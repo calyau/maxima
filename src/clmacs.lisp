@@ -367,8 +367,13 @@
 
 (defvar *acursor* nil)
 
+;; Format of *acursor*.
+;; 0                 1  2  3  4  5    6  7  8  9  10
+;; dim               i1 i2 i3 i4 i5   d1 d2 d3 d4 d5
+;; array dimension   current index    maximal index
+
 (defun set-up-cursor (ar)
-  (or *acursor* (setf *acursor* (make-array 10 :element-type 'fixnum
+  (or *acursor* (setf *acursor* (make-array 11 :element-type 'fixnum
 					    :initial-element 0)))
   (let ((lis (array-dimensions ar)))
     (setf (aref *acursor* 0) (length lis))
@@ -381,7 +386,12 @@
     (ecase (aref curs 0)
       (1 (setf (aref ar (aref curs 1)) val))
       (2 (setf (aref ar (aref curs 1) (aref curs 2)) val))
-      (3 (setf (aref ar (aref curs 1) (aref curs 2) (aref curs 3)) val)))
+      (3 (setf (aref ar (aref curs 1) (aref curs 2) (aref curs 3)) val))
+      (4 (setf (aref ar (aref curs 1) (aref curs 2) (aref curs 3)
+		     (aref curs 4)) val))
+      (5 (setf (aref ar (aref curs 1) (aref curs 2) (aref curs 3)
+		     (aref curs 4) (aref curs 5)) val)))
+    ;; set the index (`cursor') for the next call to ASET-BY-CURSOR
     (sloop for j downfrom (aref curs 0)
        do (cond ((< (aref curs j) (aref curs (f+ 5 j)))
 		 (setf (aref curs j) (f+  (aref curs j) 1))
