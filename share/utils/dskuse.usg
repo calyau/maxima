@@ -47,3 +47,50 @@ For examples of use see the file SHARE2;DSKUSE OUTPUT
 Send bugs to KMP@MC.
 This usage file was last updated: Monday, 12 March 1979.
 
+(C1) PRINTDISKUSE(); /* KMP made this sample run, so since no name was
+			given as an arg, his name will be assumed... */
+
+DSKUSE FASL DSK SHARE2 being loaded
+Loading done
+
+1532 Total Free Disk Blocks:
+  989 on Primary Pack and 543 on Secondary Pack.
+Directory use by the KMP directory:
+  449 blocks on Primary Pack and 14 blocks on Secondary Pack.
+
+(D1) DONE
+
+(C2) DISKUSE(KMP); /* How many blocks of files does KMP have? */
+
+(D2) 463 BLOCKS
+
+(C3) FULLDISKUSE(KMP); /* KMP has his own directory */
+
+(D3) [[TOTAL FREE BLOCKS, [PRIMARY PACK, 0, 480 BLOCKS],
+		          [PRIMARY PACK, 1, 509 BLOCKS],
+			  [SECONDARY PACK, 13, 543 BLOCKS]],
+      [DIRECTORY BLOCK USAGE, KMP,
+			      [PRIMARY, 449 BLOCKS],
+			      [SECONDARY, 14 BLOCKS]]]
+
+(C4) FULLDISKUSE(LPH); /* LPH is one of the users of the USERS3 directory */
+
+(D4) [[TOTAL FREE BLOCKS, [PRIMARY PACK, 0, 481 BLOCKS],
+			  [PRIMARY PACK, 1, 512 BLOCKS],
+			  [SECONDARY PACK, 13, 543 BLOCKS]],
+      [DIRECTORY BLOCK USAGE, USERS3, [PRIMARY, 239 BLOCKS],
+				      [SECONDARY, 72 BLOCKS]],
+      [USER BLOCK USAGE, LPH, [PRIMARY, 6 BLOCKS], [SECONDARY, 0 BLOCKS]]]
+
+(C5) DISKFREE(1); /* How many blocks are free on disk pack 1? */
+
+(D5) 512 BLOCKS
+
+(C6) DISKFREE(PRIMARY); /* How much free space is on both primary packs? */
+
+(D6) 993 BLOCKS
+
+(C7) DISKFREE(); /* How much disk space is available (Primary + Secondary)? */
+
+(D7) 1536 BLOCKS
+

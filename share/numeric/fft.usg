@@ -94,3 +94,51 @@ DISCLAIMER - I didn't write these routines, but copied them from
 AI:LIBDOC;FFT BWOOD1.  However you can report bugs to me.
 
 						CFFK@MC
+GJC@MIT-MC 05/15/81 20:40:29 Re: FFT
+To: JPLJMR at MIT-MC, (FILE [SHARE;FFT MAIL]) at MIT-MC
+The FFT you get by doing LOAD("FFT") is the natural complex one:
+
+      N - 1
+      ====		       - 1
+      \		 2 %I %PI I K N
+ T  =  >    A  %E		   
+  K   /	     I
+      ====
+      I = 0
+
+So if you do FFT(A_REAL,A_IMAG); what you get back is the
+coefficients of an exponential series which is the inverse
+transform:
+
+	  N - 1
+	  ====			      - 1
+      - 1 \	      - 2 %I %PI I K N
+A  = N	   >     T  %E			  
+ I	  /	  K
+	  ====
+	  K = 0
+
+Your question: "What do you do if all you have is a real function,
+and what you want is the coefficients of the SIN and COS terms?"
+A simple way is to put the function in A_REAL, and set A_IMAG to
+all zeros. Then FFT. Using the exponential formula for SIN and
+COS you get that (T[K]-T[-K])/2 gives the SIN term, and
+(T[K]+T[-K])/2 gives the COS term.
+A clever way starts out by putting the odd part of the function in A_REAL,
+and the even part in A_IMAG. 
+
+Say you do FFT(REAL,IMAG); then:
+
+COSTERM[J]:(REAL[J]+REAL[N-J])/2;
+SINTERM[J]:(IMAG[J]-IMAG[N-J])/2;
+
+Now, there is this question about the factor N^(-1), which
+some people write as SQRT(2*%PI*N)^(-1).
+All I can suggest is that you take the above formuli and use
+macsyma to carefully check that what you want to do is
+represented correctly. Using the PLOT2 package can also help in
+debugging.
+
+
+-gjc
+

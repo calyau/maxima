@@ -5,3 +5,16 @@ DIFF(%E^(A*X),X,Q) BY USING GENDIFF RATHER THAN DIFF.  UNEVALUABLE
 ITEMS COME OUT QUOTED. SOME ITEMS ARE IN TERMS OF "GENFACT", FOR 
 WHICH, SEE MANUAL.  COMMENTS AND SUGGESTIONS ARE SOLICITED.
 
+ADK@MIT-MC 04/12/82 9:04pm  For information only:
+[Bugs in GENDIFF -- SHARE2;GENDIF >]
+(1) gendiff(x*(x-a),x,j);
+    This asks "Is J - I an integer?", which is hard for the user to answer 
+    as I is a system generated dummy summation index (which has, in general, 
+    indefinite sign anyhow).
+(2) The answer for the above example involves the silly quantity diff(x,x,i),
+    which is clearly kdelta(i-1)+x*kdelta(i) for positive integer
+    values of i.  This information should be used by SUM as well.
+As nobody else is likely to care about these bugs, and I don't really care that
+much myself, this note is just for your information.  I might fix up GENDIFF
+someday, but I make no promises!
+
