@@ -134,11 +134,6 @@
 				 (caddr resimp)))))
 
 
-#+(or)
-(defun macsimp (l)
-  (cond ((null l) nil)
-	(t (append (list (simplifya (car l) nil)) (cdr l)))))
-
 (defun macsimp (exp)
   (mapcar #'(lambda (index)
 	      (simplifya ($expand index) nil))
@@ -467,7 +462,7 @@
   (cond ((equal v 0) (tchebypol n x))
 	(t (list '(mqapply)(list '($%c array) n v) x))))
 
-(defun gegenpol(n v x)
+(defun gegenpol (n v x)
   (cond ((equal v 0) (tchebypol n x))
 	(t `(($ultraspherical) ,n ,v ,x))))
 
@@ -488,30 +483,23 @@
 	(n (hyp-negp-in-l (cdr arg-l1))))
     (create-any-poly (cdr arg-l1) (cdr arg-l2) (- n))))
 
-(defun create-any-poly
-    (arg-l1 arg-l2 n)
-  (prog(result exp prodnum proden)
+(defun create-any-poly (arg-l1 arg-l2 n)
+  (prog (result exp prodnum proden)
      (setq result 1 prodnum 1 proden 1 exp 1)
      loop
      (cond ((zerop n) (return result)))
-     (setq prodnum
-	   (mul prodnum (mull arg-l1))
-	   proden
-	   (mul proden (mull arg-l2)))
+     (setq prodnum (mul prodnum (mull arg-l1))
+	   proden (mul proden (mull arg-l2)))
      (setq result
 	   (add result
 		(mul prodnum
 		     (power var exp)
 		     (inv proden)
 		     (inv (factorial exp)))))
-     (setq n
-	   (sub n 1)
-	   exp
-	   (add exp 1)
-	   arg-l1
-	   (incr1 arg-l1)
-	   arg-l2
-	   (incr1 arg-l2))
+     (setq n (sub n 1)
+	   exp (add exp 1)
+	   arg-l1 (incr1 arg-l1)
+	   arg-l2 (incr1 arg-l2))
      (go loop)))
 
 
@@ -833,7 +821,7 @@
      (go loop)))
 
 
-(defun whitfun(k m var)
+(defun whitfun (k m var)
   (list '(mqapply) (list '($%m array) k m) var))
 
 (defun simp2f1 (arg-l1 arg-l2)
@@ -1299,56 +1287,56 @@
 
 ;; Is F(a, b; c; z) is Legendre function?
 (defun legfun (a b c)			   
-  (prog (1-c a-b c-a-b inv2)
-     (setq 1-c (sub 1 c)
-	   a-b (sub a b)
-	   c-a-b (sub (sub c a) b)
-	   inv2 (inv 2))
-     (cond ((alike1 a-b inv2)
-	    ;; a-b = 1/2
-	    (return (gered1 (list a b) (list c) #'legf24))))
-     (cond ((alike1 a-b (mul -1 inv2))
-	    ;; a-b = -1/2
-	    ;;
-	    ;; For example F(a,a+1/2;c;x)
-	    (return (legf24 (list a b) (list c) var))))
-     (cond ((alike1 c-a-b inv2)
-	    ;; c-a-b = 1/2
-	    ;;
-	    ;; For example F(a,b;a+b+1/2;z)
-	    (return (legf20 (list a b) (list c) var))))
-     (cond ((alike1 c-a-b (mul -1 inv2))
-	    ;; c-a-b = -1/2
-	    (return (gered1 (list a b) (list c) #'legf20))))
-     (cond ((alike1 1-c a-b)
-	    ;; 1-c = a-b
-	    (return (legf16 (list a b) (list c) var))))
-     (cond ((alike1 1-c (mul -1 a-b))
-	    ;; 1-c = b-a
-	    (return (gered1 (list a b) (list c) #'legf16))))
-     (cond ((alike1 1-c c-a-b)
-	    ;; 1-c = c-a-b
-	    (return (gered1 (list a b) (list c) #'legf14))))
-     (cond ((alike1 1-c (mul -1 c-a-b))
-	    ;; 1-c = a+b-c
-	    ;;
-	    ;; For example F(a,1-a;c;x)
-	    (return (legf14 (list a b) (list c) var))))
-     (cond ((alike1 a-b (mul -1 c-a-b))
-	    ;; a-b = a+b-c
-	    ;;
-	    ;; For example F(a,b;2*b;z)
-	    (return (legf36 (list a b) (list c) var))))
-     (cond ((or (alike1 1-c inv2)
-		(alike1 1-c (mul -1 inv2)))
-	    ;; 1-c = 1/2 or 1-c = -1/2
-	    ;;
-	    ;; For example F(a,b;1/2;z) or F(a,b;3/2;z)
-	    (return (legpol a b c))))
-     (cond ((alike1 a-b c-a-b)
-	    ;; a-b = c-a-b
-	    (return 'legendre-funct-to-be-discovered)))
-     (return nil)))
+  (let ((1-c (sub 1 c))
+	(a-b (sub a b))
+	(c-a-b (sub (sub c a) b))
+	(inv2 (inv 2)))
+    (cond ((alike1 a-b inv2)
+	   ;; a-b = 1/2
+	   (gered1 (list a b) (list c) #'legf24))
+	  ((alike1 a-b (mul -1 inv2))
+	   ;; a-b = -1/2
+	   ;;
+	   ;; For example F(a,a+1/2;c;x)
+	   (legf24 (list a b) (list c) var))
+	  ((alike1 c-a-b inv2)
+	   ;; c-a-b = 1/2
+	   ;;
+	   ;; For example F(a,b;a+b+1/2;z)
+	   (legf20 (list a b) (list c) var))
+	  ((alike1 c-a-b (mul -1 inv2))
+	   ;; c-a-b = -1/2
+	   (gered1 (list a b) (list c) #'legf20))
+	  ((alike1 1-c a-b)
+	   ;; 1-c = a-b
+	   (legf16 (list a b) (list c) var))
+	  ((alike1 1-c (mul -1 a-b))
+	   ;; 1-c = b-a
+	   (gered1 (list a b) (list c) #'legf16))
+	  ((alike1 1-c c-a-b)
+	   ;; 1-c = c-a-b
+	   (gered1 (list a b) (list c) #'legf14))
+	  ((alike1 1-c (mul -1 c-a-b))
+	   ;; 1-c = a+b-c
+	   ;;
+	   ;; For example F(a,1-a;c;x)
+	   (legf14 (list a b) (list c) var))
+	  ((alike1 a-b (mul -1 c-a-b))
+	   ;; a-b = a+b-c
+	   ;;
+	   ;; For example F(a,b;2*b;z)
+	   (legf36 (list a b) (list c) var))
+	  ((or (alike1 1-c inv2)
+	       (alike1 1-c (mul -1 inv2)))
+	   ;; 1-c = 1/2 or 1-c = -1/2
+	   ;;
+	   ;; For example F(a,b;1/2;z) or F(a,b;3/2;z)
+	   (legpol a b c))
+	  ((alike1 a-b c-a-b)
+	   ;; a-b = c-a-b
+	   'legendre-funct-to-be-discovered)
+	  (t
+	   nil))))
 
 
 ;;; The following legf<n> functions correspond to formulas in Higher
@@ -1375,20 +1363,19 @@
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
 (defun legf20 (arg-l1 arg-l2 var)
-  (prog (m n b c)
-     (setq b (cadr arg-l1)
-	   c (car arg-l2))
-     (setq m (sub 1 c)
-	   n (mul -1 (add b b m)))
-     ;; m = 1 - c
-     ;; n = -(2*b+1-c) = c - 1 - 2*b
-     (return (mul (gm (sub 1 m))
-		  (power 2 (mul -1 m))
-		  (power (mul -1 var) (div m 2))
-		  (legen n
-			 m
-			 (power (sub 1 var) (inv 2))
-			 '$p)))))
+  (let* ((b (cadr arg-l1))
+	 (c (car arg-l2))
+	 (m (sub 1 c))
+	 (n (mul -1 (add b b m))))
+    ;; m = 1 - c
+    ;; n = -(2*b+1-c) = c - 1 - 2*b
+    (mul (gm (sub 1 m))
+	 (power 2 (mul -1 m))
+	 (power (mul -1 var) (div m 2))
+	 (legen n
+		m
+		(power (sub 1 var) (inv 2))
+		'$p))))
 
 ;; Handle the case a-b = -1/2.
 ;;
@@ -1413,21 +1400,22 @@
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
 (defun legf24 (arg-l1 arg-l2 var)
-  (prog (m n a c z)
-     (setq a (car arg-l1)
-	   c (car arg-l2)
-	   m (sub 1 c)
-	   n (mul -1 (add a a m))
-	   z (inv (power (sub 1 var) (inv 2))))
-     (return (mul (inv (power 2 m))
-		  (power (sub (power z 2) 1)
-			 (div m 2))
-		  (power z (mul -1 (add n m)))
-		  (gm (sub 1 m))
-		  (legen n
-			 m
-			 z
-			 '$p)))))
+  (let* ((a (car arg-l1))
+	 (c (car arg-l2))
+	 (m (sub 1 c))
+	 (n (mul -1 (add a a m)))
+	 (z (inv (power (sub 1 var) (inv 2)))))
+    (mul (inv (power 2 m))
+	 (power (sub (power z 2) 1)
+		(div m 2))
+	 (power z (mul -1 (add n m)))
+	 (gm (sub 1 m))
+	 (legen n
+		m
+		z
+		'$p))))
+
+
 
 ;; Handle 1-c = a-b
 ;;
@@ -1448,21 +1436,20 @@
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
 (defun legf16 (arg-l1 arg-l2 var)
-  (prog (m n a c z)
-     (setq a (car arg-l1)
-	   c (car arg-l2)
-	   m (sub 1 c)
-	   n (mul -1 a)
-	   z (div (add 1 var)
-		  (sub 1 var)))
-     (return (mul (power 2 n)
-		  (power (sub z 1) (div m 2))
-		  (gm (sub 1 m))
-		  (inv (power (add z 1) (add (div m 2) n)))
-		  (legen n
-			 m
-			 z
-			 '$p)))))
+  (let* ((a (car arg-l1))
+	 (c (car arg-l2))
+	 (m (sub 1 c))
+	 (n (mul -1 a))
+	 (z (div (add 1 var)
+		 (sub 1 var))))
+    (mul (power 2 n)
+	 (power (sub z 1) (div m 2))
+	 (gm (sub 1 m))
+	 (inv (power (add z 1) (add (div m 2) n)))
+	 (legen n
+		m
+		z
+		'$p))))
 
 
 ;; Handle the case 1-c = a+b-c.
@@ -1495,23 +1482,6 @@
 	 (gm (sub 1 m))
 	 (legen n m (sub 1 (mul 2 var)) '$p))))
 
-;; I think this version is wrong.
-#+nil
-(defun legf14 (arg-l1 arg-l2 var)
-  (prog (m n a c b)
-     (setq l (s+c (car arg-l1))
-	   a (cond ((eq (cdras 'c l) 0) (cdras 'f l))
-		   (t (mul -1 (cdras 'f l))))
-	   c (car arg-l2) m (sub 1 c)
-	   n (mul -1 a))
-     (return (mul (power (add var 1) (div m 2))
-		  (power (sub var 1) (div m -2))
-		  (inv (gm (sub 1 m)))
-		  (legen n m (sub 1 (mul 2 var)) '$p)))))
-
-
-
-
 ;; Handle a-b = a+b-c
 ;;
 ;; Formula 36:
@@ -1528,25 +1498,23 @@
 ;;
 (defun legf36 (arg-l1 arg-l2 var)
   (declare (ignore arg-l2))
-  (prog (n m a b z)
-     (setq a (car arg-l1)
-	   b (cadr arg-l1)
-	   n (sub b 1)
-	   m (sub b a)
-	   ;;z (div (sub 2 var) var)
-	   z (sub (div 2 var) 1)
-	   )
-     (return (mul (inv (power 2 n))
-		  (inv (gm (add 1 n)))
-		  (inv (gm (add 1 n m)))
-		  (inv (power (add z 1)
-			      (add (div m 2)
-				   (mul -1 n)
-				   -1)))
-		  (inv (power (sub z 1) (div m -2)))
-		  (gm (add 2 n n))
-		  (power '$%e (mul -1 '$%i m '$%pi))
-		  (legen n m z '$q)))))
+  (let* ((a (car arg-l1))
+	 (b (cadr arg-l1))
+	 (n (sub b 1))
+	 (m (sub b a))
+	 ;;z (div (sub 2 var) var)
+	 (z (sub (div 2 var) 1)))
+    (mul (inv (power 2 n))
+	 (inv (gm (add 1 n)))
+	 (inv (gm (add 1 n m)))
+	 (inv (power (add z 1)
+		     (add (div m 2)
+			  (mul -1 n)
+			  -1)))
+	 (inv (power (sub z 1) (div m -2)))
+	 (gm (add 2 n n))
+	 (power '$%e (mul -1 '$%i m '$%pi))
+	 (legen n m z '$q))))
 
 
 (defun legen (n m x pq)
@@ -1646,11 +1614,6 @@
 				   (power var (div -1 2)))))))
      (return nil)))
 
-
-       
-(defun multaug
-    (a n)
-  (cond ((zerop n) 1)(t (mul a (multaug (add a 1)(sub1 n))))))
 
 
 ;; See A&S 15.3.3:
