@@ -24,7 +24,7 @@ For reference, see http://www.vttoth.com/KK/kk.htm")$
 We also set up contraction properties for both the 4-dimensional
 and the 5-dimensional metric tensors.")$
 
-load("itensor");
+if get('itensor,'version)=false then load(itensor);
 (derivabbrev:true, dim:5, imetric:g5, defcon(g4),defcon(g5),
 defcon(g4,g4,kdelta), defcon(g5,g5,kdelta))$
 

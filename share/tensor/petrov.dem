@@ -17,7 +17,7 @@
 
 ("Attempt to compute the Petrov classification of the Kerr metric.")$
 ("First, we need to load modules and define the metric:")$
-load(ctensor);
+if get('ctensor,'version)=false then load(ctensor);
 init_ctensor();
 gcd:spmod;
 ct_coords:[t,r,h,p]$

@@ -15,7 +15,7 @@
 */
 ("the anticommutative algebra's operations on indexed objects")$
 ("the operations are allowed only on the covariant tensors")$
-load(itensor);
+if get('itensor,'version)=false then load(itensor);
 dummyx:z;
 ("The exterior product is denoted by ~. Take it on two 1-forms
   a([i])~b([j])")$

@@ -13,7 +13,7 @@
  * Derive the Schwarzschild solution in a tetrad base
  *
  */
-load("ctensor")$
+if get('ctensor,'version)=false then load(ctensor);
 ("
 
 Derive and verify Schwarzschild's solution in a tetrad base.")$

@@ -98,12 +98,13 @@ extdiff(forma,[optind]):=block
   (
     l11:makelist(idummy(),i,1,length(l1)),
     l1s:map("=",l1,l11),
-    lk1:append([ind],l1),
+/*    lk1:append([ind],l1),*/
+    lk1:append(l1,[ind]),
     indd:idummy(),
     lk2:append(l11,[indd]),
     res:sublis(l1s,forma),
-    res:contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd))))/
-                               (length(lk1)-1)!,
+    res:distrib(contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd))))/
+                               (length(lk1)-1)!),
     if iframe_flag=true then
       for i thru length(l1) do
       (
@@ -142,7 +143,8 @@ declare("|",additive);
   (
     perm:permutator(first(indices(forma))),
     if perm[2]=[] then 0
-    else perm[1]*(contract(canform(expand(forma*vec([],[first(perm[2])])))))
+    else /* perm[1]* */
+      (contract(canform(expand(forma*vec([],[first(perm[2])])))))
   )
 );
 

@@ -13,7 +13,7 @@
  * Proving Cartan's identities with ITENSOR.
  *
 */
-load(itensor)$
+if get('itensor,'version)=false then load(itensor);
 (showtime:true,dummyx:z,allsym:false)$
 decsym(a,2,0,[anti(all)],[]);
 decsym(a,3,0,[anti(all)],[]);

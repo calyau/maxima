@@ -15,17 +15,19 @@
  */
 
 if get('ctensor,'version)=false then load(ctensor);
-("Verify the Schwarzschild metric in tetrad base")$
-("The variable cframe_flag determines if a frame base is used")$
-cframe_flag:true;
-("ct_coordsys() can be used to set up predefined metrics")$
-verbose:true;
-ct_coordsys(exteriorschwarzschild);
-("A call to cmetric() computes the frame base and the metric")$
-cmetric()$
-fr;
-lg;
-("But we're not using the metric when we compute the connection")$
-christof(mcs);
-("We can now compute the Ricci tensor in tetrad base")$
-ricci(true);
+("Computing the Petrov classification of the Schwarzschild metric")$
+("We use frames, set up simplification flags")$
+(cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
+("We use the stock Schwarzschild frame")$
+ct_coordsys(exteriorschwarzschild,all);
+("The inverse metric tensor is needed by nptetrad()")$
+ug:invert(lg)$
+("The basis for the calculations is the Weyl tensor")$
+weyl(false);
+("We compute a Newman-Penrose null tetrad")$
+nptetrad(false);
+("Now we're ready to compute the coefficients")$
+psi(true);
+("And obtain the Petrov class")$
+petrov();
+

@@ -19,7 +19,7 @@
 
 Verify that the Reissner-Nordstrom metric is that of a point charge.
 First, we load ctensor...")$
-load(ctensor);
+if get('ctensor,'version)=false then load(ctensor);
 ("We also need NCHRPL that contains the MATTRACE function:")$
 load(nchrpl);
 ("Now we set up the metric with (+,-,-,-) signature:")$

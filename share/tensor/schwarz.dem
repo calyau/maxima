@@ -20,7 +20,7 @@ showtime:all$
 ("This file finds the Schwarzschild solution of 
  the Einstein vacuum equations" );
 
-if get('ctensor,'version) = false then load(ctensor)$
+if get('ctensor,'version)=false then load(ctensor);
 /* the following allows the batch program to run by presetting flags */
 setflags()$
 /* this calls for the rational simplification of geometrical objects */
@@ -63,7 +63,7 @@ ev(first(exp),h1,diff,factor);
 ode2(num(%),d,r);
 expand(radcan(%));
 h2:ev(%,%c = 1);
-("H1 and H2 should be the solution and to check");
+("h1 and h2 should be the solution and to check");
 sol:[h1,h2];
 exp,sol,diff,ratsimp;
 /* kill(all);
