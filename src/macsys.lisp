@@ -324,15 +324,46 @@
 (DEFUN $DEMO (&REST ARG-LIST)
   (BATCH (FILENAME-FROM-ARG-LIST ARG-LIST) T))
 
+(defmfun $bug_report ()
+  (format t "~%The Maxima bug database is available at~%")
+  (format t "    http://sourceforge.net/tracker/?atid=104933&group_id=4933&func=browse~%")
+  (format t "Submit bug reports by following the 'Submit New' link on that page.~%")
+  (format t "Please include the following build information with your bug report:~%")
+  (format t "-------------------------------------------------------------~%")
+  ($build_info)
+  (format t "-------------------------------------------------------------~%")
+  (format t "The above information is also available from the Maxima function build_info().~%~%")
+  "")
+
+(defmfun $build_info ()
+  (format t "~%Maxima version: ~a~%" *autoconf-version*)
+  (format t "Maxima build date: ~a:~a ~a/~a/~a~%"
+	  (third user:*maxima-build-time*)
+	  (second user:*maxima-build-time*)
+	  (fifth user:*maxima-build-time*)
+	  (fourth user:*maxima-build-time*)
+	  (sixth user:*maxima-build-time*))
+  (format t "host type: ~a~%" *autoconf-host*)
+  (format t "lisp-implementation-type: ~a~%" (lisp-implementation-type))
+  (format t "lisp-implementation-version: ~a~%~%" (lisp-implementation-version))
+  "")
+
+(defvar *maxima-started* nil)
+
 #-lispm
 (defun macsyma-top-level (&OPTIONAL (input-stream *standard-input*)
 				    batch-flag)
   (let ((*package* (find-package "MAXIMA")))
-    ;; *autconf-version* is not set under old build system.
-    ;; If old build system detect, inform the user that it is deprecated.
-    (if (boundp '*autoconf-version*)
-	(format t "Maxima ~a (with enhancements by W. Schelter).~%Licensed under the GNU Public License (see file COPYING)~%" *autoconf-version*)
-      (format t "Maxima pre59 (with enhancements by W. Schelter).~%Built with old build system. The old build system is depcrecated.~%Please see the 'for59' directory to convert to the new build system.~%Licensed under the GNU Public License (see file COPYING)~%" *autoconf-version*))
+    (if *maxima-started*
+	(format t "Maxima restarted.~%")
+      (progn
+	(format t "Maxima ~a http://maxima.sourceforge.net~%"
+		*autoconf-version*)
+	(format t "Distributed under the GNU Public License. See the file COPYING.~%")
+	(format t "Dedicated to the memory of William Schelter.~%")
+	(format t "This is a development version of Maxima. The function bug_report()~%")
+	(format t "provides bug reporting information.~%")
+	(setq *maxima-started* t)))
     (if ($file_search "maxima-init.lisp") ($load "maxima-init.lisp"))
     (if ($file_search "maxima-init.mac") ($batchload "maxima-init.mac"))
     

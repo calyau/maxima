@@ -6,6 +6,8 @@
 #+cmu
 (setf ext:*gc-verbose* nil)
 (setf *load-verbose* nil)
+(defvar *maxima-build-time* (multiple-value-list (get-decoded-time)))
+(export '*maxima-build-time*)
 
 (mk:defsystem "maxima"
   :source-extension "lisp"  
