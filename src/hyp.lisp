@@ -141,7 +141,7 @@
 
 (defun macsimp (l)
   (mapcar #'(lambda (index)
-	      (simplifya index nil))
+	      (simplifya ($expand index) nil))
 	  l))
 
 ;; Simplify the parameters.  If L1 and L2 have common elements, remove
@@ -1425,19 +1425,15 @@
 ;;
 ;; F(a,b;c;w) = gamma(c)*(-w)^(1/2-c/2)*(1-w)^(1-w)^(c/2-1/2)*P(-a,1-c,1-2*w)
 (defun legf14 (l1 l2 var)
-  (prog (m n a c b z)
-     (setq l (s+c (car l1))
-	   a (cond ((eq (cdras 'c l) 0)
-		    (cdras 'f l))
-		   (t (mul -1 (cdras 'f l))))
-	   c (car l2)
-	   m (sub 1 c)
-	   n (mul -1 a)
-	   z (sub 1 (mul 2 var)))
-     (return (mul (power (add z 1) (div m -2))
-		  (power (sub z 1) (div m 2))
-		  (gm (sub 1 m))
-		  (legen n m (sub 1 (mul 2 var)) '$p)))))
+  (let* ((a (car l1))
+	 (c (car l2))
+	 (m (sub 1 c))
+	 (n (mul -1 a))
+	 (z (sub 1 (mul 2 var))))
+    (mul (power (add z 1) (div m -2))
+	 (power (sub z 1) (div m 2))
+	 (gm (sub 1 m))
+	 (legen n m (sub 1 (mul 2 var)) '$p))))
 
 ;; I think this version is wrong.
 #+nil
