@@ -95,8 +95,8 @@
 	 (val-list (if ($listp val)
 		       (cdr val)
 		       `(,val))))
-    (format nil "~a" 
-	    (stripdollar (nth (mod (- index 1) (length val-list)) val-list)))))
+    (print-invert-case 
+     (stripdollar (nth (mod (- index 1) (length val-list)) val-list)))))
 
 (defun check-list-items (name lis type length)
   (or (eql (length lis) length)
@@ -1812,7 +1812,7 @@ MT~@d)~%"
 		     (let ((string (coerce (mstring orig-fun) 'string)))
 		       (cond ((< (length string) 20) string)
 			     (t (format nil "Function"))))))
-		(if (equal title "DEFAULT")
+		(if (equal title "default")
 		    (setf title (format nil "title '~a'" plot-name)))
 		(format $pstream "splot '-' ~a ~a~%" title 
 			(get-plot-option-string '$gnuplot_curve_styles 1)))
