@@ -1,11 +1,17 @@
 Executive Summary
 =================
 
+Maxima can now be built under Windows without recourse to any
+unix-like utilities. To do so, follow the purely lisp-based build
+procedure in INSTALL.lisp.
+
 Maxima can be simply compiled and installed under MSYS or Cygwin by
-following the instructions in INSTALL. With a few more steps, Maxima
-will create a windows installer executable. The instructions for doing
-so are contained in this file. Note, however, that this process is not
-as polished as the unix-like install process.
+following the GNU Autotools instructions in INSTALL. With a few more
+steps, Maxima will create a windows installer executable. (N.b., the
+following documentation has not been updated for the post-5.9.0
+releases.)  The instructions for doing so are contained in this
+file. Note, however, that this process is not as polished as the
+unix-like install process.
 
 In principle, creating a Windows (X)maxima installer executable is a
 straightforward exercise. In order to create the maxima windows

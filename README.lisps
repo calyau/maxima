@@ -1,19 +1,19 @@
-Preliminary notes on lisp implementations for Maxima:
+Notes on lisp implementations for Maxima:
 
-clisp, CMUCL and GCL are fully supported by Maxima; previous versions
-of Maxima only fully supported GCL. Ports to other ANSI lisps should
-be straightforward and are welcome; please contact the developers if
-you are interested in working on a port.
+clisp, CMUCL, GCL and SBCL are fully supported by Maxima; previous
+versions of Maxima only fully supported GCL. Allegro Common Lisp and
+OpenMCL have some support, but have not been fully tested. Ports to
+other ANSI lisps should be straightforward and are welcome; please
+contact the developers if you are interested in working on a port.
 
 clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
 -----
 	clisp includes GNU readline support, so Maxima will have
 advanced command-line editing facilities when built with it.
 
-clisp versions: Maxima will fail to build with 2.26 because of a bug
-in clisp. 2.28 and 2.29 are known to work. There are currently
-unresolved problems with floating point numbers in Maxima with clisp
-2.30. 2.29 is recommended.
+clisp versions: Clisp version 2.32 or later is recommended, though
+2.31 is known to work. Clisp 2.30 is not compatible with Maxima and
+should be avoided.
 
 CMUCL <http://cmucl.cons.org>
 -----
@@ -24,8 +24,7 @@ with the ledit executable. See
 <ftp://ftp.inria.fr/INRIA/Projects/cristal/Daniel.de_Rauglaudre/Tools/>
 for ledit.
 
-CMUCL versions: Maxima will build with CMUCL 18c, but will hang on
-some run-time operations. 18d is known to work.
+CMUCL versions: 18e is known to work.
 
 GCL <http://savannah.gnu.org/projects/gcl>
 ---
@@ -33,7 +32,16 @@ GCL <http://savannah.gnu.org/projects/gcl>
 support, so Maxima will have advanced command-line editing facilities
 when build with it.
 
-GCL versions: 2.4.4 and 2.5.0 should work. 2.5.0 has not yet been
-released as of this writing. The cvs version of 2.5.0 has been used to
-successfully build Maxima.
+GCL versions: The soon-to-be-released GCL 2.6.2 is the best bet for
+Maxima. Only the ANSI build of GCL is currently supported.
 
+SBCL <http://sbcl.sourceforge.net>
+----
+	SBCL version 0.8.4 is known to work.
+
+Allegro Common Lisp and OpenMCL:
+-------------------------------
+
+	Maxima should work with Allegro Common Lisp and OpenMCL, but
+only limited testing has been done with these lisp
+implementations. User feedback would be welcome.
