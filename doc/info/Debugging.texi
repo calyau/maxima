@@ -154,46 +154,73 @@ Throw to top level
 @c @node REFCHECK
 @c @unnumberedsec phony
 @defvar REFCHECK
- default: [FALSE] - if TRUE causes a message to be printed
+Default value: FALSE
+
+If REFCHECK is TRUE, Maxima prints a message
 each time a bound variable is used for the first time in a
 computation.
 
 @end defvar
-@c @node REMTRACE
-@c @unnumberedsec phony
-@defun REMTRACE ()
-This function is no longer used with the new TRACE
-package.
-
-@end defun
 @c @node SETCHECK
 @c @unnumberedsec phony
 @defvar SETCHECK
- default: [FALSE] - if set to a list of variables (which can
-be subscripted) will cause a printout whenever the variables, or
-subscripted occurrences of them, are bound (with : or :: or function
-argument binding).  The printout consists of the variable and the
-value it is bound to.  SETCHECK may be set to ALL or TRUE thereby
-including all variables.  Note: No printout is generated when a
-SETCHECKed variable is set to itself, e.g. X:'X.
+Default value: FALSE
+
+If SETCHECK is set to a list of variables (which can
+be subscripted), 
+Maxima will print a message whenever the variables, or
+subscripted occurrences of them, are bound with the
+ordinary assignment operator @code{:}, the @code{::} assignment
+operator, or function argument binding,
+but not the function assignment @code{:=} nor the macro assignment
+@code{::=} operators.
+The message comprises the name of the variable and the
+value it is bound to.
+
+SETCHECK may be set to ALL or TRUE thereby
+including all variables.
+
+Each new assignment of SETCHECK establishes a new list of variables
+to check, and any variables previously assigned to SETCHECK are forgotten.
+
+The names assigned to SETCHECK must be quoted if they would otherwise
+evaluate to something other than themselves.
+For example, if X, Y, and Z are already bound, then enter
+
+@example
+SETCHECK:['X, 'Y, 'Z]$
+@end example
+
+to put them on the list of variables to check.
+
+No printout is generated when a
+variable on the SETCHECK list is set to itself, e.g., @code{X: 'X}.
 
 @end defvar
 @c @node SETCHECKBREAK
 @c @unnumberedsec phony
 @defvar SETCHECKBREAK
- default: [FALSE] - if set to TRUE will cause a
-(MACSYMA-BREAK) to occur whenever the variables on the SETCHECK list
-are bound.  The break occurs before the binding is done.  At this
-point, SETVAL holds the value to which the variable is about to be
-set.  Hence, one may change this value by resetting SETVAL.
+Default value: FALSE
+
+When SETCHECKBREAK is TRUE,
+Maxima will present a break prompt 
+whenever a variable on the SETCHECK list is assigned a new value.
+The break occurs before the assignment is carried out.
+At this point, SETVAL holds the value to which the variable is 
+about to be assigned.
+Hence, one may assign a different value by assigning to SETVAL.
+
+See also SETCHECK and SETVAL.
 
 @end defvar
 @c @node SETVAL
 @c @unnumberedsec phony
 @defvar SETVAL
- - holds the value to which a variable is about to be set when
-a SETCHECKBREAK occurs.  Hence, one may change this value by resetting
-SETVAL.  (See SETCHECKBREAK).
+Holds the value to which a variable is about to be set when
+a SETCHECKBREAK occurs.
+Hence, one may assign a different value by assigning to SETVAL.
+
+See also SETCHECK and SETCHECKBREAK.
 
 @end defvar
 @c @node TIMER
