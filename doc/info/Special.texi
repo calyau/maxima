@@ -25,7 +25,7 @@ Constant, in ODE2
 @section GAMALG
  - A Dirac gamma matrix algebra program which takes traces of
 and does manipulations on gamma matrices in n dimensions.  It may be
-loaded into MACSYMA by 
+loaded into Maxima by 
 LOADFILE("gam");
 A preliminary manual is contained in the file SHARE;GAM USAGE and may
 be printed using
@@ -459,7 +459,7 @@ necessary.
 @c @node PSI
 @c @unnumberedsec phony
 @defun PSI (X)
-derivative of LOG(GAMMA(X)).  At this time, MACSYMA does not
+derivative of LOG(GAMMA(X)).  At this time, Maxima does not
 have numerical evaluation capabilities for PSI.  For information on
 the PSI[N](X) notation, see POLYGAMMA.
 

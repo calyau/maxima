@@ -8,7 +8,7 @@
 
  - Component Tensor Manipulation Package.  To use the CTENSR
 package, type TSETUP(); which automatically loads it from within
-MACSYMA (if it is not already loaded) and then prompts the user to
+Maxima (if it is not already loaded) and then prompts the user to
 input his coordinate system.  The user is first asked to specify the
 dimension of the manifold. If the dimension is 2, 3 or 4 then the list
 of coordinates defaults to [X,Y], [X,Y,Z] or [X,Y,Z,T] respectively.
@@ -226,7 +226,7 @@ renamed to TTRANSFORM.
 @defun TSETUP ()
 A function in the CTENSR (Component Tensor Manipulation)
 package which automatically loads the CTENSR package from within
-MACSYMA (if it is not already loaded) and then prompts the user to
+Maxima (if it is not already loaded) and then prompts the user to
 make use of it.  See CTENSOR (nota bene, not CTENSR) for more details.
 
 @end defun

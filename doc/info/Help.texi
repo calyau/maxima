@@ -45,8 +45,8 @@ see help on all the items.
  All of Maxima is of course written in lisp.  There is
 a naming convention for functions and variables:  All symbols which
 begin with a "$" sign at lisp level, are read with the "$" sign stripped
-off at Macsyma level.  For example, there are two lisp functions
-TRANSLATE and $TRANSLATE.   If at macsyma level you enter
+off at Maxima level.  For example, there are two lisp functions
+TRANSLATE and $TRANSLATE.   If at Maxima level you enter
 TRANSLATE(FOO); the function which is called is the $translate function.
 To access the other function you must prefix with a "?".   Note you
 may @i{not} put a space after the @code{?} since that would indicate
@@ -76,7 +76,7 @@ MAXIMA>(run)
 @end example
 at the lisp prompt, to restart the Maxima session.
 
-If you intend to write lisp functions to be called at macsyma
+If you intend to write lisp functions to be called at Maxima
 level you should name them by names beginning with a "$".   Note
 that all symbols typed at lisp level are automatically read in
 upper case, unless you do something like @code{|$odeSolve|} to
@@ -112,20 +112,20 @@ This will have the same effect as entering
 @noindent
 
 except that foo will not appear in the VALUES list.  In order to view
-foo in macsyma printed format you may type
+foo in Maxima printed format you may type
 
 @example
 (displa $foo)
 @end example
 
-In this documentation when we wish to refer to a macsyma symbol we
-shall generally omit the $ just as you would when typing at macsyma level.
+In this documentation when we wish to refer to a Maxima symbol we
+shall generally omit the $ just as you would when typing at Maxima level.
 This will cause confusion when we also wish to refer to a lisp symbol.
 In this case we shall usually try to use lower case for the lisp symbol
-and upper case for the macsyma symbol.  For example LIST for $list and
+and upper case for the Maxima symbol.  For example LIST for $list and
 list for the lisp symbol whose printname is "list".
 
-Since functions defined using the MAXIMA language are not ordinary
+Since functions defined using the Maxima language are not ordinary
 lisp functions, you must use mfuncall to call them.
 For example:
 

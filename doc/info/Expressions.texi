@@ -22,7 +22,7 @@ UNLESS               PRODUCT        WHILE                THRU
 STEP                                                                     
 @end example
 
-Most things in MAXIMA are expressions.   A sequence of expressions
+Most things in Maxima are expressions.   A sequence of expressions
 can be made into an expression by separating them by commas and
 putting parentheses around them.   This is similar to the @b{C}
 @i{comma expression}.
@@ -56,14 +56,14 @@ term in the @i{comma expression} which actually gives back the value.
 
 @node ASSIGNMENT, COMPLEX, Introduction to Expressions, Expressions
 @section ASSIGNMENT
- - There are two assignment operators in MACSYMA, : and :: .
+ - There are two assignment operators in Maxima, : and :: .
 E.g. A:3 sets the variable A to 3.  :: assigns the value of the
 expression on its right to the value of the quantity on its left,
 which must evaluate to an atomic variable or subscripted variable.
 
 @node COMPLEX, INEQUALITY, ASSIGNMENT, Expressions
 @section COMPLEX
- - A complex expression is specified in MACSYMA by adding the
+ - A complex expression is specified in Maxima by adding the
 real part of the expression to %I times the imaginary part.  Thus the
 roots of the equation X^2-4*X+13=0 are 2+3*%I and 2-3*%I.  Note that
 simplification of products of complex expressions can be effected by
@@ -73,7 +73,7 @@ the REALPART, IMAGPART, RECTFORM, POLARFORM, ABS, CARG functions.
 
 @node INEQUALITY, SYNTAX, COMPLEX, Expressions
 @section INEQUALITY
- - MACSYMA has the usual inequality operators:
+ - Maxima has the usual inequality operators:
 less than:  <
 greater than:  >
 greater than or equal to:  >=
@@ -81,10 +81,10 @@ less than or equal to:  <=
 
 @node SYNTAX, Definitions for Expressions, INEQUALITY, Expressions
 @section SYNTAX
- - It is possible to add new operators to MACSYMA (infix,
+ - It is possible to add new operators to Maxima (infix,
 prefix, postfix, unary, or matchfix with given precedences), to remove
 existing operators, or to redefine the precedence of existing
-operators.  While MACSYMA's syntax should be adequate for most
+operators.  While Maxima's syntax should be adequate for most
 ordinary applications, it is possible to define new operators or
 eliminate predefined ones that get in the user's way.  The extension
 mechanism is rather straightforward and should be evident from the
@@ -106,7 +106,7 @@ extension functions require additional information such as the
 matching keyword for a matchfix operator.  In addition, binding powers
 and parts of speech must be specified for all keywords defined.  This
 is done by passing additional arguments to the extension functions.
-If a user does not specify these additional parameters, MACSYMA will
+If a user does not specify these additional parameters, Maxima will
 assign default values.  The six extension functions with binding
 powers and parts of speech defaults (enclosed in brackets) are
 summarized below.
@@ -257,9 +257,9 @@ NUMER_PBRANCH, M1PBRANCH, DOTSCRULES, and LOGEXPAND
 
 BINDTEST - causes ai to signal an error if it ever is used in a
 computation unbound.  DECLARE([var1, var2, ...], BINDTEST) causes
-MACSYMA to give an error message whenever any of the vari occur
+Maxima to give an error message whenever any of the vari occur
 unbound in a computation.
-MACSYMA currently recognizes and uses the following features of
+Maxima currently recognizes and uses the following features of
 objects:
 @example
 EVEN, ODD, INTEGER, RATIONAL, IRRATIONAL, REAL, IMAGINARY,
@@ -623,8 +623,7 @@ sum).
 @c @unnumberedsec phony
 @defun OP (exp)
 Returns the operator of the expression, and functions the same way as
-PART(exp,0).  It observes the setting of the INPART flag.  It may not
-return the same value as the commercial Macsyma.
+PART(exp,0).  It observes the setting of the INPART flag.
 
 @end defun
 @c @node OPERATORP, OPTIMIZE, OP, Expressions

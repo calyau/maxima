@@ -151,7 +151,7 @@ desired to redefine the values in a hashed array.
 of arrays are recognized.  
 
 1) The art-q array (t in common lisp) which may have several dimensions
-indexed by integers, and may hold any lisp or macsyma object as an
+indexed by integers, and may hold any lisp or Maxima object as an
 entry.  To construct such an array, enter A:MAKE_ARRAY(ANY,3,4); then A
 will have as value, an array with twelve slots, and the indexing is zero
 based.
@@ -163,12 +163,12 @@ valid subscript for an art-q array,a list or a matrix ).  Its indices
 (also known as keys) may be any object.  It only takes ONE KEY at a time
 (B[X+1,U]:Y would ignore the u) Referencing is done by B[X+1]==> Y^2.  Of
 course the key may be a list, eg B[[x+1,u]]:y would be valid.  This is in-
-compatible with the old Macsyma hash arrays, but saves consing.
+compatible with the old Maxima hash arrays, but saves consing.
 
 An advantage of storing the arrays as values of the symbol is that the
 usual conventions about local variables of a function apply to arrays as
 well.  The Hash_table type also uses less consing and is more efficient
-than the old type of macsyma hashar.  To obtain consistent behaviour in
+than the old type of Maxima hashar.  To obtain consistent behaviour in
 translated and compiled code set TRANSLATE_FAST_ARRAYS [TRUE] to be
 TRUE.
  

@@ -24,14 +24,14 @@ the noun-form operators, which is not evaluation.
 @c @unnumberedsec phony
 @defvar ASKEXP
  default: [] contains the expression upon which ASKSIGN is
-called.  A user may enter a MACSYMA break with ^A and inspect this
+called.  A user may enter a Maxima break with ^A and inspect this
 expression in order to answer questions asked by ASKSIGN.
 @end defvar
 
 @c @node ASKINTEGER, ASKSIGN, ASKEXP, Simplification
 @c @unnumberedsec phony
 @defun ASKINTEGER (exp,<optional-arg>)
-exp is any valid macsyma expression
+exp is any valid Maxima expression
 and optional-arg is EVEN,ODD,INTEGER and defaults to INTEGER if not
 given.  This function attempts to determine from the data-base whether
 exp is EVEN, ODD or just an INTEGER.  It will ask the user if it
@@ -204,7 +204,7 @@ simplify to G(G(G(A,B),C),D).
 @c @node declaration, declaration, declaration, Simplification
 @c @unnumberedsec phony
 @defvr declaration LINEAR
- - One of MACSYMA's OPPROPERTIES.  For univariate f so
+ - One of Maxima's OPPROPERTIES.  For univariate f so
 declared, "expansion" F(X+Y) -> F(X)+F(Y), F(A*X) -> A*F(X) takes
 place where A is a "constant".  For functions F of >=2 args,
 "linearity" is defined to be as in the case of 'SUM or 'INTEGRATE,
@@ -277,7 +277,7 @@ over an expression.  E.g. -(X+Y) becomes -Y-X.  Setting it to FALSE
 will allow -(X+Y) to be displayed like that.  This is sometimes useful
 but be very careful: like the SIMP flag, this is one flag you do not
 want to set to FALSE as a matter of course or necessarily for other
-than local use in your MACSYMA.
+than local use in your Maxima.
 
 @end defvar
 @c @node NEGSUMDISPFLAG, {special symbol}, NEGDISTRIB, Simplification
@@ -344,7 +344,7 @@ TRUE. (see the EV function).
 @c @unnumberedsec phony
 @defvar OPPROPERTIES
  - the list of the special operator-properties handled by
-the MACSYMA simplifier: LINEAR, ADDITIVE, MULTIPLICATIVE, OUTATIVE,
+the Maxima simplifier: LINEAR, ADDITIVE, MULTIPLICATIVE, OUTATIVE,
 EVENFUN, ODDFUN, COMMUTATIVE, SYMMETRIC, ANTISYMMETRIC, NARY,
 LASSOCIATIVE, and RASSOCIATIVE.
 

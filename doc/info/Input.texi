@@ -15,7 +15,7 @@ contains data or text.  The only storage devices which are used on the
 MC machine are disks and tapes.  Files on the disks are figuratively
 grouped into "directories".  A directory is just a list of all the
 files stored under a given user name.  Do DESCRIBE(FILEOP); for
-details of how you may inspect your files using MACSYMA.  Other
+details of how you may inspect your files using Maxima.  Other
 commands which deal with files are: SAVE, STORE, LOAD,
 LOADFILE, RESTORE, UNSTORE, STRINGOUT, BATCH, BATCON, DEMO, WRITEFILE,
 CLOSEFILE, DELFILE, REMFILE, and APPENDFILE.
@@ -33,7 +33,7 @@ number to start at, otherwise it will go back about 40 lines.
 @c @node %, %%, PLAYBACK, Input and Output
 @c @unnumberedsec phony
 @defvar %
- The last D-line computed by MACSYMA (whether or not it was printed
+ The last D-line computed by Maxima (whether or not it was printed
 out).  (See also %%.)
 
 @end defvar
@@ -41,7 +41,7 @@ out).  (See also %%.)
 @c @unnumberedsec phony
 @defvar %%
  The value of the last computation performed while in a
-(MACSYMA-BREAK).  Also may be used in compound statements in the nth
+Maxima break.  Also may be used in compound statements in the nth
 statement to refer to the value of the (n-1)th statement.  E.g.
 F(N):=(INTEGRATE(X^N,X),SUBST(3,X,%%)-SUBST(2,X,%%)); is in essence
 equivalent to F(N):=BLOCK([%%], %%:INTEGRATE(X^N,X),
@@ -52,7 +52,7 @@ between the (n-1)th and nth (non-atomic) BLOCK statements.
 @c @node %EDISPFLAG, %TH, %%, Input and Output
 @c @unnumberedsec phony
 @defvar %EDISPFLAG
- default: [FALSE] - if TRUE, MACSYMA displays %E to a
+ default: [FALSE] - if TRUE, Maxima displays %E to a
 negative exponent as a quotient, i.e. %E^-X as 1/%E^X.
 
 @end defvar
@@ -70,8 +70,8 @@ SUM:SUM+%TH(I) will set SUM to the sum of the last ten D expressions.
 @c @unnumberedsec phony
 @deffn {special symbol} "?"
   - As prefix to a function or variable name, signifies that the
-function or variable is a LISP token, not a MACSYMA token.  Two
-question marks typed together, ??, will flush the current MACSYMA
+function or variable is a LISP token, not a Maxima token.  Two
+question marks typed together, ??, will flush the current Maxima
 command line.
 
 @end deffn
@@ -97,14 +97,14 @@ CLOSEFILE closes the transcript file opened by APPENDFILE or WRITEFILE.
 @c @node BATCH, BATCHKILL, BACKUP, Input and Output
 @c @unnumberedsec phony
 @defun BATCH (file-specification)
-reads in and evaluates MACSYMA command
+reads in and evaluates Maxima command
 lines from a file - A facility for executing command lines stored on a
 disk file rather than in the usual on-line mode. This facility has
 several uses, namely to provide a reservoir for working command lines,
 for giving error-free demonstrations, or helping in organizing one's
 thinking in complex problem-solving situations where modifications may
 be done via a text editor.
-A batch file consists of a set of MACSYMA command lines, each with its
+A batch file consists of a set of Maxima command lines, each with its
 terminating ; or $, which may be further separated by spaces,
 carriage- returns, form-feeds, and the like.
 The BATCH function calls for reading in the command lines from the
@@ -129,9 +129,9 @@ terminal output or labels.
 @c @node BOTHCASES, CHANGE_FILEDEFAULTS, BATCOUNT, Input and Output
 @c @unnumberedsec phony
 @defvar BOTHCASES
- default: [TRUE] if TRUE will cause MAXIMA to retain lower
+ default: [TRUE] if TRUE will cause Maxima to retain lower
 case text as well as upper case. Note, however, that the names of any
-MAXIMA special variables or functions are in upper case.   The default
+Maxima special variables or functions are in upper case.   The default
 is now TRUE since it makes code more readable, allowing users to
 have names like SeriesSolve.  
 
@@ -337,8 +337,7 @@ ERROR_SYMS:[ERREXP1,ERREXP2,ERREXP3]
 @end example
 .
 The default value of this switch might change depending on user
-experience.  If you find the defaults either too big or two small
-for your tastes, send mail to MACSYMA.
+experience.
 
 @end defvar
 @c @node ERROR_SYMS, EXPT, ERROR_SIZE, Input and Output
@@ -364,7 +363,7 @@ A^^B).
 @end defun
 @c @unnumberedsec phony
 @defvar EXPTDISPFLAG
- default: [TRUE] - if TRUE, MACSYMA displays expressions
+ default: [TRUE] - if TRUE, Maxima displays expressions
 with negative exponents using quotients e.g., X**(-1) as 1/X.
 
 @end defvar
@@ -469,7 +468,7 @@ expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code
 @c @unnumberedsec phony
 @c THIS FUNCTION DOES EXIST BUT DESCRIPTION SHOULD BE UPDATED !!!
 @defun FILE_TYPE ("filename")
-; returns OBJECT, LISP, or MACSYMA, depending on
+; returns OBJECT, LISP, or MAXIMA, depending on
 what kind of file it is. 
 
 @end defun
@@ -526,7 +525,7 @@ intermediate displayed expressions.
 @c STILL EXISTS, NEEDS UPDATING !!!
 @defvar LINEL
  default: [] - the number of characters which are printed on a
-line. It is initially set by MACSYMA to the line length of the type of
+line. It is initially set by Maxima to the line length of the type of
 terminal being used (as far as is known) but may be reset at any time
 by the user.  The user may have to reset it in DDT with :TCTYP as
 well.
@@ -600,13 +599,13 @@ outputted expressions.
  default:[FALSE] - Package designers who use SAVE
 or TRANSLATE to create packages (files) for others
 to use may want to set PACKAGEFILE:TRUE$ to prevent information
-from being added to MACSYMA's information-lists (e.g. VALUES,
+from being added to Maxima's information-lists (e.g. VALUES,
 FUNCTIONS) except where necessary when the file is loaded in.
 In this way, the contents of the package will not get in the
 user's way when he adds his own data.  Note that this will not
 solve the problem of possible name conflicts.  Also note that
 the flag simply affects what is output to the package file.
-Setting the flag to TRUE is also useful for creating MACSYMA
+Setting the flag to TRUE is also useful for creating Maxima
 init files.
 
 @end defvar
@@ -694,7 +693,7 @@ saves quantities
 described by its arguments on disk and keeps them in core also.
 The arg's are the expressions to be SAVEd.
 ALL is the simplest, but note that saving ALL will save the entire
-contents of your MACSYMA, which in the case of a large computation may
+contents of your Maxima, which in the case of a large computation may
 result in a large file.  VALUES,
 FUNCTIONS, or any other items on the INFOLISTS (do
 DESCRIBE(INFOLISTS); for the list) may be SAVEd, as may functions and
@@ -708,7 +707,7 @@ LOADFILE.  SAVE returns the pathname where the items were saved.
 @c @node SAVEDEF, SHOW, SAVE, Input and Output
 @c @unnumberedsec phony
 @defvar SAVEDEF
- default: [TRUE] - if TRUE will cause the MACSYMA version of a
+ default: [TRUE] - if TRUE will cause the Maxima version of a
 user function to remain when the function is TRANSLATEd.  This permits
 the definition to be displayed by DISPFUN and allows the function to
 be edited.  If SAVEDEF is FALSE, the names of translated functions are
@@ -742,7 +741,7 @@ displayed explicitly with an * between operands.
 @c @node STRING, STRINGOUT, STARDISP, Input and Output
 @c @unnumberedsec phony
 @defun STRING (expr)
-converts expr to MACSYMA's linear notation (similar to
+converts expr to Maxima's linear notation (similar to
 FORTRAN's) just as if it had been typed in and puts expr into the
 buffer for possible editing (in which case expr is usually Ci) The
 STRING'ed expression should not be used in a computation.

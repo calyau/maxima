@@ -6,7 +6,7 @@
 @node Introduction to Program Flow, Definitions for Program Flow, Program Flow, Program Flow
 @section Introduction to Program Flow
 
-MACSYMA provides a DO loop for iteration, as well as more primitive
+Maxima provides a DO loop for iteration, as well as more primitive
 constructs such as GO.
 
 @c end concepts Program Flow
@@ -64,7 +64,7 @@ control-variable is less than the limit if the increment was negative.
 The increment and limit may be non-numeric expressions as long as this
 inequality can be determined.  However, unless the increment is
 syntactically negative (e.g. is a negative number) at the time the DO
-statement is input, MACSYMA assumes it will be positive when the DO is
+statement is input, Maxima assumes it will be positive when the DO is
 executed.  If it is not positive, then the DO may not terminate
 properly.
     Note that the limit, increment, and termination condition are
@@ -74,7 +74,7 @@ the executions of the body, then it is more efficient to set a
 variable to their value prior to the DO and use this variable in the
 DO form.
     The value normally returned by a DO statement is the atom DONE, as
-every statement in MACSYMA returns a value.  However, the function
+every statement in Maxima returns a value.  However, the function
 RETURN may be used inside the body to exit the DO prematurely and give
 it any desired value.  Note however that a RETURN within a DO that
 occurs in a BLOCK will exit only the DO and not the BLOCK.  Note also
@@ -183,7 +183,7 @@ terminate execution of the DO.
 GUESS to be returned as the value of the DO.  The BLOCK is exited and
 this value of the DO is returned as the value of the BLOCK because the
 DO is the last statement in the block.)
-    One other form of the DO is available in MACSYMA.  The syntax is:
+    One other form of the DO is available in Maxima.  The syntax is:
 
 @example
 FOR variable IN list [end-tests] DO body
@@ -222,7 +222,7 @@ would otherwise have terminated the BATCH if the error weren't caught.
 @c @unnumberedsec phony
 @defvar ERREXP
  default: [ERREXP] When an error occurs in the course of a
-computation, MACSYMA prints out an error message and terminates the
+computation, Maxima prints out an error message and terminates the
 computation.  ERREXP is set to the offending expression and the
 message "ERREXP contains the offending expression" is printed.  The
 user can then type ERREXP; to see this and hopefully find the problem.
@@ -232,7 +232,7 @@ user can then type ERREXP; to see this and hopefully find the problem.
 @c @unnumberedsec phony
 @defun ERROR (arg1, arg2, ...)
 will evaluate and print its arguments and
-then will cause an error return to top level MACSYMA or to the nearest
+then will cause an error return to top level Maxima or to the nearest
 enclosing ERRCATCH.  This is useful for breaking out of nested
 functions if an error condition is detected, or wherever one can't
 type control-^.
@@ -242,7 +242,7 @@ ERRORMSG(); is the preferred way to see the last error message.
 ERRORFUN default: [FALSE] - if set to the name of a function of no
 arguments will cause that function to be executed whenever an error
 occurs.  This is useful in BATCH files where the user may want his
-MACSYMA killed or his terminal logged out if an error occurs.  In
+Maxima killed or his terminal logged out if an error occurs.  In
 these cases ERRORFUN would be set to QUIT or LOGOUT.
 
 @end defun
@@ -252,7 +252,7 @@ these cases ERRORFUN would be set to QUIT or LOGOUT.
  default: [FALSE] - if set to the name of a function of no
 arguments will cause that function to be executed whenever an error
 occurs.  This is useful in BATCH files where the user may want his
-MACSYMA killed or his terminal logged out if an error occurs.  In
+Maxima killed or his terminal logged out if an error occurs.  In
 these cases ERRORFUN would be set to QUIT or LOGOUT.
 
 @end defvar
@@ -272,7 +272,7 @@ character (^U) to reprint the message.
 @c @unnumberedsec phony
 @deffn {special operator} FOR
  - Used in iterations, do DESCRIBE("DO"); for a description of
-MACSYMA's iteration facilities.
+Maxima's iteration facilities.
 
 @end deffn
 @c @node GO, {special operator}, {special operator}, Program Flow
@@ -301,7 +301,7 @@ is:
 @end example
 The result of an IF statement is expression1 if condition is true and
 expression2 if it is false.  expression1 and expression2 are any
-MACSYMA expressions (including nested IF statements), and condition is
+Maxima expressions (including nested IF statements), and condition is
 an expression which evaluates to TRUE or FALSE and is composed of
 relational and logical operators which are as follows:
 @example

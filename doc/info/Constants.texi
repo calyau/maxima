@@ -8,7 +8,7 @@
 @c @node E
 @c @unnumberedsec phony
 @defvar E
- - The base of natural logarithms, e, is represented in MACSYMA
+ - The base of natural logarithms, e, is represented in Maxima
 as %E.
 
 @end defvar
@@ -27,7 +27,7 @@ as %E.
 @c @node PI
 @c @unnumberedsec phony
 @defvar PI
- - "pi" is represented in MACSYMA as %PI.
+ - "pi" is represented in Maxima as %PI.
 
 @end defvar
 @c @node TRUE

@@ -363,7 +363,7 @@ TELLSIMP, or TELLSIMPAFTER.  Do EXAMPLE(TELLSIMP); for examples.
 @c @unnumberedsec phony
 @defun TELLSIMPAFTER (pattern, replacement)
 defines a replacement for pattern
-which the MACSYMA simplifier uses after it applies the built-in
+which the Maxima simplifier uses after it applies the built-in
 simplification rules.  The pattern may be anything but a single
 variable or a number.
 

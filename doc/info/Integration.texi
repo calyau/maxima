@@ -6,7 +6,7 @@
 @node Introduction to Integration, Definitions for Integration, Integration, Integration
 @section Introduction to Integration
 
-MACSYMA has several routines for handling integration.
+Maxima has several routines for handling integration.
 The INTEGRATE command makes use of most of them.  There is also the
 ANTID package, which handles an unspecified function (and its
 derivatives, of course).  For numerical uses, there is the ROMBERG
@@ -16,7 +16,7 @@ rule, called QUANC8; and a set of adaptive integrators from QUADPACK,
 named QUAD_QAG, QUAD_QAGS, etc.
 Hypergeometric Functions are being worked on,
 do DESCRIBE(SPECINT); for details.
-Generally speaking, MACSYMA only handles integrals which are
+Generally speaking, Maxima only handles integrals which are
 integrable in terms of the "elementary functions" (rational functions,
 trigonometrics, logs, exponentials, radicals, etc.) and a few
 extensions (error function, dilogarithm).  It does not handle
@@ -80,7 +80,7 @@ higher degree function.  E.g.
 @c @unnumberedsec phony
 @defun DBLINT ('F,'R,'S,a,b)
 a double-integral routine which was written in
-top-level macsyma and then translated and compiled to machine code.
+top-level Maxima and then translated and compiled to machine code.
 Use LOAD(DBLINT); to access this package.  It uses the Simpson's Rule
 method in both the x and y directions to calculate
 /B /S(X)
@@ -277,7 +277,7 @@ NEG;
 (%i5) INTEGRATE(%,X);
 (%o5)                          LOG(Q(R(X)))
 @end example
-(Note 1) The fact that MACSYMA does not perform certain integrals does
+(Note 1) The fact that Maxima does not perform certain integrals does
 not always imply that the integral does not exist in closed form. In
 the example below the integration call returns the noun form but the
 integral can be found fairly easily. For example, one can compute the
@@ -285,7 +285,7 @@ roots of @code{X^3+X+1 = 0} to rewrite the integrand in the form
 @example
 1/((X-A)*(X-B)*(X-C))
 @end example
-where A, B and C are the roots. MACSYMA will
+where A, B and C are the roots. Maxima will
 integrate this equivalent form although the integral is quite
 complicated.
 @example
@@ -303,7 +303,7 @@ complicated.
 @c @unnumberedsec phony
 @defvar INTEGRATION_CONSTANT_COUNTER
  - a counter which is updated each time a
-constant of integration (called by MACSYMA, e.g., "INTEGRATIONCONSTANT1")
+constant of integration (called by Maxima, e.g., "INTEGRATIONCONSTANT1")
 is introduced into an expression by indefinite integration of an equation.
 
 @end defvar

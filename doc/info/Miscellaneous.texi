@@ -13,12 +13,12 @@ user defined functions, are discussed.
 
 @node SHARE, Definitions for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
 @section SHARE
- - The SHARE directory on MC or on a DEC20 version of MACSYMA
+ - The SHARE directory on MC or on a DEC20 version of Maxima
 contains programs, information files, etc.  which are considered to be
-of interest to the MACSYMA community.  Most files on SHARE; are not
-part of the MACSYMA system per se and must be loaded individually by
+of interest to the Maxima community.  Most files on SHARE; are not
+part of the Maxima system per se and must be loaded individually by
 the user, e.g.  LOADFILE("array");. Many files on SHARE;
-were contributed by MACSYMA users.  Do PRINTFILE(SHARE,USAGE,SHARE);
+were contributed by Maxima users.  Do PRINTFILE(SHARE,USAGE,SHARE);
 for more details and the conventions for contributing to the SHARE
 directory.  For an annotated "table of contents" of the directory, do:
 PRINTFILE(SHARE,>,SHARE);
@@ -47,7 +47,7 @@ Derivative indices are always taken to be symmetric.
 @c @node declaration
 @c @unnumberedsec phony
 @defvr declaration ALPHABETIC
-Adds to MACSYMA's alphabet which initially contains
+Adds to Maxima's alphabet which initially contains
 the letters A-Z, % and _.
 Thus, DECLARE("~",ALPHABETIC) enables NEW~VALUE to be used as a name.
 
@@ -56,7 +56,7 @@ Thus, DECLARE("~",ALPHABETIC) enables NEW~VALUE to be used as a name.
 @c @unnumberedsec phony
 @defun APROPOS (string)
 takes a character string as argument and looks at all
-the MACSYMA names for ones with that string appearing anywhere within
+the Maxima names for ones with that string appearing anywhere within
 them.  Thus, APROPOS(EXP); will return a long list of all the flags
 and functions which have EXP as part of their names, such as EXPAND,
 EXP, EXPONENTIALIZE.  Thus if you can only remember part of the name
@@ -120,9 +120,9 @@ angle.  (See also INF and MINF.)
 @c @unnumberedsec phony
 @defvar INFOLISTS
  default: [] a list of the names of all of the information
-lists in MACSYMA. These are:
+lists in Maxima. These are:
 LABELS - all bound C,D, and E labels.
-VALUES - all bound atoms, i.e. user variables, not MACSYMA
+VALUES - all bound atoms, i.e. user variables, not Maxima
 Options or Switches, (set up by : , :: , or functional binding).
 FUNCTIONS - all user defined functions (set up by f(x):=...).
 ARRAYS - declared and undeclared arrays (set up by : , :: , or :=...)
@@ -231,7 +231,7 @@ REMOVE(a1, p1, a2, p2, ...)  removes the property pi from the atom ai.
 Ai and pi may also be lists as with DECLARE.  Pi may be any property
 e.g.  FUNCTION, MODE_DECLARE, etc.  It may also be TRANSFUN implying
 that the translated LISP version of the function is to be removed.
-This is useful if one wishes to have the MACSYMA version of the
+This is useful if one wishes to have the Maxima version of the
 function executed rather than the translated version. Pi may also be
 OP or OPERATOR to remove a syntax extension given to ai.
 If ai is "ALL" then the property indicated by pi is removed from
@@ -248,7 +248,7 @@ removes the values of user variables
 (which can be subscripted) from the system.  If name is ALL then the
 values of all user variables are removed.  Values are those items
 given names by the user as opposed to those which are automatically
-labeled by MACSYMA as Ci, Di, or Ei.
+labeled by Maxima as Ci, Di, or Ei.
 
 @end defun
 @c @node RENAME
@@ -311,8 +311,8 @@ arguments: a file specification, and one or more function names,
 "funcI" is not defined, that the file specified by "file" is to be
 automatically loaded in via LOAD, which file should contain a
 definition for "funcI".  (This is the process by which calling e.g.
-INTEGRATE in a fresh MACSYMA causes various files to be loaded in.)
-As with the other file-handling commands in MACSYMA, the arguments to
+INTEGRATE in a fresh Maxima causes various files to be loaded in.)
+As with the other file-handling commands in Maxima, the arguments to
 SETUP_AUTOLOAD are not evaluated.
 Example:
 SETUP_AUTOLOAD("bessel")$ J1(0.0); .

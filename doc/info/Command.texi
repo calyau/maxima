@@ -60,7 +60,7 @@ Enabling DEBUGMODE will not catch Lisp errors.
 @c @node EV
 @c @unnumberedsec phony
 @defun EV (exp, arg1, ..., argn)
-is one of MACSYMA's most powerful and
+is one of Maxima's most powerful and
 versatile commands. It evaluates the expression exp in the environment
 specified by the argi.  This is done in steps, as follows:
 @itemize @bullet
@@ -95,7 +95,7 @@ E where E is an atom declared to be an EVFLAG causes E to be bound to
 TRUE during the evaluation of exp.
 V:expression (or alternately V=expression) causes V to be bound to the
 value of expression during the evaluation of exp.  Note that if V is a
-MACSYMA option, then expression is used for its value during the
+Maxima option, then expression is used for its value during the
 evaluation of exp.  If more than one argument to EV is of this type
 then the binding is done in parallel.  If V is a non-atomic expression
 then a substitution rather than a binding is performed.
@@ -119,7 +119,7 @@ substitution equations which are handled in sequence, left to right,
 and EVFUNS which are composed, e.g. EV(exp,RATSIMP,REALPART) is
 handled as REALPART(RATSIMP(exp)).
 The SIMP, NUMER, FLOAT, and PRED switches may also be set locally in a
-block, or globally at the "top level" in MACSYMA so that they will
+block, or globally at the "top level" in Maxima so that they will
 remain in effect until being reset.
 If exp is in CRE form then EV will return a result in CRE form
 provided the NUMER and FLOAT switches are not both TRUE.
@@ -243,7 +243,7 @@ EVALUATOR.
 @c @node KILL
 @c @unnumberedsec phony
 @defun KILL (arg1, arg2, ...)
-eliminates its arguments from the MACSYMA
+eliminates its arguments from the Maxima
 system.  If argi is a variable (including a single array element),
 function, or array, the designated item with all of its properties is
 removed from core.  If argi=LABELS then all input, intermediate, and
@@ -251,7 +251,7 @@ output lines to date (but not other named items) are eliminated. If
 argi=CLABELS then only input lines will be eliminated; if argi=ELABELS
 then only intermediate E-lines will be eliminated; if argi=DLABELS
 only the output lines will be eliminated.  If argi is the name of any
-of the other information lists (the elements of the MACSYMA variable
+of the other information lists (the elements of the Maxima variable
 INFOLISTS), then every item in that class (and its properties) is
 KILLed and if argi=ALL then every item on every information list
 previously defined as well as LABELS is KILLed.  If argi=a number (say
@@ -317,8 +317,8 @@ KILL(LABELS) in order to free up storage.
 @c @node OPTIONSET
 @c @unnumberedsec phony
 @defvar OPTIONSET
- default: [FALSE] - if TRUE, MACSYMA will print out a
-message whenever a MACSYMA option is reset.  This is useful if the
+ default: [FALSE] - if TRUE, Maxima will print out a
+message whenever a Maxima option is reset.  This is useful if the
 user is doubtful of the spelling of some option and wants to make sure
 that the variable he assigned a value to was truly an option variable.
 
@@ -359,18 +359,18 @@ ATVALUE, ATOMGRAD, GRADEF, and MATCHDECLARE.
 @c @unnumberedsec phony
 @defvar PROMPT
  default: [_] is the prompt symbol of the DEMO function,
-PLAYBACK(SLOW) mode, and (MACSYMA-BREAK).
+PLAYBACK(SLOW) mode, and the Maxima break loop (as invoked by BREAK).
 
 @end defvar
 @c @node QUIT
 @c @unnumberedsec phony
 @defun QUIT ()
-kills the current MACSYMA but doesn't affect the user's other
-jobs;  equivalent to exiting to DCL and stopping the MACSYMA process.
-One may "quit" to MACSYMA top-level by typing Control-C Control-G;
+kills the current Maxima but doesn't affect the user's other
+jobs;  equivalent to exiting to DCL and stopping the Maxima process.
+One may "quit" to Maxima top-level by typing Control-C Control-G;
 Control-C gets NIL's interrupt prompt, at which one types either
 Control-G or just G.  Typing X at the Interrupt prompt will cause a
-quit in a computation started within a MACSYMA-BREAK without disrupting
+quit in a computation started within a Maxima break without disrupting
 the suspended main computation.
 
 @end defun
@@ -378,24 +378,24 @@ the suspended main computation.
 @c @unnumberedsec phony
 @defun REMFUNCTION (f1, f2, ...)
 removes the user defined functions
-f1,f2,... from MACSYMA.  If there is only one argument of ALL then all
+f1,f2,... from Maxima.  If there is only one argument of ALL then all
 functions are removed.
 
 @end defun
 @c @node RESET
 @c @unnumberedsec phony
 @defun RESET ()
-causes all MACSYMA options to be set to their default values.
+causes all Maxima options to be set to their default values.
 (Please note that this does not include features of terminals such as
 LINEL which can only be changed by assignment as they are not
-considered to be computational features of MACSYMA.)
+considered to be computational features of Maxima.)
 
 @end defun
 @c @node RESTORE
 @c @unnumberedsec phony
 @defun RESTORE (file-specification)
 reinitializes all quantities filed away
-by a use of the SAVE or STORE functions, in a prior MACSYMA session,
+by a use of the SAVE or STORE functions, in a prior Maxima session,
 from the file given by file-specification without bringing them into
 core.
 
@@ -405,7 +405,7 @@ core.
 @defvar SHOWTIME
  default: [FALSE] - if TRUE then the computation time will be
 printed automatically with each output expression.  By setting
-SHOWTIME:ALL, in addition to the cpu time MACSYMA now also prints out
+SHOWTIME:ALL, in addition to the cpu time Maxima now also prints out
 (when not zero) the amount of time spent in garbage collection (gc) in
 the course of a computation.  This time is of course included in the
 time printed out as "time=" .  (It should be noted that since the
@@ -428,7 +428,7 @@ keep track of what FEATURES they have loaded in.
 @c @node TO_LISP
 @c @unnumberedsec phony
 @defun TO_LISP ()
-enters the LISP system under MACSYMA.  This is useful on
+enters the LISP system under Maxima.  This is useful on
 those systems where control-uparrow is not available for this
 function.
 
@@ -436,7 +436,7 @@ function.
 @c @node VALUES
 @c @unnumberedsec phony
 @defvar VALUES
- default:[] - all bound atoms, i.e. user variables, not MACSYMA
+ default:[] - all bound atoms, i.e. user variables, not Maxima
 Options or Switches, (set up by : , :: , or functional binding).
 
 @end defvar

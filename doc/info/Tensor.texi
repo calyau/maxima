@@ -12,7 +12,7 @@ available in share/tensor.descr.  A demo is available by
 DEMO("itenso.dem1"); (and additional demos are in
 ("itenso.dem2"), ("itenso.dem3") and following).
 
- - There are two tensor packages in MACSYMA, CTENSR and
+ - There are two tensor packages in Maxima, CTENSR and
 ITENSR.  CTENSR is Component Tensor Manipulation, and may be accessed
 with LOAD(CTENSR); .  ITENSR is Indicial Tensor Manipulation, and is
 loaded by doing LOAD(ITENSR); A manual for CTENSR AND ITENSR is

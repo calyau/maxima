@@ -328,7 +328,7 @@ all functions currently on the timer list.
 
 The matrix returned by TIMER_INFO contains the function name,
 time per function call, number of function calls, total time,
-and "GCTIME", which meant "garbage collection time" in the original MACSYMA
+and "GCTIME", which meant "garbage collection time" in the original Macsyma
 but is now always zero.
 
 The data from which TIMER_INFO constructs its return value

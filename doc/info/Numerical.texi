@@ -15,10 +15,10 @@ The following is obsolete and does not exist in Maxima 5.9.  We leave
 the documentation here for historical purposes.
 
 To make an interface to fortran
-libraries in the current MAXIMA look at the examples in
+libraries in the current Maxima look at the examples in
 "maxima/src/fortdef.lsp"
  - The IMSL version of Romberg integration is now available in
-Macsyma.  For documentation, Do PRINTFILE(DCADRE,USAGE,IMSL1); .  For
+Maxima.  For documentation, Do PRINTFILE(DCADRE,USAGE,IMSL1); .  For
 a demo, do batch("dcadre.mc");
 This is a numerical integration package using cautious, adaptive
 Romberg extrapolation.
@@ -43,7 +43,7 @@ IMSL_ROMBERG(exp,var,low,hi)
 FAST_IMSL_ROMBERG(fn,low,hi)
   This function does no error checking but may achieve a speed gain over
   the IMSL_ROMBERG function. It expects that fn is a Lisp function (or
-  translated Macsyma function) which accepts a floating point argument 
+  translated Maxima function) which accepts a floating point argument 
   and that it always returns a floating point value.
            
 Returns either
@@ -335,7 +335,7 @@ expressions to be printed farther to the right.
 @c @node FORTMX
 @c @unnumberedsec phony
 @defun FORTMX (name,matrix)
-converts a MACSYMA matrix into a sequence of
+converts a Maxima matrix into a sequence of
 FORTRAN assignment statements of the form name(i,j)=<corresponding
 matrix element>.  This command is now obsolete.  FORTMX(name,matrix);
 may now be done as FORTRAN(name=matrix);.  (If "name" is bound,
@@ -374,7 +374,7 @@ will convert exp into a rearranged representation as
 in Horner's rule, using var as the main variable if it is specified.
 Var may also be omitted in which case the main variable of the CRE
 form of exp is used.  HORNER sometimes improves stability if expr is
-to be numerically evaluated.  It is also useful if MACSYMA is used to
+to be numerically evaluated.  It is also useful if Maxima is used to
 generate programs to be run in FORTRAN (see DESCRIBE(STRINGOUT);)
 @example
 (%i1) 1.0E-20*X^2-5.5*X+5.2E20;
@@ -399,7 +399,7 @@ different sign at each endpoint.  If this condition is not met, the
 action of the of the function is governed by INTPOLERROR[TRUE]).  If
 INTPOLERROR is TRUE then an error occurs, otherwise the value of
 INTPOLERROR is returned (thus for plotting INTPOLERROR might be set to
-0.0).  Otherwise (given that MACSYMA can evaluate the first argument
+0.0).  Otherwise (given that Maxima can evaluate the first argument
 in the specified range, and that it is continuous) INTERPOLATE is
 guaranteed to come up with the zero (or one of them if there is more
 than one zero).  The accuracy of INTERPOLATE is governed by

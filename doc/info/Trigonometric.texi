@@ -5,15 +5,15 @@
 
 @node Introduction to Trigonometric, Definitions for Trigonometric, Trigonometric, Trigonometric
 @section Introduction to Trigonometric
- - MACSYMA has many Trig functions defined.  Not all Trig
+ - Maxima has many Trig functions defined.  Not all Trig
 identities are programmed, but it is possible for the user to add many
 of them using the pattern matching capabilities of the system.  The
-Trig functions defined in MACSYMA are: ACOS, ACOSH, ACOT, ACOTH, ACSC,
+Trig functions defined in Maxima are: ACOS, ACOSH, ACOT, ACOTH, ACSC,
 ACSCH, ASEC, ASECH, ASIN, ASINH, ATAN, ATANH, COS, COSH, COT, COTH,
 CSC, CSCH, SEC, SECH, SIN, SINH, TAN, and TANH.  There are a number of
 commands especially for handling Trig functions, see TRIGEXPAND,
 TRIGREDUCE, and the switch TRIGSIGN.  Two SHARE packages extend the
-simplification rules built into MACSYMA, NTRIG and ATRIG1.  Do
+simplification rules built into Maxima, NTRIG and ATRIG1.  Do
 DESCRIBE(cmd) for details.
 
 @c end concepts Trigonometric
@@ -103,7 +103,7 @@ yields the value of ATAN(Y/X) in the interval -%PI to
 @defun ATRIG1
  - The atrig1 package contains several additional
 simplification rules for inverse trig functions.  Together with rules
-already known to Macsyma, the following angles are fully implemented:
+already known to Maxima, the following angles are fully implemented:
 0, %PI/6, %PI/4, %PI/3, and %PI/2.  Corresponding angles in the other
 three quadrants are also available.  Do LOAD(ATRIG1); to use them.
 

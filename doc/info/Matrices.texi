@@ -309,7 +309,7 @@ EIGENVALUES(mat) takes a MATRIX as its argument and returns a list of
 lists the first sublist of which is the list of eigenvalues of the
 matrix and the other sublist of which is the list of the
 multiplicities of the eigenvalues in the corresponding order.  [ The
-MACSYMA function SOLVE is used here to find the roots of the
+function SOLVE is used here to find the roots of the
 characteristic polynomial of the matrix.  Sometimes SOLVE may not be
 able to find the roots of the polynomial;in that case nothing in this
 package except CONJUGATE, INNERPRODUCT, UNITVECTOR, COLUMNVECTOR and
@@ -319,7 +319,7 @@ the answers yourself before you go on.  There are provisions for this
 and they will be explained below.  ( This usually happens when SOLVE
 returns a not-so-obviously real expression for an eigenvalue which is
 supposed to be real...)]  The EIGENVALUES command is available
-directly from MACSYMA.  To use the other functions you must have
+directly from Maxima.  To use the other functions you must have
 loaded in the EIGEN package, either by a previous call to EIGENVALUES,
 or by doing LOADFILE("eigen"); .
 
@@ -331,7 +331,7 @@ takes a MATRIX as its argument and returns a list
 of lists the first sublist of which is the output of the EIGENVALUES
 command and the other sublists of which are the eigenvectors of the
 matrix corresponding to those eigenvalues respectively.  This function
-will work directly from MACSYMA, but if you wish to take advantage of
+will work directly from Maxima, but if you wish to take advantage of
 the flags for controlling it (see below), you must first load in the
 EIGEN package from the SHARE; directory.  You may do that by
 LOADFILE("eigen");.  The flags that affect this function are:
@@ -344,7 +344,7 @@ Gram-Schmidt algorithm.
 KNOWNEIGVALS[FALSE] If set to TRUE the EIGEN package will assume the
 eigenvalues of the matrix are known to the user and stored under the
 global name LISTEIGVALS.  LISTEIGVALS should be set to a list similar
-to the output of the EIGENVALUES command.  ( The MACSYMA function
+to the output of the EIGENVALUES command.  ( The function
 ALGSYS is used here to solve for the eigenvectors. Sometimes if the
 eigenvalues are messy, ALGSYS may not be able to produce a solution.
 In that case you are advised to try to simplify the eigenvalues by
@@ -364,7 +364,7 @@ elements are zero except for the i,j element which is x.
 @c @unnumberedsec phony
 @defun ENTERMATRIX (m, n)
 allows one to enter a matrix element by element
-with MACSYMA requesting values for each of the m*n entries.
+with Maxima requesting values for each of the m*n entries.
 @example
 (%i1) ENTERMATRIX(3,3);
 Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric
@@ -421,7 +421,7 @@ of equal length and not necessarily orthogonal (with respect to the
 innerproduct defined above) as its argument and returns a similar list
 each sublist of which is orthogonal to all others.  (Returned results
 may contain integers that are factored.  This is due to the fact that
-the MACSYMA function FACTOR is used to simplify each substage of the
+the function FACTOR is used to simplify each substage of the
 Gram-Schmidt algorithm.  This prevents the expressions from getting
 very messy and helps to reduce the sizes of the numbers that are
 produced along the way.)
@@ -486,7 +486,7 @@ delimiter of a matrix (see also RMXCHAR).
 defines a rectangular matrix with the
 indicated rows.  Each row has the form of a list of expressions, e.g.
 [A, X**2, Y, 0] is a list of 4 elements.  There are a number of
-MACSYMA commands which deal with matrices, for example:  DETERMINANT,
+commands which deal with matrices, for example:  DETERMINANT,
 CHARPOLY, GENMATRIX, ADDCOL, ADDROW, COPYMATRIX, TRANSPOSE, ECHELON,
 and RANK.  There is also a package on the SHARE directory for 
 computing EIGENVALUES.  Try DESCRIBE on these for more information.
@@ -551,7 +551,7 @@ DEMO("matrix.dem1"); and DEMO("matrix.dem2");.
 @c @unnumberedsec phony
 @defun MATTRACE (M)
 computes the trace [sum of the elements on the main diagonal] of
-the square matrix M.  It is used by NCHARPOLY, an alternative to MACSYMA's
+the square matrix M.  It is used by NCHARPOLY, an alternative to Maxima's
 CHARPOLY.  It is used by doing LOADFILE("nchrpl");
 
 @end defun
@@ -573,7 +573,7 @@ wide to be displayed as A^^B it will appear as NCEXPT(A,B).
 @c @unnumberedsec phony
 @defun NCHARPOLY (M,var)
 finds the characteristic polynomial of the matrix M
-with respect to var.  This is an alternative to MACSYMA's CHARPOLY.
+with respect to var.  This is an alternative to Maxima's CHARPOLY.
 NCHARPOLY works by computing traces of powers of the given matrix,
 which are known to be equal to sums of powers of the roots of the
 characteristic polynomial.  From these quantities the symmetric
@@ -789,6 +789,6 @@ n matrix of 0's.
 @c @node "["
 @c @unnumberedsec phony
 @defvr {special symbol} "["
-  - [ and ] are the characters which MACSYMA uses to delimit a
+  - [ and ] are the characters which Maxima uses to delimit a
 list.
 @end defvr

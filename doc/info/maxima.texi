@@ -36,12 +36,12 @@ END-INFO-DIR-ENTRY
 @end titlepage
 
 
-@node Top, Introduction to MAXIMA, (dir), (dir)
+@node Top, Introduction to Maxima, (dir), (dir)
 @top
 
-MAXIMA is a fairly complete computer algebra system.
+Maxima is a fairly complete computer algebra system.
 
-This system MAXIMA is a COMMON LISP implementation due to William F.
+This system Maxima is a COMMON LISP implementation due to William F.
 Schelter, and is based on the original implementation of Macsyma at
 MIT, as distributed by the Department of Energy.  I now have
 permission from DOE to make derivative copies, and in particular to
@@ -52,14 +52,14 @@ under the terms of GNU public license.
 @c includes
 
 @menu
-MAXIMA infrastructure
+Maxima infrastructure
 
-* Introduction to MAXIMA::      Sample MAXIMA sessions.
-* Bug Detection and Reporting:: Finding and reporting bugs in MAXIMA.
-* Help::                        Asking for help from within a MAXIMA session.
-* Command Line::                MAXIMA command line syntax.
-* Operators::                   Operators used in MAXIMA expressions.
-* Expressions::                 Expressions in MAXIMA.
+* Introduction to Maxima::      Sample Maxima sessions.
+* Bug Detection and Reporting:: Finding and reporting bugs in Maxima.
+* Help::                        Asking for help from within a Maxima session.
+* Command Line::                Maxima command line syntax.
+* Operators::                   Operators used in Maxima expressions.
+* Expressions::                 Expressions in Maxima.
 * Simplification::              Simplifying expressions.
 * Plotting::                    2D and 3D graphical output.
 * Input and Output::            File input and output.
@@ -98,14 +98,14 @@ Support for specific areas of mathematics
 
 Advanced facilities and programming
 
-* Runtime Environment::         Customization of the MAXIMA environment.
-* Miscellaneous Options::       Options with a global effect on MAXIMA.
+* Runtime Environment::         Customization of the Maxima environment.
+* Miscellaneous Options::       Options with a global effect on Maxima.
 * Rules and Patterns::          User defined pattern matching and
                                 simplification rules.
 * Lists::                       Manipulation of Lisp lists.
 * Function Definition::         Defining functions.
-* Program Flow::                Defining MAXIMA programs.
-* Debugging::                   Debugging MAXIMA programs.
+* Program Flow::                Defining Maxima programs.
+* Debugging::                   Debugging Maxima programs.
 
 Index
 
@@ -116,7 +116,7 @@ Index
 
 Introduction
 
-* Introduction to MAXIMA::
+* Introduction to Maxima::
 
 Help
 
@@ -329,11 +329,11 @@ Debugging
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Introduction to MAXIMA, Bug Detection and Reporting, Top, Top
-@chapter Introduction to MAXIMA
+@node Introduction to Maxima, Bug Detection and Reporting, Top, Top
+@chapter Introduction to Maxima
 @include Introduction.texi
 
-@node Bug Detection and Reporting, Help, Introduction to MAXIMA, Top
+@node Bug Detection and Reporting, Help, Introduction to Maxima, Top
 @chapter Bug Detection and Reporting
 @include Bugs.texi
 

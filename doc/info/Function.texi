@@ -10,7 +10,7 @@
 
 @node FUNCTION, MACROS, Introduction to Function Definition, Function Definition
 @section FUNCTION
- - To define a function in MACSYMA you use the := operator.
+ - To define a function in Maxima you use the := operator.
 E.g.
 @example
 F(X):=SIN(X)
@@ -87,7 +87,7 @@ would let you access what that value was.   Thus the right hand
 side of the assignments, is evaluated in the entering context, before
 any binding occurs.
 Using just @code{block([x],..} would cause the x to have itself
-as value, just as if it would have if you entered a fresh @b{MAXIMA}
+as value, just as if it would have if you entered a fresh @b{Maxima}
 session.
 
 The actual arguments to a function are treated in exactly same way as
@@ -115,7 +115,7 @@ possibly @code{buildq}.
 
 @defun BUILDQ ([varlist],expression);
 
- EXPRESSION is any single MAXIMA expression and
+ EXPRESSION is any single Maxima expression and
  VARLIST is a list of elements of the form @code{<atom>}
 or @code{<atom>:<value>}
 @end defun
@@ -126,7 +126,7 @@ The <value>s in the <varlist> are evaluated left to right (the syntax
 <atom> is equivalent to <atom>:<atom>).  then these values are substituted
 into <expression> in parallel.  If any <atom> appears as a single 
 argument to the special form SPLICE (i.e. SPLICE(<atom>) ) inside
-<expression>, then the value associated with that <atom> must be a macsyma
+<expression>, then the value associated with that <atom> must be a Maxima
 list, and it is spliced into <expression> instead of substituted.
 
 
@@ -138,7 +138,7 @@ the substitutions have been carried out.  This code should affect that
 by using @code{'}.
 
 @code{buildq} can be useful for building functions on the fly.  One
-of the powerful things about @b{MAXIMA} is that you can have your
+of the powerful things about @b{Maxima} is that you can have your
 functions define other functions to help solve the problem.
 Further below we discuss building a recursive function, for a
 series solution.   This defining of functions inside functions
@@ -220,7 +220,7 @@ while in the second it is the @code{*}, yet logically you
 might thing @code{splice(a)+splice(A)} could be replaced by
 @code{2*splice(A)}.   No simplification takes place with the buildq
 To understand what SPLICE is doing with the algebra you must understand
-that for MAXIMA, a formula an operation like @code{A+B+C} is really
+that for Maxima, a formula an operation like @code{A+B+C} is really
 internally similar to @code{+(A,B,C)}, and similarly for multiplication.
 Thus @code{*(2,B,C,D)} is @code{2*B*C*D}
 
@@ -311,12 +311,12 @@ computation unbound.
 @c @node BLOCK, BREAK, BINDTEST, Function Definition
 @c @unnumberedsec phony
 @defun BLOCK ([v1,...,vk], statement1,...,statementj)
-Blocks in MACSYMA are
+Blocks in Maxima are
 somewhat analogous to subroutines in FORTRAN or procedures in ALGOL or
 PL/I.  Blocks are like compound statements but also enable the user to
 label statements within the block and to assign "dummy" variables to
 values which are local to the block.  The vi are variables which are
-local to the BLOCK and the stmti are any MACSYMA expressions.  If no
+local to the BLOCK and the stmti are any Maxima expressions.  If no
 variables are to be made local then the list may be omitted.  A block
 uses these local variables to avoid conflict with variables having the
 same names used outside of the block (i.e. global to the block).  In
@@ -351,11 +351,11 @@ but can be used in other places as well.
 @c @unnumberedsec phony
 @defun BREAK (arg1, ...)
 will evaluate and print its arguments and will then
-cause a (MACSYMA-BREAK) at which point the user can examine and change
+cause a Maxima break at which point the user can examine and change
 his environment.  Upon typing EXIT; the computation resumes.
-Control-A (^A) will enter a MACSYMA-BREAK from any point
+Control-A (^A) will enter a Maxima break from any point
 interactively.  EXIT; will continue the computation.  Control-X may be
-used inside the MACSYMA-BREAK to quit locally, without quitting the
+used inside the Maxima break to quit locally, without quitting the
 main computation.
 
 @end defun
@@ -407,14 +407,14 @@ COMPFILE are pretty-printed.
 @c @node COMPILE, COMPILE_LISP_FILE, COMPGRIND, Function Definition
 @c @unnumberedsec phony
 @defun COMPILE (f)
-The COMPILE command is a convenience feature in macsyma. It
-handles the calling of the function COMPFILE, which translates macsyma
+The COMPILE command is a convenience feature in Maxima. It
+handles the calling of the function COMPFILE, which translates Maxima
 functions into lisp, the calling of the lisp compiler on the file
 produced by COMPFILE, and the loading of the output of the compiler
-into the macsyma. It also checks the compiler
+into the Maxima. It also checks the compiler
 comment listing output file for certain common errors.  Do
 PRINTFILE(MCOMPI,DOC,MAXDOC); for more details.
-COMPILE(); causes macsyma to prompt for arguments. 
+COMPILE(); causes Maxima to prompt for arguments. 
 COMPILE(function1,function2,...); compiles the functions, it uses the name
 of function1 as the first name of the file to put the lisp output.
 COMPILE(ALL); or COMPILE(FUNCTIONS); will compile all functions.
@@ -456,7 +456,7 @@ time of definition of the function which contains it.
 @c @unnumberedsec phony
 @defun DEFINE_VARIABLE (name,default-binding,mode,optional-documentation)
 
-introduces a global variable into the MACSYMA environment.  This is
+introduces a global variable into the Maxima environment.  This is
 for user-written packages, which are often translated or compiled.
 Thus
 @example
@@ -641,7 +641,7 @@ LIST,ANY]), and the second argument is an expression which is
 evaluated and returned as the value of MODE_IDENTITY.  However, if the
 return value is not allowed by the mode declared in the first
 argument, an error or warning is signalled.  The important thing is
-that the MODE of the expression as determined by the MACSYMA to Lisp
+that the MODE of the expression as determined by the Maxima to Lisp
 translator, will be that given as the first argument, independent of
 anything that goes on in the second argument.
 E.g. X:3.3; MODE_IDENTITY(FIXNUM,X); is an error.  MODE_IDENTITY(FLONUM,X) 
@@ -662,7 +662,7 @@ every time you take the first of a list of numbers.
 @defvar TRANSBIND
  default: [FALSE] - if TRUE removes global declarations in
 the local context.  This applies to variables which are formal
-parameters to functions which one is TRANSLATE-ing from MACSYMA code
+parameters to functions which one is TRANSLATE-ing from Maxima code
 to LISP.
 
 @end defvar
@@ -678,16 +678,16 @@ uses TRANSCOMPILE:TRUE;.
 @c @unnumberedsec phony
 @defun TRANSLATE (f1, f2, ...)
 translates the user defined functions
-f1,f2,... from the MACSYMA language to LISP (i.e. it makes them
+f1,f2,... from the Maxima language to LISP (i.e. it makes them
 EXPRs).  This results in a gain in speed when they are called.  There
-is now a version of macsyma with the macsyma to lisp translator
+is now a version of Maxima with the Maxima to lisp translator
 pre-loaded into it.  It is available by typing :TM (for
 TranslateMacsyma) at DDT level.  When given a file name, E.g. :TM
 GJC;TMTEST > , it gives that file to the function TRANSLATE_FILE, and
 proceeds without further user interaction.  If no file name is given,
-:TM gives a regular macsyma "(%i1)" line.  P.s. A user init file with
+:TM gives a regular Maxima "(%i1)" line.  P.s. A user init file with
 second name "TM" will be loaded if it exists.  You may just want to
-link this to your macsyma init file.
+link this to your Maxima init file.
 Functions to be translated should include a call to MODE_DECLARE at the
 beginning when possible in order to produce more efficient code.  For
 example:
@@ -710,11 +710,11 @@ The switch TRANSLATE, default: [FALSE], If TRUE, causes automatic
 translation of a user's function to LISP.  Note that translated
 functions may not run identically to the way they did before
 translation as certain incompatabilities may exist between the LISP
-and MACSYMA versions.  Principally, the RAT function with more than
+and Maxima versions.  Principally, the RAT function with more than
 one argument and the RATVARS function should not be used if any
 variables are MODE_DECLAREd CRE.  Also the PREDERROR:FALSE setting
 will not translate.
-SAVEDEF[TRUE] - if TRUE will cause the MACSYMA version of a user
+SAVEDEF[TRUE] - if TRUE will cause the Maxima version of a user
 function to remain when the function is TRANSLATEd.  This permits the
 definition to be displayed by DISPFUN and allows the function to be
 edited.
@@ -723,23 +723,23 @@ functions to be run (provided they are still around) rather than the
 translated version.
 One can translate functions stored in a file by giving TRANSLATE an
 argument which is a file specification.  This is a list of the form
-[fn1,fn2,DSK,dir] where fn1 fn2 is the name of the file of MACSYMA
+[fn1,fn2,DSK,dir] where fn1 fn2 is the name of the file of Maxima
 functions, and dir is the name of a file directory.
 The result returned by TRANSLATE is a list of the names of the
 functions TRANSLATEd.  In the case of a file translation the
 corresponding element of the list is a list of the first and second
 new file names containing the LISP code resulting from the
 translation.  This will be fn1 LISP on the disk directory dir.  The
-file of LISP code may be read into MACSYMA by using the LOADFILE
+file of LISP code may be read into Maxima by using the LOADFILE
 function.
 
 @end defun
 @c @node TRANSLATE_FILE, TRANSRUN, TRANSLATE, Function Definition
 @c @unnumberedsec phony
 @defun TRANSLATE_FILE (file)
-translates a file of MACSYMA code into a file
+translates a file of Maxima code into a file
 of LISP code.  It takes one or two arguments.  The first argument is
-the name of the MACSYMA file, and the optional second argument is the
+the name of the Maxima file, and the optional second argument is the
 name of the LISP file to produce.  The second argument defaults to the
 first argument with second file name the value of
 TR_OUTPUT_FILE_DEFAULT which defaults to TRLISP.  For example:
@@ -807,7 +807,7 @@ GENERAL mode, when translating F(X), if F is a bound variable, then it
 assumes that APPLY(F,[X]) is meant, and translates a such, with
 apropriate warning. There is no need to turn this off.  With the
 default settings, no warning messages implies full compatibility of
-translated and compiled code with the macsyma interpreter.
+translated and compiled code with the Maxima interpreter.
 
 @end defvar
 @c @node TR_GEN_TAGS, TR_NUMER, TR_FUNCTION_CALL_DEFAULT, Function Definition
@@ -959,7 +959,7 @@ TRANSLATE   | warn when in TRANSLATE and when TRANSLATE:TRUE
 ALL         | warn in COMPFILE and TRANSLATE            
 ------------------------------------------------------------
 Do MODE_DECLARE(<variable>,ANY) to declare a variable to be a general 
-macsyma variable (i.e. not limited to being FLOAT or FIXNUM).  The extra 
+Maxima variable (i.e. not limited to being FLOAT or FIXNUM).  The extra 
 work in declaring all your variables in code  to be compiled should pay 
 off.
 
@@ -968,7 +968,7 @@ off.
 @c @unnumberedsec phony
 @defun COMPILE_FILE (filename,&optional-outfile)
 It takes filename which
-contains macsyma code, and translates this to lisp and then compiles the
+contains Maxima code, and translates this to lisp and then compiles the
 result.  It returns a list of four files (the original file,translation,
 notes on translation and the compiled code).
 
@@ -977,10 +977,10 @@ notes on translation and the compiled code).
 @c @node DECLARE_TRANSLATED,  , COMPILE_FILE, Function Definition
 @c @unnumberedsec phony
 @defun DECLARE_TRANSLATED (FN1,FN2..)
-When translating a file of macsyma code
+When translating a file of Maxima code
 to lisp, it is important for the translator to know which functions it
 sees in the file are to be called as translated or compiled functions,
-and which ones are just macsyma functions or undefined.  Putting this
+and which ones are just Maxima functions or undefined.  Putting this
 declaration at the top of the file, lets it know that although a symbol
 does which does not yet have a lisp function value, will have one at
 call time.  (MFUNCTION-CALL fn arg1 arg2.. ) is generated when

@@ -69,9 +69,9 @@ above.
  default:[FALSE] - When using INTEGRATE, etc. one often
 introduces parameters which are real and positive or one's
 calculations can often be constructed so that this is true.  There is
-a switch ASSUME_POS (default FALSE) such that if set to TRUE, MACSYMA
+a switch ASSUME_POS (default FALSE) such that if set to TRUE, Maxima
 will assume one's parameters are positive.  The intention here is to
-cut down on the number of questions MACSYMA needs to ask.  Obviously,
+cut down on the number of questions Maxima needs to ask.  Obviously,
 ASSUME information or any contextual information present will take
 precedence.  The user can control what is considered to be a parameter
 for this purpose.  Parameters by default are those which satisfy
@@ -110,18 +110,18 @@ general description of the CONTEXT mechanism.)
 currently exist, including the currently active context.
 The context mechanism makes it possible for a user to bind together
 and name a selected portion of his data base, called a context.  Once
-this is done, the user can have MACSYMA assume or forget large numbers
+this is done, the user can have Maxima assume or forget large numbers
 of facts merely by activating or deactivating their context.  Any
 symbolic atom can be a context, and the facts contained in that
 context will be retained in storage until the user destroys them
 individually by using FORGET or destroys them as a whole by using KILL
 to destroy the context to which they belong.
     Contexts exist in a formal hierarchy, with the root always being
-the context GLOBAL, which contains information about MACSYMA that some
+the context GLOBAL, which contains information about Maxima that some
 functions need.  When in a given context, all the facts in that
 context are "active" (meaning that they are used in deductions and
 retrievals) as are all the facts in any context which is an inferior
-of that context.  When a fresh MACSYMA is started up, the user is in a
+of that context.  When a fresh Maxima is started up, the user is in a
 context called INITIAL, which has GLOBAL as a subcontext.
 The functions which deal with contexts are: FACTS, NEWCONTEXT,
 SUPCONTEXT, KILLCONTEXT, ACTIVATE, DEACTIVATE, ASSUME, and FORGET.
@@ -148,7 +148,7 @@ listed.
 @c @node declaration
 @c @unnumberedsec phony
 @defvr declaration FEATURES
- - MACSYMA has built-in properties which are handled by the
+ - Maxima has built-in properties which are handled by the
 data base.  These are called FEATURES.  One can do DECLARE(N,INTEGER),
 etc.  One can also DECLARE one's own FEATURES by e.g.
 DECLARE( INCREASING, FEATURE); which will then allow one to say

@@ -17,7 +17,7 @@ are sparse.
 @c @node GROBNER_BASIS
 @c @unnumberedsec phony
 @defun GROBNER_BASIS (eqns)
-Takes as argument a macsyma list of equations
+Takes as argument a list of equations
 and returns a grobner basis for them.  The function POLYSIMP may now
 be used to simplify other functions relative to the equations.
 

@@ -23,7 +23,7 @@ simplify, e.g. J(J(A,B),J(C,D)) to J(A, B, C, D).
  - NOFIX operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
 corresponding function to be evaluated.  For example, when one types
-"exit;" to exit from a MACSYMA break, "exit" is behaving similar to a
+"exit;" to exit from a Maxima break, "exit" is behaving similar to a
 NOFIX operator.  The function NOFIX("x") is a syntax extension
 function which declares x to be a NOFIX operator.  Do
 DESCRIBE(SYNTAX); for more details.
@@ -117,8 +117,8 @@ a function F.
 @c @node operator
 @c @unnumberedsec phony
 @deffn operator "="
-denotes an equation to MACSYMA.  To the pattern matcher in
-MACSYMA it denotes a total relation that holds between two expressions
+denotes an equation to Maxima.  To the pattern matcher in
+Maxima it denotes a total relation that holds between two expressions
 if and only if the expressions are syntactically identical.
 
 @end deffn
@@ -253,7 +253,7 @@ numeric.
 @defun FULLMAP (fn, exp1, ...)
 is similar to MAP but it will keep mapping
 down all subexpressions until the main operators are no longer the
-same.  The user should be aware that FULLMAP is used by the MACSYMA
+same.  The user should be aware that FULLMAP is used by the Maxima
 simplifier for certain matrix manipulations; thus, the user might see
 an error message concerning FULLMAP even though FULLMAP was not
 explicitly called by the user.
@@ -377,7 +377,7 @@ example, SIGNUM(-X) gives -SIGNUM(X).
 @defun SORT (list,optional-predicate)
 sorts the list using a suitable
 optional-predicate of two arguments (such as "<" or ORDERLESSP).  If
-the optional-predicate is not given, then MACSYMA's built-in ordering
+the optional-predicate is not given, then Maxima's built-in ordering
 predicate is used.
 
 @end defun
@@ -621,7 +621,7 @@ DONTKNOW.  For example ZEROEQUIV(SIN(2*X) - 2*SIN(X)*COS(X),X) returns
 TRUE and ZEROEQUIV(%E^X+X,X) returns FALSE.  On the other hand
 ZEROEQUIV(LOG(A*B) - LOG(A) - LOG(B),A) will return DONTKNOW because
 of the presence of an extra parameter.  The restrictions are:
-(1) Do not use functions that MACSYMA does not know how to
+(1) Do not use functions that Maxima does not know how to
 differentiate and evaluate.
 (2) If the expression has poles on the real line, there may be errors
 in the result (but this is unlikely to occur).

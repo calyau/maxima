@@ -1,8 +1,8 @@
 @c @menu
 @c @end menu
 
-Start MAXIMA with the command "maxima".  MAXIMA will display version
-information and a prompt.  End each MAXIMA command with a semicolon.
+Start Maxima with the command "maxima".  Maxima will display version
+information and a prompt.  End each Maxima command with a semicolon.
 End the session with the command "quit();".  Here's a sample session:
 
 @example
@@ -29,7 +29,7 @@ Licensed under the GNU Public License (see file COPYING)
 sonia$
 @end example
 
-MAXIMA can search the info pages.  Use the @kbd{describe} command to show
+Maxima can search the info pages.  Use the @kbd{describe} command to show
 all the commands and variables containing a string, and optionally their
 documentation:
 
@@ -77,7 +77,7 @@ Info from file /d/linux/local/lib/maxima-5.4/info/maxima.info:
      FACTOR explicitly), or if the integer is a fixnum (i.e.  fits in
      one machine word), complete factorization of the integer will be
      attempted.  The user's setting of INTFACLIM is used for internal
-     calls to FACTOR. Thus, INTFACLIM may be reset to prevent MACSYMA
+     calls to FACTOR. Thus, INTFACLIM may be reset to prevent Maxima
      from taking an inordinately long time factoring large integers.
      NEWFAC[FALSE] may be set to true to use the new factoring routines.
      Do EXAMPLE(FACTOR); for examples.
@@ -111,7 +111,7 @@ refers to the most recent calculated result:
 (%o4)                             6 (y + x)
 @end example
 
-MAXIMA knows about complex numbers and numerical constants:
+Maxima knows about complex numbers and numerical constants:
 
 @example
 (%i6) cos(%pi);
@@ -123,7 +123,7 @@ MAXIMA knows about complex numbers and numerical constants:
 (%o7)                                  - 1
 @end example
 
-MAXIMA can do differential and integral calculus:
+Maxima can do differential and integral calculus:
 
 @example
 (%i8) u:expand((x+y)^6);
@@ -143,7 +143,7 @@ MAXIMA can do differential and integral calculus:
                          6             SQRT(3)          3
 @end example
 
-MAXIMA can solve linear systems and cubic equations:
+Maxima can solve linear systems and cubic equations:
 
 @example
 (%i11) linsolve( [ 3*x + 4*y = 7, 2*x + a*y = 13], [x,y]);
@@ -156,7 +156,7 @@ MAXIMA can solve linear systems and cubic equations:
 (%o12)              [x = - SQRT(5) %I, x = SQRT(5) %I, x = 3]
 @end example
 
-MAXIMA can solve nonlinear sets of equations.  Note that if you don't
+Maxima can solve nonlinear sets of equations.  Note that if you don't
 want a result printed, you can finish your command with @kbd{$} instead
 of @kbd{;}.
 
@@ -176,7 +176,7 @@ of @kbd{;}.
                                           2                   2
 @end example
 
-Under the X window system, MAXIMA can generate plots of one or more
+Under the X window system, Maxima can generate plots of one or more
 functions:
 
 @example

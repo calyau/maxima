@@ -175,7 +175,7 @@ maximum depth of recursion for the differentiation method); guess is
 the initial guess for NEUMANN or FIRSTKINDSERIES.
 Default values for the 2nd thru 5th parameters are:
 unk: P(X), where P is the first function encountered in an integrand
-which is unknown to MACSYMA and X is the variable which occurs as an
+which is unknown to Maxima and X is the variable which occurs as an
 argument to the first occurrence of P found outside of an integral in
 the case of SECONDKIND equations, or is the only other variable
 besides the variable of integration in FIRSTKIND equations.  If the

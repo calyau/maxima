@@ -143,7 +143,7 @@ DERIVABBREV:TRUE).
 (%o3)                           -- . S + R . --
                                dU           dU
 @end example
-Since MACSYMA knows the chain rule for symbolic derivatives, it takes
+Since Maxima knows the chain rule for symbolic derivatives, it takes
 advantage of the given dependencies as follows:
 @example
 (%i4) DIFF(R.S,T);
@@ -174,7 +174,7 @@ eliminate all dependencies that may have been declared for R.
                                   U    T
 
 @end example
-CAVEAT: DIFF is the only MACSYMA command which uses DEPENDENCIES
+CAVEAT: DIFF is the only Maxima command which uses DEPENDENCIES
 information.  The arguments to INTEGRATE, LAPLACE, etc. must be given
 their dependencies explicitly in the command, e.g., INTEGRATE(F(X),X).
 
@@ -345,7 +345,7 @@ if g is a defined function then it is invoked and the result is used.
 Gradients are needed when, for example, a function is not known
 explicitly but its first derivatives are and it is desired to obtain
 higher order derivatives.  GRADEF may also be used to redefine the
-derivatives of MACSYMA's predefined functions (e.g.
+derivatives of Maxima's predefined functions (e.g.
 GRADEF(SIN(X),SQRT(1-SIN(X)**2)) ).  It is not permissible to use
 GRADEF on subscripted functions.
 GRADEFS is a list of the functions which have been given gradients by

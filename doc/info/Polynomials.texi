@@ -32,7 +32,7 @@ power will be considered a "variable" of the expression (in CRE form) in
 which it occurs.  For example the CRE variables of the expression
 X+SIN(X+1)+2*SQRT(X)+1 are X, SQRT(X), and SIN(X+1).  If the user does
 not specify an ordering of variables by using the RATVARS function
-MACSYMA will choose an alphabetic one.  In general, CRE's represent
+Maxima will choose an alphabetic one.  In general, CRE's represent
 rational expressions, that is, ratios of polynomials, where the
 numerator and denominator have no common factors, and the denominator is
 positive.  The internal form is essentially a pair of polynomials (the
@@ -247,7 +247,7 @@ factoring a bignum integer.  If set to FALSE (this is the case when
 the user calls FACTOR explicitly), or if the integer is a fixnum (i.e.
 fits in one machine word), complete factorization of the integer will
 be attempted.  The user's setting of INTFACLIM is used for internal
-calls to FACTOR. Thus, INTFACLIM may be reset to prevent MACSYMA from
+calls to FACTOR. Thus, INTFACLIM may be reset to prevent Maxima from
 taking an inordinately long time factoring large integers.
 NEWFAC[FALSE] may be set to true to use the new factoring routines.
 Do EXAMPLE(FACTOR); for examples.
@@ -441,7 +441,7 @@ when the user calls FACTOR explicitly), or if the integer is a fixnum
 (i.e. fits in one machine word), complete factorization of the integer
 will be attempted.  The user's setting of INTFACLIM is used for
 internal calls to FACTOR. Thus, INTFACLIM may be reset to prevent
-MACSYMA from taking an inordinately long time factoring large
+Maxima from taking an inordinately long time factoring large
 integers.
 
 @end defvar
@@ -930,8 +930,8 @@ factors of degree > 1 can be found.
 @c @unnumberedsec phony
 @defun TELLRAT (poly)
 adds to the ring of algebraic integers known to
-MACSYMA, the element which is the solution of the polynomial with
-integer coefficients.  MACSYMA initially knows about %I and all roots
+Maxima, the element which is the solution of the polynomial with
+integer coefficients.  Maxima initially knows about %I and all roots
 of integers. TELLRAT(X); means substitute 0 for X in rational
 functions.  There is a command UNTELLRAT which takes kernels and
 removes TELLRAT properties.  When TELLRATing a multivariate

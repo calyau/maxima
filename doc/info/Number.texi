@@ -67,7 +67,7 @@ isolated N.  (BERN(402) takes about 645 secs vs 13.5 secs for
 BURN(402).  BERN's time growth seems to be exponential, while BURN's
 is about cubic.  But if next you do BERN(404), it only takes 12 secs,
 since BERN remembers all in an array, whereas BURN(404) will take
-maybe 14 secs or maybe 25, depending on whether MACSYMA needs to
+maybe 14 secs or maybe 25, depending on whether Maxima needs to
 BFLOAT a better value of %PI.)  BURN is available by doing LOAD(BFFAC);.
 BURN uses an observation of WGD that (rational) Bernoulli numbers can be
 approximated by (transcendental) zetas with tolerable efficiency.
@@ -147,11 +147,11 @@ These functions evaluate the Gamma function over the complex plane
 using the algorithm of Kuki, CACM algorithm 421.  Calculations are
 performed in single precision and the relative error is typically
 around 1.0E-7; evaluation at one point costs less than 1 msec.  The
-algorithm provides for an error estimate, but the Macsyma
+algorithm provides for an error estimate, but the Maxima
 implementation currently does not use it.
 Cgamma is the general function and may be called with a symbolic or
 numeric argument.  With symbolic arguments, it returns as is; with
-real floating or rational arguments, it uses the Macsyma Gamma
+real floating or rational arguments, it uses the Maxima Gamma
 function; and for complex numeric arguments, it uses the Kuki
 algorithm.
 Cgamma2 of two arguments, real and imaginary, is for numeric arguments
