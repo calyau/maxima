@@ -1998,6 +1998,7 @@
 ;;exceeds the denumerator one and is called "C", second
 ;;the difference of the two parameters which is called "M". 
 
+#||
 (defun diffintprop-gen-exec (l l1 l2) 
   (prog (c m poly constfact ) 
      (setq c (car l) 
@@ -2096,6 +2097,7 @@
   (cond ((null b) 0.)
 	(t (add (mul a (car b)) (yanmul a (cdr b)))))) 
 
+||#
 
 (defun freevarpar(exp)
   (cond ((freevar exp) (freepar exp))
