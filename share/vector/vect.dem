@@ -2,7 +2,7 @@
 /* DEMO FILE. */
 
 /* until translated and compiled, use .MC file in DOE MACSYMA */
-IF GET('VECT,'VERSION)=FALSE THEN LOAD("VECT.mc")$
+IF GET('VECT,'VERSION)=FALSE THEN LOAD("VECT")$
 
 /* First, we establish p, q, f, and g as vector entities:*/
 

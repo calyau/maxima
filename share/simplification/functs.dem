@@ -1,4 +1,4 @@
-load("functs.mc");
+load("functs");
 [a,b,c,d,e];  rempart(%,[3,4]);  /*  RATMX:TRUE; */
 /* Find out whether these functions are linearly dependent or
 	linearly independent. */  [SIN(x),COS(x),SIN(x-1)];
