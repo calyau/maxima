@@ -10,7 +10,7 @@
 ;;    #-gcl (:compile-toplevel :execute)
 ;;    (declare-top (special fun w b l alglist $true $false n  c l1 l2)))
 
-(declare-top (special fun w b l $true $false n  c l1 l2))
+(declare-top (special fun #||w b l||# $true $false #|| n  c ||# #||l1 l2||#))
 
 (declare-top (special var par zerosigntest productcase 
 		      fldeg flgkum checkcoefsignlist serieslist
@@ -139,10 +139,10 @@
   (cond ((null l) nil)
 	(t (append (list (simplifya (car l) nil)) (cdr l)))))
 
-(defun macsimp (l)
+(defun macsimp (exp)
   (mapcar #'(lambda (index)
 	      (simplifya ($expand index) nil))
-	  l))
+	  exp))
 
 ;; Simplify the parameters.  If L1 and L2 have common elements, remove
 ;; them from both L1 and L2.
@@ -603,6 +603,7 @@
 ;; If a is half of an odd integer and small enough, the Bessel
 ;; functions are expanded in terms of trig or hyperbolic functions.
 
+#+nil
 (defun bestrig (a x)
   (prog (n res)
      ;; gamma(a)*x^((1-a)/2)
@@ -631,6 +632,18 @@
 			 (power -1 (div (sub a 1) 2))
 			 (bes (sub a 1) (setq x (mul -1 x)) 'j)))))
      (return (mul res (bes (sub a 1) x 'i)))))
+
+(defun bestrig (a x)
+  (let ((res (mul (gm a) (power x (div (sub 1 a) 2)))))
+    ;; res = gamma(a)*x^((1-a)/2)
+    (if (equal (checksigntm x) '$negative)
+	;; Not sure this is right, but the call to bes has an
+	;; extra factor (-1)^(-(a-1)/2), so we cancel that out by
+	;; multiplying by (-1)^((a-1)/2).
+	(mul res
+	     (power -1 (div (sub a 1) 2))
+	     (bes (sub a 1) (setq x (mul -1 x)) 'j))
+	(mul res (bes (sub a 1) x 'i)))))
 
 (defun bes (a x flg)
   (let ((fun (if (eq flg 'j) '%bessel_j '%bessel_i)))
@@ -918,7 +931,7 @@
      (go loop)))
 
 (defun hyp-algv  (k l m n a b c)
-  (prog (x y xy a-b)
+  (prog (x y xy a-b w)
      (setq a-b (sub a b))
      (setq xy (getxy k l m n)
 	   x (car xy)
@@ -926,7 +939,7 @@
      (cond ((< x 0)(go out)))
      (cond ((< x y)
 	    (cond ((< (add a-b x (inv 2)) 0)
-		   (return (f88 x y a c fun)))
+		   (return (f88 x y a b c fun)))
 		  (t (return (f87 x y a c fun)))))
 	   (t
 	    (cond ((< (add a-b x (inv 2)) 0)
@@ -960,7 +973,7 @@
 		      'ell (- x y)))
 	  'ell y)))
 
-(defun f88 (x y a c fun )
+(defun f88 (x y a b c fun )
   (mul
    (inv (mul (factf c y)
 	     (factf (sub (add c y) (add a x)) (- x y))
@@ -1115,11 +1128,9 @@
 
 (defun hyp-cos (a b c)
   (let ((a1 (div (sub (add a b) (div 1 2)) 2))
-	(a2 (mul c (inv 2)))
 	(z1 (sub 1 var)))
     ;; a1 = (a+b-1/2)/2
     ;; z1 = 1-var
-    ;; a2 = c/2
     (cond ((alike1 (sub (add a b)
 		       (div 1 2))
 		  c)
@@ -1371,8 +1382,7 @@
 	   n (mul -1 (add b b m)))
      ;; m = 1 - c
      ;; n = -(2*b+1-c) = c - 1 - 2*b
-     (return (mul #+(or) (lf n m)
-		  (gm (sub 1 m))
+     (return (mul (gm (sub 1 m))
 		  (power 2 (mul -1 m))
 		  (power (mul -1 var) (div m 2))
 		  (legen n
@@ -1409,8 +1419,7 @@
 	   m (sub 1 c)
 	   n (mul -1 (add a a m))
 	   z (inv (power (sub 1 var) (inv 2))))
-     (return (mul #+(or) (lf n m)
-		  (inv (power 2 m))
+     (return (mul (inv (power 2 m))
 		  (power (sub (power z 2) 1)
 			 (div m 2))
 		  (power z (mul -1 (add n m)))
@@ -1454,13 +1463,6 @@
 			 m
 			 z
 			 '$p)))))
-
-
-;; Compute 2^m/(v^2-1)^(m/2)/gamma(1-m)
-(defun lf (n m)
-  (mul (power 2 m)
-       (inv (power (sub (power var 2) 1)(div m 2)))
-       (inv (gm (sub 1 m)))))
 
 
 ;; Handle the case 1-c = a+b-c.
@@ -1525,6 +1527,7 @@
 ;;              *Q(b-1,b-a,2/w-1)*exp(-%i*%pi*(b-a))
 ;;
 (defun legf36 (arg-l1 arg-l2 var)
+  (declare (ignore arg-l2))
   (prog (n m a b z)
      (setq a (car arg-l1)
 	   b (cadr arg-l1)
@@ -1751,6 +1754,7 @@
 	(t nil)))
 
 (defun trig-3 (arg-l1 arg-l2)
+  (declare (ignore arg-l2))
   ;; A&S 15.1.10
   ;;
   ;; F(a,a+1/2,3/2,z^2) =
@@ -1802,6 +1806,7 @@
 
 ;;Generates atan if arg positive else log
 (defun trig-log-3-exec (arg-l1 arg-l2)
+  (declare (ignore arg-l1 arg-l2))
   ;; See A&S 15.1.4 and 15.1.5
   ;;
   ;; F(a,b;3/2;z) where a = 1/2 and b = 1 (or vice versa).
@@ -1830,8 +1835,7 @@
   ;; See A&S 15.1.6 and 15.1.7
   ;;
   ;; F(a,b;3/2,z) where a = b and a = 1/2 or a = 1.
-  (destructuring-bind (a b)
-      arg-l1
+  (let ((a (first arg-l1)))
     (cond ((equal (checksigntm var) '$positive)
 	   ;; A&S 15.1.6
 	   ;;
@@ -1910,6 +1914,7 @@
 
 
 (defun trig-log-1 (arg-l1 arg-l2)	;; 2F1's with C = 1/2
+  (declare (ignore arg-l2))
   (let (x z $exponentialize a b) ;; 15.1.17, 11, 18, 12, 9, and 19
     (setq a (car arg-l1) b (cadr arg-l1))
     (cond ((=0 (m+t a b))
@@ -2752,7 +2757,7 @@
 ;; We have something like F(s+m,-s+n;c;z)
 ;; Rewrite it like F(a'+d,-a';c;z) where a'=s-n=-b and d=m+n.
 ;;
-(defun algii (a b c)
+(defun algii (a b)
   (let* ((sym (cdras 'f (s+c a)))
 	 (sign (cdras 'm (m2 sym '((mtimes) ((coefft) (m $numberp)) ((coefft) (s nonnump)))
 			     nil))))
@@ -2775,7 +2780,7 @@
 
 (defun step4-a (a b c)
   (prog (aprime m n $ratsimpexponens $ratprint newf alglist)
-     (setq alglist (algii a b c)
+     (setq alglist (algii a b)
 	   aprime (cadr alglist)
 	   m (caddr alglist)
 	   n (sub c (inv 2)))
@@ -3173,4 +3178,4 @@
     (declare-top (unspecial serieslist var par zerosigntest productcase
 			    fldeg flgkum listcmdiff checkcoefsignlist ))
   
-    (declare-top (unspecial fun w b l alglist n c)))
+    (declare-top (unspecial fun #|w b l n c|#)))
