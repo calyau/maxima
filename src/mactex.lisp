@@ -2,8 +2,8 @@
 ;; TeX-printing
 ;; (c) copyright 1987, Richard J. Fateman
 ;; small corrections and additions: Andrey Grozin, 2001
-
-
+;; additional additions: Judah Milgram (JM), September 2001
+;; additional corrections: Barton Willis (BLW), October 2001
 
 ;; Usage: tex(d8,"/tmp/foo.tex"); tex(d10,"/tmp/foo.tex"); ..
 ;; to append lines d8 and d10 to the tex file.  If given only
@@ -17,7 +17,7 @@
 ;; You have my permission to put it in NESC or give it to anyone
 ;; else who might be interested in it....
 
-;; source language: 
+;; source language:
 ;; There are changes by wfs to allow use inside MAXIMA which runs
 ;; in COMMON LISP.  For original FRANZ LISP version contact rfw.
 
@@ -40,14 +40,14 @@
 ;; with appropriate substitutions and recognition of the
 ;; infix / prefix / postfix / matchfix relations on symbols. Various
 ;; changes are made to this so that TeX will like the results.
-;; It is important to understand the binding powers of the operators 
+;; It is important to understand the binding powers of the operators
 ;; in Macsyma, in mathematics, and in TeX so that parentheses will
 ;; be inserted when necessary. Because TeX has different kinds of
 ;; groupings (e.g. in superscripts, within sqrts), not all
 ;; parentheses are explicitly need.
 
 ;;  Instructions:
-;; in macsyma, type tex(<expression>);  or tex(<label>); or 
+;; in macsyma, type tex(<expression>);  or tex(<label>); or
 ;; tex(<expr-or-label>, <file-name>);  In the case of a label,
 ;; a left-equation-number will be produced.
 ;; in case a file-name is supplied, the output will be sent
@@ -58,8 +58,8 @@
 #+franz
 ($bothcases t) ;; allow alpha and Alpha to be different
 (declare-top
-	 (special lop rop ccol $gcprint texport $labels $inchar 
-		  vaxima-main-dir 
+	 (special lop rop ccol $gcprint texport $labels $inchar
+		  vaxima-main-dir
 		  )
 	 (*expr tex-lbp tex-rbp))
 
@@ -99,12 +99,12 @@
 				   :if-exists :append))))
 	;; go back and analyze the first arg more thoroughly now.
 	;; do a normal evaluation of the expression in macsyma
-	(setq mexp (meval mexplabel)) 
+	(setq mexp (meval mexplabel))
 	(cond ((memq mexplabel $labels); leave it if it is a label
 	       (setq mexplabel (concat "(" (stripdollar mexplabel) ")"))
 	       (setq itsalabel t))
 	      (t (setq mexplabel nil)));flush it otherwise
-	
+
 	;; maybe it is a function?
 	(cond((symbolp (setq x mexp)) ;;exclude strings, numbers
 	      (setq x ($verbify x))
@@ -113,14 +113,14 @@
 		    ((setq y (mget x 'mmacro))
 		     (setq mexp (list '(mdefmacro) (cons (list x) (cdadr y)) (caddr y))))
 		    ((setq y (mget x 'aexpr))
-		     (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y))))))) 
+		     (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
 	(cond ((and (null(atom mexp))
 		    (memq (caar mexp) '(mdefine mdefmacro)))
 	       (format texport "|~%" ) ;delimit with |marks
 	       (cond (mexplabel (format texport "~a " mexplabel)))
 	       (mgrind mexp texport) ;write expression as string
 	       (format texport ";|~%"))
-	      
+
 	      ((and
 		itsalabel ;; but is it a user-command-label?
 		(eq (getchar $inchar 2) (getchar mexplabel 2)))
@@ -128,10 +128,10 @@
 	       (format texport "~%|~a " mexplabel) ;delimit with |marks
 	       (mgrind mexp texport) ;write expression as string
 	       (format texport ";|~%"))
-	      
+
 	      (t ; display the expression for TeX now:
 		 (myprinc "$$")
-		 (mapc #'myprinc 
+		 (mapc #'myprinc
 		       ;;initially the left and right contexts are
 		       ;; empty lists, and there are implicit parens
 		       ;; around the whole expression
@@ -143,20 +143,20 @@
 		      (close texport)))
 	(return mexplabel)))
 
-;;; myprinc is an intelligent low level printing routine.  it keeps track of 
+;;; myprinc is an intelligent low level printing routine.  it keeps track of
 ;;; the size of the output for purposes of allowing the TeX file to
-;;; have a reasonable line-line. myprinc will break it at a space 
+;;; have a reasonable line-line. myprinc will break it at a space
 ;;; once it crosses a threshold.
 ;;; this has nothign to do with breaking the resulting equations.
- 
+
 ;-      arg:    chstr -  string or number to princ
 ;-      scheme: This function keeps track of the current location
 ;-              on the line of the cursor and makes sure
 ;-              that a value is all printed on one line (and not divided
 ;-              by the crazy top level os routines)
- 
+
 (defun myprinc (chstr)
-       (prog (chlst) 
+       (prog (chlst)
               (cond ((greaterp (plus (length (setq chlst (exploden chstr)))
                                  ccol)
                            70.)
@@ -190,11 +190,11 @@
 	      (t (tex-function x l r nil))))
 
 (defun tex-atom (x l r) ;; atoms: note: can we lose by leaving out {}s ?
-  (append l 
+  (append l
 	  (list (cond ((numberp x) (texnumformat x))
 		      ((and (symbolp x) (get x 'texword)))
 		      (t (tex-stripdollar x))))
-	  
+
 	  r))
 
 
@@ -248,7 +248,7 @@
 ;      ((eql l 1) pname)
 ;      (t (concatenate 'string "\\mathrm{" pname "}")))))
 
-#+cmu
+#+(or cmu gcl) ;; any others?
 (defun strcat (&rest args)
   (apply #'concatenate 'string (mapcar #'string args)))
 
@@ -272,19 +272,20 @@
 			  (apply #'strcat (cdr exponent))
 			  "}")))))))
 
-(defun tex-paren (x l r) 
+(defun tex-paren (x l r)
   (tex x (append l '("\\left(")) (cons "\\right)" r) 'mparen 'mparen))
 
 (defun tex-array (x l r)
   (let ((f))
-       (if (eq 'mqapply (caar x))
-	   (setq f (cadr x) 
-		 x (cdr x))
-	   (setq f (caar x)))
-       (setq l (tex (texword f) l nil lop 'mfunction)
-	     
-	     r (nconc (tex-list (cdr x) nil (list "}") ",") r)) 
-       (nconc l (list "_{") r  )))
+    (if (eq 'mqapply (caar x))
+	(setq f (cadr x)
+	      x (cdr x)
+	      l (tex f (append l (list "\\left(")) (list "\\right)") 'mparen 'mparen))
+      (setq f (caar x)
+	    l (tex (texword f) l nil lop 'mfunction)))
+    (setq
+     r (nconc (tex-list (cdr x) nil (list "}") ",") r))
+    (nconc l (list "_{") r  )))
 
 ;; we could patch this so sin x rather than sin(x), but instead we made sin a prefix
 ;; operator
@@ -304,7 +305,7 @@
 	   (setq nl (nconc nl (tex (car x)  l r 'mparen 'mparen)))
 	   nl)
 	  (setq nl (nconc nl (tex (car x)  l (list sym) 'mparen 'mparen))
-		  x (cdr x) 
+		  x (cdr x)
 		  l nil))))
 
 (defun tex-prefix (x l r)
@@ -315,7 +316,7 @@
   (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
   (setq l (tex (cadr x) l nil lop (caar x)))
   (tex (caddr x) (append l (texsym (caar x))) r (caar x) rop))
-  
+
 (defun tex-postfix (x l r)
   (tex (cadr x) l (append (texsym (caar x)) r) lop (caar x)))
 
@@ -326,7 +327,7 @@
           (t (do ((nl) (lop ext-lop op) (rop op (if (null (cdr y)) ext-rop op)))
                  ((null (cdr y)) (setq nl (nconc nl (tex (car y)  l r lop rop))) nl)
 	         (setq nl (nconc nl (tex (car y)  l (list sym)   lop rop))
-		       y (cdr y) 
+		       y (cdr y)
 		       l nil))))))
 
 (defun tex-nofix (x l r) (tex (caar x) l r (caar x) rop))
@@ -334,7 +335,7 @@
 (defun tex-matchfix (x l r)
   (setq l (append l (car (texsym (caar x))))
 	;; car of texsym of a matchfix operator is the lead op
-	r (append (cdr (texsym (caar x))) r) 
+	r (append (cdr (texsym (caar x))) r)
 	;; cdr is the trailing op
 	x (tex-list (cdr x) nil r ","))
   (append l x))
@@ -439,12 +440,15 @@
 (defprop mexpt 140. tex-lbp)
 (defprop mexpt 139. tex-rbp)
 
+(defprop %sum 110. tex-rbp)  ;; added by BLW, 1 Oct 2001
+(defprop %product 115. tex-rbp) ;; added by BLW, 1 Oct 2001
+
 ;; insert left-angle-brackets for mncexpt. a^<n> is how a^^n looks.
 (defun tex-mexpt (x l r)
   (let((nc (eq (caar x) 'mncexpt))); true if a^^b rather than a^b
      ;; here is where we have to check for f(x)^b to be displayed
      ;; as f^b(x), as is the case for sin(x)^2 .
-     ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2. 
+     ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2.
      ;; yet we must not display (a+b)^2 as +^2(a,b)...
      ;; or (sin(x))^(-1) as sin^(-1)x, which would be arcsine x
      (cond ;; this whole clause
@@ -452,18 +456,18 @@
 	   ;; time it takes is of concern.
 	   ;; it shouldn't be too expensive.
 	   ((and (eq (caar x) 'mexpt) ; don't do this hack for mncexpt
-		 (let* 
+		 (let*
 		  ((fx (cadr x)); this is f(x)
 		   (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
 		   (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
 		   (expon (caddr x)) ;; this is the exponent
-		   (doit (and 
+		   (doit (and
 			  f ; there is such a function
 			  (memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
-			  (not (memq f '(%sum %product))) ;; what else? what a hack...
+                          (not (memq f '(%sum %product %derivative %integral %at))) ;; what else? what a hack...
 			  (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 			      (and (atom expon) (numberp expon) (> expon 0))))))
-			      ; f(x)^3 is ok, but not f(x)^-1, which could 
+			      ; f(x)^3 is ok, but not f(x)^-1, which could
 			      ; inverse of f, if written f^-1 x
 			      ; what else? f(x)^(1/2) is sqrt(f(x)), ??
 		  (cond (doit
@@ -481,7 +485,7 @@
 			(tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
 		    (if nc
 			(tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
-			(if (< x 10)
+			(if (and (numberp x) (< x 10))
 			    (tex x (list "^")(cons "" r) 'mparen 'mparen)
 			    (tex x (list "^{")(cons "}" r) 'mparen 'mparen))
 			)))))
@@ -518,7 +522,7 @@
 (defprop mquotient tex-mquotient tex)
 (defprop mquotient ("\\over") texsym)
 (defprop mquotient 122. tex-lbp) ;;dunno about this
-(defprop mquotient 123. tex-rbp) 
+(defprop mquotient 123. tex-rbp)
 
 (defun tex-mquotient (x l r)
   (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
@@ -532,7 +536,7 @@
 (defun tex-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)
   (append l `("\\pmatrix{")
 	 (mapcan #'(lambda(y)
-			  (tex-list (cdr y) nil (list "\\cr ") "&")) 
+			  (tex-list (cdr y) nil (list "\\cr ") "&"))
 		 (cdr x))
 	 '("}") r))
 
@@ -549,7 +553,7 @@
 		  ((eq (caar x) '%product) "\\prod_{")
 		  ;; extend here
 		  ))
-	;; gotta be one of those above 
+	;; gotta be one of those above
 	(s1 (tex (cadr x) nil nil 'mparen rop));; summand
 	(index ;; "index = lowerlimit"
 	       (tex `((mequal simp) ,(caddr x),(cadddr x)) nil nil 'mparen 'mparen))
@@ -594,10 +598,10 @@
 ;;binomial coefficients
 
 (defprop %binomial tex-choose tex)
-	   
+
 (defun tex-choose (x l r)
-  `(,@l 
-    "\\pmatrix{" 
+  `(,@l
+    "\\pmatrix{"
     ,@(tex (cadr x) nil nil 'mparen 'mparen)
     "\\\\"
     ,@(tex (caddr x) nil nil 'mparen 'mparen)
@@ -605,7 +609,7 @@
     ,@r))
 
 
-(defprop rat tex-rat tex) 
+(defprop rat tex-rat tex)
 (defprop rat 120. tex-lbp)
 (defprop rat 121. tex-rbp)
 (defun tex-rat(x l r) (tex-mquotient x l r))
@@ -621,7 +625,7 @@
 	(if (null (cdr x))
 	    (tex-function x l r t)
 	    (tex (cadr x) (cons "+" l) r 'mplus rop)))
-       (t (setq l (tex (cadr x) l nil lop 'mplus) 
+       (t (setq l (tex (cadr x) l nil lop 'mplus)
 		x (cddr x))
 	  (do ((nl l)  (dissym))
 	      ((null (cdr x))
@@ -654,7 +658,7 @@
 (defprop mgreaterp 80. tex-rbp)
 
 (defprop mgeqp tex-infix tex)
-(defprop mgeqp ("\\geq") texsym)
+(defprop mgeqp ("\\geq ") texsym)
 (defprop mgeqp 80. tex-lbp)
 (defprop mgeqp 80. tex-rbp)
 
@@ -664,7 +668,7 @@
 (defprop mlessp 80. tex-rbp)
 
 (defprop mleqp tex-infix tex)
-(defprop mleqp ("\\leq") texsym)
+(defprop mleqp ("\\leq ") texsym)
 (defprop mleqp 80. tex-lbp)
 (defprop mleqp 80. tex-rbp)
 
@@ -691,22 +695,45 @@
       (setf (get a 'texsym) (list b))
       (setf (get a 'tex-rbp) 130)))
 
-(mapc #'tex-setup 
-  '( (%sin "\\sin ")
-     (%cos "\\cos ")
-     (%tan "\\tan ")
-     (%cot "\\cot ")
-     (%sec "\\sec ")
-     (%csc "\\csc ")
-     (%asin "\\arcsin ")
+;; JM 09/01 expand and re-order to follow table of "log-like" functions,
+;; see table in Lamport, 2nd edition, 1994, p. 44, table 3.9.
+;; I don't know if these are Latex-specific so you may have to define
+;; them if you use plain Tex.
+
+(mapc #'tex-setup
+  '(
      (%acos "\\arccos ")
+     (%asin "\\arcsin ")
      (%atan "\\arctan ")
-     (%sinh "\\sinh ")
+     ; Latex's arg(x) is ... ?
+     (%cos "\\cos ")
      (%cosh "\\cosh ")
-     (%tanh "\\tanh ")
+     (%cot "\\cot ")
      (%coth "\\coth ")
+     (%csc "\\csc ")
+     ; Latex's "deg" is ... ?
+     (%determinant "\\det ")
+     (%dim "\\dim ")
+     (%exp "\\exp ")
+     (%gcd "\\gcd ")
+     ; Latex's "hom" is ... ?
+     (%inf "\\inf ") ; many will prefer "\\infty". Hmmm.
+     ; Latex's "ker" is ... ?
+     ; Latex's "lg" is ... ?
+     (%limit "\\lim ")
+     ; Latex's "liminf" ... ?
+     ; Latex's "limsup" ... ?
      (%ln "\\ln ")
      (%log "\\log ")
+     (%max "\\max ")
+     (%min "\\min ")
+     ; Latex's "Pr" ... ?
+     (%sec "\\sec ")
+     (%sin "\\sin ")
+     (%sinh "\\sinh ")
+     ; Latex's "sup" ... ?
+     (%tan "\\tan ")
+     (%tanh "\\tanh ")
     ;; (%erf "{\\rm erf}") this would tend to set erf(x) as erf x. Unusual
      ;(%laplace "{\\cal L}")
      )) ;; etc
@@ -722,7 +749,7 @@
 (defun tex-derivative (x l r)
   (tex (tex-d x '$|d|) l r lop rop ))
 
-(defun tex-d(x dsym) ;dsym should be $d or "$d\\partial"
+(defun tex-d(x dsym) ;dsym should be $d or "$\\partial"
   ;; format the macsyma derivative form so it looks
   ;; sort of like a quotient times the deriva-dand.
   (let*
@@ -730,7 +757,7 @@
     (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
     (ords (odds difflist 0)) ;; e.g. (1 2)
     (vars (odds difflist 1)) ;; e.g. (x y)
-    (numer `((mexpt) $|d| ((mplus) ,@ords))) ; d^n numerator
+    (numer `((mexpt) dsym ((mplus) ,@ords))) ; d^n numerator
     (denom (cons '(mtimes)
 		 (mapcan #'(lambda(b e)
 				  `(,dsym ,(simplifya `((mexpt) ,b ,e) nil)))
@@ -739,9 +766,9 @@
      ((mquotient) ,(simplifya numer nil) ,denom)
      ,arg)))
 
-(defun odds(n c) 
+(defun odds(n c)
   ;; if c=1, get the odd terms  (first, third...)
-  (cond ((null n) nil) 
+  (cond ((null n) nil)
 	((= c 1)(cons (car n)(odds (cdr n) 0)))
 	((= c 0)(odds (cdr n) 1))))
 
@@ -798,9 +825,9 @@
 ;; run this first before tex(<whatever>, file);
 (defun $texinit(file)
   ;; copy header from some generic place
-  (funcall 'exec (list 
+  (funcall 'exec (list
 		  (concat "cp "
-			  vaxima-main-dir 
+			  vaxima-main-dir
 			  "//ucb//verbwin "  ;extra slashes for maclisp // = /
 			  (stripdollar file))))
   '$done )
@@ -817,12 +844,9 @@
 
 ;; Undone and trickier:
 ;; handle reserved symbols stuff, just in case someone
-;; has a macsyma variable named (yuck!!) \over  or has a name with 
+;; has a macsyma variable named (yuck!!) \over  or has a name with
 ;; {} in it.
-;; Maybe do some special hacking for standard notations for 
+;; Maybe do some special hacking for standard notations for
 ;; hypergeometric fns, alternative summation notations  0<=n<=inf, etc.
 
 ;;Undone and really pretty hard: line breaking
-
-nil
-
