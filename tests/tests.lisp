@@ -28,7 +28,7 @@
 	  "rtest6" "rtest6a" "rtest6b" "rtest7"
 	  "rtest9"
 	  "rtest9a" "rtest10" "rtest11" "rtest13" "rtest13s"
-	  "rtest14" "rtest15" "rtestode" "rtestflatten"
+	  "rtest14" "rtest15" "rtestode" "rtestode_zp" "rtestflatten"
 	  "rtest3" "rtest8" "rtest12" "rexamples"
 	  )
 	do
