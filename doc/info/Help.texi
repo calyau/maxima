@@ -233,8 +233,10 @@ Definitions for Integration
  - Function: CHANGEVAR (EXP,F(X,Y),Y,X)
 ...
 @end example
-@pxref{Introduction to Help}
 
+@code{describe ("")} yields a list of all topics documented in the on-line manual.
+
+@pxref{Introduction to Help}
 
 @end defun
 @c @node EXAMPLE
