@@ -166,6 +166,7 @@ binary-gcl/maxima:
         -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
 	j=$$($(RUNLISP) \
                  -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :test t)' < /dev/null |\
+		awk 'BEGIN {p="$(shell pwd)" "/"} /oading  *source  *file$$/ {a=$$0;next} {$$0=a $$0;sub(p,"");print;a=""}' |\
                  grep Loading |\
                  grep file | \
                  awk 'BEGIN {a="$(shell pwd)"}\
