@@ -513,12 +513,12 @@ setrgbcolor} def
 	 (y1 0.0)
 	 (y (funcall f x))
 	 (dy 0.0)
-         (epsy ($/ (- ymax ymin) 20.0))
+         (epsy ($/ (- ymax ymin) 1.0))
 	 (eps2 (* eps eps))
 	 in-range last-ok
 	 )
     (declare (long-float x1 y1 x y dy eps2 eps ymin ymax ))
-   (print (list 'ymin ymin 'ymax ymax epsy))
+   ;(print (list 'ymin ymin 'ymax ymax epsy))
      (setq x ($- x eps))  
     (cons '(mlist)
 	  (sloop   do

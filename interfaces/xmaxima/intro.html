@@ -6,8 +6,8 @@
 
                  <h4 align=center>Maxima Primer</h4>
 
-<body  BGCOLOR=#ffffff TEXT=#000000 LINK=#244C21
-  baseprogram=nmtp://localhost/ >
+<body  BGCOLOR=#ffffff TEXT=#000000 LINK=#244C21>
+
 
 
 <p>Maxima is a computer program for doing mathematics calculations,
@@ -21,73 +21,77 @@ documentation </a>is available.
 <p>To do basic operations, a line is typed, followed by a
 semicolon, and then entered.  For example,
 <br>
+<ul>
+<li>
 <eval program=maxima doinsert=1
 >integrate(1/(1+x^3),x)</eval> evaluates to <result modified>Result</result>.
 You may double click the above formula, and the integral will be substituted.
+Also you may edit any of the expressions in blue, and then reclick
+to compute a new value. 
 
+<li>a Plot
+<eval program=maxima doinsert=0
+>plot2d(sin(x),[x,-2,2])</eval>
+<li>a 3d Plot
+<eval program=maxima doinsert=0
+>plot3d(x^2+y^2,[x,-2,2],[y,-2,2],[grid,14,14])</eval>
+<li>Duffing's equation:
+<br>
+<eval program=openplot
+>plotdf -ode {d(x,t) = y; d(y,t)= -(k*x + c*y + l*x^3)/m} 
+ -sliders {k=-2:2,m=-1:1} -parameters {k=-1,m=1.0,c=0,l=1} -bbox {-3 -3 3 3} -tstep .1
+ </eval>
+</ul>
 
 <p>Here are some examples from basic calculus.  To have Maxima
 evaluate the derivative of the function below, click on this line.
-<br><eval program=maxima doinsert=1> diff(cos(x),x);</eval> returns <result modified>RESULT</result>.    
-
-<p>Maxima can calculate <b>indefinite integrals</b>.
 <ul>
-<li><eval program=maxima doinsert=1> integrate( x/(1+x^3),x );</eval> returns <result modified>RESULT</result>  
-
-<li>...and definite integrals with respect to x from 0 to 1.
+<li>Differentiation with respect to x: <eval program=maxima doinsert=1> diff(cos(x),x);</eval> returns <result modified>RESULT</result>.    
+<li>Indefinite integrals: 
+<eval program=maxima doinsert=1> integrate( x/(1+x^3),x );</eval> returns <result modified>RESULT</result>  
+<li>definite integrals with respect to x from 0 to 1.
 <br><eval program=maxima doinsert=1> integrate( 1/(1+x^2), x,  0, 1 ); </eval> returns <result modified>RESULT</result> 
-</ul>
-<p>Also, limits can be evaluated as x goes to infinity:
+<li>Also, limits can be evaluated as x goes to infinity:
 <br><eval program=maxima doinsert=1> limit( (2*x+1)/(3*x+2),  x,inf );</eval> produces <result modified>RESULT</result> 
 
 
-<br>
-<br><eval program=maxima doinsert=1> limit( sin(3*x)/x,  x,0);</eval> evaluates to <result modified>RESULT</result> 
+<li>or limit as x tends to 0<eval program=maxima doinsert=1> limit( sin(3*x)/x,  x,0);</eval> evaluates to <result modified>RESULT</result> 
 
-
-<p>Maxima can perform calculations to arbitrary precision.  The
+<li>arbitrary precision integer or floating point calculations:
+the
 following example computes Pi to one hundred decimal places.
  <br><eval program=maxima doinsert=1>block([FPPREC:100],bfloat(%pi))</eval> yields <result modified>RESULT</result> 
-if we took sin of this we would get 0 to to within 100 decimal places..
-
- 
+<li>if we took sin of this we would get 0 to to within 100 decimal places..
 <br>
 <br><eval program=maxima doinsert=1>block([FPPREC:100],sin(bfloat(%pi)))</eval> gives <result modified>RESULT</result> 
 
-<p>Maxima can solve equations.  Click this line to solve the system.
+<li> Solving equations. 
 <br><eval program=maxima doinsert=1> solve([x+y+z=5,3*x-5*y=10,y+2*z=3],[x,y,z]);</eval> returns <result modified>RESULT</result>  
 
 
-<br>
-<br><eval program=maxima doinsert=1> solve(x^2-5*x+6 =0,x);</eval> produces <result modified>RESULT</result> 
+<li><eval program=maxima doinsert=1> solve(x^2-5*x+6 =0,x);</eval> produces <result modified>RESULT</result>
+</ul>
 
 <h5>Linear Algebra</h5>
-<p>
-For example, matrices can be
+<ul>
+<li>For example, matrices can be
 entered and manipulated.  Click these two lines.
-<br><eval program=maxima doinsert=1> A:matrix([1,2],[3,4]);</eval> gives <result modified>RESULT</result> 
+<eval program=maxima doinsert=1> A:matrix([1,2],[3,4]);</eval> gives <result modified>RESULT</result> 
+<eval program=maxima doinsert=1> B:matrix([1,1],[1,1]);</eval> gives <result modified>RESULT</result> 
 
+<li>Matrix operations: Addition 
+<eval program=maxima doinsert=1>  A + B ;</eval> returns the sum <result modified>RESULT</result>   
 
-<br>
-<br><eval program=maxima doinsert=1> B:matrix([1,1],[1,1]);</eval> gives <result modified>RESULT</result> 
+<li>...and multiplied.
+<eval program=maxima doinsert=1>  A . B ;</eval> gives the product<result modified>RESULT</result>   
 
-<p>The matrices can then be added, for example:
-<br><eval program=maxima doinsert=1>  A + B ;</eval> returns the sum <result modified>RESULT</result>   
+<li>inverses
+<eval program=maxima doinsert=1>  A^^-1</eval> evaluates to the inverse: <result modified>RESULT</result>   
 
-...and multiplied.
-<br><eval program=maxima doinsert=1>  A . B ;</eval> gives the product<result modified>RESULT</result>   
-
-
-<br><eval program=maxima doinsert=1>  A^^-1</eval> evaluates to the inverse: <result modified>RESULT</result>   
-
-
-<br>
-<br><eval program=maxima doinsert=1>determinant(matrix([a,b],[c,d]))</eval> gives <result modified>RESULT</result> 
-
+<li>
+and determinants <eval program=maxima doinsert=1>determinant(matrix([a,b],[c,d]))</eval> gives <result modified>RESULT</result> 
+</ul>
 <p>Let v represent a set of points in 3 space
-
-
-<br>
 <br><eval program=maxima doinsert=0>v: [[1.214124, 0.000000, 1.589309],
 	[0.375185, 1.154701, 1.589309],
 	[-0.982247, 0.713644, 1.589309],

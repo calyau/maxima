@@ -1,6 +1,6 @@
-#!/usr/local/bin/wish -f
-# the following is used to run gnuplot under book mode.  It should
-# be put in the path.
+#!/bin/sh
+# comment \
+exec wish "$0" "$@"
 
 set gnuPlotstream [open {|  gnuplot  } r+]
 

@@ -1,0 +1,350 @@
+.TH MAXIMA 1L "21 November 1989"
+.ds Ps P\s-2OST\s+2S\s-2CRIPT\s+2
+.ds Ts T\s-2RAN\s+2S\s-2CRIPT\s+2
+.if t .ds Te T\\h'-0.1667m'\\v'0.20v'E\\v'-0.20v'\\h'-0.125m'X
+.if n .ds Te TeX
+.if t .ds La L\\h'-0.36m'\\v'-0.15v'\\s-2A\\s+2\\h'-0.15m'\\v'0.15v'T\\h'-0.1667m'\\v'0.20v'E\\v'-0.20v'\\h'-0.125m'X
+.if n .ds La LaTeX
+.ds Fl "F\s-2RANZ\s+2\ L\s-2ISP\s+2
+.ds Ml "M\s-2ACLISP\s+2
+.ds Cl "Common L\s-2ISP\s+2
+.ds Li "L\s-2ISP\s+2
+.ds Ky "Austin Kyoto Common L\s-2ISP\s+2
+.SH NAME
+maxima \- Austin Kyoto Common LISP version of MACSYMA symbolic mathematics package
+.SH SYNOPSIS
+.B maxima
+.SH DESCRIPTION
+.I Maxima
+is a version of the MIT-developed MACSYMA system,
+modifed to run under \*(Ky;
+it is an interactive expert system and programming environment for symbolic
+and numerical mathematical manipulation.
+Written in \*(Li, it allows
+differentiation, integration, solution of linear or polynomial equations,
+factoring of polynomials, expansion of functions in Laurent or Taylor
+series, computation of Poisson series, matrix and tensor manipulations,
+and two- and three-dimensional graphics.
+Procedures may be written
+using an ALGOL-like syntax, and both \*(Li-like functions and pattern
+matching facilities are provided.
+Files containing
+.I maxima
+objects may be read from and written to disc files, and pre-written
+.I maxima
+commands may be read from a file and executed, allowing batch-mode use.
+.SH INTRODUCTORY INSTRUCTIONS
+Upon initialization,
+.I maxima
+starts \*(Ky, which prints a message, including the instruction:
+.IP
+Type (run) to start Maxima.
+.LP
+Upon typing
+.IR (run) ,
+.I maxima
+proper is started, which prints a command line prompt (a
+.B C
+with an appended sequence number).
+All
+.I maxima
+commands must be concluded with either:
+.TP
+1)
+a semi-colon (in which case the result of the command is echoed on a display
+line, prefaced by
+.B D
+with an appended sequence number), or
+.TP
+2)
+a dollar sign (which suppresses printing of a display line).
+.LP
+The user types in commands which create
+.I "maxima objects"
+(such as functions and system variables) and which manipulate these objects.
+There is a built-in editor similar to TECO, which may be used by modifying the
+.I maxima
+variable
+.IR editorcom .
+The usual UNIX correction keys may be used to make in-line
+typing corrections.
+.LP
+On UNIX it is strongly recommended to run maxima under Gnu Emacs.
+You can do this by invoking shell mode in
+.IR emacs ,
+and then invoking
+.IR maxima .
+Alternately you can load
+.I akcl.el
+from the
+.IR akcl (1L)
+distribution and use the command:
+.IP
+.B M-x run
+.LP
+supplying the argument
+.IR maxima .
+This attempts to use
+.I maxima-mode
+from
+.IR maxima-mode.el .
+The main advantage of working inside
+.I emacs
+is that it provides a complete history of input/output.
+If you execute the command
+.IP
+.B display2d:false
+.LP
+you will be able to use your output as input,
+by simply killing and yanking.
+.LP
+Various options can be set which control the behavior of
+.IR maxima .
+One such option causes the display line output of
+.I maxima
+be be written in
+.IR eqn (1)
+format, allowing it to be phototypeset by the UNIX programs
+.IR nroff (1)
+and
+.IR troff (1).
+Output may also be cast in the form of FORTRAN code for use elsewhere (with
+the commmand
+.IR FORTRAN(exp) ).
+\*(Li is built into
+.I maxima
+and may be accessed by typing Ctrl-C.   This puts is the interrupt
+character, and puts you into a break loop.   In the AKCL version
+typing :t, returns to the MAXIMA (Cn) prompt.
+.SH BUILT-IN HELP
+Extensive on-line documentation is built in to the system.
+A description of a given command can be obtained by typing the command
+.LP
+DESCRIBE(command);
+.LP
+The command
+.LP
+APROPOS(string);
+.LP
+searches the list of functions for a pattern match and can therefore be used
+to browse for subjects for the
+.I describe
+command.
+Demonstration files provide complete examples of problems solved with
+.IR maxima ,
+and may be accessed with the command
+.IR demo(command) .
+A library of user-contributed command files is also provided (the
+.IR "share library" ),
+directed toward a variety of problems.
+.SH GNU-EMACS ON-LINE DOCUMENTATION
+In
+.IR emacs (1L)
+execute the command:
+.IP
+.B visit-doc-file /public/maxima/doc/DOC
+.LP
+whereupon the key c-h D will allow you to find documentation on many topics.
+This documentation will appear in the other buffer.
+The keystroke c-h / finds all documentation topics containing a given string.
+.LP
+If you cannot use
+.IR emacs (1L),
+then you can visit the above DOC file in your favorite text editor.
+You will not have the advantage of the easy selection of help topics however.
+.SH GARBAGE COLLECTION
+The beginner is often startled by the appearance of messages of the form:
+.LP
+gc:[*list:1047{59%}; fixnum:101{8%}; ut:41%]
+.LP
+which are descriptions of the
+.I maxima
+\*(Li "garbage collection" system at work.
+This frees up memory space and
+can occur at any time, including in the middle of output.
+The entity marked
+by an asterisk is the one being affected by the garbage colection maneuver.
+The entity "ut" is the utilization time, that is, the fraction of time which
+.I maxima
+is devoting to useful work, as opposed to overhead such as garbage collection.
+.SH COMMAND PRIMER
+.LP
+This list includes only commands which the beginner might find
+useful to know about prior to studying the on-line primer and
+the printed reference manuals.
+.TP
+.B alloc(entity);
+Allocate extra space for the given entity.
+.TP
+.B batch("myfile");
+Execute the contents of file
+.IR myfile ,
+which is assumed to contain
+.I maxima
+commands.
+.TP
+.B closefile("myfile");
+Close session file opened by a writefile command (see below).
+.TP
+.B demo("myfile");
+Execute the contents of file
+.IR myfile ,
+which is assumed to contain
+.I maxima
+commands, one line at a time.
+.TP
+.B ev(infolists);
+Print the contents of all of the available information lists.
+.TP
+.B functions;
+Print a list of the names of currently defined functions.
+.TP
+.B gcprint:off;
+Inhibit printing of the garbage collection message.
+.TP
+.B infolists;
+Print a list of the various available information lists.
+.TP
+.B kill(objectlist);
+Eliminate the object(s) contained within parentheses;
+.I kill(all)
+Delete all objects created by the user, restoring
+.I maxima
+to its initial state.
+.TP
+.B quit();
+Leave
+.IR maxima .
+.TP
+.B reset();
+Reset all
+.I maxima
+control parameters to their default states.
+.TP
+.B values;
+Print a list of the names of currently assigned scalar values.
+.TP
+.B writefile("myfile");
+Write record of session to file
+.IR myfile ;
+only one file at a time can be open, and the
+.I closefile
+command must be invoked prior to leaving
+.I maxima
+to flush the buffer.
+.SH DIFFERENCES BETWEEN MACSYMA AND MAXIMA
+.LP
+The syntax of certain commands was changed to accord with UNIX usage, and
+in other instances commands must be used slightly differently.
+For example:
+.TP
+.B Plotting commands
+.I Maxima
+knows very little about terminal types.
+On the Sun workstation, it is
+preferable to work out the problem in a normal window, and to send the plot
+to a file.
+Then the plot file may be accessed and plotted in a Tektronix
+emulation window.
+.TP
+.B Commands which read/write files
+The original MACSYMA ran on a DEC-10, and the corresponding document presents
+file syntax for that machine.
+Under
+.IR maxima ,
+disc file names should follow UNIX convention for file names, and should
+appear within double quotation marks, as for this example of the
+.I demo()
+command which uses the UNIX file
+.IR myfile :
+.RS
+.IP
+demo("myfile");
+.RE
+.IP
+Relative path names are assumed to relate to the users current directory.
+The commands
+.IR fassave ,
+.IR store ,
+.IR mail ,
+and
+.I send
+do not exist in
+.IR maxima ;
+the routine UNIX
+.I mail
+system fulfills the later two functions.
+.SH FILES
+.TP 2.2i
+.I /public/maxima
+primary directory
+.TP 2.2i
+.I /public/maxima/doc/DOC
+primary documentation file
+.TP 2.2i
+.I /public/maxima/doc/maxima-mode.el
+maxima mode
+.TP 2.2i
+.I /public/akcl/doc/*.el
+finding documentation using gnu emacs
+.TP
+.I /public/bin/maxima
+executable
+.TP
+.I \&./maxima.buf
+.IR vi (1)
+editing buffer created by
+.I maxima
+.TP
+.I HOME/.maxima
+user initialization file (\*(Li code)
+.SH "SEE ALSO"
+plot(1)
+.LP
+Pay particular attention in the following document to Appendix II, by
+R. Fateman, which summarizes the changes made to MACSYMA in converting it for
+use under UNIX:
+.LP
+.I "MACSYMA Reference Manual"
+(volumes 1 and 2).
+The Mathlab Group,
+Laboratory for Computer Science, MIT.
+Version 10.
+January 1983.
+.LP
+The following documents, developed for an extended commercial version of
+MACSYMA, describe certain features not available in this version of
+.IR maxima ,
+particularly those concerned with an enhanced user interface:
+.LP
+.IR "An Introduction to UNIX MACSYMA (version 3.0)" .
+Symbolics, Inc.
+October 1985.
+.LP
+.I "MACSYMA Reference Manual"
+(version 12).
+Symbolics, Inc., Cambridge, Massachusetts.
+June 1986.
+.SH BUGS
+.I Maxima
+is a complex system and there are undoubtedly bugs present.
+Use at your own risk.
+.SH AUTHOR
+MACSYMA (Project MAC's SYmbolic MAnipulation System) was developed by the
+Mathlab group of the MIT Laboratory for Computer Science (originally known
+as Project MAC), during the years 1969-1972.
+Their work was supported by grants NSG 1323 of the National
+Aeronautics and Space Administration, N00014-77-C-0641 of the Office of Naval
+Research, ET-78-C-02-4687 of the U.S. Department of Energy, and
+F49620-79-C-020 of the U.S. Air Force.
+MACSYMA was further modifed for use
+under the UNIX operating system (for use on DEC VAX computers and Sun
+workstations), by Richard Fateman and colleagues at the University of
+California at Berkeley; this version of MACSYMA is known as VAXIMA.
+The present version is a re-working of the public domain MIT MACSYMA
+for \*(Ky, prepared by William Schelter, University of Texas at Austin
+(wfs@rascal.ics.utexas.edu, wfs@carl.ma.utexas.edu).
+Manual page by R. P. C.
+Rodgers, UCSF School of Pharmacy, San Francisco, CA 94143
+(rodgers@maxwell.mmwb.ucsf.edu).
+.\"

@@ -64,7 +64,7 @@
 	 (setq var1 (car l)
 	       lis (second l)
 	       l (cddr l))
-	 (or (symbolp var1) (error "~a not a symbol" var1))
+	 (or (symbolp var1) (merror "~A not a symbol" var1))
  	 (setq lis (meval* lis))
 	 (progv (list var1)
 		(list nil)
@@ -86,7 +86,7 @@
 			      (apply 'create-list1
 				     form l)
 			      ))
-		      (T (MAXIMA-ERROR "BAD ARG")))))))
+		      (T (merror "BAD ARG")))))))
 
 #+gcl
 (progn
@@ -105,3 +105,4 @@
 tex, or viewed using info or gnu emacs.   Versions of maxima built
 on GCL have a builtin info retrieval mechanism" ))
 )
+

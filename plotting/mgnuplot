@@ -1,4 +1,6 @@
-#!/usr/local/bin/wish -f
+#!/bin/sh
+# comment \
+exec wish "$0" "$@"
 
 
 #set gnuPlotstream [open {|  gnuplot /d19/staff/wfs/tmp/jo } w]

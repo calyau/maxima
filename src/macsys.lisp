@@ -76,6 +76,9 @@
     (tagbody
      top
      (SETQ R      (dbm-read *standard-input* nil eof))
+     (if (and (eq r eof) (boundp '*socket-connection*)
+	      (eq *standard-input* *socket-connection*))
+	 ($quit))
      (cond ((and (consp r) (keywordp (car r)))
 	    (break-call (car r) (cdr r) 'break-command)
 	      (go top)))

@@ -158,13 +158,13 @@ OBJS   = opers.o utils.o sumcon.o sublis.o runtim.o \
 
 TRANSLATED = nusum.o desoln.o elim.o trgsmp.o ode2.o invert.o plot.o
 
-OTHERS 	= hypgeo.o hyp.o
+OTHERS 	= hypgeo.o hyp.o todd-coxeter.o
 
 all:   $(MACROS) $(OBJS)  saved_maxima $(OTHERS)
 	make translated
 
 install:
-	cp ${TRANSLATED} ${INSTALL_LIB_DIR}/src
+	cp ${TRANSLATED} ${OTHERS} ${INSTALL_LIB_DIR}/src
 
 sysinit.o maxobjs: sysinit.lsp makefile ../makefile
 	echo '(load "sysdef.lisp")(compile-file "sysinit.lsp" :system-p t :c-file t)' | $(LISP)

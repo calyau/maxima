@@ -1,10 +1,10 @@
 #!/bin/sh
 # comment \
-exec wish8.0 "$0" "$@"
+exec wish "$0" "$@"
 #############################################
 ##### Copyright William Schelter 1997 #######
 #############################################
-set ws_openMath(date) 10/06/2000
+set ws_openMath(date) 10/28/2000
 
 ###### plotting.tcl ######
 ############################################################
@@ -3005,8 +3005,8 @@ proc replotdf { win } {
 
 proc setXffYff { dxdt dydt parameters } {
     
-    proc xff { t x y } "return \[expr { [sparseWithParams $dxdt { x y} $parameters] } \]"
-    proc yff { t x y } "return \[expr { [sparseWithParams $dydt { x y} $parameters] } \]"
+    proc xff { t x y } "expr { [sparseWithParams $dxdt { x y} $parameters] }"    
+    proc yff { t x y } "expr { [sparseWithParams $dydt { x y} $parameters] } "
 }
 
 proc doConfigdf { win } {
@@ -3453,7 +3453,8 @@ proc replot2d {win } {
 #   puts xfun=$xfun,parameters=$parameters,[oget $win xradius],[oget $win xmax]
     foreach v [sparseListWithParams $xfun x $parameters] {
 #	puts v=$v
-	proc _xf {  x  } "return \[expr { $v } \]"
+#	proc _xf {  x  } "return \[expr { $v } \]"
+	proc _xf {  x  } "expr { $v }"	
 	regsub "\\$" $v "" label
 	lappend xfundata [list label $label] \
 	  [linsert [calculatePlot $win _xf $nsteps]  \

@@ -155,23 +155,28 @@ PLOTTING_BIN=bin/omplotdata bin/mgnuplot
 
 install1: command
 	if [  -f ${INSTALL_LIB_DIR}/makefile  ] ; then true; else \
-	tar cvf - src/plot.o */*.mac sym/*.o sym/*.lsp sym/makefile  sym/*.tex info/*.texi info/*.info* info/makefile ${PLOTTING_BIN} \
+	tar cvf - doc/manual.demo src/plot.o doc/tests.lisp src/server.lisp intro.html info/*.html */*.mac sym bin/xmaxima maxima.gif info/*.texi info/*.info* info/makefile ${PLOTTING_BIN} \
 	*/*.mc */*.dem */*.usg src/saved_maxima  | (cd ${INSTALL_LIB_DIR}/ ; tar xvf - ) ;fi
 	(cd src ; make install "INSTALL_LIB_DIR=${INSTALL_LIB_DIR}")
 	(cd info ; make install)
 	(cd elisp ; make install)
+	cp  ./doc/maxima.1 ${MAN_DIR}
+	chmod a+r ${MAN_DIR}/maxima.1
 
 command:
-	- mkdir ${PREFIX_DIR}
-	- mkdir ${PREFIX_DIR}/lib
-	- mkdir ${PREFIX_DIR}/bin
-	- mkdir ${INSTALL_LIB_DIR}/
+	for v in ${PREFIX_DIR} ${PREFIX_DIR}/lib ${PREFIX_DIR}/bin  ${INSTALL_LIB_DIR}/ ; do if test -d $$v ; then true ; else mkdir $$v ; fi ; done
 	echo '#!/bin/sh' > ${PREFIX_DIR}/bin/maxima
 	echo export MAXIMA_DIRECTORY >> ${PREFIX_DIR}/bin/maxima
 	echo MAXIMA_DIRECTORY=${INSTALL_LIB_DIR} >> ${PREFIX_DIR}/bin/maxima
 	echo exec ${INSTALL_LIB_DIR}/src/saved_maxima -dir ${INSTALL_LIB_DIR}/src/ '$$@' \
 	>>  ${PREFIX_DIR}/bin/maxima
 	chmod a+x ${PREFIX_DIR}/bin/maxima
+	echo '#!/bin/sh' > ${PREFIX_DIR}/bin/xmaxima
+	echo export MAXIMA_DIRECTORY >> ${PREFIX_DIR}/bin/xmaxima
+	echo MAXIMA_DIRECTORY=${INSTALL_LIB_DIR} >> ${PREFIX_DIR}/bin/xmaxima
+	echo exec ${INSTALL_LIB_DIR}/bin/xmaxima  '$$@' >>  ${PREFIX_DIR}/bin/xmaxima
+	chmod a+x ${PREFIX_DIR}/bin/xmaxima
+
 
 tar-bin:
 	make tar-bin1 PREFIX_DIR=${PREFIX_DIR} INSTALL_LIB_DIR=${PREFIX_DIR}/lib/maxima-`cat ${MAXDIR}/majvers`.`cat ${MAXDIR}/minvers`
