@@ -9,7 +9,7 @@
 
 
 (let* ((newlin "$$"))
-  (declare (type (simple-array base-char (2)) newlin))
+  ;(declare (type (simple-array base-char (2)) newlin))
   (defun xerprn (prefix npref messg nwrap)
     (declare (type f2cl-lib:integer4 nwrap npref)
              (type (simple-array base-char (*)) messg prefix))
