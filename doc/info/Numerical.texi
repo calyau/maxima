@@ -1,14 +1,13 @@
 @menu
 * Introduction to Numerical::   
 * Fourier::                     
-* ndiffq::                      
 * Definitions for Numerical::   
 @end menu
 
 @node Introduction to Numerical, Fourier, Numerical, Numerical
 @section Introduction to Numerical
 
-@node Fourier, ndiffq, Introduction to Numerical, Numerical
+@node Fourier, Definitions for Numerical, Introduction to Numerical, Numerical
 @section Fourier
  - There is a Fast Fourier Transform package, do DESCRIBE(FFT)
 for details.  There is also a Fourier Series package.  It may be
@@ -18,29 +17,9 @@ replace all occurrences of F(ARG) by ARG in expression (like changing
 ABS(a*x+b) to a*x+b).  Do PRINTFILE(FOURIE,USAGE,DSK,SHARE1); for
 a list of the functions included.
 
-@node ndiffq, Definitions for Numerical, Fourier, Numerical
-@section ndiffq
-a package residing on the SHARE directory for numerical
-solutions of differential equations.  LOAD("ndiffq"); will load it
-in for use.  An example of its use would be:
-
-@example
-Define_Variable(N,0.3,FLOAT);
-Define_Variable(H,0.175,FLOAT);
-F(X,E):=(Mode_Declare([X,E],FLOAT),N*EXP(X)/(E+X^(2*H)*EXP(H*X)));
-Compile(F);
-Array([X,E],FLOAT,35);
-Init_Float_Array(X,1.0E-3,6.85); /* Fills X with the interval */
-E[0]:5.0;                        /* Initial condition */
-Runge_Kutta(F,X,E);              /* Solve it */
-Graph2(X,E);                     /* Graph the solution */
-@end example
-p.s. Runge_Kutta(F,X,E,E_Prime) would be the call for a second-order 
-equation.
-
 @c end concepts Numerical
 
-@node Definitions for Numerical,  , ndiffq, Numerical
+@node Definitions for Numerical,  , Fourier, Numerical
 @section Definitions for Numerical
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
