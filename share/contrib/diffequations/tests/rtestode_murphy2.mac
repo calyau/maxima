@@ -24,7 +24,11 @@ true;
 
 /* 1 */
 (pn_(1),ans:contrib_ode(eqn:'diff(y,x)^2=a*x^n,y,x));
-false;
+[-((n+2)*y+2*sqrt(a)*x*%e^(n*log(x)/2))/(n+2)=%c];
+solve(ans[1],y);
+[y=-(2*sqrt(a)*x*%e^(n*log(x)/2)+%c*n+2*%c)/(n+2)];
+[method,ode_check(eqn,radcan(%[1]))];
+[lie,0];
 
 /* 2 */
 (pn_(2),ans:contrib_ode(eqn:'diff(y,x)^2=y,y,x));
@@ -123,7 +127,11 @@ forget(a>0,b>0);
 
 /* 25 */
 (pn_(25),ans:contrib_ode(eqn:'diff(y,x)^2+2*'diff(y,x)+x=0,y,x));
-false;
+[-(3*y+SQRT(1-x)*(2*x-2)+3*x)/3 = %C];
+solve(ans[1],y);
+[y = -((2*SQRT(1-x)+3)*x-2*SQRT(1-x)+3*%C)/3];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 26 */
 (pn_(26),ans:contrib_ode(eqn:'diff(y,x)^2-2*'diff(y,x)+a*(x-y)=0,y,x));
@@ -159,11 +167,19 @@ lagrange;
 
 /* 30 */
 (pn_(30),ans:contrib_ode(eqn:'diff(y,x)^2+a*'diff(y,x)+b=0,y,x));
-false;
+[-(2*y+SQRT(a^2-4*b)*x+a*x)/2 = %C];
+solve(ans[1],y);
+[y = -((SQRT(a^2-4*b)+a)*x+2*%C)/2];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 31 */
 (pn_(31),ans:contrib_ode(eqn:'diff(y,x)^2+a*'diff(y,x)+b*x=0,y,x));
-false;
+[-(12*b*y+SQRT(a^2-4*b*x)*(4*b*x-a^2)+6*a*b*x)/(12*b) = %C];
+solve(ans[1],y);
+[y = -(SQRT(a^2-4*b*x)*(4*b*x-a^2)+6*a*b*x+12*%C*b)/(12*b)];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 32 */
 (pn_(32),ans:contrib_ode(eqn:'diff(y,x)^2+a*'diff(y,x)+b*y=0,y,x));
@@ -173,7 +189,11 @@ lagrange;
 
 /* 33 */
 (pn_(33),ans:contrib_ode(eqn:'diff(y,x)^2+x*'diff(y,x)+1=0,y,x));
-false;
+[-(4*y-4*log(2*sqrt(x^2-4)+2*x)+x*sqrt(x^2-4)+x^2)/4=%c];
+solve(ans[1],y);
+[y=(4*log(2*sqrt(x^2-4)+2*x)-x*sqrt(x^2-4)-x^2-4*%c)/4];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 34 */
 (pn_(34),ans:contrib_ode(eqn:'diff(y,x)^2+x*'diff(y,x)-y=0,y,x));
@@ -237,7 +257,11 @@ lagrange;
 
 /* 42 */
 (pn_(42),ans:contrib_ode(eqn:'diff(y,x)^2-2*x*'diff(y,x)+1=0,y,x));
-false;
+[-(2*y-log(2*sqrt(x^2-1)+2*x)+x*sqrt(x^2-1)-x^2)/2=%c];
+solve(ans[1],y);
+[y=(log(2*sqrt(x^2-1)+2*x)-x*sqrt(x^2-1)+x^2-2*%c)/2];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 43 */
 (pn_(43),ans:contrib_ode(eqn:'diff(y,x)^2+2*x*'diff(y,x)-3*x^2=0,y,x));
@@ -269,9 +293,13 @@ ans:solve(ans[1],y);
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
 [clairault,0,0];
 
-/* 47 */
+/* 47 CHECKME */
 (pn_(47),ans:contrib_ode(eqn:'diff(y,x)^2+(1+2*x)*diff(y,x)-x*(1-x)=0,y,x));
-false;
+[-(8*y+ASIN(2*x-1)+(4*x-2)*SQRT(x-x^2))/8 = %C];
+solve(ans[1],y);
+[y = -(ASIN(2*x-1)+(4*x-2)*SQRT(x-x^2)+8*%C)/8];
+[method,ode_check(eqn,%)];
+[lie,-(16*x^4-32*x^3+SQRT(4*x-4*x^2)*SQRT(x-x^2)*(8*x^2-8*x+1)+18*x^2-2*x)/(64*x^4-128*x^3+64*x^2)];
 
 /* 48 */
 (pn_(48),ans:contrib_ode(eqn:'diff(y,x)^2+(1-x)*diff(y,x)-2*(x-y)=0,y,x));
@@ -292,8 +320,16 @@ lagrange;
 [clairault,0,0];
 
 /* 51 */
+assume(4*c+a^2>0,b>0);
+[4*c+a^2 > 0,b > 0];
 (pn_(51),ans:contrib_ode(eqn:'diff(y,x)^2+a*x*'diff(y,x)=b+c*x^2,y,x));
-false;
+[-(SQRT(4*c+a^2)*(4*y+a*x^2)+4*b*ASINH(SQRT(4*c+a^2)*x/(2*SQRT(b)))+SQRT(4*c+a^2)*x*SQRT((4*c+a^2)*x^2+4*b))/(4*SQRT(4*c+a^2))=%C];
+solve(ans[1],y);
+[y = -(4*b*ASINH(SQRT(4*c+a^2)*x/(2*SQRT(b)))+SQRT(4*c+a^2)*x*SQRT(4*c*x^2+a^2*x^2+4*b)+a*SQRT(4*c+a^2)*x^2+4*%C*SQRT(4*c+a^2))/(4*SQRT(4*c+a^2))];
+[method,ode_check(eqn,%[1])];
+[lie,0];
+forget(4*c+a^2>0,b>0);
+[4*c+a^2>0,b>0];
 
 /* 52 */
 (pn_(52),ans:contrib_ode(eqn:'diff(y,x)^2-a*x*'diff(y,x)+a*y=0,y,x));
@@ -349,7 +385,17 @@ ans:solve(%,y);
 
 /* 60 */
 (pn_(60),ans:contrib_ode(eqn:'diff(y,x)^2+2*'diff(y,x)*cosh(x)+1=0,y,x));
-false;
+[-%e^-x*(2*%e^x*y+2*%e^x*sinh(x)+%e^(2*x)+1)/2 = %c];
+solve(ans[1],y);
+[y = -%e^-x*(2*%e^x*sinh(x)+%e^(2*x)+2*%c*%e^x+1)/2];
+expand(ev(%[1],sinh(x)=1/2*(exp(x)-exp(-x))));
+y=-%e^x-%c;
+ode_check(eqn,%);
+-2*%e^x*cosh(x)+%e^(2*x)+1;
+expand(ev(%,cosh(x)=1/2*(exp(x)+exp(-x))));
+0;
+method;
+lie;
 
 /* 61 */
 (pn_(61),ans:contrib_ode(eqn:'diff(y,x)^2+y*'diff(y,x)=x*(x+y),y,x));
@@ -483,9 +529,8 @@ solve(ans[2],y);
 /* 80  Very long "answer" from ode1_lie */
 /*(pn_(80),ans:contrib_ode(eqn:'diff(y,x)^2+x*y^3*'diff(y,x)+y^4=0,y,x));*/
 
-/* 81 */
-(pn_(81),ans:contrib_ode(eqn:'diff(y,x)^2+2*y*'diff(y,x)*cot(x)-y^2=0,y,x));
-false;
+/* 81 ode1_lie takes forever */
+/* (pn_(81),ans:contrib_ode(eqn:'diff(y,x)^2+2*y*'diff(y,x)*cot(x)-y^2=0,y,x));*/
 
 /* 82 ode1_lie takes forever */
 /*(pn_(82),ans:contrib_ode(eqn:'diff(y,x)^2-3*x*y^(2/3)*'diff(y,x)+9*y^(5/3)=0,y,x));*/
@@ -495,8 +540,12 @@ false;
 /*(pn_(83),ans:contrib_ode(eqn:'diff(y,x)^2+exp(4*x-2*y)*('diff(y,x)-1)=0,y,x));*/
 
 /* 84 */
-ans:contrib_ode(eqn:2*'diff(y,x)^2+x*'diff(y,x)-2*x=0,y,x);
-false;
+(pn_(84),ans:contrib_ode(eqn:2*'diff(y,x)^2+x*'diff(y,x)-2*x=0,y,x));
+[-(8*y-64*LOG(2*SQRT(x^2+16*x)+2*x+16)+(x+8)*SQRT(x^2+16*x)+x^2)/8 = %C];
+solve(ans[1],y);
+[y = (64*LOG(2*SQRT(x^2+16*x)+2*x+16)+(-x-8)*SQRT(x^2+16*x)-x^2-8*%C)/8];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 85  */
 (pn_(85),ans:contrib_ode(eqn:2*'diff(y,x)^2-(1-x)*'diff(y,x)-y=0,y,x));
@@ -551,7 +600,11 @@ solve(%,y);
 
 /* 90 */
 (pn_(90),ans:contrib_ode(eqn:4*'diff(y,x)^2=9*x,y,x));
-false;
+[-y-x^(3/2)=%c];
+solve(ans[1],y);
+[y=-x^(3/2)-%c];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 91 Very long "answer" from ode1_lie that doesn't satisfy ode */
 /* (pn_(91),ans:contrib_ode(eqn:4*'diff(y,x)^2+2*x*exp(-2*y)*'diff(y,x)-exp(-2*y)=0,y,x));*/
@@ -576,11 +629,21 @@ lagrange;
 
 /* 96 */
 (pn_(96),ans:contrib_ode(eqn:x*'diff(y,x)^2=a,y,x));
-false;
+[-(sqrt(a/x)*y+2*a)/sqrt(a/x)=%c];
+solve(ans[1],y);
+[y=-(%c*sqrt(a/x)+2*a)/sqrt(a/x)];
+radcan(%[1]);
+y=-2*sqrt(a)*sqrt(x)-%c;
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 97 */
 (pn_(97),ans:contrib_ode(eqn:x*'diff(y,x)^2=(a-x)^2,y,x));
-false;
+[-(3*y+sqrt(x)*(2*x-6*a))/3=%c];
+solve(ans[1],y);
+[y=-(2*x^(3/2)-6*a*sqrt(x)+3*%c)/3];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 98 */
 (pn_(98),ans:contrib_ode(eqn:x*'diff(y,x)^2=y,y,x));
@@ -627,7 +690,11 @@ lagrange;
 
 /* 105 */
 (pn_(105),ans:contrib_ode(eqn:x*'diff(y,x)^2+(1-x^2)*'diff(y,x)+x=0,y,x));
-false;
+[-(4*y+2*'INTEGRATE(%E^(LOG(x^2+2*x-1)/2+LOG(x^2-2*x-1)/2)/x,x)+2*LOG(x)-x^2)/4=%C];
+solve(ans[1],y);
+[y=-(2*'INTEGRATE(%E^(LOG(x^2+2*x-1)/2+LOG(x^2-2*x-1)/2)/x,x)+2*LOG(x)-x^2+4*%C)/4];
+[method,expand(ode_check(eqn,%))];
+[lie,0];
 
 /* 106 FIXME: Check solution */
 (pn_(106),ans:contrib_ode(eqn:x*'diff(y,x)^2+y*'diff(y,x)+a=0,y,x));
@@ -666,8 +733,20 @@ lagrange;
 /* 112 */
 (pn_(112),ans:contrib_ode(eqn:x*'diff(y,x)^2+y*'diff(y,x)-y^4=0,y,x));
 [2*LOG(SQRT(4*x*y^2+1)-1)-2*LOG(y)=%C]; /*CHECKME*/
-method;
-lie;
+expand(%[1]/2);
+LOG(SQRT(4*x*y^2+1)-1)-LOG(y)=%C/2;
+map(exp,%);
+(SQRT(4*x*y^2+1)-1)/y=%E^(%C/2);
+%*y;
+SQRT(4*x*y^2+1)-1=%E^(%C/2)*y;
+%,%e^(%c/2)=%c;
+SQRT(4*x*y^2+1)-1=%C*y;
+(%+1)^2;
+4*x*y^2+1=(%C*y+1)^2;
+solve(expand(%),y);
+[y=2*%C/(4*x-%C^2),y=0];
+[method,ode_check(eqn,%[1]),ode_check(eqn,%[2])];
+[lie,0,0];
 /* Murphy gives y*(x-C)^2=C, y=0, 4*x*y^2+1=0 */
 
 /* 113 */ 
@@ -805,12 +884,6 @@ lagrange;
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
 [clairault,0,0,0];
 
-/*[2*log(sqrt(y^2-4*b*x+4*a*b)-y)=%c];
-map(exp,ans[1]);
-(sqrt(y^2-4*b*x+4*a*b)-y)^2 = %e^%c;
-method;
-lie;*/
-
 /* 132 - Too general */
 
 /* 133 FIXME: ode1_lie takes "forever" */
@@ -834,7 +907,11 @@ false; */
 
 /* 137 */
 (pn_(137),ans:contrib_ode(eqn:4*x*'diff(y,x)^2=(a-3*x)^2,y,x));
-false;
+[(a-x)*sqrt(x)-y=%c];
+solve(ans[1],y);
+[y=-x^(3/2)+a*sqrt(x)-%c];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 138 */
 (pn_(138),ans:contrib_ode(eqn:4*x*'diff(y,x)^2+2*x*'diff(y,x)-y=0,y,x));
@@ -869,7 +946,11 @@ lie;
 
 /* 142 */
 (pn_(142),ans:contrib_ode(eqn:4*(2-x)*'diff(y,x)^2+1=0,y,x));
-false;
+[-y-sqrt(x-2)=%c];
+solve(ans[1],y);
+[y=-sqrt(x-2)-%c];
+[method,ode_check(eqn,%)];
+[lie,0];
 
 /* 143 ode1_lie finds symmetry but ... */
 (pn_(143),ans:contrib_ode(eqn:16*x*'diff(y,x)^2+8*y*'diff(y,x)+y^6=0,y,x));
@@ -988,17 +1069,6 @@ lie;
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
 [factor,0,0];
 
-/* [[x = %c*%e^(log(%t)/2),y = %t*x/3]];
-radcan(%);
-[[x = %c*sqrt(%t),y = %t*x/3]];
-solve(ans[1][1]^2,%t);
-[%t = x^2/%c^2];
-ans:ans[1][2],%;
-y = x^3/(3*%c^2);
-[method,ode_check(eqn,%)]; 
-[lagrange,0];*/
-/* other solution is y=%c*x^2 */
-
 /* 163 ode1_lie takes "forever" */
 /*(pn_(163),ans:contrib_ode(eqn:x^2*'diff(y,x)^2+x*(x^2+x*y-2*y)*'diff(y,x)+(1-x)*(x^2-y)*y=0,y,x));*/
 
@@ -1041,19 +1111,35 @@ lie;
 
 /* 169 */
 (pn_(169),ans:contrib_ode(eqn:(a^2+x^2)*'diff(y,x)^2=b^2,y,x));
-false;
+[-y-b*ASINH(x/ABS(a))=%C];
+solve(ans[1],y);
+[y=-b*ASINH(x/ABS(a))-%C];
+[method,ode_check(eqn,%[1])];
+[lie,0];
 
 /* 170 */
 (pn_(170),ans:contrib_ode(eqn:(a^2-x^2)*'diff(y,x)^2+b^2=0,y,x));
-false;
+[-y-b*log(2*sqrt(x^2-a^2)+2*x)=%c];
+solve(ans[1],y);
+[y = -b*log(2*sqrt(x^2-a^2)+2*x)-%c];
+[method,ode_check(eqn,%[1])];
+[lie,0];
 
 /* 171 */
 (pn_(171),ans:contrib_ode(eqn:(a^2-x^2)*'diff(y,x)^2=b^2,y,x));
-false;
+[-y-b*asin(x/abs(a))=%c];
+solve(ans[1],y);
+[y=-b*asin(x/abs(a))-%c];
+[method,ode_check(eqn,%[1])];
+[lie,0];
 
 /* 172 */
 (pn_(172),ans:contrib_ode(eqn:(a^2-x^2)*'diff(y,x)^2=x^2,y,x));
-false;
+[sqrt(a^2-x^2)-y=%c];
+solve(ans[1],y);
+[y=sqrt(a^2-x^2)-%c];
+[method,ode_check(eqn,%[1])];
+[lie,0];
 
 /* 173 ode1_lie finds symmetry but ... */
 (pn_(173),ans:contrib_ode(eqn:(a^2-x^2)*'diff(y,x)^2+2*x*y*'diff(y,x)+x^2=0,y,x));
@@ -1078,7 +1164,11 @@ lie;
 
 /* 177 */
 (pn_(177),ans:contrib_ode(eqn:4*x^2*'diff(y,x)^2-4*x*y*'diff(y,x)=8*x^3-y^2,y,x));
-false;
+[-(2*log(y+sqrt(x)*(sqrt(2)*x-%c))-log(x))/2=%c];
+solve(ans[1],y);
+[y=%e^(log(x)/2-%c)-sqrt(2)*x^(3/2)+%c*sqrt(x)];
+[method,ode_check(eqn,%[1])];
+[lie,0];
 
 /* 178 ode1_lie finds symmetry but ... */
 /*(pn_(178),ans:contrib_ode(eqn:a*x^2*'diff(y,x)^2-2*a*x*y*'diff(y,x)+a*(a-1)*x^2+y^2=0,y,x));*/
@@ -1088,7 +1178,11 @@ false;
 
 /* 180 */
 (pn_(180),ans:contrib_ode(eqn:x^3*'diff(y,x)^2=a,y,x));
-false;
+[2*sqrt(a/x)-y=%c];
+solve(ans[1],y);
+[y=2*sqrt(a/x)-%c];
+[method,ode_check(eqn,%[1])];
+[lie,0];
 
 /* 181 ode1_lie takes "forever"*/
 /*(pn_(181),ans:contrib_ode(eqn:x^3*'diff(y,x)^2+x*'diff(y,x)-y=0,y,x));*/
@@ -1112,7 +1206,11 @@ false;
 
 /* 185 */
 (pn_(185),ans:contrib_ode(eqn:4*x*(a-x)*(b-x)*'diff(y,x)^2=(a*b-2*x*(a+b)+3*x^2)^2,y,x));
-false;
+[-(2*y+'integrate((3*x^2+(-2*b-2*a)*x+a*b)/sqrt(x^3+(-b-a)*x^2+a*b*x),x))/2=%c];
+solve(ans[1],y);
+[y=-('integrate(3*x^2/sqrt(x^3-b*x^2-a*x^2+a*b*x)-2*b*x/sqrt(x^3-b*x^2-a*x^2+a*b*x)-2*a*x/sqrt(x^3-b*x^2-a*x^2+a*b*x)+a*b/sqrt(x^3-b*x^2-a*x^2+a*b*x),x)+2*%c)/2];
+[method,ode_check(eqn,%[1])];
+[lie,0];
 
 /* 186 ode1_lie finds symmetry but ... */
 (pn_(186),ans:contrib_ode(eqn:x^4*'diff(y,x)^2-x*'diff(y,x)-y=0,y,x));
@@ -1130,8 +1228,16 @@ lie;
 /*(pn_(188),ans:contrib_ode(eqn:x^4*'diff(y,x)^2+x*y^2*'diff(y,x)-y^3=0,y,x));*/
 
 /* 189 */
+assume(a>0);
+[a>0];
 (pn_(189),ans:contrib_ode(eqn:x^2*(a^2-x^2)*'diff(y,x)^2+1=0,y,x));
-false;
+[-(a*y-ASIN(a/ABS(x)))/a = %C];
+solve(ans[1],y);
+[y = (ASIN(a/ABS(x))-%C*a)/a];
+[method,ode_check(eqn,%[1])];
+[lie,0];
+forget(a>0);
+[a>0];
 
 /* 190 ode1_lie finds symmetry but ... */
 (pn_(190),ans:contrib_ode(eqn:3*x^4*'diff(y,x)^2-x*y-y=0,y,x));
@@ -1340,7 +1446,6 @@ y=x*asin(x)+sqrt(1-x^2);
 [y=%C*x+ASIN(1/SQRT(%C^2+1)),[(%T^2+1)*SIN(y-%T*x)^2-1=0,2*%T*SIN(y-%T*x)^2-(2*%T^2*x+2*x)*COS(y-%T*x)*SIN(y-%T*x)=0]];
 [method,ode_check(eqn,ans[1])];
 [clairault,0];
-
 
 /* 397 FIXME - check second solution */
 (pn_(397),ans:contrib_ode(eqn:'diff(y,x)*(acos('diff(y,x))-x)+sqrt(1-'diff(y,x)^2)+y=0,y,x));
