@@ -28,28 +28,31 @@ putting parentheses around them.   This is similar to the @b{C}
 @i{comma expression}.
 
 @example
-(%i29) x:3$
-(%i30) joe:(x:x+1,x:x*x);
-(%o30) 16
-(%i31) joe:(if (x >17) then 2 else 4);
-(%o31) 4
-(%i32) joe:(if (x >17) then x:2 else joe:4,joe+x);
-(%o32) 20
+(%i1) x: 3$
+(%i2) (x: x+1, x: x^2);
+(%o2)                          16
+(%i3) (if (x > 17) then 2 else 4);
+(%o3)                           4
+(%i4) (if (x > 17) then x: 2 else y: 4, y+x);
+(%o4)                          20
 @end example
 
 Even loops in Maxima are expressions, although the value they
 return is the not too useful @code{done}.
 
 @example
-(%i33) joe:(x:1,for i from 1 thru 10 do (x:x*i));
-(%o33) DONE
+(%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
+(%i2) y;
+(%o2)                         done
 @end example
+
 whereas what you really want is probably to include a third
 term in the @i{comma expression} which actually gives back the value.
 
 @example
-(%i34) joe:(x:1,for i from 1 thru 10 do (x:x*i),x);
-(%o34) 3628800
+(%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
+(%i4) y;
+(%o4)                        3628800
 @end example
 
 
@@ -94,12 +97,10 @@ mechanism is rather straightforward and should be evident from the
 examples below.
 
 @example
-(%i1) PREFIX("DDX")$
-(%i2) DDX Y$
-     /* means                   "DDX"(Y) */
-(%i3) INFIX("<-")$
-(%i4) A<-DDX Y$
-    /* means               "<-"(A,"DDX"(Y)) */
+(%i1) prefix ("ddx")$
+(%i2) ddx y$        /* equivalent to "ddx"(y) */
+(%i3) infix ("<-")$
+(%i4) a <- ddx y$   /* equivalent to "<-"(a, "ddx"(y)) */
 @end example
 
 For each of the types of operator except @code{special}, there is a
@@ -235,6 +236,7 @@ automatically.
 
 @code{evfun} makes ai known to the @code{ev} function so that it will get applied
 if its name is mentioned.  Initial evfuns are
+
 @c NEED TO CHECK THIS LIST !!!
 @example
 factor, trigexpand,
@@ -245,6 +247,7 @@ trigreduce, bfloat, ratsimp, ratexpand, and radcan
 @code{true} during the execution of @code{ev} if it is mentioned.  Initial evflags
 are
 @c NEED TO CHECK THIS LIST !!!
+
 @example
 float, pred, simp, numer, detout, exponentialize, demoivre,
 keepfloat, listarith, trigexpand, simpsum, algebraic,
@@ -261,12 +264,15 @@ Maxima to give an error message whenever any of the vari occur
 unbound in a computation.
 Maxima currently recognizes and uses the following features of
 objects:
+
 @c NEED TO CHECK THIS LIST !!!
 @example
 even, odd, integer, rational, irrational, real, imaginary,
 and complex
 @end example
-he useful features of functions include:
+
+The useful features of functions include:
+
 @c NEED TO CHECK THIS LIST !!!
 @example
  increasing,
@@ -274,6 +280,7 @@ decreasing, oddfun (odd function), evenfun (even function),
 commutative (or symmetric), antisymmetric, lassociative and
 rassociative
 @end example
+
 @code{declare (f, increasing)} is in all respects equivalent to
 @code{assume (kind (f, increasing))}.
 The ai and fi may also be lists of
@@ -315,10 +322,18 @@ recurse and it is faster than @code{expand}.  It differs from @code{multthru} in
 that it expands all sums at that level. For example, 
 
 @example
-DISTRIB((A+B)*(C+D)) -> A C + A D + B C + B D 
-MULTTHRU ((A+B)*(C+D)) -> (A + B) C + (A + B) D
-DISTRIB (1/((A+B)*(C+D))) ->  1/ ((A+B) *(C+D))
-EXPAND(1/((A+B)*(C+D)),1,0) -> 1/(A C + A D + B C + B D)
+(%i1) distrib ((a+b) * (c+d));
+(%o1)                 b d + a d + b c + a c
+(%i2) multthru ((a+b) * (c+d));
+(%o2)                 (b + a) d + (b + a) c
+(%i3) distrib (1/((a+b) * (c+d)));
+                                1
+(%o3)                    ---------------
+                         (b + a) (d + c)
+(%i4) expand (1/((a+b) * (c+d)), 1, 0);
+                                1
+(%o4)                 ---------------------
+                      b d + a d + b c + a c
 @end example
 
 @end defun
@@ -330,16 +345,15 @@ the whole expression with the selected subexpression displayed inside
 a box.  The box is actually part of the expression.
 
 @example
-(%i1) DPART(X+Y/Z**2,1,2,1);
-                       Y
-(%o1)                  ---- + X
-                         2
-                     *****
-                     * Z *
-                     *****
-
-
+(%i1) dpart (x+y/z^2, 1, 2, 1);
+                             y
+(%o1)                       ---- + x
+                               2
+                            """
+                            "z"
+                            """
 @end example
+
 @end defun
 
 @defun exp (x)
@@ -446,18 +460,18 @@ refer to the operator it must be enclosed in "s.  For example
 @code{... if inpart (%o9,0) = "+" then ...}.
 
 @example
-(%i1)  X+Y+W*Z;
-(%o1)                  W Z + Y + X
-(%i2)  INPART(%o1,3,2);
-(%o2)                  Z
-(%i3)  PART(%o1,1,2);
-(%o3)                  Z
-(%i4) 'LIMIT(F(X)**G(X+1),X,0,MINUS);
-                                      G(X + 1)
-(%o4)                      LIMIT   F(X)
-                          X ->0-
-(%i5) INPART(%,1,2);
-(%o5)                            G(X + 1)
+(%i1) x + y + w*z;
+(%o1)                      w z + y + x
+(%i2) inpart (%, 3, 2);
+(%o2)                           z
+(%i3) part (%th (2), 1, 2);
+(%o3)                           z
+(%i4) 'limit (f(x)^g(x+1), x, 0, minus);
+                                  g(x + 1)
+(%o4)                 limit   f(x)
+                      x -> 0-
+(%i5) inpart (%, 1, 2);
+(%o5)                       g(x + 1)
 @end example
 
 @end defun
@@ -474,12 +488,8 @@ expression in which they occur.
 @code{exptisolate} (default value: @code{false}) if @code{true} will cause @code{isolate} to examine exponents of
 atoms (like @code{%e}) which contain var.
 
-@code{isolate_wrt_times} (default value: @code{false}) if @code{true}, then @code{isolate} will also isolate wrt
-products.  E.g. compare both settings of the switch on
-
-@example
-ISOLATE(EXPAND((A+B+C)^2),C); .
-@end example
+@code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate wrt
+products. See @code{isolate_wrt_times}.
 
 Do @code{example (isolate)} for examples.
 
@@ -493,7 +503,24 @@ will also isolate wrt products.  E.g. compare both settings of the
 switch on
 
 @example
-ISOLATE(EXPAND((A+B+C)^2),C);
+(%i1) isolate_wrt_times: true$
+(%i2) isolate (expand ((a+b+c)^2), c);
+
+(%t2)                          2 a
+
+
+(%t3)                          2 b
+
+
+                          2            2
+(%t4)                    b  + 2 a b + a
+
+                     2
+(%o4)               c  + %t3 c + %t2 c + %t4
+(%i4) isolate_wrt_times: false$
+(%i5) isolate (expand ((a+b+c)^2), c);
+                     2
+(%o5)               c  + 2 b c + 2 a c + %t4
 @end example
 
 @end defvar
@@ -519,9 +546,12 @@ product, the limit variable, and the definite integration variable.)
 Example:
 
 @example
-LISTOFVARS('SUM(F(I),I,0,N));
-Returns [I,N] if LISTDUMMYVARS is @code{true},
-and [N] if LISTDUMMYVARS is @code{false}.
+(%i1) listdummyvars: true$
+(%i2) listofvars ('sum(f(i), i, 0, n));
+(%o2)                        [i, n]
+(%i3) listdummyvars: false$
+(%i4) listofvars ('sum(f(i), i, 0, n));
+(%o4)                          [n]
 @end example
 
 @end defvar
@@ -534,8 +564,9 @@ Returns a list of the variables in @code{expr}.
 appear in @code{expr}.  The default is to omit these.
 
 @example
-(%i1) LISTOFVARS(F(X[1]+Y)/G**(2+A));
-(%o1)                            [X[1], Y, A, G]
+(%i1) listofvars (f (x[1]+y) / g^(2+a));
+(%o1)                     [g, a, x , y]
+                                  1
 @end example
 
 @end defun
@@ -551,7 +582,8 @@ Returns the lowest exponent of @code{v} which explicitly appears in
 @code{expr}.  Thus
 
 @example
-LOPOW((X+Y)**2+(X+Y)**A,X+Y) ==> MIN(A,2)
+(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
+(%o1)                       min(a, 2)
 @end example
 
 @end defun
@@ -577,33 +609,33 @@ sum or an equation) by @code{expr_1}.  If @code{expr_1} is not itself a sum then
 form is equivalent to @code{multthru (expr_1*expr_2)}.
 
 @example
-(%i1) X/(X-Y)**2-1/(X-Y)-F(X)/(X-Y)**3;
-               1        X         F(X)
-(%o1)       - ----- + -------- - --------
-             X - Y          2          3
-                     (X - Y)    (X - Y)
-(%i2) MULTTHRU((X-Y)**3,%);
-                    2
-(%o2)       - (X - Y)  + X (X - Y) - F(X)
-(%i3) RATEXPAND(%o2);
+(%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
+                      1        x         f(x)
+(%o1)             - ----- + -------- - --------
+                    x - y          2          3
+                            (x - y)    (x - y)
+(%i2) multthru ((x-y)^3, %);
                            2
-(%o3)                    - Y  + X Y - F(X)
-(%i4) ((A+B)**10*S**2+2*A*B*S+(A*B)**2)/(A*B*S**2);
-                         10  2              2  2
-                (B  + A )   S  + 2 A B S + A  B
-(%o4)            --------------------------------
-                                   2
-                              A B S
-(%i5) MULTTHRU(%);
-                                          10
-                        2   A B   (B  + A)
-(%o5)                    - + --- + -------
-                        S    2      A B
-                            S
-(notice that (B+A)**10 is not expanded)
-(%i6) MULTTHRU(A.(B+C.(D+E)+F));
-(%o6)                A . F + A . (C . (E + D)) + A . B
-(compare with similar example under EXPAND)
+(%o2)             - (x - y)  + x (x - y) - f(x)
+(%i3) ratexpand (%);
+                           2
+(%o3)                   - y  + x y - f(x)
+(%i4) ((a+b)^10*s^2 + 2*a*b*s + (a*b)^2)/(a*b*s^2);
+                        10  2              2  2
+                 (b + a)   s  + 2 a b s + a  b
+(%o4)            ------------------------------
+                                  2
+                             a b s
+(%i5) multthru (%);  /* note that this does not expand (b+a)^10 */
+                                        10
+                       2   a b   (b + a)
+(%o5)                  - + --- + ---------
+                       s    2       a b
+                           s
+(%i6) multthru (a.(b+c.(d+e)+f));
+(%o6)            a . f + a . c . (e + d) + a . b
+(%i7) expand (a.(b+c.(d+e)+f));
+(%o7)         a . f + a . c . e + a . c . d + a . b
 @end example
 
 @end defun
@@ -714,12 +746,12 @@ sum), or the list (if it is a list) which don't contain var and, (2)
 the factors, terms, or list which do.
 
 @example
-(%i1) PARTITION(2*A*X*F(X),X);
-(%o1)                 [ 2 A , X F(X) ]
-(%i2) PARTITION(A+B,X);
-(%o2)                 [ A + B , 0 ]
-(%i3) PARTITION([A,B,F(A),C],A); 
-(%o3)                [[B,C],[A,F(A)]]
+(%i1) partition (2*a*x*f(x), x);
+(%o1)                     [2 a, x f(x)]
+(%i2) partition (a+b, x);
+(%o2)                      [b + a, 0]
+(%i3) partition ([a, b, f(a), c], a); 
+(%o3)                  [[b, c], [a, f(a)]]
 @end example
 
 @end defun
@@ -740,24 +772,29 @@ with large expressions and for automatically assigning parts of an
 expression to a variable without having to use the part functions.
 
 @example
-(%i1) EXP:(A+B)/2+SIN(X^2)/3-LOG(1+SQRT(X+1));
-                                                 2
-                                            SIN(X )   B + A
-(%o1)               - LOG(SQRT(X + 1) + 1) + ------- + -----
-                                               3        2
-(%i2) PICKAPART(%,1);
-(%t2)                    - LOG(SQRT(X + 1) + 1)
-                                    2
-                               SIN(X )
-(%t3)                           -------
-                                  3
-                                B + A
-(%t4)                            -----
+(%i1) (a+b)/2 + sin (x^2)/3 - log (1 + sqrt(x+1));
+                                          2
+                                     sin(x )   b + a
+(%o1)       - log(sqrt(x + 1) + 1) + ------- + -----
+                                        3        2
+(%i2) pickapart (%, 1);
+
+(%t2)                - log(sqrt(x + 1) + 1)
+
+
                                   2
-(%o4)                         %t4 + %t3 + %t2
+                             sin(x )
+(%t3)                        -------
+                                3
 
 
+                              b + a
+(%t4)                         -----
+                                2
+
+(%o4)                    %t4 + %t3 + %t2
 @end example
+
 @end defun
 
 @defvar piece
@@ -791,8 +828,8 @@ If hi is one less than lo, we have an "empty product" and @code{product}
 returns 1 rather than erring out.  See also @code{prodhack}.
 
 @example
-(%i1)  PRODUCT(X+I*(I+1)/2,I,1,4);
-(%o1)             (X + 1) (X + 3) (X + 6) (X + 10)
+(%i1) product (x + i*(i+1)/2, i, 1, 4);
+(%o1)           (x + 1) (x + 3) (x + 6) (x + 10)
 @end example
 
 @end defun
@@ -853,25 +890,23 @@ Do @code{example (sum)} for examples.  See also @code{sumcontract}, @code{intosu
 performs the sum of @code{expr} for each element @code{ind} of the @code{list}.
 
 @example
-(%i10) lsum(x^i,i,[1,2,7]);
-
+(%i1) lsum (x^i, i, [1, 2, 7]);
                             7    2
-(%o10)                      x  + x  + x
+(%o1)                      x  + x  + x
 @end example
 
 If the last element @code{list} argument does not evaluate, or does not
 evaluate to a Maxima list then the answer is left in noun form
 
 @example
-(%i13) lsum(i^2,i,rootsof(x^3-1));
-
+(%i2) lsum (i^2, i, rootsof (x^3-1));
                      ====
                      \      2
-(%o13)                 >    i
+(%o2)                 >    i
                      /
                      ====
                                    3
-                     i in ROOTSOF(x  - 1)
+                     i in rootsof(x  - 1)
 @end example
 
 @end defun
