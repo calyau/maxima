@@ -12,7 +12,7 @@
 (mk:defsystem "maxima"
   :source-extension "lisp"  
   :binary-pathname #+clisp "binary-clisp"
-                   #+cmu "binary-cmucl"
+                   #+cmu (truename "binary-cmucl")
 		   #+gcl "binary-gcl"
 		   #-(or clisp cmu gcl) "binary-unknownlisp"
   :components ((:module package :source-pathname ""
