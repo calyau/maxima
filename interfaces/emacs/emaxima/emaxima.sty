@@ -363,6 +363,7 @@
      \ifmaximalines\m@ximatexoutput\fi
      \maximasm@llsk
      \begingroup
+     \catcode`\%=12\relax
      \def\D{\begingroup\par\m@ximatexd}
      \def\E{\begingroup\par\m@ximatexe}
      \def\p{\begingroup\setupm@ximasessionverbatim\dom@ximasessionpreprompt}
@@ -507,6 +508,7 @@
       \par
       \ifmaximasessionlines\m@ximasessiontop\fi
       \begingroup
+      \catcode`\%=12\relax
       \m@ximainsessioninputfalse
       \m@ximasessionsessiontrue
       \def\C{\begingroup\color{\maximainputcolor}
