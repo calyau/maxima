@@ -198,42 +198,97 @@ SETVAL.  (See SETCHECKBREAK).
 @end defvar
 @c @node TIMER
 @c @unnumberedsec phony
-@defun TIMER (F)
-will put a timer-wrapper on the function F, within the TRACE
-package, i.e. it will print out the time spent in computing F.
+@defun TIMER (F1, F2, ...)
+@defunx TIMER ()
+Given functions F1, F2, F3, ...,
+TIMER puts each one on the list of functions for which timing statistics are collected.
+With no arguments, 
+TIMER returns the list of timed functions.
+@code{TIMER(F)$ TIMER(G)$} will put F and then G onto the list;
+the list accumulates from one call to the next.
+
+Maxima records how much time is spent executing each function
+on the list of timed functions.
+TIMER_INFO returns the timing statistics, including the
+average time elapsed per function call, the number of calls, and the
+total time elapsed.
+UNTIMER removes functions from the list of timed functions.
+
+TIMER quotes its arguments. 
+@code{F(X) := X^2$ G:F$ TIMER(G)$} will not put F on the timer list.
+
+If TRACE(F) is in effect, then TIMER(F) has no effect; TRACE and
+TIMER can't both be in effect at the same time.
+
+See also TIMER_DEVALUE.
+
+@end defun
+@defun UNTIMER (F1, F2, F3, ...)
+@defunx UNTIMER ()
+Given functions F1, F2, F3, ...,
+UNTIMER removes each function from the timer list.
+With no arguments, UNTIMER removes all functions currently on the timer list.
+
+After UNTIMER (F) is executed, TIMER_INFO (F) will still return
+previously collected timing statistics,
+although TIMER_INFO() (with no arguments) does not
+return information about any function not currently on the timer list.
+TIMER (F) resets all timing statistics to zero
+and puts F on the timer list again.
 
 @end defun
 @c @node TIMER_DEVALUE
 @c @unnumberedsec phony
 @defvar TIMER_DEVALUE
- default: [FALSE] - when set to TRUE then the time
-charged against a function is the time spent dynamically inside the
-function devalued by the time spent inside other TIMED functions.
+Default value: FALSE
+
+If set to TRUE, Maxima subtracts from each timed function
+the time spent in other timed functions. Otherwise, the time reported 
+for each function includes the time spent in other functions.
+Note that time spent in untimed functions is not subtracted from the
+total time.
+
+See also TIMER and TIMER_INFO.
 
 @end defvar
 @c @node TIMER_INFO
 @c @unnumberedsec phony
-@defun TIMER_INFO (F)
-will print the information on timing which is stored
-also as GET('F,'CALLS); GET('F,'RUNTIME); and GET('F,'GCTIME); .  This
-is a TRACE package function.
+@defun TIMER_INFO (F1, F2, F3, ...)
+@defunx TIMER_INFO ()
+Given functions F1, F2, F3, ...,
+TIMER_INFO returns a matrix containing timing information for each function.
+With no arguments, TIMER_INFO returns timing information for
+all functions currently on the timer list.
+
+The matrix returned by TIMER_INFO contains the function name,
+time per function call, number of function calls, total time,
+and "GCTIME", which meant "garbage collection time" in the original MACSYMA
+but is now always zero.
+
+The data from which TIMER_INFO constructs its return value
+can also be obtained by the GET function:
+
+@example
+GET(F, 'CALLS);  GET(F, 'RUNTIME);  GET(F, 'GCTIME);
+@end example
+
+See also TIMER.
 
 @end defun
 @c @node TRACE
 @c @unnumberedsec phony
 @defun TRACE (F1, F2, F3, ...)
 @defunx TRACE ()
-Given a list of functions F1, F2, F3, ..., 
+Given functions F1, F2, F3, ..., 
 TRACE instructs Maxima to print out
 debugging information whenever those functions are called.
 With no arguments,
 TRACE returns a list of all the functions currently being traced.
+@code{TRACE(F)$ TRACE(G)$} will put F and then G onto the list of functions
+to be traced; the list accumulates from one call to the next.
 
 The UNTRACE function disables tracing.
 See also TRACE_OPTIONS. 
-
-@code{TRACE(F)$ TRACE(G)$} will put F and then G onto the list of functions
-to be traced; the list accumulates from one call to the next.
 
 TRACE quotes its arguments. Thus,
 @code{F(X) := X^2$ G:F$ TRACE(G)$} will not put F on the timer list.
