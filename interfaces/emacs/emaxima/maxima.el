@@ -608,7 +608,7 @@ or nil."
 (defun maxima-goto-beginning-of-form ()
   "Move to the beginning of the form."
   (let ((pt (point)))
-    (if (maxima-re-search-backward "[;\\$]" nil)
+    (if (maxima-re-search-backward "[;$]" nil)
         (forward-char 1)
       (goto-char (point-min)))
     (maxima-forward-over-comment-whitespace)
@@ -622,7 +622,7 @@ or nil."
 
 (defun maxima-goto-end-of-form ()
   "Move to the end of the form."
-  (if (maxima-re-search-forward "[;\\$]" nil)
+  (if (maxima-re-search-forward "[;$]" nil)
       (point)
     nil))
 
@@ -886,7 +886,7 @@ Returns an integer: the column to indent to."
 ;        (if pt 
 ;            (setq close-char "[,]") 
 ;          (setq close-char "[;\\$]"))
-        (setq close-char "[,;\\$]")
+        (setq close-char "[,;$]")
         ;; Now, find the indentation of beginning of the current construct
         (setq begin-construct (maxima-construct-beginning-position))
         ;; If begin-construct is nil, indent according to the opening paren
