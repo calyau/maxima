@@ -295,8 +295,9 @@ is similar to ISOLATE(exp, var)
 more than one variable simultaneously.  This might be useful, for
 example, if one were attempting to change variables in a multiple
 integration, and that variable change involved two or more of the
-integration variables.  To access this function, do
-LOAD(DISOL)$ .  A demo is available by DEMO("disol"); .
+integration variables.  This function is autoloaded from
+@file{simplification/disol.mac}.  A demo is available by
+@code{demo("disol")$}.
 
 @end defun
 @c @node DISPFORM, DISTRIB, DISOLATE, Expressions
