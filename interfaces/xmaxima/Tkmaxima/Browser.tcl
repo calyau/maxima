@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.11 2002-09-19 16:15:28 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.12 2002-09-19 21:42:20 mikeclarkson Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -846,6 +846,8 @@ proc ws_outputToTemp { string file ext encoding } {
 proc OpenMathOpenUrl { name args} {
     global maxima_priv
 
+    gui status "Opening $name"
+
     #puts "OpenMathOpenUrl  $name $args "
     set history "" ; set historyIndex -1 ; set currentUrl ""
     set prevwindow ""
@@ -1004,11 +1006,13 @@ proc OpenMathOpenUrl { name args} {
 	pushHistory $commandPanel $w
     }
     if { $err } {
+	global errorInfo
 	#puts "======begin======"
 	#puts $result
 	#puts "======end========"
 	puts "$errmsg1"
-	error "unable to evaluate [encodeURL $new]:$errmsg1"}
+	error "unable to evaluate [encodeURL $new]\n$errmsg1\n$errorInfo"
+    }
 
 }
 

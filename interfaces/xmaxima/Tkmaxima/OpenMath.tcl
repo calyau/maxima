@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.13 2002-09-19 16:25:50 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.14 2002-09-19 21:42:20 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -987,10 +987,8 @@ proc textShowHelp { win tag index msg } {
     set x [expr {$x + [winfo rootx $win] - [winfo rootx $top]}]
     set y [expr {$y + [winfo rooty $win] - [winfo rooty $top]}]
 
-
-
-
     #puts "showHelp $win $x $y $wid $hei"
+    #mike FIXME: $arg1 is a list not a window
     showHelp "$win $x $y $wid $hei" $msg
 }
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.9 2002-09-19 16:26:42 mikeclarkson Exp $
+#       $Id: Myhtml.tcl,v 1.10 2002-09-19 21:42:20 mikeclarkson Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -220,8 +220,12 @@ proc xHMsetFont { win fonttag  } {
  proc xHMconfigFont {  fonttag } {
     # font:family:weight:style:size
     global maxima_default xHMfonts
+
     set font $xHMfonts($fonttag)
     set s [split $fonttag :]
+    if {[llength $s] < "2"} {
+	error "Internal font error: $fonttag '$xHMfonts($fonttag)'"
+    }
     set fam [lindex $s 1]
     #puts "fam=$fam,fonttag=$fonttag,s=$s"
     if { "$fam" == "" } {
@@ -230,10 +234,18 @@ proc xHMsetFont { win fonttag  } {
     set si [expr {$maxima_default($fam,adjust) + [lindex $s 4]}]
     #set si [lindex $s 4]
     set si [expr {($si < 1 ? 1 : ($si > 8 ? 8 : $si))}]
-    set family $maxima_default([lindex $s 1])
+    set elt [lindex $s 1]
+    if {![info exists maxima_default($fam)]} {
+	error "Internal font error: '$fam'"
+    }
+    set family $maxima_default($fam)
     set weight [lindex $s 2]
     set slant [lindex $s 3]
-    if { "$slant" == "i" } { set slant italic} else {set slant roman}
+    if { "$slant" == "i" } { 
+	set slant italic
+    } else {
+	set slant roman
+    }
     #puts "font config $font -family $family -size $maxima_default($fam,$si) -slant $slant -weight $weight"
     global tcl_platform
     if { "$tcl_platform(platform)" == "unix" } {

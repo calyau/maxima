@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Wmenu.tcl,v 1.6 2002-09-19 16:17:20 mikeclarkson Exp $
+#       $Id: Wmenu.tcl,v 1.7 2002-09-19 21:42:20 mikeclarkson Exp $
 #
 ###### wmenu.tcl ######
 ############################################################
@@ -99,7 +99,8 @@ proc setHelp {win  help args } {
 proc showHelp { win help args } {
     global show_balloons helpwin
     if { $show_balloons == 0 } {
-	set top [winfo toplevel $win]
+	#mike FIXME: $win is a list not a window
+	set top [winfo toplevel [lindex $win 0]]
 	set helpwin [oget $top helpwin]
 	if {$helpwin != "" && [winfo exists $helpwin]} {
 	    place forget $helpwin 
@@ -107,6 +108,7 @@ proc showHelp { win help args } {
 	return
     }
     linkLocal [lindex $win 0] helpPending
+    #mike FIXME: $win is a list not a window - needs an eval
     set helpPending [after 1000 [list showHelp1 $win $help $args]]
 }
 
@@ -129,11 +131,7 @@ proc showHelp1 { win help args } {
 	    label $helpwin -width 0 -height 0  -borderwidth 1 \
 		    -background beige -padx 4 -pady 4 -justify left
 	}
-	if { $tk_version < 8.0 } {
-	    $helpwin config -relief ridge -borderwidth 2
-	} else {
-	    $helpwin config -relief solid
-	}
+	$helpwin config -relief solid
 	
 	oset $top helpwin $helpwin
     }
@@ -141,7 +139,8 @@ proc showHelp1 { win help args } {
 	catch { set help [eval [concat list [lindex $help 1]]]}
     }
 
-    $helpwin configure -text $help -wraplength [expr {round(.34 * [winfo width $top])}]
+    $helpwin configure -text $help \
+	-wraplength [expr {round(.34 * [winfo width $top])}]
     global anchorPositions
     if { [llength $win] == 5 } {
 	desetq "win wx wy wxdim wydim" $win
