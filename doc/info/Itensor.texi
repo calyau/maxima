@@ -690,7 +690,7 @@ are more easily simplified with @code{rename()} or @code{contract()}.
 @example
 
 (%i1) load(itensor);
-(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%o1)      /share/tensor/itensor.lisp
 (%i2) exp:ishow('levi_civita([],[i,j])*'levi_civita([k,l],[])*a([j],[k]))$
                                   i j  k
 (%t2)                  levi_civita    a  levi_civita
@@ -1729,9 +1729,9 @@ two vector fields, for instance, would be defined as
 More generally, the product of a p-form and a q-form would be defined as
 
 @example
-                       1     i1..ip j1..jq
+                       1     k1..kp l1..lq
 A       /\ B       = ------ D              A       B
- i1..ip     j1..jq   (p+q)!  1..p 1..q      i1..ip  j1..jq
+ i1..ip     j1..jq   (p+q)!  i1..ip j1..jq  k1..kp  l1..lq
 @end example
 
 where @code{D} stands for the Kronecker-delta.
@@ -1747,9 +1747,9 @@ a  /\ a  = a a  - a a
 and, in the general case
 
 @example
-                       1    i1..ip j1..jq
+                       1    k1..kp l1..lq
 A       /\ B       = ----- D              A       B
- i1..ip     j1..jq   p! q!  1..p 1..q      i1..ip  j1..jq
+ i1..ip     j1..jq   p! q!  i1..ip j1..jq  k1..kp  l1..lq
 @end example
 
 Since ITENSOR is a tensor algebra package, the first of these two
@@ -1780,11 +1780,21 @@ The behavior of the wedge product operator is controlled by the
                                   i  j    i  j
 (%t2)                            -------------
                                        2
-(%i3) igeowedge_flag:true;
-(%o3)                                true
-(%i4) ishow(a([i])~b([j]))$
-(%t4)                            a  b  - b  a
+(%i3) decsym(a,2,0,[anti(all)],[]);
+(%o3)                                done
+(%i4) ishow(a([i,j])~b([k]))$
+                          a    b  + b  a    - a    b
+                           i j  k    i  j k    i k  j
+(%t4)                     ---------------------------
+                                       3
+(%i5) igeowedge_flag:true;
+(%o5)                                true
+(%i6) ishow(a([i])~b([j]))$
+(%t6)                            a  b  - b  a
                                   i  j    i  j
+(%i7) ishow(a([i,j])~b([k]))$
+(%t7)                     a    b  + b  a    - a    b
+                           i j  k    i  j k    i k  j
 @end example
 
 @end defvr
