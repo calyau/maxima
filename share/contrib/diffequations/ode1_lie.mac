@@ -5,11 +5,17 @@
 
   References: 
 
-  [1] E. S. Cheb-Terrab, A. D. Roche,  Symmetries and First 
-  Order ODE Patterns
+  [1] E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order 
+      ODE Patterns, Computer Physics Communications 113 (1998), p 239. 
+      (http://lie.uwaterloo.ca/papers/ode_vii.pdf)
   
   [2] E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs, 
-  Symmetries and Linear Transformations
+      Symmetries and Linear Transformations, European Journal of 
+      Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003). 
+      (http://lie.uwaterloo.ca/papers/ode_iv.pdf)
+
+  [3] G W Bluman, S C Anco, Symmetry and Integration Methods for
+      Differential Equations, Springer, (2002)
 
 
   Copyright (C) 2004 David Billinghurst		 
