@@ -1059,13 +1059,21 @@
   )
 )
 
-;; Removes items not in i from l. But the ones in l have a minus sign!
+;; Removes items not in i from l.
 (defun removenotin (i l)
   (cond ((null l) l)
-        ((atom (car l)) (cons (car l) (removenotin i (cdr l))))
+        ((memq (car l) i) (cons (car l) (removenotin i (cdr l))))
+        (t (removenotin i (cdr l)))
+  )
+)
+
+;; Removes items not in i from l. But the ones in l have a minus sign!
+(defun removenotinm (i l)
+  (cond ((null l) l)
+        ((atom (car l)) (cons (car l) (removenotinm i (cdr l))))
         ((and (isprod (caar l)) (eq (cadar l) -1)
-             (not (memq (caddar l) i))) (removenotin i (cdr l)))
-        (t (cons (car l) (removenotin i (cdr l))))
+             (not (memq (caddar l) i))) (removenotinm i (cdr l)))
+        (t (cons (car l) (removenotinm i (cdr l))))
   )
 )
 
@@ -1208,53 +1216,51 @@
         ; what we need to do is find the corresponding items in c, and remove
         ; all other negative indices (i.e., those that were dropped by
         ; contract2).
-;;; THIS IS not OK. What we need to do is remove items from c one by one,
-;;; and substitute an item from (car f), which we should remove from
-;;; (car f).
-;;; for i thru length(c)
-;;;    if c[i] not in (cdr f)
-;;;       if (car f) is nil, remove c[i]
-;;;       otherwise subst c[i]
-;;; endfor
-;;; Now set c to what we made of c, a to whatever is left of (cdr f)
+        ; What we need to do is remove items from c one by one, and substitute
+        ; an item from (car f), which we should remove from (car f):
+        ; for i thru length(c)
+        ;    if c[i] not in (cdr f)
+        ;       if (car f) is nil, remove c[i]
+        ;       otherwise subst c[i]
+        ; endfor
+        ; Now set c to what we made of c, a to whatever is left of (cdr f)
 
-(do
-  (
-    (i c (cdr i))
-    (j (car f))
-    (k)
-  )
-  ((null i) (setq a (removenotin j a) c (reverse k)))
-  (cond
-    ((or (atom (car i)) (member (caddar i) (cdr f))) (setq k (cons (car i) k)))
-    (
-      (not (null j))
-      (setq k (cons (car j) k) j (cdr j))
-    )
-  )
-)
-;--        (setq c (removenotin (cdr f) c))
-;--        (setq a (car f))
+        (do
+          (
+            (i c (cdr i))
+            (j (car f))
+            (k)
+          )
+          ((null i) (setq a (removenotin j a) c (reverse k)))
+          (cond
+            (
+              (or (atom (car i)) (member (caddar i) (cdr f)))
+              (setq k (cons (car i) k))
+            )
+            (
+              (not (null j))
+              (setq k (cons (car j) k) j (cdr j))
+            )
+          )
+        )
       )
       (
         (and (minusi a) c (setq f (contract2 (minusi a) c)))
-(do
-  (
-    (i c (cdr i))
-    (j (car f))
-    (k)
-  )
-  ((null i) (setq c (reverse k) a j))
-  (cond
-    ((member (car i) (cdr f)) (setq k (cons (car i) k)))
-    (
-      (not (null j))
-      (setq k (cons (list '(mtimes simp) -1 (car j)) k) j (cdr j))
-    )
-  )
-)
-;--        (setq a (removenotin (car f) a))
-;--        (setq c (cdr f))
+        (do
+          (
+            (i c (cdr i))
+            (j (car f))
+            (k)
+          )
+          ((null i) (setq c (reverse k) a j))
+          (cond
+            ((member (car i) (cdr f)) (setq k (cons (car i) k)))
+            (
+              (not (null j))
+              (setq k (cons (list '(mtimes simp) -1 (car j)) k) j (cdr j))
+            )
+          )
+        )
       )
       (t (return nil))
     )
