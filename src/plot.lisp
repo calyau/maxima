@@ -928,7 +928,7 @@ setrgbcolor} def
   (setq plot-format  ($get_plot_option '$plot_format 2))
   (setq file (format nil "maxout.~(~a~)" (stripdollar plot-format)))
   
-  (with-open-file (st  file :direction :output)  
+  (with-open-file (st file :direction :output :if-exists :supersede)  
     (dolist (v (cdr fun))
 	    (incf i)
 	    (setq plot-name
@@ -1129,7 +1129,7 @@ setrgbcolor} def
 
 (defun $xgraph_curves (lis &rest options &aux w)
   options
-  (with-open-file (st  "xgraph-out" :direction :output)
+  (with-open-file (st  "xgraph-out" :direction :output :if-exists :supersede)
     (format st "=600x600~%")
     (sloop for v in (cdr lis)
        do
@@ -1223,7 +1223,7 @@ setrgbcolor} def
 (defun assureps (&optional do-prolog)
   (cond ((streamp $pstream))
 	(t (setq do-prolog t)))
-  (or $pstream (setq $pstream (open "maxout.ps" :direction :output)))
+  (or $pstream (setq $pstream (open "maxout.ps" :direction :output :if-exists :supersede)))
   (cond (do-prolog
 	  (p "%!")
 	  (p  (* .5 (nth 1 $window_size))
@@ -1579,7 +1579,8 @@ setrgbcolor} def
   (let (($pstream
 	 (cond ($in_netmath *standard-output*)
 	       (t (open (format nil "maxout.~(~a~)" (stripdollar plot-format))
-			:direction :output)))))
+			:direction :output
+			:if-exists :supersede)))))
     (unwind-protect
       (case  plot-format
 	($zic
