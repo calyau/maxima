@@ -9,7 +9,7 @@
       '("rtest1.mac" "rtest1a.mac" "rtest2.mac" "rtest4.mac"  "rtest5.mac"
 	"rtest6.mac" "rtest6a.mac" "rtest6b.mac" "rtest7.mac" "rtest9.mac"
 	"rtest9a.mac" "rtest10.mac" "rtest11.mac" "rtest13.mac" "rtest13s.mac"
-	("rtest14.mac" 54 61)
+	("rtest14.mac" 54 57 61 64 66)
 	("rtest15.mac" 4)
 	("rtest16.mac" 4)
 	"rtestode.mac" "rtestode_zp.mac" "rtestflatten.mac"
