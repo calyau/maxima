@@ -233,7 +233,7 @@
 	 (lisp-patterns (concatenate 
 			 'string "###.{"
 			 (concatenate 'string ext ",lisp,lsp}")))
-	 (maxima-patterns "###.{mac.mc}")
+	 (maxima-patterns "###.{mac,mc}")
 	 (demo-patterns "###.{dem,dm1,dm2,dm3,dmt}")
 	 (usage-patterns "##.{usg,texi}")
 	 (share-subdirs "{affine,algebra,calculus,combinatorics,contrib,contrib/nset,contrib/pdiff,diffequations,graphics,integequations,integration,macro,matrix,misc,numeric,physics,simplification,specfunctions,sym,tensor,trigonometry,utils,vector}"))
