@@ -1,103 +1,122 @@
-@c end concepts Differential Equations
+
 @menu
 * Definitions for Differential Equations::  
 @end menu
 
 @node Definitions for Differential Equations,  , Differential Equations, Differential Equations
 @section Definitions for Differential Equations
-@c @node DESOLVE
-@c @unnumberedsec phony
-@defun DESOLVE ([eq1,...,eqn],[var1,...,varn])
-where the eq's are
-differential equations in the dependent variables var1,...,varn.  The
-functional relationships must be explicitly indicated in both the
-equations and the variables. For example
+
+
+@deffn {function} bc2 (solution, xval1, yval1, xval2, yval2)
+Solves boundary value problem for second order differential equation. 
+Here: @var{solution} is a general solution to the equation, as 
+found by @code{ode2}, @var{xval1} is an equation for the independent 
+variable in the form @code{@var{x} = @var{x0}}, and @var{yval1} is
+an equation for the dependent variable in the form 
+@code{@var{y} = @var{y0}}.  The @var{xval2} and @var{yval2} are
+equations for these variables at another point.
+See @code{ode2} for example of usage.
+
+@end deffn
+
+
+@deffn {function} desolve (eq1, var)
+@deffnx {function} desolve ([eq1, ..., eqn], [var1, ..., varn])
+The function @code{dsolve} solves systems of linear 
+ordinary differential equations using Laplace transform.  
+Here the @var{eq}'s are differential equations in 
+the dependent variables @var{var1}, ..., @var{varn}. 
+The functional relationships must be explicitly 
+indicated in both the equations and the variables. For example
 @example
-(%i1) 'DIFF(F,X,2)=SIN(X)+'DIFF(G,X);
-(%i2) 'DIFF(F,X)+X^2-F=2*'DIFF(G,X,2);
-is NOT the proper format.  The correct way is:
-(%i3) 'DIFF(F(X),X,2)=SIN(X)+'DIFF(G(X),X);
-(%i4) 'DIFF(F(X),X)+X^2-F(X)=2*'DIFF(G(X),X,2);
-The call is then DESOLVE([%o3,%o4],[F(X),G(X)]);
+'diff(f,x,2)=sin(x)+'diff(g,x);
+'diff(f,x)+x^2-f=2*'diff(g,x,2);
+@end example
+is not the proper format.  The correct way is:
+@example
+'diff(f(x),x,2)=sin(x)+'diff(g(x),x);
+'diff(f(x),x)+x^2-f=2*'diff(g(x),x,2);
+@end example
+
+The call is then @code{desolve([%o3,%o4],[f(x),g(x)]);} .
+
 If initial conditions at 0 are known, they should be supplied before
-calling DESOLVE by using ATVALUE.
-(%i11) 'DIFF(F(X),X)='DIFF(G(X),X)+SIN(X);
-                        d         d
-(%o11)                   -- F(X) = -- G(X) + SIN(X)
-                        dX        dX
-(%i12) 'DIFF(G(X),X,2)='DIFF(F(X),X)-COS(X);
-                         2
-                        d          d
-(%o12)                   --- G(X) = -- F(X) - COS(X)
-                          2        dX
-                        dX
-(%i13) ATVALUE('DIFF(G(X),X),X=0,A);
-(%o13)                                A
-(%i14) ATVALUE(F(X),X=0,1);
-(%o14)                                1
-(%i15) DESOLVE([%o11,%o12],[F(X),G(X)]);
-                X                            X
-(%o16) [F(X)=A %E  - A+1, G(X) = COS(X) + A %E  - A + G(0) - 1]
-/* VERIFICATION */
-(%i17) [%o11,%o12],%o16,DIFF;
-                  X       X      X                X
-(%o17)        [A %E  = A %E , A %E  - COS(X) = A %E  - COS(X)]
+calling @code{desolve} by using @code{atvalue}.
 
-@end example
-@noindent
-If DESOLVE cannot obtain a solution, it returns "FALSE".
-
-@end defun
-@c @node IC1
-@c @unnumberedsec phony
-@defun IC1 (exp,var,var)
-In order to solve initial value problems (IVPs) and
-boundary value problems (BVPs), the routine IC1 is available in the
-ODE2 package for first order equations, and IC2 and BC2 for second
-order IVPs and BVPs, respectively.  Do LOAD(ODE2) to access these.
-They are used as in the following examples:
+@c ===beg===
+@c 'diff(f(x),x)='diff(g(x),x)+sin(x);
+@c 'diff(g(x),x,2)='diff(f(x),x)-cos(x);
+@c atvalue('diff(g(x),x),x=0,a);
+@c atvalue(f(x),x=0,1);
+@c desolve([%o1,%o2],[f(x),g(x)]);
+@c [%o1,%o2],%o5,diff;
+@c ===end===
 @example
-(%i3) IC1(%o2,X=%PI,Y=0);
-                         COS(X) + 1
-(%o3)               Y = - ----------
-                              3
-                             X
-(%i4) 'DIFF(Y,X,2) + Y*'DIFF(Y,X)^3 = 0;
-                       2
-                      d Y      dY 3
-(%o4)                  --- + Y (--)  = 0
-                        2      dX
-                      dX
-(%i5) ODE2(%,Y,X);
-                 3
-                Y  - 6 %K1 Y - 6 X
-(%o7)            ------------------ = %K2
-                        3
-(%i8) RATSIMP(IC2(%o7,X=0,Y=0,'DIFF(Y,X)=2));
-                     3
-                  2 Y  - 3 Y + 6 X
-(%o9)            - ---------------- = 0
-                         3
-(%i10) BC2(%o7,X=0,Y=1,X=1,Y=3);
-                 3
-                Y  - 10 Y - 6 X
-(%o11)           --------------- = - 3
-                       3
+(%i1) @b{@t{'diff(f(x),x)='diff(g(x),x)+sin(x);}}
+                 d           d
+(%o1)            -- (f(x)) = -- (g(x)) + sin(x)
+                 dx          dx
+(%i2) @b{@t{'diff(g(x),x,2)='diff(f(x),x)-cos(x);}}
+                  2
+                 d            d
+(%o2)            --- (g(x)) = -- (f(x)) - cos(x)
+                   2          dx
+                 dx
+(%i3) @b{@t{atvalue('diff(g(x),x),x=0,a);}}
+(%o3)                           a
+(%i4) @b{@t{atvalue(f(x),x=0,1);}}
+(%o4)                           1
+(%i5) @b{@t{desolve([%o1,%o2],[f(x),g(x)]);}}
+                  x
+(%o5) [f(x) = a %e  - a + 1, g(x) = 
+
+                                                x
+                                   cos(x) + a %e  - a + g(0) - 1]
+(%i6) @b{@t{[%o1,%o2],%o5,diff;}}
+             x       x      x                x
+(%o6)   [a %e  = a %e , a %e  - cos(x) = a %e  - cos(x)]
 
 @end example
 
-@end defun
-@c @node ODE2
-@c @unnumberedsec phony
-@defun ODE2 (exp,dvar,ivar)
-takes three arguments: an ODE of first or second
-order (only the left hand side need be given if the right hand side is
-0), the dependent variable, and the independent variable.  When
-successful, it returns either an explicit or implicit solution for the
-dependent variable.  %C is used to represent the constant in the case
-of first order equations, and %K1 and %K2 the constants for second
-order equations.  If ODE2 cannot obtain a solution for whatever
-reason, it returns FALSE, after perhaps printing out an error message.
+If @code{desolve} cannot obtain a solution, it returns @code{false}.
+
+@end deffn
+
+
+@deffn {function} ic1 (solution, xval, yval)
+Solves initial value problem for first order differential equation. 
+Here: @var{solution} is a general solution to the equation, as 
+found by @code{ode2}, @var{xval} is an equation for the independent 
+variable in the form @code{@var{x} = @var{x0}}, and @var{yval} is
+an equation for the dependent variable in the form 
+@code{@var{y} = @var{y0}}. See @code{ode2} for example of usage.
+
+@end deffn
+
+
+@deffn {function} ic2 (solution, xval, yval, dval)
+Solves initial value problem for second order differential equation. 
+Here: @var{solution} is a general solution to the equation, as 
+found by @code{ode2}, @var{xval} is an equation for the independent 
+variable in the form @code{@var{x} = @var{x0}}, @var{yval} is
+an equation for the dependent variable in the form 
+@code{@var{y} = @var{y0}}, and @var{dval} is an equation for 
+the derivative of the dependent variable with respect to 
+independent variable evaluated at the point @var{xval}. 
+See @code{ode2} for example of usage.
+
+@end deffn
+
+
+@deffn {function} ode2 (eqn, dvar, ivar)
+The function @code{ode2} solves ordinary differential equations of first or second order.
+It takes three arguments: an ODE @var{eqn}, the dependent variable
+@var{dvar}, and the independent variable @var{ivar}.  
+When successful, it returns either an explicit or implicit solution for the
+dependent variable.  @code{%c} is used to represent the constant in the case
+of first order equations, and @code{%k1} and @code{%k2} the constants for second
+order equations.  If @code{ode2} cannot obtain a solution for whatever
+reason, it returns @code{false}, after perhaps printing out an error message.
 The methods implemented for first order equations in the order in
 which they are tested are: linear, separable, exact - perhaps
 requiring an integrating factor, homogeneous, Bernoulli's equation,
@@ -109,10 +128,65 @@ variation of parameters, and equations which are free of either the
 independent or of the dependent variable so that they can be reduced
 to two first order linear equations to be solved sequentially.
 In the course of solving ODEs, several variables are set purely for
-informational purposes: METHOD denotes the method of solution used
-e.g. LINEAR, INTFACTOR denotes any integrating factor used, ODEINDEX
-denotes the index for Bernoulli's method or for the generalized
-homogeneous method, and YP denotes the particular solution for the
+informational purposes: @code{method} denotes the method of solution used
+e.g. @code{linear}, @code{intfactor} denotes any integrating factor
+used, @code{odeindex} denotes the index for Bernoulli's method or for the generalized
+homogeneous method, and @code{yp} denotes the particular solution for the
 variation of parameters technique.
 
-@end defun
+In order to solve initial value problems (IVPs) and
+boundary value problems (BVPs), the routine @code{ic1} is available 
+for first order equations, and @code{ic2} and @code{bc2} for second
+order IVPs and BVPs, respectively.  
+
+Example:
+
+@c ===beg===
+@c x^2*'diff(y,x) + 3*y*x = sin(x)/x;
+@c ode2(%,y,x);
+@c ic1(%o2,x=%pi,y=0);
+@c 'diff(y,x,2) + y*'diff(y,x)^3 = 0;
+@c ode2(%,y,x);
+@c ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));
+@c bc2(%o5,x=0,y=1,x=1,y=3);
+@c ===end===
+@example
+(%i1) @b{@t{x^2*'diff(y,x) + 3*y*x = sin(x)/x;}}
+                      2 dy           sin(x)
+(%o1)                x  -- + 3 x y = ------
+                        dx             x
+(%i2) @b{@t{ode2(%,y,x);}}
+                             %c - cos(x)
+(%o2)                    y = -----------
+                                  3
+                                 x
+(%i3) @b{@t{ic1(%o2,x=%pi,y=0);}}
+                              cos(x) + 1
+(%o3)                   y = - ----------
+                                   3
+                                  x
+(%i4) @b{@t{'diff(y,x,2) + y*'diff(y,x)^3 = 0;}}
+                         2
+                        d y      dy 3
+(%o4)                   --- + y (--)  = 0
+                          2      dx
+                        dx
+(%i5) @b{@t{ode2(%,y,x);}}
+                      3
+                     y  + 6 %k1 y
+(%o5)                ------------ = x + %k2
+                          6
+(%i6) @b{@t{ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));}}
+                             3
+                          2 y  - 3 y
+(%o6)                   - ---------- = x
+                              6
+(%i7) @b{@t{bc2(%o5,x=0,y=1,x=1,y=3);}}
+                         3
+                        y  - 10 y       3
+(%o7)                   --------- = x - -
+                            6           2
+
+@end example
+
+@end deffn
