@@ -854,8 +854,8 @@
 	       (t 'lt-asinatan-failed-1)))
 	(t 'lt-asinatan-failed-2)))
 
-(defun lt-exp
-    (l e f)
+;; Laplace transform of exponential terms
+(defun lt-exp (l e f)
   (prog(c v)
      (setq c (cdras 'c l) v (cdras 'v l))
      (cond ((t^2 f)
@@ -988,9 +988,11 @@
 	 (parcyl z v))
 	(t (simpdtf z v))))
 
+(defmvar $prefer_d nil)
+
 (defun dtford (z v)
   (let ((inv4 (inv 4)))
-    (cond ((whittindtest (add (div v 2) inv4) inv4)
+    (cond ((or $prefer_d (whittindtest (add (div v 2) inv4) inv4))
 	   (parcyl z v))
 	  (t (simpdtf z v)))))
 
@@ -1769,7 +1771,9 @@
 ;; the Bessel Y function.
 (defun lt1yref (rest arg1 index1)
   ;; If the index is an integer, use LT1Y.  Otherwise, convert Bessel
-  ;; Y to Bessel J and compute the transform of that.
+  ;; Y to Bessel J and compute the transform of that.  We do this
+  ;; because converting Y to J for an integer index doesn't work so
+  ;; well without taking limits.
   (cond ((maxima-integerp index1)
 	 (lt1y rest arg1  index1))
 	(t (fractest2 rest arg1 index1 nil 'ytj))))
@@ -2630,6 +2634,7 @@
 
 (defun freevar0(m)(cond ((equal m 0) nil)(t (freevar m))))
 
+#+nil
 (defun addarglist
     (s k)
   (prog(k1 l)
@@ -2642,6 +2647,15 @@
 	   k1
 	   (sub k1 1))
      (go loop)))
+
+;; Return a list of s/k, (s+1)/k, ..., (s+|k|-1)/k
+(defun addarglist (s k)
+  (let ((abs-k (abs k))
+	(res '()))
+    (dotimes (n abs-k)
+      (push (div (add s n) k) res))
+    (nreverse res)))
+    
 
 (defun f19cond
     (a m l1 l2)
