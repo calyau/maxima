@@ -2766,11 +2766,39 @@
 	    (mul `((%sec) ,(mul '$%pi (sub u v)))
 		 (wwhit (div a *par*) u v)))))
 
+;; Table of Integral Transforms
+;;
+;; Volume 2, p 105, formula 2 is a formula for the Y-transform of
+;;
+;;    f(x) = x^(u-3/2)*exp(-a*x)
+;;
+;; where the Y-transform is defined by
+;;
+;;    integrate(f(x)*bessel_y(v,x*y)*sqrt(x*y), x, 0, inf)
+;;
+;; which is
+;;
+;;    -2/%pi*gamma(u+v)*sqrt(y)*(y^2+a^2)^(-u/2)*assoc_legendre_q(u-1,-v,a/sqrt(y^2+a^2))
+;;
+;; with a > 0, Re u > |Re v|.
+;;
+;; In particular, with a slight change of notation, we have
+;;
+;;    integrate(x^(u-1/2)*exp(-p*x)*bessel_y(v,a*x)*sqrt(a), x, 0, inf)
+;;
+;; which is the Laplace transform of x^(u-1/2)*bessel_y(v,x).
+;;
+;; Thus, the Laplace transform is
+;;
+;;    -2/%pi*gamma(u+v)*sqrt(a)*(a^2+p^2)^(-u/2)*assoc_legendre_q(u-1,-v,p/sqrt(a^2+p^2))
+;;
+;; 
 (defun f2p105v2cond-simp (m v a) 
   (mul -2.
        (power '$%pi -1.)
        (gm (add m v))
-       (power (add (mul a a) (mul *par* *par*)) (mul -1. (inv 2.) m))
+       (power (add (mul a a) (mul *par* *par*))
+	      (mul -1. (inv 2.) m))
        (leg2fsimp (sub m 1.)
 		  (mul -1. v)
 		  (mul *par*
@@ -2784,6 +2812,7 @@
 		     (list (sub 1. m))
 		     (sub (inv 2.) (div z 2.))))) 
 
+;; Simplify assoc_legendre_q(m,v,z)
 (defun leg2fsimp (m v z) 
   (mul (power '$%e (mul m '$%pi '$%i))
        (power '$%pi (inv 2.))
