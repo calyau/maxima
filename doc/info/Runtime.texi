@@ -140,10 +140,14 @@ For information about your files, see the FILEDEFAULTS(); command.
 @end defun
 @c @node TIME
 @c @unnumberedsec phony
-@defun TIME (Di1, Di2, ...)
-gives a list of the times in milliseconds taken
-to compute the Di.  (Note: the Variable SHOWTIME, default: [FALSE],
-may be set to TRUE to have computation times printed out with each
-D-line.)
+@defun TIME (%o1, %o2, %o3, ...)
+Returns a list of the times, in seconds, taken to compute the output
+lines %o1, %o2, %o3, .... The time returned is Maxima's estimate of
+the internal computation time, not the elapsed time. TIME can only
+be applied to output line variables; for any other variables, TIME
+returns UNKNOWN.
+
+Set SHOWTIME:TRUE$ to make Maxima print out the computation time 
+and elapsed time with each output line.
 
 @end defun
