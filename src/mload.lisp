@@ -493,10 +493,12 @@
   file. This command is designed to provide maximum utility and
   convenience for writers of packages and users of the macsyma->lisp
   translator."
-  
+
+  (cond ((and (symbolp filename) (not (mstringp filename)))
+	 (setq filename (string-downcase (symbol-name (stripdollar filename))))))
   (LET ((SEARCHED-FOR
 	 ($file_search1 filename
-			'((mlist) $file_search_lisp  $file_search_maxima)))
+			'((mlist) $file_search_maxima $file_search_lisp  )))
 	 type)
 	(setq TYPE ($FILE_TYPE SEARCHED-FOR))
 	(CASE TYPE
@@ -695,6 +697,9 @@
 (defvar *macsyma-startup-queue* nil)
 ;(push '(initialize-$file_search) *macsyma-startup-queue*)
 
+(eval-when (compile) (proclaim '(special *mread-prompt*)))
+
+
 ;; Done for debuggings sake.
 ;(eval-when (eval load)  (initialize-$file_search))
 
@@ -753,23 +758,15 @@
 	
 
 (defun test-batch (filename &optional (out *standard-output*) &aux result next-result  next eof error-log all-differences
+			    (*mread-prompt* "")
 			    ($matrix_element_mult '&*))
-  (declare (special *mread-prompt*))
   (cond (*collect-errors*
 	 (setq error-log
 	       (if (streamp *collect-errors*) *collect-errors*
-	       (open (alter-pathname filename :type "ERR")
-		     :direction :output)))
+		 (open (alter-pathname filename :type "ERR")
+		       :direction :output)))
 	 (format t "~%Error log on ~a" error-log)
-	 (format error-log
-		 "~%/* -*- Package:maxima ; Mode: macsyma -*- */  ~
-                        ~%/*    MAXIMA-ERROR log for testing of ~A"
-		 filename)
-	 #+lispm
-	 (format error-log "~%      Date: ~A  ~%" 
-		 (time:print-current-time nil))
-	 #+lispm
-	 (print-herald #-ti :stream error-log)
+	 (format error-log "~%/*    MAXIMA-ERROR log for testing of ~A" filename)
 	 (format error-log "*/~2%")))
   
   (unwind-protect 
@@ -809,12 +806,14 @@
 			      (format error-log ";~%~%"))))
 		    )))
     (cond (error-log
-	    (or (streamp *collect-errors*)
-	    (close error-log)))))
+	   (or (streamp *collect-errors*)
+	       (close error-log)))))
   (cond ((null all-differences)
-	 (format t "~%Congratulations: No differences!"))
+	 (format t "~%Congratulations: No differences!") '((mlist)))
 	(t (format t "~%The number of differences found was ~A in problems: ~A" (length all-differences)
-		   all-differences))) '$done)
+		   all-differences)
+	   `((mlist),filename ,@ all-differences))))
+	   
 
 (defun batch-equal-check (next-result result &optional recursive)
   (or (like next-result result)
@@ -860,7 +859,8 @@
   (new-file-search name (cdr paths)))
 
 (defun new-file-search (name template &aux lis temp)
-  (cond ((atom template)
+  (cond ((probe-file name))
+	((atom template)
 	 (setq template (namestring ($filename_merge template  name)))
 	 ;(print (list 'template template))
 	 (setq lis 

@@ -1,6 +1,6 @@
 /* ==================================================================== */
-/* file: macex.dem     /*
-/* At some point, we get the message: DISPLACE undefined /*
+/* file: macex.dem     */
+/* At some point, we get the message: DISPLACE undefined */
 
 
 /* This is a demo of Macsyma's MACROEXPANDing commands and the use of

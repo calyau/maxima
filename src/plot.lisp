@@ -427,7 +427,8 @@ setrgbcolor} def
 	 (setq x3 (aref pts (f+ i 2)))
 	 (setf (aref pts i) (funcall fx x1 x2 x3))
 	 (setf (aref pts (f+ 1 i)) (funcall fy x1 x2 x3))
-	 (setf (aref pts (f+ 2 i)) (funcall fz x1 x2 x3)))))))
+	 (setf (aref pts (f+ 2 i)) (funcall fz x1 x2 x3)))))
+  ))
 
 
 (defun coerce-float-fun (expr &optional lvars)
@@ -1231,7 +1232,8 @@ ghostscript (or another postscript screen previewer).
 
 (defvar $openmath_plot_command
   ($sconcat   #+winnt
-	      (maxima-directory "bin" "cygwish80 ")
+;	      (maxima-directory "bin" "cygwish80 ")
+              "wish84 "   
 	      (maxima-path "bin" "omplotdata") " "
 	      "maxout.openmath"))
 
@@ -1287,6 +1289,7 @@ ghostscript (or another postscript screen previewer).
 	   (ar (polygon-pts pl)) tem
 	   )
       (declare (type (array long-float) ar))
+
       (if trans  (mfuncall trans ar))
       (if (setq tem  ($get_plot_option '$transform_xy 2)) (mfuncall tem ar))
       ;; compute bounding box.
@@ -1316,27 +1319,52 @@ ghostscript (or another postscript screen previewer).
 	($gnuplot
 	   (output-points pl (nth 2 grid)))
 	($openmath
-	 (format $pstream "{plot3d {variable_grid ~%")
-		(let* ((ar (polygon-pts pl))
-		       (x-coords
-			(sloop for i to (nth 2 grid)
-			       collect (aref ar (* i 3))))
-		       (y-coords
-			(sloop for i to (nth 3 grid)
-			       with m = (* 3 (+ 1 (nth 2 grid)))
-			       collect (aref ar (+ 1 (* i m)))))
-		       (z  (sloop for i to (nth 3 grid)
-				  with k = 2
-				  declare (fixnum k)
-				  collect
-				  (sloop for j to (nth 2 grid)
-					 collect (aref ar k)
-					 do(setq k (+ k 3))))))
-		  (tcl-output-list $pstream x-coords)
-		  (tcl-output-list $pstream y-coords)
+	 (progn
+	   (format $pstream "{plot3d {matrix_mesh ~%")
+	   ;; we do the x y z  separately:
+	   (sloop for off from 0 to 2
+		  with ar = (polygon-pts pl)
+		  with  i = 0
+		  declare (fixnum i)
+		  do (setq i off)
 		  (format $pstream "~%{")
-		  (tcl-output-list $pstream z)
-		  (format $pstream "}}}")))
+		  (sloop 
+		   while (< i (length ar))
+		   do (format $pstream "~% {")
+		   (sloop for j to (nth 2 grid)
+			 do (print-pt (aref ar i))
+			 (setq i (+ i 3)))
+		   (format $pstream "} ")
+		   )
+		  (format $pstream "} ")
+		  )
+	   (format $pstream "}}"))
+	 #+old
+	 (progn ; orig
+	   (print (list 'grid grid))
+	   (format $pstream "{plot3d {variable_grid ~%")
+	   (let* ((ar (polygon-pts pl))
+		  (x-coords
+		   (sloop for i to (nth 2 grid)
+			  collect (aref ar (* i 3))))
+		  (y-coords
+		   (sloop for i to (nth 3 grid)
+			  with m = (* 3 (+ 1 (nth 2 grid)))
+			  collect (aref ar (+ 1 (* i m)))))
+		  (z  (sloop for i to (nth 3 grid)
+			     with k = 2
+			     declare (fixnum k)
+			     collect
+			     (sloop for j to (nth 2 grid)
+				    collect (aref ar k)
+				    do(setq k (+ k 3))))))
+	     (tcl-output-list $pstream x-coords)
+	     (tcl-output-list $pstream y-coords)
+	     (format $pstream "~%{")
+	     (tcl-output-list $pstream z)
+	     (format $pstream "}}}"))
+	   )
+	 )
 	($geomview
 	 (format $pstream " MESH ~a ~a ~%"
 		 (+ 1 (nth 2 grid))

@@ -1,8 +1,6 @@
-This is TeX, Version 3.14159 (C version 6.1) (format=tex 97.1.20)  23 MAY 2000 23:11
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  6 DEC 2000 15:41
 **maxima.texi
-(maxima.texi
-Hyphenation patterns for english, german, loaded.
-(texinfo.tex Loading texinfo package [Version 2.137/K]: Basics,
+(maxima.texi (texinfo.tex Loading texinfo package [Version 2.137/K]: Basics,
 \bindingoffset=\dimen16
 \normaloffset=\dimen17
 \pagewidth=\dimen18
@@ -13,22 +11,22 @@ Hyphenation patterns for english, german, loaded.
 \outerhsize=\dimen23
 \outervsize=\dimen24
 \margin=\insert252
-\EMsimple=\toks13
+\EMsimple=\toks12
 \singlespaceskip=\skip18
-\groupinvalidhelp=\toks14
+\groupinvalidhelp=\toks13
 \mil=\dimen25
 \exdentamount=\skip19
- fonts,
+
+fonts,
 \sffam=\fam8
 \fontdepth=\count26
-
-page headings,
+ page headings,
 \titlepagetopglue=\skip20
 \titlepagebottomglue=\skip21
-\evenheadline=\toks15
-\oddheadline=\toks16
-\evenfootline=\toks17
-\oddfootline=\toks18
+\evenheadline=\toks14
+\oddheadline=\toks15
+\evenfootline=\toks16
+\oddfootline=\toks17
  tables,
 \tableindent=\dimen26
 \itemindent=\dimen27
@@ -61,7 +59,8 @@ page headings,
 \contentsrightmargin=\skip27
 \shortappendixwidth=\dimen35
 \tocindent=\dimen36
- environments,
+
+environments,
 \dblarrowbox=\box17
 \longdblarrowbox=\box18
 \pushcharbox=\box19
@@ -78,8 +77,7 @@ page headings,
 \normlskip=\skip32
 \lskip=\skip33
 \rskip=\skip34
-
-defuns,
+ defuns,
 \defbodyindent=\skip35
 \defargsindent=\skip36
 \deftypemargin=\skip37
@@ -90,18 +88,35 @@ defuns,
 \footnoteno=\count37
  and turning on texinfo input format.
 \defaultparindent=\dimen40
-) (maxima.aux)
+)
+(maxima.aux)
 @cpindfile=@write2
 @fnindfile=@write3
 @vrindfile=@write4
 @tpindfile=@write5
 @kyindfile=@write6
 @pgindfile=@write7
+ [1
+\openout1 = `maxima.aux'.
 
-[1] () Chapter1 [1] [2] <opening Introduction.texi> (Introduction.texi [3]
-[4] [5]) <closing Introduction.texi> Chapter2 [6] <opening Help.texi>
-(Help.texi [7] [8]) <closing Help.texi> Chapter3 [9] [10]
-<opening Command.texi> (Command.texi [11] [12] [13] [14] [15] [16])
+\openout0 = `maxima.toc'.
+
+\openout2 = `maxima.cp'.
+
+\openout3 = `maxima.fn'.
+
+\openout4 = `maxima.vr'.
+
+\openout5 = `maxima.tp'.
+
+\openout6 = `maxima.ky'.
+
+\openout7 = `maxima.pg'.
+
+] () Chapter1 [1] [2] <opening Introduction.texi>
+(Introduction.texi [3] [4] [5]) <closing Introduction.texi> Chapter2 [6]
+<opening Help.texi> (Help.texi [7] [8]) <closing Help.texi> Chapter3 [9]
+[10] <opening Command.texi> (Command.texi [11] [12] [13] [14] [15] [16])
 <closing Command.texi> Chapter4 [17] [18] <opening Operators.texi>
 (Operators.texi [19] [20] [21] [22] [23] [24] [25] [26])
 <closing Operators.texi> Chapter5 [27] [28] <opening Expressions.texi>
@@ -111,9 +126,22 @@ defuns,
 <closing Simplification.texi> Chapter7 [47] [48] <opening Plotting.texi>
 (Plotting.texi [49] [50] [51]) <closing Plotting.texi> Chapter8 [52]
 <opening Input.texi> (Input.texi [53] [54] [55] [56] [57] [58] [59] [60]
-[61] [62] [63] [64]) <closing Input.texi> Chapter9 [65] [66]
-<opening Floating.texi> (Floating.texi [67]) <closing Floating.texi> Chapter10
-[68] <opening Contexts.texi> (Contexts.texi [69] [70]) <closing Contexts.texi>
+[61] [62] [63]
+Overfull \hbox (76.86267pt too wide) in paragraph at lines 925--925
+ [] @texttt \sqrt{3}}}}\over{\sqrt{3}}}+{{\log \left(x+1\right)}\over{3}}\leqno
+{\tt (D1)}$$[]  |
+
+@hbox(7.60416+2.43333)x469.75499
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@penalty 10000
+.@glue 5.74869
+.@texttt \
+.etc.
+
+[64]) <closing Input.texi> Chapter9 [65] [66] <opening Floating.texi>
+(Floating.texi [67]) <closing Floating.texi> Chapter10 [68]
+<opening Contexts.texi> (Contexts.texi [69] [70]) <closing Contexts.texi>
 Chapter11 [71] [72] <opening Polynomials.texi> (Polynomials.texi [73] [74]
 [75] [76] [77] [78] [79] [80] [81] [82] [83] [84]) <closing Polynomials.texi>
 Chapter12 [85] [86] <opening Constants.texi> (Constants.texi)
@@ -175,12 +203,12 @@ Chapter39 [238] <opening Indices.texi> (Indices.texi Appendix @char 65 [239]
 [250])) <closing Indices.texi> [251] [252] (maxima.toc) [-1] [-2] (maxima.toc
 [-3] [-4] [-5]) [-6] ) 
 Here is how much of TeX's memory you used:
- 1403 strings out of 12938
- 19110 string characters out of 94873
- 50002 words of memory out of 262141
- 2238 multiletter control sequences out of 9500
- 26608 words of font info for 90 fonts, out of 150000 for 255
- 18 hyphenation exceptions out of 607
- 16i,5n,13p,247b,371s stack positions out of 300i,40n,60p,3000b,4000s
+ 1343 strings out of 63548
+ 18795 string characters out of 972269
+ 48378 words of memory out of 263001
+ 2158 multiletter control sequences out of 10000+60000
+ 26608 words of font info for 90 fonts, out of 400000 for 1000
+ 18 hyphenation exceptions out of 1000
+ 16i,5n,13p,247b,371s stack positions out of 300i,100n,500p,50000b,10000s
 
-Output written on maxima.dvi (259 pages, 1016668 bytes).
+Output written on maxima.dvi (259 pages, 1019036 bytes).

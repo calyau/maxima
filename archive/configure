@@ -5,8 +5,8 @@
 GCLDIR=/home/wfs/cvs/gcl
 # the directory where this file is, and where you will build maxima
 # could use
-MAXDIR=`pwd`
 MAXDIR=/home/wfs/cvs/maxima
+MAXDIR=`pwd`
 # where to put some maxima .el files
 EMACS_SITE_LISP=/usr/local/lib/emacs/site-lisp
 
@@ -33,11 +33,13 @@ echo INFO_DIR=${INFO_DIR} >> makedefs
 echo MAN_DIR=${MAN_DIR} >> makedefs
 echo '# end maxmakedefs' >> makedefs
 
+(cd ${GCLDIR}/bin ; make )
+
 echo inserting makedefs  in ..
 for v in makefile src/makefile info/makefile elisp/makefile 
  do
  echo " $v,"
- ${GCLDIR}/xbin/file-sub makedefs $v "# begin makedefs" '# end maxmakedefs'
+ ${GCLDIR}/bin/file-sub makedefs $v "# begin makedefs" '# end maxmakedefs' tmpx
  mv tmpx $v
  done
 

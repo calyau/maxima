@@ -574,7 +574,7 @@
     (catch 'macsyma-quit
       (tagbody
        top
-       (SETQ R    (dbm-read (or a *standard-input*) nil eof))
+       (SETQ R    (dbm-read (or a *terminal-io*) nil eof))
        (cond ((and (consp r) (keywordp (car r)))
 	      (let ((value (break-call (car r) (cdr r) 'break-command)))
 		(if (eq value :resume) (return-from retrieve1 '$exit))

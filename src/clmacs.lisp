@@ -220,7 +220,9 @@
 
 
 (defmacro defprop (sym val indic)
-  `(setf (get ',sym ',indic) ',val))
+  (cond ((eq indic 'expr)
+	 `(setf (symbol-function ',sym) #',val))
+	(t  `(setf (get ',sym ',indic) ',val))))
 
 
 
@@ -305,6 +307,15 @@
   (sloop for tail on plist by 'cddr
 	 when (memq (car tail) indicator-list)
 	 do (loop-return tail)))
+
+;;this is the get of maclisp
+;; works on symbols and plists
+(defun maclisp-get (sym-or-plist prop)
+  (cond ((symbolp sym-or-plist)
+	 (get sym-or-plist prop))
+	((consp sym-or-plist)
+	 (getf (cdr sym-or-plist) prop))
+	(t nil)))
 
 (defun string-search (stringa stringb &optional from to)
   (or from (setf from 0))

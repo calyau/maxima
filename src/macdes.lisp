@@ -10,39 +10,63 @@
 
 (defconstant *doc-start* (code-char 31))
 
+(defvar $manual_demo "manual.demo")
+
 (DEFmspec $example (l)   (setq l (cdr l))
   (block
    $example
    (let ((example (car l))
-	 (file (or (cadr l)  (maxima-path "doc" "manual.demo"))))
+	 (file (or (cadr l)  (maxima-path "doc" $manual_demo))))
      (or (symbolp example)
 	 (merror
 	  "First arg ~M to example must be a symbol, eg example(functions)"))
      (setq file ($file_search1 file '((mlist) $file_search_demo)))
      (with-open-file
       (st file)
-      (let ( *mread-prompt*)
-	(sloop with show with tem with this with all
-	       while   (setq tem (dbm-read st nil nil))
-	       do
-	       (cond((setq this (second tem))
-		     (setq this (nth 1 this))
-		     (push this all)
-		     (if show (return-from $example '$done))
-		     (setq show (eql this example))
-		     (cond ((and
-			     (eql this '$syntax)
-			     (not show)
-			     )
-			    ;; last one is unreadable i
-			    (format t "Not Found.  You can look at:")
-			    (return-from $example
-					 `((mlist) ,@ (nreverse all)))))))
-	       (cond (show
-		      (let ($display2d) (mformat nil
-						 "Input: ~M;" (nth 2 tem)))
-		      (mformat nil "==> ~M" (setq $% (meval* (nth 2 tem)))))))
-	)))))
+      (let ( ;*mread-prompt*
+	     )
+	(prog (show tem this all c-tag d-tag)
+
+	  AGAIN
+	  (setq tem (read-char st nil))
+	  (or tem (go NOTFOUND))
+	  (or (eql tem #\&) (go AGAIN))
+	  (setq tem (read-char st nil))
+	  (or (eql tem #\&) (go AGAIN))
+	  ;; so we are just after having read &&
+	  
+	  (setq tem (read st nil nil))
+	  (or tem (go NOTFOUND))
+	  (setq tem ($concat tem))
+	  (cond ((eql tem example)
+		 (go DOIT))
+		(t (push tem all)
+		   (go AGAIN)))
+      ;; at this stage we read maxima forms and print and eval
+	  ;; until a peek sees '&' as the first character of next expression.
+	  DOIT
+	  (setq tem (peek-char nil st nil))
+	  (cond ((or (null tem) (eql tem #\&))
+		 (return-from $example '$done)))
+	  (setq tem (dbm-read st nil nil))
+	  (setq $linenum (+ 1 $linenum))
+	  (set (setq c-tag (makelabel $inchar)) (nth 2 tem))
+	  (let ($display2d)
+	    (displa `((mlable) ,c-tag ,(nth 2 tem)))
+	    ;(mformat nil "Input: ~M;" (nth 2 tem))
+	    )
+	  (setq $% (meval* (nth 2 tem)))
+	  (SET (setq d-tag (makelabel $outchar)) $%)
+	  (if (eq (caar tem) 'displayinput)
+	      (displa `((mlable) ,d-tag ,$%)))
+	  ;(mformat nil "==> ~M"  (setq $% (meval* (nth 2 tem))))
+	  (go DOIT) 	
+
+	  NOTFOUND
+	   (format t "Not Found.  You can look at:")
+	   (return-from $example
+	     `((mlist) ,@ (nreverse all)))
+	   ))))))
 
 (defun mread-noprompt (&rest read-args)
   (let ((*mread-prompt* ""))
@@ -93,8 +117,8 @@
 (defvar si::*info-paths* nil)
 
 
-(defun $describe(x &aux si::*info-paths*)
-  (setq x (string-trim "&$" (symbol-name x)))
+(defun $describe(x &aux (si::*info-paths* si::*info-paths*))
+  (setq x ($sconcat x))
   (setq  SYSTEM::*INFO-PATHS*
 	 (cons  (si::string-concatenate *maxima-directory*
 				     "info/")

@@ -1,0 +1,6 @@
+./intro.html
+./gcc.zip
+./maxima.zip
+./readme.xmaxima
+./tclpip83.dll
+./unzip.exe

@@ -901,6 +901,39 @@ format.  Note: a STRINGOUT may be done while a WRITEFILE is in
 progress.
 
 @end defun
+
+@defun TEX (expr)
+@defunx TEX(expr,filename)
+@defunx TEX(label,filename)
+
+In the case of a label,
+a left-equation-number will be produced.
+in case a file-name is supplied, the output will be appended to the
+file.
+
+@example
+(C1) integrate(1/(1+x^3),x);
+
+					 2 x - 1
+		       2	    ATAN(-------)
+		  LOG(x  - x + 1)	 SQRT(3)    LOG(x + 1)
+(D1) 	        - --------------- + ------------- + ----------
+			 6	       SQRT(3)	        3
+(C2) tex(d1);
+
+$$-@{@{\log \left(x^@{2@}-x+1\right)@}\over@{6@}@}+@{@{\arctan @{@{2\>x-1@}\over@{
+ \sqrt@{3@}@}@}@}\over@{\sqrt@{3@}@}@}+@{@{\log \left(x+1\right)@}\over@{3@}@}\leqno@{\tt (D1)@}$$
+(D2) 				     (D1)
+(C6) tex(integrate(sin(x),x));
+
+$$-\cos x$$
+(D6) 				     FALSE
+(C7) tex(d1,"/tmp/jo.tex");
+
+(D7) 				     (D1)
+@end example
+where the last expression will be appended to the file @file{/tmp/jo.tex}
+@end defun
 @defun SYSTEM(command)
 Execute COMMAND as a subprocess.  The command will be passed to the
 default shell for execution.   System is not supported by all operating

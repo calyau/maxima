@@ -1,6 +1,6 @@
 /* ==================================================================== */
-/* file: macro.dem     /*
-/* At some point, we get the message: DISPLACE undefined /*
+/* file: macro.dem     */
+/* At some point, we get the message: DISPLACE undefined */
 
 /* First, we'll play with some macros that do stack manipulation.
    A stack behaves like a pile of physical objects. You can pile

@@ -71,7 +71,7 @@
 	   (sloop  for v on params for w in vals
 		   do (setq val ($sconcat w))
 		   (if (> (length val) 100)
-		       (setq val ($sconcat (substring val 0 100) "...")))
+		       (setq val ($sconcat (subseq val 0 100) "...")))
 		   (format st "~(~a~)=~a~a" ($sconcat (car v)) val
 			   (if (cdr v) "," "")))
 	   (princ ")" st)
@@ -117,13 +117,16 @@
   (setf (fill-pointer *break-point-vector*) 0)
   (setf *break-points* *break-point-vector*))
 (defvar *break-step* nil)
+(defvar *step-next* nil)
 (defun step-into (&optional (n 1))
   ;;FORM is the next form about to be evaluated.
+   n
   (or *break-points* (init-break-points))
   (setq *break-step* 'break-step-into)
   :resume)
 
 (defun step-next ( &optional (n 1))
+  n
   (let ((fun (current-step-fun)))
     (setq *step-next* (cons n fun))
     (or *break-points* (init-break-points))
@@ -132,6 +135,7 @@
 
 
 (defun maybe-break (form line-info fun env &aux pos)
+  env
   (cond ((setq pos (position form line-info))
 	 (setq *break-step* nil)
 	 (or (> (length *break-points*) 0)
@@ -229,6 +233,7 @@
 (defun dbm-read (&optional (stream *standard-input*) (eof-error-p t)
 			   (eof-value nil) repeat-if-newline  &aux tem  ch
 			   (mprompt *mread-prompt*) (*mread-prompt* "")
+			   next
 			    )
 
   (when (> (length mprompt) 0)
@@ -246,6 +251,7 @@
 	  (go top)
 	  )
 	 ((eq ch eof-value) (return-from dbm-read eof-value)))
+   (and (eql ch #\?) (setq next (peek-char nil  stream  nil)))
    (unread-char ch stream)
   )
   (cond ((eql #\: ch)
@@ -267,6 +273,10 @@
 			   ;(print (list 'tem tem))
 			   (read  (make-string-input-stream tem)
 				  eof-error-p eof-value)))))))
+	((and (eql #\? ch) (member next '(#\space #\tab)))
+	 (let* ((line (string-trim '(#\space #\tab #\; #\$)
+				   (subseq  (read-line stream eof-error-p eof-value) 2))))
+	   `((displayinput) nil (($describe) ,line))))
 	(t (setq *last-dbm-command* nil)
 	     (mread stream eof-value))))
 
@@ -274,7 +284,7 @@
   (declare (type (vector (string-char)) li))
   (cond ((and (> (length li) 3)
 	      (digit-char-p (aref li 1)))
-	 (let ((in (get-instream *parse-stream*)))
+	 (let ((in (get-instream stream)))
 	   (and in
 		(progn
 		 (multiple-value-bind
@@ -382,7 +392,7 @@
   (setf (get keyword 'break-command) fun)
   (and doc (setf (get keyword 'break-doc) doc))
   )
-(defun break-help (&optional key &aux tem)
+(defun break-help (&optional key)
   (cond (key
 	 (if (keywordp key)
 	     (dolist (v (complete-prop key 'keyword 'break-doc t))
@@ -430,7 +440,7 @@
 	  (setq debug t))
   (cond ((or (stringp fun)
 	     (and (mstringp fun) (setq fun ($sconcat fun))))
-	 (let ((file fun) tem start linfo)
+	 (let ((file fun)  start)
 	   (sloop named joe for v in-package 'maxima with tem  and linfo
 		  when (and (typep (setq tem (set-full-lineinfo v)) 'vector)
 			    (setq linfo (get-lineinfo (aref tem 1)))
@@ -579,6 +589,11 @@
 	    (format t "usage: :info :bkpt -- show breakpoints")
 	    ))))
 
+(setf (get :lisp-quiet 'break-command) 'lisp-quiet)
+(defmacro lisp-quiet (&rest l)
+   (setq *mread-prompt* "")
+   (eval (cons 'progn l)))
+
 (setf (get :lisp 'break-command) 'lisp-eval)
 (defmacro lisp-eval (&rest l)
   (dolist  (v (multiple-value-list (eval (cons 'progn l))))
@@ -615,6 +630,7 @@ a FILE and LINE is the offset from the beginning of the file." )
 
 
 (defmacro do-break (&optional name &rest l)
+  (declare (special *last-dbl-break*))
   (cond ((null name)
 	 (if *last-dbl-break*
 		(let ((fun  (nth 3 *last-dbl-break*)))
@@ -638,12 +654,12 @@ a FILE and LINE is the offset from the beginning of the file." )
 	(t nil)))
 
 ;; restore-bindings from an original binding list.
-(defun restore-bindings ( &aux vars vals)
+(defun restore-bindings ()
   (mbind *diff-bindlist* *diff-mspeclist* nil)
   (setf *diff-bindlist* nil *diff-mspeclist* nil)
   )
 
-(defun remove-bindings (the-bindlist &aux vars vals)
+(defun remove-bindings (the-bindlist)
   (sloop for v on bindlist with var
 	 while v
 	 until (eq v the-bindlist)

@@ -29,7 +29,7 @@ graph_riemann_sum(up,expr,var,partition):=
 			if val < min then min:val,
 			if val > max then max:val),
     sprint("{plot2d ", "{xrange " ,partition[1]-.5,partition[n]+.5,"} {yrange" ,
-	   min-.5,min+.5, "} {xversusy "),
+	   min-.5,max+.5, "} {xversusy "),
     tcl_output(lis,1),
     tcl_output(lis,2),
     sprint( "}"),

@@ -1,3 +1,4 @@
+(defmacro xx-$EV (&rest l) (meval `(($ev) ,@l)))
 
 (SETQ IBASE 8.)
  	(SETQ SAVENO 5466)
@@ -364,7 +365,7 @@
 	       (SETQ $FL ($PART (MEVAL1 '$FLAGPARADE) $I)) 
 	       (SIMPLIFY ($PRINT $FL
 				 (MEVAL1 '&=)
-				 (SIMPLIFY ($EV $FL))))))
+				 (SIMPLIFY (XX-$EV $FL))))))
 	    '$FL))
 	 EXPR)
  	(ARGS '$FLAGS '(NIL . 0))
@@ -385,7 +386,7 @@
 		     NIL
 		     ((DOLIST)
 		      ((MSETQ) $FL (($PART) $FLAGPARADE $I))
-		      (($PRINT) $FL &= (($EV) $FL))))))
+		      (($PRINT) $FL &= ((XX-$EV) $FL))))))
 		  MEXPR)
  	(ARGS '$FLAGS '(NIL . 0))
  	(ADD2LNC '(($FLAGS)) $FUNCTIONS)
@@ -1054,7 +1055,7 @@ MAY BE SUICIDAL.|)  ((MRETURN) (($ANTIC) $LIST))
  	(ADD2LNC '(($TELL) $EXP $LEN) $FUNCTIONS)
  	(DEFPROP $CGT
 		 (LAMBDA ($EXP) 
-		   (SIMPLIFY ($EV $EXP ((MEQUAL) $G $TR) ((MEQUAL) $GT $TR))))
+		   (SIMPLIFY (XX-$EV $EXP ((MEQUAL) $G $TR) ((MEQUAL) $GT $TR))))
 		 EXPR)
  	(ARGS '$CGT '(NIL . 1))
  	(DEFPROP $CGT T TRANSLATED)
@@ -1073,7 +1074,7 @@ MAY BE SUICIDAL.|)  ((MRETURN) (($ANTIC) $LIST))
 	      (SETQ $QW (SIMPLIFY ($SUBSTITUTE (MEVAL1 '$D0)
 					       (MEVAL1 '$D)
 					       $EXP)))
-	      (SIMPLIFY ($EV $QW)))
+	      (SIMPLIFY (XX-$EV $QW)))
 	    '$QW))
 	 EXPR)
  	(ARGS '$DFIX '(NIL . 1))
@@ -1097,7 +1098,7 @@ MAY BE SUICIDAL.|)  ((MRETURN) (($ANTIC) $LIST))
 	      (COND ((LIKE $DIM 4)
 		     (SETQ $CONTAB (MEVAL1 '$CONTAB4))
 		     (SETQ $CONTLIM 10534))
-		    (T (SETQ $CONTAB (SIMPLIFY ($EV $CONTAB
+		    (T (SETQ $CONTAB (SIMPLIFY (XX-$EV $CONTAB
 						    ((MEQUAL) $N $DIM)
 						    $INFEVAL)))))
 	      (SIMPLIFY ($PRINT (MEVAL1 '|&DIMENSIONS =|)
@@ -1337,7 +1338,7 @@ UP IN NEWL| $IN $OUT)T
  	(ADD2LNC '(($NAP) $LIST $BIT) $FUNCTIONS)
  	(DEFPROP $KAHANE
 		 (LAMBDA ($LIST) 
-		   (SIMPLIFY ($EV (($KAH0) $LIST) ((MEQUAL) $G $TR))))
+		   (SIMPLIFY (XX-$EV (($KAH0) $LIST) ((MEQUAL) $G $TR))))
 		 EXPR)
  	(ARGS '$KAHANE '(NIL . 1))
  	(DEFPROP $KAHANE T TRANSLATED)
@@ -1382,13 +1383,14 @@ UP IN NEWL| $IN $OUT)T
  	(ARGS '$UNCIND '(NIL . 1))
  	(ADD2LNC '(($UNCIND) ((MLIST) $OUTLIS)) $FUNCTIONS)
  	(MDEFPROP $UNCIND
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($UNCIND (CONS '(MLIST)
-						     (LISTIFY N))))
+						     l)))
 			  (T (SETQ NOEVALARGS NIL)
 			     ($UNCIND (CONS '(MLIST)
-					    (MEVALARGS (LISTIFY N)))))))
+					    (MEVALARGS l))))))
 		  T-MFEXPR)
  	(DEFPROP
 	 $CIND
@@ -1410,13 +1412,14 @@ UP IN NEWL| $IN $OUT)T
  	(DEFPROP $CIND T TRANSLATED)
  	(ADD2LNC '$CIND $PROPS)
  	(MDEFPROP $CIND
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($CIND (CONS '(MLIST)
-						   (LISTIFY N))))
+						   l)))
 			  (T (SETQ NOEVALARGS NIL)
 			     ($CIND (CONS '(MLIST)
-					  (MEVALARGS (LISTIFY N)))))))
+					  (MEVALARGS l ))))))
 		  T-MFEXPR)
  	(MDEFPROP $CIND T MLEXPRP)
  	(MDEFPROP $CIND
@@ -1449,7 +1452,7 @@ UP IN NEWL| $IN $OUT)T
 	 (LAMBDA ($LIST) 
 	   ((LAMBDA ($LISTARITH $NEW $I) 
 	      (SETQ $LISTARITH T)
-	      (SETQ $LIST (SIMPLIFY ($EV $LIST)))
+	      (SETQ $LIST (SIMPLIFY (XX-$EV $LIST)))
 	      (SETQ $NEW '((MLIST)))
 	      (DO (($I 1 (+ 1 $I))) 
 		  ((> $I ($LENGTH $LIST)) '$DONE) 
@@ -1548,20 +1551,21 @@ UP IN NEWL| $IN $OUT)T
  	(ADD2LNC '(($SCALS) ((MLIST) $LIST)) $FUNCTIONS)
  	(MDEFPROP $SCALS T MLEXPRP)
  	(MDEFPROP $SCALS
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($SCALS (CONS '(MLIST)
-						    (LISTIFY N))))
+						    lll)))
 			  (T (SETQ NOEVALARGS NIL)
 			     ($SCALS (CONS '(MLIST)
-					   (MEVALARGS (LISTIFY N)))))))
+					   (MEVALARGS lll))))))
 		  T-MFEXPR)
  	(DEFPROP $ZMAK0
 		 (LAMBDA ($LIST) 
 		   ((LAMBDA ($CST) 
 		      (SETQ $CST 1)
 		      (SETQ $LIST
-			    (SIMPLIFY ($EV $LIST
+			    (SIMPLIFY (XX-$EV $LIST
 					   ((MDEFINE) (($ZN) $X) $X)
 					   ((MEQUAL) $ZD $ZD0))))
 		      (MUL* $CST (SIMPLIFY ($TR0 $LIST))))
@@ -1663,7 +1667,8 @@ UP IN NEWL| $IN $OUT)T
  	(ARGS '$UNSCALS '(NIL . 1))
  	(ADD2LNC '(($UNSCALS) ((MLIST) $LIST)) $FUNCTIONS)
  	(MDEFPROP $UNSCALS
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($UNSCALS (CONS '(MLIST)
 						      (LISTIFY N))))
@@ -1763,7 +1768,8 @@ UP IN NEWL| $IN $OUT)T
  	(ADD2LNC '(($UNKINDEF) ((MLIST) $LIST)) $FUNCTIONS)
  	(MDEFPROP
 	 $UNKINDEF
-	 (LAMBDA N 
+	 (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 	   (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 			     ($UNKINDEF (CONS '(MLIST) (LISTIFY N))))
 		 (T (SETQ NOEVALARGS NIL)
@@ -1797,7 +1803,8 @@ UP IN NEWL| $IN $OUT)T
  	(ARGS '$ZNK '(NIL . 1))
  	(ADD2LNC '(($ZNK) ((MLIST) $X)) $FUNCTIONS)
  	(MDEFPROP $ZNK
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($ZNK (CONS '(MLIST)
 						  (LISTIFY N))))
@@ -2041,7 +2048,8 @@ UP IN NEWL| $IN $OUT)T
  	(ADD2LNC '(($ZDK) ((MLIST) $X)) $FUNCTIONS)
  	(MDEFPROP $ZDK T MLEXPRP)
  	(MDEFPROP $ZDK
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($ZDK (CONS '(MLIST)
 						  (LISTIFY N))))
@@ -2157,7 +2165,8 @@ UP IN NEWL| $IN $OUT)T
  	(ADD2LNC '(($KINDEF) ((MLIST) $LIST)) $FUNCTIONS)
  	(MDEFPROP $KINDEF T MLEXPRP)
  	(MDEFPROP $KINDEF
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($KINDEF (CONS '(MLIST)
 						     (LISTIFY N))))
@@ -3014,7 +3023,8 @@ UP IN NEWL| $IN $OUT)T
  	(ARGS '$ZFIX1 '(NIL . 1))
  	(ADD2LNC '(($ZFIX1) ((MLIST) $LIST)) $FUNCTIONS)
  	(MDEFPROP $ZFIX1
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($ZFIX1 (CONS '(MLIST)
 						    (LISTIFY N))))
@@ -3033,7 +3043,7 @@ UP IN NEWL| $IN $OUT)T
 							  $GT
 							  $ZFIX1)))
 					   $EXP)))
-	      (SIMPLIFY ($EV $QW)))
+	      (SIMPLIFY (XX-$EV $QW)))
 	    '$QW))
 	 EXPR)
  	(ARGS '$ZFIXR '(NIL . 2))
@@ -3305,7 +3315,8 @@ UP IN NEWL| $IN $OUT)T
  	(ADD2LNC '(($AXPROP) ((MLIST) $LIST)) $FUNCTIONS)
  	(MDEFPROP $AXPROP T MLEXPRP)
  	(MDEFPROP $AXPROP
-		  (LAMBDA N 
+		  (LAMBDA (&rest narg-rest-argument &aux
+                             (n (length narg-rest-argument))) 
 		    (COND (NOEVALARGS (SETQ NOEVALARGS NIL)
 				      ($AXPROP (CONS '(MLIST)
 						     (LISTIFY N))))

@@ -7,9 +7,9 @@
 (and (find-package "MAXIMA") (push :maxima *features*))
 #+maxima
 (in-package "MAXIMA")
-(defun user::setup ( port )
-  (setq me (si::socket port :host "localhost"))
-  (si::set-blocking me t)
+(defun user::setup ( port &optional (host "localhost"))
+  (setq me (si::socket port :host host))
+;  (si::set-blocking me t)
   ;; we exit if we get a sigpipe, usually caused by
   ;; the other side shutting down..
   (setq si::*sigpipe-action* 'si::bye)

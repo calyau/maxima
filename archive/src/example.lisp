@@ -14,7 +14,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package "MAXIMA")
-(defun $example (item &optional (file
+(defmspec $example (item &optional (file
 				 (merge-pathnames "manual.demo"
 						  $describe_documentation))
 		      &aux tmp-name

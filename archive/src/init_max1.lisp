@@ -12,6 +12,7 @@
 
 (proclaim '(optimize (safety 0) (speed 3) (space 0)))
  (defun maxima-path (dir file)
+   (if (symbolp file) (setq file (stripdollar file)))
    (format nil "~a~a/~a" maxima::*maxima-directory*
 	   dir file))
  (load "version.lisp") 
@@ -21,14 +22,29 @@
 
 
 (in-package "MAXIMA")
+;
+;; the following is just a hack to make the c and d intern
+;; as small letters in maxima.
+'(|$c| |$d|)
+
 (defun set-pathnames ()
+  ;; need to get one when were are.
+  (setq *maxima-directory* nil)
   (let* ((tem (si::getenv "MAXIMA_DIRECTORY"))
 	 (n (length tem)))
     (cond ((> n 0)
 	   (or (eql (aref tem (- n 1)) #\/)
 	       (setq tem (format nil "~a/" tem)))
-	   (setq *maxima-directory* tem)))
-
+	   (setq *maxima-directory* tem))
+	  ((si::set-dir '*maxima-directory* "-dir"))
+	  (t (setq
+	      *maxima-directory*
+	      (namestring
+	       (truename
+		(concatenate 'string
+			     (namestring (make-pathname :name nil :defaults (si::argv 0)))
+			     "../"))))))
+			     
     (push  (maxima-path "info" "") SYSTEM::*INFO-PATHS*)
     (setq $file_search_lisp
         (list '(mlist)

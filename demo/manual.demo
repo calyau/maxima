@@ -2,15 +2,14 @@
  /* This file is to be run by the EXAMPLE command, and may not 
    otherwise work.
    The following are either acceptable lines to maxima, or they are
-   ";&&
-name"
-   where the && follows a ';' or '$' immediately as the first token, and
-   signifies that name will follow, introducing a group of examples.
+   two successive '&' characters immediately following a '$' or ';'
+   and then followed by the name of the section of examples, and then followed by
+   a sequence of maxima forms.
 */
-2;&&
+&&
 functions
-kill(x,y,f,g,h);
-   F(X):=X^2+Y;
+KILL(X,Y,F,G,H);
+F(X):=X^2+Y;
 F(2);
 EV(F(2),Y:7);
 F(X):=SIN(X)^2+1;
@@ -36,19 +35,19 @@ P[2](5);
 F[I,J](X,Y):=X^I+Y^J;
 G(FUN,A,B):=PRINT(FUN," applied to ",A," and ",B," is ",FUN(A,B))$
 G(F[2,1],SIN(%PI),2*C);&&
-arrays  A[N]:=N*A[N-1];
+ARRAYS  A[N]:=N*A[N-1];
 A[0]:1$
 A[5];
 A[N]:=N$
 A[6];
 A[4];&&
-lambda  LAMBDA([X,Y,Z],X^2+Y^2+Z^2);
+LAMBDA  LAMBDA([X,Y,Z],X^2+Y^2+Z^2);
 %(1,2,A);
 "+"(1,2,A);&&
-lists  [X^2,Y/3,-2];
+LISTS  [X^2,Y/3,-2];
 %[1]*X;
 [A,%TH(2),%];&&
-matrices  M:MATRIX([A,0],[B,1]);
+MATRICES  M:MATRIX([A,0],[B,1]);
 M^2;
 M.M;
 M[1,1]*M;
@@ -57,12 +56,12 @@ M^^-1;
 [X,Y].M;
 MATRIX([A,B,C],[D,E,F],[G,H,I]);
 %^^2;&&
-equations  X+1=Y^2;
+EQUATIONS  X+1=Y^2;
 X-1=2*Y+1$
 %TH(2)+%;
 %TH(3)/Y;
 1/%;&&
-if  FIB[N]:=IF N=1 OR N=2 THEN 1 ELSE FIB[N-1]+FIB[N-2];
+IF  FIB[N]:=IF N=1 OR N=2 THEN 1 ELSE FIB[N-1]+FIB[N-2];
 FIB[1]+FIB[2];
 FIB[3];
 FIB[5];
@@ -70,7 +69,7 @@ ETA(MU,NU):=IF MU=NU THEN MU ELSE IF MU>NU THEN MU-NU ELSE MU+NU;
 ETA(5,6);
 ETA(ETA(7,7),ETA(1,2));
 IF NOT 5>=2 AND 6<=5 OR 4+1>3 THEN A ELSE B;&&
-block
+BLOCK
    kill(f);
    HESSIAN(F):=BLOCK([DFXX,DFXY,DFXZ,DFYY,DFYZ,DFZZ],
       DFXX:DIFF(F,X,2),DFXY:DIFF(F,X,1,Y,1),
@@ -85,10 +84,10 @@ F(X):=BLOCK([Y,use_fast_arrays:FALSE], LOCAL(A), Y:4, A[Y]:X, DISPLAY(A[Y]))$
 Y:2$
 A[Y+2]:0$
 F(9);
-Ff(X):=BLOCK([Y,a,use_fast_arrays:true], Y:4, A[Y]:X, DISPLAY(A[Y]))$
+Ff(X):=BLOCK([Y,A,use_fast_arrays:true], Y:4, A[Y]:X, DISPLAY(A[Y]))$
 Ff(10);
 A[Y+2];&&
-do  FOR A:-3 THRU 26 STEP 7 DO LDISPLAY(A)$
+DO  FOR A:-3 THRU 26 STEP 7 DO LDISPLAY(A)$
 S:0$
 FOR I:1 WHILE I<=10 DO S:S+I;
 S;
@@ -123,7 +122,7 @@ SQR(X):=X^2-5.0$
 NEWTON(SQR,1000);
 FOR F IN [LOG, RHO, ATAN] DO LDISP(F(1.0))$
 EV(CONCAT(E,LINENUM-1),NUMER);&&
-evaluation  DIFF(X*F(X),X);
+EVALUATION  DIFF(X*F(X),X);
 F(X):=SIN(X)$
 EV(%TH(2),DIFF);
 X;
@@ -137,7 +136,7 @@ EV(%,F);
 ''%;
 SUM(I!,I,1,4);
 'SUM(I!,I,1,4);
-remvalue(x);
+REMVALUE(X);
 'INTEGRATE(F(X),X,A,B);
 FOR I THRU 5 DO S:S+I^2;
 S;
@@ -161,7 +160,7 @@ F(Y):=''(DIFF(Y*LOG(Y),Y,2));
 DIFF(%,X);
 Y:X^2+1$
 ''(CONCAT(C,LINENUM-2));&&
-exp  EV(%E^X*SIN(X)^2,EXPONENTIALIZE);
+EXP  EV(%E^X*SIN(X)^2,EXPONENTIALIZE);
 kill(x);
 INTEGRATE(%,X);
 EV(%,DEMOIVRE);
@@ -171,7 +170,7 @@ INTEGRATE(%E^X*SIN(X)^2,X);
 TRIGREDUCE(%);
 %-ANS;
 EV(SIN(X),%EMODE);&&
-trig  SIN(%PI/12)+TAN(%PI/6);
+TRIG  SIN(%PI/12)+TAN(%PI/6);
 EV(%,NUMER);
 SIN(1);
 SIN(1),NUMER;
@@ -193,10 +192,10 @@ TRIGSIMP(%);
 EV(SIN(X),EXPONENTIALIZE);
 TAYLOR(SIN(X)/X,X,0,4);
 EV(COS(X)^2-SIN(X)^2,SIN(X)^2=1-COS(X)^2);&&
-complex  (SQRT(-4)+SQRT(2.25))^2;
+COMPLEX  (SQRT(-4)+SQRT(2.25))^2;
 EXPAND(%);
 EXPAND(SQRT(2*%I));&&
-ev
+EV
 kill(y,x,w);
 SIN(X)+COS(Y)+(W+1)^2+'DIFF(SIN(W),W);
 EV(%,SIN,EXPAND,DIFF,X=2,Y=1);
@@ -211,10 +210,10 @@ EV(%TH(3),%);
 X+1/X>GAMMA(1/2);
 EV(%,NUMER,X=1/2);
 EV(%,PRED);&&
-zeroequiv  ZEROEQUIV(SIN(2*X)-2*SIN(X)*COS(X),X);
+ZEROEQUIV  ZEROEQUIV(SIN(2*X)-2*SIN(X)*COS(X),X);
 ZEROEQUIV(%E^X+X,X);
 ZEROEQUIV(LOG(A*B)-LOG(A)-LOG(B),A);&&
-expand  (1/(X+Y)^4-3/(Y+Z)^3)^2;
+EXPAND  (1/(X+Y)^4-3/(Y+Z)^3)^2;
 EXPAND(%,2,0);
 EXPAND(A.(B+C.(D+E)+F));
 EXPAND((X+1)^3);
@@ -222,36 +221,36 @@ EXPAND((X+1)^3);
 EXPAND(%);
 EXPAND(%TH(2),7,7);
 EV(A*(B+C)+A*(B+C)^2,EXPOP:1);&&
-ratexpand  RATEXPAND((2*X-3*Y)^3);
+RATEXPAND  RATEXPAND((2*X-3*Y)^3);
 (X-1)/(X+1)^2+1/(X-1);
 EXPAND(%);
 RATEXPAND(%TH(2));&&
-ratsimp  SIN(X/(X^2+X))=%E^((LOG(X)+1)^2-LOG(X)^2);
+RATSIMP  SIN(X/(X^2+X))=%E^((LOG(X)+1)^2-LOG(X)^2);
 RATSIMP(%);
 B*(A/B-X)+B*X+A;
 RATSIMP(%);
 ((X-1)^(3/2)-(X+1)*SQRT(X-1))/SQRT(X-1)/SQRT(X+1);
 RATSIMP(%);
 X^(A+1/A),RATSIMPEXPONS;&&
-radcan  (LOG(X^2+X)-LOG(X))^A/LOG(X+1)^(A/2);
+RADCAN  (LOG(X^2+X)-LOG(X))^A/LOG(X+1)^(A/2);
 RADCAN(%);
 LOG(A^(2*X)+2*A^X+1)/LOG(A^X+1);
 RADCAN(%);
 (%E^X-1)/(%E^(X/2)+1);
 RADCAN(%);&&
-combine  COMBINE(A/X+B/X+A/Y+B/Y);&&
-multthru  X/(X-Y)^2-1/(X-Y)-F(X)/(X-Y)^3;
+COMBINE  COMBINE(A/X+B/X+A/Y+B/Y);&&
+MULTTHRU  X/(X-Y)^2-1/(X-Y)-F(X)/(X-Y)^3;
 MULTTHRU((X-Y)^3,%);
 RATEXPAND(%);
 ((A+B)^10*S^2+2*A*B*S+(A*B)^2)/(A*B*S^2);
 MULTTHRU(%);
 MULTTHRU(A.(B+C.(D+E)+F));&&
-xthru  ((X+2)^20-2*Y)/(X+Y)^20+(X+Y)^-19-X/(X+Y)^20;
+XTHRU  ((X+2)^20-2*Y)/(X+Y)^20+(X+Y)^-19-X/(X+Y)^20;
 XTHRU(%);&&
-partfrac  2/(X+2)-2/(X+1)+1/(X+1)^2;
+PARTFRAC  2/(X+2)-2/(X+1)+1/(X+1)^2;
 RATSIMP(%);
 PARTFRAC(%,X);&&
-factor  FACTOR(2^63-1);
+FACTOR  FACTOR(2^63-1);
 FACTOR(Z^2*(X+2*Y)-4*X-8*Y);
 X^2*Y^2+2*X*Y^2+Y^2-X^2-2*X-1;
 BLOCK([DONTFACTOR:[X]],FACTOR(%/36/(Y^2+2*Y+1)));
@@ -267,16 +266,16 @@ SUBST(A,X,%);
 FACTOR(%TH(2),%);
 FACTOR(X^12+1);
 FACTOR(X^99+1);&&
-factorsum  EV((X+1)*((U+V)^2+A*(W+Z)^2),EXPAND);
+FACTORSUM  EV((X+1)*((U+V)^2+A*(W+Z)^2),EXPAND);
 FACTORSUM(%);&&
-sqfr  SQFR(4*X^4+4*X^3-3*X^2-4*X-1);&&
-gfactor  GFACTOR(X^4-1);&&
-partition  PARTITION(2*A*X*F(X),X);
+SQFR  SQFR(4*X^4+4*X^3-3*X^2-4*X-1);&&
+GFACTOR  GFACTOR(X^4-1);&&
+PARTITION  PARTITION(2*A*X*F(X),X);
 PARTITION(A+B,X);&&
-logcontract  2*(A*LOG(X) + 2*A*LOG(Y));
+LOGCONTRACT  2*(A*LOG(X) + 2*A*LOG(Y));
 LOGCONTRACT(%);
 LOGCONTRACT(LOG(SQRT(X+1)+SQRT(X)) + LOG(SQRT(X+1)-SQRT(X)));&&
-rootscontract ROOTSCONMODE:FALSE$
+ROOTSCONTRACT ROOTSCONMODE:FALSE$
 ROOTSCONTRACT(X^(1/2)*Y^(3/2));
 ROOTSCONTRACT(X^(1/2)*Y^(1/4));
 ROOTSCONMODE:TRUE$
@@ -289,7 +288,7 @@ ROOTSCONMODE:FALSE$
 ROOTSCONTRACT(SQRT(SQRT(X+1)+SQRT(X))*SQRT(SQRT(X+1)-SQRT(X))); 
 ROOTSCONMODE:TRUE$
 ROOTSCONTRACT(SQRT(SQRT(5)+5)-5^(1/4)*SQRT(SQRT(5)+1));&&
-diff  kill(f,g,h,x,y);
+DIFF  kill(f,g,h,x,y);
 DIFF(SIN(X)+X^3+2*X^2,X);
 DIFF(SIN(X)*COS(X),X);
 DIFF(SIN(X)*COS(X),X,2);
@@ -297,20 +296,20 @@ DERIVABBREV:TRUE$
 DIFF(EXP(F(X)),X,2);
 'INTEGRATE(F(X,Y),Y,G(X),H(X));
 DIFF(%,X);&&
-depends  
+DEPENDS  
 kill(a,x,f,y,t);
 DEPENDS(A,X);
 DIFF(A.A,X);
 DEPENDS(F,[X,Y],[X,Y],T);
 DIFF(F,T);&&
-gradef  DEPENDS(Y,X);
+GRADEF  DEPENDS(Y,X);
 kill(f,g,j);
 GRADEF(F(X,Y),X^2,G(X,Y));
 DIFF(F(X,Y),X);
 GRADEF(J(N,Z),'DIFF(J(N,Z),N),
 	J(N-1,Z)-N/Z*J(N,Z))$
 RATSIMP(DIFF(J(2,X),X,2));&&
-integrate
+INTEGRATE
 test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)));
 test(sin(x));
 test(1/(1+x));
@@ -328,12 +327,12 @@ INTEGRATE(X^(5/4)/(X+1)^(5/2),X,0,INF);
 GRADEF(Q(X),SIN(X^2));
 DIFF(LOG(Q(R(X))),X);
 INTEGRATE(%,X);&&
-risch  
+RISCH  
 RISCH(X^2*ERF(X),X);
 DIFF(%,X),RATSIMP;&&
-changevar  'INTEGRATE(%E^(SQRT(A)*SQRT(Y)),Y,0,4);
+CHANGEVAR  'INTEGRATE(%E^(SQRT(A)*SQRT(Y)),Y,0,4);
 CHANGEVAR(%,Y-Z^2/A,Z,Y);&&
-specint  ASSUME(P>0,A>0)$
+SPECINT  ASSUME(P>0,A>0)$
 /* a Laplace transform */
 T^(1/2)*%E^(-A*T/4)*%E^(-P*T);
 SPECINT(%,T);
@@ -341,9 +340,9 @@ SPECINT(%,T);
 T^(1/2)*%J[1](2*A^(1/2)*T^(1/2))*%E^(-P*T);
 SPECINT(%,T);
 FORGET(P>0,A>0)$&&
-part  X+Y/Z^2;
+PART  X+Y/Z^2;
 PART(%,1,2,2);
-remvalue(x);
+REMVALUE(X);
 'INTEGRATE(F(X),X,A,B)+X;
 PART(%,1,1);
 X^2+2*X=Y^2;
@@ -354,13 +353,13 @@ PART(%,1);
 27*Y^3+54*X*Y^2+36*X^2*Y+Y+8*X^3+X+1;
 PART(%,2,[1,3]);
 SQRT(PIECE/54);&&
-inpart  X+Y+W*Z;
+INPART  X+Y+W*Z;
 INPART(%,3,2);
 'LIMIT(F(X)^G(X+1),X,0,MINUS);
 INPART(%,1,2);&&
-nounify  'LIMIT(F(X)^G(X+1),X,0,MINUS);
+NOUNIFY  'LIMIT(F(X)^G(X+1),X,0,MINUS);
 IS(INPART(%,0)=NOUNIFY(LIMIT));&&
-dpart  DPART(X+Y/Z^2,1,2,1);
+DPART  DPART(X+Y/Z^2,1,2,1);
 EXPAND((B+A)^4);
 (B+A)^2*(Y+X)^2;
 EXPAND(%);
@@ -368,7 +367,7 @@ EXPAND(%);
 FACTOR(%);
 DPART(%TH(2),2,4);
 PART(%TH(3),2,4);&&
-subst  SUBST(A,X+Y,X+(X+Y)^2+Y);
+SUBSTITUTE  SUBST(A,X+Y,X+(X+Y)^2+Y);
 SUBST(-%I,%I,A+B*%I);
 SUBST(X,Y,X+Y);
 SUBST(X=0,DIFF(SIN(X),X));
@@ -377,11 +376,11 @@ INTEGRATE(X^I,X),I=-1;
 ERRCATCH(SUBST(-1,I,INTEGRATE(X^I,X)));
 MATRIX([A,B],[C,D]);
 SUBST("[",MATRIX,%);&&
-ratsubst  RATSUBST(A,X*Y^2,X^4*Y^8+X^4*Y^3);
+RATSUBST  RATSUBST(A,X*Y^2,X^4*Y^8+X^4*Y^3);
 1 + COS(X) + COS(X)^2 + COS(X)^3 + COS(X)^4;
 RATSUBST(1-SIN(X)^2,COS(X)^2,%);
 RATSUBST(1-COS(X)^2,SIN(X)^2,SIN(X)^4);&&
-substpart  1/(X^2+2);
+SUBSTPART  1/(X^2+2);
 SUBSTPART(3/2,%,2,1,2);
 27*Y^3+54*X*Y^2+36*X^2*Y+Y+8*X^3+X+1;
 SUBSTPART(FACTOR(PIECE),%,[1,2,3,5]);
@@ -394,63 +393,63 @@ SUBSTPART(RATSIMP(PIECE),%,1,[1,2]);
 -SUBSTPART(-PIECE,%,1,1);
 A+B/(X*(Y+(A+B)*X)+1);
 SUBSTPART(MULTTHRU(PIECE),%,1,2,1);&&
-substinpart  X.'DIFF(F(X),X,2);
+SUBSTINPART  X.'DIFF(F(X),X,2);
 SUBSTINPART(D^2,%,2);
 SUBSTINPART(F1,F[1](X+1),0);&&
-atvalue
+ATVALUE
 kill(f,x,a,u,g);
 ATVALUE(F(X,Y),[X=0,Y=1],A^2)$
 ATVALUE('DIFF(F(X,Y),X),X=0,Y+1);
 PRINTPROPS(ALL,ATVALUE);
 DIFF(4*F(X,Y)^2-U(X,Y)^2,X);
 AT(%,[X=0,Y=1]);&&
-at  ATVALUE(F(X,Y),[X=0,Y=1],A^2);
+AT  ATVALUE(F(X,Y),[X=0,Y=1],A^2);
 ATVALUE('DIFF(F(X,Y),X),X=0,Y+1);
 PRINTPROPS(ALL,ATVALUE);
 DIFF(4*F(X,Y)^2-U(X,Y)^2,X);
 AT(%,[X=0,Y=1]);&&
-listofvars  LISTOFVARS(F(X[1]+Y)/G^(2+A));&&
-coeff  COEFF(2*A*TAN(X)+TAN(X)+B=5*TAN(X)+3,TAN(X));
+LISTOFVARS  LISTOFVARS(F(X[1]+Y)/G^(2+A));&&
+COEFF  COEFF(2*A*TAN(X)+TAN(X)+B=5*TAN(X)+3,TAN(X));
 COEFF(Y+X*%E^X+1,X,0);&&
-ratcoeff  A*X+B*X+5$
+RATCOEFF  A*X+B*X+5$
 RATCOEF(%,A+B);&&
-bothcoeff  ISLINEAR(EXP,VAR):=BLOCK([C],
+BOTHCOEFF  ISLINEAR(EXP,VAR):=BLOCK([C],
             C:BOTHCOEF(RAT(EXP,VAR),VAR),
             IS(FREEOF(VAR,C) AND C[1]#0))$
 ISLINEAR((R^2-(X-R)^2)/X,X);&&
-isolate  (A+B)^4*(1+X*(2*X+(C+D)^2));
+ISOLATE  (A+B)^4*(1+X*(2*X+(C+D)^2));
 ISOLATE(%,X);
 RATEXPAND(%)$
 EV(%);
 (A+B)*(X+A+B)^2*%E^(X^2+A*X+B);
 ISOLATE(%,X),EXPTISOLATE:TRUE;&&
-pickapart  INTEGRATE(1/(X^3+2),X)$
+PICKAPART  INTEGRATE(1/(X^3+2),X)$
 PICKAPART(%,1);&&
-numfactor  GAMMA(7/2);
+NUMFACTOR  GAMMA(7/2);
 NUMFACTOR(%);&&
-derivdegree  'DIFF(Y,X,2)+'DIFF(Y,Z,3)*2+'DIFF(Y,X)*X^2;
+DERIVDEGREE  'DIFF(Y,X,2)+'DIFF(Y,Z,3)*2+'DIFF(Y,X)*X^2;
 DERIVDEGREE(%,Y,X);&&
-realpart  (%I*V+U)/(F+%I*E)+%E^(%I*ALPHA);
+REALPART  (%I*V+U)/(F+%I*E)+%E^(%I*ALPHA);
 REALPART(%);&&
-polarform  RECTFORM(SIN(2*%I+X));
+POLARFORM  RECTFORM(SIN(2*%I+X));
 POLARFORM(%);
 RECTFORM(LOG(3+4*%I));
 POLARFORM(%);
 RECTFORM((2+3.5*%I)^0.25),NUMER;
 POLARFORM(%);&&
-delete  DELETE(SIN(X),X+SIN(X)+Y);&&
-nroots  X^10-2*X^4+1/2;
+DELETE  DELETE(SIN(X),X+SIN(X)+Y);&&
+NROOTS  X^10-2*X^4+1/2;
 NROOTS(%,-6,9.1);&&
-realroots  REALROOTS(X^5-X-1,5.0E-6);
+REALROOTS  REALROOTS(X^5-X-1,5.0E-6);
 %[1],FLOAT;
 X^5-X-1,%;&&
-allroots  (2*X+1)^3=13.5*(X^5+1);
+ALLROOTS  (2*X+1)^3=13.5*(X^5+1);
 ALLROOTS(%);&&
-linsolve  X+Z=Y$
+LINSOLVE  X+Z=Y$
 2*A*X-Y=2*A^2$
 Y-2*Z=2$
 LINSOLVE([%TH(3),%TH(2),%],[X,Y,Z]),GLOBALSOLVE;&&
-algsys  F1:2*X*(1-L1)-2*(X-1)*L2$
+ALGSYS  F1:2*X*(1-L1)-2*(X-1)*L2$
 F2:L2-L1$
 F3:L1*(1-X**2-Y)$
 F4:L2*(Y-(X-1)**2)$
@@ -458,7 +457,7 @@ ALGSYS([F1,F2,F3,F4],[X,Y,L1,L2]);
 F1:X**2-Y**2$
 F2:X**2-X+2*Y**2-Y-1$
 ALGSYS([F1,F2],[X,Y]);&&
-solve  SOLVE(ASIN(COS(3*X))*(F(X)-1),X);
+SOLVE  SOLVE(ASIN(COS(3*X))*(F(X)-1),X);
 SOLVE(5^F(X)=125,F(X)),SOLVERADCAN;
 [4*X^2-Y^2=12,X*Y-X=2];
 SOLVE(%,[X,Y]);
@@ -470,18 +469,18 @@ EXPAND(%);
 X^2-1;
 SOLVE(%,X);
 %TH(2),%[1];&&
-entermatrix  ENTERMATRIX(2,1);&&
-genmatrix  H[I,J]:=1/(I+J-1)$
+ENTERMATRIX  ENTERMATRIX(2,1);&&
+GENMATRIX  H[I,J]:=1/(I+J-1)$
 GENMATRIX(H,3,3);&&
-augcoefmatrix  [2*X-(A-1)*Y=5*B,A*X+B*Y+C=0]$
+AUGCOEFMATRIX  [2*X-(A-1)*Y=5*B,A*X+B*Y+C=0]$
 AUGCOEFMATRIX(%,[X,Y]);&&
-echelon  MATRIX([2,1-A,-5*B],[A,B,C]);
+ECHELON  MATRIX([2,1-A,-5*B],[A,B,C]);
 ECHELON(%);&&
-triangularize  MATRIX([2,1-A,-5*B],[A,B,C]);
+TRIANGULARIZE  MATRIX([2,1-A,-5*B],[A,B,C]);
 TRIANGULARIZE(%);&&
-rank  MATRIX([2,1-A,-5*B],[A,B,C]);
+RANK  MATRIX([2,1-A,-5*B],[A,B,C]);
 RANK(%);&&
-charpoly  A:MATRIX([3,1],[2,4]);
+CHARPOLY  A:MATRIX([3,1],[2,4]);
 EXPAND(CHARPOLY(A,LAMBDA));
 (PROGRAMMODE:TRUE,SOLVE(%));
 MATRIX([X1],[X2]);
@@ -489,11 +488,11 @@ EV(A.%-LAMBDA*%,%TH(2)[1]);
 %[1,1]=0;
 X1^2+X2^2=1;
 SOLVE([%TH(2),%],[X1,X2]);&&
-dotscrules  DECLARE(L,SCALAR,[M1,M2,M3],NONSCALAR);
+DOTSCRULES  DECLARE(L,SCALAR,[M1,M2,M3],NONSCALAR);
 EXPAND((1-L*M1).(1-L*M2).(1-L*M3));
 %,DOTSCRULES;
 RAT(%,L);&&
-rat  RAT(X^2);
+RAT  RAT(X^2);
 DIFF(F(%),X);
 ((X-2*Y)^4/(X^2-4*Y^2)^2+1)*(Y+A)*(2*Y+X)/(4*Y^2+X^2);
 RAT(%,Y,A,X);
@@ -501,55 +500,55 @@ RAT(%,Y,A,X);
 RAT(%);
 DIFF(%,X);
 FACTOR(%);&&
-ratweight  RATWEIGHT(A,1,B,1);
+RATWEIGHT  RATWEIGHT(A,1,B,1);
 RAT(A+B+1);
 %^2;
 EV(%TH(2)^2,RATWTLVL:1);&&
-horner  POLY:1.0E-20*X^2-5.5*X+5.2E20;
+HORNER  POLY:1.0E-20*X^2-5.5*X+5.2E20;
 ERRCATCH(EV(%,X=1.0E20));
 HORNER(POLY,X),KEEPFLOAT;
 EV(%,X=1.0E20);&&
-divide  DIVIDE(X+Y,X-Y,X);
+DIVIDE  DIVIDE(X+Y,X-Y,X);
 DIVIDE(X+Y,X-Y);&&
-content  CONTENT(2*X*Y+4*X^2*Y^2,Y);&&
-resultant  RESULTANT(A*Y+X^2+1,Y^2+X*Y+B,X);&&
-bezout  BEZOUT(A*Y+X^2+1,Y^2+X*Y+B,X);
+CONTENT  CONTENT(2*X*Y+4*X^2*Y^2,Y);&&
+RESULTANT  RESULTANT(A*Y+X^2+1,Y^2+X*Y+B,X);&&
+BEZOUT  BEZOUT(A*Y+X^2+1,Y^2+X*Y+B,X);
 EXPAND(DETERMINANT(%));
 %-EXPAND(RESULTANT(A*Y+X^2+1,Y^2+X*Y+B,X));&&
-poly_discriminant  FACTOR(POLY_DISCRIMINANT((X-A)*(X-B)*(X-C),X));&&
-ratdiff  (4*X^3+10*X-11)/(X^5+5);
+POLY_discriminant  FACTOR(POLY_DISCRIMINANT((X-A)*(X-B)*(X-C),X));&&
+RATDIFF  (4*X^3+10*X-11)/(X^5+5);
 MOD(%),MODULUS:3;
-RATDIFF(%TH(3),X);&&
-tellrat  10*(1+%I)/(3^(1/3)+%I);
+RATDIFF(%TH(2),X);&&
+TELLRAT  10*(1+%I)/(3^(1/3)+%I);
 RATDISREP(RAT(%)),ALGEBRAIC;
 TELLRAT(A^2+A+1);
 A/(SQRT(2)+SQRT(3))+1/(A*SQRT(2)-1);
 RATDISREP(RAT(%)),ALGEBRAIC;
 TELLRAT(Y^2=X^2);&&
-taytorat  TAYLOR(1+X,[X,0,3]);
+TAYTORAT  TAYLOR(1+X,[X,0,3]);
 1/%;
 TAYLOR(1+X+Y+Z,[X,0,3],[Y,1,2],[Z,2,1]);
 1/%;
 TAYLOR(1+X+Y+Z,[X,0,3],[Y,0,3],[Z,0,3]);
 1/%;&&
-sum  SUM(I^2+2^I,I,0,N),SIMPSUM;
+SUM  SUM(I^2+2^I,I,0,N),SIMPSUM;
 SUM(3^(-I),I,1,INF),SIMPSUM;
 SUM(I^2,I,1,4)*SUM(1/I^2,I,1,INF),SIMPSUM;
 SUM(I^2,I,1,5);&&
-product  PRODUCT(X+I*(I+1)/2,I,1,4);&&
-limit  LIMIT(X*LOG(X),X,0,PLUS);
+PRODUCT  PRODUCT(X+I*(I+1)/2,I,1,4);&&
+LIMIT  LIMIT(X*LOG(X),X,0,PLUS);
 LIMIT((1+X)^(1/X),X,0);
 LIMIT(%E^X/X,X,INF);
 LIMIT(SIN(1/X),X,0);&&
-nusum  NUSUM(N*N!,N,0,N);
+NUSUM  NUSUM(N*N!,N,0,N);
 NUSUM(N^4*4^N/BINOMIAL(2*N,N),N,0,N);
 UNSUM(%,N);
 UNSUM(PROD(I^2,I,1,N),N);
 NUSUM(%,N,1,N);&&
-funcsolve  FUNCSOLVE((N+1)*F(N)-(N+3)*F(N+1)/(N+1)=(N-1)/(N+2),F(N));&&
-residue  RESIDUE(S/(S^2+A^2),S,A*%I);
+FUNCSOLVE  FUNCSOLVE((N+1)*F(N)-(N+3)*F(N+1)/(N+1)=(N-1)/(N+2),F(N));&&
+RESIDUE  RESIDUE(S/(S^2+A^2),S,A*%I);
 RESIDUE(SIN(A*X)/X^4,X,0);&&
-taylor  TAYLOR(SQRT(1+A*X+SIN(X)),X,0,3);
+TAYLOR  TAYLOR(SQRT(1+A*X+SIN(X)),X,0,3);
 %^2;
 TAYLOR(SQRT(1+X),X,0,5);
 %^2;
@@ -565,132 +564,132 @@ TAYLOR(SIN(X+Y),X,0,3,Y,0,3);
 TAYLOR(SIN(X+Y),[X,Y],0,3);
 TAYLOR(1/SIN(X+Y),X,0,3,Y,0,3);
 TAYLOR(1/SIN(X+Y),[X,Y],0,3);&&
-deftaylor  DEFTAYLOR(F(X),X^2+SUM(X^I/(2^I*I!^2),I,4,INF));
+DEFTAYLOR  DEFTAYLOR(F(X),X^2+SUM(X^I/(2^I*I!^2),I,4,INF));
 TAYLOR(%E^SQRT(F(X)),X,0,4);&&
-powerseries  POWERSERIES(LOG(SIN(X)/X),X,0);&&
-trigexpand  X+SIN(3*X)/SIN(X),TRIGEXPAND,EXPAND;
+POWERSERIES  POWERSERIES(LOG(SIN(X)/X),X,0);&&
+TRIGEXPAND  X+SIN(3*X)/SIN(X),TRIGEXPAND,EXPAND;
 TRIGEXPAND(SIN(10*X+Y));&&
-trigreduce  -SIN(X)^2+3*COS(X)^2+X;
+TRIGREDUCE  -SIN(X)^2+3*COS(X)^2+X;
 EXPAND(TRIGREDUCE(%));
 DECLARE(J,INTEGER,E,EVEN,O,ODD);
 SIN(X+(E+1/2)*%PI);
 SIN(X+(O+1/2)*%PI);&&
-optimize  DIFF(EXP(X^2+Y)/(X+Y),X,2);
+OPTIMIZE  DIFF(EXP(X^2+Y)/(X+Y),X,2);
 OPTIMIZE(%);&&
-laplace  LAPLACE(%E^(2*T+A)*SIN(T)*T,T,S);&&
-ilt  'INTEGRATE(SINH(A*X)*F(T-X),X,0,T)+B*F(T)=T^2;
+LAPLACE  LAPLACE(%E^(2*T+A)*SIN(T)*T,T,S);&&
+ILT  'INTEGRATE(SINH(A*X)*F(T-X),X,0,T)+B*F(T)=T^2;
 LAPLACE(%,T,S);
 LINSOLVE([%],['LAPLACE(F(T),T,S)]);
 ILT(EV(%[1]),S,T);&&
-minfactorial  N!/(N+1)!;
+MINFACTORIAL  N!/(N+1)!;
 MINFACTORIAL(%);&&
-factcomb  (N+1)^2*N!^2;
+FACTCOMB  (N+1)^2*N!^2;
 FACTCOMB(%);&&
-qunit  QUNIT(17);
+QUNIT  QUNIT(17);
 EXPAND(%*(SQRT(17)-4));&&
-cf  CF([1,2,-3]+[1,-2,1]);
+CF  CF([1,2,-3]+[1,-2,1]);
 CFDISREP(%);
 CFLENGTH:4$
 CF(SQRT(3));
 CFEXPAND(%);
 EV(%[1,2]/%[2,2],NUMER);&&
-cfdisrep  CF([1,2,-3]+[1,-2,1]);
+CFDISREP  CF([1,2,-3]+[1,-2,1]);
 CFDISREP(%);&&
-cfexpand  CFLENGTH:4$
+CFEXPAND  CFLENGTH:4$
 CF(SQRT(3));
 CFEXPAND(%);
 EV(%[1,2]/%[2,2],NUMER);&&
-featurep DECLARE(J,EVEN)$
+FEATUREP DECLARE(J,EVEN)$
 FEATUREP(J,INTEGER);&&
-map  MAP(F,X+A*Y+B*Z);
+MAP  MAP(F,X+A*Y+B*Z);
 MAP(LAMBDA([U],PARTFRAC(U,X)),X+1/(X^3+4*X^2+5*X+2));
 MAP(RATSIMP, X/(X^2+X)+(Y^2+Y)/Y);
 MAP("=",[A,B],[-0.5,3]);&&
-fullmap  FULLMAP(G,A+B*C);
+FULLMAP  FULLMAP(G,A+B*C);
 MAP(G,A+B*C);&&
-fullmapl  FULLMAPL("+",[3,[4,5]],[[A,1],[0,-1.5]]);&&
-scanmap  (A^2+2*A+1)*Y+X^2;
+FULLMAPL  FULLMAPL("+",[3,[4,5]],[[A,1],[0,-1.5]]);&&
+SCANMAP  (A^2+2*A+1)*Y+X^2;
 SCANMAP(FACTOR,%);
-SCANMAP(FACTOR,%TH(2)AND(EXP));
+SCANMAP(FACTOR,EXPAND(%TH(2)));
 U*V^(A*X+B)+C;
 SCANMAP('F,%);&&
-append  APPEND([Y+X,0,-3.2],[2.5E20,X]);&&
-reverse  UNION(X,Y):=IF X=[] THEN Y ELSE
+APPEND  APPEND([Y+X,0,-3.2],[2.5E20,X]);&&
+REVERSE  UNION(X,Y):=IF X=[] THEN Y ELSE
                IF MEMBER(T:FIRST(X),Y) THEN UNION(REST(X),Y)
-               ELSE CONS(T,UNION(REST(X),Y)$
+               ELSE CONS(T,UNION(REST(X),Y))$
 UNION([A,B,1,1/2,X^2],[-X^2,A,Y,1/2]);
 BERNPOLY(X,5);
 MAPLIST(NUMFACTOR,%);
 APPLY(MIN,%);&&
-display  DISPLAY(B[1,2]);&&
-reveal  INTEGRATE(1/(X^3+2),X)$
+DISPLAY  DISPLAY(B[1,2]);&&
+REVEAL  INTEGRATE(1/(X^3+2),X)$
 REVEAL(%,2);
 REVEAL(%TH(2),3);&&
-catch  G(L):=CATCH(MAP(LAMBDA([X],IF X<0 THEN THROW(X) ELSE F(X)),L))$
+CATCH  G(L):=CATCH(MAP(LAMBDA([X],IF X<0 THEN THROW(X) ELSE F(X)),L))$
 G([1,2,3,7]);
 G([1,2,-3,7]);&&
-orderless  Y^2+B*X;
+ORDERLESS  Y^2+B*X;
 ORDERLESS(Y);
 Y^2+B*X;
 %-%TH(3);
 UNORDER();&&
-ordergreat  A^2+B*X;
+ORDERGREAT  A^2+B*X;
 ORDERGREAT(A);
 A^2+B*X;
 %-%TH(3);
 UNORDER();&&
-unorder  A^2+B*X;
+UNORDER  A^2+B*X;
 ORDERGREAT(A);
 A^2+B*X;
 %-%TH(3);
 UNORDER();&&
-linear DECLARE(F,LINEAR);
+LINEAR DECLARE(F,LINEAR);
 F(2*A+3*B);
 F(2*X+Y,X);&&
-additive DECLARE(F,ADDITIVE);
+ADDITIVE DECLARE(F,ADDITIVE);
 F(2*A+3*B);&&
-outative DECLARE(F,OUTATIVE);
+OUTATIVE DECLARE(F,OUTATIVE);
 F(2*A);&&
-multiplicative DECLARE(F,MULTIPLICATIVE);
+MULTIPLICATIVE DECLARE(F,MULTIPLICATIVE);
 F(2*A*B);&&
-lassociative DECLARE(G,LASSOCIATIVE);
+LASSOCIATIVE DECLARE(G,LASSOCIATIVE);
 G(G(A,B),G(C,D));
 G(G(A,B),G(C,D))-G(A,G(B,G(C,D)));&&
-rassociative DECLARE(G,RASSOCIATIVE);
+RASSOCIATIVE DECLARE(G,RASSOCIATIVE);
 G(G(A,B),G(C,D));
 G(G(A,B),G(C,D))-G(A,G(B,G(C,D)));&&
-commutative DECLARE(H,COMMUTATIVE);
+COMMUTATIVE DECLARE(H,COMMUTATIVE);
 H(X,Z,Y);&&
-symmetric DECLARE(H,SYMMETRIC);
+SYMMETRIC DECLARE(H,SYMMETRIC);
 H(X,Z,Y);&&
-antisymmetric DECLARE(H,ANTISYMMETRIC);
+ANTISYMMETRIC DECLARE(H,ANTISYMMETRIC);
 H(X,Z,Y);&&
-nary DECLARE(J,NARY);
+NARY DECLARE(J,NARY);
 J(J(A,B),J(C,D));&&
-oddfun DECLARE(F,ODDFUN);
+ODDFUN DECLARE(F,ODDFUN);
 F(-X);&&
-evenfun DECLARE(G,EVENFUN);
+EVENFUN DECLARE(G,EVENFUN);
 G(-X);&&
-posfun DECLARE(F,POSFUN);
+POSFUN DECLARE(F,POSFUN);
 IS(F(X)>0);&&
-arrayinfo B[1,X]:1$
+ARRAYINFO B[1,X]:1$
 ARRAY(F,2,3);
 ARRAYINFO(B);
 ARRAYINFO(F);&&
-properties PROPERTIES(CONS);
+PROPERTIES PROPERTIES(CONS);
 ASSUME(VAR1>0);
 PROPERTIES(VAR1);
 VAR2:2$
 PROPERTIES(VAR2);&&
-printprops GRADEF(R,X,X/R)$
+PRINTPROPS GRADEF(R,X,X/R)$
 GRADEF(R,Y,Y/R)$
 PRINTPROPS(R,ATOMGRAD);
 PROPVARS(ATOMGRAD);&&
-propvars GRADEF(R,X,X/R)$
+PROPVARS GRADEF(R,X,X/R)$
 GRADEF(R,Y,Y/R)$
 PRINTPROPS(R,ATOMGRAD);
 PROPVARS(ATOMGRAD);&&
-get  PUT(%E,TRANSCENDENTAL,TYPE);
+GET  PUT(%E,TRANSCENDENTAL,TYPE);
 PUT(%PI,TRANSCENDENTAL,TYPE)$
 PUT(%I,ALGEBRAIC,TYPE)$
 TYPEOF(X):=BLOCK([Q], IF NUMBERP(X)
@@ -701,12 +700,12 @@ TYPEOF(X):=BLOCK([Q], IF NUMBERP(X)
                ERROR("NOT NUMERIC") ELSE Q)$
 ERRCATCH(TYPEOF(2*%E+X*%PI));
 TYPEOF(2*%E+%PI);&&
-is  IS(X^2>=2*X-1);
+IS  IS(X^2>=2*X-1);
 ASSUME(A>1);
 IS(LOG(LOG(A+1)+1)>0 AND A^2+1>2*A);&&
-freeof  FREEOF(Y,SIN(X+2*Y));
+FREEOF  FREEOF(Y,SIN(X+2*Y));
 FREEOF(COS(Y),"*",SIN(Y)+COS(X));&&
-matchdeclare  MATCHDECLARE(A,TRUE)$
+MATCHDECLARE  MATCHDECLARE(A,TRUE)$
 TELLSIMP(SIN(A)^2,1-COS(A)^2)$
 SIN(Y)^2;
 KILL(RULES);
@@ -725,7 +724,7 @@ BLOCK(REMOVE(INTEGRATE,OUTATIVE),
 CHECKLIMITS(%);
 'INTEGRATE(SIN(T),T,0,X)$
 CHECKLIMITS(%);&&
-tellsimp  MATCHDECLARE(X,FREEOF(%I))$
+TELLSIMP  MATCHDECLARE(X,FREEOF(%I))$
 %IARGS:FALSE$
 TELLSIMP(SIN(%I*X),%I*SINH(X));
 TRIGEXPAND(SIN(X+%I*Y));
@@ -733,7 +732,7 @@ TRIGEXPAND(SIN(X+%I*Y));
 ERRCATCH(0^0);
 TELLSIMP(0^0,1),SIMP:FALSE;
 0^0;
-REMRULE("^","^RULE1");
+REMRULE("^",%th(2)[1]);
 TELLSIMP(SIN(X)^2,1-COS(X)^2)$
 (SIN(X)+1)^2;
 EXPAND(%);
@@ -743,7 +742,7 @@ MATCHDECLARE(A,TRUE)$
 TELLSIMP(SIN(A)^2,1-COS(A)^2)$
 SIN(Y)^2;
 KILL(RULES);&&
-defmatch  NONZEROANDFREEOF(X,E):=IS(E#0 AND FREEOF(X,E));
+DEFMATCH  NONZEROANDFREEOF(X,E):=IS(E#0 AND FREEOF(X,E));
 MATCHDECLARE(A,NONZEROANDFREEOF(X),B,FREEOF(X));
 DEFMATCH(LINEAR,A*X+B,X);
 LINEAR(3*Z+(Y+1)*Z+Y**2,Z);
@@ -759,7 +758,7 @@ CHECKLIMITS(%);
 'INTEGRATE(SIN(T),T,0,X)$
 CHECKLIMITS(%);
 REMVALUE(A,B,F,X)$&&
-let  MATCHDECLARE([A,A1,A2],TRUE);
+LET  MATCHDECLARE([A,A1,A2],TRUE);
 ONELESS(X,Y):=IS(X=Y-1)$
 LET(A1*A2!,A1!,ONELESS,A2,A1);
 LET(A1!/A1,(A1-1)!),LETRAT;
@@ -767,7 +766,7 @@ LETSIMP(N*M!*(N-1)!/M),LETRAT;
 LET(SIN(A)^2,1-COS(A)^2);
 SIN(X)^4;
 LETSIMP(%);&&
-letrules  MATCHDECLARE([A,A1,A2],TRUE);
+LETRULES  MATCHDECLARE([A,A1,A2],TRUE);
 ONELESS(X,Y):=IS(X=Y-1)$
 LET(A1*A2!,A1!,ONELESS,A2,A1);
 LET(A1!/A1,(A1-1)!),LETRAT;
@@ -775,7 +774,7 @@ LETSIMP(N*M!*(N-1)!/M),LETRAT;
 LET(SIN(A)^2,1-COS(A)^2);
 SIN(X)^4;
 LETSIMP(%);&&
-poissimp  PFEFORMAT:TRUE$
+POISSIMP  PFEFORMAT:TRUE$
 POISSIMP(SIN(X)^2);
 (2*A^2-B)*COS(X+2*Y)-(A*B+5)*SIN(U-4*X);
 POISEXPT(%,2)$
@@ -784,14 +783,14 @@ POISINT(%TH(2),Y)$
 POISSIMP(%);
 POISSIMP(SIN(X)^5+COS(X)^5);
 PFEFORMAT:FALSE$&&
-ode2  X^2*'DIFF(Y,X) + 3*X*Y = SIN(X)/X;
+ODE2  X^2*'DIFF(Y,X) + 3*X*Y = SIN(X)/X;
 SOLN1:ODE2(%,Y,X);
 IC1(SOLN1,X=%PI,Y=0);
 'DIFF(Y,X,2) + Y*'DIFF(Y,X)^3 = 0;
 SOLN2:ODE2(%,Y,X);
 RATSIMP(IC2(SOLN2,X=0,Y=0,'DIFF(Y,X)=2));
 BC2(SOLN2,X=0,Y=1,X=1,Y=3);&&
-scsimp  EXP:K^2*N^2+K^2*M^2*N^2-K^2*L^2*N^2-K^2*L^2*M^2*N^2;
+SCSIMP  EXP:K^2*N^2+K^2*M^2*N^2-K^2*L^2*N^2-K^2*L^2*M^2*N^2;
 EQ1:K^2+L^2=1;
 EQ2:N^2-M^2=1;
 SCSIMP(EXP,EQ1,EQ2);
@@ -799,20 +798,18 @@ EXQ:(K1*K4-K1*K2-K2*K3)/K3^2;
 EQ3:K1*K4-K2*K3=0;
 EQ4:K1*K2+K3*K4=0;
 SCSIMP(EXQ,EQ3,EQ4);&&
-eliminate  EXP1:2*X^2+Y*X+Z;
+ELIMINATE  EXP1:2*X^2+Y*X+Z;
 EXP2:3*X+5*Y-Z-1;
 EXP3:Z^2+X-Y^2+5;
 ELIMINATE([EXP3,EXP2,EXP1],[Y,Z]);&&
-desolve  EQN1:'DIFF(F(X),X)='DIFF(G(X),X)+SIN(X);
+DESOLVE  EQN1:'DIFF(F(X),X)='DIFF(G(X),X)+SIN(X);
 EQN2:'DIFF(G(X),X,2)='DIFF(F(X),X)-COS(X);
 ATVALUE('DIFF(G(X),X),X=0,A);
 ATVALUE(F(X),X=0,1);
 DESOLVE([EQN1,EQN2],[F(X),G(X)]);
 /* VERIFICATION */
 [EQN1,EQN2],%,DIFF;&&
-alarmclock  ALARMFUN():=PRINT("Time to go home!")$
-ALARMCLOCK(TIME,10,ALARMFUN);&&
-syntax  MATCHFIX("{","}");
+SYNTAX  MATCHFIX("{","}");
 INFIX("|");
 {X|X>0};
 {X|X<2};
@@ -828,4 +825,5 @@ INFIX(".I.",120,120)$
 %TH(5).U.%TH(5).U.%;
 REMOVE(".U.",OPERATOR)$
 ERRCATCH(%TH(7).U.%TH(3));
-
+REMOVE(["{","}",".I.",".U."],OPERATOR)$
+

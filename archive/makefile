@@ -27,26 +27,26 @@ prefix=/usr/local
 INFO_DIR=/usr/local/info/
 
 # where to put emacs lisp files.
-EMACS_SITE_LISP=/usr/share/emacs/20.3/site-lisp
+EMACS_SITE_LISP=/usr/share/emacs/20.7/site-lisp
 
 # the default.el file
-EMACS_DEFAULT_EL=/usr/share/emacs/20.3/site-lisp/default.el
+EMACS_DEFAULT_EL=/usr/share/emacs/20.7/site-lisp/default.el
 
 # numerous TCL/TK variables culled from the tkConfig.sh and tclConfig.sh
 # if these are found.
-TK_CONFIG_PREFIX=
-TK_LIBRARY=
-TCL_LIBRARY=
-TK_XINCLUDES=
-TK_INCLUDE=
+TK_CONFIG_PREFIX=/usr/local/lib
+TK_LIBRARY=/usr/local/lib/tk8.3
+TCL_LIBRARY=/usr/local/lib/tcl8.3
+TK_XINCLUDES=-I/usr/X11R6/include
+TK_INCLUDE=-I/usr/local/lib/../include
 TCL_INCLUDE=-I/usr/local/lib/../include
-TK_LIB_SPEC=
-TK_BUILD_LIB_SPEC=
-TK_XLIBSW=
-TK_XINCLUDES=
-TCL_LIB_SPEC=-L/usr/local/lib -ltcl8.2${TCL_DBGX}
+TK_LIB_SPEC=-L/usr/local/lib -ltk8.3
+TK_BUILD_LIB_SPEC=-L/home/wfs/src/tk8.3.2/unix -ltk8.3
+TK_XLIBSW=-L/usr/X11R6/lib -lX11
+TK_XINCLUDES=-I/usr/X11R6/include
+TCL_LIB_SPEC=-L/usr/local/lib -ltcl8.3${TCL_DBGX}
 TCL_DL_LIBS=-ldl
-TCL_LIBS=-ldl  -lm
+TCL_LIBS=-ldl -lm
 
 NOTIFY=yes
 GCC=gcc
@@ -109,12 +109,14 @@ LIBFILES=bsearch.o
 
 # the  make to use for saved_kcp the profiler.
 KCP=kcp-bsd
+
 # end makedefs
 GCLDIR=/home/wfs/cvs/gcl
 MAXDIR=/home/wfs/cvs/maxima
 PREFIX_DIR=/usr/local
 EMACS_SITE_LISP=/usr/local/lib/emacs/site-lisp
 INFO_DIR=/usr/local/info
+MAN_DIR=/usr/local/man/man1
 # end maxmakedefs
 
 #
@@ -156,7 +158,7 @@ PLOTTING_BIN=bin/omplotdata bin/mgnuplot
 install1: command
 	if [  -f ${INSTALL_LIB_DIR}/makefile  ] ; then true; else \
 	tar cvf - doc/manual.demo src/plot.o doc/tests.lisp src/server.lisp intro.html info/*.html */*.mac sym bin/xmaxima maxima.gif info/*.texi info/*.info* info/makefile ${PLOTTING_BIN} \
-	*/*.mc */*.dem */*.usg src/saved_maxima  | (cd ${INSTALL_LIB_DIR}/ ; tar xvf - ) ;fi
+	*/*.mc */*.dem */*.usg src/saved_maxima${EXE}  | (cd ${INSTALL_LIB_DIR}/ ; tar xvf - ) ;fi
 	(cd src ; make install "INSTALL_LIB_DIR=${INSTALL_LIB_DIR}")
 	(cd info ; make install)
 	(cd elisp ; make install)
@@ -186,4 +188,27 @@ tar-bin1:
 BETA=-beta
 tar:
 	bin/distribute maxima-`cat majvers`.`cat minvers`$(BETA).tgz
+
+
+maxima.zip: src/saved_maxima.exe
+	rm -f maxima.zip
+	OTHERS=`make -s -f src/makefile othernames` ; \
+	zip maxima.zip $${OTHERS} src/server.lisp doc/manual.demo */*.dem doc/*.mac src/xmaxima.exe info/*.html src/saved_maxima.exe .exe info/*info* doc/*.html src/*.ico src/winkill.exe src/tclwinkill.dll maxima.gif doc/tests.lisp
+
+
+DL=./deliver/
+
+${DL}zipinfo.tcl ${DL}setup_contents.txt: maxima.zip gcc.zip ${DL}pkginfo.tcl
+	tclsh  ${DL}getzipinfo.tcl
+
+DELIVER_FILES=${DL}setup.tcl ${DL}unpack.tcl  ${DL}install1.gif  ${DL}fdlogo3.gif  ${DL}pkginfo.tcl ${DL}zipinfo.tcl  ./src/maxicon.gif ./COPYING ./readme.xmaxima
+
+gcc.zip:
+	zip -r gcc.zip gcc
+
+${DL}setup.exe: gcc.zip maxima.zip ${DL}setup_contents.txt ${DL}zipinfo.tcl ${DELIVER_FILES}
+	freewrap-cross  ${DELIVER_FILES} -p ${DL}setup_contents.txt
+
+
+	
 

@@ -7,8 +7,8 @@
 
 
 /* -*- Mode: MACSYMA; Package: CL-MAXIMA -*- */
-kill(all);
-done;
+block([],kill(all),%rnum:0);
+0$
 X^10-2*X^4+1/2;
 X^10-2*X^4+1/2$
 NROOTS(%,-6,9.1);

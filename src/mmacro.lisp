@@ -207,7 +207,7 @@ call."
 	 (CONS '(MDEFMACRO SIMP) (CDR X)))
 
 
-#+NIL
+#+(or cl NIL)
 (DEFUN DISPLACE (X Y)
   (SETF (CAR X) (CAR Y))
   (SETF (CDR X) (CDR Y))

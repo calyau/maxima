@@ -97,7 +97,8 @@
 	       (setq k (length some))
 	       (setq some (append some
 				  (sloop for i below 20 for tem =
-					 (read-char-no-hang)
+					 nil 
+					 ;(read-char-no-hang)
 					 while tem collect tem)))
 	       (terpri)
 	       (sloop for v in some do (princ v))
@@ -105,7 +106,7 @@
 	       (sloop for i from 2 below k do (princ #\space))
 	       (princ "^")
 	       
-	       (sloop while (read-char-no-hang) )
+	       ;(sloop while (read-char-no-hang) )
 	       )))
       (terpri)
       (throw-macsyma-top) 

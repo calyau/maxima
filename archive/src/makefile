@@ -5,10 +5,9 @@ SHELL	= sh
 SRC	= .
 PORTDIR	=$(GCLDIR)/unixport
 MAXIMA	= ./saved_maxima
-LISP	= $(PORTDIR)/saved_gcl $(PORTDIR)/
-LISP	= $(PORTDIR)/../xbin/gcl
+LISP	= $(PORTDIR)/saved_gcl${EXE} $(PORTDIR)/
 #       sloop.o is already in our kcl. otherwise it goes here.
-
+HERE=${MAXDIR}/src
 
 # begin makedefs
 
@@ -30,26 +29,26 @@ prefix=/usr/local
 INFO_DIR=/usr/local/info/
 
 # where to put emacs lisp files.
-EMACS_SITE_LISP=/usr/share/emacs/20.3/site-lisp
+EMACS_SITE_LISP=/usr/share/emacs/20.7/site-lisp
 
 # the default.el file
-EMACS_DEFAULT_EL=/usr/share/emacs/20.3/site-lisp/default.el
+EMACS_DEFAULT_EL=/usr/share/emacs/20.7/site-lisp/default.el
 
 # numerous TCL/TK variables culled from the tkConfig.sh and tclConfig.sh
 # if these are found.
-TK_CONFIG_PREFIX=
-TK_LIBRARY=
-TCL_LIBRARY=
-TK_XINCLUDES=
-TK_INCLUDE=
+TK_CONFIG_PREFIX=/usr/local/lib
+TK_LIBRARY=/usr/local/lib/tk8.3
+TCL_LIBRARY=/usr/local/lib/tcl8.3
+TK_XINCLUDES=-I/usr/X11R6/include
+TK_INCLUDE=-I/usr/local/lib/../include
 TCL_INCLUDE=-I/usr/local/lib/../include
-TK_LIB_SPEC=
-TK_BUILD_LIB_SPEC=
-TK_XLIBSW=
-TK_XINCLUDES=
-TCL_LIB_SPEC=-L/usr/local/lib -ltcl8.2${TCL_DBGX}
+TK_LIB_SPEC=-L/usr/local/lib -ltk8.3
+TK_BUILD_LIB_SPEC=-L/home/wfs/src/tk8.3.2/unix -ltk8.3
+TK_XLIBSW=-L/usr/X11R6/lib -lX11
+TK_XINCLUDES=-I/usr/X11R6/include
+TCL_LIB_SPEC=-L/usr/local/lib -ltcl8.3${TCL_DBGX}
 TCL_DL_LIBS=-ldl
-TCL_LIBS=-ldl  -lm
+TCL_LIBS=-ldl -lm
 
 NOTIFY=yes
 GCC=gcc
@@ -112,13 +111,16 @@ LIBFILES=bsearch.o
 
 # the  make to use for saved_kcp the profiler.
 KCP=kcp-bsd
+
 # end makedefs
 GCLDIR=/home/wfs/cvs/gcl
 MAXDIR=/home/wfs/cvs/maxima
 PREFIX_DIR=/usr/local
 EMACS_SITE_LISP=/usr/local/lib/emacs/site-lisp
 INFO_DIR=/usr/local/info
+MAN_DIR=/usr/local/man/man1
 # end maxmakedefs
+
 
 
 MACROS = lmdcls.o letmac.o kclmac.o clmacs.o commac.o mormac.o \
@@ -163,6 +165,7 @@ OTHERS 	= hypgeo.o hyp.o todd-coxeter.o
 all:   $(MACROS) $(OBJS)  saved_maxima $(OTHERS)
 	make translated
 
+
 install:
 	cp ${TRANSLATED} ${OTHERS} ${INSTALL_LIB_DIR}/src
 
@@ -172,16 +175,19 @@ sysinit.o maxobjs: sysinit.lsp makefile ../makefile
 # make an init_maxima.lsp in the PORTDIR
 
 init_max0.lisp: makefile
-	echo '(si::chdir "'`pwd`'")' > init_max0.lisp
+	echo '(si::chdir "${HERE}")' > init_max0.lisp
 	echo '(load "maxima-package.lisp")' >> init_max0.lisp
 	echo '(setq maxima::*maxima-directory* (namestring (truename "../")))' >> init_max0.lisp
+
+comparedirs:
+	for v in `echo $OBJS $OTHERS $TRANSLATED | sed -e "s:\.o:.lisp:g"` ; do echo for $v ; diff -c $v  /home/wfs/cvs/maxima/src/$v ; done
 
 init_max2.lisp: makefile
 	echo '(si::chdir "'${PORTDIR}'")' > init_max2.lisp
 
 saved_maxima: maxobjs sysinit.o $(OBJS) $(MACROS) version.lisp init_max0.lisp init_max2.lisp
 	cat $(PORTDIR)/init_gcl.lsp | sed -e \
-	"s;system-init(si::chdir \"`pwd`\")(si::save-system \"saved_maxima\")g" \
+	"s;system-init(si::chdir \"${HERE}\")(si::save-system \"saved_maxima\")g" \
 	> init_maxima.lsp
 	- if cmp init_maxima.lsp $(PORTDIR)/init_maxima.lsp > /dev/null ;\
 	then true; else  cp init_maxima.lsp $(PORTDIR)/init_maxima.lsp;fi
@@ -222,7 +228,7 @@ sloop.o make.o:
 
 .lisp.o:
 	echo $(PREAMBLE)'(make::make :maxima-macros)(compile-file '\"$*.lisp\"' :system-p  t)' | ${LISP}
-	
+
 # c files should not get left but they're sometimes there.
 
 .c.o:
@@ -284,3 +290,6 @@ mhayat.o:mhayat.lisp
 numerm.o:numerm.lisp
 transm.o:transm.lisp
 optimize.o:optimize.lisp
+
+othernames:
+	@ for v in ${OTHERS} ${TRANSLATED} ; do echo src/$$v ; done

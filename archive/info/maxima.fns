@@ -153,7 +153,7 @@
 \entry {\code {CHRISTOF}}{164}
 \entry {\code {CLEARSCREEN}}{198}
 \entry {\code {CLOSEFILE}}{55}
-\entry {\code {CLOSEPS}}{51}
+\entry {\code {CLOSEPS}}{52}
 \entry {\code {COEFF}}{74}
 \entry {\code {COEFMATRIX}}{146}
 \entry {\code {COL}}{146}
@@ -635,7 +635,7 @@
 \entry {\code {PLOG}}{90}
 \entry {\code {PLOT{\_}OPTIONS}}{50}
 \entry {\code {PLOT2D}}{49}
-\entry {\code {PLOT2D{\_}PS}}{51}
+\entry {\code {PLOT2D{\_}PS}}{52}
 \entry {\code {PLOT3D}}{51}
 \entry {\code {POISDIFF}}{99}
 \entry {\code {POISEXPT}}{99}
@@ -868,6 +868,9 @@
 \entry {\code {TELLRAT}}{84}
 \entry {\code {TELLSIMP}}{209}
 \entry {\code {TELLSIMPAFTER}}{210}
+\entry {\code {TEX}}{64}
+\entry {\code {TEX(expr,filename)}}{64}
+\entry {\code {TEX(label,filename)}}{64}
 \entry {\code {THROW}}{235}
 \entry {\code {TIME}}{199}
 \entry {\code {TIMER}}{238}
@@ -931,7 +934,7 @@
 \entry {\code {TTRANSFORM}}{166}
 \entry {\code {TTYINTFUN}}{17}
 \entry {\code {TTYINTNUM}}{17}
-\entry {\code {TTYOFF}}{64}
+\entry {\code {TTYOFF}}{65}
 \initial {U}
 \entry {\code {UNDECLAREDWARN}}{227}
 \entry {\code {UNDIFF}}{108}
@@ -953,7 +956,7 @@
 \entry {\code {VERBOSE}}{172}
 \initial {W}
 \entry {\code {WEYL}}{162}
-\entry {\code {WITH{\_}STDOUT(file,stmt1,stmt2,...)}}{64}
+\entry {\code {WITH{\_}STDOUT(file,stmt1,stmt2,...)}}{65}
 \entry {\code {WRITEFILE}}{65}
 \initial {X}
 \entry {\code {xgraph{\_}curves(list)}}{49}

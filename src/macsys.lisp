@@ -63,6 +63,8 @@
  
 (DEFUN CONTINUE (&OPTIONAL (*standard-input* *standard-input*)
 			   BATCH-OR-DEMO-FLAG)
+ (if (eql BATCH-OR-DEMO-FLAG :demo)
+     (format t "~% At the _ prompt, type ';' followed by enter to get next demo"))
  (catch 'abort-demo
   (DO ((R) (time-before) (time-after) (time-used) (EOF (LIST NIL))
        (etime-before) (etime-after) #+lispm (area-before)#+lispm (area-after)
@@ -72,7 +74,7 @@
 	  (setq $linenum (f1+ $linenum)))
     #+akcl(si::reset-stack-limits)
     (setq c-tag (makelabel $inchar))
-    (LET ((*MREAD-PROMPT* (MAIN-PROMPT)))
+    (LET ((*MREAD-PROMPT* (if batch-or-demo-flag nil (MAIN-PROMPT))))
     (tagbody
      top
      (SETQ R      (dbm-read *standard-input* nil eof))
@@ -95,7 +97,7 @@
     #+lispm (SEND *standard-output* :SEND-IF-HANDLES ':FORCE-OUTPUT)
     (SETQ $__ (CADDR R))
     (SET  C-TAG $__)
-    (cond ( batch-or-demo-flag 
+    (cond (batch-or-demo-flag
 	   (displa `((mlable) ,c-tag , $__))))
     (setq time-before (get-internal-run-time)
 	  etime-before (get-internal-real-time))
@@ -125,26 +127,25 @@
 			      (cons time-used  0)
 			      'TIME))
     (fresh-line *standard-output*)
-    (let ((tem (read-char-no-hang)))
+    #+never(let ((tem (read-char-no-hang)))
       (or (eql tem #\newline) (and tem (unread-char tem))))
     (IF (EQ (CAAR R) 'DISPLAYINPUT)
 	(DISPLA `((MLABLE) ,D-TAG ,$%)))
     (when (eq batch-or-demo-flag ':demo)
       (mtell "~&_")
-      (do ((char)) (nil)
-	(case
-	 #-cl (setq char (send *standard-input* :read-char))
-	 #+cl   (setq char (read-char *standard-input*)) 
-	 ;;those are common lisp characters you'r reading here
-
-	  (#\page (unless (cursorpos 'c *standard-input*) (terpri *standard-input*))
-		  (princ "_" *standard-input*))
-	  (#\? (mtell "  Pausing.  Type a return to continue demo.~%_"))
-	  ((#\space #\newline #\return)
-	   (return nil))
-	  ;((#\return #\newline) nil)
-	  (t (throw 'abort-demo nil)
-	    ))))
+      (let (quitting)	  
+       (do ((char)) (nil)
+	     ;;those are common lisp characters you'r reading here
+	    (case
+	     (setq char (read-char *terminal-io*))
+	     ((#\page) (unless (cursorpos 'c *standard-input*) (terpri *standard-output*))
+	      (princ "_" *standard-output*))
+	     ((#\?) (mtell "  Pausing.  Type a ';' and Enter to continue demo.~%_"))
+	     ((#\space #\; #\n #\e #\x #\t))
+	     ((#\newline )
+	      (if quitting (throw 'abort-demo nil) (return nil))) 
+	     (t (setq quitting t)
+		)))))
     ;; This is sort of a kludge -- eat newlines and blanks so that they don't echo
     (AND BATCH-OR-DEMO-FLAG
 	 #+lispm
@@ -159,7 +160,7 @@
              (throw 'MACSYMA-QUIT NIL)) 
 ;;;; END INSERT 
 
-	   (unless (zl-MEMBER char '(#\space #\newline #\tab))
+	   (unless (zl-MEMBER char '(#\space #\newline #\return #\tab))
 	       (unread-char char *standard-input*)  
 	     (return nil))))))) 
 
@@ -172,7 +173,8 @@
 
 (DEFUN MBREAK-LOOP ()
   (LET ((*standard-input* #+nil (make-synonym-stream '*terminal-io*)
-			#-nil *standard-input*))
+			#-nil *debug-io*)
+	(*standard-output* *debug-io*))
     (CATCH 'BREAK-EXIT
       (format t "~%Entering a Macsyma break point. Type EXIT; to resume")
       (DO ((R)) (NIL)
@@ -184,7 +186,7 @@
 	  (T (ERRSET (DISPLA (MEVAL R)) T)))))))
 
 (defun merrbreak (&optional arg)
-  (format t "~%Merrbreak:~A" arg)
+  (format *debug-io* "~%Merrbreak:~A" arg)
   (mbreak-loop))
 
 #-cl
