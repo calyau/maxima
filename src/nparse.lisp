@@ -409,6 +409,12 @@
       (vector-push-extend c  buf)
       )))
 
+(defvar *string-register* (make-array 100 :fill-pointer 0 :adjustable t :element-type 'string-char))
+(defun readlist (lis)
+  (setf (fill-pointer *string-register*) 0)
+  (sloop for u in lis do (vector-push-extend u *string-register*))
+  (read-from-string   *string-register*))
+
 
 (DEFUN MAKE-NUMBER (DATA)
   (SETQ DATA (NREVERSE DATA))

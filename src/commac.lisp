@@ -869,8 +869,8 @@ compiler:
 ;(DEFMACRO-DISPLACE ARRAYCALL (IGNORE ARRAY &REST DIMS)
 ;  `(FUNCALL ,ARRAY . ,DIMS))
 
-(defun readlist (lis)
-  (read-from-string   (coerce lis 'string)))
+;(defun readlist (lis)
+;  (read-from-string   (coerce lis 'string)))
 
 ;#-ti
 ;(defun make-equal-hash-table (&rest l)
