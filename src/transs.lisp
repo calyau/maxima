@@ -387,13 +387,12 @@
 	and
 	collecting v into warns
 	finally (cond (warns
-		       (format stream "~2%;;The following functions declaration should ~
-                                          ;;go at the front of your macsyma file ~
-                                          ~%;;" )
+		       (format stream "~2%/* Optimization hint: */~@
+/* Prepend the following declaration to your maxima code: */~%")
 		       (mgrind `(($eval_when) $translate (($declare_translated) ,@ warns))
 			         stream)
-		       (format t "~%See the extra declarations at the end of the translated file.  They ~
-                     should be included in you macsyma file, and you should retranslate.")))))
+		       (format stream "$~%")
+		       (format t "~&See the UNLISP file for possible optimizations.")))))
 
 
 #+cl
@@ -433,7 +432,7 @@
 	  (MFORMAT *terminal-io* "~%Translation begun on ~A.~%"
 		   (pathname in-stream))
 	  (CALL-BATCH1 in-stream out-stream)
-	  (insert-necessary-function-declares out-stream)
+	  (insert-necessary-function-declares warn-stream)
 	  ;; BATCH1 calls TRANSLATE-MACEXPR-toplevel on each expression read.
 	  (cons '(mlist) 
 		(mapcar 'namestring
