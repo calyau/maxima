@@ -43,12 +43,12 @@ specint(%,t);
 
 
 
-t^(1/2)*%j[1](2*a^(1/2)*t^(1/2))*%e^(-p*t);
+t^(1/2)*bessel_j(1, 2*a^(1/2)*t^(1/2))*%e^(-p*t);
 specint(%,t);
-t^2*%j[1](a*t)*%e^(-p*t);
+t^2*bessel_j(1, a*t)*%e^(-p*t);
 specint(%,t);
 
-t^(3/2)*%y[1](a*t)*%e^(-t);
+t^(3/2)*bessel_y(1, a*t)*%e^(-t);
 specint(%,t);
 
 
@@ -75,15 +75,15 @@ specint(%,t);
 
 
 
-%j[1](t)^2*%e^(-p*t+r);
+bessel_j(1, t)^2*%e^(-p*t+r);
 specint(%,t);
-t^(1/2)*%j[1/2](t^(1/2))^2*%e^(-p*t);
+t^(1/2)*bessel_j(1/2, t^(1/2))^2*%e^(-p*t);
 specint(%,t);
-t^(5/2)*%y[1/2](t^(1/2))^2*%e^(-p*t);
+t^(5/2)*bessel_y(1/2, t^(1/2))^2*%e^(-p*t);
 specint(%,t);
 
 /*Some combinations of products of Bessel functions*/
-t^(3/4)*%j[1/2](t)*%j[1/4](t)*%e^(-p*t);
+t^(3/4)*bessel_j(1/2, t)*bessel_j(1/4, t)*%e^(-p*t);
 specint(%,t);
 
 t*%ibes[0](a*t/2)*%ibes[1](a*t/2)*%e^(-p*t);
