@@ -1,11 +1,7 @@
-#!/bin/sh
-#  -*- tcl -*- \
-exec wish "$0" "$@"
-#############################################
-##### Copyright William Schelter 1997 #######
-#############################################
-set ws_openMath(date) 04/28/2002
-
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: xmaxima.tcl,v 1.6 2002-09-04 23:00:43 mikeclarkson Exp $
+#
 ###### maxima-browser.tcl ######
 
 ## source maxima-local.tcl
