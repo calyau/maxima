@@ -279,6 +279,11 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
   :group 'maxima
   :type 'boolean)
 
+(defcustom maxima-use-full-color-in-process-buffer nil
+  "*If non-nil, font-lock the maxima process buffer."
+  :group 'maxima
+  :type 'boolean)
+
 (defcustom maxima-fix-double-prompt nil
   "*If non-nil, fix the double prompt that sometimes appears in XEmacs."
   :group 'maxima
@@ -2148,6 +2153,8 @@ The following commands are available:
 "
   (interactive)
   (comint-mode)
+  (if maxima-use-full-color-in-process-buffer
+      (inferior-maxima-font-setup))
   (setq comint-prompt-regexp inferior-maxima-prompt)
   (setq major-mode 'inferior-maxima-mode)
   (setq mode-name "Inferior Maxima")
