@@ -1,4 +1,7 @@
-
+;; SI is used for the regex info implementation. This line should be removed
+;; when the info regex implementation no longer requires SI in all lisps.
+;; jfa 12/12/2001
+(or (find-package "SI") (make-package "SI" :use '(COMMON-LISP)))
 (or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
 
 
