@@ -269,11 +269,8 @@
 
 (defun my-mgrind (x fs)
   (setq x (maybe-convert-complex x))
-  (setq x (maybe-convert-rat x))
-  (setq x (maybe-convert-symbol x))
-  (let ((*print-case* :downcase))
-    (format fs (cond ((floatp x) "~F")
-      (t "~S")) x)))
+  (cond ((complexp x) (format fs "~S" x))
+    (t (mgrind x fs))))
 
 
 (defun maybe-convert-complex (x)
