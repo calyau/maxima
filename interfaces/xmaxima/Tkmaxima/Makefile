@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#	$Id: Makefile,v 1.7 2002-09-13 17:35:41 mikeclarkson Exp $
+#	$Id: Makefile,v 1.8 2002-09-17 22:35:18 mikeclarkson Exp $
 #
 # Developer's convenience targets (not part of the normal make/install).
 #
@@ -52,7 +52,7 @@ ALLFILES = \
 	Prefs.tcl \
 	RunMaxima.tcl \
 	Menu.tcl \
-	../xmaxima-paths.tcl  \
+	Paths.tcl  \
 	../xmaxima-trailer.tcl \
 	../xmaxima.tcl 
 

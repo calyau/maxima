@@ -1,8 +1,11 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-trailer.tcl,v 1.7 2002-09-11 01:09:40 mikeclarkson Exp $
+#       $Id: xmaxima-trailer.tcl,v 1.8 2002-09-17 22:35:17 mikeclarkson Exp $
 #
 # Attach this at the bottom of the xmaxima code to start up the interface.
+
+# setMaxDir must be called here as it is used by xmaxima-trailer.tcl
+setMaxDir
 
 global tcl_platform maxima_priv
 if {$tcl_platform(platform) == "windows" } {

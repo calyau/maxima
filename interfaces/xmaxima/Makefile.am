@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.27 2002-09-13 17:26:23 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.28 2002-09-17 22:35:17 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -55,10 +55,11 @@ TKSOURCES = \
 	Tkmaxima/Prefs.tcl \
 	Tkmaxima/RunMaxima.tcl \
 	Tkmaxima/Menu.tcl \
+	Tkmaxima/Paths.tcl \
 	xmaxima.tcl 
 
-XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl
-XMAXIMASOURCES = $(TKSOURCES) autoconf-variables.tcl xmaxima-paths.tcl xmaxima-trailer.tcl
+XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-trailer.tcl
+XMAXIMASOURCES = $(TKSOURCES) autoconf-variables.tcl xmaxima-trailer.tcl
 
 xmaxima: $(XMAXIMASOURCES)
 	rm -f xmaxima && \
