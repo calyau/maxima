@@ -165,10 +165,7 @@ equations.
 @c @unnumberedsec phony
 @defun IEQN (ie,unk,tech,n,guess)
 Integral Equation solving routine.  Do
-LOAD(INTEQN); to access it.  CAVEAT: To free some storage, a
-KILL(LABELS) is included in this file.  Therefore, before loading the
-integral equation package, the user should give names to any
-expressions he wants to keep.
+LOAD(INTEQN); to access it.
 ie is the integral equation; unk is the unknown function; tech is the
 technique to be tried from those given above (tech = FIRST means: try
 the first technique which finds a solution; tech = ALL means: try all
