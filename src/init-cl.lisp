@@ -160,6 +160,8 @@
 (defun user::run ()
   "Run Maxima in its own package."
   (in-package "MAXIMA")
+  (setf *load-verbose* nil)
+  (setf *debugger-hook* #'maxima-lisp-debugger)
   ; jfa new command-line communication
   (let ((input-string *standard-input*)
 	(maxima_int_lisp_preload (maxima-getenv "MAXIMA_INT_LISP_PRELOAD"))
@@ -191,8 +193,31 @@
 ($setup_autoload "eigen.mac" '$eigenvectors '$eigenvalues)
 
 (defun $to_lisp ()
-  (format t "~%Type (run) to restart~%")
-  (throw 'to-lisp t))
+  (format t "~&Type (to-maxima) to restart~%")
+  (let ((old-debugger-hook *debugger-hook*))
+    (catch 'to-maxima
+      (unwind-protect
+	  (maxima-read-eval-print-loop)
+	(setf *debugger-hook* old-debugger-hook)
+	(format t "Returning to Maxima~%"))))
+)
+
+(defun to-maxima ()
+  (throw 'to-maxima t))
+
+(defun maxima-read-eval-print-loop ()
+  (setf *debugger-hook* #'maxima-lisp-debugger-repl)
+  (loop
+   (catch 'to-maxima-repl
+     (format t "~a~%~a> ~a" *prompt-prefix* 
+	     (package-name *package*) *prompt-suffix*)
+     (let ((form (read)))
+       (prin1 (eval form))))))
+
+(defun maxima-lisp-debugger-repl (condition me-or-my-encapsulation)
+  (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
+  (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
+  (throw 'to-maxima-repl t))
 
 (defun $jfa_lisp ()
   (format t "jfa was here"))

@@ -188,35 +188,43 @@
 				       NIL 'MPAREN 'MPAREN 0 0))
 	    ,@ body)))
 
+(defvar *alt-display2d* nil)
+(defvar *alt-display1d* nil)
 (DEFMFUN DISPLA (FORM &aux #+kcl(form form))
   (IF (OR (NOT #.TTYOFF) #.WRITEFILEP)
       (cond #+Franz ($typeset (apply #'$photot (list form)))
-	    ($DISPLAY2D
-	     (LET ((DISPLAYP T)
-		   (LINEARRAY (IF DISPLAYP (MAKE-array 80.) LINEARRAY))
-		   (MRATP (CHECKRAT FORM))
-		   (#.WRITEFILEP #.WRITEFILEP)
-		   (MAXHT     1) (MAXDP   0) (WIDTH   0)
-		   (HEIGHT    0) (DEPTH   0) (LEVEL   0) (SIZE   2)
-		   (BREAK     0) (RIGHT   0) (LINES   1) BKPT
-		   (BKPTWD    0) (BKPTHT  1) (BKPTDP  0) (BKPTOUT 0)
-		   (BKPTLEVEL 0) IN-P
-		   (MOREFLUSH D-MOREFLUSH)
-		   MORE-^W
-		   (MOREMSG D-MOREMSG))
-	       (UNWIND-PROTECT
-		(PROGN (SETQ FORM (DIMENSION FORM
-					     NIL 'MPAREN 'MPAREN 0 0))
-		       (CHECKBREAK FORM WIDTH)
-		       (OUTPUT FORM (IF (AND (NOT $LEFTJUST) (= 2 LINES))
-					(f- LINEL (f- WIDTH BKPTOUT))
-					0))
-		       (IF (AND SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
-				(> (CAR (CURSORPOS)) (f- TTYHEIGHT 3)))
-			   (LET (#.writefilep) (MTERPRI))))
-	     ;; make sure the linearray gets cleared out.
-	     (CLEAR-LINEARRAY))))
-	    (T (LINEAR-DISPLA FORM)))))
+	    ($DISPLAY2D 
+	     (cond
+	      (*alt-display2d* (apply *alt-display2d* form ()))
+	      (t 
+	       (LET ((DISPLAYP T)
+		     (LINEARRAY (IF DISPLAYP (MAKE-array 80.) LINEARRAY))
+		     (MRATP (CHECKRAT FORM))
+		     (#.WRITEFILEP #.WRITEFILEP)
+		     (MAXHT     1) (MAXDP   0) (WIDTH   0)
+		     (HEIGHT    0) (DEPTH   0) (LEVEL   0) (SIZE   2)
+		     (BREAK     0) (RIGHT   0) (LINES   1) BKPT
+		     (BKPTWD    0) (BKPTHT  1) (BKPTDP  0) (BKPTOUT 0)
+		     (BKPTLEVEL 0) IN-P
+		     (MOREFLUSH D-MOREFLUSH)
+		     MORE-^W
+		     (MOREMSG D-MOREMSG))
+		    (UNWIND-PROTECT
+		     (PROGN (SETQ FORM (DIMENSION FORM
+						  NIL 'MPAREN 'MPAREN 0 0))
+			    (CHECKBREAK FORM WIDTH)
+			    (OUTPUT FORM (IF (AND (NOT $LEFTJUST) (= 2 LINES))
+					     (f- LINEL (f- WIDTH BKPTOUT))
+					     0))
+			    (IF (AND SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
+				     (> (CAR (CURSORPOS)) (f- TTYHEIGHT 3)))
+				(LET (#.writefilep) (MTERPRI))))
+		     ;; make sure the linearray gets cleared out.
+		     (CLEAR-LINEARRAY))))))
+	    (T 
+	     (cond
+	      (*alt-display1d* (apply *alt-display1d* form ()))
+	      (t (LINEAR-DISPLA FORM)))))))
 
 (defun transform-extends (x)
   (cond (($extendp x)

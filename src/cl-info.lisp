@@ -620,7 +620,8 @@ the general info file.  The search goes over all files."
 			position-pattern
 			(if (eq file prev) nil (setq prev file)) name)))
 	(if (> (length tem) 1)
-	    (format t "~%Enter n, all, none, or multiple choices eg 1 3 : ")
+	    (format t "~%~aEnter n, all, none, or multiple choices eg 1 3 : ~a"
+		    maxima::*prompt-prefix* maxima::*prompt-suffix*)
 	    (terpri))
 	(let ((line (if (> (length tem) 1)
 			(read-line)
@@ -628,7 +629,10 @@ the general info file.  The search goes over all files."
 	      (start 0)
 	      val)
 	  (while (equal line "")
-	    (setq line (read-line)))
+	    (setq line (prog2
+			   (princ maxima::*prompt-prefix*)
+			   (read-line)
+			   (princ maxima::*prompt-suffix*))))
 	  (while (multiple-value-setq
 		     (val start)
 		   (read-from-string line nil nil :start start))

@@ -451,20 +451,23 @@
 		    (MERROR "ENTERMATRIX called with non-integer arguments")))
 	     (SETQ ROW 0)
 	     (COND ((NOT (= ROWS COLUMNS)) (SETQ SYM NIL) (GO OLOOP)))
+;; 	QUEST(PRINC "
+;; Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
+;; Answer 1, 2, 3 or 4 : ")	     (SETQ SYM (RETRIEVE NIL NIL))
 	QUEST(PRINC "
 Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
-Answer 1, 2, 3 or 4 : ")	     (SETQ SYM (RETRIEVE NIL NIL))
+")	     (SETQ SYM (RETRIEVE "Answer 1, 2, 3 or 4 : " nil))
 	     (COND ((NOT (zl-MEMBER SYM '(1 2 3 4))) (GO QUEST)))
 	OLOOP(COND ((> (SETQ ROW (f1+ ROW)) ROWS)
 		    (format t "~%Matrix entered.~%")
 		    (RETURN (CONS '($MATRIX) (MXC MATRIX)))))
 	     (COND ((EQUAL SYM 1)
 		    (SETQ COLUMN ROW)
-		    (PRINC "Row ") (PRINC ROW) (PRINC " Column ")
-		    (PRINC COLUMN) (PRINC ":  ") 
-		    (SETQ MATRIX
-		     (NCONC MATRIX
-		      (NCONS (ONEN ROW COLUMNS (MEVAL (RETRIEVE NIL NIL)) 0))))
+		    (let ((prompt (format nil "Row ~a Column ~a: " row column)))
+		      (SETQ MATRIX
+			    (NCONC MATRIX
+				   (NCONS (ONEN ROW COLUMNS 
+						(MEVAL (RETRIEVE prompt nil)) 0)))))
 		    (GO OLOOP))
 		   ((EQUAL SYM 2)
 		    (SETQ COLUMN (f1- ROW))
@@ -488,9 +491,8 @@ Answer 1, 2, 3 or 4 : ")	     (SETQ SYM (RETRIEVE NIL NIL))
 	ILOOP(COND ((> (SETQ COLUMN (f1+ COLUMN)) COLUMNS)
 		    (SETQ MATRIX (NCONC MATRIX (NCONS VECTOR)))
 		    (GO OLOOP)))
-	     (PRINC "Row ") (PRINC ROW) (PRINC " Column ")
-	     (PRINC COLUMN) (PRINC ":  ") 
-	     (SETQ VECTOR (NCONC VECTOR (NCONS (MEVAL (RETRIEVE NIL NIL)))))
+	     (let ((prompt (format nil "Row ~a Column ~a: " row column)))
+	       (SETQ VECTOR (NCONC VECTOR (NCONS (MEVAL (RETRIEVE prompt nil))))))
 	     (GO ILOOP)))
 
 (declare-top (splitfile xthru) (special sn* sd* rsn*))

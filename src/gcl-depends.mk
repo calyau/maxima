@@ -21,7 +21,7 @@ binary-gcl/maxima : ratmac.lisp
 binary-gcl/maxima : mhayat.lisp
 binary-gcl/maxima : numerm.lisp
 binary-gcl/maxima : optimize.lisp
-binary-gcl/maxima : SYS-PROCLAIM.lisp
+binary-gcl/maxima : SYS-DECLAIM.lisp
 binary-gcl/maxima : opers.lisp
 binary-gcl/maxima : utils.lisp
 binary-gcl/maxima : sumcon.lisp

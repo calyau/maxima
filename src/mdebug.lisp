@@ -410,8 +410,9 @@
 	(unwind-protect
 	    (do () (())
 		(format *debug-io*
-		    "~&~@[(~a:~a) ~]"  (unless (stringp at) "dbm")
-		    (length *quit-tags*))
+		    "~a~&~@[(~a:~a) ~]~a"  *prompt-prefix* 
+		    (unless (stringp at) "dbm")
+		    (length *quit-tags*) *prompt-suffix*)
 	        (finish-output *debug-io*)
 		(setq val
 		      (catch 'macsyma-quit

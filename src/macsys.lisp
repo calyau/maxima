@@ -20,13 +20,18 @@
 
 ;;; Standard Kinds of Input Prompts
 
+(defvar *prompt-prefix* "")
+(defvar *prompt-suffix* "")
+(defvar *general-display-prefix* "")
+
 (DEFUN MAIN-PROMPT ()
   ;; instead off using this STRIPDOLLAR hackery, the
   ;; MREAD function should call MFORMAT to print the prompt,
   ;; and take a format string and format arguments.
   ;; Even easier and more general is for MREAD to take
   ;; a FUNARG as the prompt. -gjc
-  (FORMAT () "(~A~D) " (STRIPDOLLAR $INCHAR) $LINENUM))
+  (FORMAT () "~A(~A~D) ~A" *prompt-prefix* 
+(STRIPDOLLAR $INCHAR) $LINENUM *prompt-suffix*))
 
 (DEFUN BREAK-PROMPT ()
   (declare (special $prompt))
@@ -107,6 +112,7 @@
        (c-tag)
        (d-tag))
       (NIL)
+(catch 'return-from-debugger
     (when (not (checklabel $inchar))
 	  (setq $linenum (f1+ $linenum)))
     #+akcl(si::reset-stack-limits)
@@ -145,7 +151,7 @@
      )
     )
     
-
+    (format t "~a" *general-display-prefix*)
     (cond (#.writefilep ;write out the c line to the dribble file
 	    (let ( (#.ttyoff t) smart-tty  $linedisp)
 	      (displa `((mlable) , c-tag , $__)))))
@@ -230,7 +236,7 @@
 
 	   (unless (zl-MEMBER char '(#\space #\newline #\return #\tab))
 	       (unread-char char input-stream)  
-	     (return nil))))))) 
+	     (return nil)))))))) 
 
 
 (DEFUN $BREAK (&REST ARG-LIST)
@@ -273,11 +279,24 @@
 (DEFUN RETRIEVE (MSG FLAG &AUX (PRINT? NIL))
   (DECLARE (SPECIAL MSG FLAG PRINT?))
   (OR (EQ FLAG 'NOPRINT) (SETQ PRINT? T))
-  (COND ((NOT PRINT?) (SETQ PRINT? T))
-	((NULL MSG))
-	((ATOM MSG) (PRINC MSG) (MTERPRI))
-	((EQ FLAG T) (MAPC #'PRINC (CDR MSG)) (MTERPRI))
-	(T (DISPLA MSG) (MTERPRI)))
+  (COND ((NOT PRINT?) 
+	 (SETQ PRINT? T)
+	 (princ *prompt-prefix*)
+	 (princ *prompt-suffix*))
+	((NULL MSG)
+	 (princ *prompt-prefix*)
+	 (princ *prompt-suffix*))
+	((ATOM MSG) 
+	 (format t "~a~a~a" *prompt-prefix* MSG *prompt-suffix*) 
+	 (MTERPRI))
+	((EQ FLAG T)
+	 (princ *prompt-prefix*) 
+	 (MAPC #'PRINC (CDR MSG)) 
+	 (princ *prompt-suffix*)
+	 (MTERPRI))
+	(T 
+	 (format t "~a~a~a" *prompt-prefix* MSG *prompt-suffix*) 
+	 (MTERPRI)))
   (mread-noprompt *query-io* nil))
 
 
@@ -374,7 +393,8 @@
   "")
 
 (defvar *maxima-started* nil)
-
+(defvar *maxima-prolog* "")
+(defvar *maxima-epilog* "")
 #-lispm
 (defun macsyma-top-level (&OPTIONAL (input-stream *standard-input*)
 				    batch-flag)
@@ -382,6 +402,7 @@
     (if *maxima-started*
 	(format t "Maxima restarted.~%")
       (progn
+	(format t *maxima-prolog*)
 	(format t "~&Maxima ~a http://maxima.sourceforge.net~%"
 		*autoconf-version*)
 	(format t "Distributed under the GNU Public License. See the file COPYING.~%")
@@ -398,7 +419,9 @@
 	 do
        (catch #+kcl si::*quit-tag* #+(or cmu sbcl) 'continue #-(or kcl cmu sbcl) nil
 	      (catch 'macsyma-quit
-		(continue input-stream batch-flag)(bye)))))))
+		(continue input-stream batch-flag)
+		  (format t *maxima-epilog*)
+		  (bye)))))))
 
 #-lispm
 (progn 
@@ -509,3 +532,8 @@
   (if arg-p
       (room arg)
       (room)))
+
+(defun maxima-lisp-debugger (condition me-or-my-encapsulation)
+  (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
+  (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
+  (throw 'return-from-debugger t))
