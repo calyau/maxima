@@ -7,7 +7,7 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   Differential.texi Numerical.texi \
   Statistics.texi Arrays.texi Matrices.texi Affine.texi Itensor.texi \
   Ctensor.texi Atensor.texi Series.texi Number.texi Symmetries.texi \
-  Groups.texi Runtime.texi Miscellaneous.texi Rules.texi Lists.texi
+  Groups.texi Runtime.texi Miscellaneous.texi Rules.texi Lists.texi \
   Function.texi Program.texi Debugging.texi Indices.texi Elliptic.texi \
   Bugs.texi
 
