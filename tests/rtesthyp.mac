@@ -169,8 +169,11 @@ chebyshev_t(10,1-2*x)$
 /* A&S 15.4.4 
  * (And A&S 8.2.1)
  */
-hgfred([-n,n+1],[1],x);
-legendre_p(-n-1,1-2*x);
+assume(x1>0,x1<1);
+[x1 > 0, x1 < 1]$
+
+hgfred([-n,n+1],[1],x1);
+legendre_p(-n-1,1-2*x1);
 
 /* A&S 8.1.2
  * Is there a bug in that formula?
@@ -188,8 +191,10 @@ legendre_p(-n-1,1-2*x);
  *
  * This tests the legf14 function.
  */
-radcan(((z+1)/(z-1))^(u/2)/gamma(1-u)*hgfred([-v,v+1],[1-u],(1-z)/2));
-assoc_legendre_p(v,u,z)$
+assume(z1>1);
+[z1 > 1]$
+radcan(((z1+1)/(z1-1))^(u/2)/gamma(1-u)*hgfred([-v,v+1],[1-u],(1-z1)/2));
+assoc_legendre_p(v,u,z1)$
 
 /* A&S 15.4.16 
  *
@@ -197,8 +202,8 @@ assoc_legendre_p(v,u,z)$
  *
  * This tests the legf14 function.
  */
-radcan(hgfred([a,1-a],[c],x)*(-x)^(c/2-1/2)*(1-x)^(1/2-c/2)/gamma(c));
-assoc_legendre_p(-a, 1-c, 1-2*x)$
+radcan(hgfred([a,1-a],[c],z1)*(-z1)^(c/2-1/2)*(1-z1)^(1/2-c/2)/gamma(c));
+assoc_legendre_p(-a, 1-c, 1-2*z1)$
 
 /* A&S 15.4.10 
  *

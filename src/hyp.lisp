@@ -98,6 +98,10 @@
 ;;
 ;; L1 is a (maxima) list of an's, L2 is a (maxima) list of bn's.
 (defun $hgfred (arg-l1 arg-l2 arg)
+  ;; Do we really want $radexpand set to '$all?  This is probably a
+  ;; bad idea in general, but we'll leave this in for now until we can
+  ;; verify find all of the code that does or does not need this and
+  ;; until we can verify all of the test cases are correct.
   (let (($radexpand '$all)
 	(var arg)
 	(*par* arg))
@@ -1489,7 +1493,7 @@
 ;;
 ;; P(n,m,z) = (z+1)^(m/2)*(z-1)^(-m/2)/gamma(1-m)*F(-n,1+n;1-m;(1-z)/2)
 ;;
-;; See also A&S 8.1.2, 15.4.18, 15.4.19
+;; See also A&S 8.1.2, 15.4.16, 15.4.17
 ;;
 ;; Let a=-n, b = 1+n, c = 1-m.  Then m = 1-c and n has 2 solutions:
 ;;
@@ -1497,7 +1501,8 @@
 ;;
 ;; The code belows chooses the first solution.
 ;;
-;; F(a,b;c;w) = gamma(c)*(-w)^(1/2-c/2)*(1-w)^(1-w)^(c/2-1/2)*P(-a,1-c,1-2*w)
+;; F(a,b;c;w) = gamma(c)*(-w)^(1/2-c/2)*(1-w)^(c/2-1/2)*P(-a,1-c,1-2*w)
+#+nil
 (defun legf14 (arg-l1 arg-l2 var)
   (let* ((a (car arg-l1))
 	 (c (car arg-l2))
@@ -1508,6 +1513,38 @@
 	 (power (sub z 1) (div m 2))
 	 (gm (sub 1 m))
 	 (legen n m (sub 1 (mul 2 var)) '$p))))
+
+(defun legf14 (arg-l1 arg-l2 var)
+  ;; Set $radexpand to NIL, because we don't want (-z)^x getting
+  ;; expanded to (-1)^x*z^x because that's wrong for this.
+  (let* (($radexpand nil)
+	 (a (first arg-l1))
+	 (c (first arg-l2))
+	 (m (sub 1 c))
+	 (n (mul -1 a))
+	 (z (sub 1 (mul 2 var))))
+    ;; A&S 15.4.16, 15.4.17
+    (cond ((and (eq (asksign var) '$positive)
+		(eq (asksign (sub 1 var)) '$positive))
+	   ;; A&S 15.4.17
+	   ;;
+	   ;; F(a,1-a;c;x) = gamma(c)*x^(1/2-c/2)*(1-x)^(c/2-1/2)*
+	   ;;                 assoc_legendre_p(-a,1-c,1-2*x)
+	   ;;
+	   ;; for 0 < x < 1
+	   (mul (gm c)
+		(power var (div (sub 1 c) 2))
+		(power (sub 1 var) (div (sub c 1) 2))
+		(legen n m z '$p)))
+	  (t
+	   ;; A&S 15.4.16
+	   ;;
+	   ;; F(a,1-a;c;z) = gamma(c)*(-z)^(1/2-c/2)*(1-z)^(c/2-1/2)*
+	   ;;                 assoc_legendre_p(-a,1-c,1-2*z)
+	   (mul (gm c)
+		(power (mul -1 var) (div (sub 1 c) 2))
+		(power (sub 1 var) (div (sub c 1) 2))
+		(legen n m z '$p))))))
 
 ;; Handle a-b = a+b-c
 ;;
