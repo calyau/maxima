@@ -123,7 +123,7 @@
 (DEFUN SIMPG
        (L1 L2)
        (PROG(IL)
-	    (COND ((NULL (SETQ IL (INTERSECTION L1 L2)))
+	    (COND ((NULL (SETQ IL (zl-INTERSECTION L1 L2)))
 		   (RETURN (SIMPG-EXEC L1 L2))))
 	    (RETURN (SIMPG-EXEC (DEL IL L1)(DEL IL L2)))))   
 
@@ -468,14 +468,14 @@
 	     (T (hyp-NEGP-IN-L (CDR L)))))
 
 
-(DEFUN INTERSECTION
+(DEFUN zl-INTERSECTION
        (L1 L2)
        (cond ((null l1) nil)
 	     ((zl-member (car l1) l2)
 	      (cons (car l1)
-		    (intersection (cdr l1)
+		    (zl-intersection (cdr l1)
 				  (zl-delete (car l1) l2 1))))
-	     (t (intersection (cdr l1) l2))))
+	     (t (zl-intersection (cdr l1) l2))))
 
 (DEFUN 2INP
        (L)
