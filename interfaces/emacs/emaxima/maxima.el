@@ -296,6 +296,8 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
 
 (defvar maxima-minibuffer-history nil)
 
+(defvar maxima-block "")
+
 (defvar inferior-maxima-process nil
   "The Maxima process.")
 
@@ -1623,10 +1625,12 @@ To get apropos with the symbol under point, use:
 
 (defun inferior-maxima-output-filter (str)
   "Look for a new input prompt"
-  (cond ((string-match inferior-maxima-prompt str)
-         (setq inferior-maxima-waiting-for-output nil))
-        ((string-match "?" str)
-         (maxima-ask-question str))))
+  (cond ((string-match "?" str)
+         (maxima-ask-question str))
+        ((string-match inferior-maxima-prompt str)
+         (if (not (string= maxima-block ""))
+             (maxima-single-string (maxima-get-command))
+           (setq inferior-maxima-waiting-for-output nil)))))
 
 (defun maxima-start ()
   "Start the Maxima process."
@@ -1689,13 +1693,6 @@ To get apropos with the symbol under point, use:
     (inferior-maxima-comint-send-input)
     (goto-char (point-max))))
 
-(defun maxima-single-string-wait (string)
-  "Send a single string to the maxima process,
-waiting for output after."
-  (inferior-maxima-wait-for-output)
-  (maxima-single-string string)
-  (inferior-maxima-wait-for-output))
-
 (defun maxima-ask-question (string)
   "Ask the question maxima wants answered."
   (let ((ans (read-string 
@@ -1710,41 +1707,53 @@ waiting for output after."
       (inferior-maxima-comint-send-input)
       (goto-char (point-max)))))
 
-(defun maxima-send-block (stuff)
-  "Send a block of code to Maxima."
-  (maxima-start)
+(defun maxima-get-command ()
+  "Return the maxima command that's at the front of maxima-block.
+Remove it from the front of maxima-block."
   (let* ((tmpfile (maxima-make-temp-name))
          (tmpbuf (get-buffer-create tmpfile))
-         (pt))
+         (pt)
+         (command))
     (save-excursion
       (set-buffer tmpbuf)
       (maxima-remove-kill-buffer-hooks)
-;      (make-local-hook 'kill-buffer-hook)
-;      (setq kill-buffer-hook nil)
-      (insert stuff)
+      (insert maxima-block)
       (beginning-of-buffer)
-      (while (string-match "[$;]\\|:lisp"
-                 (buffer-substring-no-properties (point) (point-max)))
-        (maxima-forward-over-comment-whitespace)
-        (setq pt (point))
-        (if (looking-at ":lisp")
-            (progn
-              (search-forward ":lisp")
-              (forward-sexp)
-              (maxima-single-string 
-               (buffer-substring-no-properties pt (point)))
-              (setq pt (point)))
-          (maxima-goto-end-of-form)
-          (maxima-single-string 
-           (buffer-substring-no-properties pt (point)))
-          (setq pt (point))))
-      (kill-buffer tmpbuf))))
+      (maxima-forward-over-comment-whitespace)
+      (setq pt (point))
+      (if (string-match "[$;]\\|:lisp"
+                          (buffer-substring-no-properties (point) (point-max)))
+          (progn
+            (if (looking-at ":lisp")
+                (progn
+                  (search-forward ":lisp")
+                  (forward-sexp)
+                  (setq command (buffer-substring-no-properties pt (point))))
+              (maxima-goto-end-of-form)
+              (setq command (buffer-substring-no-properties pt (point))))
+            (maxima-forward-over-comment-whitespace)
+            (setq maxima-block (buffer-substring-no-properties (point) (point-max))))
+        (setq command (buffer-substring-no-properties pt (point-max)))
+        (setq maxima-block ""))
+      (kill-buffer tmpbuf))
+    command))
+
+(defun maxima-send-block (stuff)
+  "Send a block of code to Maxima."
+  (maxima-start)
+  (setq stuff (maxima-strip-string stuff))
+  (if (string= maxima-block "")
+      (progn
+        (setq maxima-block stuff)
+        (maxima-single-string (maxima-get-command)))
+    (setq maxima-block (concat maxima-block stuff))))
 
 ;;; Getting information back from Maxima.
 
 (defun maxima-last-output ()
   "Get the most recent output from Maxima."
   (interactive)
+  (inferior-maxima-wait-for-output)
   (save-excursion
     (set-buffer (process-buffer inferior-maxima-process))
     (let* ((pt (point))
@@ -1792,7 +1801,14 @@ waiting for output after."
 
 
 ;;; Sending information to the process should be done through these
-;; next four commands
+;; next five commands
+
+(defun maxima-single-string-wait (string)
+  "Send a single string to the maxima process,
+waiting for output after."
+  (inferior-maxima-wait-for-output)
+  (maxima-single-string string)
+  (inferior-maxima-wait-for-output))
 
 (defun maxima-string (string)
   "Send a string to the Maxima process."
@@ -1813,6 +1829,8 @@ waiting for output after."
 do not display the maxima-buffer."
   (maxima-string-nodisplay
    (buffer-substring-no-properties beg end)))
+
+;;; Some functions to send commands to the process.
 
 (defun maxima-send-region (beg end &optional arg)
   "Send the current region to the Maxima process.
