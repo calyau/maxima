@@ -40,7 +40,8 @@ step1(i):=temp1
       :expand(trigreduce(expand(ev(eq[i],makelist([e[j],f[j]],j,1,i-1),
 				   diff))))$
 step2(i):=(f[i]:solve(coeff(temp1,cos(t)),k[i]),temp1:ev(temp1,f[i]))$
-step3(i):=temp1:ev(ode2(temp1,y[i](t),t),%k1:a[i],%k2:b[i])$
+step3(i):=(temp1:ode2(temp1,y[i](t),t),
+  temp1:subst(a[i],%k1,temp1),temp1:subst(b[i],%k2,temp1))$
 step4(i):=(temp2:rhs(temp1),temp2:diff(temp2,t),
       temp2:solve([ev(rhs(temp1),t:0),ev(temp2,t:0)],[a[i],b[i]]))$
 step5(i):=e[i]:ev(temp1,temp2)$
