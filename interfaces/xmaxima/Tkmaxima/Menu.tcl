@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.15 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.16 2004-10-16 15:37:53 vvzhy Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -214,8 +214,15 @@ proc vMAXAddSystemMenu {fr text} {
 	    lappend browse cmd.exe /c start
 	}
     } else {
-	# This is more difficult under Unix - KDE GNOME CDE etc...
-	lappend browse netscape
+	
+	set selectedbrowser mozilla
+
+	foreach b { mozilla konqueror epiphany firefox netscape } {
+	    if { ! [catch {exec which $b} ] } {
+		set selectedbrowser $b
+		break } }
+
+	lappend browse $selectedbrowser
     }
     $m add sep
     $m add command -underline 0 -label [mc "Maxima Homepage"] \
