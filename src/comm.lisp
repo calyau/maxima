@@ -830,15 +830,9 @@
 
 ; This macro is used to create functions second thru tenth.
 ; Rather than try to modify mformat for ~:R, use the quoted symbol
-; Following is Dr. Fateman's clever way to convert a symbol such as second
-; into $second.  Dan Stanger
-
-;; If  s is the symbol foo, (dollarify  s) is the symbol $foo
-(eval-when (compile eval load)
-  (defun dollarify (s) (intern (concatenate 'string "$" (symbol-name s)))))
 
 (defmacro make-nth (si i)
- (let ((sim (dollarify si)))
+ (let ((sim (intern (concatenate 'string "$" (symbol-name si)))))
   `(DEFMFUN ,sim (E)
      (ATOMCHK (SETQ E (FORMAT1 E)) ',sim NIL)
      (IF (< (LENGTH (MARGS E)) ,i)
