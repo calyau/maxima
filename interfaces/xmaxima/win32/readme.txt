@@ -77,13 +77,13 @@ To do this, follow these steps:
 
 9.  Restart the computer. 
 
-10. Modify the Environment for a Specific MS-DOS Program
 
+Modify the Environment for a Specific MS-DOS Program
 
-To increase the default environment space for maxima.bat, follow 
+To increase the default environment space just for maxima.bat, follow 
 these steps: 
 
-1.  Right-click the maxima.bat  program icon, and then click Properties. 
+1.  Right-click the maxima.bat program icon, and then click Properties. 
 
 2.  Click the Memory tab. 
 

@@ -1,1 +1,2 @@
-Do not install maxima in a folder with spaces in the name.
+Windows 9x users should read the section of the readme file on 
+environment space.
