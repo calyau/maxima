@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.13 2004-09-06 05:14:38 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.14 2004-10-13 12:08:58 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -130,7 +130,7 @@ proc setMaxDir {} {
 	# maxima_datadir is unused outside of this proc
 
 	if {![file isdir $maxima_datadir]} {
-	    tide_notify [M "Maxima data directory not found in '%s'" \
+	    tide_notify [M [mc "Maxima data directory not found in '%s'"] \
 			     [file native  $maxima_datadir]]
 	}
 
@@ -139,6 +139,8 @@ proc setMaxDir {} {
 		 $autoconf(version)]
     }
 
+    # omplotdata messages
+    mcload [file join $maxima_priv(maxima_verpkgdatadir) msgs]
 
     if {[info exists maxima_priv(maxima_verpkglibdir)]} {
 	# drop through
@@ -162,6 +164,9 @@ proc setMaxDir {} {
 	set maxima_priv(maxima_xmaximadir) \
 	    [file join $maxima_priv(maxima_verpkgdatadir) xmaxima]
     }
+    
+    # xmaxima messages
+    mcload [file join $maxima_priv(maxima_xmaximadir) msgs]
 
     # Bring derived quantities up here too so we can see the
     # side effects of setting the above variables
@@ -176,7 +181,7 @@ proc setMaxDir {} {
 	set maxima_priv(pReferenceToc) \
 	    [file join $dir html maxima_toc.html]
     } else {
-	tide_notify [M "Documentation not found in '%s'" \
+	tide_notify [M [mc "Documentation not found in '%s'"] \
 			 [file native  $maxima_priv(maxima_verpkgdatadir)]]
     }
 
@@ -195,7 +200,7 @@ proc setMaxDir {} {
     set file [file join $maxima_priv(maxima_xmaximadir) "intro.html"]
 
     if {![file isfile $file]} {
-	tide_notify [M "Starting documentation not found in '%s'" \
+	tide_notify [M [mc "Starting documentation not found in '%s'"] \
 			 [file native	$file]]
 
 	set maxima_priv(firstUrl) ""
@@ -252,21 +257,21 @@ proc vMAXSetMaximaCommand {} {
 	    $maxima_priv(xmaxima_maxima) != ""} {
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
 
-	    tide_failure [M "Error: Maxima executable not found\n%s\n\n Try setting the environment variable  XMAXIMA_MAXIMA." \
+	    tide_failure [M [mc "Error: Maxima executable not found\n%s\n\n Try setting the environment variable  XMAXIMA_MAXIMA."] \
 			      [file native $maxima_priv(xmaxima_maxima)]]
 	    return
 	}
     } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
 	set maxima_priv(xmaxima_maxima) $env(XMAXIMA_MAXIMA)
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-	    tide_failure [M "Error. maxima executable not found.\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)" \
+	    tide_failure [M [concat [mc "Error: maxima executable not found."] "\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"]] \
 			      [file native $maxima_priv(xmaxima_maxima)]]
 	    return
 	}
     } else {
 	set maxima_priv(xmaxima_maxima) maxima
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-	    tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+	    tide_failure [M [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]]
 	}
 	# jfa: bypass maxima script on windows
         # vvz: on Windows 9X/ME only
@@ -278,14 +283,14 @@ proc vMAXSetMaximaCommand {} {
 	    if {[llength $exes] != "1" || \
 		    [set exe [lindex $exes 0]] == "" || \
 		    ![file isfile $exe]} {
-		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+		tide_failure [M [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]]
 		return
 	    }
 	    
 	} else {
 	    set maxima_priv(xmaxima_maxima) maxima
 	    if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+		tide_failure [M [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]]
 	    }
 	}
     }

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.10 2002-09-19 21:42:20 mikeclarkson Exp $
+#       $Id: Myhtml.tcl,v 1.11 2004-10-13 12:08:57 vvzhy Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -224,7 +224,7 @@ proc xHMsetFont { win fonttag  } {
     set font $xHMfonts($fonttag)
     set s [split $fonttag :]
     if {[llength $s] < "2"} {
-	error "Internal font error: $fonttag '$xHMfonts($fonttag)'"
+	error [concat [mc "Internal font error:"] "$fonttag '$xHMfonts($fonttag)'"]
     }
     set fam [lindex $s 1]
     #puts "fam=$fam,fonttag=$fonttag,s=$s"
@@ -236,7 +236,7 @@ proc xHMsetFont { win fonttag  } {
     set si [expr {($si < 1 ? 1 : ($si > 8 ? 8 : $si))}]
     set elt [lindex $s 1]
     if {![info exists maxima_default($fam)]} {
-	error "Internal font error: '$fam'"
+	error [concat [mc "Internal font error:"] "'$fam'"]
     }
     set family $maxima_default($fam)
     set weight [lindex $s 2]
@@ -414,7 +414,7 @@ defTag font -body {
     }
 
 
-proc notyet { args } 	{puts "not yet $args" }
+proc notyet { args } 	{puts [concat [mc "not yet"] "$args"] }
 defTag isindex -body xHMdo_isindex -sbody {}
 defTag meta -body list -sbody list
 defTag form  -before "\n" -after "\n"  -body {
@@ -750,7 +750,7 @@ proc xHMdo_input {{type ""}} {
     if { "$w" != "" } {
 	#catch { puts "class=[winfo class $w]" }
 	if { [catch {   $win window create $wvar(W_insert) -window $w -align bottom -padx 1 -pady 1 } ] } {
-	    puts "$w bad window ?"
+	    puts [concat "$w" [mc "bad window"] "?"]
 	}
 	
 	### todo handle focus of forms.. with tabbing.
@@ -1122,7 +1122,7 @@ proc xHMrender { win tag  params text } {
 
    # eval [set xHMtag($tag)]
     if { [info exists xHMtag($tag)] } {
-	# if { [catch { eval [set xHMtag($tag)] }] } { puts "error evaling tag:$tag" }
+	# if { [catch { eval [set xHMtag($tag)] }] } { puts [concat [mc "error evaling tag:"] "$tag"] }
 	eval [set xHMtag($tag)]
     } else {
 	if { [string match "!--*" $tag] } { list} else {
@@ -1245,7 +1245,7 @@ proc HMdoaref { action win x y } {
 	    if { $i >= 0  }  {
 		set ranges [$win tag ranges $tag]
 		eval $win tag add currenthref $ranges
-		textShowHelp $win currenthref @$x,$y "Click to follow link to $reference"
+		textShowHelp $win currenthref @$x,$y [concat [mc "Click to follow link to"] "$reference"]
 
 		$win tag bind $tag <Leave> "deleteHelp $win ;$win tag remove currenthref $ranges"
 		$win tag  config currenthref -foreground [xHMwget $win option,atagforeground $HMOption(currenthrefforeground)] }
@@ -1275,7 +1275,7 @@ proc HMdoaref { action win x y } {
 proc xHMdo_isindex {} {
     uplevel 1 {
 	set paramList [xHMsplitParams $params]
-	xHMextract_param $paramList prompt " Enter search keywords: "
+	xHMextract_param $paramList prompt [mc " Enter search keywords: "]
 	xHMtextInsert $win $prompt
 	set w $win.entry[incr wvar(counter)]
 	entry $w
@@ -1361,7 +1361,7 @@ proc dec1 { s } {
     if { [scan  $s %x d] } {
 	format %c $d
     } else {
-	error "cant decode hex $s"
+	error [concat [mc "cant decode hex"] "$s"]
     }
 }
 

@@ -1,9 +1,11 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.38 2004-07-26 12:08:05 billingd Exp $
+#       $Id: Makefile.am,v 1.39 2004-10-13 12:08:57 vvzhy Exp $
 #
 
 include $(top_srcdir)/common.mk
+
+SUBDIRS = msgs
 
 genericdir = $(xmaximadir)
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.7 2004-03-28 07:28:27 vvzhy Exp $
+#       $Id: Plot3d.tcl,v 1.8 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -608,7 +608,7 @@ proc drawOneMesh { win  canv k mesh color } {
 proc doHelp3d { win } {
     global Parser
     doHelp $win [join [list \
-			   {
+			[mc {
 
 			       William Schelter's plotter for three dimensional graphics.
 
@@ -633,13 +633,12 @@ proc doHelp3d { win } {
 			       You may print to a postscript printer, or save the plot \
 				   as a postscript file, by clicking on save.   To change \
 				   between printing and saving see the Print Options under Config.
-			
+
 			       Clicking with the right mouse button and dragging may be used \
 				   instead of the scroll bars to slide the plot \
 				   around.
 
-
-			   } $Parser(help)]]
+			   } ] $Parser(help)]]
 }
 
 proc     makeFrame3d { win } {
@@ -649,7 +648,7 @@ proc     makeFrame3d { win } {
     catch { set top [winfo parent $w]}
     catch {
 
-	wm title $top "Schelter's 3d Plot Window"
+	wm title $top [mc "Schelter's 3d Plot Window"]
 	wm iconname $top "DF plot"
 	#   wm geometry $top 750x700-0+20
     }
@@ -674,8 +673,8 @@ proc mkPlot3d { win  args } {
 
     makeLocal $win buttonFont c
     bind $c <Motion> "showPosition3d $win %x %y"
-    button $wb.rotate -text "Rotate" -command "setForRotate $win" -font $buttonFont
-    setBalloonhelp $win $wb.rotate {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.}
+    button $wb.rotate -text [mc "Rotate"] -command "setForRotate $win" -font $buttonFont
+    setBalloonhelp $win $wb.rotate [mc {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.}]
 
     #$win.position config -width 15
     pack $wb.rotate -expand 1 -fill x
@@ -692,7 +691,7 @@ proc doConfig3d { win } {
     makeLocal $win buttonFont
 
     mkentry $wb1.zfun [oloc $win zfun]  "z=f(x,y)" $buttonFont
-    mkentry $wb1.nsteps [oloc $win nsteps]  "Number of mesh grids"  $buttonFont
+    mkentry $wb1.nsteps [oloc $win nsteps]  [mc "Number of mesh grids"]  $buttonFont
 
     pack $wb1.zfun  $wb1.nsteps
     pack	    $wb1.zfun  $wb1.nsteps
@@ -701,11 +700,11 @@ proc doConfig3d { win } {
 	pack $wb1.$w
     }
 
-    scale $wb1.rotxscale -label "azimuth"  \
+    scale $wb1.rotxscale -label [mc "azimuth"]  \
 	-orient horizontal -length 150 -from -180 -to 180 -resolution 1 \
 	-command "setView $win" -variable [oloc $win az] -tickinterval 120 -font $buttonFont
 
-    scale $wb1.rotyscale -label "elevation"  \
+    scale $wb1.rotyscale -label [mc "elevation"]  \
 	-orient horizontal -length 150 -from -180 -to 180 -resolution 1 \
 	-command "setView $win" -variable [oloc $win el] -tickinterval 120 -font $buttonFont
 

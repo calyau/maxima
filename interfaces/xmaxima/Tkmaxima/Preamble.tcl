@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Preamble.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Preamble.tcl,v 1.4 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### preamble.tcl ######
 
@@ -26,4 +26,7 @@ set interrupt_signal "<<interrupt fayve>>"
 set _waiting 0
 
 set _debugSend 0
+
+package require msgcat
+namespace import msgcat::*
 

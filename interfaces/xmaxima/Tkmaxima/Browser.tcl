@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.12 2002-09-19 21:42:20 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.13 2004-10-13 12:08:57 vvzhy Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -199,11 +199,11 @@ proc insertRichText {win index list } {
 	set com [lindex $list $i]
 	incr i
 	if { [catch { set n $maxima_priv($com,richTextCommand)} ] } {
-	    return -code error -errorinfo "illegal command in rich text:$com"
+	    return -code error -errorinfo [concat [mc "illegal command in rich text:"] "$com"]
 	}
 	set form [concat $com [lrange $list $i [expr {$i +$n -1}]]]
 	if { [catch {eval $form } ] } {
-	    return -code error -errorinfo "unable to evaluate command:`$form' " }
+	    return -code error -errorinfo [concat [mc "unable to evaluate command:"] "`$form'"] }
 	
 	incr i $n
     }
@@ -244,13 +244,13 @@ proc showHistory { window } {
     if {[winfo exists $w]} {catch {destroy $w}}
 
     frame $w -borderwidth 2 -relief raised
-    label $w.title -text "History List" -relief raised
+    label $w.title -text [mc "History List"] -relief raised
     pack $w.title -side top -fill x
-    setHelp $w.title {This window may be dragged elsewhere by grabbing this title bar with the mouse.   Double clicking on a history item, moves to that page.}
+    setHelp $w.title [mc "This window may be dragged elsewhere by grabbing this title bar with the mouse.  Double clicking on a history item, moves to that page."]
 
-    button $w.dismiss -command "destroy $w" -text Close
+    button $w.dismiss -command "destroy $w" -text [mc "Close"]
     pack $w.dismiss -side bottom -fill x
-    setHelp $w.dismiss {Remove the history list}
+    setHelp $w.dismiss [mc "Remove the history list"]
 
     scrollbar $w.scrolly -command "$w.list yview"
     scrollbar $w.scrollx -orient horizontal -command "$w.list xview"
@@ -468,7 +468,7 @@ proc encodeURL { lis } {
 	    #	   appendSeparate ans "" [assoc filename $lis ""] ""
 	    appendSeparate ans "#" [assoc anchor $lis ""] ""
 	}
-	default "error unsupported url type : $type"
+	default "error unsupported url type: $type"
     }
     return $ans
 }
@@ -584,7 +584,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		#mike FIXME - use async sockets and dns
 		if {[catch {socket $server $port} sock]} {
 		    global errorInfo
-		    tide_failure [M "Error connecting to %s on %s\n%s" \
+		    tide_failure [M [mc "Error connecting to %s on %s\n%s"] \
 				      $server $port $sock]
 		    return
 		}
@@ -641,7 +641,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	}
 	default {
 	    #mike dirpath?
-	    error "not supported [lindex $res 0]"
+	    error [concat [mc "not supported"] "[lindex $res 0]"]
 	}
     }
 }
@@ -710,7 +710,7 @@ proc backgroundGetImage1  { image res width height }   {
 		if { [info exists maxima_priv(inbrowser)] ||  [catch {set out [open $tmp w] } ] } {
 		    # if have binary..
 		    if { "[info command binary]" != "binary" } {
-			error "need version of tk with 'binary' command for images"}
+			error [mc "need version of tk with 'binary' command for images"]}
 		    #puts "hi binary" ; flush stdout
 		    if {  [readAllData $s -tovar \
 			       maxima_priv($s,url_result) -mimeheader \
@@ -723,7 +723,7 @@ proc backgroundGetImage1  { image res width height }   {
 			unset maxima_priv($s,url_result)
 			
 		    } else  {
-			error "could not get image"
+			error [mc "could not get image"]
 		    }
 		} else {
 		    fconfigure $out -translation binary -blocking 0
@@ -753,16 +753,16 @@ proc backgroundGetImage1  { image res width height }   {
 	
 	
 	}
-	default { error "unknown type of image" }
+	default { error [mc "unknown type of image"] }
     }
     ## if we opened an out channel try hard to remove the tmp file.
     if { [info exists out] &&
 	 [catch { file delete $tmp } ] && [catch { rm $tmp }]
 	 && [catch { exec rm $tmp }] } {
-	puts "cant remove tmp file $tmp"
+	puts [concat [mc "cant remove tmp file"] "$tmp"]
     }
     if { "$ans" == "" } {
-	error "Unable to open an image for [encodeURL $res]"
+	error [concat [mc "Unable to open an image for"] "[encodeURL $res]"]
     }
 
 }
@@ -846,7 +846,7 @@ proc ws_outputToTemp { string file ext encoding } {
 proc OpenMathOpenUrl { name args} {
     global maxima_priv
 
-    gui status "Opening $name"
+    gui status [concat [mc "Opening"] "$name"]
 
     #puts "OpenMathOpenUrl  $name $args "
     set history "" ; set historyIndex -1 ; set currentUrl ""
@@ -1011,7 +1011,7 @@ proc OpenMathOpenUrl { name args} {
 	#puts $result
 	#puts "======end========"
 	puts "$errmsg1"
-	error "unable to evaluate [encodeURL $new]\n$errmsg1\n$errorInfo"
+	error [concat [mc "unable to evaluate"] "[encodeURL $new]\n$errmsg1\n$errorInfo"]
     }
 
 }
@@ -1114,40 +1114,40 @@ proc fontDialog { top } {
 	set fo [xHMmapFont "font:$fam:normal:r:3"]
 	catch { set maxima_default($fam) [assoc -family [font actual $fo]]}
     }
-    $win insert insert "Font Settings\nThe proportional font is "
+    $win insert insert [mc "Font Settings\nThe proportional font is "]
     $win window create insert -window $win.familypropor
-    $win insert insert "with a size adjustment of "
+    $win insert insert [mc "with a size adjustment of "]
     $win window create insert -window $win.sizepropor
-    $win insert insert "\nThe fixed font is "
+    $win insert insert [mc "\nThe fixed font is "]
     $win window create insert -window $win.familyfixed
-    $win insert insert "with a size adjustment of "
+    $win insert insert [mc "with a size adjustment of "]
     $win window create insert -window $win.sizefixed
     $win insert insert "\n"
-    $win insert insert "Default nmtp servers  "
+    $win insert insert [mc "Default nmtp servers  "]
     global _servers
     set _servers $maxima_default(defaultservers)
     entry $win.entry -textvariable _servers -width 40
     $win window create insert -window $win.entry
     $win insert insert "\n\n"
     global maxima_priv
-    $win insert insert "http Proxy host and port:"
+    $win insert insert [mc "http Proxy host and port:"]
     entry $win.entryproxy  -width 40
     catch { $win.entryproxy insert 0 $maxima_priv(proxy,http) }
     $win window create insert -window $win.entryproxy
-    $win insert insert "\nIf you are behind a firewall enter the name of your http proxy host and port,\n eg: `foo.ma.utexas.edu 3128', otherwise leave this blank"
+    $win insert insert [mc "\nIf you are behind a firewall enter the name of your http proxy host and port,\n eg: `foo.ma.utexas.edu 3128', otherwise leave this blank"]
 
     set men [tk_optionMenu $win.plottype maxima_default(plotwindow) embedded separate multiple ]
-    $win insert insert "\nShould plot windows be "
+    $win insert insert [mc "\nShould plot windows be "]
     $win window create insert -window $win.plottype
     $win insert insert "?"
 
 
     $win insert insert "\n\n\n"
-    $win insert insert " Apply and Quit " "bye raised"
+    $win insert insert [mc " Apply and Quit "] "bye raised"
     $win insert insert "      "
-    $win insert insert " Apply " "click raised"
+    $win insert insert [mc " Apply "] "click raised"
     $win insert insert "      "
-    $win insert insert " Cancel " "cancel raised"
+    $win insert insert [mc " Cancel "] "cancel raised"
     proc _FontDialogApply { win } {
 	global maxima_default _servers maxima_priv
 	set maxima_default(defaultservers) $_servers
@@ -1161,7 +1161,7 @@ proc fontDialog { top } {
     $win tag bind cancel <1> "destroy $top"
     $win tag configure raised -relief raised -borderwidth 2
     $win insert insert "      "
-    $win insert insert "Save Preference" "save raised"
+    $win insert insert [mc " Save Preferences "] "save raised"
     $win tag bind save <1> "_FontDialogApply $win ; savePreferences"
 
     pack $win

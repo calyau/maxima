@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.14 2002-09-19 21:42:20 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.15 2004-10-13 12:08:58 vvzhy Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -151,10 +151,10 @@ proc omPanel { w args } {
 	$menubar add $win.$v
     }
 
-    button $win.back -text Back \
+    button $win.back -text [mc "Back"] \
 	-command "OpenMathMoveHistory $win -1"
     pack $win.back -side left -expand 0
-    button $win.forward -text Forward \
+    button $win.forward -text [mc "Forward"] \
 	-command "OpenMathMoveHistory $win 1"
     pack $win.forward -side left -expand 0
 
@@ -166,22 +166,24 @@ proc omPanel { w args } {
 
     ####### begin edit button
 
-    setHelp $win.edit {Bring down a menu with some edit options}
+    setHelp $win.edit [mc "Bring down a menu with some edit options"]
     set m [oget $win.edit menu]
-    oset $win showEditBar "show edit bar"
+    $win.edit configure -text [mc "Edit"]
+    oset $win showEditBar [mc "show edit bar"]
 
     oset $win currentProgram maxima
     oset $win currentProgramInsert 1
-    $m add command -underline 0 \
-	-help {_eval {Mark the currently selected region of the text window, so that clicking on the region will cause evaluation by a program.  The program specified below is [oget [omPanel %W] currentProgram].}} -label "mark for eval"  \
+    $m add command \
+	-help [mc "Mark the currently selected region of the text window, so that clicking on the region will cause evaluation by a program specified below."] -label [mc "mark for eval"]  \
 	-command  "markForProgram \[oget $win textwin\]"
+#	-help {_eval {Mark the currently selected region of the text window, so that clicking on the region will cause evaluation by a program.  The program specified below is [oget [omPanel %W] currentProgram].}} -label "mark for eval"  \
 
     global evalPrograms
     #   regsub -all eval_ [concat $evalPrograms [info proc eval_*]] "" programs
     set programs $evalPrograms
     foreach v $programs {
 	$m add radio \
-	    -help "Set `$v' to be the current type used by 'mark for eval' for making the selected region sensitive to double clicking." -label "$v" -value $v -variable [oloc $win currentProgram] \
+	    -help [M [mc "Set `%s' to be the current type used by 'mark for eval' for making the selected region sensitive to double clicking."] "$v"] -label "$v" -value $v -variable [oloc $win currentProgram] \
 	    -command "setTypeForEval $m $v"
     }
     frame $m.program
@@ -195,66 +197,69 @@ proc omPanel { w args } {
 
     # ====begin Help button===
     set m [oget $win.help menu]
-    $win.help configure -text Options
-    setHelp $win.help "Offer possible help options, including toggling \n	whether to show balloon help messages"
+    $win.help configure -text [mc "Options"]
+    setHelp $win.help [mc "Offer possible help options, including toggling \n	whether to show balloon help messages"]
 
     global show_balloons showHelpMessages
     if {$show_balloons == "1"} {
-	set showHelpMessages "Hide Balloon Help"
+	set showHelpMessages [mc "Hide Balloon Help"]
     } else {
-	set showHelpMessages "Show Balloon Help"
+	set showHelpMessages [mc "Show Balloon Help"]
     }
 
     $m add command -textvariable showHelpMessages \
 	-command {
 	    set show_balloons [expr {!$show_balloons}]
 	    if { $show_balloons} {
-		after 500 set showHelpMessages [list "Hide Balloon Help" ]
+		after 500 set showHelpMessages [list [mc "Hide Balloon Help"] ]
 	    } else {
-		after 500 set showHelpMessages [list "Show Balloon Help" ]
+		after 500 set showHelpMessages [list [mc "Show Balloon Help"] ]
 	    }
 	}
 
 
     # ====begin File button===
     set m [oget $win.file menu]
-    setHelp $win.file {Menu of file options, for saving and preferences}
+    $win.file configure -text [mc "File"]
+    setHelp $win.file [mc {Menu of file options, for saving and preferences}]
     global [oarray $win]
-    $m add command -label "Reload" \
+    $m add command -label [mc "Reload"] \
 	-command {OpenMathOpenUrl [oget [omPanel %W] location] -reload 1 \
 		      -commandpanel [omPanel %W]} \
-	-help {_eval {Reload the current URL displayed in the entry window: [oget [omPanel %W] location]}}
-    $m add command -label "Interrupt" \
+	-help [mc "Reload the current URL displayed in the window."]
+#	-help {_eval {Reload the current URL displayed in the entry window: [oget [omPanel %W] location]}}
+    $m add command -label [mc "Interrupt"] \
 	-command {omDoInterrupt [oget [omPanel %W] textwin]} \
-	-help {Try to interrupt the current remote computations.}
-    $m add command -label "Abort" \
+	-help [mc {Try to interrupt the current remote computations.}]
+    $m add command -label [mc "Abort"] \
 	-command {omDoAbort [oget [omPanel %W] textwin]} \
-	-help {Try to abort the current remote computation.}
-    $m add command -label "Stop" \
+	-help [mc {Try to abort the current remote computation.}]
+    $m add command -label [mc "Stop"] \
 	-command {omDoStop [oget [omPanel %W] textwin]} \
-	-help {Stop reading the current url or image.}
-    $m add command -label "Forget" \
+	-help [mc {Stop reading the current url or image.}]
+    $m add command -label [mc "Forget"] \
 	-command  "forgetCurrent $win"   \
-	-help {Move back one in the history, and remove the current one from the history, unless it was the first window.}
+	-help [mc {Move back one in the history, and remove the current one from the history, unless it was the first window.}]
     if {0} {
-    $m add command -label "History" \
+    $m add command -label [mc "History"] \
 	-command  "showHistory $win"   \
-	-help {Display the history list, so that one may be selected by clicking.}
+	-help [mc {Display the history list, so that one may be selected by clicking.}]
     }
-    $m add command -label "Base Program" \
+    $m add command -label [mc "Base Program"] \
 	-command  {fileBaseprogram [oget [omPanel %W] textwin]  %W %x %y}   \
-	-help {Show and allow altering of the base program, which shows which is the default host for programs to run on.   May also be specified in <body baseprogram= ...> in the .html file.}
+	-help [mc {Show and allow altering of the base program, which shows which is the default host for programs to run on.   May also be specified in <body baseprogram= ...> in the .html file.}]
 
-    $m add command -label {Save to file} \
+    $m add command -label [mc "Save to file"] \
 	-command "pMAXSaveTexToFile \[oget $win textwin\]" \
-	-help {_eval {Save to the file list below([oget [omPanel %W] savefilename]).  Not available when running inside Netscape}}
+	-help [mc "Save to file"]
+#	-help {_eval {Save to the file list below([oget [omPanel %W] savefilename]).  Not available when running inside Netscape}}
 
-    $m add command -label Fonts \
+    $m add command -label [mc "Fonts"] \
 	-command "fontDialog .fontdialog" \
-	-help {set the default font sizes and types}
-    $m add command -label "Exit" \
+	-help [mc {set the default font sizes and types}]
+    $m add command -label [mc "Exit"] \
 	-command  "tkmaxima exit"   \
-	-help {Exit this program}
+	-help [mc {Exit this program}]
 
 
     global location
@@ -277,15 +282,15 @@ proc omPanel { w args } {
 	#mike slate the old histroy list for demolition
 	button $win.loclabel -text " Url:" \
 	    -command "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win"
-	setHelp $win.loclabel {Fetch the URL or FILE indicated in the entry box. \
+	setHelp $win.loclabel [mc {Fetch the URL or FILE indicated in the entry box. \
 				   A local file is something like file:/home/wfs/foo.om, and a URL \
-				   begins with http.}
+				   begins with http.}]
 
 	pack $win.loclabel -side left -fill x -expand 0
     }
 
     entry $win.location -textvariable [oloc $win location] -width 40
-    setHelp $win.location {Address of the current document.  You may modify it and type Enter, to fetch a new document.}
+    setHelp $win.location [mc {Address of the current document.  You may modify it and type Enter, to fetch a new document.}]
     bind $win.location <Key-Return> "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win"
     pack $win.location  -side left -fill x -expand 1
     label $win.locspace -text " "
@@ -497,12 +502,12 @@ proc saveToFile { commandPanel label file } {
 
     if { [catch { set fi [open $file w] } err] } {
 	return -code error \
-	    [M "Could not open file %s\n%s" \
+	    [M [mc "Could not open file %s\n%s"] \
 		 [file native $file] $err]
     }
     puts $fi $text
     close $fi
-    $label configure -relief raised -text "wrote $file"
+    $label configure -relief raised -text [concat [mc "wrote"] "$file"]
     after 1200 [list $label configure -text $lab]
 }
 
@@ -551,7 +556,7 @@ proc mkOpenMath { win  } {
     $w.text tag bind "currenteval" <Leave> "$w.text tag remove currenteval 0.0 end ; addTagSameRange %W Teval currenteval @%x,%y;"
     $w.text tag config "currenteval" -foreground red
     $w.text tag bind Teval <Double-Button-1> {doInvoke %W @%x,%y }
-    $w.text tag bind Teval <Enter> {addTagSameRange %W Teval currenteval @%x,%y; textShowHelp %W Teval @%x,%y "Double clicking (with the left mouse button), in the marked region will cause evaluation. "}
+    $w.text tag bind Teval <Enter> {addTagSameRange %W Teval currenteval @%x,%y; textShowHelp %W Teval @%x,%y [mc "Double clicking (with the left mouse button), in the marked region will cause evaluation. "]}
     $w.text tag bind Teval <Leave> {deleteHelp %W}
     $w.text tag config hrule -font {Courier 1} -background black
     $w.text mark set insert 0.0
@@ -701,7 +706,7 @@ proc doInvoke { w index } {
 	if { "$name" != "" } {
 	    set nextResult [$w tag nextrange result:$name [lindex $this 1]]
 	    if { 0 == [llength $nextResult] } {
-		error "No result field with name=$name"
+		error [concat [mc "No result field with"] "name=$name"]
 	    }
 	} else {
 	    set next [$w tag nextrange Teval [lindex $this 1]]
@@ -723,7 +728,7 @@ proc doInvoke { w index } {
     set prog [programName $program]
     if { [info proc eval_$prog] != "" } {
 	if {[eval_$prog $program $w $this $nextResult] != 0 }  {
-	    error "Failed to eval region"
+	    error [mc "Failed to eval region"]
 	}
     } else {
 	global err

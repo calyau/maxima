@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tkmaxima.tcl,v 1.2 2003-01-05 19:03:11 amundson Exp $
+#       $Id: Tkmaxima.tcl,v 1.3 2004-10-13 12:08:58 vvzhy Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -132,18 +132,17 @@
 ## source RunMaxima.tcl
 
 proc vMaxUsage {} {
+
     set usage {}
-    lappend usage "usage: xmaxima [options] [url]" \
-	"           If given, [url] will be opened in the help browser instead" \
-	"           of the default starting page." \
-	"options:" \
-	"    --help: Display this usage message."
-    if {$tcl_platform(platform) != "windows"} {
-	lappend usage \
-	    "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>."
-    }
+    
     lappend usage \
-	"    --use-version=<version>: Launch maxima version <version>."
+        [mc "Usage: xmaxima \[options\] \[url\]"] \
+	[mc "           If given, \[url\] will be opened in the help browser instead"] \
+	[mc "           of the default starting page."] \
+	[mc "options:"] \
+	[mc "    --help: Display this usage message."] \
+	[mc "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>."] \
+	[mc "    --use-version=<version>: Launch maxima version <version>."]
 
     tide_notify [join $usage "\n"]
 }
@@ -181,7 +180,7 @@ proc lMaxInitSetOpts {} {
     if { [llength $argv] == 1 } {
 	set maxima_priv(firstUrl) [lindex $argv 0]
     } elseif { [llength $argv] > 1 } {
-	tide_failure "Error: arguments \"$argv\" not understood."
+	tide_failure [M [mc "Error: arguments %s not understood."] "$argv"]
 	exit 1
     }
 
@@ -223,7 +222,7 @@ object_class MAXTkmaxima {
 	cMAXINITBeforeIni
 	if {[file isfile ~/xmaxima.ini]} {
 	    if {[catch {uplevel "#0" [list source ~/xmaxima.ini] } err]} {
-		tide_failure [M "Error sourcing %s\n%s" \
+		tide_failure [M [mc "Error sourcing %s\n%s"] \
 				  [file native ~/xmaxima.ini] \
 				  $err]
 	    }
@@ -240,7 +239,7 @@ object_class MAXTkmaxima {
 
 	#mike Defer the starting of maxima until the interface has been built
 	if {[catch {runOneMaxima $w} err]} {
-	    tide_failure "Error starting Maxima:\n$err"
+	    tide_failure [concat [mc "Error starting Maxima:"] "\n$err"]
 	    return
 	}
 	after idle focus $maxima_priv(cConsoleText)
@@ -251,7 +250,7 @@ object_class MAXTkmaxima {
 	global maxima_priv
 	
 # jfa: We don't need to ask about saving preferences every single time.
-# 	set retval [tide_yesnocancel "Exiting Maxima. Save Preferences?"]
+# 	set retval [tide_yesnocancel [mc "Exiting Maxima. Save Preferences?"]]
 # 	switch -exact -- $retval "1" {
 # 	    catch {savePreferences}
 # 	} -1 {

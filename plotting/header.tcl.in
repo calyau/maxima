@@ -21,6 +21,8 @@ if { [catch { set buttonfont} ] } {
   set buttonfont [font create -family Helvetica -size $fontSize]
 }
 
+package require msgcat
+namespace import msgcat::*
 
 ###
 

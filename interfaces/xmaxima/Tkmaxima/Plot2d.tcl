@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.6 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: Plot2d.tcl,v 1.7 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -89,7 +89,7 @@ proc  makeFrame2d  { win } {
     set top $w
     catch { set top [winfo parent $w]}
     catch {
-	wm title $top "Schelter's 2d Plot Window"
+	wm title $top [mc "Schelter's 2d Plot Window"]
 	wm iconname $top "2d plot"
 	# wm geometry $top 750x700-0+20
     }
@@ -101,7 +101,7 @@ proc  makeFrame2d  { win } {
 proc doConfig2d { win } {
     desetq "wb1 wb2" [doConfig $win]
     makeLocal $win buttonFont
-    mkentry $wb1.nsteps [oloc $win nsteps]  "Number of mesh grids"  $buttonFont
+    mkentry $wb1.nsteps [oloc $win nsteps]  [mc "Number of mesh grids"]  $buttonFont
     mkentry $wb1.xfun [oloc $win xfun]  "y=f(x)"  $buttonFont
     bind $wb1.xfun.e <Return> "replot2d $win"
 
@@ -116,7 +116,7 @@ proc doHelp2d {win } {
     global Parser
 
     doHelp $win [join [list \
-			   {
+			[mc {
 
 			       William Schelter's plotter for two dimensional graphics.
 
@@ -143,11 +143,7 @@ proc doHelp2d {win } {
 				   as a postscript file, by clicking on save.   To change \
 				   between printing and saving see the Print Options under Config.
 			
-
-
-
-
-			   } $Parser(help)]]
+			   }] $Parser(help)]]
 }
 
 global plot
@@ -169,11 +165,11 @@ proc mkExtraInfo { name args } {
     grid columnconfig $w.grid 0 -weight 2 -minsize 0
 
     set i 0
-    label $w.title -text "Extra Plotting Information" -width 50
+    label $w.title -text [mc "Extra Plotting Information"] -width 50
     grid $w.title -in $w.grid -columnspan 2 -row 0 -column 0
     incr i
-    label $w.labppl -text "Plot Function f(x)"
-    label $w.labcol -text "plot color"
+    label $w.labppl -text [mc "Plot Function f(x)"]
+    label $w.labcol -text [mc "plot color"]
     grid $w.labppl -padx 1 -in $w.grid  -pady 1 -row $i -column 0 -sticky news
     grid $w.labcol -padx 1 -in $w.grid  -pady 1 -row $i -column 1 -sticky news
     incr i

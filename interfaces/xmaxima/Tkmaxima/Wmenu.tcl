@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Wmenu.tcl,v 1.7 2002-09-19 21:42:20 mikeclarkson Exp $
+#       $Id: Wmenu.tcl,v 1.8 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### wmenu.tcl ######
 ############################################################
@@ -23,14 +23,14 @@ proc wmenubar { name  } {
 	# maybe change this to do traversal toward side leaving on..
 	oset $name items ""
     } else {
-	error "needs a window name arg"
+	error [mc "needs a window name arg"]
     }
 }
 
 
 proc eswitch { key lis } {
     foreach {k act} $lis { lappend allowd $k}
-    lappend lis default "error $key must be  one of: $allowd"
+    lappend lis default [concat [mc "error"] "$key" [mc "must be one of:"] "$allowd"]
     uplevel 1 switch -- $key  [list  $lis]
 }
 
@@ -63,7 +63,7 @@ proc deleteHelp { win } {
 
 proc setHelp {win  help args } {
     # set c [ogetr $win c "cant"]
-    if { "$help" == "" } {set help "This is a menu window $win"}
+    if { "$help" == "" } {set help [concat [mc "This is a menu window"] "$win"]}
     set enter ""
     set exit ""
     if  { [catch { set current [$win cget -relief] } ] || "$current" \

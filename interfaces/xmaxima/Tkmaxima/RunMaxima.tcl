@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.18 2004-06-14 02:14:24 billingd Exp $
+#       $Id: RunMaxima.tcl,v 1.19 2004-10-13 12:08:58 vvzhy Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -82,7 +82,7 @@ proc openMaxima { win filter } {
     global maxima_priv env maxima_default
 
     if {$maxima_priv(localMaximaServer) == ""} {
-	return -code error "Could not start Maxima - empty command"
+	return -code error [mc "Could not start Maxima - empty command"]
     }
 
     set port $maxima_default(iLocalPort)
@@ -104,10 +104,10 @@ proc openMaxima { win filter } {
 	lappend command  $com
 	if { [catch $command err ] } {
 	    #mike Must return an error to stop runOneMaxima from continuing
-	    return -code error "Can't execute $com\n$err"
+	    return -code error [concat [mc "Can't execute"] "$com\n$err"]
 	}
     } else {
-	return -code error "Could not open a socket "
+	return -code error [mc "Could not open a socket "]
     }
 }
 
@@ -141,7 +141,7 @@ proc closeMaxima { win } {
 	    catch {
 		close $maximaSocket
 	    } err
-	    gui status "Closed socket $maximaSocket: $err"
+	    gui status [concat [mc "Closed socket"] "$maximaSocket: $err"]
 	    unset maximaSocket
 	    after 500
 	    # Maxima takes time to shutdown?
@@ -156,7 +156,7 @@ proc closeMaxima { win } {
 	    catch {
 		CMkill -TERM $pid
 	    } err
-	    gui status "Killed process '$pid': $err"	    
+	    gui status [concat [mc "Killed process"] "'$pid': $err"]	    
 	    unset pid
 	    # Maxima takes time to shutdown?
 	    after 500
@@ -295,15 +295,15 @@ proc runOneMaxima { win } {
     while { $pid == "none" } {
 	set af [after $maxima_priv(timeout) oset $win pid "none" ]
 	# puts "waiting pid=$pid"
-	gui status "Starting Maxima"
+	gui status [mc "Starting Maxima"]
 	vwait [oloc $win pid]
 	after cancel $af
 	if { $pid  == "none" } {
-	    if {[tide_yesno {Starting maxima timed out.  Wait longer?}]} {
+	    if {[tide_yesno [mc "Starting maxima timed out.  Wait longer?"]]} {
 		continue
 	    } else {
 		catch {closeMaxima $win}
-		set err   "Starting Maxima timed out"
+		set err   [mc "Starting Maxima timed out"]
 		if {![catch {oget $win socket} sock] && \
 			[info exists pdata(maximaInit,$sock)] } {
 		    append err : $pdata(maximaInit,$sock)
@@ -314,9 +314,9 @@ proc runOneMaxima { win } {
     }
 
     if {[catch {oget $win socket} sock]} {
-	return -code error "Failed to start Maxima"
+	return -code error [mc "Failed to start Maxima"]
     }
-    gui status "Started Maxima"
+    gui status [mc "Started Maxima"]
 
     set res [list [oget $win pid] $sock ]
     global pdata
@@ -336,14 +336,14 @@ proc sendMaxima { win form } {
     if {[catch {
 	puts -nonewline $maximaSocket $form
 	flush $maximaSocket} err]} {
-	set mess "Error sending to Maxima:"
+	set mess [mc "Error sending to Maxima:"]
 	if {[string match "can not find channel named*" err]} {
 	    # The maxima went away
 	    set maximaSocket ""
 	    unset maximaSocket
-	    set mess [M "$mess\n%s\nYou must Restart" $err]
+	    set mess [M [concat "$mess\n%s\n" [mc "You must Restart"]] $err]
 	} else {
-	    set mess [M "$mess:\n%s\nYou may need to Restart" $err]
+	    set mess [M [concat "$mess:\n%s\n" [mc "You may need to Restart"]] $err]
 	}
 	tide_failure $mess
     }
@@ -367,13 +367,13 @@ proc sendMaximaWait { win form {timeout 20000 }} {
 
     set sock [oget $win maximaSocket]
     if {$sock == ""} {
-	error "sendMaximaWait $form socket closed"
+	error [concat "sendMaximaWait $form" [mc "socket closed"]]
     }
     if { $maximaWait > 0 } {
 	global pdata
 	return [trim_maxima $pdata(${sock},result)]
     } else {
-	error "sendMaximaWait $form timed out"
+	error [concat "sendMaximaWait $form" [mc "timed out"]]
     }
 }
 
@@ -412,14 +412,14 @@ proc sendMaximaCall { win form call } {
     if {[catch {
 	puts -nonewline $maximaSocket $form
 	flush $maximaSocket} err]} {
-	set mess "Error sending to Maxima:"
+	set mess [mc "Error sending to Maxima:"]
 	if {[string match "can not find channel named*" err]} {
 	    # The maxima went away
 	    set maximaSocket ""
 	    unset maximaSocket
-	    set mess [M "$mess\n%s\nYou must Restart" $err]
+	    set mess [M [concat "$mess\n%s\n" [mc "You must Restart"]] $err]
 	} else {
-	    set mess [M "$mess:\n%s\nYou may need to Restart" $err]
+	    set mess [M [concat "$mess:\n%s\n" [mc "You may need to Restart"]] $err]
 	}
 	tide_failure $mess
 	return
@@ -453,7 +453,7 @@ proc CMkill {  signal pid } {
 
     # Windows pids can be negative
     if {[string is int $pid]} {
-	gui status "Signaling $pid with $signal"
+	gui status [M [mc "Sending signal %s to process %s"] "$signal" "$pid"]
 	if {$tcl_platform(platform) == "windows" } {
 	    exec $maxima_priv(kill) $signal $pid
 	} else {

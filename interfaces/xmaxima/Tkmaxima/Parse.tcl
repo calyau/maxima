@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Parse.tcl,v 1.3 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: Parse.tcl,v 1.4 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### Parse.tcl ######
 ############################################################
@@ -68,7 +68,7 @@ proc parseTokenize { str } {
 	    # append ans " [getOneMatch $str $all]"
 	    set str [string range $str [expr {1+ [lindex $all 1]}] end]
 	}  else {
-	    error "parser unrecognized: $str"
+	    error [concat [mc "parser unrecognized:"] "$str"]
 	}
     }
     return $ans
@@ -76,10 +76,11 @@ proc parseTokenize { str } {
 
 set Parser(reserved) " acos cos hypo sinh asin cosh log sqrt atan exp log10 tan atan2 floor pow tanh ceil fmod sin abs double int round"
 
-set Parser(help) [join [list {
+set Parser(help) [join [list [mc \
+{
     The syntax is like C except that it is permitted to write x^n
     instead of pow(x,n).
-} "\nFunctions: $Parser(reserved)\n\nOperators: == % & || ( << <= ) : * >=  + && , | < >> - > ^ ? /" ] ""]
+} ] [concat "\n" [mc "Functions:"] "$Parser(reserved)\n\n" [mc "Operators:"] "== % & || ( << <= ) : * >=  + && , | < >> - > ^ ? /" ]] ""]
 
 
 
@@ -223,7 +224,7 @@ proc getExpr120 { } {
 	    parseMatch $Parser(lookahead)
 	    break;
 	} else {
-	    error "syntax error"
+	    error [mc "syntax error"]
 	}
     }
 }

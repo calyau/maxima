@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: EOpenplot.tcl,v 1.4 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: EOpenplot.tcl,v 1.5 2004-10-13 12:08:57 vvzhy Exp $
 #
 ###### EOpenplot.tcl ######
 ############################################################
@@ -38,7 +38,7 @@ proc eval_openplot { program w thisRange resultRange } {
 	apply $f [lrange $tem 1 end]
 	ShowPlotWindow $w $name $thisRange $resultRange $desired
     } else {
-	error "$f not allowed, only {$allowed}"
+	error [concat "$f" [mc "not allowed, only"] "{$allowed}"]
     }
     return 0
 }

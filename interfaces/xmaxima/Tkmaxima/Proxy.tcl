@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Proxy.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Proxy.tcl,v 1.4 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### Proxy.tcl ######
 
@@ -35,7 +35,7 @@ proc openSocketAndSend { host port msg { verify 0}} {
 	    fconfigure $sock -blocking  1 -translation {crlf binary}
 	    gets $sock tem
 	    if { [regexp "503" $tem] } {
-		error "Could not connect $host $port"
+		error [concat [mc "Could not connect"] "$host $port"]
 	    }
 	    while { 1 } {
 		gets $sock tem

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NPlot3d.tcl,v 1.5 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: NPlot3d.tcl,v 1.6 2004-10-13 12:08:57 vvzhy Exp $
 #
 ###### NPlot3d.tcl ######
 ############################################################
@@ -105,7 +105,7 @@ proc vectorCross { x1 x2 }  {
 }
 
 proc linspace { a b n } {
-    if { $n < 2 } { error "from $a to $b requires at least 2 points" }
+    if { $n < 2 } { error [M [mc "from %s to %s requires at least 2 points"] "$a" "$b" ] }
     set del [expr {($b - $a)*1.0/($n -1)  }]
     for { set i 0 } { $i < $n } { incr i } {
 	lappend ans [expr {$a + $del * $i}]
@@ -206,10 +206,10 @@ proc addOnePlot3d { win data } {
 		set j -1
 		incr i
 		if { [llength $rowx] != [llength $rowy] } {
-		    error "mismatch rowx:$rowx,rowy:$rowy"
+		    error [concat [mc "mismatch"] "rowx:$rowx,rowy:$rowy"]
 		}
 		if { [llength $rowx] != [llength $rowz] } {
-		    error "mismatch rowx:$rowx,rowz:$rowz"
+		    error [concat [mc "mismatch"] "rowx:$rowx,rowz:$rowz"]
 		}
 		foreach x $rowx y $rowy z $rowz {
 		    incr j

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.5 2002-09-19 16:26:42 mikeclarkson Exp $
+#       $Id: Plotdf.tcl,v 1.6 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -62,13 +62,13 @@ proc makeFrameDf { win } {
     }
     set wb $w.buttons
     makeLocal $win buttonFont
-    label $w.msg  -wraplength 600 -justify left -text "A direction field plotter by William Schelter" -font $buttonFont
+    label $w.msg  -wraplength 600 -justify left -text [mc "A direction field plotter by William Schelter"] -font $buttonFont
 
-    button $wb.integrate -text "Integrate" -command "setForIntegrate $w" -font $buttonFont
-    setBalloonhelp $win $wb.integrate {Causes clicking on the  plot with the left mouse button at a point, to draw a trajectory passing through that point.   Under Config there is an entry box which allows entering exact x,y coordinates, and which also records the place of the last trajectory computed.}
+    button $wb.integrate -text [mc "Integrate"] -command "setForIntegrate $w" -font $buttonFont
+    setBalloonhelp $win $wb.integrate [mc {Causes clicking on the  plot with the left mouse button at a point, to draw a trajectory passing through that point.   Under Config there is an entry box which allows entering exact x,y coordinates, and which also records the place of the last trajectory computed.}]
 
-    button $wb.plotversust -text "Plot Versus t" -command "plotVersusT $w" -font $buttonFont
-    setBalloonhelp $win $wb.plotversust {Plot the x and y values for the  last trajectory versus t.}
+    button $wb.plotversust -text [mc "Plot Versus t"] -command "plotVersusT $w" -font $buttonFont
+    setBalloonhelp $win $wb.plotversust [mc "Plot the x and y values for the  last trajectory versus t."]
 
 
     setForIntegrate $w
@@ -98,7 +98,7 @@ proc swapChoose {win msg winchoose } {
 proc doHelpdf { win } {
     global Parser
     doHelp $win [join [list \
-			   {
+			 [mc  {
 			       William Schelter's solver/plotter for ode systems.
 
 			       To QUIT this HELP click here.
@@ -129,11 +129,11 @@ proc doHelpdf { win } {
 			       the initial t value (tinitial), and the x and y centers
 			       and radii, may be set under the  Config menu.
 
-			       You may print to a postscript printer, or save the plot \
-				   as a postscript file, by clicking on save.   To change \
+			       You may print to a postscript printer, or save the plot 
+				   as a postscript file, by clicking on save.   To change 
 				   between printing and saving see the Print Options under Config.
 			
-			   } $Parser(help)]]
+			   } ] $Parser(help)]]
 }
 
 proc setForIntegrate { win} {
@@ -275,9 +275,9 @@ proc plotVersusT {win } {
     }
 
     foreach {na val } [array get doing] {
-	lappend plotdata [list label "x versus t"] [list plotpoints 2]
+	lappend plotdata [list label "x(t)"] [list plotpoints 2]
 	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 0] ]
-	lappend plotdata [list label "y versus t"]	
+	lappend plotdata [list label "y(t)"]	
 	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 1] ]
     }
     if { ![winfo exists .versust] } {
@@ -286,7 +286,7 @@ proc plotVersusT {win } {
 
 
     plot2d -data $plotdata -windowname $nwin -ycenter $xcenter -yradius $xradius
-    wm title .versust "X and Y versus t"
+    wm title .versust [mc "X and Y versus t"]
 }
 
 proc lreverse { lis } {
@@ -416,7 +416,7 @@ proc parseOdeArg {  s } {
 	set s [string range $s [lindex $junk 1] end]
     }
     if { ![info exists ans] || ([llength $ans] == 2 && "[lindex $ans 0]" != "-dydx") } {
-	error "bad -ode argument: $orig\nwant d(y,x)=f(x,y) \n   OR d(x,t)=f(x,y) d(y,t)=g(x,y) "
+	error [concat [mc "bad -ode argument:"] "$orig" [mc "\nwant d(y,x)=f(x,y) \n   OR d(x,t)=f(x,y) d(y,t)=g(x,y)"]]
     }
     return $ans
 }

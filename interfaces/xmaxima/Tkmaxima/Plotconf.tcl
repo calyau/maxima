@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.8 2004-03-28 07:28:27 vvzhy Exp $
+#       $Id: Plotconf.tcl,v 1.9 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -46,7 +46,7 @@ proc makeFrame { w type } {
     set buttonFont $buttonfont
     oset $win buttonFont $buttonfont
 
-    menubutton $w.plotmenu -text "Menu Here" -direction below -menu $w.plotmenu.m  -relief flat -borderwidth 0 -background white -font $buttonFont
+    menubutton $w.plotmenu -text [mc "Menu Here"] -direction below -menu $w.plotmenu.m  -relief flat -borderwidth 0 -background white -font $buttonFont
     menu $w.plotmenu.m -tearoff 0
 
     #    puts "children wb=[winfo children $w]"
@@ -54,23 +54,23 @@ proc makeFrame { w type } {
     frame $wb
     set dismiss [concat $dismiss "; clearLocal $win "]
 
-    $w.plotmenu.m add command -label "Dismiss" -command $dismiss -font $buttonFont
+    $w.plotmenu.m add command -label [mc "Dismiss"] -command $dismiss -font $buttonFont
     ##setBalloonhelp $win $wb.dismiss {Close this plot window}
-    $w.plotmenu.m add command -label "Zoom" -command "showZoom $w" -font $buttonFont
+    $w.plotmenu.m add command -label [mc "Zoom"] -command "showZoom $w" -font $buttonFont
     ##setBalloonhelp $win $wb.zoom {Magnify the plot.  Causes clicking with the left mouse button on the plot, to magnify (zoom in) the plot where you click.  Also causes Shift+Click to  it to unmagnify (zoom out) at that point}
     ##oset $w position ""
     #    button $w.position -textvariable [oloc $w position] -font $buttonFont -width 10
     ##label $w.position  -textvariable [oloc $w position] -font $buttonFont -width 10
     ##setBalloonhelp $win $w.position {Position of the pointer in real x y coordinates.  For 3d it is the position of the nearest vertex of the polygon the pointer is over.}
-    $w.plotmenu.m add command -label "Help" -command "doHelp$type $win" -font $buttonFont
+    $w.plotmenu.m add command -label [mc "Help"] -command "doHelp$type $win" -font $buttonFont
     ##setBalloonhelp $win $wb.help {Give more help about this plot window}
-    $w.plotmenu.m add command -label "Save" -command "writePostscript $w" -font $buttonFont
+    $w.plotmenu.m add command -label [mc "Save"] -command "writePostscript $w" -font $buttonFont
     ##setBalloonhelp $win $wb.postscript {Prints or Saves the plot in postscript format.  The region to be printed is marked using Mark.   Other print options can be obtained by using "Print Options" in the Config menu }
-    $w.plotmenu.m add command -label "Mark" -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
+    $w.plotmenu.m add command -label [mc "Mark"] -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
     ##setBalloonhelp $win $wb.markrect {Mark the region to be printed.  Causes the left mouse button to allow marking of a rectangle by clicking at the upper left corner, and dragging the mouse to the lower right corner.  The title can be set under "Print Options" under Config}
-    $w.plotmenu.m add command -label "Replot" -command "replot$type $win" -font $buttonFont
+    $w.plotmenu.m add command -label [mc "Replot"] -command "replot$type $win" -font $buttonFont
     ##setBalloonhelp $win $wb.replot {Use the current settings and recompute the plot.  The settings may be altered in Config}
-    $w.plotmenu.m add command -label "Config" -command "doConfig$type $win" -font $buttonFont
+    $w.plotmenu.m add command -label [mc "Config"] -command "doConfig$type $win" -font $buttonFont
     ##setBalloonhelp $win $wb.config {Configure various options about the plot window.  After doing this one may do replot.  Hint: you may leave the config menu on the screen and certain actions take place immediately, such as rotating or computing a trajectory at a point.  To make room for the window you might slide the graph to the right, and possibly shrink it using the unzoom feature}
 
     #mike FIXME: this is a wrong use of after cancel
@@ -120,11 +120,11 @@ proc makeFrame { w type } {
 	 [llength $maxima_priv(showedplothelp)] < 2 } {
 	lappend maxima_priv(showedplothelp) 1
 	
-	after 100 balloonhelp $w $w.plotmenu [list \
-		"Initial help: Clicking the left mouse button on the plot menu \
+	after 200 balloonhelp $w $w.plotmenu [list \
+	    [mc "Clicking the left mouse button on the plot menu \
 		(top left corner), will bring up a menu.  Holding down \
-		right mouse button and dragging will translate the plot"]
-	after 3000 $w.c delete balloon
+		right mouse button and dragging will translate the plot."]]
+	after 6000 $w.c delete balloon
 	
 
     }
@@ -218,7 +218,7 @@ proc showPosition { win x y } {
 proc showZoom  { win } {
     #  global c position
     makeLocal $win c
-    $win.plotmenu config -text "Click to Zoom\nShift+Click Unzoom"
+    $win.plotmenu config -text [mc "Click to Zoom\nShift+Click Unzoom"]
 
     bind $c <1> "doZoom $win %x %y 1"
     bind $c  <Shift-1> "doZoom $win %x %y -1"
@@ -419,24 +419,24 @@ proc ftpDialog { win args } {
 
     frame $fr -borderwidth 2 -relief raised
     if { [catch { set ftpInfo(directory) } ] } { set ftpInfo(directory) homework }
-    label $fr.title -text "Ftp Dialog Box"
-    mkentry $fr.host ftpInfo(host) "host to write file on" $buttonFont
-    mkentry $fr.viahost ftpInfo(viahost) "host to write to via" $buttonFont
-    mkentry $fr.username ftpInfo(username) "Your User ID on host" $buttonFont
-    mkentry $fr.password ftpInfo(password) "Your password on host" $buttonFont
+    label $fr.title -text [mc "Ftp Dialog Box"]
+    mkentry $fr.host ftpInfo(host) [mc "host to write file on"] $buttonFont
+    mkentry $fr.viahost ftpInfo(viahost) [mc "host to write to via"] $buttonFont
+    mkentry $fr.username ftpInfo(username) [mc "Your User ID on host"] $buttonFont
+    mkentry $fr.password ftpInfo(password) [mc "Your password on host"] $buttonFont
     $fr.password.e config -show *
-    mkentry $fr.directory ftpInfo(directory) "remote subdirectory for output" $buttonFont
+    mkentry $fr.directory ftpInfo(directory) [mc "remote subdirectory for output"] $buttonFont
 
     if { $usefilename } {
-	mkentry $fr.filename ftpInfo(filename) "filename " $buttonFont
+	mkentry $fr.filename ftpInfo(filename) [mc "filename "] $buttonFont
     } else {
-	mkentry $fr.chapter ftpInfo(chapter) "chapter " $buttonFont
-	mkentry $fr.section ftpInfo(section) "section" $buttonFont
-	mkentry $fr.problemnumber ftpInfo(number) "Problem number" $buttonFont
+	mkentry $fr.chapter ftpInfo(chapter) [mc "chapter "] $buttonFont
+	mkentry $fr.section ftpInfo(section) [mc "section"] $buttonFont
+	mkentry $fr.problemnumber ftpInfo(number) [mc "Problem number"] $buttonFont
     }
     scale   $fr.scale -orient horizontal -variable ftpInfo(percent) -length 100
-    button $fr.doit -text "Send it" -command "doFtpSend $fr" -font $buttonFont
-    button $fr.cancel -text "Cancel" -command "destroy $fr" -font $buttonFont
+    button $fr.doit -text [mc "Send it"] -command "doFtpSend $fr" -font $buttonFont
+    button $fr.cancel -text [mc "Cancel"] -command "destroy $fr" -font $buttonFont
     set ftpInfo(message) ""
     label $fr.message  -width 30 -height 3 -textvariable ftpInfo(message) -font $buttonFont
     eval pack  [winfo  children $fr] -side top
@@ -456,7 +456,7 @@ proc doFtpSend { fr } {
     }
     foreach v $check {
 	if { $ftpInfo($v) == "" } {
-	    if  { "$error" == "" } { set error "Failed to specify $v " } else {
+	    if  { "$error" == "" } { set error [concat [mc "Failed to specify"] "$v " } else {
 		append error ", $v"}
 	}
     }
@@ -561,17 +561,17 @@ proc sparseListWithParams { form variables paramlist } {
 	set all $variables
 	foreach { v val }  $params { lappend all $v}
 	foreach v $vars { if { [lsearch $all [string range $v 1 end]] < 0 } {
-	    error "The variable `[string range $v 1 end]' appeared in $form but was not in allowed variables:{$variables} or in parameters: {$paramlist}"
+	    error [M [mc "The variable %s appeared in %s but was not in allowed variables: %s or in parameters: %s"] "`[string range $v 1 end]'" "$form" "{$variables}" "{$paramlist}" ]
 	}
 	}
-	error "The form $form may involve variables other than {$variables} or the parameters {$paramlist}, or the latter may have invalid expressions:\n $err"
+	error [M [mc "The form %s may involve variables other than %s or the parameters %s, or the latter may have invalid expressions: %s"] "$form" "{$variables}" "{$paramlist}" "$err" ]
     }
     return $res
 }
 
 proc sparseWithParams { form variables params } {
     set tem [sparseListWithParams $form $variables $params]
-    if { [llength $tem ] > 1 } { error "only wanted one function: $form"}
+    if { [llength $tem ] > 1 } { error [concat [mc "only wanted one function:"] "$form"]}
     lindex $tem 0
 }
 
@@ -703,7 +703,7 @@ proc inputParse { in } {
 	    set v4 [getOneMatch $s1 $i2]
 	    set end [string first \} $s1 ]
 	    set form2 [string range $s1 [expr {1 + [lindex $all2 1]}] [expr {$end -1}]]
-	    if { "$v4" != "$v2" } {error "different variable $v2 and $v4"}
+	    if { "$v4" != "$v2" } {error [concat [mc "different variables"] "$v2" [mc "and"] "$v4"]}
 
 	    set form1 [string range $in [expr {1 + [lindex $all1 1]}] [expr {[lindex $all2 0] + -1 + [lindex $all1 1]}]]
 	    return [list  $v2 $v1 $v3 $form1 $form2]
@@ -972,7 +972,7 @@ proc doConfig { win }  {
     catch {destroy $w}
     frame $w -borderwidth 2 -relief raised
 
-    label $w.msg  -wraplength 600 -justify left -text "Plot Setup" -font $buttonFont
+    label $w.msg  -wraplength 600 -justify left -text [mc "Plot Setup"] -font $buttonFont
     pack $w
     pack $w.msg -side top
     set wb1 $w.choose1
@@ -982,7 +982,7 @@ proc doConfig { win }  {
     pack $wb1 $wb2 -side left -fill x -pady 2m
     set item [$canv create window [$canv canvasx 10] [$canv canvasy  10] -window $w -anchor nw -tags configoptions]
     button $wb1.dismiss -command  "$canv delete $item; destroy $w " -text "ok" -font $buttonFont
-    button $wb1.printoptions -text "Print Options" -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
+    button $wb1.printoptions -text [mc "Print Options"] -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
 
     pack $wb1.dismiss  $wb1.printoptions -side top
     return "$wb1 $wb2"

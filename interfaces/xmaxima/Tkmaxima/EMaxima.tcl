@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: EMaxima.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: EMaxima.tcl,v 1.3 2004-10-13 12:08:57 vvzhy Exp $
 #
 ###### EMaxima.tcl ######
 ############################################################
@@ -31,7 +31,7 @@ proc insertResult_maxima {  w thisRange resultRange res } {
     #    puts <lengthres=[llength $res],thisRange=$thisRange,resultRange=$resultRange>
 
     if { 0 == [string compare "$res" "cant connect"] } {
-	bgerror "unable to call $program"
+	bgerror [concat [mc "unable to call"] "$program"]
     }
     if { [regexp "\{plot\[23\]d" $res] } {
 	#puts "its a plot"

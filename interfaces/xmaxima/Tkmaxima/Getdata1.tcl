@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Getdata1.tcl,v 1.6 2002-09-19 16:26:42 mikeclarkson Exp $
+#       $Id: Getdata1.tcl,v 1.7 2004-10-13 12:08:57 vvzhy Exp $
 #
 ###### getdata1.tcl ######
 ############################################################
@@ -219,7 +219,7 @@ proc readAllData1 { sock } {
 	if { "$errmsg" == "finished" } {
 	    return
 	} else {
-	    global errorInfo ; error "error: $errmsg , $errorInfo"
+	    global errorInfo ; error [concat [mc "error:"] "$errmsg , $errorInfo"]
 	}
     }
     lappend [oloc $sock after] \
@@ -423,7 +423,7 @@ proc readAndSyncCache { } {
     close $fi
     if {  $doWrite}  {
 	set fi [open [cacheName index.dat] w]
-	puts "writing [cacheName index.dat]"
+	puts [concat [mc "writing"] "[cacheName index.dat]"]
 	foreach { key val } [array get ws_Cache *]  {
 	    puts  $fi "[list [list $key]] {$val}"
 	}

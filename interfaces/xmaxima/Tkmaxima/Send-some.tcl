@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Send-some.tcl,v 1.6 2002-09-19 16:26:42 mikeclarkson Exp $
+#       $Id: Send-some.tcl,v 1.7 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### send-some.tcl ######
 
@@ -137,11 +137,11 @@ proc sendOne { program  com }  {
     set socket $pdata($program,socket)
 
     if { [eof $socket] } {
-        error "connection closed"
+        error [mc "connection closed"]
     }
     # puts "sending $program ([lindex [fconfigure $socket -peername] 1])"
 
-    message "sending $program on [lindex [fconfigure $socket -peername] 1]"
+    message [concat [mc "sending"] "$program" [mc "on"] "[lindex [fconfigure $socket -peername] 1]"]
     debugsend "sending.. {$com<$pdata($program,currentExpr)\|fayve>}"
     set msg "$com<$pdata($program,currentExpr)\|fayve>\n"
     proxyPuts $socket $msg
@@ -192,7 +192,7 @@ proc invokeAndUntrace { callback name1 name2 op args} {
     if { [catch { eval $callback } errmsg ] } {
 	global errorInfo
 	# report the error in the background
-	set com [list  error "had error in $callback:[string range $errmsg 0 300].." 	$errorInfo]
+	set com [list  error [concat [mc "had error in"] "$callback:[string range $errmsg 0 300].."]	$errorInfo]
 	after 1 $com
     }
 }
@@ -239,7 +239,7 @@ proc openConnection { tohost port magic program } {
     dtrace
     set msg "magic: $magic\n"
     set retries 2
-    message "connecting to nmtp($port)://$tohost/$program"
+    message [concat [mc "connecting to"] "nmtp($port)://$tohost/$program"]
     debugsend "openConnection { $tohost $port $magic $program }"
 
     while { [incr retries -1] > 0 \
@@ -250,7 +250,7 @@ proc openConnection { tohost port magic program } {
 
     if { $retries == 0 } { return 0}	
 
-    message "connected to nmtp//$tohost:$port/$program"
+    message [concat [mc "connected to"] "nmtp//$tohost:$port/$program"]
     set pdata($program,socket) $socket
     set pdata($program,currentExpr) 0
     set pdata(input,$socket) ""
@@ -263,7 +263,7 @@ proc openConnection { tohost port magic program } {
 proc sendInterrupt { program } {
     global pdata interrupt_signal
     set socket $pdata($program,socket)
-    gui status "Sending scoket interrupt"
+    gui status [mc "Sending scoket interrupt"]
     puts $socket $interrupt_signal
     flush $socket
 }
@@ -365,17 +365,17 @@ proc assureProgram { program timeout tries } {
 	    || [eof $socket] \
 	    || [catch { set s [read $socket]; append pdata(input,$socket) $s }] } {
 	cleanPdata $program
-	message "connecting [lindex $MathServer 0]"
+	message [concat [mc "connecting"] "[lindex $MathServer 0]"]
 	set msg "OPEN [programName $program] MMTP/1.0\nLineLength: [currentTextWinWidth]\n\n\n"
 	if {[catch {openSocketAndSend [lindex $MathServer 0] \
 		[lindex $MathServer 1] "$msg\n"} sock] } {
-	    error "Can't connect to $MathServer.  You can try another host by altering Base Program under the \"File\" menu."
+	    error [concat [mc "Can't connect to"] "$MathServer." [mc "You can try another host by altering Base Program under the \"File\" menu."]]
 	}
 	
 	set pdata($program,currentExpr) 0
 	fconfigure $sock -blocking 0
 	if { [eof $sock] } {return 0}
-	message "connected to [lindex $MathServer 0]"
+	message [concat [mc"connected to"] "[lindex $MathServer 0]"]
 	debugsend $msg
 	set result ""
 	set pdata(waiting,$sock) 1

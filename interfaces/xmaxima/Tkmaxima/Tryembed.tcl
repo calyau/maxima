@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tryembed.tcl,v 1.6 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: Tryembed.tcl,v 1.7 2004-10-13 12:08:58 vvzhy Exp $
 #
 ###### Tryembed.tcl ######
 ############################################################
@@ -242,7 +242,7 @@ proc SafesockDecideInsideOrOutside {slave server} {
     # If the status is unknown at this point, raise an error
 
     if {"$status" == "unknown"} {
-	error "unknown host: $server"
+	error [concat [mc "unknown host:"] "$server"]
     }
 
     return $status
@@ -284,7 +284,7 @@ proc SafesockServerAnswer { slave command sock host port } {
 	interp transfer {} $sock $slave
 	interp eval $slave $command $sock $host $port
     } else {
-	interp eval $slave [list error "connection from $host and $port disallowed"]
+	interp eval $slave [list error [M [mc "connection from %s and %s disallowed"] "$host" "$port" ] ]
     }
 }
 
@@ -313,7 +313,7 @@ proc SafesockAllow { slave host port} {
 	    if {"$host" == "$browser_state($slave,safesock,homebase)"} {
 	        set this homebase
 	    } else {
-	        error "unknown host: $host"
+	        error [concat [mc "unknown host:"] "$host"]
 	    }
 	}
 	set browser_state($slave,safesock,permissions) $this
@@ -358,7 +358,7 @@ proc SafesockAllow { slave host port} {
     }
 
     if {"$portset" == "-"} {
-	error "unknown host: $host"
+	error [concat [mc "unknown host:"] "$host"]
     }
 
     if { [safesockPortMatches $port $portset] } {
@@ -397,7 +397,7 @@ proc SafesockSocketAlias {slave host port args} {
 	set command $port
 	set port [lindex $args 0]
 	if { ![safesockPortMatches $port $safesockAllowedServerPorts] } {
-	    error "bad port: $port"
+	    error [concat [mc "bad port:"] "$port"]
 	}
 	set sock [socket -server \
 		      "SafesockServerAnswer $slave [list $command]" $port]
@@ -410,7 +410,7 @@ proc SafesockSocketAlias {slave host port args} {
 	set port [lindex $args 0]
     } else {
 	if { [llength $args ] != 0 } {
-	    error "wrong args: socket host port OR socket -server command port"
+	    error [mc "wrong args: socket host port OR socket -server command port"]
 	}
 	set serverCommand ""
     }
@@ -424,7 +424,7 @@ proc SafesockSocketAlias {slave host port args} {
 	browser_log $slave normal socket $host $port
 	return $sock
     }
-    error "bad port: $port"
+    error [concat [mc "bad port:"] "$port"]
 }
 
 # This procedure handles the "fconfigure" alias from the slave:
@@ -444,7 +444,7 @@ proc SafesockFconfigureAlias {slave sock args} {
 	    switch -- $flag {
 		-peername -
 		-peerport {
-		    error "Cannot change $flag configuration"
+		    error [concat [mc "Cannot change"] "$flag configuration"]]
 		}
 		-blocking -
 		-buffering -
@@ -454,7 +454,7 @@ proc SafesockFconfigureAlias {slave sock args} {
 		    set config($flag) $value
 		}
 		default {
-		    error "unknown option $flag"
+		    error [concat [mc "unknown option"] "$flag"]
 		}
 	    }
 	}

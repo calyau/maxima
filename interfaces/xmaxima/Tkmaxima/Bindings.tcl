@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Bindings.tcl,v 1.2 2003-01-22 02:57:23 mikeclarkson Exp $
+#       $Id: Bindings.tcl,v 1.3 2004-10-13 12:08:57 vvzhy Exp $
 #
 ###### Bindings.tcl ######
 ############################################################
@@ -9,7 +9,7 @@
 ############################################################
 
 global NCtextHelp
-set NCtextHelp "
+set NCtextHelp [mc "
 Bindings:
 <Return>   This sends the current expression (ie where the insert
 cursor is)  for evaluation.
@@ -24,7 +24,7 @@ kills.
 inputs.  If the current input is not empty, then
 match only inputs which begin with the current input.
 <Alt-n>   Like Previous input, but in opposite direction.
-"
+"]
 
 proc vMAXSetCNTextBindings {w} {
     bind CNtext <Return> "CMeval %W  ; break"

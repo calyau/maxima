@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Getopt.tcl,v 1.3 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: Getopt.tcl,v 1.4 2004-10-13 12:08:57 vvzhy Exp $
 #
 ###### Getopt.tcl ######
 ############################################################
@@ -95,7 +95,7 @@ proc getOptions { optlist options_supplied args } {
 
 	if { $found == 0  && !$allowOtherKeys } {
 	    catch {set caller [lindex [info level -1] 0]}
-	    error "`$caller' does not take the key `$key':\n[optionHelpMessage $optlist]\n$help"
+	    error [concat "`$caller'" [mc "does not take the key"] "`$key':\n[optionHelpMessage $optlist]\n$help"]
 
 	}
     }
@@ -103,7 +103,7 @@ proc getOptions { optlist options_supplied args } {
 	if { [lsearch $supplied [lindex $op 0]] < 0 } {
 	    if { "[lindex $op 1]" == "Required" } {
 		catch {set caller [lindex [info level -1] 0]}	
-		error "`-[lindex $op 0]' is required option for `$caller':\n[optionHelpMessage $optlist]"
+		error [concat "`-[lindex $op 0]'" [mc "is required option for"] "`$caller':\n[optionHelpMessage $optlist]"]
 	    }
 	    if { $setdefaults }  {
 

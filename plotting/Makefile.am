@@ -1,11 +1,15 @@
 include $(top_srcdir)/common.mk
 
+SUBDIRS = msgs
+
 verpkglibexec_SCRIPTS = omplotdata mgnuplot
 
 EXTRA_DIST = header.tcl footer.tcl
 
 OMPLOTDATASOURCES = \
 	header.tcl \
+	../interfaces/xmaxima/autoconf-variables.tcl \
+	paths.tcl \
 	../interfaces/xmaxima/Tkmaxima/Constants.tcl \
 	../interfaces/xmaxima/Tkmaxima/Macros.tcl \
 	../interfaces/xmaxima/Tkmaxima/Plotting.tcl \
