@@ -108,8 +108,7 @@
 	;; do a normal evaluation of the expression in macsyma
 	(setq mexp (meval mexplabel))
 	(cond ((memq mexplabel $labels); leave it if it is a label
-	       (setq mexplabel (concat "(" (quote-% (stripdollar mexplabel))
-				       ")"))
+	       (setq mexplabel (concat "(" (stripdollar mexplabel) ")"))
 	       (setq itsalabel t))
 	      (t (setq mexplabel nil)));flush it otherwise
 
@@ -124,21 +123,29 @@
 		     (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
 	(cond ((and (null(atom mexp))
 		    (memq (caar mexp) '(mdefine mdefmacro)))
+               (setq mexplabel (quote-% mexplabel))
 	       (format texport "|~%" ) ;delimit with |marks
 	       (cond (mexplabel (format texport "~a " mexplabel)))
 	       (mgrind mexp texport) ;write expression as string
 	       (format texport ";|~%"))
-
 	      ((and
 		itsalabel ;; but is it a user-command-label?
-		(eq (getchars $inchar 2 (length (string $inchar)))
-		    (getchars mexplabel 2 (length (string $inchar)))))
+                (<= (length (string $inchar)) (length (string mexplabel)))
+		(eq (getchars $inchar 2 (1+ (length (string $inchar))))
+		    (getchars mexplabel 2 (1+ (length (string $inchar)))))
+                ;; Check to make sure it isn't an outchar in disguise
+                (not
+                 (and
+                  (<= (length (string $outchar)) (length (string mexplabel)))
+                  (eq (getchars $outchar 2 (1+ (length (string $outchar))))
+                      (getchars mexplabel 2 (1+ (length (string $outchar))))))))
 	       ;; aha, this is a C-line: do the grinding:
 	       (format texport "~%|~a " mexplabel) ;delimit with |marks
 	       (mgrind mexp texport) ;write expression as string
 	       (format texport ";|~%"))
-
-	      (t ; display the expression for TeX now:
+	      (t 
+                 (setq mexplabel (quote-% mexplabel))
+                 ; display the expression for TeX now:
 		 (myprinc "$$")
 		 (mapc #'myprinc
 		       ;;initially the left and right contexts are
