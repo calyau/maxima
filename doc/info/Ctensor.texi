@@ -183,8 +183,8 @@ Sets up a predefined coordinate system and metric. The argument
   cartesian4d           4  [x,y,z,t]         Cartesian 4D coordinate system
   spherical4d           4  [r,theta,eta,phi]
   exteriorschwarzschild 4  [t,r,theta,phi]   Schwarzschild metric
-  interiorschwarzschild 4  [t,r,theta,phi]   Interior (non-vacuum)
-  kerr_newman           4  [t,r,theta,phi]
+  interiorschwarzschild 4  [t,z,u,v]         Interior Schwarzschild metric
+  kerr_newman           4  [t,r,theta,phi]   Charged axially symmetric metric
 
 @end example
 
