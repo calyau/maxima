@@ -235,7 +235,9 @@
 				    usage-patterns))
 		(combine-path (list *maxima-docdir* usage-patterns))))
     (setq $chemin
-	  (concatenate 'string *maxima-symdir* "/"))
+	  (list '(mlist)
+		(combine-path (list *maxima-symdir* lisp-patterns))
+		(combine-path (list *maxima-symdir* maxima-patterns))))
     (setq cl-info::*info-paths* (list (concatenate 'string
 						   *maxima-infodir* "/")))))
 
