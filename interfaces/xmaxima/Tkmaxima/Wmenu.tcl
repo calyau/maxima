@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Wmenu.tcl,v 1.3 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: Wmenu.tcl,v 1.4 2002-09-13 17:40:07 mikeclarkson Exp $
 #
 ###### wmenu.tcl ######
 ############################################################
@@ -48,7 +48,7 @@ proc ogetr { win var dflt } {
 }
 
 proc deleteHelp { win } {
-
+    #mike FIXME: This is being called even if show_balloons = 0
     linkLocal $win helpPending
     if { [info exists  helpPending] } {
 	after cancel $helpPending
@@ -56,7 +56,7 @@ proc deleteHelp { win } {
     }
     set top [winfo toplevel $win]
     set helpwin [oget $top helpwin]
-    if { "$helpwin" != ""} {
+    if {$helpwin != "" && [winfo exists $helpwin]} {
 	place forget $helpwin
     }
 }
