@@ -5,29 +5,24 @@
 
 @node Definitions for Symmetries,  , Symmetries, Symmetries
 @section Definitions for Symmetries
-@c @node COMP2PUI
-@c @unnumberedsec phony
-@defun COMP2PUI (n, l)
+
+@defun comp2pui (n, l)
 re'alise le passage des fonctions syme'triques
 comple`tes, donnee's dans la liste l, aux fonctions 
 syme'triques e'le'mentaires de 0 a` n. Si la liste
 l contient moins de n+1 e'le'ments les valeurs formelles viennent
 la completer. Le premier e'le'ment de la liste l donne le cardinal
 de l'alphabet si il existe, sinon on le met e'gal a n.
-@example
 
+@example
 COMP2PUI(3,[4,g]);
                      2          3
            [4, g, - g  + 2 h2, g  - 3 h2 g + 3 h3]
-
 @end example
 
-
-
 @end defun
-@c @node CONT2PART
-@c @unnumberedsec phony
-@defun CONT2PART (pc,lvar)
+
+@defun cont2part (pc,lvar)
 rend le polyno^me partitionne' associe' 
 a` la forme  contracte'e pc dont les variables sont dans lvar.
 
@@ -36,8 +31,8 @@ pc : 2*a^3*b*x^4*y + x^5$
 CONT2PART(pc,[x,y]);
                          3
                     [[2 a  b, 4, 1], [1, 5]]
-
 @end example
+
 @noindent
 Autres fonctions de changements de repre'sentations :
 
@@ -45,16 +40,15 @@ CONTRACT, EXPLOSE, PART2CONT, PARTPOL, TCONTRACT, TPARTPOL.
 
 
 @end defun
-@c @node CONTRACT
-@c @unnumberedsec phony
-@defun CONTRACT (psym,lvar)
+
+@defun contract (psym,lvar)
 rend une forme contracte'e (i.e. un mono^me
 par orbite sous l'action du groupe syme'trique) du polyno^me psym
 en les variables contenues dans la liste lvar. La fonction EXPLOSE
 re'alise l'ope'ration inverse. La fonction TCONTRACT teste en plus
 la syme'trie du polyno^me.
-@example
 
+@example
 psym : EXPLOSE(2*a^3*b*x^4*y,[x,y,z]);
 
         3      4      3      4      3    4   
@@ -66,8 +60,8 @@ CONTRACT(psym,[x,y,z]);
 
                         3    4
                      2 a  b x  y
-
 @end example
+
 @noindent
 Autres fonctions de changements de repre'sentations :
 
@@ -75,9 +69,8 @@ CONT2PART, EXPLOSE, PART2CONT, PARTPOL, TCONTRACT, TPARTPOL.
 
 
 @end defun
-@c @node DIRECT
-@c @unnumberedsec phony
-@defun DIRECT ([P1,...,Pn],y,f,[lvar1,...,lvarn])
+
+@defun direct ([p1,...,pn],y,f,[lvar1,...,lvarn])
 calcul l'image
 directe (voir M. GIUSTI,D. LAZARD et A. VALIBOUZE, ISSAC 1988, Rome)
 associe'e a` la fonction f, en les listes de variables lvar1,...,lvarn,
@@ -86,8 +79,8 @@ f est importante pour le calcul. Ainsi, si l'expression de f ne depend
 pas d'une variable, non seulement il est inutile de donner cette
 variable mais cela diminue conside'rablement lees calculs si on ne le
 fait pas.
-@example
 
+@example
 DIRECT([z^2  - e1* z + e2, z^2  - f1* z + f2], z, b*v + a*u, 
               [[u, v], [a, b]]);
 
@@ -142,8 +135,8 @@ Y  - 2 E1 F1 Y  - 6 E2 F2 Y  + 2 E1  F2 Y  + 2 E2 F1  Y
 
 Recherche du polyno^me dont les racines sont les somme a+u ou a est
 racine de z^2  - e1* z + e2 et u est racine de z^2  - f1* z + f2
-@example
 
+@example
 DIRECT([z^2  - e1* z + e2,z^2  - f1* z + f2], z,a+u,[[u],[a]]);
 
  4         3         3         2     2  2            2         2 
@@ -159,7 +152,6 @@ Y  - 2 F1 Y  - 2 E1 Y  + 2 F2 Y  + F1  Y  + 3 E1 F1 Y  + 2 E2 Y
 
                          2           2                2
 + E1 F1 F2 - 2 E2 F2 + E1  F2 + E2 F1  + E1 E2 F1 + E2
-
 @end example
 
 DIRECT peut prendre deux drapeaux possibles : ELEMENTAIRES et
@@ -168,44 +160,30 @@ les polyno^mes syme'triques apparaissant dans ce calcul par
 les fonctions syme'triques e'le'mentaires ou les fonctions puissances
 respectivement.
 
-fonctions de SYM utilis'ees dans cette fonction :
-
-
-@example
-
+Fonctions de SYM utilis'ees dans cette fonction :
 MULTI_ORBIT (donc ORBIT), PUI_DIRECT, MULTI_ELEM
 (donc ELEM), MULTI_PUI (donc PUI), PUI2ELE, ELE2PUI
 (si le drapeau DIRECT est a` PUISSANCES).
-@end example
-
 
 @end defun
-@c @node ELE2COMP
-@c @unnumberedsec phony
-@defun ELE2COMP (m , l)
+
+@defun ele2comp (m , l)
 passe des fonctions syme'triques e'le'mentaires
 aux fonctions comple`tes. Similaire a` COMP2ELE et COMP2PUI.
 
-autres fonctions de changements de bases :
-
-
-@example
+Autres fonctions de changements de bases :
 COMP2ELE, COMP2PUI, ELE2PUI, ELEM, MON2SCHUR, MULTI_ELEM,
 MULTI_PUI, PUI, PUI2COMP, PUI2ELE, PUIREDUC, SCHUR2COMP.
 
-@end example
-
-
 @end defun
-@c @node ELE2POLYNOME
-@c @unnumberedsec phony
-@defun ELE2POLYNOME (l,z)
+
+@defun ele2polynome (l,z)
 donne le polyno^me en z dont les fonctions
 syme'triques e'le'mentaires des racines sont dans la liste l.
 l=[n,e1,...,en] ou` n est le degre' du polyno^me et ei la i-ie`me
 fonction syme'trique e'le'mentaire.
-@example
 
+@example
  ele2polynome([2,e1,e2],z);
 
                                   2
@@ -218,9 +196,8 @@ fonction syme'trique e'le'mentaire.
 
                           7       5       3
                          X  - 14 X  + 56 X  - 56 X + 22
-
-
 @end example
+
 @noindent
    
   la re'ciproque : POLYNOME2ELE(p,z)
@@ -231,26 +208,18 @@ POLYNOME2ELE, PUI2POLYNOME.
 
 
 @end defun
-@c @node ELE2PUI
-@c @unnumberedsec phony
-@defun ELE2PUI (m, l)
+
+@defun ele2pui (m, l)
 passe des fonctions syme'triques e'le'mentaires
 aux fonctions comple`tes. Similaire a` COMP2ELE et COMP2PUI.
 
-autres fonctions de changements de bases :
-
-
-@example
+Autres fonctions de changements de bases :
 COMP2ELE, COMP2PUI, ELE2COMP, ELEM, MON2SCHUR, MULTI_ELEM,
 MULTI_PUI, PUI, PUI2COMP, PUI2ELE, PUIREDUC, SCHUR2COMP.
 
-
-@end example
-
 @end defun
-@c @node ELEM
-@c @unnumberedsec phony
-@defun ELEM (ele,sym,lvar)
+
+@defun elem (ele,sym,lvar)
 de'compose le polyno^me syme'trique sym, en les variables
 contenues de la liste lvar, par les fonctions syme'triques e'le'mentaires
 contenues dans la liste ele. Si le premier e'le'ment de ele est donne'
@@ -267,87 +236,80 @@ e'le'mentaire, valant 7, le polyno^me syme'trique en 3 variables dont
 la forme contracte'e (ne de'pendant ici que de deux de ses variables)
 est x^4-2*x*y se de'compose ainsi en les fonctions syme'triques 
 e'le'mentaires :
-@example
 
+@example
 ELEM([3,7],x^4-2*x*y,[x,y]);
 
                                2
                    28 e3 + 2 e2  - 198 e2 + 2401
-
 @end example
-@noindent
-autres fonctions de changements de bases :
 
+@noindent
+Autres fonctions de changements de bases :
 COMP2ELE, COMP2PUI, ELE2COMP, ELE2PUI, MON2SCHUR, MULTI_ELEM, MULTI_PUI,
 PUI, PUI2COMP, PUI2ELE, PUIREDUC, SCHUR2COMP.
 
 
 @end defun
-@c @node EXPLOSE
-@c @unnumberedsec phony
-@defun EXPLOSE (pc,lvar)
+
+@defun explose (pc,lvar)
 rend le polyno^me syme'trique associe' a` la forme 
 contracte'e pc. La liste lvar contient les variables.
-@example
 
+@example
 EXPLOSE(a*x +1,[x,y,z]);
 
                      (x + y + z) a + 1
-
 @end example
+
 @noindent
 Autres fonctions de changements de repre'sentations :
 
 CONTRACT, CONT2PART, PART2CONT, PARTPOL, TCONTRACT, TPARTPOL.
 
-
 @end defun
-@c @node KOSTKA
-@c @unnumberedsec phony
-@defun KOSTKA (part1,part2)
+
+@defun kostka (part1,part2)
 e'crite par P. ESPERET) calcule le nombre de
 kostka associe' aux partition part1 et part2
-@example
 
+@example
 kostka([3,3,3],[2,2,2,1,1,1]);
                                   6
- 
 @end example
 
 @end defun
-@c @node LGTREILLIS
-@c @unnumberedsec phony
-@defun LGTREILLIS (n,m)
+
+@defun lgtreillis (n,m)
 rend la liste des partitions de poids n et de longueur m.
 
+@example
  LGTREILLIS(4,2);
 
 			       [[3, 1], [2, 2]]
+@end example
 
- Voir e'galement : LTREILLIS, TREILLIS et TREINAT.
+Voir e'galement : LTREILLIS, TREILLIS et TREINAT.
 
 
 @end defun
-@c @node LTREILLIS
-@c @unnumberedsec phony
-@defun LTREILLIS (n,m)
+
+@defun ltreillis (n,m)
 rend la liste des partitions de poids n et de longueur 
 infe'rieure ou e'gale a` m.
-@example
 
+@example
  ltreillis(4,2);
 
                          [[4, 0], [3, 1], [2, 2]]
-
 @end example
-@noindent
- Voir e'galement : LGTREILLIS, TREILLIS et TREINAT.
 
+@noindent
+Voir e'galement : LGTREILLIS, TREILLIS et TREINAT.
 
 @end defun
-@c @node MON2SCHUR
-@c @unnumberedsec phony
-@defun MON2SCHUR (l)
+
+@defun mon2schur (l)
 la liste l repre'sente la fonction de Schur S_l :
  On a l=[i1,i2,...,iq]
 avec i1 <= i2 <= ... <= iq . La fonction de Schur est S_[i1,i2...,iq]
@@ -358,8 +320,8 @@ On e'crit cette fonction de Schur en fonction des
 formes monomiales en utilisant les fonctions TREINAT et KOSTKA. La forme
 rendue est un polyno^me syme'trique dans une de ses repre'sentations
 contracte'es avec les variables x1, x2, ...
-@example
  
+@example
  mon2schur([1,1,1]);
 
                                X1 X2 X3
@@ -371,62 +333,51 @@ contracte'es avec les variables x1, x2, ...
  MON2SCHUR([1,2]);
 					     2
  			      2 x1 x2 x3 + x1  x2
-
 @end example
+
 @noindent
 ce qui veut dire que pour 3 variables cela donne :
+
 @example
    2 x1 x2 x3 + x1^2 x2 + x2^2 x1 + x1^2 x3 + x3^2 x1
     + x2^2 x3 + x3^2 x2
-
 @end example
+
 @noindent
-autres fonctions de changements de bases :
-
-
-@example
+Autres fonctions de changements de bases :
 COMP2ELE, COMP2PUI, ELE2COMP, ELE2PUI, ELEM, MULTI_ELEM,
 MULTI_PUI, PUI, PUI2COMP, PUI2ELE, PUIREDUC, SCHUR2COMP.
-@end example
-
 
 @end defun
-@c @node MULTI_ELEM
-@c @unnumberedsec phony
-@defun MULTI_ELEM (l_elem,multi_pc,l_var)
+
+@defun multi_elem (l_elem,multi_pc,l_var)
 de'compose un polyno^me 
 multi-syme'trique sous la forme multi-contracte'e multi_pc en les groupes
 de variables contenue dans la liste de listes l_var sur les
 groupes de fonctions syme'triques e'le'mentaires contenues dans l_elem.
 
+@example
 MULTI_ELEM([[2,e1,e2],[2,f1,f2]],a*x+a^2+x^3,[[x,y],[a,b]]);
 
 				2		        3
  		     - 2 f2 + f1  + e1 f1 - 3 e1 e2 + e1
+@end example
 
-
-autres fonctions de changements de bases :
-
-
-@example
+Autres fonctions de changements de bases :
 COMP2ELE, COMP2PUI, ELE2COMP, ELE2PUI, ELEM,
 MON2SCHUR, MULTI_PUI, PUI, PUI2COMP, PUI2ELE,
 PUIREDUC, SCHUR2COMP.
 
-@end example
-
-
 @end defun
-@c @node MULTI_ORBIT
-@c @unnumberedsec phony
-@defun MULTI_ORBIT (P,[lvar1, lvar2,...,lvarp])
+
+@defun multi_orbit (p,[lvar1, lvar2,...,lvarp])
 P est un polyno^me en l'ensemble
 des variables contenues dans les listes lvar1, lvar2 ... lvarp. 
 Cette fonction rame`ne l'orbite du polyno^me P sous l'action du produit 
 des groupes syme'triques des ensembles de variables repre'sente's par 
 ces p LISTES.
-@example
 
+@example
  MULTI_ORBIT(a*x+b*y,[[x,y],[a,b]]);
 
           [b y + a x, a y + b x]
@@ -434,35 +385,29 @@ ces p LISTES.
  multi_orbit(x+y+2*a,[[x,y],[a,b,c]]);
 
               [Y + X + 2 C, Y + X + 2 B, Y + X + 2 A]
-
-
 @end example
-@noindent
-  voir e'galement : ORBIT pour l'action d'un seul groupe syme'trique
 
+@noindent
+Voir e'galement : ORBIT pour l'action d'un seul groupe syme'trique
 
 @end defun
-@c @node MULTI_PUI
-@c @unnumberedsec phony
-@defun MULTI_PUI
+
+@defun multi_pui
  est a` la fonction PUI ce que la fonction MULTI_ELEM est
 a` la fonction ELEM.
-@example
 
+@example
 MULTI_PUI([[2,p1,p2],[2,t1,t2]],a*x+a^2+x^3,[[x,y],[a,b]]);
     
                                               3
                                        3 P1 P2   P1
                           T2 + P1 T1 + ------- - ---
                                           2       2
-
- 
 @end example
 
 @end defun
-@c @node MULTINOMIAL
-@c @unnumberedsec phony
-@defun MULTINOMIAL (r,part)
+
+@defun multinomial (r,part)
 ou` r est le poids de la partition part. Cette
 fonction rame`ne le coefficient multinomial associe' : si les
 parts de la partitions part sont i1, i2, ..., ik, le re'sultat de
@@ -470,9 +415,8 @@ MULTINOMIAL est r!/(i1!i2!...ik!).
 
 
 @end defun
-@c @node MULTSYM
-@c @unnumberedsec phony
-@defun MULTSYM (ppart1, ppart2,N)
+
+@defun multsym (ppart1, ppart2,n)
 re'alise le produit de deux polyno^mes
 syme'triques de N variables en ne travaillant que modulo l'action du
 groupe syme'trique d'ordre N. Les polyno^mes sont dans leur repre'sentation
@@ -481,100 +425,89 @@ partitionne'e.
 Soient les 2 polyno^mes syme'triques en x, y : 3*(x+y) + 2*x*y et 5*(x^2+y^2)
 dont les formes partitionne'es sont respectivement [[3,1],[2,1,1]] et [[5,2]],
 alors leur produit sera donne' par :
-@example
 
+@example
  MULTSYM([[3,1],[2,1,1]],[[5,2]],2);
 
             [[10, 3, 1], [15, 2, 1], [15, 3, 0]]
-
 @end example
+
 @noindent
 soit 10*(x^3*y+y^3*x)+15*(x^2*y +y^2*x) +15(x^3+y^3)
 
 Fonctions de changements de repre'sentations d'un polyno^me syme'trique :
-
 CONTRACT, CONT2PART, EXPLOSE, PART2CONT, PARTPOL, TCONTRACT, TPARTPOL.
 
-
 @end defun
-@c @node ORBIT
-@c @unnumberedsec phony
-@defun ORBIT (P,lvar)
+
+@defun orbit (p,lvar)
 calcul l'orbite du polyno^me P en les variables de la liste
 lvar sous l'action du groupe syme'trique de l'ensemble des variables contenues
 dans la liste lvar.
-@example
  
+@example
  orbit(a*x+b*y,[x,y]);
 
                         [A Y + B X, B Y + A X]
  orbit(2*x+x^2,[x,y]);
                                 2         2
                               [Y  + 2 Y, X  + 2 X]
-
-
 @end example
+
 @noindent
- voir e'galement : MULTI_ORBIT pour l'action d'un produit de groupes 
+Voir e'galement : MULTI_ORBIT pour l'action d'un produit de groupes 
 syme'triques sur un polyno^me.
 
 
 @end defun
-@c @node PART2CONT
-@c @unnumberedsec phony
-@defun PART2CONT (ppart,lvar)
+
+@defun part2cont (ppart,lvar)
 passe de la forme partitionne'e a` la forme contracte'e
 d'un polyno^me syme'trique. La forme contracte'e est rendue avec les variables
 contenues dans lvar.
-@example
 
+@example
 PART2CONT([[2*a^3*b,4,1]],[x,y]);
 
                         3    4
                      2 a  b x  y
-
 @end example
+
 @noindent
 Autres fonctions de changements de repre'sentations :
-
 CONTRACT, CONT2PART, EXPLOSE, PARTPOL, TCONTRACT, TPARTPOL.
 
 
 @end defun
-@c @node PARTPOL
-@c @unnumberedsec phony
-@defun PARTPOL (psym, lvar)
+
+@defun partpol (psym, lvar)
 psym est un polyno^me syme'trique en les variables 
 de lvar. Cette fonction rame`ne sa repre'sentation partitionne'e.
-@example
 
+@example
 PARTPOL(-a*(x+y)+3*x*y,[x,y]);
 
                    [[3, 1, 1], [- a, 1, 0]]
 @end example
+
 @noindent
-
 Autres fonctions de changements de repre'sentations :
-
 CONTRACT, CONT2PART, EXPLOSE, PART2CONT, TCONTRACT, TPARTPOL.
 
-
 @end defun
-@c @node PERMUT
-@c @unnumberedsec phony
-@defun PERMUT (l)
+
+@defun permut (l)
 rame`ne la liste des permutations de la liste l.
 
 
 @end defun
-@c @node POLYNOME2ELE
-@c @unnumberedsec phony
-@defun POLYNOME2ELE (p,x)
+
+@defun polynome2ele (p,x)
 donne la liste l=[n,e1,...,en] ou` n est le degre'
 du polyno^me p en la variable x et ei la i-ieme fonction syme'trique 
 e'le'mentaire des racines de p.
-@example
 
+@example
  POLYNOME2ELE(x^7-14*x^5  + 56*x^3  - 56*X + 22,x);
  
               [7, 0, - 14, 0, 56, 0, - 56, - 22] 
@@ -584,24 +517,21 @@ e'le'mentaire des racines de p.
                           7       5       3
                          X  - 14 X  + 56 X  - 56 X + 22
 @end example
+
 @noindent
-
-  la re'ciproque : ELE2POLYNOME(l,x)
-
+La re'ciproque : ELE2POLYNOME(l,x)
 
 @end defun
-@c @node PRODRAC
-@c @unnumberedsec phony
-@defun PRODRAC (L,K)
+
+@defun prodrac (l,k)
 L est une liste contenant les fonctions syme'triques 
 e'le'mentaires sur un ensemble A. PRODRAC rend le polyno^me dont
 les racines sont les produits K a` K des e'le'ments de A.
 
 
 @end defun
-@c @node PUI
-@c @unnumberedsec phony
-@defun PUI (pui,sym,lvar)
+
+@defun pui (pui,sym,lvar)
 de'compose le polyno^me syme'trique sym, en les variables
 contenues de la liste lvar, par les fonctions puissances
 contenues dans la liste pui. Si le premier e'le'ment de pui est donne'
@@ -612,8 +542,8 @@ sous 3 formes diffe'rentes : contracte'e (PUI doit alors valoir 1 sa valeur
 par de'faut), partitionne'e (PUI doit alors valoir 3) ou e'tendue (i.e. le
 polyno^me en entier) (PUI doit alors valoir 2). La fonction ELEM
 s'utilise de la me^me manie`re.
-@example
 
+@example
 PUI;
 
 		       1
@@ -624,29 +554,22 @@ PUI([3,a,b],u*x*y*z,[x,y,z]);
          		     ---------------------
 				      6
 @end example
+
 @noindent
-
-autres fonctions de changements de bases :
-
-
-@example
+Autres fonctions de changements de bases :
 COMP2ELE, COMP2PUI, ELE2COMP, ELE2PUI, ELEM, MON2SCHUR,
 MULTI_ELEM, MULTI_PUI, PUI2COMP, PUI2ELE, PUIREDUC,
 SCHUR2COMP.
 
-@end example
-
-
 @end defun
-@c @node PUI2COMP
-@c @unnumberedsec phony
-@defun PUI2COMP (N,LPUI)
+
+@defun pui2comp (n,lpui)
 rend la liste des N premie`res fonctions comple`tes
 (avec en te^te le cardinal) en fonction des fonctions puissance donne'es dans
 la liste LPUI. Si la liste LPUI est vide le cardinal est N sinon 
 c'est son premier e'le'ment similaire a` COMP2ELE et COMP2PUI.
-@example
 
+@example
  PUI2COMP(2,[]);
 
 					 2
@@ -661,24 +584,16 @@ c'est son premier e'le'ment similaire a` COMP2ELE et COMP2PUI.
           	    [2, a1, --------, --------------------]
 			       2	       6
 @end example
+
 @noindent
-
 Autres fonctions de changements de bases :
-
-
-@example
-
 COMP2ELE, COMP2PUI, ELE2COMP, ELE2PUI, ELEM,
 MON2SCHUR, MULTI_ELEM, MULTI_PUI, PUI, PUI2ELE,
 PUIREDUC, SCHUR2COMP.
 
-@end example
-
-
 @end defun
-@c @node PUI2ELE
-@c @unnumberedsec phony
-@defun PUI2ELE (N,LPUI)
+
+@defun pui2ele (n,lpui)
 re'alise le passage des fonctions puissances aux
 fonctions syme'triques e'le'mentaires.
 Si le drapeau PUI2ELE est GIRARD, on re'cupe`re la liste des fonctions 
@@ -686,23 +601,15 @@ syme'triques e'le'mentaires de 1 a` N, et s'il est e'gal a`  CLOSE,
 la Nie`me fonction syme'trique e'le'mentaire.
 
 Autres fonctions de changements de bases :
-
-@example
-
 COMP2ELE, COMP2PUI, ELE2COMP, ELE2PUI, ELEM,
 MON2SCHUR, MULTI_ELEM, MULTI_PUI, PUI, PUI2COMP,
 PUIREDUC, SCHUR2COMP.
 
-@end example
-
-
 @end defun
-@c @node PUI2POLYNOME
-@c @unnumberedsec phony
-@defun PUI2POLYNOME (X,LPUI)
+
+@defun pui2polynome (x,lpui)
 calcul le polyno^me en X dont les fonctions puissances
 des racines sont donne'es dans la liste LPUI.
-
 
 @example
 (%i6) polynome2ele(x^3-4*x^2+5*x-1,x);
@@ -712,20 +619,15 @@ des racines sont donne'es dans la liste LPUI.
 (%i8) pui2polynome(x,%);
                                3      2
 (%o8)                          X  - 4 X  + 5 X - 1
-
-
 @end example
+
 @noindent
 Autres fonctions a` voir :
-
 POLYNOME2ELE, ELE2POLYNOME.
 
-
-
 @end defun
-@c @node PUI_DIRECT
-@c @unnumberedsec phony
-@defun PUI_DIRECT (ORBITE,[lvar1,...,lvarn],[d1,d2,...,dn])
+
+@defun pui_direct (orbite,[lvar1,...,lvarn],[d1,d2,...,dn])
 
 Soit f un polynome en n blocs de variables lvar1,...,lvarn.
 Soit ci le nombre de variables dans lvari . Et SC le produit des n
@@ -742,8 +644,8 @@ de'duites des fonctions puissances de SC(f) ou` N est le cardinal de SD(f).
 
 Le re'sultat est rendue sous forme multi-contracte'e par rapport a SD.
 i.e. on ne conserve qu'un e'le'ment par orbite sous l'action de SD).
-@example
 
+@example
 L:[[x,y],[a,b]]$
 
 PUI_DIRECT(MULTI_ORBIT(a*x+b*y, L), L,[2,2]);
@@ -775,18 +677,16 @@ PUI_DIRECT(MULTI_ORBIT(a*x+b*y, L), L,[3,2]);
 
 
 PUI_DIRECT([y+x+2*c, y+x+2*b, y+x+2*a],[[x,y],[a,b,c]],[3,4]);
-
 @end example
 
 @end defun
-@c @node PUIREDUC
-@c @unnumberedsec phony
-@defun PUIREDUC (N,LPUI)
+
+@defun puireduc (n,lpui)
 LPUI est une liste dont le premier e'le'ment est un entier
 M. PUIREDUC donne les N premie`res fonctions puissances en fonction 
 des M premie`res.
-@example
 
+@example
 PUIREDUC(3,[2]);
 
 						  3
@@ -794,13 +694,11 @@ PUIREDUC(3,[2]);
          		  [2, p1, p2, -------------]
 
 					    2
-
 @end example
 
 @end defun
-@c @node RESOLVANTE
-@c @unnumberedsec phony
-@defun RESOLVANTE (p,x,f,[x1,...,xd])
+
+@defun resolvante (p,x,f,[x1,...,xd])
 calcule la re'solvante du polyno^me p
 de la variable x et de degre' n >= d par la fonction f exprime'e en
 les variables x1,...,xd. Il est important pour l'efficacite' des
@@ -853,8 +751,8 @@ le drapeau de RESOLVANTE pourra e^tre respectivement :
 @item
   generale.
 @end itemize
-@example
 
+@example
  resolvante:unitaire;
 resolvante(x^7-14*x^5  + 56*x^3  - 56*X + 22,x,x^3-1,[x]);
 
@@ -954,80 +852,58 @@ resolvante(x^5-4*x^2+x+1,x,a,[]);
  6       5         4          3            2
 X  - 40 X  + 4080 X  - 92928 X  + 3772160 X  + 37880832 X + 93392896
 @end example
+
 Pour la re'solvante de Cayley, les 2 derniers arguments sont neutres
 et le polyno^me donne' en entre'e doit ne'cessairement e^tre de degre' 5.
 
 Voir e'galement :
-
-@example
 RESOLVANTE_BIPARTITE, RESOLVANTE_PRODUIT_SYM,
 RESOLVANTE_UNITAIRE, RESOLVANTE_ALTERNEE1, RESOLVANTE_KLEIN, 
 RESOLVANTE_KLEIN3, RESOLVANTE_VIERER, RESOLVANTE_DIEDRALE. 
 
-@end example
-
-
 @end defun
-@c @node RESOLVANTE_ALTERNEE1
-@c @unnumberedsec phony
-@defun RESOLVANTE_ALTERNEE1 (p,x)
+
+@defun resolvante_alternee1 (p,x)
 calcule la transformation de 
 p(x) de degre n par la fonction $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
 
 Voir e'galement :
-
-@example
 RESOLVANTE_PRODUIT_SYM, RESOLVANTE_UNITAIRE,
 RESOLVANTE , RESOLVANTE_KLEIN, RESOLVANTE_KLEIN3,
 RESOLVANTE_VIERER, RESOLVANTE_DIEDRALE, RESOLVANTE_BIPARTITE.
 
-@end example
-
-
 @end defun
-@c @node RESOLVANTE_BIPARTITE
-@c @unnumberedsec phony
-@defun RESOLVANTE_BIPARTITE (p,x)
+
+@defun resolvante_bipartite (p,x)
 calcule la transformation de 
 p(x) de degre n (n pair) par la fonction 
          $x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 
 Voir e'galement :
-
-@example
 RESOLVANTE_PRODUIT_SYM, RESOLVANTE_UNITAIRE,
 RESOLVANTE , RESOLVANTE_KLEIN, RESOLVANTE_KLEIN3,
 RESOLVANTE_VIERER, RESOLVANTE_DIEDRALE,RESOLVANTE_ALTERNEE1
-@end example
+
 @example
  RESOLVANTE_BIPARTITE(x^6+108,x);
 
                  10        8           6             4
                 Y   - 972 Y  + 314928 Y  - 34012224 Y
-
-
-
-
 @end example
+
 Voir e'galement :
-
-
-@example
 RESOLVANTE_PRODUIT_SYM, RESOLVANTE_UNITAIRE,
 RESOLVANTE, RESOLVANTE_KLEIN, RESOLVANTE_KLEIN3,
 RESOLVANTE_VIERER, RESOLVANTE_DIEDRALE,
 RESOLVANTE_ALTERNEE1.
-@end example
-
 
 @end defun
-@c @node RESOLVANTE_DIEDRALE
-@c @unnumberedsec phony
-@defun RESOLVANTE_DIEDRALE (p,x)
+
+@defun resolvante_diedrale (p,x)
 calcule la transformation de
 p(x) par la fonction x_1x_2+x_3x_4.
-@example
 
+@example
 resolvante_diedrale(x^5-3*x^4+1,x);
 
  15       12       11       10        9         8         7        6
@@ -1035,59 +911,42 @@ X   - 21 X   - 81 X   - 21 X   + 207 X  + 1134 X  + 2331 X  - 945 X
 
            5          4          3          2
    - 4970 X  - 18333 X  - 29079 X  - 20745 X  - 25326 X - 697
-
 @end example
-Voir e'galement :
 
-@example
+Voir e'galement :
 RESOLVANTE_PRODUIT_SYM, RESOLVANTE_UNITAIRE,
 RESOLVANTE_ALTERNEE1, RESOLVANTE_KLEIN, RESOLVANTE_KLEIN3,
 RESOLVANTE_VIERER, RESOLVANTE.
-@end example
-
 
 @end defun
-@c @node RESOLVANTE_KLEIN
-@c @unnumberedsec phony
-@defun RESOLVANTE_KLEIN (p,x)
+
+@defun resolvante_klein (p,x)
 calcule la transformation de
 p(x) par la fonction x_1x_2x_4+x_4.
 
 Voir e'galement :
-
-@example
 RESOLVANTE_PRODUIT_SYM, RESOLVANTE_UNITAIRE,
 RESOLVANTE_ALTERNEE1, RESOLVANTE, RESOLVANTE_KLEIN3,
 RESOLVANTE_VIERER, RESOLVANTE_DIEDRALE.
 
-@end example
-
-
 @end defun
-@c @node RESOLVANTE_KLEIN3
-@c @unnumberedsec phony
-@defun RESOLVANTE_KLEIN3 (p,x)
+
+@defun resolvante_klein3 (p,x)
 calcule la transformation de
 p(x) par la fonction x_1x_2x_4+x_4.
 
 Voir e'galement :
-
-@example
 RESOLVANTE_PRODUIT_SYM, RESOLVANTE_UNITAIRE,
 RESOLVANTE_ALTERNEE1, RESOLVANTE_KLEIN, RESOLVANTE,
 RESOLVANTE_VIERER, RESOLVANTE_DIEDRALE.
 
-@end example
-
-
 @end defun
-@c @node RESOLVANTE_PRODUIT_SYM
-@c @unnumberedsec phony
-@defun RESOLVANTE_PRODUIT_SYM (p,x)
+
+@defun resolvante_produit_sym (p,x)
 calcule la liste toutes les 
 r\'esolvantes produit du polyn\^ome  p(x).
-@example
 
+@example
   resolvante_produit_sym(x^5+3*x^4+2*x-1,x);
 
   5      4             10      8       7       6       5    4 
@@ -1108,61 +967,46 @@ esolvante(x^5+3*x^4+2*x-1,x,a*b*c,[a,b,c]);
 
  10      8       7    6       5       4       3      2
 Y   + 3 Y  + 14 Y  - Y  - 14 Y  - 31 Y  - 21 Y  - 2 Y  + 1
-
 @end example
+
 Voir e'galement :
-@example
 RESOLVANTE, RESOLVANTE_UNITAIRE,
 RESOLVANTE_ALTERNEE1, RESOLVANTE_KLEIN, RESOLVANTE_KLEIN3,
 RESOLVANTE_VIERER, RESOLVANTE_DIEDRALE.
 
-@end example
-
-
 @end defun
-@c @node RESOLVANTE_UNITAIRE
-@c @unnumberedsec phony
-@defun RESOLVANTE_UNITAIRE (p,q,x)
+
+@defun resolvante_unitaire (p,q,x)
 calcule la r\'esolvante du 
 polyn\^ome p(x) par le polyn\^ome q(x).
 
 Voir e'galement :
-@example
 RESOLVANTE_PRODUIT_SYM, RESOLVANTE,
 RESOLVANTE_ALTERNEE1, RESOLVANTE_KLEIN, RESOLVANTE_KLEIN3,
 RESOLVANTE_VIERER, RESOLVANTE_DIEDRALE.
 
-@end example
-
-
 @end defun
-@c @node RESOLVANTE_VIERER
-@c @unnumberedsec phony
-@defun RESOLVANTE_VIERER (p,x)
+
+@defun resolvante_vierer (p,x)
 calcule la transformation de
 p(x) par la fonction x_1x_2-x_3x_4.
 
-
 Voir e'galement :
-@example
 RESOLVANTE_PRODUIT_SYM, RESOLVANTE_UNITAIRE,
 RESOLVANTE_ALTERNEE1, RESOLVANTE_KLEIN, RESOLVANTE_KLEIN3,
 RESOLVANTE, RESOLVANTE_DIEDRALE.
-@end example
-
 
 @end defun
-@c @node SCHUR2COMP
-@c @unnumberedsec phony
-@defun SCHUR2COMP (P,l_var)
+
+@defun schur2comp (p,l_var)
 : P est un polyno^mes en les variables contenues dans 
 la liste l_var. Chacune des variables de l_var repre'sente une fonction
 syme'trique comple`te. On repre'sente dans l_var la ie`me fonction syme'trique
 comple`te comme la concate'nation de la lettre h avec l'entier i : hi.
 Cette fonction donne l'expression de P en fonction des fonctions
 de Schur.
-@example
 
+@example
   SCHUR2COMP(h1*h2-h3,[h1,h2,h3]);
 
 
@@ -1173,15 +1017,11 @@ de Schur.
 
  				      s  a
 				       3
-
-
-
 @end example
 
 @end defun
-@c @node SOMRAC
-@c @unnumberedsec phony
-@defun SOMRAC (liste,K)
+
+@defun somrac (liste,k)
 la liste contient les fonctions syme'triques e'le'mentaires
 d'un polyno^me P . On calcul le polyno^mes dont les racines sont les sommes 
 K a` K distinctes des racines de P. 
@@ -1190,9 +1030,8 @@ Voir e'galement PRODRAC.
 
 
 @end defun
-@c @node TCONTRACT
-@c @unnumberedsec phony
-@defun TCONTRACT (pol,lvar)
+
+@defun tcontract (pol,lvar)
 teste si le polyno^me pol est syme'trique en les
 variables contenues dans la liste lvar. Si oui il rend une forme contracte'e
 comme la fonction CONTRACT.
@@ -1203,9 +1042,8 @@ CONTRACT, CONT2PART, EXPLOSE, PART2CONT, PARTPOL, TPARTPOL.
 
 
 @end defun
-@c @node TPARTPOL
-@c @unnumberedsec phony
-@defun TPARTPOL (pol,lvar)
+
+@defun tpartpol (pol,lvar)
 teste si le polyno^me pol est syme'trique en les
 variables contenues dans la liste lvar. Si oui il rend sa forme partionne'e
 comme la fonction PARTPOL.
@@ -1216,29 +1054,25 @@ CONTRACT, CONT2PART, EXPLOSE, PART2CONT, PARTPOL, TCONTRACT.
 
 
 @end defun
-@c @node TREILLIS
-@c @unnumberedsec phony
-@defun TREILLIS (n)
-rame`ne toutes les partitions de poids n.
-@example
 
+@defun treillis (n)
+rame`ne toutes les partitions de poids n.
+
+@example
  treillis(4);
 
             [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
-
 @end example
 
 Voir e'galement : LGTREILLIS, LTREILLIS et TREINAT.
 
-
 @end defun
-@c @node TREINAT
-@c @unnumberedsec phony
-@defun TREINAT 
+
+@defun treinat 
 TREINAT(part)  rame`ne la liste des partitions infe'rieures a` la partition
   part pour l'ordre naturel.
-@example
 
+@example
    treinat([5]);
 
                                [[5]]
@@ -1251,7 +1085,8 @@ TREINAT(part)  rame`ne la liste des partitions infe'rieures a` la partition
    treinat([3,2]);
 
                         [[5], [4, 1], [3, 2]]
-
 @end example
+
 Voir e'galement : LGTREILLIS, LTREILLIS et TREILLIS.
+
 @end defun
