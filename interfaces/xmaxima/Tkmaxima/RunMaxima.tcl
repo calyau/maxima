@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.6 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.7 2002-09-10 09:19:14 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -81,7 +81,7 @@ proc openMaxima { win filter } {
 
     set port [acceptMaxima $win 4008 $filter]
     if { $port >= 0 } {
-	set com "exec "
+	set com ""
 	append com    $maxima_priv(localMaximaServer)
 	regsub PORT $com $port com
 	if { [info exists env(MAXIMA_INT_INPUT_STRING)] } {
@@ -90,7 +90,8 @@ proc openMaxima { win filter } {
 	    #puts env(MAXIMA_INT_INPUT_STRING)=$env(MAXIMA_INT_INPUT_STRING)
 	}
 	#puts com=$com
-	if { [catch { eval $com } err ] } {
+
+	if { [catch { eval exec $com } err ] } {
 	    #mike Must return an error to stop runOneMaxima from continuing
 	    return -code error "Can't execute $com\n$err" 
 	}
@@ -98,6 +99,7 @@ proc openMaxima { win filter } {
 	return -code error "could not open a socket " 
     }
 }
+
 
 proc runMaxima { win  filter sock args } {
     linkLocal $win server

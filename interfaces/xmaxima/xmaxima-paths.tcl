@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.8 2002-09-10 06:59:26 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.9 2002-09-10 09:19:14 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -9,30 +9,42 @@ proc setMaxDir {} {
     global env maxima_priv autoconf tcl_platform
 
     if {$tcl_platform(platform) == "windows"} {
-	# Need to find a way of bailing out if it's CYGWIN
-	# Need to find a way of bailing out if it's MSYS
-	# or just check tosee if the autoconf variables are valid
-	
 	# Assume the executable is one level down from the top
 	# for 5.6 this was src/ and for 5.9 its bin/
-	set env(MAXIMA_DIRECTORY) [file dir [file dir [info name]]]
+	set up [file dir [file dir [info name]]]
+	set env(MAXIMA_DIRECTORY) $up
 
-	if {![info exists autoconf] || \
-		![info exists autoconf(prefix)] || \
-		![info exists autoconf(exec_prefix)] || \
-		![info exists autoconf(libdir)] || \
-		![info exists autoconf(libexecdir)] || \
-		![info exists autoconf(datadir)] || \
-		![info exists autoconf(infodir)] || \
-		![file isdir  $autoconf(datadir) ] || \
+	if {[info exists autoconf] && \
+		[info exists autoconf(prefix)] && \
+		[info exists autoconf(exec_prefix)] && \
+		[info exists autoconf(libdir)] && \
+		[info exists autoconf(libexecdir)] && \
+		[info exists autoconf(datadir)] && \
+		[info exists autoconf(infodir)] && \
+		[file isdir  $autoconf(datadir) ] && \
 		![file isdir 
 		  [file join $autoconf(datadir) 
 		   $autoconf(package) $autoconf(version)]]} {
 
+	    # Assume it's CYGWIN or  MSYS
+	} elseif {[file isdir $up/lib] && \
+		      [file isdir $up/bin] && \
+		      [file isdir $up/libexec] && \
+		      [file isdir $up/info] && \
+		      [file isdir $up/share]} {
+	    set autoconf(prefix) $up
+	    set autoconf(exec_prefix) $up
+	    set autoconf(package) "maxima"
+	    # FIXME: hard coding
+	    set autoconf(version) "5.9.0rc1"
+	    set autoconf(libdir) "$up/lib"
+	    set autoconf(libexecdir) "$up/libexec"
+	    set autoconf(datadir) "$up/share"
+	    set autoconf(infodir) "$up/info"
+	} else {
 	    # Old windows 5.5 layout
 	    # Assume we are in the same directory as saved_maxima
-	    set exe [file join [file dir [info name]] saved_maxima.exe]
-	    if {[file isfile $exe]} {
+	    if {[file isfile [set exe $up/src/saved_maxima.exe]]} {
 		set maxima_priv(maxima_verpkgdatadir) \
 		    $env(MAXIMA_DIRECTORY)
 
@@ -120,14 +132,6 @@ proc setMaxDir {} {
 	    [file join $maxima_priv(maxima_verpkgdatadir) xmaxima]
     }
 
-    if {[info exists maxima_priv(xmaxima_maxima)]} {
-	# drop through
-    } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
-	set maxima_priv(xmaxima_maxima) $env(XMAXIMA_MAXIMA) 
-    } else {
-	set maxima_priv(xmaxima_maxima) maxima
-    }
-
     # Bring derived quantities up here too so we can see the
     # side effects of setting the above variables
 
@@ -164,20 +168,35 @@ proc setMaxDir {} {
 
 
 proc vMAXSetMaximaCommand {} {
-    global maxima_priv
+    global maxima_priv tcl_platform env
+
+    set maxima_opts [lMaxInitSetOpts]
+
+    if {[info exists maxima_priv(xmaxima_maxima)]} {
+	# drop through
+    } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
+	set maxima_priv(xmaxima_maxima) $env(XMAXIMA_MAXIMA) 
+    } else {
+	# FIXME: use the lisp from options
+	set maxima_priv(xmaxima_maxima) \
+	    [file join $maxima_priv(maxima_verpkglibdir) binary-gcl maxima]
+    }
+
 
     if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-	if { [info exists env(XMAXIMA_MAXIMA)] } {
-	    tide_failure "Error. maxima executable not found.\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"
+	if {[info exists env(XMAXIMA_MAXIMA)] } {
+	    tide_failure [M "Error. maxima executable not found.\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)" \
+			 [file native $maxima_priv(xmaxima_maxima)]]
 	} else {
-	    tide_failure "Error: Maxima executable not found/\n Try setting the environment variable  XMAXIMA_MAXIMA."
+	    tide_failure [M "Error: Maxima executable not found\n%s\n\n Try setting the environment variable  XMAXIMA_MAXIMA." \
+			      [file native $exe]]
 	}
 	return
     }
 
     if {![file isfile $exe] || ![file exec $exe]} {
 	tide_notify [M "Maxima executable not found in '%s'" \
-			 [file native $exe]]
+			 [file native $maxima_priv(xmaxima_maxima)]]
     }
 
     set lisp [file join $maxima_priv(maxima_xmaximadir) server.lisp]
@@ -186,17 +205,28 @@ proc vMAXSetMaximaCommand {} {
 			 [file native $lisp]]
     }
 
-    set maxima_opts [lMaxInitSetOpts]
-
     #mike FIXME: This should break on windows if there is a space in the pathname
     if {[string match *saved*maxima* [string tolow [file tail $exe]]]} {
 	# 5.6 maxima took different arguments
 
-	set maxima_priv(localMaximaServer) "$exe -load \{$lisp\} -eval \"(setup PORT)\" -f &"
+	set maxima_priv(localMaximaServer) "$exe -load $lisp -eval \"(setup PORT)\" -f &"
     } else {
 	# 5.9 maxima takes different arguments
-	set maxima_priv(localMaximaServer) "$exe $maxima_opts -p \{$lisp\} -r \":lisp (progn (user::setup PORT)(values))\" &"
+	set maxima_priv(localMaximaServer) "$exe $maxima_opts -p $lisp -r \":lisp (progn (user::setup PORT)(values))\" &"
     }
+
+    #mike - why is this being used rather that the above?
+    if {$tcl_platform(platform) == "windows"} {
+	# A gruesome hack. Normally, we communicate to the maxima image
+	# through the maxima script, as above. If the maxima script is not
+	# available, as may happen on windows, directly talk to the GCL 
+	# saved image. jfa 04/28/2002
+	set env(MAXIMA_INT_LISP_PRELOAD)  "$lisp"
+	set env(MAXIMA_INT_INPUT_STRING)  ":lisp (progn (user::setup PORT)(values));"
+	set maxima_priv(localMaximaServer) "$exe -eval \"(run)\" -f &"
+	
+    }
+
 
 }
 
