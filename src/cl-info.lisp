@@ -175,13 +175,13 @@
 ;; Return a list of the tag table text itself and an alist of the
 ;; starting index for each file and the name of the corresponding
 ;; file.
-(let ((pat-indirect-start (compile-regex #u"[\n]+indirect:"
+(let ((pat-indirect-start (compile-regex #u"[\n]+Indirect:"
 					 :case-sensitive t))
       (pat-end-ind (compile-regex #u""
 				  :case-sensitive t))
       (pat-indirect (compile-regex #u"\n([^\n]+): ([0-9]+)"
 				   :case-sensitive t))
-      (pat-tag-table (compile-regex #u"[\n]+tag table:"
+      (pat-tag-table (compile-regex #u"[\n]+Tag Table:"
 				    :case-sensitive t))
       )
   (defun info-get-tags (file)
@@ -193,14 +193,14 @@
 	    (i 0))
 	(declare (fixnum i)
 		 (string s))
-	;;(format t "match = ~a~%" (string-match #u"[\n]+indirect:" s 0))
+	;;(format t "match = ~a~%" (string-match #u"[\n]+Indirect:" s 0))
 	(when (>= (string-match pat-indirect-start s 0) 0)
 	  ;; The file has multiple parts, so save the filename and the
 	  ;; offset of each part.
 	  (setq i (match-end 0))
-	  ;;(format t "looking for end of indirect, from ~a~%" i)
+	  ;;(format t "looking for end of Indirect, from ~a~%" i)
 	  (setq lim (string-match pat-end-ind s i))
-	  ;;(format t "found indirect at ~a.  limit = ~a~%" i lim)
+	  ;;(format t "found Indirect at ~a.  limit = ~a~%" i lim)
 	  (while (>= (string-match pat-indirect s i lim)
 		     0)
 	    ;;(format t "found entry at ~a.~%" (match-start 0))
@@ -268,7 +268,7 @@
     (when node-string
       (let ((compiled-pat
 	     (compile-regex
-	      (string-concatenate "node: ([^]*"
+	      (string-concatenate "Node: ([^]*"
 				  (re-quote-string pat)
 				  "[^]*)")
 	      :case-sensitive (not *case-fold-search*))))
@@ -316,7 +316,7 @@
 	  (t
 	   (setq pat
 		 (compile-regex
-		  (string-concatenate "node: "
+		  (string-concatenate "Node: "
 				      (re-quote-string pat)
 				      "([0-9]+)")
 		  :case-sensitive (not *case-fold-search*)))
@@ -365,7 +365,7 @@ that matches the name name with extention ext"
 
 (defun setup-info (name)
   (let (tem file)
-    (when (equal name "dir")
+    (when (equal name "DIR")
       (setq name "dir"))
     (setq file (file-search name *info-paths* '("" "info") nil))
     (cond ((and (null file)
@@ -383,7 +383,7 @@ that matches the name name with extention ext"
 	   ;; the maxima file.  If you don't have a dir file, we lose.
 	   (error "failed to find info directory")
 	   (format t "looking for dir~a~%")
-	   (let* ((tem (show-info "(dir)top" nil))
+	   (let* ((tem (show-info "(dir)Top" nil))
 		  *case-fold-search*)
 	     (cond ((>= (string-match
 			 (string-concatenate "(([^(]*"
