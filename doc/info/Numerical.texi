@@ -179,32 +179,179 @@ equation.
 
 @node Definitions for Numerical,  , NDIFFQ, Numerical
 @section Definitions for Numerical
+@c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
+@c in this file. Otherwise DESCRIBE returns the FFT text (because
+@c POLARTORECT, etc are list in the heading of FFT with @defunx).
+
+@c @node POLARTORECT
+@c @unnumberedsec phony
+@defun POLARTORECT (magnitude_array, phase_array)
+
+Translates complex values of the form r %e^(%i t) to the form a + b %i.
+LOAD ("FFT")$ will load this function into Maxima. See also FFT.
+
+The magnitude and phase, r and t, are taken from magnitude_array and
+phase_array, respectively. The original values of the input arrays are
+replaced by the real and imaginary parts, a and b, on return. The outputs are
+equal to
+
+@example
+  a: r COS (t)
+  b: r SIN (t)
+@end example
+
+The input arrays must be the same size, and can be 1- or 2-dimensional.
+The array dimensions need not be a power of 2, nor do 2-dimensional
+arrays need to be square.
+
+POLARTORECT is the inverse function of RECTTOPOLAR.
+
+@end defun
+@c @node RECTTOPOLAR
+@c @unnumberedsec phony
+@defun RECTTOPOLAR (real_array, imaginary_array)
+
+Translates complex values of the form a + b %i to the form r %e^(%i t).
+LOAD ("FFT")$ will load this function into Maxima. See also FFT.
+
+The real and imaginary parts, a and b, are taken from real_array and
+imaginary_array, respectively. The original values of the input arrays
+are replaced by the magnitude and angle, r and t, on return. The outputs are
+equal to
+
+@example
+  r: SQRT (a^2 + b^2)
+  t: ATAN2 (b, a)
+@end example
+
+The computed angle is in the range -%pi to %pi. 
+
+The input arrays must be the same size, and can be 1- or 2-dimensional.
+The array dimensions need not be a power of 2, nor do 2-dimensional
+arrays need to be square.
+
+RECTTOPOLAR is the inverse function of POLARTORECT.
+
+@end defun
+@c @node IFT
+@c @unnumberedsec phony
+@defun IFT (real_array, imaginary_array)
+
+Fast inverse discrete Fourier transform. LOAD ("FFT")$ will load this function
+into Maxima.
+
+IFT carries out the inverse complex fast Fourier transform on 1- or
+2-dimensional floating point arrays. The inverse transform is defined as
+
+@example
+  X[j]: SUM (Y[j] EXP (+2 %i %pi j k / n), k, 0, n-1)
+@end example
+
+in the 1-dimensional case, and
+
+@example
+  X[i,j]: SUM (SUM (Y[k,l] EXP (+2 %i %pi (i k + j l) / n), l, 0, n-1), k, 0, n-1)
+@end example
+
+in the 2-dimensional case. See FFT for more details.
+
+@end defun
 @c @node FFT
 @c @unnumberedsec phony
-@defun FFT (real-array, imag-array)
-Fast Fourier Transform.  This
-package may be loaded by doing LOAD(FFT); There is also an IFT
-command, for Inverse Fourier Transform.  These functions perform a
-(complex) fast fourier transform on either 1 or 2 dimensional
-FLOATING-POINT arrays, obtained by:
+@defun FFT (real_array, imaginary_array)
+@defunx IFT (real_array, imaginary_array)
+@defunx RECTTOPOLAR (real_array, imaginary_array)
+@defunx POLARTORECT (magnitude_array, phase_array)
+
+Fast Fourier transform and related functions. LOAD ("FFT")$ will
+load these functions into Maxima.
+
+FFT and IFT carry out the complex fast Fourier transform and
+inverse transform, respectively, on 1- or 2-dimensional floating
+point arrays. If 2-dimensional, the arrays must be square (that is,
+number of rows equal to number of columns). The size of imaginary_array
+must equal the size of real_array.
+
+FFT and IFT operate in-place. That is, on return from FFT or IFT,
+the original content of the input arrays is replaced by the output.
+The FILLARRAY function can make a copy of an array, should it
+be necessary.
+
+The discrete Fourier transform and inverse transform are defined
+as follows. Let X be the original data, with
+
 @example
-ARRAY(<ary>,FLOAT,<dim1>); or
-ARRAY(<ary>,FLOAT,<dim1>,<dim2>);
+  X[i]: real_array[i] + %i imaginary_array[i]
 @end example
-For 1D arrays
+  
+and likewise, in the 2-dimensional case,
+
 @example
-<dim1> = 2^n-1
+  X[i, j]: real_array[i, j] + %i imaginary_array[i, j]
 @end example
-and for 2D arrays
+
+Let Y be the transformed data. In the 1-dimensional case,
+the forward and inverse transforms are
+
 @example
-<dim1>=<dim2>=2^n-1
+  Y[k]: (1/n) SUM (X[j] EXP (-2 %i %pi j k / n), j, 0, n-1)
+
+  X[j]:       SUM (Y[j] EXP (+2 %i %pi j k / n), k, 0, n-1)
 @end example
-(i.e. the array is
-square).  (Recall that MACSYMA arrays are indexed from a 0 origin so
-that there will be 2^n and (2^n)^2 arrays elements in the above two
-cases.)  This package also contains two other functions, POLARTORECT
-and RECTTOPOLAR.  Do DESCRIBE(cmd) for details. For details on the
-implementation, do PRINTFILE(FFT,USAGE,SHARE); .
+
+In the 2-dimensional case, the forward and inverse transforms are
+
+@example
+  Y[k,l]: (1/n^2) SUM (SUM (X[i,j] EXP (-2 %i %pi (i k + j l) / n), j, 0, n-1), i, 0, n-1)
+
+  X[i,j]:         SUM (SUM (Y[k,l] EXP (+2 %i %pi (i k + j l) / n), l, 0, n-1), k, 0, n-1)
+@end example
+
+Suitable arrays can be allocated by the ARRAY function. For example:
+
+@example
+  ARRAY (my_array, FLOAT, n-1)$
+@end example
+
+declares a 1-dimensional array, and
+
+@example
+  ARRAY (my_array, FLOAT, n-1, n-1)$
+@end example
+
+declares a square 2-dimensional array. In either case, n must
+be equal to 2^m for some m. See ARRAY.
+
+FFT can be applied to real data (imaginary array all zeros) to obtain
+sine and cosine coefficients. After calling FFT, the sine and cosine
+coefficients, say A and B, can be calculated as
+
+@example
+  A[0]: real_array[0]
+  B[0]: 0
+@end example
+
+and
+
+@example
+  A[j]: real_array[j] + real_array[n-j]
+  B[j]: imaginary_array[j] - imaginary_array[n-j]
+@end example
+
+for j equal to 1 through n/2-1, and
+
+@example
+  A[n/2]: real_array[n/2]
+  B[n/2]: 0
+@end example
+
+RECTTOPOLAR translates complex values of the form a + b %i to
+the form r %e^(%i t). See RECTTOPOLAR.
+
+POLARTORECT translates complex values of the form r %e^(%i t)
+to the form a + b %i. See POLARTORECT.
+
+Execute DEMO ("FFT")$ to see a demonstration of the FFT package.
 
 @end defun
 @c @node FORTINDENT
@@ -273,21 +420,6 @@ ARITHMETIC OVERFLOW
 
 
 @end example
-@end defun
-@c @node IFT
-@c @unnumberedsec phony
-@defun IFT (real-array, imag-array)
-Inverse Fourier Transform.  Do
-LOAD(FFT); to load in this package.  These functions (FFT and IFT)
-perform a (complex) fast fourier transform on either 1 or 2
-dimensional FLOATING-POINT arrays, obtained by:
-ARRAY(<ary>,FLOAT,<dim1>); or ARRAY(<ary>,FLOAT,<dim1>,<dim2>); For 1D
-arrays <dim1> must equal 2^n-1, and for 2D arrays <dim1>=<dim2>=2^n-1
-(i.e. the array is square).  (Recall that MACSYMA arrays are indexed
-from a 0 origin so that there will be 2^n and (2^n)^2 arrays elements
-in the above two cases.)  For details on the implementation, do
-PRINTFILE(FFT,USAGE,SHARE); .
-
 @end defun
 @c @node INTERPOLATE
 @c @unnumberedsec phony
@@ -393,33 +525,5 @@ is symbolic all the way.  INTERPOLATE(x^2-a^2,x,a/2,2*a); complains
 that .5*a is not flonum...
 An adaptive integrator which uses the Newton-Cotes 8 panel quadrature
 rule is available in SHARE1;QQ FASL.  Do DESCRIBE(QQ) for details.
-
-@end defun
-@c @node POLARTORECT
-@c @unnumberedsec phony
-@defun POLARTORECT (magnitude-array, phase-array)
-converts from
-magnitude and phase form into real and imaginary form putting the real part in
-the magnitude array and the imaginary part into the phase array
-
-@example
-<real>=<magnitude>*COS(<phase>) ==>
-  <imaginary>=<magnitude>*SIN(<phase>
-@end example
-
-This function is part of the
-FFT package.  Do LOAD(FFT); to use it.  Like FFT and IFT this function
-accepts 1 or 2 dimensional arrays.  However, the array dimensions need
-not be a power of 2, nor need the 2D arrays be square.
-
-@end defun
-@c @node RECTTOPOLAR
-@c @unnumberedsec phony
-@defun RECTTOPOLAR (real-array, imag-array)
-undoes POLARTORECT.  The
-phase is given in the range from -%PI to %PI.  This function is part
-of the FFT package.  Do LOAD(FFT); to use it.  Like FFT and IFT this
-function accepts 1 or 2 dimensional arrays.  However, the array
-dimensions need not be a power of 2, nor need the 2D arrays be square.
 
 @end defun
