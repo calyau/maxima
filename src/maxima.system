@@ -139,6 +139,8 @@
 				   (:file "dasyik")
 				   (:file "dbesi"
 					  :depends-on ("dasyik" "dlngam" "xermsg"))
+				   (:file "zbesi"
+					  :depends-on ("zabs" "zbinu"))
 	     
 				   ;; Bessel J function for complex
 				   ;; arg and real order.
@@ -189,6 +191,30 @@
 					  :depends-on ("zabs" "zlog" "zuchk" "zunhj" "zunik"))
 				   (:file "zwrsk"
 					  :depends-on ("zabs" "zbknu" "zrati"))
+	     
+				   ;; Bessel Y functions
+				   (:file "dbesy0"
+					  :depends-on ("d9b0mp" "dbesj0" "dcsevl" "initds" "xermsg"))
+				   (:file "dbesy1"
+					  :depends-on ("d9b1mp" "dbesj1" "dcsevl" "initds" "xermsg"))
+				   (:file "dbesy"
+					  :depends-on ("dasyjy" "dbesy0" "dbesy1" "dbsynu" "dyairy" "xermsg"))
+				   (:file "dbsynu"
+					  :depends-on ("dgamma" "xermsg"))
+				   (:file "dyairy")
+	     
+				   (:file "zbesy"
+					  :depends-on ("zbesh"))
+				   (:file "zbesh"
+					  :depends-on ("zabs" "zacon" "zbknu" "zbunk" "zuoik"))
+				   (:file "zacon"
+					  :depends-on ("zabs" "zbinu" "zbknu" "zmlt" "zs1s2"))
+				   (:file "zbunk"
+					  :depends-on ("zunk1" "zunk2"))
+				   (:file "zunk1"
+					  :depends-on ("zabs" "zs1s2" "zuchk" "zunik"))
+				   (:file "zunk2"
+					  :depends-on ("zabs" "zairy" "zs1s2" "zuchk" "zunhj"))
 	     
 				   ;; Airy functions
 				   (:file "d9aimp"
