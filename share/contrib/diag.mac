@@ -5,7 +5,16 @@
  * jordan(mat) is jordan form but represented by list			*
  * we obtain matrix form ,dispJordan(this list)				*
  * minimalPoly(this list) display minimalpolynomial of that matrix	*
- * (M^^-1)AM=JF,I soon show maybe at this week end			*
+ * ModeMatrix(mat,this list) return ModeMatrix M,                       *
+ * (M^^-1)AM=JF              		                        	*
+ * mat_function(analytic function,matrix) return f(matrix)              *
+ * this calculation is based on Cauchy integral formular.               *
+ * if f(x) is analytic and mat=diag([JF(m1,n1),,JF(mk,nk)]),            *
+ * then                                                                 * 
+ * f(mat)=ModeMatrix*diag([f(JF(m1,n1)),,f(JF(mk,nk))])*ModeMatrix^^(-1)*
+ * this method is only one of them,6~8or more other methods exist.      *
+ * so I cannot insist on this being best.but I think it very useful.    *
+ * please try jordan.dem                                                *
  * I intended to write this program,after saw Barton's mat_exp.mc 	*
  * Partially because of Mathematica BUG ,				*
  * a:matix( [2,0,0,0,0,0,0,0],						*
@@ -217,22 +226,52 @@ ModeMatrix(a,F):= block([i,j,k,msize,lsize,firstflg,multiplist,mindeg,ev,xv,tmpv
 
   matsolve2(mat,v0):=block([equation1,unkown1,solut1,solut2,dm1,
      index1,mat1,vectr1,vectr2,unkw,%RNUM],
-  mode_declare([equation1,unkown1,solut1,solut2],list,
-    [dm1,index1],fixnum,
-    [vectr1,vectr2,unkw,mat1],any),
-    dm1:length(mat),
-  unkown1:[],
-  for index1 thru dm1 do unkown1:endcons(concat(unkw,index1),unkown1),
-  vectr1:transpose(matrix(unkown1)),
-  vectr2:transpose(matrix(v0)),
-  mat1:mat.vectr1-vectr2,
-  equation1:[],
-  for index1 thru dm1 do equation1:cons(mat1[index1,1],equation1),
-  %RNUM:0,
-  solut1:ALGSYS(equation1,unkown1),
-  if solut1=[] then (
-      print("endreach ,I cannot solve this"),return([])
-  ) else (
-      solut2:map('RHS,solut1[1]),
+     mode_declare([equation1,unkown1,solut1,solut2],list,
+      [dm1,index1],fixnum,
+      [vectr1,vectr2,unkw,mat1],any),
+      dm1:length(mat),
+      unkown1:[],
+      for index1 thru dm1 do unkown1:endcons(concat(unkw,index1),unkown1),
+      vectr1:transpose(matrix(unkown1)),
+      vectr2:transpose(matrix(v0)),
+      mat1:mat.vectr1-vectr2,
+      equation1:[],
+      for index1 thru dm1 do equation1:cons(mat1[index1,1],equation1),
+      %RNUM:0,
+      solut1:ALGSYS(equation1,unkown1),
+      if solut1=[] then (
+      	 print("endreach ,I cannot solve this"),return([])
+      ) else (
+      	 solut2:map('RHS,solut1[1]),
       
       return(solut2)))$
+
+
+ghelp(f,labmda,k):=subst(labmda,z,diff(f(z),z,k)/k!)$
+
+/* f must be analytic function, a is matrix   */
+
+mat_function(f,a):=block([i,j,ii,n,p,L1,L2,b,tempmat,siftmat],
+   mode_declare([i,n,j,ii],fixnum,[L1,L2],list,[a,vtemp,b,tempmat,modemat],any),
+   L2:jordan(a),   
+   n:length(L2),vtemp:[],
+   
+   for i:1 thru n do (
+       for j:1 thru length(L2[i])-1 do (
+	  L1:[],
+       	  for ii:0 thru L2[i][j+1]-1 do (
+	     L1:endcons(ghelp(f,L2[i][1],ii),L1)
+	   ),
+	  tempmat:matrix(L1),
+	  siftmat:JF(0,L2[i][j+1]),
+	  b:tempmat,
+	  for ii:1 thru L2[i][j+1]-1 do (
+	     tempmat: (tempmat . siftmat), 
+	     b:addrow(b,tempmat)
+	   ),
+	   
+       	 vtemp:endcons(b,vtemp)
+      )
+   ),
+   modemat:ModeMatrix(a,L2),
+  return(modemat.diag(vtemp).(modemat)^^-1))$
