@@ -13,6 +13,7 @@ cd snapshots
 cvs -z6 -d :pserver:anonymous@cvs.Maxima.sourceforge.net:/cvsroot/maxima co maxima 
 if [ "$?" != "0" ]; then
     echo "cvs checkout failed. Aborting"
+    rmdir .
     exit 1
 fi
 
