@@ -124,13 +124,10 @@ distclean: clean-sbcl
 
 sbcl:binary-sbcl/maxima.core
 
-# "test -h" lines below work around some problem that sbcl has with defsystem
 binary-sbcl/maxima.core:
 	test -d binary-sbcl || mkdir binary-sbcl
 	test -d binary-sbcl/numerical || mkdir binary-sbcl/numerical
 	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
-	test -h numerical/binary-sbcl || ln -s ../binary-sbcl numerical
-	test -h  numerical/slatec/binary-sbcl || ln -s ../../binary-sbcl numerical/slatec
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core" :purify t) (sb-ext:quit))'
 

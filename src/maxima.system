@@ -17,8 +17,12 @@
 (mk:defsystem "maxima"
   :source-extension "lisp"  
   :binary-pathname #+clisp "binary-clisp"
-                   #+cmu (truename "binary-cmucl")
-		   #+sbcl "binary-sbcl"
+                   #+cmu (make-pathname
+			  :name "binary-cmucl"
+			  :directory (pathname-directory *load-truename*))
+		   #+sbcl (make-pathname
+			   :name "binary-sbcl"
+			   :directory (pathname-directory *load-truename*))
 		   #+gcl "binary-gcl"
 		   #+allegro "binary-acl6"
 		   #+openmcl "binary-openmcl"
