@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename mathieu.mac
 
    ***************************************************************
    *							         *
@@ -12,7 +12,7 @@
    *            						 *
    ***************************************************************
 */ /*
-(d4) This program computes the transition curves in
+(d4) This program computes the transition curves in
 
 
  Mathieu's equation using a perturbation method.
@@ -25,7 +25,7 @@ Call it by typing:
 
 */
 
-mathieu():=(input(),y0:cos(t),findtc(),y0:sin(t),findtc())$
+mathieu():=(input(),y0:cos(t),findtc(),y0:sin(t),findtc())$
 input():=(n:read("ENTER TRANSITION CURVE NUMBER N"),
       m:read("ENTER DEGREE OF TRUNCATION"))$
 findtc():=(setup1(),setup2(),for i thru m do (step1(),step2(),step3()),
@@ -41,4 +41,3 @@ step2():=(f[i]:solve(coeff(temp1,y0),k[i]),temp1:ev(temp1,f[i]))$
 step3():=(temp1:ode2(temp1,y[i](t),t),e[i]:ev(temp1,%k1:0,%k2:0))$
 output():=(print("delta=",expand(n^2/4*ev(w,makelist([f[j]],j,1,m)))),
        print(" "))$
-

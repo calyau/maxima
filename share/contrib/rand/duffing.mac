@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename duffing.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    ***************************************************************
 */ /*
 
-(d4) This program computes a perturbation solution for
+(d4) This program computes a perturbation solution for
 
 
 the periodic response of Duffing's equation.
@@ -28,7 +28,7 @@ Call it by typing:
 where N is the order of truncation.
 */
 
-duffing(n):=(setup1(n),setup2(n),
+duffing(n):=(setup1(n),setup2(n),
 	for i thru n do
 	    (step1(i),step2(i),step3(i),step4(i),step5(i),output1(i)),
 	output2(n))$
@@ -46,4 +46,3 @@ step4(i):=(temp2:rhs(temp1),temp2:diff(temp2,t),
 step5(i):=e[i]:ev(temp1,temp2)$
 output1(i):=(print(expand(e[i])),print(" "))$
 output2(n):=(print("w=",ev(w,makelist([f[j]],j,1,n))),print(" "))$
-

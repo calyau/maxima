@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename recursiv.mac
 
    ***************************************************************
    *							         *
@@ -15,7 +15,7 @@
 
 
 /*  
-(d12) This program uses recursive functions to find 
+(d12) This program uses recursive functions to find 
 
 
 the transition curves in Mathieu's equation.  To call it,
@@ -28,7 +28,7 @@ type:
 
 */
 
-tc():=(input(),sign:1,find(),IF n > 0 THEN (sign:-1,find()))$
+tc():=(input(),sign:1,find(),IF n > 0 THEN (sign:-1,find()))$
 input():=(n:read("ENTER TRANSITION CURVE NUMBER N"),
       m:read("ENTER DEGREE OF TRUNCATION"))$
 find():=(delta:n^2/4,for i thru m do delta:delta+d(i)*e^i,
@@ -46,6 +46,5 @@ a(j,k):=IF j < 0 OR k < 0 THEN 0
 					   /2
 					   -sum(d(i)*a(j-i,k),i,1,j))
 					   /((n^2-k^2)/4)))))$
-d(j):=IF n = 0 THEN -a(j-1,2)/2
+d(j):=IF n = 0 THEN -a(j-1,2)/2
    ELSE -(a(j-1,n-2)+a(j-1,n+2)+sign*a(j-1,2-n))/2$
-

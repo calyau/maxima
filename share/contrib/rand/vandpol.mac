@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename vandpol.mac
 
    ***************************************************************
    *							         *
@@ -15,7 +15,7 @@
 
 
 /*
-(d12) This program computes a perturbation solution for the
+(d12) This program computes a perturbation solution for the
 
 
 limit cycle in Van der Pol's equation.  Call it by typing:
@@ -27,7 +27,7 @@ limit cycle in Van der Pol's equation.  Call it by typing:
 where N is the order of truncation.
 */
 
-vanderpol(n):=(setup1(n),setup2(n),
+vanderpol(n):=(setup1(n),setup2(n),
 	  for i thru n do
 	      block(step1(i),step2(i),IF i > 1 THEN output1(i),
 		    IF i = n THEN go(end),step3(i),step4(i),step5(i),end),
@@ -49,4 +49,3 @@ step4(i):=(temp2:rhs(temp1),temp2:diff(temp2,t),
 step5(i):=e[i]:ev(temp1,temp2)$
 output1(i):=(print(expand(ev(e[i-1],f[i]))),print(" "))$
 output2(n):=(print("w=",ev(w,makelist([f[j]],j,1,n))),print(" "))$
-

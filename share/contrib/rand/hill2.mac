@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename hill2.mac
 
    ***************************************************************
    *							         *
@@ -12,7 +12,7 @@
    *            						 *
    ***************************************************************
 */ /*
-(d4) This program generates the transition curves in
+(d4) This program generates the transition curves in
 
 
 Mathieu's equation via Hill's determinants.  Call it by
@@ -28,7 +28,7 @@ NOTE: File HILL1.MAC must be loaded before calling HILL().
 
 */
 
-hill():=(input(),
+hill():=(input(),
      IF evenp(n) THEN (findaeven(n,m,n+m),IF n > 0 THEN findbeven(n,m,n+m))
 	 ELSE findaodd(n,m,n+m))$
 input():=(n:read("ENTER TRANSITION CURVE NUMBER N"),
@@ -45,4 +45,3 @@ findaodd(n,m,p):=(d:'d,det:expand(makeaodd(p)),d:n^2/4+k[1]*e,
 	 for i thru m do (loop(i),IF i < m THEN d:d+k[i+1]*e^(i+1)),
 	 print("delta=",d),print(" "),print("delta=",ev(d,e:-e)),print(" "))$
 loop(i):=d:ev(d,solve(taylor(ev(det),e,0,i),k[i]))$
-
