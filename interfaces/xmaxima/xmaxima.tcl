@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.8 2002-09-05 02:07:36 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.9 2002-09-05 02:34:58 mikeclarkson Exp $
 #
 
 # The following files are prepended, and could be sourced instead.
@@ -11,26 +11,9 @@
 # Source Tkmaxima/Constants.tcl ;# required - must not be autoloaded
 
 
-###### maxima-browser.tcl ######
-
-## source maxima-local.tcl
-
-###### maxima-local.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
-############################################################
-#proc start_program { } {runOneMaxima .temp } ; source maxima-local.tcl; set argv "maxima 10 billy -debug" ; set argc 4 ; set argv0 ./run-one.tcl ; source run-one.tcl
-# on other side ; openConnection localhost 5099 billy maxima
-
 ## source preamble.tcl
 
 ###### preamble.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
-############################################################
-
 set ws_openMath(clicks_per_second) 1000000
 
 # get the number of clicks per second on this machine..
@@ -311,7 +294,7 @@ proc readAllData1 { sock } {
 	    } else {
 		set amt [expr { $contentlength >= 0 ? ($chunksize < $contentlength - $bytesread ? $chunksize : ($contentlength -$bytesread)) : $chunksize } ]
 		set chunksize $amt
-		set n [unsupported0 $sock $tochannel $chunksize]
+		set n [fcopy $sock $tochannel -size $chunksize]
 	    }
 	} else {
 	    set res [read $sock $chunksize]
@@ -557,39 +540,6 @@ proc readAndSyncCache { } {
 	close $fi
     }
 }
-
-
-
-if { "[info command unsupported0]" == "" } {
-    # then we have binary strings!!, since the release that removed
-    # unsupported0 added binary strings..
-
-#
- #-----------------------------------------------------------------
- #
- # unsupported0 --  copy from FROM to TO copying at most SIZE
- # bytes.  Like fcopy $from $to -size $SIZE
- # except it does not block if there are not $SIZE bytes immediately
- # available.
- #
- #  Results: The number of bytes copied is returned.
- #
- #  Side Effects: bytes moved from one channel to other.
- #
- #----------------------------------------------------------------
-#    
-proc  unsupported0 {from to size}  {
-    # puts "entering> unsupported0 $from $to $size " ; flush stdout;
-    set tem [read $from $size]
-    #DONT comment next
-    puts -nonewline $to $tem
-    # puts "exiting> unsupported0 $from $to $size --> [string length $tem]" ; flush stdout;
-    return [string length $tem]
-}
-
-# endif unsupported0 not defined
-}
-
 
 
 ## endsource getdata1.tcl
@@ -12716,16 +12666,19 @@ proc closeMaxima { win } {
     linkLocal $win maximaSocket pid 
     foreach v [array names pdata maxima*] { unset pdata($v) }
 
-    if {$pid != "" && [string is int $pid]} {
+    if {[info exists pid] && $pid != "" && [string is int $pid]} {
 	catch {
 	    CMkill -TERM $pid
 	    unset pid
 	}
     }
 
-    catch {    close $maximaSocket
-                 unset maximaSocket
-      }
+    if {[info exists maximaSocket] && $maximaSocket != ""} {
+	catch {
+	    close $maximaSocket
+	    unset maximaSocket
+	}
+    }
 }
 
 
@@ -13116,8 +13069,4 @@ proc changeSize { win  y } {
 
 # proc doInsertp { tags } {    return 0}
 
-
-
-
-## endsource maxima-local.tcl
 
