@@ -5,3 +5,6 @@ autoconf-variables.lisp
 maxima
 
 binary-*
+
+maxout.openmath
+semantic.cache
