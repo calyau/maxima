@@ -1,50 +1,68 @@
 @menu
 * Introduction to Input and Output::  
 * FILES::                       
-* PLAYBACK::                    
 * Definitions for Input and Output::  
 @end menu
 
 @node Introduction to Input and Output, FILES, Input and Output, Input and Output
 @section Introduction to Input and Output
 
-@node FILES, PLAYBACK, Introduction to Input and Output, Input and Output
+@node FILES, Definitions for Input and Output, Introduction to Input and Output, Input and Output
 @section FILES
- - A file is simply an area on a particular storage device which
-contains data or text.  The only storage devices which are used on the
-MC machine are disks and tapes.  Files on the disks are figuratively
-grouped into "directories".  A directory is just a list of all the
-files stored under a given user name.  Do DESCRIBE(FILEOP); for
-details of how you may inspect your files using Maxima.  Other
-commands which deal with files are: SAVE, STORE, LOAD,
-LOADFILE, RESTORE, UNSTORE, STRINGOUT, BATCH, BATCON, DEMO, WRITEFILE,
-CLOSEFILE, DELFILE, REMFILE, and APPENDFILE.
-
-@node PLAYBACK, Definitions for Input and Output, FILES, Input and Output
-@section PLAYBACK
- It is possible to play back the input lines in a temporary
-scroll down window, and so not lose ones current work.  This can
-be done by typing Function  E.  A numeric argument tells it the line
-number to start at, otherwise it will go back about 40 lines.
+A file is simply an area on a particular storage device which contains data or text.
+Files on the disks are figuratively grouped into "directories".
+A directory is just a list of files.
+Commands which deal with files are:
+SAVE, LOAD, LOADFILE, STRINGOUT, BATCH, DEMO, WRITEFILE, CLOSEFILE, and APPENDFILE.
 
 @c end concepts Input and Output
-@node Definitions for Input and Output,  , PLAYBACK, Input and Output
+@node Definitions for Input and Output,  , FILES, Input and Output
 @section Definitions for Input and Output
 
 @defvar %
- The last D-line computed by Maxima (whether or not it was printed
-out).  (See also %%.)
+The output label (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
+most recently computed by Maxima,
+whether or not it was displayed.
+See also @code{%%}.
 
 @end defvar
 
 @defvar %%
- The value of the last computation performed while in a
-Maxima break.  Also may be used in compound statements in the nth
-statement to refer to the value of the (n-1)th statement.  E.g.
-F(N):=(INTEGRATE(X^N,X),SUBST(3,X,%%)-SUBST(2,X,%%)); is in essence
-equivalent to F(N):=BLOCK([%%], %%:INTEGRATE(X^N,X),
-SUBST(3,X,%%)-SUBST(2,X,%%)); This will also work for communicating
-between the (n-1)th and nth (non-atomic) BLOCK statements.
+In a compound statement comprising two or more statements,
+@code{%%} is the value of the previous statement.
+For example,
+
+@example
+block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+block ([prev], prev: integrate (x^5, x), ev (prev, x=2) - ev (prev, x=1));
+@end example
+
+yield the same result, namely @code{21/2}.
+
+A compound statement may comprise other compound statements.
+Whether a statement be simple or compound, 
+@code{%%} is the value of the previous statement.
+For example,
+
+@example
+block (block (a^n, %%*42), %%/6)
+@end example
+
+yields @code{7*a^n}.
+
+Within a compound statement, the value of @code{%%} may be inspected at a break prompt,
+which is opened by executing the BREAK function.
+For example, at the break prompt opened by
+
+@example
+block (a: 42, break ())$
+@end example
+
+entering @code{%%;} yields @code{42}.
+
+At the first statement in a compound statement,
+or outside of a compound statement,
+@code{%%} is undefined.
 
 @end defvar
 
@@ -55,11 +73,18 @@ negative exponent as a quotient, i.e. %E^-X as 1/%E^X.
 @end defvar
 
 @defun %TH (i)
-is the ith previous computation.  That is, if the next
-expression to be computed is D(j) this is D(j-i).  This is useful in
-BATCH files or for referring to a group of D expressions.  For
-example, if SUM is initialized to 0 then FOR I:1 THRU 10 DO
-SUM:SUM+%TH(I) will set SUM to the sum of the last ten D expressions.
+The value of the i'th previous output label. 
+That is, if the next expression to be computed is the n'th output,
+@code{%TH (m)} is the (n-m)'th output.
+
+@code{%TH} is useful in BATCH files or for referring to a group of output labels.
+For example,
+
+@example
+block (s: 0, for i:1 thru 10 do s: s + %th (i))$
+@end example
+
+sets @code{s} to the sum of the last ten output labels.
 
 @end defun
 
@@ -498,7 +523,9 @@ well.
 @end defvar
 
 @defun LOAD (filename)
-Evaluates expressions in @code{filename}, thus bringing new variables and functions into Maxima.
+Evaluates expressions in @code{filename}, 
+thus bringing variables, functions, and other objects into Maxima.
+The binding of any existing object is clobbered by the binding recovered from @code{filename}. 
 To find the file,
 LOAD calls FILE_SEARCH with FILE_SEARCH_MAXIMA and FILE_SEARCH_LISP
 as the search directories.
@@ -509,8 +536,8 @@ LOAD works equally well for Lisp code and Maxima code.
 Files created by SAVE, TRANSLATE_FILE, and COMPILE_FILE, which create Lisp code,
 and STRINGOUT, which creates Maxima code,
 can all be processed by LOAD.
-See also LOADFILE, RESTORE, BATCH, and DEMO.
-LOADFILE and RESTORE process Lisp files;
+See also LOADFILE, BATCH, and DEMO.
+LOADFILE processes Lisp files;
 BATCH and DEMO process Maxima files.
 
 See FILE_SEARCH for more detail about the file search mechanism.
@@ -640,21 +667,65 @@ delimiter of a matrix (see also LMXCHAR).
 
 @end defvar
 
-@c IN GREAT NEED OF UPDATING AND CLARIFICATION !!!
-@defun SAVE (filename,arg1, arg2,...,argi)
-saves quantities
-described by its arguments on disk and keeps them in core also.
-The arg's are the expressions to be SAVEd.
-ALL is the simplest, but note that saving ALL will save the entire
-contents of your Maxima, which in the case of a large computation may
-result in a large file.  VALUES,
-FUNCTIONS, or any other items on the INFOLISTS (do
-DESCRIBE(INFOLISTS); for the list) may be SAVEd, as may functions and
-variables by name.  C and D lines may also be saved, but it is better
-to give them explicit names, which may be done in the command line,
-e.g.  SAVE(RES1=%o15); Files saved with SAVE should be reloaded with
-LOADFILE.  SAVE returns the pathname where the items were saved.
+@defun SAVE (filename, name_1, name_2, name_3, ...)
+@defunx SAVE (filename, VALUES, FUNCTIONS, LABELS, ...)
+@defunx SAVE (filename, [m, n])
+@defunx SAVE (filename, new_1=old_1, new_2=old_2, ...)
+@defunx SAVE (filename, ALL)
+Stores the current values of @code{name_1}, @code{name_2}, @code{name_3}, ..., in @code{filename}.
+The arguments must be names of variables, functions, or other objects.
+SAVE returns @code{filename}.
 
+SAVE stores data in the form of Lisp expressions.
+The data stored by SAVE may be recovered by @code{LOAD (filename)}.
+The effect of executing SAVE when @code{filename} already exists
+depends on the underlying Lisp implementation;
+the file may be clobbered, or SAVE may complain with an error message.
+
+The special form @code{SAVE (filename, VALUES, FUNCTIONS, LABELS, ...)}
+stores the items named by VALUES, FUNCTIONS, LABELS, etc.
+The names may be any specified by the variable INFOLISTS.
+VALUES comprises all user-defined variables.
+
+The special form @code{SAVE (filename, [m, n])} stores the values of
+input and output labels @code{m} through @code{n}.
+Note that @code{m} and @code{n} must be literal integers or double-quoted symbols.
+Input and output labels may also be stored one by one, e.g., @code{SAVE ("foo.1", %i42, %o42)}.
+@code{SAVE (filename, LABELS)} will store all input and output labels.
+When the stored labels are recovered, they will clobber existing labels.
+
+The special form @code{SAVE (filename, name_1=expr_1, name_2=expr_2, ...)}
+stores the values of @code{expr_1}, @code{expr_2}, ...,
+with names @code{name_1}, @code{name_2}, ....
+It is useful to apply this form to input and output labels, e.g., @code{SAVE ("foo.1", aa=%o88)}.
+The right-hand side of the equality in this form may be any expression, which is evaluated.
+This form does not introduce the new names into the current Maxima environment,
+but only stores them in @code{filename}.
+
+These special forms and the general form of SAVE may be mixed at will.
+For example, @code{SAVE (filename, aa, bb, cc=42, FUNCTIONS, [11, 17])}.
+
+The special form @code{SAVE (filename, ALL)} stores the current state of Maxima.
+This includes all user-defined variables, functions, arrays, etc., as well
+as some automatically defined items.
+The saved items include system variables,
+such as FILE_SEARCH_MAXIMA or SHOWTIME, if assigned new values by the user.
+
+SAVE quotes its arguments. 
+@code{filename} must be a string, not a string variable.
+The first and last labels to save, if specified, must be integers.
+The double quote operator will evaluate a string variable to its string value,
+e.g., @code{s: "foo.1"$ SAVE (''s, ALL)$},
+and integer variables to their integer values, e.g., @code{m: 5$ n: 12$ SAVE ("foo.1", [''m, ''n])$}.
+
+@c ANY USE FOR THE FOLLOWING ???
+@c The following device constructs a list of variables to save and saves them.
+@c 
+@c @example
+@c s: "foo.1"$
+@c l: ['aa, 'bb, 'cc, 'dd]$
+@c apply (save, append ([s], l))$
+@c @end example
 @end defun
 
 @defvar SAVEDEF
@@ -783,7 +854,7 @@ using xgraph.
        system("xgraph -bar -brw .7 -nl < _hist.out"));
 @end example
 
-In order to make the plot be done in the background (returning control to maxima)
+In order to make the plot be done in the background (returning control to Maxima)
 and remove the temporary file after it is done do:
 
 @example
