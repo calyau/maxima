@@ -4182,7 +4182,7 @@ D
 			  source-pname
 			  :output-file
 			  output-file
-			  #+gcl :system-p t
+			  #+gcl :system-p #+gcl t
 			  #+CMU :error-file
 			  #+CMU (and *cmu-errors-to-file*
 				     (component-full-pathname component
