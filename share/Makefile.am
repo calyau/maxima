@@ -509,6 +509,7 @@ tensor/ctensor4.dem\
 tensor/ctensor5.dem\
 tensor/ctensor6.dem\
 tensor/ctensor7.dem\
+tensor/ctensor8.dem\
 tensor/ex_calc.dem\
 tensor/ex_calc.mac\
 tensor/gener.lisp\
