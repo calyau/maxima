@@ -1,0 +1,172 @@
+/*
+lsquares.mac v1.1 for Maxima (tested with Maxima 5.9.0).
+
+Multiple nonlinear equation adjustment of a data table by the
+"least squares" method.
+
+Usage:
+  lsquares(Mat, VarList, equation, ParamList, GuessList);
+    Mat       - a matrix containing the data.
+    VarList   - list of variable names (one for each Mat column).
+                Use "-" instead of varnames to ignore Mat columns.
+    equation  - the equation to adjust. It must be in the form:
+                depvar=f(indepvari,..., paramj,...) or
+                g(depvar)=f(indepvari,..., paramj,...) or
+                g(depvar, paramk,...)=f(indepvari,..., paramj,...).
+    ParamList - list of the parameters to obtain.
+    GuessList - optional list of initial approximations to the parameters.
+                When this argument is present, mnewton() is used
+                instead of solve() in order to obtain the parameters.
+
+Examples:
+  lsquares(M, [z,x,y], (z+D)^2=A*x+B*y+C, [A,B,C,D]);
+  lsquares(M, [x,y], y=a*x^b+c, [a,b,c], [3,3,3]);
+  The file "lsquares.dem" shows some usage examples.
+
+Notes:
+    The equation may be fully nonlinear with respect to the independent
+  variables and to the dependent variable.
+    In order to use solve(), the equations must be linear or polynomial with
+  respect to the parameters. Equations like y=a*b^x+c may be adjusted for
+  [a,b,c] with solve() if the x values are little positive integers and
+  there are few data (see the example in lsquares.dem).
+    mnewton() allow to adjust a nonlinear equation with respect to the
+  parameters, but a good set of initial approximations must be provided.
+
+Results:
+    If possible, the adjusted equation is returned. If there exists more
+  than one solution, a list of equations are returned.
+    The Determination Coefficient is displayed in order to inform about
+  the adjustment goodness (from 0:no correlation to 1:exact correlation).
+  This value is also stored in the global variable DETCOEF.
+
+Dependences:
+  mnewton.mac
+
+History:
+  2003-11 Salvador Bosch Pérez - version 1.0
+
+Possible future improvements:
+  - Option to read the data from a file instead of from a matrix.
+  - Option to include a column with rows weights.
+
+--
+
+Copyright (C) 2003  Salvador Bosch Pérez
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+load("mnewton")$
+
+lsquares([ArgList]):=
+  block([narg, Mat, VarList, equation, ParamList, GuessList,
+         ndat, nvar, inVarList, depvar, depncol, nparams, difsquare, eqaux,
+         EqSystem:[], Solutions:[], nsol, dcoef, Se2, Sy, Sy2, bestsolution,
+         i, j, k,
+         KEEPFLOAT:TRUE, RATPRINT:FALSE, REALONLY:TRUE, SOLVERADCAN:TRUE,
+         %E_TO_NUMLOG:TRUE, LOGEXPAND:ALL],
+
+    /* Elaboration and depuration of the function arguments */
+    narg:length(ArgList),
+    if narg < 3 or narg > 5 then (
+      print("lsquares: bad number of function arguments (it's required 4 or 5 arguments)."),
+      return(FALSE)
+    ),
+    Mat:ArgList[1],
+    VarList:ArgList[2],
+    equation:ArgList[3],
+    ParamList:ArgList[4],
+    if narg = 5 then GuessList:ArgList[5],
+    ndat:length(Mat),
+    nvar:length(Mat[1]),
+    for i:nvar thru 1 step -1 do
+      if VarList[i] = "-" then (
+        Mat:submatrix(Mat, i),
+        nvar:nvar - 1
+      ),
+    VarList:delete("-", VarList),
+    inVarList(var):=member(var, VarList),
+    depvar:sublist(listofvars(lhs(equation)), inVarList)[1],
+    depncol:ev(for i:1 thru nvar do if VarList[i] = depvar then return(i)),
+    nparam:length(ParamList),
+    if length(VarList) # nvar then (
+      print("lsquares: incorrect number of variable names (", nvar,
+            "matrix columns but", length(VarList), "variable names)."),
+      return(FALSE)
+    ),
+    if member(depvar, VarList) = FALSE then (
+      print("lsquares: dependent variable", depvar, "isn't in", VarList),
+      return(FALSE)
+    ),
+    if ndat < nparam then (
+      print("lsquares: insufficient number of data rows (at least", nparam,
+            "are required)."),
+      return(FALSE)
+    ),
+    apply(kill, VarList),
+    apply(kill, ParamList),
+
+    /* Parameter calculations */
+    difsquare:expand((lhs(equation) - rhs(equation))^2),
+    for i:1 thru nparam do (
+      eqaux:diff(difsquare, ParamList[i]),
+      for j:1 thru nvar do
+        eqaux:subst('Mat[k, j], VarList[j], eqaux),
+      eqaux:'sum(eqaux, k, 1, ndat),
+      eqaux:errcatch(ev(eqaux, NOUNS)),
+      if eqaux = [] then return(),
+      EqSystem:endcons(eqaux[1], EqSystem)
+    ),
+    if eqaux = [] then (
+      print("lsquares: arithmetic error processing the data."),
+      return(FALSE)
+    ),
+    if narg = 4 then Solutions:solve(EqSystem, ParamList)
+                else Solutions:mnewton(EqSystem, ParamList, GuessList),
+    nsol:length(Solutions),
+    if nsol = 0 then (
+      print("lsquares: the generated equations system can't be solved."),
+      return(FALSE)
+    ),
+
+    /* Calculation of the best determination coefficient */
+    DETCOEF:0,
+    bestsolution:1,
+    for i:1 thru nsol do (
+      Se2:ev(difsquare, Solutions[i]),
+      for i:1 thru nvar do
+        Se2:subst('Mat[k, i], VarList[i], Se2),
+      Se2:'sum(Se2, k, 1, ndat),
+      Se2:ev(Se2, NOUNS),
+      Sy:'sum(subst('Mat[k, depncol],depvar,ev(lhs(equation),Solutions[i])),
+              k,1,ndat),
+      Sy2:'sum(subst('Mat[k, depncol],depvar,ev(lhs(equation)^2,Solutions[i])),
+               k,1,ndat),
+      dcoef:1 - Se2 / (ev(Sy2, NOUNS) - ev(Sy, NOUNS)^2 / ndat),
+      if dcoef > DETCOEF then (
+        DETCOEF:dcoef,
+        bestsolution:i
+      )
+    ),
+    if DETCOEF > 1 then DETCOEF:1,
+    print("       Determination Coefficient =", float(DETCOEF)),
+
+    /* Return of the adjusted equation(s) */
+    if lhs(equation) # depvar then equation:solve(equation, depvar),
+    equation:ev(equation, Solutions[bestsolution]),
+    if length(equation) = 1 then equation:equation[1],
+    return(xthru(expand(equation)))
+  )$

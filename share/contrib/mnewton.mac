@@ -1,0 +1,101 @@
+/*
+mnewton.mac v1.1 for Maxima (tested with Maxima 5.9.0).
+
+Multiple nonlinear functions solution using the Newton method.
+
+Usage:
+  mnewton(FuncList, VarList, GuessList);
+    FuncList  - list of functions to solve.
+    VarList   - list of variable names.
+    GuessList - list of initial approximations.
+
+Examples:
+  The file "mnewton.dem" shows some usage examples.
+
+Flags:
+  NEWTONEPSILON
+    default: [10.0^(-FPPREC/2)] - precision to determine when the
+    process has converged towards the solution. 
+  NEWTONMAXITER
+    default: [50] - maximum number of iterations to stop the process
+    if this one does not converge or if it converges too much slowly.
+
+Results:
+  The solution is returned in the same format that SOLVE() returns.
+  If the solution isn't found, [] is returned.
+
+History:
+  2003-11 Salvador Bosch Pérez - version 1.0
+
+--
+
+Copyright (C) 2003  Salvador Bosch Pérez
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+NEWTONEPSILON:10.0^(-FPPREC/2)$
+NEWTONMAXITER:50$
+
+mnewton(FuncList, VarList, GuessList):=
+  block([nfunc, NewtonMatrix, det, Solutions, Increments, numdet, solved:FALSE,
+         i, j, k, KEEPFLOAT:TRUE, RATPRINT:FALSE],
+
+    /* Depuration of the function arguments */
+    GuessList:float(GuessList),
+    nfunc:length(FuncList),
+    if length(VarList) # nfunc then (
+      print("mnewton: incorrect number of variable names (", nfunc,
+            "functions but", length(VarList), "variable names)."),
+      return(FALSE)
+    ),
+    if length(GuessList) # nfunc then (
+      print("mnewton: incorrect number of approach values (", nfunc,
+            "variables but", length(GuessList), "approximation values)."),
+      return(FALSE)
+    ),
+    apply(kill, VarList),
+
+    /* Preparation of the matrix */
+    NewtonMatrix:zeromatrix(nfunc,nfunc),
+    for i:1 thru nfunc do
+      for j:1 thru nfunc do
+        NewtonMatrix[i][j]:diff(FuncList[i], VarList[j]),  /* Jacobian matrix */
+    det:determinant(NewtonMatrix),
+    NewtonMatrix:adjoint(NewtonMatrix),
+    NewtonMatrix:NewtonMatrix . FuncList,
+
+    /* Solution of the functions system */
+    for k:1 thru NEWTONMAXITER do (
+      Solutions:map("=", VarList, GuessList),
+      numdet:float(sublis(Solutions, det)),
+      if abs(numdet) < NEWTONEPSILON then return(),
+      Increments:float(rectform(expand(sublis(Solutions, NewtonMatrix / numdet)))),
+      if atom(Increments) then Increments:matrix([Increments]),
+      GuessList:GuessList-makelist(Increments[i][1],i,1,nfunc),
+      solved:TRUE,
+      for i:1 thru nfunc do
+        solved:solved and (abs(Increments[i][1]) < NEWTONEPSILON),
+      if solved then return()
+    ),
+
+    /* Return of solution or error */
+    if solved = FALSE then (
+      print("mnewton: the process doesn't converge or it converges too slowly."),
+      return([])
+    ),
+    Solutions:map("=", VarList, GuessList),
+    return([Solutions])
+  )$
