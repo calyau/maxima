@@ -1909,25 +1909,48 @@
     (setq a (car l1) b (cadr l1))
     (cond ((=0 (m+t a b))
 	   ;; F(-a,a;1/2,z)
+
 	   (cond ((equal (checksigntm var) '$positive)
-		  ;; A&S 15.1.17
+		  ;; A&S 15.1.17:
+		  ;; F(-a,a;1/2;sin(z)^2) = cos(2*a*z)
 		  (mcos (m*t 2. a (masin (msqrt var)))))
 		 ((equal (checksigntm var) '$negative)
-		  ;; A&X 15.1.11
-		  (m*t 1//2
-		       (m+t (m^t (m+t (setq x (msqrt (m-t 1. var)))
-				      (setq z (msqrt (m-t var))))
-				 (setq b (m*t 2. b)))
-			    (m^t (m-t x z) b))))
+		  ;; A&X 15.1.11:
+		  ;; F(-a,a;1/2;-z^2) = 1/2*((sqrt(1+z^2)+z)^(2*a)
+		  ;;                         +(sqrt(1+z^2)-z)^(2*a))
+		  ;;
+		  ;; Look to see a is of the form m*s+c where m and c
+		  ;; are numbers.  If m is positive, swap a and b.
+		  ;; Basically we want F(-a,a;1/2;-z^2) =
+		  ;; F(a,-a;1/2;-z^2), as they should be.
+		  (let* ((match (m*s+c a))
+			 (m (cdras 'm match))
+			 (s (cdras 's match))
+			 (b (if s
+				(if (and m (plusp m))
+				    a
+				    b)
+				(if (eq (checksigntm a) '$negative)
+				    b
+				    a))))
+		    (m*t 1//2
+			 (m+t (m^t (m+t (setq x (msqrt (m-t 1. var)))
+					(setq z (msqrt (m-t var))))
+				   (setq b (m*t 2. b)))
+			      (m^t (m-t x z) b)))))
 		 (t ())))
 	  ((equal (m+t a b) 1.)
 	   ;; F(a,1-a;1/2,z)
 	   (cond ((equal (checksigntm var) '$positive)
-		  ;; A&S 15.1.18
+		  ;; A&S 15.1.18:
+		  ;; F(a,1-a;1/2;sin(z)^2) = cos((2*a-1)*z)/cos(z)
 		  (m//t (mcos (m*t (m-t a b) (setq z (masin (msqrt var)))))
 			(mcos z)))
 		 ((equal (checksigntm var) '$negative)
 		  ;; A&S 15.1.12
+		  ;; F(a,1-a;1/2;-z^2) = 1/2*(1+z^2)^(-1/2)*
+		  ;;                     {[(sqrt(1+z^2)+z]^(2*a-1)
+		  ;;                       +[sqrt(1+z^2)-z]^(2*a-1)}
 		  (m*t 1//2 (m//t (setq x (msqrt (m-t 1. var))))
 		       (m+t (m^t (m+t x (setq z (msqrt (m-t var))))
 				 (setq b (m-t a b)))
@@ -1937,18 +1960,27 @@
 	   ;; F(a, a+1/2; 1/2; z)
 	   (cond ((equal (checksigntm var) '$positive)
 		  ;; A&S 15.1.9
+		  ;; F(a,1/2+a;1/2;z^2) = ((1+z)^(-2*a)+(1-z)^(-2*a))/2
 		  (m*t 1//2
 		       (m+t (m^t (m1+t (setq z (msqrt var)))
 				 (setq b (m-t 1//2 (m+t a b))))
 			    (m^t (m-t 1. z) b))))
 		 ((equal (checksigntm var) '$negative)
 		  ;; A&S 15.1.19
+		  ;; F(a,1/2+a;1/2;-tan(z)^2) = cos(z)^(2*a)*cos(2*a*z)
 		  (m*t (m^t (mcos (setq z (matan (msqrt (m-t var)))))
 			    (setq b (m+t a b -1//2)))
 		       (mcos (m*t b z))))
 		 (t ())))
 	  (t ()))))
 
+;; Pattern match for m*s+c where a is a number, x is symbolic, and c
+;; is a number.
+(defun m*s+c (exp)
+  (m2 exp
+      '((mplus) ((coeffpt) (m $numberp) (s nonnump))
+	        ((coeffpp) (c $numberp)))
+      nil))
 
 ;; List L contains two elements first the numerator parameter that
 ;;exceeds the denumerator one and is called "C", second
@@ -2685,7 +2717,7 @@
 (defun s+c
     (exp)
   (m2 exp
-      '((mplus)((coeffpt)(f nonnump))((coeffpp)(c $numberp)))
+      '((mplus) ((coeffpt)(f nonnump)) ((coeffpp)(c $numberp)))
       nil))
 
 (defun nonnump (z)
