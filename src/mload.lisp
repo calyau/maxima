@@ -357,8 +357,10 @@
 		    ((and (symbolp user-object)
 			  (eql #\$ (getcharn user-object 1)))
 		     (string-downcase (fullstrip1 user-object)))
-		    ((ATOM USER-OBJECT)
-		     (FULLSTRIP1 USER-OBJECT))
+		    ;; The following clause takes care of |&Foo|,
+		    ;; which comes from the Maxima string "Foo".
+		    ((ATOM USER-OBJECT)	;hence a symbol in view of the
+		     (string (FULLSTRIP1 USER-OBJECT))) ; first clause
 		    (($LISTP USER-OBJECT)
 		     (FULLSTRIP (CDR USER-OBJECT)))
 		    (T
