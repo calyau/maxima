@@ -61,13 +61,18 @@
   (setq $show_openplot nil)
   (setup-server port host))
 
+(defun getpid-from-environment ()
+  (handler-case
+      (values (parse-integer (maxima-getenv "PID")))
+    ((or type-error parse-error) () -1)))
+
 #+clisp
-(defun getpid ( &aux tem)
-  (cond #-win32((fboundp 'sys::program-id)
-		(sys::program-id))
-	((consp (setq tem (errset (system::getenv "PID"))))
-	 (read-from-string (car tem)))
-	(t (format t "using fake value for pid") -1)))
+(deff getpid (symbol-function
+	      ;; Decide at load time which function to use.
+	      (or (and (memq :unix *features*)
+		       (find-symbol "PROGRAM-ID" "SYS"))
+		  'getpid-from-environment)))
+
 #+cmu
 (defun getpid () (unix:unix-getpid))
 
