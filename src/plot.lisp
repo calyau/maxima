@@ -99,6 +99,15 @@
 (defbinop $* * long-float)
 (defbinop $/ / long-float)
 
+
+#+clisp
+(defstruct (polygon (:type list)
+		    (:constructor make-polygon (pts edges))
+		    )
+  (dummy '($polygon simp))
+  pts edges)
+
+
 (eval-when (compile eval)
 
 (defmacro f* (a b &optional c)
@@ -120,6 +129,7 @@
 (defmacro print-pt (f)
   `(print-pt1 ,f $pstream ))
 
+#-clisp
 (defstruct (polygon (:type list)
 		    (:constructor make-polygon (pts edges))
 		    )

@@ -1,3 +1,7 @@
+2001-11-19  Vadim V. Zhytnikov <vvzhy@mail.ru>
+
+	*  patches to fix problems with new clisp releases.
+	
 2001-04-20  Bill Schelter  <wfs@sonia.ma.utexas.edu>
 
 	* Now clisp and gcl work ok on all tests No errors found,

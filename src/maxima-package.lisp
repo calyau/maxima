@@ -8,8 +8,8 @@
 
 (or (find-package "MAXIMA")
     (make-package  "MAXIMA"
-			:nicknames '("CL-MACSYMA"   "CL-MAXIMA" "MACSYMA"  )
-			 :use '( "LISP" )))
+	:nicknames '("CL-MACSYMA"  "CL-MAXIMA" "MACSYMA")
+	:use `("LISP" #+clisp ,@(if (find-package "EXT") '("EXT")))  ))
 
 (shadowing-import '(sloop::loop-return sloop::local-finish sloop::loop-finish sloop::sloop) "MAXIMA")
 

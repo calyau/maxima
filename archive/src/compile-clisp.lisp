@@ -1,16 +1,21 @@
+
+(if (find-package "EXT")    
+    (use-package "EXT"))
+
 (push :main-files-loaded *features*)
 (load "sysdef.lisp")
 (load "make.lisp")
 
 
 (defun compile-maxima ()
-  (make::make :maxima :compile t))
+  (make::make :maxima :compile t)
+)
 
 (defun save-maxima ()
   (make::make :maxima )
-  (lisp:gc)
-  (lisp:saveinitmem "maxima-clisp.mem"
-                  :init-function #'user::run)
+  (gc)
+  (saveinitmem "maxima-clisp.mem"
+               :init-function #'user::run)
 )
 
 (in-package "MAXIMA")
