@@ -36,8 +36,10 @@ contract(%,[x,y,z]);
 2*a^3*b*x^4*y$
 
 expand(direct([z^2-e1*z+e2,z^2-f1*z+f2],z,b*v+a*u,[[u,v],[a,b]]));
-/* ??? We get here y instead of z */
-z^2-e1*f1*z-4*e2*f2+e1^2*f2+e2*f1^2$
+/* The docs have here z instead of y, but the code (in direct.lisp)
+   shows that y is alway used as dummy variable for the resulting
+   polynomial.  So this is a typo in the docs. */
+y^2-e1*f1*y-4*e2*f2+e1^2*f2+e2*f1^2$
 /* The other examples for `direct' are ok. */
 expand(direct([z^3-e1*z^2+e2*z-e3,z^2-f1*z+f2],z,b*v+a*u,[[u,v],[a,b]]));
 y^6-2*e1*f1*y^5-6*e2*f2*y^4+2*e1^2*f2*y^4+2*e2*f1^2*y^4+e1^2*f1^2*y^4
