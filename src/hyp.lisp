@@ -97,29 +97,29 @@
 ;; F(a1,a2,a3,...;b1,b2,b3;z)
 ;;
 ;; L1 is a (maxima) list of an's, L2 is a (maxima) list of bn's.
-(defun $hgfred (l1 l2 arg )
+(defun $hgfred (arg-l1 arg-l2 arg)
   (let (($radexpand '$all)
 	(var arg)
 	(par arg))
-    (hgfsimp-exec (cdr l1) (cdr l2) arg)))
+    (hgfsimp-exec (cdr arg-l1) (cdr arg-l2) arg)))
 
 
-(defun hgfsimp-exec
-    (l1 l2 arg)
-  (setq l1 (copy-tree l1) l2 (copy-tree l2))
+(defun hgfsimp-exec (arg-l1 arg-l2 arg)
+  (setq arg-l1 (copy-tree arg-l1)
+	arg-l2 (copy-tree arg-l2))
   (prog (res $exponentialize)
      (setq  res
-	    (hgfsimp l1 l2 arg))
-     (cond ((or (numberp res)(not (atom res)))
+	    (hgfsimp arg-l1 arg-l2 arg))
+     (cond ((or (numberp res) (not (atom res)))
 	    (return res)))
-     (return (fpqform l1 l2 arg))))
+     (return (fpqform arg-l1 arg-l2 arg))))
 
 
-(defun hgfsimp (l1 l2 var)
+(defun hgfsimp (arg-l1 arg-l2 var)
   (prog (resimp)
-     (setq l1 (macsimp l1)
-	   l2 (macsimp l2)
-	   resimp (simpg l1 l2))
+     (setq arg-l1 (macsimp arg-l1)
+	   arg-l2 (macsimp arg-l2)
+	   resimp (simpg arg-l1 arg-l2))
 	    
      (cond ((not (eq (and (consp resimp) (car resimp))
 		     'fail))
@@ -146,13 +146,13 @@
 
 ;; Simplify the parameters.  If L1 and L2 have common elements, remove
 ;; them from both L1 and L2.
-(defun simpg (l1 l2)
-  (let ((il (zl-intersection l1 l2)))
+(defun simpg (arg-l1 arg-l2)
+  (let ((il (zl-intersection arg-l1 arg-l2)))
      (cond ((null il)
-	    (simpg-exec l1 l2))
+	    (simpg-exec arg-l1 arg-l2))
 	   (t
-	    (simpg-exec (del il l1)
-			  (del il l2))))))
+	    (simpg-exec (del il arg-l1)
+			  (del il arg-l2))))))
 
 (defun del (a b)
   (cond ((null a) b)
@@ -161,34 +161,34 @@
 
 ;; Handle the simple cases where the result is either a polynomial, or
 ;; is undefined because we divide by zero.
-(defun simpg-exec (l1 l2)
+(defun simpg-exec (arg-l1 arg-l2)
   (prog(n)
-     (cond ((zerop-in-l l1)
+     (cond ((zerop-in-l arg-l1)
 	    ;; A zero in the first index means the series terminates
 	    ;; after the first term, so the result is always 1.
 	    (return 1)))
-     (cond ((setq n (hyp-negp-in-l l1))
+     (cond ((setq n (hyp-negp-in-l arg-l1))
 	    ;; A negative integer in the first series means we have a
 	    ;; polynomial.
-	    (return (create-poly l1 l2 n))))
-     (cond ((or (zerop-in-l l2)
-		(hyp-negp-in-l l2))
+	    (return (create-poly arg-l1 arg-l2 n))))
+     (cond ((or (zerop-in-l arg-l2)
+		(hyp-negp-in-l arg-l2))
 	    ;; A zero or negative number in the second index means we
 	    ;; eventually divide by zero, so we're undefined.
 	    (return 'undef)))
      ;; We failed so more complicated stuff needs to be done.
-     (return (append (list 'fail) (list l1) (list l2)))))
+     (return (append (list 'fail) (list arg-l1) (list arg-l2)))))
 
 			
 
-(defun intdiffl1l2 (l1 l2)
-  (cond ((null l1)  nil)(t (intdiff l1 l2))))
+(defun intdiffl1l2 (arg-l1 arg-l2)
+  (cond ((null arg-l1)  nil)(t (intdiff arg-l1 arg-l2))))
 
-(defun intdiff (l1 l2)
+(defun intdiff (arg-l1 arg-l2)
   (prog(l a dif)
-     (setq l l2 a (car l1))
+     (setq l arg-l2 a (car arg-l1))
      jump
-     (cond ((null l)(return (intdiffl1l2 (cdr l1) l2))))
+     (cond ((null l)(return (intdiffl1l2 (cdr arg-l1) arg-l2))))
      (cond ((nni (setq dif (sub a (car l))))
 	    (return (list a dif))))
      (setq l (cdr l))
@@ -196,25 +196,25 @@
 
 
 ;; Create the appropriate polynomial for the hypergeometric function.
-(defun create-poly (l1 l2 n)
-  (let ((len1 (length l1))
-	(len2 (length l2)))
+(defun create-poly (arg-l1 arg-l2 n)
+  (let ((len1 (length arg-l1))
+	(len2 (length arg-l2)))
     ;; n is the smallest (in magnitude) negative integer in L1.  To
     ;; make everything come out right, we need to make sure this value
     ;; is first in L1.  This is ok, the definition of the
     ;; hypergeometric function does not depend on the order of values
     ;; in L1.
-    (setf l1 (cons n (remove n l1 :count 1)))
+    (setf arg-l1 (cons n (remove n arg-l1 :count 1)))
     (cond ((and (equal len1 2)
 		(equal len2 1))
-	   (2f1polys l1 l2 n))
+	   (2f1polys arg-l1 arg-l2 n))
 	  ((and (equal len1 1)
 		(equal len2 1))
-	   (1f1polys l2 n))
+	   (1f1polys arg-l2 n))
 	  ((and (equal len1 2)
 		(zerop len2))
-	   (2f0polys l1 n))
-	  (t (create-any-poly l1 l2 (mul -1 n))))))
+	   (2f0polys arg-l1 n))
+	  (t (create-any-poly arg-l1 arg-l2 (mul -1 n))))))
 
 
 #+nil
@@ -243,8 +243,8 @@
 		  (gm (add c n))
 		  (lagpol n (sub c 1) var)))))
 
-(defun 1f1polys (l2 n)
-  (let* ((c (car l2))
+(defun 1f1polys (arg-l2 n)
+  (let* ((c (car arg-l2))
 	 (n (mul -1 n))
 	 (fact1 (mul (power 2 n)
 		     (factorial n)
@@ -332,9 +332,9 @@
 		  (inv (power -1 n))
 		  (lagpol n (add b n) x)))))
 
-(defun 2f0polys (l1 n)
-  (let ((a (car l1))
-	(b (cadr l1)))
+(defun 2f0polys (arg-l1 n)
+  (let ((a (car arg-l1))
+	(b (cadr arg-l1)))
     (when (alike1 (sub b a) (div -1 2))
       (rotatef a b))
     (cond ((alike1 (sub b a) (div 1 2))
@@ -401,19 +401,19 @@
 	 (hermpol order arg))))
 
 ;; F(a,b;c;z), where either a or b is a negative integer.
-(defun 2f1polys (l1 l2 n)
+(defun 2f1polys (arg-l1 arg-l2 n)
   (prog (l v lgf)
      ;; Since F(a,b;c;z) = F(b,a;c;z), make sure L1 has the negative
      ;; integer first, so we have F(-n,d;c;z)
-     (cond ((not (eql (car l1) n))
-	    (setq l1 (reverse l1))))
+     (cond ((not (eql (car arg-l1) n))
+	    (setq arg-l1 (reverse arg-l1))))
      #||
-     (format t "l1 = ~A~%" l1)
-     (format t "vfvp arg = ~A~%" (div (add (cadr l1) n) 2))
+     (format t "l1 = ~A~%" arg-l1)
+     (format t "vfvp arg = ~A~%" (div (add (cadr arg-l1) n) 2))
      (format t "var = ~A~%" var)
      (format t "par = ~A~%" par)
      ||#
-     (setq l (vfvp (div (add (cadr l1) n) 2)))
+     (setq l (vfvp (div (add (cadr arg-l1) n) 2)))
 
      ;;(format t "l  = ~A~%" l)
      (setq v (cdr (zl-assoc 'v l)))
@@ -423,14 +423,14 @@
      ;;(format t "v = ~A~%" v)
 
      ;; See if it can be a Legendre function.
-     (cond ((setq lgf (legpol (car l1) (cadr l1) (car l2)))
+     (cond ((setq lgf (legpol (car arg-l1) (cadr arg-l1) (car arg-l2)))
 	    (return lgf)))
 
-     (cond ((alike1 (sub (car l2) v) '((rat simp) 1 2))
+     (cond ((alike1 (sub (car arg-l2) v) '((rat simp) 1 2))
 	    ;; A&S 15.4.5:
 	    ;; F(-n, n + 2*a; a + 1/2; x) = n!*gegen(n, a, 1-2*x)/pochhammer(2*a,n)
 	    ;;
-	    ;; So v = a, and (car l2) = a + 1/2.
+	    ;; So v = a, and (car arg-l2) = a + 1/2.
 	    (return (mul 
 		     (cond ((zerp v) 1)
 			   (t (mul (factorial (* -1 n))
@@ -445,11 +445,11 @@
 		  ;; I (rlt) don't think this is right, based on
 		  ;; 15.4.6, because v doesn't have the right value.
 		  #+nil(inv (factf (add 1 v) (* -1 n)))
-		  ;; Based on 15.4.6, we really want the l2 arg
-		  (inv (factf (car l2) (* -1 n)))
+		  ;; Based on 15.4.6, we really want the arg-l2 arg
+		  (inv (factf (car arg-l2) (* -1 n)))
 		  (jacobpol (mul -1 n)
-			    (add (car l2) -1)
-			    (sub (mul 2 v) (car l2))
+			    (add (car arg-l2) -1)
+			    (sub (mul 2 v) (car arg-l2))
 			    (sub 1 (mul 2 par)))))))
 
 
@@ -482,22 +482,22 @@
 ;; Expand the hypergeometric function as a polynomial.  No real checks
 ;; are made to ensure the hypergeometric function reduces to a
 ;; polynomial.
-(defun $hgfpoly (l1 l2 arg)
+(defun $hgfpoly (arg-l1 arg-l2 arg)
   (let ((var arg)
 	(par arg)
-	(n (hyp-negp-in-l (cdr l1))))
-    (create-any-poly (cdr l1) (cdr l2) (- n))))
+	(n (hyp-negp-in-l (cdr arg-l1))))
+    (create-any-poly (cdr arg-l1) (cdr arg-l2) (- n))))
 
 (defun create-any-poly
-    (l1 l2 n)
+    (arg-l1 arg-l2 n)
   (prog(result exp prodnum proden)
      (setq result 1 prodnum 1 proden 1 exp 1)
      loop
      (cond ((zerop n) (return result)))
      (setq prodnum
-	   (mul prodnum (mull l1))
+	   (mul prodnum (mull arg-l1))
 	   proden
-	   (mul proden (mull l2)))
+	   (mul proden (mull arg-l2)))
      (setq result
 	   (add result
 		(mul prodnum
@@ -508,10 +508,10 @@
 	   (sub n 1)
 	   exp
 	   (add exp 1)
-	   l1
-	   (incr1 l1)
-	   l2
-	   (incr1 l2))
+	   arg-l1
+	   (incr1 arg-l1)
+	   arg-l2
+	   (incr1 arg-l2))
      (go loop)))
 
 
@@ -527,16 +527,16 @@
 	(t (append (list (add (car l) 1)) (incr1 (cdr l))))))
 
 
-(defun dispatch-spec-simp (l1 l2)
+(defun dispatch-spec-simp (arg-l1 arg-l2)
   (prog(len1 len2)
-     (setq len1 (length l1) len2 (length l2))
+     (setq len1 (length arg-l1) len2 (length arg-l2))
      (cond ((and (lessp len1 2)
 		 (lessp len2 2))
-	    (return (simp2>f<2 l1 l2 len1 len2))))
+	    (return (simp2>f<2 arg-l1 arg-l2 len1 len2))))
      (cond ((and (equal len1 2)
 		 (equal len2 1))
-	    (return (simp2f1 l1 l2))))
-     (return (fpqform l1 l2 var))))
+	    (return (simp2f1 arg-l1 arg-l2))))
+     (return (fpqform arg-l1 arg-l2 var))))
 
 
 #+nil
@@ -550,7 +550,7 @@
      (return (confl l1 l2 var))))
 
 ;; Handle the cases where the number of indices is less than 2.
-(defun simp2>f<2 (l1 l2 len1 len2)
+(defun simp2>f<2 (arg-l1 arg-l2 len1 len2)
   (cond ((and (zerop len1) (zerop len2))
 	 ;; hgfred([],[],z) = e^z
 	 (power '$%e var))
@@ -576,14 +576,14 @@
 	 ;; So this hypergeometric series is a Bessel I function:
 	 ;;
 	 ;; hgfred([],[b],z) = bessel_i(b-1,2*sqrt(z))*z^((1-b)/2)*gamma(b)  
-	 (bestrig (car l2) var))
+	 (bestrig (car arg-l2) var))
 	((zerop len2)
 	 ;; hgfred([a],[],z) = 1 + sum(binomial(a+k,k)*z^k)
 	 ;;  = 1/(1-z)^a
-	 (binom (car l1)))
+	 (binom (car arg-l1)))
 	(t
 	 ;; The general case of 1F1, the confluent hypergeomtric function.
-	 (confl l1 l2 var))))
+	 (confl arg-l1 arg-l2 var))))
 
 
 
@@ -732,10 +732,10 @@
 ;; Kummer's transformation.  A&S 13.1.27
 ;;
 ;; M(a,b,z) = e^z*M(b-a,b,-z)
-(defun kummer (l1 l2)
+(defun kummer (arg-l1 arg-l2)
   (mul (list '(mexpt) '$%e var)
-       (confl (list (sub (car l2) (car l1)))
-	      l2 (mul -1 var))))
+       (confl (list (sub (car arg-l2) (car arg-l1)))
+	      arg-l2 (mul -1 var))))
 
 
 ;; Return non-NIL if any element of the list L is zero.
@@ -772,13 +772,13 @@
 
 ;; Compute the intersection of L1 and L2, possibly destructively
 ;; modifying L2.  Perserves duplications in L1.
-(defun zl-intersection (l1 l2)
-  (cond ((null l1) nil)
-	((zl-member (car l1) l2)
-	 (cons (car l1)
-	       (zl-intersection (cdr l1)
-				(zl-delete (car l1) l2 1))))
-	(t (zl-intersection (cdr l1) l2))))
+(defun zl-intersection (arg-l1 arg-l2)
+  (cond ((null arg-l1) nil)
+	((zl-member (car arg-l1) arg-l2)
+	 (cons (car arg-l1)
+	       (zl-intersection (cdr arg-l1)
+				(zl-delete (car arg-l1) arg-l2 1))))
+	(t (zl-intersection (cdr arg-l1) arg-l2))))
 
 #+(or)
 (defun 2inp (l)
@@ -823,9 +823,9 @@
 (defun whitfun(k m var)
   (list '(mqapply) (list '($%m array) k m) var))
 
-(defun simp2f1 (l1 l2)
+(defun simp2f1 (arg-l1 arg-l2)
   (prog (a b c lgf)
-     (setq a (car l1) b (cadr l1) c (car l2))
+     (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
      (cond ((and (alike1 a 1)
 		 (alike1 b 1)
 		 (alike1 c 2))
@@ -869,7 +869,7 @@
 	    (when lgf
 	      (return lgf))))
      (print 'simp2f1-will-continue-in)
-     (return  (fpqform l1 l2 var))))
+     (return  (fpqform arg-l1 arg-l2 var))))
 
 (defun step7 (a b c)
   (prog (l m n k mn kl sym sym1 r)
@@ -982,11 +982,11 @@
 
 ;; F(a,b;c;z) when a and b are integers (or declared to be integers)
 ;; and c is an integral number.
-(defun simpr2f1 (l1 l2)
+(defun simpr2f1 (arg-l1 arg-l2)
   (destructuring-bind (a b)
-      l1
+      arg-l1
     (destructuring-bind (c)
-	l2
+	arg-l2
       (let ((inl1p (hyp-integerp a))
 	    (inl1bp (hyp-integerp b))
 	    (inl2p (hyp-integerp c)))
@@ -1008,7 +1008,7 @@
 		      'd)
 		     (t
 		      'c)))
-	      ((eq (caaar l1) 'rat)
+	      ((eq (caaar arg-l1) 'rat)
 	       ;; How do we ever get here?
 	       (cond (inl1bp
 		      'c)
@@ -1018,11 +1018,11 @@
 	       'failg))))))
 
 (defun geredno1
-    (l1 l2)
-  (cond ((and (greaterp (car l2)(car l1))
-	      (greaterp (car l2)(cadr l1)))
-	 (geredf (car l1)(cadr l1)(car l2)))
-	(t (gered1 l1 l2 #'hgfsimp))))
+    (arg-l1 arg-l2)
+  (cond ((and (greaterp (car arg-l2)(car arg-l1))
+	      (greaterp (car arg-l2)(cadr arg-l1)))
+	 (geredf (car arg-l1)(cadr arg-l1)(car arg-l2)))
+	(t (gered1 arg-l1 arg-l2 #'hgfsimp))))
 
 (defun geredno2 (a b c)
   (cond ((greaterp c b) (geredf b a c))
@@ -1363,10 +1363,10 @@
 ;;
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
-(defun legf20 (l1 l2 var)
+(defun legf20 (arg-l1 arg-l2 var)
   (prog (m n b c)
-     (setq b (cadr l1)
-	   c (car l2))
+     (setq b (cadr arg-l1)
+	   c (car arg-l2))
      (setq m (sub 1 c)
 	   n (mul -1 (add b b m)))
      ;; m = 1 - c
@@ -1402,10 +1402,10 @@
 ;; Is there a mistake in 15.4.10 and 15.4.11?
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
-(defun legf24 (l1 l2 var)
+(defun legf24 (arg-l1 arg-l2 var)
   (prog (m n a c z)
-     (setq a (car l1)
-	   c (car l2)
+     (setq a (car arg-l1)
+	   c (car arg-l2)
 	   m (sub 1 c)
 	   n (mul -1 (add a a m))
 	   z (inv (power (sub 1 var) (inv 2))))
@@ -1438,10 +1438,10 @@
 ;; F(a,b;c;w) = gamma(c)*w^(1/2-c/2)*(1-w)^(-a)*P(-a,1-c,(1+w)/(1-w));
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
-(defun legf16 (l1 l2 var)
+(defun legf16 (arg-l1 arg-l2 var)
   (prog (m n a c z)
-     (setq a (car l1)
-	   c (car l2)
+     (setq a (car arg-l1)
+	   c (car arg-l2)
 	   m (sub 1 c)
 	   n (mul -1 a)
 	   z (div (add 1 var)
@@ -1482,9 +1482,9 @@
 ;; The code belows chooses the first solution.
 ;;
 ;; F(a,b;c;w) = gamma(c)*(-w)^(1/2-c/2)*(1-w)^(1-w)^(c/2-1/2)*P(-a,1-c,1-2*w)
-(defun legf14 (l1 l2 var)
-  (let* ((a (car l1))
-	 (c (car l2))
+(defun legf14 (arg-l1 arg-l2 var)
+  (let* ((a (car arg-l1))
+	 (c (car arg-l2))
 	 (m (sub 1 c))
 	 (n (mul -1 a))
 	 (z (sub 1 (mul 2 var))))
@@ -1495,12 +1495,12 @@
 
 ;; I think this version is wrong.
 #+nil
-(defun legf14 (l1 l2 var)
+(defun legf14 (arg-l1 arg-l2 var)
   (prog (m n a c b)
-     (setq l (s+c (car l1))
+     (setq l (s+c (car arg-l1))
 	   a (cond ((eq (cdras 'c l) 0) (cdras 'f l))
 		   (t (mul -1 (cdras 'f l))))
-	   c (car l2) m (sub 1 c)
+	   c (car arg-l2) m (sub 1 c)
 	   n (mul -1 a))
      (return (mul (power (add var 1) (div m 2))
 		  (power (sub var 1) (div m -2))
@@ -1524,10 +1524,10 @@
 ;; F(a,b;c;z) = 2*gamma(2*b)/gamma(b)/gamma(2*b-a)*w^(-b)*(1-w)^((b-a)/2)
 ;;              *Q(b-1,b-a,2/w-1)*exp(-%i*%pi*(b-a))
 ;;
-(defun legf36 (l1 l2 var)
+(defun legf36 (arg-l1 arg-l2 var)
   (prog (n m a b z)
-     (setq a (car l1)
-	   b (cadr l1)
+     (setq a (car arg-l1)
+	   b (cadr arg-l1)
 	   n (sub b 1)
 	   m (sub b a)
 	   ;;z (div (sub 2 var) var)
@@ -1654,22 +1654,22 @@
 ;;
 ;; F(a,b;c;z) = (1-z)^(c-a-b)*F(c-a,c-b;c;z)
 #+nil
-(defun gered1 (l1 l2 simpflg)
+(defun gered1 (arg-l1 arg-l2 simpflg)
   (mul (power (sub 1 var)
-	      (add (car l2)
-		   (mul -1 (car l1))
-		   (mul -1 (cadr l1))))
+	      (add (car arg-l2)
+		   (mul -1 (car arg-l1))
+		   (mul -1 (cadr arg-l1))))
        (funcall simpflg
-		(list (sub (car l2) (car l1))
-		      (sub (car l2) (cadr l1)))
-		l2
+		(list (sub (car arg-l2) (car arg-l1))
+		      (sub (car arg-l2) (cadr arg-l1)))
+		arg-l2
 		var)))
 
-(defun gered1 (l1 l2 simpflg)
+(defun gered1 (arg-l1 arg-l2 simpflg)
   (destructuring-bind (a b)
-      l1
+      arg-l1
     (destructuring-bind (c)
-	l2
+	arg-l2
       (mul (power (sub 1 var)
 		  (add c
 		       (mul -1 a)
@@ -1677,7 +1677,7 @@
 	   (funcall simpflg
 		    (list (sub c a)
 			  (sub c a))
-		    l2
+		    arg-l2
 		    var)))))
 ;; See A&S 15.3.4
 ;;
@@ -1719,46 +1719,46 @@
 
 
 
-(defun trig-log (l1 l2)
-  (cond ((equal (simplifya (car l2) nil) '((rat simp) 3 2))
+(defun trig-log (arg-l1 arg-l2)
+  (cond ((equal (simplifya (car arg-l2) nil) '((rat simp) 3 2))
 	 ;; c = 3/2
-	 (trig-log-3 l1 l2))
-	((equal (simplifya (car l2) nil) '((rat simp) 1 2))
+	 (trig-log-3 arg-l1 arg-l2))
+	((equal (simplifya (car arg-l2) nil) '((rat simp) 1 2))
 	 ;; c = 1/2
-	 (trig-log-1 l1 l2))
+	 (trig-log-1 arg-l1 arg-l2))
 	(t nil)))
 
 
-(defun trig-log-3 (l1 l2)
-  (cond ((and (or (equal (car l1) 1) (equal (cadr l1) 1))
-	      (or (equal (car l1) (div 1 2))
-		  (equal (cadr l1) (div 1 2))))
+(defun trig-log-3 (arg-l1 arg-l2)
+  (cond ((and (or (equal (car arg-l1) 1) (equal (cadr arg-l1) 1))
+	      (or (equal (car arg-l1) (div 1 2))
+		  (equal (cadr arg-l1) (div 1 2))))
 	 ;; (a = 1 or b = 1) and (a = 1/2 or b = 1/2)
-	 (trig-log-3-exec l1 l2))
-	((and (equal (car l1) (cadr l1))
-	      (or (equal 1 (car l1))
-		  (equal (div 1 2) (car l1))))
+	 (trig-log-3-exec arg-l1 arg-l2))
+	((and (equal (car arg-l1) (cadr arg-l1))
+	      (or (equal 1 (car arg-l1))
+		  (equal (div 1 2) (car arg-l1))))
 	 ;; a = b and (a = 1 or a = 1/2)
-	 (trig-log-3a-exec l1 l2))
-	((or (equal (add (car l1) (cadr l1)) 1)
-	     (equal (add (car l1) (cadr l1)) 2))
+	 (trig-log-3a-exec arg-l1 arg-l2))
+	((or (equal (add (car arg-l1) (cadr arg-l1)) 1)
+	     (equal (add (car arg-l1) (cadr arg-l1)) 2))
 	 ;; a + b = 1 or a + b = 2
-	 (trig-sin l1 l2))
-	((or (equal (sub (car l1) (cadr l1)) (div 1 2))
-	     (equal (sub (cadr l1) (car l1)) (div 1 2)))
+	 (trig-sin arg-l1 arg-l2))
+	((or (equal (sub (car arg-l1) (cadr arg-l1)) (div 1 2))
+	     (equal (sub (cadr arg-l1) (car arg-l1)) (div 1 2)))
 	 ;; a - b = 1/2 or b - a = 1/2
-	 (trig-3 l1 l2))
+	 (trig-3 arg-l1 arg-l2))
 	(t nil)))
 
-(defun trig-3 (l1 l2)
+(defun trig-3 (arg-l1 arg-l2)
   ;; A&S 15.1.10
   ;;
   ;; F(a,a+1/2,3/2,z^2) =
   ;; ((1+z)^(1-2*a) - (1-z)^(1-2*a))/2/z/(1-2*a)
   
   (let ((a (sub 1
-		(sub (add (car l1)
-			  (cadr l1))
+		(sub (add (car arg-l1)
+			  (cadr arg-l1))
 		     (div 1 2))))
 	(z (power var (div 1 2))))
     (mul (inv z)
@@ -1767,10 +1767,10 @@
 	 (sub (power (add 1 z) a)
 	      (power (sub 1 z) a)))))
 
-(defun trig-sin (l1 l2)
+(defun trig-sin (arg-l1 arg-l2)
   ;; A&S 15.1.15, 15.1.16
   (prog (a1 z1 a b c)
-     (setq a (car l1) b (cadr l1) c (car l2))
+     (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
      (cond ((equal (add a b) 1)
 	    ;; A&S 15.1.15
 	    ;;
@@ -1801,7 +1801,7 @@
      (return nil)))
 
 ;;Generates atan if arg positive else log
-(defun trig-log-3-exec (l1 l2)
+(defun trig-log-3-exec (arg-l1 arg-l2)
   ;; See A&S 15.1.4 and 15.1.5
   ;;
   ;; F(a,b;3/2;z) where a = 1/2 and b = 1 (or vice versa).
@@ -1826,12 +1826,12 @@
 	   (mul (power z -1)
 		(matan z))))))
 
-(defun trig-log-3a-exec (l1 l2)
+(defun trig-log-3a-exec (arg-l1 arg-l2)
   ;; See A&S 15.1.6 and 15.1.7
   ;;
   ;; F(a,b;3/2,z) where a = b and a = 1/2 or a = 1.
   (destructuring-bind (a b)
-      l1
+      arg-l1
     (cond ((equal (checksigntm var) '$positive)
 	   ;; A&S 15.1.6
 	   ;;
@@ -1839,7 +1839,7 @@
 	   ;; asin(z)/z
 	   (let ((z (power var (div 1 2))))
 	     (if (equal a 1)
-		 (div (trig-log-3a-exec (list (div 1 2) (div 1 2)) l2)
+		 (div (trig-log-3a-exec (list (div 1 2) (div 1 2)) arg-l2)
 		      (power (sub 1 (power z 2)) (div 1 2)))
 		 (div (masin z) z))))
 	  ((equal (checksigntm var) '$negative)
@@ -1852,7 +1852,7 @@
 		  (1+z^2 (add 1 (power z 2))))
 	     (if (equal a 1)
 		 (div (trig-log-3a-exec (list (div 1 2) (div 1 2))
-					l2)
+					arg-l2)
 		      (power 1+z^2
 			     (div 1 2)))
 		 (div (mlog (add z (power 1+z^2
@@ -1909,9 +1909,9 @@
 
 
 
-(defun trig-log-1 (a b)	;; 2F1's with C = 1/2
-  (let (x z $exponentialize) ;; 15.1.17, 11, 18, 12, 9, and 19
-    (setq a (car l1) b (cadr l1))
+(defun trig-log-1 (arg-l1 arg-l2)	;; 2F1's with C = 1/2
+  (let (x z $exponentialize a b) ;; 15.1.17, 11, 18, 12, 9, and 19
+    (setq a (car arg-l1) b (cadr arg-l1))
     (cond ((=0 (m+t a b))
 	   ;; F(-a,a;1/2,z)
 
@@ -2126,10 +2126,10 @@
 ;; Confluent hypergeometric function.
 ;;
 ;; F(a;c;z)
-(defun confl (l1 l2 var)
+(defun confl (arg-l1 arg-l2 var)
   (prog (a c a-c k m z)
-     (setq a (car l1)
-	   c (car l2))
+     (setq a (car arg-l1)
+	   c (car arg-l2))
      (cond ((alike1 c (add a a))
 	    ;; F(a;2a;z)
 	    ;; A&S 13.6.6
@@ -2150,10 +2150,10 @@
 	    (go kumcheck)))
      (cond ((minusp a-c)
 	    (return (erfgammared a c var))))
-     (return (kummer l1 l2))
+     (return (kummer arg-l1 arg-l2))
      kumcheck
      (cond ((hyp-integerp a)
-	    (return (kummer l1 l2))))
+	    (return (kummer arg-l1 arg-l2))))
 
      (cond ($prefer_whittaker
 	    (setq m
@@ -2164,7 +2164,7 @@
 			 (power '$%e (div var 2))
 			 (whitfun k m var))))
 	   (t
-	    (return (fpqform l1 l2 var))))))
+	    (return (fpqform arg-l1 arg-l2 var))))))
 
 ;; A&S 13.6.19:
 ;; M(1/2,3/2,-z^2) =  sqrt(%pi)*erf(z)/2/sqrt(z)
@@ -2625,17 +2625,17 @@
       nil))
 
 (defun fpqform
-    (l1 l2 arg)
+    (arg-l1 arg-l2 arg)
   (list '(mqapply)
-	(list '($%f array)(length l1)(length l2))
-	(append (list '(mlist)) l1)
-	(append (list '(mlist)) l2)
+	(list '($%f array)(length arg-l1)(length arg-l2))
+	(append (list '(mlist)) arg-l1)
+	(append (list '(mlist)) arg-l2)
 	arg))
 
 
 
 (defun splitpfq
-    (l l1 l2)
+    (l arg-l1 arg-l2)
   (prog(result prodnum proden count k a1 b1)
      (setq result 0
 	   prodnum 1
@@ -2644,20 +2644,20 @@
 	   k (cadr l)
 	   a1 (car l)
 	   b1 (sub a1 k))
-     (setq l1 (zl-delete a1 l1 1)
-	   l2 (zl-delete b1 l2 1)
-	   result (hgfsimp l1 l2 var))
+     (setq arg-l1 (zl-delete a1 arg-l1 1)
+	   arg-l2 (zl-delete b1 arg-l2 1)
+	   result (hgfsimp arg-l1 arg-l2 var))
      loop
      (cond ((eq count k) (return result)))
      (setq count (add1 count)
-	   prodnum (mul prodnum (mull l1))
-	   proden (mul proden (mull l2))
+	   prodnum (mul prodnum (mull arg-l1))
+	   proden (mul proden (mull arg-l2))
 	   result (add result
 		       (mul (combin k count)
 			    (div prodnum proden)
 			    (power var count)
-			    (hgfsimp (setq l1 (incr1 l1))
-				     (setq l2 (incr1 l2))
+			    (hgfsimp (setq arg-l1 (incr1 arg-l1))
+				     (setq arg-l2 (incr1 arg-l2))
 				     var))))
      (go loop)))
 
