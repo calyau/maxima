@@ -423,7 +423,7 @@
       (READLIST (APPLY #'APPEND DATA))
       ;; For bigfloats, turn them into rational numbers then convert to bigfloat
       ($BFLOAT `((MTIMES) ((MPLUS) ,(READLIST (FIRST DATA))
-				   ((MTIMES) ,(READLIST (THIRD DATA))
+				   ((MTIMES) ,(READLIST (or (THIRD DATA) '(#\0)))
 					     ((MEXPT) 10. ,(f- (LENGTH (THIRD DATA))))))
 			  ((MEXPT) 10. ,(FUNCALL (IF (char= (FIRST (FIFTH DATA)) #\-) #'- #'+)
 						 (READLIST (SIXTH DATA))))))))
@@ -442,6 +442,7 @@
 	      (MAKE-NUMBER (CONS (NREVERSE L) DATA)))))
     (PARSE-TYI)))
 
+#+nil
 (DEFUN SCAN-NUMBER-BEFORE-DOT (DATA)
   (SCAN-DIGITS DATA '(#. period-char) #'SCAN-NUMBER-AFTER-DOT))
 
@@ -603,6 +604,23 @@
         (go read))
   )
 
+(defun scan-number-rest (data)
+  (let ((c (caar data)))
+    (cond ((imember c '(#. period-char))
+	   ;; We found a dot
+	   (scan-number-after-dot data))
+	  ((imember c '(#\E #\e #\B #\b #\D #\d #\S #\s))
+	   ;; Dot missing but found exponent marker.  Fake it.
+	   (setf data (push (ncons #\.) (rest data)))
+	   (push (ncons #\0) data)
+	   (push (ncons c) data)
+	   (scan-number-exponent data)))))
+
+(defun scan-number-before-dot (data)
+  (scan-digits data '(#. period-char #\E #\e #\B #\b #\D #\d #\S #\s)
+	       #'scan-number-rest))
+
+    
 
 (DEFMACRO FIRST-C () '(PEEK-ONE-TOKEN))
 (DEFMACRO POP-C   () '(SCAN-ONE-TOKEN))
