@@ -350,13 +350,39 @@
 	   ;; We have numeric args and the first arg is purely
 	   ;; real. Call the real-valued Bessel function.  (Should we
 	   ;; try calling j0 and j1 as appropriate instead of jn?)
-	   (multiple-value-bind (n alpha)
-	       (floor (float $order))
-	     (let ((jvals (make-array (1+ n) :element-type 'double-float)))
-	       (slatec:dbesj (float $arg) alpha (1+ n) jvals 0)
-	       (narray $besselarray $float n)
-	       (fillarray (nsymbol-array '$besselarray) jvals)
-	       (aref jvals n))))
+	   (cond ((= $order 0)
+		  (slatec:dbesj0 (float $arg)))
+		 ((= $order 1)
+		  (slatec:dbesj1 (float $arg)))
+		 (t
+		  (multiple-value-bind (n alpha)
+		      (floor (float $order))
+		    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+		      ;; Use analytic continuation formula A&S 9.1.35:
+		      ;;
+		      ;; %j[v](z*exp(m*%pi*%i)) = exp(m*%pi*%i*v)*%j[v](z)
+		      ;;
+		      ;; for an integer m.  In particular, for m = 1:
+		      ;;
+		      ;; %j[v](-x) = exp(v*%pi*%i)*%j[v](x)
+		      (cond ((>= $arg 0)
+			     (slatec:dbesj (float $arg) alpha (1+ n) jvals 0)
+			     (narray $besselarray $float n)
+			     (fillarray (nsymbol-array '$besselarray) jvals)
+			     (aref jvals n))
+			    (t
+			     (slatec:dbesj (- (float $arg)) alpha (1+ n) jvals 0)
+			     (narray $besselarray $complete n)
+			     (let ((s (cis (* $order pi))))
+			       (dotimes (k (1+ n))
+				 (let ((v (* s (aref jvals k))))
+				   (setf (arraycall 'flonum (nsymbol-array '$besselarray) k)
+					 (simplify `((mplus)
+						     ,(realpart v)
+						     ((mtimes)
+						      $%i
+						      ,(imagpart v)))))))
+			       (arraycall 'flonum (nsymbol-array '$besselarray) n)))))))))
 	  (t
 	   ;; The first arg is complex.  Use the complex-valued Bessel
 	   ;; function
@@ -397,28 +423,75 @@
 	   (numberp ($realpart arg))
 	   (numberp ($imagpart arg)))
       ($bessel (complex ($realpart arg) ($imagpart arg)) order)
-      (subfunmakes '$bessel_j (ncons order) (ncons arg))))
+      (subfunmakes '$%j (ncons order) (ncons arg))))
 
 ;; Bessel function of the second kind, Y[n](z), for real or complex z
 ;; and non-negative real n.
 (defun bessel-y (arg order)
   (cond ((zerop (imagpart arg))
 	 ;; We have numeric args and the first arg is purely
-	 ;; real. Call the real-valued Bessel function.  We call j0
-	 ;; and j1 instead of jn, if possible.
+	 ;; real. Call the real-valued Bessel function.
+	 ;;
+	 ;; For negative values, use the analytic continuation formula
+	 ;; A&S 9.1.36:
+	 ;;
+	 ;; %y[v](z*exp(m*%pi*%i)) = exp(-v*m*%pi*%i) * %y[v](z)
+	 ;;       + 2*%i*sin(m*v*%pi)*cot(v*%pi)*%j[v](z)
+	 ;;
+	 ;; In particular for m = 1:
+	 ;;
+	 ;; %y[v](-z) = exp(-v*%pi*%i) * %y[v](z) + 2*%i*cos(v*%pi)*%j[v](z)
+	 ;; 
 	 (let ((arg (realpart arg)))
 	   (cond ((zerop order)
-		  (slatec:dbesy0 arg))
+		  (cond ((>= arg 0)
+			 (slatec:dbesy0 arg))
+			(t
+			 ;; For v = 0, this simplifies to
+			 ;;
+			 ;; %y[0](-z) = %y[0](z) + 2*%i*%j[0](z)
+			 (simplify `((mplus)
+				     ,(slatec:dbesy0 (- arg))
+				     ((mtimes)
+				      $%i
+				      ,(* 2 (slatec:dbesj0 (- arg)))))))))
 		 ((= order 1)
-		  (slatec:dbesy1 arg))
+		  (cond ((>= arg 0)
+			 (slatec:dbesy1 arg))
+			(t
+			 ;; For v = 1, this simplifies to
+			 ;;
+			 ;; %y[1](-z) = -%y[1](z) - 2*%i*%j[1](v)
+			 (simplify `((mplus)
+				       ,(slatec:dbesy1 (- arg))
+				       ((mtimes)
+					$%i
+					,(* -2 (slatec:dbesj1 (- arg)))))))))
 		 (t
 		  (multiple-value-bind (n alpha)
 		      (floor (float order))
 		    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
-		      (slatec:dbesy (float (realpart arg)) alpha (1+ n) jvals)
-		      (narray $besselarray $float n)
-		      (fillarray (nsymbol-array '$besselarray) jvals)
-		      (aref jvals n)))))))
+		      (cond ((>= $arg 0)
+			     (slatec:dbesy (float (realpart arg)) alpha (1+ n) jvals)
+			     (narray $besselarray $float n)
+			     (fillarray (nsymbol-array '$besselarray) jvals)
+			     (aref jvals n))
+			    (t
+			     (let* ((j ($bessel (- $arg) $order))
+				    (s1 (cis (- (* v pi))))
+				    (s2 (* #c(0 2) (cos (* v pi)))))
+			       (slatec:dbesy (- (float arg)) alpha (1+ n) jvals)
+			       (narray $yarray $complete n)
+			       (dotimes (k (1+ n))
+				 (let ((v (+ (* s1 (aref jvals k))
+					     (* s2 (arraycall 'flonum (nsymbol-array $besselarray) k)))))
+				   (setf (arraycall 'flonum (nsymbol-array '$yarray) k)
+					 (simplify `((mplus)
+						     ,(realpart v)
+						     ((mtimes)
+						      $%i
+						      ,(imagpart v)))))))
+			       (arraycall 'flonum (nsymbol-array '$yarray) n))))))))))
 	(t
 	 ;; The first arg is complex.  Use the complex-valued Bessel
 	 ;; function
@@ -663,7 +736,7 @@
 
 ;; Define the Bessel funtion J[n](z)
 
-(defprop $bessel_j bessel-j-simp specsimp)
+(defprop $%j bessel-j-simp specsimp)
 
 (defprop $bessel_j
     ((n x)
@@ -682,17 +755,35 @@
       (/ (second e) (third e))
       nil))
 
+;; For n = 1, computes f1(z) = 1/z*diff(f(z), z)
+;; For n = 2, computes f2(z) = 1/z*diff(f1(z), z)
+;; etc.
+(defun diffz (exp arg n)
+  (if (zerop n)
+      (simplify exp)
+      (diffz `((mtimes)
+	       ((mexpt) ,arg -1)
+	       ,(simplify ($diff exp arg)))
+	     arg
+	     (1- n))))
+      
 ;; Compute the Bessel function of half-integral order.
 ;;
 ;; ARG is the argument of the Bessel function
 ;; ORDER is the order, which must be half of an odd integer
 ;; 
-(defun bessel-half-order (arg order pos-function neg-function)
+(defun bessel-jy-half-order (arg order pos-function neg-function)
   ;; The description given here is for J functions, but they equally
-  ;; apply to other Bessel functions.
+  ;; apply to Y.
   ;;
   ;; J[n+1/2](z) and J[-n-1/2](z) can be expressed in
-  ;; terms of elementary functions.  See A&S 9.1.30.
+  ;; terms of elementary functions.  See A&S 9.1.30, let k = 1:
+  ;;
+  ;; diff(z^v * %j[v](z), z) = z^v * %j[v-1](z)
+  ;;
+  ;; and
+  ;;
+  ;; diff(z^(-v) * %j[v](z), z) = -z^(-v) * %j[v+1](z)
   ;;
   ;; We have
   ;;
@@ -704,58 +795,129 @@
   (cond ((plusp order)
 	 ;; Setting v = 1/2 in the second formula of A&S 9.1.30 we have
 	 ;;
-	 ;; J[n+1/2](z) = (-1)^n * sqrt(z)*diff(1/sqrt(z)*J[1/2](z), z, n)
+	 ;; J[n+1/2](z) = (-1)^n * sqrt(z) * z^n *
+	 ;;                diffz(J[1/2](z),z,n)
+	 ;;
+	 ;; where diffz(f,z,n) means compute 1/z*diff(f,z) n times.
 	 ;;
 	 ;; or, using the expressin for J[1/2](z) above:
-	 ;;
-	 ;; J[n+1/2](z) = (-1)^n * sqrt(z) * sqrt(2/%pi) *
-	 ;;                    diff(sin(z)/z,z,n)
 	 ;;
 	 (let* ((n (floor order))
 		(var (gensym))
 		;; deriv = diff(sin(z)/z,z,n)
-		(deriv (subst arg var
-			      ($diff `((mtimes simp)
-				       ((mexpt simp) ,var -1)
-				       ((,pos-function simp) ,var))
-				     var
-				     n))))
+		(deriv (diffz `((mtimes simp)
+				((mexpt simp) ,arg -1)
+				((,pos-function simp) ,arg))
+			      arg
+			      n)))
 	   (simplify `((mtimes)
 		       ((mexpt) 2 ((rat) 1 2))
 		       ((mexpt) $%pi ((rat) -1 2))
 		       ((mexpt) -1 ,n)
+		       ((mexpt) ,arg ,n)
 		       ((mexpt) ,arg ((rat) 1 2))
 		       ,deriv))))
 	(t
 	 ;; We use the first formula and J[-1/2](z) above to get
 	 ;;
-	 ;; J[-n-1/2](z) = sqrt(z) * sqrt(2/%pi) *
-	 ;;                    diff(cos(z)/z, z, n);
+	 ;; J[-n-1/2](z) = sqrt(z) * sqrt(2/%pi) * z^n
+	 ;;                    diffz(cos(z)/z, z, n);
 	 (let* ((n (floor (- order)))
 		(var (gensym))
 		;; deriv = diff(cos(z)/z,z,n)
-		(deriv (subst arg var
-			      ($diff `((mtimes simp)
-				       ((mexpt simp) ,var -1)
-				       ((,neg-function simp) ,var))
-				     var
-				     n))))
+		(deriv (diffz `((mtimes simp)
+				((mexpt simp) ,arg -1)
+				((,neg-function simp) ,arg))
+			      arg
+			      n)))
 	   (simplify `((mtimes)
 		       ((mexpt) 2 ((rat) 1 2))
 		       ((mexpt) $%pi ((rat) -1 2))
+		       ((mexpt) ,arg ,n)
 		       ((mexpt) ,arg ((rat) 1 2))
 		       ,deriv))))))
+
+(defun bessel-i-half-order (arg order pos-function neg-function)
+  ;; I[n+1/2](z) and I[-n-1/2](z) can be expressed in
+  ;; terms of elementary functions.  See A&S 9.6.28:
+  ;;
+  ;;
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [z^v*I[v](z)] = z^(v-k) * I[v-k](z)
+  ;; [ z   dz]
+  ;;
+  ;;
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [z^(-v)*I[v](z)] = z^(-v-k) * I[v+k](z)
+  ;; [ z   dz]
+  ;;
+  ;;
+  ;; We have
+  ;;
+  ;;   I[1/2](z) = sqrt(2/%pi)*sinh(z)/sqrt(z)
+  ;;
+  ;;   I[-1/2](z) = sqrt(2/%pi)*cosh(z)/sqrt(z)
+  ;;
+  ;; Thus, for the second equation above, v = 1/2
+  ;;
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [1/sqrt(z)* sqrt(2/%pi) * sinh(z)/sqrt(z)] = 1/sqrt(z)/z^k * I[1/2+k](z)
+  ;; [ z   dz]
+  ;;
+  ;; or
+  ;;
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [sqrt(2/%pi)*sinh(z)/z] = 1/sqrt(z)/z^k * I[1/2+k](z)
+  ;; [ z   dz] 
+  ;;
+  ;;
+  ;; So
+  ;;                                                    k
+  ;;                                           [ 1   d ]
+  ;; I[1/2+k](z) = sqrt(z) * z^k * sqrt(2/%pi) [--- ---]  [sinh(z)/z]
+  ;;                                           [ z   dz]
+  ;;
+  ;; Similarly, for the second equation above with v = -1/2
+  ;;
+  ;;                                                    k
+  ;;                                            [ 1   d ]
+  ;; I[-1/2-k](z) = sqrt(z) * z^k * sqrt(2/%pi) [--- ---]  [cosh(z)/z]
+  ;;                                            [ z   dz]
+
+  (let* ((n (truncate (abs order)))
+	 (var (gensym))
+	 (deriv (diffz `((mtimes simp)
+			 ((mexpt simp) ,arg -1)
+			 ((,(if (plusp order) pos-function neg-function)
+			   simp) ,arg))
+		       arg
+		       n)))
+    (simplify `((mtimes)
+		((mexpt) 2 ((rat) 1 2))
+		((mexpt) $%pi ((rat) -1 2))
+		((mexpt) ,arg ((rat) 1 2))
+		((mexpt) ,arg ,n)
+		,deriv))))
 
 (defun bessel-j-simp (exp ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
-    (subargcheck exp 1 1 '$bessel_j)
+    (subargcheck exp 1 1 '$%j)
     (let* ((arg (simpcheck (car (subfunargs exp)) z))
 	   (real-arg ($realpart arg))
 	   (imag-arg ($imagpart arg)))
       (cond ((numberp order)
-	     (cond ((or (and (floatp real-arg) (numberp imag-arg))
+	     (cond ((and (numberp real-arg) (numberp imag-arg)
+			 (zerop real-arg) (zerop imag-arg))
+		    (if (zerop order)
+			1
+			0))
+		   ((or (and (floatp real-arg) (numberp imag-arg))
 			(and $numer (numberp real-arg) (numberp imag-arg)))
 		    ;; Numerically evaluate it if the arg is a float
 		    ;; or if the arg is a number and $numer is
@@ -765,33 +927,34 @@
 		    ;; A&S 9.1.5
 		    ;; J[-n](x) = (-1)^n*J[n](x)
 		    (if (evenp order)
-			(subfunmakes '$bessel_j (ncons (- order)) (ncons arg))
-			`((mtimes simp) -1 ,(subfunmakes '$bessel_j (ncons (- order)) (ncons arg)))))
+			(subfunmakes '$%j (ncons (- order)) (ncons arg))
+			`((mtimes simp) -1 ,(subfunmakes '$%j (ncons (- order)) (ncons arg)))))
 		   (t
-		    (eqtest (subfunmakes '$bessel_j (ncons order) (ncons arg))
+		    (eqtest (subfunmakes '$%j (ncons order) (ncons arg))
 			    exp))))
-	    ((setq rat-order (max-numeric-ratio-p order 2))
+	    ((and (setq rat-order (max-numeric-ratio-p order 2))
+		  (not (or (numberp real-arg) (numberp imag-arg))))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
 	     ;;
 	     ;; J[1/2](z) is a function of sin.  J[-1/2](z) is a
 	     ;; function of cos.
-	     (bessel-half-order arg rat-order '%sin '%cos))
+	     (bessel-jy-half-order arg rat-order '%sin '%cos))
 	    (t
-	     (eqtest (subfunmakes '$bessel_j (ncons order) (ncons arg))
+	     (eqtest (subfunmakes '$%j (ncons order) (ncons arg))
 		     exp))))))
 
 
 ;; Define the Bessel funtion Y[n](z)
 
-(defprop $bessel_y bessel-y-simp specsimp)
+(defprop $%y bessel-y-simp specsimp)
 
 (defun bessel-y-simp (exp ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
-    (subargcheck exp 1 1 '$bessel_y)
+    (subargcheck exp 1 1 '$%y)
     (let* ((arg (simpcheck (car (subfunargs exp)) z))
 	   (real-arg ($realpart arg))
 	   (imag-arg ($imagpart arg)))
@@ -806,10 +969,10 @@
 		    ;; A&S 9.1.5
 		    ;; Y[-n](x) = (-1)^n*Y[n](x)
 		    (if (evenp order)
-			(subfunmakes '$bessel_y (ncons (- order)) (ncons arg))
-			`((mtimes simp) -1 ,(subfunmakes '$bessel_y (ncons (- order)) (ncons arg)))))
+			(subfunmakes '$%y (ncons (- order)) (ncons arg))
+			`((mtimes simp) -1 ,(subfunmakes '$%y (ncons (- order)) (ncons arg)))))
 		   (t
-		    (eqtest (subfunmakes '$bessel_y (ncons order) (ncons arg))
+		    (eqtest (subfunmakes '$%y (ncons order) (ncons arg))
 			    exp))))
 	    ((setq rat-order (max-numeric-ratio-p order 2))
 	     ;; When order is a fraction with a denominator of 2, we
@@ -818,20 +981,20 @@
 	     ;;
 	     ;; Y[1/2](z) = -J[1/2](z) is a function of sin.
 	     ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
-	     (simplify `((mtimes) -1 ,(bessel-half-order arg rat-order '%sin '%cos))))
+	     (simplify `((mtimes) -1 ,(bessel-jy-half-order arg rat-order '%sin '%cos))))
 	    (t
-	     (eqtest (subfunmakes '$bessel_y (ncons order) (ncons arg))
+	     (eqtest (subfunmakes '$%y (ncons order) (ncons arg))
 		     exp))))))
 
 ;; Define the Bessel funtion I[n](z)
 
-(defprop $bessel_i bessel-i-simp specsimp)
+(defprop $%ibes bessel-i-simp specsimp)
 
 (defun bessel-i-simp (exp ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
-    (subargcheck exp 1 1 '$bessel_i)
+    (subargcheck exp 1 1 '$%ibes)
     (let* ((arg (simpcheck (car (subfunargs exp)) z))
 	   (real-arg ($realpart arg))
 	   (imag-arg ($imagpart arg)))
@@ -845,18 +1008,111 @@
 		   ((minusp order)
 		    ;; A&S 9.6.6
 		    ;; I[-n](x) = I[n](x)
-		    (subfunmakes '$bessel_i (ncons (- order)) (ncons arg)))
+		    (subfunmakes '$%ibes (ncons (- order)) (ncons arg)))
 		   (t
-		    (eqtest (subfunmakes '$bessel_i (ncons order) (ncons arg))
+		    (eqtest (subfunmakes '$%ibes (ncons order) (ncons arg))
 			    exp))))
-	    ((setq rat-order (max-numeric-ratio-p order 2))
+	    ((and (setq rat-order (max-numeric-ratio-p order 2))
+		  (not (or (numberp real-arg) (numberp imag-arg))))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
 	     ;;
 	     ;; I[1/2](z) = sqrt(2/%pi/z)*sinh(z)
 	     ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
-	     (bessel-half-order arg rat-order '%sinh '%cosh))
+	     (bessel-i-half-order arg rat-order '%sinh '%cosh))
 	    (t
-	     (eqtest (subfunmakes '$bessel_i (ncons order) (ncons arg))
+	     (eqtest (subfunmakes '$%ibes (ncons order) (ncons arg))
+		     exp))))))
+
+;; Define the Bessel funtion K[n](z)
+
+(defprop $%k bessel-k-simp specsimp)
+
+(defun bessel-k-half-order (arg order)
+  ;; K[n+1/2](z). See A&S 9.6.28
+  ;;
+  ;; We have
+  ;;
+  ;;   K[1/2](z) = 
+  ;;
+  ;; and
+  ;;   I[-1/2](z) = sqrt(2/%pi)*cosh(z)/sqrt(z)
+  ;;
+  (cond ((plusp order)
+	 ;; Setting v = 1/2 in the second formula of A&S 9.6.28 we have
+	 ;;
+	 ;; I[n+1/2](z) = sqrt(z)*diff(1/sqrt(z)*I[1/2](z), z, n)
+	 ;;
+	 ;; or, using the expressin for J[1/2](z) above:
+	 ;;
+	 ;; I[n+1/2](z) = sqrt(z) * sqrt(2/%pi) *
+	 ;;                    diff(sinh(z)/z,z,n)
+	 ;;
+	 (let* ((n (floor order))
+		(var (gensym))
+		;; deriv = diff(sinh(z)/z,z,n)
+		(deriv (subst arg var
+			      ($diff `((mtimes simp)
+				       ((mexpt simp) ,var -1)
+				       ((,pos-function simp) ,var))
+				     var
+				     n))))
+	   (simplify `((mtimes)
+		       ((mexpt) 2 ((rat) 1 2))
+		       ((mexpt) $%pi ((rat) -1 2))
+		       ((mexpt) ,arg ((rat) 1 2))
+		       ,deriv))))
+	(t
+	 ;; We use the first formula and I[-1/2](z) above to get
+	 ;;
+	 ;; I[-n-1/2](z) = sqrt(z) * sqrt(2/%pi) *
+	 ;;                    diff(cosh(z)/z, z, n);
+	 (let* ((n (floor (- order)))
+		(var (gensym))
+		;; deriv = diff(cosh(z)/z,z,n)
+		(deriv (subst arg var
+			      ($diff `((mtimes simp)
+				       ((mexpt simp) ,var -1)
+				       ((,neg-function simp) ,var))
+				     var
+				     n))))
+	   (simplify `((mtimes)
+		       ((mexpt) 2 ((rat) 1 2))
+		       ((mexpt) $%pi ((rat) -1 2))
+		       ((mexpt) ,arg ((rat) 1 2))
+		       ,deriv))))))
+  
+(defun bessel-k-simp (exp ignored z)
+  (declare (ignore ignored))
+  (let ((order (simpcheck (car (subfunsubs exp)) z))
+	(rat-order nil))
+    (subargcheck exp 1 1 '$%k)
+    (let* ((arg (simpcheck (car (subfunargs exp)) z))
+	   (real-arg ($realpart arg))
+	   (imag-arg ($imagpart arg)))
+      (cond ((numberp order)
+	     (cond ((or (and (floatp real-arg) (numberp imag-arg))
+			(and $numer (numberp real-arg) (numberp imag-arg)))
+		    ;; Numerically evaluate it if the arg is a float
+		    ;; or if the arg is a number and $numer is
+		    ;; non-NIL.
+		    (bessel-k (complex real-arg imag-arg) (float order)))
+		   ((minusp order)
+		    ;; A&S 9.6.6
+		    ;; K[-n](x) = K[n](x)
+		    (subfunmakes '$%k (ncons (- order)) (ncons arg)))
+		   (t
+		    (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
+			    exp))))
+	    ((setq rat-order (max-numeric-ratio-p order 2))
+	     ;; When order is a fraction with a denominator of 2, we
+	     ;; can express the result in terms of elementary
+	     ;; functions.
+	     ;;
+	     ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z)
+	     ;; K[-1/2](z) = sqrt(2/%pi/z)*exp(-z)
+	     (bessel-k-half-order arg rat-order))
+	    (t
+	     (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
 		     exp))))))
