@@ -11,7 +11,7 @@
 		      #+openmcl "binary-openmcl"
 		      #-(or clisp cmu sbcl gcl allegro openmcl) "binary-unknownlisp"
 		      :directory (pathname-directory *load-truename*))
-    :components ( ;;(:file "sys-declaim" :load-only t)
+    :components ((:file "sys-declaim" :load-only t)
 		 (:file "sloop")
 		 (:file "compat")       ;new
 		 (:file "amacros")
