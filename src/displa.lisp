@@ -89,7 +89,7 @@
 ;; Parameters which control how boxes, absolute value signs,
 ;; evaluation-at-a-point bars, and matrices are drawn.
 
-(DEFMVAR $BOXCHAR '|&"| ;" Character here to fix syntax highlighting
+(DEFMVAR $BOXCHAR '|&"|
   "Character used for drawing boxes.")
 (DEFMVAR $ABSBOXCHAR '|&!|
   "Character used for drawing absolute value signs and 'evaluation at' signs.")
