@@ -2052,9 +2052,9 @@ already) so the file will begin in emaxima-mode next time it's opened.
      ["TeX update all cells"  emaxima-menu-tex-update-all])
     ("Process"
      ["Start a Maxima process"   maxima-start
-      (not (processp maxima-process))]
+      (not (processp inferior-maxima-process))]
      ["Run Maxima on region"  maxima-region]
-     ["Kill Maxima process"  maxima-stop (processp maxima-process)])
+     ["Kill Maxima process"  maxima-stop (processp inferior-maxima-process)])
     ("Misc"
      ["Indent region"   maxima-indent-region (emaxima-cell-p)]
      ["Short comment"  maxima-short-comment (emaxima-cell-p)]
