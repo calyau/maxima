@@ -259,9 +259,12 @@
 (defun  bignump (x)
   (typep x 'bignum))
 
+;; Find the N most significant or least significant bits of the
+;; absolute value of X.  If N is positive, take the most significant;
+;; otherwise, the least significant.
 (defun haipart (x n)
   (let ((x (abs x)))
-    (cond ((< x 0)
+    (cond ((< n 0)
 	   (logand x (1- (ash 1 (- n)))))
 	  (t
 	   (ash x (min (- n (integer-length x))
@@ -321,13 +324,17 @@
 		  
 (defmacro ncons (x) `(cons ,x nil))  ;;can one optimize this??
 
+#+nil
 (defun zl-assoc (x lis)
   (sloop for v in lis when (equal (car v) x) do (loop-return v)))
+(defun zl-assoc (x lis)
+  (assoc x lis :test 'equal))
 
 ;;lucid had troubles
 ;(defun zl-delete (x lis &optional (count most-positive-fixnum))
 ;  (delete x lis :test 'equal :count count))
 
+#+nil
 (defun zl-delete (x lis &optional (count most-positive-fixnum))
   (declare (fixnum count))
   (sloop do (cond ((or (null lis)(<= count 0)) (return-from zl-delete lis))
@@ -343,21 +350,27 @@
      )
   
 	    lis)
-		   
-		   
-		
-	       
-		    
 
+(defun zl-delete (x lis &optional count)
+  (delete x lis :test 'equal :count count))
+		   
+#+nil
 (defun zl-member (x lis)
   (declare (object x lis))
   (sloop for v on lis
 	 when (equal (car v) x)
 	 do (return v)))
+
+(defun zl-member (x lis)
+  (member x lis :test 'equal))
 	 
+#+nil
 (defun zl-remove (item list &optional (n most-positive-fixnum))
   #+lucid (setq n 16777214) ;;yukkk.
   #+(or cmu sbcl) (setq n (min n (1- most-positive-fixnum))) ; yukkk
+  (remove item list :count n :test 'equal))
+
+(defun zl-remove (item list &optional n)
   (remove item list :count n :test 'equal))
 
 (defvar *acursor* (make-array 11 :element-type 'fixnum
