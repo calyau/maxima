@@ -181,7 +181,10 @@
 			
 
 (defun intdiffl1l2 (arg-l1 arg-l2)
-  (cond ((null arg-l1)  nil)(t (intdiff arg-l1 arg-l2))))
+  (cond ((null arg-l1)
+	 nil)
+	(t
+	 (intdiff arg-l1 arg-l2))))
 
 #+nil
 (defun intdiff (arg-l1 arg-l2)
@@ -1179,6 +1182,14 @@
 					2)))
 		       (mul -1 (sub c 1))))))))
 
+;; Is A a non-negative integer?
+(defun nni (a)
+  (cond ((hyp-integerp a)
+	 (not (minusp a)))))
+
+
+;;; The following code doesn't appear to be used at all.  Comment it all out for now.
+#||
 (defun degen2f1
     (a b c)
   (cond ((eq (quest (sub c b)) '$negative)
@@ -1268,11 +1279,6 @@
 	((equal (caar a) 'rat)(checksigntm a))
 	(t nil)))
 
-
-
-(defun nni(a)(cond ((hyp-integerp a)(not (minusp a)))))
-
-
 (defun ni(a)(not (hyp-integerp a)))
 
 
@@ -1319,6 +1325,8 @@
        (hgfsimp (list a (add a 1 (mul -1 c)))
 		(list (add a 1 (mul -1 b)))
 		(inv var))))
+
+||#
 
 
 ;; Is F(a, b; c; z) is Legendre function?
@@ -2271,63 +2279,59 @@
 ;;
 ;; F(a;c;z)
 (defun confl (arg-l1 arg-l2 var)
-  (prog (a c a-c k m z)
-     (setq a (car arg-l1)
-	   c (car arg-l2))
-     (cond ((alike1 c (add a a))
-	    ;; F(a;2a;z)
-	    ;; A&S 13.6.6
-	    ;;
-	    ;; F(n+1;2*n+1;2*z) =
-	    ;; gamma(3/2+n)*exp(z)*(z/2)^(-n-1/2)*bessel_i(n+1/2,z).
-	    ;;
-	    ;; So
-	    ;;
-	    ;; F(n,2*n,z) =
-	    ;; gamma(n+1/2)*exp(z/2)*(z/4)^(-n-3/2)*bessel_i(n-1/2,z/2);
-	    (return (mul (power '$%e (setq z (div var 2)))
-			 (bestrig (add a (inv 2))
-				  (div (mul z z) 4))))))
-					 
-		
-     (cond ((not (hyp-integerp (setq a-c (sub a c))))
-	    (go kumcheck)))
-     (cond ((minusp a-c)
-	    (return (erfgammared a c var))))
-     (return (kummer arg-l1 arg-l2))
-     kumcheck
-     (cond ((hyp-integerp a)
-	    (return (kummer arg-l1 arg-l2))))
-
-     (cond ($prefer_whittaker
-	    ;; A&S 15.1.32:
-	    ;;
-	    ;; %m[k,u](z) = exp(-z/2)*z^(u+1/2)*M(1/2+u-k,1+2*u,z)
-	    ;;
-	    ;; So
-	    ;;
-	    ;; M(a,c,z) = exp(z/2)*z^(-c/2)*%m[c/2-a,c/2-1/2](z)
-	    ;;
-	    ;; But if we apply Kummer's transformation, we can also
-	    ;; derive the expression
-	    ;;
-	    ;; %m[k,u](z) = exp(z/2)*z^(u+1/2)*M(1/2+u+k,1+2*u,-z)
-	    ;;
-	    ;; or
-	    ;;
-	    ;; M(a,c,z) = exp(-z/2)*z^(-c/2)*%m[a-c/2,c/2-1/2](-z)
-	    ;;
-	    ;; For Laplace transforms it might be more beneficial to
-	    ;; return this second form instead.
-	    (setq m
-		  (div (sub c 1) 2)
-		  k
-		  (add (inv 2) m (mul -1 a)))
-	    (return (mul (power var (mul -1 (add (inv 2) m)))
+  (let* ((a (car arg-l1))
+	 (c (car arg-l2))
+	 (a-c (sub a c)))
+    (cond ((alike1 c (add a a))
+	   ;; F(a;2a;z)
+	   ;; A&S 13.6.6
+	   ;;
+	   ;; F(n+1;2*n+1;2*z) =
+	   ;; gamma(3/2+n)*exp(z)*(z/2)^(-n-1/2)*bessel_i(n+1/2,z).
+	   ;;
+	   ;; So
+	   ;;
+	   ;; F(n,2*n,z) =
+	   ;; gamma(n+1/2)*exp(z/2)*(z/4)^(-n-3/2)*bessel_i(n-1/2,z/2);
+	   (let ((z (div var 2)))
+	     (mul (power '$%e (setq z (div var 2)))
+		  (bestrig (add a (inv 2))
+			   (div (mul z z) 4)))))
+	  ((not (hyp-integerp a-c))
+	   (cond ((hyp-integerp a)
+		  (kummer arg-l1 arg-l2))
+		 ($prefer_whittaker
+		  ;; A&S 15.1.32:
+		  ;;
+		  ;; %m[k,u](z) = exp(-z/2)*z^(u+1/2)*M(1/2+u-k,1+2*u,z)
+		  ;;
+		  ;; So
+		  ;;
+		  ;; M(a,c,z) = exp(z/2)*z^(-c/2)*%m[c/2-a,c/2-1/2](z)
+		  ;;
+		  ;; But if we apply Kummer's transformation, we can also
+		  ;; derive the expression
+		  ;;
+		  ;; %m[k,u](z) = exp(z/2)*z^(u+1/2)*M(1/2+u+k,1+2*u,-z)
+		  ;;
+		  ;; or
+		  ;;
+		  ;; M(a,c,z) = exp(-z/2)*(-z)^(-c/2)*%m[a-c/2,c/2-1/2](-z)
+		  ;;
+		  ;; For Laplace transforms it might be more beneficial to
+		  ;; return this second form instead.
+		  (let* ((m (div (sub c 1) 2))
+			 (k (add (inv 2) m (mul -1 a))))
+		    (mul (power var (mul -1 (add (inv 2) m)))
 			 (power '$%e (div var 2))
 			 (whitfun k m var))))
-	   (t
-	    (return (fpqform arg-l1 arg-l2 var))))))
+			 
+		 (t
+		  (fpqform arg-l1 arg-l2 var))))
+	  ((minusp a-c)
+	   (erfgammared a c var))
+	  (t
+	   (kummer arg-l1 arg-l2)))))
 
 ;; A&S 13.6.19:
 ;; M(1/2,3/2,-z^2) =  sqrt(%pi)*erf(z)/2/sqrt(z)
@@ -2787,10 +2791,9 @@
       '((mtimes)((coefftt)(d freepar))((coefftt)(u haspar)))
       nil))
 
-(defun fpqform
-    (arg-l1 arg-l2 arg)
+(defun fpqform (arg-l1 arg-l2 arg)
   (list '(mqapply)
-	(list '($%f array)(length arg-l1)(length arg-l2))
+	(list '($%f array) (length arg-l1)(length arg-l2))
 	(append (list '(mlist)) arg-l1)
 	(append (list '(mlist)) arg-l2)
 	arg))
@@ -3125,8 +3128,7 @@
 		      (as-15.2.6 m n 3//2 ell s res)))))))
 
 ;;Pattern match for s(ymbolic) + c(onstant) in parameter
-(defun s+c
-    (exp)
+(defun s+c (exp)
   (m2 exp
       '((mplus) ((coeffpt)(f nonnump)) ((coeffpp)(c $numberp)))
       nil))
