@@ -188,7 +188,7 @@
    (WHEN (NULL FASDUMPFL)
      (PRINC ";;; -*- Mode: LISP; package:maxima; syntax:common-lisp; -*- " SAVEFILE)
      (terpri savefile)
-     (PRINC "(in-package \"MAXIMA\"" SAVEFILE)
+     (PRINC "(in-package \"MAXIMA\")" SAVEFILE)
      )
    (DOLIST (U X)
 	   (COND ((ATOM U) (IF (NOT (SYMBOLP U)) (IMPROPER-ARG-ERR U FN)))
