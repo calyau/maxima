@@ -45,7 +45,7 @@
    INFINITY is complex infinity")
 
 (defmvar real-infinities '($inf $minf)
-  "The real infinities, INF is positive infinity, MINF negative infinity")
+  "The real infinities, `inf' is positive infinity, `minf' negative infinity")
 
 (defmvar infinitesimals '($zeroa $zerob)
   "The infinitesimals recognized by Macsyma. ZEROA zero from above,
@@ -61,7 +61,7 @@ It appears in LIMIT and DEFINT.......")
 (defmvar limit-answers ()
   "An association list for storing limit answers.")
 
-(defmvar preserve-direction () "Makes LIMIT return Direction info.")
+(defmvar preserve-direction () "Makes `limit' return Direction info.")
 
 (if (not (boundp 'integer-info)) (setq integer-info ()))
 
@@ -124,14 +124,14 @@ It appears in LIMIT and DEFINT.......")
 		    (t (setq var (arg 2))
 		       (cond (($constantp var) 
 			      (merror 
-			       "Second argument cannot be a constant - LIMIT")))
+			       "Second argument cannot be a constant - `limit'")))
 		       (setq val (arg 3))
 		       (if (eq val '$zeroa) (setq dr '$plus))
 		       (if (eq val '$zerob) (setq dr '$minus))))
 	      (cond ((= nargs 4)
 		     (if (not (memq (arg 4) '($plus $minus)))
 			 (merror
-			  "Fourth argument must be either PLUS or MINUS - LIMIT"))
+			  "Fourth argument must be either `plus' or `minus' - `limit'"))
 		     (setq dr (arg 4))))
 	      (cond ((and (atom var) (not (among var val)))
 		     (setq exp exp1))

@@ -114,7 +114,7 @@
 	     (improper-arg-err u fn))))
     #-franz
     (if (and storefl (eq (cadr file) '>))
-	(merror "> as second filename has not been implemented for STORE."))
+	(merror "> as second filename has not been implemented for `store'."))
     #+pdp10 (if storefl (setq oint (nointerrupt 'tty)))
     (cond (dsksavep (setq filelist (cons file filelist)))
 	  (ofile (setq filelist1 (cons file filelist1))))
@@ -165,7 +165,7 @@
       (when (> (cadr length) 30.)
 	(mtell "~:M is ~A blocks big!" (car list) (cadr length))
 	(cond ((> (cadr length) 60.)
-	       (mtell "You probably want to zl-DELETE it."))
+	       (mtell "You probably want to zl-delete it."))
 	      ((> (cadr length) 50.)
 	       (mtell "Do you really want such a large file?")))))
     (if maxima-error (let ((errset 'errbreak1)) (merror "Error in ~:M attempt" fn)))
@@ -385,7 +385,7 @@
 					; in proper sequence with the big mungeables.
 					; For this reason only they are output as EQ-forms.
   (let ((ary (cond ((and (eq ind 'array) (get item 'array)) rename)
-					; This code handles "COMPLETE" arrays.
+					; This code handles "complete" arrays.
 		   (t (fasprint t '(setq aaaaa (gensym))) 'aaaaa)))
 	(dims (arraydims val))
 	val1)

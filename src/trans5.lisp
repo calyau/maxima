@@ -321,7 +321,7 @@
 		     `(cons ',(cadr var) ,(dtranslate (caddr var))))
 		    (t (setq tr-abort t)
 		       (tr-tell var
-				"Illegal BUILDQ form encountered during translation"))))
+				"Illegal `buildq' form encountered during translation"))))
 					;right thing to do here??
 					;how much error checking does transl do now?
 					; Yes. Not as much as it should! -GJC

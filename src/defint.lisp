@@ -193,10 +193,10 @@
 (defmvar defintdebug () "If true Defint prints out debugging information")
 
 (defmvar integerl nil
-  "An integer-list for non-atoms found out to be INTEGERs")
+  "An integer-list for non-atoms found out to be `integer's")
 
 (defmvar nonintegerl nil
-  "A non-integer-list for non-atoms found out to be NONINTEGERs")
+  "A non-integer-list for non-atoms found out to be `noninteger's")
 
 (defun $defint (exp var ll ul)
   (let ((global-defint-assumptions ())
@@ -1326,7 +1326,7 @@
 	  (return (list (car d)
 			(f* -1 (cadr d))
 			(ptimes (cadr f) (caddr d)))))
-     (merror "Bug from PFRNUM in RESIDU")))
+     (merror "Bug from `pfrnum' in `residu'")))
 
 (defun partnum (n dl)
   (let ((n2 1)  ans nl)
@@ -2613,7 +2613,7 @@
   (let ((order (ask-greateq ul ll)))
     (cond ((eq order '$yes))
 	  ((eq order '$no) (let ((temp ul)) (setq ul ll ll temp)))
-	  (t (merror "Incorrect limits given to DEFINT:~%~M"
+	  (t (merror "Incorrect limits given to `defint':~%~M"
 		     (list '(mlist simp) ll ul)))))
   (if (not (equal ($imagpart place) 0))
       '$no

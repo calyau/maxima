@@ -20,7 +20,7 @@
 (load-macsyma-macros rzmac ratmac)
 
 (defmvar $radsubstflag nil
-  "RADSUBSTFLAG T makes RATSUBS call RADCAN when it appears useful")
+  "`radsubstflag' `t' makes `ratsubs' call `radcan' when it appears useful")
 
 
 (defmfun pdis (x) ($ratdisrep (pdis* x)))
@@ -38,7 +38,7 @@
 (defmfun $ratcoef nargs
   (cond ((= nargs 3) (ratcoeff (arg 1) (arg 2) (arg 3)))
 	((= nargs 2) (ratcoeff (arg 1) (arg 2) 1))
-	(t (wna-err '$ratcoeff)))) ; The spelling "RATCOEFF" is nicer.
+	(t (wna-err '$ratcoeff)))) ; The spelling "ratcoeff" is nicer.
 
 (defmfun ratcoeff (a b c)
   (let* ((formflag ($ratp a))
@@ -329,7 +329,7 @@
 	    (return (list '(mlist)
 			  (rdis* (ratreduce (car var) (cdr r)))
 			  (rdis* (ratreduce (cdr var) (cdr r))))))
-	   (t (merror "Bad arguments to BOTHCOEFF")))))
+	   (t (merror "Bad arguments to `bothcoeff'")))))
 	 
 ;;COEFF OF A IN B
 
@@ -343,7 +343,7 @@
   (let ((argsfreeofp t)) (freeof var e)))
  
 ;;; This is a version of freeof for a list first argument
-(defmfun $lfreeof (l e) "FREEOF for a list first argument"
+(defmfun $lfreeof (l e) "`freeof' for a list first argument"
 	 (unless ($listp l) (merror "First argument must be a list"))
 	 (let ((exp ($totaldisrep e)))
 	   (dolist (var (margs l) t)

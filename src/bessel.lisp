@@ -402,7 +402,7 @@
 ;; Bessel function of the first kind for real or complex arg and real
 ;; non-negative order.
 (defun $bessel ($arg $order)
-  "BESSEL(arg, order) = J[order](arg). This is deprecated.  Use bessel_j(order,arg)"
+  "bessel(arg, order) = J[order](arg). This is deprecated.  Use bessel_j(order,arg)"
   (cond ((not (bessel-numerical-eval-p $order $arg))
 	 ;; Args aren't numeric.  Return unevaluated.
 	 (list '(%bessel_j simp) $order $arg))

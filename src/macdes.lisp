@@ -119,7 +119,7 @@
 			 (apply 'create-list1
 				form l)
 			 ))
-		 (t (merror "BAD ARG")))))))
+		 (t (merror "Bad arg")))))))
 
 ;; The documentation is now in INFO format and can be printed using
 ;; tex, or viewed using info or gnu emacs or using a web browser.  All

@@ -27,9 +27,9 @@
 	    (*lexpr context polylogp)
 	    (genprefix risch))
 
-(defmvar $liflag t "Controls whether RISCH generates polylogs") 
+(defmvar $liflag t "Controls whether `risch' generates polylogs") 
 
-(defmvar $erfflag t "Controls whether RISCH generates ERFS") 
+(defmvar $erfflag t "Controls whether `risch' generates `erfs'") 
 
 (defvar changevp t #-lispm "When nil prevents changevar hack")
 

@@ -91,7 +91,7 @@
 			  ((lambda (x)
 			     (cond ((null mcatch)
 				    (displa x)
-				    (merror "THROW not within CATCH")))
+				    (merror "`throw' not within `catch'")))
 			     (throw 'mcatch x))
 			   t))))))
 		    $%1))

@@ -155,7 +155,7 @@
 ;;	 (PUTPROP SYMBOL DEFINITION 'SUBR))
 ;;	((consp DEFINITION)
 ;;	 (PUTPROP SYMBOL DEFINITION 'EXPR))
-;;	(T (MAXIMA-ERROR "Invalid symbol definition - FSET"
+;;	(T (MAXIMA-ERROR "Invalid symbol definition - `fset'"
 ;;		  DEFINITION 'WRNG-TYPE-ARG))))
 
 ;;; Takes a list in "alist" form and converts it to one in

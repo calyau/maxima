@@ -14,10 +14,10 @@
 (declare-top(splitfile msort) (fixnum n))
 
 (defmfun $sort n
-  (if (or (= n 0) (> n 2)) (merror "SORT takes 1 or 2 arguments."))
+  (if (or (= n 0) (> n 2)) (merror "`sort' takes 1 or 2 arguments."))
   (let ((llist (arg 1)) comparfun bfun)
     (if (not ($listp llist))
-	(merror "The first argument to SORT must be a list:~%~M" llist))
+	(merror "The first argument to `sort' must be a list:~%~M" llist))
     (setq llist (copy-top-level (cdr llist) )
 	  comparfun 
 	  (mfunction1 (setq bfun (if (= n 2) (getopr (arg 2)) 'lessthan))))
@@ -47,7 +47,7 @@
 	  (prog (n form arg a b lv d)
 	     (setq n (length x))
 	     (if (or (< n 3) (> n 4))
-		 (merror "MAKELIST takes 3 or 4 arguments."))
+		 (merror "`makelist' takes 3 or 4 arguments."))
 	     (setq form (car x)
 		   arg (cadr x)
 		   a (meval (caddr x))
@@ -85,7 +85,7 @@ and 4th arguments should evaluate to a non-negative integer:~%~M" d)
 	  ((null a) (cons '(mlist simp) (nreverse x)))
 	(if (mevalp (list (ncons f) (car a)))
 	    (setq x (cons (car a) x))))
-      (merror "The first argument to SUBLIST must be a list:~%~M" a)))
+      (merror "The first argument to `sublist' must be a list:~%~M" a)))
 
 ;; Undeclarations for the file:
 #-nil

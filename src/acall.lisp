@@ -64,7 +64,7 @@
        ((t)
 	(marrayref-gensub aarray ind1 inds))
        (t
-	(merror "BUG: Non-handled array created. ~M" aarray))))
+	(merror "Bug: Non-handled array created. ~M" aarray))))
     #-cl
     ((si:equal-hash-table)
      (gethash (if inds (cons ind1 inds) inds) aarray))
@@ -100,7 +100,7 @@
 			     ((flonum) (= val flounbound))
 			     ((fixnum) (= val fixunbound))
 			     ((t) (eq val munbound))
-			     (t (merror "BUG: Array pointer of unknown type: ~S"
+			     (t (merror "Bug: Array pointer of unknown type: ~S"
 					ap)))
 			   (arrfind `((,aarray ,aarray) ,ind1 ,@ (copy-rest-arg inds)))
 			   val)))
@@ -126,12 +126,12 @@
 
 (defmfun $arrayapply (ar inds)
   (or ($listp inds)
-      (merror "The second arg to ARRAYAPPLY must be a list."))
+      (merror "The second arg to `arrayapply' must be a list."))
   (apply #'marrayref ar (cdr inds)))
 
 (defmfun $arraysetapply (ar inds val)
   (or ($listp inds)
-      (merror "The second arg to ARRAYAPPLY must be a list."))
+      (merror "The second arg to `arrayapply' must be a list."))
   (apply #'marrayset val ar (cdr inds)))
 
 
@@ -148,7 +148,7 @@
        ((t)
 	(marrayset-gensub val aarray ind1 inds))
        (t
-	(merror "BUG: unhandled array type. ~M" aarray))))
+	(merror "Bug: unhandled array type. ~M" aarray))))
     #+cl
     ((hash-table #+lispm si:equal-hash-table)
      (setf (gethash (if (cdr all-inds)
@@ -211,7 +211,7 @@
 
 (defun list-ref (l indexl &optional set-flag val)
   (cond ((atom l)
-	 (merror "ERROR-> tried to take part of an atom."))
+	 (merror "Error-> tried to take part of an atom."))
 	((null (cdr indexl))
 	 (let ((n (car indexl)))
 	   (cond ((and (integerp n) (plusp n)
@@ -231,7 +231,7 @@
 		    (cond (set-flag l)
 			  (t ret))))
 		 (t
-		  (merror "ERROR-> ~M  bad part subscript." n)))))
+		  (merror "Error-> ~M  bad part subscript." n)))))
 	(set-flag
 	 (list-ref (list-ref l `(,(car indexl)))
 		   (cdr indexl)
@@ -331,7 +331,7 @@
 
 (defmfun mapply-tr (fun list)
   (or ($listp list)
-      (merror "Second arg to APPLY was not a list:~%~M" list))
+      (merror "Second arg to `apply' was not a list:~%~M" list))
   (mapply1 fun (cdr list) '|the first arg to a translated APPLY| list))
 
 
@@ -446,7 +446,7 @@
     ((aarray)
      (case (array-type aarray)
        ((flonum) (arraycall flonum aarray index))
-       (t (merror "Bad type of array to call for FLOAT value: ~M" aarray))))
+       (t (merror "Bad type of array to call for `float' value: ~M" aarray))))
     (t
      (float (marrayref aarray index)))))
 
@@ -455,7 +455,7 @@
     ((aarray)
      (case (array-type aarray)
        ((flonum) (store (arraycall flonum aarray index) value))
-       (t (merror "Bad type of array to set FLOAT into: ~M" aarray))))
+       (t (merror "Bad type of array to set `float' into: ~M" aarray))))
     (t
      (float (marrayset value aarray index)))))
 

@@ -117,7 +117,7 @@
 	  ((integerp x)
 	   (if rbp (setq lbp rbp))
 	   (setq rbp x))
-	  (t (maxima-error "Random object in DISPLA-DEF form" x))))
+	  (t (maxima-error "Random object in `displa-def' form" x))))
   (if l-dissym
       (setq l-dissym
 	    (if r-dissym

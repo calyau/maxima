@@ -535,7 +535,7 @@ that matches the name name with extention ext"
 	      ;; This looks for the desired pattern.  A typical entry
 	      ;; looks like
 	      ;;
-	      ;; " - Function: PLOT2D <random stuff>"
+	      ;; " - Function: plot2d <random stuff>"
 	      ;;
 	      ;; So we look for the beginning of a line, the string " -
 	      ;; ", followed by at least one letter or spaces and then a
@@ -696,7 +696,7 @@ the general info file.  The search goes over all files."
   (format t "~&~a~a~a"
 	  *prompt-prefix*
 	  (if (zerop prompt-count)
-	      "Enter space-separated numbers, ALL or NONE: "
+	      "Enter space-separated numbers, `all' or `none': "
 	      "Still waiting: ")
 	  *prompt-suffix*))
 

@@ -137,11 +137,11 @@
 
 (defun poisencode (h*)			;
   (cond ((not (checkencode h*))
-	 (merror "Illegal arg to POISSIMP:~%~M" h*)))
+	 (merror "Illegal arg to `poissimp':~%~M" h*)))
   (apply #'(lambda ($z $y $x $w $v $u)
 	     (declare (special $u $v $w $x $y $z)) 
 	     (setq h* (meval h*))
-	     (cond ((not (integerp h*)) (merror  "Illegal trig arg to POISSON form")))
+	     (cond ((not (integerp h*)) (merror  "Illegal trig arg to `poisson' form")))
 	     (plus poishift  h*))
 	 poisvals))
 
@@ -624,7 +624,7 @@
 (defun argsubst (c) (plus c (times h* (poisxcoef c b*)))) 
 
 (defmfun $poissubst n 
-  (cond ((not (or (equal n 3.) (equal n 5.))) (merror  "WRONG NUMBER OF ARGS TO POISSUBST"))
+  (cond ((not (or (equal n 3.) (equal n 5.))) (merror  "Wrong number of args to `poissubst'"))
 	((equal n 5.)
 	 (fancypoissubst (arg 1.) (arg 2.) (intopois (arg 3.)) (intopois (arg 4.)) (arg 5.)))
 	(t ((lambda (a* b* c) (cond ((memq b* '($u $v $w $x $y $z)) (poissubsta a* b* c))

@@ -34,18 +34,18 @@
 (defmvar *fnewvarsw nil)
 (defmvar *ratweights nil)
 (defvar *ratsimp* nil)
-(defmvar factorresimp nil "If T resimplifies FACTOR(X-Y) to X-Y")
+(defmvar factorresimp nil "If `t' resimplifies factor(x-y) to x-y")
 
 ;; User level global variables.
 
 (defmvar $keepfloat nil
-  "If t floating point coeffs are not converted to rationals")
-(defmvar $factorflag nil "If t constant factor of polynomial is also factored")
+  "If `t' floating point coeffs are not converted to rationals")
+(defmvar $factorflag nil "If `t' constant factor of polynomial is also factored")
 (defmvar $dontfactor '((mlist)))
 (defmvar $norepeat t)
 (defmvar $ratweights '((mlist simp)))
 
-(defmvar $ratfac nil "If t cre-forms are kept factored")
+(defmvar $ratfac nil "If `t' cre-forms are kept factored")
 (defmvar $algebraic nil)
 (defmvar $ratvars '((mlist simp)))
 (defmvar $facexpand t)
@@ -296,7 +296,7 @@
 			 (not (univar (cdr minpoly*)))
 			 (f< (cadr minpoly*) 2))
 		     (merror
-		      "The second argument to FACTOR must be a non-linear, univariate polynomial:~%~M"
+		      "The second argument to `factor' must be a non-linear, univariate polynomial:~%~M"
 		      alpha))
 		 (setq alpha (pdis (list (car minpoly*) 1 1)) 
 		       mm* (cadr minpoly*))
@@ -364,7 +364,7 @@
     (cond ((f= nargs 2)
 	   (setq modulus (arg 2))
 	   (if (or (not (integerp modulus)) (zerop modulus))
-	       (merror "Improper value for MODULUS:~%~M" modulus))))
+	       (merror "Improper value for `modulus':~%~M" modulus))))
     (if (minusp modulus) (setq modulus (abs modulus)))
     (mod1 (arg 1))))
 
@@ -378,7 +378,7 @@
 
 (defmfun $divide nargs
   (prog (x y h varlist tt ty formflag $ratfac)
-     (if (f< nargs 2) (merror "DIVIDE needs at least two arguments."))
+     (if (f< nargs 2) (merror "`divide' needs at least two arguments."))
      (setq x (arg 1))
      (if (and ($ratp x) (setq formflag t) (integerp (cadr x)) (equal (cddr x) 1))
 	 (setq x (cadr x)))
@@ -413,7 +413,7 @@
 
 (defmfun $gcd nargs
   (prog (x y h varlist genvar $keepfloat formflag)
-     (if (f< nargs 2) (merror "GCD needs 2 arguments"))
+     (if (f< nargs 2) (merror "`gcd' needs 2 arguments"))
      (setq formflag ($ratp (setq x (arg 1))))
      (setq y (arg 2))
      (and ($ratp y) (setq formflag t))
@@ -564,7 +564,7 @@
 (defun rget (genv)
   (cons (if (and $ratwtlvl
 		 (or (fixnump $ratwtlvl) 
-		     (merror "Illegal value for RATWTLVL:~%~M" $ratwtlvl))
+		     (merror "Illegal value for `ratwtlvl':~%~M" $ratwtlvl))
 		 (f> (or (get genv '$ratweight) -1) $ratwtlvl))
 	    (pzero)
 	    (pget genv))
@@ -962,8 +962,8 @@
 
 (defun prepfloat (f)
   (cond ((< (abs f) 1.0e-37) (setq f 0.0))) ;changed 38 to 37 --wfs
-  (cond (modulus (merror "Floating point meaningless unless MODULUS = FALSE"))
-	($ratprint (mtell "~&RAT replaced ~A by" f)))
+  (cond (modulus (merror "Floating point meaningless unless `modulus' = `false'"))
+	($ratprint (mtell "~&`rat' replaced ~A by" f)))
   (setq f (maxima-rationalize f))
   (if $ratprint (mtell " ~A//~A = ~A~%"  (car f) (cdr f)
 		       (fpcofrat1 (car f) (cdr f))))

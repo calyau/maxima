@@ -19,7 +19,7 @@
 	  (memq '&optional l)
 	  (memq '&restv l)
 	  (memq '&quote l))
-      (maxima-error "Can't DEF-PROPL-CALL with non-subr arglist" l)))
+      (maxima-error "Can't `def-propl-call' with non-subr arglist" l)))
 
 (defvar use-subrcall
   #+cl nil

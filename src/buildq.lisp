@@ -76,7 +76,7 @@
 (defmspec $buildq (form) (setq form (cdr form))
 	  (cond ((or (null (cdr form))
 		     (cddr form))
-		 (merror "BUILDQ takes 2 args:~%~M" `(($buildq) ,@form)))
+		 (merror "`buildq' takes 2 args:~%~M" `(($buildq) ,@form)))
 		(t (mbuildq (car form) (cadr form)))))
 
 ;; this macro definition is NOT equivalent because of the way lisp macros
@@ -94,13 +94,13 @@
 ;;	       (NULL EXPRESSIONS)
 ;;	       (CDR EXPRESSIONS))
 ;;	   (DISPLA `(($BUILDQ) ,VARLIST ,@EXPRESSIONS))
-;;	   (MERROR "BUILDQ takes 2 args"))
+;;	   (MERROR "`buildq' takes 2 args"))
 ;;	  (T `(MBUILDQ ',VARLIST ',(CAR EXPRESSIONS)))))
 
 
 (defun mbuildq (varlist expression)
   (cond ((not ($listp varlist))
-	 (merror "First arg to BUILDQ not a list: ~M" varlist)))
+	 (merror "First arg to `buildq' not a list: ~M" varlist)))
   (mbuildq-subst
    (mapcar #'(lambda (form)             ; make a variable/value alist
 	       (cond ((symbolp form)
@@ -109,7 +109,7 @@
 			   (symbolp (cadr form)))
 		      (cons (cadr form) (meval (caddr form))))
 		     (t 
-		      (merror "Illegal form in variable list--BUILDQ: ~M"
+		      (merror "Illegal form in variable list--`buildq': ~M"
 			      form
 			      ))))
 	   (cdr varlist))
@@ -131,7 +131,7 @@
 					; if the expression is a legal SPLICE, this clause is taken.
 					; a SPLICE should never occur here.  It corresponds to `,@form
 	      
-	    (merror "SPLICE used in illegal context: ~M" expression))
+	    (merror "`splice' used in illegal context: ~M" expression))
 	   ((atom (caar expression))
 	    (setq new-car (mbuildq-associate (caar expression) alist))
 	    (cond ((eq new-car (caar expression))
@@ -197,6 +197,6 @@
        (let ((match (assq (cadr expression) varlist)))
 	 (cond ((null match) () )
 	       ((not ($listp (cdr match)))
-		(merror "~M returned ~M~%But SPLICE must return a list"
+		(merror "~M returned ~M~%But `splice' must return a list"
 			expression (cdr match)))
 	       (t (cdr match))))))

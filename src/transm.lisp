@@ -100,7 +100,7 @@
 
 (defmacro transl-module (name)
   (if (not (memq name transl-modules))
-      (maxima-error "Not a TRANSL-MODULE, see LIBMAX;TRANSM >"))
+      (maxima-error "Not a `transl-module', see LIBMAX;TRANSM >"))
   #+pdp10
   (progn (push name module-stack)
 	 (push '(eval-when (compile eval)
@@ -313,7 +313,7 @@
 ;;			(macsyma-compilation-p))
 ;;		   (iota ((f `((dsk ,(get! module 'dir))
 ;;			       ,module _auto_) 'out))
-;;			 (and ttynotes (format tyo "~&;MODULE : ~A~%" MODULE))
+;;			 (and ttynotes (format tyo "~&;`module' : ~A~%" `module'))
 ;;			 (save-module-info module f)
 ;;			 (renamef f "* AUTOLO"))
 ;;		   (INSTALL-TRANSL-AUTOLOADS)))))

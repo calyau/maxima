@@ -116,7 +116,7 @@
 	 rather than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
 	 MAXIMA-ERROR signalling.")
 
-(defmvar derivsimp t "Hack in SIMPDERIV for RWG")
+(defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
 ;; The following SETQs should be replaced with DEFMVARS in the correct places.
 (declare-top (special $rootsepsilon $grindswitch $algepsilon $algdelta $true
@@ -460,7 +460,7 @@
 	((not $simp) x)				
 	((atom (car x))
 	 (cond ((and (cdr x) (atom (cdr x)))
-		(merror "~%~S is a cons with an atomic cdr - SIMPLIFYA" x))
+		(merror "~%~S is a cons with an atomic cdr - `simplifya'" x))
 	       ((get (car x) 'lisp-no-simp)
 					; this feature is to be used with care. it is meant to be
 					; used to implement data objects with minimum of consing.
@@ -483,7 +483,7 @@
 	 (cond ((or (eq (caaar x) 'lambda)
 		    (and (not (atom (caaar x))) (eq (caaaar x) 'lambda)))
 		(mapply1 (caar x) (cdr x) (caar x) x))
-	       (t (merror "Illegal form - SIMPLIFYA:~%~S" x))))
+	       (t (merror "Illegal form - `simplifya':~%~S" x))))
 	((get (caar x) 'opers)
 	 (let ((opers-list *opers-list)) (oper-apply x y)))
 	((and (eq (caar x) 'mqapply)
@@ -847,7 +847,7 @@
   (cond ((onep1 (setq y (simpcheck (cadr x) z))) (addk -1 y))
 	((zerop1 y)
 	 (cond (radcanp (list '(%log simp) 0))
-	       ((not errorsw) (merror "LOG(0) has been generated."))
+	       ((not errorsw) (merror "log(0) has been generated."))
 	       (t (throw 'errorsw t))))
 	((eq y '$%e) 1)
 	((ratnump y)
@@ -1169,10 +1169,10 @@
      (cond ((not (or (= l1 2) (= l1 4) (= l1 5))) (wna-err '%limit)))
      (setq y (simpmap (cdr x) z))
      (cond ((and (= l1 5) (not (memq (cadddr y) '($plus $minus))))
-	    (merror "4th arg to LIMIT must be either PLUS or MINUS:~%~M"
+	    (merror "4th arg to `limit' must be either `plus' or `minus':~%~M"
 		    (cadddr y)))
 	   ((mnump (cadr y))
-	    (merror "Wrong second arg to LIMIT:~%~M" (cadr y)))
+	    (merror "Wrong second arg to `limit':~%~M" (cadr y)))
 	   ((equal (car y) 1) 1)
 	   (t (eqtest (cons '(%limit) y) x))))
    (length x) nil))
@@ -1181,7 +1181,7 @@
   vestigial				;Ignored.
   ((lambda (l1 y) 
      (cond ((not (or (= l1 3) (= l1 5)))
-	    (merror "Wrong number of arguments to 'INTEGRATE")))
+	    (merror "Wrong number of arguments to '`integrate'")))
      (setq y (simpmap (cdr x) z))
      (cond ((mnump (cadr y))
 	    (merror "Attempt to integrate with respect to a number:~%~M" (cadr y)))

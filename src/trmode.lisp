@@ -99,9 +99,9 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 
 (defmspec $define_variable  (l) (setq l (cdr l))
 	  (or (> (length l) 2)
-	      (merror "Wrong number of arguments to DEFINE_VARIABLE"))
+	      (merror "Wrong number of arguments to `define_variable'"))
 	  (or (symbolp (car l))
-	      (merror "First arg to DEFINE_VARIABLE not a SYMBOL."))
+	      (merror "First arg to `define_variable' not a symbol."))
 	  (meval `(($modedeclare) ,(car l) ,(caddr l)))
 	  (meval `(($declare) ,(car l) $special))
 	  (if (not (eq (caddr l) '$any))
@@ -112,7 +112,7 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 
 
 (defmspec $mode_identity (l) (setq l (cdr l))
-	  (or (= (length l) 2) (merror "MODE_IDENTITY takes 2 arguments."))
+	  (or (= (length l) 2) (merror "`mode_identity' takes 2 arguments."))
 	  (let* ((obj (cadr l)) (v (meval obj)))
 	    (chekvalue obj (ir-or-extend (car l)) v)
 	    v))
@@ -135,7 +135,7 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 	(prog1 x
 	  (if $macsyma_extend_warnp
 	      (mtell
-	       "WARNING: ~M is not a built-in type; assuming it is a MACSYMA EXTEND type" x))))))
+	       "Warning: ~M is not a built-in type; assuming it is a macsyma extend type" x))))))
 
 (def%tr $modedeclare (form)
   (do ((l (cdr form) (cddr l))) ((null l))
@@ -162,7 +162,7 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 
 (defmspec $modedeclare (x) (setq x (cdr x))
 	  (if (oddp (length x))
-	      (merror "MODE_DECLARE takes an even number of arguments."))
+	      (merror "`mode_declare' takes an even number of arguments."))
 	  (do ((l x (cddr l)) (nl))
 	      ((null l) (cons '(mlist) (nreverse nl)))
 	    (declmode (car l) (ir-or-extend (cadr l)) nil)

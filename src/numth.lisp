@@ -46,7 +46,7 @@
 
 (defmfun $prime (i)
   (declare (ignore i))
-  (merror "PRIME doesn't work yet."))
+  (merror "`prime' doesn't work yet."))
 
 
 (defmvar $maxprime 489318.)
@@ -74,7 +74,7 @@
 
 (defmfun $divsum n
   (or (< n 3)
-      (merror "To many arguments to DIVSUM"))
+      (merror "To many arguments to `divsum'"))
   ((lambda ($intfaclim k n) 
      (cond ((and (integerp k) (integerp n))
 	    (setq n (abs n))

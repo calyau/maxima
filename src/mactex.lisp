@@ -1007,7 +1007,7 @@
 	((eq tx '$matchfix)
 	 (putprop e 'tex-matchfix 'tex)
 	 (cond ((< (length s) 2)
-		(merror "Improper 2nd argument to TEXPUT for matchfix operator."))
+		(merror "Improper 2nd argument to `texput' for matchfix operator."))
 	       ((eq (length s) 2)
 		(putprop e (list (list (nth 0 s)) (nth 1 s)) 'texsym))
 	       (t

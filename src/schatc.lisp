@@ -343,7 +343,7 @@
 		       (preserve e)
 		       (rplacd e nil)
 		       t)
-		      ((merror "(BAD ARGS TO COEFFP -- REPORT BUG TO RZ)"))))))
+		      ((merror "(Bad args to `coeffp' -- report bug to RZ)"))))))
 	((do ((x e (cdr x)))
 	     ((null (cdr x))
 	      (cond ((m1 0 p) (restore2))
@@ -590,7 +590,7 @@
 		  (and (eq b 'coeffpt)
 		       (setq ala (cadr z)))
 		  (setq z (cdr z)))
-		 ((merror "(INVALID SWITCH IN PATTERN TO SCHATCHEN)")))))
+		 ((merror "(Invalid switch in pattern to `schatchen')")))))
 	((testa* ala exp nil))))
 
 ;; ALA IS THE PREDICATE LIST (VAR PREDFN ARG2 ARG3 ARG4 . . .)

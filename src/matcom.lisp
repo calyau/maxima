@@ -26,7 +26,7 @@
 
 (defun proc-$matchdeclare (x)
   (if (oddp (length x))
-      (merror "MATCHDECLARE takes an even number of arguments."))
+      (merror "`matchdeclare' takes an even number of arguments."))
   (do ((x x (cddr x))) ((null x))
     (cond ((symbolp (car x))
 	   (cond ((and (not (symbolp (cadr x)))
@@ -112,7 +112,7 @@
 		      (zl-delete (car f) leftover)
 		      (go a1))
 		     (t
-		      (mtell "~M partitions SUM"
+		      (mtell "~M partitions `sum'"
 			     (cons '(mplus) leftover)
 			     )
 		      (setq boundlist (append boundlist (atomson leftover)))
@@ -230,7 +230,7 @@
 		      (zl-delete (car f) leftover)
 		      (go a1))
 		     (t
-		      (mtell "~M partitions PRODUCT"
+		      (mtell "~M partitions `product'"
 			     (cons '(mtimes) leftover)
 			     )
 		      (setq boundlist (append boundlist (atomson leftover)))
@@ -367,7 +367,7 @@
      (setq pt (copy (simplifya (car l) nil)))
      (setq name pt) 
      (setq rhs (copy (simplifya (cadr l) nil)))
-     (cond ((alike1 pt rhs) (merror "Circular rule attempted - TELLSIMP"))
+     (cond ((alike1 pt rhs) (merror "Circular rule attempted - `tellsimp'"))
 	   ((or (atom pt) (mget (setq name (caar pt)) 'matchdeclare))
 	    (merror "~%~A unsuitable~%" (fullstrip1 (getop name))))
 	   ((memq name '(mplus mtimes))
@@ -462,7 +462,7 @@
      (setq pt (copy (simplifya (car l) nil)))
      (setq name pt)
      (setq rhs (copy (simplifya (cadr l) nil)))
-     (cond ((alike1 pt rhs) (merror "Circular rule attempted - TELLSIMPAFTER"))
+     (cond ((alike1 pt rhs) (merror "Circular rule attempted - `tellsimpafter'"))
 	   ((or (atom pt) (mget (setq name (caar pt)) 'matchdeclare))
 	    (merror "~%~A unsuitable~%" (fullstrip1 (getop name)))))
      (setq *a* (genref))

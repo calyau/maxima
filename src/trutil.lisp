@@ -101,7 +101,7 @@
 	      (let ((winp nil))
 		(unwind-protect (progn (eval form) (setq winp t))
 		  (or winp
-		      (barfo "Bad *PRE-TRANSL-FORM*"))))))))
+		      (barfo "Bad *pre-transl-form*"))))))))
 
 (deftrfun push-autoload-def (old-entry new-entries)
   (and (get old-entry 'autoload)
@@ -135,12 +135,12 @@
      (cond ((and min (< nargs min))
 	    (mformat 
 	     *translation-msgs-files*
-	     "~%ERROR: Too few arguments supplied to ~:@M~%"
+	     "~%Error: Too few arguments supplied to ~:@M~%"
 	     (caar form))
 	    (mgrind form *translation-msgs-files*))
 	   ((and max (> nargs max))
 	    (tr-format 
-	     "~%ERROR: Too many arguments supplied to ~:@M~%"
+	     "~%Error: Too many arguments supplied to ~:@M~%"
 	     (caar form))
 	    (mgrind form *translation-msgs-files*)))))
 					; return the number of arguments.

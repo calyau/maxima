@@ -41,9 +41,9 @@
 		   (eq (caar temp) 'mequal)
 		   (symbolp (car (pop temp))))
 	      (push (cons (pop temp) (pop temp)) nl))
-	     (t (merror "Usage is SUBLIS([sym1=form1,...],expression)")))))
+	     (t (merror "Usage is sublis([sym1=form1,...],expression)")))))
     (t
-     (merror "Usage is SUBLIS([sym1=form1,...],expression)")))
+     (merror "Usage is sublis([sym1=form1,...],expression)")))
   (msublis substitutions form))
 
 (defun msublis (s y)
@@ -56,7 +56,7 @@
   (declare (special s))
   (do ((x s (cdr x)) (temp) (temp1)) ((null x))
     (cond ((not (symbolp (setq temp (caar x))))
-	   (merror "SUBLIS: Bad 1st arg")))
+	   (merror "`sublis': Bad 1st arg")))
     (setplist temp (list* *msublis-marker* (cdar x) (symbol-plist temp)))
     (cond ((not (eq temp (setq temp1 (getopr temp))))
 	   (setplist temp1 (list* *msublis-marker* (cdar x) (symbol-plist temp1)))
@@ -82,7 +82,7 @@
 			(t ($rat sub)))))
 	       ((atom (car form))
 		(merror
-		 "SUBLIS: Illegal object in expression being substituted for."))
+		 "`sublis': Illegal object in expression being substituted for."))
 	       (t
 		(let ((cdr-value (msublis-subst (cdr form) nil))
 		      (caar-value (msublis-subst (caar form) t)))

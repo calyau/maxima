@@ -182,7 +182,7 @@
 	    ((eq 'mnot (caaar x))
 	     (setq nl (cons `(assume ,(dtranslate (pred-reverse (cadar x)))) nl)))
 	    ((eq 'mor (caaar x))
-	     (merror "ASSUME: Macsyma is unable to handle assertions involving 'OR'."))
+	     (merror "`assume': Macsyma is unable to handle assertions involving 'or'."))
 	    ((eq (caaar x) 'mequal)
 	     (merror "ASSUME: = means syntactic equality in Macsyma. ~
 		     Maybe you want to use EQUAL."))

@@ -50,10 +50,10 @@
 	 in a list rather than printing E-labels.")
 
 (defmvar $solvedecomposes t
-  "Causes SOLVE to use POLYDECOMP in attempting to solve polynomials.")
+  "Causes `solve' to use `polydecomp' in attempting to solve polynomials.")
 
 (defmvar $solveexplicit nil
-  "Causes SOLVE to return implicit solutions i.e. of the form F(x)=0.")
+  "Causes `solve' to return implicit solutions i.e. of the form F(x)=0.")
 
 (defmvar $solvefactors t
   "If T, then SOLVE will try to factor the expression.  The FALSE
@@ -119,7 +119,7 @@
 		  (mapcar 'meqhk (mapcar 'meval (cdr *eql))))
 		 ((memq (g-rep-operator *eql)
 			'(mnotequal mgreaterp mlessp mgeqp mleqp))
-		  (merror "Cannot solve inequalities. -SOLVE"))
+		  (merror "Cannot solve inequalities. -`solve'"))
 		 (t (ncons (meqhk *eql)))))
 
      (cond ((null varl-p)	 ;If the variable list wasn't supplied
@@ -136,11 +136,11 @@
 			  (t (list varl))))))
 
      (if (and (null varl) $solvenullwarn)
-	 (mtell "~&Got a null variable list, continuing - SOLVE~%"))
+	 (mtell "~&Got a null variable list, continuing - `solve'~%"))
      (if (and (null eql) $solvenullwarn)
-	 (mtell "~&Got a null equation list, continuing - SOLVE~%"))
+	 (mtell "~&Got a null equation list, continuing - `solve'~%"))
      (if (ormapc #'mnump varl)
-	 (merror "A number was found where a variable was expected -SOLVE"))
+	 (merror "A number was found where a variable was expected -`solve'"))
 
      (cond ((equal eql '(0)) (return '$all))
 	   ((or (null varl) (null eql)) (return (make-mlist-simp)))
@@ -910,7 +910,7 @@
 		     (t (ncons varl))))
     (do ((varl varl (cdr varl))) ((null varl))
       (cond ((mnump (car varl))
-	     (merror "Unacceptable variable to SOLVE: ~M"
+	     (merror "Unacceptable variable to `solve': ~M"
 		     (car varl)
 		     ))))
     (cond ((null varl) (make-mlist-simp))
@@ -937,7 +937,7 @@
 	    ;; and NIL if called from LINSOLVE.
 	    (cond (flag (return ($algsys (make-mlist-l eql)
 					 (make-mlist-l varl))))
-		  (t (merror "LINSOLVE ran into a nonlinear equation.")))))
+		  (t (merror "`linsolve' ran into a nonlinear equation.")))))
      (setq ans (tfgeli 'xa* xn* xm*))
      (if (and $linsolvewarn (car ans))
 	 (mtell "~&Dependent equations eliminated:  ~A~%" (car ans)))

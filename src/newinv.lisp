@@ -118,7 +118,7 @@
      (setq *ptr* (*array nil t  (f1+ m)))
      (setq  *ptc* (*array nil t  (f1+ m)))
      (setq bl (tmlattice ax '*ptr* '*ptc* m))
-     (cond ((null bl) (merror "SINGULAR")))
+     (cond ((null bl) (merror "Singular")))
      (setq bl (mapcar 'length bl))
      (setq bm (apply 'max bl))		;Chancey.  Consider mapping.
      (setq *iar* (*array nil t (f1+ bm) (f1+ (f* 2 bm))))

@@ -750,7 +750,7 @@
 (defun psexpt (p n)
     (cond ((rczerop n)			;; p^0
 	   (if (rczerop p)		;; 0^0
-	       (merror "~&Indeterminate form 0^0 generated inside PSEXPT~%")
+	       (merror "~&Indeterminate form 0^0 generated inside `psexpt'~%")
 	      (rcone)))			;; Otherwise can let p^0 = 1
 	  ((or (equal n (rcone)) (equal n (rcfone))) p)	;; p^1 cases
 	  ((pscoefp p) (rcexpt p n))
@@ -831,7 +831,7 @@
 	 (when (infp tr)
 	    (if (rcintegerp s)
 		(setq tr (e* s (le (last l))))
-	       (merror "Bad power series arg in PSEXPT")))
+	       (merror "Bad power series arg in `psexpt'")))
 	 (when (infp tr) (setq tr (t-o-var (car varh))))
 	 b (and (e> mr tr) (go end))
 	   (setq kr inc ak l ma0 (pstimes (cons 1 m) linv)
@@ -1156,7 +1156,7 @@
 (defun lim-recip (lim)
    (or (cdr (assq lim '(($ZEROA . $INF) ($ZEROB . $MINF)
 		        ($INF . $ZEROA) ($MINF . $ZEROB))))
-       (if (eq lim '$finite) (break "inverting $FINITE?")
+       (if (eq lim '$finite) (break "inverting $finite?")
 	  lim)))
 
 (defun lim-exp (lim)
@@ -1257,7 +1257,7 @@
 	      (setq pow (cadr expt) kernel (m^ kernel (m// pow))
 		    g (prep1 kernel) pow (prep1 pow))
 	      (unless (and (equal (cdr g) 1) (equal (cdar g) '(1 1)))
-		(break "Illegal kernel in ADJOIN-PVAR"))
+		(break "Illegal kernel in `adjoin-pvar'"))
 	      (setq g (caar g) kernel (get g 'disrep))))
 	  (if (setq ans (key-var-pow g))
 	      (cons (car ans) (e* pow (cdr ans)))
@@ -1579,7 +1579,7 @@
 		       (return (psplus lterm (pslog p))))
 		    (when (pscoefp p)
 		       (unless (equal p (rcone))
-			  (merror "Internal TAYLOR MAXIMA-ERROR in PSLOG"))
+			  (merror "Internal `taylor' maxima-error in `pslog'"))
 		       (return lterm))
 		    (setq l (terms p) inc (psexpon-gcd l))
 		    (if gt (setq l (zl-DELETE (last l) l))
@@ -1674,7 +1674,7 @@
 					(adjoin-tvar `((%LOG) ,(cadr var))))))
 		      (if (equal (cadr var) '$%E)
 			  (setq logvar (taylor2 (caddr var)))
-			  (break "Unhandled gvar in PSLOG-OF-GVAR")))))
+			  (break "Unhandled gvar in `pslog-of-gvar'")))))
 	  (psplus (pslog (if c (pstimes c (ps-lc monom)) (ps-lc monom)))
 		  (pstimes (ps-le monom) logvar))))))
 
@@ -1689,7 +1689,7 @@
 		       ((eq p '$%I) log%i)
 		       ((eq p '$%E) 1)
 		       ((equal p 0)
-			(merror "Log(0) generated while TAYLOR expanding ~M"
+			(merror "Log(0) generated while `taylor' expanding ~M"
 				last-exp))
 		       (T `((%LOG) ,p)))))
 	 ((eq (caar p) 'RAT)
@@ -2014,7 +2014,7 @@
 		  ('T (setq sw 'T) (return 'T)))))))
 
 (defmvar $TAYLOR_ORDER_COEFFICIENTS T
- "When TRUE, coefficients of taylor series will be ordered canonically.")
+ "When `true', coefficients of taylor series will be ordered canonically.")
 
 (defun taylor1 (e tlist)
   (declare (special *within-srf?* ))
@@ -2042,7 +2042,7 @@
 	    ((null tl) )
 	   (unless (mfree (exp-pt (car tl)) tvars)
 	      (merror
-	       "TAYLOR: attempt to expand ~M~&at a point depending on ~M"
+	       "`taylor': attempt to expand ~M~&at a point depending on ~M"
 	       e (caar tl))))
 	;; This drastic initialization ensures that ALGEBRAIC, TELLRAT, DISREP,
 	;; etc. prop's are removed from our gensyms. RATSETUP does not appear
@@ -2249,7 +2249,7 @@
 		      (push e zerolist))
 		   e-simp)
 	       (prep1 e))))
-	((null (atom (caar e))) (merror "Bad arg TAYLOR2 - internal error"))
+	((null (atom (caar e))) (merror "Bad arg `taylor2' - internal error"))
 	((eq (caar e) 'MRAT)
 	 (if (and (memq 'TRUNC (car e))
 		  (compatvarlist varlist (mrat-varlist e)
@@ -2503,7 +2503,7 @@
 		(psminus (expand (m- a const)
 				 (cond ((eq func '%TAN) '%COT)
 				       ((eq func '%COT) '%TAN)
-				       (t (merror "Internal MAXIMA-ERROR in TAYLOR"
+				       (t (merror "Internal maxima-error in `taylor'"
 						  ))))))))))
 
 (setq *pscirc '(%COT %TAN %CSC %SIN %SEC %COS %COTH
@@ -3171,7 +3171,7 @@
 				    (srconvert1 (cdr r))))
 		   (setq temp (cdr (assq (car tl) gps)))
 		   (cond ((null (memq (car tl) (cdr trunclist))))
-			 ((mplusp temp) (merror "FOO"))
+			 ((mplusp temp) (merror "foo"))
 			 (t (setq tlist
 				  (cons (list* temp
 					       (tay-order (cadr tl))
@@ -3196,8 +3196,8 @@
 (defun tay-error (msg exp)
   (if silent-taylor-flag (throw 'taylor-catch ())
       (IF EXP
-	  (merror "TAYLOR~A~%~%~M" MSG EXP)
-	  (merror "TAYLOR~A" MSG))))
+	  (merror "`taylor'~A~%~%~M" MSG EXP)
+	  (merror "`taylor'~A" MSG))))
 
 (defun exp-pt-err ()
        (tay-err " unable to expand at a point specified in:"))
@@ -3212,7 +3212,7 @@
        (tay-err ": Expansion to infinite order?"))
 
 (defun tay-depth-err ()
-       (tay-err ": TAYLORDEPTH exceeded while expanding:"))
+       (tay-err ": `taylordepth' exceeded while expanding:"))
 
 ;		(Comment Subtitle TAYLORINFO)
 

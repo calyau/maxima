@@ -153,7 +153,7 @@
    ((and (eq (caar expres) '%derivative)
 	 (eq (caar exp) (caar expres))
 	 (or (atom (cadr exp)) (not (eq (caaadr exp) 'mqapply))
-	     (merror "Invalid arg to INTEGRATE:~%~M" exp))
+	     (merror "Invalid arg to `integrate':~%~M" exp))
 	 (checkderiv exp)))
    ((not (eq (caar expres) 'mexpt)) nil)
    ((integerp (caddr expres)) (intform (cadr expres)))

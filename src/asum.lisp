@@ -269,7 +269,7 @@
   (setq z (mapcar #'(lambda (q) (simpcheck q z)) (cdr x)))
   (let ((a (car z)) (b ($entier (cadr z))) (c (caddr z)))
     (cond ((and (fixnump b) (> b -1)) (gfact a b c))
-	  ((integerp b) (merror "Bad second argument to GENFACT: ~:M" b))
+	  ((integerp b) (merror "Bad second argument to `genfact': ~:M" b))
 	  (t (eqtest (list '(%genfact) a
 			   (if (and (not (atom b))
 				    (eq (caar b) '$entier))
@@ -349,7 +349,7 @@ summation when necessary."
 	    (simplifya (sum-upper x) z)))
 
 (defun simpsum1 (exp i lo hi)
-  (cond ((not (symbolp i)) (merror "Improper index to SUM:~%~M" i))
+  (cond ((not (symbolp i)) (merror "Improper index to `sum':~%~M" i))
 	((equal lo hi) (mbinding ((list i) (list hi)) (meval exp)))
 	((and (atom exp)
 	      (not (eq exp i))

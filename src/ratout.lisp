@@ -437,7 +437,7 @@
 	      (equal (car x) (car y)) (equal (caar x) 'mrat)
 	      (equal (cddr x) 1) (equal (cddr y) 1))
 	 (cons (car x)(cons (fptimes (cadr x)(cadr y))1)))
-	(t (merror "Use FASTTIMES only on CRE polynomials with same varlists"))))
+	(t (merror "Use `fasttimes' only on CRE polynomials with same varlists"))))
 
 (defun fptimes (x y) (cond ((or (pzerop x) (pzerop y)) (pzero))
 			   ((pcoefp x) (pctimes x y))
@@ -483,7 +483,7 @@
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
 
 (defmfun $ratweight n 
-  (cond ((oddp n) (merror "RATWEIGHT takes an even number of arguments.")))
+  (cond ((oddp n) (merror "`ratweight' takes an even number of arguments.")))
   (do ((*i* 1 (f+ *i* 2))) ((> *i* n))
     (rplacd (or (zl-assoc (arg *i*) *ratweights)
 		(car (setq *ratweights (cons (list (arg *i*)) *ratweights))))
@@ -708,7 +708,7 @@
     (or (andmapc #'(lambda (exp)
 		     (or (alike1 x exp) (free exp x)))
 		 varlist)
-	(merror "RATDIFF variable is embedded in kernel"))
+	(merror "`ratdiff' variable is embedded in kernel"))
     (setq p (ratf p))
     (setq x (caadr (ratf x)))
     (setq p (cons (car p) (ratderivative (cdr p) x)))

@@ -30,7 +30,7 @@
 
 ;;; from CLOCC: <http://clocc.sourceforge.net>
 (defun open-socket (host port &optional bin)
-  "Open a socket connection to HOST at PORT."
+  "Open a socket connection to `host' at `port'."
   (declare (type (or integer string) host) (fixnum port) (type boolean bin))
   (let ((host (etypecase host
                 (string host)

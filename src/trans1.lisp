@@ -54,7 +54,7 @@
 ;; (TWO-ARG-CHECK L)
 ;; ((LAMBDA (FUN ARG)
 ;;   (COND ((NOT ($LISTP ARG))
-;;	  (DISPLA FUN) (DISPLA ARG) (MERROR "Second arg to APPLY must be a list")))
+;;	  (DISPLA FUN) (DISPLA ARG) (MERROR "Second arg to `apply' must be a list")))
 ;;   (AUTOLDCHK (SETQ FUN (GETOPR FUN)))
 ;;   (COND ((EQ (GET FUN 'DIMENSION) 'DIMENSION-INFIX) (TWOARGCHK ARG FUN)))
 ;;   (MAPPLY FUN (CDR ARG) (CAR L)))
@@ -157,7 +157,7 @@
   `($any $put ',(cadr form) ',(caddr form) ',(cadddr form)))
 
 ;;;(DEFMFUN $SUBVAR FEXPR (L)
-;;; (COND ((NULL L) (ERLIST "Wrong number of args to SUBVAR")))
+;;; (COND ((NULL L) (ERLIST "Wrong number of args to `subvar'")))
 ;;; (MEVAL (CONS '(MQAPPLY ARRAY) L)))
 
 (def%tr $subvar (form)
@@ -285,7 +285,7 @@
     `(,mode . ((lambda (x)
 		 (cond ((null mcatch)
 			(displa x)
-			(merror "THROW not within CATCH")))
+			(merror "`throw' not within `catch'")))
 		 (throw 'mcatch x))
 	       ,exp))))
 
@@ -438,7 +438,7 @@
 		     ,|0| ,n))))
 	(t
 	 (mformat *translation-msgs-files*
-		  "Wrong number of args to MAKELIST")
+		  "Wrong number of args to `makelist'")
 	 (setq tr-abort t)
 	 '($any . '$**error**))))
 

@@ -29,8 +29,8 @@
 ;; Global variables referenced throughout the rational function package.
 
 (defmvar modulus nil "Global switch for doing modular arithmetic")
-(defmvar hmodulus nil "Half of MODULUS")
-(defmvar errrjfflag nil "Controls action of ERRRJF (MAXIMA-ERROR or throw)")
+(defmvar hmodulus nil "Half of `modulus'")
+(defmvar errrjfflag nil "Controls action of `errrjf' (`maxima-error' or throw)")
 
 ;;(DEFsubst POINTERGP (A B) (> (VALGET A) (VALGET B))) ;;better a macro in ratmac.
 

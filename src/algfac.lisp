@@ -175,9 +175,9 @@
      (declare(fixnum n i))
      (setq fl (list f) n (cadr f))
      loop (cond ((null fl)(cond((null nfl)  
-				(cond ((= n (length ans))(setq trl* nil)(return ans))(t (merror "GFSPLIT"))))(t(setq fl nfl nfl nil i (f1+ i))))))
+				(cond ((= n (length ans))(setq trl* nil)(return ans))(t (merror "`gfsplit'"))))(t(setq fl nfl nfl nil i (f1+ i))))))
      (setq f (car fl) fl (cdr fl))
-     (cond((> i mm*) (merror "GFSPLIT")))
+     (cond((> i mm*) (merror "`gfsplit'")))
 
      (comment	     (cond ((and (null modulus) (not alpha) (equal 2. (cadr f)))
 			    (setq ans (nconc ans (pfactorquad f)))
@@ -198,7 +198,7 @@
 	    (setq alc (painvmod (caddr tr)) tr (ptimes alc tr)))
 	   (t (setq alc 1.)))
      bk   (cond ((pcoefp f) (return
-			      (cond ((and(null f1)(null f2))(merror "WRONG TRACE"))(t (cons f1 f2)))))
+			      (cond ((and(null f1)(null f2))(merror "Wrong trace"))(t (cons f1 f2)))))
 		((equal (cadr f) 1.) (return (cons (cons f f1) f2)))
 		((equal m modulus)(return (cons f1 (cons f f2)))))
      (setq trm (pdifference tr (ptimes m alc)))

@@ -154,7 +154,7 @@
 	 (destructuring-let ((((nil ssymbol) (nil (nil definition) nil)) (cdr form)))
 	   (unless (eq (car definition) 'lambda)
 	     (tr-format
-	      "~%PATCH-UP-MEVAL-IN-FSET: Not a lambda expression:~%~A"
+	      "~%`patch-up-meval-in-fset': Not a lambda expression:~%~A"
 	      definition)
 	     (barfo))
 	   (tr-format "~%Translating rule or match ~:M" ssymbol)
@@ -260,7 +260,7 @@
 	 ;; and appears like a useless double-evaluation of arguments.
 	 form)
 	('else
-	 (tr-tell "Punting: Unbound MEVAL found!")
+	 (tr-tell "Punting: Unbound `meval' found!")
 	 (throw 'lisp->lisp-tr-lambda ()))))
 
 (defun-prop (is tr-lisp->lisp) (form)
@@ -269,5 +269,5 @@
 	      (eq (car form) 'quote))
 	 (cdr (translate `(($is) ,(cadr form)))))
 	('else
-	 (tr-tell "Punting: Unbound IS found!")
+	 (tr-tell "Punting: Unbound `is' found!")
 	 (throw 'lisp->lisp-tr-lambda ()))))

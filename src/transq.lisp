@@ -138,7 +138,7 @@
 		`(,f ,@ (copy-rest-arg argl)))
 	       ((get f '*fexpr)
 		(format msgfiles
-			"~&(COMMENT *MACSYMA* unhandled FEXPR ~S may barf)~%"
+			"~&(Comment *Macsyma* unhandled `fexpr' ~S may barf)~%"
 			f)
 		`(,f ,@ (copy-rest-arg argl)))
 	       ((eq info 'luser)

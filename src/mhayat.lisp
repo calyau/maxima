@@ -259,7 +259,7 @@
 (defmacro tay-err (msg) `(throw 'tay-err (list ,msg last-exp)))
 
 (defmacro zero-warn (exp)
-  `(mtell "~%~M~%Assumed to be zero in TAYLOR~%"
+  `(mtell "~%~M~%Assumed to be zero in `taylor'~%"
     `((mlable) () ,,exp)))
 
 

@@ -24,7 +24,7 @@
   text in a compact format.")
 
 (defmvar $errormsg 't
-  "If FALSE then NO MAXIMA-ERROR message is printed!")
+  "If `false' then no maxima-error message is printed!")
 
 (defmfun $error (&rest l)
   "Signals a Macsyma user error."
@@ -99,7 +99,7 @@
 	(t
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
-	 (format t "~& -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);~%")
+	 (format t "~& -- an error.  Quitting.  To debug this try debugmode(true);~%")
 	 (throw 'macsyma-quit t )
 					;(if errcatch (error "macsyma error"))
 	 )))
@@ -109,7 +109,7 @@
 ;;  (merror "hi there ~:M and ~:M" he he))
 
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
-  "Symbols to bind the too-large MAXIMA-ERROR expresssions to")
+  "Symbols to bind the too-large `maxima-error' expresssions to")
 
 (defun-prop ($error_syms assign) (var val)
   (if (not (and ($listp val)
@@ -145,7 +145,7 @@
 	     (push form new-argl))))))
 
 (defmfun $errormsg ()
-  "ERRORMSG() redisplays the MAXIMA-ERROR message while in an MAXIMA-ERROR break."
+  "errormsg() redisplays the maxima-error message while in a `maxima-error' break."
   ;; Don't optimize out call to PROCESS-ERROR-ARGL in case of
   ;; multiple calls to $ERRORMSG, because the user may have changed
   ;; the values of the special variables controling its behavior.
@@ -157,7 +157,7 @@
       (if (null (errset
 		 (apply #'mformat nil
 			(cadr $error) (caddr the-jig))))
-	  (mtell "~%** error while printing ERROR message **~%~A~%"
+	  (mtell "~%** error while printing error message **~%~A~%"
 		 (cadr $error)
 		 )))
     (fresh-line)

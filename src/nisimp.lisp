@@ -25,11 +25,11 @@
 (defmvar $letrat nil) 
 
 (defmvar $default_let_rule_package '$default_let_rule_package
-  "The name of the default rule package used by LET and LETSIMP")
+  "The name of the default rule package used by `let' and `letsimp'")
 (putprop '$default_let_rule_package 'let-rule-setter 'assign)
 
 (defmvar $current_let_rule_package '$default_let_rule_package
-  "The name of the current rule package used by LET and LETSIMP")
+  "The name of the current rule package used by `let' and `letsimp'")
 (putprop '$current_let_rule_package 'let-rule-setter 'assign)
 
 (defmvar $let_rule_packages '((mlist) $default_let_rule_package)
@@ -40,12 +40,12 @@
 
 (defun let-rule-setter (var val)
   (cond ((eq var '$default_let_rule_package)
-	 (merror "~%Attempt to change DEFAULT_LET_RULE_PACKAGE~%"))
+	 (merror "~%Attempt to change `default_let_rule_package'~%"))
 	((and (eq var '$current_let_rule_package)
 	      (not (memalike val (cdr $let_rule_packages))))
 	 (merror "~%~M is not a rule package~%" val))
 	((eq var '$let_rule_packages)
-	 (merror "~%Use LET to add let rule packages~%"))))
+	 (merror "~%Use `let' to add let rule packages~%"))))
 	 
 (defmspec $let (l) (setq l (cdr l))
 	  (if (null (cdr l)) (wna-err '$let))
@@ -171,7 +171,7 @@
      (setq permlist (nispermutations llist))
      step (when (null permlist) (setq nistree x) (return nil))
      (setq x (nistreetrimmer (car permlist) x))
-     (if (null nisflag) (merror "~M not found - REMLET" pat))
+     (if (null nisflag) (merror "~M not found - `remlet'" pat))
      (setq permlist (cdr permlist))
      (go step))) 
 

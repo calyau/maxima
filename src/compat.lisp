@@ -153,7 +153,7 @@
 		(case (length array-ref)
 		  (2 `(store-internal-1d ,@array-ref ,new-value))
 		  (3 `(store-internal-2d ,@array-ref ,new-value))
-		  (otherwise (error "Cannot expand STORE for array reference ~S" array-ref))))))
+		  (otherwise (error "Cannot expand `store' for array reference ~S" array-ref))))))
 
 
 
@@ -177,13 +177,13 @@
        (defun store-internal-1d (array-spec index new-value)
 	 (loop until (arrayp array-spec)
 		do (cond ((symbolp array-spec) (setq array-spec (symbol-array array-spec)))
-			 (t (error "STORE failed -- can't find array for ~S" array-spec))))
+			 (t (error "`store' failed -- can't find array for ~S" array-spec))))
 	 (setf (aref array-spec index) new-value))
 
        (defun store-internal-2d (array-spec i1 i2 new-value)
 	 (loop until (arrayp array-spec)
 		do (cond ((symbolp array-spec) (setq array-spec (symbol-array array-spec)))
-			 (t (error "STORE failed -- can't find array for ~S" array-spec))))
+			 (t (error "`store' failed -- can't find array for ~S" array-spec))))
 	 (setf (aref array-spec i1 i2) new-value))
 
        )				;End PROGN 'COMPILE

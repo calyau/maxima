@@ -91,7 +91,7 @@
 (defmfun $charpoly (mat var) 
   (setq mat (check mat))
   (if (not (= (length mat) (length (cadr mat))))
-      (merror "Matrix must be square - CHARPOLY")) 
+      (merror "Matrix must be square - `charpoly'")) 
   (cond ((not $ratmx) (det1 (addmatrix1
 			     (setq mat (mcx (cdr mat))) 
 			     (diagmatrix (length mat) (list '(mtimes) -1 var) '$charpoly))))
@@ -158,7 +158,7 @@
   (cond ((atom mat) (list '(%determinant) mat))
 	(t (setq mat (check mat))
 	   (if (not (= (length mat) (length (cadr mat))))
-	       (merror "DETERMINANT called on a non-square matrix."))
+	       (merror "`determinant' called on a non-square matrix."))
            (cond ((not $ratmx) (det1 (mcx (cdr mat))))
 	         (t (newvarmat1 mat) (determinant1 (mcx (cdr mat))))))))
 
@@ -601,7 +601,7 @@
      (go loop)))
  
 (defun deleterow (i m) 
-  (cond ((or (null m) (lessp i 0)) (merror "Incorrect index - MATRIX"))
+  (cond ((or (null m) (lessp i 0)) (merror "Incorrect index - `matrix'"))
 	((= i 1) (cdr m)) 
 	(t (cons (car m) (deleterow (f1- i) (cdr m)))))) 
  
@@ -613,9 +613,9 @@
 
 (defmfun $setelmx (elm m n mat) 
   (cond ((not (and (integerp m) (integerp n) ($matrixp mat)))
-	 (merror "Wrong arg to SETELMX"))
+	 (merror "Wrong arg to `setelmx'"))
 	((not (and (> m 0) (> n 0) (> (length mat) m) (> (length (cadr mat)) n)))
-	 (merror "No such entry - SETELMX")))
+	 (merror "No such entry - `setelmx'")))
   (rplaca (ncdr (car (ncdr mat (f1+ m))) (f1+ n)) elm) mat) 
  
 ;;; Here the function transpose can actually do simplification of

@@ -35,7 +35,7 @@
 		    (aset (aref old-array i) new-array i))
 		  (if (symbolp array-symbol) (setf (symbol-array  array-symbol)  new-array))
 		  new-array))
-	       (t (error  "Can't handle *REARRAY with more than one dimension")))))
+	       (t (error  "Can't handle *rearray with more than one dimension")))))
 
 (defun runtime nil (#-cl time
 			 #+cl get-internal-run-time))

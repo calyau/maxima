@@ -128,7 +128,7 @@ call."
      expansion)
     (($displace)
      (mmacro-displace form expansion))
-    (t (mtell "Warning:  MACROEXPANSION set to unrecognized value."))))
+    (t (mtell "Warning:  `macroexpansion' set to unrecognized value."))))
 
 
 (defun mmacro-displace (form expansion)
@@ -148,13 +148,13 @@ call."
 
 (defmspec $macroexpand (form) (setq form (cdr form))
 	  (cond ((or (null form) (cdr form))
-		 (merror "MACROEXPAND only takes one argument:~%~M"
+		 (merror "`macroexpand' only takes one argument:~%~M"
 			 `(($macroexpand) ,@form)))
 		(t (mmacroexpand (car form)))))
 
 (defmspec $macroexpand1 (form) (setq form (cdr form))
 	  (cond ((or (null form) (cdr form))
-		 (merror "MACROEXPAND only takes one argument: ~%~M"
+		 (merror "`macroexpand' only takes one argument: ~%~M"
 			 `(($macroexpand1) ,@form)))
 		(t (mmacroexpand1 (car form)))))
 

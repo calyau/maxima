@@ -101,9 +101,9 @@
   ;;  (declare (special varxlist)) ;;??
   (setq $%rnum_list (list '(mlist)))
   (cond ((not ($listp lhslist))
-	 (merror  "Wrong type arg to ALGSYS:~%~M" lhslist))
+	 (merror  "Wrong type arg to `algsys':~%~M" lhslist))
 	((not ($listp varxlist))
-	 (merror "Wrong type arg to ALGSYS:~%~M" varxlist)))
+	 (merror "Wrong type arg to `algsys':~%~M" varxlist)))
   ((lambda (tlhslist *tvarxlist* solnlist $ratprint $ratepsilon
 	    $keepfloat varlist genvar $ratfac $breakup
 	    $solvefactors *roots *failures *ivar* $polyfactor 
@@ -119,7 +119,7 @@
      (setq *tvarxlist*
 	   (mapcar #'(lambda (q)
 		       (cond ((mnump q)
-			      (merror "Unacceptable variable to ALGSYS:~%~M"
+			      (merror "Unacceptable variable to `algsys':~%~M"
 				      q))
 			     (t (caadr (ratf q)))))
 		   (cdr varxlist)))
@@ -487,7 +487,7 @@
 	   
 (defun callapprs (poly)
   (or (punivarp poly)
-      (merror "ALGSYS cannot solve - system too complicated."))
+      (merror "`algsys' cannot solve - system too complicated."))
   (let ($rootsquad $dispflag)
     (cond ($realonly
 	   (mapcar (function (lambda (q)
@@ -507,7 +507,7 @@
 	 (do ((tlhsl lhsl (cdr tlhsl))) (nil)
 	   (cond ((null tlhsl)
 		  (merror
-		   "ALGSYS cannot solve - system too complicated."))
+		   "`algsys' cannot solve - system too complicated."))
 		 ((pconstp (car tlhsl)) (return nil))
 		 ((punivarp (car tlhsl))
 		  (return (bakalevel (callapprs (car tlhsl))

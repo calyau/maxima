@@ -37,7 +37,7 @@
   (case (ml-typep x)
     (array (array-element-type x))
     (hash-table 'hash-table)
-    (cl:array  (princ "confusion over ARRAY and CL:ARRAY")
+    (cl:array  (princ "confusion over `array' and `cl:array'")
 		  (array-element-type x))
     (otherwise
  
@@ -83,7 +83,7 @@
 				    :generator (car diml)
 				    :null the-null)))
 		 ('else
-		  (merror "Array type of ~M is not recognized by MAKE_ARRAY" type))))
+		  (merror "Array type of ~M is not recognized by `make_array'" type))))
 	  ('else
 	   (apply '*array nil (cdr ltype) diml)))))
 
@@ -137,7 +137,7 @@
   (array-dimension  (marray-check a) n))
 
 (defun marray-type-unknown (x)
-  (merror "BUG: Array of unhandled type: ~S" x))
+  (merror "Bug: Array of unhandled type: ~S" x))
 
 (defun marrayref-gensub (aarray ind1 inds)  
   (case (marray-type aarray)

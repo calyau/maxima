@@ -225,7 +225,7 @@
 			    nil))))))
 
 (defmfun $depends n
-  (if (oddp n) (merror "DEPENDS takes an even number of arguments."))
+  (if (oddp n) (merror "`depends' takes an even number of arguments."))
   (do ((i 1 (f+ i 2)) (l))
       ((> i n) (i-$dependencies (nreverse l)))
     (cond (($listp (arg i))
@@ -243,7 +243,7 @@
   (dolist (z l)
     (cond ((atom z) (merror "Wrong format.  Try F(X)."))
 	  ((or (eq (caar z) 'mqapply) (memq 'array (cdar z)))
-	   (merror "Improper form for DEPENDS:~%~M" z))
+	   (merror "Improper form for `depends':~%~M" z))
 	  (t (let ((y (mget (caar z) 'depends)))
 	       (mputprop (caar z)
 			 (setq y (union* (reverse (cdr z)) y))
@@ -256,7 +256,7 @@
 (defmspec $gradef (l) (setq l (cdr l))
 	  (let ((z (car l)) (n 0))
 	    (cond ((atom z)
-		   (if (not (= (length l) 3)) (merror "Wrong arguments to GRADEF"))
+		   (if (not (= (length l) 3)) (merror "Wrong arguments to `gradef'"))
 		   (mputprop z
 			     (cons (cons (cadr l) (meval (caddr l)))
 				   (mget z '$atomgrad))
@@ -265,12 +265,12 @@
 		   (add2lnc z $props)
 		   z)
 		  ((or (mopp1 (caar z)) (memq 'array (cdar z)))
-		   (merror "Wrong arguments to GRADEF:~%~M" z))
+		   (merror "Wrong arguments to `gradef':~%~M" z))
 		  ((prog2 (setq n (f- (length z) (length l))) (minusp n))
 		   (wna-err '$gradef))
 		  (t (do ((zl (cdr z) (cdr zl))) ((null zl))
 		       (if (not (symbolp (car zl)))
-			   (merror "Parameters to GRADEF must be names:~%~M"
+			   (merror "Parameters to `gradef' must be names:~%~M"
 				   (car zl))))
 		     (setq l (nconc (mapcar #'(lambda (x) (remsimp (meval x)))
 					    (cdr l))
@@ -304,7 +304,7 @@
 		((null (cddr z)) (wna-err '$diff))
 		((not (eq (ml-typep (caddr z)) 'fixnum)) (go noun))
 		((minusp (setq count (caddr z)))
-		 (merror "Improper count to DIFF:~%~M" count)))
+		 (merror "Improper count to `diff':~%~M" count)))
      loop1(cond ((zerop count) (rplacd z (cdddr z)) (go loop2))
 		((equal (setq exp (sdiff exp (cadr z))) 0) (return 0)))
      (setq count (f1- count))
@@ -586,7 +586,7 @@
 
 (defmfun $dispform n
   (if (not (or (= n 1) (and (= n 2) (eq (arg 2) '$all))))
-      (merror "Incorrect arguments to DISPFORM"))
+      (merror "Incorrect arguments to `dispform'"))
   (let ((e (arg 1)))
     (if (or (atom e)
 	    (atom (setq e (if (= n 1) (nformat e) (nformat-all e))))
@@ -803,7 +803,7 @@
 			    (atomchk (setq u (specrepcheck u)) '$append nil)
 			    (if (or (not (alike1 op (mop u)))
 				    (not (eq arrp (if (memq 'array (cdar u)) t))))
-				(merror "Arguments to APPEND are not compatible."))
+				(merror "Arguments to `append' are not compatible."))
 			    (margs u))
 			(listify n)))))))
 
@@ -826,7 +826,7 @@
 
 (defmfun $first (e)
   (atomchk (setq e (format1 e)) '$first nil)
-  (if (null (cdr e)) (merror "Argument to FIRST is empty."))
+  (if (null (cdr e)) (merror "Argument to `first' is empty."))
   (car (margs e)))
 
 ;; This macro is used to create functions second thru tenth.
@@ -857,11 +857,11 @@
      (cond ((= n 1))
 	   ((not (= n 2)) (wna-err '$rest))
 	   ((not (fixnump (arg 2)))
-	    (merror "2nd argument to REST must be an integer:~%~M"
+	    (merror "2nd argument to `rest' must be an integer:~%~M"
 		    (arg 2)))
 	   ((minusp (setq n (arg 2))) (setq n (f- n) revp t)))
      (if (< (length (margs m)) n)
-	 (if $partswitch (return '$end) (merror "REST fell off end.")))
+	 (if $partswitch (return '$end) (merror "`rest' fell off end.")))
      (setq fun (car m))
      (if (eq (car fun) 'mqapply) (setq fun1 (cadr m) m (cdr m)))
      (setq m (cdr m))
@@ -875,7 +875,7 @@
 
 (defmfun $last (e)
   (atomchk (setq e (format1 e)) '$last nil)
-  (if (null (cdr e)) (merror "Argument to LAST is empty."))
+  (if (null (cdr e)) (merror "Argument to `last' is empty."))
   (car (last e)))
 
 (defmfun $args (e) (atomchk (setq e (format1 e)) '$args nil)
@@ -885,7 +885,7 @@
   (cond ((= n 2) (setq n -1))
 	((not (= n 3)) (wna-err '$delete))
 	((or (not (fixnump (arg 3))) (minusp (setq n (arg 3))))
-	 (merror "Improper 3rd argument to DELETE:~%~M" (arg 3))))
+	 (merror "Improper 3rd argument to `delete':~%~M" (arg 3))))
   (let ((x (arg 1)) (l (arg 2)))
     (atomchk (setq l (specrepcheck l)) '$delete t)
     (setq x (specrepcheck x) l (cons (delsimp (car l)) (copy-top-level (cdr l))))
@@ -901,11 +901,11 @@
   (setq e (cond (($listp e) e)
 		((or $inflag (not ($ratp e))) (specrepcheck e))
 		(t ($ratdisrep e))))
-  (cond ((symbolp e) (merror "LENGTH called on atomic symbol ~:M" e))
+  (cond ((symbolp e) (merror "`length' called on atomic symbol ~:M" e))
 	((or (numberp e) (eq (caar e) 'bigfloat))
 	 (if (and (not $inflag) (mnegp e))
 	     1
-	     (merror "LENGTH called on number ~:M" e)))
+	     (merror "`length' called on number ~:M" e)))
 	((or $inflag (not (memq (caar e) '(mtimes mexpt)))) (length (margs e)))
 	((eq (caar e) 'mexpt)
 	 (if (and (alike1 (caddr e) '((rat simp) 1 2)) $sqrtdispflag) 1 2))

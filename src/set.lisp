@@ -37,7 +37,7 @@
 
 (defun $equalp (x y)
   (cond ((or ($listp x) ($listp y))
-	 (merror "Both arguments to EQUALP must be non-lists."))	
+	 (merror "Both arguments to `equalp' must be non-lists."))	
 	(t ($xequalp x y))))
 
 ;; If you are certain that x and y are not lists, you might call
@@ -71,7 +71,7 @@
 (defun $adjoin (x a)
   (cond (($listp a)
 	 (cons '(mlist) (adjoin x (margs a) :test #'$elem_equalp)))
-	(t (merror "The second argument to ADJOIN must be a list"))))
+	(t (merror "The second argument to `adjoin' must be a list"))))
 
 ;; Setify removes duplicates from a Maxima list and sorts the
 ;; list using the partial ordering function canonlt. To remove the
@@ -81,7 +81,7 @@
 (defun $setify (a)
   (cond (($listp a)
 	 (mysort (cons '(mlist) (remove-duplicates (margs a) :test #'$elem_equalp))))
-	(t (merror "The argument to SETIFY must be a list."))))
+	(t (merror "The argument to `setify' must be a list."))))
 
 ;; When $canonlt is $unorderedp, don't sort; when $canonlt isn't
 ;; $unorderedp, sort the list using the predicate $canonlt.
@@ -96,7 +96,7 @@
 (defmfun $union ( &rest a)
   (setq a (margs a))
   (cond ((member nil (mapcar #'$listp a))
-	 (merror "Each argument to UNION must be a list."))
+	 (merror "Each argument to `union' must be a list."))
 	(t
 	 (cons '(mlist) (remove-duplicates (apply 'append  (map 'list 'rest a)) :test #'$elem_equalp)))))
 
@@ -106,7 +106,7 @@
 (defun $setdifference (a b)
   (cond ((and ($listp a) ($listp b))
 	 (cons '(mlist) (set-difference (margs a) (margs b) :test #'$elem_equalp)))
-	(t (merror "Both arguments to SETDIFFERENCE must be lists."))))
+	(t (merror "Both arguments to `setdifference' must be lists."))))
 
 ;; Return the intersection of lists a and b.  Use element_equalp for the
 ;; equality test. Signal an error if a or b aren't lists.
@@ -114,7 +114,7 @@
 (defmfun $intersection ( &rest a)
   (setq a (margs a))
   (cond ((member nil (mapcar #'$listp a))
-	 (merror "Each argument to INTERSECTION must be a list."))
+	 (merror "Each argument to `intersection' must be a list."))
 	(t
 	 (setq a (mapcar #'margs a))
 	 (cons '(mlist)
@@ -128,7 +128,7 @@
 (defun $subsetp (a b)
   (cond ((and ($listp a) ($listp b))
 	 (xsubsetp (margs a) b))
-	(t (merror "Both arguments to SUBSETP must be lists."))))
+	(t (merror "Both arguments to `subsetp' must be lists."))))
 
 ;; xsubsetp returns true if and only if each element of the Lisp
 ;; list a is a member of the Maxima list b.  This function isn't 
@@ -171,7 +171,7 @@
 (defun $emptyp(e)
   (cond (($listp e)
 	 (like e '((mlist))))
-	(t (merror "Argument to EMPTYP must be a list."))))
+	(t (merror "Argument to `emptyp' must be a list."))))
 
 ;; Return an n element Maxima list [e,e,e,...e]. When n < 0 or
 ;; n isn't an integer, signal an error.
@@ -179,7 +179,7 @@
 (defun $dupe (e n)
   (cond ((and (integerp n) (> n -1))
 	 (cons '(mlist) (make-list n :initial-element e)))
-	(t (merror "Second argument to DUPE must be a nonnegative integer."))))
+	(t (merror "Second argument to `dupe' must be a nonnegative integer."))))
 
 ;; Return true if and only if the lists a and b are disjoint;
 ;; signal an error if a or b aren't lists.
@@ -187,7 +187,7 @@
 (defun $disjointp (a b)
   (cond ((and ($listp a) ($listp b))
 	 (not (intersection (margs a) (margs b) :test #'$elem_equalp)))
-	(t (merror "Both arguments to DISJOINTP must be lists."))))
+	(t (merror "Both arguments to `disjointp' must be lists."))))
 
 ;; Return those elements of a for which the predicate f evaluates
 ;; to true; signal an error if a isn't a list.
@@ -198,7 +198,7 @@
 	 (let ((acc nil))
 	   (dolist (x a (cons '(mlist) acc))
 	     (if (mfuncall f x) (setq acc (cons x acc))))))
-	(t (merror "First argument to SUBSET must be a list."))))
+	(t (merror "First argument to `subset' must be a list."))))
 
 ;; Return the union of a - b and b - a; signal an error if a or b
 ;; aren't lists.
@@ -206,14 +206,14 @@
 (defun $symmdifference (a b)
   (cond ((and ($listp a) ($listp b))
 	 (mfuncall '$union ($setdifference a b) ($setdifference b a)))
-	(t (merror "Both arguments to SYMMDIFFERENCE must be lists."))))
+	(t (merror "Both arguments to `symmdifference' must be lists."))))
 
 ;; Return a list of the elements in b that are not in a.
 
 (defun $complement (a b)
   (cond ((and ($listp a) ($listp b))
 	 ($setdifference b a))
-	(t (merror "Both arguments to COMPLEMENT must be lists."))))
+	(t (merror "Both arguments to `complement' must be lists."))))
 
 ;; Return true if and only if the argument is a Maxima list and the
 ;; list does not have duplicate elements.  setp doesn't check that
@@ -234,7 +234,7 @@
 	 (setq a ($setify a))
 	 (cons '(mlist) (mapcar #'(lambda (x) (cons '(mlist) x))
 				(powerset (margs a)))))
-	(t (merror "Argument to POWERSET must be a list."))))
+	(t (merror "Argument to `powerset' must be a list."))))
 
 (defun powerset (a)
   (cond ((null a) (list nil))
@@ -256,7 +256,7 @@
 	       (t
 		(merror "Second argument to SUBPOWERSET must
 be a nonnegative integer."))))
-	(t (merror "First argument to SUBPOWERSET must be a list."))))
+	(t (merror "First argument to `subpowerset' must be a list."))))
 
 (defun subpowerset (a n)
   (cond ((or (< n 1) (null a))

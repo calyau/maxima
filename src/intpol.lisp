@@ -102,7 +102,7 @@
 		    (($interpolate_subr)
 		     ((lambda) ((mlist) ,var) ,exp)
 		     ,@bnds))))))
-	(t (merror "wrong number of args to INTERPOLATE"))))
+	(t (merror "wrong number of args to `interpolate'"))))
 
 (defmspec $interpolate (form)
   (meval (interpolate-macro form nil)))

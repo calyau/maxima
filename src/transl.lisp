@@ -120,14 +120,14 @@
 
 (defmvar tstack nil " stack of local variable modes ")
 
-(defmvar local nil "T if a $LOCAL statement is in the body.")
-(defmvar arrays nil "arrays to declare to COMPLR")
+(defmvar local nil "T if a $local statement is in the body.")
+(defmvar arrays nil "arrays to declare to `complr'")
 (defmvar lexprs nil "Lexprs to declare.")
 (defmvar exprs nil "what else?")
 (defmvar fexprs nil "Fexprs to declare.")
 (defmvar tr-progret t)
 (defmvar inside-mprog nil)
-(defmvar returns nil "list of TRANSLATEd return forms in the block.")
+(defmvar returns nil "list of `translate'd return forms in the block.")
 (defmvar return-mode nil "the highest(?) mode of all the returns.")
 (defmvar need-prog? nil)
 (defmvar assigns nil "These are very-special variables which have a macsyma
@@ -140,7 +140,7 @@
 
 (defmvar *transl-backtrace* nil
   " What do you think? ")
-(defmvar *transl-debug* nil "if T it pushes BACKTRACE and TRACE ")
+(defmvar *transl-debug* nil "if T it pushes `backtrace' and `trace' ")
 
 (defmvar tr-abort nil "set to T if abortion is requested by any of the
 	sub-parts of the translation. A *THROW would be better, although it
@@ -158,7 +158,7 @@
 
 (defmvar $tr_warn_meval
     '$compfile
-  "If MEVAL is called that indicates problems in the translation")
+  "If `meval' is called that indicates problems in the translation")
 
 (defmvar $tr_warn_fexpr
     '$compfile
@@ -192,7 +192,7 @@ APPLY means like APPLY.")
   "If true runtime code uses value of the variable as the array.")
 
 (defmvar $tr_numer nil
-  "If TRUE numer properties are used for atoms which have them, e.g. %PI")
+  "If `true' numer properties are used for atoms which have them, e.g. %pi")
 
 (defmvar $tr_predicate_brain_damage nil
   "If TRUE, output possible multiple evaluations in an attempt
@@ -212,7 +212,7 @@ APPLY means like APPLY.")
     ($boolean  . nil)))
 
 (defvar tr-lambda-punt-assigns nil
-  "Kludge argument to TR-LAMBDA due to lack of keyword argument passing")
+  "Kludge argument to `tr-lambda' due to lack of keyword argument passing")
 
 (or (boundp '*in-compile*) (setq *in-compile* nil))
 
@@ -273,7 +273,7 @@ APPLY means like APPLY.")
 ;;; is quick and easy.
 
 (defmvar *tr-warn-break* t
-  " if in debug mode WARNINGs signaled go to lisp break loops ")
+  " if in debug mode `warning's signaled go to lisp break loops ")
 
 (defmacro tr-warnbreak () `(and *transl-debug* *tr-warn-break* (*break t 'transl)))
 
@@ -375,13 +375,13 @@ APPLY means like APPLY.")
   (warn-meval
    form
    (cond ((atom form)
-	  "This variable should be declared BOOLEAN perhaps.")
+	  "This variable should be declared `boolean' perhaps.")
 	 ((macsyma-special-op-p (caar form))
-	  "Special form not handled in targeting: Transl BUG.")
+	  "Special form not handled in targeting: Transl bug.")
 	 ((possible-predicate-op-p (caar form))
 	  "Unable to assert modes of subexpressions, a call to the macsyma data *print-base* has been generated.")
 	 (t
-	  "TRANSLATE doesn't know predicate properties for this, a call to the macsyma data *print-base* has been generated."))))
+	  "`translate' doesn't know predicate properties for this, a call to the macsyma data *print-base* has been generated."))))
 
 ;;;***************************************************************;;;
 
@@ -605,7 +605,7 @@ APPLY means like APPLY.")
 
 (defun apply-in$bind_during_translation (f form &rest l)
   (cond ((not ($listp (cadr form)))
-	 (tr-format "Badly formed BIND_DURING_TRANSLATION variable list.~%~:M"
+	 (tr-format "Badly formed `bind_during_translation' variable list.~%~:M"
 		    (cadr form))
 	 (apply f form l))
 	('else
@@ -621,7 +621,7 @@ APPLY means like APPLY.")
 		    (push (cadr p) vars) (push (meval (caddr p)) vals))
 		   ('else
 		    (tr-format
-		     "Badly formed BIND_DURING_TRANSLATION binding~%~:M"
+		     "Badly formed `bind_during_translation' binding~%~:M"
 		     p))))))))
 
 (defmfun translate-macexpr-toplevel (form &aux (*transl-backtrace* nil)
@@ -644,7 +644,7 @@ APPLY means like APPLY.")
 	   (setq whens (cond (($listp whens) (cdr whens))
 			     ((atom whens) (list whens))
 			     (t
-			      (tr-tell "Bad EVAL-WHEN times"
+			      (tr-tell "Bad `eval-when' times"
 				       (cadr form))
 			      nil)))
 	   (setq tr-whens (mapcar 'stripdollar whens))
@@ -1029,7 +1029,7 @@ APPLY means like APPLY.")
 
 (def%tr $eval_when (form)
   (tr-tell
-   "EVAL_WHEN can only be used at top level in a file"
+   "`eval_when' can only be used at top level in a file"
    form
    "it cannot be used inside an expression or function.")
   (setq tr-abort t)
@@ -1052,7 +1052,7 @@ APPLY means like APPLY.")
 
 (def%tr $local (form)
   (cond (local (tr-format
-		"Too many LOCAL statements in one block")
+		"Too many `local' statements in one block")
 	       (setq tr-abort t))
 	(t (setq local t)))
   (tr-format "Local does not work well in translated code.~
@@ -1195,7 +1195,7 @@ APPLY means like APPLY.")
 	   (setq arglist nil
 		 body (cdr form))))
     (cond ((null body)
-	   (tr-format "A BLOCK with no body: ~:M" form)
+	   (tr-format "A `block' with no body: ~:M" form)
 	   (setq body '(((mquote) $done)))))
     (setq val-list (mapcar #'(lambda (u)
 			       (if (atom u) u
@@ -1238,7 +1238,7 @@ APPLY means like APPLY.")
 			(warn-mode (car arglist)
 				   (value-mode (car arglist))
 				   (car (car val-list))
-				   "IN a BLOCK statement")
+				   "in a `block' statement")
 			(rplaca val-list (cdr (car val-list))))))
 	     val-list arglist)
        (setq l (nreverse l))
@@ -1271,7 +1271,7 @@ APPLY means like APPLY.")
 
 (def%tr mreturn (form)
   (if (null inside-mprog)
-      (tr-format "RETURN found not inside a BLOCK DO: ~%~:M" form))
+      (tr-format "`return' found not inside a `block' 'do': ~%~:M" form))
   (setq need-prog? t)
   (setq form (translate (cadr form)))
   (setq return-mode (if return-mode (*union-mode (car form) return-mode)
@@ -1283,9 +1283,9 @@ APPLY means like APPLY.")
 
 (def%tr mgo (form)
   (if (null inside-mprog)
-      (tr-format "~%GO found not inside a BLOCK or DO. ~%~:M" form))
+      (tr-format "~%`go' found not inside a `block' or `do'. ~%~:M" form))
   (if (not (symbolp (cadr form)))
-      (tr-format "~%GO TAG in form not symbolic.~%~:M" form))
+      (tr-format "~%`go' tag in form not symbolic.~%~:M" form))
   (setq need-prog? t)
   `($any . (go ,(cadr form))))
 
@@ -1579,7 +1579,7 @@ APPLY means like APPLY.")
   (and var (symbolp var) (not (eq var t))))
 
 (defun bad-var-warn (var)
-  (tr-format "~%BAD object to use as a variable:~%~:M~%" var))
+  (tr-format "~%Bad object to use as a variable:~%~:M~%" var))
 
 (defun tbind (var &aux old)
   (cond ((variable-p var)

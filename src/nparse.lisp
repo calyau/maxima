@@ -130,8 +130,8 @@
 
 (defvar *parse-stream*		()	  "input stream for Macsyma parser")
 (defvar macsyma-operators	()	  "Macsyma operators structure")
-(defvar *mread-prompt*		nil	  "prompt used by MREAD")
-(defvar *mread-eof-obj* () "Bound by MREAD for use by MREAD-RAW")
+(defvar *mread-prompt*		nil	  "prompt used by `mread'")
+(defvar *mread-eof-obj* () "Bound by `mread' for use by `mread-raw'")
 
 (defun tyi-parse-int (stream eof)
   (or *parse-window*
@@ -1040,7 +1040,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;	$CLAUSE = Match only boolean expressions (or $ANY)
 ;;;	$EXPR   = Match only mathematical expressions (or $ANY)
 ;;;  If a mismatched mode occurs, a syntax error will be flagged. Eg,
-;;;  this is why "X^A*B" parses but "X^A AND B" does not. X^A is a $EXPR
+;;;  this is why "X^A*B" parses but "X^A and B" does not. X^A is a $EXPR
 ;;;  and not coercible to a $CLAUSE. See CONVERT.
 ;;;
 ;;;  <mode> is the required mode of the result.
@@ -1584,7 +1584,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   (list* (parse (rpos op) (rbp op))
 	 (if (eq (first-c) '$then)
 	     (parse '$any (rbp (pop-c)))
-	     (mread-synerr "Missing THEN"))
+	     (mread-synerr "Missing `then'"))
 	 (case (first-c)
 	   (($else)   (list t (parse '$any (rbp (pop-c)))))
 	   (($elseif) (parse-condition (pop-c)))

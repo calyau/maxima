@@ -99,7 +99,7 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmfun $context flush
   flush					;Ignored
-  (merror "The CONTEXT function no longer exists."))
+  (merror "The `context' function no longer exists."))
 
 ;;; This "turns on" a context, making its facts visible.
 
@@ -131,7 +131,7 @@ relational knowledge is contained in the default context GLOBAL."
 (defmfun $facts n
   (cond ((equal n 0) (facts1 $context))
 	((equal n 1) (facts1 (arg n)))
-	(t (merror "FACTS takes zero or one argument only."))))
+	(t (merror "`facts' takes zero or one argument only."))))
        
 ;;(defun facts1 (con)
 ;;       (contextmark)
@@ -184,7 +184,7 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmspec $supcontext (x) (setq x (cdr x))
 	  (cond ((null x) (merror "You must supply a name for the context."))
-		((caddr x) (merror "SUPCONTEXT takes either one or two arguments."))
+		((caddr x) (merror "`supcontext' takes either one or two arguments."))
 		((not (symbolp (car x))) (nc-err))
 		((memq (car x) $contexts)
 		 (merror "Context ~M already exists." (car x)))
@@ -274,7 +274,7 @@ relational knowledge is contained in the default context GLOBAL."
 	(t (isp (munformat patevalled)))))
 
 (defmfun pre-err (pat)
-  (merror "MACSYMA was unable to evaluate the predicate:~%~M" pat))
+  (merror "`macsyma' was unable to evaluate the predicate:~%~M" pat))
 
 (defun is-mnot (pred)
   (setq pred (mevalp pred))
@@ -324,7 +324,7 @@ relational knowledge is contained in the default context GLOBAL."
 		  ((eq 'mnot (caaar x))
 		   (setq nl (cons (assume (meval (pred-reverse (cadar x)))) nl)))
 		  ((eq 'mor (caaar x))
-		   (merror "ASSUME: Macsyma is unable to handle assertions involving 'OR'."))
+		   (merror "`assume': Macsyma is unable to handle assertions involving `or'."))
 		  ((eq (caaar x) 'mequal)
 		   (merror "ASSUME: = means syntactic equality in Macsyma.
 Maybe you want to use EQUAL."))
@@ -374,7 +374,7 @@ Maybe you want to use NOT EQUAL."))
 		  ((eq 'mnot (caaar x))
 		   (setq nl (cons (forget (meval (pred-reverse (cadar x)))) nl)))
 		  ((eq 'mor (caaar x))
-		   (merror "MACSYMA is unable to handle assertions involving 'OR'."))
+		   (merror "Macsyma is unable to handle assertions involving `or'."))
 		  (t (setq nl (cons (forget (meval (car x))) nl))))
 	    (setq x (cdr x))))
 
@@ -534,7 +534,7 @@ Maybe you want to use NOT EQUAL."))
 		 ((and (null temp2) (null temp3)) temp1)
 		 ((and (null temp1) (null temp3)) temp2)
 		 (t (merror 
-		     "~%ASKSIGN: Internal error. See Maintainers.")))))))
+		     "~%`asksign': Internal error. See Maintainers.")))))))
 
 (defun eps-coef-sign (exp epskind)
   (let ((eps-power ($lopow exp epskind)) eps-coef)
@@ -554,7 +554,7 @@ Maybe you want to use NOT EQUAL."))
 				      (eq epskind '$zerob))))
 			 '$pos)
 			(t '$neg)))
-		 (t (merror "~%ASKSIGN or SIGN: Insufficient information.~%"))))
+		 (t (merror "~%`asksign' or `sign': Insufficient information.~%"))))
 	  (t (let ((deriv (sdiff exp epskind)) deriv-sign)
 	       (cond ((not (eq (setq deriv-sign ($asksign deriv)) '$zero))
 		      (total-sign epskind deriv-sign))
@@ -563,7 +563,7 @@ Maybe you want to use NOT EQUAL."))
 			     (setq deriv-sign ($asksign deriv)))
 			   '$zero))
 		      deriv-sign)
-		     (t (merror "~%ASKSIGN or SIGN: Insufficient data.~%"))))))))
+		     (t (merror "~%`asksign' or `sign': Insufficient data.~%"))))))))
 
 ;;; The above code does a partial Taylor series analysis of something 
 ;;; that isn't a polynomial.
@@ -698,7 +698,7 @@ Maybe you want to use NOT EQUAL."))
 ;;	       (setq x (infsimp x)))))
 ;; ; (setq x (infsimp* x))
 ;;  
-;;  (if (eq x '$UND) (if limitp '$PNZ (merror "SIGN called on UND.")))
+;;  (if (eq x '$`und') (if limitp '$PNZ (merror "`sign' called on `und'.")))
 ;;  (prog (dum exp)
 ;;	(setq dum (constp x) exp x)
 ;;	(cond ((or (numberp x) (ratnump x)))
@@ -739,7 +739,7 @@ Maybe you want to use NOT EQUAL."))
 (defun sign1 (x)
   (setq x (specrepcheck x))
   (setq x (infsimp* x))
-  (if (eq x '$und) (if limitp '$pnz (merror "SIGN called on UND.")))
+  (if (eq x '$und) (if limitp '$pnz (merror "`sign' called on `und'.")))
   (prog (dum exp)
      (setq dum (constp x) exp x)
      (cond ((or (numberp x) (ratnump x)))
@@ -1074,14 +1074,14 @@ Maybe you want to use NOT EQUAL."))
 (defun sign-oddinc (x) (sign (cadr x)))
 
 (defun imag-err (x)
-  (if sign-imag-errp (merror "SIGN called on an imaginary argument:~%~M" x)
+  (if sign-imag-errp (merror "`sign' called on an imaginary argument:~%~M" x)
       (throw 'sign-imag-err t)))
 
-(defun dbzs-err (x) (merror "Division by zero detected in SIGN:~%~M" x))
+(defun dbzs-err (x) (merror "Division by zero detected in `sign':~%~M" x))
 
 (defmfun $featurep (e ind)
   (cond ((not (symbolp ind))
-	 (merror "~M is not a symbolic atom - FEATUREP." ind))
+	 (merror "~M is not a symbolic atom - `featurep'." ind))
 	((eq ind '$integer) (maxima-integerp e))
 	((eq ind '$noninteger) (nonintegerp e))
 	((eq ind '$even) (mevenp e))

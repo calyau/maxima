@@ -40,7 +40,7 @@
 ;;(DEFUN PGCDU* (P Q)
 ;;       (COND ((OR (PCOEFP P) (PCOEFP Q))  1)
 ;;	     ((NULL MODULUS)
-;;	      (merror  "ILLEGAL CALL TO PGCDU"))
+;;	      (merror  "Illegal CALL TO PGCDU"))
 ;;	     ((> (CADR P) (CADR Q)) 
 ;;	      (PSIMP (CAR P) (DPDISREP (DPGCD (DPREP (CDR P)) (DPREP (CDR Q))))))
 ;;	     ((PSIMP (CAR P) (DPDISREP (DPGCD (DPREP (CDR Q)) (DPREP (CDR P))))))))

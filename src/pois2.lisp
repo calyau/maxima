@@ -134,19 +134,19 @@
 
 ;;(DEFUN POISENCODE (H*)
 ;;   (COND ((NOT (CHECKENCODE H*))
-;;	  (merror "Illegal arg to POISSIMP:~%~M" H*)))
+;;	  (merror "Illegal arg to `poissimp':~%~M" H*)))
 ;;   (APPLY (FUNCTION (LAMBDA ($Z $Y $X $W $V $U)
 ;;		      (DECLARE (SPECIAL $U $V $W $X $Y $Z)) 
 ;;			(SETQ H* (MEVAL H*))
 ;;			(COND ((NOT (INTEGERP H*))
-;;			       (merror  "Illegal trig arg to POISSON form")))
+;;			       (merror  "Illegal trig arg to `poisson' form")))
 ;;			(PLUS POISHIFT H*)))
 ;;	  POISVALS))
 
 (defun poislim1 (u n)
   u					;Ignored
   (cond ((not (fixnump n))
-	 (merror "Improper argument to POISLIM:~%~M" n)))
+	 (merror "Improper argument to `poislim':~%~M" n)))
   (setq poisvals nil)
   (setq poists #+nil (ash 1 n) #-nil (expt 2 n))
   (do ((j 0 (f1+ j))) ((> j 5))
@@ -578,7 +578,7 @@
 
 ;;(DEFMFUN $POISSUBST N
 ;;   (COND ((NOT (OR (EQUAL N 3) (EQUAL N 5)))
-;;	  (merror "WRONG NUMBER OF ARGS TO POISSUBST"))
+;;	  (merror "Wrong number of args to `poissubst'"))
 ;;	 ((EQUAL N 5)
 ;;	  (FANCYPOISSUBST (ARG 1) (ARG 2) (INTOPOIS (ARG 3)) (INTOPOIS (ARG 4)) (ARG 5)))
 ;;	 (T ((LAMBDA (A* B* C)

@@ -47,7 +47,7 @@
 		 (maphash #'(lambda (x &rest l)l (push (gethash x tab) vals)) ary )
 		 vals))
 	      (t 
-	       (merror "Argument to LISTARRAY must be an array:~%~M" ary)))))
+	       (merror "Argument to `listarray' must be an array:~%~M" ary)))))
 
 (defmfun $fillarray (ary1 ary2)
   (let ((ary
@@ -55,7 +55,7 @@
 	  (mget ary1 'array)
 	  #+cl
 	  (and (arrayp ary1) ary1)
-	  (merror "First argument to FILLARRAY must be a declared array:~%~M" ary1))))
+	  (merror "First argument to `fillarray' must be a declared array:~%~M" ary1))))
     (fillarray
      ary
      (cond (($listp ary2) (cdr ary2))
@@ -64,7 +64,7 @@
 	   ((arrayp ary2) ary2)
 	   (t
 	    (merror
-	     "Second argument to FILLARRAY must be an array or list:~%~M" ary2))))
+	     "Second argument to `fillarray' must be an array or list:~%~M" ary2))))
     ary1))
 ;;#+cl
 ;;(defmacro $rearray (ar &rest dims)
@@ -92,23 +92,23 @@
 #-cl
 (defmspec $rearray (l) (setq l (cdr l))
 	  (cond ((> (length l) 6)
-		 (merror "Too many arguments to REARRAY:~%~M" l))
+		 (merror "Too many arguments to `rearray':~%~M" l))
 		((< (length l) 2)
-		 (merror "Too few arguments to REARRAY:~%~M" l)))
+		 (merror "Too few arguments to `rearray':~%~M" l)))
 	  (let ((name (car l))
 		(ary (cond ($use_fast_arrays
 			    (symbol-value (car l)))
 			   (t
 			    (cond ((mget (car l) 'array))
 				  (t 
-				   (merror "First argument to REARRAY must be a declared array:~%~M"
+				   (merror "First argument to `rearray' must be a declared array:~%~M"
 					   (car l))))))))
 	    (setq l (cdr l)
 		  l (mapcar #'(lambda (x)
 				(setq x (meval x))
 				(cond ((not (eq (ml-typep x) 'fixnum))
 				       (merror
-					"Non-integer dimension to REARRAY:~%~M"
+					"Non-integer dimension to `rearray':~%~M"
 					x)))
 				#-cl
 				(f1+ x)
@@ -134,23 +134,23 @@
 
 ;;(defmspec $rearray (l) (setq l (cdr l))
 ;;	  (cond ((> (length l) 6)
-;;		 (merror "Too many arguments to REARRAY:~%~M" l))
+;;		 (merror "Too many arguments to `rearray':~%~M" l))
 ;;		((< (length l) 2)
-;;		 (merror "Too few arguments to REARRAY:~%~M" l)))
+;;		 (merror "Too few arguments to `rearray':~%~M" l)))
 ;;	  (let ((name (car l))
 ;;		(ary (cond ($use_fast_arrays
 ;;			   (symbol-value (car l)))
 ;;		     (t
 ;;		       (cond ((mget (car l) 'array))
 ;;			     (t 
-;;			      (merror "First argument to REARRAY must be a declared array:~%~M"
+;;			      (merror "First argument to `rearray' must be a declared array:~%~M"
 ;;				      (car l))))))))
 ;;	    (setq l (cdr l)
 ;;		  l (mapcar #'(lambda (x)
 ;;				(setq x (meval x))
 ;;				(cond ((not (eq (ml-typep x) 'fixnum))
 ;;				       (merror
-;;					 "Non-integer dimension to REARRAY:~%~M"
+;;					 "Non-integer dimension to `rearray':~%~M"
 ;;					 x)))
 ;;				#-lispm
 ;;				(f1+ x)

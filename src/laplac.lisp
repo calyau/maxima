@@ -345,7 +345,7 @@
  
 
 (defun lapshift (fun rest) 
-  (cond ((atom fun) (merror "INTERNAL ERROR"))
+  (cond ((atom fun) (merror "Internal error"))
 	((or (memq 'laplace (car fun)) (null rest))
 	 (lapdefint (cond (rest (simptimes (cons '(mtimes)
 						 (cons fun rest)) 1 t))

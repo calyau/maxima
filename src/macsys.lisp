@@ -249,7 +249,7 @@
 			  #-nil *debug-io*)
 	(*standard-output* *debug-io*))
     (catch 'break-exit
-      (format t "~%Entering a Macsyma break point. Type EXIT; to resume")
+      (format t "~%Entering a Macsyma break point. Type exit; to resume")
       (do ((r)) (nil)
 	(fresh-line)
 	(setq r (caddr (let ((*mread-prompt* (break-prompt)))

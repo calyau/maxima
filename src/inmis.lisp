@@ -68,7 +68,7 @@
 (defmfun $reset nil (load '((dsk macsym) reset fasl)) '$done)
 
 #+multics
-(defmfun $reset () (load (executable-dir "RESET")) '$done)
+(defmfun $reset () (load (executable-dir "reset")) '$done)
 
 #+nil
 (defmfun $reset ()

@@ -1349,7 +1349,7 @@
 ;;		   (MEMQ 'ARRAY (CDAR A)))
 ;;	      (if (FREEVAR (CDR A))
 ;;		  T
-;;		  (merror "VARIABLE-OF-INTEGRATION-APPEARED-IN-SUBSCRIPT")))
+;;		  (merror "`variable-of-integration-appeared-in-subscript'")))
 ;;	     (T (AND (FREEVAR (CAR A)) (FREEVAR (CDR A))))))
 
 (defun freepar

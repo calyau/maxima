@@ -28,7 +28,7 @@
   (cond ((or (< (length argl) 2)
 	     (not (or (atom (car argl))
 		      ($listp (car argl)))))
-	 (merror "Bad whens form to EVAL_WHEN~%~M" (car argl))))
+	 (merror "Bad whens form to `eval_when'~%~M" (car argl))))
   (let ((demop #-maxii (if (and (eq (ml-typep $version) 'fixnum)
 				(> $version 296.))
 			   (caddr batconl)

@@ -136,11 +136,11 @@
 	     new-c-line-hook nil dskfnp nil ttyints t
 	     gclinenum 0 dsksavep nil saveno 0 $dynamalloc nil alloclevel 0)
        (setq quitmsg  " "
-	     mquitmsg " (Into LISP.  Type control-G to get to MACSYMA.)" 
+	     mquitmsg " (Into Lisp.  Type control-G to get to Macsyma.)" 
 	     contmsg  "(Type <space> to continue, <return> to terminate.)"
-	     ^amsg    "  (Type EXIT; to exit.)"
-	     ^bmsg   #-multics "LISP  (Type <Alt>P<Space> to continue.)" 
-	     #+multics "LISP  (Type <Dollarsign>P<Carriage Return> to continue)"
+	     ^amsg    "  (Type exit; to exit.)"
+	     ^bmsg   #-multics "Lisp  (Type <Alt>P<Space> to continue.)" 
+	     #+multics "Lisp  (Type <Dollarsign>P<Carriage Return> to continue)"
 	     ^hmsg "
  (Use the RUBOUT or DEL(ETE) key to erase a character.)" ^dmsg-on "
  (Printout of GC statistics turned on.  Type control-D again to turn them off.)
@@ -172,7 +172,7 @@
 	 fixnum no-reset)
 
 (defmvar $direc 'jrmu
-  "The default file directory for SAVE, STORE, FASSAVE, and STRINGOUT."
+  "The default file directory for `save', `store', `fassave', and `stringout'."
   no-reset)
 
 (defmvar casep t
@@ -192,7 +192,7 @@
 (defmvar $showtime nil)
 
 (defmvar aliaslist nil
-  "is used by the MAKEATOMIC scheme which has never been completed"
+  "is used by the `makeatomic' scheme which has never been completed"
   no-reset)
 
 ;;(declare-top (SETQ *print-base* 8))
@@ -205,7 +205,7 @@
 ;;#.(SETQ NALT #-MULTICS #\ALT #+MULTICS #\&)
 
 (defmvar $file_string_print t
-  "If TRUE, filenames are output as strings; if FALSE, as lists.")
+  "If `true', filenames are output as strings; if `false', as lists.")
 
 (defmvar $showtime nil)
 
@@ -559,7 +559,7 @@
 		 ((get x 'special) (makunbound x) t)
 		 (transp (set x x) t)
 		 ((eq x '$default_let_rule_package) t)
-		 (t (mtell "Warning: Illegal REMVALUE attempt:~%~M" x) nil))))))
+		 (t (mtell "Warning: Illegal `remvalue' attempt:~%~M" x) nil))))))
 
 (defmfun ruleof (rule)
   (or (mget rule 'ruleof)
@@ -617,7 +617,7 @@
 		  (mterpri)
 		  (if y (princ 'macsyma-break) (princ 'error-break))
 		  (unless (zerop brklvl) (princ " level ") (princ brklvl))
-		  (princ " Type EXIT; to quit, HELP; for more help.")))
+		  (princ " Type exit; to quit, help; for more help.")))
 	   (setq $help
 		 "BACKTRACE; will give a successive list of forms 
  (you must have already set ?DEBUG:ALL; for BACKTRACE to record) 
@@ -692,7 +692,7 @@
 
 (defmspec $tobreak (x)
   (if mbreak (throw 'mbreak (cdr x))
-      (merror "TOBREAK may be used only within a MACSYMA break.")))
+      (merror "`tobreak' may be used only within a Macsyma break.")))
 
 (defun errlfun (x)
   (when (null
@@ -702,13 +702,13 @@
 		 #-lispm (if loadf (setq defaultf loadf loadf nil))
 					;#+PDP10 (ENDPAGEFN T 'MORE-FUN)
 		 )))
-    #-lispm (setq ^q nil) (mtell-open "~%ERRLFUN has been clobbered."))
+    #-lispm (setq ^q nil) (mtell-open "~%`errlfun' has been clobbered."))
   (if $errorfun (if (null (errset (mapply1 $errorfun nil $errorfun nil)))
-		    (mtell "~%Incorrect ERRORFUN")))
+		    (mtell "~%Incorrect `errorfun'")))
   (when (null
 	 (errset
 	  (progn (if (not (eq x 'mquit)) (supunbind)) (clearsign))))
-    #-lispm (setq ^q nil) (mtell-open "~%ERRLFUN has been clobbered."))
+    #-lispm (setq ^q nil) (mtell-open "~%`errlfun' has been clobbered."))
   (when (null x) (princ quitmsg) (setq quitmsg " ")))
 
 (defun supunbind nil
@@ -809,7 +809,7 @@
 
 (defmspec $alias (form)
   (if (oddp (length (setq form (cdr form))))
-      (merror "ALIAS takes an even number of arguments."))
+      (merror "`alias' takes an even number of arguments."))
   (do ((l nil (cons (alias (pop form) (pop form))
 		    l)))
       ((null form)
@@ -1019,7 +1019,7 @@
 		     (setq maxima-error t)))
 	      (setq truename (truename savefile))
 	      (terpri savefile))
-	    (if maxima-error (let ((errset 'errbreak1)) (merror "Error in STRINGOUT attempt")))
+	    (if maxima-error (let ((errset 'errbreak1)) (merror "Error in `stringout' attempt")))
 	    (cl:namestring truename)))
 (defmspec $labels (char)
   (setq char (fexprcheck char))
@@ -1033,7 +1033,7 @@
      (if (> x 0) (setq x (f- x)))
      (if (cdr $labels)
 	 (setq l (cddr $labels) outchar (getlabcharn $outchar)))
-     loop (if (null l) (merror "Improper call to %TH"))
+     loop (if (null l) (merror "Improper call to %th"))
      (if (and (char= (getlabcharn (car l)) outchar) (= (setq x (f1+ x)) 0))
 					; Only the 1st alphabetic character of $OUTCHAR is tested.
 	 (return (meval (car l))))
@@ -1081,12 +1081,12 @@
     (prog1 (catch 'mcatch (mevaln (cdr form))) (errlfun1 mcatch))))
 
 (defmfun $throw (exp)
-  (if (null mcatch) (merror "THROW not within CATCH:~%~M" exp))
+  (if (null mcatch) (merror "`throw' not within `catch':~%~M" exp))
   (throw 'mcatch exp))
 
 (defmspec $time (l) (setq l (cdr l))
 	  #-cl
-	  (mtell-open "TIME or [TOTALTIME, GCTIME] in msecs.:~%")
+	  (mtell-open "`time' or [total`time', GC`time'] in msecs.:~%")
 	  #+cl
 	  (format t "~&Time:")
 	  (cons '(mlist simp)
@@ -1233,7 +1233,7 @@
 
 #-pdp10
 (defun pagepause1 (x y)
-  x y (merror "PAGEPAUSE does not exist in this system."))
+  x y (merror "`pagepause' does not exist in this system."))
 
 
 #+(or cl lispm)
@@ -1252,7 +1252,7 @@
 			     #+cl *features*
 			     ) t)))
       ($status '((mlist simp) $feature $status))
-      (t (merror "Unknown argument - STATUS:~%~M" keyword)))))
+      (t (merror "Unknown argument - `status':~%~M" keyword)))))
 
 #+(or cl lispm)
 (defquote $sstatus (status-function item)

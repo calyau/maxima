@@ -140,7 +140,7 @@
      (setq var (delq '$%i (cdr ($listofvars expr))))
      (or var (setq var (list (gensym))))
      (cond ((not (= (length var) 1.))
-	    (merror "ALLROOTS: polynomial not univariate: ~M" var))
+	    (merror "`allroots': polynomial not univariate: ~M" var))
 	   ((setq var (car var))))
      (setq expr ($rat expr '$%i var)
 	   res (reverse (car (cdddar expr))))
@@ -302,7 +302,7 @@
 			     ((cons '(mlist) (nreverse res)))))))) 
 
 (defun cpoly-err (expr)
-  (merror "ALLROOTS: not a polynomial:~%~M" expr))
+  (merror "`allroots': not a polynomial:~%~M" expr))
 
 (defun cpoly-sl (degree) 
   ((lambda (logbas infin smalno are mre xx yy cosr sinr cr ci sr si tr

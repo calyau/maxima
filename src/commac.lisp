@@ -189,7 +189,7 @@
 	((symbolp name)
 	 (setf (symbol-array name) aarray)
 	 name)
-	(t (error "~S is illegal first arg for *ARRAY" name))))
+	(t (error "~S is illegal first arg for *array" name))))
 
 (defmacro array (name maclisp-type &rest dimlist)
   `(*array ',name ',maclisp-type ,@dimlist))

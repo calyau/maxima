@@ -52,7 +52,7 @@
 		(*$ x (fcall$ f (*$ (+$ b a) 0.5))))
      (do ((l 1. (f1+ l)) (m 4. (f* m 2.)) (y 0.0) (z 0.0) (cerr 0.0))
 	 ((= l $rombergit)
-	  (merror "ROMBERG failed to converge"))
+	  (merror "`romberg' failed to converge"))
        (declare (flonum y z cerr)
 		(fixnum l m))
        (setq y (float m) z (//$ x y))

@@ -331,24 +331,24 @@
 (defun ndm-err (x)
   (terpri)
   (princ "Cannot determine the mode of ") (princ x)
-  (maxima-error "NDM-ERR"))
+  (maxima-error "Ndm-err"))
 
 (defun nsm-err (x)
   (terpri)
   (princ "No such mode as ") (princ x)
-  (maxima-error "NSM-ERR"))
+  (maxima-error "Nsm-err"))
 
 (defun sel-err (b s)
   (terpri)
   (tyo #\:) (princ b)
   (do () ((null s)) (tyo #\:) (princ (car s)) (setq s (cdr s)))
   (princ "is an impossible selection")
-  (maxima-error "SEL-ERR"))
+  (maxima-error "Sel-err"))
 
 (defun ia-err (x)
   (terpri)
   (princ "Cannot assign ") (princ x)
-  (maxima-error "IA-ERR"))
+  (maxima-error "Ia-err"))
 
 (defmacro sel (&rest x)
   (setq x (cons ' sel x ))

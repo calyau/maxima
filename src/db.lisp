@@ -387,7 +387,7 @@
 (defmfun isp (pat) (cond ((truep pat)) ((falsep pat) nil) (t 'unknown)))
 
 (defmfun kindp (x y &aux #+lispm (default-cons-area working-storage-area ))
-  (if (not (symbolp x)) (merror "KINDP called on a non-symbolic atom."))
+  (if (not (symbolp x)) (merror "`kindp' called on a non-symbolic atom."))
   (clear)
   (beg x 1)
   (do ((p (dq+) (dq+))) ((null p))

@@ -46,7 +46,7 @@
   (prog (divisor tt ans k)
      (cond ((null $factorflag) (return (list x 1)))
 	   ((floatp x)
-	    (errrjf "FACTOR given floating arg"))
+	    (errrjf "`factor' given floating arg"))
 	   ((pzerop x) (return (list (pzero) 1)))
 	   ((eqn x -1) (return (list -1 1)))
 	   ((minusp x)

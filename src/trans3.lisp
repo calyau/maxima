@@ -309,7 +309,7 @@
   (cond ((or (memq '*bad* arg-info)
 	     (and (memq t arg-info) 
 		  (cdr (memq t arg-info)))) ;;; the &REST is not the last one.
-	 (tr-tell (cadr form) " bad LAMBDA list. -TRANSLATE")
+	 (tr-tell (cadr form) " bad `lambda' list. -`translate'")
 	 (setq tr-abort t)
 	 nil)
 	(t

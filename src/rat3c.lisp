@@ -123,7 +123,7 @@
 	((eq $gcd '$sphen) (merror "sphgcd not implemented")) ; (SPHGCD X Y))
 	((eq $gcd '$eez) (merror "eezgcd not implemented")) ; (EEZGCD X Y))
 	((not (memq $gcd *gcdl*))
-	 (merror "GCD set incorrectly:~%~M" $gcd))
+	 (merror "`gcd' set incorrectly:~%~M" $gcd))
 	(t (list 1 x y))))
 
 ;; (DEFUN PMINDEG (P) (IF (PCOEFP P) 0 (NXTTOLAST (CDR P))))
@@ -200,7 +200,7 @@
   (setq s (case $gcd
 	    ($red (redgcd u v))
 	    ($subres (subresgcd u v))
-	    (t (merror "Illegal GCD algorithm"))))
+	    (t (merror "Illegal `gcd' algorithm"))))
   (unless (equal s 1)
     (setq s (pexpon*// (primpart
 			(if $algebraic s
@@ -383,33 +383,33 @@
 
 (defun pmodrem (x y)
   (cond ((null modulus)
-	 (merror "Illegal use of PMODREM"))
+	 (merror "Illegal use of `pmodrem'"))
 	((pacoefp y) (if (pzerop y) x 0))
 	((pacoefp x) x)
 	((eq (p-var x) (p-var y))
 	 (psimp (car x) (pgcdu1 (p-terms x) (p-terms y) nil)))
-	(t (merror "Illegal use of PMODREM"))))
+	(t (merror "Illegal use of `pmodrem'"))))
 
 (defun pmodquo (u v &aux quo)
   (declare (special quo))
   (cond ((null modulus)
-	 (merror "Illegal use of PMODQUO"))
+	 (merror "Illegal use of `pmodquo'"))
 	((pcoefp v) (cons (ptimes (crecip v) u) 0))
 	((alg v) (cons (ptimes (painvmod v) u) 0))
 	((pacoefp u) (cons 0 u))
 	((not (eq (p-var u) (p-var v)))
-	 (merror "Illegal use of PMODQUO"))
+	 (merror "Illegal use of `pmodquo'"))
 	(t (xcons (psimp (car u) (pgcdu1 (cdr u) (cdr v) t))
 		  (psimp (car u) quo)))))
 
 (comment (defun pmodrem (x y) (cond ((null modulus)
-				     (merror "Illegal use of PMODREM"))
+				     (merror "Illegal use of `pmodrem'"))
 				    ((pacoefp y) 0)
 				    ((pacoefp x) x)
 				    ((eq (car x) (car y))
 				     (dpdisrep
 				      (dpmodrem (dprep x) (dprep y))))
-				    (t (merror "Illegal use of PMODREM")))))
+				    (t (merror "Illegal use of `pmodrem'")))))
 
 (defun pgcdu1 (u v pquo*)
   (let ((invv (painvmod (pt-lc v))) (k 0) q*)
@@ -515,7 +515,7 @@
 
 (defmfun $primep (p)
   (if (not (integerp p))
-      (merror "Argument to PRIMEP must be an integer:~%~M" p))
+      (merror "Argument to `primep' must be an integer:~%~M" p))
   (let ($intfaclim) (primep (abs p))))
 
 

@@ -26,7 +26,7 @@
 	
     (cond ((= n 1) 1)
 	  ((or (= n 0) (not (atom  (cdr rform))))
-	   (merror "ARG. MUST BE A POLYNOMIAL IN VAR"))
+	   (merror "Arg. must be a polynomial in var"))
 	  (t (pdis (presign
 		    (// (f* n (f1- n)) 2)
 		    (pquotient (resultant poly (pderivative poly rvar))

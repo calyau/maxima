@@ -49,7 +49,7 @@
 #+pdp10
 (defun compiler-state () compiler-state)
 #+cl
-(defun compiler-state () (y-or-n-p "Is COMPILER-STATE true?"))
+(defun compiler-state () (y-or-n-p "Is `compiler-state' true?"))
 #-(or cl pdp10) 
 (defun compiler-state () t)
 #-cl					;is this used.??

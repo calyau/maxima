@@ -31,14 +31,14 @@
 ;;        (IF ($RATP EXP) (SETQ EXP ($RATDISREP EXP)))
 ;;        (COND ((OR (NOT (MNUMP EPS)) (MNEGP EPS) (EQUAL EPS 0))
 ;; 	      (DISPLA EPS)
-;; 	      (MERROR "Second argument must be a positive number - REALROOTS")))
+;; 	      (MERROR "Second argument must be a positive number - `realroots'")))
 ;;        (LET (($KEEPFLOAT NIL)) (STURMSEQ EXP EPS)))
 
 (defmfun $realroots n
   (let ((exp nil) (eps nil)) 
     (cond ((= n 1) (setq eps $rootsepsilon))
 	  ((= n 2) (setq eps (arg 2)))
-	  (t (merror "Wrong number of arguments - REALROOTS")))
+	  (t (merror "Wrong number of arguments - `realroots'")))
     (setq exp (meqhk (arg 1)))
     (if ($ratp exp) (setq exp ($ratdisrep exp)))
     (cond ((or (not (mnump eps)) (mnegp eps) (equal eps 0))
@@ -189,7 +189,7 @@
   (prog (varlist $keepfloat $ratfac l r)
      (cond ((= n 1) (setq l '$minf r '$inf))
 	   ((= n 3) (setq l (arg 2) r (arg 3)))
-	   (t (merror "Wrong number of arguments - NROOTS")))
+	   (t (merror "Wrong number of arguments - `nroots'")))
      (return (nroots (unipoly (meqhk (arg 1))) (makpoint l) (makpoint r)))))
 
 (defun nroots (p l r) (rootaddup (psqfr p) l r))

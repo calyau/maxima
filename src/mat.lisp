@@ -44,14 +44,14 @@
      (if (or (atom (car cc))
 	     (not (equal (cdar cc) '(1 1)))
 	     (not (equal 1 (cdr cc))))
-	 (merror "Unacceptable variable to SOLVE:~%~M" *c))
+	 (merror "Unacceptable variable to `solve':~%~M" *c))
      (setq answer (ratreduce (prodcoef (car cc) (car m)) (cdr m)))
      (if (not flag) (return answer))
      (setq leftover
 	   (rdis (ratplus m (rattimes (ratminus answer) cc t))))
      (if (or (not (freeof *c leftover))
 	     (dependsall (rdis answer) varl))
-	 (errrjf "NON-LINEAR"))
+	 (errrjf "`non-linear'"))
      (return answer)))
 
 (defun formx (flag nam eql varl)
@@ -125,7 +125,7 @@
     (tuchus $%rnum_list param)
     param))
 
-(defmvar $linsolve_params t "LINSOLVE generates %Rnums")
+(defmvar $linsolve_params t "`linsolve' generates %Rnums")
 
 ;;(DECLARE (FIXNUM N))
 

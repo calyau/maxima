@@ -102,7 +102,7 @@
 (defmfun make-tramp$ (f n)
   (let ((l (assoc n tramp$-alist :test #'equal)))
     (if (null l)
-	(merror "BUG: No trampoline of argument length ~M" n))
+	(merror "Bug: No trampoline of argument length ~M" n))
     (pop l)
     (let (tramp$			;#+maclisp tramp$-s
 	  tramp$-m tramp$-f)
@@ -205,7 +205,7 @@
     ((mexpr operators)
      (float (mapply1 (cdr f) (list x) nil nil)))
     (t
-     (merror "BUG: GCALL1$"))))
+     (merror "Bug: `gcall1'$"))))
 
 (defun gcall2$ (f x y)
   (case (car f)
@@ -223,7 +223,7 @@
     ((mexpr operators)
      (float (mapply (cdr f) (list x y) nil)))
     (t
-     (merror "BUG: GCALL2$"))))
+     (merror "Bug: `gcall2'$"))))
 
 (defun ar$+ar$ (a$ b$ c$)
   (do ((n (array-dimension-n 1 a$))
@@ -274,4 +274,4 @@
     ((mexpr operators)
      (mapply (cdr f) (list a1 a2 a3) 'gcall3))
     (t
-     (merror "BUG: GCALL3"))))
+     (merror "Bug: `gcall3'"))))

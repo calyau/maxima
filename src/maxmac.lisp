@@ -250,12 +250,12 @@
 	 `(let ((filep (probe-file (list (catenate macsyma-dir ">documentation")
 					 "macsyma.manual"))))
 	   (cond (filep filep)
-		 (t (maxima-error "Cannot MAXIMA-FIND the Macsyma manual")))))
+		 (t (maxima-error "Cannot `maxima-find' the Macsyma manual")))))
 	((eq x 'manual-index)
 	 `(let ((filep (probe-file (list (catenate macsyma-dir ">documentation")
 					 "macsyma.index.lisp"))))
 	   (cond (filep filep)
-		 (t (maxima-error "Cannot MAXIMA-FIND the Macsyma manual index")))))
+		 (t (maxima-error "Cannot `maxima-find' the Macsyma manual index")))))
 	(t (maxima-error "Unknown documentation: " x))))
 
 #+multics
@@ -329,7 +329,7 @@
 	   ,win
 	 ,@body)))
     (t
-     (maxima-error "Unknown setting of MBINDING-USAGE" mbinding-usage))))
+     (maxima-error "Unknown setting of `mbinding-usage'" mbinding-usage))))
 
 #+nil
 (defmacro mdefprop (a b c) `(mputprop ',a ',b ',c))

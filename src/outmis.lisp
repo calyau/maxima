@@ -317,7 +317,7 @@
 ;;		      (MFORMAT NIL "~&;~A isn't accepting message.~%" TO))
 ;;		     (T (MFORMAT NIL "~&;~A isn't logged in.~%" TO)))
 ;;	       (MAIL TO TEXT-LIST)
-;;	       (MFORMAT NIL "~&;Message MAIL'd.~%")
+;;	       (MFORMAT NIL "~&;Message `mail''d.~%")
 ;;	       () )
 ;;	(T ())))
 
@@ -488,7 +488,7 @@
 (defmfun $pickapart (x lev)
   (setq x (format1 x))
   (cond ((not (fixnump lev))
-	 (merror "Improper 2nd argument to PICKAPART:~%~M" lev))
+	 (merror "Improper 2nd argument to `pickapart':~%~M" lev))
 	((or (atom x) (and (eq (caar x) 'mminus) (atom (cadr x)))) x)
 	((= lev 0) (mgen2 x))
 	((and (atom (cdr x)) (cdr x)) x)
@@ -612,7 +612,7 @@
 	 (nconc propvars (ncons (car iteml))))))
 
 (defmspec $printprops (r) (setq r (cdr r))
-	  (if (null (cdr r)) (merror "PRINTPROPS takes two arguments."))
+	  (if (null (cdr r)) (merror "`printprops' takes two arguments."))
 	  (let ((s (cadr r)))
 	    (setq r (car r))
 	    (setq r (cond ((atom r)
@@ -625,7 +625,7 @@
 		  ((eq s '$atomgrad) (dispatomgrads r))
 		  ((eq s '$gradef) (dispgradefs r))
 		  ((eq s '$matchdeclare) (dispmatchdeclares r))
-		  (t (merror "UNKNOWN PROPERTY - PRINTPROPS:  ~:M" s)))))
+		  (t (merror "Unknown `property' - `printprops':  ~:M" s)))))
 
 (defun dispatvalues (l) 
   (do ((l
@@ -906,7 +906,7 @@
 (defmfun $factorout num
   (prog (e vl el fl cl l f x)
      (setq e (arg 1) vl (listify (f- 1 num)))
-     (and (null vl)(merror "FACTOROUT called on only one argument"))
+     (and (null vl)(merror "`factorout' called on only one argument"))
      (and (not (mplusp e)) (return e))
      (or (null vl) (mplusp e) (return e))
      (setq e (cdr e))

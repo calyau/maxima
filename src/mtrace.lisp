@@ -220,7 +220,7 @@
 (defun macsyma-trace-sub (fun handler ilist &aux temp)
   (declare (symbol temp))		; pathetic
   (cond ((not (symbolp (setq fun (getopr fun))))
-	 (mtell "~%Bad arg to TRACE: ~M" fun)
+	 (mtell "~%Bad arg to `trace': ~M" fun)
 	 nil)
 	((trace-p fun)
 	 ;; Things which redefine should be expected to reset this
@@ -229,7 +229,7 @@
 	 nil)
 	((memq fun hard-to-trace)
 	 (mtell
-	  "~%The function ~:@M cannot be traced because: ASK GJC~%"
+	  "~%The function ~:@M cannot be traced because: ask GJC~%"
 	  fun)
 	 nil)
 	((not (setq temp (car (macsyma-fsymeval fun))))
@@ -245,7 +245,7 @@
 			(make-trace-hook fun temp handler))
 	 (list fun))
 	(t
-	 (mtell "~%~@:M has functional properties not understood by TRACE"
+	 (mtell "~%~@:M has functional properties not understood by `trace'"
 		fun)
 	 nil)))
 
@@ -256,7 +256,7 @@
 (defun macsyma-untrace-sub (fun handler ilist)
   (prog1
       (cond ((not (symbolp (setq fun (getopr fun))))
-	     (mtell "~%Bad arg to UNTRACE: ~M" fun)
+	     (mtell "~%Bad arg to `untrace': ~M" fun)
 	     nil)
 	    ((not (trace-p fun))
 	     (mtell "~%~:@M is not traced." fun)
@@ -401,7 +401,7 @@
 		  (cadr (getl (cdr (getl fun `(,type-of))) `(,type-of)))
 		  (get fun type-of)))))
    (trace-fsymeval
-    (merror "Macsyma BUG: Trace property for ~:@M went away without hook."
+    (merror "Macsyma bug: Trace property for ~:@M went away without hook."
 	    fun))))
 
 ;;; The handling of a traced call.
@@ -488,7 +488,7 @@
 	      (setq largs ret-val)
 	      (mtell "~%Re applying the function ~:@M~%" fun))
 	     ((maxima-error)
-	      (merror "~%Signaling MAXIMA-ERROR for function ~:@M~%" fun))))))))
+	      (merror "~%Signaling `maxima-error' for function ~:@M~%" fun))))))))
 
 
 ;; The (Trace-options function) access is not optimized to take place
@@ -591,7 +591,7 @@
 (declare-top (unspecial upper))
 
 (defun trace-error-break (fun level largs)
-  (case (ask-choicep '("Signal an MAXIMA-ERROR, i.e. PUNT?"
+  (case (ask-choicep '("Signal an `maxima-error', i.e. punt?"
 		       "Retry with same arguments?"
 		       "Retry with new arguments?"
 		       "Exit with user supplied value")

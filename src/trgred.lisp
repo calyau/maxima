@@ -37,7 +37,7 @@
   (let ((*trigred t) (*noexpand t) var $trigexpand $verbose $ratprint)
     (cond ((= n 2) (setq var (arg 2)))
 	  ((= n 1) (setq var '*novar))
-	  (t (merror "Wrong number of args to TRIGREDUCE")))
+	  (t (merror "Wrong number of args to `trigreduce'")))
     (gcdred (sp1 (arg 1)))))
 
 (defun sp1 (e)
@@ -501,7 +501,7 @@
 (defun cosh^n (%n v) (sc^n %n v '(%cosh) (not (oddp %n)) 1))
 
 (defun sc^n (%n v fn fl coef)
-  (cond ((minusp %n) (merror "Bug in TRIGREDUCE.  Please report.")))
+  (cond ((minusp %n) (merror "Bug in `trigreduce'.  Please report.")))
   (m* (list '(rat) 1 (expt 2 %n))
       (m+ (cond (fl (list '(%binomial) %n (// %n 2))) (t 0))
 	  (maxima-substitute v 'trig-var

@@ -72,7 +72,7 @@
 ;;(defmvar $typeset nil
 ;; 	"Causes equations to be output in a typesetter readable form if t.")
 
-(defmvar displayp nil "Is T when inside of DISPLA")
+(defmvar displayp nil "Is T when inside of `displa'")
 
 ;; More messages which appear during the middle of display.  Different
 ;; from those which appear during typein.  MOREMSG and MOREFLUSH get
@@ -1072,7 +1072,7 @@
 	 '(#\space #.forward-slash-char #\P #.forward-slash-char))
 	(t (do ((l (cdr form) (cdr l))) ((null l))
 	     (cond ((atom l)
-		    (merror "~S has an atomic cdr - DISPLAY" form))
+		    (merror "~S has an atomic cdr - `display'" form))
 		   ((setq form (checkrat (car l))) (return form)))))))
 
 
@@ -1089,7 +1089,7 @@
 	 (if (or (null bkpt) (eq result bkpt))
 	     (merror "Expression is too wide to be displayed."))
 	 (do ((l result (cdr l))) ((eq bkpt (cdr l)) (rplacd l nil))
-	   (if (null l) (merror "CHECKBREAK not found in DISPLAY")))
+	   (if (null l) (merror "`checkbreak' not found in `display'")))
 	 (output bkpt 0) 
  	 #-franz (let ((#.ttyoff (or #.ttyoff more-^w))) (mterpri))
 
@@ -1334,7 +1334,7 @@
 ;;#-(OR CL ITS NIL)
 ;;(DEFUN OUTPUT-2D (RESULT W)
 ;;       RESULT W ;Ignored.
-;;       (MERROR "OUTPUT-2D called on system without display support."))
+;;       (MERROR "`output-2d' called on system without display support."))
 
 ;;see +lispm below for cl fix.
 (defun draw-2d (dmstr row col)
@@ -1388,7 +1388,7 @@
 ;;#-(OR CL ITS NIL)
 ;;(DEFUN DRAW-2D (DMSTR ROW COL)
 ;;       DMSTR ROW COL ;Ignored.
-;;       (MERROR "DRAW-2D called on system without display support."))
+;;       (MERROR "`draw-2d' called on system without display support."))
 
 ;; Crude line graphics.  The interface to a graphics device is via the
 ;; functions LG-SET-POINT, LG-DRAW-VECTOR, LG-END-VECTOR and via the

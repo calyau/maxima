@@ -77,7 +77,7 @@
   "Gives an MAXIMA-ERROR message including its first argument if its second
   argument is not a LIST"
   (or ($listp val)
-      (merror "The variable ~:M being set to a non-LISTP object:~%~M"
+      (merror "The variable ~:M being set to a non-`listp' object:~%~M"
 	      var val)))
 
 (defprop $file_search $listp_check assign)
@@ -90,7 +90,7 @@
 			 (l $file_types))
   (setq x ($filename_merge x))
   (if ($listp l) (setq l (cdr l))
-      (merror "3'rd arg to FILE_SEARCH not a list.~%~M" l))
+      (merror "3'rd arg to `file_search' not a list.~%~M" l))
   (do ((merge-specs			;(CONS ($filename_merge)
 					;	  ;; Get a complete "star filename"
 					;	  (CDR $FILE_SEARCH))
@@ -107,7 +107,7 @@
       ((null merge-specs)
        (if consp
 	   `((mlist) ,@(nreverse found))
-	   (merror "Could not MAXIMA-FIND file which matches ~M" x)))
+	   (merror "Could not `maxima-find' file which matches ~M" x)))
     (if (do ((l l (cdr l)) (u ($filename_merge (car merge-specs))))
 	    ((null l) nil)
 	  (let ((try ($filename_merge x u (car l))))
@@ -179,7 +179,7 @@
 ;;	   (ret))
 ;;	  ((null dir)
 ;;	   (cond (consp '((mlist)))
-;;		     (t (MERROR "Could not MAXIMA-FIND file ~M" X))))
+;;		     (t (MERROR "Could not `maxima-find' file ~M" X))))
 ;;	  (cond ((setq ret
 ;;		       (do ((try extlist (cdr try))
 ;;			    (this))
@@ -426,7 +426,7 @@
 ;;     ;; unwind protected.
 ;;     (IF WINP
 ;;	 (IF $LOADPRINT (MTELL "Batching done."))
-;;	 (MTELL "Some MAXIMA-ERROR in loading this file: ~M" NAME)))))
+;;	 (MTELL "Some maxima-error in loading this file: ~M" NAME)))))
 ;;
 ;;; end of moby & crufty #-MAXII
 ;;)
@@ -502,7 +502,7 @@
        ;; during loading. Foobar fail act errors.
        (load-and-tell searched-for))
       (t
-       (merror "MACSYMA BUG: Unknown file type ~M" type)))
+       (merror "Maxima bug: Unknown file type ~M" type)))
     searched-for
     ))
 
@@ -769,7 +769,7 @@
 		   (open (alter-pathname filename :type "ERR")
 			 :direction :output :if-exists :overwrite)))
 	 (format t "~%Error log on ~a" error-log)
-	 (format error-log "~%/*    MAXIMA-ERROR log for testing of ~A" filename)
+	 (format error-log "~%/*    maxima-error log for testing of ~A" filename)
 	 (format error-log "*/~2%")))
   (setf $ratprint nil)
   (unwind-protect 

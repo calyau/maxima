@@ -17,7 +17,7 @@
 
 (defmspec $options (x) (setq x (cdr x))
 	  (cond ((null x)
-		 (princ "OPTIONS interpreter  (Type `EXIT' to exit.)")
+		 (princ "`options' interpreter  (Type `exit' to exit.)")
 		 (terpri) (options '$all))
 		((nonsymchk (car x) 'options))
 		(t (cons '(mlist) (downs (car x))))))
@@ -63,7 +63,7 @@
     (terpri)))
 
 
-(defun opt-err () (princ "Illegal command to OPTIONS") (terpri))
+(defun opt-err () (princ "Illegal command to `options'") (terpri))
 (defun nor-err () (princ "Number out of range") (terpri))
 
 (defmacro subc (a b &rest l)

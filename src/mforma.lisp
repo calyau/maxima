@@ -127,13 +127,13 @@
 
 (defmacro pop-mformat-string ()
   '(if (null sstring) 
-    (maxima-error "Runout of MFORMAT string" nil 'fail-act)
+    (maxima-error "Runout of `mformat' string" nil 'fail-act)
     (pop sstring)))
 
 (defmacro null-mformat-string () '(null sstring))
 (defmacro top-mformat-string ()
   '(if (null sstring)
-    (maxima-error "Runout of MFORMAT string" nil 'fail-act)
+    (maxima-error "Runout of `mformat' string" nil 'fail-act)
     (car sstring)))
 
 (defmacro cdr-mformat-string ()
@@ -291,7 +291,7 @@
     (mformat-loop-c
      (progn (push-text-temp-c)
 	    (if cant-open-compile-mformat
-		(maxima-error "CAN'T OPEN COMPILE MFORMAT ON THIS CASE."
+		(maxima-error "Can't open compile `mformat' on this case."
 			      (listify n)
 			      'fail-act
 			      ))
@@ -360,7 +360,7 @@
 
 (defmacro mformat-open (stream sstring &rest other-shit)
   (if (not (stringp sstring))
-      (maxima-error "Not a string, can't open-compile the MFORMAT call"
+      (maxima-error "Not a string, can't open-compile the `mformat' call"
 		    sstring 'fail-act)
       (apply #'mformat-translate-open
 	     stream

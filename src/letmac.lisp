@@ -35,7 +35,7 @@
     (cond ((atom (car pairs))
 	   (or (symbolp (car pairs))
 	       (error 
-		"Garbage found in LET pattern: ~S" (car pairs)))
+		"Garbage found in `let' pattern: ~S" (car pairs)))
 	   (setq vars (cons (car pairs) vars))
 	   (setq *let-macro-vals* (cons nil *let-macro-vals*)))
 	  (t
@@ -52,7 +52,7 @@
 	((atom pattern)
 	 (or (symbolp pattern)
 	     (error 
-	      "Garbage found in LET pattern: ~S" pattern))
+	      "Garbage found in `let' pattern: ~S" pattern))
 	 (setq *let-macro-vals* (cons nil *let-macro-vals*))
 	 (cons pattern vars))
 	(t (let-macro-get-vars (cdr pattern)
@@ -66,14 +66,14 @@
        `(progn . ,body))
     (cond ((atom (cdr p))
 	   (error 
-	    "Odd number of args to DESETQ: ~S" p))
+	    "Odd number of args to `desetq': ~S" p))
 	  ((atom (car p))
 	   (or (symbolp (car p))
 	       (error 
-		"Garbage found in DESETQ pattern: ~S" (car p)))
+		"Garbage found in `desetq' pattern: ~S" (car p)))
 	   (and (null (car p))
 		(error 
-		 "Bad DESETQ pattern: ~S" (car p)))
+		 "Bad `desetq' pattern: ~S" (car p)))
 	   (setq body (nconc body `((setq ,(car p) ,(cadr p))))))
 	  (t
 	   (setq tem (cons nil nil))

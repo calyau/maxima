@@ -114,7 +114,7 @@
 (defun sp2sub (s exp)
   (cond ((smono exp var) (maxima-substitute exp 'sp2var (simplify s)))
 	(t (throw 'psex (list 'err '(mtext)
-			      "Tried to MAXIMA-SUBSTITUTE the expansion of  "
+			      "Tried to `maxima-substitute' the expansion of  "
 			      (out-of exp)
 			      " into an expansion")))))
 

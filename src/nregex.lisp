@@ -372,7 +372,7 @@
 		     ;; duplicate the entire group
 		     ;; NOTE: This hasn't been implemented yet!!
 		     (t
-		      (format *standard-output* "GROUP repeat hasn't been implemented yet~%")))))
+		      (format *standard-output* "`group' repeat hasn't been implemented yet~%")))))
 	(cond ((listp piece)		;Just append the list
 	       (setf result (append (list piece) result)))
 	      ((eql piece 'question) ; Wrap it in a block that won't fail

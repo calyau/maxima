@@ -64,7 +64,7 @@
 					      (undefined . (undefined-warnp
 							    "The function was totaly undefined. Maybe you want to quote it."))
 					      (punt-nil . (punt-nil-warnp
-							   "If you want the value of the function name, use APPLY"))
+							   "If you want the value of the function name, use `apply'"))
 					      (mfexpr . (mfexpr-warnedp
 							 "MFEXPRS should be loaded at translating time. Use of them in
 translated code (nay, any code!), is NOT recommened however.")))))))

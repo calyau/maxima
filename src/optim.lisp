@@ -21,7 +21,7 @@
 
 (defmvar $optimprefix '$%)
 
-(defmvar $optimwarn t "warns if OPTIMIZE encounters a special form.")
+(defmvar $optimwarn t "warns if `optimize' encounters a special form.")
 
 ;; $OPTIMIZE takes a Macsyma expression and returns a BLOCK form which is
 ;; equivalent, but which uses local variables to store the results of computing

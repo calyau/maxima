@@ -82,7 +82,7 @@
 	   ((mplusp e) (setq e (cons '(mtimes) (cdr e)) k 0))
 	   ((mtimesp e) (setq k 1))
 	   (t
-	    (merror "~M is an incorrect arg to PARTITION" e)))
+	    (merror "~M is an incorrect arg to `partition'" e)))
      (setq e (partition e var1 k))
      (return (list '(mlist simp) (car e) (cdr e)))))
 

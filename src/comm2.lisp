@@ -406,7 +406,7 @@
   (let (y x signy signx)
     (setq y (simpcheck (cadr e) z) x (simpcheck (caddr e) z))
     (cond ((and (zerop1 y) (zerop1 x))
-	   (merror "ATAN2(0,0) has been generated."))
+	   (merror "atan2(0,0) has been generated."))
 	  ( ;; float contagion
 	   (and (or (numberp x) (ratnump x)) ; both numbers
 		(or (numberp y) (ratnump y)) ; ...but not bigfloats
@@ -449,7 +449,7 @@
 	  ((and (eq signx '$zero) (eq signy '$zero))
 	   ;; Unfortunately, we'll rarely get here.  For example,
 	   ;; assume(equal(x,0)) atan2(x,x) simplifies via the alike1 case above
-	   (merror "ATAN2(0,0) has been generated."))
+	   (merror "atan2(0,0) has been generated."))
 	  (t (eqtest (list '($atan2) y x) e)))))
 
 (defun atan2negp (e) (eq (asksign-p-or-n e) '$neg))
@@ -469,11 +469,11 @@
 
 (defmspec $numerval (l) (setq l (cdr l))
 	  (do ((l l (cddr l)) (x (ncons '(mlist simp)))) ((null l) x)
-	    (cond ((null (cdr l)) (merror "NUMERVAL takes an even number of args"))
+	    (cond ((null (cdr l)) (merror "`numerval' takes an even number of args"))
 		  ((not (symbolp (car l)))
-		   (merror "~M must be atomic - NUMERVAL" (car l)))
+		   (merror "~M must be atomic - `numerval'" (car l)))
 		  ((boundp (car l))
-		   (merror "~M is bound - NUMERVAL" (car l))))
+		   (merror "~M is bound - `numerval'" (car l))))
 	    (mputprop (car l) (cadr l) '$numer)
 	    (add2lnc (car l) $props)
 	    (nconc x (ncons (car l)))))
@@ -542,7 +542,7 @@
 
 (defmfun scanmap1 n
   (let ((func (arg 1)) (arg2 (specrepcheck (arg 2))) newarg2)
-    (cond ((eq func '$rat) (merror "SCANMAP results must be in general representation."))
+    (cond ((eq func '$rat) (merror "`scanmap' results must be in general representation."))
 	  ((> n 2)
 	   (cond ((eq (arg 3) '$bottomup)
 		  (cond ((mapatom arg2) (funcer func (ncons arg2)))
@@ -555,7 +555,7 @@
 							   (margs arg2)))))
 				   arg2))))
 		 ((> n 3) (wna-err '$scanmap))
-		 (t (merror "Only BOTTOMUP is an acceptable 3rd arg to SCANMAP."))))
+		 (t (merror "Only `bottomup' is an acceptable 3rd arg to `scanmap'."))))
 	  ((mapatom arg2) (funcer func (ncons arg2)))
 	  (t (setq newarg2 (specrepcheck (funcer func (ncons arg2))))
 	     (cond ((mapatom newarg2) newarg2)
@@ -606,7 +606,7 @@
 	(improper-arg-err (car args) '$genmatrix))
 					;(MEMQ NIL (MAPCAR #'(LAMBDA (U) (EQ (TYPEP U) 'FIXNUM)) (CDR ARGS)))
     (if (notevery #'fixnump (cdr args))
-	(merror "Invalid arguments to GENMATRIX:~%~M"
+	(merror "Invalid arguments to `genmatrix':~%~M"
 		(cons '(mlist) (cdr args))))
     (let* ((header (list (car args) 'array))
 	   (dim1 (cadr args))
@@ -616,7 +616,7 @@
 	   (l (ncons '($matrix))))
       (cond ((and (or (= dim1 0) (= dim2 0)) (= i 1) (= j 1)))
 	    ((or (> i dim1) (> j dim2))
-	     (merror "Invalid arguments to GENMATRIX:~%~M"
+	     (merror "Invalid arguments to `genmatrix':~%~M"
 		     (cons '(mlist) args))))
       (do ((i i (f1+ i))) ((> i dim1)) (nconc l (ncons (ncons '(mlist)))))
       (do ((i i (f1+ i)) (l (cdr l) (cdr l))) ((> i dim1))
@@ -625,11 +625,11 @@
       l)))
 
 (defmfun $copymatrix (x)
-  (if (not ($matrixp x)) (merror "Argument not a matrix - COPYMATRIX:~%~M" x))
+  (if (not ($matrixp x)) (merror "Argument not a matrix - `copymatrix':~%~M" x))
   (cons (car x) (mapcar #'(lambda (x) (copy-top-level x)) (cdr x))))
 
 (defmfun $copylist (x)
-  (if (not ($listp x)) (merror "Argument not a list - COPYLIST:~%~M" x))
+  (if (not ($listp x)) (merror "Argument not a list - `copylist':~%~M" x))
   (cons (car x) (copy-top-level (cdr x))))
 
 ;;;; ADDROW
@@ -638,27 +638,27 @@
 
 (defmfun $addrow n
   (cond ((= n 0) (wna-err '$addrow))
-	((not ($matrixp (arg 1))) (merror "First argument to ADDROW must be a matrix"))
+	((not ($matrixp (arg 1))) (merror "First argument to `addrow' must be a matrix"))
 	((= n 1) (arg 1))
 	(t (do ((i 2 (f1+ i)) (m (arg 1))) ((> i n) m)
 	     (setq m (addrow m (arg i)))))))
 
 (defmfun $addcol n
   (cond ((= n 0) (wna-err '$addcol))
-	((not ($matrixp (arg 1))) (merror "First argument to ADDCOL must be a matrix"))
+	((not ($matrixp (arg 1))) (merror "First argument to `addcol' must be a matrix"))
 	((= n 1) (arg 1))
 	(t (do ((i 2 (f1+ i)) (m ($transpose (arg 1)))) ((> i n) ($transpose m))
 	     (setq m (addrow m ($transpose (arg i))))))))
 
 (defun addrow (m r)
-  (cond ((not (mxorlistp r)) (merror "Illegal argument to ADDROW or ADDCOL"))
+  (cond ((not (mxorlistp r)) (merror "Illegal argument to `addrow' or `addcol'"))
 	((and (cdr m)
 	      (or (and (eq (caar r) 'mlist) (not (= (length (cadr m)) (length r))))
 		  (and (eq (caar r) '$matrix)
 		       (not (= (length (cadr m)) (length (cadr r))))
 		       (prog2 (setq r ($transpose r))
 			   (not (= (length (cadr m)) (length (cadr r))))))))
-	 (merror "Incompatible structure - ADDROW//ADDCOL")))
+	 (merror "Incompatible structure - `addrow'//`addcol'")))
   (append m (if (eq (caar r) '$matrix) (cdr r) (ncons r))))
 
 ;;;; ARRAYF
@@ -667,7 +667,7 @@
 
 (defmfun $arraymake (ary subs)
   (cond ((or (not ($listp subs)) (null (cdr subs)))
-	 (merror "Wrong type argument to ARRAYMAKE:~%~M" subs))
+	 (merror "Wrong type argument to `arraymake':~%~M" subs))
 	((eq (ml-typep ary) 'symbol)
 	 (cons (cons (getopr ary) '(array)) (cdr subs)))
 	(t (cons '(mqapply array) (cons ary (cdr subs))))))
@@ -704,7 +704,7 @@
 	      ))
 	   (t
 	    (let ((gen (mgetl  sym '(hashar array))) ary1)
-	      (cond ((null gen) (merror "Not an array - ARRAYINFO:~%~M" ary))
+	      (cond ((null gen) (merror "Not an array - `arrayinfo':~%~M" ary))
 		    ((mfilep (cadr gen))
 		     (i-$unstore (ncons ary))
 		     (setq gen (mgetl ary '(hashar array)))))
@@ -761,7 +761,7 @@
 ;;	       (t (fsignal "Use_fast_arrays is true and the argument of arrayinfo is not a hash-table or an array"))))
 ;;	(t
 ;;	 (LET ((GEN (MGETL (SETQ ARY (CAR ARY)) '(HASHAR ARRAY))) ARY1)
-;;	   (COND ((NULL GEN) (MERROR "Not an array - ARRAYINFO:~%~M" ARY))
+;;	   (COND ((NULL GEN) (MERROR "Not an array - `arrayinfo':~%~M" ARY))
 ;;		 ((MFILEP (CADR GEN))
 ;;		  (I-$UNSTORE (NCONS ARY))
 ;;		  (SETQ GEN (MGETL ARY '(HASHAR ARRAY)))))
@@ -838,7 +838,7 @@
 ;;	 (NOTYPE (ASCII-NUMBERP FIXNUM)))
 
 (defmfun $concat (&rest l)
-  (if (null l) (merror "CONCAT needs at least one argument."))
+  (if (null l) (merror "`concat' needs at least one argument."))
   (getalias
    (implode
     (cons (cond ((not (atom (car l))))
@@ -846,7 +846,7 @@
 		(t #\$))
 	  (mapcan #'(lambda (x)
 		      (if (not (atom x))
-			  (merror "Argument to CONCAT not an atom: ~M" x))
+			  (merror "Argument to `concat' not an atom: ~M" x))
 		      (string* x))
 		  l)))))
 
@@ -855,9 +855,9 @@
 ;;(DEFMFUN $GETCHAR (X Y)
 ;; (LET ((N 0))
 ;;      (COND ((NOT (SYMBOLP X))
-;;	     (MERROR "1st argument to GETCHAR not a symbol: ~M" X))
+;;	     (MERROR "1st argument to `getchar' not a symbol: ~M" X))
 ;;	    ((OR (NOT (FIXNUMP Y)) (NOT (> Y 0)))
-;;	     (MERROR "Incorrect 2nd argument to GETCHAR: ~M" Y))
+;;	     (MERROR "Incorrect 2nd argument to `getchar': ~M" Y))
 ;;	    ((char= (SETQ N (GETCHARN (FULLSTRIP1 X) Y)) 0) NIL)
 ;;	    ((char= (GETCHARN X 1) '#\&) (IMPLODE (LIST #\& N)))
 ;;	    ((ASCII-NUMBERP N) (f- (char-code N) (char-code #\0)))
