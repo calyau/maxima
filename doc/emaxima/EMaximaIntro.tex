@@ -244,44 +244,6 @@ argument, \texttt{C-u C-c C-u a}, it will update all of the cells in your
 document without asking.  The command \texttt{C-c C-u A} behaves
 similarly, except now all the output is returned in \LaTeX{}  form.
 
-\subsection{Initialization Cells}
-
-\noindent
-It is possible that you want certain cells evaluated separate from the
-others; perhaps, for example, you want certain cells evaluated whenever
-you open the document.  This can be done using initialization cells.
-An initialization cell is delimited by
-\begin{verbatim}
-\beginmaxima[* Initialization Cell *]
-\end{verbatim}
-\noindent
-and
-\begin{verbatim}
-\endmaxima
-\end{verbatim}
-\noindent
-The command \texttt{C-c C-t} will turn a cell into
-an initialization cell, applying \texttt{C-c C-t} again will turn it
-back into a regular cell.  
-When \LaTeX{}ed, an initialization cell will look like
-\beginmaxima[* Initialization Cell *]
-diff(sin(x^2),x);
-\endmaxima
-
-Initialization cells behave like regular
-cells, except that they can be treated as a group.
-To evaluate all initialization cells (without displaying the output in
-the document buffer), the
-command \texttt{C-c C-u t} will go to each of the
-initialization cells and evaluate them.
-If you want the output of the initialization cells to be brought back 
-to the document buffer,  stopping at each one to see it
-you indeed want it updated, then use the command \texttt{C-c C-u i}.
-With an argument, \texttt{C-u C-c C-u i}, the
-initialization cells will be updated without asking.   The command 
-\texttt{C-c C-u I} behaves just like \texttt{C-c C-u i},
-except that the output is returned in \TeX{} form.
-
 \subsection{Referencing Other Cells}
 
 \noindent
@@ -556,8 +518,7 @@ and
 \endmaximanoshow
 \end{verbatim}
 
-Session cells and noshow cells cannot be initialization cells or part of
-packages.
+Session cells and noshow cells cannot be part of packages.
 
 If the command to create one type of cell is called while inside
 another type of cell, the type of cell will be changed.  So, for
@@ -575,8 +536,7 @@ diff(x*sin(x),x);
 \endmaximasession
 \end{verbatim}
 \noindent
-If a standard cell is an initialization cell or a package part, its
-type cannot be changed.
+If a standard cell is a package part, its type cannot be changed.
 
 \subsection{\emx{} and \texttt{Preview-LaTeX}}
 
@@ -852,14 +812,6 @@ Update all of the cells.  With an argument, don't ask before updating.\\
 \texttt{C-c C-u A}
 & Update all of the cells in \TeX{} form. With an argument don't ask
 before updating.\\
-\texttt{C-c C-u t}
-& Evaluate all of the initialization cells.\\
-\texttt{C-c C-u i}
-& Update all of the initialization cells.  With an argument, don't
-ask before updating.\\
-\texttt{C-c C-u I}
-& Update all of the initialization cells in \TeX{} form.  With an
-argument, don't ask before updating.\\
 \texttt{C-c C-u s}
 & Update all of the session cells in \TeX{} form.  With an
 argument, don't ask before updating.
@@ -890,9 +842,6 @@ argument, don't ask before updating.
 \texttt{C-c C-d}
 %& \texttt{emaxima-delete-output}
 & Delete the output from the current cell.\\
-\texttt{C-c C-t}
-%& \texttt{emaxima-toggle-init}
-& Toggle whether or not the current cell is an initialization cell.\\
 \texttt{C-c C-x}
 %& \texttt{emaxima-package-part}
 & Insert a heading for the cell indicating that it's part of a
