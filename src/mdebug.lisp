@@ -93,14 +93,17 @@
   (setq fun (complete-prop key 'keyword prop))
   (setq key fun)
   (or fun (return-from break-call nil))
-  #+clisp (eval '(setq *break-env* (the-environment)))
+  ; jfa commented out the following line. Did it ever work?
+  ;#+clisp (eval '(setq *break-env* (the-environment)))
   (setq fun (get fun prop))
   (unless (symbolp fun)  (let ((gen (gensym)))
      (setf (symbol-function gen) fun) (setf (get key prop) gen)
      (setq fun gen)))
   (cond (fun
 	 (setq args (cons fun args))
-	 (evalhook args nil nil *break-env*)
+	 ; jfa temporary hack
+	 #+gcl(evalhook args nil nil *break-env*)
+	 #-gcl(eval args)
 	 )
 	(t (format *debug-io* "~&~S is undefined break command.~%" key)))
  )
@@ -311,7 +314,7 @@
 				  eof-error-p eof-value)))))))
 	((and (eql #\? ch) (member next '(#\space #\tab)))
 	 (let* ((line (string-trim '(#\space #\tab #\; #\$)
-				   (subseq  (read-line stream eof-error-p eof-value) 1))))
+				   (subseq  (read-line stream eof-error-p eof-value) 2))))
 	   `((displayinput) nil (($describe) ,line))))
 	(t (setq *last-dbm-command* nil)
 	     (mread stream eof-value))))
