@@ -1,7 +1,5 @@
 /* First load the necessary file: */
-/* LOAD('DECLIN); */
-/* for DOE-MACSYMA */
-load("declin.mc");
+load("declin");
 /* For example, define the linearity properties of F.
 	F is to be linear in its first, third and fifth arguments.
 	The predicate to be used for distinguishing the coefficients
