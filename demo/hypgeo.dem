@@ -63,11 +63,11 @@ specint(%,t);
 t*%h[2/3,1](t^(1/2))*%e^(-p*t);
 specint(%,t);
 
-/* %ibes[v](z), %k[v](z), modified bf's. */
+/* bessel_i(v,z), %k[v](z), modified bf's. */
 
 
 
-t^(1/2)*%ibes[1](t)*%e^(-p*t);
+t^(1/2)*bessel_i(1,t)*%e^(-p*t);
 specint(%,t);
 
 
@@ -86,7 +86,7 @@ specint(%,t);
 t^(3/4)*bessel_j(1/2, t)*bessel_j(1/4, t)*%e^(-p*t);
 specint(%,t);
 
-t*%ibes[0](a*t/2)*%ibes[1](a*t/2)*%e^(-p*t);
+t*bessel_i(0,a*t/2)*bessel_i(1,a*t/2)*%e^(-p*t);
 specint(%,t);
 
 
