@@ -314,6 +314,14 @@ that matches the name NAME with extention EXT"
     (setq file (file-search name *info-paths* '("" "info") nil))
     (cond ((and (null file)
 		(not (equal name "dir")))
+	   ;; jfa: FIXME Sat Feb  2 16:18:04 2002
+	   ;; The error message is a temporary hack.
+	   ;; The code following the error message would do something.
+	   ;; (a) It is not clear to me what it is trying to do.
+	   ;; (b) The format statmement is missing an argument.
+	   ;; (c) Even if (b) is fixed, the show-info statement
+	   ;;     creates an infinite loop.
+	   (error "Failed to find info directory")
 	   (format t "looking for dir~A~%")
 	   (let* ((tem (show-info "(dir)Top" nil))
 		  *case-fold-search*)
