@@ -78,3 +78,4 @@ exp:ishow(canform(contract(rename(expand(ev(exp,ichr2))))))$
 ("In order to get the expected result:")$
 ishow(canform(ev(exp,inmc1)))$
 
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */
