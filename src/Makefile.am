@@ -342,6 +342,7 @@ polyrz.lisp \
 powers.lisp \
 procs.lisp \
 psolve.lisp \
+rand-mt19937.lisp \
 rat3a.lisp \
 rat3b.lisp \
 rat3c.lisp \

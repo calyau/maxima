@@ -265,6 +265,7 @@ binary-sbcl/maxima.core : pade.lisp
 binary-sbcl/maxima.core : homog.lisp
 binary-sbcl/maxima.core : combin.lisp
 binary-sbcl/maxima.core : nset.lisp
+binary-sbcl/maxima.core : rand-mt19937.lisp
 binary-sbcl/maxima.core : mstuff.lisp
 binary-sbcl/maxima.core : ratpoi.lisp
 binary-sbcl/maxima.core : pois2.lisp

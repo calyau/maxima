@@ -265,6 +265,7 @@ binary-clisp/maxima.mem : pade.lisp
 binary-clisp/maxima.mem : homog.lisp
 binary-clisp/maxima.mem : combin.lisp
 binary-clisp/maxima.mem : nset.lisp
+binary-clisp/maxima.mem : rand-mt19937.lisp
 binary-clisp/maxima.mem : mstuff.lisp
 binary-clisp/maxima.mem : ratpoi.lisp
 binary-clisp/maxima.mem : pois2.lisp

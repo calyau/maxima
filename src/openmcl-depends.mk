@@ -227,6 +227,7 @@ binary-openmcl/maxima.image : pade.lisp
 binary-openmcl/maxima.image : homog.lisp
 binary-openmcl/maxima.image : combin.lisp
 binary-openmcl/maxima.image : nset.lisp
+binary-openmcl/maxima.image : rand-mt19937.lisp
 binary-openmcl/maxima.image : mstuff.lisp
 binary-openmcl/maxima.image : ratpoi.lisp
 binary-openmcl/maxima.image : pois2.lisp

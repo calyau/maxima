@@ -499,6 +499,7 @@
 				     (:file "homog") 
 				     (:file "combin") 
                      (:file "nset")
+                     (:file "rand-mt19937")
 				     (:file "mstuff")))
 	       (:module poisson-series :source-pathname ""
 			:components ((:file "ratpoi")
