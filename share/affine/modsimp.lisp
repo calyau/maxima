@@ -796,7 +796,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
     when (not (module-monom-must-replacep v))
       collecting v)))
 
-(defun $shift_sequence (seq n &aux (tem (make-list (abs n) :initial-value 0)))
+(defun $shift_sequence (seq n &aux (tem (make-list (abs n) :initial-element 0)))
   "shifts a sequence of degrees over by n to use for adding to check sums"
   (cond ((zerop n) seq)
 	((> n 0)

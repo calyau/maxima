@@ -1470,7 +1470,7 @@ substituting them to be zero."
 
 (defun ldata-simplifications-write (ldata &key (open-g 1) (pathname "haskell:>wfs>answer.lisp") &aux answ)
   (setq answ (ldata-simplifications ldata :open-g open-g))
-  (with-open-file (st pathname :out)
+  (with-open-file (st pathname :direction :output)
     (let ((*standard-output* st) #-cl (*nopoint t) *print-radix*)
       (for-editor (des answ))
       (format st "~%(setq (answ (rerat '~A)))" answ))))

@@ -1529,7 +1529,7 @@
 
 
 (defun des-file (expr file-name)
-  (with-open-file  (st file-name :out)
+  (with-open-file  (st file-name :direction :output)
       (let ((linel 75)(*standard-output* st)
 	    $linedisp $display2d)
 	(des expr ))))
@@ -3308,7 +3308,7 @@
 (defvar *answer* nil)
 (defun simplify-affine-ldata-write (ldata &key (open-g 1) (pathname "haskell:>wfs>answer.lisp") &aux answ)
   (setq *answer* (setq answ (simplify-affine-ldata ldata :open-g open-g))) 
-  (with-open-file (st pathname :out)
+  (with-open-file (st pathname :direction :output)
     (let ((*standard-output* st) (*nopoint t) *print-radix*)
       (for-editor (des answ))
       (format st "~%(setq (answ (rerat '~A)))" answ))))

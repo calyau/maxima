@@ -510,9 +510,9 @@
 	       (cond ((> (length refs ) 1)(setq changed t)))
 	       refs)  into all-ops
 	appending
-	(make-list (length refs) :initial-value lis-dat  ) into all-dat
+	(make-list (length refs) :initial-element lis-dat  ) into all-dat
 	appending
-	(make-list (length refs) :initial-value lis  ) into the-eqns
+	(make-list (length refs) :initial-element lis  ) into the-eqns
 	finally
 	(setq new-pls(construct-pre-ldata-sheaves :opens all-ops :data all-dat))
 	(cond (changed (add-pls-zopen-history new-pls)))
@@ -876,7 +876,7 @@
 	 (setq file-name (merge-pathnames file-name))
 	 (setq file-name (send file-name :new-name (string name)))))
 
-  `(with-open-file  (st ',file-name :out)
+  `(with-open-file  (st ',file-name :direction :output)
        (let (*print-gensym*)
      (format st ";;; -*- mode: lisp; package: cl-maxima; syntax: common-lisp -*- 
      ~%(setq ~A (rerat '" ',name) (format st "~s" ,name)
@@ -884,7 +884,7 @@
      ',file-name)))
  
 (defun save-parts  ( obj file-name &aux  me)
-  (with-open-file (st  file-name :out)
+  (with-open-file (st  file-name :direction :output)
     (let (*print-gensym*)
     (format st ";;; -*- mode: lisp; package: cl-maxima; syntax: common-lisp; Mode: LISP -*- ~%")      
     (sloop for v in obj
@@ -894,7 +894,7 @@
 	  (format st "~%;;next part ~%~S" me))
     (send st :pathname))))
 (defun save-blew-up ( &aux  me)
-  (with-open-file (st "r20:ps:<atp.schelter>blew-up.tem" :out)
+  (with-open-file (st "r20:ps:<atp.schelter>blew-up.tem" :direction :output)
     (let (*print-gensym*)
     (format st ";;; -*- mode: lisp; package: cl-maxima; syntax: common-lisp; Mode: LISP -*- ~%")      
     (sloop for v in *blew-up*

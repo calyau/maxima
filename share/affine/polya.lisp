@@ -2678,7 +2678,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
  (cons '($matrix)
        (sloop for i below (fill-pointer (pd-rows pd))
 	do
-    (setq lis (make-list (length (pd-segments pd)):initial-value 0))
+    (setq lis (make-list (length (pd-segments pd)) :initial-element 0))
     (sloop for k below (fill-pointer (setq a-row (aref (pd-rows pd) i))) by 2
 	  when (setq tem (aref a-row k))
 	   do (setq where  (segment-interval (pd-segments pd) tem) )
