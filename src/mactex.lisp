@@ -100,7 +100,7 @@
      ;; collect the file-name, if any, and open a port if needed
      (setq texport (cond((null filename) *standard-output* ) ; t= output to terminal
 			(t
-			 (open (string (stripdollar filename))
+			 (open (string (print-invert-case (stripdollar filename)))
 			       :direction :output
 			       :if-exists :append
 			       :if-does-not-exist :create))))
@@ -108,7 +108,8 @@
      ;; do a normal evaluation of the expression in macsyma
      (setq mexp (meval mexplabel))
      (cond ((memq mexplabel $labels)	; leave it if it is a label
-	    (setq mexplabel (concat "(" (stripdollar mexplabel) ")"))
+	    (setq mexplabel (concatenate 'string "(" (print-invert-case (stripdollar mexplabel))
+					 ")"))
 	    (setq itsalabel t))
 	   (t (setq mexplabel nil)))	;flush it otherwise
 
@@ -363,10 +364,14 @@
 	x (tex-list (cdr x) nil r ","))
   (append l x))
 
-(defun texsym (x) (or (get x 'texsym) (get x 'strsym)(get x 'dissym)
-		      (stripdollar x)))
+(defun texsym (x)
+  (or (get x 'texsym) (get x 'strsym)
+      (get x 'dissym)
+      (stripdollar x)))
 
-(defun texword (x)(or (get x 'texword) (stripdollar x)))
+(defun texword (x)
+  (or (get x 'texword)
+      (stripdollar x)))
 
 (defprop bigfloat tex-bigfloat tex)
 
