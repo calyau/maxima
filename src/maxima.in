@@ -1,14 +1,18 @@
 #!@POSIX_SHELL@
 # -*- Shell-script -*-
 
+unixize () {
+    echo "$1" | sed -e 's%\\\\%/%g' | sed -e 's%^\([A-Za-z]\):%/\1%'
+}
+
 setup_vars() {
   MAXIMA_VERSION=@VERSION@
-  prefix=@prefix@
-  exec_prefix=@exec_prefix@
+  prefix=`unixize "@prefix@"`
+  exec_prefix=`unixize "@exec_prefix@"`
   PACKAGE=@PACKAGE@
   VERSION=@VERSION@
-  top_srcdir=@expanded_top_srcdir@
-  libdir=@libdir@
+  top_srcdir=`unixize "@expanded_top_srcdir@"`
+  libdir=`unixize "@libdir@"`
   if [ -n "$MAXIMA_LAYOUT_AUTOTOOLS" ]; then
       layout_autotools="$MAXIMA_LAYOUT_AUTOTOOLS"
   else
@@ -21,9 +25,9 @@ setup_vars() {
   fi  
   if [ -n "$MAXIMA_PREFIX" ]; then
       if [ "$layout_autotools" = "true" ]; then
-	  MAXIMA_IMAGESDIR=$MAXIMA_PREFIX/lib/$PACKAGE/$VERSION
+	  MAXIMA_IMAGESDIR=`unixize "$MAXIMA_PREFIX"`/lib/$PACKAGE/$VERSION
       else
-	  MAXIMA_IMAGESDIR=$MAXIMA_PREFIX/src
+	  MAXIMA_IMAGESDIR=`unixize "$MAXIMA_PREFIX"`/src
       fi  
   else
       MAXIMA_IMAGESDIR="$MAXIMA_DEFAULT_IMAGESDIR"
@@ -48,7 +52,7 @@ unsetup_vars () {
 if [ -z "$MAXIMA_USERDIR" ]; then
   maximarc_path="$HOME/.maxima/maximarc"
 else
-  maximarc_path="$MAXIMA_USERDIR/maximarc"
+  maximarc_path="`unixize \"$MAXIMA_USERDIR\"`/maximarc"
 fi
 if [ -f "$maximarc_path" ]; then
   . "$maximarc_path"
