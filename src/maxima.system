@@ -1,10 +1,8 @@
 ; -*- Lisp -*-
-#+(or sbcl openmcl)
+#+(or cmu sbcl openmcl)
 (or (find-package "USER")
-    (rename-package "COMMON-LISP-USER" "COMMON-LISP-USER" '("USER")))
-#+cmu
-(or (find-package "USER")
-    (rename-package "COMMON-LISP-USER" "COMMON-LISP-USER" '("USER" "CL-USER")))
+    (rename-package "COMMON-LISP-USER" "COMMON-LISP-USER"
+		    (cons "USER" (package-nicknames "COMMON-LISP-USER"))))
 
 (in-package :user)
 
