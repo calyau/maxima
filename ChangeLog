@@ -1,3 +1,821 @@
+2004-05-05 21:48  billingd
+
+	* share/contrib/diffequations/ode1_abel.mac: 2004-05-06  David
+	  Billinghurst
+
+		  * share/contrib/diffequations/ode1_abel.mac
+		  Small bug fixes for Abel equation of second kind.
+
+2004-05-05 21:39  billingd
+
+	* share/contrib/diffequations/contrib_ode.mac: 2004-05-06  David
+	  Billinghurst
+
+		  * share/contrib/diffequations/contrib_ode.mac
+		  Extend ode_check to check implicit solutions of ODEs
+
+2004-05-05 20:44  amundson
+
+	* share/: physics/gamkah.lisp, physics/gammtr.lisp,
+	  physics/gamnoc.lisp, physics/gamsq.lisp, Makefile.am,
+	  physics/gam5.lisp, physics/gamalg.dem, physics/gamalg.lisp,
+	  physics/gamalg.usg, physics/gamchi.lisp, physics/gamcon.lisp,
+	  physics/gamgfi.lisp: Remove gamalg package. Apparently, the
+	  authors did not want it bundled with Macsyma (or, presumbaly,
+	  Maxima.) See the thread "status of gamalg" from May 2004 on the
+	  Maxima mailing list.
+
+2004-05-05 20:35  amundson
+
+	* src/mactex.lisp: Updates compiled by Andrej Grozin. He writes:
+
+	  Also, some of bug fixes (and minor improvements) to mactex.lisp
+	  are notyet incorporated. This patch is larger; it includes recent
+	  fixes fromJesper Harder <harder@ifa.au.dk> of the problem
+	  withtex(x[i]^2)$and enhancements from Marek Rychlik
+	  <rychlik@u.arizona.edu> fortex(let(sin(x)*cos(y),sin(2*x)/2))$and
+	  similar let-rules.
+
+2004-05-05 20:33  amundson
+
+	* src/macsys.lisp: Simple bug fix from Andrej Grozin.
+
+2004-05-05 14:16  vttoth
+
+	* share/tensor/: kaluza.dem, kaluza.mac: New example demonstrates
+	  the use of derivative indices in itensor.
+
+2004-05-05 14:14  vttoth
+
+	* share/tensor/itensor.lisp: Improvements to itensor now make it
+	  able to deal with most expressions containing derivative indices.
+	  A new example, kaluza.dem, demonstrates these features.
+
+2004-05-04 10:21  rtoy
+
+	* src/autoconf-variables.lisp.in: Needs a final newline so that
+	  autoconf-variables.lisp contains the last line.  (May only be an
+	  issue on Solaris.)
+
+2004-05-04 10:20  rtoy
+
+	* src/acl6-depends.mk: Update dependencies for
+	  autoconf-variables.lisp and server.lisp.
+
+2004-05-03 23:52  billingd
+
+	* share/contrib/diffequations/contrib_ode.usg: 2004-05-04  David
+	  Billinghurst
+
+		  * share/contrib/diffequations/contrib_ode.usg
+		  Documentation update
+
+2004-05-03 23:45  billingd
+
+	* share/contrib/diffequations/tests/rtest_ode1_abel.mac: 2004-05-04
+	   David Billinghurst
+
+		  * share/contrib/diffequations/tests/rtest_ode1_abel.mac
+		  Update tests to reflect changes to ode1_abel.mac
+
+2004-05-03 23:41  billingd
+
+	* share/contrib/diffequations/ode1_abel.mac: 2004-05-04  David
+	  Billinghurst
+
+		  * share/contrib/diffequations/ode1_abel.mac
+		  Make code for Abel equation of second kind more general
+	  by
+		  allowing  (g1(x)*y+g0(x))*y'(x) rather than
+	  (y+g(x))*y'(x).
+		  Remove debugging and redundant code
+		  Fix a couple of bugs.
+
+2004-05-03 23:35  billingd
+
+	* share/contrib/diffequations/ode1_nonlinear.mac: 2004-05-04  David
+	  Billinghurst
+
+		  * share/contrib/diffequations/ode1_nonlinear.mac
+		  Fix return value for ode1_abel
+
+2004-05-03 00:19  billingd
+
+	* share/contrib/diffequations/tests/rtest_ode1_abel.mac: 2004-05-03
+	   David Billinghurst
+
+		  * share/contrib/diffequations/tests/rtest_ode1_abel.mac
+		  Update tests to reflect improvements in ode1_abel.mac
+
+2004-05-03 00:16  billingd
+
+	* share/contrib/diffequations/ode1_abel.mac: 2004-05-03  David
+	  Billinghurst
+
+		  * share/contrib/diffequations/ode1_abel.mac
+		  Update work in progress.  This version essentially works.
+
+2004-04-29 23:22  billingd
+
+	* share/contrib/diffequations/tests/rtestode_murphy2.mac:
+	  2004-04-30  David Billinghurst
+
+		  * share/contrib/diffequations/tests/rtestode_murphy2.mac
+		  Update solutions for equations (1) and (96) to match
+		  current maxima output
+
+2004-04-29 23:09  billingd
+
+	* share/contrib/diffequations/ode1_clairault.mac: 2004-04-30  David
+	  Billinghurst
+
+		  * ode1_clairault.mac (ode1_clairault_singular):
+		  Change the way that an expression is differentiated to
+		  work around interference with pdiff.
+
+2004-04-29 21:54  wjenkner
+
+	* src/: clmacs.lisp, init-cl.lisp, maxima-package.lisp,
+	  server.lisp: Some cleanup for CLISP.
+
+	  maxima-package.lisp: Don't make MAXIMA inherit from EXT.
+
+	  Don't import GETENV (we use MAXIMA-GETENV defined in
+	  init-cl.lisp).
+
+	  clmacs.lisp: Add package prefix to *DEFAULT-FLOAT-FORMAT*
+	  (previously inherited via EXT).
+
+	  init-cl.lisp (bye): New function (previously inherited via EXT).
+
+	  server.lisp (setup-server, xchdir): Add package prefix to
+	  SOCKET-CONNECT resp. CD (previously inherited via EXT).
+
+2004-04-29 20:18  vttoth
+
+	* share/tensor/itensor.dem: Correcting a minor error in this demo.
+
+2004-04-28 22:46  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: The way blocks of code are
+	  sent to the Maxima process was changed so that the user doesn't
+	  need to wait while the code is being processed.
+
+2004-04-28 20:47  belanger
+
+	* interfaces/emacs/emaxima/emaxima.el: Removed
+	  emaxima-single-string, replaced it with
+	  maxima-single-string-wait.
+
+2004-04-28 20:46  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: Added
+	  maxima-single-string-wait, fixed maxima-region so it won't stop
+	  emacs while input is being processed.
+
+2004-04-28 20:24  amundson
+
+	* plotting/Makefile.am: add header.tcl and footer.tcl.
+
+	  Remove FORCE:
+
+2004-04-28 19:49  amundson
+
+	* share/Makefile.am: include and install all new share files
+
+2004-04-28 19:48  amundson
+
+	* Makefile.am: xmaxima-local.in and maxima-local.in
+
+2004-04-28 11:43  amundson
+
+	* src/Makefile.am: Include new lisp files, files for pure lisp
+	  build.
+
+2004-04-28 11:38  amundson
+
+	* plotting/Makefile.am: Scripts are now generated files, so do not
+	  include them in the tarball.
+
+2004-04-28 11:37  amundson
+
+	* lisp-utils/Makefile.am: Include  makealbertdoc.lisp.
+
+2004-04-28 11:36  amundson
+
+	* interfaces/xmaxima/Makefile.am: remove win32/maxima.bat.
+
+2004-04-28 11:34  amundson
+
+	* interfaces/Makefile.am: Include bin/xmaxima.iss.
+
+2004-04-28 11:34  amundson
+
+	* doc/share/Makefile.am: Include specfun.texi.
+
+2004-04-28 11:29  amundson
+
+	* doc/info/Makefile.am: Include None.texi, xref.texi.
+
+2004-04-28 11:28  amundson
+
+	* doc/Makefile.am: Install maximabook. Include and install doc/misc
+	  directory.
+
+2004-04-28 11:27  amundson
+
+	* Makefile.am: Include pure lisp installation materials.
+
+2004-04-28 11:25  amundson
+
+	* admin/: compare_cvs_tarball, make_share_list, make_snapshots:
+	  utility updates
+
+2004-04-27 09:53  amundson
+
+	* configure.in: fix syntax errors, add better error message when
+	  cmucl runtime path cannot be determined.
+
+2004-04-26 22:00  amundson
+
+	* configure.in: Try using the lisp in the path for
+	  cmucl_runtime_path if all else fails.
+
+2004-04-26 16:15  vttoth
+
+	* share/tensor/symtry.lisp: Restoring one more name conflict fix
+	  that was inadvertently removed.
+
+2004-04-26 15:42  vttoth
+
+	* share/tensor/symtry.lisp: Restoring a name conflict fix that was
+	  accidentally omitted in the last version.
+
+2004-04-25 23:24  belanger
+
+	* interfaces/emacs/emaxima/emaxima.el: Replaced
+	  `maxima-send-string' with `emaxima-send-string' which waits for
+	  output.
+
+2004-04-25 23:23  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: `maxima-send-string' no
+	  longer waits for the output.
+
+2004-04-25 18:29  vttoth
+
+	* share/tensor/ten_alg.dem: Additional fixes to this demo.
+
+2004-04-25 17:35  vttoth
+
+	* share/tensor/: ademo.dem, ten_alg.dem: Simplified demos to take
+	  advantage of repairs in itensor.
+
+2004-04-24 22:03  wjenkner
+
+	* share/tensor/: tentex.lisp, car_iden.dem, ex_calc.dem,
+	  ex_calc.mac, lch.mac, ten_alg.dem: New files from Valerij Pipin
+	  (most of the commit message is taken from a description he sent
+	  me in private email).
+
+	  lch.mac: More flexible indicial Levi-Civita (permutation) tensor
+	  package.
+
+	  ex_calc.mac: Definitions for exterior calculus: exterior product,
+	  interior product, exterior derivative and the Lie derivative.
+
+	  ex_calc.dem: illustrates them in action.
+
+	  car_iden.dem: demonstrates the Cartan identity (commutation of
+	  the Lie derivative with the exterior one) for order 1,2,3,4 and
+	  5.
+
+	  ten_alg.dem: demonstrates all the current power of the itensor
+	  package with respect to the mentioned additions.
+
+	  tentex.lisp: Some tensor stuff for $tex.
+
+2004-04-24 21:48  vttoth
+
+	* share/tensor/itensor.usg: Correcting a documentation error.
+
+2004-04-24 19:27  wjenkner
+
+	* share/tensor/: canten.lisp, itensor.lisp: Changes from Valerij
+	  Pipin:
+
+	  itensor.lisp ($KDELS): New function as symmetrical counterpart to
+	  $KDELTA.
+
+	  (DELTA): Optional argument for the sake of $KDELS.
+
+	  ($TENPR): New user level alias for RPOBJ.
+
+	  The previous two changes were already in 1.6.
+
+	  canten.lisp ($NAME,$CONTI,$COVI,$DERI): User level functions with
+	  the same purpose as NAME resp. CONTI, COVI, DERI.
+
+2004-04-24 18:24  wjenkner
+
+	* share/tensor/: ademo-2steps.dem, ademo.dem, ctenso_1.dem,
+	  ctenso_2.dem, ctenso_3.dem, ctenso_4.dem, ctensr.mac, gener.lisp,
+	  inpfix.lisp, itensor.dem, itensor.lisp, itensor.usg, swartz.dem,
+	  symtry.lisp, tensor-doc.txt: Convert DOS CR/NL end-of-line to
+	  Unix style.
+
+2004-04-24 15:08  amundson
+
+	* src/Makefile.am: Work around a bug in automake 1.8.3. The
+	  workaround version is probably better than the original.
+
+2004-04-24 08:06  vttoth
+
+	* share/tensor/: aaricc.mac, aaricc_bsc.mac, aaricc_spl.mac,
+	  ademo-2steps.dem, ademo.dem, ademo2.dem, anew.mac, anew_add.mac,
+	  birkhoff.txt, brans_bmb.mac, brbirk.mac, ctenso_1.dem,
+	  ctenso_2.dem, ctenso_3.dem, ctenso_4.dem, ctensr.mac, gener.lisp,
+	  inpfix.lisp, itensor.dem, itensor.lisp, itensor.usg, mmans.mac,
+	  mmans_run.mac, ricci2.mac, rsn.mac, swartz.dem, symtry.lisp,
+	  tensor-doc.txt: Fixed broken itensor functionality, several
+	  demos, other problems. Removed some obsolete files.
+
+2004-04-23 13:28  belanger
+
+	* interfaces/emacs/emaxima/emaxima.el: Changed the emaxima-mode
+	  keymap so it wouldn't load LaTeX-mode-map twice.  Changed the
+	  emaxima-session-cell keymap to C-cC-a since C-cC-p conflicts with
+	  preview-latex.
+
+2004-04-23 09:11  vvzhy
+
+	* src/plot.lisp: Wrong MFORMAT specification.
+
+2004-04-23 07:41  vvzhy
+
+	* src/: kclmac.lisp, maxima-package.lisp, plot.lisp: Import
+	  "cl::handler-case" for ANSI GCL
+
+2004-04-22 00:38  vvzhy
+
+	* src/maxima-package.lisp: On ANSI GCL some symbols must be
+	  explicitly imported from COMMON-LISP package.
+
+2004-04-21 20:10  amundson
+
+	* src/: clisp-depends.mk, cmucl-depends.mk, gcl-depends.mk,
+	  sbcl-depends.mk: Update *-depends.mk after last maxima.system
+	  update.
+
+2004-04-21 20:08  amundson
+
+	* configure.in, src/.cvsignore, src/Makefile.am: Install rmaxima.
+
+2004-04-21 05:01  vvzhy
+
+	* src/plot.lisp: Fixed: 1) inability to plot "atomic" expressions -
+	  plot2d(1,...) or plot2d(x,...) 2) plot2d(cot(x),[x,0,1]) or other
+	  singular expressions in GCL
+
+2004-04-21 01:13  starseeker
+
+	* lisp-utils/makealbertdoc.lisp: Adding script to generate
+	  documentation with albert.
+
+2004-04-20 18:17  wjenkner
+
+	* src/nparse.lisp: (mread): Flush output after printing the prompt.
+
+2004-04-20 18:11  wjenkner
+
+	* src/macdes.lisp: Implement proposal made in bug #857171 (variable
+	  needs to be quoted for DESCRIBE to work), discussed by R. Dodier
+	  and S. Macrakis.
+
+	  ($describe): Make it an mspec.  Also, bind
+	  cl-info::*prompt-prefix* and cl-info::*prompt-suffix* here.
+
+2004-04-20 17:54  wjenkner
+
+	* src/cl-info.lisp: Address bug #902792 (describe interaction
+	  parser not robust), submitted by S. Macrakis.
+
+	  (print-prompt, parse-user-choice, select-info-items): New
+	  functions.  (*prompt-prefix*, *prompt-suffix*,
+	  +select-by-keyword-alist+): New variables.
+
+	  (info): Use them.  Also, flush output and clear input where
+	  appropriate.
+
+2004-04-20 17:10  wjenkner
+
+	* tests/rtest15.mac: Add tests for CHEBYF change.
+
+2004-04-20 17:08  wjenkner
+
+	* src/sin.lisp: (chebyf): Handle the integrand a*t^r1*(c2*t^q)^r2
+	  (i.e., c1=0).
+
+2004-04-16 07:16  amundson
+
+	* src/rmaxima.in: initial version
+
+2004-04-15 20:45  amundson
+
+	* src/plot.lisp: New maxima-gnuplot interface.
+
+	  1) Goal: the idea is not to create the ultimate plotting tool for
+	  Maxima. Rather, I have tried to make the maximum functionality
+	  available with the currently available tool (Gnuplot) and minimal
+	  effort. Simple operations should be easy and complex operations
+	  should be possible.
+
+	  2) (New) "gnuplot" is now the default plotting format. The old
+	  gnuplot interface that utilizes the mgnuplot tcl-tk script is
+	  available as "mgnuplot". The old default maxima plotting package
+	  is still available as "openmath".
+
+	  3) Three gnuplot terminals are available: default, ps and dumb.
+	  Each can either be displayed to the screen or saved to a file.
+
+	  4) Several new plot_options are available: a) gnuplot_term =
+	  default, ps or dumb. default is default.  b) gnuplot_out_file =
+	  false or filename. false is default. Output files are gnuplot
+	  format to be loaded in the gnuplot application for the default
+	  term, encapsulated postscript for the ps term and text for the
+	  dumb term.  c) gnuplot_pm3d = true or false. false is default.
+	  Turns on the pm3d option available in newer versions of Gnuplot.
+	  d) gnuplot_preamble = string. "" is default. The preamble can
+	  contain an arbitrary string of Gnuplot commands. Multiple
+	  commands should be separated with semi-colons.  e)
+	  gnuplot_curve_titles = list of (strings or default). [default] is
+	  default.  The list of curve titles will be applied to the list of
+	  curves. If there are more curves than titles in the list, the
+	  list will wrap around. The special value default give the curves
+	  titles based on the 1d representation of the function name.  f)
+	  gnuplot_curve_styles = list of strings. The styles wrap around in
+	  a manner similar to the titles. The strings themselves should be
+	  gnuplot commands appropriate for plot "file" with title "title
+	  <style>For details type "help plot" in gnuplot.  g)
+	  gnuplot_default_term_command = string. Default is "". The gnuplot
+	  command to set the default terminal.	h) gnuplot_ps_term_command
+	  = string. Default is "set size 1.5, 1.5;set term postscript eps
+	  enhanced color solid 24". The gnuplot command to set the ps
+	  terminal.  g) gnuplot_default_term_command = string. Default is
+	  "set term dumb 79 22". The gnuplot command to set the dumb
+	  terminal.
+
+	  5) More testing needs to be done, particularly with xmaxima and
+	  windows.Feedback on this interface will be greatly appreciated.
+	  This is the last feature I plan to add before working on the
+	  5.9.1 release.
+
+2004-04-15 20:43  amundson
+
+	* src/macsys.lisp: make $system command show output under cmucl.
+
+2004-04-15 20:40  amundson
+
+	* src/maxima.system: Make $system command show output under cmucl.
+
+2004-04-02 16:44  belanger
+
+	* interfaces/emacs/emaxima/maxima-font-lock.el: The regular
+	  expressions were changed to be computed at compile-time, to speed
+	  things up.
+
+2004-03-28 10:13  vvzhy
+
+	* doc/info/maximahtml.mk: Extra html chapter maxima_43.html added
+
+2004-03-28 01:56  vvzhy
+
+	* interfaces/xmaxima/Tkmaxima/Menu.tcl: Menu item "Fonts" renamed
+	  to "Preferences"
+
+2004-03-28 01:28  vvzhy
+
+	* interfaces/xmaxima/Tkmaxima/: Plot3d.tcl, Plotconf.tcl: Plot Menu
+	  rewritten with menubutton widget. Fixes bugs # 694179, 915212
+
+2004-03-28 01:16  vvzhy
+
+	* interfaces/xmaxima/Tkmaxima/Paths.tcl: We need start-server
+	  instead of setup-server to get embedded plots in xmaxima
+
+2004-03-23 18:18  wjenkner
+
+	* src/server.lisp: (getpid-from-environment): GCL doesn't like it.
+
+2004-03-22 11:44  vvzhy
+
+	* interfaces/xmaxima/Tkmaxima/Printops.tcl: Fix default font for
+	  some buttons
+
+2004-03-22 11:40  vvzhy
+
+	* plotting/: mgnuplot, omplotdata: removing mgnuplot and omplotdata
+
+2004-03-21 16:06  wjenkner
+
+	* src/server.lisp: (getpid): Rewrite the definition for CLISP.	A
+	  bug resulting from an unnecessary call to ERRSET was investigated
+	  and reported by Andrej Vodopivec.
+
+	  Avoid read-time conditionalization on operating system dependent
+	  features since the .fas files (but not the memory images) are
+	  portable across platforms.
+
+	  (getpid-from-environment): New function.
+
+2004-03-21 12:45  vvzhy
+
+	* configure.in, plotting/Makefile.am, plotting/footer.tcl,
+	  plotting/header.tcl.in, plotting/mgnuplot.in: omplotdata shares
+	  code with xmaxima.  Now it is removed from the repository and now
+	  created from /interfaces/xmaxima/Tkmaxima/*.tcl
+
+2004-03-21 01:30  vvzhy
+
+	* interfaces/xmaxima/Tkmaxima/Textinsert.tcl: font family and size
+	  typo fixed
+
+2004-03-18 15:41  billingd
+
+	* tests/: rexamples.mac, rtest10.mac, rtest11.mac, rtest12.mac,
+	  rtest13.mac, rtest15.mac, rtest3.mac, rtest4.mac, rtest5.mac,
+	  rtest6a.mac, rtest7.mac, rtest8.mac, rtest9.mac, rtest9a.mac,
+	  rtestode.mac, rtestode_zp.mac: These changes reduce the
+	  interaction between test case files.	One problem is that
+	  kill(all) removes properties that are set in the initial maxima
+	  image.  This affects trigsimp() for example.
+
+	  Replace all occurences of kill(all) with kill(allbut(props)).
+	  Add a kill(g) to rtest11.mac.
+
+2004-03-16 06:15  vvzhy
+
+	* interfaces/xmaxima/Tkmaxima/Menu.tcl: New way to run Maxima
+	  testsuite
+
+2004-03-16 05:58  vvzhy
+
+	* interfaces/xmaxima/Tkmaxima/Paths.tcl: Various way to call Maxima
+	  on different operating systems
+
+2004-03-14 16:04  amundson
+
+	* doc/info/Bugs.texi, doc/info/Makefile.am, doc/info/maxima.texi,
+	  src/mload.lisp, tests/Makefile.am, tests/known-bugs,
+	  tests/summarize-log, tests/tests.lisp, tests/testsuite.lisp:
+	  Update for running test suite. run_testsuite() is now a built-in
+	  command. The list of tests is defined by testsuite.lisp. The
+	  manual now contains rudimentary descriptions of run_testsuite,
+	  bug_report and build_info.
+
+2004-03-14 15:54  amundson
+
+	* doc/info/Lists.texi: Add a space to eliminate a warning from
+	  texinfo.
+
+2004-03-14 12:49  amundson
+
+	* src/macsys.lisp: Simple change to assure that file_search and
+	  load agree.
+
+2004-03-14 12:31  amundson
+
+	* share/contrib/: f90.lisp, f90.usg: A quick hack I (JFA) wrote for
+	  F90 output of Maxima expressions.
+
+2004-03-14 12:29  amundson
+
+	* doc/maximabook/.cvsignore: Ignore generated files.
+
+2004-03-14 12:28  amundson
+
+	* admin/: sfquery-docs.txt, sfquery.py: Python-based tool for
+	  performing queries on an xml dump of a sourceforge database.
+
+2004-03-14 12:26  amundson
+
+	* admin/make_snapshots: Remove new directory if cvs command fails.
+
+2004-03-11 23:33  wjenkner
+
+	* src/: transl.lisp, transs.lisp: Put more info about
+	  (un)translated symbols in the UNLISP file.
+
+	  transl.lisp ($declare_translated): Record the list of
+	  $declare_translated symbols as value of the new global variable
+	  *declared-translated-functions*.
+
+	  (tr-mdefine-toplevel): Remove #+lispm from the piece of code
+	  which gives symbols whose function definition is being translated
+	  the ONCE-TRANSLATED property.
+
+	  transs.lisp (translate-file): Bind
+	  *declared-translated-functions*.  (delete-with-side-effects-if):
+	  New auxiliary function.  (insert-necessary-function-declares):
+	  Rewrite.
+
+	  Note that *untranslated-functions-called* can't contain doublets,
+	  so the original loop can be simplified via
+	  delete-with-side-effects-if.
+
+	  Previously, because of the #+lispm glitch described above, the
+	  only source of symbols with a non-NIL ONCE-TRANSLATED property
+	  were those given in $declare_translated.  So the users got just a
+	  subset of their own input back, viz. those functions which were
+	  actually called.
+
+	  The new behaviour is to write to the UNLISP file two lists: The
+	  functions which are known to be translated without actually being
+	  in the $declare_translated list, and those which are not known to
+	  be translated.
+
+	  The idea is that if everything seems to be OK you should get no
+	  output at all from here.
+
+2004-03-10 23:41  wjenkner
+
+	* src/mformt.lisp: (mformat): Remove read-time conditionalization.
+	  There was no point in my fixing up Maxima's use of stream
+	  designators and of buffering for SBCL but not for other lisps.
+
+	  In particular, for CMUCL there were problems with the "_" prompt
+	  in demo mode.
+
+2004-03-10 22:59  wjenkner
+
+	* tests/rtest15.mac: Add an example from Kevin Ellwood.
+
+2004-03-10 22:55  wjenkner
+
+	* src/sin.lisp: (ratroot): Add a comment.  Correct an inadvertence
+	  in the calculation of dt/du (in the notation of this comment).
+
+	  This fixes a bug reported by Kevin Ellwood.
+
+2004-03-08 22:15  wjenkner
+
+	* src/server.lisp: (open-socket): Add SBCL support from CLOCC for
+	  client side connection.  (getpid,xchdir): Define for SBCL.
+
+	  This REQUIREs some SBCL modules at compile and load time.  A
+	  correctly installed reasonably recent SBCL should handle this
+	  automatically.
+
+2004-03-05 23:57  billingd
+
+	* interfaces/xmaxima/win32/Makefile.in: 2004-03-06  David
+	  Billinghurst
+
+		  * interfaces/xmaxima/win32/Makefile.in:  Install as.exe
+	  in
+		  $(prefix)/lib/gcc-lib/mingw32/$(GCCVER) rather than
+	  $(prefix)/bin.
+		  gcc will always look for it in this location, just like
+	  cc1.exe.
+
+2004-03-03 19:29  wjenkner
+
+	* src/transs.lisp: (translate-file): Supersede an existing .LISP or
+	  .UNLISP file of the given name.
+
+	  Without :if-exists :supersede CMUCL and SBCL would correctly
+	  signal an error in this case.
+
+2004-03-02 19:59  wjenkner
+
+	* share/: misc/declin.mac, simplification/disol.mac,
+	  simplification/facex1.mac, simplification/facexp.mac,
+	  simplification/genut.mac, simplification/stopex.mac: genut.mac,
+	  facexp.mac, stopex.mac, disol.mac, declin.mac: Add
+	  DECLARE_TRANSLATED forms.
+
+	  facexp.mac
+	  (FACTENEXPAND,COLLECTTEN,FACEXPTEN,FACTORFACEXPTEN,FACEXPTENL):
+	  Comment out functions depending on LISTOFTENS and INDEXEXPAND
+	  which presumably were defined in the DIAGEVAL tensor package,
+	  which is not extant.	Also, there are no examples for the use of
+	  theses functions.  Copy header of facex1 to facexp, in order to
+	  preserve the early revision history.
+
+	  disol.mac: Comment out autoloading for ITS.
+
+	  declin.mac (LINOPSUM0, LINOPPROD1): Removed quote from lambda
+	  expressions which are translated to m-tlambda&env&.
+	  (LINOPPROD0): Replace the undefined ERROUT by ERROR.
+
+	  facex1.mac: Add statement that it is obsolete since all of its
+	  functionality is in facexp.
+
+2004-02-29 16:26  wjenkner
+
+	* tests/rtest15.mac: Some tests for translating lambda expressions.
+
+2004-02-29 16:23  wjenkner
+
+	* src/transq.lisp: M-TLAMBDA&ENV&: Emitted by the translator but
+	  broken.  As an example for this, translate
+	  foo(x):=apply(lambda([[u]],x),[1,2]) and try to run it.  Rewrite
+	  it in the fashion of M-TLAMBDA&.  M-TLAMBDA: Don't emit a
+	  redundant special declaration.  Simplify.  M-TLAMBDA&ENV:
+	  Simplify.  Add comments.  Remove the enclosing prog form.
+	  Comment out the form dealing with some OPT property indicator for
+	  theses symbols.
+
+	  FUNGEN&ENV-FOR-MEVAL, FUNGEN&ENV-FOR-MEVALSUMARG: These compiler
+	  macros are broken (at least the latter, translate and compile
+	  foo(n):=sum(apply(lambda([x],i+x),[i]),i,1,n), for example, and
+	  note that the translated version does work, hopefully, if your
+	  lisp has a genuine interpreter).  So #+ignore them, for now and
+	  things should compile correctly again.
+
+2004-02-29 05:24  billingd
+
+	* maxima.iss.in: Update uninstall lines for Inno Setup 4
+
+2004-02-29 04:56  billingd
+
+	* interfaces/xmaxima/win32/Makefile.in: Fix typo s/getopts/getopt/
+	  Remove path to tcl files.  Not required as now part of mingw
+	  Don't install this maxima.bat
+
+2004-02-29 04:53  billingd
+
+	* interfaces/xmaxima/win32/maxima.bat: Deleted to avoid confusion.
+	  The file is unused and there is another maxima.bat in src.
+
+2004-02-26 18:37  billingd
+
+	* interfaces/xmaxima/win32/Makefile.in: Modify files installed by
+	  gcccopy to those required for gcc-3.3.1 Use TCL 8.4 libraries.
+
+2004-02-26 18:28  billingd
+
+	* interfaces/xmaxima/win32/Makefile.in: Make the GCC version a
+	  parameter, and default to 3.3.1
+
+2004-02-26 18:15  billingd
+
+	* Makefile.am, interfaces/xmaxima/win32/Makefile.in: Move gcccopy
+	  stanza from Makefile.am to interfaces/xmaxima/win32/Makefile.in
+	  No functional change.
+
+2004-02-25 10:50  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: Some small changes for XEmacs
+	  compatibility were made.
+
+2004-02-25 00:05  wjenkner
+
+	* src/: Makefile.am, maxima.system: maxima.system: When using
+	  configure.lisp for building we have no binary-* subdirectories at
+	  this point.  So express the truename of the binary-cmucl
+	  subdirectory without using TRUENAME of such a possibly
+	  non-existing file.  Do the same thing for SBCL.
+
+	  Makefile.am: Remove the kludge for working around SBCL's pathname
+	  problem since we have upgraded to the work-around described
+	  above.
+
+2004-02-24 23:49  belanger
+
+	* interfaces/emacs/emaxima/: maxima.el, emaxima.el: Some obsolete
+	  variables were removed.
+
+2004-02-24 13:47  belanger
+
+	* interfaces/emacs/emaxima/emaxima.el: Some minor (mostly name)
+	  changes to correspond to changes in maxima.el.
+
+2004-02-24 13:46  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: The method used to check to
+	  see if Maxima finished a computation was changed to something
+	  more natural.  The function maxima-replace-in-string was changed
+	  to something that would work in older emacsen.  Some minor name
+	  changes.
+
+2004-02-23 09:48  belanger
+
+	* interfaces/emacs/emaxima/emaxima.el: Occurrences of
+	  maxima-process were changed to inferior-maxima-process.
+
+2004-02-20 18:22  billingd
+
+	* src/maxima.bat.in: Fix quoting of layout_autotools
+
+2004-02-18 20:30  amundson
+
+	* admin/make_snapshots: fix cvs error check
+
+2004-02-18 20:22  amundson
+
+	* ChangeLog: updated by cvs2cl
+
 2004-02-18 20:15  amundson
 
 	* admin/make_snapshots: include all info files
