@@ -10,42 +10,49 @@
 
 @node nary, nofix, Operators, Operators
 @section nary
- - An NARY operator is used to denote a function of any number of
+An @code{nary} operator is used to denote a function of any number of
 arguments, each of which is separated by an occurrence of the
-operator, e.g. A+B or A+B+C.  The NARY("x") function is a syntax
-extension function to declare x to be an NARY operator.  Do
-DESCRIBE(SYNTAX); for more details.  Functions may be DECLAREd to be
-NARY.  If DECLARE(J,NARY); is done, this tells the simplifier to
-simplify, e.g. J(J(A,B),J(C,D)) to J(A, B, C, D).
+operator, e.g. A+B or A+B+C.  The @code{nary("x")} function is a syntax
+extension function to declare x to be an @code{nary} operator.
+Functions may be declared to be
+@code{nary}.  If @code{declare(j,nary);} is done, this tells the simplifier to
+simplify, e.g. @code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
+
+See also @code{syntax}.
 
 @node nofix, operator, nary, Operators
 @section nofix
- - NOFIX operators are used to denote functions of no arguments.
+@code{nofix} operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
 corresponding function to be evaluated.  For example, when one types
 "exit;" to exit from a Maxima break, "exit" is behaving similar to a
-NOFIX operator.  The function NOFIX("x") is a syntax extension
-function which declares x to be a NOFIX operator.  Do
-DESCRIBE(SYNTAX); for more details.
+@code{nofix} operator.  The function @code{nofix("x")} is a syntax extension
+function which declares x to be a @code{nofix} operator. 
+
+See also @code{syntax}.
 
 @node operator, postfix, nofix, Operators
 @section operator
- - See OPERATORS
+See @code{operators}.
 
 @node postfix, prefix, operator, Operators
 @section postfix
- - POSTFIX operators like the PREFIX variety denote functions
+@code{postfix} operators like the @code{prefix} variety denote functions
 of a single argument, but in this case the argument immediately
 precedes an occurrence of the operator in the input string, e.g. 3! .
-The POSTFIX("x") function is a syntax extension function to declare x
-to be a POSTFIX operator.  Do DESCRIBE(SYNTAX); for details.
+The @code{postfix("x")} function is a syntax extension function to declare x
+to be a @code{postfix} operator.
+
+See also @code{syntax}.
 
 @node prefix, Definitions for Operators, postfix, Operators
 @section prefix
- - A PREFIX operator is one which signifies a function of one
+A @code{prefix} operator is one which signifies a function of one
 argument, which argument immediately follows an occurrence of the
-operator.  PREFIX("x") is a syntax extension function to declare x to
-be a PREFIX operator.  Do DESCRIBE(SYNTAX); for more details.
+operator.  @code{prefix("x")} is a syntax extension function to declare x to
+be a @code{prefix} operator.
+
+See also @code{syntax}.
 
 @c end concepts Operators
 @node Definitions for Operators,  , prefix, Operators
@@ -54,9 +61,9 @@ be a PREFIX operator.  Do DESCRIBE(SYNTAX); for more details.
 @deffn operator "!"
 The factorial operator, which is the product of all the integers
 from 1 up to its argument.  Thus 5! = 1*2*3*4*5 = 120.  The value of
-/the option FACTLIM (default: [-1]) gives the highest factorial which is
+the option @code{factlim} gives the highest factorial which is
 automatically expanded.  If it is -1 then all integers are expanded.
-See also the FACTORIAL, MINFACTORIAL, and FACTCOMB commands.
+See also @code{factorial}, @code{minfactorial}, and @code{factcomb}.
 
 @end deffn
 
@@ -76,9 +83,20 @@ The logical operator "Not equals".
 The dot operator, for matrix (non-commutative) multiplication.
 When "." is used in this way, spaces should be left on both sides of
 it, e.g. A . B.  This distinguishes it plainly from a decimal point in
-a floating point number.  Do APROPOS(DOT); for a list of the switches
-which affect the dot operator.  DESCRIBE(switch-name); will explain
-them.
+a floating point number.
+
+See also
+@code{dot},
+@code{dot0nscsimp},
+@code{dot0simp},
+@code{dot1simp},
+@code{dotassoc},
+@code{dotconstrules},
+@code{dotdistrib},
+@code{dotexptsimp},
+@code{dotident},
+and
+@code{dotscrules}.
 
 @end deffn
 
@@ -97,13 +115,13 @@ evaluate to an atomic variable or subscripted variable.
 @deffn operator "::="
 The "::=" is used instead of ":=" to indicate that what
 follows is a macro definition, rather than an ordinary functional
-definition.  See DESCRIBE(MACROS).
+definition.  See @code{macros}.
 
 @end deffn
 
 @deffn operator ":="
-The function definition operator.  E.g. F(X):=SIN(X) defines
-a function F.
+The function definition operator.  E.g. @code{f(x):=sin(x)} defines
+a function @code{f}.
 
 @end deffn
 
@@ -122,50 +140,54 @@ modulus of exp.
 @c end concepts Operators
 
 @defvr {special symbol} additive
- - If DECLARE(F,ADDITIVE) has been executed, then:
-(1) If F is univariate, whenever the simplifier encounters F applied
-to a sum, F will be distributed over that sum.  I.e. F(Y+X); will
-simplify to F(Y)+F(X).
-(2) If F is a function of 2 or more arguments, additivity is defined as 
-additivity in the first argument to F, as in the case of 'SUM or 
-'INTEGRATE, i.e. F(H(X)+G(X),X); will simplify to F(H(X),X)+F(G(X),X).
-This simplification does not occur when F is applied to expressions of
-the form SUM(X[I],I,lower-limit,upper-limit).
+If @code{declare(f,additive)} has been executed, then:
+
+(1) If @code{f} is univariate, whenever the simplifier encounters @code{f} applied
+to a sum, @code{f} will be distributed over that sum.  I.e. @code{f(y+x)} will
+simplify to @code{f(y)+f(x)}.
+
+(2) If @code{f} is a function of 2 or more arguments, additivity is defined as 
+additivity in the first argument to @code{f}, as in the case of @code{sum} or 
+@code{integrate}, i.e. @code{f(h(x)+g(x),x)} will simplify to @code{f(h(x),x)+f(g(x),x)}.
+This simplification does not occur when @code{f} is applied to expressions of
+the form @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @end defvr
 
 @defvr keyword allbut
- works with the PART commands (i.e. PART, INPART, SUBSTPART,
-SUBSTINPART, DPART, and LPART).  For example,
+works with the @code{part} commands (i.e. @code{part}, @code{inpart}, @code{substpart},
+@code{substinpart}, @code{dpart}, and @code{lpart}).  For example,
 
 @example
-if EXPR is E+D+C+B+A,
-then PART(EXPR,[2,5]);
-==> D+A
+if expr is e+d+c+b+a,
+then part(expr,[2,5]);
+==> d+a
 @end example
 
 while
+
 @example
-PART(EXPR,ALLBUT(2,5))==>E+C+B
+part(expr,allbut(2,5))==>e+c+b
 @end example
 
-It also works with the KILL command,
+It also works with the @code{kill} command,
+
 @example
-KILL(ALLBUT(name1,...,namek))
+kill(allbut(name1,...,namek))
 @end example
 
-will do a KILL(ALL) except it will not
-KILL the names specified.  Note: namei means a name such as function
-name such as U, F, FOO, or G, not an infolist such as FUNCTIONS.
+will do a @code{kill(all)} except it will not
+@code{kill} the names specified.  Note: namei means a name such as function
+name such as @code{u}, @code{f}, @code{foo}, or @code{g}, not an infolist such as @code{functions}.
 
 
 @end defvr
 
 @defvr declaration antisymmetric
- - If DECLARE(H,ANTISYMMETRIC); is done, this tells the
-simplifier that H is antisymmetric.  E.g. H(X,Z,Y) will simplify to -
-H(X, Y, Z).  That is, it will give (-1)^n times the result given by
-SYMMETRIC or COMMUTATIVE, where n is the number of interchanges of two
+If @code{declare(h,antisymmetric)} is done, this tells the
+simplifier that @code{h} is antisymmetric.  E.g. @code{h(x,z,y)} will simplify to
+@code{- h(x, y, z)}.  That is, it will give (-1)^n times the result given by
+@code{symmetric} or @code{commutative}, where n is the number of interchanges of two
 arguments necessary to convert it to that form.
 
 @end defvr
@@ -177,100 +199,100 @@ exp.
 @end defun
 
 @defvr declaration commutative
- - If DECLARE(H,COMMUTATIVE); is done, this tells the
-simplifier that H is a commutative function.  E.g. H(X,Z,Y) will
-simplify to H(X, Y, Z).  This is the same as SYMMETRIC.
+If @code{declare(h,commutative)} is done, this tells the
+simplifier that @code{h} is a commutative function.  E.g. @code{h(x,z,y)} will
+simplify to @code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
 @end defvr
 
 @defun entier (x)
-largest integer <= X where X is numeric.  FIX (as in
-FIXnum) is a synonym for this, so FIX(X); is precisely the same.
+largest integer <= X where X is numeric.  @code{fix} (as in
+@code{fixnum}) is a synonym for this, so @code{fix(x)} is precisely the same.
 
 @end defun
 
 @defun equal (expr1,expr2)
-used with an "IS", returns TRUE (or FALSE) if
+used with an @code{is}, returns @code{true} (or @code{false}) if
 and only if expr1 and expr2 are equal (or not equal) for all possible
-values of their variables (as determined by RATSIMP).  Thus
-IS(EQUAL((X+1)**2,X**2+2*X+1)) returns TRUE whereas if X is unbound
-IS((X+1)**2=X**2+2*X+1) returns FALSE.  Note also that IS(RAT(0)=0)
-gives FALSE but IS(EQUAL(RAT(0),0)) gives TRUE.  If a determination
-can't be made with EQUAL then a simplified but equivalent form is
-returned whereas = always causes either TRUE or FALSE to be returned.
+values of their variables (as determined by @code{ratsimp}).  Thus
+@code{is(equal((x+1)**2,x**2+2*x+1))} returns @code{true} whereas if X is unbound
+@code{is((x+1)**2=x**2+2*x+1)} returns @code{false}.  Note also that @code{is(rat(0)=0)}
+gives @code{false} but @code{is(equal(rat(0),0))} gives @code{true}.  If a determination
+can't be made with @code{equal} then a simplified but equivalent form is
+returned whereas = always causes either @code{true} or @code{false} to be returned.
 All variables occurring in exp are presumed to be real valued.
-EV(exp,PRED) is equivalent to IS(exp).
+@code{ev(exp,pred)} is equivalent to @code{is(exp)}.
+
 @example
-(%i1) IS(X**2 >= 2*X-1);
-(%o1)                               TRUE
-(%i2) ASSUME(A>1);
-(%o2)                               DONE
-(%i3) IS(LOG(LOG(A+1)+1)>0 AND A^2+1>2*A);
-(%o3)                               TRUE
-
-
+(%i1) is(x**2 >= 2*x-1);
+(%o1)                               true
+(%i2) assume(a>1);
+(%o2)                               done
+(%i3) is(log(log(a+1)+1)>0 and a^2+1>2*a);
+(%o3)                               true
 @end example
+
 @end defun
 
 @defun eval
- causes an extra post-evaluation of exp to occur.
+causes an extra post-evaluation of exp to occur.
 
 @end defun
 
 @defun evenp (exp)
-is TRUE if exp is an even integer.  FALSE is returned in
+is @code{true} if exp is an even integer.  @code{false} is returned in
 all other cases.
 
 @end defun
 
 @defun fix (x)
-a synonym for ENTIER(X) - largest integer <= X where X is
+a synonym for @code{entier(x)} - largest integer <= X where X is
 numeric.
 
 @end defun
 
 @defun fullmap (fn, exp1, ...)
-is similar to MAP but it will keep mapping
+is similar to @code{map} but it will keep mapping
 down all subexpressions until the main operators are no longer the
-same.  The user should be aware that FULLMAP is used by the Maxima
+same.  The user should be aware that @code{fullmap} is used by the Maxima
 simplifier for certain matrix manipulations; thus, the user might see
-an error message concerning FULLMAP even though FULLMAP was not
+an error message concerning @code{fullmap} even though @code{fullmap} was not
 explicitly called by the user.
+
 @example
-(%i1) A+B*C$
-(%i2) FULLMAP(G,%);
-(%o2)              G(B) G(C) + G(A)
-(%i3)  MAP(G,%o1);
-(%o3)                G(B C) + G(A)
-
-
+(%i1) a+b*c$
+(%i2) fullmap(g,%);
+(%o2)              g(b) g(c) + g(a)
+(%i3)  map(g,%o1);
+(%o3)                g(b c) + g(a)
 @end example
+
 @end defun
 
 @defun fullmapl (fn, list1, ...)
-is similar to FULLMAP but it only maps onto
-lists and matrices
+is similar to @code{fullmap} but it only maps onto
+lists and matrices.
+
 @example
-(%i1) FULLMAPL("+",[3,[4,5]],[[A,1],[0,-1.5]]);
-(%o1)                      [[A + 3, 4], [4, 3.5]]
-
-
+(%i1) fullmapl("+",[3,[4,5]],[[a,1],[0,-1.5]]);
+(%o1)                      [[a + 3, 4], [4, 3.5]]
 @end example
+
 @end defun
 
 @defun is (exp)
 attempts to determine whether exp (which must evaluate to a
-predicate) is provable from the facts in the current data base.  IS
-returns TRUE if the predicate is true for all values of its variables
-consistent with the data base and returns FALSE if it is false for all
+predicate) is provable from the facts in the current data base.  @code{is}
+returns @code{true} if the predicate is true for all values of its variables
+consistent with the data base and returns @code{false} if it is false for all
 such values.  Otherwise, its action depends on the setting of the
-switch PREDERROR (default: TRUE). IS errs out if the value of
-PREDERROR is TRUE and returns UNKNOWN if PREDERROR is FALSE.
+switch @code{prederror}. @code{is} errs out if the value of
+@code{prederror} is @code{true} and returns @code{unknown} if @code{prederror} is @code{false}.
 
 @end defun
 
 @defun isqrt (x)
-takes one integer argument and returns the "integer SQRT"
+takes one integer argument and returns the "integer square root"
 of its absolute value.
 
 @end defun
@@ -290,60 +312,62 @@ simplified form if some of its arguments are non-numeric).
 @defun mod (poly)
 converts the polynomial poly to a modular representation
 with respect to the current modulus which is the value of the variable
-MODULUS.  
-MOD(poly,m) specifies a MODULUS m to be used for converting poly, if
-it is desired to override the current global value of MODULUS.
-See DESCRIBE(MODULUS); .
+@code{modulus}.  
+@code{mod(poly,m)} specifies a @code{modulus} m to be used for converting poly, if
+it is desired to override the current global value of @code{modulus}.
+See @code{modulus}.
 
 @end defun
 
 @defun oddp (exp)
-is TRUE if exp is an odd integer.  FALSE is returned in all
+is @code{true} if exp is an odd integer.  @code{false} is returned in all
 other cases.
 
 @end defun
 
 @deffn operator pred
- (EVFLAG) causes predicates (expressions which evaluate to TRUE
-or FALSE) to be evaluated.
+Causes predicates (expressions which evaluate to @code{true}
+or @code{false}) to be evaluated.
+
+See also @code{evflag}.
 
 @end deffn
 
 @defun random (x)
-Returns a pseudorandom number. If X is an integer, RANDOM (X) returns an
-integer from 0 through X-1 inclusive. If X is a floating point number,
-RANDOM (X) returns a nonnegative floating point number less than X.
-RANDOM complains with an error if X is neither an integer nor a float,
-or if X is not positive.
+Returns a pseudorandom number. If @code{x} is an integer, @code{random (x)} returns an
+integer from 0 through @code{x-1} inclusive. If @code{x} is a floating point number,
+@code{random (x)} returns a nonnegative floating point number less than @code{x}.
+@code{random} complains with an error if @code{x} is neither an integer nor a float,
+or if @code{x} is not positive.
 
-Maxima RANDOM calls the Lisp function RANDOM. Different Lisp 
+Maxima @code{random} calls the Lisp function @code{RANDOM}. Different Lisp 
 implementations may use different pseudorandom number generators.
 The state of the generator is not directly accessible from Maxima,
 although it can be accessed from the Lisp prompt using the Lisp
-functions MAKE-RANDOM-STATE and RANDOM, and the global variable
-*RANDOM-STATE*.
+functions @code{MAKE-RANDOM-STATE} and @code{RANDOM}, and the global variable
+@code{*RANDOM-STATE*}.
 
 @end defun
 
 @defun sign (exp)
-attempts to determine the sign of its specified expression
+Attempts to determine the sign of its specified expression
 on the basis of the facts in the current data base.  It returns one of
-the following answers: POS (positive), NEG (negative), ZERO, PZ
-(positive or zero), NZ (negative or zero), PN (positive or negative),
-or PNZ (positive, negative, or zero, i.e. nothing known).
+the following answers: @code{pos} (positive), @code{neg} (negative), @code{zero}, @code{pz}
+(positive or zero), @code{nz} (negative or zero), @code{pn} (positive or negative),
+or @code{pnz} (positive, negative, or zero, i.e. nothing known).
 
 @end defun
 
 @defun signum (x)
 if X<0 then -1 else if X>0 then 1 else 0.  If X is not
 numeric then a simplified but equivalent form is returned. For
-example, SIGNUM(-X) gives -SIGNUM(X).
+example, @code{signum(-x)} gives @code{-signum(x)}.
 
 @end defun
 
 @defun sort (list,optional-predicate)
 sorts the list using a suitable
-optional-predicate of two arguments (such as "<" or ORDERLESSP).  If
+optional-predicate of two arguments (such as "<" or @code{orderlessp}).  If
 the optional-predicate is not given, then Maxima's built-in ordering
 predicate is used.
 
@@ -351,15 +375,16 @@ predicate is used.
 
 @defun sqrt (x)
 the square root of X. It is represented internally by
-X^(1/2).  Also see ROOTSCONTRACT.
-RADEXPAND[TRUE] - if TRUE will cause nth roots of factors of a product
+X^(1/2).  See also @code{rootscontract}.
+
+@code{radexpand} if @code{true} will cause nth roots of factors of a product
 which are powers of n to be pulled outside of the radical, e.g.
-SQRT(16*X^2) will become 4*X only if RADEXPAND is TRUE.
+@code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is @code{true}.
 
 @end defun
 
 @defvar sqrtdispflag
- default: [TRUE] - if FALSE causes SQRT to display with
+default: @code{true} - if @code{false} causes @code{sqrt} to display with
 exponent 1/2.
 
 @end defvar
@@ -367,26 +392,28 @@ exponent 1/2.
 @defun sublis (list,expr)
 allows multiple substitutions into an expression in
 parallel.  Sample syntax:
+
 @example
-        SUBLIS([A=B,B=A],SIN(A)+COS(B));
-         => SIN(B) + COS(A)
+        sublis([a=b,b=a],sin(a)+cos(b));
+         => sin(b) + cos(a)
 @end example
-The variable SUBLIS_APPLY_LAMBDA[TRUE] controls simplification after
-SUBLIS.
+
+The variable @code{sublis_apply_lambda} controls simplification after
+@code{sublis}.
 
 @end defun
 
 @defun sublist (l,f)
-returns the list of elements of the list L for which the
-function F returns TRUE.  E.g., SUBLIST([1,2,3,4],EVENP); returns
-[2,4].
+returns the list of elements of the list @code{l} for which the
+function @code{f} returns @code{true}.  E.g., @code{sublist([1,2,3,4],evenp)} returns
+@code{[2,4]}.
 
 @end defun
 
 @defvar sublis_apply_lambda
- default:[TRUE] - controls whether LAMBDA's
-substituted are applied in simplification after SUBLIS is used or
-whether you have to do an EV to get things to apply. TRUE means do the
+default: @code{true} - controls whether @code{lambda}'s
+substituted are applied in simplification after @code{sublis} is used or
+whether you have to do an @code{ev} to get things to apply. @code{true} means do the
 application.
 
 @end defvar
@@ -395,146 +422,157 @@ application.
 substitutes a for b in c.  b must be an atom, or a
 complete subexpression of c.  For example, X+Y+Z is a complete
 subexpression of 2*(X+Y+Z)/W while X+Y is not. When b does not have
-these characteristics, one may sometimes use SUBSTPART or RATSUBST
+these characteristics, one may sometimes use @code{substpart} or @code{ratsubst}
 (see below).  Alternatively, if b is of the form e/f then one could
-use SUBST(a*f,e,c) while if b is of the form e**(1/f) then one could
-use SUBST(a**f,e,c).  The SUBST command also discerns the X^Y in X^-Y
-so that SUBST(A,SQRT(X),1/SQRT(X)) yields 1/A.  a and b may also be
+use @code{subst(a*f,e,c)} while if b is of the form e**(1/f) then one could
+use @code{subst(a**f,e,c)}.  The @code{subst} command also discerns the x^y in x^-y
+so that @code{subst(a,sqrt(x),1/sqrt(x))} yields 1/a.  a and b may also be
 operators of an expression enclosed in "s or they may be function
 names.  If one wishes to substitute for the independent variable in
-derivative forms then the AT function (see below) should be used.
-Note:  SUBST is an alias for SUBSTITUTE.
-SUBST(eq1,exp) or SUBST([eq1,...,eqk],exp) are other permissible
+derivative forms then the @code{at} function (see below) should be used.
+
+Note:  @code{subst} is an alias for @code{substitute}.
+@code{subst(eq1,exp)} or @code{subst([eq1,...,eqk],exp)} are other permissible
 forms.  The eqi are equations indicating substitutions to be made.
 For each equation, the right side will be substituted for the left in
 the expression exp.
-EXPTSUBST[FALSE] if TRUE permits substitutions like Y for %E**X in
-%E**(A*X) to take place.
-OPSUBST[TRUE] if FALSE, SUBST will not attempt to substitute into the
-operator of an expression.  E.g. (OPSUBST:FALSE, SUBST(X^2,R,R+R[0]));
-will work.
-@example
-(%i1) SUBST(A,X+Y,X+(X+Y)**2+Y);
-                                 2
-(%o1)                    Y + X + A
-(%i2) SUBST(-%I,%I,A+B*%I);
-(%o2)                             A - %I B
 
+@code{exptsubst} if @code{true} permits substitutions like Y for %E**X in
+%E**(A*X) to take place.
+
+@code{opsubst} if @code{false}, @code{subst} will not attempt to substitute into the
+operator of an expression.  E.g. @code{(opsubst:false, subst(x^2,r,r+r[0]));}
+will work.
+
+@example
+(%i1) subst(a,x+y,x+(x+y)**2+y);
+                                 2
+(%o1)                    y + x + a
+(%i2) subst(-%i,%i,a+b*%i);
+(%o2)                             a - %i b
 @end example
+
 @noindent
 (Note that %i2 is one way of obtaining the complex conjugate of an analytic
-expression.)  For further examples, do EXAMPLE(SUBST);
+expression.)  For further examples, do @code{example(subst)}.
 
 @end defun
 
 @defun substinpart (x, exp, n1, ...)
-is like SUBSTPART but works on the
+is like @code{substpart} but works on the
 internal representation of exp.
+
 @example
-(%i1) X.'DIFF(F(X),X,2);
+(%i1) x.'diff(f(x),x,2);
                                    2
                                   d
-(%o1)                         X . (--- F(X))
+(%o1)                         x . (--- f(x))
                                     2
-                                  dX
-(%i2) SUBSTINPART(D**2,%,2);
+                                  dx
+(%i2) substinpart(d**2,%,2);
                                       2
-(%o2)                             X . D
-(%i3) SUBSTINPART(F1,F[1](X+1),0);
-(%o3)                            F1(X + 1)
-              Additional Information
+(%o2)                             x . d
+(%i3) substinpart(f1,f[1](x+1),0);
+(%o3)                            f1(x + 1)
+@end example
+
 If the last argument to a part function is a list of indices then
 several subexpressions are picked out, each one corresponding to an
 index of the list.  Thus
+
 @example
-(%i1) PART(X+Y+Z,[1,3]);
-(%o1) Z+X
+(%i1) part(x+y+z,[1,3]);
+(%o1) z+x
 @end example
-PIECE holds the value of the last expression selected when using the
+
+@code{piece} holds the value of the last expression selected when using the
 part functions.  It is set during the execution of the function and
 thus may be referred to in the function itself as shown below.
-If PARTSWITCH[FALSE] is set to TRUE then END is returned when a
+If @code{partswitch} is set to @code{true} then @code{end} is returned when a
 selected part of an expression doesn't exist, otherwise an error
 message is given.
-(%i1)  27*Y**3+54*X*Y**2+36*X**2*Y+Y+8*X**3+X+1;
-            3         2       2            3
-(%o1)    27 Y  + 54 X Y  + 36 X  Y + Y + 8 X  + X + 1
-(%i2)  PART(%o1,2,[1,3]);
-                  2
-(%o2)          54 Y
-(%i3)  SQRT(PIECE/54);
-(%o3)            Y
-(%i4)  SUBSTPART(FACTOR(PIECE),%o1,[1,2,3,5]);
-                          3
-(%o4)           (3 Y + 2 X) + Y + X + 1
-(%i5) 1/X+Y/X-1/Z;
-                                 1   Y   1
-(%o5)                           - - + - + -
-                                 Z   X   X
-(%i6) SUBSTPART(XTHRU(PIECE),%,[2,3]);
-                                Y + 1   1
-(%o6)                            ----- - -
-                                  X     Z
 
+@example
+(%i1)  27*y**3+54*x*y**2+36*x**2*y+y+8*x**3+x+1;
+            3         2       2            3
+(%o1)    27 y  + 54 x y  + 36 x  y + y + 8 x  + x + 1
+(%i2)  part(%o1,2,[1,3]);
+                  2
+(%o2)          54 y
+(%i3)  sqrt(piece/54);
+(%o3)            y
+(%i4)  substpart(factor(piece),%o1,[1,2,3,5]);
+                          3
+(%o4)           (3 y + 2 x) + y + x + 1
+(%i5) 1/x+y/x-1/z;
+                                 1   y   1
+(%o5)                           - - + - + -
+                                 z   x   x
+(%i6) substpart(xthru(piece),%,[2,3]);
+                                y + 1   1
+(%o6)                            ----- - -
+                                  x     z
 @end example
-Also, setting the option INFLAG to TRUE and calling PART/SUBSTPART is 
-the same as calling INPART/SUBSTINPART.
+
+Also, setting the option @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is 
+the same as calling @code{inpart} or @code{substinpart}.
 
 @end defun
 
 @defun substpart (x, exp, n1, ..., nk)
-substitutes x for the subexpression
-picked out by the rest of the arguments as in PART.  It returns the
+Substitutes x for the subexpression
+picked out by the rest of the arguments as in @code{part}.  It returns the
 new value of exp.  x may be some operator to be substituted for an
 operator of exp.  In some cases it needs to be enclosed in "s (e.g.
-SUBSTPART("+",A*B,0); -> B + A ).
+@code{substpart("+",a*b,0)} yields B + A.
+
 @example
-(%i1) 1/(X**2+2);
+(%i1) 1/(x**2+2);
                                     1
 (%o1)                              ------
                                    2
-                                  X  + 2
-(%i2) SUBSTPART(3/2,%,2,1,2);
+                                  x  + 2
+(%i2) substpart(3/2,%,2,1,2);
                                     1
 (%o2)                             --------
                                   3/2
-                                 X    + 2
-(%i3) A*X+F(B,Y);
-(%o3)                          A X + F(B, Y)
-(%i4) SUBSTPART("+",%,1,0);
-(%o4)                         X + F(B, Y) + A
-
+                                 x    + 2
+(%i3) a*x+f(b,y);
+(%o3)                          a x + f(b, y)
+(%i4) substpart("+",%,1,0);
+(%o4)                         x + f(b, y) + a
 @end example
-Also, setting the option INFLAG to TRUE and calling PART/SUBSTPART is 
-the same as calling INPART/SUBSTINPART.
+
+Also, setting the option @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is 
+the same as calling @code{inpart} or @code{substinpart}.
 
 @end defun
 
 @defun subvarp (exp)
-is TRUE if exp is a subscripted variable, for example
+is @code{true} if exp is a subscripted variable, for example
 A[I].
 
 @end defun
 
 @defun symbolp (exp)
-returns TRUE if "exp" is a "symbol" or "name", else
-FALSE.  I.e., in effect, SYMBOLP(X):=ATOM(X) AND NOT NUMBERP(X)$ .
+returns @code{true} if "exp" is a "symbol" or "name", else
+@code{false}.  I.e., in effect, @code{symbolp(x):=atom(x) and not numberp(x)}.
 
 @end defun
 
 @defun unorder ()
 stops the aliasing created by the last use of the ordering
-commands ORDERGREAT and ORDERLESS.  ORDERGREAT and ORDERLESS may not
-be used more than one time each without calling UNORDER.  Do
-DESCRIBE(ORDERGREAT); and DESCRIBE(ORDERLESS);, and also do
-EXAMPLE(UNORDER); for specifics.
+commands @code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{orderless} may not
+be used more than one time each without calling @code{unorder}. 
+See also @code{ordergreat} and @code{orderless}.
+@code{example (unorder)} shows an example. @c JUST COPY EXAMPLE TO HERE !!!
 
 @end defun
 
 @defun vectorpotential (givencurl)
 Returns the vector potential of a given
 curl vector, in the current coordinate system.
-POTENTIALZEROLOC has a similar role as for POTENTIAL, but the order of
+@code{potentialzeroloc} has a similar role as for @code{potential}, but the order of
 the left-hand sides of the equations must be a cyclic permutation of
 the coordinate variables.
 
@@ -543,36 +581,36 @@ the coordinate variables.
 @defun xthru (exp)
 combines all terms of exp (which should be a sum) over a
 common denominator without expanding products and exponentiated sums
-as RATSIMP does.  XTHRU cancels common factors in the numerator and
+as @code{ratsimp} does.  @code{xthru} cancels common factors in the numerator and
 denominator of rational expressions but only if the factors are
-explicit.  Sometimes it is better to use XTHRU before RATSIMPing an
+explicit.  Sometimes it is better to use @code{xthru} before @code{ratsimp}ing an
 expression in order to cause explicit factors of the gcd of the
 numerator and denominator to be canceled thus simplifying the
-expression to be RATSIMPed.
+expression to be @code{ratsimp}ed.
+
 @example
-(%i1) ((X+2)**20-2*Y)/(X+Y)**20+(X+Y)**-19-X/(X+Y)**20;
+(%i1) ((x+2)**20-2*y)/(x+y)**20+(x+y)**-19-x/(x+y)**20;
                                                 20
-                     1           X       (X + 2)   - 2 Y
+                     1           x       (x + 2)   - 2 y
 (%o1)             --------- - --------- + ---------------
                         19          20             20
-                 (Y + X)     (Y + X)        (Y + X)
-(%i2) XTHRU(%);
+                 (y + x)     (y + x)        (y + x)
+(%i2) xthru(%);
                                      20
-                              (X + 2)   - Y
+                              (x + 2)   - y
 (%o2)                          -------------
                                        20
-                                (Y + X)
-
-
+                                (y + x)
 @end example
+
 @end defun
 
 @defun zeroequiv (exp,var)
 tests whether the expression exp in the variable
-var is equivalent to zero.  It returns either TRUE, FALSE, or
-DONTKNOW.  For example ZEROEQUIV(SIN(2*X) - 2*SIN(X)*COS(X),X) returns
-TRUE and ZEROEQUIV(%E^X+X,X) returns FALSE.  On the other hand
-ZEROEQUIV(LOG(A*B) - LOG(A) - LOG(B),A) will return DONTKNOW because
+var is equivalent to zero.  It returns either @code{true}, @code{false}, or
+@code{dontknow}.  For example @code{zeroequiv(sin(2*x) - 2*sin(x)*cos(x),x)} returns
+@code{true} and @code{zeroequiv(%e^x+x,x)} returns @code{false}.  On the other hand
+@code{zeroequiv(log(a*b) - log(a) - log(b),a)} will return @code{dontknow} because
 of the presence of an extra parameter.  The restrictions are:
 (1) Do not use functions that Maxima does not know how to
 differentiate and evaluate.
