@@ -1811,7 +1811,7 @@
 
 (defvar *to-invert* nil)
 
-(defun $ritt_set (ideal-generators &optional (may-invert 1) &aux rat-ideal tem &aux id )
+(defun $ritt_set (ideal-generators &optional (may-invert 1) &aux rat-ideal tem id)
   "makes $char_set from an ideal-generators pushing the leading coefs into *to-invert*"
   (setq $ideal (setq id (make-ideal)))
 
