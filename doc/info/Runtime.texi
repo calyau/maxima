@@ -7,26 +7,29 @@
 
 @node Introduction for Runtime Environment, INTERRUPTS, Runtime Environment, Runtime Environment
 @section Introduction for Runtime Environment
- - A file which is loaded automatically for you when you start up
-a MACSYMA, to customize MACSYMA for you.  It is possible to have an
-init file written as a BATCH file of macsyma commands.  We hope this
-makes it easier for users to customize their macsyma environment.
-Here is an example init file
+@c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
+@c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
+@code{maxima-init.mac} is a file which is loaded automatically when Maxima starts.
+You can use @code{maxima-init.mac} to customize your Maxima environment.
+@code{maxima-init.mac}, if it exists, is typically placed in the
+directory named by @code{:lisp (default-userdir)},
+although it can be in any directory searched by the function FILE_SEARCH.
+
+Here is an example @code{maxima-init.mac} file:
+
 @example
-        /*-*-macsyma-*-*/ 
-        setup_autoload("share\;bessel",j0,j1,jn);
-        showtime:all; comgrind:true;
+setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
+showtime:all;
 @end example
-The strange looking comment at the top of the file "/*-*-macsyma-*-*/"
-tells that it is a macsyma-language file. 
-Also: "SETUP_AUTOLOAD" can be used to make functions in BATCH files
-autoloading, meaning that you can then use (for instance, here) the
-functions J0, J1 and Jn from the BESSEL package directly because when
-you use the function the BESSEL package will be loaded in for you
-automatically.  If the second file name in the argument to
-SETUP_AUTOLOAD is not specified (the preferred usage) then the
-standard search for second file names of "FASL", "TRLISP", and ">" is
-done.
+In this example, SETUP_AUTOLOAD tells Maxima to load the
+specified file
+(@code{specfun.mac}) if any of the functions (@code{ultraspherical},
+@code{assoc_legendre_p}) are called but not yet defined.
+Thus you needn't remember to load the file before calling the functions.
+
+The statement SHOWTIME:ALL tells Maxima to set the SHOWTIME variable.
+The @code{maxima-init.mac} file can contain any other assignments or
+other Maxima statements.
 
 @node INTERRUPTS, Definitions for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
 @section INTERRUPTS
