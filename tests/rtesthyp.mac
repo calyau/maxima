@@ -3,13 +3,10 @@ done;
 /* Tests of confluent hypergeometric function */
 
 /* See A&S 13.6 */
-
 /* Bessel functions */
+
 assume(not(equal(z,0)));
 [not equal(z,0)]$
-
-sign(z);
-pnz$
 
 /* A&S 13.6.1 */
 hgfred([v+1/2],[2*v+1],2*%i*z);
@@ -50,13 +47,18 @@ exp(-%i*z)*sin(z)/z$
 expand(hgfred([1],[2],2*z));
 exp(z)*sinh(z)/z$
 
-/* A&S 13.6.17 */
+/* A&S 13.6.17 
+ * Note that this formula is in terms of He but we want just H.  
+ * A&S 22.5.18 gives the relationship between He and H:
+ *
+ * He(n,x) = 2^(-n/2)*H(n,x/sqrt(2))
+ */
 hgfred([-4],[1/2],z^2/2);
-4!/(2*4)!*(-1/2)^(-4)*hermite(2*4,z)$
+hermite(8,z/sqrt(2))/1680$
 
 /* A&S 13.6.18 */
 hgfred([-4],[3/2],z^2/2);
-4!/(2*4+1)!*(-1/2)^(-4)*hermite(2*4+1,z)$
+sqrt(2)*hermite(9,z/sqrt(2))/30240/z$
 
 /* A&S 13.6.19 */
 ratsimp(hgfred([1/2],[3/2],-z^2));
@@ -198,36 +200,41 @@ hgfred([a,b],[c,4,-3],z);
 
 /* Test 1F1 polynomials */
 hgfred([-7],[c],z);
-7!*'gen_laguerre(7,c-1,z)*gamma(c)/gamma(c+7)$
+5040*gen_laguerre(7,c-1,z)*gamma(c)/gamma(c+7)$
 
 hgfred([-2],[1],z);
-'laguerre(2,z);
+laguerre(2,z)$
 
 hgfred([-7],[1],z);
-'laguerre(7,z);
+laguerre(7,z)$
 
 hgfred([-2],[1/2],z);
-'hermite(4,sqrt(z))/12$
+hermite(4,sqrt(z))/12$
 
 hgfred([-2],[3/2],z);
-'hermite(5,sqrt(z))/120/sqrt(z)$
+hermite(5,sqrt(z))/(120*sqrt(z))$
 
+hgfred([a],[a+1],-z);
+a*%gammagreek(a,z)/z^a$
+
+hgfred([a],[a+2],-z);
+a*(a+1)*%gammagreek(a,z)/z^a-a*(a+1)*%gammagreek(a+1,z)*z^(-a-1)$
 
 /* Test 2F0 polynomials */
 hgfred([-3,-3+1/2],[],z);
--'hermite(6,%i/sqrt(z))*z^3/64$
+-hermite(6,%i/sqrt(z))*z^3/64$
 
 hgfred([-3-1/2,-3],[],z);
-%i*'hermite(7,%i/sqrt(z))*z^(7/2)/128$
+%i*hermite(7,%i/sqrt(z))*z^(7/2)/128$
 
 hgfred([-2,-4],[],z);
-2*'gen_laguerre(2,2,-1/z)*z^2$
+2*gen_laguerre(2,2,-1/z)*z^2$
 
 /* Test that 2F0([a,b],...) = 2F0([b,a],...) */
 hgfred([-4,-2],[],z);
-2*'gen_laguerre(2,2,-1/z)*z^2$
+2*gen_laguerre(2,2,-1/z)*z^2$
 
 /* Test 2F1 polynomials */
 
 hgfred([-2,1],[1/2],z);
-8*'jacobi_p(2,-1/2,-3/2,1-2*z)/3$
+8*jacobi_p(2,-1/2,-3/2,1-2*z)/3$
