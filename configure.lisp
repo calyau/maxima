@@ -39,16 +39,19 @@
 ;;; This function (only) modified from CLOCC http://clocc.sourceforge.net
 (defun default-directory-string ()
   (string-right-trim 
-   "/"
-   (namestring  
-    #+allegro (excl:current-directory)
-    #+clisp (#+lisp=cl ext:default-directory #-lisp=cl lisp:default-directory)
-    #+cmu (ext:default-directory)
-    #+cormanlisp (ccl:get-current-directory)
-    #+lispworks (hcl:get-working-directory)
-    #+lucid (lcl:working-directory)
-    #-(or allegro clisp cmu cormanlisp lispworks lucid) (truename "."))))
-
+   "\\" (string-right-trim 
+	 "/"
+	 (namestring  
+	  #+allegro (excl:current-directory)
+	  #+clisp (#+lisp=cl ext:default-directory 
+			     #-lisp=cl lisp:default-directory)
+	  #+cmu (ext:default-directory)
+	  #+cormanlisp (ccl:get-current-directory)
+	  #+lispworks (hcl:get-working-directory)
+	  #+lucid (lcl:working-directory)
+	  #-(or allegro clisp cmu cormanlisp lispworks lucid) 
+	  (truename ".")))))
+  
 (defun get-version ()
   (let ((version ""))
     (with-open-file (in "configure.in" :direction :input)
@@ -115,13 +118,15 @@
 	  (setf sbcl 
 		(read-with-default "Name of the SBCL executable (optional)"
 				   sbcl))))
-    (setf substitutions (list (cons "@prefix@" prefix)
+    (setf substitutions (list (cons "@prefix@" 
+				    (replace-substring prefix "\\" "\\\\"))
 			      (cons "@PACKAGE@" "maxima")
 			      (cons "@VERSION@" (get-version))
 			      (cons "@win32@" win32-string)
 			      (cons "@default_layout_autotools@" "false")
 			      (cons "@POSIX_SHELL@" "/bin/sh")
-			      (cons "@expanded_top_srcdir@" prefix)
+			      (cons "@expanded_top_srcdir@" 
+				    (replace-substring prefix "\\" "\\\\"))
 			      (cons "@DEFAULTLISP@" *maxima-lispname*)
 			      (cons "@CLISP_NAME@" clisp)
 			      (cons "@CMUCL_NAME@" cmucl)
