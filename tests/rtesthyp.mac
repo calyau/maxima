@@ -187,8 +187,24 @@ assoc_legendre_p(v,u,z)$
 hgfred([a,1-a],[c],x);
 assoc_legendre_p(-a, 1-c, 1-2*x)*gamma(c)*2^((1-c)/2)*x^((1-c)/2)/(2-2*x)^((1-c)/2)$
 
+/* A&S 15.4.10 
+ * Test for legf24 function.
+ */
+hgfred([a,a+1/2],[c],x);
+2^(c-1)*gamma(c)*z^(1/2-c/2)*(1-z)^(c/2-a-1/2)*assoc_legendre_p(2*a-c,1-c,1/sqrt(1-z))$
 
+/* A&S 15.4.12
+ * Test for legf20 function.
+ */
+hgfred([a,b],[a+b+1/2],x);
+2^(a+b-1/2)*gamma(a+b+1/2)*x^(1/2*(1/2-a-b))*assoc_legendre_p(a-b-1/2,1/2-a-b,sqrt(1-x))$
 
+/*
+ * A&S 15.4.7
+ * Test for legf36 function.
+ */
+hgfred([a,b],[2*b],z);
+2^(2*b)/sqrt(%pi)*gamma(b+1/2)/gamma(2*b-a)*z^(-b)*(1-z)^((b-a)/2)*exp(%i*%pi*(a-b))*assoc_legendre_q(b-1,b-a,2/z-1)$
 
 /* Regression tests */
 
