@@ -1,5 +1,10 @@
 include $(top_srcdir)/common.mk
+
+if WIN32
+bin_SCRIPTS = maxima maxima.bat
+else
 bin_SCRIPTS = maxima
+endif
 
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
 LOADMAKEDEPENDS = (load "$(top_srcdir)/lisp-utils/make-depends.lisp")
@@ -25,9 +30,11 @@ binary-clisp/maxima.mem:
 install-clisp:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-clisp"
 	$(INSTALL_DATA) binary-clisp/maxima.mem "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima.mem"
+	$(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
 
 uninstall-clisp:
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima.mem"
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
 
 clean-clisp:
 	rm -rf binary-clisp
@@ -58,9 +65,11 @@ binary-cmucl/maxima.core:
 install-cmucl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-cmucl"
 	$(INSTALL_DATA) binary-cmucl/maxima.core "$(DESTDIR)$(verpkglibdir)/binary-cmucl/maxima.core"
+	$(INSTALL_PROGRAM) @CMUCL_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-cmucl/@CMUCL_RUNTIME@"
 
 uninstall-cmucl:
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-cmucl/maxima.core"
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-cmucl/@CMUCL_RUNTIME@"
 
 clean-cmucl:
 	rm -rf binary-cmucl

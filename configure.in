@@ -4,6 +4,18 @@ AC_INIT(src/macsys.lisp)
 
 AM_INIT_AUTOMAKE(maxima,5.9.0.1cvs)
 AC_CANONICAL_HOST
+case "$host" in
+        *mingw*)
+                win32=true
+                ;;
+        *cygwin*)
+                win32=true
+                ;;
+        *)
+                win32=false
+esac
+AC_SUBST(win32)
+AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
 
 explicit_lisp=false
 
@@ -28,7 +40,19 @@ AC_ARG_WITH(clisp,
 		CLISP_NAME="$withval"
 	fi],
 	[CLISP_NAME=${clisp_default_name}])
-
+if test x"${win32}" = x"true" ; then
+   	CLISP_RUNTIME="lisp.exe"
+else
+	CLISP_RUNTIME="lisp.run"
+fi
+AC_ARG_WITH(clisp-runtime,
+	[  --with-clisp-runtime=<path>	Use clisp runtime <path> (default
+	   *lib-directory*/base/lisp.run on unix)
+	   *lib-directory*/base/lisp.exe on windows) ],
+	[clisp=true
+	CLISP_RUNTIME_PATH="$withval"
+	CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`],
+	[CLISP_RUNTIME_PATH=`${CLISP_NAME} -q -x "(format nil \"~abase/${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`])
 if test x"${clisp}" = xtrue ; then
 	if test `echo "$CLISP_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CLISP_NAME" ; then
@@ -42,6 +66,12 @@ if test x"${clisp}" = xtrue ; then
 	if test x"${clisp_found}" = xfalse ; then
 		AC_MSG_WARN(clisp executable ${CLISP_NAME} not found in PATH)
 	fi
+	if test -x ${CLISP_RUNTIME_PATH} ; then
+	   	echo "clisp runtime is \"${CLISP_RUNTIME_PATH}\""
+	else
+		AC_MSG_ERROR(clisp runtime \"${CLISP_RUNTIME_PATH}\" is not an executable)
+	fi
+	   
 fi
 
 dnl n.b. cmucl_default_name is hardcoded in "with" message
@@ -65,6 +95,14 @@ AC_ARG_WITH(cmucl,
 		CMUCL_NAME="$withval"
 	fi],
 	[CMUCL_NAME=${cmucl_default_name}])
+AC_ARG_WITH(cmucl-runtime,
+	[  --with-cmucl-runtime=<path>	Use cmucl runtime <path> (default
+	   *cmucl-lib*/../bin/lisp)],
+	[cmucl=true
+	CMUCL_RUNTIME_PATH="$withval"
+	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`],
+	[CMUCL_RUNTIME_PATH=`${CMUCL_NAME} -quiet -batch -eval '(format t "~a/../bin/lisp~%" common-lisp::*cmucl-lib*)(quit)'`
+	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`])
 if test x"${cmucl}" = xtrue ; then
 	if test `echo "$CMUCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CMUCL_NAME" ; then
@@ -78,6 +116,11 @@ if test x"${cmucl}" = xtrue ; then
 	AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
 	if test x"${cmucl_found}" = xfalse ; then
 		AC_MSG_WARN(cmucl executable ${CMUCL_NAME} not found in PATH)
+	fi
+	if test -x ${CMUCL_RUNTIME_PATH} ; then
+	   	echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
+	else
+		AC_MSG_ERROR(cmucl runtime \"${CMUCL_RUNTIME_PATH}\" is not an executable)
 	fi
 fi
 
@@ -366,7 +409,11 @@ AC_ARG_WITH(default-lisp,
 	fi])
 
 AC_SUBST(CLISP_NAME)
+AC_SUBST(CLISP_RUNTIME)
+AC_SUBST(CLISP_RUNTIME_PATH)
 AC_SUBST(CMUCL_NAME)
+AC_SUBST(CMUCL_RUNTIME)
+AC_SUBST(CMUCL_RUNTIME_PATH)
 AC_SUBST(SBCL_NAME)
 AC_SUBST(GCL_NAME)
 AC_SUBST(ACL6_NAME)
@@ -435,7 +482,7 @@ AC_SUBST(expanded_libexecdir)
 AC_SUBST(expanded_datadir)
 AC_SUBST(expanded_infodir)
 
-AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/emaxima/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl interfaces/xmaxima/Tkmaxima/Header.tcl interfaces/xmaxima/win32/Makefile share/Makefile demo/Makefile plotting/Makefile)
+AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss src/Makefile src/maxima src/maxima.bat src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/emaxima/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl interfaces/xmaxima/Tkmaxima/Header.tcl interfaces/xmaxima/win32/Makefile share/Makefile demo/Makefile plotting/Makefile)
 
 chmod +x maxima-local
 chmod +x xmaxima-local
@@ -444,9 +491,11 @@ echo
 echo "Summary:"
 if test x"${clisp}" = xtrue ; then
 	echo "clisp enabled. Executable name: \"${CLISP_NAME}\""
+	echo "clisp runtime is \"${CLISP_RUNTIME_PATH}\""
 fi
 if test x"${cmucl}" = xtrue ; then
 	echo "CMUCL enabled. Executable name: \"${CMUCL_NAME}\""
+	echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
 fi
 if test x"${sbcl}" = xtrue ; then
 	echo "SBCL enabled. Executable name: \"${SBCL_NAME}\""

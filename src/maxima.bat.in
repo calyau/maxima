@@ -11,8 +11,10 @@ set arg7=%7
 set arg8=%8
 set arg9=%9
 
-set lisp=clisp
-set version=5.9.0.1cvs
+set lisp=@DEFAULTLISP@
+set version=@VERSION@
+set prefix=@prefix@
+set package=@PACKAGE@
 set verbose=false
 
 :startparseargs
@@ -44,8 +46,17 @@ goto continueparseargs
 
 :endparseargs
 
+if "%MAXIMA_PREFIX%" == "" goto defaultvars
+set maxima_verpkglibexecdir="%MAXIMA_PREFIX%\libexec\%package%\%version%"
+goto endsetupvars
+
+defaultvars:
+set maxima_verpkglibexecdir="%prefix%\libexec\%package%\%version%"
 set clisp=d:\msys\1.0\home\amundson\bin\clisp-2.31\bin\clisp
-set mib=d:\msys\1.0\home\amundson\maxinstall\lib\maxima\5.9.0.1cvs\binary-clisp\maxima.mem
+
+:endsetupvars
+
+set maxima_image_base="%maxima_verpkglibexecdir%\binary-%lisp%"
 
 if "%verbose%" == "true" @echo on
 if "%lisp%" == "gcl" goto dogcl
@@ -59,7 +70,7 @@ echo "Gcl? you lose."
 goto end
 
 :doclisp
-%clisp% -q -M "%mib%" "" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+"%maxima_image_base%\lisp.exe" -q -M "%maxima_image_base%\maxima.mem" "" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :end

@@ -100,9 +100,17 @@ if [ "$verbose" = "true" ]; then
     set -x
 fi
 if [ "$MAXIMA_LISP" = "clisp" ]; then
-    exec "@CLISP_NAME@" -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    if [ "$in_maxima_local" = "true" ]; then
+	exec "@CLISP_NAME@" -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    else
+	exec "$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_LISP/@CLISP_RUNTIME@" -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    fi
 elif [ "$MAXIMA_LISP" = "cmucl" ]; then
-    exec "@CMUCL_NAME@" -quiet -core "$maxima_image_base.core" -eval '(user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    if [ "$in_maxima_local" = "true" ]; then
+	exec "@CMUCL_NAME@" -quiet -core "$maxima_image_base.core" -eval '(user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    else
+	exec "$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_LISP/@CMUCL_RUNTIME@" -quiet -core "$maxima_image_base.core" -eval '(user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    fi
 elif [ "$MAXIMA_LISP" = "gcl" ]; then
     exec "$maxima_image_base" -eval '(user::run)' -f -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "acl6" ]; then
