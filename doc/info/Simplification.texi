@@ -42,7 +42,10 @@ or ZERO.
 
 
 @defvar demoivre
- default: [FALSE] if TRUE will cause
+Default value: @code{false}
+
+When @code{demoivre} is TRUE, complex exponentials are converted into
+an equivalent expression in terms of sine and cosine functions.
 @example
 %E^(A+B*%I) ==> %E^A*(COS(B)+%I*SIN(B))
 @end example
@@ -57,7 +60,9 @@ having to re-evaluate the expression with EV.
 
 
 @defvar domain
-default: [REAL] - if set to COMPLEX, SQRT(X^2) will remain
+Default value: @code{real}
+
+When @code{domain} is set to COMPLEX, SQRT(X^2) will remain
 SQRT(X^2) instead of returning ABS(X).  The notion of a "domain" of
 simplification is still in its infancy, and controls little more than
 this at the moment.
@@ -72,14 +77,14 @@ be split into their respective terms, and multiplication (commutative
 and non-commutative) to be distributed over addition at all levels of
 exp.  For polynomials one should usually use RATEXPAND which uses a
 more efficient algorithm (see DESCRIBE(RATEXPAND);).
-MAXNEGEX[1000] and MAXPOSEX[1000] control the maximum negative and
+MAXNEGEX and MAXPOSEX control the maximum negative and
 positive exponents, respectively, which will expand.
 EXPAND(exp,p,n) expands exp, using p for MAXPOSEX and n for MAXNEGEX.
 This is useful in order to expand part but not all of an expression.
-EXPON[0] - the exponent of the largest negative power which is
+EXPON - the exponent of the largest negative power which is
 automatically expanded (independent of calls to EXPAND).  For example
 if EXPON is 4 then (X+1)^(-5) will not be automatically expanded.
-EXPOP[0] - the highest positive exponent which is automatically
+EXPOP - the highest positive exponent which is automatically
 expanded.  Thus (X+1)^3, when typed, will be automatically expanded
 only if EXPOP is greater than or equal to 3.  If it is desired to have
 (X+1)^N expanded where N is greater than EXPOP then executing
@@ -114,7 +119,9 @@ means of the switch EXPANDWRT_DENOM.  This function is autoloaded from
 
 
 @defvar expandwrt_denom
- default:[FALSE] controls the treatment of rational
+Default value: @code{false}
+
+@code{expandwrt_denom} controls the treatment of rational
 expressions by EXPANDWRT.  If TRUE, then both the numerator and
 denominator of the expression will be expanded according to the
 arguments of EXPANDWRT, but if EXPANDWRT_DENOM is FALSE, then only the
@@ -135,7 +142,9 @@ argument list.  This function is autoloaded from
 
 
 @defvar expon
- default: [0] - the exponent of the largest negative power which
+Default value: 0
+
+@code{expon} is the exponent of the largest negative power which
 is automatically expanded (independent of calls to EXPAND).  For
 example if EXPON is 4 then (X+1)^(-5) will not be automatically
 expanded.
@@ -144,8 +153,10 @@ expanded.
 
 
 @defvar exponentialize
- default: [FALSE] if TRUE will cause all circular and
-hyperbolic functions to be converted to exponential form.  (Setting
+Default value: @code{false}
+
+When @code{exponentialize} is TRUE, all circular and
+hyperbolic functions are converted to exponential form.  (Setting
 DEMOIVRE:TRUE; will reverse the effect.)
 EXPONENTIALIZE(exp) will cause the conversion to exponential form of an
 expression without setting the switch or having to re-evaluate the
@@ -155,7 +166,9 @@ expression with EV.
 
 
 @defvar expop
- default: [0] - the highest positive exponent which is
+Default value: 0
+
+@code{expop} is the highest positive exponent which is
 automatically expanded.  Thus (X+1)^3, when typed, will be
 automatically expanded only if EXPOP is greater than or equal to 3.
 If it is desired to have (X+1)^n expanded where n is greater than
@@ -166,7 +179,9 @@ not less than n.
 
 
 @defvar factlim
- default: [-1] gives the highest factorial which is
+Default value: -1
+
+@code{factlim} gives the highest factorial which is
 automatically expanded.  If it is -1 then all integers are expanded.
 
 @end defvar
@@ -218,28 +233,36 @@ expression in which X is a MAINVAR, you probably should also SAVE X.)
 
 
 @defvar maxapplydepth
- default: [10000] - the maximum depth to which APPLY1
+Default value: 10000
+
+@code{maxapplydepth} is the maximum depth to which APPLY1
 and APPLY2 will delve.
 
 @end defvar
 
 
 @defvar maxapplyheight
- default: [10000] - the maximum height to which APPLYB1
+Default value: 10000
+
+@code{maxapplyheight} is the maximum height to which APPLYB1
 will reach before giving up.
 
 @end defvar
 
 
 @defvar maxnegex
- default: [1000] - the largest negative exponent which will
+Default value: 1000
+
+@code{maxnegex} is the largest negative exponent which will
 be expanded by the EXPAND command (see also MAXPOSEX).
 
 @end defvar
 
 
 @defvar maxposex
- default: [1000] - the largest exponent which will be
+Default value: 1000
+
+@code{maxposex} is the largest exponent which will be
 expanded with the EXPAND command (see also MAXNEGEX).
 
 @end defvar
@@ -261,7 +284,9 @@ the form PRODUCT(X[I],I,lower-limit,upper-limit).
 
 
 @defvar negdistrib
- default: [TRUE] - when TRUE allows -1 to be distributed
+Default value: @code{true}
+
+When @code{negdistrib} is TRUE, -1 will be distributed
 over an expression.  E.g. -(X+Y) becomes -Y-X.  Setting it to FALSE
 will allow -(X+Y) to be displayed like that.  This is sometimes useful
 but be very careful: like the SIMP flag, this is one flag you do not
@@ -272,7 +297,9 @@ than local use in your Maxima.
 
 
 @defvar negsumdispflag
- default: [TRUE] - when TRUE, X-Y displays as X-Y
+Default value: @code{true}
+
+When @code{negsumdispflag} is TRUE, X-Y displays as X-Y
 instead of as -Y+X.  Setting it to FALSE causes the special check in
 display for the difference of two expressions to not be done.  One
 application is that thus A+%I*B and A-%I*B may both be displayed the
@@ -298,7 +325,9 @@ automatically.
 
 
 @defvar noundisp
- default: [FALSE] - if TRUE will cause NOUNs to display with
+Default value: @code{false}
+
+When @code{noundisp} is TRUE, NOUNs display with
 a single quote.  This switch is always TRUE when displaying function
 definitions.
 
@@ -332,7 +361,8 @@ TRUE. (see the EV function).
 
 
 @defvar opproperties
- - the list of the special operator-properties handled by
+
+@code{opproperties} is the list of the special operator-properties handled by
 the Maxima simplifier: LINEAR, ADDITIVE, MULTIPLICATIVE, OUTATIVE,
 EVENFUN, ODDFUN, COMMUTATIVE, SYMMETRIC, ANTISYMMETRIC, NARY,
 LASSOCIATIVE, and RASSOCIATIVE.
@@ -341,7 +371,9 @@ LASSOCIATIVE, and RASSOCIATIVE.
 
 
 @defvar opsubst
- default:[TRUE] - if FALSE, SUBST will not attempt to
+Default value: @code{true}
+
+When @code{opsubst} is FALSE, SUBST will not attempt to
 substitute into the operator of an expression.  E.g. (OPSUBST:FALSE,
 SUBST(X^2,R,R+R[0])); will work.
 
@@ -371,9 +403,11 @@ TRUE.
 
 
 @defvar prodhack
- default: [FALSE] - if set to TRUE then PRODUCT(F(I),I,3,1); 
-will yield 1/F(2), by the identity 
-PRODUCT(F(I),I,A,B) = 1/PRODUCT(F(I),I,B+1,A-1) when A>B.
+Default value: @code{false}
+
+When @code{prodhack} is TRUE, the identity 
+PRODUCT(F(I),I,A,B) = 1/PRODUCT(F(I),I,B+1,A-1) is applied if A>B.
+For example, PRODUCT(F(I),I,3,1); will yield 1/F(2).
 
 @end defvar
 
@@ -389,10 +423,10 @@ same appearance, but their difference will be simplified by RADCAN to
 zero.  For some expressions RADCAN can be quite time consuming.  This
 is the cost of exploring certain relationships among the components of
 the expression for simplifications based on factoring and
-partial-fraction expansions of exponents.  %E_TO_NUMLOG (default:
-[FALSE]) - when set to TRUE, for "r" some rational number, and "x" some
+partial-fraction expansions of exponents.  %E_TO_NUMLOG
+- when set to TRUE, for "r" some rational number, and "x" some
 expression, %E^(r*LOG(x)) will be simplified into x^r .
-RADEXPAND[TRUE] when set to FALSE will inhibit certain
+RADEXPAND when set to FALSE will inhibit certain
 transformations: RADCAN(SQRT(1-X)) will remain SQRT(1-X) and will not
 become %I SQRT(X-1).  RADCAN(SQRT(X^2-2*X+1)) will remain SQRT(X^2-2*X
 + 1) and will not be transformed to X- 1.
@@ -402,7 +436,9 @@ Do EXAMPLE(RADCAN); for examples.
 
 
 @defvar radexpand
- default: [TRUE] - if set to ALL will cause nth roots of
+Default value: @code{true}
+
+@code{radexpand}, if set to ALL, causes nth roots of
 factors of a product which are powers of n to be pulled outside of the
 radical.  E.g. if RADEXPAND is ALL, SQRT(16*X^2) will become 4*X .
 More particularly, consider SQRT(X^2).
@@ -419,14 +455,10 @@ TRUE.)
 @end defvar
 
 
-@defvar radprodexpand
- - this switch has been renamed RADEXPAND.
-
-@end defvar
-
-
 @defvar radsubstflag
- default: [FALSE] - if TRUE permits RATSUBST to make
+Default value: @code{false}
+
+@code{radsubstflag}, if TRUE, permits RATSUBST to make
 substitutions such as U for SQRT(X) in X.
 
 @end defvar
@@ -459,7 +491,9 @@ switch SIMP which inhibits simplification if FALSE.
 
 
 @defvar simpsum
- default: [FALSE] - if TRUE, the result of a SUM is
+Default value: @code{false}
+
+When @code{simpsum} is TRUE, the result of a SUM is
 simplified.  This simplification may sometimes be able to produce a
 closed form.  If SIMPSUM is FALSE or if 'SUM is used, the value is a
 sum noun form which is a representation of the sigma notation used in
@@ -482,7 +516,9 @@ to do an INTOSUM(expr) before the SUMCONTRACT.
 
 
 @defvar sumexpand
- default: [FALSE] if TRUE, products of sums and
+Default value: @code{false}
+
+When @code{sumexpand} is TRUE, products of sums and
 exponentiated sums are converted into nested sums. For example:
 @example
         SUMEXPAND:TRUE$
@@ -497,16 +533,20 @@ If FALSE, they are left alone.  See also CAUCHYSUM.
 
 
 @defvar sumhack
- default: [FALSE] - if set to TRUE then SUM(F(I),I,3,1); will
-yield -F(2), by the identity SUM(F(I),I,A,B) = - SUM(F(I),I,B+1,A-1) 
-when A>B.
+Default value: @code{false}
+
+When @code{sumhack} is TRUE, 
+the identity SUM(F(I),I,A,B) = - SUM(F(I),I,B+1,A-1) is applied if A>B.
+For example, SUM(F(I),I,3,1); will yield -F(2).
 
 @end defvar
 
 
 @defvar sumsplitfact
- default: [TRUE] - if set to FALSE will cause
-MINFACTORIAL to be applied after a FACTCOMB.
+Default value: @code{true}
+
+When @code{sumsplitfact} is FALSE,
+MINFACTORIAL is applied after a FACTCOMB.
 
 @end defvar
 
