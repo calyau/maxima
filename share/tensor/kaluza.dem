@@ -1,0 +1,64 @@
+("Deriving the Kaluza-Klein equation of motion.")$
+("For reference, see http://www.vttoth.com/KK/kk.htm")$
+DERIVABBREV:TRUE;
+("KALUZA.MAC contains definitions for G4 and G5")$
+load("kaluza.mac");
+("Contraction properties of both metrics:")$
+(DEFCON(G4),DEFCON(G5),DEFCON(G4,G4,KDELTA),DEFCON(G5,G5,KDELTA));
+("Predeclaring some 4d indices")$
+ASSUME(K<=4,L<=4,M<=4)$
+
+("Equation of motion in empty 5-space")$
+SHOW('DIFF(x([],[A]),t,2)+'CHR2([B,C],[A])*'DIFF(x([],[B]),t)*'DIFF(x([],[C]),t)=0)$
+SHOW(PART(FIRST(%),1))$
+SHOW(SUBST(M,C,%)+SUBST(5,C,%))$
+SHOW(SUBST(L,B,%)+SUBST(5,B,%)+PART(FIRST(%TH(3)),2)=LAST(%TH(3)))$
+
+("We are only interested in the case where A is a 4D index")$
+SHOW(SUBST(K,A,%TH(2)))$
+
+("We protect one of the Christoffel-symbols from expansion")$
+SHOW(SUBST(CHR2KLM,'CHR2([L,M],[K]),%TH(2)))$
+%,CHR2$
+SHOW(RENAME(%))$
+
+("Now we break this up into two parts depending on whether %1=5")$
+MAP(LAMBDA([U],BLOCK(IF FREEOF(%1,U) THEN U ELSE U+SUBST(5,%1,U))),FIRST(%TH(2)))=LAST(%TH(2))$
+ASSUME(%1<=4)$
+%TH(2),G5$
+%,NOUNS$
+SHOW(%)$
+
+("Symmetries in the equation allow the following substition")$
+SHOW(SUBST(L,M,PART(FIRST(%TH(2)),1))+FIRST(%TH(2))-PART(FIRST(%TH(2)),1)=LAST(%TH(2)))$
+
+("Now we're ready to isolate the electromagnetic field tensor")$
+MAP(LAMBDA([U],FACTOROUT(U,G55)),%TH(2))$
+SHOW(APPLY1(%,EVPOT))$
+
+("Contracting and rearranging yields the equation in the usual form")$
+CONTRACT(%TH(2))$
+%-PART(FIRST(%),1)$
+SHOW(SUBST('CHR2([L,M],[K]),CHR2KLM,%))$
+
+("But what about the 5D Christoffel-symbol?")$
+SHOW(CHR2([K,L],[M]))$
+RENAME(%)$
+FORGET(%1<=4)$
+SUBST(5,%1,%TH(2))$
+%,G5,G4$
+SHOW(%)$
+
+ASSUME(%1<=4)$
+%TH(6),G5$
+SCANMAP(LAMBDA([U],APPLY1(  RATSIMP(U,G55,G4([],[%1,M]),A([K],[]))  ,EVPOT)),%)$
+SHOW(%)$
+
+%+%TH(5)$
+%,NOUNS$
+RATSUBST(CHR42([K,L],[M]),G4([],[%1,M])*(G4([L,%1],[],K)+G4([K,%1],[],L)-G4([K,L],[],%1))/2,%)$
+SHOW(%)$
+
+CONTRACT(%)$
+("The extra term is presumably the curvature caused by the EM field.")$
+SHOW(MAP(FACTOR,COMBINE(DISTRIB(%TH(2)))))$
