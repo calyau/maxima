@@ -433,7 +433,7 @@
 			  ((MEXPT) 10. ,(FUNCALL (IF (char= (FIRST (FIFTH DATA)) #\-) #'- #'+)
 						 (READLIST (SIXTH DATA))))))))
 
-(DEFUN SCAN-DIGITS (DATA CONTINUATION? CONTINUATION)
+(DEFUN SCAN-DIGITS (DATA CONTINUATION? CONTINUATION &optional exponent-p)
   (DO ((C (PARSE-TYIPEEK) (PARSE-TYIPEEK))
        (L () (CONS C L)))
       ((NOT (ASCII-NUMBERP C))
@@ -443,6 +443,11 @@
 					   (NREVERSE L)
 					   Data)
 				   ))
+	     ((and (null l) exponent-p)
+	      ;; We're trying to parse the exponent part of a number,
+	      ;; and we didn't get a value after the exponent marker.
+	      ;; That's an error.
+	      (merror "Incomplete number.  Missing exponent?"))
 	     (T
 	      (MAKE-NUMBER (CONS (NREVERSE L) DATA)))))
     (PARSE-TYI)))
@@ -460,7 +465,7 @@
 		   (PARSE-TYI)
 		   #\+))
 	DATA)
-  (SCAN-DIGITS DATA () ()))
+  (SCAN-DIGITS DATA () () t))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
