@@ -1,30 +1,30 @@
-/* GENERAL DIFFERENTIATION SIMPLIFICATION: DIFF(E,X,N), FOR
-N SYMBOLIC  */
-GENDIFF(E,X,N):= IF NUMBERP(N)THEN IF INTEGERP(N) THEN DIFF(E,X,N) ELSE (PRINT ("FRACTIONAL DERIVATIVES NOT SUPPORTED"),'DIFF(E,X,N)) 
-ELSE IF FREEOF(X,E) THEN 0
- ELSE IF ATOM(E) THEN 'DIFF(E,X,N)
- ELSE IF INPART(E,0)="+" THEN MAP(lambda([u],GENDIFF(u,x,n)),E)
- ELSE IF INPART(E,0)="*" THEN GENDIFFPROD(INPART(E,1),E/INPART(E,1),x,n)
- ELSE IF INPART(E,0)="^" THEN GENDIFFPOW(INPART(E,1),INPART(E,2),x,n)
- ELSE 'DIFF(E,X,N)$
+/* general differentiation simplification: diff(e,x,n), for
+n symbolic  */
+gendiff(e,x,n):= if numberp(n)then if integerp(n) then diff(e,x,n) else (print ("fractional derivatives not supported"),'diff(e,x,n)) 
+else if freeof(x,e) then 0
+ else if atom(e) then 'diff(e,x,n)
+ else if inpart(e,0)="+" then map(lambda([u],gendiff(u,x,n)),e)
+ else if inpart(e,0)="*" then gendiffprod(inpart(e,1),e/inpart(e,1),x,n)
+ else if inpart(e,0)="^" then gendiffpow(inpart(e,1),inpart(e,2),x,n)
+ else 'diff(e,x,n)$
 
-/* DIFF OF X1^X2 WRT X N TIMES */
-GENDIFFPOW(X1,X2,x,n):=
-IF X1=X THEN GENFACT(X2,N,1)*X^(X2-N)
-ELSE 
- IF (X1=%E)AND FREEOF(X,DIFF(X2,X)) THEN DIFF(X2,X)^N*%E^X2 
- ELSE 
- IF INTEGERP(X2) AND X2>1 THEN GENDIFF(RATEXPAND(X2),x,n) ELSE 
- 'DIFF(X1^X2,X,N)$
+/* diff of x1^x2 wrt x n times */
+gendiffpow(x1,x2,x,n):=
+if x1=x then genfact(x2,n,1)*x^(x2-n)
+else 
+ if (x1=%e)and freeof(x,diff(x2,x)) then diff(x2,x)^n*%e^x2 
+ else 
+ if integerp(x2) and x2>1 then gendiff(ratexpand(x2),x,n) else 
+ 'diff(x1^x2,x,n)$
 
 /* replaced by 3-arg version
 GENDIFF1(Q):=GENDIFF(Q,X,N)$
 */
 
-/* A FIRST APPROACH */
-GENDIFFPROD(A,B,x,n):=IF FREEOF(X,A)THEN A*GENDIFF(B,X,N) ELSE
- IF FREEOF(X,B) THEN B*GENDIFF(A,X,N) ELSE
-(BLOCK([Q,R,i],
-Q:GENDIFF(A,X,I),
-R:GENDIFF(B,X,N-I),
-RETURN(SUM(BINOMIAL(N,I)*Q*R,I,0,N))))$
+/* a first approach */
+gendiffprod(a,b,x,n):=if freeof(x,a)then a*gendiff(b,x,n) else
+ if freeof(x,b) then b*gendiff(a,x,n) else
+(block([q,r,i],
+q:gendiff(a,x,i),
+r:gendiff(b,x,n-i),
+return(sum(binomial(n,i)*q*r,i,0,n))))$

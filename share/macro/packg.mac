@@ -9,24 +9,24 @@ eval_when(translate,transcompile:true)$
 
 eval_when([translate,demo,batch,loadfile],
 
- HERALD_PACKAGE(NAME)::=
-    BUILDQ([NAME,
-	    VERSION_NO:IF TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED#FALSE THEN
-			  ?pathname\-version(TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED)
-		       ELSE "VERSION UNKNOWN"],
-	 (IF LOADPRINT THEN PRINT('name,"source",'version_no),
-          PUT('NAME,'VERSION_NO,'VERSION)))
+ herald_package(name)::=
+    buildq([name,
+	    version_no:if tr_true_name_of_file_being_translated#false then
+			  ?pathname\-version(tr_true_name_of_file_being_translated)
+		       else "version unknown"],
+	 (if loadprint then print('name,"source",'version_no),
+          put('name,'version_no,'version)))
 )$
 
 /* next, a macro that is convenient for making sure a HERALDed package
    is loaded. It saves a bit of typing. e.g.
    LOAD_PACKAGE(FOO_STUFF,FOO,FASL,DSK,SHARE) */
 
-HERALD_PACKAGE(PACKG)$
+herald_package(packg)$
 
-LOAD_PACKAGE(NAME,FILE_NAME)::=
- BUILDQ([NAME,FILE_NAME],
-        IF GET('NAME,'VERSION)=FALSE THEN LOAD(FILE_NAME))$
+load_package(name,file_name)::=
+ buildq([name,file_name],
+        if get('name,'version)=false then load(file_name))$
 
 
 /* For address space reasons on MC things which have an autoload
@@ -36,10 +36,10 @@ LOAD_PACKAGE(NAME,FILE_NAME)::=
    special handling during translation. Which is not a bad thing to
    know. */
 
-SETUP_AUTOLOAD_MACRO(FILENAME,[L])::=
- BUILDQ([PROPSETS:MAPLIST(LAMBDA([U],BUILDQ([U],PUT('U,TRUE,'TRANSLOAD))),L),
-         FILENAME,L],
-        (SETUP_AUTOLOAD(FILENAME,SPLICE(L)),SPLICE(PROPSETS)) )$
+setup_autoload_macro(filename,[l])::=
+ buildq([propsets:maplist(lambda([u],buildq([u],put('u,true,'transload))),l),
+         filename,l],
+        (setup_autoload(filename,splice(l)),splice(propsets)) )$
 
 /* Now, here are the big ones */
 

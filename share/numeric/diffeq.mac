@@ -20,19 +20,19 @@
    COMPILE_LISP_FILE("SHARE2\;DIFFEQ").
 */
 
-EVAL_WHEN(translate,transcompile:true /* ,packagefile:true */)$
+eval_when(translate,transcompile:true /* ,packagefile:true */)$
 
 /* HERALD_PACKAGE(DIFFEQ_RUNGE)$ */
 
-FLOATCHECK(X):=(MODEDECLARE(X,ANY,function(float),float),
-   X:FLOAT(X),
-   IF NOT NUMBERP(X) THEN ERROR(X,"not a floating point number."),
-   X)$
+floatcheck(x):=(modedeclare(x,any,function(float),float),
+   x:float(x),
+   if not numberp(x) then error(x,"not a floating point number."),
+   x)$
 
-MODEDECLARE(FUNCTION(FLOATCHECK),FLOAT)$
+modedeclare(function(floatcheck),float)$
 
-DEFINE_VARIABLE(X_WE_ARE_CALCULATING,"WE ARE NOT CALCULATING",ANY)$
-DEFINE_VARIABLE(DIFFEQ_RUNTIME,apply('STATUS,'[RUNTIME]),ANY)$
+define_variable(x_we_are_calculating,"we are not calculating",any)$
+define_variable(diffeq_runtime,apply('status,'[runtime]),any)$
 
 /* can't use control-U on VAX
 DIFFEQ_TTYINT_FUN():=
@@ -43,13 +43,13 @@ Calculating at X=",X_WE_ARE_CALCULATING,
         apply('STATUS,'[RUNTIME])-DIFFEQ_RUNTIME,"so far.")$ */
 
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],
+eval_when([translate,batch,demo],
    /* a macro to set up a bunch of calls to FLOATCHECK. */
-   FLOATCHECKL([L])::=
-    FUNMAKE("(",
-     MAPLIST(LAMBDA([VAR],
-	       FUNMAKE(":",[VAR,FUNMAKE('FLOATCHECK,[VAR])])),
-	     L)) /* , */
+   floatcheckl([l])::=
+    funmake("(",
+     maplist(lambda([var],
+	       funmake(":",[var,funmake('floatcheck,[var])])),
+	     l)) /* , */
    /* A macro to bind the ttyintfun */
 /*   WITH_DIFFEQ_TTYINTFUN([L])::=
     BUILDQ([L],
@@ -91,32 +91,32 @@ apply('status,'[runtime]),
     4        N       N    3
 */
 
-RUNGE1(F,X0,X1,H,Y0):=
-(MODEDECLARE([F,X0,X1,H,Y0],ANY),
+runge1(f,x0,x1,h,y0):=
+(modedeclare([f,x0,x1,h,y0],any),
  /* This user interface function provides error checking.
     When compiled, the function RUNGE1_INTERNAL cannot check that the
     type of its arguments is float because of the flonum declaration
     it uses. */
-  FLOATCHECKL(X0,X1,H,Y0),
-/*  WITH_DIFFEQ_TTYINTFUN( */ RUNGE1_INTERNAL(F,X0,X1,H,Y0) /* ) */ )$
+  floatcheckl(x0,x1,h,y0),
+/*  with_diffeq_ttyintfun( */ runge1_internal(f,x0,x1,h,y0) /* ) */ )$
 
-RUNGE1_INTERNAL(F,X0,X1,H,Y0):=
- (MODEDECLARE([FUNCTION(F),X0,X1,H,Y0],FLOAT,F,ANY),
-  BLOCK([Y_LIST:[],X_LIST:[],YP_LIST:[],K1,K2,K3,K4],
-        MODEDECLARE([Y_LIST,X_LIST,YP_LIST],LIST,[X,K1,K2,K3,K4],FLOAT),
-	FOR X:X0 THRU X1 STEP H
-	 DO (X_WE_ARE_CALCULATING:X,
-	     Y_LIST:CONS(Y0,Y_LIST),
-	     X_LIST:CONS(X,X_LIST),
-	     K1:APPLY(F,[X,Y0]),         /* using K1 as a temp register. */
-	     YP_LIST:CONS(K1,YP_LIST),
-	     K1:H*K1,                    /* the real K1. */
-	     K2:H*APPLY(F,[X+H/2,Y0+K1/2]),
-	     K3:H*APPLY(F,[X+H/2,Y0+K2/2]),
-	     K4:H*APPLY(F,[X+H,Y0+K3]),
-	     Y0:Y0+(K1+K2)/6+(K2+K3)/3),
-        X_WE_ARE_CALCULATING:"WE ARE NOT CALCULATING",
-	[REVERSE(X_LIST),REVERSE(Y_LIST),REVERSE(YP_LIST)]))$
+runge1_internal(f,x0,x1,h,y0):=
+ (modedeclare([function(f),x0,x1,h,y0],float,f,any),
+  block([y_list:[],x_list:[],yp_list:[],k1,k2,k3,k4],
+        modedeclare([y_list,x_list,yp_list],list,[x,k1,k2,k3,k4],float),
+	for x:x0 thru x1 step h
+	 do (x_we_are_calculating:x,
+	     y_list:cons(y0,y_list),
+	     x_list:cons(x,x_list),
+	     k1:apply(f,[x,y0]),         /* using k1 as a temp register. */
+	     yp_list:cons(k1,yp_list),
+	     k1:h*k1,                    /* the real k1. */
+	     k2:h*apply(f,[x+h/2,y0+k1/2]),
+	     k3:h*apply(f,[x+h/2,y0+k2/2]),
+	     k4:h*apply(f,[x+h,y0+k3]),
+	     y0:y0+(k1+k2)/6+(k2+k3)/3),
+        x_we_are_calculating:"we are not calculating",
+	[reverse(x_list),reverse(y_list),reverse(yp_list)]))$
 
 /* RUNGE2(F,X0,X1,DX,Y0,Y_PRIME0), returns a list [ <x's> , <y's> , <dy/dx's> ]
 ref: abromowitz & stegun pp 897.
@@ -165,77 +165,77 @@ ref: abromowitz & stegun pp 897.
 
 */
 
-RUNGE2(F,X0,X1,H,Y0,YP0):=
- (MODEDECLARE([F,X0,X1,H,Y0,YP0],ANY),
-  FLOATCHECKL(X0,X1,H,Y0,YP0),
-/*  WITH_DIFFEQ_TTYINTFUN( */ RUNGE2_INTERNAL(F,X0,X1,H,Y0,YP0) /* ) */)$
+runge2(f,x0,x1,h,y0,yp0):=
+ (modedeclare([f,x0,x1,h,y0,yp0],any),
+  floatcheckl(x0,x1,h,y0,yp0),
+/*  with_diffeq_ttyintfun( */ runge2_internal(f,x0,x1,h,y0,yp0) /* ) */)$
 
-RUNGE2_INTERNAL(F,X0,X1,H,Y0,YP0):=
- (MODEDECLARE([FUNCTION(F),X0,X1,H,Y0,YP0],FLOAT,F,ANY),
-  BLOCK([Y_LIST:[],X_LIST:[],YP_LIST:[],YPP_LIST:[],K1,K2,K3,K4,TEMP],
-	MODEDECLARE([Y_LIST,X_LIST,YP_LIST,YPP_LIST],LIST,
-	            [X,K1,K2,K3,K4,TEMP],FLOAT),
-	FOR X:X0 THRU X1 STEP H
-	 DO (X_WE_ARE_CALCULATING:X,
-	     Y_LIST:CONS(Y0,Y_LIST),
-	     X_LIST:CONS(X,X_LIST),
-	     YP_LIST:CONS(YP0,YP_LIST),
-	     K1:APPLY(F,[X    ,Y0               ,YP0     ]),
-	     YPP_LIST:CONS(K1,YPP_LIST),
-	     K1:H*K1,
-	     K2:H*APPLY(F,[X+H/2,Y0+H/2*(YP0+K1/4),YP0+K1/2]),
-	     K3:H*APPLY(F,[X+H/2,Y0+H/2*(YP0+K2/4),YP0+K2/2]),
-	     K4:H*APPLY(F,[X+H  ,Y0+H  *(YP0+K3/2),YP0+K3  ]),
-	     /* This next must be a parallel assignment. */
-	     TEMP:YP0+(K1+2*(K2+K3)+K4)/6,
-	     Y0:Y0+H*(YP0+(K1+K2+K3)/6),
-	     YP0:TEMP),
-        X_WE_ARE_CALCULATING:"WE ARE NOT CALCULATING",	     
-	[REVERSE(X_LIST),REVERSE(Y_LIST),REVERSE(YP_LIST),REVERSE(YPP_LIST)]))$
+runge2_internal(f,x0,x1,h,y0,yp0):=
+ (modedeclare([function(f),x0,x1,h,y0,yp0],float,f,any),
+  block([y_list:[],x_list:[],yp_list:[],ypp_list:[],k1,k2,k3,k4,temp],
+	modedeclare([y_list,x_list,yp_list,ypp_list],list,
+	            [x,k1,k2,k3,k4,temp],float),
+	for x:x0 thru x1 step h
+	 do (x_we_are_calculating:x,
+	     y_list:cons(y0,y_list),
+	     x_list:cons(x,x_list),
+	     yp_list:cons(yp0,yp_list),
+	     k1:apply(f,[x    ,y0               ,yp0     ]),
+	     ypp_list:cons(k1,ypp_list),
+	     k1:h*k1,
+	     k2:h*apply(f,[x+h/2,y0+h/2*(yp0+k1/4),yp0+k1/2]),
+	     k3:h*apply(f,[x+h/2,y0+h/2*(yp0+k2/4),yp0+k2/2]),
+	     k4:h*apply(f,[x+h  ,y0+h  *(yp0+k3/2),yp0+k3  ]),
+	     /* this next must be a parallel assignment. */
+	     temp:yp0+(k1+2*(k2+k3)+k4)/6,
+	     y0:y0+h*(yp0+(k1+k2+k3)/6),
+	     yp0:temp),
+        x_we_are_calculating:"we are not calculating",	     
+	[reverse(x_list),reverse(y_list),reverse(yp_list),reverse(ypp_list)]))$
 
 /* This handles N first order equations 
    RUNGEN([F1,F2,F3],XA,XB,H,[Y1A,Y2A,Y3A])
    The functions, e.g. DY1/DX=F1(X,Y1,Y2,Y3) are functions of N+1 arguments.
 */ 
 
-RUNGEN(FL,XA,XB,H,YAL):=
- (MODEDECLARE([FL,XA,XB,H,YAL],any),
-  BLOCK([ORDER:LENGTH(FL)],
-        MODEDECLARE(ORDER,FIXNUM),
-        IF ORDER#LENGTH(YAL) THEN ERROR("Wrong number of initial values",FL,YAL),
-        FLOATCHECKL(XA,XB,H),
-        YAL:MAPLIST('FLOATCHECK,YAL),
-/*	WITH_DIFFEQ_TTYINTFUN( */ RUNGEN_INTERNAL(FL,XA,XB,H,YAL) /* ) */ ))$
+rungen(fl,xa,xb,h,yal):=
+ (modedeclare([fl,xa,xb,h,yal],any),
+  block([order:length(fl)],
+        modedeclare(order,fixnum),
+        if order#length(yal) then error("wrong number of initial values",fl,yal),
+        floatcheckl(xa,xb,h),
+        yal:maplist('floatcheck,yal),
+/*	with_diffeq_ttyintfun( */ rungen_internal(fl,xa,xb,h,yal) /* ) */ ))$
 
 /* VAPPLY is an inefficient but general way to solve this programming
    problem. It is inefficient because macsyma lists make inefficient
    vectors.*/
 
-VAPPLY(FL,ARGL):=
- (MODEDECLARE([FL,ARGL],LIST),
-  DECLARE(ARGL,SPECIAL),
-  MAPLIST(LAMBDA([F],MODEDECLARE(F,ANY),APPLY(F,ARGL)),FL))$
+vapply(fl,argl):=
+ (modedeclare([fl,argl],list),
+  declare(argl,special),
+  maplist(lambda([f],modedeclare(f,any),apply(f,argl)),fl))$
 
-DECLARE(LISTARITH,SPECIAL)$
+declare(listarith,special)$
 
-RUNGEN_INTERNAL(F,XA,XB,H,YA):=
- (MODEDECLARE([XA,XB,H],FLOAT,[F,YA],LIST),
-  BLOCK([Y_LIST:[],X_LIST:[],YP_LIST:[],K1,K2,K3,K4,LISTARITH:TRUE],
-        MODEDECLARE([Y_LIST,X_LIST,YP_LIST,K1,K2,K3,K4],LIST,
-                    [X],FLOAT),
-	FOR X:XA THRU XB STEP H
-	 DO (X_WE_ARE_CALCULATING:X,
-	     Y_LIST:CONS(YA,Y_LIST),
-	     X_LIST:CONS(X,X_LIST),
-	     K1:VAPPLY(F,CONS(X,YA)),         /* using K1 as a temp register. */
-	     YP_LIST:CONS(K1,YP_LIST),
-	     K1:H*K1,                    /* the real K1. */
-	     K2:H*VAPPLY(F,CONS(X+H/2,YA+K1/2.0)),
-	     K3:H*VAPPLY(F,CONS(X+H/2,YA+K2/2.0)),
-	     K4:H*VAPPLY(F,CONS(X+H,YA+K3)),
-	     YA:YA+(K1+K2)/6.0+(K2+K3)/3.0),
-        X_WE_ARE_CALCULATING:"WE ARE NOT CALCULATING",
-	[REVERSE(X_LIST),REVERSE(Y_LIST),REVERSE(YP_LIST)]))$
+rungen_internal(f,xa,xb,h,ya):=
+ (modedeclare([xa,xb,h],float,[f,ya],list),
+  block([y_list:[],x_list:[],yp_list:[],k1,k2,k3,k4,listarith:true],
+        modedeclare([y_list,x_list,yp_list,k1,k2,k3,k4],list,
+                    [x],float),
+	for x:xa thru xb step h
+	 do (x_we_are_calculating:x,
+	     y_list:cons(ya,y_list),
+	     x_list:cons(x,x_list),
+	     k1:vapply(f,cons(x,ya)),         /* using k1 as a temp register. */
+	     yp_list:cons(k1,yp_list),
+	     k1:h*k1,                    /* the real k1. */
+	     k2:h*vapply(f,cons(x+h/2,ya+k1/2.0)),
+	     k3:h*vapply(f,cons(x+h/2,ya+k2/2.0)),
+	     k4:h*vapply(f,cons(x+h,ya+k3)),
+	     ya:ya+(k1+k2)/6.0+(k2+k3)/3.0),
+        x_we_are_calculating:"we are not calculating",
+	[reverse(x_list),reverse(y_list),reverse(yp_list)]))$
 
 
 

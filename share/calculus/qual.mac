@@ -1,503 +1,503 @@
-TTYOFF:TRUE $
-LOAD(QUALSP)$
-MATCHDECLARE([UTRUE,VTRUE,WTRUE],TRUE)$
-TELLSIMP(QUAL(UTRUE), QUAL1(UTRUE, LISTOFVARS(UTRUE))) $
-TELLSIMP(QUAL(UTRUE,VTRUE),QUAL1(UTRUE,LISTIFY(VTRUE))) $
-TELLSIMP(REVELATION(UTRUE), REVELATION1(UTRUE,200,300)) $
-TELLSIMP(REVELATION(UTRUE,VTRUE), REVELATION1(UTRUE,VTRUE,300))$
-TELLSIMP(REVELATION(UTRUE,VTRUE,WTRUE),
-   REVELATION1(UTRUE,VTRUE,WTRUE)) $
-TELLSIMP(SLOPES(UTRUE),SLOPES1(UTRUE,LISTOFVARS(UTRUE)))$
-TELLSIMP(SLOPES(UTRUE,VTRUE),SLOPES1(UTRUE,LISTIFY(VTRUE)))$
-TELLSIMP(SYMMETRY(UTRUE),SYMMETRY1(UTRUE,LISTOFVARS(UTRUE)))$
-TELLSIMP(SYMMETRY(UTRUE,VTRUE),SYMMETRY1(UTRUE,LISTIFY(VTRUE)))$
-TELLSIMP(PERIODS(UTRUE), PERIODS1(UTRUE,LISTOFVARS(UTRUE))) $
-TELLSIMP(PERIODS(UTRUE,VTRUE),PERIODS1(UTRUE,LISTIFY(VTRUE))) $
-TELLSIMP(LIMITS(UTRUE),LIMITS1(UTRUE,LISTOFVARS(UTRUE)))$
-TELLSIMP(LIMITS(UTRUE,VTRUE),LIMITS1(UTRUE,LISTIFY(VTRUE)))$
-TELLSIMP(STATIONARYPOINTS(UTRUE),STATIONARYPOINTS1(UTRUE,
-   LISTOFVARS(UTRUE)))$
-TELLSIMP(STATIONARYPOINTS(UTRUE,VTRUE),STATIONARYPOINTS1(UTRUE,
-   LISTIFY(VTRUE))) $
+ttyoff:true $
+load(qualsp)$
+matchdeclare([utrue,vtrue,wtrue],true)$
+tellsimp(qual(utrue), qual1(utrue, listofvars(utrue))) $
+tellsimp(qual(utrue,vtrue),qual1(utrue,listify(vtrue))) $
+tellsimp(revelation(utrue), revelation1(utrue,200,300)) $
+tellsimp(revelation(utrue,vtrue), revelation1(utrue,vtrue,300))$
+tellsimp(revelation(utrue,vtrue,wtrue),
+   revelation1(utrue,vtrue,wtrue)) $
+tellsimp(slopes(utrue),slopes1(utrue,listofvars(utrue)))$
+tellsimp(slopes(utrue,vtrue),slopes1(utrue,listify(vtrue)))$
+tellsimp(symmetry(utrue),symmetry1(utrue,listofvars(utrue)))$
+tellsimp(symmetry(utrue,vtrue),symmetry1(utrue,listify(vtrue)))$
+tellsimp(periods(utrue), periods1(utrue,listofvars(utrue))) $
+tellsimp(periods(utrue,vtrue),periods1(utrue,listify(vtrue))) $
+tellsimp(limits(utrue),limits1(utrue,listofvars(utrue)))$
+tellsimp(limits(utrue,vtrue),limits1(utrue,listify(vtrue)))$
+tellsimp(stationarypoints(utrue),stationarypoints1(utrue,
+   listofvars(utrue)))$
+tellsimp(stationarypoints(utrue,vtrue),stationarypoints1(utrue,
+   listify(vtrue))) $
 
-VARIABLEP(U) := IS(ATOM(U) AND NOT NUMBERP(U) OR SUBVARP(U)) $
+variablep(u) := is(atom(u) and not numberp(u) or subvarp(u)) $
 
-LISTIFY(U) :=
-   IF LISTP(U) THEN U ELSE [U] $
+listify(u) :=
+   if listp(u) then u else [u] $
 
-QUAL1(U,V) := BLOCK(
-   REVELATION1(U, 200, 300),
-   RETURN([FIRST(LDISP(BOUNDS=BOUNDS(U))), SLOPES1(U,V),
-      LDISP(CURVATURE=CURVATURE(U)), SYMMETRY1(U:RADCAN(U),V),
-      PERIODS1(U,V), ZEROSANDSINGULARITIES(U), LIMITS1(U,V),
-      STATIONARYPOINTS1(U,V)])) $
-REVELATION1(U,UMIN,REVMAX) := BLOCK(
-   [REV, LOLD, LNEW, LU],
-   IF (LU:LENGTH(?MAKSTRING(U)))>UMIN THEN (LOLD:-1,
-      FOR J:1 STEP 1 WHILE (LNEW:LENGTH(?MAKSTRING(REV:REVEAL(U,J))))
-            <=REVMAX AND LNEW#LOLD AND LNEW<LU DO(
-         DISP('REVEAL("...", ''J) = REV),
-         LOLD:LNEW))) $
+qual1(u,v) := block(
+   revelation1(u, 200, 300),
+   return([first(ldisp(bounds=bounds(u))), slopes1(u,v),
+      ldisp(curvature=curvature(u)), symmetry1(u:radcan(u),v),
+      periods1(u,v), zerosandsingularities(u), limits1(u,v),
+      stationarypoints1(u,v)])) $
+revelation1(u,umin,revmax) := block(
+   [rev, lold, lnew, lu],
+   if (lu:length(?makstring(u)))>umin then (lold:-1,
+      for j:1 step 1 while (lnew:length(?makstring(rev:reveal(u,j))))
+            <=revmax and lnew#lold and lnew<lu do(
+         disp('reveal("...", ''j) = rev),
+         lold:lnew))) $
 
-SLOPES1(U,V) := BLOCK(
-   [ANS, PARTSWITCH, PREDERROR],
-   PARTSWITCH:TRUE,  PREDERROR:FALSE,  ANS: [],
-   FOR X IN V DO ANS: CONS(SLOPES2(U,X), ANS),
-   RETURN(ANS)) $
+slopes1(u,v) := block(
+   [ans, partswitch, prederror],
+   partswitch:true,  prederror:false,  ans: [],
+   for x in v do ans: cons(slopes2(u,x), ans),
+   return(ans)) $
 
-SLOPES2(U,X) := BLOCK(
-   U: BOUNDS1(DIFF(U,X)),
-   RETURN(FIRST(LDISP(SLOPE(X) =
-      IF POSL(U[1]) THEN 'INCREASING
-      ELSE IF NEGU(U[2]) THEN 'DECREASING
-      ELSE IF NONNEGL(U[1]) THEN
-         IF NONPOSU(U[2]) THEN 'CONSTANT
-         ELSE 'NONDECREASING
-      ELSE IF NONPOSU(U[2]) THEN 'NONINCREASING
-      ELSE 'UNKNOWN)))) $
+slopes2(u,x) := block(
+   u: bounds1(diff(u,x)),
+   return(first(ldisp(slope(x) =
+      if posl(u[1]) then 'increasing
+      else if negu(u[2]) then 'decreasing
+      else if nonnegl(u[1]) then
+         if nonposu(u[2]) then 'constant
+         else 'nondecreasing
+      else if nonposu(u[2]) then 'nonincreasing
+      else 'unknown)))) $
 
-CURVATURE(U) := BLOCK(
-   [V], V:LISTOFVARS(U),
-   RETURN(['STRICTCONCAVE, 'CONCAVE, 'NONCONVEX, 'CONCAVEANDCONVEX,
-      'NONCONCAVE, 'CONVEX, 'STRICTCONVEX,
-      'NEITHERCONCAVENORCONVEX, 'UNKNOWN]
-      [DEFINITECODE(HESSIAN(GRADIENT(U,V),V))])) $
+curvature(u) := block(
+   [v], v:listofvars(u),
+   return(['strictconcave, 'concave, 'nonconvex, 'concaveandconvex,
+      'nonconcave, 'convex, 'strictconvex,
+      'neitherconcavenorconvex, 'unknown]
+      [definitecode(hessian(gradient(u,v),v))])) $
 
-HESSIAN(G,V) := BLOCK(
-   [ANS],
-   ANS:[],
-   FOR X IN V DO ANS: ENDCONS(DIFF(G,X), ANS),
-   RETURN(APPLY(MATRIX,ANS))) $
+hessian(g,v) := block(
+   [ans],
+   ans:[],
+   for x in v do ans: endcons(diff(g,x), ans),
+   return(apply(matrix,ans))) $
 
-GRADIENT(U,V) := BLOCK(
-   [ANS],
-   ANS: [],
-   FOR X IN V DO ANS: ENDCONS(DIFF(U,X), ANS),
-   RETURN(ANS)) $
-
-
-SYMMETRY1(U,V) := BLOCK(
-   [ANS],
-   ANS: [],
-   IF U=0 THEN RETURN(['ZERO]),
-   FOR X IN V DO ANS: ENDCONS(FIRST(LDISP(SYMMETRIES(X)=SYMMETRY2(U,
-     X))), ANS),
-   RETURN(ANS)) $
-
-SYMMETRY2(U,X):= BLOCK(
-   [UMX, EVN, OD, TEMP, V],
-   UMX: SUBST(X=-X, U),
-   TEMP: RADCAN(U-UMX),
-   IF TEMP=0 THEN RETURN('EVEN),
-   UMX: RADCAN(U+UMX),
-   IF UMX=0 THEN RETURN('ODD),
-   IF NUMBERP(TEMP) THEN EVN:'NO
-   ELSE IF LENGTH(V:LISTOFVARS(UMX))=1 THEN EVN:ZEROEQUIV(TEMP,V)
-   ELSE EVN: 'UNKNOWN,
-   IF NUMBERP(UMX) THEN OD: 'NO
-   ELSE IF LENGTH(V:LISTOFVARS(UMX))=1 THEN OD:ZEROEQUIV(TEMP,V)
-   ELSE OD: 'UNKNOWN,
-   IF EVN=TRUE THEN
-      IF OD=TRUE THEN
-         IF ZEROEQUIV(U,V)=TRUE THEN RETURN('PROBABLYZERO)
-         ELSE RETURN('UNKNOWN)
-      ELSE RETURN('PROBABLYEVEN),
-   IF OD=TRUE THEN RETURN('PROBABLYODD),
-   IF EVN='NO THEN
-      IF OD='NO THEN RETURN('NEITHER)
-      ELSE IF OD=FALSE THEN RETURN('NONEVENANDPROBABLYNONODD)
-      ELSE RETURN('NONEVEN),
-   IF OD='NO THEN
-      IF EVEN=FALSE THEN RETURN('NONODDANDPROBABLYNONEVEN)
-      ELSE RETURN('NONODD),
-   IF EVN=FALSE THEN
-      IF OD=FALSE THEN RETURN('PROBABLYNEITHER)
-      ELSE RETURN('PROBABLYNONEVEN),
-   IF OD=FALSE THEN RETURN('PROBABLYNONODD),
-   RETURN('UNKNOWN)) $
-
-PERIODS1(U,V) := BLOCK(
-   [ANS, PARTSWITCH],
-   PARTSWITCH: TRUE,
-   U: TRIGREDUCE(U),
-   ANS: [],
-   FOR X IN V DO ANS: ENDCONS(FIRST(LDISP(PERIOD(X)=PERIOD2(U,
-      X))),ANS),
-   RETURN(ANS)) $
-
-PERIOD2(U,X) := BLOCK(
-   [ANS],
-   IF NUMBERP(U) THEN RETURN(0),
-   IF VARIABLEP(U) THEN
-      IF U=X THEN RETURN(INF)
-      ELSE RETURN(0),
-   IF INPART(U,0)="*" OR PIECE="+" THEN (
-      ANS: PERIOD2(INPART(U,1), X),
-      FOR J:2 STEP 1 WHILE ANS#INF AND INPART(U,J)#END DO
-         ANS: LCMSPEC(ANS,PERIOD2(PIECE,X)),
-      RETURN(ANS)),
-   IF PIECE="^" THEN RETURN(LCMSPEC(
-      PERIOD2(INPART(U,1),X),PERIOD2(INPART(U,2),X))),
-   IF PIECE='SIN OR PIECE='COS OR PIECE='SEC OR PIECE='CSC THEN
-      IF FREEOF(X,INPART(U,1)) THEN RETURN(0)
-      ELSE IF FREEOF(X,ANS:DIFF(PIECE,X)) THEN RETURN(2*%PI/ANS)
-      ELSE RETURN(INF),
-   IF PIECE='TAN OR PIECE='COT THEN
-      IF FREEOF(X,INPART(U,1)) THEN RETURN(0)
-      ELSE IF FREEOF(X,ANS:DIFF(PIECE,X)) THEN RETURN(%PI/ANS)
-      ELSE RETURN(INF),
-   RETURN(PERIOD2(INPART(U,1),X))) $
-
-LCMSPEC(U,V) :=
-   IF U=0 THEN V
-   ELSE IF V=0 THEN U
-   ELSE IF U='INF OR V='INF THEN 'INF
-   ELSE NUM(U)*NUM(V)/GCD(NUM(U)*DENOM(V), NUM(V)*DENOM(U)) $
+gradient(u,v) := block(
+   [ans],
+   ans: [],
+   for x in v do ans: endcons(diff(u,x), ans),
+   return(ans)) $
 
 
-LIMITS1(U,V) := BLOCK(
-   [ANS, T, PARTSWITCH],
-   ANS: [],
-   PARTSWITCH: TRUE,
-   FOR X IN V DO (T: LBATOM(X),
-      ANS:ENDCONS(FIRST(LDISP(LIMITAS(X,T) =
-         IF INPART(T,0)='STRICT THEN STRICT(LIMIT(U,X,INPART(T,1),
-            PLUS))
-         ELSE LIMIT(U,X,T,PLUS))), ANS),
-      T: UBATOM(X),
-      ANS: ENDCONS(FIRST(LDISP(LIMITAS(X,T) =
-         IF INPART(T,0)='STRICT THEN STRICT(LIMIT(U,X,INPART(T,1),
-            MINUS))
-         ELSE LIMIT(U,X,T,MINUS))), ANS)),
-   RETURN(ANS)) $
+symmetry1(u,v) := block(
+   [ans],
+   ans: [],
+   if u=0 then return(['zero]),
+   for x in v do ans: endcons(first(ldisp(symmetries(x)=symmetry2(u,
+     x))), ans),
+   return(ans)) $
 
-ZEROSANDSINGULARITIES(U) := BLOCK(
-   [PARTSWITCH, TEMP, PREDERROR],
-   PREDERROR: FALSE,
-   PARTSWITCH:TRUE,
-   U: RADCAN(TRIGREDUCE(U)),
-   TEMP: ZP1(FACTOR(RATDENOM(U)), ZP1(FACTOR(RATNUMER(U)),[[],[]])),
-   RETURN(LDISP('ZEROS = FIRST(TEMP), 'SINGULARITIES=TEMP[2])))$
+symmetry2(u,x):= block(
+   [umx, evn, od, temp, v],
+   umx: subst(x=-x, u),
+   temp: radcan(u-umx),
+   if temp=0 then return('even),
+   umx: radcan(u+umx),
+   if umx=0 then return('odd),
+   if numberp(temp) then evn:'no
+   else if length(v:listofvars(umx))=1 then evn:zeroequiv(temp,v)
+   else evn: 'unknown,
+   if numberp(umx) then od: 'no
+   else if length(v:listofvars(umx))=1 then od:zeroequiv(temp,v)
+   else od: 'unknown,
+   if evn=true then
+      if od=true then
+         if zeroequiv(u,v)=true then return('probablyzero)
+         else return('unknown)
+      else return('probablyeven),
+   if od=true then return('probablyodd),
+   if evn='no then
+      if od='no then return('neither)
+      else if od=false then return('nonevenandprobablynonodd)
+      else return('noneven),
+   if od='no then
+      if even=false then return('nonoddandprobablynoneven)
+      else return('nonodd),
+   if evn=false then
+      if od=false then return('probablyneither)
+      else return('probablynoneven),
+   if od=false then return('probablynonodd),
+   return('unknown)) $
 
-ZP1(N,ZP) := BLOCK(
-   [Z,P],
-   Z:FIRST(ZP), P:ZP[2],
-   IF NOT CONSTANTP(N) THEN
-      IF INPART(N,0)="*" THEN FOR J:1 STEP 1 WHILE INPART(N,J)#'END
-         DO (IF NOT CONSTANTP(PIECE) THEN (Z:CONS(PIECE=0,Z),
-            P:CONSSINGULARITIES(P,PIECE)))
-      ELSE(Z:CONS(N=0,Z),
-         P:CONSSINGULARITIES(P,N)),
-   RETURN([P,Z])) $
-CONSSINGULARITIES(P,U) := BLOCK(
-   [BAS],
-   IF VARIABLEP(U) THEN RETURN(P),
-   IF INPART(U,0)="+" OR PIECE="*" THEN
-      FOR J:1 STEP 1 WHILE INPART(U,J)#'END DO P:CONSSINGULARITIES(P,PIECE)
-   ELSE IF PIECE="^" AND NOT CONSTANTP(BAS:INPART(U,1)) THEN
-      IF NUMBERP(PIECE) THEN (
-         IF PIECE<0 THEN P:CONS(BAS=0, P))
-      ELSE PIECE: CONS(BAS=0 AND PIECE<0, P)
-   ELSE IF PIECE='LOG AND NOT NUMBERP(INPART(U,1)) THEN
-      P:CONS(PIECE=0,P)
-   ELSE IF (PIECE='TAN OR PIECE='SEC) AND NOT NUMBERP(INPART(U,1))
-      THEN P: CONS(PIECE-('INTEGER+1/2)*%PI=0, P)
-   ELSE IF (PIECE='COT OR PIECE='CSC) AND NOT NUMBERP(INPART(U,1))
-      THEN P: CONS(PIECE-'INTEGER*%PI=0, P)
-   ELSE IF PIECE='ATANH AND NOT NUMBERP(INPART(U,1)) 
-      THEN P: CONS(PIECE-1=0, CONS(PIECE+1=0, P)),
-   RETURN(P)) $
+periods1(u,v) := block(
+   [ans, partswitch],
+   partswitch: true,
+   u: trigreduce(u),
+   ans: [],
+   for x in v do ans: endcons(first(ldisp(period(x)=period2(u,
+      x))),ans),
+   return(ans)) $
 
-STATIONARYPOINTS1(U,V) := BLOCK(
-   [SINGSOLVE,GRINDSWITCH,DISPFLAG,G,ANS,UU,S],
-   G:GRADIENT(U,V),
-   SINGSOLVE: GRINDSWITCH:  TRUE,
-   DISPFLAG: FALSE,
-   S:ERRCATCH(EV(SOLVE(G,V),EVAL)),
-   IF S=[] OR S=[[]] OR S=[[FALSE=0]]
-      THEN RETURN(LDISP("NO STATIONARY POINTS FOUND")),
-   S:FIRST(S),
-   ANS: LDISP("STATIONARY POINTS" = S),
-   UU:[],
-   FOR SS IN S DO UU: ENDCONS(IF LENGTH(V)>1 OR FIRST(V)=LHS(SS) AND
-      FREEOF(FIRST(V),RHS(SS)) THEN SUBST(SS,U) ELSE 'UNKNOWN ,UU),
-   ANS:ENDCONS(FIRST(LDISP("CORRESPONDING EXPRESSION VALUES" = UU)),
-   ANS),
-   G: HESSIAN(G,V), UU: [],
-   FOR SS IN S DO UU: ENDCONS(TYPE(DEFINITECODE(SUBST(SS,G))),UU),
-   ANS: ENDCONS(FIRST(LDISP("CORRESPONDING TYPES" = UU)), ANS),
-   RETURN(ANS)) $
+period2(u,x) := block(
+   [ans],
+   if numberp(u) then return(0),
+   if variablep(u) then
+      if u=x then return(inf)
+      else return(0),
+   if inpart(u,0)="*" or piece="+" then (
+      ans: period2(inpart(u,1), x),
+      for j:2 step 1 while ans#inf and inpart(u,j)#end do
+         ans: lcmspec(ans,period2(piece,x)),
+      return(ans)),
+   if piece="^" then return(lcmspec(
+      period2(inpart(u,1),x),period2(inpart(u,2),x))),
+   if piece='sin or piece='cos or piece='sec or piece='csc then
+      if freeof(x,inpart(u,1)) then return(0)
+      else if freeof(x,ans:diff(piece,x)) then return(2*%pi/ans)
+      else return(inf),
+   if piece='tan or piece='cot then
+      if freeof(x,inpart(u,1)) then return(0)
+      else if freeof(x,ans:diff(piece,x)) then return(%pi/ans)
+      else return(inf),
+   return(period2(inpart(u,1),x))) $
 
-TYPE(U) :=
-   ['MAXIMUM, 'NONMINIMUM, 'NONMINIMUM, 'UNKNOWN, 'NONMAXIMUM,
-      'NONMAXIMUM, 'MINIMUM, 'SADDLE, 'UNKNOWN][U] $
+lcmspec(u,v) :=
+   if u=0 then v
+   else if v=0 then u
+   else if u='inf or v='inf then 'inf
+   else num(u)*num(v)/gcd(num(u)*denom(v), num(v)*denom(u)) $
 
-BOUNDS(W) := EV(BOUNDS1(W),PREDERROR:FALSE,PARTSWITCH:TRUE)$
 
-BOUNDS1(W) := BLOCK(/* W is an expression.  Returns list of its
+limits1(u,v) := block(
+   [ans, t, partswitch],
+   ans: [],
+   partswitch: true,
+   for x in v do (t: lbatom(x),
+      ans:endcons(first(ldisp(limitas(x,t) =
+         if inpart(t,0)='strict then strict(limit(u,x,inpart(t,1),
+            plus))
+         else limit(u,x,t,plus))), ans),
+      t: ubatom(x),
+      ans: endcons(first(ldisp(limitas(x,t) =
+         if inpart(t,0)='strict then strict(limit(u,x,inpart(t,1),
+            minus))
+         else limit(u,x,t,minus))), ans)),
+   return(ans)) $
+
+zerosandsingularities(u) := block(
+   [partswitch, temp, prederror],
+   prederror: false,
+   partswitch:true,
+   u: radcan(trigreduce(u)),
+   temp: zp1(factor(ratdenom(u)), zp1(factor(ratnumer(u)),[[],[]])),
+   return(ldisp('zeros = first(temp), 'singularities=temp[2])))$
+
+zp1(n,zp) := block(
+   [z,p],
+   z:first(zp), p:zp[2],
+   if not constantp(n) then
+      if inpart(n,0)="*" then for j:1 step 1 while inpart(n,j)#'end
+         do (if not constantp(piece) then (z:cons(piece=0,z),
+            p:conssingularities(p,piece)))
+      else(z:cons(n=0,z),
+         p:conssingularities(p,n)),
+   return([p,z])) $
+conssingularities(p,u) := block(
+   [bas],
+   if variablep(u) then return(p),
+   if inpart(u,0)="+" or piece="*" then
+      for j:1 step 1 while inpart(u,j)#'end do p:conssingularities(p,piece)
+   else if piece="^" and not constantp(bas:inpart(u,1)) then
+      if numberp(piece) then (
+         if piece<0 then p:cons(bas=0, p))
+      else piece: cons(bas=0 and piece<0, p)
+   else if piece='log and not numberp(inpart(u,1)) then
+      p:cons(piece=0,p)
+   else if (piece='tan or piece='sec) and not numberp(inpart(u,1))
+      then p: cons(piece-('integer+1/2)*%pi=0, p)
+   else if (piece='cot or piece='csc) and not numberp(inpart(u,1))
+      then p: cons(piece-'integer*%pi=0, p)
+   else if piece='atanh and not numberp(inpart(u,1)) 
+      then p: cons(piece-1=0, cons(piece+1=0, p)),
+   return(p)) $
+
+stationarypoints1(u,v) := block(
+   [singsolve,grindswitch,dispflag,g,ans,uu,s],
+   g:gradient(u,v),
+   singsolve: grindswitch:  true,
+   dispflag: false,
+   s:errcatch(ev(solve(g,v),eval)),
+   if s=[] or s=[[]] or s=[[false=0]]
+      then return(ldisp("no stationary points found")),
+   s:first(s),
+   ans: ldisp("stationary points" = s),
+   uu:[],
+   for ss in s do uu: endcons(if length(v)>1 or first(v)=lhs(ss) and
+      freeof(first(v),rhs(ss)) then subst(ss,u) else 'unknown ,uu),
+   ans:endcons(first(ldisp("corresponding expression values" = uu)),
+   ans),
+   g: hessian(g,v), uu: [],
+   for ss in s do uu: endcons(type(definitecode(subst(ss,g))),uu),
+   ans: endcons(first(ldisp("corresponding types" = uu)), ans),
+   return(ans)) $
+
+type(u) :=
+   ['maximum, 'nonminimum, 'nonminimum, 'unknown, 'nonmaximum,
+      'nonmaximum, 'minimum, 'saddle, 'unknown][u] $
+
+bounds(w) := ev(bounds1(w),prederror:false,partswitch:true)$
+
+bounds1(w) := block(/* W is an expression.  Returns list of its
       lower, then upper bounds.  (reference: file QUAL USAGE .  In
       comments below, "symbolic" means neither numerical, INF, MINF,
       or STRICT with such an argument. */
-  [U, V, T],
-  IF NUMBERP(W) THEN RETURN([W,W]),
-  IF VARIABLEP(W) THEN RETURN([LBATOM(W), UBATOM(W)]),
-  IF INPART(W,0) = "+" THEN (U: BOUNDS1(INPART(W,1)),
-    FOR J:2 STEP 1 WHILE U#[MINF,INF] AND INPART(W,J)#END DO
-      (V: BOUNDS1(PIECE),
-      U: [ADDBND(U[1],V[1]), ADDBND(U[2],V[2])]),
-    RETURN(U)),
+  [u, v, t],
+  if numberp(w) then return([w,w]),
+  if variablep(w) then return([lbatom(w), ubatom(w)]),
+  if inpart(w,0) = "+" then (u: bounds1(inpart(w,1)),
+    for j:2 step 1 while u#[minf,inf] and inpart(w,j)#end do
+      (v: bounds1(piece),
+      u: [addbnd(u[1],v[1]), addbnd(u[2],v[2])]),
+    return(u)),
 
-  IF PIECE = "*" THEN (U:BOUNDS1(INPART(W,1)),
-    FOR J:2 STEP 1 WHILE INPART(W,J)#END DO (
-      V:BOUNDS1(PIECE),
+  if piece = "*" then (u:bounds1(inpart(w,1)),
+    for j:2 step 1 while inpart(w,j)#end do (
+      v:bounds1(piece),
         /* Try standardizing lowerbound of 1st arg to nonnegative: */
-      IF NONNEGL(U[1]) THEN U:BNDNNTIMES(U,V)
-      ELSE IF NONNEGL(V[1]) THEN U:BNDNNTIMES(V,U)
-      ELSE IF NONPOSU(U[2]) THEN U:BNDNNTIMES(BNDMINUS(U),BNDMINUS(V))
-      ELSE IF NONPOSU(V[2]) THEN U:BNDNNTIMES(BNDMINUS(V),BNDMINUS(U))
+      if nonnegl(u[1]) then u:bndnntimes(u,v)
+      else if nonnegl(v[1]) then u:bndnntimes(v,u)
+      else if nonposu(u[2]) then u:bndnntimes(bndminus(u),bndminus(v))
+      else if nonposu(v[2]) then u:bndnntimes(bndminus(v),bndminus(u))
         /* Try standardizing lowerbound of 1st arg to negative: */
-      ELSE IF NEGL(U[1]) THEN U:BNDNEGTIMES(U,V)
-      ELSE IF NEGL(V[1]) THEN U:BNDNEGTIMES(V,U)
-      ELSE IF POSU(U[2]) THEN U:BNDNEGTIMES(BNDMINUS(U),BNDMINUS(V))
-      ELSE IF POSU(V[2]) THEN U:BNDNEGTIMES(BNDMINUS(V),BNDMINUS(U))
+      else if negl(u[1]) then u:bndnegtimes(u,v)
+      else if negl(v[1]) then u:bndnegtimes(v,u)
+      else if posu(u[2]) then u:bndnegtimes(bndminus(u),bndminus(v))
+      else if posu(v[2]) then u:bndnegtimes(bndminus(v),bndminus(u))
         /* Both bounds of both args are symbolic: */
-      ELSE (U:[U[1]*V[1], U[1]*V[2], U[2]*V[1], U[2]*V[2]],
-        U: [APPLY(MIN,U), APPLY(MAX,U)])),
-      RETURN(U)),
+      else (u:[u[1]*v[1], u[1]*v[2], u[2]*v[1], u[2]*v[2]],
+        u: [apply(min,u), apply(max,u)])),
+      return(u)),
 
-  IF PIECE="^" THEN (U:BOUNDS1(INPART(W,1)), V:BOUNDS1(INPART(W,2)),
-    IF POSL(U[1]) THEN
+  if piece="^" then (u:bounds1(inpart(w,1)), v:bounds1(inpart(w,2)),
+    if posl(u[1]) then
         /*Try standardizing lowerbound of 1st arg to >=1: */
-      IF GE1L(U[1]) THEN RETURN(BNDGE1TO(U,V))
-      ELSE IF LE1U(U[2]) THEN RETURN(BNDRECIP(BNDGE1TO(BNDRECIP(U),
-        V)))
-      ELSE IF GE1U(U[2]) THEN
+      if ge1l(u[1]) then return(bndge1to(u,v))
+      else if le1u(u[2]) then return(bndrecip(bndge1to(bndrecip(u),
+        v)))
+      else if ge1u(u[2]) then
           /* 0<=U[1]<1 and U[2]>1.  Try standardizing
              lower bound of 2nd arg to nonnegative: */
-        IF NONNEGL(V[1]) THEN RETURN(BNDSPAN1TONN(U,V))
-        ELSE IF NONPOSU(V[2]) THEN RETURN(BNDRECIP(BNDSPAN1TONN(U,
-          BNDMINUS(V))))
+        if nonnegl(v[1]) then return(bndspan1tonn(u,v))
+        else if nonposu(v[2]) then return(bndrecip(bndspan1tonn(u,
+          bndminus(v))))
             /* V[1]<1 or symbolic & V[2]>1 or symbolic.  Standardize
                nonsymbolic args of ** to nonneg: */
-        ELSE RETURN([MIN(NNTONN(U[1],V[2]),RECIPL(NNTONN(U[2],NEG8(
-          V[1])))), MAX(NNTONN(U[2],V[2]),RECIPU(NNTONN(U[1],NEG8(
-          V[1]))))])
+        else return([min(nntonn(u[1],v[2]),recipl(nntonn(u[2],neg8(
+          v[1])))), max(nntonn(u[2],v[2]),recipu(nntonn(u[1],neg8(
+          v[1]))))])
             /* 0<=U[1]<1 & U[2] symbolic.  Try standardizing lower
                bound of 2nd arg to nonegative: */
-      ELSE IF NONNEGL(V[1]) THEN RETURN(BNDMAYSPAN1TONN(U,V))
-      ELSE IF NONPOSU(V[2]) THEN
-        RETURN(BNDRECIP(BNDMAYSPAN1TONN(U,BNDMINUS(V))))
+      else if nonnegl(v[1]) then return(bndmayspan1tonn(u,v))
+      else if nonposu(v[2]) then
+        return(bndrecip(bndmayspan1tonn(u,bndminus(v))))
           /* U[1]<1 & U[2] symbolic: */
-      ELSE IF POSU(V[2]) THEN
-        IF NEGL(V[1]) THEN RETURN([MIN(NNTONN(U[1],V[2]),U[2]**V[1]),
-          MAX(RECIPU(NNTONN(U[1],NEG8(V[1]))), U[2]**V[2])])
+      else if posu(v[2]) then
+        if negl(v[1]) then return([min(nntonn(u[1],v[2]),u[2]**v[1]),
+          max(recipu(nntonn(u[1],neg8(v[1]))), u[2]**v[2])])
             /* V[1] symbolic too, so another possible upperbound:*/
-        ELSE RETURN([MIN(NNTONN(U[1],V[2]), U[2]**V[1]),
-          MAX(U[1]**V[1], U[2]**V[2], U[2]**V[1])])
-      ELSE IF NEGL(V[1]) THEN RETURN([MIN(U[1]**V[2],U[2]**V[2],U[2]
-        **V[1]),MAX(RECIPU(NNTONN(U[1],NEG8(V[1]))),U[2]**V[2])])
+        else return([min(nntonn(u[1],v[2]), u[2]**v[1]),
+          max(u[1]**v[1], u[2]**v[2], u[2]**v[1])])
+      else if negl(v[1]) then return([min(u[1]**v[2],u[2]**v[2],u[2]
+        **v[1]),max(recipu(nntonn(u[1],neg8(v[1]))),u[2]**v[2])])
           /* V[1] & V[2] symbolic.  3 symbolic possibilities for
              each bound: */
-      ELSE RETURN([MIN(U[1]**V[2], U[2]**V[2], U[2]**V[1]),
-                   MAX(U[1]**V[1], U[2]**V[2], U[2]**V[1])])
+      else return([min(u[1]**v[2], u[2]**v[2], u[2]**v[1]),
+                   max(u[1]**v[1], u[2]**v[2], u[2]**v[1])])
       /* U[1]=0 or symbolic.  Negatives must not be raised to
          nonintegers: */
-    ELSE IF INTEGERP(V[1]) AND INTEGERP(V[2]) THEN
-      IF V[1]=V[2] THEN  /* interval ** integer: */
-        IF V[1]>=0 THEN
-          IF EVNP(V[1]) THEN
-            IF NONPOSU(U[2]) THEN RETURN([NNTONN(NEG8(U[2]),V[1]),
-              NNTONN(NEG8(U[1]),V[1])])
+    else if integerp(v[1]) and integerp(v[2]) then
+      if v[1]=v[2] then  /* interval ** integer: */
+        if v[1]>=0 then
+          if evnp(v[1]) then
+            if nonposu(u[2]) then return([nntonn(neg8(u[2]),v[1]),
+              nntonn(neg8(u[1]),v[1])])
                 /* interval spanning 0 ** nonnegative integer: */
-            ELSE IF NEGL(U[1]) AND POSU(U[2]) THEN RETURN([0,
-              MAX(NNTONN(U[2],V[1]), NNTONN(NEG8(U[1]),V[1]))])
+            else if negl(u[1]) and posu(u[2]) then return([0,
+              max(nntonn(u[2],v[1]), nntonn(neg8(u[1]),v[1]))])
                 /* U[1] or U[2] symbolic so that maybespan0 **
                    nonnegative even integer: */
-            ELSE RETURN([IF POSU(U[2]) THEN 0 ELSE U[2]**V[2],
-                MAX(NNTONN(NEG8(U[1]),V[2]), U[2]**V[2])])
-          ELSE RETURN([NEG8(NNTONN(NEG8(U[1]),V[1])),
+            else return([if posu(u[2]) then 0 else u[2]**v[2],
+                max(nntonn(neg8(u[1]),v[2]), u[2]**v[2])])
+          else return([neg8(nntonn(neg8(u[1]),v[1])),
                    /* allow for symbolic or either-signed 
                        upper bound of U: */
-                 IF NEGU(U[2]) THEN NEG8(NNTONN(NEG8(U[2]),V[1]))
-                 ELSE NNTONN(U[2],V[1])])
+                 if negu(u[2]) then neg8(nntonn(neg8(u[2]),v[1]))
+                 else nntonn(u[2],v[1])])
           /* U[1]<0: */
-        ELSE IF NONPOSU(U[2]) THEN
-          IF EVNP(V[1]) THEN RETURN(BNDRECIP(BNDGE1TONN(BNDMINUS(U),
-            BNDMINUS(V))))
-          ELSE RETURN(BNDMINUS(BNDRECIP(BNDGE1TONN(BNDMINUS(U),
-            BNDMINUS(V)))))
-        ELSE RETURN([MINF,INF])
-      ELSE IF NEGU(U[2]) THEN
+        else if nonposu(u[2]) then
+          if evnp(v[1]) then return(bndrecip(bndge1tonn(bndminus(u),
+            bndminus(v))))
+          else return(bndminus(bndrecip(bndge1tonn(bndminus(u),
+            bndminus(v)))))
+        else return([minf,inf])
+      else if negu(u[2]) then
           /* Try standardizing  lowerbound of 1st arg <=-1: */
-        IF LEM1U(U[2]) THEN RETURN(BNDLEM1TO(U,V))
-        ELSE IF GEM1L(U[1]) THEN RETURN(BNDLEM1TO(BNDRECIP(U)
-          ,BNDMINUS(V)))
-        ELSE IF LEM1L(U[1]) THEN
+        if lem1u(u[2]) then return(bndlem1to(u,v))
+        else if gem1l(u[1]) then return(bndlem1to(bndrecip(u)
+          ,bndminus(v)))
+        else if lem1l(u[1]) then
             /* U[1]<-1 & U[2]>-1.  Try standardizing lower
               bound of V to nonnegative: */
-          IF NONNEGL(V[1]) THEN RETURN(BNDSPANM1TONN(U,V))
-          ELSE IF NONPOSU(V[2]) THEN RETURN(BNDRECIP(BNDSPANM1TONN(
-            U, BNDMINUS(V))))
-          ELSE (W: BNDLEM1TONN(U,V),
+          if nonnegl(v[1]) then return(bndspanm1tonn(u,v))
+          else if nonposu(v[2]) then return(bndrecip(bndspanm1tonn(
+            u, bndminus(v))))
+          else (w: bndlem1tonn(u,v),
               /* V[1]<0 or symbolic & V[2]>0 or symbolic: */
-            U: BNDLEM1TONN(BNDRECIP(U),BNDMINUS(V)),
-            RETURN([MIN(U[1],W[1]), MAX(U[2],W[2])]))
+            u: bndlem1tonn(bndrecip(u),bndminus(v)),
+            return([min(u[1],w[1]), max(u[2],w[2])]))
               /* U[1] algebraic: */
-        ELSE RETURN([LB(W),UB(W)])
-      ELSE IF V[1]>=0 THEN (     /* 0<=V[1]<V[2]: */
-        IF LEM1L(U[1]) THEN T: BNDLEM1TONN(U,V)
-        ELSE IF GEM1L(U[1]) THEN 
+        else return([lb(w),ub(w)])
+      else if v[1]>=0 then (     /* 0<=v[1]<v[2]: */
+        if lem1l(u[1]) then t: bndlem1tonn(u,v)
+        else if gem1l(u[1]) then 
             /* U[1] symbolic: */
-          T: BNDRECIP(BNDLEM1TONN(BNDRECIP([1,U[1]]),V))
-        ELSE RETURN([LB(W), UB(W)]),
-        IF GE1U(U[2]) THEN U: NNTONN(U[2],V[2])
-        ELSE IF LE1U(U[2]) THEN U: NNTONN(U[2],V[1])
+          t: bndrecip(bndlem1tonn(bndrecip([1,u[1]]),v))
+        else return([lb(w), ub(w)]),
+        if ge1u(u[2]) then u: nntonn(u[2],v[2])
+        else if le1u(u[2]) then u: nntonn(u[2],v[1])
           /* U[2] symbolic: */
-        ELSE RETURN([LB(W), UB(W)]),
-        RETURN([T[1], MAX(T[2],U)]))
-    ELSE IF V[2]<0 AND NEGU(U[2]) AND POSL(U[1]) 
-      THEN RETURN([MINF,INF])
-    ELSE RETURN([MINF, INF])),
+        else return([lb(w), ub(w)]),
+        return([t[1], max(t[2],u)]))
+    else if v[2]<0 and negu(u[2]) and posl(u[1]) 
+      then return([minf,inf])
+    else return([minf, inf])),
 
-  IF PIECE='LOG OR PIECE='ATAN OR PIECE='ERF OR PIECE='SINH OR
-    PIECE='ASINH OR PIECE='ACOSH OR
-    PIECE='TANH THEN RETURN(BNDUNARY(PIECE, BOUNDS(INPART(W,1)))),
-  IF PIECE = 'SIN OR PIECE = 'COS THEN RETURN([-1,1]),
-  IF PIECE='ACOT OR PIECE='ASECH THEN RETURN(
-    REVERSE(BNDUNARY(PIECE, BOUNDS(INPART(W,1))))),
-  IF PIECE = 'COSH THEN RETURN([1, INF]),
-  IF PIECE='SECH THEN RETURN([0,1]),
-  IF PIECE='ASEC THEN RETURN([0, 3.14159]),
-  IF PIECE='ACSC THEN RETURN([-1.57079, 1.57079]),
-  IF PIECE='ASIN OR PIECE='ATANH THEN RETURN(BNDRESTRICT(PIECE,W)),
-  IF PIECE='ACOS THEN RETURN(REVERSE(BNDRESTRICT(PIECE,W))),
-  RETURN([MINF, INF])) $
+  if piece='log or piece='atan or piece='erf or piece='sinh or
+    piece='asinh or piece='acosh or
+    piece='tanh then return(bndunary(piece, bounds(inpart(w,1)))),
+  if piece = 'sin or piece = 'cos then return([-1,1]),
+  if piece='acot or piece='asech then return(
+    reverse(bndunary(piece, bounds(inpart(w,1))))),
+  if piece = 'cosh then return([1, inf]),
+  if piece='sech then return([0,1]),
+  if piece='asec then return([0, 3.14159]),
+  if piece='acsc then return([-1.57079, 1.57079]),
+  if piece='asin or piece='atanh then return(bndrestrict(piece,w)),
+  if piece='acos then return(reverse(bndrestrict(piece,w))),
+  return([minf, inf])) $
 
-BNDRESTRICT(P,W) := BLOCK(
-   W:BOUNDS(INPART(W,1)),
-   IF LEM1L(W[1]) THEN W[1]:-1,
-   IF GE1U(W[2]) THEN W[2]:1,
-   RETURN(BNDUNARY(P,W))) $
+bndrestrict(p,w) := block(
+   w:bounds(inpart(w,1)),
+   if lem1l(w[1]) then w[1]:-1,
+   if ge1u(w[2]) then w[2]:1,
+   return(bndunary(p,w))) $
 
-ADDBND(B1,B2) := /* B1 and B2 are both lower or both upper
+addbnd(b1,b2) := /* B1 and B2 are both lower or both upper
       bounds.  Returns their sum.  Assumes PARTSWITCH:TRUE. */
-   IF B1=INF OR B2=INF THEN INF
-   ELSE IF B1=MINF OR B2=MINF THEN MINF
-   ELSE IF INPART(B1,0)='STRICT THEN
-      IF INPART(B2,0)='STRICT THEN
-         STRICT(ADDBND(INPART(B1,1), INPART(B2,1)))
-      ELSE STRICT(ADDBND(INPART(B1,1), B2))
-   ELSE IF INPART(B2,0)='STRICT THEN STRICT(ADDBND(B1,INPART(B2,1)))
-   ELSE B1+B2 $
+   if b1=inf or b2=inf then inf
+   else if b1=minf or b2=minf then minf
+   else if inpart(b1,0)='strict then
+      if inpart(b2,0)='strict then
+         strict(addbnd(inpart(b1,1), inpart(b2,1)))
+      else strict(addbnd(inpart(b1,1), b2))
+   else if inpart(b2,0)='strict then strict(addbnd(b1,inpart(b2,1)))
+   else b1+b2 $
 
-BNDGE1TO(U,V) := /* U & V are intervals, with U[1]>=1.  Returns
+bndge1to(u,v) := /* U & V are intervals, with U[1]>=1.  Returns
       interval of U**V.  First try standardizing to nonnegative
       lower bound of power: */
-   IF NONNEGL(V[1]) THEN BNDGE1TONN(U,V)
-   ELSE IF NONPOSU(V[2]) THEN BNDRECIP(BNDGE1TONN(U,BNDMINUS(V)))
-   ELSE IF NEGL(V[1]) THEN
-      IF POSU(V[2]) THEN [RECIPL(NNTONN(U[2], NEG8(V[1]))),
-         NNTONN(U[2],V[2])]
-        /* V[2] symbolic: */
-      ELSE [RECIPL(NNTONN(U[2], NEG8(V[1]))), MAX(U[1]**V[2],
-         U[2]**V[2])]
-      /* V[1] symbolic: */
-   ELSE IF POSU(V[2]) THEN [MIN(U[1]**V[1], U[2]**V[1]),
-      NNTONN(U[2],V[2])]
-      /* V[1] and V[2] symbolic: */
-   ELSE [MIN(U[1]**V[1], U[2]**V[1]), MAX(U[1]**V[2], U[2]**V[2])] $
+   if nonnegl(v[1]) then bndge1tonn(u,v)
+   else if nonposu(v[2]) then bndrecip(bndge1tonn(u,bndminus(v)))
+   else if negl(v[1]) then
+      if posu(v[2]) then [recipl(nntonn(u[2], neg8(v[1]))),
+         nntonn(u[2],v[2])]
+        /* v[2] symbolic: */
+      else [recipl(nntonn(u[2], neg8(v[1]))), max(u[1]**v[2],
+         u[2]**v[2])]
+      /* v[1] symbolic: */
+   else if posu(v[2]) then [min(u[1]**v[1], u[2]**v[1]),
+      nntonn(u[2],v[2])]
+      /* v[1] and v[2] symbolic: */
+   else [min(u[1]**v[1], u[2]**v[1]), max(u[1]**v[2], u[2]**v[2])] $
 
-BNDGE1TONN(U,V) := /* U & V are intervals with U[2]>=1, V[1]>=0.
+bndge1tonn(u,v) := /* U & V are intervals with U[2]>=1, V[1]>=0.
       Returns interval of U**V. */
-   [NNTONN(U[1],V[1]), NNTONN(U[2],V[2])] $
+   [nntonn(u[1],v[1]), nntonn(u[2],v[2])] $
 
-BNDLEM1TO(U,V) := /* U and V are intervals with U[2]<=-1 &
+bndlem1to(u,v) := /* U and V are intervals with U[2]<=-1 &
       V[1] & V[2] are unequal integers.  Returns interval of U**V. 
       First, standardize to V[2]>0: */
-   IF V[2]>0 THEN BNDLEM1TONN(U,V) 
-   ELSE IF EVNP(V[2]) THEN [RECIPL(NEG8(NNTONN(NEG8(U[2]),1-V[2]))),
-      RECIPU(NNTONN(NEG8(U[2]),-V[2]))]
-   ELSE [RECIPL(NEG8(NNTONN(NEG8(U[2]),-V[2]))), 
-      RECIPU(NNTONN(NEG8(U[2]),1-V[2]))] $
+   if v[2]>0 then bndlem1tonn(u,v) 
+   else if evnp(v[2]) then [recipl(neg8(nntonn(neg8(u[2]),1-v[2]))),
+      recipu(nntonn(neg8(u[2]),-v[2]))]
+   else [recipl(neg8(nntonn(neg8(u[2]),-v[2]))), 
+      recipu(nntonn(neg8(u[2]),1-v[2]))] $
 
-BNDLEM1TONN(U,V) := /* U & V are intervals with U[1]>=1, V[2]>1.
+bndlem1tonn(u,v) := /* U & V are intervals with U[1]>=1, V[2]>1.
       Returns interval for U**V. */
-   IF EVNP(V[2]) THEN [NEG8(NNTONN(NEG8(U[1]),V[2]-1)),
-      NNTONN(NEG8(U[1]),V[2])]
-   ELSE [NEG8(NNTONN(NEG8(U[1]),V[2])),NNTONN(NEG8(U[1]),V[2]-1)]$
+   if evnp(v[2]) then [neg8(nntonn(neg8(u[1]),v[2]-1)),
+      nntonn(neg8(u[1]),v[2])]
+   else [neg8(nntonn(neg8(u[1]),v[2])),nntonn(neg8(u[1]),v[2]-1)]$
 
-BNDMAYSPAN1TONN(U,V) := /* U & V are intervals with 0<=U[1]<1 &
+bndmayspan1tonn(u,v) := /* U & V are intervals with 0<=U[1]<1 &
       U[2] symbolic & V[1]>=0.  Returns interval for U**V. */
-   [NNTONN(U[1],V[2]), MAX(U[2]**V[1], U[2]**V[2])] $
+   [nntonn(u[1],v[2]), max(u[2]**v[1], u[2]**v[2])] $
 
-BNDMINUS(U) := /* U is an interval.  Returns interval for -U. */
-   [NEG8(U[2]), NEG8(U[1])] $
+bndminus(u) := /* U is an interval.  Returns interval for -U. */
+   [neg8(u[2]), neg8(u[1])] $
 
-BNDNNTIMES(U,V) := /* U & V are intervals with U[1]>=0.  Returns
+bndnntimes(u,v) := /* U & V are intervals with U[1]>=0.  Returns
       interval of U*V.  First, try to standardize lower bound
       of 2nd arg to nonnegative too: */
-  IF NONNEGL(V[1]) THEN BNDNNTIMNN(U,V)
-  ELSE IF NONPOSU(V[2]) THEN BNDMINUS(BNDNNTIMNN(U,BNDMINUS(V)))
-  ELSE IF NEGL(V[1]) THEN
-    IF POSU(V[2]) THEN [NEG8(MGEZ(U[2],NEG8(V[1]))),MGEZ(U[2],V[2])]
-    ELSE [NEG8(MGEZ(U[2],NEG8(V[1]))), MAX(U[1]*V[2], U[2]*V[2])]
-  ELSE IF POSU(V[2]) THEN [MIN(U[1]*V[1], U[2]*V[1]), MGEZ(U[2],V[2])]
-  ELSE [MIN(U[1]*V[1], U[2]*V[1]), MAX(U[1]*V[2], U[2]*V[2])] $
+  if nonnegl(v[1]) then bndnntimnn(u,v)
+  else if nonposu(v[2]) then bndminus(bndnntimnn(u,bndminus(v)))
+  else if negl(v[1]) then
+    if posu(v[2]) then [neg8(mgez(u[2],neg8(v[1]))),mgez(u[2],v[2])]
+    else [neg8(mgez(u[2],neg8(v[1]))), max(u[1]*v[2], u[2]*v[2])]
+  else if posu(v[2]) then [min(u[1]*v[1], u[2]*v[1]), mgez(u[2],v[2])]
+  else [min(u[1]*v[1], u[2]*v[1]), max(u[1]*v[2], u[2]*v[2])] $
 
-BNDNEGTIMES(U,V) := /* U & V are intervals with U[1]<0.
+bndnegtimes(u,v) := /* U & V are intervals with U[1]<0.
       Returns interval of U*V. */
-  IF POSU(U[2]) OR POSU(V[2]) AND NEGL(V[1]) THEN 
-    [MIN(NEG8(MGEZ(NEG8(U[1]),V[2])), NEG8(MGEZ(U[2],NEG8(V[1])))),
-    MAX(MGEZ(NEG8(U[1]),NEG8(V[1])), MGEZ(U[2],V[2]))]
-  ELSE IF NEGL(V[1]) THEN [MIN(U[2]*V[2], U[2]*V[1], U[1]*V[2]),
-    MAX(MGEZ(NEG8(U[1]), NEG8(V[1])), U[2]*V[2])]
-  ELSE IF POSU(V[2]) THEN [MIN(U[2]*V[1],NEG8(MGEZ(NEG8(U[1]),V[2]))),
-    MAX(U[2]*V[2], U[2]*V[1], U[1]*V[1])]
-  ELSE [MIN(U[2]*V[2], U[2]*V[1], U[1]*V[2]),
-    MAX(U[2]*V[2], U[2]*V[1], U[1]*V[1])] $
+  if posu(u[2]) or posu(v[2]) and negl(v[1]) then 
+    [min(neg8(mgez(neg8(u[1]),v[2])), neg8(mgez(u[2],neg8(v[1])))),
+    max(mgez(neg8(u[1]),neg8(v[1])), mgez(u[2],v[2]))]
+  else if negl(v[1]) then [min(u[2]*v[2], u[2]*v[1], u[1]*v[2]),
+    max(mgez(neg8(u[1]), neg8(v[1])), u[2]*v[2])]
+  else if posu(v[2]) then [min(u[2]*v[1],neg8(mgez(neg8(u[1]),v[2]))),
+    max(u[2]*v[2], u[2]*v[1], u[1]*v[1])]
+  else [min(u[2]*v[2], u[2]*v[1], u[1]*v[2]),
+    max(u[2]*v[2], u[2]*v[1], u[1]*v[1])] $
 
-BNDNNTIMNN(U,V) := /* U & V are intervals with U[1] & U[2]>=0.
+bndnntimnn(u,v) := /* U & V are intervals with U[1] & U[2]>=0.
       Returns interval for U*V. */
-   [MGEZ(U[1],V[1]), MGEZ(U[2],V[2])] $
+   [mgez(u[1],v[1]), mgez(u[2],v[2])] $
 
-BNDNPTONNEVN(U,V) := /* U & V are intervals with U[1]<=0 &
+bndnptonnevn(u,v) := /* U & V are intervals with U[1]<=0 &
       V a nonnegative even integer.  Returns interval of U**V. */
-   [NNTONN(NEG8(U[2]),V[1]), NNTONN(NEG8(U[1]), V[1])] $
+   [nntonn(neg8(u[2]),v[1]), nntonn(neg8(u[1]), v[1])] $
 
-BNDRECIP(U) := /* U is an interval not containing zzero in its
+bndrecip(u) := /* U is an interval not containing zzero in its
       interior.  Returns interval of 1/U. */
-   [RECIPL(U[2]), RECIPU(U[1])] $
+   [recipl(u[2]), recipu(u[1])] $
 
-BNDSPAN1TONN(U,V) := /* U & V are intervals with 0<=U[1]<1<U[2]
+bndspan1tonn(u,v) := /* U & V are intervals with 0<=U[1]<1<U[2]
       & V[1]>=0.  Returns interval for U**V. */
-   [NNTONN(U[1],V[2]), NNTONN(U[2],V[2])] $
+   [nntonn(u[1],v[2]), nntonn(u[2],v[2])] $
 
-BNDUNARY(NAME,U) := /* NAME is the name of a univariate
+bndunary(name,u) := /* NAME is the name of a univariate
       nondecreasing function such as LOG, and U is the bounds of its
       argument.  Returns BOUNDS1(NAME(argument)). */
-   [UNARYBND(NAME, U[1], PLUS), UNARYBND(NAME, U[2], MINUS)] $
+   [unarybnd(name, u[1], plus), unarybnd(name, u[2], minus)] $
 
-EVNP(B) := /* B is integer. Returns TRUE if it is even & FALSE
+evnp(b) := /* B is integer. Returns TRUE if it is even & FALSE
       otherwise. */
-   IF INTEGERP(B/2) THEN TRUE ELSE FALSE $
+   if integerp(b/2) then true else false $
 
-GEM1L(LB) := /* LB is a lowerbound.  Returns TRUE if it is >=1,
+gem1l(lb) := /* LB is a lowerbound.  Returns TRUE if it is >=1,
       FALSE otherwise. */
-   IF NUMBERP(LB) AND LB>=-1 OR INPART(LB,0)='STRICT AND 
-      NUMBERP(INPART(LB,1)) AND PIECE>=-1 THEN TRUE
-   ELSE FALSE $
+   if numberp(lb) and lb>=-1 or inpart(lb,0)='strict and 
+      numberp(inpart(lb,1)) and piece>=-1 then true
+   else false $
 
-GE1L(LB) := /* LB is a lowerbound.  Returns TRUE if it is >=1,
+ge1l(lb) := /* LB is a lowerbound.  Returns TRUE if it is >=1,
       FALSE otherwise. */
-   IF NUMBERP(LB) AND LB>=1 OR INPART(LB,0)='STRICT AND NUMBERP(
-      INPART(LB,1)) AND PIECE>=1 THEN TRUE
-   ELSE FALSE $
+   if numberp(lb) and lb>=1 or inpart(lb,0)='strict and numberp(
+      inpart(lb,1)) and piece>=1 then true
+   else false $
 
-GE1U(UB) := /* UB is an upperbound.  Returns TRUE if it is >=1,
+ge1u(ub) := /* UB is an upperbound.  Returns TRUE if it is >=1,
       FALSE otherwise. */
-   IF UB=INF OR NUMBERP(UB) AND UB>=1 OR INPART(UB,0)='STRICT AND
-    (NUMBERP(BOUNDS1(INPART(UB,1))) AND PIECE>1 OR PIECE=INF)THEN TRUE
-   ELSE FALSE $
+   if ub=inf or numberp(ub) and ub>=1 or inpart(ub,0)='strict and
+    (numberp(bounds1(inpart(ub,1))) and piece>1 or piece=inf)then true
+   else false $
 
 /*LBATOM(W) := BLOCK(/* W is an indeterminate.  Returns its
       lowerbound, printing a message and establishing it as MINF if
@@ -508,114 +508,114 @@ GE1U(UB) := /* UB is an upperbound.  Returns TRUE if it is >=1,
       PUT(W, MINF, LOWERBOUND),
       ANS:MINF),
    RETURN (ANS)) $*/
-LBATOM(W) := BLOCK(
-   [ANS],
-   IF W=%E THEN RETURN(2.718281),
-   IF W=%PI THEN RETURN(3.141592),
-   ANS: GREATERS(W),
-   IF ANS=[] THEN (ANS:GEQS(W),
-      IF ANS=[] THEN ANS:'MINF
-      ELSE ANS: FIRST(ANS))
-   ELSE ANS: STRICT(FIRST(ANS)),
-   RETURN(ANS)) $
+lbatom(w) := block(
+   [ans],
+   if w=%e then return(2.718281),
+   if w=%pi then return(3.141592),
+   ans: greaters(w),
+   if ans=[] then (ans:geqs(w),
+      if ans=[] then ans:'minf
+      else ans: first(ans))
+   else ans: strict(first(ans)),
+   return(ans)) $
 
-LEM1L(LB) := /* LB is a lowerbound.  Returns TRUE if it's <=-1,
+lem1l(lb) := /* LB is a lowerbound.  Returns TRUE if it's <=-1,
       FALSE otherwise. */
-   IF NUMBERP(LB) AND LB<=-1 OR LB=MINF OR INPART(LB,0)='STRICT AND
-      (INPART(LB,1)=MINF OR NUMBERP(PIECE) AND PIECE<1) THEN TRUE
-   ELSE FALSE $
+   if numberp(lb) and lb<=-1 or lb=minf or inpart(lb,0)='strict and
+      (inpart(lb,1)=minf or numberp(piece) and piece<1) then true
+   else false $
 
-LEM1U(UB) := /* UB is an upperbound.  Returns TRUE if it's <=-1,
+lem1u(ub) := /* UB is an upperbound.  Returns TRUE if it's <=-1,
       FALSE otherwise. */
-   IF NUMBERP(UB) AND UB<=-1 OR INPART(UB,0)='STRICT AND
-      NUMBERP(INPART(UB,1)) AND PIECE<=-1 THEN TRUE
-   ELSE FALSE $
+   if numberp(ub) and ub<=-1 or inpart(ub,0)='strict and
+      numberp(inpart(ub,1)) and piece<=-1 then true
+   else false $
 
-LE1U(UB) := /* UB is an upperbound.  Returns TRUE if it is <=1,
+le1u(ub) := /* UB is an upperbound.  Returns TRUE if it is <=1,
       FALSE otherwise. */
-   IF NUMBERP(UB) AND UB<=1 OR INPART(UB,0)='STRICT AND
-      NUMBERP(INPART(UB,1)) AND PIECE<=1 THEN TRUE
-   ELSE FALSE $
+   if numberp(ub) and ub<=1 or inpart(ub,0)='strict and
+      numberp(inpart(ub,1)) and piece<=1 then true
+   else false $
 
-MGEZ(X,Y) := /* X & Y are bounds.  Returns X*Y. */
-   IF X=0 OR Y=0 THEN 0
-   ELSE IF X=INF OR Y=INF THEN INF
-   ELSE IF INPART(X,0)='STRICT THEN
-      IF INPART(Y,0)='STRICT THEN
-         STRICT(MGEZ(INPART(X,1),INPART(Y,1)))
-      ELSE STRICT(MGEZ(INPART(X,1),Y))
-   ELSE IF INPART(Y,0)='STRICT THEN STRICT(MGEZ(X,INPART(Y,1)))
-   ELSE X*Y $
+mgez(x,y) := /* X & Y are bounds.  Returns X*Y. */
+   if x=0 or y=0 then 0
+   else if x=inf or y=inf then inf
+   else if inpart(x,0)='strict then
+      if inpart(y,0)='strict then
+         strict(mgez(inpart(x,1),inpart(y,1)))
+      else strict(mgez(inpart(x,1),y))
+   else if inpart(y,0)='strict then strict(mgez(x,inpart(y,1)))
+   else x*y $
 
-NEGL(LB) := /* LB is a lowerbound.  Returns TRUE if it is <0,
+negl(lb) := /* LB is a lowerbound.  Returns TRUE if it is <0,
       FALSE otherwise. */
-   IF LB=MINF OR NUMBERP(LB) AND LB<0 OR INPART(LB,0)='STRICT AND
-      (INPART(LB,1)=MINF OR NUMBERP(PIECE) AND PIECE<0) THEN TRUE
-   ELSE FALSE $
+   if lb=minf or numberp(lb) and lb<0 or inpart(lb,0)='strict and
+      (inpart(lb,1)=minf or numberp(piece) and piece<0) then true
+   else false $
 
-NEGU(UB) := /* UB is an upperbound.  Returns TRUE if it is <0
+negu(ub) := /* UB is an upperbound.  Returns TRUE if it is <0
       FALSE otherwise. */
-   IF NUMBERP(UB) AND  UB<0 OR INPART(UB,0)='STRICT AND
-      NUMBERP(INPART(UB,1)) AND PIECE<=0 THEN TRUE
-   ELSE FALSE $
+   if numberp(ub) and  ub<0 or inpart(ub,0)='strict and
+      numberp(inpart(ub,1)) and piece<=0 then true
+   else false $
 
-NEG8(B) := /* B is a bound.  Returns its negative. */
-   IF VARIABLEP(B) THEN 
-      IF B=INF THEN MINF
-      ELSE IF B=MINF THEN INF
-      ELSE -B
-   ELSE IF INPART(B,0)='STRICT THEN STRICT(NEG8(INPART(B,1)))
-   ELSE -B $
+neg8(b) := /* B is a bound.  Returns its negative. */
+   if variablep(b) then 
+      if b=inf then minf
+      else if b=minf then inf
+      else -b
+   else if inpart(b,0)='strict then strict(neg8(inpart(b,1)))
+   else -b $
 
-NNTONN(X,Y) := /* X & Y are nonnegative bounds. Returns X**Y. */
-   IF Y=0 THEN 1
-   ELSE IF X=0 THEN 0
-   ELSE IF X=INF THEN INF
-   ELSE IF X=1 THEN 1
-   ELSE IF Y=INF THEN
-      IF NUMBERP(X) AND X<1 OR INPART(X,0)='STRICT AND
-         NUMBERP(INPART(X,1)) AND PIECE<1 THEN 0
-      ELSE INF
-   ELSE IF INPART(X,0)='STRICT THEN
-      IF INPART(Y,0)='STRICT THEN
-         STRICT(NNTONN(INPART(X,1),INPART(Y,1)))
-      ELSE STRICT(NNTONN(INPART(X,1),Y))
-   ELSE IF INPART(Y,0)='STRICT THEN STRICT(NNTONN(X,INPART(Y,1)))
-   ELSE EV(X**Y,NUMER) $
+nntonn(x,y) := /* X & Y are nonnegative bounds. Returns X**Y. */
+   if y=0 then 1
+   else if x=0 then 0
+   else if x=inf then inf
+   else if x=1 then 1
+   else if y=inf then
+      if numberp(x) and x<1 or inpart(x,0)='strict and
+         numberp(inpart(x,1)) and piece<1 then 0
+      else inf
+   else if inpart(x,0)='strict then
+      if inpart(y,0)='strict then
+         strict(nntonn(inpart(x,1),inpart(y,1)))
+      else strict(nntonn(inpart(x,1),y))
+   else if inpart(y,0)='strict then strict(nntonn(x,inpart(y,1)))
+   else ev(x**y,numer) $
 
-NONNEGL(LB) := /* LB is a lower bound.  Returns TRUE if it is 
+nonnegl(lb) := /* LB is a lower bound.  Returns TRUE if it is 
       nonnegative, FALSE otherwise. */ 
-   IF LB=0 OR POSL(LB) THEN TRUE ELSE FALSE $
+   if lb=0 or posl(lb) then true else false $
 
-NONPOSU(UB) := /* UB is an upperbound.  Returns TRUE if it is
+nonposu(ub) := /* UB is an upperbound.  Returns TRUE if it is
       positive, FALSE otehrwise. */ 
-   IF UB=0 OR NEGU(UB) THEN TRUE ELSE FALSE $
+   if ub=0 or negu(ub) then true else false $
 
-POSL(LB) := /* LB is a lowerbound.  Returns TRUE if it is >0,
+posl(lb) := /* LB is a lowerbound.  Returns TRUE if it is >0,
       FALSE otherwise. */
-   IF NUMBERP(LB) AND LB>0 OR INPART(LB,0)='STRICT AND
-      NUMBERP(INPART(LB,1)) AND PIECE>=0 THEN TRUE
-   ELSE FALSE $
+   if numberp(lb) and lb>0 or inpart(lb,0)='strict and
+      numberp(inpart(lb,1)) and piece>=0 then true
+   else false $
 
-POSU(UB) := /* UB is an upperbound.  Returns TRUE if >0,
+posu(ub) := /* UB is an upperbound.  Returns TRUE if >0,
       FALSE otherwise. */
-   IF UB=INF OR NUMBERP(UB) AND UB>0 OR INPART(UB,0)='STRICT AND
-      (INPART(UB,1)=INF OR NUMBERP(PIECE) AND PIECE>=0) THEN TRUE
-   ELSE FALSE $
+   if ub=inf or numberp(ub) and ub>0 or inpart(ub,0)='strict and
+      (inpart(ub,1)=inf or numberp(piece) and piece>=0) then true
+   else false $
 
 
-RECIPL(UB) := /* UB is an upperbound.  Returns its 1/UB. */
-   IF UB=INF THEN 0
-   ELSE IF UB=0 THEN MINF
-   ELSE IF INPART(UB,0)='STRICT THEN STRICT(RECIPL(INPART(UB,1)))
-   ELSE 1/UB $
+recipl(ub) := /* UB is an upperbound.  Returns its 1/UB. */
+   if ub=inf then 0
+   else if ub=0 then minf
+   else if inpart(ub,0)='strict then strict(recipl(inpart(ub,1)))
+   else 1/ub $
 
-RECIPU(LB) := /* LB is a lowerbound.  Returnns its 1/LB. */
-   IF LB=MINF THEN 0
-   ELSE IF LB=0 THEN INF
-   ELSE IF INPART(LB,0)='STRICT THEN
-      STRICT(RECIPU(INPART(LB,1)))
-   ELSE 1/LB $
+recipu(lb) := /* LB is a lowerbound.  Returnns its 1/LB. */
+   if lb=minf then 0
+   else if lb=0 then inf
+   else if inpart(lb,0)='strict then
+      strict(recipu(inpart(lb,1)))
+   else 1/lb $
 
 /*UBATOM(W) := BLOCK(/* W is an indeterminate.
       Returns its upperbound, printing a message & establishing it as
@@ -626,72 +626,72 @@ RECIPU(LB) := /* LB is a lowerbound.  Returnns its 1/LB. */
       PUT(W,INF,UPPERBOUND),
       ANS: INF),
    RETURN(ANS)) $*/
-UBATOM(W) := BLOCK(
-   [ANS],
-   IF W=%E THEN RETURN(2.718282),
-   IF W=%PI THEN RETURN(3.141593),
-   ANS: LESSES(W),
-   IF ANS=[] THEN (ANS:LEQS(W),
-      IF ANS=[] THEN ANS:'INF
-      ELSE ANS: FIRST(ANS))
-   ELSE ANS: STRICT(FIRST(ANS)),
-   RETURN(ANS)) $
+ubatom(w) := block(
+   [ans],
+   if w=%e then return(2.718282),
+   if w=%pi then return(3.141593),
+   ans: lesses(w),
+   if ans=[] then (ans:leqs(w),
+      if ans=[] then ans:'inf
+      else ans: first(ans))
+   else ans: strict(first(ans)),
+   return(ans)) $
 
 
-UNARYBND(NAME, B, D) := BLOCK(/* NAME is name of a univariate
+unarybnd(name, b, d) := block(/* NAME is name of a univariate
       nondecreasing function like LOG, B is a bound of its argument,
       and D is PLUS for a lower bound or MINUS for an upperbound.
       Returns the corresponding bound of NAME(argument). */
-   [ARG],
-   IF INPART(B,0) = 'STRICT THEN
-      ARG: STRICT(LIMIT(APPLY(NAME,[ARG]), ARG, INPART(B,1), D))
-   ELSE ARG: LIMIT(APPLY(NAME,[ARG]), ARG, B, D),
-   RETURN(EV(ARG,NUMER))) $
+   [arg],
+   if inpart(b,0) = 'strict then
+      arg: strict(limit(apply(name,[arg]), arg, inpart(b,1), d))
+   else arg: limit(apply(name,[arg]), arg, b, d),
+   return(ev(arg,numer))) $
 
-DEFINITECODE(A) := BLOCK( /*LAGRANGE'S */
-   [N, PERM, B, II, JJ, KK, NPOS, NNEG, NZERO, NNPOS, NNNEG, NUNKN,
-      PARTSWITCH, PREDERROR],
-   PREDERROR:FALSE,  PARTSWITCH: TRUE,  N: LENGTH(A),  PERM: [],
-   NPOS: NNEG: NZERO: NNPOS: NNNEG: NUNKN: 0,
-   FOR I:N STEP -1 THRU 1 DO PERM: CONS(I, PERM),
-   FOR I:1 THRU N WHILE (NPOS=0 OR NNEG=0) DO(
-      JJ: I,
-      WHILE JJ<=N AND A[II:PERM[JJ],II]=0 DO JJ: JJ+1,
-      IF JJ>N THEN (NZERO: N+1-I,
-         FOR J:I THRU N WHILE NPOS=0 OR NNEG=0 DO(II: PERM[J],
-            FOR K:I THRU N DO IF A[II,PERM[K]]#0 THEN NPOS:NNEG:1))
-      ELSE (PERM[JJ]:PERM[I],  PERM[I]:II,
-         B: BOUNDS1(A[II,II]),
-         IF POSL(B[1]) THEN NPOS: NPOS+1
-         ELSE IF NEGU(B[2]) THEN NNEG: NNEG+1
-         ELSE IF B[1]=0 THEN 
-            IF B[2]=0 THEN NZERO:NZERO+1
-            ELSE NNNEG: NNNEG+1
-         ELSE IF B[2]=0 THEN NNPOS: NNPOS+1
-         ELSE NUNKN: NUNKN+1,
-         FOR J:I+1 THRU N DO (JJ: PERM[J],
-            B: -A[JJ,II]/A[II,II],
-            FOR K:I+1 THRU N DO (KK: PERM[K],
-               A[JJ,KK]: A[JJ,KK] + B*A[II,KK])))),
-   IF NPOS>0 THEN
-      IF NNEG>0 THEN RETURN(/*indefinite*/ 8)
-      ELSE IF NNPOS>0 THEN RETURN(/*pos semi or indef*/ 5)
-      ELSE IF NUNKN=0 THEN
-         IF NZERO=0 AND NNNEG=0 THEN RETURN(/*pos def*/ 7)
-         ELSE RETURN(/*pos semi*/ 6)
-      ELSE RETURN(/*pos def, pos semi, or indef*/ 5)
-   ELSE IF NNEG>0 THEN
-      IF NNNEG>0 THEN RETURN(/*neg semi or indef*/ 3)
-      ELSE IF NUNKN=0 THEN
-         IF NZERO=0 AND NNPOS=0  THEN RETURN(/*neg def*/ 1)
-         ELSE RETURN(/*neg semi*/ 2)
-      ELSE RETURN(/*neg def, neg semi, or indef*/ 3)
-   ELSE IF NUNKN=0 THEN
-      IF NNPOS=0 THEN
-         IF NNNEG=0 THEN RETURN(/*rank 0*/ 4)
-         ELSE RETURN(/*pos semi*/ 6)
-      ELSE IF NNNEG=0 AND NZERO=0 THEN RETURN(/*neg def or semi*/ 2)
-      ELSE RETURN(/*unknown*/ 9)
-   ELSE RETURN(/*unknown*/ 9)) $
+definitecode(a) := block( /*lagrange's */
+   [n, perm, b, ii, jj, kk, npos, nneg, nzero, nnpos, nnneg, nunkn,
+      partswitch, prederror],
+   prederror:false,  partswitch: true,  n: length(a),  perm: [],
+   npos: nneg: nzero: nnpos: nnneg: nunkn: 0,
+   for i:n step -1 thru 1 do perm: cons(i, perm),
+   for i:1 thru n while (npos=0 or nneg=0) do(
+      jj: i,
+      while jj<=n and a[ii:perm[jj],ii]=0 do jj: jj+1,
+      if jj>n then (nzero: n+1-i,
+         for j:i thru n while npos=0 or nneg=0 do(ii: perm[j],
+            for k:i thru n do if a[ii,perm[k]]#0 then npos:nneg:1))
+      else (perm[jj]:perm[i],  perm[i]:ii,
+         b: bounds1(a[ii,ii]),
+         if posl(b[1]) then npos: npos+1
+         else if negu(b[2]) then nneg: nneg+1
+         else if b[1]=0 then 
+            if b[2]=0 then nzero:nzero+1
+            else nnneg: nnneg+1
+         else if b[2]=0 then nnpos: nnpos+1
+         else nunkn: nunkn+1,
+         for j:i+1 thru n do (jj: perm[j],
+            b: -a[jj,ii]/a[ii,ii],
+            for k:i+1 thru n do (kk: perm[k],
+               a[jj,kk]: a[jj,kk] + b*a[ii,kk])))),
+   if npos>0 then
+      if nneg>0 then return(/*indefinite*/ 8)
+      else if nnpos>0 then return(/*pos semi or indef*/ 5)
+      else if nunkn=0 then
+         if nzero=0 and nnneg=0 then return(/*pos def*/ 7)
+         else return(/*pos semi*/ 6)
+      else return(/*pos def, pos semi, or indef*/ 5)
+   else if nneg>0 then
+      if nnneg>0 then return(/*neg semi or indef*/ 3)
+      else if nunkn=0 then
+         if nzero=0 and nnpos=0  then return(/*neg def*/ 1)
+         else return(/*neg semi*/ 2)
+      else return(/*neg def, neg semi, or indef*/ 3)
+   else if nunkn=0 then
+      if nnpos=0 then
+         if nnneg=0 then return(/*rank 0*/ 4)
+         else return(/*pos semi*/ 6)
+      else if nnneg=0 and nzero=0 then return(/*neg def or semi*/ 2)
+      else return(/*unknown*/ 9)
+   else return(/*unknown*/ 9)) $
 
-TTYOFF:FALSE $
+ttyoff:false $

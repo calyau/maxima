@@ -1,317 +1,317 @@
-TTYOFF: TRUE $
+ttyoff: true $
 
 /* Set up pattern-match rules to standardize bases of logs and
 exponentials: */
-MATCHDECLARE(XTRUE,TRUE, NON%ECONST,NON%ECONSTP) $
-TELLSIMPAFTER(LOG2(XTRUE), 1.44269504*LOG(XTRUE)) $
-TELLSIMP(NON%ECONST^XTRUE, %E^(LOG(NON%ECONST)*XTRUE)) $
+matchdeclare(xtrue,true, non%econst,non%econstp) $
+tellsimpafter(log2(xtrue), 1.44269504*log(xtrue)) $
+tellsimp(non%econst^xtrue, %e^(log(non%econst)*xtrue)) $
 
-NON%ECONSTP(EX) := IS(BASECONVERT=TRUE AND CONSTANTP(EX) AND EX#%E) $
+non%econstp(ex) := is(baseconvert=true and constantp(ex) and ex#%e) $
 
 /* Initialize global variables: */
-BASECONVERT: FALSE$
+baseconvert: false$
 
-TAYLORMAX: 0 $
+taylormax: 0 $
 
 
-ASYMP(FN) := BLOCK(/* Returns 'ASYMP(expr), where expr is a simplified
+asymp(fn) := block(/* Returns 'ASYMP(expr), where expr is a simplified
       asymptotic equivalent to FN.  Uses the global integer variable
       named MAXTAYLOR to control optional use of the TAYLOR-series
       technique. */
-   [ASYMVAR, ASYMPNT, ANS, RATEXPAND, RATDENOMDIVIDE],
-   ASYMPNT: ASYMPDATA(FN),   ASYMVAR: ASYMPNT[1],
-   IF ASYMVAR=[] THEN RETURN('ASYMP(FN)),
-   ASYMPNT: ANS: ASYMPNT[2],
-   ANS: FOR JJ:1 THRU TAYLORMAX WHILE ANS#[]  DO (
-      ANS: ERRCATCH(APPLY('TAYLOR, [FN,ASYMVAR,ASYMPNT,JJ])),
-      IF ANS#[] AND(ANS:RATDISREP(FIRST(ANS)))#0 THEN RETURN(ANS)),
-   IF ANS#'DONE THEN RETURN(ANS),
-   ANS: FOR JJ:1 THRU TAYLORMAX WHILE ANS#[] DO (
-      ANS: ERRCATCH(APPLY('TAYLOR, [1/FN,ASYMVAR,ASYMPNT,JJ])),
-      IF ANS#[] AND(ANS:RATDISREP(FIRST(ANS)))#0 THEN RETURN(1/ANS)),
-   IF ANS#'DONE THEN RETURN(ANS),
-   RATEXPAND: TRUE,   RATDENOMDIVIDE: FALSE,
-   APPLY('RATVARS, ASYMVAR),
-   ANS: RATSIMP(LEADTERM(RATNUMER(FN))/LEADTERM(RATDENOM(FN))),
-   RATVARS() /* Warning:  might alter user environment */,
-   'ASYMP(ANS)) $
+   [asymvar, asympnt, ans, ratexpand, ratdenomdivide],
+   asympnt: asympdata(fn),   asymvar: asympnt[1],
+   if asymvar=[] then return('asymp(fn)),
+   asympnt: ans: asympnt[2],
+   ans: for jj:1 thru taylormax while ans#[]  do (
+      ans: errcatch(apply('taylor, [fn,asymvar,asympnt,jj])),
+      if ans#[] and(ans:ratdisrep(first(ans)))#0 then return(ans)),
+   if ans#'done then return(ans),
+   ans: for jj:1 thru taylormax while ans#[] do (
+      ans: errcatch(apply('taylor, [1/fn,asymvar,asympnt,jj])),
+      if ans#[] and(ans:ratdisrep(first(ans)))#0 then return(1/ans)),
+   if ans#'done then return(ans),
+   ratexpand: true,   ratdenomdivide: false,
+   apply('ratvars, asymvar),
+   ans: ratsimp(leadterm(ratnumer(fn))/leadterm(ratdenom(fn))),
+   ratvars() /* Warning:  might alter user environment */,
+   'asymp(ans)) $
 
-ASYMPDATA(EX) := BLOCK(/* Returns a list of 2 lists, the first
+asympdata(ex) := block(/* Returns a list of 2 lists, the first
       being the asymptotic variables in expression EX and the
       second being their limits. */
-   [ALLVAR, ASYMVAR, ASYMPNT, ANS],
-   ALLVAR: LISTOFVARS(EX),
-   ASYMVAR: ASYMPNT: [],
-   FOR VAR IN ALLVAR DO
-       IF (ANS:GET(VAR,'LIMIT))#FALSE THEN
-          (ASYMVAR: CONS(VAR, ASYMVAR),
-           ASYMPNT: CONS(ANS, ASYMPNT)),
-   [ASYMVAR, ASYMPNT]) $
+   [allvar, asymvar, asympnt, ans],
+   allvar: listofvars(ex),
+   asymvar: asympnt: [],
+   for var in allvar do
+       if (ans:get(var,'limit))#false then
+          (asymvar: cons(var, asymvar),
+           asympnt: cons(ans, asympnt)),
+   [asymvar, asympnt]) $
 
-LEADTERM(EX) := BLOCK(/* Same as ASYMP, except EX is a numerator
+leadterm(ex) := block(/* Same as ASYMP, except EX is a numerator
       or denominator */
-   [SAVED],
-   SAVED: PASS1(EX),
-   IF SAVED=[] THEN RETURN(EX),
-   SAVED: PASS2(SAVED),
-   IF SAVED=[] THEN EX
-   ELSE SAVED) $
+   [saved],
+   saved: pass1(ex),
+   if saved=[] then return(ex),
+   saved: pass2(saved),
+   if saved=[] then ex
+   else saved) $
 
-PASS1(EX) := BLOCK(/* Returns a list of lists, with each of the
+pass1(ex) := block(/* Returns a list of lists, with each of the
       latter being an asymptotically significant cofactor followed
       by its coefficient.  If a coefficient is 0 or contains
       'IND, then cancellation does or could take place.  [] is
       returned when EX is not a sum or when dominance relations
       between terms are uncertain. */
-   [SAVED],
-   IF MAPATOM(EX) OR INPART(EX,0)#"+" THEN RETURN([]),
-   EX: SUBSTINPART("[",EX,0),
-   SAVED: [[FIRST(EX), 1]],
-   WHILE (EX:REST(EX))#[] DO SAVED: UPDATE(SAVED,FIRST(EX)),
-   SAVED) $
+   [saved],
+   if mapatom(ex) or inpart(ex,0)#"+" then return([]),
+   ex: substinpart("[",ex,0),
+   saved: [[first(ex), 1]],
+   while (ex:rest(ex))#[] do saved: update(saved,first(ex)),
+   saved) $
 
-UPDATE(SAVED,TERM) := BLOCK(/* SAVED is as indicated for PASS1,
+update(saved,term) := block(/* SAVED is as indicated for PASS1,
       and TERM is a nonsum.  Returns an appropriately updated version
       of SAVED, according to the dominance between TERM and each
       cofactor in SAVED. Also, sets global EX to [[]] when it is time to
       preemptively terminate the loop in PASS1.  */
-   [SAV, NUSAVED, LIM],
-   NUSAVED: [],
-   WHILE SAVED#[] DO(
-      SAV: FIRST(SAVED),
-      LIM: MULTILIM(TERM/SAV[1]),
-      IF LIM='SAVDOMINATES THEN(
-         NUSAVED: APPEND(SAVED,NUSAVED),
-         SAVED: [])
-      ELSE IF LIM='TERMDOMINATES THEN SAVED: REST(SAVED)
-      ELSE IF LIM='BOTHDOMINATE THEN(
-         NUSAVED: CONS(SAV, NUSAVED),
-         SAVED: REST(SAVED))
-      ELSE IF LIM='INVALID THEN EX: [SAVED: []]
-      ELSE (/* asymptotically proportional */
-         NUSAVED: CONS(MRGE(SAV, TERM, LIM),APPEND(NUSAVED,REST(SAVED))),
-         SAVED: [])),
-   IF LIM='TERMDOMINATES OR LIM='BOTHDOMINATE THEN
-      NUSAVED: CONS([TERM,1], NUSAVED),
-   NUSAVED) $
+   [sav, nusaved, lim],
+   nusaved: [],
+   while saved#[] do(
+      sav: first(saved),
+      lim: multilim(term/sav[1]),
+      if lim='savdominates then(
+         nusaved: append(saved,nusaved),
+         saved: [])
+      else if lim='termdominates then saved: rest(saved)
+      else if lim='bothdominate then(
+         nusaved: cons(sav, nusaved),
+         saved: rest(saved))
+      else if lim='invalid then ex: [saved: []]
+      else (/* asymptotically proportional */
+         nusaved: cons(mrge(sav, term, lim),append(nusaved,rest(saved))),
+         saved: [])),
+   if lim='termdominates or lim='bothdominate then
+      nusaved: cons([term,1], nusaved),
+   nusaved) $
 
-MULTILIM(RATIO) := BLOCK(/* RATIO is term/savedterm.  Returns
+multilim(ratio) := block(/* RATIO is term/savedterm.  Returns
       'SAVDOMINATES, 'TERMDOMINATES, 'BOTHDOMINATE, 'INVALID, or
       the finite asymptotic limit of RATIO.  Uses global variables
       ASYMPNT and ASYMVAR established by ASYMP. */
-   [MLIM, ULIM, PNTS],
-   RATIO: [RATIO,1],
-   PNTS: ASYMPNT,
-   MLIM: 1,
-   FOR VAR IN ASYMVAR WHILE MLIM#'INVALID DO(
-      RATIO: MYPARTITION(RATIO[1],VAR),
-      IF FREEOF(DELETE(VAR,ASYMVAR),RATIO[2]) THEN (
-         ULIM: ERRCATCH(LIMIT(RATIO[2], VAR, FIRST(PNTS))),
-         IF ULIM=[] OR (ULIM:FIRST(ULIM))='UND OR
-               NOT FREEOF(NOUNIFY('LIMIT),ULIM) THEN MLIM:'INVALID
-         ELSE IF MLIM#'BOTHDOMINATE THEN (
-            IF ULIM=0 THEN
-               IF MLIM='TERMDOMINATES THEN MLIM:'BOTHDOMINATE
-               ELSE MLIM: SAVDOMINATES
-            ELSE IF MEMBER(ULIM,'[INF,MINF,INFINITY]) THEN
-               IF MLIM='SAVDOMINATES THEN MLIM:'BOTHDOMINATE
-               ELSE MLIM: 'TERMDOMINATES
-            ELSE IF MLIM#'TERMDOMINATES AND MLIM#SAVDOMINATES THEN
-               MLIM: ULIM*MLIM)),
-      PNTS: REST(PNTS)),
-   IF NOT MEMBER(MLIM,'[SAVDOMINATES,TERMDOMINATES,BOTHDOMINATE,INVALID])
-      THEN RETURN(RATIO[1]*MLIM),
-   MLIM) $
+   [mlim, ulim, pnts],
+   ratio: [ratio,1],
+   pnts: asympnt,
+   mlim: 1,
+   for var in asymvar while mlim#'invalid do(
+      ratio: mypartition(ratio[1],var),
+      if freeof(delete(var,asymvar),ratio[2]) then (
+         ulim: errcatch(limit(ratio[2], var, first(pnts))),
+         if ulim=[] or (ulim:first(ulim))='und or
+               not freeof(nounify('limit),ulim) then mlim:'invalid
+         else if mlim#'bothdominate then (
+            if ulim=0 then
+               if mlim='termdominates then mlim:'bothdominate
+               else mlim: savdominates
+            else if member(ulim,'[inf,minf,infinity]) then
+               if mlim='savdominates then mlim:'bothdominate
+               else mlim: 'termdominates
+            else if mlim#'termdominates and mlim#savdominates then
+               mlim: ulim*mlim)),
+      pnts: rest(pnts)),
+   if not member(mlim,'[savdominates,termdominates,bothdominate,invalid])
+      then return(ratio[1]*mlim),
+   mlim) $
 
-MYPARTITION(NONSUM,VAR) := /* Returns a list consisting of
+mypartition(nonsum,var) := /* Returns a list consisting of
       factors of NONSUM freeof VAR, then other factors. */
-   IF MAPATOM(NONSUM) OR INPART(NONSUM,0)#"*" THEN
-      IF FREEOF(VAR, NONSUM) THEN [NONSUM,1]
-      ELSE [1,NONSUM]
-   ELSE PARTITION(NONSUM,VAR) $
+   if mapatom(nonsum) or inpart(nonsum,0)#"*" then
+      if freeof(var, nonsum) then [nonsum,1]
+      else [1,nonsum]
+   else partition(nonsum,var) $
 
-MRGE(SAV,TERM,LIM) := BLOCK( /* Returns a list consisting of the
+mrge(sav,term,lim) := block( /* Returns a list consisting of the
       cofactor and coefficient of the simplest asymptotic form for TERM
       + SAV[1]*SAV[2], where TERM/SAV[1] approaches LIM. */
-   [TOLD, TNEW],
-   TOLD: RATSIMP(SAV[2]+LIM), TNEW: RATSIMP((LIM+SAV[2])/LIM),
-   IF COMPLEXITY(SAV[1]*TOLD) < COMPLEXITY(TERM*TNEW)
-      THEN [SAV[1], TOLD]
-   ELSE [TERM, TNEW]) $
+   [told, tnew],
+   told: ratsimp(sav[2]+lim), tnew: ratsimp((lim+sav[2])/lim),
+   if complexity(sav[1]*told) < complexity(term*tnew)
+      then [sav[1], told]
+   else [term, tnew]) $
 
-COMPLEXITY(EXPR) := /* Returns a complexity measure of
+complexity(expr) := /* Returns a complexity measure of
       expression EXPR. */
-   IF MAPATOM(EXPR) THEN 1
-      ELSE 1 + ARGSCOMPLEXITY(SUBSTINPART("[", EXPR, 0)) $
+   if mapatom(expr) then 1
+      else 1 + argscomplexity(substinpart("[", expr, 0)) $
 
-ARGSCOMPLEXITY(ARGS) := /* Returns a complexity measure of
+argscomplexity(args) := /* Returns a complexity measure of
       a list of expressions, ARGS. */
-   IF ARGS=[] THEN 0
-   ELSE COMPLEXITY(FIRST(ARGS)) + ARGSCOMPLEXITY(REST(ARGS)) $
+   if args=[] then 0
+   else complexity(first(args)) + argscomplexity(rest(args)) $
 
-PASS2(SAVED) := BLOCK(/* Given the list of lists returned by
+pass2(saved) := block(/* Given the list of lists returned by
       PASS1, this function returns [] if any cancellations are
       possible.  Otherwise, this function returns the sum of the
       terms represented by SAVED */
-   [RES, SAV],
-   RES: 0,
-   WHILE SAVED#[] DO (
-      SAV: FIRST(SAVED),
-      IF FREEOF('IND,SAV[2]) AND ASKSIGN(ABS(SAV[2]))#'ZERO THEN(
-         RES: RES + SAV[1]*SAV[2],
-         SAVED: REST(SAVED))
-      ELSE RES: SAVED: []),
-   RES) $
+   [res, sav],
+   res: 0,
+   while saved#[] do (
+      sav: first(saved),
+      if freeof('ind,sav[2]) and asksign(abs(sav[2]))#'zero then(
+         res: res + sav[1]*sav[2],
+         saved: rest(saved))
+      else res: saved: []),
+   res) $
 
-THETA(EX) :=  (/* Returns 'THETA(expr), where expr is a
+theta(ex) :=  (/* Returns 'THETA(expr), where expr is a
       simplified expression having the same exact order as EX. */
-   EX: FIRST(ASYMP(EX)),
-   'THETA(RATSIMP(THETA1(NUM(EX))/THETA1(DENOM(EX))))) $
+   ex: first(asymp(ex)),
+   'theta(ratsimp(theta1(num(ex))/theta1(denom(ex))))) $
 
-THETA1(EX) := BLOCK(/* Same as THETA, except EX is a numerator
+theta1(ex) := block(/* Same as THETA, except EX is a numerator
       or denominator. */
-   [ASYMVAR, TERMS, GC],
-   ASYMVAR: ASYMPDATA(EX)[1],
-   IF MAPATOM(EX) OR INPART(EX,0)#"+" THEN TERMS:[EX]
-   ELSE TERMS: SUBSTINPART("[",EX,0),
-   GC: CFASYMP(FIRST(TERMS)),
-   IF IS(GC=0) THEN RETURN(GC),
-   TERMS: REST(TERMS),
-   FOR TERM IN TERMS WHILE IS(GC#1) DO GC: GCD(GC,CFASYMP(TERM)),
-   EX/GC) $
+   [asymvar, terms, gc],
+   asymvar: asympdata(ex)[1],
+   if mapatom(ex) or inpart(ex,0)#"+" then terms:[ex]
+   else terms: substinpart("[",ex,0),
+   gc: cfasymp(first(terms)),
+   if is(gc=0) then return(gc),
+   terms: rest(terms),
+   for term in terms while is(gc#1) do gc: gcd(gc,cfasymp(term)),
+   ex/gc) $
 
-CFASYMP(TERM) := BLOCK(/* Returns the coefficient of TERM with
+cfasymp(term) := block(/* Returns the coefficient of TERM with
       respect to factors containing asymptotic variables. */
-   [CF],
-   IF MAPATOM(TERM) OR INPART(TERM,0)#"*" THEN TERM: [TERM]
-   ELSE TERM: SUBSTINPART("[",TERM,0),
-   CF: 1,
-   FOR FCTR IN TERM DO IF APPLY('FREEOF, ENDCONS(FCTR,ASYMVAR))
-      THEN CF: CF*FCTR,
-   CF) $
+   [cf],
+   if mapatom(term) or inpart(term,0)#"*" then term: [term]
+   else term: substinpart("[",term,0),
+   cf: 1,
+   for fctr in term do if apply('freeof, endcons(fctr,asymvar))
+      then cf: cf*fctr,
+   cf) $
 
-OMEGA(EX) := /* Returns 'OMEGA(expr), where expr is a simplified
+omega(ex) := /* Returns 'OMEGA(expr), where expr is a simplified
       expression having at most the same order as EX. */
-   'OMEGA(OOROMEGA(EX,FALSE)) $
+   'omega(ooromega(ex,false)) $
 
-LOMEGA(EX) := /* Returns 'LOMEGA(expr), where expr is a simplified
+lomega(ex) := /* Returns 'LOMEGA(expr), where expr is a simplified
       expression which is of lesser order than every expression which
       EX is lesser order than. */
-   'LOMEGA(OOROMEGA(EX,FALSE)) $
+   'lomega(ooromega(ex,false)) $
 
-O(EX) := /* Returns 'O(expr), where expr is a simplified expression
+o(ex) := /* Returns 'O(expr), where expr is a simplified expression
       having at least the same order as EX. */
-   'O(OOROMEGA(EX,TRUE)) $
+   'o(ooromega(ex,true)) $
 
-LO(EX) := /* Returns 'LO(expr), where expr is a simplified
+lo(ex) := /* Returns 'LO(expr), where expr is a simplified
       expression which is of greater order than every expression
       which EX is greater order than. */
-    'LO(OOROMEGA(EX,TRUE)) $
+    'lo(ooromega(ex,true)) $
 
-OOROMEGA(EX,FLAG) := /* If FLAG is TRUE, returns product of
+ooromega(ex,flag) := /* If FLAG is TRUE, returns product of
       highest-order asymptotic factors from terms of EX.  Otherwise
       returns product of lowest-order factors. */
-   (EX: FIRST(THETA(EX)),
-   RATDISREP(RADCAN(OOM(RATNUMER(EX),FLAG)/OOM(RATDENOM(EX),NOT FLAG)))) $
+   (ex: first(theta(ex)),
+   ratdisrep(radcan(oom(ratnumer(ex),flag)/oom(ratdenom(ex),not flag)))) $
 
-OOM(EX,BIGO) := BLOCK(/* Same as OOROMEGA, except EX is a
+oom(ex,bigo) := block(/* Same as OOROMEGA, except EX is a
       numerator or denominator. */
-   [ASYMVAR, ASYMPNT, RATIO, LIMRATIO, ANS, PNTS],
-   ASYMPNT: ASYMPDATA(EX),
-   ASYMVAR: ASYMPNT[1], ASYMPNT: ASYMPNT[2],
-   IF MAPATOM(EX) OR INPART(EX,0)#"+" THEN RETURN(EX),
-   EX: SUBSTINPART("[", EX, 0),
-   ANS: FIRST(EX),   EX: REST(EX),
-   FOR TERM IN EX WHILE ANS#'INVALID DO (
-      RATIO: [TERM/ANS, 1],
-      PNTS: ASYMPNT,
-      FOR VAR IN ASYMVAR WHILE ANS#'INVALID DO (
-         RATIO: MYPARTITION(RATIO[1],VAR),
-         IF FREEOF(DELETE(VAR,ASYMVAR),RATIO[2]) THEN (
-            LIMRATIO: ERRCATCH(LIMIT(RATIO[2], VAR, FIRST(PNTS))),
-            IF LIMRATIO=[] OR (LIMRATIO:FIRST(LIMRATIO))='UND
-               OR NOT FREEOF(NOUNIFY('LIMIT),LIMRATIO) THEN ANS:'INVALID
-            ELSE IF LIMRATIO=0 AND NOT BIGO
-                OR MEMBER(LIMRATIO,'[INF,MINF,INFINITY]) AND BIGO
-                THEN ANS: ANS*RATIO[2]),
-         PNTS: REST(PNTS))),
-   ANS) $
+   [asymvar, asympnt, ratio, limratio, ans, pnts],
+   asympnt: asympdata(ex),
+   asymvar: asympnt[1], asympnt: asympnt[2],
+   if mapatom(ex) or inpart(ex,0)#"+" then return(ex),
+   ex: substinpart("[", ex, 0),
+   ans: first(ex),   ex: rest(ex),
+   for term in ex while ans#'invalid do (
+      ratio: [term/ans, 1],
+      pnts: asympnt,
+      for var in asymvar while ans#'invalid do (
+         ratio: mypartition(ratio[1],var),
+         if freeof(delete(var,asymvar),ratio[2]) then (
+            limratio: errcatch(limit(ratio[2], var, first(pnts))),
+            if limratio=[] or (limratio:first(limratio))='und
+               or not freeof(nounify('limit),limratio) then ans:'invalid
+            else if limratio=0 and not bigo
+                or member(limratio,'[inf,minf,infinity]) and bigo
+                then ans: ans*ratio[2]),
+         pnts: rest(pnts))),
+   ans) $
 
-ASYMPSERIES(UU,NT) := BLOCK(/* Returns an NT term asymptotic
+asympseries(uu,nt) := block(/* Returns an NT term asymptotic
       expansion for UU. */
-   [ANSWER, TERM],
-   ANSWER: 0,
-   FOR J: 1 THRU NT DO (
-      TERM: INPART(ASYMP(UU), 1),
-      ANSWER: ANSWER + TERM,
-      UU: UU - TERM),
-   ANSWER) $
+   [answer, term],
+   answer: 0,
+   for j: 1 thru nt do (
+      term: inpart(asymp(uu), 1),
+      answer: answer + term,
+      uu: uu - term),
+   answer) $
 
 /* Establish table for combining different kinds of approximate
    expressions: */
-ASYM[1]:'ASYMP$  ASYM[2]:'THETA$  ASYM[3]:'O$
-ASYM[4]:'LO$  ASYM[5]:'OMEGA$  ASYM[6]:'LOMEGA$
-PUT('ASYMP,1,'LEVEL)$  PUT('THETA,2,'LEVEL)$  PUT('O,3,'LEVEL)$
-PUT('LO,4,'LEVEL)$  PUT('OMEGA,5,'LEVEL)$  PUT('LOMEGA,6,'LEVEL)$
+asym[1]:'asymp$  asym[2]:'theta$  asym[3]:'o$
+asym[4]:'lo$  asym[5]:'omega$  asym[6]:'lomega$
+put('asymp,1,'level)$  put('theta,2,'level)$  put('o,3,'level)$
+put('lo,4,'level)$  put('omega,5,'level)$  put('lomega,6,'level)$
 
-ASYMPSIMP(EX) := /* Returns a simplified version of EX, if EX
+asympsimp(ex) := /* Returns a simplified version of EX, if EX
       contains approximate subexpressions. */
-   SCANMAP('ASIMP, EX, 'BOTTOMUP) $
+   scanmap('asimp, ex, 'bottomup) $
 
-ASIMP(EX) := BLOCK(/* EX has its subexpressions already simplified recursively.
+asimp(ex) := block(/* EX has its subexpressions already simplified recursively.
       This function properly combines any top-level approximate
       subexpressions therein. */
-   [INFLAG, MAXLEV, LEV, ASYMS, NONASYMS],
-   IF MAPATOM(EX) THEN RETURN(EX),
-   IF INPART(EX,0)="^" THEN
-      IF NOT MAPATOM(INPART(EX,1)) 
-         AND GET(VERBIFY(INPART(PIECE,0)),'LEVEL)#FALSE
-         AND IS(SIGN(INPART(EX,2))='POS)
-         THEN RETURN(APPLY(INPART(EX,1,0),
-            [INPART(EX,1,1)^INPART(EX,2)]))
-      ELSE RETURN(EX),
-   INFLAG:TRUE,  MAXLEV:0,  ASYMS:NONASYMS:[],
-   IF PIECE="*" THEN (
-      FOR FCTR IN EX DO
-         IF MAPATOM(FCTR) OR(LEV:GET(VERBIFY(INPART(FCTR,0)),'LEVEL))=FALSE
-            THEN ASYMS: CONS(FCTR,ASYMS)
-         ELSE IF INCOMENSURATE(LEV,MAXLEV) THEN
-            NONASYMS: CONS(INPART(FCTR,1), NONASYMS)
-         ELSE (ASYMS: CONS(INPART(FCTR,1), ASYMS),
-            MAXLEV: MAX(LEV, MAXLEV)),
-      IF MAXLEV=0 THEN RETURN(EX),
-      ASYMS: APPLY(ASYM[MAXLEV], IF REST(ASYMS)=[] THEN ASYMS
-            ELSE [APPLY("*", ASYMS)]),
-      IF NONASYMS#[] THEN ASYMS: ASYMS*APPLY(
-         IF MAXLEV<=4 THEN 'OMEGA ELSE 'O, IF REST(NONASYMS)=[] THEN
-         NONASYMS ELSE APPLY("*",NONASYMS)),
-      RETURN(ASYMS)),
-   IF PIECE="+" THEN (
-      FOR TRM IN EX DO
-         IF MAPATOM(TRM) OR (LEV:GET(VERBIFY(INPART(TRM,0)),'LEVEL))=FALSE OR
-            INCOMENSURATE(LEV,MAXLEV) THEN
-            NONASYMS: CONS(TRM,NONASYMS)
-         ELSE (ASYMS: CONS(INPART(TRM,1),ASYMS),
-            MAXLEV: IF MAXLEV<=3 AND LEV=4 OR MAXLEV=4 AND LEV<=3 THEN 3
-               ELSE IF LEV=6 AND (MAXLEV=5 OR MAXLEVEL<3) OR
-                  MAXLEV=6 AND (LEV=5 OR LEV<3) THEN 5
-               ELSE MAX(MAXLEV,LEV)),
-      IF MAXLEV=0 THEN RETURN(EX),
-      ASYMS: APPLY(ASYM[MAXLEV], IF REST(ASYMS)=[] THEN ASYMS
-            ELSE [APPLY("+",ASYMS)]),
-      IF NONASYMS#[] THEN ASYMS: ASYMS+(IF REST(NONASYMS)=[]
-            THEN FIRST(NONASYMS) ELSE APPLY("+",NONASYMS)),
-      RETURN(ASYMS)),
-   ASYMS: PIECE,
-   IF (LEV:GET(VERBIFY(PIECE),'LEVEL))#FALSE AND NOT MAPATOM(INPART(EX,1))
-      AND (MAXLEV:GET(VERBIFY(INPART(PIECE,0)),'LEVEL))#FALSE THEN
-      IF INCOMENSURATE(LEV,MAXLEV) THEN RETURN(EX)
-      ELSE RETURN(APPLY(ASYM[MAX(LEV,MAXLEV)], [INPART(EX,1,1)])),
-   EX) $
+   [inflag, maxlev, lev, asyms, nonasyms],
+   if mapatom(ex) then return(ex),
+   if inpart(ex,0)="^" then
+      if not mapatom(inpart(ex,1)) 
+         and get(verbify(inpart(piece,0)),'level)#false
+         and is(sign(inpart(ex,2))='pos)
+         then return(apply(inpart(ex,1,0),
+            [inpart(ex,1,1)^inpart(ex,2)]))
+      else return(ex),
+   inflag:true,  maxlev:0,  asyms:nonasyms:[],
+   if piece="*" then (
+      for fctr in ex do
+         if mapatom(fctr) or(lev:get(verbify(inpart(fctr,0)),'level))=false
+            then asyms: cons(fctr,asyms)
+         else if incomensurate(lev,maxlev) then
+            nonasyms: cons(inpart(fctr,1), nonasyms)
+         else (asyms: cons(inpart(fctr,1), asyms),
+            maxlev: max(lev, maxlev)),
+      if maxlev=0 then return(ex),
+      asyms: apply(asym[maxlev], if rest(asyms)=[] then asyms
+            else [apply("*", asyms)]),
+      if nonasyms#[] then asyms: asyms*apply(
+         if maxlev<=4 then 'omega else 'o, if rest(nonasyms)=[] then
+         nonasyms else apply("*",nonasyms)),
+      return(asyms)),
+   if piece="+" then (
+      for trm in ex do
+         if mapatom(trm) or (lev:get(verbify(inpart(trm,0)),'level))=false or
+            incomensurate(lev,maxlev) then
+            nonasyms: cons(trm,nonasyms)
+         else (asyms: cons(inpart(trm,1),asyms),
+            maxlev: if maxlev<=3 and lev=4 or maxlev=4 and lev<=3 then 3
+               else if lev=6 and (maxlev=5 or maxlevel<3) or
+                  maxlev=6 and (lev=5 or lev<3) then 5
+               else max(maxlev,lev)),
+      if maxlev=0 then return(ex),
+      asyms: apply(asym[maxlev], if rest(asyms)=[] then asyms
+            else [apply("+",asyms)]),
+      if nonasyms#[] then asyms: asyms+(if rest(nonasyms)=[]
+            then first(nonasyms) else apply("+",nonasyms)),
+      return(asyms)),
+   asyms: piece,
+   if (lev:get(verbify(piece),'level))#false and not mapatom(inpart(ex,1))
+      and (maxlev:get(verbify(inpart(piece,0)),'level))#false then
+      if incomensurate(lev,maxlev) then return(ex)
+      else return(apply(asym[max(lev,maxlev)], [inpart(ex,1,1)])),
+   ex) $
 
-INCOMENSURATE(L1,L2) := /* Returns TRUE if approximation operators having
+incomensurate(l1,l2) := /* Returns TRUE if approximation operators having
       numeric codes L1 and L2 cannot coalesce, returning FALSE
       otherwise. */
-    (L1=3 OR L1=4) AND (L2=5 OR L2=6) $
+    (l1=3 or l1=4) and (l2=5 or l2=6) $
 
-TTYOFF: FALSE $
+ttyoff: false $

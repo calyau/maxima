@@ -13,160 +13,160 @@
    *            						 *
    ***************************************************************
 */ 
-/* PROGRAM NUMBER 6: TWOVAR(), A FUNCTION TO PERFORM A TWO VARIABLE
-   EXPANSION TO ORDER EPSILON FOR N WEAKLY COUPLED PERTURBED NONLINEAR
-   OSCILLATORS. SEE PAGE 94 IN "PERTURBATION METHODS, BIFURCATION
-   THEORY AND COMPUTER ALGEBRA". */
+/* program number 6: twovar(), a function to perform a two variable
+   expansion to order epsilon for n weakly coupled perturbed nonlinear
+   oscillators. see page 94 in "perturbation methods, bifurcation
+   theory and computer algebra". */
 
 
 
-TWOVAR():=BLOCK(
+twovar():=block(
 
-CHOICE:READ("DO YOU WANT TO ENTER NEW DATA (Y/N)"),
+choice:read("do you want to enter new data (y/n)"),
 
-IF CHOICE = N THEN GO(JUMP1),
+if choice = n then go(jump1),
 
-/* INPUT D.E.'S */
-N:READ("NUMBER OF D.E.'S"),
+/* input d.e.'s */
+n:read("number of d.e.'s"),
 
-PRINT("THE",N,"D.E.'S WILL BE IN THE FORM:"),
-PRINT("X[I]'' + W[I]^2 X[I] = E F[I](X[1],...,X[",N,"],T)"),
+print("the",n,"d.e.'s will be in the form:"),
+print("x[i]'' + w[i]^2 x[i] = e f[i](x[1],...,x[",n,"],t)"),
 
-FOR I:1 THRU N DO
-    X[I]:READ("ENTER SYMBOL FOR X[",I,"]"),
+for i:1 thru n do
+    x[i]:read("enter symbol for x[",i,"]"),
 
-FOR I:1 THRU N DO
-    DEPENDS(X[I],T),
+for i:1 thru n do
+    depends(x[i],t),
 
-FOR I:1 THRU N DO
-    W[I]:READ("ENTER W[",I,"]"),
+for i:1 thru n do
+    w[i]:read("enter w[",i,"]"),
 
-FOR I:1 THRU N DO
-    F[I]:READ("ENTER F[",I,"]"),
+for i:1 thru n do
+    f[i]:read("enter f[",i,"]"),
 
-JUMP1,
+jump1,
 
-/* UPDATE EQS FOR SUBSTITUTION OF RESONANT VALUES ON 2ND TIME THRU */
-FOR I:1 THRU N DO(
-   W[I]:EV(W[I]),
-   F[I]:EV(F[I])),
+/* update eqs for substitution of resonant values on 2nd time thru */
+for i:1 thru n do(
+   w[i]:ev(w[i]),
+   f[i]:ev(f[i])),
 
-/* ECHO BACK THE D.E.'S */
-PRINT("THE D.E.'S ARE ENTERED AS:"),
-FOR I:1 THRU N DO
-    PRINT(X[I],"'' +",W[I]^2*X[I],"=",E*F[I]),
+/* echo back the d.e.'s */
+print("the d.e.'s are entered as:"),
+for i:1 thru n do
+    print(x[i],"'' +",w[i]^2*x[i],"=",e*f[i]),
 
-PRINT("THE METHOD ASSUMES A SOLUTION IN THE FORM:"),
-PRINT("X[I] = X0[I] + E X1[I]"),
-PRINT("WHERE X0[I] = A[I](ETA) COS W[I] XI + B[I](ETA) SIN W[I] XI"),
-PRINT("WHERE XI = T AND ETA = E T"),
+print("the method assumes a solution in the form:"),
+print("x[i] = x0[i] + e x1[i]"),
+print("where x0[i] = a[i](eta) cos w[i] xi + b[i](eta) sin w[i] xi"),
+print("where xi = t and eta = e t"),
 
-/* DON'T USE A OR B AS PARAMETERS IN THE GIVEN D.E.'S */
-DEPENDS([A,B],ETA),
+/* don't use a or b as parameters in the given d.e.'s */
+depends([a,b],eta),
 
-FOR I:1 THRU N DO
-    X0[I]:A[I]*COS(W[I]*XI)+B[I]*SIN(W[I]*XI),
+for i:1 thru n do
+    x0[i]:a[i]*cos(w[i]*xi)+b[i]*sin(w[i]*xi),
 
-FOR I:1 THRU N DO
-    G[I]:EV(F[I],T=XI),
+for i:1 thru n do
+    g[i]:ev(f[i],t=xi),
 
-FOR I:1 THRU N DO(
-    FOR J:1 THRU N DO
-        G[I]:EV(G[I],X[J]::X0[J])),
+for i:1 thru n do(
+    for j:1 thru n do
+        g[i]:ev(g[i],x[j]::x0[j])),
     
-FOR I:1 THRU N DO(
-    G[I]:G[I]-2*DIFF(X0[I],XI,1,ETA,1),
-    G[I]:EV(G[I],DIFF),
-    G[I]:EXPAND(TRIGREDUCE(EXPAND(G[I])))),    
+for i:1 thru n do(
+    g[i]:g[i]-2*diff(x0[i],xi,1,eta,1),
+    g[i]:ev(g[i],diff),
+    g[i]:expand(trigreduce(expand(g[i])))),    
 
-/* COLLECT SECULAR TERMS */
-FOR I:1 THRU N DO(
-    S[I]:COEFF(G[I],SIN(W[I]*XI)),
-    C[I]:COEFF(G[I],COS(W[I]*XI))),
+/* collect secular terms */
+for i:1 thru n do(
+    s[i]:coeff(g[i],sin(w[i]*xi)),
+    c[i]:coeff(g[i],cos(w[i]*xi))),
 
-/* DISPLAY SECULAR TERMS */
-PRINT("REMOVAL OF SECULAR TERMS IN THE X1[I] EQS. GIVES:"),
+/* display secular terms */
+print("removal of secular terms in the x1[i] eqs. gives:"),
 
-FOR I:1 THRU N DO(
-    PRINT(S[I],"= 0"),
-    PRINT(C[I],"= 0")),
+for i:1 thru n do(
+    print(s[i],"= 0"),
+    print(c[i],"= 0")),
 
-ABEQS:APPEND(MAKELIST(S[I],I,1,N),MAKELIST(C[I],I,1,N)),
+abeqs:append(makelist(s[i],i,1,n),makelist(c[i],i,1,n)),
 
-CHOICE2:READ("DO YOU WANT TO TRANSFORM TO POLAR COORDINATES (Y/N)"),
+choice2:read("do you want to transform to polar coordinates (y/n)"),
 
-IF CHOICE2=N THEN GO(JUMP2),
+if choice2=n then go(jump2),
 
-/* TRANSFORM TO POLAR COORDINATES */
-DEPENDS([R,THETA],ETA),
-TRANS:MAKELIST([A[I]=R[I]*COS(THETA[I]),B[I]=R[I]*SIN(THETA[I])],I,1,N),
-INTEQS:EV(ABEQS,TRANS,DIFF),
-RTHEQS:SOLVE(INTEQS,APPEND(MAKELIST(DIFF(R[I],ETA),I,1,N),
-                     MAKELIST(DIFF(THETA[I],ETA),I,1,N))),
-RTHEQS:TRIGSIMP(RTHEQS),
-RTHEQS:EXPAND(TRIGREDUCE(RTHEQS)),
-PRINT(RTHEQS),
+/* transform to polar coordinates */
+depends([r,theta],eta),
+trans:makelist([a[i]=r[i]*cos(theta[i]),b[i]=r[i]*sin(theta[i])],i,1,n),
+inteqs:ev(abeqs,trans,diff),
+rtheqs:solve(inteqs,append(makelist(diff(r[i],eta),i,1,n),
+                     makelist(diff(theta[i],eta),i,1,n))),
+rtheqs:trigsimp(rtheqs),
+rtheqs:expand(trigreduce(rtheqs)),
+print(rtheqs),
 
-JUMP2,
+jump2,
 
-CHOICE3:READ("DO YOU WANT TO SEARCH FOR RESONANT PARAMETER VALUES (Y/N)"),
+choice3:read("do you want to search for resonant parameter values (y/n)"),
 
-IF CHOICE3=N THEN GO(END),
+if choice3=n then go(end),
 
-/* OBTAIN FREQUENCIES WHICH APPEAR ON RHS'S OF D.E.'S */
+/* obtain frequencies which appear on rhs's of d.e.'s */
 
-/* DEFINE PATTERN MATCHING RULES TO ISOLATE FREQS */
-MATCHDECLARE([DUMMY1,DUMMY2],TRUE),
-DEFRULE(COSARG,DUMMY1*COS(DUMMY2),DUMMY2),
-DEFRULE(SINARG,DUMMY1*SIN(DUMMY2),DUMMY2),
+/* define pattern matching rules to isolate freqs */
+matchdeclare([dummy1,dummy2],true),
+defrule(cosarg,dummy1*cos(dummy2),dummy2),
+defrule(sinarg,dummy1*sin(dummy2),dummy2),
 
-FOR I:1 THRU N DO(
-/* CHANGE SUM TO A LIST */
-    TEMP1:ARGS(G[I]),
-/* REMOVE CONSTANT TERMS */
-    TEMP2:MAP(TRIGIDENTIFY,TEMP1),
-/* ISOLATE ARGUMENTS OF TRIG TERMS */
-    TEMP3:APPLY1(TEMP2,COSARG,SINARG),
-    TEMP4:EV(TEMP3,XI=1),
-/* REMOVE DUPLICATE ARGUMENTS */
-    FREQ[I]:SETIFY(TEMP4)),
+for i:1 thru n do(
+/* change sum to a list */
+    temp1:args(g[i]),
+/* remove constant terms */
+    temp2:map(trigidentify,temp1),
+/* isolate arguments of trig terms */
+    temp3:apply1(temp2,cosarg,sinarg),
+    temp4:ev(temp3,xi=1),
+/* remove duplicate arguments */
+    freq[i]:setify(temp4)),
 
-/* DISPLAY FREQUENCIES */                   
-FOR I:1 THRU N DO(
-    PRINT(X[I],"EQ'S RESONANT FREQ =",W[I]),
-    PRINT("FREQS ON RHS =",FREQ[I])),
+/* display frequencies */                   
+for i:1 thru n do(
+    print(x[i],"eq's resonant freq =",w[i]),
+    print("freqs on rhs =",freq[i])),
 
-JUMP3,
+jump3,
 
-PAR:READ("WHICH PARAMETER TO SEARCH FOR ?"),
+par:read("which parameter to search for ?"),
 
-/* COMPUTE RESONANT VALUES OF DESIRED PARAMETER */
-RESVALS:[],
-FOR I:1 THRU N DO(
-   FOR J:1 THRU LENGTH(FREQ[I]) DO(
-      RES:SOLVE(PART(FREQ[I],J)=W[I],PAR),
-      IF (RES#[] AND RES#ALL) THEN RESVALS:APPEND(RESVALS,RES),
-      RES:SOLVE(PART(FREQ[I],J)=-W[I],PAR),
-      IF (RES#[] AND RES#ALL) THEN RESVALS:APPEND(RESVALS,RES))),
+/* compute resonant values of desired parameter */
+resvals:[],
+for i:1 thru n do(
+   for j:1 thru length(freq[i]) do(
+      res:solve(part(freq[i],j)=w[i],par),
+      if (res#[] and res#all) then resvals:append(resvals,res),
+      res:solve(part(freq[i],j)=-w[i],par),
+      if (res#[] and res#all) then resvals:append(resvals,res))),
 
-/* ELIMINATE DUPLICATE PARAMETER VALUES */
-RESVALUES:SETIFY(RESVALS),
+/* eliminate duplicate parameter values */
+resvalues:setify(resvals),
 
-/* DISPLAY RESONANT PARAMETER VALUES */
-PRINT(RESVALUES),
+/* display resonant parameter values */
+print(resvalues),
 
-CHOICE4:READ("DO YOU WANT TO SEARCH FOR ANOTHER PARAMETER (Y/N) ?"),
+choice4:read("do you want to search for another parameter (y/n) ?"),
 
-IF CHOICE4=Y THEN GO(JUMP3),
+if choice4=y then go(jump3),
 
-END," ")$
+end," ")$
 
-/* AUXILIARY FUNCTIONS */
+/* auxiliary functions */
 
-TRIGIDENTIFY(EXP):=IF FREEOF(SIN,EXP) AND FREEOF(COS,EXP) THEN 0 ELSE EXP$
+trigidentify(exp):=if freeof(sin,exp) and freeof(cos,exp) then 0 else exp$
 
-SETIFY(LIST):=(
-    SET:[LIST[1]],
-    FOR I:2 THRU LENGTH(LIST) DO(
-        IF NOT MEMBER(LIST[I],SET) THEN SET:CONS(LIST[I],SET)),
-    SET)$
+setify(list):=(
+    set:[list[1]],
+    for i:2 thru length(list) do(
+        if not member(list[i],set) then set:cons(list[i],set)),
+    set)$

@@ -11,71 +11,71 @@
    convention  of %f% being the special rather than declaring f special
    since other programs might use f */
 
-EVAL_WHEN(TRANSLATE,
-DECLARE_TRANSLATED(BOUNDTEST,NOTEQN,NLXY,NLY,NLX,XCC2,BESSEL2,EULER2,
-   PTTEST,EXACT2,CC2,GENHOM,SOLVEBERNOULLI,SOLVEHOM,INTEGFACTOR,EXACT,
-   SEPARABLE,SOLVELNR,SOLVE1,LINEAR2,REDUCE,HOM2,PR2,VARP,DESIMP,FAILURE,
-   ODE1A,FTEST,ODE2A));
+eval_when(translate,
+declare_translated(boundtest,noteqn,nlxy,nly,nlx,xcc2,bessel2,euler2,
+   pttest,exact2,cc2,genhom,solvebernoulli,solvehom,integfactor,exact,
+   separable,solvelnr,solve1,linear2,reduce,hom2,pr2,varp,desimp,failure,
+   ode1a,ftest,ode2a));
 
 /* Remove some of the specials like x and y at the end */
-DECLARE(pt,special,yp,special,YOLD,SPECIAL,%Q%,SPECIAL,x,special,y,special,
-   METHOD,SPECIAL,%F%,SPECIAL,
-    %G%,SPECIAL,MSG1,SPECIAL,
-    MSG2,SPECIAL,INTFACTOR,SPECIAL,ODEINDEX,SPECIAL,SINGSOLVE,SPECIAL);
+declare(pt,special,yp,special,yold,special,%q%,special,x,special,y,special,
+   method,special,%f%,special,
+    %g%,special,msg1,special,
+    msg2,special,intfactor,special,odeindex,special,singsolve,special);
 
-ODE2(EQ,YOLD,X):=BLOCK([DERIVSUBST:FALSE,ynew],
-   SUBST(YOLD,YNEW,ODE2A(SUBST(YNEW,YOLD,EQ),YNEW,X)))$
+ode2(eq,yold,x):=block([derivsubst:false,ynew],
+   subst(yold,ynew,ode2a(subst(ynew,yold,eq),ynew,x)))$
 
-ODE2A(EQ,Y,X):=BLOCK([DE,A1,A2,A3,A4,%q%,msg1],
-   INTFACTOR: FALSE, METHOD: 'NONE,
-   IF FREEOF('DIFF(Y,X,2),EQ)
-     THEN IF FTEST(ODE1A(EQ,Y,X)) THEN RETURN(%q%) ELSE RETURN(FALSE),
-   IF DERIVDEGREE(DE: DESIMP(LHS(EQ)-RHS(EQ)),Y,X) # 2
-     THEN RETURN(FAILURE(MSG1,EQ)),
-   A1: COEFF(DE,'DIFF(Y,X,2)),
-   A2: COEFF(DE,'DIFF(Y,X)),
-   A3: COEFF(DE,Y),
-   A4: EXPAND(DE - A1*'DIFF(Y,X,2) - A2*'DIFF(Y,X) - A3*Y),
-   IF PR2(A1) AND PR2(A2) AND PR2(A3) AND PR2(A4) AND
-      FTEST(HOM2(A1,A2,A3))
-     THEN IF A4=0 THEN RETURN(%q%) ELSE RETURN(VARP(%q%,-A4/A1)),
-   IF FTEST(REDUCE(DE)) THEN RETURN(%q%) ELSE RETURN(FALSE))$
+ode2a(eq,y,x):=block([de,a1,a2,a3,a4,%q%,msg1],
+   intfactor: false, method: 'none,
+   if freeof('diff(y,x,2),eq)
+     then if ftest(ode1a(eq,y,x)) then return(%q%) else return(false),
+   if derivdegree(de: desimp(lhs(eq)-rhs(eq)),y,x) # 2
+     then return(failure(msg1,eq)),
+   a1: coeff(de,'diff(y,x,2)),
+   a2: coeff(de,'diff(y,x)),
+   a3: coeff(de,y),
+   a4: expand(de - a1*'diff(y,x,2) - a2*'diff(y,x) - a3*y),
+   if pr2(a1) and pr2(a2) and pr2(a3) and pr2(a4) and
+      ftest(hom2(a1,a2,a3))
+     then if a4=0 then return(%q%) else return(varp(%q%,-a4/a1)),
+   if ftest(reduce(de)) then return(%q%) else return(false))$
 
-ODE1A(EQ,Y,X):=BLOCK([DE,DES], /* f, g, %q% */
-   IF DERIVDEGREE(DE: EXPAND(LHS(EQ)-RHS(EQ)),Y,X) # 1
-     THEN RETURN(FAILURE(MSG1,EQ)),
-   IF LINEAR2(DE,'DIFF(Y,X)) = FALSE THEN RETURN(FAILURE(MSG2,EQ)),
-   DES: DESIMP(DE),
-   DE: SOLVE1(DES,'DIFF(Y,X)),
-   IF FTEST(SOLVELNR(DE)) THEN RETURN(%q%),
-   IF FTEST(SEPARABLE(DE)) THEN RETURN(%q%),
-   IF FTEST(INTEGFACTOR(%g%,%f%)) THEN RETURN(EXACT(%q%*%g%,%q%*%f%)),
-			       /* LINEAR2 binds %f% and %g% */
-   IF LINEAR2(DES,'DIFF(Y,X)) = FALSE THEN RETURN(FAILURE(MSG2,EQ)),
-   IF FTEST(INTEGFACTOR(%g%,%f%)) THEN RETURN(EXACT(%q%*%g%,%q%*%f%)),
-   IF FTEST(SOLVEHOM(DE)) THEN RETURN(%q%),
-   IF FTEST(SOLVEBERNOULLI(DE)) THEN RETURN(%q%),
-   IF FTEST(GENHOM(DE)) THEN RETURN(%q%) ELSE RETURN(FALSE))$
+ode1a(eq,y,x):=block([de,des], /* f, g, %q% */
+   if derivdegree(de: expand(lhs(eq)-rhs(eq)),y,x) # 1
+     then return(failure(msg1,eq)),
+   if linear2(de,'diff(y,x)) = false then return(failure(msg2,eq)),
+   des: desimp(de),
+   de: solve1(des,'diff(y,x)),
+   if ftest(solvelnr(de)) then return(%q%),
+   if ftest(separable(de)) then return(%q%),
+   if ftest(integfactor(%g%,%f%)) then return(exact(%q%*%g%,%q%*%f%)),
+			       /* linear2 binds %f% and %g% */
+   if linear2(des,'diff(y,x)) = false then return(failure(msg2,eq)),
+   if ftest(integfactor(%g%,%f%)) then return(exact(%q%*%g%,%q%*%f%)),
+   if ftest(solvehom(de)) then return(%q%),
+   if ftest(solvebernoulli(de)) then return(%q%),
+   if ftest(genhom(de)) then return(%q%) else return(false))$
 
-DESIMP(EQ):=BLOCK([INFLAG:TRUE],
-   EQ: FACTOR(EQ),
-   IF ATOM(EQ) OR NOT(INPART(EQ,0)="*") THEN RETURN(EXPAND(EQ)),
-   EQ: MAP(LAMBDA([U], IF FREEOF(NOUNIFY('DIFF),U) THEN 1 ELSE U), EQ),
-   RETURN(EXPAND(EQ)))$
+desimp(eq):=block([inflag:true],
+   eq: factor(eq),
+   if atom(eq) or not(inpart(eq,0)="*") then return(expand(eq)),
+   eq: map(lambda([u], if freeof(nounify('diff),u) then 1 else u), eq),
+   return(expand(eq)))$
 
-PR2(%f%):=FREEOF(Y,'DIFF(Y,X),'DIFF(Y,X,2),%f%)$
+pr2(%f%):=freeof(y,'diff(y,x),'diff(y,x,2),%f%)$
 
-FTEST(CALL):=IS((%q%: CALL) # FALSE)$
+ftest(call):=is((%q%: call) # false)$
 
-SOLVE1(EQ,Y):=BLOCK([PROGRAMMODE:TRUE],FIRST(SOLVE(EQ,Y)))$
+solve1(eq,y):=block([programmode:true],first(solve(eq,y)))$
 
-/* LINEAR2 tests for the form fx+%g% */
+/* linear2 tests for the form fx+%g% */
 
-LINEAR2(EXPR,X):=BLOCK([],
-   %f%: RATCOEF(EXPR,X),
-   IF NOT(FREEOF(X,%f%)) THEN RETURN(FALSE),
-   %g%: RATSIMP(EXPR - %f%*X),
-   RETURN(FREEOF(X,%g%)))$
+linear2(expr,x):=block([],
+   %f%: ratcoef(expr,x),
+   if not(freeof(x,%f%)) then return(false),
+   %g%: ratsimp(expr - %f%*x),
+   return(freeof(x,%g%)))$
 
 /*  variables used to denote constants: %C, %K1, %K2.
     METHOD denotes the method of solution.
@@ -85,173 +85,173 @@ LINEAR2(EXPR,X):=BLOCK([],
 
 /*  B&DiP, pp. 13-14  */
 
-SOLVELNR(EQ):=BLOCK([%f%,%g%,W,%c],
-   IF LINEAR2(RHS(EQ),Y) = FALSE THEN RETURN(FALSE),
-   W: %E^(INTEGRATE(%f%,X)),
-   METHOD: 'LINEAR,
-   RETURN(Y=W*(INTEGRATE(%g%/W,X)+%C)))$
+solvelnr(eq):=block([%f%,%g%,w,%c],
+   if linear2(rhs(eq),y) = false then return(false),
+   w: %e^(integrate(%f%,x)),
+   method: 'linear,
+   return(y=w*(integrate(%g%/w,x)+%c)))$
 
 /*  B&DiP, pp. 29-34  */
 
-SEPARABLE(EQ):=BLOCK([XPART:[],YPART:[],FLAG:FALSE,INFLAG:TRUE,%c],
-   EQ: FACTOR(RHS(EQ)),
-   IF ATOM(EQ) OR NOT(INPART(EQ,0)="*") THEN EQ: [EQ],
-   FOR U IN EQ DO
-      IF FREEOF(X,U) THEN YPART: CONS(U,YPART) ELSE
-      IF FREEOF(Y,U) THEN XPART: CONS(U,XPART) ELSE RETURN(FLAG: TRUE),
-   IF FLAG = TRUE THEN RETURN(FALSE),
-   IF XPART = [] THEN XPART: 1 ELSE XPART: APPLY("*",XPART),
-   IF YPART = [] THEN YPART: 1 ELSE YPART: APPLY("*",YPART),
-   METHOD: 'SEPARABLE,
-   RETURN(RATSIMP(INTEGRATE(1/YPART,Y)) = RATSIMP(INTEGRATE(XPART,X)) + %C))$
+separable(eq):=block([xpart:[],ypart:[],flag:false,inflag:true,%c],
+   eq: factor(rhs(eq)),
+   if atom(eq) or not(inpart(eq,0)="*") then eq: [eq],
+   for u in eq do
+      if freeof(x,u) then ypart: cons(u,ypart) else
+      if freeof(y,u) then xpart: cons(u,xpart) else return(flag: true),
+   if flag = true then return(false),
+   if xpart = [] then xpart: 1 else xpart: apply("*",xpart),
+   if ypart = [] then ypart: 1 else ypart: apply("*",ypart),
+   method: 'separable,
+   return(ratsimp(integrate(1/ypart,y)) = ratsimp(integrate(xpart,x)) + %c))$
 
 /*  B&DiP, pp. 34-41  */
 
-INTEGFACTOR(M,N):=BLOCK([B1,B2,DMDX,DMDY,DNDX,DNDY,DD,%E_TO_NUMLOG:TRUE],
-   DMDY: RATSIMP(DIFF(M,Y)),  DNDX: RATSIMP(DIFF(N,X)),
-   IF (DD: DMDY-DNDX) = 0 THEN RETURN(1),
-   DMDX: RATSIMP(DIFF(M,X)),  DNDY: RATSIMP(DIFF(N,Y)),
-   IF DMDX-DNDY=0 AND DMDY+DNDX=0 THEN RETURN(1/(M^2 + N^2)),
-   IF FREEOF(Y, (B1: RATSIMP(DD/N))) THEN RETURN(%E^(INTEGRATE(B1,X))),
-   IF FREEOF(X, (B2: RATSIMP(DD/M)))
-     THEN RETURN(%E^(INTEGRATE(-B2,Y))) ELSE RETURN(FALSE))$
+integfactor(m,n):=block([b1,b2,dmdx,dmdy,dndx,dndy,dd,%e_to_numlog:true],
+   dmdy: ratsimp(diff(m,y)),  dndx: ratsimp(diff(n,x)),
+   if (dd: dmdy-dndx) = 0 then return(1),
+   dmdx: ratsimp(diff(m,x)),  dndy: ratsimp(diff(n,y)),
+   if dmdx-dndy=0 and dmdy+dndx=0 then return(1/(m^2 + n^2)),
+   if freeof(y, (b1: ratsimp(dd/n))) then return(%e^(integrate(b1,x))),
+   if freeof(x, (b2: ratsimp(dd/m)))
+     then return(%e^(integrate(-b2,y))) else return(false))$
 
-EXACT(M,N):=BLOCK([A,ynew,%c],
-   INTFACTOR: SUBST(YOLD,YNEW,%q%),
-   A: INTEGRATE(RATSIMP(M),X),
-   METHOD: 'EXACT,
-   RETURN(RATSIMP(A + INTEGRATE(RATSIMP(N-DIFF(A,Y)),Y)) = %C))$
+exact(m,n):=block([a,ynew,%c],
+   intfactor: subst(yold,ynew,%q%),
+   a: integrate(ratsimp(m),x),
+   method: 'exact,
+   return(ratsimp(a + integrate(ratsimp(n-diff(a,y)),y)) = %c))$
 
 /*  B&DiP, pp. 43-44  */
 
-SOLVEHOM(EQ):=BLOCK([QQ,A1,A2,%c],
-   A1: RATSIMP(SUBST(X*QQ,Y,RHS(EQ))),
-   IF NOT(FREEOF(X,A1)) THEN RETURN(FALSE),
-   A2: RATSIMP(SUBST(Y/X,QQ,INTEGRATE(1/(A1-QQ),QQ))),
-   METHOD: 'HOMOGENEOUS,
-   RETURN(%C*X = %E^A2))$
+solvehom(eq):=block([qq,a1,a2,%c],
+   a1: ratsimp(subst(x*qq,y,rhs(eq))),
+   if not(freeof(x,a1)) then return(false),
+   a2: ratsimp(subst(y/x,qq,integrate(1/(a1-qq),qq))),
+   method: 'homogeneous,
+   return(%c*x = %e^a2))$
 
 /*  B&DiP, p. 21, problem 15  */
 
-SOLVEBERNOULLI(EQ):=BLOCK([A1,A2,N,%c],
-   A1: COEFF(EQ: EXPAND(RHS(EQ)),Y,1),
-   IF NOT(FREEOF(Y,A1)) THEN RETURN(FALSE),
-   N: HIPOW(RATSIMP(EQ-A1*Y),Y),
-   A2: COEFF(EQ,Y,N),
-   IF NOT(FREEOF(Y,A2)) OR NOT(FREEOF(X,Y,N)) OR N=0
-		        OR NOT(EQ = EXPAND(A1*Y + A2*Y^N))
-     THEN RETURN(FALSE),
-   A1: INTEGRATE(A1,X),
-   METHOD: 'BERNOULLI, ODEINDEX: N,
-   RETURN(Y = %E^A1 * ((1-N)*INTEGRATE(A2*%E^((N-1)*A1),X) + %C) ^ (1/(1-N))))$
+solvebernoulli(eq):=block([a1,a2,n,%c],
+   a1: coeff(eq: expand(rhs(eq)),y,1),
+   if not(freeof(y,a1)) then return(false),
+   n: hipow(ratsimp(eq-a1*y),y),
+   a2: coeff(eq,y,n),
+   if not(freeof(y,a2)) or not(freeof(x,y,n)) or n=0
+		        or not(eq = expand(a1*y + a2*y^n))
+     then return(false),
+   a1: integrate(a1,x),
+   method: 'bernoulli, odeindex: n,
+   return(y = %e^a1 * ((1-n)*integrate(a2*%e^((n-1)*a1),x) + %c) ^ (1/(1-n))))$
 
 /*  Generalized homogeneous equation:  y' = y/x * H(yx^n)
 	Reference:  Moses' thesis.  */
 
-GENHOM(EQ):=BLOCK([%g%,U,N,A1,A2,A3,%c],
-   %g%: RHS(EQ)*X/Y,
-   N: RATSIMP(X*DIFF(%g%,X)/(Y*DIFF(%g%,Y))),
-   IF NOT(FREEOF(X,Y,N)) THEN RETURN(FALSE),
-   A1: RATSIMP(SUBST(U/X^N,Y,%g%)),
-   A2: INTEGRATE(1/(U*(N+A1)),U),
-   IF NOT(FREEOF(NOUNIFY('INTEGRATE),A2)) THEN RETURN(FALSE),
-   A3: RATSIMP(SUBST(Y*X^N,U,A2)),
-   METHOD: 'GENHOM, ODEINDEX: N,
-   RETURN(X = %C*%E^A3))$
+genhom(eq):=block([%g%,u,n,a1,a2,a3,%c],
+   %g%: rhs(eq)*x/y,
+   n: ratsimp(x*diff(%g%,x)/(y*diff(%g%,y))),
+   if not(freeof(x,y,n)) then return(false),
+   a1: ratsimp(subst(u/x^n,y,%g%)),
+   a2: integrate(1/(u*(n+a1)),u),
+   if not(freeof(nounify('integrate),a2)) then return(false),
+   a3: ratsimp(subst(y*x^n,u,a2)),
+   method: 'genhom, odeindex: n,
+   return(x = %c*%e^a3))$
 
 /*  Chain of solution methods for second order linear homogeneous equations  */
 
-HOM2(A1,A2,A3):=BLOCK([AP,AQ,PT],
-   AP: A2/A1, AQ: A3/A1, 
-   IF FTEST(CC2(AP,AQ,Y,X)) THEN RETURN(%q%),
-   IF FTEST(EXACT2(A1,A2,A3)) THEN RETURN(%q%),
-   IF (PT: PTTEST(AP)) = FALSE THEN GO(END),
-   IF FTEST(EULER2(AP,AQ)) THEN RETURN(%q%),
-   IF FTEST(BESSEL2(AP,AQ)) THEN RETURN(%q%),
- END, 
-   IF FTEST(XCC2(AP,AQ)) THEN RETURN(%q%) ELSE RETURN(FALSE))$
+hom2(a1,a2,a3):=block([ap,aq,pt],
+   ap: a2/a1, aq: a3/a1, 
+   if ftest(cc2(ap,aq,y,x)) then return(%q%),
+   if ftest(exact2(a1,a2,a3)) then return(%q%),
+   if (pt: pttest(ap)) = false then go(end),
+   if ftest(euler2(ap,aq)) then return(%q%),
+   if ftest(bessel2(ap,aq)) then return(%q%),
+ end, 
+   if ftest(xcc2(ap,aq)) then return(%q%) else return(false))$
 
 /*  B&DiP, pp. 106-112  */
 
-CC2(%f%,%g%,Y,X):=BLOCK([A,SIGN,RADEXPAND:'ALL,ALPHA,zero,pos,ynew,%k1,%k2],
-   IF NOT(FREEOF(X,Y,%f%) AND FREEOF(X,Y,%g%)) THEN RETURN(FALSE),
-   METHOD: 'CONSTCOEFF,
-   A: %f%^2-4*%g%,
-   IF FREEOF(%I,A) THEN SIGN: ASKSIGN(A)
-		   ELSE (RADEXPAND: TRUE, SIGN: 'PNZ),
-   IF SIGN = ZERO THEN RETURN(Y = %E^(-%f%*X/2) * (%K1 + %K2*X)),
-   IF SIGN = POS THEN
-     RETURN(Y = %K1*%E^((-%f%+SQRT(A))*X/2) + %K2*%E^((-%f%-SQRT(A))*X/2)),
-   A: -A, ALPHA: X*SQRT(A)/2,
-   IF EXPONENTIALIZE = FALSE THEN
-     RETURN(Y = %E^(-%f%*X/2) * (%K1*SIN(ALPHA) + %K2*COS(ALPHA))),
-   RETURN(Y = %E^(-%f%*X/2) * (%K1*EXP(%I*ALPHA) + %K2*EXP(-%I*ALPHA))))$ 
+cc2(%f%,%g%,y,x):=block([a,sign,radexpand:'all,alpha,zero,pos,ynew,%k1,%k2],
+   if not(freeof(x,y,%f%) and freeof(x,y,%g%)) then return(false),
+   method: 'constcoeff,
+   a: %f%^2-4*%g%,
+   if freeof(%i,a) then sign: asksign(a)
+		   else (radexpand: true, sign: 'pnz),
+   if sign = zero then return(y = %e^(-%f%*x/2) * (%k1 + %k2*x)),
+   if sign = pos then
+     return(y = %k1*%e^((-%f%+sqrt(a))*x/2) + %k2*%e^((-%f%-sqrt(a))*x/2)),
+   a: -a, alpha: x*sqrt(a)/2,
+   if exponentialize = false then
+     return(y = %e^(-%f%*x/2) * (%k1*sin(alpha) + %k2*cos(alpha))),
+   return(y = %e^(-%f%*x/2) * (%k1*exp(%i*alpha) + %k2*exp(-%i*alpha))))$ 
 
 /*  B&DiP, pp. 98-99, problem 17  */
 
-EXACT2(A1,A2,A3):=BLOCK([B1,%k1,%k2],
-   IF RATSIMP(DIFF(A1,X,2) - DIFF(A2,X) + A3) = 0
-     THEN B1: %E^(-INTEGRATE(RATSIMP((A2 - DIFF(A1,X))/A1), X))
-     ELSE RETURN(FALSE),
-   METHOD: 'EXACT,
-   RETURN(Y = %K1*B1*INTEGRATE(1/(A1*B1),X) + %K2*B1))$
+exact2(a1,a2,a3):=block([b1,%k1,%k2],
+   if ratsimp(diff(a1,x,2) - diff(a2,x) + a3) = 0
+     then b1: %e^(-integrate(ratsimp((a2 - diff(a1,x))/a1), x))
+     else return(false),
+   method: 'exact,
+   return(y = %k1*b1*integrate(1/(a1*b1),x) + %k2*b1))$
 
 /*  B&DiP, pp. 113-114, problem 16  */
 
-XCC2(AP,AQ):=BLOCK([D,B1,Z,RADEXPAND:'ALL],
-   IF AQ=0 THEN RETURN(FALSE),
-   D: RATSIMP((DIFF(AQ,X) + 2*AP*AQ)/(2*AQ^(3/2))),
-   IF FREEOF(X,Y,D) THEN B1: CC2(D,1,Y,Z) ELSE RETURN(FALSE),
-   METHOD: 'XFORMTOCONSTCOEFF,
-   RETURN(SUBST(INTEGRATE(SQRT(AQ),X),Z,B1)))$
+xcc2(ap,aq):=block([d,b1,z,radexpand:'all],
+   if aq=0 then return(false),
+   d: ratsimp((diff(aq,x) + 2*ap*aq)/(2*aq^(3/2))),
+   if freeof(x,y,d) then b1: cc2(d,1,y,z) else return(false),
+   method: 'xformtoconstcoeff,
+   return(subst(integrate(sqrt(aq),x),z,b1)))$
 
 /*  B&DiP, pp. 124-127  */
 
-VARP(SOLN,%g%):=BLOCK([Y1,Y2,Y3,Y4,WR,HEURISTIC:FALSE,%k1,%k2],
-   Y1: RATSIMP(SUBST([%K1=1,%K2=0],RHS(SOLN))),
-   Y2: RATSIMP(SUBST([%K1=0,%K2=1],RHS(SOLN))),
-   WR: Y1*DIFF(Y2,X) - Y2*DIFF(Y1,X),
-   IF WR=0 THEN RETURN(FALSE),
-   IF METHOD='CONSTCOEFF AND NOT(FREEOF('SIN,WR)) AND NOT(FREEOF('COS,WR))
-     THEN (HEURISTIC: TRUE, WR: RATSIMP(TRIGREDUCE(WR))),
-   Y3: RATSIMP(Y1*%g%/WR),
-   Y4: RATSIMP(Y2*%g%/WR),
-   YP: RATSIMP(Y2*INTEGRATE(Y3,X) - Y1*INTEGRATE(Y4,X)),
-   IF HEURISTIC=TRUE THEN YP: RATSIMP(TRIGREDUCE(YP)),
-   METHOD: 'VARIATIONOFPARAMETERS,
-   RETURN(Y = RHS(SOLN) + YP))$
+varp(soln,%g%):=block([y1,y2,y3,y4,wr,heuristic:false,%k1,%k2],
+   y1: ratsimp(subst([%k1=1,%k2=0],rhs(soln))),
+   y2: ratsimp(subst([%k1=0,%k2=1],rhs(soln))),
+   wr: y1*diff(y2,x) - y2*diff(y1,x),
+   if wr=0 then return(false),
+   if method='constcoeff and not(freeof('sin,wr)) and not(freeof('cos,wr))
+     then (heuristic: true, wr: ratsimp(trigreduce(wr))),
+   y3: ratsimp(y1*%g%/wr),
+   y4: ratsimp(y2*%g%/wr),
+   yp: ratsimp(y2*integrate(y3,x) - y1*integrate(y4,x)),
+   if heuristic=true then yp: ratsimp(trigreduce(yp)),
+   method: 'variationofparameters,
+   return(y = rhs(soln) + yp))$
 
 /*  Methods to reduce second-order equations free of x or y  */
 
-REDUCE(EQ):=BLOCK([B1,QQ],
-   B1: SUBST(['DIFF(Y,X,2)=QQ, 'DIFF(Y,X)=QQ], EQ),
-   IF FREEOF(Y,B1) THEN RETURN(NLX(EQ)),
-   IF FREEOF(X,B1) THEN RETURN(NLY(EQ)) ELSE RETURN(FALSE))$
+reduce(eq):=block([b1,qq],
+   b1: subst(['diff(y,x,2)=qq, 'diff(y,x)=qq], eq),
+   if freeof(y,b1) then return(nlx(eq)),
+   if freeof(x,b1) then return(nly(eq)) else return(false))$
 
 /*  B&DiP, p. 89, problem 1  */
 
-NLX(EQ):=BLOCK([DE,B,A1,V,%k1,%c],
-   DE: SUBST(['DIFF(Y,X,2)='DIFF(V,X), 'DIFF(Y,X)=V], EQ),
-   IF (B: ODE1A(DE,V,X)) = FALSE THEN RETURN(FALSE),
-   A1: SUBST([V='DIFF(Y,X),%C=%K1], B),
-   IF FTEST(NLXY(A1,'DIFF(Y,X)))
-     THEN (METHOD: 'FREEOFY, RETURN(%q%)) ELSE RETURN(FALSE))$
+nlx(eq):=block([de,b,a1,v,%k1,%c],
+   de: subst(['diff(y,x,2)='diff(v,x), 'diff(y,x)=v], eq),
+   if (b: ode1a(de,v,x)) = false then return(false),
+   a1: subst([v='diff(y,x),%c=%k1], b),
+   if ftest(nlxy(a1,'diff(y,x)))
+     then (method: 'freeofy, return(%q%)) else return(false))$
 
 /*  B&DiP, p. 89, problem 2  */
 
-NLY(EQ):=BLOCK([DE,B,A1,YZ,V,%c,%k1],
-   DE: SUBST(['DIFF(Y,X,2)=V*'DIFF(V,YZ), 'DIFF(Y,X)=V, Y=YZ], EQ),
-   IF (B: ODE1A(DE,V,YZ)) = FALSE THEN RETURN(FALSE),
-   A1: SUBST([V='DIFF(Y,X),YZ=Y,%C=%K1], B),
-   IF FTEST(NLXY(A1,'DIFF(Y,X)))
-     THEN (METHOD: 'FREEOFX, RETURN(%q%)) ELSE RETURN(FALSE))$
+nly(eq):=block([de,b,a1,yz,v,%c,%k1],
+   de: subst(['diff(y,x,2)=v*'diff(v,yz), 'diff(y,x)=v, y=yz], eq),
+   if (b: ode1a(de,v,yz)) = false then return(false),
+   a1: subst([v='diff(y,x),yz=y,%c=%k1], b),
+   if ftest(nlxy(a1,'diff(y,x)))
+     then (method: 'freeofx, return(%q%)) else return(false))$
 
-NLXY(EQ,DE):=BLOCK([PROGRAMMODE:TRUE,EQ1,%k2,%c],
-   EQ1: SOLVE(EQ,DE),
-   EQ1: MAPLIST(LAMBDA([ZZ], IF FTEST(ODE1A(ZZ,Y,X))
-			       THEN SUBST(%K2,%C,%q%) ELSE FALSE),
-		EQ1),
-   IF LENGTH(EQ1)=1 THEN RETURN(FIRST(EQ1)) ELSE RETURN(EQ1))$
+nlxy(eq,de):=block([programmode:true,eq1,%k2,%c],
+   eq1: solve(eq,de),
+   eq1: maplist(lambda([zz], if ftest(ode1a(zz,y,x))
+			       then subst(%k2,%c,%q%) else false),
+		eq1),
+   if length(eq1)=1 then return(first(eq1)) else return(eq1))$
 
 /*    This is a start on a series of programs to recognize and 
     solve certain special classes of differential equations. 
@@ -262,79 +262,79 @@ NLXY(EQ,DE):=BLOCK([PROGRAMMODE:TRUE,EQ1,%k2,%c],
     a/(x-pt), since we must assume that the equation may be 
     translated.  */
 
-PTTEST(A):=BLOCK([A1,A2,A3],
-   IF (A1: RATSIMP(A)) = 0 THEN RETURN(FALSE),
-   A1: EXPAND(1/A1),
-   IF (A2: COEFF(A1,X,1)) = 0 THEN RETURN(FALSE),
-   IF NOT(FREEOF(X,A2)) THEN RETURN(FALSE),
-   A3: COEFF(A1,X,0),
-   IF NOT(A1 = A2*X + A3) THEN RETURN(FALSE) ELSE RETURN(-A3/A2))$
+pttest(a):=block([a1,a2,a3],
+   if (a1: ratsimp(a)) = 0 then return(false),
+   a1: expand(1/a1),
+   if (a2: coeff(a1,x,1)) = 0 then return(false),
+   if not(freeof(x,a2)) then return(false),
+   a3: coeff(a1,x,0),
+   if not(a1 = a2*x + a3) then return(false) else return(-a3/a2))$
 
-EULER2(A,B):=BLOCK([DC,RP,IP,ALPHA,BETA,SIGN,RADEXPAND:FALSE,%k1,%k2,pos,zero],
-   IF NOT(FREEOF(X,Y,BETA: RATSIMP(B*(X-PT)^2))) THEN RETURN(FALSE),
-   METHOD: 'EULER, ALPHA: A*(X-PT),
-   DC: RATSIMP((ALPHA-1)^2 - 4*BETA),
-   RP: RATSIMP(-(ALPHA-1)/2),
-   SIGN: ASKSIGN(DC),
-   IF SIGN = ZERO THEN RETURN(Y = (X-PT)^RP * (%K1 + %K2*LOG(X-PT))),
-   IF SIGN = POS THEN 
-     (IP: SQRT(DC)/2, RETURN(Y = %K1*(X-PT)^(RP+IP) + %K2*(X-PT)^(RP-IP))),
-   DC: -DC, IP: SQRT(DC)/2,
-   RETURN(Y = (X-PT)^RP * (%K1*SIN(IP*LOG(X-PT)) + %K2*COS(IP*LOG(X-PT)))))$
+euler2(a,b):=block([dc,rp,ip,alpha,beta,sign,radexpand:false,%k1,%k2,pos,zero],
+   if not(freeof(x,y,beta: ratsimp(b*(x-pt)^2))) then return(false),
+   method: 'euler, alpha: a*(x-pt),
+   dc: ratsimp((alpha-1)^2 - 4*beta),
+   rp: ratsimp(-(alpha-1)/2),
+   sign: asksign(dc),
+   if sign = zero then return(y = (x-pt)^rp * (%k1 + %k2*log(x-pt))),
+   if sign = pos then 
+     (ip: sqrt(dc)/2, return(y = %k1*(x-pt)^(rp+ip) + %k2*(x-pt)^(rp-ip))),
+   dc: -dc, ip: sqrt(dc)/2,
+   return(y = (x-pt)^rp * (%k1*sin(ip*log(x-pt)) + %k2*cos(ip*log(x-pt)))))$
 
-BESSEL2(A,B):=BLOCK([NU,B1,INTP,RADEXPAND:'ALL,%k1,%y,%k2,%j],
-   IF NOT(FREEOF(X,Y,B1: RATSIMP((1-B)*(X-PT)^2))) THEN RETURN(FALSE),
-   IF RATSIMP(A*(X-PT)) # 1 THEN RETURN(FALSE),
-   NU: SQRT(B1), METHOD: 'BESSEL,
-   IF NU = 1/2 THEN RETURN(Y = (%K1*SIN(X-PT) + %K2*COS(X-PT))/SQRT(X-PT)),
-   IF FEATUREP(NU,'INTEGER) THEN INTP: 'Y ELSE IF NUMBERP(NU) THEN INTP: 'N,
- LOOP,
-   IF NOT(INTP='Y OR INTP='N)
-     THEN (INTP: READONLY("Is", NU, "an integer?  Type Y or N."), GO(LOOP)),
-   IF INTP = 'Y THEN RETURN(Y = %K1*%J[NU](X-PT) + %K2*%Y[NU](X-PT)),
-   RETURN(Y = %K1*%J[NU](X-PT) + %K2*%J[-NU](X-PT)))$
+bessel2(a,b):=block([nu,b1,intp,radexpand:'all,%k1,%y,%k2,%j],
+   if not(freeof(x,y,b1: ratsimp((1-b)*(x-pt)^2))) then return(false),
+   if ratsimp(a*(x-pt)) # 1 then return(false),
+   nu: sqrt(b1), method: 'bessel,
+   if nu = 1/2 then return(y = (%k1*sin(x-pt) + %k2*cos(x-pt))/sqrt(x-pt)),
+   if featurep(nu,'integer) then intp: 'y else if numberp(nu) then intp: 'n,
+ loop,
+   if not(intp='y or intp='n)
+     then (intp: readonly("is", nu, "an integer?  type y or n."), go(loop)),
+   if intp = 'y then return(y = %k1*%j[nu](x-pt) + %k2*%y[nu](x-pt)),
+   return(y = %k1*%j[nu](x-pt) + %k2*%j[-nu](x-pt)))$
 
-IC1(SOLN,XC,YC):=
+ic1(soln,xc,yc):=
    block([%c],
-   (NOTEQN(XC), NOTEQN(YC), BOUNDTEST('%C,%C),
-    RATSIMP(SUBST(['%C=RHS(SOLVE1(SUBST([XC,YC],SOLN),%C))],SOLN))))$
+   (noteqn(xc), noteqn(yc), boundtest('%c,%c),
+    ratsimp(subst(['%c=rhs(solve1(subst([xc,yc],soln),%c))],soln))))$
 
-BC2(SOLN,XA,YA,XB,YB):=
-   BLOCK([PROGRAMMODE:TRUE,BACKSUBST:TRUE,SINGSOLVE:TRUE,TEMP,%k1,%k2],
-      NOTEQN(XA), NOTEQN(YA), NOTEQN(XB), NOTEQN(YB),
-      BOUNDTEST('%K1,%K1), BOUNDTEST('%K2,%K2),
-      TEMP: MAPLIST(LAMBDA([ZZ], SUBST(ZZ,SOLN)),
-		    SOLVE([SUBST([XA,YA],SOLN),
-			   SUBST([XB,YB],SOLN)],
-			  [%K1,%K2])),
-      IF LENGTH(TEMP)=1 THEN RETURN(FIRST(TEMP)) ELSE RETURN(TEMP))$
+bc2(soln,xa,ya,xb,yb):=
+   block([programmode:true,backsubst:true,singsolve:true,temp,%k1,%k2],
+      noteqn(xa), noteqn(ya), noteqn(xb), noteqn(yb),
+      boundtest('%k1,%k1), boundtest('%k2,%k2),
+      temp: maplist(lambda([zz], subst(zz,soln)),
+		    solve([subst([xa,ya],soln),
+			   subst([xb,yb],soln)],
+			  [%k1,%k2])),
+      if length(temp)=1 then return(first(temp)) else return(temp))$
 
-IC2(SOLN,XA,YA,DYA):=
-   BLOCK([PROGRAMMODE:TRUE,BACKSUBST:TRUE,SINGSOLVE:TRUE,TEMP,%k2,%k1],
-      NOTEQN(XA), NOTEQN(YA), NOTEQN(DYA),
-      BOUNDTEST('%K1,%K1), BOUNDTEST('%K2,%K2),
-      TEMP: LHS(SOLN) - RHS(SOLN),
-      TEMP: MAPLIST(LAMBDA([ZZ], SUBST(ZZ,SOLN)),
-		    SOLVE([SUBST([XA,YA],SOLN), SUBST([DYA,XA],
-			     LHS(DYA)=-SUBST(0,LHS(DYA),DIFF(TEMP,LHS(XA)))
-				       /DIFF(TEMP,LHS(YA)))],
-			  [%K1,%K2])),
-      IF LENGTH(TEMP)=1 THEN RETURN(FIRST(TEMP)) ELSE RETURN(TEMP))$
+ic2(soln,xa,ya,dya):=
+   block([programmode:true,backsubst:true,singsolve:true,temp,%k2,%k1],
+      noteqn(xa), noteqn(ya), noteqn(dya),
+      boundtest('%k1,%k1), boundtest('%k2,%k2),
+      temp: lhs(soln) - rhs(soln),
+      temp: maplist(lambda([zz], subst(zz,soln)),
+		    solve([subst([xa,ya],soln), subst([dya,xa],
+			     lhs(dya)=-subst(0,lhs(dya),diff(temp,lhs(xa)))
+				       /diff(temp,lhs(ya)))],
+			  [%k1,%k2])),
+      if length(temp)=1 then return(first(temp)) else return(temp))$
 
-NOTEQN(X):=IF ATOM(X) OR NOT INPART(X,0)="="
-	     THEN (DISP(X), DISP("Not an equation"), ERROR())$
+noteqn(x):=if atom(x) or not inpart(x,0)="="
+	     then (disp(x), disp("not an equation"), error())$
 
-BOUNDTEST(X,Y):=
-   IF X#Y THEN (DISP(X), DISP("Must not be bound"), ERROR())$
+boundtest(x,y):=
+   if x#y then (disp(x), disp("must not be bound"), error())$
 
-FAILURE(MSG,EQ):=
-   block([ynew],   (IF NOT STATUS(FEATURE,"ODE")
-      THEN (LDISP(SUBST(YOLD,YNEW,EQ)), DISP(MSG)),
-    FALSE))$
+failure(msg,eq):=
+   block([ynew],   (if not status(feature,"ode")
+      then (ldisp(subst(yold,ynew,eq)), disp(msg)),
+    false))$
 
 eval_when([translate,load,compile],
        remove(x,special,y,special))$
  
-MSG1:	"Not a proper differential equation"$
-MSG2:	"First order equation not linear in y'"$
+msg1:	"not a proper differential equation"$
+msg2:	"first order equation not linear in y'"$
 

@@ -13,147 +13,147 @@
    *            						 *
    ***************************************************************
 */ 
-/*PROGRAM NUMBER 10: REDUCTION1(), A LIAPUNOV-SCHMIDT REDUCTION FOR
-  STEADY STATE BIFURCATIONS IN ONE DIFFERENTIAL EQUATION DEPENDING
-  ON ONE INDEPENDENT VARIABLE. SEE PAGE 170 IN "PERTURBATION METHODS,
-  BIFURCATION THEORY AND COMPUTER ALGEBRA". */
+/*program number 10: reduction1(), a liapunov-schmidt reduction for
+  steady state bifurcations in one differential equation depending
+  on one independent variable. see page 170 in "perturbation methods,
+  bifurcation theory and computer algebra". */
 
 
   
 
-/*THIS FILE CONTAINS REDUCTION1(), A FUNCTION TO PERFORM A LIAPUNOV-
-  SCHMIDT REDUCTION FOR STEADY STATE BIFURCATIONS OF NONLINEAR D.E.'S
-  OF THE FORM Y'' + F(Y,Y',ALPHA) = 0. Y = Y(X) IS DEFINED ON A REAL
-  INTERVAL WITH DIRICHLET OR NEUMANN BOUNDARY CONDITIONS AND F DEPENDS 
-  ONLY LINEARLY ON ALPHA.
-  IT ALSO CONTAINS THESE ADDITIONAL FUNCTIONS:
-  SETUP() ALLOWS TO ENTER THE PROBLEM.
-  G_POLY(I,J) CALCULATES THE COEFFICIENT OF AMP^I LAM^J IN THE BIFURCATION
-  EQUATION.
-  W_POLY(I,J) CALCULATES THE COEFFICIENT OF AMP^I LAM^J IN W(X;AMP,LAM).
-  PROJECT(EXP) ENSURES THAT <CFUN,EXP>=0.
-  NEUMANNBC(EXP) ACCOUNTS FOR NEUMANN BOUNDARY CONDITIONS.
-  G_EQ() ASSEMBLES THE BIFURCATION EQUATION. */
+/*this file contains reduction1(), a function to perform a liapunov-
+  schmidt reduction for steady state bifurcations of nonlinear d.e.'s
+  of the form y'' + f(y,y',alpha) = 0. y = y(x) is defined on a real
+  interval with dirichlet or neumann boundary conditions and f depends 
+  only linearly on alpha.
+  it also contains these additional functions:
+  setup() allows to enter the problem.
+  g_poly(i,j) calculates the coefficient of amp^i lam^j in the bifurcation
+  equation.
+  w_poly(i,j) calculates the coefficient of amp^i lam^j in w(x;amp,lam).
+  project(exp) ensures that <cfun,exp>=0.
+  neumannbc(exp) accounts for neumann boundary conditions.
+  g_eq() assembles the bifurcation equation. */
 
 
-REDUCTION1():=BLOCK(
-	   SETUP(),
-	   ORDER:READ("TO WHICH ORDER DO YOU WANT TO CALCULATE"),
-	   FOR I:2 THRU ORDER-1 DO  W_POLY(I,0),
-	   FOR I:1 THRU ORDER-2 DO  W_POLY(I,1),
-	   FOR I:1 THRU ORDER DO G_POLY(I,0),
-	   FOR I:1 THRU ORDER-1 DO G_POLY(I,1),
-	   G_EQ())$
+reduction1():=block(
+	   setup(),
+	   order:read("to which order do you want to calculate"),
+	   for i:2 thru order-1 do  w_poly(i,0),
+	   for i:1 thru order-2 do  w_poly(i,1),
+	   for i:1 thru order do g_poly(i,0),
+	   for i:1 thru order-1 do g_poly(i,1),
+	   g_eq())$
 
 
 
-SETUP():=(
-/*THE FUNCTION SETUP ASKS FOR THE VARIABLES OF THE D.E., THE BIFURCATION
-POINT, THE CRITICAL EIGENFUNCTION, THE X-INTERVAL, THE BOUNDARY
-CONDITIONS AND THE DIFFERENTIAL EQUATION. */
-ASSUME_POS:TRUE,
-LS_LIST:[],
-Y:READ("ENTER DEPENDENT VARIABLE"),
-PRINT("USE X AS THE INDEPENDENT VARIABLE AND ALPHA AS A PARAMETER TO VARY"),
-CAL:READ("ENTER THE CRITICAL BIFURCATION VALUE ALPHA"),
-PRINT("WE DEFINE LAM = ALPHA - ",CAL),
-CFUN: READ("ENTER THE CRITICAL EIGENFUNCTION"),
-DEPENDS([ZW,Y,W],[AMP,LAM,X]),
-LEN:READ("WHAT IS THE LENGTH OF THE X-INTERVAL"),
-NORM:INTEGRATE(CFUN^2,X,0,LEN),
-PRINT("SPECIFY THE BOUNDARY CONDITIONS"),
-PRINT("YOUR CHOICE FOR THE B.C. ON Y AT X=0 AND X=",LEN),
-PRINT("ENTER 1 FOR Y=0, 2 FOR Y'=0"),
-BCL:READ("B.C. AT 0?"),
-BCR:READ("B.C. AT",LEN,"?"),
-EQ:DIFF(Y,X,2) +
-	 READ("THE D.E. IS OF THE FORM Y'' + F(Y,Y',ALPHA) = 0,ENTER F"),
-EQLAM:EV(EQ,ALPHA=LAM+CAL),
-PRINT(EQLAM),
-DATABASE:[DIFF(W,AMP)=0,DIFF(W,LAM)=0],
-SUB:Y=AMP*CFUN+W,
-TEMP1:EV(EQLAM,SUB,DIFF),
-NULLANS:READ("DO YOU KNOW APRIORI THAT SOME TAYLOR COEFFICENTS ARE ZERO, Y/N")
+setup():=(
+/*the function setup asks for the variables of the d.e., the bifurcation
+point, the critical eigenfunction, the x-interval, the boundary
+conditions and the differential equation. */
+assume_pos:true,
+ls_list:[],
+y:read("enter dependent variable"),
+print("use x as the independent variable and alpha as a parameter to vary"),
+cal:read("enter the critical bifurcation value alpha"),
+print("we define lam = alpha - ",cal),
+cfun: read("enter the critical eigenfunction"),
+depends([zw,y,w],[amp,lam,x]),
+len:read("what is the length of the x-interval"),
+norm:integrate(cfun^2,x,0,len),
+print("specify the boundary conditions"),
+print("your choice for the b.c. on y at x=0 and x=",len),
+print("enter 1 for y=0, 2 for y'=0"),
+bcl:read("b.c. at 0?"),
+bcr:read("b.c. at",len,"?"),
+eq:diff(y,x,2) +
+	 read("the d.e. is of the form y'' + f(y,y',alpha) = 0,enter f"),
+eqlam:ev(eq,alpha=lam+cal),
+print(eqlam),
+database:[diff(w,amp)=0,diff(w,lam)=0],
+sub:y=amp*cfun+w,
+temp1:ev(eqlam,sub,diff),
+nullans:read("do you know apriori that some taylor coefficents are zero, y/n")
 )$
 
 					
-G_POLY(I,J):=BLOCK(
-/* THIS IS A FUNCTION TO DETERMINE A PARTICULAR TAYLOR COEFFICIENT OF THE 
-BIFURCATION EQUATION G(AMP,LAM) =0. IT REQUIRES KNOWLEDGE ABOUT THE TAYLOR
-COEFFICIENTS OF W(AMP,LAM). THIS KNOWLEDGE IS STORED IN THE LIST DATABASE */
-	  LS_LIST:CONS([K=I,L=J],LS_LIST),
-	  IF NULLANS = Y THEN (
-			       ZEROANS:READ("IS G_POLY(",I,",",J,") IDENTICALLY 
-ZERO, Y/N"),
-			       IF ZEROANS = Y THEN  RETURN(BIFEQ[I,J]:0)),
-	  TEMP2:DIFF(TEMP1,AMP,I,LAM,J),	
-	  DERIVSUBST:TRUE,
-/*THIS DIFFERENTIAL OF W WILL BE ANNIHILATED BY THE PROJECTION ONTO THE
-CRITICAL EIGENFUNCTION, HENCE WE SET IT TO ZERO ALREADY HERE */
-	  TEMP3:SUBST('DIFF(W,AMP,I,LAM,J)=0,TEMP2),
-/* HERE WE INSERT ALL KNOWLEDGE GAINED THROUGH W_POLY */
-	  D_BASE_LENGTH:LENGTH(DATABASE),
-	  FOR II THRU D_BASE_LENGTH DO 
-	             TEMP3:EV(SUBST(DATABASE[D_BASE_LENGTH+1-II],TEMP3),DIFF),
-	  DERIVSUBST:FALSE,
-	  TEMP4:EV(TEMP3,AMP=0,LAM=0,W=0),
-/*PROJECTION ONTO CFUN, THE CRITICAL EIGENFUNCTION */
-          TEMP5:TRIGREDUCE(CFUN*TEMP4),
-	  BIFEQ[I,J]:RATSIMP(INTEGRATE(TEMP5,X,0,LEN))
+g_poly(i,j):=block(
+/* this is a function to determine a particular taylor coefficient of the 
+bifurcation equation g(amp,lam) =0. it requires knowledge about the taylor
+coefficients of w(amp,lam). this knowledge is stored in the list database */
+	  ls_list:cons([k=i,l=j],ls_list),
+	  if nullans = y then (
+			       zeroans:read("is g_poly(",i,",",j,") identically 
+zero, y/n"),
+			       if zeroans = y then  return(bifeq[i,j]:0)),
+	  temp2:diff(temp1,amp,i,lam,j),	
+	  derivsubst:true,
+/*this differential of w will be annihilated by the projection onto the
+critical eigenfunction, hence we set it to zero already here */
+	  temp3:subst('diff(w,amp,i,lam,j)=0,temp2),
+/* here we insert all knowledge gained through w_poly */
+	  d_base_length:length(database),
+	  for ii thru d_base_length do 
+	             temp3:ev(subst(database[d_base_length+1-ii],temp3),diff),
+	  derivsubst:false,
+	  temp4:ev(temp3,amp=0,lam=0,w=0),
+/*projection onto cfun, the critical eigenfunction */
+          temp5:trigreduce(cfun*temp4),
+	  bifeq[i,j]:ratsimp(integrate(temp5,x,0,len))
 	  )$
 
 
   
 
-W_POLY(I,J):=BLOCK( 
-/* THIS FUNCTION ALLOWS TO DETERMINE ITERATIVELY ANY PARTICULAR TAYLOR
-COEFFICIENT OF THE FUNCTION W(AMP,LAM). THE RESULT IS FED INTO DATABASE.*/
-	  IF NULLANS = Y THEN (
-		   ZEROANS:READ("IS DIFF(W,AMP,",I,",LAM,",J,") IDENTICALLY ZERO
-, Y/N"),
-			   IF ZEROANS = Y THEN 
-			            (ADDBASE:['DIFF(W,AMP,I,LAM,J)=0],
-				     DATABASE:APPEND(DATABASE,ADDBASE),
-				     RETURN(ADDBASE))),
-	  TEMP2:DIFF(TEMP1,AMP,I,LAM,J),
-	  DERIVSUBST:TRUE,
-/*WE SUBSTITUTE ZW FOR THE UNKNOWN TAYLOR COEFFICIENT AND SOLVE
-AN O.D.E. FOR ZW IN TEMP7 */
-	  TEMP3:SUBST(DIFF(W,AMP,I,LAM,J)=ZW,TEMP2),
-/*NOW WE INSERT ALL KNOWLEDGE GAINED THROUGH PREVIOUS ITERATIONS*/
-	  D_BASE_LENGTH:LENGTH(DATABASE),
-	  FOR II THRU D_BASE_LENGTH DO
-	             TEMP3:EV(SUBST(DATABASE[D_BASE_LENGTH+1-II],TEMP3),DIFF),
-	  DERIVSUBST:FALSE,
-	  TEMP4:EV(TEMP3,AMP=0,LAM=0,W=0),
-          TEMP5:TRIGREDUCE(TEMP4),
-/*THIS ENSURES THAT THE R.H.S. FO THE D.E. TEMP6 IS ORTHOGONAL TO
-THE SOLUTION OF THE HOMOGENEOUS EQUATION */
-	  TEMP6:PROJECT(TEMP5),
-	  TEMP7:ODE2(TEMP6,ZW,X),
-/*SATISFY BOUNDARY CONDITIONS*/
-	  IF BCL*BCR=1 THEN TEMP8:BC2(TEMP7,X=0,ZW=0,X=LEN,ZW=0)
-	                ELSE
-			     TEMP8:NEUMANNBC(TEMP7),
-/*MAKE SURE THAT <CFUN,W>= 0*/
-	  TEMP9:PROJECT(TEMP8),
-	  ADDBASE:['DIFF(W,AMP,I,LAM,J)=RHS(TEMP9)],
-	  DATABASE:APPEND(DATABASE,ADDBASE),
-	  PRINT(ADDBASE))$
+w_poly(i,j):=block( 
+/* this function allows to determine iteratively any particular taylor
+coefficient of the function w(amp,lam). the result is fed into database.*/
+	  if nullans = y then (
+		   zeroans:read("is diff(w,amp,",i,",lam,",j,") identically zero
+, y/n"),
+			   if zeroans = y then 
+			            (addbase:['diff(w,amp,i,lam,j)=0],
+				     database:append(database,addbase),
+				     return(addbase))),
+	  temp2:diff(temp1,amp,i,lam,j),
+	  derivsubst:true,
+/*we substitute zw for the unknown taylor coefficient and solve
+an o.d.e. for zw in temp7 */
+	  temp3:subst(diff(w,amp,i,lam,j)=zw,temp2),
+/*now we insert all knowledge gained through previous iterations*/
+	  d_base_length:length(database),
+	  for ii thru d_base_length do
+	             temp3:ev(subst(database[d_base_length+1-ii],temp3),diff),
+	  derivsubst:false,
+	  temp4:ev(temp3,amp=0,lam=0,w=0),
+          temp5:trigreduce(temp4),
+/*this ensures that the r.h.s. fo the d.e. temp6 is orthogonal to
+the solution of the homogeneous equation */
+	  temp6:project(temp5),
+	  temp7:ode2(temp6,zw,x),
+/*satisfy boundary conditions*/
+	  if bcl*bcr=1 then temp8:bc2(temp7,x=0,zw=0,x=len,zw=0)
+	                else
+			     temp8:neumannbc(temp7),
+/*make sure that <cfun,w>= 0*/
+	  temp9:project(temp8),
+	  addbase:['diff(w,amp,i,lam,j)=rhs(temp9)],
+	  database:append(database,addbase),
+	  print(addbase))$
 
 
-PROJECT(EXP):=(
-	  PRO1:EV(EXP,ZW=0),
-	  PRO2:INTEGRATE(PRO1*CFUN,X,0,LEN)/NORM,
-	  EXPAND(EXP-PRO2*CFUN))$
-NEUMANNBC(EXP):=(
-	  REXP:RHS(EXP),
-	  NBC1:DIFF(REXP,X),
-	  IF BCL=1 AND BCR=2 THEN NBC2:SOLVE([EV(REXP,X=0),EV(NBC1,X=LEN)],
-		[%K1,%K2]),
-	  IF BCL=2 AND BCR=1 THEN NBC2:SOLVE([EV(REXP,X=LEN),EV(NBC1,X=0)],
-		[%K1,%K2]),
-	  IF BCL=2 AND BCR=2 THEN NBC2:SOLVE([EV(NBC1,X=LEN),EV(NBC1,X=0)],
-		[%K1,%K2]),
-	  EV(EXP,NBC2))$
-G_EQ():=  SUM(EV(AMP^K*LAM^L/K!*BIFEQ[K,L],LS_LIST[N]),N,1,LENGTH(LS_LIST))$
+project(exp):=(
+	  pro1:ev(exp,zw=0),
+	  pro2:integrate(pro1*cfun,x,0,len)/norm,
+	  expand(exp-pro2*cfun))$
+neumannbc(exp):=(
+	  rexp:rhs(exp),
+	  nbc1:diff(rexp,x),
+	  if bcl=1 and bcr=2 then nbc2:solve([ev(rexp,x=0),ev(nbc1,x=len)],
+		[%k1,%k2]),
+	  if bcl=2 and bcr=1 then nbc2:solve([ev(rexp,x=len),ev(nbc1,x=0)],
+		[%k1,%k2]),
+	  if bcl=2 and bcr=2 then nbc2:solve([ev(nbc1,x=len),ev(nbc1,x=0)],
+		[%k1,%k2]),
+	  ev(exp,nbc2))$
+g_eq():=  sum(ev(amp^k*lam^l/k!*bifeq[k,l],ls_list[n]),n,1,length(ls_list))$

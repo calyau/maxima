@@ -1,20 +1,20 @@
-/* THIS IS THE INTEGRATION PART OF INTSCE.  IT CAN BE ALTERED,
-TRANSLATED, AND INCORPORATED IN INTSCE LISP WHICH CONTAINS
-THE TOP-LEVEL ROUTINE THAT DOES THE PATTERN MATCHING. */
+/* this is the integration part of intsce.  it can be altered,
+translated, and incorporated in intsce lisp which contains
+the top-level routine that does the pattern matching. */
 
-SCEINT(M,N):=BLOCK([DEN,NUM],MODEDECLARE([M,N],INTEGER),
-  DEN:D^2+B^2*(M+N)^2,
-  NUM: IF M=0 THEN (IF N=0 THEN RETURN(RET) ELSE
-	 	    IF N=1 THEN (D*CO+B*SI)*EX ELSE
-			(D*CO+N*B*SI)*EX*CO^(N-1)+N*(N-1)*B^2*SCEINT(0,N-2)) ELSE
-       IF M=1 THEN (IF N=0 THEN (D*SI-B*CO)*EX ELSE
-	 	    IF N=1 THEN (D*SI*CO+B*SI^2-B*CO^2)*EX ELSE
-		     (D*SI*CO+N*B*SI^2-B*CO^2)*CO^(N-1)*EX+
-			 N*(N-1)*B^2*SCEINT(1,N-2)) ELSE
+sceint(m,n):=block([den,num],modedeclare([m,n],integer),
+  den:d^2+b^2*(m+n)^2,
+  num: if m=0 then (if n=0 then return(ret) else
+	 	    if n=1 then (d*co+b*si)*ex else
+			(d*co+n*b*si)*ex*co^(n-1)+n*(n-1)*b^2*sceint(0,n-2)) else
+       if m=1 then (if n=0 then (d*si-b*co)*ex else
+	 	    if n=1 then (d*si*co+b*si^2-b*co^2)*ex else
+		     (d*si*co+n*b*si^2-b*co^2)*co^(n-1)*ex+
+			 n*(n-1)*b^2*sceint(1,n-2)) else
   
-		   (IF N=0 THEN (D*SI-M*B*CO)*EX*SI^(M-1)+M*(M-1)*B^2*SCEINT(M-2,0) ELSE
-		    IF N=1 THEN (D*CO*SI+B*SI^2-M*B*CO^2)*SI^(M-1)*EX+M*(M-1)*B^2*SCEINT(M-2,1) ELSE
-		     (D*SI*CO+N*B*SI^2-M*B*CO^2)*SI^(M-1)*CO^(N-1)*EX+
-			N*(N-1)*B^2*SCEINT(M,N-2)+M*(M-1)*B^2*SCEINT(M-2,N)),
-  RETURN(NUM/DEN))$
+		   (if n=0 then (d*si-m*b*co)*ex*si^(m-1)+m*(m-1)*b^2*sceint(m-2,0) else
+		    if n=1 then (d*co*si+b*si^2-m*b*co^2)*si^(m-1)*ex+m*(m-1)*b^2*sceint(m-2,1) else
+		     (d*si*co+n*b*si^2-m*b*co^2)*si^(m-1)*co^(n-1)*ex+
+			n*(n-1)*b^2*sceint(m,n-2)+m*(m-1)*b^2*sceint(m-2,n)),
+  return(num/den))$
 

@@ -1,21 +1,21 @@
 declare([v,w],special);
 
-REVERT(EXP, T) := BLOCK([F, N, V, W, r1], N : HIPOW(EXP, T), 
-ARRAY([V,W], N), r1:1/ratcoeff(exp,t,1), v[1]:1,
-FOR K:2 THRU N DO (V[k]:RATCOEF(EXP, T, K)*r1 ,W[k]: - V[k] ), W[1]  : 1, 
-F : LAMBDA([J], FOR I FROM J + 1 THRU N DO w[i]:w[i]-w[j]*v[i-j+1]),
-FOR J FROM 2 THRU N - 1 DO apply(F,[J]), FOR K FROM 2 THRU N - 1 
-DO (FOR J FROM K THRU N - 1 DO apply(F,[J])), F : 0, 
+revert(exp, t) := block([f, n, v, w, r1], n : hipow(exp, t), 
+array([v,w], n), r1:1/ratcoeff(exp,t,1), v[1]:1,
+for k:2 thru n do (v[k]:ratcoef(exp, t, k)*r1 ,w[k]: - v[k] ), w[1]  : 1, 
+f : lambda([j], for i from j + 1 thru n do w[i]:w[i]-w[j]*v[i-j+1]),
+for j from 2 thru n - 1 do apply(f,[j]), for k from 2 thru n - 1 
+do (for j from k thru n - 1 do apply(f,[j])), f : 0, 
 for k thru n do f:f+w[k]*(t*r1)^k, f)$
 
-REVERT2(EXP, VAR, N) := BLOCK([F, V, W, r1,n], n:hipow(exp,var),
-IF  n = 0 THEN RETURN(EXP), ARRAY([V,w], N), 
-V[0]  : RATCOEF(EXP, VAR, 0), r1:1/ratcoef(exp,var,1),
+revert2(exp, var, n) := block([f, v, w, r1,n], n:hipow(exp,var),
+if  n = 0 then return(exp), array([v,w], n), 
+v[0]  : ratcoef(exp, var, 0), r1:1/ratcoef(exp,var,1),
 v[1]:1,
-FOR K:2 THRU N DO (V[k]: RATCOEF(EXP, VAR, K)*r1, W[k]: - V[k] ), W[1]: 1, 
-F : LAMBDA([J], FOR I FROM J + 1 THRU N DO W[i]  : W[i]  - W[j]*V[i-j+1]  ), 
-FOR J FROM 2 THRU N - 1 DO apply(F,[J]), FOR K FROM 2 THRU N - 1 
-DO (FOR J FROM K THRU N - 1 DO apply(F,[J])), F : 0, 
-r1  : RATDISREP(r1), FOR K THRU N 
+for k:2 thru n do (v[k]: ratcoef(exp, var, k)*r1, w[k]: - v[k] ), w[1]: 1, 
+f : lambda([j], for i from j + 1 thru n do w[i]  : w[i]  - w[j]*v[i-j+1]  ), 
+for j from 2 thru n - 1 do apply(f,[j]), for k from 2 thru n - 1 
+do (for j from k thru n - 1 do apply(f,[j])), f : 0, 
+r1  : ratdisrep(r1), for k thru n 
 do f:ratdisrep(w[k])*(ratdisrep(var-v[0])*r1)^k+f, f)$
 

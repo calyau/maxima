@@ -1,42 +1,42 @@
 /*-*-MACSYMA-*-*/
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],
-          IF GET('SHAREM,'VERSION)=FALSE THEN LOAD(AUTOLO))$
+eval_when([translate,batch,demo],
+          if get('sharem,'version)=false then load(autolo))$
 
-HERALD_PACKAGE(CONTRL)$
+herald_package(contrl)$
 
-/* COND and CASEQ */
+/* cond and caseq */
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO,LOADFILE],
+eval_when([translate,batch,demo,loadfile],
 
-COND([PAIR_SEQUENCE])::=
- IF PAIR_SEQUENCE=[] THEN BUILDQ([],FALSE)
- ELSE
-  BLOCK([PRED:POP(PAIR_SEQUENCE),
-	 FORM:IF PAIR_SEQUENCE=[] THEN ERROR("Odd number of COND args")
-	      ELSE POP(PAIR_SEQUENCE)],
-    IF PRED=TRUE THEN BUILDQ([FORM],FORM)
-    ELSE BUILDQ([PRED,FORM,PAIR_SEQUENCE],
-	    IF PRED THEN FORM ELSE COND(SPLICE(PAIR_SEQUENCE))))
+cond([pair_sequence])::=
+ if pair_sequence=[] then buildq([],false)
+ else
+  block([pred:pop(pair_sequence),
+	 form:if pair_sequence=[] then error("odd number of cond args")
+	      else pop(pair_sequence)],
+    if pred=true then buildq([form],form)
+    else buildq([pred,form,pair_sequence],
+	    if pred then form else cond(splice(pair_sequence))))
 )$
 
-CASEQ(EXP,[PAIRS])::=
- BLOCK([PREDT,STATEMENT],
-  COND(NOT ATOM(EXP),
-       BUILDQ([G:?GENTEMP(),EXP,PAIRS],BLOCK([G:EXP],CASEQ(G,SPLICE(PAIRS)))),
+caseq(exp,[pairs])::=
+ block([predt,statement],
+  cond(not atom(exp),
+       buildq([g:?gentemp(),exp,pairs],block([g:exp],caseq(g,splice(pairs)))),
 
-       PAIRS=[],BUILDQ([],FALSE),
+       pairs=[],buildq([],false),
 
-       (PREDT:POP(PAIRS),IF LISTP(PREDT) AND LENGTH(PREDT)=1 THEN PREDT:PREDT[1],PAIRS=[]),
-       ERROR("Odd number of CASEQ case args"),
+       (predt:pop(pairs),if listp(predt) and length(predt)=1 then predt:predt[1],pairs=[]),
+       error("odd number of caseq case args"),
        
-       TRUE,
-       (STATEMENT:POP(PAIRS),
-        IF MEMBER(PREDT,'[OTHERWISE,TRUE]) THEN BUILDQ([STATEMENT,EXP],STATEMENT)
-	ELSE
-	   BUILDQ([CONDITION:IF LISTP(PREDT) THEN
-				BUILDQ([EXP,PREDT],MEMBER(EXP,'PREDT))
-			     ELSE BUILDQ([EXP,PREDT],EXP='PREDT),
-		   STATEMENT,EXP,PAIRS],
-              IF CONDITION THEN STATEMENT
-	      ELSE CASEQ(EXP,SPLICE(PAIRS))))))$
+       true,
+       (statement:pop(pairs),
+        if member(predt,'[otherwise,true]) then buildq([statement,exp],statement)
+	else
+	   buildq([condition:if listp(predt) then
+				buildq([exp,predt],member(exp,'predt))
+			     else buildq([exp,predt],exp='predt),
+		   statement,exp,pairs],
+              if condition then statement
+	      else caseq(exp,splice(pairs))))))$

@@ -1,10 +1,10 @@
 /*-*-MACSYMA-*-*/
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],
-          IF GET('SHAREM,'VERSION) = FALSE
-             THEN LOAD(AUTOLO))$
+eval_when([translate,batch,demo],
+          if get('sharem,'version) = false
+             then load(autolo))$
 
-HERALD_PACKAGE(BASIC)$
+herald_package(basic)$
 
 
 /* These are basic macros, nothing in here should call anything
@@ -15,19 +15,19 @@ HERALD_PACKAGE(BASIC)$
    macros, including the once-only stuff, can be simpler.
 */
 
-PROG1(STATEMENT1,[STATEMENTS])::=
- BUILDQ([STATEMENT1,STATEMENTS,LOCAL:?GENTEMP()],
-        LAMBDA([LOCAL],SPLICE(STATEMENTS),LOCAL)(STATEMENT1))$
+prog1(statement1,[statements])::=
+ buildq([statement1,statements,local:?gentemp()],
+        lambda([local],splice(statements),local)(statement1))$
 
-SYMBOLCHECK(X):=
- IF SYMBOLP(X) THEN X ELSE ERROR("Arg must be a symbol",X)$
+symbolcheck(x):=
+ if symbolp(x) then x else error("arg must be a symbol",x)$
 
-PUSH(C,L)::=(SYMBOLCHECK(L),BUILDQ([C,L],L:CONS(C,L)))$
+push(c,l)::=(symbolcheck(l),buildq([c,l],l:cons(c,l)))$
 
-POP(L)::=(SYMBOLCHECK(L),BUILDQ([L],PROG1(FIRST(L),L:REST(L))))$
+pop(l)::=(symbolcheck(l),buildq([l],prog1(first(l),l:rest(l))))$
 
 /* TR_EV is a pretty sorry way to get optimization
    by Translation-time evaluation. User directed constant-folding
    you might call it. TR_EV has other uses. */
 
-TR_EV(X)::=BUILDQ([X],?MEVAL(X))$
+tr_ev(x)::=buildq([x],?meval(x))$

@@ -3,10 +3,10 @@
 /* macros to define functions which take their arguments
    via keywords. */
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],
-	  LOAD_PACKAGE(SHAREM,"MAX$DISK:[SHAREM]AUTOLO"))$
+eval_when([translate,batch,demo],
+	  load_package(sharem,"max$disk:[sharem]autolo"))$
 
-HERALD_PACKAGE(KEYARG)$
+herald_package(keyarg)$
 
 /* The idea is to be able to say:
 
@@ -18,41 +18,41 @@ HERALD_PACKAGE(KEYARG)$
 And have unspecified arguments default. */
 
 
-DEF_KEYARG(HEADER,BODY)::=
- BUILDQ([MNAME:PART(HEADER,0), BODY,
-         SNAME:CONCAT(PART(HEADER,0),"-internal"),
-         SARGS:MAPLIST(LAMBDA([U],IF ATOM(U) THEN U ELSE PART(U,1)),
-	               ARGS(HEADER)),
-         DISPATCH:MAPLIST(LAMBDA([U],IF ATOM(U) THEN ['KEY_ATOM,[U]]
-	                                ELSE ['KEY_PAIR,[PART(U,1),PART(U,2)]]),
-			  ARGS(HEADER))],
-	(EVAL_WHEN(LOADFILE,
-	           SETUP_AUTOLOAD("MAX$DISK:[SHAREM]KEYARG",TRANSLATE_KEYARG)),
-         PUT('MNAME,'DISPATCH,'TRANSLATE_KEYARG),
-         MNAME([MACRO_ARGL])::=TRANSLATE_KEYARG(MACRO_ARGL,'MNAME,'SNAME),
-	 SNAME(SPLICE(SARGS)):=BODY))$
+def_keyarg(header,body)::=
+ buildq([mname:part(header,0), body,
+         sname:concat(part(header,0),"-internal"),
+         sargs:maplist(lambda([u],if atom(u) then u else part(u,1)),
+	               args(header)),
+         dispatch:maplist(lambda([u],if atom(u) then ['key_atom,[u]]
+	                                else ['key_pair,[part(u,1),part(u,2)]]),
+			  args(header))],
+	(eval_when(loadfile,
+	           setup_autoload("max$disk:[sharem]keyarg",translate_keyarg)),
+         put('mname,'dispatch,'translate_keyarg),
+         mname([macro_argl])::=translate_keyarg(macro_argl,'mname,'sname),
+	 sname(splice(sargs)):=body))$
 
 /* This routine must be around during the macro-expansion */
 
-TRANSLATE_KEYARG(MACRO_ARGL,MNAME,SNAME):=
+translate_keyarg(macro_argl,mname,sname):=
  /* for now I am not going to do the order-of-evaluation guarantee */
- BLOCK([SARGL:[],TEMP,DISPATCH:GET(MNAME,'TRANSLATE_KEYARG)],
-       FOR D IN DISPATCH
-       DO(TEMP:APPLY(D[1],CONS(MACRO_ARGL,D[2])),
-          PUSH(TEMP[1],SARGL),
-	  MACRO_ARGL:TEMP[2]),
-       IF NOT MACRO_ARGL=[] THEN ERROR("Unknown arguments to",MNAME,":",MACRO_ARGL),
-       FUNMAKE(SNAME,REVERSE(SARGL)))$
+ block([sargl:[],temp,dispatch:get(mname,'translate_keyarg)],
+       for d in dispatch
+       do(temp:apply(d[1],cons(macro_argl,d[2])),
+          push(temp[1],sargl),
+	  macro_argl:temp[2]),
+       if not macro_argl=[] then error("unknown arguments to",mname,":",macro_argl),
+       funmake(sname,reverse(sargl)))$
 
-KEY_INDICATOR(ARGL,ATOM,VALUE):=
- (FOR A IN ARGL
-  DO(IF ATOM(A) THEN(IF A=ATOM THEN(VALUE:TRUE,ARGL:DELETE(A,ARGL),RETURN(DONE)))
-     ELSE IF PART(A,1)=ATOM THEN(VALUE:PART(A,2),ARGL:DELETE(A,ARGL),RETURN(DONE))),
-  [VALUE,ARGL])$     
+key_indicator(argl,atom,value):=
+ (for a in argl
+  do(if atom(a) then(if a=atom then(value:true,argl:delete(a,argl),return(done)))
+     else if part(a,1)=atom then(value:part(a,2),argl:delete(a,argl),return(done))),
+  [value,argl])$     
 
 /* I am thinking of having KEY_ATOM and KEY_PAIR do different things. */
 
-KEY_ATOM(ARGL,ATOM):=KEY_INDICATOR(ARGL,ATOM,FALSE)$
+key_atom(argl,atom):=key_indicator(argl,atom,false)$
 
-KEY_PAIR(ARGL,ATOM,VALUE):=KEY_INDICATOR(ARGL,ATOM,VALUE)$
+key_pair(argl,atom,value):=key_indicator(argl,atom,value)$
 

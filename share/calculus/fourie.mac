@@ -1,212 +1,212 @@
 declare([a,b],special)$
-define_variable(SINNPIFLAG,TRUE,boolean)$
-define_variable(COSNPIFLAG,TRUE,boolean)$
+define_variable(sinnpiflag,true,boolean)$
+define_variable(cosnpiflag,true,boolean)$
 
-REMFUN1(FUN,EXP):=SCANMAP(LAMBDA([Q],DELFUN1(FUN,Q)),EXP)$
+remfun1(fun,exp):=scanmap(lambda([q],delfun1(fun,q)),exp)$
 
-DELFUN1(FUN,EXP):=IF NOT ATOM(EXP) AND INPART(EXP,0) = FUN
-	 THEN FIRST(ARGS(EXP)) ELSE EXP$
+delfun1(fun,exp):=if not atom(exp) and inpart(exp,0) = fun
+	 then first(args(exp)) else exp$
 
-REMFUNN1(FUN,EXP):=SCANMAP(LAMBDA([Q],DELFUNN1(FUN,Q)),EXP)$
+remfunn1(fun,exp):=scanmap(lambda([q],delfunn1(fun,q)),exp)$
 
-DELFUNN1(FUN,EXP):=IF NOT ATOM(EXP) AND INPART(EXP,0) = FUN
-	  THEN -FIRST(ARGS(EXP)) ELSE EXP$
+delfunn1(fun,exp):=if not atom(exp) and inpart(exp,0) = fun
+	  then -first(args(exp)) else exp$
 
-REMFUN2(FUN,EXP,VAR):=SCANMAP(LAMBDA([Q],DELFUN2(FUN,Q,VAR)),EXP)$
+remfun2(fun,exp,var):=scanmap(lambda([q],delfun2(fun,q,var)),exp)$
 
-DELFUN2(FUN,EXP,VAR):=
-     IF	NOT ATOM(EXP) AND INPART(EXP,0) = FUN AND MEMBER(VAR,LISTOFVARS(EXP))
-	 THEN FIRST(ARGS(EXP)) ELSE EXP$
+delfun2(fun,exp,var):=
+     if	not atom(exp) and inpart(exp,0) = fun and member(var,listofvars(exp))
+	 then first(args(exp)) else exp$
 
-REMFUNN2(FUN,EXP,VAR):=SCANMAP(LAMBDA([Q],DELFUNN2(FUN,Q,VAR)),EXP)$
+remfunn2(fun,exp,var):=scanmap(lambda([q],delfunn2(fun,q,var)),exp)$
 
-DELFUNN2(FUN,EXP,VAR):=
-      IF NOT ATOM(EXP) AND INPART(EXP,0) = FUN
-		       AND MEMBER(VAR,LISTOFVARS(EXP))
-	  THEN -FIRST(ARGS(EXP)) ELSE EXP$
+delfunn2(fun,exp,var):=
+      if not atom(exp) and inpart(exp,0) = fun
+		       and member(var,listofvars(exp))
+	  then -first(args(exp)) else exp$
 
-REMFUN(FUN,EXP,[VAR]):=IF VAR = [] THEN REMFUN1(FUN,EXP)
-        ELSE (IF LENGTH(VAR) = 1 THEN REMFUN2(FUN,EXP,FIRST(VAR))
-		  ELSE ERROR("TOO MANY ARGUMENTS TO REMFUN"))$
+remfun(fun,exp,[var]):=if var = [] then remfun1(fun,exp)
+        else (if length(var) = 1 then remfun2(fun,exp,first(var))
+		  else error("too many arguments to remfun"))$
 
-REMFUNN(FUN,EXP,[VAR]):=IF VAR = [] THEN REMFUNN1(FUN,EXP)
-	 ELSE (IF LENGTH(VAR) = 1 THEN REMFUNN2(FUN,EXP,FIRST(VAR))
-		   ELSE ERROR("TOO MANY ARGUMENTS TO REMFUNN"))$
+remfunn(fun,exp,[var]):=if var = [] then remfunn1(fun,exp)
+	 else (if length(var) = 1 then remfunn2(fun,exp,first(var))
+		   else error("too many arguments to remfunn"))$
 
-FUNP1(FUN,EXP):=BLOCK([INFLAG],INFLAG:TRUE,
-      IF MAPATOM(EXP) THEN FALSE
-	  ELSE (IF INPART(EXP,0) = FUN THEN TRUE
-		    ELSE member(true,MAPLIST(LAMBDA([Q],FUNP1(FUN,Q)),EXP))))$
+funp1(fun,exp):=block([inflag],inflag:true,
+      if mapatom(exp) then false
+	  else (if inpart(exp,0) = fun then true
+		    else member(true,maplist(lambda([q],funp1(fun,q)),exp))))$
  /* commented out of DOE MACSYMA
 ; APPLY("OR",MAPLIST(LAMBDA([Q],FUNP1(FUN,Q)),EXP))))$ */
 
 
-FUNP2(FUN,EXP,VAR):=BLOCK([INFLAG],INFLAG:TRUE,
-      IF MAPATOM(EXP) THEN FALSE
-	  ELSE (IF INPART(EXP,0) = FUN AND MEMBER(VAR,LISTOFVARS(EXP))
-		    THEN TRUE
-		    ELSE member(true,
-                                MAPLIST(LAMBDA([Q],FUNP2(FUN,Q,VAR)),EXP))))$
+funp2(fun,exp,var):=block([inflag],inflag:true,
+      if mapatom(exp) then false
+	  else (if inpart(exp,0) = fun and member(var,listofvars(exp))
+		    then true
+		    else member(true,
+                                maplist(lambda([q],funp2(fun,q,var)),exp))))$
 /* commented out of DOE MACSYMA
 APPLY("OR",MAPLIST(LAMBDA([Q],FUNP2(FUN,Q,VAR)),EXP))))$ */
 
-FUNP(FUN,EXP,[VAR]):=IF VAR = [] THEN FUNP1(FUN,EXP)
-      ELSE (IF LENGTH(VAR) = 1 THEN FUNP2(FUN,EXP,FIRST(VAR))
-	        ELSE ERROR("TOO MANY ARGUMENTS TO FUNP"))$
+funp(fun,exp,[var]):=if var = [] then funp1(fun,exp)
+      else (if length(var) = 1 then funp2(fun,exp,first(var))
+	        else error("too many arguments to funp"))$
 
-EQUALP(X,Y):=BLOCK([PREDERROR],PREDERROR:FALSE,
-       IF IS(EQUAL(X,Y)) = TRUE THEN TRUE)$
+equalp(x,y):=block([prederror],prederror:false,
+       if is(equal(x,y)) = true then true)$
 
-PARITY(F,X):=IF EVENFUNP(F,X) THEN 'EVEN
-        ELSE (IF ODDFUNP(F,X) THEN 'ODD ELSE 'NEITHER)$
+parity(f,x):=if evenfunp(f,x) then 'even
+        else (if oddfunp(f,x) then 'odd else 'neither)$
 
-EVENFUNP(F,X):=IF EQUALP(F,SUBST(-X,X,F)) THEN TRUE$
+evenfunp(f,x):=if equalp(f,subst(-x,x,f)) then true$
 
-ODDFUNP(F,X):=IF EQUALP(F,-SUBST(-X,X,F)) THEN TRUE$
+oddfunp(f,x):=if equalp(f,-subst(-x,x,f)) then true$
 
-PARINT(F,X,A,B):=
-    IF NOT (EQUALP(-A,B) OR A = 'MINF AND B = 'INF OR A = 'INF AND B = 'MINF)
-        THEN F
-        ELSE (IF ATOM(F) OR INPART(F,0) # "+" THEN PARINT1(F,X)
-		  ELSE MAP(LAMBDA([Q],PARINT1(Q,X)),F))$
+parint(f,x,a,b):=
+    if not (equalp(-a,b) or a = 'minf and b = 'inf or a = 'inf and b = 'minf)
+        then f
+        else (if atom(f) or inpart(f,0) # "+" then parint1(f,x)
+		  else map(lambda([q],parint1(q,x)),f))$
 
-PARINT1(F,X):=IF ODDFUNP(F,X) THEN 0 ELSE F$
+parint1(f,x):=if oddfunp(f,x) then 0 else f$
 
-ADEFINT(F,X,A,B):=BLOCK([ASIGN,BSIGN],
-	IF EQUALP(A,B) THEN 0
-	    ELSE (IF NOT (FREEOF(%I,F) AND FREEOF(%I,A) AND FREEOF(%I,B))
-		      THEN LDEFINT(F,X,A,B)
-		      ELSE (F:PARINT(F,X,A,B),
-			    IF EQUALP(F,0) THEN 0
-			        ELSE (IF NOT FUNP2('ABS,F,X)
-					  THEN LDEFINT(F,X,A,B)
-					  ELSE (ASIGN:ASKSIGN(A),
-						BSIGN:ASKSIGN(B),
-						IF 
-						 (ASIGN = 'NEG
-						   OR ASIGN = 'ZERO)
-						   AND (BSIGN = 'NEG
-						    OR BSIGN = 'ZERO)
-						  THEN LDEFINT(
-						  REMFUNN2('ABS,F,X),X,A,B)
-						  ELSE (IF 
-						  (ASIGN = 'ZERO
-						    OR ASIGN = 'POS)
-						    AND (BSIGN = 'ZERO
-						     OR BSIGN = 'POS)
-						   THEN LDEFINT(
-						   REMFUN2('ABS,F,X),X,A,B)
-						   ELSE (IF ASIGN = 'NEG
-							     THEN RATSIMP(
-							     LDEFINT(
-							      REMFUNN2(
-							       'ABS,F,X),X,A,
+adefint(f,x,a,b):=block([asign,bsign],
+	if equalp(a,b) then 0
+	    else (if not (freeof(%i,f) and freeof(%i,a) and freeof(%i,b))
+		      then ldefint(f,x,a,b)
+		      else (f:parint(f,x,a,b),
+			    if equalp(f,0) then 0
+			        else (if not funp2('abs,f,x)
+					  then ldefint(f,x,a,b)
+					  else (asign:asksign(a),
+						bsign:asksign(b),
+						if 
+						 (asign = 'neg
+						   or asign = 'zero)
+						   and (bsign = 'neg
+						    or bsign = 'zero)
+						  then ldefint(
+						  remfunn2('abs,f,x),x,a,b)
+						  else (if 
+						  (asign = 'zero
+						    or asign = 'pos)
+						    and (bsign = 'zero
+						     or bsign = 'pos)
+						   then ldefint(
+						   remfun2('abs,f,x),x,a,b)
+						   else (if asign = 'neg
+							     then ratsimp(
+							     ldefint(
+							      remfunn2(
+							       'abs,f,x),x,a,
 							      0)
-							      +LDEFINT(
-							       REMFUN2(
-								'ABS,F,X),X,
-							       0,B))
-							     ELSE RATSIMP(
-							     LDEFINT(
-							      REMFUN2(
-							       'ABS,F,X),X,A,
+							      +ldefint(
+							       remfun2(
+								'abs,f,x),x,
+							       0,b))
+							     else ratsimp(
+							     ldefint(
+							      remfun2(
+							       'abs,f,x),x,a,
 							      0)
-							      +LDEFINT(
-							       REMFUNN2(
-								'ABS,F,X),X,
-							       0,B)))))))))$
+							      +ldefint(
+							       remfunn2(
+								'abs,f,x),x,
+							       0,b)))))))))$
 
-INDEFINT(F,X,HALFPLANE):=IF HALFPLANE = 'POS
-	  THEN INTEGRATE(REMFUN2('ABS,F,X),X)
-	  ELSE (IF HALFPLANE = 'NEG THEN INTEGRATE(REMFUNN2('ABS,F,X),X)
-		    ELSE (IF HALFPLANE = 'BOTH
-			      THEN APPEND(
-			      LDISP(INTEGRATE(REMFUNN2('ABS,F,X),X)),
-			      LDISP(INTEGRATE(REMFUN2('ABS,F,X),X)))
-			      ELSE ERROR("INVALID HALFPLANE:",HALFPLANE)))$
+indefint(f,x,halfplane):=if halfplane = 'pos
+	  then integrate(remfun2('abs,f,x),x)
+	  else (if halfplane = 'neg then integrate(remfunn2('abs,f,x),x)
+		    else (if halfplane = 'both
+			      then append(
+			      ldisp(integrate(remfunn2('abs,f,x),x)),
+			      ldisp(integrate(remfun2('abs,f,x),x)))
+			      else error("invalid halfplane:",halfplane)))$
 
-ABSINT(F,X,[RANGE]):=IF RANGE = [] THEN INDEFINT(F,X,'POS)
-        ELSE (IF LENGTH(RANGE) = 1 THEN INDEFINT(F,X,FIRST(RANGE))
-		  ELSE (IF LENGTH(RANGE) = 2
-			    THEN ADEFINT(F,X,RANGE[1],RANGE[2])
-			    ELSE ERROR("TOO MANY ARGUMENTS TO ABSINT")))$
+absint(f,x,[range]):=if range = [] then indefint(f,x,'pos)
+        else (if length(range) = 1 then indefint(f,x,first(range))
+		  else (if length(range) = 2
+			    then adefint(f,x,range[1],range[2])
+			    else error("too many arguments to absint")))$
 
-FOURINT(F,X):=block([z],
-IF EVENFUNP(F,X) THEN APPEND(FOURINTCOS(F,X),LDISP(B[Z] = 0))
-	 ELSE (IF ODDFUNP(F,X) THEN APPEND(LDISP(A[Z] = 0),FOURINTSIN(F,X))
-		   ELSE FOURINTCOEFF(F,X)))$
+fourint(f,x):=block([z],
+if evenfunp(f,x) then append(fourintcos(f,x),ldisp(b[z] = 0))
+	 else (if oddfunp(f,x) then append(ldisp(a[z] = 0),fourintsin(f,x))
+		   else fourintcoeff(f,x)))$
 
-FOURINTCOEFF(F,X):=BLOCK([AZ,BZ,Z],ASSUME(Z > 0),
-	     AZ:ADEFINT(F*COS(Z*X),X,'MINF,'INF)/%PI,
-	     BZ:ADEFINT(F*SIN(Z*X),X,'MINF,'INF)/%PI,
-	     APPEND(LDISP(A[Z] = AZ),LDISP(B[Z] = BZ)))$
+fourintcoeff(f,x):=block([az,bz,z],assume(z > 0),
+	     az:adefint(f*cos(z*x),x,'minf,'inf)/%pi,
+	     bz:adefint(f*sin(z*x),x,'minf,'inf)/%pi,
+	     append(ldisp(a[z] = az),ldisp(b[z] = bz)))$
 
-FOURINTCOS(F,X):=BLOCK([AZ,Z],ASSUME(Z > 0),
-	   AZ:2*ADEFINT(F*COS(Z*X),X,0,'INF)/%PI,LDISP(A[Z] = AZ))$
+fourintcos(f,x):=block([az,z],assume(z > 0),
+	   az:2*adefint(f*cos(z*x),x,0,'inf)/%pi,ldisp(a[z] = az))$
 
-FOURINTSIN(F,X):=BLOCK([BZ,Z],ASSUME(Z > 0),
-	   BZ:2*ADEFINT(F*SIN(Z*X),X,0,'INF)/%PI,LDISP(B[Z] = BZ))$
+fourintsin(f,x):=block([bz,z],assume(z > 0),
+	   bz:2*adefint(f*sin(z*x),x,0,'inf)/%pi,ldisp(b[z] = bz))$
 
-FOURIER(F,X,P):=block([n],
-IF EVENFUNP(F,X) THEN APPEND(FOURCOS(F,X,P),LDISP(B[N] = 0))
-	 ELSE (IF ODDFUNP(F,X)
-		   THEN APPEND(LDISP(A[0] = 0),LDISP(A[N] = 0),
-			       FOURSIN(F,X,P)) ELSE FOURCOEFF(F,X,P)))$
+fourier(f,x,p):=block([n],
+if evenfunp(f,x) then append(fourcos(f,x,p),ldisp(b[n] = 0))
+	 else (if oddfunp(f,x)
+		   then append(ldisp(a[0] = 0),ldisp(a[n] = 0),
+			       foursin(f,x,p)) else fourcoeff(f,x,p)))$
 
-FOURCOEFF(F,X,P):=BLOCK([A0,AN,BN,N],ASSUME(N > 0),
-	  A0:ADEFINT(F,X,-P,P)/(2*P),AN:ADEFINT(F*COS(N*%PI*X/P),X,-P,P)/P,
-	  BN:ADEFINT(F*SIN(N*%PI*X/P),X,-P,P)/P,
-	  APPEND(LDISP(A[0] = A0),LDISP(A[N] = AN),LDISP(B[N] = BN)))$
+fourcoeff(f,x,p):=block([a0,an,bn,n],assume(n > 0),
+	  a0:adefint(f,x,-p,p)/(2*p),an:adefint(f*cos(n*%pi*x/p),x,-p,p)/p,
+	  bn:adefint(f*sin(n*%pi*x/p),x,-p,p)/p,
+	  append(ldisp(a[0] = a0),ldisp(a[n] = an),ldisp(b[n] = bn)))$
 
-FOURCOS(F,X,P):=BLOCK([A0,AN,N],ASSUME(N > 0),A0:ADEFINT(F,X,0,P)/P,
-	AN:2*ADEFINT(F*COS(N*%PI*X/P),X,0,P)/P,
-	APPEND(LDISP(A[0] = A0),LDISP(A[N] = AN)))$
+fourcos(f,x,p):=block([a0,an,n],assume(n > 0),a0:adefint(f,x,0,p)/p,
+	an:2*adefint(f*cos(n*%pi*x/p),x,0,p)/p,
+	append(ldisp(a[0] = a0),ldisp(a[n] = an)))$
 
-FOURSIN(F,X,P):=BLOCK([BN,N],ASSUME(N > 0),
-	BN:2*ADEFINT(F*SIN(N*%PI*X/P),X,0,P)/P,LDISP(B[N] = BN))$
+foursin(f,x,p):=block([bn,n],assume(n > 0),
+	bn:2*adefint(f*sin(n*%pi*x/p),x,0,p)/p,ldisp(b[n] = bn))$
 
-FOURSIMP(EXP):=IF LISTP(EXP)
-	  THEN MAP(LAMBDA([Q],FIRST(LDISP(FOURSIMP(apply('EV,[Q]))))),EXP)
-	  ELSE (IF NOT FREEOF("=",EXP) THEN LHS(EXP) = FOURSIMPLE(RHS(EXP))
-		    ELSE FOURSIMPLE(EXP))$
+foursimp(exp):=if listp(exp)
+	  then map(lambda([q],first(ldisp(foursimp(apply('ev,[q]))))),exp)
+	  else (if not freeof("=",exp) then lhs(exp) = foursimple(rhs(exp))
+		    else foursimple(exp))$
 
-FOURSIMPLE(EXP):=BLOCK([n],
-	   IF FUNP1('INTEGRATE,EXP) THEN EXP
-	       ELSE (IF SINNPIFLAG THEN EXP:RATSUBST(0,SIN(N*%PI),EXP),
-		     IF COSNPIFLAG THEN EXP:RATSUBST((-1)^N,COS(N*%PI),EXP),
-		     FACTOR(EXP)))$
+foursimple(exp):=block([n],
+	   if funp1('integrate,exp) then exp
+	       else (if sinnpiflag then exp:ratsubst(0,sin(n*%pi),exp),
+		     if cosnpiflag then exp:ratsubst((-1)^n,cos(n*%pi),exp),
+		     factor(exp)))$
 
-FOUREXPAND(L,X,P,NN):=BLOCK([SIMPSUM,SERIES,L1,LHSL1,n],
-	   IF NOT LISTP(L) THEN ERROR("FIRST ARGUMENT NOT A LIST")
-	       ELSE (IF L = [] THEN ERROR("ARGUMENT LIST IS EMPTY")
-			 ELSE (L:apply('EV,[L]),SIMPSUM:TRUE,SERIES:0,
-			       UNLESS L = [] DO
-				      (L1:FIRST(L),L:REST(L),LHSL1:LHS(L1),
-				       IF LHSL1 = A[0]
-					   THEN SERIES:SERIES+RHS(L1)
-					   ELSE (IF LHSL1 = A[N]
-						     THEN SERIES
-						     :SERIES
-						      +APPLY('SUM,
-							     [RHS(L1)
-							       *COS(
-								N*%PI*X/P),N,
-							      1,NN])
-						     ELSE (IF LHSL1 = B[N]
-							       THEN SERIES
-							       :SERIES
-								+APPLY(
-								 'SUM,
+fourexpand(l,x,p,nn):=block([simpsum,series,l1,lhsl1,n],
+	   if not listp(l) then error("first argument not a list")
+	       else (if l = [] then error("argument list is empty")
+			 else (l:apply('ev,[l]),simpsum:true,series:0,
+			       unless l = [] do
+				      (l1:first(l),l:rest(l),lhsl1:lhs(l1),
+				       if lhsl1 = a[0]
+					   then series:series+rhs(l1)
+					   else (if lhsl1 = a[n]
+						     then series
+						     :series
+						      +apply('sum,
+							     [rhs(l1)
+							       *cos(
+								n*%pi*x/p),n,
+							      1,nn])
+						     else (if lhsl1 = b[n]
+							       then series
+							       :series
+								+apply(
+								 'sum,
 								 [
-								  RHS(L1)
-								   *SIN(
-								    N*%PI*X
-								     /P),N,1,
-								  NN])
-							       ELSE ERROR(
-							       "INVALID EQUATI
-ON IN ARGUMENT LIST:",
-							       L1)))),
-			       SERIES)))$
+								  rhs(l1)
+								   *sin(
+								    n*%pi*x
+								     /p),n,1,
+								  nn])
+							       else error(
+							       "invalid equati
+on in argument list:",
+							       l1)))),
+			       series)))$
 
-TOTALFOURIER(F,X,P):=FOUREXPAND(FOURSIMP(FOURIER(F,X,P)),X,P,'INF)$
+totalfourier(f,x,p):=fourexpand(foursimp(fourier(f,x,p)),x,p,'inf)$

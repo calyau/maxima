@@ -3,28 +3,28 @@
 /* A macro for defining simple substitution macros.
    George Carrette, 12:20am  Tuesday, 12 August 1980 */
 
-EVAL_WHEN(TRANSLATE,MODEDECLARE(FUNCTION(GETCHARN),FIXNUM))$
+eval_when(translate,modedeclare(function(getcharn),fixnum))$
 
-GENSYM_CONVENTIONP(SYMBOL):=
- IF GETCHARN(SYMBOL,1)=GETCHARN('%,1) AND
-    GETCHARN(SYMBOL,2)=GETCHARN('%,1) THEN TRUE ELSE FALSE$
+gensym_conventionp(symbol):=
+ if getcharn(symbol,1)=getcharn('%,1) and
+    getcharn(symbol,2)=getcharn('%,1) then true else false$
 
-GENSYM_CONVENTIONS(EXP):=
- IF ATOM(EXP) THEN EXP ELSE FALSE
- BLOCK([GENS:[],TEMP:GENSYM_CONVENTIONS(PART(EXP,0))],
-       IF NOT TEMP=FALSE THEN GENS:CONS(TEMP,GENS),
-       EXP:ARGS(EXP),
-       WHILE NOT EXP=[] DO (TEMP:GENSYM_CONVENTIONS(FIRST(EXP)),
-                            IF NOT TEMP=FALSE THEN GENS:CONS(TEMP,GENS),
-			    EXP:REST(EXP)),
-       IF GENS=[] THEN FALSE ELSE GENS)$
+gensym_conventions(exp):=
+ if atom(exp) then exp else false
+ block([gens:[],temp:gensym_conventions(part(exp,0))],
+       if not temp=false then gens:cons(temp,gens),
+       exp:args(exp),
+       while not exp=[] do (temp:gensym_conventions(first(exp)),
+                            if not temp=false then gens:cons(temp,gens),
+			    exp:rest(exp)),
+       if gens=[] then false else gens)$
 
-INFX("=>")$
+infx("=>")$
 
-"=>"(HEADER,BODY)::=
- (IF ATOM(HEADER) THEN ERROR("bad arg to \"=>\"")
-  MAPLIST(LAMBDA([U],IF NOT ATOM(U)
-                       THEN ERROR(U,"Bad variable in arglist of \"=>\"")),
-	  ARGS(HEADER)), 
-  BLOCK([GENS:GENSYM_CONVENTIONS(BODY)],
+"=>"(header,body)::=
+ (if atom(header) then error("bad arg to \"=>\"")
+  maplist(lambda([u],if not atom(u)
+                       then error(u,"bad variable in arglist of \"=>\"")),
+	  args(header)), 
+  block([gens:gensym_conventions(body)],
         

@@ -1,32 +1,32 @@
 
-DELINT(EXPR,VAR,[LIMITS]):=BLOCK([ARG,ARGLIST,ISD],
-ARGLIST:CONS(VAR,LIMITS),
-IF LENGTH(LIMITS)#0 AND LENGTH(LIMITS)#2 THEN ERROR(
-"Wrong number of arguments to delint"),
-IF NOT ATOM(EXPR) THEN
-IF PART(EXPR,0)="+" OR (PART(EXPR,0)="-" AND LENGTH(EXPR)>1) THEN
-	RETURN((APPLY('DELINT,CONS(PART(EXPR,1),ARGLIST))+APPLY
-	('DELINT,CONS(EXPR-PART(EXPR,1),ARGLIST)))),
-ISD:ISDELTAP(EXPR),
-IF ISD=FALSE THEN RETURN(APPLY('INTEGRATE,CONS(EXPR,ARGLIST))),
-ARG:RHS(PART(ISD,2)),
-IF FREEOF(VAR,ARG) THEN RETURN(APPLY('INTEGRATE,CONS(EXPR,ARGLIST))),
-APPLY('DELINTD,CONS(EXPR,CONS(ARG,ARGLIST))))$
+delint(expr,var,[limits]):=block([arg,arglist,isd],
+arglist:cons(var,limits),
+if length(limits)#0 and length(limits)#2 then error(
+"wrong number of arguments to delint"),
+if not atom(expr) then
+if part(expr,0)="+" or (part(expr,0)="-" and length(expr)>1) then
+	return((apply('delint,cons(part(expr,1),arglist))+apply
+	('delint,cons(expr-part(expr,1),arglist)))),
+isd:isdeltap(expr),
+if isd=false then return(apply('integrate,cons(expr,arglist))),
+arg:rhs(part(isd,2)),
+if freeof(var,arg) then return(apply('integrate,cons(expr,arglist))),
+apply('delintd,cons(expr,cons(arg,arglist))))$
 
-/* LOADFILE(UTILS,FASL,MPS)$ */
+/* loadfile(utils,fasl,mps)$ */
 
-MATCHDECLARE([DUM1,DUM2],TRUE)$
+matchdeclare([dum1,dum2],true)$
 
 
-DEFMATCH(ISDELTAP,DUM1*DELTA(DUM2))$
-DELINTD(GRAND,ARG,VAR,[L]):=
-BLOCK([PREDERROR:FALSE,PROGRAMMODE:TRUE,REST,NSOL,SOLNS,JAC,ANS],
-SOLNS:MAP(RHS,SOLVE(ARG,VAR)),
-IF (NSOL:LENGTH(SOLNS))=0 THEN RETURN(0)
-,SOLNS:REMOVEIMAG(SOLNS),
-IF LENGTH(L)=2 THEN SOLNS:REM_OUT_OF_RANGE(SOLNS,L[1],L[2]),
-IF (NSOL:LENGTH(SOLNS))=0 THEN RETURN(0),
-REST:GRAND/DELTA(ARG),
-JAC:ABS(DIFF(ARG,VAR)),
-IF LENGTH(L)=2 THEN SUM(SUBST((SOLNS[N]),VAR,REST/JAC),N,1,NSOL)
-	ELSE SUM(SUBST(SOLNS[N],VAR,REST/JAC)*THETA(VAR-SOLNS[N]),N,1,NSOL))$
+defmatch(isdeltap,dum1*delta(dum2))$
+delintd(grand,arg,var,[l]):=
+block([prederror:false,programmode:true,rest,nsol,solns,jac,ans],
+solns:map(rhs,solve(arg,var)),
+if (nsol:length(solns))=0 then return(0)
+,solns:removeimag(solns),
+if length(l)=2 then solns:rem_out_of_range(solns,l[1],l[2]),
+if (nsol:length(solns))=0 then return(0),
+rest:grand/delta(arg),
+jac:abs(diff(arg,var)),
+if length(l)=2 then sum(subst((solns[n]),var,rest/jac),n,1,nsol)
+	else sum(subst(solns[n],var,rest/jac)*theta(var-solns[n]),n,1,nsol))$

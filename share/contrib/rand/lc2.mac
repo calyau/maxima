@@ -13,84 +13,84 @@
    *            						 *
    ***************************************************************
 */ 
-/* PROGRAM NUMBER 2: LC2(), LINDSTEDT'S METHOD FOR MORE GENERAL
-   DIFFERENTIAL EQUATIONS. SEE PAGE 14 IN "PERTURBATION METHODS,
-   BIFURCATION THEORY AND COMPUTER ALGEBRA". */
+/* program number 2: lc2(), lindstedt's method for more general
+   differential equations. see page 14 in "perturbation methods,
+   bifurcation theory and computer algebra". */
 
 
 
 
-LC2():=(
+lc2():=(
 
-/* INPUT THE DIFFERENTIAL EQUATION */
-KILL(X,Y,XYLIST,PARAMLIST),
-PRINT("THE D.E.'S ARE OF THE FORM X' = -Y + E*F, Y' = X + E*G"),
-PRINT("WHERE F,G ARE OF THE FORM: 
-          QUADRATIC + E*(LINEAR + CUBIC) + E^2*(QUARTIC) + ..."),
-F:READ("ENTER F:"),
-PRINT("F =",F),
-G:READ("ENTER G:"),
-PRINT("G =",G),
+/* input the differential equation */
+kill(x,y,xylist,paramlist),
+print("the d.e.'s are of the form x' = -y + e*f, y' = x + e*g"),
+print("where f,g are of the form: 
+          quadratic + e*(linear + cubic) + e^2*(quartic) + ..."),
+f:read("enter f:"),
+print("f =",f),
+g:read("enter g:"),
+print("g =",g),
 
-/* SET UP THE SERIES EXPANSIONS */
-N:READ("ENTER TRUNCATION ORDER:"),
-K[0]:1,
-K[1]:0,
-W:SUM(K[I]*E^I,I,0,N),
-XY:[X:B[0]*COS(Z)+SUM(XX[I](Z)*E^I,I,1,N),
-    Y:B[0]*SIN(Z)+SUM(YY[I](Z)*E^I,I,1,N)],
-XYLIST:[XX[0](Z)=B[0]*COS(Z),
-        YY[0](Z)=B[0]*SIN(Z)],
+/* set up the series expansions */
+n:read("enter truncation order:"),
+k[0]:1,
+k[1]:0,
+w:sum(k[i]*e^i,i,0,n),
+xy:[x:b[0]*cos(z)+sum(xx[i](z)*e^i,i,1,n),
+    y:b[0]*sin(z)+sum(yy[i](z)*e^i,i,1,n)],
+xylist:[xx[0](z)=b[0]*cos(z),
+        yy[0](z)=b[0]*sin(z)],
 
-/* PLUG INTO D.E.'S AND COLLECT TERMS */
-TEMP1:[-DIFF(X,Z)*W-Y+E*EV(F,DIFF),-DIFF(Y,Z)*W+X+E*EV(G,DIFF)],
-TEMP2:TAYLOR(TEMP1,E,0,N),
-FOR I:1 THRU N DO EQ[I]:COEFF(TEMP2,E,I),
+/* plug into d.e.'s and collect terms */
+temp1:[-diff(x,z)*w-y+e*ev(f,diff),-diff(y,z)*w+x+e*ev(g,diff)],
+temp2:taylor(temp1,e,0,n),
+for i:1 thru n do eq[i]:coeff(temp2,e,i),
 
 
-/* MAIN LOOP */
-FOR I:1 THRU N DO BLOCK(
+/* main loop */
+for i:1 thru n do block(
 
-/* TRIGONOMETRIC SIMPLIFICATION */
-TEMP3:EXPAND(TRIGREDUCE(EXPAND(EV(EQ[I],XYLIST,PARAMLIST,DIFF)))),
+/* trigonometric simplification */
+temp3:expand(trigreduce(expand(ev(eq[i],xylist,paramlist,diff)))),
 
-/* ELIMINATE SECULAR TERMS */
-IF I=1 THEN (TEMP4:TEMP3, GO(SKIP_TO_HERE_FIRST_TIME))
-       ELSE NEWPARAMLIST:
-             SOLVE([COEFF(PART(TEMP3,1),SIN(Z))-COEFF(PART(TEMP3,2),COS(Z)),
-                    COEFF(PART(TEMP3,1),COS(Z))+COEFF(PART(TEMP3,2),SIN(Z))],
-                   [B[I-2],K[I]]),
-IF I=2 THEN (PARAMLIST:NEWPARAMLIST,
-             PRINT("CHOICES FOR LIMIT CYCLE AMPLITUDE:"),
-             FOR J:1 THRU LENGTH(PARAMLIST) DO
-                 PRINT(J,")  ",PART(PARAMLIST,J,1,2)),
-             R1:READ("ENTER CHOICE NUMBER"),
-             PARAMLIST:PART(PARAMLIST,R1))
-        ELSE PARAMLIST:APPEND(PARAMLIST,NEWPARAMLIST),
-TEMP4:EXPAND(EV(TEMP3,PARAMLIST)),
-XYLIST:EXPAND(EV(XYLIST,PARAMLIST)),
-SKIP_TO_HERE_FIRST_TIME,
+/* eliminate secular terms */
+if i=1 then (temp4:temp3, go(skip_to_here_first_time))
+       else newparamlist:
+             solve([coeff(part(temp3,1),sin(z))-coeff(part(temp3,2),cos(z)),
+                    coeff(part(temp3,1),cos(z))+coeff(part(temp3,2),sin(z))],
+                   [b[i-2],k[i]]),
+if i=2 then (paramlist:newparamlist,
+             print("choices for limit cycle amplitude:"),
+             for j:1 thru length(paramlist) do
+                 print(j,")  ",part(paramlist,j,1,2)),
+             r1:read("enter choice number"),
+             paramlist:part(paramlist,r1))
+        else paramlist:append(paramlist,newparamlist),
+temp4:expand(ev(temp3,paramlist)),
+xylist:expand(ev(xylist,paramlist)),
+skip_to_here_first_time,
 
-/* OUTPUT PROGRESS */
-PRINT("DONE WITH STEP",I,"OF",N),
+/* output progress */
+print("done with step",i,"of",n),
 
-/* EXIT HERE IF LAST ITERATION */
-IF I=N THEN GO(END),
+/* exit here if last iteration */
+if i=n then go(end),
 
-/* SOLVE THE D.E.'S */
-TEMP4A:SUBST(DUMMY(Z),YY[I](Z),TEMP4),
-ATVALUE(DUMMY(Z),Z=0,0),
-TEMP5:DESOLVE(TEMP4A,[XX[I](Z),DUMMY(Z)]),
-TEMP5A:SUBST(YY[I](Z),DUMMY(Z),TEMP5),
-TEMP5B:SUBST(B[I],XX[I](0),TEMP5A),
-XYLIST:APPEND(XYLIST,[TEMP5B]),
+/* solve the d.e.'s */
+temp4a:subst(dummy(z),yy[i](z),temp4),
+atvalue(dummy(z),z=0,0),
+temp5:desolve(temp4a,[xx[i](z),dummy(z)]),
+temp5a:subst(yy[i](z),dummy(z),temp5),
+temp5b:subst(b[i],xx[i](0),temp5a),
+xylist:append(xylist,[temp5b]),
 
-/* END OF MAIN LOOP */
-END),
+/* end of main loop */
+end),
 
-/* OUTPUT RESULTS */
-W:EV(W,PARAMLIST),
-SOLN:TAYLOR(EV([X,Y],XYLIST,PARAMLIST),E,0,N-2),
-PRINT("X =",PART(SOLN,1)),
-PRINT("Y =",PART(SOLN,2)),
-PRINT("W =",W))$
+/* output results */
+w:ev(w,paramlist),
+soln:taylor(ev([x,y],xylist,paramlist),e,0,n-2),
+print("x =",part(soln,1)),
+print("y =",part(soln,2)),
+print("w =",w))$

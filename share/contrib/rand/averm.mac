@@ -13,119 +13,119 @@
    *            						 *
    ***************************************************************
 */ 
-/* PROGRAM NUMBER 8: AVERM(), ALLOWS MTH ORDER AVERAGING. SEE PAGE 128 IN
-   "PERTURBATION METHODS, BIFURCATION THEORY AND COMPUTER ALGEBRA". */
+/* program number 8: averm(), allows mth order averaging. see page 128 in
+   "perturbation methods, bifurcation theory and computer algebra". */
 
 
-/* PROGRAM TO PERFORM MTH ORDER AVERAGING 
-   ON AN N-DIMENSIONAL SYSTEM OF NONAUTONOMOUS ODE'S */
+/* program to perform mth order averaging 
+   on an n-dimensional system of nonautonomous ode's */
 
-/* AVERAGING IS PERFORMED BY CONVERTING TRIG TERMS TO
-   COMPLEX EXPONENTIALS, THEN KILLING EXPONENTIALS   */
+/* averaging is performed by converting trig terms to
+   complex exponentials, then killing exponentials   */
 
-AVERM():=BLOCK(
-      CHOICE1:READ("DO YOU WANT TO ENTER A NEW PROBLEM? (Y/N)"),
-      IF CHOICE1 = N THEN GO(JUMP1),
-      KILL(X),
-      PRINT("ARE YOU CONSIDERING A WEAKLY NONLINEAR OSCILLATOR OF THE FORM"),
-      CHOICE2:READ("Z'' + OMEGA0^2 Z = EPS F(Z,ZDOT,T) ? (Y/N)"),
-      IF CHOICE2 = N THEN GO(JUMP2),
+averm():=block(
+      choice1:read("do you want to enter a new problem? (y/n)"),
+      if choice1 = n then go(jump1),
+      kill(x),
+      print("are you considering a weakly nonlinear oscillator of the form"),
+      choice2:read("z'' + omega0^2 z = eps f(z,zdot,t) ? (y/n)"),
+      if choice2 = n then go(jump2),
 		
-/* ENTER DATA FOR SINGLE OSCILLATOR PROBLEM */
-      N:2,
-      OMEGA0:READ("ENTER OMEGA0"),
-      F:READ("ENTER F(Z,ZDOT,T)")*EPS,
-/* DOES F(Z,ZDOT,T) DEPEND EXPLICITLY ON T? */
-      TEST:DIFF(F,T),
-      IF TEST=0 THEN OMEGA1:OMEGA0 
-            ELSE(
-      	    OMEGA:READ("ENTER THE FORCING FREQUENCY"),
-            K:READ("ENTER THE ORDER OF THE SUBHARMONIC RESONANCE"),
-            OMEGA1:OMEGA/K),
-/* VAN DER POL TRANSFORMATION */
-      ZSUB:[Z=COS(OMEGA1*T)*X1-SIN(OMEGA1*T)*X2,
-               ZDOT=-OMEGA1*SIN(OMEGA1*T)*X1-OMEGA1*COS(OMEGA1*T)*X2],
-/* SUBSTITUTE ZSUB INTO TRANSFORMED EQS */
-/* SCALE TIME SO THAT AVERAGING OCCURS OVER PERIOD 2 PI */
-      VF:EV([-1/OMEGA1^2*(EPS*KAPOMEGA/K^2*Z + F)*SIN(OMEGA1*T),
-             -1/OMEGA1^2*(EPS*KAPOMEGA/K^2*Z + F)*COS(OMEGA1*T)],
-             ZSUB,T=TAU/OMEGA1,INFEVAL),
-      VF:EV(VF,TAU=T),
-      IF OMEGA1 # OMEGA0 
-      THEN PRINT("WE WRITE EPS*KAPOMEGA =",OMEGA^2-K^2*OMEGA0^2)
-            ELSE VF:EV(VF,KAPOMEGA=0),
-      VF2:EXPAND(EXPONENTIALIZE(VF)),
-      FOR I:1 THRU 2 DO VF2[I]:MAP(FACTOR,VF2[I]),
-      X:[X1,X2],
-      GO(JUMP1),
+/* enter data for single oscillator problem */
+      n:2,
+      omega0:read("enter omega0"),
+      f:read("enter f(z,zdot,t)")*eps,
+/* does f(z,zdot,t) depend explicitly on t? */
+      test:diff(f,t),
+      if test=0 then omega1:omega0 
+            else(
+      	    omega:read("enter the forcing frequency"),
+            k:read("enter the order of the subharmonic resonance"),
+            omega1:omega/k),
+/* van der pol transformation */
+      zsub:[z=cos(omega1*t)*x1-sin(omega1*t)*x2,
+               zdot=-omega1*sin(omega1*t)*x1-omega1*cos(omega1*t)*x2],
+/* substitute zsub into transformed eqs */
+/* scale time so that averaging occurs over period 2 pi */
+      vf:ev([-1/omega1^2*(eps*kapomega/k^2*z + f)*sin(omega1*t),
+             -1/omega1^2*(eps*kapomega/k^2*z + f)*cos(omega1*t)],
+             zsub,t=tau/omega1,infeval),
+      vf:ev(vf,tau=t),
+      if omega1 # omega0 
+      then print("we write eps*kapomega =",omega^2-k^2*omega0^2)
+            else vf:ev(vf,kapomega=0),
+      vf2:expand(exponentialize(vf)),
+      for i:1 thru 2 do vf2[i]:map(factor,vf2[i]),
+      x:[x1,x2],
+      go(jump1),
 
 
-JUMP2,
-/* ENTER DATA FOR GENERAL PROBLEM OF N ODE'S */
-      N:READ("ENTER NUMBER OF DIFFERENTIAL EQUATIONS"),
-      X:MAKELIST(CONCAT('X,I),I,1,N),	 
-      PRINT("THE ODE'S ARE OF THE FORM:"),
-      PRINT("DX/DT = EPS F(X,T)"),
-      PRINT("WHERE X =",X),
-      PRINT("SCALE TIME T SUCH THAT AVERAGING OCCURS OVER 2 PI"),
-      VF:MAKELIST(READ("ENTER RHS(",I,")=EPS*...")*EPS,I,1,N),
-      FOR I:1 THRU N DO PRINT("D",X[I],"/DT =",VF[I]),
-      VF2:EXPAND(EXPONENTIALIZE(VF)),
-      FOR I:1 THRU N DO VF2[I]:MAP(FACTOR,VF2[I]),
+jump2,
+/* enter data for general problem of n ode's */
+      n:read("enter number of differential equations"),
+      x:makelist(concat('x,i),i,1,n),	 
+      print("the ode's are of the form:"),
+      print("dx/dt = eps f(x,t)"),
+      print("where x =",x),
+      print("scale time t such that averaging occurs over 2 pi"),
+      vf:makelist(read("enter rhs(",i,")=eps*...")*eps,i,1,n),
+      for i:1 thru n do print("d",x[i],"/dt =",vf[i]),
+      vf2:expand(exponentialize(vf)),
+      for i:1 thru n do vf2[i]:map(factor,vf2[i]),
 
 
-JUMP1,
-/* AVERAGING */
-      M:READ("ENTER ORDER OF AVERAGING"),
-      IF M=1 
-/* FIRST ORDER AVERAGING */         
-      THEN (TEMP0:DEMOIVRE(APPLY1(F,KILLEXP)),
-           RESULT:TAYLOR(TEMP0,EPS,0,1))
-/* AVERAGING OF ORDER M > 1 */
-      ELSE
-      Y:MAKELIST(CONCAT('Y,I),I,1,N),
-      WLIST:MAKELIST(CONCAT('W,I),I,1,N),      
-      DEPENDS(WLIST,CONS(T,Y)),
-      TRAFO:Y,
-      XSUB:MAPLIST("=",Y,X),
-/* WNULL SETS WLIST TO ZERO */
-      WNULL:VFUN(WLIST,0),
-      JACOB[I,J] := DIFF(WLIST[I],Y[J]),
-      JAC:GENMATRIX(JACOB,N,N),
-/* MAIN LOOP */
-      FOR I :1 THRU M-1 DO (
-	  TEMP1:MAPLIST("=",X,Y+EPS^I*WLIST),
-/* HERE X IS THE LIST [X1,X2,...,XN], Y IS THE LIST [Y1,Y2,...,YN],
-        WLIST IS THE TRANSFORMATION VECTOR [W1,W2,...,WN] */
-	  TEMP2:TAYLOR(SUM((-EPS)^(I*J)*JAC^^J,J,0,M-1).
-		                (EV(VF2,TEMP1) - DIFF(WLIST,T)*EPS^I),EPS,0,M),
-/* JAC IS THE JACOBIAN D WLIST/DY OF THE TRANSFORMATION WLIST */
-          TEMP3:MATTOLIST(TEMP2,N),
-          TEMP4:MAP(EXPAND,TAYLOR(EV(TEMP3,WNULL,DIFF),EPS,0,I)),
-/* THE ITH ORDER MEAN */
-	  MEAN:APPLY1(TEMP4,KILLEXP),
-	  TEMP6:EXPAND(TEMP4-MEAN),
-	  TEMP7:EV(INTEGRATE(TEMP6,T),EPS=1),
-/* THE ITH ORDER TRANSFORMATION */	  
-          TEMP8:MAPLIST("=",WLIST,TEMP7),
-	  TEMP9:RATSIMP(TEMP8),
-/* THE TRANSFORMED DE */
-	  VF2:EXPAND(EV(TEMP3,TEMP9,DIFF,XSUB,INFEVAL)),
-/* THE SUM OF ALL TRANSFORMATIONS */
-	  TRAFO:EXPAND(TRAFO+EV(EPS^I*WLIST,TEMP9))),
-/* END OF MAIN LOOP */
-      PRINT("THE TRANSFORMATION: ",X,"="),
-      PRINT(RATSIMP(DEMOIVRE(TRAFO))),
-/* THE FINAL AVERAGING */
-      RESULT:APPLY1(VF2,KILLEXP),
-/* REPLACE X BY Y */
-      FOR I:1 THRU N DO RESULT:SUBST(CONCAT('Y,I),CONCAT('X,I),RESULT),
-      RESULT)$
+jump1,
+/* averaging */
+      m:read("enter order of averaging"),
+      if m=1 
+/* first order averaging */         
+      then (temp0:demoivre(apply1(f,killexp)),
+           result:taylor(temp0,eps,0,1))
+/* averaging of order m > 1 */
+      else
+      y:makelist(concat('y,i),i,1,n),
+      wlist:makelist(concat('w,i),i,1,n),      
+      depends(wlist,cons(t,y)),
+      trafo:y,
+      xsub:maplist("=",y,x),
+/* wnull sets wlist to zero */
+      wnull:vfun(wlist,0),
+      jacob[i,j] := diff(wlist[i],y[j]),
+      jac:genmatrix(jacob,n,n),
+/* main loop */
+      for i :1 thru m-1 do (
+	  temp1:maplist("=",x,y+eps^i*wlist),
+/* here x is the list [x1,x2,...,xn], y is the list [y1,y2,...,yn],
+        wlist is the transformation vector [w1,w2,...,wn] */
+	  temp2:taylor(sum((-eps)^(i*j)*jac^^j,j,0,m-1).
+		                (ev(vf2,temp1) - diff(wlist,t)*eps^i),eps,0,m),
+/* jac is the jacobian d wlist/dy of the transformation wlist */
+          temp3:mattolist(temp2,n),
+          temp4:map(expand,taylor(ev(temp3,wnull,diff),eps,0,i)),
+/* the ith order mean */
+	  mean:apply1(temp4,killexp),
+	  temp6:expand(temp4-mean),
+	  temp7:ev(integrate(temp6,t),eps=1),
+/* the ith order transformation */	  
+          temp8:maplist("=",wlist,temp7),
+	  temp9:ratsimp(temp8),
+/* the transformed de */
+	  vf2:expand(ev(temp3,temp9,diff,xsub,infeval)),
+/* the sum of all transformations */
+	  trafo:expand(trafo+ev(eps^i*wlist,temp9))),
+/* end of main loop */
+      print("the transformation: ",x,"="),
+      print(ratsimp(demoivre(trafo))),
+/* the final averaging */
+      result:apply1(vf2,killexp),
+/* replace x by y */
+      for i:1 thru n do result:subst(concat('y,i),concat('x,i),result),
+      result)$
 
 
-/* AUXILIARY FUNCTIONS */
-      VFUN(LIST,VALUE):=MAP(LAMBDA([U],U=VALUE),LIST)$
-      MATTOLIST(MAT,DIM):=IF DIM>1 THEN MAKELIST(MAT[I,1],I,1,DIM) ELSE [MAT]$
-      CONTAINS_T(EXP):= NOT FREEOF(T,EXP)$
-      MATCHDECLARE(Q,CONTAINS_T)$
-      DEFRULE(KILLEXP,EXP(Q),0)$
+/* auxiliary functions */
+      vfun(list,value):=map(lambda([u],u=value),list)$
+      mattolist(mat,dim):=if dim>1 then makelist(mat[i,1],i,1,dim) else [mat]$
+      contains_t(exp):= not freeof(t,exp)$
+      matchdeclare(q,contains_t)$
+      defrule(killexp,exp(q),0)$

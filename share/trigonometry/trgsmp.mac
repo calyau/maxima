@@ -8,15 +8,15 @@ into sin and cos (in lower case)*/
   reformatting and some streamlining for translation. -asb
 */
 
-EVAL_WHEN([TRANSLATE],
-	  TRANSCOMPILE:TRUE,
-          TR_BOUND_FUNCTION_APPLYP:FALSE,
-          MODE_DECLARE(FUNCTION(EXPNLENGTH,ARGSLENGTH),FIXNUM))$
+eval_when([translate],
+	  transcompile:true,
+          tr_bound_function_applyp:false,
+          mode_declare(function(expnlength,argslength),fixnum))$
 
 /* Variable definitions */
 
-DEFINE_VARIABLE(BESTLENGTH,0,FIXNUM)$
-DEFINE_VARIABLE(TRYLENGTH,0,FIXNUM)$
+define_variable(bestlength,0,fixnum)$
+define_variable(trylength,0,fixnum)$
 
 /* Properties */
 
@@ -25,130 +25,130 @@ DEFINE_VARIABLE(TRYLENGTH,0,FIXNUM)$
      FOO^2=GET(FOO,'UNITCOF)
            +GET(FOO,'COMPLEMENT_COF)*GET(FOO,'COMPLEMENT_FUNCTION)^2*/
 
-PUT('SIN,'COS,'COMPLEMENT_FUNCTION)$
-PUT('COS,'SIN,'COMPLEMENT_FUNCTION)$
-PUT('SINH,'COSH,'COMPLEMENT_FUNCTION)$
-PUT('COSH,'SINH,'COMPLEMENT_FUNCTION)$
-PUT('COS,1,'UNITCOF)$
-PUT('SIN,1,'UNITCOF)$
-PUT('COSH,1,'UNITCOF)$
-PUT('SINH,-1,'UNITCOF)$
-PUT('COS,-1,'COMPLEMENT_COF)$
-PUT('SIN,-1,'COMPLEMENT_COF)$
-PUT('COSH,1,'COMPLEMENT_COF)$
-PUT('SINH,1,'COMPLEMENT_COF)$
+put('sin,'cos,'complement_function)$
+put('cos,'sin,'complement_function)$
+put('sinh,'cosh,'complement_function)$
+put('cosh,'sinh,'complement_function)$
+put('cos,1,'unitcof)$
+put('sin,1,'unitcof)$
+put('cosh,1,'unitcof)$
+put('sinh,-1,'unitcof)$
+put('cos,-1,'complement_cof)$
+put('sin,-1,'complement_cof)$
+put('cosh,1,'complement_cof)$
+put('sinh,1,'complement_cof)$
 
-PUT('SIN,'TRIGONOMETRIC,'TYPE)$
-PUT('COS,'TRIGONOMETRIC,'TYPE)$
-PUT('SINH,'HYPER_TRIGONOMETRIC,'TYPE)$
-PUT('COSH,'HYPER_TRIGONOMETRIC,'TYPE)$
+put('sin,'trigonometric,'type)$
+put('cos,'trigonometric,'type)$
+put('sinh,'hyper_trigonometric,'type)$
+put('cosh,'hyper_trigonometric,'type)$
 
 /* Declarations */
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],
-	  MATCHDECLARE(A,TRUE))$
+eval_when([translate,batch,demo],
+	  matchdeclare(a,true))$
 
 /* Predicates */
 
-TRIGONOMETRICP(EXP):=
-  IS(GET(INPART(EXP,0),'TYPE)='TRIGONOMETRIC
-     OR GET(PIECE,'TYPE)='HYPER_TRIGONOMETRIC)$
+trigonometricp(exp):=
+  is(get(inpart(exp,0),'type)='trigonometric
+     or get(piece,'type)='hyper_trigonometric)$
 
 /* Rules */
 
-DEFRULE(TRIGRULE1,TAN(A),SIN(A)/COS(A))$
-DEFRULE(TRIGRULE2,SEC(A),1/COS(A))$
-DEFRULE(TRIGRULE3,CSC(A),1/SIN(A))$
-DEFRULE(TRIGRULE4,COT(A),COS(A)/SIN(A))$
-DEFRULE(HTRIGRULE1,TANH(A),SINH(A)/COSH(A))$
-DEFRULE(HTRIGRULE2,SECH(A),1/COSH(A))$
-DEFRULE(HTRIGRULE3,CSCH(A),1/SINH(A))$
-DEFRULE(HTRIGRULE4,COTH(A),COSH(A)/SINH(A))$
+defrule(trigrule1,tan(a),sin(a)/cos(a))$
+defrule(trigrule2,sec(a),1/cos(a))$
+defrule(trigrule3,csc(a),1/sin(a))$
+defrule(trigrule4,cot(a),cos(a)/sin(a))$
+defrule(htrigrule1,tanh(a),sinh(a)/cosh(a))$
+defrule(htrigrule2,sech(a),1/cosh(a))$
+defrule(htrigrule3,csch(a),1/sinh(a))$
+defrule(htrigrule4,coth(a),cosh(a)/sinh(a))$
 
 /* Functions */
 
-TRIGSIMP(X):=
-  TRIGSIMP3(RADCAN(APPLY1(X,
-                          TRIGRULE1,TRIGRULE2,TRIGRULE3,TRIGRULE4,
-			  HTRIGRULE1,HTRIGRULE2,HTRIGRULE3,HTRIGRULE4)))$
+trigsimp(x):=
+  trigsimp3(radcan(apply1(x,
+                          trigrule1,trigrule2,trigrule3,trigrule4,
+			  htrigrule1,htrigrule2,htrigrule3,htrigrule4)))$
 
-TRIGSIMP3(EXPN):=
-   (EXPN:TOTALDISREP(EXPN),
-    RATSIMP(TRIGSIMP1(NUM(EXPN))/TRIGSIMP1(DENOM(EXPN)))) $
+trigsimp3(expn):=
+   (expn:totaldisrep(expn),
+    ratsimp(trigsimp1(num(expn))/trigsimp1(denom(expn)))) $
 
-TRIGSIMP1(EXPN):=BLOCK(
-   [LISTOFTRIGSQ, BESTLENGTH, TRYLENGTH],
-   LISTOFTRIGSQ: LISTOFTRIGSQ(EXPN),
-   BESTLENGTH: 999999,
-   IF LISTOFTRIGSQ#[]
-   THEN IMPROVE(EXPN,EXPN,LISTOFTRIGSQ)
-   ELSE EXPN)$
+trigsimp1(expn):=block(
+   [listoftrigsq, bestlength, trylength],
+   listoftrigsq: listoftrigsq(expn),
+   bestlength: 999999,
+   if listoftrigsq#[]
+   then improve(expn,expn,listoftrigsq)
+   else expn)$
 
-IMPROVE(EXPN,SUBSOFAR,LISTOFTRIGSQ):=
-  IF LISTOFTRIGSQ=[]
-  THEN (IF (TRYLENGTH:EXPNLENGTH(SUBSOFAR))<BESTLENGTH
-	THEN (BESTLENGTH:TRYLENGTH,SUBSOFAR)
-        ELSE EXPN)
-  ELSE (SUBSOFAR:IMPROVE(EXPN,SUBSOFAR,REST(LISTOFTRIGSQ)),
-	FOR ALT IN FIRST(LISTOFTRIGSQ) DO 
-            SUBSOFAR:
-	    IMPROVE(SUBSOFAR,
-		    RATSUBST(GET(INPART(ALT,0),'UNITCOF)
-           		     +GET(PIECE,'COMPLEMENT_COF)
-			      *GET(PIECE,'COMPLEMENT_FUNCTION)(FIRST(ALT))^2,
-                             ALT^2,SUBSOFAR),
-		    REST(LISTOFTRIGSQ)),
-	SUBSOFAR)$
+improve(expn,subsofar,listoftrigsq):=
+  if listoftrigsq=[]
+  then (if (trylength:expnlength(subsofar))<bestlength
+	then (bestlength:trylength,subsofar)
+        else expn)
+  else (subsofar:improve(expn,subsofar,rest(listoftrigsq)),
+	for alt in first(listoftrigsq) do 
+            subsofar:
+	    improve(subsofar,
+		    ratsubst(get(inpart(alt,0),'unitcof)
+           		     +get(piece,'complement_cof)
+			      *get(piece,'complement_function)(first(alt))^2,
+                             alt^2,subsofar),
+		    rest(listoftrigsq)),
+	subsofar)$
 
-LISTOFTRIGSQ(EXPN):=
-  IF ATOM(EXPN)
-  THEN []
-  ELSE BLOCK([INFLAG, ANS:[]],
-             DECLARE(ANS,SPECIAL),
-             IF INPART(EXPN,0)="^" AND INTEGERP(INPART(EXPN,2))
-                AND PIECE>=2
-             THEN IF ATOM(EXPN:INPART(EXPN,1))
-                  THEN RETURN([])
-	          ELSE IF TRIGONOMETRICP(EXPN)
-                       THEN RETURN([[EXPN]]),
-             INFLAG:TRUE,
-             FOR ARG IN EXPN DO
-                 ANS:SPECIALUNION(LISTOFTRIGSQ(ARG),ANS),
-             ANS)$
+listoftrigsq(expn):=
+  if atom(expn)
+  then []
+  else block([inflag, ans:[]],
+             declare(ans,special),
+             if inpart(expn,0)="^" and integerp(inpart(expn,2))
+                and piece>=2
+             then if atom(expn:inpart(expn,1))
+                  then return([])
+	          else if trigonometricp(expn)
+                       then return([[expn]]),
+             inflag:true,
+             for arg in expn do
+                 ans:specialunion(listoftrigsq(arg),ans),
+             ans)$
 
-SPECIALUNION(LIST1,LIST2):=
-  IF LIST1=[]
-  THEN LIST2
-  ELSE IF LIST2=[]
-       THEN LIST1
-       ELSE BLOCK([ALTERNATES:FIRST(LIST1)],
-                  FOR ALT IN ALTERNATES DO
-                      LIST2:UPDATE(ALT,GET(INPART(ALT,0),'COMPLEMENT_FUNCTION)),
-                  SPECIALUNION(REST(LIST1),LIST2))$
+specialunion(list1,list2):=
+  if list1=[]
+  then list2
+  else if list2=[]
+       then list1
+       else block([alternates:first(list1)],
+                  for alt in alternates do
+                      list2:update(alt,get(inpart(alt,0),'complement_function)),
+                  specialunion(rest(list1),list2))$
 
-DECLARE(LIST2,SPECIAL)$
+declare(list2,special)$
 
-UPDATE(FORM, COMPLEMENT):=BLOCK(
-   [ANS],
-   DECLARE(ANS,SPECIAL),
-   COMPLEMENT: APPLY(COMPLEMENT,[INPART(FORM,1)]),
-   ANS: FOR ELEMENT IN LIST2 DO
-      IF MEMBER(FORM, ELEMENT) THEN RETURN('FOUND)
-      ELSE IF MEMBER(COMPLEMENT,ELEMENT) THEN RETURN(
-         CONS([FORM,COMPLEMENT], DELETE(ELEMENT,LIST2))),
-   IF ANS='FOUND
-   THEN LIST2
-   ELSE IF ANS='DONE
-        THEN CONS([FORM],LIST2)
-        ELSE ANS)$
+update(form, complement):=block(
+   [ans],
+   declare(ans,special),
+   complement: apply(complement,[inpart(form,1)]),
+   ans: for element in list2 do
+      if member(form, element) then return('found)
+      else if member(complement,element) then return(
+         cons([form,complement], delete(element,list2))),
+   if ans='found
+   then list2
+   else if ans='done
+        then cons([form],list2)
+        else ans)$
 
-EXPNLENGTH(EXPR):=BLOCK(
-  [INFLAG:TRUE],
-  IF ATOM(EXPR)
-  THEN 1
-  ELSE 1+ARGSLENGTH(ARGS(EXPR)))$
+expnlength(expr):=block(
+  [inflag:true],
+  if atom(expr)
+  then 1
+  else 1+argslength(args(expr)))$
 
-ARGSLENGTH(ARGS):=
-  APPLY("+",MAP('EXPNLENGTH,ARGS))$
+argslength(args):=
+  apply("+",map('expnlength,args))$
 
 

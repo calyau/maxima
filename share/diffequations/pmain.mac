@@ -143,17 +143,17 @@ ldf0(i):=block([],if ldsw[0,i]#y then (ldsw[0,i]:y,
    if i=17 then load(peqp11) else
    if i=18 then load(peqp12) ))$
 
-LODESAVE(FILENAME,[LODE_FUNCTIONS]):=
-  IF STATUS(FEATURE,ITS)=TRUE
-  THEN APPLY('FASSAVE,CONS(FILENAME,LODE_FUNCTIONS))
-  ELSE BLOCK([PACKAGEFILE:TRUE],
-	     IF STATUS(FEATURE,UNIX)=TRUE
-	     THEN APPLY('SAVE,
-			CONS(CONCAT(FIRST(FILENAME),".l"),lode_functions))
-	     ELSE ERROR("unknown System"))$
+lodesave(filename,[lode_functions]):=
+  if status(feature,its)=true
+  then apply('fassave,cons(filename,lode_functions))
+  else block([packagefile:true],
+	     if status(feature,unix)=true
+	     then apply('save,
+			cons(concat(first(filename),".l"),lode_functions))
+	     else error("unknown system"))$
 
 lodesave([pmain,fasl],lode2,tobegin,nhstddeq,hlode2,brchde1,vecdeg,
    brchde2,deqcoeff,tblspt,facza,nosol,idvprep,vprep,stddeq,calca,
    lcm,polord,kindspt,ratdeg,regsingpt,reqans1,ldf0);
 
-lodesave([LODSAV,FASL],LODESAVE)$
+lodesave([lodsav,fasl],lodesave)$

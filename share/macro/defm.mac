@@ -4,18 +4,18 @@
 
 /* A macro for defining substitution macros. */
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],
-          IF GET('SHAREM,'VERSION) = FALSE
-             THEN LOAD(AUTOLO))$
+eval_when([translate,batch,demo],
+          if get('sharem,'version) = false
+             then load(autolo))$
 
-EVAL_WHEN(BATCH,TTYOFF:TRUE)$ 
+eval_when(batch,ttyoff:true)$ 
 
 /* e.g.  
 
-DEFM(RECT_RULE('EXP,'X,A,B,DX),
-     BLOCK([%_SUM:0.0],
-     FOR X:A THRU B STEP DX 
-     DO %_SUM:%_SUM+EXP, %_SUM))$
+defm(rect_rule('exp,'x,a,b,dx),
+     block([%_sum:0.0],
+     for x:a thru b step dx 
+     do %_sum:%_sum+exp, %_sum))$
 
 defines a rectangle-rule numerical integration macro.
 The DEFM macro provides a more convenient interface to the
@@ -46,64 +46,64 @@ with the built-in macro BUILDQ.
     Generated symbols are introduced to avoid name conflicts.
 */
 
-HERALD_PACKAGE(DEFM)$
+herald_package(defm)$
 
-EVAL_WHEN([TRANSLATE],TRANSCOMPILE:TRUE,
+eval_when([translate],transcompile:true,
 	  /* PACKAGEFILE:TRUE, bug in MEVAL makes this lose now. */
-          MODEDECLARE(FUNCTION(GETCHARN),FIXNUM,
-	  FUNCTION(SYMBOLP,GENSYM_CONVENTIONP),BOOLEAN))$
+          modedeclare(function(getcharn),fixnum,
+	  function(symbolp,gensym_conventionp),boolean))$
 
-EVAL_WHEN(TRANSLATE,DECLARE(%_GENSYMS,SPECIAL))$
+eval_when(translate,declare(%_gensyms,special))$
 
-GENSYM_CONVENTIONP(X):=
- IF (SYMBOLP(X) AND 
-     NOT(MEMBER(X,%_GENSYMS)) AND
-     GETCHAR(X,1)='% AND
-     GETCHAR(X,2)='_)
-   THEN PUSH(X,%_GENSYMS)$
+gensym_conventionp(x):=
+ if (symbolp(x) and 
+     not(member(x,%_gensyms)) and
+     getchar(x,1)='% and
+     getchar(x,2)='_)
+   then push(x,%_gensyms)$
 
 
-%_CHECK(EXP):=
+%_check(exp):=
  /* This give a syntactic coverage of the "variables" in the
     code, not a semantic one. The BUILDQ macro which does
     the substitution is similarly non-semantic */
- IF ATOM(EXP) THEN GENSYM_CONVENTIONP(EXP)
-    ELSE (%_CHECK(PART(EXP,0)),
-          FOR EXP IN ARGS(EXP) DO(%_CHECK(EXP)))$
+ if atom(exp) then gensym_conventionp(exp)
+    else (%_check(part(exp,0)),
+          for exp in args(exp) do(%_check(exp)))$
 
-%_GENSYMS(EXP):=BLOCK([%_GENSYMS:[]],%_CHECK(EXP),%_GENSYMS)$
+%_gensyms(exp):=block([%_gensyms:[]],%_check(exp),%_gensyms)$
 
 
-DEFM(HEADER,BODY)::=
-    BLOCK([BUILD_SUBST:[], /* the subsitutions the buildq will make */
-           EVAL_ONCE:[], /* From unquoted arguments. */
-	   FORMAL_ARGS:[] ], /* Of the constructed macro. */
+defm(header,body)::=
+    block([build_subst:[], /* the subsitutions the buildq will make */
+           eval_once:[], /* from unquoted arguments. */
+	   formal_args:[] ], /* of the constructed macro. */
 
-	   FOR U IN %_GENSYMS(BODY)
-	    DO PUSH(BUILDQ([U],U:?GENSYM()),BUILD_SUBST),
+	   for u in %_gensyms(body)
+	    do push(buildq([u],u:?gensym()),build_subst),
 
-	   FOR ARG IN ARGS(HEADER)
-            DO(IF ATOM(ARG)
-	          /* F(X)=>BAR(X) is
-	             F(G001)::=BUILDQ([G001,X:?GENSYM()],BLOCK([X:G001],BODY)) */
-                  THEN BLOCK([G:?GENSYM()],
-		             PUSH(G,FORMAL_ARGS),
-			     PUSH(G,BUILD_SUBST),
-			     PUSH(BUILDQ([ARG],ARG:?GENSYM()),BUILD_SUBST),
-			     PUSH(BUILDQ([ARG,G],ARG:G),EVAL_ONCE))
-               ELSE IF PART(ARG,0)="'"
-	          THEN (ARG:PART(ARG,1),
-		        PUSH(ARG,BUILD_SUBST),
-			PUSH(ARG,FORMAL_ARGS))
-               ELSE ERROR("Bad formal arg to DEFM",ARG)),
+	   for arg in args(header)
+            do(if atom(arg)
+	          /* f(x)=>bar(x) is
+	             f(g001)::=buildq([g001,x:?gensym()],block([x:g001],body)) */
+                  then block([g:?gensym()],
+		             push(g,formal_args),
+			     push(g,build_subst),
+			     push(buildq([arg],arg:?gensym()),build_subst),
+			     push(buildq([arg,g],arg:g),eval_once))
+               else if part(arg,0)="'"
+	          then (arg:part(arg,1),
+		        push(arg,build_subst),
+			push(arg,formal_args))
+               else error("bad formal arg to defm",arg)),
 
-	   FORMAL_ARGS:REVERSE(FORMAL_ARGS),
-	   EVAL_ONCE:REVERSE(EVAL_ONCE), /* preserve order of evaluation. */
+	   formal_args:reverse(formal_args),
+	   eval_once:reverse(eval_once), /* preserve order of evaluation. */
 
-           BUILDQ([FORMAL_ARGS,EVAL_ONCE,BUILD_SUBST,NAME:PART(HEADER,0),BODY],
-		  NAME(SPLICE(FORMAL_ARGS))::=
-                       BUILDQ(BUILD_SUBST,
-                              BLOCK(EVAL_ONCE,BODY))))$
+           buildq([formal_args,eval_once,build_subst,name:part(header,0),body],
+		  name(splice(formal_args))::=
+                       buildq(build_subst,
+                              block(eval_once,body))))$
 
 
 
@@ -114,14 +114,14 @@ DEFM(HEADER,BODY)::=
     INFIX(operator, lbp[180], rbp[180], lpos[ANY], rpos[ANY],pos[ANY])
 */
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],
-	  INFIX("=>",180,20),
-	  "=>"(X,Y)::=BUILDQ([X,Y],DEFM(X,Y)))$
+eval_when([translate,batch,demo],
+	  infix("=>",180,20),
+	  "=>"(x,y)::=buildq([x,y],defm(x,y)))$
 
-EVAL_WHEN([TRANSLATE],
-	  TRANSLATE("=>"), /* Yes Virginia, good lisp is reentrant. */
+eval_when([translate],
+	  translate("=>"), /* Yes Virginia, good lisp is reentrant. */
 	  /* This hack deflects the syntax to another file */
-	  SAVE("MAX$DISK:[SHAREM]DEFM.SYN","=>"))$
+	  save("max$disk:[sharem]defm.syn","=>"))$
 
 /* By default, don't load syntax.
 This is evaluated once we are translated and then loaded. 
@@ -130,13 +130,13 @@ EVAL_WHEN([LOADFILE],
 */
 
 
-EVAL_WHEN(DEMO,
-RECT_RULE('EXP,'X,A,B,DX)=>BLOCK([%_SUM:0.0],
-                                 FOR X:A THRU B STEP DX
-                                  DO %_SUM:%_SUM+EXP, %_SUM));
-EVAL_WHEN(DEMO,MACROEXPAND(RECT_RULE(X^3*A,X,A^2,A*B^2,0.5)));
+eval_when(demo,
+rect_rule('exp,'x,a,b,dx)=>block([%_sum:0.0],
+                                 for x:a thru b step dx
+                                  do %_sum:%_sum+exp, %_sum));
+eval_when(demo,macroexpand(rect_rule(x^3*a,x,a^2,a*b^2,0.5)));
 
-EVAL_WHEN(BATCH,TTYOFF:FALSE)$
+eval_when(batch,ttyoff:false)$
 
 
 

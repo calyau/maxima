@@ -20,25 +20,25 @@ type:
                         TC()
 */
 
-tc():=(input(),sign:1,find(),IF n > 0 THEN (sign:-1,find()))$
-input():=(n:read("ENTER TRANSITION CURVE NUMBER N"),
-      m:read("ENTER DEGREE OF TRUNCATION"))$
+tc():=(input(),sign:1,find(),if n > 0 then (sign:-1,find()))$
+input():=(n:read("enter transition curve number n"),
+      m:read("enter degree of truncation"))$
 find():=(remarray(b,e),delta:n^2/4,for i thru m do delta:delta+d(i)*e^i,
      print("delta=",delta),print(" "))$
 a(j,k):=
-  IF j < 0 OR k < 0 THEN 
+  if j < 0 or k < 0 then 
     0
-  ELSE IF j = 0 AND k = n THEN 
+  else if j = 0 and k = n then 
     1
-  ELSE IF j = 0 THEN 
+  else if j = 0 then 
     0
-  ELSE IF k = n THEN 
+  else if k = n then 
     0
   else if numberp(b[j,k]) then
     b[j,k]
-  ELSE IF k = 0 THEN 
+  else if k = 0 then 
     b[j,k]:(-a(j-1,2)/2-sum(d(i)*a(j-i,0),i,1,j))/(n^2/4)
-  ELSE 
+  else 
     b[j,k]:(-(a(j-1,k-2)+a(j-1,k+2)+sign*a(j-1,2-k))/2
       -sum(d(i)*a(j-i,k),i,1,j))/((n^2-k^2)/4)
 $
@@ -46,8 +46,8 @@ $
 d(j):=
   if numberp(e[j]) then
     e[j]
-  else IF n = 0 THEN 
+  else if n = 0 then 
     e[j]:-a(j-1,2)/2
-  ELSE 
+  else 
     e[j]:-(a(j-1,n-2)+a(j-1,n+2)+sign*a(j-1,2-n))/2
 $

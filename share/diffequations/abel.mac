@@ -1,10 +1,10 @@
 /* -*- Macsyma -*- */
-ABEL(DE,A,X):=block([v,coefs,f0,f1,f2,f3,a,%a,%fff,y,u,z,%ff,%dff,
+abel(de,a,x):=block([v,coefs,f0,f1,f2,f3,a,%a,%fff,y,u,z,%ff,%dff,
                      %v,%uu,newde],
-    DEPENDS(V,X),
-    DE:LHS(DE)-RHS(DE),
-    COEFS:MAKECOEFLIST3(DE),
-    F0:COEFS[1],F1:COEFS[2],F2:COEFS[3],F3:COEFS[4],a:coefs[5],
+    depends(v,x),
+    de:lhs(de)-rhs(de),
+    coefs:makecoeflist3(de),
+    f0:coefs[1],f1:coefs[2],f2:coefs[3],f3:coefs[4],a:coefs[5],
     if a#1 then return(abel2(coefs,y,x)),
     if f0=0 and f1=0 and freeof(x,%a:diff(%fff:f3/f2,x)/f2) then
       return(transform(de,y,x,u,z,[x=z,u=%fff*y])),
@@ -12,61 +12,61 @@ ABEL(DE,A,X):=block([v,coefs,f0,f1,f2,f3,a,%a,%fff,y,u,z,%ff,%dff,
     %v:exp(integrate((f1+%ff*f2),x)),
     %uu:(f0-%dff+f1*%ff+2*f2*%ff^2/3)/%v^3/f3,
     newde:transform(de,y,x,u,z,[y=u*%v+%ff,z=ratsimp(integrate(f3*%v^2,x))]),
-     RETURN(ratsimp(newDE)))$
+     return(ratsimp(newde)))$
 
 
-MAKECOEFLIST3(DE):=BLOCK([a,F0,F1,F2,F3,y,x],
-	DE:EXPAND(DE),       
-        A: COEFF(DE,'DIFF(Y,X),1),
+makecoeflist3(de):=block([a,f0,f1,f2,f3,y,x],
+	de:expand(de),       
+        a: coeff(de,'diff(y,x),1),
 
-	F0:-COEFF(DE,Y,0),
-	F1:-COEFF(DE,Y,1),
-	F2:-COEFF(DE,Y,2),
-	F3:-COEFF(DE,Y,3),
-RETURN([F0,F1,F2,F3,a]))$
+	f0:-coeff(de,y,0),
+	f1:-coeff(de,y,1),
+	f2:-coeff(de,y,2),
+	f3:-coeff(de,y,3),
+return([f0,f1,f2,f3,a]))$
 
-/*METHOD FOR NON-LINEAR Y'*/
-NONLIN(DE,Y,X):=BLOCK([temp,temp1,newy,dd,newde,dispflag,%p],
+/*method for non-linear y'*/
+nonlin(de,y,x):=block([temp,temp1,newy,dd,newde,dispflag,%p],
 	de:expand(de),depends(newy,x),dispflag:false,
-	DD:DERIVDEGREE(DE,Y,X),
-	IF(DD>1) THEN RETURN(FALSE) ELSE
-	 IF(HIPOW(DE,DIFF(Y,X))<2) THEN RETURN(FALSE),
-       	NEWDE:SUBST(%P,DIFF(Y,X),DE),
-	DEPENDS(%P,X),
-	NEWDE:LHS(NEWDE)-RHS(NEWDE),
-	TEMP:SOLVE(NEWDE=0,%P),
-	TEMP:SUBST('DIFF(Y,X),%P,apply('ev,[TEMP])),
-	temp:map(LAMBDA([V],ODE2(V,Y,X)),apply('ev,[TEMP,'diff])),
+	dd:derivdegree(de,y,x),
+	if(dd>1) then return(false) else
+	 if(hipow(de,diff(y,x))<2) then return(false),
+       	newde:subst(%p,diff(y,x),de),
+	depends(%p,x),
+	newde:lhs(newde)-rhs(newde),
+	temp:solve(newde=0,%p),
+	temp:subst('diff(y,x),%p,apply('ev,[temp])),
+	temp:map(lambda([v],ode2(v,y,x)),apply('ev,[temp,'diff])),
 	temp:map(lambda([v],solve(v,y)),temp),
 	return(apply('ev,[temp,'infeval])))$
 
 
 
-BERNO(DE,Y,X):=BLOCK([nn,mm,nni,mmi,%q,ans],ANS:[],
-	  IF(DERIVDEGREE(DE,Y,X)>1) THEN RETURN(FALSE),
-	  DE:LHS(DE)-RHS(DE),
-	  NN:EXPAND(COEFF(DE,DIFF(Y,X))),
-	  MM:EXPAND(RADCAN(DE-NN*DIFF(Y,X))),
-	  NNI:APPLY('APPEND,MAPLIST('ELEMENTS,NN)),
-	  MMI:APPLY('APPEND,MAPLIST('ELEMENTS,MM)),
-	  IF(ATOM(MM) OR PART(MM,0)="^") THEN MM:[MM],
+berno(de,y,x):=block([nn,mm,nni,mmi,%q,ans],ans:[],
+	  if(derivdegree(de,y,x)>1) then return(false),
+	  de:lhs(de)-rhs(de),
+	  nn:expand(coeff(de,diff(y,x))),
+	  mm:expand(radcan(de-nn*diff(y,x))),
+	  nni:apply('append,maplist('elements,nn)),
+	  mmi:apply('append,maplist('elements,mm)),
+	  if(atom(mm) or part(mm,0)="^") then mm:[mm],
 /* commented out of DOE MACSYMA because it can't be translated
 	  MAP(LAMBDA([V],IF NOT FREEOF(%Q,RATSUBST(%Q,
 	     DELETE(NUMFACTOR(DIFF(V,X)),DELETE(DIFF(Y,X),DIFF(V,X))),NN))
 	     THEN ANS:CONS(V,ANS)),MM), */
 /* and replaced by the equivalent do loop */
-	  for v in mm do (IF NOT FREEOF(%Q,RATSUBST(%Q,
-	     DELETE(NUMFACTOR(DIFF(V,X)),DELETE(DIFF(Y,X),DIFF(V,X))),NN))
-	     THEN ANS:CONS(V,ANS)),
-	  RETURN(ANS))$
+	  for v in mm do (if not freeof(%q,ratsubst(%q,
+	     delete(numfactor(diff(v,x)),delete(diff(y,x),diff(v,x))),nn))
+	     then ans:cons(v,ans)),
+	  return(ans))$
 	  
-ELEMENTS(A):=BLOCK([],IF ATOM(A) THEN RETURN([A]),
-	  IF(PART(A,0) ="*") THEN RETURN(MAPLPROD(LAMBDA([V],V),A)),
-	  IF(PART(A,0)="+") THEN RETURN(MAPLSUM(LAMBDA([V],V),A)),
-	  RETURN([A]))$
+elements(a):=block([],if atom(a) then return([a]),
+	  if(part(a,0) ="*") then return(maplprod(lambda([v],v),a)),
+	  if(part(a,0)="+") then return(maplsum(lambda([v],v),a)),
+	  return([a]))$
 
 /*Method for nonlinear coeffs*/
-NONLIN1(de,y,x):=block([%v,a1,a2,newde],
+nonlin1(de,y,x):=block([%v,a1,a2,newde],
 	  de:expand(rhs(de)-lhs(de)),depends(%v,x),
 	  a1:coeff(de,diff(y,x)),
 	  a2:expand(de-a1*diff(y,x)),

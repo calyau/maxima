@@ -13,92 +13,92 @@
    *            						 *
    ***************************************************************
 */ 
-/*PROGRAM NUMBER 1: LC(), LINDSTEDT'S METHOD TO CALCULATE LIMIT CYCLES,
-  SEE PAGE 7 IN "PERTURBATION METHODS, BIFURCATION THEORY  AND COMPUTER
-  ALGEBRA".*/
+/*program number 1: lc(), lindstedt's method to calculate limit cycles,
+  see page 7 in "perturbation methods, bifurcation theory  and computer
+  algebra".*/
 
-/* THIS PROGRAM APPLIES LINDSTEDT'S METHOD TO
-THE EQUATION:
-               X'' + X + E F(X,X') = 0,
-ASSUMING A LIMIT CYCLE EXISTS.
-CALL IT WITH:
-                   LC();
+/* this program applies lindstedt's method to
+the equation:
+               x'' + x + e f(x,x') = 0,
+assuming a limit cycle exists.
+call it with:
+                   lc();
 */
 
-LC():=(
+lc():=(
 
-/* INPUT THE DIFFERENTIAL EQUATION */
-KILL(X,XLIST,PARAMLIST),
-PRINT("THE D.E. IS OF THE FORM:  X'' + X + E * F(X,X') = 0"),
-F:READ("ENTER F(X,Y), REPRESENTING X' AS Y"),
-PRINT("THE D.E. IS: X'' + X + E (",F,") = 0"),
-F:SUBST('DIFF(X,Z,1)*W,Y,F),
+/* input the differential equation */
+kill(x,xlist,paramlist),
+print("the d.e. is of the form:  x'' + x + e * f(x,x') = 0"),
+f:read("enter f(x,y), representing x' as y"),
+print("the d.e. is: x'' + x + e (",f,") = 0"),
+f:subst('diff(x,z,1)*w,y,f),
 
-/* SET UP THE SERIES EXPANSIONS */
-N:READ("ENTER TRUNCATION ORDER"),
-W:1,
-FOR I THRU N DO W:W+K[I]*E^I,
-X:B[0]*COS(Z),
-XLIST:[XX[0] = X],
-FOR I THRU N DO X:X+XX[I]*E^I,
+/* set up the series expansions */
+n:read("enter truncation order"),
+w:1,
+for i thru n do w:w+k[i]*e^i,
+x:b[0]*cos(z),
+xlist:[xx[0] = x],
+for i thru n do x:x+xx[i]*e^i,
 
-/* PLUG INTO THE D.E. AND COLLECT TERMS */
-DEPENDS(XX,Z),
-TEMP1:DIFF(X,Z,2)+X/W^2+E*EV(F,DIFF)/W^2,
-TEMP1:TAYLOR(TEMP1,E,0,N),
-FOR I THRU N DO EQ[I]:COEFF(TEMP1,E,I),
+/* plug into the d.e. and collect terms */
+depends(xx,z),
+temp1:diff(x,z,2)+x/w^2+e*ev(f,diff)/w^2,
+temp1:taylor(temp1,e,0,n),
+for i thru n do eq[i]:coeff(temp1,e,i),
 
-/* SET UP PATTERN MATCHING RULES FOR USE IN SOLVING D.E. */
-MATCHDECLARE(N1,TRUE),
-DEFRULE(C,COS(N1*Z),COS(N1*Z)/(N1*N1-1)),
-DEFRULE(S,SIN(N1*Z),SIN(N1*Z)/(N1*N1-1)),
+/* set up pattern matching rules for use in solving d.e. */
+matchdeclare(n1,true),
+defrule(c,cos(n1*z),cos(n1*z)/(n1*n1-1)),
+defrule(s,sin(n1*z),sin(n1*z)/(n1*n1-1)),
 
-/* LOAD POISSON SERIES PACKAGE AND SET PARAMETER */
-OUTOFPOIS(DUMMY),
-POISLIM:100,
+/* load poisson series package and set parameter */
+outofpois(dummy),
+poislim:100,
 
-/* MAIN LOOP */
-FOR I:1 THRU N DO BLOCK(
+/* main loop */
+for i:1 thru n do block(
 
-/* TRIGONOMETRIC SIMPLIFICATION */
-TEMP1:OUTOFPOIS(EV(EQ[I],XLIST,PARAMLIST,DIFF)),
+/* trigonometric simplification */
+temp1:outofpois(ev(eq[i],xlist,paramlist,diff)),
 
-/* ELIMINATE SECULAR TERMS */
-IF I = 1
-     THEN (PARAMLIST:SOLVE(COEFF(TEMP1,SIN(Z)),B[0]),
-           PRINT("CHOICES FOR LIMIT CYCLE AMPLITUDE:"),
-	   FOR J:1 THRU LENGTH(PARAMLIST) DO 
-                PRINT(J,")  ",PART(PARAMLIST,J,2)),
-           R1:READ("ENTER CHOICE NUMBER"),
-	   PARAMLIST:APPEND(SOLVE(COEFF(TEMP1,COS(Z)),K[1]),
-		[PART(PARAMLIST,R1)]))
-     ELSE  PARAMLIST:APPEND(PARAMLIST,SOLVE([COEFF(TEMP1,COS(Z)),
-		COEFF(TEMP1,SIN(Z))],[K[I],B[I-1]])),
-TEMP1:EXPAND(EV(TEMP1,PARAMLIST)),
-XLIST:EXPAND(EV(XLIST,PARAMLIST)),
+/* eliminate secular terms */
+if i = 1
+     then (paramlist:solve(coeff(temp1,sin(z)),b[0]),
+           print("choices for limit cycle amplitude:"),
+	   for j:1 thru length(paramlist) do 
+                print(j,")  ",part(paramlist,j,2)),
+           r1:read("enter choice number"),
+	   paramlist:append(solve(coeff(temp1,cos(z)),k[1]),
+		[part(paramlist,r1)]))
+     else  paramlist:append(paramlist,solve([coeff(temp1,cos(z)),
+		coeff(temp1,sin(z))],[k[i],b[i-1]])),
+temp1:expand(ev(temp1,paramlist)),
+xlist:expand(ev(xlist,paramlist)),
 
-/* OUTPUT PROGRESS */
-PRINT("DONE WITH STEP",I,"OF",N),
+/* output progress */
+print("done with step",i,"of",n),
 
-/* EXIT HERE IF LAST ITERATION */
-IF I=N THEN GO(END),
+/* exit here if last iteration */
+if i=n then go(end),
 
-/* SOLVE THE D.E. */
-TEMP1:FACTOR(EV(TEMP1,XX[I] = 0)),
-TEMP1:APPLYB1(TEMP1,C,S),
-TEMP1:XX[I] = TEMP1+A[I]*SIN(Z)+B[I]*COS(Z),
+/* solve the d.e. */
+temp1:factor(ev(temp1,xx[i] = 0)),
+temp1:applyb1(temp1,c,s),
+temp1:xx[i] = temp1+a[i]*sin(z)+b[i]*cos(z),
 
-/* FIT THE INITIAL CONDITION */
-TEMP2:RHS(TEMP1),
-TEMP2:DIFF(TEMP2,Z),
-TEMP2:SOLVE(EV(TEMP2,Z:0),A[I]),
-XLIST:APPEND(XLIST,[EV(TEMP1,TEMP2)]),
+/* fit the initial condition */
+temp2:rhs(temp1),
+temp2:diff(temp2,z),
+temp2:solve(ev(temp2,z:0),a[i]),
+xlist:append(xlist,[ev(temp1,temp2)]),
 
-/* END OF MAIN LOOP */
-END),
+/* end of main loop */
+end),
 
-/* OUTPUT RESULTS */
-W:EV(W,PARAMLIST),
-X:TAYLOR(EV(X,XLIST,PARAMLIST),E,0,N-1),
-PRINT("X =",X),
-PRINT("W =",W))$
+/* output results */
+w:ev(w,paramlist),
+x:taylor(ev(x,xlist,paramlist),e,0,n-1),
+print("x =",x),
+print("w =",w))$

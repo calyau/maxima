@@ -1,19 +1,19 @@
 /* -*- Mode: MACSYMA; Package: CL-MAXIMA -*- */
 
-DESOLVE(EQNS,VARS):=BLOCK([TEQNS,TVARS,OVAR,LVAR,FLAG,DISPFLAG],
-	MODEDECLARE(FLAG,BOOLEAN),
-	FLAG:FALSE,
-	IF NOT LISTP(VARS) THEN (EQNS:[EQNS], VARS:[VARS], FLAG:TRUE),
-	IF LENGTH(OVAR:VARS[1])#1 THEN
-		ERROR(OVAR,"contains more than one independent variable."),
-	OVAR:INPART(OVAR,1),DISPFLAG:FALSE,
-	TEQNS:MAP(LAMBDA([Z],LAPLACE(Z,OVAR,LVAR)),EQNS),
-	TVARS:MAP(LAMBDA([Z],'LAPLACE(Z,OVAR,LVAR)),VARS),
+desolve(eqns,vars):=block([teqns,tvars,ovar,lvar,flag,dispflag],
+	modedeclare(flag,boolean),
+	flag:false,
+	if not listp(vars) then (eqns:[eqns], vars:[vars], flag:true),
+	if length(ovar:vars[1])#1 then
+		error(ovar,"contains more than one independent variable."),
+	ovar:inpart(ovar,1),dispflag:false,
+	teqns:map(lambda([z],laplace(z,ovar,lvar)),eqns),
+	tvars:map(lambda([z],'laplace(z,ovar,lvar)),vars),
 	/* if not freeof(nounify('diff),teqns) then return(false), */
-	TEQNS:ERRCATCH(SOLVE(TEQNS,TVARS)),
-	IF TEQNS=[] OR TEQNS=[[]] 
-	  THEN ERROR("DESOLVE can't handle this case.")
-	  ELSE TEQNS:FIRST(TEQNS),
+	teqns:errcatch(solve(teqns,tvars)),
+	if teqns=[] or teqns=[[]] 
+	  then error("desolve can't handle this case.")
+	  else teqns:first(teqns),
 	if flag#true then teqns:first(teqns),
-	TEQNS:MAP(LAMBDA([Z],ILT(Z,LVAR,OVAR)),TEQNS),
-	IF FLAG AND LENGTH(TVARS)=1 THEN TEQNS[1] ELSE TEQNS)$
+	teqns:map(lambda([z],ilt(z,lvar,ovar)),teqns),
+	if flag and length(tvars)=1 then teqns[1] else teqns)$

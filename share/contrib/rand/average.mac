@@ -13,90 +13,90 @@
    *            						 *
    ***************************************************************
 */ 
-/*PROGRAM NUMBER 7: AVERAGE(), ALLOWS ONE TO PERFORM FIRST AND SECOND ORDER
-  AVERAGING. SEE PAGE 114 IN "PERTURBATION METHODS, BIFURCATION THEORY 
-  AND COMPUTER ALGEBRA". */
+/*program number 7: average(), allows one to perform first and second order
+  averaging. see page 114 in "perturbation methods, bifurcation theory 
+  and computer algebra". */
 
 
 
-/* PROGRAM TO PERFORM 1ST OR 2ND ORDER AVERAGING 
-   ON AN N-DIMENSIONAL SYSTEM OF NONAUTONOMOUS ODE'S */
+/* program to perform 1st or 2nd order averaging 
+   on an n-dimensional system of nonautonomous ode's */
 
-/* AVERAGING IS PERFORMED BY CONVERTING TRIG TERMS TO
-   COMPLEX EXPONENTIALS, THEN KILLING EXPONENTIALS   */
+/* averaging is performed by converting trig terms to
+   complex exponentials, then killing exponentials   */
 
-AVERAGE():=BLOCK(
-      CHOICE1:READ("DO YOU WANT TO ENTER A NEW PROBLEM? (Y/N)"),
-      IF CHOICE1 = N THEN GO(JUMP1),
-      KILL(X),
-      PRINT("ARE YOU CONSIDERING A WEAKLY NONLINEAR OSCILLATOR OF THE FORM"),
-      CHOICE2:READ("Z'' + OMEGA0^2 Z = EPS F(Z,ZDOT,T) ? (Y/N)"),
-      IF CHOICE2 = N THEN GO(JUMP2),
+average():=block(
+      choice1:read("do you want to enter a new problem? (y/n)"),
+      if choice1 = n then go(jump1),
+      kill(x),
+      print("are you considering a weakly nonlinear oscillator of the form"),
+      choice2:read("z'' + omega0^2 z = eps f(z,zdot,t) ? (y/n)"),
+      if choice2 = n then go(jump2),
 		
-/* ENTER DATA FOR SINGLE OSCILLATOR PROBLEM */
-      N:2,
-      OMEGA0:READ("ENTER OMEGA0"),
-      F:READ("ENTER F(Z,ZDOT,T)")*EPS,
-/* DOES F(Z,ZDOT,T) DEPEND EXPLICITLY ON T? */
-      TEST:DIFF(F,T),
-      IF TEST=0 THEN OMEGA1:OMEGA0 
-            ELSE(
-      	    OMEGA:READ("ENTER THE FORCING FREQUENCY"),
-            K:READ("ENTER THE ORDER OF THE SUBHARMONIC RESONANCE"),
-            OMEGA1:OMEGA/K),
-/* VAN DER POL TRANSFORMATION */
-      ZSUB:[Z=COS(OMEGA1*T)*X1-SIN(OMEGA1*T)*X2,
-               ZDOT=-OMEGA1*SIN(OMEGA1*T)*X1-OMEGA1*COS(OMEGA1*T)*X2],
-/* SUBSTITUTE ZSUB INTO TRANSFORMED EQS */
-/* SCALE TIME SO THAT AVERAGING OCCURS OVER PERIOD 2 PI */
-      VF:EV([-1/OMEGA1^2*(EPS*KAPOMEGA/K^2*Z + F)*SIN(OMEGA1*T),
-             -1/OMEGA1^2*(EPS*KAPOMEGA/K^2*Z + F)*COS(OMEGA1*T)],
-             ZSUB,T=TAU/OMEGA1,INFEVAL),
-      VF:EV(VF,TAU=T),
-      IF OMEGA1 # OMEGA0 
-      THEN PRINT("WE WRITE EPS*KAPOMEGA =",OMEGA^2-K^2*OMEGA0^2)
-            ELSE VF:EV(VF,KAPOMEGA=0),
-      VF2:EXPAND(EXPONENTIALIZE(VF)),
-      FOR I:1 THRU 2 DO VF2[I]:MAP(FACTOR,VF2[I]),
-      X:[X1,X2],
-      GO(JUMP1),
+/* enter data for single oscillator problem */
+      n:2,
+      omega0:read("enter omega0"),
+      f:read("enter f(z,zdot,t)")*eps,
+/* does f(z,zdot,t) depend explicitly on t? */
+      test:diff(f,t),
+      if test=0 then omega1:omega0 
+            else(
+      	    omega:read("enter the forcing frequency"),
+            k:read("enter the order of the subharmonic resonance"),
+            omega1:omega/k),
+/* van der pol transformation */
+      zsub:[z=cos(omega1*t)*x1-sin(omega1*t)*x2,
+               zdot=-omega1*sin(omega1*t)*x1-omega1*cos(omega1*t)*x2],
+/* substitute zsub into transformed eqs */
+/* scale time so that averaging occurs over period 2 pi */
+      vf:ev([-1/omega1^2*(eps*kapomega/k^2*z + f)*sin(omega1*t),
+             -1/omega1^2*(eps*kapomega/k^2*z + f)*cos(omega1*t)],
+             zsub,t=tau/omega1,infeval),
+      vf:ev(vf,tau=t),
+      if omega1 # omega0 
+      then print("we write eps*kapomega =",omega^2-k^2*omega0^2)
+            else vf:ev(vf,kapomega=0),
+      vf2:expand(exponentialize(vf)),
+      for i:1 thru 2 do vf2[i]:map(factor,vf2[i]),
+      x:[x1,x2],
+      go(jump1),
 
 
-JUMP2,
-/* ENTER DATA FOR GENERAL PROBLEM OF N ODE'S */
-      N:READ("ENTER NUMBER OF DIFFERENTIAL EQUATIONS"),
-      X:MAKELIST(CONCAT('X,I),I,1,N),	 
-      PRINT("THE ODE'S ARE OF THE FORM:"),
-      PRINT("DX/DT = EPS F(X,T)"),
-      PRINT("WHERE X =",X),
-      PRINT("SCALE TIME T SUCH THAT AVERAGING OCCURS OVER 2 PI"),
-      VF:MAKELIST(READ("ENTER RHS(",I,")=EPS*...")*EPS,I,1,N),
-      FOR I:1 THRU N DO PRINT("D",X[I],"/DT =",VF[I]),
-      VF2:EXPAND(EXPONENTIALIZE(VF)),
-      FOR I:1 THRU N DO VF2[I]:MAP(FACTOR,VF2[I]),
+jump2,
+/* enter data for general problem of n ode's */
+      n:read("enter number of differential equations"),
+      x:makelist(concat('x,i),i,1,n),	 
+      print("the ode's are of the form:"),
+      print("dx/dt = eps f(x,t)"),
+      print("where x =",x),
+      print("scale time t such that averaging occurs over 2 pi"),
+      vf:makelist(read("enter rhs(",i,")=eps*...")*eps,i,1,n),
+      for i:1 thru n do print("d",x[i],"/dt =",vf[i]),
+      vf2:expand(exponentialize(vf)),
+      for i:1 thru n do vf2[i]:map(factor,vf2[i]),
 
 
-JUMP1,
-/* AVERAGING */
-      M:READ("DO YOU WANT FIRST OR SECOND ORDER AVERAGING?  (1/2)"),
-      COEFVFEPS1:COEFF(VF2,EPS),
-      COEFVFEPS2:COEFF(VF2,EPS,2),
-      G1BAR:DEMOIVRE(APPLY1(COEFVFEPS1,KILLEXP)),
-      IF M=1 THEN RESULT:EPS*G1BAR
-                ELSE(
-                G1TILDE:COEFVFEPS1-G1BAR,
-                W1:INTEGRATE(G1TILDE,T),
-      REMARRAY(JACOB),
-      JACOB[I,J] := DIFF(G1TILDE[I],X[J]),
-      JACG1TILDE:GENMATRIX(JACOB,N,N),
-      G2BAR:DEMOIVRE(APPLY1(EXPAND(JACG1TILDE.W1)+COEFVFEPS2,KILLEXP)),	
-      RESULT:EPS*G1BAR+EPS^2*G2BAR),
-/* REPLACE X BY Y */
-      FOR I:1 THRU N DO RESULT:SUBST(CONCAT('Y,I),CONCAT('X,I),RESULT),
-      RESULT)$
+jump1,
+/* averaging */
+      m:read("do you want first or second order averaging?  (1/2)"),
+      coefvfeps1:coeff(vf2,eps),
+      coefvfeps2:coeff(vf2,eps,2),
+      g1bar:demoivre(apply1(coefvfeps1,killexp)),
+      if m=1 then result:eps*g1bar
+                else(
+                g1tilde:coefvfeps1-g1bar,
+                w1:integrate(g1tilde,t),
+      remarray(jacob),
+      jacob[i,j] := diff(g1tilde[i],x[j]),
+      jacg1tilde:genmatrix(jacob,n,n),
+      g2bar:demoivre(apply1(expand(jacg1tilde.w1)+coefvfeps2,killexp)),	
+      result:eps*g1bar+eps^2*g2bar),
+/* replace x by y */
+      for i:1 thru n do result:subst(concat('y,i),concat('x,i),result),
+      result)$
 
 
-/* AUXILIARY FUNCTIONS TO KILL EXPONENTIAL TERMS */
-      CONTAINS_T(EXP):= NOT FREEOF(T,EXP)$
-      MATCHDECLARE(Q,CONTAINS_T)$
-      DEFRULE(KILLEXP,EXP(Q),0)$
+/* auxiliary functions to kill exponential terms */
+      contains_t(exp):= not freeof(t,exp)$
+      matchdeclare(q,contains_t)$
+      defrule(killexp,exp(q),0)$

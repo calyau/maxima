@@ -13,151 +13,151 @@
    *            						 *
    ***************************************************************
 */ 
-/* PROGRAM NUMBER 9: LIE(), LIE TRANSFORMATIONS FOR HAMILTONIAN SYSTEMS.
-   SEE PAGE 144 IN "PERTURBATION METHODS, BIFURCATION THEORY AND
-   COMPUTER ALGEBRA". */
+/* program number 9: lie(), lie transformations for hamiltonian systems.
+   see page 144 in "perturbation methods, bifurcation theory and
+   computer algebra". */
 
 
-LIE():=BLOCK(
+lie():=block(
  
-/* INPUT PROBLEM ? */
-CHOICE1:READ("DO YOU WANT TO INPUT A NEW PROBLEM (Y/N) ?"),
+/* input problem ? */
+choice1:read("do you want to input a new problem (y/n) ?"),
  
-IF CHOICE1=N THEN GO(JUMP1),
+if choice1=n then go(jump1),
  
-/* INPUT PROBLEM */
-N:READ("ENTER NUMBER OF DEGREES OF FREEDOM"),
-FOR II:1 THRU N DO (
-   Q[II]:READ("ENTER SYMBOL FOR Q[",II,"]"),
-   P[II]:READ("ENTER SYMBOL FOR P[",II,"]")),
-KILL(W),
-PRINT("THE HAMILTONIAN DEPENDS ON THE Q'S, P'S, T AND E (SMALL PARAMETER)"),
-PRINT("THE E=0 PROBLEM MUST BE OF THE FORM:"),
-PRINT("H =",SUM((P[II]^2+W[II]^2*Q[II]^2)/2,II,1,N)),
-HORIGINAL:READ("ENTER THE HAMILTONIAN"),
-PRINT("H =",HORIGINAL),
+/* input problem */
+n:read("enter number of degrees of freedom"),
+for ii:1 thru n do (
+   q[ii]:read("enter symbol for q[",ii,"]"),
+   p[ii]:read("enter symbol for p[",ii,"]")),
+kill(w),
+print("the hamiltonian depends on the q's, p's, t and e (small parameter)"),
+print("the e=0 problem must be of the form:"),
+print("h =",sum((p[ii]^2+w[ii]^2*q[ii]^2)/2,ii,1,n)),
+horiginal:read("enter the hamiltonian"),
+print("h =",horiginal),
  
-/* TRANSFORM TO ACTION-ANGLE VARIABLES */
-/* FIND THE W[II]'S */
-H0:EV(HORIGINAL,E=0),
-FOR II:1 THRU N DO
-   W[II]:SQRT(DIFF(H0,Q[II],2)),
-PRINT("THE ACTION-ANGLE VARIABLES ARE J'S FOR ACTION, PHI'S FOR ANGLE"), 
-FOR II:1 THRU N DO
-   TR[II]:[Q[II]=SQRT(2*J[II]/W[II])*SIN(PHI[II]),
-          P[II]=SQRT(2*J[II]*W[II])*COS(PHI[II])],
-TRAN:MAKELIST(TR[II],II,1,N),
-H:EV(HORIGINAL,TRAN,ASSUME_POS:TRUE,INFEVAL),
-H:TRIGSIMP(H),
-H:EXPAND(TRIGREDUCE(EXPAND(H))),
-PRINT("H =",H),
+/* transform to action-angle variables */
+/* find the w[ii]'s */
+h0:ev(horiginal,e=0),
+for ii:1 thru n do
+   w[ii]:sqrt(diff(h0,q[ii],2)),
+print("the action-angle variables are j's for action, phi's for angle"), 
+for ii:1 thru n do
+   tr[ii]:[q[ii]=sqrt(2*j[ii]/w[ii])*sin(phi[ii]),
+          p[ii]=sqrt(2*j[ii]*w[ii])*cos(phi[ii])],
+tran:makelist(tr[ii],ii,1,n),
+h:ev(horiginal,tran,assume_pos:true,infeval),
+h:trigsimp(h),
+h:expand(trigreduce(expand(h))),
+print("h =",h),
  
-JUMP1,
+jump1,
  
-/* INPUT TRUNCATION ORDER */
-NTRUNC:READ("ENTER HIGHEST ORDER TERMS IN E TO BE KEPT"),
-FOR II:0 THRU NTRUNC DO
-   H[II]:RATCOEF(H,E,II),
+/* input truncation order */
+ntrunc:read("enter highest order terms in e to be kept"),
+for ii:0 thru ntrunc do
+   h[ii]:ratcoef(h,e,ii),
  
-/* LIE TRANSFORMS */
-/* NEAR IDENTITY TRANSFORMATION FROM (J,PHI)'S TO (I,PSI)'S */
+/* lie transforms */
+/* near identity transformation from (j,phi)'s to (i,psi)'s */
  
-/* UPDATE VARIABLES */
-FOR II:1 THRU N DO(
-   P[II]:I[II],
-   Q[II]:PSI[II]),
+/* update variables */
+for ii:1 thru n do(
+   p[ii]:i[ii],
+   q[ii]:psi[ii]),
  
-/* REPLACE J AND PHI BY I AND PSI IN H'S */
-FOR II:0 THRU NTRUNC DO
-   H[II]:EV(H[II],MAKELIST(J[III]=I[III],III,1,N),
-                MAKELIST(PHI[III]=PSI[III],III,1,N)),
+/* replace j and phi by i and psi in h's */
+for ii:0 thru ntrunc do
+   h[ii]:ev(h[ii],makelist(j[iii]=i[iii],iii,1,n),
+                makelist(phi[iii]=psi[iii],iii,1,n)),
  
-K[0]:H[0],
+k[0]:h[0],
  
-/* DECLARE WGEN[I] TO BE A FN OF T, Q'S AND P'S */
-KILL(WGEN),
-DEPENDS(WGEN,[T]),
-FOR II:1 THRU N DO
-  DEPENDS(WGEN,[Q[II],P[II]]),
+/* declare wgen[i] to be a fn of t, q's and p's */
+kill(wgen),
+depends(wgen,[t]),
+for ii:1 thru n do
+  depends(wgen,[q[ii],p[ii]]),
  
-/* E=0 PROBLEM IS OF FORM SUM(W[II]*I[II]) */
-/* CHOOSE WGEN[II] TO KILL AS MUCH AS POSSIBLE IN EQ(II) */
-/* EQUATE K[II] TO UNREMOVABLE TERMS */
+/* e=0 problem is of form sum(w[ii]*i[ii]) */
+/* choose wgen[ii] to kill as much as possible in eq(ii) */
+/* equate k[ii] to unremovable terms */
  
-/* DEFINE PATTERN MATCHING RULES TO ISOLATE ARGS OF TRIG TERMS */
-MATCHDECLARE([DUMMY1,DUMMY2],TRUE),
-DEFRULE(COSARG,DUMMY1*COS(DUMMY2),DUMMY2),
-DEFRULE(SINARG,DUMMY1*SIN(DUMMY2),DUMMY2),
+/* define pattern matching rules to isolate args of trig terms */
+matchdeclare([dummy1,dummy2],true),
+defrule(cosarg,dummy1*cos(dummy2),dummy2),
+defrule(sinarg,dummy1*sin(dummy2),dummy2),
  
-FOR II:1 THRU NTRUNC DO(
+for ii:1 thru ntrunc do(
  
-   EQN[II]:EXPAND(TRIGREDUCE(EXPAND(EQ(II)))),
-   TEMP:EXPAND(EV(EQN[II],WGEN[II]=0)),
-/* CHANGE SUM TO A LIST */
-   TEMP1:ARGS(TEMP),
-/* REMOVE CONSTANT TERMS */
-   TEMP2:MAP(TRIGIDENTIFY,TEMP1),
-/* ISOLATE ARGUMENTS OF TRIG TERMS */
-   ARG1:APPLY1(TEMP2,COSARG,SINARG),
-/* REMOVE DUPLICATE ARGUMENTS */
-   ARG2:SETIFY(ARG1),
-/* REMOVE RESONANT ARGUMENTS */
-   ARG3:SUBLIST(ARG2,NOTRESP),
+   eqn[ii]:expand(trigreduce(expand(eq(ii)))),
+   temp:expand(ev(eqn[ii],wgen[ii]=0)),
+/* change sum to a list */
+   temp1:args(temp),
+/* remove constant terms */
+   temp2:map(trigidentify,temp1),
+/* isolate arguments of trig terms */
+   arg1:apply1(temp2,cosarg,sinarg),
+/* remove duplicate arguments */
+   arg2:setify(arg1),
+/* remove resonant arguments */
+   arg3:sublist(arg2,notresp),
  
-/* CHOOSE WGEN TO ELIMINATE NONRESONANT TERMS */
-   LENG:LENGTH(ARG3),
-   WGENTEMP1:0,
-   FOR JJ:1 THRU LENG DO(
-      WGENTEMP2:AAA*COS(PART(ARG3,JJ))+BBB*SIN(PART(ARG3,JJ)),
-      TEMP4:EV(EQN[II],WGEN[II]=WGENTEMP2,DIFF),
-      TEMP5:SOLVE([RATCOEF(TEMP4,COS(PART(ARG3,JJ))),
-                   RATCOEF(TEMP4,SIN(PART(ARG3,JJ)))],[AAA,BBB]),
-      WGENTEMP1:WGENTEMP1+EV(WGENTEMP2,TEMP5)),
-   WGEN[II]:WGENTEMP1,
-   PRINT("WGEN[",II,"] ="),
-   PRINT(WGEN[II]),
-   K[II]:EXPAND(EV(EQN[II],DIFF)),
-   K[II]:EXPAND(RATSIMP(K[II])),
-   PRINT("THE TRANSFORMED HAMILTONIAN K[",II,"] ="),
-   PRINT(K[II])),   
+/* choose wgen to eliminate nonresonant terms */
+   leng:length(arg3),
+   wgentemp1:0,
+   for jj:1 thru leng do(
+      wgentemp2:aaa*cos(part(arg3,jj))+bbb*sin(part(arg3,jj)),
+      temp4:ev(eqn[ii],wgen[ii]=wgentemp2,diff),
+      temp5:solve([ratcoef(temp4,cos(part(arg3,jj))),
+                   ratcoef(temp4,sin(part(arg3,jj)))],[aaa,bbb]),
+      wgentemp1:wgentemp1+ev(wgentemp2,temp5)),
+   wgen[ii]:wgentemp1,
+   print("wgen[",ii,"] ="),
+   print(wgen[ii]),
+   k[ii]:expand(ev(eqn[ii],diff)),
+   k[ii]:expand(ratsimp(k[ii])),
+   print("the transformed hamiltonian k[",ii,"] ="),
+   print(k[ii])),   
  
-KAMILTONIAN:SUM(K[II]*E^II,II,0,NTRUNC),
-PRINT ("THE TRANSFORMED HAMILTONIAN IS "),
-PRINT ("K =",KAMILTONIAN),
+kamiltonian:sum(k[ii]*e^ii,ii,0,ntrunc),
+print ("the transformed hamiltonian is "),
+print ("k =",kamiltonian),
  
-CHOICE2:READ("DO YOU WANT TO SEE THE NEAR IDENTITY TRANSFORMATION (Y/N) ?"),
-IF CHOICE2=N THEN GO(END),
+choice2:read("do you want to see the near identity transformation (y/n) ?"),
+if choice2=n then go(end),
  
-/* THE NEAR IDENTITY TRANSFORMATION */
-FOR II:1 THRU N DO(
-   JTRANS[II]:SUM(S(III,P[II])*E^III,III,0,NTRUNC),
-   PHITRANS[II]:SUM(S(III,Q[II])*E^III,III,0,NTRUNC)),
-FOR II:1 THRU N DO(
-   PRINT(J[II],"=",JTRANS[II]),
-   PRINT(PHI[II],"=",PHITRANS[II])),
+/* the near identity transformation */
+for ii:1 thru n do(
+   jtrans[ii]:sum(s(iii,p[ii])*e^iii,iii,0,ntrunc),
+   phitrans[ii]:sum(s(iii,q[ii])*e^iii,iii,0,ntrunc)),
+for ii:1 thru n do(
+   print(j[ii],"=",jtrans[ii]),
+   print(phi[ii],"=",phitrans[ii])),
  
-END,
-KAMILTONIAN)$
+end,
+kamiltonian)$
  
  
-POISSON(F,G):=
-          SUM(DIFF(F,Q[II])*DIFF(G,P[II])-DIFF(F,P[II])*DIFF(G,Q[II]),II,1,N)$
+poisson(f,g):=
+          sum(diff(f,q[ii])*diff(g,p[ii])-diff(f,p[ii])*diff(g,q[ii]),ii,1,n)$
  
-L(II,F):=POISSON(WGEN[II],F)$
+l(ii,f):=poisson(wgen[ii],f)$
  
-S(II,F):=(IF II=0 THEN F ELSE SUM(L(II-M,S(M,F)),M,0,II-1)/II)$
+s(ii,f):=(if ii=0 then f else sum(l(ii-m,s(m,f)),m,0,ii-1)/ii)$
  
-EQ(II):=(H[II]+(DIFF(WGEN[II],T)+POISSON(WGEN[II],H[0]))/II
-        +SUM(L(II-M,K[M])+M*S(II-M,H[M]),M,1,II-1)/II)$
+eq(ii):=(h[ii]+(diff(wgen[ii],t)+poisson(wgen[ii],h[0]))/ii
+        +sum(l(ii-m,k[m])+m*s(ii-m,h[m]),m,1,ii-1)/ii)$
  
-LZAP(ANY):=DIFF(ANY,T)+POISSON(ANY,H[0])$
+lzap(any):=diff(any,t)+poisson(any,h[0])$
 
-TRIGIDENTIFY(EXP):=IF FREEOF(SIN,EXP) AND FREEOF(COS,EXP) THEN 0 ELSE EXP$
+trigidentify(exp):=if freeof(sin,exp) and freeof(cos,exp) then 0 else exp$
 
-NOTRESP(EXP):=NOT IS(LZAP(EXP) = 0)$
+notresp(exp):=not is(lzap(exp) = 0)$
 
-SETIFY(LIST):=(
-   SET:[LIST[1]],
-   FOR I:2 THRU LENGTH(LIST) DO(
-      IF NOT MEMBER(LIST[I],SET) THEN SET:CONS(LIST[I],SET)),
-   SET)$
+setify(list):=(
+   set:[list[1]],
+   for i:2 thru length(list) do(
+      if not member(list[i],set) then set:cons(list[i],set)),
+   set)$

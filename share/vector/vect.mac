@@ -10,437 +10,437 @@ Style changes made in order to TRANSLATE, 3/1/81 George Carrette (GJC)
 */
 
 
-HERALD_PACKAGE('VECT)$
-PUT('VECT,TRUE,'VERSION);
+herald_package('vect)$
+put('vect,true,'version);
 
-EVAL_WHEN([TRANSLATE,batch,demo,load,loadfile],
+eval_when([translate,batch,demo,load,loadfile],
 /* trgsmp is in the standard Maxima image but check anyway */
 if get('sin,'complement_function)=false then load("trgsmp"),
-MATCHDECLARE([ETRUE,TTRUE,VTRUE], TRUE,
-LESSP, BEFORE, SCALARM, VSCALARP),
-	TR_BOUND_FUNCTION_APPLYP:FALSE
+matchdeclare([etrue,ttrue,vtrue], true,
+lessp, before, scalarm, vscalarp),
+	tr_bound_function_applyp:false
 	/* we do not want FOO(F):=F(1) to mean APPLY(F,[1]) */
 	)$
 
-INFIX("~", 134, 133, EXPR, EXPR, EXPR) $
-PREFIX("GRAD", 142, EXPR, EXPR) $
-PREFIX("DIV", 142, EXPR, EXPR) $
-PREFIX("CURL", 142, EXPR, EXPR) $
-PREFIX("LAPLACIAN", 142, EXPR, EXPR) $ 
+infix("~", 134, 133, expr, expr, expr) $
+prefix("grad", 142, expr, expr) $
+prefix("div", 142, expr, expr) $
+prefix("curl", 142, expr, expr) $
+prefix("laplacian", 142, expr, expr) $ 
 
-DECLARE([".",ORDER],COMMUTATIVE,
-        ORDERN,NARY,
-        ["GRAD","DIV","CURL","LAPLACIAN"],OUTATIVE,
-        "CURL",NONSCALAR)$
+declare([".",order],commutative,
+        ordern,nary,
+        ["grad","div","curl","laplacian"],outative,
+        "curl",nonscalar)$
 
-TELLSIMPAFTER(0~ETRUE, 0) $
-TELLSIMPAFTER(ETRUE~0, 0) $
-TELLSIMPAFTER(ETRUE~ETRUE, 0)$
-TELLSIMPAFTER(ETRUE~TTRUE.VTRUE, ETRUE.TTRUE~VTRUE)$
-TELLSIMP(ETRUE~LESSP, -LESSP~ETRUE) $
-TELLSIMPAFTER(DIV (CURL( ETRUE)), 0) $
-TELLSIMPAFTER(CURL (GRAD( ETRUE)), 0) $
-TELLSIMPAFTER(VECTORPOTENTIAL(ETRUE,TTRUE),
-   (SCALEFACTORS(TTRUE), VPOT(ETRUE))) $
-TELLSIMPAFTER(VECTORPOTENTIAL(ETRUE), VPOT(ETRUE)) $
-TELLSIMPAFTER(EXPRESS(ETRUE), EXPRESS1(ETRUE)) $
-TELLSIMPAFTER(EXPRESS(ETRUE,TTRUE),
-   (SCALEFACTORS(TTRUE), EXPRESS(ETRUE))) $
-TELLSIMPAFTER(POTENTIAL(ETRUE, TTRUE),
-   (SCALEFACTORS(TTRUE),  POTENTIAL1(ETRUE))) $
-TELLSIMPAFTER(POTENTIAL(ETRUE), POTENTIAL1(ETRUE)) $
+tellsimpafter(0~etrue, 0) $
+tellsimpafter(etrue~0, 0) $
+tellsimpafter(etrue~etrue, 0)$
+tellsimpafter(etrue~ttrue.vtrue, etrue.ttrue~vtrue)$
+tellsimp(etrue~lessp, -lessp~etrue) $
+tellsimpafter(div (curl( etrue)), 0) $
+tellsimpafter(curl (grad( etrue)), 0) $
+tellsimpafter(vectorpotential(etrue,ttrue),
+   (scalefactors(ttrue), vpot(etrue))) $
+tellsimpafter(vectorpotential(etrue), vpot(etrue)) $
+tellsimpafter(express(etrue), express1(etrue)) $
+tellsimpafter(express(etrue,ttrue),
+   (scalefactors(ttrue), express(etrue))) $
+tellsimpafter(potential(etrue, ttrue),
+   (scalefactors(ttrue),  potential1(etrue))) $
+tellsimpafter(potential(etrue), potential1(etrue)) $
 
 
 /* Variables and switches */
 
-DEFINE_VARIABLE(COORDINATES, '[X, Y, Z],ANY)$
-DEFINE_VARIABLE(DIMENSION,3,FIXNUM)$
-DEFINE_VARIABLE(DIMENIMBED,1,FIXNUM)$
-DEFINE_VARIABLE(TRYLENGTH,1,FIXNUM)$
-DEFINE_VARIABLE(BESTLENGTH,1,FIXNUM)$
-DEFINE_VARIABLE(SFPROD,1,any)$
-DEFINE_VARIABLE(SF,[1,1,1],list)$
+define_variable(coordinates, '[x, y, z],any)$
+define_variable(dimension,3,fixnum)$
+define_variable(dimenimbed,1,fixnum)$
+define_variable(trylength,1,fixnum)$
+define_variable(bestlength,1,fixnum)$
+define_variable(sfprod,1,any)$
+define_variable(sf,[1,1,1],list)$
 
-DEFINE_VARIABLE(EXPANDALL,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDDOT,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDDOTPLUS,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDGRAD,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDPLUS,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDALL,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDGRADPLUS,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDDIV,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDDIVPLUS,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDCURL,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDCURLPLUS,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDLAPLACIAN,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDLAPLACIANPLUS,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDPROD,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDGRADPROD,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDDIVPROD,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDCURLCURL,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDLAPLACIANTODIVGRAD,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDLAPLACIANPROD,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDCROSS,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDCROSSCROSS,false,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDCROSSPLUS,false,BOOLEAN)$
-DEFINE_VARIABLE(FIRSTCROSSSCALAR,false,BOOLEAN)$
+define_variable(expandall,false,boolean)$
+define_variable(expanddot,false,boolean)$
+define_variable(expanddotplus,false,boolean)$
+define_variable(expandgrad,false,boolean)$
+define_variable(expandplus,false,boolean)$
+define_variable(expandall,false,boolean)$
+define_variable(expandgradplus,false,boolean)$
+define_variable(expanddiv,false,boolean)$
+define_variable(expanddivplus,false,boolean)$
+define_variable(expandcurl,false,boolean)$
+define_variable(expandcurlplus,false,boolean)$
+define_variable(expandlaplacian,false,boolean)$
+define_variable(expandlaplacianplus,false,boolean)$
+define_variable(expandprod,false,boolean)$
+define_variable(expandgradprod,false,boolean)$
+define_variable(expanddivprod,false,boolean)$
+define_variable(expandcurlcurl,false,boolean)$
+define_variable(expandlaplaciantodivgrad,false,boolean)$
+define_variable(expandlaplacianprod,false,boolean)$
+define_variable(expandcross,false,boolean)$
+define_variable(expandcrosscross,false,boolean)$
+define_variable(expandcrossplus,false,boolean)$
+define_variable(firstcrossscalar,false,boolean)$
 
 
-EV_DIFF(X):=APPLY('EV,[X,'DIFF])$
+ev_diff(x):=apply('ev,[x,'diff])$
 
 
 declare(jacobian,special)$
-SCALEFACTORS(TRANSFORMATION) := BLOCK(
-   IF LISTP(FIRST(TRANSFORMATION)) THEN (
-      COORDINATES: REST(TRANSFORMATION),
-      TRANSFORMATION: FIRST(TRANSFORMATION))
-   ELSE COORDINATES: LISTOFVARS(TRANSFORMATION),
-   DIMENSION: LENGTH(COORDINATES),
-   DIMENIMBED: LENGTH(TRANSFORMATION),
-   FOR ROW:1 THRU DIMENSION DO
-      FOR COL:1 THRU DIMENIMBED DO JACOBIAN[ROW,COL]:
-         TRIGSIMP(RATSIMP(DIFF(TRANSFORMATION[COL],
-            COORDINATES[ROW]))),
-   SFPROD:1,
-   FOR ROW:1 THRU DIMENSION DO (
-      FOR COL:1 THRU ROW-1 DO (
-         SF[ROW]: GCOV(ROW,COL),
-         IF SF[ROW]#0 THEN PRINT("WARNING: COORDINATE SYSTEM IS NONORTHOGONAL UNLESS FOLLOWING SIMPLIFIES TO ZERO:", SF[ROW])),
-      SF[ROW]: RADCAN(SQRT(GCOV(ROW,ROW))),
-      SFPROD: SFPROD*SF[ROW])) $
+scalefactors(transformation) := block(
+   if listp(first(transformation)) then (
+      coordinates: rest(transformation),
+      transformation: first(transformation))
+   else coordinates: listofvars(transformation),
+   dimension: length(coordinates),
+   dimenimbed: length(transformation),
+   for row:1 thru dimension do
+      for col:1 thru dimenimbed do jacobian[row,col]:
+         trigsimp(ratsimp(diff(transformation[col],
+            coordinates[row]))),
+   sfprod:1,
+   for row:1 thru dimension do (
+      for col:1 thru row-1 do (
+         sf[row]: gcov(row,col),
+         if sf[row]#0 then print("warning: coordinate system is nonorthogonal unless following simplifies to zero:", sf[row])),
+      sf[row]: radcan(sqrt(gcov(row,row))),
+      sfprod: sfprod*sf[row])) $
 
-GCOV(II,JJ) := TRIGSIMP(RATSIMP(SUM(
-   JACOBIAN[II,KK]*JACOBIAN[JJ,KK], KK, 1, DIMENIMBED))) $
+gcov(ii,jj) := trigsimp(ratsimp(sum(
+   jacobian[ii,kk]*jacobian[jj,kk], kk, 1, dimenimbed))) $
 
-EXPRESS1(EXPN) := BLOCK(
-   [ANS],
-   IF MAPATOM(EXPN) THEN
-      IF NONSCALARP(EXPN) THEN (ANS:[],
-         FOR JJ: DIMENSION STEP -1 THRU 1 DO
-            ANS: CONS(EXPN[COORDINATES[JJ]], ANS),
-         RETURN(ANS))
-      ELSE RETURN(EXPN),
-   EXPN: MAP('EXPRESS1, EXPN),
-   IF MAPATOM(EXPN) OR LISTP(EXPN) THEN RETURN(EXPN),
+express1(expn) := block(
+   [ans],
+   if mapatom(expn) then
+      if nonscalarp(expn) then (ans:[],
+         for jj: dimension step -1 thru 1 do
+            ans: cons(expn[coordinates[jj]], ans),
+         return(ans))
+      else return(expn),
+   expn: map('express1, expn),
+   if mapatom(expn) or listp(expn) then return(expn),
 
-   IF INPART(EXPN,0)="GRAD" THEN (ANS:[],
-      EXPN: INPART(EXPN,1),
-      FOR JJ: DIMENSION STEP -1 THRU 1 DO ANS:
-         CONS('DIFF(EXPN,COORDINATES[JJ])/SF[JJ], ANS),
-      RETURN(ANS)),
+   if inpart(expn,0)="grad" then (ans:[],
+      expn: inpart(expn,1),
+      for jj: dimension step -1 thru 1 do ans:
+         cons('diff(expn,coordinates[jj])/sf[jj], ans),
+      return(ans)),
 
-   IF PIECE="DIV" THEN (EXPN: INPART(EXPN,1),
-      IF NOT LISTP(EXPN) THEN ERROR("DIV CALLED ON SCALAR ARG:",
-         EXPN),
-      RETURN(SUM('DIFF(SFPROD*EXPN[JJ]/SF[JJ],
-         COORDINATES[JJ]), JJ, 1, DIMENSION)/SFPROD)),
+   if piece="div" then (expn: inpart(expn,1),
+      if not listp(expn) then error("div called on scalar arg:",
+         expn),
+      return(sum('diff(sfprod*expn[jj]/sf[jj],
+         coordinates[jj]), jj, 1, dimension)/sfprod)),
 
-   IF PIECE="LAPLACIAN" THEN RETURN(SUM('DIFF(SFPROD*'DIFF(
-      INPART(EXPN,1),COORDINATES[JJ])/SF[JJ]**2,
-      COORDINATES[JJ]), JJ, 1, DIMENSION) / SFPROD),
+   if piece="laplacian" then return(sum('diff(sfprod*'diff(
+      inpart(expn,1),coordinates[jj])/sf[jj]**2,
+      coordinates[jj]), jj, 1, dimension) / sfprod),
 
-   IF PIECE="CURL" THEN (EXPN:INPART(EXPN,1),
-      IF LISTP(EXPN) THEN (
-         IF LENGTH(EXPN)=2 THEN RETURN(('DIFF(SF[2]*EXPN[2],
-            COORDINATES[1])-'DIFF(SF[1]*EXPN[1],
-            COORDINATES[2]))/ SF[1]/SF[2]),
-         IF DIMENSION=3 THEN RETURN([
-             ('DIFF(SF[3]*EXPN[3],COORDINATES[2])-
-             'DIFF(SF[2]*EXPN[2],COORDINATES[3]))/
-             SF[2]/SF[3],
-             ('DIFF(SF[1]*EXPN[1],COORDINATES[3])-
-              'DIFF(SF[3]*EXPN[3],COORDINATES[1]))/
-             SF[1]/SF[3],
-             ('DIFF(SF[2]*EXPN[2],COORDINATES[1]) -
-              'DIFF(SF[1]*EXPN[1],COORDINATES[2]))/
-             SF[1]/SF[2]])),
-      ERROR("CURL USED IN SPACE OF WRONG DIMENSION")),
+   if piece="curl" then (expn:inpart(expn,1),
+      if listp(expn) then (
+         if length(expn)=2 then return(('diff(sf[2]*expn[2],
+            coordinates[1])-'diff(sf[1]*expn[1],
+            coordinates[2]))/ sf[1]/sf[2]),
+         if dimension=3 then return([
+             ('diff(sf[3]*expn[3],coordinates[2])-
+             'diff(sf[2]*expn[2],coordinates[3]))/
+             sf[2]/sf[3],
+             ('diff(sf[1]*expn[1],coordinates[3])-
+              'diff(sf[3]*expn[3],coordinates[1]))/
+             sf[1]/sf[3],
+             ('diff(sf[2]*expn[2],coordinates[1]) -
+              'diff(sf[1]*expn[1],coordinates[2]))/
+             sf[1]/sf[2]])),
+      error("curl used in space of wrong dimension")),
 
-   IF PIECE="~" THEN (
-      ANS: INPART(EXPN,1),  EXPN:INPART(EXPN,2),
-      IF LISTP(ANS) AND LISTP(EXPN) AND LENGTH(ANS)=LENGTH(EXPN)
-         THEN (IF LENGTH(ANS)=2 THEN RETURN(ANS[1]*EXPN[2]
-             -ANS[2]*EXPN[1]),
-            IF LENGTH(ANS)=3 THEN RETURN([ANS[2]*EXPN[3]-
-               ANS[3]*EXPN[2], ANS[3]*EXPN[1]-ANS[1]*EXPN[3],
-               ANS[1]*EXPN[2]-ANS[2]*EXPN[1]])),
-      ERROR("~ USED WITH IMPROPER ARGUMENTS:",ANS,EXPN)),
+   if piece="~" then (
+      ans: inpart(expn,1),  expn:inpart(expn,2),
+      if listp(ans) and listp(expn) and length(ans)=length(expn)
+         then (if length(ans)=2 then return(ans[1]*expn[2]
+             -ans[2]*expn[1]),
+            if length(ans)=3 then return([ans[2]*expn[3]-
+               ans[3]*expn[2], ans[3]*expn[1]-ans[1]*expn[3],
+               ans[1]*expn[2]-ans[2]*expn[1]])),
+      error("~ used with improper arguments:",ans,expn)),
 
-   EXPN) $
-
-
-DOTASSOC: DOTEXPTSIMP: FALSE$
-DOTSCRULES: TRUE $
-define_variable(EXPANDFLAGS, '[
-   EXPANDALL,
-      EXPANDDOT,
-         EXPANDDOTPLUS,
-      EXPANDCROSS,
-         EXPANDCROSSPLUS,
-         EXPANDCROSSCROSS,
-      EXPANDGRAD,
-         EXPANDGRADPLUS,
-         EXPANDGRADPROD,
-      EXPANDDIV,
-         EXPANDDIVPLUS,
-         EXPANDDIVPROD,
-      EXPANDCURL,
-         EXPANDCURLPLUS,
-         EXPANDCURLCURL,
-      EXPANDLAPLACIAN,
-         EXPANDLAPLACIANPLUS,
-         EXPANDLAPLACIANPROD,
-   EXPANDLAPLACIANTODIVGRAD,
-   EXPANDPLUS,
-   EXPANDPROD ],list) $
+   expn) $
 
 
-APPLY('DECLARE, ['EXPANDFLAGS, 'EVFLAG]) $
-
-VECTORSIMP(EXPN) := BLOCK(
-   [DOTDISTRIB, DOTSCRULES, INFLAG, FIRSTCROSSSCALAR],
-   INFLAG: FIRSTCROSSSCALAR: TRUE,
-   DOTDISTRIB: EXPANDALL OR EXPANDDOT OR EXPANDDOTPLUS
-      OR EXPANDPLUS,
-   IF EXPANDALL OR EXPANDGRAD OR EXPANDGRADPLUS OR EXPANDPLUS
-      THEN DECLARE("GRAD",ADDITIVE),
-   IF EXPANDALL OR EXPANDDIV OR EXPANDDIVPLUS OR EXPANDPLUS
-      THEN DECLARE("DIV",ADDITIVE),
-   IF EXPANDALL OR EXPANDCURL OR EXPANDCURLPLUS OR EXPANDPLUS
-      THEN DECLARE("CURL",ADDITIVE),
-   IF EXPANDALL OR EXPANDLAPLACIAN OR EXPANDLAPLACIANPLUS OR
-      EXPANDPLUS THEN DECLARE("LAPLACIAN",ADDITIVE),
-   EXPN: VSIMP(EXPN),
-   IF EXPANDALL THEN EXPN: RATEXPAND(EXPN),
-   IF EXPANDALL OR EXPANDGRAD OR EXPANDGRADPLUS OR EXPANDPLUS
-      THEN REMOVE("GRAD",ADDITIVE),
-   IF EXPANDALL OR EXPANDDIV OR EXPANDDIVPLUS OR EXPANDPLUS
-      THEN REMOVE("DIV",ADDITIVE),
-   IF EXPANDALL OR EXPANDCURL OR EXPANDCURLPLUS OR EXPANDPLUS
-      THEN REMOVE("CURL",ADDITIVE),
-   IF EXPANDALL OR EXPANDLAPLACIAN OR EXPANDLAPLACIANPLUS OR
-      EXPANDPLUS THEN REMOVE("LAPLACIAN",ADDITIVE),
-   EXPN) $
+dotassoc: dotexptsimp: false$
+dotscrules: true $
+define_variable(expandflags, '[
+   expandall,
+      expanddot,
+         expanddotplus,
+      expandcross,
+         expandcrossplus,
+         expandcrosscross,
+      expandgrad,
+         expandgradplus,
+         expandgradprod,
+      expanddiv,
+         expanddivplus,
+         expanddivprod,
+      expandcurl,
+         expandcurlplus,
+         expandcurlcurl,
+      expandlaplacian,
+         expandlaplacianplus,
+         expandlaplacianprod,
+   expandlaplaciantodivgrad,
+   expandplus,
+   expandprod ],list) $
 
 
-BEFORE(ARG) := INPART(ORDER(ETRUE,ARG),1)#ETRUE$
+apply('declare, ['expandflags, 'evflag]) $
 
-VSCALARP(ARG) := NOT NONSCALARP(ARG)$
+vectorsimp(expn) := block(
+   [dotdistrib, dotscrules, inflag, firstcrossscalar],
+   inflag: firstcrossscalar: true,
+   dotdistrib: expandall or expanddot or expanddotplus
+      or expandplus,
+   if expandall or expandgrad or expandgradplus or expandplus
+      then declare("grad",additive),
+   if expandall or expanddiv or expanddivplus or expandplus
+      then declare("div",additive),
+   if expandall or expandcurl or expandcurlplus or expandplus
+      then declare("curl",additive),
+   if expandall or expandlaplacian or expandlaplacianplus or
+      expandplus then declare("laplacian",additive),
+   expn: vsimp(expn),
+   if expandall then expn: ratexpand(expn),
+   if expandall or expandgrad or expandgradplus or expandplus
+      then remove("grad",additive),
+   if expandall or expanddiv or expanddivplus or expandplus
+      then remove("div",additive),
+   if expandall or expandcurl or expandcurlplus or expandplus
+      then remove("curl",additive),
+   if expandall or expandlaplacian or expandlaplacianplus or
+      expandplus then remove("laplacian",additive),
+   expn) $
 
-VSIMP(EXPN) :=
-   IF MAPATOM(EXPN) THEN EXPN
-   ELSE BLOCK([PV, QV, RV, SV],
-      EXPN: MAP('VSIMP, EXPN),
-      IF MAPATOM(EXPN) THEN RETURN(EXPN),
-      IF INPART(EXPN,0)="~" THEN EXPN:REMOVECROSSSC1(EXPN,pv,rv,sv)
-      ELSE IF PIECE="GRAD" THEN (
-         IF (EXPANDALL OR EXPANDGRAD OR EXPANDGRADPROD OR
-            EXPANDPROD) AND
-            NOT MAPATOM(PV:INPART(EXPN,1)) AND INPART(PV,0)="*"
-            THEN EXPN:APPLY("+", MAPLIST(lambda([u],GRADPROD(u,pv)), PV)))
-      ELSE IF PIECE="DIV" THEN(
-         IF (EXPANDALL OR EXPANDDIV OR EXPANDDIVPROD OR
-            EXPANDPROD) AND NOT
-            MAPATOM(PV:INPART(EXPN,1)) AND INPART(PV,0)="*" THEN
-            EXPN: APPLY("+", MAPLIST(lambda([u],DIVPROD(u,pv)), PV)))
-      ELSE IF PIECE="CURL" THEN (
-         IF (EXPANDALL OR EXPANDCURL OR EXPANDCURLCURL) AND NOT
-            MAPATOM(PV:INPART(EXPN,1)) AND INPART(PV,0)="CURL"
-            THEN EXPN: GRAD( DIV(PV:INPART(PV,1))) - LAPLACIAN( PV))
-      ELSE IF PIECE="LAPLACIAN" THEN
-         IF EXPANDLAPLACIANTODIVGRAD THEN
-            EXPN: DIV (GRAD( INPART(EXPN,1)))
-         ELSE IF (EXPANDALL OR EXPANDLAPLACIAN OR
-            EXPANDLAPLACIANPROD OR EXPANDPROD) AND NOT MAPATOM
-            (PV:INPART(EXPN,1)) AND INPART(PV,0)="*" THEN(
-            QV: INPART(PV,1),
-            RV: DELETE(QV,PV),
-            EXPN: RV*LAPLACIAN(QV) + 2*GRAD (RV) * GRAD( QV) + QV*
-               LAPLACIAN(RV)),
-      EXPN) $
 
-CROSSSIMP(EX,pv,rv,sv) :=
-   IF NOT MAPATOM(EX) AND INPART(EX,0)="~" THEN (
-      IF EXPANDALL OR EXPANDCROSS OR EXPANDCROSSCROSS THEN
-         EX: TRYCROSSCROSS(EX,pv,rv,sv),
-      IF NOT MAPATOM(EX) AND INPART(EX,0)="~" AND(
-         EXPANDALL OR EXPANDCROSS OR EXPANDCROSSPLUS OR
-         EXPANDPLUS) THEN EX: TRYCROSSPLUS(EX,pv,rv,sv),
-      EX)
-   ELSE EX $
+before(arg) := inpart(order(etrue,arg),1)#etrue$
 
-REMOVECROSSSC(EXPN,pv,rv,sv) :=
-   IF NOT MAPATOM(EXPN) AND INPART(EXPN,0)="~" THEN
-      REMOVECROSSSC1(EXPN,pv,rv,sv)
-   ELSE EXPN $
+vscalarp(arg) := not nonscalarp(arg)$
 
-REMOVECROSSSC1(EXPN,pv,rv,sv) :=  BLOCK(
-      [LEFT, RIGHT],
-      LEFT: PARTITIONSC(INPART(EXPN,1)),
-      RIGHT: PARTITIONSC(INPART(EXPN,2)),
-      IF FIRSTCROSSSCALAR AND (LEFT[2]=1 OR RIGHT[2]=1)
-         THEN( PRINT("WARNING: DECLARE VECTOR INDETERMINANTS 
-NONSCALAR TO AVOID ERRORS & TO GET FULL SIMPLIFICATION"),
-            FIRSTCROSSSCALAR:FALSE,
-                RETURN(EXPN)),
-      LEFT[1]*RIGHT[1]*CROSSSIMP(LEFT[2]~RIGHT[2],pv,rv,sv))$
+vsimp(expn) :=
+   if mapatom(expn) then expn
+   else block([pv, qv, rv, sv],
+      expn: map('vsimp, expn),
+      if mapatom(expn) then return(expn),
+      if inpart(expn,0)="~" then expn:removecrosssc1(expn,pv,rv,sv)
+      else if piece="grad" then (
+         if (expandall or expandgrad or expandgradprod or
+            expandprod) and
+            not mapatom(pv:inpart(expn,1)) and inpart(pv,0)="*"
+            then expn:apply("+", maplist(lambda([u],gradprod(u,pv)), pv)))
+      else if piece="div" then(
+         if (expandall or expanddiv or expanddivprod or
+            expandprod) and not
+            mapatom(pv:inpart(expn,1)) and inpart(pv,0)="*" then
+            expn: apply("+", maplist(lambda([u],divprod(u,pv)), pv)))
+      else if piece="curl" then (
+         if (expandall or expandcurl or expandcurlcurl) and not
+            mapatom(pv:inpart(expn,1)) and inpart(pv,0)="curl"
+            then expn: grad( div(pv:inpart(pv,1))) - laplacian( pv))
+      else if piece="laplacian" then
+         if expandlaplaciantodivgrad then
+            expn: div (grad( inpart(expn,1)))
+         else if (expandall or expandlaplacian or
+            expandlaplacianprod or expandprod) and not mapatom
+            (pv:inpart(expn,1)) and inpart(pv,0)="*" then(
+            qv: inpart(pv,1),
+            rv: delete(qv,pv),
+            expn: rv*laplacian(qv) + 2*grad (rv) * grad( qv) + qv*
+               laplacian(rv)),
+      expn) $
 
-PARTITIONSC(EX) :=
-   IF MAPATOM(EX) THEN
-      IF NONSCALARP(EX) THEN [1,EX]
-      ELSE [EX,1]
-   ELSE IF INPART(EX,0)="*" THEN BLOCK([SC,NONSC],
-      SC: NONSC: 1,
-      FOR FACT IN EX DO
-         IF NONSCALARP(FACT) THEN NONSC:NONSC*FACT
-         ELSE SC:SC*FACT,
-      [SC,NONSC])
-   ELSE [1,EX] $
+crosssimp(ex,pv,rv,sv) :=
+   if not mapatom(ex) and inpart(ex,0)="~" then (
+      if expandall or expandcross or expandcrosscross then
+         ex: trycrosscross(ex,pv,rv,sv),
+      if not mapatom(ex) and inpart(ex,0)="~" and(
+         expandall or expandcross or expandcrossplus or
+         expandplus) then ex: trycrossplus(ex,pv,rv,sv),
+      ex)
+   else ex $
 
-TRYCROSSPLUS(EXPN,pv,rv,sv) :=(
-   PV:INPART(EXPN,1), RV:INPART(EXPN,2),
-   IF NOT MAPATOM(PV) AND INPART(PV,0)="+" THEN
-      IF NOT MAPATOM(RV) AND INPART(RV,0)="+" THEN
-         MAP(lambda([u],TRYCROSSPLUS(u,pv,rv,sv)), 
-         MAP(lambda([u],CROSSRV(u,rv,sv)), PV))
-      ELSE MAP(lambda([u],CROSSRV(u,rv,sv)), PV)
-   ELSE IF NOT MAPATOM(RV) AND INPART(RV,0)="+" THEN
-      MAP(lambda([u],PVCROSS(pv,u,sv)), RV)
-   ELSE EXPN) $
+removecrosssc(expn,pv,rv,sv) :=
+   if not mapatom(expn) and inpart(expn,0)="~" then
+      removecrosssc1(expn,pv,rv,sv)
+   else expn $
 
-TRYCROSSCROSS(EXPN,pv,rv,sv) := (
-      PV:INPART(EXPN,1),  RV:INPART(EXPN,2),
-      IF NOT MAPATOM(RV) AND INPART(RV,0)="~" THEN (
-         SV: INPART(RV,2), RV:INPART(RV,1),
-         RV*PV.SV - SV*PV.RV)
-      ELSE IF NOT MAPATOM(PV) AND INPART(PV,0)="~" THEN(
-         SV:INPART(PV,2), PV:INPART(PV,1),
-         SV*RV.PV - PV*RV.SV)
-      ELSE EXPN) $
+removecrosssc1(expn,pv,rv,sv) :=  block(
+      [left, right],
+      left: partitionsc(inpart(expn,1)),
+      right: partitionsc(inpart(expn,2)),
+      if firstcrossscalar and (left[2]=1 or right[2]=1)
+         then( print("warning: declare vector indeterminants 
+nonscalar to avoid errors & to get full simplification"),
+            firstcrossscalar:false,
+                return(expn)),
+      left[1]*right[1]*crosssimp(left[2]~right[2],pv,rv,sv))$
 
-PVCROSS(pv,RV,sv) := REMOVECROSSSC(PV~RV,pv,rv,sv) $
+partitionsc(ex) :=
+   if mapatom(ex) then
+      if nonscalarp(ex) then [1,ex]
+      else [ex,1]
+   else if inpart(ex,0)="*" then block([sc,nonsc],
+      sc: nonsc: 1,
+      for fact in ex do
+         if nonscalarp(fact) then nonsc:nonsc*fact
+         else sc:sc*fact,
+      [sc,nonsc])
+   else [1,ex] $
 
-CROSSRV(PV,rv,sv) := REMOVECROSSSC(PV~RV,pv,rv,sv) $
+trycrossplus(expn,pv,rv,sv) :=(
+   pv:inpart(expn,1), rv:inpart(expn,2),
+   if not mapatom(pv) and inpart(pv,0)="+" then
+      if not mapatom(rv) and inpart(rv,0)="+" then
+         map(lambda([u],trycrossplus(u,pv,rv,sv)), 
+         map(lambda([u],crossrv(u,rv,sv)), pv))
+      else map(lambda([u],crossrv(u,rv,sv)), pv)
+   else if not mapatom(rv) and inpart(rv,0)="+" then
+      map(lambda([u],pvcross(pv,u,sv)), rv)
+   else expn) $
 
-GRADPROD(UU,pv) := DELETE(UU,PV)*GRAD(UU) $
+trycrosscross(expn,pv,rv,sv) := (
+      pv:inpart(expn,1),  rv:inpart(expn,2),
+      if not mapatom(rv) and inpart(rv,0)="~" then (
+         sv: inpart(rv,2), rv:inpart(rv,1),
+         rv*pv.sv - sv*pv.rv)
+      else if not mapatom(pv) and inpart(pv,0)="~" then(
+         sv:inpart(pv,2), pv:inpart(pv,1),
+         sv*rv.pv - pv*rv.sv)
+      else expn) $
 
-DIVPROD(UU,pv) := BLOCK([DOTSCRULES],
-   DOTSCRULES: FALSE,
+pvcross(pv,rv,sv) := removecrosssc(pv~rv,pv,rv,sv) $
+
+crossrv(pv,rv,sv) := removecrosssc(pv~rv,pv,rv,sv) $
+
+gradprod(uu,pv) := delete(uu,pv)*grad(uu) $
+
+divprod(uu,pv) := block([dotscrules],
+   dotscrules: false,
  
-   IF NONSCALARP(UU) THEN DELETE(UU,PV)*DIV(UU)
-   ELSE DELETE(UU,PV).GRAD(UU) )$
+   if nonscalarp(uu) then delete(uu,pv)*div(uu)
+   else delete(uu,pv).grad(uu) )$
 
 
-POTENTIAL1(GR) := BLOCK(
-   [ORIGIN, GRPERM, JJ, RESULT,%dum],
-   IF NOT LISTP(GR) OR LENGTH(GR)#DIMENSION THEN ERROR(
-      "1ST ARG OF POTENTIAL MUST BE A LIST OF LENGTH EQUAL TO",
-      "THE DIMENSIONALITY OF THE COORDINATE SYSTEM"),
-   ORIGIN: ZEROLOC(),
-   RESULT: [],
-   FOR JJ:DIMENSION STEP -1 THRU 1 DO
-      RESULT: CONS(SF[JJ]*GR[JJ], RESULT),
-   GRPERM:[],
-   FOR EQN IN ORIGIN DO (
-      JJ:1,
-      WHILE LHS(EQN)#COORDINATES[JJ] DO JJ:JJ+1,
-      GRPERM: ENDCONS(RESULT[JJ], GRPERM)),
-   RESULT:SUM(MYINT(SUBLESS(JJ,origin,grperm), %DUM, RHS(ORIGIN[JJ]),
-      LHS(ORIGIN[JJ])), JJ, 1, DIMENSION),
-   GR: GR-EXPRESS1(GRAD( RESULT)),
-   GR: EV_DIFF(GR),
-   GR: TRIGSIMP(RADCAN(GR)),
-   ORIGIN:1,
-    /* Variable name should NOT be re-used! */
-   WHILE ORIGIN<=DIMENSION AND GR[ORIGIN]=0 DO 
-         (MODE_DECLARE(ORIGIN,FIXNUM),ORIGIN:ORIGIN+1),
-   IF ORIGIN<=DIMENSION THEN PRINT("UNABLE TO PROVE THAT THE",
-      "FOLLOWING DIFFERENCE BETWEEN THE INPUT AND THE GRADIENT",
-      "OF THE RETURNED RESULT IS ZERO", GR),
-   TRIGSIMP(RADCAN(RESULT))) $
+potential1(gr) := block(
+   [origin, grperm, jj, result,%dum],
+   if not listp(gr) or length(gr)#dimension then error(
+      "1st arg of potential must be a list of length equal to",
+      "the dimensionality of the coordinate system"),
+   origin: zeroloc(),
+   result: [],
+   for jj:dimension step -1 thru 1 do
+      result: cons(sf[jj]*gr[jj], result),
+   grperm:[],
+   for eqn in origin do (
+      jj:1,
+      while lhs(eqn)#coordinates[jj] do jj:jj+1,
+      grperm: endcons(result[jj], grperm)),
+   result:sum(myint(subless(jj,origin,grperm), %dum, rhs(origin[jj]),
+      lhs(origin[jj])), jj, 1, dimension),
+   gr: gr-express1(grad( result)),
+   gr: ev_diff(gr),
+   gr: trigsimp(radcan(gr)),
+   origin:1,
+    /* variable name should not be re-used! */
+   while origin<=dimension and gr[origin]=0 do 
+         (mode_declare(origin,fixnum),origin:origin+1),
+   if origin<=dimension then print("unable to prove that the",
+      "following difference between the input and the gradient",
+      "of the returned result is zero", gr),
+   trigsimp(radcan(result))) $
 
-define_variable(POTENTIALZEROLOC, 0, any) $
+define_variable(potentialzeroloc, 0, any) $
 
-ZEROLOC() := 
-   IF NOT LISTP(POTENTIALZEROLOC) THEN
-       MAP(LAMBDA([UU],UU=POTENTIALZEROLOC), COORDINATES)
-   ELSE IF DISJUNCT(COORDINATES,MAP('LHS,POTENTIALZEROLOC)) # []
-      THEN ERROR("POTENTIALZEROLOC MUST BE A LIST OF LENGTH",
-      "EQUALING THE DIMENSIONALITY OF THE COORDINATE SYSTEM",
-      "CONTAINING EQUATIONS WITH EACH COORDINATE VARIABLE",
-      "ON THE LHS OF EXACTLY 1 EQUATION,",
-      "OR ELSE POTENTIALZEROLOC MUST NOT BE A LIST")
-   ELSE POTENTIALZEROLOC$
+zeroloc() := 
+   if not listp(potentialzeroloc) then
+       map(lambda([uu],uu=potentialzeroloc), coordinates)
+   else if disjunct(coordinates,map('lhs,potentialzeroloc)) # []
+      then error("potentialzeroloc must be a list of length",
+      "equaling the dimensionality of the coordinate system",
+      "containing equations with each coordinate variable",
+      "on the lhs of exactly 1 equation,",
+      "or else potentialzeroloc must not be a list")
+   else potentialzeroloc$
 
 
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO,load,loadfile],
+eval_when([translate,batch,demo,load,loadfile],
 
-CYC(II) ::= BUILDQ([II], 1 + REMAINDER(II+SHIFT,3)) )$
+cyc(ii) ::= buildq([ii], 1 + remainder(ii+shift,3)) )$
 
-VPOT(KURL) := BLOCK(
-   [ORIGIN, SHIFT],
-   MODE_DECLARE(SHIFT,FIXNUM),
-   IF NOT LISTP(KURL) OR LENGTH(KURL)#3 THEN ERROR(
-      "1ST ARG OF VECTORPOTENTIAL MUST BE A LIST OF LENGTH 3"),
-   ORIGIN: ZEROLOC(),
-   SHIFT: 1,
-   WHILE SHIFT<=3 AND LHS(ORIGIN[1])#COORDINATES[SHIFT] DO 
-      SHIFT:SHIFT+1,
-   SHIFT: SHIFT+1,
-   IF SHIFT>4 OR LHS(ORIGIN[2])#COORDINATES[CYC(2)] OR
-      LHS(ORIGIN[3])#COORDINATES[CYC(3)] THEN ERROR(
-      "LEFT SIDES OF POTENTIALZEROLOC MUST BE A CYCLIC",
-      "PERMUTATION OF COORDINATES"),
-   ORIGIN: [(MYINT(SF[CYC(1)]*SF[CYC(3)]*KURL[CYC(2)],
-      LHS(ORIGIN[3]),RHS(ORIGIN[3]),LHS(ORIGIN[3])) - MYINT(
-      SF[CYC(1)]*SF[CYC(2)]*SUBST(ORIGIN[3],KURL[CYC(3)]),
-      LHS(ORIGIN[2]),RHS(ORIGIN[2]),LHS(ORIGIN[2])))/SF[CYC(1)],
-      -MYINT(SF[CYC(2)]*SF[CYC(3)]*KURL[CYC(1)],
-      LHS(ORIGIN[3]),RHS(ORIGIN[3]),LHS(ORIGIN[3]))/SF[CYC(2)],
+vpot(kurl) := block(
+   [origin, shift],
+   mode_declare(shift,fixnum),
+   if not listp(kurl) or length(kurl)#3 then error(
+      "1st arg of vectorpotential must be a list of length 3"),
+   origin: zeroloc(),
+   shift: 1,
+   while shift<=3 and lhs(origin[1])#coordinates[shift] do 
+      shift:shift+1,
+   shift: shift+1,
+   if shift>4 or lhs(origin[2])#coordinates[cyc(2)] or
+      lhs(origin[3])#coordinates[cyc(3)] then error(
+      "left sides of potentialzeroloc must be a cyclic",
+      "permutation of coordinates"),
+   origin: [(myint(sf[cyc(1)]*sf[cyc(3)]*kurl[cyc(2)],
+      lhs(origin[3]),rhs(origin[3]),lhs(origin[3])) - myint(
+      sf[cyc(1)]*sf[cyc(2)]*subst(origin[3],kurl[cyc(3)]),
+      lhs(origin[2]),rhs(origin[2]),lhs(origin[2])))/sf[cyc(1)],
+      -myint(sf[cyc(2)]*sf[cyc(3)]*kurl[cyc(1)],
+      lhs(origin[3]),rhs(origin[3]),lhs(origin[3]))/sf[cyc(2)],
       0],
-   ORIGIN: [ORIGIN[CYC(CYC(1))], ORIGIN[CYC(CYC(2))],
-      ORIGIN[CYC(CYC(3))]],
-   KURL: KURL-EXPRESS1(CURL (ORIGIN)),
-   KURL: EV_DIFF(KURL),
-   KURL: TRIGSIMP(RADCAN(KURL)),
-   FOR JJ:1 THRU 3 DO IF KURL[JJ]#0 THEN PRINT(
-      "UNABLE TO PROVE THAT THE FOLLOWING DIFFERENCE BETWEEN A",
-      "COMPONENT OF THE INPUT AND OF THE CURL OUTPUT IS ZERO",
-      KURL[JJ]),
-   ORIGIN) $
+   origin: [origin[cyc(cyc(1))], origin[cyc(cyc(2))],
+      origin[cyc(cyc(3))]],
+   kurl: kurl-express1(curl (origin)),
+   kurl: ev_diff(kurl),
+   kurl: trigsimp(radcan(kurl)),
+   for jj:1 thru 3 do if kurl[jj]#0 then print(
+      "unable to prove that the following difference between a",
+      "component of the input and of the curl output is zero",
+      kurl[jj]),
+   origin) $
 
 
 
-DISJUNCT(L1,L2) := APPEND(SETDIFF(L1,L2), SETDIFF(L2,L1)) $
+disjunct(l1,l2) := append(setdiff(l1,l2), setdiff(l2,l1)) $
 
-SETDIFF(L1,L2) :=
-   IF L1=[] THEN []
-   ELSE IF MEMBER(FIRST(L1),L2) THEN SETDIFF(REST(L1),L2)
-   ELSE CONS(FIRST(L1), SETDIFF(REST(L1),L2)) $
+setdiff(l1,l2) :=
+   if l1=[] then []
+   else if member(first(l1),l2) then setdiff(rest(l1),l2)
+   else cons(first(l1), setdiff(rest(l1),l2)) $
 
-SUBLESS(KK,origin,grperm) := (MODE_DECLARE(KK,FIXNUM),BLOCK([ANS,%dum],
-   ANS: RATSUBST(%DUM, LHS(ORIGIN[KK]), GRPERM[KK]),
-   FOR L1:1 THRU KK-1 DO
-      ANS: RATSUBST(RHS(ORIGIN[L1]), LHS(ORIGIN[L1]),ANS),
-   ANS)) $
+subless(kk,origin,grperm) := (mode_declare(kk,fixnum),block([ans,%dum],
+   ans: ratsubst(%dum, lhs(origin[kk]), grperm[kk]),
+   for l1:1 thru kk-1 do
+      ans: ratsubst(rhs(origin[l1]), lhs(origin[l1]),ans),
+   ans)) $
 
-MYINT(FUN,VAR,LOW,HIGH):=BLOCK([RESULT,ATLOW,ATHIGH],
-  RESULT:INTEGRATE(FUN,VAR),
-  IF FREEOF(nounify('INTEGRATE),RESULT) THEN (
-	ATLOW:EVLIMIT(RESULT,VAR,LOW),
-	IF ATLOW=FALSE THEN GO(NOGOOD),
-	ATHIGH:EVLIMIT(RESULT,VAR,HIGH),
-	IF ATHIGH=FALSE THEN GO(NOGOOD),
-	RETURN(RADCAN(ATHIGH-ATLOW))),
-  NOGOOD, DEFINT(FUN,VAR,LOW,HIGH))$
+myint(fun,var,low,high):=block([result,atlow,athigh],
+  result:integrate(fun,var),
+  if freeof(nounify('integrate),result) then (
+	atlow:evlimit(result,var,low),
+	if atlow=false then go(nogood),
+	athigh:evlimit(result,var,high),
+	if athigh=false then go(nogood),
+	return(radcan(athigh-atlow))),
+  nogood, defint(fun,var,low,high))$
 
-EVLIMIT(EXPR,VAR,LIM):=BLOCK([TEMP],
-  IF LIM='MINF OR LIM='INF THEN GO(USELIMIT),
-  TEMP:ERRCATCH(SUBST(LIM,VAR,EXPR)),
-  IF TEMP#[] THEN RETURN(TEMP[1]),
-  USELIMIT, TEMP:LIMIT(EXPR,VAR,LIM),
-  IF MEMBER(TEMP,'[INF,MINF,UND,IND,INFINITY]) THEN RETURN(FALSE),
-  IF FREEOF(nounify('LIMIT),TEMP) THEN TEMP)$
+evlimit(expr,var,lim):=block([temp],
+  if lim='minf or lim='inf then go(uselimit),
+  temp:errcatch(subst(lim,var,expr)),
+  if temp#[] then return(temp[1]),
+  uselimit, temp:limit(expr,var,lim),
+  if member(temp,'[inf,minf,und,ind,infinity]) then return(false),
+  if freeof(nounify('limit),temp) then temp)$
 
-EVAL_WHEN(BATCH,TTYOFF:FALSE)$
+eval_when(batch,ttyoff:false)$

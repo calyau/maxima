@@ -29,8 +29,8 @@ where N is the order of truncation.
 
 vanderpol(n):=(setup1(n),setup2(n),
 	  for i thru n do
-	      block(step1(i),step2(i),IF i > 1 THEN output1(i),
-		    IF i = n THEN go(end),step3(i),step4(i),step5(i),end),
+	      block(step1(i),step2(i),if i > 1 then output1(i),
+		    if i = n then go(end),step3(i),step4(i),step5(i),end),
 	  output2(n))$
 setup1(n):=(w:1,for i thru n do w:w+k[i]*e^i,x:2*cos(t),
        for i thru n do x:x+y[i](t)*e^i)$
@@ -40,8 +40,8 @@ step1(i):=temp1
       :expand(trigreduce(expand(ev(eq[i],makelist([e[j],f[j]],j,1,i-1),
 				   diff))))$
 step2(i):=(
-      IF i = 1 THEN f[i]:solve(coeff(temp1,cos(t)),k[i])
-	  ELSE f[i]:solve([coeff(temp1,cos(t)),coeff(temp1,sin(t))],
+      if i = 1 then f[i]:solve(coeff(temp1,cos(t)),k[i])
+	  else f[i]:solve([coeff(temp1,cos(t)),coeff(temp1,sin(t))],
 			  [k[i],b[i-1]]),temp1:ev(temp1,f[i]))$
 step3(i):=(temp1:ode2(temp1,y[i](t),t),
   temp1:subst(a[i],%k1,temp1),temp1:subst(b[i],%k2,temp1))$

@@ -16,82 +16,82 @@
 /*			      so should be used with APPLY, MAP, etc	*/
 /*									*/
 
-DEF(FNINFO,BODY)::=
- BLOCK([BVL,		  /* Arglist of the main function		*/
-        NAME,		  /* Main Function Name				*/
-        AUXNAME,	  /* Aux Function Name				*/
-        VARS:[],	  /* List of var names used by main fun		*/
-        VARSETS,	  /* List of vars for buildq setup in macro def	*/
-	QINFO:[],	  /* List of which args need quoting		*/
-        LEXPR:FALSE,	  /* Flag saying if this was a LEXPR		*/
-	PIECE],		  /* Make PIECE local to this function		*/
+def(fninfo,body)::=
+ block([bvl,		  /* arglist of the main function		*/
+        name,		  /* main function name				*/
+        auxname,	  /* aux function name				*/
+        vars:[],	  /* list of var names used by main fun		*/
+        varsets,	  /* list of vars for buildq setup in macro def	*/
+	qinfo:[],	  /* list of which args need quoting		*/
+        lexpr:false,	  /* flag saying if this was a lexpr		*/
+	piece],		  /* make piece local to this function		*/
 
-  BVL:ARGS(FNINFO),			     /* BVL is original arglist */
+  bvl:args(fninfo),			     /* bvl is original arglist */
 					     /*				*/
-  IF ATOM(PART(FNINFO,0))		     /* Allow two syntaxes	*/
-     THEN ( NAME:PIECE,			     /*  Only one name means	*/
-            AUXNAME:CONCAT(PIECE,"_AUX"))    /*   to gensym other name	*/
-     ELSE ( NAME:PART(PIECE,1),		     /*  If two names were given*/
-	    AUXNAME:PART(PIECE,2) ),	     /*   then use 2nd as aux	*/
+  if atom(part(fninfo,0))		     /* allow two syntaxes	*/
+     then ( name:piece,			     /*  only one name means	*/
+            auxname:concat(piece,"_aux"))    /*   to gensym other name	*/
+     else ( name:part(piece,1),		     /*  if two names were given*/
+	    auxname:part(piece,2) ),	     /*   then use 2nd as aux	*/
 					     /*				*/
-  MAP( LAMBDA([X],			     /* ** Check each var in BVL*/
-	 IF ATOM(X)			     /* If atomic,		*/
-	    THEN ( QINFO:CONS(FALSE,QINFO),  /*   then remember no quote*/
-		   VARS:CONS(X,VARS) )	     /*   and add to VARS	*/
-    ELSE IF PART(X,0) = "'"		     /* If quoted,		*/
-	    THEN ( QINFO:CONS(TRUE,QINFO),   /*   then remember to quote*/
-		   VARS:CONS(PART(X,1),VARS))/*   and add to VARS	*/
-    ELSE IF PART(X,0) = "["		     /* Else if a list,		*/
-            THEN ( LEXPR:TRUE,		     /*   Then this is a LEXPR	*/
-		   X:PART(X,1),		     /*   Look at first element	*/
-	 IF ATOM(X)			     /*   If an atom,		*/
-	    THEN ( QINFO:CONS(FALSE,QINFO),  /*     say not to quote it */
-		   VARS:CONS(X,VARS) )	     /*     and add to VARS	*/
-	    ELSE (			     /*   Else,			*/
-	     IF PART(X,0) = "'"		     /*    If quoted,		*/
-	      THEN			     /*     Then,		*/
-	        (QINFO:CONS(TRUE,QINFO),     /*	     Save quote info	*/
-		  VARS:CONS(PART(X,1),VARS)) /*	     and add to VARS	*/
-	      ELSE			     /*    Else loser blew it	*/
-	        (ERROR("ILLEGAL FORM IN BVL -DEF"))))
-	    ELSE ( ERROR ("ILLEGAL FORM IN BVL -DEF"))),
-	BVL),				     /* (Map across BVL)	*/
-					     /* What a long function	*/
+  map( lambda([x],			     /* ** check each var in bvl*/
+	 if atom(x)			     /* if atomic,		*/
+	    then ( qinfo:cons(false,qinfo),  /*   then remember no quote*/
+		   vars:cons(x,vars) )	     /*   and add to vars	*/
+    else if part(x,0) = "'"		     /* if quoted,		*/
+	    then ( qinfo:cons(true,qinfo),   /*   then remember to quote*/
+		   vars:cons(part(x,1),vars))/*   and add to vars	*/
+    else if part(x,0) = "["		     /* else if a list,		*/
+            then ( lexpr:true,		     /*   then this is a lexpr	*/
+		   x:part(x,1),		     /*   look at first element	*/
+	 if atom(x)			     /*   if an atom,		*/
+	    then ( qinfo:cons(false,qinfo),  /*     say not to quote it */
+		   vars:cons(x,vars) )	     /*     and add to vars	*/
+	    else (			     /*   else,			*/
+	     if part(x,0) = "'"		     /*    if quoted,		*/
+	      then			     /*     then,		*/
+	        (qinfo:cons(true,qinfo),     /*	     save quote info	*/
+		  vars:cons(part(x,1),vars)) /*	     and add to vars	*/
+	      else			     /*    else loser blew it	*/
+	        (error("illegal form in bvl -def"))))
+	    else ( error ("illegal form in bvl -def"))),
+	bvl),				     /* (map across bvl)	*/
+					     /* what a long function	*/
 					     /*  this is getting to be	*/
 
-  BVL     : VARS,			     /* Make BVL same as vars	*/
-  GENLIST : VARS,
-  VARSETS : VARS,
+  bvl     : vars,			     /* make bvl same as vars	*/
+  genlist : vars,
+  varsets : vars,
 
-  /* Hack things to add brackets, etc if a LEXPR */
+  /* hack things to add brackets, etc if a lexpr */
 
-  IF LEXPR THEN
-     (BVL:CONS([PART(BVL,1)],REST(BVL)),
-      IF QINFO[1]=TRUE THEN 
-         (QINFO:CONS(FALSE,REST(QINFO)),
-	  VARSETS:CONS(BUILDQ([V:GENLIST[1]],
-			      V:MAP(LAMBDA([X],FUNMAKE("'",[X])),V)),
-		       REST(VARSETS))),
-      GENLIST:CONS(FUNMAKE('SPLICE,[PART(GENLIST,1)]),REST(GENLIST))),
+  if lexpr then
+     (bvl:cons([part(bvl,1)],rest(bvl)),
+      if qinfo[1]=true then 
+         (qinfo:cons(false,rest(qinfo)),
+	  varsets:cons(buildq([v:genlist[1]],
+			      v:map(lambda([x],funmake("'",[x])),v)),
+		       rest(varsets))),
+      genlist:cons(funmake('splice,[part(genlist,1)]),rest(genlist))),
 
-  /* Make genlist have vars quoted as appropriate */
+  /* make genlist have vars quoted as appropriate */
 
-  GENLIST:MAP(LAMBDA([X,Y], IF X THEN FUNMAKE("'",[Y]) ELSE Y),
-	      QINFO,
-	      GENLIST), 
+  genlist:map(lambda([x,y], if x then funmake("'",[y]) else y),
+	      qinfo,
+	      genlist), 
 
-  /* The whole world is backward at this point	*/
+  /* the whole world is backward at this point	*/
 
-  QINFO  : REVERSE(QINFO),		     /* Reverse quote info	*/
-  BVL    : REVERSE(BVL),		     /* Reverse bvl		*/
-  VARS   : REVERSE(VARS),		     /* Reverse main vars	*/
-  GENLIST: REVERSE(GENLIST),		     /* Reverse genlist		*/
+  qinfo  : reverse(qinfo),		     /* reverse quote info	*/
+  bvl    : reverse(bvl),		     /* reverse bvl		*/
+  vars   : reverse(vars),		     /* reverse main vars	*/
+  genlist: reverse(genlist),		     /* reverse genlist		*/
 
-  /* Now cons up the solution and we're all set */
+  /* now cons up the solution and we're all set */
 
-  BUILDQ([NAME,AUXNAME,VARS,GENLIST,BODY,BVL,VARSETS],
-         (NAME(SPLICE(BVL))::=		     /* Main def recalls aux	*/
-              BUILDQ([SPLICE(VARSETS)],AUXNAME(SPLICE(GENLIST))),
-          AUXNAME(SPLICE(BVL)):= BODY,	     /* Aux definition		*/
-          ['NAME, 'AUXNAME])))$		     /* Return names of funs	*/
+  buildq([name,auxname,vars,genlist,body,bvl,varsets],
+         (name(splice(bvl))::=		     /* main def recalls aux	*/
+              buildq([splice(varsets)],auxname(splice(genlist))),
+          auxname(splice(bvl)):= body,	     /* aux definition		*/
+          ['name, 'auxname])))$		     /* return names of funs	*/
 

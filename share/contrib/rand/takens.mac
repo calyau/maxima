@@ -14,144 +14,144 @@
    *            						 *
    ***************************************************************
 */ 
-/* TAKENS' BLOW-UP CALCULATION */
+/* takens' blow-up calculation */
 
-/* MAIN PROGRAM */
-TAKENS():=BLOCK(
-/* VARIABLE I TAGS LOOP */
-FOR I:1 THRU 8 DO 
-	(SETUP1(),
-	IF I=1 THEN INPUTRHS() ,
-	IF I>1 THEN BLOWUP(),
-	SETUP2(),
-	DEFFG(),
-	PRINT(" TAKENS' TEST "),
-	PRINT(" TRUNCATE F AND G TO HOMOGENEOUS POLYNOMIALS "),
-	PRINT(TRUNCATE()),
-	GETROOTS(),
-	PRINT(TEST()),
-	IF FLAG=GREEN THEN RETURN("DONE"),
-	DEFPQ(),
-	DEFPPQQ(),
-	SROOTS()) )$
+/* main program */
+takens():=block(
+/* variable i tags loop */
+for i:1 thru 8 do 
+	(setup1(),
+	if i=1 then inputrhs() ,
+	if i>1 then blowup(),
+	setup2(),
+	deffg(),
+	print(" takens' test "),
+	print(" truncate f and g to homogeneous polynomials "),
+	print(truncate()),
+	getroots(),
+	print(test()),
+	if flag=green then return("done"),
+	defpq(),
+	defppqq(),
+	sroots()) )$
 
-/* SUBROUTINES TO CREATE VARIABLE NAMES AT ITH LOOP */
-SETUP1():=(
-U:CONCAT('U,I),
-V:CONCAT('V,I),
-X:CONCAT('X,I),
-Y:CONCAT('Y,I))$
+/* subroutines to create variable names at ith loop */
+setup1():=(
+u:concat('u,i),
+v:concat('v,i),
+x:concat('x,i),
+y:concat('y,i))$
 
-SETUP2():=(
-F:CONCAT('F,I),
-G:CONCAT('G,I),
-P:CONCAT('P,I),
-Q:CONCAT('Q,I),
-R:CONCAT('R,I),
-S:CONCAT('S,I),
-PP:CONCAT('PP,I),
-QQ:CONCAT('QQ,I))$
+setup2():=(
+f:concat('f,i),
+g:concat('g,i),
+p:concat('p,i),
+q:concat('q,i),
+r:concat('r,i),
+s:concat('s,i),
+pp:concat('pp,i),
+qq:concat('qq,i))$
 
-/* SUBROUTINE TO INPUT THE RHS'S FROM KEYBOARD */
-INPUTRHS():=(
-PRINT(" ENTER THE RHS'S TO BE STUDIED "),
-PRINT(" USE VARIABLES X,Y, THEY WILL BE CONVERTED TO X1,Y1 "),
-U::READ(U,"="),
-PRINT(EV(U)),
-V::READ(V,"="),
-PRINT(EV(V)))$
+/* subroutine to input the rhs's from keyboard */
+inputrhs():=(
+print(" enter the rhs's to be studied "),
+print(" use variables x,y, they will be converted to x1,y1 "),
+u::read(u,"="),
+print(ev(u)),
+v::read(v,"="),
+print(ev(v)))$
 
-/* SUBROUTINE TO TRUNCATE F AND G TO TERMS OF LOWEST DEGREE */
-TRUNCATE():=BLOCK(
-FOR J FROM 2 THRU 8 DO
-	(TEMP1:RATEXPAND([EV(F),EV(G)]),
-	TEMP2:TAYLOR(TEMP1,[EV(X),EV(Y)],0,J),
-	IF TEMP2 # TAYLOR([0,0],DUMMY,0,1) THEN RETURN(TEMP2)))$
+/* subroutine to truncate f and g to terms of lowest degree */
+truncate():=block(
+for j from 2 thru 8 do
+	(temp1:ratexpand([ev(f),ev(g)]),
+	temp2:taylor(temp1,[ev(x),ev(y)],0,j),
+	if temp2 # taylor([0,0],dummy,0,1) then return(temp2)))$
 
-/* SUBROUTINE TO SOLVE GTRUNC = 0 */
-GETROOTS():=(
-PRINT("SOLVING GTRUNC = 0"),
-FTRUNC:PART(TEMP2,1),
-GTRUNC:PART(TEMP2,2),
-GTRUNCX:DIFF(GTRUNC,EV(X)),
-GTRUNCY:DIFF(GTRUNC,EV(Y)),
-XROOTS:SOLVE(GTRUNC,EV(X)),
-YROOTS:SOLVE(GTRUNC,EV(Y)),
-ROOTNUM:0,
-FOR K:1 THRU LENGTH(XROOTS) DO
-	(ROOTNUM:ROOTNUM+1,
-	ROOT[ROOTNUM]:PART(XROOTS,K)),
-FOR K:1 THRU LENGTH(YROOTS) DO
-	(ROOTNUM:ROOTNUM+1,
-	ROOT[ROOTNUM]:PART(YROOTS,K)),
-PRINT("TOTAL NO. OF ROOTS =",ROOTNUM))$
+/* subroutine to solve gtrunc = 0 */
+getroots():=(
+print("solving gtrunc = 0"),
+ftrunc:part(temp2,1),
+gtrunc:part(temp2,2),
+gtruncx:diff(gtrunc,ev(x)),
+gtruncy:diff(gtrunc,ev(y)),
+xroots:solve(gtrunc,ev(x)),
+yroots:solve(gtrunc,ev(y)),
+rootnum:0,
+for k:1 thru length(xroots) do
+	(rootnum:rootnum+1,
+	root[rootnum]:part(xroots,k)),
+for k:1 thru length(yroots) do
+	(rootnum:rootnum+1,
+	root[rootnum]:part(yroots,k)),
+print("total no. of roots =",rootnum))$
 
-/* PERFORM TAKENS' TEST FOR EACH ROOT */
-TEST():=(BLOCK(
-FLAG:GREEN,
-FOR K:1 THRU ROOTNUM DO (PRINT(ROOT[K]),
-	FTEST:EV(FTRUNC,ROOT[K]),
-	GXTEST:EV(GTRUNCX,ROOT[K]),
-	GYTEST:EV(GTRUNCY,ROOT[K]),
-/*	PRINT("FTRUNC =",FTEST),
-	PRINT("GXTRUNC =",GXTEST),
-	PRINT("GYTRUNC =",GYTEST),             */
-	IF FTEST=0 THEN (PRINT("FTRUNC IS ZERO!"), FLAG:RED)  ELSE
-	IF GXTEST=0 AND GYTEST=0 THEN (PRINT("DG TRUNC IS ZERO!"),FLAG:RED)),
-	IF FLAG=GREEN THEN "PASSED TEST" ELSE "FAILED TEST"))$
+/* perform takens' test for each root */
+test():=(block(
+flag:green,
+for k:1 thru rootnum do (print(root[k]),
+	ftest:ev(ftrunc,root[k]),
+	gxtest:ev(gtruncx,root[k]),
+	gytest:ev(gtruncy,root[k]),
+/*	print("ftrunc =",ftest),
+	print("gxtrunc =",gxtest),
+	print("gytrunc =",gytest),             */
+	if ftest=0 then (print("ftrunc is zero!"), flag:red)  else
+	if gxtest=0 and gytest=0 then (print("dg trunc is zero!"),flag:red)),
+	if flag=green then "passed test" else "failed test"))$
 
-/* SUBROUTINE TO DEFINE F AND G */
-DEFFG():=(
-F::EXPAND(EV(X*U+Y*V)),
-PRINT(F,"=",EV(F)),
-G::EXPAND(EV(X*V-Y*U)),
-PRINT(G,"=",EV(G)))$
+/* subroutine to define f and g */
+deffg():=(
+f::expand(ev(x*u+y*v)),
+print(f,"=",ev(f)),
+g::expand(ev(x*v-y*u)),
+print(g,"=",ev(g)))$
 
-/* SUBROUTINE TO DEFINE P AND Q */
-DEFPQ():=(
-TRANS:[EV(X)=R*COS(S),EV(Y)=R*SIN(S)],
-P::EV(F)/R,P::EXPAND(EV(EV(P),TRANS)),
-PRINT(P,"=",EV(P)),
-Q::EV(G)/R^2,Q::EXPAND(EV(EV(Q),TRANS)),
-PRINT(Q,"=",EV(Q)))$
+/* subroutine to define p and q */
+defpq():=(
+trans:[ev(x)=r*cos(s),ev(y)=r*sin(s)],
+p::ev(f)/r,p::expand(ev(ev(p),trans)),
+print(p,"=",ev(p)),
+q::ev(g)/r^2,q::expand(ev(ev(q),trans)),
+print(q,"=",ev(q)))$
 
-/* SUBROUTINE TO DEFINE PP AND QQ */
-DEFPPQQ():=(
-EXPONENT:MIN(LOPOW(EV(P),R),LOPOW(EV(Q),R)),
-PP::EXPAND(EV(P)/R^EXPONENT),
-QQ::EXPAND(EV(Q)/R^EXPONENT),
-PRINT("DIVIDE OUT",R^EXPONENT),
-/*       PRINT(PP,"=",EV(PP)),
-         PRINT(QQ,"=",EV(QQ)),           */
-PRINT("NOW SET",R,"= 0"),
-PTEMP:EV(EV(PP),R::0),
-QTEMP:EV(EV(QQ),R::0),
-PRINT(PP,"=",PTEMP),
-PRINT("NOTE: PREVIOUS SHOULD BE ZERO!"),
-PRINT(QQ,"=",QTEMP))$
+/* subroutine to define pp and qq */
+defppqq():=(
+exponent:min(lopow(ev(p),r),lopow(ev(q),r)),
+pp::expand(ev(p)/r^exponent),
+qq::expand(ev(q)/r^exponent),
+print("divide out",r^exponent),
+/*       print(pp,"=",ev(pp)),
+         print(qq,"=",ev(qq)),           */
+print("now set",r,"= 0"),
+ptemp:ev(ev(pp),r::0),
+qtemp:ev(ev(qq),r::0),
+print(pp,"=",ptemp),
+print("note: previous should be zero!"),
+print(qq,"=",qtemp))$
 
-/* SUBROUTINE TO FIND ROOTS S OF QQ=0 WHEN R=0 */
-/*     USER SELECTS ROOT SSTAR TO BE USED      */
-SROOTS():=(
-STEMP:SOLVE(QTEMP,EV(S)),
-FOR K:1 THRU LENGTH(STEMP) DO 
-	PRINT("ROOT NO.",K,",",PART(STEMP,K)),
-	PRINT("THERE ARE",LENGTH(STEMP),"ROOTS"),
-	ROOTNO:READ("PICK A ROOT NO., OR 0 TO ENTER ONE"),
-	IF ROOTNO=0 THEN SSTAR:READ("ENTER ROOT") ELSE
-	SSTAR:RHS(PART(STEMP,ROOTNO)),
-	PRINT(S,"STAR =",SSTAR))$
+/* subroutine to find roots s of qq=0 when r=0 */
+/*     user selects root sstar to be used      */
+sroots():=(
+stemp:solve(qtemp,ev(s)),
+for k:1 thru length(stemp) do 
+	print("root no.",k,",",part(stemp,k)),
+	print("there are",length(stemp),"roots"),
+	rootno:read("pick a root no., or 0 to enter one"),
+	if rootno=0 then sstar:read("enter root") else
+	sstar:rhs(part(stemp,rootno)),
+	print(s,"star =",sstar))$
 
-/* SUBROUTINE TO TAYLOR EXPAND PP AND QQ ABOUT R=0, S=STAR */
-/*        RETURNS NEW U AND V FOR NEXT ITERATION           */
+/* subroutine to taylor expand pp and qq about r=0, s=star */
+/*        returns new u and v for next iteration           */
      
-BLOWUP():=(
-R::EV(X),
-S::SSTAR+EV(Y),
-POW:READ("KEEP TERMS OF WHAT POWER?"),
-PRINT(U,"="),
-U::TAYLOR(EV(EV(PP)),[EV(X),EV(Y)],0,POW),
-PRINT(EV(U)),
-PRINT(V,"="),
-V::TAYLOR(EV(EV(QQ)),[EV(X),EV(Y)],0,POW),
-PRINT(EV(V)) )$
+blowup():=(
+r::ev(x),
+s::sstar+ev(y),
+pow:read("keep terms of what power?"),
+print(u,"="),
+u::taylor(ev(ev(pp)),[ev(x),ev(y)],0,pow),
+print(ev(u)),
+print(v,"="),
+v::taylor(ev(ev(qq)),[ev(x),ev(y)],0,pow),
+print(ev(v)) )$

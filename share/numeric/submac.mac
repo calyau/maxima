@@ -38,101 +38,101 @@ with the built-in macro BUILDQ.
 
 */
 
-EVAL_WHEN([translate,batch,demo],
-          IF GET('MACRO1,'VERSION) = FALSE
-        THEN LOADFILE(MACRO1,FASL,DSK,SHARE))$
+eval_when([translate,batch,demo],
+          if get('macro1,'version) = false
+        then loadfile(macro1,fasl,dsk,share))$
 
-HERALD_PACKAGE(SUBMAC)$
+herald_package(submac)$
 
-EVAL_WHEN([TRANSLATE],TRANSCOMPILE:TRUE,
-	  /* PACKAGEFILE:TRUE, bug in MEVAL makes this lose now. */
-          MODEDECLARE(FUNCTION(GETCHARN),FIXNUM,
-	  FUNCTION(SYMBOLP,GENSYM_CONVENTIONP),BOOLEAN))$
+eval_when([translate],transcompile:true,
+	  /* packagefile:true, bug in meval makes this lose now. */
+          modedeclare(function(getcharn),fixnum,
+	  function(symbolp,gensym_conventionp),boolean))$
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],          
-          PARAMETER(X)::=EV(X))$
+eval_when([translate,batch,demo],          
+          parameter(x)::=ev(x))$
 
-GENSYM_CONVENTIONP(X):=
- IF SYMBOLP(X) AND GETCHARN(X,1)=PARAMETER(GETCHARN('%,1)) AND
-    GETCHARN(X,2)=PARAMETER(GETCHARN('_,1)) THEN TRUE
-    ELSE FALSE$
+gensym_conventionp(x):=
+ if symbolp(x) and getcharn(x,1)=parameter(getcharn('%,1)) and
+    getcharn(x,2)=parameter(getcharn('_,1)) then true
+    else false$
 
-EVAL_WHEN(TRANSLATE,DECLARE(%_GENSYMS,SPECIAL))$
+eval_when(translate,declare(%_gensyms,special))$
 
-%_CHECK(EXP):=IF ATOM(EXP)
-                 THEN( IF GENSYM_CONVENTIONP(EXP) AND NOT(MEMBER(EXP,%_GENSYMS))
-			  THEN PUSH(EXP,%_GENSYMS))
-                 ELSE (%_CHECK(PART(EXP,0)),
-                       FOR EXP IN ARGS(EXP) DO(%_CHECK(EXP)))$
+%_check(exp):=if atom(exp)
+                 then( if gensym_conventionp(exp) and not(member(exp,%_gensyms))
+			  then push(exp,%_gensyms))
+                 else (%_check(part(exp,0)),
+                       for exp in args(exp) do(%_check(exp)))$
 
-%_GENSYMS(EXP):=BLOCK([%_GENSYMS:[]],%_CHECK(EXP),%_GENSYMS)$
+%_gensyms(exp):=block([%_gensyms:[]],%_check(exp),%_gensyms)$
 
 /*    :=        180       ANY       20        ANY       ANY
     INFIX(operator, lbp[180], rbp[180], lpos[ANY], rpos[ANY],pos[ANY])
 */
 
-EVAL_WHEN([TRANSLATE],
-          /* This  hack diverts the syntax defining forms for
+eval_when([translate],
+          /* this  hack diverts the syntax defining forms for
              "=>" to another file. */
-	  INFIX("=>",180,20),
+	  infix("=>",180,20),
 	  /* get rid of any function or macro properties that "=>"
              might have so that only the syntax gets saved. */
-          REMFUNCTION("=>"),
-          SAVE([SUBMAC,SYNTAX,DSK,SHARE2],"=>"))$
+          remfunction("=>"),
+          save([submac,syntax,dsk,share2],"=>"))$
 
-EVAL_WHEN([LOADFILE],
-          /* This is evaluated once we are translated and then loaded. */
-          LOADFILE(SUBMAC,SYNTAX,DSK,SHARE2))$
+eval_when([loadfile],
+          /* this is evaluated once we are translated and then loaded. */
+          loadfile(submac,syntax,dsk,share2))$
 
-EVAL_WHEN([BATCH,DEMO],
-          /* Otherwise just evaluate the usual form. */
-          /* The reason I don't do EVAL_WHEN([BATCH,DEMO,TRANSLATE,LOADFILE],
-	  				     INFIX("=>"))
-             is to save the core of loading the INFIX function. */
-          INFIX("=>"))$
+eval_when([batch,demo],
+          /* otherwise just evaluate the usual form. */
+          /* the reason i don't do eval_when([batch,demo,translate,loadfile],
+	  				     infix("=>"))
+             is to save the core of loading the infix function. */
+          infix("=>"))$
 
-/* The right hand side of the "=>" definition is the template of
-   the BUILDQ, the formal arguments and the gensym convention
+/* the right hand side of the "=>" definition is the template of
+   the buildq, the formal arguments and the gensym convention
    symbols are the substitution parameters. */
 
-"=>"(HEADER,BODY)::=
-    BLOCK([BUILD_SUBST:[], /* the subsitutions the buildq will make */
-           EVAL_ONCE:[], /* From unquoted arguments. */
-	   FORMAL_ARGS:[] ], /* Of the constructed macro. */
+"=>"(header,body)::=
+    block([build_subst:[], /* the subsitutions the buildq will make */
+           eval_once:[], /* from unquoted arguments. */
+	   formal_args:[] ], /* of the constructed macro. */
 
-	   FOR U IN %_GENSYMS(BODY)
-	    DO PUSH(BUILDQ([U],U:?GENSYM()),BUILD_SUBST),
+	   for u in %_gensyms(body)
+	    do push(buildq([u],u:?gensym()),build_subst),
 
-	   FOR ARG IN ARGS(HEADER)
-            DO(IF ATOM(ARG)
-	          /* F(X)=>BAR(X) is
-	             F(G001)::=BUILDQ([G001,X:?GENSYM()],BLOCK([X:G001],BODY)) */
-                  THEN BLOCK([G:?GENSYM()],
-		             PUSH(G,FORMAL_ARGS),
-			     PUSH(G,BUILD_SUBST),
-			     PUSH(BUILDQ([ARG],ARG:?GENSYM()),BUILD_SUBST),
-			     PUSH(BUILDQ([ARG,G],ARG:G),EVAL_ONCE))
-               ELSE IF PART(ARG,0)="'"
-	          THEN (ARG:PART(ARG,1),
-		        PUSH(ARG,BUILD_SUBST),
-			PUSH(ARG,FORMAL_ARGS))
-               ELSE ERROR("Bad formal arg to \"=>\"",ARG)),
+	   for arg in args(header)
+            do(if atom(arg)
+	          /* f(x)=>bar(x) is
+	             f(g001)::=buildq([g001,x:?gensym()],block([x:g001],body)) */
+                  then block([g:?gensym()],
+		             push(g,formal_args),
+			     push(g,build_subst),
+			     push(buildq([arg],arg:?gensym()),build_subst),
+			     push(buildq([arg,g],arg:g),eval_once))
+               else if part(arg,0)="'"
+	          then (arg:part(arg,1),
+		        push(arg,build_subst),
+			push(arg,formal_args))
+               else error("bad formal arg to \"=>\"",arg)),
 
-	   FORMAL_ARGS:REVERSE(FORMAL_ARGS),
-	   EVAL_ONCE:REVERSE(EVAL_ONCE), /* preserve order of evaluation. */
+	   formal_args:reverse(formal_args),
+	   eval_once:reverse(eval_once), /* preserve order of evaluation. */
 
-           BUILDQ([FORMAL_ARGS,EVAL_ONCE,BUILD_SUBST,NAME:PART(HEADER,0),BODY],
-		  NAME(SPLICE(FORMAL_ARGS))::=
-                       BUILDQ(BUILD_SUBST,
-                              BLOCK(EVAL_ONCE,BODY))))$
+           buildq([formal_args,eval_once,build_subst,name:part(header,0),body],
+		  name(splice(formal_args))::=
+                       buildq(build_subst,
+                              block(eval_once,body))))$
 
-EVAL_WHEN(DEMO,
-RECT_RULE('EXP,'X,A,B,DX)=>BLOCK([%_SUM:0.0],
-                                 FOR X:A THRU B STEP DX
-                                  DO %_SUM:%_SUM+EXP, %_SUM));
-EVAL_WHEN(DEMO,MACROEXPAND(RECT_RULE(X^3*A,X,A^2,A*B^2,0.5)));
+eval_when(demo,
+rect_rule('exp,'x,a,b,dx)=>block([%_sum:0.0],
+                                 for x:a thru b step dx
+                                  do %_sum:%_sum+exp, %_sum));
+eval_when(demo,macroexpand(rect_rule(x^3*a,x,a^2,a*b^2,0.5)));
 
-EVAL_WHEN(BATCH,TTYOFF:FALSE)$
+eval_when(batch,ttyoff:false)$
 
 
 
