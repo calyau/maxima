@@ -23,13 +23,13 @@ dumping it one does (make :maxima ).
 BUILDING:
 ========
 
-For GCL (GNU Common Lisp) version 2.0 and later, edit the file ./configure
-putting the correct
-directories in these.  It presupposes your having the .o files from
-the GCL available, since a large link will be done to produce a new
+If building with GCL (GNU Common Lisp) version 2.0 or later,
+edit the file maxima-x.x/configure putting the correct
+pathnames in it.  It presupposes your having the .o files from
+the GCL available, since a  link will be done to produce a new
 image containing maxima.
 
-Then in the main maxima directory,
+In the main maxima directory,
 
 % ./configure
 % make

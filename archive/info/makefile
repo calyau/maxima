@@ -133,6 +133,7 @@ install:
 
 maxima.html:
 	texi2html -split_chapter maxima.texi
+
 install-html:
 	cp *.html /d/www/maxima
 
