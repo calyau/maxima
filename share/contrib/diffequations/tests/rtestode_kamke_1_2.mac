@@ -81,11 +81,146 @@ riccati;
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
-/* 114 [y>0] */
-/* 120 Crash */ 
-/* 126 Crash */ 
-/* 127 Crash */ 
-/* 128 Crash */ 
+/* 111 */
+(pn_(111),ans:contrib_ode(eqn: x*'diff(y,x) + y^3 + 3*x*y^2,y,x));
+false;
+
+/* 112 */
+(pn_(112),ans:contrib_ode(eqn:x*'diff(y,x)-sqrt(y^2+x^2)-y,y,x));
+[x = %c*%e^(x*asinh(y/x)/abs(x))];
+assume(x>0);
+[x>0];
+solve(map(log,ans[1]/%c),y);
+[y = x*sinh(log(x/%c))];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[genhom,0];
+forget(x>0);
+[x>0];
+
+/* 113 */
+(pn_(113),ans:contrib_ode(eqn:x*'diff(y,x)+a*sqrt(y^2+x^2)-y,y,x));
+[x=%c*%e^-(x*asinh(y/x)/(a*abs(x)))];
+assume(x>0);
+[x>0];
+solve(map(log,ans[1]/%c),y);
+[y=-x*sinh(a*log(x/%c))];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[genhom,0];
+forget(x>0);
+[x>0];
+
+/* 114 */
+assume(x>0,y>0);
+[x>0,y>0];
+(pn_(114),ans:contrib_ode(eqn:x*'diff(y,x)-x*sqrt(y^2+x^2)-y,y,x));
+[x-asinh(y/x)=%c];
+solve(ans[1],y);
+[y=x*sinh(x-%c)];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[lie,0];
+forget(x>0,y>0);
+[x>0,y>0];
+
+/* 115 */
+(pn_(115),ans:contrib_ode(eqn:x*'diff(y,x)-x*(y-x)*sqrt(y^2+x^2)-y,y,x));
+[(2*'integrate((sqrt(y^2+x^2)*((y^2-x*y)*'integrate((2*y^2-x*y+x^2)*%e^-(log(y^2+x^2)/2)/(y^4-2*x*y^3+2*x^2*y^2-2*x^3*y+x^4),x)+(x-y)*'integrate(%e^-(log(y^2+x^2)/2)/(y-x),x))-x)/((y-x)*sqrt(y^2+x^2)),y)+2*y*'integrate(%e^-(log(y^2+x^2)/2)/(y-x),x)+x^2)/2=%c];
+method;
+lie;
+
+/* 116 */
+(pn_(116),ans:contrib_ode(eqn:x*'diff(y,x)-x*sqrt((y^2-x^2)*(y^2-4*x^2))-y,y,x)); 
+[(2*'integrate((sqrt(y^4-5*x^2*y^2+4*x^4)*(y*'integrate((2*y^3-5*x^2*y)*%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2)/(y^4-5*x^2*y^2+4*x^4),x)-'integrate(%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2),x))-x)/sqrt(y^4-5*x^2*y^2+4*x^4),y)+2*y*'integrate(%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2),x)+x^2)/2=%c];
+method;
+lie;
+
+/* 117 */
+(pn_(117),ans:contrib_ode(eqn:x*'diff(y,x)-x*exp(y/x)-y-x,y,x));
+[%c*x=%e^-((x*log(%e^(y/x)+1)-y)/x)];
+method;
+homogeneous;
+
+/* 118 */
+(pn_(118),ans:contrib_ode(eqn:x*'diff(y,x)-y*log(y),y,x));
+[log(log(y))=log(x)+%c];
+solve(ans[1],y);
+[y=%e^(%e^%c*x)];
+[method,ode_check(eqn,%[1])];
+[separable,0];
+
+/* 119 */
+(pn_(119),ans:contrib_ode(eqn:x*'diff(y,x)-y*(log(x*y)-1),y,x));
+[x = %c*log(x*y)];
+solve(ans[1],y);
+[y=%e^(x/%c)/x];
+[method,ode_check(eqn,%[1])];
+[genhom,0];
+
+/* 120  Error return from ode1_lie - symmetries exist, see rtest_sym.mac */
+/* (pn_(120),ans:contrib_ode(eqn:x*'diff(y,x)-y*(x*log(x^2/y)+2),y,x)); */
+
+/* 121 */
+(pn_(121),ans:contrib_ode(eqn:x*'diff(y,x)+sin(y-x),y,x));
+false;
+
+/* 122 */
+(pn_(122),ans:contrib_ode(eqn:x*'diff(y,x)+(sin(y)-3*x^2*cos(y))*cos(y),y,x));
+false;
+
+/* 123 */
+(pn_(123),ans:contrib_ode(eqn:x*'diff(y,x)-x*sin(y/x)-y,y,x));
+[%c*x=%e^-((log(cos(y/x)+1)-log(cos(y/x)-1))/2)];
+method;
+homogeneous;
+
+/* 124 */
+(pn_(124),ans:contrib_ode(eqn:x*'diff(y,x)+x*cos(y/x)-y+x,y,x));
+[%c*x=%e^-(sin(y/x)/(cos(y/x)+1))];
+method;
+homogeneous;
+
+/* 125 */
+(pn_(125),ans:contrib_ode(eqn:x*'diff(y,x)+x*tan(y/x)-y,y,x));
+[%c*x=1/sin(y/x)];
+method;
+homogeneous;
+
+/* Equations 126 to 128 need pdiff */
+use_pdiff:true;
+true;
+
+/* 126 */
+(pn_(126),ans:contrib_ode(eqn:x*'diff(y,x)-y*f(x*y),y,x));
+[y*'integrate(f(x*y)/(x*y*f(x*y)+x*y),x)-'integrate(((y^2*f(x*y)+y^2)*'integrate((x*y*pderivop(f,1)(x*y)-f(x*y)^2-f(x*y))/(x*y^2*f(x*y)^2+2*x*y^2*f(x*y)+x*y^2),x)+(y*f(x*y)+y)*'integrate(f(x*y)/(x*y*f(x*y)+x*y),x)+1)/(y*f(x*y)+y),y)=%c];
+method;
+lie;
+
+/* 127  */
+(pn_(127),ans:contrib_ode(eqn:x*'diff(y,x)-y*f(x^a*y^b),y,x));
+[b*y*'integrate(f(x^a*y^b)/(b*x*y*f(x^a*y^b)+a*x*y),x)-'integrate(((b^2*y^2*f(x^a*y^b)+a*b*y^2)*'integrate((a*b*x^a*y^b*pderivop(f,1)(x^a*y^b)-b*f(x^a*y^b)^2-a*f(x^a*y^b))/(b^2*x*y^2*f(x^a*y^b)^2+2*a*b*x*y^2*f(x^a*y^b)+a^2*x*y^2),x)+(b^2*y*f(x^a*y^b)+a*b*y)*'integrate(f(x^a*y^b)/(b*x*y*f(x^a*y^b)+a*x*y),x)+b)/(b*y*f(x^a*y^b)+a*y),y)=%c];
+method;
+lie;
+
+/* 128  */
+(pn_(128),ans:contrib_ode(eqn:x*'diff(y,x)+a*y-f(x)*g(x^a*y),y,x));
+['integrate((x^a*f(x)*g(x^a*y)-a*x^a*y)/(x*g(x^a*y)),x)-'integrate((g(x^a*y)*'integrate((a*x^(2*a)*y*pderivop(g,1)(x^a*y)-a*x^a*g(x^a*y))/(x*g(x^a*y)^2),x)+x^a)/g(x^a*y),y)=%c];
+method;
+lie;
+
+use_pdiff:false;
+false;
+
+/* 129 */
+(pn_(129),ans:contrib_ode(eqn:(x+1)*'diff(y,x)+y*(y-x),y,x));
+[y=%e^x/((x+1)*('integrate(%e^x/(x+1)^2,x)+%c))];
+[method,ode_check(eqn,ans[1])];
+[bernoulli,0];
+
+/* 130 */
+(pn_(130),ans:contrib_ode(eqn:2*x*'diff(y,x)-y-2*x^3,y,x));
+[y=%e^(log(x)/2)*(2*%e^(5*log(x)/2)/5+%c)];
+[method,ode_check(eqn,ans[1])];
+[linear,0];
+
 /* 141 [4*b-a^2+2*a-1>0] */
 /* 143 [4*a*b+1>0] */
 /* 180 [4*a*c-b^2>0] */
