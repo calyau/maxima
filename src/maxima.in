@@ -5,11 +5,12 @@ usage () {
 usage: maxima [options]
 options:
     -h, --help: Display this usage message.
-    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>. Leave <lisp>
-                              empty to see the list of possible values.
+    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>. Use --list-avail
+                              to see the list of possible values.
     -u <version>, --use-version=<version>: Launch maxima version <version>.
-                                           Leave <version> empty to see the 
-                                           list of possible values.
+                                           Use --list-avail to see the list
+                                           of possible values.
+    --list-avail: List the installed versions and lisp implementations.
     -b <file>, --batch=<file>: Process <file> in maxima batch mode.
     --batch-lisp=<file>: Process lisp file <file> in batch mode.
     --batch-string=<string>: Process <string> in maxima batch mode.
@@ -17,6 +18,7 @@ options:
                                         mode.
     -p <lisp_file>, --preload-lisp=<lisp_file>: Preload <lisp_file>
     -v, --verbose: Print extra information from the maxima wrapper script.
+    --version: Print the (default) installed version.
 EOF
 }
 
@@ -73,6 +75,8 @@ process_args () {
   batch_string=
   run_string=
   preload_lisp_file=
+  list_avail=
+  show_version=
   while getopts "hl:u:b:r:p:v-:" opt; do
     if [ "$opt" = "-" ]; then
       opt=$OPTARG
@@ -104,6 +108,9 @@ process_args () {
 		    exit
 		  fi
 		  ;;
+      list-avail)
+		  list_avail=true
+		  ;;
       b | batch=*)
 		   if [ "$opt" = "b" ]; then
 		     batch_file=$OPTARG
@@ -134,6 +141,9 @@ process_args () {
       v | verbose)
 	       verbose=true
 	       ;;
+      version)
+	       show_version=true
+	       ;;
       *)
 	 echo "Option $1 not recognized" 1>&2
 	 usage
@@ -143,11 +153,40 @@ process_args () {
   done
 }
 
-if [ -f "$HOME/.maxima/maximarc" ]; then
-  . "$HOME/.maxima/maximarc"
+if [ -z "$MAXIMA_USERDIR" ]; then
+  maximarc_path="$HOME/.maxima/maximarc"
+else
+  maximarc_path="$MAXIMA_USERDIR/maximarc"
+fi
+if [ -f "$maximarc_path" ]; then
+  . "$maximarc_path"
 fi
 process_args "$@"
 setup_vars
+
+if [ -n "$show_version" ]; then
+  echo "Maxima $VERSION"
+  exit 0
+fi
+
+if [ -n "$list_avail" ]; then
+  if [ -n "$in_maxima_local" ]; then
+    echo "The --list-avail option is only available once maxima is installed."
+    exit 1
+  fi
+  echo "Available versions:"
+  versions=`ls -1 \`dirname "$MAXIMA_VERPKGLIBDIR"\``
+  for version in $versions
+  do
+    binary_lisps=`ls -1 \`dirname "$MAXIMA_VERPKGLIBDIR"\`/$version`
+    for binary_lisp in $binary_lisps
+    do
+      lisp=`echo $binary_lisp | sed 's/binary-//'`
+      echo "version $version, lisp $lisp"
+    done
+  done
+  exit 0
+fi
 
 LISPTYPE=$MAXIMA_LISP
 export LISPTYPE
