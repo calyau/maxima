@@ -18,6 +18,7 @@ inonmet_flag:false;
 iframe_bracket_form:true;
 defcon(ifr,ifri,ifg);
 defcon(ifg,ifg,kdelta);
+SYM;		/* So that 5.9.1 knows about this as a case-insensitive symbol */
 
 /* Helper function to get the metric tensor or return an error */
 _g([l]):=if iframe_flag then apply(nounify(ifg), l)
