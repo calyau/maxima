@@ -227,6 +227,9 @@ Choices are 'standard, 'perhaps-smart, 'basic"
 
 ;;;; The other variables
 
+(defconst maxima-temp-suffix 0
+  "Temporary filename suffix.  Incremented by 1 for each filename.")
+
 (defvar inferior-maxima-process nil
   "The Maxima process.")
 
@@ -272,18 +275,26 @@ Choices are 'standard, 'perhaps-smart, 'basic"
 
 (defvar maxima-special-symbol-letters "!:='")
 
+(defvar maxima-input-end 0
+  "The end of the latest input that was sent to Maxima.")
+
+(defvar maxima-real-input-end 0
+  "The end of the latest input that was sent to Maxima.
+This doesn't include answers to questions.")
+
 (defvar inferior-maxima-exit-hook '())
+
 ;;;; Utility functions
 
 (defun maxima-line-beginning-position ()
-  (if (fboundp 'beginning-of-line)
+  (if (not (fboundp 'line-beginning-position))
       (save-excursion
 	(beginning-of-line)
 	(point))
     (line-beginning-position)))
 
 (defun maxima-line-end-position ()
-  (if (fboundp 'end-of-line)
+  (if (not (fboundp 'line-end-position))
       (save-excursion
 	(end-of-line)
 	(point))
@@ -313,6 +324,13 @@ Choices are 'standard, 'perhaps-smart, 'basic"
   (save-excursion
     (skip-chars-forward maxima-special-symbol-letters)
     (point)))
+
+(defun maxima-make-temp-name ()
+  "Return a unique filename."
+  (setq maxima-temp-suffix (+ maxima-temp-suffix 1))
+  (concat (concat (make-temp-name "#mz") "-")
+          (int-to-string maxima-temp-suffix)
+          ".max"))
 
 ;;;; Maxima mode functions
 
@@ -1411,11 +1429,13 @@ To get apropos with the symbol under point, use:
           (erase-buffer))
         (setq inferior-maxima-process nil)))
   (unless (processp inferior-maxima-process)
+    (setq maxima-input-end 0)
     (let ((mbuf (make-comint "maxima" maxima-command)))
-      (accept-process-output (get-buffer-process mbuf))
       (save-excursion
         (set-buffer mbuf)
         (setq inferior-maxima-process (get-buffer-process mbuf))
+        (while (not (maxima-new-prompt-p))
+          (sleep-for 0.100))
         (inferior-maxima-mode)))))
 
 (defun maxima-stop (&optional arg)
@@ -1435,41 +1455,146 @@ To get apropos with the symbol under point, use:
 
 ;;;; Sending information to the process
 
+(defun maxima-prompt ()
+  "Return the point of the last prompt in the maxima process buffer."
+  (save-excursion
+    (set-buffer (process-buffer inferior-maxima-process))
+    (goto-char (point-max))
+    (re-search-backward inferior-maxima-prompt)
+    (match-end 0)))
+
+(defun maxima-new-prompt-p ()
+  "Check to see if there is a new prompt after the last input."
+  (save-excursion
+    (set-buffer (process-buffer inferior-maxima-process))
+    (goto-char maxima-input-end)
+    (or
+     (re-search-forward inferior-maxima-prompt (point-max) t)
+     (re-search-forward "?" (point-max) t)
+     (re-search-forward "Inferior Maxima Finished" (point-max) t))))
+
+(defun maxima-question-p ()
+  "Check to see if there is a question"
+  (let ((prompt))
+    (save-excursion
+      (set-buffer (process-buffer inferior-maxima-process))
+      (goto-char (point-max))
+      (re-search-backward "?" maxima-input-end t))))
+
+(defun maxima-finished-p ()
+  "Check to see if the Maxima process has halted"
+  (not (maxima-running)))
+
+(defun maxima-strip-string (string)
+  "Remove any spaces or newlines at the beginning and end of the string"
+  (while (or
+          (string= "\n" (substring string -1))
+          (string= " " (substring string -1)))
+    (setq string (substring string 0 -1)))
+  (while (or
+          (string= "\n" (substring string 0 1))
+          (string= " " (substring string 0 1)))
+    (setq string (substring string 1)))
+  string)
+
+(defun maxima-single-string (string &optional nonewinput)
+  "Send a string to the Maxima process."
+  (setq string (maxima-strip-string string))
+  (let ((prompt))
+    (maxima-start)
+    (save-excursion
+      (set-buffer (process-buffer inferior-maxima-process))
+      (goto-char (point-max))
+      (insert string)
+      (setq maxima-input-end (point))
+      (unless nonewinput
+        (setq maxima-real-input-end (point)))
+      (comint-send-input);)
+      (while (not (maxima-new-prompt-p))
+        (sit-for 0.100))
+      (goto-char (point-max)))
+    (when (maxima-question-p)
+      (let ((ans (read-string (maxima-question))))
+        (unless (string-match "[;$]" ans)
+          (setq ans (concat ans ";")))
+        (maxima-single-string ans t)))))
+
+(defun maxima-question ()
+  "Return inferior-maxima-result with whitespace trimmed off the ends.
+For use when the process asks a question."
+  (let ((qn))
+    (save-excursion
+      (set-buffer (get-buffer "*maxima*"))
+      (goto-char (point-max))
+      (search-backward "?")
+      (setq qn (buffer-substring-no-properties 
+                (maxima-line-beginning-position) (maxima-line-end-position)))
+      (goto-char (point-max)))
+    (concat qn " ")))
+
+;(defun maxima-get-lisp-end (string)
+;  (with-temp-buffer
+;    (insert string)
+;    (beginning-of-buffer)
+;    (search-forward ":lisp")
+;    (forward-sexp)
+;    (- (point) 1)))
+
+(defun maxima-get-lisp-end (string)
+  (let* ((tmpfile (maxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (end))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (make-local-hook 'kill-buffer-hook)
+      (setq kill-buffer-hook nil)
+      (insert string)
+      (beginning-of-buffer)
+      (search-forward ":lisp")
+      (forward-sexp)
+      (setq end (- (point) 1)))
+    (kill-buffer tmpbuf)
+    end))
+
+(defun maxima-send-block (stuff)
+  "Send a block of code to Maxima."
+  (maxima-start)
+  (while (or
+          (string-match "[$;]" stuff)
+          (eq (string-match "[ \n]*:lisp" stuff) 0))
+    (if (eq (string-match "[ \n]*:lisp" stuff) 0)
+        (setq end (maxima-get-lisp-end stuff))
+      (setq end (1+ (string-match "[$;]" stuff))))
+    (maxima-single-string (substring stuff 0 end))
+    (setq stuff (substring stuff end))))
+
 ;;; Sending information to the process should be done through these
-;; next two commands
+;; next four commands
 
 (defun maxima-string (string)
   "Send a string to the Maxima process."
-  (maxima-start)
   (setq inferior-maxima-computing-p t)
   (setq inferior-maxima-question-p nil)
-  (comint-send-string inferior-maxima-process (concat string "\n"))
+  (maxima-send-block string)
   (maxima-display-buffer))
 
 (defun maxima-string-nodisplay (string)
   "Send a string to the Maxima process."
-  (maxima-start)
+  "Send a string to the Maxima process."
   (setq inferior-maxima-computing-p t)
   (setq inferior-maxima-question-p nil)
-  (comint-send-string inferior-maxima-process (concat string "\n")))
+  (maxima-send-block string))
     
 (defun maxima-region (beg end)
   "Send the region to the Maxima process."
-  (maxima-start)
-  (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-question-p nil)
-  (comint-send-region inferior-maxima-process beg end)
-  (comint-send-string inferior-maxima-process "\n")
-  (maxima-display-buffer))
+  (maxima-string
+   (buffer-substring-no-properties beg end)))
 
 (defun maxima-region-nodisplay (beg end)
   "Send the region to the Maxima process,
 do not display the maxima-buffer."
-  (maxima-start)
-  (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-question-p nil)
-  (comint-send-region inferior-maxima-process beg end)
-  (comint-send-string inferior-maxima-process "\n"))
+  (maxima-string-nodisplay
+   (buffer-substring-no-properties beg end)))
 
 (defun maxima-send-region (beg end &optional arg)
   "Send the current region to the Maxima process.
@@ -1576,7 +1701,7 @@ and such that no line contains an incomplete form."
 	(maxima-start))
     (pop-to-buffer (process-buffer inferior-maxima-process))
     (goto-char (point-max))
-    (recenter)
+;    (recenter (universal-argument))
     (pop-to-buffer origbuffer)))
 
 ;;;; The inferior Maxima process
