@@ -909,7 +909,8 @@
 
 (DEFUN SPLICE2 (X)
   (COND ((FIXP X)(EXPLODE X))
-	(T (CDR (EXPLODEc (print-invert-case X))))))
+	(T (CDR (EXPLODEc X)))))
+;	(T (CDR (EXPLODEc (print-invert-case X))))))
 
 (DEFUN DERIV (E) 
        (PROG (EXP Z COUNT V) 
@@ -1351,6 +1352,9 @@
          (DO ((I 1 (1+ I))) ((> I (COND ((CADDDR E) (CADDDR E)) (T 1))))
            (SETQ BOTTOM (CONS (CADDR E) BOTTOM)))
         )
+((MEMQ (CAAR E) '(%DERIVATIVE $DIFF %IDIFF $IDIFF))
+ (SETQ X (INDICES (CADR E)) BOTTOM (APPEND BOTTOM (CADR X)) TOP (APPEND TOP (CAR X)))
+)
 ;;        (T (MERROR "Improper argument to INDICES: ~M" E))
   )
   (RETURN (LIST TOP BOTTOM))
