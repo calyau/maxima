@@ -316,3 +316,4 @@ contrib/impdiff.mac\
 contrib/lindstedt.mac\
 contrib/makeOrders.mac
 
+EXTRA_DIST = $(genericdirDATA)

@@ -32,3 +32,5 @@ clean-info:
 
 clean-html:
 	rm -f maxima*.html
+
+EXTRA_DIST = texi2html

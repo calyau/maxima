@@ -3,9 +3,12 @@ xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png 
 
 bin_SCRIPTS = xmaxima
 
-XMAXIMASOURCES = xmaxima.tcl autoconf-variables.tcl xmaxima-paths.tcl xmaxima-trailer.tcl
+XMAXIMA_REAL_SOURCES = xmaxima.tcl xmaxima-paths.tcl xmaxima-trailer.tcl
+XMAXIMASOURCES = $(XMAXIMA_REAL_SOURCES) autoconf-variables.tcl
 
 xmaxima: $(XMAXIMASOURCES)
 	rm -f xmaxima && \
 	cat $(XMAXIMASOURCES) > xmaxima && \
 	chmod +x xmaxima
+
+EXTRA_DIST = $(xmaxima_DATA) $(XMAXIMA_REAL_SOURCES)

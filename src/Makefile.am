@@ -1,5 +1,5 @@
 include $(top_srcdir)/common.mk
-RUNLISP = ../lisp-utils/maxima-run-lisp
+RUNLISP = $(top_srcdir)/lisp-utils/maxima-run-lisp
 bin_SCRIPTS = maxima
 
 if CLISP
@@ -12,9 +12,9 @@ distclean: clean-clisp
 binary-clisp/maxima.mem:
 	LISPTYPE=clisp ; export LISPTYPE ;\
 	CLISP=$(CLISP_NAME) ; export CLISP ;\
-	$(RUNLISP) -i ../lisp-utils/defsystem \
+	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-        $(RUNLISP) -i ../lisp-utils/defsystem \
+        $(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
          -f user::run -d binary-clisp/maxima
 
@@ -31,7 +31,7 @@ clean-clisp:
 
 clisp-depends.mk: maxima.system
 	LISPTYPE=clisp ; export LISPTYPE ;\
-	$(RUNLISP) -i ../lisp-utils/defsystem -x '(load "../lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-clisp/maxima.mem" "clisp-depends.mk")'
+	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-clisp/maxima.mem" "clisp-depends.mk")'
 include clisp-depends.mk
 endif
 
@@ -45,9 +45,9 @@ distclean: clean-cmucl
 binary-cmucl/maxima.core:
 	LISPTYPE=cmucl ; export LISPTYPE ;\
 	CMUCL=$(CMUCL_NAME) ; export CMUCL ;\
-	$(RUNLISP) -i ../lisp-utils/defsystem \
+	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-        $(RUNLISP) -i ../lisp-utils/defsystem \
+        $(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
         -d binary-cmucl/maxima
 
@@ -62,7 +62,7 @@ clean-cmucl:
 	rm -rf binary-cmucl
 cmucl-depends.mk: maxima.system
 	LISPTYPE=cmucl ; export LISPTYPE ;\
-	$(RUNLISP) -i ../lisp-utils/defsystem -x '(load "../lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-cmucl/maxima.core" "cmucl-depends.mk")'
+	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-cmucl/maxima.core" "cmucl-depends.mk")'
 include cmucl-depends.mk
 endif
 
@@ -80,9 +80,9 @@ binary-gcl/maxima:
 	LISPTYPE=gcl ; export LISPTYPE ;\
 	GCL=$(GCL_NAME) ; export GCL ;\
 	$(RUNLISP) \
-        -x '(load "../lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
+        -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
         $(RUNLISP) \
-        -x '(load "../lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
+        -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
          -d binary-gcl/maxima
 
 install-gcl:
@@ -96,7 +96,7 @@ clean-gcl:
 
 gcl-depends.mk: maxima.system
 	LISPTYPE=gcl ; export LISPTYPE ;\
-	$(RUNLISP) -x '(load "../lisp-utils/defsystem.lisp")(load "../lisp-utils/make-depends.lisp")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-gcl/maxima" "gcl-depends.mk")'
+	$(RUNLISP) -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(load "$(top_srcdir)/lisp-utils/make-depends.lisp")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-gcl/maxima" "gcl-depends.mk")'
 include gcl-depends.mk
 endif
 
@@ -105,7 +105,7 @@ echo_%:
 	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"
 
 genericdir = $(instsrcdir)
-genericdirDATA = SYS-DECLAIM.lisp \
+real_lisp_sources = SYS-DECLAIM.lisp \
 SYS-PROCLAIM.lisp \
 acall.lisp \
 algfac.lisp \
@@ -356,3 +356,7 @@ numerical/slatec/zunk2.lisp \
 numerical/f2cl-package.lisp \
 numerical/slatec.lisp \
 numerical/f2cl-lib.lisp
+
+genericdirDATA = $(real_lisp_sources) autoconf-variables.lisp
+
+EXTRA_DIST = $(real_lisp_sources) maxima.system numerical/slatec/fortran

@@ -15,3 +15,5 @@ rombrg.dem\
 subscr.dem\
 sumcon.dem\
 trgsmp.dem
+
+EXTRA_DIST = $(demo_DATA)
