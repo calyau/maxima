@@ -1,14 +1,14 @@
 /* CALCUL DES RESOLVANTES PRODUITS DE 1 AU DEGRE DU POLYNOMES */
 
 /* AVEC LES RESULTANTS */
-resolvante_produit_RES(p,x):=
-   block([n,rmax,Puissances,elementaires,Rh,k,Rf],
+resolvante_produit_res(p,x):=
+   block([n,rmax,puissances,elementaires,rh,k,rf],
           n:hipow(p,x),
           rmax : binomial(n,quotient(n,2)),
-          Rh: makelist(resultant(p,y-x^i,x),i,0,rmax),
+          rh: makelist(resultant(p,y-x^i,x),i,0,rmax),
           puissances: makelist(maplist(lambda([pol],
                                               (-1)^k*coeff(pol,y,n-k)),
-                                       expand(Rh)),
+                                       expand(rh)),
                                k,0,n),
           elementaires :maplist(lambda([puissances] ,
                                     pui2ele(first(puissances),puissances)),
@@ -16,35 +16,35 @@ resolvante_produit_RES(p,x):=
           k : 0,
           maplist(lambda([elem],
                          (deg:first(elem),
-                          Rf[k] : y^deg,
+                          rf[k] : y^deg,
                           for i:1 thru deg do
                               (elem:rest(elem),
-                               Rf[k]:Rf[k] +
+                               rf[k]:rf[k] +
                                        (-1)^(i)*first(elem)*y^(deg-i)),
                           k:k+1,
-                          Rf[k-1])),
+                          rf[k-1])),
                   elementaires));
 
 /* AVEC LES FONCTIONS SYMETRIQUES */
 /* Les A[k] sont les fonctions puissances des racines de la re'solvante */
 
-resolvante_produit_SYM (p,x):=
-    block([n,rmax,krmax,A,AA,resol,pui_depart],
+resolvante_produit_sym (p,x):=
+    block([n,rmax,krmax,a,aa,resol,pui_depart],
        (n:hipow(p,x),
         krmax : if oddp(n) then 1+quotient(n,2) else quotient(n,2),
-        A[0]:makelist(binomial(n,r),r,0,n),
-        A[1] :cons(n,makelist(coeff(p,x,n-i)*(-1)^i/coeff(p,x,n),i,1,n)),
-        pui_depart:ele2pui(binomial(n,krmax)*krmax,A[1]),
+        a[0]:makelist(binomial(n,r),r,0,n),
+        a[1] :cons(n,makelist(coeff(p,x,n-i)*(-1)^i/coeff(p,x,n),i,1,n)),
+        pui_depart:ele2pui(binomial(n,krmax)*krmax,a[1]),
         for i:1 thru quotient(n,2)
            do for k:binomial(n,i-1)+1 thru binomial(n,i)
-              do A[k] : pui2ele(n-i,makelist(part(pui_depart,r*k+1),
+              do a[k] : pui2ele(n-i,makelist(part(pui_depart,r*k+1),
                                           r,0,n-i)),
         makelist((bin : binomial(n,r),
-                  AA : pui2ele(bin,makelist(part(A[k],r+1),k,0,bin)),
-                  resol : Y^bin,
+                  aa : pui2ele(bin,makelist(part(a[k],r+1),k,0,bin)),
+                  resol : y^bin,
                   for j:bin-1 step -1 thru 0 do
-                      (AA:rest(AA),
-                       resol : resol + (-1)^(bin-j)*first(AA)*Y^j),
+                      (aa:rest(aa),
+                       resol : resol + (-1)^(bin-j)*first(aa)*y^j),
                  resol), r,1,n)));
 
 resolvante_unitaire(p,q,x):=
