@@ -866,13 +866,14 @@
       :mcl
       :lispworks
       :clisp
+      :gcl
       :sbcl
       :cormanlisp
       :scl
       (and allegro-version>= (version>= 4 1)))
-(eval-when #-(or :lucid :cmu17 :cmu18 gcl)
+(eval-when #-(or :lucid :gcl)
            (:compile-toplevel :load-toplevel :execute)
-	   #+(or :lucid :cmu17 :cmu18 gcl)
+	   #+(or :lucid :gcl)
            (compile load eval)
 
   (unless (or (fboundp 'lisp::require)
@@ -989,17 +990,12 @@
 ;;; MAKE package. A nice side-effect is that the short nickname
 ;;; MK is my initials.
 
-#+ecl
-(defpackage "MAKE" (:use "COMMON-LISP") (:nicknames "MK"))
-
-#+clisp
-(defpackage "MAKE" (:use "COMMON-LISP") (:nicknames "MK"))
-
-#+cormanlisp
+#+(or clisp cormanlisp ecl (and gcl defpackage) sbcl)
 (defpackage "MAKE" (:use "COMMON-LISP") (:nicknames "MK"))
 
 #+gcl
-(defpackage "MAKE" (:use "LISP" "SYSTEM") (:nicknames "MK"))
+(defpackage "MAKE" (:use "LISP" "SYSTEM") (:nicknames "MK")
+             (:import-from conditions ignore-errors))
 
 #-(or :sbcl :cltl2 :lispworks :ecl :scl)
 (in-package "MAKE" :nicknames '("MK"))
@@ -1436,9 +1432,9 @@
 ;;; ********************************
 ;;; Component Operation Definition *
 ;;; ********************************
-(eval-when #-(or :lucid :cmu17 :cmu18 :gcl)
+(eval-when #-(or :lucid :gcl)
 	   (:compile-toplevel :load-toplevel :execute)
-	   #+(or :lucid :cmu17 :cmu18 :gcl)
+	   #+(or :lucid :gcl)
 	   (compile load eval)
 (defvar *version-dir* nil
   "The version subdir. bound in operate-on-system.")
@@ -1823,8 +1819,7 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
 			(pop abs-directory)))
 	 ;; Stig (July 2001):
 	 ;; Somehow CLISP dies on the next line, but NIL is ok.
-	 #-gcl(abs-name (ignore-errors (file-namestring abs-dir))) ; was pathname-name
-	 #+:gcl(abs-name (file-namestring abs-dir))
+	 (abs-name (ignore-errors (file-namestring abs-dir))) ; was pathname-name
 	 (rel-directory (directory-to-list (pathname-directory rel-dir)))
 	 (rel-keyword (when (keywordp (car rel-directory))
 			(pop rel-directory)))
@@ -1883,10 +1878,7 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
      (make-pathname :host host
 		    :device device
                     :directory
-		    #-(and :cmu (not (or :cmu17 :cmu18)))
                     directory
-		    #+(and :cmu (not (or :cmu17 :cmu18)))
-                    (coerce directory 'simple-vector)
 		    :name
 		    #-(or :sbcl :MCL :clisp) rel-file
 		    #+(or :sbcl :MCL :clisp) rel-name
@@ -2342,7 +2334,7 @@ D
 	    (when path
 	      (gethash path *file-load-time-table*)))))))))
 
-#-(or :cmu17 :cmu18)
+#-(or :cmu)
 (defsetf component-load-time (component) (value)
   `(when ,component
     (etypecase ,component
@@ -2367,7 +2359,7 @@ D
 		    ,value)))))))
     ,value))
 
-#+(or :cmu17 :cmu18)
+#+(or :cmu)
 (defun (setf component-load-time) (value component)
   (declare
    (type (or null string pathname component) component)
@@ -2675,11 +2667,9 @@ D
 			         #+scl (string-upcase
 					(component-extension component type))
 			   :device
-			   #+(and :CMU (not (or :cmu17 :cmu18)))
-			   :absolute
 			   #+sbcl
 			   :unspecific
-			   #-(or :sbcl (and :CMU (not (or :cmu17 :cmu18))))
+			   #-(or :sbcl)
 			   (let ((dev (component-device component)))
 			     (if dev
                                  (pathname-device dev
@@ -3375,9 +3365,10 @@ D
   (declare #-(or :cltl2 :ansi-cl) (ignore override-compilation-unit))
   (unwind-protect
       ;; Protect the undribble.
-      (#+(and (or :cltl2 :ansi-cl) (not gcl))  with-compilation-unit
-	 #+(and (or :cltl2 :ansi-cl) (not gcl)) (:override override-compilation-unit)
-	 #-(and (or :cltl2 :ansi-cl) (not gcl)) progn
+      (#+(and (or :cltl2 :ansi-cl) (not :gcl)) with-compilation-unit
+	 #+(and (or :cltl2 :ansi-cl) (not :gcl)) 
+	 (:override override-compilation-unit)
+	 #-(and (or :cltl2 :ansi-cl) (not :gcl)) progn
 	(when *reset-full-pathname-table* (clear-full-pathname-tables))
 	(when dribble (dribble dribble))
 	(when test (setq verbose t))
@@ -3803,8 +3794,8 @@ D
 ;;; if anybody does a funcall on #'require.
 
 ;;; Redefine old require to call the new require.
-(eval-when #-(or :lucid :cmu17 :cmu18 gcl) (:load-toplevel :execute)
-	   #+(or :lucid :cmu17 :cmu18 gcl) (load eval)
+(eval-when #-(or :lucid :gcl) (:load-toplevel :execute)
+	   #+(or :lucid  :gcl) (load eval)
 (unless *old-require*
   (setf *old-require*
 	(symbol-function
