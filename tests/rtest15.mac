@@ -204,3 +204,7 @@ expand(trigreduce(expand((cosh(x)+sinh(x))^8)));
 sinh(8*x)+cosh(8*x);
 expand(trigreduce(expand((cosh(x)+sinh(x))^9)));
 sinh(9*x)+cosh(9*x);
+
+/* bug 835287 */
+solve('diff(y,x),'diff(y,x));
+['diff(y,x,1)=0];
