@@ -801,31 +801,16 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 (%o9)                                done
 (%i10) ishow(lc2kdt(exp))$
 
-         %3 i  %4 j       k        l     %3 i  %4 j       l        k
-(%t10) (g     g     kdelta   kdelta   - g     g     kdelta   kdelta  ) a
-                          %3       %4                     %3       %4   j k
+         %3 i       k   %4 j       l     %3 i       l   %4 j       k
+(%t10) (g     kdelta   g     kdelta   - g     kdelta   g     kdelta  ) a
+                    %3             %4               %3             %4   j k
 (%i11) ishow(contract(expand(%)))$
 
-                                  i l      l i
+                                  l i      l i
 (%t11)                           a    - a g
 
 @end example
 
-NB: This example also demonstrates a particular shortcoming in Itensor,
-which will be addressed in a future release. As indices are raised or
-lowered, their relative positions are 'forgotten' by Itensor, as the
-package only maintains index ordering within covariant and contravariant
-indices, respectively. In the preceding example, as first one, then the
-other index of the tensor @code{a} is raised, the order of the two indices
-becomes reversed. This is because at the intermediate stage, when one index
-is raised already while the other remains in a covariant position, their
-relative positions are no longer known to Itensor. Because of this,
-the result obtained is not correct if @code{a} is not a symmetric tensor;
-the correct result should have been
-@example
- l i      i l
-a    - a g
-@end example
 
 @end defun
 

@@ -1216,14 +1216,16 @@ the connection coefficients. The nonmetricity coefficients are computed
 from the user-supplied nonmetricity vector @code{nm} by the function
 @code{nonmetricity()}.
 
+@end defvar
+
 @c @node ctayswitch
 @c @unnumberedsec phony
 @defvar ctayswitch
 
 If set to @code{true}, causes some CTENSOR computations to be carried out using
-Taylor-series expansions. Presently, @code{christof()}, @code{ricci()}, @code{uricci()},
-@code{einstein()}, and @code{weyl()} take into account this setting, but only when
-a holonomic metric is being used (i.e., @code{cframe_flag} is @code{false}).
+Taylor-series expansions. Presently, @code{christof()}, @code{ricci()},
+@code{uricci()}, @code{einstein()}, and @code{weyl()} take into account this
+setting.
 
 @end defvar
 
@@ -1403,6 +1405,7 @@ User-supplied nonmetricity vector. Used by @code{nonmetricity()}.
 
 @c @node nmc
 @c @unnumberedsec phony
+@defvar nmc
 
 The nonmetricity coefficients, computed from @code{nm} by @code{nonmetricity()}.
 
