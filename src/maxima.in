@@ -166,6 +166,13 @@ fi
 if [ -f "$maximarc_path" ]; then
   . "$maximarc_path"
 fi
+
+# For some reason TeXmacs sets MAXIMA_DIRECTORY to the empty string,
+# which breaks maxima's internal path logic. This is a workaround.
+if [ -z "$MAXIMA_DIRECTORY" ]; then
+  unset MAXIMA_DIRECTORY
+fi
+
 process_args "$@"
 setup_vars
 
