@@ -44,9 +44,7 @@ uninstall-local:
 	rm -f $(DESTDIR)$(insttestsdir)/summarize-log
 
 genericdir = $(insttestsdir)
-genericdirDATA = ltest2.lisp \
-ltests.lisp \
-rexamples.mac \
+genericdirDATA = rexamples.mac \
 rtest10.mac \
 rtest11.mac \
 rtest12.mac \
