@@ -32,8 +32,8 @@
 			:components ((:file "maxima-package")
 				     (:file "autoconf-variables")))
 	       (:module info :source-pathname ""
-			:components (#-gcl(:file "nregex")
-				     #-gcl(:file "cl-info")))
+			:components ((:file "nregex")
+				     (:file "cl-info")))
 	       (:module sloop :source-pathname ""
 			:components ((:file "sloop")))
                (:module declarations :source-pathname ""

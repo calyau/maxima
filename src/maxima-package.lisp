@@ -11,16 +11,9 @@
 ;; Create the package CL-INFO that holds the info regex routines. For
 ;; GCL, we import the necessary symbols we need from SYSTEM, since GCL
 ;; comes with an info reader.
-#-gcl
 (defpackage "CL-INFO"
   (:use :common-lisp)
   (:export "INFO" "*INFO-PATHS*"))
-
-#+gcl
-(defpackage "CL-INFO"
-  (:use "LISP" "SYSTEM")
-  (:import-from "SYSTEM" "INFO" "*INFO-PATHS*")
-  (:export "INFO" "*INFO-PATHS"))
 
 #+(and gcl (not ansi-cl))
 ;; Traditional GCL may have empty CL package.  Delete it.
@@ -141,6 +134,10 @@
 ;; *info-paths* from cl-info.lisp
 #-gcl
 (import '( cl-info::*info-paths* ) "MAXIMA" )
+
+#+gcl
+(shadowing-import '( cl-info::*info-paths* ) "MAXIMA" )
+
 
 ;; MAXIMA uses LISP package which is legacy CLtL1 for GCL.
 ;; Thus with ANSI GCL we have to import some symbols from COMMON-LISP

@@ -23,7 +23,8 @@
 ;;;
 ;;; First we create a copy of macros to help debug the beast
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
+(eval-when #-gcl(:compile-toplevel :load-toplevel :execute) 
+	   #+gcl(load compile eval)
 (defpackage "NREGEX"
   (:use "COMMON-LISP")
   (:export

@@ -32,18 +32,61 @@
 (defun get-match (s n)
   (subseq s (match-start n) (match-end n)))
 
-;; Compile the regex pattern in PAT for use by the string matcher.
-(defun compile-regex (pat &key (case-sensitive t))
-  (let ((*compile-print* nil)
-	(*compile-verbose* nil)
-	#+cmu
-	(*compile-progress* nil)
-	#+sbcl
-	(sb-ext:*compile-progress* nil)
-	)
-    (compile nil
-	     (nregex:regex-compile pat :case-sensitive case-sensitive))))
 
+;; Compile the regex pattern in PAT for use by the string matcher.  We
+;; precompile three regex's that are used for all queries. If there
+;; were any more, I would have put them in a hash table 
+;; -- jfa 07/24/04
+(let* ((string1 (format nil "Node: ([^~a]*index[^~a]*)~a"
+			(code-char 127) (code-char 127) (code-char 127)))
+       (string2 (format nil "Node: Function and Variable Index~a([0-9]+)"
+			(code-char 127)))
+       (string3 (format nil "~a[~a~a][^~a]*Node:[~a~a]+Function and Variable Index[,~a~a][^~a]*~a"
+			(code-char 31) (code-char 10) (code-char 12) 
+			(code-char 10) (code-char 32) (code-char 9) 
+			(code-char 9) (code-char 10) (code-char 10)
+			(code-char 10)))
+      (precomp-nil-string1
+       (compile nil
+		(nregex:regex-compile 
+		 string1
+		 :case-sensitive nil)))
+      (precomp-t-string2
+       (compile nil
+		(nregex:regex-compile 
+		 string2
+		 :case-sensitive t)))
+      (precomp-t-string3
+       (compile nil
+		(nregex:regex-compile 
+		 string3
+		 :case-sensitive t))))
+  (defun compile-regex (pat &key (case-sensitive t))
+    (cond
+      ((and (equal case-sensitive nil)
+	    (string= pat string1))
+       precomp-nil-string1)
+      ((and (equal case-sensitive t)
+	    (string= pat string2))
+       precomp-t-string2)
+      ((and (equal case-sensitive t)
+	    (string= pat string3))
+       precomp-t-string3)
+      (t
+       (let ((*compile-print* nil)
+	     (*compile-verbose* nil)
+	     #+cmu
+	     (*compile-progress* nil)
+	     #+sbcl
+	     (sb-ext:*compile-progress* nil)
+	     #+gcl
+	     (compiler:*compile-verbose* nil)
+	     )
+	 (compile nil
+		  (nregex:regex-compile 
+		   pat 
+		   :case-sensitive case-sensitive))))))
+  )
 ;; Search the string STRING for the pattern PAT.  Only the part of the
 ;; string bounded by START and END are searched.  PAT may either be a
 ;; string or a compiled regex (which is a function).
@@ -62,7 +105,8 @@
 	(match-start 0))
       -1))
 
-(eval-when (compile eval)
+(eval-when (compile load eval)
+  #-allegro
   (defmacro while (test &body body)
     `(loop while ,test do ,@ body))
   #+nil
@@ -107,12 +151,19 @@
     (let ((len (file-length st)))
       (unless (<= 0 start len)
 	(error "illegal file start ~a" start))
+      #-gcl
       (let ((tem (make-array (- len start)
 			     :element-type 'base-char)))
 	(when (> start 0)
 	  (file-position st start))
 	(read-sequence tem st :start 0 :end (length tem))
-	tem))))
+	tem)
+      #+gcl
+      (let ((tem (make-array (- len start)
+			     :element-type 'string-char)))
+	(if (> start 0) (file-position st start))
+	(si::fread tem 0 (length tem) st) tem)
+      )))
 
 (defun atoi (string start)
   (parse-integer string :start start :junk-allowed t))

@@ -114,18 +114,14 @@
 		      (T (merror "BAD ARG")))))))
 
 ;; The documentation is now in INFO format and can be printed using
-;; tex, or viewed using info or gnu emacs or using a web browser:
-;; http://www.ma.utexas.edu/maxima/ Some versions of maxima built
-;; have a builtin info retrieval mechanism.
+;; tex, or viewed using info or gnu emacs or using a web browser.  All
+;; versions of maxima have a builtin info retrieval mechanism.
 
 (defmspec $describe (x)
   (setq x ($sconcat (cadr x)))
-  #-gcl
   (let ((cl-info::*prompt-prefix* *prompt-prefix*)
 	(cl-info::*prompt-suffix* *prompt-suffix*))
-    (cl-info:info x '("maxima.info") *info-paths*))
-  #+gcl
-  (cl-info:info x '("maxima.info")))
+    (cl-info:info x '("maxima.info") *info-paths*)))
 
 (defun $apropos ( s ) 
   (cons '(mlist) (apropos-list s "MAXIMA"))) 
