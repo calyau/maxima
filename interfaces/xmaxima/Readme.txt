@@ -1,6 +1,6 @@
-# -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+# -*-mode: text; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#	$Id: Readme.txt,v 1.1 2002-09-05 20:37:29 mikeclarkson Exp $
+#	$Id: Readme.txt,v 1.2 2002-09-05 22:02:12 mikeclarkson Exp $
 #
 
 Maxima Tcl Development Notes (by Mike Clarkson):

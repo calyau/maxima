@@ -1,9 +1,6 @@
-#!/bin/sh
-#  -*- tcl -*- \
-exec wish "$0" "$@"
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.11 2002-09-05 20:00:33 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.12 2002-09-05 22:02:12 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -12,6 +9,7 @@ xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png 
 bin_SCRIPTS = xmaxima
 
 TKSOURCES = \
+	Tkmaxima/Header.tcl \
 	Tkmaxima/Constants.tcl \
 	xmaxima.tcl 
 
