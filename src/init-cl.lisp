@@ -197,9 +197,10 @@
       (setf version-string (unix-like-basename version))
       (dolist (lisp lisps)
 	(setf lisp-string (unix-like-basename lisp))
-	(setf lisp-string (subseq lisp-string (length "binary-") 
+	(when (search "binary-" lisp-string)
+	  (setf lisp-string (subseq lisp-string (length "binary-") 
 				  (length lisp-string)))
-	(format t "version ~a, lisp ~a~%" version-string lisp-string)))
+	  (format t "version ~a, lisp ~a~%" version-string lisp-string))))
     (bye)))
 
 (defun process-maxima-args (input-stream batch-flag)
