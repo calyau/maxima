@@ -10,23 +10,23 @@
 
 (defun xermsg (librar subrou messg nerr level)
   (declare (type f2cl-lib:integer4 level nerr)
-           (type (simple-array base-char (*)) messg subrou librar))
+           (type (simple-array character (*)) messg subrou librar))
   (prog ((lfirst
-          (make-array '(20) :element-type 'base-char :initial-element #\Space))
+          (make-array '(20) :element-type 'character :initial-element #\Space))
          (temp
-          (make-array '(72) :element-type 'base-char :initial-element #\Space))
+          (make-array '(72) :element-type 'character :initial-element #\Space))
          (xlibr
-          (make-array '(8) :element-type 'base-char :initial-element #\Space))
+          (make-array '(8) :element-type 'character :initial-element #\Space))
          (xsubr
-          (make-array '(8) :element-type 'base-char :initial-element #\Space))
+          (make-array '(8) :element-type 'character :initial-element #\Space))
          (ltemp 0) (mkntrl 0) (llevel 0) (lerr 0) (kount 0) (i 0) (kdummy 0)
          (f2cl-lib:f2cl-// 0.0f0) (maxmes 0) (lkntrl 0))
     (declare (type single-float f2cl-lib:f2cl-//)
              (type f2cl-lib:integer4 lkntrl maxmes kdummy i kount lerr llevel
               mkntrl ltemp)
-             (type (simple-array base-char (8)) xsubr xlibr)
-             (type (simple-array base-char (72)) temp)
-             (type (simple-array base-char (20)) lfirst))
+             (type (simple-array character (8)) xsubr xlibr)
+             (type (simple-array character (72)) temp)
+             (type (simple-array character (20)) lfirst))
     (setf lkntrl (j4save 2 0 f2cl-lib:%false%))
     (setf maxmes (j4save 4 0 f2cl-lib:%false%))
     (cond

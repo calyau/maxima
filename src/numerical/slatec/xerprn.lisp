@@ -9,15 +9,15 @@
 
 
 (let* ((newlin "$$"))
-  ;(declare (type (simple-array base-char (2)) newlin))
+  (declare (type (simple-array character (2)) newlin))
   (defun xerprn (prefix npref messg nwrap)
     (declare (type f2cl-lib:integer4 nwrap npref)
-             (type (simple-array base-char (*)) messg prefix))
+             (type (simple-array character (*)) messg prefix))
     (prog ((iu (make-array 5 :element-type 'f2cl-lib:integer4)) (nunit 0)
            (cbuff
             (make-array '(148)
                         :element-type
-                        'base-char
+                        'character
                         :initial-element
                         #\Space))
            (idelta 0) (lpiece 0) (nextc 0) (lenmsg 0) (lwrap 0) (lpref 0) (i 0)
@@ -25,7 +25,7 @@
       (declare (type (simple-array f2cl-lib:integer4 (5)) iu)
                (type f2cl-lib:integer4 n i lpref lwrap lenmsg nextc lpiece
                 idelta nunit)
-               (type (simple-array base-char (148)) cbuff))
+               (type (simple-array character (148)) cbuff))
       (multiple-value-bind
           (var-0 var-1)
           (xgetua iu nunit)

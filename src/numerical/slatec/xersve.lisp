@@ -20,37 +20,37 @@
         (nmsg 0))
     (declare (type f2cl-lib:integer4 nmsg kountx)
              (type (simple-array f2cl-lib:integer4 (*)) kount levtab nertab)
-             (type (simple-array (simple-array base-char (20)) (*)) mestab)
-             (type (simple-array (simple-array base-char (8)) (*)) subtab
+             (type (simple-array (simple-array character (20)) (*)) mestab)
+             (type (simple-array (simple-array character (8)) (*)) subtab
               libtab))
     (setq kountx 0)
     (setq nmsg 0)
     (defun xersve (librar subrou messg kflag nerr level icount)
       (declare (type f2cl-lib:integer4 icount level nerr kflag)
-               (type (simple-array base-char (*)) messg subrou librar))
+               (type (simple-array character (*)) messg subrou librar))
       (prog ((mes
               (make-array '(20)
                           :element-type
-                          'base-char
+                          'character
                           :initial-element
                           #\Space))
              (lib
               (make-array '(8)
                           :element-type
-                          'base-char
+                          'character
                           :initial-element
                           #\Space))
              (sub
               (make-array '(8)
                           :element-type
-                          'base-char
+                          'character
                           :initial-element
                           #\Space))
              (lun (make-array 5 :element-type 'f2cl-lib:integer4)) (i 0)
              (iunit 0) (kunit 0) (nunit 0))
         (declare (type f2cl-lib:integer4 nunit kunit iunit i)
-                 (type (simple-array base-char (20)) mes)
-                 (type (simple-array base-char (8)) lib sub)
+                 (type (simple-array character (20)) mes)
+                 (type (simple-array character (8)) lib sub)
                  (type (simple-array f2cl-lib:integer4 (5)) lun))
         (cond
          ((<= kflag 0) (if (= nmsg 0) (go end_label))

@@ -10,7 +10,7 @@
 
 (defun xercnt (librar subrou messg nerr level kontrl)
   (declare (type f2cl-lib:integer4 kontrl level nerr)
-           (type (simple-array base-char (*)) messg subrou librar))
+           (type (simple-array character (*)) messg subrou librar))
   (prog ()
     (declare)
     (go end_label)
