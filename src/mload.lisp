@@ -575,7 +575,7 @@
 
 
 
-
+#+nil
 (defun $mkey (keyword)
     "takes a macsyma symbol and makes a keyword of it"
   (intern (string-left-trim "$" (string-upcase (string keyword))) 'keyword))
