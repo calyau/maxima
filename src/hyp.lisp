@@ -38,7 +38,8 @@
 
 (DEFMACRO SIMP-LIST (L) `(MAPCAR #'(LAMBDA (X) (SIMP X)) ,L))
 
-(DEFMACRO MABS (X) `(SIMP `((MABS) ,,X)))
+;; jfa removed to avoid conflict with main definition of MABS.
+;; (DEFMACRO MABS (X) `(SIMP `((MABS) ,,X)))
 
 (DEFMACRO MSQRT (X) `(M^T ,X 1//2))
 
