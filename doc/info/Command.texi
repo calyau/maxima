@@ -44,94 +44,124 @@ Enabling DEBUGMODE will not catch Lisp errors.
 
 @end defvar
 
-@defun EV (exp, arg1, ..., argn)
-is one of Maxima's most powerful and
-versatile commands. It evaluates the expression exp in the environment
-specified by the argi.  This is done in steps, as follows:
+@defun ev (expr, arg_1, arg_2, arg_3, ...)
+Evaluates the expression @code{expr} in the environment
+specified by the arguments @code{arg_1}, @code{arg_2}, @code{arg_3}, ....
+The arguments are Boolean flags, assignments, equations, and functions.
+@code{ev} returns the result (another expression) of the evaluation.
+
+The evaluation is carried out in steps, as follows.
+
 @enumerate
 @item
-First the environment is set up by scanning the argi which may
-be as follows:
-SIMP causes exp to be simplified regardless of the setting of the
-switch SIMP which inhibits simplification if FALSE.
-NOEVAL supresses the evaluation phase of EV (see step (4) below).
+First the environment is set up by scanning the arguments which may
+be any or all of the following.
+
+@itemize @bullet
+@item
+@code{simp} causes @code{expr} to be simplified regardless of the setting of the
+switch @code{simp} which inhibits simplification if @code{false}.
+@item
+@code{noeval} supresses the evaluation phase of @code{ev} (see step (4) below).
 This is useful in conjunction with the other switches and in causing
-exp to be resimplified without being reevaluated.
-EXPAND causes expansion.
-EXPAND(m,n) causes expansion, setting the values of MAXPOSEX and
-MAXNEGEX to m and n respectively.
-DETOUT causes any matrix inverses computed in exp to have their
+@code{expr} to be resimplified without being reevaluated.
+@item
+@code{expand} causes expansion.
+@item
+@code{expand (m, n)} causes expansion, setting the values of @code{maxposex} and
+@code{maxnegex} to m and n respectively.
+@item
+@code{detout} causes any matrix inverses computed in @code{expr} to have their
 determinant kept outside of the inverse rather than dividing through
 each element.
-DIFF causes all differentiations indicated in exp to be performed.
-DERIVLIST(var1,...,vark) causes only differentiations with respect to
+@item
+@code{diff} causes all differentiations indicated in @code{expr} to be performed.
+@item
+@code{derivlist (x, y, z, ...)} causes only differentiations with respect to
 the indicated variables.
-FLOAT causes non-integral rational numbers to be converted to floating
+@item
+@code{float} causes non-integral rational numbers to be converted to floating
 point.
-NUMER causes some mathematical functions (including exponentiation)
+@item
+@code{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point.  It causes
-variables in exp which have been given numervals to be replaced by
-their values.  It also sets the FLOAT switch on.
-PRED causes predicates (expressions which evaluate to TRUE or FALSE)
+variables in @code{expr} which have been given numervals to be replaced by
+their values.  It also sets the @code{float} switch on.
+@item
+@code{pred} causes predicates (expressions which evaluate to @code{true} or @code{false})
 to be evaluated.
-EVAL causes an extra post-evaluation of exp to occur. (See step (5)
+@item
+@code{eval} causes an extra post-evaluation of @code{expr} to occur. (See step (5)
 below.)
-E where E is an atom declared to be an EVFLAG causes E to be bound to
-TRUE during the evaluation of exp.
-V:expression (or alternately V=expression) causes V to be bound to the
-value of expression during the evaluation of exp.  Note that if V is a
-Maxima option, then expression is used for its value during the
-evaluation of exp.  If more than one argument to EV is of this type
-then the binding is done in parallel.  If V is a non-atomic expression
+@item
+@code{E} where @code{E} is an atom declared to be an evaluation flag (see @code{evflag})
+causes @code{E} to be bound to
+@code{true} during the evaluation of @code{expr}.
+@item
+@code{V: expression} (or alternately @code{V=expression}) causes @code{V} to be bound to the
+value of @code{expression} during the evaluation of @code{expr}.  Note that if @code{V} is a
+Maxima option, then @code{expression} is used for its value during the
+evaluation of @code{expr}.  If more than one argument to @code{ev} is of this type
+then the binding is done in parallel.  If @code{V} is a non-atomic expression
 then a substitution rather than a binding is performed.
-E where E, a function name, has been declared to be an EVFUN causes E
-to be applied to exp.
-Any other function names (e.g.  SUM) cause evaluation of occurrences
-of those names in exp as though they were verbs.
-In addition a function occurring in exp (say F(args)) may be defined
-locally for the purpose of this evaluation of exp by giving
-F(args):=body as an argument to EV.
+@item
+@code{E} where @code{E}, a function name, has been declared to be an evaluation function (see @code{evfun})
+causes @code{E}
+to be applied to @code{expr}.
+@item
+Any other function names (e.g., @code{sum}) cause evaluation of occurrences
+of those names in @code{expr} as though they were verbs.
+@item
+In addition a function occurring in @code{expr} (say @code{F(x)}) may be defined
+locally for the purpose of this evaluation of @code{expr} by giving
+@code{F(x) := body} as an argument to @code{ev}.
+@item
 If an atom not mentioned above or a subscripted variable or
 subscripted expression was given as an argument, it is evaluated and
 if the result is an equation or assignment then the indicated binding
 or substitution is performed.  If the result is a list then the
 members of the list are treated as if they were additional arguments
-given to EV. This permits a list of equations to be given (e.g. [X=1,
-Y=A**2] ) or a list of names of equations (e.g.  [%t1,%t2] where %t1 and
-E2 are equations) such as that returned by SOLVE.
-The argi of EV may be given in any order with the exception of
+given to @code{ev}. This permits a list of equations to be given (e.g. @code{[X=1, Y=A**2]})
+or a list of names of equations (e.g., @code{[%t1, %t2]} where @code{%t1} and
+@code{%t2} are equations) such as that returned by @code{solve}.
+@end itemize
+
+The arguments of @code{ev} may be given in any order with the exception of
 substitution equations which are handled in sequence, left to right,
-and EVFUNS which are composed, e.g. EV(exp,RATSIMP,REALPART) is
-handled as REALPART(RATSIMP(exp)).
-The SIMP, NUMER, FLOAT, and PRED switches may also be set locally in a
+and evaluation functions which are composed, e.g., @code{ev (expr, ratsimp, realpart)} is
+handled as @code{realpart (ratsimp (expr))}.
+
+The @code{simp}, @code{numer}, @code{float}, and @code{pred} switches may also be set locally in a
 block, or globally at the "top level" in Maxima so that they will
 remain in effect until being reset.
-If exp is in CRE form then EV will return a result in CRE form
-provided the NUMER and FLOAT switches are not both TRUE.
+
+If @code{expr} is in CRE form then @code{ev} will return a result in CRE form
+provided the @code{numer} and @code{float} switches are not both @code{true}.
 
 @item
 During step (1), a list is made of the non-subscripted
-variables appearing on the left side of equations in the argi or in
-the value of some argi if the value is an equation.  The variables
+variables appearing on the left side of equations in the arguments or in
+the value of some arguments if the value is an equation.  The variables
 (both subscripted variables which do not have associated array
-functions, and non-subscripted variables) in the expression exp are
+functions, and non-subscripted variables) in the expression @code{expr} are
 replaced by their global values, except for those appearing in this
-list.  Usually, exp is just a label or % (as in (%i2) below), so this
-step simply retrieves the expression named by the label, so that EV
+list.  Usually, @code{expr} is just a label or @code{%}
+(as in @code{%i2} in the example below), so this
+step simply retrieves the expression named by the label, so that @code{ev}
 may work on it.
 
 @item
-If any substitutions are indicated by the argi, they are
+If any substitutions are indicated by the arguments, they are
 carried out now.
 
 @item
 The resulting expression is then re-evaluated (unless one of
-the argi was NOEVAL) and simplified according the the argi.  Note that
-any function calls in exp will be carried out after the variables in
-it are evaluated and that EV(F(X)) thus may behave like F(EV(X)).
+the arguments was @code{noeval}) and simplified according to the arguments.  Note that
+any function calls in @code{expr} will be carried out after the variables in
+it are evaluated and that @code{ev(F(x))} thus may behave like @code{F(ev(x))}.
 
 @item
-If one of the argi was EVAL, steps (3) and (4) are repeated.
+If one of the arguments was @code{eval}, steps (3) and (4) are repeated.
 @end enumerate
 
                      Examples
@@ -146,15 +176,16 @@ If one of the argi was EVAL, steps (3) and (4) are repeated.
 (%o2)           cos(w) + w  + 2 w + cos(1) + 1.909297426825682
 @end example
 
-An alternate top level syntax has been provided for EV, whereby one
-may just type in its arguments, without the EV().  That is, one may
+An alternate top level syntax has been provided for @code{ev}, whereby one
+may just type in its arguments, without the @code{ev()}.  That is, one may
 write simply
+
 @example
-exp, arg1, ...,argn.
+expr, arg_1, arg_2, arg_3, ...
 @end example
 
 This is not permitted as part of
-another expression, i.e. in functions, blocks, etc.
+another expression, e.g., in functions, blocks, etc.
 
 Notice the parallel binding process in the following example.
 
