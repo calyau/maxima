@@ -273,7 +273,9 @@
 	   (setq input-file (third result))))
   #+(or cmu sbcl clisp allegro openmcl)
   (multiple-value-bind (output-truename warnings-p failure-p)
-      (compile-file input-file :output-file (or bin-file t))
+      (if bin-file
+	  (compile-file input-file :output-file bin-file)
+	  (compile-file input-file))
     ;; If the compiler encountered errors, don't set bin-file to
     ;; indicate that we found errors. Is this what we want?
     (unless failure-p
