@@ -3,6 +3,10 @@
 kill(all);
 done;
 
+/* Trivial ode - bug 866510 */
+ode2('diff(y,x),y,x);
+y=%c;
+
 /* Examples from "The Maxima Book" */
 
 ode2(x^2*'diff(y,x)+3*x*y=sin(x)/x, y, x);
