@@ -33,5 +33,7 @@ GCL <http://savannah.gnu.org/projects/gcl>
 support, so Maxima will have advanced command-line editing facilities
 when build with it.
 
-GCL versions: 2.4.3 and 2.5.0 should work. 2.5.0 has not yet been
-released as of this writing.
+GCL versions: 2.5.0 should work. Unfortunately, 2.5.0 has not yet been
+released as of this writing. The cvs version of 2.5.0 has been used to 
+successfully build Maxima.
+
