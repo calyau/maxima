@@ -61,14 +61,8 @@ Possible choices are 'auctex, 'tex or nil"
   :group 'emaxima
   :type '(file))
 
-(defcustom emaxima-tex-lisp-file (locate-library "emaxima.lisp" t)
-  "The file to be loaded that allows TeX output."
-  :group 'emaxima
-  :type '(file))
-
-
 (defcustom emaxima-output-marker "---"
-  "The file to be loaded that allows TeX output."
+  "The string to separate the input from the output."
   :group 'emaxima
   :type 'string)
 
@@ -1307,7 +1301,7 @@ Return nil if no name or error in name."
       (set-buffer maxima-buffer)
       (save-excursion
 	(goto-char (point-max))
-        (if (maxima-finished-p)
+        (if (not (inferior-maxima-running))
             (re-search-backward inferior-maxima-prompt (point-min) nil 1)
           (re-search-backward inferior-maxima-prompt (point-min) nil 2))
         (setq prompt
@@ -1373,13 +1367,13 @@ Return nil if no name or error in name."
               (if (eq (string-match "[ \n]*:lisp" cell) 0)
                   (setq end (emaxima-get-lisp-end cell))
                 (setq end  (emaxima-get-form-end cell)))
-              (if (and tex emaxima-tex-lisp-file (maxima-finished-p))
+              (if (and tex emaxima-tex-lisp-file (not (inferior-maxima-running)))
                   (emaxima-tex-on))
               (maxima-single-string (substring cell 0 end))
               (setq cell (substring cell end))
               (if (and tex 
                        (not (emaxima-noshow-cell-p))
-                       (not (maxima-finished-p)))
+                       (inferior-maxima-running))
                   (emaxima-insert-last-output-tex-noprompt)
                 (let ((mlon (maxima-last-output-noprompt)))
                   (unless (= (length (maxima-strip-string mlon)) 0)
@@ -1435,7 +1429,7 @@ Return nil if no name or error in name."
           (if (eq (string-match "[ \n]*:lisp" cell) 0)
               (setq end (emaxima-get-lisp-end cell))
             (setq end (emaxima-get-form-end cell)))
-          (if (and emaxima-tex-lisp-file (maxima-finished-p))
+          (if (and emaxima-tex-lisp-file (not (inferior-maxima-running)))
               (emaxima-tex-on))
           (maxima-single-string (substring cell 0 end))
           (while (or (string= "\n" (substring cell 0 1))
@@ -1556,7 +1550,7 @@ With C-u prefix, update without confirmation at each cell."
               (setq cell (substring cell end))
               (if (and tex 
                        (not (emaxima-noshow-cell-p))
-                       (not (maxima-finished-p)))
+                       (inferior-maxima-running))
                   (emaxima-insert-last-output-tex-noprompt)
                 (let ((mlon (maxima-last-output-noprompt)))
                   (unless (= (length (maxima-strip-string mlon)) 0)
@@ -2016,7 +2010,7 @@ already) so the file will begin in emaxima-mode next time it's opened.
             nil nil ((?\( . ".") (?\) . ".") (?$ . "\"")) nil
             (font-lock-comment-start-regexp . "%")
             (font-lock-mark-block-function . mark-paragraph))))
-  (if (maxima-running)
+  (if (inferior-maxima-running)
      (emaxima-load-tex-library))
   (add-hook 'inferior-maxima-mode-hook 'emaxima-load-tex-library)
 ;  (if running-xemacs 
