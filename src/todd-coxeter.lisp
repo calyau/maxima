@@ -38,14 +38,14 @@
   `(progn (vector-push-extend ,m *todo*)
 	  (vector-push-extend ,n *todo*)))
 
-#-:ansi-cl
+#-(and :ansi-cl (not gcl))
 (defmacro f+ (a b) `(the fixnum (+ (the fixnum ,a) (the fixnum ,b))))
-#+:ansi-cl
+#+(and :ansi-cl (not gcl))
 (define-compiler-macro f+ (a b) `(the fixnum (+ (the fixnum ,a) (the fixnum ,b))))
-#-:ansi-cl
+#-(and :ansi-cl (not gcl))
 (defmacro f- (a &optional b) `(the fixnum (- (the fixnum ,a)
 					     ,@ (if b `((the fixnum ,b))))))
-#+:ansi-cl
+#+(and :ansi-cl (not gcl))
 (define-compiler-macro f- (a &optional b) `(the fixnum (- (the fixnum ,a)
 					     ,@ (if b `((the fixnum ,b))))))
   
