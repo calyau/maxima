@@ -9,8 +9,8 @@
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.3 $
-;; $Date: 2001-12-09 19:27:47 $
+;; $Revision: 1.4 $
+;; $Date: 2002-01-14 21:08:15 $
 ;; Keywords: maxima, emaxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -111,7 +111,253 @@ The buffers are used in package and cell assembly.")
 (defconst emaxima-temp-suffix 0
   "Temporary filename suffix.  Incremented by 1 for each filename.")
 
+;;; Sending information to Maxima, and getting it back
+
+(defun emaxima-maxima-prompt ()
+  "Return the point of the last prompt in the maxima process buffer."
+  (save-excursion
+    (set-buffer (process-buffer inferior-maxima-process))
+    (goto-char (point-max))
+    (re-search-backward inferior-maxima-prompt)
+    (match-end 0)))
+
+(defun emaxima-new-maxima-prompt-p (pt)
+  "Check to see if there is a new prompt after PT"
+  (save-excursion
+    (set-buffer (process-buffer inferior-maxima-process))
+    (goto-char pt)
+    (or
+     (re-search-forward inferior-maxima-prompt (point-max) t)
+     (re-search-forward "?" (point-max) t)
+;     (not (maxima-running)))))
+     (re-search-forward "Inferior Maxima Finished" (point-max) t))))
+
+(defun emaxima-maxima-question-p ()
+  "Check to see if there is a question"
+  (let ((prompt))
+    (save-excursion
+      (set-buffer (process-buffer inferior-maxima-process))
+      (goto-char (point-max))
+      (if (re-search-backward inferior-maxima-prompt (point-min) t)
+          (setq prompt (point))
+        (setq prompt 0))
+      (goto-char (point-max))
+      (re-search-backward "?" prompt t))))
+
+(defun emaxima-maxima-finished-p ()
+  "Check to see if the Maxima process has halted"
+  (not (maxima-running)))
+;  (save-excursion
+;    (set-buffer (process-buffer inferior-maxima-process))
+;    (goto-char (point-min))
+;    (re-search-forward "Inferior Maxima Finished" (point-max) t)))
+
+;; (defun emaxima-start-maxima ()
+;;   (unless (and (processp inferior-maxima-process)
+;;                (eq (process-status inferior-maxima-process) 'run))
+;;     (let ((prompt 0))
+;;       (maxima-start)
+;;       (while (not (emaxima-new-maxima-prompt-p 0))
+;;         (sleep-for 0.100))
+;;       (when emaxima-tex-lisp-file
+;;         (setq prompt (emaxima-maxima-prompt))
+;;         (comint-send-string inferior-maxima-process
+;; ;        (emaxima-maxima-string
+;;                             (concat "block(load(\"" 
+;;                                     emaxima-tex-lisp-file
+;;                                     "\"), linenum:linenum-1)$\n"))
+;;         (while (not (emaxima-new-maxima-prompt-p prompt))
+;;           (sit-for 0.100)))
+;;       (set-buffer (process-buffer inferior-maxima-process))
+;;       (goto-char (point-max))
+;;       (set-marker (process-mark inferior-maxima-process) (point)))))
+
+(defun emaxima-start-maxima ()
+  (unless (and (processp inferior-maxima-process)
+               (eq (process-status inferior-maxima-process) 'run))
+    (let ((prompt 0))
+      (maxima-start)
+      (while (not (emaxima-new-maxima-prompt-p 0))
+        (sleep-for 0.100))
+      (when emaxima-tex-lisp-file
+;        (setq prompt (emaxima-maxima-prompt))
+;        (comint-send-string inferior-maxima-process
+        (emaxima-maxima-string
+                            (concat "block(load(\"" 
+                                    emaxima-tex-lisp-file
+                                    "\"), linenum:linenum-1)$"))))))
+;        (while (not (emaxima-new-maxima-prompt-p prompt))
+;          (sit-for 0.100)))
+;      (set-buffer (process-buffer inferior-maxima-process))
+;      (goto-char (point-max))
+;      (set-marker (process-mark inferior-maxima-process) (point)))))
+
+(defun emaxima-strip-string (string)
+  "Remove any spaces or newlines at the beginning and end of the string"
+  (while (or
+          (string= "\n" (substring string -1))
+          (string= " " (substring string -1)))
+    (setq string (substring string 0 -1)))
+  (while (or
+          (string= "\n" (substring string 0 1))
+          (string= " " (substring string 0 1)))
+    (setq string (substring string 1)))
+  string)
+
+
+(defun emaxima-maxima-string (string &optional pt)
+  "Send a string to the Maxima process."
+  (setq string (emaxima-strip-string string))
+  (let ((prompt))
+    (emaxima-start-maxima)
+;  (setq inferior-maxima-computing-p t)
+;  (setq inferior-maxima-question-p nil)
+    (if pt 
+        (setq prompt pt)
+      (setq prompt (emaxima-maxima-prompt)))
+    (save-excursion
+      (set-buffer (process-buffer inferior-maxima-process))
+      (goto-char (point-max))
+      (insert string)
+      (comint-send-input))
+;      (set-marker (process-mark inferior-maxima-process) (point)))
+;    (comint-send-string inferior-maxima-process (concat string "\n"))
+;    (comint-simple-send inferior-maxima-process string)
+    (while (not (emaxima-new-maxima-prompt-p prompt))
+      (sit-for 0.100))
+    (when (emaxima-maxima-question-p)
+      (let ((ans (read-string (emaxima-maxima-question))))
+        (unless (string-match "[;$]" ans)
+          (setq ans (concat ans ";")))
+        (save-excursion
+          (set-buffer (process-buffer inferior-maxima-process))
+;          (insert ans "\n")
+          (setq prompt (point)))
+;          (set-marker (process-mark inferior-maxima-process) (point)))
+        (emaxima-maxima-string ans prompt)))))
+
+;; (defun emaxima-maxima-question ()
+;;   "Return inferior-maxima-result with whitespace trimmed off the ends.
+;; For use when the process asks a question."
+;;   (let ((beg (string-match "[^ \n]" inferior-maxima-result))
+;;         (end (string-match "?" inferior-maxima-result)))
+;;     (concat 
+;;      (substring inferior-maxima-result beg (1+ end))
+;;      " ")))
+
+(defun emaxima-maxima-question ()
+  "Return inferior-maxima-result with whitespace trimmed off the ends.
+For use when the process asks a question."
+  (let ((qn))
+    (save-excursion
+      (set-buffer (get-buffer "*maxima*"))
+      (goto-char (point-max))
+      (search-backward "?")
+      (setq qn (buffer-substring-no-properties 
+                (maxima-line-beginning-position) (maxima-line-end-position)))
+      (goto-char (point-max)))
+    (concat qn " ")))
+
+(defun emaxima-last-maxima-output ()
+  "Copy the last output from Maxima."
+  (interactive)
+;  (emaxima-wait)
+  (let ((out-start)
+	(out-end)
+        (nonewline nil)
+        (pr)
+        (i 0)
+	(old-buffer (current-buffer))
+        (maxima-buffer (get-buffer "*maxima*"))
+        (output))
+    (if (null maxima-buffer)
+        (message "No Maxima output buffer")
+      (save-excursion
+        (set-buffer maxima-buffer)
+	(goto-char (point-max))
+        (unless (emaxima-maxima-finished-p)
+          (re-search-backward inferior-maxima-prompt))
+	(setq out-end (point))
+	(re-search-backward inferior-maxima-prompt)
+        (goto-char (match-end 0))
+;        (if (looking-at " *$")
+        (forward-line 1)
+        ;; Now, gcl inserts an extra blank line
+        (if (looking-at "^ *$")
+            (forward-line 1))
+;          (forward-line 0)
+;          (setq nonewline t))
+	(setq out-start (point))
+	(setq output 
+              (buffer-substring-no-properties out-start out-end))
+        (goto-char (point-max))))
+;    (set-buffer old-buffer)
+;    (when nonewline
+;      (setq pr (1+ (string-match ")" output)))
+;      (setq output (concat (make-string pr ? ) (substring output pr))))
+    output))
+
+(defun emaxima-last-maxima-output-noprompt ()
+  "Return the last Maxima output, without the prompts"
+  (interactive)
+  (if (emaxima-maxima-finished-p)
+      (emaxima-last-maxima-output)
+    (let* ((output (emaxima-last-maxima-output))
+           (newstring)
+           (i 0)
+           (beg)
+           (end)
+           (k))
+    ;; Replace the output prompt with spaces
+      (setq beg (string-match "\\(^([D][0-9]*) \\)" output))
+      (if (not beg)
+          output
+        (setq end (1+ (string-match ")" output beg)))
+        (setq newstring (substring output 0 beg))
+        (setq k (- end beg))
+        (while (< i k)
+          (setq newstring (concat newstring " "))
+          (setq i (1+ i)))
+        (concat newstring 
+                (substring output 
+                           end))))))
+
+(defun emaxima-last-maxima-output-tex-noprompt ()
+  "Return the last Maxima output, between the dollar signs."
+  (interactive)
+  (let* ((output (emaxima-last-maxima-output))
+         (begtex (string-match "\\$\\$" output))
+         (endtex (string-match "\\$\\$" output (1+ begtex))))
+    (concat
+     (substring output begtex (+ endtex 2))
+     "\n")))
+
+
 ;;; Some utility functions
+
+(defun emaxima-insert-quote (arg)
+  "Insert a quote as appropriate"
+  (interactive "*P")
+  (cond
+   ((emaxima-cell-p)
+      (self-insert-command (prefix-numeric-value arg)))
+   ((eq emaxima-use-tex 'auctex)
+    (TeX-insert-quote arg))
+   ((eq emaxima-use-tex 'tex)
+    (tex-insert-quote arg))
+   (t (self-insert-command (prefix-numeric-value arg)))))
+
+(defun emaxima-insert-dollar (arg)
+  "Insert a dollar sign as appropriate"
+  (interactive "*P")
+  (cond
+   ((emaxima-cell-p)
+    (self-insert-command (prefix-numeric-value arg)))
+   ((eq emaxima-use-tex 'auctex)
+    (TeX-insert-dollar arg))
+   ((eq emaxima-use-tex 'tex)
+    (skeleton-pair-insert-maybe arg))
+   (t (self-insert-command (prefix-numeric-value arg)))))
 
 (defun emaxima-mark-file-as-emaxima ()
   "Mark the file as an EMaxima buffer.
@@ -127,27 +373,23 @@ The next time the file is loaded, it will then be in EMaxima mode"
 
 (defun emaxima-load-tex-library ()
   (when emaxima-tex-lisp-file
-    (maxima-wait)
-    (maxima-string-nodisplay (concat "block(load(\"" 
-                                     emaxima-tex-lisp-file
-                                     "\"), linenum:linenum-1)$"))
-    (maxima-wait)))
+    (let ((prompt (emaxima-maxima-prompt)))
+      (comint-send-string inferior-maxima-process
+                          (concat "block(load(\"" 
+                                  emaxima-tex-lisp-file
+                                  "\"), linenum:linenum-1)$"))
+      (while (not (emaxima-new-maxima-prompt-p prompt))
+        (sit-for 0.100)))))
 
 (defun emaxima-tex-on ()
+  (emaxima-start-maxima)
   (when emaxima-tex-lisp-file
-    (maxima-wait)
-    (maxima-string-nodisplay "block(display2d:emaxima, linenum:linenum-1)$")
-    (maxima-wait)))
+    (emaxima-maxima-string "block(display2d:emaxima, linenum:linenum-1)$")))
 
 (defun emaxima-tex-off ()
+  (emaxima-start-maxima)
   (when emaxima-tex-lisp-file
-    (maxima-wait)
-    (maxima-string-nodisplay "block(display2d:true, linenum:linenum-1)$")
-    (maxima-wait)))
-
-(defun emaxima-maxima-running ()
-  (and (processp inferior-maxima-process)
-       (eq (process-status inferior-maxima-process) 'run)))
+    (emaxima-maxima-string "block(display2d:true, linenum:linenum-1)$")))
 
 ;;; Which type of cell, if any, is the point in.
 
@@ -1242,25 +1484,27 @@ Return nil if no name or error in name."
     end))
 
 (defun emaxima-insert-last-output-tex ()
-  (let ((out (maxima-last-output)))
+  (let ((out (emaxima-last-maxima-output)))
     (if (string-match "(D[0-9]+)" out)
         (progn
-          (if (> (match-beginning 0) 0)
+          (if (and
+               (> (match-beginning 0) 0)
+               (string-match "[^ \n]" (substring out 0 (match-beginning 0))))
               (progn
                 (insert "\\p ")
                 (insert (substring out 0 (match-beginning 0)))
-                (insert " \\\\\n"))
-            (insert "\\D")
-            (insert (substring out (+ (match-beginning 0) 2) (- (match-end 0) 1)))
-            (insert ".  ")
-            (insert (substring out (match-end 0)))
-            (forward-char -1)
-            (if (looking-at "\n")
-                (progn
-                  (insert " \\\\")
-                  (forward-char 1))
-              (forward-char 1)
-              (insert " \\\\\n"))))
+                (insert " \\\\\n")))
+          (insert "\\D")
+          (insert (substring out (+ (match-beginning 0) 2) (- (match-end 0) 1)))
+          (insert ".  ")
+          (insert (substring out (match-end 0)))
+          (forward-char -1)
+          (if (looking-at "\n")
+              (progn
+                (insert " \\\\")
+                (forward-char 1))
+            (forward-char 1)
+            (insert " \\\\\n")))
       (when (not (string= out ""))
         (insert "\\p  ")
         (insert out)
@@ -1273,24 +1517,24 @@ Return nil if no name or error in name."
           (insert " \\\\\n"))))))
 
 (defun emaxima-insert-last-output-tex-noprompt ()
-  (let ((out (maxima-last-output)))
+  (let ((out (emaxima-last-maxima-output)))
     (if (string-match "(D[0-9]+)" out)
         (progn
           (if (> (match-beginning 0) 0)
               (progn
                 (insert "\\p ")
                 (insert (substring out 0 (match-beginning 0)))
-                (insert " \\\\\n"))
-            (insert "$$")
-            (insert "  ")
-            (insert (substring out (match-end 0)))
-            (forward-char -1)
-            (if (looking-at "\n")
-                (progn
-                  (insert " $$")
-                  (forward-char 1))
-              (forward-char 1)
-              (insert " $$\n"))))
+                (insert " \\\\\n")))
+          (insert "$$")
+          (insert "  ")
+          (insert (substring out (match-end 0)))
+          (forward-char -1)
+          (if (looking-at "\n")
+              (progn
+                (insert " $$")
+                (forward-char 1))
+            (forward-char 1)
+            (insert " $$\n")))
       (when (not (string= out ""))
         (insert "\\p  ")
         (insert out)
@@ -1308,17 +1552,17 @@ Return nil if no name or error in name."
   (let ((old-buffer (current-buffer))
         (maxima-buffer (get-buffer "*maxima*"))
         (prompt))
-    (maxima-wait)
     (if (null maxima-buffer)
         (message "No Maxima output buffer")
       (set-buffer maxima-buffer)
       (save-excursion
-	(end-of-buffer)
-        (if (not (emaxima-maxima-running))
+	(goto-char (point-max))
+        (if (emaxima-maxima-finished-p)
             (re-search-backward inferior-maxima-prompt (point-min) nil 1)
           (re-search-backward inferior-maxima-prompt (point-min) nil 2))
         (setq prompt
-             (buffer-substring-no-properties (match-beginning 0) (- (match-end 0) 1))))
+              (buffer-substring-no-properties 
+               (match-beginning 0) (- (match-end 0) 1))))
       (set-buffer old-buffer)
       prompt)))
 
@@ -1326,6 +1570,7 @@ Return nil if no name or error in name."
 
 (defun emaxima-update-cell (&optional tex)
   "Send the current cell's contents to Maxima, and return the results."
+  (emaxima-start-maxima)
   (setq tex (and tex emaxima-tex-lisp-file))
   (if (emaxima-cell-p)
       (save-excursion
@@ -1347,20 +1592,20 @@ Return nil if no name or error in name."
               (if (eq (string-match "[ \n]*:lisp" cell) 0)
                   (setq end (emaxima-get-lisp-end cell))
                 (setq end (1+ (string-match "[$;]" cell))))
-              (if (and tex emaxima-tex-lisp-file (not (emaxima-maxima-running)))
+              (if (and tex emaxima-tex-lisp-file (emaxima-maxima-finished-p))
                   (emaxima-tex-on))
-              (maxima-string-nodisplay (substring cell 0 end))
-              (maxima-wait)
+              (emaxima-maxima-string (substring cell 0 end))
               (setq cell (substring cell end))
               (if (and tex 
                        (not (emaxima-noshow-cell-p))
-                       inferior-maxima-running-p)
+                       (not (emaxima-maxima-finished-p)))
                   (emaxima-insert-last-output-tex-noprompt)
-                (insert (maxima-last-output-noprompt)))))))
-        (error "Not in Maxima cell")))
+                (insert (emaxima-last-maxima-output-noprompt)))))))
+    (error "Not in Maxima cell")))
 
 (defun emaxima-update-session-cell ()
   "Send the current cell's contents to Maxima, and return the results."
+  (emaxima-start-maxima)
   (save-excursion
     (emaxima-delete-output)
     (let ((end)
@@ -1374,7 +1619,7 @@ Return nil if no name or error in name."
         (if (eq (string-match "[ \n]*:lisp" cell) 0)
             (setq end (emaxima-get-lisp-end cell))
           (setq end (1+ (string-match "[$;]" cell))))
-        (maxima-string-nodisplay (substring cell 0 end))
+        (emaxima-maxima-string (substring cell 0 end))
         (insert (emaxima-last-input-prompt))
         (insert " ")
         (while (or (string= "\n" (substring cell 0 1))
@@ -1385,11 +1630,12 @@ Return nil if no name or error in name."
         (unless (string= "\n" (substring cell (- end 1) end))
           (insert "\n"))
         (insert "\n")
-        (insert (maxima-last-output))
+        (insert (emaxima-last-maxima-output))
         (setq cell (substring cell end))))))
 
 (defun emaxima-tex-update-session-cell ()
   "Send the current cell's contents to Maxima, and return the results."
+  (emaxima-start-maxima)
   (if (not emaxima-tex-lisp-file)
       (emaxima-update-session-cell)
     (save-excursion
@@ -1406,10 +1652,9 @@ Return nil if no name or error in name."
           (if (eq (string-match "[ \n]*:lisp" cell) 0)
               (setq end (emaxima-get-lisp-end cell))
             (setq end (1+ (string-match "[$;]" cell))))
-          (if (and emaxima-tex-lisp-file (not (emaxima-maxima-running)))
+          (if (and emaxima-tex-lisp-file (emaxima-maxima-finished-p))
               (emaxima-tex-on))
-          (maxima-string-nodisplay (substring cell 0 end))
-          (maxima-wait)
+          (emaxima-maxima-string (substring cell 0 end))
           (while (or (string= "\n" (substring cell 0 1))
                      (string= " " (substring cell 0 1)))
             (setq cell (substring cell 1))
@@ -1489,6 +1734,7 @@ With C-u prefix, update without confirmation at each cell."
 (defun emaxima-update-single-cell (&optional tex)
   "Send the current cell's contents to Maxima, and return the results."
   (interactive "P")
+  (emaxima-start-maxima)
   (setq tex (and tex emaxima-tex-lisp-file))
   (if (emaxima-cell-p)
       (save-excursion
@@ -1511,14 +1757,13 @@ With C-u prefix, update without confirmation at each cell."
               (if (eq (string-match "[ \n]*:lisp" cell) 0)
                   (setq end (emaxima-get-lisp-end cell))
                 (setq end (1+ (string-match "[$;]" cell))))
-              (maxima-string-nodisplay (substring cell 0 end))
-              (maxima-wait)
+              (emaxima-maxima-string (substring cell 0 end))
               (setq cell (substring cell end))
               (if (and tex 
                        (not (emaxima-noshow-cell-p))
-                       inferior-maxima-running-p)
+                       (not (emaxima-maxima-finished-p)))
                   (emaxima-insert-last-output-tex-noprompt)
-                (insert (maxima-last-output-noprompt))))))
+                (insert (emaxima-last-maxima-output-noprompt))))))
         (if tex (emaxima-tex-off)))
         (error "Not in Maxima cell")))
   
@@ -1560,7 +1805,8 @@ If TEX is non-nil, then insert \\maximatexoutput instead of \\maximaoutput."
                 (forward-line 1)
                 (if (and ask (not (y-or-n-p "Update this cell? ")))
                     t
-                  (emaxima-update-cell tex)))
+                  (emaxima-update-cell tex)
+                  (sit-for 0 100)))
             (widen) ; If user aborts evaluation at prompt
             ) ; unwind-protect
           ) ; if in a valid cell
@@ -1610,7 +1856,9 @@ If TEX is non-nil, then insert \\maximatexoutput instead of \\maximaoutput."
   (interactive)
   (if (not (emaxima-cell-p))
       (message "Not in cell.")
-    (maxima-region-nodisplay (emaxima-cell-start) (emaxima-cell-end))))
+    (emaxima-start-maxima)
+    (emaxima-maxima-string 
+     (buffer-substring-no-properties (emaxima-cell-start) (emaxima-cell-end)))))
 
 (defun emaxima-replace-line-with-tex ()
   "Sends the current line to Maxima, and then replaces it with the Maxima
@@ -1618,27 +1866,33 @@ output in TeX form."
   (interactive)
   (if (not emaxima-tex-lisp-file)
       (emaxima-replace-line)
-    (maxima-send-line-nodisplay)
-    (maxima-wait)
-    (maxima-string-nodisplay "tex(%);")
-    (maxima-wait)
+    (emaxima-start-maxima)
+    (emaxima-tex-on)
+    (emaxima-maxima-string 
+     (buffer-substring-no-properties 
+      (maxima-line-beginning-position) (maxima-line-end-position)))
+;    (emaxima-maxima-string "tex(%);")
     (beginning-of-line)
     (insert "% ")
     (end-of-line)
     (newline)
-    (maxima-last-output-tex-noprompt)))
+    (emaxima-insert-last-output-tex-noprompt)
+;    (emaxima-last-maxima-output-tex-noprompt)
+    (emaxima-tex-off)))
 
 (defun emaxima-replace-line ()
   "Sends the current line to Maxima, and then replaces it with the Maxima
 output."
   (interactive)
-  (maxima-send-line-nodisplay)
-  (maxima-wait)
+  (emaxima-start-maxima)
+  (emaxima-maxima-string 
+   (buffer-substring-no-properties 
+    (maxima-line-beginning-position) (maxima-line-end-position)))
   (beginning-of-line)
   (insert "% ")
   (end-of-line)
   (newline)
-  (insert (maxima-last-output-noprompt)))
+  (insert (emaxima-last-maxima-output-noprompt)))
 
 ;;; The mode
 
@@ -1667,6 +1921,8 @@ output."
 (if emaxima-mode-map
     nil
   (let ((map (copy-keymap texmode-map)))
+    (define-key map "\"" 'emaxima-insert-quote)
+    (define-key map "$" 'emaxima-insert-dollar)
     (define-key map "\C-c\C-u" nil)
     (define-key map "\C-c+" 'emaxima-forward-cell)
     (define-key map "\C-c-" 'emaxima-backward-cell)
@@ -1759,6 +2015,9 @@ already) so the file will begin in emaxima-mode next time it's opened.
     (setq ispell-parser 'tex)
     (make-local-variable 'ispell-tex-p)
     (setq ispell-tex-p t))
+  (make-local-variable 'texmathp-tex-commands)
+  (setq texmathp-tex-commands 
+     '(("\\endmaxima" sw-off)))
   (when (eq emaxima-use-tex 'auctex)
     (require 'font-latex)
     (defvar emaxima-keywords
@@ -1773,11 +2032,11 @@ already) so the file will begin in emaxima-mode next time it's opened.
             nil nil ((?\( . ".") (?\) . ".") (?$ . "\"")) nil
             (font-lock-comment-start-regexp . "%")
             (font-lock-mark-block-function . mark-paragraph))))
-  (if (emaxima-maxima-running)
+  (if (maxima-running)
      (emaxima-load-tex-library))
-  (add-hook 'inferior-maxima-mode-hook 'emaxima-load-tex-library)
-  (if running-xemacs 
-      (add-hook 'inferior-maxima-mode-hook (lambda () (sit-for 1))))
+;  (add-hook 'inferior-maxima-mode-hook 'emaxima-load-tex-library)
+;  (if running-xemacs 
+;      (add-hook 'inferior-maxima-mode-hook (lambda () (sit-for 1))))
   (run-hooks 'emaxima-mode-hook))
 
 ;;; Now, the menu.
