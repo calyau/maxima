@@ -253,6 +253,7 @@ Matrices and Linear Algebra
 * Introduction to Matrices and Linear Algebra::  
 * DOT::                         
 * VECTORS::                     
+* eigen::
 * Definitions for Matrices and Linear Algebra::  
 
 Affine
