@@ -186,6 +186,7 @@ algebra/solver/slvrtbox.mac\
 algebra/solver/solver.mac\
 algebra/solver/test.mac\
 algebra/solver/solver1.pdf\
+calculus/asympa.mac\
 calculus/pade2.mac\
 calculus/qual.dem\
 calculus/qual.mac\
