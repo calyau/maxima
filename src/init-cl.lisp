@@ -66,7 +66,14 @@
   (in-package "MAXIMA")
   (catch 'to-lisp
     (set-pathnames)
-    (macsyma-top-level)))
+    #+cmu
+    (progn
+      (loop 
+	  (with-simple-restart (macsyma-quit "Macsyma top-level")
+	    (macsyma-top-level))))
+    #-cmu
+    (catch 'macsyma-quit
+      (macsyma-top-level))))
 
 (import 'user::run)
 
@@ -82,3 +89,24 @@
 (defvar $help "type describe(topic) or example(topic);")
 
 (defun $help () $help)			;
+
+;; CMUCL needs because when maxima reaches EOF, it calls BYE, not $QUIT.
+#+cmu
+(defun bye ()
+  (ext:quit))
+
+;;add the quit maxima for the clisp debugger.
+#+clisp
+(progn
+  
+(or (fboundp 'commands1.orig)
+  (setf (fdefinition 'commands1.orig) (fdefinition 'sys::commands1)))
+
+
+(defun sys::commands1 ()
+  (append (list "
+Quit to top    :q       Quit to MAXIMA top level"
+                (cons ":q" #'(lambda () (throw 'macsyma-quit nil))))
+          (commands1.orig)))
+
+) ; end progn for clisp
