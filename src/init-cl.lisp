@@ -100,6 +100,7 @@
 	(setq *maxima-infodir* maxima-infodir-env)
       (if maxima-prefix-env
 	  (setq *maxima-infodir* (concatenate 'string *maxima-prefix*
+					      "/"
 					      "info"))
 	(setq *maxima-infodir* *autoconf-infodir*)))
     (if maxima-userdir-env
