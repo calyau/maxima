@@ -109,8 +109,7 @@ contrib/diffequations/tests/rtestode_murphy1.mac\
 contrib/diffequations/tests/rtestode_murphy2.mac\
 contrib/diffequations/tests/rtest_sym2.mac\
 contrib/diffequations/tests/rtest_sym.mac\
-contrib/diffequations/tests/summarize-log\
-contrib/diffequations/tests/tests.lisp\
+contrib/diffequations/tests/testsuite.lisp\
 contrib/f90.lisp\
 contrib/f90.usg\
 contrib/format/autoload-m.macsyma\
