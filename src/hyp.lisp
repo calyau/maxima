@@ -10,7 +10,7 @@
 ;;    #-gcl (:compile-toplevel :execute)
 ;;    (declare-top (special fun w b l alglist $true $false n  c l1 l2)))
 
-(declare-top (special fun w b l alglist $true $false n  c l1 l2))
+(declare-top (special fun w b l $true $false n  c l1 l2))
 
 (declare-top (special var par zerosigntest productcase 
 		      fldeg flgkum checkcoefsignlist serieslist
@@ -2672,9 +2672,10 @@
 ;; We're looking at F(a+m,-a+n;1/2+L;z)
 #+nil
 (defun algii (a b c)
+  (declare (ignore c))
   (prog (m n ap con sym m+n)
      ;; We know a+b is an integer.  In the most general form, we can
-     ;; have a = r*a+f+m and b = -(r*a-f)+n.
+     ;; have a = r*s+f+m and b = -(r*s+f)+n.
      (cond ((not (setq sym (cdras 'f (s+c a))))
 	    (setq sym 0)))
      (setq con (sub a sym))
@@ -2683,22 +2684,37 @@
      (setq m ($entier con))
      (when (minusp m)
        (add1 m))
-     ;; At this point sym = r*a, con is f+m, and m is m.
+     ;; At this point sym = r*s, con is f+m, and m is m.
      (setq ap (add (sub con m) ap))
      ;; ap = r*a+f
      (setq n (add b ap))
      ;; Return r*a+f, r*a+f+p, and m+n, where p is chosen to minimize
      ;; the number of derivatives we need to take.  Basically
      ;; p=min(abs(m),abs(n)).
+     ;;
+     ;; So we have changed F(a+m,-a+n;c;z) to F(a',-a'+m+n;c;z).
      (cond ((and (minusp (mul n m))
 		 (greaterp (abs m) (abs n)))
 	    (return (list ap (sub ap n) m+n))))
      (return  (list ap (add ap m) m+n))))
 
+;; F(a,b;c;z), where a + b is a (numerical) integer.
+;;
+;; If we're here, a and b are not integers.  In general, a = s+f+m,
+;; where s is symbolic stuff and |f|<1 and m is an integer.  We can
+;; also write b = -(s+f)+n.
+;;
+;; Let a' = s+f+m.  Then a=a' and b = -a'+m+n, and we have converted
+;; F(a,b;c;z) to F(a',-a'+m+n;c;z), or, equivalently,
+;; F(-a'+m+n,a';c;z).
+#+nil
 (defun algii (a b c)
+  (declare (ignore c))
   (prog (m n ap con sym m+n)
      ;; We know a+b is an integer.  In the most general form, we can
-     ;; have a = r*a+f+m and b = -(r*a-f)+n.
+     ;; have a = x+f+m and b = -(x-f)+n.
+     ;;
+     ;; Express a in the form sym + con.
      (cond ((not (setq sym (cdras 'f (s+c a))))
 	    (setq sym 0))
 	   (t
@@ -2712,20 +2728,35 @@
      (setq con (sub a sym))
      (setq ap sym)
      (setq m+n (add a b))
+     ;; Truncate con to an integer m.
      (setq m ($entier con))
      (when (minusp m)
        (add1 m))
-     ;; At this point sym = r*a, con is f+m, and m is m.
+     ;; Make ap = s+con-m
      (setq ap (add (sub con m) ap))
-     ;; ap = r*a+f
      (setq n (add b ap))
      ;; Return r*a+f, r*a+f+p, and m+n, where p is chosen to minimize
      ;; the number of derivatives we need to take.  Basically
      ;; p=min(abs(m),abs(n)).
+     ;;
+     ;; Hmm, not sure why we do this.  In any case, we need to do m+n
+     ;; differentiations.  So the only simplification we could do is
+     ;; make a' simpler.
      (cond ((and (minusp (mul n m))
 		 (greaterp (abs m) (abs n)))
-	    (return (list ap (sub ap n) m+n))))
-     (return  (list ap (add ap m) m+n))))
+	    (return (list ap (sub ap n) m+n m n))))
+     (return  (list ap (add ap m) m+n m n))))
+
+;; We have something like F(s+m,-s+n;c;z)
+;; Rewrite it like F(a'+d,-a';c;z) where a'=s-n=-b and d=m+n.
+;;
+(defun algii (a b c)
+  (let* ((sym (cdras 'f (s+c a)))
+	 (sign (cdras 'm (m2 sym '((mtimes) ((coefft) (m $numberp)) ((coefft) (s nonnump)))
+			     nil))))
+    (when (and sign (minusp sign))
+      (rotatef a b))
+    (list nil (mul -1 b) (add a b))))
 
 
 ;;Algor. 2F1-RL from thesis:step 4:dispatch on a+m,-a+n,1/2+l cases
@@ -2741,7 +2772,7 @@
       (step4-a a b c)))
 
 (defun step4-a (a b c)
-  (prog (aprime m n $ratsimpexponens $ratprint newf)
+  (prog (aprime m n $ratsimpexponens $ratprint newf alglist)
      (setq alglist (algii a b c)
 	   aprime (cadr alglist)
 	   m (caddr alglist)
@@ -2922,7 +2953,7 @@
 ;;
 ;; A&S 15.2.7
 ;; diff((1-z)^(a+m-1)*F(a+m-n,-a;1/2;z),z,n)
-;;     = (-1)^n*poch(a+m-n,n)*poch(1/2+a,n)/poch(1/2,n)*(1-z)^(a+m-n)
+;;     = (-1)^n*poch(a+m-n,n)*poch(1/2+a,n)/poch(1/2,n)*(1-z)^(a+m-n-1)
 ;;         * F(a+m,-a;1/2+n;z)
 ;;
 (defun f85 (fun m n a)
@@ -2986,10 +3017,35 @@
 			  'ell (- n m)))
 	      'ell m)))
 
-;; Like f86, but |n|<=|m|
+;; Like f86, but |n|>=|m|
+;;
+;; F(a-m,-a;1/2-n;z) where n >= m >0
+;;
+;; A&S 15.2.4
+;; diff(z^(c-1)*F(a,b;c;z),z,n)
+;;     = poch(c-n,n)*z^(c-n-1)*F(a;b;c-n;z)
+;;
+;; A&S 15.2.8:
+;; diff(z^(c-1)*(1-z)^(b-c+n)*F(a,b;c;z),z,n)
+;;     - poch(c-n,n)*z^(c-n-1)*(1-z)^(b-c)*F(a-n,b;c-n;z)
+;;
+;; For our problem:
+;;
+;; diff(z^(-1/2)*F(a,-a;1/2;z),z,n-m)
+;;     = poch(1/2-n+m,n-m)*z^(m-n-1/2)*F(a,-a;1/2-n+m;z)
+;;
+;; diff(z^(m-n-1/2)*(1-z)^(n-a-1/2)*F(a,-a;1/2-n+m;z),z,m)
+;;     = poch(1/2-n,m)*z^(-1/2-n)*(1-z)^(n-m-a-1/2)*F(a-m,-a;1/2-n;z)
+;;
+;; So
+;;
+;; G(z) = z^(m-n-1/2)*F(a,-a;1/2-n+m;z)
+;;      = z^(n-m+1/2)/poch(1/2-n+m,n-m)*diff(z^(-1/2)*F(a,-a;1/2;z),z,n-m)
+;;
+;; F(a-m,-a;1/2-n;z)
+;;     = z^(n+1/2)*(1-z)^(m+a-1/2-n)/poch(1/2-n,m)*diff((1-z)^(n-a-1/2)*G(z),z,m)
 (defun f82 (fun m n a)
   (mul (inv (factf (sub (inv 2) n) m))
-       ;; Was this both inverse?
        (inv (factf (sub (add (inv 2) m) n) (- n m)))
        (power 'ell (add n (inv 2)))
        (power (sub 1 'ell) (sub (add m (inv 2) a) n))
@@ -3000,28 +3056,36 @@
 			  (- n m)))
 	      'ell
 	      m)))
-;; F(a,-a+m;1/2+n;z) with m,n integers and m < 0, n >= 0
+
+;; F(a+m,-a;1/2+n;z) with m,n integers and m < 0, n >= 0
 ;;
-;; Write this more clearly as F(a,-a-m;1/2+n;z), m > 0, n >= 0
-;; or equivalently F(-a-m,a;c+n;z)
+;; Write this more clearly as F(a-m,-a;1/2+n;z), m > 0, n >= 0
+;; or equivalently F(a-m,-a;c+n;z)
 ;;
 ;; A&S 15.2.6
-;; diff((1-z)^(-1/2)*F(-a,a;1/2;z),z,n) 
+;; diff((1-z)^(-1/2)*F(a,-a;1/2;z),z,n) 
 ;;     = poch((1/2+a,n)*poch(1/2-a,n)/poch(1/2,n)*(1-z)^(-1/2-n)
-;;         * F(-a,a;1/2+n;z)
+;;         * F(a,-a;1/2+n;z)
 ;;
 ;; A&S 15.2.5
-;; diff(z^(n+a+m-1/2)*(1-z)^(-1/2-n)*F(-a,a;1/2+n;z),z,m)
-;;     = poch(1/2+n+a,m)*z^(1/2+n+a-1)*(1-z)^(-1/2-n-m)*F(-a-m,a;1/2+n;z)
-;;     = poch(1/2+n+a,m)*z^(a+n-1/2)*(1-z)^(-1/2-n-m)*F(-a-m,a;1/2+n;z)
+;; diff(z^(n+m-a-1/2)*(1-z)^(-1/2-n)*F(a,-a;1/2+n;z),z,m)
+;;     = poch(1/2+n-a,m)*z^(1/2+n-a-1)*(1-z)^(-1/2-n-m)*F(a-m,-a;1/2+n;z)
+;;     = poch(1/2+n-a,m)*z^(n-a-1/2)*(1-z)^(-1/2-n-m)*F(a-m,-a;1/2+n;z)
+;;
+;; (1-z)^(-1/2-n)*F(a,-a;1/2+n;z)
+;;     = poch(1/2,n)/poch(1/2-a,n)/poch(1/2+a,n)*diff((1-z)^(-1/2)*F(a,-a;1/2;z),z,n)
+;;
+;; F(a-m,-a;1/2+n;z)
+;;     = (1-z)^(n+m+1/2)*z^(a-n+1/2)/poch(1/2+n-a,m)
+;;        *diff(z^(n+m-a-1/2)*(1-z)^(-1/2-n)*F(a,-a;1/2+n;z),z,m)
 (defun f83 (fun m n a)
   (mul (factf (inv 2) n)
        (inv (factf (sub (inv 2) a) n))
-       (inv (factf (add a n (inv 2)) m))
+       (inv (factf (sub (add n (inv 2)) a) m))
        (inv (factf (add (inv 2) a) n))
        (power (sub 1 'ell) (add m n (inv 2)))
-       (power 'ell (sub (inv 2) (add a n)))
-       ($diff (mul (power 'ell (sub (add (+ m n) a) (inv 2)))
+       (power 'ell (add (sub a n) (inv 2)))
+       ($diff (mul (power 'ell (sub (sub (+ m n) a) (inv 2)))
 		   ($diff (mul (power (sub 1 'ell)
 				      (inv -2))
 			       fun)
@@ -3030,9 +3094,24 @@
 	      'ell
 	      m)))
 
-;; The last case F(a,-a+m;c+n;z), m,n integers, m >= 0, n < 0
+;; The last case F(a+m,-a;c+n;z), m,n integers, m >= 0, n < 0
+;;
+;; F(a+m,-a;1/2-n;z)
+;;
+;; A&S 15.2.4:
+;; diff(z^(c-1)*F(a,b;c;z),z,n) = poch(c-n,n)*z^(c-n-1)*F(a,b;c-n;z)
+;;
+;; A&S 15.2.3:
+;; diff(z^(a+m-1)*F(a,b;c;z),z,m) = poch(a,n)*z^(a-1)*F(a+n,b;c;z)
+;;
+;; For our problem:
+;;
+;; diff(z^(-1/2)*F(a,-a;1/2;z),z,n) = poch(1/2-n,n)*z^(-n-1/2)*F(a,-a;1/2-n;z)
+;;
+;; diff(z^(a+m-1)*F(a,-a;1/2-n;z),z,m) = poch(a,m)*z^(a-1)*F(a+m,-a;1/2-n;z)
 (defun f84 (fun m n a)
-  (mul (inv (mul (factf a m) (factf (sub (inv 2) n) n)))
+  (mul (inv (mul (factf a m)
+		 (factf (sub (inv 2) n) n)))
        (power 'ell (sub 1 a))
        ($diff (mul (power 'ell (sub (add a m n) (inv 2)))
 		   ($diff (mul (power 'ell (inv -2)) fun)
