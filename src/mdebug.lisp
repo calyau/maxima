@@ -632,11 +632,13 @@
 		 (setf (aref *break-points* i)
 		       (case action
 			 (:delete
+			  (unless (car tem)
+			    (pop tem))	; disabled or already deleted bkpt
 			  (if tem (setf (get (bkpt-function tem) 'break-points)
 					(delete i (get (bkpt-function tem) 'break-points))))
 			  nil)
 			 (:enable
-			  (if (eq (car tem) nil) (cdr tem) nil))
+			  (if (eq (car tem) nil) (cdr tem) tem))
 			 (:disable
 			  (if (and tem (not (eq (car tem) nil)))
 			      (cons nil tem)
