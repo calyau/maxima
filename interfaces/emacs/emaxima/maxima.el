@@ -104,6 +104,11 @@
 ;; To get apropos with the symbol under point, use:
 ;; C-cC-a or M-f12.
 
+;; ** Maxima noweb mode **
+;; maxima-noweb-mode is a modification of maxima-mode that will work
+;; nicely with noweb-mode; namely, it will limit any relevant searches 
+;; to the current chunk and treat <<...>> as word parts.
+
 ;; ** Running Maxima interactively **
 ;; To run Maxima interactively in a buffer, type M-x maxima
 ;; In the Maxima process buffer,
@@ -517,7 +522,30 @@ in maxima minor mode."
        (not (search-forward "*/" pt t))))))
 
 ;;; Functions that search
-(defun maxima-re-search-forward (regexp &optional pmax)
+
+;; Some additions to help with different types of searches
+(defvar maxima-mode-type 'maxima-mode)
+(make-variable-buffer-local 'maxima-mode-type)
+
+(defvar maxima-noweb-ignore-bounds '("<<" ">>"))
+
+(defun maxima-noweb-in-ignore-bounds-p ()
+  (if (not maxima-noweb-ignore-bounds)
+      nil
+    (let ((pt (point)))
+      (save-excursion
+        (if (not (re-search-backward (car maxima-noweb-ignore-bounds) nil t))
+            nil
+          (not (re-search-forward (cadr maxima-noweb-ignore-bounds) pt t)))))))
+
+(defun maxima-noweb-forward-out-of-ignore-bounds (&optional pmax)
+  (re-search-forward (cadr maxima-noweb-ignore-bounds) pmax 1))
+
+(defun maxima-noweb-backward-out-of-ignore-bounds (&optional pmin)
+  (re-search-backward (car maxima-noweb-ignore-bounds) pmin 1))
+
+
+(defun maxima-standard-re-search-forward (regexp &optional pmax)
   "Search forward for REGEXP, bounded by PMAX.
 Ignore matches found in comments and strings."
   (let ((keep-looking t)
@@ -549,8 +577,25 @@ Ignore matches found in comments and strings."
           nil)
       match)))
 
+
+(defun maxima-noweb-re-search-forward (regexp &optional pmax)
+  (let ((match
+         (maxima-standard-re-search-forward regexp pmax)))
+    (while (maxima-noweb-in-ignore-bounds-p)
+      (maxima-noweb-forward-out-of-ignore-bounds pmax)
+      (setq match
+            (maxima-standard-re-search-forward regexp pmax)))
+    match))
+
+(defun maxima-re-search-forward (regexp &optional pmax)
+  (cond
+   ((eq maxima-mode-type 'maxima-mode)
+    (maxima-standard-re-search-forward regexp pmax))
+   ((eq maxima-mode-type 'maxima-noweb-mode)
+    (maxima-noweb-re-search-forward regexp pmax))))
+
 (defun maxima-re-search-forward-skip-blocks (regexp &optional pmax)
-  "Search forward for REGEXP, bounded by PMIN.
+  "Search forward for REGEXP, bounded by PMAX.
 Ignore matches found in comments and strings, and skip over
 parenthesized or bracketed blocks."
   (let ((keep-looking t)
@@ -576,7 +621,7 @@ parenthesized or bracketed blocks."
           nil)
       match)))
 
-(defun maxima-re-search-backward (regexp &optional pmin)
+(defun maxima-standard-re-search-backward (regexp &optional pmin)
   "Search backward for REGEXP, bounded by PMIN.
 Ignore matches found in comments and strings."
   (let ((keep-looking t)
@@ -599,6 +644,22 @@ Ignore matches found in comments and strings."
           (goto-char origpt)
           nil)
       match)))
+
+(defun maxima-noweb-re-search-backward (regexp &optional pmin)
+  (let ((match
+         (maxima-standard-re-search-backward regexp pmin)))
+    (while (maxima-noweb-in-ignore-bounds-p)
+      (maxima-noweb-backward-out-of-ignore-bounds pmin)
+      (setq match
+            (maxima-standard-re-search-backward regexp pmin)))
+    match))
+
+(defun maxima-re-search-backward (regexp &optional pmin)
+  (cond
+   ((eq maxima-mode-type 'maxima-mode)
+    (maxima-standard-re-search-backward regexp pmin))
+   ((eq maxima-mode-type 'maxima-noweb-mode)
+    (maxima-noweb-re-search-backward regexp pmin))))
 
 (defun maxima-re-search-backward-skip-blocks (regexp &optional pmin)
   "Search forward for REGEXP, bounded by PMIN.
@@ -682,7 +743,7 @@ If character is in a string or a list, ignore it."
 ;;         (skip-chars-backward "\\\\")
 ;;         (1+ (- pt (point)))))))
 
-(defun maxima-next-char-word-part-p ()
+(defun maxima-standard-next-char-word-part-p ()
   "Non-nil if next char is a a word part."
   (or
    (looking-at "\\w")
@@ -691,13 +752,34 @@ If character is in a string or a list, ignore it."
      (forward-char -1)
      (looking-at "\\\\"))))
 
+(defun maxima-noweb-next-char-word-part-p ()
+  "Non-nil if next char is a a word part."
+  (or
+   (looking-at "\\w")
+   (looking-at "\\\\")
+   (and
+    (looking-at ">")
+    (save-excursion
+      (forward-char -1)
+      (looking-at ">")))
+   (save-excursion
+     (forward-char -1)
+     (looking-at "\\\\"))))
+
+(defun maxima-next-char-word-part-p ()
+  (cond
+   ((eq maxima-mode-type 'maxima-mode)
+    (maxima-standard-next-char-word-part-p))
+   ((eq maxima-mode-type 'maxima-noweb-mode)
+    (maxima-noweb-next-char-word-part-p))))
+
 (defun maxima-previous-char-word-part-p ()
   "Non-nil if previous character is a word part."
   (save-excursion
     (forward-char -1)
     (maxima-next-char-word-part-p)))
 
-(defun maxima-forward-word ()
+(defun maxima-standard-forward-word ()
   "Go to the end of the current word."
   (let ((keep-going t))
     (while keep-going
@@ -709,7 +791,31 @@ If character is in a string or a list, ignore it."
        (t
         (setq keep-going nil))))))
 
-(defun maxima-backward-word ()
+(defun maxima-noweb-forward-word ()
+  "Go to the end of the current word."
+  (if (maxima-noweb-in-ignore-bounds-p)
+      (maxima-noweb-forward-out-of-ignore-bounds))
+  (let ((keep-going t))
+    (while keep-going
+      (cond
+       ((looking-at "\\w")
+        (forward-word 1))
+       ((looking-at "\\\\")
+        (forward-char 2))
+       ((looking-at "<<")
+        (forward-char 2)
+        (maxima-noweb-forward-out-of-ignore-bounds))
+       (t
+        (setq keep-going nil))))))
+
+(defun maxima-forward-word ()
+  (cond
+   ((eq maxima-mode-type 'maxima-mode)
+    (maxima-standard-forward-word))
+   ((eq maxima-mode-type 'maxima-noweb-mode)
+    (maxima-noweb-forward-word))))
+
+(defun maxima-standard-backward-word ()
   "Go to the beginning of the current word."
   (let ((keep-going t))
     (while keep-going
@@ -728,6 +834,42 @@ If character is in a string or a list, ignore it."
         (forward-char -2))
        (t
         (setq keep-going nil))))))
+
+(defun maxima-noweb-backward-word ()
+  "Go to the beginning of the current word."
+  (if (maxima-noweb-in-ignore-bounds-p)
+      (maxima-noweb-backward-out-of-ignore-bounds))
+  (let ((keep-going t))
+    (while keep-going
+      (cond
+       ((and
+         (> (point) (point-min))
+         (save-excursion
+           (forward-char -1)
+           (looking-at "\\w")))
+        (backward-word 1))
+       ((and
+         (> (point) (1+ (point-min)))
+         (save-excursion
+           (forward-char -2)
+           (looking-at "\\\\")))
+        (forward-char -2))
+       ((and
+         (> (point) (1+ (point-min)))
+         (save-excursion
+           (forward-char -2)
+           (looking-at ">>")))
+        (forward-char -2)
+        (maxima-noweb-backward-out-of-ignore-bounds))
+       (t
+        (setq keep-going nil))))))
+
+(defun maxima-backward-word ()
+  (cond
+   ((eq maxima-mode-type 'maxima-mode)
+    (maxima-standard-backward-word))
+   ((eq maxima-mode-type 'maxima-noweb-mode)
+    (maxima-noweb-backward-word))))
 
 ;;;; Functions that return special positions
 
@@ -843,7 +985,7 @@ or nil."
   "Move backward over comments and whitespace."
   (forward-comment (- (buffer-size))))
 
-(defun maxima-goto-beginning-of-form ()
+(defun maxima-standard-goto-beginning-of-form ()
   "Move to the beginning of the form."
   (let ((pt (point))
         (keep-looking t))
@@ -860,12 +1002,25 @@ or nil."
         (goto-char pt))
     (point)))
 
+(defun maxima-noweb-goto-beginning-of-form ()
+  "Move to the beginning of the form."
+  (if (re-search-backward "^<<.*?>>= *$" (point-min) 1)
+      (forward-line 1))
+  (maxima-forward-over-comment-whitespace))
+
+(defun maxima-goto-beginning-of-form ()
+  (cond
+   ((eq maxima-mode-type 'maxima-mode)
+    (maxima-standard-goto-beginning-of-form))
+   ((eq maxima-mode-type 'maxima-noweb-mode)
+    (maxima-noweb-goto-beginning-of-form))))
+
 (defun maxima-goto-beginning-of-form-interactive ()
   "Move to the beginning of the form."
   (interactive)
   (maxima-goto-beginning-of-form))
 
-(defun maxima-goto-end-of-form ()
+(defun maxima-standard-goto-end-of-form ()
   "Move to the end of the form."
   (let ((keep-looking t)
         (pt (point)))
@@ -879,6 +1034,20 @@ or nil."
         (point)
       (goto-char pt)
       nil)))
+
+(defun maxima-noweb-goto-end-of-form ()
+  "Move to the end of the form."
+  (when (re-search-forward "\\(^@\\( \\|$\\)\\|^<<.*>>= *$\\)" nil 1)
+    (forward-line -1)
+    (end-of-line)
+    (maxima-back-over-comment-whitespace)))
+
+(defun maxima-goto-end-of-form ()
+  (cond
+   ((eq maxima-mode-type 'maxima-mode)
+    (maxima-standard-goto-end-of-form))
+   ((eq maxima-mode-type 'maxima-noweb-mode)
+    (maxima-noweb-goto-end-of-form))))
 
 (defun maxima-goto-end-of-form-interactive ()
   "Move to the end of the form."
@@ -1126,7 +1295,7 @@ Assumes the point is right before the open parenthesis."
 
 ;;; 'perhaps-smart
 
-(defun maxima-perhaps-smart-calculate-indent ()
+(defun maxima-standard-perhaps-smart-calculate-indent ()
   "Return appropriate indentation for current line as Maxima code.
 Returns an integer: the column to indent to."
   (let ((indent 0)
@@ -1141,8 +1310,17 @@ Returns an integer: the column to indent to."
       (setq pt (point))
       (setq pmin (maxima-form-beginning-position))
       (setq pps (parse-partial-sexp pmin (point)))
-      (if (nth 1 pps)
-          (setq pmin (nth 1 pps)))
+      (when (nth 1 pps)
+        (setq pmin (nth 1 pps))
+        (unless (looking-at "^[ \t]*,")
+          (save-excursion
+            (when (maxima-re-search-backward-skip-blocks "," pmin)
+              (save-excursion
+                (let ((lep (maxima-line-end-position)))
+                  (forward-char 1)
+                  (maxima-forward-over-comment-whitespace)
+                  (unless (>= (point) lep)
+                    (setq pmin (point)))))))))
       (cond
        ;; First, take care of the cases where the indentation is clear
        ;; No indentation at the beginning of the buffer
@@ -1227,13 +1405,17 @@ Returns an integer: the column to indent to."
             (cond
              (comma-line
               (setq indent (current-column)))
-             ((looking-at "( *$")
+             ((save-excursion
+                (let ((lep (maxima-line-end-position)))
+                  (forward-char 1)
+                  (maxima-forward-over-comment-whitespace)
+                  (>= (point) lep)))
+              ;(looking-at "( *$")
               ;; Check to see if there is anything before the (
-              (save-excursion
-                (beginning-of-line)
-                (if (looking-at "[ \t]*([ \t]*$")
-                    (setq tmpchar maxima-paren-indent-amount)
-                  (setq tmpchar 0)))
+              (if (save-excursion
+                    (re-search-backward "\\(?:^[ \t]*\\)\\=" nil t))
+                  (setq tmpchar maxima-paren-indent-amount)
+                (setq tmpchar 0))
               ;; If there is nothing after the (, there are two
               ;; cases
               ;; First, there is a function before it
@@ -1264,6 +1446,32 @@ Returns an integer: the column to indent to."
             (if (not (looking-at "[,;$(]"))
                 (setq indent (+ maxima-continuation-indent-amount indent))))))))
     indent))
+
+(defun maxima-noweb-perhaps-smart-calculate-indent ()
+  (let ((indent nil)
+        (pt))
+    (save-excursion
+      (beginning-of-line)
+      (cond
+       ((looking-at "^<<.*?>>=[ \t]*$")
+        (setq indent -1))
+       ((looking-at "^@[ \n]")
+        (setq indent -1))
+       (t
+        (forward-line -1)
+        (if (looking-at "^<<.*?>>=[ \t]*$")
+            (setq indent -1)))))
+    (if indent
+        indent
+      (maxima-standard-perhaps-smart-calculate-indent))))
+
+(defun maxima-perhaps-smart-calculate-indent ()
+  (cond
+   ((eq maxima-mode-type 'maxima-mode)
+    (maxima-standard-perhaps-smart-calculate-indent))
+   ((eq maxima-mode-type 'maxima-noweb-mode)
+    (maxima-noweb-perhaps-smart-calculate-indent))))
+
 
 (defun maxima-perhaps-smart-in-comment-p (incomment pmin pt)
   "Determine if the point is in a comment or not."
@@ -2169,6 +2377,9 @@ To get apropos with the symbol under point, use:
               'maxima-mode-add-remove-highlight nil t))
   (run-hooks 'maxima-mode-hook))
 
+(define-derived-mode maxima-noweb-mode maxima-mode
+  "Maxima Noweb Mode"
+  (setq maxima-mode-type 'maxima-noweb-mode))
 
 ;;;; Interacting with the Maxima process
 
