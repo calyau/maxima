@@ -328,6 +328,8 @@
 }      
 
 \def\m@ximatexd#1\\{ \[ #1 \]\endgroup}
+\def\m@ximatexe#1.#2\\{\[ E#1 = #2 \]\endgroup}
+
 
 \def\maximatexoutput{
      \endm@ximainputverbatim
@@ -338,6 +340,7 @@
      \maximasm@llsk
      \begingroup
      \def\D{\begingroup\par\m@ximatexd}
+     \def\E{\begingroup\par\m@ximatexe}
      \def\p{\begingroup\setupm@ximasessionverbatim\dom@ximasessionpreprompt}
      \maximaoutputfont
 }      
@@ -471,6 +474,8 @@
 
 \def\m@ximasessionoutput#1.#2\\{\textcolor{\maximapromptcolor}{(D#1)} \[ #2 \]\endgroup}
 
+\def\m@ximasessioneoutput#1.#2\\{\textcolor{\maximapromptcolor}{(E#1)} \[ #2 \]\endgroup}
+
 \def\maximatexsession{
       \endgroup
       \par  \vskip \premaximasessionspace \par
@@ -484,6 +489,7 @@
       \def\C{\begingroup\color{\maximainputcolor}
         \setupm@ximasessionverbatim\dom@ximatexsessionverbatim}
       \def\D{\begingroup\color{\maximaoutputcolor}\par\m@ximasessionoutput}
+      \def\E{\begingroup\color{\maximaoutputcolor}\par\m@ximasessioneoutput}
       \def\DD{\begingroup\color{\maximaoutputcolor}\par\m@ximatexd}
       \def\p{\begingroup\setupm@ximasessionverbatim\dom@ximasessionpreprompt}
       \baselineskip=\maximatexsessionbaselineskip
