@@ -46,10 +46,15 @@ Any even number of arguments may be used.
 @c @node DEBUGMODE
 @c @unnumberedsec phony
 @defvar DEBUGMODE
- default: [FALSE] - causes MACSYMA to enter a MACSYMA break
-loop whenever a MACSYMA error occurs if it is TRUE and to terminate
-that mode if it is FALSE.  If it is set to ALL then the user may
-examine BACKTRACE for the list of functions currently entered.
+Default value: FALSE
+
+When a Maxima error occurs, Maxima will start the debugger if DEBUGMODE is TRUE.
+The user may enter commands to examine the call stack, set breakpoints, step
+through Maxima code, and so on. See DEBUGGING for a list of debugger commands.
+
+Enabling DEBUGMODE will not catch Lisp errors.
+@c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
+@c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
 @end defvar
 @c @node EV

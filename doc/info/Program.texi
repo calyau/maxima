@@ -14,11 +14,15 @@ constructs such as GO.
 @section Definitions for Program Flow
 @c @node BACKTRACE, {special operator}, ITERATION, Program Flow
 @c @unnumberedsec phony
-@defvar BACKTRACE
- default: [] (when DEBUGMODE:ALL has been done) has as value
-a list of all functions currently entered.
+@defun BACKTRACE ()
+@defunx BACKTRACE (n)
+Prints the call stack, that is, the list of functions which
+called the currently active function. BACKTRACE() prints the
+entire stack, while BACKTRACE(n) prints the n most recent 
+functions, including the currently active function.
+BACKTRACE can be called at any time (not only in a debugging context).
 
-@end defvar
+@end defun
 @c @node DO
 @c @unnumberedsec phony
 @deffn {special operator} DO
