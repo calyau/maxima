@@ -29,9 +29,8 @@ declare("&",additive);
     l1s:map("=",l1,l11), l2s:map("=",l2,l22),
     lk1:append(l1,l2),lk2:append(l11,l22),
     any:sublis(l1s,any), body:sublis(l2s,body),
-    evf:(if evenp(length(lk1)) then 1 else -1),
     canform(contract(
-        expand(evf*kdelta(lk1,lk2)*any*body/(length(lk1)-1)!)))));
+        expand(kdelta(lk1,lk2)*any*body/(length(lk1)-1)!)))));
 
 extdiff(forma,ind):=block(l1:first(indices(forma)),
   if l1=[] then return(diff(forma,ind))
@@ -40,9 +39,8 @@ extdiff(forma,ind):=block(l1:first(indices(forma)),
     lk1:append([ind],l1),
     indd:idummy(),lk2:append(l11,[indd]),
     forma:sublis(l1s,forma),
-    evf:(if evenp(length(lk1)) then 1 else -1),
     contract(canform(ratexpand(
-          evf*kdelta(lk1,lk2)*diff(forma,indd)/(length(lk1)-1)!)))));
+          kdelta(lk1,lk2)*diff(forma,indd)/(length(lk1)-1)!)))));
 
 /* VTT: To ensure consistent application of the "first" index in |_ */
 permutator(l):=block([result:1,temp],
