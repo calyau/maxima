@@ -1393,18 +1393,18 @@ Returns an integer: the column to indent to."
           (cond
            ;; The construct begins with a bracket
            ((looking-at "\\[")
-            (if comma-line
-                (setq indent (current-column))
+;            (if comma-line
+;                (setq indent (current-column))
               (setq indent (+ maxima-paren-indent-amount (current-column)))
               (forward-char 1)
               (skip-chars-forward " \t")
               (unless (looking-at "\n")
-                (setq indent (current-column)))))
+                (setq indent (current-column))));)
            ;; The construct begins with a paren
            ((looking-at "(")
             (cond
-             (comma-line
-              (setq indent (current-column)))
+;             (comma-line
+;              (setq indent (current-column)))
              ((save-excursion
                 (let ((lep (maxima-line-end-position)))
                   (forward-char 1)
@@ -1439,7 +1439,25 @@ Returns an integer: the column to indent to."
         ;; of that line, and add to the indentation, unless the 
         ;; previous line was the beginning of the construct containing 
         ;; the point or only an open parenthesis.
-        (unless comma-line
+        (if comma-line
+            (let ((bol-pt (point))
+                  comma-pt
+                  diff)
+              (skip-chars-forward " \t")
+              (setq comma-pt (point))
+              (forward-char 1)
+              (skip-chars-forward " \t")
+              (setq diff (- (point) comma-pt))
+              (if (> diff indent)
+                  (let ((lineno
+                         (save-excursion
+                           (forward-line 0)
+                           (1+ (count-lines (point-min) (point))))))
+                    (message 
+                     (format "Leading comma prevents proper indentation on line %d"
+                             lineno))
+                    (setq indent 0))
+                (setq indent (- indent diff))))
           (maxima-back-over-comment-whitespace)
           (when (not (looking-at "^"))
             (forward-char -1)
@@ -2511,8 +2529,8 @@ The variable `tab-width' controls the spacing of tab stops."
         (setq inferior-maxima-process (get-buffer-process mbuf))
         (add-to-list 'comint-output-filter-functions
                      'inferior-maxima-output-filter)
-        (add-to-list 'comint-output-filter-functions
-                     'inferior-maxima-replace-tabs-by-spaces)
+;        (add-to-list 'comint-output-filter-functions
+;                     'inferior-maxima-replace-tabs-by-spaces)
         (add-to-list 'comint-output-filter-functions
                      'inferior-maxima-remove-double-input-prompt)
 	(if maxima-fix-double-prompt
