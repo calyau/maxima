@@ -108,6 +108,13 @@ binary-cmucl/maxima.core : numerical/slatec/zunk2.lisp
 binary-cmucl/maxima.core : numerical/slatec/zbunk.lisp
 binary-cmucl/maxima.core : numerical/slatec/zbesh.lisp
 binary-cmucl/maxima.core : numerical/slatec/zbesy.lisp
+binary-cmucl/maxima.core : numerical/slatec/dbsk0e.lisp
+binary-cmucl/maxima.core : numerical/slatec/dbesk0.lisp
+binary-cmucl/maxima.core : numerical/slatec/dbsk1e.lisp
+binary-cmucl/maxima.core : numerical/slatec/dbesk1.lisp
+binary-cmucl/maxima.core : numerical/slatec/dbsknu.lisp
+binary-cmucl/maxima.core : numerical/slatec/dbesk.lisp
+binary-cmucl/maxima.core : numerical/slatec/zbesk.lisp
 binary-cmucl/maxima.core : numerical/slatec/d9aimp.lisp
 binary-cmucl/maxima.core : numerical/slatec/daie.lisp
 binary-cmucl/maxima.core : numerical/slatec/dai.lisp

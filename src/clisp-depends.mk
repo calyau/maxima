@@ -108,6 +108,13 @@ binary-clisp/maxima.mem : numerical/slatec/zunk2.lisp
 binary-clisp/maxima.mem : numerical/slatec/zbunk.lisp
 binary-clisp/maxima.mem : numerical/slatec/zbesh.lisp
 binary-clisp/maxima.mem : numerical/slatec/zbesy.lisp
+binary-clisp/maxima.mem : numerical/slatec/dbsk0e.lisp
+binary-clisp/maxima.mem : numerical/slatec/dbesk0.lisp
+binary-clisp/maxima.mem : numerical/slatec/dbsk1e.lisp
+binary-clisp/maxima.mem : numerical/slatec/dbesk1.lisp
+binary-clisp/maxima.mem : numerical/slatec/dbsknu.lisp
+binary-clisp/maxima.mem : numerical/slatec/dbesk.lisp
+binary-clisp/maxima.mem : numerical/slatec/zbesk.lisp
 binary-clisp/maxima.mem : numerical/slatec/d9aimp.lisp
 binary-clisp/maxima.mem : numerical/slatec/daie.lisp
 binary-clisp/maxima.mem : numerical/slatec/dai.lisp
