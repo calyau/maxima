@@ -227,7 +227,7 @@ and a simple 3-dimensional example
 .B plot3d(2^(-u^2+v^2),[u,-5,5],[v,-7,7]);
 .LP
 By default plotting is done by a TCL/Tk application supplied with
-Maxima. If is gnuplot is available, it can be used by setting a plot
+Maxima. If gnuplot is available, it can be used by setting a plot
 option as follows
 .LP
 .B set_plot_option([PLOT_FORMAT,gnuplot]);
