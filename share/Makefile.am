@@ -307,6 +307,7 @@ tensor/mmans.mac\
 tensor/mmans_run.mac\
 tensor/petrov.mac\
 tensor/ricci2.mac\
+tensor/swartz.dem\
 tensor/symtry.lisp\
 tensor/tensor-doc.txt\
 tensor/info-tensor-2.txt\

@@ -214,7 +214,7 @@
 
 (defun CANPROD (e)
        (prog (scalars indexed)
-	     (cond ((catch (do ((f (cdr e) (cdr f)) (obj))
+	     (cond ((catch 'foo (do ((f (cdr e) (cdr f)) (obj))
 			       ((null f)
 				(setq scalars (nreverse scalars)
 				      indexed (nreverse indexed))
@@ -224,7 +224,7 @@
 				      (setq scalars (cons obj scalars)))
 				     ((rpobj obj)
 				      (setq indexed (cons obj indexed)))
-				     ((eq (caar obj) 'MPLUS) (throw t))
+				     ((eq (caar obj) 'MPLUS) (throw 'foo t))
 				     (t (setq scalars (cons obj scalars))))))
 		    (return ($canform ($expand e))))
 		   ((null indexed) (return e))

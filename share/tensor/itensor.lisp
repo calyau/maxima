@@ -37,13 +37,13 @@
 
 #+cl
 (progn
-(autof '$GENERATE '|../tensor/gener|)
-(autof '$DECSYM '|../tensor/symtry|)
-(autof '$CANFORM '|../tensor/symtry|)
-(autof '$CANTEN '|../tensor/canten|)
-(autof '$MAKEBOX '|../tensor/gener|)
-(autof '$GEODESIC '|../tensor/gener|)
-(autof '$CONMETDERIV '|../tensor/gener|)
+(autof '$GENERATE '|gener|)
+(autof '$DECSYM '|symtry|)
+(autof '$CANFORM '|symtry|)
+(autof '$CANTEN '|canten|)
+(autof '$MAKEBOX '|gener|)
+(autof '$GEODESIC '|gener|)
+(autof '$CONMETDERIV '|gener|)
 )
 #+cl
 (eval-when (eval compile)

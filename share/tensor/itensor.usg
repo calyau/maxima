@@ -1,59 +1,38 @@
 This file describes  the way to work with maxima's indicial
-tensor manipulation package, "itensor.lisp".
+tensor manipulation package.
 
 The "itensor" package is considered, currently, as broken.
-Indeed, some functions there don't work. E.g., 
-components(tensor1,tensor2), remcomponents(tensor), canten(exp)
-and probably some others. 
+Indeed, some functions like, 
+components(tensor1,tensor2), remcomponents(tensor), are broken.
+
 
 Nevertheless, it is possible to use "itensor", at least for small
 problems. The current ability of itensor is demonstrated by
-"itensor.dem". I tested it on maxima-5.6.1 compiled vs gcl
+"itensor.dem". I tested it on cvs maxima-5.9.0rc3 compiled vs 
+clisp-2.29 and cmucl-18d+. To run the tensor packages on the gcl compiled
+maxima you need to compile the sources (Just start Maxima and type
+:lisp(compile-file "itensor.lisp"). Repeat it for "canten,gener & symtry.lisp"). 
 and clisp-2.28. Note the cool feature provided by generate(eqs).
-It gives the possibility to use results obtained by "itensor" in
-"ctensr". In demo I demonstrate the derivation of the diffusion
-heat transport equation in cartesian and spherical coordinates.
+It make possible to use results obtained by "itensor" in
+"ctensr" (express indexed terms via components).
 
-Well, for a moment, the way using "itensor" in gcl- and clisp- maxima
-is different. This is due to in gcl-maxima you should load
-compiled version of "itensor.lisp" and in clisp-maxima both the
-compiled and source file do work (for my system).
+To start the itensor use load(itensor).
 
-First, you should apply patches given here to the corresponded
-files in your maxima distribution, or you can take 
-the patched versions which are also given here. The proposed patches
-could be considered as purely cosmetic. They correct files in
-correspondence with common lisp syntax. Like (in-package 'maxima)
-is replaced by (in-package "MAXIMA"), and (MAPCAR 'LAMBDA(
-is replaced by (MAPCAR #'LAMBDA( .
+Currently, it is recomended to use the switch bothcases:false. It gives
+the better indexes representation. Also, you will safe from the upper-lower
+cases conflict  in the case. It will be essential when you generate 
+the components for particular tensor via generate() to use them 
+with "ctensr". 
 
-After this you should compile itensor.lisp from maxima input string,
-like :lisp (compile-file "itensor.lisp"). You can try to compile others
-files as "gener.lisp", "canten.lisp" and "symtry.lisp", but it's not
-needed. Actually compilation of "symtry.lisp" will not succesfull.
-There is a bug in function canprod. Fortunately this bug does not influence
-much on results of computations. Suprisingly, for clisp-maxima
- the compilation procedure is not neccessary. You can load patched
-*.lisp files directly. However for gcl-maxima you should compile at least
-"itensor.lisp" and get "itensor.o". Otherwise functions 
-COVDIFF(tensor,vars), and RENAME() will not work! 
-Put everything in maxima path.
+To assign some tensor expression for a particular tensor use the native
+maxima abilities like
+T(L1,L2):=E(L1,L2)+....
+It is possible because in itensor the tensors are functions on indices.
+This is a way around broken components(). Look in the "itensor.dem" to see
+examples about it. 
 
-Then you if you use clisp-maxima, please edit
- one string in "itensor.dem" instead load("itensor.o")
-should be load("itensor.lisp") or load("itensor.fas"). 
-
-You can try from maxima command string batch("itensor.dem") 
-or demo("itensor.dem"). It would be nice to have tensor's
-manual.txt in the hand. So you can compare...
-
-Note, for a moment the simplification of the complicated tensor
-contributed by the Chritoffel symbols should be done in 
-3 steps (as done in several examples in "itensor.dem"), the first
-is undiff(exp) (to manage derivatives symbollically), the second -
-ev(%, chr2) (to replace chr2 via metrics) and then ev(%,diff) and etc.
-
-
-Good luck!
-
-Valerij.   
+The working demo files are 
+"itensor.dem" - general review of itensor-ctensor abilities;
+"ademo.dem" - proves the Balakram identity, relate to itensor;
+"swartz.dem" - finds out the Swartzshild solution for black hole,
+ relate to ctensr.   

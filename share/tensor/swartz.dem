@@ -1,0 +1,87 @@
+kill(all);
+SHOWTIME:ALL$
+ /* if properties(GCFAC) = [] then load(scifac,fasl)$  */
+load(facexp); 
+/*load(ode2);*/
+("This file finds the Schwarzschild solution of 
+ the Einstein vacuum equations" );
+
+IF GET('CTENSR,'VERSION) = FALSE THEN LOAD(ctensr)$
+/* the following allows the batch program to run by presetting flags */
+SETFLAGS()$
+/* this calls for the rational simplification of geometrical objects */
+RATFAC:TRUE$
+("Specify the dimension of the manifold and
+the coordinate labels.");
+(dim:4,omega:[r,th,ph,t])$
+("Enter the general static spherically symmetric metric."); 
+lg:MATRIX([A,0,0,0],[0,r^2,0,0],[0,0,r^2*SIN(th)^2,0],[0,0,0,-D]);
+ug:invert(lg)$
+("Specify functional dependencies"); 
+DEPENDS([A,D],r);
+("computes inverse metric and specifies diagonality");
+ug:invert(lg)$
+("computes the mixed Christoffel symbols but not display them");
+christof(FALSE)$
+("computes and ratsimps Ricci tensor");
+riccicom(FALSE)$
+("computes and displays the Einstein tensor");
+einstein(TRUE);
+
+("makes a list of the non-zero components of the Einstein tensor (G)
+where the 2 indicates the order of the array G");
+
+EXP:findde(g,2);
+
+("now begins to solve the field equations");
+
+EXP1:ODE2(last(EXP),A,r);
+
+(" a kludge to get the solution (the 1,1 component) explicitly");
+
+SOLVE(EXP1,r);
+RESULTLIST:SOLVE(%,A)$
+H:EV(PART(RESULTLIST,1),EVAL);
+("to cast the solution into standard form");
+H1:H,EXP(%C) = 1/(2*m),FACTOR;
+("now to find the 4,4 component");
+EV(FIRST(EXP),H1,DIFF,FACTOR);
+ODE2(NUM(%),D,r);
+EXPAND(RADCAN(%));
+H2:EV(%,%C = 1);
+("H1 and H2 should be the solution and to check");
+SOL:[H1,H2];
+EXP,SOL,DIFF,RATSIMP;
+/* kill(all);
+IF GET('CTENSR,'VERSION) = FALSE THEN LOAD("ctensr.mac")$ */
+(dim:4,omega:[r,th,ph,t])$
+
+("Enter the Schwarzschild metric in standard coordinates.")$ 
+lg : matrix([1/(1-2*m/r),0,0,0],[0,r^2,0,0]
+  ,[0,0,r^2*sin(th)^2,0],[0,0,0,(2*m/r-1)])$
+ug:invert(lg)$
+
+("Compute and display mixed Christoffel symbols")$
+
+CHRISTOF(all)$
+RICCICOM(true)$
+("computes scalar curvature")$
+SCURVATURE();
+("computes Riemann tensor")$
+RIEMANN(TRUE)$
+("computes contravariant Riemann tensor")$
+raiseriemann(false)$
+("computes the Kretchmann invariant Rijkl^2")$
+rinvariant();
+diagmetric:true;
+("Compute the covariant form of geodesic equations")$
+motion(true)$
+
+("Compute the contravariant form geodesic equations");
+block( for i thru dim do 
+       emc[i]: factorfacsum(ratexpand(sum(ug[i,a]*em[a],a,1,dim))),
+	         for i thru dim do ldisplay(emc[i]));
+
+
+block([title: "Schwarzschild Potential for Mass M=2",m:2.],
+plot3d([r*cos(th),r*sin(th),ug[1,1]],[r,.4,4.],[th,-%pi,%pi],['grid,50,15]))$ 
