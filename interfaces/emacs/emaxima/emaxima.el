@@ -223,22 +223,12 @@ The next time the file is loaded, it will then be in EMaxima mode"
    (not (emaxima-session-cell-p))
    (not (emaxima-noshow-cell-p))))
 
-(defun emaxima-init-cell-p ()
-  (and 
-   (emaxima-standard-cell-p)
-   (save-excursion
-     (re-search-backward "^\\\\beginmaxima")
-     (goto-char (match-end 0))
-     (looking-at "\\[\\* Initialization Cell \\*\\]"))))
-
 (defun emaxima-package-cell-p ()
   (and 
    (emaxima-standard-cell-p)
    (save-excursion
      (re-search-backward "^\\\\beginmaxima")
      (goto-char (match-end 0))
-     (if (looking-at "\\[\\* Initialization Cell \\*\\]")
-         (goto-char (match-end 0)))
      (looking-at "<"))))
      
 
@@ -310,16 +300,14 @@ The next time the file is loaded, it will then be in EMaxima mode"
         (error "Currently in cell.")
       (if (emaxima-standard-cell-p)
           (progn
-            (if (emaxima-init-cell-p)
-                (error "Currently in initialization cell.")
-              (if (emaxima-package-cell-p)
-                  (error "Currently in package cell.")
-                (save-excursion
-                  (re-search-backward "^\\\\beginmaxima")
-                  (goto-char (match-end 0))
-                  (insert "session")
-                  (re-search-forward "^\\\\endmaxima")
-                  (insert "session")))))
+            (if (emaxima-package-cell-p)
+                (error "Currently in package cell.")
+              (save-excursion
+                (re-search-backward "^\\\\beginmaxima")
+                (goto-char (match-end 0))
+                (insert "session")
+                (re-search-forward "^\\\\endmaxima")
+                (insert "session"))))
         (save-excursion
           (re-search-backward "^\\\\beginmaxima")
           (goto-char (match-end 0))
@@ -338,16 +326,14 @@ The next time the file is loaded, it will then be in EMaxima mode"
         (error "Currently in cell.")
       (if (emaxima-standard-cell-p)
           (progn
-            (if (emaxima-init-cell-p)
-                (error "Currently in initialization cell.")
-              (if (emaxima-package-cell-p)
-                  (error "Currently in package cell.")
-                (save-excursion
-                  (re-search-backward "^\\\\beginmaxima")
-                  (goto-char (match-end 0))
-                  (insert "noshow")
-                  (re-search-forward "^\\\\endmaxima")
-                  (insert "noshow")))))
+            (if (emaxima-package-cell-p)
+                (error "Currently in package cell.")
+              (save-excursion
+                (re-search-backward "^\\\\beginmaxima")
+                (goto-char (match-end 0))
+                (insert "noshow")
+                (re-search-forward "^\\\\endmaxima")
+                (insert "noshow"))))
         (save-excursion
           (re-search-backward "^\\\\beginmaxima")
           (goto-char (match-end 0))
@@ -356,18 +342,6 @@ The next time the file is loaded, it will then be in EMaxima mode"
           (re-search-forward "^\\\\endmaxima")
           (delete-char 7)
           (insert "noshow"))))))
-
-(defun emaxima-toggle-init ()
-  "Toggle initialization marker of cell containing point."
-  (interactive)
-  (if (emaxima-standard-cell-p)
-      (save-excursion
-        (re-search-backward "^\\\\beginmaxima")
-        (goto-char (match-end 0))
-        (if (looking-at "\\[\\* Initialization Cell \\*\\]")
-            (delete-region (match-beginning 0) (match-end 0))
-          (insert "[* Initialization Cell *]")))
-    (error "Not in (standard) Maxima cell")))
 
 (defun emaxima-package-part ()
   "Insert package marker for cell."
@@ -1530,28 +1504,6 @@ With C-u prefix, update without confirmation at each cell."
              (fboundp 'preview-buffer))
         (preview-buffer))))
 
-(defun emaxima-update-init (arg)
-  "Optionally update all initialization cells.
-With C-u prefix, update without confirmation at each cell."
-  (interactive "P")
-  (if arg
-      (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil nil)
-    (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
-		   (y-or-n-p "Interactive update? ") nil)))
-
-(defun emaxima-tex-update-init (arg)
-  "Optionally update all initialization cells and return output in TeX form.
-With C-u prefix, update without confirmation at each cell."
-  (interactive "P")
-  (if (not emaxima-tex-lisp-file)
-      (error "File `emaxima.lisp' not found in Emacs load path.")
-    (emaxima-tex-on)
-    (if arg
-        (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil t)
-      (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
-                      (y-or-n-p "Interactive update? ") t))
-    (emaxima-tex-off)))
-
 (defun emaxima-update-session (arg)
   "Optionally update all session cells.
 With C-u prefix, update without confirmation at each cell."
@@ -1669,41 +1621,6 @@ If TEX is non-nil, then insert \\maximatexoutput instead of \\maximaoutput."
       (sit-for 1)) ; save-excursion
 ;    (beep)
     (message "Update of cells finished")))
-
-(defun emaxima-eval-init ()
-  "Evaluate all initialization cells, without returning the output."
-  (interactive)
-  (let (bypass display-start display-end cur-pos)
-    (save-excursion
-      (goto-char (point-min))
-      (while (emaxima-forward-cell)
-        (forward-line -1)
-        (if (not (looking-at "^\\\\beginmaxima\\[\\* Initialization Cell \\*\\]"))
-            (progn
-              (forward-line 1) ; Don't want the same cell next time
-              nil) ; Wrong kind of cell
-          ;; We have a cell of the right kind
-          (setq display-start (point))
-          (goto-char (emaxima-cell-end))
-          (forward-line 1) ; We need to include cell trailer in narrowed region
-          (end-of-line)    ; ..
-          (setq display-end (point))
-          (forward-line 0)
-          (unwind-protect
-              (progn
-                (narrow-to-region display-start display-end)
-                (goto-char (point-min))
-                (recenter 1) ; force display, just in case...
-                (forward-line 1)
-                (emaxima-send-cell))
-            (widen) ; If user aborts evaluation at prompt
-            ) ; unwind-protect
-          ) ; if in a valid cell
-        ) ; while still types to check
-      ) ; save-excursion
-    (widen)
-;    (beep)
-    (message "Evaluation of initialization cells finished")))
 
 (defun emaxima-send-cell ()
   "Send the current cell's contents to Maxima."
@@ -2000,9 +1917,6 @@ output."
     (define-key map "\C-c-" 'emaxima-backward-cell)
     (define-key map "\C-c\C-ua" 'emaxima-update-all)
     (define-key map "\C-c\C-uA" 'emaxima-tex-update-all)
-    (define-key map "\C-c\C-ut" 'emaxima-eval-init)
-    (define-key map "\C-c\C-ui" 'emaxima-update-init)
-    (define-key map "\C-c\C-uI" 'emaxima-tex-update-init)
     (define-key map "\C-c\C-us" 'emaxima-update-session)
     (define-key map "\C-c\C-uS" 'emaxima-tex-update-session)
     (define-key map "\C-c\C-o" 'emaxima-create-standard-cell)
@@ -2016,7 +1930,6 @@ output."
     (define-key map "\C-c\C-uc" 'emaxima-update-single-cell)
     (define-key map "\C-c\C-uC" 'emaxima-tex-update-single-cell)
     (define-key map "\C-c\C-d" 'emaxima-delete-output)
-    (define-key map "\C-c\C-t" 'emaxima-toggle-init)
     (define-key map "\C-c\C-x" 'emaxima-package-part)
     (define-key map "\C-c@" 'emaxima-assemble)
     (define-key map "\C-c\C-h" 'maxima-help)
@@ -2055,9 +1968,6 @@ The commands for working with cells are:
  \\[emaxima-tex-update-all] update all the cells in TeX form 
  \\[emaxima-forward-cell] go to the next cell 
  \\[emaxima-backward-cell] go to the previous cell
- \\[emaxima-eval-init] evaluate all  initialization cells
- \\[emaxima-update-init] update all the initialization cells
- \\[emaxima-tex-update-init] update all the initialization cells in TeX form
 
 (With a prefix, C-u \\[emaxima-update-all] and C-u \\[emaxima-tex-update-all] will update the cells 
 without prompting)
@@ -2072,7 +1982,6 @@ Within a cell, the following commands are available:\\<emaxima-maxima-map>
  \\[emaxima-delete-output]  delete the cell's output
  \\[emaxima-update-cell]  update a cell 
  \\[emaxima-tex-update-cell] update a cell in TeX form
- \\[emaxima-toggle-init] toggle initialization cells
  \\[emaxima-assemble]  assemble a cell which defines a package
  C-u \\[emaxima-assemble]  assemble a cell with references
 
@@ -2129,7 +2038,6 @@ already) so the file will begin in emaxima-mode next time it's opened.
      ["Update cell"   emaxima-update-single-cell (emaxima-cell-p)]
      ["TeX update cell"  emaxima-tex-update-single-cell (emaxima-cell-p)]
      ["Delete output"   emaxima-delete-output (emaxima-cell-p)]
-     ["Toggle initialization"  emaxima-toggle-init (emaxima-standard-cell-p)]
      ["Mark as package part" emaxima-package-part (emaxima-standard-cell-p)]
      ["Insert complete name" emaxima-insert-complete-name 
                                                   (emaxima-standard-cell-p)]
@@ -2139,16 +2047,13 @@ already) so the file will begin in emaxima-mode next time it's opened.
      ["Update line"   emaxima-replace-line (not (emaxima-cell-p))]
      ["Update all cells"  emaxima-menu-update-all]
      ["Update session cells" emaxima-update-session]
-     ["Update initialization cells"  emaxima-update-init]
      "---"
      ["TeX update line"   emaxima-replace-line-with-tex (not (emaxima-cell-p))]
-     ["TeX update all cells"  emaxima-menu-tex-update-all]
-     ["TeX update initialization cells"  emaxima-tex-update-init])
+     ["TeX update all cells"  emaxima-menu-tex-update-all])
     ("Process"
      ["Start a Maxima process"   maxima-start
       (not (processp maxima-process))]
      ["Run Maxima on region"  maxima-region]
-     ["Run Maxima on initialization cells"  emaxima-eval-init]
      ["Kill Maxima process"  maxima-stop (processp maxima-process)])
     ("Misc"
      ["Indent region"   maxima-indent-region (emaxima-cell-p)]
