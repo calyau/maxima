@@ -26,24 +26,21 @@ PRINTFILE(SHARE,>,SHARE);
 @c end concepts Miscellaneous Options
 @node Definitions for Miscellaneous Options,  , SHARE, Miscellaneous Options
 @section Definitions for Miscellaneous Options
-@c @node ALIASES
-@c @unnumberedsec phony
+
 @defvar ALIASES
  default: [] atoms which have a user defined alias (set up by
 the ALIAS, ORDERGREAT, ORDERLESS functions or by DECLAREing the atom a
 NOUN).
 @end defvar
 
-@c @node declaration
-@c @unnumberedsec phony
+
 @defvr declaration ALPHABETIC
 Adds to Maxima's alphabet which initially contains
 the letters A-Z, % and _.
 Thus, DECLARE("~",ALPHABETIC) enables NEW~VALUE to be used as a name.
 
 @end defvr
-@c @node APROPOS
-@c @unnumberedsec phony
+
 @defun APROPOS (string)
 takes a character string as argument and looks at all
 the Maxima names for ones with that string appearing anywhere within
@@ -55,8 +52,7 @@ Similarily, you could say APROPOS(TR_); to find a list of many of the
 switches relating to the TRANSLATOR (most of which begin with TR_).
 
 @end defun
-@c @node ARGS
-@c @unnumberedsec phony
+
 @defun ARGS (exp)
 returns a list of the args of exp.  I.e. it is
 essentially equivalent to
@@ -67,8 +63,7 @@ Both ARGS and
 SUBSTPART depend on the setting of INFLAG.
 
 @end defun
-@c @node DUMMY
-@c @unnumberedsec phony
+
 @defun DUMMY (i1,i2,...)
 will set each index i1,i2,... to name of the form !n
 where n is a positive integer.  This guarantees that dummy indices
@@ -78,36 +73,31 @@ be used in generating the next dummy index.  The prefix is determined
 by the option DUMMYX[!].
 
 @end defun
-@c @node GENINDEX
-@c @unnumberedsec phony
+
 @defvar GENINDEX
  default: [I] is the alphabetic prefix used to generate the
 next variable of summation when necessary.
 
 @end defvar
-@c @node GENSUMNUM
-@c @unnumberedsec phony
+
 @defvar GENSUMNUM
 [0] is the numeric suffix used to generate the next variable
 of summation.  If it is set to FALSE then the index will consist only
 of GENINDEX with no numeric suffix.
 
 @end defvar
-@c @node INF
-@c @unnumberedsec phony
+
 @defvar INF
  - real positive infinity.
 
 @end defvar
-@c @node INFINITY
-@c @unnumberedsec phony
+
 @defvar INFINITY
  - complex infinity, an infinite magnitude of arbitrary phase
 angle.  (See also INF and MINF.)
 
 @end defvar
-@c @node INFOLISTS
-@c @unnumberedsec phony
+
 @defvar INFOLISTS
  default: [] a list of the names of all of the information
 lists in Maxima. These are:
@@ -136,14 +126,12 @@ plus the special package DEFAULT_LET_RULE_PACKAGE.
 one is not explicitly set by the user.)
 
 @end defvar
-@c @node INTEGERP
-@c @unnumberedsec phony
+
 @defun INTEGERP (exp)
 is TRUE if exp is an integer else FALSE.
 
 @end defun
-@c @node M1PBRANCH
-@c @unnumberedsec phony
+
 @defvar M1PBRANCH
  default: [FALSE] - "principal branch for -1 to a power".
 Quantities such as (-1)^(1/3) [i.e. "odd" rational exponent] and 
@@ -161,59 +149,51 @@ M1PBRANCH:FALSE(default)   M1PBRANCH:TRUE
 (-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
 @end example
 @end defvar
-@c @node NUMBERP
-@c @unnumberedsec phony
+
 @defun NUMBERP (exp)
 is TRUE if exp is an integer, a rational number, a
 floating point number or a bigfloat else FALSE.
 
 @end defun
-@c @node PROPERTIES
-@c @unnumberedsec phony
+
 @defun PROPERTIES (a)
 will yield a list showing the names of all the
 properties associated with the atom a.
 
 @end defun
-@c @node PROPS
-@c @unnumberedsec phony
+
 @defvr {special symbol} PROPS
  - atoms which have any property other than those explicitly
 mentioned in INFOLISTS, such as atvalues, matchdeclares, etc. as well
 as properties specified in the DECLARE function.
 
 @end defvr
-@c @node PROPVARS
-@c @unnumberedsec phony
+
 @defun PROPVARS (prop)
 yields a list of those atoms on the PROPS list which
 have the property indicated by prop.  Thus PROPVARS(ATVALUE) will
 yield a list of atoms which have atvalues.
 
 @end defun
-@c @node PUT
-@c @unnumberedsec phony
+
 @defun PUT (a, p, i)
 associates with the atom a the property p with the
 indicator i.  This enables the user to give an atom any arbitrary
 property.
 
 @end defun
-@c @node QPUT
-@c @unnumberedsec phony
+
 @defun QPUT (a, p, i)
 is similar to PUT but it doesn't have its arguments
 evaluated.
 
 @end defun
-@c @node REM
-@c @unnumberedsec phony
+
 @defun REM (a, i)
 removes the property indicated by i from the atom a.
 
 @end defun
-@c @node REMOVE
-@c @unnumberedsec phony
+
 @defun REMOVE (args)
 will remove some or all of the properties associated
 with variables or functions.
@@ -231,8 +211,7 @@ indicate when a given property is non-existent; it always returns
 "DONE".
 
 @end defun
-@c @node REMVALUE
-@c @unnumberedsec phony
+
 @defun REMVALUE (name1, name2, ...)
 removes the values of user variables
 (which can be subscripted) from the system.  If name is ALL then the
@@ -241,8 +220,7 @@ given names by the user as opposed to those which are automatically
 labeled by Maxima as Ci, Di, or Ei.
 
 @end defun
-@c @node RNCOMBINE
-@c @unnumberedsec phony
+
 @defun RNCOMBINE (exp)
 transforms exp by combining all terms of exp that have
 identical denominators or denominators that differ from each other by
@@ -255,16 +233,14 @@ This results in neater forms, and the possiblity of recognizing some
 cancellations.  Bugs to ASB.
 
 @end defun
-@c @node SCALARP
-@c @unnumberedsec phony
+
 @defun SCALARP (exp)
 is TRUE if exp is a number, constant, or variable
 DECLAREd SCALAR, or composed entirely of numbers, constants, and such
 variables, but not containing matrices or lists.
 
 @end defun
-@c @node SCALEFACTORS
-@c @unnumberedsec phony
+
 @defun SCALEFACTORS (coordinatetransform)
 Here coordinatetransform
 evaluates to the form [[expression1, expression2, ...],
@@ -282,8 +258,7 @@ To expand an expression into physical components in the current
 coordinate system, there is a function with usage of the form
 
 @end defun
-@c @node SETUP_AUTOLOAD
-@c @unnumberedsec phony
+
 @defun SETUP_AUTOLOAD (file,func1,...,funcN)
 which takes two or more
 arguments: a file specification, and one or more function names,
