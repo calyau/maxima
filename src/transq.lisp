@@ -63,8 +63,9 @@
 		  (eq ,v ',v))
 	      (setq ,v ,a))))
 
-(DEFOPT TRD-MSYMEVAL (VAR &rest ignore)
-  VAR)
+;; To do.
+;; (DEFOPT TRD-MSYMEVAL (VAR &rest ignore)
+;;   VAR)
 
 (DEFVAR *MAX-EXPT$-EXPAND* 7)
 
