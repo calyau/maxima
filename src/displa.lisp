@@ -1821,6 +1821,7 @@
 		 (t (setq string (format nil "~ve" (+ 4 $fpprec) symb)))))
 	 (setq string (string-left-trim " " string))
 	 )
+	#+(and gcl (not gmp))
 	((bignump symb)
 	 (let* ((big symb)
 		ans rem tem

@@ -1150,7 +1150,7 @@
 	 $TREILLIS
 	 $TREINAT
 	 ))
-  (setf (get v 'autoload)        "sym_auto.mac")
+  (setf (get v 'autoload)        "sym.mac")
   )
 
 

@@ -7,15 +7,20 @@
 ;(load (pathname "../src/elim"))
 ;(load (pathname "../src/trgsmp"))
 
-;(si::set-gmp-allocate-relocatable t)
+(si::set-gmp-allocate-relocatable t)
 
 (setf (get 'maxima::%cosh 'maxima::translated) t);;so that kill won't remprop.
 
 ;(dolist (v  '(|nusum| |ode2| |elim| |trgsmp|)) (aload v))
 
 ;; bang on sgc if we have it.
-#+sgc (si::sgc-on t)
-;(si::set-gmp-allocate-relocatable t)
+;#+sgc (si::sgc-on t)
+;; allocate some more space..
+;#+gcl (progn (si::allocate-relocatable-pages 2000 t) (si::allocate 'cfun 200 t)  (si::allocate 'fixnum 200 t) (si::allocate 'cons 400 t) (si::allocate 'symbol 100 t))
+
+
+;; bang on relocatable bignums
+#+gmp(si::set-gmp-allocate-relocatable t)
 
 ;;we won't bother collecting the errors
 
