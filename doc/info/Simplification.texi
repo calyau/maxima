@@ -89,18 +89,30 @@ EXPAND(exp,p,n) expands exp, using p for MAXPOSEX and n for MAXNEGEX.
 This is useful in order to expand part but not all of an expression.
 EXPON[0] - the exponent of the largest negative power which is
 automatically expanded (independent of calls to EXPAND).  For example
-if EXPON is 4 then (X+1)**(-5) will not be automatically expanded.
+if EXPON is 4 then (X+1)^(-5) will not be automatically expanded.
 EXPOP[0] - the highest positive exponent which is automatically
-expanded.  Thus (X+1)**3, when typed, will be automatically expanded
+expanded.  Thus (X+1)^3, when typed, will be automatically expanded
 only if EXPOP is greater than or equal to 3.  If it is desired to have
-(X+1)**N expanded where N is greater than EXPOP then executing
-EXPAND((X+1)**N) will work only if MAXPOSEX is not less than N.
+(X+1)^N expanded where N is greater than EXPOP then executing
+EXPAND((X+1)^N) will work only if MAXPOSEX is not less than N.
 The EXPAND flag used with EV (see EV) causes expansion.
-The file SHARE1;FACEXP FASL contains several related functions 
-(FACSUM and COLLECTTERMS are two) that provide the user with the 
-ability to structure expressions by controlled expansion.
-Brief function descriptions are available in SHARE1;FACEXP USAGE.
-A demo is available by doing BATCH("facexp.mc")$ .
+
+@findex FACSUM
+@findex COLLECTTERMS
+@findex FACTORFACSUM
+@vindex NEXTLAYERFACTOR
+@vindex FACSUM_COMBINE 
+The file @file{simplification/facexp.mac}
+@c I should really use a macro which expands to something like
+@c @uref{file://...,,simplification/facexp.mac}.  But texi2html
+@c currently supports @uref only with one argument.
+@c Worse, the `file:' scheme is OS and browser dependent.
+contains several related functions (in particular FACSUM, FACTORFACSUM
+and COLLECTTERMS, which are autoloaded) and variables (NEXTLAYERFACTOR
+and FACSUM_COMBINE) that provide the user with the ability to structure
+expressions by controlled expansion.  Brief function descriptions are
+available in @file{simplification/facexp.usg}.  A demo is available by
+doing @code{demo("facexp")$}.
 
 @end defun
 @c @node EXPANDWRT, EXPANDWRT_DENOM, EXPAND, Simplification
@@ -111,8 +123,8 @@ All products involving the vari appear explicitly.  The form returned
 will be free of products of sums of expressions that are not free of
 the vari.  The vari may be variables, operators, or expressions.  By
 default, denominators are not expanded, but this can be controlled by
-means of the switch EXPANDWRT_DENOM.  Do LOAD(STOPEX); to use this
-function.
+means of the switch EXPANDWRT_DENOM.  This function is autoloaded from
+@file{simplification/stopex.mac}.
 
 @end defun
 @c @node EXPANDWRT_DENOM, EXPANDWRT_FACTORED, EXPANDWRT, Simplification
@@ -122,7 +134,7 @@ function.
 expressions by EXPANDWRT.  If TRUE, then both the numerator and
 denominator of the expression will be expanded according to the
 arguments of EXPANDWRT, but if EXPANDWRT_DENOM is FALSE, then only the
-numerator will be expanded in that way.  Do LOAD(STOPEX) to use.
+numerator will be expanded in that way.
 
 @end defvar
 @c @node EXPANDWRT_FACTORED, EXPON, EXPANDWRT_DENOM, Simplification
@@ -132,8 +144,8 @@ is similar to
 EXPANDWRT, but treats expressions that are products somewhat
 differently.  EXPANDWRT_FACTORED will perform the required expansion
 only on those factors of exp that contain the variables in its argument list
-argument list.  Do LOAD(STOPEX) to use this
-function.
+argument list.  This function is autoloaded from
+@file{simplification/stopex.mac}.
 
 @end defun
 @c @node EXPON, EXPONENTIALIZE, EXPANDWRT_FACTORED, Simplification
@@ -141,7 +153,7 @@ function.
 @defvar EXPON
  default: [0] - the exponent of the largest negative power which
 is automatically expanded (independent of calls to EXPAND).  For
-example if EXPON is 4 then (X+1)**(-5) will not be automatically
+example if EXPON is 4 then (X+1)^(-5) will not be automatically
 expanded.
 
 @end defvar
@@ -160,10 +172,10 @@ expression with EV.
 @c @unnumberedsec phony
 @defvar EXPOP
  default: [0] - the highest positive exponent which is
-automatically expanded.  Thus (X+1)**3, when typed, will be
+automatically expanded.  Thus (X+1)^3, when typed, will be
 automatically expanded only if EXPOP is greater than or equal to 3.
-If it is desired to have (X+1)**n expanded where n is greater than
-EXPOP then executing EXPAND((X+1)**n) will work only if MAXPOSEX is
+If it is desired to have (X+1)^n expanded where n is greater than
+EXPOP then executing EXPAND((X+1)^n) will work only if MAXPOSEX is
 not less than n.
 
 @end defvar
