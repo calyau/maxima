@@ -553,8 +553,17 @@ values")
 		      sym)))))))
 
 
-(defun explode (symb &aux tem)
-  (sloop for v on (setq tem (coerce (string symb) 'list))
+(defun list-string (strin &aux tem)
+  (setq tem (make-list (length (the string  strin))))
+  (sloop for v on tem
+	for i from 0
+	do (setf (car v) (aref strin i)))
+  tem)
+
+(defun explode (symb &aux tem sstring)
+  ;; Note:  symb can also be a number, not just a symbol.
+  (setq sstring (format nil "~S" symb))
+  (sloop for v on (setq tem (list-string sstring))
 	 do (setf (car v)(intern (string (car v)))))
   tem)
 
