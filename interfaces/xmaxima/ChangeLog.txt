@@ -1,0 +1,6 @@
+2002-09-06  Mike Clarkson  <mikeclarkson@usw-pr-shell1.sourceforge.net>
+
+	* xmaxima.tcl: Massive breakup of xmaxima.tcl
+	into compenent files in the Tkmaxima subdirectory.
+	Reindented Tcl code in  the Tkmaxima subdirectory.
+
