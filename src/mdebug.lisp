@@ -347,7 +347,7 @@
 	 (mread stream eof-value))))
 
 (defun grab-line-number (li stream)
-  (declare (type (vector ( #. (array-element-type "ab"))) li))
+  (declare (type (vector #.(array-element-type "ab")) li))
   (cond ((and (> (length li) 3)
 	      (digit-char-p (aref li 1)))
 	 (let ((in (get-instream stream)))
