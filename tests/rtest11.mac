@@ -6,7 +6,7 @@
 ***************************************************************************/
 
 
-kill(allbut(props));
+kill(all);
 done;
 display(b[1,2]);
 done$
@@ -115,7 +115,7 @@ h(x,y,z)$
 done$
 h(x,z,y);
 -h(x,y,z)$
-(kill(allbut(props)),declare(j,nary));
+(kill(all),declare(j,nary));
 done$
 j(j(a,b),j(c,d));
 j(a,b,c,d)$
@@ -127,11 +127,11 @@ declare(g,evenfun);
 done$
 g(-x);
 g(x)$
-(kill(allbut(props)),kill(g),declare(f,posfun));
+(kill(all),kill(g),declare(f,posfun));
 done$
 is(f(x) > 0);
 true$
-(kill(allbut(props)),b[1,x]:1);
+(kill(all),b[1,x]:1);
 1$
 array(f,2,3);
 f$

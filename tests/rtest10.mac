@@ -4,7 +4,7 @@
 ***     Copyright (c) 1984 by William Schelter,University of Texas     *****
 ***     All rights reserved                                            *****
 ***************************************************************************/
-kill(allbut(props));
+kill(all);
 done$
 n!/(n+1)!;
 n!/(n+1)!$

@@ -20,7 +20,7 @@ expand(%);
 6.0*%i-1.75$
 expand(sqrt(2*%i));
 (-1)^(1/4)*sqrt(2)$
-kill(allbut(props));
+kill(all);
 done$
 sin(x)+cos(y)+(w+1)^2+'diff(sin(w),w);
 cos(y)+sin(x)+'diff(sin(w),w,1)+(w+1)^2$
@@ -103,7 +103,7 @@ radcan(%);
 (%e^x-1)/(%e^(x/2)+1)$
 radcan(%);
 %e^(x/2)-1$
-kill(allbut(props));
+kill(all);
 done$
 combine(a/x+b/x+a/y+b/y);
 (b+a)/y+(b+a)/x$

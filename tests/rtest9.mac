@@ -6,7 +6,7 @@
 ***************************************************************************/
 
 
-(kill(allbut(props)),
+(kill(all),
 declare(l,scalar,[m1,m2,m3],nonscalar));
 done$
 expand((1-l*m1) . (1-l*m2) . (1-l*m3));

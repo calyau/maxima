@@ -1,6 +1,6 @@
 /* ODE tests */
 
-kill(allbut(props));
+kill(all);
 done;
 
 /* Trivial ode - bug 866510 */

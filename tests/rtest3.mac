@@ -7,7 +7,7 @@
 
 
 /* rtest3 */						
-kill(allbut(props));
+kill(all);
 done;
 for a from -3 step 7 thru 26 do ldisplay(a);
 done$
@@ -147,7 +147,7 @@ y:x^2+1;
 x^2+1$
 
 /* begin fix */
-kill(allbut(props));
+kill(all);
 done;
  ev(%e^x*sin(x)^2,exponentialize);
  -%e^x*(%e^(%i*x)-%e^-(%i*x))^2/4;

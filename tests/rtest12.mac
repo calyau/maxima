@@ -6,7 +6,7 @@
 ***************************************************************************/
 
 
-(kill(allbut(props)),clear_rules(),matchdeclare(a,true));
+(kill(all),clear_rules(),matchdeclare(a,true));
 done$
 tellsimp(sin(a)^2,1-cos(a)^2);
 ["^rule1",?simpexpt]$
@@ -41,7 +41,7 @@ checklimits(%);
 'integrate(sin(t),t,0,t)$
 checklimits(%);
 false$
-(kill(allbut(props)),matchdeclare(x,freeof(%i)));
+(kill(all),matchdeclare(x,freeof(%i)));
 done$
 %iargs:false;
 false$
@@ -77,7 +77,7 @@ sin(y)^2;
 1-cos(y)^2$
 kill(rules);
 done$
-(kill(allbut(props)),nonzeroandfreeof(x,e):=is(e # 0 and freeof(x,e)));
+(kill(all),nonzeroandfreeof(x,e):=is(e # 0 and freeof(x,e)));
 nonzeroandfreeof(x,e):=is(e # 0 and freeof(x,e))$
 matchdeclare(a,nonzeroandfreeof(x),b,freeof(x));
 done$
@@ -106,7 +106,7 @@ checklimits(%);
 false$
 remvalue(a,b,f,x);
 [a,b,f,x]$
-(kill(allbut(props)),matchdeclare([a,a1,a2],true));
+(kill(all),matchdeclare([a,a1,a2],true));
 done$
 oneless(x,y):=is(x = y-1);
 oneless(x,y):=is(x = y-1)$
