@@ -15,7 +15,7 @@ if {[file isdir $maxima_datadir]} {
 
     if {[file isdir $maxima_omplotdata_msgs_dir]} {
 
-	mcload $maxima_omplotdata_msgs_dir
+	::msgcat::mcload $maxima_omplotdata_msgs_dir
     
     }
 

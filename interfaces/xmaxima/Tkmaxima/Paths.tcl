@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.14 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.15 2005-01-23 11:15:30 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -140,7 +140,7 @@ proc setMaxDir {} {
     }
 
     # omplotdata messages
-    mcload [file join $maxima_priv(maxima_verpkgdatadir) msgs]
+    ::msgcat::mcload [file join $maxima_priv(maxima_verpkgdatadir) msgs]
 
     if {[info exists maxima_priv(maxima_verpkglibdir)]} {
 	# drop through
@@ -166,7 +166,7 @@ proc setMaxDir {} {
     }
     
     # xmaxima messages
-    mcload [file join $maxima_priv(maxima_xmaximadir) msgs]
+    ::msgcat::mcload [file join $maxima_priv(maxima_xmaximadir) msgs]
 
     # Bring derived quantities up here too so we can see the
     # side effects of setting the above variables
