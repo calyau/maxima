@@ -61,7 +61,7 @@ ode1_nonlinear(de,y,x):=block(
 
   ode_disp("       -> ode1_abel"),
   q:ode1_abel(de,y,x),
-  if (is(q#false)) then return([q]),
+  if (is(q#false)) then return(q),
 
   ode_disp("       -> ode1_lie"),
   q:block(
