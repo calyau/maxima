@@ -1,8 +1,5 @@
-kill (all)$
+kill (allbut (props))$
 done$
-
-(load ("nset.lisp"), 0)$
-0$
 
 emptyp(set());
 true$

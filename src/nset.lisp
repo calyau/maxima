@@ -11,7 +11,9 @@
 
 ;; A Maxima set package
 
-;(in-package "MAXIMA")
+(in-package "MAXIMA")
+(macsyma-module nset)
+
 ;($put '$nset '1.2.03 '$version)
 
 (defmacro while (cond &rest body)

@@ -247,7 +247,6 @@ contrib/nset/changes_1.0_to_1.2.txt\
 contrib/nset/maxima-init.lisp\
 contrib/nset/nset.html\
 contrib/nset/nset-init.lisp\
-contrib/nset/nset.lisp\
 contrib/nset/nset.texi\
 contrib/nset/nset_toc.html\
 contrib/nset/README\

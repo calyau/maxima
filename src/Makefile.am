@@ -322,6 +322,7 @@ nisimp.lisp \
 nparse.lisp \
 nrat4.lisp \
 nregex.lisp \
+nset.lisp \
 numer.lisp \
 numerm.lisp \
 numth.lisp \

@@ -70,13 +70,13 @@ scanmap('f,%);
 f(f(f(u)*f(f(v)^f(f(f(a)*f(x))+f(b))))+f(c))$
 append([y+x,0,-3.2],[2.5e+20,x]);
 [y+x,0,-3.2,2.5e+20,x]$
-union(x,y):=if x = [] then y
-       else (if member(t:first(x),y) then union(rest(x),y)
-		 else cons(t,union(rest(x),y)));
-union(x,y):=if x = [] then y
-       else (if member(t:first(x),y) then union(rest(x),y)
-		 else cons(t,union(rest(x),y)))$
-union([a,b,1,1/2,x^2],[-x^2,a,y,1/2]);
+my_union(x,y):=if x = [] then y
+       else (if member(t:first(x),y) then my_union(rest(x),y)
+		 else cons(t,my_union(rest(x),y)));
+my_union(x,y):=if x = [] then y
+       else (if member(t:first(x),y) then my_union(rest(x),y)
+		 else cons(t,my_union(rest(x),y)))$
+my_union([a,b,1,1/2,x^2],[-x^2,a,y,1/2]);
 [b,1,x^2,-x^2,a,y,1/2]$
 bernpoly(x,5);
 x^5-5*x^4/2+5*x^3/3-x/6$

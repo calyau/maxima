@@ -270,6 +270,7 @@ binary-gcl/maxima : laplac.lisp
 binary-gcl/maxima : pade.lisp
 binary-gcl/maxima : homog.lisp
 binary-gcl/maxima : combin.lisp
+binary-gcl/maxima : nset.lisp
 binary-gcl/maxima : mstuff.lisp
 binary-gcl/maxima : ratpoi.lisp
 binary-gcl/maxima : pois2.lisp
