@@ -9,6 +9,8 @@ uninstall: uninstall-clisp
 clean: clean-clisp
 distclean: clean-clisp
 
+clisp: binary-clisp/maxima.mem
+
 binary-clisp/maxima.mem:
 	LISPTYPE=clisp ; export LISPTYPE ;\
 	CLISP=$(CLISP_NAME) ; export CLISP ;\
@@ -42,6 +44,8 @@ install-exec-local: install-cmucl
 uninstall: uninstall-cmucl
 clean: clean-cmucl
 distclean: clean-cmucl
+
+cmucl: binary-cmucl/maxima.core
 
 binary-cmucl/maxima.core:
 	test -d binary-cmucl || mkdir binary-cmucl
@@ -79,6 +83,8 @@ uninstall: uninstall-acl6
 clean: clean-acl6
 distclean: clean-acl6
 
+acl6:binary-acl6/maxima.dxl
+
 binary-acl6/maxima.dxl:
 	test -d binary-acl6 || mkdir binary-acl6
 	test -d binary-acl6/numerical || mkdir binary-acl6/numerical
@@ -115,6 +121,8 @@ install-exec-local: install-sbcl
 uninstall: uninstall-sbcl
 clean: clean-sbcl
 distclean: clean-sbcl
+
+sbcl:binary-sbcl/maxima.core
 
 binary-sbcl/maxima.core:
 	test -d binary-sbcl || mkdir binary-sbcl
@@ -154,6 +162,8 @@ install-exec-local: install-gcl
 uninstall: uninstall-gcl
 clean: clean-gcl
 distclean: clean-gcl
+
+gcl:binary-gcl/maxima
 
 if GCL_ALT_LINK
 binary-gcl/maxima:
@@ -211,6 +221,8 @@ install-exec-local: install-openmcl
 uninstall: uninstall-openmcl
 clean: clean-openmcl
 distclean: clean-openmcl
+
+openmcl:binary-openmcl/maxima.image
 
 binary-openmcl/maxima.image:
 	LISPTYPE=openmcl ; export LISPTYPE ;\
