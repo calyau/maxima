@@ -6,8 +6,8 @@
 
 @node Introduction to Special Functions, SPECINT, Special Functions, Special Functions
 @section Introduction to Special Functions
-@c @node %K
-@c @unnumberedsec phony
+
+@c NEEDS EXPANSION OR EXPUNCTION
 @deffn %K [index](expr)
 
 Constant, in ODE2
@@ -48,10 +48,9 @@ For a better feeling for what it can do, do DEMO(HYPGEO,DEMO,SHARE1); .
 @c end concepts Special Functions
 @node Definitions for Special Functions,  , SPECINT, Special Functions
 @section Definitions for Special Functions
-@c @node AIRY
-@c @unnumberedsec phony
-@c AIRY IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
-@defun AIRY (X)
+
+@c airy IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
+@defun airy (@var{x})
 returns the Airy function Ai of real argument X.
 
 @c REMAINDER DERIVED FROM airy.usg AND SHOULD PROBABLY BE MOVED
@@ -89,19 +88,18 @@ A similar expression can be constructed for @code{bi}.
 
 @end defun
 
-@c @node ASYMPA
-@c @unnumberedsec phony
-@defun ASYMPA
- - Asymptotic Analysis - The file SHARE1;ASYMPA > contains
-simplification functions for asymptotic analysis, including the big-O
-and little-o functions that are widely used in complexity analysis and
-numerical analysis.  Do BATCH("asympa.mc"); .
-(For asymptotic behavior of Feynman diagrams, see ASYMP.)
+
+@defun asympa
+@code{asympa} is a package for asymptotic analysis. The package contains
+simplification functions for asymptotic analysis, including the ``big O''
+and ``little o'' functions that are widely used in complexity analysis and
+numerical analysis.
+
+@code{load ("asympa")} loads this package.
 
 @end defun
-@c @node BESSEL
-@c @unnumberedsec phony
-@defun BESSEL (Z,A) 
+
+@defun bessel (@var{z}, @var{a}) 
 returns the value of Bessel function J for complex argument Z and real
 order A > 0.0 .  Also an array BESSELARRAY is set up such that
 BESSELARRAY[I] = J[I+A- ENTIER(A)](Z).
@@ -110,9 +108,8 @@ This function is deprecated.  Use BESSEL_J instead.
 
 @end defun
 
-@c @node BESSEL_J
-@c @unnumberedsec phony
-@defun BESSEL_J (v, z)
+
+@defun bessel_j (@var{v}, @var{z})
 The Bessel function of the first kind of order @math{v} and argument
 @math{z}.  Also, the array BESSELARRAY is computed such that
 BESSELARRAY[I] = J[I + V - INT(V)](z).
@@ -136,9 +133,8 @@ $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
 @end tex
 @end defun
 
-@c @node BESSEL_Y
-@c @unnumberedsec phony
-@defun BESSEL_Y (v, z)
+
+@defun bessel_y (@var{v}, @var{z})
 The Bessel function of the second kind of order @math{v} and argument
 @math{z}.  Also, the array BESSELARRAY is computed such that
 BESSELARRAY[I] = Y[I + V - INT(V)](z).
@@ -162,9 +158,8 @@ the limit as @math{v} approaches @math{n} is taken.
 
 @end defun
 
-@c @node BESSEL_I
-@c @unnumberedsec phony
-@defun BESSEL_I (v, z)
+
+@defun bessel_i (@var{v}, @var{z})
 The modified Bessel function of the first kind of order @math{v} and
 argument @math{z}.  Also, the array BESSELARRAY is computed such that
 BESSELARRAY[I] = I[I + V - INT(V)](z).
@@ -189,9 +184,8 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
 
 @end defun
 
-@c @node BESSEL_K
-@c @unnumberedsec phony
-@defun BESSEL_K (v, z)
+
+@defun bessel_k (@var{v}, @var{z})
 The modified Bessel function of the second kind of order @math{v} and
 argument @math{z}.  Also, the array BESSELARRAY is computed such that
 BESSELARRAY[I] = K[I + V - INT(V)](z).
@@ -211,13 +205,13 @@ when @math{v} is not an integer.  If @math{v} is an integer @math{n},
 then the limit as @math{v} approaches @math{n} is taken.
 @end defun
 
-@defvar BESSELEXPAND
- default: FALSE
+@defvar besselexpand
+Default value: @code{false}
 
- Controls expansion of the Bessel functions when the order is half of
- an odd integer.  In this case, the Bessel functions can be expanded
- in terms of other elementary functions.  When BESSELEXPAND is true,
- the Bessel function is expanded.
+Controls expansion of the Bessel functions when the order is half of
+an odd integer.  In this case, the Bessel functions can be expanded
+in terms of other elementary functions.  When @code{besselexpand} is @code{true},
+the Bessel function is expanded.
 
 @example
 (%i1) besselexpand: false$
@@ -234,70 +228,61 @@ then the limit as @math{v} approaches @math{n} is taken.
 @end example
 @end defvar
 
-@c @node J0
-@c @unnumberedsec phony
-@defun J0 (X)
+
+@defun j0 (@var{x})
 The Bessel function of the first kind of order 0.
 
-Deprecated.  Used BESSEL_J(0,X).
+Deprecated.  Write @code{bessel_j (0, @var{x})} instead.
 
 @end defun
 
-@c @node J1
-@c @unnumberedsec phony
-@defun J1 (X)
+
+@defun j1 (@var{x})
 The Bessel function of the first kind of order 1.
 
-Deprecated.  Used BESSEL_J(1, X).
+Deprecated.  Write @code{bessel_j (1, @var{x})} instead.
 
 @end defun
 
-@c @node J1
-@c @unnumberedsec phony
-@defun JN (X, N)
+
+@defun jn (@var{x}, @var{n})
 The Bessel function of the first kind of order N.
 
-Deprecated.  Used BESSEL_J(N, X).
+Deprecated.  Write @code{bessel_j (@var{n}, @var{x})} instead.
 
 @end defun
 
-@c @node I0
-@c @unnumberedsec phony
-@defun I0 (X)
+
+@defun i0 (@var{x})
 The modified Bessel function of the first kind of order 0.
 
-Deprecated.  Used BESSEL_I(0,X).
+Deprecated.  Write @code{bessel_i (0, @var{x})} instead.
 
 @end defun
 
-@c @node I1
-@c @unnumberedsec phony
-@defun I1 (X)
+
+@defun i1 (@var{x})
 The Bessel function of the first kind of order 1.
 
-Deprecated.  Used BESSEL_I(1, X).
+Deprecated.  Write @code{bessel_i (1, @code{x})} instead.
 
 @end defun
 
 
-@comment  node-name,  next,  previous,  up@c @node BETA
-@c @unnumberedsec phony
-@defun BETA (X, Y)
-same as GAMMA(X)*GAMMA(Y)/GAMMA(X+Y).
+@defun beta (@var{x}, @var{y})
+Same as gamma(x)*gamma(y)/gamma(x+y).
 
 @end defun
-@c @node GAMMA
-@c @unnumberedsec phony
-@defun GAMMA (X)
-the gamma function. GAMMA(I)=(I-1)!  for I a positive
+
+@defun gamma (@var{x})
+The gamma function. GAMMA(I)=(I-1)!  for I a positive
 integer.  For the Euler-Mascheroni constant, see %GAMMA.  See also the
 MAKEGAMMA function.  The variable GAMMALIM[1000000] (which see)
 controls simplification of the gamma function.
 
 @end defun
-@c @node GAMMALIM
-@c @unnumberedsec phony
-@defvar GAMMALIM
+
+@defvar gammalim
  default: [1000000] controls simplification of the gamma
 function for integral and rational number arguments.  If the absolute
 value of the argument is not greater than GAMMALIM, then
@@ -305,29 +290,25 @@ simplification will occur.  Note that the FACTLIM switch controls
 simplification of the result of GAMMA of an integer argument as well.
 
 @end defvar
-@c @node INTOPOIS
-@c @unnumberedsec phony
-@defun INTOPOIS (A)
+
+@defun intopois (@var{a})
 converts A into a Poisson encoding.
 
 @end defun
-@c @node MAKEFACT
-@c @unnumberedsec phony
-@defun MAKEFACT (exp)
+
+@defun makefact (@var{expr})
 transforms occurrences of binomial,gamma, and beta
 functions in exp to factorials.
 
 @end defun
-@c @node MAKEGAMMA
-@c @unnumberedsec phony
-@defun MAKEGAMMA (exp)
+
+@defun makegamma (@var{expr})
 transforms occurrences of binomial,factorial, and beta
 functions in exp to gamma functions.
 
 @end defun
-@c @node NUMFACTOR
-@c @unnumberedsec phony
-@defun NUMFACTOR (exp)
+
+@defun numfactor (@var{expr})
 gives the numerical factor multiplying the expression
 exp which should be a single term.  If the gcd of all the terms in a
 sum is desired the CONTENT function may be used.
@@ -344,9 +325,8 @@ sum is desired the CONTENT function may be used.
 
 @end example
 @end defun
-@c @node OUTOFPOIS
-@c @unnumberedsec phony
-@defun OUTOFPOIS (A)
+
+@defun outofpois (@var{a})
 converts A from Poisson encoding to general
 representation.  If A is not in Poisson form, it will make the
 conversion, i.e.  it will look like the result of
@@ -354,69 +334,61 @@ OUTOFPOIS(INTOPOIS(A)).  This function is thus a canonical simplifier
 for sums of powers of SIN's and COS's of a particular type.
 
 @end defun
-@c @node POISDIFF
-@c @unnumberedsec phony
-@defun POISDIFF (A, B)
+
+@defun poisdiff (@var{a}, @var{b})
 differentiates A with respect to B.  B must occur only
 in the trig arguments or only in the coefficients.
 
 @end defun
-@c @node POISEXPT
-@c @unnumberedsec phony
-@defun POISEXPT (A, B)
+
+@defun poisexpt (@var{a}, @var{b})
 B a positive integer) is functionally identical to
 INTOPOIS(A**B).
 
 @end defun
-@c @node POISINT
-@c @unnumberedsec phony
-@defun POISINT (A, B)
+
+@defun poisint (@var{a}, @var{b})
 integrates in a similarly restricted sense (to
 POISDIFF).  Non-periodic terms in B are dropped if B is in the trig
 arguments.
 
 @end defun
-@c @node POISLIM
-@c @unnumberedsec phony
-@defvar POISLIM
+
+@defvar poislim
  default: [5] - determines the domain of the coefficients in
 the arguments of the trig functions.  The initial value of 5
 corresponds to the interval [-2^(5-1)+1,2^(5-1)], or [-15,16], but it
 can be set to [-2^(n-1)+1, 2^(n-1)].
 
 @end defvar
-@c @node POISMAP
-@c @unnumberedsec phony
-@defun POISMAP (series, sinfn, cosfn)
+
+@c UMM, WHAT IS THIS ABOUT EXACTLY ?? EXAMPLES NEEDED
+@defun poismap (@var{series}, @var{sinfn}, @var{cosfn})
 will map the functions sinfn on the
 sine terms and cosfn on the cosine terms of the poisson series given.
 sinfn and cosfn are functions of two arguments which are a coefficient
 and a trigonometric part of a term in series respectively.
 
 @end defun
-@c @node POISPLUS
-@c @unnumberedsec phony
-@defun POISPLUS (A, B)
+
+@defun poisplus (@var{a}, @var{b})
 is functionally identical to INTOPOIS(A+B).
 
 @end defun
-@c @node POISSIMP
-@c @unnumberedsec phony
-@defun POISSIMP (A)
+
+@defun poissimp (@var{a})
 converts A into a Poisson series for A in general
 representation.
 
 @end defun
-@c @node POISSON
-@c @unnumberedsec phony
-@defvr {special symbol} POISSON
+
+@defvr {special symbol} poisson
  - The Symbol /P/ follows the line label of Poisson series
 expressions.
 
 @end defvr
-@c @node POISSUBST
-@c @unnumberedsec phony
-@defun POISSUBST (A, B, C)
+
+@defun poissubst (@var{a}, @var{b}, @var{c})
 substitutes A for B in C.  C is a Poisson series.
 (1) Where B is a variable U, V, W, X, Y, or Z then A must be an
 expression linear in those variables (e.g. 6*U+4*V).
@@ -431,33 +403,29 @@ POISSUBST(U,V,COS(V),E,3) results in COS(U)*(1-E^2/2) -
 SIN(U)*(E-E^3/6).
 
 @end defun
-@c @node POISTIMES
-@c @unnumberedsec phony
-@defun POISTIMES (A, B)
+
+@defun poistimes (@var{a}, @var{b})
 is functionally identical to INTOPOIS(A*B).
 
 @end defun
-@c @node POISTRIM
-@c @unnumberedsec phony
-@defun POISTRIM ()
+
+@defun poistrim ()
 is a reserved function name which (if the user has defined
 it) gets applied during Poisson multiplication.  It is a predicate
 function of 6 arguments which are the coefficients of the U, V,..., Z
-in a term.  Terms for which POISTRIM is TRUE (for the coefficients of
+in a term.  Terms for which POISTRIM is @code{true} (for the coefficients of
 that term) are eliminated during multiplication.
 
 @end defun
-@c @node PRINTPOIS
-@c @unnumberedsec phony
-@defun PRINTPOIS (A)
+
+@defun printpois (@var{a})
 prints a Poisson series in a readable format.  In common
 with OUTOFPOIS, it will convert A into a Poisson encoding first, if
 necessary.
 
 @end defun
-@c @node PSI
-@c @unnumberedsec phony
-@defun PSI (X)
+
+@defun psi (@var{x})
 derivative of LOG(GAMMA(X)).  At this time, Maxima does not
 have numerical evaluation capabilities for PSI.  For information on
 the PSI[N](X) notation, see POLYGAMMA.
