@@ -108,6 +108,7 @@ ode1_a(phi,y,x) := block(
     /* Case 1: diff(A,y)=0 
        Change variables using y=A*u (15) */
     block(
+      [u],
       ode_disp(" ..... Case 1 true"),
       ode_disp("       Change variables using y=A.u"),
       ode_disp2("       where A is ",%A),
@@ -132,7 +133,7 @@ ode1_a(phi,y,x) := block(
     /* Case 2: diff(A,y,2)=0 and diff(A,y)#0 
        Change variables using u=ln(A) (17) */
     block(
-      [sub],
+      [neweq,sub,u],
       ode_disp(" ..... Case 2 true"),
       ode_disp2("       A is ",%A),
       ode_disp2("       ln(A) is ",log(%A)),
@@ -170,7 +171,7 @@ ode1_a(phi,y,x) := block(
            p=exp(integrate(Iy,x))
            Substitute y = u/p */
         block(
-          [ _F, _H, _xi, _eta ],
+          [ _F, _H, _xi, _eta, u ],
           ode_disp(" ..... Case 3 true"),
           if get('contrib_ode,'verbose) then 
             print("       A is ",%A),
