@@ -10,7 +10,11 @@ mkdir snapshots
 
 # checkout
 cd snapshots
-cvs -z6 -d :pserver:anonymous@cvs.Maxima.sourceforge.net:/cvsroot/maxima co maxima || (echo "cvs checkout failed. Aborting" ; exit 1)
+cvs -z6 -d :pserver:anonymous@cvs.Maxima.sourceforge.net:/cvsroot/maxima co maxima 
+if [ "$?" != "0" ]; then
+    echo "cvs checkout failed. Aborting"
+    exit 1
+fi
 
 # bootstrap
 cd maxima
