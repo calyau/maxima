@@ -68,19 +68,19 @@ uricci(true)$
 ("computes scalar curvature")$
 scurvature();
 ("computes Riemann tensor")$
-riemann(true)$
+lriemann(true)$
 ("computes contravariant Riemann tensor")$
 uriemann(false)$
 ("computes the Kretchmann invariant Rijkl^2")$
 rinvariant();
 diagmetric:true;
 ("Compute the covariant form of geodesic equations")$
-motion(true)$
+cgeodesic(true)$
 
-("Compute the contravariant form geodesic equations");
+/*("Compute the contravariant form geodesic equations");
 block( for i thru dim do 
-       emc[i]: factorfacsum(ratexpand(sum(ug[i,a]*em[a],a,1,dim))),
-	         for i thru dim do ldisplay(emc[i]));
+       emc[i]: factorfacsum(ratexpand(sum(ug[i,a]*geod[a],a,1,dim))),
+	         for i thru dim do ldisplay(emc[i]));*/
 
 
 block([title: "Schwarzschild Potential for Mass M=2",m:2.],

@@ -357,9 +357,9 @@ are displayed. For the standard metric one finds (with RATFAC:TRUE):
 .end
 .endfunction
 
-.function(MOTION,dis)
+.function(CGEODESIC,dis)
 computes the covariant form of the geodesic equations of motion for a
-given metric.  They are stored in the array EM[i].  If the argument
+given metric.  They are stored in the array GEOD[i].  If the argument
 2dis* is TRUE then these equations are displayed.
 .endfunction
 
@@ -406,7 +406,7 @@ Ricci tensor. With RATFAC:TRUE this invariant will be factored.
 
 .function(WEYL,dis)
 computes the covariant Weyl conformal tensor. If the argument 2dis*
-is TRUE, the non-zero components W[i,j,k,l] will be displayed.
+is TRUE, the non-zero components WEYL[i,j,k,l] will be displayed.
 Otherwise, these components will be computed and stored.  If the
 switch $var<RATWEYL/TRUE> is set to TRUE, then the components will be
 rationally simplified. If RATFAC is TRUE then the results will be
@@ -887,12 +887,12 @@ derivative indices will be sorted.
 .skip
 2) the 2vi* may be integers from 1 up to the value of the variable
 DIM[4].  This will cause the differentiation to be carried out with
-respect to the 2vi*th member of the list COORDINATES which should be
+respect to the 2vi*th member of the list VECT_COORDS which should be
 set to a list of the names of the coordinates, e.g., [x,y,z,t] .  If
-COORDINATES is bound to an atomic variable, then that variable
+VECT_COORDS is bound to an atomic variable, then that variable
 subscripted by 2vi* will be used for the variable of
 differentiation.  This permits an array of coordinate names or
-subscripted names like X[1], X[2],...  to be used.  If COORDINATES has
+subscripted names like X[1], X[2],...  to be used.  If VECT_COORDS has
 not been assigned a value, then the variables will be treated as in 1)
 above.
 .break continue
@@ -1570,7 +1570,7 @@ which are needed in forming expressions will not conflict with indices
 already in use (see the example under INDICES).
 .endfunction
 
-.function2 DUMMYX
+.function2 IDUMMYX
 is the prefix for dummy indices (see the example under INDICES).
 .endfunction
 
@@ -1621,12 +1621,12 @@ as the following example demonstrates.
 .end
 .skip
 .begin group
-(C8) DUMMYX;
+(C8) IDUMMYX;
 (D8) 				      %
 .end
 .skip
 .begin group
-(C9) DUMMYX:&$
+(C9) IDUMMYX:&$
 .end
 .skip
 .begin group

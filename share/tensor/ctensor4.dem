@@ -17,7 +17,7 @@ lg:matrix([a,0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,-d]);
 /* functional dependencies */
 depends([a,d],x);
 /* computes inverse metric and specifies diagonality */
-setmetric()$
+cmetric()$
 /* computes the mixed Christoffel symbols */
 christof(false)$
 /* computes and ratsimps Ricci tensor */

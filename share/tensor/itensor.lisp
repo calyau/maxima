@@ -57,16 +57,16 @@
 
 #+maclisp ($UUO) 	                        ;Restore calls to SDIFF so it can be redefined	
 
-(DECLARE-TOP (SPECIAL SMLIST $DUMMYX $COORDINATES $IMETRIC $ICOUNTER $DIM
+(DECLARE-TOP (SPECIAL SMLIST $IDUMMYX $VECT_COORDS $IMETRIC $ICOUNTER $DIM
 		  $CONTRACTIONS $COORD $ALLSYM $METRICCONVERT)
 	 (*LEXPR $RENAME $DIFF $COORD $REMCOORD $LORENTZ_GAUGE))
 
-(SETQ $DUMMYX '$%                    ;Prefix for dummy indices
+(SETQ $IDUMMYX '$%                   ;Prefix for dummy indices
       $ICOUNTER 0.                   ;Dummy variable numeric indexs
       SMLIST '(MLIST SIMP)           ;Simplified MLIST header
-      $COORDINATES NIL               ;Used when differentiating w.r.t. a number
+      $VECT_COORDS NIL               ;Used when differentiating w.r.t. a number
       $COORD '((MLIST SIMP))         ;Objects treated liked coordinates in DIFF
-      $ALLSYM T                      ;If T then all indexed objects symmetric
+      $ALLSYM NIL                    ;If T then all indexed objects symmetric
       $METRICCONVERT T)              ;Flag used by $IC_CONVERT
 
 ;(DEFUN IFNOT MACRO (CLAUSE) (CONS 'OR (CDR CLAUSE)))
@@ -80,7 +80,7 @@
 
 (DEFMFUN $IDUMMY nil                              ;Sets arguments to dummy indices
        (progn (setq $ICOUNTER (1+ $ICOUNTER))
-              (concat $DUMMYX $ICOUNTER)))
+              (concat $IDUMMYX $ICOUNTER)))
 
 (DEFPROP $KDELTA ((/  . / )) CONTRACTIONS)
 
@@ -201,7 +201,7 @@
 	(PROG (A B C)
 		(COND 
 ;			((> NARGS 2) (RETURN (MEVAL (CONS '$COVDIFF (CONS ($ICHR1 (ARG 1) (ARG 2)) (CDDR (LISTIFY NARGS)))))))
-			((> NARGS 2) (RETURN (MEVAL (CONS '$DIFF (CONS ($ICHR1 (ARG 1) (ARG 2)) (APPLY #'APPEND (MAPCAR #'(LAMBDA (E) (LIST E 1)) (CDDR (LISTIFY NARGS)))))))))
+			((> NARGS 2) (RETURN (MEVAL (CONS '$IDIFF (CONS ($ICHR1 (ARG 1) (ARG 2)) (APPLY #'APPEND (MAPCAR #'(LAMBDA (E) (LIST E 1)) (CDDR (LISTIFY NARGS)))))))))
 			((> NARGS 1) (AND (EQ 1 (LENGTH (ARG 2))) (RETURN ($ICHR1 (ARG 1))))
 					(merror "ICHR1 cannot have contravariant indices"))
 ;;				(COND
@@ -237,7 +237,7 @@
 (DEFMFUN $ICHR2 NARGS
 	(PROG (A B C D) 
 		(COND
-			((> NARGS 2) (RETURN (MEVAL (CONS '$DIFF (CONS ($ICHR2 (ARG 1) (ARG 2)) (APPLY #'APPEND (MAPCAR #'(LAMBDA (E) (LIST E 1)) (CDDR (LISTIFY NARGS)))))))))
+			((> NARGS 2) (RETURN (MEVAL (CONS '$IDIFF (CONS ($ICHR2 (ARG 1) (ARG 2)) (APPLY #'APPEND (MAPCAR #'(LAMBDA (E) (LIST E 1)) (CDDR (LISTIFY NARGS)))))))))
 			(T
 				(SETQ A (CADR (ARG 1)) B (CADDR (ARG 1)) C (CADR (ARG 2)))
 				(return (do ((flag) (l (append (cdr (ARG 1)) (cdr (ARG 2)))))
@@ -254,13 +254,13 @@
 	     (setq r ($idummy))
 	     (SETQ I (CADR L1) K (CADDR L1) H (CADDDR L1) J (CADR L2))
 	     (RETURN (LIST '(MPLUS)
-			   (SDIFF (LIST '($ICHR2 SIMP)
+			   (IDIFF (LIST '($ICHR2 SIMP)
 					(LIST SMLIST I K)
 					L2)
 				  H)
 			   (LIST '(MTIMES)
 				 -1.
-				 (SDIFF (LIST '($ICHR2 SIMP)
+				 (IDIFF (LIST '($ICHR2 SIMP)
 					      (LIST SMLIST I H)
 					      (LIST SMLIST J))
 					K))
@@ -305,7 +305,7 @@
 (DEFUN COVDIFF (E) 
        (setq d ($idummy)) 
        (COND
-	((OR (ATOM E) (EQ (CAAR E) 'RAT)) (SDIFF E X))
+	((OR (ATOM E) (EQ (CAAR E) 'RAT)) (IDIFF E X))
 	((RPOBJ E)
 	 (SETQ TEMP (MAPCAR #'(LAMBDA (V) (LIST '(MTIMES)
 					       (LIST '($ICHR2 SIMP)
@@ -317,7 +317,7 @@
 	  (CONS
 	   '(MPLUS)
 	   (CONS
-	    (SDIFF E X)
+	    (IDIFF E X)
 	    (COND
 	     ((OR (CDADR E) (CDDDR E))
 	      (CONS
@@ -650,19 +650,132 @@
 	     (AND E
 ;		  (DO E E (CDR E)
 ;		      (NULL E)
-;		      (SETQ F (SDIFF F (CAR E))))
+;		      (SETQ F (IDIFF F (CAR E))))
 		  (DO ((E E (CDR E)))
 		      ((NULL E) )
-		      (SETQ F (SDIFF F (CAR E))))
+		      (SETQ F (IDIFF F (CAR E))))
 
 		  )
 	     (RETURN F)))
 
+
+(defun liediff (v e n)
+  (cond
+    ((not (symbolp v)) (merror "~M is not a symbol" v))
+    ((or (atom e) (eq (caar e) 'rat)) ; Scalar field
+                                      ; v([],[%1])*idiff(e,%1)
+     (let ((dummy (implode (nconc (exploden $idummyx) (exploden n)))))
+      (list '(mtimes)
+            (list (list v) '((mlist)) (list '(mlist) dummy))
+            ($idiff e dummy)
+      )
+     )
+    )
+    ((rpobj e)                        ; Tensor field
+;     Dummy implementation for logic tests
+;     (list '(%liediff) v e)
+;     Shall the dummy index be in ICOUNTER sequence? Probably yes.
+;     (let ((dummy (implode (nconc (exploden $idummyx) (exploden n)))))
+     (let ((dummy ($idummy)))
+      (append
+       (list '(mplus) 0
+             (list '(mtimes)          ; e([...],[...],%1)*v([],[%1])
+                   (list (list v) '((mlist)) (list '(mlist) dummy))
+                   ($idiff e dummy)
+            )
+       )
+       (maplist #'(lambda (s)         ; e([..%1..],[...])*v([],[%1],k)
+         (list '(mtimes)
+               (append (list (car e)
+                             (cons '(mlist)
+                              (append (subseq (cdadr e) 0
+                                       (- (length (cdadr e)) (length s))
+                                      )
+                                      (cons dummy (cdr s))
+                              )
+                             )
+                             (caddr e)
+                       )
+                       (cdddr e)
+               )
+               (list (list v) '((mlist)) (list '(mlist) dummy) (car s))
+         )
+        )
+        (cdadr e)
+       )
+       (maplist #'(lambda (s)         ; +e([...],[...],..%1..)*v([],[%1],k)
+         (list '(mtimes)
+               (append (list (car e)
+                             (cadr e)
+                             (caddr e)
+                       )
+                       (subseq (cdddr e) 0
+                        (- (length (cdddr e)) (length s))
+                       )
+                       (cons dummy (cdr s))
+               )
+               (list (list v) '((mlist)) (list '(mlist) dummy) (car s))
+         )
+        )
+        (cdddr e)
+       )
+       (maplist #'(lambda (s)         ; -e([...],[..%1..])*v([],[k],%1)
+         (list '(mtimes) -1
+               (append (list (car e)
+                             (cadr e)
+                             (cons '(mlist)
+                              (append (subseq (cdaddr e) 0
+                                       (- (length (cdaddr e)) (length s))
+                                      )
+                                      (cons dummy (cdr s))
+                              )
+                             )
+                       )
+                       (cdddr e)
+               )
+               (list (list v) '((mlist)) (list '(mlist) (car s)) dummy)
+         )
+        )
+        (cdaddr e)
+       )
+      )
+     )
+    )
+    ((eq (caar e) 'mtimes)            ; Leibnitz rule
+                                      ; Lv(cadr e)*(cddr e)+(cadr e)*Lv(cddr e)
+     (list '(mplus)
+            (cons '(mtimes) (cons (liediff v (cadr e) n) (cddr e)))
+            (cons '(mtimes)
+              (list (cadr e) (liediff v
+                              (cond ((cdddr e) (cons '(mtimes) (cddr e)))
+                                    (t (caddr e)))
+                              n)))
+     )
+    )
+    ((eq (caar e) 'mplus)             ; Linearity
+;     We prefer mapcar to iteration, but the commented code also works
+;     (list '(mplus) (liediff v (cadr e) n)
+;                    (liediff v (cond ((cdddr e) (cons '(mplus) (cddr e)))
+;                                     (t (caddr e)))
+;                             n)
+;     )
+    (cons '(mplus) (mapcar #'(lambda (u) (liediff v u n)) (cdr e)))
+    )
+    (t (merror "~M is not a tensorial expression liediff can handle" e))
+  )
+)
+
+(defmfun $liediff (v e) (liediff v e 1))
+
+(defmfun $rediff (x) (meval '(($ev) x $idiff)))
+(defmfun $evundiff (x) ($rediff ($undiff x)))
+
 (DEFMFUN $UNDIFF (X) 
-       (COND ((ATOM X) X)
+       (COND
+         ((ATOM X) X)
 	     ((RPOBJ X)
 	      (COND ((CDDDR X)
-		     (NCONC (LIST '(%DERIVATIVE)
+		     (NCONC (LIST '(%IDIFF)
 				  (LIST (CAR X) (CADR X) (CADDR X)))
 			    (PUTINONES (CDDDR X))))
 		    (T X)))
@@ -818,19 +931,19 @@
 			    COUNT)))
 	LOOP1(SETQ V (CADR Z))
 	     (AND (FIXP V)
-		  $COORDINATES
+		  $VECT_COORDS
 		  (> V 0.)
 		  (NOT (> V $DIM))
 		  (SETQ V
-			(COND ((ATOM $COORDINATES)
-			       (MEVAL1 (LIST (LIST $COORDINATES 'SIMP 'ARRAY)
+			(COND ((ATOM $VECT_COORDS)
+			       (MEVAL1 (LIST (LIST $VECT_COORDS 'SIMP 'ARRAY)
 					     V)))
-			      ((EQ (CAAR $COORDINATES) 'MLIST)
+			      ((EQ (CAAR $VECT_COORDS) 'MLIST)
 			       (COND ((NOT (< V
-					      (LENGTH $COORDINATES)))
+					      (LENGTH $VECT_COORDS)))
 				      (merror
 "Coordinate list too short for derivative index"))
-				     (T (NTH V $COORDINATES))))
+				     (T (NTH V $VECT_COORDS))))
 			      (T V))))
 	     (COND ((ZEROP COUNT) (RPLACD Z (CDDDR Z)) (GO LOOP2))
 		   ((ZEROP1 (SETQ EXP (SDIFF EXP V))) (RETURN 0.)))
@@ -872,16 +985,16 @@
 	     ((EQ (CAAR E) 'MTIMES)
  	      (ADDN (SDIFFTIMES (CDR E) X) T))
 	     ((EQ (CAAR E) 'MEXPT) (DIFFEXPT E X))
-	     ((RPOBJ E) (DIFFRPOBJ E X))                        ;New line added
-	     ((AND (BOUNDP '$IMETRIC) (EQ (CAAR E) '%DETERMINANT);New line added
-		   (EQ (CADR E) $IMETRIC))
-	      ((LAMBDA (DUMMY)
-		       (setq dummy ($idummy))
-		       (COND ((EQ DUMMY X) (setq dummy ($idummy))))
-		       (LIST '(MTIMES SIMP) 2. E
-			     (LIST '($ICHR2 SIMP) (CONS SMLIST (LIST DUMMY X))
-				   (CONS SMLIST (NCONS DUMMY)))))
-	       NIL))
+;;	     ((RPOBJ E) (DIFFRPOBJ E X))                        ;New line added
+;;	     ((AND (BOUNDP '$IMETRIC) (EQ (CAAR E) '%DETERMINANT);New line added
+;;		   (EQ (CADR E) $IMETRIC))
+;;	      ((LAMBDA (DUMMY)
+;;		       (setq dummy ($idummy))
+;;		       (COND ((EQ DUMMY X) (setq dummy ($idummy))))
+;;		       (LIST '(MTIMES SIMP) 2. E
+;;			     (LIST '($ICHR2 SIMP) (CONS SMLIST (LIST DUMMY X))
+;;				   (CONS SMLIST (NCONS DUMMY)))))
+;;	       NIL))
 	     ((NOT (DEPENDS E X))
 	      (COND ((FIXP X) (LIST '(%DERIVATIVE) E X))
 		    ((ATOM X) 0.)
@@ -907,6 +1020,202 @@
 		    (T (DIFF%DERIV (LIST E X 1.)))))
 	     ((MEMQ (CAAR E) '(%SUM %PRODUCT)) (DIFFSUMPROD E X))
 	     (T (SDIFFGRAD E X)))) 
+
+; VTT: several of these functions have been copied verbatim from comm.lisp and
+; comm2.lisp, in order to implement indicial differentiation as distinct from
+; differentiation with respect to an external variable.
+
+(defun idiffmap (e x) (mapcar #'(lambda (term) (idiff term x)) e))
+
+(defun idifftimes (l x)
+  (prog (term left out)
+   loop (setq term (car l) l (cdr l))
+   (setq out (cons (muln (cons (idiff term x) (append left l)) t) out))
+   (if (null l) (return out))
+   (setq left (cons term left))
+   (go loop)))
+
+(defun idiffexpt (e x)
+  (if (mnump (caddr e))
+      (mul3 (caddr e) (power (cadr e) (addk (caddr e) -1)) (idiff (cadr e) x))
+      (mul2 e (add2 (mul3 (power (cadr e) -1) (caddr e) (idiff (cadr e) x))
+            (mul2 (simplifya (list '(%log) (cadr e)) t)
+              (idiff (caddr e) x))))))
+
+(defmfun idiffint (e x)
+  (let (a)
+    (cond ((null (cdddr e))
+       (cond ((alike1 x (caddr e)) (cadr e))
+         ((and (not (atom (caddr e))) (atom x) (not (free (caddr e) x)))
+          (mul2 (cadr e) (idiff (caddr e) x)))
+         ((or ($constantp (setq a (idiff (cadr e) x)))
+              (and (atom (caddr e)) (free a (caddr e))))
+          (mul2 a (caddr e)))
+         (t (simplifya (list '(%integrate) a (caddr e)) t))))
+      ((alike1 x (caddr e)) (addn (idiffint1 (cdr e) x x) t))
+      (t (addn (cons (if (equal (setq a (idiff (cadr e) x)) 0)
+                 0
+                 (simplifya (list '(%integrate) a (caddr e)
+                          (cadddr e) (car (cddddr e)))
+                    t))
+             (idiffint1 (cdr e) x (caddr e)))
+           t)))))
+
+(defun idiffint1 (e x y)
+  (let ((u (idiff (cadddr e) x)) (v (idiff (caddr e) x)))
+    (list (if (pzerop u) 0 (mul2 u (maxima-substitute (cadddr e) y (car e))))
+      (if (pzerop v) 0 (mul3 v (maxima-substitute (caddr e) y (car e)) -1)))))
+
+(defun idiff%deriv (e) (let (derivflag) (simplifya (cons '(%idiff) e) t)))
+
+(defun ideriv (e)
+  (prog (exp z count)
+     (cond ((null e) (wna-err '$idiff))
+       ((null (cdr e)) (return (itotaldiff (car e))))
+       ((null (cddr e)) (nconc e '(1))))
+     (setq exp (car e) z (setq e (copy-top-level e)))
+     loop (if (or (null derivlist) (zl-member (cadr z) derivlist)) (go doit))
+                    ; DERIVLIST is set by $EV
+     (setq z (cdr z))
+     loop2(cond ((cdr z) (go loop))
+        ((null (cdr e)) (return exp))
+        (t (go noun)))
+     doit (cond ((nonvarcheck (cadr z) '$idiff))
+        ((null (cddr z)) (wna-err '$idiff))
+        ((not (eq (ml-typep (caddr z)) 'fixnum)) (go noun))
+        ((minusp (setq count (caddr z)))
+         (merror "Improper count to IDIFF:~%~M" count)))
+     loop1(cond ((zerop count) (rplacd z (cdddr z)) (go loop2))
+        ((equal (setq exp (idiff exp (cadr z))) 0) (return 0)))
+     (setq count (f1- count))
+     (go loop1)
+     noun (return (idiff%deriv (cons exp (cdr e))))))
+
+
+(defmfun idiffncexpt (e x)
+  ((lambda (base* pow)
+     (cond ((and (mnump pow) (or (not (eq (ml-typep pow) 'fixnum)) (< pow 0))) ; POW cannot be 0
+        (idiff%deriv (list e x 1)))
+       ((and (atom base*) (eq base* x) (free pow base*))
+        (mul2* pow (list '(mncexpt) base* (add2 pow -1))))
+       ((ml-typep pow 'fixnum)
+        ((lambda (deriv ans)
+           (do ((i 0 (f1+ i))) ((= i pow))
+         (setq ans (cons (list '(mnctimes) (list '(mncexpt) base* i)
+                       (list '(mnctimes) deriv
+                         (list '(mncexpt) base* (f- pow 1 i))))
+                 ans)))
+           (addn ans nil))
+         (idiff base* x) nil))
+       ((and (not (depends pow x)) (or (atom pow) (and (atom base*) (free pow base*))))
+        ((lambda (deriv index)
+           (simplifya
+        (list '(%sum)
+              (list '(mnctimes) (list '(mncexpt) base* index)
+                (list '(mnctimes) deriv
+                  (list '(mncexpt) base*
+                    (list '(mplus) pow -1 (list '(mtimes) -1 index)))))
+              index 0 (list '(mplus) pow -1)) nil))
+         (idiff base* x) (gensumindex)))
+       (t (idiff%deriv (list e x 1)))))
+   (cadr e) (caddr e)))
+
+(defmfun idiffsumprod (e x)
+  (cond ((or (not (atom x)) (not (free (cadddr e) x)) (not (free (car (cddddr e)) x)))
+     (idiff%deriv (list e x 1)))
+    ((eq (caddr e) x) 0)
+    (t (let ((u (idiff (cadr e) x)))
+         (setq u (simplifya (list '(%sum)
+                      (if (eq (caar e) '%sum) u (div u (cadr e)))
+                      (caddr e) (cadddr e) (car (cddddr e)))
+                t))
+         (if (eq (caar e) '%sum) u (mul2 e u))))))
+
+(defun idiffgrad (e x)
+  (let ((fun (caar e)) grad args)
+    (cond ((and (eq fun 'mqapply) (oldget (caaadr e) 'grad))
+       (idiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e)))
+              x))
+      ((or (eq fun 'mqapply) (null (setq grad (oldget fun 'grad))))
+       (if (not (depends e x)) 0 (idiff%deriv (list e x 1))))
+      ((not (= (length (cdr e)) (length (car grad))))
+       (merror "Wrong number of arguments for ~:M" fun))
+      (t (setq args (idiffmap (cdr e) x))
+         (addn (mapcar
+            #'mul2
+            (cdr (substitutel
+              (cdr e) (car grad)
+              (do ((l1 (cdr grad) (cdr l1))
+                   (args args (cdr args)) (l2))
+                  ((null l1) (cons '(mlist) (nreverse l2)))
+                (setq l2 (cons (cond ((equal (car args) 0) 0)
+                         (t (car l1)))
+                       l2)))))
+            args)
+           t)))))
+
+(defmfun $idiff n (let (derivlist) (ideriv (listify n))))
+
+(DEFMFUN IDIFF (E X)
+  (COND
+         (($constantp E) 0.)
+	     ((ALIKE1 E X) 1.)
+	     ((OR (ATOM E) (MEMQ 'ARRAY (CDAR E)))
+;;	      (ICHAINRULE E X))
+;;        (idiff%deriv (list e x 1)))
+          0)
+	     ((MGET (CAAR E) '$CONSTANT) 0.)                    ;New line added
+	     ((EQ (CAAR E) 'MRAT) (RATDX E X))
+	     ((EQ (CAAR E) 'MPLUS)
+	      (SIMPLUS (CONS '(MPLUS) (IDIFFMAP (CDR E) X))
+		       1.
+		       T))
+	     ((EQ (CAAR E) 'MEQUAL)
+	      (LIST (CAR E) ($IDIFF (CADR E) X) ($IDIFF (CADDR E) X)))
+	     ((EQ (CAAR E) '$MATRIX)
+	      (CONS (CAR E)
+		    (MAPCAR 
+		     (FUNCTION (LAMBDA (Y) 
+				       (CONS (CAR Y)
+					     (IDIFFMAP (CDR Y) X))))
+		     (CDR E))))
+	     ((EQ (CAAR E) 'MTIMES)
+ 	      (ADDN (IDIFFTIMES (CDR E) X) T))
+	     ((EQ (CAAR E) 'MEXPT) (IDIFFEXPT E X))
+	((RPOBJ E) (DIFFRPOBJ E X))
+    ((AND (BOUNDP '$IMETRIC) (EQ (CAAR E) '%DETERMINANT)
+      (EQ (CADR E) $IMETRIC))
+      ((LAMBDA (DUMMY)
+       (setq dummy ($idummy))
+       (COND ((EQ DUMMY X) (setq dummy ($idummy))))
+       (LIST '(MTIMES SIMP) 2. E
+       (LIST '($ICHR2 SIMP) (CONS SMLIST (LIST DUMMY X))
+       (CONS SMLIST (NCONS DUMMY)))))
+       NIL))
+	     ((EQ (CAAR E) 'MNCTIMES)
+	      (SIMPLUS (LIST '(MPLUS)
+			     (LIST '(MNCTIMES)
+				   ($IDIFF (CADR E) X)
+				   (CADDR E))
+			     (LIST '(MNCTIMES)
+				   (CADR E)
+				   ($IDIFF (CADDR E) X)))
+		       1.
+		       NIL))
+	     ((EQ (CAAR E) 'MNCEXPT) (IDIFFNCEXPT E X))
+	     ((EQ (CAAR E) '%INTEGRATE) (IDIFFINT E X))
+	     ((EQ (CAAR E) '%DERIVATIVE)
+	      (COND ((OR (ATOM (CADR E))
+			 (MEMQ 'ARRAY (CDAADR E)))
+;;		     (ICHAINRULE E X))
+;;           (idiff%deriv (list e x 1)))
+             0)
+		    ((FREEL (CDR E) X) 0.)
+		    (T (DIFF%DERIV (LIST E X 1.)))))
+	     ((MEMQ (CAAR E) '(%SUM %PRODUCT)) (IDIFFSUMPROD E X))
+	     (T (IDIFFGRAD E X))
+  )
+)
 
 (defun DIFFRPOBJ (e x)                         ;Derivative of an indexed object
        (cond ((and (memq (caar e) $COORD) (null (cdadr e))
@@ -1037,7 +1346,8 @@
         ((MEMQ (CAAR E) '($SUM %SUM))
          (SETQ TOP (LIST (CADDR E)) BOTTOM (LIST (CADDR E)))
         )
-        ((MEMQ (CAAR E) '(%DERIVATIVE $DIFF))
+;;        ((MEMQ (CAAR E) '(%DERIVATIVE $DIFF))
+        ((MEMQ (CAAR E) '(%IDIFF $IDIFF))
          (DO ((I 1 (1+ I))) ((> I (COND ((CADDDR E) (CADDDR E)) (T 1))))
            (SETQ BOTTOM (CONS (CADDR E) BOTTOM)))
         )
@@ -1160,7 +1470,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 (DEFUN itensor-CLEANUP (A N)((LAMBDA (DUMX)(CLEANUP1 A)) NIL))        ;Sets DUMX to NIL
  
 (DEFUN CLEANUP1 (A)
-  (AND A (SETQ DUMX (IMPLODE (NCONC (EXPLODEN $DUMMYX)    ;Keep proper order of
+  (AND A (SETQ DUMX (IMPLODE (NCONC (EXPLODEN $IDUMMYX)    ;Keep proper order of
 				    (EXPLODEN N))) N (1+ N))          ;indices
 	(COND ((EQ DUMX (CAR A)) (CLEANUP1 (CDR A)))
 	      (T (CONS (CONS (CAR A) DUMX) (CLEANUP1 (CDR A)))))))
@@ -1289,14 +1599,20 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	      ((SETQ PROP (ZL-ASSOC INDEX (ZL-GET TENSOR 'TEXPRS)))
 ;;;VTT	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CADR PROP)))
 ;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
-	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (SETQ $ICOUNTER (1- (COND ((BOUNDP 'N) N) (T 1))))))))
+;; VTT: What is this business with N instead of $ICOUNTER anyway?
+;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (COND ((BOUNDP 'N) (SETQ $ICOUNTER (1- N))) )))))
+;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (COND ((BOUNDP 'N) (SETQ $ICOUNTER N)) )))))
+;;;        (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $COUNTER)) (SETQ $COUNTER (1- (COND ((BOUNDP 'N) N) (T 1))))))))
+	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
+
+
 	      ((SETQ PROP (ZL-GET TENSOR 'TSUBR))
 ;;	       (APPLY PROP (LIST (CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))(CONS SMLIST L3))))
 ;;	      ((NOT (EQ L3 NIL)) (APPLY '$DIFF (SELECT TENSOR (INCONSTANT L1) (INCONSTANT L2) (CDR L3)) (LIST (CAR L3))))
 ;;	      (T (APPEND (LIST (LIST TENSOR 'SIMP)(CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))) L3))))
 ;;	NIL (APPEND (INCONSTANT L1) (INCONSTANT L2) L3)(LIST (LENGTH (INCONSTANT L1))(LENGTH (INCONSTANT L2))(LENGTH L3))))
 	       (APPLY PROP (LIST (CONS SMLIST L1)(CONS SMLIST L2)(CONS SMLIST L3))))
-	      ((NOT (EQ L3 NIL)) (APPLY '$DIFF (SELECT TENSOR L1 L2 (CDR L3)) (LIST (CAR L3))))
+	      ((NOT (EQ L3 NIL)) (APPLY '$IDIFF (SELECT TENSOR L1 L2 (CDR L3)) (LIST (CAR L3))))
 	      (T (APPEND (LIST (LIST TENSOR 'SIMP)(CONS SMLIST L1)(CONS SMLIST L2)) L3))))
 	NIL (APPEND L1 L2 L3)(LIST (LENGTH L1)(LENGTH L2)(LENGTH L3))))
 

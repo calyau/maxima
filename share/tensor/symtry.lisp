@@ -4,7 +4,7 @@
 
 ;	** (c) Copyright 1979 Massachusetts Institute of Technology **
 
-(declare-top (special symtypes $symmetries $allsym csign smlist $dummyx))
+(declare-top (special symtypes $symmetries $allsym csign smlist $idummyx))
 
 (setq symtypes '($SYM $ANTI $CYC) $symmetries '((MLIST SIMP)))
 
@@ -124,7 +124,7 @@
 (defun CANTEN (e nfprpobjs)                                   ;CANonical TENsor
        (prog (cov contr deriv tensor)
 	     ((lambda (dummy) (and nfprpobjs dummy (setq e (rename1 e dummy))))
-	      (NONUMBER (cdaddr ($indices2 e)))) ;NFPRPOBJS is Not From Product
+	      (NONUMBER (cdaddr ($indices e)))) ;NFPRPOBJS is Not From Product
 	     (setq cov (copy (cdadr e))          ;of RP (indexed) OBJects
 		   contr (copy (cdaddr e))
 		   deriv (copy (cdddr e))
@@ -165,7 +165,7 @@
 (defun CLEANUP0 (a)
        (do ((b a (cdr b)) (n 1 (1+ n)) (l) (dumx))
 	   ((null b) l)
-	   (setq dumx (concat $dummyx n))
+	   (setq dumx (concat $idummyx n))
 	   (cond ((not (eq dumx (car b)))
 		  (setq l (cons (cons (car b) dumx) l))))))
 
@@ -241,13 +241,13 @@
 				      ((lambda (q)
 					       (rename1 q
 						       (NONUMBER (cdaddr
-						        ($indices2
+						        ($indices
 						         (cons '(MTIMES) q))))))
 				       (mapcar 'cdr
 					       (sortcar
 						(progn
 						 (setq free-indices
-						       (NONUMBER (cdadr ($indices2 e))))
+						       (NONUMBER (cdadr ($indices e))))
 						 (mapcar 'describe-tensor
 							 indexed))
 						'tensorpred))))))))))

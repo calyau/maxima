@@ -401,8 +401,8 @@ RICCI(dis) computes the covariant (symmetric) components  RIC[i,j] of
                                       4 A  D X
 
 
-MOTION(dis) computes  the covariant  form of  the geodesic  equations of
-    motion for a given metric.  They are stored in the array  EM[i].  If
+CGEODESIC(dis) computes  the covariant  form of  the geodesic  equations of
+    motion for a given metric.  They are stored in the array  GEOD[i].  If
     the argument dis is TRUE then these equations are displayed.
 
 
@@ -446,7 +446,7 @@ SCURVATURE()  returns the  Scalar Curvature,  TRACER, the  trace  of the
 
 
 WEYL(dis) computes the covariant Weyl conformal tensor. If  the argument
-    dis is TRUE, the  non-zero components W[i,j,k,l] will  be displayed.
+    dis is TRUE, the  non-zero components WEYL[i,j,k,l] will  be displayed.
     Otherwise, these  components will  be computed  and stored.   If the
     switch RATWEYL[TRUE]  is set  to TRUE, then  the components  will be
     rationally simplified. If  RATFAC is TRUE  then the results  will be
@@ -844,12 +844,12 @@ DIFF(exp,v1,n1,v2,n2,...) is the usual  MAXIMA  differentiation function
 
         2) the vi may be integers from 1 up to the value of the variable
     DIM[4].  This will cause the differentiation to be carried  out with
-    respect to the vith member  of the list COORDINATES which  should be
+    respect to the vith member  of the list VECT_COORDS which  should be
     set to a list of the names of the coordinates, e.g., [x,y,z,t]  . If
-    COORDINATES  is  bound to  an  atomic variable,  then  that variable
+    VECT_COORDS  is  bound to  an  atomic variable,  then  that variable
     subscripted by vi will be used for the variable  of differentiation.
     This permits an array of coordinate names or subscripted  names like
-    X[1], X[2],...  to be used.  If COORDINATES has not been  assigned a
+    X[1], X[2],...  to be used.  If VECT_COORDS has not been  assigned a
     value, then the variables will be treated as in 1) above.
 
 
@@ -1410,7 +1410,7 @@ IDUMMY() increments ICOUNTER and returns as its value an index of the form
     with indices already in use (see the example under INDICES).
 
 
-DUMMYX is the prefix for dummy indices (see the example under INDICES).
+IDUMMYX is the prefix for dummy indices (see the example under INDICES).
 
 
 INDICES(exp) returns a list of two elements.  The first is a list of the
@@ -1443,10 +1443,10 @@ INDICES(exp) returns a list of two elements.  The first is a list of the
      (- ICHR2      - ICHR2      ICHR2    + ICHR2      + ICHR2      ICHR2   )
             I K,J       %12 J     I K       I J,K       %12 K     I J
 
-(C8) DUMMYX;
+(C8) IDUMMYX;
 (D8)                                  %
 
-(C9) DUMMYX:&$
+(C9) IDUMMYX:&$
 30       1.11 Indicial Tensor Manipulation- Indexing Functions   TENSORS
 
 
@@ -1598,7 +1598,7 @@ DISPCON (tensor1,tensor2,...) 27*      REMCOORD (tensor1,tensor2,...)
 DISPSYM (tensor, m, n) 27*                28*
 DSCALAR (function) 9*                  REMSYM (tensor,m,n) 28*
 IDUMMY () 29*                          RENAME (exp, <count>) 18*
-DUMMYX 29*                             URICCI (dis) 7*
+IDUMMYX 29*                            URICCI (dis) 7*
                                        RIEMANN (dis) 7*
 EINSTEIN (dis) 5*                      RINVARIANT () 10*
 ENTERTENSOR (<name>) 17*

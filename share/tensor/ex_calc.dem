@@ -2,57 +2,55 @@
 ("the operations are allowed only on the covariant tensors")$
 load("ex_calc.mac");
 dummyx:z;
-("The exterior product is denoted by &. Take it on two 1-forms
-  a([i])&b([j])")$
+("The exterior product is denoted by ~. Take it on two 1-forms
+  a([i])~b([j])")$
 
-ishow(a([i])&b([j]))$
+ishow(a([i])~b([j]))$
 
 ("The exterior product of the three  1-forms
-  a([i])&b([j])&c([k])")$
+  a([i])~b([j])~c([k])")$
 
-ishow(a([i])&b([j])&c([k]))$
+ishow(a([i])~b([j])~c([k]))$
 
 ("Take a sum of two 3 forms")$
-ishow( factor(a([i])&(bk*b([j]))&c([k]) +(ak*a([i]))&c([j])&b([k])))$
+ishow( factor(a([i])~(bk*b([j]))~c([k]) +(ak*a([i]))~c([j])~b([k])))$
 
-("declare 2-form (don't forget to put allsym:false) and take & with 1-form")$
+("declare 2-form (don't forget to put allsym:false) and take ~ with 1-form")$
 allsym:false;
 decsym(p,2,0,[anti(all)],[]);
 
-ishow(q([i])&p([j,k]))$
+ishow(q([i])~p([j,k]))$
 ("the exterior (anticommutative) derivative
   is denoted by extdiff(x,ind), where ind denotes the component")$
 
-("So actually d_k & form means in our notation extdiff(form, k), e.g.")$
+("So actually d_k ~ form means in our notation extdiff(form, k), e.g.")$
 
 ishow(extdiff(p([j,k]),i))$
-ishow(extdiff((a([j])&b([k])),i))$
-ishow(extdiff((a([j])&b([k])),k))$
+ishow(extdiff((a([j])~b([k])),i))$
+ishow(extdiff((a([j])~b([k])),k))$
 
-("the interior product is denoted by |_, say form |_ vector, where
+("the interior product is denoted by |, say form | vector, where
   form is indexed tensor and vector is vector's name")$
-ishow(a([i])|_a)$
+ishow(a([i])|a)$
 
-ishow((a([i])&b([j]))|_a)$
+ishow((a([i])~b([j]))|a)$
 ("to avoid the mistake please use the literally sorted indices
-  when you apply the |_ ")$
+  when you apply the | ")$
 
-ishow(factor((a([i2])&b([i1]))|_a+ (a([i1])&b([i2]))|_a))$
+ishow(factor((a([i2])~b([i1]))|a+ (a([i1])~b([i2]))|a))$
 
-("the Lie derivative is denoted by liediff(x,[vector,ind]), (say liediff(form,[vector,ind]))
-  where  vector is vector name and ind is the index of the component")$
-("it is currently not applicable to functions.
-  Also you have to use the literally sorted indices")$
+("the Lie derivative is denoted by liediff(vector,x)")$
+("it is currently not applicable to functions.")$
 
-ishow(liediff(a([i1]),[v,i2]))$
+ishow(liediff(v,a([i1])))$
 ("tests the consequence of the
   Cartan identity for 1-forms.  The Lie derivative
   has to commute with the exterior one ")$
 
-ishow(liediff(extdiff(a([i1]),i2),[v,i3])-extdiff(liediff(a([i1]),[v,i2]),i3))$
+ishow(canform(liediff(v,extdiff(a([i1]),i2))-extdiff(liediff(v,a([i1])),i2)))$
 
-("where the liediff(extdiff(a([i1]),i2),[v,i3]) is")$
-ishow(liediff(extdiff(a([i1]),i2),[v,i3]))$
+("where the liediff(v,extdiff(a([i1]),i2)) is")$
+ishow(liediff(v,extdiff(a([i1]),i2)))$
 
 ("the verifications of this consequence of the Cartan identity
   for the higher order forms are in car_iden.dem")$

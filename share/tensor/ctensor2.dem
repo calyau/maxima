@@ -17,7 +17,7 @@ ct_coords:[x,y,z,t]$
 lg:
 matrix([1/(1-2*m/x),0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,2*m/x-1]);
 /* computes metric inverse and determines diagonality */
-setmetric()$
+cmetric()$
 /* computes and displays mixed Christoffel symbols */
 christof(mcs)$
 /* computes and ratsimps Ricci tensor */
@@ -25,7 +25,7 @@ uricci(true)$
 /* computes scalar curvature */
 scurvature();
 /* computes Riemann tensor */
-riemann(true)$
+lriemann(true)$
 /* computes contravariant Riemann tensor */
 uriemann(false)$
 /* computes the Kretchmann invariant Rijkl^2 */

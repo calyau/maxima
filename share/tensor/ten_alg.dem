@@ -28,8 +28,8 @@ d_t* v(l1,[])+v([],[j1])*v(l1,[],j1)+1/rho([])*diff(p([],[]),l1[1])+diff(phi([],
 g([],[l2[1],j1])*(diff(p([],[]),j1)/rho([])+diff(phi([],[]),j1)) )$
 ishow(Eu([i],[]))$
 ishow(Eu([],[i]))$
-("control the dummy indices with dummyx: something")$
-dummyx:n$
+("control the dummy indices with idummyx: something")$
+idummyx:n$
 ishow(Eu([i],[]))$
 
 
@@ -107,17 +107,17 @@ ishow(expand(exp2))$
 ishow(canform(contract(%)))$
 
 ("the exterior algebra for the antisymmetric covariant objects")$
-("the exterior product is defined through the infix operator &
-  the exterior derivative through extdiff(), inner product with |_ vec,
-  and the Lie derivative through liediff(x, [vec, ind])")$
+("the exterior product is defined through the infix operator ~
+  the exterior derivative through extdiff(), inner product with | vec,
+  and the Lie derivative through liediff(vec,x)")$
 ("load the package in the system")$
 ("now look at the exterior product of two 1-forms
   and 1-form with 2-form")$
 allsym:false$
 decsym(p,2,0,[anti(all)],[])$
 kill(a)$
-ishow(a([i])&b([j]))$
-ishow(a([i])&p([j,k])+a([i])&b([j])&a([k]))$
+ishow(a([i])~b([j]))$
+ishow(a([i])~p([j,k])+a([i])~b([j])~a([k]))$
 
 ("dualization")$
 ("the itensor's old-style Levi-Civita symbol operates only on integers")$
@@ -174,10 +174,10 @@ ishow(rename(%))$
 ("exterior derivatives")$
 (allsym:false,decsym(p,2,0,[anti(all)],[]),ishow(extdiff(p([i,j]),k)))$
 ("the Lie derivative of a 1-form")$
-ishow(liediff(a([i]),[v,k]))$
+ishow(liediff(v,a([i])))$
 ("the Lie derivative has to commute with the exterior one.")$
-ishow(extdiff(liediff(a([i]),[v,j]),k)-liediff(extdiff(a([i]),j),[v,k]))$
-ishow(extdiff(liediff(p([i1,i2]),[v,i3]),i4)-liediff(extdiff(p([i1,i2]),i3),[v,i4]))$
+ishow(canform(extdiff(liediff(v,a([i])),j)-liediff(v,extdiff(a([i]),j))))$
+ishow(canform(extdiff(liediff(v,p([i1,i2])),i3)-liediff(v,extdiff(p([i1,i2]),i3))))$
 
 ("more examples about the Cartan identity are in car_iden.dem")$
 
@@ -244,7 +244,7 @@ nterms(exp);
 ishow(canform(exp))$
 
 ("transition to the coordinates")$
-dummyx:di$
+idummyx:di$
 remcomps(g);
 imetric:g$
 dim:3$
@@ -269,14 +269,14 @@ ev(heat);
 kill(ct_coords)$
 ("the conservation of the helicity in hydrodynamics")$
 (if allsym=true then allsym:false)$
-dummyx:j$
+idummyx:j$
 ("the covariant formulation of the Euler equation is")$
 euler: d_t*v([i1])+
-'liediff(v([i0]),[v,i1])=-extdiff(p([]),i1)/rho([])+extdiff((v([i0])|_v/2-phi([])),i1)$
+'liediff(v,v([i0]))=-extdiff(p([]),i1)/rho([])+extdiff((v([i0])|v/2-phi([])),i1)$
 ishow(euler)$
 ("take the exterior derivative of both sides")$
-euler1:d_t*ct_coords([i1,i2])+'liediff(ct_coords([i0,i1]),[v,i2])=
-extdiff(-extdiff(p([]),i1)/rho([])+extdiff(v([i0])|_v/2-phi([]),i1),i2)$
+euler1:d_t*ct_coords([i1,i2])+'liediff(v,ct_coords([i0,i1]))=
+extdiff(-extdiff(p([]),i1)/rho([])+extdiff(v([i0])|v/2-phi([]),i1),i2)$
 ishow(euler1)$
 ishow(ct_coords([i1,i2])=extdiff(v([i1]),i2))$
 ("declare the function's dependencies")$
@@ -294,7 +294,7 @@ euler2:factor(expand(apply1(euler1,p_sr)))$
 ishow(euler2)$
 ("so the rhs will vanish after forming the exterior product with
   the differential of the entropy")$
-rhs(euler1)&extdiff(s([]),i3)$
+rhs(euler1)~extdiff(s([]),i3)$
 ishow(factor(expand(apply1(%,p_sr))))$
 
 ("the magnetic field lines are embedded in the moving plasma")$
@@ -302,17 +302,17 @@ allsym:false$
 ("introduce the 2-form describing the magnetic field")$
 decsym(b,2,0,[anti(all)],[])$
 ("due to the infinite conductivity the electric field is expressed through")$
-e_field:b([i1,i2])|_v$
+e_field:b([i1,i2])|v$
 equat: d_t*b([i2,i3])=-extdiff(e_field,i3)$
 ishow(equat)$
 
 ("express B through the vector potential")$
 ("i.e., re-compute the electric field")$
-e_field1:extdiff(a([i1]),i2)|_v$
+e_field1:extdiff(a([i1]),i2)|v$
 ("substitute it in Equat")$
 equat1: d_t*b([i2,i3])=-extdiff(e_field1,i3)$
 ("compute the Lie derivative of B")$
-lie_derb: 'liediff(b([i1,i2]),[v,i3])=extdiff(extdiff(a([i1]),i2),L[v,i3])$
+lie_derb: 'liediff(v,b([i1,i2]))=liediff(v,extdiff(a([i1]),i2))$
 ("summing up the lhs and rhs parts")$
 emded:lhs(equat1)+lhs(lie_derb)=canform(rhs(equat1)+rhs(lie_derb))$
 ishow(emded)$

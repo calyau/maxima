@@ -1,0 +1,32 @@
+("Verifying that the Reissner-Nordstrom metric is that of a point charge.")$
+("First, we load ctensor...")$
+load(ctensor);
+("We also need NCHRPL that contains the MATTRACE function:")$
+load(nchrpl);
+("Now we set up the metric with (+,-,-,-) signature:")$
+dim:4;
+ct_coords:[t,r,o,f];
+lg:matrix([(r^2+q^2-2*m*r)/r^2,0,0,0],[0,r^2/(2*m*r-r^2-q^2),0,0],[0,0,-r^2,0],[0,0,0,-r^2*sin(o)^2]);
+ug:ratsimp(invert(lg));
+("Next, we compute the Christoffel-symbols:")$
+christof(false);
+("Before computing the Ricci and Einstein tensors, we create them as matrices;
+this will make life easier later on:")$
+ric:lein:ident(4)$
+ricci(false);
+leinstein(false);
+
+("Part II: we set up the electromagnetic 4-potential:")$
+a:[q/r,0,0,0];
+("From which we compute the covariant electromagnetic field tensor:")$
+fl:ident(4)$
+for i thru dim do for j thru dim do fl[i,j]:diff(a[i],ct_coords[j])-diff(a[j],ct_coords[i]);
+("With the help of the metric, we can obtain the mixed and
+contravariant electromagnetic field tensors:")$
+fm:ug.fl;
+fu:fm.ug;
+("And now we can compute the stress-energy tensor (times 8*%PI).")$
+t:ratsimp(2*(fl.fm-lg*mattrace(fl.fu)/4));
+("This and the covariant Einstein tensor should be identical:")$
+ratsimp(lein-t);
+

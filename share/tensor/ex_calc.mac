@@ -12,63 +12,138 @@
  *
  * Commentary:
  * Its purpose is to extend the maxima's itensor ability to manage the
- exterior forms. We introduce the "&" operator for the exterior product,
- and "|_" for the inner product of a form with a vector.
+ * exterior forms. We introduce the "~" operator for the exterior product,
+ * and "|" for the inner product of a form with a vector.
 */
 load("tensor/itensor")$
-infix("&");
-declare("&",additive); 
 
-"&"(any,body):=block(local(i),
-  l1:first(indices(any)),
-  l2:first(indices(body)),
-  if l1=[] then return(any*body)
-  else if l2=[] then return(any*body)
-  else ( l11 : makelist(idummy(), i,1, length(l1)),
-    l22 : makelist(idummy(), i,1, length(l2)),
-    l1s:map("=",l1,l11), l2s:map("=",l2,l22),
-    lk1:append(l1,l2),lk2:append(l11,l22),
-    any:sublis(l1s,any), body:sublis(l2s,body),
-    canform(contract(
-        expand(kdelta(lk1,lk2)*any*body/(length(lk1)-1)!)))));
+infix("~");
+declare("~",additive);
+declare("~",antisymmetric);
 
-extdiff(forma,ind):=block(l1:first(indices(forma)),
-  if l1=[] then return(diff(forma,ind))
-  else ( l11 : makelist(idummy(), i,1, length(l1)),
+"~"(any,body):=block
+(
+  [i,l1,l2,l11,l22,l1s,lk1],
+  if listp(cartan_basis) and not member(body,cartan_basis) and
+                             member(any,cartan_basis) then -body~any
+  else if not atom(any) and op(any)="+" then
+    apply(op(any),[part(any,1)~body,rest(any)~body])
+  else if not atom(body) and op(body)="+" then
+    apply(op(body),[any~part(body,1),any~rest(body)])
+  else if not atom(any) and op(any)="-" then -((-any)~body)
+  else if not atom(body) and op(body)="-" then -(any~(-body))
+  else if not atom(any) and op(any)="*" then
+  (
+    if numberp(first(any)) then first(any)*(second(any)~body)
+    else (first(any)~body)*second(any)
+  )
+  else if not atom(body) and op(body)="*" then
+  (
+    if numberp(first(body)) then first(body)*(any~second(body))
+    else (any~first(body))*second(body)
+  )
+  else if atom(any) and atom(body) then
+  (
+    if any=body then 0
+    else nounify("~")(any,body)
+  )
+  else if not atom(any) and nounify(op(any))=nounify("~") and
+          not atom(body) and nounify(op(body))=nounify("~") and
+          (?intersect)(args(any),args(body))#[] then 0
+  else if not atom(any) and nounify(op(any))=nounify("~") then
+  (
+     if member(body, any) then 0
+     else nounify("~")(any,body)
+  )
+  else if not atom(body) and nounify(op(body))=nounify("~") then
+  (
+     if member(any, body) then 0
+     else nounify("~")(any,body)
+  )
+  else if atom(any) and nounify(op(body))=nounify("~") and
+          member(any,body) then 0
+  else if atom(body) and nounify(op(any))=nounify("~") and
+          member(body,any) then 0
+  else
+  (
+    l1:first(indices(any)),
+    l2:first(indices(body)),
+    if l1=[] then return(any*body)
+    else if l2=[] then return(any*body)
+    else
+    (
+      l11 : makelist(idummy(), i,1, length(l1)),
+      l22 : makelist(idummy(), i,1, length(l2)),
+      l1s:map("=",l1,l11), l2s:map("=",l2,l22),
+      lk1:append(l1,l2),lk2:append(l11,l22),
+      any:sublis(l1s,any), body:sublis(l2s,body),
+      canform(contract(expand(kdelta(lk1,lk2)*any*body)))/(length(lk1)-1)!
+    )
+  )
+);
+
+extdiff(forma,[optind]):=block
+(
+  [l1:first(indices(forma)),
+   ind:if length(optind)>0 then optind[1] else idummy()],
+  if l1=[] then return(idiff(forma,ind))
+  else
+  (
+    l11:makelist(idummy(),i,1,length(l1)),
     l1s:map("=",l1,l11),
     lk1:append([ind],l1),
-    indd:idummy(),lk2:append(l11,[indd]),
+    indd:idummy(),
+    lk2:append(l11,[indd]),
     forma:sublis(l1s,forma),
-    contract(canform(ratexpand(
-          kdelta(lk1,lk2)*diff(forma,indd)/(length(lk1)-1)!)))));
+    contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(forma,indd))))/
+                               (length(lk1)-1)!
+  )
+);
 
-/* VTT: To ensure consistent application of the "first" index in |_ */
-permutator(l):=block([result:1,temp],
+/* VTT: To ensure consistent application of the "first" index in | */
+permutator(l):=block
+(
+    [result:1,temp],
 	for i thru length(l)-1 do if orderlessp(l[i+1],l[i]) then
 	(temp:l[i+1],l[i+1]:l[i],l[i]:temp,i:0,result:-result),
 	[result,l]
 );
 
-infix("|_");
-declare("|_",additive);
+infix("|");
+declare("|",additive);
 /* VTT: ADDITIVE doesn't always do the trick so we break up sums manually */
-"|_"(forma,vec):=block(local(ind,perm),
+"|"(forma,vec):=block
+(
+  [ind,perm],
   if not(atom(forma)) and (op(forma)="+" or op(forma)="=") then
-    apply(op(forma),[part(forma,1)|_vec,rest(forma)|_vec])
-  else (perm:permutator(first(indices(forma))),
+    apply(op(forma),[part(forma,1)|vec,rest(forma)|vec])
+  else if listp(forma) and listp(cartan_basis) then
+  (
+    for i thru length(cartan_basis) do
+      vec:subst(forma[i],cartan_basis[i],-vec),
+    vec
+  )
+  else
+  (
+    perm:permutator(first(indices(forma))),
     if perm[2]=[] then 0
-    else perm[1]*(contract(canform(expand(forma*vec([],[first(perm[2])])))))));
+    else perm[1]*(contract(canform(expand(forma*vec([],[first(perm[2])])))))
+  )
+);
 
+
+
+/*
 liediff(forma,l1):=block(local(temp1,temp2,ind1),
   vec:first(l1),ind1:second(l1),
   if ind1=0 then (ind1:idummy(),v([],[ind1])*diff(forma,ind1))
   else(
 /* VTT: some black magic needed because MAXIMA doesn't handle ADDITIVE as expected */
   temp1:rename(extdiff(forma,ind1)),
-  temp1:ev(temp1|_vec,noeval),
+  temp1:ev(temp1|vec,noeval),
   temp1:ev(temp1,eval),
   temp2:rename(forma),
-  temp2:ev(temp2|_vec,noeval),
+  temp2:ev(temp2|vec,noeval),
   temp2:extdiff(ev(temp2,eval),ind1),
   temp1+temp2));
-
+*/

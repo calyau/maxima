@@ -10,7 +10,7 @@ ct_coords:[x,y,z,t]$
 /* THIS IS A CONFORMALLY FLAT METRIC */
 lg:a*ident(4)$
 dependencies(a(t))$
-setmetric()$
+cmetric()$
 christof(mcs)$
 uricci(false)$
 riemann(false)$
