@@ -205,10 +205,10 @@ relational knowledge is contained in the default context GLOBAL."
   (mapcar #'killcontext (cdr $contexts))
   (setq $context '$initial context '$initial current '$initial  
 	$contexts '((mlist) $initial $global) dobjects ())
-					;The DB variables
-					;conmark, conunmrk, conindex, connumber, and contexts
-					;concern garbage-collectible contexts, and so we're
-					;better off not resetting them.
+  ;;The DB variables
+  ;;conmark, conunmrk, conindex, connumber, and contexts
+  ;;concern garbage-collectible contexts, and so we're
+  ;;better off not resetting them.
   (defprop $global 1 cmark) (defprop $initial 1 cmark)	 
   (defprop $initial ($global) subc))
 
