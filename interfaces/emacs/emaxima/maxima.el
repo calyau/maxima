@@ -1393,13 +1393,21 @@ which is in a comment which begins on a previous line."
 ;;;; Help functions
 
 (defun maxima-goto-info-node (node)
-  (info-other-window (concat "(Maxima)" node)))
+  (if maxima-running-xemacs
+      (info "Maxima")
+    (info-other-window (concat "(Maxima)" node))))
 
 (defun maxima-get-info-on-subject (subject)
-  (info-other-window "(Maxima)Function and Variable Index")
+  (if maxima-running-xemacs
+      (progn
+        (info "Maxima")
+        (Info-menu "Function and Variable Index"))
+    (info-other-window "(Maxima)Function and Variable Index"))
   (search-forward subject)
-  (Info-follow-nearest-node)
-  (re-search-forward (concat "-.*: *" subject "\\s-"))
+  (if maxima-running-xemacs
+      (Info-follow-nearest-node (point))
+    (Info-follow-nearest-node))
+  (re-search-forward (concat "-.*: *" subject "\\( \\|$\\)"))
   (if (looking-at "^")
       (forward-line -1)
     (beginning-of-line)))
@@ -1414,13 +1422,8 @@ which is in a comment which begins on a previous line."
       (setq pt (point))
       (search-forward ":")
       (skip-chars-backward ": ")
-      (setq name (buffer-substring-no-properties pt (point)))
-      (skip-chars-forward ": ")
-      (setq pt (point))
-      (end-of-line)
-      (skip-chars-backward ". ")
-      (setq place (buffer-substring-no-properties pt (point))))
-    (maxima-get-info-on-subject place)))
+      (setq name (buffer-substring-no-properties pt (point))))
+    (maxima-get-info-on-subject name)))
 ;    (if (not maxima-running-xemacs)
 ;        (info-other-window (concat "(Maxima)" place))
 ;      (info "Maxima")
@@ -1466,7 +1469,7 @@ which is in a comment which begins on a previous line."
     (insert "q in the *info* buffer will return you here.\n")
     (insert "q in this buffer will exit Maxima help\n\n")
     (with-temp-buffer
-      (require 'info nil t)
+      (require 'info)
       (Info-mode)
       (Info-goto-node "(Maxima)Function and Variable Index")
       (goto-char (point-min))
@@ -1507,6 +1510,7 @@ which is in a comment which begins on a previous line."
           (define-key (current-local-map) "\t" 'maxima-next-subject)
 	  (goto-char (point-min))
           (re-search-forward "^\\*")
+          (forward-char -1)
 	  (pop-to-buffer maxima-help-buffer)
           (setq buffer-read-only t))
       (kill-buffer maxima-help-buffer)
@@ -1624,7 +1628,9 @@ which is in a comment which begins on a previous line."
 (defun maxima-info ()
   "Read the info file for Maxima."
   (interactive)
-  (info-other-window "Maxima"))
+  (if maxima-running-xemacs
+      (info "Maxima")
+    (info-other-window "Maxima")))
 
 ;;;; Completion
 
