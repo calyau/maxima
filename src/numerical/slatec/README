@@ -9,6 +9,7 @@ versions are stored in CVS.)
 Here is a simple script used to convert the Fortran code from the
 SLATEC library to Lisp.
 
+----------------------------------------------------------------------
 (dolist (f (directory "numerical/slatec/fortran/*.f"))
   (let ((lisp-path
 	 (make-pathname :directory (remove "fortran" (pathname-directory f)
@@ -19,21 +20,34 @@ SLATEC library to Lisp.
       :array-slicing nil :package "SLATEC" :float-format
       'double-float)))
 
-However, dbesj needs to be compiled as follows:
-
 (f2cl::f2cl "numerical/slatec/fortran/dbesj.f"
 	    :output-file "numerical/slatec/dbesj.lisp"
 	    :array-slicing t
 	    :package "SLATEC" :float-format 'double-float)
-
-because it slices an array for use by DASYJY.  Therefore, DASYJY needs
-to be compiled like:
 
 (f2cl::f2cl "numerical/slatec/fortran/dasyjy.f"
 	    :output-file "numerical/slatec/dasyjy.lisp"
 	    :array-slicing nil
 	    :array-type :array
 	    :package "SLATEC" :float-format 'double-float)
+
+(f2cl::f2cl "numerical/slatec/fortran/dasyik.f"
+	    :output-file "numerical/slatec/dasyik.lisp"
+	    :array-slicing nil
+	    :array-type :array
+	    :package "SLATEC" :float-format 'double-float)
+
+(f2cl::f2cl "numerical/slatec/fortran/dbesi.f"
+	    :output-file "numerical/slatec/dbesi.lisp"
+	    :array-slicing t
+	    :package "SLATEC" :float-format 'double-float)
+
+----------------------------------------------------------------------
+
+However, dbesj needs to be compiled as above because it slices an
+array for use by DASYJY.  Therefore, DASYJY needs to be compiled as
+above since it's not given a simple-array.  Same thing holds for
+dasyik and dbesi.
 
 It is important that the options given above to f2cl are used,
 especially the array-slicing, package, and float-format options.  If
