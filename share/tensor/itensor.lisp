@@ -626,9 +626,26 @@
 		   (T (RETURN NIL)))
 					       ;Form combined indices of result
 	     (AND D (SETQ B (APPEND B D)))
-	     (AND C (SETQ A (APPEND A C)))
+	     (AND C (SETQ A (APPEND C A)))
 						       ;Zl-remove repeated indices
 	     (AND (SETQ F (CONTRACT2 A B)) (SETQ A (CAR F) B (CDR F)))
+;; VTT: Special handling of Christoffel symbols. We can only contract them
+;; when we turn CHR1 into CHR2 or vice versa; other index combinations are
+;; illegal. This code checks if the index pattern is a valid one and replaces
+;; CHR1 with CHR2 or vice versa as appropriate.
+	     (COND ((OR (EQ (CAR CF) '$CHR1) (EQ (CAR CF) '%CHR1))
+		      (COND	 ((AND (EQ (LENGTH A) 2) (EQ (LENGTH B) 1))
+				  (SETQ CF (CONS (COND ((EQ (CAR CF) '$CHR1) '$CHR2) (T '%CHR2)) (CDR CF))))
+				 ((NOT (AND (EQ (LENGTH A) 3) (EQ (LENGTH B) 0))) (RETURN NIL)))
+		   )
+		   ((OR (EQ (CAR CF) '$CHR2) (EQ (CAR CF) '%CHR2))
+		      (COND	 ((AND (EQ (LENGTH A) 3) (EQ (LENGTH B) 0))
+				  (SETQ CF (CONS (COND ((EQ (CAR CF) '$CHR2) '$CHR1) (T '%CHR1)) (CDR CF)))
+				 )
+				 ((NOT (AND (EQ (LENGTH A) 2) (EQ (LENGTH B) 1))) (RETURN NIL)))
+		   )
+	     )
+
 	     (SETQ F (MEVAL (LIST CF (CONS SMLIST A) (CONS SMLIST B))))
 	     (AND E
 ;		  (DO E E (CDR E)
@@ -1272,7 +1289,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	      ((SETQ PROP (ZL-ASSOC INDEX (ZL-GET TENSOR 'TEXPRS)))
 ;;;VTT	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CADR PROP)))
 ;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
-	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $COUNTER)) (SETQ $COUNTER (1- N))))))
+	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $COUNTER)) (SETQ $COUNTER (1- (COND ((BOUNDP 'N) N) (T 1))))))))
 	      ((SETQ PROP (ZL-GET TENSOR 'TSUBR))
 ;;	       (APPLY PROP (LIST (CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))(CONS SMLIST L3))))
 ;;	      ((NOT (EQ L3 NIL)) (APPLY '$DIFF (SELECT TENSOR (INCONSTANT L1) (INCONSTANT L2) (CDR L3)) (LIST (CAR L3))))
