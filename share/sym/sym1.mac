@@ -41,26 +41,28 @@ if ev(directnew)='directnew then directnew: parallele ;
 
 print("");
 print("NOTE: To compile the system do");
-print(" cd ",chemin, ";make");
+print("load(\"sym/compile\");");
 
-apply(loadfile,[concat(chemin,"macros")]);
-apply(loadfile,[concat(chemin,"util")]);
-apply(loadfile,[concat(chemin,"lecteur")]);
-apply(loadfile,[concat(chemin,"ecrivain")]);
-apply(loadfile,[concat(chemin,"operations")]);
-
-apply(loadfile,[concat(chemin,"arite")]);
-apply(loadfile,[concat(chemin,"elem")]);
-apply(loadfile,[concat(chemin,"pui")]);
-apply(loadfile,[concat(chemin,"chbase")]);
-apply(loadfile,[concat(chemin,"schur")]);
-apply(loadfile,[concat(chemin,"direct")]);
-apply(loadfile,[concat(chemin,"kak")]);
-apply(loadfile,[concat(chemin,"partpol")]);
-apply(loadfile,[concat(chemin,"multmon")]);
-apply(loadfile,[concat(chemin,"permut")]);
-apply(loadfile,[concat(chemin,"treillis")]);
-apply(loadfile,[concat(chemin,"resolv1")]);
-apply(batchload,[concat(chemin,"resolvante.mac")]);
-
-
+block([file_search_maxima:chemin,
+  file_search_lisp:chemin],
+  load("macros"),
+  load("util"),
+  load("lecteur"),
+  load("ecrivain"),
+  load("operations"),
+  operation(),
+  load("arite"),
+  load("elem"),
+  load("pui"),
+  load("chbase"),
+  load("schur"),
+  load("direct"),
+  load("kak"),
+  load("partpol"),
+  load("multmon"),
+  load("permut"),
+  load("treillis"),
+  load("resolv1"),
+  load("resolvante"),
+  load("resolcayley"),
+  'done);
