@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.12 2002-09-06 00:18:17 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.13 2002-09-06 00:40:51 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -61,6 +61,7 @@ catch {
 ## source proxy.tcl
 
 if { $argc == 0 } {
+global port magic interrupt_signal _waiting _debugSend
 set port 4444
 set magic "billyboy"
 }
@@ -374,6 +375,7 @@ proc cleanPdata { program } {
 
 
 # number from run-main.tcl
+global MathServer
 set MathServer { genie1.ma.utexas.edu 4443 }
 # set MathServer { linux1.ma.utexas.edu 4443 }
 
@@ -476,6 +478,7 @@ proc programName { name } {
    return [lindex [split $name #] 0]
 }
 
+global EOFexpr
 set EOFexpr "|fayve>"
 
 proc getMatch { s inds } {
@@ -914,6 +917,7 @@ proc parseTokenize { str } {
   return $ans
 }
 
+global Parser
 set Parser(reserved) " acos cos hypo sinh asin cosh log sqrt atan exp log10 tan atan2 floor pow tanh ceil fmod sin abs double int round"
 
 set Parser(help) [join [list {
@@ -1057,6 +1061,7 @@ proc getExpr120 { } {
     }
 }
 
+global getOp
 set getOp(PRE_PLUS) doPrefix
 set getOp(PRE_MINUS) doPrefix
 set getOp(funcall) doFuncall
@@ -1142,6 +1147,7 @@ proc parseFromSuffixList { list } {
  #
  #----------------------------------------------------------------
 #
+global Parser
 set Parser(convertOptions) {
     { doall 0 "convert all variables x to \$x" }
     { variables "" "list of variables to change from x to \$x" }
@@ -1235,7 +1241,8 @@ proc mkTextItem { c x y args  } {
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
 
-### fix a4 size !
+### FIXME: fix a4 size !
+global paperSizes printOptions
 set paperSizes {{letter 8.5 11} { A4 8.5 11} {legal 8.5 13}} 
 
 set printOptions { 
@@ -1368,6 +1375,7 @@ proc getPageOffsets { widthbyheight} {
     return $opts
 }
 
+global printOption
 set printOption(setupDone) 0
 
 proc getEnv { name } {
@@ -1542,11 +1550,17 @@ proc getPSBbox  { } {
 
 ## endsource printops.tcl
 # set font {Courier 8}
+global fontCourier8
 set fontCourier8 "-*-Courier-Medium-R-Normal--*-120-*-*-*-*-*-*"
 
-if { "[winfo screenvisual .]" == "staticgray" } { set axisGray black
-}     else  { set axisGray gray60}
+global axisGray
+if { "[winfo screenvisual .]" == "staticgray" } { 
+    set axisGray black
+} else  { 
+    set axisGray gray60
+}
 
+global writefile
 set writefile  "Save"
 # make printing be by ftp'ing a file..
 
@@ -2056,6 +2070,7 @@ set y2 [expr {$y2-.01 * $diag}]
  #----------------------------------------------------------------
 #
 
+global ftpInfo
 set ftpInfo(host) genie1.ma.utexas.edu
 set ftpInfo(viahost) genie1.ma.utexas.edu
 
@@ -2921,6 +2936,7 @@ proc sliderUpdate { win var val } {
 #######  Copyright William F. Schelter.  All rights reserved.  ########
 #######################################################################
 
+global plotdfOptions
 set plotdfOptions {
     {dxdt "x-y^2+sin(x)*.3" {specifies dx/dt = dxdt.  eg -dxdt "x+y+sin(x)^2"} }
     {dydt "x+y" {specifies dy/dt = dydt.  eg -dydt "x-y^2+exp(x)"} }
@@ -3624,9 +3640,11 @@ proc recomputeDF { win } {
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
 
+global p
 set p .plot
-catch { destroy $p }
+if {[winfo exists $p]} {catch { destroy $p }}
 
+global plot2dOptions
 set plot2dOptions { 
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
@@ -3764,7 +3782,7 @@ between printing and saving see the Print Options under Config.
 } $Parser(help)]]
 }
 
-
+global plot
 set   plot(numberPlots) 4
 proc mkExtraInfo { name args } {
     # global plot 	
@@ -4412,10 +4430,6 @@ proc recomputePlot2d { win } {
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
-
-
-set ws_openMath(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [incr i] < 1000} {}} 1] 0]))}]
-
 
 set plot3dOptions { 
     {xradius 1 "Width in x direction of the x values" }
@@ -5933,6 +5947,7 @@ proc insertResult_octave {  w thisRange resultRange res } {
    return 0
 }
 
+global ws_openMath
 set ws_openMath(options,octave) {{doinsert 1 "Do an insertion" boolean}}
 
 
@@ -6074,9 +6089,10 @@ proc getDimensions { w name } {
    return " -width $width -height $height"
 }
 
+global ws_openMath
 set ws_openMath(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
-proc insertResult_openplot {w args } { puts "insert=[$w index insert]"  }
 
+proc insertResult_openplot {w args } { puts "insert=[$w index insert]"  }
 
 proc ShowPlotWindow { w name thisRange resultRange desired } {
    if { "[winfo toplevel $w]" != "[winfo toplevel $name]" } {
@@ -6245,6 +6261,7 @@ proc obsoleteeval_href { program w this nextResult} {
    return 0
 }
 
+global ws_openMath
 set ws_openMath(options,href) {
     {src "" "A URL (universal resource locator) such as http://www.ma.utexas.edu/foo.om"}
     {search "" "A string to search for, to get an initial position"}
@@ -6260,6 +6277,8 @@ set ws_openMath(options,href) {
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
+
+global MathServer
 set MathServer "locahost 4443"
 # help keysyms
 # bind .jim <Key> "puts {%A %K}"
@@ -6287,6 +6306,7 @@ proc pushCommand { win command arglist } {
 
 
 
+global ws_openMath
 set ws_openMath(sticky) "^Teval$|^program:"
 
 
@@ -6374,6 +6394,7 @@ if { [catch { set ws_openMath(bindings_added) } ] } {
   set ws_openMath(bindings_added) 1
 }
 
+global ws_openMath
 set ws_openMath(doublek) 0
 
 bind OpenMathText <Control-Key-k><Control-Key-k> {
@@ -6654,6 +6675,7 @@ proc TinsSlashEnd { tags text } {
 
     
 
+global ws_openMath
 set ws_openMath(richTextCommands) {Tins TinsSlashEnd}
 
 ## endsource keyb.tcl
@@ -6937,6 +6959,7 @@ proc resolveURL { name current {post ""} } {
     return $ans
 }
 
+global ws_openMath
 set ws_openMath(urlHandlers) {
     text/html  netmath
     text/plain netmath
@@ -7244,6 +7267,7 @@ proc ws_outputToTemp { string file ext encoding } {
     return $tmp
 }
 
+global debugParse
 if { ![info exists debugParse ] } {
 set debugParse 0
 }
@@ -7462,6 +7486,7 @@ proc addTagSameRange { win oldtag newtag index } {
     }
 }
 
+global xHMpreferences
 set xHMpreferences(defaultservers) { nmtp://genie1.ma.utexas.edu/ nmtp://linux51.ma.utexas.edu/ nmtp://linux52.ma.utexas.edu/ }
 
 if { "[info var embed_args]" != "" } {
@@ -7749,6 +7774,7 @@ proc setHelp {win  help args } {
     bind $win <Leave> "$exit; deleteHelp $win"
 }
 
+global show_balloons
 set show_balloons 1
 
 
@@ -8765,6 +8791,7 @@ defTag option -body { set text [string trimright $text]
        set text ""
 }
 
+global xHMpriv
 set xHMpriv(counter) 0
 
 
@@ -9247,6 +9274,8 @@ proc xHMassureNewlines { n } {
 	xHMtextInsert $win [dupString "\n" [expr {$_n - $_have}]]
     }
 }
+
+global xHMpreferences
 set xHMpreferences(adjust) 0
 catch {
     set width_ [expr {.9 * [winfo screenwidth .]}]
@@ -9402,6 +9431,8 @@ proc xHMinit_win { win } {
     $win tag configure center -justify center
     $win configure -wrap word
 }
+
+global HMdefaultOptions
 set HMdefaultOptions {
     {atagforeground blue "foreground for <a href=...>  tags"}
     {currenthrefforeground red "foreground of current <a href=..> tags"} 
@@ -9477,6 +9508,7 @@ proc xHMdo_isindex {} {
 #   c --> [format %.2x $c]
 
 # make a list of all characters, to get char code from char.
+global xHMallchars
 set xHMallchars ""
 for { set i 1} { $i <256 } {incr i } { append xHMallchars [format %c $i] }
 
@@ -9793,6 +9825,7 @@ proc char64 { x } {
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
 
+global xHMulBMPdata
 set xHMulBMPdata ""
 lappend xHMulBMPdata "#define disc_width 6\n#define disc_height 6
 static unsigned char disc_bits[] = {
@@ -9956,6 +9989,7 @@ proc browser_log { args } {
 # Remember the location of the data file for the Safesock policy, so that
 # it can be reloaded each time the policy is used, to reflect changes.
 
+global safesockDataFile
 set safesockDataFile [file join [file dirname [info script]] safesock.data]
 
 proc Safesock_PolicyInit {slave {version 1.0}} {
@@ -10292,7 +10326,7 @@ if { ![info exists ws_openMath(date)] } {
     set ws_openMath(date) [clock  format [clock seconds] -format {%m/%d/%Y} ]
 }
 
-
+global ws_openMath
 set ws_openMath(fixedFont) Courier
 # the linelength should be long enough to display formatted mathematical
 # output from things like maxima, without adjustment, and to allow
@@ -10327,6 +10361,7 @@ proc fontMeasure { font size } {
   return $ws_openMath($font,$size,$ll)
 }
 
+global fixedFont
 set fixedFont Courier
 proc getDefaultFontSize { width } {
     global fixedFont
@@ -10857,6 +10892,7 @@ proc mkOpenMath { win  } {
 #   book-shell-eval
 #  }
 
+global evalPrograms
 set evalPrograms {  gp gap gb }
 #set ws_openMath(options,maxima) {{doinsert 1 "Do an insertion" boolean}}
 #set ws_openMath(options,gp) {{doinsert 1 "Do an insertion" boolean}}
@@ -11289,6 +11325,7 @@ proc markForProgram { w args } {
   }
 }
 
+global ws_openMath
 set ws_openMath(counter) 0
 	
 
@@ -11303,10 +11340,6 @@ set ws_openMath(counter) 0
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
 
-
-
-
-#set MathServer "localhost 4443"
 
 proc mkConsole { fr program } {
     catch { destroy $fr }
