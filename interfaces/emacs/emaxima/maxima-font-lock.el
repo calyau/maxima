@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.7 $
-;; $Date: 2002-09-26 21:22:15 $
+;; $Revision: 1.8 $
+;; $Date: 2002-09-27 15:52:58 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -1336,35 +1336,38 @@
 (unless (facep 'font-lock-builtin-face)
   (copy-face 'font-lock-keyword-face 'font-lock-builtin-face))
 
+(unless (facep 'font-lock-constant-face)
+  (copy-face 'font-lock-keyword-face 'font-lock-constant-face))
+
 (defvar maxima-font-lock-keywords-1
   `(
-    (,maxima-match-declarations (0  font-lock-keyword-face t)))
+    (,maxima-match-declarations . font-lock-keyword-face))
     "Subdued level highlighting for Maxima mode.")
 
 (defvar maxima-font-lock-keywords-2
   (append maxima-font-lock-keywords-1
    `(
-     (,maxima-match-operators (0  font-lock-keyword-face t))
-     (,maxima-match-variables-1 (0 font-lock-keyword-face t))
-     (,maxima-match-variables-2 (0 font-lock-keyword-face t))
-     (,maxima-match-variables-3 (0  font-lock-keyword-face t))
-     (,maxima-match-variables-4 (0  font-lock-keyword-face t))
-     (,maxima-match-functions-1 (0  font-lock-builtin-face t))
-     (,maxima-match-functions-2 (0  font-lock-builtin-face t))
-     (,maxima-match-functions-3 (0  font-lock-builtin-face t))
-     (,maxima-match-functions-4 (0  font-lock-builtin-face t))
-     (,maxima-match-functions-5 (0  font-lock-builtin-face t))
-     (,maxima-match-functions-6 (0  font-lock-builtin-face t))
-     (,maxima-match-constants-1 (0  font-lock-constant-face t))
-     (,maxima-match-constants-2 (0  font-lock-constant-face t))
-     (,maxima-match-constants-3 (0  font-lock-constant-face t))
-     (,maxima-match-constants-4 (0  font-lock-constant-face t))
-     (,maxima-match-keywords (0  font-lock-keyword-face t))
-     (,maxima-match-properties (0  font-lock-keyword-face t))
-     (,maxima-match-macros (0  font-lock-keyword-face t))
-     (,maxima-match-specops (0  font-lock-keyword-face t))
-     (,maxima-match-specsymbs-1 (0  font-lock-keyword-face t))
-     (,maxima-match-specsymbs-2 (0  font-lock-keyword-face t))))
+     (,maxima-match-operators . font-lock-keyword-face)
+     (,maxima-match-variables-1 . font-lock-keyword-face)
+     (,maxima-match-variables-2 . font-lock-keyword-face)
+     (,maxima-match-variables-3 . font-lock-keyword-face)
+     (,maxima-match-variables-4 . font-lock-keyword-face)
+     (,maxima-match-functions-1 . font-lock-builtin-face)
+     (,maxima-match-functions-2 . font-lock-builtin-face)
+     (,maxima-match-functions-3 . font-lock-builtin-face)
+     (,maxima-match-functions-4 . font-lock-builtin-face)
+     (,maxima-match-functions-5 . font-lock-builtin-face)
+     (,maxima-match-functions-6 . font-lock-builtin-face)
+     (,maxima-match-constants-1 . font-lock-constant-face)
+     (,maxima-match-constants-2 . font-lock-constant-face)
+     (,maxima-match-constants-3 . font-lock-constant-face)
+     (,maxima-match-constants-4 . font-lock-constant-face)
+     (,maxima-match-keywords . font-lock-keyword-face)
+     (,maxima-match-properties . font-lock-keyword-face)
+     (,maxima-match-macros . font-lock-keyword-face)
+     (,maxima-match-specops . font-lock-keyword-face)
+     (,maxima-match-specsymbs-1 . font-lock-keyword-face)
+     (,maxima-match-specsymbs-2 . font-lock-keyword-face)))
   "Medium level highlighting for Maxima mode.")
 
 (defvar maxima-font-lock-keywords-3
