@@ -80,6 +80,8 @@ binary-gcl/maxima:
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
 	LISPTYPE=gcl ; export LISPTYPE ;\
         GCL=$(GCL_NAME) ; export GCL ;\
+	$(RUNLISP) \
+        -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
 	j=$$($(RUNLISP) \
                  -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :test t)' < /dev/null |\
                  grep Loading |\
