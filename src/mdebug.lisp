@@ -330,13 +330,15 @@
 	   ;; Make a new stream consisting of the next char and the
 	   ;; rest of the actual input.
 	 #+cmu
-	 (let* ((first-char (read-char stream))
-		(new-stream (make-concatenated-stream
-			     (make-string-input-stream
-			      (concatenate 'string (string first-char)
-					   (string next)))
-			     stream)))
-	   (mread new-stream eof-value)))))
+	 (if (eql #\? ch)
+	     (let* ((first-char (read-char stream))
+		    (new-stream (make-concatenated-stream
+				 (make-string-input-stream
+				  (concatenate 'string (string first-char)
+					       (string next)))
+				 stream)))
+	       (mread new-stream eof-value))
+	     (mread stream eof-value)))))
 
 
 (defun grab-line-number (li stream)
