@@ -58,10 +58,10 @@
 	     (add2lnc tensor $symmetries)
 	     (return '$DONE)))
 
-(defun INTERVAL (i j)     ;INTERVAL returns the list of integers from I thru J.
-       (do ((n i (1+ n)) (ans))             ;Thus (INTERVAL 3 5) yields (3 4 5)
-           ((> n j) (nreverse ans))
-           (setq ans (cons n ans))))
+;(defun INTERVAL (i j)     ;INTERVAL returns the list of integers from I thru J.
+;       (do ((n i (1+ n)) (ans))             ;Thus (INTERVAL 3 5) yields (3 4 5)
+;           ((> n j) (nreverse ans))
+;           (setq ans (cons n ans))))
 
 (defun CHECK-SYMARGS (ll n)            ;Returns an ascending list of the unique
 				       ;elements of LL and checks that they are
