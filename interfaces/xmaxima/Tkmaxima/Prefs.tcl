@@ -1,3 +1,7 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Prefs.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 proc xmaximaPreferences { } {
     global xmaximaPreferences
     catch {destroy .prefs}
@@ -23,7 +27,7 @@ proc xmaximaPreferences { } {
 	if { [catch { resetMaximaFont .maxima.text } ] } {
 	    error  "fontAdjust must be an integer not $xmaximaPreferences(fontAdjust)"
 	}
-	    
+	
 
     }
 

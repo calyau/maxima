@@ -1,7 +1,11 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Matrix.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Matrix.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 # In this file a matrix is represented by a list of M*N entries together
@@ -9,18 +13,19 @@
 # the two by two identity
 
 proc comment {args } { }
-  set mee " } \] \[ expr { "  
+global mee
+set mee " } \] \[ expr { "
 
 proc mkMultLeftExpr { mat n prefix { constant "" } } {
-#create a function body that does MAT (prefix1,prefix2,..) + constant 
+    #create a function body that does MAT (prefix1,prefix2,..) + constant
     global mee
     set all ""
-    
+
     set vars ""
     for { set i 0} { $i < $n} {incr i} { append vars " $prefix$i" }
     set j 0
     set k 0
-    
+
     foreach v $mat {
 	if { $j == 0 } {
 	    set ro ""
@@ -30,7 +35,7 @@ proc mkMultLeftExpr { mat n prefix { constant "" } } {
         append ro " $op $v*\$$prefix$j"
 	set op "+"
 	if { $j == [expr {$n -1}] } {
-	     append ans " "
+	    append ans " "
 	    if { "[lindex $constant $k]" != "" } {
 		append ro " + [lindex $constant $k] "
 	    }
@@ -41,49 +46,36 @@ proc mkMultLeftExpr { mat n prefix { constant "" } } {
 	incr j
     }
     # puts [list $vars $ans]
-     return [list $vars $ans]
+    return [list $vars $ans]
 }
 
 proc mkMultLeftFun { mat n name { constant ""} } {
     set expr [mkMultLeftExpr $mat $n _a $constant]
     set bod1 [string trim [lindex $expr 1] " "]
-#    set bod "return \"$bod1\""
+    #    set bod "return \"$bod1\""
     set bod [concat list [lindex $expr 1]]
     proc $name [lindex $expr 0] $bod
 }
 
 proc rotationMatrix { th ph } {
-   return [list \
-	   [expr {cos($ph)*cos($th)}] [expr {- cos($ph)*sin($th)}] [expr {sin($ph)}] \
-	   [expr {sin($th)}] [expr {cos($th)}] 0.0 \
-	   [expr {- sin($ph)*cos($th)}] [expr {sin($ph)*sin($th)}] [expr {cos($ph)}]]
+    return [list \
+	    [expr {cos($ph)*cos($th)}] [expr {- cos($ph)*sin($th)}] [expr {sin($ph)}] \
+	    [expr {sin($th)}] [expr {cos($th)}] 0.0 \
+	    [expr {- sin($ph)*cos($th)}] [expr {sin($ph)*sin($th)}] [expr {cos($ph)}]]
 }
-
-# proc rotationMatrix { thx thy thz } {
-#   return [list  \
-#  [expr { cos($thy)*cos($thz)} ]  \
-#  [expr { cos($thy)*sin($thz)} ]  \
-#  [expr { sin($thy)} ]  \
-#  [expr { sin($thx)*sin($thy)*cos($thz)-cos($thx)*sin($thz)} ]  \
-#  [expr { sin($thx)*sin($thy)*sin($thz)+cos($thx)*cos($thz)} ]  \
-#  [expr { -sin($thx)*cos($thy)} ]  \
-#  [expr { -sin($thx)*sin($thz)-cos($thx)*sin($thy)*cos($thz)} ]  \
-#  [expr { -cos($thx)*sin($thy)*sin($thz)+sin($thx)*cos($thz)} ]  \
-#  [expr { cos($thx)*cos($thy)} ] ]
-# }
 
 proc rotationMatrix { thx thy thz } {
     return \
- [list  \
- [expr { cos($thy)*cos($thz) } ] \
- [expr { cos($thy)*sin($thz) } ] \
- [expr { sin($thy) } ] \
- [expr { sin($thx)*sin($thy)*cos($thz)-cos($thx)*sin($thz) } ] \
- [expr { sin($thx)*sin($thy)*sin($thz)+cos($thx)*cos($thz) } ] \
- [expr { -sin($thx)*cos($thy) } ] \
- [expr { -sin($thx)*sin($thz)-cos($thx)*sin($thy)*cos($thz) } ] \
- [expr { sin($thx)*cos($thz)-cos($thx)*sin($thy)*sin($thz) } ] \
- [expr { cos($thx)*cos($thy) } ] ]
+	    [list  \
+	    [expr { cos($thy)*cos($thz) } ] \
+	    [expr { cos($thy)*sin($thz) } ] \
+	    [expr { sin($thy) } ] \
+	    [expr { sin($thx)*sin($thy)*cos($thz)-cos($thx)*sin($thz) } ] \
+	    [expr { sin($thx)*sin($thy)*sin($thz)+cos($thx)*cos($thz) } ] \
+	    [expr { -sin($thx)*cos($thy) } ] \
+	    [expr { -sin($thx)*sin($thz)-cos($thx)*sin($thy)*cos($thz) } ] \
+	    [expr { sin($thx)*cos($thz)-cos($thx)*sin($thy)*sin($thz) } ] \
+	    [expr { cos($thx)*cos($thy) } ] ]
 }
 
 # cross [a,b,c] [d,e,f] == [B*F-C*E,C*D-A*F,A*E-B*D]
@@ -95,16 +87,16 @@ proc rotationMatrix { thx thy thz } {
 
 proc rotationMatrix { th ph {ignore {} } } {
     return \
-[list \
-[	    expr {cos($th)   } ]\
-[expr {sin($th)   } ]\
-0 \
-[expr {-cos($ph)*sin($th)   } ]\
-[expr {cos($ph)*cos($th)   } ]\
-[expr {sin($ph)   } ]\
-[expr {sin($ph)*sin($th)   } ]\
-[expr {-sin($ph)*cos($th)   } ]\
-[expr {cos($ph)   } ]]
+	    [list \
+	    [	    expr {cos($th)   } ]\
+	    [expr {sin($th)   } ]\
+	    0 \
+	    [expr {-cos($ph)*sin($th)   } ]\
+	    [expr {cos($ph)*cos($th)   } ]\
+	    [expr {sin($ph)   } ]\
+	    [expr {sin($ph)*sin($th)   } ]\
+	    [expr {-sin($ph)*cos($th)   } ]\
+	    [expr {cos($ph)   } ]]
 }
 
 proc setMatFromList {name lis n} {
@@ -145,8 +137,8 @@ proc matMul { mat1 cols1 mat2 cols2 } {
 	incr i $cols1
 	incr j
     }
- #   return $ans
-   # puts "matTranspose $ans $rows1"
+    #   return $ans
+    # puts "matTranspose $ans $rows1"
     return [matTranspose $ans $rows1]
 }
 
@@ -157,7 +149,7 @@ proc invMat3 { mat } {
     set det [expr { double($xx(1,1))*($xx(2,2)*$xx(3,3)-$xx(2,3)*$xx(3,2))-$xx(1,2)* \
 	    ($xx(2,1)*$xx(3,3)-$xx(2,3)*$xx(3,1))+$xx(1,3)*($xx(2,1)*$xx(3,2)\
 	    -$xx(2,2)*$xx(3,1)) }]
-    
+
     return [list   [expr { ($xx(2,2)*$xx(3,3)-$xx(2,3)*$xx(3,2))/$det}] \
 	    [expr { ($xx(1,3)*$xx(3,2)-$xx(1,2)*$xx(3,3))/$det}] \
 	    [expr { ($xx(1,2)*$xx(2,3)-$xx(1,3)*$xx(2,2))/$det}] \

@@ -1,3 +1,7 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: OpenMath.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 proc genSample { x n } {
     set sample $x
     set m 1
@@ -12,6 +16,7 @@ proc genSample { x n } {
     }
 }
 
+global fontSize
 option add *Button.font [font create -family Courier -size $fontSize]
 
 	
@@ -19,7 +24,7 @@ option add *Button.font [font create -family Courier -size $fontSize]
 # of x's.
 proc fontMeasure { font size } {
    global  ws_openMath
-   set ll $ws_openMath(linelength) 
+   set ll $ws_openMath(linelength)
    if { ![catch {set answer [set $ws_openMath($font,$size,$ll)]} ] } { return $answer}
   set sample [genSample x $ll]
   set  ws_openMath($font,$size,$ll)  [font measure [list $font $size] $sample]
@@ -29,7 +34,7 @@ proc fontMeasure { font size } {
 proc getDefaultFontSize { width } {
     global fixedFont
     set answer "10 480"
-    catch { 
+    catch {
     set wid1 [fontMeasure $fixedFont 10]
 	set guess [expr {round($width/double($wid1) * 10.0)}]
     while { [fontMeasure $fixedFont $guess] < $width && $guess <= 14 } {
@@ -41,7 +46,7 @@ proc getDefaultFontSize { width } {
     return $answer
 
 }
-    
+
 proc getMaxDimensions { } {
   global embed_args
   set dims "800 600"
@@ -68,7 +73,7 @@ proc computeTextWinDimensions { win width height } {
     set wid $width
    set fixedFont [xHMmapFont font:fixed:normal:r:3]
    set fsize [xHMfontPointSize $fixedFont]
-   
+
    set lh [expr {$fsize +1}]
    catch {   set lh [font metrics $fixedFont -linespace] }
    oset $win fixedFont $fixedFont
@@ -105,12 +110,12 @@ proc setFontOptions { fontSize }     {
 }
 proc omPanel { w args } {
     global buttonfont entryfont labelfont ws_openMath
-    set top [winfo toplevel $w]    
+    set top [winfo toplevel $w]
     linkLocal $top omPanel
     if { [info exists omPanel] } {return $omPanel }
     set top [winfo parent $w]
-    # 
-    if { "$top" == "." } { set top ""}	  
+    #
+    if { "$top" == "." } { set top ""}	
     set win $top.textcommands
     set omPanel $win
     makeLocal $w fontSize
@@ -134,14 +139,14 @@ proc omPanel { w args } {
     bind  $win.forward <Button-1> "OpenMathMoveHistory $win 1"
     setHelp $win.forward {Move forward in the history of documents visited.}
     setHelp $win.back {Move backward in the history of documents visited.}
- 
+
 
     ####### begin edit button
 
     setHelp $win.edit {Bring down a menu with some edit options}
     set m [oget $win.edit menu]
     oset $win showEditBar "show edit bar"
-    
+
    # $m add command -help "Toggle viewing of an editor bar which allows marking text with properties, eg marking to evaluate in maxima"  -textvariable [oloc $win showEditBar] -command "toggleEditBar $win"
     oset $win currentProgram maxima
     oset $win currentProgramInsert 1
@@ -158,11 +163,11 @@ proc omPanel { w args } {
     pack $m.program
 
    #  $m add check -help "Toggle whether Mark for Eval should expect the program to insert a result, or should just evaluate for effect." -label "Eval Insert" -onvalue 1 -offvalue 0 -variable [oloc $win currentProgramInsert]
-    
 
-    
 
-  # ====begin Help button===    
+
+
+  # ====begin Help button===
     set m [oget $win.help menu]
     setHelp $win.help {Offer possible help options, including toggling \
 	    whether to show balloon help messages}
@@ -172,15 +177,15 @@ proc omPanel { w args } {
     $m add command -textvariable showHelpMessages -command {set show_balloons [expr {!$show_balloons}]; if { $show_balloons} {after 500 set showHelpMessages [list "Hide Balloon Help" ]} else {after 500 set showHelpMessages [list "Show Balloon Help" ]}}
     label $m.date -text "Version $ws_openMath(date)"
     $m add window -window $m.date
-   
-    
-    
 
-    
-    
+
+
+
+
+
   # ====begin File button===
     set m [oget $win.file menu]
-    setHelp $win.file {Menu of file options, for saving and preferences} 
+    setHelp $win.file {Menu of file options, for saving and preferences}
     global [oarray $win]
     $m add command -label "Reload" -command {OpenMathOpenUrl [oget [omPanel %W] location] -reload 1 -commandpanel [omPanel %W]} -help {_eval {Reload the current URL displayed in the entry window: [oget [omPanel %W] location]}}
     $m add command -label "Interrupt" -command {omDoInterrupt [oget [omPanel %W] textwin]} -help {Try to interrupt the current remote computations.}
@@ -188,12 +193,12 @@ proc omPanel { w args } {
     $m add command -label "Stop" -command {omDoStop [oget [omPanel %W] textwin]} -help {Stop reading the current url or image.}
     $m add command -label "Forget" -command  "forgetCurrent $win"   -help {Move back one in the history, and remove the current one from the history, unless it was the first window.}
     $m add command -label "History" -command  "showHistory $win"   -help {Display the history list, so that one may be selected by clicking.}
-    $m add command -label "Base Program" -command  {fileBaseprogram [oget [omPanel %W] textwin]  %W %x %y}   -help {Show and allow altering of the base program, which shows which is the default host for programs to run on.   May also be specified in <body baseprogram= ...> in the .html file.}        
+    $m add command -label "Base Program" -command  {fileBaseprogram [oget [omPanel %W] textwin]  %W %x %y}   -help {Show and allow altering of the base program, which shows which is the default host for programs to run on.   May also be specified in <body baseprogram= ...> in the .html file.}
     set new [$m add entry -label {Save file:} -help {_eval {Save to the file list below([oget [omPanel %W] savefilename]).  Not available when running inside Netscape}}]
     $new.entry configure  -textvariable [oloc $win savefilename]
     bind $new.entry  <Return> "saveToFile $win $new.label \[oget $win savefilename\] "
     bind $new.label  <Button-1> "saveToFile $win $new.label \[oget $win savefilename\] "
-    $m add command -label "Exit" -command  "destroy ."   -help {Exit this program}        
+    $m add command -label "Exit" -command  "destroy ."   -help {Exit this program}
 #    $m add command -label "Print not yet!" -command "puts printing" -underline 0 -help {You may print individual graphs using their menu bars, but printing the whole file is not yet implemented.}
     $m add command -label Preferences -command "fontDialog .fontdialog" -help {set the default font sizes and types}
     if { "[info command console]" == "console" } {
@@ -209,7 +214,7 @@ proc omPanel { w args } {
     setHelp $win.loclabel {Fetch the URL or FILE indicated in the entry box. \
 	    A local file is something like file:/home/wfs/foo.om, and a URL \
 	    begins with http.}
-    
+
     pack $win.loclabel -side left -fill x -expand 0
     entry $win.location -textvariable [oloc $win location] -width 40
     setHelp $win.location {Address of the current document.  You may modify it and type Enter, to fetch a new document.}
@@ -229,7 +234,7 @@ proc omPanel { w args } {
     set ws_openMath(status_window) $st
     scale $st.scale -showvalue 0 -length 200 -orient horizontal
     label $st.rate -width 35 -font $labelfont -textvariable ws_openMath(load_rate)
-    pack $st.rate $st.scale -side left 
+    pack $st.rate $st.scale -side left
     pack $st -side bottom
     return $win
 }
@@ -260,16 +265,16 @@ proc omDoStop { win } {
     if { [regexp {sock[0-9]+} $var sock] } {
 	oset $sock done -1
 	if { ![catch { close $sock} ] } {
-	    
+	
 	    append ws_openMath(load_rate) "--aborted"
 	}
     }
 }
-    
-    
 
 
-
+
+
+
 #
  #-----------------------------------------------------------------
  #
@@ -277,7 +282,7 @@ proc omDoStop { win } {
  #
  #  Results:
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -302,9 +307,9 @@ proc setTypeForEval { menu program } {
 	    oset $men items ""
 	    oset $key parent $menu
 	    proc $men {option args } $body
-	    
+	
 	    ##### end
-	    
+	
 
 	    foreach v $options {
 		desetq "key dflt help" $v
@@ -338,7 +343,7 @@ proc setTypeForEval { menu program } {
 
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -368,7 +373,7 @@ proc getGlobalOptions { program } {
     return $ans
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -414,7 +419,7 @@ proc getPrefixed { prefix  tags } {
 	return ""
     }
 }
-    
+
 proc programFromTags {tags} {
     if {[lsearch $tags Teval ] < 0 } {
 	return ""
@@ -453,7 +458,7 @@ if { [catch { package require Safesock } ] } {
 
 proc mkOpenMath { win  } {
     global    ws_openMath
-   
+
     set w $win
     catch {destroy $w}
     if { [catch { package require Safesock } ] } {
@@ -461,10 +466,10 @@ proc mkOpenMath { win  } {
 	catch {  policy  outside }
     }
     desetq "width height" [getMaxDimensions]
-    computeTextWinDimensions $win $width $height 
+    computeTextWinDimensions $win $width $height
     makeLocal $win fontSize width_chars height_chars fixedFont
     set font $fixedFont
-    
+
     # puts "fontSize=$fontSize"
     frame $w
     set commandPanel [omPanel $w ]
@@ -491,19 +496,19 @@ proc mkOpenMath { win  } {
   # try "#d0d0d0" or "#ffffd0" or yellow
     $w.text tag configure Teval -foreground blue -font [font create -family Courier -size $fontSize]  -border 1 -lmargin1 20
 
-    
+
 
     $w.text tag configure bold -font [xHMmapFont font:propor:bold:r:3] -lmargin1 15
-    $w.text tag configure plain -font [xHMmapFont font:propor:bold:r:3] -lmargin1 10 
+    $w.text tag configure plain -font [xHMmapFont font:propor:bold:r:3] -lmargin1 10
     $w.text tag configure Tresult -font [xHMmapFont font:fixed:bold:r:3] -lmargin1 10
     $w.text tag configure Tmodified -font [xHMmapFont font:fixed:normal:r:3] -background pink -relief sunken -border 1
-    $w.text tag configure Thref -font [xHMmapFont font:fixed:normal:r:3]  -foreground blue  -relief flat 
+    $w.text tag configure Thref -font [xHMmapFont font:fixed:normal:r:3]  -foreground blue  -relief flat
 
     set lh [oget $win lineheight]
     $w.text tag configure sub -offset [expr {-round($lh*.6) }]
     $w.text tag configure sup -offset [expr {round($lh*.6) }]
 
-    
+
     oset $w.text counter 0
     # allow some openmath text bindings to take precedence
     bindtags $w.text "OpenMathText [bindtags $w.text]"
@@ -513,7 +518,7 @@ proc mkOpenMath { win  } {
     pack $w -expand 1 -fill both
     if {[winfo exists $prevwindow] } { pack forget [winfo parent $prevwindow] }
     return  $w.text
-    
+
 }
 
 #source emaxima.tcl
@@ -561,7 +566,7 @@ foreach v [info proc insertResult_*] {
     lappend evalPrograms [string range $v 13 end]
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -577,7 +582,7 @@ foreach v [info proc insertResult_*] {
 proc defaultInsertMode { program } {
     global ws_openMath
     if { [catch {  set dflt [getOptionDefault doinsert $ws_openMath(options,$program)]} ] } { return 1}
- 
+
     if { "$dflt" == "" } {set dflt  1}
     return $dflt
 }
@@ -588,7 +593,7 @@ proc doInsertp { tags } {
     return [getEvalArg -doinsert $tags [defaultInsertMode [programName $program]]]
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -605,7 +610,7 @@ proc doInsertp { tags } {
 proc doInvoke { w index } {
     global evalPrograms MathServer
    set tags [$w tag names $index]
-    
+
     $w tag delete sel
 
     set program [programFromTags $tags]
@@ -615,7 +620,7 @@ proc doInvoke { w index } {
    # puts "base=[oget $w baseprogram],w=$w"
    set res [resolveURL $program [oget $w baseprogram]]
    # puts "program=$program,baseprogram[oget $w baseprogram],res=$res"
-   
+
    set MathServer "[assoc server $res [lindex $MathServer 0]] \
 	   [assoc port $res [lindex $MathServer 1]]"
    set this [thisRange $w  program:$program $index]
@@ -624,7 +629,7 @@ proc doInvoke { w index } {
    set nextResult ""
    set doinsert [doInsertp $tags]
    # puts "doinsert=$doinsert"
-   
+
    if { $doinsert} {
        set name [getPrefixed name: $tags]
        if { "$name" != "" } {
@@ -641,14 +646,14 @@ proc doInvoke { w index } {
 	       &&  [$w  compare [lindex $nextResult 0] > [lindex $next 0]] )
 	   } {
 	    $w insert "[lindex $this 1]+1 char" " " "Tresult"
-	     set nextResult [$w tag nextrange Tresult [lindex $this 1]]   
+	     set nextResult [$w tag nextrange Tresult [lindex $this 1]]
 	   # error "no place to put result"
          }
       }
       if { "$nextResult" != "" } {
 	  eval $w  tag add Tmodified $nextResult
       }
-   } 
+   }
    set prog [programName $program]
    if { [info proc eval_$prog] != "" } {
        if {[eval_$prog $program $w $this $nextResult] != 0 }  {
@@ -670,8 +675,8 @@ proc doInvoke { w index } {
 
        }
    }
-	       
-   
+	
+
 }
 
 proc getEvalArg { key names {dflt ""} } {
@@ -684,7 +689,7 @@ proc getEvalArg { key names {dflt ""} } {
     return $dflt
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -692,7 +697,7 @@ proc getEvalArg { key names {dflt ""} } {
  #  after the current expression.
  #  Results:
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -705,16 +710,16 @@ proc setModifiedFlag { win index } {
   }
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
  # insertResult --  replace RESULTRANGE of the text buffer by VALUE,
  #  and clear the Tmodified tag if there is one.
  #  most eval_$program programs will call this to insert their result.
- #  Results:  
+ #  Results:
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -722,7 +727,7 @@ proc insertResult { w resultRange value } {
        set tags [$w tag names [lindex $resultRange 0]]
        set value [xHMuntabify $value]
        # append a newline to a multiline result that has no newline after it.
-       if { [regexp "\n.*\[^\n]\$" $value ] } {append value "\n"} 
+       if { [regexp "\n.*\[^\n]\$" $value ] } {append value "\n"}
        eval $w delete $resultRange
        # dont lose the whole thing!!
        if { "$value" == "" } { set value " "}
@@ -731,19 +736,19 @@ proc insertResult { w resultRange value } {
 
 
 
-
+
 #
  #-----------------------------------------------------------------
  #
- # addPreloads --  Tack any preloads or preevals on to the 
+ # addPreloads --  Tack any preloads or preevals on to the
  #  command.
  #  Results: the new COMMAND
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
-#   
-proc addPreloads {command program win this } {   
+#
+proc addPreloads {command program win this } {
    set preload [getTagsMatching $win ^pre(load|eval):* $this]
     if { "$preload" != "" &&  ![preeval $program $preload] } {
 	if { [regexp \{pre(load|eval):(.*)\} $preload junk op url] ||
@@ -762,13 +767,13 @@ proc addPreloads {command program win this } {
    return $command
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
  # sendOneInsertTextWin --  send PROGRAM the COMMAND for insertion
  # in the text window WIN at RANGE.   There may be a program specific
- # insertResult_maxima, .. in which case this does the job.   It  
+ # insertResult_maxima, .. in which case this does the job.   It
  # is also passed the field of where the command came from.
  # We mark these fields with a tag, since they may get moved by typing
  # before the result comes back.   The com:* tags also provide omDoAbort
@@ -777,10 +782,10 @@ proc addPreloads {command program win this } {
  #
  #  Side Effects: until the evaluation succeeds the tags
  #  res:pdata($PROGRAM,result,$i) and a similar com: indicate the
- #  result field, and the command field. 
+ #  result field, and the command field.
  #
  #----------------------------------------------------------------
-#   
+#
 proc sendOneInsertTextWin { program command win this range} {
     set eval [getTagsMatching $win ^eval(sub|):* $this]
     if { "$eval" != "" } {
@@ -792,7 +797,7 @@ proc sendOneInsertTextWin { program command win this range} {
 	}
     }
     set command [addPreloads $command $program $win $this ]
-    
+
    # puts "preload=$preload,command:$command"
     set loc [sendOneDoCommand $program $command "sendOneInsertTextWin1 $win $program "]
     if { "$range" != "" } {
@@ -807,7 +812,7 @@ proc sendOneInsertTextWin1 { win program location } {
     message "received result"
     set resultRange [$win tag nextrange res:$location 0.0]
     set this [$win tag nextrange com:$location 0.0]
-    $win tag delete res:$location com:$location    
+    $win tag delete res:$location com:$location
 #    if { "$resultRange" == ""} {
 #	puts "somebody removed result place for $location"
 #	return ""
@@ -821,8 +826,8 @@ proc sendOneInsertTextWin1 { win program location } {
    }
      uplevel #0 unset $location
 }
-   
-    
+
+
 
 proc xHMuntabify { s } {
     set lis [split $s \n]
@@ -845,22 +850,22 @@ proc xHMuntabifyLine { s } {
     return $ans
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
  # textBbox --  Compute the bounding box of a range of characters
- # starting at IND1 and running to IND2.  
+ # starting at IND1 and running to IND2.
  #
  #  Results: return "x y width height" where x, y are the coordinates
  #  of the upper left corner.
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
 proc textBbox { win ind1 ind2 } {
-  
+
     foreach i { 1 2 } {
 	set ind [eval $win index [set ind$i]]
 	set ind$i $ind
@@ -911,13 +916,13 @@ proc textShowHelp { win tag index msg } {
 	return ""
     }
     set top [winfo toplevel $win]
-    
+
     set x [expr {$x + [winfo rootx $win] - [winfo rootx $top]}]
     set y [expr {$y + [winfo rooty $win] - [winfo rooty $top]}]
-    
 
-    
- 
+
+
+
     #puts "showHelp $win $x $y $wid $hei"
     showHelp "$win $x $y $wid $hei" $msg
 }
@@ -973,13 +978,13 @@ proc markForProgram { w args } {
 
 	set templates [list " yields " " evaluates to "  \
 	    " returns " " produces " " gives "]
-        $w mark set tmp [lindex $range 1]	    
+        $w mark set tmp [lindex $range 1]	
 
 	    $w insert tmp [lindex $templates [expr {[clock clicks]%[llength $templates]}]] plain
         $w insert tmp RESULT {Tresult Tmodified}
         $w insert tmp " "  {plain}
     } else { apply $w tag add Tmodified $nextResult}
-    
+
   }
 }
 

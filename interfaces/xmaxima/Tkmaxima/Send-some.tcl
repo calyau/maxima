@@ -1,3 +1,7 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Send-some.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### send-some.tcl ######
 
 # Usage:
@@ -16,25 +20,25 @@
 #   eg:  sendCommand octave "list 1 1"
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # myVwait --  this is a replacement for vwait which is missing from
- # the plugin tcl.   It is 'supposed' to be the same but in fact if it
- # is a fileevent handler that is supposed to do the setting, then the
- # fileevent handler might indeed get called continuously because the
- # file becomes readable, and myVwait which was checking a variable that
- # the handler set,  never gets a chance to return, since the handler
- # is called again and again.   So Remove the handler when it is invoked.
- # Note this uses tracing of the variable or array, and may interfere
- # with other tracing.
- #  Results: 
- #
- #  Side Effects: waits till the variable is set if it was unset, or
- # until its value is different. 
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# myVwait --  this is a replacement for vwait which is missing from
+# the plugin tcl.   It is 'supposed' to be the same but in fact if it
+# is a fileevent handler that is supposed to do the setting, then the
+# fileevent handler might indeed get called continuously because the
+# file becomes readable, and myVwait which was checking a variable that
+# the handler set,  never gets a chance to return, since the handler
+# is called again and again.   So Remove the handler when it is invoked.
+# Note this uses tracing of the variable or array, and may interfere
+# with other tracing.
+#  Results:
+#
+#  Side Effects: waits till the variable is set if it was unset, or
+# until its value is different.
+#
+#----------------------------------------------------------------
 #
 proc myVwait { var  } {
     global _waiting ws_openMath
@@ -44,7 +48,7 @@ proc myVwait { var  } {
     lappend ws_openMath(myVwait) $variable
 
 
-    set index ""  
+    set index ""
     if { [llength $tem ] > 1 } {
 	set index [lindex [split [lindex $tem 1] ")" ] 0]
     }
@@ -56,31 +60,31 @@ proc myVwait { var  } {
     while { [set _waiting] } {
         #puts "still waiting _waiting=$_waiting"
 	update
-     }
-     set ws_openMath(myVwait) [ ldelete $variable $ws_openMath(myVwait)]
-     trace vdelete $variable w $action
+    }
+    set ws_openMath(myVwait) [ ldelete $variable $ws_openMath(myVwait)]
+    trace vdelete $variable w $action
 }
 
 proc _myaction { ind name1 name2 op } {
     global _waiting
     # puts "action $ind $name1 $name2 $op"
     if { "$ind" == "$name2" } {
-    
+	
 	global $name1
 	set _waiting 0
 
     }
-    
+
 }
-    
+
 # proc myVwait { x args } {uplevel #0  vwait $x }
 if { "[info commands vwait]" == "vwait"  } {
-proc myVwait { x  } {
-      global ws_openMath $x
-      lappend ws_openMath(myVwait) $x
-      vwait $x
-      set ws_openMath(myVwait) [ ldelete $x $ws_openMath(myVwait)]
-  }
+    proc myVwait { x  } {
+	global ws_openMath $x
+	lappend ws_openMath(myVwait) $x
+	vwait $x
+	set ws_openMath(myVwait) [ ldelete $x $ws_openMath(myVwait)]
+    }
 }
 
 proc omDoInterrupt { win } {
@@ -90,9 +94,9 @@ proc omDoInterrupt { win } {
 	    # puts "interrupt program=$program,$var"
 	    after 10 uplevel #0 set $var <interrupted>
 	    catch { sendInterrupt $program }
-	    }
 	}
     }
+}
 
 
 proc omDoAbort { win } {
@@ -108,63 +112,63 @@ proc omDoAbort { win } {
 	    set var [string range $v 4 end]
 	    # rputs "interrupt program=$program,$var"
 	    after 200 uplevel #0 set $var <aborted>
-	    }
 	}
     }
+}
 
-    
+
 
 proc  msleep { n } {
     global Msleeping
     set Msleeping 1
     after $n "set Msleeping 0"
-  debugsend "waiting Msleeping.."
+    debugsend "waiting Msleeping.."
     myVwait Msleeping
-  debugsend "..donewaiting Msleeping"
+    debugsend "..donewaiting Msleeping"
 }
 proc message { msg } {
     global ws_openMath _debugSend
     if { $_debugSend } { puts "setting message=<$msg>" }
-   catch { set ws_openMath(load_rate) $msg }
+    catch { set ws_openMath(load_rate) $msg }
 }
 proc sendOne { program  com }  {
     global  pdata ws_openMath
     incr pdata($program,currentExpr)
     set socket $pdata($program,socket)
-    
+
     if { [eof $socket] } {
         error "connection closed"
     }
     # puts "sending $program ([lindex [fconfigure $socket -peername] 1])"
- 
+
     message "sending $program on [lindex [fconfigure $socket -peername] 1]"
     debugsend "sending.. {$com<$pdata($program,currentExpr)\|fayve>}"
     set msg "$com<$pdata($program,currentExpr)\|fayve>\n"
     proxyPuts $socket $msg
-    }
+}
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # sendOneDoCommand --  sends to PROGRAM the COMMAND and then
- # when the result comes back it invokes the script CALLBACK with
- # one argument appended: the global LOCATION where the result
- # will be.   [uplevel #0 set $LOCATION] would retrieve it.
- #
- #  Results: returns immediately the location that will be
- #  watched.
- #
- #  Side Effects: CALLBACK is invoked later by tracing the
- #  result field
- #
- #----------------------------------------------------------------
-#    
+#-----------------------------------------------------------------
+#
+# sendOneDoCommand --  sends to PROGRAM the COMMAND and then
+# when the result comes back it invokes the script CALLBACK with
+# one argument appended: the global LOCATION where the result
+# will be.   [uplevel #0 set $LOCATION] would retrieve it.
+#
+#  Results: returns immediately the location that will be
+#  watched.
+#
+#  Side Effects: CALLBACK is invoked later by tracing the
+#  result field
+#
+#----------------------------------------------------------------
+#
 proc sendOneDoCommand {program command callback } {
     global pdata
 
     if { ![assureProgram $program 5000 2] } { return "cant connect"}
-    
+
     set ii [expr {$pdata($program,currentExpr) + 1}]
     catch { unset pdata($program,results,$ii)}
     trace variable pdata($program,results,$ii) w \
@@ -191,32 +195,32 @@ proc invokeAndUntrace { callback name1 name2 op args} {
 	after 1 $com
     }
 }
-    
+
 proc sendOneWait { program com } {
-  global pdata
-   if { ![assureProgram $program 5000 2] } { return "cant connect"}
-  set ii [expr {$pdata($program,currentExpr) + 1}]
-  catch { unset pdata($program,results,$ii)}
+    global pdata
+    if { ![assureProgram $program 5000 2] } { return "cant connect"}
+    set ii [expr {$pdata($program,currentExpr) + 1}]
+    catch { unset pdata($program,results,$ii)}
 
 
-  sendOne $program $com
-  set i $pdata($program,currentExpr)
-  set socket $pdata($program,socket)
-  if { $ii != $i } { error "expected $ii got $i as expression number " }
-  debugsend "waiting for pdata($program,results,$i)"
+    sendOne $program $com
+    set i $pdata($program,currentExpr)
+    set socket $pdata($program,socket)
+    if { $ii != $i } { error "expected $ii got $i as expression number " }
+    debugsend "waiting for pdata($program,results,$i)"
 
-  myVwait pdata($program,results,$i)
-  debugsend "..done waiting for pdata($program,results,$i)"
-  return $pdata($program,results,$i)
+    myVwait pdata($program,results,$i)
+    debugsend "..done waiting for pdata($program,results,$i)"
+    return $pdata($program,results,$i)
 }
 
 proc closeConnection { program } {
     global pdata
-    catch { 
-    set sock $pdata($program,socket)
-    set pdata(input,$sock) ""
-    cleanPdata $program
-    close $sock
+    catch {
+	set sock $pdata($program,socket)
+	set pdata(input,$sock) ""
+	cleanPdata $program
+	close $sock
 
     }
 }
@@ -228,9 +232,9 @@ proc dtrace { } {
 	if { [info level]>2 } {puts "   from:[info level -2 ]"}
     }
 }
-	
+
 proc openConnection { tohost port magic program } {
-   global  pdata
+    global  pdata
     dtrace
     set msg "magic: $magic\n"
     set retries 2
@@ -238,55 +242,55 @@ proc openConnection { tohost port magic program } {
     debugsend "openConnection { $tohost $port $magic $program }"
 
     while { [incr retries -1] > 0 \
-             && [catch { set socket [openSocketAndSend $tohost $port $msg 1] }] }   {
-	         debugsend retries=$retries
-		 msleep 400
-	     }
-	     
-   if { $retries == 0 } { return 0}	     
+	    && [catch { set socket [openSocketAndSend $tohost $port $msg 1] }] }   {
+	debugsend retries=$retries
+	msleep 400
+    }
 
-   message "connected to nmtp//$tohost:$port/$program"
-   set pdata($program,socket) $socket
-   set pdata($program,currentExpr) 0 
-   set pdata(input,$socket) ""
-   catch { fconfigure $socket -blocking 0 }
-   fileevent $socket readable "getResults $program $socket"
-   return 1 
-   
+    if { $retries == 0 } { return 0}	
+
+    message "connected to nmtp//$tohost:$port/$program"
+    set pdata($program,socket) $socket
+    set pdata($program,currentExpr) 0
+    set pdata(input,$socket) ""
+    catch { fconfigure $socket -blocking 0 }
+    fileevent $socket readable "getResults $program $socket"
+    return 1
+
 }
 
 proc sendInterrupt { program } {
-  global pdata interrupt_signal
-   set socket $pdata($program,socket)
-  puts $socket $interrupt_signal ; flush $socket
+    global pdata interrupt_signal
+    set socket $pdata($program,socket)
+    puts $socket $interrupt_signal ; flush $socket
 }
 
-proc sendCommand { program c }   {w
- global  pdata
-   set socket $pdata($program,socket)
- puts $socket "<command:$c>"
- flush $socket
+proc sendCommand { program c }   {
+    global  pdata
+    set socket $pdata($program,socket)
+    puts $socket "<command:$c>"
+    flush $socket
 }
 
 proc dumpInfo {program } {
- sendCommand $program dumpInfo 
+    sendCommand $program dumpInfo
 }
 
 proc getResults {  program socket } {
     # debugsend "enter:getResults"
     global pdata  next_command_available next_command results ii
     if { [eof $socket] } {
-		close $socket ;
-	        debugsend "closed $socket"
-            	cleanPdata $program
-		return "<$program exitted>"
-    }    
+	close $socket ;
+	debugsend "closed $socket"
+	cleanPdata $program
+	return "<$program exitted>"
+    }
     set s [read $socket]
     if { "[string index $s 0]" != "" } {
 	set s [append pdata(input,$socket) $s]
 	while { [set inds [testForFayve $s]] != "" } {
 	    set input $pdata(input,$socket)
-	   # set next_command_available 1
+	    # set next_command_available 1
 	    debugsend "input=$input"
 	    set gotback [string range $input 0 [expr {[lindex $inds 0] -1}]]
 	    set index [lindex $inds 2]
@@ -296,12 +300,12 @@ proc getResults {  program socket } {
 		cleanPdata $program
 	    }
 
-	    debugsend "gotback{$index:$gotback}" 
+	    debugsend "gotback{$index:$gotback}"
 	    set s \
 		    [string range $input [expr {1 + [lindex $inds 1]}] end ]
-	    set pdata(input,$socket) $s  
+	    set pdata(input,$socket) $s
 	}
-  }
+    }
     return ""
 }
 
@@ -311,12 +315,12 @@ proc cleanPdata { program } {
     catch { unset pdata($program,socket) }
     catch { unset pdata($program,preeval) }
     catch {
-    foreach v [array names $program,results,*] {
-	unset pdata($v)
-    }
+	foreach v [array names $program,results,*] {
+	    unset pdata($v)
+	}
     }
 }
-    
+
 
 
 # number from run-main.tcl
@@ -333,18 +337,18 @@ proc currentTextWinWidth { } {
 
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # assureProgram --  
- #
- #  Results: return 2 if the program was already open, and 1 if it is just
- # now opened.   0 if cant open it.
- #
- #  Side Effects: program is started.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# assureProgram --
+#
+#  Results: return 2 if the program was already open, and 1 if it is just
+# now opened.   0 if cant open it.
+#
+#  Side Effects: program is started.
+#
+#----------------------------------------------------------------
 #
 proc assureProgram { program timeout tries } {
     # puts "assure: program=$program"
@@ -352,73 +356,72 @@ proc assureProgram { program timeout tries } {
 
 
     if { $tries <=  0   } { return 0}
-    
-    if  { [catch { set socket $pdata($program,socket) } ]
-	  || [catch { eof $socket}]
-	  || [eof $socket]
-	  || [catch { set s [read $socket] ;
-	      append pdata(input,$socket) $s }] } {
+
+    if  { [catch { set socket $pdata($program,socket) } ] \
+	    || [catch { eof $socket}] \
+	    || [eof $socket] \
+	    || [catch { set s [read $socket]; append pdata(input,$socket) $s }] } {
 	cleanPdata $program
 	message "connecting [lindex $MathServer 0]"
 	set msg "OPEN [programName $program] MMTP/1.0\nLineLength: [currentTextWinWidth]\n\n\n"
-	if { [catch {
-	    set sock [openSocketAndSend [lindex $MathServer 0] \
-  	    [lindex $MathServer 1] $msg\n ] } ]  } {
-	    error "Can't connect to $MathServer.  You can try another host by altering Base Program under the \"file\" menu."
-	    
+	if {[catch {openSocketAndSend [lindex $MathServer 0] \
+		[lindex $MathServer 1] "$msg\n"} sock] } {
+	    error "Can't connect to $MathServer.  You can try another host by altering Base Program under the \"File\" menu."
 	}
-	    
+	
 	set pdata($program,currentExpr) 0
 	fconfigure $sock -blocking 0
 	if { [eof $sock] } {return 0}
 	message "connected to [lindex $MathServer 0]"
 	debugsend $msg
 	set result ""
-        set pdata(waiting,$sock) 1
+	set pdata(waiting,$sock) 1
 	set script "close $sock ; debugsend {after closing} ; set pdata(waiting,$sock) -1"
 	debugsend "script=$script,timeout=$timeout"
 	set af [after $timeout $script ]
 	debugsend "after=$af"
 	while {1 } {
 	    debugsend "waiting pdata(waiting,$sock)=$pdata(waiting,$sock)"
-#	    puts "pdata=[array get pdata *$sock* ]"
+	    #	    puts "pdata=[array get pdata *$sock* ]"
 	    fileevent $sock readable "if { [eof $sock] }  {set pdata(waiting,$sock) -2} else { set pdata(waiting,$sock) 0 ;} ;fileevent $sock readable {} "
 	    set pdata(waiting,$sock) 1
-	    debugsend "waiting on  pdata(waiting,$sock)" 
-	    myVwait pdata(waiting,$sock) 
+	    debugsend "waiting on  pdata(waiting,$sock)"
+	    myVwait pdata(waiting,$sock)
 	    
 	    debugsend "..done now pdata(waiting,$sock)=$pdata(waiting,$sock)"
 	    if { $pdata(waiting,$sock) < 0 } {
 		debugsend "timed out,$pdata(waiting,$sock)"
-		return 0 }
-		set me [read $sock]
-		if { "[string index $me 0]" == ""  && [eof $sock] } {
-		    debugsend "nothing there"
-		    return 0}
-		    append result $me
-		    debugsend "result=<$result>"    
-		    if { [regexp "RUNNING (\[^ \]+) MMTP\[^\n\]*\nHost: (\[^\n ]+)\nPort: (\[0-9\]+)\nMagic: (\[^\n \]+)\n" \
-			    $result junk prog tohost port magic] } {
-			after cancel $af
-			debugsend "doing openConnection  $tohost $port $magic $program"
-			close $sock ;
-			return [openConnection  $tohost $port $magic $program]
-		    }
-		}
-	    } elseif { [eof $socket] } {
-		close $socket
-		unset pdata($program,socket)
-		return [assureProgram $program $timeout [expr {$tries -1}]]
-	    } else {
-		# already open
-		return 2
+		return 0 
+	    }
+	    set me [read $sock]
+	    if { "[string index $me 0]" == ""  && [eof $sock] } {
+		debugsend "nothing there"
+		return 0
+	    }
+	    append result $me
+	    debugsend "result=<$result>"
+	    if { [regexp "RUNNING (\[^ \]+) MMTP\[^\n\]*\nHost: (\[^\n ]+)\nPort: (\[0-9\]+)\nMagic: (\[^\n \]+)\n" \
+		    $result junk prog tohost port magic] } {
+		after cancel $af
+		debugsend "doing openConnection  $tohost $port $magic $program"
+		close $sock
+		return [openConnection  $tohost $port $magic $program]
 	    }
 	}
+    } elseif { [eof $socket] } {
+	close $socket
+	unset pdata($program,socket)
+	return [assureProgram $program $timeout [expr {$tries -1}]]
+    } else {
+	# already open
+	return 2
+    }
+}
 
 # name may look like "maxima#1.2"
 proc programName { name } {
     set name [file tail $name]
-   return [lindex [split $name #] 0]
+    return [lindex [split $name #] 0]
 }
 
 global EOFexpr
@@ -426,17 +429,17 @@ set EOFexpr "|fayve>"
 
 proc getMatch { s inds } {
     return [string range $s [lindex $inds 0] [lindex $inds 1]]
-}    
+}
 
 proc testForFayve { input } {
     global EOFexpr
-   set ind [string first $EOFexpr $input]
-   if { $ind < 0 } { return "" } else {
-       regexp -indices {<([0-9]+)\|fayve>} $input all first
-       
-       set n [getMatch $input $first]
-       return "$all $n"
-   }
+    set ind [string first $EOFexpr $input]
+    if { $ind < 0 } { return "" } else {
+	regexp -indices {<([0-9]+)\|fayve>} $input all first
+	
+	set n [getMatch $input $first]
+	return "$all $n"
+    }
 }
 
 #### the following is correct but just a fair bit slower.. ####
@@ -446,29 +449,29 @@ proc statServer1  {server {timeout 1000}} {
     set ans ""
     if { ![catch { set s [eval socket $server]} ] } {
 	puts $s "STAT MMTP/1.0\n" ; flush $s
-       if { [readAllData $s -tovar statServer(data) \
-	       -mimeheader statServer(header) -timeout $timeout ] > 0 } {
-	   set head $statServer(header)
-#	   puts "data=<$statServer(data)>"
-	   set res $statServer(header)\n\n$statServer(data)
-	   unset statServer
-	   return $res
-       }
-   }
-   return ""
+	if { [readAllData $s -tovar statServer(data) \
+		-mimeheader statServer(header) -timeout $timeout ] > 0 } {
+	    set head $statServer(header)
+	    #	   puts "data=<$statServer(data)>"
+	    set res $statServer(header)\n\n$statServer(data)
+	    unset statServer
+	    return $res
+	}
+    }
+    return ""
 }
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # needToDo --  Check if we have already done OPERATION for  NAME into data
- #
- #  Results: returns 0 if the data for name is not preloaded, and 1 otherwise
- #
- #  Side Effects: adds NAME to those preloaded for PROGRAM if not there
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# needToDo --  Check if we have already done OPERATION for  NAME into data
+#
+#  Results: returns 0 if the data for name is not preloaded, and 1 otherwise
+#
+#  Side Effects: adds NAME to those preloaded for PROGRAM if not there
+#
+#----------------------------------------------------------------
 #
 proc preeval { program name } {
     global pdata
@@ -479,34 +482,35 @@ proc preeval { program name } {
 	return 0
     } else { return 1 }
 }
-	
-	
+
+
 
 proc statServer  {server {timeout 1000}} {
     global statServer1_
     set ans ""
     if { ![catch { set s [eval socket $server]} ] } {
 	puts $s "STAT MMTP/1.0\n" ; flush $s
-       if { [readDataTilEof $s data $timeout ] } {
-	   foreach v { jobs currentjobs } {
-	       if { [regexp "\n$v: (\[^\n]*)\n" $data junk val] } {
-		   lappend ans $v $val
-	       }
-	   }
-       }
-   }
-       return $ans
-   }
+	if { [readDataTilEof $s data $timeout ] } {
+	    foreach v { jobs currentjobs } {
+		if { [regexp "\n$v: (\[^\n]*)\n" $data junk val] } {
+		    lappend ans $v $val
+		}
+	    }
+	}
+    }
+    return $ans
+}
 
 proc isAlive1 { s } {
     global ws_openMath
     if { [catch { read $s } ] } {
-	set ws_openMath(isalive) -1 } else {
-	    set ws_openMath(isalive) 1
-	}
-	close $s
-	}
-	
+	set ws_openMath(isalive) -1 
+    } else {
+	set ws_openMath(isalive) 1
+    }
+    close $s
+}
+
 proc isAlive { server {timeout 1000} } {
     global ws_openMath
 
@@ -521,14 +525,14 @@ proc isAlive { server {timeout 1000} } {
     after cancel $after_id
     return $ws_openMath(isalive)
 }
-    
-   
+
+
 proc debugsend { s } {
     global _debugSend
     if { $_debugSend } {
-     
-     puts $s
-    flush stdout
+	
+	puts $s
+	flush stdout
     }
 }
 

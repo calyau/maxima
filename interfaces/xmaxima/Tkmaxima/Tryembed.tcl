@@ -1,10 +1,14 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Tryembed.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Tryembed.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
-## the following worked to have an entry box that spoke... 
+## the following worked to have an entry box that spoke...
 # %     safe::interpCreate jack
 # jack
 # % set slave jack
@@ -105,7 +109,7 @@ proc setupPrintVariables { slave } {
 #     if { $width <=1 } {set width 200}
 #     if { $height <=1 } {set height 200}
 #     set ff [makeEmbedWin $win $width $height]
-    
+
 #     return [list $ff [oget $ff slave]]
 # }
 
@@ -179,7 +183,7 @@ proc Safesock_PolicyInit {slave {version 1.0}} {
 
     # Tell the slave about itself:
 
-    interp eval $slave [list set env(SERVER) $server] 
+    interp eval $slave [list set env(SERVER) $server]
     interp eval $slave [list set env(PORT) $port]
     interp eval $slave [list set env(URL) $url]
 
@@ -254,19 +258,19 @@ proc Safesock_PolicyCleanup {slave} {
     }
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
  # SafesockServerAnswer --  will replace COMMAND in a `socket -server command'
  #  request.   Checks if the incoming connection is allowed and if so
  #  invokes the original command.   Allowed is based on the same criteria
- #  as the outgoing connection.   
+ #  as the outgoing connection.
  #
  #  Results: none
  #
  #  Side Effects: if connect is allowed, transfer the socket to the slave
- #  and eval the original command there. 
+ #  and eval the original command there.
  #
  #----------------------------------------------------------------
 #
@@ -282,7 +286,7 @@ proc SafesockServerAnswer { slave command sock host port } {
 }
 
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -291,7 +295,7 @@ proc SafesockServerAnswer { slave command sock host port } {
  #
  #  Results: 1 if succeeds and 0 if it fails to allow
  #
- #  Side Effects:  set GOOD to ok port in the caller 
+ #  Side Effects:  set GOOD to ok port in the caller
  #
  #----------------------------------------------------------------
 #
@@ -409,7 +413,7 @@ proc SafesockSocketAlias {slave host port args} {
     }
     SafesockAllow $slave $host $port
     if [info exists good] {
-	if { "$option" != "" } { 
+	if { "$option" != "" } {
 	    set sock [interp invokehidden $slave socket $option $host $good]
 	} else { set sock [interp invokehidden $slave socket $host $good]}
 	browser_log $slave normal socket $host $port

@@ -1,14 +1,18 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Printops.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Printops.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 ### FIXME: fix a4 size !
 global paperSizes printOptions
-set paperSizes {{letter 8.5 11} { A4 8.5 11} {legal 8.5 13}} 
+set paperSizes {{letter 8.5 11} { A4 8.5 11} {legal 8.5 13}}
 
-set printOptions { 
+set printOptions {
     { landscape  1 "Non zero means use landscape mode in printing" }
     { tofile 1 "Non zero means print to file" }
     { pagewidth "" "Figure width" }
@@ -23,7 +27,7 @@ set printOptions {
     { title "" "Title" }
     { psfilename "~/sdfplot.ps" "Postscript filename" }
     { gsview "gsview32" "postscript viewer, used for printing under Windows" }
-    { centeronpage 1 ""} 
+    { centeronpage 1 ""}
 }
 
 # proc getPageOffsets { widthbyheight} {
@@ -72,7 +76,7 @@ set printOptions {
 #     #-pagey = right margin (whether landscape or not)
 #     #-pagewidth becomes vertical height if landscape
 #     #-pageheight becomes horiz width if landscape
-    
+
 #     set xoff [expr {($pwid-$iwid)/2.0}]
 #     set yoff [expr  {($phei-$ihei)/2.0}]
 
@@ -86,7 +90,7 @@ set printOptions {
 #     set ans "-pagex [set xoff]i -pagey [set yoff]i \
 # 	    -pagewidth [set iwid]i -pageheight [set ihei]i"
 #     set ans "-pagex [set xoff]i -pagey [set yoff]i \
-# 	    -pagewidth [set iwid]i -pageheight [set ihei]i"    
+# 	    -pagewidth [set iwid]i -pageheight [set ihei]i"
 #     return $ans
 # }
 
@@ -112,7 +116,7 @@ proc getPageOffsets { widthbyheight} {
     set hei [expr {$phei - 2* $printOption(voffset)}]
     if { $printOption(landscape) } {
 	swap wid hei
-#	swap pwid phei
+	#	swap pwid phei
     }
     if { $wid / $hei  < $widthbyheight  } {
 	# width dominates
@@ -129,12 +133,12 @@ proc getPageOffsets { widthbyheight} {
     #-pagey = right margin (whether landscape or not)
     #-pagewidth becomes vertical height if landscape
     #-pageheight becomes horiz width if landscape
-    
+
     append opts " -pagex [expr {$pwid / 2.0}]i -pagey [expr {$phei / 2.0}]i "
 
-	if { $printOption(landscape) } {
-	    append opts " -rotate $printOption(landscape)" 
-	}
+    if { $printOption(landscape) } {
+	append opts " -rotate $printOption(landscape)"
+    }
     return $opts
 }
 
@@ -142,13 +146,13 @@ global printOption
 set printOption(setupDone) 0
 
 proc getEnv { name } {
-  global env
- if { [catch { set tem $env($name) } ] } { return "" }
- return $tem
+    global env
+    if { [catch { set tem $env($name) } ] } { return "" }
+    return $tem
 }
 proc setPrintOptions { lis } {
     global browser_version
-   global printOptions printOption printSetUpDone 
+    global printOptions printOption printSetUpDone
     if { !$printOption(setupDone) } {
 	set printOption(setupDone) 1
 	getOptions $printOptions $lis -allowOtherKeys 1 \
@@ -176,10 +180,10 @@ proc mkPrintDialog { name args } {
     catch { destroy $name }
     set dismiss "destroy $name"
     if { "$canv" == "" } {
-     catch {destroy $name}
-    toplevel $name
-    wm geometry $name -0+20
-   
+	catch {destroy $name}
+	toplevel $name
+	wm geometry $name -0+20
+
     } else {
         $canv delete printoptions
         set name [winfo parent $canv].printoptions
@@ -191,7 +195,7 @@ proc mkPrintDialog { name args } {
         $canv raise printoptions
 	set dismiss "$canv delete $item; destroy $name "
     }
-	
+    
     frame $name.fr
 
     set w $name.fr
@@ -199,17 +203,17 @@ proc mkPrintDialog { name args } {
     pack $w
     pack $w.msg
     set wb $w.buttons
-    frame $wb 
+    frame $wb
     pack $wb -side left -fill x -pady 2m
     set topack ""
     catch { set printOption(psfilename) \
 	    [file nativename $printOption(psfilename)]}
     button $wb.ok -text "ok" -font $buttonFont  -command "destroy $name ; $canv delete printoptions"
-    radiobutton $wb.b0 -text "Save via ftp" -variable printOption(tofile) -relief flat -value 2 -command {set writefile "Save"} -font $buttonFont  -highlightthickness 0 
-    radiobutton $wb.b1 -text "Save as Postscript File" -variable printOption(tofile) -relief flat -value 1 -command {set writefile "Save"} -font $buttonFont  -highlightthickness 0 
-    radiobutton $wb.b2 -text "Print To Printer" -variable printOption(tofile) -relief flat -value 0 -command {set writefile "Print"} -font $buttonFont -highlightthickness 0 
-    checkbutton $wb.b3 -text "Center on Page" -variable printOption(centeronpage) -relief flat -font $buttonFont -highlightthickness 0 
-    checkbutton $wb.b4 -text "Landscape Mode" -variable printOption(landscape) -relief flat -font $buttonFont -highlightthickness 0 
+    radiobutton $wb.b0 -text "Save via ftp" -variable printOption(tofile) -relief flat -value 2 -command {set writefile "Save"} -font $buttonFont  -highlightthickness 0
+    radiobutton $wb.b1 -text "Save as Postscript File" -variable printOption(tofile) -relief flat -value 1 -command {set writefile "Save"} -font $buttonFont  -highlightthickness 0
+    radiobutton $wb.b2 -text "Print To Printer" -variable printOption(tofile) -relief flat -value 0 -command {set writefile "Print"} -font $buttonFont -highlightthickness 0
+    checkbutton $wb.b3 -text "Center on Page" -variable printOption(centeronpage) -relief flat -font $buttonFont -highlightthickness 0
+    checkbutton $wb.b4 -text "Landscape Mode" -variable printOption(landscape) -relief flat -font $buttonFont -highlightthickness 0
 
     mkentryPr  $wb.pagewidth printOption(pagewidth) "Figure width" $buttonFont
     mkentryPr  $wb.pageheight printOption(pageheight) "Figure height" $buttonFont
@@ -218,8 +222,8 @@ proc mkPrintDialog { name args } {
     mkentryPr  $wb.psfilename printOption(psfilename) "postscript filename" $buttonFont
     mkentryPr  $wb.printer printOption(printer) "Printer to print to" $buttonFont
     mkentryPr  $wb.gsview printOption(gsview) "postscript viewer, used for printing under Windows" $buttonFont
-   mkentryPr  $wb.xticks printOption(xticks) "Rough number of xticks" $buttonFont
-   mkentryPr  $wb.yticks printOption(yticks) "Rough number of yticks" $buttonFont
+    mkentryPr  $wb.xticks printOption(xticks) "Rough number of xticks" $buttonFont
+    mkentryPr  $wb.yticks printOption(yticks) "Rough number of yticks" $buttonFont
     eval pack $wb.ok $wb.b0 $wb.b1 $wb.b2 $wb.b3 $wb.b4
     eval pack $topack -expand 1
 
@@ -227,10 +231,10 @@ proc mkPrintDialog { name args } {
 	set papersize [lindex $v 0]
         set lower [string tolower $papersize]
         radiobutton $wb.$lower -text [lindex $v 0] -variable printOption(papersize) \
-	   -value [lindex $v 0] -font $buttonFont -highlightthickness 0 
-    pack $wb.$lower -pady 2 -anchor w -fill x
+		-value [lindex $v 0] -font $buttonFont -highlightthickness 0
+	pack $wb.$lower -pady 2 -anchor w -fill x
     }
-    checkbutton $wb.domargin -variable printOption(domargin) -text "do margin" 
+    checkbutton $wb.domargin -variable printOption(domargin) -text "do margin"
     pack $wb.domargin -pady 2 -anchor w -fill x
 
     frame $w.grid
@@ -241,9 +245,9 @@ proc mkPrintDialog { name args } {
 
 proc markToPrint { win tag title } {
     # puts "$win $tag"
-   # bind $win <1> "bindBeginDrag $win %x %y $tag [list $title]"
+    # bind $win <1> "bindBeginDrag $win %x %y $tag [list $title]"
     pushBind $win <1> "$win delete printrectangle ; popBind $win <1>"
-    pushBind $win <1> "bindBeginDrag $win %x %y $tag [list $title]; popBind $win <1>"    
+    pushBind $win <1> "bindBeginDrag $win %x %y $tag [list $title]; popBind $win <1>"
 }
 
 proc bindBeginDrag { win x y tag title } {
@@ -267,23 +271,23 @@ proc unbindAdjustWidth { canv tag title } {
     set it [$canv find withtag $tag]
     set co1 [$canv coords $tag]
     set co [$canv coords $it]
-   # if { "$co" != "$co1" } {puts differ,$co1,$co}
+    # if { "$co" != "$co1" } {puts differ,$co1,$co}
     desetq "x1 y1 x2 y2" $co
     set center [expr { ($x1+$x2 )/2}]
-   set h [expr {$y2 - $y1}]
+    set h [expr {$y2 - $y1}]
     set it [$canv find withtag $tag]
-   set new [$canv create rectangle $x1 $y1 $x2 $y2 -outline white -width [expr {$h* .04}] -tags [concat $tag bigger] ]
+    set new [$canv create rectangle $x1 $y1 $x2 $y2 -outline white -width [expr {$h* .04}] -tags [concat $tag bigger] ]
 
     # puts "<marginTicks $canv $x1 $y1 $x2 $y2 printrectangle>"
     marginTicks $canv [storx$win $x1] [story$win $y2] [storx$win $x2] [story$win $y1] "printrectangle marginticks"
     desetq "a1 b1 a2 b2" [$canv bbox $new]
-   set textit [$canv create text $center [expr {$y1 - $h *.03}] \
+    set textit [$canv create text $center [expr {$y1 - $h *.03}] \
 	    -font [font create -family Courier -size 14 -weight bold] -text "$title" \
 	    -anchor s -tags [concat $tag bigger title]]
 
     set bb [$canv bbox $textit]
-   $canv create rectangle $a1 [lindex $bb 1]  $a2 [expr {$y1 - 0.02 * $h}]  -tags $tag -fill white -outline {}
-   $canv itemconfig $it -width [expr {$h *.002}]
+    $canv create rectangle $a1 [lindex $bb 1]  $a2 [expr {$y1 - 0.02 * $h}]  -tags $tag -fill white -outline {}
+    $canv itemconfig $it -width [expr {$h *.002}]
     $canv raise $it
     $canv raise $textit
     $canv raise marginticks
@@ -295,19 +299,19 @@ proc unbindAdjustWidth { canv tag title } {
     # puts h=$h
 
 }
-    
+
 
 proc getPSBbox  { } {
-  set fi [open /home/wfs/sdfplot.ps r]
-  set me [read $fi 500]
-  regexp {BoundingBox: (-*[0-9]+) (-*[0-9]+) (-*[0-9]+) (-*[0-9]+)} $me junk x1 y1 x2 y2
+    set fi [open /home/wfs/sdfplot.ps r]
+    set me [read $fi 500]
+    regexp {BoundingBox: (-*[0-9]+) (-*[0-9]+) (-*[0-9]+) (-*[0-9]+)} $me junk x1 y1 x2 y2
     set w [expr {72 * 8.5}]
     set h [expr {72 * 11}]
     # puts "hei=[expr {$y2-$y1}],tm=[expr {$h - $y2}],bm=$y1"
     # puts "wid=[expr {$x2-$x1}],lm=$x1,rm=[expr {$w - $x2}]"
     # puts "hei=[expr {($y2-$y1)/72.0}],tm=[expr {($h - $y2)/72.0}],bm=([expr {$y1/72.0}])"
-    #puts "wid=[expr {($x2-$x1)/72.0}],lm=([expr {$x1/72.0}]),rm=[expr {($w - $x2)/72.0}]"    
-  close $fi
+    #puts "wid=[expr {($x2-$x1)/72.0}],lm=([expr {$x1/72.0}]),rm=[expr {($w - $x2)/72.0}]"
+    close $fi
 }
 
 

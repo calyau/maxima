@@ -1,14 +1,18 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Tryftp2.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Tryftp2.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 if { "[info commands vwait]" == "vwait" && "[info commands myVwait]" == "" } {
-  proc myVwait { x  } {uplevel 1  vwait $x }
+    proc myVwait { x  } {uplevel 1  vwait $x }
 }
 
 proc submitFtp { viahost host name password directory filename} {
-    global ftpInfo 
+    global ftpInfo
 
     if  { [catch { set sock [socket $viahost 80] } ] } {
 	set sock [socket $viahost 4080]
@@ -16,7 +20,7 @@ proc submitFtp { viahost host name password directory filename} {
     set ftpInfo($sock,done) 0
     set len [string length $ftpInfo(data)]
     set ftpInfo($sock,data) $ftpInfo(data)
- 
+
     # set sock [open /tmp/jim w+]
     fconfigure $sock -blocking 0 -translation {lf lf}
     # global billy ;lappend billy [list [fconfigure $sock]]
@@ -42,7 +46,7 @@ proc submitFtp { viahost host name password directory filename} {
     set ftpInfo($sock,datalength) $len
     set ftpInfo($sock,datanext) 0
     set ftpInfo($sock,log) "none.."
-   # puts $sock $ftpInfo(data) ; flush $sock
+    # puts $sock $ftpInfo(data) ; flush $sock
     fileevent $sock writable "ftp2SendData $sock"
     fileevent $sock readable "ftp2WatchReturn $sock"
     myVwait ftpInfo($sock,done)
@@ -65,7 +69,7 @@ proc ftp2Close { sock } {
 }
 
 proc ftp2WatchReturn { sock } {
-    global ftpInfo 
+    global ftpInfo
 
     append ftpInfo($sock,return) " watching ..."
     set new [read $sock ]
@@ -86,8 +90,8 @@ proc ftp2WatchReturn { sock } {
 }
 # set billy {}
 proc ftp2SendData { sock } {
-    global ftpInfo 
-    
+    global ftpInfo
+
     set dn $ftpInfo($sock,datanext)
     set dl $ftpInfo($sock,datalength)
     #global billy ; lappend billy [list $dn $dl]
@@ -112,7 +116,7 @@ proc ftp2SendData { sock } {
     after cancel "set ftpInfo($sock,done) -1"
     after 10000 "set ftpInfo($sock,done) -1"
 }
-    
+
 
 
 ## endsource tryftp2.tcl

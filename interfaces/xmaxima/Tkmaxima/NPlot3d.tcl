@@ -1,7 +1,11 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: NPlot3d.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### NPlot3d.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 # source plotting.tcl ; source nplot3d.tcl ; catch { destroy .plot3d} ;  plot3d -zfun "" -data $sample -xradius 10 -yradius 10
@@ -14,14 +18,14 @@
 #  { xyzgrid {{x00 y00 z00 x01 y01 z01 .. x0  }{x0 x1  xm} {y0 y1 yn } miny maxy}
 #   {{z00 z01 z02 .. z0n } { z10 z11 z12 .. z1n} {..  } ...}
 # tclMesh(2*[0,0,0,0,0;1,1,1,1,1]-1,2*[0,1,1,0,0;0,1,1,0,0]-1,2*[0,0,1,1,0;0,0,1,1,0]-1)
-  
-#     { gridequal { 
+
+#     { gridequal {
 
 # z00 z01 .. all belong to x=minx and y = miny,.... up y=maxy in n+1 steps
 #{ grid {minx maxx} {miny maxy}
 #  {{z00 z01 z02 .. z0n } { z10 z11 z12 .. z1n} {..  } ...}
 # }
-# where a mesh(1) {z00 z01 z11 z10} above 
+# where a mesh(1) {z00 z01 z11 z10} above
 
 
 
@@ -45,21 +49,21 @@ set sample { matrix_mesh  {  { 0 0 0 0 0 }
  { 0 1 1 0 0 }
  }  {  { 0 0 1 1 0 }
  { 0 0 1 1 0 }
- }  } 
+ }  }
 
-    
+
 proc  fixupZ { } {
     uplevel 1 {
 	if { [catch { expr $z + 0 } ] } {
 	    set z nam
 	}  elseif { $dotruncate  &&  ($z > $zzmax || $z < $zzmin) } {
 	    set z nam
-	    
+	
 	} else {
 	    if { $flatten } {
 		if { $z > $zzmax } { set z $zzmax } elseif {
 		    $z < $zzmin } { set z $zzmin }}
-		    
+		
 		    if { $z < $zmin }  { set zmin $z } elseif {
 			$z > $zmax } { set zmax $z }
 		    }
@@ -77,11 +81,11 @@ proc normalizeToLengthOne { v } {
 	return [list [expr { [lindex $v 0] / $norm  } ] \
 		[expr { [lindex $v 1] / $norm  } ] \
 		[expr { [lindex $v 2] / $norm  } ] ]
-	 
+	
     } else { return "1.0 0.0 0.0 " }
 }
-    
-    
+
+
 
 proc vectorCross { x1 x2 }  {
      list \
@@ -89,7 +93,7 @@ proc vectorCross { x1 x2 }  {
       [expr { [lindex $x1 2]*[lindex $x2 0]- [lindex $x2 2]*[lindex $x1 0] } ] \
       [expr { [lindex $x1 0]*[lindex $x2 1]- [lindex $x2 0]*[lindex $x1 1] }]
 }
-    
+
 proc linspace { a b n } {
     if { $n < 2 } { error "from $a to $b requires at least 2 points" }
     set del [expr {($b - $a)*1.0/($n -1)  }]
@@ -101,11 +105,11 @@ proc linspace { a b n } {
 
 
 proc addOnePlot3d { win data } {
-    upvar #0 plot3dMeshes$win meshes 
+    upvar #0 plot3dMeshes$win meshes
     #puts " adding meshes = plot3dMeshes$win"
     #puts "data=$data"
     linkLocal $win points zmax zmin zcenter zradius rotationcenter xradius yradius xmin xmax ymin ymax lmesh
-    makeLocal $win flatten 
+    makeLocal $win flatten
     catch { unset  meshes }
     set points ""
 
@@ -157,12 +161,12 @@ proc addOnePlot3d { win data } {
 
 	for {set j 0} { $j <= $ny } { incr j} {
 	    set y [lindex $yrow $j]
-	    set row [lindex $zmat $j]    
+	    set row [lindex $zmat $j]
 	for {set i 0} { $i <= $nx } { incr i} {
 	    set x [lindex $xrow $i]
 	    set z [lindex $row $i]
 	    #puts "x=$x,y=$y,z=$z, at ($i,$j)"
-	    fixupZ 
+	    fixupZ
 	    if { $j != $ny && $i != $nx } {
 		lappend lmesh [list $k [expr { $k+3 }] \
 			[expr { $k+3+($nx+1)*3 }] \
@@ -176,10 +180,10 @@ proc addOnePlot3d { win data } {
 	
 	desetq "xmat ymat zmat" [lrange $data 1 end]
 	foreach v {x y z} {
-	    
-	    
+	
+	
 	    desetq "${v}min ${v}max" [matrixMinMax [list [set ${v}mat]]]
-	    
+	
 	}
 	#puts "zrange=$zmin,$zmax"
 	set nj [expr {[llength [lindex $xmat 0]] -1 }]
@@ -217,14 +221,14 @@ proc addOnePlot3d { win data } {
     set mdata [lindex $data 1]
     set nx [llength $mdata]
     set ny [llength [lindex $mdata 0]]
-    
+
     for {set i 0} { $i <= $nx } { incr i} {
 	set pts [lindex $mdata $i]
 	set j 0
 	foreach { x y z} $pts {
 	    fixupZ $z
 	    if { $j != $ny && $i != $nx } {
-		lappend lmesh [list 
+		lappend lmesh [list
 			$k [expr { $k+3 }] [expr { $k+3+($ny+1)*3 }] \
 			[expr { $k+($ny+1)*3 }] ]
 		}
@@ -248,7 +252,7 @@ proc addOnePlot3d { win data } {
     if { "$rotationcenter" == "" } {
 	set rotationcenter "[expr {.5*($xmax + $xmin)}] [expr {.5*($ymax + $ymin)}]   [expr {.5*($zmax + $zmin)}] "
     }
-    
+
     #puts "meshes data=[array get meshes]"
     #global plot3dMeshes.plot3d
     #puts "array names plot3dMeshes.plot3d = [array names plot3dMeshes.plot3d]"
@@ -294,7 +298,7 @@ proc tubeFromCurveData { pts nsides radius } {
     set n1 $old1
     set n2 [normalizeToLengthOne [vectorCross $delta $old1]]
     set first1 $n1 ; set first2 $n2
-    
+
     lappend ans [oneCircle $n2   old1 [lindex $pts 0]]
     for { set j 1 } { $j < $n -1 } { incr j } {
 	set delta [vectorDiff [lindex $pts $j] [lindex $pts [expr {$j+1}]]]
@@ -327,7 +331,7 @@ proc tubeFromCurveData { pts nsides radius } {
    return $ans
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #

@@ -1,7 +1,11 @@
-###### macros.tcl ######
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Macros.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
+###### Macros.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 proc desetq {lis lis2} {
     set i 0
@@ -14,7 +18,8 @@ proc desetq {lis lis2} {
 proc assoc { key lis args } {
     foreach { k val } $lis {
 	if { "$k" == "$key" } {
-	    return $val }
+	    return $val 
+	}
     }
     return [lindex $args 0]
 }
@@ -22,7 +27,7 @@ proc assoc { key lis args } {
 proc delassoc { key lis } {
     foreach { k val } $lis {
 	if { "$k" != "$key" } {
-	lappend new $k $val
+	    lappend new $k $val
 	}
     }
     return $new
@@ -52,17 +57,17 @@ proc intersect { lis1 lis2 } {
 }
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # ldelete --  remove all copies of ITEM from LIST
- #
- #  Results: new list without item
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# ldelete --  remove all copies of ITEM from LIST
+#
+#  Results: new list without item
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc ldelete { item list } {
     while { [set ind [lsearch $list $item]] >= 0  } {

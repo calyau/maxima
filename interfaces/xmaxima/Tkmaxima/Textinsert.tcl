@@ -1,7 +1,11 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Textinsert.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Textinsert.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 proc mkTextItem { c x y args  } {
@@ -19,7 +23,7 @@ proc mkTextItem { c x y args  } {
     $c bind text <Control-h> "textBs $c"
     $c bind text <BackSpace> "textBs $c"
     $c bind text <Delete> "textDel $c"
-    $c bind text <2> "textPaste $c @%x,%y" 
+    $c bind text <2> "textPaste $c @%x,%y"
 }
 
 

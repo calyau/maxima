@@ -1,3 +1,7 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Preamble.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### preamble.tcl ######
 
 # get the number of clicks per second on this machine..

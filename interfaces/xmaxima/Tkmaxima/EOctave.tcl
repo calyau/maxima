@@ -1,39 +1,43 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: EOctave.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### EOctave.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # insertResult_octave --  insert result RES, in text window W,
- # into RESULTRANGE.  The command which was sent to octave came
- # from THISRANGE.   For plots if a resultRANGE is missing,
- # we use a space just after the end of the line of THISRANGE.
- # checks if this is plotdata, and if so makes plot win for it.
- #
- #  Results: none
- #
- #  Side Effects:  inserts in text or graph in window W.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# insertResult_octave --  insert result RES, in text window W,
+# into RESULTRANGE.  The command which was sent to octave came
+# from THISRANGE.   For plots if a resultRANGE is missing,
+# we use a space just after the end of the line of THISRANGE.
+# checks if this is plotdata, and if so makes plot win for it.
+#
+#  Results: none
+#
+#  Side Effects:  inserts in text or graph in window W.
+#
+#----------------------------------------------------------------
 #
 
 proc insertResult_octave {  w thisRange resultRange res } {
     #puts "res=$res"
-  if { [regexp "\{plot\[23\]d" $res] } {
-      #puts "its a plot"
-      set name [plotWindowName $w]
-      set tem [setDesiredDims $w $name $thisRange ]
-      eval plot2dData $name $res [getDimensions $w $name] 
-      ShowPlotWindow $w $name  $thisRange $resultRange $tem
-      return 0
-   } elseif { "$resultRange" != "" } {
+    if { [regexp "\{plot\[23\]d" $res] } {
+	#puts "its a plot"
+	set name [plotWindowName $w]
+	set tem [setDesiredDims $w $name $thisRange ]
+	eval plot2dData $name $res [getDimensions $w $name]
+	ShowPlotWindow $w $name  $thisRange $resultRange $tem
+	return 0
+    } elseif { "$resultRange" != "" } {
 	insertResult $w $resultRange $res
-   }
-   return 0
+    }
+    return 0
 }
 
 

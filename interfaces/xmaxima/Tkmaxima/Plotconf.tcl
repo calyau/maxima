@@ -1,26 +1,31 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Plotconf.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### plotconf.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 proc makeFrame { w type } {
-    global   writefile doExit fontSize buttonfont ws_openMath   
+    global   writefile doExit fontSize buttonfont ws_openMath
     set win $w
     if { "$w" == "." } {
-        set w "" } else {
+        set w "" 
+    } else {
 	    catch { destroy $w}
-	    
+	
 	    frame $w
 	    # toplevel $w
 	    # set w $w.new
             # frame $w
            # puts "making $w"	
-	    
+	
     }
 
     set dismiss "destroy $win"
-    catch { set  parent [winfo parent $win] 
+    catch { set  parent [winfo parent $win]
     if { "$parent" == "." } {
 	set dismiss "destroy ."
     }
@@ -28,7 +33,7 @@ proc makeFrame { w type } {
 	set dismiss "destroy [winfo toplevel $win]"
     }
     }
-    
+
     if { "$doExit" != "" } {set dismiss $doExit } 	
     oset $w type $type
 
@@ -37,11 +42,11 @@ proc makeFrame { w type } {
     set c $w.c
     oset $win c $c
     bboxToRadius $win
-    
+
     if { [catch { set buttonfont} ] } {
 	set buttonfont [font create -family Helvetica -size $fontSize]
     }
-    set buttonFont $buttonfont    
+    set buttonFont $buttonfont
     oset $win buttonFont $buttonfont
 
 #    puts "children wb=[winfo children $w]"
@@ -53,7 +58,7 @@ proc makeFrame { w type } {
     setBalloonhelp $win $wb.dismiss {Close this plot window}
     button $wb.zoom -text "Zoom" -command "showZoom $w" -font $buttonFont
     setBalloonhelp $win $wb.zoom {Magnify the plot.  Causes clicking with the left mouse button on the plot, to magnify (zoom in) the plot where you click.  Also causes Shift+Click to  it to unmagnify (zoom out) at that point}
-    oset $w position "" 
+    oset $w position ""
 #    button $w.position -textvariable [oloc $w position] -font $buttonFont -width 10
     label $w.position  -textvariable [oloc $w position] -font $buttonFont -width 10
     setBalloonhelp $win $w.position {Position of the pointer in real x y coordinates.  For 3d it is the position of the nearest vertex of the polygon the pointer is over.}
@@ -62,17 +67,17 @@ proc makeFrame { w type } {
     setBalloonhelp $win $wb.help {Give more help about this plot window}
     button $wb.postscript -textvariable writefile -command "writePostscript $w" -font $buttonFont
     setBalloonhelp $win $wb.postscript {Prints or Saves the plot in postscript format.  The region to be printed is marked using Mark.   Other print options can be obtained by using "Print Options" in the Config menu }
-    
+
     button $wb.markrect -text "Mark" -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
     setBalloonhelp $win $wb.markrect {Mark the region to be printed.  Causes the left mouse button to allow marking of a rectangle by clicking at the upper left corner, and dragging the mouse to the lower right corner.  The title can be set under "Print Options" under Config}
     button $wb.replot -text "Replot" -command "replot$type $win" -font $buttonFont
     setBalloonhelp $win $wb.replot {Use the current settings and recompute the plot.  The settings may be altered in Config}
-    
+
 	
-    
+
     button $wb.config -text "Config" -command "doConfig$type $win" -font $buttonFont
-    setBalloonhelp $win $wb.config {Configure various options about the plot window.  After doing this one may do replot.  Hint: you may leave the config menu on the screen and certain actions take place immediately, such as rotating or computing a trajectory at a point.  To make room for the window you might slide the graph to the right, and possibly shrink it using the unzoom feature}    
-    
+    setBalloonhelp $win $wb.config {Configure various options about the plot window.  After doing this one may do replot.  Hint: you may leave the config menu on the screen and certain actions take place immediately, such as rotating or computing a trajectory at a point.  To make room for the window you might slide the graph to the right, and possibly shrink it using the unzoom feature}
+
 
 
     #mike FIXME: this is a wrong use of after cancel
@@ -98,14 +103,14 @@ proc makeFrame { w type } {
     # bind $c <2> "$c scan mark %x %y"
     bind $c <B3-Motion> "$c scan dragto %x %y"
     bind $c <3> "$c scan mark %x %y"
-    bind $c <B3-Motion> "$c scan dragto %x %y"    
+    bind $c <B3-Motion> "$c scan dragto %x %y"
     bind $c <Motion> "showPosition $w %x %y"
     bind $c <Configure> "reConfigure $c %w %h"
     bind $c <Enter> "raise $win.position"
     bind $c <Leave> "after 200 lower $win.position"
     $w.position config -background [$c cget -background]
-     
-     
+
+
     pack  $wb.dismiss $wb.help $wb.zoom   \
 	    $wb.postscript $wb.markrect $wb.replot $wb.config -side top -expand 1 -fill x
     if { 0 } {
@@ -113,7 +118,7 @@ proc makeFrame { w type } {
 	pack $w.vscroll -side right -expand 1 -fill y
     }
 	pack $w.c -side right -expand 1 -fill both
-    
+
     pack $w
     place $w.position -in $w -x 2 -y 2 -anchor nw
     oset $w position "Menu Here"
@@ -129,9 +134,9 @@ proc makeFrame { w type } {
 	
 
     }
-    
+
     raise $w.position
-    
+
     pack [winfo parent $wb]
    # update
 #    set wid [ winfo width $win]
@@ -140,10 +145,10 @@ proc makeFrame { w type } {
 #	    oset $win width $wid
 #    }
 
-   addSliders $w 
+   addSliders $w
 
    bind $w <Configure> "resizePlotWindow $w %w %h"
-    return $w    
+    return $w
 }
 
 proc mkentry { newframe textvar text buttonFont } {
@@ -165,15 +170,15 @@ proc mkentry { newframe textvar text buttonFont } {
 	    }
     }
     }
-    label $newframe.lab1 
+    label $newframe.lab1
     label $newframe.lab -text "$text:" -font $buttonFont -width 0
     entry $newframe.e -width 20 -textvariable $textvar -font $buttonFont
-    pack $newframe.lab1 -side left -expand 1 -fill x 
+    pack $newframe.lab1 -side left -expand 1 -fill x
     pack $newframe.lab -side left
     pack $newframe.e -side right -padx 3 -fill x
    # pack $newframe.lab $newframe.e -side left -padx 3 -expand 1 -fill x
 }
-    
+
 
 proc doHelp { win msg } {
     makeLocal $win c
@@ -181,19 +186,19 @@ proc doHelp { win msg } {
     set aty [$c canvasy 0]
     $c create rectangle [expr {$atx -1000}] [expr  {$aty -1000}] 10000 10000 -fill white -tag help
 
-    $c create text [expr {$atx +10}] [expr {$aty + 10.0}] -tag help  -anchor nw  -width 400 -text $msg 
+    $c create text [expr {$atx +10}] [expr {$aty + 10.0}] -tag help  -anchor nw  -width 400 -text $msg
 
     pushBind $c <1> "$c delete help; popBind $c <1>"
 }
 
 proc pushBind { win key action } {
-    pushl [bind $win $key] [list $win $key ] 
+    pushl [bind $win $key] [list $win $key ]
     bind $win $key $action
 }
 
 proc popBind { win key  } {
     set binding [popl [list $win $key] {}]
-   
+
     bind $win $key $binding
 }
 
@@ -201,7 +206,9 @@ proc popBind { win key  } {
 proc maybeExit { n } {
     if { "[info proc OpenMathOpenUrl]" != "" } {
 	uplevel 1 return
-    } else { exit 0 }
+    } else { 
+	exit 0 
+    }
 }
 
 proc showPosition { win x y } {
@@ -217,7 +224,7 @@ proc showZoom  { win } {
   #  global c position
     makeLocal $win c
     oset $win position "Click to Zoom\nShift+Click Unzoom"
-     
+
     bind $c <1> "doZoom $win %x %y 1"
     bind $c  <Shift-1> "doZoom $win %x %y -1"
 }
@@ -229,9 +236,9 @@ proc doZoom { win x y direction } {
     }
     eval doZoomXY $win $x $y $zf
 }
-    
 
-
+
+
 #
  #-----------------------------------------------------------------
  #
@@ -253,7 +260,7 @@ proc doZoomXY { win x y facx facy } {
 	# not ready
 	return
     }
-    
+
     set x [$c canvasx $x]
     set y [$c canvasy $y]
 
@@ -268,7 +275,7 @@ proc doZoomXY { win x y facx facy } {
     axisTicks $win $c
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -277,7 +284,7 @@ proc doZoomXY { win x y facx facy } {
  #
  #  Results: none
  #
- #  Side Effects: changes x and y view of canvas 
+ #  Side Effects: changes x and y view of canvas
  #
  #----------------------------------------------------------------
 #
@@ -287,16 +294,16 @@ proc scrollPointTo { c x y sx sy } {
     $c yview moveto [expr { 1.0*($y-$y0-$sy)/($y1-$y0)} ]
 }
 
-
-
+
+
 #
  #-----------------------------------------------------------------
  #
- # reConfigure --  
+ # reConfigure --
  #
  #  Results:
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -312,7 +319,7 @@ proc reConfigure { c width height  } {
     set oldy [$c canvasy [expr {$oldCheight/2.0}]]
     doZoomXY $w [expr {$oldCwidth/2.0}] [expr {$oldCheight/2.0}] \
 	    [expr {1.0*$width/$oldCwidth}] [expr {1.0*$height/$oldCheight}]
-    
+
     scrollPointTo $c $oldx $oldy [expr {$width/2.0}] [expr {$height/2.0}]
    # update
     oset $w oldCwidth $width
@@ -359,7 +366,7 @@ set y2 [expr {$y2-.01 * $diag}]
     set output [eval $com]
     switch $printOption(tofile) {
 	0 { global tcl_platform
-	    set usegsview 0  
+	    set usegsview 0
 	    if { "$tcl_platform(platform)" == "windows" } {
 		set usegsview 1
 	    }
@@ -369,15 +376,16 @@ set y2 [expr {$y2-.01 * $diag}]
 		close $fi
 		exec "$printOption(gsview) /S $printOption(psfilename)"
 	    } else {
-	    set fi [open "|lpr -P[set printOption(printer)]" w]
-	    puts $fi $output
-	    close $fi
+		set fi [open "|lpr -P[set printOption(printer)]" w]
+		puts $fi $output
+		close $fi
 	    }
-	}
-	1 { set fi [open $printOption(psfilename) w]
-	puts $fi $output
-	close $fi }
-	2 { global ftpInfo
+	} 1 { 
+	    set fi [open $printOption(psfilename) w]
+	    puts $fi $output
+	    close $fi 
+	} 2 { 
+	    global ftpInfo
 	    set ftpInfo(data) $output
 	    ftpDialog $win
 	}
@@ -385,11 +393,11 @@ set y2 [expr {$y2-.01 * $diag}]
 #    if { $printOption(tofile) } {
 #	set fi [open $printOption(psfilename) w]
 #    } else { set fi [open "|lpr -P[set printOption(printer)]" w] }
- #   puts $fi $output
+#   puts $fi $output
 #    close $fi
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -398,7 +406,7 @@ set y2 [expr {$y2-.01 * $diag}]
  #
  #  Results:
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -431,15 +439,15 @@ proc ftpDialog { win args } {
     mkentry $fr.section ftpInfo(section) "section" $buttonFont
     mkentry $fr.problemnumber ftpInfo(number) "Problem number" $buttonFont
     }
-    scale   $fr.scale -orient horizontal -variable ftpInfo(percent) -length 100 
+    scale   $fr.scale -orient horizontal -variable ftpInfo(percent) -length 100
     button $fr.doit -text "Send it" -command "doFtpSend $fr" -font $buttonFont
     button $fr.cancel -text "Cancel" -command "destroy $fr" -font $buttonFont
     set ftpInfo(message) ""
     label $fr.message  -width 30 -height 3 -textvariable ftpInfo(message) -font $buttonFont
-    eval pack  [winfo  children $fr] -side top 
+    eval pack  [winfo  children $fr] -side top
     raise $fr
     place $fr -in $win -relx .5 -rely .5 -anchor center
-   }
+}
 
 proc doFtpSend { fr } {
     global ftpInfo om_ftp
@@ -455,7 +463,7 @@ proc doFtpSend { fr } {
 	if { $ftpInfo($v) == "" } {
 	    if  { "$error" == "" } { set error "Failed to specify $v " } else {
 		append error ", $v"}
-	}   
+	}
     }
     if { "$error" != "" } {
 	set ftpInfo(message) $error
@@ -464,14 +472,14 @@ proc doFtpSend { fr } {
     if { [winfo exists $fr.chapter] } {
 	set filename "$ftpInfo(chapter).$ftpInfo(section)-$ftpInfo(number).ps"
     }
-    
-    
+
+
     set res [submitFtp $ftpInfo(viahost) $ftpInfo(host) $ftpInfo(username) $ftpInfo(password) $ftpInfo(directory) $filename]
     if { "$res" == 1 }  {
 	   after 1000 "destroy $fr"
     }
     return $res
-    
+
 #    set counter [ ftp $ftpInfo(host) $ftpInfo(username) $ftpInfo(password)]
 #    if { $counter < 0 } {
 #	set ftpInfo(message) [concat "Failed:" $om_ftp($counter,log)]
@@ -485,7 +493,7 @@ proc doFtpSend { fr } {
 # 	return -1
 #     }
 
-    
+
 #     set res [ftpDoStore $counter $ftpInfo(chapter).$ftpInfo(section)-$ftpInfo(number).ps $ftpInfo(data)]
 #     if { $res < 0 } {
 # 	set ftpInfo(message) "Failed: $om_ftp($counter,log)"
@@ -511,7 +519,7 @@ proc setupCanvas { win } {
 
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -520,7 +528,7 @@ proc setupCanvas { win } {
  #  "o s" . x ==> (x-o)*s + o
  #  Results: the "origin scalefac" which corresponds to the composition.
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -530,7 +538,7 @@ proc compose { a b } {
       +[lindex $a 0]}] [expr {[lindex $a 1]*[lindex $b 1]}]"
 }
 
-# the following two have been replaced 
+# the following two have been replaced
 # proc sparseList { s } {
 #     if  { [catch {
 # 	set val [parseConvert "$s" -variables "x y t"] } err ] } {
@@ -538,7 +546,7 @@ proc compose { a b } {
 # 	}
 # 	return [lindex $val 0]
 #     }
-# 
+#
 # proc sparse { s } {
 #     set val [sparseList $s]
 #     set first $val
@@ -561,9 +569,9 @@ proc sparseListWithParams { form variables paramlist } {
 	    error "The variable `[string range $v 1 end]' appeared in $form but was not in allowed variables:{$variables} or in parameters: {$paramlist}"
 	}
     }
-	error "The form $form may involve variables other than {$variables} or the parameters {$paramlist}, or the latter may have invalid expressions:\n $err"
-    }
-    return $res
+    error "The form $form may involve variables other than {$variables} or the parameters {$paramlist}, or the latter may have invalid expressions:\n $err"
+}
+return $res
 }
 
 proc sparseWithParams { form variables params } {
@@ -573,22 +581,22 @@ proc sparseWithParams { form variables params } {
 }
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # myVarSubst --  into FORM substitute where
- # listVarsVals where each element of this list may mention
- # the previous values eg "k 7 ll sin(k+8)"
- # eg:
- #myVarSubst [lindex [parseConvert "k*x+l" -doall 1] 0] {x $x k 27+4 l 93+k^3}
- # ==> {((31 * $x) + 29884.0)}  
- #
- #  Results: FORM with the substitutions done
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# myVarSubst --  into FORM substitute where
+# listVarsVals where each element of this list may mention
+# the previous values eg "k 7 ll sin(k+8)"
+# eg:
+#myVarSubst [lindex [parseConvert "k*x+l" -doall 1] 0] {x $x k 27+4 l 93+k^3}
+# ==> {((31 * $x) + 29884.0)}
+#
+#  Results: FORM with the substitutions done
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc myVarSubst { form listVarsVals } {
     foreach {_u _v} $listVarsVals {
@@ -598,9 +606,9 @@ proc myVarSubst { form listVarsVals } {
 	    set _f1 [lindex [parseConvert  $_v -doall 1] 0]
 	    set $_u [expr [lindex $_f1 0]]
 	    # puts "$_u = [set $_u]"
+	}
     }
-   }
-   subst -nobackslashes -nocommands $form
+    subst -nobackslashes -nocommands $form
 
 }
 
@@ -615,127 +623,127 @@ proc splitParams { paramlist } {
     return $params
 }
 
-    
-
+
+
 #
- #-----------------------------------------------------------------
- #
- # substParams --  substitute into FORM keeping VARIABLES as they are
- # and the PARAMLIST (of the form k=23, l=k+7,...) into FORM
- #
- #  Results: substituted FORM
- #
- #  Side Effects: none
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# substParams --  substitute into FORM keeping VARIABLES as they are
+# and the PARAMLIST (of the form k=23, l=k+7,...) into FORM
+#
+#  Results: substituted FORM
+#
+#  Side Effects: none
+#
+#----------------------------------------------------------------
 #
 proc substParams { form variables params } {
-   foreach v $variables { lappend params $v \$$v}
-   set res [myVarSubst $form $params]
+    foreach v $variables { lappend params $v \$$v}
+    set res [myVarSubst $form $params]
     return $res
 }
-	
-    
-	
 
-
+
+
+
+
 #
- #-----------------------------------------------------------------
- #
- # setUpTransforms --  set up transformations for the canvas of WINDOW
- # so that the image is on FACTOR fractionof the window
- # these transforms are used for real to screen and vice versa.
- #  Results: 
- #
- #  Side Effects: transform functions rtosx$win rtosy$win storx$win story$win
- #  are defined.
- #
- #----------------------------------------------------------------
-#    
+#-----------------------------------------------------------------
+#
+# setUpTransforms --  set up transformations for the canvas of WINDOW
+# so that the image is on FACTOR fractionof the window
+# these transforms are used for real to screen and vice versa.
+#  Results:
+#
+#  Side Effects: transform functions rtosx$win rtosy$win storx$win story$win
+#  are defined.
+#
+#----------------------------------------------------------------
+#
 proc setUpTransforms { win fac } {
     makeLocal $win xcenter ycenter xradius yradius c
 
     set delx [$c cget -width]
     set dely [$c cget -height]
     set f1 [expr {(1 - $fac)/2.0}]
-    
+
     set x1 [expr {$f1 *$delx}]
     set y1 [expr {$f1 *$dely}]
     set x2 [expr {$x1 + $fac*$delx}]
     set y2 [expr {$x1 + $fac*$dely}]
 
-    
-    
+
+
     set xmin [expr {$xcenter - $xradius}]
     set xmax [expr {$xcenter + $xradius}]
     set ymin [expr {$ycenter - $yradius}]
     set ymax [expr {$ycenter + $yradius}]
-    
+
     oset $win xmin $xmin
     oset $win xmax $xmax
     oset  $win ymin $ymin
     oset $win ymax $ymax
-    
+
     oset $win transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " "$xmax $ymin $x2 $y2"]
     set transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " "$xmax $ymin $x2 $y2"]
     oset $win transform $transform
     oset $win transform0 $transform
-    
+
     getXtransYtrans $transform rtosx$win rtosy$win
-    getXtransYtrans [inverseTransform $transform] storx$win story$win 
-    
+    getXtransYtrans [inverseTransform $transform] storx$win story$win
+
 }
 
 proc inputParse { in } {
-  if { [regexp -indices \
-       {D\[([a-zA-Z][0-9a-zA-Z]*[ ]*),([a-zA-Z][0-9a-zA-Z]*[ ]*)\] *=} \
-	  $in all1 i1 i2] } {
-   set v1 [getOneMatch $in $i1]
-   set v2 [getOneMatch $in $i2]
-   set s1 [string range $in [lindex $all1 1] end]
+    if { [regexp -indices \
+	    {D\[([a-zA-Z][0-9a-zA-Z]*[ ]*),([a-zA-Z][0-9a-zA-Z]*[ ]*)\] *=} \
+	    $in all1 i1 i2] } {
+	set v1 [getOneMatch $in $i1]
+	set v2 [getOneMatch $in $i2]
+	set s1 [string range $in [lindex $all1 1] end]
 
-     if { [regexp -indices {,[ \n]*D\[([a-zA-Z][0-9a-zA-Z]*[ ]*),([a-zA-Z][0-9a-zA-Z]*[ ]*)\] *=} \
-	  $s1 all2 i1 i2] } {
-   set v3  [getOneMatch $s1 $i1]
-   set v4 [getOneMatch $s1 $i2]
-   set end [string first \} $s1 ]
-      set form2 [string range $s1 [expr {1 + [lindex $all2 1]}] [expr {$end -1}]]
-    if { "$v4" != "$v2" } {error "different variable $v2 and $v4"}
+	if { [regexp -indices {,[ \n]*D\[([a-zA-Z][0-9a-zA-Z]*[ ]*),([a-zA-Z][0-9a-zA-Z]*[ ]*)\] *=} \
+		$s1 all2 i1 i2] } {
+	    set v3  [getOneMatch $s1 $i1]
+	    set v4 [getOneMatch $s1 $i2]
+	    set end [string first \} $s1 ]
+	    set form2 [string range $s1 [expr {1 + [lindex $all2 1]}] [expr {$end -1}]]
+	    if { "$v4" != "$v2" } {error "different variable $v2 and $v4"}
 
-    set form1 [string range $in [expr {1 + [lindex $all1 1]}] [expr {[lindex $all2 0] + -1 + [lindex $all1 1]}]]
-    return [list  $v2 $v1 $v3 $form1 $form2]
-    # puts "v1=$v1,form1=$form1,form2=$form2"  
-  } 
- }
+	    set form1 [string range $in [expr {1 + [lindex $all1 1]}] [expr {[lindex $all2 0] + -1 + [lindex $all1 1]}]]
+	    return [list  $v2 $v1 $v3 $form1 $form2]
+	    # puts "v1=$v1,form1=$form1,form2=$form2"
+	}
+    }
 }
 
 proc composeTransform { t1 t2  } {
     desetq "a11 a12 a21 a22 e1 e2" $t1
     desetq "b11 b12 b21 b22 f1 f2" $t2
-   return  [list \
-	   [expr {$a11*$b11+$a12*$b21}] \
-	   [expr {$a11*$b12+$a12*$b22}] \
-	   [expr {$a21*$b11+$a22*$b21}] \
-	   [expr {$a22*$b22+$a21*$b12}] \
-	   [expr {$a11*$f1+$a12*$f2+$e1}] \
-	   [expr {$a21*$f1+$a22*$f2+$e2}] ]
+    return  [list \
+	    [expr {$a11*$b11+$a12*$b21}] \
+	    [expr {$a11*$b12+$a12*$b22}] \
+	    [expr {$a21*$b11+$a22*$b21}] \
+	    [expr {$a22*$b22+$a21*$b12}] \
+	    [expr {$a11*$f1+$a12*$f2+$e1}] \
+	    [expr {$a21*$f1+$a22*$f2+$e2}] ]
 }
-    
 
-
+
+
 #
- #-----------------------------------------------------------------
- #
- # makeTransform --  Given three points mapped to three other points
- # write down the affine transformation (A.X+B) which performs this.
- # the arguments are of the form "x1 y1 u1 v1" "x2 y2 u2 v2" "x3 y3 u3 v3"
- # where (x1,y1) --> (u1,v1)  etc.
- #  Results: an affine transformation "a b c d e f" which is
- #     [ a  b ]  [ x1 ] + [ e ]     
- #     [ c  d ]  [ y1 ]   [ f ]
- #  Side Effects: none
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# makeTransform --  Given three points mapped to three other points
+# write down the affine transformation (A.X+B) which performs this.
+# the arguments are of the form "x1 y1 u1 v1" "x2 y2 u2 v2" "x3 y3 u3 v3"
+# where (x1,y1) --> (u1,v1)  etc.
+#  Results: an affine transformation "a b c d e f" which is
+#     [ a  b ]  [ x1 ] + [ e ]
+#     [ c  d ]  [ y1 ]   [ f ]
+#  Side Effects: none
+#
+#----------------------------------------------------------------
 #
 proc makeTransform { P1 P2 P3 } {
     desetq  "X1 Y1 U1 V1" $P1
@@ -763,40 +771,40 @@ proc makeTransform { P1 P2 P3 } {
     return [list $A $B $C $D $E $F]
 }
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # getXtransYtrans --   If the x coordinate transforms independently
- #  of the y and vice versa, give expressions suitable for building a
- # proc. 
- #  Results:
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# getXtransYtrans --   If the x coordinate transforms independently
+#  of the y and vice versa, give expressions suitable for building a
+# proc.
+#  Results:
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc getXtransYtrans { transform p1 p2 } {
     desetq "a b c d e f"  $transform
     if { $b == 0  && $c == 0 } {
-	proc $p1 { x } "return \[expr {$a*\$x+$e}\]" 
+	proc $p1 { x } "return \[expr {$a*\$x+$e}\]"
 	proc $p2 { y } "return \[expr {$d*\$y+$f} \]"
 	return 1
     }
     return 0
 }
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # inverseTransform --   Find the inverse of an affine transformation.
- #
- #  Results:
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# inverseTransform --   Find the inverse of an affine transformation.
+#
+#  Results:
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc inverseTransform { transform } {
     desetq "a b c d e f" $transform
@@ -805,19 +813,19 @@ proc inverseTransform { transform } {
 
 }
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # getTicks --  given an interval (a,b) subdivide it and 
- # calculate where to put the ticks and what to print there.
- # we want DESIRED number of ticks, but we also want the ticks
- # to be at points in the real coords of the form .2*10^i or .5*10^j
- #  Results: the ticks
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# getTicks --  given an interval (a,b) subdivide it and
+# calculate where to put the ticks and what to print there.
+# we want DESIRED number of ticks, but we also want the ticks
+# to be at points in the real coords of the form .2*10^i or .5*10^j
+#  Results: the ticks
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 
 proc getTicks { a b n } {
@@ -841,7 +849,7 @@ proc getTicks { a b n } {
 	    } else  {
 		append ticks " $tt"
 	    }
-	    incr j   
+	    incr j
 	}
 	set answer($v) $ticks
 	set this [llength $ticks]
@@ -852,10 +860,10 @@ proc getTicks { a b n } {
 	#puts "for $v [llength $ticks] ticks"
     }
     #puts "using $at [llength $answer($at)]"
-     
+
     return $answer($at)
 }
-     
+
 proc axisTicks { win c }  {
     $c delete axisTicks
     if { ![catch {oget $win noaxisticks}] } { return }
@@ -879,8 +887,8 @@ proc axisTicks { win c }  {
 	    if { [lindex $v 0] == 0 } { set text "" ; set donext 1 }
 	    #puts " drawTick $c $x 0 0 $neps 0 $eps  $text axisTicks"
 	    drawTick $c $x 0 0 $neps 0 $eps  $text axisTicks
-	    }
 	}
+    }
     if { 0 < $x2 && 0 > $x1 } {
 	set ticks [getTicks $y2 $y1 [expr {$shei/50}]]
 	set eps [expr {.005 * ($x2 - $x1)}]
@@ -893,24 +901,24 @@ proc axisTicks { win c }  {
 	    if { [lindex $v 0] == 0 } { set text "" ; set donext 1}
 
 	    drawTick $c 0 $y $neps 0 $eps 0  $text axisTicks
-	    }
 	}
-
     }
 
-
+}
+
+
 #
- #-----------------------------------------------------------------
- #
- # marginTicks --  draw ticks around the border of window
- #  x1,y1  top left x2,y2 bottom right.
- #
- #  Results:
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
-#    
+#-----------------------------------------------------------------
+#
+# marginTicks --  draw ticks around the border of window
+#  x1,y1  top left x2,y2 bottom right.
+#
+#  Results:
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
+#
 proc marginTicks { c x1 y1 x2 y2 tag }  {
     global printOption
     set win [winfo parent $c]
@@ -938,8 +946,8 @@ proc marginTicks { c x1 y1 x2 y2 tag }  {
 	set text [lindex $v 1]
 	drawTick $c $x1 $y 0 0 $eps 0  $text $tag
 	drawTick $c $x2 $y 0 0 $neps 0  $text $tag
-	    }
-	}
+    }
+}
 
 proc drawTick {c x y dx dy ex ey n tags} {
     global axisGray     fontCourier8
@@ -947,24 +955,24 @@ proc drawTick {c x y dx dy ex ey n tags} {
     set rtosx rtosx$win ; set rtosy rtosy$win
     set it [$c create line [$rtosx [expr {$x +$dx}]] [$rtosy [expr {$y +$dy}]] [$rtosx [expr {$x +$ex}]] [$rtosy [expr {$y +$ey}]] -fill $axisGray -tags $tags]
     $c lower $it
-    
+
     if { "$n" != "" } {
-   if { $ey > 0 } { set anch s
-    } elseif { $ex > 0 } {set anch w 
+	if { $ey > 0 } { set anch s
+    } elseif { $ex > 0 } {set anch w
     } elseif { $ex < 0 } {set anch e
     } elseif { $ey < 0 } {set anch n}
-    
+
     $c create text  [$rtosx [expr {$x +1.5*$ex}]] [$rtosy [expr {$y +1.5*$ey}]] \
-		-text [format "%.8g" $n] -font $fontCourier8 -tags $tags \
-		-anchor $anch
+	    -text [format "%.8g" $n] -font $fontCourier8 -tags $tags \
+	    -anchor $anch
 }   }
 
 proc doConfig { win }  {
     makeLocal $win c buttonFont
     $c delete configoptions
     set canv $c
-   # set w $c.config
-     set w $win.config
+    # set w $c.config
+    set w $win.config
     catch {destroy $w}
     frame $w -borderwidth 2 -relief raised
 
@@ -980,10 +988,10 @@ proc doConfig { win }  {
     button $wb1.dismiss -command  "$canv delete $item; destroy $w " -text "ok" -font $buttonFont
     button $wb1.printoptions -text "Print Options" -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
 
-    pack $wb1.dismiss  $wb1.printoptions -side top 
+    pack $wb1.dismiss  $wb1.printoptions -side top
     return "$wb1 $wb2"
 }
-# mkentry { newframe textvar text } 
+# mkentry { newframe textvar text }
 
 # turn off the horrible show_balloons by default.
 global show_balloons
@@ -1003,8 +1011,8 @@ proc balloonhelp1 { win subwin msg } {
     makeLocal $win c buttonFont
     set x0 [winfo rootx $win]
     set y0 [winfo rooty $win]
-    
-    
+
+
     set atx [expr {[winfo rootx $subwin] + [winfo width $subwin] - $x0} ]
     set aty [expr {[winfo rooty $subwin] + [winfo height $subwin] - $y0} ]
 
@@ -1012,7 +1020,7 @@ proc balloonhelp1 { win subwin msg } {
     set wid2 [expr {round ($wid /2.0)}]
     set wid10 [expr {round ($wid /10.0)}]
 
-    if { $aty <=1 } { set aty 30 } 
+    if { $aty <=1 } { set aty 30 }
     incr aty 10
     incr atx 10
     set atx [$c canvasx $atx]
@@ -1024,13 +1032,13 @@ proc balloonhelp1 { win subwin msg } {
 
     set x1 [expr {$x1 - .3*($x2-$x1)}]
     set x2 [expr {$x2 + .3*($x2-$x1)}]
-    
+
     set y1 [expr {$y1 - .3*($y2-$y1)}]
     set y2 [expr {$y2 + .3*($y2-$y1)}]
 
     eval $c create polygon $x1 $y1  $x2 $y1 $x2 $y2 $x1 $y2  -fill beige -tags balloon -smooth 1
     $c raise btext
-    
+
 }
 
 proc setBalloonhelp { win subwin msg } {
@@ -1038,7 +1046,7 @@ proc setBalloonhelp { win subwin msg } {
     bind $subwin <Enter> "balloonhelp $win $subwin [list $msg]"
     bind $subwin <Leave> "deleteBalloon $c"
 }
-    
+
 proc deleteBalloon { c } {
     linkLocal $c helpPending
     if { [info exists helpPending] } {
@@ -1048,18 +1056,18 @@ proc deleteBalloon { c } {
     $c delete balloon
 }
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # minMax --  Compute the max and min of the arguments, which may
- # be vectors or numbers
- #
- #  Results: list of MIN and MAX
- #
- #  Side Effects: none
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# minMax --  Compute the max and min of the arguments, which may
+# be vectors or numbers
+#
+#  Results: list of MIN and MAX
+#
+#  Side Effects: none
+#
+#----------------------------------------------------------------
 #
 proc minMax { args } {
     set max [lindex [lindex $args 0] 0] ; set min $max ;
@@ -1073,7 +1081,7 @@ proc minMax { args } {
 }
 
 proc matrixMinMax { list } {
-# compute the min max of the list    
+    # compute the min max of the list
     set min +10e300
     set max -10e300
     foreach mat $list {
@@ -1081,12 +1089,12 @@ proc matrixMinMax { list } {
 	    foreach v [ldelete nam $row] {
 		if { $v > $max } {catch  { set max [expr {$v + 0}] }}
 		if { $v < $min} {catch  { set min [expr {$v + 0}] }}
-		}
 	    }
 	}
+    }
     list $min $max
 }
-	
+
 proc omPlotAny { data args } {
     # puts "data=<[lindex $data 0]>"
     set command [list [lindex [lindex $data 0] 0]  -data [lindex $data 0] ]
@@ -1104,68 +1112,68 @@ proc resizeSubPlotWindows { win wid height } {
     foreach w [winfo children $win] {
 	if { [string match plot* [lindex [split $w .] end]] } {
 	    resizePlotWindow $w [winfo width $w] $height
+	}
     }
-  }
-  if { "$at" != "" } { $win yview $at} 
- }
+    if { "$at" != "" } { $win yview $at}
+}
 
 
-	    
+
 proc resizePlotWindow  { w width height } {
     if { [winfo width $w.c] <= 1 } {
 	after 100 update ;
 	return }
 	if { ![catch { set tem [oget $w lastResize] } ] && [expr {[clock seconds] - $tem }] < 2 } { return
-} else { oset $w lastResize [clock seconds ]
+    } else { oset $w lastResize [clock seconds ]
     }
     #puts "resizePlotWindow $w $width $height"
-	
-   # return
-   set par [winfo parent $w]
-   set facx 1.0
-   set facy 1.0    
+    
+    # return
+    set par [winfo parent $w]
+    set facx 1.0
+    set facy 1.0
     set wid [winfo width $par]
     set hei [winfo height $par]
-    
-   if { "[winfo class $par]" == "Text" } {
-   set dif 10
 
-   set wid1 $wid ; set hei1 $hei
-   #puts "now w=$w"
-   #set wid1 [getPercentDim [oget $w widthDesired] width $par]        
-   catch {set wid1 [getPercentDim [oget $w widthDesired] width $par] }
-   catch {set hei1 [getPercentDim [oget $w heightDesired] height $par] }
-   set wid [expr {($wid1 > $wid - 30 ? $wid - 30 : $wid1 )}]
-   set hei [expr {($hei1 > $hei - 30 ? $hei - 30 : $hei1 )}]
-   } else {
-       set dif 10
+    if { "[winfo class $par]" == "Text" } {
+	set dif 10
 
-   }
-   
+	set wid1 $wid ; set hei1 $hei
+	#puts "now w=$w"
+	#set wid1 [getPercentDim [oget $w widthDesired] width $par]
+	catch {set wid1 [getPercentDim [oget $w widthDesired] width $par] }
+	catch {set hei1 [getPercentDim [oget $w heightDesired] height $par] }
+	set wid [expr {($wid1 > $wid - 30 ? $wid - 30 : $wid1 )}]
+	set hei [expr {($hei1 > $hei - 30 ? $hei - 30 : $hei1 )}]
+    } else {
+	set dif 10
+
+    }
+
 
     #puts "width arg=$width,width $w=[winfo width $w],wid of $par=$wid,height=$height,hei=$hei,\[winfo width \$w.c\]=[winfo width $w.c]"
-#     if { $width > $wid -20 || $wid > $width -20 }
+    #     if { $width > $wid -20 || $wid > $width -20 }
     if { (abs($width-$wid) > $dif ||  abs($height-$hei) > $dif)
-&&  [winfo width $w.c] > 1 } {
-    set eps [expr {2 * [$w.c cget -insertborderwidth] + [$w.c cget -borderwidth] }]
-    set epsx $eps
-    set epsy $eps
+    &&  [winfo width $w.c] > 1 } {
+	set eps [expr {2 * [$w.c cget -insertborderwidth] + [$w.c cget -borderwidth] }]
+	set epsx $eps
+	set epsy $eps
 	#puts "reconfiguring: w=$w,par=$par,dif=$dif,widths=$wid, \
-    $width,[winfo width $par],[winfo width $w],[winfo width $w.c]\
-	heights=$hei,$height,[winfo height $par],[winfo height $w],\
-    [winfo height $w.c]"
-    
-    set extrawidth [expr {([winfo width $w] - [winfo width  $w.c]) +$epsx}]
-    set extraheight [expr {([winfo height $w] - [winfo height  $w.c]) +$epsy}]
-    set nwidth [expr {$wid - ($extrawidth > 0  ? $extrawidth : 0)}]
-    set nheight [expr {$hei - ($extraheight > 0  ? $extraheight : 0)}]
-    
-    #puts "$w.c config -width $nwidth  -height $nheight, extraheight=$extraheight,epsy=$epsy"
-    $w.c config -width $nwidth  -height $nheight
+		$width,[winfo width $par],[winfo width $w],[winfo width $w.c]\
+		heights=$hei,$height,[winfo height $par],[winfo height $w],\
+		[winfo height $w.c]"
 
-		}
-    		
- }
+	set extrawidth [expr {([winfo width $w] - [winfo width  $w.c]) +$epsx}]
+	set extraheight [expr {([winfo height $w] - [winfo height  $w.c]) +$epsy}]
+	set nwidth [expr {$wid - ($extrawidth > 0  ? $extrawidth : 0)}]
+	set nheight [expr {$hei - ($extraheight > 0  ? $extraheight : 0)}]
+
+	#puts "$w.c config -width $nwidth  -height $nheight, extraheight=$extraheight,epsy=$epsy"
+	$w.c config -width $nwidth  -height $nheight
+
+    }
+    
+}
 
 
 
@@ -1180,8 +1188,8 @@ proc bboxToRadius { win  } {
 	    set max [lindex $bbox [expr $i +2]]
 	    if { "$min" != "" } {
 		if { $min >= $max } {error "bad bbox $bbox since $min >= $max"}
-	    set ${v}radius [expr { ($max - $min) /2.0}]
-	    set ${v}center [expr { ($max + $min) /2.0}]
+		set ${v}radius [expr { ($max - $min) /2.0}]
+		set ${v}center [expr { ($max + $min) /2.0}]
 	    }
 	}
     }
@@ -1189,10 +1197,10 @@ proc bboxToRadius { win  } {
 
 proc updateParameters { win var value} {
     linkLocal $win parameters
-#    puts "$win $var $value"
+    #    puts "$win $var $value"
     set ans ""
     set comma ""
-    
+
     foreach {v val} [splitParams $parameters] {
         if { "$v" == "$var" } {
 	    set val $value
@@ -1200,7 +1208,7 @@ proc updateParameters { win var value} {
 	append ans $comma $v=$val
 	set comma ","
     }
-#    puts "parameters=$ans"
+    #    puts "parameters=$ans"
     set parameters $ans
 }
 
@@ -1218,13 +1226,13 @@ proc addSliders { win } {
 	    if { "$x0" == "" } { set x0 -5  ; set x1 5}
 
 	    set fr $c.sliders.fr$i
-	    frame $fr -background $bg 
-	    label $fr.lab -text $var: -background $bg 
+	    frame $fr -background $bg
+	    label $fr.lab -text $var: -background $bg
 	    label $fr.labvalue -textvariable [oloc $win slidevalue$i]  -background $bg -relief sunken -justify left
 	    scale $fr.scale -command "sliderUpdate $win $var" \
 		    -from "$x0" -to $x1 -orient horizontal \
-	    -resolution [expr ($x1 - $x0) < 1 ? ($x1-$x0)/100.0 : .01] \
-	    -length [expr {$width/2}] -showvalue 0 -variable [oloc $win slidevalue$i] -background $bg -troughcolor "#22ccff" -highlightthickness 0
+		    -resolution [expr ($x1 - $x0) < 1 ? ($x1-$x0)/100.0 : .01] \
+		    -length [expr {$width/2}] -showvalue 0 -variable [oloc $win slidevalue$i] -background $bg -troughcolor "#22ccff" -highlightthickness 0
 	    pack $fr.lab -side left -expand 1 -fill x
 	    pack $fr.labvalue $fr.scale -side left
 	    pack  $fr -side top -expand 1 -fill x
@@ -1232,7 +1240,7 @@ proc addSliders { win } {
 	    set val  [assoc $var [splitParams $parameters] no]
 	    if { "$val" == "no" } {
 		set val  [expr ($x1 + $x0)/2.0]
-		if { "$parameters" != "" }  { append parameters , } 
+		if { "$parameters" != "" }  { append parameters , }
 		append parameters $var=$val
 	    }
 	    $fr.scale set $val
@@ -1241,8 +1249,8 @@ proc addSliders { win } {
 
     place  $c.sliders -in $c -x 4 -rely 1.0 -y -4 -anchor sw
 
-    }
-	
+}
+
 
 proc sliderUpdate { win var val } {
     linkLocal $win sliderCommand parameters
@@ -1251,9 +1259,10 @@ proc sliderUpdate { win var val } {
     if { "$params" != "$parameters" &&
     [info exists sliderCommand] } {
 
-    $sliderCommand $win $var $val
-}   }
-    
+	$sliderCommand $win $var $val
+    }   
+}
+
 
 
 

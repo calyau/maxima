@@ -1,7 +1,11 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Myhtml1.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Myhtml1.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 defTag eval -alter {family fixed Cnowrap nowrap adjust 0} \
@@ -24,10 +28,10 @@ defTag eval -alter {family fixed Cnowrap nowrap adjust 0} \
 	    }
 	}
     }
-   }  -sbody {
-       catch {foreach v $wvar(evalPushed) { xHMpopConstantTag $win $v } }
-   }
-   
+}  -sbody {
+    catch {foreach v $wvar(evalPushed) { xHMpopConstantTag $win $v } }
+}
+
 
 defTag result  -alter {family fixed  weight bold  adjust 0} -body {
     set paramList [xHMsplitParams $params]
@@ -40,28 +44,28 @@ defTag result  -alter {family fixed  weight bold  adjust 0} -body {
     if { [xHMextract_param $paramList name ""] } {
 	lappend wvar(resultPushed) result:$name
 	set taglist(result:$name) 1
-    }}   -sbody {
-       catch {foreach v $wvar(resultPushed) { xHMpopConstantTag $win $v } }
+}   }   -sbody {
+    catch {foreach v $wvar(resultPushed) { xHMpopConstantTag $win $v } }
 }
 
 defTag netmath -body {
     set paramList [xHMsplitParams $params]
     catch {
-    if { [xHMextract_param $paramList version ""] } {
-	global ws_openMath
-	if { [clock scan $version] > [clock scan $ws_openMath(date)] } {
+	if { [xHMextract_param $paramList version ""] } {
+	    global ws_openMath
+	    if { [clock scan $version] > [clock scan $ws_openMath(date)] } {
 
-	    xHMextract_param $paramList oldversion ""
-	    append oldversion $text
-	    set text $oldversion
+		xHMextract_param $paramList oldversion ""
+		append oldversion $text
+		set text $oldversion
+	    }
 	}
+	#  swallow the following text if the browser is netmath enabled...
+	if { [xHMextract_param $paramList swallow] } {
+	    set text ""
+	}
+
     }
-#  swallow the following text if the browser is netmath enabled...
-    if { [xHMextract_param $paramList swallow] } {
-	set text ""
-    }
-    
-  }
 }
 
 defTag math -body {
@@ -73,16 +77,16 @@ defTag math -body {
 	set pre {$\displaystyle}
 	xHMassureNewlines 1
     }
-	
+    
     set wc $win.c[incr xHMpriv(counter)]
     canvas $wc 		-background [$win cget -background] -highlightthickness 0 -borderwidth 0
-    
+
     set si [expr {[lindex $wvar(size) end] + [lindex $wvar(adjust) end]}]
     if { [xHMextract_param $paramList size] } {
 	catch { incr si $size }
     }
     set si [expr {($si < 1 ? 1 : ($si > 7 ? 7 : $si))}]
-    
+
     set ptsize $xHMpreferences([lindex $wvar(family) end],$si)
     if { [regexp & $text] }  {
 	set text [xHMconvert_ampersand $text]
@@ -138,10 +142,5 @@ proc HMgetURL {  textwin url type } {
     return [uplevel 1 getURL [list $new] type]
 }
 
-    
-    
-    
-    
-    
 
 ## endsource "myhtml1.tcl"

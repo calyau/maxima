@@ -1,12 +1,12 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.8 2002-09-06 06:53:15 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.9 2002-09-07 05:21:42 mikeclarkson Exp $
 #
 
 global ws_openMath
 set ws_openMath(date) 04/28/2002
 
-# from 
+# from
 if { ![info exists ws_openMath(date)] } {
     set ws_openMath(date) [clock  format [clock seconds] -format {%m/%d/%Y} ]
 }

@@ -1,3 +1,7 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Plotdf.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Plotdf.tcl ######
 #######################################################################
 #######  Copyright William F. Schelter.  All rights reserved.  ########
@@ -10,7 +14,7 @@ set plotdfOptions {
     {dydx "" { may specify dy/dx = x^2+y,instead of dy/dt = x^2+y and dx/dt=1 }}
     {adamsMoulton red "Color to do adams moulton integration in. None means dont do" }
     {rungeKuttaA "" "Color to do Runge Kutta adaptive integration in. None means dont do" }
-    
+
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
     {width 500 "Width of canvas in pixels"}
@@ -57,16 +61,16 @@ if { "[info proc makeFrame]" == "" } { source "plotconf.tcl" }
 #    wm geometry $top 750x700-0+20
    }
     set wb $w.buttons
-   makeLocal $win buttonFont 
+   makeLocal $win buttonFont
    label $w.msg  -wraplength 600 -justify left -text "A direction field plotter by William Schelter" -font $buttonFont
-   
+
   button $wb.integrate -text "Integrate" -command "setForIntegrate $w" -font $buttonFont
    setBalloonhelp $win $wb.integrate {Causes clicking on the  plot with the left mouse button at a point, to draw a trajectory passing through that point.   Under Config there is an entry box which allows entering exact x,y coordinates, and which also records the place of the last trajectory computed.}
 
   button $wb.plotversust -text "Plot Versus t" -command "plotVersusT $w" -font $buttonFont
-   setBalloonhelp $win $wb.plotversust {Plot the x and y values for the  last trajectory versus t.}   
-   
-   
+   setBalloonhelp $win $wb.plotversust {Plot the x and y values for the  last trajectory versus t.}
+
+
   setForIntegrate $w
   pack $wb.integrate -side top -expand 1 -fill x
   pack $wb.plotversust -side top -expand 1 -fill x
@@ -77,7 +81,7 @@ if { "[info proc makeFrame]" == "" } { source "plotconf.tcl" }
 
 proc swapChoose {win msg winchoose } {
    # global dydx dxdt dydt
-    
+
     if { "$msg" == "dydt" } {
 	pack $winchoose.dxdt -before $winchoose.dydt -side bottom
 	oset $win dydx ""
@@ -152,18 +156,18 @@ proc doIntegrate { win x0 y0 } {
 #    puts "dointegrate $win $x0 $y0"
     makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t linecolors
     linkLocal $win didLast trajectoryStarts
-    set rtosx rtosx$win ; set rtosy rtosy$win      
+    set rtosx rtosx$win ; set rtosy rtosy$win
     oset $win doTrajectoryAt [format "%.10g  %.10g" $x0 $y0]
     lappend trajectoryStarts [list $x0 $y0]
-    
+
     set didLast {}
     # puts "doing at $doTrajectoryAt"
     set steps $nsteps
-    if { "$tstep" == "" } {  
+    if { "$tstep" == "" } {
 	set h [expr {[vectorlength $xradius $yradius] / 200.0}]
 	set tstep $h
     } else {set h $tstep }
-    
+
     # puts h=$h
     set todo $h
     switch $direction {
@@ -199,7 +203,7 @@ proc doIntegrate { win x0 y0 } {
 	#set im1 [getPoint 2 purple]
 	set im [getPoint 2 $ptColor]
 	#set im1 [getPoint 2 purple]		
-	catch  { 
+	catch  {
 	    while { $i <= $lim } {
 		set xn2  [$rtosx [lindex $ans [incr i]]]
 		set yn2  [$rtosy [lindex $ans [incr i]]]
@@ -207,7 +211,7 @@ proc doIntegrate { win x0 y0 } {
 		# xxxxxxxx following is for a bug in win95 version
 		if { abs($xn1) + abs($yn1) +abs($xn2)+abs($yn2) < $mee    } {
 		    $c create line $xn1 $yn1 $xn2 $yn2 -tags path -width $linewidth -fill $linecolor
-		    
+		
 		}
 		
                 if { "$im" != "" } {
@@ -219,9 +223,9 @@ proc doIntegrate { win x0 y0 } {
 		    $c create oval [expr $xn1 -2] [expr $yn1 -2] [expr $xn1 +2] [expr $yn1 +2] -fill $color
 
 		}
-	    
+	
 			
-		    
+		
 
 		# puts "$xn1 $yn1"
 		set xn1 $xn2
@@ -250,7 +254,7 @@ proc plotVersusT {win } {
 	}
 	set doing($this) ""
 	set allx "" ; set ally "" ; set allt ""
-	set ii 0 
+	set ii 0
 	foreach {x y } $ans {
 	    lappend allx $x
 	    lappend ally $y
@@ -273,7 +277,7 @@ proc plotVersusT {win } {
     if { ![winfo exists .versust] } {
 	toplevel .versust
     }
-    
+
 
     plot2d -data $plotdata -windowname $nwin -ycenter $xcenter -yradius $xradius
     wm title .versust "X and Y versus t"
@@ -288,7 +292,7 @@ proc lreverse { lis } {
     return $ans
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -296,11 +300,11 @@ proc lreverse { lis } {
  #
  #  Results: a window coordinate
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -308,7 +312,7 @@ proc lreverse { lis } {
  #
  #  Results:
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -332,14 +336,14 @@ proc drawDF { win tinitial } {
 
     # flush stdout
     set rtosx rtosx$win ; set rtosy rtosy$win
-    set storx   storx$win  ;   set story   story$win  
+    set storx   storx$win  ;   set story   story$win
     set stepsize 30
     set min 100000000000.0
     set max 0.0
     set t0 $tinitial
     set xfactor [lindex $transform 0]
     set yfactor [lindex $transform 3]
-    set extra $stepsize  
+    set extra $stepsize
     set uptox [expr {[$rtosx $xmax] + $extra}]
     set uptoy [expr {[$rtosy $ymin] + $extra}]
     # draw the axes:
@@ -370,23 +374,23 @@ proc drawDF { win tinitial } {
     # puts "now to draw,s1=$s1 s2=$s2,max=$max,min=$min"
     # puts "xfactor=$xfactor,yfactor=$yfactor"
 
-    
+
     set i -1
     for { set x [expr {[$rtosx $xmin] - $stepsize}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
 	for { set y [expr {[$rtosy $ymax] - $stepsize}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
-	    
-	    
+	
+	
 	    set len [lindex $all [incr i]]
-	    
+	
 	    set fac [expr {$s1/$len + $s2}]
 	    set dfx [lindex $all [incr i]]
 	    set dfy [lindex $all [incr i]]
 	    #puts "[$storx $x] [$story $y] x=$x y=$y dfx=$dfx dfy=$dfy fac=$fac"
-	    # puts "$len $dfx $dfy" 
+	    # puts "$len $dfx $dfy"
 	    drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy}]
         }
     }
-    
+
     $c create line [$rtosx 0 ] [$rtosy -1000] [$rtosx 0] [$rtosy 1000] \
 	    -fill $axisGray
     $c create line [$rtosx -1000] [$rtosy 0] [$rtosx 1000] [$rtosy 0] \
@@ -432,7 +436,7 @@ proc plotdf { args } {
     foreach v {trajectoryStarts recompute} {
 	    catch { unset [oloc $win $v]  }
 	}
-    
+
     makeFrameDf $win
     oset $win sliderCommand sliderCommandDf
     oset $win trajectoryStarts ""
@@ -451,7 +455,7 @@ proc replotdf { win } {
 	set data ""
 	
     }
-    makeLocal $win c dxdt dydt tinitial nsteps xfun     doTrajectoryAt parameters 
+    makeLocal $win c dxdt dydt tinitial nsteps xfun     doTrajectoryAt parameters
 
     setUpTransforms $win 1.0
     setXffYff $dxdt $dydt $parameters
@@ -471,18 +475,18 @@ proc replotdf { win } {
 		0 xversusy]
     }
     redraw2dData $win -tags path
-    
-}    
+
+}
 
 proc setXffYff { dxdt dydt parameters } {
-    
-    proc xff { t x y } "expr { [sparseWithParams $dxdt { x y} $parameters] }"    
+
+    proc xff { t x y } "expr { [sparseWithParams $dxdt { x y} $parameters] }"
     proc yff { t x y } "expr { [sparseWithParams $dydt { x y} $parameters] } "
 }
 
 proc doConfigdf { win } {
     desetq "wb1 wb2" [doConfig $win]
-    makeLocal $win buttonFont 
+    makeLocal $win buttonFont
     frame $wb1.choose1
     set frdydx $wb1.choose1
     button $frdydx.dydxbut -command "swapChoose $win dydx $frdydx " \
@@ -493,7 +497,7 @@ proc doConfigdf { win } {
     mkentry $frdydx.dydt [oloc $win dydt] "dy/dt" $buttonFont
     pack $frdydx.dxdt  $frdydx.dydt -side bottom  -fill x -expand 1
     pack $frdydx.dydxbut $frdydx.dydtbut -side left -fill x -expand 1
-    
+
     foreach w {versus_t parameters linewidth xradius yradius xcenter ycenter tinitial nsteps tstep direction xfun linecolors rungeKuttaA adamsMoulton } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w -side bottom -expand 1 -fill x
@@ -520,7 +524,7 @@ proc sliderCommandDf { win var val } {
 }
 
 proc recomputeDF { win } {
-    linkLocal $win  recompute 
+    linkLocal $win  recompute
     if { [info exists recompute]  } {
 	incr recompute
 	return
@@ -532,7 +536,7 @@ proc recomputeDF { win } {
     set redo 0
     set trajs ""
 
-    catch {     set trajs $trajectoryStarts} 
+    catch {     set trajs $trajectoryStarts}
 
 
     while { $redo != $recompute } {
@@ -555,12 +559,12 @@ proc recomputeDF { win } {
 #    puts "    unset recompute"
     unset recompute
 }
-    
+
 
 	
 		
 	
 	
-    
+
 
 ## endsource plotdf.tcl

@@ -1,9 +1,13 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: RunMaxima.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 proc textWindowWidth { w } {
     set font [$w cget -font]
     set w20 [font measure [$w cget -font] -displayof $w "01234567890123456789"]
     return [expr round(floor([winfo width $w]*20.0/$w20))]
 }
-    
+
 
 proc resizeMaxima { win width height } {
     linkLocal $win pid
@@ -46,7 +50,7 @@ proc CMeval { w } {
 	return
 	}
     }
-    
+
     $w tag add input lastStart "end -1char"
     $w mark set  lastStart "end -1char"
     lappend inputs $expr
@@ -96,8 +100,8 @@ proc runMaxima { win  filter sock args } {
     fconfigure $sock -blocking 0 -translation lf
     fileevent $sock readable "$filter $win $sock"
     if { [info exists server] } {
-	# puts "closing server $server" 
-    catch { 
+	# puts "closing server $server"
+    catch {
     close $server
     unset server
     }
@@ -107,7 +111,7 @@ proc runMaxima { win  filter sock args } {
 
 proc closeMaxima { win } {
     global pdata
-    linkLocal $win maximaSocket pid 
+    linkLocal $win maximaSocket pid
     foreach v [array names pdata maxima*] { unset pdata($v) }
 
     if {[info exists pid] && $pid != "" && [string is int $pid]} {
@@ -127,7 +131,7 @@ proc closeMaxima { win } {
 
 
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -137,8 +141,8 @@ proc closeMaxima { win } {
  #               -->redisplay in other window
  # \032\031tcl: command \n
  #           --> eval tcl command o
- #       
- # 
+ #
+ #
  #  Results: none
  #
  #  Side Effects:  input is read from SOCK and WIN has items displayed.
@@ -158,7 +162,7 @@ proc maximaFilter { win sock } {
    # puts "read=<$it>"
     if { [string first "\032\032" $it] >= 0 &&
      [regexp  -indices "\032\032(\[^:]+):(\[0-9]+):\[^\n]*\n" $it junk file line] } {
-	 
+	
 	 dblDisplayFrame [getMatch $it $file] [getMatch $it $line]
 	 append res [string range $it 0 [expr { [lindex $junk 0] -1 } ]]
 	 append res [string range $it [expr { 1+[lindex $junk 1]}] end]
@@ -196,7 +200,7 @@ proc maximaFilter { win sock } {
 
 	}
     }
-    
+
     $win insert end $it "output"
     $win mark set  lastStart "end -1char"
     if { [regexp {\(C[0-9]+\) $|\(dbm:[0-9]+\) $|([A-Z]+>[>]*)$} $it junk lisp]  } {
@@ -211,7 +215,7 @@ proc maximaFilter { win sock } {
 	    set pdata($sock,wait) 0
 	 }
 	$win mark set lastStart "end -1char"
-	$win tag add  input "end -1char" end 
+	$win tag add  input "end -1char" end
 	oset $win atMaximaPrompt [expr { 0 == [string compare $lisp ""] }]
 	
     }
@@ -232,7 +236,7 @@ proc littleFilter {win sock } {
 }
 
 if { ![info exists ws_openMath(timeout)] } {
-    
+
     set ws_openMath(timeout) 20000
 }
 
@@ -242,7 +246,7 @@ proc runOneMaxima { win } {
     linkLocal $win pid
     set pid -1
     openMaxima $win littleFilter
-    while { $pid == -1 } {  
+    while { $pid == -1 } {
 	set af [after $ws_openMath(timeout) oset $win pid -1 ]
 	# puts "waiting pid=$pid"
 	vwait [oloc $win pid]
@@ -283,10 +287,10 @@ proc sendMaxima { win form } {
 
 
 proc sendMaximaWait { win form {timeout 20000 }} {
-    linkLocal $win maximaWait 
+    linkLocal $win maximaWait
 
     set form [string trimright $form "\n \t\r"]
-    
+
     if { ![regexp "\[\$;\]|^\[ \t]*:" $form ] } {
 	 append form ";"
     }
@@ -296,15 +300,15 @@ proc sendMaximaWait { win form {timeout 20000 }} {
     vwait [oloc $win maximaWait]
     after cancel $af
     if { $maximaWait > 0 } {
-	global pdata 
+	global pdata
 	return [trim_maxima $pdata([oget $win maximaSocket],result)]
     } else {
 	error "sendMaximaWait $form timed out"
     }
 }
-    
 
-
+
+
 #
  #-----------------------------------------------------------------
  #
@@ -314,7 +318,7 @@ proc sendMaximaWait { win form {timeout 20000 }} {
  #  Results: none
  #
  #  Side Effects: maxima executes form and then call may
- #  do something like insert it somewhere in a buffer.   
+ #  do something like insert it somewhere in a buffer.
  #
  #  # todo: should probably make it so this guy looks at maxima c, d numbers
  #    and matches results ..
@@ -346,7 +350,7 @@ proc setAction { var action } {
 }
 
 proc setAct { var val } {
-    global _actions 
+    global _actions
     uplevel #0 set $var [list $val]
     if { [info exists _actions($var)] } {
 	uplevel #0 $_actions($var)
@@ -372,7 +376,7 @@ proc CMkill {  signal pid } {
 
 proc CMinterrupt { win } {
     global ws_openMath
-    CMkill   -INT [oget $win pid]  
+    CMkill   -INT [oget $win pid]
     CMresetFilter $win
 }
 
@@ -423,7 +427,7 @@ proc dblDisplayFrame { location line } {
 }
 	
 
-
+
 #
  #-----------------------------------------------------------------
  # required:
@@ -435,7 +439,7 @@ proc dblDisplayFrame { location line } {
  #
  #  Results:  a string with white space trimmed off
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -462,10 +466,10 @@ proc dshow { args  } {
     puts $ans
 }
 proc maxima_insert { w this next val args } {
-    catch { 
+    catch {
     set res [uplevel #0 set $val]
     }
-    catch { 
+    catch {
     insertResult_maxima $w $this $next [trim_maxima $res]
     }
 }
@@ -500,7 +504,7 @@ proc changeSize { win  y } {
 	incr h $del
 	if { $h >= 1 } {
 	    $win config -height $h
-	}   
+	}
     }
-   
+
 }

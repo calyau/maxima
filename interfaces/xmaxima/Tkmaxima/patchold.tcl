@@ -1,8 +1,12 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: patchold.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 #mike Obsolete unused code
 ###### patchold.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 # these are some compatibility patches for older versions
@@ -20,14 +24,14 @@ mproc font  {option args} {
 	create  {
 		
 	    # puts "args=$args"
-	    
+	
 	    set family [assoc -family $args "courier"]
 	    set family [string tolower $family]
 	    set slant [assoc -slant $args r]
 	    if { "$slant" == "italic" || "$slant" == "oblique" } {
 		set slant o
 	    } else { set slant r}
-	    
+	
 	    set size [assoc -size $args 10]
 	    set weight [assoc -weight $args normal]
 	    if { [fontExistsp  $family $weight $slant $size ] } {
@@ -57,14 +61,14 @@ mproc font {option args} {
 	create  {
 	    set bil $args
 	    # puts "args=$args"
-	    
+	
 	    set family [assoc -family $args "courier"]
 	    set family [string tolower $family]
 	    set slant [assoc -slant $args r]
 	    if { "$slant" == "italic" || "$slant" == "oblique" } {
 		set slant o
 	    } else { set slant r}
-	    
+	
 	    set size [assoc -size $args 10]
 	    set weight [assoc -weight $args normal]
     	    if { [catch { set allfonts $ws_openMath(allfonts)} ] &&
@@ -79,7 +83,7 @@ mproc font {option args} {
 	    if { [set ind [lsearch -glob $allfonts *$family-normal-$slant*-$size-*]] >= 0 } { return  [lindex $allfonts $ind]  }
 	return [list $family $size $weight]
 	} else { 	    return [lindex $allfonts $ind] }
-    }  
+    }
     default { error "cant measure"
 }
 }
@@ -89,8 +93,8 @@ proc fontExistsp {   family weight slant size } {
     if { ![winfo exists .bfontexists ] }  { entry .bfontexists }
     return [expr ![catch { .bfontexists config -font *-$family-$weight-$slant-*--$size-*-*-*-*-*-*-* }]]
 }
-    
- 
+
+
 
 
 ## endsource patchold.tcl

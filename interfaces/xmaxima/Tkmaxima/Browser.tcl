@@ -1,7 +1,11 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Browser.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### browser.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 global MathServer
@@ -15,7 +19,7 @@ set MathServer "locahost 4443"
 ###### keyb.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 proc peekLastCommand {win} {
@@ -35,7 +39,7 @@ proc pushCommand { win command arglist } {
 global ws_openMath
 set ws_openMath(sticky) "^Teval$|^program:"
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -43,10 +47,10 @@ set ws_openMath(sticky) "^Teval$|^program:"
  #  so that tags present before or after the insert, which are sticky
  #  are added to the inserted string.   As usual, ones on both sides
  #  are added.
- # 
- #  Results: 
  #
- #  Side Effects: 
+ #  Results:
+ #
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -58,7 +62,7 @@ proc tkTextInsert { w s } {
     set both [intersect $after $before]
    # puts "after=$after"
    # puts "before=$before"
-    
+
     foreach v [concat $after $before] {
 	if { [regexp $ws_openMath(sticky) $v] } {
 	    lappend both $v
@@ -68,7 +72,7 @@ proc tkTextInsert { w s } {
     if { [info exists ws_openMath($w,inputTag) ] } {
 	lappend both $ws_openMath($w,inputTag)
     }
-    
+
     if {($s == "") || ([$w cget -state] == "disabled")} {
 	return
     }
@@ -80,22 +84,22 @@ proc tkTextInsert { w s } {
     }
     $w insert insert $s $both
     $w see insert
-    
-}    
+
+}
 proc getRange { win a b }  {
     if { [$win compare $a < $b ] } { return "$a $b" } else { return "$b $a"}
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
  # binding --   push the current selection on the killRing, and
  # if there is no selection, push the region between the anchor and
- # the point.   
+ # the point.
  #  Results:
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -116,7 +120,7 @@ if { [catch { set ws_openMath(bindings_added) } ] } {
     bind Text <Control-Key-k> "openMathControlK %W \n [bind Text <Control-Key-k>]"
     bind Text <B3-Motion> [bind Text <B2-Motion>]
     bind Text <Button-3> [bind Text <Button-2>]
-    
+
   set ws_openMath(bindings_added) 1
 }
 
@@ -175,7 +179,7 @@ proc OpenMathYank {win level } {
 		    $win delete beforeyank insert
 		    eval $res
 		}
-                pushCommand $win OpenMathYank [list $win $m] 
+                pushCommand $win OpenMathYank [list $win $m]
 	    }
     }
     catch { $win see insert}
@@ -202,7 +206,7 @@ bind OpenMathText <Control-Key-space> {
     pushCommand %W SetAnchor ""
     %W mark set anchor insert }
 
-    
+
 proc openMathAnyKey { win keysym s  } {
    # puts "$win `$keysym' `$s'"
     if { "$s" != "" } {
@@ -230,7 +234,7 @@ proc saveText { win args } {
 	    lappend stop($end) $v
 	    set allar($begin) 1
 	    set allar($end) 1
-	    
+	
 	}
     }
    proc __comp { a b} " return  \[$win compare \$a > \$b \] "
@@ -251,7 +255,7 @@ proc saveText { win args } {
 	   foreach u $stop($v) { unset currentTags($u) }
        }
 
-       
+
 
        #puts -nonewline "..deleting{$stop($v)} giving {$currentTags}"
 
@@ -262,17 +266,17 @@ proc saveText { win args } {
 }
 
 
-
+
 #
  #-----------------------------------------------------------------
  #
  # tagRanges --  find ranges on WINDOW for TAG from FROMINDEX below TOINDEX
  #
- #  Results: a list of ranges start1 stop1 start2 stop2 .. 
+ #  Results: a list of ranges start1 stop1 start2 stop2 ..
  # which are contained in [fromindex,toindex] such that TAG is on from
  # start1 to stop1 etc.
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -306,13 +310,13 @@ proc tagRanges { win tag begin end } {
 		} else { return $answer }
 	    }
 	    return $answer
-	    
+	
 	}
 }
 	
 
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -322,7 +326,7 @@ proc tagRanges { win tag begin end } {
  #
  #  Results: a string
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -345,26 +349,26 @@ proc thisRange { win tag index } {
 
 
 
-
+
 #
  #-----------------------------------------------------------------
  #
  # insertRichText --  insert rich text in TEXTWINDOW at INDEX according
  # to commands and data in LIST.   The latter must be of the form
  #  command1 arg1 ..argn command2 arg1 ..argn2 ..
- # for example if `Tins' takes two args 
- #  and the commands must be in 
+ # for example if `Tins' takes two args
+ #  and the commands must be in
  # since the rich text might come from a selection or some or an untrusted
  # file we want to be careful not to do any bad evals.
  #  Results: none
  #
  #  Side Effects:  the rich text commands are invoked to do insertions
- # on the window.  
+ # on the window.
  #
  #----------------------------------------------------------------
 #
 proc insertRichText {win index list } {
-    global ws_openMath 
+    global ws_openMath
     set ws_openMath(currentwin) $win
     set ws_openMath(point) $index
     foreach v $ws_openMath(richTextCommands) {
@@ -381,7 +385,7 @@ proc insertRichText {win index list } {
 	set form [concat $com [lrange $list $i [expr {$i +$n -1}]]]
 	if { [catch {eval $form } ] } {
 	    return -code error -errorinfo "unable to evaluate command:`$form' " }
-	    
+	
 	incr i $n
     }
 }
@@ -399,7 +403,7 @@ proc TinsSlashEnd { tags text } {
    $ws_openMath(currentwin) insert $ws_openMath(point) "$text\\"  $tags
 }
 
-    
+
 
 global ws_openMath
 set ws_openMath(richTextCommands) {Tins TinsSlashEnd}
@@ -419,10 +423,10 @@ proc showHistory { window } {
     label $w.title -text "History List" -relief raised
     setHelp $w.title {This window may be dragged elsewhere by grabbing this title bar with the mouse.   Double clicking on a history item, moves to that page.}
     button $w.dismiss -command "destroy $w" -text dimsiss
-    setHelp $w.dismiss {Remove the history list} 
+    setHelp $w.dismiss {Remove the history list}
     pack $w.title $w.dismiss -side top -expand 1 -fill x
     scrollbar $w.scrolly -command "$w.list yview"
-    scrollbar $w.scrollx -orient horizontal -command "$w.list xview"    
+    scrollbar $w.scrollx -orient horizontal -command "$w.list xview"
     pack $w.scrollx -side bottom -fill x -expand 1
     pack $w.scrolly -side right -fill y -expand 1
     listbox $w.list -yscroll "$w.scrolly set" \
@@ -443,7 +447,7 @@ proc showHistory { window } {
     bind  $w.title <B1-Motion> "dragPlacedWindow $w %W %X %Y"
     bind  $w.title <1> "startDragPlacedWindow $w %X %Y"
     place $w -relx .4 -rely .8 -in $top
-    
+
 }
 
 proc deleteAllTraces {var} {
@@ -456,7 +460,7 @@ proc resetHistory { win list args } {
     if { [catch {
 	if { "$action" == "history" } {
 	    $list delete 0 end
-	    if { [winfo exists $list] } { 
+	    if { [winfo exists $list] } {
 		foreach v [oget $win history] {
 		    $list insert end [oget $v location]
 		}
@@ -479,7 +483,7 @@ proc startDragPlacedWindow { win x y } {
 
 proc dragPlacedWindow { win w1 x y } {
     global me recursive
-    makeLocal $win placeinfo 
+    makeLocal $win placeinfo
     catch { after cancel [oget $win after]}
     set me [oget $win placeinfo]
     #puts "have=[oget $win placeinfo]"
@@ -492,7 +496,7 @@ proc dragPlacedWindow { win w1 x y } {
     eval place $win $new
     oset $win placeinfo [list $x $y $new]
 }
-    
+
 proc OpenMathMoveHistory { win  n } {
     makeLocal $win history historyIndex
     incr historyIndex $n
@@ -506,7 +510,7 @@ proc OpenMathMoveHistory { win  n } {
 }
 
 proc toLocalFilename { url } {
-    set type [assoc type $url] 
+    set type [assoc type $url]
     switch $type {
 	http {
 	    return [assoc filename $url]
@@ -530,13 +534,13 @@ proc OpenMathGetWindow { commandPanel win } {
     set tem [toLocalFilename [decodeURL [oget $win location]]]
     oset $commandPanel savefilename  [file root $tem].txt
 }   }
-    
+
 
 proc getw { s  } { eval pack forget [winfo children . ] ; pack $s}
 
 proc try1 { file } {
    global ccc
-   eval pack forget [winfo children . ] 
+   eval pack forget [winfo children . ]
    mkOpenMath [set w .t[incr ccc]]
    uplevel #0 source $file
   }
@@ -548,8 +552,8 @@ proc filesplit { x } {
     set file [lindex $l [expr {$n - 1}]]
     return [list [join $dir /] $file]
 }
-    
-    
+
+
 
 proc decodeURL { name } {
     set server ""
@@ -558,12 +562,12 @@ proc decodeURL { name } {
 	   # puts "answer=$answer"
     }
 
-    
+
     if { [regexp {^([a-z]+)[(]?([0-9]*)[)]?:/([^ ]+)$} $name all type port path ] } {
 	lappend answer type $type
     } else { set path $name ; set type ""
     }
-    
+
     set path [removeDotDot $path]
     #puts "path=$path"
     desetq "dirname filename" [filesplit $path]
@@ -582,7 +586,7 @@ proc decodeURL { name } {
 	    set dirname /
 	    set filename {}
 	}
-	lappend answer port $port server $server 
+	lappend answer port $port server $server
     }
     lappend answer dirname $dirname filename $filename
     return $answer
@@ -608,7 +612,7 @@ proc encodeURL { lis } {
 	      if { [ set port [assoc port $lis 4443]] != 4443 } {
 	       append type "($port)"
 	   }
-   	   appendSeparate ans "" $type ://[assoc server $lis ""] 
+   	   appendSeparate ans "" $type ://[assoc server $lis ""]
 	   append ans [dirnamePlusFilename $lis]
 	   appendSeparate ans "#" [assoc anchor $lis ""] ""
 	}
@@ -616,15 +620,15 @@ proc encodeURL { lis } {
 	   if { [ set port [assoc port $lis 80]] != 80 } {
 	       append type "($port)"
 	   }
-	   appendSeparate ans "" $type ://[assoc server $lis ""] 
+	   appendSeparate ans "" $type ://[assoc server $lis ""]
 	   append ans [dirnamePlusFilename $lis]
-	   #appendSeparate ans "" [assoc dirname $lis ""] 
+	   #appendSeparate ans "" [assoc dirname $lis ""]
 	   #appendSeparate ans "/" [assoc filename $lis ""] ""
 	   appendSeparate ans "#" [assoc anchor $lis ""] ""
        }
        file {
 	   appendSeparate ans "" $type :/
-	   append ans  [dirnamePlusFilename $lis] 
+	   append ans  [dirnamePlusFilename $lis]
 #	   appendSeparate ans "" [assoc dirname $lis ""] "/"
 #	   appendSeparate ans "" [assoc filename $lis ""] ""
 	   appendSeparate ans "#" [assoc anchor $lis ""] ""
@@ -660,7 +664,7 @@ proc resolveURL { name current {post ""} } {
 		    lappend ans dirname [removeDotDot $new]
 		}
 		filename {
-		    
+		
 		    if { "[assoc filename $decode]" == "" && "[assoc anchor $decode]" != "" } {
 			lappend ans $x $y
 		    }
@@ -703,10 +707,10 @@ proc getURLrequest { path server port types {post ""} {meth ""} } {
 	set method GET
 	if { "$post" != "" } {set method POST}
     }
-    
+
     #puts "getURLrequest $path $server $port [list $types]"
     foreach {v handler}  $ws_openMath(urlHandlers) {
-	lappend types $v, 
+	lappend types $v,
     }
 
     set ans "$method $path HTTP/1.0\nConnection: Keep-Alive\nUser-agent: netmath\nHost: $server:$port\nAccept: $types\n"
@@ -714,9 +718,9 @@ proc getURLrequest { path server port types {post ""} {meth ""} } {
 	# append ans "Content-length: [string length $post]\n\n$post"
 	append ans "Content-type: application/x-www-form-urlencoded\nContent-length: [string length $post]\n\n$post"
     }
-    
+
 	return $ans
-    
+
 }
 
 proc canonicalizeContentType { type } {
@@ -727,15 +731,15 @@ proc canonicalizeContentType { type } {
 proc getURL { resolved type {mimeheader ""} {post ""} } {
     global ws_openMath
     set res $resolved
-    
+
     set ans ""
     set method ""
     if { "$mimeheader" != ""} {
 	uplevel 1 set $mimeheader \[list\]
     }
     uplevel 1 set $type "unknown"
-    
-    
+
+
     #puts "getting $resolved,post=<$post>"
     switch [assoc type $res] {
 	http {
@@ -747,7 +751,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	    } else {
 	    set sock [socket [assoc server $res] [assoc port $res 80]]
 	    }
-	    
+	
 	    fconfigure $sock -blocking 0
 	    ##DO NOT DELETE THE FOLLOWING !!!!!puts!!!!!!!!
 	    #puts request=[getURLrequest [dirnamePlusFilename $res] [assoc server $res] [assoc port $res] image/gif $post]
@@ -820,8 +824,8 @@ proc getImage { resolved width height} {
     }
 
 
-global ws_openMath    
-set ws_openMath(imagecounter) 0    
+global ws_openMath
+set ws_openMath(imagecounter) 0
 
 set ws_openMath(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzgCEACH5BAEAAAIALAAAAAAdACAAAAPOOLrcLjDCQaq9+CoZaf7YIIicx50nNZYV6k4tCRPuYduSR8vmef+dy2rU4vyOM8uqJzkCBYCoNEqkGZ04SGHLBSiKTewhx/AyI+LxqWIGh5Eo9pdm8D3jhDa9/nrJTQaBfS5/LYGCgxyFe4cnAY+Qj1oFegKHjRKRkpMbgJeIEJqTBTyGnxybAlwbQYygKFusOaavo5SkJ5WYErELKAO6fBy4LxS6vFzEv4snpLIpIszIMiWKeXMWvS7RGXoVsX0g11NR1Bzk6F4jCn0ODgkAOwAA
 
@@ -839,7 +843,7 @@ proc backgroundGetImage  { image res width height }   {
     }
 }
 
-    
+
 proc backgroundGetImage1  { image res width height }   {
     #puts  "resolved=$res"
     global ws_openMath
@@ -871,14 +875,14 @@ proc backgroundGetImage1  { image res width height }   {
 			#puts "hi binary" ; flush stdout
 			if {  [readAllData $s -tovar \
 				ws_openMath($s,url_result) -mimeheader \
-				ws_openMath($s,mimeheader) 
+				ws_openMath($s,mimeheader)
 			] > 0  && [string match *gif [assoc content-type $ws_openMath($s,mimeheader)]] } {
 			    set ans $image
 			    $image configure -data [tobase64 $ws_openMath($s,url_result)]
 
 			    unset ws_openMath($s,mimeheader)
 			    unset ws_openMath($s,url_result)
-			    
+			
 			} else  {
 			    error "could not get image"
 			}
@@ -890,7 +894,7 @@ proc backgroundGetImage1  { image res width height }   {
 				ws_openMath($s,mimeheader) -timeout 15000 -chunksize 2024 ] > 0 } {
 			    set ans $image
 			    $image config  -file \
-				    $tmp 
+				    $tmp
 			    unset ws_openMath($s,mimeheader)
 			}
 
@@ -907,7 +911,7 @@ proc backgroundGetImage1  { image res width height }   {
 		# puts "$image config -file [toLocalFilename $res]"
 		#set ans [image create photo -file [toLocalFilename $res]]
 		
-	    
+	
 	}
 	    default { error "unknown type of image" }
 	}
@@ -922,16 +926,16 @@ proc backgroundGetImage1  { image res width height }   {
 	 }
 
     }
-    
-
+
+
 #
 #-----------------------------------------------------------------
 #
 # readData --  read data from S, storing the result
 # in ws_openMath($s,url_result).   It times out after TIMEOUT without any data coming.
-# it can be aborted by setting set ws_openMath($s,done)  -1 
+# it can be aborted by setting set ws_openMath($s,done)  -1
 #
-# 
+#
 #  Results: -1 on failure and 1 on success.
 #
 #  Side Effects: it initially  empties ws_openMath($s,url_result) and then
@@ -951,7 +955,7 @@ proc readData { s { timeout 10000 }} {
     fileevent $s readable \
 	   "after cancel {set ws_openMath($s,done) -1} ; after $timeout {set ws_openMath($s,done) -1} ; set da \[read $s 8000] ; append ws_openMath($s,url_result) \$da; if { \[string length \$da] < 8000  && \[eof $s] } {after cancel {set ws_openMath($s,done) -1} ; set ws_openMath($s,done) 1; fileevent $s readable {} ;  }"
     myVwait ws_openMath($s,done)
-    catch { close $s } 
+    catch { close $s }
     #mike FIXME: this is a wrong use of after cancel
     after cancel "set ws_openMath($s,done) -1"
     return $ws_openMath($s,done)
@@ -1023,7 +1027,7 @@ proc OpenMathOpenUrl { name args} {
 	catch { set currentUrl [decodeURL [oget $textwin baseurl]] }
 
 	if { $reload == 0} {
-	    
+	
 	    set new [resolveURL $name $currentUrl $post]
 	    if { [set anchor [assoc anchor $new]] != "" } {
 		set new [delassoc anchor $new]
@@ -1044,7 +1048,7 @@ proc OpenMathOpenUrl { name args} {
 		#    pushHistory $commandPanel $v
 		return
 	    }
-	    
+	
 	}
     } else {
 	# reload=1
@@ -1058,7 +1062,7 @@ proc OpenMathOpenUrl { name args} {
        if { [set tem [assoc location $mimeheader]] == "" } { break }
        set name $tem
    }
-       
+
    #puts "contentType defined:[info exists contentType]"
    set handler [assoc $contentType $ws_openMath(urlHandlers)]
    if { "$handler" != "netmath" && "$handler" != "" } {
@@ -1081,7 +1085,7 @@ proc OpenMathOpenUrl { name args} {
    #puts "ws_openMath(counter)=$ws_openMath(counter)"
 
    set win [mkOpenMath [set w $toplevel.t[incr ws_openMath(counter)]] ]
-   
+
    #puts "ws_openMath(counter)=$ws_openMath(counter)"
 
 
@@ -1091,7 +1095,7 @@ proc OpenMathOpenUrl { name args} {
 
    if { [set anchor [assoc anchor $new]] != "" } {
        set new [delassoc anchor $new]
-   } 
+   }
    if { "[assoc filename $new]" == "" } {
        set new [putassoc  filename $new index.html]
    }
@@ -1100,7 +1104,7 @@ proc OpenMathOpenUrl { name args} {
    oset $commandPanel location [encodeURL $new]
    oset $commandPanel textwin $win
    oset $w location  [encodeURL $new]
-   # puts "new=$new" 
+   # puts "new=$new"
    oset $commandPanel savefilename [file root [toLocalFilename $new]].txt
    set tem [assoc filename $new ""]
    #puts $contentType
@@ -1115,7 +1119,7 @@ proc OpenMathOpenUrl { name args} {
    } elseif { 1 }  {
     xHMinit_win $win
     xHMset_state $win url [encodeURL $new]
-    oset $win baseprogram $baseprogram    
+    oset $win baseprogram $baseprogram
     # puts win=$win,lengres=[string length $result]
     set errmsg1 ""
        set err 0
@@ -1124,7 +1128,7 @@ proc OpenMathOpenUrl { name args} {
 	   xHMparse_html $result "xHMrender $win"
 	   set err 0
        } else {
-	   set err [catch { 
+	   set err [catch {
 	       xHMparse_html $result "xHMrender $win"
 	   } errmsg1 ]
 	   }
@@ -1134,7 +1138,7 @@ proc OpenMathOpenUrl { name args} {
 		$win yview anchor:$anchor
 	}   }
 	
-	#   foreach v {Tresult Teval} {  $win tag raise $v}	   
+	#   foreach v {Tresult Teval} {  $win tag raise $v}	
 
 
     }    else {
@@ -1174,7 +1178,7 @@ proc pushHistory { commandPanel win } {
     }
 }
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -1183,7 +1187,7 @@ proc pushHistory { commandPanel win } {
  #
  #  Results: none
  #
- #  Side Effects: page scrolls 
+ #  Side Effects: page scrolls
  #
  #----------------------------------------------------------------
 #
@@ -1196,7 +1200,7 @@ proc omScrollPage { win n } {
 	} else {$win mark set insert @0,[$win cget -height]}
     }
 }
-	    
+	
 #bind Text <Control-v> "omScrollPage %W 1"
 #bind Text <Meta-v> "omScrollPage %W -1"
 #bind Text <Alt-v> "omScrollPage %W -1"
@@ -1238,7 +1242,7 @@ proc fileBaseprogram { textwin parent x y } {
     set com "destroy $e ; oset $textwin baseprogram \[decodeURL \$xHMpriv(baseprogram)] "
     bind $e <Leave> $com
     bind $e <Return> $com
-    
+
 }
 
 ######### font choosing utilities #########
@@ -1252,7 +1256,7 @@ fixed 1 {fangsong ti} 1 {clearlyu alternate glyphs} 0 lucidatypewriter 1 charter
 }
 
 proc fontDialog { top } {
-    global xHMpreferences 
+    global xHMpreferences
     set font [xHMmapFont font:propor:normal:r:3]
     catch { destroy $top }
     toplevel $top
@@ -1299,8 +1303,8 @@ proc fontDialog { top } {
     $win insert insert "\nShould plot windows be "
     $win window create insert -window $win.plottype
     $win insert insert "?"
-    
-    
+
+
     $win insert insert "\n\n\n"
     $win insert insert " Apply and Quit " "bye raised"
     $win insert insert "      "
@@ -1342,12 +1346,12 @@ proc savePreferences {} {
     }
     close $fi
 }
-    
-    
 
-    
-    
-    
+
+
+
+
+
 proc getFontFamilies { fixed } {
     global isFixedp
     foreach font  [font families] {
@@ -1362,7 +1366,7 @@ proc getFontFamilies { fixed } {
 }
 	
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -1399,7 +1403,7 @@ proc listBoxChoose { win  items textvar  } {
 	set wid [expr {($xx > $wid ? $xx : $wid)}]
     }
     eval [concat $list insert 0 $items]
-    catch { $list selection set [lsearch $items [set $textvar]] } 
+    catch { $list selection set [lsearch $items [set $textvar]] }
     bind $list <1> "set $textvar \[$list get \[$list nearest %y\]\]; destroy $fr"
     place $fr -in $win -x 0  -y 0 -anchor n
 }
@@ -1410,5 +1414,5 @@ proc quoteForRegexp { s } {
     return $ans
 }
 
-    
+
 ## endsource browser.tcl

@@ -1,44 +1,48 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Getdata1.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### getdata1.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # readAllData --  read data from CHANNEL.
- #  Options: -tovar variable    (store in this global variable)
- #           -mimeheader store in alist the mime values
- #                   and oset $sock contentlength if
- #           -tochannel  (store in channel)
- #           -timeout   (for non action)
- #           -translation  (for the sock)
- #           -chunksize   size to do for each read between updating %
- #           -command    a call back run on each chunk  
- # If -command is not specified, wait and return the result code.
- # Value of -1 means a timeout, and value of >1 means success.
- # If  command is specified, call command each time data is read,
- # with 1 argument appended, the result code.  
- # allowing no more than TIMEOUT millisconds between reads.
- #  We set up local variables for the $CHANNEL
- #        result
- #        bytesread  (after the header if one specified)
- #        mimeheader (extracted)
- #        length     (0 if not provied by mime header)
- # COMMAND can access
- # to examine the data read so far.
- #
- #  Results:  1 on success, and -1 if it fails or times out.
- #
- #  Side Effects: CHANNEL will be closed and the global variable VAR will
- #  be set..
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# readAllData --  read data from CHANNEL.
+#  Options: -tovar variable    (store in this global variable)
+#           -mimeheader store in alist the mime values
+#                   and oset $sock contentlength if
+#           -tochannel  (store in channel)
+#           -timeout   (for non action)
+#           -translation  (for the sock)
+#           -chunksize   size to do for each read between updating %
+#           -command    a call back run on each chunk
+# If -command is not specified, wait and return the result code.
+# Value of -1 means a timeout, and value of >1 means success.
+# If  command is specified, call command each time data is read,
+# with 1 argument appended, the result code.
+# allowing no more than TIMEOUT millisconds between reads.
+#  We set up local variables for the $CHANNEL
+#        result
+#        bytesread  (after the header if one specified)
+#        mimeheader (extracted)
+#        length     (0 if not provied by mime header)
+# COMMAND can access
+# to examine the data read so far.
+#
+#  Results:  1 on success, and -1 if it fails or times out.
+#
+#  Side Effects: CHANNEL will be closed and the global variable VAR will
+#  be set..
+#
+#----------------------------------------------------------------
 #
 
 
@@ -82,7 +86,7 @@ proc readAllData { sock args } {
     } else {
 	fileevent  $sock readable "readAllData1 $sock"
     }
-    
+
     if { "[oget $sock command]" == "" } {
 	oset $sock docommand 0
 	return [wrWaitRead $sock]
@@ -94,18 +98,18 @@ proc readAllData { sock args } {
 }
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # readMimeHeader --  read from SOCK until end of mime header.
- #  this is done as a fileevent.  Store result in $sock local HEADERVALUE.
- #
- #  Results: none
- #
- #  Side Effects:  data read, and the mime header decoded and stored.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# readMimeHeader --  read from SOCK until end of mime header.
+#  this is done as a fileevent.  Store result in $sock local HEADERVALUE.
+#
+#  Results: none
+#
+#  Side Effects:  data read, and the mime header decoded and stored.
+#
+#----------------------------------------------------------------
 #
 proc readMimeHeader { sock } {
     global [oarray $sock]
@@ -124,7 +128,7 @@ proc readMimeHeader { sock } {
 	}
 	if { $n <=1 && ($n==0 || "$line" == "\r") }  {
 	    # we are done the header
-	  
+	    
 	    append [oloc $sock result] $result\n
 	    regsub -all "\r"  [oget $sock result] "" result
 	    set lis [split $result \n]
@@ -150,12 +154,9 @@ proc readMimeHeader { sock } {
 	    #puts "switching to readAllData1 $sock, [eof $sock]"
 	    fileevent $sock readable "readAllData1 $sock"
 	    #puts "doing     readAllData1 $sock"
-	    #if { [ catch { readAllData1 $sock } err ] } {
-	    #	puts "err=$err"
-	    #}
-	    return 
+	    return
 	}
-	append result $line\n
+	append result "$line\n"
     }
 }
 
@@ -168,77 +169,76 @@ proc readAllData1 { sock } {
 
     upvar #0 [oloc $sock bytesread] bytesread
     #puts "readAllData1 $sock, bytes=$bytesread" ; flush stdout
-    if { [catch { 
-    foreach v $after {
-	after cancel $v
-    }
-    while { 1 } {
-	if { "$tochannel" != "" } {
-	    if { [eof $sock] } {
-		wrFinishRead $sock
-		return finished
+    if { [catch {
+	foreach v $after {after cancel $v}
+	while { 1 } {
+	    if { "$tochannel" != "" } {
+		if { [eof $sock] } {
+		    wrFinishRead $sock
+		    return finished
+		} else {
+		    set amt [expr { $contentlength >= 0 ? ($chunksize < $contentlength - $bytesread ? $chunksize : ($contentlength -$bytesread)) : $chunksize } ]
+		    set chunksize $amt
+		    set n [fcopy $sock $tochannel -size $chunksize]
+		}
 	    } else {
-		set amt [expr { $contentlength >= 0 ? ($chunksize < $contentlength - $bytesread ? $chunksize : ($contentlength -$bytesread)) : $chunksize } ]
-		set chunksize $amt
-		set n [fcopy $sock $tochannel -size $chunksize]
+		set res [read $sock $chunksize]
+		set n [string length $res]
+		append [oloc $sock result] $res
 	    }
-	} else {
-	    set res [read $sock $chunksize]
-	    set n [string length $res]
-	    append [oloc $sock result] $res
-	}
-	incr bytesread $n
-	if { $n == 0 } {
-	    if { [eof $sock] } {
+	    incr bytesread $n
+	    if { $n == 0 } {
+		if { [eof $sock] } {
+		    wrFinishRead $sock
+		    return finished
+		}
+	    }
+	    set ws_openMath(load_rate) "[expr {round ($bytesread * ($ws_openMath(clicks_per_second)*1.0 / ([clock clicks] - $begin)))}] bytes/sec"
+
+	    if { $contentlength > 0 } {
+		oset $sock percent \
+			[expr {$bytesread * 100.0 / $contentlength }]
+		
+	    }
+
+	    if { $docommand } {
+		catch { uplevel #0  [oget $sock command] }
+	    }
+	    # puts "percent=[oget $sock percent],bytes=[oget $sock bytesread]"
+
+	    if { $contentlength >= 0 &&  $bytesread >= $contentlength } {
 		wrFinishRead $sock
 		return finished
 	    }
+	    if { $n <= $chunksize } { break    }
+	    
 	}
-	set ws_openMath(load_rate) "[expr {round ($bytesread * ($ws_openMath(clicks_per_second)*1.0 / ([clock clicks] - $begin)))}] bytes/sec"
-
-	if { $contentlength > 0 } {
-	    oset $sock percent \
-		    [expr {$bytesread * 100.0 / $contentlength }]
-	
+    } errmsg   ] } {
+	if { "$errmsg" == "finished" } { 
+	    return 
+	} else {
+	    global errorInfo ; error "error: $errmsg , $errorInfo"
 	}
-
-	if { $docommand } {
-	    catch { uplevel #0  [oget $sock command] }
-	}
-	 # puts "percent=[oget $sock percent],bytes=[oget $sock bytesread]"
-
-	if { $contentlength >= 0 &&  $bytesread >= $contentlength } {
-	    wrFinishRead $sock 
-	    return finished
-	}
-	if { $n <= $chunksize } { break    }
-	
-   }
-} errmsg   ] } {
-    if { "$errmsg" == "finished" } { return } else {
-	
-	global errorInfo ; error "error: $errmsg , $errorInfo"
     }
-   }
     lappend [oloc $sock after] \
-	   [after $timeout "oset $sock done -1"]
+	    [after $timeout "oset $sock done -1"]
 }
 
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # wrFinishRead --  run at the EOF.  It will run the COMMAND one last
- # time and look after setting the global variables with the result,
- # closing the channel(s).   
- #
- #  Results:  the $sock variable 'done', 1 for success, -1 for failure.  
- #
- #  Side Effects: many!
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# wrFinishRead --  run at the EOF.  It will run the COMMAND one last
+# time and look after setting the global variables with the result,
+# closing the channel(s).
+#
+#  Results:  the $sock variable 'done', 1 for success, -1 for failure.
+#
+#  Side Effects: many!
+#
+#----------------------------------------------------------------
 #
 proc wrFinishRead { sock } {
     makeLocal $sock mimeheader contentlength tovar tochannel headervalue \
@@ -257,17 +257,17 @@ proc wrFinishRead { sock } {
 	oset $sock done 1
     } else { oset $sock done -1
     }
-    catch { close $sock }	 
+    catch { close $sock }	
     if { $docommand } {
-		catch { uplevel #0  [oget $sock command]  }
-	 }
+	catch { uplevel #0  [oget $sock command]  }
+    }
     set res [oget $sock done]
-    #puts "wrFinishRead, tovar=$tovar,tochannel=$tochannel,res=$res,bytesread=$bytesread"	 
+    #puts "wrFinishRead, tovar=$tovar,tochannel=$tochannel,res=$res,bytesread=$bytesread"	
     clearLocal $sock
     oset $sock done $res
-	 
+    
     return $res
-     }
+}
 
 proc wrWaitRead { sock } {
     #puts "entering wrWaitRead"
@@ -289,8 +289,9 @@ proc testit { addr usecommand args } {
 	puts $sock "GET $path HTTP/1.0\nMIME-Version: 1.0\nAccept: text/html\n\nhi there" ;
 	flush $sock
 	proc _joe { sock } {
-		makeLocal $sock percent contentlength bytesread
-		puts "percent=$percent,contentlength=$contentlength,bytesread=$bytesread"}
+	    makeLocal $sock percent contentlength bytesread
+	    puts "percent=$percent,contentlength=$contentlength,bytesread=$bytesread"
+	}
 	if { $usecommand } {	
 	    eval readAllData $sock -command  [list "_joe $sock"] $args
 	    wrWaitRead $sock
@@ -298,23 +299,23 @@ proc testit { addr usecommand args } {
 	    eval readAllData $sock $args
 	}
 	catch { close $sock }
-    } 
+    }
 }
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # tryGetCache --  look up PATH (eg http://www.ma.utexas.edu:80/...)
- # in the cache, and if you find success and a matching ETAG,
- # then return the data in the file
- #
- #  Results:  The cached data in FILE or ""
- #
- #  Side Effects: Will remove the file if the current etag differs.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# tryGetCache --  look up PATH (eg http://www.ma.utexas.edu:80/...)
+# in the cache, and if you find success and a matching ETAG,
+# then return the data in the file
+#
+#  Results:  The cached data in FILE or ""
+#
+#  Side Effects: Will remove the file if the current etag differs.
+#
+#----------------------------------------------------------------
 #
 proc tryGetCache { path alist } {
     global ws_Cache ws_openMath
@@ -324,7 +325,7 @@ proc tryGetCache { path alist } {
 	set etag [assoc etag $alist]
 	if { "$etag" != "" } {
 	    if {  "[lindex $tem 0]" == "$etag" }  {
-		if { ! [catch { 
+		if { ! [catch {
 		    set fi [open $filename  r]
 		}] } {
 		    fconfigure $fi -translation binary
@@ -348,8 +349,8 @@ proc tryGetCache { path alist } {
 proc saveInCache { path etag  result} {
     global ws_Cache ws_openMath
     set cachedir $ws_openMath(cachedir)
- # todo add a catch
-   set type [lindex [split [file tail $path] .] 1]
+    # todo add a catch
+    set type [lindex [split [file tail $path] .] 1]
     set count 0
     while [ file exists [set tem [file join $cachedir $count$etag.$type]]] {
 	incr count
@@ -367,31 +368,31 @@ proc saveInCache { path etag  result} {
 
 proc cleanCache { } {
     global ws_Cache
-    catch { 
-    foreach v [glob [cacheName *]] {
-	catch { file delete $v }
+    catch {
+	foreach v [glob [cacheName *]] {
+	    catch { file delete $v }
     }   }
     catch { unset ws_Cache }
 }
 proc cacheName { name } {
     global ws_openMath
-   return [ file join $ws_openMath(cachedir) $name]
+    return [ file join $ws_openMath(cachedir) $name]
 }
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # readAndSyncCache --  read the cache index.dat
- # and remove duplicates removing files, and if necessary save
- # the file out.   Normally this would be done at start up.
- #
- #  Results:
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# readAndSyncCache --  read the cache index.dat
+# and remove duplicates removing files, and if necessary save
+# the file out.   Normally this would be done at start up.
+#
+#  Results:
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc readAndSyncCache { } {
     global ws_openMath ws_Cache

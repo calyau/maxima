@@ -1,14 +1,18 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Myhtml.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Myhtml.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 # parsing routines for html
 # try to be compatible from calling level with the package by stephen uhler.
 # to use:
 #  set html [exec cat /home/wfs/tclet/server/sample.html] ; xHMinit_win .t ; xHMset_state .t url sample.html ; xHMparse_html $html "xHMrender .t" ;     array set wvar $args
-# source myhtml.tcl ; catch {destroy .t } ; text .t ;  set html [exec cat /home/wfs/tclet/server/sample.html] ; xHMinit_win .t ; xHMset_state .t url sample.html ; xHMparse_html $html "xHMrender .t" 
+# source myhtml.tcl ; catch {destroy .t } ; text .t ;  set html [exec cat /home/wfs/tclet/server/sample.html] ; xHMinit_win .t ; xHMset_state .t url sample.html ; xHMparse_html $html "xHMrender .t"
 
 proc testit { file } {
     global xHMpriv
@@ -27,7 +31,7 @@ proc testit { file } {
     raise .
 }
 
-#     
+#
 #     xHMparse_html $html "xHMrender .t"
 # you can change the state of the parse engine by using
 #    xHMset_state .t key1 val1 key2 val2...
@@ -40,8 +44,8 @@ proc testit { file } {
 
 # idea: some tags like font,indent,link have only one per but the tag
 # varies..  others have a constant tag... eg 'strike' 'underline' ...
-# or fill.  You cant have    
-# and are either on or off...  
+# or fill.  You cant have
+# and are either on or off...
 # have pushConstantTag win tag
 # have popConstantTag win tag
 # have pushNamedTag win name tag
@@ -86,7 +90,7 @@ proc xHMgetNamedTag {win tag } {
     catch  { set res [lindex $win($tag) end] }
     return $res
 }
-    
+
 proc xHMpushAindent { win i } {
     upvar #0 xHMvar$win wvar
     upvar #0 xHMtaglist$win taglist
@@ -101,18 +105,18 @@ proc xHMpopAindent { win i } {
     upvar #0 xHMvar$win wvar
     set n 0
     set n [set wvar(indent)]
-    
+
     unset taglist(indent:$n)
     set n [expr {$n - $i}]
     if { $n < 0 } { set n 0 }
     set wvar(indent) $n
     set taglist(indent:$n) 1
-    
+
 }
 
 # font and indent wil
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -129,8 +133,8 @@ proc xHMpopAindent { win i } {
  #  the BODY is evaluated.   Thus for example $text would get the
  #  text following the tag, and
  # 	set paramList [xHMsplitParams $params]
- #  could be used to decode the params. 
- # 
+ #  could be used to decode the params.
+ #
  #  Results: none
  #
  #  Side Effects: saves the script in xHMtag array under TAG and /TAG
@@ -169,10 +173,12 @@ proc defTag { htag args } {
     catch { set xHMtag($htag) $body }
     catch { set xHMtag(/$htag) $sbody }
 }
+
 proc slashNewline { s } {
     regsub -all "\n" $s "\\n" s
     return $s
 }
+
 # netscape uses fonts in the following progression.
 # we will have the font labels looking like:
 #  font:propor:normal:r:4   to indicate size 4
@@ -289,7 +295,7 @@ proc xHMsplitParams { param } {
    # set sub "{1=\\1,2=\\2,3=\\3,4=\\4,5=\\5,6=\\6,7==\\7,8=\\8,9=\\9}"
    # regsub -all $reg $param $sub  joe
    # puts joe=$joe
-    
+
     set sub "\\1\\6\\8\\9"
     regsub -all $reg $param $sub  joe
     foreach { dummy key val } [lreplace [split $joe ] end end]  { lappend new [string tolower $key] $val}
@@ -310,12 +316,12 @@ proc xHMextract_param {paramList  key args} {
 global xHMtag
 if {[info exists xHMtag]} {catch {unset xHMtag}}
 
-defTag a -alter {Cdoaref doaref} -body xHMdo_a  -sbody xHMdo_/a 
+defTag a -alter {Cdoaref doaref} -body xHMdo_a  -sbody xHMdo_/a
 defTag b -alter {weight bold }
-defTag -body xHMdo_body 
+defTag -body xHMdo_body
 defTag br -before "\n"
 defTag center -alter {Ccenter center}
-defTag cite -alter {style i} 
+defTag cite -alter {style i}
 defTag code -alter {family fixed}
 defTag dd -before "\n" -after "\n"
 defTag dfn -alter {style i}
@@ -331,11 +337,11 @@ defTag i -alter {style i}
 defTag img -body xHMdo_img
 
 defTag kbd -alter {family fixed weight bold}
-defTag li -body xHMdo_li 
+defTag li -body xHMdo_li
 
-defTag dl  -body xHMlistEnter -sbody xHMlistExit  
-defTag dir  -body xHMlistEnter -sbody xHMlistExit 
-defTag menu -body xHMlistEnter -sbody xHMlistExit 
+defTag dl  -body xHMlistEnter -sbody xHMlistExit
+defTag dir  -body xHMlistEnter -sbody xHMlistExit
+defTag menu -body xHMlistEnter -sbody xHMlistExit
 defTag ol  -body {
     xHMlistEnter
     set wvar(listindex$wvar(indent)) 0} -sbody {
@@ -355,7 +361,7 @@ defTag ul -alter {Aindent 1} -body { xHMlistEnter
   # push an index which will say disc, circle or square.
   xHMpushNamedTag $win ultype $_iii
 }  -sbody { xHMlistExit ; catch { xHMpopNamedTag $win ultype }}
-   
+
 
 #defTag p -before "\n\n" -sbody {}
 #defTag p -before "\n\n" -sbody {}
@@ -373,15 +379,15 @@ defTag u -alter {Cunderline underline}
 
 defTag hrx  -body { $win insert $wvar(W_insert) "\n" ;
      $win insert $wvar(W_insert) "\n" hrule
-    } -sbody {} 
-defTag hr -before \n  -body { 
+    } -sbody {}
+defTag hr -before \n  -body {
      $win insert $wvar(W_insert) "                  " underline
-    } -sbody {} 
+    } -sbody {}
 
 defTag var -alter {style i}
 
 defTag hmstart -alter {	family propor   weight normal   style r   size 3
-	list list 
+	list list
         adjust 0 } -body { set wvar(counter) 0 }
 
 defTag font -body {
@@ -452,7 +458,7 @@ defTag select -body "xHMdo_input select" -sbody {
 
     set form(f_select_list,$na) $wvar(f_select_values)
     if { [catch { unset wvar(f_selected,$na) }] } { puts "failed= unset wvar(f_selected,$na)"}
-    if { [catch  { unset wvar(f_select_values) }] } { puts "failed=unset wvar(f_select_values)"} 
+    if { [catch  { unset wvar(f_select_values) }] } { puts "failed=unset wvar(f_select_values)"}
     #}
 }
 
@@ -496,7 +502,7 @@ defTag body -body {
 
     set _text $text
     if { [xHMextract_param $paramList text ""] } {
-	 configColor $win config -foreground $text 
+	 configColor $win config -foreground $text
     }
     set text ${_text}
     foreach {ll tag} {evalrelief Teval resultrelief  Tresult aevalrelief currenteval resultmodifiedrelief Tmodified }  {
@@ -507,7 +513,7 @@ defTag body -body {
 
     foreach {ll tag} {bgeval Teval bgresult Tresult bgresultmodified Tmodified bgaeval currenteval}  {
 	if { [xHMextract_param $paramList $ll ""] } {
-	      configColor $win tag configure $tag -background [set $ll] 
+	      configColor $win tag configure $tag -background [set $ll]
 	}
     }
     foreach {ll tag} {link href alink currenthrefforeground eval Teval result Tresult resultmodified Tmodified aeval currenteval}  {
@@ -516,7 +522,7 @@ defTag body -body {
 	}
     }
    } -sbody "list "
-    
+
 defTag base -body {       set paramList [xHMsplitParams $params]
    if { [xHMextract_param $paramList href ""] } {
        set wvar(baseurl) $href
@@ -524,8 +530,8 @@ defTag base -body {       set paramList [xHMsplitParams $params]
        oset $win baseurl $href
    }
   }
-  
-    
+
+
 
 defTag option -body { set text [string trimright $text]
        set paramList [xHMsplitParams $params]
@@ -542,7 +548,7 @@ defTag option -body { set text [string trimright $text]
 global xHMpriv
 set xHMpriv(counter) 0
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -550,7 +556,7 @@ set xHMpriv(counter) 0
  #
  #  Results: new list without item
  #
- #  Side Effects: 
+ #  Side Effects:
  #
  #----------------------------------------------------------------
 #
@@ -564,7 +570,7 @@ if { ![info exists _gensymCounter] } {set _gensymCounter  0}
 proc gensym { name } {
     global _gensymCounter
     incr _gensymCounter
-    set var ${name}_${_gensymCounter} 
+    set var ${name}_${_gensymCounter}
     catch { uplevel #0  unset $var}
     return $var
 }
@@ -626,14 +632,14 @@ proc xHMdo_input {{type ""}} {
 	    set wvar(f_in_select) $name
 	    set wvar(f_select_values) $name
 	    # throw away any text after select
-	    set text ""  
-	    
+	    set text ""
+	
 	}
 	textarea {
 	    upvar 1 text text
 	    xHMextract_param $paramList cols 30
 	    xHMextract_param $paramList rows 5
-	    catch { 
+	    catch {
 	      frame $w
 	      puts "w=$w"
 	    scrollbar $w.yscroll -command "$w.text yview" -orient v
@@ -647,7 +653,7 @@ proc xHMdo_input {{type ""}} {
 	    append form(f_reset) " ; $w.text delete 0.0 end ; $w.text insert end [list $text]"
 	} errm ;
 	    puts errm=$errm;
-	    
+	
 	}
 	image {
 
@@ -661,7 +667,7 @@ proc xHMdo_input {{type ""}} {
 	    bind $w <ButtonRelease-1>   "xHMdoSubmit $w $xHMpriv(form) {$name.x %x $name.y %y}"
 	    bind $w <Return> "xHMdoSubmit $w $xHMpriv(form) {$name.x 0 $name.y 0}"
 	    bind $w <Leave> "$w configure -relief raised"
-	    
+	
 	    }
 	radio {
 
@@ -683,7 +689,7 @@ proc xHMdo_input {{type ""}} {
 
 	}
 	checkbox {
-	    ######### to do fix this..failed: http://www.ncsa.uiuc.edu/SDG/Software/Mosaic/Forms/example-4.html 
+	    ######### to do fix this..failed: http://www.ncsa.uiuc.edu/SDG/Software/Mosaic/Forms/example-4.html
 	    if { [catch { set var $form(checkbox,$name) } ] } {
 		set var [set form(checkbox,$name) [gensym checkbox_value]]
 	    }
@@ -692,7 +698,7 @@ proc xHMdo_input {{type ""}} {
 		    -text " "
 
 	    set form(f_submit,$name) "uplevel #0 set $var"
-	    
+	
 	    if { [xHMextract_param $paramList checked] } {
 		append form(f_reset) " ; $w select"
 		$w select;
@@ -736,7 +742,7 @@ proc xHMdo_input {{type ""}} {
 	### todo handle focus of forms.. with tabbing.
 	
     }
-    
+
 }
 
 proc xHMsetSubmitPosition { formvar name x y } {
@@ -744,8 +750,8 @@ proc xHMsetSubmitPosition { formvar name x y } {
     set form(f_submit,$name.x) "list $x"
     set form(f_submit,$name.y) "list $y"
 }
-    
-    
+
+
 
 proc xHMdoReset { formVar } {
     upvar #0 $formVar form
@@ -776,7 +782,7 @@ proc xHMdoSubmit { w formVar nameVals } {
 	}
     }
     # do the select listboxes:
-    
+
     foreach { name w } [array get form f_select,*] {
 	set name [string range $name [string length f_select,] end]
 	
@@ -850,7 +856,7 @@ proc xHMdo_li {} {
 	    catch { set ii [lindex $wvar(ultype) end] }
 	    xHMpopAindent $win 1
 	    xHMtextInsert $win "\n\t"
-	    xHMinsertBullet $win $ii 
+	    xHMinsertBullet $win $ii
 	    xHMtextInsert $win "\t"
 	    xHMpushAindent $win 1
 	}
@@ -882,7 +888,7 @@ defTag tr -body list
 
 
 
-    
+
 proc xHMdo_a  {} {
    uplevel 1  {
        set paramList [xHMsplitParams $params]
@@ -896,7 +902,7 @@ proc xHMdo_a  {} {
 	   $win tag bind h:$href <1> "HMdoaref click $win %x %y"
 	   set taglist(h:$href) 1
 	   set taglist(href) 1
-	   
+	
        }
        if { [xHMextract_param $paramList name] } {
 	   $win mark set anchor:$name "$wvar(W_insert) -1 chars"
@@ -911,7 +917,7 @@ proc xHMdo_/a  {} {
 	catch {unset taglist(href)}
     }
 }
-    
+
 proc xHMdo_body { win } {
     global xHMOptions
     upvar 1 params params
@@ -967,11 +973,11 @@ proc xHMdo_img {} {
     }
     foreach v [array names taglist] { $win tag add $v $wvar(W_insert)}
     $win window create $wvar(W_insert) -window $w -align $align -padx 1 -pady 1
-    
-    
+
+
 ## to do add links for call backs
 }
-    
+
 # return an image object..
 proc xHMgetImage {win src baseurl width height } {
 #     puts "$win,$src,$baseurl,$width,$height"
@@ -1009,7 +1015,7 @@ proc dupString { s n } {
 ### to do fix this to see how many blank lines there are at our insert
 ### point and to insert ones to make up.
 proc xHMassureNewlines { n } {
-    
+
     uplevel 1 set _n $n
     uplevel 1 {
 	set _have 0
@@ -1032,10 +1038,10 @@ set xHMpreferences(adjust) [expr {
     $width_<= 640 ? -1 :
     $width_<= 800 ? 0 :
     1 } ]
-   unset width_    
+   unset width_
 }
 proc xHMsetDefaultPreferences {} {
-    global xHMpreferences 
+    global xHMpreferences
     foreach fam {propor fixed} {
 	foreach {n si} {  1 8
     2 10
@@ -1064,7 +1070,7 @@ proc xHMinit_state { win args } {
         catch { unset taglist}
     array set wvar {
 	family propor   weight normal   style r   size 3
-	list list 
+	list list
 	indent 0
 	adjust 0
 	measure -1
@@ -1073,7 +1079,7 @@ proc xHMinit_state { win args } {
     }
     array set wvar [array get saveme]
     array set taglist {indent:0 1}
-    
+
 }
 
 proc xHMrender { win tag  params text } {
@@ -1085,7 +1091,7 @@ proc xHMrender { win tag  params text } {
     set tag [string tolower $tag]
     # the following will go in a catch after debugging:
     #dputs "doing <$tag>"
-    #dputs text=<<$text>> 
+    #dputs text=<<$text>>
     # puts "xHMtag($tag)=[set xHMtag($tag)]"
 
 
@@ -1097,8 +1103,8 @@ proc xHMrender { win tag  params text } {
 	if { [string match "!--*" $tag] } { list} else {
 	#puts "undefined $tag: puts comment:$text"
     }   }
-    
- 
+
+
     if { [regexp & $text] }  {
        set text [xHMconvert_ampersand $text]
     }
@@ -1114,7 +1120,7 @@ proc xHMrender { win tag  params text } {
 # make a copy of it.
 proc xHMrender_orig [info args xHMrender] [info body xHMrender]
 
- 
+
 proc xHMtextInsert { win text } {
     global xHMtaglist$win
     upvar #0 xHMvar$win wvar
@@ -1183,7 +1189,7 @@ proc xHMinit_win { win } {
 global HMdefaultOptions
 set HMdefaultOptions {
     {atagforeground blue "foreground for <a href=...>  tags"}
-    {currenthrefforeground red "foreground of current <a href=..> tags"} 
+    {currenthrefforeground red "foreground of current <a href=..> tags"}
     {foreground black "foreground"}
     {background white "background "}
     {atagbackground blue "background for <a href=...>  tags" }
@@ -1196,7 +1202,7 @@ proc xHMwget { win key dflt } {
     if { [info exists wvar($key)] } {return $wvar($key) } else {
 	return $dflt
 }   }
-    
+
 proc HMdoaref { action win x y } {
     global HMOption
     set tags [$win tag names  @$x,$y ]
@@ -1234,7 +1240,7 @@ proc HMdoaref { action win x y } {
 		$win tag delete currenthref
 	    }
 	}
-    }   
+    }
 
 proc xHMdo_isindex {} {
     uplevel 1 {
@@ -1268,32 +1274,32 @@ proc xHMhexChar { c } {
 
 # "ISO 8879-1986//ENTITIES Added Latin 1 substitutions
 array set isoLatin1 {
-    	AElig \xc6 	Aacute \xc1 	Acirc \xc2 	Agrave \xc0 
-	Aring \xc5 	Atilde \xc3 	Auml \xc4 	Ccedil \xc7 
-	ETH \xd0 	Eacute \xc9 	Ecirc \xca 	Egrave \xc8 
-	Euml \xcb 	Iacute \xcd 	Icirc \xce 	Igrave \xcc 
-	Iuml \xcf 	Ntilde \xd1 	Oacute \xd3 	Ocirc \xd4 
-	Ograve \xd2 	Oslash \xd8 	Otilde \xd5 	Ouml \xd6 
-	THORN \xde 	Uacute \xda 	Ucirc \xdb 	Ugrave \xd9 
-	Uuml \xdc 	Yacute \xdd 	aacute \xe1 	acirc \xe2 
-	acute \xb4 	aelig \xe6 	agrave \xe0 	amp \x26 
-	aring \xe5 	atilde \xe3 	auml \xe4 	brvbar \xa6 
-	cb \x7d 	ccedil \xe7 	cedil \xb8 	cent \xa2 
-	copy \xa9 	curren \xa4 	deg \xb0 	divide \xf7 
-	eacute \xe9 	ecirc \xea 	egrave \xe8 	eth \xf0 
-	euml \xeb 	frac12 \xbd 	frac14 \xbc 	frac34 \xbe 
-	gt \x3e 	hibar \xaf 	iacute \xed 	icirc \xee 
-	iexcl \xa1 	igrave \xec 	iquest \xbf 	iuml \xef 
-	laquo \xab 	lt \x3c 	micro \xb5 	middot \xb7 
-	nbsp \xa0 	not \xac 	ntilde \xf1 	oacute \xf3 
-	ob \x7b 	ocirc \xf4 	ograve \xf2 	ordf \xaa 
-	ordm \xba 	oslash \xf8 	otilde \xf5 	ouml \xf6 
-	para \xb6 	plusmn \xb1 	pound \xa3 	quot \x22 
-	raquo \xbb 	reg \xae 	sect \xa7 	shy \xad 
-	sup1 \xb9 	sup2 \xb2 	sup3 \xb3 	szlig \xdf 
-	thorn \xfe 	times \xd7 	uacute \xfa 	ucirc \xfb 
-	ugrave \xf9 	uml \xa8 	uuml \xfc 	yacute \xfd 
-	yen \xa5 	yuml \xff 
+    	AElig \xc6 	Aacute \xc1 	Acirc \xc2 	Agrave \xc0
+	Aring \xc5 	Atilde \xc3 	Auml \xc4 	Ccedil \xc7
+	ETH \xd0 	Eacute \xc9 	Ecirc \xca 	Egrave \xc8
+	Euml \xcb 	Iacute \xcd 	Icirc \xce 	Igrave \xcc
+	Iuml \xcf 	Ntilde \xd1 	Oacute \xd3 	Ocirc \xd4
+	Ograve \xd2 	Oslash \xd8 	Otilde \xd5 	Ouml \xd6
+	THORN \xde 	Uacute \xda 	Ucirc \xdb 	Ugrave \xd9
+	Uuml \xdc 	Yacute \xdd 	aacute \xe1 	acirc \xe2
+	acute \xb4 	aelig \xe6 	agrave \xe0 	amp \x26
+	aring \xe5 	atilde \xe3 	auml \xe4 	brvbar \xa6
+	cb \x7d 	ccedil \xe7 	cedil \xb8 	cent \xa2
+	copy \xa9 	curren \xa4 	deg \xb0 	divide \xf7
+	eacute \xe9 	ecirc \xea 	egrave \xe8 	eth \xf0
+	euml \xeb 	frac12 \xbd 	frac14 \xbc 	frac34 \xbe
+	gt \x3e 	hibar \xaf 	iacute \xed 	icirc \xee
+	iexcl \xa1 	igrave \xec 	iquest \xbf 	iuml \xef
+	laquo \xab 	lt \x3c 	micro \xb5 	middot \xb7
+	nbsp \xa0 	not \xac 	ntilde \xf1 	oacute \xf3
+	ob \x7b 	ocirc \xf4 	ograve \xf2 	ordf \xaa
+	ordm \xba 	oslash \xf8 	otilde \xf5 	ouml \xf6
+	para \xb6 	plusmn \xb1 	pound \xa3 	quot \x22
+	raquo \xbb 	reg \xae 	sect \xa7 	shy \xad
+	sup1 \xb9 	sup2 \xb2 	sup3 \xb3 	szlig \xdf
+	thorn \xfe 	times \xd7 	uacute \xfa 	ucirc \xfb
+	ugrave \xf9 	uml \xa8 	uuml \xfc 	yacute \xfd
+	yen \xa5 	yuml \xff
 }
 
 proc xHMencode_get { str } {
@@ -1328,7 +1334,7 @@ proc dec1 { s } {
 
 
 
-
+
 #
  #-----------------------------------------------------------------
  #
@@ -1354,7 +1360,7 @@ proc dec1 { s } {
 #
 proc xHMparse_html {html {cmd HMtest_parse} {firstTag hmstart}} {
     #dputs "beginning parse"
-    
+
      global meee ; set meee $html;
 	regsub -all \} <$firstTag>\n$html\n</$firstTag> {\&cb;} html
         #dputs "beginning parse1"
@@ -1367,10 +1373,10 @@ proc xHMparse_html {html {cmd HMtest_parse} {firstTag hmstart}} {
 		"\}\n$cmd {\\1}  {\\2} \{" html
         # puts "<html=$html>"
         #dputs "beginning end splitparse1"
-        
+
         #dputs "list {$html}"
 	eval "list {$html}"
- 
+
 }
 
 proc myPost { win menu } {

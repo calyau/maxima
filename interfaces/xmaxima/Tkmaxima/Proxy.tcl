@@ -1,21 +1,25 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: Proxy.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### Proxy.tcl ######
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # openSocketAndSend --  open a Socket to HOST on PORT and then
- # send the message MSG to it.   If verify is non 0, then read
- # up through the end of the http header and verify this is not
- # an error.
- #
- #  Results:  returns a socket which you can read from using ordinary
- #  read and write, but to which you should write only using s
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# openSocketAndSend --  open a Socket to HOST on PORT and then
+# send the message MSG to it.   If verify is non 0, then read
+# up through the end of the http header and verify this is not
+# an error.
+#
+#  Results:  returns a socket which you can read from using ordinary
+#  read and write, but to which you should write only using s
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc openSocketAndSend { host port msg { verify 0}} {
     global ws_openMath  pdata
@@ -41,8 +45,8 @@ proc openSocketAndSend { host port msg { verify 0}} {
 	set pdata($sock,proxyto) [list $host $port $magic]
 	fconfigure $sock -blocking  0
 	return $sock
-	    
-	    
+	
+	
     } else {
 	set sock [socket $host $port]
 	if {[info exists pdata($sock,proxyto)]} {
@@ -58,17 +62,17 @@ proc openSocketAndSend { host port msg { verify 0}} {
 
 
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # proxyPuts --  send the MESSAGE to SOCK, not appending a newline.
- #
- #  Results: none
- #
- #  Side Effects: message sent
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# proxyPuts --  send the MESSAGE to SOCK, not appending a newline.
+#
+#  Results: none
+#
+#  Side Effects: message sent
+#
+#----------------------------------------------------------------
 #
 proc proxyPuts { sock  message } {
     global pdata
@@ -82,33 +86,33 @@ proc proxyPuts { sock  message } {
     }
 }
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # sendViaProxy --  send a message.
- #  this is a private function.
- #
- #  Results: a socket one can read the answer from.
- #   Caller is responsible for closing the socket. 
- #
- #  Side Effects: socket opened and message sent as the body
- #  of a post.  The magic is put in the http header request as the
- #  filename	
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# sendViaProxy --  send a message.
+#  this is a private function.
+#
+#  Results: a socket one can read the answer from.
+#   Caller is responsible for closing the socket.
+#
+#  Side Effects: socket opened and message sent as the body
+#  of a post.  The magic is put in the http header request as the
+#  filename	
+#
+#----------------------------------------------------------------
 #
 proc sendViaProxy { message host port magic  } {
     global ws_openMath
     dtrace
-   set ss [eval socket $ws_openMath(proxy,http)]
-   fconfigure $ss -blocking 0
-   fconfigure $ss -translation {crlf binary}
-   set request [getURLrequest http://$host:$port/$magic $host $port "" $message]
-   debugsend "<$ss  request=$request>"
-   puts $ss $request
-   flush $ss
-   return $ss
+    set ss [eval socket $ws_openMath(proxy,http)]
+    fconfigure $ss -blocking 0
+    fconfigure $ss -translation {crlf binary}
+    set request [getURLrequest http://$host:$port/$magic $host $port "" $message]
+    debugsend "<$ss  request=$request>"
+    puts $ss $request
+    flush $ss
+    return $ss
 }
 
 ## endsource proxy.tcl

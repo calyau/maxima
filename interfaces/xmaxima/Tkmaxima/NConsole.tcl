@@ -1,7 +1,11 @@
+# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#
+#       $Id: NConsole.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#
 ###### NConsole.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
+# For distribution under GNU public License.  See COPYING. #
 ############################################################
 
 
@@ -13,28 +17,28 @@ proc mkConsole { fr program } {
     set w $fr.text
     label [set msg $fr.label]  -height 1 -relief sunken \
 	    -textvariable ws_openMath(load_rate)
-    
+
     if { ![info exists NCtextHelp] } {
 	set NCtextHelp "
-	    Bindings:
-	    <Return>   This sends the current expression (ie where the insert
-	               cursor is)  for evaluation.
-	    <Linefeed> (Control-j) This inserts a newline, and is useful
-	               for entering multiline input.
-	    <Control-k> Kills the current line and puts it in kill ring.
-	                Successive control-k's append their output together.
-	    <Control-y> Yank out the last kill, Meta-y cycles thru previous
-	                kills.
-	    <Control-c> Interrupt the current computation.
-	    <Alt-p>   Previous input, or if repeated cycle through the previous
-	               inputs.  If the current input is not empty, then
-	                match only inputs which begin with the current input.
-	    <Alt-n>   Like Previous input, but in opposite direction.
+	Bindings:
+	<Return>   This sends the current expression (ie where the insert
+	cursor is)  for evaluation.
+	<Linefeed> (Control-j) This inserts a newline, and is useful
+	for entering multiline input.
+	<Control-k> Kills the current line and puts it in kill ring.
+	Successive control-k's append their output together.
+	<Control-y> Yank out the last kill, Meta-y cycles thru previous
+	kills.
+	<Control-c> Interrupt the current computation.
+	<Alt-p>   Previous input, or if repeated cycle through the previous
+	inputs.  If the current input is not empty, then
+	match only inputs which begin with the current input.
+	<Alt-n>   Like Previous input, but in opposite direction.
 	"
     }
 
     clearLocal $w
-     if { 1 || "[bind CNtext <Return>]" == "" } {
+    if { 1 || "[bind CNtext <Return>]" == "" } {
  	bind CNtext <Return> "CNeval %W  ; break"
  	bind CNtext <Control-c> "CNinterrupt %W "
  	bind CNtext <Control-u> "CNclearinput %W "
@@ -47,7 +51,7 @@ proc mkConsole { fr program } {
     }
 
     oset $w program $program
-    oset $w prompt "% " 
+    oset $w prompt "% "
     text $w
     bind $w <Configure> "resizeSubPlotWindows $w %w %h"
 
@@ -104,7 +108,7 @@ proc CNeval { w } {
 	    $w delete lastStart end
 	    $w insert lastStart $code input
 	}
-   }
+    }
     set expr [string trimright [$w get lastStart end] \n]
     $w tag add input lastStart end
     lappend inputs $expr
@@ -113,28 +117,28 @@ proc CNeval { w } {
     set res [sendOneWait [oget $w program] $expr]
     message "received result"
 
-   if { "$res" != "" } {
-    if { ![regexp \n $res] } {
-	set tag center
-	set res "\n $res"
-    }
+    if { "$res" != "" } {
+	if { ![regexp \n $res] } {
+	    set tag center
+	    set res "\n $res"
+	}
 
-    if { [regexp "\{plot\[23\]d" $res] } {
-	linkLocal $w counter
-	#puts res=$res
-	if { ![info exists counter] } {set counter 0} 
-	set name $w.plot[oset $w counter [expr {1 + [oget $w counter]}]]
-        eval plot2dData $name $res [getDimensions $w $name]
-	set e [$w index end]
-	set view [ShowPlotWindow $w $name  "$e $e" "$e $e"  ""]
-	append view " -1 line"
-    } else {
-    $w insert end $res "$tag result"
+	if { [regexp "\{plot\[23\]d" $res] } {
+	    linkLocal $w counter
+	    #puts res=$res
+	    if { ![info exists counter] } {set counter 0}
+	    set name $w.plot[oset $w counter [expr {1 + [oget $w counter]}]]
+	    eval plot2dData $name $res [getDimensions $w $name]
+	    set e [$w index end]
+	    set view [ShowPlotWindow $w $name  "$e $e" "$e $e"  ""]
+	    append view " -1 line"
+	} else {
+	    $w insert end $res "$tag result"
+	}
+
     }
-    
-   }
     CNinsertPrompt $w
-   if { [info exists view] } {$w yview $view }
+    if { [info exists view] } {$w yview $view }
     if { "$prev" != "" }  {$w insert insert $prev}
 }
 
@@ -180,17 +184,17 @@ proc CNblinkMatchingParen { win ch } {
     }
 }
 
-
+
 #
- #-----------------------------------------------------------------
- #
- # matchingParen --  Return index of STRING which a close paren
- #   would match if added to end.
- #  Results: index
- #
- #  Side Effects: none
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# matchingParen --  Return index of STRING which a close paren
+#   would match if added to end.
+#  Results: index
+#
+#  Side Effects: none
+#
+#----------------------------------------------------------------
 #
 proc matchingParen { s1  } {
     set s $s1
@@ -207,7 +211,9 @@ proc matchingParen { s1  } {
 	set c [string index $v 0]
 	if { "$c" == "c" } {
 	    incr count -1
-	} else { incr count }
+	} else { 
+	    incr count 
+	}
 	if { $count == 0 } {
 	    return $ind
 	}
