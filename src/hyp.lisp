@@ -1973,10 +1973,11 @@
 		    b)
 		(if (eq (checksigntm a) '$negative)
 		    b
-		    a))))
+		    a)))
+	 (x (msqrt (m-t 1. v)))
+	 (z (msqrt (m-t v))))
     (m*t 1//2
-	 (m+t (m^t (m+t (setq x (msqrt (m-t 1. v)))
-			(setq z (msqrt (m-t v))))
+	 (m+t (m^t (m+t x z)
 		   (setq b (m*t 2. b)))
 	      (m^t (m-t x z) b)))))
   
@@ -2691,6 +2692,17 @@
 
 ;;Algor. 2F1-RL from thesis:step 4:dispatch on a+m,-a+n,1/2+l cases
 (defun step4 (a b c)
+  ;; F(a,b;c;z) where a+b is an integer and c+1/2 is an integer.  If a
+  ;; and b are not integers themselves, we can derive the result from
+  ;; F(a1,-a1;1/2;z).  However, if a and b are integers, we can't use
+  ;; that because F(a1,-a1;1/2;z) is a polynomial.  We need to derive
+  ;; the result from F(1,1;3/2;z).
+  (if (and (hyp-integerp a)
+	   (hyp-integerp b))
+      (step4-int a b c)
+      (step4-a a b c)))
+
+(defun step4-a (a b c)
   (prog (aprime m n $ratsimpexponens $ratprint newf)
      (setq alglist (algii a b c)
 	   aprime (cadr alglist)
@@ -2732,6 +2744,96 @@
      (return (subst var 'ell
 		    (algiii newf
 			    m n aprime)))))
+
+;; F(a,b;c;z), where a and b are (positive) integers and c = 1/2+l.
+;; This can be computed from F(1,1;3/2;z).
+;;
+;; Assume a < b, without loss of generality.
+;;
+;; F(m,n;3/2+L;z), m < n.
+;;
+;; We start from F(1,1;3/2;z).  Use A&S 15.2.3, differentiating m
+;; times to get F(m,1;3/2;z).  Swap a and b to get F(m,1;3/2;z) =
+;; F(1,m;3/2;z) and use A&S 15.2.3 again to get F(n,m;3/2;z) by
+;; differentiating n times.  Finally, if L < 0, use A&S 15.2.4.
+;; Otherwise use A&S 15.2.6.
+;;
+;; I (rtoy) can't think of any way to do this with less than 3
+;; differentiations.
+;;
+;; Note that if d = (n-m)/2 is not an integer, we can write F(m,n;c;z)
+;; as F(-d+u,d+u;c;z) where u = (n+m)/2.  In this case, we could use
+;; step4-a to compute the result.
+
+(defun as-15.2.3 (a b c n arg fun)
+  (declare (ignore b c))
+  ;; A&S 15.2.3:
+  ;; F(a+n,b;c;z) = z^(1-a)/poch(a,n)*diff(z^(a+n-1)*fun,z,n)
+  (mul (inv (factf a n))
+       (power arg (sub 1 a))
+       ($diff (mul (power arg (sub (add a n) 1))
+		   fun)
+	      arg n)))
+
+(defun as-15.2.4 (a b c n arg fun)
+  (declare (ignore a b))
+  ;; A&S 15.2.4
+  ;; F(a,b;c-n;z) = 1/poch(c-n,n)/z^(c-n-1)*diff(z^(c-1)*fun,z,n)
+  (mul (inv (factf (sub c n) n))
+       (inv (power arg (sub (sub c n) 1)))
+       ($diff (mul (power arg (sub c 1))
+		   fun)
+	      arg n)))
+
+(defun as-15.2.6 (a b c n arg fun)
+  ;; A&S 15.2.6
+  ;; F(a,b;c+n;z) = poch(c,n)/poch(c-a,n)/poch(c-b,n)*(1-z)^(c+n-a-b)
+  ;;                 *diff((1-z)^(a+b-c)*fun,z,n)
+  (mul (factf c n)
+       (inv (factf (sub c a) n))
+       (inv (factf (sub c b) n))
+       (inv (power (sub 1 arg) (sub (add a b)
+				    (add c n))))
+       ($diff (mul (power (sub 1 arg) (sub (add a b) c))
+		   fun)
+	      arg n)))
+
+(defun step4-int (a b c)
+  (if (> a b)
+      (step4-int b a c)
+      (let* ((s (gensym "STEP4-VAR-"))
+	     (m (1- a))
+	     (n (1- b))
+	     (ell (sub c 3//2))
+	     (res (cond ((eq (checksigntm var) '$negative)
+			 ;; F(1,1;3/2;z) =
+			 ;; -%i*log(%i*sqrt(zn)+sqrt(1-zn))/(sqrt(1-zn)*sqrt(zn))
+			 ;; for z < 0
+			 (let ((root1-z (power (sub 1 s) (inv 2)))
+			       (rootz (power s (inv 2))))
+			   (mul -1 '$%i
+				(mlog (add (mul '$%i rootz)
+					   root1-z))
+				(inv root1-z)
+				(inv rootz))))
+			(t
+			 ;; F(1,1;3/2;z) = asin(sqrt(zp))/(sqrt(1-zp)*sqrt(zp))
+			 ;; for z > 0
+			 (let ((root1-z (power (sub 1 s) (inv 2)))
+			       (rootz (power s (inv 2))))
+			   (mul (masin rootz)
+				(inv root1-z)
+				(inv rootz)))))))
+	;; Start with res = F(1,1;3/2;z).  Compute F(m,1;3/2;z)
+	(setf res (as-15.2.3 1 1 3//2 m s res))
+	;; We now have res = C*F(m,1;3/2;z).  Compute F(m,n;3/2;z)
+	(setf res (as-15.2.3 1 m 3//2 n s res))
+	;; We now have res = C*F(m,n;3/2;z).  Now compute F(m,n;3/2+ell;z):
+	(subst var s
+	       (cond ((minusp ell)
+		      (as-15.2.4 m n 3//2 (- ell) s res))
+		     (t
+		      (as-15.2.6 m n 3//2 ell s res)))))))
 
 ;;Pattern match for s(ymbolic) + c(onstant) in parameter
 (defun s+c
@@ -2775,15 +2877,15 @@
 
 ;; Like F81, except m > n.
 ;;
-;; F(a,-a+m;c+n;z), m > n, c = 1/2, m and n are non-negative integers
+;; F(a+m,-a;c+n;z), m > n, c = 1/2, m and n are non-negative integers
 ;;
 ;; A&S 15.2.3
-;; diff(z^(a+m-n-1)*F(-a,a;1/2;z),z,m-n) = poch(a,m-n)*z^(a-1)*F(-a+m-n,a;1/2;z)
+;; diff(z^(a+m-n-1)*F(a,-a;1/2;z),z,m-n) = poch(a,m-n)*z^(a-1)*F(a+m-n,-a;1/2;z)
 ;;
 ;; A&S 15.2.7
-;; diff((1-z)^(-a+m-1)*F(-a+m-n,a;1/2;z),z,n)
-;;     = (-1)^n*poch(-a+m-n,n)*poch(1/2-a,n)/poch(1/2,n)*(1-z)^(-a+m-n)
-;;         * F(-a+m,a;1/2+n;z)
+;; diff((1-z)^(a+m-1)*F(a+m-n,-a;1/2;z),z,n)
+;;     = (-1)^n*poch(a+m-n,n)*poch(1/2+a,n)/poch(1/2,n)*(1-z)^(a+m-n)
+;;         * F(a+m,-a;1/2+n;z)
 ;;
 (defun f85 (fun m n a)
   (mul (factf (inv 2) n)
@@ -2796,8 +2898,6 @@
 		   n))
        (inv (factf a (- m n)))
        (power (sub 1 'ell) (sub (sub (add 1 n) m) a))
-       ;; Hmm.  The a+m-1 doesn't look right, assuming the derivation
-       ;; above is correct.
        ($diff (mul (power (sub 1 'ell) (sub (add a m) 1))
 		   (power 'ell (sub 1 a))
 		   ($diff (mul (power 'ell (sub (add a m -1) n))
