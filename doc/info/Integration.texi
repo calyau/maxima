@@ -54,6 +54,11 @@ respect to @code{x}; @code{y} is the new variable.
                                 a
 @end example
 
+An expression containing a noun form, such as the instances of @code{'integrate} above,
+may be evaluated by @code{ev} with the @code{nouns} flag.
+For example, the expression returned by @code{changevar} above may be evaluated
+by @code{ev (%o3, nouns)}.
+
 @code{changevar} may also be used to changes in the indices of a sum or
 product.  However, it must be realized that when a change is made in a
 sum or product, this change must be a shift, i.e., @code{i = j+ ...}, not a
@@ -129,9 +134,15 @@ magnitude speed improvement over interpreted code in many cases!
 @end defun
 
 @defun defint (expr, var, low, high)
-Definite integration, the same as
-@code{integrate (expr,var,low,high)}.   This uses symbolic methods, if
-you wish to use a numerical method try @code{romberg (expr,var,low,high)}.
+Attempts to compute a definite integral.
+@code{defint} is called by @code{integrate} when limits of integration are specified,
+i.e., when @code{integrate} is called as @code{integrate (expr, var, low, high)}.
+Thus from the user's point of view, it is sufficient to call @code{integrate}.
+@c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT ALREADY PRESENT IN integrate !!!
+
+@code{defint} returns a symbolic expression,
+either the computed integral or the noun form of the integral.
+See @code{quad_qag} and related functions for numerical approximation of definite integrals.
 
 @end defun
 
@@ -200,48 +211,68 @@ pos;
 
 @defun integrate (expr, var)
 @defunx integrate (expr, var, a, b)
-Integrates @code{expr} with respect to @code{var} or returns an
-integral expression (the noun form) if it cannot perform the
-integration (see note 1 below).
+Attempts to symbolically compute the integral of @code{expr} with respect to @code{var}.
 @code{integrate (expr, var, a, b)} is a definite integral,
 with limits of integration @code{a} and @code{b},
 while @code{integrate (expr, var)} is an indefinite integral.
+The limits should not contain @code{var}, although @code{integrate} does not enforce this restriction.
+@code{a} need not be less than @code{b}.
 
-Roughly speaking three stages are used:
+See @code{quad_qag} and related functions for numerical approximation of definite integrals.
+See @code{residue} for computation of residues (complex integration).
 
-@itemize @bullet
-@item
-@code{integrate} sees if the integrand is of the form
-@code{f(g(x))*diff(g(x),x)} by testing whether the derivative of some
-subexpression (@code{g(x)} in the above case) divides the integrand.  If
-so it looks up @code{f} in a table of integrals and substitutes @code{g(x)} for @code{x} in
-the integral of @code{f}.  This may make use of gradients in taking the
-derivative.  (If an unknown function appears in the integrand it must
-be eliminated in this stage or else @code{integrate} will return the noun
-form of the integrand.)
-@item
-@code{integrate} tries to match the integrand to a form for which a
-specific method can be used, e.g.  trigonometric substitutions.
-@item
-If the first two stages fail it uses the Risch algorithm.
-@end itemize
+The integral is returned if @code{integrate} succeeds,
+otherwise the return value is
+the noun form (with a leading single-quote)
+of the integral, containing the quoted operator @code{'integrate}.
+See also Note 1, below.
 
-Functional relationships must be explicitly represented in order
-for @code{integrate} to work properly.  @code{integrate} is not affected by
-dependencies set up with the @code{depends} command.
-@code{integrate (expr, var, a, b)} finds the definite integral of @code{expr} with
-respect to @code{var} from @code{a} to @code{b} or returns the noun form if it cannot
-perform the integration.  The limits should not contain @code{var}.  Several
-methods are used, including direct substitution in the indefinite
-integral and contour integration.  Improper integrals may use the
-names @code{inf} for positive infinity and @code{minf} for negative infinity.  If an
+If an
 integral "form" is desired for manipulation (for example, an integral
 which cannot be computed until some numbers are substituted for some
 parameters), the noun form @code{'integrate} may be used and this will
 display with an integral sign.  (See Note 1 below.)
 
+@code{integrate} handles definite integrals separately from indefinite,
+and employs a range of heuristics to handle each case.
+Special cases of definite integrals include limits of integration equal to
+zero or infinity (@code{inf} or @code{minf}),
+trigonometric functions with limits of integration equal to zero and @code{%pi} or @code{2 %pi},
+rational functions,
+integrals related to the definitions of the @code{beta} and @code{psi} functions,
+and some logarithmic and trigonometric integrals.
+Processing rational functions may include computation of residues.
+If an applicable special case is not found,
+an attempt will be made to compute the indefinite integral and evaluate it at the limits of integration.
+This may include taking a limit as a limit of integration goes to infinity or negative infinity;
+see also @code{ldefint}.
+
+Special cases of indefinite integrals include trigonometric functions,
+exponential and logarithmic functions,
+and rational functions.
+@code{integrate} may also make use of a short table of elementary integrals.
+
+@code{integrate} may attempt a change of variable,
+by testing whether the derivative of some subexpression divides the integrand;
+this implies the integrand has the form @code{f(g(x)) * diff(g(x),x)}.
+This test may make use of derivatives defined by the @code{gradef} function.
+See also @code{changevar}.
+
+If none of the preceding heuristics find the indefinite integral,
+the Risch algorithm is executed. See @code{risch}.
+
+Functional relationships must be explicitly represented in order
+for @code{integrate} to work properly.  @code{integrate} is not affected by
+dependencies set up with the @code{depends} command.
+
 The function @code{ldefint} uses @code{limit} to evaluate the integral at the
 lower and upper limits.
+
+@code{integrate} is not, by default, declared to be linear.
+
+The flag @code{risch} may be set on the @code{integrate} input line.
+If @code{risch} is present, @code{integrate} calls the @code{risch} function
+without attempting heuristics first.
 
 Sometimes during integration the user may be asked what the sign
 of an expression is.  Suitable responses are @code{pos;}, @code{zero;}, or @code{neg;}.
@@ -285,11 +316,12 @@ neg;
 not always imply that the integral does not exist in closed form. In
 the example below the integration call returns the noun form but the
 integral can be found fairly easily. For example, one can compute the
-roots of @code{x^3+x+1 = 0} to rewrite the integrand in the form
+roots of @code{x^3 + x + 1} to rewrite the integrand in the form
 @code{1/((x-a)*(x-b)*(x-c))}
 where @code{a}, @code{b}, and @code{c} are the roots. Maxima will
 integrate this equivalent form although the integral is quite
 complicated.
+See also @code{integrate_use_rootsof}.
 
 @example
 (%i6) integrate (1/(x^3+x+1),x);
@@ -299,6 +331,8 @@ complicated.
                          ]  3
                          / x  + x + 1
 @end example
+
+@code{integrate} attempts integration by parts only in few special cases.
 
 @end defun
 
@@ -366,6 +400,10 @@ so as to give a better answer.
 Yields the definite integral of @code{expr} by using
 @code{limit} to evaluate the indefinite integral of @code{expr} with respect to @code{var}
 at the upper limit @code{ul} and at the lower limit @code{ll}.
+
+@code{ldefint} is not called from @code{integrate},
+so executing @code{ldefint (expr, var, ll, ul)} may yield a different result than
+@code{integrate (expr, var, ll, ul)}.
 
 @end defun
 
