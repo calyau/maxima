@@ -5,3 +5,10 @@ treats lists and sets as distinct objects. This feature makes it possible to
 work with sets that have members that are either lists or sets.
 
 To install nset, follow the directions in nset.html.
+
+Commercial Macsyma has several problems with nset:
+
+(a) the display code doesn't work,
+(b) The commercial Macsyma's Lisp doesn't allow a second argument to last,
+(c) (meval* '(($declare) $kron_delta $symmetric)) doesn't work in commercial
+    Macsyma.

@@ -1,0 +1,580 @@
+Some dates are approximate.
+
+11 Jan 2004
+
+1.  rl-reduce needs a list, but xreduce hands it a set; new version
+
+(defun $xreduce (f s &optional (init 'no-init))
+  (let ((op (if (atom f) ($verbify f) nil)) (id))
+    (cond ((consp (setq id (get op '$nary)))
+	   (setq s (require-list-or-set s "$xreduce"))
+	   (if (not (equal init 'no-init)) (setq s (cons init s)))
+	   ;(print "...using nary function")
+	   (funcall (car id) s))
+	  (t
+            (rl-reduce f `((mlist) ,@s) nil init "$xreduce")))))
+
+2. divisors uses < to sort; as far as I know, this doesn't cause a
+bug, but everywhere else we use orderlessp for ordering.  Changed
+divisors to 
+
+(defun simp-divisors (n y z)
+  (oneargcheck n)
+  (setq y (caar n))
+  (setq n (simpcheck (cadr n) z))
+  (cond ((or ($listp n) ($setp n) ($matrixp n) (mequalp n))
+	 (thread y (cdr n) (caar n)))
+	((and (integerp n) (not (= n 0)))
+	 (setq n (abs n))
+	 `(($set simp) ,@(sort (mapcar #'(lambda (x) (car x)) 
+				       (divisors (cfactorw n))) '$orderlessp)))
+	(t `(($divisors simp) ,n))))
+
+
+13 Nov 2003
+
+1.  Eliminated the automatic list to set conversion; changed
+user documentation and testing code.
+
+2. In user-documentation, eliminated the statement that nset 
+orders sets according to orderlessp and added warning that
+future versions may use a different ordering.
+
+3. Changed the section "Set Member Access" to "Set Member
+Iteration."   Added a warning that cons, first, and last 
+might not work in future versions.
+
+4.  Added new function choose; it returns an arbitrary member of a set. The
+user is warned that future versions could return a "random" member.
+Added user documentation. The function choose is an alternative to
+using 'first' (but 'first' might not work in future nset versions.)
+Added user documentation for choose.
+
+5. Removed much of the details about the sign bug in the
+user-documentation.
+
+6.  Removed the section "Future Projects" from user-documentation.
+
+7.  Fixed the affiliations of the authors.
+
+8.  Eliminated the feature kron_delta(a,b) --> kron_delta(abs(a,b),0)
+that happened when csign returned true. Now kron_delta looks at the 
+sign of |a - b|.  Changed user-documentation.
+
+9.  Removed the comment about speed in tree_reduce.
+
+6 Nov 2003
+
+1.  Added new tests for every and some.
+
+2.  Changed
+
+  (put '$set '((#\{ ) #\} ) 'dissym)      ;; put doesn't work in commercial Macsyma
+  (put '$set 'dimension-match 'dimension)
+
+to
+
+  (setf (get '$set 'dissym) '((#\{ ) #\} ))
+  (setf (get '$set  'dimension) 'dimension-match)
+
+Sets now display correctly in commercial Macsyma.
+
+3.  Added user documentation for tree_reduce, identity, some, and every.
+
+4 Nov 2003
+
+1.  Added new every/some functions; corrected test-nset.mac for
+these new definitions of every/some.
+
+31 Oct 2003
+
+1.  Bug in sorted-remove-duplicates; setify([false,false]) --> endless
+loop.  New code
+
+(defun sorted-remove-duplicates (l)
+  (prog1 l
+    (while (cdr l)
+      (while (and (cdr l) (like (car l) (cadr l))
+		  (rplacd l (cddr l))))
+      (setq l (cdr l)))))
+
+Added check in test-nset.mac for this bug.
+
+
+30 Oct 2003
+
+1.  Bug function thread assumes that the result is simplified; this
+maybe true for lists, matrices, and equalities, but it's not true
+for sets!  Changed thread to 
+
+(defun thread (fn l op)
+ (simplify (cons `(,op) (mapcar #'(lambda (x) (simplify `((,fn) ,x)))l))))
+
+28 Oct 2003
+
+1.  Changed mobius to moebius in maxima-init.lisp.
+
+24 Oct 2003
+
+1.  Changed error message in require-set from
+
+(merror "Function ~:M expects a list set or a set, instead found ~:M" )
+
+to
+
+(merror "Function ~:M expects a list or a set, instead found ~:M" )
+
+
+2.  Added non-simplifying versions of require-set
+
+(defun require-list (x context-string)
+  (if ($listp x) (cdr x)
+    (merror "Function ~:M expects a list, instead found ~:M" context-string x)))
+
+(defun require-list-or-set (x context-string)
+  (if (or ($listp x) ($setp x)) (cdr x)
+    (merror "Function ~:M expects a list or a set, instead found ~:M" context-string x)))
+
+3. lreduce and rreduce now require lists; they no longer work on sets.
+
+
+22 Oct 2003
+
+1.  Added function disjoin.  For a set s, we have
+disjoin(x,s) == delete(x,s) == setdifference(s,set(x)).  But
+disjoin should be faster -- it uses b-search-expr.  Added
+testing code and user documentation for disjoin. Added disjoin
+to autoload list. Added note in announce about disjoin.
+
+2. Fixed problem with optional argument to rreduce and lreduce.
+
+3. Changed b-search-expr from 
+
+... (if (= len 0) (values nil lo l)
+       ;; uses great directly instead of $orderlessp; only specrepcheck x once
+      (setq x (specrepcheck x))
+
+to
+... (if (= len 0) (values nil lo l)
+    (progn
+    ;; uses great directly instead of $orderlessp; only specrepcheck x once
+      (setq x (specrepcheck x)) ...)
+
+The old version used the Maxima "if" macro.
+
+4. Deleted function complement -- we don't have a universal set,
+so we can't really do the complement only a relative complement.
+And setdifference(a,b) is a less confusing way to do complement(b,a).
+Deleted code, testing code, user documentation, and autoload property.
+
+5.  Added tree_reduce -- not yet documented, no testing code, ...
+
+14 Oct 2003
+
+1. Replaced reduce to rreduce an lrreduce. The new functions use
+Maxima functions to simplify nary functions +, *, and, or, max,
+min, append. Updated user-documentation
+
+2.  New version of symmdifference.  This version takes zero or more
+arguments and returns a set of the members that are members of exactly
+one argument. Updated user-documentation
+
+9 Oct 2003
+
+1. Changed mobius to moebius in code, user documentation, and 
+testing code.
+
+2. Fixed some spelling errors in announce-1.2.txt.
+
+7 Oct 2003
+
+1. Integrated new version of b-search-expr, added new function
+prefixconc -- some Lisps (GCL) had problems adjoining to 
+large lists. The new version fixes this problem; here it is
+
+;; (previxconc l len rest) is equivalent to (nconc (subseq l len) rest)
+
+(defun prefixconc (l len rest)
+  (do ((res nil (cons (car l) res))
+       (i len (decf i))
+       (l l (cdr l)))
+      ((= i 0) (nreconc res rest))
+    (declare (fixnum i))))
+
+2.  Added new section to user documentation on set member access.
+I still need to explain how to install the mapply1 patch.
+Also added note in the Bugs section on the non-transitivity of
+orderlessp.
+
+3. Replaced integer_partitions with new version that generates
+the partitions in dictionary order. The new version also 
+optionally generates fixed length partitions.  I need to
+update the user documentation.  Added some tests to test-nset.mac
+that use the optional second argument.
+
+5 Oct 2003
+
+1. Added makeset to autoload list.
+
+2. Added an experimental version of mapply1 that allows set member 
+access using [ ].  Changed maxima-init.lisp to make mapply1 and load it.
+
+3. Inserted a new copyright and licensing notice to nset.lisp.
+
+4. Expunged the no longer used permutation code.
+
+29 Sept 2003
+
+1. Made a few spelling corrections to this file and in the 
+user-documentation.
+
+2. Change version identifier to 1.2.0 in $put 
+
+   ($put '$nset '1.2.0 '$version)
+
+and added  get(nset,'version) the the end of test-nset.mac.
+
+3. From num_partitions, removed :element-type 'fixnum from 
+make-array. This allows num_partitions to work for large arguments. 
+Also updated the autoloads in maxima-init.lisp  from nset-init.lisp.
+
+4. Added user-documentation and testing code for num_distinct_partitions.
+Also added trap for a first argument of zero (similar to the trap 
+in num_partitions). Further, removed :element-type 'fixnum from 
+make-array and added num_distinct_partitions to autoload list.
+
+5. Removed subpowerset from autoload lists.
+
+6. In permutations, corrected (require-set a "$perm")
+to (require-set a "$permutations")
+
+7. Added some tests  to test-nset that check that permutations 
+returns a sorted set.
+
+28 Sept 2003
+
+1. Miscellaneous small changes to user documentation.
+2. Changed version to 1.2.0 -- this will be a version for release.
+
+10 Sept 2003
+
+1.  Made belln, divisors, and mobius thread over lists, sets, matrices,
+and equalities.
+
+9 Sept 2003
+
+1. Changed divisors to simplify instead of evaluate -- now a user needn't
+use ev after a substitution in divisors.  Fixed maxima-init.lisp and 
+nset-init.lisp to autoload simp-divisors instead of $divisors.
+
+2. Converted mobius to simplify instead of evaluate. Fixed maxima-init.lisp
+and nset-init.lisp.
+
+4 Sept 2003
+
+1. The function full_listify was silly and broken; it was silly because
+it made the same substitution twice
+
+(defun $full_listify (a)
+  (setq a (subst '(mlist simp) '($set simp) a :test 'equal))
+  (subst '(mlist simp) '($set simp) a :test 'equal))
+
+And it was broken because sometimes extraneous stuff gets stuffed
+into the car of expressions; for example, the Maxima to Lisp 
+translator may translate an set into
+
+   (($SET (422 "test-nset.mac" SRC)) |$a| |$a| |$b|))  
+
+I changed full_listify to 
+
+(defun $full_listify (a)
+  (cond ((atom a) a)
+	(($setp a) `((mlist simp) ,@(mapcar #'$full_listify (cdr a))))
+	(t `(,(car a) ,@(mapcar #'$full_listify (cdr a))))))
+
+2 Sept 2003
+
+1. Fixed bug in kron_delta
+
+(C1)  kron_delta(%i*(x+1)^2,%i*(x^2+2*x+1));
+(D1) 				       0
+
+Previously, kron_delta returned 0 whenever csign (...) returned true; 
+this was bogus. Added new testing code, and updated user-documentation.
+
+Another change: when (like p q) evaluates to nil and both p and
+q are sysconsts, we return 0.  Assuming the list of sysconsts gets
+changed to include $ind, $und, t, and nil, we can do stuff like
+kron_delta(true,false) -> 0.
+
+(mapc #'(lambda (x) (mputprop x t '$constant) (putprop x t 'sysconst))
+      '($%pi $%i $%e $%phi $inf $minf $infinity %i $%gamma $ind $und t nil))
+
+The new simp-kron-delta is 
+
+(defun simp-kron-delta (x y z)
+  (twoargcheck x)
+  (setq y (mapcar #'(lambda (s) (simpcheck s z)) (cdr x)))
+  (let ((p (nth 0 y)) (q (nth 1 y)) (sgn) (d))
+    (cond ((like p q) 1)
+	  ((and (symbolp p) (get p 'sysconst) (symbolp q) (get q 'sysconst)) 0)
+	  (t
+	   (setq d (specrepcheck (sub p q)))
+	   (setq sgn (csign d))
+	   (cond ((memq sgn `($pos $neg)) 0)
+		 ((eq sgn t)
+		  (setq d (simplify `((mabs) ,d)))
+		  `(($kron_delta) ,d 0))
+		 (t
+		  `(($kron_delta simp) ,p ,q)))))))
+
+
+30 August 2003
+
+1.  Fixed cut-and-paste error in maxima-init.lisp and nset-init.lisp.
+
+22 August 2003
+
+1.  Added code, user documentation, and testing for new function
+num_partitions.
+
+2.  Added code, user documentation, and testing for new function
+mobius.
+
+3.  Added code, user documentation, and testing for new function
+divisors.
+
+4. Added divisors, mobius, and num_partitions to the nset-init.lisp
+autoload statement.
+
+19 August 2003
+
+1. Added a sample maxima-init.lisp file into the nset archive and
+purloined the $make function from orthopoly.  Deleted the load statement
+in the testing code -- to run the testing code, a user either needs
+to manually load nset or must autoload nset functions.
+
+18 August 2003
+
+1. Removed the final optional argument to reduce, fixed documentation
+and testing code for reduce.
+
+8 August 2003
+
+1. Added code, user documentation, and testing for functions some,
+every, and reduce.
+
+2. Added code, user documentation, and testing code for makeset.
+
+3. Imported new permutations code.
+
+5 August 2003
+
+1. Changed multinomial_coeff to always return its factorial representation;
+thus multinomial_coeff(x,y,z) --> (x + y + z)!/(x! y! z!). Otherwise,
+I'd have to append stuff to makefactorial and makegamma to convert
+a multinomial coefficient to a factorial or gamma function form. Changed
+the user documentation for multinomial_coeff.
+
+It's up to Maxima to evaluate (or miss-evaluate) the factorials; for example
+
+(C1)  multinomial_coeff(-6,2);
+
+				    (- 4)!
+(D1) 				   --------
+				   2 (- 6)!
+(C2) minfactorial(%);
+
+(D2) 				      10
+(C3) float(d1);
+
+(D3) 			       16.66666666666665
+(C4) 
+
+
+2 August 2003
+
+1. Removed  (put '$set 'msize-matchfix 'grind).  This made sets display
+using { ....} in 1-d output and it  made it hard to cut & paste. 
+
+2. Added tests for kron_delta -- didn't find any bugs.
+
+3. Added integer_partitions and stirling1 to the autoload list.
+
+4. Fixed nset-init.lisp to autoload set, belln, and stirling1 & 2.
+
+1 August 2003
+
+1.  Changed Belln, stirling1, and stirling2 to simplify instead of
+evaluate.  Need more tests for these functions. Extended user
+documentation on stirling1 and stirling2.
+
+2. Added kron_delta from orthopoly; yikes, it had a bug. When
+csign(p - q) is neg or pos, return 0;  when csign(p-q) is true, this 
+means that p-q has a nonzero imaginary part -- so we can return 0;
+otherwise, return a noun form. Rewrote user documentation 
+for kron_delta and simplified the code.
+
+3. Made miscellaneous fixes to user documentation.
+
+28 July 2003
+
+1.  Added miscellaneous tests to test-nset.mac.
+
+2. Corrected
+
+(defun $partition_set (a f)
+  (setq a (require-set a "$subset")) ...)
+
+to
+
+(defun $partition_set (a f)
+  (setq a (require-set a "$partition_set")) ... )
+
+3. Wrote experimental functions summit and perm; I haven't yet included
+these functions nset -- they haven't been tested.
+
+4.  Added tests for permutations to test-nset.mac; previously there 
+were none. Yikes; I must check that test-nset.mac has at least a few
+checks for every user-level function in nset!
+
+23 July 2003
+
+1. Added Stirling numbers of the first kind; I based my code on
+Algorithm 3.17 "Combinatorial Algorithms Generation,
+Enumeration, and Search," CRC Press, 1999 by Donald Kreher and Douglas
+Stinson. I'm undecided on the best argument ordering for the Stirling
+numbers --- this needs to be straighten out.  Added tests for Stirling1.
+
+2. Discovered the orderless bug:
+
+(C2) s1 : set(a,b,c);
+
+(D2) 				   {a, b, c}
+(C3) orderless(a,c,b);
+
+(D3) 				     DONE
+(C4) s1;
+
+(D4) 				   {a, b, c}
+(C5) elementp(a,s1);
+
+(D5) 				     FALSE
+(C6) quit();
+
+Added a note in the user documentation about this.  Without hacking the
+orderless and ordergreat functions (would need to check if nset had been
+loaded), I don't think we can prevent a user from using orderless after
+nset has been started.
+
+3.  Added code, user documentation, and testing for integer_partitions.
+
+4.  Added new section "Combinatorial Functions" to user documentation.
+
+21 July 2003
+
+1. Correction from Stavros: setp changed to
+
+(defun $setp (a)
+  (and (consp a) (consp (car a)) (eq (caar a) '$set)))
+
+2. Deleted dupe; makelist is more general. Removed source code, documentation,
+testing, and autoload for dupe.
+
+3. Changed setequality to setequalp. Changed source code, documentation, testing,
+and autoload for setequality.
+
+4. The third argument to extremal_subset must now be either max or min.
+Changed user documentation.  I choose to disallow anything other than
+max or min.
+
+5. Eliminated extraneous source code comment preceding set-intersect 
+"examples of use."
+
+6. Declared mid to be fixnum in b-search-expr
+
+(defun b-search-expr (x l lo len)
+  (declare (fixnum lo len mid))
+  ...
+
+7. Changed cartesian_product to take zero or more arguments;
+previously it required 1 or more. Fixed user-documentation and
+added tests for cartesian_product().
+
+8. Changed the algorithm for powerset(a,k); I now
+use a very spiffy algorithm translated from pseudo-code
+in "Combinatorial Algorithms Generation, Enumeration, and 
+Search," CRC Press, 1999 by Donald Kreher and Douglas Stinson. 
+
+Also, changed the code for powerset(a) -- the new function power-set
+returns the set elements in dictionary order.
+
+9. Deleted function  listintersection and listunion; older code should
+instead use listify(intersection(...)).
+
+10.  Added note in user documentation on how to run the testing code
+via the undocumented
+
+(C1) batch("test-nset.mac",'test);
+
+11. Deleted user documentation section "Miscellaneous Functions"  --
+there wasn't much left in it.
+
+12. In the user documentation, I now recommend that nset be copied
+to /share/combinatorics.  Also, I now strongly recommend 
+compiling nset.
+
+13. From the user documentation I deleted the comment
+
+(The only way to change the set ordering is to modify the source 
+code to @emph{nset}.)
+
+Changing the set ordering is more tricky than it may appear; I
+don't want to encourage anybody to try.
+
+14. New version of flatten from Stavros; removed some of the silly
+flatten tests a^b^c from test-nset.mac. And I removed some source
+code comments that now longer apply.  flatten now is the identity
+function on the set of expressions with special representations
+(for example CRE expressions).
+
+15.  New version of sorted-remove-duplicates from Stavros;
+all tests pass with new version.  For now, old version commented 
+out.
+
+12 - 20 July 2003
+
+1.  Changed powerset to take an optional second argument -- with
+the optional second argument, powerset(s,n) == subpowerset(s,n).
+Of course, the function subpowerset isn't needed anymore.  It's
+gone.  Changed user documentation and updated test-nset.mac.
+
+2.  Added code and documentation for functions listintersection 
+and listunion. These are for compatibility with older set packages.
+
+3.  Added code, user documentation, and testing code for function emptyp:
+
+(defun $emptyp (a)
+  (or (like a `(($set))) (like a `((mlist)))))
+
+4. Updated my fixes for  $setup_autoload and generic-autoload.
+
+5. Fixed bug in the nset-init.lisp ($setup_autoload "nset" ..)
+statement -- had stray comma in the list of file names.
+
+6. Added code, user documentation, and testing for function
+stirling2 and belln.
+
+7. Added emptyp, listintersection, listunion, stirling2, belln,
+and set_partitions, to the autoload statement in nset-init.lisp.
+
+8. Added function set_partitions, user documentation for set_partitions,
+and testing code to test-nset.mac.
+
+9. Just before the flatten tests, added remfuction(f,g) to test-nset.mac.
+Not needed when test-nset is started from a fresh maxima.  But ...
+
+10. Changed version to 1.1.
+
+11. Added note in user documentation about how to allow set input via
+braces. Someone asked for this on the list and I said I'd add it.
