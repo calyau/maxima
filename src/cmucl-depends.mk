@@ -227,6 +227,7 @@ binary-cmucl/maxima.core : pade.lisp
 binary-cmucl/maxima.core : homog.lisp
 binary-cmucl/maxima.core : combin.lisp
 binary-cmucl/maxima.core : mstuff.lisp
+binary-cmucl/maxima.core : set.lisp
 binary-cmucl/maxima.core : ratpoi.lisp
 binary-cmucl/maxima.core : pois2.lisp
 binary-cmucl/maxima.core : pois3.lisp
