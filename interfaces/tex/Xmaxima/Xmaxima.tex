@@ -1,0 +1,122 @@
+% -*-mode: latex; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+%
+%	$Id: Xmaxima.tex,v 1.1 2002-09-24 00:32:47 mikeclarkson Exp $
+%
+
+\documentclass[12pt,makeidx,maxima]{report}
+
+\newif\ifpdf\pdffalse
+\ifx\pdfoutput\undefined\else\ifcase\pdfoutput
+\else
+  \pdftrue
+  \input{pdfcolor}
+  \pdfcompresslevel=9
+  \pdfpagewidth=\paperwidth    % page width of PDF output
+  \pdfpageheight=\paperheight  % page height of PDF output
+  %
+  % Pad the number with '0' to 3 digits wide so no page name is a prefix
+  % of any other.
+  %
+\fi\fi
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\usepackage[pdftex]{epsfig}
+\usepackage[pdftex]{color}
+\usepackage[pdftex,colorlinks,pdfauthor={http://maxima.sourceforge.net/},pdftitle={Xmaxima User's Guide},urlcolor=blue,linkcolor=red,hyperindex]{hyperref}
+\usepackage{nameref}
+\fi
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+\makeindex
+
+
+\begin{document}
+\title{Xmaxima User's Guide\\
+	Version 5.9.0}
+
+\author{Maxima Group,\\
+        \ \\
+	{\tt http://maxima.sourceforge.net}
+        }
+
+\date{Sept 2002}
+
+\maketitle
+
+\pagestyle{empty}
+\clearpage
+\vspace*{5in}
+Printed \today.
+\clearpage
+
+\pagestyle{headings}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+
+\clearpage
+\chapter*{Preface}
+\index{Preface}
+
+
+\section*{Notational Conventions of this Manual}
+\index{Notational Conventions of this Manual}
+
+\pagenumbering{arabic}
+
+\chapter{Installing Xmaxima}
+\index{Installing Xmaxima}
+
+\clearpage
+\section{Installing Xmaxima under Windows}
+\index{Installing Xmaxima under Windows}
+
+\clearpage
+\section{Installing Xmaxima under Unix}
+\index{Installing Xmaxima under Unix}
+
+\clearpage
+\section{Environment Variables}
+\index{Environment Variables}
+
+\clearpage
+\chapter{XMaxima User Interface}
+\index{XMaxima User Interface}
+
+\clearpage
+\section{Menus}
+
+\subsection{File Menu}
+
+\subsection{Edit Menu}
+
+\subsection{Options Menu}
+
+\subsection{Maxima Menu}
+
+\subsection{Help Menu}
+
+\clearpage
+\section{Console}
+
+\clearpage
+\section{Browser}
+
+\clearpage
+\chapter{Open Math}
+
+\appendix
+\clearpage
+\chapter{Building Xmaxima for Windows}
+
+\section{Installing MSYS}
+
+\section{Wrapping the Tcl Code}
+
+\section{Packaging with Inno}
+
+
+\end{document}
+
