@@ -877,13 +877,13 @@
 	   k ($num kl)
 	   l ($denom kl))
      (cond ((equal (* 2 l) n)
-	    (cond ((hyp-integerp (// (- k m) n))
+	    (cond ((hyp-integerp (/ (- k m) n))
 		   (return (hyp-algv k l m n a b c))))))
-     (cond ((hyp-integerp (// k (* 2 l)))
-	    (cond ((hyp-integerp (// m n))
+     (cond ((hyp-integerp (/ k (* 2 l)))
+	    (cond ((hyp-integerp (/ m n))
 		   (return (hyp-algv k l m n a b c)))
 		  (t (return nil))))
-	   ((hyp-integerp (// m n))
+	   ((hyp-integerp (/ m n))
 	    (return nil))
 	   ((hyp-integerp (/ (- (* k n) (* 2 l m)) (* 2 l n)))
 	    (return (hyp-algv k l m n a b c))))
@@ -905,20 +905,20 @@
 
 (defun hyp-algv  (k l m n a b c)
   (prog (x y xy a-b)
-     (setq a-b (- a b))
+     (setq a-b (sub a b))
      (setq xy (getxy k l m n)
 	   x (car xy)
-	   y (cdr xy))
+	   y (cadr xy))
      (cond ((< x 0)(go out)))
-     (cond ((< x y)(cond ((< (+ a-b x (inv 2)) 0)
+     (cond ((< x y)(cond ((< (add a-b x (inv 2)) 0)
 			  (return (f88 x y a c fun)))
 			 (t (return (f87 x y a c fun)))))
-	   (t (cond ((< (+ a-b x (inv 2)) 0)
+	   (t (cond ((< (add a-b x (inv 2)) 0)
 		     (return (f90 x y a c fun)))
 		    (t (return (f89 x y a c fun))))))
      out
      (setq w (* x -1))
-     (cond ((< (- (+ a-b (inv 2)) w) 0)
+     (cond ((< (- (add a-b (inv 2)) w) 0)
 	    (return (f92 x y a c fun)))
 	   (t (return (f91 x y a c fun))))))
 
@@ -965,8 +965,7 @@
 
 
 
-(defun simpr2f1
-    (l1 l2)
+(defun simpr2f1 (l1 l2)
   ((lambda (inl1p inl1bp inl2p)
      (cond (inl2p (cond ((and inl1p inl1bp)
 			 (derivint (- (car l1) 1)
@@ -1000,22 +999,22 @@
   (cond ((greaterp c b) (geredf b a c))
 	(t (gered2 a b c))))
 
-(defun derivint
-    (n m l)(subst var 'psey
-		  (mul (power -1 m)
-		       (factorial (+ n m l 1))
-		       (inv (factorial n))
-		       (inv (factorial l))
-		       (inv (factorial (+ n m)))
-		       (inv (factorial (+ m l)))
-		       ($diff  (mul (power (sub 1 'psey) (+ m l))
-				    ($diff (mul (power  'psey  -1)
-						-1
-						(mlog (sub 1 'psey)))
-					   'psey
-					   l))
-			       'psey
-			       (+ n m)))))
+(defun derivint (n m l)
+  (subst var 'psey
+	 (mul (power -1 m)
+	      (factorial (+ n m l 1))
+	      (inv (factorial n))
+	      (inv (factorial l))
+	      (inv (factorial (+ n m)))
+	      (inv (factorial (+ m l)))
+	      ($diff (mul (power (sub 1 'psey) (+ m l))
+			  ($diff (mul (power  'psey  -1)
+				      -1
+				      (mlog (sub 1 'psey)))
+				 'psey
+				 l))
+		     'psey
+		     (+ n m)))))
 
 
 
@@ -1227,14 +1226,10 @@
 ;; Is F(a, b; c; z) is Legendre function?
 (defun legfun (a b c)			   
   (prog (1-c a-b c-a-b inv2)
-     (setq 1-c
-	   (sub 1 c)
-	   a-b
-	   (sub a b)
-	   c-a-b
-	   (sub (sub c a) b)
-	   inv2
-	   (inv 2))
+     (setq 1-c (sub 1 c)
+	   a-b (sub a b)
+	   c-a-b (sub (sub c a) b)
+	   inv2 (inv 2))
      (cond ((alike1 a-b inv2)
 	    ;; a-b = 1/2
 	    (return (gered1 (list a b) (list c) #'legf24))))
