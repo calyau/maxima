@@ -59,18 +59,95 @@ See also @code{syntax}.
 @section Definitions for Operators
 
 @deffn operator "!"
-The factorial operator, which is the product of all the integers
-from 1 up to its argument.  Thus 5! = 1*2*3*4*5 = 120.  The value of
-the option @code{factlim} gives the highest factorial which is
-automatically expanded.  If it is -1 then all integers are expanded.
-See also @code{factorial}, @code{minfactorial}, and @code{factcomb}.
+The factorial operator.
+For any complex number @code{x} (including integer, rational, and real numbers) except for
+negative integers, @code{x!} is defined as @code{gamma(x+1)}.
+
+For an integer @code{x}, @code{x!} simplifies to the product of the integers from 1 to @code{x} inclusive.
+@code{0!} simplifies to 1.
+For a floating point number @code{x}, @code{x!} simplifies to the value of @code{gamma (x+1)}.
+For @code{x} equal to @code{n/2} where @code{n} is an odd integer,
+@code{x!} simplifies to a rational factor times @code{sqrt (%pi)}
+(since @code{gamma (1/2)} is equal to @code{sqrt (%pi)}).
+If @code{x} is anything else,
+@code{x!} is not simplified.
+
+The variables
+@code{factlim}, @code{minfactorial}, and @code{factcomb} control the simplification
+of expressions containing factorials.
+
+The functions @code{gamma}, @code{bffac}, and @code{cbffac}
+are varieties of the gamma function.
+@code{makegamma} substitutes @code{gamma} for factorials and related functions.
+
+See also @code{binomial}.
+
+@itemize @bullet
+@item
+The factorial of an integer, half-integer, or floating point argument is simplified
+unless the operand is greater than @code{factlim}.
+
+@example
+(%i1) factlim: 10$
+(%i2) [0!, (7/2)!, 4.77!, 8!, 20!];
+          105 sqrt(%pi)
+(%o2) [1, -------------, 81.44668037931193, 40320, 20!]
+               16
+@end example
+
+@item
+The factorial of a complex number, known constant, or general expression is not simplified.
+Even so it may be possible simplify the factorial after evaluating the operand.
+
+@example
+(%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
+(%o1)    [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
+(%i2) ev (%, numer, %enumer);
+(%o2) [(%i + 1)!, 7.188082728976031, 4.260820476357003, 
+
+                                          1.227580202486819]
+@end example
+
+@item
+The factorial of an unbound symbol is not simplified.
+
+@example
+(%i1) kill (foo)$
+(%i2) foo!;
+(%o2)                       foo!
+@end example
+
+@item
+Factorials are simplified, not evaluated.
+Thus @code{x!} may be replaced even in a quoted expression.
+
+@example
+(%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);
+          105 sqrt(%pi)
+(%o1) [1, -------------, 81.44668037931193, 40320, 20!]
+               16
+@end example
+@end itemize
 
 @end deffn
 
 @deffn operator "!!"
-Stands for double factorial which is defined as the product of
-all the consecutive odd (or even) integers from 1 (or 2) to the odd
-(or even) argument.  Thus 8!! is 2*4*6*8 = 384.
+The double factorial operator.
+
+For an integer, float, or rational number @code{n},
+@code{n!!} evaluates to the product @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))}
+where @code{k} is equal to @code{entier (n/2)},
+that is, the largest integer less than or equal to @code{n/2}.
+Note that this definition does not coincide with other published definitions
+for arguments which are not integers.
+@c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
+
+For an even (or odd) integer @code{n}, @code{n!!} evaluates to the product of
+all the consecutive even (or odd) integers from 2 (or 1) through @code{n} inclusive.
+
+For an argument @code{n} which is not an integer, float, or rational,
+@code{n!!} yields a noun form @code{genfact (n, n/2, 2)}.
+@c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? OR TOO MUCH DETAIL ???
 
 @end deffn
 
