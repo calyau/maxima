@@ -451,6 +451,13 @@ setrgbcolor} def
 
 (defmacro zval (points verts i) `(aref ,points (f+ 2 (f* 3 (aref ,verts ,i)))))
 
+;;sort the edges array so that drawing the edges will happen from the back towards
+;; the front.   The if n==4 the edges array coming in looks like
+;; v1 v2 v3 v4 0 w1 w2 w3 w4 0 ...
+;; where vi,wi are indices pointint into the points array specifiying a point
+;; in 3 space.   After the sorting is done, the 0 is filled in with the vertex
+;; which is closer to us (ie highest z component after rotating towards the user)
+;; and this is then they are sorted in groups of 5.   
 (defun sort-ngons (points edges n &aux lis )
   (declare (type (array (long-float))  points)
 	   (type (array (mod 65000)) edges)
@@ -464,47 +471,35 @@ setrgbcolor} def
 	(leng (length edges))
 	)
     (declare (type (array (mod 65000)) new)
-		 (fixnum i leng n1 at )
-		 )
+	     (fixnum i leng n1 at )
+	     )
     (declare (long-float z z1))
     
-  (setq lis
-	(sloop  for i0 below leng by (+ n 1)
-	       do 
-	       (setq i i0)
-	       (setq at 0)
-	       (setq z (zval points edges i))
-	       (setq i (+ i 1))
-	       (sloop for j below n1
+    (setq lis
+	  (sloop  for i0 below leng by (+ n 1)
+		  do 
+		  (setq i i0)
+		  (setq at 0)
+		  (setq z (zval points edges i))
+		  (setq i (+ i 1))
+		  (sloop for j below n1
 			 do (if (> (setq z1 (zval points edges i))  z)
-				 (setq z z1 at (aref edges i) ))
+				(setq z z1 at (aref edges i) ))
 			 (setq i (+ i 1))
 			 )
-	       ;(print i)
-	       (setf (aref edges i) at)
-	       collect (cons z i0)))
-;  (print lis)
-;  (print (list 'old edges))
-  (setq lis (sortcar lis))
-  (setq i 0)
-;  (print lis)
-  (sloop for v in lis
-	 do
-	 ;(print (list 'i i 'v v))
-	 (sloop for j from (cdr v) 
-		   for k to n
-		   do (setf (aref new i) (aref edges j))
-		   (incf i))
-	; (print new)
-	 ;(incf i)
-	 )
-  ;(print (list 'edg edges))
-   ; (print (list 'new new))
-  ;(print (list 'new new))
-  (copy-array-portion edges new  0 0 (length edges))
-
-;  (print (list 'edg edges))
-  ))
+		  (setf (aref edges i) at)
+		  collect (cons z i0)))
+    (setq lis (sortcar lis))
+    (setq i 0)
+    (sloop for v in lis
+	   do
+	   (sloop for j from (cdr v) 
+		  for k to n
+		  do (setf (aref new i) (aref edges j))
+		  (incf i))
+	   )
+    (copy-array-portion edges new  0 0 (length edges))
+    ))
 
 (defun copy-array-portion (ar1 ar2 i1 i2 n1)
  (declare (fixnum i1 i2 n1))
