@@ -540,7 +540,7 @@
 
 #+cmu
 (defun $system (&rest args)
-  (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args))))
+  (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output t))
 
 #+allegro
 (defun $system (&rest args)
