@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Printops.tcl,v 1.4 2002-09-19 16:26:42 mikeclarkson Exp $
+#       $Id: Printops.tcl,v 1.5 2004-03-22 17:44:19 vvzhy Exp $
 #
 ###### Printops.tcl ######
 ############################################################
@@ -203,7 +203,7 @@ proc mkPrintDialog { name args } {
     frame $name.fr
 
     set w $name.fr
-    label $w.msg  -wraplength 600 -justify left -text "Printer Setup"
+    label $w.msg  -wraplength 600 -justify left -text "Printer Setup" -font $buttonFont
     pack $w
     pack $w.msg
     set wb $w.buttons
@@ -238,7 +238,7 @@ proc mkPrintDialog { name args } {
 		-value [lindex $v 0] -font $buttonFont -highlightthickness 0
 	pack $wb.$lower -pady 2 -anchor w -fill x
     }
-    checkbutton $wb.domargin -variable printOption(domargin) -text "do margin"
+    checkbutton $wb.domargin -variable printOption(domargin) -text "do margin" -font $buttonFont
     pack $wb.domargin -pady 2 -anchor w -fill x
 
     frame $w.grid
