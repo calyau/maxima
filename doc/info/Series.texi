@@ -5,82 +5,181 @@
 
 @node Introduction to Series, Definitions for Series, Series, Series
 @section Introduction to Series
-Maxima contains functions @code{Taylor} and @code{Powerseries} for finding the 
-series of differentiable functions.   It also has tools such as @code{Nusum}
+Maxima contains functions @code{taylor} and @code{powerseries} for finding the 
+series of differentiable functions.   It also has tools such as @code{nusum}
 capable of finding the closed form of some series.   Operations such as addition and multiplication work as usual on series. This section presents the various global various variables which control the expansion.
 @c end concepts Series
 @node Definitions for Series,  , Introduction to Series, Series
 @section Definitions for Series
 
 @defvar cauchysum
- default: @code{false} - When multiplying together sums with @code{inf}
-as their upper limit, if @code{sumexpand} is @code{true} and @code{cauchysum} is set to
-@code{true} then the Cauchy product will be used rather than the usual
-product.  In the Cauchy product the index of the inner summation is a
+Default value: @code{false}
+
+@c REPHRASE
+When multiplying together sums with @code{inf} as their upper limit,
+if @code{sumexpand} is @code{true} and @code{cauchysum} is @code{true}
+then the Cauchy product will be used rather than the usual
+product.
+In the Cauchy product the index of the inner summation is a
 function of the index of the outer one rather than varying
-independently.  That is: @code{sum(f(i),i,0,inf)*sum(g(j),j,0,inf)} becomes
-@code{sum(sum(f(i)*g(j-i),i,0,j),j,0,inf)}
+independently.
+
+Example:
+
+@example
+(%i1) sumexpand: false$
+(%i2) cauchysum: false$
+(%i3) s: sum (f(i), i, 0, inf) * sum (g(j), j, 0, inf);
+                      inf         inf
+                      ====        ====
+                      \           \
+(%o3)                ( >    f(i))  >    g(j)
+                      /           /
+                      ====        ====
+                      i = 0       j = 0
+(%i4) sumexpand: true$
+(%i5) cauchysum: true$
+(%i6) ''s;
+                 inf     i1
+                 ====   ====
+                 \      \
+(%o6)             >      >     g(i1 - i2) f(i2)
+                 /      /
+                 ====   ====
+                 i1 = 0 i2 = 0
+@end example
 
 @end defvar
 
-@defun deftaylor (function, exp)
-allows the user to define the Taylor series
-(about 0) of an arbitrary function of one variable as exp which may be
-a polynomial in that variable or which may be given implicitly as a
-power series using the @code{sum} function.
+@defun deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+For each function @var{f_i} of one variable @var{x_i}, 
+@code{deftaylor} defines @var{expr_i} as the Taylor series about zero.
+@var{expr_i} is typically a polynomial in @var{x_i} or a summation;
+more general expressions are accepted by @code{deftaylor} without complaint.
 
-    In order to display the information given to @code{deftaylor} one can use
-@code{powerseries(f(x),x,0).} (see below).
+@code{powerseries (@var{f_i}(@var{x_i}), @var{x_i}, 0)}
+returns the series defined by @code{deftaylor}.
+
+@code{deftaylor} returns a list of the functions
+@var{f_1}, ..., @var{f_n}.
+@code{deftaylor} evaluates its arguments.
+
+Example:
 
 @example
-(%i1) deftaylor(f(x),x**2+sum(x**i/(2**i*i!**2),
-        i,4,inf));
+(%i1) deftaylor (f(x), x^2 + sum(x^i/(2^i*i!^2), i, 4, inf));
 (%o1)                          [f]
-(%i2) taylor(%e**sqrt(f(x)),x,0,4);
-                     2         3          4
-                    x    3073 x    12817 x
-(%o2)/r/     1 + x + -- + ------- + -------- +  . . .
-                    2     18432     307200
+(%i2) powerseries (f(x), x, 0);
+                      inf
+                      ====      i1
+                      \        x         2
+(%o2)                  >     -------- + x
+                      /       i1    2
+                      ====   2   i1!
+                      i1 = 4
+(%i3) taylor (exp (sqrt (f(x))), x, 0, 4);
+                      2         3          4
+                     x    3073 x    12817 x
+(%o3)/T/     1 + x + -- + ------- + -------- + . . .
+                     2     18432     307200
 @end example
 
 @end defun
 
 @defvar maxtayorder
- default: @code{true} - if @code{true,} then during algebraic
-manipulation of (truncated) Taylor series, @code{taylor} will try to retain
-as many terms as are certain to be correct.
+Default value: @code{true}
+
+@c REPHRASE
+When @code{maxtayorder} is @code{true}, then during algebraic
+manipulation of (truncated) Taylor series, @code{taylor} tries to retain
+as many terms as are known to be correct.
 
 @end defvar
 
-@defun niceindices (expr)
-will take the expression and change all the
-indices of sums and products to something easily understandable. It
-makes each index it can "I" , unless "I" is in the internal
-expression, in which case it sequentially tries
-J,K,L,M,N,I0,I1,I2,I3,I4,...  until it finds a legal index.
+@defun niceindices (@var{expr})
+Renames the indices of sums and products in @var{expr}.
+@code{niceindices} attempts to rename each index to the value of @code{niceindicespref[1]},
+unless that name appears in the summand or multiplicand,
+in which case @code{niceindices} tries
+the succeeding elements of @code{niceindicespref} in turn, until an unused variable is found.
+If the entire list is exhausted,
+additional indices are constructed by appending integers to the value of
+@code{niceindicespref[1]}, e.g., @code{i0}, @code{i1}, @code{i2}, ....
+
+@code{niceindices} returns an expression.
+@code{niceindices} evaluates its argument.
+
+Example:
+
+@example
+(%i1) niceindicespref;
+(%o1)                  [i, j, k, l, m, n]
+(%i2) product (sum (f (foo + i*j*bar), foo, 1, inf), bar, 1, inf);
+                 inf    inf
+                /===\   ====
+                 ! !    \
+(%o2)            ! !     >      f(bar i j + foo)
+                 ! !    /
+                bar = 1 ====
+                        foo = 1
+(%i3) niceindices (%);
+                     inf  inf
+                    /===\ ====
+                     ! !  \
+(%o3)                ! !   >    f(i j l + k)
+                     ! !  /
+                    l = 1 ====
+                          k = 1
+@end example
 
 @end defun
 
 @defvar niceindicespref
- default: [I,J,K,L,M,N] - the list which @code{niceindices}
-uses to find indices for sums and products.  This allows the user to
-set the order of preference of how @code{niceindices} finds the "nice
-indices".  E.g.  @code{niceindicespref:[q,r,s,t,index]$.}  Then if
-@code{niceindices} finds that it cannot use any of these as indices in a
-particular summation, it uses the first as a base to try and tack on
-numbers.  Here, if the list is exhausted, Q0, then Q1, etc, will be
-tried.
+Default value: @code{[i, j, k, l, m, n]}
+
+@code{niceindicespref} is the list from which @code{niceindices}
+takes the names of indices for sums and products.
+
+The elements of @code{niceindicespref} are typically names of variables,
+although that is not enforced by @code{niceindices}.
+
+Example:
+
+@example
+(%i1) niceindicespref: [p, q, r, s, t, u]$
+(%i2) product (sum (f (foo + i*j*bar), foo, 1, inf), bar, 1, inf);
+                 inf    inf
+                /===\   ====
+                 ! !    \
+(%o2)            ! !     >      f(bar i j + foo)
+                 ! !    /
+                bar = 1 ====
+                        foo = 1
+(%i3) niceindices (%);
+                     inf  inf
+                    /===\ ====
+                     ! !  \
+(%o3)                ! !   >    f(i j q + p)
+                     ! !  /
+                    q = 1 ====
+                          p = 1
+@end example
 
 @end defvar
 
-@defun nusum (exp,var,low,high)
-performs indefinite hypergeometric summation of exp with
-respect to var using a decision procedure due to R.W. Gosper.  exp and
-the potential answer must be expressible as products of nth powers,
-factorials, binomials, and rational functions.  The terms "definite"
+@defun nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+Carries out indefinite hypergeometric summation of @var{expr} with
+respect to @var{x} using a decision procedure due to R.W. Gosper.
+@var{expr} and the result must be expressible as products of integer powers,
+factorials, binomials, and rational functions.
+
+@c UMM, DO WE REALLY NEED TO DEFINE "DEFINITE" AND "INDEFINITE" SUMMATION HERE ??
+@c (CAN'T WE MAKE THE POINT WITHOUT DRAGGING IN SOME NONSTANDARD TERMINOLOGY ??)
+The terms "definite"
 and "indefinite summation" are used analogously to "definite" and
-"indefinite integration".  To sum indefinitely means to give a closed
-form for the sum over intervals of variable length, not just e.g. 0 to
+"indefinite integration".
+To sum indefinitely means to give a symbolic result
+for the sum over intervals of variable length, not just e.g. 0 to
 inf.  Thus, since there is no formula for the general partial sum of
 the binomial series, @code{nusum} can't do it.
 
@@ -124,52 +223,71 @@ Dependent equations eliminated:  (2 3)
 
 @end defun
 
-@defun pade (taylor-series,num-deg-bound,denom-deg-bound)
-returns a list of
-all rational functions which have the given taylor-series expansion
+@c THIS ITEM NEEDS SERIOUS WORK
+@defun pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+Returns a list of
+all rational functions which have the given Taylor series expansion
 where the sum of the degrees of the numerator and the denominator is
 less than or equal to the truncation level of the power series, i.e.
 are "best" approximants, and which additionally satisfy the specified
-degree bounds.  Its first argument must be a univariate taylor-series;
-the second and third are positive integers specifying degree bounds on
+degree bounds.
+
+@var{taylor_series} is a univariate Taylor series.
+@var{numer_deg_bound} and @var{denom_deg_bound}
+are positive integers specifying degree bounds on
 the numerator and denominator.
-@code{pade}'s first argument can also be a Laurent series, and the degree
+
+@var{taylor_series} can also be a Laurent series, and the degree
 bounds can be @code{inf} which causes all rational functions whose total
 degree is less than or equal to the length of the power series to be
-returned.  Total degree is num-degree + denom-degree.  Length of a
-power series is "truncation level" + 1 - minimum(0,"order of series").
+returned.  Total degree is defined as @code{@var{numer_deg_bound} + @var{denom_deg_bound}}.
+Length of a power series is defined as
+@code{"truncation level" + 1 - min(0, "order of series")}.
 
 @example
-(%i15) ff:taylor(1+x+x^2+x^3,x,0,3);
-                                     2    3
-(%o15)/t/                    1 + x + x  + x  + . . .
-(%i16) pade(ff,1,1);
-                                        1
-(%o16)                              [- -----]
-                                      x - 1
-(%i1) ff:taylor(-(83787*x^10-45552*x^9-187296*x^8
-                  +387072*x^7+86016*x^6-1507328*x^5
-                  +1966080*x^4+4194304*x^3-25165824*x^2
-                  +67108864*x-134217728)
-       /134217728,x,0,10);
-@c EXAMPLE FAILS HERE WITH ERROR MESSAGE: !!!
-@c  CDR: 134217728 is not a LIST !!!
-(%i25) pade(ff,4,4);
-(%o25) []
+(%i1) taylor (1 + x + x^2 + x^3, x, 0, 3);
+                              2    3
+(%o1)/T/             1 + x + x  + x  + . . .
+(%i2) pade (%, 1, 1);
+                                 1
+(%o2)                       [- -----]
+                               x - 1
+(%i3) t: taylor(-(83787*x^10 - 45552*x^9 - 187296*x^8
+                   + 387072*x^7 + 86016*x^6 - 1507328*x^5
+                   + 1966080*x^4 + 4194304*x^3 - 25165824*x^2
+                   + 67108864*x - 134217728)
+       /134217728, x, 0, 10);
+                    2    3       4       5       6        7
+             x   3 x    x    15 x    23 x    21 x    189 x
+(%o3)/T/ 1 - - + ---- - -- - ----- + ----- - ----- - ------
+             2    16    32   1024    2048    32768   65536
+
+                                  8         9          10
+                            5853 x    2847 x    83787 x
+                          + ------- + ------- - --------- + . . .
+                            4194304   8388608   134217728
+(%i4) pade (t, 4, 4);
+(%o4)                          []
 @end example
+
 There is no rational function of degree 4 numerator/denominator, with this
 power series expansion.  You must in general have degree of the numerator and
 degree of the denominator adding up to at least the degree of the power series,
 in order to have enough unknown coefficients to solve.
+
 @example
-@c EXAMPLE FAILS HERE WITH ERROR MESSAGE: !!!
-@c  CDR: 134217728 is not a LIST !!!
-(%i26) pade(ff,5,5);
-(%o26) [-(520256329*x^5-96719020632*x^4-489651410240*x^3
-           -1619100813312*x^2 -2176885157888*x-2386516803584)
-	/(47041365435*x^5+381702613848*x^4+1360678489152*x^3
-                +2856700692480*x^2
-	        +3370143559680*x+2386516803584)]
+(%i5) pade (t, 5, 5);
+                     5                4                 3
+(%o5) [- (520256329 x  - 96719020632 x  - 489651410240 x
+
+                  2
+ - 1619100813312 x  - 2176885157888 x - 2386516803584)
+
+               5                 4                  3
+/(47041365435 x  + 381702613848 x  + 1360678489152 x
+
+                  2
+ + 2856700692480 x  + 3370143559680 x + 2386516803584)]
 @end example
 
 @end defun
@@ -223,8 +341,8 @@ in the first simplification we have returned:
 @defvar psexpand
  default: @code{false} - if @code{true} will cause extended rational
 function expressions to display fully expanded.  (@code{ratexpand} will also
-cause this.)  If @code{false,} multivariate expressions will be displayed
-just as in the rational function package.  If @code{psexpand:multi,} then
+cause this.)  If @code{false}, multivariate expressions will be displayed
+just as in the rational function package.  If @code{psexpand:multi}, then
 terms with the same total degree in the variables are grouped
 together.
 
@@ -245,7 +363,7 @@ expansions around 0.
 @end defun
 
 @defun srrat (exp)
-this command has been renamed to @code{taytorat.}
+this command has been renamed to @code{taytorat}.
 
 @end defun
 
@@ -258,9 +376,9 @@ degree pow then @code{taylor} will try to expand g(var) up to degree 2*pow.
 If there are still no non-zero terms @code{taylor} will keep doubling the
 degree of the expansion of g(var) until reaching pow*2**n where n is
 the value of the variable @code{taylordepth} [3].  If @code{maxtayorder} [FALSE] is
-set to @code{true,} then during algebraic manipulation of (truncated) Taylor
+set to @code{true}, then during algebraic manipulation of (truncated) Taylor
 series, @code{taylor} will try to retain as many terms as are certain to be
-correct.  Do @code{example(taylor);} for examples.
+correct.  Do @code{example(taylor)} for examples.
 
 @code{taylor(exp,[var1,pt1,ord1],[var2,pt2,ord2],...)}  returns a truncated
 power series in the variables vari about the points pti, truncated at
@@ -268,8 +386,8 @@ ordi.
 
 @code{psexpand} [FALSE] if @code{true} will cause extended rational function
 expressions to display fully expanded.  (@code{ratexpand} will also cause
-this.) If @code{false,} multivariate expressions will be displayed just as in
-the rational function package.  If @code{psexpand:multi,} then terms with the
+this.) If @code{false}, multivariate expressions will be displayed just as in
+the rational function package.  If @code{psexpand:multi}, then terms with the
 same total degree in the variables are grouped together.
 
 @code{taylor(exp, [var1, var2, .  . .], pt, ord)} where each of pt and ord
@@ -325,7 +443,7 @@ the expression 'exp' is in Taylor series representation.
 zero-recognition problems involving logarithmic identities do not
 disturb the expansion process.  However, this scheme is not always
 mathematically correct since it ignores branch information.  If
-@code{taylor_logexpand} is set to @code{false,} then the only expansion of log's
+@code{taylor_logexpand} is set to @code{false}, then the only expansion of log's
 that will occur is that necessary to obtain a formal power series.
 
 @end defvar
@@ -360,8 +478,8 @@ like @code{rat(ratdisrep(exp))} although much faster.
 @defun trunc (exp)
 causes exp which is in general representation to be
 displayed as if its sums were truncated Taylor series.  E.g. compare
-@code{exp1:x^2+x+1;} with @code{exp2:trunc(x^2+x+1);} .  Note that @code{is(exp1=exp2);}
-gives @code{true.}
+@code{exp1:x^2+x+1} with @code{exp2:trunc(x^2+x+1)} .  Note that @code{is(exp1=exp2)}
+gives @code{true}.
 
 @end defun
 
