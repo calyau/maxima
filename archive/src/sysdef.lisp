@@ -1,9 +1,7 @@
 
-(or (find-package "MAKE") (make-package "MAKE" :use '(LISP)))
-
+(load "make.lisp")
 (in-package "MAKE")
 
-(or (fboundp 'make) (load  "make.lisp" ))
 (or (member :cl *features*) (setq *features* (cons :cl *features*)))
 
 (setf (get :maxima :source-path) "foo.lisp")

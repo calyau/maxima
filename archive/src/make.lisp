@@ -6,7 +6,9 @@
 ;; preserved.   The author provides no warranty and this software is
 ;; provided on an 'as is' basis.
 
-(in-package "MAKE" :use '("LISP") #+akcl :external #+akcl 11 #+akcl :internal #+akcl 79)
+(or (find-package "MAKE") (make-package "MAKE" :use '("LISP") #+akcl :external #+akcl 11 #+akcl :internal #+akcl 79))
+
+(in-package "MAKE")
 
 (export '(make system-load system-compile))
 (provide "MAKE")

@@ -112,7 +112,9 @@ MAN_DIR=/usr/local/man/man1
 # end maxmakedefs
 
 
-all: maxima.dvi maxima.info maxima.info-1.gz
+all: maxima.dvi maxima.info maxima.info-1.gz maxima.pdf
+
+
 
 OBJS=Affine.texi Arrays.texi Command.texi Constants.texi Contexts.texi \
 	Ctensor.texi Debugging.texi Differential.texi Differentiation.texi \
@@ -137,6 +139,8 @@ maxima.info maxima.info-1.gz : ${OBJS}
 
 maxima.dvi: maxima.vr maxima.texi maxima.fns maxima.fn ${OBJS}
 	tex maxima.texi
+maxima.pdf: maxima.vr maxima.texi maxima.fns maxima.fn
+	pdftex maxima.texi
 
 maxima.vr maxima.fn:  maxima.texi ${OBJS}
 	tex maxima.texi

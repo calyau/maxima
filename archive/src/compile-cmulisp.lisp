@@ -20,6 +20,7 @@
 
 (defpackage "SI"
     (:use "COMMON-LISP" "ALIEN" "C-CALL"))
+(defvar si::*info-paths* nil)
 
 (defpackage "REGEX"
     (:use "COMMON-LISP" "ALIEN" "C-CALL")

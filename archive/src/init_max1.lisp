@@ -62,8 +62,7 @@
                                    (si::argv 0)))
 			     "../"))))))
 
-    (or (boundp 'SI::*INFO-PATHS*) (setq SI::*INFO-PATHS* nil) )
-    (push  (maxima-path "info" "") SI::*INFO-PATHS*)
+   #+(or gcl cmu) (push  (maxima-path "info" "") SI::*INFO-PATHS*)
     (let ((ext #+gcl "o"
 	       #+cmu (c::backend-fasl-file-type c::*target-backend*)
 	       #-(or gcl cmu)
@@ -96,24 +95,19 @@
 
     ))
 
-#+gcl
-(defun user::run ()
-  (in-package "MAXIMA")
-  (catch 'to-lisp
-    (set-pathnames)
-    (macsyma-top-level)
-  ))
 
-#+cmu
+
 (defun user::run ()
   ;; Turn off gc messages
-  (setf ext:*gc-verbose* nil)
-  ;; Reload the documentation stuff
-  (cond ((probe-file "/apps/gnu/src/regex-0.12/regex.o")
-         (ext:load-foreign "/apps/gnu/src/regex-0.12/regex.o")	
-         (load "cmulisp-regex" :if-source-newer :compile)
-         (load "cl-info" :if-source-newer :compile))
-        (t (format t "~&/apps/gnu/src/regex-0.12/regex.o not found .. skipping regexp stuff for describe")))
+  #+cmu
+  (progn 'cmulisp
+	 (setf ext:*gc-verbose* nil)
+	 ;; Reload the documentation stuff
+         (cond 	((probe-file "/apps/gnu/src/regex-0.12/regex.o")
+		 (ext:load-foreign "/apps/gnu/src/regex-0.12/regex.o")	
+		 (load "cmulisp-regex" :if-source-newer :compile)
+		 (load "cl-info" :if-source-newer :compile))
+		(t (format t "~&/apps/gnu/src/regex-0.12/regex.o not found .. skipping regexp stuff for describe"))))
   (in-package "MAXIMA")
   (catch 'to-lisp
     (set-pathnames)

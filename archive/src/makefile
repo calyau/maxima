@@ -268,6 +268,9 @@ clisp-compile:
 	echo '(progn (load "compile-clisp.lisp")(compile-maxima))' | ${CLISP}
 maxima-clisp.mem: clisp-compile
 	echo '(progn (load "compile-clisp.lisp")(save-maxima))' | ${CLISP}
+# invoke clisp maxima on the test suite
+test-clisp:
+	(cd ../doc ; ${CLISP} -M ../src/maxima-clisp.mem tests.lisp)
 
 
 cmulisp-compile:
