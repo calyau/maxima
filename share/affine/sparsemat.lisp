@@ -406,11 +406,13 @@ constants-column
 	      finally 
 		      (return temp))))
 
-
-(defun sp-set-rows (sp-mat the-rows &optional list-of-columns )
-   (setf (sp-rows sp-mat) the-rows)
-  (setf (sp-number-of-rows sp-mat) (or (fill-pointer the-rows)
-				       (setf (fill-pointer the-rows) (car (array-dimensions the-rows)))))
+(defun sp-set-rows (sp-mat the-rows &optional list-of-columns)
+  (setf (sp-rows sp-mat)
+	(if (array-has-fill-pointer-p the-rows)
+	    the-rows
+	    (make-array (array-dimension the-rows 0) :adjustable t
+			:displaced-to the-rows :fill-pointer t)))
+  (setf (sp-number-of-rows sp-mat) (fill-pointer (sp-rows sp-mat)))
  ; (cond ((zerop (fill-pointer the-rows)) (break 'why-no-rows)))
  ; (show (sp-rows sp-mat))
   (setf (sp-last-good-row sp-mat) (f1- (sp-number-of-rows sp-mat)))
@@ -1716,7 +1718,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;(once (piv div ) (setq div 4)(setq piv 3));;watch out if control leaves in middle of body the
 		;values of the variables may not be restored!!
 
-
+#-cl
 (defun create-sparse-matrix (&rest options)
 
   (LET* ((PLIST (CONS NIL (COPY-LIST OPTIONS)))
@@ -1762,10 +1764,10 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	  (sloop for ii below (sp-number-of-rows sp-mat)
 		when (setq val ( sp-entry sp-mat ii j))
 		do
-		(array-push-extend-replace rowj ii)
-		(array-push-extend-replace rowj val))
+		(array-push-extend-replace (solution-row-data rowj) ii)
+		(array-push-extend-replace (solution-row-data rowj) val))
 	  
-	 (setf (aref transpose-rows i)   rowj))
+	 (setf (aref transpose-rows i) (solution-row-data rowj)))
     
     (setf (sp-transpose sp-mat) (make-sparse-matrix
 				    :rows transpose-rows
