@@ -302,7 +302,7 @@ constants-column
 
 (defun row-entry ( arow j &aux col)
   (catch 'entry
-    (sloop for ii below (length (the lisp::array arow)) by 2
+    (sloop for ii below (length (the cl:array arow)) by 2
 	  when (and (setf col (aref arow ii )) (eql j col))
 	 do (throw 'entry (aref arow (f1+ ii ))))))
 
@@ -337,7 +337,7 @@ constants-column
   (with-characteristic
     
 		   (let (val)
-		     (sloop for iii below (length (the lisp::array arow)) by 2
+		     (sloop for iii below (length (the cl:array arow)) by 2
 			   when (and (setf aindex (aref arow iii ))
 				     (setq val (row-entry brow aindex)))
 			   do (setq ans
@@ -352,7 +352,7 @@ constants-column
   ( sp-row-dot sp-mat (aref (sp-rows sp-mat) i) (aref (sp-rows sp-mat) j)))
  
 (defmacro below-fill (a)
-  `(max (f- (length (the lisp::array ,a)) 2) 0))
+  `(max (f- (length (the cl:array ,a)) 2) 0))
 ;(defsubst set-fill-pointer (aarray n)
 ;  (store-array-leader n aarray 0))
 ;
@@ -366,7 +366,7 @@ constants-column
 ;		 finally (setf (fill-pointer this-row) 0))))))
 
 (defun maybe-move-back-fill-pointer (arow)
-  (cond ((equal (length (the lisp::array arow)) 0) nil)
+  (cond ((equal (length (the cl:array arow)) 0) nil)
 	(t  
 	 (sloop for i downfrom (below-fill arow) to 0 by 2
 	       when (aref arow i)
@@ -380,7 +380,7 @@ constants-column
 	 (setf (sp-characteristic sp-mat) (sp-type-of-entries sp-mat))
 	 (sloop for iii below (sp-number-of-rows sp-mat)
 	      do (let ((this-row (aref (sp-rows sp-mat) iii)))
-		   (sloop for ii below (length (the lisp::array  this-row)) by 2
+		   (sloop for ii below (length (the cl:array  this-row)) by 2
 		       when (aref this-row ii )
 		       do (let ((value (aref this-row (f1+ ii))))
 			    (cond (value
@@ -398,7 +398,7 @@ constants-column
 	(sloop for ii below (sp-number-of-rows sp-mat)
 	      for this-row = (aref  (sp-rows sp-mat) ii)
 	      appending 
-	      (sloop for jj below (length (the lisp::array  this-row)) by 2
+	      (sloop for jj below (length (the cl:array  this-row)) by 2
 		    when (and (setq ind (aref this-row jj ))
 			      (not (memq ind temp)))
 		    collecting ind)
@@ -456,7 +456,7 @@ constants-column
   (setf (sp-current-row-number sp-mat) i)
   (setf (sp-current-row sp-mat)  (aref (sp-rows sp-mat) i))
   (setf (sp-current-row-length sp-mat)
-	(length (the lisp::array (sp-current-row sp-mat))))
+	(length (the cl:array (sp-current-row sp-mat))))
   (sp-current-row sp-mat))
 
 (eval-when (load compile eval)  ;;because of symbolics bug
@@ -474,7 +474,7 @@ constants-column
 (defun sp-entry (sp-mat  i j &aux (this-row (aref (sp-rows sp-mat) i)))
  #+symbolics (declare ( sys:array-register this-row))
     (catch 'entry
-      (sloop for ii below (length (the lisp::array this-row)) by 2
+      (sloop for ii below (length (the cl:array this-row)) by 2
 	    when (eql j (aref this-row ii ))
 	    do (throw 'entry (aref this-row (f1+ ii))))))
 
@@ -675,7 +675,7 @@ constants-column
   `(catch 'row-slot
      (let ((.row. ,row))
       #+symbolics (declare (sys:array-register .row.))
-     (sloop for .ii. below (length (the lisp::array .row.)) by 2
+     (sloop for .ii. below (length (the cl:array .row.)) by 2
 	   do (cond ((eql ,index (aref .row. .ii. ))
 		     (throw 'row-slot .ii.)))))))
 
@@ -687,7 +687,7 @@ constants-column
 	(.ind. ,index))
   (cond (($zerop  .val.) nil)
 	(t
-  (sloop for ii below (length (the lisp::array ,row)) by 2
+  (sloop for ii below (length (the cl:array ,row)) by 2
 	when (null (aref ,row ii))
 	do(setf (aref ,row ii)  .ind.)
 (setf	(aref ,row (f1+ ii))  .val.)  
@@ -712,7 +712,7 @@ constants-column
        (cond
 	 ((equal factor 0) nil)
 	 (t
-	  (sloop for ii below (length (the lisp::array (sp-pivot-row sp-mat))) by 2
+	  (sloop for ii below (length (the cl:array (sp-pivot-row sp-mat))) by 2
 		when (setq piv-col (aref (sp-pivot-row sp-mat) ii ))
 		do (cond ((setq current-row-slot
 				(row-slot  (sp-current-row sp-mat) piv-col))
@@ -770,21 +770,21 @@ constants-column
 (defun sp-gcd-row (sp-mat i)
   (let ((ans ( sp-first-element-of-row sp-mat i))
 	(this-row (aref (sp-rows sp-mat) i)))
-       (sloop for ii below (length (the lisp::array this-row)) by 2
+       (sloop for ii below (length (the cl:array this-row)) by 2
 	     when (aref this-row ii )
 	     do (setq ans (gcd ans (aref this-row (f1+ ii ))))
 	     finally (return ans))))
 (defun sp-first-element-of-row (sp-mat ii)
   (catch 'first-element
     (let ((this-row (aref (sp-rows sp-mat) ii)))
-   (sloop for i below (length (the lisp::array this-row)) by 2
+   (sloop for i below (length (the cl:array this-row)) by 2
 	 when (aref this-row i )
 	 do (throw 'first-element (aref this-row (f1+ i )))))))
 
 
 (defmacro show-row (arow)
   `(let ((this-row ,arow) ind)
-     (sloop for jj below (length (the lisp::array this-row)) by 2
+     (sloop for jj below (length (the cl:array this-row)) by 2
 	   when (setq ind (aref this-row jj))
 	   do (format t "~%In slot ~D ~D-->~D "
 		      (// jj 2) ind (aref this-row (f1+ jj))))))
@@ -826,11 +826,11 @@ constants-column
 
 (defun sp-choose-type-of-entries (sp-mat &aux  rational float tem1
 					 (rows (sp-rows sp-mat)))
-  (sloop named sue for i below (length (the lisp::array rows))
+  (sloop named sue for i below (length (the cl:array rows))
 	do
         (let ((a-row (aref rows i)))
 	 #+symbolics (declare (sys:array-register a-row))
-	  (sloop for ii below (length (the lisp::array a-row)) by 2
+	  (sloop for ii below (length (the cl:array a-row)) by 2
 		when (aref a-row ii)
 		do
 		(cond ((numberp (setq tem1 (aref a-row (f1+ ii))))
@@ -895,7 +895,7 @@ constants-column
 
 (defun sp-remove-zero-entries-from-row (sp-mat i)
   (let ((this-row (aref (sp-rows sp-mat) i)))
-    (sloop for ii below (length (the lisp::array this-row)) by 2
+    (sloop for ii below (length (the cl:array this-row)) by 2
 	  when (aref this-row ii )
 	  do (if (null (aref this-row (f1+ ii) ))(setf (aref this-row ii 0)  nil)))
     (maybe-move-back-fill-pointer this-row))) 
@@ -1059,7 +1059,7 @@ constants-column
 	  ((equal 1 factor) nil)
 	  (t
 	   (with-characteristic
-	     (sloop for i below (length (the lisp::array this-row)) by 2
+	     (sloop for i below (length (the cl:array this-row)) by 2
 		   when (aref this-row i )
 		   do(setf (aref this-row (f1+ i) )    (special-times
 				(aref this-row (f1+ i ))
@@ -1501,7 +1501,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 		(with-once-only
 		  ((sp-pivot-row sp-mat))
 		  (sloop
-		    for ii below (length (the lisp::array (sp-pivot-row sp-mat))) by 2
+		    for ii below (length (the cl:array (sp-pivot-row sp-mat))) by 2
 		    when (aref (sp-pivot-row sp-mat) ii)
 ;				 (and (aref (sp-pivot-row sp-mat) ii )	
 ;					   (null (gethash  ;;these entries should be zero!!
@@ -1642,7 +1642,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 				    #'(lambda (x) ($numberp x))
 				    #'(lambda (ignor) ignor t))
 	do		  
-        (sloop for i below (length (the lisp::array (sp-pivot-row sp-mat))) by 2
+        (sloop for i below (length (the cl:array (sp-pivot-row sp-mat))) by 2
 	      when (and (aref (sp-pivot-row sp-mat) i)
 			(funcall test
 				 (aref (sp-pivot-row sp-mat) (f1+ i))))
@@ -1657,7 +1657,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 
 (defun sp-smallest-possible-pivot(sp-mat &aux
 				  (.pivot-row. (sp-pivot-row sp-mat)))
-  (sloop for ii below (length (the lisp::array  .pivot-row.)) by 2
+  (sloop for ii below (length (the cl:array  .pivot-row.)) by 2
 	when (aref .pivot-row. ii)
 		       minimize (abs (aref .pivot-row. (f1+ ii )))))
 ;
@@ -1843,7 +1843,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
   (sloop for i below (sp-number-of-rows sp-mat)
 	do
 	(setf this-row (aref (sp-rows sp-mat) i))
-	(sloop for ii below (length (the lisp::array this-row)) by 2
+	(sloop for ii below (length (the cl:array this-row)) by 2
 	      when (eql (aref this-row ii) j)
 	      do
 	     (setf (aref this-row ii)  nil)
@@ -2052,7 +2052,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 (defun sp-find-good-column-to-pivot (sp-mat  &aux the-gcd)
   "Trys to find a column where the gcd is equal to the entry of the pivot-row
    without changing the pivot row"
-  (sloop for ii below (length (the lisp::array (sp-pivot-row sp-mat))) by 2
+  (sloop for ii below (length (the cl:array (sp-pivot-row sp-mat))) by 2
 	when (aref (sp-pivot-row sp-mat) ii)
 	do ( sp-set-current-column-above-pivot-row-number sp-mat
 	    (aref (sp-pivot-row sp-mat) ii))
@@ -2124,7 +2124,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
   (setf (sp-current-row-number sp-mat    ) "Fake row number")
   (sloop while not-done
 	do
-  (sloop for ii below (length (the lisp::array a-row)) by 2
+  (sloop for ii below (length (the cl:array a-row)) by 2
 	when (and (setq col (aref a-row ii))(setq piv-row (gethash  col (sp-columns-used-to-pivot sp-mat)
 								)))
 	do

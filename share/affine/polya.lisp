@@ -220,12 +220,12 @@
 	(t tem)))
 (defun collect-coefficients ( a-row  &aux col sum)
   
-       (sloop for i  below (length (the lisp::array a-row)) by 2
+       (sloop for i  below (length (the cl:array a-row)) by 2
 	     when (setq col (aref a-row i))
 	     do
 	     
 	     (setq sum (aref a-row (1+ i)))
-	     (sloop for ii from (f+ i 2) below (length (the lisp::array a-row)) by 2
+	     (sloop for ii from (f+ i 2) below (length (the cl:array a-row)) by 2
 		   when (equal col (aref a-row ii))
 		   do
 		
@@ -249,7 +249,7 @@
   "This should actually return something equal to the original polynomial
   which was fed into convert-polynomial-to-vector"
   (setq terms
-	(sloop for ii below (length (the lisp::array row)) by 2
+	(sloop for ii below (length (the cl:array row)) by 2
 	      when (setq col (aref row ii ))
 	      do
 	      (setq mon (get-key hash-table  col))
@@ -265,7 +265,7 @@
   "This should actually return something equal to the original polynomial
   which was fed into convert-polynomial-to-vector"
   (setq terms
-	(sloop for ii below (length (the lisp::array row)) by 2
+	(sloop for ii below (length (the cl:array row)) by 2
 	      when (setq col (aref row ii ))
 	      do
 	      (setq mon (get-key hash-table col))
@@ -365,7 +365,7 @@
 	  do
 	  (setq answer 0)
 	  (setq special-contribution 0)
-	  (sloop for ii below (length (the lisp::array the-solutions))
+	  (sloop for ii below (length (the cl:array the-solutions))
 		do
 		(setq this-row (aref the-solutions ii))
 		(setq corresponding-variables-column
@@ -407,7 +407,7 @@
   (let ((sp ( pv-the-sparse-matrix $poly_vector )))
 	( sp-reduce sp)
 	(setq cols ( sp-column-used-in-row sp))
-	(sloop for i below (length (the lisp::array cols))
+	(sloop for i below (length (the cl:array cols))
 	      when  (aref cols i)
 	      count i into rank
 	      finally (return rank))))
@@ -415,7 +415,7 @@
 	   (self an-array &optional parts-of-monomial last-column-number)
     "Takes AN-ARRAY whose entries are polynomials or Art-q-n arrays of polynomials.
      It uses the parts-of-monomial if supplied to get the coefficients"
-    (let* ((number-of-rows (length (the lisp::array an-array)))
+    (let* ((number-of-rows (length (the cl:array an-array)))
 	   first-element a-row poly partial-row)
       (cond ((> 0 number-of-rows )(setq first-element (aref an-array 0))))
       (cond ((ml-typep first-element 'array)
@@ -463,7 +463,7 @@
 		       (cond ((pv-verify-conversion self)
 			      (check-conversion poly partial-row
 						(aref (pv-array-of-tables self) i))))
-		       (sloop for k below (length (the lisp::array partial-row))
+		       (sloop for k below (length (the cl:array partial-row))
 			     do (vector-push-extend  (aref partial-row k) a-row))
 		       ;;;		       (get-rid-of-array partial-row)
 		       ))))))
@@ -485,10 +485,10 @@
 (defun  pv-check-type-of-entries (self &aux a-row)
    (setf (pv-type-of-entries self) (or modulus :rational))
   (catch 'done
-    (sloop for ii below (length (the lisp::array (pv-rows self)))
+    (sloop for ii below (length (the cl:array (pv-rows self)))
 	  do
 	  (setq a-row (aref (pv-rows self) ii))
-	  (sloop for i below (length (the lisp::array a-row)) by 2
+	  (sloop for i below (length (the cl:array a-row)) by 2
 		when (and (aref a-row i) (not (numberp (aref a-row (f1+ i)))))
 		do (setf (pv-type-of-entries self) ':any-macsyma)
 		(throw 'Done 'done))))
@@ -1863,13 +1863,13 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			  (setf (pv-constants-column-number self) 0))))))
 
    (adjust-array (pv-rows self)
-		 (max (length (the lisp::array (pv-rows self)))
+		 (max (length (the cl:array (pv-rows self)))
 		      1)
 		 :fill-pointer (fill-pointer (pv-rows self)))
     (cond (constants-column (setf (pv-constants-column-number self) 0)
 			    (adjust-array
 			      constants-column
-			      (MAX (length (the lisp::array (pv-rows self))) 1)
+			      (MAX (length (the cl:array (pv-rows self))) 1)
 
 			      :fill-pointer
 			      (fill-pointer (pv-rows self)))
@@ -2116,7 +2116,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 						      (ncmul left-times-gen
 							     right-multiple) answer)))))
 
-  (setf ans1  (adjust-array answer (length (the lisp::array answer))
+  (setf ans1  (adjust-array answer (length (the cl:array answer))
 			    :fill-pointer (fill-pointer  answer)))
   answer)
 
@@ -2147,10 +2147,10 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (setf answer (MAKE-ARRAY 100 :fill-pointer 0 :adjustable t))
   (sloop for u in l
 	do
-	(sloop for i below (length (the lisp::array u))
+	(sloop for i below (length (the cl:array u))
 	      do
 		 (vector-push-extend  (aref u i) answer)))
-  (adjust-array answer (length (the lisp::array answer))
+  (adjust-array answer (length (the cl:array answer))
 		:fill-pointer (fill-pointer  answer)))
 
 
@@ -2218,7 +2218,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	( sp-set-type-of-entries ( pv-the-sparse-matrix poly-vectors ) ':any-macsyma)
 	(
 	      sp-reduce-row-with-respect-to-rows ( pv-the-sparse-matrix poly-vectors ) a-row)
-	appending (sloop for i below (length (the lisp::array a-row)) by 2
+	appending (sloop for i below (length (the cl:array a-row)) by 2
 			 when (aref a-row i)
 			 collecting ($rat (aref a-row (f1+ i))))
 	into eqns
@@ -2270,7 +2270,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   	(sp-set-type-of-entries ( pv-the-sparse-matrix poly-vectors ) ':any-macsyma)
 	(sp-reduce-row-with-respect-to-rows
 	      ( pv-the-sparse-matrix poly-vectors ) a-row)
-	(sloop for ii below (length (the lisp::array a-row)) by 2
+	(sloop for ii below (length (the cl:array a-row)) by 2
 	      when (aref a-row ii)
 	      collecting (mul* (aref a-row (f1+ ii))
 			       ( get-key ( pv-table poly-vectors )  (aref a-row ii)))
@@ -2540,7 +2540,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	  ( pv-the-sparse-matrix poly-vectors ) ':any-macsyma)
 	(sp-reduce-row-with-respect-to-rows
 	  ( pv-the-sparse-matrix poly-vectors ) a-row)
-	(setf eqns (sloop for i below (length (the lisp::array a-row)) by 2
+	(setf eqns (sloop for i below (length (the cl:array a-row)) by 2
 			 when (aref a-row i)
 			 collecting ($rat (aref a-row (f1+ i)))))
 	

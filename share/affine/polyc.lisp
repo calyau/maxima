@@ -924,7 +924,7 @@
 	(setq solns ($fast_linsolve eqns (firstn (length monoms) $aaaa)))
 	(setq sp(send $poly_vector :the-sparse-matrix))
     (setq ar (send sp ':column-used-in-row))
-   (setq pivots  (sloop for i below (length (the lisp::array ar))
+   (setq pivots  (sloop for i below (length (the cl:array ar))
 	  when (setq tem (aref ar i))
 	  collecting tem into tem1
 	  finally (return  tem1)))

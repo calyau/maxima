@@ -1350,7 +1350,7 @@ and modulo-p not prime gives false answer"
 (DEFUN MY-DRAW-STRING ( A-STRING FROMX FROMY &OPTIONAL (STREAM *standard-output*))
   (MULTIPLE-VALUE-BIND (X Y) (SEND STREAM :READ-CURSORPOS :CHARACTER)
   (SEND STREAM :SET-CURSORPOS  (F1+ FROMX) FROMY :CHARACTER)
-  (SLOOP FOR I FROM 0 BELOW (length (the lisp::array A-STRING))
+  (SLOOP FOR I FROM 0 BELOW (length (the cl:array A-STRING))
 	UNLESS (EQ (AREF A-STRING I) 141)
 	DO (SEND STREAM :TYO (AREF A-STRING I))
         ELSE  DO (INCF FROMY) (SEND STREAM :SET-CURSORPOS   FROMX FROMY :CHARACTER)
@@ -1370,10 +1370,10 @@ and modulo-p not prime gives false answer"
 (defun string-trim-replace ( replace  replace-by sstring)
   (cond ((stringp replace-by )(setq replace-by (aref replace-by 0))))
   (cond ((stringp replace) (setq replace (listarray replace))))
-  (sloop for i from 0 below (length (the lisp::array sstring))
+  (sloop for i from 0 below (length (the cl:array sstring))
 	while (memq (aref sstring i) replace)
 		    do (setf (aref sstring i) replace-by))
-  (sloop for i downfrom (f1- (length (the lisp::array sstring))) to 0
+  (sloop for i downfrom (f1- (length (the cl:array sstring))) to 0
 	while (memq (aref sstring i) replace)
 		    do (setf (aref sstring i) replace-by))
   sstring)

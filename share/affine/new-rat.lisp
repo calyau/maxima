@@ -354,9 +354,9 @@ into genvar ordering and adds to genpairs"
 		      (t (aref f 0))))
 
 (defun ar-last (aray)
-  (aref aray (f1- (length (the lisp::array aray)))))
+  (aref aray (f1- (length (the cl:array aray)))))
 (defun ar-second-last (aray)
-  (aref aray (f- (length (the lisp::array aray)) 2)))
+  (aref aray (f- (length (the cl:array aray)) 2)))
 
 (defun set-fill-pointer (aray n)(setf (fill-pointer aray ) n) aray)
 (defun constant-term-in-main-variable (f)
