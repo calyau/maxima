@@ -74,13 +74,18 @@
 	  (setq $linenum (f1+ $linenum)))
     #+akcl(si::reset-stack-limits)
     (setq c-tag (makelabel $inchar))
-    (LET ((*MREAD-PROMPT* (if batch-or-demo-flag nil (MAIN-PROMPT))))
+    (LET ((*MREAD-PROMPT* (if batch-or-demo-flag nil (MAIN-PROMPT)))
+	  (eof-count 0))
     (tagbody
      top
      (SETQ R      (dbm-read *standard-input* nil eof))
-     (if (and (eq r eof) (boundp '*socket-connection*)
-	      (eq *standard-input* *socket-connection*))
-	 ($quit))
+     (cond ((and (eq r eof) (boundp '*socket-connection*)
+		 (eq *standard-input* *socket-connection*))
+	    (cond ((>=  (setq eof-count (+ 1 eof-count)) 10)
+		   (print "exiting on eof")
+		   ($quit))
+		  (t (go top)))))
+		 
      (cond ((and (consp r) (keywordp (car r)))
 	    (break-call (car r) (cdr r) 'break-command)
 	      (go top)))

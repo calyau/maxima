@@ -1,7 +1,7 @@
 (push :main-files-loaded *features*)
 (load "sysdef.lisp")
 (load "make.lisp")
-(import '(system::GETENV) (find-package "MAXIMA"))
+
 
 (defun compile-maxima ()
   (make::make :maxima :compile t))
@@ -14,6 +14,9 @@
 )
 
 (in-package "MAXIMA")
+
+(import '(system::getenv system::socket-connect) "MAXIMA")
+
 
 (defun getpid ( &aux tem)
 

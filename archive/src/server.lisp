@@ -32,7 +32,7 @@
                 (integer (hostent-name (resolve-host-ipaddr host))))))
     #+allegro (socket:make-socket :remote-host host :remote-port port
                                   :format (if bin :binary :text))
-    #+clisp (lisp:socket-connect port host :element-type
+    #+clisp (socket-connect port host :element-type
                                  (if bin '(unsigned-byte 8) 'character))
 
     #+cmu (sys:make-fd-stream (ext:connect-to-inet-socket host port)

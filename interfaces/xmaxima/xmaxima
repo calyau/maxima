@@ -4,7 +4,7 @@ exec wish "$0" "$@"
 #############################################
 ##### Copyright William Schelter 1997 #######
 #############################################
-set ws_openMath(date) 04/24/2001
+set ws_openMath(date) 04/27/2001
 
 ###### maxima-browser ######
 
@@ -7804,11 +7804,11 @@ set ws_openMath(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzg
 proc backgroundGetImage  { image res width height }   {
     global ws_openMath
     #puts [list backgroundGetImage  $image $res $width $height ]
-    if { [catch { backgroundGetImage1 $image $res $width $height } ] } {
+    if { [catch { backgroundGetImage1 $image $res $width $height } err ] } {
 	if { ![info exists ws_openMath(brokenimage)] } {
 	    set ws_openMath(brokenimage) [image create photo -data $ws_openMath(brokenimage,data)]
 	}
-	# puts "got error, doing $image copy $ws_openMath(brokenimage)"
+	 #puts "got error $err, doing $image copy $ws_openMath(brokenimage)"
 	set im $ws_openMath(brokenimage)
 	$image config -width [image width $im] -height [image height $im]
 	$image copy $im
@@ -7817,7 +7817,7 @@ proc backgroundGetImage  { image res width height }   {
 
     
 proc backgroundGetImage1  { image res width height }   {
-    # res = resolved
+    #puts  "resolved=$res"
     global ws_openMath
     #puts [list backgroundGetImage $image $res $width $height]
     switch [assoc type $res] {
@@ -7877,7 +7877,14 @@ proc backgroundGetImage1  { image res width height }   {
 			
 		}   }
 	    }
-	    file { set ans [image create photo -file [toLocalFilename $res]] }
+	    file {
+		$image config -file [toLocalFilename $res]
+		set ans $image
+		# puts "$image config -file [toLocalFilename $res]"
+		#set ans [image create photo -file [toLocalFilename $res]]
+		
+	    
+	}
 	    default { error "unknown type of image" }
 	}
 	## if we opened an out channel try hard to remove the tmp file.
@@ -12411,14 +12418,18 @@ if { "$tcl_platform(platform)" == "windows" } {
 
 rename setMaxDir {}
 
-set ws_openMath(localMaximaServer) "[file join $ws_openMath(maximaPath) src/saved_maxima] -load [file join $ws_openMath(maximaPath) src/server.lisp] -eval \"(setup PORT)\" -f &"
 
 
 
+proc getkey {key lis } {
+   set tem [ lsearch $lis $key ]
+    if { $tem >= 0} {lindex $lis [expr 1 + $tem]}
+}
 
 proc doit { fr } {
     catch { destroy $fr }
     global NCtextHelp ws_openMath xmaximaPreferences argv
+    set ws_openMath(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
     frame .browser
     set firstUrl file:/[file join $ws_openMath(maximaPath) intro.html]
     if { [llength $argv] > 0 } {
@@ -12431,7 +12442,29 @@ proc doit { fr } {
 	catch { source [lindex $argv [expr $tem + $i +1]] }
 	set i [expr $tem + $i +2]
     }
-    }
+   }
+    switch  x-[getkey -lisp $argv] {
+	x-(cmu)?lisp {	set ws_openMath(localMaximaServer) "lisp -core \
+	[file join $ws_openMath(maximaPath) src/maxima.core] \
+	-load [file join $ws_openMath(maximaPath) src/server.lisp] \
+	-eval \"(setup PORT)\" &"
+    } 
+    x-clisp {
+	set ws_openMath(localMaximaServer) "clisp -M \
+	[file join $ws_openMath(maximaPath) src/maxima-clisp.mem] \
+	-i [file join $ws_openMath(maximaPath) src/server.lisp] \
+	-x \":lisp (progn (user::setup PORT)(values))\" &"
+   }
+   x- {
+       set ws_openMath(localMaximaServer) "[file join \
+	       $ws_openMath(maximaPath) src/saved_maxima] \
+	       -load [file join $ws_openMath(maximaPath) src/server.lisp] \
+	       -eval \"(setup PORT)\" -f &"
+   }
+   default { error "unrecognized -lisp option:  lisp or clisp.  default is gcl saved_maxima"  }
+   }
+
+    
     OpenMathOpenUrl $firstUrl -toplevel .browser
     frame $fr
     pack $fr -expand 1 -fill both -side top
@@ -12718,7 +12751,7 @@ proc openMaxima { win filter } {
 	set com "exec "
 	append com    $ws_openMath(localMaximaServer)
 	regsub PORT $com $port com
-#	puts com=$com
+	#puts com=$com
 	if { [catch { eval $com } err ] } {
 	    tk_messageBox -title "Error" -message "Can't execute $ws_openMath(localMaximaServer) : $err" }
     } else {error "could not open a socket " }

@@ -119,7 +119,7 @@
       (format t "~&Regex support files not found.  Skipping regexp stuff for describe~%")))
 ))
 
-(defvar maxima::*maxima-directory* nil)
+(defvar *maxima-directory* nil)
 
 
 ;; Set this to where GNU regex.o can be found.
