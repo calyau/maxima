@@ -799,9 +799,9 @@
 			  (and expected-error show-expected))
 		      (progn
 			(format out "~%********************** Problem ~A ***************" i)
-			(format out "~%Input:" )
+			(format out "~%Input:~%" )
 			(displa (third expr))
-			(format out "~%~%Result:")
+			(format out "~%~%Result:~%")
 			(format out "~a" (get-output-stream-string tmp-output))
 			(displa $%)))
 		  (cond ((and correct expected-error)
@@ -813,7 +813,7 @@
 			     (progn
 			       (format t "~%This is a known error in Maxima. The correct result is:")
 			       (displa next-result))))
-			(t (format t "~%This differed from the expected result:")
+			(t (format t "~%This differed from the expected result:~%")
 			   (push i all-differences)
 			   (displa next-result)
 			   (cond (*collect-errors*
