@@ -564,152 +564,423 @@ with the @code{knowneigvals} flag set to @code{true}.
 
 @end defun
 
-@defun ematrix (m, n, x, i, j)
-will create an m by n matrix all of whose
-elements are zero except for the i,j element which is x.
+@defun ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+Returns an @var{m} by @var{n} matrix, all elements of which
+are zero except for the @code{[@var{i}, @var{j}]} element which is @var{x}.
+@c WOW, THAT SEEMS PRETTY SPECIALIZED ...
 
 @end defun
 
-@defun entermatrix (m, n)
-allows one to enter a matrix element by element
-with Maxima requesting values for each of the m*n entries.
-@example
-(%i1) ENTERMATRIX(3,3);
-Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric
- 4. General
+@defun entermatrix (@var{m}, @var{n})
+Returns an @var{m} by @var{n} matrix, reading the elements interactively.
 
-Answer 1, 2, 3 or 4
-1;
-Row 1 Column 1:  A;
-Row 2 Column 2:  B;
-Row 3 Column 3:  C;
+If @var{n} is equal to @var{m},
+Maxima prompts for the type of the matrix (diagonal, symmetric, antisymmetric, or general)
+and for each element.
+Each response is terminated by a semicolon @code{;} or dollar sign @code{$}.
+
+If @var{n} is not equal to @var{m},
+Maxima prompts for each element.
+
+The elements may be any expressions, which are evaluated.
+@code{entermatrix} evaluates its arguments.
+
+@example
+(%i1) n: 3$
+(%i2) m: entermatrix (n, n)$
+
+Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
+Answer 1, 2, 3 or 4 : 
+1$
+Row 1 Column 1: 
+(a+b)^n$
+Row 2 Column 2: 
+(a+b)^(n+1)$
+Row 3 Column 3: 
+(a+b)^(n+2)$
+
 Matrix entered.
-                                 [ A  0  0 ]
-                                 [         ]
-(%o1)                             [ 0  B  0 ]
-                                 [         ]
-                                 [ 0  0  C ]
-
-
+(%i3) m;
+                [        3                     ]
+                [ (b + a)      0         0     ]
+                [                              ]
+(%o3)           [                  4           ]
+                [    0      (b + a)      0     ]
+                [                              ]
+                [                            5 ]
+                [    0         0      (b + a)  ]
 @end example
+
 @end defun
 
-@defun genmatrix (array, i2, j2, i1, j1)
-generates a matrix from the array
-using array(i1,j1) for the first (upper-left) element and array(i2,j2)
-for the last (lower-right) element of the matrix.  If j1=i1 then j1
-may be omitted. If j1=i1=1 then i1 and j1 may both be omitted. If a
-selected element of the array doesn't exist a symbolic one will be
-used.
+@defun genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
+@defunx genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
+@defunx genmatrix (@var{a}, @var{i_2}, @var{j_2})
+Returns a matrix generated from @var{a},
+taking element @code{@var{a}[@var{i_1},@var{j_1}]}
+as the upper-left element and @code{@var{a}[@var{i_2},@var{j_2}]}
+as the lower-right element of the matrix.
+Here @var{a} is an array (created by @code{array} but not by @code{make_array})
+or an array function. 
+(An array function is created like other functions with @code{:=} or @code{define},
+but arguments are enclosed in square brackets instead of parentheses.)
+
+If @var{j_1} is omitted, it is assumed equal to @var{i_1}.
+If both @var{j_1} and @var{i_1} are omitted, both are assumed equal to 1.
+
+If a selected element @code{i,j} of the array is undefined,
+the matrix will contain a symbolic element @code{@var{a}[i,j]}.
+
 @example
-(%i1) H[I,J]:=1/(I+J-1)$
-(%i2) GENMATRIX(H,3,3);
-                           [   1  1]
-                           [1  -  -]
-                           [   2  3]
-                           [       ]
-                           [1  1  1]
-(%o2)                       [-  -  -]
-                           [2  3  4]
-                           [       ]
-                           [1  1  1]
-                           [-  -  -]
-                           [3  4  5]
-
-
+(%i1) h[i,j] := 1/(i+j-1)$
+(%i2) genmatrix (h, 3, 3);
+                           [    1  1 ]
+                           [ 1  -  - ]
+                           [    2  3 ]
+                           [         ]
+                           [ 1  1  1 ]
+(%o2)                      [ -  -  - ]
+                           [ 2  3  4 ]
+                           [         ]
+                           [ 1  1  1 ]
+                           [ -  -  - ]
+                           [ 3  4  5 ]
+(%i3) array (a, fixnum, 2, 2)$
+(%i4) a[1,1]: %e$
+(%i5) a[2,2]: %pi$
+(%i6) kill (a[1,2], a[2,1])$
+(%i7) genmatrix (a, 2, 2);
+                        [  %e    a     ]
+                        [         1, 2 ]
+(%o7)                   [              ]
+                        [ a       %pi  ]
+                        [  2, 1        ]
 @end example
+
 @end defun
 
-@defun gramschmidt (x)
-@defunx gschmit (x)
-a function in the EIGEN package.  Do LOAD(EIGEN) to
-use it.  GRAMSCHMIDT takes a LIST of lists the sublists of which are
-of equal length and not necessarily orthogonal (with respect to the
-innerproduct defined above) as its argument and returns a similar list
-each sublist of which is orthogonal to all others.  (Returned results
-may contain integers that are factored.  This is due to the fact that
-the function FACTOR is used to simplify each substage of the
-Gram-Schmidt algorithm.  This prevents the expressions from getting
-very messy and helps to reduce the sizes of the numbers that are
-produced along the way.)
+@defun gramschmidt (@var{x})
+@defunx gschmit (@var{x})
+Carries out the Gram-Schmidt orthogonalization algorithm on @var{x},
+which is either a matrix or a list of lists.
+@var{x} is not modified by @code{gramschmidt}.
+
+If @var{x} is a matrix, the algorithm is applied to the rows of @var{x}.
+If @var{x} is a list of lists, the algorithm is applied to the sublists,
+which must have equal numbers of elements.
+In either case,
+the return value is a list of lists, the sublists of which are orthogonal
+and span the same space as @var{x}.
+If the dimension of the span of @var{x} is less than the number of rows or sublists,
+some sublists of the return value are zero.
+
+@code{factor} is called at each stage of the algorithm to simplify intermediate results.
+As a consequence, the return value may contain factored integers.
 
 @code{gschmit} (note spelling) is a synonym for @code{gramschmidt}.
 
+@code{load ("eigen")} loads this function.
+
+Example:
+
+@example
+(%i1) load ("eigen")$
+Warning - you are redefining the Macsyma function eigenvalues
+Warning - you are redefining the Macsyma function eigenvectors
+(%i2) x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
+                         [ 1   2   3  ]
+                         [            ]
+(%o2)                    [ 9   18  30 ]
+                         [            ]
+                         [ 12  48  60 ]
+(%i3) y: gramschmidt (x);
+                       2      2            4     3
+                      3      3   3 5      2  3  2  3
+(%o3)  [[1, 2, 3], [- ---, - --, ---], [- ----, ----, 0]]
+                      2 7    7   2 7       5     5
+(%i4) i: innerproduct$
+(%i5) [i (y[1], y[2]), i (y[2], y[3]), i (y[3], y[1])];
+(%o5)                       [0, 0, 0]
+@end example
+
 @end defun
 
-@defun hach (a,b,m,n,l)
-An implementation of Hacijan's linear programming
-algorithm is available by doing BATCH("kach.mc"$.  Details of use
-are available by doing BATCH("kach.dem");
+@defun hach (@var{a}, @var{b}, @var{m}, @var{n}, @var{l})
+@code{hach} is an implementation of Hacijan's linear programming algorithm.
+
+@code{load ("kach")} loads this function.
+@code{demo ("kach")} executes a demonstration of this function.
+@c ACTUALLY BOTH kach.mac AND kach.dem APPEAR TO BE BROKEN AT THE MOMENT
+@c DUNNO WHAT WE SHOULD DO ABOUT THAT HERE
 
 @end defun
 
-@defun ident (n)
-produces an n by n identity matrix.
+@defun ident (@var{n})
+Returns an @var{n} by @var{n} identity matrix.
 
 @end defun
 
-@defun innerproduct (x,y)
-@defunx inprod (x, y)
-a function in the EIGEN package.  Do LOAD(EIGEN)
-to use it.  INNERPRODUCT takes two LISTS of equal length as its
-arguments and returns their inner (scalar) product defined by (Complex
-Conjugate of X).Y (The "dot" operation is the same as the usual one
-defined for vectors).
+@defun innerproduct (@var{x}, @var{y})
+@defunx inprod (@var{x}, @var{y})
+Returns the inner product (also called the scalar product) of @var{x} and @var{y},
+which are lists of equal length, or both 1-column or 1-row matrices of equal length.
+The return value is @code{conjugate (x) . y},
+where @code{.} is the noncommutative multiplication operator.
+
+@code{load ("eigen")} loads this function.
 
 @code{inprod} is a synonym for @code{innerproduct}.
 
+@c NEED EXAMPLE HERE
 @end defun
 
-@defun invert (matrix)
-finds the inverse of a matrix using the adjoint
-method.  This allows a user to compute the inverse of a matrix with
-bfloat entries or polynomials with floating pt. coefficients without
-converting to cre-form.  The DETERMINANT command is used to compute
-cofactors, so if RATMX is @code{false} (the default) the inverse is computed
-without changing the representation of the elements.  The current
-implementation is inefficient for matrices of high order.
-The DETOUT flag if true keeps the determinant factored out of the
-inverse.
-Note: the results are not automatically expanded.  If the matrix
-originally had polynomial entries, better appearing output can be
-generated by EXPAND(INVERT(mat)),DETOUT.  If it is desirable to then
-divide through by the determinant this can be accomplished by XTHRU(%)
-or alternatively from scratch by
-EXPAND(ADJOINT(mat))/EXPAND(DETERMINANT(mat)).
-INVERT(mat):=ADJOINT(mat)/DETERMINANT(mat).
-See also DESCRIBE("^^"); for another method of inverting a matrix.
+@c THIS DESCRIPTION NEEDS WORK
+@defun invert (@var{m})
+Returns the inverse of the matrix @var{m}.
+The inverse is computed by the adjoint method.
 
+This allows a user to compute the inverse of a matrix with
+bfloat entries or polynomials with floating pt. coefficients without
+converting to cre-form.
+
+Cofactors are computed by the @code{determinant} function,
+so if @code{ratmx} is @code{false} the inverse is computed
+without changing the representation of the elements.
+
+The current
+implementation is inefficient for matrices of high order.
+
+When @code{detout} is @code{true}, the determinant is factored out of the
+inverse.
+
+The elements of the inverse are not automatically expanded.
+If @var{m} has polynomial elements, better appearing output can be
+generated by @code{expand (invert (m)), detout}.
+If it is desirable to then
+divide through by the determinant this can be accomplished by @code{xthru (%)}
+or alternatively from scratch by
+
+@example
+expand (adjoint (m)) / expand (determinant (m))
+invert (m) := adjoint (m) / determinant (m)
+@end example
+
+See @code{^^} (noncommutative exponent) for another method of inverting a matrix.
+
+@c NEED EXAMPLE HERE
 @end defun
 
 @defvar lmxchar
- default: [[] - The character used to display the (left)
-delimiter of a matrix (see also RMXCHAR).
+Default value: @code{[}
+
+@code{lmxchar} is the character displayed as the left
+delimiter of a matrix.
+See also @code{rmxchar}.
+
+Example:
+
+@example
+(%i1) lmxchar: "|"$
+(%i2) matrix ([a, b, c], [d, e, f], [g, h, i]);
+                           | a  b  c ]
+                           |         ]
+(%o2)                      | d  e  f ]
+                           |         ]
+                           | g  h  i ]
+@end example
 
 @end defvar
 
-@defun matrix (row1, ..., rown)
-defines a rectangular matrix with the
-indicated rows.  Each row has the form of a list of expressions, e.g.
-[A, X**2, Y, 0] is a list of 4 elements.  There are a number of
-commands which deal with matrices, for example:  DETERMINANT,
-CHARPOLY, GENMATRIX, ADDCOL, ADDROW, COPYMATRIX, TRANSPOSE, ECHELON,
-and RANK.  There is also a package on the SHARE directory for 
-computing EIGENVALUES.  Try DESCRIBE on these for more information.
-Matrix multiplication is effected by using the dot operator, ".",
-which is also convenient if the user wishes to represent other
-non-commutative algebraic operations.  The exponential of the "."
-operation is "^^" .
-Thus, for a matrix A, A.A = A^^2 and, if it exists, A^^-1 is the
-inverse of A.
-The operations +,-,*,** are all element-by-element operations; all
-operations are normally carried out in full, including the . (dot)
-operation.  Many switches exist for controlling simplification rules
+@defun matrix (@var{row_1}, ..., @var{row_n})
+Returns a rectangular matrix which has the rows @var{row_1}, ..., @var{row_n}.
+Each row is a list of expressions.
+All rows must be the same length.
+
+The operations @code{+} (addition), @code{-} (subtraction), @code{*} (multiplication),
+and @code{/} (division), are carried out element by element
+when the operands are two matrices, a scalar and a matrix, or a matrix and a scalar.
+The operation @code{^} (exponentiation, equivalently @code{**})
+is carried out element by element 
+if the operands are a scalar and a matrix or a matrix and a scalar,
+but not if the operands are two matrices.
+@c WHAT DOES THIS NEXT PHRASE MEAN EXACTLY ??
+All operations are normally carried out in full,
+including @code{.} (noncommutative multiplication).
+
+Matrix multiplication is represented by the noncommutative multiplication operator @code{.}.
+The corresponding noncommutative exponentiation operator is @code{^^}.
+For a matrix @code{@var{A}}, @code{@var{A}.@var{A} = @var{A}^^2} and
+@code{@var{A}^^-1} is the inverse of @var{A}, if it exists.
+
+There are switches for controlling simplification of expressions
 involving dot and matrix-list operations.
-Options Relating to Matrices:
-LMXCHAR, RMXCHAR, RATMX, LISTARITH, DETOUT, DOALLMXOPS, DOMXEXPT
-DOMXMXOPS, DOSCMXOPS, DOSCMXPLUS, SCALARMATRIX, and SPARSE.
-Do DESCRIBE(option) for details on them.
+These are
+@code{doallmxops}, @code{domxexpt}
+@code{domxmxops}, @code{doscmxops}, and @code{doscmxplus}.
+@c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
+
+There are additional options which are related to matrices. These are:
+@code{lmxchar}, @code{rmxchar}, @code{ratmx}, @code{listarith}, @code{detout},
+@code{scalarmatrix},
+and @code{sparse}.
+@c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
+
+There are a number of
+functions which take matrices as arguments or yield matrices as return values.
+See @code{eigenvalues}, @code{eigenvectors},
+@code{determinant},
+@code{charpoly}, @code{genmatrix}, @code{addcol}, @code{addrow}, 
+@code{copymatrix}, @code{transpose}, @code{echelon},
+and @code{rank}.
+@c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
+
+Examples:
+
+@itemize @bullet
+@item
+Construction of matrices from lists.
+@end itemize
+@example
+(%i1) x: matrix ([17, 3], [-8, 11]);
+                           [ 17   3  ]
+(%o1)                      [         ]
+                           [ - 8  11 ]
+(%i2) y: matrix ([%pi, %e], [a, b]);
+                           [ %pi  %e ]
+(%o2)                      [         ]
+                           [  a   b  ]
+@end example
+@itemize @bullet
+@item
+Addition, element by element.
+@end itemize
+@example
+(%i3) x + y;
+                      [ %pi + 17  %e + 3 ]
+(%o3)                 [                  ]
+                      [  a - 8    b + 11 ]
+@end example
+@itemize @bullet
+@item
+Subtraction, element by element.
+@end itemize
+@example
+(%i4) x - y;
+                      [ 17 - %pi  3 - %e ]
+(%o4)                 [                  ]
+                      [ - a - 8   11 - b ]
+@end example
+@itemize @bullet
+@item
+Multiplication, element by element.
+@end itemize
+@example
+(%i5) x * y;
+                        [ 17 %pi  3 %e ]
+(%o5)                   [              ]
+                        [ - 8 a   11 b ]
+@end example
+@itemize @bullet
+@item
+Division, element by element.
+@end itemize
+@example
+(%i6) x / y;
+                        [ 17       - 1 ]
+                        [ ---  3 %e    ]
+                        [ %pi          ]
+(%o6)                   [              ]
+                        [   8    11    ]
+                        [ - -    --    ]
+                        [   a    b     ]
+@end example
+@itemize @bullet
+@item
+Matrix to a scalar exponent, element by element.
+@end itemize
+@example
+(%i7) x ^ 3;
+                         [ 4913    27  ]
+(%o7)                    [             ]
+                         [ - 512  1331 ]
+@end example
+@itemize @bullet
+@item
+Scalar base to a matrix exponent, element by element.
+@end itemize
+@example
+(%i8) exp(y); 
+                         [   %pi    %e ]
+                         [ %e     %e   ]
+(%o8)                    [             ]
+                         [    a     b  ]
+                         [  %e    %e   ]
+@end example
+@itemize @bullet
+@item
+Matrix base to a matrix exponent. This is not carried out element by element.
+@c WHAT IS THIS ??
+@end itemize
+@example
+(%i9) x ^ y;
+                                [ %pi  %e ]
+                                [         ]
+                                [  a   b  ]
+                     [ 17   3  ]
+(%o9)                [         ]
+                     [ - 8  11 ]
+@end example
+@itemize @bullet
+@item
+Noncommutative matrix multiplication.
+@end itemize
+@example
+(%i10) x . y;
+                  [ 3 a + 17 %pi  3 b + 17 %e ]
+(%o10)            [                           ]
+                  [ 11 a - 8 %pi  11 b - 8 %e ]
+(%i11) y . x;
+                [ 17 %pi - 8 %e  3 %pi + 11 %e ]
+(%o11)          [                              ]
+                [  17 a - 8 b     11 b + 3 a   ]
+@end example
+@itemize @bullet
+@item
+Noncommutative matrix exponentiation.
+A scalar base @code{b} to a matrix power @code{m}
+is carried out element by element and so @code{b^^m} is the same as @code{b^m}.
+@end itemize
+@example
+(%i12) x ^^ 3;
+                        [  3833   1719 ]
+(%o12)                  [              ]
+                        [ - 4584  395  ]
+(%i13) %e ^^ y;
+                         [   %pi    %e ]
+                         [ %e     %e   ]
+(%o13)                   [             ]
+                         [    a     b  ]
+                         [  %e    %e   ]
+@end example
+@itemize @bullet
+@item
+A matrix raised to a -1 exponent with noncommutative exponentiation is the matrix inverse,
+if it exists.
+@end itemize
+@example
+(%i14) x ^^ -1;
+                         [ 11      3  ]
+                         [ ---  - --- ]
+                         [ 211    211 ]
+(%o14)                   [            ]
+                         [  8    17   ]
+                         [ ---   ---  ]
+                         [ 211   211  ]
+(%i15) x . (x ^^ -1);
+                            [ 1  0 ]
+(%o15)                      [      ]
+                            [ 0  1 ]
+@end example
 
 @end defun
 
