@@ -2925,7 +2925,7 @@
 		  (t
 		   (return (f85 fun mm nn aprime)))))
 	   ((and (hyp-negp n) (hyp-negp m))
-	    (cond ((greaterp (abs n) (abs m))
+	    (cond ((greaterp (abs m) (abs n))
 		   (return (f86 fun mm nn aprime)))
 		  (t
 		   (return (f82 fun mm nn aprime)))))
@@ -3027,7 +3027,7 @@
 ;;
 ;; A&S 15.2.8:
 ;; diff(z^(c-1)*(1-z)^(b-c+n)*F(a,b;c;z),z,n)
-;;     - poch(c-n,n)*z^(c-n-1)*(1-z)^(b-c)*F(a-n,b;c-n;z)
+;;     = poch(c-n,n)*z^(c-n-1)*(1-z)^(b-c)*F(a-n,b;c-n;z)
 ;;
 ;; For our problem:
 ;;
@@ -3120,19 +3120,48 @@
 	      'ell
 	      m)))
 
-;; F(a,-a+m;c+n;z), m and n are negative integers, |n|>|m|, c = 1/2
+;; Like f82, but |n|<|m|
+;;
+;; F(a-m,-a;1/2-n;z), 0 < n < m
+;;
+;; A&S 15.2.5
+;; diff(z^(c-a+n-1)*(1-z)^(a+b-c)*F(a,b;c;z),z,n)
+;;     = poch(c-a,n)*z^(c-a-1)*(1-z)^(a+b-c-n)*F(a-n,b;c;z)
+;;
+;; A&S 15.2.8:
+;; diff(z^(c-1)*(1-z)^(b-c+n)*F(a,b;c;z),z,n)
+;;     = poch(c-n,n)*z^(c-n-1)*(1-z)^(b-c)*F(a-n,b;c-n;z)
+;;
+;; For our problem:
+;;
+;; diff(z^(-a+m-n-1/2)*(1-z)^(-1/2)*F(a,-a;1/2;z),z,m-n)
+;;     = poch(1/2-a,m-n)*z^(-a-1/2)*(1-z)^(-1/2-m+n)*F(a-m+n,-a;1/2;z)
+;;
+;; diff(z^(-1/2)*(1-z)^(-a-1/2+n)*F(a-m+n,-a;1/2;z),z,n)
+;;     = poch(1/2-n,n)*z^(-n-1/2)*(1-z)^(-a-1/2)*F(a-m,-a;1/2-n;z)
+;;
+;; G(z) = z^(-a-1/2)*(1-z)^(-1/2-m+n)*F(a-m+n,-a;1/2;z)
+;;      = 1/poch(1/2-a,m-n)*diff(z^(-a+m-n-1/2)*(1-z)^(-1/2)*F(a,-a;1/2;z),z,m-n)
+;;
+;; F(a-m,-a;1/2-n;z)
+;;      = z^(n+1/2)*(1-z)^(a+1/2)/poch(1/2-n,n)
+;;         *diff(z^(-1/2)*(1-z)^(-a-1/2+n)*F(a-m+n,-a;1/2;z),z,n)
+;;      = z^(n+1/2)*(1-z)^(a+1/2)/poch(1/2-n,n)
+;;         *diff(z^a*(1-z)^(m-a)*G(z),z,n)
+;; 
 (defun f86 (fun m n a)
   (mul (inv (mul (factf (sub (inv 2) n) n)
 		 (factf (sub (inv 2) a) (- m n))))
        (power 'ell (add n (inv 2)))
-       (power (sub 1 'ell)(add (inv 2) a))
+       (power (sub 1 'ell) (add (inv 2) a))
        ($diff (mul (power 'ell a)
-		   (power (sub 1 'ell)(sub m a))
+		   (power (sub 1 'ell) (sub m a))
 		   ($diff (mul (power 'ell
 				      (sub (sub (sub m n) (inv 2)) a))
 			       (power (sub 1 'ell)
 				      (inv -2))
-			       fun) 'ell (- m n)))
+			       fun)
+			  'ell (- m n)))
 	      'ell n)))
 
 
