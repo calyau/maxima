@@ -512,7 +512,7 @@
 			 (tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
 		     (if nc
 			 (tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
-			 (if (and (numberp x) (< x 10))
+			 (if (and (integerp x) (< x 10))
 			     (tex x (list "^")(cons "" r) 'mparen 'mparen)
 			     (tex x (list "^{")(cons "}" r) 'mparen 'mparen))
 			 )))))
