@@ -2,39 +2,45 @@ These RPMs were created on a RedHat 7.3 system. They have been tested
 on RedHat 7.3 and 7.1 systems; see the note below for issues with 7.1.
 
 Executive summary: The maxima package is required. One or more of the
-maxima-exec_* package is required. The maxima-exec_cmucl package is
+maxima-exec-* package is required. The maxima-exec-cmucl package is
 the fastest option. For details on Lisp implementations, see the
 attached file README.lisps. The maxima-xmaxima package is optional. It
 provides a maxima GUI.
+
+There is a circular dependency between maxima and the maxima-exec*
+packages. They can be easily installed by specifying both on the command
+line, e.g.,
+
+rpm -ivh maxima-5.9.0.rc4-1.i386.rpm maxima-exec-clisp-5.9.0.rc4-1.i386.rpm
 
 Packages:
 
 * maxima : The maxima package is required for all uses of maxima. It
 contains the maxima wrapper scripts as well as various input and
-documentation files. One or more of the maxima-exec_* packages is also
+documentation files. One or more of the maxima-exec-* packages is also
 required.
 
-* maxima-exec_* : These packages contain the compiled maxima code
-using various lisp implementations. Only one maxima-exec_ package is
-required. Any combination of the maxima_exec_ packages may be
+* maxima-exec-* : These packages contain the compiled maxima code
+using various lisp implementations. Only one maxima-exec- package is
+required. Any combination of the maxima_exec- packages may be
 installed simultaneously, however. If more than one exec package is
 installed, the lisp implementation can be selected at runtime. See
 "maxima --help" or the maxima man page for details.
 
-    ** maxima-exec_clisp : Maxima compiled with CLISP 2.29. This package
+    ** maxima-exec-clisp : Maxima compiled with CLISP 2.29. This package
 requires the CLISP 2.29 rpm, which is available from
 <http://clisp.cons.org/> by following the link "SourceForge
 downloads/HTTP" to
 <http://sourceforge.net/project/showfiles.php?group_id=1355>.
 
-    ** maxima-exec_cmucl : Maxima compiled with CMUCL 18d. This package
+    ** maxima-exec-cmucl : Maxima compiled with CMUCL 18d. This package
 requires the CMUCL 18d rpm, which is available from
 <http://www.caddr.com/lisp/>. Since CMUCL lacks readline support,
 ledit is recommended. (See README.lisps below.) ledit is available in
 rpm format from
 <ftp://ftp.inria.fr/INRIA/Projects/cristal/Daniel.de_Rauglaudre/Tools/>.
 
-    ** maxima-exec_gcl : Maxima compiled with GCL
+    ** maxima-exec-gcl : Maxima compiled with GCL
 2.5.0.cvs20020625. This package *does not* require a GCL
 rpm. Nonetheless, the GCL rpm used for this build is available from
 the GCL project page, <http://savannah.gnu.org/projects/gcl/>. Follow
@@ -44,10 +50,10 @@ problem on RedHat 7.x. Fortunately, the dependency can be safely
 ignored. Install with --nodeps.
 
 * maxima-xmaxima : The maxima-xmaxima package provides a TCL/Tk
-frontend to maxima. Not surprisingly, it requires the Tk rpm. The
+front end to maxima. Not surprisingly, it requires the Tk rpm. The
 standard RedHat Tk rpm will do.
 
-Issues with RedHat 7.1: maxima-exec_gcl requires libreadline.so.4, as
+Issues with RedHat 7.1: maxima-exec-gcl requires libreadline.so.4, as
 does the clisp-2.29 rpm. Due to a packaging problem, RedHat 7.1
 *appears* to be lacking libreadline.so.4. In fact, the readline
 package on 7.1 does contain the file in question. The RPMs can be
