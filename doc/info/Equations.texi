@@ -6,6 +6,7 @@
 @node Definitions for Equations,  , Equations, Equations
 @section Definitions for Equations
 
+@c NEED A DESCRIPTION OF %rnum AS WELL
 @defvar %rnum_list
 Default value: []
 
@@ -161,7 +162,7 @@ Examples:
 
 @defun allroots (@var{expr})
 @defunx allroots (@var{eqn})
-Finds all the real and complex roots of the
+Computes numerical approximations of the real and complex roots of the
 polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
 
 @c polyfactor IS NOT OTHERWISE DOCUMENTED
@@ -170,9 +171,10 @@ The flag @code{polyfactor} when @code{true} causes
 polynomial is real, or over the complex numbers, if the polynomial is
 complex.
 
-@code{allroots} may give inaccurate results in case of multiple
-roots.  (If poly is real and you get inaccurate answers, you may want
-to try @code{allroots (%i*@var{poly})})
+@code{allroots} may give inaccurate results in case of multiple roots.
+If the polynomial is real, @code{allroots (%i*@var{p})}) may yield
+more accurate approximations than @code{allroots (@var{p})},
+as @code{allroots} invokes a different algorithm in that case.
 
 @code{allroots} rejects non-polynomials.  It requires that the numerator
 after @code{rat}'ing should be a polynomial, and it requires that the
@@ -230,100 +232,233 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 @end defun
 
 @defvar backsubst
-Default value: @code{true} if set to @code{false} will prevent back
+Default value: @code{true}
+
+@c WHAT IS THE CONTEXT HERE ?? (TO WHICH OTHER FUNCTION DOES THIS APPLY ??)
+When @code{backsubst} is @code{false}, prevents back
 substitution after the equations have been triangularized.  This may
-be necessary in very big problems where back substitution would cause
+be helpful in very big problems where back substitution would cause
 the generation of extremely large expressions.
 
 @end defvar
 
 @defvar breakup
-Default value: @code{true} if @code{false} will cause @code{solve} to express the
-solutions of cubic or quartic equations as single expressions rather
-than as made up of several common subexpressions which is the default.
-@code{breakup: true} only works when @code{programmode} is @code{false}.
+Default value: @code{true}
+
+When @code{breakup} is @code{true}, @code{solve} expresses solutions
+of cubic and quartic equations in terms of common subexpressions,
+which are assigned to intermediate expression labels (@code{%t1}, @code{%t2}, etc.).
+Otherwise, common subexpressions are not identified.
+
+@code{breakup: true} has an effect only when @code{programmode} is @code{false}.
+
+Examples:
+
+@example
+(%i1) programmode: false$
+(%i2) breakup: true$
+(%i3) solve (x^3 + x^2 - 1);
+
+                        sqrt(23)    25 1/3
+(%t3)                  (--------- + --)
+                        6 sqrt(3)   54
+Solution:
+
+                                      sqrt(3) %i   1
+                                      ---------- - -
+                sqrt(3) %i   1            2        2   1
+(%t4)    x = (- ---------- - -) %t3 + -------------- - -
+                    2        2            9 %t3        3
+
+                                      sqrt(3) %i   1
+                                    - ---------- - -
+              sqrt(3) %i   1              2        2   1
+(%t5)    x = (---------- - -) %t3 + ---------------- - -
+                  2        2             9 %t3         3
+
+                                   1     1
+(%t6)                  x = %t3 + ----- - -
+                                 9 %t3   3
+(%o6)                    [%t4, %t5, %t6]
+(%i6) breakup: false$
+(%i7) solve (x^3 + x^2 - 1);
+Solution:
+
+             sqrt(3) %i   1
+             ---------- - -
+                 2        2        sqrt(23)    25 1/3
+(%t7) x = --------------------- + (--------- + --)
+             sqrt(23)    25 1/3    6 sqrt(3)   54
+          9 (--------- + --)
+             6 sqrt(3)   54
+
+                                              sqrt(3) %i   1    1
+                                           (- ---------- - -) - -
+                                                  2        2    3
+
+           sqrt(23)    25 1/3  sqrt(3) %i   1
+(%t8) x = (--------- + --)    (---------- - -)
+           6 sqrt(3)   54          2        2
+
+                                            sqrt(3) %i   1
+                                          - ---------- - -
+                                                2        2      1
+                                      + --------------------- - -
+                                           sqrt(23)    25 1/3   3
+                                        9 (--------- + --)
+                                           6 sqrt(3)   54
+
+            sqrt(23)    25 1/3             1             1
+(%t9)  x = (--------- + --)    + --------------------- - -
+            6 sqrt(3)   54          sqrt(23)    25 1/3   3
+                                 9 (--------- + --)
+                                    6 sqrt(3)   54
+(%o9)                    [%t7, %t8, %t9]
+@end example
 
 @end defvar
 
 @defun dimension (equation or list of equations)
-The file "share1/dimen.mc"
-contains functions for automatic dimensional analysis.  @code{load (dimen)}
-will load it up for you.  There is a demonstration available in
-share1/dimen.dem.  Do @code{demo ("dimen")} to run it.
+@code{dimen} is a package for dimensional analysis.
+@code{load ("dimen")} loads this package.
+@code{demo ("dimen")} displays a short demonstration.
+@c I GUESS THIS SHOULD BE EXPANDED TO COVER EACH FUNCTION IN THE PACKAGE
 
 @end defun
 
 @defvar dispflag
-Default value: @code{true} if set to @code{false} within a @code{block} will inhibit
+Default value: @code{true}
+
+@c WHAT DOES THIS MEAN ??
+If set to @code{false} within a @code{block} will inhibit
 the display of output generated by the solve functions called from
 within  the @code{block}.  Termination of the @code{block} with a dollar sign, $, sets
 @code{dispflag} to @code{false}.
 
 @end defvar
 
+@c THIS COULD BENEFIT FROM REPHRASING
 @defun funcsolve (@var{eqn}, @var{g}(@var{t}))
-gives [g(t) = ...]  or [], depending on whether
-or not there exists a rational fcn g(t) satisfying eqn, which must be
-a first order, linear polynomial in (for this case) g(t) and g(t+1).
+Returns @code{[@var{g}(@var{t}) = ...]}  or @code{[]}, depending on whether
+or not there exists a rational function @code{@var{g}(@var{t})} satisfying @var{eqn},
+which must be a first order, linear polynomial in (for this case) 
+@code{@var{g}(@var{t})} and @code{@var{g}(@var{t}+1)}
 
 @example
-(%i1) funcsolve((n+1)*foo(n)-(n+3)*foo(n+1)/(n+1) =
-    (n-1)/(n+2),foo(n));
+(%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) = (n - 1)/(n + 2);
+                            (n + 3) f(n + 1)   n - 1
+(%o1)        (n + 1) f(n) - ---------------- = -----
+                                 n + 1         n + 2
+(%i2) funcsolve (eqn, f(n));
+
+Dependent equations eliminated:  (4 3)
                                    n
-(%o1)               foo(n) = ---------------
+(%o2)                f(n) = ---------------
                             (n + 1) (n + 2)
 @end example
 
-Warning: this is a very rudimentary implementation--many safety checks
+Warning: this is a very rudimentary implementation -- many safety checks
 and obvious generalizations are missing.
 
 @end defun
 
 @defvar globalsolve
-Default value: @code{false} if set to @code{true} then variables which are
-solved for will be set to the solution of the set of simultaneous
-equations.
+Default value: @code{false}
+
+When @code{globalsolve} is @code{true}, solved-for variables
+are assigned the solution values found by @code{solve}.
+@c DOES ANY OTHER FUNCTION RESPECT globalsolve ??
+
+Examples:
+
+@example
+(%i1) globalsolve: true$
+(%i2) solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
+Solution
+
+                                 17
+(%t2)                        x : --
+                                 7
+
+                                   1
+(%t3)                        y : - -
+                                   7
+(%o3)                     [[%t2, %t3]]
+(%i3) x;
+                               17
+(%o3)                          --
+                               7
+(%i4) y;
+                                 1
+(%o4)                          - -
+                                 7
+(%i5) globalsolve: false$
+(%i6) kill (x, y)$
+(%i7) solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
+Solution
+
+                                 17
+(%t7)                        x = --
+                                 7
+
+                                   1
+(%t8)                        y = - -
+                                   7
+(%o8)                     [[%t7, %t8]]
+(%i8) x;
+(%o8)                           x
+(%i9) y;
+(%o9)                           y
+@end example
 
 @end defvar
 
+@c THIS DESCRIPTION NEEDS WORK AND EXAMPLES
+@c MERGE IN TEXT FROM share/integequations/inteqn.usg
+@c AND EXAMPLES FROM .../intexs.mac
 @defun ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
-Integral Equation solving routine.  Do
-@code{load (inteqn)} to access it.
-ie is the integral equation; unk is the unknown function; tech is the
-technique to be tried from those given above (tech = @code{first} means: try
-the first technique which finds a solution; tech = @code{all} means: try all
-applicable techniques); n is the maximum number of terms to take for
+@code{inteqn} is a package for solving integral equations.
+@code{load ("inteqn")} loads this package.
+
+@var{ie} is the integral equation; @var{unk} is the unknown function; @var{tech} is the
+technique to be tried from those given above (@var{tech} = @code{first} means: try
+the first technique which finds a solution; @var{tech} = @code{all} means: try all
+applicable techniques); @var{n} is the maximum number of terms to take for
 @code{taylor}, @code{neumann}, @code{firstkindseries}, or @code{fredseries} (it is also the
-maximum depth of recursion for the differentiation method); guess is
+maximum depth of recursion for the differentiation method); @var{guess} is
 the initial guess for @code{neumann} or @code{firstkindseries}.
 
 Default values for the 2nd thru 5th parameters are:
 
-unk: P(X), where P is the first function encountered in an integrand
-which is unknown to Maxima and X is the variable which occurs as an
-argument to the first occurrence of P found outside of an integral in
+@var{unk}: @code{@var{p}(@var{x})}, where @var{p} is the first function encountered in an integrand
+which is unknown to Maxima and @var{x} is the variable which occurs as an
+argument to the first occurrence of @var{p} found outside of an integral in
 the case of @code{secondkind} equations, or is the only other variable
 besides the variable of integration in @code{firstkind} equations.  If the
-attempt to search for X fails, the user will be asked to supply the
-independent variable;
+attempt to search for @var{x} fails, the user will be asked to supply the
+independent variable.
 
 tech: @code{first}
 
 n: 1
 
-guess: @code{none} which will cause @code{neumann} and @code{firstkindseries} to use F(X)
-as an initial guess.
+guess: @code{none} which will cause @code{neumann} and @code{firstkindseries} to use
+@code{@var{f}(@var{x})} as an initial guess.
 
 @end defun
 
 @defvar ieqnprint
-Default value: @code{true} - governs the behavior of the result
-returned by the @code{ieqn} command (which see).  If @code{ieqnprint} is set to
+Default value: @code{true}
+
+@code{ieqnprint} governs the behavior of the result
+returned by the @code{ieqn} command. When @code{ieqnprint} is
 @code{false}, the lists returned by the @code{ieqn} function are of the form
 
    [@var{solution}, @var{technique used}, @var{nterms}, @var{flag}]
 
-where @var{flag} is absent if the solution is exact.  Otherwise, it is the
+where @var{flag} is absent if the solution is exact.
+
+Otherwise, it is the
 word @code{approximate} or @code{incomplete} corresponding to an inexact or
 non-closed form solution, respectively. If a series method was used,
 @var{nterms} gives the number of terms taken (which could be less than the n
@@ -332,79 +467,108 @@ given to @code{ieqn} if an error prevented generation of further terms).
 @end defvar
 
 @defun lhs (@var{eqn})
-the left side of the equation eqn.
+Returns the left side of the equation @var{eqn}.
+
+If the argument is not an equation, @code{lhs} returns the argument.
+
+See also @code{rhs}.
+
+Example:
+
+@example
+(%i1) e: x^2 + y^2 = z^2;
+                           2    2    2
+(%o1)                     y  + x  = z
+(%i2) lhs (e);
+                              2    2
+(%o2)                        y  + x
+(%i3) rhs (e);
+                                2
+(%o3)                          z
+@end example
 
 @end defun
 
-@defun linsolve ([@var{expr_1}, @var{expr_2}, ...], [@var{x_1}, @var{x_2}, ...])
-solves the list of
-simultaneous linear equations for the list of variables.  The expi
+@c REVISIT -- THERE'S PROBABLY MORE TO SAY HERE
+@defun linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+Solves the list of
+simultaneous linear equations for the list of variables.  The expressions
 must each be polynomials in the variables and may be equations.
-If @code{globalsolve} is set to @code{true} then variables which are solved
+
+When @code{globalsolve} is @code{true} then variables which are solved
 for will be set to the solution of the set of simultaneous equations.
 
-@code{backsubst} if set to @code{false} will prevent back substitution after
+When @code{backsubst} is @code{false}, @code{linsolve}
+does not carry out back substitution after
 the equations have been triangularized.  This may be necessary in very
 big problems where back substitution would cause the generation of
 extremely large expressions.
 
-@code{linsolve_params} If @code{true}, @code{linsolve} also generates the @code{%ri} symbols
+When @code{linsolve_params} is @code{true},
+@code{linsolve} also generates the @code{%r} symbols
 used to represent arbitrary parameters described in the manual under
-@code{algsys}.  If @code{false}, @code{linsolve} behaves as before, i.e. when it meets up
-with an under-determined system of equations, it solves for some of
-the variables in terms of others.
+@code{algsys}.
+Otherwise, @code{linsolve} solves an under-determined system of
+equations with some variables expressed in terms of others.
 
 @example
-(%i1) x+z=y$
-(%i2) 2*a*x-y=2*a**2$
-(%i3) y-2*z=2$
-(%i4) linsolve([%o1,%o2,%o3],[x,y,z]),globalsolve:true;
-solution
-(%t4)                            x : a + 1
-(%t5)                             y : 2 a
-(%t6)                            z : a - 1
-(%o6)                          [%t4, %t5, %t6]
+(%i1) e1: x + z = y$
+(%i2) e2: 2*a*x - y = 2*a^2$
+(%i3) e3: y - 2*z = 2$
+(%i4) linsolve ([e1, e2, e3], [x, y, z]);
+(%o4)            [x = a + 1, y = 2 a, z = a - 1]
 @end example
 
 @end defun
 
+@c DO ANY FUNCTIONS OTHER THAN linsolve RESPECT linsolvewarn ??
 @defvar linsolvewarn
-Default value: @code{true} - if @code{false} will cause the message
-"Dependent equations eliminated" to be suppressed.
+Default value: @code{true}
+
+When @code{linsolvewarn} is @code{true},
+@code{linsolve} prints a message "Dependent equations eliminated".
 
 @end defvar
 
 @defvar linsolve_params
-Default value: @code{true} - If @code{true}, @code{linsolve} also generates
-the @code{%ri} symbols used to represent arbitrary parameters described in
-the manual under @code{algsys}.  If @code{false}, @code{linsolve} behaves as before, i.e.
-when it meets up with an under-determined system of equations, it
-solves for some of the variables in terms of others.
+Default value: @code{true}
+
+When @code{linsolve_params} is @code{true}, @code{linsolve} also generates
+the @code{%r} symbols used to represent arbitrary parameters described in
+the manual under @code{algsys}.
+Otherwise, @code{linsolve} solves an under-determined system of
+equations with some variables expressed in terms of others.
 
 @end defvar
 
 @defvar multiplicities
-Default value: @code{not_set_yet} - will be set to a list of the
+Default value: @code{not_set_yet}
+
+@code{multiplicities} is set to a list of the
 multiplicities of the individual solutions returned by @code{solve} or
 @code{realroots}.
+@c NEED AN EXAMPLE HERE
 
 @end defvar
 
-@defun nroots (@var{poly}, @var{low}, @var{high})
-finds the number of real roots of the real
-univariate polynomial poly in the half-open interval (low,high].  The
-endpoints of the interval may also be @code{minf} or @code{inf} respectively for minus
-infinity and plus infinity.  The method of Sturm sequences is used.
+@defun nroots (@var{p}, @var{low}, @var{high})
+Returns the number of real roots of the real
+univariate polynomial @var{p} in the half-open interval
+@code{(@var{low}, @var{high}]}.
+The endpoints of the interval may be @code{minf} or @code{inf}.
+infinity and plus infinity.
+
+@code{nroots} uses the method of Sturm sequences.
 
 @example
-(%i1) poly1:x**10-2*x**4+1/2$
-(%i2) nroots(poly1,-6,9.1);
-rat replaced 0.5 by 1/2 = 0.5
-(%o2)                               4
+(%i1) p: x^10 - 2*x^4 + 1/2$
+(%i2) nroots (p, -6, 9.1);
+(%o2)                           4
 @end example
 
 @end defun
 
+@c NEEDS WORK
 @defun nthroot (@var{p}, @var{n})
 where p is a polynomial with integer coefficients and
 n is a positive integer returns q, a polynomial over the integers, such
@@ -414,22 +578,33 @@ nth power. This routine is much faster than @code{factor} or even @code{sqfr}.
 @end defun
 
 @defvar programmode
-Default value: @code{true} - when @code{false} will cause @code{solve}, @code{realroots},
-@code{allroots}, and @code{linsolve} to print E-labels (intermediate line labels) to
-label answers.  When @code{true}, @code{solve}, etc. return answers as elements in a
-list.  (Except when @code{backsubst} is set to @code{false}, in which case
-@code{programmode: false} is also used.)
+Default value: @code{true}
+
+When @code{programmode} is @code{true},
+@code{solve}, @code{realroots}, @code{allroots}, and @code{linsolve}
+return solutions as elements in a list.
+@c WHAT DOES BACKSUBSTITUTION HAVE TO DO WITH RETURN VALUES ??
+(Except when @code{backsubst} is set to @code{false}, in which case
+@code{programmode: false} is assumed.)
+
+When @code{programmode} is @code{false}, @code{solve}, etc.
+create intermediate expression labels
+@code{%t1}, @code{t2}, etc., and assign the solutions to them.
+@c NEED AN EXAMPLE HERE
 
 @end defvar
 
 @defvar realonly
-Default value: @code{false} - if @code{true} causes @code{algsys} to return only
+Default value: @code{false}
+
+When @code{realonly} is @code{true}, @code{algsys} returns only
 those solutions which are free of @code{%i}.
 
 @end defvar
 
+@c NEEDS WORK
 @defun realroots (@var{poly}, @var{bound})
-finds all of the real roots of the real
+Finds all of the real roots of the real
 univariate polynomial poly within a tolerance of bound which, if less
 than 1, causes all integral roots to be found exactly.  The parameter
 bound may be arbitrarily small in order to achieve any desired
@@ -442,7 +617,25 @@ Do @code{example (realroots)} for an example.
 @end defun
 
 @defun rhs (@var{eqn})
-the right side of the equation eqn.
+Returns the right side of the equation @var{eqn}.
+
+If the argument is not an equation, @code{rhs} returns @code{0}.
+
+See also @code{lhs}.
+
+Example:
+
+@example
+(%i1) e: x^2 + y^2 = z^2;
+                           2    2    2
+(%o1)                     y  + x  = z
+(%i2) lhs (e);
+                              2    2
+(%o2)                        y  + x
+(%i3) rhs (e);
+                                2
+(%o3)                          z
+@end example
 
 @end defun
 
@@ -452,22 +645,15 @@ Default value: @code{true} - Determines the behavior of the
 
 @end defvar
 
+@c NEEDS WORK
 @defun rootscontract (@var{expr})
-converts products of roots into roots of products.
+Converts products of roots into roots of products.
 For example,
+@code{rootscontract (sqrt(x)*y^(3/2))} yields @code{sqrt(x*y^3)}.
 
-@example
-rootscontract(sqrt(x)*y^(3/2)) ==> sqrt(x*y^3)
-@end example
-
-When
-@code{radexpand} is @code{true} and @code{domain} is @code{real} (their defaults), 
-@code{rootscontract}
-converts @code{abs} into @code{sqrt}, e.g.
-
-@example
-rootscontract(abs(x)*sqrt(y)) ==> sqrt(x^2*y)
-@end example
+When @code{radexpand} is @code{true} and @code{domain} is @code{real},
+@code{rootscontract} converts @code{abs} into @code{sqrt}, e.g.,
+@code{rootscontract (abs(x)*sqrt(y))} yields @code{sqrt(x^2*y)}.
 
 There is an option @code{rootsconmode}
 affecting @code{rootscontract} as follows:
@@ -484,56 +670,103 @@ x^(1/2)*y^(1/4)      all            (x^2*y)^(1/4)
 x^(1/2)*y^(1/3)      all            (x^3*y^2)^(1/6)
 @end example
 
-The above examples and more may be tried out by typing 
-
-@example
-example(rootscontract);
-@end example
-
-When @code{rootsconmode} is @code{false}, @code{rootscontract} contracts only wrt rational 
+When @code{rootsconmode} is @code{false}, @code{rootscontract} contracts only with respect to rational 
 number exponents whose denominators are the same.  The key to the 
 @code{rootsconmode: true} examples is simply that 2 divides into 4 but not 
-into 3.  @code{rootsconmode: all} involves taking the lcm (least common multiple)
+into 3.  @code{rootsconmode: all} involves taking the least common multiple
 of the denominators of the exponents.
 
-@code{rootscontract} uses @code{ratsimp} in a manner similar to @code{logcontract} (see the 
-manual).  
+@code{rootscontract} uses @code{ratsimp} in a manner similar to @code{logcontract}.
+
+Examples:
+@c FOLLOWING ADAPTED FROM example (rootscontract)
+@c rootsconmode: false$
+@c rootscontract (x^(1/2)*y^(3/2));
+@c rootscontract (x^(1/2)*y^(1/4));
+@c rootsconmode: true$
+@c rootscontract (x^(1/2)*y^(1/4));
+@c rootscontract (x^(1/2)*y^(1/3));
+@c rootsconmode: all$
+@c rootscontract (x^(1/2)*y^(1/4));
+@c rootscontract (x^(1/2)*y^(1/3));
+@c rootsconmode: false$
+@c rootscontract (sqrt(sqrt(x) + sqrt(1 + x))
+@c                     *sqrt(sqrt(1 + x) - sqrt(x)));
+@c rootsconmode: true$
+@c rootscontract (sqrt(5 + sqrt(5)) - 5^(1/4)*sqrt(1 + sqrt(5)));
+
+@example
+(%i1) rootsconmode: false$
+(%i2) rootscontract (x^(1/2)*y^(3/2));
+                                   3
+(%o2)                      sqrt(x y )
+(%i3) rootscontract (x^(1/2)*y^(1/4));
+                                   1/4
+(%o3)                     sqrt(x) y
+(%i4) rootsconmode: true$
+(%i5) rootscontract (x^(1/2)*y^(1/4));
+(%o5)                    sqrt(x sqrt(y))
+(%i6) rootscontract (x^(1/2)*y^(1/3));
+                                   1/3
+(%o6)                     sqrt(x) y
+(%i7) rootsconmode: all$
+(%i8) rootscontract (x^(1/2)*y^(1/4));
+                              2   1/4
+(%o8)                       (x  y)
+(%i9) rootscontract (x^(1/2)*y^(1/3));
+                             3  2 1/6
+(%o9)                      (x  y )
+(%i10) rootsconmode: false$
+(%i11) rootscontract (sqrt(sqrt(x) + sqrt(1 + x))
+                    *sqrt(sqrt(1 + x) - sqrt(x)));
+(%o11)                          1
+(%i12) rootsconmode: true$
+(%i13) rootscontract (sqrt(5 + sqrt(5)) - 5^(1/4)*sqrt(1 + sqrt(5)));
+(%o13)                          0
+@end example
 
 @end defun
 
 @defvar rootsepsilon
-Default value: 1.0e-7 - a real number used to establish the
+Default value: 1.0e-7
+
+@code{rootsepsilon} is the tolerance which establishes the
 confidence interval for the roots found by the @code{realroots} function.
+@c IS IT GUARANTEED THAT |ACTUAL - ESTIMATE| < rootepsilon OR IS IT SOME OTHER NOTION ??
+@c NEED EXAMPLE HERE
 
 @end defvar
 
-@defun solve (@var{expr}, @var{var})
-solves the algebraic equation exp for the variable
-var and returns a list of solution equations in var.  If exp is not an
-equation, it is assumed to be an expression to be set equal to zero.
-Var may be a function (e.g. F(X)), or other non-atomic expression
-except a sum or product. It may be omitted if exp contains only one
-variable.  Exp may be a rational expression, and may contain
+@c NEEDS WORK
+@defun solve (@var{expr}, @var{x})
+@defunx solve (@var{expr})
+@defunx solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+Solves the algebraic equation @var{expr} for the variable
+@var{x} and returns a list of solution equations in @var{x}.  If @var{expr} is not an
+equation, the equation @code{@var{expr} = 0} is assumed in its place.
+@var{x} may be a function (e.g. @code{f(x)}), or other non-atomic expression
+except a sum or product. @var{x} may be omitted if @var{expr} contains only one
+variable.  @var{expr} may be a rational expression, and may contain
 trigonometric functions, exponentials, etc.
 
 The following method is used:
 
-Let E be the expression and X be the variable.  If E is linear in X
-then it is trivially solved for X.  Otherwise if E is of the form
-A*X**N+B then the result is (-B/A)**(1/N) times the Nth roots of
+Let @var{E} be the expression and @var{X} be the variable.  If @var{E} is linear in @var{X}
+then it is trivially solved for @var{X}.  Otherwise if @var{E} is of the form
+@code{A*X^N + B} then the result is @code{(-B/A)^1/N)} times the @code{N}'th roots of
 unity.
 
-If E is not linear in X then the gcd of the exponents of X in E (say
-N) is divided into the exponents and the multiplicity of the roots is
-multiplied by N.  Then @code{solve} is called again on the result.
-If E factors then @code{solve} is called on each of the factors.  Finally
+If @var{E} is not linear in @var{X} then the gcd of the exponents of @var{X} in @var{E} (say
+@var{N}) is divided into the exponents and the multiplicity of the roots is
+multiplied by @var{N}.  Then @code{solve} is called again on the result.
+If @var{E} factors then @code{solve} is called on each of the factors.  Finally
 @code{solve} will use the quadratic, cubic, or quartic formulas where
 necessary.
 
-In the case where E is a polynomial in some function of the variable
-to be solved for, say F(X), then it is first solved for F(X) (call the
-result C), then the equation F(X)=C can be solved for X provided the
-inverse of the function F is known.
+In the case where @var{E} is a polynomial in some function of the variable
+to be solved for, say @code{F(X)}, then it is first solved for @code{F(X)} (call the
+result @var{C}), then the equation @code{F(X)=C} can be solved for @var{X} provided the
+inverse of the function @var{F} is known.
 
 @code{breakup} if @code{false} will cause @code{solve} to express the solutions of
 cubic or quartic equations as single expressions rather than as made
@@ -550,8 +783,8 @@ solves a system of simultaneous
 (linear or non-linear) polynomial equations by calling @code{linsolve} or
 @code{algsys} and returns a list of the solution lists in the variables.  In
 the case of @code{linsolve} this list would contain a single list of
-solutions.  It takes two lists as arguments.  The first list (eqi,
-i=1,...,n) represents the equations to be solved; the second list is a
+solutions.  It takes two lists as arguments.  The first list
+represents the equations to be solved; the second list is a
 list of the unknowns to be determined.  If the total number of
 variables in the equations is equal to the number of equations, the
 second argument-list may be omitted.  For linear systems if the given
@@ -559,57 +792,194 @@ equations are not compatible, the message @code{inconsistent} will be
 displayed (see the @code{solve_inconsistent_error} switch); if no unique
 solution exists, then @code{singular} will be displayed.
 
-For examples, do @code{example (solve)}.
+Examples:
+@c FOLLOWING ADAPTED FROM example (solve)
+@c solve (asin (cos (3*x))*(f(x) - 1), x);
+@c ev (solve (5^f(x) = 125, f(x)), solveradcan);
+@c [4*x^2 - y^2 = 12, x*y - x = 2];
+@c solve (%, [x, y]);
+@c solve (1 + a*x + x^3, x);
+@c solve (x^3 - 1);
+@c solve (x^6 - 1);
+@c ev (x^6 - 1, %[1]);
+@c expand (%);
+@c x^2 - 1;
+@c solve (%, x);
+@c ev (%th(2), %[1]);
+
+@example
+(%i1) solve (asin (cos (3*x))*(f(x) - 1), x);
+
+SOLVE is using arc-trig functions to get a solution.
+Some solutions will be lost.
+                            %pi
+(%o1)                  [x = ---, f(x) = 1]
+                             6
+(%i2) ev (solve (5^f(x) = 125, f(x)), solveradcan);
+                                log(125)
+(%o2)                   [f(x) = --------]
+                                 log(5)
+(%i3) [4*x^2 - y^2 = 12, x*y - x = 2];
+                      2    2
+(%o3)             [4 x  - y  = 12, x y - x = 2]
+(%i4) solve (%, [x, y]);
+(%o4) [[x = 2, y = 2], [x = .5202594388652008 %i
+
+ - .1331240357358706, y = .0767837852378778
+
+ - 3.608003221870287 %i], [x = - .5202594388652008 %i
+
+ - .1331240357358706, y = 3.608003221870287 %i
+
+ + .0767837852378778], [x = - 1.733751846381093, 
+
+y = - .1535675710019696]]
+(%i5) solve (1 + a*x + x^3, x);
+                                       3
+              sqrt(3) %i   1   sqrt(4 a  + 27)   1 1/3
+(%o5) [x = (- ---------- - -) (--------------- - -)
+                  2        2      6 sqrt(3)      2
+
+        sqrt(3) %i   1
+       (---------- - -) a
+            2        2
+ - --------------------------, x = 
+              3
+      sqrt(4 a  + 27)   1 1/3
+   3 (--------------- - -)
+         6 sqrt(3)      2
+
+                          3
+ sqrt(3) %i   1   sqrt(4 a  + 27)   1 1/3
+(---------- - -) (--------------- - -)
+     2        2      6 sqrt(3)      2
+
+         sqrt(3) %i   1
+      (- ---------- - -) a
+             2        2
+ - --------------------------, x = 
+              3
+      sqrt(4 a  + 27)   1 1/3
+   3 (--------------- - -)
+         6 sqrt(3)      2
+
+         3
+ sqrt(4 a  + 27)   1 1/3               a
+(--------------- - -)    - --------------------------]
+    6 sqrt(3)      2                  3
+                              sqrt(4 a  + 27)   1 1/3
+                           3 (--------------- - -)
+                                 6 sqrt(3)      2
+(%i6) solve (x^3 - 1);
+             sqrt(3) %i - 1        sqrt(3) %i + 1
+(%o6)   [x = --------------, x = - --------------, x = 1]
+                   2                     2
+(%i7) solve (x^6 - 1);
+           sqrt(3) %i + 1      sqrt(3) %i - 1
+(%o7) [x = --------------, x = --------------, x = - 1, 
+                 2                   2
+
+                     sqrt(3) %i + 1        sqrt(3) %i - 1
+               x = - --------------, x = - --------------, x = 1]
+                           2                     2
+(%i8) ev (x^6 - 1, %[1]);
+                                      6
+                      (sqrt(3) %i + 1)
+(%o8)                 ----------------- - 1
+                             64
+(%i9) expand (%);
+(%o9)                           0
+(%i10) x^2 - 1;
+                              2
+(%o10)                       x  - 1
+(%i11) solve (%, x);
+(%o11)                  [x = - 1, x = 1]
+(%i12) ev (%th(2), %[1]);
+(%o12)                          0
+@end example
 
 @end defun
 
 @defvar solvedecomposes
-Default value: @code{true} - if @code{true}, will induce @code{solve} to use
-@code{polydecomp} (see @code{polydecomp}) in attempting to solve polynomials.
+Default value: @code{true}
+
+When @code{solvedecomposes} is @code{true}, @code{solve} calls
+@code{polydecomp} if asked to solve polynomials.
+@c OTHERWISE WHAT HAPPENS -- CAN'T SOLVE POLYNOMIALS, OR SOME OTHER METHOD IS USED ??
 
 @end defvar
 
 @defvar solveexplicit
-Default value: @code{false} - if @code{true}, inhibits @code{solve} from
-returning implicit solutions i.e. of the form F(x)=0.
+Default value: @code{false}
+
+When @code{solveexplicit} is @code{true}, inhibits @code{solve} from
+returning implicit solutions, that is, solutions of the form @code{F(x) = 0}
+where @code{F} is some function.
+@c NEED AN EXAMPLE HERE
 
 @end defvar
 
 @defvar solvefactors
-Default value: @code{true} - if @code{false} then @code{solve} will not try to
+Default value: @code{true}
+
+@c WHAT IS THIS ABOUT EXACTLY ??
+When @code{solvefactors} is @code{false}, @code{solve} does not try to
 factor the expression.  The @code{false} setting may be desired in some cases
 where factoring is not necessary.
+@c NEED AN EXAMPLE HERE
 
 @end defvar
 
 @defvar solvenullwarn
-Default value: @code{true} - if @code{true} the user will be warned if he
-calls @code{solve} with either a null equation list or a null variable list.
-For example, @code{solve ([], [])} would print two warning messages and return
-[].
+Default value: @code{true}
+
+When @code{solvenullwarn} is @code{true}, 
+@code{solve} prints a warning message if called with either a null equation list or a null variable list.
+For example, @code{solve ([], [])} would print two warning messages and return @code{[]}.
 
 @end defvar
 
 @defvar solveradcan
-Default value: @code{false} - if @code{true} then @code{solve} will use @code{radcan}
-which will make @code{solve} slower but will allow certain problems
-containing exponentials and logs to be solved.
+Default value: @code{false}
+
+When @code{solveradcan} is @code{true}, @code{solve} calls @code{radcan}
+which makes @code{solve} slower but will allow certain problems
+containing exponentials and logarithms to be solved.
+@c NEED AN EXAMPLE HERE
 
 @end defvar
 
 @defvar solvetrigwarn
-Default value: @code{true} - if set to @code{false} will inhibit printing
-by @code{solve} of the warning message saying that it is using inverse
+Default value: @code{true}
+
+@c MAYBE THIS CAN BE CLARIFIED
+When @code{solvetrigwarn} is @code{true},
+@code{solve} may print a message saying that it is using inverse
 trigonometric functions to solve the equation, and thereby losing
 solutions.
+@c NEED AN EXAMPLE HERE
 
 @end defvar
 
 @defvar solve_inconsistent_error
-Default value: @code{true} - If @code{true}, @code{solve} and
-@code{linsolve} give an error if they meet up with a set of inconsistent
-linear equations, e.g. @code{solve ([a + b = 1, a + b = 2])}.  If @code{false}, they return []
-in this case.  (This is the new mode, previously gotten only by
-calling @code{algsys}.)
+Default value: @code{true}
+
+When @code{solve_inconsistent_error} is @code{true}, @code{solve} and
+@code{linsolve} give an error if the equations to be solved are inconsistent.
+
+If @code{false}, @code{solve} and @code{linsolve} return an empty list @code{[]} 
+if the equations are inconsistent.
+
+Example:
+
+@example
+(%i1) solve_inconsistent_error: true$
+(%i2) solve ([a + b = 1, a + b = 2], [a, b]);
+Inconsistent equations:  (2)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i3) solve_inconsistent_error: false$
+(%i4) solve ([a + b = 1, a + b = 2], [a, b]);
+(%o4)                          []
+@end example
 
 @end defvar
