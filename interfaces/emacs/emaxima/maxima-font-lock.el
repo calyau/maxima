@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.6 $
-;; $Date: 2002-09-26 20:17:47 $
+;; $Revision: 1.7 $
+;; $Date: 2002-09-26 21:22:15 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@
 ;;
 ;; The keywords are divided into the following groups, following the 
 ;; Maxima info files:
-;; Functions (font-lock-builtin-face)
+;; Functions (font-lock-builtin-face or font-lock-keyword-face)
 ;; Variables (font-lock-keyword-face)
 ;; Constants (font-lock-constant-face)
 ;; Keywords (font-lock-keyword-face)
@@ -1333,6 +1333,9 @@
 ;;   :group 'maxima)
 
 ;;; now, the keywords
+(unless (facep 'font-lock-builtin-face)
+  (copy-face 'font-lock-keyword-face 'font-lock-builtin-face))
+
 (defvar maxima-font-lock-keywords-1
   `(
     (,maxima-match-declarations (0  font-lock-keyword-face t)))
