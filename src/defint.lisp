@@ -1406,7 +1406,7 @@
 		    (RETURN (LIST M R K)))))) 
 
 (DEFUN SINRX (E)
-       (COND ((EQ (CAAR E) '%SIN)
+       (COND ((and (consp e) (EQ (CAAR E) '%SIN))
 	      (COND ((EQ (CADR E) VAR) 1.)
 		    ((AND (SETQ E (PARTITION (CADR E) VAR 1)) (EQ (CDR E) VAR))
 		     (CAR E)))))) 
