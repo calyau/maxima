@@ -105,6 +105,9 @@ contrib/diffequations/tests/Makefile\
 contrib/diffequations/tests/README\
 contrib/diffequations/tests/rtest_ode1_abel.mac\
 contrib/diffequations/tests/rtest_ode1_riccati.mac\
+contrib/diffequations/tests/rtestode_kamke_1_1.mac\
+contrib/diffequations/tests/rtestode_kamke_1_2.mac\
+contrib/diffequations/tests/rtestode_kamke_1_3.mac\
 contrib/diffequations/tests/rtestode_murphy1.mac\
 contrib/diffequations/tests/rtestode_murphy2.mac\
 contrib/diffequations/tests/rtest_sym2.mac\
