@@ -16,7 +16,11 @@
 #+gcl(defvar *maxima-directory* "/home/amundson/notwork/src/maxima-clocc")
 
 (defun maxima-path (dir file)
-   (format nil "~a~a/~a" *maxima-directory* dir file))
+   (format nil "~a/~a/~a" *maxima-prefix* dir file))
+
+(defun maxima-data-path (dir file)
+   (format nil "~a/~a/~a"
+	   *maxima-verpkgdatadir* dir file))
 
 (defvar $file_search_lisp nil
   "Directories to search for Lisp source code.")
@@ -47,13 +51,31 @@
   (ext:getenv envvar))
 
 (defun set-pathnames ()
-  (let* ((tem-env (maxima-getenv "MAXIMA_DIRECTORY"))
-	 (tem (if tem-env tem-env *autoconf-prefix*)))
-    (if (and tem (> (length tem) 0))
-	(or (eql (aref tem (1- (length tem))) #\/)
-	    (setq tem (format nil "~a/" tem))))
-    (when tem
-      (setq *maxima-directory* tem)))
+  (let* ((maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY"))
+	 (maxima-datadir-env (maxima-getenv "MAXIMA_DATADIR"))
+	 (maxima-infodir-env (maxima-getenv "MAXIMA_INFODIR")))
+	 (if maxima-prefix-env
+	     (setq *maxima-directory* maxima-prefix-env)
+	   (setq *maxima-prefix* *autoconf-prefix*))
+	 (if maxima-datadir-env
+	     (setq *maxima-datadir* maxima-datadir-env)
+	   (if maxima-prefix-env
+	       (setq *maxima-datadir* (concatenate 'string *maxima-prefix*
+						   "share"))
+	     (setq *maxima-datadir* *autoconf-datadir*)))
+	 (setq *maxima-verpkgdatadir* (concatenate 'string
+						   *maxima-datadir*
+						   "/"
+						   *autoconf-package*
+						   "/"
+						   *autoconf-version*))
+	 (if maxima-infodir-env
+	     (setq *maxima-infodir* maxima-infodir-env)
+	   (if maxima-prefix-env
+	       (setq *maxima-infodir* (concatenate 'string *maxima-prefix*
+						   "info"))
+	     (setq *maxima-infodir* *autoconf-infodir*))))
+	 
   (let ((ext #+gcl "o"
 	     #+cmu (c::backend-fasl-file-type c::*target-backend*)
 	     #+clisp "fas"
@@ -62,23 +84,29 @@
 	     ""))
     (setq $file_search_lisp
 	  (list '(mlist)
-		(maxima-path "{src,share1,sym}"
-			     (concatenate 'string "###." ext))
-		(maxima-path "{src,share1}" "###.lisp")
-		(maxima-path "{sym}" "###.lsp"))))
+		; actually, this entry is not correct.
+		; there should be a separate directory for compiled
+		; lisp code. jfa 04/11/02
+		(maxima-data-path "{src,share}"
+				 (concatenate 'string "###." ext))
+		(maxima-data-path "{src,share}" "###.lisp")
+		(maxima-data-path "{src,share}" "###.lsp"))))
   (setq $file_search_maxima
-    (list '(mlist)
-	  (maxima-path "{mac,sym}" "###.mac")
-	  (maxima-path "{share,share1,share2,tensor}" "###.mc")))
+	(list '(mlist)
+	      (maxima-data-path "{share}" "###.mac")
+	      (maxima-data-path "{share}" "###.mc")))
   (setq $file_search_demo
-    (list '(mlist) (maxima-path "{demo,share,share1,share2}"
+    (list '(mlist) (maxima-data-path "{demo,share}"
 				"###.{dem,dm1,dm2,dm3,dmt}")))
   (setq $file_search_usage
-    (list '(mlist) (maxima-path "{demo,share,share1,share2}"
+    (list '(mlist) (maxima-data-path "{share}"
 				"###.{usg,texi}")
-	  (maxima-path "doc" "###.{mac}")))
+	  (maxima-data-path "doc" "###.{mac}")))
   (setq $chemin
-    (maxima-path "sym" "")))
+    (maxima-data-path "sym" ""))
+  (setq si::*info-paths* (list (concatenate 'string
+					    *maxima-infodir* "/")))
+  )
 
 ;#+gcl (setq si::*top-level-hook* 'user::run)
 (defun user::run ()

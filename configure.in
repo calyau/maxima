@@ -144,6 +144,24 @@ AC_SUBST(CLISP_NAME)
 AC_SUBST(CMUCL_NAME)
 AC_SUBST(GCL_NAME)
 AC_SUBST(DEFAULTLISP)
+
+if test x"${exec_prefix}" = xNONE ; then
+	tmp_exec_prefix="${prefix}"
+else
+	tmp_exec_prefix="${exec_prefix}"
+fi
+expanded_exec_prefix="${tmp_exec_prefix}"
+expanded_libdir="`eval "exec_prefix=${tmp_exec_prefix};echo ${libdir}"`"
+expanded_libexecdir="`eval "exec_prefix=${tmp_exec_prefix};echo ${libexecdir}"`"
+expanded_datadir="`eval "echo ${datadir}"`"
+expanded_infodir="`eval "echo ${infodir}"`"
+
+AC_SUBST(expanded_exec_prefix)
+AC_SUBST(expanded_libdir)
+AC_SUBST(expanded_libexecdir)
+AC_SUBST(expanded_datadir)
+AC_SUBST(expanded_infodir)
+
 AC_OUTPUT(Makefile src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile share/Makefile demo/Makefile)
 
 echo

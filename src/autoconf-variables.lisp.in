@@ -2,10 +2,11 @@
 (in-package :maxima)
 
 (defparameter *autoconf-prefix* "@prefix@")
+(defparameter *autoconf-exec_prefix* "@expanded_exec_prefix@")
 (defparameter *autoconf-package* "@PACKAGE@")
 (defparameter *autoconf-version* "@VERSION@")
-(defparameter *autoconf-libdir* "@libdir@")
-(defparameter *autoconf-libexecdir* "@libexecdir@")
-(defparameter *autoconf-datadir* "@datadir@")
-(defparameter *autoconf-infodir* "@infodir@")
-
+(defparameter *autoconf-libdir* "@expanded_libdir@")
+(defparameter *autoconf-libexecdir* "@expanded_libexecdir@")
+(defparameter *autoconf-datadir* "@expanded_datadir@")
+(defparameter *autoconf-infodir* "@expanded_infodir@")
+ 
