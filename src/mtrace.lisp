@@ -109,11 +109,11 @@
 ;; the macsyma functions (mfexpr*,...) are stored on the property list.
 ;;
 
-;; Wolfgang Jenker says (in the maxima mailing list):
-;; 1) The variety of maxima functions is much more restricted than what
-;;    the table at the beginning of mtrace.lisp shows.  I think the
-;;    following table gives the correct picture (like its counterpart in
-;;    mtrace.lisp, it ignores maxima macros or functional arrays).
+
+;; 1) The variety of maxima functions is much more restricted than
+;;    what the table above shows.  I think the following table gives
+;;    the correct picture (like its counterpart, it ignores maxima
+;;    macros or functional arrays).
 ;;
 ;;
 ;; Maxima function	shadow type	hook type	mget
@@ -125,13 +125,13 @@
 ;; These types have the following meaning: Suppose MFUN evaluates to some
 ;; symbol in the MAXIMA package.  That this symbol is of type
 ;;
-;;  - EXPR (or SUBR) implies that it has a lisp function definition ==
+;;  - EXPR (or SUBR) implies that it has a lisp function definition <=
 ;;    (SYMBOL-FUNCTION MFUN)
 ;;
-;;  - MEXPR implies that it has a (parsed) maxima language definition ==
+;;  - MEXPR implies that it has a (parsed) maxima language definition <=
 ;;    (MGET MFUN 'MEXPR) and all arguments are evaluated by MEVAL.
 ;;
-;;  - MFEXPR* implies that it has a lisp function definition == (GET MFUN
+;;  - MFEXPR* implies that it has a lisp function definition <= (GET MFUN
 ;;    'MFEXPR*) and its arguments are not automatically evaluated by
 ;;    MEVAL.
 ;;
@@ -153,7 +153,7 @@
 ;; (which is of type EXPR) will not cleanly untrace it (i.e., it is
 ;; effectively no longer traced but it remains on the list of traced
 ;; functions).  I think that this has to be fixed somewhere in the
-;; translation package.
+;; translation package. -wj
 
 
 ;;; Structures.
@@ -218,6 +218,7 @@
 (defun macsyma-trace (fun) (macsyma-trace-sub fun 'trace-handler $trace))
 
 (defun macsyma-trace-sub (fun handler ilist &aux temp)
+  (declare (symbol temp))		; pathetic
   (cond ((not (symbolp fun))
 	 (mtell "~%Bad arg to TRACE: ~M" fun)
 	 nil)
@@ -231,17 +232,17 @@
 	  "~%The function ~:@M cannot be traced because: ASK GJC~%"
 	  fun)
 	 nil)
-	((null (setq temp (macsyma-fsymeval fun)))
+	((not (setq temp (car (macsyma-fsymeval fun))))
 	 (mtell "~%~@:M has no functional properties." fun)
 	 nil)
-	((memq (car temp) '(mmacro translated-mmacro))
+	((memq temp '(mmacro translated-mmacro))
 	 (mtell "~%~@:M is a macro, won't trace well, so use ~
 		     the MACROEXPAND function to debug it." fun)
 	 nil)
-	((get (car temp) 'shadow)
-	 (put-trace-info fun (car temp) ilist)
-	 (trace-fshadow fun (car temp)
-			(make-trace-hook fun (car temp) handler))
+	((get temp 'shadow)
+	 (put-trace-info fun temp ilist)
+	 (trace-fshadow fun temp
+			(make-trace-hook fun temp handler))
 	 (list fun))
 	(t
 	 (mtell "~%~@:M has functional properties not understood by TRACE"
