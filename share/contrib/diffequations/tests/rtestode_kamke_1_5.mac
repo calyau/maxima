@@ -22,7 +22,7 @@ true;
 method;
 lagrange;
 
-/*  402  */ 
+/*  402  Why the complex solution? */ 
 (pn_(402),ans:contrib_ode(eqn:3*('diff(y,x,1))^2+4*x*'diff(y,x,1)-y+x^2,y,x));
 [(4*%i*sqrt(3*y+x^2)+2*%i*x)/(3*sqrt(2))=%c];
 [method,ode_check(eqn,ans[1])];
@@ -74,9 +74,11 @@ lagrange;
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
-/*  413  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 413 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2+y*'diff(y,x,1)-x^2 ,y,x)); */ 
+/*  413  Not sure about this one - ode_check() chokes */
+(pn_(413),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)-x^2,y,x));
+[-(120*'integrate((sqrt(y^2+4*x^3)*(y*%e^(3*log(y^2+4*x^3)/2)+(-y^3-4*x^3*y)*%e^(log(y^2+4*x^3)/2)+32*x^3*y^2+128*x^6)+(-4*y^2-32*x^3)*%e^(3*log(y^2+4*x^3)/2)+(4*y^4+16*x^3*y^2)*%e^(log(y^2+4*x^3)/2))/(sqrt(y^2+4*x^3)*((4*y^2+16*x^3)*%e^(3*log(y^2+4*x^3)/2)+(-4*y^4-16*x^3*y^2)*%e^(log(y^2+4*x^3)/2)+64*x^3*y^3+256*x^6*y)+(16*y^3+64*x^3*y)*%e^(3*log(y^2+4*x^3)/2)+(-16*y^5-64*x^3*y^3)*%e^(log(y^2+4*x^3)/2)+256*x^3*y^4+1024*x^6*y^2),y)-64*log(%e^(log(y^2+4*x^3)/2)+4*y)+25*log(%e^(log(y^2+4*x^3)/2)+y)+9*log(%e^(log(y^2+4*x^3)/2)-y)-75*log(x))/120 = %c];
+method;
+lie;
 
 /*  414  */ 
 (pn_(414),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)+x^3,y,x));
@@ -123,20 +125,27 @@ lagrange;
 /*  421  */ 
 (pn_(421),ans:contrib_ode(eqn:x*('diff(y,x,1))^2-2*y*'diff(y,x,1)-x,y,x));
 [x*(2*%c*y-x^2+%c^2)=0];
-method;
-lagrange;
+solve(ans[1],y);
+[y=(x^2-%c^2)/(2*%c)];
+[method,ode_check(eqn,%[1])];
+[lagrange,0];
 
 /*  422  */ 
 (pn_(422),ans:contrib_ode(eqn:x*('diff(y,x,1))^2-2*y*'diff(y,x,1)+4*x,y,x));
 [x*(2*%c*y-x^2-4*%c^2)=0];
-method;
-lagrange;
+solve(ans[1],y);                                                    
+[y=(x^2+4*%c^2)/(2*%c)];
+[method,ode_check(eqn,%[1])];
+[lagrange,0];
+
 
 /*  423  */ 
 (pn_(423),ans:contrib_ode(eqn:x*('diff(y,x,1))^2-2*y*'diff(y,x,1)+2*y+x,y,x));
 [x*(2*%c*y-x^2-2*%c*x-2*%c^2)=0];
-method;
-lagrange;
+solve(ans[1],y);
+[y=(x^2+2*%c*x+2*%c^2)/(2*%c)];
+[method,ode_check(eqn,%[1])];
+[lagrange,0];
 
 /*  424  */ 
 (pn_(424),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+a*y*'diff(y,x,1)+b*x,y,x));
@@ -185,8 +194,10 @@ lie;
 /*  434  */ 
 (pn_(434),ans:contrib_ode(eqn:x^2*('diff(y,x,1))^2-2*x*y*'diff(y,x,1)-x^2,y,x));
 [x*(2*%c*y-x^2+%c^2)=0];
-method;
-lagrange;
+solve(ans[1],y);
+[y=(x^2-%c^2)/(2*%c)];
+[method,ode_check(eqn,%[1])];
+[lagrange,0];
 
 /*  435  */ 
 /* This equation presents a problem - crashes ode_contrib */ 
@@ -290,9 +301,11 @@ false;
 /* This equation presents a problem - crashes ode_contrib */ 
 /* (pn_( 452 ),ans:contrib_ode(eqn: (2*x^2+1)*('diff(y,x,1))^2+(y^2+2*x*y+x^2+2)*'diff(y,x,1)+2*y^2+1 ,y,x)); */ 
 
-/*  453  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 453 ),ans:contrib_ode(eqn: (a^2-1)*x^2*('diff(y,x,1))^2+2*x*y*'diff(y,x,1)-y^2+a^2*x^2 ,y,x)); */ 
+/*  453   Not sure about this one - ode_check() chokes */
+(pn_( 453 ),ans:contrib_ode(eqn:(a^2-1)*x^2*('diff(y,x,1))^2+2*x*y*'diff(y,x,1)-y^2+a^2*x^2,y,x));
+['integrate((a*sqrt(y^2+(1-a^2)*x^2)+y)/(a*%e^('integrate(1/x,x))*sqrt(y^2+(1-a^2)*x^2)+a^2*%e^('integrate(1/x,x))*y),x)-'integrate((a*%e^('integrate(1/x,x))*sqrt(y^2+(1-a^2)*x^2)*'integrate(((a^5-2*a^3+a)*x^2*y*sqrt(y^2+(1-a^2)*x^2)+(a^4-2*a^2+1)*x^2*y^2+(-a^6+3*a^4-3*a^2+1)*x^4)/((a^4+3*a^2)*%e^('integrate(1/x,x))*y^5+sqrt(y^2+(1-a^2)*x^2)*((3*a^3+a)*%e^('integrate(1/x,x))*y^4+(-3*a^5+a^3+2*a)*x^2*%e^('integrate(1/x,x))*y^2+(a^5-2*a^3+a)*x^4*%e^'integrate(1/x,x))+(-a^6-5*a^4+6*a^2)*x^2*%e^('integrate(1/x,x))*y^3+(3*a^6-6*a^4+3*a^2)*x^4*%e^('integrate(1/x,x))*y),x)+a^2*%e^('integrate(1/x,x))*y*'integrate(((a^5-2*a^3+a)*x^2*y*sqrt(y^2+(1-a^2)*x^2)+(a^4-2*a^2+1)*x^2*y^2+(-a^6+3*a^4-3*a^2+1)*x^4)/((a^4+3*a^2)*%e^('integrate(1/x,x))*y^5+sqrt(y^2+(1-a^2)*x^2)*((3*a^3+a)*%e^('integrate(1/x,x))*y^4+(-3*a^5+a^3+2*a)*x^2*%e^('integrate(1/x,x))*y^2+(a^5-2*a^3+a)*x^4*%e^'integrate(1/x,x))+(-a^6-5*a^4+6*a^2)*x^2*%e^('integrate(1/x,x))*y^3+(3*a^6-6*a^4+3*a^2)*x^4*%e^('integrate(1/x,x))*y),x)+(1-a^2)*x)/(a*%e^('integrate(1/x,x))*sqrt(y^2+(1-a^2)*x^2)+a^2*%e^('integrate(1/x,x))*y),y) = %c];
+method;
+lie;
 
 /*  454  */ 
 assume(a>1,y>0);
@@ -345,8 +358,10 @@ false;
 /*  462  */ 
 (pn_(462),ans:contrib_ode(eqn:y*('diff(y,x,1))^2-1,y,x));
 [4*y^3-9*x^2+18*%c*x-9*%c^2=0];
-method;
-lagrange;
+ solve(ans[1],y);
+[y=(sqrt(3)*9^(1/3)*%i-9^(1/3))*(x-%c)^(2/3)/(2*4^(1/3)),y=-(sqrt(3)*9^(1/3)*%i+9^(1/3))*(x-%c)^(2/3)/(2*4^(1/3)),y=9^(1/3)*(x-%c)^(2/3)/4^(1/3)];
+[method,ode_check(eqn,%[3])];
+[lagrange,0];
 
 /*  463  */ 
 /* This equation presents a problem - crashes ode_contrib */ 

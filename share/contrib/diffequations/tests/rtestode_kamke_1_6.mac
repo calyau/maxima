@@ -100,8 +100,10 @@ lagrange;
 /* (pn_( 519 ),ans:contrib_ode(eqn: ('diff(y,x,1))^3-f(x)*(a*y^2+b*y+c)^2 ,y,x)); */ 
 
 /*  520  */ 
-/* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 520 ),ans:contrib_ode(eqn: ('diff(y,x,1))^3+'diff(y,x,1)-y ,y,x)); */ 
+(pn_( 520 ),ans:contrib_ode(eqn: ('diff(y,x,1))^3+'diff(y,x,1)-y ,y,x));
+[[x = log(%t)+3*%t^2/2+%c,y = %t^3+%t]];
+method;
+lagrange;
 
 /*  521  */ 
 (pn_(521),ans:contrib_ode(eqn:('diff(y,x,1))^3+x*'diff(y,x,1)-y,y,x));
@@ -119,9 +121,11 @@ lagrange;
 /* This equation presents a problem - crashes ode_contrib */ 
 /* (pn_( 523 ),ans:contrib_ode(eqn: ('diff(y,x,1))^3-a*x*'diff(y,x,1)+x^3 ,y,x)); */ 
 
-/*  524  */ 
-/* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 524 ),ans:contrib_ode(eqn: ('diff(y,x,1))^3-2*y*'diff(y,x,1)+y^2 ,y,x)); */ 
+/*  524  */
+(pn_(524),ans:contrib_ode(eqn:('diff(y,x,1))^3-2*y*'diff(y,x,1)+y^2,y,x)); 
+[[x=-3*sqrt(1-%t)+2*log(sqrt(1-%t)+1)+%c,y=%t-sqrt(1-%t)*%t],[x=3*sqrt(1-%t)+2*log(sqrt(1-%t)-1)+%c,y=sqrt(1-%t)*%t+%t]];
+method;
+lagrange;
 
 /*  525  */ 
 /* This equation presents a problem - runs forever */ 
@@ -142,12 +146,16 @@ lagrange;
 /* (pn_( 528 ),ans:contrib_ode(eqn: ('diff(y,x,1))^3+a*('diff(y,x,1))^2+b*y+a*b*x ,y,x)); */ 
 
 /*  529  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 529 ),ans:contrib_ode(eqn: ('diff(y,x,1))^3+x*('diff(y,x,1))^2-y ,y,x)); */ 
+(pn_(529),ans:contrib_ode(eqn:('diff(y,x,1))^3+x*('diff(y,x,1))^2-y ,y,x));
+[-8*y^3-(4*x^2-12*x-24*%c-27)*y^2-(-8*x^3+(-8*%c-12)*x^2-12*%c*x+24*%c^2)*y-4*x^4-(8-8*%c)*x^3-(4*%c^2-24*%c)*x^2-24*%c^2*x+8*%c^3=0];
+method;
+lagrange;
 
-/*  530  */ 
-/* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 530 ),ans:contrib_ode(eqn: ('diff(y,x,1))^3-y*('diff(y,x,1))^2+y^2 ,y,x)); */ 
+/*  530  */
+(pn_(530),ans:contrib_ode(eqn:('diff(y,x,1))^3-y*('diff(y,x,1))^2+y^2,y,x));
+[[x=log(2*sqrt(%t^2-4*%t)+2*%t-4)-sqrt(%t^2-4*%t)+%t+%c,y=-(%t*sqrt(%t^2-4*%t)-%t^2)/2],[x=-log(2*sqrt(%t^2-4*%t)+2*%t-4)+sqrt(%t^2-4*%t)+%t+%c,y=(%t*sqrt(%t^2-4*%t)+%t^2)/2]];
+method;
+lagrange;
 
 /*  531  */ 
 (pn_(531),ans:contrib_ode(eqn:('diff(y,x,1))^3-(y^4+x*y^2+x^2)*('diff(y,x,1))^2+(x*y^6+x^2*y^4+x^3*y^2)*'diff(y,x,1)-x^3*y^6,y,x));
@@ -156,8 +164,10 @@ lagrange;
 [factor,0,0,0];
 
 /*  532  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 532 ),ans:contrib_ode(eqn: a*('diff(y,x,1))^3+b*('diff(y,x,1))^2+c*'diff(y,x,1)-y-d ,y,x)); */ 
+(pn_(532),ans:contrib_ode(eqn:a*('diff(y,x,1))^3+b*('diff(y,x,1))^2+c*'diff(y,x,1)-y-d,y,x));
+[[x=log(%t)*c+(4*%t*b+3*%t^2*a)/2+%c,y=-d+%t*c+%t^2*b+%t^3*a]];
+method;
+lagrange;
 
 /*  533  */ 
 (pn_(533),ans:contrib_ode(eqn:x*('diff(y,x,1))^3-y*('diff(y,x,1))^2+a,y,x));
@@ -194,8 +204,10 @@ lagrange;
 /*  539  */ 
 (pn_(539),ans:contrib_ode(eqn:sin(x)*('diff(y,x,1))^3-(sin(x)*y-cos(x)^2)*('diff(y,x,1))^2+(-cos(x)^2*y-sin(x))*'diff(y,x,1)+sin(x)*y,y,x));
 [[x=log(%t)+%c,y=%t]];
-method;
-lagrange;
+ans[1][2],solve(ans[1][1],%t);
+y = %e^(x-%c);
+[method,ode_check(eqn,%)];
+[lagrange,0];
 
 /*  540  */ 
 (pn_(540),ans:contrib_ode(eqn:2*y*('diff(y,x,1))^3-y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-x,y,x));
@@ -270,6 +282,8 @@ false;
 /*  555  */ 
 (pn_(555),ans:contrib_ode(eqn:sqrt(('diff(y,x,1))^2+1)+x*'diff(y,x,1)-y,y,x));
 [y=%c*x+sqrt(%c^2+1),[-y+%t*x+sqrt(%t^2+1)=0,(sqrt(%t^2+1)*x+%t)/sqrt(%t^2+1)=0]];
+ode_check(eqn,ans[1]);
+0;
 method;
 clairault;
 
@@ -313,11 +327,11 @@ lagrange;
 (pn_(563),ans:contrib_ode(eqn:log('diff(y,x,1))+x*'diff(y,x,1)+a*y+b,y,x));
 false;
 
-/*  564  */ 
+/*  564  Check second solution */ 
 (pn_(564),ans:contrib_ode(eqn:log('diff(y,x,1))+a*(x*'diff(y,x,1)-y),y,x));
 [y=(%c*a*x+log(%c))/a,[a*(%t*x-y)+log(%t)=0,(%t*a*x+1)/%t=0]];
-method;
-clairault;
+[method,ode_check(eqn,ans[1])];
+[clairault,0];
 
 /*  565  */ 
 (pn_(565),ans:contrib_ode(eqn:y*log('diff(y,x,1))+'diff(y,x,1)-y*log(y)-x*y,y,x));
