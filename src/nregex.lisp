@@ -428,6 +428,7 @@
 	      `(lambda (string &key (start 0) (end (length string)))
 		 (declare (string string)
 			  (fixnum start end)
+		          (ignorable start)
 			  (optimize (speed 0) (compilation-speed 3)))
 		 (setf *regex-groupings* ,group)
 		 (block final-return
@@ -440,6 +441,7 @@
 	    `(lambda (string &key (start 0) (end (length string)))
 	       (declare (string string)
 			(fixnum start end)
+		        (ignorable start)
 			(optimize (speed 0) (compilation-speed 3)))
 	       (setf *regex-groupings* ,group)
 	       (block final-return
