@@ -30,8 +30,6 @@ T^(1/2)*%E^-(A*T/4)*%E^-(P*T);
 SQRT(T)*%E^(-P*T-A*T/4);
 /* SPECINT(%,T); not available in distribution
 SQRT(%PI)/(2*(P+A/4)^(3/2)); */
-assume(T > 0);
-[T > 0]$
 T^(1/2)*%J[1](2*A^(1/2)*T^(1/2))*%E^-(P*T);
 %J[1](2*SQRT(A)*SQRT(T))*SQRT(T)*%E^-(P*T);
 /* SPECINT(%,T); not available
