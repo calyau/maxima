@@ -7,18 +7,17 @@
 @section Introduction to Rules and Patterns
 
    This section discusses user defined pattern matching and
-simplification rules (set up by TELLSIMP, TELLSIMPAFTER, DEFMATCH, or,
-DEFRULE.)  You may affect the main simplification procedures, or 
-else have your rules applied explicityly using APPLY1 and APPLY2.
-   There are additional mechanisms for polynomials rules under TELLRAT,
-and for commutative and non commutative algebra in chapter on AFFINE. 
+simplification rules (set up by @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, or,
+@code{defrule}.)  You may affect the main simplification procedures, or 
+else have your rules applied explicityly using @code{apply1} and @code{apply2}.
+   There are additional mechanisms for polynomials rules under @code{tellrat},
+and for commutative and non commutative algebra in chapter on @code{affine}. 
 
 @c end concepts Rules and Patterns
 @node Definitions for Rules and Patterns,  , Introduction to Rules and Patterns, Rules and Patterns
 @section Definitions for Rules and Patterns
-@c @node APPLY1
-@c @unnumberedsec phony
-@defun APPLY1 (exp, rule1, ..., rulen)
+
+@defun apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 repeatedly applies the first rule to
 exp until it fails, then repeatedly applies the same rule to all
 subexpressions of exp, left-to-right, until the first rule has failed
@@ -28,105 +27,100 @@ starting at the top of exp'.  When the final rule fails on the final
 subexpression, the application is finished.
 
 @end defun
-@c @node APPLY2
-@c @unnumberedsec phony
-@defun APPLY2 (exp, rule1, ..., rulen)
-differs from APPLY1 in that if the
+
+@defun apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+differs from @code{apply1} in that if the
 first rule fails on a given subexpression, then the second rule is
 repeatedly applied, etc.  Only if they all fail on a given
 subexpression is the whole set of rules repeatedly applied to the next
 subexpression.  If one of the rules succeeds, then the same
 subexpression is reprocessed, starting with the first rule.
-MAXAPPLYDEPTH[10000] is the maximum depth to which APPLY1 and APPLY2
+@code{maxapplydepth}[10000] is the maximum depth to which @code{apply1} and @code{apply2}
 will delve.
 
 @end defun
-@c @node APPLYB1
-@c @unnumberedsec phony
-@defun APPLYB1 (exp, rule1, ..., rulen)
-is similar to APPLY1 but works from
+
+@defun applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+is similar to @code{apply1} but works from
 the "bottom up" instead of from the "top down".  That is, it processes
 the smallest subexpression of exp, then the next smallest, etc.
-MAXAPPLYHEIGHT[10000] - is the maximum height to which APPLYB1 will
+@code{maxapplyheight}[10000] - is the maximum height to which @code{applyb1} will
 reach before giving up.
 
 @end defun
-@c @node CURRENT_LET_RULE_PACKAGE
-@c @unnumberedsec phony
-@defvar CURRENT_LET_RULE_PACKAGE
- default:[DEFAULT_LET_RULE_PACKAGE] - the
+
+@defvar current_let_rule_package
+ default:[@code{default_let_rule_package}] - the
 name of the rule package that is presently being used.  The user may
 reset this variable to the name of any rule package previously defined
-via the LET command.  Whenever any of the functions comprising the let
+via the @code{let} command.  Whenever any of the functions comprising the let
 package are called with no package name the value of
 @example
-CURRENT_LET_RULE_PACKAGE
+current_let_rule_package
 @end example
 is used.  If a call such as
-LETSIMP(expr,rule_pkg_name); is made, the rule package rule_pkg_name
-is used for that LETSIMP command only, i.e.  the value of
-CURRENT_LET_RULE_PACKAGE is not changed.
+@code{letsimp (expr, rule_pkg_name)} is made, the rule package rule_pkg_name
+is used for that @code{letsimp} command only, i.e.  the value of
+@code{current_let_rule_package} is not changed.
 
 @end defvar
-@c @node DEFAULT_LET_RULE_PACKAGE
-@c @unnumberedsec phony
-@defvar DEFAULT_LET_RULE_PACKAGE
+
+@defvar default_let_rule_package
  - the name of the rule package used when one
-is not explicitly set by the user with LET or by changing the value of
-CURRENT_LET_RULE_PACKAGE.
+is not explicitly set by the user with @code{let} or by changing the value of
+@code{current_let_rule_package}.
 
 @end defvar
-@c @node DEFMATCH
-@c @unnumberedsec phony
-@defun DEFMATCH (progname, pattern, parm1, ..., parmn)
+
+@defun defmatch (@var{progname}, @var{pattern}, @var{param_1}, ..., @var{param_n})
 creates a function of
 n+1 arguments with the name progname which tests an expression to see
 if it can match a particular pattern.  The pattern is some expression
 containing pattern variables and parameters.  The parms are given
-explicitly as arguments to DEFMATCH while the pattern variables (if
-supplied) were given implicitly in a previous MATCHDECLARE function.
+explicitly as arguments to @code{defmatch} while the pattern variables (if
+supplied) were given implicitly in a previous @code{matchdeclare} function.
 The first argument to the created function progname, is an expression
 to be matched against the "pattern" and the other n arguments are the
 actual variables occurring in the expression which are to take the
 place of dummy variables occurring in the "pattern".  Thus the parms
-in the DEFMATCH are like the dummy arguments to the SUBROUTINE
-statement in FORTRAN.  When the function is "called" the actual
+in the @code{defmatch} are like the dummy arguments to the @code{subroutine}
+statement in Fortran.  When the function is "called" the actual
 arguments are substituted.  For example:
-@example
-(%i1)  NONZEROANDFREEOF(X,E):=  IF E#0 AND FREEOF(X,E)
-            THEN TRUE ELSE FALSE$
-(IS(E#0 AND FREEOF(X,E)) is an  equivalent function
-definition)
-(%i2)  MATCHDECLARE(A,NONZEROANDFREEOF(X),B,FREEOF(X))$
-(%i3)  DEFMATCH(LINEAR,A*X+B,X)$
-    This has caused the function LINEAR(exp,var1) to be defined.  It
 
+@example
+(%i1)  nonzeroandfreeof(x,e):=  if e#0 and freeof(x,e)
+            then true else false$
+(is(e#0 and freeof(x,e)) is an  equivalent function
+definition)
+(%i2)  matchdeclare(a,nonzeroandfreeof(x),b,freeof(x))$
+(%i3)  defmatch(linear,a*x+b,x)$
 @end example
+
 @noindent
+    This has caused the function @code{linear (expr, var_1)} to be defined.  It
 tests exp to see if it is of the form A*var1+B where A and B do not
-contain var1 and A is not zero.  DEFMATCHed functions return (if the
+contain var1 and A is not zero.  @code{defmatch}'ed functions return (if the
 match is successful) a list of equations whose left sides are the
 pattern variables and parms and whose right sides are the expressions
 which the pattern variables and parameters matched.  The pattern
 variables, but not the parameters, are set to the matched expressions.
-If the match fails, the function returns FALSE.  Thus
+If the match fails, the function returns @code{false}.  Thus
 LINEAR(3*Z+(Y+1)*Z+Y**2,Z) would return [B=Y**2, A=Y+4, X=Z].  Any
-variables not declared as pattern variables in MATCHDECLARE or as
-parameters in DEFMATCH which occur in pattern will match only
-themselves so that if the third argument to the DEFMATCH in (%i4) had
-been omitted, then LINEAR would only match expressions linear in X,
+variables not declared as pattern variables in @code{matchdeclare} or as
+parameters in @code{defmatch} which occur in pattern will match only
+themselves so that if the third argument to the @code{defmatch} in (%i4) had
+been omitted, then @code{linear} would only match expressions linear in X,
 not in any other variable.
     A pattern which contains no parameters or pattern variables
-returns TRUE if the match succeeds.
-Do EXAMPLE(DEFMATCH); for more examples.
+returns @code{true} if the match succeeds.
+Do @code{example (defmatch)} for more examples.
 
 @end defun
-@c @node DEFRULE
-@c @unnumberedsec phony
-@defun DEFRULE (rulename, pattern, replacement)
+
+@defun defrule (@var{rulename}, @var{pattern}, @var{replacement})
 defines and names a
 replacement rule for the given pattern.  If the rule named rulename is
-applied to an expression (by one of the APPLY functions below), every
+applied to an expression (by one of the @code{apply} functions below), every
 subexpression matching the pattern will be replaced by the
 replacement.  All variables in the replacement which have been
 assigned values by the pattern match are assigned those values in the
@@ -136,134 +130,127 @@ operation of the pattern match and replacement.  If the pattern fails,
 the original expression is returned.
 
 @end defun
-@c @node DISPRULE
-@c @unnumberedsec phony
-@defun DISPRULE (rulename1, rulename2, ...)
+
+@defun disprule (@var{rulename_1}, @var{rulename_2}, ...)
 will display rules with the names
-rulename1, rulename2, as were given by DEFRULE, TELLSIMP, or
-TELLSIMPAFTER or a pattern defined by DEFMATCH.  For example, the
-first rule modifying SIN will be called SINRULE1.  DISPRULE(ALL);
+rulename1, rulename2, as were given by @code{defrule}, @code{tellsimp}, or
+@code{tellsimpafter} or a pattern defined by @code{defmatch}.  For example, the
+first rule modifying @code{sin} will be called @code{sinrule1}.  @code{disprule (all)}
 will display all rules.
 
 @end defun
-@c @node LET
-@c @unnumberedsec phony
-@defun LET (prod, repl, predname, arg1, arg2, ..., argn)
+
+@defun let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
 defines a
-substitution rule for LETSIMP such that prod gets replaced by repl.
+substitution rule for @code{letsimp} such that prod gets replaced by repl.
 prod is a product of positive or negative powers of the following
 types of terms:
 @itemize @bullet
 @item
-    (1) Atoms which LETSIMP will search for literally unless previous
-to calling LETSIMP the MATCHDECLARE function is used to associate a
-predicate with the atom.  In this case LETSIMP will match the atom to
+    (1) Atoms which @code{letsimp} will search for literally unless previous
+to calling @code{letsimp} the @code{matchdeclare} function is used to associate a
+predicate with the atom.  In this case @code{letsimp} will match the atom to
 any term of a product satisfying the predicate.
 @item
     (2) Kernels such as SIN(X), N!, F(X,Y), etc.  As with atoms above
-LETSIMP will look for a literal match unless MATCHDECLARE is used to
+@code{letsimp} will look for a literal match unless @code{matchdeclare} is used to
 associate a predicate with the argument of the kernel.
 A term to a positive power will only match a term having at least that
-power in the expression being LETSIMPed.  A term to a negative power
+power in the expression being @code{letsimp}'ed.  A term to a negative power
 on the other hand will only match a term with a power at least as
 negative.  In the case of negative powers in "product" the switch
-LETRAT must be set to TRUE (see below).
-If a predicate is included in the LET function followed by a list of
+@code{letrat} must be set to @code{true} (see below).
+If a predicate is included in the @code{let} function followed by a list of
 arguments, a tentative match (i.e. one that would be accepted if the
 predicate were omitted) will be accepted only if
-predname(arg1',...,argn') evaluates to TRUE where argi' is the value
+predname(arg1',...,argn') evaluates to @code{true} where argi' is the value
 matched to argi.  The argi may be the name of any atom or the argument
 of any kernel appearing in prod.  repl may be any rational expression.
 If any of the atoms or arguments from prod appear in repl the
 appropriate substitutions will be made.
 @end itemize
-    LETRAT[FALSE] when FALSE, LETSIMP will simplify the numerator and
+    @code{letrat}[@code{false}] when @code{false}, @code{letsimp} will simplify the numerator and
 denominator of expr independently and return the result.
 Substitutions such as N!/N goes to (N-1)!  will fail.  To handle such
-situations LETRAT should be set to TRUE, then the numerator,
+situations @code{letrat} should be set to @code{true}, then the numerator,
 denominator, and their quotient will be simplified in that order.
     These substitution functions allow you to work with several
-rulepackages at once. Each rulepackage can contain any number of LETed
+rulepackages at once. Each rulepackage can contain any number of @code{let}'ed
 rules and is referred to by a user supplied name.  To insert a rule
 into the rulepackage name, do LET([prod,repl,pred,arg1,...],name).  To
 apply the rules in rulepackage name, do LETSIMP(expr, name).  The
 function LETSIMP(expr,name1,name2,...)  is equivalent to doing
 LETSIMP(expr,name1) followed by LETSIMP(%,name2) etc.
-CURRENT_LET_RULE_PACKAGE is the name of the rule package that is
+@code{current_let_rule_package} is the name of the rule package that is
 presently being used.  The user may reset this variable to the name of
-any rule package previously defined via the LET command.  Whenever any
+any rule package previously defined via the @code{let} command.  Whenever any
 of the functions comprising the let package are called with no package
-name the value of CURRENT_LET_RULE_PACKAGE is used.  If a call such as
+name the value of @code{current_let_rule_package} is used.  If a call such as
 LETSIMP(expr,rule_pkg_name); is made, the rule package rule_pkg_name
-is used for that LETSIMP command only, i.e.  the value of
-CURRENT_LET_RULE_PACKAGE is not changed.
-There is a DEFAULT_LET_RULE_PACKAGE which is assumed when no other
-name is supplied to any of the functions.  Whenever a LET includes a
-rulepackage name that is used as the CURRENT_LET_RULE_PACKAGE.
+is used for that @code{letsimp} command only, i.e.  the value of
+@code{current_let_rule_package} is not changed.
+There is a @code{default_let_rule_package} which is assumed when no other
+name is supplied to any of the functions.  Whenever a @code{let} includes a
+rulepackage name that is used as the @code{current_let_rule_package}.
 
 @end defun
-@c @node LETRAT
-@c @unnumberedsec phony
-@defvar LETRAT
- default: [FALSE] - when FALSE, LETSIMP will simplify the
+
+@defvar letrat
+ default: [@code{false}] - when @code{false}, @code{letsimp} will simplify the
 numerator and denominator of expr independently and return the result.
 Substitutions such as N!/N goes to (N-1)! will fail.  To handle such
-situations LETRAT should be set to TRUE, then the numerator,
+situations @code{letrat} should be set to @code{true}, then the numerator,
 denominator, and their quotient will be simplified in that order.
 
 @end defvar
-@c @node LETRULES
-@c @unnumberedsec phony
-@defun LETRULES ()
+
+@defun letrules ()
 displays the rules in the current rulepackage.
 LETRULES(name) displays the rules in the
 named rulepackage.
 The current rulepackage is the value of
 @example
-CURRENT_LET_RULE_PACKAGE
+current_let_rule_package
 @end example
 The initial value of the rules is
 @example
-DEFAULT_LET_RULE_PACKAGE
+default_let_rule_package
 @end example
 
 @end defun
-@c @node LETSIMP
-@c @unnumberedsec phony
-@defun LETSIMP (exp)
+
+@defun letsimp (@var{expr})
 will continually apply the substitution rules previously
-defined by the function LET until no further change is made to exp.
+defined by the function @code{let} until no further change is made to exp.
 LETSIMP(expr,rule_pkg_name); will cause the rule package rule_pkg_name
-to be used for that LETSIMP command only, i.e.  the value of
-CURRENT_LET_RULE_PACKAGE is not changed.
+to be used for that @code{letsimp} command only, i.e.  the value of
+@code{current_let_rule_package} is not changed.
 
 @end defun
-@c @node LET_RULE_PACKAGES
-@c @unnumberedsec phony
-@defvar LET_RULE_PACKAGES
- default:[DEFAULT_LET_RULE_PACKAGE] - The value of
-LET_RULE_PACKAGES is a list of all the user-defined let rule packages
+
+@defvar let_rule_packages
+ default:[@code{default_let_rule_package}] - The value of
+@code{let_rule_packages} is a list of all the user-defined let rule packages
 plus the special package
 @example
-DEFAULT_LET_RULE_PACKAGE
+default_let_rule_package
 @end example
 This is the name of the rule package used when one
 is not explicitly set by the user.
 
 @end defvar
-@c @node MATCHDECLARE
-@c @unnumberedsec phony
-@defun MATCHDECLARE (patternvar, predicate, ...)
+
+@defun matchdeclare (@var{patternvar}, @var{predicate}, ...)
 associates a predicate with
 a pattern variable so that the variable will only match expressions
-for which the predicate is not FALSE.  (The matching is accomplished
+for which the predicate is not @code{false}.  (The matching is accomplished
 by one of the functions described below).  For example after
 @example
-MATCHDECLARE(Q,FREEOF(X,%E))
+matchdeclare(q,freeof(x,%e))
 @end example
 is executed, Q will match any expression
 not containing X or %E.  If the match succeeds then the variable is
-set to the matched expression.  The predicate (in this case FREEOF) is
+set to the matched expression.  The predicate (in this case @code{freeof}) is
 written without the last argument which should be the one against
 which the pattern variable is to be tested.  Note that the patternvar
 and the arguments to the predicate are evaluated at the time the match
@@ -272,19 +259,18 @@ The odd numbered argument may also be a list of pattern variables all
 of which are to have the associated predicate.  Any even number of
 arguments may be given.
 For pattern matching, predicates refer to functions which are either
-FALSE or not FALSE (any non FALSE value acts like TRUE).
+@code{false} or not @code{false} (any non @code{false} value acts like @code{true}).
 MATCHDECLARE(var,TRUE) will permit var to match any expression.
 
 @end defun
-@c @node MATCHFIX (leftOperator, rightMatchingOperator, [BP 180], [ARGSPOS , $any] [POS,ANY]
-@c @unnumberedsec phony
-@defun MATCHFIX
- - MATCHFIX operators are used to denote functions of any
+
+@defun matchfix
+ - @code{matchfix} operators are used to denote functions of any
 number of arguments which are passed to the function as a list.  The
 arguments occur between the main operator and its "matching"
 delimiter.  The MATCHFIX("x",...) function is a syntax extension
-function which declares x to be a MATCHFIX operator.   The default
-binding power is 180, and the ARGS inside may be anything.
+function which declares x to be a @code{matchfix} operator.   The default
+binding power is 180, and the args inside may be anything.
 
 @example
 (%i1) matchfix ("|", "|");
@@ -308,49 +294,45 @@ binding power is 180, and the ARGS inside may be anything.
 @end example
 
 @end defun
-@c @node REMLET
-@c @unnumberedsec phony
-@defun REMLET (prod, name)
+
+@defun remlet (@var{prod}, @var{name})
 deletes the substitution rule, prod --> repl, most
-recently defined by the LET function.  If name is supplied the rule is
+recently defined by the @code{let} function.  If name is supplied the rule is
 deleted from the rule package name.  REMLET() and REMLET(ALL) delete
 all substitution rules from the current rulepackage. If the name of a
 rulepackage is supplied, e.g. REMLET(ALL,name), the rulepackage, name,
 is also deleted.  If a substitution is to be changed using the same
-product, REMLET need not be called, just redefine the substitution
-using the same product (literally) with the LET function and the new
+product, @code{remlet} need not be called, just redefine the substitution
+using the same product (literally) with the @code{let} function and the new
 replacement and/or predicate name.  Should REMLET(product) now be
 called the original substitution rule will be revived.
 
 @end defun
-@c @node REMRULE
-@c @unnumberedsec phony
-@defun REMRULE (function, rulename)
+
+@defun remrule (@var{function}, @var{rulename})
 will remove a rule with the name rulename
-from the function which was placed there by DEFRULE, DEFMATCH,
-TELLSIMP, or TELLSIMPAFTER.  If rule-name is ALL, then all rules will
+from the function which was placed there by @code{defrule}, @code{defmatch},
+@code{tellsimp}, or @code{tellsimpafter}.  If rule-name is @code{all}, then all rules will
 be removed.
 
 @end defun
-@c @node TELLSIMP
-@c @unnumberedsec phony
-@defun TELLSIMP (pattern, replacement)
-is similar to TELLSIMPAFTER but places
+
+@defun tellsimp (@var{pattern}, @var{replacement})
+is similar to @code{tellsimpafter} but places
 new information before old so that it is applied before the built-in
-simplification rules.  TELLSIMP is used when it is important to modify
+simplification rules.  @code{tellsimp} is used when it is important to modify
 the expression before the simplifier works on it, for instance if the
 simplifier "knows" something about the expression, but what it returns
 is not to your liking.  If the simplifier "knows" something about the
 main operator of the expression, but is simply not doing enough for
-you, you probably want to use TELLSIMPAFTER.  The pattern may not be a
-sum, product, single variable, or number.  RULES is a list of names
-having simplification rules added to them by DEFRULE, DEFMATCH,
-TELLSIMP, or TELLSIMPAFTER.  Do EXAMPLE(TELLSIMP); for examples.
+you, you probably want to use @code{tellsimpafter}.  The pattern may not be a
+sum, product, single variable, or number.  @code{rules} is a list of names
+having simplification rules added to them by @code{defrule}, @code{defmatch},
+@code{tellsimp}, or @code{tellsimpafter}.  Do EXAMPLE(TELLSIMP); for examples.
 
 @end defun
-@c @node TELLSIMPAFTER
-@c @unnumberedsec phony
-@defun TELLSIMPAFTER (pattern, replacement)
+
+@defun tellsimpafter (@var{pattern}, @var{replacement})
 defines a replacement for pattern
 which the Maxima simplifier uses after it applies the built-in
 simplification rules.  The pattern may be anything but a single
