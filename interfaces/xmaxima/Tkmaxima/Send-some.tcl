@@ -1,12 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: send-some.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
 ###### send-some.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
-############################################################
 
 # Usage:
 # catch {close $socket}
@@ -23,167 +15,6 @@
 #    evaluate tcl commands in the process controlling 'program'
 #   eg:  sendCommand octave "list 1 1"
 
-
-## source readdata.tcl
-
-###### readdata.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
-############################################################
-
-
-
-#
- #-----------------------------------------------------------------
- #
- # readDataTilEof --  read data from CHANNEL appending to VAR
- # allowing no more than TIMEOUT milliseconds between reads.
- #
- #  Results:  1 on success, and -1 if it fails or times out.
- #
- #  Side Effects: CHANNEL will be closed and the global variable VAR will
- #  be set..
- #
- #----------------------------------------------------------------
-#
-proc readDataTilEof { channel var timeout } {
-    global readDataDone_ _readDataData
-    global readDataDone_
-    upvar 1 $var variable
-    set _readDataData ""
-    set readDataDone_ 0
-    set $var ""
-    after $timeout "set readDataDone_ -1"
-    fconfigure $channel -blocking 0
-    fileevent $channel readable "readDataTilEof1 $channel _readDataData $timeout"
-            
-    myVwait readDataDone_
-    after cancel "set readDataDone_ -1"
-    catch { close $channel}
-    set res $readDataDone_
-    if {$res > 0 } { append variable $_readDataData }
-    return $res
-}
-    
-proc readDataTilEof1 { channel var timeout} {
-    global readDataDone_  $var
-    set new  [read $channel]
-    append $var $new
-
-    if { [eof $channel] } {
-	set readDataDone_ 1
-	close $channel
-    } else {
-	 after cancel "set readDataDone_ -1"	
-        after $timeout "set readDataDone_ -1"
-    }
-}
-    
-
-## endsource readdata.tcl
-source getdata1.tcl
-## source macros.tcl
-
-###### macros.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
-############################################################
-proc desetq {lis lis2} {
-    set i 0
-    foreach v $lis {
-	uplevel 1 set $v [list [lindex $lis2 $i]]
-	set i [expr {$i + 1}]
-    }
-}
-
-proc assoc { key lis args } {
-    foreach { k val } $lis {
-	if { "$k" == "$key" } {
-	    return $val }
-    }
-    return [lindex $args 0]
-}
-
-proc delassoc { key lis } {
-    foreach { k val } $lis {
-	if { "$k" != "$key" } {
-	lappend new $k $val
-	}
-    }
-    return $new
-}
-
-
-proc putassoc {key lis value } {
-    set done 0
-    foreach { k val } $lis {
-	if { "$k" == "$key" } {
-	    set done 1
-	    set val $value
-	}
-	lappend new $k $val
-    }
-    if { !$done } {
-	lappend new $key $value
-    }
-    return $new
-}
-
-proc intersect { lis1 lis2 } {
-    set new ""
-    foreach v $lis1 { set there($v) 1 }
-    foreach v $lis2 { if { [info exists there($v)] } { lappend new $v }}
-    return $new
-}
-
-
-
-#
- #-----------------------------------------------------------------
- #
- # ldelete --  remove all copies of ITEM from LIST
- #
- #  Results: new list without item
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
-#
-proc ldelete { item list } {
-    while { [set ind [lsearch $list $item]] >= 0  } {
-	set list [concat [lrange $list 0 [expr {$ind -1}]] [lrange $list [expr {$ind +1}] end]]
-    }
-    return $list
-}
-
-# apply f a1 a2 a3 [list  u1 u2 ..un]   , should call
-# f with n+3 arguments.
-proc apply {f args } {
-    set lis1 [lrange $args 0 [expr {[llength $args] -2}]]
-    foreach v [lindex $args end] { lappend lis1 $v}
-    set lis1 [linsert $lis1  0 $f]
-    uplevel 1 $lis1
-}
-
-
-
-
-
-
-## endsource macros.tcl
-source proxy.tcl
-
-if { $argc == 0 } {
-set port 4444
-set magic "billyboy"
-}
-set interrupt_signal "<<interrupt fayve>>"
-
-set _waiting 0
-
-set _debugSend 0
 
 
 #
@@ -489,7 +320,6 @@ proc cleanPdata { program } {
 
 
 # number from run-main.tcl
-set MathServer { genie1.ma.utexas.edu 4443 }
 # set MathServer { linux1.ma.utexas.edu 4443 }
 
 proc currentTextWinWidth { } {
@@ -524,10 +354,10 @@ proc assureProgram { program timeout tries } {
     if { $tries <=  0   } { return 0}
     
     if  { [catch { set socket $pdata($program,socket) } ]
-    || [catch { eof $socket}]
-    || [eof $socket]
-    || [catch { set s [read $socket] ;
-    append pdata(input,$socket) $s }] } {
+	  || [catch { eof $socket}]
+	  || [eof $socket]
+	  || [catch { set s [read $socket] ;
+	      append pdata(input,$socket) $s }] } {
 	cleanPdata $program
 	message "connecting [lindex $MathServer 0]"
 	set msg "OPEN [programName $program] MMTP/1.0\nLineLength: [currentTextWinWidth]\n\n\n"
@@ -591,6 +421,7 @@ proc programName { name } {
    return [lindex [split $name #] 0]
 }
 
+global EOFexpr
 set EOFexpr "|fayve>"
 
 proc getMatch { s inds } {
@@ -678,15 +509,16 @@ proc isAlive1 { s } {
 	
 proc isAlive { server {timeout 1000} } {
     global ws_openMath
+
     if { [ catch { set s [eval socket -async $server] } ] } { return -1 }
     set ws_openMath(isalive) 0
     fconfigure $s -blocking 0
     fileevent    $s writable     "isAlive1 $s"
     set c1 "set ws_openMath(isalive) -2"
-    after $timeout $c1
+    set after_id [after $timeout $c1]
     myVwait ws_openMath(isalive)
     catch { close $s}
-    after cancel $c1
+    after cancel $after_id
     return $ws_openMath(isalive)
 }
     

@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.14 2002-09-06 00:19:46 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.15 2002-09-06 01:10:12 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -15,6 +15,7 @@ TKSOURCES = \
 	Tkmaxima/Getdata1.tcl \
 	Tkmaxima/Macros.tcl \
 	Tkmaxima/Proxy.tcl \
+	Tkmaxima/Send-some.tcl \
 	xmaxima.tcl 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl
