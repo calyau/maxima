@@ -1618,6 +1618,7 @@ first kind:
     ((m)
      ;; diff wrt m
      ((mtimes)
+      ((rat) 1 2)
       ((mplus) ((%elliptic_ec) m)
        ((mtimes) -1
 	((%elliptic_kc) m)
