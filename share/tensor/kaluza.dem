@@ -27,7 +27,7 @@ predval(prd):=block([retval,saved_prederror:prederror],
     retval
 )$
 difflist(exp,lst):=if length(lst)=0 then exp
-                   else difflist(diff(exp,lst[1]),rest(lst))$
+                   else difflist(idiff(exp,lst[1]),rest(lst))$
 
 ("Metric components are defined conditionally, allowing us to treat
 the fifth index in a unique way.")$
@@ -59,11 +59,6 @@ g5(l1,l2,[l3]):=
     )
     else funmake('g5,append([l1,l2],l3))$
 
-("We also need some simplification rules:")$
-matchdeclare([dummy1,dummy2],true);
-defrule(evpot,a([dummy1],[],dummy2)-a([dummy2],[],dummy1),
-              -f([dummy1,dummy2],[]))$
-
 ("Now we're ready to begin the analysis. First, we predeclare
 some 4-dimensional indices:")$
 assume(k<=4,l<=4,m<=4)$
@@ -94,7 +89,7 @@ ishow(%)$
 
 ("Now we're ready to isolate the electromagnetic field tensor:")$
 map(lambda([u],factorout(u,g55)),%th(2))$
-ishow(apply1(%,evpot))$
+ishow(ratsubst(-f([%1,%2],[]),a([%1],[],%2)-a([%2],[],%1),%))$
 
 ("Contracting and rearranging yields the equation in the usual form:")$
 contract(%th(2))$
@@ -113,13 +108,14 @@ ishow(%)$
 
 assume(%1<=4)$
 %th(6),g5$
-scanmap(lambda([u],apply1(ratsimp(u,g55,g4([],[%1,m]),a([k],[])),evpot)),%)$
-ishow(%)$
+ratsubst(-f([%1,k],[]),a([%1],[],k)-a([k],[],%1),%)$
+ratsubst(-f([%1,l],[]),a([%1],[],l)-a([l],[],%1),%)$
+ishow(factor(contract(expand(%))))$
 
-%+%th(5)$
+%+%th(6)$
 %,nouns$
 ratsubst(chr42([k,l],[m]),
-         g4([],[%1,m])*(g4([l,%1],[],k)+g4([k,%1],[],l)-g4([k,l],[],%1))/2,%)$
+         g4([],[m,%1])*(g4([l,%1],[],k)+g4([k,%1],[],l)-g4([k,l],[],%1))/2,%)$
 ishow(%)$
 
 contract(%)$
