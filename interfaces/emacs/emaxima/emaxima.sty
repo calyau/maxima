@@ -436,7 +436,11 @@
  \m@ximastartwrite}
 
 \newcommand{\maximatexoutput}
-{\setboolean{m@ximatexoutput}{true}
+{\def\m##1\\{%
+    \par\noindent
+    \begingroup\maximafont\color{\maximaoutputcolor}
+    \begin{em@ximam@th} ##1 \end{em@ximam@th}\endgroup}
+ \setboolean{m@ximatexoutput}{true}
  \maximamiddle
  \m@ximaindent
  \par\noindent}
