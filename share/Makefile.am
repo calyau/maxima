@@ -398,7 +398,6 @@ misc/seqopt.usg\
 misc/set.lisp\
 misc/set.usg\
 misc/smacro.mac\
-numeric/bffac.lisp\
 numeric/bffac.mac\
 numeric/bffac.usg\
 numeric/brmbrg.lisp\
