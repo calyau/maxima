@@ -30,7 +30,7 @@ See @code{Definitions for Fourier Series}.
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
 @c POLARTORECT, etc are list in the heading of FFT with @defunx).
 
-@defun polartorect (magnitude_array, phase_array)
+@defun polartorect (@var{magnitude_array}, @var{phase_array})
 
 Translates complex values of the form @code{r %e^(%i t)} to the form @code{a + b %i}.
 @code{load ("fft")} loads this function into Maxima. See also @code{fft}.
@@ -52,7 +52,7 @@ The array size need not be a power of 2.
 
 @end defun
 
-@defun recttopolar (real_array, imaginary_array)
+@defun recttopolar (@var{real_array}, @var{imaginary_array})
 
 Translates complex values of the form @code{a + b %i} to the form @code{r %e^(%i t)}.
 @code{load ("fft")} loads this function into Maxima. See also @code{fft}.
@@ -76,7 +76,7 @@ The array size need not be a power of 2.
 
 @end defun
 
-@defun ift (real_array, imaginary_array)
+@defun ift (@var{real_array}, @var{imaginary_array})
 
 Fast inverse discrete Fourier transform. @code{load ("fft")} loads this function
 into Maxima.
@@ -92,10 +92,10 @@ See @code{fft} for more details.
 
 @end defun
 
-@defun fft (real_array, imaginary_array)
-@defunx ift (real_array, imaginary_array)
-@defunx recttopolar (real_array, imaginary_array)
-@defunx polartorect (magnitude_array, phase_array)
+@defun fft (@var{real_array}, @var{imaginary_array})
+@defunx ift (@var{real_array}, @var{imaginary_array})
+@defunx recttopolar (@var{real_array}, @var{imaginary_array})
+@defunx polartorect (@var{magnitude_array}, @var{phase_array})
 
 Fast Fourier transform and related functions. @code{load ("fft")}
 loads these functions into Maxima.
@@ -176,7 +176,7 @@ expressions to be printed farther to the right.
 
 @end defvar
 
-@defun fortran (expr)
+@defun fortran (@var{expr})
 Prints @var{expr} as a Fortran statement.
 The output line is indented with spaces.
 If the line is too long, @code{fortran} prints continuation lines.
@@ -240,11 +240,11 @@ each printed line with spaces to 80 columns.
 
 @end defvar
 
-@defun horner (expr, var)
-@defunx horner (expr)
+@defun horner (@var{expr}, @var{x})
+@defunx horner (@var{expr})
 Returns a rearranged representation of @var{expr} as
-in Horner's rule, using @var{var} as the main variable if it is specified.
-@code{var} may be omitted in which case the main variable of the canonical rational expression
+in Horner's rule, using @var{x} as the main variable if it is specified.
+@code{x} may be omitted in which case the main variable of the canonical rational expression
 form of @var{expr} is used.
 
 @code{horner} sometimes improves stability if @code{expr} is
@@ -270,211 +270,277 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end defun
 
-@defun interpolate (func, x, a, b)
-finds the zero of func as x varies.  The last
-two args give the range to look in.  The function must have a
+@c NEEDS WORK
+@defun interpolate (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@defunx interpolate (@var{f}, @var{a}, @var{b})
+Finds the zero of function @var{f} as variable @var{x} varies over the range @code{[@var{a}, @var{b}]}.
+The function must have a
 different sign at each endpoint.  If this condition is not met, the
-action of the of the function is governed by INTPOLERROR[TRUE]).  If
-INTPOLERROR is TRUE then an error occurs, otherwise the value of
-INTPOLERROR is returned (thus for plotting INTPOLERROR might be set to
+action of the of the function is governed by @code{intpolerror}.  If
+@code{intpolerror} is @code{true} then an error occurs, otherwise the value of
+@code{intpolerror} is returned (thus for plotting @code{intpolerror} might be set to
 0.0).  Otherwise (given that Maxima can evaluate the first argument
-in the specified range, and that it is continuous) INTERPOLATE is
+in the specified range, and that it is continuous) @code{interpolate} is
 guaranteed to come up with the zero (or one of them if there is more
-than one zero).  The accuracy of INTERPOLATE is governed by
-INTPOLABS[0.0] and INTPOLREL[0.0] which must be non-negative floating
-point numbers.  INTERPOLATE will stop when the first arg evaluates to
-something less than or equal to INTPOLABS or if successive
-approximants to the root differ by no more than INTPOLREL * <one of
-the approximants>.  The default values of INTPOLABS and INTPOLREL are
-0.0 so INTERPOLATE gets as good an answer as is possible with the
+than one zero).  The accuracy of @code{interpolate} is governed by
+@code{intpolabs} and @code{intpolrel} which must be non-negative floating
+point numbers.  @code{interpolate} will stop when the first arg evaluates to
+something less than or equal to @code{intpolabs} or if successive
+approximants to the root differ by no more than @code{intpolrel * <one of the approximants>}.
+The default values of @code{intpolabs} and @code{intpolrel} are
+0.0 so @code{interpolate} gets as good an answer as is possible with the
 single precision arithmetic we have.  The first arg may be an
 equation.  The order of the last two args is irrelevant.  Thus
 
 @example
-INTERPOLATE(SIN(X)=X/2,X,%PI,.1);
-   is equivalent to
-INTERPOLATE(SIN(X)=X/2,X,.1,%PI);
+interpolate (sin(x) = x/2, x, %pi, 0.1);
 @end example
+
+is equivalent to
+
+@example
+interpolate (sin(x) = x/2, x, 0.1, %pi);
+@end example
+
 The method used is a binary search in the range specified by the last
 two args.  When it thinks the function is close enough to being
 linear, it starts using linear interpolation.
-An alternative syntax has been added to interpolate, this replaces the
-first two arguments by a function name.  The function MUST be
-TRANSLATEd or compiled function of one argument.  No checking of the
-result is done, so make sure the function returns a floating point
-number.
 
-
+@c PREVIOUS EXAMPLE STUFF
+@c f(x):=(mode_declare(x,float),sin(x)-x/2.0);
+@c interpolate(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
+@c interpolate(f(x),x,0.1,%pi);            time= 68 msec
+@c translate(f);
+@c interpolate(f(x),x,0.1,%pi);            time= 26 msec
+@c interpolate(f,0.1,%pi);                 time=  5 msec
+@c
+@c STUFF BELOW GENERATED FROM THE FOLLOWING
+@c f(x) := sin(x) - x/2;
+@c interpolate (sin(x) - x/2, x, 0.1, %pi);
+@c interpolate (sin(x) = x/2, x, 0.1, %pi);
+@c interpolate (f(x), x, 0.1, %pi);
+@c interpolate (f, 0.1, %pi);
 @example
-f(x):=(mode_declare(x,float),sin(x)-x/2.0);
-interpolate(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
-interpolate(f(x),x,0.1,%pi);            time= 68 msec
-translate(f);
-interpolate(f(x),x,0.1,%pi);            time= 26 msec
-interpolate(f,0.1,%pi);                 time=  5 msec
+(%i1) f(x) := sin(x) - x/2;
+                                        x
+(%o1)                  f(x) := sin(x) - -
+                                        2
+(%i2) interpolate (sin(x) - x/2, x, 0.1, %pi);
+(%o2)                   1.895494267033981
+(%i3) interpolate (sin(x) = x/2, x, 0.1, %pi);
+(%o3)                   1.895494267033981
+(%i4) interpolate (f(x), x, 0.1, %pi);
+(%o4)                   1.895494267033981
+(%i5) interpolate (f, 0.1, %pi);
+(%o5)                   1.895494267033981
 @end example
 
-There is also a Newton method interpolation routine, do DESCRIBE(NEWTON); .
+There is also a Newton method interpolation routine. See @code{newton}.
 
 @end defun
 
-@defvar INTPOLABS
- default: [0.0] - The accuracy of the INTERPOLATE command is
-governed by INTPOLABS[0.0] and INTPOLREL[0.0] which must be
-non-negative floating point numbers.  INTERPOLATE will stop when the
-first arg evaluates to something less than or equal to INTPOLABS or if
-successive approximants to the root differ by no more than INTPOLREL *
-<one of the approximants>.  The default values of INTPOLABS and
-INTPOLREL are 0.0 so INTERPOLATE gets as good an answer as is possible
+@defvar intpolabs
+Default value: 0.0
+
+@code{intpolabs} is the accuracy of the @code{interpolate} command is
+governed by @code{intpolabs} and @code{intpolrel} which must be
+non-negative floating point numbers.  @code{interpolate} will stop when the
+first arg evaluates to something less than or equal to @code{intpolabs} or if
+successive approximants to the root differ by no more than @code{intpolrel * <one of the approximants>}.
+The default values of @code{intpolabs} and
+@code{intpolrel} are 0.0 so @code{interpolate} gets as good an answer as is possible
 with the single precision arithmetic we have.
 
 @end defvar
 
-@defvar INTPOLERROR
- default: [TRUE] - Governs the behavior of INTERPOLATE.
-When INTERPOLATE is called, it determines whether or not the function
+@defvar intpolerror
+Default value: @code{true}
+
+@code{intpolerror} governs the behavior of @code{interpolate}.
+When @code{interpolate} is called, it determines whether or not the function
 to be interpolated satisfies the condition that the values of the
 function at the endpoints of the interpolation interval are opposite
 in sign.  If they are of opposite sign, the interpolation proceeds.
-If they are of like sign, and INTPOLERROR is TRUE, then an error is
-signaled.  If they are of like sign and INTPOLERROR is not TRUE, the
-value of INTPOLERROR is returned.  Thus for plotting, INTPOLERROR
+If they are of like sign, and @code{intpolerror} is @code{true}, then an error is
+signaled.  If they are of like sign and @code{intpolerror} is not @code{true}, the
+value of @code{intpolerror} is returned.  Thus for plotting, @code{intpolerror}
 might be set to 0.0.
 
 @end defvar
 
-@defvar INTPOLREL
- default: [0.0] - The accuracy of the INTERPOLATE command is
-governed by INTPOLABS[0.0] and INTPOLREL[0.0] which must be
-non-negative floating point numbers.  INTERPOLATE will stop when the
-first arg evaluates to something less than or equal to INTPOLABS or if
-successive approximants to the root differ by no more than INTPOLREL *
-<one of the approximants>.  The default values of INTPOLABS and
-INTPOLREL are 0.0 so INTERPOLATE gets as good an answer as is possible
+@defvar intpolrel
+Default value: 0.0
+
+@code{intpolrel} is the accuracy of the @code{interpolate} command is
+governed by @code{intpolabs} and @code{intpolrel} which must be
+non-negative floating point numbers.  @code{interpolate} will stop when the
+first arg evaluates to something less than or equal to @code{intpolabs} or if
+successive approximants to the root differ by no more than @code{intpolrel * <one of the approximants>}.
+The default values of @code{intpolabs} and
+@code{intpolrel} are 0.0 so @code{interpolate} gets as good an answer as is possible
 with the single precision arithmetic we have.
 
 @end defvar
 
-@defun NEWTON (exp,var,X0,eps)
-The file NEWTON 1 on the SHARE directory
-contains a function which will do interpolation using Newton's method.
-It may be accessed by LOAD(NEWTON); .  The Newton method can do things
-that INTERPOLATE will refuse to handle, since INTERPOLATE requires
-that everything evaluate to a flonum. Thus
-NEWTON(x^2-a^2,x,a/2,a^2/100);
-will say that it can't tell if flonum*a^2<a^2/100. Doing ASSUME(a>0);
-and then doing NEWTON again works. You get x=a+<small flonum>*a which
-is symbolic all the way.  INTERPOLATE(x^2-a^2,x,a/2,2*a); complains
-that .5*a is not flonum...
-An adaptive integrator which uses the Newton-Cotes 8 panel quadrature
-rule is available.  Do DESCRIBE(QQ) for details.
+@c NEEDS WORK
+@c SEARCHING THE SHARE DIRECTORY TURNS UP SOME OTHER "NEWTON" FUNCTIONS
+@c share/contrib/mnewton.mac
+@c share/numeric/newton.mac
+@c THERE MAY WELL BE OTHERS
+@defun newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+Interpolation by Newton's method. @code{load ("newton1")} loads this function.
 
+@code{newton} can handle some expressions
+that @code{interpolate} refuses to handle, since @code{interpolate} requires
+that everything evaluate to a floating point number.
+Thus @code{newton (x^2 - a^2, x, a/2, a^2/100)}
+complains that it can't tell if @code{6.098490481853958E-4 a^2 < a^2/100}.
+After @code{assume (a>0)}, the same function call succeeds,
+yielding a symbolic result, @code{1.00030487804878 a}.
+
+On the other hand,
+@code{interpolate (x^2 - a^2, x, a/2, 2*a)} complains
+that @code{0.5 a} is not a floating point number.
+
+An adaptive integrator which uses the Newton-Cotes 8 panel quadrature
+rule is available.  See @code{qq}.
+
+@c NEEDS EXAMPLES
 @end defun
 
 @node Definitions for Fourier Series, , Definitions for Numerical, Numerical
 @section Definitions for Fourier Series
 
-@defun equalp (x, y)
-Returns @code{true} if @code{equal (x, y)} otherwise @code{false} (doesn't give an
+@c REPHRASE
+@defun equalp (@var{x}, @var{y})
+Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false} (doesn't give an
 error message like @code{equal (x, y)} would do in this case).
 
+@c NEEDS EXAMPLES
 @end defun
 
-@defun remfun (fun, expr)
-Replaces all occurrences of @code{@var{fun} (@var{arg})} by @var{arg} in @var{expr}.
+@defun remfun (@var{f}, @var{expr})
+@defunx remfun (@var{f}, @var{expr}, @var{x})
+@code{remfun (@var{f}, @var{expr})}
+replaces all occurrences of @code{@var{f} (@var{arg})} by @var{arg} in @var{expr}.
 
+@code{remfun (@var{f}, @var{expr}, @var{x})}
+replaces all occurrences of @code{@var{f} (@var{arg})} by @var{arg} in @var{expr}
+only if @var{arg} contains the variable @var{x}.
+
+@c NEEDS EXAMPLES
 @end defun
 
-@defun remfun (fun, expr, var)
-Replaces all occurrences of @code{@var{fun} (@var{arg})} by @var{arg} in @var{expr}
-only if @var{arg} contains the variable @var{var}.
+@defun funp (@var{f}, @var{expr})
+@defunx funp (@var{f}, @var{expr}, @var{x})
+@code{funp (@var{f}, @var{expr})}
+returns @code{true} if @var{expr} contains the function @var{f}.
 
+@code{funp (@var{f}, @var{expr}, @var{x})}
+returns @code{true} if @var{expr} contains the function @var{f} and the variable
+@var{x} is somewhere in the argument of one of the instances of @var{f}.
+
+@c NEEDS EXAMPLES
 @end defun
 
-@defun funp (fun, expr)
-Returns @code{true} if @var{expr} contains the function @var{fun}.
-
-@end defun
-
-@defun funp (fun, expr, var)
-Returns @code{true} if @var{expr} contains the function @var{fun} and the variable
-@var{var} is somewhere in the argument of one of the
-occurences of @var{fun}.
-
-@end defun
-
-@defun absint (fun, var, halfplane)
-Returns the indefinite integral of @var{fun} with respect to
-@var{var} in the given halfplane (@code{pos}, @code{neg}, or @code{both}).
-If @var{halfplane} is omitted, @code{pos} is assumed as a
-default. @var{fun} may contain expressions of the form
+@defun absint (@var{f}, @var{x}, @var{halfplane})
+@defunx absint (@var{f}, @var{x})
+@defunx absint (@var{f}, @var{x}, @var{a}, @var{b})
+@code{absint (@var{f}, @var{x}, @var{halfplane})}
+returns the indefinite integral of @var{f} with respect to
+@var{x} in the given halfplane (@code{pos}, @code{neg}, or @code{both}).
+@var{f} may contain expressions of the form
 @code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
 
+@code{absint (@var{f}, @var{x})} is equivalent to @code{absint (@var{f}, @var{x}, pos)}.
+
+@code{absint (@var{f}, @var{x}, @var{a}, @var{b})}
+returns the definite integral of @var{f} with respect to @var{x} from @var{a} to @var{b}.
+@c SAME LIST AS ABOVE ??
+@var{f} may include absolute values.
+
+@c NEEDS EXAMPLES
 @end defun
 
-@defun absint (fun, var, a, b)
-Returns the definite integral of @var{fun} with respect to @var{var} from @var{a} to
-@var{b}. @var{fun} may include absolute values.
-
-@end defun
-
-@defun fourier (f, x, p)
+@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@defun fourier (@var{f}, @var{x}, @var{p})
 Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
 on the interval @code{[-%pi, %pi]}.
 
+@c NEEDS EXAMPLES
 @end defun
 
-@defun foursimp (l)
+@c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
+@defun foursimp (@var{l})
 Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
 @code{cos (n %pi)} to @code{(-1)^n} if @code{cosnpiflag} is @code{true}.
 
+@c NEEDS EXAMPLES
 @end defun
 
 @defvar sinnpiflag
 Default value: @code{true}
+
+See @code{foursimp}.
 
 @end defvar
 
 @defvar cosnpiflag
 Default value: @code{true}
 
+See @code{foursimp}.
+
 @end defvar
 
-@defun fourexpand (l, x, p, limit)
+@c NEEDS EXPANSION. EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
+@defun fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
 Constructs and returns the Fourier series from the list of
 Fourier coefficients @var{l} up through @var{limit} terms (@var{limit}
 may be @code{inf}). @var{x} and @var{p} have same meaning as in
 @code{fourier}.
 
+@c NEEDS EXAMPLES
 @end defun
 
-@defun fourcos (f, x, p)
+@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@defun fourcos (@var{f}, @var{x}, @var{p})
 Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, %pi]}.
 
+@c NEEDS EXAMPLES
 @end defun
 
-@defun foursin (f, x, p)
+@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@defun foursin (@var{f}, @var{x}, @var{p})
 Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, %pi]}.
 
+@c NEEDS EXAMPLES
 @end defun
 
-@defun totalfourier (f, x, p)
+@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@defun totalfourier (@var{f}, @var{x}, @var{p})
 Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
 
+@c NEEDS EXAMPLES
 @end defun
 
-@defun fourint (f, x)
+@c NEEDS EXPANSION
+@defun fourint (@var{f}, @var{x})
 Constructs and returns a list of the Fourier integral coefficients of @code{@var{f}(@var{x})}
 defined on @code{[minf, inf]}.
 
+@c NEEDS EXAMPLES
 @end defun
 
-@defun fourintcos (f, x)
+@c NEEDS EXPANSION
+@defun fourintcos (@var{f}, @var{x})
 Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
+@c NEEDS EXAMPLES
 @end defun
 
-@defun fourintsin (f, x)
+@c NEEDS EXPANSION
+@defun fourintsin (@var{f}, @var{x})
 Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
+@c NEEDS EXAMPLES
 @end defun
