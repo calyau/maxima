@@ -44,6 +44,10 @@
 (autof '$MAKEBOX '|gener|)
 (autof '$GEODESIC '|gener|)
 (autof '$CONMETDERIV '|gener|)
+(autof '$NAME '|canten|)
+(autof '$CONTI '|canten|)
+(autof '$COVI '|canten|)
+(autof '$DERI '|canten|)
 )
 #+cl
 (eval-when (eval compile)
@@ -626,14 +630,23 @@
        (COND ((CDR E) (CONS (CAR E) (CONS 1. (PUTINONES (CDR E)))))
 	     (T (LIST (CAR E) 1.)))) 
 
-;kdelta defines the symmetric combination of the Kronecker symbols
-
-(DEFMFUN $KDELTA (L1 L2) 		;KDELTA([L1],[L2]) is defined only if L1 and L2
-       (COND ((NULL (AND ($LISTP L1)             ;are empty or both of length 1
+(DEFMFUN $KDELTA (L1 L2)
+       (COND ((NULL (AND ($LISTP L1)
 			 ($LISTP L2)
 			 (= (LENGTH L1) (LENGTH L2))))
 	      (merror "Improper arg to DELTA: ~M"
 		      (LIST '(%KDELTA) L1 L2)
+		      ))
+	     (T (DELTA (CDR L1) (CDR L2))))) 
+
+;kdels defines the symmetric combination of the Kronecker symbols
+
+(DEFMFUN $KDELS (L1 L2)
+       (COND ((NULL (AND ($LISTP L1)
+			 ($LISTP L2)
+			 (= (LENGTH L1) (LENGTH L2))))
+	      (merror "Improper arg to DELTA: ~M"
+		      (LIST '(%KDELS) L1 L2)
 		      ))
 	     (T (DELTA (CDR L1) (CDR L2) 1)))) 
 
