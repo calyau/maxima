@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
+#       $Id: Myhtml.tcl,v 1.4 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -439,7 +439,7 @@ defTag select -body "xHMdo_input select" -sbody {
     set na [lindex $wvar(f_in_select) 0]
      	
     set w $form(f_select,$na)
-    foreach v [lrange $$wvar(f_in_select) 1 end] {
+    foreach v [lrange $wvar(f_in_select) 1 end] {
 	$w.list insert end $v
     }
     xHMresetListbox $w $wvar(f_selected,$na)
@@ -803,7 +803,8 @@ proc xHMdoSubmit { w formVar nameVals } {
 	xHMfindUrl $win $form(method) $form(action)?[string range $ans 1 end]
     } else {
 	xHMfindUrl $win $form(method) $form(action) [string range $ans 1 end]
-}   }
+}
+		}
 
 proc xHMfindUrl { win method  url { body "" }} {
     #puts "$win,$method,$url,$body"
@@ -1105,7 +1106,8 @@ proc xHMrender { win tag  params text } {
     } else {
 	if { [string match "!--*" $tag] } { list} else {
 	#puts "undefined $tag: puts comment:$text"
-    }   }
+    }
+		}
 
 
     if { [regexp & $text] }  {
@@ -1203,9 +1205,12 @@ foreach v $HMdefaultOptions {set HMOption([lindex $v 0]) [lindex $v 1] }
 
 proc xHMwget { win key dflt } {
     upvar #0 xHMvar$win wvar
-    if { [info exists wvar($key)] } {return $wvar($key) } else {
+    if { [info exists wvar($key)] } {
+	return $wvar($key) 
+    } else {
 	return $dflt
-}   }
+}
+		}
 
 proc HMdoaref { action win x y } {
     global HMOption

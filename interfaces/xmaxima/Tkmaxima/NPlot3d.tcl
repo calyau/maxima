@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NPlot3d.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
+#       $Id: NPlot3d.tcl,v 1.4 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### NPlot3d.tcl ######
 ############################################################
@@ -37,19 +37,21 @@ set sample { variable_grid { 0 1 2 } { 3 4 5} { {0 1 2} {3 4 5 } {6 7 8 }}}
 set sample { matrix_mesh {{0 1} { 2 3 } {4 5 }}  {{0 1} { 2 3 } {4 5 }}  {{0 1} { 2 3 } {4 5 }} }
 set sample { matrix_mesh {{0 1 2} {0 1 2 } {0 1 2 }} {{3 4 5} {3 4 5} {3 4 5}} { {0 1 2} {3 4 5 } {6 7 8 }}}
 set sample1 { variable_grid  { 1 2 3 4 5 6 7 8 9 10 }
- { 1 2 3 }
- {  { 0 0 0 0 0 0 0 0 0 0 }
- { 0 0.68404 1.28558 1.73205 1.96962 1.96962 1.73205 1.28558 0.68404 2.44921e-16 }
- { 0 1.36808 2.57115 3.4641 3.93923 3.93923 3.4641 2.57115 1.36808 4.89843e-16 }
- }  }
+    { 1 2 3 }
+    {  { 0 0 0 0 0 0 0 0 0 0 }
+	{ 0 0.68404 1.28558 1.73205 1.96962 1.96962 1.73205 1.28558 0.68404 2.44921e-16 }
+	{ 0 1.36808 2.57115 3.4641 3.93923 3.93923 3.4641 2.57115 1.36808 4.89843e-16 }
+    }
+}
 
 set sample { matrix_mesh  {  { 0 0 0 0 0 }
- { 1 1 1 1 1 }
- }  {  { 0 1 1 0 0 }
- { 0 1 1 0 0 }
- }  {  { 0 0 1 1 0 }
- { 0 0 1 1 0 }
- }  }
+    { 1 1 1 1 1 }
+}  {  { 0 1 1 0 0 }
+    { 0 1 1 0 0 }
+}  {  { 0 0 1 1 0 }
+    { 0 0 1 1 0 }
+}
+}
 
 
 proc  fixupZ { } {
@@ -58,7 +60,7 @@ proc  fixupZ { } {
 	    set z nam
 	}  elseif { $dotruncate  &&  ($z > $zzmax || $z < $zzmin) } {
 	    set z nam
-	
+	    
 	} else {
 	    if { $flatten } {
 		if { $z > $zzmax } { 
@@ -85,8 +87,8 @@ proc normalizeToLengthOne { v } {
     set norm [expr { sqrt(1.0 * [lindex $v 0]*[lindex $v 0] + [lindex $v 1]*[lindex $v 1] + [lindex $v 2]*[lindex $v 2]) }]
     if { $norm != 0.0 } {
 	return [list [expr { [lindex $v 0] / $norm  } ] \
-		[expr { [lindex $v 1] / $norm  } ] \
-		[expr { [lindex $v 2] / $norm  } ] ]
+		    [expr { [lindex $v 1] / $norm  } ] \
+		    [expr { [lindex $v 2] / $norm  } ] ]
 	
     } else {
 	return "1.0 0.0 0.0 " 
@@ -96,10 +98,10 @@ proc normalizeToLengthOne { v } {
 
 
 proc vectorCross { x1 x2 }  {
-     list \
-      [expr { [lindex $x1 1]*[lindex $x2 2]- [lindex $x2 1]*[lindex $x1 2]}] \
-      [expr { [lindex $x1 2]*[lindex $x2 0]- [lindex $x2 2]*[lindex $x1 0] } ] \
-      [expr { [lindex $x1 0]*[lindex $x2 1]- [lindex $x2 0]*[lindex $x1 1] }]
+    list \
+	[expr { [lindex $x1 1]*[lindex $x2 2]- [lindex $x2 1]*[lindex $x1 2]}] \
+	[expr { [lindex $x1 2]*[lindex $x2 0]- [lindex $x2 2]*[lindex $x1 0] } ] \
+	[expr { [lindex $x1 0]*[lindex $x2 1]- [lindex $x2 0]*[lindex $x1 1] }]
 }
 
 proc linspace { a b n } {
@@ -131,122 +133,122 @@ proc addOnePlot3d { win data } {
     } else {set alldata $data}
     foreach data $alldata {	
 	set type [lindex $data 0]
-    if { "$type" == "grid" } {
-	desetq "xmin xmax" [lindex $data 1]
-	desetq "ymin ymax" [lindex $data 2]
-	set pts [lindex $data 3]
-	
-	set ncols [llength $pts]
-	set nrows  [llength [lindex $pts 0]]
-	set data [list variable_grid [linspace $xmin $xmax $ncols] \
-		[linspace $ymin $ymax $nrows] \
-		$pts ]
-    }
-    if { "$type" == "variable_grid" } {
-	desetq "xrow yrow zmat" [lrange $data 1 end]
-	# puts "xrow=$xrow,yrow=$yrow,zmat=$zmat"
-	set nx [expr {[llength $xrow] -1}]
-	set ny [expr {[llength $yrow] -1}]
-	#puts "nx=$nx,ny=$ny"
-#	set xmin [lindex $xrow 0]
-#	set xmax [lindex $xrow $nx]
-#	set ymin [lindex $yrow 0]
-#	set ymax [lindex $yrow $ny]
-	desetq "xmin xmax" [minMax $xrow ""]
-	desetq "ymin ymax" [minMax $yrow ""]
-	desetq "zmin zmax" [matrixMinMax [list $zmat]]
-#	puts "and now"
-#	dshow nx xmin xmax ymin ymax zmin zmax
-	if { $dotruncate } {
-	    if { $flatten } { set dotruncate 0 }
-
-	    set zzmax [expr {$zcenter + $zradius}]
-	    set zzmin [expr {$zcenter - $zradius}]
-	    #puts "zzmax=$zzmax,$zzmin"
-	} else { set flatten 0 }
-
-
-
-	for {set j 0} { $j <= $ny } { incr j} {
-	    set y [lindex $yrow $j]
-	    set row [lindex $zmat $j]
-	for {set i 0} { $i <= $nx } { incr i} {
-	    set x [lindex $xrow $i]
-	    set z [lindex $row $i]
-	    #puts "x=$x,y=$y,z=$z, at ($i,$j)"
-	    fixupZ
-	    if { $j != $ny && $i != $nx } {
-		lappend lmesh [list $k [expr { $k+3 }] \
-			[expr { $k+3+($nx+1)*3 }] \
-		      [expr { $k+($nx+1)*3 }]]
-	    }
-	      incr k 3
-	  lappend points $x $y $z
-	  }
+	if { "$type" == "grid" } {
+	    desetq "xmin xmax" [lindex $data 1]
+	    desetq "ymin ymax" [lindex $data 2]
+	    set pts [lindex $data 3]
+	    
+	    set ncols [llength $pts]
+	    set nrows  [llength [lindex $pts 0]]
+	    set data [list variable_grid [linspace $xmin $xmax $ncols] \
+			  [linspace $ymin $ymax $nrows] \
+			  $pts ]
 	}
-    } elseif { "$type" == "matrix_mesh" } {
-	
-	desetq "xmat ymat zmat" [lrange $data 1 end]
-	foreach v {x y z} {
-	
-	
-	    desetq "${v}min ${v}max" [matrixMinMax [list [set ${v}mat]]]
-	
-	}
-	#puts "zrange=$zmin,$zmax"
-	set nj [expr {[llength [lindex $xmat 0]] -1 }]
-	set ni [expr {[llength $xmat ] -1 }]
-	set i -1
-	set k [llength $points]
-	foreach rowx $xmat rowy $ymat rowz $zmat {
-	    set j -1
-	    incr i
-	    if { [llength $rowx] != [llength $rowy] } {
-		error "mismatch rowx:$rowx,rowy:$rowy"
+	if { "$type" == "variable_grid" } {
+	    desetq "xrow yrow zmat" [lrange $data 1 end]
+	    # puts "xrow=$xrow,yrow=$yrow,zmat=$zmat"
+	    set nx [expr {[llength $xrow] -1}]
+	    set ny [expr {[llength $yrow] -1}]
+	    #puts "nx=$nx,ny=$ny"
+	    #	set xmin [lindex $xrow 0]
+	    #	set xmax [lindex $xrow $nx]
+	    #	set ymin [lindex $yrow 0]
+	    #	set ymax [lindex $yrow $ny]
+	    desetq "xmin xmax" [minMax $xrow ""]
+	    desetq "ymin ymax" [minMax $yrow ""]
+	    desetq "zmin zmax" [matrixMinMax [list $zmat]]
+	    #	puts "and now"
+	    #	dshow nx xmin xmax ymin ymax zmin zmax
+	    if { $dotruncate } {
+		if { $flatten } { set dotruncate 0 }
+
+		set zzmax [expr {$zcenter + $zradius}]
+		set zzmin [expr {$zcenter - $zradius}]
+		#puts "zzmax=$zzmax,$zzmin"
+	    } else { set flatten 0 }
+
+
+
+	    for {set j 0} { $j <= $ny } { incr j} {
+		set y [lindex $yrow $j]
+		set row [lindex $zmat $j]
+		for {set i 0} { $i <= $nx } { incr i} {
+		    set x [lindex $xrow $i]
+		    set z [lindex $row $i]
+		    #puts "x=$x,y=$y,z=$z, at ($i,$j)"
+		    fixupZ
+		    if { $j != $ny && $i != $nx } {
+			lappend lmesh [list $k [expr { $k+3 }] \
+					   [expr { $k+3+($nx+1)*3 }] \
+					   [expr { $k+($nx+1)*3 }]]
+		    }
+		    incr k 3
+		    lappend points $x $y $z
+		}
 	    }
-	    if { [llength $rowx] != [llength $rowz] } {
-		error "mismatch rowx:$rowx,rowz:$rowz"
+	} elseif { "$type" == "matrix_mesh" } {
+	    
+	    desetq "xmat ymat zmat" [lrange $data 1 end]
+	    foreach v {x y z} {
+		
+		
+		desetq "${v}min ${v}max" [matrixMinMax [list [set ${v}mat]]]
+		
 	    }
-	    foreach x $rowx y $rowy z $rowz {
-		incr j
-		if { $j != $nj && $i != $ni } {
-		#puts "tes=($i,$j) $x, $y, $z"
-		    lappend lmesh [ list \
-			    $k [expr { $k+3 } ] [expr { $k + 3  + ($nj+1)*3}] \
-			    [expr { $k+($nj+1)*3 }] ]
+	    #puts "zrange=$zmin,$zmax"
+	    set nj [expr {[llength [lindex $xmat 0]] -1 }]
+	    set ni [expr {[llength $xmat ] -1 }]
+	    set i -1
+	    set k [llength $points]
+	    foreach rowx $xmat rowy $ymat rowz $zmat {
+		set j -1
+		incr i
+		if { [llength $rowx] != [llength $rowy] } {
+		    error "mismatch rowx:$rowx,rowy:$rowy"
+		}
+		if { [llength $rowx] != [llength $rowz] } {
+		    error "mismatch rowx:$rowx,rowz:$rowz"
+		}
+		foreach x $rowx y $rowy z $rowz {
+		    incr j
+		    if { $j != $nj && $i != $ni } {
+			#puts "tes=($i,$j) $x, $y, $z"
+			lappend lmesh [ list \
+					    $k [expr { $k+3 } ] [expr { $k + 3  + ($nj+1)*3}] \
+					    [expr { $k+($nj+1)*3 }] ]
+		    }
+		    incr k 3
+		    lappend points $x $y $z
+		}
+	    }
+	} elseif { 0 && "$type" == "mesh" } {
+	    # walk thru compute the xmin, xmax, ymin , ymax...
+	    # and then go thru setting up the mesh array..
+	    # and maybe setting up the color map for these meshes..
+	    #
+	    # { mesh {{{x00 y00 z00 } { x01 y01 z01} { x02 y02 z02}  ..}{{x10 y10 z10} {x11 y11 z11} ......} ..}}
+	    # mesh(1) = P00 P01 P11 P10
+	    set mdata [lindex $data 1]
+	    set nx [llength $mdata]
+	    set ny [llength [lindex $mdata 0]]
+
+	    for {set i 0} { $i <= $nx } { incr i} {
+		set pts [lindex $mdata $i]
+		set j 0
+		foreach { x y z} $pts {
+		    fixupZ $z
+		    if { $j != $ny && $i != $nx } {
+			lappend lmesh [list
+				       $k [expr { $k+3 }] [expr { $k+3+($ny+1)*3 }] \
+					   [expr { $k+($ny+1)*3 }] ]
+		    }
 		}
 		incr k 3
 		lappend points $x $y $z
+		incr j
 	    }
-	}
-    } elseif { 0 && "$type" == "mesh" } {
-  # walk thru compute the xmin, xmax, ymin , ymax...
-  # and then go thru setting up the mesh array..
-  # and maybe setting up the color map for these meshes..
-  #
-    # { mesh {{{x00 y00 z00 } { x01 y01 z01} { x02 y02 z02}  ..}{{x10 y10 z10} {x11 y11 z11} ......} ..}}
-# mesh(1) = P00 P01 P11 P10
-    set mdata [lindex $data 1]
-    set nx [llength $mdata]
-    set ny [llength [lindex $mdata 0]]
-
-    for {set i 0} { $i <= $nx } { incr i} {
-	set pts [lindex $mdata $i]
-	set j 0
-	foreach { x y z} $pts {
-	    fixupZ $z
-	    if { $j != $ny && $i != $nx } {
-		lappend lmesh [list
-			$k [expr { $k+3 }] [expr { $k+3+($ny+1)*3 }] \
-			[expr { $k+($ny+1)*3 }] ]
-		}
-	    }
-	    incr k 3
-	    lappend points $x $y $z
-	    incr j
 	}
     }
-   }
     foreach v { x y z } {
 	set a [set ${v}min]
 	set b  [set ${v}max]
@@ -268,8 +270,8 @@ proc addOnePlot3d { win data } {
 
 proc vectorDiff { x1 x2 } {
     list [expr { [lindex $x1 0] - [lindex $x2 0] }] \
-	    [expr { [lindex $x1 1] - [lindex $x2 1] }] \
-	    [expr { [lindex $x1 2] - [lindex $x2 2] }]
+	[expr { [lindex $x1 1] - [lindex $x2 1] }] \
+	[expr { [lindex $x1 2] - [lindex $x2 2] }]
 }
 
 
@@ -278,8 +280,8 @@ proc oneCircle { old2 old1 pt radius nsides { angle 0 } } {
     for  { set i 0 } { $i < $nsides } { incr i } {
 	set t [expr {$dt*$i }]
 	lappend ans [expr { $radius*([lindex $old2 0]*cos($t) + [lindex $old1 0] * sin($t)) + [lindex $pt 0] } ] \
-		[expr { $radius*([lindex $old2 1]*cos($t) + [lindex $old1 1] * sin($t)) + [lindex $pt 1] } ] \
-		[expr { $radius*([lindex $old2 2]*cos($t) + [lindex $old1 2] * sin($t)) + [lindex $pt 2] } ]
+	    [expr { $radius*([lindex $old2 1]*cos($t) + [lindex $old1 1] * sin($t)) + [lindex $pt 1] } ] \
+	    [expr { $radius*([lindex $old2 2]*cos($t) + [lindex $old1 2] * sin($t)) + [lindex $pt 2] } ]
     }
     return $ans
 }
@@ -288,7 +290,8 @@ proc curve3d { xfun yfun zfun trange } {
     foreach u { x y z} {
 	set res [parseConvert [set ${u}fun] -variables t]
 	proc _${u}fun { t } [list expr [lindex [lindex $res 0] 0]]
-}   }
+    }
+}
 
 proc tubeFromCurveData { pts nsides radius } {
     set n [llength $pts] ;
@@ -297,7 +300,7 @@ proc tubeFromCurveData { pts nsides radius } {
 	set f1 [expr {$n -2}]
 	set f2 1
     } else { set f1 0
-	 set f2 1
+	set f2 1
     }
     set delta [vectorDiff [lindex $pts $f2] [lindex $pts $f1]]
     if { [lindex $delta 0] == 0 && [lindex $delta 1] == 0 && [lindex $delta 2] == 0 } { set delta "0 0 1.0" }
@@ -311,14 +314,14 @@ proc tubeFromCurveData { pts nsides radius } {
     for { set j 1 } { $j < $n -1 } { incr j } {
 	set delta [vectorDiff [lindex $pts $j] [lindex $pts [expr {$j+1}]]]
 	if { [lindex $delta 0] == 0 && [lindex $delta 1] == 0 && [lindex $delta 2] == 0 } { set delta $old
+	}
+	set old $delta
+	set old1 [normalizeToLengthOne [vectorCross $delta $n1]]
+	set old2 [normalizeToLengthOne [vectorCross $delta $n2]]
+	set n2 $old1
+	set n1 $old2
+	lappend ans [oneCircle $n2 $n1 [lindex $pts $j] $radius $nsides]
     }
-    set old $delta
-    set old1 [normalizeToLengthOne [vectorCross $delta $n1]]
-    set old2 [normalizeToLengthOne [vectorCross $delta $n2]]
-    set n2 $old1
-    set n1 $old2
-    lappend ans [oneCircle $n2 $n1 [lindex $pts $j] $radius $nsides]
-}
     if { $closed } {
 	set f2 1 ; set f1 [expr {$n -2}] ; set f3 0
     } else {
@@ -327,7 +330,7 @@ proc tubeFromCurveData { pts nsides radius } {
 
     set delta [vectorDiff [lindex $pts $f2] [lindex $pts $f1]]
     if { [lindex $delta 0] == 0 && [lindex $delta 1] == 0 && \
-	    [lindex $delta 2] == 0 } { set delta $old }
+	     [lindex $delta 2] == 0 } { set delta $old }
     set old1 [normalizeToLengthOne [vectorCross delta $n1]]
     set old2 [normalizeToLengthOne [vectorCross $n2 $delta]]
     set n2 $old1 ; set n1 $old2
@@ -336,29 +339,28 @@ proc tubeFromCurveData { pts nsides radius } {
 	set n1 $first1 ; st n2 $first2;
     }
     lappend ans [oneCircle $n2 $n1 [lindex $pts $f3] $radius $nsides $angle]
-   return $ans
+    return $ans
 }
 
 
 #
- #-----------------------------------------------------------------
- #
- # vangle --  angle between two unit vectors
- #
- #  Results: an angle
- #
- #  Side Effects: none.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# vangle --  angle between two unit vectors
+#
+#  Results: an angle
+#
+#  Side Effects: none.
+#
+#----------------------------------------------------------------
 #
 proc vangle { x1 x2 } {
     set dot [expr { [lindex $x1 0]*[lindex $x2 0] +\
-	     [lindex $x1 1]*[lindex $x2 1] +\
-	     [lindex $x1 2]*[lindex $x2 2]} ]
+			[lindex $x1 1]*[lindex $x2 1] +\
+			[lindex $x1 2]*[lindex $x2 2]} ]
     if { $dot >= 1 } { return 0.0 }
     if { $dot <= -1.0 } { return 3.141592653589 }
     return [expr { acos($dot) } ]
 }
 
 ## endsource nplot3d.tcl
-

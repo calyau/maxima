@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Getdata1.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Getdata1.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### getdata1.tcl ######
 ############################################################
@@ -79,7 +79,7 @@ proc readAllData { sock args } {
     fconfigure $sock -blocking 0
 
     catch { $ws_openMath(status_window).scale \
-	    config -variable [oloc $sock percent] }
+		config -variable [oloc $sock percent] }
     lappend [oloc $sock after] [after [oget $sock timeout] "oset $sock done -1"]
     if { "[oget $sock mimeheader]" != "" } {
 	fileevent  $sock readable "readMimeHeader $sock"
@@ -197,12 +197,12 @@ proc readAllData1 { sock } {
 
 	    if { $contentlength > 0 } {
 		oset $sock percent \
-			[expr {$bytesread * 100.0 / $contentlength }]
+		    [expr {$bytesread * 100.0 / $contentlength }]
 		
 	    }
 
 	    if { $docommand } {
-		catch { uplevel #0  [oget $sock command] }
+		catch { uplevel "#0"  [oget $sock command] }
 	    }
 	    # puts "percent=[oget $sock percent],bytes=[oget $sock bytesread]"
 
@@ -221,7 +221,7 @@ proc readAllData1 { sock } {
 	}
     }
     lappend [oloc $sock after] \
-	    [after $timeout "oset $sock done -1"]
+	[after $timeout "oset $sock done -1"]
 }
 
 
@@ -242,14 +242,14 @@ proc readAllData1 { sock } {
 #
 proc wrFinishRead { sock } {
     makeLocal $sock mimeheader contentlength tovar tochannel headervalue \
-	    bytesread docommand
+	bytesread docommand
     #puts "entering wrFinishRead" ; flush stdout
 
     if { "$mimeheader" != "" } {
-	uplevel #0 set $mimeheader \[oget $sock headervalue\]
+	uplevel "#0" set $mimeheader \[oget $sock headervalue\]
     }
     if { "$tovar" != "" } {
-	uplevel #0 set $tovar \[oget $sock result\]
+	uplevel "#0" set $tovar \[oget $sock result\]
     } else {
 	catch { close $tochannel }
     }
@@ -259,7 +259,7 @@ proc wrFinishRead { sock } {
     }
     catch { close $sock }	
     if { $docommand } {
-	catch { uplevel #0  [oget $sock command]  }
+	catch { uplevel "#0"  [oget $sock command]  }
     }
     set res [oget $sock done]
     #puts "wrFinishRead, tovar=$tovar,tochannel=$tochannel,res=$res,bytesread=$bytesread"	
@@ -371,7 +371,8 @@ proc cleanCache { } {
     catch {
 	foreach v [glob [cacheName *]] {
 	    catch { file delete $v }
-    }   }
+	}
+    }
     catch { unset ws_Cache }
 }
 proc cacheName { name } {

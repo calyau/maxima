@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml1.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
+#       $Id: Myhtml1.tcl,v 1.4 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### Myhtml1.tcl ######
 ############################################################
@@ -9,28 +9,28 @@
 ############################################################
 
 defTag eval -alter {family fixed Cnowrap nowrap adjust 0} \
-	-body {
-    set paramList [xHMsplitParams $params]
-    if { [xHMextract_param $paramList program ""] } {
-	set wvar(evalPushed) "Teval"
-	xHMpushConstantTag $win Teval
-	foreach { k val } $paramList {
-	    if { "$k" == "doinsert" } {
-		set doinsert $val
-		if { "$doinsert" != "[defaultInsertMode $program]" } {
-		    lappend wvar(evalPushed) [list Targs -doinsert $doinsert]
-		    xHMpushConstantTag $win [list Targs -doinsert $doinsert]
+    -body {
+	set paramList [xHMsplitParams $params]
+	if { [xHMextract_param $paramList program ""] } {
+	    set wvar(evalPushed) "Teval"
+	    xHMpushConstantTag $win Teval
+	    foreach { k val } $paramList {
+		if { "$k" == "doinsert" } {
+		    set doinsert $val
+		    if { "$doinsert" != "[defaultInsertMode $program]" } {
+			lappend wvar(evalPushed) [list Targs -doinsert $doinsert]
+			xHMpushConstantTag $win [list Targs -doinsert $doinsert]
+		    }
+		} else {
+		    set tem "$k:$val"
+		    xHMpushConstantTag $win $tem
+		    lappend wvar(evalPushed) $tem
 		}
-	    } else {
-		set tem "$k:$val"
-		xHMpushConstantTag $win $tem
-		lappend wvar(evalPushed) $tem
 	    }
 	}
+    }  -sbody {
+	catch {foreach v $wvar(evalPushed) { xHMpopConstantTag $win $v } }
     }
-}  -sbody {
-    catch {foreach v $wvar(evalPushed) { xHMpopConstantTag $win $v } }
-}
 
 
 defTag result  -alter {family fixed  weight bold  adjust 0} -body {
@@ -44,7 +44,8 @@ defTag result  -alter {family fixed  weight bold  adjust 0} -body {
     if { [xHMextract_param $paramList name ""] } {
 	lappend wvar(resultPushed) result:$name
 	set taglist(result:$name) 1
-}   }   -sbody {
+    }
+}   -sbody {
     catch {foreach v $wvar(resultPushed) { xHMpopConstantTag $win $v } }
 }
 
@@ -92,8 +93,8 @@ defTag math -body {
 	set text [xHMconvert_ampersand $text]
     }
     if { [catch { set it [ $wc create stext 0 0 \
-	    -anchor nw -stext "$pre $text \$" -pointsize $ptsize \
-	    ] } ]  } {
+			       -anchor nw -stext "$pre $text \$" -pointsize $ptsize \
+			      ] } ]  } {
 	xHMpushConstantTag $win "center"
 	xHMtextInsert $win $text
 	xHMpopConstantTag $win "center"

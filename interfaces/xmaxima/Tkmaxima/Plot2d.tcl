@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Plot2d.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -64,7 +64,7 @@ proc mkPlot2d { args } {
     getOptions $plot2dOptions $args -usearray [oarray $win]
     linkLocal $win autoscale
     if { [argSuppliedp -data] && ![argSuppliedp -autoscale] && \
-	    ![argSuppliedp -xradius] } {
+	     ![argSuppliedp -xradius] } {
 	lappend autoscale x
     }
     if { ![argSuppliedp -autoscale] & [argSuppliedp -yradius] } {
@@ -117,38 +117,38 @@ proc doHelp2d {win } {
     global Parser
 
     doHelp $win [join [list \
-	    {
+			   {
 
-	William Schelter's plotter for two dimensional graphics.
+			       William Schelter's plotter for two dimensional graphics.
 
-	to QUIT this HELP click here.
+			       to QUIT this HELP click here.
 
-	By clicking on Zoom, the mouse now allows you to zoom \
-		in on a region of the plot.  Each click near a point \
-		magnifies the plot, keeping the center at the point \
-		you clicked.  Depressing the SHIFT key while clicking \
-		zooms in the opposite direction.
+			       By clicking on Zoom, the mouse now allows you to zoom \
+				   in on a region of the plot.  Each click near a point \
+				   magnifies the plot, keeping the center at the point \
+				   you clicked.  Depressing the SHIFT key while clicking \
+				   zooms in the opposite direction.
 
-	To change the functions plotted, click on Config and \
-		enter new values in the entry windows, and then click on \
-		Replot in the main menu bar.
+			       To change the functions plotted, click on Config and \
+				   enter new values in the entry windows, and then click on \
+				   Replot in the main menu bar.
 
-	Holding the right mouse button down allows you to drag
-	(translate) the plot sideways or up and down.
+			       Holding the right mouse button down allows you to drag
+			       (translate) the plot sideways or up and down.
 
-	Additional parameters such as the number of steps (nsteps), \
-		and the x and y centers and radii, may be set under the \
-		Config menu.
+			       Additional parameters such as the number of steps (nsteps), \
+				   and the x and y centers and radii, may be set under the \
+				   Config menu.
 
-	You may print to a postscript printer, or save the plot \
-		as a postscript file, by clicking on save.   To change \
-		between printing and saving see the Print Options under Config.
-	
-
-
+			       You may print to a postscript printer, or save the plot \
+				   as a postscript file, by clicking on save.   To change \
+				   between printing and saving see the Print Options under Config.
+			       
 
 
-    } $Parser(help)]]
+
+
+			   } $Parser(help)]]
 }
 
 global plot
@@ -269,13 +269,13 @@ proc  calculatePlot1 { win x0 h0 fun  limit } {
 	# catch { set delta [expr {abs($slope - ($y1-$y0)/($x1-$x0))}] }
 	
 	if { $count > 0 && (abs($y1 - $y0) > $h2 || $delta > $h2)  && (0 || abs($y1) < $littleLimit)
-    } {
-	#puts "too  big $y1 [expr {abs($y1-$y0)}] at $x1"
-	set x1 [expr {($x1 -$x0)/2 + $x0}]
-	incr count -1
-	continue
-    } elseif { abs($y1) > $limit || abs($y1-$y0) > $limit
-	|| $delta > $littleLimit } {
+	 } {
+	    #puts "too  big $y1 [expr {abs($y1-$y0)}] at $x1"
+	    set x1 [expr {($x1 -$x0)/2 + $x0}]
+	    incr count -1
+	    continue
+	} elseif { abs($y1) > $limit || abs($y1-$y0) > $limit
+		   || $delta > $littleLimit } {
 	    incr ii
 	    if { $count == 0 } {
 		uplevel 1 set x0 [expr {$x0 + $heps}]
@@ -363,8 +363,8 @@ proc replot2d {win } {
 	proc _xf {  x  } "expr { $v }"	
 	regsub "\\$" $v "" label
 	lappend xfundata [list label $label] \
-		[linsert [calculatePlot $win _xf $nsteps]  \
-		0 xversusy]
+	    [linsert [calculatePlot $win _xf $nsteps]  \
+		 0 xversusy]
     }
 
     # in case only functions and no y autoscale dont bother.
@@ -426,7 +426,7 @@ proc plot2dData { win data args } {
     } else {
 	# puts data=$data
 	set com [concat \
-		plot3d $args -windowname $win -zfun {{}} -data [lrange $data 1 end]]
+		     plot3d $args -windowname $win -zfun {{}} -data [lrange $data 1 end]]
 	# puts com=$com
 	eval $com
     }
@@ -502,7 +502,7 @@ proc plot2dRangesToRadius  { rangex rangey extra } {
 	    if { "$max" != "" } {
 		
 		lappend extra -[set u]radius [expr {($max-$min)/1.7}] \
-			-[set u]center [expr {($max+$min)/2.0}]
+		    -[set u]center [expr {($max+$min)/2.0}]
 	    }
 	}
     }
@@ -541,7 +541,7 @@ proc redraw2dData { win  args } {
 			
 			if { [info exists didLabel([oget $win curveNumber])] } {
 			    set label "" } else { set didLabel([oget $win curveNumber]) 1
-			}
+			    }
 			set errorbar [oget $win errorbar]
 			# puts "errorbar=$errorbar"
 			if { $errorbar != 0 } {
@@ -576,7 +576,8 @@ proc redraw2dData { win  args } {
 			set yvalues [lrange $yvalues [llength $xvalues] end]
 		    }
 
-	    }   }
+		}
+	    }
 	    againstIndex {
 		set color [nextColor $win]
 		set ind 0
@@ -587,13 +588,13 @@ proc redraw2dData { win  args } {
 		}
 		
 		drawPlot $win [list $ans] -tags \
-			[list [concat $tags line[oget $win curveNumber]]] \
-			-fill $color -width $linewidth -label $label
+		    [list [concat $tags line[oget $win curveNumber]]] \
+		    -fill $color -width $linewidth -label $label
 		set label _default
 
 		#	       eval $c create line $ans -tags \
-			#		        [list [concat $tags line[oget $win curveNumber]]] \
-			#		       -fill $color -width .2
+		    #		        [list [concat $tags line[oget $win curveNumber]]] \
+		    #		       -fill $color -width .2
 	    }
 	    label {
 		set label [lindex $d 1]
@@ -602,8 +603,8 @@ proc redraw2dData { win  args } {
 
 		# puts "$type,[lindex $d 1]"
 		if { [lsearch { xfun color plotpoints linecolors pointsize nolines bargraph errorbar maintitle linewidth
-		labelposition
-		xaxislabel yaxislabel } $type] >= 0 } {
+		    labelposition
+		    xaxislabel yaxislabel } $type] >= 0 } {
 		    # puts "setting oset $win $type [lindex $d 1]"
 		    oset $win $type [lindex $d 1]
 		} elseif { "$type" == "text" } {
@@ -628,8 +629,8 @@ proc plot2dDrawLabel { win label color } {
     desetq "x0 y0 x1 y1" $bb
     set leng  15
     set last [$c create text [expr {$a0 +$leng +4}] \
-	    [expr {2 + $y1}] \
-	    -anchor nw       -text "$label" -tags label]
+		  [expr {2 + $y1}] \
+		  -anchor nw       -text "$label" -tags label]
     desetq "ux0 uy0 ux1 uy1" [$c bbox $last]
     $c create line $a0 [expr {($uy0+$uy1) /2}] [expr {$a0 +$leng}] [expr {($uy0+$uy1) /2}]   -tags "label" -fill $color
 }
@@ -681,74 +682,74 @@ proc drawPlot {win listpts args } {
 		set ry0 [$rtosy 0]
 		foreach { x y } $pts {
 		    $c create rectangle [expr {$x-$w2}] $y  [expr {$x+$w2}] \
-			    $ry0 -tags $tags -fill $fill }
-		} else {
-		    if { $plotpoints } {
-			set im [getPoint $pointsize $fill]
-			
-			# there is no eval, so we need this.
-			if { "$im" != "" } {
-			    foreach { x y } $pts {
-				$c create image $x $y -image $im -anchor center \
-					-tags "$tags point"
-			    }
-			} else {
-			    foreach { x y } $pts {
-				$c create oval [expr {$x -$pointsize}] \
-					[expr {$y -$pointsize}] [expr {$x +$pointsize}] \
-					[expr {$y +$pointsize}] -tags $tags \
-					-fill $fill -outline {}
-				
-			    }
-			}
-		    }
+			$ry0 -tags $tags -fill $fill }
+	    } else {
+		if { $plotpoints } {
+		    set im [getPoint $pointsize $fill]
 		    
-		    if { $nolines == 0 } {
-			set n [llength $pts]
-			set i 0
-			set res "$win create line "
-			#puts npts:[llength $pts]
-			if { $n >= 6 } {
-			    eval $c create line $pts  	-tags [list $tags] -width $linewidth -fill $fill
+		    # there is no eval, so we need this.
+		    if { "$im" != "" } {
+			foreach { x y } $pts {
+			    $c create image $x $y -image $im -anchor center \
+				-tags "$tags point"
+			}
+		    } else {
+			foreach { x y } $pts {
+			    $c create oval [expr {$x -$pointsize}] \
+				[expr {$y -$pointsize}] [expr {$x +$pointsize}] \
+				[expr {$y +$pointsize}] -tags $tags \
+				-fill $fill -outline {}
+			    
 			}
 		    }
 		}
 		
+		if { $nolines == 0 } {
+		    set n [llength $pts]
+		    set i 0
+		    set res "$win create line "
+		    #puts npts:[llength $pts]
+		    if { $n >= 6 } {
+			eval $c create line $pts  	-tags [list $tags] -width $linewidth -fill $fill
+		    }
+		}
 	    }
+	    
 	}
-	plot2dDrawLabel $win $label $fill
+    }
+    plot2dDrawLabel $win $label $fill
+}
+
+
+
+proc drawPointsForPrint { c } {
+    global ws_openMath
+    foreach v [$c find withtag point] {
+	set tags [ldelete point [$c gettags $v]]
+	desetq "x y" [$c coords $v]
+	
+	
+	desetq "pointsize fill" $ws_openMath(pointimage,[$c itemcget $v -image])
+	catch {
+	    $c create oval [expr {$x -$pointsize}] \
+		[expr {$y -$pointsize}] [expr {$x +$pointsize}] \
+		[expr {$y +$pointsize}] -tags $tags \
+		-fill $fill -outline {}
+	    $c delete $v			
+	}
+
+
     }
 
+}
 
-
-    proc drawPointsForPrint { c } {
-	global ws_openMath
-	foreach v [$c find withtag point] {
-	    set tags [ldelete point [$c gettags $v]]
-	    desetq "x y" [$c coords $v]
-	    
-	    
-	    desetq "pointsize fill" $ws_openMath(pointimage,[$c itemcget $v -image])
-	    catch {
-		$c create oval [expr {$x -$pointsize}] \
-			[expr {$y -$pointsize}] [expr {$x +$pointsize}] \
-			[expr {$y +$pointsize}] -tags $tags \
-			-fill $fill -outline {}
-		$c delete $v			
-	    }
-
-
-	}
-
+proc getPoint { size color } {
+    global ws_openMath
+    set im ""
+    if { ![catch { set im $ws_openMath(pointimage,$size,$color) }] } {
+	return $im
     }
-
-    proc getPoint { size color } {
-	global ws_openMath
-	set im ""
-	if { ![catch { set im $ws_openMath(pointimage,$size,$color) }] } {
-	    return $im
-	}
-	catch { set data $ws_openMath(bitmap,disc[expr {$size * 2}])
+    catch { set data $ws_openMath(bitmap,disc[expr {$size * 2}])
 	set im [image create bitmap -data $data -foreground $color]
 	set ws_openMath(pointimage,$size,$color) $im
 	set ws_openMath(pointimage,$im) "$size $color"

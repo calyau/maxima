@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Plot3d.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -44,12 +44,12 @@ set plot3dOptions {
 ## source Matrix.tcl
 
 proc transformPoints { pts fun } {
-  set ans ""
-  foreach { x y z } $pts {
-      append ans " "
-      append ans [$fun $x $y $z]
-  }
-  return $ans
+    set ans ""
+    foreach { x y z } $pts {
+	append ans " "
+	append ans [$fun $x $y $z]
+    }
+    return $ans
 }
 
 proc calculatePlot3d {win fun  nx ny } {
@@ -70,7 +70,7 @@ proc calculatePlot3d {win fun  nx ny } {
 	set zzmax [expr {$zcenter + $zradius}]
 	set zzmin [expr {$zcenter - $zradius}]
 	#puts "zzmax=$zzmax,$zzmin"
-   } else { set flatten 0 }
+    } else { set flatten 0 }
 
     catch { unset  $meshes }
     set k 0
@@ -78,26 +78,26 @@ proc calculatePlot3d {win fun  nx ny } {
 	set x [expr { $xmin + $i * $stepx }]
 	for {set j 0} { $j <= $ny } { incr j} {
 	    set y [expr { $ymin + $j *$stepy }]
-	   if { [catch {  set z [$fun $x $y] }] } {
-	       set z nam
-	   } elseif { $dotruncate  &&  ($z > $zzmax || $z < $zzmin) } {
-	       set z nam
+	    if { [catch {  set z [$fun $x $y] }] } {
+		set z nam
+	    } elseif { $dotruncate  &&  ($z > $zzmax || $z < $zzmin) } {
+		set z nam
 
 	    } else {
 		if { $flatten } {
 		    if { $z > $zzmax } { set z $zzmax } elseif {
-			$z < $zzmin } { set z $zzmin }}
-			
-	       if { $z < $zmin }  { set zmin $z } elseif {
-		$z > $zmax } { set zmax $z }
+								$z < $zzmin } { set z $zzmin }}
+		
+		if { $z < $zmin }  { set zmin $z } elseif {
+							   $z > $zmax } { set zmax $z }
 		if { $j != $ny && $i != $nx } {
 		    set [set meshes]($k) \
-                      "$k [expr { $k+3 }] [expr { $k+3+($ny+1)*3 }] \
+			"$k [expr { $k+3 }] [expr { $k+3+($ny+1)*3 }] \
 		      [expr { $k+($ny+1)*3 }]"} else {
-		  # set plot3dMeshes($k) ""
-	      }
-	  }
-	      incr k 3
+			  # set plot3dMeshes($k) ""
+		      }
+	    }
+	    incr k 3
 	    append ans " $x $y $z"
 	}
     }
@@ -112,7 +112,7 @@ proc calculatePlot3d {win fun  nx ny } {
 }
 
 proc calculatePlot3data {win fun  nx ny } {
-# calculate the 3d data from function:
+    # calculate the 3d data from function:
     makeLocal $win xradius xmin xmax ymax yradius ymin zradius zcenter flatten
 
     set rowx [linspace $xmin $xmax $nx]
@@ -187,7 +187,7 @@ proc addAxes { win } {
     # puts "ans=$ans"
     append [oloc $win points] $ans
 
-   # set $meshes($k) ""
+    # set $meshes($k) ""
 
 }
 
@@ -196,7 +196,7 @@ proc addBbox { win } {
     makeLocal $win xmin xmax ymin ymax zmin zmax  cmap
     linkLocal $win points lmesh
     set ll [llength $points]
-     append points " $xmin $ymin $zmin \
+    append points " $xmin $ymin $zmin \
 	    $xmax $ymin $zmin \
             $xmin $ymax $zmin \
             $xmax $ymax $zmin \
@@ -205,8 +205,8 @@ proc addBbox { win } {
             $xmin $ymax $zmax \
             $xmax $ymax $zmax "
     foreach  { a b } { 0 1 0 2 2 3 3 1
-                       4 5 4 6 6 7 7 5
-    0 4 1 5 2 6 3 7  }  {
+	4 5 4 6 6 7 7 5
+	0 4 1 5 2 6 3 7  }  {
 	set k [expr {$a*3 + $ll}]
 	set l [expr {$b*3 + $ll}]
 	# set plot3dMeshes${win}($k) [list $k $l]
@@ -255,8 +255,8 @@ proc calculateRotated { win } {
     linkLocal $win scale
     makeLocal $win az el rotationcenter xradius zradius yradius
     set rotmatrix [rotationMatrix [expr {$az * $pideg }] \
-	    [expr {$el * $pideg }] \
-      ]
+		       [expr {$el * $pideg }] \
+		      ]
 
     # shrink by .2 on z axis
     # set fac [expr  {[vectorlength $xradius $yradius] / (sqrt(2) * $zradius)}]
@@ -277,14 +277,14 @@ proc calculateRotated { win } {
     foreach { x y z } [oget $win points] {
 	if { [catch { append ans " " [$rot $x $y $z] } ] } {
 	    append ans "  nam nam nam " }
-	}
+    }
     oset $win rotatefun $rot
     oset $win rotated $ans
 }
 
 proc getOrderedMeshIndices { win } {
- #   global  plot3dMeshes$win
- #    set meshes plot3dMeshes$win
+    #   global  plot3dMeshes$win
+    #    set meshes plot3dMeshes$win
     linkLocal $win lmesh
     # puts "array names $meshes =[array names $meshes ]"
     # get the list offset by 2, so the lindex indices grab the Z coordinate.
@@ -293,30 +293,30 @@ proc getOrderedMeshIndices { win } {
     set i 0
     foreach tem $lmesh {
         set k [llength $tem]
-       if { [catch {
-        if {  $k == 4 } {
-	    set z [expr { ([lindex $pts2 [lindex $tem 0]] \
-		    +[lindex $pts2 [lindex $tem 1]] \
-		    + [lindex $pts2 [lindex $tem 2]] \
-		    + [lindex $pts2 [lindex $tem 3]])/4.0 }]
-	} elseif { $k == 2 } {
-            set z [expr { ([lindex $pts2 [lindex $tem 0]] \
-		    +[lindex $pts2 [lindex $tem 1]])/2.0 }]
-	} else {
-	    set z 0
-            foreach w $tem {
-		set z [expr {$z + [lindex $pts2 $w] }  ]
-		
-	    }	
-	    set z [expr { $z/double($k)}]
-        }
-	lappend ans [list $z $i]
-	# append pp($z) "$i "
-	incr i
-	
-         } ]} {
+	if { [catch {
+	    if {  $k == 4 } {
+		set z [expr { ([lindex $pts2 [lindex $tem 0]] \
+				   +[lindex $pts2 [lindex $tem 1]] \
+				   + [lindex $pts2 [lindex $tem 2]] \
+				   + [lindex $pts2 [lindex $tem 3]])/4.0 }]
+	    } elseif { $k == 2 } {
+		set z [expr { ([lindex $pts2 [lindex $tem 0]] \
+				   +[lindex $pts2 [lindex $tem 1]])/2.0 }]
+	    } else {
+		set z 0
+		foreach w $tem {
+		    set z [expr {$z + [lindex $pts2 $w] }  ]
+		    
+		}	
+		set z [expr { $z/double($k)}]
+	    }
+	    lappend ans [list $z $i]
+	    # append pp($z) "$i "
+	    incr i
+	    
+	} ]} {
 	    set lmesh [lreplace $lmesh $i $i]
-	 }
+	}
     }
     set ttem [lsort -real -index 0 $ans]
     set ans {}
@@ -334,7 +334,7 @@ proc setUpTransforms3d { win } {
     # setUpTransforms $win .7
     # set screenwindow $scr
     linkLocal $win scale
-        makeLocal $win xcenter ycenter xradius yradius c zmin zmax xmin xmax ymin ymax zradius
+    makeLocal $win xcenter ycenter xradius yradius c zmin zmax xmin xmax ymin ymax zradius
     #dshow xcenter ycenter xradius yradius c zmin zmax xmin xmax ymin ymax zradius
     set fac .5
 
@@ -357,7 +357,7 @@ proc setUpTransforms3d { win } {
     desetq "xmax ymax" [matMul $scale 3 "$xmax $ymax 0" 1]
     #puts "RANGES=$xmin,$xmax $ymin,$ymax $zmin,$zmax"
     # set transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " "$xmax $ymin $x2 $y2"]
-   # desetq "xmin xmax ymin ymax" "-2 2 -2 2"
+    # desetq "xmin xmax ymin ymax" "-2 2 -2 2"
 
     set transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " "$xmax $ymin $x2 $y2"]
     oset $win transform $transform
@@ -377,7 +377,7 @@ proc plot3d { args } {
 	set win [getOptionDefault windowname $plot3dOptions] }
     clearLocal $win
     apply mkPlot3d  $win $args
-#    bind $win <Configure> {}	
+    #    bind $win <Configure> {}	
     replot3d $win
 }
 
@@ -389,7 +389,7 @@ proc replot3d { win } {
     oset $win maintitle    "concat \"Plot of z = [oget $win zfun]\""
     if { [llength $nsteps] == 1 }    {
 	oset $win nsteps \
-		[set nsteps  [list [lindex $nsteps 0] [lindex $nsteps 0]]]
+	    [set nsteps  [list [lindex $nsteps 0] [lindex $nsteps 0]]]
     }
     foreach v $data {
 	if { "[assq [lindex $v 0] $plot2dOptions notthere]" != "notthere" } {
@@ -408,17 +408,17 @@ proc replot3d { win } {
 
     if { "$data" != "" } {
 	if { 0 } {
-        puts "here"
-	set ranges [ plot3dGetDataRange [list $data]]
-	linkLocal $win zmin zmax
-	desetq "zmin zmax" [lindex $ranges 2]
-	puts "ranges=$ranges"
-	set some [plot2dRangesToRadius [lindex $ranges 0] [lindex $ranges 1] ""]
-	puts "and now"
-	foreach {v k} $some {
-	    puts "oset $win [string range $v 1 end] $k"
-	    oset $win [string range $v 1 end] $k
-	}
+	    puts "here"
+	    set ranges [ plot3dGetDataRange [list $data]]
+	    linkLocal $win zmin zmax
+	    desetq "zmin zmax" [lindex $ranges 2]
+	    puts "ranges=$ranges"
+	    set some [plot2dRangesToRadius [lindex $ranges 0] [lindex $ranges 1] ""]
+	    puts "and now"
+	    foreach {v k} $some {
+		puts "oset $win [string range $v 1 end] $k"
+		oset $win [string range $v 1 end] $k
+	    }
         }
 	
 	addOnePlot3d $win $data
@@ -428,7 +428,7 @@ proc replot3d { win } {
     setUpTransforms3d $win
 
     oset $win colorfun plot3dcolorFun
-#    addAxes $win
+    #    addAxes $win
     oset $win cmap c1
     setupPlot3dColors $win
     addBbox $win
@@ -479,7 +479,7 @@ proc setView1 { win  } {
 }
 
 proc setQuick { win on } {
-  linkLocal $win  lmesh  points savedData cmap 	lmeshBbox pointsBbox
+    linkLocal $win  lmesh  points savedData cmap 	lmeshBbox pointsBbox
     if { $on } {
 	if { ![info exists savedData] && [info exists lmeshBbox] } {
 	    set savedData [list $lmesh $points $cmap]
@@ -492,7 +492,9 @@ proc setQuick { win on } {
 	    desetq "lmesh points cmap" $savedData
 	    unset savedData
 	    oset $win lastAnglesPlotted ""
-}   }   }
+	}
+    }
+}
 
 
 # reduce the set of pointsBbox to include only those needed by lmeshBbox
@@ -514,14 +516,14 @@ proc resetPtsForLmesh { win } {
 		    set tem($w) $k
 		    lappend s $k
 		    lappend pointsBbox \
-			    [lindex $points $w] \
-			    [lindex $points [expr {$w +1}]] \
-			    [lindex $points [expr {$w +2}]]
+			[lindex $points $w] \
+			[lindex $points [expr {$w +1}]] \
+			[lindex $points [expr {$w +2}]]
 		    catch {set wvar(c2,$k) $wvar(c1,$w)}
 		    incr k 3
-		
+		    
 		}
-			
+		
 	    }
 	    lappend nmesh $s
 	    if { [info exists wvar(c1,$v)] } {
@@ -556,17 +558,17 @@ proc drawMeshes {win canv} {
 
 
 #
- #-----------------------------------------------------------------
- # plot3dMeshes  --  given K an index in plot3dPoints(points)
- # if this is the index of a lower grid corner, return the other points.
- # k takes values 0,3,6,9,... the values returned all have a 3 factor,
- # and so are true lindex indices into the list of points.
- # returns {} if this is not a mesh point.
- #  Results:
- #
- #  Side Effects: none... NOTE we should maybe cash this in an array.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+# plot3dMeshes  --  given K an index in plot3dPoints(points)
+# if this is the index of a lower grid corner, return the other points.
+# k takes values 0,3,6,9,... the values returned all have a 3 factor,
+# and so are true lindex indices into the list of points.
+# returns {} if this is not a mesh point.
+#  Results:
+#
+#  Side Effects: none... NOTE we should maybe cash this in an array.
+#
+#----------------------------------------------------------------
 #
 
 proc drawOneMesh { win  canv k mesh color } {
@@ -583,72 +585,72 @@ proc drawOneMesh { win  canv k mesh color } {
 	#desetq "a b" $mesh
 	#puts "<[lrange $points $a [expr {$a +2}]]> <[lrange $points $b [expr {$b +2}]]"
 	if { $n == 2 } {
-#	    set color gray70
-#	    catch { set color [oget $win $cmap,$mesh]}
+	    #	    set color gray70
+	    #	    catch { set color [oget $win $cmap,$mesh]}
 
 	    eval $canv create line $coords -tags [list [list axis mesh.$k]] \
-		    -fill $color -width 5
+		-fill $color -width 5
 	} else {
-	   # puts "doing special $mesh, $coords"
+	    # puts "doing special $mesh, $coords"
 	    catch { set tem [oget $win special([lindex $mesh 0])]
-	    eval [concat $tem $coords]
-	}
+		eval [concat $tem $coords]
+	    }
 	}
     } else {
-	 eval $canv create polygon $coords -tags [list [list poly mesh.$k]] \
-		-fill $color \
-		-outline black
+	eval $canv create polygon $coords -tags [list [list poly mesh.$k]] \
+	    -fill $color \
+	    -outline black
     }
 }
 
 proc doHelp3d { win } {
- global Parser
- doHelp $win [join [list \
-{
+    global Parser
+    doHelp $win [join [list \
+			   {
 
-William Schelter's plotter for three dimensional graphics.
+			       William Schelter's plotter for three dimensional graphics.
 
-To QUIT this HELP click here.
+			       To QUIT this HELP click here.
 
-By clicking on Zoom, the mouse now allows you \
-to zoom in on a region of the plot.  Each click \
-near a point magnifies the plot, keeping the \
-center at the point you clicked.  Depressing \
-the SHIFT key while clicking zooms in the \
-opposite direction.
+			       By clicking on Zoom, the mouse now allows you \
+				   to zoom in on a region of the plot.  Each click \
+				   near a point magnifies the plot, keeping the \
+				   center at the point you clicked.  Depressing \
+				   the SHIFT key while clicking zooms in the \
+				   opposite direction.
 
-Clicking on Rotate, makes the left mouse button  \
-cause rotation of the image.   The current position \
-can be determined by azimuth and elevation angles \
-which are given under the Config menu.   They may also \
-be specified on the command line.
+			       Clicking on Rotate, makes the left mouse button  \
+				   cause rotation of the image.   The current position \
+				   can be determined by azimuth and elevation angles \
+				   which are given under the Config menu.   They may also \
+				   be specified on the command line.
 
-To change the equations enter in the entry \
-windows, and click on replot.
+			       To change the equations enter in the entry \
+				   windows, and click on replot.
 
-You may print to a postscript printer, or save the plot \
-as a postscript file, by clicking on save.   To change \
-between printing and saving see the Print Options under Config.
-	
-Clicking with the right mouse button and dragging may be used \
-instead of the scroll bars to slide the plot \
-around.
+			       You may print to a postscript printer, or save the plot \
+				   as a postscript file, by clicking on save.   To change \
+				   between printing and saving see the Print Options under Config.
+			       
+			       Clicking with the right mouse button and dragging may be used \
+				   instead of the scroll bars to slide the plot \
+				   around.
 
 
-} $Parser(help)]]
+			   } $Parser(help)]]
 }
 
 proc     makeFrame3d { win } {
-  global plot3dPoints
-   set w [makeFrame $win 3d]
+    global plot3dPoints
+    set w [makeFrame $win 3d]
     set top $w
     catch { set top [winfo parent $w]}
     catch {
 
-    wm title $top "Schelter's 3d Plot Window"
-    wm iconname $top "DF plot"
- #   wm geometry $top 750x700-0+20
-   }
+	wm title $top "Schelter's 3d Plot Window"
+	wm iconname $top "DF plot"
+	#   wm geometry $top 750x700-0+20
+    }
 
     pack $w
 
@@ -663,19 +665,19 @@ proc mkPlot3d { win  args } {
     set printOption(maintitle) ""
     set wb $win.buttons
     setupCanvas $win
-   # catch { destroy $win }
+    # catch { destroy $win }
     makeFrame3d $win
     oset $win sliderCommand sliderCommandPlot3d
-   oset $win noaxisticks 1
+    oset $win noaxisticks 1
 
-   makeLocal $win buttonFont c
+    makeLocal $win buttonFont c
     bind $c <Motion> "showPosition3d $win %x %y"
     button $wb.rotate -text "Rotate" -command "setForRotate $win" -font $buttonFont
-   setBalloonhelp $win $wb.rotate {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.}
+    setBalloonhelp $win $wb.rotate {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.}
 
-   $win.position config -width 15
+    $win.position config -width 15
     pack $wb.rotate -expand 1 -fill x
-   setForRotate $win
+    setForRotate $win
 
 
 }
@@ -693,23 +695,23 @@ proc doConfig3d { win } {
     # pack .jim.buttons.rot
     pack $wb1.zfun  $wb1.nsteps
     pack	    $wb1.zfun  $wb1.nsteps
-   foreach w {xradius yradius xcenter ycenter zcenter zradius parameters } {
+    foreach w {xradius yradius xcenter ycenter zcenter zradius parameters } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w
     }
 
     scale $wb1.rotxscale -label "azimuth"  \
-	    -orient horizontal -length 150 -from -180 -to 180 -resolution 1 \
-	    -command "setView $win" -variable [oloc $win az] -tickinterval 120 -font $buttonFont
+	-orient horizontal -length 150 -from -180 -to 180 -resolution 1 \
+	-command "setView $win" -variable [oloc $win az] -tickinterval 120 -font $buttonFont
 
     scale $wb1.rotyscale -label "elevation"  \
-	    -orient horizontal -length 150 -from -180 -to 180 -resolution 1 \
-	    -command "setView $win" -variable [oloc $win el] -tickinterval 120 -font $buttonFont
+	-orient horizontal -length 150 -from -180 -to 180 -resolution 1 \
+	-command "setView $win" -variable [oloc $win el] -tickinterval 120 -font $buttonFont
 
 
-#    scale $wb1.rotzscale -label "thetaz"  \
-#	    -orient horizontal -length 150 -from -180 -to 180 \
-#	    -command "setView $win" -variable [oloc $win thetaz] -tickinterval 120 -font $buttonFont
+    #    scale $wb1.rotzscale -label "thetaz"  \
+	#	    -orient horizontal -length 150 -from -180 -to 180 \
+	#	    -command "setView $win" -variable [oloc $win thetaz] -tickinterval 120 -font $buttonFont
 
     pack   $wb1.rotxscale   $wb1.rotyscale
 
@@ -717,7 +719,7 @@ proc doConfig3d { win } {
 
 
 proc showPosition3d { win x y } {
-   # global position c
+    # global position c
     makeLocal $win c
     set x [$c canvasx $x]
     set y [$c canvasy $y]
@@ -739,24 +741,24 @@ proc showPosition3d { win x y } {
 	# puts pt=$pt
 	catch { oset $win position [eval [concat "format {(%.2f %.2f %.2f)}" $pt]] }
     }
-#    oset $win position [format {(%.1f %.1f)} $x $y]
-#    oset $win position \
-#      "[format {(%.2f,%.2f)}  [storx$win [$c canvasx $x]] [story$win [$c canvasy $y]]]"
+    #    oset $win position [format {(%.1f %.1f)} $x $y]
+    #    oset $win position \
+	#      "[format {(%.2f,%.2f)}  [storx$win [$c canvasx $x]] [story$win [$c canvasy $y]]]"
 }
 
 
 
 #
- #-----------------------------------------------------------------
- #
- # rotateRelative --  do a rotation indicated by a movement
- # of dx,dy on the screen.
- #
- #  Results:
- #
- #  Side Effects:
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# rotateRelative --  do a rotation indicated by a movement
+# of dx,dy on the screen.
+#
+#  Results:
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 
 proc rotateRelative { win x1 x2 y1 y2 } {
@@ -770,7 +772,7 @@ proc rotateRelative { win x1 x2 y1 y2 } {
     set res [$rotatefun 0 0 1]
     set res1 [$rotatefun 0 0 0]
     set fac [expr {([lindex $res 1] > [lindex $res1 1] ? -1 : 1) }] ;
-   # puts "fac=$fac,[lindex $res 1],[lindex $res1 1]"
+    # puts "fac=$fac,[lindex $res 1],[lindex $res1 1]"
     oset $win az [reduceMode360 [expr   {round($az + $fac *  $xx /2.0) }]]
     oset $win el [reduceMode360 [expr   {round($el -  $yy /2.0) }]]
     setView $win ignore
@@ -779,7 +781,7 @@ proc rotateRelative { win x1 x2 y1 y2 } {
 }
 
 proc reduceMode360 { n } {
-  return [  expr fmod(($n+180+5*360),360)-180]
+    return [  expr fmod(($n+180+5*360),360)-180]
 
 }
 
@@ -827,12 +829,12 @@ proc recomputePlot3d { win } {
 	incr recompute
 	return
     } else {
-		set recompute 1
+	set recompute 1
     }
     set redo 0
     while { $redo != $recompute } {
 	set redo $recompute
-#	puts "replot3d $win,[oget $win parameters]"
+	#	puts "replot3d $win,[oget $win parameters]"
 	catch {replot3d $win }
 	update
     }

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Plotdf.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -42,45 +42,45 @@ set plotdfOptions {
     {autoscale "x y" "Set {x,y}center and {x,y}range depending on data and function. "}
     {zoomfactor "1.6 1.6" "Factor to zoom the x and y axis when zooming.  Zoom out will be reciprocal" }
     {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"}
-     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
+    {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
     {labelposition "10 35" "Position for the curve labels nw corner"}
 }
 
 if { "[info proc makeFrame]" == "" } { source "plotconf.tcl" }
- proc makeFrameDf { win } {
-   set w [makeFrame $win df]
+proc makeFrameDf { win } {
+    set w [makeFrame $win df]
     makeLocal $win c dydx
 
     set top $win
-   # puts "w=$w,win=$win"
+    # puts "w=$w,win=$win"
     catch { set top [winfo parent $win]}
     catch {
 
-    wm title $top "Direction Fields"
-    wm iconname $top "DF plot"
-#    wm geometry $top 750x700-0+20
-   }
+	wm title $top "Direction Fields"
+	wm iconname $top "DF plot"
+	#    wm geometry $top 750x700-0+20
+    }
     set wb $w.buttons
-   makeLocal $win buttonFont
-   label $w.msg  -wraplength 600 -justify left -text "A direction field plotter by William Schelter" -font $buttonFont
+    makeLocal $win buttonFont
+    label $w.msg  -wraplength 600 -justify left -text "A direction field plotter by William Schelter" -font $buttonFont
 
-  button $wb.integrate -text "Integrate" -command "setForIntegrate $w" -font $buttonFont
-   setBalloonhelp $win $wb.integrate {Causes clicking on the  plot with the left mouse button at a point, to draw a trajectory passing through that point.   Under Config there is an entry box which allows entering exact x,y coordinates, and which also records the place of the last trajectory computed.}
+    button $wb.integrate -text "Integrate" -command "setForIntegrate $w" -font $buttonFont
+    setBalloonhelp $win $wb.integrate {Causes clicking on the  plot with the left mouse button at a point, to draw a trajectory passing through that point.   Under Config there is an entry box which allows entering exact x,y coordinates, and which also records the place of the last trajectory computed.}
 
-  button $wb.plotversust -text "Plot Versus t" -command "plotVersusT $w" -font $buttonFont
-   setBalloonhelp $win $wb.plotversust {Plot the x and y values for the  last trajectory versus t.}
+    button $wb.plotversust -text "Plot Versus t" -command "plotVersusT $w" -font $buttonFont
+    setBalloonhelp $win $wb.plotversust {Plot the x and y values for the  last trajectory versus t.}
 
 
-  setForIntegrate $w
-  pack $wb.integrate -side top -expand 1 -fill x
-  pack $wb.plotversust -side top -expand 1 -fill x
- # pack $w.msg -side top
-  pack $w
-  return $win
+    setForIntegrate $w
+    pack $wb.integrate -side top -expand 1 -fill x
+    pack $wb.plotversust -side top -expand 1 -fill x
+    # pack $w.msg -side top
+    pack $w
+    return $win
 }
 
 proc swapChoose {win msg winchoose } {
-   # global dydx dxdt dydt
+    # global dydx dxdt dydt
 
     if { "$msg" == "dydt" } {
 	pack $winchoose.dxdt -before $winchoose.dydt -side bottom
@@ -93,47 +93,47 @@ proc swapChoose {win msg winchoose } {
 	$winchoose.dydt.lab config -text "dy/dx"
     }
 }
-	
+
 
 proc doHelpdf { win } {
     global Parser
- doHelp $win [join [list \
-{
-William Schelter's solver/plotter for ode systems.
+    doHelp $win [join [list \
+			   {
+			       William Schelter's solver/plotter for ode systems.
 
-To QUIT this HELP click here.
+			       To QUIT this HELP click here.
 
-Clicking at a point computes the trajectory
-(x(t),y(t)) starting at that point, and satisfying
-the differential equation
-	
-  dx/dt = dxdt
-  dy/dt = dydt
+			       Clicking at a point computes the trajectory
+			       (x(t),y(t)) starting at that point, and satisfying
+			       the differential equation
+			       
+			       dx/dt = dxdt
+			       dy/dt = dydt
 
-By clicking on Zoom, the mouse now allows you to zoom
-in on a region of the plot.  Each click near a point
-magnifies the plot, keeping the center at the point
-you clicked.  Depressing the SHIFT key while clicking
-zooms in the opposite direction.
+			       By clicking on Zoom, the mouse now allows you to zoom
+			       in on a region of the plot.  Each click near a point
+			       magnifies the plot, keeping the center at the point
+			       you clicked.  Depressing the SHIFT key while clicking
+			       zooms in the opposite direction.
 
-To resume computing trajectories click on Integrate.
+			       To resume computing trajectories click on Integrate.
 
-To change the differential equation, click on Config and
-enter new values in the entry windows, and then click on
-Replot in the main menu bar.
+			       To change the differential equation, click on Config and
+			       enter new values in the entry windows, and then click on
+			       Replot in the main menu bar.
 
-Holding the right mouse button down allows you to drag
-(translate) the plot sideways or up and down.
+			       Holding the right mouse button down allows you to drag
+			       (translate) the plot sideways or up and down.
 
-Additional parameters such as the number of steps (nsteps),
-the initial t value (tinitial), and the x and y centers
-and radii, may be set under the  Config menu.
+			       Additional parameters such as the number of steps (nsteps),
+			       the initial t value (tinitial), and the x and y centers
+			       and radii, may be set under the  Config menu.
 
-You may print to a postscript printer, or save the plot \
-as a postscript file, by clicking on save.   To change \
-between printing and saving see the Print Options under Config.
-	
-} $Parser(help)]]
+			       You may print to a postscript printer, or save the plot \
+				   as a postscript file, by clicking on save.   To change \
+				   between printing and saving see the Print Options under Config.
+			       
+			   } $Parser(help)]]
 }
 
 proc setForIntegrate { win} {
@@ -153,7 +153,7 @@ proc doIntegrateScreen { win sx sy  } {
 
 proc doIntegrate { win x0 y0 } {
     # global xradius yradius c tstep  nsteps
-#    puts "dointegrate $win $x0 $y0"
+    #    puts "dointegrate $win $x0 $y0"
     makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t linecolors
     linkLocal $win didLast trajectoryStarts
     set rtosx rtosx$win ; set rtosy rtosy$win
@@ -176,64 +176,65 @@ proc doIntegrate { win x0 y0 } {
 	both { set todo "$h [expr {- $h}]" }
     }
     foreach method { adamsMoulton rungeKuttaA  } {
-	set color [oget $win $method]
-	if { "$color" != "" } {
-	    lappend methods $method
-	    lappend useColors $method $color
-	}
-    }
+						  set color [oget $win $method]
+						  if { "$color" != "" } {
+						      lappend methods $method
+						      lappend useColors $method $color
+						  }
+					      }
     set methodNo -1
     foreach method $methods {
-	incr methodNo
-#    puts method=$method
-    foreach h $todo {
-	set form [list $method xff yff $tinitial $x0 $y0 $h $steps]
-	set ans [eval $form]
-	lappend didLast $form
+			     incr methodNo
+			     #    puts method=$method
+			     foreach h $todo {
+				 set form [list $method xff yff $tinitial $x0 $y0 $h $steps]
+				 set ans [eval $form]
+				 lappend didLast $form
 
-	#puts "doing: $form"
-	set i -1
-	set xn1 [$rtosx [lindex $ans [incr i]]]
-	set yn1 [$rtosy [lindex $ans [incr i]]]
-	set lim [expr {$steps * 2}]
-	set mee [expr {pow(10.0,9)}]
-	set ptColor [assoc $method $useColors ]
-	set linecolor [lindex $linecolors $methodNo]
-	#set im [getPoint 2 green]
-	#set im1 [getPoint 2 purple]
-	set im [getPoint 2 $ptColor]
-	#set im1 [getPoint 2 purple]		
-	catch  {
-	    while { $i <= $lim } {
-		set xn2  [$rtosx [lindex $ans [incr i]]]
-		set yn2  [$rtosy [lindex $ans [incr i]]]
-		# puts "$xn1 $yn1"
-		# xxxxxxxx following is for a bug in win95 version
-		if { abs($xn1) + abs($yn1) +abs($xn2)+abs($yn2) < $mee    } {
-		    $c create line $xn1 $yn1 $xn2 $yn2 -tags path -width $linewidth -fill $linecolor
-		
-		}
-		
-                if { "$im" != "" } {
-			#puts hi
-			$c create image $xn1 $yn1 -image $im -anchor center \
-				-tags "point"
-			
-		    } else {
-		    $c create oval [expr $xn1 -2] [expr $yn1 -2] [expr $xn1 +2] [expr $yn1 +2] -fill $color
+				 #puts "doing: $form"
+				 set i -1
+				 set xn1 [$rtosx [lindex $ans [incr i]]]
+				 set yn1 [$rtosy [lindex $ans [incr i]]]
+				 set lim [expr {$steps * 2}]
+				 set mee [expr {pow(10.0,9)}]
+				 set ptColor [assoc $method $useColors ]
+				 set linecolor [lindex $linecolors $methodNo]
+				 #set im [getPoint 2 green]
+				 #set im1 [getPoint 2 purple]
+				 set im [getPoint 2 $ptColor]
+				 #set im1 [getPoint 2 purple]		
+				 catch  {
+				     while { $i <= $lim } {
+					 set xn2  [$rtosx [lindex $ans [incr i]]]
+					 set yn2  [$rtosy [lindex $ans [incr i]]]
+					 # puts "$xn1 $yn1"
+					 # xxxxxxxx following is for a bug in win95 version
+					 if { abs($xn1) + abs($yn1) +abs($xn2)+abs($yn2) < $mee    } {
+					     $c create line $xn1 $yn1 $xn2 $yn2 -tags path -width $linewidth -fill $linecolor
+					     
+					 }
+					 
+					 if { "$im" != "" } {
+					     #puts hi
+					     $c create image $xn1 $yn1 -image $im -anchor center \
+						 -tags "point"
+					     
+					 } else {
+					     $c create oval [expr $xn1 -2] [expr $yn1 -2] [expr $xn1 +2] [expr $yn1 +2] -fill $color
 
-		}
-	
-			
-		
+					 }
+					 
+					 
+					 
 
-		# puts "$xn1 $yn1"
-		set xn1 $xn2
-		set yn1 $yn2
-	    }
-    }   }
-  }
-  if { $versus_t } { plotVersusT $win}
+					 # puts "$xn1 $yn1"
+					 set xn1 $xn2
+					 set yn1 $yn2
+				     }
+				 }
+			     }
+			 }
+    if { $versus_t } { plotVersusT $win}
 }
 
 
@@ -263,10 +264,11 @@ proc plotVersusT {win } {
 	}
 	
 	foreach u $tem v [list $allx $ally $allt] {
-		if { $h > 0 } { lappend doing($this) [concat $u $v]} else {
-		    lappend doing($this) [concat [lreverse $v] $u]
-	    }   }
+	    if { $h > 0 } { lappend doing($this) [concat $u $v]} else {
+		lappend doing($this) [concat [lreverse $v] $u]
+	    }
 	}
+    }
 
     foreach {na val } [array get doing] {
 	lappend plotdata [list label "x versus t"] [list plotpoints 2]
@@ -294,27 +296,27 @@ proc lreverse { lis } {
 
 
 #
- #-----------------------------------------------------------------
- #
- # $rtosx,$rtosy --  convert Real coordinate to screen coordinate
- #
- #  Results: a window coordinate
- #
- #  Side Effects:
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# $rtosx,$rtosy --  convert Real coordinate to screen coordinate
+#
+#  Results: a window coordinate
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 
 
 #
- #-----------------------------------------------------------------
- #
- # $storx,$story --  Convert a screen coordinate to a Real coordinate.
- #
- #  Results:
- #
- #  Side Effects:
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# $storx,$story --  Convert a screen coordinate to a Real coordinate.
+#
+#  Results:
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 
 proc drawArrowScreen { c atx aty dfx dfy } {
@@ -325,9 +327,9 @@ proc drawArrowScreen { c atx aty dfx dfy } {
     #   set y2 [expr {$aty + .8*$dfy - .1* $dfx}]
     #   set x3 [expr {$atx + .8*$dfx -.1* $dfy}]
     #   set y3 [expr {$aty + .8*$dfy + .1* $dfx}]
-  $c create line $atx $aty $x1 $y1 -tags arrow -fill blue -arrow last -arrowshape {3 5 2}
-#  $c create line $x2 $y2  $x1 $y1 -tags arrow -fill red
-#  $c create line $x3 $y3 $x1 $y1 -tags arrow -fill red
+    $c create line $atx $aty $x1 $y1 -tags arrow -fill blue -arrow last -arrowshape {3 5 2}
+    #  $c create line $x2 $y2  $x1 $y1 -tags arrow -fill red
+    #  $c create line $x3 $y3 $x1 $y1 -tags arrow -fill red
 }
 
 proc drawDF { win tinitial } {
@@ -359,7 +361,8 @@ proc drawDF { win tinitial } {
 	    append all " $len $dfx $dfy "
 	    if { $min > $len } { set min $len }
 	    if { $max < $len } {set  max $len}
-    }   }
+	}
+    }
     set fac [expr {($stepsize -5 -8)/($max - $min)}]
     set arrowmin 8
     set arrowrange [expr {$stepsize -4 - $arrowmin}]
@@ -378,10 +381,10 @@ proc drawDF { win tinitial } {
     set i -1
     for { set x [expr {[$rtosx $xmin] - $stepsize}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
 	for { set y [expr {[$rtosy $ymax] - $stepsize}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
-	
-	
+	    
+	    
 	    set len [lindex $all [incr i]]
-	
+	    
 	    set fac [expr {$s1/$len + $s2}]
 	    set dfx [lindex $all [incr i]]
 	    set dfy [lindex $all [incr i]]
@@ -392,9 +395,9 @@ proc drawDF { win tinitial } {
     }
 
     $c create line [$rtosx 0 ] [$rtosy -1000] [$rtosx 0] [$rtosy 1000] \
-	    -fill $axisGray
+	-fill $axisGray
     $c create line [$rtosx -1000] [$rtosy 0] [$rtosx 1000] [$rtosy 0] \
-	    -fill $axisGray
+	-fill $axisGray
     axisTicks $win $c
 }
 
@@ -434,19 +437,19 @@ proc plotdf { args } {
     if { "$dydx" !="" } { oset $win dxdt 1 ; oset $win dydt $dydx }
     setPrintOptions $args
     foreach v {trajectoryStarts recompute} {
-	    catch { unset [oloc $win $v]  }
-	}
+	catch { unset [oloc $win $v]  }
+    }
 
     makeFrameDf $win
     oset $win sliderCommand sliderCommandDf
     oset $win trajectoryStarts ""
-	
+    
 
     oset $win maintitle [concat "makeLocal $win  dxdt dydt dydx ;"  \
-	    {if { "$dydx" == "" } { concat "dx/dt = $dxdt , dy/dt = $dydt"}  else {
-	concat "dy/dx = $dydt" } } ]
-	replotdf $win
-    }
+			     {if { "$dydx" == "" } { concat "dx/dt = $dxdt , dy/dt = $dydt"}  else {
+				 concat "dy/dx = $dydt" } } ]
+    replotdf $win
+}
 
 proc replotdf { win } {
     global plotdfOptions
@@ -464,15 +467,15 @@ proc replotdf { win } {
     oset $win curveNumber -1
     drawDF $win $tinitial
     if { "$doTrajectoryAt" != "" } {
-         eval doIntegrate $win  $doTrajectoryAt
+	eval doIntegrate $win  $doTrajectoryAt
     }
     set xfundata ""
     foreach v [sparseListWithParams $xfun {x y t} $parameters ] {
 	proc _xf {  x  } "return \[expr { $v } \]"
 	regsub "\\$" $v "" label
 	lappend xfundata [list label $label] \
-	  [linsert [calculatePlot $win _xf $nsteps]  \
-		0 xversusy]
+	    [linsert [calculatePlot $win _xf $nsteps]  \
+		 0 xversusy]
     }
     redraw2dData $win -tags path
 
@@ -490,9 +493,9 @@ proc doConfigdf { win } {
     frame $wb1.choose1
     set frdydx $wb1.choose1
     button $frdydx.dydxbut -command "swapChoose $win dydx $frdydx " \
-	    -text "dy/dx" -font $buttonFont
+	-text "dy/dx" -font $buttonFont
     button $frdydx.dydtbut -command "swapChoose $win dydt $frdydx" \
-	    -text "dy/dt,dx/dt" -font $buttonFont
+	-text "dy/dt,dx/dt" -font $buttonFont
     mkentry $frdydx.dxdt [oloc $win dxdt] "dx/dt" $buttonFont
     mkentry $frdydx.dydt [oloc $win dydt] "dy/dt" $buttonFont
     pack $frdydx.dxdt  $frdydx.dydt -side bottom  -fill x -expand 1
@@ -503,13 +506,13 @@ proc doConfigdf { win } {
 	pack $wb1.$w -side bottom -expand 1 -fill x
     }
     mkentry $wb1.doTrajectoryAt [oloc $win doTrajectoryAt] \
-	    "Trajectory at" $buttonFont
+	"Trajectory at" $buttonFont
     bind $wb1.doTrajectoryAt.e <KeyPress-Return> \
-	    "eval doIntegrate $win \[oget $win doTrajectoryAt\] "
+	"eval doIntegrate $win \[oget $win doTrajectoryAt\] "
     pack  $wb1.doTrajectoryAt   $frdydx    -side bottom -expand 1 -fill x
     if { "[oget $win dydx]" != "" } { swapChoose $win dydx $frdydx }
     setForIntegrate $win
- }
+}
 
 
 
@@ -529,7 +532,7 @@ proc recomputeDF { win } {
 	incr recompute
 	return
     } else {
-#	puts "set recompute 1"
+	#	puts "set recompute 1"
 	set recompute 1
     }
     linkLocal $win trajectoryStarts  c tinitial dxdt dydt parameters
@@ -540,9 +543,9 @@ proc recomputeDF { win } {
 
 
     while { $redo != $recompute } {
-#	puts "	setXffYff $dxdt $dydt $parameters"
+	#	puts "	setXffYff $dxdt $dydt $parameters"
 	setXffYff $dxdt $dydt $parameters
-#	$c delete path point arrow
+	#	$c delete path point arrow
 	$c delete all
 	catch { unset  trajectoryStarts }
 	set redo $recompute
@@ -556,15 +559,9 @@ proc recomputeDF { win } {
 	    catch { drawDF $win $tinitial }
 	}
     }
-#    puts "    unset recompute"
+    #    puts "    unset recompute"
     unset recompute
 }
-
-
-	
-		
-	
-	
 
 
 ## endsource plotdf.tcl

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.4 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### browser.tcl ######
 ############################################################
@@ -193,7 +193,8 @@ bind OpenMathText <Alt-Key-w> {
     if { "[selection own -displayof %W]" == "%W"} {
     pushl [saveText %W sel.first sel.last] killRing
     selection clear -displayof %W
-}   }
+}
+		}
 
 bind OpenMathText <Key> {openMathAnyKey %W %K %A}
 bind OpenMathText <Alt-Key> {openMathAnyKey %W %K ALT_%A}
@@ -540,7 +541,8 @@ proc OpenMathGetWindow { commandPanel win } {
     oset $commandPanel location [oget $win location]
     set tem [toLocalFilename [decodeURL [oget $win location]]]
     oset $commandPanel savefilename  [file root $tem].txt
-}   }
+}
+		}
 
 
 proc getw { s  } { eval pack forget [winfo children . ] ; pack $s}
@@ -607,7 +609,8 @@ proc removeDotDot { path } {
 proc appendSeparate { var before item separator } {
     if { "$item" != "" } {
 	uplevel 1 append $var $before $item $separator
-}   }
+}
+		}
 
 proc dirnamePlusFilename { lis } {
   return  [string trimright [assoc dirname $lis ""] /]/[assoc filename $lis ""]
@@ -910,7 +913,8 @@ proc backgroundGetImage1  { image res width height }   {
 			# all the below just to try to remove the file..
 			#  depending on versions and in environments..
 			
-		}   }
+		}
+		}
 	    }
 	    file {
 		$image config -file [toLocalFilename $res]
@@ -1019,7 +1023,8 @@ proc OpenMathOpenUrl { name args} {
 	linkLocal . omPanel
 	if { [info exists omPanel] } {
 	    set commandPanel $omPanel
-    }   }
+    }
+		}
     set toplevel [assoc -toplevel $args ""]
     set reload [assoc -reload $args 0]
     set post [assoc -post $args ""]
@@ -1143,7 +1148,8 @@ proc OpenMathOpenUrl { name args} {
 	    if { "$anchor" != "" } {
 		update
 		$win yview anchor:$anchor
-	}   }
+	}
+		}
 	
 	#   foreach v {Tresult Teval} {  $win tag raise $v}	
 

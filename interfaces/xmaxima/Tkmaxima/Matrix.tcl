@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Matrix.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Matrix.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### Matrix.tcl ######
 ############################################################
@@ -59,23 +59,23 @@ proc mkMultLeftFun { mat n name { constant ""} } {
 
 proc rotationMatrix { th ph } {
     return [list \
-	    [expr {cos($ph)*cos($th)}] [expr {- cos($ph)*sin($th)}] [expr {sin($ph)}] \
-	    [expr {sin($th)}] [expr {cos($th)}] 0.0 \
-	    [expr {- sin($ph)*cos($th)}] [expr {sin($ph)*sin($th)}] [expr {cos($ph)}]]
+		[expr {cos($ph)*cos($th)}] [expr {- cos($ph)*sin($th)}] [expr {sin($ph)}] \
+		[expr {sin($th)}] [expr {cos($th)}] 0.0 \
+		[expr {- sin($ph)*cos($th)}] [expr {sin($ph)*sin($th)}] [expr {cos($ph)}]]
 }
 
 proc rotationMatrix { thx thy thz } {
     return \
-	    [list  \
-	    [expr { cos($thy)*cos($thz) } ] \
-	    [expr { cos($thy)*sin($thz) } ] \
-	    [expr { sin($thy) } ] \
-	    [expr { sin($thx)*sin($thy)*cos($thz)-cos($thx)*sin($thz) } ] \
-	    [expr { sin($thx)*sin($thy)*sin($thz)+cos($thx)*cos($thz) } ] \
-	    [expr { -sin($thx)*cos($thy) } ] \
-	    [expr { -sin($thx)*sin($thz)-cos($thx)*sin($thy)*cos($thz) } ] \
-	    [expr { sin($thx)*cos($thz)-cos($thx)*sin($thy)*sin($thz) } ] \
-	    [expr { cos($thx)*cos($thy) } ] ]
+	[list  \
+	     [expr { cos($thy)*cos($thz) } ] \
+	     [expr { cos($thy)*sin($thz) } ] \
+	     [expr { sin($thy) } ] \
+	     [expr { sin($thx)*sin($thy)*cos($thz)-cos($thx)*sin($thz) } ] \
+	     [expr { sin($thx)*sin($thy)*sin($thz)+cos($thx)*cos($thz) } ] \
+	     [expr { -sin($thx)*cos($thy) } ] \
+	     [expr { -sin($thx)*sin($thz)-cos($thx)*sin($thy)*cos($thz) } ] \
+	     [expr { sin($thx)*cos($thz)-cos($thx)*sin($thy)*sin($thz) } ] \
+	     [expr { cos($thx)*cos($thy) } ] ]
 }
 
 # cross [a,b,c] [d,e,f] == [B*F-C*E,C*D-A*F,A*E-B*D]
@@ -87,16 +87,16 @@ proc rotationMatrix { thx thy thz } {
 
 proc rotationMatrix { th ph {ignore {} } } {
     return \
-	    [list \
-	    [	    expr {cos($th)   } ]\
-	    [expr {sin($th)   } ]\
-	    0 \
-	    [expr {-cos($ph)*sin($th)   } ]\
-	    [expr {cos($ph)*cos($th)   } ]\
-	    [expr {sin($ph)   } ]\
-	    [expr {sin($ph)*sin($th)   } ]\
-	    [expr {-sin($ph)*cos($th)   } ]\
-	    [expr {cos($ph)   } ]]
+	[list \
+	     [	    expr {cos($th)   } ]\
+	     [expr {sin($th)   } ]\
+	     0 \
+	     [expr {-cos($ph)*sin($th)   } ]\
+	     [expr {cos($ph)*cos($th)   } ]\
+	     [expr {sin($ph)   } ]\
+	     [expr {sin($ph)*sin($th)   } ]\
+	     [expr {-sin($ph)*cos($th)   } ]\
+	     [expr {cos($ph)   } ]]
 }
 
 proc setMatFromList {name lis n} {
@@ -105,7 +105,8 @@ proc setMatFromList {name lis n} {
     foreach v $lis {
 	uplevel 1 set [set name]($i,$j) $v
 	if { $j == $n } {set j 1; incr i} else { incr j}
-}   }
+    }
+}
 
 proc matRef { mat cols i j } { [lindex $mat [expr {$i*$cols + $j}]] }
 proc matTranspose { mat cols } {
@@ -147,20 +148,20 @@ proc matMul { mat1 cols1 mat2 cols2 } {
 proc invMat3 { mat } {
     setMatFromList xx $mat 3
     set det [expr { double($xx(1,1))*($xx(2,2)*$xx(3,3)-$xx(2,3)*$xx(3,2))-$xx(1,2)* \
-	    ($xx(2,1)*$xx(3,3)-$xx(2,3)*$xx(3,1))+$xx(1,3)*($xx(2,1)*$xx(3,2)\
-	    -$xx(2,2)*$xx(3,1)) }]
+			($xx(2,1)*$xx(3,3)-$xx(2,3)*$xx(3,1))+$xx(1,3)*($xx(2,1)*$xx(3,2)\
+									    -$xx(2,2)*$xx(3,1)) }]
 
     return [list   [expr { ($xx(2,2)*$xx(3,3)-$xx(2,3)*$xx(3,2))/$det}] \
-	    [expr { ($xx(1,3)*$xx(3,2)-$xx(1,2)*$xx(3,3))/$det}] \
-	    [expr { ($xx(1,2)*$xx(2,3)-$xx(1,3)*$xx(2,2))/$det}] \
-	    \
-	    [expr { ($xx(2,3)*$xx(3,1)-$xx(2,1)*$xx(3,3))/$det}] \
-	    [expr { ($xx(1,1)*$xx(3,3)-$xx(1,3)*$xx(3,1))/$det}] \
-	    [expr { ($xx(1,3)*$xx(2,1)-$xx(1,1)*$xx(2,3))/$det}] \
-	    \
-	    [expr { ($xx(2,1)*$xx(3,2)-$xx(2,2)*$xx(3,1))/$det}] \
-	    [expr { ($xx(1,2)*$xx(3,1)-$xx(1,1)*$xx(3,2))/$det}] \
-	    [expr { ($xx(1,1)*$xx(2,2)-$xx(1,2)*$xx(2,1))/$det}]]
+		[expr { ($xx(1,3)*$xx(3,2)-$xx(1,2)*$xx(3,3))/$det}] \
+		[expr { ($xx(1,2)*$xx(2,3)-$xx(1,3)*$xx(2,2))/$det}] \
+		\
+		[expr { ($xx(2,3)*$xx(3,1)-$xx(2,1)*$xx(3,3))/$det}] \
+		[expr { ($xx(1,1)*$xx(3,3)-$xx(1,3)*$xx(3,1))/$det}] \
+		[expr { ($xx(1,3)*$xx(2,1)-$xx(1,1)*$xx(2,3))/$det}] \
+		\
+		[expr { ($xx(2,1)*$xx(3,2)-$xx(2,2)*$xx(3,1))/$det}] \
+		[expr { ($xx(1,2)*$xx(3,1)-$xx(1,1)*$xx(3,2))/$det}] \
+		[expr { ($xx(1,1)*$xx(2,2)-$xx(1,2)*$xx(2,1))/$det}]]
 }
 
 

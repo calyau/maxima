@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.7 2002-09-07 23:20:49 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.8 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -140,14 +140,25 @@ proc omPanel { w args } {
     wmenubar $menubar
     pack $menubar -side top -expand 0 -fill x -anchor nw
 
-    foreach v { file back forward edit help  } {
+    foreach v { file  } {
+	label $win.$v -text [string totit $v] -relief raised
+	$menubar add $win.$v
+    }
+
+    #mike FIXME: change these to buttons
+    foreach v { back forward  } {
 	label $win.$v -text [string totit $v] -relief raised
 	$menubar add $win.$v
     }
     bind $win.back <Button-1>  "OpenMathMoveHistory $win -1"
-    bind  $win.forward <Button-1> "OpenMathMoveHistory $win 1"
+    bind $win.forward <Button-1> "OpenMathMoveHistory $win 1"
     setHelp $win.forward {Move forward in the history of documents visited.}
     setHelp $win.back {Move backward in the history of documents visited.}
+
+    foreach v {  edit help  } {
+	label $win.$v -text [string totit $v] -relief raised
+	$menubar add $win.$v
+    }
 
 
     ####### begin edit button

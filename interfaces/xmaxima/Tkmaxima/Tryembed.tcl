@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tryembed.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Tryembed.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
 #
 ###### Tryembed.tcl ######
 ############################################################
@@ -46,10 +46,10 @@ proc makeEmbedWin { parent width height } {
     }
 
     if { [info exists env(DISPLAY)] } {
-    interp eval $slave set env(DISPLAY) $env(DISPLAY)
+	interp eval $slave set env(DISPLAY) $env(DISPLAY)
     }
     interp eval $slave { proc policy {args } {} }
-#    $slave alias bgerror bgerror
+    #    $slave alias bgerror bgerror
     load {} Tk $slave
     Safesock_PolicyInit $slave
     setupUnknown $slave
@@ -66,32 +66,32 @@ proc setupUnknown { slave } {
 	if { [eval auto_load1 $args] } { return 1 }
 	uplevel 1 auto_load-orig $args
     }
- }
+    }
 }
 
 
 
 proc auto_load1 { slave name {namespace ""} } {
-   if { "[info proc $name ]" != "" } {
-       set arglist [info args $name]
-       set theargs {}
-       foreach v $arglist {
-	   if { [info default $name $v theDefault] } {
-	       lappend theargs [list $v $theDefault]
-	   } else { lappend theargs $v
-	   }
-       }
-       interp eval $slave [list proc $name $theargs [info body $name]]
-       return 1
-   }
-   return 0
+    if { "[info proc $name ]" != "" } {
+	set arglist [info args $name]
+	set theargs {}
+	foreach v $arglist {
+	    if { [info default $name $v theDefault] } {
+		lappend theargs [list $v $theDefault]
+	    } else { lappend theargs $v
+	    }
+	}
+	interp eval $slave [list proc $name $theargs [info body $name]]
+	return 1
+    }
+    return 0
 }
 
 proc setupPrintVariables { slave } {
     global printOption fontSize show_balloons getOp parse_table Parser     axisGray plot2dOptions plot3dOptions paperSizes  printOptions writefile     doExit  fontCourier8   plotdfOptions ftpInfo  ws_openMath
     foreach v {printOption fontSize show_balloons getOp parse_table Parser
-    axisGray plot2dOptions plot3dOptions paperSizes  printOptions writefile
-    doExit  fontCourier8   plotdfOptions ftpInfo ws_openMath} {
+	axisGray plot2dOptions plot3dOptions paperSizes  printOptions writefile
+	doExit  fontCourier8   plotdfOptions ftpInfo ws_openMath} {
 	if { [array exists  $v] } {
 	    interp eval $slave [list array set $v [array get $v *] ]
 	} else {  interp eval $slave [list set $v [set $v ]]
@@ -99,7 +99,7 @@ proc setupPrintVariables { slave } {
     }
 
 }
-# proc tryit { {win .}  } {
+# proc tryit {{win .}} {
 #  global  ws_openMath
 #     if { ![info exists ws_openMath(counter)] } {
 # 	set ws_openMath(counter) 0
@@ -153,7 +153,7 @@ proc Safesock_PolicyInit {slave {version 1.0}} {
     interp alias $slave socket {} SafesockSocketAlias $slave
     interp alias $slave fconfigure {} SafesockFconfigureAlias $slave
 
-    uplevel #0 {source $safesockDataFile}
+    uplevel "#0" {source $safesockDataFile}
 
 
     # Attempt to get the URL and extract the server and port portions:
@@ -161,7 +161,7 @@ proc Safesock_PolicyInit {slave {version 1.0}} {
     set server "" ; set port "" ; set url ""
     catch {set url $browser_state($slave,url)}
     if {[regexp -nocase {http://([^:/]+)(:([0-9]+))?/} $url \
-		x server y port]} {
+	     x server y port]} {
 	if {[string length $port] == 0} {
 	    set port 80
 	}
@@ -260,19 +260,19 @@ proc Safesock_PolicyCleanup {slave} {
 
 
 #
- #-----------------------------------------------------------------
- #
- # SafesockServerAnswer --  will replace COMMAND in a `socket -server command'
- #  request.   Checks if the incoming connection is allowed and if so
- #  invokes the original command.   Allowed is based on the same criteria
- #  as the outgoing connection.
- #
- #  Results: none
- #
- #  Side Effects: if connect is allowed, transfer the socket to the slave
- #  and eval the original command there.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# SafesockServerAnswer --  will replace COMMAND in a `socket -server command'
+#  request.   Checks if the incoming connection is allowed and if so
+#  invokes the original command.   Allowed is based on the same criteria
+#  as the outgoing connection.
+#
+#  Results: none
+#
+#  Side Effects: if connect is allowed, transfer the socket to the slave
+#  and eval the original command there.
+#
+#----------------------------------------------------------------
 #
 proc SafesockServerAnswer { slave command sock host port } {
     set peer [fconfigure $sock -peername]
@@ -282,22 +282,22 @@ proc SafesockServerAnswer { slave command sock host port } {
 	interp transfer {} $sock $slave
 	interp eval $slave $command $sock $host $port
     } else { interp eval $slave [list error "connection from $host and $port disallowed"]
-   }
+    }
 }
 
 
 
 #
- #-----------------------------------------------------------------
- #
- # SafesockAllow --  check if connection by SLAVE to HOST at PORT is allowed,
- #  based on the inside/outside history of slave and data in safesock.data
- #
- #  Results: 1 if succeeds and 0 if it fails to allow
- #
- #  Side Effects:  set GOOD to ok port in the caller
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# SafesockAllow --  check if connection by SLAVE to HOST at PORT is allowed,
+#  based on the inside/outside history of slave and data in safesock.data
+#
+#  Results: 1 if succeeds and 0 if it fails to allow
+#
+#  Side Effects:  set GOOD to ok port in the caller
+#
+#----------------------------------------------------------------
 #
 proc SafesockAllow { slave host port} {
     global browser_state
@@ -370,7 +370,7 @@ proc safesockPortMatches { port portset } {
 	set low [set high ""]
 	if {[regexp {^([0-9]+)-([0-9]*)$} $portspec x low high]} {
 	    if {($low <= $port && $high == "") ||
-			($low <= $port && $high >= $port)} {
+		($low <= $port && $high >= $port)} {
                 return 1
 		break
 	    }
@@ -394,10 +394,10 @@ proc SafesockSocketAlias {slave host port args} {
 	set command $port
 	set port [lindex $args 0]
 	if { ![safesockPortMatches $port $safesockAllowedServerPorts] } {
-	     error "bad port: $port"
+	    error "bad port: $port"
 	}
 	set sock [socket -server \
-		"SafesockServerAnswer $slave [list $command]" $port]
+		      "SafesockServerAnswer $slave [list $command]" $port]
 	interp transfer {} $sock $slave
 	browser_log $slave normal socket -server $port
 	return $sock
@@ -454,17 +454,17 @@ proc SafesockFconfigureAlias {slave sock args} {
 	    }
 	}
 	lappend jack [list interp invokehidden $slave fconfigure $sock \
-	    -blocking $config(-blocking) \
-	    -buffering $config(-buffering) \
-	    -buffersize $config(-buffersize) \
-	    -eofchar $config(-eofchar) \
-	    -translation $config(-translation)]
+			  -blocking $config(-blocking) \
+			  -buffering $config(-buffering) \
+			  -buffersize $config(-buffersize) \
+			  -eofchar $config(-eofchar) \
+			  -translation $config(-translation)]
 	return [interp invokehidden $slave fconfigure $sock \
-	    -blocking $config(-blocking) \
-	    -buffering $config(-buffering) \
-	    -buffersize $config(-buffersize) \
-	    -eofchar $config(-eofchar) \
-	    -translation $config(-translation)]
+		    -blocking $config(-blocking) \
+		    -buffering $config(-buffering) \
+		    -buffersize $config(-buffersize) \
+		    -eofchar $config(-eofchar) \
+		    -translation $config(-translation)]
     }
 }
 
