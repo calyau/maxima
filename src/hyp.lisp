@@ -132,10 +132,15 @@
 				 (caddr resimp)))))
 
 
+#+(or)
 (defun macsimp (l)
   (cond ((null l) nil)
 	(t (append (list (simplifya (car l) nil)) (cdr l)))))
 
+(defun macsimp (l)
+  (mapcar #'(lambda (index)
+	      (simplifya index nil))
+	  l))
 
 (defun simpg (l1 l2)
   (prog(il)
@@ -148,14 +153,26 @@
 (defun del (a b)
   (cond ((null a) b)(t (del (cdr a) (zl-delete (car a) b 1)))))
 
+;; Handle the simple cases where the result is either a polynomial, or
+;; is undefined because we divide by zero.
 (defun simpg-exec (l1 l2)
   (prog(n)
-     (cond ((zerop-in-l l1)(return 1)))
+     (cond ((zerop-in-l l1)
+	    ;; A zero in the first index means the series terminates
+	    ;; after the first term, so the result is always 1.
+	    (return 1)))
      (cond ((setq n (hyp-negp-in-l l1))
+	    ;; A negative integer in the first series means we have a
+	    ;; polynomial.
 	    (return (create-poly l1 l2 n))))
-     (cond ((or (zerop-in-l l2)(hyp-negp-in-l l2))
+     (cond ((or (zerop-in-l l2)
+		(hyp-negp-in-l l2))
+	    ;; A zero or negative number in the second index means we
+	    ;; eventually divide by zero, so we're undefined.
 	    (return 'undef)))
-     (return (append (list 'fail)(list l1)(list l2)))))
+     ;; We failed so more complicated stuff needs to be done.
+     (return (append (list 'fail) (list l1) (list l2)))))
+
 			
 
 (defun intdiffl1l2 (l1 l2)
@@ -215,8 +232,9 @@
   `(($hermite) ,n ,arg))
 
 
-(defun lagpol(n a arg)
-  (list '(mqapply)(list '($%l array) n a) arg))
+;; Generalized Laguerre polynomial
+(defun lagpol (n a arg)
+  `(($gen_laguerre) ,n ,a, arg))
 
 
 (defun 2f0polys (l1 n)
