@@ -398,6 +398,7 @@
 ;;; o removed the arg result that was used to return the result.  The
 ;;;   function value is the result.
 
+#+nil
 (let ((four 4.0d0)
       (one 1.0d0)
       (half 0.5d0)
@@ -589,9 +590,9 @@
        (return result))))
 
 (defmfun erf (y)
-  (calerf (float y 1d0) 0))
+  (slatec:derf (float y 1d0)))
 (defmfun erfc (y)
-  (calerf (float y 1d0) 1))
+  (slatec:derfc (float y 1d0)))
 
 
 (declare-top (SPLITFILE EMATRIX))
