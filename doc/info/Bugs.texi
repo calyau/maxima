@@ -26,6 +26,11 @@ well as failures.
 
 @code{run_testsuite (true, true)} displays all tests.
 
+@code{run_testsuite} changes the Maxima environment.
+Typically a test script executes @code{kill} to establish a known environment
+(namely one without user-defined functions and variables)
+and then defines functions and variables appropriate to the test.
+
 @code{run_testsuite} returns @code{false}.
 @end defun
 
