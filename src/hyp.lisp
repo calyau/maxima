@@ -144,16 +144,20 @@
 	      (simplifya index nil))
 	  l))
 
+;; Simplify the parameters.  If L1 and L2 have common elements, remove
+;; them from both L1 and L2.
 (defun simpg (l1 l2)
-  (prog(il)
-     (cond ((null (setq il (zl-intersection l1 l2)))
-	    (return (simpg-exec l1 l2))))
-     (return (simpg-exec (del il l1) (del il l2)))))
-
-
+  (let ((il (zl-intersection l1 l2)))
+     (cond ((null il)
+	    (simpg-exec l1 l2))
+	   (t
+	    (simpg-exec (del il l1)
+			  (del il l2))))))
 
 (defun del (a b)
-  (cond ((null a) b)(t (del (cdr a) (zl-delete (car a) b 1)))))
+  (cond ((null a) b)
+	(t
+	 (del (cdr a) (zl-delete (car a) b 1)))))
 
 ;; Handle the simple cases where the result is either a polynomial, or
 ;; is undefined because we divide by zero.
@@ -191,17 +195,26 @@
      (go jump)))		     
 
 
+;; Create the appropriate polynomial for the hypergeometric function.
 (defun create-poly (l1 l2 n)
-  ((lambda(len1 len2)
-     (cond ((and (equal len1 2)(equal len2 1))
-	    (2f1polys l1 l2 n))
-	   ((and (equal len1 1)(equal len2 1))
-	    (1f1polys l2 n))
-	   ((and (equal len1 2)(zerop len2))
-	    (2f0polys l1 n))
-	   (t (create-any-poly l1 l2 (mul -1 n)))))
-   (length l1)
-   (length l2)))
+  (let ((len1 (length l1))
+	(len2 (length l2)))
+    ;; n is the smallest (in magnitude) negative integer in L1.  To
+    ;; make everything come out right, we need to make sure this value
+    ;; is first in L1.  This is ok, the definition of the
+    ;; hypergeometric function does not depend on the order of values
+    ;; in L1.
+    (setf l1 (cons n (remove n l1 :count 1)))
+    (cond ((and (equal len1 2)
+		(equal len2 1))
+	   (2f1polys l1 l2 n))
+	  ((and (equal len1 1)
+		(equal len2 1))
+	   (1f1polys l2 n))
+	  ((and (equal len1 2)
+		(zerop len2))
+	   (2f0polys l1 n))
+	  (t (create-any-poly l1 l2 (mul -1 n))))))
 
 
 #+nil
@@ -719,13 +732,20 @@
 	      l2 (mul -1 var))))
 
 
+;; Return non-NIL if any element of the list L is zero.
+#+nil
 (defun zerop-in-l (l)
   (cond ((null l) nil)
 	((numberp (car l))
 	 (cond ((zerop (car l)) t)(t (zerop-in-l (cdr l)))))
 	(t (zerop-in-l (cdr l)))))
 
+(defun zerop-in-l (l)
+  (some #'(lambda (x)
+	    (and (numberp x) (zerop x)))
+	l))
 
+#+nil
 (defun hyp-negp-in-l (l)
   (cond ((null l) nil)
 	((hyp-integerp (car l))
@@ -733,7 +753,18 @@
 	       (t (hyp-negp-in-l (cdr l)))))
 	(t (hyp-negp-in-l (cdr l)))))
 
+;; If the list L contains a negative integer, return the most positive
+;; of the negative integers.  Otherwise return NIL.
+(defun hyp-negp-in-l (l)
+  (let ((max-neg (loop for x in l
+		    when (and (numberp x) (minusp x))
+		    maximize x)))
+    (if (minusp max-neg)
+	max-neg
+	nil)))
 
+;; Compute the intersection of L1 and L2, possibly destructively
+;; modifying L2.  Perserves duplications in L1.
 (defun zl-intersection (l1 l2)
   (cond ((null l1) nil)
 	((zl-member (car l1) l2)
