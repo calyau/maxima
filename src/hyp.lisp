@@ -348,9 +348,14 @@
   (prog (n res)
      ;; gamma(a)*x^((1-a)/2)
      (setq res (mul (gm a) (power x (div (sub 1 a) 2))))
+     #+(or)
      (cond ((and (maxima-integerp (add a a))
 		 (numberp (setq n (sub a (inv 2))))
 		 (lessp n $bestriglim))
+	    ;; This is totally broken.  It's got an extra (-1)^foo
+	    ;; factor, so let's not use it at all for now.  Use the
+	    ;; general forms below and let expand get the right
+	    ;; answer.
 	    (return (mul res
 			 (meval (besredtrig (- n 1)
 					    (mul 2
@@ -360,7 +365,11 @@
 						  (inv
 						   2)))))))))
      (cond ((equal (checksigntm x) '$negative)
+	    ;; Not sure this is right, but the call to bes has an
+	    ;; extra factor (-1)^(-(a-1)/2), so we cancel that out by
+	    ;; multiplying by (-1)^((a-1)/2).
 	    (return (mul res
+			 (power -1 (div (sub a 1) 2))
 			 (bes (sub a 1) (setq x (mul -1 x)) 'j)))))
      (return (mul res (bes (sub a 1) x 'i)))))
 	    
