@@ -1,3 +1,11 @@
+# -*- mode: rpm-spec -*-
+%define enable_clisp 1
+%define clisp_flags --enable-clisp
+%define enable_cmucl 0
+%define cmucl_flags --disable-cmucl
+%define enable_gcl 0
+%define gcl_flags --disable-gcl
+
 Summary: Maxima Symbolic Computation Program
 Name: maxima
 Version: @VERSION@
@@ -7,6 +15,7 @@ Group: Development/Languages
 URL: http://maxima.sourceforge.net
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
+Requires: maxima_exec
 
 %description
 
@@ -18,30 +27,39 @@ based on the original Macsyma developed at MIT in the 1970's.  It is
 quite reliable, and has good garbage collection, and no memory leaks.
 It comes with hundreds of self tests.
 
-%package clisp
+%if %{enable_clisp}
+%package exec_clisp
 Summary: Maxima compiled with clisp
 Group: Development/Languages
 Requires: clisp maxima
-%description clisp
+Provides: maxima_exec
+%description exec_clisp
 Maxima compiled with clisp.
+%endif
 
-%package cmucl
+%if %{enable_cmucl}
+%package exec_cmucl
 Summary: Maxima compiled with CMUCL
 Group: Development/Languages
 Requires: cmucl maxima
-%description cmucl
+Provides: maxima_exec
+%description exec_cmucl
 Maxima compiled with CMUCL.
+%endif
 
-%package gcl
+%if %{enable_gcl}
+%package exec_gcl
 Summary: Maxima compiled with GCL
 Group: Development/Languages
 Requires: maxima
-%description gcl
+Provides: maxima_exec
+%description exec_gcl
 Maxima compiled with Gnu Common Lisp.
+%endif
 
 %prep
 %setup -q
-%configure --enable-clisp --enable-cmucl --enable-gcl
+%configure  %{?cmucl_flags:} %{?gcl_flags:} %{?clisp_flags:}
 
 %build
 make
@@ -51,10 +69,12 @@ rm -rf $RPM_BUILD_ROOT
 %makeinstall
 
 %post
-/sbin/install-info %{_infodir}/maxima.info.gz %{_infodir}/dir
+/sbin/install-info %{_infodir}/maxima.info %{_infodir}/dir
+gunzip %{_infodir}/maxima*.gz >& /dev/null || /bin/true
 
 %postun
-/sbin/install-info --delete %{_infodir}/maxima.info.gz %{_infodir}/dir
+/sbin/install-info --delete %{_infodir}/maxima.info %{_infodir}/dir
+rm %{_infodir}/maxima.info*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -67,12 +87,21 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man1/maxima.1.gz
 /usr/bin/maxima
 /usr/bin/xmaxima
-%files clisp
+
+%if %{enable_clisp}
+%files exec_clisp
 /usr/lib/maxima/%{version}/binary-clisp/*
-%files cmucl
+%endif
+
+%if %{enable_cmucl}
+%files exec_cmucl
 /usr/lib/maxima/%{version}/binary-cmucl/*
-%files gcl
+%endif
+
+%if %{enable_gcl}
+%files exec_gcl
 /usr/lib/maxima/%{version}/binary-gcl/*
+%endif
 
 %doc
 
