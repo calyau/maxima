@@ -299,13 +299,6 @@ The variable, LABELS, default: [], is a list of C, D, and E lines
 which are bound.
 
 @end defun
-@c @node LASTTIME
-@c @unnumberedsec phony
-@defvar LASTTIME
- - the time to compute the last expression in milliseconds
-presented as a list of "time" and "gctime".
-
-@end defvar
 @c @node LINENUM
 @c @unnumberedsec phony
 @defvar LINENUM
@@ -439,28 +432,6 @@ will then return TRUE.  This can be useful for package writers, to
 keep track of what FEATURES they have loaded in.
 
 @end defun
-@c @node TOBREAK
-@c @unnumberedsec phony
-@defun TOBREAK ()
-causes the MACSYMA break which was left by typing
-TOPLEVEL; to be re-entered.  If TOBREAK is given any argument
-whatsoever, then the break will be exited, which is equivalent to
-typing TOBREAK() immediately followed by EXIT;.
-
-@end defun
-@c @node TOPLEVEL
-@c @unnumberedsec phony
-@defun TOPLEVEL ()
-During a break one may type TOPLEVEL;.  This will cause
-top-level MACSYMA to be entered recursively.  Labels will now be bound
-as usual.  Everything will be identical to the previous top-level
-state except that the computation which was interrupted is saved.  The
-function TOBREAK() will cause the break which was left by typing
-TOPLEVEL; to be re-entered.  If TOBREAK is given any argument
-whatsoever, then the break will be exited, which is equivalent to
-typing TOBREAK() immediately followed by EXIT;.
-
-@end defun
 @c @node TO_LISP
 @c @unnumberedsec phony
 @defun TO_LISP ()
@@ -469,30 +440,6 @@ those systems where control-uparrow is not available for this
 function.
 
 @end defun
-@c @node TTYINTFUN
-@c @unnumberedsec phony
-@defvar TTYINTFUN
- default: [FALSE] - Governs the function which will be run
-whenever the User-interrupt-character is typed.  To use this feature,
-one sets TTYINTFUN (default FALSE meaning feature not in use) to a
-function of no arguments.  Then whenever (e.g.) ^U (control-U) is
-typed, this function is run.  E.g. suppose you have a FOR statement
-loop which increments I, and you want an easy way of checking on the
-value of I while the FOR statement is running.  You can do:
-TTYINTFUN:PRINTI$ PRINTI():=PRINT(I)$ , then whenever you type (e.g.)
-^U you get the check you want.
-
-@end defvar
-@c @node TTYINTNUM
-@c @unnumberedsec phony
-@defvar TTYINTNUM
- default: [21] (the ascii value of Control-U (^U), U being
-the 21st letter of the alphabet).  This controls what character
-becomes the User-interrupt-character.  ^U was chosen for it mnemonic
-value.  Most users should not reset TTYINTNUM unless they are already
-using ^U for something else.
-
-@end defvar
 @c @node VALUES
 @c @unnumberedsec phony
 @defvar VALUES
