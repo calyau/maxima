@@ -1,38 +1,57 @@
 This file describes  the way to work with maxima's indicial
 tensor manipulation package.
 
-The "itensor" package is considered, currently, as broken.
-Indeed, some functions like, 
-components(tensor1,tensor2), remcomponents(tensor), are broken.
+The "itensor" package is now considered to be fully functional,
+thanks in part to fixes provided by Valery Pipin and Yuri Semenov.
+
+In particular, it is no longer necessary to use cumbersome
+workarounds, as COMPONENTS, REMCOMPS, and COVDIFF are all
+functional. See the (now fully functional) itensor.dem file
+for details.
+
+Moreover, EV now correctly evaluates Christoffel symbols of
+both kinds with derivative indices. This makes it unnecessary
+to employ the cumbersome workaround of UNDIFF-ing an expression
+first and then evaluating the Christoffel symbols in a separate
+step before evaluating the differential operator.
+
+The CTENSR package has been changed to behave as other MAXIMA
+packages behave, i.e., to provide all built-in variable and
+function names in upper case. This will likely change again
+if/when the planned downcasing takes place.
+
+An extra LISP file, inpfix.lisp, has been provided to deal with
+the "missing prompts" problem on some systems. This problem has
+been fixed with the CVS version of Maxima, but is still present
+in 5.9.0. Uncomment the last line in CTENSR.MAC to make use of
+this fix. Use with caution: inpfix.lisp redefines some internal
+Maxima functions.
+
+Though it is not essential, you might want to compile the
+tensor sources (Just start Maxima and type
+:lisp(compile-file "itensor.lisp"). Repeat it for canten, gener &
+symtry.lisp). Note the cool feature provided by generate(eqs). It
+makes possible to use results obtained by "itensor" in "ctensr"
+(express indexed terms via components).
 
 
-Nevertheless, it is possible to use "itensor", at least for small
-problems. The current ability of itensor is demonstrated by
-"itensor.dem". I tested it on cvs maxima-5.9.0rc3 compiled vs 
-clisp-2.29 and cmucl-18d+. To run the tensor packages on the gcl compiled
-maxima you need to compile the sources (Just start Maxima and type
-:lisp(compile-file "itensor.lisp"). Repeat it for "canten,gener & symtry.lisp"). 
-and clisp-2.28. Note the cool feature provided by generate(eqs).
-It make possible to use results obtained by "itensor" in
-"ctensr" (express indexed terms via components).
+To start the itensor package use load(itensor).
 
-To start the itensor use load(itensor).
+The main demo file for the tensor packages is called ITENSOR.DEM.
+To run this demo, start Maxima and type DEMO(itensor);.
 
-Currently, it is recomended to use the switch bothcases:false. It gives
-the better indexes representation. Also, you will safe from the upper-lower
-cases conflict  in the case. It will be essential when you generate 
-the components for particular tensor via generate() to use them 
-with "ctensr". 
+ITENSOR.DEM has been tested using Maxima 5.9.0 under Windows,
+and Maxima 5.9.1cvs under Linux, the latter using all three
+major LISP versions, that is, GCL, CLISP, and CMUCL.
 
-To assign some tensor expression for a particular tensor use the native
-maxima abilities like
-T(L1,L2):=E(L1,L2)+....
-It is possible because in itensor the tensors are functions on indices.
-This is a way around broken components(). Look in the "itensor.dem" to see
-examples about it. 
+Other working (and tested) demo files are:
 
-The working demo files are 
-"itensor.dem" - general review of itensor-ctensor abilities;
-"ademo.dem" - proves the Balakram identity, relate to itensor;
-"swartz.dem" - finds out the Swartzshild solution for black hole,
- relate to ctensr.   
+"ademo.dem" - Verifies the double divergence of the Einstein tensor;
+"ademo-2steps.dem" - As above, different method;
+"ctenso_1.dem ..
+ ctenso_4.dem" - Basic CTENSR package demo set;
+"swartz.dem" - finds the Schwarzschild solution using CTENSR.
+
+There are several other files in this directory that have not
+(yet) been tested. In future releases, these will be fixed and/or
+removed as appropriate.

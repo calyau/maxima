@@ -3,7 +3,7 @@ SHOWTIME:ALL$
 /* This file finds the Schwarzschild solution of the
 Einstein vacuum equations */
 /* .mc version currently available in DOE MACSYMA */
-IF GET('CTENSR,'VERSION) = FALSE THEN LOAD("max$disk:[tensor]CTENSR.mc")$
+LOAD("ctensr")$
 /* the following allows the batch program to run by presetting flags */
 SETFLAGS()$
 /* this calls for the rational simplification of geometrical objects */

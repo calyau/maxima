@@ -4,7 +4,7 @@ SHOWTIME:ALL$
 the Einstein vacuum equations as well as computing other tensors
 and invariants */
 /* .mc version is presently available in DOE MACSYMA */
-IF GET('CTENSR,'VERSION) = FALSE THEN LOAD("max$disk:[tensor]CTENSR.mc")$
+LOAD("ctensr")$
 /* the following allows the batch program to run by presetting flags */
 SETFLAGS()$
 /* this calls for the rational simplification of geometrical objects */

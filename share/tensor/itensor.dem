@@ -1,45 +1,43 @@
-bothcases:false$
-load(ctensr)$
-load(itensor)$
-
+(bothcases:false,load(ctensr),load(itensor))$
 ("ITENSR - Basic Functions")$
 
-("function CHR1([i,j,k])
-yields the Christoffel symbol of the first kind via the definition
-to evaluate the Christoffel symbols for a particular metric, the
-variable METRIC must be assigned a name")$
+("The function CHR1([i,j,k]) yields the Christoffel symbol of the first
+kind via the definition to evaluate the Christoffel symbols for a
+particular metric. The variable METRIC must be assigned a name.")$
 
-METRIC:G;
+METRIC:G$
 show(chr1([i,j,k]))$
 show(chr2([i,j],[k]))$
 
-(" As an example we consider a conformally flat metric and find the
-Christoffel symbols of both kinds")$
+("As an example we consider a conformally flat metric and find the
+Christoffel symbols of both kinds:")$
 
-DECLARE(E,CONSTANT);
+DECLARE(E,CONSTANT)$
 
-(" Note function COMPONENTS() is broken
-Another possibility to assign the particular
-components to some tensor is following ")$
+	/*(" Note function COMPONENTS() is broken
+	Another possibility to assign the particular
+	components to some tensor is following ")$
 
-G(L1,L2):=BLOCK(IF L2=[] THEN RETURN(E(L1,[])*P([],[]) ),
-  E([],L2)/P([],[]) )$
+	G(L1,L2):=BLOCK(IF L2=[] THEN RETURN(E(L1,[])*P([],[]) ),
+	  E([],L2)/P([],[]) )$ */
+
+COMPONENTS(G([I,J],[]),E([I,J],[])*P([],[]));
+COMPONENTS(G([],[I,J]),E([],[I,J])/P([],[]));
+
 SHOW(G([I,J],[]))$
 SHOW(G([],[I,J]))$
 SHOW(FACTOR(CHR1([I,J,K])))$
 SHOW(FACTOR(CHR2([I,J],[K])))$
 
-
-(" CURVATURE([i,j,k],[h]) yields the Riemann curvature tensor in
-terms of the Christoffel symbols of the second kind (CHR2). 
-The following notation is used:")$
+("CURVATURE([i,j,k],[h]) yields the Riemann curvature tensor in terms of
+the Christoffel symbols of the second kind (CHR2). The following notation
+is used:")$
 
 SHOW(curvature([i,j,k],[h]))$
 
-
-("Next we demostrate using kdelta() and defcon() function that
- assigns contraction properties to a particular tensor. Another
- example with defcon is below.")$
+("Next we demostrate using KDELTA() and DEFCON() function that assigns
+contraction properties to a particular tensor. Another example with
+defcon is below.")$
 
 DIM:3;
 defcon(E,E,kdelta)$
@@ -48,82 +46,82 @@ show(ev(%,kdelta))$
 
 show(contract(expand(G([a,b],[])*G([],[b,l]))))$
 
-
 show(kdelta([a,b,c],[r,s,t]))$
  
-
-(" LC() gives Levi-Chevitta tensor. I would refer this function
- to ctensor package because it deals with integer types of indices. The indicial
- Levi-Chevitta tensor might be defined through kdelta, e.g. kdelta([1,2,3],[i,j,k])")$
+("LC() gives Levi-Civita tensor. I would refer this function to the
+ctensor package because it deals with integer types of indices. The
+indicial Levi-Civita tensor might be defined through KDELTA, e.g.
+KDELTA([1,2,3],[i,j,k])")$
 
 lc([1,2,3]);lc([1,1,3]);lc([2,1,3])$
 
-(" Function geodesic(exp,name) enables the user to cause
- undifferentiated Christoffel symbols and
-first derivatives of the metric tensor vanish in exp. The name
-in the GEODESIC function refers to the metric name (if it appears
-in exp) while the connection coefficients must be called with the
-names CHR1 and/or CHR2. The following example demonstrates the
-verification of the cyclic identity satisfied by the Riemann curvature
-tensor using RENAME while also showing the use of the GEODESIC
-function.")$
+("Function GEODESIC(exp,name) enables the user to cause the
+undifferentiated Christoffel symbols and first derivatives of the metric
+tensor to vanish in exp. The name in the GEODESIC function refers to the
+metric name (if it appears in exp) while the connection coefficients must
+be called with the names CHR1 and/or CHR2. The following example
+demonstrates the verification of the cyclic identity satisfied by the
+Riemann curvature tensor using RENAME while also showing the use of the
+GEODESIC function.")$
 
 exp2:curvature([r,s,t],[u])+curvature([s,t,r],[u])+curvature([t,r,s,t],[u])$
 show(exp2)$
 show(geodesic(exp2,chr2))$
 show(rename(exp2))$
 
-(" In order to evaluate an expression involving the Riemann tensor and
+("In order to evaluate an expression involving the Riemann tensor and
 incorporate this given definition of metric explicitly into the result
-the user can ev(expression), as the following example for the weak
-field metric demonstrates:")$
+the user can EV(expression), as the following example for the weak field
+metric demonstrates:")$
 
-kill(G);
+REMCOMPS(G);
 DECLARE(E,CONSTANT);
 metric:G;
-G(L1,L2):=BLOCK( IF L2=[] THEN RETURN(E(L1,[])+2*L*P(L1,[]) ),
-  E([],L2)-2*L*P([],L2) )$
+	/*G(L1,L2):=BLOCK( IF L2=[] THEN RETURN(E(L1,[])+2*L*P(L1,[]) ),
+	  E([],L2)-2*L*P([],L2) )$*/
+COMPONENTS(G([I,J],[]),E([I,J],[])*2*L*P([],[]));
+COMPONENTS(G([],[I,J]),E([],[I,J])-2*L*P([],[]));
+
 SHOW(G([I,J],[]))$
 SHOW(G([],[I,J]))$
 
 (RATVARS(L),RATWEIGHT(L,1),RATWTLVL:1)$
 exp1:CURVATURE([S,U,N],[Y]);
-(" Note the direct application ev(%) does not work currently")$ 
-undiff(exp1)$
-ev(%,chr2)$
-ev(%,diff)$
-SHOW(CANFORM(CONTRACT(RENAME(RATEXPAND(%)))))$
- 
-(" function CONMETDERIV(exp,tensor)
-is used to simplify expressions containing ordinary derivatives of
-both covariant and contravariant forms of the metric tensor (the
-current restriction).  For example, CONMETDERIV can relate the
-derivative of the contravariant metric tensor with the Christoffel
-symbols as seen from the following:")$
+
+	/*("Note the direct application ev(%) does not work currently")$
+	undiff(exp1)$
+	ev(%,chr2)$
+	ev(%,diff)$*/
+SHOW(CANFORM(CONTRACT(RENAME(RATEXPAND(EV(%))))))$
+
+("CONMETDERIV(exp,tensor) is used to simplify expressions containing
+ordinary derivatives of both covariant and contravariant forms of the
+metric tensor (the current restriction).  For example, CONMETDERIV can
+relate the derivative of the contravariant metric tensor with the
+Christoffel symbols as seen from the following:")$
+
 show(Q([],[A,B],C))$
 show(conmetderiv(%,Q))$
-(" FLUSHD ")$
-(" function FLUSHD(exp,tensor1,tensor2,...)
-will set to zero in exp, all occurrences of the tensori 
-that have derivative indices.")$
+
+("FLUSHD(exp,tensor1,tensor2,...) will set to zero in exp, all
+occurrences of the tensori that have derivative indices.")$
 
 exp1 : A([i],[j,r],k,r)+A([i],[j,r,s],k,r,s)$
 show(exp1)$
 show(flushd(exp1,A))$
 
-(" function FLUSHND(exp,tensor1,tensor2,...)
-will set to zero in exp, all occurrences of the differentiated 
-object tensor that have b o more derivative indices ")$ 
+("Function FLUSHND(exp,tensor1,n) will set to zero in exp, all
+occurrences of the differentiated object tensor that have n or more
+derivative indices")$ 
 
 show(flushnd(exp1,A,3))$
 
-(" LORENTZ(exp, <tensor1, tensor2, ...>)
-imposes a generalized Lorentz condition on exp replacing by zero
-those tensori which have a derivative index identical to a
-contravariant index. If no tensori are specified, this process
-will be performed on all indexed objects in exp.
-In what following we costruct Einstein tensor and impose the
-Lorentz condition. ")$
+("LORENTZ(exp, <tensor1, tensor2, ...>) imposes a generalized Lorentz
+condition on exp replacing with zero those tensori that have a derivative
+index identical to a contravariant index. If no tensori are specified,
+this process will be performed on all indexed objects in exp. In the
+following we costruct the Einstein tensor and impose the Lorentz
+condition.")$
 
 metric:G$
 show(G([],[i,j]))$
@@ -131,36 +129,35 @@ defcon(E,E,kdelta)$
 defcon(E,P,P)$
 defcon(P,E,P)$
 
-RR : G([],[r,t])*curvature([r,s,t],[s]);
-RRIJ : G([],[i,r])*G([],[j,t])*curvature([r,s,t],[s]);
+RR: G([],[r,t])*curvature([r,s,t],[s]);
+RRIJ: G([],[i,r])*G([],[j,t])*curvature([r,s,t],[s]);
 ein:-(RRIJ-1/2*RR*G([],[i,j]))$
-undiff(ein)$
-ev(%,chr2)$
-ev(%,diff)$
-ein:canform(rename(contract(ratexpand(%))))$
+	/*undiff(ein)$
+	ev(%,chr2)$
+	ev(%,diff)$*/
+ein:canform(rename(contract(ratexpand(EV(%)))))$
 lorentz(ein,P)$
 show(%)$
 
-(" Now check whether the Einstein tensor is divergency free, 
-the consequense of the Bjanki rules.")$
+("Now check whether the Einstein tensor is divergence free, a consequence
+of the Bianchi identities.")$
 
-divein : covdiff(ein,j)$
-undiff(divein)$
-ev(%,chr2)$
-ev(%,diff)$
-divein : canform(rename(contract(ratexpand(%))))$
+divein: covdiff(ein,j)$
+	/*undiff(divein)$
+	ev(%,chr2)$
+	ev(%,diff)$*/
+divein: canform(rename(contract(ratexpand(EV(%)))))$
 show(%)$
 
-("Note, with help of canten(), 
-maxima is able to prove the Bjanki rules in general case. In coming!")$
-
+("Note that with help of CANTEN(), Maxima is able to prove the Bianchi
+identities in the general case. Incoming!")$
 
 kill:G;
 metric:G;
 
+("Declaring the symmetry properties")$
 
-(" Declaring the symmetry properties ")$
-exp1 : A([K,J,I],[])+ A([K,I,J],[])+ A([J,K,I],[])+
+exp1:A([K,J,I],[])+ A([K,I,J],[])+ A([J,K,I],[])+
         A([J,I,K],[])+ A([I,K,J],[])+ A([I,J,K],[])$
 
 show(exp1)$
@@ -174,24 +171,21 @@ remsym(A,3,0);
 decsym(A,3,0,[cyc(all)],[])$
 show(canform(exp1))$
 
-(" Using defcon ")$
-(" DEFCON(tensor1,<tensor2,tensor3>) 
-gives tensor1 the property that the contraction of a product of
-tensor1 and 2tensor2 results in tensor3 with the
-appropriate indices.  If only one argument, tensor1, is given,
-then the contraction of the product of tensor1 with any indexed
-object having the appropriate indices (say tensor) will yield an
-indexed object with that name, i.e. tensor, and with a new set of
-indices reflecting the contractions performed. For example, if
-METRIC:G, then DEFCON(G) will implement the raising and lowering of
-indices through contraction with the metric tensor. CONTRACTIONS is a
-list of those indexed objects which have been given contraction
-properties with DEFCON.
+("DEFCON(tensor1,<tensor2,tensor3>) gives tensor1 the property that the
+contraction of a product of tensor1 and tensor2 results in tensor3 with
+the appropriate indices. If only one argument, tensor1, is given, then
+the contraction of the product of tensor1 with any indexed object having
+the appropriate indices (say tensor) will yield an indexed object with
+that name, i.e. tensor, and with a new set of indices reflecting the
+contractions performed. For example, if METRIC:G, then DEFCON(G) will
+implement the raising and lowering of indices through contraction with
+the metric tensor. CONTRACTIONS is a list of those indexed objects which
+have been given contraction properties with DEFCON.
 
-The following example for an algebraically special metric shows
-how the null property of a vector field may be assigned as well as
-demonstrating that more than one DEFCON assignment can be given for
-the same indexed object.")$
+The following example for an algebraically special metric shows how the
+null property of a vector field may be assigned as well as demonstrating
+that more than one DEFCON assignment can be given for the same indexed
+object.")$
 
 DECLARE(E,CONSTANT);
 
@@ -199,19 +193,24 @@ defcon(E);
 defcon(E,E,KDELTA);
 defcon(L,L,W)$
 W(L1,L2):=0$
-G(L1,L2):=BLOCK(
-IF L2=[] THEN RETURN(E(L1,[])+2*M*L([L1[1]],[])*L([L1[2]],[]) ),
-E([],L2)-2*M*L([],[L2[1]])*L([],[L2[2]]))$
+	/*G(L1,L2):=BLOCK(
+	IF L2=[] THEN RETURN(E(L1,[])+2*M*L([L1[1]],[])*L([L1[2]],[]) ),
+	E([],L2)-2*M*L([],[L2[1]])*L([],[L2[2]]))$*/
+REMCOMPS(G);
+COMPONENTS(G([I,J],[]),E([I,J],[])+2*M*L([I],[])*L([J],[]));
+COMPONENTS(G([],[I,J]),E([I,J],[])-2*M*L([],[I])*L([],[J]));
+
+
 SHOW(G([I,J],[]))$
 SHOW(G([],[I,J]))$
 contract(rename(expand(G([i,j],[])*G([],[j,k]))))$
 show(%)$
 
-(" Indices control")$
+("Indices control")$
 
-kill(G);
+REMCOMPS(G);
 
-exp1 : curvature([I,J,K],[L])*curvature([A,B,C],[D])$
+exp1:curvature([I,J,K],[L])*curvature([A,B,C],[D])$
 show(exp1)$
 
 INDICES(%)$
@@ -226,17 +225,15 @@ dummyx:di$
 METRIC:G$
 DIM:3;
 
-(" The RHS of heat transport equation ")$
+("The RHS of the heat transport equation")$
 
-eq1 : TD = show(canform(rename(expand(covdiff(
+eq1:TD = show(canform(rename(expand(covdiff(
      -k([],[])*covdiff(T([],[]),i),j)*G([],[i,j]))))+ source)$
 
-heat : GENERATE(eq1 );
+heat:GENERATE(eq1);
 
-("At the first, write eq. in cartesian coords. Note, all functions 
- and parameters in itensor.lisp are in upper case. So we have to make 
- some trivial redifinitions. Hope it will be made in more elegant way in future ")$
-dim :DIM;
+("First, write the equation in Cartesian coordinates.")$
+
 OMEGA:[X,Y,Z];
 
 LG:MATRIX([1,0,0],[0,1,0],[0,0,1]);
@@ -247,14 +244,12 @@ CHRISTOF(MCS);
 depends([T,k],omega);
 ev(heat);
 
-(" get equation in spherical coordinates ")$
-OMEGA:[r,th,ph];
+("Now get the equation in spherical coordinates.")$
 
+OMEGA:[r,th,ph];
 LG:MATRIX([1,0,0],[0,r^2,0],[0,0,r^2*sin(th)^2])$
-UG : INVERT(LG)$
+UG:INVERT(LG)$
 christof(all);
 remove([T,k],dependency);
 depends(T,omega);
- 
 ev(heat);
- 

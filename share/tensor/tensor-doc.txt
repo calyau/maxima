@@ -7,7 +7,7 @@
 MIT/LCS/TM-167                                             July 12, 1982
 Computer Programs for Research in Gravitation and Differential Geometry
        (Volume 2, Chapter 3 of the 1982 MACSYMA REFERENCE MANUAL)
-
+  (Revised for MAXIMA 5.9.0 - Viktor T. Toth - http://www.vttoth.com/)
 
                             Richard Pavelle
                     Laboratory for Computer Science
@@ -21,22 +21,22 @@ Computer Programs for Research in Gravitation and Differential Geometry
                                 ABSTRACT
 
 This report contains a description of all current functions and features
-(with  many  examples)  of  the programs  CTENSR  and  ITENSR  which are
-available  with  MACSYMA.    CTENSR  is  a  standard   Component  TENSoR
+(with  many  examples)  of  the programs  CTENSR  and  ITENSOR which are
+available  with  MAXIMA.    CTENSR   is  a  standard   Component  TENSoR
 manipulation  system which  means  that geometrical  tensor  objects are
 represented  as   arrays  or  matrices.    Tensor  operations   such  as
 contraction  or covariant  differentiation are  carried out  by actually
-summing over repeated (dummy) indices with DO statements. ITENSR,  is an
-Indicial TENSoR manipulation system which is implemented by representing
+summing over repeated (dummy) indices with DO statements. ITENSOR, is an
+Indicial TENSOR manipulation system which is implemented by representing
 tensors as  functions of their  covariant, contravariant  and derivative
 indices.   Tensor   operations   such   as   contraction   or  covariant
 differentiation  are performed  by manipulating  the  indices themselves
 rather than the components  to which they correspond.  The  two programs
-are connected in the sense that one can generate an expression in ITENSR
-and have the corresponding expression generated in the  CTENSR (MACSYMA)
-format automatically.
+are connected in the sense  that  one  can  generate  an  expression  in
+ITENSOR and have the corresponding expression generated  in  the  CTENSR
+(MAXIMA) format automatically.
 
-KEY WORDS: MACSYMA,  computer algebra, algebraic  manipulation, computer
+KEY WORDS: MAXIMA,  computer algebra, algebraic  manipulation,  computer
 science, general relativity, gravitation, tensor  analysis, differential
 geometry.
 
@@ -89,7 +89,7 @@ FUNCTION,VARIABLE, and OPTION INDEX  . . . . . . . . . . . . . . . . . i
 1 Tensor Manipulation Programs - Introduction
 
 
-    MACSYMA  implements  symbolic tensor  manipulation  of  two distinct
+    MAXIMA  implements  symbolic tensor  manipulation  of  two  distinct
 types: component tensor manipulation and indicial tensor manipulation.
 
     Component tensor manipulation means that geometrical  tensor objects
@@ -119,7 +119,7 @@ implementations:
     use. Specification  of the  metric and  the computation  of the
     induced tensors and invariants is straightforward.
 
-        ii)  Although  all  of  MACSYMA's  powerful  simplification
+        ii)  Although  all  of   MAXIMA's  powerful  simplification
     capacity is at hand, a complex metric with intricate functional
     and  coordinate  dependencies can  easily  lead  to expressions
     whose  size  is excessive  and  whose structure  is  hidden. In
@@ -137,22 +137,22 @@ implementations:
     their   indices,    expressions   which   in    the   component
     representation would be  unmanageable can sometimes  be greatly
     simplified  by  using  the  special  routines  for  symmetrical
-    objects  in  ITENSR.  In  this way  the  structure  of  a large
+    objects  in  ITENSOR.  In  this way  the  structure  of a large
     expression may be more transparent.
 
         ii) On the other hand, because of the the  special indicial
-    representation  in  ITENSR, in  some  cases the  user  may find
+    representation  in ITENSOR, in  some  cases the  user  may find
     difficulty  with  the  specification  of  the  metric, function
     definition,  and  the  evaluation  of  differentiated "indexed"
     objects.
 
-    These  two  tensor  manipulation packages,  CTENSR  and  ITENSR, are
-available  to the  MACSYMA user  on the  TENSOR directory.   To  use the
+    These  two  tensor  manipulation packages,  CTENSR  and ITENSOR, are
+available  to the  MAXIMA  user  on the  TENSOR directory.   To  use the
 functions in these files, the user can load them in by doing
 
-    LOADFILE(CTENSR,FASL,TENSOR); --- for component tensor manipulation.
+    LOAD(CTENSR);  --- for component tensor manipulation.
 
-    LOADFILE(ITENSR,FASL,TENSOR); --- for indicial tensor manipulation
+    LOAD(ITENSOR); --- for indicial tensor manipulation
 
     Both  of these  packages enable  the user  to specify  a  metric and
 compute the basic geometrical objects of interest.  These  routines were
@@ -162,31 +162,30 @@ applied owing to their generality.
 
     In  addition there  are  demo files  on the  TENSOR  directory which
 demonstrate applications of these packages to well defined  problems. To
-run these demos the user types, in  MACSYMA, BATCH(CTENSO,DEMO1,TENSOR),
-BATCH(CTENSO,DEMO1,TENSOR),    ...     or    BATCH(ITENSO,DEMO1,TENSOR),
-BATCH(ITENSO,DEMO2,TENSOR)... There are several CTENSR and  ITENSR demos
-and more are being added.
+run  these  demos  the  user  types,  in  MAXIMA,  DEMO("CTENSO_1.DEM"),
+DEMO("CTENSO_2.DEM"), ... or DEMO("ITENSOR.DEM"). There are several
+CTENSR and  ITENSR demos and more are being added.
 TENSORS                                                                3
 
 
 2 Component Tensor Manipulation- Basic Functions
 
 
-    To use CTENSR the user does LOADFILE(CTENSR,FASL,TENSOR).  The basic
-function is called
+    To use CTENSR the user does  LOAD(CTENSR).  The  basic  function  is
+    called
 
 
 TSETUP()  which  automatically  loads  the  CTENSR  package  from within
-    MACSYMA (if it is not  already loaded) and then prompts the  user to
+    MAXIMA  (if it is not  already loaded) and then prompts the  user to
     make use of it. The user is first asked to specify the  dimension of
     the  manifold. If  the  dimension is  2, 3  or  4 then  the  list of
     coordinates defaults  to [X,Y],  [X,Y,Z] or  [X,Y,Z,T] respectively.
     These names may be changed by assigning a new list of coordinates to
     the variable OMEGA (described  below) and the user is  queried about
-    this. Care must be  taken to avoid the coordinate  names conflictingM          ____ ____ __  _____ __ _____ ___ __________  _____ ___________
-    with  other object  definitions. Next,  the user  enters  the metricM    ____  _____ ______  ___________
+    this. _Care must be  taken to avoid the coordinate names conflicting
+    with other object  definitions_. Next,  the user  enters  the metric
     either directly or from  a file by specifying its  ordinal position.
-    As an example of a  file of common metrics, see  TENSOR;METRIC FILE.
+    As an example of a  file of common metrics, see  tensor/metrics.mac.
     The metric is stored in  the matrix LG. Finally, the  metric inverse
     is  computed and  stored in  the matrix  UG. One  has the  option of
     carrying out all calculations in a power series.
@@ -196,6 +195,9 @@ TSETUP()  which  automatically  loads  the  CTENSR  package  from within
     problem of deriving Einstein's  vacuum equations (which lead  to the
     Schwarzschild  solution) as  an example.  Many of  the  functions in
     CTENSR will be displayed for the standard metric as examples.
+
+    (Note that interactive prompts do not appear as described in  MAXIMA
+    5.9.0. You can still however enter the data "in the blind.")
 
     (C2) TSETUP();
     Enter the dimension of the coordinate system:
@@ -323,27 +325,27 @@ EINSTEIN(dis) computes the  mixed Einstein tensor after  the Christoffel
     demonstrates:
 
 (C40) EINSTEIN(TRUE);
-                                    D  X - A D + D
-                                     X
-(E40)                       G     = --------------
-                             1, 1            2
-                                        A D X
+                                   D  X + (1 - A) D
+                                    X
+(E40)                      G     = ----------------
+                            1, 1            2
+                                       A D X
 6          1.2 Component Tensor Manipulation- Basic Functions    TENSORS
 
 
 
-                                  2                                  2
-               2 A D D    X - A D   X - A  D D  X + 2 A D D  - 2 A  D
-                      X X        X       X    X            X      X
-(E41)  G     = -------------------------------------------------------
+                                   2                                  2
+               (2 A D D    - A (D )  - A  D D ) X + 2 A D D  - 2 A  D
+                       X X       X      X    X             X      X
+(E41)  G     = --------------------------------------------------------
         2, 2                             2  2
                                       4 A  D  X
 
 
-                                  2                                  2
-               2 A D D    X - A D   X - A  D D  X + 2 A D D  - 2 A  D
-                      X X        X       X    X            X      X
-(E42)  G     = -------------------------------------------------------
+                                   2                                  2
+               (2 A D D    - A (D )  - A  D D ) X + 2 A D D  - 2 A  D
+                       X X       X      X    X             X      X
+(E42)  G     = --------------------------------------------------------
         3, 3                             2  2
                                       4 A  D  X
 
@@ -365,12 +367,12 @@ LRICCICOM(dis) computes the covariant (symmetric) components  LR[i,j] of
 
 
 (C25) LRICCICOM(TRUE);
-                                         2                       2
-                      2 A D D    X - A D   X - A  D D  X - 4 A  D
-                             X X        X       X    X        X
-(E25)      LR     = - --------------------------------------------
-             1, 1                            2
-                                        4 A D  X
+                                          2                       2
+                     2 A D D    X - A (D )  X - A  D D  X - 4 A  D
+                            X X         X        X    X        X
+(E25)     LR     = - ----------------------------------------------
+            1, 1                            2
+                                       4 A D  X
 
 
                                                  2
@@ -391,12 +393,12 @@ LRICCICOM(dis) computes the covariant (symmetric) components  LR[i,j] of
                                          2 A  D
 
 
-                                        2
-                     2 A D D    X - A D   X - A  D D  X + 4 A D D
-                            X X        X       X    X            X
-(E28)       LR     = ---------------------------------------------
-              4, 4                        2
-                                       4 A  D X
+                                          2
+                    2 A D D    X - A (D )  X - A  D D  X + 4 A D D
+                           X X         X        X    X            X
+(E28)      LR     = -----------------------------------------------
+             4, 4                        2
+                                      4 A  D X
 
 
 MOTION(dis) computes  the covariant  form of  the geodesic  equations of
@@ -406,21 +408,21 @@ MOTION(dis) computes  the covariant  form of  the geodesic  equations of
 
 OMEGA is an option which assigns a list of coordinates to  the variable.
     While normally defined when  the function TSETUP is called,  one may
-    redefine  the  coordinates with  the  assignment OMEGA:[j1,j2,...jn]
+    redefine  the  coordinates with  the  assignment omega:[j1,j2,...jn]
     where the  j's are the  new coordinate names.  A call to  OMEGA will
     return the coordinate name list. Also see the function TSETUP above.
 
 
 RATFAC(false) is a  switch which, if  TRUE, causes the  Ricci, Einstein,
     Riemann, and Weyl  tensors and the  Scalar Curvature to  be factored
-    automatically. Clearly, this should only be set for cases  where theM                   ________ ____ ______ ____ __ ___ ___ _____  _____ ___
-    tensorial components are known to consist of few terms.M    _________ __________ ___ _____ __ _______ __ ___ _____
+    automatically. _Clearly, this should only be set for cases where the
+    tensorial components are known to consist of few terms_.
 
 
 RIEMANN(dis) computes the Riemann curvature tensor from the given metric
     and  the corresponding  Christoffel symbols.   If dis  is  TRUE, the
-    non-zero components R[i,j,k,l] will be displayed. All  the indicatedM                                                      ___  ___ _________
-    indices  are  covariant.   As  with  the  Einstein  tensor,  variousM    _______  ___  _________
+    non-zero components R[i,j,k,l] will be displayed. _All the indicated
+    indices  are  covariant_.   As with  the  Einstein  tensor,  various
     switches  set  by  the  user  control  the  simplification   of  the
     components of the Riemann  tensor.  If RATRIEMAN[TRUE] is  TRUE then
     rational simplification will be done. If RATFAC is TRUE then each of
@@ -453,18 +455,19 @@ WEYL(dis) computes the covariant Weyl conformal tensor. If  the argument
     flat.
 
 
-(C7) LG;
+(C7) DIM:5$
+(C8) LG:DIAGMATRIX(5,A);
                           [ A  0  0  0  0 ]
                           [               ]
                           [ 0  A  0  0  0 ]
                           [               ]
-(D7)                      [ 0  0  A  0  0 ]
+(D8)                      [ 0  0  A  0  0 ]
                           [               ]
                           [ 0  0  0  A  0 ]
                           [               ]
                           [ 0  0  0  0  A ]
 
-(C8) DEPENDENCIES;
+(C8) DEPENDS(A,T);
 (D8)                            [A(T)]
 
 (C9) RATWEYL:TRUE;
@@ -482,7 +485,7 @@ Time= 94320 msec.
 
 
 CHECKDIV(tensor) computes the  covariant divergence of the  mixed second
-    rank tensor (whose  first index must  be covariant) by  printing theM                 _____  _____ _____ ____  __ _________
+    rank tensor (_whose first index must  be covariant_) by printing the
     corresponding  n components  of  the vector  field  (the divergence)
     where  n =  DIM.  If the  argument to  the  function is  G  then the
     divergence of the Einstein tensor  will be formed and must  be zero.
@@ -508,7 +511,7 @@ CONTRAGRAD(function,name)  computes  the  CONTRAvariant  GRADient  of  a
 (C15) CONTRAGRAD(F,G2)$
 (C16) LISTARRAY(G2);
                              F
-                              X
+                              x
 (D16)                       [--, 0, 0, 0]
                              A
 
@@ -536,16 +539,16 @@ DSCALAR(function)  computes  the  tensor  d'Alembertian  of  the  scalar
 
 FINDDE(array,n)  returns a  list  of the  unique  differential equations
     (expressions)  corresponding to  the elements  of the  n dimensional
-    square array. Presently, n may be  2 or 3. DEINDEX is a  global list
+    square array. Presently, n may be  2 or 3. deindex is a  global list
     containing  the  indices  of  array  corresponding  to  these unique
-    differential  equations. For  the Einstein  tensor (G)  given above,
-    which  is  a  two  dimensional  array,  FINDDE  gives  the following
+    differential  equations. For  the Einstein  tensor (g)  given above,
+    which  is  a  two  dimensional  array,  findde  gives  the following
     independent differential equations:
 
 (C19) FINDDE(G,2);
-                                          2
-(D19) [D  X - A D + D, 2 A D D    X - A D   X - A  D D  X + 2 A D D
-        X                     X X        X       X    X            X
+                                            2
+(D19) [D  X - A D + D, 2 A D D    X - A (D )  X - A  D D  X + 2 A D D
+        X                     X X         x        X    X            X
 
                                                      2          2
                                              - 2 A  D , A  X + A  - A]
@@ -567,7 +570,7 @@ RAISERIEMANN(dis) returns  the contravariant  components of  the Riemann
     if dis is TRUE.
 
 
-RINVARIANT() forms  the Kretschmann  invariant, KINVARIANT,  obtained by
+RINVARIANT() forms  the Kretschmann  invariant, kinvariant,  obtained by
     contracting  the  tensors  R[i,j,k,l]*UR[i,j,k,l].  This  object not
     automatically  simplified  since  it  can  be  very  large.  For the
     standard  metric,  however,  the  invariant  is  small   and  easily
@@ -575,19 +578,19 @@ RINVARIANT() forms  the Kretschmann  invariant, KINVARIANT,  obtained by
 
 (C20) FACTOR(KINVARIANT);
 
-          2  2     2  4      2     2       4           2          4
-(D20) (4 A  D  D     X  - 4 A  D D   D    X  - 4 A A  D  D  D    X
-                X X               X   X X           X     X  X X
+          2  2       2  4      2       2       4           2          4
+(D20) (4 A  D  (D   )  X  - 4 A  D (D )  D    X  - 4 A A  D  D  D    X
+                 X X                 X    X X           X     X  X X
 
 
-    2   4  4              3  4     2  2   2  4      2  2   2  2
- + A  D   X  + 2 A A  D D   X  + A   D  D   X  + 8 A  D  D   X
-       X            X    X        X      X                X
+    2     4  4                3  4     2  2     2  4      2  2     2  2
+ + A  (D )  X  + 2 A A  D (D )  X  + A   D  (D )  X  + 8 A  D  (D )  X
+        X             X     X         X       X                  X
 
 
-       2  4  2       4  4       3  4       2  4      4  4  4
- + 8 A   D  X  + 16 A  D  - 32 A  D  + 16 A  D )/(4 A  D  X )
-      X
+         2  4  2       4  4       3  4       2  4      4  4  4
+ + 8 (A )  D  X  + 16 A  D  - 32 A  D  + 16 A  D )/(4 A  D  X )
+       X
 TENSORS  1.3 Component Tensor Manipulation- Auxiliary Functions       11
 
 
@@ -638,7 +641,7 @@ EV(%,COS(Y) = SQRT(1-SIN(Y)^2),SIN(Z) = SQRT(1-COS(Z)^2),RATSIMP);
 
 
 BDVAC() generates the covariant components of the vacuum field equations
-    of  the  Brans-  Dicke gravitational  theory.  There  are  two field
+    of  the  Brans-Dicke  gravitational  theory.  There  are  two  field
     equations. The components of the second rank covariant  field tensor
     are represented by the array BD2. The scalar field equation requires
     the user to  input the name of  a scalar and declare  its functional
@@ -679,18 +682,18 @@ They  can be  explicitly specified  by  the user  or be  created  in the
 process  of differentiation  with respect  to some  coordinate variable.
 Since ordinary  differentiation is  commutative, the  derivative indices
 are sorted alphanumerically.  This canonical ordering makes  it possible
-for MACSYMA to recognize  that, for example, T([a],[b],i,j) is  the same
+for MAXIMA  to recognize  that, for example, T([a],[b],i,j) is  the same
 as T([a],[b],j,i).  Differentiation of an indexed object with respect to
 some  coordinate whose  index  does not  appear  as an  argument  to the
-indexed object would normally yield zero. This is because  MACSYMA would
+indexed object would normally yield zero. This is because  MAXIMA  would
 not know that the tensor represented by the indexed object  might depend
 implicitly on the  corresponding coordinate.  By modifying  the existing
-MACSYMA function DIFF  in ITENSR, MACSYMA  now assumes that  all indexed
+MAXIMA  function DIFF in ITENSOR,  MAXIMA  now assumes that  all indexed
 objects  depend  on  any variable  of  differentiation  unless otherwise
 stated.   This makes  it  possible for  the summation  convention  to be
-extended to derivative indices. It should be noted that ITENSR  does notM                                __ ______ __ _____ ____ ______  ____ ___
-possess the capabilities of raising derivative indices, and so  they areM_______ ___ ____________ __ _______ __________ ________ ___ __  ____ ___
-always treated as covariant.M______ _______ __ _________
+extended  to derivative indices.  _It should be noted that ITENSOR  does
+not possess the capabilities of raising derivative indices, and so  they
+are always treated as covariant_.
 
     The  following functions  are available  in the  tensor  package for
 manipulating  indexed  objects.    At  present,  with  respect   to  the
@@ -698,8 +701,8 @@ simplification  routines, it  is assumed  that all  indexed  objects are
 completely symmetric in their  lists of covariant indices  and symmetric
 in  their lists  of  contravariant indices.  This can  be  overridden by
 setting  the variable  ALLSYM[TRUE]  to FALSE  which will  result  in no
-symmetry  assumptions  in  these  two  sets  of  indices.   However, theM                                                            ________ ___
-simplification routines may no longer operate completely.M______________ ________ ___ __ ______ _______ ___________
+symmetry  assumptions  in  these  two  sets  of  indices.  _However, the
+simplification routines may no longer operate completely._
 
     In what follows, general indexed objects will be denoted by tensor1,
 tensor2, ... . The symbols  L1, L2,... denote lists which  are arguments
@@ -732,26 +735,26 @@ CHR2([i,j],[k]) yields the Christoffel symbol of the second kind defined
         As an example we consider a conformally flat metric and find the
     Christoffel symbols of both kinds:
 
-    (C7) DECLARE(E,CONSTANT)$
+    (C7) DECLARE(E,CONSTANT);
 
-    (C8) METRIC(G)$
+    (C8) METRIC(G);
 
-    (C9) COMPONENTS(G([I,J],[]),E([I,J],[])*P([],[]))$
+    (C9) COMPONENTS(G([I,J],[]),E([I,J],[])*P([],[]));
 
-    (C10) COMPONENTS(G([],[I,J]),E([],[I,J])/P([],[]))$
+    (C10) COMPONENTS(G([],[I,J]),E([],[I,J])/P([],[]));
 
-    (C11) SHOW(G([I,J],[]));
+    (C11) SHOW(G([I,J],[]))$
     (D11)                           P E
                                        I J
 
-    (C12) SHOW(G([],[I,J]));
+    (C12) SHOW(G([],[I,J]))$
                                       I J
                                      E
     (D12)                            ----
                                       P
 
 
-    (C13) SHOW(FACTOR(CHR1([I,J,K])));
+    (C13) SHOW(FACTOR(CHR1([I,J,K])))$
                         P   E    + P   E    - P   E
                          ,I  J K    ,J  I K    ,K  I J
     (D13)               ------------------------------
@@ -759,11 +762,11 @@ CHR2([i,j],[k]) yields the Christoffel symbol of the second kind defined
 TENSORS    1.6 Indicial Tensor Manipulation- Basic Functions          15
 
 
-    (C30) SHOW(FACTOR(CHR2([I,J],[K])));
-                    %1 K
-                   E     (P    E    - P   E     - P   E    )
-                           ,%1  I J    ,I  %1 J    ,J  %1 I
-    (D31)        - -----------------------------------------
+    (C30) SHOW(FACTOR(CHR2([I,J],[K])))$
+                    K %1
+                   E     (P   E     - P    E    + P   E    )
+                           ,I  J %1    ,%1  I J    ,J  I %1
+    (D31)          -----------------------------------------
                                       2 P
 
 
@@ -787,9 +790,9 @@ COMPONENTS(tensor,exp) permits  one to  assign an  indicial value  to an
 
 CONTRACT(exp) carries out the tensorial contractions in exp which may be
     any  combination  of  sums and  products.   This  function  uses the
-    information given to the DEFCON function.  When using  CONTRACT, expM                                               ____ _____  _________ ___
-    must be fully expanded. Also see the function METRIC and the exampleM    ____ __ _____ ________
-    under DIM.
+    information given to the DEFCON function. _When using  CONTRACT, exp
+    must  be fully expanded_.   Also  see the function  METRIC  and  the
+    example under DIM.
 
 
 COVDIFF(exp,v1,v2,...)  yields  the  covariant  derivative  of  exp with
@@ -797,7 +800,7 @@ COVDIFF(exp,v1,v2,...)  yields  the  covariant  derivative  of  exp with
     the second  kind (CHR2).  In  order to evaluate  these, one  can use
     EV(exp,CHR2).
 
-(C3) ENTERTENSOR();
+(C3) ENTERTENSOR()$
 Enter tensor name: A;
 Enter a list of the covariant indices: [I,J];
 Enter a list of the contravariant indices: [K];
@@ -806,7 +809,7 @@ Enter a list of the derivative indices: [];
 (D3)                                 A
                                       I J
 
-(C4) SHOW(COVDIFF(%,S));
+(C4) SHOW(COVDIFF(%,S))$
               K        %1     K        %1     K           K     %1
 (D4)       - A     CHR2    - A     CHR2    + A      + CHR2     A
               I %1     J S    %1 J     I S    I J,S       %1 S  I J
@@ -827,8 +830,8 @@ CURVATURE([i,j,k],[h]) yields the  Riemann curvature tensor in  terms of
 
 
 
-DIFF(exp,v1,n1,v2,n2,...) is the usual MACSYMA  differentiation function
-    which has been  expanded in its abilities  for ITENSR. It  takes the
+DIFF(exp,v1,n1,v2,n2,...) is the usual  MAXIMA  differentiation function
+    which has been expanded in its abilities  for ITENSOR.  It takes the
     derivative of exp with respect to v1 n1 times, with respect to v2 n2
     times,  etc.  For  the tensor  package, the  following modifications
     have been incorporated (also see the function UNDIFF):
@@ -874,7 +877,7 @@ ENTERTENSOR(<name>) is  a function  which, by  prompting, allows  one to
     create an indexed  object called name  with any number  of tensorial
     and derivative indices. Either a  single index or a list  of indices
     (which  may be  null)  is acceptable  input (see  the  example under
-    COVDIFF).
+    COVDIFF). (Note that prompts do not work correctly in MAXIMA 5.9.0.)
 
 
 GEODESIC(exp,name)   enables   the   user   to   cause  undifferentiated
@@ -886,9 +889,10 @@ GEODESIC(exp,name)   enables   the   user   to   cause  undifferentiated
     satisfied by  the Riemann curvature  tensor using RENAME  while also
     showing the use of the GEODESIC function.
 
-(C2) EXP:CURVATURE([R,S,T],[U])+CURVATURE([S,T,R],[U])+CURVATURE([T,R,S]
+(C2) EXP:CURVATURE([R,S,T],[U])+CURVATURE([S,T,R],[U])+
+CURVATURE([T,R,S],[U])$
 
-(C3) SHOW(EXP);
+(C3) SHOW(EXP)$
            U          U       %6       U          U       %6       U
 (D3) - CHR2     - CHR2    CHR2   + CHR2     + CHR2    CHR2   + CHR2
            T S,R      %6 R    T S      T R,S      %6 S    T R      S T,R
@@ -901,12 +905,12 @@ GEODESIC(exp,name)   enables   the   user   to   cause  undifferentiated
  - CHR2     CHR2    + CHR2      + CHR2     CHR2
        %4 S     R T       R S,T       %4 T     R S
 
-(C4) SHOW(GEODESIC(EXP,CHR2));
+(C4) SHOW(GEODESIC(EXP,CHR2))$
            U          U          U          U          U          U
 (D4) - CHR2     + CHR2     + CHR2     - CHR2     - CHR2     + CHR2
            T S,R      T R,S      S T,R      S R,T      R T,S      R S,T
 
-(C5) SHOW(RENAME(EXP));
+(C5) SHOW(RENAME(EXP))$
 (D5)                                  0
 
 
@@ -926,7 +930,7 @@ KDELTA(L1,L2) is  the generalized Kronecker  delta function with  L1 the
 18         1.6 Indicial Tensor Manipulation- Basic Functions     TENSORS
 
 
-(C4) SHOW(%);
+(C4) SHOW(%)$
              R        S       T         T       S
 (D4) - KDELTA  (KDELTA  KDELTA  - KDELTA  KDELTA )
              A        B       C         B       C
@@ -975,7 +979,11 @@ RENAME(exp, <count>)  returns an expression  equivalent to exp  but with
 TENSORS    1.6 Indicial Tensor Manipulation- Basic Functions          19
 
 
-(C41) SHOW(EXP);
+(C39) INDEXED(CHR2)$
+(C40) EXP:G([],[%4,%5])*G([],[%6,%7])*CHR2([%1,%4],[%3])*CHR2([%2,%3],[U
+])*CHR2([%5,%6],[%1])*CHR2([%7,R],[%2])-G([],[%4,%5])*G([],[%6,%7])*CHR2
+([%1,%2],[U])*CHR2([%3,%5],[%1])*CHR2([%4,%6],[%3])*CHR2([%7,R],[%2])$
+(C41) SHOW(EXP)$
        %4 %5  %6 %7     %3        U         %1        %2
 (D41) G      G      CHR2      CHR2      CHR2      CHR2
                         %1 %4     %2 %3     %5 %6     %7 R
@@ -987,7 +995,7 @@ RENAME(exp, <count>)  returns an expression  equivalent to exp  but with
 (C42) FLIPFLAG;
 (D42)                               FALSE
 
-(C43) SHOW(RENAME(EXP));
+(C43) SHOW(RENAME(EXP))$
        %2 %5  %6 %7     %4        U         %1        %3
 (D43) G      G      CHR2      CHR2      CHR2      CHR2
                         %1 %2     %3 %4     %5 %6     %7 R
@@ -997,13 +1005,12 @@ RENAME(exp, <count>)  returns an expression  equivalent to exp  but with
                                     %1 %2     %3 %4     %5 %6     %7 R
 
 (C44) FLIPFLAG:TRUE$
-
-(C45) RENAME(D41);
+(C45) RENAME(D43);
 (D45)                             0
 
-(C46) [FIRST(D42),LAST(D42)]$
+(C46) [FIRST(D43),LAST(D43)]$
 
-(C46) SHOW(RENAME(%));
+(C46) SHOW(RENAME(%))$
         %1 %2  %3 %4     %5        %6        %7       U
 (D46) [G      G      CHR2      CHR2      CHR2     CHR2     ,
                          %1 %6     %2 %3     %4 R     %5 %7
@@ -1019,8 +1026,6 @@ incorporate  this given  definition of  the metric  explicitly  into the
 result, the user  can do expression, EVAL  as the following  example for
 the weak field metric demonstrates:
 
-(C5) INDEXED(CHR2)$
-
 (C6) DECLARE(E,CONSTANT)$
 
 (C7) METRIC:G$
@@ -1031,11 +1036,11 @@ the weak field metric demonstrates:
 20         1.6 Indicial Tensor Manipulation- Basic Functions     TENSORS
 
 
-(C10) SHOW(G([I,J],[]));
+(C10) SHOW(G([I,J],[]))$
 (D10)                      2 L P    + E
                                 I J    I J
 
-(C11) SHOW(G([],[I,J]));
+(C11) SHOW(G([],[I,J]))$
                             I J      I J
 (D11)                      E    - 2 P    L
 
@@ -1043,18 +1048,21 @@ the weak field metric demonstrates:
 
 (C13) CURVATURE([S,U,N],[Y])$
 
-(C14) %,EVAL$
+(C14) UNDIFF(%)$
 
-(C15) SHOW(CANFORM(CONTRACT(RENAME(RATEXPAND(%)))))$
+(C15) %,EVAL$
+
+(C16) %,DIFF$
+
+(C17) SHOW(CANFORM(CONTRACT(RENAME(RATEXPAND(%)))))$
 
          %1 Y                %1 Y                %1 Y
-(D15) - E     L P         + E     L P         + E     P         L
+(D17) - E     L P         + E     L P         + E     P         L
                  S U,%1 N            N S,%1 U          %1 U,N S
 
                                                       %1 Y
                                                    - E     P         L
                                                             %1 N,S U
-
 
 SHOW(exp) displays exp with the indexed objects in it shown having their
     covariant  indices  as  subscripts  and  contravariant   indices  as
@@ -1123,7 +1131,7 @@ CONMETDERIV(exp,tensor)  is  used  to  simplify  expressions  containing
 (D8)                                 G
                                       ,C
 
-(C9) SHOW(CONMETDERIV(%,G));
+(C9) SHOW(CONMETDERIV(%,G))$
                          %1 B     A       %1 A     B
 (D9)                  - G     CHR2     - G     CHR2
                                   %1 C             %1 C
@@ -1152,12 +1160,12 @@ FLUSHND(exp,tensor,n) will set to  zero, in exp, all occurrences  of the
     differentiated object tensor that have n or more  derivative indices
     as the following example demonstrates.
 
-(C3) SHOW(A([I],[J,R],K,R)+A([I],[J,R,S],K,R,S));
+(C3) SHOW(A([I],[J,R],K,R)+A([I],[J,R,S],K,R,S))$
                                J R S      J R
 (D3)                          A        + A
                                I,K R S    I,K R
 
-(C4) SHOW(FLUSHND(D3,A,3));
+(C4) SHOW(FLUSHND(%,A,3))$
                                      J R
 (D4)                                A
                                      I,K R
@@ -1183,12 +1191,12 @@ MAKEBOX(exp,tensor) will display, with the symbol [], all occurrences of
 TENSORS1.7 Indicial Tensor Manipulation- Simplification Functions     23
 
 
-(C56) SHOW(G([I,J]));
+(C56) SHOW(G([I,J]))$
 
 (D56)                       P    L + E
                              I J      I J
 
-(C57) SHOW(EIN);
+(C57) SHOW(EIN)$
          %1 %2  I J         %1 %2   I J              %1 %2  I J
 (D57) - E      P       L - P       E    L + P       E      E    L
                 ,%1 %2      ,%1 %2           ,%1 %2
@@ -1197,7 +1205,7 @@ MAKEBOX(exp,tensor) will display, with the symbol [], all occurrences of
            + E     P       L + P       E     L - P       E     E     L
                     ,%1 %2      ,%1 %2            ,%1 %2
 
-(C58) SHOW(LORENTZ(%,P));
+(C58) SHOW(LORENTZ(%,P))$
          %1 %2  I J                 %1 %2  I J
 (D58) - E      P       L + P       E      E    L
                 ,%1 %2      ,%1 %2
@@ -1206,7 +1214,7 @@ MAKEBOX(exp,tensor) will display, with the symbol [], all occurrences of
                                                - P       E     E     L
                                                   ,%1 %2
 
-(C59) SHOW(MAKEBOX(%,E));
+(C59) SHOW(MAKEBOX(%,E))$
                 I J          I J              %1 I  %2 J
 (D59)      - []P    L + []P E    L - P       E     E     L
                                       ,%1 %2
@@ -1254,14 +1262,14 @@ DECSYM(tensor,  m,  n,  [cov1,cov2,...],  [contr1,contr2,...])  declares
 (C4) EXP:A([K,J,I],[])+A([K,I,J],[])+A([J,K,I],[])+
          A([J,I,K],[])+A([I,K,J],[])+A([I,J,K],[])$
 
-(C5) SHOW(EXP);
+(C5) SHOW(EXP)$
 (D5)         A      + A      + A      + A      + A      + A
               K J I    K I J    J K I    J I K    I K J    I J K
 
 (C6) ALLSYM;
 (D6)                                 TRUE
 
-(C7) SHOW(CANFORM(EXP));
+(C7) SHOW(CANFORM(EXP))$
 
 (D7)                               6 A
                                       I J K
@@ -1275,14 +1283,14 @@ DECSYM(tensor,  m,  n,  [cov1,cov2,...],  [contr1,contr2,...])  declares
 (C10) DISPSYM(A,3,0);
 (D10)                     [[ANTI, [[1, 2, 3]], []]]
 
-(C11) SHOW(CANFORM(EXP));
+(C11) SHOW(CANFORM(EXP))$
 (D11)                                 0
 
 (C12) REMSYM(A,3,0)$
 
 (C13) DECSYM(A,3,0,[CYC(ALL)],[])$
 
-(C14) SHOW(CANFORM(EXP));
+(C14) SHOW(CANFORM(EXP))$
 (D14)                        3 A      + 3 A
                                 I K J      I J K
 
@@ -1319,13 +1327,13 @@ DEFCON(tensor1,<tensor2,tensor3>)  gives tensor1  the property  that the
 
     (C10) COMPONENTS(G([],[A,B]),E([],[A,B])-2*M*L([],[A])*L([],[B]))$
 
-    (C11) SHOW(G([I,J],[]));
+    (C11) SHOW(G([I,J],[]))$
     (D11)                          2 L  L  M + E
                                       I  J      I J
 26  1.8 Indicial Tensor Manipulation- Property Assignment FunctionsM                                                                  TENSO
 
 
-    (C12) SHOW(G([],[I,J]));
+    (C12) SHOW(G([],[I,J]))$
                                     I J      I  J
     (D12)                          E    - 2 L  L  M
 
@@ -1333,7 +1341,7 @@ DEFCON(tensor1,<tensor2,tensor3>)  gives tensor1  the property  that the
 
     (C14) CONTRACT(RENAME(EXPAND(G([I,J],[])*G([],[J,K]))))$
 
-    (C15) SHOW(%);
+    (C15) SHOW(%)$
                                              K
     (D15)                              KDELTA
                                              I
@@ -1410,7 +1418,7 @@ INDICES(exp) returns a list of two elements.  The first is a list of the
     list of the dummy indices in exp (those that occur exactly twice) as
     the following example demonstrates.
 
-(C3) SHOW(CURVATURE([I,J,K],[L])*CURVATURE([A,B,C],[D]));
+(C3) SHOW(CURVATURE([I,J,K],[L])*CURVATURE([A,B,C],[D]))$
             D           D        %2        D           D        %2
 (D3) (- CHR2      - CHR2     CHR2    + CHR2      + CHR2     CHR2   )
             A C,B       %2 B     A C       A B,C       %2 C     A B
@@ -1426,8 +1434,7 @@ INDICES(exp) returns a list of two elements.  The first is a list of the
 (D5)                                  2
 
 (C6) COUNTER:11$
-
-(C7) ''C3;
+(C7) ''C3$
             D           D         %13       D           D         %13
 (D7) (- CHR2      - CHR2      CHR2    + CHR2      + CHR2      CHR2   )
             A C,B       %13 B     A C       A B,C       %13 C     A B
@@ -1484,12 +1491,12 @@ GENERATE(eqn) converts  an ITENSR  equation eqn  to a  CTENSR assignment
 
                          I, 1, DIM), J, 1, DIM), L, 1, DIM)
 
-(C4) SHOW(T([I],[J]));
+(C4) SHOW(T([I],[J]))$
                                    J
 (D4)                              T
                                    I
 
-(C5) SHOW(COVDIFF(%,K));
+(C5) SHOW(COVDIFF(%,K))$
                     J      %1     J         J     %1
 (D5)             - T   CHR2    + T    + CHR2     T
                     %1     I K    I,K       %1 K  I
@@ -1516,7 +1523,7 @@ FOR I THRU DIM DO (FOR J THRU DIM DO (FOR K THRU DIM DO H        :
 
 (C9) D5,CHR2$
 
-(C10) SHOW(%);
+(C10) SHOW(%)$
          %1 %3  J
         G      T   (G       - G       + G      )
                 %1   K %3,I    I K,%3    I %3,K
