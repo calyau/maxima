@@ -13,6 +13,9 @@ TCLTKDIR = /c/tcltk
 TCLTKINCFLAGS = -I $(TCLTKDIR)/include
 TCLTKLINKFLAGS = -L $(TCLTKDIR)/lib
 
+GCCPREFIX=/mingw
+GCCVER=3.3.1
+
 all: xmaxima.exe winkill.exe tclwinkill.dll
 
 ../xmaxima: 
@@ -33,13 +36,14 @@ winkill.exe: winkill.c
 tclwinkill.dll: tclwinkill.c
 	gcc -Wall $(TCLTKINCFLAGS) -shared tclwinkill.c $(TCLTKLINKFLAGS) -ltclstub83 -o tclwinkill.dll
 
-GCCPREFIX=/mingw
 gcccopy:
 	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
 	test -d "$(prefix)/include" || mkdir -p "$(prefix)/include"
 	test -d "$(prefix)/include/sys" || mkdir -p "$(prefix)/include/sys"
-	test -d "$(prefix)/lib/gcc-lib/mingw32/3.2" || mkdir -p "$(prefix)/lib/gcc-lib/mingw32/3.2"
-	test -d "$(prefix)/lib/gcc-lib/mingw32/3.2/include" || mkdir -p "$(prefix)/lib/gcc-lib/mingw32/3.2/include"
+	test -d "$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)" \
+		|| mkdir -p "$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)"
+	test -d "$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include" \
+		|| mkdir -p "$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include"
 	cp $(GCCPREFIX)/bin/gcc.exe $(prefix)/bin
 	cp $(GCCPREFIX)/bin/as.exe $(prefix)/bin
 	cp $(GCCPREFIX)/bin/mingwm10.dll $(prefix)/bin
@@ -53,10 +57,10 @@ gcccopy:
 	cp $(GCCPREFIX)/include/io.h $(prefix)/include
 	cp $(GCCPREFIX)/include/process.h $(prefix)/include
 	cp $(GCCPREFIX)/include/sys/*.h $(prefix)/include/sys
-	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/3.2/cc1.exe $(prefix)/lib/gcc-lib/mingw32/3.2
-	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/3.2/cpp0.exe $(prefix)/lib/gcc-lib/mingw32/3.2
-	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/3.2/specs  $(prefix)/lib/gcc-lib/mingw32/3.2
-	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/3.2/include/*.h  $(prefix)/lib/gcc-lib/mingw32/3.2/include
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cc1.exe $(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cpp0.exe $(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/specs  $(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/include/*.h  $(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include
 
 install: xmaxima.exe winkill.exe tclwinkill.dll
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
