@@ -55,8 +55,6 @@
       (setf aa (/ 0.5 tol))
       (setf bb (* (f2cl-lib:i1mach 9) 0.5))
       (setf aa (min aa bb))
-      (f2cl-lib:fformat t (("~A~%")) "az, aa = " az aa)
-      (f2cl-lib:fformat t (("~A~%")) "fn     = " fn)
       (if (> az aa) (go label260))
       (if (> fn aa) (go label260))
       (setf aa (f2cl-lib:fsqrt aa))

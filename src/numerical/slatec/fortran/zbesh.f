@@ -215,8 +215,6 @@ C-----------------------------------------------------------------------
       AA = 0.5D0/TOL
       BB = I1MACH(9)*0.5D0
       AA = MIN(AA,BB)
-      print *, 'az, aa = ', az, aa
-      print *, 'fn     = ', fn
       IF (AZ.GT.AA) GO TO 260
       IF (FN.GT.AA) GO TO 260
       AA = SQRT(AA)
