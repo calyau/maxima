@@ -18,6 +18,20 @@
 ;;; Every function in this file is known about externally.
 
 
+;;; This function searches for the key in the left hand side of the input list
+;;; of the form [x,y,z...] where each of the list elements is a expression of
+;;; a binary operand and 2 elements.  For example x=1, 2^3, [a,b] etc.
+;;; The key checked againts the first operand and and returns the second
+;;; operand if the key is found.
+;;; If the key is not found it either returns the default value if supplied or
+;;; false.
+;;; Author Dan Stanger 12/1/02
+(defmfun $assoc (key ielist &optional default)
+   (let ((elist (margs ielist)))
+      (if (every #'(lambda (x) (= 3 (length x))) elist)
+         (let ((found (find key elist :test #'alike1 :key #'second)))
+            (if found (third found) default))
+         (MERROR "Improper form for list:~%~M" ielist))))
 
 ;;; (ASSOL item A-list)
 ;;;
