@@ -2468,7 +2468,9 @@ It appears in LIMIT and DEFINT.......")
 	  ((eq arglim '$und) '$und)
 	  ((memq arglim '($zeroa $zerob $ind)) arg)
 ;;;Ignore tanh(%pi/2*%I) and multiples of the argument.
-	  (t (simplify (list (ncons fn) arg))))))
+	  (t
+	   ;; erf (or tanh) of a known value is just erf(arglim).
+	   (simplify (list (ncons fn) arglim))))))
 
 (defun simplim%atan (exp1) 
   (cond ((zerop2 exp1) exp1)
