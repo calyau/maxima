@@ -849,7 +849,7 @@ specint(t*bessel_y(1,a*t)*exp(-p*t),t);
 
 hgfred([s,s+1/2],[2*s+2],z)
   -(2*s+1)/(s+1)/(s+1/2)*(1-z)^(3/2)*diff((1-z)^(-1/2)
-    *hgfred([s,s+1/2],[2*s+1],z,1);
+    *hgfred([s,s+1/2],[2*s+1],z),z);
 0$
 
 /*
@@ -858,11 +858,11 @@ hgfred([s,s+1/2],[2*s+2],z)
  *    F(a+n,b;c;z) = z^(1-a)/poch(a,n)*diff(z^(a+n-1)*F(a,b;c;z),z,n)
  *
  * F(s+2,s+1/2;2*s+1,z) 
- *    = z^(1-s)/s*diff(z^s*F(s,s+1/2;2*s+1;z),z,2)
+ *    = z^(1-s)/s/(s+1)*diff(z^(s+1)*F(s,s+1/2;2*s+1;z),z,2)
  */
 
 hgfred([s+2,s+1/2],[2*s+1],z)
-  - z^(1-s)/s*diff(z^s*hgfred([s,s+1/2],[2*s+1],z),z,2);
+  - z^(1-s)/s/(s+1)*diff(z^(s+1)*hgfred([s,s+1/2],[2*s+1],z),z,2);
 0$
 
 
