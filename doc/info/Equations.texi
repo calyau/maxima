@@ -496,28 +496,3 @@ in this case.  (This is the new mode, previously gotten only by
 calling ALGSYS.)
 
 @end defvar
-@c @node ZRPOLY
-@c @unnumberedsec phony
-@defun ZRPOLY
- - This is no longer available in Maxima. See ALLROOTS for a function
-   to compute the roots of a polynomial.
-
-@end defun
-@c @node ZSOLVE
-@c @unnumberedsec phony
-@defun ZSOLVE
- This is not available with Maxima anymore.  Documentation is left for
- historical purposes.
-
- - For those who can make use of approximate numerical
-solutions to problems, there is a package which calls a routine which
-has been translated from the IMSL fortran library to solve N
-simultaneous non-linear equations in N unknowns.  It uses black-box
-techniques that probably aren't desirable if an exact solution can be
-obtained from one of the smarter solvers (LINSOLVE, ALGSYS, etc).  But
-for things that the other solvers don't attempt to handle, this can
-probably give some very useful results.  For documentation, do
-PRINTFILE("zsolve.usg");.  For a demo do
-batch("zsolve.mc")$
-
-@end defun
