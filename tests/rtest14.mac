@@ -158,7 +158,17 @@ ratsimp(specint(t^(3/4)*%e^(-t^2/2/b)*%e^(-p*t),t));
 ratsimp(specint(t^(-1/2)*%e^(-2*a^(1/2)*t^(1/2))*%e^(-p*t),t));
 -sqrt(%pi)*(erf(sqrt(a)/sqrt(p))-1)*%e^(a/p)/sqrt(p)$
 
-/* FIXME:  Verify this!
+/*
+ * The Laplace transform of sin(a*t)*cosh(b*t^2) can be derived by
+ * expressing sin and cosh in terms of exponential functions.  We end
+ * up with terms of the form:
+ *
+ *   exp(+/-%i*a*t)*exp(+/-b*t^2)
+ *
+ * All of these can be computed using formula 24, p. 146 of Tables of
+ * Integral Transforms, which handle functions of the form
+ * t^(v-1)*exp(-t^2/8/a).
+ * 
  */
 radcan(specint(sin(a*t)*cosh(b*t^2)*%e^(-p*t),t));
 -%e^-((p^2+2*%i*a*p+a^2)/(4*b))*(sqrt(%pi)*%e^((2*%i*a*p+a^2)/(2*b))*erf((%i 
@@ -284,6 +294,22 @@ specint(t^(3/4)*bessel_j(1/2,t)*bessel_j(1/4,t)*%e^(-p*t),t);
  * Not sure this is right.  We can convert bessel_y to bessel_j,
  * multiply them together and use the results for products of bessel_j
  * functions.
+ *
+ * bessel_y(1/2,sqrt(t)) = -bessel_j(-1/2,sqrt(t))
+ *
+ * And maxima should be able to compute the transform of 
+ *
+ * t^(5/2)*bessel_j(-1/2,sqrt(t))^2
+ *
+ * Or note that bessel_y(1/2,sqrt(t)) =
+ * -sqrt(2/%pi)*cos(sqrt(t))/t^(1/4).  Then the integrand becomes
+ *
+ * 2/%pi*t^2*cos(sqrt(t))^2
+ *
+ * And maxima should know how to compute the transform of this.
+ *
+ * Unfortunately, the transforms of these two approaches don't agree.
+ * Yuck!
  */
 specint(t^(5/2)*bessel_y(1/2,t^(1/2))^2*%e^(-p*t),t);
 -12*((-3*sqrt(%pi)*%i*erf(%i/sqrt(p))*p^(5/2)*%e^-(1/p)/8-sqrt(%pi)*%i*erf 
