@@ -462,14 +462,14 @@
 	   ((NULL J) A)
 	   (OR (AND (NOT (NUMBERP (CAR J))) (MEMQ (CAR J) S2)) (SETQ A (CONS (CAR J) A)))))
 
-(DEFUN CONTRACT3 (IT LST)      ;Tries to contract it with some element of LST.
+(DEFUN CONTRACT3 (IT LST)      ;Tries to contract IT with some element of LST.
        (PROG (FRST R REST)     ;If none occurs then return NIL otherwise return
 			       ;a list whose first member is the result of
 			       ;contraction and whose cdr is a top-level copy
 		               ;of LST with the element which contracted
 			       ;removed.
 	LOOP (SETQ FRST (CAR LST) LST (CDR LST))
-	     (AND (EQ (CAAR FRST) '%KDELTA) (GO SKIP))
+;;	     (AND (EQ (CAAR FRST) '%KDELTA) (GO SKIP))
 	     (AND (SETQ R (CONTRACT1 IT FRST))
 		  (RETURN (CONS R (NCONC (NREVERSE REST) LST))))
 			       ;Try contraction in reverse order since the
@@ -598,6 +598,8 @@
 					 E))
 				 (T NIL))
 			   NIL))))
+;; VTT: No tensor should be able to contract LC or KDELTA.
+	     (AND (OR (EQ (CAAR G) '$KDELTA) (EQ (CAAR G) '%KDELTA) (EQ (CAAR G) '$LC) (EQ (CAAR G) '%LC)) (RETURN NIL))
 
 				    ;If G has derivative indices then F must be
 	     (and e                 ;constant in order to contract it.
@@ -737,12 +739,12 @@
 ;single atom with a comma in between which serves as the subscript.
 
 (DEFMFUN $SHOW (f)
-       (progn (makelabel $OUTCHAR)
+       (progn (makelabel $LINECHAR)
               (cond ($DISPFLAG
                      (displa (list '(MLABLE) LINELABLE (ishow (specrepcheck f))))
 ;                     (setq $DISPFLAG nil)
 ))
-              f))
+              (SET LINELABLE f)))
 
 (DEFUN ISHOW (F) 
        ((LAMBDA (FOOBAR)                              ;FOOBAR intialized to NIL
@@ -1268,7 +1270,9 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 			      (SETQ SUBS (MEVAL PROP))) 0)
 		     (T SUBS)))
 	      ((SETQ PROP (ZL-ASSOC INDEX (ZL-GET TENSOR 'TEXPRS)))
-	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CADR PROP)))
+;;;VTT	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CADR PROP)))
+;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
+	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $COUNTER)) (SETQ $COUNTER (1- N))))))
 	      ((SETQ PROP (ZL-GET TENSOR 'TSUBR))
 ;;	       (APPLY PROP (LIST (CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))(CONS SMLIST L3))))
 ;;	      ((NOT (EQ L3 NIL)) (APPLY '$DIFF (SELECT TENSOR (INCONSTANT L1) (INCONSTANT L2) (CDR L3)) (LIST (CAR L3))))
@@ -1400,3 +1404,50 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	     (delq (car l) $COORD)))))
 
 
+;; Additions on 5/19/2004 -- VTT
+
+(DEFUN MEMBERLIST (E L)
+	(COND ((NULL L) NIL)
+	      ((EQUAL E (CAR L)) T)
+	      (T (MEMBERLIST E (CDR L)))
+	)
+)
+
+(DEFUN UNIONLIST (L1 L2)
+	(COND ((NULL L1) L2)
+	      ((MEMBERLIST (CAR L1) L2) (UNIONLIST (CDR L1) L2))
+	      (T (CONS (CAR L1) (UNIONLIST (CDR L1) L2)))
+	)
+)
+
+(DEFMFUN $LISTOFTENS (E) (itensor-sort (CONS SMLIST (LISTOFTENS E))))
+(DEFUN LISTOFTENS (E)
+	(COND
+	  ((ATOM E) NIL)
+	  ((RPOBJ E) (LIST E))
+	  (T (PROG (L) (SETQ L NIL)
+		(MAPCAR (LAMBDA (X) (SETQ L (UNIONLIST L (LISTOFTENS X)))) (CDR E))
+		(RETURN L)
+	     )
+	  )
+	)
+)
+
+(DEFUN NUMLIST (&optional (n '1)) (COND ((>= n $DIM) (LIST n)) (T (CONS n (NUMLIST (1+ n))))))
+
+;;SHOWCOMPS(tensor):=BLOCK([i1,i2,ind:INDICES(tensor)[1]],
+;;	IF LENGTH(ind)=0 THEN SHOW(EV(tensor))
+;;	ELSE IF LENGTH(ind)=1 THEN SHOW(MAKELIST(EV(tensor,ind[1]=i1),i1,1,DIM))
+;;	ELSE IF LENGTH(ind)=2 THEN SHOW(tensor=APPLY('MATRIX,MAKELIST(MAKELIST(EV(tensor,[ind[1]=i1,ind[2]=i2]),i1,1,DIM),i2,1,DIM)))
+;;	ELSE FOR i1 THRU DIM DO (SHOWCOMPS(SUBST(i1,LAST(ind),tensor)),IF LENGTH(ind)=3 AND i1<DIM THEN LINENUM:LINENUM+1)
+;;);
+(DEFMFUN $SHOWCOMPS (E)
+ (PROG (IND)
+  (SETQ IND (CDADR ($INDICES E)))
+  (COND ((> 1 (LENGTH IND)) ($SHOW (MEVAL (LIST '($EV) E))))
+	((> 2 (LENGTH IND)) ($SHOW (CONS SMLIST (MAPCAR (LAMBDA (I) (MEVAL (LIST '($EV) E (LIST '(MEQUAL) (CAR IND) I)))) (NUMLIST)))))
+	((> 3 (LENGTH IND)) ($SHOW (LIST '(MEQUAL) E (CONS '($MATRIX SIMP) (MAPCAR (LAMBDA (J) (CONS SMLIST (MAPCAR (LAMBDA (I) (MEVAL (LIST '($EV) E (LIST '(MEQUAL) (CAR IND) I) (LIST '(MEQUAL) (CADR IND) J)))) (NUMLIST)))) (NUMLIST))))))
+	(T (MAPCAR (LAMBDA (I)  ($SHOWCOMPS ($SUBSTITUTE I (CAR (LAST IND)) E)) (AND (> 4 (LENGTH IND)) (< I $DIM) (SETQ $LINENUM (1+ $LINENUM)))) (NUMLIST)))
+  )
+ )
+)
