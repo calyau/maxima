@@ -10,7 +10,7 @@ MACSYMA has several routines for handling integration.
 The INTEGRATE command makes use of most of them.  There is also the
 ANTID package, which handles an unspecified function (and its
 derivatives, of course).  For numerical uses, there is the ROMBERG
-function, and the IMSL version of Romberg, DCADRE.  There is also an
+function.  There is also an
 adaptave integrator which uses the Newton-Cotes 8 panel quadrature
 rule, called QUANC8.  Hypergeometric Functions are being worked on,
 do DESCRIBE(SPECINT); for details.
@@ -561,8 +561,6 @@ though.  The amount of extra calculation needed because of the
 geometric information thrown away by expressing multiple integrals
 this way can be incredible.  The user should be sure to understand and
 use the ROMBERGTOL and ROMBERGIT switches.
-(The IMSL version of Romberg integration is now available in Macsyma.
-Do DESCRIBE(DCADRE); for more information.)
 
 @end defun
 @c @node ROMBERGABS, ROMBERGIT, ROMBERG, Integration
