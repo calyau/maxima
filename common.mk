@@ -24,13 +24,13 @@ install-datafiles: $(genericdirDATA)
 	$(mkinstalldirs) $(DESTDIR)$(genericdir)
 	@list='$(genericdirDATA)'; for p in $$list; do \
 	  if test -f $(srcdir)/$$p; then \
-            if ! test -d `dirname $(DESTDIR)$(genericdir)/$$p`; then \
+            if test ! -d `dirname $(DESTDIR)$(genericdir)/$$p`; then \
               $(mkinstalldirs) `dirname $(DESTDIR)$(genericdir)/$$p`; \
             fi; \
 	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(genericdir)/$$p"; \
 	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(genericdir)/$$p; \
 	  else if test -f $$p; then \
-            if ! test -d `dirname $(DESTDIR)$(genericdir)/$$p`; then \
+            if test ! -d `dirname $(DESTDIR)$(genericdir)/$$p`; then \
               $(mkinstalldirs) `dirname $(DESTDIR)$(genericdir)/$$p`; \
             fi; \
 	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(genericdir)/$$p"; \
