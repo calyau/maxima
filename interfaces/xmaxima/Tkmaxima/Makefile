@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#	$Id: Makefile,v 1.8 2002-09-17 22:35:18 mikeclarkson Exp $
+#	$Id: Makefile,v 1.9 2002-09-19 16:13:49 mikeclarkson Exp $
 #
 # Developer's convenience targets (not part of the normal make/install).
 #
@@ -38,6 +38,7 @@ ALLFILES = \
 	EMaxima.tcl \
 	EHref.tcl \
 	Browser.tcl \
+	Bindings.tcl \
 	Wmenu.tcl \
 	Tryftp2.tcl \
 	Myhtml.tcl \
@@ -52,8 +53,8 @@ ALLFILES = \
 	Prefs.tcl \
 	RunMaxima.tcl \
 	Menu.tcl \
+	Gui.tcl \
 	Paths.tcl  \
-	../xmaxima-trailer.tcl \
 	../xmaxima.tcl 
 
 
@@ -74,8 +75,8 @@ unused::	procs.lis
 
 TCLSH = tclsh
 
-TAGS:	 $(ALLFILES)
-	echo $(ALLFILES) | xargs $(TCLSH) ../Utils/etags.tcl
+TAGS:	 $(ALLFILES) Tkmaxima.tcl
+	echo $(ALLFILES) Tkmaxima.tcl | xargs $(TCLSH) ../Utils/etags.tcl
 
 tclIndex:: $(ALLFILES)
 	echo "source ../ObjTcl/Object.tcl; auto_mkindex . $(ALLFILES)" | $(TCLSH)

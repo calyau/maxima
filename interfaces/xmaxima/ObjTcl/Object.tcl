@@ -1,6 +1,6 @@
 # -*- mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#	$Id: Object.tcl,v 1.1 2002-09-07 10:31:22 mikeclarkson Exp $
+#	$Id: Object.tcl,v 1.2 2002-09-19 16:13:50 mikeclarkson Exp $
 #
 # Original Id: object.tcl,v 1.7 1995/02/10 08:32:50 sls Exp sls
 #
@@ -166,7 +166,11 @@ proc object_new {className {name {}}} {
 	upvar #0 %s object
 	uplevel [concat $object(__class__):$method %s $args]
     } $name $name]
-    if {[info procs ${className}:__init__] != ""} {$name  __init__}
+    if {[info procs ${className}:__init__] != ""} {
+	$name  __init__
+    } elseif {[info procs ${className}:create] != ""} {
+	$name  create
+    }
     return $name
 }
 

@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.28 2002-09-17 22:35:17 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.29 2002-09-19 16:13:47 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -14,6 +14,8 @@ TKSOURCES = \
 	Utils/FileDlg.tcl \
 	Utils/Messages.tcl \
 	Utils/Misc.tcl \
+	ObjTcl/Object.tcl \
+	ObjTcl/Feedback.tcl \
 	Tkmaxima/Constants.tcl \
 	Tkmaxima/Preamble.tcl \
 	Tkmaxima/Readdata.tcl \
@@ -42,6 +44,7 @@ TKSOURCES = \
 	Tkmaxima/EMaxima.tcl \
 	Tkmaxima/EHref.tcl \
 	Tkmaxima/Browser.tcl \
+	Tkmaxima/Bindings.tcl \
 	Tkmaxima/Wmenu.tcl \
 	Tkmaxima/Tryftp2.tcl \
 	Tkmaxima/Myhtml.tcl \
@@ -56,7 +59,9 @@ TKSOURCES = \
 	Tkmaxima/RunMaxima.tcl \
 	Tkmaxima/Menu.tcl \
 	Tkmaxima/Paths.tcl \
-	xmaxima.tcl 
+	Tkmaxima/Gui.tcl \
+	Tkmaxima/Tkmaxima.tcl 
+
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-trailer.tcl
 XMAXIMASOURCES = $(TKSOURCES) autoconf-variables.tcl xmaxima-trailer.tcl
