@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.14 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.15 2002-09-19 16:24:37 mikeclarkson Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -9,6 +9,10 @@ proc cMAXINITBeforeIni {} {
 
     # from Send-some.tcl
     set maxima_default(sMathServerHost) genie1.ma.utexas.edu
+    set maxima_default(iMathServerPort) 4443
+
+    # from Browser.tcl
+    set maxima_default(sMathServerHost) localhost
     set maxima_default(iMathServerPort) 4443
 
     #mike turn these off by default
@@ -20,6 +24,8 @@ proc cMAXINITBeforeIni {} {
     set maxima_default(iConsoleHeight) 24
 
     set maxima_default(iLocalPort) 4008
+
+    set maxima_default(bDebugParse) 0
 
     # From Browser.tcl
     set maxima_default(defaultservers) {
@@ -35,6 +41,7 @@ proc cMAXINITBeforeIni {} {
     }
 
 
+    # maxima_default(lProxyHttp)
 }
 
 proc cMAXINITAfterIni {} {
@@ -51,6 +58,15 @@ proc cMAXINITAfterIni {} {
     global show_balloons
     set show_balloons $maxima_default(iShowBalloons)
 
+    # From Browser.tcl
+    global debugParse
+    set debugParse $maxima_default(bDebugParse)
+
+    if {[info exists maxima_default(lProxyHttp)] && \
+	    [llength $maxima_default(lProxyHttp)] == "2"} {
+	#mike FIXME: make this a _default
+	set maxima_priv(proxy,http) $maxima_default(lProxyHttp)
+    }
 
 }
 
@@ -101,7 +117,7 @@ set maxima_priv(options,href) {
     {searchregexp "" "A regexp to search for, to get an initial position"}
 }
 
-# from preamle.tcl
+# from Preamle.tcl
 set maxima_priv(counter) 0
 	
 # the linelength should be long enough to display formatted mathematical
@@ -109,29 +125,28 @@ set maxima_priv(counter) 0
 # for a margin.
 set maxima_priv(linelength) 90
 
+# From Browser.tcl
+set maxima_priv(sticky) "^Teval$|^program:"
+set maxima_priv(richTextCommands) {Tins TinsSlashEnd}
+set maxima_priv(urlHandlers) {
+    text/html  netmath
+    text/plain netmath
+    image/gif  netmath
+    application/postscript "ghostview -safer %s"
+    application/pdf "acroread %s"
+    application/x-dvi "xdvi %s"
+}
+set maxima_priv(imagecounter) 0
+
+set maxima_priv(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzgCEACH5BAEAAAIALAAAAAAdACAAAAPOOLrcLjDCQaq9+CoZaf7YIIicx50nNZYV6k4tCRPuYduSR8vmef+dy2rU4vyOM8uqJzkCBYCoNEqkGZ04SGHLBSiKTewhx/AyI+LxqWIGh5Eo9pdm8D3jhDa9/nrJTQaBfS5/LYGCgxyFe4cnAY+Qj1oFegKHjRKRkpMbgJeIEJqTBTyGnxybAlwbQYygKFusOaavo5SkJ5WYErELKAO6fBy4LxS6vFzEv4snpLIpIszIMiWKeXMWvS7RGXoVsX0g11NR1Bzk6F4jCn0ODgkAOwAA
+
+
+
+
+
 global evalPrograms
 set evalPrograms {  gp gap gb }
 #set maxima_priv(options,maxima) {{doinsert 1 [M "Do an insertion"] boolean}}
 #set maxima_priv(options,gp) {{doinsert 1 [M "Do an insertion"] boolean}}
 # set maxima_priv(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
-
-global NCtextHelp
-set NCtextHelp "
-	    Bindings:
-	    <Return>   This sends the current expression (ie where the insert
-	               cursor is)  for evaluation.
-	    <Linefeed> (Control-j) This inserts a newline, and is useful
-	               for entering multiline input.
-	    <Control-k> Kills the current line and puts it in kill ring.
-	                Successive control-k's append their output together.
-	    <Control-y> Yank out the last kill, Meta-y cycles thru previous
-	                kills.
-	    <Control-c><Control-c> Interrupt the current computation.
-	    <Alt-p>   Previous input, or if repeated cycle through the previous
-	               inputs.  If the current input is not empty, then
-	                match only inputs which begin with the current input.
-	    <Alt-n>   Like Previous input, but in opposite direction.
-	"
-
-
 

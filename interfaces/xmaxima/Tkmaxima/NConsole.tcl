@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NConsole.tcl,v 1.4 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: NConsole.tcl,v 1.5 2002-09-19 16:24:37 mikeclarkson Exp $
 #
 ###### NConsole.tcl ######
 ############################################################
@@ -18,38 +18,6 @@ proc mkConsole { fr program } {
     label [set msg $fr.label]  -height 1 -relief sunken \
 	    -textvariable maxima_priv(load_rate)
 
-    if { ![info exists NCtextHelp] } {
-	set NCtextHelp "
-	Bindings:
-	<Return>   This sends the current expression (ie where the insert
-	cursor is)  for evaluation.
-	<Linefeed> (Control-j) This inserts a newline, and is useful
-	for entering multiline input.
-	<Control-k> Kills the current line and puts it in kill ring.
-	Successive control-k's append their output together.
-	<Control-y> Yank out the last kill, Meta-y cycles thru previous
-	kills.
-	<Control-c> Interrupt the current computation.
-	<Alt-p>   Previous input, or if repeated cycle through the previous
-	inputs.  If the current input is not empty, then
-	match only inputs which begin with the current input.
-	<Alt-n>   Like Previous input, but in opposite direction.
-	"
-    }
-
-    clearLocal $w
-    if { 1 || "[bind CNtext <Return>]" == "" } {
- 	bind CNtext <Return> "CNeval %W  ; break"
- 	bind CNtext <Control-c> "CNinterrupt %W "
- 	bind CNtext <Control-u> "CNclearinput %W "
- 	bind CNtext "\)"  "CNblinkMatchingParen %W %A"
- 	bind CNtext "\]"  "CNblinkMatchingParen %W %A"
- 	bind CNtext "\}"  "CNblinkMatchingParen %W %A"
- 	bind CNtext <Control-j> "tkTextInsert %W %A ; openMathAnyKey %W %K  %A"
- 	bind CNtext <Alt-p>  "CNpreviousInput $w -1"
- 	bind CNtext <Alt-n>  "CNpreviousInput $w 1"
-    }
-
     oset $w program $program
     oset $w prompt "% "
     text $w
@@ -61,7 +29,7 @@ proc mkConsole { fr program } {
 
     global maxima_priv
 
-    if { ![regexp $maxima_priv(sticky) input] } {
+    if { ![regexp -- $maxima_priv(sticky) input] } {
 	append maxima_priv(sticky) {|^input$}
     }
 
@@ -145,10 +113,13 @@ proc CNeval { w } {
 proc CNpreviousInput { w direction } {
     linkLocal $w  inputIndex matching
     makeLocal $w inputs
+
     if { [$w compare insert < lastStart ] } { return }
+
     set last [lindex [peekLastCommand $w] 1]
-    if {  ("[lindex $last 2]" != "ALT_p" && "[lindex $last 2]" != "ALT_n")
-    || ![info exists inputIndex] } {
+
+    if {  ("[lindex $last 2]" != "ALT_p" && "[lindex $last 2]" != "ALT_n") || \
+	      ![info exists inputIndex] } {
 	set inputIndex [expr {$direction < 0 ? [llength $inputs] : -1}]
 	set matching [string trim [$w get lastStart end] " \n"]
     }
@@ -159,7 +130,7 @@ proc CNpreviousInput { w direction } {
     while {[incr j] <= $n } {
 	set inputIndex [expr {($inputIndex + $direction+ $n)%$n}]
 	# [string match "$matching*" [lindex $inputs $inputIndex]]
-    	if { [regexp $matchRegexp [lindex $inputs $inputIndex]] } {
+    	if { [regexp -- $matchRegexp [lindex $inputs $inputIndex]] } {
 	    $w delete lastStart end
 	    $w insert insert [lindex $inputs $inputIndex] input
 	    $w see end
