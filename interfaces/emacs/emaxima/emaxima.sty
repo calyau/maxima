@@ -346,10 +346,6 @@
      \m@ximaoutputverbatim
 }      
 
-\def\m@ximatexd#1\\{ \[ #1 \]\endgroup}
-\def\m@ximatexe#1.#2\\{\[ E#1 = #2 \]\endgroup}
-
-
 \def\maximatexoutput{
      \endm@ximainputverbatim
      \maximasm@llsk
@@ -361,6 +357,7 @@
      \def\D{\begingroup\par\m@ximatexd}
      \def\E{\begingroup\par\m@ximatexe}
      \def\p{\begingroup\setupm@ximasessionverbatim\dom@ximasessionpreprompt}
+     \def\m{\m@ximatexoutputeqn}
      \maximaoutputfont
 }      
 
@@ -493,10 +490,6 @@
 |obeylines|gdef|dom@ximasessionpreprompt#1\\{|par|parskip=|maximasessionpretexskip #1|par|endgroup|vspace{|maximapostpretexskip}}
 }
 
-\def\m@ximasessionoutput#1.#2\\{\textcolor{\maximapromptcolor}{(D#1)} \[ #2 \]\endgroup}
-
-\def\m@ximasessioneoutput#1.#2\\{\textcolor{\maximapromptcolor}{(E#1)} \[ #2 \]\endgroup}
-
 \def\maximatexsession{
       \endgroup
       \par  \vskip \premaximasessionspace \par
@@ -561,6 +554,40 @@
     \catcode`\%=14\relax
     \endgroup
 }
+
+
+%%% Finally, some things that require the breqn package.
+%% They are at the end, since if breqn is loaded too early, it
+%% interferes with some verbatim environments.
+\newif\ifmaxusebreqn
+\maxusebreqnfalse
+\DeclareOption{breqn}{\maxusebreqntrue}
+\ProcessOptions\relax
+
+\ifmaxusebreqn
+  \ifx\pdfoutput\undefined
+  \else
+    \def\keyed@msg#1#2#3{}
+  \fi
+  \usepackage[cmbase]{flexisym}
+  \usepackage{breqn}
+  \newenvironment{emaxmath}
+     {\begin{dmath*}}
+     {\end{dmath*}}
+\else
+  \newenvironment{emaxmath}
+     {\begin{displaymath}}
+     {\end{displaymath}}
+\fi
+  
+\def\m@ximatexoutputeqn#1\\{\begin{emaxmath} #1 \end{emaxmath}}
+
+\def\m@ximatexd#1\\{ \begin{emaxmath} #1 \end{emaxmath}\endgroup}
+\def\m@ximatexe#1.#2\\{\begin{emaxmath} E#1 = #2 \end{emaxmath}\endgroup}
+
+\def\m@ximasessionoutput#1.#2\\{\textcolor{\maximapromptcolor}{(D#1)} \begin{emaxmath} #2 \end{emaxmath}\endgroup}
+
+\def\m@ximasessioneoutput#1.#2\\{\textcolor{\maximapromptcolor}{(E#1)} \begin{emaxmath} #2 \end{emaxmath}\endgroup}
 
 \catcode`\@=12\relax
 
