@@ -5,23 +5,20 @@
 
 @node Definitions for Number Theory,  , Number Theory, Number Theory
 @section Definitions for Number Theory
-@c @node BERN
-@c @unnumberedsec phony
+
 @defun BERN (x)
 gives the Xth Bernoulli number for integer X.
 ZEROBERN[TRUE] if set to FALSE excludes the zero BERNOULLI numbers.
 (See also BURN).
 
 @end defun
-@c @node BERNPOLY
-@c @unnumberedsec phony
+
 @defun BERNPOLY (v, n)
 generates the nth Bernoulli polynomial in the
 variable v.
 
 @end defun
-@c @node BFZETA
-@c @unnumberedsec phony
+
 @defun BFZETA (exp,n)
 BFLOAT version of the Riemann Zeta function.  The 2nd
 argument is how many digits to retain and return, it's a good idea to
@@ -29,8 +26,7 @@ request a couple of extra.  This function is available by doing
 LOAD(BFFAC); .
 
 @end defun
-@c @node BGZETA
-@c @unnumberedsec phony
+
 @defun BGZETA (S, FPPREC)
 BGZETA is like BZETA, but avoids arithmetic
 overflow errors on large arguments, is faster on medium size arguments
@@ -39,8 +35,7 @@ may eventually replace BZETA.  BGZETA is available by doing
 LOAD(BFAC);.
 
 @end defun
-@c @node BHZETA
-@c @unnumberedsec phony
+
 @defun BHZETA (S,H,FPPREC)
 gives FPPREC digits of
 @example
@@ -49,8 +44,7 @@ SUM((K+H)^-S,K,0,INF)
 This is available by doing LOAD(BFFAC);.
 
 @end defun
-@c @node BINOMIAL
-@c @unnumberedsec phony
+
 @defun BINOMIAL (X, Y)
 the binomial coefficient X*(X-1)*...*(X-Y+1)/Y!. If X
 and Y are integers, then the numerical value of the binomial
@@ -58,8 +52,7 @@ coefficient is computed.  If Y, or the value X-Y, is an integer, the
 binomial coefficient is expressed as a polynomial.
 
 @end defun
-@c @node BURN
-@c @unnumberedsec phony
+
 @defun BURN (N)
 is like BERN(N), but without computing all of the uncomputed
 Bernoullis of smaller index.  So BURN works efficiently for large,
@@ -73,14 +66,12 @@ BURN uses an observation of WGD that (rational) Bernoulli numbers can be
 approximated by (transcendental) zetas with tolerable efficiency.
 
 @end defun
-@c @node BZETA
-@c @unnumberedsec phony
+
 @defun BZETA
  - This function is obsolete, see BFZETA.
 
 @end defun
-@c @node CF
-@c @unnumberedsec phony
+
 @defun CF (exp)
 converts exp into a continued fraction.  exp is an expression
 composed of arithmetic operators and lists which represent continued
@@ -92,8 +83,7 @@ CFLENGTH[1] times the period.  Thus the default is to give one period.
 (CF binds LISTARITH to FALSE so that it may carry out its function.)
 
 @end defun
-@c @node CFDISREP
-@c @unnumberedsec phony
+
 @defun CFDISREP (list)
 converts the continued fraction represented by list
 into general representation.
@@ -112,8 +102,7 @@ into general representation.
 
 @end example
 @end defun
-@c @node CFEXPAND
-@c @unnumberedsec phony
+
 @defun CFEXPAND (x)
 gives a matrix of the numerators and denominators of the
 next-to-last and last convergents of the continued fraction x.
@@ -130,16 +119,14 @@ next-to-last and last convergents of the continued fraction x.
 
 @end example
 @end defun
-@c @node CFLENGTH
-@c @unnumberedsec phony
+
 @defvar CFLENGTH
  default: [1] controls the number of terms of the continued
 fraction the function CF will give, as the value CFLENGTH[1] times the
 period.  Thus the default is to give one period.
 
 @end defvar
-@c @node CGAMMA
-@c @unnumberedsec phony
+
 @defun CGAMMA
  - The Gamma function in the complex plane.  Do LOAD(CGAMMA) to
 use these functions.  Functions Cgamma, Cgamma2, and LogCgamma2.
@@ -159,44 +146,38 @@ only; LogCgamma2 is the same, but the log-gamma function is
 calculated.  These two functions are somewhat more efficient.
 
 @end defun
-@c @node CGAMMA2
-@c @unnumberedsec phony
+
 @defun CGAMMA2
  - See CGAMMA.
 
 @end defun
-@c @node DIVSUM
-@c @unnumberedsec phony
+
 @defun DIVSUM (n,k)
 adds up all the factors of n raised to the kth power.  If
 only one argument is given then k is assumed to be 1.
 
 @end defun
-@c @node EULER
-@c @unnumberedsec phony
+
 @defun EULER (X)
 gives the Xth Euler number for integer X.  For the
 Euler-Mascheroni constant, see %GAMMA.
 
 @end defun
-@c @node FACTORIAL
-@c @unnumberedsec phony
+
 @defun FACTORIAL (X)
 The factorial function.  FACTORIAL(X) = X! .
 See also MINFACTORIAL and FACTCOMB.  The factorial operator is !,
 and the double factorial operator is !!.
 
 @end defun
-@c @node FIB
-@c @unnumberedsec phony
+
 @defun FIB (X)
 the Xth Fibonacci number with FIB(0)=0, FIB(1)=1, and
 FIB(-N)=(-1)^(N+1) *FIB(N).  PREVFIB is FIB(X-1), the Fibonacci number
 preceding the last one computed.
 
 @end defun
-@c @node FIBTOPHI
-@c @unnumberedsec phony
+
 @defun FIBTOPHI (exp)
 converts FIB(n) to its closed form definition.
 This involves the constant %PHI (= (SQRT(5)+1)/2 = 1.618033989).
@@ -204,35 +185,30 @@ If you want the Rational Function Package to know
 About %PHI do TELLRAT(%PHI^2-%PHI-1)$  ALGEBRAIC:TRUE$ .
 
 @end defun
-@c @node INRT
-@c @unnumberedsec phony
+
 @defun INRT (X,n)
 takes two integer arguments, X and n, and returns the
 integer nth root of the absolute value of X.
 
 @end defun
-@c @node JACOBI
-@c @unnumberedsec phony
+
 @defun JACOBI (p,q)
 is the Jacobi symbol of p and q.
 
 @end defun
-@c @node LCM
-@c @unnumberedsec phony
+
 @defun LCM (exp1,exp2,...)
 returns the Least Common Multiple of its arguments.
 Do LOAD(FUNCTS); to access this function.
 
 @end defun
-@c @node MAXPRIME
-@c @unnumberedsec phony
+
 @defvar MAXPRIME
  default: [489318] - the largest number which may be given to
 the PRIME(n) command, which returns the nth prime.
 
 @end defvar
-@c @node MINFACTORIAL
-@c @unnumberedsec phony
+
 @defun MINFACTORIAL (exp)
 examines exp for occurrences of two factorials
 which differ by an integer.  It then turns one into a polynomial times
@@ -251,8 +227,7 @@ converted into ratios of factorials.
 
 @end example
 @end defun
-@c @node PARTFRAC
-@c @unnumberedsec phony
+
 @defun PARTFRAC (exp, var)
 expands the expression exp in partial fractions
 with respect to the main variable, var.  PARTFRAC does a complete
@@ -263,8 +238,7 @@ numerators can be written as linear combinations of denominators, and
 the expansion falls out.  See EXAMPLE(PARTFRAC); for examples.
 
 @end defun
-@c @node PRIME
-@c @unnumberedsec phony
+
 @defun PRIME (n)
 gives the nth prime. MAXPRIME[489318] is the largest number
 accepted as argument.  Note:  The PRIME command does not work in
@@ -272,14 +246,12 @@ Maxima, since it required a large file of primes, which most users
 do not want.    PRIMEP does work however.
 
 @end defun
-@c @node PRIMEP
-@c @unnumberedsec phony
+
 @defun PRIMEP (n)
 returns TRUE if n is a prime, FALSE if not.
 
 @end defun
-@c @node QUNIT
-@c @unnumberedsec phony
+
 @defun QUNIT (n)
 gives the principal unit of the real quadratic number field
 SQRT(n) where n is an integer, i.e.  the element whose norm is unity.
@@ -293,29 +265,25 @@ This amounts to solving Pell's equation A**2- n*B**2=1.
 
 @end example
 @end defun
-@c @node TOTIENT
-@c @unnumberedsec phony
+
 @defun TOTIENT (n)
 is the number of integers less than or equal to n which
 are relatively prime to n.
 
 @end defun
-@c @node ZEROBERN
-@c @unnumberedsec phony
+
 @defvar ZEROBERN
  default: [TRUE] - if set to FALSE excludes the zero
 BERNOULLI numbers.  (See the BERN function.)
 
 @end defvar
-@c @node ZETA
-@c @unnumberedsec phony
+
 @defun ZETA (X)
 gives the Riemann zeta function for certain integer values
 of X.
 
 @end defun
-@c @node ZETA%PI
-@c @unnumberedsec phony
+
 @defvar ZETA%PI
  default: [TRUE] - if FALSE, suppresses ZETA(n) giving
 coeff*%PI^n for n even.
