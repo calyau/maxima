@@ -235,6 +235,68 @@
 						       (aref cyi k)))
 				       (aref cyr k)))))))))))
 
+(defun bessel-k (arg order)
+  (cond ((zerop (imagpart arg))
+	 ;; We have numeric args and the first arg is purely
+	 ;; real. Call the real-valued Bessel function.  We call i0
+	 ;; and i1 instead of jn, if possible.
+	 (let ((arg (realpart arg)))
+	   (cond ((zerop order)
+		  (slatec:dbesk0 arg))
+		 ((= order 1)
+		  (slatec:dbesk1 arg))
+		 (t
+		  (multiple-value-bind (n alpha)
+		      (floor (float order))
+		    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+		      (slatec:dbesk (float (realpart arg)) alpha 1 (1+ n) jvals 0)
+		      (narray $besselarray $float n)
+		      (fillarray (nsymbol-array '$besselarray) jvals)
+		      (aref jvals n)))))))
+	(t
+	 ;; The first arg is complex.  Use the complex-valued Bessel
+	 ;; function
+	 (multiple-value-bind (n alpha)
+	     (floor (float order))
+	   (let ((cyr (make-array (1+ n) :element-type 'double-float))
+		 (cyi (make-array (1+ n) :element-type 'double-float)))
+	     (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
+					v-cyr v-cyi v-nz v-ierr)
+		 (slatec::zbesk (float (realpart arg))
+				(float (imagpart arg))
+				alpha
+				1
+				(1+ n)
+				cyr
+				cyi
+				0
+				0)
+	       (declare (ignore v-zr v-zi v-fnu v-kode v-n
+				v-cyr v-cyi))
+
+	       ;; We should check for errors here based on the
+	       ;; value of v-ierr.
+	       (when (plusp v-ierr)
+		 (format t "zbesk ierr = ~A~%" v-ierr))
+	       (narray $besselarray $complete (1+ n))
+	       (dotimes (k (1+ n)
+			 (arraycall 'flonum (nsymbol-array '$besselarray) n))
+		 (setf (arraycall 'flonum (nsymbol-array '$besselarray) k)
+		       (simplify (list '(mplus)
+				       (simplify (list '(mtimes)
+						       '$%i
+						       (aref cyi k)))
+				       (aref cyr k)))))))))))
+
+(defun $bessel_k (arg order)
+  (if (and (numberp order)
+	   (numberp ($realpart arg))
+	   (numberp ($imagpart arg)))
+      (bessel-k (complex ($realpart arg) ($imagpart arg)) order)
+      (subfunmakes '$bessel_k (ncons order) (ncons arg))))
+
+
+
 
 ;; I think g0(x) = exp(-x)*I[0](x), g1(x) = exp(-x)*I[1](x), and
 ;; gn(x,n) = exp(-x)*I[n](x), based on some simple numerical
