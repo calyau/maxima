@@ -5,6 +5,7 @@
 (pushnew :nocp *features*)
 #+cmu
 (setf ext:*gc-verbose* nil)
+(setf *load-verbose* nil)
 
 (mk:defsystem "maxima"
   :source-extension "lisp"  
