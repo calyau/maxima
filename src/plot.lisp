@@ -27,14 +27,14 @@
 			;; doesn't impact 2-D plotting, but is useful
 			;; for parametric plots so that the plots
 			;; don't get prematurely clipped.
-			((mlist) |$x| #.(- (/ most-positive-double-float 1024))
+			((mlist) $x #.(- (/ most-positive-double-float 1024))
 			 #.(/ most-positive-double-float 1024))
 			;; Make the default range on Y large.  Don't
 			;; use most-positive-double-float because this
 			;; causes overflow in the draw2d routine.
-			((mlist) |$y| #.(- (/ most-positive-double-float 1024))
+			((mlist) $y #.(- (/ most-positive-double-float 1024))
 			 #.(/ most-positive-double-float 1024))
-			((mlist) |$t| -3 3)
+			((mlist) $t -3 3)
 			((mlist) $grid 30 30)
 			((mlist) $view_direction 1 1 1)
 			((mlist) $colour_z nil)
@@ -117,7 +117,7 @@
     (merror "~M is not a plot option.  Must be [symbol,..data]" value))
   (setq value
 	(case name
-	  ((|$x| |$y|) (check-list-items name (cddr value) 'number 2)
+	  (($x $y $t) (check-list-items name (cddr value) 'number 2)
 	   (check-range value)
 	   )
 	  ($view_direction (check-list-items name (cddr value) 'number 3))
@@ -667,9 +667,9 @@ setrgbcolor} def
 				     ($cons range1 $plot_options)
 				     $plot_options)))
 	 (nticks (nth 2($get_plot_option '$nticks)))
-	 (trange (or range ($get_plot_option '|$t|)))
-	 (xrange ($get_plot_option '|$x|))
-	 (yrange ($get_plot_option '|$y|))
+	 (trange (or range ($get_plot_option '$t)))
+	 (xrange ($get_plot_option '$x))
+	 (yrange ($get_plot_option '$y))
 	 ($numer t)
 	 (tmin (coerce-float (nth 2 trange)))
 	 (tmax (coerce-float (nth 3 trange)))
@@ -874,7 +874,7 @@ setrgbcolor} def
   (if (and ($listp f) (equal '$discrete (cadr f)))
       (return-from draw2d (draw2d-discrete f)))
   (let* ((nticks (nth 2 ($get_plot_option '$nticks)))
-	 (yrange ($get_plot_option '|$y|))
+	 (yrange ($get_plot_option '$y))
 	 (depth (nth 2 ($get_plot_option '$adapt_depth)))
 	 ($numer t))
 
@@ -1770,7 +1770,7 @@ MT~@d)~%"
 	(t (princ ans) "")))
 
 (defun $plot3d ( fun &optional (xrange ($get_plot_option '$x))
-		(yrange ($get_plot_option '|$y|) y-supplied)
+		(yrange ($get_plot_option '$y) y-supplied)
 		&rest options 
 		&aux lvars trans *original-points*
 		($plot_options $plot_options)
