@@ -273,10 +273,43 @@ specint(t^(5/2)*bessel_y(1/2,t^(1/2))^2*%e^(-p*t),t);
  * So, the final result is:
  *
  * -2*%i*erf(%i/sqrt(p))*%e^-(1/p)/(sqrt(%pi)*p^(3/2))
+ *
+ * But we also have 
+ *
+ * bessel_j(u,t)*bessel_j(v,t)
+ *    = (z/2)^(u+v)/gamma(u+1)/gamma(v+1)
+ *        * %f[2,3]([(u+v+1)/2,(u+v+2)/2],[u+1,v+1,u+v+1],-z^2)
+ *
+ * So bessel_j(1/2,sqrt(t))^2 is
+ *
+ *    2/%pi*%f[2,3]([1,3/2],[3/2,3/2,2],-t)*sqrt(t)
+ * 
+ * So the integrand is
+ *
+ *    2/%pi*t*%f[2,3]([1,3/2],[3/2,3/2,2],-t)
+ *     = 2/%pi*t*%f[1,2]([1],[3/2,2],-t)
+ *
+ * f19p220 then gives us the desired transform:
+ *
+ *    t*%f[1,2]([1],[3/2,2],-t)
+ *      -> gamma(2)*p^(-2)*%f[2,2]([1,2],[3/2,2],-1/p)
+ *
+ *      = p^(-2)*%f[1,1]([1],[3/2],-1/p)
+ *
+ * So the final answer is
+ *
+ *    -%i*erf(%i/sqrt(p))*%e^-(1/p)/(sqrt(%pi)*p^(3/2))
+ *
+ * Hmm.  This differs from formula 42 above.  I think there's a bug in
+ * formula 42, and it should be divided by 2.
+ *
+ * If we use the expression for the product of Bessel functions and
+ * f19p220, we can easily derive the result of formula 42, except,
+ * we're missing the factor of 2.  So, I think formula 42 is wrong.
  */
 
 specint(t^(1/2)*bessel_j(1/2,t^(1/2))^2*%e^(-p*t),t);
--2*%i*erf(%i/sqrt(p))*%e^-(1/p)/(sqrt(%pi)*p^(3/2)) $
+-%i*erf(%i/sqrt(p))*%e^-(1/p)/(sqrt(%pi)*p^(3/2)) $
 
 /*
  * See formula (8), section 4.16 of Table of Integral Transforms:
