@@ -348,11 +348,16 @@ if test x"${cmucl}" = xtrue; then
     else
 dnl last chance: find CMUCL_NAME in path. Use it if it doesn't appear to
 dnl be a shell script.
-	cmucl_path=`type -p ${CMUCL_NAME}"`
-	if test x"grep -c '#!.*bin.*sh.*'" = x"0" ; then
+	cmucl_path=`type -p "${CMUCL_NAME}"`
+	if test x"`grep -c '#!.*bin.*sh.*' ${cmucl_path}`" = x"0" ; then
 	   	CMUCL_RUNTIME_PATH="${cmucl_path}"
 	else
-		AC_MSG_ERROR(Unable to determine CMUCL runtime path. cmucl runtime \"${CMUCL_RUNTIME_PATH}\" is not an executable)
+		AC_MSG_ERROR(Unable to determine CMUCL runtime path.
+The best guess for CMUCL runtime \"${CMUCL_RUNTIME_PATH}\" is not
+an executable. Use the argument
+   --with-cmucl-runtime=<path>
+to set the actual CMUCL executable. If the CMUCL lisp command is a shell
+script the CMUCL executable is the program exec'd by that shell script.)
 	fi
     fi
     CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`
