@@ -4,5 +4,5 @@ the necessary auto(conf,make) magic necessary to produce "configure."
 
 Further installation instructions are available from
 	./configure --help
-and the file INSTALL.
-
+and the file INSTALL. The files configure and INSTALL are not stored
+in cvs; they will be created by the bootstrap script.
