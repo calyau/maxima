@@ -24,7 +24,7 @@
     (setq tem ($file_search1 file '((mlist)
 				    $FILE_SEARCH_MAXIMA
 				    $system)))
-    (and tem ($batchload tem))))
+    (and tem ($load tem))))
 
 
 
