@@ -1,5 +1,24 @@
-("Verifying that the Reissner-Nordstrom metric is that of a point charge.")$
-("First, we load ctensor...")$
+/* Copyright (C) 2004 Viktor T. Toth <http://www.vttoth.com/>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * MAXIMA CTENSOR demo: Proving that the Reissner-Nordstrom metric
+ * is that of a point charge.
+ *
+ */
+
+("
+
+Verify that the Reissner-Nordstrom metric is that of a point charge.
+First, we load ctensor...")$
 load(ctensor);
 ("We also need NCHRPL that contains the MATTRACE function:")$
 load(nchrpl);
@@ -10,8 +29,7 @@ lg:matrix([(r^2+q^2-2*m*r)/r^2,0,0,0],[0,r^2/(2*m*r-r^2-q^2),0,0],[0,0,-r^2,0],[
 ug:ratsimp(invert(lg));
 ("Next, we compute the Christoffel-symbols:")$
 christof(false);
-("Before computing the Ricci and Einstein tensors, we create them as matrices;
-this will make life easier later on:")$
+("Predefine Ricci & Einstein tensors as matrices for later use:")$
 ric:lein:ident(4)$
 ricci(false);
 leinstein(false);
@@ -21,11 +39,10 @@ a:[q/r,0,0,0];
 ("From which we compute the covariant electromagnetic field tensor:")$
 fl:ident(4)$
 for i thru dim do for j thru dim do fl[i,j]:diff(a[i],ct_coords[j])-diff(a[j],ct_coords[i]);
-("With the help of the metric, we can obtain the mixed and
-contravariant electromagnetic field tensors:")$
+("We can now obtain the mixed and contravariant EM field tensors:")$
 fm:ug.fl;
 fu:fm.ug;
-("And now we can compute the stress-energy tensor (times 8*%PI).")$
+("And now we can compute the stress-energy tensor (times 8*%pi).")$
 t:ratsimp(2*(fl.fm-lg*mattrace(fl.fu)/4));
 ("This and the covariant Einstein tensor should be identical:")$
 ratsimp(lein-t);

@@ -1,5 +1,24 @@
 ;;; -*- Mode:LISP; Package:MACSYMA -*-
-;; (based on itensor.116 ,117)
+;; 
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2 of
+;; the License, or (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be
+;; useful, but WITHOUT ANY WARRANTY; without even the implied
+;; warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+;; PURPOSE.  See the GNU General Public License for more details.
+;;
+;; Comments:
+;;
+;; The ;tensor package was downcased, cleaned up, and moving frames
+;; functionality was added by Viktor Toth (http://www.vttoth.com/).
+;;
+;; As of November, 2004, the naming conventions in this package now
+;; correspond with the naming conventions in commercial MACSYMA.
+;;
+
 (in-package "MAXIMA")
 
 (macsyma-module itensor) ;; added 9/24/82 at UCB

@@ -1,5 +1,19 @@
 ;;; -*- Mode:LISP; Package:MACSYMA -*-
+;; 
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2 of
+;; the License, or (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be
+;; useful, but WITHOUT ANY WARRANTY; without even the implied
+;; warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+;; PURPOSE.  See the GNU General Public License for more details.
+;;
+;; Comments: Symmetrization module for itensor.lisp
+;;
 ;;; symtry 100 Feb 12, 1982
+
 (in-package "MAXIMA")
 
 ;	** (c) Copyright 1979 Massachusetts Institute of Technology **

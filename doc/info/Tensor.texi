@@ -111,8 +111,8 @@ specify the name of the metric, and perform some simple calculations.
 (%t12) v    - g      v   (e p       + e   p     - e p       - e    p
         i,j           %4     j %5,i    ,i  j %5      i j,%5    ,%5  i j
 
-                                                     + e p       + e   p    )/2
-                                                          i %5,j    ,j  i %5
+                                                + e p       + e   p    )/2
+                                                     i %5,j    ,j  i %5
 (%i13) iframe_flag:true;
 
 (%o13)                               true
@@ -132,9 +132,9 @@ specify the name of the metric, and perform some simple calculations.
 (%t16) (v   ifb    - 2 v   ichr2    + g      ifb     v   g     + 2 v
          %1    i j      %1      i j             %2 j  %3  i %1      i,j
 
-                                                     %3 %1    %2
-                                                  - g      ifb     g     v  )/2
-                                                              %1 i  %2 j  %3
+                                                %3 %1    %2
+                                             - g      ifb     g     v  )/2
+                                                         %1 i  %2 j  %3
 (%i17) ishow(canform(s([i,j],[])-s([j,i])))$
 
 (%t17)                            s    - s
@@ -191,7 +191,24 @@ renamed to @code{new}.
 @c @node listoftens
 @c @unnumberedsec phony
 @defun listoftens
-*** TO BE WRITTEN ***
+
+Lists all tensors in a tensorial expression, complete with their indices. E.g.,
+
+@example
+
+(%i6) ishow(a([i,j],[k])*b([u],[],v)+c([x,y],[])*d([],[])*e)$
+
+                                         k
+(%t6)                        d e c    + a    b
+                                  x y    i j  u,v
+(%i7) ishow(listoftens(%))$
+
+                               k
+(%t7)                        [a   , b   , c   , d]
+                               i j   u,v   x y
+
+@end example
+
 @end defun
 
 @c @node ishow
@@ -277,9 +294,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 (%t4) g      g      ichr2      ichr2      ichr2      ichr2
                          %1 %4      %2 %3      %5 %6      %7 r
 
-                        %4 %5  %6 %7      u          %1         %3         %2
-                     - g      g      ichr2      ichr2      ichr2      ichr2
-                                          %1 %2      %3 %5      %4 %6      %7 r
+              %4 %5  %6 %7      u          %1         %3         %2
+           - g      g      ichr2      ichr2      ichr2      ichr2
+                                %1 %2      %3 %5      %4 %6      %7 r
 (%i5) flipflag:true;
 
 (%o5)                                true
@@ -289,9 +306,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 (%t6) g      g      ichr2      ichr2      ichr2      ichr2
                          %1 %2      %3 %4      %5 %6      %7 r
 
-                        %4 %5  %6 %7      u          %1         %3         %2
-                     - g      g      ichr2      ichr2      ichr2      ichr2
-                                          %1 %2      %3 %4      %5 %6      %7 r
+              %4 %5  %6 %7      u          %1         %3         %2
+           - g      g      ichr2      ichr2      ichr2      ichr2
+                                %1 %2      %3 %4      %5 %6      %7 r
 (%i7) flipflag:false;
 
 (%o7)                                false
@@ -304,9 +321,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 (%t9) g      g      ichr2      ichr2      ichr2     ichr2
                          %1 %6      %2 %3      %4 r      %5 %7
 
-                        %1 %2  %3 %4      %6         %5         %7        u
-                     - g      g      ichr2      ichr2      ichr2     ichr2
-                                          %1 %3      %2 %6      %4 r      %5 %7
+              %1 %2  %3 %4      %6         %5         %7        u
+           - g      g      ichr2      ichr2      ichr2     ichr2
+                                %1 %3      %2 %6      %4 r      %5 %7
 @end example
 
 @end defun
@@ -353,8 +370,8 @@ contraction properties with @code{defcon}.
 @c @unnumberedsec phony
 @defun remcon (tensor1,tensor2,...)
 removes all the contraction properties
-from the @code{tensori}.  @code{remcon(all)} removes all contraction properties from
-all indexed objects.
+from the @code{tensori}. @code{remcon(all)} removes all contraction
+properties from all indexed objects.
 
 @end defun
 
@@ -417,7 +434,58 @@ Unbinds all values from @code{tensor} which were assigned with the
 @c @node showcomps
 @c @unnumberedsec phony
 @defun showcomps
-*** TO BE WRITTEN ***
+
+Shows component assignments of a tensor, as made using the @code{components}
+command. This command can be particularly useful when a matrix is assigned
+to an indicial tensor using @code{components}, as demonstrated by the
+following example:
+
+@example
+
+(%i1) load(ctensor);
+
+(%o1)       /share/tensor/ctensor.mac
+(%i2) load(itensor);
+
+(%o2)      /share/tensor/itensor.lisp
+(%i3) lg:matrix([sqrt(r/(r-2*m)),0,0,0],[0,r,0,0],
+                [0,0,sin(theta)*r,0],[0,0,0,sqrt((r-2*m)/r)]);
+
+               [         r                                     ]
+               [ sqrt(-------)  0       0              0       ]
+               [      r - 2 m                                  ]
+               [                                               ]
+               [       0        r       0              0       ]
+(%o3)          [                                               ]
+               [       0        0  r sin(theta)        0       ]
+               [                                               ]
+               [                                      r - 2 m  ]
+               [       0        0       0        sqrt(-------) ]
+               [                                         r     ]
+(%i4) components(g([i,j],[]),lg);
+
+(%o4)                                done
+(%i5) showcomps(g([i,j],[]));
+
+                  [         r                                     ]
+                  [ sqrt(-------)  0       0              0       ]
+                  [      r - 2 m                                  ]
+                  [                                               ]
+                  [       0        r       0              0       ]
+(%t5)      g    = [                                               ]
+            i j   [       0        0  r sin(theta)        0       ]
+                  [                                               ]
+                  [                                      r - 2 m  ]
+                  [       0        0       0        sqrt(-------) ]
+                  [                                         r     ]
+(%o5)                                false
+
+
+@end example
+
+The @code{showcomps} command can also display components of a tensor of
+rank higher than 2.
+
 @end defun
 
 @c @node idummy
@@ -451,8 +519,8 @@ determined by the option @code{idummy} (default: %).
 @c @unnumberedsec phony
 @defun kdelta (l1,l2)
 is the generalized Kronecker delta function defined in
-the Tensor package with @code{l1} the list of covariant indices and @code{l2} the
-list of contravariant indices.  @code{kdelta([i],[j])} returns the ordinary
+the Tensor package with @code{l1} the list of covariant indices and @code{l2}
+the list of contravariant indices.  @code{kdelta([i],[j])} returns the ordinary
 Kronecker delta.  The command @code{ev(exp,kdelta)} causes the evaluation of
 an expression containing @code{kdelta([],[])} to the dimension of the
 manifold.
@@ -462,7 +530,32 @@ manifold.
 @c @node kdels
 @c @unnumberedsec phony
 @defun kdels (l1,l2)
-*** TO BE WRITTEN ***
+
+Symmetricized Kronecker delta, used in some calculations. For instance:
+
+@example
+
+(%i1) load(itensor);
+(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%i2) kdelta([1,2],[2,1]);
+
+(%o2)                                 - 1
+(%i3) kdels([1,2],[2,1]);
+
+(%o3)                                  1
+(%i4) ishow(kdelta([a,b],[c,d]))$
+
+                             c       d         d       c
+(%t4)                  kdelta  kdelta  - kdelta  kdelta
+                             a       b         a       b
+(%i4) ishow(kdels([a,b],[c,d]))$
+
+                             c       d         d       c
+(%t4)                  kdelta  kdelta  + kdelta  kdelta
+                             a       b         a       b
+
+@end example
+
 @end defun
 
 @c @node levi_civita
@@ -478,13 +571,47 @@ repeated.
 @c @node lc_l
 @c @unnumberedsec phony
 @defun lc_l
-*** TO BE WRITTEN ***
+
+Simplification rule used for expressions containing the unevaluated Levi-Civita
+symbol (@code{levi-civita}). Along with @code{lc_u}, it can be used to simplify
+many expressions more efficiently than the evaluation of @code{levi-civita}.
+For example:
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%i2)  el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
+
+                             i  j
+(%t2)                       a  a  levi_civita
+                                             i j k
+(%i3) el2:ishow('levi_civita([],[i,j,k])*a([i])*a([j]))$
+
+                                       i j k
+(%t3)                       levi_civita      a  a
+                                              i  j
+(%i4) ishow(canform(contract(expand(applyb1(el1,lc_l,lc_u)))))$
+
+(%t4)                                  0
+(%i5) ishow(canform(contract(expand(applyb1(el2,lc_l,lc_u)))))$
+
+(%t5)                                  0
+
+@end example
+
 @end defun
 
 @c @node lc_u
 @c @unnumberedsec phony
 @defun lc_u
-*** TO BE WRITTEN ***
+
+Simplification rule used for expressions containing the unevaluated Levi-Civita
+symbol (@code{levi-civita}). Along with @code{lc_u}, it can be used to simplify
+many expressions more efficiently than the evaluation of @code{levi-civita}.
+For details, see @code{lc_l}.
+
 @end defun
 
 @c @node canten
@@ -648,14 +775,41 @@ is chosen appropriately.
 
 @c @node liediff
 @c @unnumberedsec phony
-@defun liediff
-*** TO BE WRITTEN ***
+@defun liediff (v,ten)
+
+Computes the Lie-derivative of the tensorial expression @code{ten} with
+respect to the vector field @code{v}. @code{ten} should be any indexed
+tensor expression; @code{v} should be the name (without indices) of a vector
+field. For example:
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%i2) ishow(liediff(v,a([i,j],[])*b([],[k],l)))$
+
+       k    %2            %2          %2
+(%t2) b   (v   a       + v   a     + v   a    )
+       ,l       i j,%2    ,j  i %2    ,i  %2 j
+
+                                %1  k        %1  k      %1  k
+                            + (v   b      - b   v    + v   b   ) a
+                                    ,%1 l    ,l  ,%1    ,l  ,%1   i j
+
+
+@end example
+
+
 @end defun
 
 @c @node rediff
 @c @unnumberedsec phony
-@defun rediff
-*** TO BE WRITTEN ***
+@defun rediff (ten)
+
+Evaluates all occurrences of the @code{idiff} command in the tensorial
+expression @code{ten}.
+
 @end defun
 
 @c @node undiff
@@ -675,7 +829,10 @@ in @code{exp} and then carry out the differentiation by saying
 @c @node evundiff
 @c @unnumberedsec phony
 @defun evundiff
-*** TO BE WRITTEN ***
+
+Equivalent to the execution of @code{undiff}, followed by @code{ev} and
+@code{rediff}.
+
 @end defun
 
 @c @node flush
@@ -923,9 +1080,9 @@ curvature tensor using the @code{igeodesic_coords} function.
 (%t4) - ichr2      + ichr2      + ichr2      - ichr2      - ichr2
              t s,r        t r,s        s t,r        s r,t        r t,s
 
-                                                                          u
-                                                                   + ichr2
-                                                                          r s,t
+                                                                  u
+                                                           + ichr2
+                                                                  r s,t
 (%i5) canform(%);
 
 (%o5)                                  0

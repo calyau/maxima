@@ -84,6 +84,13 @@ declare("~",antisymmetric);
 
 extdiff(forma,[optind]):=block
 (
+/* VTT: 20041130: I don't think this gives correct results for products.
+   I think we may need recursion. If we do that, and we evaluate the
+   function separately for indexed objects, here's how we can check if
+   the object has been declared anti(all) in its covariant indices:
+
+   dispsym(a,5,0)=[[anti,[makelist(i,i,1,5)],[]]]
+*/
   [l11,l1s,lk1,lk2,indd,res,l1:first(indices(forma)),
    ind:if length(optind)>0 then optind[1] else idummy()],
   if l1=[] then return(idiff(forma,ind))

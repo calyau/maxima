@@ -1,11 +1,5 @@
 load(ctensor)$
-load("tensor/ex_calc.mac")$
 load(itensor)$
-load(canten)$
-load("tensor/lckdt.mac")$
-/*
-bothcases:false$
-*/
 
 ("To show a tensor use ISHOW()")$
 ishow(g([a,b],[c,i],i2,i1))$
@@ -310,7 +304,7 @@ ishow(equat)$
 ("i.e., re-compute the electric field")$
 e_field1:extdiff(a([i1]),i2)|v$
 ("substitute it in Equat")$
-equat1: d_t*b([i2,i3])=-extdiff(e_field1,i3)$
+equat1: d_t*b([i2,i1])=-extdiff(e_field1,i1)$
 ("compute the Lie derivative of B")$
 lie_derb: 'liediff(v,b([i1,i2]))=liediff(v,extdiff(a([i1]),i2))$
 ("summing up the lhs and rhs parts")$

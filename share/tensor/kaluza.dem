@@ -1,18 +1,32 @@
-("Deriving the Kaluza-Klein equation of motion.
+/* Copyright (C) 2004 Viktor T. Toth <http://www.vttoth.com/>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * MAXIMA CTENSOR demo: Proving that the Reissner-Nordstrom metric
+ * is that of a point charge.
+ *
+ */
+
+("
+
+Deriving the Kaluza-Klein equation of motion.
 For reference, see http://www.vttoth.com/KK/kk.htm")$
 
-derivabbrev:true;
 ("We first load ITENSOR and set up the 5-dimensional metric.
 We also set up contraction properties for both the 4-dimensional
 and the 5-dimensional metric tensors.")$
 
 load("itensor");
-dim:5;
-imetric:g5;
-defcon(g4);
-defcon(g5);
-defcon(g4,g4,kdelta);
-defcon(g5,g5,kdelta);
+(derivabbrev:true, dim:5, imetric:g5, defcon(g4),defcon(g5),
+defcon(g4,g4,kdelta), defcon(g5,g5,kdelta))$
 
 ("To set up the metric components, we need some helper functions.
 The function predval() determines if a predicate can be evaluated.

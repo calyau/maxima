@@ -1,5 +1,22 @@
+/* Copyright (C) 2004 Viktor T. Toth <http://www.vttoth.com/>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * Derive the Schwarzschild solution in a tetrad base
+ *
+ */
 load("ctensor")$
-("First, we enter the initial parameters, starting with the coordinate base:")$
+("
+
+Derive and verify Schwarzschild's solution in a tetrad base.")$
 init_ctensor();
 ct_coords:[t,r,d,c]$
 ("We use dimension 4. The four base vectors arranged in matrix form:")$
@@ -9,9 +26,7 @@ fri:matrix(
   [0,           0,  r,       0],
   [0,           0,  0,r*sin(d)]);
 ("The problem is simple enough for automatic simplification:")$
-ctrgsimp:true;
-ratfac:true;
-cframe_flag:true;
+(ctrgsimp:true, ratfac:true, cframe_flag:true)$
 cmetric();
 ("Compute the Ricci rotation coefficients")$
 christof(true);
@@ -55,5 +70,5 @@ cmetric(true);
 christof(true);
 ("And the Riemann tensor:")$
 lriemann(true);
-("And last, the Ricci tensor:")$
+("And last, the Ricci tensor, which should indicate an empty spacetime:")$
 ricci(true);

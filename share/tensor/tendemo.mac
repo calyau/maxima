@@ -1,0 +1,49 @@
+/* Copyright (C) 2004 Viktor T. Toth <http://www.vttoth.com/>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * The main MAXIMA tensor demo
+ *
+ */
+
+(sel:read("
+
+This is the main demonstration program for MAXIMA tensors.
+Select an option below by its number followed by a semicolon (;)
+INDICIAL TENSOR MANIPULATION        COMPONENT TENSOR MANIPULATION
+1. Basics                           11. Basics
+2. Index contraction                12. Initialization
+3. Symmetrization                   13. Curvature and differentiation
+4. Special tensors                  14. Frame fields
+5. Coordinate differentiation       15. Torsion and nonmetricity
+6. Covariant derivatives, curvature 16. Algebraic classification
+7. Exterior algebra                 17. Differential equations
+8. Generating CTENSOR programs
+9. Torsion and nonmetricity         21. Complete examples"),
+if sel=1 then demo(itensor1)
+   else if sel=2 then demo(itensor2)
+   else if sel#21 then error("Unknown demo!")
+   else
+(sel:read("The following specific examples demonstrate practical applications:
+INDICIAL TENSOR MANIPULATION        COMPONENT TENSOR MANIPULATION
+1. Proving the Bianchi-identities   11. Deriving Schwarzschild's metric
+2. Proving Cartan's identities      12. Verifying Reissner-Nordstrom
+3. The Kaluza-Klein metric          13. Petrov classification of metrics
+                                    14. Using a tetrad base"),
+    if sel=2 then demo(car_iden)
+   else if sel=3 then demo(kaluza)
+   else if sel=11 then demo(swartz)
+   else if sel=12 then demo(reissner)
+   else if sel=13 then demo(petrov)
+   else if sel=14 then demo(tetrad)
+   else error("Unknown demo!")
+))$
+

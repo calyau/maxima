@@ -427,7 +427,27 @@ ct_coordsys(coordinate_system, [extra_args]):=
   )
   else if coordinate_system='confocalellipsoidal then
   (
-    error("Not implemented yet!")
+    dim:3,
+    ct_coords:[u,v,w],
+    declare([e,f,g],constant),
+    if cframe_flag then
+    (
+      fri:matrix([-sqrt((v-e^2)*(w-e^2)/(f^2-e^2)/(g^2-e^2)/(e^2-u))/2,
+                  -sqrt((u-e^2)*(w-e^2)/(f^2-e^2)/(g^2-e^2)/(e^2-v))/2,
+                  -sqrt((u-e^2)*(v-e^2)/(f^2-e^2)/(g^2-e^2)/(e^2-w))/2],
+
+                 [ sqrt((v-f^2)*(w-f^2)/(f^2-e^2)/(g^2-f^2)/(u-f^2))/2,
+                   sqrt((u-f^2)*(w-f^2)/(f^2-e^2)/(g^2-f^2)/(v-f^2))/2,
+                   sqrt((u-f^2)*(v-f^2)/(f^2-e^2)/(g^2-f^2)/(w-f^2))/2],
+
+                 [-sqrt((v-g^2)*(w-g^2)/(g^2-e^2)/(g^2-f^2)/(g^2-u))/2,
+                  -sqrt((u-g^2)*(w-g^2)/(g^2-e^2)/(g^2-f^2)/(g^2-v))/2,
+                  -sqrt((u-g^2)*(v-g^2)/(g^2-e^2)/(g^2-f^2)/(g^2-w))/2]),
+      lfg:ident(3)
+    )
+    else lg:matrix([(v-u)*(w-u)/4/(e^2-u)/(u-f^2)/(u-g^2), 0, 0],
+                   [0, (v-u)*(w-v)/4/(v-e^2)/(v-f^2)/(v-g^2), 0],
+                   [0, 0, (w-u)*(w-v)/4/(e^2-w)/(w-f^2)/(w-g^2)])
   )
   else if coordinate_system='bipolarcylindrical then
   block(
@@ -477,7 +497,14 @@ ct_coordsys(coordinate_system, [extra_args]):=
     declare([e,f],constant),
     if cframe_flag then
     (
-      error("Not implemented yet!")
+      fri:matrix([v*w/e/f, u*w/e/f, u*v/e/f],
+                 [-u*w/sqrt((f^2-e^2)*(u^2-e^2)/(e^2-v^2))/e,
+                  -v*w/sqrt((f^2-e^2)*(v^2-e^2)/(e^2-u^2))/e,
+                       sqrt((u^2-e^2)*(v^2-e^2)/(e^2-f^2))/e],
+                 [ u*w/sqrt((f^2-e^2)*(u^2-f^2)/(v^2-f^2))/f,
+                   v*w/sqrt((f^2-e^2)*(v^2-f^2)/(u^2-f^2))/f,
+                       sqrt((u^2-f^2)*(v^2-f^2)/(f^2-e^2))/f]),
+      lfg:ident(3)
     )
     else lg:matrix([(v-u)*(v+u)*w^2/((u-e)*(u+e)*(u-f)*(u+f)), 0, 0],
                    [0, (u-v)*(u+v)*w^2/((v-e)*(v+e)*(v-f)*(v+f)), 0],
@@ -584,8 +611,18 @@ ct_coordsys(coordinate_system, [extra_args]):=
   (
     dim:3,
     ct_coords:[r,theta,phi],
+    declare([a,b,c],constant),
     if cframe_flag then error("No frame fields yet")
-    else error("Not implemented yet!")
+    else lg:matrix(
+      [(a^2*cos(phi)^2+b^2*sin(phi)^2)*sin(theta)^2+c^2*cos(theta)^2,
+           (a^2*cos(phi)^2+b^2*sin(phi)^2-c^2)*r*cos(theta)*sin(theta),
+               (b^2-a^2)*cos(phi)*sin(phi)*r*sin(theta)^2],
+      [(a^2*cos(phi)^2+b^2*sin(phi)^2-c^2)*r*cos(theta)*sin(theta),
+           r^2*((a^2*cos(phi)^2+b^2*sin(phi)^2)*cos(theta)^2+c^2*sin(theta)^2),
+               (b^2-a^2)*cos(phi)*sin(phi)*r^2*cos(theta)*sin(theta)],
+      [(b^2-a^2)*cos(phi)*sin(phi)*r*sin(theta)^2,
+           (b^2-a^2)*cos(phi)*sin(phi)*r^2*cos(theta)*sin(theta),
+               (a^2*sin(phi)^2+b^2*cos(phi)^2)*r^2*sin(theta)^2])
   )
   else if coordinate_system='cartesian4d then
   (
@@ -599,16 +636,16 @@ ct_coordsys(coordinate_system, [extra_args]):=
   (
     dim:4,
     ct_coords:[r,theta,eta,phi],
-    declare(kurv,constant),
+/*    declare(kurv,constant),*/
     if cframe_flag then
     (
-      fri:matrix([sqrt(1/(1-kurv*r^2)), 0, 0,          0],
+      fri:matrix([1 /* sqrt(1/(1-kurv*r^2)) */, 0, 0,  0],
                  [        0, r,            0,          0],
                  [        0, 0, r*sin(theta),          0],
                  [        0, 0, 0, r*sin(eta)*sin(theta)]),
       lfg:ident(4)
     )
-    else lg:matrix([1/(1-kurv*r^2), 0, 0,                           0],
+    else lg:matrix([1 /* /(1-kurv*r^2) */, 0, 0,                    0],
                    [0,            r^2, 0,                           0],
                    [0,              0, r^2*sin(theta)^2,            0],
                    [0,              0, 0, r^2*sin(eta)^2*sin(theta)^2])

@@ -171,18 +171,18 @@ Sets up a predefined coordinate system and metric. The argument
   cartesian3d           3  [x,y,z]           Cartesian 3D coordinate system
   polarcylindrical      3  [r,theta,z]
   ellipticcylindrical   3  [u,v,z]           Elliptic 2D with cylindrical Z
-  confocalellipsoidal   3  *** NOT YET IMPLEMENTED ***
+  confocalellipsoidal   3  [u,v,w]
   bipolarcylindrical    3  [u,v,z]           Bipolar 2D with cylintrical Z
   paraboliccylindrical  3  [u,v,z]           Parabolic 2D with cylindrical Z
   paraboloidal          3  [u,v,phi]
-  conical               3  [u,v,w]           Not yet implemented for frames
-  toroidal              3  *** NOT YET IMPLEMENTED ***
+  conical               3  [u,v,w]
+  toroidal              3  [u,v,phi]
   spherical             3  [r,theta,phi]     Spherical coordinate system
   oblatespheroidal      3  [u,v,phi]
   oblatespheroidalsqrt  3  [u,v,phi]
   prolatespheroidal     3  [u,v,phi]
   prolatespheroidalsqrt 3  [u,v,phi]
-  ellipsoidal           3  *** NOT YET IMPLEMENTED ***
+  ellipsoidal           3  [r,theta,phi]
   cartesian4d           4  [x,y,z,t]         Cartesian 4D coordinate system
   spherical4d           4  [r,theta,eta,phi]
   exteriorschwarzschild 4  [r,theta,phi,ct]  Schwarzschild metric
@@ -383,7 +383,7 @@ if @code{dis} is @code{true}.
 @c @node rinvariant
 @c @unnumberedsec phony
 @defun rinvariant ()
-Tensor package) forms the Kretchmann-invariant (@code{kinvariant}) obtained by
+Forms the Kretchmann-invariant (@code{kinvariant}) obtained by
 contracting the tensors
 @example
 lriem[i,j,k,l]*uriem[i,j,k,l].
@@ -396,7 +396,7 @@ This object is not automatically simplified since it can be very large.
 @c @node weyl
 @c @unnumberedsec phony
 @defun weyl ()
-computes the Weyl conformal tensor.  If the argument @code{dis} is
+Computes the Weyl conformal tensor.  If the argument @code{dis} is
 @code{true}, the non-zero components @code{weyl[i,j,k,l]} will be displayed to the
 user.  Otherwise, these components will simply be computed and stored.
 If the switch @code{ratweyl} is set to @code{true}, then the components will be
@@ -1093,35 +1093,49 @@ automatically by @code{csetup()} if a diagonal metric is specified.
 @c @unnumberedsec phony
 @defvar ctrgsimp
 
-*** TO BE WRITTEN ***
+Causes trigonometric simplifications to be used when tensors are computed. Presently,
+@code{ctrgsimp} affects only computations involving a moving frame.
+
 @end defvar
 
 @c @node cframe_flag
 @c @unnumberedsec phony
 @defvar cframe_flag
 
-*** TO BE WRITTEN ***
+Causes computations to be performed relative to a moving frame as opposed to a holonomic
+metric. The frame is defined by the inverse frame array @code{fri} and the frame metric
+@code{lfg}. For computations using a Cartesian frame, @code{lfg} should be the unit
+matrix of the appropriate dimension; for computations in a Lorentz frame, @code{lfg}
+should have the appropriate signature.
+
 @end defvar
 
 @c @node ctayswitch
 @c @unnumberedsec phony
 @defvar ctayswitch
 
-*** TO BE WRITTEN ***
+If set to @code{true}, causes some CTENSOR computations to be carried out using
+Taylor-series expansions. Presently, @code{christof()}, @code{ricci()}, @code{uricci()},
+@code{einstein()}, and @code{weyl()} take into account this setting, but only when
+a holonomic metric is being used (i.e., @code{cframe_flag} is @code{false}).
+
 @end defvar
 
 @c @node gdet
 @c @unnumberedsec phony
 @defvar gdet
 
-*** TO BE WRITTEN ***
+The determinant of the metric tensor @code{lg}. Computed by @code{cmetric()} when
+@code{cframe_flag} is set to @code{false}.
+
 @end defvar
 
 @c @node ratchristof
 @c @unnumberedsec phony
 @defvar ratchristof
 
-*** TO BE WRITTEN ***
+Causes rational simplification to be applied by @code{christof()}.
+
 @end defvar
 
 @c @node rateinstein
@@ -1175,49 +1189,57 @@ if @code{cframe_flag} is @code{true}, @code{riem} is computed from the covariant
 @c @unnumberedsec phony
 @defvar lriem
 
-*** TO BE WRITTEN ***
+The covariant Riemann tensor. Computed by @code{lriemann()}.
+
 @end defvar
 
 @c @node uriem
 @c @unnumberedsec phony
 @defvar uriem
 
-*** TO BE WRITTEN ***
+The contravariant Riemann tensor. Computed by @code{uriemann()}.
+
 @end defvar
 
 @c @node ric
 @c @unnumberedsec phony
 @defvar ric
 
-*** TO BE WRITTEN ***
+The mixed Ricci-tensor. Computed by @code{ricci()}.
+
 @end defvar
 
 @c @node uric
 @c @unnumberedsec phony
 @defvar uric
 
-*** TO BE WRITTEN ***
+The contravariant Ricci-tensor. Computed by @code{uricci()}.
+
 @end defvar
 
 @c @node lg
 @c @unnumberedsec phony
 @defvar lg
 
-*** TO BE WRITTEN ***
+The metric tensor. This tensor must be specified (as a @code{dim}x@code{dim} matrix)
+before other computations can be performed.
+
 @end defvar
 
 @c @node ug
 @c @unnumberedsec phony
 @defvar ug
 
-*** TO BE WRITTEN ***
+The inverse of the metric tensor. Computed by @code{cmetric()}.
+
 @end defvar
 
 @c @node weyl
 @c @unnumberedsec phony
 @defvar weyl
 
-*** TO BE WRITTEN ***
+The Weyl tensor. Computed by @code{weyl()}.
+
 @end defvar
 
 @c @node fb
@@ -1231,28 +1253,33 @@ if @code{cframe_flag} is @code{true}, @code{riem} is computed from the covariant
 @c @unnumberedsec phony
 @defvar kinvariant
 
-*** TO BE WRITTEN ***
+The Kretchmann invariant. Computed by @code{rinvariant()}.
+
 @end defvar
 
 @c @node np
 @c @unnumberedsec phony
 @defvar np
 
-*** TO BE WRITTEN ***
+A Newman-Penrose null tetrad. Computed by @code{nptetrad()}.
+
 @end defvar
 
 @c @node npi
 @c @unnumberedsec phony
 @defvar npi
 
-*** TO BE WRITTEN ***
+The inverse Newman-Penrose null tetrad. Computed by @code{nptetrad()}.
+
 @end defvar
 
 @c @node tensorkill
 @c @unnumberedsec phony
 @defvar tensorkill
 
-*** TO BE WRITTEN ***
+Variable indicating if the tensor package has been initialized. Set and used by
+@code{csetup()}, reset by @code{init_ctensor()}.
+
 @end defvar
 
 @c @node ct_coords
