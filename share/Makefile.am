@@ -248,7 +248,6 @@ contrib/nset/nset.lisp\
 contrib/nset/nset.texi\
 contrib/nset/nset_toc.html\
 contrib/nset/README\
-contrib/nset/test-nset.mac\
 contrib/numericalio/README\
 contrib/numericalio/array.data\
 contrib/numericalio/array.mac\

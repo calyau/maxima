@@ -1,3 +1,9 @@
+kill (all)$
+done$
+
+(load ("nset.lisp"), 0)$
+0$
+
 emptyp(set());
 true$
 
@@ -874,7 +880,10 @@ set(-1,1)$
 extremal_subset(set(1,sqrt(2),3,%pi),log, max);
 set(%pi)$
 
-extremal_subset(set(sqrt(2),sqrt(3),sqrt(5)),exp, max);
+/* quote exp because some other tests assign a value to exp,
+   and kill refuses to kill the assigned value ... (sigh)
+ */
+extremal_subset(set(sqrt(2),sqrt(3),sqrt(5)), 'exp, max);
 set(sqrt(5))$
 
 extremal_subset(set(1+%i,sqrt(2),1-%i),abs, max);

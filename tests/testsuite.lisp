@@ -14,5 +14,5 @@
 	("rtest16.mac" 4)
 	"rtestode.mac" "rtestode_zp.mac" "rtestflatten.mac"
 	"rtest3.mac" "rtest8.mac" "rtest12.mac" "rexamples.mac"
-	"rtesthyp.mac"
+	"rtesthyp.mac" "rtestnset.mac"
 	))
