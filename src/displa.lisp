@@ -1810,6 +1810,8 @@
 (defvar *big-chunk-size*  9)
 (setq *tentochunksize* (expt 10 *big-chunk-size*))
 
+;; Defined in commac.lisp.
+#+nil
 (defun exploden (symb &aux string)
   (cond ((symbolp symb)(setq string (symbol-name symb)))
         ((floatp symb)
