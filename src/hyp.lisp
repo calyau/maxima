@@ -275,9 +275,8 @@
 	   ;; Or hgfred([-n],[alpha],x) =
 	   ;; gen_laguerre(n,alpha-1,x)/binomial(n+alpha-1,n)
 	   (mul (factorial n)
-		(inv (mul
-		      (gm c)
-		      (gm (add c n))))
+		(gm c)
+		(inv (gm (add c n)))
 		(lagpol n (sub c 1) var))))))
 
 ;; Hermite polynomial.  Note: The Hermite polynomial used here is the
