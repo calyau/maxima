@@ -693,19 +693,31 @@
 ;;	;; Does the LISPM have FSC?
 ;;      (*QUO (FLOAT NU) D)))
 
-(defun expta (x y) (cond ((equal y 1) x)
-			 ((numberp x) (exptb x (num1 y)))
-			 (($bfloatp x) ($bfloat (list '(mexpt) x y)))
-			 ((minusp (num1 y))
-			  (*red (exptb (caddr x) (minus (num1 y)))
-				(exptb (cadr x) (minus (num1 y)))))
-			 (t (*red (exptb (cadr x) (num1 y))
-				  (exptb (caddr x) (num1 y))))))
+(defun expta (x y)
+  (cond ((equal y 1)
+	 x)
+	((numberp x)
+	 (exptb x (num1 y)))
+	(($bfloatp x)
+	 ($bfloat (list '(mexpt) x y)))
+	((minusp (num1 y))
+	 (*red (exptb (caddr x) (minus (num1 y)))
+	       (exptb (cadr x) (minus (num1 y)))))
+	(t
+	 (*red (exptb (cadr x) (num1 y))
+	       (exptb (caddr x) (num1 y))))))
 
+;; I (rtoy) think EXPTB is meant to compute a^b, where b is an
+;; integer.
 (defun exptb (a b)
-  (cond ((equal a %e-val) (exp b))
-	((or (floatp a) (not (minusp b))) (expt a b))
-	(t (setq b (expt a (minus b))) (*red 1 b))))
+  (cond ((equal a %e-val)
+	 ;; Make B a float so we'll get double-precision result.
+	 (exp (float b)))
+	((or (floatp a) (not (minusp b)))
+	 (expt a b))
+	(t
+	 (setq b (expt a (minus b)))
+	 (*red 1 b))))
 
 (defmfun simplus (x w z)		; W must be 1
   (prog (res check eqnflag matrixflag sumflag)
