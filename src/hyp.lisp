@@ -1083,15 +1083,33 @@
   ;; fact, it's A&S 15.1.14: F(a,a+1/2,;1+2a;z) =
   ;; 2^(2*a)*(1+sqrt(1-z))^(-2*a).
   (declare (special var))
+  (let ((q (sub (add a b (inv 2))
+		c)))
+    (unless (hyp-integerp q)
+      ;; Wrong form, so return NIL
+      (return-from step7 nil))
+    ;; Since F(a,b;c;z) = F(b,a;c;z), we need to figure out which form
+    ;; to use.  The criterion will be the fewest number of derivatives
+    ;; needed.
+    (let* ((p1 (add (sub a b) (inv 2)))
+	   (r1 (sub q p1))
+	   (p2 (add (sub b a) (inv 2)))
+	   (r2 (sub q p2)))
+      (format t "q, p1, r1 = ~A ~A ~A~%" q p1 r1)
+      (format t "   p2, r2 = ~A ~A~%" p2 r2)
+      (cond ((<= (+ (abs p1) (abs r1))
+		 (+ (abs p2) (abs r2)))
+	     (step7-core a b c))
+	    (t
+	     (step7-core b a c))))))
+
+(defun step7-core (a b c)
   (let* ((p (add (sub a b) (inv 2)))
 	 (q (sub (add a b (inv 2))
 		 c))
 	 (r (sub q p))
 	 (a-prime (sub a p))
 	 (c-prime (add c r)))
-    (unless (hyp-integerp q)
-      ;; Wrong form, so return NIL
-      (return-from step7 nil))
     ;; Ok, p and q are integers.  We can compute something.  There are
     ;; four cases to handle depending on the sign of p and r.
 
@@ -1100,6 +1118,7 @@
 				(power (sub 1 var)
 				       (inv 2)))
 			   (mul -2 a-prime)))))
+      ;; fun is F(a',a'+1/2;2*a'+1;z)
       (cond ((>= p 0)
 	     (cond ((>= r 0)
 		    (step-7-pp a-prime b c-prime p r var fun))
@@ -1110,7 +1129,7 @@
 		    (step-7-mp a-prime b c-prime p r var fun))
 		   (t
 		    (step-7-mm a-prime b c-prime p r var fun))))))))
-
+  
 ;; F(a,b;c;z) in terms of F(a',b;c';z)
 ;;
 ;; F(a'+p,b;c'-r;z) where p >= 0, r >= 0.
