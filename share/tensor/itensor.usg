@@ -1,4 +1,4 @@
-This file describes  the way to work with maxima's indicial
+This file describes the way to work with Maxima's indicial
 tensor manipulation package.
 
 The "itensor" package is now considered to be fully functional,
@@ -46,7 +46,7 @@ major LISP versions, that is, GCL, CLISP, and CMUCL.
 
 Other working (and tested) demo files are:
 
-"ademo.dem" - Verifies the double divergence of the Einstein tensor;
+"ademo.dem" - Verifies the double divergence of the Riemann tensor;
 "ademo-2steps.dem" - As above, different method;
 "ctenso_1.dem ..
  ctenso_4.dem" - Basic CTENSR package demo set;
