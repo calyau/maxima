@@ -1,15 +1,8 @@
 (in-package "MAXIMA")
 
-#+clisp
-(setq custom:*parse-namestring-ansi* t)
-
-(setf (logical-pathname-translations "affine")
-      `(("**;*.*.*" 
-	 ,(merge-pathnames 
-	   (make-pathname :directory '(:relative :wild-inferiors))
-	   (make-pathname :directory (pathname-directory *load-pathname*))))))
-
-(load "affine:affine.system")
+(load (merge-pathnames #p"affine.system" 
+		       (make-pathname
+			:directory (pathname-directory *load-truename*))))
 (mk:load-system "affine")
 
 ;;; affine.lisp ends here

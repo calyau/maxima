@@ -1,17 +1,17 @@
 ;;; -*- Mode:Lisp; Package:CL-MAXIMA; Syntax:COMMON-LISP; Base:10 -*-;;;
 
 (mk:defsystem "affine"
-    :source-pathname "affine:"
     :source-extension "lisp"
-    :binary-pathname
-    #+clisp "affine:binary-clisp;"
-    #+cmu "affine:binary-cmucl;"
-    #+sbcl "affine:binary-sbcl;"
-    #+gcl "affine:binary-gcl;"
-    #+allegro "affine:binary-acl6;"
-    #+openmcl "affine:binary-openmcl;"
-    #-(or clisp cmu sbcl gcl allegro openmcl) "affine:binary-unknownlisp;"
-    :components (;(:file "sys-declaim" :load-only t)
+    :binary-pathname (make-pathname
+		      :name #+clisp "binary-clisp"
+		      #+cmu "binary-cmucl"
+		      #+sbcl "binary-sbcl"
+		      #+gcl "binary-gcl"
+		      #+allegro "binary-acl6"
+		      #+openmcl "binary-openmcl"
+		      #-(or clisp cmu sbcl gcl allegro openmcl) "binary-unknownlisp"
+		      :directory (pathname-directory *load-truename*))
+    :components ( ;;(:file "sys-declaim" :load-only t)
 		 (:file "sloop")
 		 (:file "compat")       ;new
 		 (:file "amacros")
