@@ -32,7 +32,7 @@
 	  $mapprint featurel outfiles fundefsimp mfexprp transp
 	  sfindex mspeclist2 envlist $macros linel $ratfac $ratwtlvl
 	  $operators noevalargs $piece $partswitch *gcdl*
-	  scanmapp))
+	  scanmapp *builtin-$props*))
 
 (declare-top (unspecial args))
 
@@ -1762,7 +1762,8 @@ wrapper for this."
 			     matchdeclare $atomgrad atvalues t-mfexpr)))
 	   (not (getl var '(evfun evflag translated nonarray bindtest
 			    opr sp2 operators opers special data
-			    alphabet autoload mode))))
+			    alphabet autoload mode)))
+	   (not (memq var *builtin-$props*)))
       (delq var $props 1)))
 
 (defun rem-verbify (fnname) (nonsymchk fnname '$remove) ($verbify fnname))
@@ -1807,7 +1808,9 @@ wrapper for this."
 					 x)))))))
 
 (defun remcompary (x)
-  (cond ((eq x (mget x 'array)) (zl-remprop x 'array-mode) (zl-remprop x 'array))))
+  (cond ((eq x (mget x 'array))
+	 (zl-remprop x 'array-mode)
+	 (zl-remprop x 'array))))
 
 (defmspec $remvalue (form) (i-$remvalue (cdr form)))
 

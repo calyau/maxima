@@ -424,10 +424,8 @@
 
 (import 'cl-user::run)
 
-($setup_autoload "eigen.mac" '$eigenvectors '$eigenvalues)
-
 (defun $to_lisp ()
-  (format t "~&Type (to-maxima) to restart~%")
+  (format t "~&Type (to-maxima) to restart, ($quit) to quit Maxima.~%")
   (let ((old-debugger-hook *debugger-hook*))
     (catch 'to-maxima
       (unwind-protect
@@ -455,14 +453,32 @@
   (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
   (throw 'to-maxima-repl t))
 
-(defun $jfa_lisp ()
-  (format t "jfa was here"))
-
 (defvar $help "type describe(topic) or example(topic);")
 
 (defun $help () $help)			;
 
+;;; Now that all of maxima has been loaded, define the various lists
+;;; and hashtables of builtin symbols and values.
 
-(defun $maxima_server (port)
-  (load "/home/amundson/devel/maxima/archive/src/server.lisp")
-  (cl-user::setup port))
+;;; The symbols in problematic-symbols contains properties with
+;;; circular data structures. Attempting to copy a circular structure
+;;; into *builtin-symbol-props* would cause a hang. Lacking a better
+;;; solution, we simply avoid those symbols.
+(let ((problematic-symbols '($%gamma $%phi $global $%pi $%e)))
+  (do-symbols (s (find-package 'maxima))
+    (when (and (eql (symbol-package s) (find-package 'maxima))
+	       (memq (getchar s 1) '($ % &)))
+      (push s *builtin-symbols*)
+      (when (not (memq s problematic-symbols))
+	(setf (gethash s *builtin-symbol-props*)
+	      (copy-tree (symbol-plist s)))))))
+
+(dolist (s *builtin-symbols*)
+  (when (boundp s)
+    (push s *builtin-symbols-with-values*)))
+
+(dolist (s *builtin-symbols-with-values*)
+  (setf (gethash s *builtin-symbol-values*) (symbol-value s)))
+
+(setf *builtin-$props* (copy-list $props))
+(setf *builtin-$rules* (copy-list $rules))
