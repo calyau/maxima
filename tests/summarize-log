@@ -1,6 +1,7 @@
 #!/bin/sh
 
 log_file="$1"
+known_bugs="`dirname $1`/known-bugs"
 echo
 echo "*** Summary results for tests recorded in"
 echo "*** log file ${log_file}:"
@@ -13,6 +14,11 @@ if [ "$no_err_count" = "0" ] && [ "$err_count" = "0" ]; then
   echo "Unknown error in log file"
 fi
 echo
+if [ -f "$known_bugs" ]; then
+  echo "Expected failures (known bugs in this version of Maxima):"
+  cat "$known_bugs"
+  echo 
+fi
 echo "Timing:"
 grep time $log_file
 echo "*** end of summary for $log_file"
