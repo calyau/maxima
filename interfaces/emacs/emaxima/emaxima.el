@@ -9,8 +9,8 @@
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.8 $
-;; $Date: 2003-03-07 17:17:04 $
+;; $Revision: 1.9 $
+;; $Date: 2003-03-11 21:18:34 $
 ;; Keywords: maxima, emaxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -1245,7 +1245,7 @@ Return nil if no name or error in name."
   (let ((mb)
         (me)
         (ie)
-        (out (maxima-last-output)))
+        (out (maxima-strip-string (maxima-last-output))))
     (while (string-match "(E[0-9]+)" out)
       (setq mb (match-beginning 0))
       (setq me (match-end 0))
@@ -1304,7 +1304,7 @@ Return nil if no name or error in name."
           (insert " \\\\\n"))))))
 
 (defun emaxima-insert-last-output-tex-noprompt ()
-  (let ((out (maxima-last-output))
+  (let ((out (maxima-strip-string (maxima-last-output)))
         (me)
         (mb)
         (ie))
@@ -1317,7 +1317,13 @@ Return nil if no name or error in name."
           (progn
             (insert "\\p ")
             (insert substring out 0 mb)
-            (insert " \\\\\n")))
+            (forward-char -1)
+            (if (looking-at "\n")
+                (progn
+                  (insert " \\\\")
+                  (forward-char 1))
+              (forward-char 1)
+              (insert " \\\\\n"))))
       (insert "\\E")
       (insert (substring out (+ mb 2) (- me 1)))
       (insert ". ")
@@ -1335,16 +1341,23 @@ Return nil if no name or error in name."
     (if (string-match "(D[0-9]+)" out)
         (progn
           (setq mb (match-beginning 0))
+          (setq me (match-end 0))
           (if (and (> mb 0)
                    (string-match "[^ \n]" (substring out 0 mb)))
               (progn
                 (insert "\\p ")
                 (insert (substring out 0 mb))
-                (insert " \\\\\n")))
-;          (setq out (substring out mb))
+                (forward-char -1)
+                (if (looking-at "\n")
+                    (progn
+                      (insert " \\\\")
+                      (forward-char 1))
+                  (forward-char 1)
+                  (insert " \\\\\n"))))
+          (setq out (substring out me))
           (insert "\\[")
           (insert "  ")
-          (insert (substring out (match-end 0)))
+          (insert out );(substring out me))
           (forward-char -1)
           (if (looking-at "\n")
               (progn
