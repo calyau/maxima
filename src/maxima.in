@@ -6,11 +6,12 @@ unixize () {
 }
 
 setup_vars() {
-  MAXIMA_VERSION=@VERSION@
+  if [ -z "$MAXIMA_VERSION" ]; then
+    MAXIMA_VERSION=@VERSION@
+  fi
   prefix=`unixize "@prefix@"`
   exec_prefix=`unixize "@exec_prefix@"`
   PACKAGE=@PACKAGE@
-  VERSION=@VERSION@
   top_srcdir=`unixize "@expanded_top_srcdir@"`
   libdir=`unixize "@libdir@"`
   if [ -n "$MAXIMA_LAYOUT_AUTOTOOLS" ]; then
@@ -19,13 +20,13 @@ setup_vars() {
       layout_autotools=@default_layout_autotools@
   fi
   if [ "$layout_autotools" = "true" ]; then
-      MAXIMA_DEFAULT_IMAGESDIR=$libdir/$PACKAGE/$VERSION
+      MAXIMA_DEFAULT_IMAGESDIR=$libdir/$PACKAGE/$MAXIMA_VERSION
   else
       MAXIMA_DEFAULT_IMAGESDIR=$top_srcdir/src
   fi  
   if [ -n "$MAXIMA_PREFIX" ]; then
       if [ "$layout_autotools" = "true" ]; then
-	  MAXIMA_IMAGESDIR=`unixize "$MAXIMA_PREFIX"`/lib/$PACKAGE/$VERSION
+	  MAXIMA_IMAGESDIR=`unixize "$MAXIMA_PREFIX"`/lib/$PACKAGE/$MAXIMA_VERSION
       else
 	  MAXIMA_IMAGESDIR=`unixize "$MAXIMA_PREFIX"`/src
       fi  
