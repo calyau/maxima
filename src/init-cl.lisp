@@ -12,6 +12,8 @@
 (defvar *maxima-prefix*)
 (defvar *maxima-datadir*)
 (defvar *maxima-infodir*)
+(defvar *maxima-plotdir*)
+(defvar *maxima-verpkglibexecdir*)
 (defvar *maxima-verpkgdatadir*)
 
 (defun maxima-path (dir file)
@@ -52,7 +54,8 @@
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-datadir-env (maxima-getenv "MAXIMA_DATADIR"))
-	(maxima-infodir-env (maxima-getenv "MAXIMA_INFODIR")))
+	(maxima-infodir-env (maxima-getenv "MAXIMA_INFODIR"))
+	(maxima-plotdir-env (maxima-getenv "MAXIMA_PLOTDIR")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
     (if (not maxima-prefix-env)
 	(setq maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY")))
@@ -63,6 +66,7 @@
 	(setq *maxima-datadir* maxima-datadir-env)
       (if maxima-prefix-env
 	  (setq *maxima-datadir* (concatenate 'string *maxima-prefix*
+					      "/"
 					      "share"))
 	(setq *maxima-datadir* *autoconf-datadir*)))
     (setq *maxima-verpkgdatadir* (concatenate 'string
@@ -71,6 +75,20 @@
 					      *autoconf-package*
 					      "/"
 					      *autoconf-version*))
+    (if maxima-prefix-env
+	(setq *maxima-libexecdir* (concatenate 'string *maxima-prefix*
+					       "/"
+					       "libexec"))
+      (setq *maxima-libexecdir* *autoconf-libexecdir*))
+    (setq *maxima-verpkglibexecdir* (concatenate 'string
+						 *maxima-libexecdir*
+						 "/"
+						 *autoconf-package*
+						 "/"
+						 *autoconf-version*))
+    (if maxima-plotdir-env
+	(setq *maxima-plotdir* (maxima-getenv "MAXIMA_PLOTDIR"))
+      (setq *maxima-plotdir* *maxima-verpkglibexecdir*))
     (if maxima-infodir-env
 	(setq *maxima-infodir* maxima-infodir-env)
       (if maxima-prefix-env

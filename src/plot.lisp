@@ -761,7 +761,7 @@ setrgbcolor} def
 	       (t  (format st "~,3f ~,3f ~%" v w))))))
   (case plot-format
 	($gnuplot 
-	 ($system (maxima-bin-search $gnuplot_command) " -plot2d maxout.gnuplot -title '" plot-name "'"))
+	 ($system (concatenate 'string *maxima-plotdir* "/" $gnuplot_command) " -plot2d maxout.gnuplot -title '" plot-name "'"))
 	($xgraph
 	 ($system "xgraph -t 'Maxima Plot' < maxout.xgraph &"))
 	))
@@ -1334,7 +1334,7 @@ setrgbcolor} def
   (cond ($show_openplot
 	 (with-open-file (st1 "maxout.openmath" :direction :output)
 			(princ  ans st1))
-	 ($system (maxima-bin-search $openmath_plot_command) " maxout.openmath" ))
+	 ($system (concatenate 'string *maxima-plotdir* "/" $openmath_plot_command) " maxout.openmath" ))
 	(t (princ ans) "")))
 
 (defun $plot3d ( fun &optional (xrange ($get_plot_option '$x))
@@ -1488,10 +1488,10 @@ setrgbcolor} def
 	       ($zic ($view_zic))
 	       ($ps ($viewps))
 	       ($openmath
-		($system (maxima-bin-search $openmath_plot_command) " maxout.openmath")
+		($system (concatenate 'string *maxima-plotdir* "/" $openmath_plot_command) " maxout.openmath")
 		)
 	       ($geomview ($system $geomview_command))
-	       ($gnuplot ($system (maxima-bin-search $gnuplot_command)
+	       ($gnuplot ($system (concatenate 'string *maxima-plotdir* "/" $gnuplot_command)
 				  " -parametric3d maxout.gnuplot" ))
 	       )))
       )))

@@ -6,5 +6,7 @@ MAXIMA_VERPKGLIBDIR=$top_srcdir/src
 export MAXIMA_VERPKGLIBDIR
 MAXIMA_INFODIR=$top_srcdir/doc/info
 export MAXIMA_INFODIR
+MAXIMA_PLOTDIR=$top_srcdir/plotting
+export MAXIMA_PLOTDIR
 
 exec /bin/sh $top_srcdir/src/maxima "$@"
