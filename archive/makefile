@@ -158,7 +158,7 @@ PLOTTING_BIN=bin/omplotdata bin/mgnuplot
 install1: command
 	if [  -f ${INSTALL_LIB_DIR}/makefile  ] ; then true; else \
 	tar cvf - doc/manual.demo src/plot.o doc/*.mac doc/tests.lisp src/server.lisp intro.html doc/*.html info/*.html */*.mac sym bin/xmaxima maxima.gif info/*.texi info/*.info* info/makefile ${PLOTTING_BIN} \
-	*/*.mc */*.dem */*.usg src/saved_maxima${EXE}  | (cd ${INSTALL_LIB_DIR}/ ; tar xvf - ) ;fi
+	share/*.lisp */*.mc */*.dem */*.usg src/saved_maxima${EXE}  | (cd ${INSTALL_LIB_DIR}/ ; tar xvf - ) ;fi
 	(cd src ; make install "INSTALL_LIB_DIR=${INSTALL_LIB_DIR}")
 	(cd info ; make install)
 	(cd elisp ; make install)
@@ -193,7 +193,7 @@ tar:
 maxima.zip: src/saved_maxima${EXE}
 	rm -f maxima.zip
 	OTHERS=`make -s -f src/makefile othernames` ; \
-	zip maxima.zip $${OTHERS} src/server.lisp doc/manual.demo */*.dem doc/*.mac src/xmaxima.exe info/*.html src/saved_maxima.exe .exe info/*info* doc/*.html src/*.ico src/winkill.exe src/tclwinkill.dll maxima.gif doc/tests.lisp
+	zip maxima.zip $${OTHERS} src/server.lisp doc/manual.demo share*/*.mc share*/*.lisp sym/*.lsp */*.dem doc/*.mac src/xmaxima.exe info/*.html src/saved_maxima.exe .exe info/*info* doc/*.html src/*.ico src/winkill.exe src/tclwinkill.dll maxima.gif doc/tests.lisp
 
 
 DL=./deliver/

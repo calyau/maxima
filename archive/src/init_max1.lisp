@@ -75,7 +75,7 @@
 			       (concatenate 'string "###." ext))
 		  (maxima-path "{src,share1,sym}"
 			       (concatenate 'string "###." ext))
-		  (maxima-path "{src,share1}" "###.lisp")
+		  (maxima-path "{src,share}" "###.lisp")
 		  (maxima-path "{sym}" "###.lsp"))))
     (setq $file_search_maxima
        (list '(mlist)
@@ -109,9 +109,11 @@
   ;; Turn off gc messages
   (setf ext:*gc-verbose* nil)
   ;; Reload the documentation stuff
-  (ext:load-foreign "/apps/gnu/src/regex-0.12/regex.o")
-  (load "cmulisp-regex" :if-source-newer :compile)
-  (load "cl-info" :if-source-newer :compile)
+  (cond ((probe-file "/apps/gnu/src/regex-0.12/regex.o")
+         (ext:load-foreign "/apps/gnu/src/regex-0.12/regex.o")	
+         (load "cmulisp-regex" :if-source-newer :compile)
+         (load "cl-info" :if-source-newer :compile))
+        (t (format t "~&/apps/gnu/src/regex-0.12/regex.o not found .. skipping regexp stuff for describe")))
   (in-package "MAXIMA")
   (catch 'to-lisp
     (set-pathnames)

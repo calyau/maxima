@@ -90,7 +90,7 @@
     (unless (mget fun 'mexpr)
           (mputprop fun
               `((LAMBDA) ((MLIST) ((MLIST) |_l|))
-                   ((MPROGN) (($ALOAD_MAC) ',file ) (($APPLY) |$foo| |_l|)))
+                   ((MPROGN) ((aload) ',file ) (($APPLY) ',fun |_l|)))
 	      'mexpr)
 	      ))
 
