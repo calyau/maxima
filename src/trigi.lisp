@@ -612,7 +612,8 @@ NIL ))
 
 (DEFMFUN ACOTH (NUM)
    (LET ((YFLO (FLOAT NUM)))
-     (COND ((> (ABS YFLO) 1.0) (//$ (LOG (//$ (-$ 1.0 YFLO) (1+$ YFLO))) 2.0))
+     (COND ((> (ABS YFLO) 1.0)
+	    (//$ (LOG (//$ (+$ 1.0 YFLO) (+$ -1.0 YFLO))) 2.0))
 	   ((= 1.0 (ABS YFLO)) (T//$ 1.0 0.0 'ACOTH))
 	   (T (LOGARC '%ACOTH YFLO)))))
 
