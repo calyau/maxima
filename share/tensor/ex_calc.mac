@@ -15,7 +15,6 @@
  * exterior forms. We introduce the "~" operator for the exterior product,
  * and "|" for the inner product of a form with a vector.
 */
-/*load("tensor/itensor")$*/
 
 infix("~");
 declare("~",additive);
@@ -82,15 +81,28 @@ declare("~",antisymmetric);
   )
 );
 
-extdiff(forma,[optind]):=block
+extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
+/* A misguided attempt to check for valid forms... DO NOT UNCOMMENT
+ *      else if (?rpobj)(forma)#false and length(conti(forma))>0
+ *      then error("A differential form cannot have a contravariant index")
+ *      else if (?rpobj)(forma)#false and length(covi(forma))>1 and
+ *              dispsym(forma,length(covi(forma)),0)#
+ *              [[anti,[makelist(i,i,1,length(covi(forma)))],[]]]
+ *      then error("Tensor not declared anti(all) in its covariant indices")
+ */
+        else if not mapatom(forma) and op(forma)="+" then
+          sum(apply(extdiff,cons(part(forma,i),optind)),i,1,length(forma))
+/* Another misguided attempt to process products. Fails because it
+ * separates contractable products, yielding invalid results. DO NOT UNCOMMENT
+ *      else if not mapatom(forma) and op(forma)="*" then block
+ *        (
+ *          [d:(if length(optind)>0 then optind[1] else idummy())],
+ *          extdiff(first(forma),d)*rest(forma)+
+ *          first(forma)*extdiff(rest(forma),d)
+ *        )
+ */
+        else block
 (
-/* VTT: 20041130: I don't think this gives correct results for products.
-   I think we may need recursion. If we do that, and we evaluate the
-   function separately for indexed objects, here's how we can check if
-   the object has been declared anti(all) in its covariant indices:
-
-   dispsym(a,5,0)=[[anti,[makelist(i,i,1,5)],[]]]
-*/
   [l11,l1s,lk1,lk2,indd,res,l1:first(indices(forma)),
    ind:if length(optind)>0 then optind[1] else idummy()],
   if l1=[] then return(idiff(forma,ind))
@@ -98,19 +110,19 @@ extdiff(forma,[optind]):=block
   (
     l11:makelist(idummy(),i,1,length(l1)),
     l1s:map("=",l1,l11),
-/*    lk1:append([ind],l1),*/
     lk1:append(l1,[ind]),
     indd:idummy(),
     lk2:append(l11,[indd]),
     res:sublis(l1s,forma),
     res:distrib(contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd))))/
                                (length(lk1)-1)!),
+    /* If a frame base is used, the contribution of ifb must be added */
     if iframe_flag=true then
       for i thru length(l1) do
       (
         l1s:map("=",[l1[i]],[indd]),
         res:res+(if evenp(length(l1)) then 1 else -1)*
-                'ifb([l1[i],ind],[indd])*apply(op(forma),[sublis(l1s,l1)])
+                'ifb([l1[i],ind],[indd])*sublis(l1s,forma)
       ),
     res
   )
@@ -133,34 +145,28 @@ declare("|",additive);
   [ind,perm],
   if not(atom(forma)) and (op(forma)="+" or op(forma)="=") then
     apply(op(forma),[part(forma,1)|vec,rest(forma)|vec])
-  else if listp(forma) and listp(cartan_basis) then
-  (
-    for i thru length(cartan_basis) do
-      vec:subst(forma[i],cartan_basis[i],-vec),
-    vec
-  )
+/* When I thought that I'd implement MACSYMA's Cartan package features
+ * as part of this package, I thought I needed this. But I don't.
+ *  else if listp(forma) and listp(cartan_basis) then
+ *  (
+ *    for i thru length(cartan_basis) do
+ *      vec:subst(forma[i],cartan_basis[i],-vec),
+ *    vec
+ *  )
+ */
   else
   (
-    perm:permutator(first(indices(forma))),
+    /* We must not attempt to permute derivative indices. Non-derivative
+       indices are found as the intersection of free indices, and free
+       indices of the UNDIFF'd form of forma. However, we still do the
+       contraction with respect to the first free covariant index which
+       may be a derivative index. Urgh. */
+    perm:permutator((?intersect)(first(indices(forma)),
+                                 first(indices(undiff(forma))))),
+    if perm[2]=[] then perm:[1,first(indices(forma))],
     if perm[2]=[] then 0
-    else /* perm[1]* */
-      (contract(canform(expand(forma*vec([],[first(perm[2])])))))
+    else perm[1]*(contract(canform(expand(forma*
+                 vec([],[first(sort(indices(forma)[1]))])))))
   )
 );
 
-
-
-/*
-liediff(forma,l1):=block(local(temp1,temp2,ind1),
-  vec:first(l1),ind1:second(l1),
-  if ind1=0 then (ind1:idummy(),v([],[ind1])*diff(forma,ind1))
-  else(
-/* VTT: some black magic needed because MAXIMA doesn't handle ADDITIVE as expected */
-  temp1:rename(extdiff(forma,ind1)),
-  temp1:ev(temp1|vec,noeval),
-  temp1:ev(temp1,eval),
-  temp2:rename(forma),
-  temp2:ev(temp2|vec,noeval),
-  temp2:extdiff(ev(temp2,eval),ind1),
-  temp1+temp2));
-*/
