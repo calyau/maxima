@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.5 2002-09-07 08:47:10 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.6 2002-09-07 10:05:06 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -708,7 +708,8 @@ proc doInvoke { w index } {
 		oset $w baseprogram [decodeURL [getBaseprogram]]
 		doInvoke $w $index
 		return
-	    } else { return
+	    } else {
+		return
 	    }
 
 	}
@@ -861,10 +862,9 @@ proc sendOneInsertTextWin1 { win program location } {
 	    $win $this $resultRange \
  	    [uplevel "#0" set $location]
     } else {
-	insertResult $win $resultRange [uplevel #0 set $location]
-				    }
-	uplevel "#0" unset $location
+	insertResult $win $resultRange [uplevel "#0" set $location]
     }
+    uplevel "#0" unset $location
 }
 
 

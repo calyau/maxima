@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.3 2002-09-07 08:01:57 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.4 2002-09-07 10:05:06 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -36,18 +36,18 @@ proc CMeval { w } {
 	    $w delete lastStart end
 	    $w insert lastStart $code input
 	}
-   }
-#    puts "expr=<[$w get lastStart end]>"
- #  puts "tags=[$w tag names insert],insert=[$w index insert]"
-   if { [lsearch [$w tag names insert] insert] >= 0 } {
-       $w mark set lastStart [lindex [$w tag prevrange input] 0]
-   }
+    }
+    #    puts "expr=<[$w get lastStart end]>"
+    #  puts "tags=[$w tag names insert],insert=[$w index insert]"
+    if { [lsearch [$w tag names insert] insert] >= 0 } {
+	$w mark set lastStart [lindex [$w tag prevrange input] 0]
+    }
     set expr [string trimright [$w get lastStart end] \n]
     if { ![regexp "^\[ \n\t]*:|\[;\$]\$" $expr] } {
 	$w insert insert "\n"
 	$w see insert
 	if { [oget $w atMaximaPrompt] } {
-	return
+	    return
 	}
     }
 
@@ -55,29 +55,30 @@ proc CMeval { w } {
     $w mark set  lastStart "end -1char"
     lappend inputs $expr
     set tag ""
-#    puts "sending <$expr>"
+    #    puts "sending <$expr>"
     # set res [sendMaxima $w $expr ]
-     set res [sendMaxima $w $expr\n ]
+    set res [sendMaxima $w $expr\n ]
     # set res [sendMaxima $w $expr ]
-   # puts "[$w dump -all "lastStart linestart" end]"
+    # puts "[$w dump -all "lastStart linestart" end]"
     #message "send form"
 
 }
 
 proc acceptMaxima { win port filter } {
-    set count 3 ;
+    set count 3
     catch { close [oget $win server] }
     while {[incr count -1 ] > 0 } {
 	if { ![catch {oset $win server [socket -server "runMaxima $win $filter" $port]} ] } {
 	    # puts "server sock [oget $win server]"
 	    return $port
-    } else { incr port   }
- }
+	} else { incr port   }
+    }
     return -1
 }
 
 proc openMaxima { win filter } {
     global ws_openMath env
+
     set port [acceptMaxima $win 4008 $filter]
     if { $port >= 0 } {
 	set com "exec "
@@ -140,21 +141,21 @@ proc closeMaxima { win } {
 
 
 #
- #-----------------------------------------------------------------
- #
- # maximaFilter --  filter the output on SOCKET inserting in WINDOW
- # recognizing
- #     \032\032:file:line:charpos\n
- #               -->redisplay in other window
- # \032\031tcl: command \n
- #           --> eval tcl command o
- #
- #
- #  Results: none
- #
- #  Side Effects:  input is read from SOCK and WIN has items displayed.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# maximaFilter --  filter the output on SOCKET inserting in WINDOW
+# recognizing
+#     \032\032:file:line:charpos\n
+#               -->redisplay in other window
+# \032\031tcl: command \n
+#           --> eval tcl command o
+#
+#
+#  Results: none
+#
+#  Side Effects:  input is read from SOCK and WIN has items displayed.
+#
+#----------------------------------------------------------------
 #
 #todo fix sendMaximaWait win expr
 proc maximaFilter { win sock } {
@@ -166,30 +167,29 @@ proc maximaFilter { win sock } {
 	return ""
     }
     set it [read $sock]
-   # puts "read=<$it>"
+    # puts "read=<$it>"
     if { [string first "\032\032" $it] >= 0 &&
-     [regexp  -indices "\032\032(\[^:]+):(\[0-9]+):\[^\n]*\n" $it junk file line] } {
+	 [regexp  -indices "\032\032(\[^:]+):(\[0-9]+):\[^\n]*\n" $it junk file line] } {
 	
-	 dblDisplayFrame [getMatch $it $file] [getMatch $it $line]
-	 append res [string range $it 0 [expr { [lindex $junk 0] -1 } ]]
-	 append res [string range $it [expr { 1+[lindex $junk 1]}] end]
-	 set it $res
-     }
-     if { [string first "\032\031tcl:" $it] >= 0 &&
-            [regexp  -indices "\032\031tcl:(\\[^\n]*)\n" $it junk com]
-     } {
-	 eval $com
-	 append res [string range $it 0 [expr { [lindex $junk 0] -1 } ]]
-	 append res [string range $it [expr { 1+[lindex $junk 1]}] end]
-	 set it $res
-     }
+	dblDisplayFrame [getMatch $it $file] [getMatch $it $line]
+	append res [string range $it 0 [expr { [lindex $junk 0] -1 } ]]
+	append res [string range $it [expr { 1+[lindex $junk 1]}] end]
+	set it $res
+    }
+    if { [string first "\032\031tcl:" $it] >= 0 && \
+	     [regexp  -indices "\032\031tcl:(\\[^\n]*)\n" $it junk com]} {
+	eval $com
+	append res [string range $it 0 [expr { [lindex $junk 0] -1 } ]]
+	append res [string range $it [expr { 1+[lindex $junk 1]}] end]
+	set it $res
+    }
     # puts it=<$it>
     if { [regexp -indices "\{plot\[d23]\[fd]" $it inds] } {
 	set plotPending [string range $it [lindex $inds 0] end]
 	set it ""
 	if { [regexp {\(C[0-9]+\) $} $it ff] } {
 	    regexp "\{plot\[d23]\[df].*\}" $ff it
-#	set it $ff
+	    #	set it $ff
 	}
     }
     if { [info exists plotPending] } {
@@ -211,8 +211,8 @@ proc maximaFilter { win sock } {
     $win insert end $it "output"
     $win mark set  lastStart "end -1char"
     if { [regexp {\(C[0-9]+\) $|\(dbm:[0-9]+\) $|([A-Z]+>[>]*)$} $it junk lisp]  } {
-  #puts "junk=$junk, lisp=$lisp,[expr { 0 == [string compare $lisp {}] }]"
-	 #puts "it=<$it>,pdata={[array get pdata *]},[$win index end],[$win index insert]"
+	#puts "junk=$junk, lisp=$lisp,[expr { 0 == [string compare $lisp {}] }]"
+	#puts "it=<$it>,pdata={[array get pdata *]},[$win index end],[$win index insert]"
 
 	if { [info exists pdata($sock,wait) ] && $pdata($sock,wait) > 0 } {
 	    #puts "it=<$it>,begin=$pdata($sock,begin),end=[$win index {end linestart}]"
@@ -220,7 +220,7 @@ proc maximaFilter { win sock } {
 	    setAct pdata($sock,result) [$win get $pdata($sock,begin) "end -1char linestart" ]
 	    #puts result=$pdata($sock,result)
 	    set pdata($sock,wait) 0
-	 }
+	}
 	$win mark set lastStart "end -1char"
 	$win tag add  input "end -1char" end
 	oset $win atMaximaPrompt [expr { 0 == [string compare $lisp ""] }]
@@ -263,7 +263,7 @@ proc runOneMaxima { win } {
 	if { $pid  == -1 } {
 	    if { "[info  command console]" != "" } { console show }
 	    if { [tk_dialog .jim ask {Starting maxima timed out.  Wait longer?} \
-		    {} yes  no yes ] } {
+		      {} yes  no yes ] } {
 		list
 	    } else {
 		closeMaxima $win
@@ -301,7 +301,7 @@ proc sendMaximaWait { win form {timeout 20000 }} {
     set form [string trimright $form "\n \t\r"]
 
     if { ![regexp "\[\$;\]|^\[ \t]*:" $form ] } {
-	 append form ";"
+	append form ";"
     }
     sendMaximaCall $win $form\n [list oset $win maximaWait 1]
     set maximaWait -1
@@ -319,26 +319,26 @@ proc sendMaximaWait { win form {timeout 20000 }} {
 
 
 #
- #-----------------------------------------------------------------
- #
- # sendMaximaCall --  send FORM to maxima process in WIN
- # and when it gets the result have it execute CALL
- #
- #  Results: none
- #
- #  Side Effects: maxima executes form and then call may
- #  do something like insert it somewhere in a buffer.
- #
- #  # todo: should probably make it so this guy looks at maxima c, d numbers
- #    and matches results ..
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# sendMaximaCall --  send FORM to maxima process in WIN
+# and when it gets the result have it execute CALL
+#
+#  Results: none
+#
+#  Side Effects: maxima executes form and then call may
+#  do something like insert it somewhere in a buffer.
+#
+#  # todo: should probably make it so this guy looks at maxima c, d numbers
+#    and matches results ..
+#----------------------------------------------------------------
 #
 proc sendMaximaCall { win form call } {
     linkLocal $win maximaSocket
     global pdata
     set begin [$win index lastStart]
     if { [regexp {C([0-9]+)} [$win get "$begin linestart" $begin] junk \
-	    counter ] } {
+	      counter ] } {
 	#	set af [after 5000 set pdata($maximaSocket,wait) -1]
 	set pdata($maximaSocket,wait) 1
 	
@@ -360,9 +360,9 @@ proc setAction { var action } {
 
 proc setAct { var val } {
     global _actions
-    uplevel #0 set $var [list $val]
+    uplevel "#0" set $var [list $val]
     if { [info exists _actions($var)] } {
-	uplevel #0 $_actions($var)
+	uplevel "#0" $_actions($var)
 	unset _actions($var)
     }
 }
@@ -385,14 +385,18 @@ proc CMkill {  signal pid } {
 
 proc CMinterrupt { win } {
     global ws_openMath
-    CMkill   -INT [oget $win pid]
+    oget $win pid
+    if {[info exists pid] && $pid != ""} {
+	CMkill   -INT $pid
+    }
     CMresetFilter $win
 }
 
 
 proc doShowPlot { w data } {
-        global xHMpreferences
-	#puts data=$data
+    global xHMpreferences
+
+    #puts data=$data
     set name [plotWindowName $w]
     set command [lindex [lindex $data 0] 0]
     if { "$command" == "plotdf" } {
@@ -401,22 +405,22 @@ proc doShowPlot { w data } {
 	lappend command -data [lindex $data 0]
     }
     lappend command -windowname $name
-#	puts $command
-	eval $command
-#	return
-	set e [$w index end]
-	set view [ShowPlotWindow $w $name  "$e $e" "$e $e"  ""]
-	if { "$view" == "" } { return }
-	append view " -1 line"
-	set tem [$w dump -window $view end]
-	global billy
-	set billy $tem
-	if { [llength $tem] == 3 } {
-	    after 80 $w see [lindex $tem 2]
-	    #after 400 $w see [lindex $tem 2]
-	    #puts "	    after 400 $w see [lindex $tem 2]"
-	}
+    #	puts $command
+    eval $command
+    #	return
+    set e [$w index end]
+    set view [ShowPlotWindow $w $name  "$e $e" "$e $e"  ""]
+    if { "$view" == "" } { return }
+    append view " -1 line"
+    set tem [$w dump -window $view end]
+    global billy
+    set billy $tem
+    if { [llength $tem] == 3 } {
+	after 80 $w see [lindex $tem 2]
+	#after 400 $w see [lindex $tem 2]
+	#puts "	    after 400 $w see [lindex $tem 2]"
     }
+}
 
 
 proc dblDisplayFrame { location line } {
@@ -434,23 +438,23 @@ proc dblDisplayFrame { location line } {
     }
     $w see $line.0
 }
-	
+
 
 
 #
- #-----------------------------------------------------------------
- # required:
- #
- # trim_maxima --  takes STRING and trims off the prompt
- # and trailing space if desired.   Usually single line results
- # have their white space completely trimmed, while multiline
- # results will be left so that they display properly from left margin
- #
- #  Results:  a string with white space trimmed off
- #
- #  Side Effects:
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+# required:
+#
+# trim_maxima --  takes STRING and trims off the prompt
+# and trailing space if desired.   Usually single line results
+# have their white space completely trimmed, while multiline
+# results will be left so that they display properly from left margin
+#
+#  Results:  a string with white space trimmed off
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc trim_maxima { string } {
     debugsend "in trim_maxima input=<$string>"
@@ -476,10 +480,10 @@ proc dshow { args  } {
 }
 proc maxima_insert { w this next val args } {
     catch {
-    set res [uplevel #0 set $val]
+	set res [uplevel "#0" set $val]
     }
     catch {
-    insertResult_maxima $w $this $next [trim_maxima $res]
+	insertResult_maxima $w $this $next [trim_maxima $res]
     }
 }
 
@@ -492,8 +496,8 @@ proc eval_maxima { prog win this nextResult } {
     if { "[lindex $nextResult 0]" != "" } {
 	sendMaximaCall $w "$form;\n" [list maxima_insert $win $this  $nextResult pdata($maximaSocket,result)]
 	
-#         set res [sendMaximaWait $ws_openMath(maximaWindow) "$form;"]
-#	insertResult_maxima $win $this  $nextResult $res
+	#         set res [sendMaximaWait $ws_openMath(maximaWindow) "$form;"]
+	#	insertResult_maxima $win $this  $nextResult $res
     } else {
 	sendMaxima $ws_openMath(maximaWindow) "$form;\n"
     }

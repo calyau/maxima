@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Send-some.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Send-some.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
 #
 ###### send-some.tcl ######
 
@@ -77,7 +77,7 @@ proc _myaction { ind name1 name2 op } {
 
 }
 
-# proc myVwait { x args } {uplevel #0  vwait $x }
+# proc myVwait { x args } {uplevel "#0"  vwait $x }
 if { "[info commands vwait]" == "vwait"  } {
     proc myVwait { x  } {
 	global ws_openMath $x
@@ -92,7 +92,7 @@ proc omDoInterrupt { win } {
 	if { [regexp "com:pdata\\((\[a-z_A-Z]*)," $v junk program] } {
 	    set var [string range $v 4 end]
 	    # puts "interrupt program=$program,$var"
-	    after 10 uplevel #0 set $var <interrupted>
+	    after 10 uplevel "#0" set $var <interrupted>
 	    catch { sendInterrupt $program }
 	}
     }
@@ -106,12 +106,12 @@ proc omDoAbort { win } {
 	    set prog [programName $program]
 	    if { "[info command abort_$prog]" != "" } {
 		abort_$prog $program
-		after 200 uplevel #0 set $var <aborted>
+		after 200 uplevel "#0" set $var <aborted>
 	    }
 	    cleanPdata $program
 	    set var [string range $v 4 end]
 	    # rputs "interrupt program=$program,$var"
-	    after 200 uplevel #0 set $var <aborted>
+	    after 200 uplevel "#0" set $var <aborted>
 	}
     }
 }
@@ -154,7 +154,7 @@ proc sendOne { program  com }  {
 # sendOneDoCommand --  sends to PROGRAM the COMMAND and then
 # when the result comes back it invokes the script CALLBACK with
 # one argument appended: the global LOCATION where the result
-# will be.   [uplevel #0 set $LOCATION] would retrieve it.
+# will be.   [uplevel "#0" set $LOCATION] would retrieve it.
 #
 #  Results: returns immediately the location that will be
 #  watched.
@@ -181,6 +181,7 @@ proc testit { program com } {
     sendOneDoCommand $program $com "jimmy"
     proc jimmy {s} { puts "<result is:[uplevel #0 set $s]>" ; flush stdout}
 }
+
 proc invokeAndUntrace { callback name1 name2 op args} {
     #puts "callback:$callback $name1 $name2 $op, args=$args"
     #puts "trace vdelete [set name1]($name2) w [list invokeAndUntrace $callback]"
@@ -476,11 +477,13 @@ proc statServer1  {server {timeout 1000}} {
 proc preeval { program name } {
     global pdata
     assureProgram $program 5000 2
-    if { ![info exists pdata($program,preeval)] ||
+    if { ![info exists pdata($program,preeval)] || \
     [lsearch  $pdata($program,preeval) $name] < 0 } {
 	lappend pdata($program,preeval) $name
 	return 0
-    } else { return 1 }
+    } else {
+	return 1 
+    }
 }
 
 

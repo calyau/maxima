@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
 #
 ###### browser.tcl ######
 ############################################################
@@ -307,7 +307,9 @@ proc tagRanges { win tag begin end } {
 		} elseif {[$win compare [lindex $next 0] < $end ]} {
 		    append answer "[lindex $next 0] $end"
 		    return $answer
-		} else { return $answer }
+		} else {
+		    return $answer 
+		}
 	    }
 	    return $answer
 	
@@ -411,7 +413,12 @@ set ws_openMath(richTextCommands) {Tins TinsSlashEnd}
 ## endsource keyb.tcl
 
 proc underTop {top win} {
-    if { "$top" == "." } { return $win} else { return $top$win}}
+    if { "$top" == "." } { 
+	return $win
+    } else {
+	return $top$win
+    }
+}
 
 proc showHistory { window } {
     set top [winfo toplevel $window]
@@ -451,8 +458,8 @@ proc showHistory { window } {
 }
 
 proc deleteAllTraces {var} {
-    foreach v [uplevel #0 trace vinfo $var] {
-	uplevel #0 trace vdelete $var [lindex $v 0] [list [lindex $v 1]]
+    foreach v [uplevel "#0" trace vinfo $var] {
+	uplevel "#0" trace vdelete $var [lindex $v 0] [list [lindex $v 1]]
     }
 }
 proc resetHistory { win list args } {
@@ -542,7 +549,7 @@ proc try1 { file } {
    global ccc
    eval pack forget [winfo children . ]
    mkOpenMath [set w .t[incr ccc]]
-   uplevel #0 source $file
+   uplevel "#0" source $file
   }
 
 proc filesplit { x } {
@@ -774,7 +781,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		set contentType [canonicalizeContentType [assoc content-type $ws_openMath(mimeheader) text/plain]]
 		uplevel 1 set $type [list $contentType]
 		if { "$mimeheader" != "" } {
-		    uplevel 1 set $mimeheader \[ uplevel #0 set ws_openMath(mimeheader) \]
+		    uplevel 1 set $mimeheader \[ uplevel "#0" set ws_openMath(mimeheader) \]
 		}
 		set ans $ws_openMath(url_result)
 		unset ws_openMath(url_result)

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Myhtml.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -571,7 +571,7 @@ proc gensym { name } {
     global _gensymCounter
     incr _gensymCounter
     set var ${name}_${_gensymCounter}
-    catch { uplevel #0  unset $var}
+    catch { uplevel "#0"  unset $var}
     return $var
 }
 
@@ -837,9 +837,12 @@ proc xHM_do1 { a b {c xx} } {
 	     return "&$c"
 	  }
 	  return $result
-      }    else {
-      return [format %c $b] }
-   } else { return [string index $a 0] }
+      } else {
+	  return [format %c $b] 
+      }
+   } else {
+       return [string index $a 0] 
+   }
 }
 
 proc xHMdo_li {} {
@@ -1150,7 +1153,8 @@ proc xHMset_state { win args } {
 
 proc toPixelWidth { dim win } {
     if { [regexp {([.0-9]+)c} $dim junk d] } {
-	return [expr {round($d*[winfo screenwidth $win] /(.1*[winfo screenmmwidth $win]))}] } else { return $dim}
+	return [expr {round($d*[winfo screenwidth $win] /(.1*[winfo screenmmwidth $win]))}] } else {
+		return $dim}
     }
 	
 
@@ -1324,7 +1328,8 @@ proc HexDecode { me }  {
      regsub -all {\[} $me {[dec1 5b]} me
     regsub -all {%([0-9A-Fa-f][0-9A-Fa-f])} $me {[dec1 \1]}  me
     subst -nobackslashes -novariables $me
- } else { return $me }
+ } else {
+		return $me }
 }
 proc dec1 { s } {
     if { [scan  $s %x d] } {

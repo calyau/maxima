@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml1.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Myhtml1.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
 #
 ###### Myhtml1.tcl ######
 ############################################################
@@ -115,7 +115,9 @@ proc getDim { dim  max } {
 	return [expr {round($amt * .01 * $max) }]
     } elseif { $dim  < 0 } {
 	return $max
-    } else { return $dim }
+    } else {
+	return $dim 
+    }
 }
 
 defTag embed  -body {

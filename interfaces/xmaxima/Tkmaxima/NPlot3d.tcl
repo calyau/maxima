@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NPlot3d.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: NPlot3d.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
 #
 ###### NPlot3d.tcl ######
 ############################################################
@@ -61,13 +61,19 @@ proc  fixupZ { } {
 	
 	} else {
 	    if { $flatten } {
-		if { $z > $zzmax } { set z $zzmax } elseif {
-		    $z < $zzmin } { set z $zzmin }}
-		
-		    if { $z < $zmin }  { set zmin $z } elseif {
-			$z > $zmax } { set zmax $z }
-		    }
+		if { $z > $zzmax } { 
+		    set z $zzmax 
+		} elseif {$z < $zzmin } {
+		    set z $zzmin 
 		}
+	    }
+	    if { $z < $zmin }  { 
+		set zmin $z 
+	    } elseif {$z > $zmax } { 
+		set zmax $z 
+	    }
+	}
+    }
 }
 
 
@@ -82,7 +88,9 @@ proc normalizeToLengthOne { v } {
 		[expr { [lindex $v 1] / $norm  } ] \
 		[expr { [lindex $v 2] / $norm  } ] ]
 	
-    } else { return "1.0 0.0 0.0 " }
+    } else {
+	return "1.0 0.0 0.0 " 
+    }
 }
 
 
