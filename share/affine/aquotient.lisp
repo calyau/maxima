@@ -577,7 +577,7 @@
 	(t nil)))
 
 (defun afc-remainder (n divisor &aux remainder)
-    (declare (values remainder quotient))
+;    (declare (values remainder quotient))
   (setq remainder (// n divisor))
   (values  (- n (* divisor remainder)) remainder))
 
@@ -589,7 +589,7 @@
    so that creqd*f=g*quotient+remainder.  Creqd  does not involve the
    main variable of f.  The remainder has degree lower than g with respect
    to the main variable of f."
-  (declare (values  quotient remainder creqd))
+;  (declare (values  quotient remainder creqd))
   (cond ((numberp f)
 	 (cond ((numberp g)
 		(apply 'values (nconc '(1) (multiple-value-list (afc-remainder f g)))))
@@ -803,7 +803,7 @@
 (defun afp-big-gcd (f g &aux tem)
   "The arguments may be polynomials with integer coefficients. ~
    Three values are returned:  gcd , f/gcd,  and g/gcd."
-  (declare (values gcd-of-f-g f-over-gcd g-over-gcd))
+;  (declare (values gcd-of-f-g f-over-gcd g-over-gcd))
   (values (setq tem (afp-subresultant-gcd f g)) (afp-quotient f tem) (afp-quotient g tem)))
 
 (defun afp-pgcdcofacts (f g)
@@ -1191,7 +1191,7 @@
 (defun recursive-ideal-gcd1 (f g )
    "assumes that f and g are polynomials of one variable and that modulus is non trivial
    and that deg f >= deg g   gcd = a*f +b*g , and deg a < deg g, deg b < deg f"
-  (declare (values gcd a b))
+;  (declare (values gcd a b))
 
   (cond ((numberp g)(setq g (cmod g))
 	 (cond ((zerop g)(values f 1 0))
@@ -1210,7 +1210,7 @@
   "assumes that f and g are polynomials of one variable and that modulus is non trivial
    It returns (gcd a b) such that gcd = a*f +b*g , and deg a < deg g, deg b < deg f where
    gcd is the gcd of f and g in the polynomial ring modulo modulus."
-  (declare (values gcd a b))
+;  (declare (values gcd a b))
   (cond ((null modulus)(ferror "polynomials over the integers are not a PID")))
    (assume-pointerg-or-equal-p f g rev?)
    (cond ((numberp f)(values 1 (crecip f) 0))
@@ -1914,7 +1914,7 @@
   "Lifts v and w which satisfy product=v*w mod(prime) to a list FACTS = (uu vv)
    satisfying product = uu*vv mod (up-to-size).  Product, v, and w are assumed to 
    have leading coefficient 1"
-  (declare (values fact-pair power))
+;  (declare (values fact-pair power))
   (let ((modulus prime)) (multiple-value-setq (gcd a b)
 					      (recursive-ideal-gcd v w))
        (cond ((not (numberp gcd))(fsignal "must have gcd of factors a unit")))
@@ -1960,7 +1960,7 @@
 (defun hensel-lift1 (product ve we prev-modulus prime  &optional a b &aux dif h kk   quot zl-REM creqd new-modulus gcd)
   "lifts u=ve*we mod (p^e) to u=ve+1*we+1 mod (p^e+1) with ve=ve+1 and we=we+1 mod (p^e+1)
   and deg(ve+1)<=deg(ve) deg(we+1)<=deg(we)  and returns the list of  ve+1 and we+1"
-  (declare (values (list ve+1 we+1)))
+;  (declare (values (list ve+1 we+1)))
   (setq new-modulus   (* prime prev-modulus))
   (let ((modulus new-modulus)) (setq dif (pdifference product (ptimes ve we))))
   (cond ((pzerop dif)(list ve we))

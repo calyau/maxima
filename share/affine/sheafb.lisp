@@ -979,7 +979,7 @@
 	       do (loop-return       (linear-poly-solve w v)))))
 
 (defun normalize-zopen (zopen eqns &key inequality data &aux op answ)
-  (declare (values norm-open data))
+;  (declare (values norm-open data))
   (cond ((null inequality) (setq inequality (zopen-inequality zopen))))
   (setq op (make-normal-zopen eqns (zopen-dim zopen) inequality ))
   (setq answ (copy-list zopen))
@@ -1178,7 +1178,7 @@
 			 &aux all-ldata  cofs)
   "Will return m ldata covering the ldata. The open-gs can
  be used as the open number for the simplification."
-  (declare (values all-data open-gs))
+;  (declare (values all-data open-gs))
   (let* (;;(gg (nplcm inequality (ldata-inequality ldata)))
 ;	 (m (length (any-gm-prepared gmprep-poly gg)))
 	 (vari (gm-prepared gmprep-poly :m m :inequal inequality)))
@@ -1634,7 +1634,7 @@
 				       &aux *refine-opens* hh gg red-transl answ
 				       inv inv-denom
 				       transl MAPL )
-  (declare (values ldata intersection-inequality-on-to-open))
+;  (declare (values ldata intersection-inequality-on-to-open))
   (setq MAPL (find-ring-map from-open to-open))
     (with-polynomial-area-new ()
     (:maybe-reset))
@@ -2301,7 +2301,7 @@
 
 ;;(LDATA ((X7 1 1) (X8 1 1) (X5 2 1 1 (X4 2 -2 0 (X3 1 (X2 1 1))) 0 (X4 4 1 2 (X3 1 (X2 1 1)) 1 (X3 1 (X1 1 2)))) (X6 1 (X5 1 (X2 1 1) 0 (X4 2 (X2 1 1) 1 (X1 1 2))) 0 (X5 1 (X4 1 (X2 1 3) 0 (X1 1 2)) 0 (X4 3 (X2 1 -1)))) (X6 1 (X5 1 1 0 (X4 2 -1)) 0 (X5 1 (X4 1 -1) 0 (X4 3 1 1 (X3 1 (X2 1 -1)) 0 (X3 1 (X1 1 -1))))) (X5 1 (X2 2 1) 0 (X1 2 -1))) 1 2)
 (defmacro minimize ( for v in a-list quantity)
-  (declare (values where-its-miniminum))
+;  (declare (values where-its-miniminum))
   (iassert (and (eq for 'for) in 'in))
   `(sloop for ,v in ,a-list
 	 with .prev-min. = 10000000
@@ -2404,7 +2404,7 @@
 (defun good-order-variables (ldata &aux variable-occurs varl order eqns
 			     compl)
   (declare (special mult))
-  (declare (values . (list ordered-list variable-occurs-in)))
+;  (declare (values . (list ordered-list variable-occurs-in)))
   (cond
     ((ldatap ldata)
      (cond ((ldata-variables ldata)(list (ldata-variables ldata) (mapcar 'list-variables
@@ -2461,7 +2461,7 @@
 ; (nreverse all-eqns))
 
 (defun order-equations (eqns &aux tem)
-  (declare     (values eqns ch-set))
+;  (declare     (values eqns ch-set))
   (multiple-value-bind (ch-set vars ignore highest-vars)
       (charactaristic-setp eqns)
     (setq eqns   (cond (ch-set
@@ -2791,7 +2791,7 @@
 
 
 (defun find-repeats (highest-variables eqns &aux first-repeat repeat-eqns)
-  (declare   (values  repeat-eqns first-repeat))
+;  (declare   (values  repeat-eqns first-repeat))
   (setq first-repeat
 	(sloop for v on highest-variables
 	      for eqnss on eqns

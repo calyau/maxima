@@ -2382,7 +2382,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
    modulo list-subspace-rows.  Returns two values: the reduce sparse matrix for the
    subspace and then the basis for the quotient space.  Note all-rows need not
    contain list-subspace-rows."
-  (declare (values sp-quotient sp-sub))
+;  (declare (values sp-quotient sp-sub))
   (setq sp-sub (sp-make-sparse-matrix  list-subspace-rows))
   (sp-reduce sp-sub)
   (cond ((arrayp all-rows)(setq all-rows (listarray all-rows))))

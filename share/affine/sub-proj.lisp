@@ -28,7 +28,7 @@
 ;(defmacro PT-RED (terms) `(cddr ,terms))
 
 (defun rational-subst (poly var denom )
-  (declare (values . numerator))
+;  (declare (values . numerator))
   "does a substitution like var --> var/denom  where var is a genvar 
 and denom is a poly.  It calculates the numerator after bringing a common
 denominator of denom^(pdegree poly var)"
@@ -355,7 +355,7 @@ poly)
 
 ;;incorrect needs 
 (defun gen-vrem (b divisor &aux tem)
-  (declare (values . (list quot zl-REM c-reqd)))
+;  (declare (values . (list quot zl-REM c-reqd)))
   (cond 
     ((atom divisor) 0)		
     ((atom b)b )
@@ -379,7 +379,7 @@ poly)
 ;;up appropriateley.
 ;;won't work for x^2*y+x+1 where  
 (defun gen-vrem (b divisor &aux tem)
-  (declare (values . (list quot zl-REM c-reqd)))
+;  (declare (values . (list quot zl-REM c-reqd)))
   (cond 
     ((atom divisor) 0)		
     ((atom b)b )
@@ -410,7 +410,7 @@ poly)
 
 
 (defun highest-power-dividing (f divisor &aux quot )
-  (declare (values power final-quotient))
+;  (declare (values power final-quotient))
   (sloop for i from 1
 	with prev-quot = f
 	do 
@@ -422,7 +422,7 @@ poly)
 
 ;c-reqd*f=g*quot+remaind
 (defun gen-prem (f g var &aux remainder c-reqd)
-    (declare (values .   (zl-REM c-reqd)))
+;    (declare (values .   (zl-REM c-reqd)))
   (cond ((< (pdegree f var) (pdegree g var))
 	 
 	 (setq remainder f)(setq c-reqd 1))
@@ -458,7 +458,7 @@ poly)
 						
 ;;works now c*b=q*divisor +r
 (defun vdivide (b divisor &aux rnew rfactor leading-gcd deltaq)
-  (declare (values . (list quot zl-REM c-reqd)))
+;  (declare (values . (list quot zl-REM c-reqd)))
   (let ((q 0)(c 1)(r  b)) 
     (cond 
       ((atom divisor) (list b 0 divisor)) ;;should b/gcd(c(b),divisor) 0 a/same

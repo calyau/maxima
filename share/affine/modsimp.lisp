@@ -161,7 +161,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   ($separate_parameters ($sublis sols sum) "par" "aa"))
 
 (defun $scalar_sum (prefix monoms &aux scal )
-  (declare (values general-sum scalars))
+;  (declare (values general-sum scalars))
   (setq scal (sloop for i below ($length monoms)
 		   collecting ($concat prefix i)))
   ($declare_scalar_list (setq scal(cons '(mlist) scal)))
@@ -292,7 +292,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 (defvar $module_simplifications nil)
 
 (defun module-monom-must-replacep (monom &aux repl)
-  (declare (values (list  repl-monom  replacement)))
+;  (declare (values (list  repl-monom  replacement)))
   (cond ((atom monom)
 	 (setq repl (memq monom (cdr $module_simplifications)))
 	 (cond (repl (list monom (second repl)))))
@@ -312,7 +312,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 ;    (mod-must-replace1 poly)))
 
 (defun module-must-replacep (poly &aux monom)
-  (declare (values (list gensym-needing-replacement monom monoms-replacement)))
+;  (declare (values (list gensym-needing-replacement monom monoms-replacement)))
   (sloop while poly
 	do
     (cond ((atom poly) (loop-return nil))
@@ -666,7 +666,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	    finally (return-from sue (values old-simps nil))))))
 
 (defun dotsimp (ratl-or-poly)
-  (declare (values ratl-function))
+;  (declare (values ratl-function))
     (new-rat  (new-rat-dotsimp ratl-or-poly)))
 
 (defun ratl-function-id (number-or-rational-function &aux tem)

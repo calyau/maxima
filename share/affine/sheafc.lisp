@@ -25,7 +25,7 @@
 ;  (values answ unit-ideal))
 
 (defun grobner-subset (id1 id2 &optional ( may-invert 1) &aux answ unit-ideal)
-  (declare   (values  answ unit-ideal))
+;  (declare   (values  answ unit-ideal))
   (setq unit-ideal (unit-idealp id2 may-invert))
   (setq answ	       (sloop for v in id1 when (not ($zerop (polysimp v)))
 					    do (loop-return nil)
@@ -47,7 +47,7 @@
 (defun fast-grobner-basis (list-eqns &optional (may-invert 1) (string-for-inverse-name "")
 			    &aux eqns facts newvars inverses
 		    (pcomplexity-of-inverses 80))
-  (declare    (values   *poly-simplifications* newvars))
+;  (declare    (values   *poly-simplifications* newvars))
    (cond
     ((sloop for v in list-eqns
 	   when  (may-invertp v may-invert)
@@ -312,7 +312,7 @@
   "makes the list-eqns become first coords in open and in the other opens, it
   should also look after refining if necessary: ie. if one of eqns is gm-prepared
   it must refine"
-  (declare (values normal-pls opens-not-to-blowup component-codimension))
+;  (declare (values normal-pls opens-not-to-blowup component-codimension))
   (setq opens (pls-opens pls))
   (setq lis-data  (pls-data pls))
   (cond ((numberp open)(setq nth-open open))
@@ -1158,13 +1158,13 @@
 
 
 (defun rank-generic-reduce-jacobian (eqns &optional (variables(list-variables eqns)) &aux mat det )
-  (declare (values must-invert rank))
+;  (declare (values must-invert rank))
  (setq mat (matrix-rows (jacobian-matrix eqns variables)))
  (setq *sparse-matrix* (convert-to-sparse-matrix mat :re-use-sparse-matrix *sparse-matrix*))
  (setq det (sp-determinant *sparse-matrix*))
  (values det (sp-number-of-pivots *sparse-matrix*)))
 (defun reduce-jacobian (eqns &optional (variables (list-variables eqns)) &aux mat det)
-  (declare (values must-invert rank))
+;  (declare (values must-invert rank))
  (setq mat (matrix-rows (jacobian-matrix eqns variables)))
  (setq *sparse-matrix* (convert-to-sparse-matrix mat :re-use-sparse-matrix *sparse-matrix*))
  (setq det (sp-determinant *sparse-matrix*))
@@ -1180,7 +1180,7 @@
 					     (use-simplification t)
 					     &aux new
 					     singular-locus eqns-and-jacob)
-  (declare (values ( singular-locus non-singularp)))
+;  (declare (values ( singular-locus non-singularp)))
   (cond ((ldatap eqns) (setq eqns (ldata-eqns eqns))))
   (setq eqns-and-jacob  (mapcar 'square-free (append eqns (jacobian eqns))))
   (cond (use-simplification
@@ -1199,7 +1199,7 @@
 					     (variables (list-variables eqns))
 					     &aux new
 					     singular-locus eqns-and-jacob)
-  (declare (values ( singular-locus non-singularp)))
+;  (declare (values ( singular-locus non-singularp)))
   (cond ((ldatap eqns) (setq eqns (ldata-eqns eqns))))
   (cond ((null codim) (setq codim (length eqns))))
   (setq eqns-and-jacob  (mapcar 'square-free (append eqns (jacobian eqns :variables variables

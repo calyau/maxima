@@ -443,7 +443,7 @@ substituting them to be zero."
 (eval-when (load compile)
 (fmakunbound 'must-replacep)
 (defun must-replacep ( poly &aux part-above monom  replace)
-  (declare (values part-above monom replace))  
+;  (declare (values part-above monom replace))  
   (sloop for (seq repl) on *poly-simplifications* by 'cddr
 	when (setq part-above (part-above-degree poly seq))
 	do (setq monom (convert-deg-sequence-to-monomial seq) replace repl)
