@@ -434,3 +434,8 @@
 #+cmu
 (defun $system (&rest args)
   (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args))))
+
+(defun $room (&optional (arg nil arg-p))
+  (if arg-p
+      (room arg)
+      (room)))
