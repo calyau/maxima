@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.8 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.9 2002-09-10 06:03:31 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -15,12 +15,6 @@ proc genSample { x n } {
 	}
     }
 }
-
-global fontSize
-# FIXME: Need to fix the font2 problem, and this must be defined until then
-set _font [font create -family Courier -size $fontSize]
-#mike Maxima should not be playing with these
-# option add *Button.font $_font
 
 
 # font measuring is very slow so we cache the result of measuring a line
@@ -41,7 +35,8 @@ proc getDefaultFontSize { width } {
 	set wid1 [fontMeasure $fixedFont 10]
 	set guess [expr {round($width/double($wid1) * 10.0)}]
 	while { [fontMeasure $fixedFont $guess] < $width && $guess <= 14 } {
-	    incr guess }
+	    incr guess 
+	}
 	incr guess -1
 	while { [fontMeasure $fixedFont $guess] > $width } { incr guess -1 }
 	set answer   [list $guess [fontMeasure $fixedFont $guess]]
@@ -74,7 +69,7 @@ proc computeTextWinDimensions { win width height } {
     global fixedFont ws_openMath
     # desetq "fsize wid" [getDefaultFontSize [expr {$width -15}]]
     set wid $width
-    set fixedFont [xHMmapFont font:fixed:normal:r:3]
+    # set fixedFont [xHMmapFont font:fixed:normal:r:3]
     set fsize [xHMfontPointSize $fixedFont]
 
     set lh [expr {$fsize +1}]
@@ -91,19 +86,30 @@ proc computeTextWinDimensions { win width height } {
 
 
 
-proc setFontOptions { fontSize }     {
-    global buttonfont entryfont labelfont ws_openMath
+proc setFontOptions { fsize }     {
+    global ws_openMath
 
-    set fsize $fontSize
-    if { $fontSize > 10 } { set fsize 12 }
+    global _fixed_default _prop_default fontSize
+    set helvetica $_prop_default
+    set courier $_fixed_default
+
+    global buttonfont entryfont labelfont fixedtextfont
+    set  buttonfont [font create -family $helvetica -size $fsize]
+    set  labelfont [font create -family $helvetica -size $fsize]
+    set  fixedtextfont [font create -family $courier -size $fsize]
+    set  entryfont [font create -family $courier -size $fsize]
+
+return
+
+    if { $fsize > 10 } { set fsize 12 }
     if { $fsize == 8 } { set entrysize 10 } else {set entrysize $fsize }
     #puts "fsize=$fsize"
     catch {
 	#mike FIXME: these are broken for windows
 	set  buttonfont [font create -family Helvetica -size $fsize]
-	set labelfont [font create -family helvetica -size $fsize]
+	set  labelfont [font create -family helvetica -size $fsize]
 	set  fixedtextfont [font create -family courier -size $fsize]
-	set  entryfont [font create -family courier -size $entrysize]
+	set  entryfont [font create -family courier -size $fsize]
 
 	#mike: maxima should not be playing with these
 	# option add *Button.font $buttonfont
@@ -145,15 +151,12 @@ proc omPanel { w args } {
 	$menubar add $win.$v
     }
 
-    #mike FIXME: change these to buttons
-    foreach v { back forward  } {
-	label $win.$v -text [string totit $v] -relief raised
-	$menubar add $win.$v
-    }
-    bind $win.back <Button-1>  "OpenMathMoveHistory $win -1"
-    bind $win.forward <Button-1> "OpenMathMoveHistory $win 1"
-    setHelp $win.forward {Move forward in the history of documents visited.}
-    setHelp $win.back {Move backward in the history of documents visited.}
+    button $win.back -text Back \
+	-command "OpenMathMoveHistory $win -1"
+    pack $win.back -side left -expand 0
+    button $win.forward -text Forward \
+	-command "OpenMathMoveHistory $win 1"
+    pack $win.forward -side left -expand 0
 
     foreach v {  edit help  } {
 	label $win.$v -text [string totit $v] -relief raised
@@ -202,13 +205,14 @@ proc omPanel { w args } {
     }
 
     $m add command -textvariable showHelpMessages \
-	-command {set show_balloons [expr {!$show_balloons}]; if { $show_balloons} {after 500 set showHelpMessages [list "Hide Balloon Help" ]} else {after 500 set showHelpMessages [list "Show Balloon Help" ]}}
-    label $m.date -text "Version $ws_openMath(date)"
-    $m add window -window $m.date
-
-
-
-
+	-command {
+	    set show_balloons [expr {!$show_balloons}]
+	    if { $show_balloons} {
+		after 500 set showHelpMessages [list "Hide Balloon Help" ]
+	    } else {
+		after 500 set showHelpMessages [list "Show Balloon Help" ]
+	    }
+	}
 
 
     # ====begin File button===
@@ -247,14 +251,8 @@ proc omPanel { w args } {
     $m add command -label Preferences \
 	-command "fontDialog .fontdialog" \
 	-help {set the default font sizes and types}
-    if { "[info command console]" == "console" } {
-	$m add command -underline 0 -label "Show Tcl Console" \
-	    -command "console show" \
-	    -help \
-	    {This console is used mainly in debugging netmath}
-    }
     $m add command -label "Exit" \
-	-command  "destroy ."   \
+	-command  "vMAXExit"   \
 	-help {Exit this program}
 
 
@@ -518,6 +516,7 @@ proc mkOpenMath { win  } {
     }
     desetq "width height" [getMaxDimensions]
     computeTextWinDimensions $win $width $height
+
     makeLocal $win fontSize width_chars height_chars fixedFont
     set font $fixedFont
 
@@ -526,12 +525,14 @@ proc mkOpenMath { win  } {
     set commandPanel [omPanel $w ]
     oset $w commandPanel $commandPanel
     set prevwindow ""
+
     catch { set prevwindow [oget $commandPanel textwin] }
+
     oset $commandPanel textwin $w.text
+
     # pack $commandPanel -in $w -side top -fill x -pady 2m
     # raise  $commandPanel
-    set fontSize2  [expr {2+$fontSize}]
-    if { $fontSize2 >= 14 } { set fontSize2 14}
+
     text $w.text -yscrollcommand "$w.scroll set" \
 	-width $width_chars  -height $height_chars -font $font -wrap word
     bind $w.text <Configure> "resizeSubPlotWindows $w.text %w %h"
@@ -544,8 +545,10 @@ proc mkOpenMath { win  } {
     $w.text tag bind Teval <Leave> {deleteHelp %W}
     $w.text tag config hrule -font {Courier 1} -background black
     $w.text mark set insert 0.0
+
     # try "#d0d0d0" or "#ffffd0" or yellow
-    $w.text tag configure Teval -foreground blue -font [font create -family Courier -size $fontSize]  -border 1 -lmargin1 20
+
+    $w.text tag configure Teval -foreground blue -font $font  -border 1 -lmargin1 20
 
 
 
@@ -564,9 +567,11 @@ proc mkOpenMath { win  } {
     # allow some openmath text bindings to take precedence
     bindtags $w.text "OpenMathText [bindtags $w.text]"
     scrollbar $w.scroll -command "$w.text yview"
+
     pack $w.scroll -side right -fill y
     pack $w.text -expand 1  -fill both
     pack $w -expand 1 -fill both
+
     if {[winfo exists $prevwindow] } { pack forget [winfo parent $prevwindow] }
     return  $w.text
 

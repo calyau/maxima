@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: CMMenu.tcl,v 1.4 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: CMMenu.tcl,v 1.5 2002-09-10 06:03:31 mikeclarkson Exp $
 #
 proc CMmenu { win } {
     global buttonfont ws_openMath
@@ -25,12 +25,28 @@ proc CMmenu { win } {
     set file $ws_openMath(pReferenceToc)
     $m add command -underline 0 -label {Maxima Help} \
 	-command "OpenMathOpenUrl \"file:/$file\""
+
+    global tcl_platform
+
+    if {$tcl_platform(platform) == "windows"} {
+	set browse start
+    } else {
+	# FIXME: get a browser object
+	set browse netscape
+    }
+    $m add sep
     $m add command -underline 0 -label {Maxima Homepage} \
-	-command {OpenMathOpenUrl http://maxima.sourceforge.net}
+	-command [list $browse http://maxima.sourceforge.net]
+    $m add command -underline 0 -label {Project Page} \
+	-command [list $browse http://sourceforge.net/projects/maxima]
+    $m add command -underline 0 -label {Bug Reports} \
+	-command [list $browse \
+		      {http://sourceforge.net/tracker/?group_id=4933&atid=104933}]
+
+    $m add sep
     set dir $ws_openMath(pTestsDir)
     $m add command -underline 0 -label {Run Tests} \
 	-command "sendMaxima \[oget $win textwin\] {:lisp (progn (xchdir \"$dir\")(load \"tests.lisp\"))\n}"
-
 
 
     ####### begin file button
@@ -40,16 +56,16 @@ proc CMmenu { win } {
     #oset $win showFileBar "show file bar"
     $m add command -underline 0 -label {Toggle Browser Visibility} \
 	-help {Toggle display of Browser} -command {if { [catch { pack info .browser }] } { pack .browser -side bottom } else { pack forget .browser }}
-    $m add command -underline 0 -label {Exit} -command "destroy ." \
+    $m add command -underline 0 -label {Exit} -command "vMAXExit $ws_openMath(cConsoleText)" \
 	-help  "End this session of Maxima"
     $m add command -underline 0 -label {Interrupt   C-c C-c} -command "CMinterrupt \[oget $win textwin\]" \
 	-help  "Interrupt the Maxima process and reset the filter"
     $m add command -underline 0 -label {Restart} -command "runOneMaxima \[oget $win textwin\]" \
 	-help  "Kill the Maxima process and reset the filter, and start a new one"
-    #     $m add command -underline 0 -label {Preferences} -command "xmaximaPreferences" -help  "Set Preferences for Xmaxima saved in ~/xmaxima.ini"
     $m add command -underline 0 -label {Preferences} -command "fontDialog .preferences" \
 	-help  "Set Preferences for Xmaxima and Netmath saved in ~/netmath.ini"
     if { "[info command console]" == "console" } {
+	$m add sep
 	$m add command -underline 0 -label "Show Tcl Console" \
 	    -command "console show" \
 	    -help \

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tryembed.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Tryembed.tcl,v 1.4 2002-09-10 06:03:31 mikeclarkson Exp $
 #
 ###### Tryembed.tcl ######
 ############################################################
@@ -94,7 +94,8 @@ proc setupPrintVariables { slave } {
 	doExit  fontCourier8   plotdfOptions ftpInfo ws_openMath} {
 	if { [array exists  $v] } {
 	    interp eval $slave [list array set $v [array get $v *] ]
-	} else {  interp eval $slave [list set $v [set $v ]]
+	} else { 
+	    interp eval $slave [list set $v [set $v ]]
 	}
     }
 

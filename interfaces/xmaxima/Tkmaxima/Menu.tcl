@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.2 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.3 2002-09-10 06:03:31 mikeclarkson Exp $
 #
 
 proc vMAXAddSystemMenu {fr text} {
@@ -51,7 +51,7 @@ proc vMAXAddSystemMenu {fr text} {
     $m add separator
     $m add command -underline 0 \
 	-label {Exit} \
-	-command "catch \{closeMaxima $text\}; exit"
+	-command [list vMAXExit $text]
 
     # Add a Edit menubutton
     set m [menu .menu.edit -tearoff 0]
@@ -104,9 +104,8 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 0 \
 	-label {Fonts} \
 	-command {fontDialog .preferences}
-    $m add command -underline 0 -label {Preferences} \
-	-command "xmaximaPreferences"
     if {[info commands console] == "console" } {
+	$m add sep
 	$m add command -underline 0 -label "Show Tcl Console" \
 	    -command "console show"
     }
@@ -152,8 +151,22 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 7 -label {Maxima Help} \
 	-state $state \
 	-command "OpenMathOpenUrl \"file:/$file\""
-    $m add command -underline 12 -label {Maxima Home Page} \
-	-command {OpenMathOpenUrl http://maxima.sourceforge.net/}
+    set browse {exec}
+    global tcl_platform
+    if {$tcl_platform(platform) == "windows"} {
+	lappend browse start
+} else {
+	# FIXME: get a browser object
+	lappend browse [auto_execok netscape]
+    }
+    $m add sep
+    $m add command -underline 0 -label {Maxima Homepage} \
+	-command [list eval $browse http://maxima.sourceforge.net &]
+    $m add command -underline 0 -label {Project Page} \
+	-command [list eval $browse http://sourceforge.net/projects/maxima &]
+    $m add command -underline 0 -label {Bug Reports} \
+	-command [list eval $browse \
+		      {http://sourceforge.net/tracker/?group_id=4933&atid=104933} &]
 
     rename vMAXAddSystemMenu ""
     # vMAXSystemMenuHandlers $text $event

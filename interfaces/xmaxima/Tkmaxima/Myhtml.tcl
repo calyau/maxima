@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.4 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Myhtml.tcl,v 1.5 2002-09-10 06:03:31 mikeclarkson Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -238,7 +238,9 @@ proc xHMsetFont { win fonttag  } {
     global tcl_platform
     if { "$tcl_platform(platform)" == "unix" } {
 	set usePixel "-"
-    } else { set usePixel "" }
+    } else { 
+	set usePixel "" 
+    }
     font config $font -family $family -size $usePixel$xHMpreferences($fam,$si) -slant $slant -weight $weight
     return
  }
@@ -255,7 +257,7 @@ proc xHMsetFont { win fonttag  } {
 
 proc xHMfontPointSize { string } {
     #mike FIXME: hard coded font name and $string is ignored
-    set si [font config font2 -size]
+    set si [font config $string -size]
     return [expr { $si < 0 ? - $si : $si }]
 }
 
@@ -1045,17 +1047,33 @@ set xHMpreferences(adjust) [expr {
    unset width_
 }
 proc xHMsetDefaultPreferences {} {
-    global xHMpreferences
+    global xHMpreferences tcl_platform
+
+    if { "$tcl_platform(platform)" == "unix" } {
+	set pairs {  1 8
+	    2 10
+	    3 12
+	    4 14
+	    5 18
+	    6 24
+	    7 24
+	    8 34	
+	}
+    } else {
+	set pairs {  1 6
+	    2 8
+	    3 8
+	    4 10
+	    5 12
+	    6 14
+	    7 16
+	    8 18	
+	}
+    }
+
     foreach fam {propor fixed} {
-	foreach {n si} {  1 8
-    2 10
-    3 12
-    4 14
-    5 18
-    6 24
-    7 24
-    8 34	
-    } { set xHMpreferences($fam,$n) $si}}
+	foreach {n si} $pairs { set xHMpreferences($fam,$n) $si}
+    }
     set xHMpreferences(propor,adjust) [expr {$xHMpreferences(adjust) + 0}]
     set xHMpreferences(fixed,adjust) [expr {$xHMpreferences(adjust)  + 0}]
     array set xHMpreferences { propor arial fixed courier  indentwidth .7 }

@@ -1,7 +1,10 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.10 2002-09-07 08:48:34 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.11 2002-09-10 06:03:31 mikeclarkson Exp $
 #
+
+global xHMpreferences
+set xHMpreferences(plotwindow) embedded
 
 global ws_openMath
 set ws_openMath(date) 04/28/2002
@@ -42,13 +45,13 @@ static unsigned char disc_bits[] = {
 }
 
 # from xmaxima.tcl
-set ws_openMath(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
+set ws_openMath(options,maxima) {{doinsert 0 [M "Do an insertion"] boolean}}
 
 # from EOctave.tcl
-set ws_openMath(options,octave) {{doinsert 1 "Do an insertion" boolean}}
+set ws_openMath(options,octave) {{doinsert 1 [M "Do an insertion"] boolean}}
 
 # from EOpenplot.tcl
-set ws_openMath(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
+set ws_openMath(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
 
 # from EHref.tcl
 set ws_openMath(options,href) {
@@ -66,20 +69,16 @@ set show_balloons 0
 set ws_openMath(counter) 0
 	
 global ws_openMath
-set ws_openMath(fixedFont) Courier
 # the linelength should be long enough to display formatted mathematical
 # output from things like maxima, without adjustment, and to allow
 # for a margin.
 set ws_openMath(linelength) 90
 
-global fixedFont
-set fixedFont Courier
-
 global evalPrograms
 set evalPrograms {  gp gap gb }
-#set ws_openMath(options,maxima) {{doinsert 1 "Do an insertion" boolean}}
-#set ws_openMath(options,gp) {{doinsert 1 "Do an insertion" boolean}}
-# set ws_openMath(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
+#set ws_openMath(options,maxima) {{doinsert 1 [M "Do an insertion"] boolean}}
+#set ws_openMath(options,gp) {{doinsert 1 [M "Do an insertion"] boolean}}
+# set ws_openMath(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
 
 global NCtextHelp
 set NCtextHelp "

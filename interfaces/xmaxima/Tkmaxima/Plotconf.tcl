@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Plotconf.tcl,v 1.4 2002-09-10 06:03:31 mikeclarkson Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -43,9 +43,6 @@ proc makeFrame { w type } {
     oset $win c $c
     bboxToRadius $win
 
-    if { [catch { set buttonfont} ] } {
-	set buttonfont [font create -family Helvetica -size $fontSize]
-    }
     set buttonFont $buttonfont
     oset $win buttonFont $buttonfont
 
@@ -422,10 +419,10 @@ proc ftpDialog { win args } {
     }
     catch { destroy $fr }
     set ftpInfo(percent) 0
-    set buttonFont [font create -family Courier -size $fontSize]
+
     frame $fr -borderwidth 2 -relief raised
     if { [catch { set ftpInfo(directory) } ] } { set ftpInfo(directory) homework }
-    label $fr.title -text "Ftp Dialog Box" -font [font create -family Helvetica -size [expr {2+ $fontSize}]]
+    label $fr.title -text "Ftp Dialog Box"
     mkentry $fr.host ftpInfo(host) "host to write file on" $buttonFont
     mkentry $fr.viahost ftpInfo(viahost) "host to write to via" $buttonFont
     mkentry $fr.username ftpInfo(username) "Your User ID on host" $buttonFont

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.4 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.5 2002-09-10 06:03:31 mikeclarkson Exp $
 #
 ###### browser.tcl ######
 ############################################################
@@ -1294,7 +1294,7 @@ proc fontDialog { top } {
     $win window create insert -window $win.familypropor
     $win insert insert "with a size adjustment of "
     $win window create insert -window $win.sizepropor
-    $win insert insert "\nThe proportional fixed font is "
+    $win insert insert "\nThe fixed font is "
     $win window create insert -window $win.familyfixed
     $win insert insert "with a size adjustment of "
     $win window create insert -window $win.sizefixed

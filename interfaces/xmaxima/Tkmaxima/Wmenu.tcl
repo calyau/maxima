@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Wmenu.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Wmenu.tcl,v 1.3 2002-09-10 06:03:31 mikeclarkson Exp $
 #
 ###### wmenu.tcl ######
 ############################################################
@@ -22,7 +22,8 @@ proc wmenubar { name  } {
 	set parent [winfo parent $name]
 	# maybe change this to do traversal toward side leaving on..
 	oset $name items ""
-    } else {error "needs a window name arg"
+    } else {
+	error "needs a window name arg"
     }
 }
 
