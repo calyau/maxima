@@ -1,0 +1,7 @@
+The nset package provides set functions, such as intersection and 
+union, for finite sets that are defined by explicit enumeration. 
+Unlike the package set in Maxima's share library, nset ("n" for new)
+treats lists and sets as distinct objects. This feature makes it possible to
+work with sets that have members that are either lists or sets.
+
+To install nset, follow the directions in nset.html.

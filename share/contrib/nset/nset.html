@@ -1,0 +1,819 @@
+
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.52
+     from nset.texi on 19 December 2002 -->
+
+<TITLE>Untitled Document</TITLE>
+
+</HEAD>
+<BODY>
+<H1>Untitled Document</H1>
+<P>
+<P><HR><P>
+
+
+<H2><A NAME="SEC1" HREF="nset_toc.html#TOC1">Introduction to Finite Sets</A></H2>
+
+<P>
+The <B>nset</B> package provides set functions, such as intersection and 
+union, for finite sets that are defined by explicit enumeration. Unlike 
+the package <B>set</B> in Maxima's share library, <B>nset</B> treats 
+lists and sets as distinct objects. This feature makes it possible to
+work with sets that have members that are either lists or sets.
+
+</P>
+
+
+<H4><A NAME="SEC2" HREF="nset_toc.html#TOC2">Installation</A></H4>
+
+<P>
+Download the archive nset-x.tar.gz, where x is the release identifier,
+from http://www.unk.edu/acad/math/people/willisb.  Under Linux, unpack it using
+
+</P>
+<P>
+   gzip -d nset-x.tar.gz
+
+</P>
+<P>
+   tar -xvf nset-x.tar 
+
+</P>
+<P>
+This will create a directory <EM>nset-x</EM> (again x is the release identifier)
+that contains the source file <EM>nset.lisp</EM>, user documentation in html 
+and texi formats, a sample maxima initialization file <EM>nset-init.lisp</EM>, 
+a README file, and a testing routine <EM>test-nset.mac</EM>.
+
+</P>
+<P>
+Copy <EM>nset.lisp</EM> to a directory that Maxima can find.  A good location is 
+the same directory that contains <EM>set.lisp</EM>.  Under Maxima release 5.9.0 
+or higher for Linux, <EM>set.lisp</EM> is in the directory
+
+</P>
+<P>
+     /usr/local/share/maxima/&#60;ver&#62;/share/misc/set.lisp
+
+</P>
+<P>
+where &#60;ver&#62; is your Maxima release identifier. If you don't have write 
+permission for this directory,  or if you want to install <EM>nset.lisp</EM> in 
+a different location, that is  fine as long as you place it in a 
+directory that Maxima can find.
+
+</P>
+<P>
+For increased speed, you can compile <EM>nset.lisp</EM>. To do this, 
+start Maxima in the <EM>nset-x</EM> directory and issue the command
+
+<PRE>
+(C1) compile_file("nset.lisp")$
+</PRE>
+
+<P>
+This will create a file <EM>nset.xxx</EM> in the <B>nset-x</B> directory.
+The file extension <EM>xxx</EM> depends on which Lisp your Maxima uses; 
+under gcl, the extension is "o".  Copy the compiled file to the same directory 
+where you put <EM>nset.lisp</EM>.
+
+</P>
+<P>
+If you are using Maxima version 5.9.0 or higher, finish the installation
+by appending the contents of <EM>nset-init.lisp</EM> to your own
+<EM>maxima-init.lisp</EM> file. The Lisp file <EM>nset-init.lisp</EM> 
+contains replacements for the Maxima functions <EM>setup_autoload</EM>
+and <EM>generic_autoload</EM>. Unlike Maxima's <EM>setup_autload</EM> function,
+the version in <EM>nset-init.lisp</EM> uses <EM>file_search</EM>. Without this
+change, a full pathname must be given to <EM>setup_autload</EM>. The
+autoload function in Maxima 5.9.0 and lower does not recognize some
+file extensions, such as .x86f and .fasl, as valid extensions for
+compiled code. The version of <EM>generic_autoload</EM> in <EM>nset-init</EM>
+fixes this problem. Additionally, <EM>nset-init.lisp</EM> contains 
+the command
+
+</P>
+<P>
+    (add2lnc '$set $props)
+
+</P>
+<P>
+This command appends "set" to Maxima's prop list; finally, the 
+<EM>setup_autoload</EM> command contained in <EM>nset-init.lisp</EM> 
+makes <B>nset</B> load automatically whenever  you enter an expression 
+containing a function from <B>nset</B>.
+
+</P>
+<P>
+Maxima versions prior to 5.9.0 do not support initialization files. You
+may still use <B>nset</B> under these versions of Maxima;   you must,
+however, manually load <EM>nset.lisp</EM> <EM>before</EM> you use 
+any functions (especially the <EM>set</EM> function) that are in <B>nset</B>. 
+
+</P>
+
+
+<H4><A NAME="SEC3" HREF="nset_toc.html#TOC3">Usage</A></H4>
+
+<P>
+To use the set functions, begin by loading  <B>nset</B>. Provided you 
+have installed the package correctly, load it with the command
+
+<PRE>
+(C1) load("nset")$
+</PRE>
+
+<P>
+If Maxima is unable to find <EM>nset</EM>, use its full pathname. If you have 
+included an autoload statement for all functions in <B>nset</B> in your 
+<EM>maxima-init.lisp</EM> file, you will not have to manually load
+<B>nset</B>.
+
+</P>
+<P>
+To construct a set with members <EM>a1,a2,...,an</EM>, use the
+command <EM>set(a1,a2,...,an)</EM>; to construct the empty
+set, use <EM>set()</EM>.  If a set member is listed more than
+once, the simplification processes eliminates the redundant member.
+
+<PRE>
+(C1) set();
+(D1) 				      {}
+(C2) set(a,b,a);
+(D2) 				    {a, b}
+(C3) set(a,set(b));
+(D3) 				   {a, {b}}
+(C4) set(a,[b]);
+(D4) 				   {a, [b]}
+</PRE>
+
+<P>
+Sets are displayed as brace delimited lists; it isn't possible, however, to 
+define a set by enclosing its members in braces. 
+
+</P>
+<P>
+To construct a set from the elements of a list, use  <EM>setify</EM>
+
+<PRE>
+(C4) setify([b,a]);
+(D4) 		     {a,b}
+</PRE>
+
+<P>
+Set members <EM>x</EM> and <EM>y</EM> are equal provided <EM>is(x = y)</EM> 
+evaluates to true. Thus <EM>rat(x)</EM> and <EM>x</EM> are equal as set members;
+consequently, 
+
+<PRE>
+(C1) set(x,rat(x));
+(D1) 				      {x}
+</PRE>
+
+<P>
+Further, since <EM>is((x-1)*(x+1) = x^2 - 1)</EM> evaluates to false, 
+<EM>(x-1)*(x+1)</EM> and <EM>x^2-1</EM> are distinct set members; thus 
+
+<PRE>
+(C2) set((x-1)*(x+1),x^2-1);
+					      2
+(D2) 			   {(x - 1) (x + 1), x  - 1}
+</PRE>
+
+<P>
+To reduce this set to a singleton set, apply <EM>rat</EM> to each set member
+
+<PRE>
+(C3) map(rat,%);
+				     2
+(D3) 				   {x  - 1}
+</PRE>
+
+<P>
+A set is simplified when its members are non-redundant and sorted according
+to the Maxima predicate <EM>orderlessp</EM>. (The only way to change
+the set ordering is to modify the source code to <B>nset</B>.) Some operations
+on sets, such as substitution, automatically force a re-simplification; for 
+example,
+
+<PRE>
+(C1) s : set(a,b,c)$
+(C2) subst(c=a,s);
+(D2) 				    {a, b}
+(C3) ev(s,a=x,b=x,c=x);
+(D3) 				      {x}
+(C4) map(lambda([x],x^2),set(-1,0,1));
+(D4) 				    {0, 1}
+</PRE>
+
+<P>
+Most functions in <EM>nset</EM> work either sets or lists; when the
+function receives a list, but needs a set, the list is automatically
+converted to a set.  Here are some examples that use the set functions
+<EM>setdifference</EM>, <EM>intersect</EM>, and <EM>union</EM>
+
+<PRE>
+(C1) intersect([a,a,b],set(b,c));
+(D1) 				      {b}
+(C2) setdifference([3,1,4,1,6],[3]);
+(D2) 				   {1, 4, 6}
+(C3) union([a,b,b],[c,d],set(e,f));
+(D3) 			      {a, b, c, d, e, f}
+</PRE>
+
+<P>
+To extract all set elements of a set <EM>s</EM> that satisfy a predicate
+<EM>f</EM>, use <EM>subset(s,f)</EM>. (In  Maxima, a <EM>predicate</EM> is a 
+boolean-valued function.) For example, to find the equations 
+in a given set that do not depend on a variable <EM>z</EM>, use
+
+<PRE>
+(C1) subset([x+y+z,x-y+4,x+y-5],lambda([e],freeof(z,e)));
+(D1) 			   {- y + x + 4, y + x - 5}
+</PRE>
+
+<P>
+The section <EM>Definitions for Sets</EM> has a complete list of
+the functions in <B>nset</B>
+
+</P>
+
+
+<H4><A NAME="SEC4" HREF="nset_toc.html#TOC4">Miscellaneous Functions</A></H4>
+
+<P>
+The <B>nset</B> package contains the  miscellaneous utility functions
+<EM>dupe, flatten</EM>, <EM>permutations</EM>, and a few others.
+
+</P>
+
+
+<H4><A NAME="SEC5" HREF="nset_toc.html#TOC5">Bugs</A></H4>
+
+<P>
+The <B>nset</B> package uses the Maxima function <EM>orderlessp</EM> to 
+order set members and the (Lisp-level) function <EM>like</EM> to test for set
+member equality.  Both of these functions have known bugs (versions
+5.9.0rc3 and earlier) that may manifest if you attempt to use
+sets with members that are lists or matrices that contain expressions
+in CRE form. An example is
+
+<PRE>
+(C1) set([x],[rat(x)]);
+</PRE>
+
+<P>
+This command causes Maxima to halt with an error (the error message
+depends on which version of Lisp your Maxima uses). Another
+example is
+
+<PRE>
+(C2) setify([[rat(a)],[rat(b)]]);
+</PRE>
+
+<P>
+These bugs are caused by bugs in <EM>orderlessp</EM> and <EM>like</EM>; they
+are not caused by bugs in <B>nset</B>. To illustrate, try the commands
+
+<PRE>
+(C1) orderlessp([rat(a)],[rat(b)]);
+(C2) is([rat(a)]=[rat(a)]);
+</PRE>
+
+<P>
+Until these bugs are fixed, do not construct sets with members that
+are lists or matrices containing expressions in CRE form; a set with a 
+member in CRE form, however, shouldn't be a problem
+
+<PRE>
+(C1) set(x,rat(x));
+(D1)/R/ 			      {x}
+</PRE>
+
+<P>
+There are two other minor bugs that may manifest while using <B>nset</B>.
+Maxima versions 5.5 and earlier had a bug in the <EM>tex</EM> function that
+makes the empty set incorrectly translate to TeX; this bug is fixed in
+the Maxima 5.9.0. Additionally, the <EM>setup_autoload</EM> function in
+Maxima 5.9.0 is broken; a fix is in the <EM>nset-init.lisp</EM> file
+located in the <B>nset</B> distribution.
+
+</P>
+<P>
+If you find something that you think might be a <B>nset</B> bug, please report 
+it to the authors or to the Maxima mailing list.
+
+</P>
+
+
+<H4><A NAME="SEC6" HREF="nset_toc.html#TOC6">Future Projects</A></H4>
+
+<P>
+A ambitious project would be adding support for sets (possibly
+infinite) with membership determined by a rule; for example
+
+</P>
+<P>
+   {x in reals | x = n %pi and n in integers}.
+
+</P>
+<P>
+Maxima's solver package, as well as others, could be improved by
+making use of sets like these.  A somewhat less ambitious project would be 
+to support symbolic sets and to add rules, such as
+
+</P>
+<P>
+   union(a,a) =&#62; a,
+
+</P>
+<P>
+   intersect(a,a) =&#62; a,
+
+</P>
+<P>
+   intersect(a, union(a,b)) =&#62; a,
+
+</P>
+<P>
+for simplifying set functions on symbolic sets.
+
+</P>
+
+
+<H4><A NAME="SEC7" HREF="nset_toc.html#TOC7">Authors</A></H4>
+
+<P>
+Barton Willis of the University of Nebraska at Kearney (UNK) and Stavros
+Macrakis wrote the <B>nset</B> package and its documentation.
+
+</P>
+
+
+<H2><A NAME="SEC8" HREF="nset_toc.html#TOC8">Definitions for Sets</A></H2>
+
+<a name="adjoin"></a><P>
+<DL>
+<DT><U>Function:</U> <B>adjoin</B> <I>(x, a)</I>
+<DD><A NAME="IDX1"></A>
+
+</P>
+<P>
+Adjoin <EM>x</EM> to the set <EM>a</EM> and return a set.  Thus <EM>adjoin(x,a)</EM> 
+and <EM>union(set(x),a)</EM> are equivalent; however, using <EM>adjoin</EM> might
+be faster. If <EM>a</EM> isn't a list or a set, signal an error.
+
+<PRE>
+(C1) adjoin(c,set(a,b));
+(D1) 				   {a, b, c}
+(C2) adjoin(a,set(a,b));
+(D2) 				    {a, b}
+</PRE>
+
+</DL>
+
+<a name="cardinality"></a><P>
+<DL>
+<DT><U>Function:</U> <B>cardinality</B> <I>(a)</I>
+<DD><A NAME="IDX2"></A>
+
+</P>
+<P>
+Return the number of distinct elements of the set <EM>a</EM>. 
+
+<PRE>
+(C1) cardinality(set());
+(D1) 				       0
+(C2) cardinality(set(a,a,b,c));
+(D2) 				       3
+(C3) cardinality(set(a,a,b,c)), simp : false;
+(D3) 				       3
+</PRE>
+
+<P>
+In line (c3), we see that cardinality works correctly even when simplification
+has been turned off.  Like most functions in <B>nset</B>, the argument
+to cardinality may either be a list or a set; when the argument is a list,
+cardinality still returns the number of distinct elements of the list;
+for example,
+
+<PRE>
+(C4) cardinality([a,a,b,c]);
+(D4) 				       3
+</PRE>
+
+</DL>
+
+<a name="cartesian_product"></a><P>
+<DL>
+<DT><U>Function:</U> <B>cartesian_product</B> <I>(a, b1, b2, ... , bn)</I>
+<DD><A NAME="IDX3"></A>
+Return a set of lists of the form <EM>[x0,x1,...,xn]</EM>, where
+<EM>x0 in a</EM>, <EM>x1 in b1</EM>, ..., and <EM>xn in bn</EM>. 
+Signal an error when <EM>a</EM> or any <EM>b</EM> isn't a list or a set.
+
+<PRE>
+(C1) cartesian_product(set(0,1));
+(D1) 				  {[0], [1]}
+(C2) cartesian_product(set(0,1),set(0,1));
+(D2) 		       {[0, 0], [0, 1], [1, 0], [1, 1]}
+(C3) cartesian_product(set(x),set(y),set(z));
+(D3) 				  {[x, y, z]}
+(C4) cartesian_product(set(x),set(-1,0,1));
+(D4) 			  {[x, - 1], [x, 0], [x, 1]}
+</PRE>
+
+</DL>
+
+<a name="complement"></a><P>
+<DL>
+<DT><U>Function:</U> <B>complement</B> <I>(a,b)</I>
+<DD><A NAME="IDX4"></A>
+Return the set of the elements in <EM>b</EM> that are not in <EM>a</EM>.
+Signal an error if either <EM>a</EM> or <EM>b</EM> isn't a list or a set. 
+Notice that <EM>complement(a,b) = setdifference(b,a)</EM>. 
+See also  <A HREF="nset.html#setdifference">setdifference</A>.
+</DL>
+
+</P>
+<a name="disjointp"></a><P>
+<DL>
+<DT><U>Function:</U> <B>disjointp</B> <I>(a, b)</I>
+<DD><A NAME="IDX5"></A>
+Return <EM>true</EM> if the sets <EM>a</EM> and <EM>b</EM> are disjoint. Signal an error 
+is either <EM>a</EM> or <EM>b</EM> isn't a list or a set.
+</DL>
+<a name="dupe"></a><DL>
+<DT><U>Function:</U> <B>dupe</B> <I>(e,n)</I>
+<DD><A NAME="IDX6"></A>
+Return the <EM>n</EM> element list <EM>[e,e,...,e]</EM>; signal an
+error if <EM>n</EM> isn't a nonnegative integer.
+</DL>
+<a name="elementp"></a><DL>
+<DT><U>Function:</U> <B>elementp</B> <I>(x, a)</I>
+<DD><A NAME="IDX7"></A>
+Return <EM>true</EM> if and only if  <EM>x</EM> is a member of the 
+set <EM>a</EM>.  Signal an error if <EM>a</EM> isn't a list or a set.  
+</DL>
+
+</P>
+<a name="equiv_classes"></a><P>
+<DL>
+<DT><U>Function:</U> <B>equiv_classes</B> <I>(s,f)</I>
+<DD><A NAME="IDX8"></A>
+Return a set of the equivalence classes of <EM>s</EM> with respect
+to the equivalence relation <EM>f</EM>. The function <EM>f</EM> should
+be a boolean-valued function defined on the cartesian product
+of <EM>s</EM> with <EM>s</EM>. Further, the function <EM>f</EM> should 
+be an equivalence relation; <EM>equiv_classes</EM>, however, doesn't 
+check that it is. 
+
+<PRE>
+(C1) equiv_classes(set(a,b,c),lambda([x,y],is(x=y)));
+(D1) 			        {{a}, {b}, {c}}
+</PRE>
+
+<P>
+Actually, <EM>equiv_classes(s,f)</EM> automatically applies the Maxima 
+function <EM>is</EM> after applying the function <EM>f</EM>; accordingly,
+we can re-work the previous example with the command
+
+<PRE>
+(C2) equiv_classes(set(a,b,c),"=");
+(D2) 			        {{a}, {b}, {c}}
+</PRE>
+
+<P>
+Here is another example
+
+<PRE>
+(C3) equiv_classes(set(1,2,3,4,5,6,7),lambda([x,y],remainder(x-y,3)=0));
+(D3) 			  {{1, 4, 7}, {2, 5}, {3, 6}}
+</PRE>
+
+</DL>
+
+<a name="extremal_subset"></a><P>
+<DL>
+<DT><U>Function:</U> <B>extremal_subset</B> <I>(s,f,{min})</I>
+<DD><A NAME="IDX9"></A>
+Return the subset of the set or list <EM>s</EM> for which the
+real-valued function <EM>f</EM> takes on its greatest value. 
+Given an optional third argument, return the subset for 
+which <EM>f</EM> takes on its least value.
+
+<PRE>
+(C1) extremal_subset(set(-2,-1,0,1,2),abs);
+(D1) 				   {- 2, 2}
+(C3) extremal_subset(set(sqrt(2), 1.57, %pi/2),sin);
+				      %PI
+(D3) 				     {---}
+				       2
+</PRE>
+
+<P>
+To find the minimizing subset, give the optional third argument a value
+
+<PRE>
+(C2) extremal_subset(set(-2,-1,0,1,2),abs, min);
+(D2) 				      {0}
+</PRE>
+
+</DL>
+
+<a name="flatten"></a><P>
+<DL>
+<DT><U>Function:</U> <B>flatten</B> <I>(e)</I>
+<DD><A NAME="IDX10"></A>
+Flatten essentially evaluates an  expression as if its main operator had 
+been declared nary; there is, however, one difference -- flatten doesn't 
+recurse into other function arguments.  Consider
+
+</P>
+
+<PRE>
+ (C2) flatten(f(g(f(f(x)))));
+ (D2)         f(g(f(f(x))))
+ (C3) declare(f,nary);
+ (D3)         DONE
+ (C4) ev(d2);
+ (D4)         f(g(f(x)))
+</PRE>
+
+<P>
+Applied to a set, flatten gathers all members of set elements that
+are sets; for example
+
+</P>
+
+<PRE>
+(C1) flatten(set(a, set(b), set(set(c))));
+(D1) 				   {a, b, c}
+(C2) flatten(set(a,set([a],set(a))));
+(D2) 				   {a, [a]}
+</PRE>
+
+<P>
+Flatten works correctly when the main operator is a subscripted function
+
+</P>
+
+<PRE>
+(C3) flatten(f[5](f[5](x)));
+
+(D3) 				     f (x)
+				      5
+</PRE>
+
+<P>
+To successfully flatten an expression, the main operator must be
+defined for zero or more arguments;  if this isn't the case, 
+Maxima can halt with an error. 
+</DL>
+
+</P>
+<a name="full_listify"></a><P>
+<DL>
+<DT><U>Function:</U> <B>full_listify </B> <I>(a)</I>
+<DD><A NAME="IDX11"></A>
+Convert <EM>every</EM> set in the expression <EM>a</EM> into a list.
+To convert just the top-level operator of a set to a list,
+see  <A HREF="nset.html#listify">listify</A>.
+</DL>
+
+</P>
+<a name="fullsetify"></a><P>
+<DL>
+<DT><U>Function:</U> <B>fullsetify</B> <I>(a)</I>
+<DD><A NAME="IDX12"></A>
+If <EM>a</EM> is a list, convert <EM>a</EM> to a set and apply 
+<EM>fullsetify</EM> to each set member. 
+
+<PRE>
+(C1) fullsetify([a,[a]]);
+(D1) 				   {a, {a}}
+(C2) fullsetify([a,f([b])]);
+(D2) 				  {a, f([b])}
+(C3) 
+</PRE>
+
+<P>
+In line (C2), the argument of <EM>f</EM> isn't converted to a set
+because the main operator of <EM>f([b])</EM> isn't a list.
+
+</P>
+<P>
+To convert just the top-level operator of a list to a set, see
+ <A HREF="nset.html#setify">setify</A>.
+</DL>
+
+</P>
+<a name="intersect"></a><P>
+<DL>
+<DT><U>Function:</U> <B>intersect</B> <I>(a1,a2,...,an)</I>
+<DD><A NAME="IDX13"></A>
+Return a set containing  the elements that are common to the
+sets <EM>a1</EM> through <EM>an</EM>. The function <EM>intersect</EM>
+must receive one or more arguments. Signal an error if any of
+<EM>a1</EM> through <EM>an</EM> isn't a list or a set.  See also  <A HREF="nset.html#intersection">intersection</A>.
+</DL>
+
+</P>
+<a name="intersection"></a><P>
+<DL>
+<DT><U>Function:</U> <B>intersection</B> <I>(a1,a2,...,an)</I>
+<DD><A NAME="IDX14"></A>
+Return a set containing  the elements that are common to the 
+sets <EM>a1</EM> through <EM>an</EM>. The function <EM>intersection</EM>
+must receive one or more arguments. Signal an error if any of
+<EM>a1</EM> through <EM>an</EM> isn't a list or a set.  See also  <A HREF="nset.html#intersect">intersect</A>.
+</DL>
+
+</P>
+<a name="listify"></a><P>
+<DL>
+<DT><U>Function:</U> <B>listify</B> <I>(a)</I>
+<DD><A NAME="IDX15"></A>
+If <EM>a</EM> is a set, return a list containing the members of <EM>a</EM>;
+when <EM>a</EM> isn't a set, return <EM>a</EM>.  To convert a set and all
+of its members to lists, see  <A HREF="nset.html#full_listify">full_listify</A>
+
+<PRE>
+</PRE>
+
+</DL>
+
+<a name="partition_set"></a><P>
+<DL>
+<DT><U>Function:</U> <B>partition_set</B> <I>(a,f)</I>
+<DD><A NAME="IDX16"></A>
+Return a list of two sets; the first set is the subset of <EM>a</EM> for which
+the predicate <EM>f</EM> evaluates to false and the second is the subset of 
+<EM>a</EM> for which <EM>f</EM> evaluates to true.  If <EM>a</EM> isn't a list 
+or a set, signal an error. See also  <A HREF="nset.html#subset">subset</A>.
+
+<PRE>
+(C1)  partition_set(set(2,7,1,8,2,8),evenp);
+(D1) 			       [{1, 7}, {2, 8}]
+(C2) partition_set(set(x,rat(y),rat(y)+z,1),lambda([x], ratp(x)));
+(D2)/R/ 		     [{1, x}, {y, y + z}]
+</PRE>
+
+</DL>
+
+<a name="permutations"></a><P>
+<DL>
+<DT><U>Function:</U> <B>permutations</B> <I>(a)</I>
+<DD><A NAME="IDX17"></A>
+Return a <EM>set</EM> of all <EM>distinct</EM> permutations of the members of 
+the list or set <EM>a</EM>. (Each permutation is a list, not a set.) 
+When <EM>a</EM> is a list,  duplicate members of <EM>a</EM> are <EM>not</EM> deleted 
+before finding the permutations. Thus
+
+<PRE>
+(C1) permutations([a,a]);
+(D1) 				   {[a, a]}
+(C2) permutations([a,a,b]);
+(D2) 		       {[a, a, b], [a, b, a], [b, a, a]}
+(C3) 
+</PRE>
+
+<P>
+If <EM>a</EM> isn't a list or set, signal an error.
+</DL>
+
+</P>
+<a name="powerset"></a><P>
+<DL>
+<DT><U>Function:</U> <B>powerset</B> <I>(a)</I>
+<DD><A NAME="IDX18"></A>
+Return the set of all subsets of the set <EM>a</EM>.  If <EM>a</EM> has
+<EM>n</EM> elements, <EM>powerset(a)</EM> has <EM>2^n</EM> members. 
+Signal an error if <EM>a</EM> isn't a list or a set. See also  <A HREF="nset.html#subpowerset">subpowerset</A>.
+</DL>
+
+</P>
+<a name="setdifference"></a><P>
+<DL>
+<DT><U>Function:</U> <B>setdifference</B> <I>(a,b)</I>
+<DD><A NAME="IDX19"></A>
+Return a set containing the elements in the set <EM>a</EM> that are
+not in the set <EM>b</EM>.  Signal an error if <EM>a</EM> or <EM>b</EM> aren't sets.
+See also  <A HREF="nset.html#complement">complement</A>.
+</DL>
+
+</P>
+<a name="setequality"></a><P>
+<DL>
+<DT><U>Function:</U> <B>setequality</B> <I>(a,b)</I>
+<DD><A NAME="IDX20"></A>
+Return true if and only if <EM>a</EM> and <EM>b</EM> are equal sets.
+Signal an error if <EM>a</EM> or <EM>b</EM> aren't sets.
+</DL>
+
+</P>
+<a name="setify"></a><P>
+<DL>
+<DT><U>Function:</U> <B>setify</B> <I>(a)</I>
+<DD><A NAME="IDX21"></A>
+Construct a set from the elements of the list <EM>a</EM>.  Duplicate
+elements of the list <EM>a</EM> are deleted and the elements
+are sorted according to the predicate <EM>orderlessp</EM>.  
+Signal an error if <EM>a</EM> isn't a list. 
+</DL>
+
+</P>
+<a name="setp"></a><P>
+<DL>
+<DT><U>Function:</U> <B>setp</B> <I>(a)</I>
+<DD><A NAME="IDX22"></A>
+Return true if and only if <EM>a</EM> is a Maxima set.  The function
+<EM>setp</EM> checks that the operator of its argument is set; it doesn't
+check that its argument is a <EM>simplified</EM> set. Thus
+
+<PRE>
+(C1) setp(set(a,a)),simp : false;
+(D1) 				     TRUE
+</PRE>
+
+<P>
+The function <EM>setp</EM> could be coded in Maxima as 
+
+</P>
+<P>
+    setp(a) := is(inpart(a) = set).
+
+</P>
+</DL>
+
+<a name="subpowerset"></a><P>
+<DL>
+<DT><U>Function:</U> <B>subpowerset</B> <I>(a,n)</I>
+<DD><A NAME="IDX23"></A>
+Return the set of all subsets of the set  <EM>a</EM> that have 
+cardinality <EM>n</EM>; signal an error if <EM>n</EM> isn't a 
+nonnegative integer or if <EM>a</EM> isn't a list or a set. 
+See also  <A HREF="nset.html#powerset">powerset</A>.
+</DL>
+
+</P>
+<a name="subset"></a><P>
+<DL>
+<DT><U>Function:</U> <B>subset</B> <I>(a, f)</I>
+<DD><A NAME="IDX24"></A>
+Return the subset of the set <EM>a</EM> that satisfies the predicate <EM>f</EM>. 
+For example
+
+<PRE>
+(C1) subset(set(1,2,x,x+y,z,x+y+z),atom);
+(D1) {1,2,z}
+(C2) subset(set(1,2,7,8,9,14),evenp);
+(D2) {2,8,14}
+</PRE>
+
+<P>
+The second argument to <EM>subset</EM> must be a Maxima predicate
+(a boolean-valued function of one argument) if the first argument to 
+<EM>subset</EM> isn't a list or a set, signal an error. See also
+ <A HREF="nset.html#partition_set">partition_set</A>.
+</DL>
+
+</P>
+<a name="subsetp"></a><P>
+<DL>
+<DT><U>Function:</U> <B>subsetp</B> <I>(a, b)</I>
+<DD><A NAME="IDX25"></A>
+Return true if and only if the set <EM>a</EM> is a subset of <EM>b</EM>.
+Signal an error if <EM>a</EM> or <EM>b</EM> aren't lists or sets.
+</DL>
+
+</P>
+<a name="symmdifference"></a><P>
+<DL>
+<DT><U>Function:</U> <B>symmdifference</B> <I>(a,b)</I>
+<DD><A NAME="IDX26"></A>
+Return the symmetric difference of sets <EM>a</EM> and <EM>b</EM>. 
+This is the same as union(setdifference(a,b),setdifference(b,a)).
+Signal an error if <EM>a</EM> or <EM>b</EM> aren't lists or sets.
+</DL>
+
+</P>
+<a name="union"></a><P>
+<DL>
+<DT><U>Function:</U> <B>union</B> <I>(a1,a2, ..., an)</I>
+<DD><A NAME="IDX27"></A>
+Return the union of the sets <EM>a1</EM> through <EM>an</EM>. 
+When <EM>union</EM> receives no arguments, it returns the
+empty set. Signal an error when one or more arguments to 
+<EM>union</EM> is not a list or a set.
+</DL>
+
+</P>
+
+<P><HR><P>
+This document was generated on 19 December 2002 using the
+<A HREF="http://wwwcn.cern.ch/dci/texi2html/">texi2html</A>
+translator version 1.51a.</P>
+</BODY>
+</HTML>

@@ -1,0 +1,577 @@
+@node Introduction to Sets, Definitions for Finite Sets, Sets, Sets
+@section Introduction to Finite Sets
+@menu
+* Introduction to Finite Sets::       
+* Definitions for Finite Sets::       
+@end menu
+
+The @b{nset} package provides set functions, such as intersection and 
+union, for finite sets that are defined by explicit enumeration. Unlike 
+the package @b{set} in Maxima's share library, @b{nset} treats 
+lists and sets as distinct objects. This feature makes it possible to
+work with sets that have members that are either lists or sets.
+
+@subsubsection Installation
+
+
+Download the archive nset-x.tar.gz, where x is the release identifier,
+from http://www.unk.edu/acad/math/people/willisb.  Under Linux, unpack it using
+
+   gzip -d nset-x.tar.gz
+
+   tar -xvf nset-x.tar 
+
+This will create a directory @emph{nset-x} (again x is the release identifier)
+that contains the source file @emph{nset.lisp}, user documentation in html 
+and texi formats, a sample maxima initialization file @emph{nset-init.lisp}, 
+a README file, and a testing routine @emph{test-nset.mac}.
+
+Copy @emph{nset.lisp} to a directory that Maxima can find.  A good location is 
+the same directory that contains @emph{set.lisp}.  Under Maxima release 5.9.0 
+or higher for Linux, @emph{set.lisp} is in the directory
+
+     /usr/local/share/maxima/<ver>/share/misc/set.lisp
+
+where <ver> is your Maxima release identifier. If you don't have write 
+permission for this directory,  or if you want to install @emph{nset.lisp} in 
+a different location, that is  fine as long as you place it in a 
+directory that Maxima can find.
+
+For increased speed, you can compile @emph{nset.lisp}. To do this, 
+start Maxima in the @emph{nset-x} directory and issue the command
+@example
+(C1) compile_file("nset.lisp")$
+@end example
+This will create a file @emph{nset.xxx} in the @b{nset-x} directory.
+The file extension @emph{xxx} depends on which Lisp your Maxima uses; 
+under gcl, the extension is "o".  Copy the compiled file to the same directory 
+where you put @emph{nset.lisp}.
+
+If you are using Maxima version 5.9.0 or higher, finish the installation
+by appending the contents of @emph{nset-init.lisp} to your own
+@emph{maxima-init.lisp} file. The Lisp file @emph{nset-init.lisp} 
+contains replacements for the Maxima functions @emph{setup_autoload}
+and @emph{generic_autoload}. Unlike Maxima's @emph{setup_autload} function,
+the version in @emph{nset-init.lisp} uses @emph{file_search}. Without this
+change, a full pathname must be given to @emph{setup_autload}. The
+autoload function in Maxima 5.9.0 and lower does not recognize some
+file extensions, such as .x86f and .fasl, as valid extensions for
+compiled code. The version of @emph{generic_autoload} in @emph{nset-init}
+fixes this problem. Additionally, @emph{nset-init.lisp} contains 
+the command
+
+    (add2lnc '$set $props)
+
+This command appends "set" to Maxima's prop list; finally, the 
+@emph{setup_autoload} command contained in @emph{nset-init.lisp} 
+makes @b{nset} load automatically whenever  you enter an expression 
+containing a function from @b{nset}.
+
+Maxima versions prior to 5.9.0 do not support initialization files. You
+may still use @b{nset} under these versions of Maxima;   you must,
+however, manually load @emph{nset.lisp} @emph{before} you use 
+any functions (especially the @emph{set} function) that are in @b{nset}. 
+
+@subsubsection Usage
+
+To use the set functions, begin by loading  @b{nset}. Provided you 
+have installed the package correctly, load it with the command
+@example
+(C1) load("nset")$
+@end example
+If Maxima is unable to find @emph{nset}, use its full pathname. If you have 
+included an autoload statement for all functions in @b{nset} in your 
+@emph{maxima-init.lisp} file, you will not have to manually load
+@b{nset}.
+
+To construct a set with members @emph{a1,a2,...,an}, use the
+command @emph{set(a1,a2,...,an)}; to construct the empty
+set, use @emph{set()}.  If a set member is listed more than
+once, the simplification processes eliminates the redundant member.
+@example
+(C1) set();
+(D1) 				      {}
+(C2) set(a,b,a);
+(D2) 				    {a, b}
+(C3) set(a,set(b));
+(D3) 				   {a, {b}}
+(C4) set(a,[b]);
+(D4) 				   {a, [b]}
+@end example
+Sets are displayed as brace delimited lists; it isn't possible, however, to 
+define a set by enclosing its members in braces. 
+
+To construct a set from the elements of a list, use  @emph{setify}
+@example
+(C4) setify([b,a]);
+(D4) 		     {a,b}
+@end example 
+
+Set members @emph{x} and @emph{y} are equal provided @emph{is(x = y)} 
+evaluates to true. Thus @emph{rat(x)} and @emph{x} are equal as set members;
+consequently, 
+@example
+(C1) set(x,rat(x));
+(D1) 				      {x}
+@end example
+Further, since @emph{is((x-1)*(x+1) = x^2 - 1)} evaluates to false, 
+@emph{(x-1)*(x+1)} and @emph{x^2-1} are distinct set members; thus 
+@example
+(C2) set((x-1)*(x+1),x^2-1);
+					      2
+(D2) 			   {(x - 1) (x + 1), x  - 1}
+@end example
+To reduce this set to a singleton set, apply @emph{rat} to each set member
+@example
+(C3) map(rat,%);
+				     2
+(D3) 				   {x  - 1}
+@end example
+
+A set is simplified when its members are non-redundant and sorted according
+to the Maxima predicate @emph{orderlessp}. (The only way to change
+the set ordering is to modify the source code to @b{nset}.) Some operations
+on sets, such as substitution, automatically force a re-simplification; for 
+example,
+@example
+(C1) s : set(a,b,c)$
+(C2) subst(c=a,s);
+(D2) 				    {a, b}
+(C3) ev(s,a=x,b=x,c=x);
+(D3) 				      {x}
+(C4) map(lambda([x],x^2),set(-1,0,1));
+(D4) 				    {0, 1}
+@end example
+
+Most functions in @emph{nset} work either sets or lists; when the
+function receives a list, but needs a set, the list is automatically
+converted to a set.  Here are some examples that use the set functions
+@emph{setdifference}, @emph{intersect}, and @emph{union}
+@example
+(C1) intersect([a,a,b],set(b,c));
+(D1) 				      {b}
+(C2) setdifference([3,1,4,1,6],[3]);
+(D2) 				   {1, 4, 6}
+(C3) union([a,b,b],[c,d],set(e,f));
+(D3) 			      {a, b, c, d, e, f}
+@end example
+
+To extract all set elements of a set @emph{s} that satisfy a predicate
+@emph{f}, use @emph{subset(s,f)}. (In  Maxima, a @emph{predicate} is a 
+boolean-valued function.) For example, to find the equations 
+in a given set that do not depend on a variable @emph{z}, use
+@example 
+(C1) subset([x+y+z,x-y+4,x+y-5],lambda([e],freeof(z,e)));
+(D1) 			   {- y + x + 4, y + x - 5}
+@end example
+The section @emph{Definitions for Sets} has a complete list of
+the functions in @b{nset}
+
+@subsubsection Miscellaneous Functions
+
+The @b{nset} package contains the  miscellaneous utility functions
+@emph{dupe, flatten}, @emph{permutations}, and a few others.
+
+@subsubsection Bugs
+
+The @b{nset} package uses the Maxima function @emph{orderlessp} to 
+order set members and the (Lisp-level) function @emph{like} to test for set
+member equality.  Both of these functions have known bugs (versions
+5.9.0rc3 and earlier) that may manifest if you attempt to use
+sets with members that are lists or matrices that contain expressions
+in CRE form. An example is
+@example
+(C1) set([x],[rat(x)]);
+@end example
+This command causes Maxima to halt with an error (the error message
+depends on which version of Lisp your Maxima uses). Another
+example is
+@example
+(C2) setify([[rat(a)],[rat(b)]]);
+@end example
+These bugs are caused by bugs in @emph{orderlessp} and @emph{like}; they
+are not caused by bugs in @b{nset}. To illustrate, try the commands
+@example
+(C1) orderlessp([rat(a)],[rat(b)]);
+(C2) is([rat(a)]=[rat(a)]);
+@end example
+Until these bugs are fixed, do not construct sets with members that
+are lists or matrices containing expressions in CRE form; a set with a 
+member in CRE form, however, shouldn't be a problem
+@example
+(C1) set(x,rat(x));
+(D1)/R/ 			      {x}
+@end example
+
+There are two other minor bugs that may manifest while using @b{nset}.
+Maxima versions 5.5 and earlier had a bug in the @emph{tex} function that
+makes the empty set incorrectly translate to TeX; this bug is fixed in
+the Maxima 5.9.0. Additionally, the @emph{setup_autoload} function in
+Maxima 5.9.0 is broken; a fix is in the @emph{nset-init.lisp} file
+located in the @b{nset} distribution.
+
+If you find something that you think might be a @b{nset} bug, please report 
+it to the authors or to the Maxima mailing list.
+
+@subsubsection Future Projects
+
+A ambitious project would be adding support for sets (possibly
+infinite) with membership determined by a rule; for example
+
+   {x in reals | x = n %pi and n in integers}.
+
+Maxima's solver package, as well as others, could be improved by
+making use of sets like these.  A somewhat less ambitious project would be 
+to support symbolic sets and to add rules, such as
+
+   union(a,a) => a,
+
+   intersect(a,a) => a,
+
+   intersect(a, union(a,b)) => a,
+
+for simplifying set functions on symbolic sets.
+
+@subsubsection Authors
+
+Barton Willis of the University of Nebraska at Kearney (UNK) and Stavros
+Macrakis wrote the @b{nset} package and its documentation.
+
+@node Definitions for Sets,  , Introduction to Sets, Sets
+@section Definitions for Sets
+
+@anchor{adjoin}
+@defun adjoin (x, a) 
+
+Adjoin @emph{x} to the set @emph{a} and return a set.  Thus @emph{adjoin(x,a)} 
+and @emph{union(set(x),a)} are equivalent; however, using @emph{adjoin} might
+be faster. If @emph{a} isn't a list or a set, signal an error.
+@example
+(C1) adjoin(c,set(a,b));
+(D1) 				   {a, b, c}
+(C2) adjoin(a,set(a,b));
+(D2) 				    {a, b}
+@end example
+@end defun
+
+@anchor{cardinality}
+@defun cardinality (a)
+
+Return the number of distinct elements of the set @emph{a}. 
+@example
+(C1) cardinality(set());
+(D1) 				       0
+(C2) cardinality(set(a,a,b,c));
+(D2) 				       3
+(C3) cardinality(set(a,a,b,c)), simp : false;
+(D3) 				       3
+@end example 
+In line (c3), we see that cardinality works correctly even when simplification
+has been turned off.  Like most functions in @b{nset}, the argument
+to cardinality may either be a list or a set; when the argument is a list,
+cardinality still returns the number of distinct elements of the list;
+for example,
+@example
+(C4) cardinality([a,a,b,c]);
+(D4) 				       3
+@end example
+@end defun
+
+@anchor{cartesian_product}
+@defun cartesian_product (a, b1, b2, ... , bn)
+Return a set of lists of the form @emph{[x0,x1,...,xn]}, where
+@emph{x0 in a}, @emph{x1 in b1}, ..., and @emph{xn in bn}. 
+Signal an error when @emph{a} or any @emph{b} isn't a list or a set.
+@example
+(C1) cartesian_product(set(0,1));
+(D1) 				  {[0], [1]}
+(C2) cartesian_product(set(0,1),set(0,1));
+(D2) 		       {[0, 0], [0, 1], [1, 0], [1, 1]}
+(C3) cartesian_product(set(x),set(y),set(z));
+(D3) 				  {[x, y, z]}
+(C4) cartesian_product(set(x),set(-1,0,1));
+(D4) 			  {[x, - 1], [x, 0], [x, 1]}
+@end example
+@end defun
+
+@anchor{complement}
+@defun complement (a,b)
+Return the set of the elements in @emph{b} that are not in @emph{a}.
+Signal an error if either @emph{a} or @emph{b} isn't a list or a set. 
+Notice that @emph{complement(a,b) = setdifference(b,a)}. 
+See also @ref{setdifference}.
+@end defun
+
+@anchor{disjointp}
+@defun disjointp (a, b) 
+Return @emph{true} if the sets @emph{a} and @emph{b} are disjoint. Signal an error 
+is either @emph{a} or @emph{b} isn't a list or a set.
+@end defun
+@anchor{dupe}
+@defun dupe (e,n)
+Return the @emph{n} element list @emph{[e,e,...,e]}; signal an
+error if @emph{n} isn't a nonnegative integer.
+@end defun
+@anchor{elementp}
+@defun elementp (x, a)          
+Return @emph{true} if and only if  @emph{x} is a member of the 
+set @emph{a}.  Signal an error if @emph{a} isn't a list or a set.  
+@end defun
+
+@anchor{equiv_classes}
+@defun equiv_classes (s,f)
+Return a set of the equivalence classes of @emph{s} with respect
+to the equivalence relation @emph{f}. The function @emph{f} should
+be a boolean-valued function defined on the cartesian product
+of @emph{s} with @emph{s}. Further, the function @emph{f} should 
+be an equivalence relation; @emph{equiv_classes}, however, doesn't 
+check that it is. 
+@example
+(C1) equiv_classes(set(a,b,c),lambda([x,y],is(x=y)));
+(D1) 			        {{a}, {b}, {c}}
+@end example
+Actually, @emph{equiv_classes(s,f)} automatically applies the Maxima 
+function @emph{is} after applying the function @emph{f}; accordingly,
+we can re-work the previous example with the command
+@example
+(C2) equiv_classes(set(a,b,c),"=");
+(D2) 			        {{a}, {b}, {c}}
+@end example 
+Here is another example
+@example
+(C3) equiv_classes(set(1,2,3,4,5,6,7),lambda([x,y],remainder(x-y,3)=0));
+(D3) 			  {{1, 4, 7}, {2, 5}, {3, 6}}
+@end example
+@end defun
+
+@anchor{extremal_subset}
+@defun extremal_subset (s,f,{min})
+Return the subset of the set or list @emph{s} for which the
+real-valued function @emph{f} takes on its greatest value. 
+Given an optional third argument, return the subset for 
+which @emph{f} takes on its least value.
+@example
+(C1) extremal_subset(set(-2,-1,0,1,2),abs);
+(D1) 				   {- 2, 2}
+(C3) extremal_subset(set(sqrt(2), 1.57, %pi/2),sin);
+				      %PI
+(D3) 				     {---}
+				       2
+@end example
+To find the minimizing subset, give the optional third argument a value
+@example
+(C2) extremal_subset(set(-2,-1,0,1,2),abs, min);
+(D2) 				      {0}
+@end example
+@end defun
+
+@anchor{flatten}
+@defun flatten (e)
+Flatten essentially evaluates an  expression as if its main operator had 
+been declared nary; there is, however, one difference -- flatten doesn't 
+recurse into other function arguments.  Consider
+
+@example 
+ (C2) flatten(f(g(f(f(x)))));
+ (D2)         f(g(f(f(x))))
+ (C3) declare(f,nary);
+ (D3)         DONE
+ (C4) ev(d2);
+ (D4)         f(g(f(x)))
+@end example
+Applied to a set, flatten gathers all members of set elements that
+are sets; for example
+
+@example
+(C1) flatten(set(a, set(b), set(set(c))));
+(D1) 				   {a, b, c}
+(C2) flatten(set(a,set([a],set(a))));
+(D2) 				   {a, [a]}
+@end example
+Flatten works correctly when the main operator is a subscripted function
+
+@example
+(C3) flatten(f[5](f[5](x)));
+
+(D3) 				     f (x)
+				      5
+@end example
+To successfully flatten an expression, the main operator must be
+defined for zero or more arguments;  if this isn't the case, 
+Maxima can halt with an error. 
+@end defun
+
+@anchor{full_listify}
+@defun full_listify (a)
+Convert @emph{every} set in the expression @emph{a} into a list.
+To convert just the top-level operator of a set to a list,
+see @ref{listify}.
+@end defun
+
+@anchor{fullsetify}
+@defun fullsetify (a)
+If @emph{a} is a list, convert @emph{a} to a set and apply 
+@emph{fullsetify} to each set member. 
+@example
+(C1) fullsetify([a,[a]]);
+(D1) 				   {a, {a}}
+(C2) fullsetify([a,f([b])]);
+(D2) 				  {a, f([b])}
+(C3) 
+@end example
+In line (C2), the argument of @emph{f} isn't converted to a set
+because the main operator of @emph{f([b])} isn't a list.
+
+To convert just the top-level operator of a list to a set, see
+@ref{setify}.
+@end defun
+
+@anchor{intersect}
+@defun intersect (a1,a2,...,an)
+Return a set containing  the elements that are common to the
+sets @emph{a1} through @emph{an}. The function @emph{intersect}
+must receive one or more arguments. Signal an error if any of
+@emph{a1} through @emph{an} isn't a list or a set.  See also @ref{intersection}.
+@end defun
+
+@anchor{intersection}
+@defun intersection (a1,a2,...,an)
+Return a set containing  the elements that are common to the 
+sets @emph{a1} through @emph{an}. The function @emph{intersection}
+must receive one or more arguments. Signal an error if any of
+@emph{a1} through @emph{an} isn't a list or a set.  See also @ref{intersect}.
+@end defun
+
+@anchor{listify}
+@defun listify (a)
+If @emph{a} is a set, return a list containing the members of @emph{a};
+when @emph{a} isn't a set, return @emph{a}.  To convert a set and all
+of its members to lists, see @ref{full_listify}
+@example
+@end example
+@end defun
+
+@anchor{partition_set}
+@defun partition_set (a,f)
+Return a list of two sets; the first set is the subset of @emph{a} for which
+the predicate @emph{f} evaluates to false and the second is the subset of 
+@emph{a} for which @emph{f} evaluates to true.  If @emph{a} isn't a list 
+or a set, signal an error. See also @ref{subset}.
+@example
+(C1)  partition_set(set(2,7,1,8,2,8),evenp);
+(D1) 			       [{1, 7}, {2, 8}]
+(C2) partition_set(set(x,rat(y),rat(y)+z,1),lambda([x], ratp(x)));
+(D2)/R/ 		     [{1, x}, {y, y + z}]
+@end example
+@end defun
+
+@anchor{permutations}
+@defun permutations (a)
+Return a @emph{set} of all @emph{distinct} permutations of the members of 
+the list or set @emph{a}. (Each permutation is a list, not a set.) 
+When @emph{a} is a list,  duplicate members of @emph{a} are @emph{not} deleted 
+before finding the permutations. Thus
+@example
+(C1) permutations([a,a]);
+(D1) 				   {[a, a]}
+(C2) permutations([a,a,b]);
+(D2) 		       {[a, a, b], [a, b, a], [b, a, a]}
+(C3) 
+@end example
+If @emph{a} isn't a list or set, signal an error.
+@end defun
+
+@anchor{powerset}
+@defun powerset (a)
+Return the set of all subsets of the set @emph{a}.  If @emph{a} has
+@emph{n} elements, @emph{powerset(a)} has @emph{2^n} members. 
+Signal an error if @emph{a} isn't a list or a set. See also @ref{subpowerset}.
+@end defun
+
+@anchor{setdifference}
+@defun  setdifference (a,b)
+Return a set containing the elements in the set @emph{a} that are
+not in the set @emph{b}.  Signal an error if @emph{a} or @emph{b} aren't sets.
+See also @ref{complement}.
+@end defun
+
+@anchor{setequality}
+@defun setequality (a,b)
+Return true if and only if @emph{a} and @emph{b} are equal sets.
+Signal an error if @emph{a} or @emph{b} aren't sets.
+@end defun
+
+@anchor{setify}
+@defun setify (a)
+Construct a set from the elements of the list @emph{a}.  Duplicate
+elements of the list @emph{a} are deleted and the elements
+are sorted according to the predicate @emph{orderlessp}.  
+Signal an error if @emph{a} isn't a list. 
+@end defun
+
+@anchor{setp}
+@defun setp (a)
+Return true if and only if @emph{a} is a Maxima set.  The function
+@emph{setp} checks that the operator of its argument is set; it doesn't
+check that its argument is a @emph{simplified} set. Thus
+@example
+(C1) setp(set(a,a)),simp : false;
+(D1) 				     TRUE
+@end example
+The function @emph{setp} could be coded in Maxima as 
+
+    setp(a) := is(inpart(a) = set).
+
+@end defun
+
+@anchor{subpowerset}
+@defun subpowerset (a,n)
+Return the set of all subsets of the set  @emph{a} that have 
+cardinality @emph{n}; signal an error if @emph{n} isn't a 
+nonnegative integer or if @emph{a} isn't a list or a set. 
+See also @ref{powerset}.
+@end defun
+
+@anchor{subset}
+@defun subset (a, f)
+Return the subset of the set @emph{a} that satisfies the predicate @emph{f}. 
+For example
+@example
+(C1) subset(set(1,2,x,x+y,z,x+y+z),atom);
+(D1) {1,2,z}
+(C2) subset(set(1,2,7,8,9,14),evenp);
+(D2) {2,8,14}
+@end example
+The second argument to @emph{subset} must be a Maxima predicate
+(a boolean-valued function of one argument) if the first argument to 
+@emph{subset} isn't a list or a set, signal an error. See also
+@ref{partition_set}.
+@end defun
+
+@anchor{subsetp}
+@defun subsetp (a, b)
+Return true if and only if the set @emph{a} is a subset of @emph{b}.
+Signal an error if @emph{a} or @emph{b} aren't lists or sets.
+@end defun
+
+@anchor{symmdifference}
+@defun symmdifference (a,b)
+Return the symmetric difference of sets @emph{a} and @emph{b}. 
+This is the same as union(setdifference(a,b),setdifference(b,a)).
+Signal an error if @emph{a} or @emph{b} aren't lists or sets.
+@end defun
+
+@anchor{union}
+@defun union (a1,a2, ..., an)
+Return the union of the sets @emph{a1} through @emph{an}. 
+When @emph{union} receives no arguments, it returns the
+empty set. Signal an error when one or more arguments to 
+@emph{union} is not a list or a set.
+@end defun
+
+
+
+
+
+
+
