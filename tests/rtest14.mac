@@ -142,6 +142,9 @@ true$
  *   *(8*sqrt(%pi)/3/gamma(3/8)*%m[-5/8,-1/4](b*p^2/2)
  *      - 2*sqrt(%pi)/gamma(7/8)*%m[-5/8,1/4](b*p^2/2))
  */
+(assume(b>0),true);
+true$
+
 ratsimp(specint(t^(3/4)*%e^(-t^2/2/b)*%e^(-p*t),t));
 -sqrt(%pi)*b^(5/8)
           *(3*gamma(3/8)*gamma(3/4)*%e^(b*p^2/4)*%m[-5/8,1/4](b*p^2/2)
