@@ -793,14 +793,14 @@ and modulo-p not prime gives false answer"
 	finally (return (cons '(mlist simp) a-list))))
 
 
-#+3600
-(DEFUN *RED (N D &aux tem )
-  (COND ((ZEROP N) 0)
-	((EQUAL D 1) N)
-	(t (setq n (/ n d))
-	   (cond ((integerp n) n)
-		 (t (list '(rat simp)
-			  (numerator n) (denominator n)))))))
+;; #+3600
+;; (DEFUN *RED (N D &aux tem )
+;;   (COND ((ZEROP N) 0)
+;; 	((EQUAL D 1) N)
+;; 	(t (setq n (/ n d))
+;; 	   (cond ((integerp n) n)
+;; 		 (t (list '(rat simp)
+;; 			  (numerator n) (denominator n)))))))
 (defvar $list_of_zeroes nil)
 ;
 ;(defun $zerop (n &aux tem)
