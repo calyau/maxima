@@ -50,10 +50,10 @@
 ;; Some variables that may have to be set in order to use the maxima help:
 ;;  maxima-info-dir   
 ;;         This should be the directory where the maxima info files are kept.
-;;         By default, it is "/usr/info/"
+;;         By default, it is "/usr/local/info/"
 ;;  maxima-info-index-file
 ;;         This should be the name of the maxima info file that contains
-;;         the index, by default, it is "maxima.info-16"
+;;         the index, by default, it is "maxima.info-15"
 ;; To allow M-x maxima-mode to put a buffer into maxima mode, add the line
 ;; (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
 ;; to your .emacs file, to allow M-x maxima to start an interactive
@@ -210,7 +210,7 @@ Choices are 'standard, 'perhaps-smart, 'basic"
                  (const standard) 
                  (const perhaps-smart)))
 
-(defcustom maxima-info-dir "/usr/lib/maxima-5.6/info/"
+(defcustom maxima-info-dir "/usr/local/info/"
   "*The directory where the maxima info files are kept."
   :group 'maxima
   :type '(directory))
