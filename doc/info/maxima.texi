@@ -55,6 +55,7 @@ under the terms of GNU public license.
 MAXIMA infrastructure
 
 * Introduction to MAXIMA::      Sample MAXIMA sessions.
+* Bug Detection and Reporting:: Finding and reporting bugs in MAXIMA.
 * Help::                        Asking for help from within a MAXIMA session.
 * Command Line::                MAXIMA command line syntax.
 * Operators::                   Operators used in MAXIMA expressions.
@@ -329,11 +330,15 @@ Debugging
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Introduction to MAXIMA, Help, Top, Top
+@node Introduction to MAXIMA, Bug Detection and Reporting, Top, Top
 @chapter Introduction to MAXIMA
 @include Introduction.texi
 
-@node Help, Command Line, Introduction to MAXIMA, Top
+@node Bug Detection and Reporting, Help, Introduction to MAXIMA, Top
+@chapter Bug Detection and Reporting
+@include Bugs.texi
+
+@node Help, Command Line, Bug Detection and Reporting, Top
 @chapter Help
 @include Help.texi
 

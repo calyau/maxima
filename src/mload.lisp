@@ -733,7 +733,7 @@
 				    '((mlist) $file_search_demo )
 				  '((mlist) $file_search_maxima ))))
   (cond ((eq demo :test)
-	 (test-batch filename))
+	 (test-batch filename nil :show-all t))
 	(t
 	 (with-open-file (in-stream filename)
 	   (format t "~%batching ~A"
@@ -759,10 +759,20 @@
 ;				   :return-string t)))
 ;	  (apply 'alter-pathname name make-pathname-options))
 	
-
-(defun test-batch (filename &optional (out *standard-output*) &aux result next-result  next eof error-log all-differences
-			    (*mread-prompt* "")
-			    ($matrix_element_mult '&*))
+(defun in-list (item list)
+  (dolist (element list)
+    (if (equal item element)
+        (return-from in-list t)))
+  nil)
+(defun test-batch (filename expected-errors
+		    &key (out *standard-output*) (show-expected nil)
+		   (show-all nil)
+		    &aux result next-result next eof error-log all-differences
+		    (*mread-prompt* "")
+		    ($matrix_element_mult '&*)
+		    (num-problems 0)
+		    tmp-output
+		    save-output)
   (cond (*collect-errors*
 	 (setq error-log
 	       (if (streamp *collect-errors*) *collect-errors*
@@ -771,7 +781,7 @@
 	 (format t "~%Error log on ~a" error-log)
 	 (format error-log "~%/*    MAXIMA-ERROR log for testing of ~A" filename)
 	 (format error-log "*/~2%")))
-  
+  (setf $ratprint nil)
   (unwind-protect 
       (with-open-file
        (st filename)
@@ -781,42 +791,66 @@
 	      (setq expr (mread st eof))
 	      while expr 
 	      do
-	      (format out "~%/* ********************** Problem ~A. *************** */ " i)
+	      
 					;      (mshow expr)
-	      (format out "~%%Input is" )
-	      (displa (third expr))
+	      (setq num-problems (+ 1 num-problems))
+	      (setf tmp-output (make-string-output-stream))
+	      (setf save-output *standard-output*)
+	      (setf *standard-output* tmp-output)
 	      (setq $%(setq result  (meval* (third expr))))
-	      (format out "~%~%The result is")
-	      (displa $%)
+	      (setf *standard-output* save-output)
 	      (setq next (mread st eof))
 	      (cond ((null next) (error "no result")))
 	      (setq next-result  (third next))
-	      (cond ((batch-equal-check next-result result)
-		     (format t "~%..Which was correct"))
-		    (t (format t "~%This differed from the expected result:")
-		       (push i all-differences)
-		       (displa next-result)
-		       (cond (*collect-errors*
-			      (mgrind (third expr) error-log)
-			      (list-variable-bindings (third expr) error-log)
-			      (format error-log ";~%")
-			      (format error-log "//*Erroneous Result?:~%")
-			      (mgrind result error-log) (format error-log "*// ")
-			      (terpri error-log)
-			      (mgrind next-result error-log)
-			      (format error-log ";~%~%"))))
-		    )))
+	      (let* ((correct (batch-equal-check next-result result))
+		     (expected-error (in-list i expected-errors))
+		     (pass (or correct expected-error)))
+		(if (or show-all (not pass) (and correct expected-error)
+			(and expected-error show-expected))
+		    (progn
+		      (format out "~%********************** Problem ~A ***************" i)
+		      (format out "~%Input:" )
+		      (displa (third expr))
+		      (format out "~%~%Result:")
+		      (format out "~a" (get-output-stream-string tmp-output))
+		      (displa $%)))
+		(cond ((and correct expected-error)
+		       (format t "~%... Which was correct, but was expected to be wrong due to a known bug in~% Maxima.~%"))
+		      (correct
+		       (if show-all (format t "~%... Which was correct.~%")))
+		      ((and (not correct) expected-error)
+		       (if (or show-all show-expected)
+			   (progn
+			     (format t "~%This is a known error in Maxima. The correct result is:")
+			     (displa next-result))))
+		      (t (format t "~%This differed from the expected result:")
+			 (push i all-differences)
+			 (displa next-result)
+			 (cond (*collect-errors*
+				(mgrind (third expr) error-log)
+				(list-variable-bindings (third expr) error-log)
+				(format error-log ";~%")
+				(format error-log "//*Erroneous Result?:~%")
+				(mgrind result error-log) (format error-log "*// ")
+				(terpri error-log)
+				(mgrind next-result error-log)
+				(format error-log ";~%~%"))))
+		      ))))
     (cond (error-log
 	   (or (streamp *collect-errors*)
 	       (close error-log)))))
   (cond ((null all-differences)
-	 (format t "~%Congratulations: No differences!") '((mlist)))
-	(t (format t "~%The number of differences found was ~A in problems: ~A" (length all-differences)
-		   all-differences)
-	   `((mlist),filename ,@ all-differences))))
+	 (format t "~a/~a tests passed." num-problems num-problems) '((mlist)))
+	(t (progn
+	     (format t "~%~a/~a tests passed." 
+		     (- num-problems (length all-differences)) num-problems)
+	     (let ((s (if (> (length all-differences) 1) "s" "")))
+	       (format t "~%The following ~A problem~A failed: ~A" 
+		       (length all-differences) s all-differences))
+	     `((mlist),filename ,@ all-differences)))))
 	   
-
-(defun batch-equal-check (next-result result &optional recursive)
+(defun batch-equal-check (next-result result 
+			  &optional recursive)
   (or (like next-result result)
       ($simple_equal next-result result)
       (cond ((not
@@ -831,8 +865,8 @@
 
 	     
       (cond ((not  (appears-in result 'factored))
-	     (format t "~%Using ratsimp")(like ($ratsimp next-result)
-						   ($ratsimp result))))
+	     (like ($ratsimp next-result)
+		   ($ratsimp result))))
       (equal 0 ($ratsimp `((mplus) ,next-result ((mtimes) -1 ,result))))
       (equal (msize result nil nil nil nil )
 	     (msize next-result nil nil nil nil))
@@ -929,3 +963,54 @@
 
   
   
+(defvar *testsuite-files* nil)
+
+(defun $run_testsuite (&optional (show-known-bugs nil) (show-all nil)) 
+  (let ((test-file)
+	(expected-failures))
+  (setq *collect-errors* nil)
+  (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp"))
+;  (load "testsuite")
+  (let ((error-break-file)
+	(testresult))
+    (time 
+     (sloop with errs = '() for testentry in *testsuite-files*
+	    do
+	    (if (atom testentry)
+		(progn
+		  (setf test-file testentry)
+		  (setf expected-failures nil))
+		(progn
+		  (setf test-file (first testentry))
+		  (setf expected-failures (rest testentry))))
+  
+	    (format t "~%Running tests in ~a: " test-file)
+	    (or (errset
+		 (progn
+		   (setq testresult 
+			 (rest (test-batch
+				(format nil "~a/~a" 
+					*maxima-testsdir* test-file)
+				expected-failures
+				:show-expected show-known-bugs
+				:show-all show-all)))
+		   (if testresult
+		       (setq errs (append errs (list testresult))))))
+		(progn
+
+		  (setq error-break-file (format nil "~a" test-file))
+		  (setq errs 
+			(append errs 
+				(list (list error-break-file "error break"))))
+		  (format t "~%Caused an error break: ~a~%" test-file)))
+	    finally (cond ((null errs) 
+			   (format t "~%~%No unexpected errors found.~%"))
+			  (t (format t "~%Error summary:~%")
+			     (mapcar
+			      #'(lambda (x)
+				  (let ((s (if (> (length (rest x)) 1) "s" "")))
+				    (format 
+				     t "Error~a found in ~a, problem~a: ~a~%"
+				     s (first x) s (sort (rest x) #'<))))
+			      errs)))))
+    )))

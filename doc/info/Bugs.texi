@@ -1,0 +1,36 @@
+
+@menu
+* Introduction to Bug Detection and Reporting::  
+* Definitions for Bug Detection and Reporting::  
+@end menu
+
+@node Introduction to Bug Detection and Reporting
+@section Introduction to Bug Detection and Reporting
+Like all large programs, Maxima contains both known and unknown
+bugs. This chapter describes the built-in facilities for running the
+Maxima test suite as well as reporting new bugs.
+
+@node Definitions for Bug Detection and Reporting
+@section Definitions for Bug Detection and Reporting
+@defun run_testsuite ()
+Run the maxima test suite. Tests producing the desired answer are
+considered ``passes,'' as are tests that do not produce the desired
+answer, but are marked as known bugs.
+
+run_testsuite() takes two optional arguments, show_known_bugs and
+show_all. Both arguments are booleans. By default, only tests that do
+not pass are individually displayed.
+
+run_testsuite(true) displays tests that are marked as known bugs, as
+well as failures.
+
+run_testsuite(true,true) displays all tests.
+@end defun
+
+@defun bug_report ()
+Provides bug reporting information.
+@end defun
+
+@defun build_info ()
+Summarizes the parameters of the Maxima build.
+@end defun

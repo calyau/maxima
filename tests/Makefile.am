@@ -4,56 +4,43 @@ if CLISP
 check: clisp-check
 clisp-check:
 	echo "Running test suite with clisp..."; \
-	$(MAXIMA) --lisp=clisp --batch-lisp=tests.lisp > tests-clisp.log < /dev/null 2>&1; \
-	./summarize-log tests-clisp.log
+	$(MAXIMA) --lisp=clisp --batch-string="run_testsuite();" < /dev/null
 endif
 
 if CMUCL
 check: cmucl-check
 cmucl-check:
 	echo "Running test suite with cmucl..."; \
-	$(MAXIMA) --lisp=cmucl --batch-lisp=tests.lisp > tests-cmucl.log < /dev/null 2>&1; \
-	./summarize-log tests-cmucl.log
+	$(MAXIMA) --lisp=cmucl --batch-string="run_testsuite();" < /dev/null
 endif
 
 if SBCL
 check: sbcl-check
 sbcl-check:
 	echo "Running test suite with sbcl..."; \
-	$(MAXIMA) --lisp=sbcl --batch-lisp=tests.lisp > tests-sbcl.log < /dev/null 2>&1; \
-	./summarize-log tests-sbcl.log
+	$(MAXIMA) --lisp=sbcl --batch-string="run_testsuite();" < /dev/null
 endif
 
 if GCL
 check: gcl-check
 gcl-check:
 	echo "Running test suite with gcl..."; \
-	$(MAXIMA) --lisp=gcl --batch-lisp=tests.lisp > tests-gcl.log < /dev/null 2>&1; \
-	./summarize-log tests-gcl.log
+	$(MAXIMA) --lisp=gcl --batch-string="run_testsuite();" < /dev/null
 endif
 
 if ACL6
 check: acl6-check
 acl6-check:
 	echo "Running test suite with acl6..."; \
-	$(MAXIMA) --lisp=acl6 --batch-lisp=tests.lisp > tests-acl6.log < /dev/null 2>&1; \
-	./summarize-log tests-acl6.log
+	$(MAXIMA) --lisp=acl6 --batch-string="run_testsuite();" < /dev/null
 endif
 
 if OPENMCL
 check: openmcl-check
 openmcl-check:
 	echo "Running test suite with openmcl..."; \
-	$(MAXIMA) --lisp=openmcl --batch-lisp=tests.lisp > tests-openmcl.log < /dev/null 2>&1; \
-	./summarize-log tests-openmcl.log
+	$(MAXIMA) --lisp=openmcl --batch-string="run_testsuite();" < /dev/null
 endif
-
-install-exec-local:
-	$(mkinstalldirs) $(DESTDIR)$(insttestsdir)
-	$(INSTALL_PROGRAM) summarize-log $(DESTDIR)$(insttestsdir)/summarize-log
-
-uninstall-local:
-	rm -f $(DESTDIR)$(insttestsdir)/summarize-log
 
 genericdir = $(insttestsdir)
 genericdirDATA = rexamples.mac \
@@ -80,6 +67,6 @@ rtest9.mac \
 rtestode.mac \
 rtestode_zp.mac \
 rtestflatten.mac \
-tests.lisp
+testsuite.lisp
 
-EXTRA_DIST = $(genericdirDATA) summarize-log known-bugs
+EXTRA_DIST = $(genericdirDATA)
