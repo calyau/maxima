@@ -472,6 +472,13 @@
 (defprop %sum 110. tex-rbp) ;; added by BLW, 1 Oct 2001
 (defprop %product 115. tex-rbp)	;; added by BLW, 1 Oct 2001
 
+;; If the number contains a exponent marker when printed, we need to
+;; put parens around it.
+(defun numneedsparen (number)
+  (unless (integerp number)
+    (let ((r (exploden number)))
+      (member 'e r :test #'string-equal))))
+
 ;; insert left-angle-brackets for mncexpt. a^<n> is how a^^n looks.
 (defun tex-mexpt (x l r)
   (let((nc (eq (caar x) 'mncexpt)))	; true if a^^b rather than a^b
@@ -509,7 +516,11 @@
 			 (setq r (tex (car bascdr) nil r f 'mparen))
 			 (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen))))
 		    (t nil)))))		; won't doit. fall through
-      (t (setq l (tex (cadr x) l nil lop (caar x))
+      (t (setq l (cond ((and (numberp (cadr x))
+			     (numneedsparen (cadr x)))
+			(tex (cadr x) (cons "\\left(" l) '("\\right)") lop
+			     (caar x)))
+		       (t (tex (cadr x) l nil lop (caar x))))
 	       r (if (mmminusp (setq x (nformat (caddr x))))
 		     ;; the change in base-line makes parens unnecessary
 		     (if nc
