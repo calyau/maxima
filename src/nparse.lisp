@@ -994,7 +994,8 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	 (when *mread-prompt*
 	       (and *parse-window* (setf (car *parse-window*) nil
 					 *parse-window* (cdr *parse-window*)))
-	       (princ *mread-prompt*))
+	       (princ *mread-prompt*)
+	       (force-output))
 	 (#+lispm read-apply #-lispm apply 'mread-raw read-args)
 		    )
   #-(or NIL cl)
