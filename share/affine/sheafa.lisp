@@ -1013,7 +1013,7 @@
 					:recursive-p t))
 			    appending
 			    (sloop for v in tem do
-				 (copy-structure v ldata- open-inequality
+				 (zl-copy-structure v ldata- open-inequality
 						 (sftimes ggi (ldata-open-inequality
 								v))))))))
 					     
@@ -2143,12 +2143,12 @@ would restore the list"
 			       'pointergp))))
     (setq fns (cons (rmap-denom rmap) (rmap-fns rmap)))
     (setq red-fns   (eliminate-common-factors fns))
-    (setq answ   (copy-structure rmap rmap- fns (cdr red-fns)
+    (setq answ   (zl-copy-structure rmap rmap- fns (cdr red-fns)
 					 denom (car red-fns)))
     answ))
 
 (defun convert-rmap-to-new (name) 
-	 (copy-structure
+	 (zl-copy-structure
 	       name rmap-
 	            fns
 		    (sloop for v in (rmap-fns name)

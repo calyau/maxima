@@ -20,7 +20,7 @@
 ;  (setq ineq          ;(plcm (list (xxx i) 1 1)
 ;		    (psublis subs 1 (zopen-inequality zopen)))
   (setq ineq (function-numerator (apply-rmap (zopen-inv ichart) (zopen-inequality zopen))))
-  (setq answ (copy-structure zopen zopen- coord pss inv qss inequality ineq))
+  (setq answ (zl-copy-structure zopen zopen- coord pss inv qss inequality ineq))
   answ)
 
 (defun s-blow (  simp-pls open-number component-number)
@@ -1146,13 +1146,13 @@
 	  (sloop 
 	    for cof in cofs
 	    collecting
-	    (copy-structure zopen
+	    (zl-copy-structure zopen
 		      zopen- inequality (nplcm cof gg)
 				coord (zopen-coord zopen)
 				inv (zopen-inv zopen))))
     (setq next-open
 
-		 (copy-structure zopen zopen- inequality  (nplcm gg
+		 (zl-copy-structure zopen zopen- inequality  (nplcm gg
 							     gmprep-poly)))
     (cons next-open mzopens)))
 
@@ -1191,7 +1191,7 @@
 	  (sloop 
 	    for cof in cofs
 	    collecting
-	    (copy-structure  ldata
+	    (zl-copy-structure  ldata
 		      ldata- inequality (nplcm cof (ldata-inequality ldata)))))
    (values all-ldata cofs)))
 
@@ -1919,7 +1919,7 @@
 
 (defun add-zopen-history (zopen n)
   (cond ((>= (length zopen) 5)
-	 (copy-structure zopen zopen- history (cons n (zopen-history zopen))))
+	 (zl-copy-structure zopen zopen- history (cons n (zopen-history zopen))))
 	(t (setq zopen (nconc zopen (copy-list (list nil) )))
 	   (add-zopen-history zopen n))))
 
@@ -2533,7 +2533,7 @@
        ((setq varl (linear-ldatap ldata :open-g open-g))
 	(setq eqns(reduce-linear-ldata ldata varl :open-g open-g))
 	(cond ((grobner-subset '(1) eqns open-g) nil)
-	      (t (list (copy-structure ldata ldata- eqns eqns)))))
+	      (t (list (zl-copy-structure ldata ldata- eqns eqns)))))
        ((< (setq comp (gen-pcomplexity (ldata-eqns ldata))) 200)
 	(LET (*POLY-SIMPLIFICATIONS*)
 	  (grobner-remember (ldata-eqns ldata))
@@ -2560,7 +2560,7 @@
 					  do (setq eqn (gen-prem f ff uu)) 
 					  when (> (length  (non-constant-factors eqn open-g)) 2)
 					    do (return-from sue (make-dichotomy
-								  (copy-structure ldata ldata-
+								  (zl-copy-structure ldata ldata-
 										  eqns (subst eqn f eqns))
 								  :open-g  open-g))))
 		     finally (loop-return (list ldata))))

@@ -197,7 +197,7 @@
 	       
 	       (setq refs
 		     (sloop for gg in answ
-			   collecting (copy-structure zopen zopen-
+			   collecting (zl-copy-structure zopen zopen-
 						      inequality gg)))
 	       ;;could stick something recursive in here to make linear variables in each
 	       ;;eqn disjoint
@@ -428,7 +428,7 @@
 		    (t (format t "~%There are ~A equations of complexity ~A of which ~A ~
                                    are monomials"
 			       (length eqns) (gen-pcomplexity eqns) (length used))
-		     (list (copy-structure ldata ldata- eqns eqns))))))
+		     (list (zl-copy-structure ldata ldata- eqns eqns))))))
 
 
 ;;;try to do without factoring.

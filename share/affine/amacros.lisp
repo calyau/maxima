@@ -419,7 +419,11 @@
 	into tem
 	finally (return (cons 'progn tem))))
 
-(defmacro copy-structure (struct conc-prefix &rest alt-list)
+;; Note that ZL-COPY-STRUCTURE works only for structures which are
+;; represented by lists.  The `ZL' is just for analogy with other private
+;; versions of list related functions in Maxima and no reference to any
+;; historical version of Lisp is intended.
+(defmacro zl-copy-structure (struct conc-prefix &rest alt-list)
  ` (let (( .ans. (copy-list ,struct)))
 	 (set-slots .ans. ,conc-prefix ,@ alt-list)
 	 .ans.))
