@@ -525,14 +525,19 @@ that matches the name NAME with extention EXT"
 				 (string-match doc-start s
 					       (+ beg 1 initial-offset) end)))
 			   ;;(format t "start-doc = ~A~%" start-doc)
-			   (when (>= (string-match pat-subnode s
-						   (if (>= start-doc 0)
-						       start-doc
-						       (+ beg 1 initial-offset))
-						   end)
-				     0)
-			     ;;(format t "end at ~A~%" (match-beginning 0))
-			     (match-beginning 0))))))
+			   (cond ((>= (string-match pat-subnode s
+						    (if (>= start-doc 0)
+							start-doc
+							(+ beg 1 initial-offset))
+						    end)
+				      0)
+				  ;;(format t "end at ~A~%" (match-beginning 0))
+				  (match-beginning 0))
+				 (t
+				  ;; No next node, so the end point we
+				  ;; found is really the end point we
+				  ;; want.
+				  end))))))
 
 	      (subseq s (+ initial-offset beg) e)))))))
   )
