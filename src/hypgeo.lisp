@@ -1907,19 +1907,35 @@
     (rest arg1 index1 index2)
   (lt-ltp 's rest arg1 (list index1 index2)))
 
-(defun hstf
-    (v z)
-  (prog(d32)
-     (setq d32 (div 3 2))
-     (return (list (mul* (power (div z 2)(add v 1))
-			 (inv (gm d32))
-			 (inv (gm (add v d32)))
-			 (inv (gm (add v d32))))
-		   (list 'fpq
-			 (list 1 2)
-			 (list 1)
-			 (list d32 (add v d32))
-			 (mul* (inv -4) z z))))))
+;; Express the Struve H function as a hypergeometric function.
+;;
+;; A&S 12.1.2 gives the following series for the Struve H function:
+;;
+;;                       inf
+;; H[v](z) = (z/2)^(v+1)*sum (-1)^k*(z/2)^(2*k)/gamma(k+3/2)/gamma(k+v+3/2)
+;;                       k=0
+;;
+;; We can write this in the form
+;;
+;; H[v](z) = 2/sqrt(%pi)*(z/2)^(v+1)/gamma(v+3/2)
+;;
+;;             inf
+;;           * sum n!/poch(3/2,n)/poch(v+3/2,n)*(-z^2/4)^n/n!
+;;             n=0
+;;
+;;         = 2/sqrt(%pi)*(z/2)^(v+1)/gamma(v+3/2) * 1F2(1;3/2,v+3/2;(-z^2/4))
+;;
+(defun hstf (v z)
+  (let ((d32 (div 3 2)))
+    (list (mul* (power (div z 2)(add v 1))
+		(inv (gm d32))
+		(inv (gm (add v d32)))	; What is this doing here?
+		(inv (gm (add v d32))))
+	  (list 'fpq
+		(list 1 2)
+		(list 1)
+		(list d32 (add v d32))
+		(mul* (inv -4) z z)))))
 
 (defun lstf
     (v z)
@@ -2301,12 +2317,25 @@
 				       m)))))
      (return 'failed-on-f19cond-multiply-the-other-cases-with-d)))
 
-(defun f19p220-simp
-    (s l1 l2 cf k)
+;; Table of Laplace transforms, p 220, formula 19:
+;;
+;; If m + k <= n + 1, and Re(s) > 0, the Laplace transform of
+;;
+;;    t^(s-1)*%f[m,n]([a1,...,am],[p1,...,pn],(c*t)^k)
+;; is
+;; 
+;;    gamma(s)/p^s*%f[m+k,n]([a1,...,am,s/k,(s+1)/k,...,(s+k-1)/k],[p1,...,pm],(k*c/p)^k)
+;;
+;; with Re(p) > 0 if m + k <= n, Re(p+k*c*exp(2*%pi*%i*r/k)) > 0 for r
+;; = 0, 1,...,k-1, if m + k = n + 1.
+;;
+;; The args below are s, [a's], [p's], c, k.
+(defun f19p220-simp (s l1 l2 cf k)
   (mul* (gm s)
 	(inv (power par s))
 	(hgfsimp-exec (append l1 (addarglist s k))
 		      l2
+		      ;; Shouldn't we also have cf^k?
 		      (mul* cf
 			    (power k k)
 			    (power (inv par) k))))) 
