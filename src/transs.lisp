@@ -271,6 +271,14 @@
 	 (setq result (list '(mlist) input-file)))
 	(t (setq result (translate-file input-file translation-output-file))
 	   (setq input-file (third result))))
+  #+(or cmu clisp)
+  (multiple-value-bind (output-truename warnings-p failure-p)
+      (compile-file input-file :output-file (or bin-file t))
+    ;; If the compiler encountered errors, don't set bin-file to
+    ;; indicate that we found errors. Is this what we want?
+    (unless failure-p
+      (setq bin-file output-truename)))
+  #-(or cmu clisp)
   (setq bin-file (compile-file input-file :output-file bin-file))
   (append result (list bin-file)))
 
