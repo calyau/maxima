@@ -8,8 +8,90 @@
 /* Don't kill(all); It messes up trigsimp */
 
 /* Print ode number*/
-(pn_(n_):=print("Kamke ODE ",n_),true);
+(pn_(n_):=print("Kamke ODE 1.",n_),true);
 true;
+
+/* 101 */
+(pn_(100),ans:contrib_ode(eqn:x*'diff(y,x)+x*y^2-y,y,x));
+[(x^2*y-2*x)/(2*y)=%c];
+solve(ans[1],y);
+[y=2*x/(x^2-2*%c)];
+[method,ode_check(eqn,%[1])];
+[exact,0];
+
+/* 102 - Why the complex solution? */
+(pn_(102),ans:contrib_ode(eqn:x*'diff(y,x)+x*y^2-y-a*x^3,y,x));
+[y=sqrt(a)*(%c*x*sinh(sqrt(a)*x^2/2)+%i*x*cosh(sqrt(a)*x^2/2))/(%i*sinh(sqrt(a)*x^2/2)+%c*cosh(sqrt(a)*x^2/2))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
+
+/* 102  - Why the complex solution? */
+(pn_(102),ans:contrib_ode(eqn:x*'diff(y,x)+x*y^2-(2*x^2+1)*y-x^3,y,x));
+[y=((sqrt(2)*%c+%i)*x*sinh(sqrt(2)*x^2/2)+(%c+sqrt(2)*%i)*x*cosh(sqrt(2)*x^2/2))/(%i*sinh(sqrt(2)*x^2/2)+%c*cosh(sqrt(2)*x^2/2))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
+
+/* 104 */
+assume(a>0,b>0);
+[a>0,b>0];
+(pn_(104),ans:contrib_ode(eqn: x*'diff(y,x)+a*x*y^2+2*y+b*x,y,x));
+[-(sqrt(a)*sqrt(b)*(atan((a^2*x*y^2+a*y+a*b*x)/(sqrt(a)*sqrt(b)))-atan(sqrt(a)*y/sqrt(b)))-a*b*x)/(a*b)=%c];
+method;
+lie;
+forget(a>0,b>0);
+[a>0,b>0];
+
+/* 105 */
+(pn_(105),ans:contrib_ode(eqn:x*'diff(y,x)+a*x*y^2+b*y+c*x+d,y,x));
+[[y='diff(%u,x,1)/(%u*a),%u*a^2*(-d/x-c)-'diff(%u,x,1)*a*b/x-'diff(%u,x,2)*a = 0]];
+method;
+riccati;
+
+/* 106 [a+b>0] Actually want b+a # 0 */
+assume(a+b>0);
+[a+b>0];
+(pn_(106),ans:contrib_ode(eqn:x*'diff(y,x)+x^a*y^2+(a-b)*y/2+x^b,y,x));
+[y=-(%c*x^(b/2+a/2)*sin(2*x^(b/2+a/2)/(b+a))-x^(b/2+a/2)*cos(2*x^(b/2+a/2)/(b+a)))/(x^a*sin(2*x^(b/2+a/2)/(b+a))+%c*x^a*cos(2*x^(b/2+a/2)/(b+a)))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
+forget(a+b>0);
+[a+b>0];
+
+/* 107 */
+(pn_(107),ans:contrib_ode(eqn:x*'diff(y,x)+a*x^alpha*y^2+b*y-c*x^beta,y,x));
+[[y = 'diff(%u,x,1)*x^(1-alpha)/(%u*a),%u*a^2*c*x^(beta+2*(alpha-1)-1)-'diff(%u,x,2)*a*x^(alpha-1)-'diff(%u,x,1)*(a*b*x^(alpha-2)-a*(alpha-1)*x^(alpha-2))=0]];
+method;
+riccati;
+
+/* 108 */
+(pn_(108),ans:contrib_ode(eqn:x*'diff(y,x)-y^2*log(x)+y,y,x));
+[y=1/(x*(log(x)/x+1/x+%c))];
+[method,ode_check(eqn,ans[1])];
+[bernoulli,0];
+
+/* 109 */
+(pn_(109),ans:contrib_ode(eqn:x*'diff(y,x)-y*(2*y*log(x)-1),y,x));
+[y=1/(x*(%c-2*(-log(x)/x-1/x)))];
+[method,ode_check(eqn,ans[1])];
+[bernoulli,0];
+
+/* 110 Why the complex solution? */
+(pn_(110),ans:contrib_ode(eqn:x*'diff(y,x)+ f(x)*(y^2-x^2)-y,y,x));
+[y=(%c*x*sinh('integrate(f(x),x))+%i*x*cosh('integrate(f(x),x)))/(%i*sinh('integrate(f(x),x))+%c*cosh('integrate(f(x),x)))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
+
+/* 114 [y>0] */
+/* 120 Crash */ 
+/* 126 Crash */ 
+/* 127 Crash */ 
+/* 128 Crash */ 
+/* 141 [4*b-a^2+2*a-1>0] */
+/* 143 [4*a*b+1>0] */
+/* 180 [4*a*c-b^2>0] */
+/* 181 [a>0] */
+/* 185 Infinite run time */
+/* 187 [n^2-2*n-4*a*b+1>0] */
 
 /* 188  Abel eqn
   Some choices that are integrable include
@@ -22,3 +104,5 @@ method;
 genhom;
 kill(a,b,n);
 done;
+
+/* 189 Asks question */
