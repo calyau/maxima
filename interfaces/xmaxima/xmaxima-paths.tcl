@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.11 2002-09-10 16:11:47 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.12 2002-09-10 16:16:30 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -25,10 +25,10 @@ proc setMaxDir {} {
 		[info exists autoconf(package)] && \
 		[file isdir  $autoconf(datadir)] && \
 		[file isdir \
-		  [file join $autoconf(datadir) 
+		  [file join $autoconf(datadir) \
 		   $autoconf(package) $autoconf(version)]]} {
 
-	    # Assume it's CYGWIN or  MSYS
+	    # Assume it's CYGWIN or  MSYS in /usr/local
 	} elseif {[file isdir $up/lib] && \
 		      [file isdir $up/bin] && \
 		      [file isdir $up/libexec] && \
