@@ -737,6 +737,7 @@ Maybe you want to use NOT EQUAL."))
   (if (or (atom e) (and (free e '$inf) (free e '$minf))) e (infsimp e)))
 
 (defun sign1 (x)
+  (setq x (specrepcheck x))
   (setq x (infsimp* x))
   (if (eq x '$und) (if limitp '$pnz (merror "SIGN called on UND.")))
   (prog (dum exp)
