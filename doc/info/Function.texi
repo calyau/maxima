@@ -1315,3 +1315,15 @@ assignments to the translation flags (@code{tr_numer}, etc.) have no effect on t
 
 @end defun
 
+@defun declare_translated (f_1, f_2, ...)
+When translating a file of Maxima code
+to Lisp, it is important for the translator to know which functions it
+sees in the file are to be called as translated or compiled functions,
+and which ones are just Maxima functions or undefined.  Putting this
+declaration at the top of the file, lets it know that although a symbol
+does which does not yet have a Lisp function value, will have one at
+call time.  (MFUNCTION-CALL fn arg1 arg2.. ) is generated when
+the translator does not know fn is going to be a Lisp function.
+
+@end defun
+
