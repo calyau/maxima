@@ -929,7 +929,7 @@ this amounts to appending the @code{vi} as derivative indices.
 Subsequently, derivative indices will be sorted, unless @code{iframe_flag}
 is set to @code{true}.
 
-@code{idiff()} can also differentiate the determinant of th metric
+@code{idiff()} can also differentiate the determinant of the metric
 tensor. Thus, if @code{imetric} has been bound to @code{G} then
 @code{idiff(determinant(g),k)} will return
 @code{2*determinant(g)*ichr2([%i,k],[%i])} where the dummy index @code{%i}

@@ -91,7 +91,7 @@ dotdistrib:true;
 dotexptsimp:false;
 @end example
 
-If you wish to experience with a nonassociative algebra, you may also
+If you wish to experiment with a nonassociative algebra, you may also
 consider setting @code{dotassoc} to @code{false}. In this case, however,
 @code{atensimp} will not always be able to obtain the desired
 simplifications.
