@@ -125,15 +125,15 @@
 ;; These types have the following meaning: Suppose MFUN evaluates to some
 ;; symbol in the MAXIMA package.  That this symbol is of type
 ;;
-;;  - EXPR (or SUBR) implies that it has a lisp function definition <=
-;;    (SYMBOL-FUNCTION MFUN)
+;;  - EXPR (or SUBR) implies that it has a lisp function definition
+;;    (SYMBOL-FUNCTION MFUN).
 ;;
-;;  - MEXPR implies that it has a (parsed) maxima language definition <=
+;;  - MEXPR implies that it has a (parsed) maxima language definition
 ;;    (MGET MFUN 'MEXPR) and all arguments are evaluated by MEVAL.
 ;;
-;;  - MFEXPR* implies that it has a lisp function definition <= (GET MFUN
-;;    'MFEXPR*) and its arguments are not automatically evaluated by
-;;    MEVAL.
+;;  - MFEXPR* implies that it has a lisp function definition
+;;    (GET MFUN 'MFEXPR*) and its arguments are not automatically
+;;    evaluated by MEVAL.
 ;;
 ;; Note that the shadow type has to agree with the original function's
 ;; type in the way arguments are evaluated.  On the other hand, I think
@@ -219,7 +219,7 @@
 
 (defun macsyma-trace-sub (fun handler ilist &aux temp)
   (declare (symbol temp))		; pathetic
-  (cond ((not (symbolp fun))
+  (cond ((not (symbolp (setq fun (getopr fun))))
 	 (mtell "~%Bad arg to TRACE: ~M" fun)
 	 nil)
 	((trace-p fun)
@@ -255,7 +255,7 @@
 
 (defun macsyma-untrace-sub (fun handler ilist)
   (prog1
-   (cond ((not (symbolp fun))
+   (cond ((not (symbolp (setq fun (getopr fun))))
 	  (mtell "~%Bad arg to UNTRACE: ~M" fun)
 	  nil)
 	 ((not (trace-p fun))
@@ -501,7 +501,7 @@
 
 (defun trace-option-p (function KEYWORD)
   (do ((options					
-	(LET ((OPTIONS (TRACE-OPTIONS FUNCTION)))
+	(LET ((OPTIONS (TRACE-OPTIONS (getop FUNCTION))))
 	  (COND ((NULL OPTIONS) NIL)
 		(($LISTP OPTIONS) (CDR OPTIONS))
 		(T
@@ -517,7 +517,7 @@
 	  ((eq (caar option) keyword)
 	   (let ((return-to-trace-handle $trace_safety))
 	     (return (mapply (cadr option) predicate-arglist
-			     "&A trace option predicate")))))))
+			     '|&A trace option predicate|)))))))
 			
 
 (defun trace-enter-print (fun lev largs &aux (mlargs `((mlist) ,@largs)))
@@ -576,10 +576,10 @@
 (defun ask-choicep (llist &rest header-message)
        (do ((j 0 (f1+ j))
 	    (dlist nil
-		   (list* "M" `((marrow) ,j ,(car ilist)) dlist))
+		   (list* #\newline `((marrow) ,j ,(car ilist)) dlist))
 	    (ilist llist (cdr ilist)))
 	   ((null ilist)
-	    (setq dlist (nconc header-message (cons "M" (nreverse dlist))))
+	    (setq dlist (nconc header-message (cons #\newline (nreverse dlist))))
 	    (let ((upper (f1- j)))
 		 (pred-$read #'(lambda (val)
 				      (and (integerp val)
@@ -597,7 +597,7 @@
 			     "Exit with user supplied value")
 			   "Error during application of" (mopstringnam fun)
 			   "at level" level
-			   "M" "Do you want to:")
+			   #\newline "Do you want to:")
 	      ((0)
 	       '(MAXIMA-ERROR))
 	      ((1)
@@ -705,7 +705,7 @@
 	     (return-to-trace-handle nil))
 	    (case type
 		   ((mexpr)
-		    (mapply prop largs "&A traced function"))
+		    (mapply prop largs '|&A traced function|))
 		   ((expr)
 		    (apply prop largs))
 		   ((subr lsubr)
