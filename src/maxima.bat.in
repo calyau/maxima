@@ -14,6 +14,7 @@ set arg9=%9
 set lisp=@DEFAULTLISP@
 set version=@VERSION@
 set prefix=@prefix@
+set maxima_prefix=@prefix@
 set package=@PACKAGE@
 set verbose=false
 
