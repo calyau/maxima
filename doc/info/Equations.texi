@@ -502,15 +502,8 @@ calling ALGSYS.)
 @c @node ZRPOLY
 @c @unnumberedsec phony
 @defun ZRPOLY
- - The IMSL ZRPOLY routine for finding the zeros of simple
-polynomials (single variable, real coefficients, non-negative integer
-exponents), using the Jenkins-Traub technique.
-To use it, do:  LOADFILE("imsl");
-The command is POLYROOTS(polynomial);
-For more info, do: PRINTFILE("zrpoly.usg");
-For a demo do: DEMO("zrpoly.dem"); 
-For general info on MACSYMA-IMSL packages, PRINTFILE(IMSL,USAGE,SHARE2);
-
+ - This is no longer available in Maxima. See ALLROOTS for a function
+   to compute the roots of a polynomial.
 
 @end defun
 @c @node ZSOLVE
