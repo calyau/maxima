@@ -17,12 +17,12 @@ clisp versions: Clisp version 2.33.2 or later is recommended. Clisp
 CMUCL <http://cmucl.cons.org>
 -----
 
-	CMUCL is generally the fastest option for Maxima on platforms
-where it is available. The rmaxima front-end provides advanced
-line-editing facilities for Maxima when compiled with CMUCL. rlwrap is
-available from <http://utopia.knoware.nl/~hlub/uck/rlwrap/> .
+	CMUCL is a fast option for Maxima on platforms where it is
+available. The rmaxima front-end provides advanced line-editing
+facilities for Maxima when compiled with CMUCL. rlwrap is available
+from <http://utopia.knoware.nl/~hlub/uck/rlwrap/> .
 
-CMUCL versions: 18e is known to work.
+CMUCL versions: 18e and pre-releases of 19a are known to work.
 
 GCL <http://savannah.gnu.org/projects/gcl>
 ---
@@ -30,8 +30,9 @@ GCL <http://savannah.gnu.org/projects/gcl>
 support, so Maxima will have advanced command-line editing facilities
 when built with it.
 
-GCL versions: The soon-to-be-released GCL 2.6.2 is the best bet for
-Maxima. Only the ANSI build of GCL is currently supported.
+GCL versions: GCL 2.6.3 is recommended for Maxima. Only the ANSI build
+of GCL is currently supported. GCL produces the fastest Maxima
+exectuable of any lisp.
 
 SBCL <http://sbcl.sourceforge.net>
 ----

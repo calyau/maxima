@@ -49,12 +49,17 @@ categories: infrastructure, functionality and bug fixes.
       - rmaxima is a simple new front-end that gives Maxima better
         command-line editing abilities, including persistent history,
         for Lisps that did not have it before, e.g., CMUCL. rmaxima
-        requires the external program rlwrap.
+        requires the external program rlwrap. rmaxima is not currently
+        compatible with Clisp.
    
    i) Test suite improvements
       - The test suite is now available at run time through the
         new command run_testsuite().
       - Test suite output has been made more readable.
+
+   j) GCL performance increase
+      - Maxima now takes better advantage of GCL's optimization
+        features. The result is a substantially faster exectuable.
 
 2) Functionality
 
