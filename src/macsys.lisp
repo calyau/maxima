@@ -392,3 +392,7 @@
 
 #+clisp
 (defun $system (&rest x) (ext:run-shell-command (apply '$sconcat x)))
+
+#+cmu
+(defun $system (&rest args)
+  (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args))))
