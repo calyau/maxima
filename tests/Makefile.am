@@ -51,6 +51,7 @@ rtest13.mac \
 rtest13s.mac \
 rtest14.mac \
 rtest15.mac \
+rtest16.mac \
 rtest1a.mac \
 rtest1.mac \
 rtest2.mac \
