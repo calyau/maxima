@@ -6,7 +6,7 @@
 ***************************************************************************/
 
 
-(kill(all),
+(kill(allbut(props)),
 DECLARE(L,SCALAR,[M1,M2,M3],NONSCALAR));
 DONE$
 EXPAND((1-L*M1) . (1-L*M2) . (1-L*M3));

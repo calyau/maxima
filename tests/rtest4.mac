@@ -20,7 +20,7 @@ EXPAND(%);
 6.0*%I-1.75$
 EXPAND(SQRT(2*%I));
 (-1)^(1/4)*SQRT(2)$
-KILL(ALL);
+KILL(ALLBUT(PROPS));
 DONE$
 SIN(X)+COS(Y)+(W+1)^2+'DIFF(SIN(W),W);
 COS(Y)+SIN(X)+'DIFF(SIN(W),W,1)+(W+1)^2$
@@ -103,7 +103,7 @@ RADCAN(%);
 (%E^X-1)/(%E^(X/2)+1)$
 RADCAN(%);
 %E^(X/2)-1$
-KILL(ALL);
+KILL(ALLBUT(PROPS));
 DONE$
 COMBINE(A/X+B/X+A/Y+B/Y);
 (B+A)/Y+(B+A)/X$

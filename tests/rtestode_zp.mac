@@ -6,7 +6,7 @@
     http://www.loria.fr/~zimmerma/ComputerAlgebra/
 */
 
-kill(all);
+kill(allbut(props));
 done;
 
 /* Equation 1 - Linear polynomial */

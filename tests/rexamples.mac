@@ -1,452 +1,452 @@
 /* not found
-(kill(all),example("//"));
+(kill(allbut(props)),example("//"));
 done; */
 
-(kill(all),example(ADDITIVE));
+(kill(allbut(props)),example(ADDITIVE));
 done;
 
-(kill(all),example(ALGSYS));
+(kill(allbut(props)),example(ALGSYS));
 done;
 
-(kill(all),example(ALLROOTS));
+(kill(allbut(props)),example(ALLROOTS));
 done;
 
-(kill(all),example(ANTISYMMETRIC));
+(kill(allbut(props)),example(ANTISYMMETRIC));
 done;
 
-(kill(all),example(APPEND));
+(kill(allbut(props)),example(APPEND));
 done;
 
-(kill(all),example(ARRAYINFO));
+(kill(allbut(props)),example(ARRAYINFO));
 done;
 
-(kill(all),example(ARRAYS));
+(kill(allbut(props)),example(ARRAYS));
 done;
 
-(kill(all),example(AT));
+(kill(allbut(props)),example(AT));
 done;
 
-(kill(all),example(ATVALUE));
+(kill(allbut(props)),example(ATVALUE));
 done;
 
-(kill(all),example(AUGCOEFMATRIX));
+(kill(allbut(props)),example(AUGCOEFMATRIX));
 done;
 
-(kill(all),example(BEZOUT));
+(kill(allbut(props)),example(BEZOUT));
 done;
 
 /* not found
-(kill(all),example(BLOCK));
+(kill(allbut(props)),example(BLOCK));
 done; */
 
 /* not found
-(kill(all),example(BOTHCOEFF));
+(kill(allbut(props)),example(BOTHCOEFF));
 done; */
 
-(kill(all),example(CATCH));
+(kill(allbut(props)),example(CATCH));
 done;
 
-(kill(all),example(CF));
+(kill(allbut(props)),example(CF));
 done;
 
-(kill(all),example(CFDISREP));
+(kill(allbut(props)),example(CFDISREP));
 done;
 
-(kill(all),example(CFEXPAND));
+(kill(allbut(props)),example(CFEXPAND));
 done;
 
 /* user input required - asks if a > 0
-(kill(all),example(CHANGEVAR));
+(kill(allbut(props)),example(CHANGEVAR));
 done; */
 
-(kill(all),example(CHARPOLY));
+(kill(allbut(props)),example(CHARPOLY));
 done;
 
-(kill(all),example(COEFF));
+(kill(allbut(props)),example(COEFF));
 done;
 
-(kill(all),example(COMBINE));
+(kill(allbut(props)),example(COMBINE));
 done;
 
-(kill(all),example(COMMUTATIVE));
+(kill(allbut(props)),example(COMMUTATIVE));
 done;
 
-(kill(all),example(COMPLEX));
+(kill(allbut(props)),example(COMPLEX));
 done;
 
-(kill(all),example(CONTENT));
+(kill(allbut(props)),example(CONTENT));
 done;
 
-(kill(all),example(DEFMATCH));
+(kill(allbut(props)),example(DEFMATCH));
 done;
 
-(kill(all),example(DEFTAYLOR));
+(kill(allbut(props)),example(DEFTAYLOR));
 done;
 
-(kill(all),example(DELETE));
+(kill(allbut(props)),example(DELETE));
 done;
 
-(kill(all),example(DEPENDS));
+(kill(allbut(props)),example(DEPENDS));
 done;
 
-(kill(all),example(DERIVDEGREE));
+(kill(allbut(props)),example(DERIVDEGREE));
 done;
 
-(kill(all),example(DESOLVE));
+(kill(allbut(props)),example(DESOLVE));
 done;
 
-(kill(all),example(DIFF));
+(kill(allbut(props)),example(DIFF));
 done;
 
-(kill(all),example(DISPLAY));
+(kill(allbut(props)),example(DISPLAY));
 done;
 
-(kill(all),example(DIVIDE));
+(kill(allbut(props)),example(DIVIDE));
 done;
 
 /* something bad happens
-(kill(all),example(DO));
+(kill(allbut(props)),example(DO));
 done; */
 
-(kill(all),example(DOTSCRULES));
+(kill(allbut(props)),example(DOTSCRULES));
 done;
 
-(kill(all),example(DPART));
+(kill(allbut(props)),example(DPART));
 done;
 
-(kill(all),example(ECHELON));
+(kill(allbut(props)),example(ECHELON));
 done;
 
-(kill(all),example(ELIMINATE));
+(kill(allbut(props)),example(ELIMINATE));
 done;
 
 /* user input required
-(kill(all),example(ENTERMATRIX));
+(kill(allbut(props)),example(ENTERMATRIX));
 done; */
 
-(kill(all),example(EQUATIONS));
+(kill(allbut(props)),example(EQUATIONS));
 done;
 
-(kill(all),example(EV));
+(kill(allbut(props)),example(EV));
 done;
 
-(kill(all),example(EVALUATION));
+(kill(allbut(props)),example(EVALUATION));
 done;
 
-(kill(all),example(EVENFUN));
+(kill(allbut(props)),example(EVENFUN));
 done;
 
-(kill(all),example(EXP));
+(kill(allbut(props)),example(EXP));
 done;
 
-(kill(all),example(EXPAND));
+(kill(allbut(props)),example(EXPAND));
 done;
 
-(kill(all),example(FACTCOMB));
+(kill(allbut(props)),example(FACTCOMB));
 done;
 
-(kill(all),example(FACTOR));
+(kill(allbut(props)),example(FACTOR));
 done;
 
-(kill(all),example(FACTORSUM));
+(kill(allbut(props)),example(FACTORSUM));
 done;
 
-(kill(all),example(FEATUREP));
+(kill(allbut(props)),example(FEATUREP));
 done;
 
-(kill(all),example(FREEOF));
+(kill(allbut(props)),example(FREEOF));
 done;
 
-(kill(all),example(FULLMAP));
+(kill(allbut(props)),example(FULLMAP));
 done;
 
-(kill(all),example(FULLMAPL));
+(kill(allbut(props)),example(FULLMAPL));
 done;
 
-(kill(all),example(FUNCSOLVE));
+(kill(allbut(props)),example(FUNCSOLVE));
 done;
 
-(kill(all),example(FUNCTIONS));
+(kill(allbut(props)),example(FUNCTIONS));
 done;
 
-(kill(all),example(GENMATRIX));
+(kill(allbut(props)),example(GENMATRIX));
 done;
 
-(kill(all),example(GET));
+(kill(allbut(props)),example(GET));
 done;
 
-(kill(all),example(GFACTOR));
+(kill(allbut(props)),example(GFACTOR));
 done;
 
-(kill(all),example(GRADEF));
+(kill(allbut(props)),example(GRADEF));
 done;
 
-(kill(all),example(HORNER));
+(kill(allbut(props)),example(HORNER));
 done;
 
 /* something bad happens
-(kill(all),example(IF));
+(kill(allbut(props)),example(IF));
 done; */
 
 /* user input required
-(kill(all),example(ILT));
+(kill(allbut(props)),example(ILT));
 done; */
 
-(kill(all),example(INPART));
+(kill(allbut(props)),example(INPART));
 done;
 
-(kill(all),example(INTEGRATE));
+(kill(allbut(props)),example(INTEGRATE));
 done;
 
-(kill(all),example(IS));
+(kill(allbut(props)),example(IS));
 done;
 
-(kill(all),example(ISOLATE));
+(kill(allbut(props)),example(ISOLATE));
 done;
 
 /* not found
-(kill(all),example(LAMBDA));
+(kill(allbut(props)),example(LAMBDA));
 done; */
 
-(kill(all),example(LAPLACE));
+(kill(allbut(props)),example(LAPLACE));
 done;
 
-(kill(all),example(LASSOCIATIVE));
+(kill(allbut(props)),example(LASSOCIATIVE));
 done;
 
-(kill(all),example(LET));
+(kill(allbut(props)),example(LET));
 done;
 
-(kill(all),example(LETRULES));
+(kill(allbut(props)),example(LETRULES));
 done;
 
-(kill(all),example(LIMIT));
+(kill(allbut(props)),example(LIMIT));
 done;
 
-(kill(all),example(LINEAR));
+(kill(allbut(props)),example(LINEAR));
 done;
 
-(kill(all),example(LINSOLVE));
+(kill(allbut(props)),example(LINSOLVE));
 done;
 
-(kill(all),example(LISTOFVARS));
+(kill(allbut(props)),example(LISTOFVARS));
 done;
 
-(kill(all),example(LISTS));
+(kill(allbut(props)),example(LISTS));
 done;
 
-(kill(all),example(LOGCONTRACT));
+(kill(allbut(props)),example(LOGCONTRACT));
 done;
 
-(kill(all),example(MAP));
+(kill(allbut(props)),example(MAP));
 done;
 
-(kill(all),example(MATCHDECLARE));
+(kill(allbut(props)),example(MATCHDECLARE));
 done;
 
-(kill(all),example(MATRICES));
+(kill(allbut(props)),example(MATRICES));
 done;
 
-(kill(all),example(MINFACTORIAL));
+(kill(allbut(props)),example(MINFACTORIAL));
 done;
 
-(kill(all),example(MULTIPLICATIVE));
+(kill(allbut(props)),example(MULTIPLICATIVE));
 done;
 
-(kill(all),example(MULTTHRU));
+(kill(allbut(props)),example(MULTTHRU));
 done;
 
-(kill(all),example(NARY));
+(kill(allbut(props)),example(NARY));
 done;
 
-(kill(all),example(NOUNIFY));
+(kill(allbut(props)),example(NOUNIFY));
 done;
 
-(kill(all),example(NROOTS));
+(kill(allbut(props)),example(NROOTS));
 done;
 
-(kill(all),example(NUMFACTOR));
+(kill(allbut(props)),example(NUMFACTOR));
 done;
 
-(kill(all),example(NUSUM));
+(kill(allbut(props)),example(NUSUM));
 done;
 
-(kill(all),example(ODDFUN));
+(kill(allbut(props)),example(ODDFUN));
 done;
 
-(kill(all),example(ODE2));
+(kill(allbut(props)),example(ODE2));
 done;
 
-(kill(all),example(OPTIMIZE));
+(kill(allbut(props)),example(OPTIMIZE));
 done;
 
-(kill(all),example(ORDERGREAT));
+(kill(allbut(props)),example(ORDERGREAT));
 done;
 
-(kill(all),example(ORDERLESS));
+(kill(allbut(props)),example(ORDERLESS));
 done;
 
-(kill(all),example(OUTATIVE));
+(kill(allbut(props)),example(OUTATIVE));
 done;
 
-(kill(all),example(PART));
+(kill(allbut(props)),example(PART));
 done;
 
-(kill(all),example(PARTFRAC));
+(kill(allbut(props)),example(PARTFRAC));
 done;
 
-(kill(all),example(PARTITION));
+(kill(allbut(props)),example(PARTITION));
 done;
 
-(kill(all),example(PICKAPART));
+(kill(allbut(props)),example(PICKAPART));
 done;
 
-(kill(all),example(POISSIMP));
+(kill(allbut(props)),example(POISSIMP));
 done;
 
-(kill(all),example(POLARFORM));
+(kill(allbut(props)),example(POLARFORM));
 done;
 
-(kill(all),example(POLY_DISCRIMINANT));
+(kill(allbut(props)),example(POLY_DISCRIMINANT));
 done;
 
-(kill(all),example(POSFUN));
+(kill(allbut(props)),example(POSFUN));
 done;
 
-(kill(all),example(POWERSERIES));
+(kill(allbut(props)),example(POWERSERIES));
 done;
 
-(kill(all),example(PRINTPROPS));
+(kill(allbut(props)),example(PRINTPROPS));
 done;
 
-(kill(all),example(PRODUCT));
+(kill(allbut(props)),example(PRODUCT));
 done;
 
-(kill(all),example(PROPERTIES));
+(kill(allbut(props)),example(PROPERTIES));
 done;
 
-(kill(all),example(PROPVARS));
+(kill(allbut(props)),example(PROPVARS));
 done;
 
-(kill(all),example(QUNIT));
+(kill(allbut(props)),example(QUNIT));
 done;
 
-(kill(all),example(RADCAN));
+(kill(allbut(props)),example(RADCAN));
 done;
 
-(kill(all),example(RANK));
+(kill(allbut(props)),example(RANK));
 done;
 
-(kill(all),example(RASSOCIATIVE));
+(kill(allbut(props)),example(RASSOCIATIVE));
 done;
 
 /* not found
-(kill(all),example(RATCOEFF));
+(kill(allbut(props)),example(RATCOEFF));
 done; */
 
-(kill(all),example(RATDIFF));
+(kill(allbut(props)),example(RATDIFF));
 done;
 
-(kill(all),example(RATEXPAND));
+(kill(allbut(props)),example(RATEXPAND));
 done;
 
-(kill(all),example(RATSIMP));
+(kill(allbut(props)),example(RATSIMP));
 done;
 
-(kill(all),example(RATSUBST));
+(kill(allbut(props)),example(RATSUBST));
 done;
 
-(kill(all),example(RATWEIGHT));
+(kill(allbut(props)),example(RATWEIGHT));
 done;
 
-(kill(all),example(REALPART));
+(kill(allbut(props)),example(REALPART));
 done;
 
-(kill(all),example(REALROOTS));
+(kill(allbut(props)),example(REALROOTS));
 done;
 
-(kill(all),example(RESIDUE));
+(kill(allbut(props)),example(RESIDUE));
 done;
 
-(kill(all),example(RESULTANT));
+(kill(allbut(props)),example(RESULTANT));
 done;
 
-(kill(all),example(REVEAL));
+(kill(allbut(props)),example(REVEAL));
 done;
 
-(kill(all),example(REVERSE));
+(kill(allbut(props)),example(REVERSE));
 done;
 
-(kill(all),example(RISCH));
+(kill(allbut(props)),example(RISCH));
 done;
 
-(kill(all),example(ROOTSCONTRACT));
+(kill(allbut(props)),example(ROOTSCONTRACT));
 done;
 
-(kill(all),example(SCANMAP));
+(kill(allbut(props)),example(SCANMAP));
 done;
 
-(kill(all),example(SCSIMP));
+(kill(allbut(props)),example(SCSIMP));
 done;
 
-(kill(all),example(SOLVE));
+(kill(allbut(props)),example(SOLVE));
 done;
 
-(kill(all),example(SPECINT));
+(kill(allbut(props)),example(SPECINT));
 done;
 
-(kill(all),example(SQFR));
+(kill(allbut(props)),example(SQFR));
 done;
 
 /* requires input
-(kill(all),example(SUBST));
+(kill(allbut(props)),example(SUBST));
 done; */
 
-(kill(all),example(SUBSTINPART));
+(kill(allbut(props)),example(SUBSTINPART));
 done;
 
-(kill(all),example(SUBSTPART));
+(kill(allbut(props)),example(SUBSTPART));
 done;
 
-(kill(all),example(SUM));
+(kill(allbut(props)),example(SUM));
 done;
 
-(kill(all),example(SYMMETRIC));
+(kill(allbut(props)),example(SYMMETRIC));
 done;
 
-(kill(all),example(SYNTAX));
+(kill(allbut(props)),example(SYNTAX));
 done;
 
-(kill(all),example(TAYLOR));
+(kill(allbut(props)),example(TAYLOR));
 done;
 
-(kill(all),example(TAYTORAT));
+(kill(allbut(props)),example(TAYTORAT));
 done;
 
-(kill(all),example(TELLRAT));
+(kill(allbut(props)),example(TELLRAT));
 done;
 
-(kill(all),example(TELLSIMP));
+(kill(allbut(props)),example(TELLSIMP));
 done;
 
-(kill(all),example(TRIANGULARIZE));
+(kill(allbut(props)),example(TRIANGULARIZE));
 done;
 
-(kill(all),example(TRIG));
+(kill(allbut(props)),example(TRIG));
 done;
 
-(kill(all),example(TRIGEXPAND));
+(kill(allbut(props)),example(TRIGEXPAND));
 done;
 
-(kill(all),example(TRIGREDUCE));
+(kill(allbut(props)),example(TRIGREDUCE));
 done;
 
-(kill(all),example(UNORDER));
+(kill(allbut(props)),example(UNORDER));
 done;
 
-(kill(all),example(XTHRU));
+(kill(allbut(props)),example(XTHRU));
 done;
 
-(kill(all),example(ZEROEQUIV));
+(kill(allbut(props)),example(ZEROEQUIV));
 done;
 

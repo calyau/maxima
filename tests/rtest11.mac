@@ -7,7 +7,7 @@
 
 
 /* -*- Package: CL-MAXIMA; Mode: MACSYMA -*-*/
-kill(all);
+kill(allbut(props));
 done;
 DISPLAY(B[1,2]);
 DONE$
@@ -116,7 +116,7 @@ H(X,Y,Z)$
 DONE$
 H(X,Z,Y);
 -H(X,Y,Z)$
-(KILL(ALL),DECLARE(J,NARY));
+(KILL(ALLBUT(PROPS)),DECLARE(J,NARY));
 DONE$
 J(J(A,B),J(C,D));
 J(A,B,C,D)$
@@ -128,11 +128,11 @@ DECLARE(G,EVENFUN);
 DONE$
 G(-X);
 G(X)$
-(KILL(ALL),DECLARE(F,POSFUN));
+(KILL(ALLBUT(PROPS)),KILL(G),DECLARE(F,POSFUN));
 DONE$
 IS(F(X) > 0);
 TRUE$
-(KILL(ALL),B[1,X]:1);
+(KILL(ALLBUT(PROPS)),B[1,X]:1);
 1$
 ARRAY(F,2,3);
 F$

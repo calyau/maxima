@@ -7,7 +7,7 @@
 
 
 /* -*- Mode: MACSYMA; Package: CL-MAXIMA -*- */
-block([],kill(all),%rnum:0);
+block([],kill(allbut(props)),%rnum:0);
 0$
 X^10-2*X^4+1/2;
 X^10-2*X^4+1/2$

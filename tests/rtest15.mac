@@ -1,6 +1,6 @@
 /* This file contains tests added since April 2002 */
 
-kill(all);
+kill(allbut(props));
 done$
 
 /* apropos function added 7 April 2002 */

@@ -11,7 +11,7 @@
 It asked is a pos answred yes
    and is i+1 zero or nonzero and I answered nonzero 
   so should add ASSUME (A>0,NOT(EQUAL(I+1,0)))  */
-kill(all);
+kill(allbut(props));
 done;
 RISCH(X^2*ERF(X),X);
 (%PI*X^3*ERF(X)+(SQRT(%PI)*X^2+SQRT(%PI))*%E^-X^2)/(3*%PI);
