@@ -25,31 +25,31 @@
 
 (eval-when #-gcl(:compile-toplevel :load-toplevel :execute) 
 	   #+gcl(load compile eval)
-(defpackage "NREGEX"
-  (:use "COMMON-LISP")
-  (:export
-   ;; Vars
-   "*REGEX-DEBUG*" "*REGEX-GROUPS*" "*REGEX-GROUPINGS*"
-   ;; Functions
-   "REGEX-COMPILE"
-   ))
-)
+	   (defpackage "NREGEX"
+	     (:use "COMMON-LISP")
+	     (:export
+	      ;; Vars
+	      "*REGEX-DEBUG*" "*REGEX-GROUPS*" "*REGEX-GROUPINGS*"
+	      ;; Functions
+	      "REGEX-COMPILE"
+	      ))
+	   )
 
 (in-package "NREGEX")
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-(defvar *regex-debug* nil)		; Set to nil for no debugging code
+  (defvar *regex-debug* nil)	    ; Set to nil for no debugging code
 
-(defmacro info (message &rest args)
-  (if *regex-debug*
-      `(format *trace-output* ,message ,@args)))
+  (defmacro info (message &rest args)
+    (if *regex-debug*
+	`(format *trace-output* ,message ,@args)))
 
 ;;;
 ;;; Declare the global variables for storing the paren index list.
 ;;;
-(defvar *regex-groups* (make-array 10))
-(defvar *regex-groupings* 0)
-)
+  (defvar *regex-groups* (make-array 10))
+  (defvar *regex-groupings* 0)
+  )
 
 ;;;
 ;;; Declare a simple interface for testing.  You probably wouldn't want
@@ -66,7 +66,7 @@
 	(result nil))
     (if (not (funcall (if (functionp findit)
 			  findit
-			(eval `(function ,findit))) string))
+			  (eval `(function ,findit))) string))
 	(return-from regex nil))
     (if (= *regex-groupings* 0)
 	(return-from regex t))
@@ -104,18 +104,18 @@
   ;; The second pass takes this list and produces the lambda expression.
   (let ((expression '())		; holder for expressions
 	(group 1)			; Current group index
-	(group-stack nil)		; Stack of current group endings
+	(group-stack nil)	      ; Stack of current group endings
 	(result nil)			; holder for built expression.
-	(fast-first nil))		; holder for quick unanchored scan
+	(fast-first nil))	    ; holder for quick unanchored scan
     ;;
     ;; If the expression was an empty string then it alway
     ;; matches (so lets leave early)
     ;;
     (if (= (length source) 0)
 	(return-from regex-compile
-		     '(lambda (&rest args)
-			(declare (ignore args))
-			t)))
+	  '(lambda (&rest args)
+	    (declare (ignore args))
+	    t)))
     ;;
     ;; If the first character is a caret then set the anchored
     ;; flags and remove if from the expression string.
@@ -154,13 +154,13 @@
 					    (char string i)
 					    ,(char source 0))
 					  (return (setf start i)))))
-			      (return-from final-return nil)))))
+			       (return-from final-return nil)))))
     ;;
     ;; Generate the very first expression to save the starting index
     ;; so that group 0 will be the entire string matched always
     ;;
     (add-exp '((setf (aref *regex-groups* 0)
-		     (list index nil))))
+		(list index nil))))
     ;;
     ;; Loop over each character in the regular expression building the
     ;; expression list as we go.
@@ -176,7 +176,7 @@
 	   ;;
 	   (add-exp '((if (>= index length)
 			  (return-from compare nil)
-			(incf index)))))
+			  (incf index)))))
 	  ((#\$)
 	   ;;
 	   ;; If this is the last character of the expression then
@@ -186,18 +186,18 @@
 	   (if (= eindex (1- (length source)))
 	       (add-exp '((if (not (= index length))
 			      (return-from compare nil))))
-	     (add-exp '((if (not (and (< index length)
-				      (eql (char string index) #\$)))
-			    (return-from compare nil)
-			  (incf index))))))
+	       (add-exp '((if (not (and (< index length)
+					(eql (char string index) #\$)))
+			      (return-from compare nil)
+			      (incf index))))))
 	  ((#\*)
-	   (add-exp '(ASTRISK)))
+	   (add-exp '(astrisk)))
 
 	  ((#\+)
-	   (add-exp '(PLUS)))
+	   (add-exp '(plus)))
 
 	  ((#\?)
-	   (add-exp '(QUESTION)))
+	   (add-exp '(question)))
 
 	  ((#\()
 	   ;;
@@ -206,7 +206,7 @@
 	   (incf group)
 	   (push group group-stack)
 	   (add-exp `((setf (aref *regex-groups* ,(1- group)) 
-			    (list index nil))))
+		       (list index nil))))
 	   (add-exp `(,group)))
 	  ((#\))
 	   ;;
@@ -214,7 +214,7 @@
 	   ;;
 	   (let ((group (pop group-stack)))
 	     (add-exp `((setf (cadr (aref *regex-groups* ,(1- group)))
-			      index)))
+			 index)))
 	     (add-exp `(,(- group)))))
 	  ((#\[)
 	   ;;
@@ -225,8 +225,8 @@
 	   ;; If the first character is carat then invert the set.
 	   (let* ((invert (eql (char source (1+ eindex)) #\^))
 		  (bitstring (make-array 256 :element-type 'bit
-					     :initial-element
-					        (if invert 1 0)))
+					 :initial-element
+					 (if invert 1 0)))
 		  (set-char (if invert 0 1)))
 	     (if invert (incf eindex))
 	     (do ((x (1+ eindex) (1+ x)))
@@ -235,14 +235,14 @@
 	       (cond ((and (eql (char source (1+ x)) #\-)
 			   (not (eql (char source (+ x 2)) #\])))
 		      (if (>= (char-code (char source x))
-			     (char-code (char source (+ 2 x))))
+			      (char-code (char source (+ 2 x))))
 			  (error "Invalid range \"~A-~A\".  Ranges must be in acending order"
 				 (char source x) (char source (+ 2 x))))
 		      (do ((j (char-code (char source x)) (1+ j)))
-		       ((> j (char-code (char source (+ 2 x))))
-			(incf x 2))
-		     (info "Setting bit for char ~A code ~A~%" (code-char j) j)
-		     (setf (sbit bitstring j) set-char)))
+			  ((> j (char-code (char source (+ 2 x))))
+			   (incf x 2))
+			(info "Setting bit for char ~A code ~A~%" (code-char j) j)
+			(setf (sbit bitstring j) set-char)))
 		     (t
 		      (cond ((not (eql (char source x) #\]))
 			     (let ((char (char source x)))
@@ -253,18 +253,18 @@
 			       (if (eql (char source x) #\\ )
 				   (let ((length))
 				     (multiple-value-setq (char length)
-					 (regex-quoted (subseq source x) invert))
+				       (regex-quoted (subseq source x) invert))
 				     (incf x length)))
 			       (info "Setting bit for char ~A code ~A~%" char (char-code char))
 			       (if (not (vectorp char))
 				   (setf (sbit bitstring (char-code (char source x))) set-char)
-				 (bit-ior bitstring char t))))))))
+				   (bit-ior bitstring char t))))))))
 	     (add-exp `((let ((range ,bitstring))
 			  (if (>= index length)
 			      (return-from compare nil))
 			  (if (= 1 (sbit range (char-code (char string index))))
 			      (incf index)
-			    (return-from compare nil)))))))
+			      (return-from compare nil)))))))
 	  ((#\\ )
 	   ;;
 	   ;; Intreprete the next character as a special, range, octal, group or 
@@ -273,7 +273,7 @@
 	   (let ((length)
 		 (value))
 	     (multiple-value-setq (value length)
-		 (regex-quoted (subseq source (1+ eindex)) nil))
+	       (regex-quoted (subseq source (1+ eindex)) nil))
 	     (cond ((listp value)
 		    (add-exp value))
 		   ((characterp value)
@@ -281,14 +281,14 @@
 					     (eql (char string index) 
 						  ,value)))
 				   (return-from compare nil)
-				 (incf index)))))
+				   (incf index)))))
 		   ((vectorp value)
 		    (add-exp `((let ((range ,value))
 				 (if (>= index length)
 				     (return-from compare nil))
 				 (if (= 1 (sbit range (char-code (char string index))))
 				     (incf index)
-				   (return-from compare nil)))))))
+				     (return-from compare nil)))))))
 	     (incf eindex length)))
 	  (t
 	   ;;
@@ -301,38 +301,38 @@
 			  (let ((litchar (char source (+ eindex litindex))))
 			    (if (position litchar *regex-special-chars*)
 				(return litchar)
-			      (progn
-				(info "Now adding ~A index ~A to lit~%" litchar 
-				      litindex)
-				(setf lit (concatenate 'string lit 
-						       (string litchar)))))))))
+				(progn
+				  (info "Now adding ~A index ~A to lit~%" litchar 
+					litindex)
+				  (setf lit (concatenate 'string lit 
+							 (string litchar)))))))))
 	     (if (= (length lit) 1)
 		 (add-exp `((if (not (and (< index length)
 					  (,(if case-sensitive 'eql 'char-equal)
-					   (char string index) ,current)))
+					    (char string index) ,current)))
 				(return-from compare nil)
-			      (incf index))))
-	       ;;
-	       ;; If we have a multi-character literal then we must
-	       ;; check to see if the next character (if there is one)
-	       ;; is an astrisk or a plus.  If so then we must not use this
-	       ;; character in the big literal.
-	       (progn 
-		 (if (or (eql term #\*) (eql term #\+))
-		     (setf lit (subseq lit 0 (1- (length lit)))))
-		 (add-exp `((if (< length (+ index ,(length lit)))
-				(return-from compare nil))
-			    (if (not (,(if case-sensitive 'string= 'string-equal)
-				      string ,lit :start1 index
-					      :end1 (+ index ,(length lit))))
-				(return-from compare nil)
-			      (incf index ,(length lit)))))))
+				(incf index))))
+		 ;;
+		 ;; If we have a multi-character literal then we must
+		 ;; check to see if the next character (if there is one)
+		 ;; is an astrisk or a plus.  If so then we must not use this
+		 ;; character in the big literal.
+		 (progn 
+		   (if (or (eql term #\*) (eql term #\+))
+		       (setf lit (subseq lit 0 (1- (length lit)))))
+		   (add-exp `((if (< length (+ index ,(length lit)))
+				  (return-from compare nil))
+			      (if (not (,(if case-sensitive 'string= 'string-equal)
+					 string ,lit :start1 index
+					 :end1 (+ index ,(length lit))))
+				  (return-from compare nil)
+				  (incf index ,(length lit)))))))
 	     (incf eindex (1- (length lit))))))))
     ;;
     ;; Plug end of list to return t.  If we made it this far then
     ;; We have matched!
     (add-exp '((setf (cadr (aref *regex-groups* 0))
-		     index)))
+		index)))
     (add-exp '((return-from final-return t)))
     ;;
 ;;;    (print expression)
@@ -364,7 +364,7 @@
 	;; Now check for PLUS, if so then ditto the expression and then let the
 	;; ASTRISK below handle the rest.
 	;;
-	(cond ((eql piece 'PLUS)
+	(cond ((eql piece 'plus)
 	       (cond ((listp (nth (1+ elt) expression))
 		      (setf result (append (list (nth (1+ elt) expression))
 					   result)))
@@ -375,12 +375,12 @@
 		      (format *standard-output* "GROUP repeat hasn't been implemented yet~%")))))
 	(cond ((listp piece)		;Just append the list
 	       (setf result (append (list piece) result)))
-	      ((eql piece 'QUESTION)	; Wrap it in a block that won't fail
+	      ((eql piece 'question) ; Wrap it in a block that won't fail
 	       (cond ((listp (nth (1+ elt) expression))
 		      (setf result 
 			    (append `((progn (block compare
-						    ,(nth (1+ elt) 
-							  expression))
+					       ,(nth (1+ elt) 
+						     expression))
 					     t))
 				    result))
 		      (incf elt))
@@ -390,8 +390,8 @@
 		     ;;
 		     (t
 		      (format *standard-output* "Optional groups not implemented yet~%"))))
-	      ((or (eql piece 'ASTRISK) ; Do the wild thing!
-		   (eql piece 'PLUS))
+	      ((or (eql piece 'astrisk) ; Do the wild thing!
+		   (eql piece 'plus))
 	       (cond ((listp (nth (1+ elt) expression))
 		      ;;
 		      ;; This is a single character wild card so
@@ -401,16 +401,16 @@
 			    `((let ((oindex index))
 				(declare (fixnum oindex))
 				(block compare
-				       (do ()
-					   (nil)
-					 ,(nth (1+ elt) expression)))
+				  (do ()
+				      (nil)
+				    ,(nth (1+ elt) expression)))
 				(do ((start index (1- start)))
 				    ((< start oindex) nil)
 				  (declare (fixnum start))
 				  (let ((index start))
 				    (declare (fixnum index))
 				    (block compare
-					   ,@result))))))
+				      ,@result))))))
 		      (incf elt))
 		     (t
 		      ;;
@@ -427,36 +427,36 @@
     (if anchored
 	(setf result
 	      `(lambda (string &key (start 0) (end (length string)))
-		 (declare (string string)
-			  (fixnum start end)
-		          (ignorable start)
-			  (optimize (speed 0) (compilation-speed 3)))
-		 (setf *regex-groupings* ,group)
-		 (block final-return
-			(block compare
-			       (let ((index start)
-				     (length end))
-				 (declare (fixnum index length))
-				 ,@result)))))
-      (setf result
-	    `(lambda (string &key (start 0) (end (length string)))
-	       (declare (string string)
-			(fixnum start end)
-		        (ignorable start)
-			(optimize (speed 0) (compilation-speed 3)))
-	       (setf *regex-groupings* ,group)
-	       (block final-return
-		      (let ((length end))
-			(declare (fixnum length))
-			,@fast-first
-			(do ((marker start (1+ marker)))
-			    ((> marker end) nil)
-			  (declare (fixnum marker))
-			  (let ((index marker))
-			    (declare (fixnum index))
-			    (if (block compare
-				       ,@result)
-				(return t)))))))))))
+		(declare (string string)
+		 (fixnum start end)
+		 (ignorable start)
+		 (optimize (speed 0) (compilation-speed 3)))
+		(setf *regex-groupings* ,group)
+		(block final-return
+		  (block compare
+		    (let ((index start)
+			  (length end))
+		      (declare (fixnum index length))
+		      ,@result)))))
+	(setf result
+	      `(lambda (string &key (start 0) (end (length string)))
+		(declare (string string)
+		 (fixnum start end)
+		 (ignorable start)
+		 (optimize (speed 0) (compilation-speed 3)))
+		(setf *regex-groupings* ,group)
+		(block final-return
+		  (let ((length end))
+		    (declare (fixnum length))
+		    ,@fast-first
+		    (do ((marker start (1+ marker)))
+			((> marker end) nil)
+		      (declare (fixnum marker))
+		      (let ((index marker))
+			(declare (fixnum index))
+			(if (block compare
+			      ,@result)
+			    (return t)))))))))))
 
 
 ;;;
@@ -475,11 +475,11 @@
 	(result (char char-string 0))
 	(used-length 1))
     (cond ((eql first #\n)
-	   (setf result #\NewLine))
+	   (setf result #\newline))
 	  ((eql first #\c)
-	   (setf result #\Return))
+	   (setf result #\return))
 	  ((eql first #\t)
-	   (setf result #\Tab))
+	   (setf result #\tab))
 	  ((eql first #\d)
 	   (setf result #*0000000000000000000000000000000000000000000000001111111111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000))
 	  ((eql first #\D)
@@ -514,19 +514,19 @@
 						(- (char-code (char char-string x))
 						   (char-code #\0))))))
 		 (setf used-length 3))
-	     ;;
-	     ;; We have a group number replacement.
-	     ;;
-	     (let ((group (- (char-code first) (char-code #\0))))
-	       (setf result `((let ((nstring (subseq string (car (aref *regex-groups* ,group))
-						     (cadr (aref *regex-groups* ,group)))))
-				(if (< length (+ index (length nstring)))
-				    (return-from compare nil))
-				(if (not (string= string nstring
-						  :start1 index
-						  :end1 (+ index (length nstring))))
-				    (return-from compare nil)
-				  (incf index (length nstring)))))))))
+	       ;;
+	       ;; We have a group number replacement.
+	       ;;
+	       (let ((group (- (char-code first) (char-code #\0))))
+		 (setf result `((let ((nstring (subseq string (car (aref *regex-groups* ,group))
+						       (cadr (aref *regex-groups* ,group)))))
+				  (if (< length (+ index (length nstring)))
+				      (return-from compare nil))
+				  (if (not (string= string nstring
+						    :start1 index
+						    :end1 (+ index (length nstring))))
+				      (return-from compare nil)
+				      (incf index (length nstring)))))))))
 	  (t 
 	   (setf result first)))
     (if (and (vectorp result) invert)

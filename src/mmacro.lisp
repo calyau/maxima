@@ -11,18 +11,18 @@
 (in-package "MAXIMA")
 (macsyma-module mmacro)
 
-; Exported functions are MDEFMACRO, $MACROEXPAND, $MACROEXPAND1, MMACRO-APPLY
-;                        MMACROEXPANDED, MMACROEXPAND and MMACROEXPAND1
+;; Exported functions are MDEFMACRO, $MACROEXPAND, $MACROEXPAND1, MMACRO-APPLY
+;;                        MMACROEXPANDED, MMACROEXPAND and MMACROEXPAND1
 
 
-(declare-top (SPECIAL $MACROS $FUNCTIONS $TRANSRUN $TRANSLATE))
+(declare-top (special $macros $functions $transrun $translate))
 
  
 ;; $MACROS declared in jpg;mlisp >
 
 
-(DEFMVAR $MACROEXPANSION ()
-	 "Governs the expansion of Macsyma Macros.  The following settings are
+(defmvar $macroexpansion ()
+  "Governs the expansion of Macsyma Macros.  The following settings are
 available:  FALSE means to re-expand the macro every time it gets called.
 EXPAND means to remember the expansion for each individual call do that it 
 won't have to be re-expanded every time the form is evaluated.  The form will 
@@ -30,8 +30,8 @@ still grind and display as if the expansion had not taken place.  DISPLACE
 means to completely replace the form with the expansion.  This is more space
 efficient than EXPAND but grinds and displays the expansion instead of the
 call."
-         MODIFIED-COMMANDS '($MACROEXPAND)
-         SETTING-LIST      '( () $EXPAND $DISPLACE ) )
+  modified-commands '($macroexpand)
+  setting-list      '( () $expand $displace ) )
 
 
 
@@ -39,7 +39,7 @@ call."
 
 ;;; LOCAL MACRO ;;;
 
-(DEFMACRO COPY1CONS (NAME) `(CONS (CAR ,NAME) (CDR ,NAME)))
+(defmacro copy1cons (name) `(cons (car ,name) (cdr ,name)))
 
 
 
@@ -47,46 +47,46 @@ call."
 ;;; DEFINING A MACRO ;;;
 
 
-(DEFMSPEC MDEFMACRO (FORM) (SETQ FORM (CDR FORM))
-  (COND ((OR (NULL (CDR FORM)) (CDDDR FORM))
-	 (MERROR "Wrong number of args to ::= ~%~M"
-		 `((MDEFMACRO) ,@FORM))
-	 )
-	(T (MDEFMACRO1 (CAR FORM) (CADR FORM)))))
+(defmspec mdefmacro (form) (setq form (cdr form))
+	  (cond ((or (null (cdr form)) (cdddr form))
+		 (merror "Wrong number of args to ::= ~%~M"
+			 `((mdefmacro) ,@form))
+		 )
+		(t (mdefmacro1 (car form) (cadr form)))))
 
 
-(DEFUN MDEFMACRO1 (FUN BODY)
-  (LET ((NAME) (ARGS))
-     (COND ((OR (ATOM FUN)
-		(NOT (ATOM (CAAR FUN)))                
-		(MEMQ 'array (CDAR FUN))              
-		(MOPP (SETQ NAME ($VERBIFY (CAAR FUN))))
-		(MEMQ NAME '($ALL $% $%% MQAPPLY)))
-	    (MERROR "Illegal macro definition: ~M"	;ferret out all the
-		    FUN))				;  illegal forms
-	   ((NOT (EQ NAME (CAAR FUN)))                 ;efficiency hack I guess
-	    (RPLACA (CAR FUN) NAME)))                  ;  done in jpg;mlisp
-     (SETQ ARGS (CDR FUN))                             ;  (in MDEFINE).
-     (MREDEF-CHECK NAME)
-     (DO ((A ARGS (CDR A)) (MLEXPRP))
-	 ((NULL A)
-	  (REMOVE1 (NCONS NAME) 'MEXPR T $FUNCTIONS T) ;do all arg checking,
-	  (COND (MLEXPRP (MPUTPROP NAME T 'MLEXPRP))   ; then remove MEXPR defn
-		(T (ARGS NAME (CONS () (LENGTH ARGS))))))
-	 (COND ((MDEFPARAM (CAR A)))
-	       ((AND (MDEFLISTP A)
-		     (MDEFPARAM (CADR (CAR A))))
-		(SETQ MLEXPRP T))
-	       (T 
-		  (MERROR "Illegal parameter in macro definition: ~M"
-			  (CAR A)))))
-     (REMOVE-TRANSL-FUN-PROPS NAME)
-     (ADD2LNC `((,NAME) ,@ARGS) $MACROS)
-     (MPUTPROP NAME (MDEFINE1 ARGS BODY) 'MMACRO)
+(defun mdefmacro1 (fun body)
+  (let ((name) (args))
+    (cond ((or (atom fun)
+	       (not (atom (caar fun)))                
+	       (memq 'array (cdar fun))              
+	       (mopp (setq name ($verbify (caar fun))))
+	       (memq name '($all $% $%% mqapply)))
+	   (merror "Illegal macro definition: ~M" ;ferret out all the
+		   fun))		;  illegal forms
+	  ((not (eq name (caar fun)))	;efficiency hack I guess
+	   (rplaca (car fun) name)))	;  done in jpg;mlisp
+    (setq args (cdr fun))		;  (in MDEFINE).
+    (mredef-check name)
+    (do ((a args (cdr a)) (mlexprp))
+	((null a)
+	 (remove1 (ncons name) 'mexpr t $functions t) ;do all arg checking,
+	 (cond (mlexprp (mputprop name t 'mlexprp)) ; then remove MEXPR defn
+	       (t (args name (cons () (length args))))))
+      (cond ((mdefparam (car a)))
+	    ((and (mdeflistp a)
+		  (mdefparam (cadr (car a))))
+	     (setq mlexprp t))
+	    (t 
+	     (merror "Illegal parameter in macro definition: ~M"
+		     (car a)))))
+    (remove-transl-fun-props name)
+    (add2lnc `((,name) ,@args) $macros)
+    (mputprop name (mdefine1 args body) 'mmacro)
      
-     (COND ($TRANSLATE (TRANSLATE-AND-EVAL-MACSYMA-EXPRESSION
-			`((MDEFMACRO) ,FUN ,BODY))))
-     `((MDEFMACRO SIMP) ,FUN ,BODY)))
+    (cond ($translate (translate-and-eval-macsyma-expression
+		       `((mdefmacro) ,fun ,body))))
+    `((mdefmacro simp) ,fun ,body)))
 
 
 
@@ -94,15 +94,15 @@ call."
 ;;; EVALUATING A MACRO CALL ;;;
 
 
-(DEFMFUN MMACRO-APPLY (DEFN FORM)
-  (MMACROEXPANSION-CHECK FORM
-			 (IF (AND (ATOM DEFN)
-				  (NOT (SYMBOLP DEFN)))
+(defmfun mmacro-apply (defn form)
+  (mmacroexpansion-check form
+			 (if (and (atom defn)
+				  (not (symbolp defn)))
 			     ;; added this clause for NIL. MAPPLY
 			     ;; doesn't really handle applying interpreter
 			     ;; closures and subrs very well.
-			     (APPLY DEFN (CDR FORM))
-			     (MAPPLY1 DEFN (CDR FORM) (CAAR FORM) form))))
+			     (apply defn (cdr form))
+			     (mapply1 defn (cdr form) (caar form) form))))
 
 
 
@@ -110,105 +110,105 @@ call."
 ;;; MACROEXPANSION HACKERY ;;;
 
 
-; does any reformatting necessary according to the current setting of
-; $MACROEXPANSION.  Note that it always returns the expansion returned
-; by displace, for future displacing.
+;; does any reformatting necessary according to the current setting of
+;; $MACROEXPANSION.  Note that it always returns the expansion returned
+;; by displace, for future displacing.
 
-(DEFUN MMACROEXPANSION-CHECK (FORM EXPANSION)
-  (CASE $MACROEXPANSION
-	 (( () )
-	  (COND ((EQ (CAAR FORM) 'MMACROEXPANDED)
-		 (MMACRO-DISPLACE FORM EXPANSION))
-		(T EXPANSION)))
-	 (($EXPAND)
-	  (COND ((NOT (EQ (CAAR FORM) 'MMACROEXPANDED))
-		 (DISPLACE FORM `((MMACROEXPANDED) 
-				  ,EXPANSION
-				  ,(COPY1CONS FORM)))))
-	  EXPANSION)
-	 (($DISPLACE)
-	  (MMACRO-DISPLACE FORM EXPANSION))
-	 (T (MTELL "Warning:  MACROEXPANSION set to unrecognized value."))))
-
-
-(DEFUN MMACRO-DISPLACE (FORM EXPANSION)
-       (DISPLACE FORM (COND ((ATOM EXPANSION) `((MPROGN) ,EXPANSION))
-			    (T EXPANSION))))
+(defun mmacroexpansion-check (form expansion)
+  (case $macroexpansion
+    (( () )
+     (cond ((eq (caar form) 'mmacroexpanded)
+	    (mmacro-displace form expansion))
+	   (t expansion)))
+    (($expand)
+     (cond ((not (eq (caar form) 'mmacroexpanded))
+	    (displace form `((mmacroexpanded) 
+			     ,expansion
+			     ,(copy1cons form)))))
+     expansion)
+    (($displace)
+     (mmacro-displace form expansion))
+    (t (mtell "Warning:  MACROEXPANSION set to unrecognized value."))))
 
 
-; Handles memo-ized forms.  Reformats them if $MACROEXPANSION has changed.
-; Format is ((MMACROEXPANDED) <expansion> <original form>)
+(defun mmacro-displace (form expansion)
+  (displace form (cond ((atom expansion) `((mprogn) ,expansion))
+		       (t expansion))))
 
-(DEFMSPEC MMACROEXPANDED (FORM)
-  (MEVAL (MMACROEXPANSION-CHECK FORM (CADR FORM))))
+
+;; Handles memo-ized forms.  Reformats them if $MACROEXPANSION has changed.
+;; Format is ((MMACROEXPANDED) <expansion> <original form>)
+
+(defmspec mmacroexpanded (form)
+  (meval (mmacroexpansion-check form (cadr form))))
 
 
 ;;; MACROEXPANDING FUNCTIONS ;;;
 
 
-(DEFMSPEC $MACROEXPAND (FORM) (SETQ FORM (CDR FORM))
-  (COND ((OR (NULL FORM) (CDR FORM))
-	 (MERROR "MACROEXPAND only takes one argument:~%~M"
-		 `(($MACROEXPAND) ,@FORM)))
-	(T (MMACROEXPAND (CAR FORM)))))
+(defmspec $macroexpand (form) (setq form (cdr form))
+	  (cond ((or (null form) (cdr form))
+		 (merror "MACROEXPAND only takes one argument:~%~M"
+			 `(($macroexpand) ,@form)))
+		(t (mmacroexpand (car form)))))
 
-(DEFMSPEC $MACROEXPAND1 (FORM) (SETQ FORM (CDR FORM))
-  (COND ((OR (NULL FORM) (CDR FORM))
-	 (MERROR "MACROEXPAND only takes one argument: ~%~M"
-		 `(($MACROEXPAND1) ,@FORM)))
-	(T (MMACROEXPAND1 (CAR FORM)))))
-
-
-; Expands the top-level form repeatedly until it is no longer a macro
-; form.  Has to copy the form each time because if macros are displacing
-; the form given to mmacroexpand1 will get bashed each time.  Recursion
-; is used instead of iteration so the user gets a pdl overflow error
-; if he tries to expand recursive macro definitions that never terminate.
-
-(DEFUN MMACROEXPAND (FORM)
-  (LET ((TEST-FORM (IF (ATOM FORM) FORM (COPY1CONS FORM)))
-	(EXPANSION (MMACROEXPAND1 FORM)))
-       (COND ((EQUAL EXPANSION TEST-FORM)
-	      EXPANSION)
-	     (T (MMACROEXPAND EXPANSION)))))
+(defmspec $macroexpand1 (form) (setq form (cdr form))
+	  (cond ((or (null form) (cdr form))
+		 (merror "MACROEXPAND only takes one argument: ~%~M"
+			 `(($macroexpand1) ,@form)))
+		(t (mmacroexpand1 (car form)))))
 
 
-; only expands the form once.  If the form is not a valid macro
-; form it just gets returned (eq'ness is preserved).  Note that if the
-; macros are displacing, the returned form is also eq to the given
-; form (which has been bashed).
+;; Expands the top-level form repeatedly until it is no longer a macro
+;; form.  Has to copy the form each time because if macros are displacing
+;; the form given to mmacroexpand1 will get bashed each time.  Recursion
+;; is used instead of iteration so the user gets a pdl overflow error
+;; if he tries to expand recursive macro definitions that never terminate.
 
-(DEFUN MMACROEXPAND1 (FORM)
- (LET ((FUNNAME) (MACRO-DEFN))
-  (COND ((OR (ATOM FORM)
-	     (ATOM (CAR FORM))
-	     (MEMQ 'array (CDAR FORM))
-	     (NOT (SYMBOLP (SETQ FUNNAME (MOP FORM)))))
-	 FORM)
-	((EQ FUNNAME 'MMACROEXPANDED)
-	 (MMACROEXPANSION-CHECK FORM (CADR FORM)))
-	((SETQ MACRO-DEFN
-	       (OR (AND $TRANSRUN 
-			(GET (CAAR FORM) 'TRANSLATED-MMACRO))
-		   (MGET (CAAR FORM) 'MMACRO)))
-	 (MMACRO-APPLY MACRO-DEFN FORM))
-	(T FORM))))
+(defun mmacroexpand (form)
+  (let ((test-form (if (atom form) form (copy1cons form)))
+	(expansion (mmacroexpand1 form)))
+    (cond ((equal expansion test-form)
+	   expansion)
+	  (t (mmacroexpand expansion)))))
+
+
+;; only expands the form once.  If the form is not a valid macro
+;; form it just gets returned (eq'ness is preserved).  Note that if the
+;; macros are displacing, the returned form is also eq to the given
+;; form (which has been bashed).
+
+(defun mmacroexpand1 (form)
+  (let ((funname) (macro-defn))
+    (cond ((or (atom form)
+	       (atom (car form))
+	       (memq 'array (cdar form))
+	       (not (symbolp (setq funname (mop form)))))
+	   form)
+	  ((eq funname 'mmacroexpanded)
+	   (mmacroexpansion-check form (cadr form)))
+	  ((setq macro-defn
+		 (or (and $transrun 
+			  (get (caar form) 'translated-mmacro))
+		     (mget (caar form) 'mmacro)))
+	   (mmacro-apply macro-defn form))
+	  (t form))))
 
 
 
 ;;; SIMPLIFICATION ;;;
 
-(DEFPROP MDEFMACRO SIMPMDEFMACRO OPERATORS)
+(defprop mdefmacro simpmdefmacro operators)
 
-; emulating simpmdef (for mdefine) in jm;simp
-(DEFMFUN SIMPMDEFMACRO (X *IGNORED* SIMP-FLAG)
-	 *IGNORED* ;Ignored.
-	 SIMP-FLAG ;No interesting sub-expressions.
-	 (CONS '(MDEFMACRO SIMP) (CDR X)))
+;; emulating simpmdef (for mdefine) in jm;simp
+(defmfun simpmdefmacro (x *ignored* simp-flag)
+  *ignored*				;Ignored.
+  simp-flag			      ;No interesting sub-expressions.
+  (cons '(mdefmacro simp) (cdr x)))
 
 
-#+(or cl NIL)
-(DEFUN DISPLACE (X Y)
-  (SETF (CAR X) (CAR Y))
-  (SETF (CDR X) (CDR Y))
-  X)
+#+(or cl nil)
+(defun displace (x y)
+  (setf (car x) (car y))
+  (setf (cdr x) (cdr y))
+  x)

@@ -20,1538 +20,1538 @@
 
 
 
-NIL
-(EVAL-WHEN (COMPILE LOAD EVAL) (MEVAL* '(($DECLARE) $PT $SPECIAL $YP 
-                                             $SPECIAL $YOLD $SPECIAL $%Q%
-					     $SPECIAL $YNEW
-                                             $SPECIAL $X $SPECIAL $Y $SPECIAL 
-                                             $METHOD $SPECIAL $%F% $SPECIAL $%G%
-                                             $SPECIAL $MSG1 $SPECIAL $MSG2 
-                                             $SPECIAL $INTFACTOR $SPECIAL 
-                                             $ODEINDEX $SPECIAL $SINGSOLVE 
-                                             $SPECIAL)))
-#+symbolics  ;;above doesn't affect compiler for some reasons
-(declare (special $PT  $YP                                          $YOLD  $%Q% 
-                                              $X  $Y  
-                                             $METHOD  $%F%  $%G%
-                                              $MSG1  $MSG2 
-                                              $INTFACTOR  
-                                             $ODEINDEX  $SINGSOLVE ))
+nil
+(eval-when (compile load eval) (meval* '(($declare) $pt $special $yp 
+					 $special $yold $special $%q%
+					 $special $ynew
+					 $special $x $special $y $special 
+					 $method $special $%f% $special $%g%
+					 $special $msg1 $special $msg2 
+					 $special $intfactor $special 
+					 $odeindex $special $singsolve 
+					 $special)))
+#+symbolics ;;above doesn't affect compiler for some reasons
+(declare (special $pt  $yp                                          $yold  $%q% 
+		  $x  $y  
+		  $method  $%f%  $%g%
+		  $msg1  $msg2 
+		  $intfactor  
+		  $odeindex  $singsolve ))
 
 
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $ODE2 T TRANSLATED)
- (ADD2LNC '$ODE2 $PROPS)
- (DEFMTRFUN
-  ($ODE2 $ANY MDEFINE NIL NIL)
-  ($EQ $YOLD $X)
-  NIL
-  ((LAMBDA
-    ($DERIVSUBST $YNEW)
-    NIL
-    (SIMPLIFY
-     ($SUBSTITUTE
-      (TRD-MSYMEVAL $YOLD '$YOLD)
-      $YNEW
-      (SIMPLIFY ($ODE2A (SIMPLIFY ($SUBSTITUTE $YNEW
-                                               (TRD-MSYMEVAL $YOLD
-                                                             '$YOLD)
-                                               $EQ))
-                        $YNEW
-                        (TRD-MSYMEVAL $X '$X))))))
-   NIL
-   '$YNEW)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $ODE2A T TRANSLATED)
- (ADD2LNC '$ODE2A $PROPS)
- (DEFMTRFUN
-  ($ODE2A $ANY MDEFINE NIL NIL)
-  ($EQ $Y $X)
-  NIL
-  ((LAMBDA
-    ($DE $A1 $A2 $A3 $A4 $%Q% $MSG)
-    NIL
-    (PROG
-     NIL
-     (SETQ $INTFACTOR NIL)
-     (SETQ $METHOD '$NONE)
-     (COND (($FREEOF (SIMPLIFY `((%DERIVATIVE) ,(TRD-MSYMEVAL $Y '$Y) ,
-                                 (TRD-MSYMEVAL $X '$X) 2))
-                     $EQ)
-            (COND (($FTEST (SIMPLIFY ($ODE1A $EQ
-                                             (TRD-MSYMEVAL $Y '$Y)
-                                             (TRD-MSYMEVAL $X '$X))))
-                   (RETURN (TRD-MSYMEVAL $%Q% '$%Q%)))
-                  (T (RETURN NIL)))))
-     (COND
-      ((NOT
-        (LIKE
-         (SIMPLIFY
-          ($DERIVDEGREE
-           (SETQ $DE (SIMPLIFY ($DESIMP (ADD* ($LHS $EQ)
-                                              (*MMINUS ($RHS $EQ))))))
-           (TRD-MSYMEVAL $Y '$Y)
-           (TRD-MSYMEVAL $X '$X)))
-         2))
-       (RETURN ($FAILURE (TRD-MSYMEVAL $MSG '$MSG) $EQ))))
-     (SETQ $A1 (SIMPLIFY ($COEFF $DE
-                                 (SIMPLIFY `((%DERIVATIVE) ,
-                                             (TRD-MSYMEVAL $Y '$Y) ,
-                                             (TRD-MSYMEVAL $X '$X) 2)))))
-     (SETQ $A2 (SIMPLIFY ($COEFF $DE
-                                 (SIMPLIFY `((%DERIVATIVE) ,
-                                             (TRD-MSYMEVAL $Y '$Y) ,
-                                             (TRD-MSYMEVAL $X '$X))))))
-     (SETQ $A3 (SIMPLIFY ($COEFF $DE (TRD-MSYMEVAL $Y '$Y))))
-     (SETQ
-      $A4
-      (SIMPLIFY
-       ($EXPAND
-        (ADD* $DE
-              (*MMINUS (MUL* $A1
-                             (SIMPLIFY `((%DERIVATIVE) ,
-                                         (TRD-MSYMEVAL $Y '$Y) ,
-                                         (TRD-MSYMEVAL $X '$X) 2))))
-              (MUL* (*MMINUS $A2)
-                    (SIMPLIFY `((%DERIVATIVE) ,(TRD-MSYMEVAL $Y '$Y) ,
-                                (TRD-MSYMEVAL $X '$X))))
-              (MUL* (*MMINUS $A3) (TRD-MSYMEVAL $Y '$Y))))))
-     (COND ((AND ($PR2 $A1)
-                 ($PR2 $A2)
-                 ($PR2 $A3)
-                 ($PR2 $A4)
-                 ($FTEST (SIMPLIFY ($HOM2 $A1 $A2 $A3))))
-            (COND ((LIKE $A4 0)
-                   (RETURN (TRD-MSYMEVAL $%Q% '$%Q%)))
-                  (T (RETURN (SIMPLIFY ($VARP (TRD-MSYMEVAL $%Q% '$%Q%)
-                                              (DIV (*MMINUS $A4) $A1))))))))
-     (RETURN (COND (($FTEST (SIMPLIFY ($REDUCE $DE)))
-                    (RETURN (TRD-MSYMEVAL $%Q% '$%Q%)))
-                   (T (RETURN NIL))))))
-   '$DE
-   '$A1
-   '$A2
-   '$A3
-   '$A4
-   '$%Q%
-   '$MSG1)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $ODE1A T TRANSLATED)
- (ADD2LNC '$ODE1A $PROPS)
- (DEFMTRFUN
-  ($ODE1A $ANY MDEFINE NIL NIL)
-  ($EQ $Y $X)
-  NIL
-  ((LAMBDA
-    ($DE $DES)
-    NIL
-    (PROG
-     NIL
-     (COND
-      ((NOT
-        (LIKE
-         (SIMPLIFY
-          ($DERIVDEGREE
-           (SETQ $DE (SIMPLIFY ($EXPAND (ADD* ($LHS $EQ)
-                                              (*MMINUS ($RHS $EQ))))))
-           (TRD-MSYMEVAL $Y '$Y)
-           (TRD-MSYMEVAL $X '$X)))
-         1))
-       (RETURN ($FAILURE (TRD-MSYMEVAL $MSG1 '$MSG1) $EQ))))
-     (COND ((LIKE (SIMPLIFY ($LINEAR2 $DE
-                                      (SIMPLIFY `((%DERIVATIVE) ,
-                                                  (TRD-MSYMEVAL $Y '$Y) ,
-                                                  (TRD-MSYMEVAL $X '$X)))))
-                  NIL)
-            (RETURN ($FAILURE (TRD-MSYMEVAL $MSG2 '$MSG2) $EQ))))
-     (SETQ $DES (SIMPLIFY ($DESIMP $DE)))
-     (SETQ $DE (SIMPLIFY ($SOLVE1 $DES
-                                  (SIMPLIFY `((%DERIVATIVE) ,
-                                              (TRD-MSYMEVAL $Y '$Y) ,
-                                              (TRD-MSYMEVAL $X '$X))))))
-     (COND (($FTEST (SIMPLIFY ($SOLVELNR $DE)))
-            (RETURN (TRD-MSYMEVAL $%Q% '$%Q%))))
-     (COND (($FTEST (SIMPLIFY ($SEPARABLE $DE)))
-            (RETURN (TRD-MSYMEVAL $%Q% '$%Q%))))
-     (COND (($FTEST (SIMPLIFY ($INTEGFACTOR (TRD-MSYMEVAL $%G% '$%G%)
-                                            (TRD-MSYMEVAL $%F% '$%F%))))
-            (RETURN (SIMPLIFY ($EXACT (MUL* (TRD-MSYMEVAL $%Q% '$%Q%)
-                                            (TRD-MSYMEVAL $%G% '$%G%))
-                                      (MUL* (TRD-MSYMEVAL $%Q% '$%Q%)
-                                            (TRD-MSYMEVAL $%F% '$%F%)))))))
-     (COND ((LIKE (SIMPLIFY ($LINEAR2 $DES
-                                      (SIMPLIFY `((%DERIVATIVE) ,
-                                                  (TRD-MSYMEVAL $Y '$Y) ,
-                                                  (TRD-MSYMEVAL $X '$X)))))
-                  NIL)
-            (RETURN ($FAILURE (TRD-MSYMEVAL $MSG2 '$MSG2) $EQ))))
-     (COND (($FTEST (SIMPLIFY ($INTEGFACTOR (TRD-MSYMEVAL $%G% '$%G%)
-                                            (TRD-MSYMEVAL $%F% '$%F%))))
-            (RETURN (SIMPLIFY ($EXACT (MUL* (TRD-MSYMEVAL $%Q% '$%Q%)
-                                            (TRD-MSYMEVAL $%G% '$%G%))
-                                      (MUL* (TRD-MSYMEVAL $%Q% '$%Q%)
-                                            (TRD-MSYMEVAL $%F% '$%F%)))))))
-     (COND (($FTEST (SIMPLIFY ($SOLVEHOM $DE)))
-            (RETURN (TRD-MSYMEVAL $%Q% '$%Q%))))
-     (COND (($FTEST (SIMPLIFY ($SOLVEBERNOULLI $DE)))
-            (RETURN (TRD-MSYMEVAL $%Q% '$%Q%))))
-     (RETURN (COND (($FTEST (SIMPLIFY ($GENHOM $DE)))
-                    (RETURN (TRD-MSYMEVAL $%Q% '$%Q%)))
-                   (T (RETURN NIL))))))
-   '$DE
-   '$DES)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $DESIMP T TRANSLATED)
- (ADD2LNC '$DESIMP $PROPS)
- (DEFMTRFUN
-  ($DESIMP $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($INFLAG)
-    NIL
-    (PROG
-     NIL
-     (SETQ $EQ (SIMPLIFY ($FACTOR $EQ)))
-     (COND ((OR ($ATOM $EQ)
-                (NOT (LIKE (SIMPLIFY ($INPART $EQ 0)) '&*)))
-            (RETURN (SIMPLIFY ($EXPAND $EQ)))))
-     (SETQ
-      $EQ
-      (SIMPLIFY
-       (MAP1
-        (GETOPR (M-TLAMBDA ($U)
-                           NIL
-                           (COND (($FREEOF (SIMPLIFY ($NOUNIFY '$DIFF))
-                                           $U)
-                                  1)
-                                 (T $U))))
-        $EQ)))
-     (RETURN (SIMPLIFY ($EXPAND $EQ)))))
-   T)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
-       (DEFPROP $PR2 T TRANSLATED)
-       (ADD2LNC '$PR2 $PROPS)
-       (DEFMTRFUN ($PR2 $BOOLEAN MDEFINE NIL NIL)
-                  ($%F%)
-                  NIL
-                  ($FREEOF (TRD-MSYMEVAL $Y '$Y)
-                           (SIMPLIFY `((%DERIVATIVE) ,(TRD-MSYMEVAL $Y '$Y) ,
-                                       (TRD-MSYMEVAL $X '$X)))
-                           (SIMPLIFY `((%DERIVATIVE) ,(TRD-MSYMEVAL $Y '$Y) ,
-                                       (TRD-MSYMEVAL $X '$X) 2))
-                           (TRD-MSYMEVAL $%F% '$%F%))))
-(EVAL-WHEN (COMPILE EVAL LOAD)
-       (DEFPROP $FTEST T TRANSLATED)
-       (ADD2LNC '$FTEST $PROPS)
-       (DEFMTRFUN ($FTEST $BOOLEAN MDEFINE NIL NIL)
-                  ($CALL)
-                  NIL
-                  (NOT (LIKE (SETQ $%Q% $CALL)
-                             NIL))))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $SOLVE1 T TRANSLATED)
- (ADD2LNC '$SOLVE1 $PROPS)
- (DEFMTRFUN ($SOLVE1 $ANY MDEFINE NIL NIL)
-            ($EQ $Y)
-            NIL
-            ((LAMBDA ($PROGRAMMODE)
-               NIL
-               (SIMPLIFY ($FIRST (SIMPLIFY ($SOLVE $EQ
-                                                   (TRD-MSYMEVAL $Y '$Y))))))
-             T)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $LINEAR2 T TRANSLATED)
- (ADD2LNC '$LINEAR2 $PROPS)
- (DEFMTRFUN
-  ($LINEAR2 $ANY MDEFINE NIL NIL)
-  ($EXPR $X)
-  NIL
-  ((LAMBDA
-    NIL
-    NIL
-    (PROG
-     NIL
-     (SETQ $%F% (SIMPLIFY ($RATCOEF $EXPR (TRD-MSYMEVAL $X '$X))))
-     (COND ((NOT ($FREEOF (TRD-MSYMEVAL $X '$X) (TRD-MSYMEVAL $%F% '$%F%)))
-            (RETURN NIL)))
-     (SETQ
-      $%G%
-      (SIMPLIFY ($RATSIMP (ADD* $EXPR
-                                (*MMINUS (MUL* (TRD-MSYMEVAL $%F%
-                                                             '$%F%)
-                                               (TRD-MSYMEVAL $X '$X)))))))
-     (RETURN ($FREEOF (TRD-MSYMEVAL $X '$X) (TRD-MSYMEVAL $%G% '$%G%))))))))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $SOLVELNR T TRANSLATED)
- (ADD2LNC '$SOLVELNR $PROPS)
- (DEFMTRFUN
-  ($SOLVELNR $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($%F% $%G% $W $%C)
-    NIL
-    (PROG
-     NIL
-     (COND ((LIKE (SIMPLIFY ($LINEAR2 ($RHS $EQ) (TRD-MSYMEVAL $Y '$Y)))
-                  NIL)
-            (RETURN NIL)))
-     (SETQ
-      $W
-      (SIMPLIFY ($EXP (SIMPLIFY ($INTEGRATE (TRD-MSYMEVAL $%F% '$%F%)
-                                            (TRD-MSYMEVAL $X '$X))))))
-     (SETQ $METHOD '$LINEAR)
-     (RETURN
-      (SIMPLIFY
-       (LIST
-        '(MEQUAL)
-        (TRD-MSYMEVAL $Y '$Y)
-        (MUL* $W
-              (ADD* (SIMPLIFY ($INTEGRATE (DIV (TRD-MSYMEVAL $%G%
-                                                             '$%G%)
-                                               $W)
-                                          (TRD-MSYMEVAL $X '$X)))
-                    $%C)))))))
-   '$%F%
-   '$%G%
-   '$W
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $SEPARABLE T TRANSLATED)
- (ADD2LNC '$SEPARABLE $PROPS)
- (DEFMTRFUN
-  ($SEPARABLE $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($XPART $YPART $FLAG $INFLAG $%C)
-    NIL
-    (PROG
-     NIL
-     (SETQ $EQ (SIMPLIFY ($FACTOR ($RHS $EQ))))
-     (COND ((OR ($ATOM $EQ)
-                (NOT (LIKE (SIMPLIFY ($INPART $EQ 0)) '&*)))
-            (SETQ $EQ (LIST '(MLIST) $EQ))))
-     (DO (($U)
-          (MDO (CDR $EQ) (CDR MDO)))
-         ((NULL MDO) '$DONE)
-       (SETQ $U (CAR MDO))
-       (COND (($FREEOF (TRD-MSYMEVAL $X '$X) $U)
-              (SETQ $YPART ($CONS $U $YPART)))
-             (($FREEOF (TRD-MSYMEVAL $Y '$Y) $U)
-              (SETQ $XPART ($CONS $U $XPART)))
-             (T (RETURN (SETQ $FLAG T)))))
-     (COND ((LIKE $FLAG T)
-            (RETURN NIL)))
-     (COND ((LIKE $XPART '((MLIST)))
-            (SETQ $XPART 1))
-           (T (SETQ $XPART (SIMPLIFY (MAPPLY-TR '&* $XPART)))))
-     (COND ((LIKE $YPART '((MLIST)))
-            (SETQ $YPART 1))
-           (T (SETQ $YPART (SIMPLIFY (MAPPLY-TR '&* $YPART)))))
-     (SETQ $METHOD '$SEPARABLE)
-     (RETURN
-      (SIMPLIFY
-       (LIST
-        '(MEQUAL)
-        (SIMPLIFY ($RATSIMP (SIMPLIFY ($INTEGRATE (DIV 1 $YPART)
-                                                  (TRD-MSYMEVAL $Y
-                                                                '$Y)))))
-        (ADD*
-         (SIMPLIFY ($RATSIMP (SIMPLIFY ($INTEGRATE $XPART
-                                                   (TRD-MSYMEVAL $X
-                                                                 '$X)))))
-         $%C))))))
-   '((MLIST))
-   '((MLIST))
-   NIL
-   T
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $INTEGFACTOR T TRANSLATED)
- (ADD2LNC '$INTEGFACTOR $PROPS)
- (DEFMTRFUN
-  ($INTEGFACTOR $ANY MDEFINE NIL NIL)
-  ($M $N)
-  NIL
-  ((LAMBDA
-    ($B1 $B2 $DMDX $DMDY $DNDX $DNDY $DD $%E_TO_NUMLOG)
-    NIL
-    (PROG
-     NIL
-     (SETQ $DMDY (SIMPLIFY ($RATSIMP (SIMPLIFY ($DIFF $M
-                                                      (TRD-MSYMEVAL $Y
-                                                                    '$Y))))))
-     (SETQ $DNDX (SIMPLIFY ($RATSIMP (SIMPLIFY ($DIFF $N
-                                                      (TRD-MSYMEVAL $X
-                                                                    '$X))))))
-     (COND ((LIKE (SETQ $DD (ADD* $DMDY (*MMINUS $DNDX)))
-                  0)
-            (RETURN 1)))
-     (SETQ $DMDX (SIMPLIFY ($RATSIMP (SIMPLIFY ($DIFF $M
-                                                      (TRD-MSYMEVAL $X
-                                                                    '$X))))))
-     (SETQ $DNDY (SIMPLIFY ($RATSIMP (SIMPLIFY ($DIFF $N
-                                                      (TRD-MSYMEVAL $Y
-                                                                    '$Y))))))
-     (COND ((AND (LIKE (ADD* $DMDX (*MMINUS $DNDY)) 0)
-                 (LIKE (ADD* $DMDY $DNDX) 0))
-            (RETURN (DIV 1 (ADD* (POWER $M 2) (POWER $N 2))))))
-     (COND
-      (($FREEOF (TRD-MSYMEVAL $Y '$Y)
-                (SETQ $B1 (SIMPLIFY ($RATSIMP (DIV $DD $N)))))
-       (RETURN
-        (SIMPLIFY ($EXP (SIMPLIFY ($INTEGRATE $B1
-                                              (TRD-MSYMEVAL $X '$X))))))))
-     (RETURN
-      (COND
-       (($FREEOF (TRD-MSYMEVAL $X '$X)
-                 (SETQ $B2 (SIMPLIFY ($RATSIMP (DIV $DD $M)))))
-        (RETURN
-         (SIMPLIFY ($EXP (SIMPLIFY ($INTEGRATE (*MMINUS $B2)
-                                               (TRD-MSYMEVAL $Y '$Y)))))))
-       (T (RETURN NIL))))))
-   '$B1
-   '$B2
-   '$DMDX
-   '$DMDY
-   '$DNDX
-   '$DNDY
-   '$DD
-   T)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $EXACT T TRANSLATED)
- (ADD2LNC '$EXACT $PROPS)
- (DEFMTRFUN
-  ($EXACT $ANY MDEFINE NIL NIL)
-  ($M $N)
-  NIL
-  ((LAMBDA
-    ($A $YNEW $%C)
-    NIL
-    (PROG
-     NIL
-     (SETQ $INTFACTOR (SIMPLIFY ($SUBSTITUTE (TRD-MSYMEVAL $YOLD '$YOLD)
-                                             $YNEW
-                                             (TRD-MSYMEVAL $%Q% '$%Q%))))
-     (SETQ $A (SIMPLIFY ($INTEGRATE (SIMPLIFY ($RATSIMP $M))
-                                    (TRD-MSYMEVAL $X '$X))))
-     (SETQ $METHOD '$EXACT)
-     (RETURN
-      (SIMPLIFY
-       (LIST
-        '(MEQUAL)
-        (SIMPLIFY
-         ($RATSIMP
-          (ADD*
-           $A
-           (SIMPLIFY
-            ($INTEGRATE
-             (SIMPLIFY
-              ($RATSIMP
-               (ADD*
-                $N
-                (*MMINUS (SIMPLIFY ($DIFF $A
-                                          (TRD-MSYMEVAL $Y '$Y)))))))
-             (TRD-MSYMEVAL $Y '$Y))))))
-        $%C)))))
-   '$A
-   '$YNEW
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $SOLVEHOM T TRANSLATED)
- (ADD2LNC '$SOLVEHOM $PROPS)
- (DEFMTRFUN
-  ($SOLVEHOM $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($QQ $A1 $A2 $%C)
-    NIL
-    (PROG
-     NIL
-     (SETQ
-      $A1
-      (SIMPLIFY ($RATSIMP (SIMPLIFY ($SUBSTITUTE (MUL* (TRD-MSYMEVAL $X
-                                                                     '$X)
-                                                       $QQ)
-                                                 (TRD-MSYMEVAL $Y '$Y)
-                                                 ($RHS $EQ))))))
-     (COND ((NOT ($FREEOF (TRD-MSYMEVAL $X '$X) $A1))
-            (RETURN NIL)))
-     (SETQ
-      $A2
-      (SIMPLIFY
-       ($RATSIMP
-        (SIMPLIFY
-         ($SUBSTITUTE (DIV (TRD-MSYMEVAL $Y '$Y) (TRD-MSYMEVAL $X '$X))
-                      $QQ
-                      (SIMPLIFY ($INTEGRATE (DIV 1
-                                                 (ADD* $A1
-                                                       (*MMINUS $QQ)))
-                                            $QQ)))))))
-     (SETQ $METHOD '$HOMOGENEOUS)
-     (RETURN (SIMPLIFY (LIST '(MEQUAL)
-                             (MUL* $%C (TRD-MSYMEVAL $X '$X))
-                             (SIMPLIFY ($EXP $A2)))))))
-   '$QQ
-   '$A1
-   '$A2
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $SOLVEBERNOULLI T TRANSLATED)
- (ADD2LNC '$SOLVEBERNOULLI $PROPS)
- (DEFMTRFUN
-  ($SOLVEBERNOULLI $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($A1 $A2 $N $%C)
-    NIL
-    (PROG
-     NIL
-     (SETQ $A1 (SIMPLIFY ($COEFF (SETQ $EQ (SIMPLIFY ($EXPAND ($RHS $EQ))))
-                                 (TRD-MSYMEVAL $Y '$Y)
-                                 1)))
-     (COND ((NOT ($FREEOF (TRD-MSYMEVAL $Y '$Y) $A1))
-            (RETURN NIL)))
-     (SETQ
-      $N
-      (SIMPLIFY
-       ($HIPOW
-        (SIMPLIFY ($RATSIMP (ADD* $EQ
-                                  (*MMINUS (MUL* $A1
-                                                 (TRD-MSYMEVAL $Y '$Y))))))
-        (TRD-MSYMEVAL $Y '$Y))))
-     (SETQ $A2 (SIMPLIFY ($COEFF $EQ (TRD-MSYMEVAL $Y '$Y) $N)))
-     (COND
-      ((OR
-        (NOT ($FREEOF (TRD-MSYMEVAL $Y '$Y) $A2))
-        (NOT ($FREEOF (TRD-MSYMEVAL $X '$X) (TRD-MSYMEVAL $Y '$Y) $N))
-        (LIKE $N 0)
-        (NOT
-         (LIKE
-          $EQ
-          (SIMPLIFY ($EXPAND (ADD* (MUL* $A1 (TRD-MSYMEVAL $Y '$Y))
-                                   (MUL* $A2
-                                         (POWER (TRD-MSYMEVAL $Y '$Y)
-                                                $N))))))))
-       (RETURN NIL)))
-     (SETQ $A1 (SIMPLIFY ($INTEGRATE $A1 (TRD-MSYMEVAL $X '$X))))
-     (SETQ $METHOD '$BERNOULLI)
-     (SETQ $ODEINDEX $N)
-     (RETURN
-      (SIMPLIFY
-       (LIST
-        '(MEQUAL)
-        (TRD-MSYMEVAL $Y '$Y)
-        (MUL*
-         (SIMPLIFY ($EXP $A1))
-         (POWER
-          (ADD*
-           (MUL*
-            (ADD* 1 (*MMINUS $N))
-            (SIMPLIFY
-             ($INTEGRATE (MUL* $A2
-                               (SIMPLIFY ($EXP (MUL* (ADD* $N -1)
-                                                     $A1))))
-                         (TRD-MSYMEVAL $X '$X))))
-           $%C)
-          (DIV 1 (ADD* 1 (*MMINUS $N))))))))))
-   '$A1
-   '$A2
-   '$N
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $GENHOM T TRANSLATED)
- (ADD2LNC '$GENHOM $PROPS)
- (DEFMTRFUN
-  ($GENHOM $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($%G% $U $N $A1 $A2 $A3 $%C)
-    NIL
-    (PROG
-     NIL
-     (SETQ $%G% (DIV (MUL* ($RHS $EQ) (TRD-MSYMEVAL $X '$X))
-                     (TRD-MSYMEVAL $Y '$Y)))
-     (SETQ
-      $N
-      (SIMPLIFY
-       ($RATSIMP (DIV (MUL* (TRD-MSYMEVAL $X '$X)
-                            (SIMPLIFY ($DIFF (TRD-MSYMEVAL $%G% '$%G%)
-                                             (TRD-MSYMEVAL $X '$X))))
-                      (MUL* (TRD-MSYMEVAL $Y '$Y)
-                            (SIMPLIFY ($DIFF (TRD-MSYMEVAL $%G% '$%G%)
-                                             (TRD-MSYMEVAL $Y '$Y))))))))
-     (COND ((NOT ($FREEOF (TRD-MSYMEVAL $X '$X) (TRD-MSYMEVAL $Y '$Y) $N))
-            (RETURN NIL)))
-     (SETQ
-      $A1
-      (SIMPLIFY
-       ($RATSIMP (SIMPLIFY ($SUBSTITUTE (DIV $U
-                                             (POWER (TRD-MSYMEVAL $X
-                                                                  '$X)
-                                                    $N))
-                                        (TRD-MSYMEVAL $Y '$Y)
-                                        (TRD-MSYMEVAL $%G% '$%G%))))))
-     (SETQ $A2 (SIMPLIFY ($INTEGRATE (DIV 1 (MUL* $U (ADD* $N $A1))) $U)))
-     (COND ((NOT ($FREEOF (SIMPLIFY ($NOUNIFY '$INTEGRATE)) $A2))
-            (RETURN NIL)))
-     (SETQ
-      $A3
-      (SIMPLIFY
-       ($RATSIMP (SIMPLIFY ($SUBSTITUTE (MUL* (TRD-MSYMEVAL $Y '$Y)
-                                              (POWER (TRD-MSYMEVAL $X
-                                                                   '$X)
-                                                     $N))
-                                        $U
-                                        $A2)))))
-     (SETQ $METHOD '$GENHOM)
-     (SETQ $ODEINDEX $N)
-     (RETURN (SIMPLIFY (LIST '(MEQUAL)
-                             (TRD-MSYMEVAL $X '$X)
-                             (MUL* $%C (SIMPLIFY ($EXP $A3))))))))
-   '$%G%
-   '$U
-   '$N
-   '$A1
-   '$A2
-   '$A3
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $HOM2 T TRANSLATED)
- (ADD2LNC '$HOM2 $PROPS)
- (DEFMTRFUN ($HOM2 $ANY MDEFINE NIL NIL)
-            ($A1 $A2 $A3)
-            NIL
-            ((LAMBDA ($AP $AQ $PT)
-               NIL
-               (PROG NIL
-                     (SETQ $AP (DIV $A2 $A1))
-                     (SETQ $AQ (DIV $A3 $A1))
-                     (COND (($FTEST (SIMPLIFY ($CC2 $AP
-                                                    $AQ
-                                                    (TRD-MSYMEVAL $Y '$Y)
-                                                    (TRD-MSYMEVAL $X '$X))))
-                            (RETURN (TRD-MSYMEVAL $%Q% '$%Q%))))
-                     (COND (($FTEST (SIMPLIFY ($EXACT2 $A1 $A2 $A3)))
-                            (RETURN (TRD-MSYMEVAL $%Q% '$%Q%))))
-                     (COND ((LIKE (SETQ $PT (SIMPLIFY ($PTTEST $AP)))
-                                  NIL)
-                            (GO $END)))
-                     (COND (($FTEST (SIMPLIFY ($EULER2 $AP $AQ)))
-                            (RETURN (TRD-MSYMEVAL $%Q% '$%Q%))))
-                     (COND (($FTEST (SIMPLIFY ($BESSEL2 $AP $AQ)))
-                            (RETURN (TRD-MSYMEVAL $%Q% '$%Q%))))
-                $END (RETURN (COND (($FTEST (SIMPLIFY ($XCC2 $AP $AQ)))
-                                    (RETURN (TRD-MSYMEVAL $%Q% '$%Q%)))
-                                   (T (RETURN NIL))))))
-             '$AP
-             '$AQ
-             '$PT)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $CC2 T TRANSLATED)
- (ADD2LNC '$CC2 $PROPS)
- (DEFMTRFUN
-  ($CC2 $ANY MDEFINE NIL NIL)
-  ($%F% $%G% $Y $X)
-  NIL
-  ((LAMBDA
-    ($A $SIGN $RADEXPAND $ALPHA $ZERO $POS $YNEW $%K1 $%K2)
-    NIL
-    (PROG
-     NIL
-     (COND ((NOT (AND ($FREEOF (TRD-MSYMEVAL $X '$X)
-                               (TRD-MSYMEVAL $Y '$Y)
-                               (TRD-MSYMEVAL $%F% '$%F%))
-                      ($FREEOF (TRD-MSYMEVAL $X '$X)
-                               (TRD-MSYMEVAL $Y '$Y)
-                               (TRD-MSYMEVAL $%G% '$%G%))))
-            (RETURN NIL)))
-     (SETQ $METHOD '$CONSTCOEFF)
-     (SETQ $A (ADD* (POWER (TRD-MSYMEVAL $%F% '$%F%) 2)
-                    (*MMINUS (MUL* 4 (TRD-MSYMEVAL $%G% '$%G%)))))
-     (COND (($FREEOF '$%I $A)
-            (SETQ $SIGN (SIMPLIFY ($ASKSIGN $A))))
-           (T
-            (SETQ $RADEXPAND T)
-            (SETQ $SIGN '$PNZ)))
-     (COND
-      ((LIKE $SIGN $ZERO)
-       (RETURN
-        (SIMPLIFY
-         (LIST
-          '(MEQUAL)
-          (TRD-MSYMEVAL $Y '$Y)
-          (MUL*
-           (SIMPLIFY ($EXP (DIV (MUL* (*MMINUS (TRD-MSYMEVAL $%F%
-                                                             '$%F%))
-                                      (TRD-MSYMEVAL $X '$X))
-                                2)))
-           (ADD* $%K1 (MUL* $%K2 (TRD-MSYMEVAL $X '$X)))))))))
-     (COND
-      ((LIKE $SIGN $POS)
-       (RETURN
-        (SIMPLIFY
-         (LIST
-          '(MEQUAL)
-          (TRD-MSYMEVAL $Y '$Y)
-          (ADD*
-           (MUL*
-            $%K1
-            (SIMPLIFY
-             ($EXP (DIV (MUL* (ADD* (*MMINUS (TRD-MSYMEVAL $%F%
-                                                           '$%F%))
-                                    (SIMPLIFY (LIST '(%SQRT) $A)))
-                              (TRD-MSYMEVAL $X '$X))
-                        2))))
-           (MUL*
-            $%K2
-            (SIMPLIFY
-             ($EXP
-              (DIV (MUL* (ADD* (*MMINUS (TRD-MSYMEVAL $%F% '$%F%))
-                               (*MMINUS (SIMPLIFY (LIST '(%SQRT)
-                                                        $A))))
-                         (TRD-MSYMEVAL $X '$X))
-                   2))))))))))
-     (SETQ $A (*MMINUS $A))
-     (SETQ $ALPHA (DIV (MUL* (TRD-MSYMEVAL $X '$X)
-                             (SIMPLIFY (LIST '(%SQRT) $A)))
-                       2))
-     (COND
-      ((LIKE (TRD-MSYMEVAL $EXPONENTIALIZE NIL) NIL)
-       (RETURN
-        (SIMPLIFY
-         (LIST
-          '(MEQUAL)
-          (TRD-MSYMEVAL $Y '$Y)
-          (MUL*
-           (SIMPLIFY ($EXP (DIV (MUL* (*MMINUS (TRD-MSYMEVAL $%F%
-                                                             '$%F%))
-                                      (TRD-MSYMEVAL $X '$X))
-                                2)))
-           (ADD* (MUL* $%K1 (SIMPLIFY (LIST '(%SIN) $ALPHA)))
-                 (MUL* $%K2 (SIMPLIFY (LIST '(%COS) $ALPHA))))))))))
-     (RETURN
-      (SIMPLIFY
-       (LIST
-        '(MEQUAL)
-        (TRD-MSYMEVAL $Y '$Y)
-        (MUL* (SIMPLIFY ($EXP (DIV (MUL* (*MMINUS (TRD-MSYMEVAL $%F%
-                                                                '$%F%))
-                                         (TRD-MSYMEVAL $X '$X))
-                                   2)))
-              (ADD* (MUL* $%K1 (SIMPLIFY ($EXP (MUL* '$%I $ALPHA))))
-                    (MUL* $%K2
-                          (SIMPLIFY ($EXP (MUL* (*MMINUS '$%I)
-                                                $ALPHA)))))))))))
-   '$A
-   '$SIGN
-   '$ALL
-   '$ALPHA
-   '$ZERO
-   '$POS
-   '$YNEW
-   '$%K1
-   '$%K2)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $EXACT2 T TRANSLATED)
- (ADD2LNC '$EXACT2 $PROPS)
- (DEFMTRFUN
-  ($EXACT2 $ANY MDEFINE NIL NIL)
-  ($A1 $A2 $A3)
-  NIL
-  ((LAMBDA
-    ($B1 $%K1 $%K2)
-    NIL
-    (PROG
-     NIL
-     (COND
-      ((LIKE
-        (SIMPLIFY
-         ($RATSIMP (ADD* (SIMPLIFY ($DIFF $A1 (TRD-MSYMEVAL $X '$X) 2))
-                         (*MMINUS (SIMPLIFY ($DIFF $A2
-                                                   (TRD-MSYMEVAL $X '$X))))
-                         $A3)))
-        0)
-       (SETQ
-        $B1
-        (SIMPLIFY
-         ($EXP
-          (*MMINUS
-           (SIMPLIFY
-            ($INTEGRATE
-             (SIMPLIFY
-              ($RATSIMP
-               (DIV
-                (ADD*
-                 $A2
-                 (*MMINUS (SIMPLIFY ($DIFF $A1
-                                           (TRD-MSYMEVAL $X '$X)))))
-                $A1)))
-             (TRD-MSYMEVAL $X '$X))))))))
-      (T (RETURN NIL)))
-     (SETQ $METHOD '$EXACT)
-     (RETURN
-      (SIMPLIFY
-       (LIST '(MEQUAL)
-             (TRD-MSYMEVAL $Y '$Y)
-             (ADD* (MUL* $%K1
-                         $B1
-                         (SIMPLIFY ($INTEGRATE (DIV 1 (MUL* $A1 $B1))
-                                               (TRD-MSYMEVAL $X '$X))))
-                   (MUL* $%K2 $B1)))))))
-   '$B1
-   '$%K1
-   '$%K2)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $XCC2 T TRANSLATED)
- (ADD2LNC '$XCC2 $PROPS)
- (DEFMTRFUN
-  ($XCC2 $ANY MDEFINE NIL NIL)
-  ($AP $AQ)
-  NIL
-  ((LAMBDA
-    ($D $B1 $Z $RADEXPAND)
-    NIL
-    (PROG
-     NIL
-     (COND ((LIKE $AQ 0)
-            (RETURN NIL)))
-     (SETQ
-      $D
-      (SIMPLIFY ($RATSIMP (DIV (ADD* (SIMPLIFY ($DIFF $AQ
-                                                      (TRD-MSYMEVAL $X
-                                                                    '$X)))
-                                     (MUL* 2 $AP $AQ))
-                               (MUL* 2 (POWER $AQ (RREMAINDER 3 2)))))))
-     (COND (($FREEOF (TRD-MSYMEVAL $X '$X) (TRD-MSYMEVAL $Y '$Y) $D)
-            (SETQ $B1 (SIMPLIFY ($CC2 $D 1 (TRD-MSYMEVAL $Y '$Y) $Z))))
-           (T (RETURN NIL)))
-     (SETQ $METHOD '$XFORMTOCONSTCOEFF)
-     (RETURN
-      (SIMPLIFY
-       ($SUBSTITUTE (SIMPLIFY ($INTEGRATE (SIMPLIFY (LIST '(%SQRT) $AQ))
-                                          (TRD-MSYMEVAL $X '$X)))
-                    $Z
-                    $B1)))))
-   '$D
-   '$B1
-   '$Z
-   '$ALL)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $VARP T TRANSLATED)
- (ADD2LNC '$VARP $PROPS)
- (DEFMTRFUN
-  ($VARP $ANY MDEFINE NIL NIL)
-  ($SOLN $%G%)
-  NIL
-  ((LAMBDA
-    ($Y1 $Y2 $Y3 $Y4 $WR $HEURISTIC $%K1 $%K2)
-    NIL
-    (PROG
-     NIL
-     (SETQ
-      $Y1
-      (SIMPLIFY
-       ($RATSIMP (SIMPLIFY ($SUBSTITUTE (LIST '(MLIST)
-                                              (SIMPLIFY (LIST '(MEQUAL)
-                                                              $%K1
-                                                              1))
-                                              (SIMPLIFY (LIST '(MEQUAL)
-                                                              $%K2
-                                                              0)))
-                                        ($RHS $SOLN))))))
-     (SETQ
-      $Y2
-      (SIMPLIFY
-       ($RATSIMP (SIMPLIFY ($SUBSTITUTE (LIST '(MLIST)
-                                              (SIMPLIFY (LIST '(MEQUAL)
-                                                              $%K1
-                                                              0))
-                                              (SIMPLIFY (LIST '(MEQUAL)
-                                                              $%K2
-                                                              1)))
-                                        ($RHS $SOLN))))))
-     (SETQ $WR (ADD* (MUL* $Y1 (SIMPLIFY ($DIFF $Y2 (TRD-MSYMEVAL $X '$X))))
-                     (*MMINUS (MUL* $Y2
-                                    (SIMPLIFY ($DIFF $Y1
-                                                     (TRD-MSYMEVAL $X
-                                                                   '$X)))))))
-     (COND ((LIKE $WR 0)
-            (RETURN NIL)))
-     (COND ((AND (LIKE (TRD-MSYMEVAL $METHOD '$METHOD) '$CONSTCOEFF)
-                 (NOT ($FREEOF '%SIN $WR))
-                 (NOT ($FREEOF '%COS $WR)))
-            (SETQ $HEURISTIC T)
-            (SETQ $WR (SIMPLIFY ($RATSIMP (SIMPLIFY ($TRIGREDUCE $WR)))))))
-     (SETQ $Y3 (SIMPLIFY ($RATSIMP (DIV (MUL* $Y1
-                                              (TRD-MSYMEVAL $%G% '$%G%))
-                                        $WR))))
-     (SETQ $Y4 (SIMPLIFY ($RATSIMP (DIV (MUL* $Y2
-                                              (TRD-MSYMEVAL $%G% '$%G%))
-                                        $WR))))
-     (SETQ
-      $YP
-      (SIMPLIFY
-       ($RATSIMP
-        (ADD* (MUL* $Y2 (SIMPLIFY ($INTEGRATE $Y3 (TRD-MSYMEVAL $X '$X))))
-              (*MMINUS (MUL* $Y1
-                             (SIMPLIFY ($INTEGRATE $Y4
-                                                   (TRD-MSYMEVAL $X
-                                                                 '$X)))))))))
-     (COND
-      ((LIKE $HEURISTIC T)
-       (SETQ
-        $YP
-        (SIMPLIFY ($RATSIMP (SIMPLIFY ($TRIGREDUCE (TRD-MSYMEVAL $YP
-                                                                 '$YP))))))))
-     (SETQ $METHOD '$VARIATIONOFPARAMETERS)
-     (RETURN (SIMPLIFY (LIST '(MEQUAL)
-                             (TRD-MSYMEVAL $Y '$Y)
-                             (ADD* ($RHS $SOLN) (TRD-MSYMEVAL $YP '$YP)))))))
-   '$Y1
-   '$Y2
-   '$Y3
-   '$Y4
-   '$WR
-   NIL
-   '$%K1
-   '$%K2)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $REDUCE T TRANSLATED)
- (ADD2LNC '$REDUCE $PROPS)
- (DEFMTRFUN
-  ($REDUCE $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($B1 $QQ)
-    NIL
-    (PROG
-     NIL
-     (SETQ
-      $B1
-      (SIMPLIFY
-       ($SUBSTITUTE
-        (LIST '(MLIST)
-              (SIMPLIFY (LIST '(MEQUAL)
-                              (SIMPLIFY `((%DERIVATIVE) ,
-                                          (TRD-MSYMEVAL $Y '$Y) ,
-                                          (TRD-MSYMEVAL $X '$X) 2))
-                              $QQ))
-              (SIMPLIFY (LIST '(MEQUAL)
-                              (SIMPLIFY `((%DERIVATIVE) ,
-                                          (TRD-MSYMEVAL $Y '$Y) ,
-                                          (TRD-MSYMEVAL $X '$X)))
-                              $QQ)))
-        $EQ)))
-     (COND (($FREEOF (TRD-MSYMEVAL $Y '$Y) $B1)
-            (RETURN (SIMPLIFY ($NLX $EQ)))))
-     (RETURN (COND (($FREEOF (TRD-MSYMEVAL $X '$X) $B1)
-                    (RETURN (SIMPLIFY ($NLY $EQ))))
-                   (T (RETURN NIL))))))
-   '$B1
-   '$QQ)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $NLX T TRANSLATED)
- (ADD2LNC '$NLX $PROPS)
- (DEFMTRFUN
-  ($NLX $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($DE $B $A1 $V $%K1 $%C)
-    NIL
-    (PROG
-     NIL
-     (SETQ
-      $DE
-      (SIMPLIFY
-       ($SUBSTITUTE
-        (LIST '(MLIST)
-              (SIMPLIFY (LIST '(MEQUAL)
-                              (SIMPLIFY `((%DERIVATIVE) ,
-                                          (TRD-MSYMEVAL $Y '$Y) ,
-                                          (TRD-MSYMEVAL $X '$X) 2))
-                              (SIMPLIFY `((%DERIVATIVE) ,$V ,
-                                          (TRD-MSYMEVAL $X '$X)))))
-              (SIMPLIFY (LIST '(MEQUAL)
-                              (SIMPLIFY `((%DERIVATIVE) ,
-                                          (TRD-MSYMEVAL $Y '$Y) ,
-                                          (TRD-MSYMEVAL $X '$X)))
-                              $V)))
-        $EQ)))
-     (COND ((LIKE (SETQ $B (SIMPLIFY ($ODE1A $DE $V (TRD-MSYMEVAL $X '$X))))
-                  NIL)
-            (RETURN NIL)))
-     (SETQ
-      $A1
-      (SIMPLIFY
-       ($SUBSTITUTE
-        (LIST '(MLIST)
-              (SIMPLIFY (LIST '(MEQUAL)
-                              $V
-                              (SIMPLIFY `((%DERIVATIVE) ,
-                                          (TRD-MSYMEVAL $Y '$Y) ,
-                                          (TRD-MSYMEVAL $X '$X)))))
-              (SIMPLIFY (LIST '(MEQUAL) $%C $%K1)))
-        $B)))
-     (RETURN
-      (COND (($FTEST (SIMPLIFY ($NLXY $A1
-                                      (SIMPLIFY `((%DERIVATIVE) ,
-                                                  (TRD-MSYMEVAL $Y '$Y)
-                                                  ,(TRD-MSYMEVAL $X
-                                                                 '$X))))))
-             (SETQ $METHOD '$FREEOFY)
-             (RETURN (TRD-MSYMEVAL $%Q% '$%Q%)))
-            (T (RETURN NIL))))))
-   '$DE
-   '$B
-   '$A1
-   '$V
-   '$%K1
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $NLY T TRANSLATED)
- (ADD2LNC '$NLY $PROPS)
- (DEFMTRFUN
-  ($NLY $ANY MDEFINE NIL NIL)
-  ($EQ)
-  NIL
-  ((LAMBDA
-    ($DE $B $A1 $YZ $V $%C $%K1)
-    NIL
-    (PROG
-     NIL
-     (SETQ
-      $DE
-      (SIMPLIFY
-       ($SUBSTITUTE
-        (LIST '(MLIST)
-              (SIMPLIFY (LIST '(MEQUAL)
-                              (SIMPLIFY `((%DERIVATIVE) ,
-                                          (TRD-MSYMEVAL $Y '$Y) ,
-                                          (TRD-MSYMEVAL $X '$X) 2))
-                              (MUL* $V
-                                    (SIMPLIFY `((%DERIVATIVE) ,$V ,$YZ)))))
-              (SIMPLIFY (LIST '(MEQUAL)
-                              (SIMPLIFY `((%DERIVATIVE) ,
-                                          (TRD-MSYMEVAL $Y '$Y) ,
-                                          (TRD-MSYMEVAL $X '$X)))
-                              $V))
-              (SIMPLIFY (LIST '(MEQUAL) (TRD-MSYMEVAL $Y '$Y) $YZ)))
-        $EQ)))
-     (COND ((LIKE (SETQ $B (SIMPLIFY ($ODE1A $DE $V $YZ)))
-                  NIL)
-            (RETURN NIL)))
-     (SETQ
-      $A1
-      (SIMPLIFY
-       ($SUBSTITUTE
-        (LIST '(MLIST)
-              (SIMPLIFY (LIST '(MEQUAL)
-                              $V
-                              (SIMPLIFY `((%DERIVATIVE) ,
-                                          (TRD-MSYMEVAL $Y '$Y) ,
-                                          (TRD-MSYMEVAL $X '$X)))))
-              (SIMPLIFY (LIST '(MEQUAL) $YZ (TRD-MSYMEVAL $Y '$Y)))
-              (SIMPLIFY (LIST '(MEQUAL) $%C $%K1)))
-        $B)))
-     (RETURN
-      (COND (($FTEST (SIMPLIFY ($NLXY $A1
-                                      (SIMPLIFY `((%DERIVATIVE) ,
-                                                  (TRD-MSYMEVAL $Y '$Y)
-                                                  ,(TRD-MSYMEVAL $X
-                                                                 '$X))))))
-             (SETQ $METHOD '$FREEOFX)
-             (RETURN (TRD-MSYMEVAL $%Q% '$%Q%)))
-            (T (RETURN NIL))))))
-   '$DE
-   '$B
-   '$A1
-   '$YZ
-   '$V
-   '$%C
-   '$%K1)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $NLXY T TRANSLATED)
- (ADD2LNC '$NLXY $PROPS)
- (DEFMTRFUN
-  ($NLXY $ANY MDEFINE NIL NIL)
-  ($EQ $DE)
-  NIL
-  ((LAMBDA
-    ($PROGRAMMODE $EQ1 $%K2 $%C)
-    NIL
-    (PROG
-     NIL
-     (SETQ $EQ1 (SIMPLIFY ($SOLVE $EQ $DE)))
-     (SETQ
-      $EQ1
-      (MAPLIST_TR
-       (M-TLAMBDA&ENV
-        (($ZZ) ($%K2 $%C))
-        NIL
-        (COND (($FTEST (SIMPLIFY ($ODE1A $ZZ
-                                         (TRD-MSYMEVAL $Y '$Y)
-                                         (TRD-MSYMEVAL $X '$X))))
-               (SIMPLIFY ($SUBSTITUTE $%K2
-                                      $%C
-                                      (TRD-MSYMEVAL $%Q% '$%Q%))))))
-       $EQ1))
-     (RETURN (COND ((EQL ($LENGTH $EQ1) 1)
-                    (RETURN (SIMPLIFY ($FIRST $EQ1))))
-                   (T (RETURN $EQ1))))))
-   T
-   '$EQ1
-   '$%K2
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $PTTEST T TRANSLATED)
- (ADD2LNC '$PTTEST $PROPS)
- (DEFMTRFUN
-  ($PTTEST $ANY MDEFINE NIL NIL)
-  ($A)
-  NIL
-  ((LAMBDA ($A1 $A2 $A3)
-     NIL
-     (PROG NIL
-           (COND ((LIKE (SETQ $A1 (SIMPLIFY ($RATSIMP $A)))
-                        0)
-                  (RETURN NIL)))
-           (SETQ $A1 (SIMPLIFY ($EXPAND (DIV 1 $A1))))
-           (COND ((LIKE (SETQ $A2 (SIMPLIFY ($COEFF $A1
-                                                    (TRD-MSYMEVAL $X '$X)
-                                                    1)))
-                        0)
-                  (RETURN NIL)))
-           (COND ((NOT ($FREEOF (TRD-MSYMEVAL $X '$X) $A2))
-                  (RETURN NIL)))
-           (SETQ $A3 (SIMPLIFY ($COEFF $A1 (TRD-MSYMEVAL $X '$X) 0)))
-           (RETURN (COND ((NOT (LIKE $A1
-                                     (ADD* (MUL* $A2
-                                                 (TRD-MSYMEVAL $X '$X))
-                                           $A3)))
-                          (RETURN NIL))
-                         (T (RETURN (DIV (*MMINUS $A3) $A2)))))))
-   '$A1
-   '$A2
-   '$A3)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $EULER2 T TRANSLATED)
- (ADD2LNC '$EULER2 $PROPS)
- (DEFMTRFUN
-  ($EULER2 $ANY MDEFINE NIL NIL)
-  ($A $B)
-  NIL
-  ((LAMBDA
-    ($DC $RP $IP $ALPHA $BETA $SIGN $RADEXPAND $%K1 $%K2 $POS $ZERO)
-    NIL
-    (PROG
-     NIL
-     (COND
-      ((NOT
-        ($FREEOF
-         (TRD-MSYMEVAL $X '$X)
-         (TRD-MSYMEVAL $Y '$Y)
-         (SETQ
-          $BETA
-          (SIMPLIFY
-           ($RATSIMP (MUL* $B
-                           (POWER (ADD* (TRD-MSYMEVAL $X '$X)
-                                        (*MMINUS (TRD-MSYMEVAL $PT
-                                                               '$PT)))
-                                  2)))))))
-       (RETURN NIL)))
-     (SETQ $METHOD '$EULER)
-     (SETQ $ALPHA (MUL* $A
-                        (ADD* (TRD-MSYMEVAL $X '$X)
-                              (*MMINUS (TRD-MSYMEVAL $PT '$PT)))))
-     (SETQ $DC (SIMPLIFY ($RATSIMP (ADD* (POWER (ADD* $ALPHA -1) 2)
-                                         (*MMINUS (MUL* 4 $BETA))))))
-     (SETQ $RP (SIMPLIFY ($RATSIMP (DIV (*MMINUS (ADD* $ALPHA -1)) 2))))
-     (SETQ $SIGN (SIMPLIFY ($ASKSIGN $DC)))
-     (COND
-      ((LIKE $SIGN $ZERO)
-       (RETURN
-        (SIMPLIFY
-         (LIST
-          '(MEQUAL)
-          (TRD-MSYMEVAL $Y '$Y)
-          (MUL*
-           (POWER (ADD* (TRD-MSYMEVAL $X '$X)
-                        (*MMINUS (TRD-MSYMEVAL $PT '$PT)))
-                  $RP)
-           (ADD*
-            $%K1
-            (MUL*
-             $%K2
-             (SIMPLIFY (LIST '(%LOG)
-                             (ADD* (TRD-MSYMEVAL $X '$X)
-                                   (*MMINUS (TRD-MSYMEVAL $PT
-                                                          '$PT)))))))))))))
-     (COND
-      ((LIKE $SIGN $POS)
-       (SETQ $IP (DIV (SIMPLIFY (LIST '(%SQRT) $DC)) 2))
-       (RETURN
-        (SIMPLIFY
-         (LIST '(MEQUAL)
-               (TRD-MSYMEVAL $Y '$Y)
-               (ADD* (MUL* $%K1
-                           (POWER (ADD* (TRD-MSYMEVAL $X '$X)
-                                        (*MMINUS (TRD-MSYMEVAL $PT
-                                                               '$PT)))
-                                  (ADD* $RP $IP)))
-                     (MUL* $%K2
-                           (POWER (ADD* (TRD-MSYMEVAL $X '$X)
-                                        (*MMINUS (TRD-MSYMEVAL $PT
-                                                               '$PT)))
-                                  (ADD* $RP (*MMINUS $IP))))))))))
-     (SETQ $DC (*MMINUS $DC))
-     (SETQ $IP (DIV (SIMPLIFY (LIST '(%SQRT) $DC)) 2))
-     (RETURN
-      (SIMPLIFY
-       (LIST
-        '(MEQUAL)
-        (TRD-MSYMEVAL $Y '$Y)
-        (MUL*
-         (POWER (ADD* (TRD-MSYMEVAL $X '$X)
-                      (*MMINUS (TRD-MSYMEVAL $PT '$PT)))
-                $RP)
-         (ADD*
-          (MUL*
-           $%K1
-           (SIMPLIFY
-            (LIST
-             '(%SIN)
-             (MUL*
-              $IP
-              (SIMPLIFY (LIST '(%LOG)
-                              (ADD* (TRD-MSYMEVAL $X '$X)
-                                    (*MMINUS (TRD-MSYMEVAL $PT
-                                                           '$PT)))))))))
-          (MUL*
-           $%K2
-           (SIMPLIFY
-            (LIST
-             '(%COS)
-             (MUL*
-              $IP
-              (SIMPLIFY
-               (LIST '(%LOG)
-                     (ADD* (TRD-MSYMEVAL $X '$X)
-                           (*MMINUS (TRD-MSYMEVAL $PT '$PT))))))))))))))))
-   '$DC
-   '$RP
-   '$IP
-   '$ALPHA
-   '$BETA
-   '$SIGN
-   NIL
-   '$%K1
-   '$%K2
-   '$POS
-   '$ZERO)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $BESSEL2 T TRANSLATED)
- (ADD2LNC '$BESSEL2 $PROPS)
- (DEFMTRFUN
-  ($BESSEL2 $ANY MDEFINE NIL NIL)
-  ($A $B)
-  NIL
-  ((LAMBDA
-    ($NU $B1 $INTP $RADEXPAND $%K1 $%Y $%K2 $%J)
-    NIL
-    (PROG
-     NIL
-     (COND
-      ((NOT
-        ($FREEOF
-         (TRD-MSYMEVAL $X '$X)
-         (TRD-MSYMEVAL $Y '$Y)
-         (SETQ
-          $B1
-          (SIMPLIFY
-           ($RATSIMP (MUL* (ADD* 1 (*MMINUS $B))
-                           (POWER (ADD* (TRD-MSYMEVAL $X '$X)
-                                        (*MMINUS (TRD-MSYMEVAL $PT
-                                                               '$PT)))
-                                  2)))))))
-       (RETURN NIL)))
-     (COND
-      ((NOT
-        (LIKE
-         (SIMPLIFY ($RATSIMP (MUL* $A
-                                   (ADD* (TRD-MSYMEVAL $X '$X)
-                                         (*MMINUS (TRD-MSYMEVAL $PT
-                                                                '$PT))))))
-         1))
-       (RETURN NIL)))
-     (SETQ $NU (SIMPLIFY (LIST '(%SQRT) $B1)))
-     (SETQ $METHOD '$BESSEL)
-     (COND
-      ((LIKE $NU (RREMAINDER 1 2))
-       (RETURN
-        (SIMPLIFY
-         (LIST
-          '(MEQUAL)
-          (TRD-MSYMEVAL $Y '$Y)
-          (DIV
-           (ADD*
-            (MUL*
-             $%K1
-             (SIMPLIFY (LIST '(%SIN)
-                             (ADD* (TRD-MSYMEVAL $X '$X)
-                                   (*MMINUS (TRD-MSYMEVAL $PT '$PT))))))
-            (MUL*
-             $%K2
-             (SIMPLIFY (LIST '(%COS)
-                             (ADD* (TRD-MSYMEVAL $X '$X)
-                                   (*MMINUS (TRD-MSYMEVAL $PT
-                                                          '$PT)))))))
-           (SIMPLIFY (LIST '(%SQRT)
-                           (ADD* (TRD-MSYMEVAL $X '$X)
-                                 (*MMINUS (TRD-MSYMEVAL $PT '$PT)))))))))))
-     (COND ((IS-BOOLE-CHECK (SIMPLIFY ($FEATUREP $NU '$INTEGER)))
-            (SETQ $INTP '$Y))
-           (($NUMBERP $NU)
-            (SETQ $INTP '$N)))
-     $LOOP
-     (COND
-      ((NOT (OR (LIKE $INTP '$Y)
-                (LIKE $INTP '$N)))
-       (SETQ $INTP (SIMPLIFY ($READONLY '|&Is|
-                                        $NU
-                                        '|&an integer?  Type Y or N.|)))
-       (GO $LOOP)))
-     (COND
-      ((LIKE $INTP '$Y)
-       (RETURN
-        (SIMPLIFY
-         (LIST
-          '(MEQUAL)
-          (TRD-MSYMEVAL $Y '$Y)
-          (ADD*
-           (MUL*
-            $%K1
-            (SIMPLIFY
-             (MAPPLY (MAREF $%J $NU)
-                     (LIST (ADD* (TRD-MSYMEVAL $X '$X)
-                                 (*MMINUS (TRD-MSYMEVAL $PT '$PT))))
-                     '(($%J ARRAY) $NU))))
-           (MUL*
-            $%K2
-            (SIMPLIFY
-             (MAPPLY (MAREF $%Y $NU)
-                     (LIST (ADD* (TRD-MSYMEVAL $X '$X)
-                                 (*MMINUS (TRD-MSYMEVAL $PT '$PT))))
-                     '(($%Y ARRAY) $NU))))))))))
-     (RETURN
-      (SIMPLIFY
-       (LIST
-        '(MEQUAL)
-        (TRD-MSYMEVAL $Y '$Y)
-        (ADD*
-         (MUL*
-          $%K1
-          (SIMPLIFY (MAPPLY (MAREF $%J $NU)
-                            (LIST (ADD* (TRD-MSYMEVAL $X '$X)
-                                        (*MMINUS (TRD-MSYMEVAL $PT
-                                                               '$PT))))
-                            '(($%J ARRAY) $NU))))
-         (MUL*
-          $%K2
-          (SIMPLIFY
-           (MAPPLY (MAREF $%J (*MMINUS $NU))
-                   (LIST (ADD* (TRD-MSYMEVAL $X '$X)
-                               (*MMINUS (TRD-MSYMEVAL $PT '$PT))))
-                   '(($%J ARRAY) ((MMINUS) $NU)))))))))))
-   '$NU
-   '$B1
-   '$INTP
-   '$ALL
-   '$%K1
-   '$%Y
-   '$%K2
-   '$%J)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $IC1 T TRANSLATED)
- (ADD2LNC '$IC1 $PROPS)
- (DEFMTRFUN
-  ($IC1 $ANY MDEFINE NIL NIL)
-  ($SOLN $XC $YC)
-  NIL
-  ((LAMBDA
-    ($%C)
-    NIL
-    (PROGN
-     (SIMPLIFY ($NOTEQN $XC))
-     (SIMPLIFY ($NOTEQN $YC))
-     (SIMPLIFY ($BOUNDTEST '$%C $%C))
-     (SIMPLIFY
-      ($RATSIMP
-       (SIMPLIFY
-        ($SUBSTITUTE
-         (LIST
-          '(MLIST)
-          (SIMPLIFY
-           (LIST
-            '(MEQUAL)
-            '$%C
-            ($RHS
-             (SIMPLIFY
-              ($SOLVE1 (SIMPLIFY ($SUBSTITUTE (LIST '(MLIST)
-                                                    $XC
-                                                    $YC)
-                                              $SOLN))
-                       $%C))))))
-         $SOLN))))))
-   '$%C)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $BC2 T TRANSLATED)
- (ADD2LNC '$BC2 $PROPS)
- (DEFMTRFUN
-  ($BC2 $ANY MDEFINE NIL NIL)
-  ($SOLN $XA $YA $XB $YB)
-  NIL
-  ((LAMBDA
-    ($PROGRAMMODE $BACKSUBST $SINGSOLVE $TEMP $%K1 $%K2)
-    NIL
-    (PROG
-     NIL
-     (SIMPLIFY ($NOTEQN $XA))
-     (SIMPLIFY ($NOTEQN $YA))
-     (SIMPLIFY ($NOTEQN $XB))
-     (SIMPLIFY ($NOTEQN $YB))
-     (SIMPLIFY ($BOUNDTEST '$%K1 $%K1))
-     (SIMPLIFY ($BOUNDTEST '$%K2 $%K2))
-     (SETQ
-      $TEMP
-      (MAPLIST_TR
-       (M-TLAMBDA&ENV (($ZZ) ($SOLN))
-                      NIL
-                      (SIMPLIFY ($SUBSTITUTE $ZZ $SOLN)))
-       (SIMPLIFY ($SOLVE (LIST '(MLIST)
-                               (SIMPLIFY ($SUBSTITUTE (LIST '(MLIST)
-                                                            $XA
-                                                            $YA)
-                                                      $SOLN))
-                               (SIMPLIFY ($SUBSTITUTE (LIST '(MLIST)
-                                                            $XB
-                                                            $YB)
-                                                      $SOLN)))
-                         (LIST '(MLIST) $%K1 $%K2)))))
-     (RETURN (COND ((EQL ($LENGTH $TEMP) 1)
-                    (RETURN (SIMPLIFY ($FIRST $TEMP))))
-                   (T (RETURN $TEMP))))))
-   T
-   T
-   T
-   '$TEMP
-   '$%K1
-   '$%K2)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $IC2 T TRANSLATED)
- (ADD2LNC '$IC2 $PROPS)
- (DEFMTRFUN
-  ($IC2 $ANY MDEFINE NIL NIL)
-  ($SOLN $XA $YA $DYA)
-  NIL
-  ((LAMBDA
-    ($PROGRAMMODE $BACKSUBST $SINGSOLVE $TEMP $%K2 $%K1)
-    NIL
-    (PROG
-     NIL
-     (SIMPLIFY ($NOTEQN $XA))
-     (SIMPLIFY ($NOTEQN $YA))
-     (SIMPLIFY ($NOTEQN $DYA))
-     (SIMPLIFY ($BOUNDTEST '$%K1 $%K1))
-     (SIMPLIFY ($BOUNDTEST '$%K2 $%K2))
-     (SETQ $TEMP (ADD* ($LHS $SOLN) (*MMINUS ($RHS $SOLN))))
-     (SETQ
-      $TEMP
-      (MAPLIST_TR
-       (M-TLAMBDA&ENV (($ZZ) ($SOLN))
-                      NIL
-                      (SIMPLIFY ($SUBSTITUTE $ZZ $SOLN)))
-       (SIMPLIFY
-        ($SOLVE
-         (LIST
-          '(MLIST)
-          (SIMPLIFY ($SUBSTITUTE (LIST '(MLIST) $XA $YA) $SOLN))
-          (SIMPLIFY
-           ($SUBSTITUTE
-            (LIST '(MLIST) $DYA $XA)
-            (SIMPLIFY
-             (LIST
-              '(MEQUAL)
-              ($LHS $DYA)
-              (DIV
-               (*MMINUS
-                (SIMPLIFY
-                 ($SUBSTITUTE 0
-                              ($LHS $DYA)
-                              (SIMPLIFY ($DIFF $TEMP ($LHS $XA))))))
-               (SIMPLIFY ($DIFF $TEMP ($LHS $YA)))))))))
-         (LIST '(MLIST) $%K1 $%K2)))))
-     (RETURN (COND ((EQL ($LENGTH $TEMP) 1)
-                    (RETURN (SIMPLIFY ($FIRST $TEMP))))
-                   (T (RETURN $TEMP))))))
-   T
-   T
-   T
-   '$TEMP
-   '$%K2
-   '$%K1)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $NOTEQN T TRANSLATED)
- (ADD2LNC '$NOTEQN $PROPS)
- (DEFMTRFUN ($NOTEQN $ANY MDEFINE NIL NIL)
-            ($X)
-            NIL
-            (COND ((OR ($ATOM (TRD-MSYMEVAL $X '$X))
-                       (NOT (LIKE (SIMPLIFY ($INPART (TRD-MSYMEVAL $X '$X)
-                                                     0))
-                                  '&=)))
-                   (DISPLAY-FOR-TR NIL NIL (TRD-MSYMEVAL $X '$X))
-                   (DISPLAY-FOR-TR NIL NIL '|&Not an equation|)
-                   (SIMPLIFY ($ERROR))))))
-(EVAL-WHEN (COMPILE EVAL LOAD)
-       (DEFPROP $BOUNDTEST T TRANSLATED)
-       (ADD2LNC '$BOUNDTEST $PROPS)
-       (DEFMTRFUN ($BOUNDTEST $ANY MDEFINE NIL NIL)
-                  ($X $Y)
-                  NIL
-                  (COND ((NOT (LIKE (TRD-MSYMEVAL $X '$X)
-                                    (TRD-MSYMEVAL $Y '$Y)))
-                         (DISPLAY-FOR-TR NIL NIL (TRD-MSYMEVAL $X '$X))
-                         (DISPLAY-FOR-TR NIL NIL '|&Must not be bound|)
-                         (SIMPLIFY ($ERROR))))))
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $FAILURE T TRANSLATED)
- (ADD2LNC '$FAILURE $PROPS)
- (DEFMTRFUN
-  ($FAILURE $BOOLEAN MDEFINE NIL NIL)
-  ($MSG $EQ)
-  NIL
-  ((LAMBDA
-    ($YNEW)
-    NIL
-    (PROGN
-     (COND ((NOT (IS-BOOLE-CHECK (STATUS $FEATURE &ODE)))
-            (DISPLAY-FOR-TR T
-                            NIL
-                            (SIMPLIFY ($SUBSTITUTE (TRD-MSYMEVAL $YOLD
-                                                                 '$YOLD)
-                                                   $YNEW
-                                                   $EQ)))
-            (DISPLAY-FOR-TR NIL NIL $MSG)))
-     NIL))
-   '$YNEW)))
-(EVAL-WHEN (load COMPILE) (MEVAL '(($REMOVE) $X $SPECIAL $Y $SPECIAL)))
-(SETQ $MSG1 '|&Not a proper differential equation|)
-(SETQ $MSG2 '|&First order equation not linear in y'|)
+(eval-when (compile eval load)
+  (defprop $ode2 t translated)
+  (add2lnc '$ode2 $props)
+  (defmtrfun
+      ($ode2 $any mdefine nil nil)
+      ($eq $yold $x)
+    nil
+    ((lambda
+	 ($derivsubst $ynew)
+       nil
+       (simplify
+	($substitute
+	 (trd-msymeval $yold '$yold)
+	 $ynew
+	 (simplify ($ode2a (simplify ($substitute $ynew
+						  (trd-msymeval $yold
+								'$yold)
+						  $eq))
+			   $ynew
+			   (trd-msymeval $x '$x))))))
+     nil
+     '$ynew)))
+(eval-when (compile eval load)
+  (defprop $ode2a t translated)
+  (add2lnc '$ode2a $props)
+  (defmtrfun
+      ($ode2a $any mdefine nil nil)
+      ($eq $y $x)
+    nil
+    ((lambda
+	 ($de $a1 $a2 $a3 $a4 $%q% $msg)
+       nil
+       (prog
+	   nil
+	  (setq $intfactor nil)
+	  (setq $method '$none)
+	  (cond (($freeof (simplify `((%derivative) ,(trd-msymeval $y '$y) ,
+				      (trd-msymeval $x '$x) 2))
+			  $eq)
+		 (cond (($ftest (simplify ($ode1a $eq
+						  (trd-msymeval $y '$y)
+						  (trd-msymeval $x '$x))))
+			(return (trd-msymeval $%q% '$%q%)))
+		       (t (return nil)))))
+	  (cond
+	    ((not
+	      (like
+	       (simplify
+		($derivdegree
+		 (setq $de (simplify ($desimp (add* ($lhs $eq)
+						    (*mminus ($rhs $eq))))))
+		 (trd-msymeval $y '$y)
+		 (trd-msymeval $x '$x)))
+	       2))
+	     (return ($failure (trd-msymeval $msg '$msg) $eq))))
+	  (setq $a1 (simplify ($coeff $de
+				      (simplify `((%derivative) ,
+						  (trd-msymeval $y '$y) ,
+						  (trd-msymeval $x '$x) 2)))))
+	  (setq $a2 (simplify ($coeff $de
+				      (simplify `((%derivative) ,
+						  (trd-msymeval $y '$y) ,
+						  (trd-msymeval $x '$x))))))
+	  (setq $a3 (simplify ($coeff $de (trd-msymeval $y '$y))))
+	  (setq
+	   $a4
+	   (simplify
+	    ($expand
+	     (add* $de
+		   (*mminus (mul* $a1
+				  (simplify `((%derivative) ,
+					      (trd-msymeval $y '$y) ,
+					      (trd-msymeval $x '$x) 2))))
+		   (mul* (*mminus $a2)
+			 (simplify `((%derivative) ,(trd-msymeval $y '$y) ,
+				     (trd-msymeval $x '$x))))
+		   (mul* (*mminus $a3) (trd-msymeval $y '$y))))))
+	  (cond ((and ($pr2 $a1)
+		      ($pr2 $a2)
+		      ($pr2 $a3)
+		      ($pr2 $a4)
+		      ($ftest (simplify ($hom2 $a1 $a2 $a3))))
+		 (cond ((like $a4 0)
+			(return (trd-msymeval $%q% '$%q%)))
+		       (t (return (simplify ($varp (trd-msymeval $%q% '$%q%)
+						   (div (*mminus $a4) $a1))))))))
+	  (return (cond (($ftest (simplify ($reduce $de)))
+			 (return (trd-msymeval $%q% '$%q%)))
+			(t (return nil))))))
+     '$de
+     '$a1
+     '$a2
+     '$a3
+     '$a4
+     '$%q%
+     '$msg1)))
+(eval-when (compile eval load)
+  (defprop $ode1a t translated)
+  (add2lnc '$ode1a $props)
+  (defmtrfun
+      ($ode1a $any mdefine nil nil)
+      ($eq $y $x)
+    nil
+    ((lambda
+	 ($de $des)
+       nil
+       (prog
+	   nil
+	  (cond
+	    ((not
+	      (like
+	       (simplify
+		($derivdegree
+		 (setq $de (simplify ($expand (add* ($lhs $eq)
+						    (*mminus ($rhs $eq))))))
+		 (trd-msymeval $y '$y)
+		 (trd-msymeval $x '$x)))
+	       1))
+	     (return ($failure (trd-msymeval $msg1 '$msg1) $eq))))
+	  (cond ((like (simplify ($linear2 $de
+					   (simplify `((%derivative) ,
+						       (trd-msymeval $y '$y) ,
+						       (trd-msymeval $x '$x)))))
+		       nil)
+		 (return ($failure (trd-msymeval $msg2 '$msg2) $eq))))
+	  (setq $des (simplify ($desimp $de)))
+	  (setq $de (simplify ($solve1 $des
+				       (simplify `((%derivative) ,
+						   (trd-msymeval $y '$y) ,
+						   (trd-msymeval $x '$x))))))
+	  (cond (($ftest (simplify ($solvelnr $de)))
+		 (return (trd-msymeval $%q% '$%q%))))
+	  (cond (($ftest (simplify ($separable $de)))
+		 (return (trd-msymeval $%q% '$%q%))))
+	  (cond (($ftest (simplify ($integfactor (trd-msymeval $%g% '$%g%)
+						 (trd-msymeval $%f% '$%f%))))
+		 (return (simplify ($exact (mul* (trd-msymeval $%q% '$%q%)
+						 (trd-msymeval $%g% '$%g%))
+					   (mul* (trd-msymeval $%q% '$%q%)
+						 (trd-msymeval $%f% '$%f%)))))))
+	  (cond ((like (simplify ($linear2 $des
+					   (simplify `((%derivative) ,
+						       (trd-msymeval $y '$y) ,
+						       (trd-msymeval $x '$x)))))
+		       nil)
+		 (return ($failure (trd-msymeval $msg2 '$msg2) $eq))))
+	  (cond (($ftest (simplify ($integfactor (trd-msymeval $%g% '$%g%)
+						 (trd-msymeval $%f% '$%f%))))
+		 (return (simplify ($exact (mul* (trd-msymeval $%q% '$%q%)
+						 (trd-msymeval $%g% '$%g%))
+					   (mul* (trd-msymeval $%q% '$%q%)
+						 (trd-msymeval $%f% '$%f%)))))))
+	  (cond (($ftest (simplify ($solvehom $de)))
+		 (return (trd-msymeval $%q% '$%q%))))
+	  (cond (($ftest (simplify ($solvebernoulli $de)))
+		 (return (trd-msymeval $%q% '$%q%))))
+	  (return (cond (($ftest (simplify ($genhom $de)))
+			 (return (trd-msymeval $%q% '$%q%)))
+			(t (return nil))))))
+     '$de
+     '$des)))
+(eval-when (compile eval load)
+  (defprop $desimp t translated)
+  (add2lnc '$desimp $props)
+  (defmtrfun
+      ($desimp $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($inflag)
+       nil
+       (prog
+	   nil
+	  (setq $eq (simplify ($factor $eq)))
+	  (cond ((or ($atom $eq)
+		     (not (like (simplify ($inpart $eq 0)) '&*)))
+		 (return (simplify ($expand $eq)))))
+	  (setq
+	   $eq
+	   (simplify
+	    (map1
+	     (getopr (m-tlambda ($u)
+				nil
+				(cond (($freeof (simplify ($nounify '$diff))
+						$u)
+				       1)
+				      (t $u))))
+	     $eq)))
+	  (return (simplify ($expand $eq)))))
+     t)))
+(eval-when (compile eval load)
+  (defprop $pr2 t translated)
+  (add2lnc '$pr2 $props)
+  (defmtrfun ($pr2 $boolean mdefine nil nil)
+      ($%f%)
+    nil
+    ($freeof (trd-msymeval $y '$y)
+	     (simplify `((%derivative) ,(trd-msymeval $y '$y) ,
+			 (trd-msymeval $x '$x)))
+	     (simplify `((%derivative) ,(trd-msymeval $y '$y) ,
+			 (trd-msymeval $x '$x) 2))
+	     (trd-msymeval $%f% '$%f%))))
+(eval-when (compile eval load)
+  (defprop $ftest t translated)
+  (add2lnc '$ftest $props)
+  (defmtrfun ($ftest $boolean mdefine nil nil)
+      ($call)
+    nil
+    (not (like (setq $%q% $call)
+	       nil))))
+(eval-when (compile eval load)
+  (defprop $solve1 t translated)
+  (add2lnc '$solve1 $props)
+  (defmtrfun ($solve1 $any mdefine nil nil)
+      ($eq $y)
+    nil
+    ((lambda ($programmode)
+       nil
+       (simplify ($first (simplify ($solve $eq
+					   (trd-msymeval $y '$y))))))
+     t)))
+(eval-when (compile eval load)
+  (defprop $linear2 t translated)
+  (add2lnc '$linear2 $props)
+  (defmtrfun
+      ($linear2 $any mdefine nil nil)
+      ($expr $x)
+    nil
+    ((lambda
+	 nil
+       nil
+       (prog
+	   nil
+	  (setq $%f% (simplify ($ratcoef $expr (trd-msymeval $x '$x))))
+	  (cond ((not ($freeof (trd-msymeval $x '$x) (trd-msymeval $%f% '$%f%)))
+		 (return nil)))
+	  (setq
+	   $%g%
+	   (simplify ($ratsimp (add* $expr
+				     (*mminus (mul* (trd-msymeval $%f%
+								  '$%f%)
+						    (trd-msymeval $x '$x)))))))
+	  (return ($freeof (trd-msymeval $x '$x) (trd-msymeval $%g% '$%g%))))))))
+(eval-when (compile eval load)
+  (defprop $solvelnr t translated)
+  (add2lnc '$solvelnr $props)
+  (defmtrfun
+      ($solvelnr $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($%f% $%g% $w $%c)
+       nil
+       (prog
+	   nil
+	  (cond ((like (simplify ($linear2 ($rhs $eq) (trd-msymeval $y '$y)))
+		       nil)
+		 (return nil)))
+	  (setq
+	   $w
+	   (simplify ($exp (simplify ($integrate (trd-msymeval $%f% '$%f%)
+						 (trd-msymeval $x '$x))))))
+	  (setq $method '$linear)
+	  (return
+	    (simplify
+	     (list
+	      '(mequal)
+	      (trd-msymeval $y '$y)
+	      (mul* $w
+		    (add* (simplify ($integrate (div (trd-msymeval $%g%
+								   '$%g%)
+						     $w)
+						(trd-msymeval $x '$x)))
+			  $%c)))))))
+     '$%f%
+     '$%g%
+     '$w
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $separable t translated)
+  (add2lnc '$separable $props)
+  (defmtrfun
+      ($separable $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($xpart $ypart $flag $inflag $%c)
+       nil
+       (prog
+	   nil
+	  (setq $eq (simplify ($factor ($rhs $eq))))
+	  (cond ((or ($atom $eq)
+		     (not (like (simplify ($inpart $eq 0)) '&*)))
+		 (setq $eq (list '(mlist) $eq))))
+	  (do (($u)
+	       (mdo (cdr $eq) (cdr mdo)))
+	      ((null mdo) '$done)
+	    (setq $u (car mdo))
+	    (cond (($freeof (trd-msymeval $x '$x) $u)
+		   (setq $ypart ($cons $u $ypart)))
+		  (($freeof (trd-msymeval $y '$y) $u)
+		   (setq $xpart ($cons $u $xpart)))
+		  (t (return (setq $flag t)))))
+	  (cond ((like $flag t)
+		 (return nil)))
+	  (cond ((like $xpart '((mlist)))
+		 (setq $xpart 1))
+		(t (setq $xpart (simplify (mapply-tr '&* $xpart)))))
+	  (cond ((like $ypart '((mlist)))
+		 (setq $ypart 1))
+		(t (setq $ypart (simplify (mapply-tr '&* $ypart)))))
+	  (setq $method '$separable)
+	  (return
+	    (simplify
+	     (list
+	      '(mequal)
+	      (simplify ($ratsimp (simplify ($integrate (div 1 $ypart)
+							(trd-msymeval $y
+								      '$y)))))
+	      (add*
+	       (simplify ($ratsimp (simplify ($integrate $xpart
+							 (trd-msymeval $x
+								       '$x)))))
+	       $%c))))))
+     '((mlist))
+     '((mlist))
+     nil
+     t
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $integfactor t translated)
+  (add2lnc '$integfactor $props)
+  (defmtrfun
+      ($integfactor $any mdefine nil nil)
+      ($m $n)
+    nil
+    ((lambda
+	 ($b1 $b2 $dmdx $dmdy $dndx $dndy $dd $%e_to_numlog)
+       nil
+       (prog
+	   nil
+	  (setq $dmdy (simplify ($ratsimp (simplify ($diff $m
+							   (trd-msymeval $y
+									 '$y))))))
+	  (setq $dndx (simplify ($ratsimp (simplify ($diff $n
+							   (trd-msymeval $x
+									 '$x))))))
+	  (cond ((like (setq $dd (add* $dmdy (*mminus $dndx)))
+		       0)
+		 (return 1)))
+	  (setq $dmdx (simplify ($ratsimp (simplify ($diff $m
+							   (trd-msymeval $x
+									 '$x))))))
+	  (setq $dndy (simplify ($ratsimp (simplify ($diff $n
+							   (trd-msymeval $y
+									 '$y))))))
+	  (cond ((and (like (add* $dmdx (*mminus $dndy)) 0)
+		      (like (add* $dmdy $dndx) 0))
+		 (return (div 1 (add* (power $m 2) (power $n 2))))))
+	  (cond
+	    (($freeof (trd-msymeval $y '$y)
+		      (setq $b1 (simplify ($ratsimp (div $dd $n)))))
+	     (return
+	       (simplify ($exp (simplify ($integrate $b1
+						     (trd-msymeval $x '$x))))))))
+	  (return
+	    (cond
+	      (($freeof (trd-msymeval $x '$x)
+			(setq $b2 (simplify ($ratsimp (div $dd $m)))))
+	       (return
+		 (simplify ($exp (simplify ($integrate (*mminus $b2)
+						       (trd-msymeval $y '$y)))))))
+	      (t (return nil))))))
+     '$b1
+     '$b2
+     '$dmdx
+     '$dmdy
+     '$dndx
+     '$dndy
+     '$dd
+     t)))
+(eval-when (compile eval load)
+  (defprop $exact t translated)
+  (add2lnc '$exact $props)
+  (defmtrfun
+      ($exact $any mdefine nil nil)
+      ($m $n)
+    nil
+    ((lambda
+	 ($a $ynew $%c)
+       nil
+       (prog
+	   nil
+	  (setq $intfactor (simplify ($substitute (trd-msymeval $yold '$yold)
+						  $ynew
+						  (trd-msymeval $%q% '$%q%))))
+	  (setq $a (simplify ($integrate (simplify ($ratsimp $m))
+					 (trd-msymeval $x '$x))))
+	  (setq $method '$exact)
+	  (return
+	    (simplify
+	     (list
+	      '(mequal)
+	      (simplify
+	       ($ratsimp
+		(add*
+		 $a
+		 (simplify
+		  ($integrate
+		   (simplify
+		    ($ratsimp
+		     (add*
+		      $n
+		      (*mminus (simplify ($diff $a
+						(trd-msymeval $y '$y)))))))
+		   (trd-msymeval $y '$y))))))
+	      $%c)))))
+     '$a
+     '$ynew
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $solvehom t translated)
+  (add2lnc '$solvehom $props)
+  (defmtrfun
+      ($solvehom $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($qq $a1 $a2 $%c)
+       nil
+       (prog
+	   nil
+	  (setq
+	   $a1
+	   (simplify ($ratsimp (simplify ($substitute (mul* (trd-msymeval $x
+									  '$x)
+							    $qq)
+						      (trd-msymeval $y '$y)
+						      ($rhs $eq))))))
+	  (cond ((not ($freeof (trd-msymeval $x '$x) $a1))
+		 (return nil)))
+	  (setq
+	   $a2
+	   (simplify
+	    ($ratsimp
+	     (simplify
+	      ($substitute (div (trd-msymeval $y '$y) (trd-msymeval $x '$x))
+			   $qq
+			   (simplify ($integrate (div 1
+						      (add* $a1
+							    (*mminus $qq)))
+						 $qq)))))))
+	  (setq $method '$homogeneous)
+	  (return (simplify (list '(mequal)
+				  (mul* $%c (trd-msymeval $x '$x))
+				  (simplify ($exp $a2)))))))
+     '$qq
+     '$a1
+     '$a2
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $solvebernoulli t translated)
+  (add2lnc '$solvebernoulli $props)
+  (defmtrfun
+      ($solvebernoulli $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($a1 $a2 $n $%c)
+       nil
+       (prog
+	   nil
+	  (setq $a1 (simplify ($coeff (setq $eq (simplify ($expand ($rhs $eq))))
+				      (trd-msymeval $y '$y)
+				      1)))
+	  (cond ((not ($freeof (trd-msymeval $y '$y) $a1))
+		 (return nil)))
+	  (setq
+	   $n
+	   (simplify
+	    ($hipow
+	     (simplify ($ratsimp (add* $eq
+				       (*mminus (mul* $a1
+						      (trd-msymeval $y '$y))))))
+	     (trd-msymeval $y '$y))))
+	  (setq $a2 (simplify ($coeff $eq (trd-msymeval $y '$y) $n)))
+	  (cond
+	    ((or
+	      (not ($freeof (trd-msymeval $y '$y) $a2))
+	      (not ($freeof (trd-msymeval $x '$x) (trd-msymeval $y '$y) $n))
+	      (like $n 0)
+	      (not
+	       (like
+		$eq
+		(simplify ($expand (add* (mul* $a1 (trd-msymeval $y '$y))
+					 (mul* $a2
+					       (power (trd-msymeval $y '$y)
+						      $n))))))))
+	     (return nil)))
+	  (setq $a1 (simplify ($integrate $a1 (trd-msymeval $x '$x))))
+	  (setq $method '$bernoulli)
+	  (setq $odeindex $n)
+	  (return
+	    (simplify
+	     (list
+	      '(mequal)
+	      (trd-msymeval $y '$y)
+	      (mul*
+	       (simplify ($exp $a1))
+	       (power
+		(add*
+		 (mul*
+		  (add* 1 (*mminus $n))
+		  (simplify
+		   ($integrate (mul* $a2
+				     (simplify ($exp (mul* (add* $n -1)
+							   $a1))))
+			       (trd-msymeval $x '$x))))
+		 $%c)
+		(div 1 (add* 1 (*mminus $n))))))))))
+     '$a1
+     '$a2
+     '$n
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $genhom t translated)
+  (add2lnc '$genhom $props)
+  (defmtrfun
+      ($genhom $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($%g% $u $n $a1 $a2 $a3 $%c)
+       nil
+       (prog
+	   nil
+	  (setq $%g% (div (mul* ($rhs $eq) (trd-msymeval $x '$x))
+			  (trd-msymeval $y '$y)))
+	  (setq
+	   $n
+	   (simplify
+	    ($ratsimp (div (mul* (trd-msymeval $x '$x)
+				 (simplify ($diff (trd-msymeval $%g% '$%g%)
+						  (trd-msymeval $x '$x))))
+			   (mul* (trd-msymeval $y '$y)
+				 (simplify ($diff (trd-msymeval $%g% '$%g%)
+						  (trd-msymeval $y '$y))))))))
+	  (cond ((not ($freeof (trd-msymeval $x '$x) (trd-msymeval $y '$y) $n))
+		 (return nil)))
+	  (setq
+	   $a1
+	   (simplify
+	    ($ratsimp (simplify ($substitute (div $u
+						  (power (trd-msymeval $x
+								       '$x)
+							 $n))
+					     (trd-msymeval $y '$y)
+					     (trd-msymeval $%g% '$%g%))))))
+	  (setq $a2 (simplify ($integrate (div 1 (mul* $u (add* $n $a1))) $u)))
+	  (cond ((not ($freeof (simplify ($nounify '$integrate)) $a2))
+		 (return nil)))
+	  (setq
+	   $a3
+	   (simplify
+	    ($ratsimp (simplify ($substitute (mul* (trd-msymeval $y '$y)
+						   (power (trd-msymeval $x
+									'$x)
+							  $n))
+					     $u
+					     $a2)))))
+	  (setq $method '$genhom)
+	  (setq $odeindex $n)
+	  (return (simplify (list '(mequal)
+				  (trd-msymeval $x '$x)
+				  (mul* $%c (simplify ($exp $a3))))))))
+     '$%g%
+     '$u
+     '$n
+     '$a1
+     '$a2
+     '$a3
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $hom2 t translated)
+  (add2lnc '$hom2 $props)
+  (defmtrfun ($hom2 $any mdefine nil nil)
+      ($a1 $a2 $a3)
+    nil
+    ((lambda ($ap $aq $pt)
+       nil
+       (prog nil
+	  (setq $ap (div $a2 $a1))
+	  (setq $aq (div $a3 $a1))
+	  (cond (($ftest (simplify ($cc2 $ap
+					 $aq
+					 (trd-msymeval $y '$y)
+					 (trd-msymeval $x '$x))))
+		 (return (trd-msymeval $%q% '$%q%))))
+	  (cond (($ftest (simplify ($exact2 $a1 $a2 $a3)))
+		 (return (trd-msymeval $%q% '$%q%))))
+	  (cond ((like (setq $pt (simplify ($pttest $ap)))
+		       nil)
+		 (go $end)))
+	  (cond (($ftest (simplify ($euler2 $ap $aq)))
+		 (return (trd-msymeval $%q% '$%q%))))
+	  (cond (($ftest (simplify ($bessel2 $ap $aq)))
+		 (return (trd-msymeval $%q% '$%q%))))
+	  $end (return (cond (($ftest (simplify ($xcc2 $ap $aq)))
+			      (return (trd-msymeval $%q% '$%q%)))
+			     (t (return nil))))))
+     '$ap
+     '$aq
+     '$pt)))
+(eval-when (compile eval load)
+  (defprop $cc2 t translated)
+  (add2lnc '$cc2 $props)
+  (defmtrfun
+      ($cc2 $any mdefine nil nil)
+      ($%f% $%g% $y $x)
+    nil
+    ((lambda
+	 ($a $sign $radexpand $alpha $zero $pos $ynew $%k1 $%k2)
+       nil
+       (prog
+	   nil
+	  (cond ((not (and ($freeof (trd-msymeval $x '$x)
+				    (trd-msymeval $y '$y)
+				    (trd-msymeval $%f% '$%f%))
+			   ($freeof (trd-msymeval $x '$x)
+				    (trd-msymeval $y '$y)
+				    (trd-msymeval $%g% '$%g%))))
+		 (return nil)))
+	  (setq $method '$constcoeff)
+	  (setq $a (add* (power (trd-msymeval $%f% '$%f%) 2)
+			 (*mminus (mul* 4 (trd-msymeval $%g% '$%g%)))))
+	  (cond (($freeof '$%i $a)
+		 (setq $sign (simplify ($asksign $a))))
+		(t
+		 (setq $radexpand t)
+		 (setq $sign '$pnz)))
+	  (cond
+	    ((like $sign $zero)
+	     (return
+	       (simplify
+		(list
+		 '(mequal)
+		 (trd-msymeval $y '$y)
+		 (mul*
+		  (simplify ($exp (div (mul* (*mminus (trd-msymeval $%f%
+								    '$%f%))
+					     (trd-msymeval $x '$x))
+				       2)))
+		  (add* $%k1 (mul* $%k2 (trd-msymeval $x '$x)))))))))
+	  (cond
+	    ((like $sign $pos)
+	     (return
+	       (simplify
+		(list
+		 '(mequal)
+		 (trd-msymeval $y '$y)
+		 (add*
+		  (mul*
+		   $%k1
+		   (simplify
+		    ($exp (div (mul* (add* (*mminus (trd-msymeval $%f%
+								  '$%f%))
+					   (simplify (list '(%sqrt) $a)))
+				     (trd-msymeval $x '$x))
+			       2))))
+		  (mul*
+		   $%k2
+		   (simplify
+		    ($exp
+		     (div (mul* (add* (*mminus (trd-msymeval $%f% '$%f%))
+				      (*mminus (simplify (list '(%sqrt)
+							       $a))))
+				(trd-msymeval $x '$x))
+			  2))))))))))
+	  (setq $a (*mminus $a))
+	  (setq $alpha (div (mul* (trd-msymeval $x '$x)
+				  (simplify (list '(%sqrt) $a)))
+			    2))
+	  (cond
+	    ((like (trd-msymeval $exponentialize nil) nil)
+	     (return
+	       (simplify
+		(list
+		 '(mequal)
+		 (trd-msymeval $y '$y)
+		 (mul*
+		  (simplify ($exp (div (mul* (*mminus (trd-msymeval $%f%
+								    '$%f%))
+					     (trd-msymeval $x '$x))
+				       2)))
+		  (add* (mul* $%k1 (simplify (list '(%sin) $alpha)))
+			(mul* $%k2 (simplify (list '(%cos) $alpha))))))))))
+	  (return
+	    (simplify
+	     (list
+	      '(mequal)
+	      (trd-msymeval $y '$y)
+	      (mul* (simplify ($exp (div (mul* (*mminus (trd-msymeval $%f%
+								      '$%f%))
+					       (trd-msymeval $x '$x))
+					 2)))
+		    (add* (mul* $%k1 (simplify ($exp (mul* '$%i $alpha))))
+			  (mul* $%k2
+				(simplify ($exp (mul* (*mminus '$%i)
+						      $alpha)))))))))))
+     '$a
+     '$sign
+     '$all
+     '$alpha
+     '$zero
+     '$pos
+     '$ynew
+     '$%k1
+     '$%k2)))
+(eval-when (compile eval load)
+  (defprop $exact2 t translated)
+  (add2lnc '$exact2 $props)
+  (defmtrfun
+      ($exact2 $any mdefine nil nil)
+      ($a1 $a2 $a3)
+    nil
+    ((lambda
+	 ($b1 $%k1 $%k2)
+       nil
+       (prog
+	   nil
+	  (cond
+	    ((like
+	      (simplify
+	       ($ratsimp (add* (simplify ($diff $a1 (trd-msymeval $x '$x) 2))
+			       (*mminus (simplify ($diff $a2
+							 (trd-msymeval $x '$x))))
+			       $a3)))
+	      0)
+	     (setq
+	      $b1
+	      (simplify
+	       ($exp
+		(*mminus
+		 (simplify
+		  ($integrate
+		   (simplify
+		    ($ratsimp
+		     (div
+		      (add*
+		       $a2
+		       (*mminus (simplify ($diff $a1
+						 (trd-msymeval $x '$x)))))
+		      $a1)))
+		   (trd-msymeval $x '$x))))))))
+	    (t (return nil)))
+	  (setq $method '$exact)
+	  (return
+	    (simplify
+	     (list '(mequal)
+		   (trd-msymeval $y '$y)
+		   (add* (mul* $%k1
+			       $b1
+			       (simplify ($integrate (div 1 (mul* $a1 $b1))
+						     (trd-msymeval $x '$x))))
+			 (mul* $%k2 $b1)))))))
+     '$b1
+     '$%k1
+     '$%k2)))
+(eval-when (compile eval load)
+  (defprop $xcc2 t translated)
+  (add2lnc '$xcc2 $props)
+  (defmtrfun
+      ($xcc2 $any mdefine nil nil)
+      ($ap $aq)
+    nil
+    ((lambda
+	 ($d $b1 $z $radexpand)
+       nil
+       (prog
+	   nil
+	  (cond ((like $aq 0)
+		 (return nil)))
+	  (setq
+	   $d
+	   (simplify ($ratsimp (div (add* (simplify ($diff $aq
+							   (trd-msymeval $x
+									 '$x)))
+					  (mul* 2 $ap $aq))
+				    (mul* 2 (power $aq (rremainder 3 2)))))))
+	  (cond (($freeof (trd-msymeval $x '$x) (trd-msymeval $y '$y) $d)
+		 (setq $b1 (simplify ($cc2 $d 1 (trd-msymeval $y '$y) $z))))
+		(t (return nil)))
+	  (setq $method '$xformtoconstcoeff)
+	  (return
+	    (simplify
+	     ($substitute (simplify ($integrate (simplify (list '(%sqrt) $aq))
+						(trd-msymeval $x '$x)))
+			  $z
+			  $b1)))))
+     '$d
+     '$b1
+     '$z
+     '$all)))
+(eval-when (compile eval load)
+  (defprop $varp t translated)
+  (add2lnc '$varp $props)
+  (defmtrfun
+      ($varp $any mdefine nil nil)
+      ($soln $%g%)
+    nil
+    ((lambda
+	 ($y1 $y2 $y3 $y4 $wr $heuristic $%k1 $%k2)
+       nil
+       (prog
+	   nil
+	  (setq
+	   $y1
+	   (simplify
+	    ($ratsimp (simplify ($substitute (list '(mlist)
+						   (simplify (list '(mequal)
+								   $%k1
+								   1))
+						   (simplify (list '(mequal)
+								   $%k2
+								   0)))
+					     ($rhs $soln))))))
+	  (setq
+	   $y2
+	   (simplify
+	    ($ratsimp (simplify ($substitute (list '(mlist)
+						   (simplify (list '(mequal)
+								   $%k1
+								   0))
+						   (simplify (list '(mequal)
+								   $%k2
+								   1)))
+					     ($rhs $soln))))))
+	  (setq $wr (add* (mul* $y1 (simplify ($diff $y2 (trd-msymeval $x '$x))))
+			  (*mminus (mul* $y2
+					 (simplify ($diff $y1
+							  (trd-msymeval $x
+									'$x)))))))
+	  (cond ((like $wr 0)
+		 (return nil)))
+	  (cond ((and (like (trd-msymeval $method '$method) '$constcoeff)
+		      (not ($freeof '%sin $wr))
+		      (not ($freeof '%cos $wr)))
+		 (setq $heuristic t)
+		 (setq $wr (simplify ($ratsimp (simplify ($trigreduce $wr)))))))
+	  (setq $y3 (simplify ($ratsimp (div (mul* $y1
+						   (trd-msymeval $%g% '$%g%))
+					     $wr))))
+	  (setq $y4 (simplify ($ratsimp (div (mul* $y2
+						   (trd-msymeval $%g% '$%g%))
+					     $wr))))
+	  (setq
+	   $yp
+	   (simplify
+	    ($ratsimp
+	     (add* (mul* $y2 (simplify ($integrate $y3 (trd-msymeval $x '$x))))
+		   (*mminus (mul* $y1
+				  (simplify ($integrate $y4
+							(trd-msymeval $x
+								      '$x)))))))))
+	  (cond
+	    ((like $heuristic t)
+	     (setq
+	      $yp
+	      (simplify ($ratsimp (simplify ($trigreduce (trd-msymeval $yp
+								       '$yp))))))))
+	  (setq $method '$variationofparameters)
+	  (return (simplify (list '(mequal)
+				  (trd-msymeval $y '$y)
+				  (add* ($rhs $soln) (trd-msymeval $yp '$yp)))))))
+     '$y1
+     '$y2
+     '$y3
+     '$y4
+     '$wr
+     nil
+     '$%k1
+     '$%k2)))
+(eval-when (compile eval load)
+  (defprop $reduce t translated)
+  (add2lnc '$reduce $props)
+  (defmtrfun
+      ($reduce $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($b1 $qq)
+       nil
+       (prog
+	   nil
+	  (setq
+	   $b1
+	   (simplify
+	    ($substitute
+	     (list '(mlist)
+		   (simplify (list '(mequal)
+				   (simplify `((%derivative) ,
+					       (trd-msymeval $y '$y) ,
+					       (trd-msymeval $x '$x) 2))
+				   $qq))
+		   (simplify (list '(mequal)
+				   (simplify `((%derivative) ,
+					       (trd-msymeval $y '$y) ,
+					       (trd-msymeval $x '$x)))
+				   $qq)))
+	     $eq)))
+	  (cond (($freeof (trd-msymeval $y '$y) $b1)
+		 (return (simplify ($nlx $eq)))))
+	  (return (cond (($freeof (trd-msymeval $x '$x) $b1)
+			 (return (simplify ($nly $eq))))
+			(t (return nil))))))
+     '$b1
+     '$qq)))
+(eval-when (compile eval load)
+  (defprop $nlx t translated)
+  (add2lnc '$nlx $props)
+  (defmtrfun
+      ($nlx $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($de $b $a1 $v $%k1 $%c)
+       nil
+       (prog
+	   nil
+	  (setq
+	   $de
+	   (simplify
+	    ($substitute
+	     (list '(mlist)
+		   (simplify (list '(mequal)
+				   (simplify `((%derivative) ,
+					       (trd-msymeval $y '$y) ,
+					       (trd-msymeval $x '$x) 2))
+				   (simplify `((%derivative) ,$v ,
+					       (trd-msymeval $x '$x)))))
+		   (simplify (list '(mequal)
+				   (simplify `((%derivative) ,
+					       (trd-msymeval $y '$y) ,
+					       (trd-msymeval $x '$x)))
+				   $v)))
+	     $eq)))
+	  (cond ((like (setq $b (simplify ($ode1a $de $v (trd-msymeval $x '$x))))
+		       nil)
+		 (return nil)))
+	  (setq
+	   $a1
+	   (simplify
+	    ($substitute
+	     (list '(mlist)
+		   (simplify (list '(mequal)
+				   $v
+				   (simplify `((%derivative) ,
+					       (trd-msymeval $y '$y) ,
+					       (trd-msymeval $x '$x)))))
+		   (simplify (list '(mequal) $%c $%k1)))
+	     $b)))
+	  (return
+	    (cond (($ftest (simplify ($nlxy $a1
+					    (simplify `((%derivative) ,
+							(trd-msymeval $y '$y)
+							,(trd-msymeval $x
+								       '$x))))))
+		   (setq $method '$freeofy)
+		   (return (trd-msymeval $%q% '$%q%)))
+		  (t (return nil))))))
+     '$de
+     '$b
+     '$a1
+     '$v
+     '$%k1
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $nly t translated)
+  (add2lnc '$nly $props)
+  (defmtrfun
+      ($nly $any mdefine nil nil)
+      ($eq)
+    nil
+    ((lambda
+	 ($de $b $a1 $yz $v $%c $%k1)
+       nil
+       (prog
+	   nil
+	  (setq
+	   $de
+	   (simplify
+	    ($substitute
+	     (list '(mlist)
+		   (simplify (list '(mequal)
+				   (simplify `((%derivative) ,
+					       (trd-msymeval $y '$y) ,
+					       (trd-msymeval $x '$x) 2))
+				   (mul* $v
+					 (simplify `((%derivative) ,$v ,$yz)))))
+		   (simplify (list '(mequal)
+				   (simplify `((%derivative) ,
+					       (trd-msymeval $y '$y) ,
+					       (trd-msymeval $x '$x)))
+				   $v))
+		   (simplify (list '(mequal) (trd-msymeval $y '$y) $yz)))
+	     $eq)))
+	  (cond ((like (setq $b (simplify ($ode1a $de $v $yz)))
+		       nil)
+		 (return nil)))
+	  (setq
+	   $a1
+	   (simplify
+	    ($substitute
+	     (list '(mlist)
+		   (simplify (list '(mequal)
+				   $v
+				   (simplify `((%derivative) ,
+					       (trd-msymeval $y '$y) ,
+					       (trd-msymeval $x '$x)))))
+		   (simplify (list '(mequal) $yz (trd-msymeval $y '$y)))
+		   (simplify (list '(mequal) $%c $%k1)))
+	     $b)))
+	  (return
+	    (cond (($ftest (simplify ($nlxy $a1
+					    (simplify `((%derivative) ,
+							(trd-msymeval $y '$y)
+							,(trd-msymeval $x
+								       '$x))))))
+		   (setq $method '$freeofx)
+		   (return (trd-msymeval $%q% '$%q%)))
+		  (t (return nil))))))
+     '$de
+     '$b
+     '$a1
+     '$yz
+     '$v
+     '$%c
+     '$%k1)))
+(eval-when (compile eval load)
+  (defprop $nlxy t translated)
+  (add2lnc '$nlxy $props)
+  (defmtrfun
+      ($nlxy $any mdefine nil nil)
+      ($eq $de)
+    nil
+    ((lambda
+	 ($programmode $eq1 $%k2 $%c)
+       nil
+       (prog
+	   nil
+	  (setq $eq1 (simplify ($solve $eq $de)))
+	  (setq
+	   $eq1
+	   (maplist_tr
+	    (m-tlambda&env
+	     (($zz) ($%k2 $%c))
+	     nil
+	     (cond (($ftest (simplify ($ode1a $zz
+					      (trd-msymeval $y '$y)
+					      (trd-msymeval $x '$x))))
+		    (simplify ($substitute $%k2
+					   $%c
+					   (trd-msymeval $%q% '$%q%))))))
+	    $eq1))
+	  (return (cond ((eql ($length $eq1) 1)
+			 (return (simplify ($first $eq1))))
+			(t (return $eq1))))))
+     t
+     '$eq1
+     '$%k2
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $pttest t translated)
+  (add2lnc '$pttest $props)
+  (defmtrfun
+      ($pttest $any mdefine nil nil)
+      ($a)
+    nil
+    ((lambda ($a1 $a2 $a3)
+       nil
+       (prog nil
+	  (cond ((like (setq $a1 (simplify ($ratsimp $a)))
+		       0)
+		 (return nil)))
+	  (setq $a1 (simplify ($expand (div 1 $a1))))
+	  (cond ((like (setq $a2 (simplify ($coeff $a1
+						   (trd-msymeval $x '$x)
+						   1)))
+		       0)
+		 (return nil)))
+	  (cond ((not ($freeof (trd-msymeval $x '$x) $a2))
+		 (return nil)))
+	  (setq $a3 (simplify ($coeff $a1 (trd-msymeval $x '$x) 0)))
+	  (return (cond ((not (like $a1
+				    (add* (mul* $a2
+						(trd-msymeval $x '$x))
+					  $a3)))
+			 (return nil))
+			(t (return (div (*mminus $a3) $a2)))))))
+     '$a1
+     '$a2
+     '$a3)))
+(eval-when (compile eval load)
+  (defprop $euler2 t translated)
+  (add2lnc '$euler2 $props)
+  (defmtrfun
+      ($euler2 $any mdefine nil nil)
+      ($a $b)
+    nil
+    ((lambda
+	 ($dc $rp $ip $alpha $beta $sign $radexpand $%k1 $%k2 $pos $zero)
+       nil
+       (prog
+	   nil
+	  (cond
+	    ((not
+	      ($freeof
+	       (trd-msymeval $x '$x)
+	       (trd-msymeval $y '$y)
+	       (setq
+		$beta
+		(simplify
+		 ($ratsimp (mul* $b
+				 (power (add* (trd-msymeval $x '$x)
+					      (*mminus (trd-msymeval $pt
+								     '$pt)))
+					2)))))))
+	     (return nil)))
+	  (setq $method '$euler)
+	  (setq $alpha (mul* $a
+			     (add* (trd-msymeval $x '$x)
+				   (*mminus (trd-msymeval $pt '$pt)))))
+	  (setq $dc (simplify ($ratsimp (add* (power (add* $alpha -1) 2)
+					      (*mminus (mul* 4 $beta))))))
+	  (setq $rp (simplify ($ratsimp (div (*mminus (add* $alpha -1)) 2))))
+	  (setq $sign (simplify ($asksign $dc)))
+	  (cond
+	    ((like $sign $zero)
+	     (return
+	       (simplify
+		(list
+		 '(mequal)
+		 (trd-msymeval $y '$y)
+		 (mul*
+		  (power (add* (trd-msymeval $x '$x)
+			       (*mminus (trd-msymeval $pt '$pt)))
+			 $rp)
+		  (add*
+		   $%k1
+		   (mul*
+		    $%k2
+		    (simplify (list '(%log)
+				    (add* (trd-msymeval $x '$x)
+					  (*mminus (trd-msymeval $pt
+								 '$pt)))))))))))))
+	  (cond
+	    ((like $sign $pos)
+	     (setq $ip (div (simplify (list '(%sqrt) $dc)) 2))
+	     (return
+	       (simplify
+		(list '(mequal)
+		      (trd-msymeval $y '$y)
+		      (add* (mul* $%k1
+				  (power (add* (trd-msymeval $x '$x)
+					       (*mminus (trd-msymeval $pt
+								      '$pt)))
+					 (add* $rp $ip)))
+			    (mul* $%k2
+				  (power (add* (trd-msymeval $x '$x)
+					       (*mminus (trd-msymeval $pt
+								      '$pt)))
+					 (add* $rp (*mminus $ip))))))))))
+	  (setq $dc (*mminus $dc))
+	  (setq $ip (div (simplify (list '(%sqrt) $dc)) 2))
+	  (return
+	    (simplify
+	     (list
+	      '(mequal)
+	      (trd-msymeval $y '$y)
+	      (mul*
+	       (power (add* (trd-msymeval $x '$x)
+			    (*mminus (trd-msymeval $pt '$pt)))
+		      $rp)
+	       (add*
+		(mul*
+		 $%k1
+		 (simplify
+		  (list
+		   '(%sin)
+		   (mul*
+		    $ip
+		    (simplify (list '(%log)
+				    (add* (trd-msymeval $x '$x)
+					  (*mminus (trd-msymeval $pt
+								 '$pt)))))))))
+		(mul*
+		 $%k2
+		 (simplify
+		  (list
+		   '(%cos)
+		   (mul*
+		    $ip
+		    (simplify
+		     (list '(%log)
+			   (add* (trd-msymeval $x '$x)
+				 (*mminus (trd-msymeval $pt '$pt))))))))))))))))
+     '$dc
+     '$rp
+     '$ip
+     '$alpha
+     '$beta
+     '$sign
+     nil
+     '$%k1
+     '$%k2
+     '$pos
+     '$zero)))
+(eval-when (compile eval load)
+  (defprop $bessel2 t translated)
+  (add2lnc '$bessel2 $props)
+  (defmtrfun
+      ($bessel2 $any mdefine nil nil)
+      ($a $b)
+    nil
+    ((lambda
+	 ($nu $b1 $intp $radexpand $%k1 $%y $%k2 $%j)
+       nil
+       (prog
+	   nil
+	  (cond
+	    ((not
+	      ($freeof
+	       (trd-msymeval $x '$x)
+	       (trd-msymeval $y '$y)
+	       (setq
+		$b1
+		(simplify
+		 ($ratsimp (mul* (add* 1 (*mminus $b))
+				 (power (add* (trd-msymeval $x '$x)
+					      (*mminus (trd-msymeval $pt
+								     '$pt)))
+					2)))))))
+	     (return nil)))
+	  (cond
+	    ((not
+	      (like
+	       (simplify ($ratsimp (mul* $a
+					 (add* (trd-msymeval $x '$x)
+					       (*mminus (trd-msymeval $pt
+								      '$pt))))))
+	       1))
+	     (return nil)))
+	  (setq $nu (simplify (list '(%sqrt) $b1)))
+	  (setq $method '$bessel)
+	  (cond
+	    ((like $nu (rremainder 1 2))
+	     (return
+	       (simplify
+		(list
+		 '(mequal)
+		 (trd-msymeval $y '$y)
+		 (div
+		  (add*
+		   (mul*
+		    $%k1
+		    (simplify (list '(%sin)
+				    (add* (trd-msymeval $x '$x)
+					  (*mminus (trd-msymeval $pt '$pt))))))
+		   (mul*
+		    $%k2
+		    (simplify (list '(%cos)
+				    (add* (trd-msymeval $x '$x)
+					  (*mminus (trd-msymeval $pt
+								 '$pt)))))))
+		  (simplify (list '(%sqrt)
+				  (add* (trd-msymeval $x '$x)
+					(*mminus (trd-msymeval $pt '$pt)))))))))))
+	  (cond ((is-boole-check (simplify ($featurep $nu '$integer)))
+		 (setq $intp '$y))
+		(($numberp $nu)
+		 (setq $intp '$n)))
+	  $loop
+	  (cond
+	    ((not (or (like $intp '$y)
+		      (like $intp '$n)))
+	     (setq $intp (simplify ($readonly '|&Is|
+					      $nu
+					      '|&an integer?  Type Y or N.|)))
+	     (go $loop)))
+	  (cond
+	    ((like $intp '$y)
+	     (return
+	       (simplify
+		(list
+		 '(mequal)
+		 (trd-msymeval $y '$y)
+		 (add*
+		  (mul*
+		   $%k1
+		   (simplify
+		    (mapply (maref $%j $nu)
+			    (list (add* (trd-msymeval $x '$x)
+					(*mminus (trd-msymeval $pt '$pt))))
+			    '(($%j array) $nu))))
+		  (mul*
+		   $%k2
+		   (simplify
+		    (mapply (maref $%y $nu)
+			    (list (add* (trd-msymeval $x '$x)
+					(*mminus (trd-msymeval $pt '$pt))))
+			    '(($%y array) $nu))))))))))
+	  (return
+	    (simplify
+	     (list
+	      '(mequal)
+	      (trd-msymeval $y '$y)
+	      (add*
+	       (mul*
+		$%k1
+		(simplify (mapply (maref $%j $nu)
+				  (list (add* (trd-msymeval $x '$x)
+					      (*mminus (trd-msymeval $pt
+								     '$pt))))
+				  '(($%j array) $nu))))
+	       (mul*
+		$%k2
+		(simplify
+		 (mapply (maref $%j (*mminus $nu))
+			 (list (add* (trd-msymeval $x '$x)
+				     (*mminus (trd-msymeval $pt '$pt))))
+			 '(($%j array) ((mminus) $nu)))))))))))
+     '$nu
+     '$b1
+     '$intp
+     '$all
+     '$%k1
+     '$%y
+     '$%k2
+     '$%j)))
+(eval-when (compile eval load)
+  (defprop $ic1 t translated)
+  (add2lnc '$ic1 $props)
+  (defmtrfun
+      ($ic1 $any mdefine nil nil)
+      ($soln $xc $yc)
+    nil
+    ((lambda
+	 ($%c)
+       nil
+       (progn
+	 (simplify ($noteqn $xc))
+	 (simplify ($noteqn $yc))
+	 (simplify ($boundtest '$%c $%c))
+	 (simplify
+	  ($ratsimp
+	   (simplify
+	    ($substitute
+	     (list
+	      '(mlist)
+	      (simplify
+	       (list
+		'(mequal)
+		'$%c
+		($rhs
+		 (simplify
+		  ($solve1 (simplify ($substitute (list '(mlist)
+							$xc
+							$yc)
+						  $soln))
+			   $%c))))))
+	     $soln))))))
+     '$%c)))
+(eval-when (compile eval load)
+  (defprop $bc2 t translated)
+  (add2lnc '$bc2 $props)
+  (defmtrfun
+      ($bc2 $any mdefine nil nil)
+      ($soln $xa $ya $xb $yb)
+    nil
+    ((lambda
+	 ($programmode $backsubst $singsolve $temp $%k1 $%k2)
+       nil
+       (prog
+	   nil
+	  (simplify ($noteqn $xa))
+	  (simplify ($noteqn $ya))
+	  (simplify ($noteqn $xb))
+	  (simplify ($noteqn $yb))
+	  (simplify ($boundtest '$%k1 $%k1))
+	  (simplify ($boundtest '$%k2 $%k2))
+	  (setq
+	   $temp
+	   (maplist_tr
+	    (m-tlambda&env (($zz) ($soln))
+			   nil
+			   (simplify ($substitute $zz $soln)))
+	    (simplify ($solve (list '(mlist)
+				    (simplify ($substitute (list '(mlist)
+								 $xa
+								 $ya)
+							   $soln))
+				    (simplify ($substitute (list '(mlist)
+								 $xb
+								 $yb)
+							   $soln)))
+			      (list '(mlist) $%k1 $%k2)))))
+	  (return (cond ((eql ($length $temp) 1)
+			 (return (simplify ($first $temp))))
+			(t (return $temp))))))
+     t
+     t
+     t
+     '$temp
+     '$%k1
+     '$%k2)))
+(eval-when (compile eval load)
+  (defprop $ic2 t translated)
+  (add2lnc '$ic2 $props)
+  (defmtrfun
+      ($ic2 $any mdefine nil nil)
+      ($soln $xa $ya $dya)
+    nil
+    ((lambda
+	 ($programmode $backsubst $singsolve $temp $%k2 $%k1)
+       nil
+       (prog
+	   nil
+	  (simplify ($noteqn $xa))
+	  (simplify ($noteqn $ya))
+	  (simplify ($noteqn $dya))
+	  (simplify ($boundtest '$%k1 $%k1))
+	  (simplify ($boundtest '$%k2 $%k2))
+	  (setq $temp (add* ($lhs $soln) (*mminus ($rhs $soln))))
+	  (setq
+	   $temp
+	   (maplist_tr
+	    (m-tlambda&env (($zz) ($soln))
+			   nil
+			   (simplify ($substitute $zz $soln)))
+	    (simplify
+	     ($solve
+	      (list
+	       '(mlist)
+	       (simplify ($substitute (list '(mlist) $xa $ya) $soln))
+	       (simplify
+		($substitute
+		 (list '(mlist) $dya $xa)
+		 (simplify
+		  (list
+		   '(mequal)
+		   ($lhs $dya)
+		   (div
+		    (*mminus
+		     (simplify
+		      ($substitute 0
+				   ($lhs $dya)
+				   (simplify ($diff $temp ($lhs $xa))))))
+		    (simplify ($diff $temp ($lhs $ya)))))))))
+	      (list '(mlist) $%k1 $%k2)))))
+	  (return (cond ((eql ($length $temp) 1)
+			 (return (simplify ($first $temp))))
+			(t (return $temp))))))
+     t
+     t
+     t
+     '$temp
+     '$%k2
+     '$%k1)))
+(eval-when (compile eval load)
+  (defprop $noteqn t translated)
+  (add2lnc '$noteqn $props)
+  (defmtrfun ($noteqn $any mdefine nil nil)
+      ($x)
+    nil
+    (cond ((or ($atom (trd-msymeval $x '$x))
+	       (not (like (simplify ($inpart (trd-msymeval $x '$x)
+					     0))
+			  '&=)))
+	   (display-for-tr nil nil (trd-msymeval $x '$x))
+	   (display-for-tr nil nil '|&Not an equation|)
+	   (simplify ($error))))))
+(eval-when (compile eval load)
+  (defprop $boundtest t translated)
+  (add2lnc '$boundtest $props)
+  (defmtrfun ($boundtest $any mdefine nil nil)
+      ($x $y)
+    nil
+    (cond ((not (like (trd-msymeval $x '$x)
+		      (trd-msymeval $y '$y)))
+	   (display-for-tr nil nil (trd-msymeval $x '$x))
+	   (display-for-tr nil nil '|&Must not be bound|)
+	   (simplify ($error))))))
+(eval-when (compile eval load)
+  (defprop $failure t translated)
+  (add2lnc '$failure $props)
+  (defmtrfun
+      ($failure $boolean mdefine nil nil)
+      ($msg $eq)
+    nil
+    ((lambda
+	 ($ynew)
+       nil
+       (progn
+	 (cond ((not (is-boole-check (status $feature &ode)))
+		(display-for-tr t
+				nil
+				(simplify ($substitute (trd-msymeval $yold
+								     '$yold)
+						       $ynew
+						       $eq)))
+		(display-for-tr nil nil $msg)))
+	 nil))
+     '$ynew)))
+(eval-when (load compile) (meval '(($remove) $x $special $y $special)))
+(setq $msg1 '|&Not a proper differential equation|)
+(setq $msg2 '|&First order equation not linear in y'|)

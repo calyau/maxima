@@ -11,7 +11,7 @@
 (in-package "MAXIMA")
 (macsyma-module ar)
 
-(declare-top (SPECIAL EVARRP MUNBOUND FLOUNBOUND FIXUNBOUND #+cl $use_fast_arrays))
+(declare-top (special evarrp munbound flounbound fixunbound #+cl $use_fast_arrays))
 
 ;;; This code needs to be checked carefully for the lispm.
 
@@ -21,126 +21,126 @@
   aref
   aset
   type
-  NULL
-  GENERATOR
-  CONTENT)
+  null
+  generator
+  content)
 
-;#-cl
-;(DEFUN MARRAY-TYPE (X)
+;;#-cl
+;;(DEFUN MARRAY-TYPE (X)
   
-;  (OR (CDR (ASSQ (ARRAY-TYPE X)
-;		 '((FLONUM . $FLOAT)
-;		   (FIXNUM . $FIXNUM))))
-;      (MGENARRAY-TYPE X)))
+;;  (OR (CDR (ASSQ (ARRAY-TYPE X)
+;;		 '((FLONUM . $FLOAT)
+;;		   (FIXNUM . $FIXNUM))))
+;;      (MGENARRAY-TYPE X)))
 
-(DEFUN MARRAY-TYPE (X)
+(defun marray-type (x)
   (case (ml-typep x)
     (array (array-element-type x))
     (hash-table 'hash-table)
     (lisp::array  (princ "confusion over array and lisp::array")
-	    (array-element-type x))
+		  (array-element-type x))
     (otherwise
  
-  (OR (CDR (ASSQ (array-type x)
-		 '((FLONUM . $FLOAT)
-		   (FIXNUM . $FIXNUM))))
-      (MGENARRAY-TYPE X)))))
+     (or (cdr (assq (array-type x)
+		    '((flonum . $float)
+		      (fixnum . $fixnum))))
+	 (mgenarray-type x)))))
 
 
-(DEFMFUN $MAKE_ARRAY (TYPE &REST DIML)
-  (LET ((LTYPE (ASSQ TYPE '(($FLOAT . FLONUM) ($FLONUM . FLONUM)
-					      ($FIXNUM . FIXNUM)))))
-    (COND ((NOT LTYPE)
-	   (COND ((EQ TYPE '$ANY)
+(defmfun $make_array (type &rest diml)
+  (let ((ltype (assq type '(($float . flonum) ($flonum . flonum)
+			    ($fixnum . fixnum)))))
+    (cond ((not ltype)
+	   (cond ((eq type '$any)
 		  (make-array diml :initial-element nil))
-		 ((EQ TYPE '$HASHED)
-		  (LET ((KLUDGE (GENSYM)))
-		    (OR (INTEGERP (CAR DIML))
-			(MERROR "non-integer number of dimensions: ~M"
-				(CAR DIML)))
-		    (INSURE-ARRAY-PROPS KLUDGE () (CAR DIML))
-		    (MAKE-MGENARRAY :TYPE '$HASHED
-				    :CONTENT KLUDGE)))
-		 ((EQ TYPE '$FUNCTIONAL)
+		 ((eq type '$hashed)
+		  (let ((kludge (gensym)))
+		    (or (integerp (car diml))
+			(merror "non-integer number of dimensions: ~M"
+				(car diml)))
+		    (insure-array-props kludge () (car diml))
+		    (make-mgenarray :type '$hashed
+				    :content kludge)))
+		 ((eq type '$functional)
 		  ;; MAKE_ARRAY('FUNCTIONAL,LAMBDA(...),'ARRAY_TYPE,...)
-		  (OR (> (LENGTH DIML) 1)
-		      (MERROR "not enough arguments for functional array specification"))
-		  (LET ((AR (APPLY #'$MAKE_ARRAY (CDR DIML)))
-			(THE-NULL))
-		    (CASE (MARRAY-TYPE AR)
-		      (($FIXNUM)
-		       (FILLARRAY AR (LIST (SETQ THE-NULL FIXUNBOUND))))
-		      (($FLOAT)
-		       (FILLARRAY AR (LIST (SETQ THE-NULL FLOUNBOUND))))
-		      (($ANY)
-		       (FILLARRAY (MGENARRAY-CONTENT AR) (LIST (SETQ THE-NULL MUNBOUND))))
-		      (T
+		  (or (> (length diml) 1)
+		      (merror "not enough arguments for functional array specification"))
+		  (let ((ar (apply #'$make_array (cdr diml)))
+			(the-null))
+		    (case (marray-type ar)
+		      (($fixnum)
+		       (fillarray ar (list (setq the-null fixunbound))))
+		      (($float)
+		       (fillarray ar (list (setq the-null flounbound))))
+		      (($any)
+		       (fillarray (mgenarray-content ar) (list (setq the-null munbound))))
+		      (t
 		       ;; Nothing to do for hashed arrays. Is FUNCTIONAL here
 		       ;; an error?
-		       (SETQ THE-NULL 'NOTEXIST)))
-		    (MAKE-MGENARRAY :TYPE '$FUNCTIONAL
-				    :CONTENT AR
-				    :GENERATOR (CAR DIML)
-				    :NULL THE-NULL)))
-		 ('ELSE
-		  (MERROR "Array type of ~M is not recognized by MAKE_ARRAY" TYPE))))
-	  ('ELSE
-	   (APPLY '*ARRAY NIL (CDR LTYPE) DIML)))))
+		       (setq the-null 'notexist)))
+		    (make-mgenarray :type '$functional
+				    :content ar
+				    :generator (car diml)
+				    :null the-null)))
+		 ('else
+		  (merror "Array type of ~M is not recognized by MAKE_ARRAY" type))))
+	  ('else
+	   (apply '*array nil (cdr ltype) diml)))))
 
 (defmfun maknum (x)
   (cond ($use_fast_arrays
-  (exploden (format nil "~A" x)))
+	 (exploden (format nil "~A" x)))
 	(t (format nil "~A" x))))
 
-(DEFMFUN DIMENSION-ARRAY-OBJECT (FORM RESULT &AUX (MTYPE (MARRAY-TYPE FORM)))
+(defmfun dimension-array-object (form result &aux (mtype (marray-type form)))
   (cond ($use_fast_arrays (dimension-string  (maknum form) result))
 	(t
-	 (DIMENSION-STRING
-	   (NCONC (EXPLODEN "{Array: ")
-		  (CDR (EXPLODEN MTYPE))
-		  (EXPLODEN " ")
-		  (EXPLODEN (MAKNUM FORM))
-		  (IF (MEMQ MTYPE '($FLOAT $FIXNUM $ANY))
-		      (NCONC (EXPLODEN "[")
-			     (DO ((L (CDR (ARRAYDIMS (IF (MEMQ MTYPE '($FLOAT $FIXNUM))
-							 FORM
-							 (MGENARRAY-CONTENT FORM))))
-				     (CDR L))
-				  (V NIL
-				     (NCONC (NREVERSE (EXPLODEN (CAR L))) V)))
-				 ((NULL L) (NREVERSE V))
-			       (IF V (PUSH #\, V)))
-			     (EXPLODEN "]")))
-		  (EXPLODEN "}"))
-	   RESULT))))
+	 (dimension-string
+	  (nconc (exploden "{Array: ")
+		 (cdr (exploden mtype))
+		 (exploden " ")
+		 (exploden (maknum form))
+		 (if (memq mtype '($float $fixnum $any))
+		     (nconc (exploden "[")
+			    (do ((l (cdr (arraydims (if (memq mtype '($float $fixnum))
+							form
+							(mgenarray-content form))))
+				    (cdr l))
+				 (v nil
+				    (nconc (nreverse (exploden (car l))) v)))
+				((null l) (nreverse v))
+			      (if v (push #\, v)))
+			    (exploden "]")))
+		 (exploden "}"))
+	  result))))
 
 
 
-(DEFUN MARRAY-CHECK (A)
-  (IF (EQ (ml-typep A) 'array)
-      (CASE (MARRAY-TYPE A)
+(defun marray-check (a)
+  (if (eq (ml-typep a) 'array)
+      (case (marray-type a)
 	((art-q ) a)
-	(($FIXNUM $FLOAT) A)
-	(($ANY) (MGENARRAY-CONTENT A))
-	(($HASHED $FUNCTIONAL)
+	(($fixnum $float) a)
+	(($any) (mgenarray-content a))
+	(($hashed $functional)
 	
 	 ;; BUG: It does have a number of dimensions! Gosh. -GJC
-	 (MERROR "Hashed array has no dimension info: ~M" A))
-	(T
-	 (MARRAY-TYPE-UNKNOWN A)))
-      (MERROR "Not an array: ~M" A)))
+	 (merror "Hashed array has no dimension info: ~M" a))
+	(t
+	 (marray-type-unknown a)))
+      (merror "Not an array: ~M" a)))
 
-;(DEFMFUN $ARRAY_NUMBER_OF_DIMENSIONS (A)
-;  (ARRAY-/#-DIMS (MARRAY-CHECK A)))
+;;(DEFMFUN $ARRAY_NUMBER_OF_DIMENSIONS (A)
+;;  (ARRAY-/#-DIMS (MARRAY-CHECK A)))
 
-(DEFMFUN $ARRAY_DIMENSION_N (N A)
-  (array-dimension  (MARRAY-CHECK A) n))
+(defmfun $array_dimension_n (n a)
+  (array-dimension  (marray-check a) n))
 
-(DEFUN MARRAY-TYPE-UNKNOWN (X)
-  (MERROR "BUG: Array of unhandled type: ~S" X))
+(defun marray-type-unknown (x)
+  (merror "BUG: Array of unhandled type: ~S" x))
 
-(DEFUN MARRAYREF-GENSUB (AARRAY IND1 INDS)  
-       (CASE (MARRAY-TYPE AARRAY)
+(defun marrayref-gensub (aarray ind1 inds)  
+  (case (marray-type aarray)
     ;; We are using a CASE on the TYPE instead of a FUNCALL, (or SUBRCALL)
     ;; because we are losers. All this stuff uses too many functions from
     ;; the "MLISP" modual, which are not really suitable for the kind of
@@ -149,56 +149,56 @@
     ;; extra consing in the case of hashed arrays.
     ((t) (apply #'aref aarray ind1 inds))
     ((hash-table) (gethash (if inds (cons ind1 inds) ind1) aarray))
-    (($HASHED)
-     (APPLY #'MARRAYREF (MGENARRAY-CONTENT AARRAY) IND1 INDS))
-    (($FLOAT $FIXNUM)
-     (APPLY AARRAY IND1 INDS))
-    (($ANY)
-     (APPLY (MGENARRAY-CONTENT AARRAY) IND1 INDS))
-    (($FUNCTIONAL)
-     (LET ((VALUE (LET ((EVARRP T))
+    (($hashed)
+     (apply #'marrayref (mgenarray-content aarray) ind1 inds))
+    (($float $fixnum)
+     (apply aarray ind1 inds))
+    (($any)
+     (apply (mgenarray-content aarray) ind1 inds))
+    (($functional)
+     (let ((value (let ((evarrp t))
 		    ;; special variable changes behavior of hashed-array
 		    ;; referencing functions in case of not finding an element.
-		    (CATCH 'EVARRP (MARRAYREF-GENSUB
-				      (MGENARRAY-CONTENT AARRAY) IND1 INDS)))))
-       (IF (EQUAL VALUE (MGENARRAY-NULL AARRAY))
-	   (MARRAYSET-GENSUB  (APPLY #'MFUNCALL
-					     (MGENARRAY-GENERATOR AARRAY)
-					     ;; the first argument we pass the
-					     ;; function is a SELF variable.
-					     AARRAY
-					     ;; extra consing here! LEXPR madness.
-					     IND1
-					     INDS)
-			      (MGENARRAY-CONTENT AARRAY) IND1 INDS)
-	   VALUE)))
-    (T
-     (MARRAY-TYPE-UNKNOWN AARRAY))))
+		    (catch 'evarrp (marrayref-gensub
+				    (mgenarray-content aarray) ind1 inds)))))
+       (if (equal value (mgenarray-null aarray))
+	   (marrayset-gensub  (apply #'mfuncall
+				     (mgenarray-generator aarray)
+				     ;; the first argument we pass the
+				     ;; function is a SELF variable.
+				     aarray
+				     ;; extra consing here! LEXPR madness.
+				     ind1
+				     inds)
+			      (mgenarray-content aarray) ind1 inds)
+	   value)))
+    (t
+     (marray-type-unknown aarray))))
 	  
-(defmfun $Make_art_q (&rest l)
-    (make-array l))
+(defmfun $make_art_q (&rest l)
+  (make-array l))
 
-(DEFUN MARRAYSET-GENSUB (VAL AARRAY IND1 INDS) 
-  (CASE (MARRAY-TYPE AARRAY)
+(defun marrayset-gensub (val aarray ind1 inds) 
+  (case (marray-type aarray)
     ((t) (setf (apply #'aref aarray ind1 inds) val))
-    (($HASHED)
-     (APPLY #'MARRAYSET VAL (MGENARRAY-CONTENT AARRAY) IND1 INDS))
-    (($ANY)
-     (setf (apply #'Aref (MGENARRAY-CONTENT AARRAY) IND1 INDS) val ))
-    (($FLOAT $FIXNUM)
-     (setf  (apply #'Aref (MGENARRAY-CONTENT AARRAY) IND1 INDS) val ))
-    (($FUNCTIONAL)
-     (MARRAYSET-GENSUB VAL (MGENARRAY-CONTENT AARRAY) IND1 INDS))
-    (T
-      (MARRAY-TYPE-UNKNOWN AARRAY))))
+    (($hashed)
+     (apply #'marrayset val (mgenarray-content aarray) ind1 inds))
+    (($any)
+     (setf (apply #'aref (mgenarray-content aarray) ind1 inds) val ))
+    (($float $fixnum)
+     (setf  (apply #'aref (mgenarray-content aarray) ind1 inds) val ))
+    (($functional)
+     (marrayset-gensub val (mgenarray-content aarray) ind1 inds))
+    (t
+     (marray-type-unknown aarray))))
 
 ;; Extensions to MEVAL.
 
-(DEFMFUN MEVAL1-EXTEND (FORM)
-  (LET ((L (MEVALARGS (CDR FORM))))
-    (MARRAYREF-GENSUB (CAAR FORM) (CAR L) (CDR L))))
+(defmfun meval1-extend (form)
+  (let ((l (mevalargs (cdr form))))
+    (marrayref-gensub (caar form) (car l) (cdr l))))
 
-(DEFMFUN ARRSTORE-EXTEND (A L R)
-  (MARRAYSET-GENSUB R A (CAR L) (CDR L)))
+(defmfun arrstore-extend (a l r)
+  (marrayset-gensub r a (car l) (cdr l)))
 
 

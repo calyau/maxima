@@ -12,8 +12,8 @@
 (macsyma-module mtrace)
 
 (declare-top(*lexpr trace-mprint) ;; forward references
-	 (genprefix mtrace-)
-	 (special $functions $transrun trace-allp))
+	    (genprefix mtrace-)
+	    (special $functions $transrun trace-allp))
 
 ;;; a reasonable trace capability for macsyma users.
 ;;; 8:10pm  Saturday, 10 January 1981 -GJC.
@@ -159,13 +159,13 @@
 ;;; Structures.
 
 (eval-when (compile load eval)
-(defmacro trace-p (x) `(mget ,x 'trace))
-(defmacro trace-type (x) `(mget ,x 'trace-type))
-(defmacro trace-level (x) `(mget ,x 'trace-level))
-(defmacro trace-options (x) `($get ,x '$trace_options))
-#+(or Franz Cl)
-(defmacro trace-oldfun (x) `(mget ,x 'trace-oldfun))
-)
+  (defmacro trace-p (x) `(mget ,x 'trace))
+  (defmacro trace-type (x) `(mget ,x 'trace-type))
+  (defmacro trace-level (x) `(mget ,x 'trace-level))
+  (defmacro trace-options (x) `($get ,x '$trace_options))
+  #+(or franz cl)
+  (defmacro trace-oldfun (x) `(mget ,x 'trace-oldfun))
+  )
 
 
 
@@ -182,7 +182,7 @@
         `((mlist) ,@(mapcan fun
 			    (if (memq (car llist) '($all $functions))
 			        (prog2 (setq trace-allp t)
-				       (mapcar #'caar (cdr $functions)))
+				    (mapcar #'caar (cdr $functions)))
 			        llist))))))
 
 (defmspec $trace (form)
@@ -206,8 +206,8 @@
 ;;; System interface functions.
 
 (defvar hard-to-trace '(trace-handler listify args setplist
-				     trace-apply
-				     *apply mapply))
+			trace-apply
+			*apply mapply))
 
 
 ;; A list of functions called by the TRACE-HANDLEr at times when
@@ -255,41 +255,41 @@
 
 (defun macsyma-untrace-sub (fun handler ilist)
   (prog1
-   (cond ((not (symbolp (setq fun (getopr fun))))
-	  (mtell "~%Bad arg to UNTRACE: ~M" fun)
-	  nil)
-	 ((not (trace-p fun))
-	  (mtell "~%~:@M is not traced." fun)
-	  nil)
-	 (t
-	  (trace-unfshadow fun (trace-type fun))
-	  (rem-trace-info fun ilist)
-	  (list fun)))
-   (if (memq fun trace-handling-stack)
-       ;; yes, he has re-defined or untraced the function
-       ;; during the trace-handling application.
-       ;; This is not strange, in fact it happens all the
-       ;; time when the user is using the $ERRORCATCH option!
-       (macsyma-trace-sub fun handler ilist))))
+      (cond ((not (symbolp (setq fun (getopr fun))))
+	     (mtell "~%Bad arg to UNTRACE: ~M" fun)
+	     nil)
+	    ((not (trace-p fun))
+	     (mtell "~%~:@M is not traced." fun)
+	     nil)
+	    (t
+	     (trace-unfshadow fun (trace-type fun))
+	     (rem-trace-info fun ilist)
+	     (list fun)))
+    (if (memq fun trace-handling-stack)
+	;; yes, he has re-defined or untraced the function
+	;; during the trace-handling application.
+	;; This is not strange, in fact it happens all the
+	;; time when the user is using the $ERRORCATCH option!
+	(macsyma-trace-sub fun handler ilist))))
 
 (defun put-trace-info (fun type ilist)
-       (setf (trace-p fun) fun) ; needed for MEVAL at this time also.
-       (setf (trace-type fun) type)
-#+Franz(setf (trace-oldfun fun) (getd fun))
-#+cl(setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
-       (LET ((SYM (GENSYM)))
-	    (SET SYM 0)
-	    (setf (trace-level fun) SYM))
-       (push fun (cdr ilist))
-       (list fun))
+  (setf (trace-p fun) fun)	 ; needed for MEVAL at this time also.
+  (setf (trace-type fun) type)
+  #+franz(setf (trace-oldfun fun) (getd fun))
+  #+cl(setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
+  (let ((sym (gensym)))
+    (set sym 0)
+    (setf (trace-level fun) sym))
+  (push fun (cdr ilist))
+  (list fun))
 
 (defun rem-trace-info (fun ilist)
-       (setf (trace-p fun) nil)
-       (or (memq fun trace-handling-stack)
-	   (setf (trace-level fun) nil))
-       (setf (trace-type fun) nil)
-       (delq fun ilist)
-       (list fun))
+  (setf (trace-p fun) nil)
+  (or (memq fun trace-handling-stack)
+      (setf (trace-level fun) nil))
+  (setf (trace-type fun) nil)
+  (delq fun ilist)
+  (list fun))
 
 
 ;; Placing the TRACE functional hook.
@@ -309,69 +309,69 @@
 (defprop mfexpr*s mfexpr* shadow)
 (defprop mfexpr* mfexpr* shadow)
 
-#-Multics
+#-multics
 (progn
-;; too slow to snap links on multics.
-(defprop subr t uuolinks)
-(defprop lsubr t uuolinks)
-(defprop fsubr t uuolinks) ; believe it or not. 
-)
+  ;; too slow to snap links on multics.
+  (defprop subr t uuolinks)
+  (defprop lsubr t uuolinks)
+  (defprop fsubr t uuolinks)		; believe it or not. 
+  )
 
 (defprop mexpr t mget)
 (defprop mexpr expr shadow)
 
 (defun get! (x y)
-       (or (get x y)
-	   (get! (MAXIMA-ERROR (list "Undefined" y "property") x 'wrng-type-arg)
-		 y)))
+  (or (get x y)
+      (get! (maxima-error (list "Undefined" y "property") x 'wrng-type-arg)
+	    y)))
 
-#+Maclisp
+#+maclisp
 (defun trace-fshadow (fun type value)
-       ;; the value is defined to be a lisp functional object, which
-       ;; might have to be compiled to be placed in certain locations.
-       (if (get type 'uuolinks)
-	   (sstatus uuolinks))
-       (let ((shadow (get! type 'shadow)))
-	    (setplist fun (list* shadow value (symbol-plist fun)))))
+  ;; the value is defined to be a lisp functional object, which
+  ;; might have to be compiled to be placed in certain locations.
+  (if (get type 'uuolinks)
+      (sstatus uuolinks))
+  (let ((shadow (get! type 'shadow)))
+    (setplist fun (list* shadow value (symbol-plist fun)))))
 
-#+Franz
+#+franz
 (defun trace-fshadow (fun type value)
-   (cond ((and (get type 'uuolinks)
-	       (status translink))
-	  (sstatus translink nil)))
-   (let ((shadow (get! type 'shadow)))
-      (cond ((memq shadow '(expr subr))
-	     (setf (trace-oldfun fun) (getd fun))
-	     (putd fun value))
-	    ((memq shadow '(fexpr fsubr))
-	     (setf (trace-oldfun fun) (getd fun))
-	     (putd fun (cons 'nlambda (cdr value))))
-	    (t (setplist fun
-			 `(,shadow ,value ,@(symbol-plist fun)))))))
+  (cond ((and (get type 'uuolinks)
+	      (status translink))
+	 (sstatus translink nil)))
+  (let ((shadow (get! type 'shadow)))
+    (cond ((memq shadow '(expr subr))
+	   (setf (trace-oldfun fun) (getd fun))
+	   (putd fun value))
+	  ((memq shadow '(fexpr fsubr))
+	   (setf (trace-oldfun fun) (getd fun))
+	   (putd fun (cons 'nlambda (cdr value))))
+	  (t (setplist fun
+		       `(,shadow ,value ,@(symbol-plist fun)))))))
 
 #+cl
 (defun trace-fshadow (fun type value)
-   (let ((shadow (get! type 'shadow)))
-      (cond ((memq shadow '(expr subr))
-	     (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
-	     (setf (symbol-function  fun)  value))
-	    (t (setplist fun
-			 `(,shadow ,value ,@(symbol-plist fun)))))))
+  (let ((shadow (get! type 'shadow)))
+    (cond ((memq shadow '(expr subr))
+	   (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
+	   (setf (symbol-function  fun)  value))
+	  (t (setplist fun
+		       `(,shadow ,value ,@(symbol-plist fun)))))))
 
-#+Maclisp
+#+maclisp
 (defun trace-unfshadow (fun type)
-       ;; what a hack.
-       (remprop fun (get! type 'shadow)))
+  ;; what a hack.
+  (remprop fun (get! type 'shadow)))
 
-#+Franz
+#+franz
 (defun trace-unfshadow (fun type)
-   (cond ((memq type '(expr subr fexpr fsubr))
-	  (let ((oldf (trace-oldfun fun)))
-	    (if (not (null oldf))
-		(putd fun oldf)
-		(putd fun nil))))
-	 (t (remprop fun (get! type 'shadow))
-	    (putd fun nil))))
+  (cond ((memq type '(expr subr fexpr fsubr))
+	 (let ((oldf (trace-oldfun fun)))
+	   (if (not (null oldf))
+	       (putd fun oldf)
+	       (putd fun nil))))
+	(t (remprop fun (get! type 'shadow))
+	   (putd fun nil))))
 
 #+cl
 (defun trace-unfshadow (fun type)
@@ -379,49 +379,49 @@
   (cond ((memq type '(expr subr))
 	 (let ((oldf (trace-oldfun fun)))
 	   (if (not (null oldf))
-	     (setf (symbol-function  fun)  oldf)
-	     (fmakunbound fun))))
-	 (t (remprop fun (get! type 'shadow))
-	    (fmakunbound fun))))
+	       (setf (symbol-function  fun)  oldf)
+	       (fmakunbound fun))))
+	(t (remprop fun (get! type 'shadow))
+	   (fmakunbound fun))))
 
-;--- trace-fsymeval :: find original function
-;  fun : a function which is being traced.  The original defintion may
-;	 be hidden on the property list behind the shadow function.
-;
+;;--- trace-fsymeval :: find original function
+;;  fun : a function which is being traced.  The original defintion may
+;;	 be hidden on the property list behind the shadow function.
+;;
 (defun trace-fsymeval (fun)
-   (or
-      (let ((type-of (trace-type fun)))
-	 (cond ((get type-of 'mget)
-		(if (eq (get! type-of 'shadow) type-of)
-		    (mget (cdr (mgetl fun (list type-of))) type-of)
-		    (mget fun type-of)))
-	       ((eq (get! type-of 'shadow) 'expr)
-		(trace-oldfun fun))
-	       (t (if (eq (get! type-of 'shadow) type-of)
-		      (cadr (getl (cdr (getl fun `(,type-of))) `(,type-of)))
-		      (get fun type-of)))))
-      (trace-fsymeval
-	 (merror "Macsyma BUG: Trace property for ~:@M went away without hook."
-		 fun))))
+  (or
+   (let ((type-of (trace-type fun)))
+     (cond ((get type-of 'mget)
+	    (if (eq (get! type-of 'shadow) type-of)
+		(mget (cdr (mgetl fun (list type-of))) type-of)
+		(mget fun type-of)))
+	   ((eq (get! type-of 'shadow) 'expr)
+	    (trace-oldfun fun))
+	   (t (if (eq (get! type-of 'shadow) type-of)
+		  (cadr (getl (cdr (getl fun `(,type-of))) `(,type-of)))
+		  (get fun type-of)))))
+   (trace-fsymeval
+    (merror "Macsyma BUG: Trace property for ~:@M went away without hook."
+	    fun))))
 
 ;;; The handling of a traced call.
 
 (defvar trace-indent-level -1)
 
 (defmacro bind-sym (symbol value . body)
-	  #-Multics
-	   ;; is by far the best dynamic binding generally available.
-	  `(progv (list ,symbol)
-		  (list ,value)
+  #-multics
+  ;; is by far the best dynamic binding generally available.
+  `(progv (list ,symbol)
+    (list ,value)
+    ,@body)
+  #+multics				; PROGV is wedged on multics.
+  `(let ((the-symbol ,symbol)
+	 (the-value ,value))
+    (let ((old-value (symbol-value the-symbol)))
+      (unwind-protect
+	   (progn (set the-symbol the-value)
 		  ,@body)
-	  #+Multics ; PROGV is wedged on multics.
-	  `(let ((the-symbol ,symbol)
-		 (the-value ,value))
-		(let ((old-value (symbol-value the-symbol)))
-		     (unwind-protect
-		      (progn (set the-symbol the-value)
-			     ,@body)
-		      (set the-symbol old-value)))))
+	(set the-symbol old-value)))))
 
 ;; We really want to (BINDF (TRACE-LEVEL FUN) (f1+ (TRACE-LEVEL FUN)) ...)
 ;; (Think about PROGV and SETF and BINDF. If the trace object where
@@ -438,57 +438,57 @@
 ;; implemented, use the correct thing and get rid of this macro.
 
 (declare-top(special errcatch lisperrprint bindlist loclist)
-	 (*expr errlfun1))
+	    (*expr errlfun1))
 
 (defmacro macsyma-errset (form &aux (ret (gensym)))
-	  `(let ((errcatch (cons bindlist loclist)) ,ret)
-		(setq ,ret (errset ,form lisperrprint))
-		(or ,ret (errlfun1 errcatch))
-		,ret))
+  `(let ((errcatch (cons bindlist loclist)) ,ret)
+    (setq ,ret (errset ,form lisperrprint))
+    (or ,ret (errlfun1 errcatch))
+    ,ret))
 
 (defvar predicate-arglist nil)
 
 (defvar return-to-trace-handle nil)
 
 (defun trace-handler (fun largs)
-       (If return-to-trace-handle
-	   ;; we were called by the trace-handler.
-	   (trace-apply fun largs)
-	   (let ((trace-indent-level (f1+ trace-indent-level))
-		 (return-to-trace-handle t)
-		 (trace-handling-stack (cons fun trace-handling-stack))
-		 (LEVEL-SYM (TRACE-LEVEL fun))(LEVEL))
-		(SETQ LEVEL (f1+ (SYMBOL-VALUE LEVEL-SYM)))
-		(BIND-SYM
-		 LEVEL-SYM
-		 LEVEL
-		 (do ((ret-val)(continuation)(predicate-arglist))(nil)
-		     (setq predicate-arglist `(,level $enter ,fun ((mlist) ,@largs)))
-		     (setq largs (trace-enter-break fun level largs))
-		     (trace-enter-print fun level largs)
-		     (cond ((trace-option-p fun '$errorcatch)
-			    (setq ret-val (macsyma-errset (trace-apply fun largs)))
-			    (cond ((null ret-val)
-				   (setq ret-val (trace-error-break fun level largs))
-				   (setq continuation (car ret-val)
-					 ret-val (cdr ret-val)))
-				  (t
-				   (setq continuation 'exit
-					 ret-val (car ret-val)))))
-			   (t
-			    (setq continuation 'exit
-				  ret-val (trace-apply fun largs))))
-		     (case continuation
-			    ((exit)
-			     (setq predicate-arglist `(,level $exit ,fun ,ret-val))
-			     (setq ret-val (trace-exit-break fun level ret-val))
-			     (trace-exit-print fun level ret-val)
-			     (return ret-val))
-			    ((retry)
-			     (setq largs ret-val)
-			     (MTELL "~%Re applying the function ~:@M~%" fun))
-			    ((MAXIMA-ERROR)
-			     (MERROR "~%Signaling MAXIMA-ERROR for function ~:@M~%" fun))))))))
+  (if return-to-trace-handle
+      ;; we were called by the trace-handler.
+      (trace-apply fun largs)
+      (let ((trace-indent-level (f1+ trace-indent-level))
+	    (return-to-trace-handle t)
+	    (trace-handling-stack (cons fun trace-handling-stack))
+	    (level-sym (trace-level fun))(level))
+	(setq level (f1+ (symbol-value level-sym)))
+	(bind-sym
+	 level-sym
+	 level
+	 (do ((ret-val)(continuation)(predicate-arglist))(nil)
+	   (setq predicate-arglist `(,level $enter ,fun ((mlist) ,@largs)))
+	   (setq largs (trace-enter-break fun level largs))
+	   (trace-enter-print fun level largs)
+	   (cond ((trace-option-p fun '$errorcatch)
+		  (setq ret-val (macsyma-errset (trace-apply fun largs)))
+		  (cond ((null ret-val)
+			 (setq ret-val (trace-error-break fun level largs))
+			 (setq continuation (car ret-val)
+			       ret-val (cdr ret-val)))
+			(t
+			 (setq continuation 'exit
+			       ret-val (car ret-val)))))
+		 (t
+		  (setq continuation 'exit
+			ret-val (trace-apply fun largs))))
+	   (case continuation
+	     ((exit)
+	      (setq predicate-arglist `(,level $exit ,fun ,ret-val))
+	      (setq ret-val (trace-exit-break fun level ret-val))
+	      (trace-exit-print fun level ret-val)
+	      (return ret-val))
+	     ((retry)
+	      (setq largs ret-val)
+	      (mtell "~%Re applying the function ~:@M~%" fun))
+	     ((maxima-error)
+	      (merror "~%Signaling MAXIMA-ERROR for function ~:@M~%" fun))))))))
 
 
 ;; The (Trace-options function) access is not optimized to take place
@@ -499,19 +499,19 @@
 
 (defmvar $trace_safety t "This is subtle")
 
-(defun trace-option-p (function KEYWORD)
+(defun trace-option-p (function keyword)
   (do ((options					
-	(LET ((OPTIONS (TRACE-OPTIONS (getop FUNCTION))))
-	  (COND ((NULL OPTIONS) NIL)
-		(($LISTP OPTIONS) (CDR OPTIONS))
-		(T
+	(let ((options (trace-options (getop function))))
+	  (cond ((null options) nil)
+		(($listp options) (cdr options))
+		(t
 		 (mtell "Trace options for ~:@M not a list, so ignored."
 			function)
-		 NIL)))
-	(CDR OPTIONS))
-       (OPTION))
+		 nil)))
+	(cdr options))
+       (option))
       ((null options) nil)
-    (setq OPTION (CAR OPTIONS))
+    (setq option (car options))
     (cond ((atom option)
 	   (if (eq option keyword) (return t)))
 	  ((eq (caar option) keyword)
@@ -533,150 +533,150 @@
 (defun mopstringnam (x) (maknam (mstring (getop x))))
 
 (defun trace-exit-print (fun lev ret-val)
-       (if (not (trace-option-p fun '$noprint))
-	   (let ((info (trace-option-p fun '$info)))
-		(cond ((trace-option-p fun '$lisp_print)
-		       (trace-print `(,lev exit ,fun ,ret-val ,@info)))
-		      (t
-		       (trace-mprint lev " Exit  " (mopstringnam fun) " " ret-val
-				     (if info " -> " "")
-				     (if info info "")))))))
+  (if (not (trace-option-p fun '$noprint))
+      (let ((info (trace-option-p fun '$info)))
+	(cond ((trace-option-p fun '$lisp_print)
+	       (trace-print `(,lev exit ,fun ,ret-val ,@info)))
+	      (t
+	       (trace-mprint lev " Exit  " (mopstringnam fun) " " ret-val
+			     (if info " -> " "")
+			     (if info info "")))))))
 
-(defmvar $trace_break_arg '$TRACE_BREAK_ARG 
-	 "During trace Breakpoints bound to the argument list or return value")
+(defmvar $trace_break_arg '$trace_break_arg 
+  "During trace Breakpoints bound to the argument list or return value")
 
 (defun trace-enter-break (fun lev largs)
-       (if (trace-option-p fun '$break)
-	   (do ((return-to-trace-handle nil)
-		($trace_break_arg `((mlist) ,@largs)))(nil)
-	       ($break '|&Trace entering| fun '|&level| lev)
-	       (cond (($listp $trace_break_arg)
-		      (return (cdr $trace_break_arg)))
-		     (t
-		       (mtell "~%Trace_break_arg set to nonlist, ~
+  (if (trace-option-p fun '$break)
+      (do ((return-to-trace-handle nil)
+	   ($trace_break_arg `((mlist) ,@largs)))(nil)
+	($break '|&Trace entering| fun '|&level| lev)
+	(cond (($listp $trace_break_arg)
+	       (return (cdr $trace_break_arg)))
+	      (t
+	       (mtell "~%Trace_break_arg set to nonlist, ~
 			      please try again"))))
-	   largs))
+      largs))
 
 (defun trace-exit-break (fun lev ret-val)
-       (if (trace-option-p fun '$break)
-	   (let (($trace_break_arg ret-val)
-		 (return-to-trace-handle nil))
-		($break '|&Trace exiting| fun '|&level| lev)
-		$trace_break_arg)
-	   ret-val))
+  (if (trace-option-p fun '$break)
+      (let (($trace_break_arg ret-val)
+	    (return-to-trace-handle nil))
+	($break '|&Trace exiting| fun '|&level| lev)
+	$trace_break_arg)
+      ret-val))
 
 (defun pred-$read (predicate argl bad-message)
-       (do ((ans))(nil)
-	   (setq ans (apply #'$read argl))
-	   (if (funcall predicate ans) (return ans))
-	   (mtell "~%Unacceptable input, ~A~%" bad-message)))
+  (do ((ans))(nil)
+    (setq ans (apply #'$read argl))
+    (if (funcall predicate ans) (return ans))
+    (mtell "~%Unacceptable input, ~A~%" bad-message)))
 
 (declare-top(special upper))
 
 (defun ask-choicep (llist &rest header-message)
-       (do ((j 0 (f1+ j))
-	    (dlist nil
-		   (list* #\newline `((marrow) ,j ,(car ilist)) dlist))
-	    (ilist llist (cdr ilist)))
-	   ((null ilist)
-	    (setq dlist (nconc header-message (cons #\newline (nreverse dlist))))
-	    (let ((upper (f1- j)))
-		 (pred-$read #'(lambda (val)
-				      (and (integerp val)
-					   (>= val 0)
-					   (<= val upper)))
-			    dlist
-			    "please reply with an integer from the menue.")))))
+  (do ((j 0 (f1+ j))
+       (dlist nil
+	      (list* #\newline `((marrow) ,j ,(car ilist)) dlist))
+       (ilist llist (cdr ilist)))
+      ((null ilist)
+       (setq dlist (nconc header-message (cons #\newline (nreverse dlist))))
+       (let ((upper (f1- j)))
+	 (pred-$read #'(lambda (val)
+			 (and (integerp val)
+			      (>= val 0)
+			      (<= val upper)))
+		     dlist
+		     "please reply with an integer from the menue.")))))
 
 (declare-top (unspecial upper))
 
 (defun trace-error-break (fun level largs)
-       (case (ask-choicep '("Signal an MAXIMA-ERROR, i.e. PUNT?"
-			     "Retry with same arguments?"
-			     "Retry with new arguments?"
-			     "Exit with user supplied value")
-			   "Error during application of" (mopstringnam fun)
-			   "at level" level
-			   #\newline "Do you want to:")
-	      ((0)
-	       '(MAXIMA-ERROR))
-	      ((1)
-	       (cons 'retry largs))
-	      ((2)
-	       (cons 'retry (let (($trace_break_arg `((mlist) ,largs)))
-				 (cdr (pred-$read '$listp
-						 (list
-						  "Enter new argument list for"
-						  (mopstringnam fun))
-						 "please enter a list.")))))
+  (case (ask-choicep '("Signal an MAXIMA-ERROR, i.e. PUNT?"
+		       "Retry with same arguments?"
+		       "Retry with new arguments?"
+		       "Exit with user supplied value")
+		     "Error during application of" (mopstringnam fun)
+		     "at level" level
+		     #\newline "Do you want to:")
+    ((0)
+     '(maxima-error))
+    ((1)
+     (cons 'retry largs))
+    ((2)
+     (cons 'retry (let (($trace_break_arg `((mlist) ,largs)))
+		    (cdr (pred-$read '$listp
+				     (list
+				      "Enter new argument list for"
+				      (mopstringnam fun))
+				     "please enter a list.")))))
 					   
-	      ((3)
-	       (cons 'exit ($read "Enter value to return")))))
+    ((3)
+     (cons 'exit ($read "Enter value to return")))))
 
 
 ;;; application dispatch, and the consing up of the trace hook.
 
 (defun macsyma-fsymeval (fun)
-       (let ((try (macsyma-fsymeval-sub fun)))
-	    (cond (try try)
-		  ((get fun 'autoload)
-		   (load-and-tell (get fun 'autoload))
-		   (setq try (macsyma-fsymeval-sub fun))
-		   (or try
-		       (mtell "~%~:@M has no functional~
+  (let ((try (macsyma-fsymeval-sub fun)))
+    (cond (try try)
+	  ((get fun 'autoload)
+	   (load-and-tell (get fun 'autoload))
+	   (setq try (macsyma-fsymeval-sub fun))
+	   (or try
+	       (mtell "~%~:@M has no functional~
 			      properties after autoloading.~%"
-			      fun))
-		   try)
-		  (t try))))
+		      fun))
+	   try)
+	  (t try))))
 
 (defun macsyma-fsymeval-sub (fun)
-       ;; The semantics of $TRANSRUN are herein taken from DESCRIBE,
-       ;; a carefull reading of MEVAL1 reveals, well... I've promised to watch
-       ;; my language in these comments.
+  ;; The semantics of $TRANSRUN are herein taken from DESCRIBE,
+  ;; a carefull reading of MEVAL1 reveals, well... I've promised to watch
+  ;; my language in these comments.
 
-       (let ((mprops (mgetl fun '(mexpr mmacro)))
-	     (lprops (getl  fun '(translated-mmacro mfexpr* mfexpr*s)))
-	     (fcell-props (getl-fun fun '(subr lsubr expr macro))))
-	    (cond ($TRANSRUN
-		   ;; the default, so its really a waste to have looked for
-		   ;; those mprops. Its better to fix the crock than to
-		   ;; optimize this though!
-		   (or lprops fcell-props mprops))
-		  (t
-		   (or mprops lprops fcell-props)))))
+  (let ((mprops (mgetl fun '(mexpr mmacro)))
+	(lprops (getl  fun '(translated-mmacro mfexpr* mfexpr*s)))
+	(fcell-props (getl-fun fun '(subr lsubr expr macro))))
+    (cond ($transrun
+	   ;; the default, so its really a waste to have looked for
+	   ;; those mprops. Its better to fix the crock than to
+	   ;; optimize this though!
+	   (or lprops fcell-props mprops))
+	  (t
+	   (or mprops lprops fcell-props)))))
 
-(Defprop EXPR EXPR HOOK-TYPE)
-(DEFPROP MEXPR EXPR HOOK-TYPE)
-(Defprop SUBR EXPR HOOK-TYPE)
-(Defprop LSUBR EXPR HOOK-TYPE)
-(Defprop MFEXPR* MACRO HOOK-TYPE)
-(Defprop MFEXPR*S MACRO HOOK-TYPE)
+(defprop expr expr hook-type)
+(defprop mexpr expr hook-type)
+(defprop subr expr hook-type)
+(defprop lsubr expr hook-type)
+(defprop mfexpr* macro hook-type)
+(defprop mfexpr*s macro hook-type)
 
-#+Maclisp
+#+maclisp
 (defun make-trace-hook (fun type handler)
-  (CASE (GET! TYPE 'HOOK-TYPE)
-    ((EXPR)
+  (case (get! type 'hook-type)
+    ((expr)
      `(lambda trace-nargs
-	(,handler ',fun (listify trace-nargs))))
-    ((FEXPR)
-     `(LAMBDA (TRACE-ARGL)
-	(,HANDLER ',FUN TRACE-ARGL)))
-    ((MACRO)
-     `(lambda (TRACE-FORM)
-	(,HANDLER (CAAR TRACE-FORM) (LIST TRACE-FORM))))))
+       (,handler ',fun (listify trace-nargs))))
+    ((fexpr)
+     `(lambda (trace-argl)
+       (,handler ',fun trace-argl)))
+    ((macro)
+     `(lambda (trace-form)
+       (,handler (caar trace-form) (list trace-form))))))
 
-#+Franz
+#+franz
 (defun make-trace-hook (fun type handler)
-  (CASE (GET! TYPE 'HOOK-TYPE)
-    ((EXPR)
+  (case (get! type 'hook-type)
+    ((expr)
      `(lexpr (trace-nargs)
-	     (,handler ',fun (listify trace-nargs))))
-    ((FEXPR)
-     `(LAMBDA (TRACE-ARGL)
-	(,HANDLER ',FUN TRACE-ARGL)))
-    ((MACRO)
-     `(lambda (TRACE-FORM)
-	(,HANDLER (CAAR TRACE-FORM) (LIST TRACE-FORM))))))
+       (,handler ',fun (listify trace-nargs))))
+    ((fexpr)
+     `(lambda (trace-argl)
+       (,handler ',fun trace-argl)))
+    ((macro)
+     `(lambda (trace-form)
+       (,handler (caar trace-form) (list trace-form))))))
 
 #+cl
 (defun make-trace-hook (fun type handler)
@@ -686,150 +686,150 @@
   #'(lambda (&rest trace-args)
       (funcall handler fun trace-args)))
        
-#+Maclisp
+#+maclisp
 (defmacro trace-setup-call (prop fun type)  
   `(args 'the-trace-apply-hack (args ,fun))
   `(setplist 'the-trace-apply-hack (list ,type ,prop)))
 
-#+Franz
+#+franz
 (defmacro trace-setup-call (prop fun type)
   `(putd 'the-trace-apply-hack ,prop))
 
 #+cl
 (defmacro trace-setup-call (prop fun type) fun type
-  `(setf (symbol-function  'the-trace-apply-hack)  ,prop))
+	  `(setf (symbol-function  'the-trace-apply-hack)  ,prop))
 
 (defun trace-apply (fun largs)
-       (let ((prop (trace-fsymeval fun))
-	     (type (trace-type fun))
-	     (return-to-trace-handle nil))
-	    (case type
-		   ((mexpr)
-		    (mapply prop largs '|&A traced function|))
-		   ((expr)
-		    (apply prop largs))
-		   ((subr lsubr)
-		    ;; no need to be fast here.
-		    (args 'the-trace-apply-hack (args fun))
-		    (setplist 'the-trace-apply-hack (list type prop))
-		    #-cl (apply 'the-trace-apply-hack largs)
-		    #+cl (apply (second (getl 'the-trace-apply-hack '(subr lsubr))) largs)
-		    )
-		   ((MFEXPR*)
-		    (FUNCALL PROP (CAR LARGS)))
-		   ((MFEXPR*S)
-		    (SUBRCALL NIL PROP (CAR LARGS))))))
+  (let ((prop (trace-fsymeval fun))
+	(type (trace-type fun))
+	(return-to-trace-handle nil))
+    (case type
+      ((mexpr)
+       (mapply prop largs '|&A traced function|))
+      ((expr)
+       (apply prop largs))
+      ((subr lsubr)
+       ;; no need to be fast here.
+       (args 'the-trace-apply-hack (args fun))
+       (setplist 'the-trace-apply-hack (list type prop))
+       #-cl (apply 'the-trace-apply-hack largs)
+       #+cl (apply (second (getl 'the-trace-apply-hack '(subr lsubr))) largs)
+       )
+      ((mfexpr*)
+       (funcall prop (car largs)))
+      ((mfexpr*s)
+       (subrcall nil prop (car largs))))))
 
 
 ;;; I/O cruft
 
 (defmvar $trace_max_indent 15. "max number of spaces it will go right"
-	 FIXNUM)
+	 fixnum)
 (putprop '$trace_max_indent 'assign-mode-check 'assign)
 (putprop '$trace_max_indent '$fixnum 'mode)
 
 (defun-prop (spaceout dimension) (form result)
-       (dimension-string (*make-list (cadr form) #\Space) result))
+  (dimension-string (*make-list (cadr form) #\space) result))
 
 (defun trace-mprint (&rest l)
-       (mtell-open "~M"
-		   `((mtext)
-		     ((spaceout) ,(min $trace_max_indent trace-indent-level))
-		     ,@ (copy-rest-arg l))))
+  (mtell-open "~M"
+	      `((mtext)
+		((spaceout) ,(min $trace_max_indent trace-indent-level))
+		,@ (copy-rest-arg l))))
 
 (defun trace-print (form)
-       (terpri)
-       (do ((j (min $trace_max_indent trace-indent-level)
-	       (f1- j)))
-	   ((not (> j 0)))
-	   (tyo #\Space))
-       (if prin1 (funcall prin1 form)
-	   (prin1 form))
-       (tyo #\Space))
+  (terpri)
+  (do ((j (min $trace_max_indent trace-indent-level)
+	  (f1- j)))
+      ((not (> j 0)))
+    (tyo #\space))
+  (if prin1 (funcall prin1 form)
+      (prin1 form))
+  (tyo #\space))
 
 
 ;; 9:02pm  Monday, 18 May 1981 -GJC
 ;; A function benchmark facility using trace utilities.
 ;; This provides medium accuracy, enough for most user needs.
 
-(DEFMVAR $TIMER '((MLIST)) "List of functions under active timetrace")
+(defmvar $timer '((mlist)) "List of functions under active timetrace")
 #-cl
-(PUTPROP '$TIMER #'READ-ONLY-ASSIGN 'ASSIGN)
+(putprop '$timer #'read-only-assign 'assign)
 
-(DEFMSPEC $TIMER (FORM)
-  (MLISTCAN-$ALL #'macsyma-timer (cdr form) $timer))
+(defmspec $timer (form)
+  (mlistcan-$all #'macsyma-timer (cdr form) $timer))
 
-(DEFMSPEC $UNTIMER (FORM)
-  `((MLIST) ,@(MAPCAN #'MACSYMA-UNTIMER (OR (CDR FORM)
-					    (CDR $TIMER)))))
+(defmspec $untimer (form)
+  `((mlist) ,@(mapcan #'macsyma-untimer (or (cdr form)
+					    (cdr $timer)))))
 
-(DEFUN MICRO-TO-SEC (RUNTIME)
-  (MUL RUNTIME (float (/ internal-time-units-per-second)) '$SEC))
-(DEFUN MICRO-PER-CALL-TO-SEC (RUNTIME CALLS)
-  (DIV (MICRO-TO-SEC RUNTIME)
-       (IF (ZEROP CALLS) 1 CALLS)))
+(defun micro-to-sec (runtime)
+  (mul runtime (float (/ internal-time-units-per-second)) '$sec))
+(defun micro-per-call-to-sec (runtime calls)
+  (div (micro-to-sec runtime)
+       (if (zerop calls) 1 calls)))
 
-(DEFUN TIMER-MLIST (FUNCTION CALLS RUNTIME GCTIME)
-  `((MLIST SIMP) ,FUNCTION
-		 ,(MICRO-PER-CALL-TO-SEC (PLUS RUNTIME GCTIME) CALLS)
-		 ,CALLS
-		 ,(MICRO-TO-SEC RUNTIME)
-		 ,(MICRO-TO-SEC GCTIME)))
+(defun timer-mlist (function calls runtime gctime)
+  `((mlist simp) ,function
+    ,(micro-per-call-to-sec (plus runtime gctime) calls)
+    ,calls
+    ,(micro-to-sec runtime)
+    ,(micro-to-sec gctime)))
 
-(DEFMSPEC $TIMER_INFO (FORM)
-  (DO ((L (OR (CDR FORM) (CDR $TIMER))
-	  (CDR L))
-       (V NIL)
-       (TOTAL-RUNTIME 0)
-       (TOTAL-GCTIME 0)
-       (TOTAL-CALLS 0))
-      ((NULL L)
+(defmspec $timer_info (form)
+  (do ((l (or (cdr form) (cdr $timer))
+	  (cdr l))
+       (v nil)
+       (total-runtime 0)
+       (total-gctime 0)
+       (total-calls 0))
+      ((null l)
        `(($matrix simp)
-	 ((MLIST SIMP) $FUNCTION $TIME//CALL $CALLS $RUNTIME $GCTIME)
-	 ,.(NREVERSE V)
-	 ,(TIMER-MLIST '$TOTAL TOTAL-CALLS TOTAL-RUNTIME TOTAL-GCTIME)))
-      (LET ((RUNTIME ($GET (CAR L) '$RUNTIME))
-	    (GCTIME  ($GET (CAR L) '$GCTIME))
-	    (CALLS   ($GET (CAR L) '$CALLS)))
-	(WHEN RUNTIME
-	      (SETQ TOTAL-CALLS (PLUS CALLS TOTAL-CALLS))
-	      (SETQ TOTAL-RUNTIME (PLUS RUNTIME TOTAL-RUNTIME))
-	      (SETQ TOTAL-GCTIME (PLUS GCTIME TOTAL-GCTIME))
-	      (PUSH (TIMER-MLIST (CAR L) CALLS RUNTIME GCTIME) V)))))
+	 ((mlist simp) $function $time//call $calls $runtime $gctime)
+	 ,.(nreverse v)
+	 ,(timer-mlist '$total total-calls total-runtime total-gctime)))
+    (let ((runtime ($get (car l) '$runtime))
+	  (gctime  ($get (car l) '$gctime))
+	  (calls   ($get (car l) '$calls)))
+      (when runtime
+	(setq total-calls (plus calls total-calls))
+	(setq total-runtime (plus runtime total-runtime))
+	(setq total-gctime (plus gctime total-gctime))
+	(push (timer-mlist (car l) calls runtime gctime) v)))))
 
-(DEFUN macsyma-timer (fun)
-  (PROG1 (macsyma-trace-sub fun 'timer-handler $timer)
-	 ($PUT FUN 0 '$RUNTIME)
-	 ($PUT FUN 0 '$GCTIME)
-	 ($PUT FUN 0 '$CALLS)
-	 ))
+(defun macsyma-timer (fun)
+  (prog1 (macsyma-trace-sub fun 'timer-handler $timer)
+    ($put fun 0 '$runtime)
+    ($put fun 0 '$gctime)
+    ($put fun 0 '$calls)
+    ))
 
 (defun macsyma-untimer (fun) (macsyma-untrace-sub fun 'timer-handler $timer))
 
-(DEFVAR RUNTIME-DEVALUE 0)
-(DEFVAR GCTIME-DEVALUE 0)
+(defvar runtime-devalue 0)
+(defvar gctime-devalue 0)
 
-(DEFMVAR $TIMER_DEVALUE NIL
+(defmvar $timer_devalue nil
   "If true, then time spent inside calls to other timed functions is
   subtracted from the timing figure for a function.")
 
-(DEFUN TIMER-HANDLER (FUN LARGS)
+(defun timer-handler (fun largs)
   ;; N.B. Doesn't even try to account for use of DYNAMIC CONTROL
   ;; such as ERRSET ERROR and CATCH and THROW, as these are
   ;; rare and the overhead for the unwind-protect is high.
-  (LET ((RUNTIME (RUNTIME))
-	(GCTIME (STATUS GCTIME))
-	(OLD-RUNTIME-DEVALUE RUNTIME-DEVALUE)
-	(OLD-GCTIME-DEVALUE GCTIME-DEVALUE))
-    (PROG1 (TRACE-APPLY FUN LARGS)
-	   (SETQ OLD-RUNTIME-DEVALUE (- RUNTIME-DEVALUE OLD-RUNTIME-DEVALUE))
-	   (SETQ OLD-GCTIME-DEVALUE (- GCTIME-DEVALUE OLD-GCTIME-DEVALUE))
-	   (SETQ RUNTIME (- (RUNTIME) RUNTIME OLD-RUNTIME-DEVALUE))
-	   (SETQ GCTIME (- (STATUS GCTIME) GCTIME OLD-GCTIME-DEVALUE))
-	   (WHEN $TIMER_DEVALUE
-		 (SETQ RUNTIME-DEVALUE (f+ RUNTIME-DEVALUE RUNTIME))
-		 (SETQ GCTIME-DEVALUE (f+ GCTIME-DEVALUE GCTIME)))
-	   ($PUT FUN (f+ ($GET FUN '$RUNTIME) RUNTIME) '$RUNTIME)
-	   ($PUT FUN (f+ ($GET FUN '$GCTIME) GCTIME) '$GCTIME)
-	   ($PUT FUN (f1+ ($GET FUN '$CALLS)) '$CALLS))))
+  (let ((runtime (runtime))
+	(gctime (status gctime))
+	(old-runtime-devalue runtime-devalue)
+	(old-gctime-devalue gctime-devalue))
+    (prog1 (trace-apply fun largs)
+      (setq old-runtime-devalue (- runtime-devalue old-runtime-devalue))
+      (setq old-gctime-devalue (- gctime-devalue old-gctime-devalue))
+      (setq runtime (- (runtime) runtime old-runtime-devalue))
+      (setq gctime (- (status gctime) gctime old-gctime-devalue))
+      (when $timer_devalue
+	(setq runtime-devalue (f+ runtime-devalue runtime))
+	(setq gctime-devalue (f+ gctime-devalue gctime)))
+      ($put fun (f+ ($get fun '$runtime) runtime) '$runtime)
+      ($put fun (f+ ($get fun '$gctime) gctime) '$gctime)
+      ($put fun (f1+ ($get fun '$calls)) '$calls))))
 

@@ -71,24 +71,24 @@
 ;;; some other package.
 (in-package "SLOOP")
 
-;(or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
-;(eval-when (compile eval load)
-;(shadow '(LOOP-FINISH) (find-package "SLOOP"))
-;)
-;(in-package "SLOOP" )
-;
-;(eval-when (compile eval load)
+;;(or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
+;;(eval-when (compile eval load)
+;;(shadow '(LOOP-FINISH) (find-package "SLOOP"))
+;;)
+;;(in-package "SLOOP" )
+;;
+;;(eval-when (compile eval load)
 ;;(provide "SLOOP")
-;(export '(loop-return sloop def-loop-collect def-loop-map
-;		      def-loop-for def-loop-macro local-finish
-;		      loop-finish) (find-package "SLOOP"))
-;)
+;;(export '(loop-return sloop def-loop-collect def-loop-map
+;;		      def-loop-for def-loop-macro local-finish
+;;		      loop-finish) (find-package "SLOOP"))
+;;)
 
 ;;; some variables that may be changed to suit different implementations:
 
 (eval-when (compile load eval)
 
-(defvar *use-locatives* nil "See sloop.lisp")   ;#+lispm t #-lispm nil 
+  (defvar *use-locatives* nil "See sloop.lisp")	;#+lispm t #-lispm nil 
 ;;; If t should have locf, such that if we do
 ;;;   (setf b nil) (setq a (locf b))
 ;;;    then the command
@@ -97,31 +97,31 @@
 ;;; nil, since otherwise we must check each time if the list has really
 ;;; been started, before we do a (setf (cdr b) ..)
 
-(defvar *Automatic-declarations*  #+lispm nil  #-lispm
-  '(:from fixnum) "See sloop.lisp")
+  (defvar *automatic-declarations*  #+lispm nil  #-lispm
+	  '(:from fixnum) "See sloop.lisp")
 
 ;;; some other reasonable ones would be :count fixnum :max fixnum
 ;;; Automatic declarations for variables in the stepping and collecting,
 ;;; so for i below n, gives i and n a :from declaration (here fixnum)
 
 
-;;valid keys in *automatic-declarations*
-(defvar *auto-type* '(:from :in :collect))
-;;give automatic register declaration to these variables 
-(defvar *auto-register* '(:from :in :collect))
-(proclaim '(declaration :register))
+  ;;valid keys in *automatic-declarations*
+  (defvar *auto-type* '(:from :in :collect))
+  ;;give automatic register declaration to these variables 
+  (defvar *auto-register* '(:from :in :collect))
+  (proclaim '(declaration :register))
 
 
 
-(defvar *type-check* t "If t adds a type check on bounds of from loop
+  (defvar *type-check* t "If t adds a type check on bounds of from loop
 if there is and automatic declare")
 
-(defvar *macroexpand-hook-for-no-copy* #-(or lmi ti) 'funcall #+(or lmi ti) t)
+  (defvar *macroexpand-hook-for-no-copy* #-(or lmi ti) 'funcall #+(or lmi ti) t)
 ;;; some lisps remember a macro so that (loop-return) will expand eq forms
 ;;; always in the same manner, even if the form is in a macrolet! To
 ;;; defeat this feature we copy all macro expansions unless
 ;;; *macro-expand-hook* = *macroexpand-hook-for-no-copy*
-)
+  )
 
 #+kcl (eval-when (compile) (proclaim '(optimize (safety 2) (space 2))))
 
@@ -131,100 +131,100 @@ if there is and automatic declare")
 ;;; all macros here in here.
 (eval-when (compile eval load)
 
-(defparameter *sloop-translations* '((appending . append)
-			 ((collecting collect) . collect)
-			 ((maximizing maximize) . maximize)
-			 ((minimizing minimize) . minimize)
-			 (nconcing . nconc)
-			 ((count counting) . count)
-			 (summing . sum)
-			 (if . when)
-			 (as . for)
-			 (in-fringe . in-fringe)
-			 (collate . collate)
-			 (in-table . in-table)
-			 (in-carefully . in-carefully)
-			 (averaging . averaging)
-			 (repeat . repeat)
-			 (first-use . first-use)
-			 (in-array . in-array))
-  "A list of cons's where the translation is the cdr, and the car
+  (defparameter *sloop-translations* '((appending . append)
+				       ((collecting collect) . collect)
+				       ((maximizing maximize) . maximize)
+				       ((minimizing minimize) . minimize)
+				       (nconcing . nconc)
+				       ((count counting) . count)
+				       (summing . sum)
+				       (if . when)
+				       (as . for)
+				       (in-fringe . in-fringe)
+				       (collate . collate)
+				       (in-table . in-table)
+				       (in-carefully . in-carefully)
+				       (averaging . averaging)
+				       (repeat . repeat)
+				       (first-use . first-use)
+				       (in-array . in-array))
+    "A list of cons's where the translation is the cdr, and the car
 is a list of names or name to be translated.  Essentially allows 'globalizing'
 a symbol for the purposes of being a keyword in a sloop")
 
 
-(defparameter *additional-collections* nil)
+  (defparameter *additional-collections* nil)
 
-(defmacro lcase (item &body body)
-  (let (bod last-case tem)
-    (do ((rest body (cdr rest)) (v))
-	((or last-case (null rest)))
-      (setq  v (car rest))
-      (push
-	(cond ((eql (car v) t) (setq last-case t) v)
-	      ((eql (car v) :collect)
-	       `((loop-collect-keyword-p .item.) ,@ (cdr v)))
-	      ((eql (car v) :no-body)
-	       `((parse-no-body  .item.) ,@ (cdr v)))
-	      ((setq tem
-		     (member (car v) '(:sloop-macro :sloop-for :sloop-map)))
-	       `((and (symbolp .item.)(get .item. ,(car tem))) ,@ (cdr v)))
-	      (t
-	       `((l-equal .item. ',(car v)) ,@ (cdr v))))
-	bod))
-    (or last-case (push `(t (error "lcase fell off end ~a  " .item.)) bod))
-    `(let ((.item. (translate-name ,item)))
-       (cond ,@ (nreverse bod)))))
+  (defmacro lcase (item &body body)
+    (let (bod last-case tem)
+      (do ((rest body (cdr rest)) (v))
+	  ((or last-case (null rest)))
+	(setq  v (car rest))
+	(push
+	 (cond ((eql (car v) t) (setq last-case t) v)
+	       ((eql (car v) :collect)
+		`((loop-collect-keyword-p .item.) ,@ (cdr v)))
+	       ((eql (car v) :no-body)
+		`((parse-no-body  .item.) ,@ (cdr v)))
+	       ((setq tem
+		      (member (car v) '(:sloop-macro :sloop-for :sloop-map)))
+		`((and (symbolp .item.)(get .item. ,(car tem))) ,@ (cdr v)))
+	       (t
+		`((l-equal .item. ',(car v)) ,@ (cdr v))))
+	 bod))
+      (or last-case (push `(t (error "lcase fell off end ~a  " .item.)) bod))
+      `(let ((.item. (translate-name ,item)))
+	(cond ,@ (nreverse bod)))))
 
-(defun desetq1 (form val)
-  (cond ((symbolp form)
-	 (and form `(setf ,form ,val)))
-	((consp form)
-	 `(progn ,(desetq1 (car form) `(car ,val))
-		 ,@ (if (consp (cdr form))
-			(list(desetq1 (cdr form) `(cdr ,val)))
-		      (and (cdr form) `((setf ,(cdr form) (cdr ,val)))))))
-	(t (error ""))))
+  (defun desetq1 (form val)
+    (cond ((symbolp form)
+	   (and form `(setf ,form ,val)))
+	  ((consp form)
+	   `(progn ,(desetq1 (car form) `(car ,val))
+	     ,@ (if (consp (cdr form))
+		    (list(desetq1 (cdr form) `(cdr ,val)))
+		    (and (cdr form) `((setf ,(cdr form) (cdr ,val)))))))
+	  (t (error ""))))
 
-(defmacro desetq (form val)
-  (cond ((atom val) (desetq1 form val))
-	(t (let ((value (gensym)))
-	     `(let ((,value ,val)) , (desetq1 form value))))))
+  (defmacro desetq (form val)
+    (cond ((atom val) (desetq1 form val))
+	  (t (let ((value (gensym)))
+	       `(let ((,value ,val)) , (desetq1 form value))))))
 
-(defmacro loop-return (&rest vals)
-  (cond ((<=  (length vals) 1)
-	 `(return ,@ vals))
-	(t`(return (values  ,@ vals)))))
+  (defmacro loop-return (&rest vals)
+    (cond ((<=  (length vals) 1)
+	   `(return ,@ vals))
+	  (t`(return (values  ,@ vals)))))
 
-(defmacro loop-finish ()
-  `(go finish-loop))
+  (defmacro loop-finish ()
+    `(go finish-loop))
 
-(defmacro local-finish ()
-  `(go finish-loop))
+  (defmacro local-finish ()
+    `(go finish-loop))
 
-(defmacro sloop (&body body)
-  (parse-loop body))
+  (defmacro sloop (&body body)
+    (parse-loop body))
   
-(defmacro def-loop-map (name args &body body)
-  (def-loop-internal name args body 'map))
-(defmacro def-loop-for (name args &body body )
-  (def-loop-internal name args body 'for nil 1))
-(defmacro def-loop-macro (name args &body body)
-  (def-loop-internal name args body 'macro))
-(defmacro def-loop-collect (name arglist &body body )
-       "Define function of 2 args arglist= (collect-var value-to-collect)"
-  (def-loop-internal name arglist body 'collect '*additional-collections* 2 2))
+  (defmacro def-loop-map (name args &body body)
+    (def-loop-internal name args body 'map))
+  (defmacro def-loop-for (name args &body body )
+    (def-loop-internal name args body 'for nil 1))
+  (defmacro def-loop-macro (name args &body body)
+    (def-loop-internal name args body 'macro))
+  (defmacro def-loop-collect (name arglist &body body )
+    "Define function of 2 args arglist= (collect-var value-to-collect)"
+    (def-loop-internal name arglist body 'collect '*additional-collections* 2 2))
 
-(defmacro sloop-swap ()
- `(progn (rotatef a *loop-bindings*)
-  (rotatef b  *loop-prologue*)
-  (rotatef c *loop-epilogue*)
-  (rotatef e *loop-end-test*)
-  (rotatef f *loop-increment*)
-  (setf *inner-sloop* (not *inner-sloop*))
-  ))
+  (defmacro sloop-swap ()
+    `(progn (rotatef a *loop-bindings*)
+      (rotatef b  *loop-prologue*)
+      (rotatef c *loop-epilogue*)
+      (rotatef e *loop-end-test*)
+      (rotatef f *loop-increment*)
+      (setf *inner-sloop* (not *inner-sloop*))
+      ))
 
-) ;;end of macros
+  ) ;;end of macros
 
 (defun l-equal (a b)
   (and (symbolp a)
@@ -246,27 +246,27 @@ a symbol for the purposes of being a keyword in a sloop")
 (defun loop-pop ()
   (declare (special *last-val* *loop-form*))
   (cond (*loop-form*
-          (setq *last-val* (pop *loop-form*)))
+	 (setq *last-val* (pop *loop-form*)))
 	(t (setq *last-val* 'empty-form) nil)))
 
 (defun loop-un-pop ()  (declare (special *last-val* *loop-form*))
-  (case *last-val*
-	(empty-form nil)
-	(already-un-popped (error "you are un-popping without popping"))
-	(t  (push *last-val* *loop-form*)
-	    (setf *last-val* 'alread-un-popped))))
+       (case *last-val*
+	 (empty-form nil)
+	 (already-un-popped (error "you are un-popping without popping"))
+	 (t  (push *last-val* *loop-form*)
+	     (setf *last-val* 'alread-un-popped))))
 
 (defun loop-peek () (declare (special *last-val* *loop-form*))
-   (car *loop-form*))
+       (car *loop-form*))
 
 (defun loop-let-bindings(binds)
   (do ((v (car binds) (cdr v)))
       ((null v) (nreverse (car binds)))
-      (or (cdar v) (setf (car v) (caar v)))))
+    (or (cdar v) (setf (car v) (caar v)))))
 
 (defun parse-loop (form &aux inner-body)
   (let ((*loop-form* form)
-	(*Automatic-declarations* *Automatic-declarations*)
+	(*automatic-declarations* *automatic-declarations*)
 	*last-val* *loop-map* 
 	*loop-body* 
 	*loop-name*
@@ -294,23 +294,23 @@ a symbol for the purposes of being a keyword in a sloop")
 		      *type-test-limit*
 		      ))
     (unless (and (symbolp (car *loop-form*))  (car *loop-form*))
-	    (push 'do  *loop-form*))	;compatible with common lisp loop..
+      (push 'do  *loop-form*))	   ;compatible with common lisp loop..
     (parse-loop1)
     (when (or *loop-map* *product-for*)
-	  (or *loop-name* (setf *loop-name* (gensym "SLOOP")))
-	  (and (eql 'finish-loop finish-loop)
-	       (setf finish-loop (gensym "FINISH"))))
+      (or *loop-name* (setf *loop-name* (gensym "SLOOP")))
+      (and (eql 'finish-loop finish-loop)
+	   (setf finish-loop (gensym "FINISH"))))
 ;;; some one might use local-finish,local-return or loop-finish, so they might
 ;;; be bound at an outer level.  WE have to always include this since
 ;;; loop-return may be being bound outside.
     (and				; *loop-name*
-      (push 
-	`(loop-return (&rest vals)
-		      `(return-from ,',*loop-name* (values ,@ vals)))
-	local-macros))
-    (when  t;; (or (> *loop-level* 1) (not (eql finish-loop 'finish-loop)))
-	   (push 	 `(loop-finish () `(go ,',finish-loop)) local-macros)
-	   (push 	 `(local-finish () `(go ,',finish-loop)) local-macros))
+     (push 
+      `(loop-return (&rest vals)
+	`(return-from ,',*loop-name* (values ,@ vals)))
+      local-macros))
+    (when  t ;; (or (> *loop-level* 1) (not (eql finish-loop 'finish-loop)))
+      (push 	 `(loop-finish () `(go ,',finish-loop)) local-macros)
+      (push 	 `(local-finish () `(go ,',finish-loop)) local-macros))
     (and *loop-collect-var*
 	 (push   `(return-from ,*loop-name* , *loop-collect-var*)
 		 *loop-epilogue*))
@@ -318,30 +318,30 @@ a symbol for the purposes of being a keyword in a sloop")
 			      (nreverse *loop-body*)
 			      (nreverse	*loop-increment*)))
     (cond (*loop-map*
-	    (setq inner-body (substitute-sloop-body inner-body)))
+	   (setq inner-body (substitute-sloop-body inner-body)))
 	  (t (setf inner-body (cons 'next-loop
 				    (append inner-body '((go next-loop)))))))
     (let ((bod 
-	    `(macrolet ,local-macros
-		       (block ,*loop-name*
-			      (tagbody
-				,@ (append
-				     (nreverse *loop-prologue*)
-				     inner-body
-				     `(,finish-loop)
-				     (nreverse *loop-epilogue*)
-				     #+kcl '((loop-return  nil))))))
+	   `(macrolet ,local-macros
+	     (block ,*loop-name*
+	       (tagbody
+		  ,@ (append
+		      (nreverse *loop-prologue*)
+		      inner-body
+		      `(,finish-loop)
+		      (nreverse *loop-epilogue*)
+		      #+kcl '((loop-return  nil))))))
 	    
 	    ))
 ;;; temp-fix..should not be necessary but some lisps cache macro
 ;;; expansions.  and ignore the macrolet!!
       (unless  (eql *macroexpand-hook* *macroexpand-hook-for-no-copy*)
-	       (setf bod (copy-tree bod)))
+	(setf bod (copy-tree bod)))
       (dolist (v *loop-bindings*)
-	      (setf bod
-		    `(let ,(loop-let-bindings v)
-		       ,@(and (cdr v) `(,(cons 'declare (cdr v))))
-		       ,bod)))
+	(setf bod
+	      `(let ,(loop-let-bindings v)
+		,@(and (cdr v) `(,(cons 'declare (cdr v))))
+		,bod)))
       bod
       ))) 
 
@@ -355,19 +355,19 @@ a symbol for the purposes of being a keyword in a sloop")
 	 (t nil))
   (do ((v (loop-pop) (loop-pop)))
       ((and (null v) (null *loop-form*)))
-      (lcase v
-	     (:no-body)
-	     (for (parse-loop-for))
-	     (while (push
-		      `(or ,(loop-pop) (local-finish))  *loop-body*))
-	     (until (push
-		      `(and ,(loop-pop) (local-finish))  *loop-body*))
-	     (do (setq *loop-body* (append (parse-loop-do) *loop-body*)))
-	     ((when unless) (setq *loop-body*
-				  (append (parse-loop-when) *loop-body*)))
-	     (:collect  (setq *loop-body*
-			      (append (parse-loop-collect) *loop-body*)))
-	     )))
+    (lcase v
+	   (:no-body)
+	   (for (parse-loop-for))
+	   (while (push
+		   `(or ,(loop-pop) (local-finish))  *loop-body*))
+	   (until (push
+		   `(and ,(loop-pop) (local-finish))  *loop-body*))
+	   (do (setq *loop-body* (append (parse-loop-do) *loop-body*)))
+	   ((when unless) (setq *loop-body*
+				(append (parse-loop-when) *loop-body*)))
+	   (:collect  (setq *loop-body*
+			    (append (parse-loop-collect) *loop-body*)))
+	   )))
 
 
 (defun parse-no-body (com &aux (found t) (first t))
@@ -381,43 +381,43 @@ otherwise nil"
 		    *loop-name* ))
   (do ((v com (loop-pop)))
       ((null (or first *loop-form*)))
-      (lcase v
-	     ((initially finally)(parse-loop-initially v))
-	     (nil nil)
-	     (with      (parse-loop-with))
-	     (declare   (parse-loop-declare (loop-pop) t))
-	     (nodeclare  (setq *no-declare* (loop-pop)))
-	     ;take argument to be consistent.
-	     (increment (setq *loop-increment*
-			      (append (parse-loop-do) *loop-increment*)))
-	     (end-test  (setq *loop-end-test*
-			      (append (parse-loop-do) *loop-end-test*)))
-	     (with-unique (parse-loop-with nil t))
-	     (:sloop-macro (parse-loop-macro v :sloop-macro))
-	     (t
-	       (cond (first
-		       (setf found nil))
-		     (t (loop-un-pop)))
-	       (return 'done)))
-      (setf first nil))
+    (lcase v
+	   ((initially finally)(parse-loop-initially v))
+	   (nil nil)
+	   (with      (parse-loop-with))
+	   (declare   (parse-loop-declare (loop-pop) t))
+	   (nodeclare  (setq *no-declare* (loop-pop)))
+					;take argument to be consistent.
+	   (increment (setq *loop-increment*
+			    (append (parse-loop-do) *loop-increment*)))
+	   (end-test  (setq *loop-end-test*
+			    (append (parse-loop-do) *loop-end-test*)))
+	   (with-unique (parse-loop-with nil t))
+	   (:sloop-macro (parse-loop-macro v :sloop-macro))
+	   (t
+	    (cond (first
+		   (setf found nil))
+		  (t (loop-un-pop)))
+	    (return 'done)))
+    (setf first nil))
   found)
 
 (defun parse-loop-with (&optional and-with only-if-not-there)
   (let ((var  (loop-pop)))
     (lcase (loop-peek)
-      (= (loop-pop)
-	 (or (symbolp var) (error "Not a variable ~a" var))
-	 (loop-add-binding var (loop-pop)
-			   (not and-with) nil nil t only-if-not-there))
-      (t (loop-add-temps var nil nil (not and-with) only-if-not-there)))
+	   (= (loop-pop)
+	      (or (symbolp var) (error "Not a variable ~a" var))
+	      (loop-add-binding var (loop-pop)
+				(not and-with) nil nil t only-if-not-there))
+	   (t (loop-add-temps var nil nil (not and-with) only-if-not-there)))
     (lcase (loop-peek)
-      (and (loop-pop)
-	   (lcase (loop-pop)
-	     (with (parse-loop-with t ))
-	     (with-unique (parse-loop-with t t))
-	     (t (loop-un-pop) (parse-loop-with t))
-	     ))
-      (t nil))))
+	   (and (loop-pop)
+		(lcase (loop-pop)
+		       (with (parse-loop-with t ))
+		       (with-unique (parse-loop-with t t))
+		       (t (loop-un-pop) (parse-loop-with t))
+		       ))
+	   (t nil))))
 
 (defun parse-loop-do (&aux result)
   (declare (special *loop-form*))
@@ -434,47 +434,47 @@ otherwise nil"
 (defun parse-loop-initially (command )
   (declare (special *loop-prologue* *loop-epilogue* *loop-bindings*))
   (lcase
-    command
-    (initially
-      (let ((form (parse-loop-do)))
-	(dolist (v (nreverse form))
-		(cond ((and (listp v)
-			    (member (car v) '(setf setq))
-			    (eql (length v) 3)
-			    (symbolp   (second v))
-			    (constantp (third v))
-			    (loop-add-binding (second v) (third v)
-					      nil nil nil t t)
-			    ))
-		      (t (setf *loop-prologue*
-			       (cons v *loop-prologue*)))))))
-    (finally
-      (setf *loop-epilogue* (append (parse-loop-do) *loop-epilogue*)))))
+   command
+   (initially
+    (let ((form (parse-loop-do)))
+      (dolist (v (nreverse form))
+	(cond ((and (listp v)
+		    (member (car v) '(setf setq))
+		    (eql (length v) 3)
+		    (symbolp   (second v))
+		    (constantp (third v))
+		    (loop-add-binding (second v) (third v)
+				      nil nil nil t t)
+		    ))
+	      (t (setf *loop-prologue*
+		       (cons v *loop-prologue*)))))))
+   (finally
+    (setf *loop-epilogue* (append (parse-loop-do) *loop-epilogue*)))))
 
 (defun parse-one-when-clause ( &aux this-case  (want 'body) v)
   (declare (special *loop-form*))
   (prog
-    nil
-    next-loop
-    (and (null *loop-form*) (return 'done))
-    (setq v (loop-pop))
-    (lcase v
-	   (:no-body)
-	   (:collect (or (eql 'body want) (go finish))
-		     (setq this-case (append  (parse-loop-collect) this-case))
-		     (setq want 'and))
-	   (when  (or (eql 'body want) (go finish))
-		  (setq this-case (append   (parse-loop-when) this-case))
-		  (setq want 'and))
-	   (do    (or (eql 'body want) (go finish))
-		  (setq this-case (append   (parse-loop-do) this-case))
-		  (setq want 'and))
-	   (and    (or (eql 'and  want) (error "Premature AND"))
-		   (setq want 'body))
-	   (t  (loop-un-pop)(return 'done)))
-    (go next-loop)
-    finish
-    (loop-un-pop))
+      nil
+   next-loop
+   (and (null *loop-form*) (return 'done))
+   (setq v (loop-pop))
+   (lcase v
+	  (:no-body)
+	  (:collect (or (eql 'body want) (go finish))
+		    (setq this-case (append  (parse-loop-collect) this-case))
+		    (setq want 'and))
+	  (when  (or (eql 'body want) (go finish))
+	    (setq this-case (append   (parse-loop-when) this-case))
+	    (setq want 'and))
+	  (do    (or (eql 'body want) (go finish))
+		 (setq this-case (append   (parse-loop-do) this-case))
+	    (setq want 'and))
+	  (and    (or (eql 'and  want) (error "Premature AND"))
+		  (setq want 'body))
+	  (t  (loop-un-pop)(return 'done)))
+   (go next-loop)
+   finish
+   (loop-un-pop))
   (or this-case (error "Hanging conditional"))
   this-case)
 
@@ -486,9 +486,9 @@ otherwise nil"
     (setq initial (parse-one-when-clause))
     (lcase (loop-peek)
 	   (else
-	     (loop-pop)
-	     (setq else t)
-	     (setq else-clause (parse-one-when-clause)))
+	    (loop-pop)
+	    (setq else t)
+	    (setq else-clause (parse-one-when-clause)))
 	   (t nil))
     `((cond (,test ,@ (nreverse initial))
 	    ,@ (and else `((t ,@ (nreverse else-clause))))))))
@@ -509,24 +509,24 @@ otherwise nil"
   (let ((command   *last-val*)
 	(val (loop-pop)))
     (lcase
-      (loop-pop)
-      (into (loop-add-binding (setq collect-var (loop-pop)) nil nil t nil t ))
-      (t (loop-un-pop)
-	 (cond (*loop-collect-var* (setf collect-var *loop-collect-var*))
-	       (t  (setf collect-var
-			 (setf *loop-collect-var*
-			       (loop-add-binding (gensym "COLL") nil )))))))
+     (loop-pop)
+     (into (loop-add-binding (setq collect-var (loop-pop)) nil nil t nil t ))
+     (t (loop-un-pop)
+	(cond (*loop-collect-var* (setf collect-var *loop-collect-var*))
+	      (t  (setf collect-var
+			(setf *loop-collect-var*
+			      (loop-add-binding (gensym "COLL") nil )))))))
     (lcase command
 	   ((append nconc collect)
 	    (setf pointer (pointer-for-collect collect-var))
 	    (cond (*use-locatives*
-		    (pushnew `(setf ,pointer
-				    (locf ,collect-var))
-			     *loop-prologue* :test 'equal)))
+		   (pushnew `(setf ,pointer
+			      (locf ,collect-var))
+			    *loop-prologue* :test 'equal)))
 	    (lcase command
 		   ( append
-		      (unless (and (listp val) (eql (car val) 'list))
-			      (setf val `(copy-list ,val))))
+		     (unless (and (listp val) (eql (car val) 'list))
+		       (setf val `(copy-list ,val))))
 		   (t nil)))
 	   (t nil))
     (cond ((and  (listp val) (not *use-locatives*))
@@ -534,41 +534,41 @@ otherwise nil"
 	  (t (setf name-val val)))
     (let
 	((result
-	   (lcase
-	     command
-	     ((nconc append)
-	      (let ((set-pointer
-		      `(and (setf (cdr ,pointer) ,name-val)
-			    (setf ,pointer (last (cdr ,pointer))))))
-		(cond (*use-locatives*
-			(list set-pointer))
-		      (t
-			`((cond (,pointer ,set-pointer)
-				(t (setf ,pointer
-					 (last (setf
-						 ,collect-var
-						 ,name-val))))))))))
-	     (collect
-	       (cond (*use-locatives*
-		       `((setf (cdr ,pointer)
-			       (setf ,pointer (cons ,name-val nil)))))
-		     (t `((cond (,pointer
-				   (setf (cdr ,pointer)
-					 (setf ,pointer (cons ,name-val nil))))
-				(t (setf ,collect-var
-					 (setf ,pointer
-					       (cons ,name-val nil)))))))))
-	     (t (setq command (translate-name command))
-		(cond ((find command *additional-collections* :test 'l-equal)
-		       (loop-parse-additional-collections
-			 command collect-var name-val))
-		      (t (error "loop fell off end ~a" command)))))))
+	  (lcase
+	   command
+	   ((nconc append)
+	    (let ((set-pointer
+		   `(and (setf (cdr ,pointer) ,name-val)
+		     (setf ,pointer (last (cdr ,pointer))))))
+	      (cond (*use-locatives*
+		     (list set-pointer))
+		    (t
+		     `((cond (,pointer ,set-pointer)
+			     (t (setf ,pointer
+				      (last (setf
+					     ,collect-var
+					     ,name-val))))))))))
+	   (collect
+	    (cond (*use-locatives*
+		   `((setf (cdr ,pointer)
+		      (setf ,pointer (cons ,name-val nil)))))
+		  (t `((cond (,pointer
+			      (setf (cdr ,pointer)
+				    (setf ,pointer (cons ,name-val nil))))
+			     (t (setf ,collect-var
+				      (setf ,pointer
+					    (cons ,name-val nil)))))))))
+	   (t (setq command (translate-name command))
+	      (cond ((find command *additional-collections* :test 'l-equal)
+		     (loop-parse-additional-collections
+		      command collect-var name-val))
+		    (t (error "loop fell off end ~a" command)))))))
       (cond ((eql name-val val)
 	     result)
 	    (t (nconc result `((setf ,name-val ,val) )))))))
 
 (defun loop-parse-additional-collections
-  (command collect-var name-val &aux eachtime)
+    (command collect-var name-val &aux eachtime)
   (declare (special *loop-prologue* *last-val*
 		    *loop-collect-var* *loop-epilogue* ))
   (let* ((com  (find command *additional-collections* :test 'l-equal))
@@ -578,15 +578,15 @@ otherwise nil"
 	(declare (special  *loop-form* *last-val*))
 	(do ((v (loop-pop) (loop-pop)))
 	    ((null *loop-form*))
-	    (lcase v
-		   (:no-body)
-		   (do (setq eachtime (parse-loop-do)))))
+	  (lcase v
+		 (:no-body)
+		 (do (setq eachtime (parse-loop-do)))))
 	eachtime))))
 
 (defun the-type (symbol type)
   (declare (special *no-declare*))
   (and *no-declare* (setf type nil))
-  (and type (setf type (or (getf *Automatic-declarations* type)
+  (and type (setf type (or (getf *automatic-declarations* type)
 			   (and  (not (keywordp type)) type))))
   (and (consp type) (eq (car type) 'type) (setf type (second  type)))
   (cond (type (list 'the type symbol ))
@@ -610,8 +610,8 @@ recompile."))
 	  (not *no-declare*)
 	  *type-check*
 	  (eq type-key :from)
-	  (setq type (getf  *Automatic-declarations* type-key)))
-	  (setq type
+	  (setq type (getf  *automatic-declarations* type-key)))
+	 (setq type
 	       (cond ((and (consp type)
 			   (eq (car type) 'type))
 		      (second type))
@@ -622,13 +622,13 @@ recompile."))
 			      (eval (subst value
 					   'the-value *type-test-limit*)))
 			     (t (eval value)))))
-		(or (typep test-value type)
-		    (error
-		     "~&Sloop found the type of ~a was not type ~a,~%~
+		  (or (typep test-value type)
+		      (error
+		       "~&Sloop found the type of ~a was not type ~a,~%~
                       Maybe you want to insert SLOOP NODECLARE T ..."
-		     value
-		     type))
-		(list value)))
+		       value
+		       type))
+		  (list value)))
 	       (t  (let (chk)
 		     `((let ,(cond ((atom value)
 				    nil)
@@ -638,7 +638,7 @@ recompile."))
 			   ,(if *type-test-limit*
 				(subst (or chk value)
 				       'the-value *type-test-limit*)
-			      (or chk value))
+				(or chk value))
 			   ',type)
 			  (sloop-type-error))
 			 ,(or chk value)))))))
@@ -651,13 +651,13 @@ recompile."))
 
 
 (defun loop-add-binding
-       (variable value &optional (new-level t) type force-type (force-new-value t)
-			 only-if-not-there &aux tem)
+    (variable value &optional (new-level t) type force-type (force-new-value t)
+     only-if-not-there &aux tem)
 ;;; Add a variable binding to the current or new level.  If FORCE-TYPE,
 ;;; ignore a *no-declare*.  If ONLY-IF-NOT-THERE, check all levels.
   (declare (special *loop-bindings*))
   (when  (or new-level (null *loop-bindings*))
-	 (push (cons nil nil) *loop-bindings*))
+    (push (cons nil nil) *loop-bindings*))
   (cond ((setq tem (assoc variable (caar  *loop-bindings*) ))
 	 (and force-new-value
 	      (setf (cdr tem) (and value (make-value value type)))))
@@ -674,13 +674,13 @@ recompile."))
   (and type (loop-declare-binding variable type force-type))
   variable)
 
-;(defmacro nth-level (n) `(nth ,n *loop-bindings*))
-;if x = (nth i *loop-bindings*)
-;(defmacro binding-declares (x) `(cdr ,x)) ;(cons 'declare (binding-declares x)) to get honest declare statement
-;(defmacro binding-values (x) `(car ,x))  ;(let (binding-values x) ) to get let.
+;;(defmacro nth-level (n) `(nth ,n *loop-bindings*))
+;;if x = (nth i *loop-bindings*)
+;;(defmacro binding-declares (x) `(cdr ,x)) ;(cons 'declare (binding-declares x)) to get honest declare statement
+;;(defmacro binding-values (x) `(car ,x))  ;(let (binding-values x) ) to get let.
 
 (defun loop-declare-binding (var type force-type &optional odd-type
-				 &aux found )
+			     &aux found )
   (declare (special *loop-bindings* *automatic-declarations*
 		    *no-declare* *loop-map*))
   odd-type ;;ignored
@@ -693,13 +693,13 @@ recompile."))
     (dolist (v *loop-bindings*)
       (cond ((assoc var (car v)) (setf found t)
 	     (pushnew
-	       (if (and (consp type)
-			(eq (car type) 'type))
-		   (list 'type (second type) var)
-		   (if odd-type (list 'type type var)
+	      (if (and (consp type)
+		       (eq (car type) 'type))
+		  (list 'type (second type) var)
+		  (if odd-type (list 'type type var)
 		       
-		   (list type var)))
-	       (cdr v) :test 'equal)
+		      (list type var)))
+	      (cdr v) :test 'equal)
 	     (return 'done)
 	     )))
     (or found *loop-map* (error "Could not find variable ~a in bindings" var)))
@@ -722,13 +722,13 @@ recompile."))
 
 
 (defun add-from-data (data &rest args)
-   "rest = var begin end  incr direction or-eql"
-   (or data (setq data (copy-list '(nil 0 nil 1 + nil))))
-   (do ((l data (cdr l))
-        (v args (cdr v)))
+  "rest = var begin end  incr direction or-eql"
+  (or data (setq data (copy-list '(nil 0 nil 1 + nil))))
+  (do ((l data (cdr l))
+       (v args (cdr v)))
       ((null v) l)
-     (and (car v) (setf (car l) (car v))))
-   data)
+    (and (car v) (setf (car l) (car v))))
+  data)
 
 (defun parse-loop-for ( &aux  inc  from-data)
   (declare (special *loop-form*  *loop-map-declares*  *loop-map* 
@@ -741,104 +741,104 @@ recompile."))
   (let* ((var (loop-pop)) test incr)
     (do ((v (loop-pop) (loop-pop)))
 	(())
-	(lcase v
-	       (in (let ((lis (gensym "LIS")))
-		     (loop-add-temps var nil :in t)
-		     (loop-add-binding lis (loop-pop) nil)
-		     (push  `(desetq ,var (car ,lis)) *loop-body*)
-		     (setf incr `(setf ,lis (cdr ,lis)))
-		     (setq test   `(null ,lis) )
-		     ))
-	       (on (let ((lis
-			   (cond ((symbolp var) var)
-				 (t (gensym "LIS")))))
-		     (loop-add-temps var nil :in t)
-		     (loop-add-binding lis (loop-pop) nil)
-		     (setf incr `(setf ,lis (cdr ,lis)))
-		     (unless (eql lis var)
-			     (push `(desetq ,var ,lis) *loop-body*))
-		     (setf test `(null ,lis))))
+      (lcase v
+	     (in (let ((lis (gensym "LIS")))
+		   (loop-add-temps var nil :in t)
+		   (loop-add-binding lis (loop-pop) nil)
+		   (push  `(desetq ,var (car ,lis)) *loop-body*)
+		   (setf incr `(setf ,lis (cdr ,lis)))
+		   (setq test   `(null ,lis) )
+		   ))
+	     (on (let ((lis
+			(cond ((symbolp var) var)
+			      (t (gensym "LIS")))))
+		   (loop-add-temps var nil :in t)
+		   (loop-add-binding lis (loop-pop) nil)
+		   (setf incr `(setf ,lis (cdr ,lis)))
+		   (unless (eql lis var)
+		     (push `(desetq ,var ,lis) *loop-body*))
+		   (setf test `(null ,lis))))
         
-	       ((upfrom from)
-		(setq from-data (add-from-data from-data
-					       var (loop-pop) nil  nil '+)))
-	       (downfrom
-		 (setq from-data  (add-from-data
-				    from-data var (loop-pop) nil  nil '-)))
-	       (by
-		 (setq inc (loop-pop))
-		 (cond ((and (listp inc)(eql (car inc) 'quote))
-			(setf inc (second inc))
-			))
-		 (cond (from-data
-			 (setq from-data (add-from-data
-					   from-data nil nil nil inc)))
-		       (t (assert (eq (car (third incr)) 'cdr))
-			  (setq incr
-				`(setf ,(second incr)
-				       (, inc ,(second incr)))))))
-	       (below
-		 (setq from-data (add-from-data from-data
-						var nil (loop-pop) nil '+)))
-	       (above
-		 (setq from-data (add-from-data from-data
-						var nil (loop-pop) nil '-)))
-	       (to
-		 (setq from-data (add-from-data from-data
-						var nil (loop-pop) nil nil t)))
-	       (:sloop-for (parse-loop-macro (translate-name v)
-					     :sloop-for var )
-			   (return 'done))
-	       (:sloop-map (parse-loop-map (translate-name v) var )
-			   (return nil))
-	       (t(or			
-		   (loop-un-pop))
-		 (return 'done))))
+	     ((upfrom from)
+	      (setq from-data (add-from-data from-data
+					     var (loop-pop) nil  nil '+)))
+	     (downfrom
+	      (setq from-data  (add-from-data
+				from-data var (loop-pop) nil  nil '-)))
+	     (by
+	      (setq inc (loop-pop))
+	      (cond ((and (listp inc)(eql (car inc) 'quote))
+		     (setf inc (second inc))
+		     ))
+	      (cond (from-data
+		     (setq from-data (add-from-data
+				      from-data nil nil nil inc)))
+		    (t (assert (eq (car (third incr)) 'cdr))
+		       (setq incr
+			     `(setf ,(second incr)
+			       (, inc ,(second incr)))))))
+	     (below
+	      (setq from-data (add-from-data from-data
+					     var nil (loop-pop) nil '+)))
+	     (above
+	      (setq from-data (add-from-data from-data
+					     var nil (loop-pop) nil '-)))
+	     (to
+	      (setq from-data (add-from-data from-data
+					     var nil (loop-pop) nil nil t)))
+	     (:sloop-for (parse-loop-macro (translate-name v)
+					   :sloop-for var )
+			 (return 'done))
+	     (:sloop-map (parse-loop-map (translate-name v) var )
+			 (return nil))
+	     (t(or			
+		(loop-un-pop))
+	       (return 'done))))
     
     ;;whew finished parsing a for clause..
     
     (cond (from-data
-	    (let
-		((op (nth 4 from-data))
-		 (or-eql (nth 5 from-data))
-		 (var (car from-data))
-		 (end (third from-data))
-		 (inc (fourth from-data))
-		 type)
-	      (loop-add-binding var (second from-data) t :from)
-	      (or (constantp inc) (setq *no-declare* t))
-	      (setf incr `(setf ,var ,(the-type `(,op  ,var ,inc) :from)))
-	      (cond (end
-		      (let ((lim (gensym "LIM"))
-			    (*type-test-limit*
-			      (cond ((and (eql inc 1)
-					  (null (nth 5 from-data)))
-				     nil)
-				    (t `(,op
-					   the-value , inc)))))
-			(declare (special *type-test-limit*))
-			(loop-add-binding lim end nil :from nil nil)
-			(setq test `(,(cond (or-eql
-					      (if (eq op '+) '> '<))
-					    (t (if (eq op '+) '>= '<=)))
-				     ,var ,lim))))
-		    ((and (not *no-declare*)
-			  *type-check*
-			  (setq type (getf *automatic-declarations* :from))
-			  (progn (if (and (consp type)(eq (car type) 'type))
-				     (setf type      (second type)))
-				 (subtypep type 'fixnum)))
-		     (or (constantp inc) (error "increment must be constant."))
-		     (push
-		       `(or
-			  ,(cond ((eq op '+)
-				  `(< ,var ,(- most-positive-fixnum
-					       (or inc 1))))
-				 (t `(> ,var  ,(+ most-negative-fixnum
-						  (or inc 1)))))
-			  (sloop-type-error))
-		       *loop-increment*)
-		     )))))
+	   (let
+	       ((op (nth 4 from-data))
+		(or-eql (nth 5 from-data))
+		(var (car from-data))
+		(end (third from-data))
+		(inc (fourth from-data))
+		type)
+	     (loop-add-binding var (second from-data) t :from)
+	     (or (constantp inc) (setq *no-declare* t))
+	     (setf incr `(setf ,var ,(the-type `(,op  ,var ,inc) :from)))
+	     (cond (end
+		    (let ((lim (gensym "LIM"))
+			  (*type-test-limit*
+			   (cond ((and (eql inc 1)
+				       (null (nth 5 from-data)))
+				  nil)
+				 (t `(,op
+				      the-value , inc)))))
+		      (declare (special *type-test-limit*))
+		      (loop-add-binding lim end nil :from nil nil)
+		      (setq test `(,(cond (or-eql
+					   (if (eq op '+) '> '<))
+					  (t (if (eq op '+) '>= '<=)))
+				   ,var ,lim))))
+		   ((and (not *no-declare*)
+			 *type-check*
+			 (setq type (getf *automatic-declarations* :from))
+			 (progn (if (and (consp type)(eq (car type) 'type))
+				    (setf type      (second type)))
+				(subtypep type 'fixnum)))
+		    (or (constantp inc) (error "increment must be constant."))
+		    (push
+		     `(or
+		       ,(cond ((eq op '+)
+			       `(< ,var ,(- most-positive-fixnum
+					    (or inc 1))))
+			      (t `(> ,var  ,(+ most-negative-fixnum
+					       (or inc 1)))))
+		       (sloop-type-error))
+		     *loop-increment*)
+		    )))))
     
     (and test (push (copy-tree `(and ,test (local-finish))) *loop-end-test*))
     (and incr (push incr *loop-increment*))
@@ -856,17 +856,17 @@ recompile."))
 	       (cdr tem)))
 	    (:sloop-macro(get v :sloop-macro-args))))
     (let ((last-helper-apply-arg
-	    (cond ((member '&rest args)
-		   (prog1 *loop-form* (setf *loop-form* nil)))
-		  (t (dotimes (i (length args) (nreverse result))
-			     (push (car *loop-form*) result)
-			     (setf *loop-form* (cdr *loop-form*)))))))
+	   (cond ((member '&rest args)
+		  (prog1 *loop-form* (setf *loop-form* nil)))
+		 (t (dotimes (i (length args) (nreverse result))
+		      (push (car *loop-form*) result)
+		      (setf *loop-form* (cdr *loop-form*)))))))
       (setq *loop-form*
 	    (append 
-	      (case type
-		    (:sloop-for (apply helper initial last-helper-apply-arg))
-		    (:sloop-macro(apply helper  last-helper-apply-arg)))
-	      *loop-form*)))))
+	     (case type
+	       (:sloop-for (apply helper initial last-helper-apply-arg))
+	       (:sloop-macro(apply helper  last-helper-apply-arg)))
+	     *loop-form*)))))
 
 (defun parse-loop-map (v var)
   (declare (special *loop-map* *loop-map-declares* *loop-form*))
@@ -877,48 +877,48 @@ recompile."))
     (cond ((member '&rest args)
 	   (error "Build this in two steps if you want &rest")))
     (let* (result
-	    (last-helper-apply-arg
-	      (dotimes (i (1- (length args)) (nreverse result))
-		       (push (car *loop-form*) result)
-		       (setf *loop-form* (cdr *loop-form*)))))
+	   (last-helper-apply-arg
+	    (dotimes (i (1- (length args)) (nreverse result))
+	      (push (car *loop-form*) result)
+	      (setf *loop-form* (cdr *loop-form*)))))
       (setq *loop-map-declares*
 	    (do ((v (loop-pop)(loop-pop)) (result))
 		((null (l-equal v 'declare))
 		 (loop-un-pop)
 		 (and result (cons 'declare result)))
-		(push (loop-pop) result)))
+	      (push (loop-pop) result)))
       (setq *loop-map* (apply helper var last-helper-apply-arg))
       nil)))
 
 (defun substitute-sloop-body (inner-body)
   (declare (special *loop-map* *loop-map-declares*))
-    (cond (*loop-map*
-	   (setf inner-body (list  (subst (cons 'progn inner-body)
-					  :sloop-body *loop-map*)))
-	   (and *loop-map-declares*
-		(setf inner-body(subst *loop-map-declares*
-				       :sloop-map-declares inner-body)))))
+  (cond (*loop-map*
+	 (setf inner-body (list  (subst (cons 'progn inner-body)
+					:sloop-body *loop-map*)))
+	 (and *loop-map-declares*
+	      (setf inner-body(subst *loop-map-declares*
+				     :sloop-map-declares inner-body)))))
   inner-body)
 
 ;;; **User Extensible Iteration Facility**
 
 (eval-when (compile eval load)
-(defun def-loop-internal (name args  body type
-			       &optional list min-args max-args
-			       &aux (*print-case* :upcase)
-			       (helper (intern
-				  (format nil "~a-SLOOP-~a" name type))))
-  (and min-args (or (>= (length args) min-args)(error "need more args")))
-  (and max-args (or (<= (length args) max-args)(error "need less args")))
-  `(eval-when (load compile eval)
-	      (defun ,helper ,args
-		,@ body)
-	      ,@ (and list `((pushnew ',name ,list)))
-	      (setf (get ',name ,(intern (format nil "SLOOP-~a" type)
-					 (find-package 'keyword))) ',helper)
-	      (setf (get ',name ,(intern (format nil "SLOOP-~a-ARGS" type)
-					 (find-package 'keyword))) ',args)))
-)
+  (defun def-loop-internal (name args  body type
+			    &optional list min-args max-args
+			    &aux (*print-case* :upcase)
+			    (helper (intern
+				     (format nil "~a-SLOOP-~a" name type))))
+    (and min-args (or (>= (length args) min-args)(error "need more args")))
+    (and max-args (or (<= (length args) max-args)(error "need less args")))
+    `(eval-when (load compile eval)
+      (defun ,helper ,args
+	,@ body)
+      ,@ (and list `((pushnew ',name ,list)))
+      (setf (get ',name ,(intern (format nil "SLOOP-~a" type)
+				 (find-package 'keyword))) ',helper)
+      (setf (get ',name ,(intern (format nil "SLOOP-~a-ARGS" type)
+				 (find-package 'keyword))) ',args)))
+  )
 		
 
 ;;; DEF-LOOP-COLLECT lets you get a handle on the collection var.  exactly
@@ -930,22 +930,22 @@ recompile."))
     do (setq ,ans (+ ,ans ,val))))
 (def-loop-collect logxor (ans val)
   `(initially (setf ,ans 0)
-  do (setf ,ans (logxor ,ans ,val))
-  declare (fixnum ,ans ,val)))
+    do (setf ,ans (logxor ,ans ,val))
+    declare (fixnum ,ans ,val)))
 (def-loop-collect maximize (ans val)
   `(initially (setq ,ans nil) 
-  do (if ,ans (setf ,ans (max ,ans ,val)) (setf ,ans ,val))))
+    do (if ,ans (setf ,ans (max ,ans ,val)) (setf ,ans ,val))))
 
 (def-loop-collect minimize (ans val) 
   `(initially (setq ,ans nil)
-  do (if ,ans (setf ,ans (min ,ans ,val)) (setf ,ans ,val))))
+    do (if ,ans (setf ,ans (min ,ans ,val)) (setf ,ans ,val))))
 
 (def-loop-collect count (ans val)
   `(initially (setq ,ans 0)
-  do (and ,val (setf ,ans (1+ ,ans)))))
+    do (and ,val (setf ,ans (1+ ,ans)))))
 
 (def-loop-collect thereis (ans val)(declare(ignore ans))
-  `(do (if ,val (loop-return ,val))))
+		  `(do (if ,val (loop-return ,val))))
 (def-loop-collect always (ans val)
   `(initially (setq ,ans t) do (and (null ,val)(loop-return nil))))
 (def-loop-collect never (ans val)
@@ -972,8 +972,8 @@ recompile."))
     and with-unique .n-to-average. = 0
     declare (float .average. ) declare (fixnum .n-to-average.)
     do (setf .average. (/
-			 (+ (* .n-to-average. .average.) ,x)
-			 (incf .n-to-average.)))
+			(+ (* .n-to-average. .average.) ,x)
+			(incf .n-to-average.)))
     finally (loop-return .average.)))
 
 (def-loop-macro repeat (x)
@@ -1034,13 +1034,13 @@ recompile."))
 	  (t (setf elt vars ind (gensym "INDEX" ))))
     (let ((skip (do ((v args (cddr v)) (result))
 		    (())
-		   (lcase (car v)
-		       ((from downfrom) )
-		       ((to below above) (setf to t))
-		       (by)
-		       (t (setq args (copy-list v))
-			  (return (nreverse result))))
-		   (push (car v) result) (push (second v) result))))
+		  (lcase (car v)
+			 ((from downfrom) )
+			 ((to below above) (setf to t))
+			 (by)
+			 (t (setq args (copy-list v))
+			    (return (nreverse result))))
+		  (push (car v) result) (push (second v) result))))
       (or to (setf skip (nconc `(below (length ,array)) skip)))
       `(for ,ind 
 	,@ skip
@@ -1057,15 +1057,15 @@ recompile."))
 
 (def-loop-for = (var val)
   (lcase (loop-peek)
-    (then (loop-pop) `(with ,var initially (desetq ,var ,val) increment (desetq ,var ,(loop-pop))))
-    (t  `(with ,var do (desetq ,var ,val)))))
+	 (then (loop-pop) `(with ,var initially (desetq ,var ,val) increment (desetq ,var ,(loop-pop))))
+	 (t  `(with ,var do (desetq ,var ,val)))))
 
 (def-loop-macro sloop (for-loop)
   (lcase (car for-loop)
-    (for))
+	 (for))
   (let (*inner-sloop* *loop-body* *loop-map* inner-body
-	(finish-loop (gensym "FINISH"))
-	a b c e f (*loop-form* for-loop))
+		      (finish-loop (gensym "FINISH"))
+		      a b c e f (*loop-form* for-loop))
     (declare (special *inner-sloop* *loop-end-test* *loop-increment*
 		      *product-for* *loop-map*
 		      *loop-form*  *loop-body*  *loop-prologue*
@@ -1076,36 +1076,36 @@ recompile."))
     (loop-pop)
     (sloop-swap)
     (parse-loop-for)
-     (sloop-swap)
+    (sloop-swap)
     (do ()
 	((null *loop-form*))
       (cond ((catch 'collect  (parse-loop1)))
 	    ((null *loop-form*)(return 'done))
-	    (t ;(fsignal "hi")
+	    (t				;(fsignal "hi")
 	     (print *loop-form*)
 	     (sloop-swap)
 	     (parse-loop-collect)
 	     (sloop-swap)
-	     	     (print *loop-form*)
+	     (print *loop-form*)
 	     )))
     (sloop-swap)
     (setf inner-body (nreverse *loop-body*))
     (and *loop-map*  (setf inner-body (substitute-sloop-body inner-body)))
     (let ((bod
-	    `(macrolet ((local-finish () `(go ,',finish-loop)))
-	      (tagbody
-		  ,@ (nreverse *loop-prologue*)
-	          ,@ (and (null *loop-map*) '(next-loop))
-		  ,@ (nreverse *loop-end-test*)
-		  ,@ inner-body
-		  ,@ (nreverse *loop-increment*)
-		  ,@ (and (null *loop-map*) '((go next-loop)))
-		  ,finish-loop
-		  ,@ (nreverse *loop-epilogue*)))))
+	   `(macrolet ((local-finish () `(go ,',finish-loop)))
+	     (tagbody
+		,@ (nreverse *loop-prologue*)
+		,@ (and (null *loop-map*) '(next-loop))
+		,@ (nreverse *loop-end-test*)
+		,@ inner-body
+		,@ (nreverse *loop-increment*)
+		,@ (and (null *loop-map*) '((go next-loop)))
+		,finish-loop
+		,@ (nreverse *loop-epilogue*)))))
       (dolist (v *loop-bindings*)
 	(setf bod
 	      `(let ,(loop-let-bindings v) ,@(and (cdr v) `(,(cons 'declare (cdr v))))
-		    ,bod)))
+		,bod)))
       (sloop-swap)
       `(do ,bod))))
 
@@ -1118,9 +1118,9 @@ recompile."))
   "Path with var in lis except lis may end with a non nil cdr" 
   (let ((point (gensym "POINT")))
     `(with ,point and with ,var initially (setf ,point ,lis)
-           do(desetq ,var (car ,point))
-	   end-test (and (atom ,point)(local-finish))
-	   increment (setf ,point (cdr ,point)))))
+      do(desetq ,var (car ,point))
+      end-test (and (atom ,point)(local-finish))
+      increment (setf ,point (cdr ,point)))))
 
 ;;; Usage: IN-CAREFULLY
 ;;; (defun te (l)
@@ -1146,13 +1146,13 @@ recompile."))
   ;; move the FIRST setting into the INITIALLY section
   (cond ((null *loop-increment*)
 	 `(with ,var initially (desetq ,var ,expr1)
-		increment (desetq ,var ,expr2)))
+	   increment (desetq ,var ,expr2)))
 	(t
-	  (let ((flag (gensym)))
-	    `(with ,var with ,flag
-		   do (cond (,flag (desetq ,var ,expr2))
-			    (t (desetq ,var ,expr1)))
-		   increment (desetq ,flag t))))))
+	 (let ((flag (gensym)))
+	   `(with ,var with ,flag
+	     do (cond (,flag (desetq ,var ,expr2))
+		      (t (desetq ,var ,expr1)))
+	     increment (desetq ,flag t))))))
 
 
 (defvar *collate-order* #'<)
@@ -1162,23 +1162,23 @@ recompile."))
 ;;; here, but it should be done.
 
 (defun find-in-ordered-list
-       (it list &optional (order-function *collate-order*) &aux prev)
+    (it list &optional (order-function *collate-order*) &aux prev)
   (do ((v list (cdr v)))
       ((null v) (values prev nil))
-	 (cond ((eql (car v) it) (return (values v t)))
-	       ((funcall order-function it (car v))
-		(return (values prev nil))))
-	 (setq prev v)))
+    (cond ((eql (car v) it) (return (values v t)))
+	  ((funcall order-function it (car v))
+	   (return (values prev nil))))
+    (setq prev v)))
 
 (def-loop-collect collate (ans val)
   "Collects values into a sorted list without duplicates.
 Order based order function *collate-order*"
   `(do (multiple-value-bind
-       (after already-there )
-       (find-in-ordered-list ,val ,ans)
-       (unless already-there
-	  (cond (after (setf (cdr after) (cons ,val (cdr after))))
-		(t (setf ,ans (cons ,val ,ans))))))))
+	     (after already-there )
+	   (find-in-ordered-list ,val ,ans)
+	 (unless already-there
+	   (cond (after (setf (cdr after) (cons ,val (cdr after))))
+		 (t (setf ,ans (cons ,val ,ans))))))))
 
 ;;; Usage: COLLATE
 ;;; (defun te ()
@@ -1188,14 +1188,14 @@ Order based order function *collate-order*"
 ;;;		          collate (* i (mod j (max i 1)) (random 2)))))
 
 (defun map-fringe (fun tree)
-      (do ((v tree))
-	       (())
-	(cond ((atom v)
-		    (and v (funcall fun v))(return 'done))
-	      ((atom (car v))
-		    (funcall fun (car v)))
-	      (t (map-fringe fun (car v) )))
-	     (setf v (cdr v))))
+  (do ((v tree))
+      (())
+    (cond ((atom v)
+	   (and v (funcall fun v))(return 'done))
+	  ((atom (car v))
+	   (funcall fun (car v)))
+	  (t (map-fringe fun (car v) )))
+    (setf v (cdr v))))
 
 (def-loop-map in-fringe (var tree)
   "Map over the non nil atoms in the fringe of tree"

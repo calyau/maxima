@@ -21,225 +21,225 @@
 
 (macsyma-module acall)
 
-#+PDP10
-(EVAL-WHEN (EVAL COMPILE) (SSTATUS FEATURE JPG))
+#+pdp10
+(eval-when (eval compile) (sstatus feature jpg))
 
-(TRANSL-MODULE ACALL)
+(transl-module acall)
 
-(DEFMFUN INTERVAL-ERROR (FUN LOW HIGH)
-  (MERROR "Lower bound to ~:@M : ~M, not less than upper bound: ~M"
-	  FUN LOW HIGH))
+(defmfun interval-error (fun low high)
+  (merror "Lower bound to ~:@M : ~M, not less than upper bound: ~M"
+	  fun low high))
 
-(DEFMFUN MFUNCALL (F &REST L)
-  (COND
+(defmfun mfuncall (f &rest l)
+  (cond
     #+cl ((functionp f)(apply f l))
-    #-cl ((AND (SYMBOLP F)
-		     (FBOUNDP F))
-		;; This is unfortunately NOT correct.
-		;; A complicated interplay of the setting of $TRANSRUN,
-		;; and MGET '$TRACE, GET 'TRANSLATED and MGET 'MEXPR
-		;; interacts to determine if a function can be called
-		;; via APPLY.
-		(APPLY F L))
+    #-cl ((and (symbolp f)
+	       (fboundp f))
+	  ;; This is unfortunately NOT correct.
+	  ;; A complicated interplay of the setting of $TRANSRUN,
+	  ;; and MGET '$TRACE, GET 'TRANSLATED and MGET 'MEXPR
+	  ;; interacts to determine if a function can be called
+	  ;; via APPLY.
+	  (apply f l))
     #+cl
     ((and (symbolp f)(or (macro-function f)
 			 (special-operator-p f)))
      (eval (cons f (copy-rest-arg l))))
-    (T
-     (MAPPLY F (copy-rest-arg  L) NIL))))
+    (t
+     (mapply f (copy-rest-arg  l) nil))))
 
-(DECLARE-TOP(*LEXPR LIST-REF))
+(declare-top(*lexpr list-ref))
  
 ;;; ((MQAPPLY ARRAY) X Y) is a strange form, meaning (X)[Y].
 
-(DEFMFUN MARRAYREF (AARRAY IND1 &REST INDS &AUX AP tem)
-	 (declare (special FIXUNBOUND FLOUNBOUND))
-  (CASE
-    (ml-typep AARRAY)
-    ((ARRAY)
-     (CASE (ARRAY-TYPE AARRAY)
-	    ((FLONUM FIXNUM #+LISPM ART-Q #+cl t)
-	     (apply 'aref AARRAY IND1 INDS))
-	    #-cl
-	    ((T)
-	     (MARRAYREF-GENSUB AARRAY IND1 INDS))
-	    (T
-	      (MERROR "BUG: Non-handled array created. ~M" AARRAY))))
+(defmfun marrayref (aarray ind1 &rest inds &aux ap tem)
+  (declare (special fixunbound flounbound))
+  (case
+      (ml-typep aarray)
+    ((array)
+     (case (array-type aarray)
+       ((flonum fixnum #+lispm art-q #+cl t)
+	(apply 'aref aarray ind1 inds))
+       #-cl
+       ((t)
+	(marrayref-gensub aarray ind1 inds))
+       (t
+	(merror "BUG: Non-handled array created. ~M" aarray))))
     #-cl
     ((si:equal-hash-table)
      (gethash (if inds (cons ind1 inds) inds) aarray))
-     #+cl
+    #+cl
     ((hash-table)
      (gethash (if inds (cons ind1 inds) inds) aarray))
-    ((SYMBOL)
+    ((symbol)
      (cond
        #+cl
        ($use_fast_arrays
 	(setq tem (and (boundp aarray) (symbol-value aarray)))
-	    (simplify (cond ((arrayp tem) (apply 'aref tem ind1 inds))
-			    ((hash-table-p tem)
-			     (gethash (if inds (cons ind1 inds) inds)
-					tem))
-			    ((EQ AARRAY 'MQAPPLY) 
-			     (APPLY #'MARRAYREF IND1 INDS))
-			    ((mget aarray 'hashar)
-			     (harrfind `((,aarray array) ,ind1 ,@ (copy-rest-arg inds))))
-			    ((symbolp tem)
-			     `((,tem array) ,ind1 ,@ (copy-rest-arg inds)))
-			    (t (error "unknown type of array for use_fast_arrays. ~
+	(simplify (cond ((arrayp tem) (apply 'aref tem ind1 inds))
+			((hash-table-p tem)
+			 (gethash (if inds (cons ind1 inds) inds)
+				  tem))
+			((eq aarray 'mqapply) 
+			 (apply #'marrayref ind1 inds))
+			((mget aarray 'hashar)
+			 (harrfind `((,aarray array) ,ind1 ,@ (copy-rest-arg inds))))
+			((symbolp tem)
+			 `((,tem array) ,ind1 ,@ (copy-rest-arg inds)))
+			(t (error "unknown type of array for use_fast_arrays. ~
                                the value cell should have the array or hash table")))))
-	   (t
-	    (SIMPLIFY (COND 
-			((SETQ AP (GET AARRAY 'array))
-			 (LET ((VAL (COND ((NULL INDS)
-					   (FUNCALL AP IND1))
-					  (T
-					   (APPLY AP IND1 INDS)))))
-			   ;; Check for KLUDGING array function implementation.
-			   (IF (CASE (ARRAY-TYPE AP)
-				      ((FLONUM) (= VAL FLOUNBOUND))
-				      ((FIXNUM) (= VAL FIXUNBOUND))
-				      ((T) (EQ VAL MUNBOUND))
-				      (T (MERROR "BUG: Array pointer of unknown type: ~S"
-						 AP)))
-			       (ARRFIND `((,AARRAY ,AaRRAY) ,IND1 ,@ (copy-rest-arg INDS)))
-			       VAL)))
-			((SETQ AP (MGET AARRAY 'array))
-			 #+JPG
-			 (AND (MFILEP AP) (I-$UNSTORE (LIST AARRAY)))
-			 (ARRFIND `((,AARRAY ARRAY) ,IND1 ,@ (copy-rest-arg INDS))))
-			((SETQ AP (MGET AARRAY 'HASHAR))
-			 #+JPG
-			 (AND (MFILEP AP) (I-$UNSTORE (LIST AARRAY)))
-			 (HARRFIND `((,AARRAY ARRAY) ,IND1  ,@ (copy-rest-arg INDS))))
-			((EQ AARRAY 'MQAPPLY)
-			 (APPLY #'MARRAYREF IND1 INDS))
-			(T
-			 `((,AARRAY  ARRAY) ,IND1  ,@ (copy-rest-arg INDS))))))))
-    ((LIST)
-     (SIMPLIFY (COND ((MEMQ (CAAR AARRAY) '(MLIST $MATRIX))
-		      (LIST-REF AARRAY (CONS IND1 (copy-rest-arg INDS))))
-		     (T
-		      `((MQAPPLY AARRAY) ,AARRAY ,IND1 ,@ (copy-rest-arg INDS))))))
-    (T
-      (MERROR "Bad object to reference as an array: ~M" AARRAY))))
+       (t
+	(simplify (cond 
+		    ((setq ap (get aarray 'array))
+		     (let ((val (cond ((null inds)
+				       (funcall ap ind1))
+				      (t
+				       (apply ap ind1 inds)))))
+		       ;; Check for KLUDGING array function implementation.
+		       (if (case (array-type ap)
+			     ((flonum) (= val flounbound))
+			     ((fixnum) (= val fixunbound))
+			     ((t) (eq val munbound))
+			     (t (merror "BUG: Array pointer of unknown type: ~S"
+					ap)))
+			   (arrfind `((,aarray ,aarray) ,ind1 ,@ (copy-rest-arg inds)))
+			   val)))
+		    ((setq ap (mget aarray 'array))
+		     #+jpg
+		     (and (mfilep ap) (i-$unstore (list aarray)))
+		     (arrfind `((,aarray array) ,ind1 ,@ (copy-rest-arg inds))))
+		    ((setq ap (mget aarray 'hashar))
+		     #+jpg
+		     (and (mfilep ap) (i-$unstore (list aarray)))
+		     (harrfind `((,aarray array) ,ind1  ,@ (copy-rest-arg inds))))
+		    ((eq aarray 'mqapply)
+		     (apply #'marrayref ind1 inds))
+		    (t
+		     `((,aarray  array) ,ind1  ,@ (copy-rest-arg inds))))))))
+    ((list)
+     (simplify (cond ((memq (caar aarray) '(mlist $matrix))
+		      (list-ref aarray (cons ind1 (copy-rest-arg inds))))
+		     (t
+		      `((mqapply aarray) ,aarray ,ind1 ,@ (copy-rest-arg inds))))))
+    (t
+     (merror "Bad object to reference as an array: ~M" aarray))))
 
-(DEFMFUN $ARRAYAPPLY (AR INDS)
-  (OR ($LISTP INDS)
-      (MERROR "The second arg to ARRAYAPPLY must be a list."))
-  (APPLY #'MARRAYREF AR (CDR INDS)))
+(defmfun $arrayapply (ar inds)
+  (or ($listp inds)
+      (merror "The second arg to ARRAYAPPLY must be a list."))
+  (apply #'marrayref ar (cdr inds)))
 
-(DEFMFUN $ARRAYSETAPPLY (AR INDS VAL)
-  (OR ($LISTP INDS)
-      (MERROR "The second arg to ARRAYAPPLY must be a list."))
-  (APPLY #'MARRAYSET VAL AR (CDR INDS)))
+(defmfun $arraysetapply (ar inds val)
+  (or ($listp inds)
+      (merror "The second arg to ARRAYAPPLY must be a list."))
+  (apply #'marrayset val ar (cdr inds)))
 
 
-(DEFMFUN MARRAYSET (VAL AARRAY &REST ALL-INDS &AUX AP (IND1 (FIRST ALL-INDS))
-			(INDS (CDR ALL-INDS)))
-  (CASE (ml-typep AARRAY)
-    ((ARRAY)
-     (CASE (ARRAY-TYPE AARRAY)
-       ((FIXNUM FLONUM #+LISPM ART-Q #+cl t)
-	#-cl (STORE (APPLY AARRAY IND1 INDS) VAL)
+(defmfun marrayset (val aarray &rest all-inds &aux ap (ind1 (first all-inds))
+			(inds (cdr all-inds)))
+  (case (ml-typep aarray)
+    ((array)
+     (case (array-type aarray)
+       ((fixnum flonum #+lispm art-q #+cl t)
+	#-cl (store (apply aarray ind1 inds) val)
 	#+cl (setf (apply #'aref aarray ind1 inds) val)
 	)
        #-cl
-       ((T)
-	(MARRAYSET-GENSUB VAL AARRAY IND1 INDS))
-       (T
-	(MERROR "BUG: unhandled array type. ~M" AARRAY))))
+       ((t)
+	(marrayset-gensub val aarray ind1 inds))
+       (t
+	(merror "BUG: unhandled array type. ~M" aarray))))
     #+cl
     ((hash-table #+lispm si:equal-hash-table)
      (setf (gethash (if (cdr all-inds)
 			(copy-rest all-inds)
-		      (car all-inds))
+			(car all-inds))
 		    aarray) val))
-    ((SYMBOL)
-     (COND ((SETQ AP (GET AARRAY 'array))
-	    (COND ((null inds)
-		   (STORE (FUNCALL AP IND1) VAL))
+    ((symbol)
+     (cond ((setq ap (get aarray 'array))
+	    (cond ((null inds)
+		   (store (funcall ap ind1) val))
 		  (t
-		   #-cl (STORE (APPLY AP IND1 INDS) VAL)
+		   #-cl (store (apply ap ind1 inds) val)
 		   #+cl (setf (apply #'aref ap all-inds) val)
 		   )))
-	   ((SETQ AP (MGET aARRAY 'array))
-	    #+JPG
-	    (AND (MFILEP AP) (I-$UNSTORE (LIST aARRAY)))
+	   ((setq ap (mget aarray 'array))
+	    #+jpg
+	    (and (mfilep ap) (i-$unstore (list aarray)))
 	    ;; the macsyma ARRAY frob is NOT an array pointer, it
 	    ;; is a GENSYM with a lisp array property, don't
 	    ;; ask me why.
-	    (COND ((null inds)
+	    (cond ((null inds)
 		   (store (funcall ap ind1) val))
 		  (t
-		   #-cl (STORE (APPLY AP ALL-INDS) VAL)
+		   #-cl (store (apply ap all-inds) val)
 		   #+cl (setf (apply #'aref ap all-inds) val)
 		   )))
-	   ((SETQ AP (MGET aARRAY 'HASHAR))
-	    #+JPG
-	    (AND (MFILEP AP) (I-$UNSTORE (LIST aARRAY)))
-	    (ARRSTORE `((,aARRAY ,'array)
-			,@(MAPCAR #'(LAMBDA (U)
-				      `((MQUOTE SIMP) ,U))
-                                   all-inds
+	   ((setq ap (mget aarray 'hashar))
+	    #+jpg
+	    (and (mfilep ap) (i-$unstore (list aarray)))
+	    (arrstore `((,aarray ,'array)
+			,@(mapcar #'(lambda (u)
+				      `((mquote simp) ,u))
+				  all-inds
 				  ))
-		      VAL))
-	   ((EQ AaRRAY 'MQAPPLY)
+		      val))
+	   ((eq aarray 'mqapply)
 	    #-cl
-	    (APPLY #'MARRAYSET `(,VAL ,IND1 ,@INDS))
+	    (apply #'marrayset `(,val ,ind1 ,@inds))
             #+cl (apply #'marrayset val ind1 inds)
 	    )
-	   (T
-	    (ARRSTORE `((,aARRAY ,'array) ,@(MAPCAR #'(LAMBDA (U)
-						     `((MQUOTE SIMP) ,U))
-						 all-inds
-						 ))
-		      VAL))))
-    (LIST
-     (COND ((MEMQ (CAAR aARRAY) '(MLIST $MATRIX))
-	    (LIST-REF aARRAY (copy-rest-arg all-inds) T VAL))
+	   (t
+	    (arrstore `((,aarray ,'array) ,@(mapcar #'(lambda (u)
+							`((mquote simp) ,u))
+						    all-inds
+						    ))
+		      val))))
+    (list
+     (cond ((memq (caar aarray) '(mlist $matrix))
+	    (list-ref aarray (copy-rest-arg all-inds) t val))
 	   ('else
-	    (MERROR "Bad use of `:' on~%~M" aARRAY))))
-    (T
-     (MERROR "Bad argument to set as an array.~%~M" aARRAY)))
-  VAL)
+	    (merror "Bad use of `:' on~%~M" aarray))))
+    (t
+     (merror "Bad argument to set as an array.~%~M" aarray)))
+  val)
 
 
 
 ;;; Note that all these have HEADERS on the list. The CAR of a list I
 ;;; will call element 0. So [1,2][1] => 1
 
-(DEFUN LIST-REF (L INDEXL &OPTIONAL SET-FLAG VAL)
-  (COND ((ATOM L)
-	 (MERROR "ERROR-> tried to take part of an atom."))
-	((NULL (CDR INDEXL))
-	 (LET ((N (CAR INDEXL)))
-	   (COND ((AND (INTEGERP N) (PLUSP N)
-		       (OR (EQ (CAAR L) 'MLIST)
-			   (EQ (CAAR L) '$MATRIX)))
-		  (LET ((RET (DO ((J 1 (f1+ J))
-				  (N (FIXNUM-IDENTITY N))
-				  (L (CDR L) (CDR L)))
-				 ((OR (NULL L) (= J N))
-				  (COND ((NULL L)
-					 (MERROR "Improper index to list or matrix: ~M" N))
-					(SET-FLAG
-					 (RPLACA L VAL))
-					(T
-					 (CAR L))))
-			       (DECLARE (FIXNUM J N)))))
-		    (COND (SET-FLAG L)
-			  (T RET))))
-		 (T
-		  (MERROR "ERROR-> ~M  bad part subscript." N)))))
-	(SET-FLAG
-	 (LIST-REF (LIST-REF L `(,(CAR INDEXL)))
-		   (CDR INDEXL)
-		   SET-FLAG
-		   VAL)
-	 L)
-	(T
-	 (LIST-REF (LIST-REF L `(,(CAR INDEXL))) (CDR INDEXL)))))
+(defun list-ref (l indexl &optional set-flag val)
+  (cond ((atom l)
+	 (merror "ERROR-> tried to take part of an atom."))
+	((null (cdr indexl))
+	 (let ((n (car indexl)))
+	   (cond ((and (integerp n) (plusp n)
+		       (or (eq (caar l) 'mlist)
+			   (eq (caar l) '$matrix)))
+		  (let ((ret (do ((j 1 (f1+ j))
+				  (n (fixnum-identity n))
+				  (l (cdr l) (cdr l)))
+				 ((or (null l) (= j n))
+				  (cond ((null l)
+					 (merror "Improper index to list or matrix: ~M" n))
+					(set-flag
+					 (rplaca l val))
+					(t
+					 (car l))))
+			       (declare (fixnum j n)))))
+		    (cond (set-flag l)
+			  (t ret))))
+		 (t
+		  (merror "ERROR-> ~M  bad part subscript." n)))))
+	(set-flag
+	 (list-ref (list-ref l `(,(car indexl)))
+		   (cdr indexl)
+		   set-flag
+		   val)
+	 l)
+	(t
+	 (list-ref (list-ref l `(,(car indexl))) (cdr indexl)))))
 
 ;;; 3 guesses where this code is from.
 ;;;(DEFUN DISP1 (LL LABLIST EQNSP)
@@ -258,106 +258,106 @@
 ;;;     (MTERPRI)
 ;;;     (TIMEORG TIM)))
 
-(DECLARE-TOP(SPECIAL $DISPFLAG))
-(DEFMFUN DISPLAY-FOR-TR (LABELSP EQUATIONSP &REST ARGL)
-	 (declare (special LINELABLE))
-       (DO ((ARGL ARGL (CDR ARGL))
-	    (LABLIST NIL)
-	    (TIM 0))
-	   ((NULL ARGL)
-	    (COND (LABELSP
-		   `((MLIST) ,@LABLIST))
-		  (T '$DONE)))
-	   (LET ((ANS (CAR ARGL)))
-		(COND ((AND EQUATIONSP
-			    ;; ((MEQUAL) FOO BAR)
-			    (NOT (ATOM (CADDR ANS)))
-			    (EQ (CAAR (CADDR ANS)) 'MEQUAL))
-		       ;; if the ANS evaluats to something with an "="
-		       ;; allready then of course he really meant to use
-		       ;; DISP, but we might as well do what he means right?
-		       (SETQ ANS (CADDR ANS))))
-		(COND (LABELSP
-		       (OR (CHECKLABEL $LINECHAR)
-			   (SETQ $LINENUM (f1+ $LINENUM)))
-		       (MAKELABEL $LINECHAR)
-		       ;; setqs the free variable LINELABLE, what a win,
-		       ;; how convenient, now I don't need to use LET !
-		       (PUSH LINELABLE ;; note the spelling
-			     LABLIST)
-		       (OR  $NOLABELS
-			    (SET LINELABLE ;; SET !!!!
-				 ANS))))
-		(SETQ TIM (RUNTIME))
-		(DISPLA `((MLABLE) ,(COND (LABELSP LINELABLE)) ,ANS))
-		(MTERPRI)
-		(TIMEORG TIM))))
+(declare-top(special $dispflag))
+(defmfun display-for-tr (labelsp equationsp &rest argl)
+  (declare (special linelable))
+  (do ((argl argl (cdr argl))
+       (lablist nil)
+       (tim 0))
+      ((null argl)
+       (cond (labelsp
+	      `((mlist) ,@lablist))
+	     (t '$done)))
+    (let ((ans (car argl)))
+      (cond ((and equationsp
+		  ;; ((MEQUAL) FOO BAR)
+		  (not (atom (caddr ans)))
+		  (eq (caar (caddr ans)) 'mequal))
+	     ;; if the ANS evaluats to something with an "="
+	     ;; allready then of course he really meant to use
+	     ;; DISP, but we might as well do what he means right?
+	     (setq ans (caddr ans))))
+      (cond (labelsp
+	     (or (checklabel $linechar)
+		 (setq $linenum (f1+ $linenum)))
+	     (makelabel $linechar)
+	     ;; setqs the free variable LINELABLE, what a win,
+	     ;; how convenient, now I don't need to use LET !
+	     (push linelable ;; note the spelling
+		   lablist)
+	     (or  $nolabels
+		  (set linelable ;; SET !!!!
+		       ans))))
+      (setq tim (runtime))
+      (displa `((mlable) ,(cond (labelsp linelable)) ,ans))
+      (mterpri)
+      (timeorg tim))))
 
 
-(DEFMFUN INSURE-ARRAY-PROPS (FNNAME IGNORE-MODE NUMBER-OF-ARGS &AUX ARY)
-	 IGNORE-MODE
-	 ;; called during load or eval time by the defining forms
-	 ;; for translated array-functions.
-	 ;; this duplicates code in JPG;MLISP (however, the code in MLISP
-	 ;; is not callable because it is in a big piece of so-called
-	 ;; multi-purpose code).
+(defmfun insure-array-props (fnname ignore-mode number-of-args &aux ary)
+  ignore-mode
+  ;; called during load or eval time by the defining forms
+  ;; for translated array-functions.
+  ;; this duplicates code in JPG;MLISP (however, the code in MLISP
+  ;; is not callable because it is in a big piece of so-called
+  ;; multi-purpose code).
 
-	 ;; This code is incredibly kludgy. For example, what if
-	 ;; the function FOO[J] had a lisp array property gotten
-	 ;; by ARRAY(FOO,FIXNUM,33), how is *THAT* detected by this code?
-	 ;; Well, it is because that will also put an MPROP ARRAY of $FOO,
-	 ;; and (ARRAYDIMS '$FOO) works! (Also checks the array property).
-	 ;; Isn't that something. Shit, I never knew that ARRAYDIMS worked
-	 ;; on symbols. What a crock.
-	 (COND ((PROG2 (ADD2LNC FNNAME $ARRAYS)
-		       (SETQ ARY (MGETL FNNAME '(HASHAR ARRAY))))
-		#+JPG
-		(COND ((MFILEP (CADR ARY))
-		       (I-$UNSTORE (cons FNNAME nil))
-		       (SETQ ARY (MGETL FNNAME '(HASHAR ARRAY)))))
-		(COND ((NOT (= (COND ((EQ (CAR ARY) 'HASHAR) (FUNCALL (CADR ARY) 2))
-				     (T (LENGTH (CDR (ARRAYDIMS (CADR ARY))))))
-			       NUMBER-OF-ARGS))
-		       (MERROR
-			"~:@M Array already defined with different dimensions"
-			FNNAME))))
-	       (T (MPUTPROP FNNAME (SETQ ARY (GENSYM)) 'HASHAR)
-		  (*ARRAY ARY T 7)
-		  (STORE (FUNCALL ARY 0) 4)
-		  (STORE (FUNCALL ARY 1) 0)
-		  (STORE (FUNCALL ARY 2) NUMBER-OF-ARGS))))
+  ;; This code is incredibly kludgy. For example, what if
+  ;; the function FOO[J] had a lisp array property gotten
+  ;; by ARRAY(FOO,FIXNUM,33), how is *THAT* detected by this code?
+  ;; Well, it is because that will also put an MPROP ARRAY of $FOO,
+  ;; and (ARRAYDIMS '$FOO) works! (Also checks the array property).
+  ;; Isn't that something. Shit, I never knew that ARRAYDIMS worked
+  ;; on symbols. What a crock.
+  (cond ((prog2 (add2lnc fnname $arrays)
+	     (setq ary (mgetl fnname '(hashar array))))
+	 #+jpg
+	 (cond ((mfilep (cadr ary))
+		(i-$unstore (cons fnname nil))
+		(setq ary (mgetl fnname '(hashar array)))))
+	 (cond ((not (= (cond ((eq (car ary) 'hashar) (funcall (cadr ary) 2))
+			      (t (length (cdr (arraydims (cadr ary))))))
+			number-of-args))
+		(merror
+		 "~:@M Array already defined with different dimensions"
+		 fnname))))
+	(t (mputprop fnname (setq ary (gensym)) 'hashar)
+	   (*array ary t 7)
+	   (store (funcall ary 0) 4)
+	   (store (funcall ary 1) 0)
+	   (store (funcall ary 2) number-of-args))))
 
 ;;; An entry point to $APPLY for translated code.
 
-(DEFMFUN MAPPLY-TR (FUN LIST)
-	 (OR ($LISTP LIST)
-	     (MERROR "Second arg to APPLY was not a list:~%~M" LIST))
-	 (MAPPLY1 FUN (CDR LIST) '|the first arg to a translated APPLY| list))
+(defmfun mapply-tr (fun list)
+  (or ($listp list)
+      (merror "Second arg to APPLY was not a list:~%~M" list))
+  (mapply1 fun (cdr list) '|the first arg to a translated APPLY| list))
 
 
-(DEFMFUN ASSIGN-CHECK (VAR VAL)
-  (LET ((A (GET VAR 'ASSIGN)))
-    (IF A (FUNCALL A VAR VAL))))
+(defmfun assign-check (var val)
+  (let ((a (get var 'assign)))
+    (if a (funcall a var val))))
 
 
-(declare-top (SPECIAL MAPLP))
+(declare-top (special maplp))
 
-;(format t "~%Change maplist_tr for the explorer rest arg bug")
+;;(format t "~%Change maplist_tr for the explorer rest arg bug")
 #+cl
-(DEFMFUN MAPLIST_TR (FUN  L1 &rest l)
+(defmfun maplist_tr (fun  l1 &rest l)
   (setq l (cons l1 (copy-list l)))
-  (SIMPLIFY (LET ((MAPLP T) RES)
-	      (SETQ RES (APPLY #'MAP1 (GETOPR FUN) L))
-	      (COND ((ATOM RES) (LIST '(MLIST) RES))
-		    ((EQ (CAAR RES) 'MLIST) RES)
-		    (T (CONS '(MLIST) (MARGS RES))))))) 
+  (simplify (let ((maplp t) res)
+	      (setq res (apply #'map1 (getopr fun) l))
+	      (cond ((atom res) (list '(mlist) res))
+		    ((eq (caar res) 'mlist) res)
+		    (t (cons '(mlist) (margs res))))))) 
 #-cl
-(DEFMFUN MAPLIST_TR (FUN &REST L)
-  (SIMPLIFY (LET ((MAPLP T) RES)
-	      (SETQ RES (APPLY #'MAP1 (GETOPR FUN) L))
-	      (COND ((ATOM RES) (LIST '(MLIST) RES))
-		    ((EQ (CAAR RES) 'MLIST) RES)
-		    (T (CONS '(MLIST) (MARGS RES)))))))
+(defmfun maplist_tr (fun &rest l)
+  (simplify (let ((maplp t) res)
+	      (setq res (apply #'map1 (getopr fun) l))
+	      (cond ((atom res) (list '(mlist) res))
+		    ((eq (caar res) 'mlist) res)
+		    (t (cons '(mlist) (margs res)))))))
 
 
 ;;; Entry point into DB for translated code. The main point here
@@ -372,22 +372,22 @@
 ;;; better to simply modify the code in COMPAR! However, mumble...
 ;;; Anyway, be carefull of changes to COMPAR that break this code.
 
-(DEFMFUN IS-BOOLE-CHECK (FORM)
-  (COND ((NULL FORM) NIL)
-	((EQ FORM T) T)
-	('ELSE
+(defmfun is-boole-check (form)
+  (cond ((null form) nil)
+	((eq form t) t)
+	('else
 	 ;; We check for T and NIL quickly, otherwise go for the database.
-	 (MEVALP_TR FORM T NIL))))
+	 (mevalp_tr form t nil))))
 
-(DEFMFUN MAYBE-BOOLE-CHECK (FORM)
-  (MEVALP_TR FORM NIL NIL))
+(defmfun maybe-boole-check (form)
+  (mevalp_tr form nil nil))
 
 ;; The following entry point is for querying the database without
 ;; the dubious side effects of using PREDERROR:FALSE.
 
-(DEFMSPEC $MAYBE (FORM) (MEVALP_TR (FEXPRCHECK FORM) NIL T))
+(defmspec $maybe (form) (mevalp_tr (fexprcheck form) nil t))
 
-(DECLARE-TOP(SPECIAL PATEVALLED))
+(declare-top(special patevalled))
 
 (defun mevalp_tr (pat error? meval?)
   (let (patevalled ans)
@@ -395,7 +395,7 @@
     (cond ((memq ans '(t nil)) ans)
 	  (error?
 	   (pre-err patevalled))
-	  ('else '$UNKNOWN))))
+	  ('else '$unknown))))
 
 (defun mevalp1_tr (pat error? meval?)
   (cond ((and (not (atom pat)) (memq (caar pat) '(mnot mand mor)))
@@ -438,53 +438,53 @@
 
 
 ;; Some functions for even faster calling of arrays.
-(DECLARE-TOP(FLONUM (MARRAYREF1$ NIL NIL)
-		 (MARRAYSET1$ FLONUM NIL NIL)))
+(declare-top(flonum (marrayref1$ nil nil)
+		    (marrayset1$ flonum nil nil)))
 
-(DEFUN MARRAYREF1$ (AARRAY INDEX)
-  (CASE (ml-typep AARRAY)
-    ((AARRAY)
-     (CASE (ARRAY-TYPE AARRAY)
-       ((FLONUM) (ARRAYCALL FLONUM AARRAY INDEX))
-       (T (MERROR "Bad type of array to call for FLOAT value: ~M" AARRAY))))
-    (T
-     (FLOAT (MARRAYREF AARRAY INDEX)))))
+(defun marrayref1$ (aarray index)
+  (case (ml-typep aarray)
+    ((aarray)
+     (case (array-type aarray)
+       ((flonum) (arraycall flonum aarray index))
+       (t (merror "Bad type of array to call for FLOAT value: ~M" aarray))))
+    (t
+     (float (marrayref aarray index)))))
 
-(DEFUN MARRAYSET1$ (VALUE AARRAY INDEX)
-  (CASE (ml-typep AARRAY)
-    ((AARRAY)
-     (CASE (ARRAY-TYPE AARRAY)
-       ((FLONUM) (STORE (ARRAYCALL FLONUM AARRAY INDEX) VALUE))
-       (T (MERROR "Bad type of array to set FLOAT into: ~M" AARRAY))))
-    (T
-     (FLOAT (MARRAYSET VALUE AARRAY INDEX)))))
+(defun marrayset1$ (value aarray index)
+  (case (ml-typep aarray)
+    ((aarray)
+     (case (array-type aarray)
+       ((flonum) (store (arraycall flonum aarray index) value))
+       (t (merror "Bad type of array to set FLOAT into: ~M" aarray))))
+    (t
+     (float (marrayset value aarray index)))))
 
 
-(DEFMFUN APPLICATION-OPERATOR (FORM &rest ign) ign 
-  (APPLY (CAAR FORM) (CDR FORM)))
+(defmfun application-operator (form &rest ign) ign 
+	 (apply (caar form) (cdr form)))
 
 ;;; Multics trys to optimize EVAL calls into APPLY's 
 ;;; On Multics DEFUN is a MACRO so we indirect to fool the complier
 ;;; by letting the form be a variable.
-(DEFMFUN MAKE-ALAMBDA (FORMALS BODY)
-  (LET* ((NAME (GENSYM))
-	 (FORM-TO-EVAL `(DEFUN ,NAME ,FORMALS ,BODY)))
+(defmfun make-alambda (formals body)
+  (let* ((name (gensym))
+	 (form-to-eval `(defun ,name ,formals ,body)))
     ;; on LISPM we can use closures after we fix up MEVAL and MAPPLY.
     ;; This isn't much more expensive, GENSYMs get garbage collected
     ;; just like any other object.
-    (PUTPROP NAME 'APPLICATION-OPERATOR 'OPERATORS)
-    (EVAL `(DEFUN ,NAME ,FORMALS ,BODY))
-    (EVAL FORM-TO-EVAL)
-    NAME))
+    (putprop name 'application-operator 'operators)
+    (eval `(defun ,name ,formals ,body))
+    (eval form-to-eval)
+    name))
 
 ;; more efficient operators calls.
 
-(DEFUN *MMINUS (X)
-  (IF (NUMBERP X)
-      (MINUS X)
-      (SIMPLIFY (LIST '(MMINUS) X))))
+(defun *mminus (x)
+  (if (numberp x)
+      (minus x)
+      (simplify (list '(mminus) x))))
 
-(DEFmfUN RETLIST_TR N
-  (DO ((J (f1- N) (f- J 2))
-       (L () (CONS (LIST '(MEQUAL SIMP) (ARG J) (ARG (f1+ J))) L)))
-      ((< J 0) (CONS '(MLIST SIMP) L))))
+(defmfun retlist_tr n
+  (do ((j (f1- n) (f- j 2))
+       (l () (cons (list '(mequal simp) (arg j) (arg (f1+ j))) l)))
+      ((< j 0) (cons '(mlist simp) l))))

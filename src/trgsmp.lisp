@@ -15,485 +15,485 @@
 ;;TR_ARRAY_AS_REF:TRUE;
 ;;TR_NUMER:FALSE;
 ;;DEFINE_VARIABLE:FALSE;
-NIL
+nil
 (eval-when (compile eval load)
-       (MEVAL* '(($MODEDECLARE) $BESTLENGTH $FIXNUM))
-       (MEVAL* '(($DECLARE) $BESTLENGTH $SPECIAL))
-       (DEFPROP $BESTLENGTH ASSIGN-MODE-CHECK ASSIGN)
-       (DEF-MTRVAR $BESTLENGTH 0))
+  (meval* '(($modedeclare) $bestlength $fixnum))
+  (meval* '(($declare) $bestlength $special))
+  (defprop $bestlength assign-mode-check assign)
+  (def-mtrvar $bestlength 0))
 (eval-when (compile eval load)
-       (MEVAL* '(($MODEDECLARE) $TRYLENGTH $FIXNUM))
-       (MEVAL* '(($DECLARE) $TRYLENGTH $SPECIAL))
-       (DEFPROP $TRYLENGTH ASSIGN-MODE-CHECK ASSIGN)
-       (DEF-MTRVAR $TRYLENGTH 0))
+  (meval* '(($modedeclare) $trylength $fixnum))
+  (meval* '(($declare) $trylength $special))
+  (defprop $trylength assign-mode-check assign)
+  (def-mtrvar $trylength 0))
 (eval-when (compile eval load)
-(proclaim '(special $ans ))
+  (proclaim '(special $ans ))
 
-(SIMPLIFY ($PUT '%SIN '%COS '$COMPLEMENT_FUNCTION))
-(SIMPLIFY ($PUT '%COS '%SIN '$COMPLEMENT_FUNCTION))
-(SIMPLIFY ($PUT '%SINH '%COSH '$COMPLEMENT_FUNCTION))
-(SIMPLIFY ($PUT '%COSH '%SINH '$COMPLEMENT_FUNCTION))
-(SIMPLIFY ($PUT '%COS 1 '$UNITCOF))
-(SIMPLIFY ($PUT '%SIN 1 '$UNITCOF))
-(SIMPLIFY ($PUT '%COSH 1 '$UNITCOF))
-(SIMPLIFY ($PUT '%SINH -1 '$UNITCOF))
-(SIMPLIFY ($PUT '%COS -1 '$COMPLEMENT_COF))
-(SIMPLIFY ($PUT '%SIN -1 '$COMPLEMENT_COF))
-(SIMPLIFY ($PUT '%COSH 1 '$COMPLEMENT_COF))
-(SIMPLIFY ($PUT '%SINH 1 '$COMPLEMENT_COF))
-(SIMPLIFY ($PUT '%SIN '$TRIGONOMETRIC '$TYPE))
-(SIMPLIFY ($PUT '%COS '$TRIGONOMETRIC '$TYPE))
-(SIMPLIFY ($PUT '%SINH '$HYPER_TRIGONOMETRIC '$TYPE))
-(SIMPLIFY ($PUT '%COSH '$HYPER_TRIGONOMETRIC '$TYPE))
-)
-NIL
-(EVAL-WHEN (COMPILE LOAD EVAL) (MEVAL* '(($DECLARE) $LIST2 
-                                                              $SPECIAL)))
+  (simplify ($put '%sin '%cos '$complement_function))
+  (simplify ($put '%cos '%sin '$complement_function))
+  (simplify ($put '%sinh '%cosh '$complement_function))
+  (simplify ($put '%cosh '%sinh '$complement_function))
+  (simplify ($put '%cos 1 '$unitcof))
+  (simplify ($put '%sin 1 '$unitcof))
+  (simplify ($put '%cosh 1 '$unitcof))
+  (simplify ($put '%sinh -1 '$unitcof))
+  (simplify ($put '%cos -1 '$complement_cof))
+  (simplify ($put '%sin -1 '$complement_cof))
+  (simplify ($put '%cosh 1 '$complement_cof))
+  (simplify ($put '%sinh 1 '$complement_cof))
+  (simplify ($put '%sin '$trigonometric '$type))
+  (simplify ($put '%cos '$trigonometric '$type))
+  (simplify ($put '%sinh '$hyper_trigonometric '$type))
+  (simplify ($put '%cosh '$hyper_trigonometric '$type))
+  )
+nil
+(eval-when (compile load eval) (meval* '(($declare) $list2 
+					 $special)))
 (eval-when (compile eval load)
-       (DEFPROP $TRIGONOMETRICP T TRANSLATED)
-       (ADD2LNC '$TRIGONOMETRICP $PROPS)
-       (DEFMTRFUN ($TRIGONOMETRICP $BOOLEAN MDEFINE NIL NIL)
-                  ($EXP)
-                  NIL
-                  (OR (LIKE (SIMPLIFY ($GET (SIMPLIFY ($INPART $EXP 0))
-                                            '$TYPE))
-                            '$TRIGONOMETRIC)
-                      (LIKE (SIMPLIFY ($GET (TRD-MSYMEVAL $PIECE '$PIECE)
-                                            '$TYPE))
-                            '$HYPER_TRIGONOMETRIC))))
+  (defprop $trigonometricp t translated)
+  (add2lnc '$trigonometricp $props)
+  (defmtrfun ($trigonometricp $boolean mdefine nil nil)
+      ($exp)
+    nil
+    (or (like (simplify ($get (simplify ($inpart $exp 0))
+			      '$type))
+	      '$trigonometric)
+	(like (simplify ($get (trd-msymeval $piece '$piece)
+			      '$type))
+	      '$hyper_trigonometric))))
 (eval-when (compile eval load)
-       (DEFUN $TRIGRULE0
-              (|tr-gensym~0|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~1| |tr-gensym~2|)
-                            (DECLARE (SPECIAL $A |tr-gensym~1| |tr-gensym~2|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~0|))
-                                               '%TAN))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~1| (KDR |tr-gensym~0|))
-                            (SETQ |tr-gensym~2| (KAR |tr-gensym~1|))
-                            (SETQ $A |tr-gensym~2|)
-                            (COND ((NTHKDR |tr-gensym~1| 1)
-                                   (MATCHERR)))
-                            (RETURN (MUL* (POWER (SIMPLIFY (LIST '(%COS) $A))
-                                                 -1)
-                                          (SIMPLIFY (LIST '(%SIN) $A)))))))
-       (ADD2LNC '$TRIGRULE0 $RULES)
-       (MDEFPROP $TRIGRULE0
-                 ((MEQUAL) ((%TAN SIMP) $A)
-                           ((MTIMES SIMP) ((MEXPT SIMP) ((%COS SIMP) $A) -1)
-                                          ((%SIN SIMP) $A)))
-                 $RULE)
-       (MDEFPROP $TRIGRULE0 $DEFRULE $RULETYPE))
+  (defun $trigrule0
+      (|tr-gensym~0|)
+    (catch 'match
+      (prog ($a |tr-gensym~1| |tr-gensym~2|)
+	 (declare (special $a |tr-gensym~1| |tr-gensym~2|))
+	 (cond ((not (equal (kar (kar |tr-gensym~0|))
+			    '%tan))
+		(matcherr)))
+	 (setq |tr-gensym~1| (kdr |tr-gensym~0|))
+	 (setq |tr-gensym~2| (kar |tr-gensym~1|))
+	 (setq $a |tr-gensym~2|)
+	 (cond ((nthkdr |tr-gensym~1| 1)
+		(matcherr)))
+	 (return (mul* (power (simplify (list '(%cos) $a))
+			      -1)
+		       (simplify (list '(%sin) $a)))))))
+  (add2lnc '$trigrule0 $rules)
+  (mdefprop $trigrule0
+	    ((mequal) ((%tan simp) $a)
+	     ((mtimes simp) ((mexpt simp) ((%cos simp) $a) -1)
+	      ((%sin simp) $a)))
+	    $rule)
+  (mdefprop $trigrule0 $defrule $ruletype))
 (eval-when (compile eval load)
-       (DEFUN $TRIGRULE1
-              (|tr-gensym~3|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~4| |tr-gensym~5|)
-                            (DECLARE (SPECIAL $A |tr-gensym~4| |tr-gensym~5|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~3|))
-                                               '%TAN))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~4| (KDR |tr-gensym~3|))
-                            (SETQ |tr-gensym~5| (KAR |tr-gensym~4|))
-                            (SETQ $A |tr-gensym~5|)
-                            (COND ((NTHKDR |tr-gensym~4| 1)
-                                   (MATCHERR)))
-                            (RETURN (MUL* (POWER (SIMPLIFY (LIST '(%COS) $A))
-                                                 -1)
-                                          (SIMPLIFY (LIST '(%SIN) $A)))))))
-       (ADD2LNC '$TRIGRULE1 $RULES)
-       (MDEFPROP $TRIGRULE1
-                 ((MEQUAL) ((%TAN SIMP) $A)
-                           ((MTIMES SIMP) ((MEXPT SIMP) ((%COS SIMP) $A) -1)
-                                          ((%SIN SIMP) $A)))
-                 $RULE)
-       (MDEFPROP $TRIGRULE1 $DEFRULE $RULETYPE))
+  (defun $trigrule1
+      (|tr-gensym~3|)
+    (catch 'match
+      (prog ($a |tr-gensym~4| |tr-gensym~5|)
+	 (declare (special $a |tr-gensym~4| |tr-gensym~5|))
+	 (cond ((not (equal (kar (kar |tr-gensym~3|))
+			    '%tan))
+		(matcherr)))
+	 (setq |tr-gensym~4| (kdr |tr-gensym~3|))
+	 (setq |tr-gensym~5| (kar |tr-gensym~4|))
+	 (setq $a |tr-gensym~5|)
+	 (cond ((nthkdr |tr-gensym~4| 1)
+		(matcherr)))
+	 (return (mul* (power (simplify (list '(%cos) $a))
+			      -1)
+		       (simplify (list '(%sin) $a)))))))
+  (add2lnc '$trigrule1 $rules)
+  (mdefprop $trigrule1
+	    ((mequal) ((%tan simp) $a)
+	     ((mtimes simp) ((mexpt simp) ((%cos simp) $a) -1)
+	      ((%sin simp) $a)))
+	    $rule)
+  (mdefprop $trigrule1 $defrule $ruletype))
 (eval-when (compile eval load)
-       (DEFUN $TRIGRULE2
-              (|tr-gensym~6|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~7| |tr-gensym~8|)
-                            (DECLARE (SPECIAL $A |tr-gensym~7| |tr-gensym~8|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~6|))
-                                               '%SEC))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~7| (KDR |tr-gensym~6|))
-                            (SETQ |tr-gensym~8| (KAR |tr-gensym~7|))
-                            (SETQ $A |tr-gensym~8|)
-                            (COND ((NTHKDR |tr-gensym~7| 1)
-                                   (MATCHERR)))
-                            (RETURN (POWER (SIMPLIFY (LIST '(%COS) $A)) -1)))))
-       (ADD2LNC '$TRIGRULE2 $RULES)
-       (MDEFPROP $TRIGRULE2
-                 ((MEQUAL) ((%SEC SIMP) $A) ((MEXPT SIMP) ((%COS SIMP) $A) -1))
-                 $RULE)
-       (MDEFPROP $TRIGRULE2 $DEFRULE $RULETYPE))
+  (defun $trigrule2
+      (|tr-gensym~6|)
+    (catch 'match
+      (prog ($a |tr-gensym~7| |tr-gensym~8|)
+	 (declare (special $a |tr-gensym~7| |tr-gensym~8|))
+	 (cond ((not (equal (kar (kar |tr-gensym~6|))
+			    '%sec))
+		(matcherr)))
+	 (setq |tr-gensym~7| (kdr |tr-gensym~6|))
+	 (setq |tr-gensym~8| (kar |tr-gensym~7|))
+	 (setq $a |tr-gensym~8|)
+	 (cond ((nthkdr |tr-gensym~7| 1)
+		(matcherr)))
+	 (return (power (simplify (list '(%cos) $a)) -1)))))
+  (add2lnc '$trigrule2 $rules)
+  (mdefprop $trigrule2
+	    ((mequal) ((%sec simp) $a) ((mexpt simp) ((%cos simp) $a) -1))
+	    $rule)
+  (mdefprop $trigrule2 $defrule $ruletype))
 (eval-when (compile eval load)
-       (DEFUN $TRIGRULE3
-              (|tr-gensym~9|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~10| |tr-gensym~11|)
-                            (DECLARE (SPECIAL $A
-                                              |tr-gensym~10|
-                                              |tr-gensym~11|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~9|))
-                                               '%CSC))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~10| (KDR |tr-gensym~9|))
-                            (SETQ |tr-gensym~11| (KAR |tr-gensym~10|))
-                            (SETQ $A |tr-gensym~11|)
-                            (COND ((NTHKDR |tr-gensym~10| 1)
-                                   (MATCHERR)))
-                            (RETURN (POWER (SIMPLIFY (LIST '(%SIN) $A)) -1)))))
-       (ADD2LNC '$TRIGRULE3 $RULES)
-       (MDEFPROP $TRIGRULE3
-                 ((MEQUAL) ((%CSC SIMP) $A) ((MEXPT SIMP) ((%SIN SIMP) $A) -1))
-                 $RULE)
-       (MDEFPROP $TRIGRULE3 $DEFRULE $RULETYPE))
+  (defun $trigrule3
+      (|tr-gensym~9|)
+    (catch 'match
+      (prog ($a |tr-gensym~10| |tr-gensym~11|)
+	 (declare (special $a
+			   |tr-gensym~10|
+			   |tr-gensym~11|))
+	 (cond ((not (equal (kar (kar |tr-gensym~9|))
+			    '%csc))
+		(matcherr)))
+	 (setq |tr-gensym~10| (kdr |tr-gensym~9|))
+	 (setq |tr-gensym~11| (kar |tr-gensym~10|))
+	 (setq $a |tr-gensym~11|)
+	 (cond ((nthkdr |tr-gensym~10| 1)
+		(matcherr)))
+	 (return (power (simplify (list '(%sin) $a)) -1)))))
+  (add2lnc '$trigrule3 $rules)
+  (mdefprop $trigrule3
+	    ((mequal) ((%csc simp) $a) ((mexpt simp) ((%sin simp) $a) -1))
+	    $rule)
+  (mdefprop $trigrule3 $defrule $ruletype))
 (eval-when (compile eval load)
-       (DEFUN $TRIGRULE4
-              (|tr-gensym~12|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~13| |tr-gensym~14|)
-                            (DECLARE (SPECIAL $A
-                                              |tr-gensym~13|
-                                              |tr-gensym~14|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~12|))
-                                               '%COT))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~13| (KDR |tr-gensym~12|))
-                            (SETQ |tr-gensym~14| (KAR |tr-gensym~13|))
-                            (SETQ $A |tr-gensym~14|)
-                            (COND ((NTHKDR |tr-gensym~13| 1)
-                                   (MATCHERR)))
-                            (RETURN (MUL* (SIMPLIFY (LIST '(%COS) $A))
-                                          (POWER (SIMPLIFY (LIST '(%SIN)
-                                                                 $A))
-                                                 -1))))))
-       (ADD2LNC '$TRIGRULE4 $RULES)
-       (MDEFPROP $TRIGRULE4
-                 ((MEQUAL) ((%COT SIMP) $A)
-                           ((MTIMES SIMP) ((%COS SIMP) $A)
-                                          ((MEXPT SIMP) ((%SIN SIMP) $A) -1)))
-                 $RULE)
-       (MDEFPROP $TRIGRULE4 $DEFRULE $RULETYPE))
+  (defun $trigrule4
+      (|tr-gensym~12|)
+    (catch 'match
+      (prog ($a |tr-gensym~13| |tr-gensym~14|)
+	 (declare (special $a
+			   |tr-gensym~13|
+			   |tr-gensym~14|))
+	 (cond ((not (equal (kar (kar |tr-gensym~12|))
+			    '%cot))
+		(matcherr)))
+	 (setq |tr-gensym~13| (kdr |tr-gensym~12|))
+	 (setq |tr-gensym~14| (kar |tr-gensym~13|))
+	 (setq $a |tr-gensym~14|)
+	 (cond ((nthkdr |tr-gensym~13| 1)
+		(matcherr)))
+	 (return (mul* (simplify (list '(%cos) $a))
+		       (power (simplify (list '(%sin)
+					      $a))
+			      -1))))))
+  (add2lnc '$trigrule4 $rules)
+  (mdefprop $trigrule4
+	    ((mequal) ((%cot simp) $a)
+	     ((mtimes simp) ((%cos simp) $a)
+	      ((mexpt simp) ((%sin simp) $a) -1)))
+	    $rule)
+  (mdefprop $trigrule4 $defrule $ruletype))
 (eval-when (compile eval load)
-       (DEFUN $HTRIGRULE1
-              (|tr-gensym~15|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~16| |tr-gensym~17|)
-                            (DECLARE (SPECIAL $A
-                                              |tr-gensym~16|
-                                              |tr-gensym~17|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~15|))
-                                               '%TANH))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~16| (KDR |tr-gensym~15|))
-                            (SETQ |tr-gensym~17| (KAR |tr-gensym~16|))
-                            (SETQ $A |tr-gensym~17|)
-                            (COND ((NTHKDR |tr-gensym~16| 1)
-                                   (MATCHERR)))
-                            (RETURN (MUL* (POWER (SIMPLIFY (LIST '(%COSH)
-                                                                 $A))
-                                                 -1)
-                                          (SIMPLIFY (LIST '(%SINH) $A)))))))
-       (ADD2LNC '$HTRIGRULE1 $RULES)
-       (MDEFPROP $HTRIGRULE1
-                 ((MEQUAL) ((%TANH SIMP) $A)
-                           ((MTIMES SIMP) ((MEXPT SIMP) ((%COSH SIMP) $A) -1)
-                                          ((%SINH SIMP) $A)))
-                 $RULE)
-       (MDEFPROP $HTRIGRULE1 $DEFRULE $RULETYPE))
+  (defun $htrigrule1
+      (|tr-gensym~15|)
+    (catch 'match
+      (prog ($a |tr-gensym~16| |tr-gensym~17|)
+	 (declare (special $a
+			   |tr-gensym~16|
+			   |tr-gensym~17|))
+	 (cond ((not (equal (kar (kar |tr-gensym~15|))
+			    '%tanh))
+		(matcherr)))
+	 (setq |tr-gensym~16| (kdr |tr-gensym~15|))
+	 (setq |tr-gensym~17| (kar |tr-gensym~16|))
+	 (setq $a |tr-gensym~17|)
+	 (cond ((nthkdr |tr-gensym~16| 1)
+		(matcherr)))
+	 (return (mul* (power (simplify (list '(%cosh)
+					      $a))
+			      -1)
+		       (simplify (list '(%sinh) $a)))))))
+  (add2lnc '$htrigrule1 $rules)
+  (mdefprop $htrigrule1
+	    ((mequal) ((%tanh simp) $a)
+	     ((mtimes simp) ((mexpt simp) ((%cosh simp) $a) -1)
+	      ((%sinh simp) $a)))
+	    $rule)
+  (mdefprop $htrigrule1 $defrule $ruletype))
 (eval-when (compile eval load)
-       (DEFUN $HTRIGRULE2
-              (|tr-gensym~18|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~19| |tr-gensym~20|)
-                            (DECLARE (SPECIAL $A
-                                              |tr-gensym~19|
-                                              |tr-gensym~20|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~18|))
-                                               '%SECH))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~19| (KDR |tr-gensym~18|))
-                            (SETQ |tr-gensym~20| (KAR |tr-gensym~19|))
-                            (SETQ $A |tr-gensym~20|)
-                            (COND ((NTHKDR |tr-gensym~19| 1)
-                                   (MATCHERR)))
-                            (RETURN (POWER (SIMPLIFY (LIST '(%COSH) $A)) -1)))))
-       (ADD2LNC '$HTRIGRULE2 $RULES)
-       (MDEFPROP $HTRIGRULE2
-                 ((MEQUAL) ((%SECH SIMP) $A)
-                           ((MEXPT SIMP) ((%COSH SIMP) $A) -1))
-                 $RULE)
-       (MDEFPROP $HTRIGRULE2 $DEFRULE $RULETYPE))
+  (defun $htrigrule2
+      (|tr-gensym~18|)
+    (catch 'match
+      (prog ($a |tr-gensym~19| |tr-gensym~20|)
+	 (declare (special $a
+			   |tr-gensym~19|
+			   |tr-gensym~20|))
+	 (cond ((not (equal (kar (kar |tr-gensym~18|))
+			    '%sech))
+		(matcherr)))
+	 (setq |tr-gensym~19| (kdr |tr-gensym~18|))
+	 (setq |tr-gensym~20| (kar |tr-gensym~19|))
+	 (setq $a |tr-gensym~20|)
+	 (cond ((nthkdr |tr-gensym~19| 1)
+		(matcherr)))
+	 (return (power (simplify (list '(%cosh) $a)) -1)))))
+  (add2lnc '$htrigrule2 $rules)
+  (mdefprop $htrigrule2
+	    ((mequal) ((%sech simp) $a)
+	     ((mexpt simp) ((%cosh simp) $a) -1))
+	    $rule)
+  (mdefprop $htrigrule2 $defrule $ruletype))
 (eval-when (compile eval load)
-       (DEFUN $HTRIGRULE3
-              (|tr-gensym~21|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~22| |tr-gensym~23|)
-                            (DECLARE (SPECIAL $A
-                                              |tr-gensym~22|
-                                              |tr-gensym~23|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~21|))
-                                               '%CSCH))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~22| (KDR |tr-gensym~21|))
-                            (SETQ |tr-gensym~23| (KAR |tr-gensym~22|))
-                            (SETQ $A |tr-gensym~23|)
-                            (COND ((NTHKDR |tr-gensym~22| 1)
-                                   (MATCHERR)))
-                            (RETURN (POWER (SIMPLIFY (LIST '(%SINH) $A)) -1)))))
-       (ADD2LNC '$HTRIGRULE3 $RULES)
-       (MDEFPROP $HTRIGRULE3
-                 ((MEQUAL) ((%CSCH SIMP) $A)
-                           ((MEXPT SIMP) ((%SINH SIMP) $A) -1))
-                 $RULE)
-       (MDEFPROP $HTRIGRULE3 $DEFRULE $RULETYPE))
+  (defun $htrigrule3
+      (|tr-gensym~21|)
+    (catch 'match
+      (prog ($a |tr-gensym~22| |tr-gensym~23|)
+	 (declare (special $a
+			   |tr-gensym~22|
+			   |tr-gensym~23|))
+	 (cond ((not (equal (kar (kar |tr-gensym~21|))
+			    '%csch))
+		(matcherr)))
+	 (setq |tr-gensym~22| (kdr |tr-gensym~21|))
+	 (setq |tr-gensym~23| (kar |tr-gensym~22|))
+	 (setq $a |tr-gensym~23|)
+	 (cond ((nthkdr |tr-gensym~22| 1)
+		(matcherr)))
+	 (return (power (simplify (list '(%sinh) $a)) -1)))))
+  (add2lnc '$htrigrule3 $rules)
+  (mdefprop $htrigrule3
+	    ((mequal) ((%csch simp) $a)
+	     ((mexpt simp) ((%sinh simp) $a) -1))
+	    $rule)
+  (mdefprop $htrigrule3 $defrule $ruletype))
 (eval-when (compile eval load)
-       (DEFUN $HTRIGRULE4
-              (|tr-gensym~24|)
-              (CATCH 'MATCH
-                      (PROG ($A |tr-gensym~25| |tr-gensym~26|)
-                            (DECLARE (SPECIAL $A
-                                              |tr-gensym~25|
-                                              |tr-gensym~26|))
-                            (COND ((NOT (EQUAL (KAR (KAR |tr-gensym~24|))
-                                               '%COTH))
-                                   (MATCHERR)))
-                            (SETQ |tr-gensym~25| (KDR |tr-gensym~24|))
-                            (SETQ |tr-gensym~26| (KAR |tr-gensym~25|))
-                            (SETQ $A |tr-gensym~26|)
-                            (COND ((NTHKDR |tr-gensym~25| 1)
-                                   (MATCHERR)))
-                            (RETURN (MUL* (SIMPLIFY (LIST '(%COSH) $A))
-                                          (POWER (SIMPLIFY (LIST '(%SINH)
-                                                                 $A))
-                                                 -1))))))
-       (ADD2LNC '$HTRIGRULE4 $RULES)
-       (MDEFPROP $HTRIGRULE4
-                 ((MEQUAL) ((%COTH SIMP) $A)
-                           ((MTIMES SIMP) ((%COSH SIMP) $A)
-                                          ((MEXPT SIMP) ((%SINH SIMP) $A) -1)))
-                 $RULE)
-       (MDEFPROP $HTRIGRULE4 $DEFRULE $RULETYPE))
+  (defun $htrigrule4
+      (|tr-gensym~24|)
+    (catch 'match
+      (prog ($a |tr-gensym~25| |tr-gensym~26|)
+	 (declare (special $a
+			   |tr-gensym~25|
+			   |tr-gensym~26|))
+	 (cond ((not (equal (kar (kar |tr-gensym~24|))
+			    '%coth))
+		(matcherr)))
+	 (setq |tr-gensym~25| (kdr |tr-gensym~24|))
+	 (setq |tr-gensym~26| (kar |tr-gensym~25|))
+	 (setq $a |tr-gensym~26|)
+	 (cond ((nthkdr |tr-gensym~25| 1)
+		(matcherr)))
+	 (return (mul* (simplify (list '(%cosh) $a))
+		       (power (simplify (list '(%sinh)
+					      $a))
+			      -1))))))
+  (add2lnc '$htrigrule4 $rules)
+  (mdefprop $htrigrule4
+	    ((mequal) ((%coth simp) $a)
+	     ((mtimes simp) ((%cosh simp) $a)
+	      ((mexpt simp) ((%sinh simp) $a) -1)))
+	    $rule)
+  (mdefprop $htrigrule4 $defrule $ruletype))
 (eval-when (compile eval load)
- (DEFPROP $TRIGSIMP T TRANSLATED)
- (ADD2LNC '$TRIGSIMP $PROPS)
- (DEFMTRFUN
-  ($TRIGSIMP $ANY MDEFINE NIL NIL)
-  ($X)
-  NIL
-  (SIMPLIFY
-   ($TRIGSIMP3
-    (SIMPLIFY ($RADCAN (DO ((|tr-gensym~27| $X
-                                            (APPLY1 |tr-gensym~27|
-                                                    (CAR |tr-gensym~28|)
-                                                    0))
-                            (|tr-gensym~28| '($TRIGRULE1 $TRIGRULE2 
-                                              $TRIGRULE3 $TRIGRULE4 
-                                              $HTRIGRULE1 $HTRIGRULE2 
-                                              $HTRIGRULE3 $HTRIGRULE4)
-                                            (CDR |tr-gensym~28|)))
-                           ((NULL |tr-gensym~28|) |tr-gensym~27|)
-                        )))))))
+  (defprop $trigsimp t translated)
+  (add2lnc '$trigsimp $props)
+  (defmtrfun
+      ($trigsimp $any mdefine nil nil)
+      ($x)
+    nil
+    (simplify
+     ($trigsimp3
+      (simplify ($radcan (do ((|tr-gensym~27| $x
+					      (apply1 |tr-gensym~27|
+						      (car |tr-gensym~28|)
+						      0))
+			      (|tr-gensym~28| '($trigrule1 $trigrule2 
+						$trigrule3 $trigrule4 
+						$htrigrule1 $htrigrule2 
+						$htrigrule3 $htrigrule4)
+					      (cdr |tr-gensym~28|)))
+			     ((null |tr-gensym~28|) |tr-gensym~27|)
+			   )))))))
 (eval-when (compile eval load)
- (DEFPROP $TRIGSIMP3 T TRANSLATED)
- (ADD2LNC '$TRIGSIMP3 $PROPS)
- (DEFMTRFUN
-  ($TRIGSIMP3 $ANY MDEFINE NIL NIL)
-  ($EXPN)
-  NIL
-  (PROGN (SETQ $EXPN (SIMPLIFY ($TOTALDISREP $EXPN)))
-         (SIMPLIFY ($RATSIMP (DIV (SIMPLIFY ($TRIGSIMP1 ($NUM $EXPN)))
-                                  (SIMPLIFY ($TRIGSIMP1 ($DENOM $EXPN)))))))))
+  (defprop $trigsimp3 t translated)
+  (add2lnc '$trigsimp3 $props)
+  (defmtrfun
+      ($trigsimp3 $any mdefine nil nil)
+      ($expn)
+    nil
+    (progn (setq $expn (simplify ($totaldisrep $expn)))
+	   (simplify ($ratsimp (div (simplify ($trigsimp1 ($num $expn)))
+				    (simplify ($trigsimp1 ($denom $expn)))))))))
 (eval-when (compile eval load)
-       (DEFPROP $TRIGSIMP1 T TRANSLATED)
-       (ADD2LNC '$TRIGSIMP1 $PROPS)
-       (DEFMTRFUN ($TRIGSIMP1 $ANY MDEFINE NIL NIL)
-                  ($EXPN)
-                  NIL
-                  ((LAMBDA ($LISTOFTRIGSQ $BESTLENGTH $TRYLENGTH)
-                       NIL
-                       (ASSIGN-MODE-CHECK '$TRYLENGTH $TRYLENGTH)
-                       (ASSIGN-MODE-CHECK '$BESTLENGTH $BESTLENGTH)
-                       (SETQ $LISTOFTRIGSQ (SIMPLIFY ($LISTOFTRIGSQ $EXPN)))
-                       (PROGN (ASSIGN-MODE-CHECK '$BESTLENGTH 999999)
-                              (SETQ $BESTLENGTH 999999))
-                       (COND ((NOT (LIKE $LISTOFTRIGSQ '((MLIST))))
-                              (SIMPLIFY ($IMPROVE $EXPN
-                                                  $EXPN
-                                                  $LISTOFTRIGSQ)))
-                             (T $EXPN)))
-                   '$LISTOFTRIGSQ
-                   0
-                   0)))
+  (defprop $trigsimp1 t translated)
+  (add2lnc '$trigsimp1 $props)
+  (defmtrfun ($trigsimp1 $any mdefine nil nil)
+      ($expn)
+    nil
+    ((lambda ($listoftrigsq $bestlength $trylength)
+       nil
+       (assign-mode-check '$trylength $trylength)
+       (assign-mode-check '$bestlength $bestlength)
+       (setq $listoftrigsq (simplify ($listoftrigsq $expn)))
+       (progn (assign-mode-check '$bestlength 999999)
+	      (setq $bestlength 999999))
+       (cond ((not (like $listoftrigsq '((mlist))))
+	      (simplify ($improve $expn
+				  $expn
+				  $listoftrigsq)))
+	     (t $expn)))
+     '$listoftrigsq
+     0
+     0)))
 (eval-when (compile eval load)
- (DEFPROP $IMPROVE T TRANSLATED)
- (ADD2LNC '$IMPROVE $PROPS)
- (DEFMTRFUN
-  ($IMPROVE $ANY MDEFINE NIL NIL)
-  ($EXPN $SUBSOFAR $LISTOFTRIGSQ)
-  NIL
-  (COND
-   ((LIKE $LISTOFTRIGSQ '((MLIST)))
-    (COND ((< ((LAMBDA (|tr-gensym~31|)
-                   (PROGN (ASSIGN-MODE-CHECK '$TRYLENGTH |tr-gensym~31|)
-                          (SETQ $TRYLENGTH |tr-gensym~31|)))
-               ($EXPNLENGTH $SUBSOFAR))
-              (TRD-MSYMEVAL $BESTLENGTH 0))
-           ((LAMBDA (|tr-gensym~30|)
-                (PROGN (ASSIGN-MODE-CHECK '$BESTLENGTH |tr-gensym~30|)
-                       (SETQ $BESTLENGTH |tr-gensym~30|)))
-            (TRD-MSYMEVAL $TRYLENGTH 0))
-           $SUBSOFAR)
-          (T $EXPN)))
-   (T
-    (SETQ $SUBSOFAR (SIMPLIFY ($IMPROVE $EXPN
-                                        $SUBSOFAR
-                                        (SIMPLIFY ($REST $LISTOFTRIGSQ)))))
-    (DO
-     (($ALT) (MDO (CDR (SIMPLIFY ($FIRST $LISTOFTRIGSQ))) (CDR MDO)))
-     ((NULL MDO) '$DONE)
-     (SETQ $ALT (CAR MDO))
-     (SETQ
-      $SUBSOFAR
-      (SIMPLIFY
-       ($IMPROVE
-        $SUBSOFAR
-        (SIMPLIFY
-         ($RATSUBST
-          (ADD*
-           (SIMPLIFY ($GET (SIMPLIFY ($INPART $ALT 0)) '$UNITCOF))
-           (MUL*
-            (SIMPLIFY ($GET (TRD-MSYMEVAL $PIECE '$PIECE)
-                            '$COMPLEMENT_COF))
-            (POWER
-             (SIMPLIFY (MAPPLY (SIMPLIFY ($GET (TRD-MSYMEVAL $PIECE
-                                                             '$PIECE)
-                                               '$COMPLEMENT_FUNCTION))
-                               (LIST (SIMPLIFY ($FIRST $ALT)))
-                               '(($GET) $PIECE 
-                                 ((MQUOTE) $COMPLEMENT_FUNCTION))))
-             2)))
-          (POWER $ALT 2)
-          $SUBSOFAR))
-        (SIMPLIFY ($REST $LISTOFTRIGSQ))))))
-    $SUBSOFAR))))
+  (defprop $improve t translated)
+  (add2lnc '$improve $props)
+  (defmtrfun
+      ($improve $any mdefine nil nil)
+      ($expn $subsofar $listoftrigsq)
+    nil
+    (cond
+      ((like $listoftrigsq '((mlist)))
+       (cond ((< ((lambda (|tr-gensym~31|)
+		    (progn (assign-mode-check '$trylength |tr-gensym~31|)
+			   (setq $trylength |tr-gensym~31|)))
+		  ($expnlength $subsofar))
+		 (trd-msymeval $bestlength 0))
+	      ((lambda (|tr-gensym~30|)
+		 (progn (assign-mode-check '$bestlength |tr-gensym~30|)
+			(setq $bestlength |tr-gensym~30|)))
+	       (trd-msymeval $trylength 0))
+	      $subsofar)
+	     (t $expn)))
+      (t
+       (setq $subsofar (simplify ($improve $expn
+					   $subsofar
+					   (simplify ($rest $listoftrigsq)))))
+       (do
+	(($alt) (mdo (cdr (simplify ($first $listoftrigsq))) (cdr mdo)))
+	((null mdo) '$done)
+	 (setq $alt (car mdo))
+	 (setq
+	  $subsofar
+	  (simplify
+	   ($improve
+	    $subsofar
+	    (simplify
+	     ($ratsubst
+	      (add*
+	       (simplify ($get (simplify ($inpart $alt 0)) '$unitcof))
+	       (mul*
+		(simplify ($get (trd-msymeval $piece '$piece)
+				'$complement_cof))
+		(power
+		 (simplify (mapply (simplify ($get (trd-msymeval $piece
+								 '$piece)
+						   '$complement_function))
+				   (list (simplify ($first $alt)))
+				   '(($get) $piece 
+				     ((mquote) $complement_function))))
+		 2)))
+	      (power $alt 2)
+	      $subsofar))
+	    (simplify ($rest $listoftrigsq))))))
+       $subsofar))))
 (eval-when (compile eval load)
- (DEFPROP $LISTOFTRIGSQ T TRANSLATED)
- (ADD2LNC '$LISTOFTRIGSQ $PROPS)
- (DEFMTRFUN
-  ($LISTOFTRIGSQ $ANY MDEFINE NIL NIL)
-  ($EXPN)
-  NIL
-  (COND
-   (($ATOM $EXPN) '((MLIST)))
-   (T
-    ((LAMBDA
-      ($INFLAG $ANS) 
-      NIL
-      (PROG
-       NIL
-       (COND ((AND (LIKE (SIMPLIFY ($INPART $EXPN 0)) '&^)
-                   ($INTEGERP (SIMPLIFY ($INPART $EXPN 2)))
-                   (NOT (IS-BOOLE-CHECK (MLSP (TRD-MSYMEVAL $PIECE
-                                                            '$PIECE)
-                                              2))))
-              (COND (($ATOM (SETQ $EXPN (SIMPLIFY ($INPART $EXPN 1))))
-                     (RETURN '((MLIST))))
-                    (($TRIGONOMETRICP $EXPN)
-                     (RETURN (LIST '(MLIST) (LIST '(MLIST) $EXPN)))))))
-       (SETQ $INFLAG T)
-       (DO
-        (($ARG) (MDO (CDR $EXPN) (CDR MDO)))
-        ((NULL MDO) '$DONE)
-        (SETQ $ARG (CAR MDO))
-        (SETQ
-         $ANS
-         (SIMPLIFY ($SPECIALUNION (SIMPLIFY ($LISTOFTRIGSQ $ARG))
-                                  (TRD-MSYMEVAL $ANS '$ANS)))))
-       (RETURN (TRD-MSYMEVAL $ANS '$ANS))))
-     '$INFLAG
-     '((MLIST)))))))
+  (defprop $listoftrigsq t translated)
+  (add2lnc '$listoftrigsq $props)
+  (defmtrfun
+      ($listoftrigsq $any mdefine nil nil)
+      ($expn)
+    nil
+    (cond
+      (($atom $expn) '((mlist)))
+      (t
+       ((lambda
+	    ($inflag $ans) 
+	  nil
+	  (prog
+	      nil
+	     (cond ((and (like (simplify ($inpart $expn 0)) '&^)
+			 ($integerp (simplify ($inpart $expn 2)))
+			 (not (is-boole-check (mlsp (trd-msymeval $piece
+								  '$piece)
+						    2))))
+		    (cond (($atom (setq $expn (simplify ($inpart $expn 1))))
+			   (return '((mlist))))
+			  (($trigonometricp $expn)
+			   (return (list '(mlist) (list '(mlist) $expn)))))))
+	     (setq $inflag t)
+	     (do
+	      (($arg) (mdo (cdr $expn) (cdr mdo)))
+	      ((null mdo) '$done)
+	       (setq $arg (car mdo))
+	       (setq
+		$ans
+		(simplify ($specialunion (simplify ($listoftrigsq $arg))
+					 (trd-msymeval $ans '$ans)))))
+	     (return (trd-msymeval $ans '$ans))))
+	'$inflag
+	'((mlist)))))))
 (eval-when (compile eval load)
- (DEFPROP $SPECIALUNION T TRANSLATED)
- (ADD2LNC '$SPECIALUNION $PROPS)
- (DEFMTRFUN
-  ($SPECIALUNION $ANY MDEFINE NIL NIL)
-  ($LIST1 $LIST2)
-  NIL
-  (COND
-   ((LIKE $LIST1 '((MLIST))) (TRD-MSYMEVAL $LIST2 '$LIST2))
-   ((LIKE (TRD-MSYMEVAL $LIST2 '$LIST2) '((MLIST))) $LIST1)
-   (T
-    ((LAMBDA
-      ($ALTERNATES)
-      NIL
-      (DO
-       (($ALT) (MDO (CDR $ALTERNATES) (CDR MDO)))
-       ((NULL MDO) '$DONE)
-       (SETQ $ALT (CAR MDO))
-       (SETQ
-        $LIST2
-        (SIMPLIFY ($UPDATE $ALT
-                           (SIMPLIFY ($GET (SIMPLIFY ($INPART $ALT 0))
-                                           '$COMPLEMENT_FUNCTION))))))
-      (SIMPLIFY ($SPECIALUNION (SIMPLIFY ($REST $LIST1))
-                               (TRD-MSYMEVAL $LIST2 '$LIST2))))
-     (SIMPLIFY ($FIRST $LIST1)))))))
+  (defprop $specialunion t translated)
+  (add2lnc '$specialunion $props)
+  (defmtrfun
+      ($specialunion $any mdefine nil nil)
+      ($list1 $list2)
+    nil
+    (cond
+      ((like $list1 '((mlist))) (trd-msymeval $list2 '$list2))
+      ((like (trd-msymeval $list2 '$list2) '((mlist))) $list1)
+      (t
+       ((lambda
+	    ($alternates)
+	  nil
+	  (do
+	   (($alt) (mdo (cdr $alternates) (cdr mdo)))
+	   ((null mdo) '$done)
+	    (setq $alt (car mdo))
+	    (setq
+	     $list2
+	     (simplify ($update $alt
+				(simplify ($get (simplify ($inpart $alt 0))
+						'$complement_function))))))
+	  (simplify ($specialunion (simplify ($rest $list1))
+				   (trd-msymeval $list2 '$list2))))
+	(simplify ($first $list1)))))))
 (eval-when (compile eval load) 
- (DEFPROP $UPDATE T TRANSLATED)
- (ADD2LNC '$UPDATE $PROPS)
- (DEFMTRFUN
-  ($UPDATE $ANY MDEFINE NIL NIL)
-  ($FORM $COMPLEMENT)
-  NIL
-  ((LAMBDA
-    ($ANS)
-     (declare (special $ans))
-    NIL
-    NIL
-    (SETQ $COMPLEMENT (SIMPLIFY (MFUNCALL $COMPLEMENT
-                                          (SIMPLIFY ($INPART $FORM 1)))))
-    (SETQ
-     $ANS
-     (DO (($ELEMENT)
-          (MDO (CDR (TRD-MSYMEVAL $LIST2 '$LIST2)) (CDR MDO)))
-         ((NULL MDO) '$DONE)
-       (SETQ $ELEMENT (CAR MDO))
-       (COND (($MEMBER $FORM $ELEMENT)
-              (RETURN '$FOUND))
-             (($MEMBER $COMPLEMENT $ELEMENT)
-              (RETURN ($CONS (LIST '(MLIST) $FORM $COMPLEMENT)
-                             (SIMPLIFY ($DELETE $ELEMENT
-                                                (TRD-MSYMEVAL $LIST2
-                                                              '$LIST2)))))))))
-    (COND ((LIKE (TRD-MSYMEVAL $ANS '$ANS) '$FOUND)
-           (TRD-MSYMEVAL $LIST2 '$LIST2))
-          ((LIKE (TRD-MSYMEVAL $ANS '$ANS) '$DONE)
-           ($CONS (LIST '(MLIST) $FORM) (TRD-MSYMEVAL $LIST2 '$LIST2)))
-          (T (TRD-MSYMEVAL $ANS '$ANS))))
-   '$ANS)))
+  (defprop $update t translated)
+  (add2lnc '$update $props)
+  (defmtrfun
+      ($update $any mdefine nil nil)
+      ($form $complement)
+    nil
+    ((lambda
+	 ($ans)
+       (declare (special $ans))
+       nil
+       nil
+       (setq $complement (simplify (mfuncall $complement
+					     (simplify ($inpart $form 1)))))
+       (setq
+	$ans
+	(do (($element)
+	     (mdo (cdr (trd-msymeval $list2 '$list2)) (cdr mdo)))
+	    ((null mdo) '$done)
+	  (setq $element (car mdo))
+	  (cond (($member $form $element)
+		 (return '$found))
+		(($member $complement $element)
+		 (return ($cons (list '(mlist) $form $complement)
+				(simplify ($delete $element
+						   (trd-msymeval $list2
+								 '$list2)))))))))
+       (cond ((like (trd-msymeval $ans '$ans) '$found)
+	      (trd-msymeval $list2 '$list2))
+	     ((like (trd-msymeval $ans '$ans) '$done)
+	      ($cons (list '(mlist) $form) (trd-msymeval $list2 '$list2)))
+	     (t (trd-msymeval $ans '$ans))))
+     '$ans)))
 (eval-when (compile eval load) 
-       (DEFPROP $EXPNLENGTH T TRANSLATED)
-       (ADD2LNC '$EXPNLENGTH $PROPS)
-       (DEFMTRFUN ($EXPNLENGTH $FIXNUM MDEFINE NIL NIL)
-                  ($EXPR)
-                  NIL
-                  ((LAMBDA ($INFLAG)
-                       NIL
-                       (COND (($ATOM $EXPR) 1)
-                             (T (f+ 1
-                                   ($ARGSLENGTH (SIMPLIFY ($ARGS $EXPR)))))))
-                   T)))
+  (defprop $expnlength t translated)
+  (add2lnc '$expnlength $props)
+  (defmtrfun ($expnlength $fixnum mdefine nil nil)
+      ($expr)
+    nil
+    ((lambda ($inflag)
+       nil
+       (cond (($atom $expr) 1)
+	     (t (f+ 1
+		    ($argslength (simplify ($args $expr)))))))
+     t)))
 (eval-when (compile eval load) 
- (DEFPROP $ARGSLENGTH T TRANSLATED)
- (ADD2LNC '$ARGSLENGTH $PROPS)
- (DEFMTRFUN ($ARGSLENGTH $ANY MDEFINE NIL NIL)
-            ($ARGS)
-            NIL
-            (SIMPLIFY (MAPPLY-TR '&+
-                                 (SIMPLIFY (MAP1 (GETOPR '$EXPNLENGTH)
-                                                 $ARGS))))))
+  (defprop $argslength t translated)
+  (add2lnc '$argslength $props)
+  (defmtrfun ($argslength $any mdefine nil nil)
+      ($args)
+    nil
+    (simplify (mapply-tr '&+
+			 (simplify (map1 (getopr '$expnlength)
+					 $args))))))

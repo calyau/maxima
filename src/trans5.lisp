@@ -12,7 +12,7 @@
 (macsyma-module trans5)
 
 
-(TRANSL-MODULE TRANS5)
+(transl-module trans5)
 
 ;;; these are TRANSLATE properies for the FSUBRS in JPG;COMM >
 
@@ -63,18 +63,18 @@
 ;;;
 
 
-(DEF%TR $DISP (FORM) 
-	`($ANY . (DISPLAY-FOR-TR ,(eq (caar form) '$ldisp)
-				 NIL ; equationsp
-				 ,@(TR-ARGS (CDR FORM)))))
-(DEF-SAME%TR $LDISP $DISP)
+(def%tr $disp (form) 
+  `($any . (display-for-tr ,(eq (caar form) '$ldisp)
+	    nil				; equationsp
+	    ,@(tr-args (cdr form)))))
+(def-same%tr $ldisp $disp)
 
-(DEF%TR $DISPLAY (FORM) 
-	`($ANY . (DISPLAY-FOR-TR ,(EQ (CAAR FORM) '$LDISPLAY)
-				 T
-				 ,@(MAPCAR #'TR-EXP-TO-DISPLAY (CDR FORM)))))
+(def%tr $display (form) 
+  `($any . (display-for-tr ,(eq (caar form) '$ldisplay)
+	    t
+	    ,@(mapcar #'tr-exp-to-display (cdr form)))))
 
-(DEF-SAME%TR $LDISPLAY $DISPLAY)
+(def-same%tr $ldisplay $display)
 
 ;;; DISPLAY(F(X,Y,FOO()))
 ;;; (F X Y (FOO)) => (LET ((&G1 (FOO))) (list '(mequal) (LIST '(F) X Y &G1)
@@ -99,96 +99,96 @@
 ;;; be evaluated first. I don't seriously expect anyone to find this
 ;;; bug.
 
-(DEFVAR VALUE-ALIST NIL)
-(DEFUN MAKE-VALUES (EXPR-ARGS)
-       (MAPCAR #'(LAMBDA (ARG)
-			 (COND ((OR (ATOM ARG)
-				    (MEMQ (CAR ARG) '(TRD-MSYMEVAL QUOTE)))
-				ARG)
-			       (T
-				(LET ((SYM (GENSYM)))
-				     (PUSH (CONS ARG SYM) VALUE-ALIST)
-				     SYM))))
-	       EXPR-ARGS))
+(defvar value-alist nil)
+(defun make-values (expr-args)
+  (mapcar #'(lambda (arg)
+	      (cond ((or (atom arg)
+			 (memq (car arg) '(trd-msymeval quote)))
+		     arg)
+		    (t
+		     (let ((sym (gensym)))
+		       (push (cons arg sym) value-alist)
+		       sym))))
+	  expr-args))
 
 
-(EVAL-WHEN (COMPILE EVAL #-PDP10 LOAD)
-#-cl
-(DEFSTRUCT (DISP-HACK-OB #+Maclisp TREE #-Maclisp :TREE)
-  LEFT-OB RIGHT-OB)
-#+cl
-(DEFSTRUCT (DISP-HACK-OB (:conc-name nil)( :type list ))  ;;it wanted tree but that's illegal
-  LEFT-OB RIGHT-OB)
-)
+(eval-when (compile eval #-pdp10 load)
+  #-cl
+  (defstruct (disp-hack-ob #+maclisp tree #-maclisp :tree)
+    left-ob right-ob)
+  #+cl
+  (defstruct (disp-hack-ob (:conc-name nil)( :type list )) ;;it wanted tree but that's illegal
+    left-ob right-ob)
+  )
 
-(DEFUN OBJECT-FOR-DISPLAY-HACK (EXP)
-       (IF (ATOM EXP)
-	   (MAKE-DISP-HACK-OB
-	     #+cl :LEFT-OB #-cl LEFT-OB `',EXP
-	     #+cl :RIGHT-OB #-cl RIGHT-OB EXP)
-	   (CASE (CAR EXP)
-		  (SIMPLIFY
-		   (LET ((V (OBJECT-FOR-DISPLAY-HACK (CADR EXP))))
-			(MAKE-DISP-HACK-OB
-			 #+cl :LEFT-OB #-cl LEFT-OB (LEFT-OB V)
-			 #+cl :RIGHT-OB #-cl RIGHT-OB `(SIMPLIFY ,(RIGHT-OB V)))))
-		  (MARRAYREF
-		   (LET ((VALS (MAKE-VALUES (CDR EXP))))
-			(MAKE-DISP-HACK-OB
-			 #+cl :LEFT-OB #-cl LEFT-OB `(LIST (LIST* ,(CAR VALS) '(ARRAY))
-					,@(CDR VALS))
-			 #+cl :RIGHT-OB #-cl RIGHT-OB `(MARRAYREF ,@VALS))))
-		  (MFUNCTION-CALL
-		   ; assume evaluation of arguments.
-		   (LET ((VALS (MAKE-VALUES (CDDR EXP))))
-			(MAKE-DISP-HACK-OB
-			 #+cl :LEFT-OB #-cl LEFT-OB `(LIST '(,(CADR EXP)) ,@VALS)
-			 #+cl :RIGHT-OB #-cl RIGHT-OB `(MFUNCTION-CALL ,(CADR EXP) ,@VALS))))
-		  (LIST
-		   (LET ((OBS (MAPCAR #'OBJECT-FOR-DISPLAY-HACK (CDR EXP))))
-			(MAKE-DISP-HACK-OB
-			 #+cl :LEFT-OB #-cl LEFT-OB `(LIST ,@(MAPCAR #'(LAMBDA (U) (LEFT-OB U))
-						  OBS))
-			 #+cl :RIGHT-OB #-cl RIGHT-OB `(LIST ,@(MAPCAR #'(LAMBDA (U) (RIGHT-OB U))
-						   OBS)))))
-		  (QUOTE (MAKE-DISP-HACK-OB
-			   #+cl :LEFT-OB #-cl LEFT-OB EXP
-			   #+cl :RIGHT-OB #-cl RIGHT-OB EXP))
-		  (TRD-MSYMEVAL
-		   (MAKE-DISP-HACK-OB
-		     #+cl :LEFT-OB #-cl LEFT-OB `',(CADR EXP)
-		     #+cl :RIGHT-OB #-cl RIGHT-OB EXP))
-		 (T
-		   (COND ((OR (NOT (ATOM (CAR EXP)))
-			      (GETL (CAR EXP) '(FSUBR FEXPR MACRO)))
-			  (MAKE-DISP-HACK-OB
-			    #+cl :LEFT-OB #-cl LEFT-OB `',EXP
-			    #+cl :RIGHT-OB #-cl RIGHT-OB EXP))
-			 (T
-			  (LET ((VALS (MAKE-VALUES (CDR EXP))))
-			       (MAKE-DISP-HACK-OB
-				#+cl :LEFT-OB #-cl LEFT-OB `(LIST '(,(UNTRANS-OP (CAR EXP)))
-					       ,@VALS)
-				#+cl :RIGHT-OB #-cl RIGHT-OB `(,(CAR EXP) ,@VALS)))))))))
+(defun object-for-display-hack (exp)
+  (if (atom exp)
+      (make-disp-hack-ob
+       #+cl :left-ob #-cl left-ob `',exp
+       #+cl :right-ob #-cl right-ob exp)
+      (case (car exp)
+	(simplify
+	 (let ((v (object-for-display-hack (cadr exp))))
+	   (make-disp-hack-ob
+	    #+cl :left-ob #-cl left-ob (left-ob v)
+	    #+cl :right-ob #-cl right-ob `(simplify ,(right-ob v)))))
+	(marrayref
+	 (let ((vals (make-values (cdr exp))))
+	   (make-disp-hack-ob
+	    #+cl :left-ob #-cl left-ob `(list (list* ,(car vals) '(array))
+					 ,@(cdr vals))
+	    #+cl :right-ob #-cl right-ob `(marrayref ,@vals))))
+	(mfunction-call
+					; assume evaluation of arguments.
+	 (let ((vals (make-values (cddr exp))))
+	   (make-disp-hack-ob
+	    #+cl :left-ob #-cl left-ob `(list '(,(cadr exp)) ,@vals)
+	    #+cl :right-ob #-cl right-ob `(mfunction-call ,(cadr exp) ,@vals))))
+	(list
+	 (let ((obs (mapcar #'object-for-display-hack (cdr exp))))
+	   (make-disp-hack-ob
+	    #+cl :left-ob #-cl left-ob `(list ,@(mapcar #'(lambda (u) (left-ob u))
+							obs))
+	    #+cl :right-ob #-cl right-ob `(list ,@(mapcar #'(lambda (u) (right-ob u))
+							  obs)))))
+	(quote (make-disp-hack-ob
+		#+cl :left-ob #-cl left-ob exp
+		#+cl :right-ob #-cl right-ob exp))
+	(trd-msymeval
+	 (make-disp-hack-ob
+	  #+cl :left-ob #-cl left-ob `',(cadr exp)
+	  #+cl :right-ob #-cl right-ob exp))
+	(t
+	 (cond ((or (not (atom (car exp)))
+		    (getl (car exp) '(fsubr fexpr macro)))
+		(make-disp-hack-ob
+		 #+cl :left-ob #-cl left-ob `',exp
+		 #+cl :right-ob #-cl right-ob exp))
+	       (t
+		(let ((vals (make-values (cdr exp))))
+		  (make-disp-hack-ob
+		   #+cl :left-ob #-cl left-ob `(list '(,(untrans-op (car exp)))
+						,@vals)
+		   #+cl :right-ob #-cl right-ob `(,(car exp) ,@vals)))))))))
 
-(DEFUN TR-EXP-TO-DISPLAY (EXP)
-       (LET* ((LISP-EXP (DTRANSLATE EXP))
-	      (VALUE-ALIST NIL)
-	      (OB (OBJECT-FOR-DISPLAY-HACK LISP-EXP))
-	      (DISP `(LIST '(MEQUAL) ,(LEFT-OB OB) ,(RIGHT-OB OB))))
-	     (SETQ VALUE-ALIST (NREVERSE VALUE-ALIST))
-	     (IF VALUE-ALIST
-		 `((LAMBDA ,(MAPCAR #'CDR VALUE-ALIST) ,DISP)
-		   ,@(MAPCAR #'CAR VALUE-ALIST))
-		 DISP)))
+(defun tr-exp-to-display (exp)
+  (let* ((lisp-exp (dtranslate exp))
+	 (value-alist nil)
+	 (ob (object-for-display-hack lisp-exp))
+	 (disp `(list '(mequal) ,(left-ob ob) ,(right-ob ob))))
+    (setq value-alist (nreverse value-alist))
+    (if value-alist
+	`((lambda ,(mapcar #'cdr value-alist) ,disp)
+	  ,@(mapcar #'car value-alist))
+	disp)))
 
-(DEFUN UNTRANS-OP (OP)
-       (OR (CDR (ASSQ OP '((ADD* . MPLUS)
-			   (SUB* . MMINUS)
-			   (MUL* . MTIMES)
-			   (DIV* . MQUOTIENT)
-			   (POWER* . MEXPT))))
-	   OP))
+(defun untrans-op (op)
+  (or (cdr (assq op '((add* . mplus)
+		      (sub* . mminus)
+		      (mul* . mtimes)
+		      (div* . mquotient)
+		      (power* . mexpt))))
+      op))
 
 
 ;;; From RZ;COMBIN >
@@ -208,15 +208,15 @@
 ;;;       (let (($listarith nil))
 ;;;	    (cfeval (meval (car a)))))
 
-(DEF%TR $CF (FORM)
-	(SETQ FORM (CAR (TR-ARGS (CDR FORM))))
-	(PUSH-AUTOLOAD-DEF '$CF '(CFEVAL))
-	`($ANY . ((LAMBDA (DIVOV $LISTARITH)
-			  (SSTATUS DIVOV T)
-			  (UNWIND-PROTECT (CFEVAL ,FORM)
-					  (SSTATUS DIVOV DIVOV)))
-		  (STATUS DIVOV)
-		  NIL)))
+(def%tr $cf (form)
+  (setq form (car (tr-args (cdr form))))
+  (push-autoload-def '$cf '(cfeval))
+  `($any . ((lambda (divov $listarith)
+	      (sstatus divov t)
+	      (unwind-protect (cfeval ,form)
+		(sstatus divov divov)))
+	    (status divov)
+	    nil)))
 
 ;;; from RZ;TRGRED >
 ;;;
@@ -227,20 +227,20 @@
 ;;;	     ( '*NOVAR ))
 ;;;     T NIL NIL NIL))
 
-; JPG made this an LSUBR now! win win win good old Jeff.
-;(DEF%TR $TRIGREDUCE (FORM)
-;	(LET ((ARG1 (DTRANSLATE (CADR FORM)))
-;	      (ARG2 (COND ((CDDR FORM) (DTRANSLATE (CADDR FORM)))
-;			  (T ''*NOVAR))))
-;	     `($ANY . #%(LET ((*TRIGRED T)
-;			      (VAR ,ARG2)
-;			      (*NOEXPAND T)
-;			      ($TRIGEXPAND NIL)
-;			      ($VERBOSE NIL)
-;			      ($RATPRINT NIL))
-;			     ; gross hack, please fix me quick gjc!!!!
-;			     (OR (SYMBOL-PLIST 'GCDRED) (LOAD (GET '$TRIGREDUCE 'AUTOLOAD)))
-;			     (GCDRED (SP1 ,ARG1))))))
+;; JPG made this an LSUBR now! win win win good old Jeff.
+;;(DEF%TR $TRIGREDUCE (FORM)
+;;	(LET ((ARG1 (DTRANSLATE (CADR FORM)))
+;;	      (ARG2 (COND ((CDDR FORM) (DTRANSLATE (CADDR FORM)))
+;;			  (T ''*NOVAR))))
+;;	     `($ANY . #%(LET ((*TRIGRED T)
+;;			      (VAR ,ARG2)
+;;			      (*NOEXPAND T)
+;;			      ($TRIGEXPAND NIL)
+;;			      ($VERBOSE NIL)
+;;			      ($RATPRINT NIL))
+;;			     ; gross hack, please fix me quick gjc!!!!
+;;			     (OR (SYMBOL-PLIST 'GCDRED) (LOAD (GET '$TRIGREDUCE 'AUTOLOAD)))
+;;			     (GCDRED (SP1 ,ARG1))))))
 
 ;;; From MATRUN
 ;;; (DEFUN $APPLY1 FEXPR (L)
@@ -251,26 +251,26 @@
 ;;;		   (CDR L))
 ;;;	     (RETURN *EXPR)))
 
-(DEF%TR $APPLY1 (FORM &AUX
-		      (EXPR (TR-GENSYM))
-		      (RULES (TR-GENSYM)))
-	(PUSH-AUTOLOAD-DEF '$APPLY1 '(APPLY1))
+(def%tr $apply1 (form &aux
+		      (expr (tr-gensym))
+		      (rules (tr-gensym)))
+  (push-autoload-def '$apply1 '(apply1))
 		      
-	`($ANY  . (DO ((,EXPR ,(DTRANSLATE (CADR FORM))
-			       (APPLY1 ,EXPR (CAR ,RULES) 0))
-		       (,RULES ',(CDDR FORM) (CDR ,RULES)))
-		      ((NULL ,RULES) ,EXPR))))
+  `($any  . (do ((,expr ,(dtranslate (cadr form))
+			(apply1 ,expr (car ,rules) 0))
+		 (,rules ',(cddr form) (cdr ,rules)))
+		((null ,rules) ,expr))))
 
 ;;; This code was written before they had formatting of lisp code invented.
 ;;;(DEFUN $APPLY2 FEXPR (L)(PROG (*RULELIST)
 ;;;(SETQ *RULELIST (CDR L))
 ;;;(RETURN (APPLY2 (MEVAL (CAR L)) 0))))
 
-(DEF%TR $APPLY2 (FORM)
-	`($ANY . ((LAMBDA (*RULELIST)
-			  (DECLARE (SPECIAL *RULELIST))
-			  (APPLY2 ,(DTRANSLATE (CADR FORM)) 0))
-		  ',(CDDR FORM))))
+(def%tr $apply2 (form)
+  `($any . ((lambda (*rulelist)
+	      (declare (special *rulelist))
+	      (apply2 ,(dtranslate (cadr form)) 0))
+	    ',(cddr form))))
 
 ;;;(DEFUN $APPLYB1 FEXPR (L) 
 ;;;	 (PROG (*EXPR) 
@@ -282,23 +282,23 @@
 ;;;		     (CDR L))
 ;;;	       (RETURN *EXPR )))
 
-(DEF%TR $APPLYB1 (FORM &AUX (EXPR (TR-GENSYM)) (RULES (TR-GENSYM)))
-	(PUSH-AUTOLOAD-DEF '$APPLYB1 '(APPLY1HACK))
-	`($ANY . (DO ((,EXPR ,(DTRANSLATE (CADR FORM))
-			     (CAR (APPLY1HACK ,EXPR (CAR ,RULES))))
-		      (,RULES ',(CDDR FORM) (CDR ,RULES)))
-		     ((NULL ,RULES) ,EXPR))))
+(def%tr $applyb1 (form &aux (expr (tr-gensym)) (rules (tr-gensym)))
+  (push-autoload-def '$applyb1 '(apply1hack))
+  `($any . (do ((,expr ,(dtranslate (cadr form))
+		       (car (apply1hack ,expr (car ,rules))))
+		(,rules ',(cddr form) (cdr ,rules)))
+	       ((null ,rules) ,expr))))
 
 ;;;(DEFUN $APPLYB2 FEXPR (L)(PROG (*RULELIST)
 ;;;(SETQ *RULELIST (CDR L))
 ;;;(RETURN(CAR (APPLY2HACK (MEVAL (CAR L)))))))
 
-(DEF%TR $APPLYB2 (FORM)
-	(PUSH-AUTOLOAD-DEF '$APPLYB2 '(APPLY2HACK))
-	`($ANY . ((LAMBDA (*RULELIST)
-			  (DECLARE (SPECIAL *RULELIST))
-			  (APPLY2HACK ,(DTRANSLATE (CADR FORM))))
-		  ',(CDDR FORM))))
+(def%tr $applyb2 (form)
+  (push-autoload-def '$applyb2 '(apply2hack))
+  `($any . ((lambda (*rulelist)
+	      (declare (special *rulelist))
+	      (apply2hack ,(dtranslate (cadr form))))
+	    ',(cddr form))))
 
 
 
@@ -307,29 +307,29 @@
 ;;; write the translation property for his own special form!
 
 
-(DEF%TR $BUILDQ (FORM)
+(def%tr $buildq (form)
 
- (LET ((ALIST                               ;would be nice to output
-        (MAPCAR         		    ;backquote instead of list/cons
-	  #'(LAMBDA (VAR)		    ;but I'm not sure if things get
-             (COND ((ATOM VAR)              ;macroexpanded.  -REH
-                                            ; Well, any macros are o.k. They
-		                            ; get expanded "at the right time". -gjc
+  (let ((alist				;would be nice to output
+	 (mapcar		       ;backquote instead of list/cons
+	  #'(lambda (var)	       ;but I'm not sure if things get
+	      (cond ((atom var)		;macroexpanded.  -REH
+					; Well, any macros are o.k. They
+					; get expanded "at the right time". -gjc
 		    
-                    `(CONS ',VAR ,(DTRANSLATE VAR)))
-                   ((EQ (CAAR VAR) 'MSETQ)
-                    `(CONS ',(CADR VAR) ,(DTRANSLATE (CADDR VAR))))
-                   (T (SETQ TR-ABORT T)
-                      (TR-TELL VAR
-			    "Illegal BUILDQ form encountered during translation"))))
-                       ;right thing to do here??
-                       ;how much error checking does transl do now?
-                       ; Yes. Not as much as it should! -GJC
+		     `(cons ',var ,(dtranslate var)))
+		    ((eq (caar var) 'msetq)
+		     `(cons ',(cadr var) ,(dtranslate (caddr var))))
+		    (t (setq tr-abort t)
+		       (tr-tell var
+				"Illegal BUILDQ form encountered during translation"))))
+					;right thing to do here??
+					;how much error checking does transl do now?
+					; Yes. Not as much as it should! -GJC
 	  
-         (CDR (CADR FORM)))))
-      (COND ((NULL ALIST) 
-               `($ANY QUOTE ,(CADDR FORM)))
-            (T `($ANY MBUILDQ-SUBST (LIST ,@ALIST) ',(CADDR FORM))))))
+	  (cdr (cadr form)))))
+    (cond ((null alist) 
+	   `($any quote ,(caddr form)))
+	  (t `($any mbuildq-subst (list ,@alist) ',(caddr form))))))
 
 
 ;;; Presently STATUS and SSTATUS are FEXPR which don't evaluate 
@@ -337,21 +337,21 @@
 
 #-cl
 (def%tr $sstatus (form)
-	`($any . ($sstatus . ,(cdr form))))
+  `($any . ($sstatus . ,(cdr form))))
 
 #-cl
 (def%tr $status (form)
-	(setq form (cdr form))
-	(cond ((null form) ; %%%PLEASE FIX ME%%% with WNA-CHECKING %%%%%%
-	       nil)
-	      (t
-	       (case (car form)
-		      ($FEATURE
-		       (cond ((null (cdr form))
-			      `($any . ($status $feature)))
-			     ; this BOOLEAN check is important, since
-			     ; STATUS(FEATURE,FOO) will always be used in a
-			     ; BOOLEAN context.
-			     (t `($BOOLEAN . ($STATUS $FEATURE ,(CADR FORM))))))
-		      (T `($ANY . ($STATUS . ,FORM)))))))
+  (setq form (cdr form))
+  (cond ((null form)	; %%%PLEASE FIX ME%%% with WNA-CHECKING %%%%%%
+	 nil)
+	(t
+	 (case (car form)
+	   ($feature
+	    (cond ((null (cdr form))
+		   `($any . ($status $feature)))
+					; this BOOLEAN check is important, since
+					; STATUS(FEATURE,FOO) will always be used in a
+					; BOOLEAN context.
+		  (t `($boolean . ($status $feature ,(cadr form))))))
+	   (t `($any . ($status . ,form)))))))
 

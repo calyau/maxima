@@ -15,7 +15,7 @@
 (load-macsyma-macros procs)
 (load-macsyma-macros-at-runtime 'procs)
 
-(DEFVAR TRANSL-MODULES NIL)
+(defvar transl-modules nil)
 
 ;;; Simple but effective single-level module definitions
 ;;; and utilities which work through property lists.
@@ -34,462 +34,462 @@
 ;;; user-level (and non-modular global only) INFOLISTS of FUNCTIONS and VALUES,
 ;;; inspired this, motivated by my characteristic lazyness.
 
-(DEFMACRO ENTERQ (THING LIST)
+(defmacro enterq (thing list)
   ;; should be a DEF-ALTERANT
-  `(OR (MEMQ ,THING ,LIST)
-       (SETF ,LIST (CONS ,THING ,LIST))))
+  `(or (memq ,thing ,list)
+    (setf ,list (cons ,thing ,list))))
 
-(DEFMACRO DEF-TRANSL-MODULE (NAME &REST PROPERTIES)
-  `(PROGN
-    (ENTerQ ',NAME TRANSL-MODULES)
-    ,@(MAPCAR #'(LAMBDA (P)
-		  `(DEFPROP ,NAME
-		     ,(IF (ATOM P) T (CDR P))
-		     ,(IF (ATOM P) P (CAR P))))
-	      PROPERTIES)))
+(defmacro def-transl-module (name &rest properties)
+  `(progn
+    (enterq ',name transl-modules)
+    ,@(mapcar #'(lambda (p)
+		  `(defprop ,name
+		    ,(if (atom p) t (cdr p))
+		    ,(if (atom p) p (car p))))
+	      properties)))
 
-(DEF-TRANSL-MODULE TRANSS TTIME-AUTO)
-(DEF-TRANSL-MODULE TRANSL TTIME-AUTO (FIRST-LOAD TRDATA DCL))
-(DEF-TRANSL-MODULE TRUTIL TTIME-AUTO)
-(DEF-TRANSL-MODULE TRANS1 TTIME-AUTO)
-(DEF-TRANSL-MODULE TRANS2 TTIME-AUTO)
-(DEF-TRANSL-MODULE TRANS3 TTIME-AUTO)
-(DEF-TRANSL-MODULE TRANS4 TTIME-AUTO)
-(DEF-TRANSL-MODULE TRANS5 TTIME-AUTO)
-(DEF-TRANSL-MODULE TRANSF TTIME-AUTO)
-(DEF-TRANSL-MODULE TROPER TTIME-AUTO)
-(DEF-TRANSL-MODULE TRPRED TTIME-AUTO)
+(def-transl-module transs ttime-auto)
+(def-transl-module transl ttime-auto (first-load trdata dcl))
+(def-transl-module trutil ttime-auto)
+(def-transl-module trans1 ttime-auto)
+(def-transl-module trans2 ttime-auto)
+(def-transl-module trans3 ttime-auto)
+(def-transl-module trans4 ttime-auto)
+(def-transl-module trans5 ttime-auto)
+(def-transl-module transf ttime-auto)
+(def-transl-module troper ttime-auto)
+(def-transl-module trpred ttime-auto)
 
-(DEF-TRANSL-MODULE MTAGS TTIME-AUTO)
-(DEF-TRANSL-MODULE MDEFUN)
-(DEF-TRANSL-MODULE TRANSQ)
-(DEF-TRANSL-MODULE FCALL  NO-LOAD-AUTO)
-(DEF-TRANSL-MODULE ACALL NO-LOAD-AUTO)
-(DEF-TRANSL-MODULE TRDATA   NO-LOAD-AUTO)
-(DEF-TRANSL-MODULE MCOMPI TTIME-AUTO)
+(def-transl-module mtags ttime-auto)
+(def-transl-module mdefun)
+(def-transl-module transq)
+(def-transl-module fcall  no-load-auto)
+(def-transl-module acall no-load-auto)
+(def-transl-module trdata   no-load-auto)
+(def-transl-module mcompi ttime-auto)
 
-(DEF-TRANSL-MODULE DCL pseudo) ; more data
-(DEFPROP DCL MAXDOC FASL-DIR)
+(def-transl-module dcl pseudo)		; more data
+(defprop dcl maxdoc fasl-dir)
 
-(DEF-TRANSL-MODULE TRMODE TTIME-AUTO
-  NO-LOAD-AUTO
+(def-transl-module trmode ttime-auto
+  no-load-auto
   ;; Temporary hack, TRANSL AUTOLOADs should be
   ;; in a different file from functional autoloads.
   )
 
-(DEF-TRANSL-MODULE TRHOOK HYPER)
-(DEF-TRANSL-MODULE TRANSL-AUTOLOAD PSEUDO)
+(def-transl-module trhook hyper)
+(def-transl-module transl-autoload pseudo)
 
 (eval-when (eval compile load)
-  (LOAD-MACSYMA-MACROS PROCS))
-#+ITS
-(DEFUN TR-FASL-FILE-NAME (FOO)
-  (NAMESTRING `((dsk  ,(get! foo 'fasl-dir)) ,foo fasl)))
-
-#+Multics
+  (load-macsyma-macros procs))
+#+its
 (defun tr-fasl-file-name (foo)
-  (NAMESTRING `,(executable-dir foo)))
+  (namestring `((dsk  ,(get! foo 'fasl-dir)) ,foo fasl)))
 
-#+ITS
+#+multics
+(defun tr-fasl-file-name (foo)
+  (namestring `,(executable-dir foo)))
+
+#+its
 (defvar transl-autoload-oldio-name "DSK:MACSYM;TRANSL AUTOLO")
 
-#+Multics
-(defvar transl-autoload-oldio-name (NAMESTRING (executable-dir 'transl/.autoload)))
+#+multics
+(defvar transl-autoload-oldio-name (namestring (executable-dir 'transl/.autoload)))
 
-(DEFVAR MODULE-STACK NIL)
+(defvar module-stack nil)
 
-(DEFMACRO TRANSL-MODULE (NAME)
-  (IF (NOT (MEMQ NAME TRANSL-MODULES))
-      (MAXIMA-ERROR "Not a TRANSL-MODULE, see LIBMAX;TRANSM >"))
-  #+PDP10
-  (PROGN (PUSH NAME MODULE-STACK)
-	 (PUSH '(EVAL-WHEN (COMPILE EVAL)
-			   (TRANSL-MODULE-DO-IT)
-			   (POP MODULE-STACK))
-	       EOF-COMPILE-QUEUE)
-	 (PUTPROP NAME NIL 'FUNCTIONS)
-	 (PUTPROP NAME NIL 'TR-PROPS)
-	 (PUTPROP NAME NIL 'VARIABLES)
-	 (DO ((L TRANSL-MODULES (CDR L)))
-	     ((NULL L))
-	   (IF (EQ (CAR L) NAME) NIL
-	       (LOAD-MODULE-INFO (CAR L))))
+(defmacro transl-module (name)
+  (if (not (memq name transl-modules))
+      (maxima-error "Not a TRANSL-MODULE, see LIBMAX;TRANSM >"))
+  #+pdp10
+  (progn (push name module-stack)
+	 (push '(eval-when (compile eval)
+		 (transl-module-do-it)
+		 (pop module-stack))
+	       eof-compile-queue)
+	 (putprop name nil 'functions)
+	 (putprop name nil 'tr-props)
+	 (putprop name nil 'variables)
+	 (do ((l transl-modules (cdr l)))
+	     ((null l))
+	   (if (eq (car l) name) nil
+	       (load-module-info (car l))))
 	 )
-  #+PDP10
-  `(PROGN 'COMPILE
-	  (DEFPROP ,NAME
-	    ,(CADDR (NAMELIST (TRUENAME INFILE)))
-	    VERSION)
-	  (PROGN
-	    ,(IF (NOT (GET NAME 'NO-LOAD-AUTO))
-		 `(OR (GET 'TRANSL-AUTOLOAD 'VERSION)
-		      ($LOAD ',transl-autoload-oldio-name)))
-	    ,@(MAPCAR #'(LAMBDA (U)
-			  `(OR (GET ',U 'VERSION)
-			       ($LOAD
-				',(TR-FASL-FILE-NAME U))))
-		      (GET NAME 'FIRST-LOAD))))
-  #-PDP10
-  '(COMMENT THERE ARE REASONABLE THINGS TO DO HERE)
+  #+pdp10
+  `(progn 'compile
+    (defprop ,name
+	,(caddr (namelist (truename infile)))
+      version)
+    (progn
+      ,(if (not (get name 'no-load-auto))
+	   `(or (get 'transl-autoload 'version)
+	     ($load ',transl-autoload-oldio-name)))
+      ,@(mapcar #'(lambda (u)
+		    `(or (get ',u 'version)
+		      ($load
+		       ',(tr-fasl-file-name u))))
+		(get name 'first-load))))
+  #-pdp10
+  '(comment there are reasonable things to do here)
   )
 
-#+PDP10
+#+pdp10
 
-(DEFUN LAMBDA-TYPE (ARGLIST)
-  (COND ((NULL ARGLIST)
-	 '(*EXPR . (NIL . 0)))
-	((ATOM ARGLIST)
-	 '(*LEXPR . NIL))
-	(T
+(defun lambda-type (arglist)
+  (cond ((null arglist)
+	 '(*expr . (nil . 0)))
+	((atom arglist)
+	 '(*lexpr . nil))
+	(t
 	 ;; (FOO BAR &OPTIONAL ... &REST L &AUX)
 	 ;; #O776 is the MAX MAX.
-	 (DO ((MIN 0)
-	      (MAX 0)
-	      (OPTIONAL NIL)
-	      (L ARGLIST (CDR L)))
-	     ((NULL L)
-	      (IF (= MIN MAX)
-		  `(*EXPR . (NIL . ,MIN))
-		  `(*LEXPR . (,MIN . ,MAX))))
-	   (CASE (CAR L)
-	     ((&REST)
-	      (SETQ MAX #o776)
-	      (SETQ L NIL))
-	     ((&OPTIONAL)
-	      (SETQ OPTIONAL T))
-	     ((&AUX)
-	      (SETQ L NIL))
+	 (do ((min 0)
+	      (max 0)
+	      (optional nil)
+	      (l arglist (cdr l)))
+	     ((null l)
+	      (if (= min max)
+		  `(*expr . (nil . ,min))
+		  `(*lexpr . (,min . ,max))))
+	   (case (car l)
+	     ((&rest)
+	      (setq max #o776)
+	      (setq l nil))
+	     ((&optional)
+	      (setq optional t))
+	     ((&aux)
+	      (setq l nil))
 	     (t
-	      (IF (AND (SYMBOLP (CAR L))
-		       (= #\& (GETCHARN (CAR L) 1)))
-		  (RETURN
-		   (LAMBDA-TYPE
-		    (MAXIMA-ERROR (LIST "arglist has unknown &keword" (CAR L))
-			   ARGLIST 'WRNG-TYPE-ARG))))
-	      (OR OPTIONAL (SETQ MIN (f1+ MIN)))
-	      (SETQ MAX (f1+ MAX))))))))
+	      (if (and (symbolp (car l))
+		       (= #\& (getcharn (car l) 1)))
+		  (return
+		    (lambda-type
+		     (maxima-error (list "arglist has unknown &keword" (car l))
+				   arglist 'wrng-type-arg))))
+	      (or optional (setq min (f1+ min)))
+	      (setq max (f1+ max))))))))
 
 (def-def-property translate (form))
 
 #+cl
 (defmacro def%tr (name lambda-list &body body &aux definition)
   (setq definition
-	(COND ((AND (NULL BODY) (SYMBOLP LAMBDA-LIST))
-	       `(DEF-SAME%TR ,NAME ,LAMBDA-LIST))
-	      (T
-	       #+PDP10
-	       (ENTERQ NAME (GET (CAR MODULE-STACK) 'TR-PROPS))
+	(cond ((and (null body) (symbolp lambda-list))
+	       `(def-same%tr ,name ,lambda-list))
+	      (t
+	       #+pdp10
+	       (enterq name (get (car module-stack) 'tr-props))
 	       `(defun-prop (,name translate) ,lambda-list ,@ body))))
   `(eval-when (compile eval load)
-	  #+lispm(record-source-file-name ',name 'def%tr)
-	  ,definition))
+    #+lispm(record-source-file-name ',name 'def%tr)
+    ,definition))
 
 
 #-cl
-(DEFMACRO DEF%TR (NAME LAMBDA-LIST &REST BODY)
-  (COND ((AND (NULL BODY) (SYMBOLP LAMBDA-LIST))
-	 `(DEF-SAME%TR ,NAME ,LAMBDA-LIST))
-	(T
-	 #+PDP10
-	 (ENTERQ NAME (GET (CAR MODULE-STACK) 'TR-PROPS))
-	 `(def-translate-property ,NAME
-	    ,LAMBDA-LIST ,@BODY))))
+(defmacro def%tr (name lambda-list &rest body)
+  (cond ((and (null body) (symbolp lambda-list))
+	 `(def-same%tr ,name ,lambda-list))
+	(t
+	 #+pdp10
+	 (enterq name (get (car module-stack) 'tr-props))
+	 `(def-translate-property ,name
+	   ,lambda-list ,@body))))
 
-(DEFMACRO DEF-SAME%TR (NAME SAME-AS)
+(defmacro def-same%tr (name same-as)
   ;; right now MUST be used in the SAME file.
-  #+PDP10
-  (ENTERQ NAME (GET (CAR MODULE-STACK) 'TR-PROPS))
-  `(PUTPROP ',NAME
-	    (OR (GET ',SAME-AS 'TRANSLATE)
-		(MAXIMA-ERROR '|No TRANSLATE property to alias.| ',SAME-AS))
-	    'TRANSLATE))
+  #+pdp10
+  (enterq name (get (car module-stack) 'tr-props))
+  `(putprop ',name
+    (or (get ',same-as 'translate)
+     (maxima-error '|No TRANSLATE property to alias.| ',same-as))
+    'translate))
 
-(DEFMACRO DEF%TR-INHERIT (FROM &REST OTHERS)
-  #+PDP10
+(defmacro def%tr-inherit (from &rest others)
+  #+pdp10
   (mapc #'(lambda (name)
 	    (enterq name (get (car module-stack) 'tr-props)))
 	others)
-  `(LET ((TR-PROP (OR (GET ',FROM 'TRANSLATE)
-		      (MAXIMA-ERROR '|No TRANSLATE property to alias.| ',FROM))))
-     (MAPC #'(LAMBDA (NAME) (PUTPROP NAME TR-PROP 'TRANSLATE))
-	   ',OTHERS)))
+  `(let ((tr-prop (or (get ',from 'translate)
+		      (maxima-error '|No TRANSLATE property to alias.| ',from))))
+    (mapc #'(lambda (name) (putprop name tr-prop 'translate))
+     ',others)))
 
-#+PDP10
-(DEFUN PUT-LAMBDA-TYPE (NAME ARGL)
-       (LET ((LAMBDA-TYPE (LAMBDA-TYPE ARGL)))
-	    (PUTPROP NAME T (CAR LAMBDA-TYPE))
-	    (ARGS NAME (CDR LAMBDA-TYPE))))
+#+pdp10
+(defun put-lambda-type (name argl)
+  (let ((lambda-type (lambda-type argl)))
+    (putprop name t (car lambda-type))
+    (args name (cdr lambda-type))))
 
 
-(DEFMACRO DEFTRFUN (NAME ARGL &REST BODY)
-  #+PDP10
-  (PROGN (ENTERQ NAME (GET (CAR MODULE-STACK) 'FUNCTIONS))
-	 (PUT-LAMBDA-TYPE NAME ARGL))
-  `(DEFUN ,NAME ,ARGL ,@BODY))
+(defmacro deftrfun (name argl &rest body)
+  #+pdp10
+  (progn (enterq name (get (car module-stack) 'functions))
+	 (put-lambda-type name argl))
+  `(defun ,name ,argl ,@body))
 
-(DEFMACRO DEFTRVAR (NAME VALUE &REST IGNORE-DOC) IGNORE-DOC
-  ;; to be used to put the simple default value in
-  ;; the autoload file. Should be generalized to include
-  ;; BINDING methods.
-  #+PDP10
-  (PROGN (ENTERQ NAME (GET (CAR MODULE-STACK) 'VARIABLES))
-	 (PUTPROP NAME (IF (FBOUNDP 'MACRO-EXPAND)
-			   (MACRO-EXPAND VALUE)
-			   VALUE)
-		  'VALUE))
-  `(DEFVAR ,NAME ,VALUE))
+(defmacro deftrvar (name value &rest ignore-doc) ignore-doc
+	  ;; to be used to put the simple default value in
+	  ;; the autoload file. Should be generalized to include
+	  ;; BINDING methods.
+	  #+pdp10
+	  (progn (enterq name (get (car module-stack) 'variables))
+		 (putprop name (if (fboundp 'macro-expand)
+				   (macro-expand value)
+				   value)
+			  'value))
+	  `(defvar ,name ,value))
 
-;#+PDP10
-;(PROGN 'COMPILE
+;;#+PDP10
+;;(PROGN 'COMPILE
 
-;(defun get! (a b) (or (get a b) (get! (MAXIMA-ERROR (list "undefined" b "property")
-;					     a 'wrng-type-arg)
-;				      b)))
+;;(defun get! (a b) (or (get a b) (get! (MAXIMA-ERROR (list "undefined" b "property")
+;;					     a 'wrng-type-arg)
+;;				      b)))
 
-;(defun print-defprop (symbol prop stream)
-;       (print `(defprop ,symbol ,(get symbol prop) ,prop) stream))
+;;(defun print-defprop (symbol prop stream)
+;;       (print `(defprop ,symbol ,(get symbol prop) ,prop) stream))
 
-;(defun save-module-info (module stream)
-;  (putprop module `(,(status uname) ,(status dow) ,(status date))
-;	   'last-compiled)
-;  (print-defprop module 'last-compiled stream)
-;  (print-defprop module 'functions stream)
-;  (print-defprop module 'variables stream)
-;  (print-defprop module 'tr-props stream)
-;  (DO ((VARIABLES (get module 'VARIABLES) (CDR VARIABLES)))
-;      ((NULL VARIABLES))
-;    (print-defprop (car variables) 'value stream)
-;    ;; *NB*
-;    ;; this depends on knowing about the internal workings
-;    ;; of the maclisp compiler!!!!
-;    (print `(defprop ,(car variables)
-;	      (special ,(car variables))
-;	      special)
-;	   stream)
-;    )
-;  (DO ((FUNCTIONS (GET MODULE 'FUNCTIONS) (CDR FUNCTIONS)))
-;      ((NULL FUNCTIONS))
-;    ;; *NB* depends on maclisp compiler.
-;    (LET ((X (GETL (CAR FUNCTIONS) '(*LEXPR *EXPR))))
-;      (IF X
-;	  (PRINT-DEFPROP (CAR FUNCTIONS) (CAR X) STREAM)))
-;    (LET ((X (ARGS (CAR FUNCTIONS))))
-;      (IF X
-;	  (PRINT `(ARGS ',(CAR FUNCTIONS) ',X) STREAM)))))
+;;(defun save-module-info (module stream)
+;;  (putprop module `(,(status uname) ,(status dow) ,(status date))
+;;	   'last-compiled)
+;;  (print-defprop module 'last-compiled stream)
+;;  (print-defprop module 'functions stream)
+;;  (print-defprop module 'variables stream)
+;;  (print-defprop module 'tr-props stream)
+;;  (DO ((VARIABLES (get module 'VARIABLES) (CDR VARIABLES)))
+;;      ((NULL VARIABLES))
+;;    (print-defprop (car variables) 'value stream)
+;;    ;; *NB*
+;;    ;; this depends on knowing about the internal workings
+;;    ;; of the maclisp compiler!!!!
+;;    (print `(defprop ,(car variables)
+;;	      (special ,(car variables))
+;;	      special)
+;;	   stream)
+;;    )
+;;  (DO ((FUNCTIONS (GET MODULE 'FUNCTIONS) (CDR FUNCTIONS)))
+;;      ((NULL FUNCTIONS))
+;;    ;; *NB* depends on maclisp compiler.
+;;    (LET ((X (GETL (CAR FUNCTIONS) '(*LEXPR *EXPR))))
+;;      (IF X
+;;	  (PRINT-DEFPROP (CAR FUNCTIONS) (CAR X) STREAM)))
+;;    (LET ((X (ARGS (CAR FUNCTIONS))))
+;;      (IF X
+;;	  (PRINT `(ARGS ',(CAR FUNCTIONS) ',X) STREAM)))))
 
-;(defun save-enable-module-info (module stream)
-;  ;; this outputs stuff to be executed in the context
-;  ;; of RUNTIME of the modules, using information gotten
-;  ;; by the SAVE done by the above function.
-;  (print `(defprop ,module ,(tr-fasl-file-name module) fasload) stream)
-;  ;; FASLOAD property lets us share the TR-FASL-FILE-NAME
-;  ;; amoung the various autoload properties.
-;  (print `(map1-put-if-nil ',(get module 'functions)
-;			   (get ',module 'fasload)
-;			   'autoload)
-;	 stream)
-;  (print `(map1-put-if-nil ',(get module 'tr-props)
-;			   (get ',module 'fasload)
-;			   'autoload-translate)
-;	 stream)
-;  (print `(map1-put-if-nil ',(get module 'tr-props)
-;			   (or (get 'autoload-translate 'subr)
-;			       (MAXIMA-ERROR 'autoload-translate 'subr
-;				      'fail-act))
-;			   'translate)
-;	 stream)
-;  (do ((variables (get module 'variables) (cdr variables)))
-;      ((null variables))
-;    (print `(or (boundp ',(car variables))
-;		(setq ,(car variables) ,(get (car variables) 'value)))
-;	   stream)))
+;;(defun save-enable-module-info (module stream)
+;;  ;; this outputs stuff to be executed in the context
+;;  ;; of RUNTIME of the modules, using information gotten
+;;  ;; by the SAVE done by the above function.
+;;  (print `(defprop ,module ,(tr-fasl-file-name module) fasload) stream)
+;;  ;; FASLOAD property lets us share the TR-FASL-FILE-NAME
+;;  ;; amoung the various autoload properties.
+;;  (print `(map1-put-if-nil ',(get module 'functions)
+;;			   (get ',module 'fasload)
+;;			   'autoload)
+;;	 stream)
+;;  (print `(map1-put-if-nil ',(get module 'tr-props)
+;;			   (get ',module 'fasload)
+;;			   'autoload-translate)
+;;	 stream)
+;;  (print `(map1-put-if-nil ',(get module 'tr-props)
+;;			   (or (get 'autoload-translate 'subr)
+;;			       (MAXIMA-ERROR 'autoload-translate 'subr
+;;				      'fail-act))
+;;			   'translate)
+;;	 stream)
+;;  (do ((variables (get module 'variables) (cdr variables)))
+;;      ((null variables))
+;;    (print `(or (boundp ',(car variables))
+;;		(setq ,(car variables) ,(get (car variables) 'value)))
+;;	   stream)))
 
-;(eval-when (compile eval)
-;	   (or (get 'iota 'macro) (load '|liblsp;iota fasl|)))
+;;(eval-when (compile eval)
+;;	   (or (get 'iota 'macro) (load '|liblsp;iota fasl|)))
 
-;(DEFUN TRANSL-MODULE-DO-IT (&AUX (*print-base* 10.) (*NOPOINT NIL))
-;       (let ((module (CAR MODULE-STACK)))
-;	    (cond ((AND (GET module 'ttime-auto)
-;			(macsyma-compilation-p))
-;		   (iota ((f `((dsk ,(get! module 'dir))
-;			       ,module _auto_) 'out))
-;			 (and ttynotes (format tyo "~&;MODULE : ~A~%" MODULE))
-;			 (save-module-info module f)
-;			 (renamef f "* AUTOLO"))
-;		   (INSTALL-TRANSL-AUTOLOADS)))))
+;;(DEFUN TRANSL-MODULE-DO-IT (&AUX (*print-base* 10.) (*NOPOINT NIL))
+;;       (let ((module (CAR MODULE-STACK)))
+;;	    (cond ((AND (GET module 'ttime-auto)
+;;			(macsyma-compilation-p))
+;;		   (iota ((f `((dsk ,(get! module 'dir))
+;;			       ,module _auto_) 'out))
+;;			 (and ttynotes (format tyo "~&;MODULE : ~A~%" MODULE))
+;;			 (save-module-info module f)
+;;			 (renamef f "* AUTOLO"))
+;;		   (INSTALL-TRANSL-AUTOLOADS)))))
 
-;(defun load-module-info (module)
-;       (IF (AND (GET MODULE 'TTIME-AUTO)
-;		;; Assume we are the only MCL compiling
-;		;; a transl module at this time.
-;		(NOT (GET MODULE 'LAST-COMPILED)))
-;	   (LET ((FILE `((dsk ,(get! module 'dir))
-;			 ,module autolo)))
-;		(COND ((PROBE-FILE FILE)
-;		       (AND TTYNOTES
-;			    (FORMAT TYO "~&;Loading ~A info~%"
-;				    file))
-;		       (LOAD FILE))
-;		      (T
-;		       (AND TTYNOTES
-;			    (FORMAT TYO "~&; ~A NOT FOUND~%"
-;				    file)))))))
+;;(defun load-module-info (module)
+;;       (IF (AND (GET MODULE 'TTIME-AUTO)
+;;		;; Assume we are the only MCL compiling
+;;		;; a transl module at this time.
+;;		(NOT (GET MODULE 'LAST-COMPILED)))
+;;	   (LET ((FILE `((dsk ,(get! module 'dir))
+;;			 ,module autolo)))
+;;		(COND ((PROBE-FILE FILE)
+;;		       (AND TTYNOTES
+;;			    (FORMAT TYO "~&;Loading ~A info~%"
+;;				    file))
+;;		       (LOAD FILE))
+;;		      (T
+;;		       (AND TTYNOTES
+;;			    (FORMAT TYO "~&; ~A NOT FOUND~%"
+;;				    file)))))))
 
-;(defvar autoload-install-file "dsk:macsyma;transl autoload")
+;;(defvar autoload-install-file "dsk:macsyma;transl autoload")
 
-;(DEFUN UNAME-TIMEDATE (FORMAT-STREAM)
-;       (LET (((YEAR MONTH DAY) (STATUS DATE))
-;	     ((HOUR MINUTE SECOND) (STATUS DAYTIME)))
-;	    (FORMAT FORMAT-STREAM
-;		    "by ~A on ~A, ~
-;	       ~[January~;February~;March~;April~;May~;June~;July~;August~
-;	       ~;September~;October~;November~;December~] ~
-;	       ~D, 19~D, at ~D:~2,'0D:~2,'0D"
-;		    (status uname)
-;		    (status dow)
-;		    (f1- month) day year
-;		    hour minute second)))
+;;(DEFUN UNAME-TIMEDATE (FORMAT-STREAM)
+;;       (LET (((YEAR MONTH DAY) (STATUS DATE))
+;;	     ((HOUR MINUTE SECOND) (STATUS DAYTIME)))
+;;	    (FORMAT FORMAT-STREAM
+;;		    "by ~A on ~A, ~
+;;	       ~[January~;February~;March~;April~;May~;June~;July~;August~
+;;	       ~;September~;October~;November~;December~] ~
+;;	       ~D, 19~D, at ~D:~2,'0D:~2,'0D"
+;;		    (status uname)
+;;		    (status dow)
+;;		    (f1- month) day year
+;;		    hour minute second)))
 
-;(defun install-transl-autoloads ()
-;       (MAPC #'LOAD-MODULE-INFO TRANSL-MODULES)
-;       (iota ((f (mergef "* _TEMP"
-;			 autoload-install-file)
-;		 '(out ascii)))
-;	     (PRINT `(progn
-;		      (DEFPROP TRANSL-AUTOLOAD ,(Uname-timedate nil) VERSION)
-;		      (OR (GET 'TRANSL-AUTOLOAD 'SUBR)
-;			  (load '((dsk macsym)trhook fasl)))
-;		      (setq transl-modules
-;			    ',transl-modules))
-;		    F)
-;	     (DO ((MODULES TRANSL-MODULES (CDR MODULES)))
-;		 ((NULL MODULES)
-;		  (renamef f autoload-install-file))
-;		 (and (get (car modules) 'ttime-auto)
-;		      (save-enable-module-info (car modules) f)))))
+;;(defun install-transl-autoloads ()
+;;       (MAPC #'LOAD-MODULE-INFO TRANSL-MODULES)
+;;       (iota ((f (mergef "* _TEMP"
+;;			 autoload-install-file)
+;;		 '(out ascii)))
+;;	     (PRINT `(progn
+;;		      (DEFPROP TRANSL-AUTOLOAD ,(Uname-timedate nil) VERSION)
+;;		      (OR (GET 'TRANSL-AUTOLOAD 'SUBR)
+;;			  (load '((dsk macsym)trhook fasl)))
+;;		      (setq transl-modules
+;;			    ',transl-modules))
+;;		    F)
+;;	     (DO ((MODULES TRANSL-MODULES (CDR MODULES)))
+;;		 ((NULL MODULES)
+;;		  (renamef f autoload-install-file))
+;;		 (and (get (car modules) 'ttime-auto)
+;;		      (save-enable-module-info (car modules) f)))))
 
-;(defun tr-tagS ()
-;  ;; trivial convenience utility.
-;  (iota ((f `((dsk ,(get 'transl 'dir)) transl ntags) 'out))
-;    (do ((l transl-modules (cdr l)))
-;	((null l)
-;	 (close f)
-;	 (valret
-;	  (symbolconc '|:TAGS | (NAMESTRING F) '|
-; |)))
-;      (or (get (car l) 'pseudo)
-;	  (format f "DSK:~A;~A >~%,LISP~%~%"
-;		  (get! (car l) 'dir) (car l))))))
+;;(defun tr-tagS ()
+;;  ;; trivial convenience utility.
+;;  (iota ((f `((dsk ,(get 'transl 'dir)) transl ntags) 'out))
+;;    (do ((l transl-modules (cdr l)))
+;;	((null l)
+;;	 (close f)
+;;	 (valret
+;;	  (symbolconc '|:TAGS | (NAMESTRING F) '|
+;; |)))
+;;      (or (get (car l) 'pseudo)
+;;	  (format f "DSK:~A;~A >~%,LISP~%~%"
+;;		  (get! (car l) 'dir) (car l))))))
 
 ;;;; end of #+PDP10 I/O code.
 
-;)
+;;)
 
 ;;; in PDP-10 maclisp OP is a subr-pointer.
 ;;; system-dependance macro-fied away in PROCS.
 
-(DEFMACRO TPROP-CALL (OP FORM)
+(defmacro tprop-call (op form)
   `(subr-call ,op ,form))
 
-(DEFMACRO DEF-AUTOLOAD-TRANSLATE (&REST FUNS)
-  #+PDP10
-  `(LET ((A-SUBR (OR (GET 'AUTOLOAD-TRANSLATE 'SUBR)
-		     (MAXIMA-ERROR 'LOSE 'AUTOLOAD-TRANSLATE 'FAIL-ACT))))
-     (mapc #'(lambda (u)
+(defmacro def-autoload-translate (&rest funs)
+  #+pdp10
+  `(let ((a-subr (or (get 'autoload-translate 'subr)
+		     (maxima-error 'lose 'autoload-translate 'fail-act))))
+    (mapc #'(lambda (u)
 	      (or (get u 'translate)
-		  (putprop u A-SUBR 'TRANSLATE)))
-	   ',FUNS))
-  #-PDP10
-  `(COMMENT *AUTOLOADING?* ,@FUNS))
+		  (putprop u a-subr 'translate)))
+     ',funs))
+  #-pdp10
+  `(comment *autoloading?* ,@funs))
 
 
 ;;; declarations for the TRANSL PACKAGE.
 
 (declare-top 
-  (SPECIAL *TRANSL-SOURCES*)
-  ;; The warning an error subsystem.
-  (SPECIAL TR-ABORT				; set this T if you want to abort.
-	   *TRANSLATION-MSGS-FILES*)		; the stream to print messages to.
-  (*LEXPR WARN-UNDEDECLARED
-	  TR-NARGS-CHECK
-	  WARN-MEVAL
-	  WARN-MODE
-	  WARN-FEXPR
-	  TELL)
+ (special *transl-sources*)
+ ;; The warning an error subsystem.
+ (special tr-abort		    ; set this T if you want to abort.
+	  *translation-msgs-files*) ; the stream to print messages to.
+ (*lexpr warn-undedeclared
+	 tr-nargs-check
+	 warn-meval
+	 warn-mode
+	 warn-fexpr
+	 tell)
   
-  (*LEXPR PUMP-STREAM				; file hacking
-	  )
-  
-  ;; State variables.
-  
-  (SPECIAL PRE-TRANSL-FORMS*			; push onto this, gets output first into the
-						; transl file.
-	   *WARNED-UN-DECLARED-VARS*
-	   *WARNED-FEXPRS* 
-	   *WARNED-MODE-VARS*
-	   *WARNED-UNDEFINED-VARS*
-	   WARNED-UNDEFINED-VARIABLES
-	   TR-ABORT
-	   TRANSL-FILE
-	   *IN-COMPFILE*
-	   *IN-TRANSLATE-FILE*
-	   *IN-TRANSLATE*
-	   *PRE-TRANSL-FORMS* 
-	   *NEW-AUTOLOAD-ENTRIES*		; new entries created by TRANSL. 
-	   *UNTRANSLATED-FUNCTIONS-CALLED*
-	   )
-  
-  ;; General entry points.
-  
-  (*EXPR TRANSLATE
-	 ;; Takes a macsyma form, returns a form
-	 ;; such that the CAR is the MODE and the
-	 ;; CDR is the equivalent lisp form.
-	 ;; For the meaning of the second argument to TRANSLATE
-	 ;; see the code. When calling TRANSLATE from outside of
-	 ;; itself, the second arg is always left out.
-	 TR-ARGS				; mapcar of translate, strips off the modes.
-	 DTRANSLATE				; CDR TRANSLATE
-	 CALL-AND-SIMP				; (MODE F ARGL) generates `(,F ,@ARGL)
-	 ;; sticks on the mode and a SIMPLIFY if needed.
-	 ARRAY-MODE
-	 FUNCTION-MODE
-	 VALUE-MODE
-	 TBIND					; For META binding of variables.
-	 TUNBIND				; unbind.
-	 TUNBINDS				; a list.
-	 TBOUNDP				; is the variable lexicaly bound?
-	 TEVAL					; get the var replacement. Now this is always
-	 ;; the same as the var itself. BUT it could be use
-	 ;; to do internal-mode stuff.
-	 
-	 PUSH-PRE-TRANSL-FORM
-	 
+ (*lexpr pump-stream			; file hacking
 	 )
-  (*LEXPR TR-LOCAL-EXP
-	  ;; conses up a lambda, calls, translate, strips...
-	  TR-LAMBDA
-	  ;; translate only a standard lambda expression
+  
+ ;; State variables.
+  
+ (special pre-transl-forms* ; push onto this, gets output first into the
+					; transl file.
+	  *warned-un-declared-vars*
+	  *warned-fexprs* 
+	  *warned-mode-vars*
+	  *warned-undefined-vars*
+	  warned-undefined-variables
+	  tr-abort
+	  transl-file
+	  *in-compfile*
+	  *in-translate-file*
+	  *in-translate*
+	  *pre-transl-forms* 
+	  *new-autoload-entries*     ; new entries created by TRANSL. 
+	  *untranslated-functions-called*
 	  )
   
-  (*EXPR FREE-LISP-VARS
-	 PUSH-DEFVAR
-	 TR-TRACE-EXIT
-	 TR-TRACE-ENTRY
-	 side-effect-free-check
-	 tbound-free-vars)
+ ;; General entry points.
   
-  (*EXPR TRANSLATE-FUNCTION TR-MFUN DCONVX)
+ (*expr translate
+	;; Takes a macsyma form, returns a form
+	;; such that the CAR is the MODE and the
+	;; CDR is the equivalent lisp form.
+	;; For the meaning of the second argument to TRANSLATE
+	;; see the code. When calling TRANSLATE from outside of
+	;; itself, the second arg is always left out.
+	tr-args		  ; mapcar of translate, strips off the modes.
+	dtranslate			; CDR TRANSLATE
+	call-and-simp		; (MODE F ARGL) generates `(,F ,@ARGL)
+	;; sticks on the mode and a SIMPLIFY if needed.
+	array-mode
+	function-mode
+	value-mode
+	tbind			      ; For META binding of variables.
+	tunbind				; unbind.
+	tunbinds			; a list.
+	tboundp			     ; is the variable lexicaly bound?
+	teval		 ; get the var replacement. Now this is always
+	;; the same as the var itself. BUT it could be use
+	;; to do internal-mode stuff.
+	 
+	push-pre-transl-form
+	 
+	)
+ (*lexpr tr-local-exp
+	 ;; conses up a lambda, calls, translate, strips...
+	 tr-lambda
+	 ;; translate only a standard lambda expression
+	 )
   
-  ;; these special declarations are for before DEFMVAR
-  (SPECIAL $ERREXP $LOADPRINT $NUMER $SAVEDEF $NOLABELS $FUNCTIONS $PROPS 
-	   $FILENAME $FILENUM $DIREC $DEVICE MUNBOUND $VALUES $TRANSRUN
-	   ST OLDST  $VERSION
-	   REPHRASE $PACKAGEFILE
-	   DSKFNP)
+ (*expr free-lisp-vars
+	push-defvar
+	tr-trace-exit
+	tr-trace-entry
+	side-effect-free-check
+	tbound-free-vars)
   
-  ;; end of COMPLR declarations section.
-  )
+ (*expr translate-function tr-mfun dconvx)
+  
+ ;; these special declarations are for before DEFMVAR
+ (special $errexp $loadprint $numer $savedef $nolabels $functions $props 
+	  $filename $filenum $direc $device munbound $values $transrun
+	  st oldst  $version
+	  rephrase $packagefile
+	  dskfnp)
+  
+ ;; end of COMPLR declarations section.
+ )
 
 (defmacro bind-transl-state (&rest forms)
   ;; this binds all transl state variables to NIL.
@@ -498,53 +498,53 @@
   ;; a file, yet will only affect that file.
   ;; Called in 3 places, for compactness maybe this should be a PROGV
   ;; which references a list of variables?
-  `(let (*WARNED-UN-DECLARED-VARS*
-	 *WARNED-FEXPRS* 
-	 *WARNED-MODE-VARS*
-	 *WARNED-UNDEFINED-VARS*
-	 WARNED-UNDEFINED-VARIABLES
-	 TR-ABORT
-	 TRANSL-FILE
-	 *IN-COMPFILE*
-	 *IN-TRANSLATE-FILE*
-	 *IN-TRANSLATE*
-	 *PRE-TRANSL-FORMS* 
-	 *NEW-AUTOLOAD-ENTRIES*
-	 ($TR_SEMICOMPILE $TR_SEMICOMPILE)
-	 (ARRAYS NIL)
-	 (EXPRS NIL)
-	 (LEXPRS NIL)
-	 (FEXPRS NIL)
-	 (SPECIALS NIL)
-	 (DECLARES NIL)
-	 ($TRANSCOMPILE $TRANSCOMPILE)
-	 ($TR_NUMER $TR_NUMER)
-	 DEFINED_VARIABLES)
-     ,@FORMS))
+  `(let (*warned-un-declared-vars*
+	 *warned-fexprs* 
+	 *warned-mode-vars*
+	 *warned-undefined-vars*
+	 warned-undefined-variables
+	 tr-abort
+	 transl-file
+	 *in-compfile*
+	 *in-translate-file*
+	 *in-translate*
+	 *pre-transl-forms* 
+	 *new-autoload-entries*
+	 ($tr_semicompile $tr_semicompile)
+	 (arrays nil)
+	 (exprs nil)
+	 (lexprs nil)
+	 (fexprs nil)
+	 (specials nil)
+	 (declares nil)
+	 ($transcompile $transcompile)
+	 ($tr_numer $tr_numer)
+	 defined_variables)
+    ,@forms))
 
 
 
-#-(or cl Multics)
-(DEFMACRO TR-FORMAT (STRING &REST ARGL)
-  `(MFORMAT *TRANSLATION-MSGS-FILES*
-	    ,STRING ,@ARGL))
+#-(or cl multics)
+(defmacro tr-format (string &rest argl)
+  `(mformat *translation-msgs-files*
+    ,string ,@argl))
 
 ;;; Is MFORMAT really prepared in general to handle
 ;;; the above form. Certainly not on Multics.
-#+(and Multics (not cl))
+#+(and multics (not cl))
 (defmacro tr-format (string &rest argl)
   `(cond ((consp *translation-msgs-files*)
 	  (mapcar #'(lambda (file)
-		     (mformat file ,string ,@argl))
-		  *translation-msgs-files*))
-	 (t (mformat *translation-msgs-files* ,string ,@argl))))
+		      (mformat file ,string ,@argl))
+	   *translation-msgs-files*))
+    (t (mformat *translation-msgs-files* ,string ,@argl))))
 
 #+cl
 (defun tr-format (sstring &rest argl &aux strs)
   (cond ((consp *translation-msgs-files*)(setq strs *translation-msgs-files*))
 	(t (setq strs (list *translation-msgs-files*))))
   (sloop for v in strs
-	do (apply 'mformat v sstring argl)))
+	 do (apply 'mformat v sstring argl)))
 
  
 ;;; for debugging convenience:
@@ -553,35 +553,35 @@
 ;; to use in mixing maxima and lisp
 ;; (tr #$$f(x):=x+2$)
 (defmacro tr (u)
- (and (consp u) (eq (car u) 'quote)
-  (BIND-TRANSL-STATE (translate-macexpr-toplevel  (second u)))))
+  (and (consp u) (eq (car u) 'quote)
+       (bind-transl-state (translate-macexpr-toplevel  (second u)))))
 
 
 ;;; These are used by MDEFUN and MFUNCTION-CALL.
 ;;; N.B. this has arguments evaluated twice because I am too lazy to
 ;;; use a LET around things.
 
-(DEFMACRO PUSH-INFO (NAME INFO STACK)
-  `(LET ((*INFO* (ASSQ ,NAME ,STACK)))
-     (COND (*INFO* ;;; should check for compatibility of INFO here.
-	    )
-	   (T
-	    (PUSH (CONS ,NAME ,INFO) ,STACK)))))
+(defmacro push-info (name info stack)
+  `(let ((*info* (assq ,name ,stack)))
+    (cond (*info* ;;; should check for compatibility of INFO here.
+	   )
+	  (t
+	   (push (cons ,name ,info) ,stack)))))
 
-(DEFMACRO GET-INFO (NAME STACK)
-  `(CDR (ASSQ ,NAME ,STACK)))
+(defmacro get-info (name stack)
+  `(cdr (assq ,name ,stack)))
 
-(DEFMACRO POP-INFO (NAME STACK)
-  `(LET ((*INFO* (ASSQ ,NAME ,STACK)))
-     (COND (*INFO*
-	    (SETQ ,STACK (zl-DELETE *INFO* ,STACK))
-	    (CDR *INFO*))
-	   (T NIL))))
+(defmacro pop-info (name stack)
+  `(let ((*info* (assq ,name ,stack)))
+    (cond (*info*
+	   (setq ,stack (zl-delete *info* ,stack))
+	   (cdr *info*))
+	  (t nil))))
 
-(DEFMACRO TOP-IND (STACK)
-  `(COND ((NULL ,STACK) NIL)
-	 (T
-	  (CAAR ,STACK))))
+(defmacro top-ind (stack)
+  `(cond ((null ,stack) nil)
+    (t
+     (caar ,stack))))
 
 
 

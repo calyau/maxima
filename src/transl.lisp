@@ -90,96 +90,96 @@
 ;;; N.B. It does not mean that that is the translate property for <something>.
 
 
-(DEFMVAR $TRANSBIND NIL
-	 "This variable is now obsolete."
-	 )
+(defmvar $transbind nil
+  "This variable is now obsolete."
+  )
 
-(DEFUN OBSOLETE-VARIABLE (VAR IGNORE-VAL) ignore-val
-       (COND ((EQ (SYMBOL-VALUE VAR) '$OBSOLETE))
-	     (T
-	      (SET VAR '$OBSOLETE)
-	      (MTELL "~%Warning, setting obsolete variable: ~:M~%" VAR))))
+(defun obsolete-variable (var ignore-val) ignore-val
+       (cond ((eq (symbol-value var) '$obsolete))
+	     (t
+	      (set var '$obsolete)
+	      (mtell "~%Warning, setting obsolete variable: ~:M~%" var))))
 
-(PUTPROP '$TRANSBIND #'OBSOLETE-VARIABLE 'ASSIGN)
+(putprop '$transbind #'obsolete-variable 'assign)
 
 (defvar *untranslated-functions-called* nil)
 (declaim (special *declared-translated-functions*))
 
-(DEFMVAR $TR_SEMICOMPILE NIL
-	 "If TRUE TRANSLATE_FILE and COMPFILE output forms which will~
+(defmvar $tr_semicompile nil
+  "If TRUE TRANSLATE_FILE and COMPFILE output forms which will~
 	 be macroexpanded but not compiled into machine code by the~
 	 lisp compiler.")
-(DEFMVAR  $TRANSCOMPILE  t
-	  "If TRUE TRANSLATE_FILE outputs declarations for the COMPLR.
+(defmvar  $transcompile  t
+  "If TRUE TRANSLATE_FILE outputs declarations for the COMPLR.
 	  The only use of the switch is to save the space declarations take
 	  up in interpreted code.")
 
-(DEFMVAR $SPECIAL NIL "This is an obsolete variable -GJC")
+(defmvar $special nil "This is an obsolete variable -GJC")
 
-(PUTPROP '$SPECIAL #'OBSOLETE-VARIABLE 'ASSIGN)
+(putprop '$special #'obsolete-variable 'assign)
 
-(DEFMVAR TSTACK NIL " stack of local variable modes ")
+(defmvar tstack nil " stack of local variable modes ")
 
-(DEFMVAR LOCAL NIL "T if a $LOCAL statement is in the body.")
-(DEFMVAR ARRAYS NIL "arrays to declare to COMPLR")
-(DEFMVAR LEXPRS NIL "Lexprs to declare.")
-(DEFMVAR EXPRS NIL "what else?")
-(DEFMVAR FEXPRS NIL "Fexprs to declare.")
-(DEFMVAR TR-PROGRET T)
-(DEFMVAR INSIDE-MPROG NIL)
-(DEFMVAR RETURNS NIL "list of TRANSLATEd return forms in the block.")
-(DEFMVAR RETURN-MODE NIL "the highest(?) mode of all the returns.")
-(DEFMVAR NEED-PROG? NIL)
-(DEFMVAR ASSIGNS NIL "These are very-special variables which have a macsyma
+(defmvar local nil "T if a $LOCAL statement is in the body.")
+(defmvar arrays nil "arrays to declare to COMPLR")
+(defmvar lexprs nil "Lexprs to declare.")
+(defmvar exprs nil "what else?")
+(defmvar fexprs nil "Fexprs to declare.")
+(defmvar tr-progret t)
+(defmvar inside-mprog nil)
+(defmvar returns nil "list of TRANSLATEd return forms in the block.")
+(defmvar return-mode nil "the highest(?) mode of all the returns.")
+(defmvar need-prog? nil)
+(defmvar assigns nil "These are very-special variables which have a macsyma
 	assign property which must be called to bind and unbind the variable
 	whenever it is `lambda' bound.")
-(DEFMVAR SPECIALS NIL "variables to declare special to the complr.")
-(DEFMVAR TRANSLATE-TIME-EVALABLES
-	'($MODEDECLARE $ALIAS $DECLARE $INFIX $NOFIX $declare_translated
-		       $MATCHFIX $PREFIX $POSTFIX $COMPFILE))
+(defmvar specials nil "variables to declare special to the complr.")
+(defmvar translate-time-evalables
+    '($modedeclare $alias $declare $infix $nofix $declare_translated
+      $matchfix $prefix $postfix $compfile))
 
-(DEFMVAR *TRANSL-BACKTRACE* NIL
-	" What do you think? ")
-(DEFMVAR *TRANSL-DEBUG* NIL "if T it pushes BACKTRACE and TRACE ")
+(defmvar *transl-backtrace* nil
+  " What do you think? ")
+(defmvar *transl-debug* nil "if T it pushes BACKTRACE and TRACE ")
 
-(DEFMVAR TR-ABORT NIL "set to T if abortion is requested by any of the
+(defmvar tr-abort nil "set to T if abortion is requested by any of the
 	sub-parts of the translation. A *THROW would be better, although it
 	wouldn't cause the rest of the translation to continue, which may
 	be useful in translation for MAXIMA-ERROR checking.")
 
-(DEFMVAR TR-UNIQUE (GENSYM)
-	"this is just a unque object used for random purposes,
+(defmvar tr-unique (gensym)
+  "this is just a unque object used for random purposes,
 	such as the second (file end) argument of READ.")
 
 
-(DEFMVAR $TR_WARN_UNDECLARED
-	 '$COMPILE
-	 "When to send warnings about undeclared variables to the TTY")
+(defmvar $tr_warn_undeclared
+    '$compile
+  "When to send warnings about undeclared variables to the TTY")
 
-(DEFMVAR $TR_WARN_MEVAL
-	 '$COMPFILE
-	 "If MEVAL is called that indicates problems in the translation")
+(defmvar $tr_warn_meval
+    '$compfile
+  "If MEVAL is called that indicates problems in the translation")
 
-(DEFMVAR $TR_WARN_FEXPR
-	 '$COMPFILE
-         "FEXPRS should not normally be output in translated code, all legitimate
+(defmvar $tr_warn_fexpr
+    '$compfile
+  "FEXPRS should not normally be output in translated code, all legitimate
 special program forms are translated.")
 
-(DEFMVAR $TR_WARN_MODE
-	 '$ALL
-	 "Warn when variables are assigned values out of their mode.")
+(defmvar $tr_warn_mode
+    '$all
+  "Warn when variables are assigned values out of their mode.")
 
-(DEFMVAR $TR_WARN_UNDEFINED_VARIABLE
-	 '$ALL
-	 "Warn when undefined global variables are seen.")
+(defmvar $tr_warn_undefined_variable
+    '$all
+  "Warn when undefined global variables are seen.")
 
 
-(DEFMVAR *WARNED-UN-DECLARED-VARS* NIL "Warning State variable")
-(DEFMVAR *WARNED-FEXPRS* NIL "Warning State variable")
-(DEFMVAR *WARNED-MODE-VARS* NIL "Warning State variable")
+(defmvar *warned-un-declared-vars* nil "Warning State variable")
+(defmvar *warned-fexprs* nil "Warning State variable")
+(defmvar *warned-mode-vars* nil "Warning State variable")
 
-(DEFMVAR $TR_FUNCTION_CALL_DEFAULT '$GENERAL
-	 "
+(defmvar $tr_function_call_default '$general
+  "
 FALSE means punt to MEVAL, EXPR means assume lisp fixed arg function.
 GENERAL, the default gives code good for mexprs and mlexprs but not macros.
 GENERAL assures variable bindings are correct in compiled code.
@@ -188,64 +188,64 @@ it assumes that APPLY(F,[X]) is meant, and translates a such, with
 apropriate warning. There is no need to turn this off.
 APPLY means like APPLY.")
 
-(DEFMVAR $TR_ARRAY_AS_REF T
-	 "If true runtime code uses value of the variable as the array.")
+(defmvar $tr_array_as_ref t
+  "If true runtime code uses value of the variable as the array.")
 
-(DEFMVAR $TR_NUMER NIL
-	 "If TRUE numer properties are used for atoms which have them, e.g. %PI")
+(defmvar $tr_numer nil
+  "If TRUE numer properties are used for atoms which have them, e.g. %PI")
 
-(DEFMVAR $TR_PREDICATE_BRAIN_DAMAGE NIL
+(defmvar $tr_predicate_brain_damage nil
   "If TRUE, output possible multiple evaluations in an attempt
   to interface to the COMPARE package.")
 
-(DEFVAR BOOLEAN-OBJECT-TABLE
-  '(($TRUE . ($BOOLEAN . T))
-    ($FALSE . ($BOOLEAN . NIL))
-    (T . ($BOOLEAN . T))
-    (NIL . ($BOOLEAN . NIL))))
+(defvar boolean-object-table
+  '(($true . ($boolean . t))
+    ($false . ($boolean . nil))
+    (t . ($boolean . t))
+    (nil . ($boolean . nil))))
 
-(DEFVAR MODE-INIT-VALUE-TABLE
-  '(($FLOAT . 0.0)
-    ($FIXNUM . 0)
-    ($NUMBER  . 0)
-    ($LIST . '((MLIST)))
-    ($BOOLEAN  . NIL)))
+(defvar mode-init-value-table
+  '(($float . 0.0)
+    ($fixnum . 0)
+    ($number  . 0)
+    ($list . '((mlist)))
+    ($boolean  . nil)))
 
-(DEFVAR TR-LAMBDA-PUNT-ASSIGNS NIL
+(defvar tr-lambda-punt-assigns nil
   "Kludge argument to TR-LAMBDA due to lack of keyword argument passing")
 
-(OR (BOUNDP '*IN-COMPILE*) (SETQ *IN-COMPILE* NIL))
+(or (boundp '*in-compile*) (setq *in-compile* nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(DEFTRFUN TR-TELL (&REST X &AUX (TP T))
-	  (DO ((X X (CDR X)))
-	      ((NULL X))
-	      (COND ((ATOM (CAR X)) ;;; simple heuristic that seems to work.
-		     (COND ((OR TP (> (FLATC (CAR X)) 10.))
-			    (dolist (v *TRANSLATION-MSGS-FILES*) (TERPRI v))
-			    (SETQ TP NIL)))
-		     (dolist (v *TRANSLATION-MSGS-FILES*)
-		       (PRINC (STRIPDOLLAR (CAR X)) v)))
-		    (T
-		     (dolist (v *TRANSLATION-MSGS-FILES*) (MGRIND (CAR X) v))))))
+(deftrfun tr-tell (&rest x &aux (tp t))
+  (do ((x x (cdr x)))
+      ((null x))
+    (cond ((atom (car x)) ;;; simple heuristic that seems to work.
+	   (cond ((or tp (> (flatc (car x)) 10.))
+		  (dolist (v *translation-msgs-files*) (terpri v))
+		  (setq tp nil)))
+	   (dolist (v *translation-msgs-files*)
+	     (princ (stripdollar (car x)) v)))
+	  (t
+	   (dolist (v *translation-msgs-files*) (mgrind (car x) v))))))
 
-(DEFTRFUN BARFO (&REST L)
-	  (APPLY #'TR-TELL
-		 (nconc l
-			'("***BARFO*** gasp. Internal TRANSLATE error. i.e. *BUG*")))
-	  (cond (*transl-debug*
-		 (*break t '|Transl Barfo|))
-		(t
-		 (setq tr-abort t)
-		 nil)))
+(deftrfun barfo (&rest l)
+  (apply #'tr-tell
+	 (nconc l
+		'("***BARFO*** gasp. Internal TRANSLATE error. i.e. *BUG*")))
+  (cond (*transl-debug*
+	 (*break t '|Transl Barfo|))
+	(t
+	 (setq tr-abort t)
+	 nil)))
 
-(DEFUN SPECIALP (VAR)
-  (COND ((OR (OPTIONP VAR)
-	     (GET VAR 'SPECIAL))
-	 (IF $TRANSCOMPILE (ADDL VAR SPECIALS))
-	 T)))
+(defun specialp (var)
+  (cond ((or (optionp var)
+	     (get var 'special))
+	 (if $transcompile (addl var specials))
+	 t)))
 
 
 ;;; The error message system. Crude as it is.
@@ -272,116 +272,116 @@ APPLY means like APPLY.")
 ;;; to edit code, because searching for warned-about tokens
 ;;; is quick and easy.
 
-(DEFMVAR *TR-WARN-BREAK* T
-	" if in debug mode WARNINGs signaled go to lisp break loops ")
+(defmvar *tr-warn-break* t
+  " if in debug mode WARNINGs signaled go to lisp break loops ")
 
 (defmacro tr-warnbreak () `(and *transl-debug* *tr-warn-break* (*break t 'transl)))
 
 
-(DEFUN TR-WARNP (VAL)
-       (AND VAL
-	    (COND (*IN-COMPILE*
-		   (MEMQ VAL '($ALL $COMPILE $COMPFILE $TRANSLATE)))
-		  ((OR *IN-COMPFILE* *IN-TRANSLATE-FILE*)
-		   (MEMQ VAL '($ALL $COMPFILE $TRANSLATE)))
-		  (*IN-TRANSLATE*
-		   (MEMQ VAL '($ALL $TRANSLATE))))))
+(defun tr-warnp (val)
+  (and val
+       (cond (*in-compile*
+	      (memq val '($all $compile $compfile $translate)))
+	     ((or *in-compfile* *in-translate-file*)
+	      (memq val '($all $compfile $translate)))
+	     (*in-translate*
+	      (memq val '($all $translate))))))
 
-(DEFVAR WARNED-UNDEFINED-VARIABLES NIL)
+(defvar warned-undefined-variables nil)
 
-(DEFTRFUN WARN-UNDEFINED-VARIABLE (FORM)
-	  (AND (TR-WARNP $TR_WARN_UNDEFINED_VARIABLE)
-	       (COND ((MEMQ FORM WARNED-UNDEFINED-VARIABLES))
-		     ('ELSE
-		      (PUSH FORM WARNED-UNDEFINED-VARIABLES)
-		      (TR-FORMAT "~%Warning-> ~:M is an undefined global variable."
-				 FORM)
-		      (TR-WARNBREAK)))))
+(deftrfun warn-undefined-variable (form)
+  (and (tr-warnp $tr_warn_undefined_variable)
+       (cond ((memq form warned-undefined-variables))
+	     ('else
+	      (push form warned-undefined-variables)
+	      (tr-format "~%Warning-> ~:M is an undefined global variable."
+			 form)
+	      (tr-warnbreak)))))
 
-(DEFTRFUN WARN-UNDECLARED (FORM &optional comment)
-	  (AND (TR-WARNP $TR_WARN_UNDECLARED)
-	       (COND ((zl-MEMBER FORM *WARNED-UN-DECLARED-VARS*) T)
-		     (T
-		      (PUSH FORM *WARNED-UN-DECLARED-VARS*)
-		      (TR-FORMAT
-		       "~%WARNING-> ~:M has not been MODEDECLAREd, ~
+(deftrfun warn-undeclared (form &optional comment)
+  (and (tr-warnp $tr_warn_undeclared)
+       (cond ((zl-member form *warned-un-declared-vars*) t)
+	     (t
+	      (push form *warned-un-declared-vars*)
+	      (tr-format
+	       "~%WARNING-> ~:M has not been MODEDECLAREd, ~
 		       taken as mode ANY."
-		       FORM)
-		      (cond (comment
-			      (dolist (v *TRANSLATION-MSGS-FILES*) (terpri v) (princ comment v))
-			     ))
-		      (tr-warnbreak)
-		      NIL))))
+	       form)
+	      (cond (comment
+		     (dolist (v *translation-msgs-files*) (terpri v) (princ comment v))
+		     ))
+	      (tr-warnbreak)
+	      nil))))
 
-(DEFTRFUN WARN-MEVAL (FORM &optional comment)
-	  (COND ((TR-WARNP $TR_WARN_MEVAL)
-		 (TR-FORMAT
-		  "~%WARNING-> ~:M~
+(deftrfun warn-meval (form &optional comment)
+  (cond ((tr-warnp $tr_warn_meval)
+	 (tr-format
+	  "~%WARNING-> ~:M~
 		       ~%has caused a call to the evaluator to be output,~
 		       ~%due to lack of information. Code will not work compiled."
-		  FORM)
-		 (cond (comment       (dolist (v *TRANSLATION-MSGS-FILES*) (terpri v) (princ comment v))))
-		 (tr-warnbreak)
-		 'WARNED)))
+	  form)
+	 (cond (comment       (dolist (v *translation-msgs-files*) (terpri v) (princ comment v))))
+	 (tr-warnbreak)
+	 'warned)))
 
 
-(DEFTRFUN WARN-MODE (VAR MODE NEWMODE &optional comment)
-  (COND ((EQ MODE NEWMODE))
-	(T
-	 (COND ((AND (TR-WARNP $TR_WARN_MODE)
-		     (NOT (COVERS MODE NEWMODE))
-		     (NOT (zl-MEMBER (LIST VAR MODE NEWMODE)
-				  *WARNED-MODE-VARS*)))
-		(PUSH (LIST VAR MODE NEWMODE) *WARNED-MODE-VARS*)
-		(TR-FORMAT
+(deftrfun warn-mode (var mode newmode &optional comment)
+  (cond ((eq mode newmode))
+	(t
+	 (cond ((and (tr-warnp $tr_warn_mode)
+		     (not (covers mode newmode))
+		     (not (zl-member (list var mode newmode)
+				     *warned-mode-vars*)))
+		(push (list var mode newmode) *warned-mode-vars*)
+		(tr-format
 		 "~%WARNING-> Assigning variable ~:M, whose mode is ~:M,~
 		 a value of mode ~:M."
-		 VAR MODE NEWMODE)
+		 var mode newmode)
 		(cond (comment
-		       (dolist (v *TRANSLATION-MSGS-FILES*) (terpri v) (princ comment v))
-			       ))
+		       (dolist (v *translation-msgs-files*) (terpri v) (princ comment v))
+		       ))
 		(tr-warnbreak))))))
 
-(DEFTRFUN WARN-FEXPR (FORM &optional comment)
-  (COND ((AND (TR-WARNP $TR_WARN_FEXPR)
-	      (NOT (zl-MEMBER FORM *WARNED-FEXPRS*)))
-	 (PUSH  FORM *WARNED-FEXPRS*)
-	 (TR-FORMAT
+(deftrfun warn-fexpr (form &optional comment)
+  (cond ((and (tr-warnp $tr_warn_fexpr)
+	      (not (zl-member form *warned-fexprs*)))
+	 (push  form *warned-fexprs*)
+	 (tr-format
 	  "~%WARNING->~%~:M~
 		       ~%is a special function without a full LISP translation~
 		       ~%scheme. Use in compiled code may not work."
-	  FORM
+	  form
 	  )
-	 (cond (comment       (dolist (v *TRANSLATION-MSGS-FILES*) (terpri v) (princ comment v))))
+	 (cond (comment       (dolist (v *translation-msgs-files*) (terpri v) (princ comment v))))
 	 (tr-warnbreak))))
 
 
 (defun macsyma-special-macro-p (fcn)
-     (GETL-LM-FCN-PROP  FCN  '( macro)))
-;
-;(DEFUN MACSYMA-SPECIAL-OP-P (Fcn)
-;   #-lispm
-;    
-;        (GETL F '(FSUBR FEXPR MFEXPR* MFEXPR*S *FEXPR)))
+  (getl-lm-fcn-prop  fcn  '( macro)))
+;;
+;;(DEFUN MACSYMA-SPECIAL-OP-P (Fcn)
+;;   #-lispm
+;;    
+;;        (GETL F '(FSUBR FEXPR MFEXPR* MFEXPR*S *FEXPR)))
 
-(DEFUN MACSYMA-SPECIAL-OP-P (F)
-        (GETL F '(FSUBR FEXPR MFEXPR* MFEXPR*S *FEXPR)))
+(defun macsyma-special-op-p (f)
+  (getl f '(fsubr fexpr mfexpr* mfexpr*s *fexpr)))
 
-(DEFUN POSSIBLE-PREDICATE-OP-P (F)
-       (MEMQ F '(MNOTEQUAL MEQUAL $EQUAL
-			   MGREATERP MGEQP MLESSP MLEQP)))
+(defun possible-predicate-op-p (f)
+  (memq f '(mnotequal mequal $equal
+	    mgreaterp mgeqp mlessp mleqp)))
 
-(DEFUN WARN-PREDICATE (FORM)
-       (WARN-MEVAL
-	FORM
-	(COND ((ATOM FORM)
-	       "This variable should be declared BOOLEAN perhaps.")
-	      ((MACSYMA-SPECIAL-OP-P (CAAR FORM))
-	       "Special form not handled in targeting: Transl BUG.")
-	      ((POSSIBLE-PREDICATE-OP-P (CAAR FORM))
-	       "Unable to assert modes of subexpressions, a call to the macsyma data *print-base* has been generated.")
-	      (T
-	       "TRANSLATE doesn't know predicate properties for this, a call to the macsyma data *print-base* has been generated."))))
+(defun warn-predicate (form)
+  (warn-meval
+   form
+   (cond ((atom form)
+	  "This variable should be declared BOOLEAN perhaps.")
+	 ((macsyma-special-op-p (caar form))
+	  "Special form not handled in targeting: Transl BUG.")
+	 ((possible-predicate-op-p (caar form))
+	  "Unable to assert modes of subexpressions, a call to the macsyma data *print-base* has been generated.")
+	 (t
+	  "TRANSLATE doesn't know predicate properties for this, a call to the macsyma data *print-base* has been generated."))))
 
 ;;;***************************************************************;;;
 
@@ -389,60 +389,60 @@ APPLY means like APPLY.")
 ;;; locally bound internal mode declarations. Result of TR-LAMBDA will be
 ;;; (MODE . (LAMBDA (...) (DECLARE ...) TRANSLATED-EXP))
 
-(DEFUN TR-LOCAL-EXP (EXP &REST VARS-MODES)
-  (LET ((LOC (LET ((TR-LAMBDA-PUNT-ASSIGNS T))
-	       (TR-LAMBDA `((LAMBDA) ((MLIST)  ,@(DO ((L VARS-MODES (CDDR L))
-						      (LL NIL (CONS (CAR L) LL)))
-						     ((NULL L) LL)
-						   (OR (VARIABLE-P (CAR L))
-						       (BAD-VAR-WARN (CAR L)))
-						   ))
-				     (($MODEDECLARE)  ,@ (copy-rest-arg VARS-MODES))
-				     ,EXP)))))
-    (LET ((MODE (CAR LOC))
-	  (EXP (CAR (LAST LOC)))) ;;; length varies with TRANSCOMPILE.
-      (CONS MODE EXP))))
+(defun tr-local-exp (exp &rest vars-modes)
+  (let ((loc (let ((tr-lambda-punt-assigns t))
+	       (tr-lambda `((lambda) ((mlist)  ,@(do ((l vars-modes (cddr l))
+						      (ll nil (cons (car l) ll)))
+						     ((null l) ll)
+						     (or (variable-p (car l))
+							 (bad-var-warn (car l)))
+						     ))
+			    (($modedeclare)  ,@ (copy-rest-arg vars-modes))
+			    ,exp)))))
+    (let ((mode (car loc))
+	  (exp (car (last loc)))) ;;; length varies with TRANSCOMPILE.
+      (cons mode exp))))
 
-(DEFUN TR-ARGS (FORM)
-       (MAPCAR #'(LAMBDA (X) (DCONVX (TRANSLATE X))) FORM))
+(defun tr-args (form)
+  (mapcar #'(lambda (x) (dconvx (translate x))) form))
 
-(DEFUN DTRANSLATE (FORM) (CDR (TRANSLATE FORM)))
+(defun dtranslate (form) (cdr (translate form)))
 
-(DEFUN DCONV (X MODE) 
-  (COND ((EQ '$FLOAT MODE) (DCONV-$FLOAT X))
-	((EQ '$CRE MODE) (DCONV-$CRE X))
-	(T (CDR X))))
+(defun dconv (x mode) 
+  (cond ((eq '$float mode) (dconv-$float x))
+	((eq '$cre mode) (dconv-$cre x))
+	(t (cdr x))))
 
-(DEFUN DCONVX (X) 
-  (IF (MEMQ (CAR X) '(RATEXPR PEXPR)) (DCONV-$CRE X) (CDR X)))
+(defun dconvx (x) 
+  (if (memq (car x) '(ratexpr pexpr)) (dconv-$cre x) (cdr x)))
 
-(DEFUN DCONV-$FLOAT (X)
-  (COND ((MEMQ (CAR X) '($FIXNUM $NUMBER))
-	 (IF (INTEGERP (CDR X)) (FLOAT (CDR X)) (LIST 'FLOAT (CDR X))))
-	((EQ '$RATIONAL (CAR X))
-	 (IFN (EQ 'QUOTE (CADR X)) `($FLOAT ,(CDR X))
-	     (//$ (FLOAT (CADADR (CDR X))) (FLOAT (CADDR (CADDR X))))))
-	(T (CDR X))))
+(defun dconv-$float (x)
+  (cond ((memq (car x) '($fixnum $number))
+	 (if (integerp (cdr x)) (float (cdr x)) (list 'float (cdr x))))
+	((eq '$rational (car x))
+	 (ifn (eq 'quote (cadr x)) `($float ,(cdr x))
+	      (//$ (float (cadadr (cdr x))) (float (caddr (caddr x))))))
+	(t (cdr x))))
 
-(DEFUN DCONV-$CRE (X) (IF (EQ '$CRE (CAR X)) (CDR X) `(RATF ,(CDR X))))
+(defun dconv-$cre (x) (if (eq '$cre (car x)) (cdr x) `(ratf ,(cdr x))))
 
-(DEFMVAR *$ANY-MODES* '($ANY $LIST))
+(defmvar *$any-modes* '($any $list))
 
-(DEFUN COVERS (MODE1 MODE2)
-  (COND ((EQ MODE1 MODE2) T)
-	((EQ '$FLOAT MODE1) (MEMQ MODE2 '($FLOAT $FIXNUM $RATIONAL)))
-	((EQ '$NUMBER MODE1) (MEMQ MODE2 '($FIXNUM $FLOAT)))
-	((MEMQ MODE1 *$ANY-MODES*) T)))
+(defun covers (mode1 mode2)
+  (cond ((eq mode1 mode2) t)
+	((eq '$float mode1) (memq mode2 '($float $fixnum $rational)))
+	((eq '$number mode1) (memq mode2 '($fixnum $float)))
+	((memq mode1 *$any-modes*) t)))
 
 
 ;;; takes a function name as input.
 
-(DEFTRFUN TR-MFUN (NAME &AUX (*TRANSL-BACKTRACE* NIL))
-	  (LET   ((DEF-FORM (CONSFUNDEF NAME NIL NIL)))
-		 (COND ((NULL DEF-FORM)
-			(SETQ TR-ABORT T))
-		       (T
-			(TR-MDEFINE-TOPLEVEL DEF-FORM)))))
+(deftrfun tr-mfun (name &aux (*transl-backtrace* nil))
+  (let   ((def-form (consfundef name nil nil)))
+    (cond ((null def-form)
+	   (setq tr-abort t))
+	  (t
+	   (tr-mdefine-toplevel def-form)))))
 
 ;;; DEFUN
 ;;; All the hair here to deal with macsyma fexprs has been flushed.
@@ -451,31 +451,31 @@ APPLY means like APPLY.")
 ;;; defuns to make (LEXPR EXPR for maclisp) are punted to the
 ;;; macro package.
 
-(DEFUN TR-MDEFINE-TOPLEVEL (FORM &AUX (AND-RESTP NIL))
-  (LET (( (((NAME . FLAGS) . ARGS) BODY) (CDR FORM))
-	(A-ARGS) KIND OUT-FORMS)
+(defun tr-mdefine-toplevel (form &aux (and-restp nil))
+  (let (( (((name . flags) . args) body) (cdr form))
+	(a-args) kind out-forms)
 
-    (DO ((ARGS ARGS (CDR ARGS))
+    (do ((args args (cdr args))
 	 ;; array functions cannot be LEXPR-like. gee.
 	 ;; there is no good reason for that, except for efficiency,
 	 ;; and I know that efficiency was not a consideration.
-	 (FULL-RESTRICTED-FLAG (OR (EQ NAME 'MQAPPLY)
-				   (MEMQ 'array FLAGS))))
-	((NULL ARGS) (SETQ A-ARGS (NREVERSE A-ARGS)))
-      (LET ((U (CAR ARGS)))
-	(COND ((ATOM U)
-	       (PUSH U A-ARGS))
-	      ((AND (NOT FULL-RESTRICTED-FLAG)
-		    (NOT AND-RESTP)
-		    (EQ (CAAR U) 'MLIST)
-		    (CDR U) (ATOM (CADR U)))
-	       (PUSH (CADR U) A-ARGS)
-	       (SETQ AND-RESTP T))
-	      (T
-	       (PUSH TR-UNIQUE A-ARGS)))))
+	 (full-restricted-flag (or (eq name 'mqapply)
+				   (memq 'array flags))))
+	((null args) (setq a-args (nreverse a-args)))
+      (let ((u (car args)))
+	(cond ((atom u)
+	       (push u a-args))
+	      ((and (not full-restricted-flag)
+		    (not and-restp)
+		    (eq (caar u) 'mlist)
+		    (cdr u) (atom (cadr u)))
+	       (push (cadr u) a-args)
+	       (setq and-restp t))
+	      (t
+	       (push tr-unique a-args)))))
 
     
-    (COND ((EQ NAME 'MQAPPLY) 
+    (cond ((eq name 'mqapply) 
 	   ;; don't you love syntax!
 	   ;; do a switch-a-roo here. Calling ourselves recursively
 	   ;; like this allows all legal forms and also catches
@@ -483,501 +483,501 @@ APPLY means like APPLY.")
 	   ;; allowed. They won't get passed the interpreter, but
 	   ;; interesting things may happen here. Thats what you
 	   ;; get from too much syntax, so don't sweat it.
-	   (TR-MDEFINE-TOPLEVEL
-	    `(,(CAR FORM) ,(CAR ARGS)
-			  ((LAMBDA) ((MLIST) ,@(CDR ARGS)) ,BODY))))
-	  ((MEMQ TR-UNIQUE A-ARGS)
-	   (TR-TELL "Bad argument list for a function to translate->"
-		    `((MLIST),@ARGS))
-	   (SETQ TR-ABORT T)
-	   NIL)
-	  ((MEMQ (CAAR FORM) '(MDEFINE MDEFMACRO))
-	   (SETQ KIND (COND ((EQ (CAAR FORM) 'MDEFMACRO) 'MACRO)
-			    ((MEMQ 'array FLAGS) 'array)
-			    (T 'FUNC)))
-	   (LET* ((T-FORM
-		   (TR-LAMBDA `((LAMBDA)
-				((MLIST) ,@A-ARGS) ,BODY)))
-		  (DESC-HEADER
-		   `(,NAME ,(CAR T-FORM) ,(CAAR FORM)
-			   ,AND-RESTP ,(EQ KIND 'array))))
-	     (COND ((EQ KIND 'FUNC)
-		    (PUSH-PRE-TRANSL-FORM
-		     `(DEFMTRFUN-EXTERNAL ,DESC-HEADER))
-		    (AND (NOT (MEMQ (CAR T-FORM) '($ANY NIL)))
-			 (PUTPROP NAME (CAR T-FORM) 'FUNCTION-MODE)))
-		   ((EQ KIND 'array)
-		    (AND (NOT (MEMQ (CAR T-FORM) '($ANY NIL)))
-			 (DECMODE-ARRAYFUN NAME (CAR T-FORM)))))
+	   (tr-mdefine-toplevel
+	    `(,(car form) ,(car args)
+	      ((lambda) ((mlist) ,@(cdr args)) ,body))))
+	  ((memq tr-unique a-args)
+	   (tr-tell "Bad argument list for a function to translate->"
+		    `((mlist),@args))
+	   (setq tr-abort t)
+	   nil)
+	  ((memq (caar form) '(mdefine mdefmacro))
+	   (setq kind (cond ((eq (caar form) 'mdefmacro) 'macro)
+			    ((memq 'array flags) 'array)
+			    (t 'func)))
+	   (let* ((t-form
+		   (tr-lambda `((lambda)
+				((mlist) ,@a-args) ,body)))
+		  (desc-header
+		   `(,name ,(car t-form) ,(caar form)
+		     ,and-restp ,(eq kind 'array))))
+	     (cond ((eq kind 'func)
+		    (push-pre-transl-form
+		     `(defmtrfun-external ,desc-header))
+		    (and (not (memq (car t-form) '($any nil)))
+			 (putprop name (car t-form) 'function-mode)))
+		   ((eq kind 'array)
+		    (and (not (memq (car t-form) '($any nil)))
+			 (decmode-arrayfun name (car t-form)))))
 
-	     (COND ((OR *IN-TRANSLATE* (NOT $PACKAGEFILE))
-				; These are all properties which tell the
-				; user that functions are in the environment,
-				; and that also allow him to SAVE the functions.
-		    (PUSH `(DEFPROP ,NAME T TRANSLATED) OUT-FORMS)
-		    (PUSH `(ADD2LNC ',NAME $PROPS) OUT-FORMS)
-		    (COND ((EQ '$ALL $SAVEDEF)
-			   (PUSH
-			    `(ADD2LNC
-			      '((,NAME ,@FLAGS) ,@ARGS)
-			      ,(CASE KIND
-				 (ARRAY '$ARRAYS)
-				 (FUNC '$FUNCTIONS)
-				 (MACRO '$MACROS))) OUT-FORMS)))))
-	     (COND ((EQ '$ALL $SAVEDEF)
+	     (cond ((or *in-translate* (not $packagefile))
+					; These are all properties which tell the
+					; user that functions are in the environment,
+					; and that also allow him to SAVE the functions.
+		    (push `(defprop ,name t translated) out-forms)
+		    (push `(add2lnc ',name $props) out-forms)
+		    (cond ((eq '$all $savedef)
+			   (push
+			    `(add2lnc
+			      '((,name ,@flags) ,@args)
+			      ,(case kind
+				     (array '$arrays)
+				     (func '$functions)
+				     (macro '$macros))) out-forms)))))
+	     (cond ((eq '$all $savedef)
 		    ;; For some reason one may want to save the
 		    ;; interpreted definition even if in a PACKAGEFILE.
 		    ;; not a good idea to use SAVEDEF anyway though.
-		    (PUSH `(MDEFPROP ,NAME
-				     ((LAMBDA) ((MLIST) ,@ARGS) ,BODY)
-				     ,(CASE KIND
-					(ARRAY 'AEXPR)
-					(MACRO 'MMACRO)
-					(FUNC 'MEXPR)))
-			  OUT-FORMS)))
+		    (push `(mdefprop ,name
+			    ((lambda) ((mlist) ,@args) ,body)
+			    ,(case kind
+				   (array 'aexpr)
+				   (macro 'mmacro)
+				   (func 'mexpr)))
+			  out-forms)))
 	     ;;once a function has been translated we want to make sure mfunction-call is eliminated.
 	     (progn (remprop (car desc-header) 'undefined-warnp)
 		    (setf (get (car desc-header) 'once-translated) "I was once translated"))
-	     `(PROGN ;'COMPILE
-		     ,@(NREVERSE OUT-FORMS)
-		     (DEFMTRFUN ,DESC-HEADER ,@(CDR (cdr t-FORM))))))
-	  (T
-	   (BARFO '?)))))
+	     `(progn			;'COMPILE
+	       ,@(nreverse out-forms)
+	       (defmtrfun ,desc-header ,@(cdr (cdr t-form))))))
+	  (t
+	   (barfo '?)))))
 
 
-(DEFUN LISP-FCN-TYPEP (FCN TYPE)
-  #-LISPM (GET FCN TYPE)
-  #+LISPM (EQ TYPE (GETL-LM-FCN-PROP
-		    FCN '(SUBR LSUBR FSUBR EXPR LEXPR FEXPR MACRO))))
+(defun lisp-fcn-typep (fcn type)
+  #-lispm (get fcn type)
+  #+lispm (eq type (getl-lm-fcn-prop
+		    fcn '(subr lsubr fsubr expr lexpr fexpr macro))))
 
-(DEFTRFUN TRANSLATE-FUNCTION (NAME)
-       (BIND-TRANSL-STATE
-	(SETQ *IN-TRANSLATE* T)
-       (LET ((LISP-DEF-FORM (TR-MFUN NAME))
-	     (DELETE-SUBR? (AND (GET NAME 'TRANSLATED)
-				(NOT (lisp-fcn-typep NAME 'EXPR)))))
-	    (COND (TR-ABORT
-		   (TRFAIL NAME))
-		  (T
-		   (IF DELETE-SUBR? (REMPROP NAME 'SUBR))
-		   (IF (MGET NAME 'TRACE) (macsyma-untrace NAME))
-		   (IF (NOT $SAVEDEF) (MEVAL `(($REMFUNCTION) ,NAME)))
-		   (LET ((LISP-ACTION
-			  ; apply EVAL so it is easy to TRACE.
-			  ; ERRSET is crude, but...
-			  (ERRSET (APPLY 'EVAL (LIST LISP-DEF-FORM)))))
-			(COND ((NOT LISP-ACTION)
-			       (TRFAIL NAME))
-			      (T (values NAME lisp-def-form)))))))))
+(deftrfun translate-function (name)
+  (bind-transl-state
+   (setq *in-translate* t)
+   (let ((lisp-def-form (tr-mfun name))
+	 (delete-subr? (and (get name 'translated)
+			    (not (lisp-fcn-typep name 'expr)))))
+     (cond (tr-abort
+	    (trfail name))
+	   (t
+	    (if delete-subr? (remprop name 'subr))
+	    (if (mget name 'trace) (macsyma-untrace name))
+	    (if (not $savedef) (meval `(($remfunction) ,name)))
+	    (let ((lisp-action
+					; apply EVAL so it is easy to TRACE.
+					; ERRSET is crude, but...
+		   (errset (apply 'eval (list lisp-def-form)))))
+	      (cond ((not lisp-action)
+		     (trfail name))
+		    (t (values name lisp-def-form)))))))))
 
 
-(DEFUN TRFAIL (X) (TR-TELL X " failed to translate.") NIL)
+(defun trfail (x) (tr-tell x " failed to translate.") nil)
 
 
 ;;; should macsyma batch files support INCLUDEF? No, not needed
 ;;; and not as efficient for loading declarations, and macros 
 ;;; as simple LOADING is. Thats why there is EVAL_WHEN.
 
-(DEFTRFUN TRANSLATE-MACEXPR-ACTUAL (FORM FILEPOS)
-	  (declare (special *TRANSLATE-BUFFERED-FORMS*))
-       ;; Called as the EVAL-PRINT part of the READ-EVAL-PRINT
-       (IF (AND (NOT (ATOM FORM)) (SYMBOLP (CAAR FORM)))
-	   (LET ((P (GET (CAAR FORM) 'TAGS)))
-		;; So we can generate a tags file as we translate,
-		;; this is an incredibly efficient way to do it
-		;; since the incremental cost is almost nothing.
-		(IF P (FUNCALL P FORM FILEPOS))))
-       (PUSH (TRANSLATE-MACEXPR-TOPLEVEL FORM)
-	     *TRANSLATE-BUFFERED-FORMS*))
+(deftrfun translate-macexpr-actual (form filepos)
+  (declare (special *translate-buffered-forms*))
+  ;; Called as the EVAL-PRINT part of the READ-EVAL-PRINT
+  (if (and (not (atom form)) (symbolp (caar form)))
+      (let ((p (get (caar form) 'tags)))
+	;; So we can generate a tags file as we translate,
+	;; this is an incredibly efficient way to do it
+	;; since the incremental cost is almost nothing.
+	(if p (funcall p form filepos))))
+  (push (translate-macexpr-toplevel form)
+	*translate-buffered-forms*))
 
-(DEFMFUN TRANSLATE-AND-EVAL-MACSYMA-EXPRESSION (FORM)
-	 ;; this is the hyper-random entry to the transl package!
-	 ;; it is used by MLISP for TRANSLATE:TRUE ":=".
-	 (bind-transl-state
-	  (setq *in-translate* t)
-	  ;; Use FUNCALL so that we can be sure we can TRACE this even when
-	  ;; JPG sets PURE to NIL. Also, use a function named TRANSLATOR-EVAL
-	  ;; so we don't have to lose badly by tracing EVAL!
-	  (FUNCALL (PROGN 'TRANSLATOR-EVAL)
-		   (FUNCALL (PROGN 'TRANSLATE-MACEXPR-TOPLEVEL) FORM))))
+(defmfun translate-and-eval-macsyma-expression (form)
+  ;; this is the hyper-random entry to the transl package!
+  ;; it is used by MLISP for TRANSLATE:TRUE ":=".
+  (bind-transl-state
+   (setq *in-translate* t)
+   ;; Use FUNCALL so that we can be sure we can TRACE this even when
+   ;; JPG sets PURE to NIL. Also, use a function named TRANSLATOR-EVAL
+   ;; so we don't have to lose badly by tracing EVAL!
+   (funcall (progn 'translator-eval)
+	    (funcall (progn 'translate-macexpr-toplevel) form))))
 
-(DEFUN TRANSLATOR-EVAL (X) (EVAL X))
+(defun translator-eval (x) (eval x))
 
-(DEFUN APPLY-IN$BIND_DURING_TRANSLATION (F FORM &REST L)
-  (COND ((NOT ($LISTP (CADR FORM)))
-	 (TR-FORMAT "Badly formed BIND_DURING_TRANSLATION variable list.~%~:M"
-		    (CADR FORM))
-	 (APPLY F FORM L))
-	('ELSE
-	 (DO ((L (CDR (CADR FORM)) (CDR L))
-	      (VARS NIL)
-	      (VALS NIL))
-	     ((NULL L)
-	      (MBINDING (VARS VALS '$BIND_DURING_TRANSLATION)
-			(APPLY F FORM L)))
-	   (LET ((P (CAR L)))
-	     (COND ((ATOM P) (PUSH P VARS) (PUSH (MEVAL P) VALS))
-		   ((EQ (CAAR P) 'MSETQ)
-		    (PUSH (CADR P) VARS) (PUSH (MEVAL (CADDR P)) VALS))
-		   ('ELSE
-		    (tr-FORMAT
+(defun apply-in$bind_during_translation (f form &rest l)
+  (cond ((not ($listp (cadr form)))
+	 (tr-format "Badly formed BIND_DURING_TRANSLATION variable list.~%~:M"
+		    (cadr form))
+	 (apply f form l))
+	('else
+	 (do ((l (cdr (cadr form)) (cdr l))
+	      (vars nil)
+	      (vals nil))
+	     ((null l)
+	      (mbinding (vars vals '$bind_during_translation)
+			(apply f form l)))
+	   (let ((p (car l)))
+	     (cond ((atom p) (push p vars) (push (meval p) vals))
+		   ((eq (caar p) 'msetq)
+		    (push (cadr p) vars) (push (meval (caddr p)) vals))
+		   ('else
+		    (tr-format
 		     "Badly formed BIND_DURING_TRANSLATION binding~%~:M"
-		     P))))))))
+		     p))))))))
 
-(DEFMFUN TRANSLATE-MACEXPR-TOPLEVEL (FORM &AUX (*TRANSL-BACKTRACE* NIL)
-					  TR-ABORT)
-	 ;; there are very few top-level special cases, I don't
-	 ;; think it would help the code any to generalize TRANSLATE
-	 ;; to target levels.
-	 (SETQ FORM (TOPLEVEL-OPTIMIZE FORM))
-	 (COND ((ATOM FORM) NIL)
-	       ((EQ (CAAR FORM) '$BIND_DURING_TRANSLATION)
-		(APPLY-IN$BIND_DURING_TRANSLATION
-		 #'(LAMBDA (FORM) 
-		     `(PROGN
-		       'COMPILE
-		       ,@(MAPCAR 'TRANSLATE-MACEXPR-TOPLEVEL (CDDR FORM))))
-		 FORM))
-	       ((EQ (CAAR FORM) '$EVAL_WHEN)
-		(LET ((WHENS (CADR FORM))
-		      (BODY (CDDR FORM)) tr-whens)
-		     (SETQ WHENS (COND (($LISTP WHENS) (CDR WHENS))
-				       ((ATOM WHENS) (LIST WHENS))
-				       (T
-					(TR-TELL "Bad EVAL-WHEN times"
-					      (CADR FORM))
-					NIL)))
-		     (setq tr-whens (mapcar 'stripdollar whens))
-		     (COND ((MEMQ '$TRANSLATE WHENS)
-			    (MAPC 'MEVAL BODY)))
-		     (COND ((MEMQ '$LOADFILE WHENS)
-			    `(PROGN 'COMPILE
-				    ,@(MAPCAR 'TRANSLATE-MACEXPR-TOPLEVEL BODY)))
-			   #+cl
-			   ((setq tr-whens (intersect tr-whens '(compile load eval)))
-			    `(eval-when
-			       ,tr-whens
-			        ,@(MAPCAR 'TRANSLATE-MACEXPR-TOPLEVEL BODY)))
-			   ((MEMQ '$COMPILE WHENS)
-			    ;; strictly for the knowledgeable user.
-			    ;; I.E. so I can use EVAL_WHEN(COMPILE,?SPECIALS:TRUE)
-			    `(EVAL-WHEN
-			       (compile)
-			      ,@(MAPCAR 'TRANSLATE-MACEXPR-TOPLEVEL BODY))))))
-	       ((MEMQ (CAAR FORM) TRANSLATE-TIME-EVALABLES)
-		(MEVAL1 FORM)
-		#-cl
-		`(MEVAL* ',FORM)
-		#+cl
-		`(eval-when (compile load eval) (MEVAL* ',FORM))
-		)
-	       ((MEMQ  (CAAR FORM) '(MDEFINE MDEFMACRO))
-		(LET ((NAME (CAAADR FORM))
-		      (TRL))
-		     (TR-FORMAT
-			      "~%Translating: ~:@M"
-			      NAME)
-		     (SETQ TRL (TR-MDEFINE-TOPLEVEL FORM))
-		     (COND (TR-ABORT
-			    (TR-FORMAT
-				     "~%~:@M failed to Translate.  Continuing..."
-				     NAME)
-			    `(MEVAL* ',FORM))
-			   (T TRL))))
-	       ((EQ 'MPROGN (CAAR FORM))
-		;; flatten out all PROGN's of course COMPLR needs PROGN 'COMPILE to
-		;; tell it to flatten. I don't really see the use of that since one
-		;; almost allways wants to. flatten.
-		;; note that this ignores the $%% crock.
-		`(PROGN 'COMPILE
-			,@(MAPCAR #'TRANSLATE-MACEXPR-TOPLEVEL (CDR FORM))))
-	       (t		
-		(LET  ((T-FORM (DTRANSLATE FORM)))
-		      (COND (TR-ABORT
-			     `(MEVAL* ',FORM))
-			    (T
-			     T-FORM))))))
+(defmfun translate-macexpr-toplevel (form &aux (*transl-backtrace* nil)
+					  tr-abort)
+  ;; there are very few top-level special cases, I don't
+  ;; think it would help the code any to generalize TRANSLATE
+  ;; to target levels.
+  (setq form (toplevel-optimize form))
+  (cond ((atom form) nil)
+	((eq (caar form) '$bind_during_translation)
+	 (apply-in$bind_during_translation
+	  #'(lambda (form) 
+	      `(progn
+		'compile
+		,@(mapcar 'translate-macexpr-toplevel (cddr form))))
+	  form))
+	((eq (caar form) '$eval_when)
+	 (let ((whens (cadr form))
+	       (body (cddr form)) tr-whens)
+	   (setq whens (cond (($listp whens) (cdr whens))
+			     ((atom whens) (list whens))
+			     (t
+			      (tr-tell "Bad EVAL-WHEN times"
+				       (cadr form))
+			      nil)))
+	   (setq tr-whens (mapcar 'stripdollar whens))
+	   (cond ((memq '$translate whens)
+		  (mapc 'meval body)))
+	   (cond ((memq '$loadfile whens)
+		  `(progn 'compile
+		    ,@(mapcar 'translate-macexpr-toplevel body)))
+		 #+cl
+		 ((setq tr-whens (intersect tr-whens '(compile load eval)))
+		  `(eval-when
+		    ,tr-whens
+		    ,@(mapcar 'translate-macexpr-toplevel body)))
+		 ((memq '$compile whens)
+		  ;; strictly for the knowledgeable user.
+		  ;; I.E. so I can use EVAL_WHEN(COMPILE,?SPECIALS:TRUE)
+		  `(eval-when
+		    (compile)
+		    ,@(mapcar 'translate-macexpr-toplevel body))))))
+	((memq (caar form) translate-time-evalables)
+	 (meval1 form)
+	 #-cl
+	 `(meval* ',form)
+	 #+cl
+	 `(eval-when (compile load eval) (meval* ',form))
+	 )
+	((memq  (caar form) '(mdefine mdefmacro))
+	 (let ((name (caaadr form))
+	       (trl))
+	   (tr-format
+	    "~%Translating: ~:@M"
+	    name)
+	   (setq trl (tr-mdefine-toplevel form))
+	   (cond (tr-abort
+		  (tr-format
+		   "~%~:@M failed to Translate.  Continuing..."
+		   name)
+		  `(meval* ',form))
+		 (t trl))))
+	((eq 'mprogn (caar form))
+	 ;; flatten out all PROGN's of course COMPLR needs PROGN 'COMPILE to
+	 ;; tell it to flatten. I don't really see the use of that since one
+	 ;; almost allways wants to. flatten.
+	 ;; note that this ignores the $%% crock.
+	 `(progn 'compile
+	   ,@(mapcar #'translate-macexpr-toplevel (cdr form))))
+	(t		
+	 (let  ((t-form (dtranslate form)))
+	   (cond (tr-abort
+		  `(meval* ',form))
+		 (t
+		  t-form))))))
 
 
 
-(DEFMVAR $TR_OPTIMIZE_MAX_LOOP 100.
-	 "The maximum number of times the macro-expansion and optimization
+(defmvar $tr_optimize_max_loop 100.
+  "The maximum number of times the macro-expansion and optimization
 	 pass of the translator will loop in considering a form.
 	 This is to catch macro expansion errors, and non-terminating
 	 optimization properties.")
 
-(DEFUN TOPLEVEL-OPTIMIZE (FORM)
-       ;; it is vital that optimizations be done within the
-       ;; context of variable meta bindings, declarations, etc.
-       ;; Also: think about calling the simplifier here.
-       (COND ((ATOM FORM)
-	      (COND ((SYMBOLP FORM)
-		     (LET ((V (GETL (MGET FORM '$PROPS) '($CONSTANT))))
-			  (IF V (CADR V) FORM)))
-		    (T FORM)))
-	     ('ELSE
-	      (DO ((NEW-FORM)
-		   (KOUNT 0 (f1+ KOUNT)))
-		  ;; tailrecursion should always arrange for a counter
-		  ;; to check for mobylossage.
-		  ((> KOUNT $TR_OPTIMIZE_MAX_LOOP)
-		   (TR-FORMAT
-		    "~%Looping over ~A times in optimization of call to ~:@M~
+(defun toplevel-optimize (form)
+  ;; it is vital that optimizations be done within the
+  ;; context of variable meta bindings, declarations, etc.
+  ;; Also: think about calling the simplifier here.
+  (cond ((atom form)
+	 (cond ((symbolp form)
+		(let ((v (getl (mget form '$props) '($constant))))
+		  (if v (cadr v) form)))
+	       (t form)))
+	('else
+	 (do ((new-form)
+	      (kount 0 (f1+ kount)))
+	     ;; tailrecursion should always arrange for a counter
+	     ;; to check for mobylossage.
+	     ((> kount $tr_optimize_max_loop)
+	      (tr-format
+	       "~%Looping over ~A times in optimization of call to ~:@M~
 		    ~%macro expand MAXIMA-ERROR likely so punting at this level."
-		    $TR_OPTIMIZE_MAX_LOOP (CAAR FORM))
-		   FORM)
-		  (SETQ NEW-FORM (TOPLEVEL-OPTIMIZE-1 FORM))
-		  (COND ((ATOM NEW-FORM)
-			 (RETURN (TOPLEVEL-OPTIMIZE NEW-FORM)))
-			((EQ NEW-FORM FORM)
-			 (RETURN FORM))
-			(T
-			 (SETQ FORM NEW-FORM)))))))
+	       $tr_optimize_max_loop (caar form))
+	      form)
+	   (setq new-form (toplevel-optimize-1 form))
+	   (cond ((atom new-form)
+		  (return (toplevel-optimize new-form)))
+		 ((eq new-form form)
+		  (return form))
+		 (t
+		  (setq form new-form)))))))
 
-(DEFUN TOPLEVEL-OPTIMIZE-1 (FORM &AUX (OP (CAR FORM)) PROP)
-       (COND ((or (atom op)
-		  (MEMQ 'array OP)) FORM)
-	     ((PROGN (SETQ OP (CAR OP))
-		     (SETQ PROP
-			   (IF $TRANSRUN		; crock a minute.
-			       (OR (GET OP 'TRANSLATED-MMACRO)
-				   (MGET OP 'MMACRO))
-			       (OR (MGET OP 'MMACRO)
-				   (GET OP 'TRANSLATED-MMACRO)))))
-	      (MMACRO-APPLY PROP FORM))
-	     ((SETQ PROP ($GET OP '$OPTIMIZE))
-	      ;; interesting, the MAPPLY here causes the simplification
-	      ;; of the form and the result.
-	      ;; The optimize property can be used to implement
-	      ;; such niceties as the $%% crock.
-	      (MAPPLY1 PROP (LIST FORM) "an optimizer property" nil))
-	     ((AND ($GET OP '$TRANSLOAD)
-		   (GET OP 'AUTOLOAD)
-		   ;; check for all reasonable definitions,
-		   ;; $OPTIMIZE and MACRO already checked.
-		   (NOT (OR (GET-LISP-FUN-TYPE OP)
-			    (GETL OP '(TRANSLATE MFEXPR* MFEXPR*S
-						 FSUBR FEXPR *FEXPR
-						 MACRO
-						 ;; foobar?
-						 ))
-			    (MGETL OP '(MEXPR)))))
-	      (LOAD-FUNCTION OP T)
-	      ;; to loop.
-	      (CONS (CAR FORM) (CDR FORM)))
-	     (T FORM)))
+(defun toplevel-optimize-1 (form &aux (op (car form)) prop)
+  (cond ((or (atom op)
+	     (memq 'array op)) form)
+	((progn (setq op (car op))
+		(setq prop
+		      (if $transrun	; crock a minute.
+			  (or (get op 'translated-mmacro)
+			      (mget op 'mmacro))
+			  (or (mget op 'mmacro)
+			      (get op 'translated-mmacro)))))
+	 (mmacro-apply prop form))
+	((setq prop ($get op '$optimize))
+	 ;; interesting, the MAPPLY here causes the simplification
+	 ;; of the form and the result.
+	 ;; The optimize property can be used to implement
+	 ;; such niceties as the $%% crock.
+	 (mapply1 prop (list form) "an optimizer property" nil))
+	((and ($get op '$transload)
+	      (get op 'autoload)
+	      ;; check for all reasonable definitions,
+	      ;; $OPTIMIZE and MACRO already checked.
+	      (not (or (get-lisp-fun-type op)
+		       (getl op '(translate mfexpr* mfexpr*s
+				  fsubr fexpr *fexpr
+				  macro
+				  ;; foobar?
+				  ))
+		       (mgetl op '(mexpr)))))
+	 (load-function op t)
+	 ;; to loop.
+	 (cons (car form) (cdr form)))
+	(t form)))
 
-(DEFTRFUN TRANSLATE (FORM)
-	  (AND *TRANSL-DEBUG* (PUSH FORM *TRANSL-BACKTRACE*))
-	  (SETQ FORM (TOPLEVEL-OPTIMIZE FORM))
-	  (AND *TRANSL-DEBUG* (POP *TRANSL-BACKTRACE*))
-	  (PROG2
-	   (AND *TRANSL-DEBUG* (PUSH FORM *TRANSL-BACKTRACE*))
-	   (COND ((ATOM FORM)
-		  (TRANSLATE-ATOM FORM))
-		 ((consp FORM)
-		  (TRANSLATE-FORM FORM))
-		 (T
-		  (BARFO "help")))
-	   ;; hey boy, reclaim that cons, just don't pop it!
-	   (AND *TRANSL-DEBUG* (POP *TRANSL-BACKTRACE*))))
+(deftrfun translate (form)
+  (and *transl-debug* (push form *transl-backtrace*))
+  (setq form (toplevel-optimize form))
+  (and *transl-debug* (pop *transl-backtrace*))
+  (prog2
+      (and *transl-debug* (push form *transl-backtrace*))
+      (cond ((atom form)
+	     (translate-atom form))
+	    ((consp form)
+	     (translate-form form))
+	    (t
+	     (barfo "help")))
+    ;; hey boy, reclaim that cons, just don't pop it!
+    (and *transl-debug* (pop *transl-backtrace*))))
 
-(DEFUN TRANSLATE-ATOM (FORM &AUX TEMP)
-       (COND ((NUMBERP FORM) (CONS (TR-CLASS FORM) FORM))
-	     ((SETQ TEMP (ASSQ FORM BOOLEAN-OBJECT-TABLE))
-	      (CDR TEMP))
-	     ((AND (SETQ TEMP (MGET FORM '$NUMER)) $TR_NUMER)
-	      `($FLOAT . ,TEMP))
-	     ((SETQ TEMP (IMPLIED-QUOTEP FORM))
-	      `($ANY . ',TEMP))
-	     ((TBOUNDP FORM)
-	      (SPECIALP FORM) ;; notes its usage if special.
-	      (SETQ FORM (TEVAL FORM))
-	      `(,(VALUE-MODE FORM) . ,FORM))
-	     (T
-	      (COND ((NOT (SPECIALP FORM))
-		     (WARN-UNDEFINED-VARIABLE FORM)
-		     (IF $TRANSCOMPILE (ADDL FORM SPECIALS))))
-	      ;; note that the lisp analysis code must know that
-	      ;; the TRD-MSYMEVAL form is a semantic variable.
-	      (LET* ((MODE (VALUE-MODE FORM))		
-		     (INIT-VAL (ASSQ MODE MODE-INIT-VALUE-TABLE)))
-		    (SETQ INIT-VAL (COND (INIT-VAL (CDR INIT-VAL))
-					 (T `',FORM)))
-		    ;; in the compiler TRD-MSYMEVAL doesn't do a darn
-		    ;; thing, but it provides dynamic initialization of
-		    ;; variables in interpreted code which is translated
-		    ;; in-core. In FILE loaded code the DEFVAR will take
-		    ;; care of this.
-		    (PUSH-DEFVAR FORM INIT-VAL)
-		    `(,MODE . (TRD-MSYMEVAL ,FORM ,INIT-VAL))))))
+(defun translate-atom (form &aux temp)
+  (cond ((numberp form) (cons (tr-class form) form))
+	((setq temp (assq form boolean-object-table))
+	 (cdr temp))
+	((and (setq temp (mget form '$numer)) $tr_numer)
+	 `($float . ,temp))
+	((setq temp (implied-quotep form))
+	 `($any . ',temp))
+	((tboundp form)
+	 (specialp form) ;; notes its usage if special.
+	 (setq form (teval form))
+	 `(,(value-mode form) . ,form))
+	(t
+	 (cond ((not (specialp form))
+		(warn-undefined-variable form)
+		(if $transcompile (addl form specials))))
+	 ;; note that the lisp analysis code must know that
+	 ;; the TRD-MSYMEVAL form is a semantic variable.
+	 (let* ((mode (value-mode form))		
+		(init-val (assq mode mode-init-value-table)))
+	   (setq init-val (cond (init-val (cdr init-val))
+				(t `',form)))
+	   ;; in the compiler TRD-MSYMEVAL doesn't do a darn
+	   ;; thing, but it provides dynamic initialization of
+	   ;; variables in interpreted code which is translated
+	   ;; in-core. In FILE loaded code the DEFVAR will take
+	   ;; care of this.
+	   (push-defvar form init-val)
+	   `(,mode . (trd-msymeval ,form ,init-val))))))
 
-(DEFUN TRANSLATE-FORM (FORM &AUX TEMP)
-       (COND ((eq (car form) 'meval) (cons '$any form)) ;;for those lispy macsyma forms
-	     ((NOT (ATOM (CAAR FORM)))
-	      ;; this is a check like that in the simplifier. form could
-	      ;; result from substitution macros.
-	      (TRANSLATE `((MQAPPLY) ,(CAAR FORM) . ,(CDR FORM))))
-	     ((MEMQ 'array (CDAR FORM))
-	      ;; dispatch this bad-boy to another module quick.
-	      (TR-ARRAYCALL FORM))
-	     ;; TRANSLATE properties have priority.
-	     ((SETQ TEMP (GET (CAAR FORM) 'TRANSLATE))
-	      ;; TPROP-CALL is a macro, think of it as FUNCALL.
-	      ;; see the macro file if you are curious.
-	      (TPROP-CALL TEMP FORM))
-	     ((SETQ TEMP (GET-LISP-FUN-TYPE (CAAR FORM)))
-	      (TR-LISP-FUNCTION-CALL FORM TEMP))
-	     ((SETQ TEMP (macsyma-special-macro-p (CAAR FORM)))
-              (attempt-translate-random-macro-op form temp))
-	     ((SETQ TEMP (MACSYMA-SPECIAL-OP-P (CAAR FORM)))
-	      ;; a special form not handled yet! foobar!
-	      (attempt-translate-random-special-op form temp))
-	     ((getl (caar form) '(noun operators))
-	      ;; puntastical case. the weird ones are presumably taken care
-	      ;; of by TRANSLATE properties by now.
-	      (TR-INFAMOUS-NOUN-FORM FORM))
+(defun translate-form (form &aux temp)
+  (cond ((eq (car form) 'meval) (cons '$any form)) ;;for those lispy macsyma forms
+	((not (atom (caar form)))
+	 ;; this is a check like that in the simplifier. form could
+	 ;; result from substitution macros.
+	 (translate `((mqapply) ,(caar form) . ,(cdr form))))
+	((memq 'array (cdar form))
+	 ;; dispatch this bad-boy to another module quick.
+	 (tr-arraycall form))
+	;; TRANSLATE properties have priority.
+	((setq temp (get (caar form) 'translate))
+	 ;; TPROP-CALL is a macro, think of it as FUNCALL.
+	 ;; see the macro file if you are curious.
+	 (tprop-call temp form))
+	((setq temp (get-lisp-fun-type (caar form)))
+	 (tr-lisp-function-call form temp))
+	((setq temp (macsyma-special-macro-p (caar form)))
+	 (attempt-translate-random-macro-op form temp))
+	((setq temp (macsyma-special-op-p (caar form)))
+	 ;; a special form not handled yet! foobar!
+	 (attempt-translate-random-special-op form temp))
+	((getl (caar form) '(noun operators))
+	 ;; puntastical case. the weird ones are presumably taken care
+	 ;; of by TRANSLATE properties by now.
+	 (tr-infamous-noun-form form))
 	
-	     ;; "What does a macsyma function call mean?".
-	     ;; By the way, (A:'B,B:'C,C:'D)$ A(3) => D(3)
-	     ;; is not supported.
-	     (t
-	      (tr-macsyma-user-function-call (caar form) (cdr form) form))))
+	;; "What does a macsyma function call mean?".
+	;; By the way, (A:'B,B:'C,C:'D)$ A(3) => D(3)
+	;; is not supported.
+	(t
+	 (tr-macsyma-user-function-call (caar form) (cdr form) form))))
 
 
 
-(DEFMVAR $TR_BOUND_FUNCTION_APPLYP T)
+(defmvar $tr_bound_function_applyp t)
 
 (defun tr-macsyma-user-function-call (function args form)
-       ;; this needs some work, output load-time code to
-       ;; check for MMACRO properties, etc, to be really
-       ;; foolproof.
-       (cond ((EQ $TR_FUNCTION_CALL_DEFAULT '$APPLY)
-	      (TRANSLATE `(($APPLY)  ,(CAAR FORM) ((MLIST) ,@(CDR FORM)))))
-	     ((EQ $TR_FUNCTION_CALL_DEFAULT '$EXPR)
-	      (TR-LISP-FUNCTION-CALL FORM 'SUBR))
+  ;; this needs some work, output load-time code to
+  ;; check for MMACRO properties, etc, to be really
+  ;; foolproof.
+  (cond ((eq $tr_function_call_default '$apply)
+	 (translate `(($apply)  ,(caar form) ((mlist) ,@(cdr form)))))
+	((eq $tr_function_call_default '$expr)
+	 (tr-lisp-function-call form 'subr))
 	     
-	     ((EQ $TR_FUNCTION_CALL_DEFAULT '$GENERAL)
-	      (cond 
+	((eq $tr_function_call_default '$general)
+	 (cond 
 	     ;;; G(F,X):=F(X+1); case.
 	     
-	       ((AND $TR_BOUND_FUNCTION_APPLYP (tboundp function))
-		(let ((new-form `(($apply) ,function ((mlist) ,@args))))
-		     (TR-TELL function
-			   "in the form "
-			   form
-			   "has been used as a function, yet is a bound variable"
-			   "in this context. This code being translated as :"
-			   new-form)
-		     (translate new-form)))
-	       ;; MFUNCTION-CALL cleverely punts this question to a FSUBR in the
-	       ;; interpreter, and a macro in the compiler. This is good style,
-	       ;; if a user is compiling then assume he is less lossage prone.
-	       (t #+cl (pushnew (caar form) *untranslated-functions-called*)
-		(CALL-AND-SIMP
-		 (FUNCTION-MODE (CAAR FORM))
-		 'MFUNCTION-CALL `(,(CAAR FORM) ,@(TR-ARGS args))))))
-	     (T
-	      ;; This case used to be the most common, a real loser.
-	      (WARN-MEVAL FORM)
-	      `(,(FUNCTION-MODE (CAAR FORM)) . (MEVAL ',FORM)))))
+	   ((and $tr_bound_function_applyp (tboundp function))
+	    (let ((new-form `(($apply) ,function ((mlist) ,@args))))
+	      (tr-tell function
+		       "in the form "
+		       form
+		       "has been used as a function, yet is a bound variable"
+		       "in this context. This code being translated as :"
+		       new-form)
+	      (translate new-form)))
+	   ;; MFUNCTION-CALL cleverely punts this question to a FSUBR in the
+	   ;; interpreter, and a macro in the compiler. This is good style,
+	   ;; if a user is compiling then assume he is less lossage prone.
+	   (t #+cl (pushnew (caar form) *untranslated-functions-called*)
+	      (call-and-simp
+	       (function-mode (caar form))
+	       'mfunction-call `(,(caar form) ,@(tr-args args))))))
+	(t
+	 ;; This case used to be the most common, a real loser.
+	 (warn-meval form)
+	 `(,(function-mode (caar form)) . (meval ',form)))))
 
 
-(DEFUN ATTEMPT-TRANSLATE-RANDOM-macro-OP (FORM TYPEL &aux tem)
+(defun attempt-translate-random-macro-op (form typel &aux tem)
   ;; da,da,da,da.
-  (WARN-FEXPR FORM)
+  (warn-fexpr form)
   (setq tem (translate-atoms form))
   (setf (car tem) (caar tem))
-  `($ANY . ,tem))
+  `($any . ,tem))
 
-(DEFUN ATTEMPT-TRANSLATE-RANDOM-SPECIAL-OP (FORM TYPEL)
+(defun attempt-translate-random-special-op (form typel)
   ;; da,da,da,da.
-  (WARN-FEXPR FORM)
-  `($ANY . (MEVAL ',(TRANSLATE-ATOMS FORM))))
+  (warn-fexpr form)
+  `($any . (meval ',(translate-atoms form))))
 
 
 
 
-(DEFUN TR-LISP-FUNCTION-CALL (FORM TYPE)
-       (LET ((OP (CAAR FORM)) (MODE) (ARGS))
-	    (SETQ ARGS (COND ((MEMQ TYPE '(SUBR LSUBR EXPR))
-			      (IF $TRANSCOMPILE
-				  (CASE TYPE
-				    ((SUBR) (ADDL OP EXPRS))
-				    ((LSUBR) (ADDL OP LEXPRS))
-				    (T NIL)))
-			      (MAPCAR #'(LAMBDA (LLIS) (DCONVX (TRANSLATE LLIS)))
-				      (CDR FORM)))
-			     (T
-			      (IF $TRANSCOMPILE (ADDL OP FEXPRS))
-			      (MAPCAR 'DTRANSLATE (CDR FORM))))
-		  MODE (FUNCTION-MODE OP))
-	    (CALL-AND-SIMP MODE OP ARGS)))
+(defun tr-lisp-function-call (form type)
+  (let ((op (caar form)) (mode) (args))
+    (setq args (cond ((memq type '(subr lsubr expr))
+		      (if $transcompile
+			  (case type
+			    ((subr) (addl op exprs))
+			    ((lsubr) (addl op lexprs))
+			    (t nil)))
+		      (mapcar #'(lambda (llis) (dconvx (translate llis)))
+			      (cdr form)))
+		     (t
+		      (if $transcompile (addl op fexprs))
+		      (mapcar 'dtranslate (cdr form))))
+	  mode (function-mode op))
+    (call-and-simp mode op args)))
 
 ;;the once-translated is so that inside translate file where a function
 ;;has been translated, subsequent calls won't use mfunction call
-(DEFUN GET-LISP-FUN-TYPE (FUN &AUX TEMP)
-       ;; N.B. this is Functional types. NOT special-forms,
-       ;; lisp special forms are meaningless to macsyma.
-       (COND ((GET FUN '*LEXPR) 'LSUBR)
-	     ((GET FUN '*EXPR) 'SUBR)
-	     ;; *LEXPR & *EXPR gotten from DEFMFUN declarations
-	     ;; which is loaded by TrData.
-	     ((MGET FUN '$FIXED_NUM_ARGS_FUNCTION)
-	      'SUBR)
-	     ((MGET FUN '$VARIABLE_NUM_ARGS_FUNCTION)
-	      'LSUBR)
-	     ((SETQ TEMP #+LISPM (GETL-LM-FCN-PROP FUN '(EXPR SUBR LSUBR))
-		         #-LISPM (GETL FUN '(EXPR SUBR LSUBR)))
-	      (CAR TEMP))
-	     #+lispm
-	     ((get fun 'once-translated))
-	     (T NIL)))
+(defun get-lisp-fun-type (fun &aux temp)
+  ;; N.B. this is Functional types. NOT special-forms,
+  ;; lisp special forms are meaningless to macsyma.
+  (cond ((get fun '*lexpr) 'lsubr)
+	((get fun '*expr) 'subr)
+	;; *LEXPR & *EXPR gotten from DEFMFUN declarations
+	;; which is loaded by TrData.
+	((mget fun '$fixed_num_args_function)
+	 'subr)
+	((mget fun '$variable_num_args_function)
+	 'lsubr)
+	((setq temp #+lispm (getl-lm-fcn-prop fun '(expr subr lsubr))
+	       #-lispm (getl fun '(expr subr lsubr)))
+	 (car temp))
+	#+lispm
+	((get fun 'once-translated))
+	(t nil)))
 
-(DEFUN TR-INFAMOUS-NOUN-FORM (FORM)
-       ;; 'F(X,Y) means noun-form. The arguments are evaluated.
-       ;;  but the function is cons on, not applied.
-       ;;  N.B. for special forms and macros this is totally wrong.
-       ;;  But, those cases are filtered out already, presumably.
+(defun tr-infamous-noun-form (form)
+  ;; 'F(X,Y) means noun-form. The arguments are evaluated.
+  ;;  but the function is cons on, not applied.
+  ;;  N.B. for special forms and macros this is totally wrong.
+  ;;  But, those cases are filtered out already, presumably.
        
-       (LET ((OP (COND ((MEMQ 'array (CAR FORM))
-			`(,(CAAR FORM) ARRAY))
-		       (T `(,(CAAR FORM)))))
-	     (ARGS (TR-ARGS (CDR FORM))))
-	    `($any . (simplify (list ',op ,@args)))))
+  (let ((op (cond ((memq 'array (car form))
+		   `(,(caar form) array))
+		  (t `(,(caar form)))))
+	(args (tr-args (cdr form))))
+    `($any . (simplify (list ',op ,@args)))))
 
 
 
 ;;; Some atoms, soley by usage, are self evaluating. 
 
-(DEFUN IMPLIED-QUOTEP (ATOM)
-       (COND ((GET ATOM 'IMPLIED-QUOTEP)
-	      ATOM)
-	     ((char= (GETCHARN ATOM 1)  #\&)    ;;; mstring hack
-	      (COND ((EQ ATOM '|&**|)  ;;; foolishness. The PARSER should do this.
-		     ;; Losing Fortran hackers.
-		     (TR-FORMAT
-			      "~% `**' is obsolete, use `^' !!!")
-		     '|&^|)
-		    (T ATOM)))
-	     (T NIL)))
+(defun implied-quotep (atom)
+  (cond ((get atom 'implied-quotep)
+	 atom)
+	((char= (getcharn atom 1)  #\&)    ;;; mstring hack
+	 (cond ((eq atom '|&**|) ;;; foolishness. The PARSER should do this.
+		;; Losing Fortran hackers.
+		(tr-format
+		 "~% `**' is obsolete, use `^' !!!")
+		'|&^|)
+	       (t atom)))
+	(t nil)))
 
-(DEFUN TRANSLATE-ATOMS (FORM)
-       ;; This is an oldy moldy which tries to declare everthing
-       ;; special so that calling fexpr's will work in compiled
-       ;; code. What a joke.
-  (COND ((ATOM FORM)
-	 (COND ((OR (NUMBERP FORM) (MEMQ FORM '(T NIL))) FORM)
-	       ((TBOUNDP FORM)
-		(IF $TRANSCOMPILE
+(defun translate-atoms (form)
+  ;; This is an oldy moldy which tries to declare everthing
+  ;; special so that calling fexpr's will work in compiled
+  ;; code. What a joke.
+  (cond ((atom form)
+	 (cond ((or (numberp form) (memq form '(t nil))) form)
+	       ((tboundp form)
+		(if $transcompile
 		    (or (specialp form)
 			(addl form specials)))
-		FORM)
-	       (T
-		(IF $TRANSCOMPILE (ADDL FORM SPECIALS))
-		FORM)))
-	((EQ 'MQUOTE (CAAR FORM)) FORM)
-	(T (CONS (CAR FORM) (MAPCAR 'TRANSLATE-ATOMS (CDR FORM))))))
+		form)
+	       (t
+		(if $transcompile (addl form specials))
+		form)))
+	((eq 'mquote (caar form)) form)
+	(t (cons (car form) (mapcar 'translate-atoms (cdr form))))))
 
 
 ;;; the Translation Properties. the heart of TRANSL.
@@ -986,91 +986,91 @@ APPLY means like APPLY.")
 ;;; SIMPLIFY i the mode is $ANY. This should be called everywhere.
 ;;; instead of duplicating the COND everywhere, as is done now in TRANSL.
 
-(DEFUN TR-NOSIMPP (OP)
-       (COND ((ATOM OP)
-	      (GET OP 'TR-NOSIMP))
-	     (T NIL)))
+(defun tr-nosimpp (op)
+  (cond ((atom op)
+	 (get op 'tr-nosimp))
+	(t nil)))
 
-(DEFUN CALL-AND-SIMP (MODE FUN ARGS)
-       (COND ((OR (NOT (EQ MODE '$ANY))
-		  (TR-NOSIMPP FUN))
-	      `(,MODE ,FUN . ,ARGS))
-	     (T
-	      `(,MODE SIMPLIFY (,FUN . ,ARGS)))))
+(defun call-and-simp (mode fun args)
+  (cond ((or (not (eq mode '$any))
+	     (tr-nosimpp fun))
+	 `(,mode ,fun . ,args))
+	(t
+	 `(,mode simplify (,fun . ,args)))))
 
 
-(DEF%TR $BIND_DURING_TRANSLATION (FORM)
-  (APPLY-IN$BIND_DURING_TRANSLATION
-   #'(LAMBDA (FORM)
-       (TRANSLATE `((MPROGN) ,@(CDDR FORM))))
-   FORM))
+(def%tr $bind_during_translation (form)
+  (apply-in$bind_during_translation
+   #'(lambda (form)
+       (translate `((mprogn) ,@(cddr form))))
+   form))
 
 (defmspec $declare_translated (fns)
   (setq fns (cdr fns))
   (loop for v in fns
-     when (symbolp v)
-     do (setf (get v 'once-translated) t)
-     (pushnew v *declared-translated-functions*)
-     else do (merror "Declare_translated needs symbolic args")))
+	when (symbolp v)
+	do (setf (get v 'once-translated) t)
+	(pushnew v *declared-translated-functions*)
+	else do (merror "Declare_translated needs symbolic args")))
 
-(DEF%TR $DECLARE (FORM)
-  (DO ((L (CDR FORM) (CDDR L)) (NL))
-      ((NULL L) (IF NL `($ANY $DECLARE . ,(NREVERSE NL))))
-      (COND ((NOT (EQ '$SPECIAL (CADR L)))
-	     (SETQ NL (CONS (CADR L) (CONS (CAR L) NL))))
-	    ((ATOM (CAR L)) (SPEC (CAR L)))
-	    (T (MAPCAR 'SPEC (CDAR L))))))
+(def%tr $declare (form)
+  (do ((l (cdr form) (cddr l)) (nl))
+      ((null l) (if nl `($any $declare . ,(nreverse nl))))
+    (cond ((not (eq '$special (cadr l)))
+	   (setq nl (cons (cadr l) (cons (car l) nl))))
+	  ((atom (car l)) (spec (car l)))
+	  (t (mapcar 'spec (cdar l))))))
 
-(DEFUN SPEC (VAR)
-  (ADDL VAR SPECIALS)
-  (PUTPROP VAR T 'SPECIAL)
-  (PUTPROP VAR VAR 'TBIND))
+(defun spec (var)
+  (addl var specials)
+  (putprop var t 'special)
+  (putprop var var 'tbind))
 
 
-(DEF%TR $EVAL_WHEN (FORM)
-	(TR-TELL
-	 "EVAL_WHEN can only be used at top level in a file"
-	 FORM
-	 "it cannot be used inside an expression or function.")
-	(SETQ TR-ABORT T)
-	'($ANY . NIL))
+(def%tr $eval_when (form)
+  (tr-tell
+   "EVAL_WHEN can only be used at top level in a file"
+   form
+   "it cannot be used inside an expression or function.")
+  (setq tr-abort t)
+  '($any . nil))
 
-(DEF%TR MDEFINE (FORM) ;; ((MDEFINE) ((F) ...) ...)
-  (TR-FORMAT
+(def%tr mdefine (form) ;; ((MDEFINE) ((F) ...) ...)
+  (tr-format
    "A definition of the function ~:@M is given inside a program.~
    ~%This doesn't work well, try using LAMBDA expressions instead.~%"
-   (CAAR (CADR FORM)))
-  `($ANY . (MEVAL ',FORM)))
+   (caar (cadr form)))
+  `($any . (meval ',form)))
 
-(DEF%TR MDEFMACRO (FORM)
-  (TR-FORMAT "A definiton of a macro ~:@M is being given inside the~
+(def%tr mdefmacro (form)
+  (tr-format "A definiton of a macro ~:@M is being given inside the~
 	     ~%body of a function or expression. This probably isn't going~
 	     ~%to work, local macro definitions are not supported.~%"
-	     (CAAR (CADR FORM)))
-  (MEVAL FORM)
-  `($ANY . (MEVAL ',FORM)))
+	     (caar (cadr form)))
+  (meval form)
+  `($any . (meval ',form)))
 
-(DEF%TR $LOCAL (FORM)
-  (COND (LOCAL (TR-FORMAT
-			"Too many LOCAL statements in one block")
-	       (SETQ TR-ABORT T))
-	(T (SETQ LOCAL T)))
+(def%tr $local (form)
+  (cond (local (tr-format
+		"Too many LOCAL statements in one block")
+	       (setq tr-abort t))
+	(t (setq local t)))
   (tr-format "Local does not work well in translated code.~
               ~%Try to use value cell and the Use_fast_arrays:true
               ~%if this is for arrays.  For functions, local definitions are~
                ~%not advised so use lambda expression")
-  (CONS NIL (CONS 'MLOCAL (CDR FORM)))
+  (cons nil (cons 'mlocal (cdr form)))
   )
 
 
-(DEF%TR MQUOTE (FORM) (LIST (TR-CLASS (CADR FORM)) 'QUOTE (CADR FORM)))
+(def%tr mquote (form) (list (tr-class (cadr form)) 'quote (cadr form)))
 
 
  
-(DEFUN TR-LAMBDA (FORM &OPTIONAL (TR-BODY #'TR-SEQ) &REST TR-BODY-ARGL
-		       &AUX
-		       (ARGLIST (MPARAMS (CADR FORM)))
-		       (EASY-ASSIGNS NIL))
+(defun tr-lambda (form &optional (tr-body #'tr-seq) &rest tr-body-argl
+		  &aux
+		  (arglist (mparams (cadr form)))
+		  (easy-assigns nil))
   ;; This function is defined to take a simple macsyma lambda expression and
   ;; return a simple lisp lambda expression. The optional TR-BODY hook
   ;; can be used for translating other special forms that do lambda binding.
@@ -1081,94 +1081,94 @@ APPLY means like APPLY.")
   ;; advocating the use of DEFINE_VARIABLE in macsyma user programs so
   ;; that the use of DECLARE(FOO,SPECIAL) will be phased out at that level.
 
-  (MAPC #'TBIND ARGLIST)
-  (LET (((mode . nbody) (APPLY TR-BODY (cddr form) TR-BODY-ARGL))
-	(LOCAL-DECLARES (MAKE-DECLARES ARGLIST T)))
+  (mapc #'tbind arglist)
+  (let (((mode . nbody) (apply tr-body (cddr form) tr-body-argl))
+	(local-declares (make-declares arglist t)))
     ;; -> BINDING of variables with ASSIGN properties may be difficult to
     ;; do correctly and efficiently if arbitrary code is to be run.
-    (IF (OR TR-LAMBDA-PUNT-ASSIGNS
-	    (DO ((L ARGLIST (CDR L)))
-		((NULL L) T)
-	      (LET* ((VAR (CAR L))
-		     (ASSIGN (GET VAR 'ASSIGN)))
-		(IF ASSIGN
-		    (COND ((MEMQ ASSIGN '(ASSIGN-MODE-CHECK))
-			   (PUSH `(,ASSIGN ',VAR ,(TEVAL VAR)) EASY-ASSIGNS))
-			  (T
-			   (RETURN NIL)))))))
+    (if (or tr-lambda-punt-assigns
+	    (do ((l arglist (cdr l)))
+		((null l) t)
+	      (let* ((var (car l))
+		     (assign (get var 'assign)))
+		(if assign
+		    (cond ((memq assign '(assign-mode-check))
+			   (push `(,assign ',var ,(teval var)) easy-assigns))
+			  (t
+			   (return nil)))))))
 	;; Case with EASY or no ASSIGN's
-	(progn  ;;-have to undo any local assignments. --wfs
+	(progn ;;-have to undo any local assignments. --wfs
 	  #+lispm
 	  (sloop for v in nbody when (and (consp v) (eq (car v) 'mlocal))
-		do
-		(setq nbody `((unwind-protect (progn ,@nbody) (munlocal))))
-		(return 'done))
-	  `(,MODE . (LAMBDA ,(TUNBINDS ARGLIST)
-		      ,LOCAL-DECLARES
-		      ,@EASY-ASSIGNS
-		      ,@NBODY)))
+		 do
+		 (setq nbody `((unwind-protect (progn ,@nbody) (munlocal))))
+		 (return 'done))
+	  `(,mode . (lambda ,(tunbinds arglist)
+		      ,local-declares
+		      ,@easy-assigns
+		      ,@nbody)))
 	;; Case with arbitrary ASSIGN's.
-	(LET ((TEMPS (MAPCAR #'(LAMBDA (IGN) ign (TR-GENSYM)) ARGLIST)))
-	  `(,MODE . (LAMBDA ,TEMPS
-		      (UNWIND-PROTECT
-			(PROGN
-			  ;; [1] Check before binding.
-			  ,@(MAPCAN #'(LAMBDA (VAR VAL)
-					(LET ((ASSIGN (GET VAR 'ASSIGN)))
-					  (IF ASSIGN
-					      (LIST `(,ASSIGN ',VAR ,VAL)))))
-				    ARGLIST TEMPS)
-			  ;; [2] do the binding.
-			  ((LAMBDA ,(TUNBINDS ARGLIST)
-			     ,LOCAL-DECLARES
-			     ,@NBODY)
-			   ,@TEMPS))
+	(let ((temps (mapcar #'(lambda (ign) ign (tr-gensym)) arglist)))
+	  `(,mode . (lambda ,temps
+		      (unwind-protect
+			   (progn
+			     ;; [1] Check before binding.
+			     ,@(mapcan #'(lambda (var val)
+					   (let ((assign (get var 'assign)))
+					     (if assign
+						 (list `(,assign ',var ,val)))))
+				       arglist temps)
+			     ;; [2] do the binding.
+			     ((lambda ,(tunbinds arglist)
+				,local-declares
+				,@nbody)
+			      ,@temps))
 			;; [2] check when unbinding too.
-			,@(MAPCAN #'(LAMBDA (VAR)
-				      (LET ((ASSIGN (GET VAR 'ASSIGN)))
-					(IF ASSIGN
-					    (LIST `(,ASSIGN ',VAR
-							    ;; use DTRANSLATE to
-							    ;; catch global
-							    ;; scoping if any.
-							    ,(DTRANSLATE VAR))))))
-				  ARGLIST))))))))
+			,@(mapcan #'(lambda (var)
+				      (let ((assign (get var 'assign)))
+					(if assign
+					    (list `(,assign ',var
+						    ;; use DTRANSLATE to
+						    ;; catch global
+						    ;; scoping if any.
+						    ,(dtranslate var))))))
+				  arglist))))))))
 
 
-(DEFUN UPDATE-GLOBAL-DECLARES ()
-   (DO ((L ARRAYS (CDR L)) (MODE))
-       ((NULL L))
-       (SETQ MODE (Array-MODE (CAR L)))
-       (COND ((EQ '$FIXNUM MODE)
-	      (ADDL `(ARRAY* (FIXNUM (,(CAR L) 1))) DECLARES))
-	     ((EQ '$FLOAT MODE)
-	      (ADDL `(ARRAY* (FLONUM (,(CAR L) 1))) DECLARES))))
-   (IF SPECIALS (ADDL `(SPECIAL ,@SPECIALS) DECLARES))
-   (IF SPECIALS
-       (SETQ DECLARES (NCONC (CDR (MAKE-DECLARES SPECIALS NIL)) DECLARES)))
-   (IF LEXPRS (ADDL `(*LEXPR . ,(REVERSE LEXPRS)) DECLARES))
-   (IF FEXPRS (ADDL `(*FEXPR . ,(REVERSE FEXPRS)) DECLARES)))
+(defun update-global-declares ()
+  (do ((l arrays (cdr l)) (mode))
+      ((null l))
+    (setq mode (array-mode (car l)))
+    (cond ((eq '$fixnum mode)
+	   (addl `(array* (fixnum (,(car l) 1))) declares))
+	  ((eq '$float mode)
+	   (addl `(array* (flonum (,(car l) 1))) declares))))
+  (if specials (addl `(special ,@specials) declares))
+  (if specials
+      (setq declares (nconc (cdr (make-declares specials nil)) declares)))
+  (if lexprs (addl `(*lexpr . ,(reverse lexprs)) declares))
+  (if fexprs (addl `(*fexpr . ,(reverse fexprs)) declares)))
 
-(DEFUN MAKE-DECLARES (VARLIST LOCALP &AUX (DL) (FX) (FL) specs)
-  (WHEN $TRANSCOMPILE
-	(DO ((L VARLIST (CDR L))
-	     (MODE) (VAR)
-	     )
-	    ((NULL L))
-	  (when (OR (NOT LOCALP)
-		    (NOT (GET (CAR L) 'SPECIAL)))
-		;; don't output local declarations on special variables.
-		(SETQ VAR (TEVAL (CAR L)) MODE (VALUE-MODE VAR))
-		(setq specs (cons var specs))
+(defun make-declares (varlist localp &aux (dl) (fx) (fl) specs)
+  (when $transcompile
+    (do ((l varlist (cdr l))
+	 (mode) (var)
+	 )
+	((null l))
+      (when (or (not localp)
+		(not (get (car l) 'special)))
+	;; don't output local declarations on special variables.
+	(setq var (teval (car l)) mode (value-mode var))
+	(setq specs (cons var specs))
 		
-		(COND ((EQ '$FIXNUM MODE) (ADDL VAR FX))
-		      ((EQ '$FLOAT MODE)  (ADDL VAR FL)))))
-	(IF FX (ADDL `(FIXNUM  . ,FX) DL))
-	(IF FL (ADDL `(FLONUM  . ,FL) DL))
-	(IF specs (ADDL `(special  . ,specs) DL))
-	(IF DL `(DECLARE . ,DL))))
+	(cond ((eq '$fixnum mode) (addl var fx))
+	      ((eq '$float mode)  (addl var fl)))))
+    (if fx (addl `(fixnum  . ,fx) dl))
+    (if fl (addl `(flonum  . ,fl) dl))
+    (if specs (addl `(special  . ,specs) dl))
+    (if dl `(declare . ,dl))))
 
-(DEF%TR DOLIST (FORM) (TRANSLATE `((MPROGN) . ,(CDR FORM))))
+(def%tr dolist (form) (translate `((mprogn) . ,(cdr form))))
 
 (defun tr-seq (l)
   (do ((mode nil)
@@ -1185,70 +1185,70 @@ APPLY means like APPLY.")
 	
 
 
-(DEF%tr MPROG (FORM)
-  (LET (ARGLIST BODY VAL-LIST)
+(def%tr mprog (form)
+  (let (arglist body val-list)
     ;; [1] normalize the MPROG syntax.
-    (COND (($LISTP (CADR FORM))
-	   (SETQ ARGLIST (CDADR FORM)
-		 BODY (CDDR FORM)))
-	  (T
-	   (SETQ ARGLIST NIL
-		 BODY (CDR FORM))))
-    (COND ((NULL BODY)
-	   (TR-FORMAT "A BLOCK with no body: ~:M" FORM)
-	   (SETQ BODY '(((MQUOTE) $DONE)))))
-    (SETQ VAL-LIST (MAPCAR #'(LAMBDA (U)
-			       (IF (ATOM U) U
-				   (TRANSLATE (CADDR U))))
-			   ARGLIST)
-	  ARGLIST (MAPCAR #'(LAMBDA (U)
+    (cond (($listp (cadr form))
+	   (setq arglist (cdadr form)
+		 body (cddr form)))
+	  (t
+	   (setq arglist nil
+		 body (cdr form))))
+    (cond ((null body)
+	   (tr-format "A BLOCK with no body: ~:M" form)
+	   (setq body '(((mquote) $done)))))
+    (setq val-list (mapcar #'(lambda (u)
+			       (if (atom u) u
+				   (translate (caddr u))))
+			   arglist)
+	  arglist (mapcar #'(lambda (u)
 			      ;;  X or ((MSETQ) X Y)
-			      (IF (ATOM U) U (CADR U)))
-			  ARGLIST))
-    (SETQ FORM
-	  (TR-LAMBDA
+			      (if (atom u) u (cadr u)))
+			  arglist))
+    (setq form
+	  (tr-lambda
 	   ;; [2] call the lambda translator.
-	   `((LAMBDA) ((MLIST) ,@ARGLIST) ,@BODY)
+	   `((lambda) ((mlist) ,@arglist) ,@body)
 	   ;; [3] supply our own body translator.
-	   #'TR-MPROG-BODY
-	   VAL-LIST
-	   ARGLIST))
-    (CONS (CAR FORM) `(,(CDR FORM) ,@VAL-LIST))))
+	   #'tr-mprog-body
+	   val-list
+	   arglist))
+    (cons (car form) `(,(cdr form) ,@val-list))))
 
-(DEFUN TR-MPROG-BODY (BODY VAL-LIST ARGLIST
-			   &AUX 
-			   (INSIDE-MPROG T)
-			   (RETURN-MODE NIL)
-			   (NEED-PROG? NIL)
-			   (RETURNS NIL) ;; not used but must be bound.
-			   (LOCAL NIL)
-			   )
-  (DO ((L NIL))
-      ((NULL BODY)
+(defun tr-mprog-body (body val-list arglist
+		      &aux 
+		      (inside-mprog t)
+		      (return-mode nil)
+		      (need-prog? nil)
+		      (returns nil) ;; not used but must be bound.
+		      (local nil)
+		      )
+  (do ((l nil))
+      ((null body)
        ;; [5] hack the val-list for the mode context.
        ;; Perhaps the only use of the function MAP in all of macsyma.
-       (MAPL #'(LAMBDA (VAL-LIST ARGLIST)
-		(COND ((ATOM (CAR VAL-LIST))
-		       (RPLACA VAL-LIST
-			       (OR (CDR (ASSQ (VALUE-MODE
-					       (CAR ARGLIST))
-					      MODE-INIT-VALUE-TABLE))
-				   `',(CAR ARGLIST))))
-		      (T
-		       (WARN-MODE (CAR ARGLIST)
-				  (VALUE-MODE (CAR ARGLIST))
-				  (CAR (CAR VAL-LIST))
-				  "IN a BLOCK statement")
-		       (RPLACA VAL-LIST (CDR (CAR VAL-LIST))))))
-	    VAL-LIST ARGLIST)
-       (SETQ L (NREVERSE L))
-       (CONS RETURN-MODE
-	     (IF NEED-PROG?
-		 `((PROG () ,@(zl-DELETE NIL L)))
-		 L)))
+       (mapl #'(lambda (val-list arglist)
+		 (cond ((atom (car val-list))
+			(rplaca val-list
+				(or (cdr (assq (value-mode
+						(car arglist))
+					       mode-init-value-table))
+				    `',(car arglist))))
+		       (t
+			(warn-mode (car arglist)
+				   (value-mode (car arglist))
+				   (car (car val-list))
+				   "IN a BLOCK statement")
+			(rplaca val-list (cdr (car val-list))))))
+	     val-list arglist)
+       (setq l (nreverse l))
+       (cons return-mode
+	     (if need-prog?
+		 `((prog () ,@(zl-delete nil l)))
+		 l)))
     ;; [4] translate a form in the body
-    (LET ((FORM (POP BODY)))
-      (COND ((NULL BODY)
+    (let ((form (pop body)))
+      (cond ((null body)
 	     ;; this is a really bad case.
 	     ;; we don't really know if the return mode
 	     ;; of the expression is for the value of the block.
@@ -1256,107 +1256,107 @@ APPLY means like APPLY.")
 	     ;; and some don't. In any case, the people not
 	     ;; use the PROG programming style won't be screwed
 	     ;; by this.
-	     (SETQ FORM (TRANSLATE FORM))
-	     (SETQ RETURN-MODE (*UNION-MODE (CAR FORM) RETURN-MODE))
-	     (SETQ FORM (CDR FORM))
-	     (IF (AND NEED-PROG?
-		      (OR (ATOM FORM)
-			  (NOT (EQ (CAR FORM) 'RETURN))))
+	     (setq form (translate form))
+	     (setq return-mode (*union-mode (car form) return-mode))
+	     (setq form (cdr form))
+	     (if (and need-prog?
+		      (or (atom form)
+			  (not (eq (car form) 'return))))
 		 ;; put a RETURN on just in case.
-		 (SETQ FORM `(RETURN ,FORM))))
-	    ((SYMBOLP FORM))
-	    (T
-	     (SETQ FORM (DTRANSLATE FORM))))
-      (PUSH FORM L))))
+		 (setq form `(return ,form))))
+	    ((symbolp form))
+	    (t
+	     (setq form (dtranslate form))))
+      (push form l))))
 
-(DEF%TR MRETURN (FORM)
-  (IF (NULL INSIDE-MPROG)
-      (TR-FORMAT "RETURN found not inside a BLOCK DO: ~%~:M" FORM))
-  (SETQ NEED-PROG? T)
-  (SETQ FORM (TRANSLATE (CADR FORM)))
-  (SETQ RETURN-MODE (IF RETURN-MODE (*UNION-MODE (CAR FORM) RETURN-MODE)
-			(CAR FORM)))
-  (SETQ FORM `(RETURN ,(CDR FORM)))
-  (PUSH FORM RETURNS) ;; USED by lusing MDO etc not yet re-written.
+(def%tr mreturn (form)
+  (if (null inside-mprog)
+      (tr-format "RETURN found not inside a BLOCK DO: ~%~:M" form))
+  (setq need-prog? t)
+  (setq form (translate (cadr form)))
+  (setq return-mode (if return-mode (*union-mode (car form) return-mode)
+			(car form)))
+  (setq form `(return ,(cdr form)))
+  (push form returns) ;; USED by lusing MDO etc not yet re-written.
   ;; MODE here should be $PHANTOM or something.
-  `($ANY . ,FORM))
+  `($any . ,form))
 
-(DEF%TR MGO (FORM)
-  (IF (NULL INSIDE-MPROG)
-      (TR-FORMAT "~%GO found not inside a BLOCK or DO. ~%~:M" FORM))
-  (IF (NOT (SYMBOLP (CADR FORM)))
-      (TR-FORMAT "~%GO TAG in form not symbolic.~%~:M" FORM))
-  (SETQ NEED-PROG? T)
-  `($ANY . (GO ,(CADR FORM))))
+(def%tr mgo (form)
+  (if (null inside-mprog)
+      (tr-format "~%GO found not inside a BLOCK or DO. ~%~:M" form))
+  (if (not (symbolp (cadr form)))
+      (tr-format "~%GO TAG in form not symbolic.~%~:M" form))
+  (setq need-prog? t)
+  `($any . (go ,(cadr form))))
 
-(DEF%TR MQAPPLY (FORM)
- (LET     ((FN (CADR FORM)) (ARGS (CDDR FORM)) 
-	   (ARYP (MEMQ 'array (CDAR FORM))))
-   (COND ((ATOM FN) 
-	  (MFORMAT  *TRANSLATION-MSGS-FILES*
-		    "~%Illegal mqapply form:~%~:M" FORM)
-	  NIL)
-	 ((EQ (CAAR FN) 'MQUOTE) 
-	  `($ANY LIST ',(CONS (CADR FN) ARYP) ,@(TR-ARGS ARGS)))
-	 ((EQ (CAAR FN) 'LAMBDA)
-;; LAMBDA([X,'Y,[L]],...)(A,B,C) is a bogus form. Don't bother with it.
-;; ((LAMBDA) ((MLIST) ....) ....)
-	  (COND ((MEMQ 'BOGUS (MAPCAR #'(LAMBDA (ARG)
-					  (COND ((OR (MQUOTEP ARG)
-						     ($LISTP ARG))
-						 'BOGUS)))
-				      (CDR (CADR FN))))
-		 (TR-FORMAT
-		  "~%QUOTE or [] args are not allowed in mqapply forms.~%~
+(def%tr mqapply (form)
+  (let     ((fn (cadr form)) (args (cddr form)) 
+	    (aryp (memq 'array (cdar form))))
+    (cond ((atom fn) 
+	   (mformat  *translation-msgs-files*
+		     "~%Illegal mqapply form:~%~:M" form)
+	   nil)
+	  ((eq (caar fn) 'mquote) 
+	   `($any list ',(cons (cadr fn) aryp) ,@(tr-args args)))
+	  ((eq (caar fn) 'lambda)
+	   ;; LAMBDA([X,'Y,[L]],...)(A,B,C) is a bogus form. Don't bother with it.
+	   ;; ((LAMBDA) ((MLIST) ....) ....)
+	   (cond ((memq 'bogus (mapcar #'(lambda (arg)
+					   (cond ((or (mquotep arg)
+						      ($listp arg))
+						  'bogus)))
+				       (cdr (cadr fn))))
+		  (tr-format
+		   "~%QUOTE or [] args are not allowed in mqapply forms.~%~
 		  ~:M"
-		  FORM)
-		 (SETQ TR-ABORT T)
-		 NIL)
-		(T
-		 (SETQ 	FN (TR-LAMBDA FN)
-			ARGS (TR-ARGS ARGS))
-		 `(,(CAR FN) ,(CDR FN) ,@ARGS))))
-	 ((NOT ARYP)
-	  `($ANY SIMPLIFY (MAPPLY ,(DCONVX (TRANSLATE FN))
-				   (LIST ,@(TR-ARGS ARGS))
-				   ',FN)))
-	 (T
-	  (WARN-MEVAL FORM)
-	  `($ANY MEVAL ',FORM)))))
+		   form)
+		  (setq tr-abort t)
+		  nil)
+		 (t
+		  (setq 	fn (tr-lambda fn)
+				args (tr-args args))
+		  `(,(car fn) ,(cdr fn) ,@args))))
+	  ((not aryp)
+	   `($any simplify (mapply ,(dconvx (translate fn))
+			    (list ,@(tr-args args))
+			    ',fn)))
+	  (t
+	   (warn-meval form)
+	   `($any meval ',form)))))
 
 
 
-(DEF%TR MCOND (FORM) 
-  (PROG (DUMMY MODE NL) 
-	(SETQ DUMMY (TRANSLATE (CADDR FORM)) 
-	      MODE (CAR DUMMY) 
-	      NL (LIST DUMMY (TRANSLATE-PREDICATE (CADR FORM))))
-	(DO ((L (CDDDR FORM) (CDDR L))) ((NULL L))
-	    (COND ((AND (NOT (ATOM (CADR L))) (EQ 'MCOND (CAAADR L)))
-		   (SETQ L (CDADR L))))
-	    (SETQ DUMMY (TRANSLATE (CADR L)) 
-		  MODE (*UNION-MODE MODE (CAR DUMMY)) 
-		  NL (CONS DUMMY
-			   (CONS (TRANSLATE-PREDICATE (CAR L))
-				 NL))))
-	(SETQ FORM NIL)
-	(DO ((L NL (CDDR L))) ((NULL L))
-	    (COND ((AND (EQ T (CADR L)) (NULL (CDAR L))))
-		  (T (SETQ FORM
-			   (CONS (CONS (CADR L)
-				       (COND ((AND (NOT (ATOM (CDAR l)))
-						   (CDDAR L)
-						   (EQ (CADAR L) 'PROGN))
-					      (NREVERSE 
-					       (CONS (DCONV (CONS (CAAR L)
-								  (CAR (REVERSE (CDDAR L))))
-							    MODE)
-						     (CDR (REVERSE (CDDAR L))))))
-					     ((AND (EQUAL (CDAR L) (CADR L))
-						   (ATOM (CDAR L))) NIL)
-					     (T (LIST (CDR (CAR L))))))
-				 FORM)))))
-	(RETURN (CONS MODE (CONS 'COND FORM)))))
+(def%tr mcond (form) 
+  (prog (dummy mode nl) 
+     (setq dummy (translate (caddr form)) 
+	   mode (car dummy) 
+	   nl (list dummy (translate-predicate (cadr form))))
+     (do ((l (cdddr form) (cddr l))) ((null l))
+       (cond ((and (not (atom (cadr l))) (eq 'mcond (caaadr l)))
+	      (setq l (cdadr l))))
+       (setq dummy (translate (cadr l)) 
+	     mode (*union-mode mode (car dummy)) 
+	     nl (cons dummy
+		      (cons (translate-predicate (car l))
+			    nl))))
+     (setq form nil)
+     (do ((l nl (cddr l))) ((null l))
+       (cond ((and (eq t (cadr l)) (null (cdar l))))
+	     (t (setq form
+		      (cons (cons (cadr l)
+				  (cond ((and (not (atom (cdar l)))
+					      (cddar l)
+					      (eq (cadar l) 'progn))
+					 (nreverse 
+					  (cons (dconv (cons (caar l)
+							     (car (reverse (cddar l))))
+						       mode)
+						(cdr (reverse (cddar l))))))
+					((and (equal (cdar l) (cadr l))
+					      (atom (cdar l))) nil)
+					(t (list (cdr (car l))))))
+			    form)))))
+     (return (cons mode (cons 'cond form)))))
 
 
 
@@ -1365,293 +1365,293 @@ APPLY means like APPLY.")
 
 (defun new-end-symbol ( &aux tem)
   (sloop for i from 0
-	do (setq tem (intern (format nil "test-~A" i)))
-	   when (null (symbol-plist tem))
-	     do (return tem)))
+	 do (setq tem (intern (format nil "test-~A" i)))
+	 when (null (symbol-plist tem))
+	 do (return tem)))
 
 (declare-top (special shit))
-(DEF%TR MDO (FORM )
-  (LET     (RETURNS ASSIGNS RETURN-MODE LOCAL (INSIDE-MPROG T) tem
-		    NEED-PROG?)
-    (LET   (MODE VAR INIT NEXT TEST ACTION VARMODE end-var init-end-var)
-	  (SETQ VAR (COND ((CADR FORM)) (T 'MDO)))
-	  (SPECIALP VAR)
-	  (TBIND VAR)
-	  (SETQ INIT (IF (CADDR FORM) (TRANSLATE (CADDR FORM)) '($FIXNUM . 1)))
-	  (IFN (SETQ VARMODE (GET VAR 'MODE)) (DECLVALUE VAR (CAR INIT) T))
-	  (SETQ NEXT (TRANSLATE (COND ((CADDDR FORM) (LIST '(MPLUS) (CADDDR FORM) VAR))
-				      ((CAR (CDDDDR FORM)))
-				      (T (LIST '(MPLUS) 1 VAR)))))
-	  (setq form (copy-list form))
-	  ;;to make the end test for thru be numberp if the index is numberp
-	  ;;and to eliminate reevaluation
-	  tem
-	  #+lispm
-          (cond ((setq tem (sixth form))
-		 (cond ((symbolp tem)
-			(putprop tem (get var 'mode) 'mode))
-		       (t (setq end-var (new-end-symbol))
-			  (putprop end-var (get var 'mode) 'mode)
- 			  (putprop end-var end-var  'tbind)
-			  (setq init-end-var `((,end-var ,(cdr (translate tem)))))
-			  (setf (sixth form) end-var)))))
-	  (IFN VARMODE (DECLVALUE VAR (*UNION-MODE (CAR INIT) (CAR NEXT)) T)
-	       (WARN-MODE VAR VARMODE (*UNION-MODE (CAR INIT) (CAR NEXT))))
-	  (SETQ TEST (TRANSLATE-PREDICATE
-		      (LIST '(MOR)
-			    (COND ((NULL (CADR (CDDDDR FORM)))  NIL)
-				  ((AND (CADDDR FORM)
-					(MNEGP ($NUMFACTOR (SIMPLIFY (CADDDR FORM)))))
-				   (LIST '(MLESSP) VAR (CADR (CDDDDR FORM))))
-				  (T (LIST '(MGREATERP) VAR (CADR (CDDDDR FORM)))))
-			    (CADDR (CDDDDR FORM)))))
-	  #+lispm
-	  (cond ((and tem (symbolp tem)) (remprop tem 'mode)))
-	  (cond ((and end-var (symbolp end-var))(remprop end-var 'mode)
-		 (remprop end-var 'tbind)))
-	  (SETQ ACTION (TRANSLATE (CADDDR (CDDDDR FORM)))
-		MODE (COND ((NULL RETURNS) '$ANY)
-			   (T
-			    (IF SHIT
-				(DO ((L RETURNS (CDR L))) ((NULL L))
-				    (RPLACA (CDAR L) (DCONV (CADAR L) RETURN-MODE))))
-			      RETURN-MODE)))
-	  (SETQ VAR (TUNBIND (COND ((CADR FORM)) (T 'MDO))))
-	  `(,MODE DO ((,VAR ,(CDR INIT) ,(CDR NEXT))
-		      ,@ init-end-var )
-		  (,TEST '$DONE) . 
-		  ,(COND ((ATOM (CDR ACTION)) NIL)
-			 ((EQ 'PROGN (CADR ACTION)) (CDDR ACTION))
-			 (T (LIST (CDR ACTION))))))))
+(def%tr mdo (form )
+  (let     (returns assigns return-mode local (inside-mprog t) tem
+		    need-prog?)
+    (let   (mode var init next test action varmode end-var init-end-var)
+      (setq var (cond ((cadr form)) (t 'mdo)))
+      (specialp var)
+      (tbind var)
+      (setq init (if (caddr form) (translate (caddr form)) '($fixnum . 1)))
+      (ifn (setq varmode (get var 'mode)) (declvalue var (car init) t))
+      (setq next (translate (cond ((cadddr form) (list '(mplus) (cadddr form) var))
+				  ((car (cddddr form)))
+				  (t (list '(mplus) 1 var)))))
+      (setq form (copy-list form))
+      ;;to make the end test for thru be numberp if the index is numberp
+      ;;and to eliminate reevaluation
+      tem
+      #+lispm
+      (cond ((setq tem (sixth form))
+	     (cond ((symbolp tem)
+		    (putprop tem (get var 'mode) 'mode))
+		   (t (setq end-var (new-end-symbol))
+		      (putprop end-var (get var 'mode) 'mode)
+		      (putprop end-var end-var  'tbind)
+		      (setq init-end-var `((,end-var ,(cdr (translate tem)))))
+		      (setf (sixth form) end-var)))))
+      (ifn varmode (declvalue var (*union-mode (car init) (car next)) t)
+	   (warn-mode var varmode (*union-mode (car init) (car next))))
+      (setq test (translate-predicate
+		  (list '(mor)
+			(cond ((null (cadr (cddddr form)))  nil)
+			      ((and (cadddr form)
+				    (mnegp ($numfactor (simplify (cadddr form)))))
+			       (list '(mlessp) var (cadr (cddddr form))))
+			      (t (list '(mgreaterp) var (cadr (cddddr form)))))
+			(caddr (cddddr form)))))
+      #+lispm
+      (cond ((and tem (symbolp tem)) (remprop tem 'mode)))
+      (cond ((and end-var (symbolp end-var))(remprop end-var 'mode)
+	     (remprop end-var 'tbind)))
+      (setq action (translate (cadddr (cddddr form)))
+	    mode (cond ((null returns) '$any)
+		       (t
+			(if shit
+			    (do ((l returns (cdr l))) ((null l))
+			      (rplaca (cdar l) (dconv (cadar l) return-mode))))
+			return-mode)))
+      (setq var (tunbind (cond ((cadr form)) (t 'mdo))))
+      `(,mode do ((,var ,(cdr init) ,(cdr next))
+		  ,@ init-end-var )
+	(,test '$done) . 
+	,(cond ((atom (cdr action)) nil)
+	       ((eq 'progn (cadr action)) (cddr action))
+	       (t (list (cdr action))))))))
 
-(SETQ SHIT NIL)
+(setq shit nil)
 
 
-(DEF%TR MDOIN (FORM)
-  (LET     (RETURNS ASSIGNS RETURN-MODE LOCAL (INSIDE-MPROG T)
-		    NEED-PROG?)
-    (PROG (MODE VAR INIT ACTION)
-	  (SETQ VAR (TBIND (CADR FORM))) (TBIND 'MDO)
-	  (SPECIALP VAR)
-	  (SETQ INIT (DTRANSLATE (CADDR FORM)))
-	  (COND ((OR (CADR (CDDDDR FORM)) (CADDR (CDDDDR FORM)))
-		 (TUNBIND 'MDO) (TUNBIND (CADR FORM))
-		 (RETURN `($ANY SIMPLIFY (MDOIN . ,(CDR FORM))))))
-	  (SETQ ACTION (TRANSLATE (CADDDR (CDDDDR FORM)))
-		MODE (COND ((NULL RETURNS) '$ANY)
-			   (T
-			    (IF SHIT
-				(DO ((L RETURNS (CDR L))) ((NULL L))
-				    (RPLACA (CDAR L) (DCONV (CADAR L) RETURN-MODE))))
-			      RETURN-MODE)))
-	  (TUNBIND 'MDO) (TUNBIND (CADR FORM))
-	  (RETURN
-	   `(,MODE DO ((,VAR) (MDO (CDR ,INIT) (CDR MDO)))
-		   ((NULL MDO) '$DONE)
-		   (SETQ ,VAR (CAR MDO)) . 
-		   ,(COND ((ATOM (CDR ACTION)) NIL)
-			  ((EQ 'PROGN (CADR ACTION)) (CDDR ACTION))
-			  (T (LIST (CDR ACTION)))))))))
+(def%tr mdoin (form)
+  (let     (returns assigns return-mode local (inside-mprog t)
+		    need-prog?)
+    (prog (mode var init action)
+       (setq var (tbind (cadr form))) (tbind 'mdo)
+       (specialp var)
+       (setq init (dtranslate (caddr form)))
+       (cond ((or (cadr (cddddr form)) (caddr (cddddr form)))
+	      (tunbind 'mdo) (tunbind (cadr form))
+	      (return `($any simplify (mdoin . ,(cdr form))))))
+       (setq action (translate (cadddr (cddddr form)))
+	     mode (cond ((null returns) '$any)
+			(t
+			 (if shit
+			     (do ((l returns (cdr l))) ((null l))
+			       (rplaca (cdar l) (dconv (cadar l) return-mode))))
+			 return-mode)))
+       (tunbind 'mdo) (tunbind (cadr form))
+       (return
+	 `(,mode do ((,var) (mdo (cdr ,init) (cdr mdo)))
+	   ((null mdo) '$done)
+	   (setq ,var (car mdo)) . 
+	   ,(cond ((atom (cdr action)) nil)
+		  ((eq 'progn (cadr action)) (cddr action))
+		  (t (list (cdr action)))))))))
 
 
-(DEFUN LAMBDA-WRAP1 (TN VAL FORM)
-  (IF (OR (ATOM VAL)
-	  (EQ (CAR VAL) 'QUOTE))
-      (SUBST VAL TN FORM)
-      `((LAMBDA (,TN) ,FORM) ,VAL)))
+(defun lambda-wrap1 (tn val form)
+  (if (or (atom val)
+	  (eq (car val) 'quote))
+      (subst val tn form)
+      `((lambda (,tn) ,form) ,val)))
 	  
-(DEF%TR MSETQ (FORM)
-  (LET ((VAR (CADR FORM))
-	(VAL (CADDR FORM))
-	ASSIGN
-	MODE)
-    (COND ((ATOM VAR)
-	   (SETQ MODE (VALUE-MODE VAR) VAL (TRANSLATE VAL))
-	   (IFN (TBOUNDP VAR) (ADDL VAR SPECIALS))
-	   (WARN-MODE VAR MODE (CAR VAL))
-	   (IF (EQ '$ANY MODE)
-	       (SETQ MODE (CAR VAL) VAL (CDR VAL))
-	       (SETQ VAL (DCONV VAL MODE)))
-	   (CONS MODE
-		 (IF (SETQ ASSIGN (GET VAR 'ASSIGN))
-		     (LET ((TN (TR-GENSYM)))
-		       (LAMBDA-WRAP1 TN VAL `(PROGN (,ASSIGN ',VAR ,TN)
-						    (SETQ ,(TEVAL VAR) ,TN))))
-		     `(SETQ ,(TEVAL VAR) ,VAL))))
-	  ((MEMQ 'array (CAR VAR))
-	   (TR-ARRAYSETQ VAR VAL))
-	  (T
-	   (TR-FORMAT "~%Dubious first LHS argument to ~:@M~%~:M"
-		      (CAAR FORM) VAR)
-	   (SETQ VAL (TRANSLATE VAL))
-	   `(,(CAR VAL) MSET ',(TRANSLATE-ATOMS VAR) ,(CDR VAL))))))
+(def%tr msetq (form)
+  (let ((var (cadr form))
+	(val (caddr form))
+	assign
+	mode)
+    (cond ((atom var)
+	   (setq mode (value-mode var) val (translate val))
+	   (ifn (tboundp var) (addl var specials))
+	   (warn-mode var mode (car val))
+	   (if (eq '$any mode)
+	       (setq mode (car val) val (cdr val))
+	       (setq val (dconv val mode)))
+	   (cons mode
+		 (if (setq assign (get var 'assign))
+		     (let ((tn (tr-gensym)))
+		       (lambda-wrap1 tn val `(progn (,assign ',var ,tn)
+					      (setq ,(teval var) ,tn))))
+		     `(setq ,(teval var) ,val))))
+	  ((memq 'array (car var))
+	   (tr-arraysetq var val))
+	  (t
+	   (tr-format "~%Dubious first LHS argument to ~:@M~%~:M"
+		      (caar form) var)
+	   (setq val (translate val))
+	   `(,(car val) mset ',(translate-atoms var) ,(cdr val))))))
 
 
 
-(DEF%TR $RAT (FORM)
-  (COND ((NULL (CDDR FORM)) (CONS '$CRE (DCONV-$CRE (TRANSLATE (CADR FORM)))))
-	(T (SETQ TR-ABORT T) (CONS '$ANY FORM))))
+(def%tr $rat (form)
+  (cond ((null (cddr form)) (cons '$cre (dconv-$cre (translate (cadr form)))))
+	(t (setq tr-abort t) (cons '$any form))))
 
 
-(DEF%TR $MAX (X) (TRANSLATE-$MAX-$MIN X))
-(DEF%TR $MIN (X) (TRANSLATE-$MAX-$MIN X))
-(DEF%TR %MAX (X) (TRANSLATE-$MAX-$MIN X))
-(DEF%TR %MIN (X) (TRANSLATE-$MAX-$MIN X))
+(def%tr $max (x) (translate-$max-$min x))
+(def%tr $min (x) (translate-$max-$min x))
+(def%tr %max (x) (translate-$max-$min x))
+(def%tr %min (x) (translate-$max-$min x))
 
-(DEFUN TRANSLATE-$MAX-$MIN (FORM)
-  (LET   ((MODE) (ARGLIST) (OP (STRIPDOLLAR (CAAR FORM))))
-	(SETQ ARGLIST 
-	      (MAPCAR #'(LAMBDA (L) (SETQ L (TRANSLATE L)
-					 MODE (*UNION-MODE (CAR L) MODE))
-			           L)
-		      (CDR FORM)))
-	(IF (MEMQ MODE '($FIXNUM $FLOAT $NUMBER))
-	    `(,MODE  ,(IF (EQ 'MIN OP) 'MIN 'MAX) . ,(MAPCAR 'CDR ARGLIST))
-	    `($ANY ,(IF (EQ 'MIN OP) 'MINIMUM 'MAXIMUM)
-		    (LIST . ,(MAPCAR 'DCONVX ARGLIST))))))
+(defun translate-$max-$min (form)
+  (let   ((mode) (arglist) (op (stripdollar (caar form))))
+    (setq arglist 
+	  (mapcar #'(lambda (l) (setq l (translate l)
+				      mode (*union-mode (car l) mode))
+			    l)
+		  (cdr form)))
+    (if (memq mode '($fixnum $float $number))
+	`(,mode  ,(if (eq 'min op) 'min 'max) . ,(mapcar 'cdr arglist))
+	`($any ,(if (eq 'min op) 'minimum 'maximum)
+	  (list . ,(mapcar 'dconvx arglist))))))
 
 
 ;;; mode acessing, binding, handling. Super over-simplified.
 
-(DEFUN TR-CLASS (X)
-  (COND ((INTEGERP X) '$FIXNUM)
-	((FLOATP X) '$FLOAT)
-	((MEMQ X '(T NIL)) '$BOOLEAN)
-	((ATOM X) '$ANY)
-	((EQ 'RAT (CAAR X)) '$RATIONAL)
-	(T '$ANY)))
+(defun tr-class (x)
+  (cond ((integerp x) '$fixnum)
+	((floatp x) '$float)
+	((memq x '(t nil)) '$boolean)
+	((atom x) '$any)
+	((eq 'rat (caar x)) '$rational)
+	(t '$any)))
 
-(DEFUN *UNION-MODE (MODE1 MODE2) 
-  (COND ((EQ MODE1 MODE2) MODE1)
-	((NULL MODE1) MODE2)
-	((NULL MODE2) MODE1)
-	((MEMQ MODE2 *$ANY-MODES*) '$ANY)
-	((MEMQ MODE1 *$ANY-MODES*) '$ANY)
-	((EQ '$FIXNUM MODE1) MODE2)
-	((EQ '$FLOAT MODE1)
-	 (IF (EQ '$NUMBER MODE2) '$NUMBER '$FLOAT))
-	((EQ '$RATIONAL MODE1)
-	 (IF (EQ '$FLOAT MODE2) '$FLOAT '$ANY))
-	((EQ '$NUMBER MODE1)
-	 (IF (EQ '$RATIONAL MODE2) '$ANY '$NUMBER))
-	(T '$ANY)))
+(defun *union-mode (mode1 mode2) 
+  (cond ((eq mode1 mode2) mode1)
+	((null mode1) mode2)
+	((null mode2) mode1)
+	((memq mode2 *$any-modes*) '$any)
+	((memq mode1 *$any-modes*) '$any)
+	((eq '$fixnum mode1) mode2)
+	((eq '$float mode1)
+	 (if (eq '$number mode2) '$number '$float))
+	((eq '$rational mode1)
+	 (if (eq '$float mode2) '$float '$any))
+	((eq '$number mode1)
+	 (if (eq '$rational mode2) '$any '$number))
+	(t '$any)))
 
 
 
-(DEFUN VALUE-MODE (VAR) (COND ((GET VAR 'MODE))
-			      (T
-			       (WARN-UNDECLARED VAR)
-			       '$ANY)))
+(defun value-mode (var) (cond ((get var 'mode))
+			      (t
+			       (warn-undeclared var)
+			       '$any)))
 
-(DEFUN DECMODE-ARRAYFUN (F M) (PUTPROP F M 'ARRAYFUN-MODE))
+(defun decmode-arrayfun (f m) (putprop f m 'arrayfun-mode))
 
-(DEFUN Array-MODE (AR) (COND ((GET AR 'Array-MODE)) (T '$ANY)))
-(DEFUN ARRAYFUN-MODE (AR) (COND ((GET AR 'ARRAYFUN-MODE)) (T '$ANY)))
-(DEFUN FUNCTION-MODE (F) (COND ((GET F 'FUNCTION-MODE)) (T '$ANY)))
-(DEFUN FUNCTION-MODE-@ (F)
-       (ASS-EQ-REF (GET F 'VAL-MODES) 'FUNCTION-MODE '$ANY))
-(DEFUN ARRAY-MODE-@ (F)
-       (ASS-EQ-REF (GET F 'VAL-MODES) 'ARRAY-MODE '$ANY))
+(defun array-mode (ar) (cond ((get ar 'array-mode)) (t '$any)))
+(defun arrayfun-mode (ar) (cond ((get ar 'arrayfun-mode)) (t '$any)))
+(defun function-mode (f) (cond ((get f 'function-mode)) (t '$any)))
+(defun function-mode-@ (f)
+  (ass-eq-ref (get f 'val-modes) 'function-mode '$any))
+(defun array-mode-@ (f)
+  (ass-eq-ref (get f 'val-modes) 'array-mode '$any))
 
 
-(DEFVAR $TR_BIND_MODE_HOOK NIL
+(defvar $tr_bind_mode_hook nil
   "A hack to allow users to key the modes of variables
   off of variable spelling, and other things like that.")
 
-(EVAL-WHEN (EVAL COMPILE #-PDP10 LOAD)
-(DEFSTRUCT (TSTACK-SLOT #+Maclisp CONC-NAME
-			#-Maclisp (:CONC-NAME TSTACK-SLOT-)
-			#+Maclisp TREE
-			#-(or cl Maclisp) :NAMED)
-  MODE 
-  TBIND
-  VAL-MODES
-  ;; an alist telling second order info
-  ;; about APPLY(VAR,[X]), ARRAYAPPLY(F,[X]) etc.
-  SPECIAL))
+(eval-when (eval compile #-pdp10 load)
+  (defstruct (tstack-slot #+maclisp conc-name
+			  #-maclisp (:conc-name tstack-slot-)
+			  #+maclisp tree
+			  #-(or cl maclisp) :named)
+    mode 
+    tbind
+    val-modes
+    ;; an alist telling second order info
+    ;; about APPLY(VAR,[X]), ARRAYAPPLY(F,[X]) etc.
+    special))
 
 ;;; should be a macro (TBINDV <var-list> ... forms)
 ;;; so that TUNBIND is assured, and also so that the stupid ASSQ doesn't
 ;;; have to be done on the darn TSTACK. This will have to wait till
 ;;; the basic special form translation properties are rewritten.
 
-(DEFUN VARIABLE-P (VAR)
-  (AND VAR (SYMBOLP VAR) (NOT (EQ VAR T))))
+(defun variable-p (var)
+  (and var (symbolp var) (not (eq var t))))
 
-(DEFUN BAD-VAR-WARN (VAR)
-  (TR-FORMAT "~%BAD object to use as a variable:~%~:M~%" VAR))
+(defun bad-var-warn (var)
+  (tr-format "~%BAD object to use as a variable:~%~:M~%" var))
 
-(DEFUN TBIND (VAR &AUX OLD)
-  (COND ((VARIABLE-P VAR)
-	 (SETQ OLD (MAKE-TSTACK-SLOT #+cl :MODE #-cl MODE (GET VAR 'MODE)
-				     #+cl :TBIND #-cl TBIND (GET VAR 'TBIND)
-				     #+cl :VAL-MODES #-cl VAL-MODES (GET VAR 'VAL-MODES)
-				     #+cl :SPECIAL #-cl SPECIAL (GET VAR 'SPECIAL)))
-	 (PUSH (CONS VAR OLD) TSTACK)
-	 (COND ((NOT (SPECIALP VAR))
+(defun tbind (var &aux old)
+  (cond ((variable-p var)
+	 (setq old (make-tstack-slot #+cl :mode #-cl mode (get var 'mode)
+				     #+cl :tbind #-cl tbind (get var 'tbind)
+				     #+cl :val-modes #-cl val-modes (get var 'val-modes)
+				     #+cl :special #-cl special (get var 'special)))
+	 (push (cons var old) tstack)
+	 (cond ((not (specialp var))
 		;; It is the lisp convention in use to inherit
 		;; specialness from higher context.
 		;; Spurious MODEDECLARATIONS get put in the environment
 		;; when code is MEVAL'd since there is no way to stack
 		;; the mode properties. Certainly nobody is willing
 		;; to hack MEVAL in JPG;MLISP
-		(REMPROP VAR 'VAL-MODES)
-		(REMPROP VAR 'MODE)
-		(REMPROP VAR 'SPECIAL)))
-	 (PUTPROP VAR VAR 'TBIND)
-	 (IF $TR_BIND_MODE_HOOK
-	     (LET ((MODE? (MAPPLY $TR_BIND_MODE_HOOK
-				  (LIST VAR)
-				  '$TR_BIND_MODE_HOOK)))
-	       (IF MODE? (TR-DECLARE-VARMODE VAR MODE?))))
-	 VAR)
-	('ELSE
-	 (BAD-VAR-WARN VAR))))
+		(remprop var 'val-modes)
+		(remprop var 'mode)
+		(remprop var 'special)))
+	 (putprop var var 'tbind)
+	 (if $tr_bind_mode_hook
+	     (let ((mode? (mapply $tr_bind_mode_hook
+				  (list var)
+				  '$tr_bind_mode_hook)))
+	       (if mode? (tr-declare-varmode var mode?))))
+	 var)
+	('else
+	 (bad-var-warn var))))
 
 
 
-(DEFUN TUNBIND (VAR
-		&AUX
-		(OLD (ASSQ VAR TSTACK)))
-  (WHEN (VARIABLE-P VAR)
-	(PROG1
-	 (TEVAL VAR)
-	 (COND (OLD
-		(SETQ TSTACK (DELQ OLD TSTACK)) ; POP should be all we need.
-		(SETQ OLD (CDR OLD))
-		(PUTPROP1 VAR (TSTACK-SLOT-MODE OLD) 'MODE)
-		(PUTPROP1 VAR (TSTACK-SLOT-TBIND OLD) 'TBIND)
-		(PUTPROP1 VAR (TSTACK-SLOT-VAL-MODES OLD) 'VAL-MODES)
-		(PUTPROP1 VAR (TSTACK-SLOT-SPECIAL OLD) 'SPECIAL))))))
+(defun tunbind (var
+		&aux
+		(old (assq var tstack)))
+  (when (variable-p var)
+    (prog1
+	(teval var)
+      (cond (old
+	     (setq tstack (delq old tstack)) ; POP should be all we need.
+	     (setq old (cdr old))
+	     (putprop1 var (tstack-slot-mode old) 'mode)
+	     (putprop1 var (tstack-slot-tbind old) 'tbind)
+	     (putprop1 var (tstack-slot-val-modes old) 'val-modes)
+	     (putprop1 var (tstack-slot-special old) 'special))))))
 
-(DEFUN PUTPROP1 (NAME VALUE KEY)
-       ;; leaves property list clean after unwinding, this
-       ;; is an efficiency/storage issue only.
-       (IF VALUE (PUTPROP NAME VALUE KEY) (PROGN (REMPROP NAME KEY) NIL)))
+(defun putprop1 (name value key)
+  ;; leaves property list clean after unwinding, this
+  ;; is an efficiency/storage issue only.
+  (if value (putprop name value key) (progn (remprop name key) nil)))
 
-(DEFUN TUNBINDS (L)
-  (DO ((NL)) ((NULL L) NL)
-      (SETQ NL (CONS (TUNBIND (CAAR TSTACK)) NL) L (CDR L))))
+(defun tunbinds (l)
+  (do ((nl)) ((null l) nl)
+    (setq nl (cons (tunbind (caar tstack)) nl) l (cdr l))))
 
-(DEFUN TBOUNDP (VAR)
-       ;; really LEXICAL-VARP.
-       (AND (GET VAR 'TBIND) (NOT (GET VAR 'SPECIAL))))
+(defun tboundp (var)
+  ;; really LEXICAL-VARP.
+  (and (get var 'tbind) (not (get var 'special))))
 
-(DEFUN TEVAL (VAR) (OR (GET VAR 'TBIND) VAR))
+(defun teval (var) (or (get var 'tbind) var))
 
 
 
 #+cl
 (defmacro maset ( val ar  &rest inds)
   `(progn
-     (cond ((symbolp ,ar)(setf ,ar (make-equal-hash-table
-				     ,(if (cdr inds) t nil)))))
-     (maset1 ,val  ,ar ,@  inds)))
+    (cond ((symbolp ,ar)(setf ,ar (make-equal-hash-table
+				   ,(if (cdr inds) t nil)))))
+    (maset1 ,val  ,ar ,@  inds)))
 
 
-;#+lispm  ;;removed the apply from tr-arraycall and &rest.
-;(defun tr-maref (ar &rest inds)
-;    `(nil maref ,ar ,@ (copy-list inds)))
+;;#+lispm  ;;removed the apply from tr-arraycall and &rest.
+;;(defun tr-maref (ar &rest inds)
+;;    `(nil maref ,ar ,@ (copy-list inds)))
 
 
 

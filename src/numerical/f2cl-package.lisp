@@ -1,11 +1,11 @@
-; f2cl0.l
+;; f2cl0.l
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;Copyright (c) University of Waikato;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;Hamilton, New Zealand 1992-95 - all rights reserved;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; edit here so that the root of the f2cl directory tree is appropriate
-; for your installation and the filename extension is valid
+;; edit here so that the root of the f2cl directory tree is appropriate
+;; for your installation and the filename extension is valid
 ;;#+(or sparc sun4)(defvar *f2cl_dir* "/d/sen/f2cl/wrk/")
 ;;#+vms (defvar *f2cl_dir* "d:[sen.f2cl.wrk]")
 ;;(defvar *ext* 
@@ -73,7 +73,7 @@
 
 #+nil
 (defpackage "FORTRAN-TO-LISP"
-    (:use "CL")
+  (:use "CL")
   (:documentation "The package holding all symbols need by the Fortran to Lisp converter")
   (:nicknames "F2CL")
   (:export
@@ -85,9 +85,13 @@
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.5 2003-11-26 17:27:16 rtoy Exp $
+;;; $Id: f2cl-package.lisp,v 1.6 2004-10-04 02:25:54 amundson Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.5  2003-11-26 17:27:16  rtoy
+;;; Revision 1.6  2004-10-04 02:25:54  amundson
+;;; Downcasing of source complete. Code compiles and passes tests with
+;;; clisp, cmucl, gcl and sbcl.
+;;;
+;;; Revision 1.5  2003/11/26 17:27:16  rtoy
 ;;; Synchronize to the current versions of f2cl.
 ;;;
 ;;; Revision 1.4  2002/07/18 02:37:22  rtoy

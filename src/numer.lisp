@@ -15,154 +15,154 @@
 ;;; Interface of lisp numerical routines to macsyma.
 ;;; 4:34pm  Thursday, 28 May 1981 - George Carrette.
 
-(DEFUN COMPATIBLE-ARRAY-TYPE? (TYPE TYPE-LIST)
+(defun compatible-array-type? (type type-list)
   (declare (ignore type-list))
-;  #+MACLISP
-;  (MEMQ TYPE TYPE-LIST)
-;  #+NIL
-;  (memq (or (cdr (assq type '((double-float . flonum))))
-;	    type)
-;	type-list)
-  (EQ TYPE t))
+  ;;  #+MACLISP
+  ;;  (MEMQ TYPE TYPE-LIST)
+  ;;  #+NIL
+  ;;  (memq (or (cdr (assq type '((double-float . flonum))))
+  ;;	    type)
+  ;;	type-list)
+  (eq type t))
 
-(DEFMFUN GET-ARRAY (X &OPTIONAL (KINDS NIL) (/#-DIMS) &REST DIMENSIONS)
-;  "Get-Array is fairly general.
-;  Examples:
-;  (get-array ar '(flonum) 2 3 5) makes sure ar is a flonum array
-;  with 2 dimensions, of 3 and 5.
-;  (get-array ar '(fixnum) 1) gets a 1 dimensional fixnum array."
-  (COND ((NULL KINDS) (get-array-pointer x))
-	((NULL /#-DIMS)
-	 (LET ((A  (get-array-pointer x)))
-	   (if (COMPATIBLE-ARRAY-TYPE? (ARRAY-TYPE A) KINDS)
-	       A
-	       (MERROR "~:M is not an array of type: ~:M"  X
+(defmfun get-array (x &optional (kinds nil) (/#-dims) &rest dimensions)
+  ;;  "Get-Array is fairly general.
+  ;;  Examples:
+  ;;  (get-array ar '(flonum) 2 3 5) makes sure ar is a flonum array
+  ;;  with 2 dimensions, of 3 and 5.
+  ;;  (get-array ar '(fixnum) 1) gets a 1 dimensional fixnum array."
+  (cond ((null kinds) (get-array-pointer x))
+	((null /#-dims)
+	 (let ((a  (get-array-pointer x)))
+	   (if (compatible-array-type? (array-type a) kinds)
+	       a
+	       (merror "~:M is not an array of type: ~:M"  x
 		       `((mlist) ,@kinds)))))
-	((NULL DIMENSIONS)
-	 (LET ((A (GET-ARRAY X KINDS)))
-	   (if (= (ARRAY-rank A) /#-DIMS)
-	       A
-	       (MERROR "~:M does not have ~:M dimensions." X /#-DIMS))))
-	('ELSE
-	 (LET ((A (GET-ARRAY X KINDS /#-DIMS)))
-	   (DO ((J 1 (f1+ J))
-		(L DIMENSIONS (CDR L)))
-	       ((NULL L)
-		A)
-	     (OR (OR (EQ (CAR L) '*)
-		     (= (CAR L) (ARRAY-DIMENSION-N J A)))
-		 (MERROR "~:M does not have dimension ~:M equal to ~:M"
-			 X J (CAR L))))))))
+	((null dimensions)
+	 (let ((a (get-array x kinds)))
+	   (if (= (array-rank a) /#-dims)
+	       a
+	       (merror "~:M does not have ~:M dimensions." x /#-dims))))
+	('else
+	 (let ((a (get-array x kinds /#-dims)))
+	   (do ((j 1 (f1+ j))
+		(l dimensions (cdr l)))
+	       ((null l)
+		a)
+	     (or (or (eq (car l) '*)
+		     (= (car l) (array-dimension-n j a)))
+		 (merror "~:M does not have dimension ~:M equal to ~:M"
+			 x j (car l))))))))
 
-(DECLARE-top (SPECIAL %E-VAL))
+(declare-top (special %e-val))
 
-(DEFUN MTO-FLOAT (X)
-  (FLOAT (IF (NUMBERP X)
-	     X
-	     (LET (($NUMER T) ($FLOAT T))
-	       (RESIMPLIFY (SUBST %E-VAL '$%E X))))))
+(defun mto-float (x)
+  (float (if (numberp x)
+	     x
+	     (let (($numer t) ($float t))
+	       (resimplify (subst %e-val '$%e x))))))
 
 ;;; Trampolines for calling with numerical efficiency.
 
-(DEFVAR TRAMP$-ALIST ())
+(defvar tramp$-alist ())
 
-(DEFMACRO DEFTRAMP$ (NARGS)
-  (LET ((TRAMP$ (SYMBOLCONC 'TRAMP NARGS '$))
-;	#+MACLISP
-;	(TRAMP$-S (SYMBOLCONC 'TRAMP NARGS '$-S))
-	(TRAMP$-F (SYMBOLCONC 'TRAMP NARGS '$-F))
-	(TRAMP$-M (SYMBOLCONC 'TRAMP NARGS '$-M))
-	(L (MAKE-LIST NARGS)))
-    (LET ((ARG-LIST (MAPCAR #'(LAMBDA (IGN)IGN (GENSYM)) L))
-;	  #+MACLISP
-;	  (ARG-TYPE-LIST (MAPCAR #'(LAMBDA (IGNORE) 'flonum) L))
+(defmacro deftramp$ (nargs)
+  (let ((tramp$ (symbolconc 'tramp nargs '$))
+	;;	#+MACLISP
+	;;	(TRAMP$-S (SYMBOLCONC 'TRAMP NARGS '$-S))
+	(tramp$-f (symbolconc 'tramp nargs '$-f))
+	(tramp$-m (symbolconc 'tramp nargs '$-m))
+	(l (make-list nargs)))
+    (let ((arg-list (mapcar #'(lambda (ign)ign (gensym)) l))
+	  ;;	  #+MACLISP
+	  ;;	  (ARG-TYPE-LIST (MAPCAR #'(LAMBDA (IGNORE) 'flonum) L))
 	  )
-    `(PROGN ;'COMPILE
-	    (PUSH '(,NARGS ,TRAMP$
-;		    #+MACLISP ,TRAMP$-S
-		    ,TRAMP$-F ,TRAMP$-M)
-		  TRAMP$-ALIST)
-	    (DEFMVAR ,TRAMP$ "Contains the object to jump to if needed")
-;	    #+MACLISP
-;	    (DECLARE-top (FLONUM (,TRAMP$-S ,@ARG-TYPE-LIST)
-;			     (,TRAMP$-F ,@ARG-TYPE-LIST)
-;			     (,TRAMP$-M ,@ARG-TYPE-LIST)))
-;	    #+MACLISP
-;	    (DEFUN ,TRAMP$-S ,ARG-LIST
-;	      (FLOAT (SUBRCALL NIL ,TRAMP$ ,@ARG-LIST)))
-	    (DEFUN ,TRAMP$-F ,ARG-LIST
-	      (FLOAT (FUNCALL ,TRAMP$ ,@ARG-LIST)))
-	    (DEFUN ,TRAMP$-M ,ARG-LIST
-	      (FLOAT (MAPPLY1 ,TRAMP$ (LIST ,@ARG-LIST) ',TRAMP$ nil)))))))
+      `(progn				;'COMPILE
+	(push '(,nargs ,tramp$
+		;;		    #+MACLISP ,TRAMP$-S
+		,tramp$-f ,tramp$-m)
+	 tramp$-alist)
+	(defmvar ,tramp$ "Contains the object to jump to if needed")
+	;;	    #+MACLISP
+	;;	    (DECLARE-top (FLONUM (,TRAMP$-S ,@ARG-TYPE-LIST)
+	;;			     (,TRAMP$-F ,@ARG-TYPE-LIST)
+	;;			     (,TRAMP$-M ,@ARG-TYPE-LIST)))
+	;;	    #+MACLISP
+	;;	    (DEFUN ,TRAMP$-S ,ARG-LIST
+	;;	      (FLOAT (SUBRCALL NIL ,TRAMP$ ,@ARG-LIST)))
+	(defun ,tramp$-f ,arg-list
+	  (float (funcall ,tramp$ ,@arg-list)))
+	(defun ,tramp$-m ,arg-list
+	  (float (mapply1 ,tramp$ (list ,@arg-list) ',tramp$ nil)))))))
 
-(DEFTRAMP$ 1)
-(DEFTRAMP$ 2)
-(DEFTRAMP$ 3)
+(deftramp$ 1)
+(deftramp$ 2)
+(deftramp$ 3)
 
-(DEFMFUN MAKE-TRAMP$ (F N)
-  (LET ((L (ASSOC N TRAMP$-ALIST :test #'equal)))
-    (IF (NULL L)
-	(MERROR "BUG: No trampoline of argument length ~M" N))
-    (POP L)
-    (LET (tramp$ ;#+maclisp tramp$-s
+(defmfun make-tramp$ (f n)
+  (let ((l (assoc n tramp$-alist :test #'equal)))
+    (if (null l)
+	(merror "BUG: No trampoline of argument length ~M" n))
+    (pop l)
+    (let (tramp$			;#+maclisp tramp$-s
 	  tramp$-m tramp$-f)
-	 (declare (special tramp$ tramp$-m tramp$-f ))
-	 (setq tramp$ (pop l)
-;	       #+maclisp TRAMP$-S #+maclisp (POP L)
-	       tramp$-f (pop l)
-	       tramp$-m (pop l))
-      (LET ((WHATNOT (FUNTYPEP F)))
-	(CASE (CAR WHATNOT)
-	  ((OPERATORS)
-	   (SET TRAMP$ F)
-	   (GETSUBR! TRAMP$-M))
-   	  ((MEXPR)
-	   (SET TRAMP$ (CADR WHATNOT))
-	   (GETSUBR! TRAMP$-M))
-;	  #+MACLISP
-;	  ((SUBR)
-;	   (COND ((SHIT-EQ (CADR WHATNOT) (GETSUBR! TRAMP$-S))
-;		  ;; This depends on the fact that the lisp compiler
-;		  ;; always outputs the same first instruction for
-;		  ;; "flonum compiled" subrs.
-;		  (CADR WHATNOT))
-;		 ('ELSE
-;		  (SET TRAMP$ (CADR WHATNOT))
-;		  (GETSUBR! TRAMP$-S))))
-	  ((EXPR LSUBR)
-	   (SET TRAMP$ (CADR WHATNOT))
-	   (GETSUBR! TRAMP$-F))
-	  (T
-	   (MERROR "Undefined or inscrutable function~%~M" F)))))))
+      (declare (special tramp$ tramp$-m tramp$-f ))
+      (setq tramp$ (pop l)
+	    ;;	       #+maclisp TRAMP$-S #+maclisp (POP L)
+	    tramp$-f (pop l)
+	    tramp$-m (pop l))
+      (let ((whatnot (funtypep f)))
+	(case (car whatnot)
+	  ((operators)
+	   (set tramp$ f)
+	   (getsubr! tramp$-m))
+   	  ((mexpr)
+	   (set tramp$ (cadr whatnot))
+	   (getsubr! tramp$-m))
+	  ;;	  #+MACLISP
+	  ;;	  ((SUBR)
+	  ;;	   (COND ((SHIT-EQ (CADR WHATNOT) (GETSUBR! TRAMP$-S))
+	  ;;		  ;; This depends on the fact that the lisp compiler
+	  ;;		  ;; always outputs the same first instruction for
+	  ;;		  ;; "flonum compiled" subrs.
+	  ;;		  (CADR WHATNOT))
+	  ;;		 ('ELSE
+	  ;;		  (SET TRAMP$ (CADR WHATNOT))
+	  ;;		  (GETSUBR! TRAMP$-S))))
+	  ((expr lsubr)
+	   (set tramp$ (cadr whatnot))
+	   (getsubr! tramp$-f))
+	  (t
+	   (merror "Undefined or inscrutable function~%~M" f)))))))
 
 
-(DEFUN GETSUBR! (X)
-  (OR ;#+MACLISP (GET X 'SUBR)
-   (AND (SYMBOLP X) (FBOUNDP X) (SYMBOL-FUNCTION X))
-   (GETSUBR! (MAXIMA-ERROR "No subr property for it!" X 'WRNG-TYPE-ARG))))
+(defun getsubr! (x)
+  (or					;#+MACLISP (GET X 'SUBR)
+   (and (symbolp x) (fboundp x) (symbol-function x))
+   (getsubr! (maxima-error "No subr property for it!" x 'wrng-type-arg))))
 
-(DEFUN FUNTYPEP (F)
-  (COND ((SYMBOLP F)
-	 (LET ((MPROPS (MGETL F '(MEXPR)))
-	       (LPROPS ;#+MACLISP (GETL F '(SUBR LSUBR EXPR))
-		(AND (FBOUNDP F)
-		     (LIST 'EXPR (SYMBOL-FUNCTION F)))))
-	   (OR (IF $TRANSRUN
-		   (OR LPROPS MPROPS)
-		   (OR MPROPS LPROPS))
-	       (GETL F '(OPERATORS)))))
+(defun funtypep (f)
+  (cond ((symbolp f)
+	 (let ((mprops (mgetl f '(mexpr)))
+	       (lprops		;#+MACLISP (GETL F '(SUBR LSUBR EXPR))
+		(and (fboundp f)
+		     (list 'expr (symbol-function f)))))
+	   (or (if $transrun
+		   (or lprops mprops)
+		   (or mprops lprops))
+	       (getl f '(operators)))))
 	((functionp f)
 	 (list 'expr f))
-	((consp f) ;(EQ (TYPEP F) 'LIST)
-	 (LIST (IF (MEMQ (CAR F) '(FUNCTION LAMBDA NAMED-LAMBDA))
-		   'EXPR
-		   'MEXPR)
-	       F))
-	('ELSE
-	 NIL)))
+	((consp f)			;(EQ (TYPEP F) 'LIST)
+	 (list (if (memq (car f) '(function lambda named-lambda))
+		   'expr
+		   'mexpr)
+	       f))
+	('else
+	 nil)))
 
-;#+MACLISP
-;(DEFUN SHIT-EQ (X Y) (= (EXAMINE (MAKNUM X)) (EXAMINE (MAKNUM Y))))
+;;#+MACLISP
+;;(DEFUN SHIT-EQ (X Y) (= (EXAMINE (MAKNUM X)) (EXAMINE (MAKNUM Y))))
 
 ;; For some purposes we need a more general trampoline mechanism,
 ;; not limited by the need to use a special variable and a
@@ -171,107 +171,107 @@
 ;; For now, we just need the special cases F(X), and F(X,Y) for plotting,
 ;; and the hackish GAPPLY$-AR$ for systems of equations.
 
-(DEFUN MAKE-GTRAMP$ (F NARGS)
-  NARGS
+(defun make-gtramp$ (f nargs)
+  nargs
   ;; for now, ignoring the number of arguments, but we really should
   ;; do this error checking.
-  (LET ((K (FUNTYPEP F)))
-    (CASE (CAR K)
-      ((OPERATORS)
-       (CONS 'OPERATORS F))
-;      #+MACLISP
-;      ((SUBR)
-;       (IF (SHIT-EQ (CADR K) (GETSUBR! 'TRAMP1$-S))
-;	   (CONS 'SUBR$ (CADR K))
-;	   (CONS 'SUBR (CADR K))))
-      ((MEXPR EXPR LSUBR)
-       (CONS (CAR K) (CADR K)))
-      (T
-       (MERROR "Undefined or inscrutable function~%~M" F)))))
+  (let ((k (funtypep f)))
+    (case (car k)
+      ((operators)
+       (cons 'operators f))
+      ;;      #+MACLISP
+      ;;      ((SUBR)
+      ;;       (IF (SHIT-EQ (CADR K) (GETSUBR! 'TRAMP1$-S))
+      ;;	   (CONS 'SUBR$ (CADR K))
+      ;;	   (CONS 'SUBR (CADR K))))
+      ((mexpr expr lsubr)
+       (cons (car k) (cadr k)))
+      (t
+       (merror "Undefined or inscrutable function~%~M" f)))))
 
-(DEFUN GCALL1$ (F X)
-  (CASE (CAR F)
-;    #+MACLISP
-;    ((SUBR$)
-;     (SUBRCALL FLONUM (CDR F) X))
-;    #+MACLISP
-;    ((SUBR)
-;     (FLOAT (SUBRCALL NIL (CDR F) X)))
-;    #+MACLISP
-;    ((LSUBR)
-;     (FLOAT (LSUBRCALL NIL (CDR F) X)))
-    ((EXPR)
-     (FLOAT (FUNCALL (CDR F) X)))
-    ((MEXPR OPERATORS)
-     (FLOAT (MAPPLY1 (CDR F) (LIST X) NIL nil)))
-    (T
-     (MERROR "BUG: GCALL1$"))))
+(defun gcall1$ (f x)
+  (case (car f)
+    ;;    #+MACLISP
+    ;;    ((SUBR$)
+    ;;     (SUBRCALL FLONUM (CDR F) X))
+    ;;    #+MACLISP
+    ;;    ((SUBR)
+    ;;     (FLOAT (SUBRCALL NIL (CDR F) X)))
+    ;;    #+MACLISP
+    ;;    ((LSUBR)
+    ;;     (FLOAT (LSUBRCALL NIL (CDR F) X)))
+    ((expr)
+     (float (funcall (cdr f) x)))
+    ((mexpr operators)
+     (float (mapply1 (cdr f) (list x) nil nil)))
+    (t
+     (merror "BUG: GCALL1$"))))
 
-(DEFUN GCALL2$ (F X Y)
-  (CASE (CAR F)
-;    #+MACLISP
-;    ((SUBR$)
-;     (SUBRCALL FLONUM (CDR F) X Y))
-;    #+MACLISP
-;    ((SUBR)
-;     (FLOAT (SUBRCALL NIL (CDR F) X Y)))
-;    #+MACLISP
-;    ((LSUBR)
-;     (FLOAT (LSUBRCALL NIL (CDR F) X Y)))
-    ((EXPR)
-     (FLOAT (FUNCALL (CDR F) X Y)))
-    ((MEXPR OPERATORS)
-     (FLOAT (MAPPLY (CDR F) (LIST X Y) NIL)))
-    (T
-     (MERROR "BUG: GCALL2$"))))
+(defun gcall2$ (f x y)
+  (case (car f)
+    ;;    #+MACLISP
+    ;;    ((SUBR$)
+    ;;     (SUBRCALL FLONUM (CDR F) X Y))
+    ;;    #+MACLISP
+    ;;    ((SUBR)
+    ;;     (FLOAT (SUBRCALL NIL (CDR F) X Y)))
+    ;;    #+MACLISP
+    ;;    ((LSUBR)
+    ;;     (FLOAT (LSUBRCALL NIL (CDR F) X Y)))
+    ((expr)
+     (float (funcall (cdr f) x y)))
+    ((mexpr operators)
+     (float (mapply (cdr f) (list x y) nil)))
+    (t
+     (merror "BUG: GCALL2$"))))
 
-(DEFUN AR$+AR$ (A$ B$ C$)
-  (DO ((N (ARRAY-DIMENSION-N 1 A$))
-       (J 0 (f1+ J)))
-      ((= J N))
-    (DECLARE (FIXNUM N J))
-    (SETF (AREF$ A$ J) (+$ (AREF$ B$ J) (AREF$ C$ J)))))
+(defun ar$+ar$ (a$ b$ c$)
+  (do ((n (array-dimension-n 1 a$))
+       (j 0 (f1+ j)))
+      ((= j n))
+    (declare (fixnum n j))
+    (setf (aref$ a$ j) (+$ (aref$ b$ j) (aref$ c$ j)))))
 
-(DEFUN AR$*S (A$ B$ S)
-  (DO ((N (ARRAY-DIMENSION-N 1 A$))
-       (J 0 (f1+ J)))
-      ((= J N))
-    (DECLARE (FIXNUM N J))
-    (SETF (AREF$ A$ J) (*$ (AREF$ B$ J) S))))
+(defun ar$*s (a$ b$ s)
+  (do ((n (array-dimension-n 1 a$))
+       (j 0 (f1+ j)))
+      ((= j n))
+    (declare (fixnum n j))
+    (setf (aref$ a$ j) (*$ (aref$ b$ j) s))))
 
-(DEFUN AR$GCALL2$ (AR FL X Y)
-  (DO ((J 0 (f1+ J))
-       (L FL (CDR L)))
-      ((NULL L))
-    (SETF (AREF$ AR J) (GCALL2$ (CAR L) X Y))))
+(defun ar$gcall2$ (ar fl x y)
+  (do ((j 0 (f1+ j))
+       (l fl (cdr l)))
+      ((null l))
+    (setf (aref$ ar j) (gcall2$ (car l) x y))))
 
-(DEFUN MAKE-GTRAMP (F NARGS)
-  NARGS
+(defun make-gtramp (f nargs)
+  nargs
   ;; for now, ignoring the number of arguments, but we really should
   ;; do this error checking.
-  (LET ((K (FUNTYPEP F)))
-    (CASE (CAR K)
-      ((OPERATORS)
-       (CONS 'OPERATORS F))
-;      #+MACLISP
-;      ((SUBR)
-;       (CONS 'SUBR (CADR K)))
-      ((MEXPR EXPR LSUBR)
-       (CONS (CAR K) (CADR K)))
-      (T
-       (MERROR "Undefined or inscrutable function~%~M" F)))))
+  (let ((k (funtypep f)))
+    (case (car k)
+      ((operators)
+       (cons 'operators f))
+      ;;      #+MACLISP
+      ;;      ((SUBR)
+      ;;       (CONS 'SUBR (CADR K)))
+      ((mexpr expr lsubr)
+       (cons (car k) (cadr k)))
+      (t
+       (merror "Undefined or inscrutable function~%~M" f)))))
 
-(DEFUN GCALL3 (F A1 A2 A3)
-  (CASE (CAR F)
-;    #+MACLISP
-;    ((SUBR)
-;     (SUBRCALL T (CDR F) A1 A2 A3))
-;    #+MACLISP
-;    ((LSUBR)
-;     (LSUBRCALL T (CDR F) A1 A2 A3))
-    ((EXPR)
-     (FUNCALL (CDR F)  A1 A2 A3))
-    ((MEXPR OPERATORS)
-     (MAPPLY (CDR F) (LIST A1 A2 A3) 'GCALL3))
-    (T
-     (MERROR "BUG: GCALL3"))))
+(defun gcall3 (f a1 a2 a3)
+  (case (car f)
+    ;;    #+MACLISP
+    ;;    ((SUBR)
+    ;;     (SUBRCALL T (CDR F) A1 A2 A3))
+    ;;    #+MACLISP
+    ;;    ((LSUBR)
+    ;;     (LSUBRCALL T (CDR F) A1 A2 A3))
+    ((expr)
+     (funcall (cdr f)  a1 a2 a3))
+    ((mexpr operators)
+     (mapply (cdr f) (list a1 a2 a3) 'gcall3))
+    (t
+     (merror "BUG: GCALL3"))))

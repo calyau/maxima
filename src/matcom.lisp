@@ -13,645 +13,645 @@
 
 ;; This is the Match Compiler.
 
-(DECLARE-TOP  (GENPREFIX MC_)
-	 (SPECIAL *EXPR *RULES *RULELIST $RULES ALIST $PROPS 
-		  *AFTERFLAG ARGS BOUNDLIST *A* PT
-		  REFLIST TOPREFLIST PROGRAM $NOUNDISP))
+(declare-top  (genprefix mc_)
+	      (special *expr *rules *rulelist $rules alist $props 
+		       *afterflag args boundlist *a* pt
+		       reflist topreflist program $noundisp))
 
-(SETQ *AFTERFLAG NIL)
+(setq *afterflag nil)
 
-(DEFMSPEC $MATCHDECLARE (FORM)
-  (LET ((META-PROP-P NIL))
-    (PROC-$MATCHDECLARE (CDR FORM))))
+(defmspec $matchdeclare (form)
+  (let ((meta-prop-p nil))
+    (proc-$matchdeclare (cdr form))))
 
-(DEFUN PROC-$MATCHDECLARE (X)
- (IF (ODDP (LENGTH X))
-     (MERROR "MATCHDECLARE takes an even number of arguments."))
- (DO ((X X (CDDR X))) ((NULL X))
-     (COND ((SYMBOLP (CAR X))
-	    (COND ((AND (NOT (SYMBOLP (CADR X)))
-		        (OR (NUMBERP (CADR X))
-			    (MEMQ (CAAADR X) '(MAND MOR MNOT MCOND MPROG))))
-		   (IMPROPER-ARG-ERR (CADR X) '$MATCHDECLARE)))
-	    (META-ADD2LNC (CAR X) '$PROPS)
-	    (META-MPUTPROP (CAR X) (NCONS (CADR X)) 'MATCHDECLARE))
-	   ((NOT ($LISTP (CAR X)))
-	    (IMPROPER-ARG-ERR (CAR X) '$MATCHDECLARE))
-	   (T (DO ((L (CDAR X) (CDR L))) ((NULL L))
-		  (PROC-$MATCHDECLARE (LIST (CAR L) (CADR X)))))))
-'$DONE)
+(defun proc-$matchdeclare (x)
+  (if (oddp (length x))
+      (merror "MATCHDECLARE takes an even number of arguments."))
+  (do ((x x (cddr x))) ((null x))
+    (cond ((symbolp (car x))
+	   (cond ((and (not (symbolp (cadr x)))
+		       (or (numberp (cadr x))
+			   (memq (caaadr x) '(mand mor mnot mcond mprog))))
+		  (improper-arg-err (cadr x) '$matchdeclare)))
+	   (meta-add2lnc (car x) '$props)
+	   (meta-mputprop (car x) (ncons (cadr x)) 'matchdeclare))
+	  ((not ($listp (car x)))
+	   (improper-arg-err (car x) '$matchdeclare))
+	  (t (do ((l (cdar x) (cdr l))) ((null l))
+	       (proc-$matchdeclare (list (car l) (cadr x)))))))
+  '$done)
 
-(DEFUN COMPILEATOM (E P) 
-  (PROG (D) 
-	(SETQ D (GETDEC P E))
-	(RETURN (COND ((NULL D)
-		       (EMIT (LIST 'COND
-				   (LIST (LIST 'NOT
-					       (LIST 'EQUAL
-						     E
-						     (LIST 'QUOTE P)))
-					 '(MATCHERR)))))
-		      ((MEMQ P BOUNDLIST)
-		       (EMIT (LIST 'COND
-				   (LIST (LIST 'NOT (LIST 'EQUAL E P))
-					 '((MATCHERR))))))
-		      (T (SETQ BOUNDLIST (CONS P BOUNDLIST)) (EMIT D))))))
+(defun compileatom (e p) 
+  (prog (d) 
+     (setq d (getdec p e))
+     (return (cond ((null d)
+		    (emit (list 'cond
+				(list (list 'not
+					    (list 'equal
+						  e
+						  (list 'quote p)))
+				      '(matcherr)))))
+		   ((memq p boundlist)
+		    (emit (list 'cond
+				(list (list 'not (list 'equal e p))
+				      '((matcherr))))))
+		   (t (setq boundlist (cons p boundlist)) (emit d))))))
 
-(DEFUN EMIT (X) (SETQ PROGRAM (NCONC PROGRAM (LIST X))))
+(defun emit (x) (setq program (nconc program (list x))))
 
-(DEFUN MEMQARGS (X)
-  (COND ((OR (NUMBERP X) (MEMQ X BOUNDLIST)) X)
-	((AND (SYMBOLP X) (GET X 'OPERATORS)) `(QUOTE ,X))
+(defun memqargs (x)
+  (cond ((or (numberp x) (memq x boundlist)) x)
+	((and (symbolp x) (get x 'operators)) `(quote ,x))
 	;; ((NULL BOUNDLIST) (LIST 'SIMPLIFYA (LIST 'QUOTE X) NIL))
-	(T `(MEVAL (QUOTE ,X)))))
+	(t `(meval (quote ,x)))))
 
-(DEFUN MAKEPREDS (L GG) 
-       (COND ((NULL L) NIL)
-	     (T (CONS (COND ((ATOM (CAR L))
-			     (LIST 'LAMBDA (LIST (SETQ GG (GENSYM)))
-				   `(declare (special ,gg))
-				   (GETDEC (CAR L) GG)))
-			    (T (DEFMATCH1 (CAR L) (GENSYM))))
-		      (MAKEPREDS (CDR L) NIL)))))
+(defun makepreds (l gg) 
+  (cond ((null l) nil)
+	(t (cons (cond ((atom (car l))
+			(list 'lambda (list (setq gg (gensym)))
+			      `(declare (special ,gg))
+			      (getdec (car l) gg)))
+		       (t (defmatch1 (car l) (gensym))))
+		 (makepreds (cdr l) nil)))))
 
-(DEFUN DEFMATCH1 (PT E) 
-       (PROG (TOPREFLIST PROGRAM) 
-	     (SETQ TOPREFLIST (LIST E))
-	     (COND ((ATOM (ERRSET (COMPILEMATCH E PT)))
-		    (merror "Match processing aborted~%"))
-		   (T (mtell
-"~M Will be matched uniquely since sub-parts would otherwise be ambigious.~%" 
+(defun defmatch1 (pt e) 
+  (prog (topreflist program) 
+     (setq topreflist (list e))
+     (cond ((atom (errset (compilematch e pt)))
+	    (merror "Match processing aborted~%"))
+	   (t (mtell
+	       "~M Will be matched uniquely since sub-parts would otherwise be ambigious.~%" 
   
-PT)
-		      (RETURN (LIST 'LAMBDA
-				    (LIST E)
-				    `(declare (special ,e))
-				  (LIST 'CATCH ''MATCH
-					(NCONC (LIST 'PROG)
-					       (LIST (CDR (REVERSE TOPREFLIST)))
-					       PROGRAM
-					       (LIST (LIST 'RETURN T))))))))))
+	       pt)
+	      (return (list 'lambda
+			    (list e)
+			    `(declare (special ,e))
+			    (list 'catch ''match
+				  (nconc (list 'prog)
+					 (list (cdr (reverse topreflist)))
+					 program
+					 (list (list 'return t))))))))))
 
-(DEFUN COMPILEPLUS (E P) 
-       (PROG (REFLIST F G H FLAG LEFTOVER) 
-	A    (SETQ P (CDR P))
-	A1   (COND ((NULL P)
-		    (COND ((NULL LEFTOVER)
-			   (RETURN (EMIT (LIST 'COND
-					       (LIST (LIST 'NOT (LIST 'EQUAL E 0.))
-						     '(MATCHERR))))))
-			  ((NULL (CDR LEFTOVER)) (RETURN (COMPILEMATCH E (CAR LEFTOVER))))
-			  ((SETQ F (INTERSECT LEFTOVER BOUNDLIST))
-			   (EMIT (LIST 'SETQ
-				       E
-				       (LIST 'MEVAL
-					     (LIST 'QUOTE
-						   (LIST '(MPLUS)
-							 E
-							 (LIST '(MMINUS) (CAR F)))))))
-			   (zl-DELETE (CAR F) LEFTOVER)
-			   (GO A1))
-			  (T
-			   (MTELL "~M partitions SUM"
-				  (CONS '(MPLUS) LEFTOVER)
-				  )
-			   (SETQ BOUNDLIST (APPEND BOUNDLIST (ATOMSON LEFTOVER)))
-			     (RETURN (EMIT (LIST 'COND
-						 (LIST (LIST 'PART+
-							     E
-							     (LIST 'QUOTE LEFTOVER)
-							     (LIST 'QUOTE
-								   (MAKEPREDS LEFTOVER NIL))))
-						 '(T (MATCHERR))))))))
-		   ((FIXEDMATCHP (CAR P))
-		    (EMIT (LIST 'SETQ
-				E
-				(LIST 'MEVAL
-				      (LIST 'QUOTE
-					    (LIST '(MPLUS)
-						  E
-						  (LIST '(MMINUS) (CAR P))))))))
-		   ((ATOM (CAR P))
-		    (COND ((CDR P) (SETQ LEFTOVER (CONS (CAR P) LEFTOVER)) (SETQ P (CDR P)) (GO A1))
-			  (LEFTOVER (SETQ LEFTOVER (CONS (CAR P) LEFTOVER)) (SETQ P NIL) (GO A1)))
-		    (SETQ BOUNDLIST (CONS (CAR P) BOUNDLIST))
-		    (EMIT (GETDEC (CAR P) E))
-		    (COND ((NULL (CDR P)) (RETURN NIL)) (T (GO A))))
-		   ((EQ (CAAAR P) 'MTIMES)
-		    (COND ((AND (NOT (OR (NUMBERP (CADAR P))
-					 (AND (NOT (ATOM (CADAR P)))
-					      (EQ (CAAR (CADAR P)) 'RAT))))
-				(FIXEDMATCHP (CADAR P)))
-			   (SETQ FLAG NIL)
-			   (EMIT `(SETQ ,(GENREF)
-					(RATDISREP
-					 (RATCOEF ,E ,(MEMQARGS (CADAR P))))))
-			   (COMPILETIMES (CAR REFLIST) (CONS '(MTIMES) (CDDAR P)))
-			   (EMIT `(SETQ ,E (MEVAL
-					    (QUOTE
-					     (($RATSIMP)
-					      ((MPLUS) ,E
-						       ((MTIMES) -1 ,(CAR REFLIST)
-								    ,(CADAR P)))))))))
-			  ((NULL FLAG)
-			   (SETQ FLAG T) (RPLACD (CAR P) (REVERSE (CDAR P))) (GO A1))
-			  (T (SETQ LEFTOVER (CONS (CAR P) LEFTOVER)) (GO A))))
-		   ((EQ (CAAAR P) 'MEXPT)
-		    (COND ((FIXEDMATCHP (CADAR P))
-			   (SETQ F 'FINDEXPON)
-			   (SETQ G (CADAR P))
-			   (SETQ H (CADDAR P)))
-			  ((FIXEDMATCHP (CADDAR P))
-			   (SETQ F 'FINDBASE)
-			   (SETQ G (CADDAR P))
-			   (SETQ H (CADAR P)))
-			  (T (GO FUNCTIONMATCH)))
-		    (EMIT (LIST 'SETQ
-				(GENREF)
-				(LIST F E (SETQ G (MEMQARGS G)) ''MPLUS)))
-		    (EMIT (LIST 'SETQ
-				E
-				(LIST 'MEVAL
-				      (LIST 'QUOTE
-					    (LIST '(MPLUS)
-						  E
-						  (LIST '(MMINUS)
-							(COND ((EQ F 'FINDEXPON)
-							       (LIST '(MEXPT)
-								     G
-								     (CAR REFLIST)))
-							      (T (LIST '(MEXPT)
-								       (CAR REFLIST)
-								       G)))))))))
-		    (COMPILEMATCH (CAR REFLIST) H))
-		   ((NOT (FIXEDMATCHP (CAAAR P)))
-		    (COND ((CDR P)
-			   (SETQ LEFTOVER (CONS (CAR P) LEFTOVER))
-			   (SETQ P (CDR P))
-			   (GO A1)))
-		    (SETQ BOUNDLIST (CONS (CAAAR P) BOUNDLIST))
-		    (EMIT (LIST 'MSETQ
-				(CAAAR P)
-				(LIST 'KAR (LIST 'KAR (GENREF)))))
-		    (GO FUNCTIONMATCH))
-		   (T (GO FUNCTIONMATCH)))
-	     (GO A)
-	FUNCTIONMATCH
-	     (EMIT (LIST 'SETQ
-			 (GENREF)
-			 (LIST 'FINDFUN E (MEMQARGS (CAAAR P)) ''MPLUS)))
-	     (COND ((EQ (CAAAR P) 'MPLUS)
-		    (MTELL "~M~%Warning: + within +~%" (CAR P))
-		    (COMPILEPLUS (CAR REFLIST) (CAR P)))
-		   (T (EMIT (LIST 'SETQ (GENREF) (LIST 'KDR (CADR REFLIST))))
-		      (COMPILEEACH (CAR REFLIST) (CDAR P))))
-	     (EMIT (LIST 'SETQ
-			 E
-			 (LIST 'MEVAL
-			       (LIST 'QUOTE
-				     (LIST '(MPLUS) E (LIST '(MMINUS) (CAR P)))))))
-	     (GO A)))
+(defun compileplus (e p) 
+  (prog (reflist f g h flag leftover) 
+   a    (setq p (cdr p))
+   a1   (cond ((null p)
+	       (cond ((null leftover)
+		      (return (emit (list 'cond
+					  (list (list 'not (list 'equal e 0.))
+						'(matcherr))))))
+		     ((null (cdr leftover)) (return (compilematch e (car leftover))))
+		     ((setq f (intersect leftover boundlist))
+		      (emit (list 'setq
+				  e
+				  (list 'meval
+					(list 'quote
+					      (list '(mplus)
+						    e
+						    (list '(mminus) (car f)))))))
+		      (zl-delete (car f) leftover)
+		      (go a1))
+		     (t
+		      (mtell "~M partitions SUM"
+			     (cons '(mplus) leftover)
+			     )
+		      (setq boundlist (append boundlist (atomson leftover)))
+		      (return (emit (list 'cond
+					  (list (list 'part+
+						      e
+						      (list 'quote leftover)
+						      (list 'quote
+							    (makepreds leftover nil))))
+					  '(t (matcherr))))))))
+	      ((fixedmatchp (car p))
+	       (emit (list 'setq
+			   e
+			   (list 'meval
+				 (list 'quote
+				       (list '(mplus)
+					     e
+					     (list '(mminus) (car p))))))))
+	      ((atom (car p))
+	       (cond ((cdr p) (setq leftover (cons (car p) leftover)) (setq p (cdr p)) (go a1))
+		     (leftover (setq leftover (cons (car p) leftover)) (setq p nil) (go a1)))
+	       (setq boundlist (cons (car p) boundlist))
+	       (emit (getdec (car p) e))
+	       (cond ((null (cdr p)) (return nil)) (t (go a))))
+	      ((eq (caaar p) 'mtimes)
+	       (cond ((and (not (or (numberp (cadar p))
+				    (and (not (atom (cadar p)))
+					 (eq (caar (cadar p)) 'rat))))
+			   (fixedmatchp (cadar p)))
+		      (setq flag nil)
+		      (emit `(setq ,(genref)
+			      (ratdisrep
+			       (ratcoef ,e ,(memqargs (cadar p))))))
+		      (compiletimes (car reflist) (cons '(mtimes) (cddar p)))
+		      (emit `(setq ,e (meval
+				       (quote
+					(($ratsimp)
+					 ((mplus) ,e
+					  ((mtimes) -1 ,(car reflist)
+					   ,(cadar p)))))))))
+		     ((null flag)
+		      (setq flag t) (rplacd (car p) (reverse (cdar p))) (go a1))
+		     (t (setq leftover (cons (car p) leftover)) (go a))))
+	      ((eq (caaar p) 'mexpt)
+	       (cond ((fixedmatchp (cadar p))
+		      (setq f 'findexpon)
+		      (setq g (cadar p))
+		      (setq h (caddar p)))
+		     ((fixedmatchp (caddar p))
+		      (setq f 'findbase)
+		      (setq g (caddar p))
+		      (setq h (cadar p)))
+		     (t (go functionmatch)))
+	       (emit (list 'setq
+			   (genref)
+			   (list f e (setq g (memqargs g)) ''mplus)))
+	       (emit (list 'setq
+			   e
+			   (list 'meval
+				 (list 'quote
+				       (list '(mplus)
+					     e
+					     (list '(mminus)
+						   (cond ((eq f 'findexpon)
+							  (list '(mexpt)
+								g
+								(car reflist)))
+							 (t (list '(mexpt)
+								  (car reflist)
+								  g)))))))))
+	       (compilematch (car reflist) h))
+	      ((not (fixedmatchp (caaar p)))
+	       (cond ((cdr p)
+		      (setq leftover (cons (car p) leftover))
+		      (setq p (cdr p))
+		      (go a1)))
+	       (setq boundlist (cons (caaar p) boundlist))
+	       (emit (list 'msetq
+			   (caaar p)
+			   (list 'kar (list 'kar (genref)))))
+	       (go functionmatch))
+	      (t (go functionmatch)))
+   (go a)
+   functionmatch
+   (emit (list 'setq
+	       (genref)
+	       (list 'findfun e (memqargs (caaar p)) ''mplus)))
+   (cond ((eq (caaar p) 'mplus)
+	  (mtell "~M~%Warning: + within +~%" (car p))
+	  (compileplus (car reflist) (car p)))
+	 (t (emit (list 'setq (genref) (list 'kdr (cadr reflist))))
+	    (compileeach (car reflist) (cdar p))))
+   (emit (list 'setq
+	       e
+	       (list 'meval
+		     (list 'quote
+			   (list '(mplus) e (list '(mminus) (car p)))))))
+   (go a)))
 
-(DEFUN COMPILETIMES (E P) 
-       (PROG (REFLIST F G H LEFTOVER) 
-	A    (SETQ P (CDR P))
-	A1   (COND ((NULL P)
-		    (COND ((NULL LEFTOVER)
-			   (RETURN (EMIT (LIST 'COND
-					       (LIST (LIST 'NOT (LIST 'EQUAL E 1.))
-						     '(MATCHERR))))))
-			  ((NULL (CDR LEFTOVER)) (RETURN (COMPILEMATCH E (CAR LEFTOVER))))
-			  ((SETQ F (INTERSECT LEFTOVER BOUNDLIST))
-			   (EMIT (LIST 'SETQ
-				       E
-				       (LIST 'MEVAL
-					     (LIST 'QUOTE
-						   (LIST '(MQUOTIENT) E (CAR F))))))
-			   (zl-DELETE (CAR F) LEFTOVER)
-			   (GO A1))
-			  (T
-			   (MTELL "~M partitions PRODUCT"
-				  (CONS '(MTIMES) LEFTOVER)
-				  )
-			   (SETQ BOUNDLIST (APPEND BOUNDLIST (ATOMSON LEFTOVER)))
-			     (RETURN (EMIT (LIST 'COND
-						 (LIST (LIST 'PART*
-							     E
-							     (LIST 'QUOTE LEFTOVER)
-							     (LIST 'QUOTE
-								   (MAKEPREDS LEFTOVER NIL))))
-						 '(T (MATCHERR))))))))
-		   ((FIXEDMATCHP (CAR P))
-		    (EMIT (LIST 'SETQ
-				E
-				(LIST 'MEVAL
-				      (LIST 'QUOTE (LIST '(MQUOTIENT) E (CAR P)))))))
-		   ((ATOM (CAR P))
-		    (COND ((CDR P) (SETQ LEFTOVER (CONS (CAR P) LEFTOVER)) (SETQ P (CDR P)) (GO A1))
-			  (LEFTOVER (SETQ LEFTOVER (CONS (CAR P) LEFTOVER)) (SETQ P NIL) (GO A1)))
-		    (SETQ BOUNDLIST (CONS (CAR P) BOUNDLIST))
-		    (EMIT (GETDEC (CAR P) E))
-		    (COND ((NULL (CDR P)) (RETURN NIL)) (T (GO A))))
-		   ((EQ (CAAAR P) 'MEXPT)
-		    (COND ((FIXEDMATCHP (CADAR P))
-			   (SETQ F 'FINDEXPON)
-			   (SETQ G (CADAR P))
-			   (SETQ H (CADDAR P)))
-			  ((FIXEDMATCHP (CADDAR P))
-			   (SETQ F 'FINDBASE)
-			   (SETQ G (CADDAR P))
-			   (SETQ H (CADAR P)))
-			  (T (GO FUNCTIONMATCH)))
-		    (EMIT (LIST 'SETQ
-				(GENREF)
-				(LIST F E (SETQ G (MEMQARGS G)) ''MTIMES)))
-		    (COND ((EQ F 'FINDBASE)
-			   (EMIT (LIST 'COND
-				       (LIST (LIST 'EQUAL (CAR REFLIST) 0)
-					     '(MATCHERR))))))
-		    (EMIT (LIST 'SETQ
-				E
-				(LIST 'MEVAL
-				      (LIST 'QUOTE
-					    (LIST '(MQUOTIENT)
-						  E
-						  (COND ((EQ F 'FINDEXPON)
-							 (LIST '(MEXPT) G (CAR REFLIST)))
-							(T (LIST '(MEXPT)
-								 (CAR REFLIST)
-								 G))))))))
-		    (COMPILEMATCH (CAR REFLIST) H))
-		   ((NOT (FIXEDMATCHP (CAAAR P)))
-		    (COND ((CDR P)
-			   (SETQ LEFTOVER (CONS (CAR P) LEFTOVER))
-			   (SETQ P (CDR P))
-			   (GO A1)))
-		    (SETQ BOUNDLIST (CONS (CAAAR P) BOUNDLIST))
-		    (EMIT (LIST 'MSETQ
-				(CAAAR P)
-				(LIST 'KAR (LIST 'KAR (GENREF)))))
-		    (GO FUNCTIONMATCH))
-		   (T (GO FUNCTIONMATCH)))
-	     (GO A)
-	FUNCTIONMATCH
-	     (EMIT (LIST 'SETQ
-			 (GENREF)
-			 (LIST 'FINDFUN E (MEMQARGS (CAAAR P)) ''MTIMES)))
-	     (COND ((EQ (CAAAR P) 'MTIMES)
-		    (MTELL "~M~%Warning: * within *" (CAR P))
-		    (COMPILETIMES (CAR REFLIST) (CAR P)))
-		   (T (EMIT (LIST 'SETQ (GENREF) (LIST 'KDR (CADR REFLIST))))
-		      (COMPILEEACH (CAR REFLIST) (CDAR P))))
-	     (EMIT (LIST 'SETQ
-			 E
-			 (LIST 'MEVAL
-			       (LIST 'QUOTE (LIST '(MQUOTIENT) E (CAR P))))))
-	     (GO A)))
+(defun compiletimes (e p) 
+  (prog (reflist f g h leftover) 
+   a    (setq p (cdr p))
+   a1   (cond ((null p)
+	       (cond ((null leftover)
+		      (return (emit (list 'cond
+					  (list (list 'not (list 'equal e 1.))
+						'(matcherr))))))
+		     ((null (cdr leftover)) (return (compilematch e (car leftover))))
+		     ((setq f (intersect leftover boundlist))
+		      (emit (list 'setq
+				  e
+				  (list 'meval
+					(list 'quote
+					      (list '(mquotient) e (car f))))))
+		      (zl-delete (car f) leftover)
+		      (go a1))
+		     (t
+		      (mtell "~M partitions PRODUCT"
+			     (cons '(mtimes) leftover)
+			     )
+		      (setq boundlist (append boundlist (atomson leftover)))
+		      (return (emit (list 'cond
+					  (list (list 'part*
+						      e
+						      (list 'quote leftover)
+						      (list 'quote
+							    (makepreds leftover nil))))
+					  '(t (matcherr))))))))
+	      ((fixedmatchp (car p))
+	       (emit (list 'setq
+			   e
+			   (list 'meval
+				 (list 'quote (list '(mquotient) e (car p)))))))
+	      ((atom (car p))
+	       (cond ((cdr p) (setq leftover (cons (car p) leftover)) (setq p (cdr p)) (go a1))
+		     (leftover (setq leftover (cons (car p) leftover)) (setq p nil) (go a1)))
+	       (setq boundlist (cons (car p) boundlist))
+	       (emit (getdec (car p) e))
+	       (cond ((null (cdr p)) (return nil)) (t (go a))))
+	      ((eq (caaar p) 'mexpt)
+	       (cond ((fixedmatchp (cadar p))
+		      (setq f 'findexpon)
+		      (setq g (cadar p))
+		      (setq h (caddar p)))
+		     ((fixedmatchp (caddar p))
+		      (setq f 'findbase)
+		      (setq g (caddar p))
+		      (setq h (cadar p)))
+		     (t (go functionmatch)))
+	       (emit (list 'setq
+			   (genref)
+			   (list f e (setq g (memqargs g)) ''mtimes)))
+	       (cond ((eq f 'findbase)
+		      (emit (list 'cond
+				  (list (list 'equal (car reflist) 0)
+					'(matcherr))))))
+	       (emit (list 'setq
+			   e
+			   (list 'meval
+				 (list 'quote
+				       (list '(mquotient)
+					     e
+					     (cond ((eq f 'findexpon)
+						    (list '(mexpt) g (car reflist)))
+						   (t (list '(mexpt)
+							    (car reflist)
+							    g))))))))
+	       (compilematch (car reflist) h))
+	      ((not (fixedmatchp (caaar p)))
+	       (cond ((cdr p)
+		      (setq leftover (cons (car p) leftover))
+		      (setq p (cdr p))
+		      (go a1)))
+	       (setq boundlist (cons (caaar p) boundlist))
+	       (emit (list 'msetq
+			   (caaar p)
+			   (list 'kar (list 'kar (genref)))))
+	       (go functionmatch))
+	      (t (go functionmatch)))
+   (go a)
+   functionmatch
+   (emit (list 'setq
+	       (genref)
+	       (list 'findfun e (memqargs (caaar p)) ''mtimes)))
+   (cond ((eq (caaar p) 'mtimes)
+	  (mtell "~M~%Warning: * within *" (car p))
+	  (compiletimes (car reflist) (car p)))
+	 (t (emit (list 'setq (genref) (list 'kdr (cadr reflist))))
+	    (compileeach (car reflist) (cdar p))))
+   (emit (list 'setq
+	       e
+	       (list 'meval
+		     (list 'quote (list '(mquotient) e (car p))))))
+   (go a)))
 
 
-(DEFMSPEC $DEFMATCH (FORM)
-  (LET ((META-PROP-P NIL))
-    (PROC-$DEFMATCH (CDR FORM))))
+(defmspec $defmatch (form)
+  (let ((meta-prop-p nil))
+    (proc-$defmatch (cdr form))))
 
-(DEFUN PROC-$DEFMATCH (L) 
-  (PROG (PT PT* ARGS *A* BOUNDLIST REFLIST TOPREFLIST PROGRAM NAME tem) 
-	(SETQ NAME (CAR L))
-	(SETQ PT (COPY (SETQ PT* (SIMPLIFY (CADR L)))))
-	(COND ((ATOM PT)
-	       (SETQ PT (COPY (SETQ PT* (MEVAL PT))))
-	       (MTELL "~M~%Is the pattern~%" PT)
-	       ))
-	(SETQ ARGS (CDDR L))
-	(COND ((NULL (ALLATOMS ARGS)) (MTELL "Non-atomic pattern variables")
-				      (RETURN NIL)))
-	(SETQ BOUNDLIST ARGS)
-	(SETQ *A* (GENREF))
-	(COND ((ATOM (ERRSET (COMPILEMATCH *A* PT)))
-	       (merror "Match processing aborted~%"))
-	      (T (META-FSET NAME
-		       (LIST 'LAMBDA
-			     (CONS *A* ARGS)
-			     `(declare (special ,*a* ,@ args))
-			     (LIST 'CATCH ''MATCH
-				   (NCONC (LIST 'PROG)
-					  (LIST (setq tem  (CDR (REVERSE TOPREFLIST))))
-  					  `((declare (special ,@ tem)))
-					  PROGRAM
-					  (LIST (LIST 'RETURN
-						      (COND (BOUNDLIST (CONS 'RETLIST
-									     BOUNDLIST))
-							    (T T))))))))
-		 (META-ADD2LNC NAME '$RULES) 
-		 (META-MPUTPROP NAME (LIST '(MLIST) PT* (CONS '(MLIST) ARGS)) '$RULE)
-		 (RETURN NAME)))))
+(defun proc-$defmatch (l) 
+  (prog (pt pt* args *a* boundlist reflist topreflist program name tem) 
+     (setq name (car l))
+     (setq pt (copy (setq pt* (simplify (cadr l)))))
+     (cond ((atom pt)
+	    (setq pt (copy (setq pt* (meval pt))))
+	    (mtell "~M~%Is the pattern~%" pt)
+	    ))
+     (setq args (cddr l))
+     (cond ((null (allatoms args)) (mtell "Non-atomic pattern variables")
+	    (return nil)))
+     (setq boundlist args)
+     (setq *a* (genref))
+     (cond ((atom (errset (compilematch *a* pt)))
+	    (merror "Match processing aborted~%"))
+	   (t (meta-fset name
+			 (list 'lambda
+			       (cons *a* args)
+			       `(declare (special ,*a* ,@ args))
+			       (list 'catch ''match
+				     (nconc (list 'prog)
+					    (list (setq tem  (cdr (reverse topreflist))))
+					    `((declare (special ,@ tem)))
+					    program
+					    (list (list 'return
+							(cond (boundlist (cons 'retlist
+									       boundlist))
+							      (t t))))))))
+	      (meta-add2lnc name '$rules) 
+	      (meta-mputprop name (list '(mlist) pt* (cons '(mlist) args)) '$rule)
+	      (return name)))))
 
 
-(DEFUN ATOMSON (L) 
-       (COND ((NULL L) NIL)
-	     ((ATOM (CAR L)) (CONS (CAR L) (ATOMSON (CDR L))))
-	     (T (ATOMSON (CDR L)))))
+(defun atomson (l) 
+  (cond ((null l) nil)
+	((atom (car l)) (cons (car l) (atomson (cdr l))))
+	(t (atomson (cdr l)))))
 
 
-(DEFMSPEC $TELLSIMP (FORM)
-  (LET ((META-PROP-P NIL))
-    (PROC-$TELLSIMP (CDR FORM))))
+(defmspec $tellsimp (form)
+  (let ((meta-prop-p nil))
+    (proc-$tellsimp (cdr form))))
 
 (defun $clear_rules ()
-   (mapc 'kill1 (cdr $rules))
-   (sloop for v in '(mexpt mplus mtimes)
+  (mapc 'kill1 (cdr $rules))
+  (sloop for v in '(mexpt mplus mtimes)
 	 do (setf (mget v 'rulenum) nil)))
 
-(DEFUN PROC-$TELLSIMP (L) 
- (PROG (PT RHS BOUNDLIST REFLIST TOPREFLIST *A* PROGRAM NAME tem
-	   OLDSTUFF PGNAME ONAME RULENUM) 
-  (SETQ PT (COPY (SIMPLIFYA (CAR L) NIL)))
-  (SETQ NAME PT) 
-  (SETQ RHS (COPY (SIMPLIFYA (CADR L) NIL)))
-  (COND ((ALIKE1 PT RHS) (MERROR "Circular rule attempted - TELLSIMP"))
-	((OR (ATOM PT) (MGET (SETQ NAME (CAAR PT)) 'MATCHDECLARE))
-	 (MERROR "~%~A unsuitable~%" (FULLSTRIP1 (GETOP NAME))))
-	((MEMQ NAME '(MPLUS MTIMES))
-	 (MTELL "Warning: Putting rules on '+' or '*' is inefficient, and may not work.~%")))
-  (SETQ *A* (GENREF))
-  (COND ((ATOM (ERRSET (COMPILEEACH *A* (CDR PT))))
-	 (MERROR "Match processing aborted~%")))
-  (SETQ OLDSTUFF (GET NAME 'OPERATORS))
-  (SETQ RULENUM (MGET NAME 'RULENUM))
-  (COND ((NULL RULENUM) (SETQ RULENUM 1.)))
-  (SETQ ONAME (GETOP NAME))
-  (SETQ PGNAME (IMPLODE (APPEND (%TO$ (EXPLODEC ONAME))
-				'(R U L E)
-				(MEXPLODEN RULENUM))))
-  (META-MPUTPROP PGNAME NAME 'RULEOF)
-  (META-ADD2LNC PGNAME '$RULES)
-  (META-MPUTPROP NAME (f1+ RULENUM) 'RULENUM)
-  (META-FSET PGNAME
-	(LIST 'LAMBDA '(X A2 A3)
-	      `(declare (special x a2 a3))
-	      (LIST 'PROG
-		    (LIST 'ANS *A*)
-		    `(declare (special ans ,*a*))
-		    (LIST 'SETQ
-			  'X
-			  (LIST 'CONS
-				'(CAR X)
-				(LIST 'SETQ
-				      *A*
-				      '(COND (A3 (CDR X)) 
-					     (T (MAPCAR #'(LAMBDA (H) (SIMPLIFYA H A3))
-							(CDR X)))))))
-		    (LIST
-		     'SETQ
-		     'ANS
-		     (LIST 'CATCH ''MATCH
-			   (NCONC (LIST 'PROG)
-				  (LIST (setq tem (NCONC BOUNDLIST
-					       (CDR (REVERSE TOPREFLIST)))))
-				  #+cl
-				  `((declare (special ,@ tem)))
-				  PROGRAM
-				  (LIST (LIST 'RETURN
-					      (MEMQARGS RHS))))))
-		    (COND ((NOT (MEMQ NAME '(MTIMES MPLUS)))
-			   (LIST 'RETURN
-				 (LIST 'COND
-				       '(ANS) '((AND (NOT DOSIMP) (MEMQ 'SIMP (CDAR X)))X)
-				       (LIST T
-					     (COND (OLDSTUFF (CONS OLDSTUFF
-								   '(X A2 T)))
-						   (T '(EQTEST X X)))))))
-			  ((EQ NAME 'MTIMES)
-			   (LIST 'RETURN
-				 (LIST 'COND
-				       '((AND (EQUAL 1. A2) ANS))
-				       '(ANS (MEVAL '((MEXPT) ANS A2)))
-				       (LIST T
-					     (COND (OLDSTUFF (CONS OLDSTUFF
-								   '(X A2 A3)))
-						   (T '(EQTEST X X)))))))
-			  ((EQ NAME 'MPLUS)
-			   (LIST 'RETURN
-				 (LIST 'COND
-				       '((AND (EQUAL 1. A2) ANS))
-				       '(ANS (MEVAL '((MTIMES) ANS A2)))
-				       (LIST T
-					     (COND (OLDSTUFF (CONS OLDSTUFF
-								   '(X A2 A3)))
-						   (T '(EQTEST X X)))))))))))
-  (META-MPUTPROP PGNAME (LIST '(MEQUAL) PT RHS) '$RULE)
-  (COND ((NULL (MGET NAME 'OLDRULES))
-	 (META-MPUTPROP NAME
-		   (LIST (GET NAME 'OPERATORS))
-		   'OLDRULES)))
-  (META-PUTPROP NAME PGNAME 'OPERATORS)
-  (RETURN (CONS '(MLIST)
-		(META-MPUTPROP NAME
-			  (CONS PGNAME (MGET NAME 'OLDRULES))
-			  'OLDRULES)))))
+(defun proc-$tellsimp (l) 
+  (prog (pt rhs boundlist reflist topreflist *a* program name tem
+	 oldstuff pgname oname rulenum) 
+     (setq pt (copy (simplifya (car l) nil)))
+     (setq name pt) 
+     (setq rhs (copy (simplifya (cadr l) nil)))
+     (cond ((alike1 pt rhs) (merror "Circular rule attempted - TELLSIMP"))
+	   ((or (atom pt) (mget (setq name (caar pt)) 'matchdeclare))
+	    (merror "~%~A unsuitable~%" (fullstrip1 (getop name))))
+	   ((memq name '(mplus mtimes))
+	    (mtell "Warning: Putting rules on '+' or '*' is inefficient, and may not work.~%")))
+     (setq *a* (genref))
+     (cond ((atom (errset (compileeach *a* (cdr pt))))
+	    (merror "Match processing aborted~%")))
+     (setq oldstuff (get name 'operators))
+     (setq rulenum (mget name 'rulenum))
+     (cond ((null rulenum) (setq rulenum 1.)))
+     (setq oname (getop name))
+     (setq pgname (implode (append (%to$ (explodec oname))
+				   '(r u l e)
+				   (mexploden rulenum))))
+     (meta-mputprop pgname name 'ruleof)
+     (meta-add2lnc pgname '$rules)
+     (meta-mputprop name (f1+ rulenum) 'rulenum)
+     (meta-fset pgname
+		(list 'lambda '(x a2 a3)
+		      `(declare (special x a2 a3))
+		      (list 'prog
+			    (list 'ans *a*)
+			    `(declare (special ans ,*a*))
+			    (list 'setq
+				  'x
+				  (list 'cons
+					'(car x)
+					(list 'setq
+					      *a*
+					      '(cond (a3 (cdr x)) 
+						(t (mapcar #'(lambda (h) (simplifya h a3))
+						    (cdr x)))))))
+			    (list
+			     'setq
+			     'ans
+			     (list 'catch ''match
+				   (nconc (list 'prog)
+					  (list (setq tem (nconc boundlist
+								 (cdr (reverse topreflist)))))
+					  #+cl
+					  `((declare (special ,@ tem)))
+					  program
+					  (list (list 'return
+						      (memqargs rhs))))))
+			    (cond ((not (memq name '(mtimes mplus)))
+				   (list 'return
+					 (list 'cond
+					       '(ans) '((and (not dosimp) (memq 'simp (cdar x)))x)
+					       (list t
+						     (cond (oldstuff (cons oldstuff
+									   '(x a2 t)))
+							   (t '(eqtest x x)))))))
+				  ((eq name 'mtimes)
+				   (list 'return
+					 (list 'cond
+					       '((and (equal 1. a2) ans))
+					       '(ans (meval '((mexpt) ans a2)))
+					       (list t
+						     (cond (oldstuff (cons oldstuff
+									   '(x a2 a3)))
+							   (t '(eqtest x x)))))))
+				  ((eq name 'mplus)
+				   (list 'return
+					 (list 'cond
+					       '((and (equal 1. a2) ans))
+					       '(ans (meval '((mtimes) ans a2)))
+					       (list t
+						     (cond (oldstuff (cons oldstuff
+									   '(x a2 a3)))
+							   (t '(eqtest x x)))))))))))
+     (meta-mputprop pgname (list '(mequal) pt rhs) '$rule)
+     (cond ((null (mget name 'oldrules))
+	    (meta-mputprop name
+			   (list (get name 'operators))
+			   'oldrules)))
+     (meta-putprop name pgname 'operators)
+     (return (cons '(mlist)
+		   (meta-mputprop name
+				  (cons pgname (mget name 'oldrules))
+				  'oldrules)))))
 
-(DEFUN %TO$ (L) (COND ((EQ (CAR L) '%) (RPLACA L '$)) (L)))
+(defun %to$ (l) (cond ((eq (car l) '%) (rplaca l '$)) (l)))
 
 
-(DEFMSPEC $TELLSIMPAFTER (FORM)
-  (LET ((META-PROP-P NIL))
-    (PROC-$TELLSIMPAFTER (CDR FORM))))
+(defmspec $tellsimpafter (form)
+  (let ((meta-prop-p nil))
+    (proc-$tellsimpafter (cdr form))))
 
-(DEFUN PROC-$TELLSIMPAFTER (L) 
-  (PROG (PT RHS BOUNDLIST REFLIST TOPREFLIST *A* PROGRAM NAME OLDSTUFF PLUSTIMES PGNAME ONAME tem
-	 RULENUM) 
-	(SETQ PT (COPY (SIMPLIFYA (CAR L) NIL)))
-	(SETQ NAME PT)
-	(SETQ RHS (COPY (SIMPLIFYA (CADR L) NIL)))
-	(COND ((ALIKE1 PT RHS) (MERROR "Circular rule attempted - TELLSIMPAFTER"))
-	      ((OR (ATOM PT) (MGET (SETQ NAME (CAAR PT)) 'MATCHDECLARE))
-	       (MERROR "~%~A unsuitable~%" (FULLSTRIP1 (GETOP NAME)))))
-	(SETQ *A* (GENREF))
-	(SETQ PLUSTIMES (MEMQ NAME '(MPLUS MTIMES)))
-	(IF (ATOM (IF PLUSTIMES (ERRSET (COMPILEMATCH *A* PT))
-				(ERRSET (COMPILEEACH *A* (CDR PT)))))
-	    (MERROR "Match processing aborted~%"))
-	(SETQ OLDSTUFF (GET NAME 'OPERATORS))
-	(SETQ RULENUM (MGET NAME 'RULENUM))
-	(IF (NULL RULENUM) (SETQ RULENUM 1))
-	(SETQ ONAME (GETOP NAME))
-	(SETQ PGNAME (IMPLODE (APPEND (%TO$ (EXPLODEC ONAME))
-				      '(R U L E) (MEXPLODEN RULENUM))))
-	(META-MPUTPROP PGNAME NAME 'RULEOF)
-	(META-ADD2LNC PGNAME '$RULES)
-	(META-MPUTPROP NAME (f1+ RULENUM) 'RULENUM)
-	(META-FSET
-	 PGNAME
-	 (LIST
-	  'LAMBDA
-	  '(X ANS A3)
-	  (IF OLDSTUFF (LIST 'SETQ 'X (LIST OLDSTUFF 'X 'ANS 'A3)))
-	  (LIST
-	   'COND
-	   '(*AFTERFLAG X)
-	   (LIST 'T
-		 (NCONC (LIST 'PROG)
-			(LIST (CONS *A* '(*AFTERFLAG)))
-			`((declare (special ,*a* *afterflag)))
-			(LIST '(SETQ *AFTERFLAG T))
-			(COND (OLDSTUFF (SUBST (LIST 'QUOTE NAME)
-					       'NAME
-					       '((COND ((OR (ATOM X) (NOT (EQ (CAAR X) NAME)))
-							(RETURN X)))))))
-			(LIST (LIST 'SETQ
-				    *A*
-				    (COND (PLUSTIMES 'X) (T '(CDR X)))))
-			(LIST (LIST 'SETQ
-				    'ANS
-				  (LIST 'CATCH ''MATCH
-					(NCONC (LIST 'PROG)
-					       (LIST (setq tem(NCONC BOUNDLIST
-							    (CDR (REVERSE TOPREFLIST)))))
-					       #+cl
-					       `((declare (special ,@ tem)))
-					       PROGRAM
-					       (LIST (LIST 'RETURN
-							   (MEMQARGS RHS)))))))
-			(LIST '(RETURN (OR ANS (EQTEST X X)))))))))
-	(META-MPUTPROP PGNAME (LIST '(MEQUAL) PT RHS) '$RULE)
-	(COND ((NULL (MGET NAME 'OLDRULES))
-	       (META-MPUTPROP NAME (LIST (GET NAME 'OPERATORS)) 'OLDRULES)))
-	(META-PUTPROP NAME PGNAME 'OPERATORS)
-		(RETURN (CONS '(MLIST)
-		      (META-MPUTPROP NAME
-				(CONS PGNAME (MGET NAME 'OLDRULES))
-				'OLDRULES)))))
+(defun proc-$tellsimpafter (l) 
+  (prog (pt rhs boundlist reflist topreflist *a* program name oldstuff plustimes pgname oname tem
+	 rulenum) 
+     (setq pt (copy (simplifya (car l) nil)))
+     (setq name pt)
+     (setq rhs (copy (simplifya (cadr l) nil)))
+     (cond ((alike1 pt rhs) (merror "Circular rule attempted - TELLSIMPAFTER"))
+	   ((or (atom pt) (mget (setq name (caar pt)) 'matchdeclare))
+	    (merror "~%~A unsuitable~%" (fullstrip1 (getop name)))))
+     (setq *a* (genref))
+     (setq plustimes (memq name '(mplus mtimes)))
+     (if (atom (if plustimes (errset (compilematch *a* pt))
+		   (errset (compileeach *a* (cdr pt)))))
+	 (merror "Match processing aborted~%"))
+     (setq oldstuff (get name 'operators))
+     (setq rulenum (mget name 'rulenum))
+     (if (null rulenum) (setq rulenum 1))
+     (setq oname (getop name))
+     (setq pgname (implode (append (%to$ (explodec oname))
+				   '(r u l e) (mexploden rulenum))))
+     (meta-mputprop pgname name 'ruleof)
+     (meta-add2lnc pgname '$rules)
+     (meta-mputprop name (f1+ rulenum) 'rulenum)
+     (meta-fset
+      pgname
+      (list
+       'lambda
+       '(x ans a3)
+       (if oldstuff (list 'setq 'x (list oldstuff 'x 'ans 'a3)))
+       (list
+	'cond
+	'(*afterflag x)
+	(list 't
+	      (nconc (list 'prog)
+		     (list (cons *a* '(*afterflag)))
+		     `((declare (special ,*a* *afterflag)))
+		     (list '(setq *afterflag t))
+		     (cond (oldstuff (subst (list 'quote name)
+					    'name
+					    '((cond ((or (atom x) (not (eq (caar x) name)))
+						     (return x)))))))
+		     (list (list 'setq
+				 *a*
+				 (cond (plustimes 'x) (t '(cdr x)))))
+		     (list (list 'setq
+				 'ans
+				 (list 'catch ''match
+				       (nconc (list 'prog)
+					      (list (setq tem(nconc boundlist
+								    (cdr (reverse topreflist)))))
+					      #+cl
+					      `((declare (special ,@ tem)))
+					      program
+					      (list (list 'return
+							  (memqargs rhs)))))))
+		     (list '(return (or ans (eqtest x x)))))))))
+     (meta-mputprop pgname (list '(mequal) pt rhs) '$rule)
+     (cond ((null (mget name 'oldrules))
+	    (meta-mputprop name (list (get name 'operators)) 'oldrules)))
+     (meta-putprop name pgname 'operators)
+     (return (cons '(mlist)
+		   (meta-mputprop name
+				  (cons pgname (mget name 'oldrules))
+				  'oldrules)))))
 
-(DEFMSPEC $DEFRULE (FORM)
-  (LET ((META-PROP-P NIL))
-    (PROC-$DEFRULE (CDR FORM))))
+(defmspec $defrule (form)
+  (let ((meta-prop-p nil))
+    (proc-$defrule (cdr form))))
 
-;(defvar *match-specials* nil);;Hell lets declare them all special, its safer--wfs
-(DEFUN PROC-$DEFRULE (L) 
- (PROG (PT RHS BOUNDLIST REFLIST TOPREFLIST NAME *A* PROGRAM LHS* RHS*   tem) 
-       (IF (NOT (= (LENGTH L) 3)) (WNA-ERR '$DEFRULE))
-       (SETQ NAME (CAR L))
-       (IF (OR (NOT (SYMBOLP NAME)) (MOPP NAME) (MEMQ NAME '($ALL $%)))
-	   (MERROR "Improper rule name:~%~M" NAME))
-       (SETQ PT (COPY (SETQ LHS* (SIMPLIFY (CADR L)))))
-       (SETQ RHS (COPY (SETQ RHS* (SIMPLIFY (CADDR L)))))
-       (SETQ *A* (GENREF))
-       (COND ((ATOM (ERRSET (COMPILEMATCH *A* PT)))
-	      (MERROR "Match processing aborted~%"))
-	     (T (META-FSET NAME
-		      (LIST 'LAMBDA
-			    (LIST *A*)
-			    `(declare (special ,*a*))
-			    (LIST 'CATCH ''MATCH
-				  (NCONC (LIST 'PROG)
-					 (LIST (setq tem (NCONC BOUNDLIST
-						      (CDR (REVERSE TOPREFLIST)))))
-					 #+cl
-					 `((declare (special ,@ tem)))
-					 PROGRAM
-					 (LIST (LIST 'RETURN
-						     (MEMQARGS RHS)))))))
-		(META-ADD2LNC NAME '$RULES)
-		(META-MPUTPROP NAME (SETQ L (LIST '(MEQUAL) LHS* RHS*)) '$RULE)
-		(META-MPUTPROP NAME '$DEFRULE '$RULETYPE)
-		(RETURN (LIST '(MSETQ) NAME (CONS '(MARROW) (CDR L))))))))
+;;(defvar *match-specials* nil);;Hell lets declare them all special, its safer--wfs
+(defun proc-$defrule (l) 
+  (prog (pt rhs boundlist reflist topreflist name *a* program lhs* rhs*   tem) 
+     (if (not (= (length l) 3)) (wna-err '$defrule))
+     (setq name (car l))
+     (if (or (not (symbolp name)) (mopp name) (memq name '($all $%)))
+	 (merror "Improper rule name:~%~M" name))
+     (setq pt (copy (setq lhs* (simplify (cadr l)))))
+     (setq rhs (copy (setq rhs* (simplify (caddr l)))))
+     (setq *a* (genref))
+     (cond ((atom (errset (compilematch *a* pt)))
+	    (merror "Match processing aborted~%"))
+	   (t (meta-fset name
+			 (list 'lambda
+			       (list *a*)
+			       `(declare (special ,*a*))
+			       (list 'catch ''match
+				     (nconc (list 'prog)
+					    (list (setq tem (nconc boundlist
+								   (cdr (reverse topreflist)))))
+					    #+cl
+					    `((declare (special ,@ tem)))
+					    program
+					    (list (list 'return
+							(memqargs rhs)))))))
+	      (meta-add2lnc name '$rules)
+	      (meta-mputprop name (setq l (list '(mequal) lhs* rhs*)) '$rule)
+	      (meta-mputprop name '$defrule '$ruletype)
+	      (return (list '(msetq) name (cons '(marrow) (cdr l))))))))
 
-(DEFUN GETDEC (P E) 
-  (LET (X Z) 
-       (COND ((SETQ X (MGET P 'MATCHDECLARE))
-	      (COND ((NOT (ATOM (CAR X))) (SETQ X (CAR X))))
-	      (SETQ Z (NCONC (MAPCAR 'MEMQARGS (CDR X)) (NCONS E)))
-	      (SETQ X (CAR X))
-	      (COND ((NOT (ATOM X)) (SETQ X (CAR X))))
-	      (SETQ Z
-		    (COND ((OR (MEMQ X '($TRUE T $ALL))
-			       (AND (FBOUNDP X) (NOT (GET X 'TRANSLATED))))
-			   (CONS X Z))
-			  (T ;(push (second z) *match-specials*)
-			     (LIST 'IS (LIST 'QUOTE (CONS (NCONS X) Z))))))
-	      (COND ((MEMQ (CAR Z) '($TRUE T $ALL)) (LIST 'MSETQ P E))
-		    (T (LIST 'COND
-			     (LIST Z (LIST 'MSETQ P E))
-			     '((MATCHERR)))))))))
+(defun getdec (p e) 
+  (let (x z) 
+    (cond ((setq x (mget p 'matchdeclare))
+	   (cond ((not (atom (car x))) (setq x (car x))))
+	   (setq z (nconc (mapcar 'memqargs (cdr x)) (ncons e)))
+	   (setq x (car x))
+	   (cond ((not (atom x)) (setq x (car x))))
+	   (setq z
+		 (cond ((or (memq x '($true t $all))
+			    (and (fboundp x) (not (get x 'translated))))
+			(cons x z))
+		       (t	   ;(push (second z) *match-specials*)
+			(list 'is (list 'quote (cons (ncons x) z))))))
+	   (cond ((memq (car z) '($true t $all)) (list 'msetq p e))
+		 (t (list 'cond
+			  (list z (list 'msetq p e))
+			  '((matcherr)))))))))
 
-(DEFUN COMPILEMATCH (E P) 
-       (PROG (REFLIST) 
-	     (COND ((FIXEDMATCHP P)
-		    (EMIT (LIST 'COND
-				(LIST (LIST 'NOT
-					    (LIST 'ALIKE1
-						  E
-						  (LIST 'MEVAL (LIST 'QUOTE
-							P))))
-				      '(MATCHERR)))))
-		   ((ATOM P) (COMPILEATOM E P))
-		   ((EQ (CAAR P) 'MPLUS) (COMPILEPLUS E P))
-		   ((EQ (CAAR P) 'MTIMES) (COMPILETIMES E P))
-		   ((AND (EQ (CAAR P) 'MEXPT)
-			 (FIXEDMATCHP (CADR P)))
-		    (EMIT (LIST 'SETQ
-				(GENREF)
-				(LIST 'FINDEXPON
-				      E
-				      (MEMQARGS (CADR P))
-				      ''MEXPT)))
-		    (COMPILEMATCH (CAR REFLIST) (CADDR P)))
-		   ((AND (EQ (CAAR P) 'MEXPT)
-			 (FIXEDMATCHP (CADR P)))
-		    (EMIT (LIST 'SETQ
-				(GENREF)
-				(LIST 'FINDBASE
-				      E
-				      (MEMQARGS (CADDR P))
-				      ''MEXPT)))
-		    (COMPILEMATCH (CAR REFLIST) (CADR P)))
-		   ((EQ (CAAR P) 'MEXPT)
-		    (EMIT (LIST 'SETQ
-				(GENREF)
-				(LIST 'FINDBE E)))
-		    (EMIT (LIST 'SETQ
-				(GENREF)
-				(LIST 'KAR (CADR REFLIST))))
-		    (COMPILEMATCH (CAR REFLIST) (CADR P))
-		    (EMIT (LIST 'SETQ
-				(CADR REFLIST)
-				(LIST 'KDR (CADR REFLIST))))
-		    (COMPILEMATCH (CADR REFLIST) (CADDR P)))
-		   (T (COMPILEATOM (LIST 'KAR
-					 (LIST 'KAR E))
-				   (CAAR P))
-		      (EMIT (LIST 'SETQ
-				  (GENREF)
-				  (LIST 'KDR E)))
-		      (COMPILEEACH (CAR REFLIST) (CDR P))))
-	     (RETURN PROGRAM)))
+(defun compilematch (e p) 
+  (prog (reflist) 
+     (cond ((fixedmatchp p)
+	    (emit (list 'cond
+			(list (list 'not
+				    (list 'alike1
+					  e
+					  (list 'meval (list 'quote
+							     p))))
+			      '(matcherr)))))
+	   ((atom p) (compileatom e p))
+	   ((eq (caar p) 'mplus) (compileplus e p))
+	   ((eq (caar p) 'mtimes) (compiletimes e p))
+	   ((and (eq (caar p) 'mexpt)
+		 (fixedmatchp (cadr p)))
+	    (emit (list 'setq
+			(genref)
+			(list 'findexpon
+			      e
+			      (memqargs (cadr p))
+			      ''mexpt)))
+	    (compilematch (car reflist) (caddr p)))
+	   ((and (eq (caar p) 'mexpt)
+		 (fixedmatchp (cadr p)))
+	    (emit (list 'setq
+			(genref)
+			(list 'findbase
+			      e
+			      (memqargs (caddr p))
+			      ''mexpt)))
+	    (compilematch (car reflist) (cadr p)))
+	   ((eq (caar p) 'mexpt)
+	    (emit (list 'setq
+			(genref)
+			(list 'findbe e)))
+	    (emit (list 'setq
+			(genref)
+			(list 'kar (cadr reflist))))
+	    (compilematch (car reflist) (cadr p))
+	    (emit (list 'setq
+			(cadr reflist)
+			(list 'kdr (cadr reflist))))
+	    (compilematch (cadr reflist) (caddr p)))
+	   (t (compileatom (list 'kar
+				 (list 'kar e))
+			   (caar p))
+	      (emit (list 'setq
+			  (genref)
+			  (list 'kdr e)))
+	      (compileeach (car reflist) (cdr p))))
+     (return program)))
 
-(DEFUN GENREF NIL 
-	(PROG (A) 
-	   (SETQ A (tr-GENSYM))
-	   (SETQ TOPREFLIST (CONS A TOPREFLIST))
-	   (RETURN (CAR (SETQ REFLIST (CONS A REFLIST))))))
-(DEFUN COMPILEEACH (ELIST PLIST) 
-	 (PROG (REFLIST COUNT) 
-	       (SETQ COUNT 0)
-	       (SETQ REFLIST (CONS ELIST REFLIST))
-	  A    (SETQ COUNT (f1+ COUNT))
-	       (COND ((NULL PLIST)
-		      (RETURN (EMIT (LIST 'COND
-					  (LIST (LIST 'NTHKDR ELIST (f1- COUNT))
-						'(MATCHERR)))))))
-	       (EMIT (LIST 'SETQ (GENREF) (LIST 'KAR (CADR REFLIST))))
-	       (COMPILEMATCH (CAR REFLIST) (CAR PLIST))
-	       (SETQ PLIST (CDR PLIST))
-	       (SETQ REFLIST (CONS (LIST 'KDR (CADR REFLIST)) REFLIST))
-	       (GO A)))
+(defun genref nil 
+  (prog (a) 
+     (setq a (tr-gensym))
+     (setq topreflist (cons a topreflist))
+     (return (car (setq reflist (cons a reflist))))))
+(defun compileeach (elist plist) 
+    (prog (reflist count) 
+       (setq count 0)
+       (setq reflist (cons elist reflist))
+       a    (setq count (f1+ count))
+       (cond ((null plist)
+	      (return (emit (list 'cond
+				  (list (list 'nthkdr elist (f1- count))
+					'(matcherr)))))))
+       (emit (list 'setq (genref) (list 'kar (cadr reflist))))
+       (compilematch (car reflist) (car plist))
+       (setq plist (cdr plist))
+       (setq reflist (cons (list 'kdr (cadr reflist)) reflist))
+       (go a)))
 
-(DEFUN FIXEDMATCHP (X)
-  (COND ((NUMBERP X) T)
-	((ATOM X)
-	 (IF (OR (MEMQ X BOUNDLIST) (NULL (MGET X 'MATCHDECLARE))) T))
-	(T (AND (OR (MEMQ (CAAR X) BOUNDLIST)
-		    (NULL (MGET (CAAR X) 'MATCHDECLARE)))
-		(FMP1 (CDR X))))))
+(defun fixedmatchp (x)
+  (cond ((numberp x) t)
+	((atom x)
+	 (if (or (memq x boundlist) (null (mget x 'matchdeclare))) t))
+	(t (and (or (memq (caar x) boundlist)
+		    (null (mget (caar x) 'matchdeclare)))
+		(fmp1 (cdr x))))))
 
-(DEFUN FMP1 (X) (IF (NULL X) T (AND (FIXEDMATCHP (CAR X)) (FMP1 (CDR X)))))
+(defun fmp1 (x) (if (null x) t (and (fixedmatchp (car x)) (fmp1 (cdr x)))))
 

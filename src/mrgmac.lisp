@@ -15,387 +15,387 @@
   (cond ((symbolp sym) (get sym tag))
 	((consp sym) (getf (cdr sym) tag))))
 
-#-LISPM
-(DEFMACRO FIX-LM (&rest BODY)
-  `(PROGN . ,BODY))
+#-lispm
+(defmacro fix-lm (&rest body)
+  `(progn . ,body))
 
-;#+LISPM
-;(DEFMACRO FIX-LM (&BODY BODY)
-;  `(LET ((DEFAULT-CONS-AREA WORKING-STORAGE-AREA))
-;     . ,BODY))
+;;#+LISPM
+;;(DEFMACRO FIX-LM (&BODY BODY)
+;;  `(LET ((DEFAULT-CONS-AREA WORKING-STORAGE-AREA))
+;;     . ,BODY))
 
 
 ;; The GRAM and DISPLA packages manipulate lists of fixnums, representing
 ;; lists of characters.  This syntax facilitates typing them in.
 ;; {abc} reads as (#/a #/b #/c), unquoted.
 
-;(DEFUN CHAR-LIST-SYNTAX-ON ()
-;  (FIX-LM
-;    (SETSYNTAX '|{| 'MACRO
-;	       #'(LAMBDA () (DO ((C (TYI) (TYI)) (NL))
-;				((char= #\} C) (NREVERSE NL))
-;			      (SETQ NL (CONS C NL)))))
-;    T))
+;;(DEFUN CHAR-LIST-SYNTAX-ON ()
+;;  (FIX-LM
+;;    (SETSYNTAX '|{| 'MACRO
+;;	       #'(LAMBDA () (DO ((C (TYI) (TYI)) (NL))
+;;				((char= #\} C) (NREVERSE NL))
+;;			      (SETQ NL (CONS C NL)))))
+;;    T))
 
-;(DEFUN CHAR-LIST-SYNTAX-OFF ()
-;  (FIX-LM nil
-;    #+(OR MACLISP NIL) (SETSYNTAX '|{| 'MACRO NIL)
-;    #+Franz   (setsyntax '|{| 2)
-;    #+LISPM   (SET-SYNTAX-FROM-DESCRIPTION #\{ 'SI:ALPHABETIC)))
+;;(DEFUN CHAR-LIST-SYNTAX-OFF ()
+;;  (FIX-LM nil
+;;    #+(OR MACLISP NIL) (SETSYNTAX '|{| 'MACRO NIL)
+;;    #+Franz   (setsyntax '|{| 2)
+;;    #+LISPM   (SET-SYNTAX-FROM-DESCRIPTION #\{ 'SI:ALPHABETIC)))
 
 ;; This sets up the syntax for a simple mode system defined later on
 ;; in this file.  As usual, it is poorly documented.
 
-;#-cl
-;(DEFUN MODE-SYNTAX-ON ()
-;  ;; :A:B:C --> (SEL A B C)
-;  ;; A component selection facility.  :A:B:C is like (C (B A)) in the
-;  ;; DEFSATRUCT world.
-;  (FIX-LM
-;    (SETSYNTAX '|:| 'MACRO
-;	       #'(LAMBDA () (DO ((L (LIST (READ)) (CONS (READ) L)))
-;				((NOT (char= #\: (TYIPEEK))) (CONS 'SEL (NREVERSE L)))
-;			      (TYI))))
+;;#-cl
+;;(DEFUN MODE-SYNTAX-ON ()
+;;  ;; :A:B:C --> (SEL A B C)
+;;  ;; A component selection facility.  :A:B:C is like (C (B A)) in the
+;;  ;; DEFSATRUCT world.
+;;  (FIX-LM
+;;    (SETSYNTAX '|:| 'MACRO
+;;	       #'(LAMBDA () (DO ((L (LIST (READ)) (CONS (READ) L)))
+;;				((NOT (char= #\: (TYIPEEK))) (CONS 'SEL (NREVERSE L)))
+;;			      (TYI))))
     
-;    ;; <A B C> --> (SELECTOR A B C)  Used when defining a mode.
-;    (SETSYNTAX '|<| 'MACRO
-;	       #'(LAMBDA ()
-;		   (COND ((char= #\SPACE (TYIPEEK)) '|<|)
-;			 ((char= #\= (TYIPEEK)) (TYI) '|<=|)
-;			 (T (DO ((S (READ) (READ)) (NL))
-;				((EQ '|>| S) (CONS 'SELECTOR (NREVERSE NL)))
-;			      (SETQ NL (CONS S NL)))))))
+;;    ;; <A B C> --> (SELECTOR A B C)  Used when defining a mode.
+;;    (SETSYNTAX '|<| 'MACRO
+;;	       #'(LAMBDA ()
+;;		   (COND ((char= #\SPACE (TYIPEEK)) '|<|)
+;;			 ((char= #\= (TYIPEEK)) (TYI) '|<=|)
+;;			 (T (DO ((S (READ) (READ)) (NL))
+;;				((EQ '|>| S) (CONS 'SELECTOR (NREVERSE NL)))
+;;			      (SETQ NL (CONS S NL)))))))
     
-;    ;; Needed as a single character object.  Used when defining a mode.
-;    (SETSYNTAX '|>| 'MACRO
-;	       #'(LAMBDA ()
-;		   (COND ((NOT (char= #\= (TYIPEEK))) '|>|)
-;			 (T (TYI) '|>=|))))
-;    T))
+;;    ;; Needed as a single character object.  Used when defining a mode.
+;;    (SETSYNTAX '|>| 'MACRO
+;;	       #'(LAMBDA ()
+;;		   (COND ((NOT (char= #\= (TYIPEEK))) '|>|)
+;;			 (T (TYI) '|>=|))))
+;;    T))
 
-;#-cl
-;(DEFUN MODE-SYNTAX-OFF ()
-;  (FIX-LM
-;    #+(OR MACLISP NIL) (PROGN (SETSYNTAX '|:| 'MACRO NIL)
-;			      (SETSYNTAX '|<| 'MACRO NIL)
-;			      (SETSYNTAX '|>| 'MACRO NIL))
-;    #+LISPM (PROGN (SI:SET-SYNTAX-BITS #\: '(0 . 23))
-;		   (SET-SYNTAX-FROM-DESCRIPTION #\> 'SI:ALPHABETIC)
-;		   (SET-SYNTAX-FROM-DESCRIPTION #\< 'SI:ALPHABETIC))
-;    #+Franz (progn (setsyntax '|:| 2)
-;		   (setsyntax '|<| 2)
-;		   (setsyntax '|>| 2))))
+;;#-cl
+;;(DEFUN MODE-SYNTAX-OFF ()
+;;  (FIX-LM
+;;    #+(OR MACLISP NIL) (PROGN (SETSYNTAX '|:| 'MACRO NIL)
+;;			      (SETSYNTAX '|<| 'MACRO NIL)
+;;			      (SETSYNTAX '|>| 'MACRO NIL))
+;;    #+LISPM (PROGN (SI:SET-SYNTAX-BITS #\: '(0 . 23))
+;;		   (SET-SYNTAX-FROM-DESCRIPTION #\> 'SI:ALPHABETIC)
+;;		   (SET-SYNTAX-FROM-DESCRIPTION #\< 'SI:ALPHABETIC))
+;;    #+Franz (progn (setsyntax '|:| 2)
+;;		   (setsyntax '|<| 2)
+;;		   (setsyntax '|>| 2))))
 
 ;; Loading this file used to turn on the mode syntax.  Its been turned off
 ;; now and hopefully no files left rely on it.  Files which want to 
 ;; use that syntax should call (MODE-SYNTAX-ON) during read time.
 
-;#+MACLISP
-;(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
-;    (PUTPROP NAME LAMBDA-EXP 'MACRO))
+;;#+MACLISP
+;;(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
+;;    (PUTPROP NAME LAMBDA-EXP 'MACRO))
 
-#+CL
-(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
-  (FIX-LM
-    (COND ((SYMBOLP LAMBDA-EXP) (SETQ LAMBDA-EXP (symbol-function LAMBDA-EXP))))
-    #-cl(si:record-source-file-name name 'macro)
-    #-cl(FSET NAME (CONS 'MACRO LAMBDA-EXP))
-    #+cl ;note need two args for cl macro
-    (setf (macro-function name) lambda-exp))
-    )
+#+cl
+(defun define-macro (name lambda-exp)
+  (fix-lm
+   (cond ((symbolp lambda-exp) (setq lambda-exp (symbol-function lambda-exp))))
+   #-cl(si:record-source-file-name name 'macro)
+   #-cl(fset name (cons 'macro lambda-exp))
+   #+cl				      ;note need two args for cl macro
+   (setf (macro-function name) lambda-exp))
+  )
 
-;#+Franz
-;(defun define-macro (name lambda-exp)
-;  (putd name `(macro (dummy-arg) (,lambda-exp dummy-arg))))
+;;#+Franz
+;;(defun define-macro (name lambda-exp)
+;;  (putd name `(macro (dummy-arg) (,lambda-exp dummy-arg))))
 
-;#+NIL
-;(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
-;  (ADD-MACRO-DEFINITION NAME LAMBDA-EXP))
+;;#+NIL
+;;(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
+;;  (ADD-MACRO-DEFINITION NAME LAMBDA-EXP))
 
 ;; LAMBIND* and PROGB* are identical, similar to LET, but contain an implicit
 ;; PROG.  On the Lisp Machine, PROG is extended to provide this capability.
 
-(DEFMACRO LAMBIND* (VAR-LIST . BODY) `(LET ,VAR-LIST (PROG NIL . ,BODY)))
-(DEFMACRO PROGB* (VAR-LIST . BODY) `(LET ,VAR-LIST (PROG NIL . ,BODY)))
+(defmacro lambind* (var-list . body) `(let ,var-list (prog nil . ,body)))
+(defmacro progb* (var-list . body) `(let ,var-list (prog nil . ,body)))
 
-(DEFMACRO MAPAND (FUNCTION LIST) 
-  `(DO ((L ,LIST (CDR L))) ((NULL L) T)
-       (IFN (,FUNCTION (CAR L)) (RETURN NIL))))
+(defmacro mapand (function list) 
+  `(do ((l ,list (cdr l))) ((null l) t)
+    (ifn (,function (car l)) (return nil))))
 
-(DEFMACRO MAPOR (FUNCTION LIST)
-  `(DO ((L ,LIST (CDR L))) ((NULL L))
-       (IF (FUNCALL ,FUNCTION (CAR L)) (RETURN T))))
+(defmacro mapor (function list)
+  `(do ((l ,list (cdr l))) ((null l))
+    (if (funcall ,function (car l)) (return t))))
 
 ;; (MAPLAC #'1+ '(1 2 3)) --> '(2 3 4), but the original list is rplaca'd
 ;; rather than a new list being consed up.
 
-(DEFMACRO MAPLAC (FUNCTION LIST)
-  `(DO ((L ,LIST (CDR L))) ((NULL L)) (RPLACA L (FUNCALL ,FUNCTION (CAR L)))))
+(defmacro maplac (function list)
+  `(do ((l ,list (cdr l))) ((null l)) (rplaca l (funcall ,function (car l)))))
 
 (defmacro put (a b c) `(putprop ,a ,b ,c))
 
-;(defmacro zl-REM (a b) `(remprop ,a ,b))
+;;(defmacro zl-REM (a b) `(remprop ,a ,b))
 
-(DEFMACRO COPYP (L) `(CONS (CAR ,L) (CDR ,L)))
-(DEFMACRO COPYL (L) #+NIL `(COPY-LIST ,L) #-NIL `(APPEND ,L NIL))
+(defmacro copyp (l) `(cons (car ,l) (cdr ,l)))
+(defmacro copyl (l) #+nil `(copy-list ,l) #-nil `(append ,l nil))
 
-(DEFMACRO ECONS (X Y) `(APPEND ,X (LIST ,Y)))
+(defmacro econs (x y) `(append ,x (list ,y)))
 
-#-Franz 
+#-franz 
 (progn 'compile
-  (DEFMACRO CAAADAR (X) `(CAAADR (CAR ,X)))
-  (DEFMACRO CAAADDR (X) `(CAAADR (CDR ,X)))
-  (DEFMACRO CAADAAR (X) `(CAADAR (CAR ,X)))
-  (DEFMACRO CAADADR (X) `(CAADAR (CDR ,X)))
-  (DEFMACRO CADAAAR (X) `(CADAAR (CAR ,X)))
-  (DEFMACRO CADADDR (X) `(CADADR (CDR ,X)))
-  (DEFMACRO CADDAAR (X) `(CADDAR (CAR ,X)))
-  (DEFMACRO CADDDAR (X) `(CADDDR (CAR ,X)))
-  (DEFMACRO CDADADR (X) `(CDADAR (CDR ,X)))
-  (DEFMACRO CDADDDR (X) `(CDADDR (CDR ,X)))
-  (DEFMACRO CDDDDDR (X) `(CDDDDR (CDR ,X))))
+       (defmacro caaadar (x) `(caaadr (car ,x)))
+       (defmacro caaaddr (x) `(caaadr (cdr ,x)))
+       (defmacro caadaar (x) `(caadar (car ,x)))
+       (defmacro caadadr (x) `(caadar (cdr ,x)))
+       (defmacro cadaaar (x) `(cadaar (car ,x)))
+       (defmacro cadaddr (x) `(cadadr (cdr ,x)))
+       (defmacro caddaar (x) `(caddar (car ,x)))
+       (defmacro cadddar (x) `(cadddr (car ,x)))
+       (defmacro cdadadr (x) `(cdadar (cdr ,x)))
+       (defmacro cdadddr (x) `(cdaddr (cdr ,x)))
+       (defmacro cdddddr (x) `(cddddr (cdr ,x))))
 
-(DEFMACRO TELL (&REST ARGS) `(DISPLA (LIST '(MTEXT) . ,ARGS)))
-
-
-(declare-top (SPECIAL NAME BAS MOBJECTS SELECTOR) (*EXPR MODE))
-
-(SETQ MOBJECTS NIL)
-
-(DEFPROP MODE (C-MODE S-MODE A-MODE) MODE)
-
-(DEFMACRO C-MODE (&REST L) `(LIST . ,L))
-
-;(MACRO S-MODE (X)
-;  (COND ((EQ 'C (CADDR X)) `(CAR ,(CADR X)))
-;	((EQ 'SEL (CADDR X)) `(CADR ,(CADR X)))
-;	((EQ '_ (CADDR X)) `(CADDR ,(CADR X)))))
+(defmacro tell (&rest args) `(displa (list '(mtext) . ,args)))
 
 
-;(MACRO A-MODE (X)
-;  (COND ((EQ 'C (CADDR X)) `(RPLACA (CADR X) ,(CADDDR X)))
-;	((EQ 'SEL (CADDR X)) `(RPLACA (CDR ,(CADR X)) ,(CADDDR X)))
-;	((EQ '_ (CADDR X)) `(RPLACA (CDDR ,(CADR X)) ,(CADDDR X)))))
+(declare-top (special name bas mobjects selector) (*expr mode))
 
-;(MACRO DEFMODE (X)
-;  (LET ((SELECTOR (MEMQ 'SELECTOR (CDDDDR X))))
-;    (DEFINE-MODE (CADR X) (CADDDR X))
-;    (MAPC 'EVAL (CDDDDR X))
-;    `',(CADR X)))
+(setq mobjects nil)
 
-(defMACRO S-MODE (&rest X)
-  (setq X (cons ' S-MODE X ))
-  (COND ((EQ 'C (CADDR X)) `(CAR ,(CADR X)))
-	((EQ 'SEL (CADDR X)) `(CADR ,(CADR X)))
-	((EQ '_ (CADDR X)) `(CADDR ,(CADR X)))))
+(defprop mode (c-mode s-mode a-mode) mode)
+
+(defmacro c-mode (&rest l) `(list . ,l))
+
+;;(MACRO S-MODE (X)
+;;  (COND ((EQ 'C (CADDR X)) `(CAR ,(CADR X)))
+;;	((EQ 'SEL (CADDR X)) `(CADR ,(CADR X)))
+;;	((EQ '_ (CADDR X)) `(CADDR ,(CADR X)))))
 
 
-(defMACRO A-MODE (&rest X)
-  (setq X (cons ' A-MODE X ))
-  (COND ((EQ 'C (CADDR X)) `(RPLACA (CADR X) ,(CADDDR X)))
-	((EQ 'SEL (CADDR X)) `(RPLACA (CDR ,(CADR X)) ,(CADDDR X)))
-	((EQ '_ (CADDR X)) `(RPLACA (CDDR ,(CADR X)) ,(CADDDR X)))))
+;;(MACRO A-MODE (X)
+;;  (COND ((EQ 'C (CADDR X)) `(RPLACA (CADR X) ,(CADDDR X)))
+;;	((EQ 'SEL (CADDR X)) `(RPLACA (CDR ,(CADR X)) ,(CADDDR X)))
+;;	((EQ '_ (CADDR X)) `(RPLACA (CDDR ,(CADR X)) ,(CADDDR X)))))
 
-(defMACRO DEFMODE (&rest X)
-  (setq X (cons ' DEFMODE X ))
-  (LET ((SELECTOR (MEMQ 'SELECTOR (CDDDDR X))))
-       ;(setq billy `(DEFINE-MODE ,(CADR X) ,(CADDDR X)))
+;;(MACRO DEFMODE (X)
+;;  (LET ((SELECTOR (MEMQ 'SELECTOR (CDDDDR X))))
+;;    (DEFINE-MODE (CADR X) (CADDDR X))
+;;    (MAPC 'EVAL (CDDDDR X))
+;;    `',(CADR X)))
+
+(defmacro s-mode (&rest x)
+  (setq x (cons ' s-mode x ))
+  (cond ((eq 'c (caddr x)) `(car ,(cadr x)))
+	((eq 'sel (caddr x)) `(cadr ,(cadr x)))
+	((eq '_ (caddr x)) `(caddr ,(cadr x)))))
+
+
+(defmacro a-mode (&rest x)
+  (setq x (cons ' a-mode x ))
+  (cond ((eq 'c (caddr x)) `(rplaca (cadr x) ,(cadddr x)))
+	((eq 'sel (caddr x)) `(rplaca (cdr ,(cadr x)) ,(cadddr x)))
+	((eq '_ (caddr x)) `(rplaca (cddr ,(cadr x)) ,(cadddr x)))))
+
+(defmacro defmode (&rest x)
+  (setq x (cons ' defmode x ))
+  (let ((selector (memq 'selector (cddddr x))))
+					;(setq billy `(DEFINE-MODE ,(CADR X) ,(CADDDR X)))
        
-    (DEFINE-MODE (CADR X) (CADDDR X))
-    (MAPC 'EVAL (CDDDDR X))
-    `',(CADR X)))
+    (define-mode (cadr x) (cadddr x))
+    (mapc 'eval (cddddr x))
+    `',(cadr x)))
 
-#+(OR NIL CL)
-(DEFUN DEFINE-MODE (NAME DESC &aux #+lispm (default-cons-area working-storage-area))
+#+(or nil cl)
+(defun define-mode (name desc &aux #+lispm (default-cons-area working-storage-area))
   
-  (PROG (C S A)
-	(SETQ
-	  C (INTERN (FORMAT NIL "C-~A" NAME)) 
-	  S (INTERN (FORMAT NIL "S-~A" NAME)) 
-	  A (INTERN (FORMAT NIL "A-~A" NAME)))
-     ;(setq silly `    (DEFINE-MACRO ,C ,(DEFC DESC))	)
-    (DEFINE-MACRO C (DEFC DESC))
-    (DEFINE-MACRO S (DEFS DESC))
-    (DEFINE-MACRO A (DEFA DESC))
-    (PUT NAME (C-MODE C S A) 'MODE)
-    (RETURN NAME)))
+  (prog (c s a)
+     (setq
+      c (intern (format nil "C-~A" name)) 
+      s (intern (format nil "S-~A" name)) 
+      a (intern (format nil "A-~A" name)))
+					;(setq silly `    (DEFINE-MACRO ,C ,(DEFC DESC))	)
+     (define-macro c (defc desc))
+     (define-macro s (defs desc))
+     (define-macro a (defa desc))
+     (put name (c-mode c s a) 'mode)
+     (return name)))
 
-#-(OR NIL CL)
-(DEFUN DEFINE-MODE (NAME DESC)
-  (PROG (C S A DUMMY)
-    (SETQ DUMMY (EXPLODEC NAME)
-	  C (IMPLODE (APPEND '(C -) DUMMY))
-	  S (IMPLODE (APPEND '(S -) DUMMY))
-	  A (IMPLODE (APPEND '(A -) DUMMY)))
-    (DEFINE-MACRO C (DEFC DESC))
-    (DEFINE-MACRO S (DEFS DESC))
-    (DEFINE-MACRO A (DEFA DESC))
-    (PUT NAME (C-MODE C S A) 'MODE)
-    (RETURN NAME)))
-
-
-(DEFUN DEFC (DESC) (LET ((BAS 'X)) (coerce `(LAMBDA (X &optional env) env
-					    ,(DEFC1 DESC)) 'function)))
-
-(DEFUN DEFC1 (DESC)
-  (COND ((ATOM DESC) (LIST 'QUOTE DESC))
-	((EQ 'SELECTOR (CAR DESC))
-	 (COND ((NOT (NULL (CDDDR DESC))) (LIST 'QUOTE (CADDDR DESC)))
-	       (T (SETQ BAS (LIST 'CDR BAS))
-		  (LIST 'CAR BAS))))
-	((EQ (QUOTE ATOM) (CAR DESC))
-	 `(LIST 'C-ATOM '',(MAPCAR 'CADR (CDR DESC)) (CONS (QUOTE LIST) (CDR X))))
-	((EQ 'CONS (CAR DESC)) `(LIST 'CONS ,(DEFC1 (CADR DESC)) ,(DEFC1 (CADDR DESC))))
-	((EQ (quote LIST) (CAR DESC))
-	 (DO ((L (CDR DESC) (CDR L)) (NL))
-	     ((NULL L) `(LIST (QUOTE LIST) . ,(NREVERSE NL)))
-	     (SETQ NL (CONS (DEFC1 (CAR L)) NL))))
-	((EQ 'STRUCT (CAR DESC)) (DEFC1 (CONS (QUOTE LIST) (CDR DESC))))
-	(T (LIST 'QUOTE DESC))))
+#-(or nil cl)
+(defun define-mode (name desc)
+  (prog (c s a dummy)
+     (setq dummy (explodec name)
+	   c (implode (append '(c -) dummy))
+	   s (implode (append '(s -) dummy))
+	   a (implode (append '(a -) dummy)))
+     (define-macro c (defc desc))
+     (define-macro s (defs desc))
+     (define-macro a (defa desc))
+     (put name (c-mode c s a) 'mode)
+     (return name)))
 
 
-(DEFUN DEFS (DESC)
-  (coerce `(LAMBDA (X &optional env)env
-	   (COND . ,(NREVERSE (DEFS1 DESC '(CADR X) NIL))))'function )) 
+(defun defc (desc) (let ((bas 'x)) (coerce `(lambda (x &optional env) env
+					     ,(defc1 desc)) 'function)))
 
-(DEFUN DEFS1 (DESC BAS RESULT)
-  (COND ((ATOM DESC) RESULT)
-	((EQ 'SELECTOR (CAR DESC))
-	 (PUT (CADR DESC)
-	      (CONS (CONS NAME (CADDR DESC)) (ZL-GET (CADR DESC) 'MODES))
-	      'MODES)
-	 (PUT NAME
-	      (CONS (CONS (CADR DESC) (CADDR DESC)) (ZL-GET NAME 'SELS))
-	      'SELS)
-	 (IF SELECTOR (DEFINE-MACRO (CADR DESC) 'SELECTOR))
-	 (CONS `((EQ ',(CADR DESC) (CADDR X)) ,BAS) RESULT))
-	((EQ (QUOTE ATOM) (CAR DESC))
-	 (DO ((L (CDR DESC) (CDR L))) ((NULL L))
-	     (PUT (CADAR L) (CONS (CONS NAME (CADDAR L))
-				  (ZL-GET (CADAR L) 'MODES)) 'MODES)
-	     (PUT NAME (CONS (CONS (CADAR L) (CADDAR L))
-			     (ZL-GET NAME 'SELS)) 'SELS)
-	     (IF SELECTOR (DEFINE-MACRO (CADAR L) 'SELECTOR)))
-	 (CONS `((MEMQ (CADDR X) ',(MAPCAR 'CADR (CDR DESC)))
-		 (LIST 'ZL-GET ,BAS (LIST 'QUOTE (CADDR X))))
-	       RESULT))
-	((EQ 'CONS (CAR DESC))
-	 (SETQ RESULT (DEFS1 (CADR DESC) `(LIST 'CAR ,BAS) RESULT))
-	 (DEFS1 (CADDR DESC) `(LIST 'CDR ,BAS) RESULT))
-	((EQ (QUOTE LIST) (CAR DESC))
-	 (DO ((L (CDR DESC) (CDR L))) ((NULL L))
-	     (SETQ RESULT (DEFS1 (CAR L) `(LIST 'CAR ,BAS) RESULT)
-		   BAS `(LIST 'CDR ,BAS)))
-	 RESULT)
-	((EQ 'STRUCT (CAR DESC)) (DEFS1 (CONS (QUOTE LIST) (CDR DESC)) BAS RESULT))
-	(T RESULT)))
-
-(DEFUN DEFA (DESC)
-  (coerce `(LAMBDA (X &optional env) env
-	   (COND . ,(NREVERSE (DEFA1 DESC '(CADR X) NIL NIL)))) 'function))
-
-(DEFUN DEFA1 (DESC BAS CDR RESULT)
-  (COND ((ATOM DESC) RESULT)
-	((EQ 'SELECTOR (CAR DESC))
-	 (SETQ BAS (COND ((NOT CDR) `(LIST 'CAR (LIST 'RPLACA ,(CADDR BAS) (CADDDR X))))
-			 (T `(LIST 'CDR (LIST 'RPLACD ,(CADDR BAS) (CADDDR X))))))
-	 (CONS `((EQ ',(CADR DESC) (CADDR X)) ,BAS) RESULT))
-	((EQ  (QUOTE ATOM) (CAR DESC))
-	 (LIST `(T (LIST 'A-ATOM (CADR X) (LIST 'QUOTE (CADDR X)) (CADDDR X)))))
-	((EQ 'CONS (CAR DESC))
-	 (SETQ RESULT (DEFA1 (CADR DESC) `(LIST 'CAR ,BAS) NIL RESULT))
-	 (DEFA1 (CADDR DESC) `(LIST 'CDR ,BAS) T RESULT))
-	((EQ (QUOTE LIST) (CAR DESC))
-	 (DO ((L (CDR DESC) (CDR L))) ((NULL L))
-	     (SETQ RESULT (DEFA1 (CAR L) `(LIST 'CAR ,BAS) NIL RESULT)
-		   BAS `(LIST 'CDR ,BAS)))
-	 RESULT)
-	((EQ 'STRUCT (CAR DESC)) (DEFA1 (CONS (QUOTE LIST) (CDR DESC)) BAS CDR RESULT))
-	(T RESULT)))
+(defun defc1 (desc)
+  (cond ((atom desc) (list 'quote desc))
+	((eq 'selector (car desc))
+	 (cond ((not (null (cdddr desc))) (list 'quote (cadddr desc)))
+	       (t (setq bas (list 'cdr bas))
+		  (list 'car bas))))
+	((eq (quote atom) (car desc))
+	 `(list 'c-atom '',(mapcar 'cadr (cdr desc)) (cons (quote list) (cdr x))))
+	((eq 'cons (car desc)) `(list 'cons ,(defc1 (cadr desc)) ,(defc1 (caddr desc))))
+	((eq (quote list) (car desc))
+	 (do ((l (cdr desc) (cdr l)) (nl))
+	     ((null l) `(list (quote list) . ,(nreverse nl)))
+	   (setq nl (cons (defc1 (car l)) nl))))
+	((eq 'struct (car desc)) (defc1 (cons (quote list) (cdr desc))))
+	(t (list 'quote desc))))
 
 
-(DEFUN MODE (X) (CDR (zl-ASSOC X MOBJECTS)))
+(defun defs (desc)
+  (coerce `(lambda (x &optional env)env
+	    (cond . ,(nreverse (defs1 desc '(cadr x) nil))))'function )) 
 
-#-NIL
+(defun defs1 (desc bas result)
+  (cond ((atom desc) result)
+	((eq 'selector (car desc))
+	 (put (cadr desc)
+	      (cons (cons name (caddr desc)) (zl-get (cadr desc) 'modes))
+	      'modes)
+	 (put name
+	      (cons (cons (cadr desc) (caddr desc)) (zl-get name 'sels))
+	      'sels)
+	 (if selector (define-macro (cadr desc) 'selector))
+	 (cons `((eq ',(cadr desc) (caddr x)) ,bas) result))
+	((eq (quote atom) (car desc))
+	 (do ((l (cdr desc) (cdr l))) ((null l))
+	   (put (cadar l) (cons (cons name (caddar l))
+				(zl-get (cadar l) 'modes)) 'modes)
+	   (put name (cons (cons (cadar l) (caddar l))
+			   (zl-get name 'sels)) 'sels)
+	   (if selector (define-macro (cadar l) 'selector)))
+	 (cons `((memq (caddr x) ',(mapcar 'cadr (cdr desc)))
+		 (list 'zl-get ,bas (list 'quote (caddr x))))
+	       result))
+	((eq 'cons (car desc))
+	 (setq result (defs1 (cadr desc) `(list 'car ,bas) result))
+	 (defs1 (caddr desc) `(list 'cdr ,bas) result))
+	((eq (quote list) (car desc))
+	 (do ((l (cdr desc) (cdr l))) ((null l))
+	   (setq result (defs1 (car l) `(list 'car ,bas) result)
+		 bas `(list 'cdr ,bas)))
+	 result)
+	((eq 'struct (car desc)) (defs1 (cons (quote list) (cdr desc)) bas result))
+	(t result)))
+
+(defun defa (desc)
+  (coerce `(lambda (x &optional env) env
+	    (cond . ,(nreverse (defa1 desc '(cadr x) nil nil)))) 'function))
+
+(defun defa1 (desc bas cdr result)
+  (cond ((atom desc) result)
+	((eq 'selector (car desc))
+	 (setq bas (cond ((not cdr) `(list 'car (list 'rplaca ,(caddr bas) (cadddr x))))
+			 (t `(list 'cdr (list 'rplacd ,(caddr bas) (cadddr x))))))
+	 (cons `((eq ',(cadr desc) (caddr x)) ,bas) result))
+	((eq  (quote atom) (car desc))
+	 (list `(t (list 'a-atom (cadr x) (list 'quote (caddr x)) (cadddr x)))))
+	((eq 'cons (car desc))
+	 (setq result (defa1 (cadr desc) `(list 'car ,bas) nil result))
+	 (defa1 (caddr desc) `(list 'cdr ,bas) t result))
+	((eq (quote list) (car desc))
+	 (do ((l (cdr desc) (cdr l))) ((null l))
+	   (setq result (defa1 (car l) `(list 'car ,bas) nil result)
+		 bas `(list 'cdr ,bas)))
+	 result)
+	((eq 'struct (car desc)) (defa1 (cons (quote list) (cdr desc)) bas cdr result))
+	(t result)))
+
+
+(defun mode (x) (cdr (zl-assoc x mobjects)))
+
+#-nil
 
 (defmacro modedeclare (&rest l)
   `(modeclare-internal ',l))
 
 (defun modedeclare-internal (x)
-  (MAPC #'(LAMBDA (L) (MAPC #'(LAMBDA (V) (PUSH (CONS V (CAR L)) MOBJECTS))
-			   (CDR L)))
-	X))
+  (mapc #'(lambda (l) (mapc #'(lambda (v) (push (cons v (car l)) mobjects))
+			    (cdr l)))
+	x))
 
 ;; Do not make this (ERROR 'NDM-ERR).  It won't work on the Lisp machine.
 
-(DEFUN NDM-ERR (X)
-  (TERPRI)
-  (PRINC "Cannot determine the mode of ") (PRINC X)
-  (MAXIMA-ERROR "NDM-ERR"))
+(defun ndm-err (x)
+  (terpri)
+  (princ "Cannot determine the mode of ") (princ x)
+  (maxima-error "NDM-ERR"))
 
-(DEFUN NSM-ERR (X)
-  (TERPRI)
-  (PRINC "No such mode as ") (PRINC X)
-  (MAXIMA-ERROR "NSM-ERR"))
+(defun nsm-err (x)
+  (terpri)
+  (princ "No such mode as ") (princ x)
+  (maxima-error "NSM-ERR"))
 
-(DEFUN SEL-ERR (B S)
-  (TERPRI)
-  (TYO #\:) (PRINC B)
-  (DO () ((NULL S)) (TYO #\:) (PRINC (CAR S)) (SETQ S (CDR S)))
-  (PRINC "is an impossible selection")
-  (MAXIMA-ERROR "SEL-ERR"))
+(defun sel-err (b s)
+  (terpri)
+  (tyo #\:) (princ b)
+  (do () ((null s)) (tyo #\:) (princ (car s)) (setq s (cdr s)))
+  (princ "is an impossible selection")
+  (maxima-error "SEL-ERR"))
 
-(DEFUN IA-ERR (X)
-  (TERPRI)
-  (PRINC "Cannot assign ") (PRINC X)
-  (MAXIMA-ERROR "IA-ERR"))
+(defun ia-err (x)
+  (terpri)
+  (princ "Cannot assign ") (princ x)
+  (maxima-error "IA-ERR"))
 
-(defMACRO SEL (&rest X)
-  (setq X (cons ' SEL X ))
-  (LET ((S (FSEL (MODE (CADR X)) (CDDR X))))
-    (COND ((NULL S) (SEL-ERR (CADR X) (CDDR X)))
-	  (T (SETQ X (CADR X))
-	     (DO () ((NULL (CDR S)) X)
-		 (SETQ X (CONS (CADR (ZL-GET (CAR S) 'MODE)) (RPLACA S X)) S (CDDR S))
-		 (RPLACD (CDDR X) NIL))))))
+(defmacro sel (&rest x)
+  (setq x (cons ' sel x ))
+  (let ((s (fsel (mode (cadr x)) (cddr x))))
+    (cond ((null s) (sel-err (cadr x) (cddr x)))
+	  (t (setq x (cadr x))
+	     (do () ((null (cdr s)) x)
+	       (setq x (cons (cadr (zl-get (car s) 'mode)) (rplaca s x)) s (cddr s))
+	       (rplacd (cddr x) nil))))))
 
-(DEFUN FSEL (M SELS)    ;;This has a bug in it. 
-  (COND ((NULL SELS) (LIST M))
-	((NULL M)
-	 (DO ((L (ZL-GET (CAR SELS) 'MODES) (CDR L))) ((NULL L))
-	     (IF (SETQ M (FSEL (CDAR L) (CDR SELS)))
-		 (RETURN (CONS (CAAR L) (CONS (CAR SELS) M))))))
-	((LET (DUM)
-	   (IF (SETQ DUM (ASSQ (CAR SELS) (ZL-GET M 'SELS)))
-	       (CONS M (CONS (CAR SELS) (FSEL (CDR DUM) (CDR SELS)))))))
-	(T (DO ((L (ZL-GET M 'SELS) (CDR L)) (DUM)) ((NULL L))
-	       (IF (SETQ DUM (FSEL (CDAR L) SELS))
-		   (RETURN (CONS M (CONS (CAAR L) DUM))))))))
+(defun fsel (m sels) ;;This has a bug in it. 
+  (cond ((null sels) (list m))
+	((null m)
+	 (do ((l (zl-get (car sels) 'modes) (cdr l))) ((null l))
+	   (if (setq m (fsel (cdar l) (cdr sels)))
+	       (return (cons (caar l) (cons (car sels) m))))))
+	((let (dum)
+	   (if (setq dum (assq (car sels) (zl-get m 'sels)))
+	       (cons m (cons (car sels) (fsel (cdr dum) (cdr sels)))))))
+	(t (do ((l (zl-get m 'sels) (cdr l)) (dum)) ((null l))
+	     (if (setq dum (fsel (cdar l) sels))
+		 (return (cons m (cons (caar l) dum))))))))
 
-;(DEFUN SELECTOR (X &optional env) env
-;  (IF (NULL (CDDR X)) `(SEL ,(CADR X) ,(CAR X))
-;      `(_ (SEL ,(CADR X) ,(CAR X)) ,(CADDR X))))
-(DEFUN SELECTOR (X #+cl env) env
-  (IF (NULL (CDDR X)) `(SEL ,(CADR X) ,(CAR X))
-      `(_ (SEL ,(CADR X) ,(CAR X)) ,(CADDR X))))
+;;(DEFUN SELECTOR (X &optional env) env
+;;  (IF (NULL (CDDR X)) `(SEL ,(CADR X) ,(CAR X))
+;;      `(_ (SEL ,(CADR X) ,(CAR X)) ,(CADDR X))))
+(defun selector (x #+cl env) env
+       (if (null (cddr x)) `(sel ,(cadr x) ,(car x))
+	   `(_ (sel ,(cadr x) ,(car x)) ,(caddr x))))
 
 
-(defMACRO _ (&rest X)
-  (setq X (cons ' _ X ))
-  `(STO . ,(CDR X)))
+(defmacro _ (&rest x)
+  (setq x (cons ' _ x ))
+  `(sto . ,(cdr x)))
 
-(defMACRO STO (&rest X)
-  (setq X (cons ' STO X ))
-  (DO ((L (CDR X) (CDDR L)) (S) (NL))
-      ((NULL L) `(PROGN . ,(NREVERSE NL)))
-      (COND ((ATOM (CAR L)) (SETQ NL (CONS `(SETQ ,(CAR L) ,(CADR L)) NL)))
-	    ((AND (EQ 'SEL (CAAR L)) (SETQ S (FSEL (MODE (CADAR L)) (CDDAR L))))
-	     (SETQ X (CADAR L))
-	     (DO ((L (CDDR S) (CDDR L))) ((NULL (CDR L)))
-		 (SETQ X (CONS (CADR (ZL-GET (CAR L) 'MODE)) (RPLACA L X)))
-		 (RPLACD (CDDR X) NIL))
-	     (SETQ NL (CONS (LIST (CADDR (ZL-GET (CAR S) 'MODE)) X (CADR S) (CADR L)) NL)))
-	    (T (IA-ERR (CAR L))))))
+(defmacro sto (&rest x)
+  (setq x (cons ' sto x ))
+  (do ((l (cdr x) (cddr l)) (s) (nl))
+      ((null l) `(progn . ,(nreverse nl)))
+    (cond ((atom (car l)) (setq nl (cons `(setq ,(car l) ,(cadr l)) nl)))
+	  ((and (eq 'sel (caar l)) (setq s (fsel (mode (cadar l)) (cddar l))))
+	   (setq x (cadar l))
+	   (do ((l (cddr s) (cddr l))) ((null (cdr l)))
+	     (setq x (cons (cadr (zl-get (car l) 'mode)) (rplaca l x)))
+	     (rplacd (cddr x) nil))
+	   (setq nl (cons (list (caddr (zl-get (car s) 'mode)) x (cadr s) (cadr l)) nl)))
+	  (t (ia-err (car l))))))
 
 ;; (C-ATOM '(AGE WEIGHT MARRIED) '(21 130 NIL)) creates a plist-structure
 ;; with slot names as properties.  This should use SETPLIST instead
@@ -417,7 +417,7 @@
 ;; 	    (T (SETQ L (CDR L))))))
 
 
-(DEFMACRO CONS-EXP (OP . ARGS) `(SIMPLIFY (LIST (LIST ,OP) . ,ARGS)))
+(defmacro cons-exp (op . args) `(simplify (list (list ,op) . ,args)))
 
 ;; Local Modes:
 ;; Mode: LISP

@@ -19,59 +19,59 @@
 ;; of each macro must reflect the type of its operand, e.g.
 ;; RAT-NUMER versus MRAT-NUMER.
 
-(DEFMACRO MAKE-G-REP (OPERATOR . OPERANDS)
-  `(LIST (LIST ,OPERATOR) . ,OPERANDS))
-(DEFMACRO MAKE-G-REP-SIMP (OPERATOR . OPERANDS)
-  `(LIST (LIST ,OPERATOR) . ,OPERANDS))
+(defmacro make-g-rep (operator . operands)
+  `(list (list ,operator) . ,operands))
+(defmacro make-g-rep-simp (operator . operands)
+  `(list (list ,operator) . ,operands))
 
-(DEFMACRO G-REP-OPERATOR (EXP) `(CAAR ,EXP))
-(DEFMACRO G-REP-OPERANDS (EXP) `(CDR ,EXP))
-(DEFMACRO G-REP-FIRST-OPERAND (EXP)
-   `(CADR ,EXP))
+(defmacro g-rep-operator (exp) `(caar ,exp))
+(defmacro g-rep-operands (exp) `(cdr ,exp))
+(defmacro g-rep-first-operand (exp)
+  `(cadr ,exp))
 
-(DEFMACRO MAKE-MPLUS (&rest ARGS) `(LIST '(MPLUS) . ,ARGS))
-(DEFMACRO MAKE-MPLUS-L (LLIST) `(CONS '(MPLUS) ,LLIST))
-(DEFMACRO MAKE-MPLUS-SIMP (&rest ARGS) `(LIST '(MPLUS SIMP) . ,ARGS))
-(DEFMACRO MAKE-MPLUS-SIMP-L (LLIST) `(CONS '(MPLUS SIMP) ,LLIST))
+(defmacro make-mplus (&rest args) `(list '(mplus) . ,args))
+(defmacro make-mplus-l (llist) `(cons '(mplus) ,llist))
+(defmacro make-mplus-simp (&rest args) `(list '(mplus simp) . ,args))
+(defmacro make-mplus-simp-l (llist) `(cons '(mplus simp) ,llist))
 
 
 
-(DEFMACRO MAKE-MTIMES (&rest ARGS) `(LIST '(MTIMES) . ,ARGS))
-(DEFMACRO MAKE-MTIMES-L (LLIST) `(CONS '(MTIMES) ,LLIST))
-(DEFMACRO MAKE-MTIMES-SIMP (&rest ARGS) `(LIST '(MTIMES SIMP) . ,ARGS))
-(DEFMACRO MAKE-MTIMES-SIMP-L (LLIST) `(CONS '(MTIMES SIMP) ,LLIST))
+(defmacro make-mtimes (&rest args) `(list '(mtimes) . ,args))
+(defmacro make-mtimes-l (llist) `(cons '(mtimes) ,llist))
+(defmacro make-mtimes-simp (&rest args) `(list '(mtimes simp) . ,args))
+(defmacro make-mtimes-simp-l (llist) `(cons '(mtimes simp) ,llist))
 
-; losing MACLISP doesn't like BASE as a variable name !!
-(DEFMACRO MAKE-MEXPT (thing-being-raised-to-power EXPT)
-   `(LIST '(MEXPT) ,thing-being-raised-to-power ,EXPT))
-(DEFMACRO MAKE-MEXPT-L (LLIST) `(CONS '(MEXPT) ,LLIST))
-(DEFMACRO MAKE-MEXPT-SIMP (thing-being-raised-to-power EXPT)
-   `(LIST '(MEXPT SIMP) ,thing-being-raised-to-power ,EXPT))
-(DEFMACRO MAKE-MEXPT-SIMP-L (LLIST) `(CONS '(MEXPT SIMP) ,LLIST))
+;; losing MACLISP doesn't like BASE as a variable name !!
+(defmacro make-mexpt (thing-being-raised-to-power expt)
+  `(list '(mexpt) ,thing-being-raised-to-power ,expt))
+(defmacro make-mexpt-l (llist) `(cons '(mexpt) ,llist))
+(defmacro make-mexpt-simp (thing-being-raised-to-power expt)
+  `(list '(mexpt simp) ,thing-being-raised-to-power ,expt))
+(defmacro make-mexpt-simp-l (llist) `(cons '(mexpt simp) ,llist))
 
-(DEFMACRO MEXPT-BASE (MEXPT) `(CADR ,MEXPT))
-(DEFMACRO MEXPT-EXPT (MEXPT) `(CADDR ,MEXPT))
+(defmacro mexpt-base (mexpt) `(cadr ,mexpt))
+(defmacro mexpt-expt (mexpt) `(caddr ,mexpt))
 
-(DEFMACRO MAKE-MEQUAL (LHS RHS) `(LIST '(MEQUAL) ,LHS ,RHS))
-(DEFMACRO MAKE-MEQUAL-L (LLIST) `(CONS '(MEQUAL) ,LLIST))
-(DEFMACRO MAKE-MEQUAL-SIMP (LHS RHS) `(LIST '(MEQUAL SIMP) ,LHS ,RHS))
-(DEFMACRO MAKE-MEQUAL-SIMP-L (LLIST) `(CONS '(MEQUAL SIMP) ,LLIST))
+(defmacro make-mequal (lhs rhs) `(list '(mequal) ,lhs ,rhs))
+(defmacro make-mequal-l (llist) `(cons '(mequal) ,llist))
+(defmacro make-mequal-simp (lhs rhs) `(list '(mequal simp) ,lhs ,rhs))
+(defmacro make-mequal-simp-l (llist) `(cons '(mequal simp) ,llist))
 
-(DEFMACRO MEQUAL-LHS (MEQUAL) `(CADR ,MEQUAL))
-(DEFMACRO MEQUAL-RHS (MEQUAL) `(CADDR ,MEQUAL))
+(defmacro mequal-lhs (mequal) `(cadr ,mequal))
+(defmacro mequal-rhs (mequal) `(caddr ,mequal))
 
-(DEFMACRO MAKE-MLIST (&rest ARGS) `(LIST '(MLIST) . ,ARGS))
-(DEFMACRO MAKE-MLIST-L (LLIST) `(CONS '(MLIST) ,LLIST))
-(DEFMACRO MAKE-MLIST-SIMP (&rest ARGS) `(LIST '(MLIST SIMP) . ,ARGS))
-(DEFMACRO MAKE-MLIST-SIMP-L (LLIST) `(CONS '(MLIST SIMP) ,LLIST))
+(defmacro make-mlist (&rest args) `(list '(mlist) . ,args))
+(defmacro make-mlist-l (llist) `(cons '(mlist) ,llist))
+(defmacro make-mlist-simp (&rest args) `(list '(mlist simp) . ,args))
+(defmacro make-mlist-simp-l (llist) `(cons '(mlist simp) ,llist))
 
-(DEFMACRO MAKE-MTEXT (&rest ARGS) `(LIST '(MTEXT) . ,ARGS))
+(defmacro make-mtext (&rest args) `(list '(mtext) . ,args))
 
-(DEFMACRO MAKE-RAT (&rest ARGS) `(LIST '(RAT) . ,ARGS))
-(DEFMACRO MAKE-RAT-SIMP (&rest ARGS) `(LIST '(RAT SIMP) . ,ARGS))
-(DEFMACRO MAKE-RAT-BODY (NUMER DENOM) `(CONS ,NUMER ,DENOM))
-(DEFMACRO RAT-NUMER (RAT) `(CADR ,RAT))
-(DEFMACRO RAT-DENOM (RAT) `(CADDR ,RAT))
+(defmacro make-rat (&rest args) `(list '(rat) . ,args))
+(defmacro make-rat-simp (&rest args) `(list '(rat simp) . ,args))
+(defmacro make-rat-body (numer denom) `(cons ,numer ,denom))
+(defmacro rat-numer (rat) `(cadr ,rat))
+(defmacro rat-denom (rat) `(caddr ,rat))
 
 ;; Schematic of MRAT form:
 ;;  ((MRAT SIMP <varlist> <genvars>) <numer> . <denom>)
@@ -85,38 +85,38 @@
 ;; Representation for X+Y:
 ;;  ((MRAT SIMP ($X $Y) (G0001 G0002)) (G0001 1 1 0 (G0002 1 1)) . 1)
 
-(DEFMACRO MRAT-BODY  (MRAT) `(CDR ,MRAT))
-(DEFMACRO MRAT-NUMER (MRAT) `(CADR ,MRAT))
-(DEFMACRO MRAT-DENOM (MRAT) `(CDDR ,MRAT))
+(defmacro mrat-body  (mrat) `(cdr ,mrat))
+(defmacro mrat-numer (mrat) `(cadr ,mrat))
+(defmacro mrat-denom (mrat) `(cddr ,mrat))
 
-(DEFMACRO MAKE-MRAT (VARLIST GENVARS NUMER DENOM)
-  `((MRAT ,VARLIST ,GENVARS) ,NUMER . ,DENOM))
+(defmacro make-mrat (varlist genvars numer denom)
+  `((mrat ,varlist ,genvars) ,numer . ,denom))
 
-(DEFMACRO MAKE-MRAT-BODY (NUMER DENOM) `(CONS ,NUMER ,DENOM))
+(defmacro make-mrat-body (numer denom) `(cons ,numer ,denom))
 
 ;; Data structures used only in this file.
 
-(DEFMACRO TRIG-CANNON (OPERATOR) `(GET ,OPERATOR 'TRIG-CANNON))
+(defmacro trig-cannon (operator) `(get ,operator 'trig-cannon))
 
 ;; Linear equation -- cons of linear term and constant term.
 
-(DEFMACRO MAKE-LINEQ (LINEAR CONSTANT) `(CONS ,LINEAR ,CONSTANT))
-(DEFMACRO LINEQ-LINEAR   (LINEQ) `(CAR ,LINEQ))
-(DEFMACRO LINEQ-CONSTANT (LINEQ) `(CDR ,LINEQ))
+(defmacro make-lineq (linear constant) `(cons ,linear ,constant))
+(defmacro lineq-linear   (lineq) `(car ,lineq))
+(defmacro lineq-constant (lineq) `(cdr ,lineq))
 
 ;; Solutions -- a pair of polynomial/multiplicity lists
 
-(DEFMACRO MAKE-SOLUTION (WINS LOSSES) `(CONS ,WINS ,LOSSES))
-(DEFMACRO SOLUTION-WINS   (SOLUTION) `(CAR ,SOLUTION))
-(DEFMACRO SOLUTION-LOSSES (SOLUTION) `(CDR ,SOLUTION))
+(defmacro make-solution (wins losses) `(cons ,wins ,losses))
+(defmacro solution-wins   (solution) `(car ,solution))
+(defmacro solution-losses (solution) `(cdr ,solution))
 
 ;; Polynomials -- these appear in the numerator or denominator
 ;; of MRAT forms.  This doesn't handle the case of a coefficient
 ;; polynomial.
 
-(DEFMACRO MAKE-MRAT-POLY (VAR TERMS) `(CONS ,VAR ,TERMS))
-(DEFMACRO POLY-VAR   (POLY) `(CAR ,POLY))
-(DEFMACRO POLY-TERMS (POLY) `(CDR ,POLY))
+(defmacro make-mrat-poly (var terms) `(cons ,var ,terms))
+(defmacro poly-var   (poly) `(car ,poly))
+(defmacro poly-terms (poly) `(cdr ,poly))
 
 
 

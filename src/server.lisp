@@ -10,7 +10,7 @@
   (require 'sb-bsd-sockets))
 
 
-(defvar $In_Netmath nil)
+(defvar $in_netmath nil)
 (defvar $show_openplot t)
 (defvar *socket-connection*)
 

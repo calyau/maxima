@@ -12,1050 +12,1050 @@
 
 (macsyma-module option)
 
-(DECLARE-TOP(SPECIAL OPTIONS HISTORY CRU CRF)
-	 (*EXPR OPTIONS NCDR FULLSTRIP1 RETRIEVE URESTORE NONSYMCHK MDESCRIBE))
+(declare-top(special options history cru crf)
+	    (*expr options ncdr fullstrip1 retrieve urestore nonsymchk mdescribe))
 
-(DEFMSPEC $OPTIONS (X) (SETQ X (CDR X))
-  (COND ((NULL X)
-	 (PRINC "OPTIONS interpreter  (Type `EXIT' to exit.)")
-	 (TERPRI) (OPTIONS '$ALL))
-	((NONSYMCHK (CAR X) 'OPTIONS))
-	(T (CONS '(MLIST) (DOWNS (CAR X))))))
+(defmspec $options (x) (setq x (cdr x))
+	  (cond ((null x)
+		 (princ "OPTIONS interpreter  (Type `EXIT' to exit.)")
+		 (terpri) (options '$all))
+		((nonsymchk (car x) 'options))
+		(t (cons '(mlist) (downs (car x))))))
 
-(DEFUN OPTIONS (ANS)
-  (DO ((HISTORY)) (NIL)
-      (COND ((EQ '$EXIT ANS) (RETURN '$DONE))
-	    ((OR (EQ '$UP ANS) (EQ '$BACK ANS))
-	     (SETQ ANS (CADR HISTORY) HISTORY (CDDR HISTORY))
-	     (DOWN (IF (NULL ANS) '$ALL ANS)))
-	    ((EQ '$TOP ANS) (OPTIONS '$ALL))
-	    ((ATOM ANS) (DOWN ANS))
-	    ((OR (EQ '$DOWN (CAAR ANS)) (EQ '$OPTIONS (CAAR ANS)))
-	     (DOWN (CADR ANS)))
-	    ((EQ '$DESCRIBE (CAAR ANS)) (MDESCRIBE (DECODE (CADR ANS))))
-	    (T (OPT-ERR)))
-      (SETQ ANS (RETRIEVE ": " nil))))
+(defun options (ans)
+  (do ((history)) (nil)
+    (cond ((eq '$exit ans) (return '$done))
+	  ((or (eq '$up ans) (eq '$back ans))
+	   (setq ans (cadr history) history (cddr history))
+	   (down (if (null ans) '$all ans)))
+	  ((eq '$top ans) (options '$all))
+	  ((atom ans) (down ans))
+	  ((or (eq '$down (caar ans)) (eq '$options (caar ans)))
+	   (down (cadr ans)))
+	  ((eq '$describe (caar ans)) (mdescribe (decode (cadr ans))))
+	  (t (opt-err)))
+    (setq ans (retrieve ": " nil))))
 
-(DEFUN DOWN (NODE &AUX OPTS)
-  (SETQ NODE (DECODE NODE) OPTS (DOWNS NODE))
-  (COND ((NULL OPTS) (PRINC "No options") (TERPRI))
-	(T (SETQ HISTORY (CONS NODE HISTORY) OPTIONS OPTS)
-	   (MENU OPTIONS))))
+(defun down (node &aux opts)
+  (setq node (decode node) opts (downs node))
+  (cond ((null opts) (princ "No options") (terpri))
+	(t (setq history (cons node history) options opts)
+	   (menu options))))
 
-(DEFUN UP (NODE &AUX OPTS)
-  (SETQ NODE (DECODE NODE) OPTS (UPS NODE))
-  (COND ((NULL OPTS) (PRINC "No options") (TERPRI))
-	(T (SETQ HISTORY (CONS NODE HISTORY) OPTIONS OPTS)
-	   (MENU OPTIONS))))
+(defun up (node &aux opts)
+  (setq node (decode node) opts (ups node))
+  (cond ((null opts) (princ "No options") (terpri))
+	(t (setq history (cons node history) options opts)
+	   (menu options))))
 
-(DEFUN DOWNS (NODE) (OLDGET NODE 'SUBC))
-(DEFUN UPS (NODE) (OLDGET NODE 'SUPC))
+(defun downs (node) (oldget node 'subc))
+(defun ups (node) (oldget node 'supc))
 
-(DEFUN DECODE (NODE)
-  (COND ((NOT (INTEGERP NODE)) NODE)
-	((OR (ZEROP NODE) (NULL (SETQ NODE (NCDR OPTIONS NODE)))) (NOR-ERR))
-	(T (CAR NODE))))
+(defun decode (node)
+  (cond ((not (integerp node)) node)
+	((or (zerop node) (null (setq node (ncdr options node)))) (nor-err))
+	(t (car node))))
 
-(DEFUN MENU (OPTS)
-  (DO ((L OPTS (CDR L)) (I 1 (f1+ I))) ((NULL L))
-      (PRINC I) (PRINC " - ") (PRINC (FULLSTRIP1 (CAR L)))
-      (COND ((OLDGET (CAR L) 'KIND) (TYO #\SPACE) (PRINC (OLDGET (CAR L) 'KIND))))
-      (TERPRI)))
+(defun menu (opts)
+  (do ((l opts (cdr l)) (i 1 (f1+ i))) ((null l))
+    (princ i) (princ " - ") (princ (fullstrip1 (car l)))
+    (cond ((oldget (car l) 'kind) (tyo #\space) (princ (oldget (car l) 'kind))))
+    (terpri)))
 
 
-(DEFUN OPT-ERR () (PRINC "Illegal command to OPTIONS") (TERPRI))
-(DEFUN NOR-ERR () (PRINC "Number out of range") (TERPRI))
+(defun opt-err () (princ "Illegal command to OPTIONS") (terpri))
+(defun nor-err () (princ "Number out of range") (terpri))
 
 (defmacro subc (a b &rest l)
   `(subc-internal '(,a ,b ,@l)))
 (defun subc-internal (x)
-  (PUTPROP (CAR X) (CADR X) 'KIND)
-  (PUTPROP (CAR X) (CDDR X) 'SUBC))
+  (putprop (car x) (cadr x) 'kind)
+  (putprop (car x) (cddr x) 'subc))
 
 (defmacro supc (a b &rest l)
   `(supc-internal '(,a ,b ,@l)))
 (defun supc-internal (x)
-  (PUTPROP (CAR X) (CADR X) 'KIND)
-  (PUTPROP (CAR X) (CDDR X) 'SUPC))
+  (putprop (car x) (cadr x) 'kind)
+  (putprop (car x) (cddr x) 'supc))
 
-(DEFUN PRINTNET () (PRNET '$ALL 0) NIL)
-(DEFUN PRNET (NODE INDENT)
-  (TERPRI)
-  (DO ((I 1 (f1+ I))) ((> I INDENT)) (TYO #\TAB)) (PRINC (FULLSTRIP1 NODE))
-  (COND ((OLDGET NODE 'KIND) (TYO #\SPACE) (PRINC (OLDGET NODE 'KIND))))
-  (MAPC #'(LAMBDA (L) (PRNET L (f1+ INDENT))) (DOWNS NODE)))
+(defun printnet () (prnet '$all 0) nil)
+(defun prnet (node indent)
+  (terpri)
+  (do ((i 1 (f1+ i))) ((> i indent)) (tyo #\tab)) (princ (fullstrip1 node))
+  (cond ((oldget node 'kind) (tyo #\space) (princ (oldget node 'kind))))
+  (mapc #'(lambda (l) (prnet l (f1+ indent))) (downs node)))
 
 ;;Copyright 1980, Massachusetts Institute of Technology
-(SUBC $ALL () $INTERACTION $DEBUGGING $EVALUATION $LISTS $MATRICES 
-	      $SIMPLIFICATION $REPRESENTATIONS $PLOTTING $TRANSLATION
-	      $PATTERN-MATCHING $TENSORS)
+(subc $all () $interaction $debugging $evaluation $lists $matrices 
+      $simplification $representations $plotting $translation
+      $pattern-matching $tensors)
 
-(SUBC $ABS (C))
+(subc $abs (c))
 
-(SUBC $ADDROW (C))
+(subc $addrow (c))
 
-(SUBC $ALARMCLOCK (C))
+(subc $alarmclock (c))
 
-(SUBC $ALIASES (V))
+(subc $aliases (v))
 
-(SUBC $ALGSYS (C))
+(subc $algsys (c))
 
-(SUBC $ALLROOTS (C))
+(subc $allroots (c))
 
-(SUBC $APPEND (C))
+(subc $append (c))
 
-(SUBC $APPENDFILE (C))
+(subc $appendfile (c))
 
-(SUBC $APPLY (C))
+(subc $apply (c))
 
-(SUPC $APROPOS (C) $USER-AIDS $GENERAL-INFO)
+(supc $apropos (c) $user-aids $general-info)
 
-(SUBC $ARRAYS () $ARRAY)
+(subc $arrays () $array)
 
-(SUBC $ARRAYS (V))
+(subc $arrays (v))
 
-(SUBC $ARRAY (C))
+(subc $array (c))
 
-(SUBC $ARRAYINFO (C))
+(subc $arrayinfo (c))
 
-(SUBC $ARRAYMAKE (C))
+(subc $arraymake (c))
 
-(SUBC $ASSUME (C))
+(subc $assume (c))
 
-(SUBC $AT (C))
+(subc $at (c))
 
-(SUBC $ATOM (C))
+(subc $atom (c))
 
-(SUBC $ATVALUE (C))
+(subc $atvalue (c))
 
-(SUBC $AUGCOEFMATRIX (C))
+(subc $augcoefmatrix (c))
 
-(SUBC $AUTOMATIC () $TRIGEXPAND $TRIGINVERSES $TRIGSIGN $EXPONENTIALIZE
-                    $LOGARC $DEMOIVRE $LOGEXPAND $RADEXPAND)
+(subc $automatic () $trigexpand $triginverses $trigsign $exponentialize
+      $logarc $demoivre $logexpand $radexpand)
 
-(SUBC $BAKSOLVE (C))
+(subc $baksolve (c))
 
-(SUBC $BATCH (C))
+(subc $batch (c))
 
-(SUBC $BATCON (C))
+(subc $batcon (c))
 
-(SUBC $BERN (C))
+(subc $bern (c))
 
-(SUBC $BERNPOLY (C))
+(subc $bernpoly (c))
 
-(SUBC $BETA (C))
+(subc $beta (c))
 
-(SUBC $BFLOAT (C))
+(subc $bfloat (c))
 
-(SUPC $BFTRUNC (S) $DISPLAY)
+(supc $bftrunc (s) $display)
 
-(SUBC $BREAK (C))
+(subc $break (c))
 
-(SUBC $CABS (C))
+(subc $cabs (c))
 
-(SUBC $CATCH (C))
+(subc $catch (c))
 
-(SUBC $CF (C))
+(subc $cf (c))
 
-(SUBC $CFDISREP (C))
+(subc $cfdisrep (c))
 
-(SUBC $CFEXPAND (C))
+(subc $cfexpand (c))
 
-(SUBC $CHANGEVAR (C))
+(subc $changevar (c))
 
-(SUBC $CHARPOLY (C))
+(subc $charpoly (c))
 
-(SUBC $CHR1 (C))
+(subc $chr1 (c))
 
-(SUBC $CHR2 (C))
+(subc $chr2 (c))
 
-(SUBC $CHRISTOF (C))
+(subc $christof (c))
 
-(SUBC $CLOSEFILE (C))
+(subc $closefile (c))
 
-(SUBC $COEFF (C))
+(subc $coeff (c))
 
-(SUBC $COEFMATRIX (C))
+(subc $coefmatrix (c))
 
-(SUBC $COL (C))
+(subc $col (c))
 
-(SUBC $COMEXP (C))
+(subc $comexp (c))
 
-(SUBC $COMPILE (C))
+(subc $compile (c))
 
-(SUBC $CONCAT (C))
+(subc $concat (c))
 
-(SUBC $COMMAND-FILES (C) $BATCH $BATCON $DEMO)
+(subc $command-files (c) $batch $batcon $demo)
 
-(SUBC $COMPFILE (C))
+(subc $compfile (c))
 
-(SUBC $COMPLEX () $REALPART $IMAGPART $RECTFORM $POLARFORM $CABS)
+(subc $complex () $realpart $imagpart $rectform $polarform $cabs)
 
-(SUBC $CONS (C))
+(subc $cons (c))
 
-(SUBC $CONSTANTP (C))
+(subc $constantp (c))
 
-(SUBC $CONTENT (C))
+(subc $content (c))
 
-(SUBC $CONTRACT (C))
+(subc $contract (c))
 
-(SUBC $COPYLIST (C))
+(subc $copylist (c))
 
-(SUBC $COVDIFF (C))
+(subc $covdiff (c))
 
-(SUBC $COPYMATRIX (C) $RATMX $SPARSE $LISTARITH $DETOUT $DOALLMXOPS
-                      $DOMXMXOPS $DOSCMXPLUS $SCALARMATRIXP)
+(subc $copymatrix (c) $ratmx $sparse $listarith $detout $doallmxops
+      $domxmxops $doscmxplus $scalarmatrixp)
 
-(SUBC $CURVATURE () $SCURVATURE $RIEMANN $RAISERIEMANN $RINVARIANT $WEYL
-                    $DSCALAR $DALEM $YT)
+(subc $curvature () $scurvature $riemann $raiseriemann $rinvariant $weyl
+      $dscalar $dalem $yt)
 
-(SUBC $DALEM (C))
+(subc $dalem (c))
 
-(SUBC $DEBUGMODE (C))
+(subc $debugmode (c))
 
-(SUBC $DECLARE (C))
+(subc $declare (c))
 
-(SUBC $DEFCON (C))
+(subc $defcon (c))
 
-(SUBC $DEFINE (C))
+(subc $define (c))
 
-(SUBC $DEFMATCH (C))
+(subc $defmatch (c))
 
-(SUBC $DEFRULE (C))
+(subc $defrule (c))
 
-(SUBC $DEFTAYLOR (C))
+(subc $deftaylor (c))
 
-(SUBC $DEBUGGING () $TRACE $DEBUG $DEBUGMODE $BREAK $BINDTEST $OPTIONSET)
+(subc $debugging () $trace $debug $debugmode $break $bindtest $optionset)
 
-(SUBC $DELETE (C))
+(subc $delete (c))
 
-(SUPC $DERIVABBREV (S) $DISPLAY)
+(supc $derivabbrev (s) $display)
 
-(SUBC $DEFILE (C))
+(subc $defile (c))
 
-(SUBC $DELTA (C))
+(subc $delta (c))
 
-(SUBC $DEMO (C))
+(subc $demo (c))
 
-(SUBC $DENOM (C))
+(subc $denom (c))
 
-(SUBC $DEPENDS (C))
+(subc $depends (c))
 
-(SUBC $DEPENDENCIES (V))
+(subc $dependencies (v))
 
-(SUBC $DERIVDEGREE (C))
+(subc $derivdegree (c))
 
-(SUBC $DETERMINANT (C))
+(subc $determinant (c))
 
-(SUBC $DESCRIBE (C))
+(subc $describe (c))
 
-(SUBC $DIAGMATRIX (C))
+(subc $diagmatrix (c))
 
-(SUBC $DIFF (C) $DEPENDENCIES $GRADEF)
+(subc $diff (c) $dependencies $gradef)
 
-(SUBC $DISPLAY (C) $POWERDISP $SQRTDISPFLAG $STARDISP $DERIVABBREV 
-		   $EXPTDISPFLAG $%EDISPFLAG $BFTRUNC $PFEFORMAT
-		   $NOUNDISP $NOLABELS)
+(subc $display (c) $powerdisp $sqrtdispflag $stardisp $derivabbrev 
+      $exptdispflag $%edispflag $bftrunc $pfeformat
+      $noundisp $nolabels)
 
-(SUBC $DISP (C))
+(subc $disp (c))
 
-(SUBC $DISPFUN (C))
+(subc $dispfun (c))
 
-(SUBC $DISPRULE (C))
+(subc $disprule (c))
 
-(SUBC $DISPTERMS (C))
+(subc $dispterms (c))
 
-(SUBC $DIVIDE (C))
+(subc $divide (c))
 
-(SUBC $DPART (C))
+(subc $dpart (c))
 
-(SUBC $DSCALAR (C))
+(subc $dscalar (c))
 
-(SUBC $DSKGC (C))
+(subc $dskgc (c))
 
-(SUBC $DUMMY (C))
+(subc $dummy (c))
 
 
-(SUBC $EDITING () $MACSYMA-LINE-EDITOR $TECO)
+(subc $editing () $macsyma-line-editor $teco)
 
-(SUPC $%EDISPFLAG (S) $DISPLAY)
+(supc $%edispflag (s) $display)
 
-(SUBC $ECHELON (C))
+(subc $echelon (c))
 
-(SUBC $EINSTEIN (C) $RATEINSTEIN $FACRAT)
+(subc $einstein (c) $rateinstein $facrat)
 
-(SUBC $EMATRIX (C))
+(subc $ematrix (c))
 
-(SUBC $ENDCONS (C))
+(subc $endcons (c))
 
-(SUBC $ENTERMATRIX (C) $RATMX $SPARSE $LISTARITH $DETOUT $DOALLMXOPS
-                       $DOMXMXOPS $DOSCMXPLUS $SCALARMATRIXP)
+(subc $entermatrix (c) $ratmx $sparse $listarith $detout $doallmxops
+      $domxmxops $doscmxplus $scalarmatrixp)
 
-(SUBC $ENTIER (C))
+(subc $entier (c))
 
-(SUBC $EQUAL (C))
+(subc $equal (c))
 
-(SUBC $ERF (C))
+(subc $erf (c))
 
-(SUBC $ERRCATCH (C))
+(subc $errcatch (c))
 
-(SUBC $ERROR (C))
+(subc $error (c))
 
-(SUBC $EULER (C))
+(subc $euler (c))
 
-(SUBC $EXP (C))
+(subc $exp (c))
 
-(SUBC $EXPLICIT () $TSETUP $QUANTITIES $CURVATURE)
+(subc $explicit () $tsetup $quantities $curvature)
 
-(SUBC $EXTEND (C))
+(subc $extend (c))
 
-(SUBC $EZGCD (C))
+(subc $ezgcd (c))
 
-(SUBC $EXPAND (C) $MAXPOSEX $MAXNEGEX)
+(subc $expand (c) $maxposex $maxnegex)
 
-(SUBC $EXPANSION () $EXPAND $RATEXPAND)
+(subc $expansion () $expand $ratexpand)
 
-(SUPC $EXPONENTIALIZE (S) $EV $SIMPLIFICATION)
+(supc $exponentialize (s) $ev $simplification)
 
-(SUPC $EXPTDISPFLAG (S) $DISPLAY)
+(supc $exptdispflag (s) $display)
 
-(SUBC $EV (C) $EXPONENTIALIZE $%IARGS $LOGARC $%PIARGS $TRIGSIGN 
-	      $TRIGINVERSES)
+(subc $ev (c) $exponentialize $%iargs $logarc $%piargs $trigsign 
+      $triginverses)
 
-(SUBC $EVALUATION () $VARIABLE $FUNCTION $ARRAY $SIMP)
+(subc $evaluation () $variable $function $array $simp)
 
-(SUPC $FACRAT (S) $EINSTEIN $REIMANN $WEYL)
+(supc $facrat (s) $einstein $reimann $weyl)
 
-(SUBC $FACTCOMB (C))
+(subc $factcomb (c))
 
-(SUBC $FACTOR (C) $RATVARS)
+(subc $factor (c) $ratvars)
 
-(SUBC $FACTORSUM (C) $RATVARS)
+(subc $factorsum (c) $ratvars)
 
-(SUBC $FACTORING () $FACTOR $GFACTOR $FACTORSUM $GFACTORSUM $SQFR $PARTITION)
+(subc $factoring () $factor $gfactor $factorsum $gfactorsum $sqfr $partition)
 
-(SUBC $FASSAVE (C))
+(subc $fassave (c))
 
-(SUBC $FASTTIMES (C))
+(subc $fasttimes (c))
 
-(SUBC $FIB (C))
+(subc $fib (c))
 
-(SUBC $FIRST (C))
+(subc $first (c))
 
-(SUBC $FLOAT (C))
+(subc $float (c))
 
-(SUBC $FLOATNUMP (C))
+(subc $floatnump (c))
 
-(SUBC $FORGET (C))
+(subc $forget (c))
 
-(SUBC $FPPREC (C))
+(subc $fpprec (c))
 
-(SUBC $FREEOF (C))
+(subc $freeof (c))
 
-(SUBC $FILES () $FILE-CREATION $FILE-DELETION $SAVE-FILES $COMMAND-FILES)
+(subc $files () $file-creation $file-deletion $save-files $command-files)
 
-(SUBC $FILE-CREATION () $APPENDFILE $CLOSEFILE $FASSAVE $STORE
-                         $SAVE $WRITEFILE)
+(subc $file-creation () $appendfile $closefile $fassave $store
+      $save $writefile)
 
-(SUBC $FILE-DELETION () $DEFILE $REMFILE)
+(subc $file-deletion () $defile $remfile)
 
-(SUBC $FULLMAP (C) $MAPERROR $MAPRAT)
+(subc $fullmap (c) $maperror $maprat)
 
-(SUBC $FULLMAPL (C) $MAPERROR $MAPRAT)
+(subc $fullmapl (c) $maperror $maprat)
 
-(SUBC $FUNCTIONS (V))
+(subc $functions (v))
 
-(SUBC $GAMMA (C))
+(subc $gamma (c))
 
-(SUBC $GCD (C))
+(subc $gcd (c))
 
-(SUBC $GENERAL-INFO () $DESCRIBE $EXAMPLE $OPTIONS $PRIMER $APROPOS)
+(subc $general-info () $describe $example $options $primer $apropos)
 
-(SUBC $GENFACT (C))
+(subc $genfact (c))
 
-(SUBC $GENMATRIX (C) $RATMX $SPARSE $LISTARITH $DETOUT $DOALLMXOPS
-                     $DOMXMXOPS $DOSCMXPLUS $SCALARMATRIXP)
+(subc $genmatrix (c) $ratmx $sparse $listarith $detout $doallmxops
+      $domxmxops $doscmxplus $scalarmatrixp)
 
-(SUBC $GET (C))
+(subc $get (c))
 
-(SUBC $GETCHAR (C))
+(subc $getchar (c))
 
-(SUBC $GFACTOR (C) $RATVARS)
+(subc $gfactor (c) $ratvars)
 
-(SUBC $GFACTORSUM (C) $RATVARS)
+(subc $gfactorsum (c) $ratvars)
 
-(SUBC $GRADEF (C))
+(subc $gradef (c))
 
-(SUBC $GRADEFS (V))
+(subc $gradefs (v))
 
-(SUBC $GRAPH (C) $PLOTHEIGHT $LINEL)
+(subc $graph (c) $plotheight $linel)
 
-(SUBC $HIPOW (C))
+(subc $hipow (c))
 
-(SUBC $HORNER (C))
+(subc $horner (c))
 
-(SUPC $%IARGS (S) $EV $SIMPLIFICATION)
+(supc $%iargs (s) $ev $simplification)
 
-(SUPC $INCHAR (V))
+(supc $inchar (v))
 
-(SUBC $IDENT (C))
+(subc $ident (c))
 
-(SUBC $ILT (C))
+(subc $ilt (c))
 
-(SUBC $IMAGPART (C))
+(subc $imagpart (c))
 
-(SUBC $INDICES (C))
+(subc $indices (c))
 
-(SUBC $INPART (C))
+(subc $inpart (c))
 
-(SUBC $INTEGERP (C))
+(subc $integerp (c))
 
-(SUBC $INTEGRATE (C))
+(subc $integrate (c))
 
-(SUBC $INTOPOIS (C))
+(subc $intopois (c))
 
-(SUBC $INFIX (C))
+(subc $infix (c))
 
-(SUBC $INPUT () $SYNTAX $EDITING $RETRIEVE $READ $INCHAR)
+(subc $input () $syntax $editing $retrieve $read $inchar)
 
-(SUBC $INTERACTION () $INPUT $OUTPUT $FILES $INFORMATION $USER-AIDS
-                      $INFORMATION)
+(subc $interaction () $input $output $files $information $user-aids
+      $information)
 
-(SUBC $INFOLISTS (V))
+(subc $infolists (v))
 
-(SUBC $INFORMATION () $GENERAL-INFO $SPECIFIC-INFO $INFORMATION-LISTS)
+(subc $information () $general-info $specific-info $information-lists)
 
-(SUBC $INFORMATION-LISTS () $INFOLISTS $MYOPTIONS $ALIASES $LABELS
-                            $LABELS $VALUES $FUNCTIONS $RULES $PROPS
-			    $MATCHDECLARES $MODEDECLARES $ARRAYS
-			    $GRADEFS $DEPENDENCIES)
-(SUBC $IS (C) $PREDERROR)
+(subc $information-lists () $infolists $myoptions $aliases $labels
+      $labels $values $functions $rules $props
+      $matchdeclares $modedeclares $arrays
+      $gradefs $dependencies)
+(subc $is (c) $prederror)
 
-(SUBC $ISOLATE (C))
+(subc $isolate (c))
 
-(SUBC $ISQRT (C))
+(subc $isqrt (c))
 
-(SUBC $KILL (C))
+(subc $kill (c))
 
-(SUBC $LABELS (V))
+(subc $labels (v))
 
-(SUBC $LAMBDA (C))
+(subc $lambda (c))
 
-(SUBC $LAPLACE (C))
+(subc $laplace (c))
 
-(SUBC $LAST (C))
+(subc $last (c))
 
-(SUBC $LC (C))
+(subc $lc (c))
 
-(SUBC $LDEFINT (C))
+(subc $ldefint (c))
 
-(SUBC $LDISP (C))
+(subc $ldisp (c))
 
-(SUBC $LDISPLAY (C))
+(subc $ldisplay (c))
 
-(SUBC $LENGTH (C))
+(subc $length (c))
 
-(SUBC $LET (C))
+(subc $let (c))
 
-(SUBC $LETRULES (C))
+(subc $letrules (c))
 
-(SUBC $LETSIMP (C))
+(subc $letsimp (c))
 
-(SUBC $LHS (C))
+(subc $lhs (c))
 
-(SUBC $LIMIT (C))
+(subc $limit (c))
 
-(SUPC $LINEL (V) $DISPLAY $PLOT $GRAPH $MULTIGRAPH $PARAMPLOT)
+(supc $linel (v) $display $plot $graph $multigraph $paramplot)
 
-(SUBC $LISTS () $CONS $ENDCONS $APPEND $MEMBER $REVERSE $FIRST $REST
-	        $LAST $DELETE $LENGTH $MAPPING)
+(subc $lists () $cons $endcons $append $member $reverse $first $rest
+      $last $delete $length $mapping)
 
-(SUPC $LISTARITH (S) $ENTERMATRIX $MATRIX $GENMATRIX $COPYMATRIX
-                     $ADDROW $TRANSPOSE $ECHELON $TRIANGULARIZE
-                     $RANK $DETERMINANT $CHARPOLY)
+(supc $listarith (s) $entermatrix $matrix $genmatrix $copymatrix
+      $addrow $transpose $echelon $triangularize
+      $rank $determinant $charpoly)
 
-(SUBC $LINSOLVE (C))
+(subc $linsolve (c))
 
-(SUBC $LISTOFVARS (C))
+(subc $listofvars (c))
 
-(SUBC $LISTP (C))
+(subc $listp (c))
 
-(SUBC $LOADFILE (C))
+(subc $loadfile (c))
 
-(SUBC $LOCAL (C))
+(subc $local (c))
 
-(SUBC $LOG (C))
+(subc $log (c))
 
-(SUBC $LOGOUT (C))
+(subc $logout (c))
 
-(SUBC $LOPOW (C))
+(subc $lopow (c))
 
-(SUBC $LORENTZ (C))
+(subc $lorentz (c))
 
-(SUBC $LPART (C))
+(subc $lpart (c))
 
-(SUBC $LRICCICOM (C))
+(subc $lriccicom (c))
 
-(SUPC $LOGARC (S) $EV $SIMPLIFICATION)
+(supc $logarc (s) $ev $simplification)
 
-(SUBC $MACSYMA-LINE-EDITOR ())
+(subc $macsyma-line-editor ())
 
-(SUBC $MAKEBOX (C))
+(subc $makebox (c))
 
-(SUBC $MAKENONSCALAR (C))
+(subc $makenonscalar (c))
 
-(SUBC $MAP (C) $MAPERROR $MAPRAT)
+(subc $map (c) $maperror $maprat)
 
-(SUBC $MAPLIST (C) $MAPERROR $MAPRAT)
+(subc $maplist (c) $maperror $maprat)
 
-(SUPC $MAPERROR (S) $MAP $MAPLIST $FULLMAP $FULLMAPL)
+(supc $maperror (s) $map $maplist $fullmap $fullmapl)
 
-(SUBC $MAPPING () $MAP $MAPLIST $FULLMAP $FULLMAPL $SCANMAP)
+(subc $mapping () $map $maplist $fullmap $fullmapl $scanmap)
 
-(SUPC $MAPRAT (S) $MAP $MAPLIST $FULLMAP $FULLMAPL)
+(supc $maprat (s) $map $maplist $fullmap $fullmapl)
 
-(SUBC $MATCHDECLARES (V))
+(subc $matchdeclares (v))
 
-(SUBC $MATCHDECLARE (C))
+(subc $matchdeclare (c))
 
-(SUBC $MATCHFIX (C))
+(subc $matchfix (c))
 
-(SUBC $MATRICES () $MATRIX-CONSTRUCTION $MATRIX-MANIPULATION)
+(subc $matrices () $matrix-construction $matrix-manipulation)
 
-(SUBC $MATRIX-CONSTRUCTION () $ENTERMATRIX $MATRIX $GENMATRIX $COPYMATRIX
-                              $ADDROW)
+(subc $matrix-construction () $entermatrix $matrix $genmatrix $copymatrix
+      $addrow)
 
-(SUBC $MATRIX-MANIPULATION () $TRANSPOSE $ECHELON $TRIANGULARIZE
-                              $RANK $DETERMINANT $CHARPOLY)
+(subc $matrix-manipulation () $transpose $echelon $triangularize
+      $rank $determinant $charpoly)
 
-(SUBC $MATRIX (C) $RATMX $SPARSE $LISTARITH $DETOUT $DOALLMXOPS
-                  $DOMXMXOPS $DOSCMXPLUS $SCALARMATRIXP)
+(subc $matrix (c) $ratmx $sparse $listarith $detout $doallmxops
+      $domxmxops $doscmxplus $scalarmatrixp)
 
-(SUBC $MATRIXMAP (C))
+(subc $matrixmap (c))
 
-(SUBC $MATRIXP (C))
+(subc $matrixp (c))
 
-(SUBC $MAX (C))
+(subc $max (c))
 
-(SUBC $MAXNEGEX (S) $EXPAND)
+(subc $maxnegex (s) $expand)
 
-(SUBC $MAXPOSEX (S) $EXPAND)
+(subc $maxposex (s) $expand)
 
-(SUBC $MEMBER (C))
+(subc $member (c))
 
-(SUBC $MIN (C))
+(subc $min (c))
 
-(SUBC $MINFACTORIAL (C))
+(subc $minfactorial (c))
 
-(SUBC $MINOR (C))
+(subc $minor (c))
 
-(SUBC $MOD (C))
+(subc $mod (c))
 
-(SUBC $MODEDECLARE (C))
+(subc $modedeclare (c))
 
-(SUBC $MODEDECLARES (V))
+(subc $modedeclares (v))
 
-(SUBC $MOTION (C))
+(subc $motion (c))
 
-(SUBC $MULTIGRAPH (C) $PLOTHEIGHT $LINEL)
+(subc $multigraph (c) $plotheight $linel)
 
-(SUBC $MULTTHRU (C))
+(subc $multthru (c))
 
-(SUBC $MYOPTIONS (V))
+(subc $myoptions (v))
 
-(SUBC $NARY (C))
+(subc $nary (c))
 
-(SUBC $NEWDET (C))
+(subc $newdet (c))
 
-(SUBC $NONSCALARP (C))
+(subc $nonscalarp (c))
 
-(SUBC $NOUNIFY (C))
+(subc $nounify (c))
 
-(SUBC $NOFIX (C))
+(subc $nofix (c))
 
-(SUPC $NOLABELS (S) $DISPLAY)
+(supc $nolabels (s) $display)
 
-(SUPC $NOUNDISP (S) $DISPLAY)
+(supc $noundisp (s) $display)
 
-(SUBC $NROOTS (C))
+(subc $nroots (c))
 
-(SUBC $NTERMS (C))
+(subc $nterms (c))
 
-(SUBC $NTERMSG (C))
+(subc $ntermsg (c))
 
-(SUBC $NTERMSRCI (C))
+(subc $ntermsrci (c))
 
-(SUBC $NUM (C))
+(subc $num (c))
 
-(SUBC $NUMBERP (C))
+(subc $numberp (c))
 
-(SUBC $NUMERVAL (C))
+(subc $numerval (c))
 
-(SUBC $NUMFACTOR (C))
+(subc $numfactor (c))
 
-(SUBC $OPTIMIZE (C))
+(subc $optimize (c))
 
-(SUBC $OPTIONS (C) $DOWN $UP $BACK $DESCRIBE $EXIT)
+(subc $options (c) $down $up $back $describe $exit)
 
-(SUBC $ORDERGREAT (C))
+(subc $ordergreat (c))
 
-(SUBC $ORDERLESS (C))
+(subc $orderless (c))
 
-(SUBC $OTHER-TRANSFORMATIONS () $TRIGREDUCE $TRIGEXPAND $FACTCOMB $LOGCONTRACT)
+(subc $other-transformations () $trigreduce $trigexpand $factcomb $logcontract)
 
-(SUBC $OUTOFPOIS (C))
+(subc $outofpois (c))
 
-(SUBC $OUTCHAR (V))
+(subc $outchar (v))
 
-(SUBC $OUTPUT () $PRINT $DISPLAY $OUTCHAR)
+(subc $output () $print $display $outchar)
 
-(SUBC $PARAMPLOT (C) $PLOTHEIGHT $LINEL)
+(subc $paramplot (c) $plotheight $linel)
 
-(SUBC $PART-FUNCTIONS () $PART $INPART $LHS $RHS %NUM $DENOM $COEFF $$FIRST
-                         $REST $LAST $RATCOEF)
+(subc $part-functions () $part $inpart $lhs $rhs %num $denom $coeff $$first
+      $rest $last $ratcoef)
 
-(SUBC $PART (C))
+(subc $part (c))
 
-(SUBC $PARTFRAC (C))
+(subc $partfrac (c))
 
-(SUBC $PARTITION (C)  $RATVARS)
+(subc $partition (c)  $ratvars)
 
-(SUPC $PFEFORMAT (S) $DISPLAY)
+(supc $pfeformat (s) $display)
 
-(SUPC $%PIARGS (S) $EV $SIMPLIFICATION)
+(supc $%piargs (s) $ev $simplification)
 
-(SUBC $PICKAPART (C))
+(subc $pickapart (c))
 
-(SUBC $PLAYBACK (C))
+(subc $playback (c))
 
-(SUBC $PLOG (C))
+(subc $plog (c))
 
-(SUBC $PLOT (C) $PLOTHEIGHT $LINEL)
+(subc $plot (c) $plotheight $linel)
 
-(SUPC $PLOTHEIGHT (V) $PLOT $GRAPH $MULTIGRAPH $PARAMPLOT)
+(supc $plotheight (v) $plot $graph $multigraph $paramplot)
 
-(SUBC $PLOTTING () $PLOT $GRAPH $MULTIGRAPH $PARAMPLOT)
+(subc $plotting () $plot $graph $multigraph $paramplot)
 
-(SUBC $POISDIFF (C))
+(subc $poisdiff (c))
 
-(SUBC $POISEXPT (C))
+(subc $poisexpt (c))
 
-(SUBC $POISINT (C))
+(subc $poisint (c))
 
-(SUBC $POISMAP (C))
+(subc $poismap (c))
 
-(SUBC $POISPLUS (C))
+(subc $poisplus (c))
 
-(SUBC $POISSIMP (C))
+(subc $poissimp (c))
 
-(SUBC $POISSUBST (C))
+(subc $poissubst (c))
 
-(SUBC $POISTIMES (C))
+(subc $poistimes (c))
 
-(SUBC $POISTRIM (C))
+(subc $poistrim (c))
 
-(SUBC $POLARFORM (C))
+(subc $polarform (c))
 
-(SUBC $POLYSIGN (C))
+(subc $polysign (c))
 
-(SUBC $POSTFIX (C))
+(subc $postfix (c))
 
-(SUPC $POWERDISP (S) $DISPLAY)
+(supc $powerdisp (s) $display)
 
-(SUBC $POWERSERIES (C))
+(subc $powerseries (c))
 
-(SUPC $PREDERROR (S) $IS)
+(supc $prederror (s) $is)
 
-(SUBC $PREDICATES () $IS $ZEROEQUIV $ASSUME $FORGET)
+(subc $predicates () $is $zeroequiv $assume $forget)
 
-(SUBC $PREFIX (C))
+(subc $prefix (c))
 
-(SUBC $PRIMER (C))
+(subc $primer (c))
 
-(SUBC $PRINT (C))
+(subc $print (c))
 
-(SUBC $PRINTPOIS (C))
+(subc $printpois (c))
 
-(SUBC $PRINTPROPS (C))
+(subc $printprops (c))
 
-(SUBC $PRODUCT (C))
+(subc $product (c))
 
-(SUBC $PROPS (V))
+(subc $props (v))
 
-(SUBC $PROPERTIES (C))
+(subc $properties (c))
 
-(SUBC $PROPVARS (C))
+(subc $propvars (c))
 
-(SUBC $PSI (C))
+(subc $psi (c))
 
-(SUBC $PUT (C))
+(subc $put (c))
 
-(SUBC $QPUT (C))
+(subc $qput (c))
 
-(SUBC $QUANTITIES () $CHRISTOF $MOTION $RICCICOM $NTERMSRCI $LRICCICOM
-                     $EINSTEIN $NTERMSG)
+(subc $quantities () $christof $motion $riccicom $ntermsrci $lriccicom
+      $einstein $ntermsg)
 
-(SUBC $QUIT (C))
+(subc $quit (c))
 
-(SUBC $QUNIT (C))
+(subc $qunit (c))
 
-(SUBC $QUOTIENT (C))
+(subc $quotient (c))
 
-(SUBC $RADCAN (C))
+(subc $radcan (c))
 
-(SUBC $RAISERIEMANN (C))
+(subc $raiseriemann (c))
 
-(SUBC $RANDOM (C))
+(subc $random (c))
 
-(SUBC $RANK (C))
+(subc $rank (c))
 
-(SUBC $RAT (C))
+(subc $rat (c))
 
-(SUBC $RATCOEF (C))
+(subc $ratcoef (c))
 
-(SUBC $RATDENOM (C))
+(subc $ratdenom (c))
 
-(SUBC $RATDIFF (C))
+(subc $ratdiff (c))
 
-(SUBC $RATDISREP (C))
+(subc $ratdisrep (c))
 
-(SUPC $RATEINSTEIN (S) $EINSTEIN)
+(supc $rateinstein (s) $einstein)
 
-(SUBC $RATEXPAND (C))
+(subc $ratexpand (c))
 
-(SUBC $RATIONAL () $EXPAND $MULTTHRU $XTHRU $COMBINE $FACTOR $FACTORSUM
-                   $FACTOROUT $SQFR $RATSIMP $PARTFRAC)
+(subc $rational () $expand $multthru $xthru $combine $factor $factorsum
+      $factorout $sqfr $ratsimp $partfrac)
 
-(SUPC $RATMX (S) $ENTERMATRIX $MATRIX $GENMATRIX $COPYMATRIX
-                   $ADDROW $TRANSPOSE $ECHELON $TRIANGULARIZE
-                   $RANK $DETERMINANT $CHARPOLY)
+(supc $ratmx (s) $entermatrix $matrix $genmatrix $copymatrix
+      $addrow $transpose $echelon $triangularize
+      $rank $determinant $charpoly)
 
-(SUBC $RATNUMER (C))
+(subc $ratnumer (c))
 
-(SUBC $RATNUMP (C))
+(subc $ratnump (c))
 
-(SUBC $RATP (C))
+(subc $ratp (c))
 
-(SUPC $RATRIEMANN (S) $RIEMANN)
+(supc $ratriemann (s) $riemann)
 
-(SUBC $RATSIMP (C))
+(subc $ratsimp (c))
 
-(SUBC $RATSUBST (C))
+(subc $ratsubst (c))
 
-(SUPC $RATVARS (V))
+(supc $ratvars (v))
 
-(SUBC $RATWEIGHT (C))
+(subc $ratweight (c))
 
-(SUPC $RATWEYL (S) $WEYL)
+(supc $ratweyl (s) $weyl)
 
-(SUBC $READ (C))
+(subc $read (c))
 
-(SUBC $REALPART (C))
+(subc $realpart (c))
 
-(SUBC $REALROOTS (C))
+(subc $realroots (c))
 
-(SUBC $RECTFORM (C))
+(subc $rectform (c))
 
-(SUBC $REM (C))
+(subc $rem (c))
 
-(SUBC $REMAINDER (C))
+(subc $remainder (c))
 
-(SUBC $REMARRAY (C))
+(subc $remarray (c))
 
-(SUBC $REMBOX (C))
+(subc $rembox (c))
 
-(SUBC $REMCON (C))
+(subc $remcon (c))
 
-(SUBC $REMFILE (C))
+(subc $remfile (c))
 
-(SUBC $REMFUNCTION (C))
+(subc $remfunction (c))
 
-(SUBC $REMLET (C))
+(subc $remlet (c))
 
-(SUBC $REMOVE (C))
+(subc $remove (c))
 
-(SUBC $REMRULE (C))
+(subc $remrule (c))
 
-(SUBC $RETRIEVE (C))
+(subc $retrieve (c))
 
-(SUBC $REMTRACE (C))
+(subc $remtrace (c))
 
-(SUBC $REMVALUE (C))
+(subc $remvalue (c))
 
-(SUBC $RENAME (C))
+(subc $rename (c))
 
-(SUBC $RESET (C))
+(subc $reset (c))
 
-(SUBC $RESIDUE (C))
+(subc $residue (c))
 
-(SUBC $REPRESENTATIONS () $GENERAL $CRE $TRANSFORMATIONS $SUBSTITUTIONS
-                          $PART-FUNCTIONS)
+(subc $representations () $general $cre $transformations $substitutions
+      $part-functions)
 
-(SUBC $REST (C))
+(subc $rest (c))
 
-(SUBC $REVERSE (C))
+(subc $reverse (c))
 
-(SUBC $RESTORE (C))
+(subc $restore (c))
 
-(SUBC $RESULTANT (C))
+(subc $resultant (c))
 
-(SUBC $REVEAL (C))
+(subc $reveal (c))
 
-(SUBC $RHS (C))
+(subc $rhs (c))
 
-(SUBC $RICCICOM (C))
+(subc $riccicom (c))
 
-(SUBC $RIEMANN (C) $RATRIEMANN $FACRAT)
+(subc $riemann (c) $ratriemann $facrat)
 
-(SUBC $RINVARIENT (C))
+(subc $rinvarient (c))
 
-(SUBC $RISCH (C))
+(subc $risch (c))
 
-(SUBC $ROW (C))
+(subc $row (c))
 
-(SUBC $RULES (V))
+(subc $rules (v))
 
-(SUBC $SAVE-FILES (C) $LOADFILE $RESTORE)
+(subc $save-files (c) $loadfile $restore)
 
-(SUBC $SAVE (C))
+(subc $save (c))
 
-(SUBC $SCANMAP (C))
+(subc $scanmap (c))
 
-(SUBC $SCURVATURE (C))
+(subc $scurvature (c))
 
-(SUBC $SEND (C))
+(subc $send (c))
 
-(SUBC $SETELMX (C))
+(subc $setelmx (c))
 
-(SUBC $SETUP (C))
+(subc $setup (c))
 
-(SUBC $SHOW (C))
+(subc $show (c))
 
-(SUBC $SHOWTIME (C))
+(subc $showtime (c))
 
-(SUBC $SIGN (C))
+(subc $sign (c))
 
-(SUBC $SIGNUM (C))
+(subc $signum (c))
 
-(SUBC $SIMP (S))
+(subc $simp (s))
 
-(SUBC $SIMPLIFICATION () $AUTOMATIC $SIMP-RULES)
+(subc $simplification () $automatic $simp-rules)
 
-(SUBC $SOLVE (C))
+(subc $solve (c))
 
-(SUPC $SPARSE (S) $ENTERMATRIX $MATRIX $GENMATRIX $COPYMATRIX
-                  $ADDROW $TRANSPOSE $ECHELON $TRIANGULARIZE
-                  $RANK $DETERMINANT $CHARPOLY)
+(supc $sparse (s) $entermatrix $matrix $genmatrix $copymatrix
+      $addrow $transpose $echelon $triangularize
+      $rank $determinant $charpoly)
 
-(SUBC $SPECIFIC-INFO () $TRACE $UNTRACE $GRIND $DISPRULE $PROPERTIES
-                        $PRINTPROPS $PLAYBACK $DISPFUN $ARRAYINFO)
+(subc $specific-info () $trace $untrace $grind $disprule $properties
+      $printprops $playback $dispfun $arrayinfo)
 
-(SUBC $SQFR (C) $RATVARS)
+(subc $sqfr (c) $ratvars)
 
-(SUBC $SQRT (C))
+(subc $sqrt (c))
 
-(SUBC $SRRAT (C))
+(subc $srrat (c))
 
-(SUBC $STARDISP (C))
+(subc $stardisp (c))
 
-(SUBC $STATUS (C))
+(subc $status (c))
 
-(SUBC $STORE (C))
+(subc $store (c))
 
-(SUBC $STRING (C))
+(subc $string (c))
 
-(SUBC $STRINGOUT (C))
+(subc $stringout (c))
 
-(SUBC $SUBMATRIX (C))
+(subc $submatrix (c))
 
-(SUBC $SUBST (C))
+(subc $subst (c))
 
-(SUBC $SUBSTINPART (C))
+(subc $substinpart (c))
 
-(SUBC $SUBSTITUTIONS () $SUBST $RATSUBST $SUBSTPART $SUBSTINPART)
+(subc $substitutions () $subst $ratsubst $substpart $substinpart)
 
-(SUBC $SUBSTPART (C))
+(subc $substpart (c))
 
-(SUBC $SUM (C))
+(subc $sum (c))
 
-(SUBC $SYMBOL (C))
+(subc $symbol (c))
 
-(SUBC $SYNTAX () $PREFIX $INFIX $POSTFIX $NARY $MATCHFIX $NOFIX $SYMBOL)
+(subc $syntax () $prefix $infix $postfix $nary $matchfix $nofix $symbol)
 
-(SUBC $TAYLOR (C))
+(subc $taylor (c))
 
-(SUBC $TELLRAT (C))
+(subc $tellrat (c))
 
-(SUBC $TELLSIMP (C))
+(subc $tellsimp (c))
 
-(SUBC $TELLSIMPAFTER (C))
+(subc $tellsimpafter (c))
 
-(SUBC $TENSORS () $EXPLICIT $INDICIAL)
+(subc $tensors () $explicit $indicial)
 
-(SUBC $THROW (C))
+(subc $throw (c))
 
-(SUBC $TLDEFINT (C))
+(subc $tldefint (c))
 
-(SUBC $TLIMIT (C))
+(subc $tlimit (c))
 
-(SUBC $TOTALDISREP (C))
+(subc $totaldisrep (c))
 
-(SUBC $TRACE (C) $UNTRACE $REMTRACE)
+(subc $trace (c) $untrace $remtrace)
 
-(SUBC $TRANSFORMATIONS () $RATIONAL $OTHER-TRANSFORMATIONS)
+(subc $transformations () $rational $other-transformations)
 
-(SUBC $TRANSLATE (C) $TRANSRUN $MODEDECLARE)
+(subc $translate (c) $transrun $modedeclare)
 
-(SUBC $TRANSPOSE (C))
+(subc $transpose (c))
 
-(SUPC $TRANSRUN (S) $EVALUATION)
+(supc $transrun (s) $evaluation)
 
-(SUBC $TRIANGULARIZE (C))
+(subc $triangularize (c))
 
-(SUBC $TRIG () $TRIGSWITCHES $TRIGEXPAND $TRIGREDUCE)
+(subc $trig () $trigswitches $trigexpand $trigreduce)
 
-(SUBC $TRIGEXPAND (C S))
+(subc $trigexpand (c s))
 
-(SUPC $TRIGINVERSES (S) $EV $SIMPLIFICATION)
+(supc $triginverses (s) $ev $simplification)
 
-(SUBC $TRIGREDUCE (C))
+(subc $trigreduce (c))
 
-(SUPC $TRIGSIGN (S) $EV $SIMPLIFICATION)
+(supc $trigsign (s) $ev $simplification)
 
-(SUBC $TRIGSWITCHES () $%PIARGS $%IARGS $TRIGINVERSES $TRIGSIGN 
-		       $EXPONENTIALIZE $LOGARC)
+(subc $trigswitches () $%piargs $%iargs $triginverses $trigsign 
+      $exponentialize $logarc)
 
-(SUBC $TSETUP (C))
+(subc $tsetup (c))
 
-(SUBC $SCANMAP (C))
+(subc $scanmap (c))
 
-(SUBC $SIMPLIFICATION () $EXPANSION $FACTORING $TRIG)
+(subc $simplification () $expansion $factoring $trig)
 
-(SUBC $SOLVE (C) $SOLVEFACTORS $SOLVERADCAN)
+(subc $solve (c) $solvefactors $solveradcan)
 
-(SUPC $SOLVEFACTORS (S) $SOLVE)
+(supc $solvefactors (s) $solve)
 
-(SUPC $SOLVERADCAN (S) $SOLVE)
+(supc $solveradcan (s) $solve)
 
-(SUPC $SQRTDISPFLAG (S) $DISPLAY)
+(supc $sqrtdispflag (s) $display)
 
-(SUPC $STARDISP (S) $DISPLAY)
+(supc $stardisp (s) $display)
 
-(SUBC $TRANSLATION () $TRANSLATE $COMPFILE $MODEDECLARE)
+(subc $translation () $translate $compfile $modedeclare)
 
-(SUBC $TRIGFUNCTION () %SIN %COS %TAN %COT %CSC %SEC 
-		       %ASIN %ACOS %ATAN %ACOT %ACSC %ASEC
-		       %SINH %COSH %TANH %COTH %CSCH %SECH
-		       %ASINH %ACOSH %ATANH %ACOTH %ACSCH %ASECH)
+(subc $trigfunction () %sin %cos %tan %cot %csc %sec 
+      %asin %acos %atan %acot %acsc %asec
+      %sinh %cosh %tanh %coth %csch %sech
+      %asinh %acosh %atanh %acoth %acsch %asech)
 
-(SUBC $UNDIFF (C))
+(subc $undiff (c))
 
-(SUBC $UNIVERSALS () $TIMEDATE $WHO $BUG $MAIL $SEND)
+(subc $universals () $timedate $who $bug $mail $send)
 
-(SUBC $UNORDER (C))
+(subc $unorder (c))
 
-(SUBC $UNSTORE (C))
+(subc $unstore (c))
 
-(SUBC $UNTRACE (C))
+(subc $untrace (c))
 
-(SUBC $USER-AIDS () $PRIMER $DESCRIBE $OPTIONS $EXAMPLE $APROPOS $VISUAL-AIDS)
+(subc $user-aids () $primer $describe $options $example $apropos $visual-aids)
 
-(SUBC $VALUES (V))
+(subc $values (v))
 
-(SUBC $VERBIFY (C))
+(subc $verbify (c))
 
-(SUBC $VISUAL-AIDS () $REVEAL $ISOLATE $PICKAPART)
+(subc $visual-aids () $reveal $isolate $pickapart)
 
-(SUBC $WEYL (C) $RATWEYL $FACRAT)
+(subc $weyl (c) $ratweyl $facrat)
 
-(SUBC $WRITEFILE (C))
+(subc $writefile (c))
 
-(SUBC $XTHRU (C))
+(subc $xthru (c))
 
-(SUBC $YT (C))
+(subc $yt (c))
 
-(SUBC $ZETA (C))
+(subc $zeta (c))
 
-(SUBC $ZEROEQUIV (C))
+(subc $zeroequiv (c))
 
-(SUBC %SIN (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-	       $TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN
-	       $LOGARC)
+(subc %sin (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign
+      $logarc)
 
-(SUBC %COS (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-	       $TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN
-	       $LOGARC)
+(subc %cos (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign
+      $logarc)
 
-(SUBC %TAN (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-	       $TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN
-	       $LOGARC)
+(subc %tan (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign
+      $logarc)
 
-(SUBC %COT (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-	       $TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN
-	       $LOGARC)
+(subc %cot (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign
+      $logarc)
 
-(SUBC %CSC (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-	       $TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN
-	       $LOGARC)
+(subc %csc (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign
+      $logarc)
 
-(SUBC %SEC (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-	       $TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN
-	       $LOGARC)
+(subc %sec (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign
+      $logarc)
 
-(SUBC %ASIN (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGSIGN $LOGARC)
+(subc %asin (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ACOS (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGSIGN $LOGARC)
+(subc %acos (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ATAN (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGSIGN $LOGARC)
+(subc %atan (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ACOT (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGSIGN $LOGARC)
+(subc %acot (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ACSC (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGSIGN $LOGARC)
+(subc %acsc (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ASEC (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGSIGN $LOGARC)
+(subc %asec (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %SINH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN)
+(subc %sinh (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign)
 
-(SUBC %COSH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN)
+(subc %cosh (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign)
 
-(SUBC %TANH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN)
+(subc %tanh (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign)
 
-(SUBC %COTH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN)
+(subc %coth (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign)
 
-(SUBC %CSCH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN)
+(subc %csch (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign)
 
-(SUBC %SECH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		$TRIGEXPAND $EXPONENTIALIZE $HALFANGLES $TRIGSIGN)
+(subc %sech (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigexpand $exponentialize $halfangles $trigsign)
 
-(SUBC %ASINH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		 $TRIGSIGN $LOGARC)
+(subc %asinh (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ACOSH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		 $TRIGSIGN $LOGARC)
+(subc %acosh (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ATANH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		 $TRIGSIGN $LOGARC)
+(subc %atanh (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ACOTH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		 $TRIGSIGN $LOGARC)
+(subc %acoth (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ACSCH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		 $TRIGSIGN $LOGARC)
+(subc %acsch (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC %ASECH (C) $FLOAT $NUMER $BFLOAT $%PIARGS $%IARGS $TRIGINVERSES
-		 $TRIGSIGN $LOGARC)
+(subc %asech (c) $float $numer $bfloat $%piargs $%iargs $triginverses
+      $trigsign $logarc)
 
-(SUBC |&.| (C) $DOTASSOC $DOTSCRULES $DOTCONSTRULES $DOTEXPTSIMP
-	       $DOTDISTRIB $ASSUMESCALAR)
+(subc |&.| (c) $dotassoc $dotscrules $dotconstrules $dotexptsimp
+      $dotdistrib $assumescalar)
 

@@ -11,19 +11,19 @@
 (in-package "MAXIMA")
 (macsyma-module mstuff)
 
-(DECLARE-TOP(SPLITFILE MSORT) (FIXNUM N))
+(declare-top(splitfile msort) (fixnum n))
 
-(DEFMFUN $SORT N
-  (IF (OR (= N 0) (> N 2)) (MERROR "SORT takes 1 or 2 arguments."))
-  (LET ((LLIST (ARG 1)) COMPARFUN BFUN)
-       (IF (NOT ($LISTP LLIST))
-	   (MERROR "The first argument to SORT must be a list:~%~M" LLIST))
-       (SETQ LLIST (copy-top-level (CDR LLIST) )
-	     COMPARFUN 
-	     (MFUNCTION1 (SETQ BFUN (IF (= N 2) (GETOPR (ARG 2)) 'LESSTHAN))))
-       (IF (MEMQ BFUN '(LESSTHAN GREAT))
-	   (SETQ LLIST (MAPCAR #'RATDISREP LLIST)))
-       (CONS '(MLIST SIMP) (SORT LLIST COMPARFUN))))
+(defmfun $sort n
+  (if (or (= n 0) (> n 2)) (merror "SORT takes 1 or 2 arguments."))
+  (let ((llist (arg 1)) comparfun bfun)
+    (if (not ($listp llist))
+	(merror "The first argument to SORT must be a list:~%~M" llist))
+    (setq llist (copy-top-level (cdr llist) )
+	  comparfun 
+	  (mfunction1 (setq bfun (if (= n 2) (getopr (arg 2)) 'lessthan))))
+    (if (memq bfun '(lessthan great))
+	(setq llist (mapcar #'ratdisrep llist)))
+    (cons '(mlist simp) (sort llist comparfun))))
 
 ;; old non closure version
 ;;(DEFUN MFUNCTION1 (FUN)
@@ -32,63 +32,63 @@
 ;; cmulisp does not like the closure version.  Clisp insists on the
 ;; closure version.  Gcl likes either...  For the moment we will
 ;; leave a conditional here.
-(DEFUN MFUNCTION1 (FUN)
+(defun mfunction1 (fun)
   #+cmu
-   (LAMBDA (X Y) (MEVALP `((,FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y))))
+  (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y))))
   #-cmu 
-  (function (LAMBDA (X Y) (MEVALP `((,FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y)))))
+  (function (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y)))))
   )
 
-(DEFUN LESSTHAN (A B) (IF (GREAT B A) T))
+(defun lessthan (a b) (if (great b a) t))
 
-(declare-top (SPLITFILE MAKEL))
+(declare-top (splitfile makel))
 
-(DEFMSPEC $MAKELIST (X) (SETQ X (CDR X))
-   (PROG (N FORM ARG A B LV D)
-      (SETQ N (LENGTH X))
-      (IF (OR (< N 3) (> N 4))
-	  (MERROR "MAKELIST takes 3 or 4 arguments."))
-      (SETQ FORM (CAR X)
-	    ARG (CADR X)
-	    A (MEVAL (CADDR X))
-	    LV (COND ((= N 3) 
-		      (IF ($LISTP A)
-			  (MAPCAR #'(LAMBDA (U) (LIST '(MQUOTE) U)) (CDR A))
-			  (MERROR "
+(defmspec $makelist (x) (setq x (cdr x))
+	  (prog (n form arg a b lv d)
+	     (setq n (length x))
+	     (if (or (< n 3) (> n 4))
+		 (merror "MAKELIST takes 3 or 4 arguments."))
+	     (setq form (car x)
+		   arg (cadr x)
+		   a (meval (caddr x))
+		   lv (cond ((= n 3) 
+			     (if ($listp a)
+				 (mapcar #'(lambda (u) (list '(mquote) u)) (cdr a))
+				 (merror "
 If 3 arguments are given to MAKELIST,
-the 3rd argument should evaluate to a list:~%~M" A)))
-		     (T
-		      (SETQ B (MEVAL (CADDDR X)))
-		      (IF (OR (NOT (FIXNUMP (SETQ D (SUB* B A)))) (< D -1))
-			  (MERROR "
+the 3rd argument should evaluate to a list:~%~M" a)))
+			    (t
+			     (setq b (meval (cadddr x)))
+			     (if (or (not (fixnump (setq d (sub* b a)))) (< d -1))
+				 (merror "
 If 4 arguments are given to MAKELIST, the difference of the 3rd
-and 4th arguments should evaluate to a non-negative integer:~%~M" D)
-			  (INTERVAL A B)))))
-      (RETURN 
-	 (DO ((LV LV (CDR LV)) (ANS))
-	     ((NULL LV) (CONS '(MLIST SIMP) (NREVERSE ANS)))
-	     (SETQ ANS (CONS (MEVAL `(($EV)
-				      ,@(LIST (LIST '(MQUOTE) FORM)
-					  (LIST '(MEQUAL SIMP) 
-						ARG 
-						(CAR LV)))))
-			     ANS))))))
+and 4th arguments should evaluate to a non-negative integer:~%~M" d)
+				 (interval a b)))))
+	     (return 
+	       (do ((lv lv (cdr lv)) (ans))
+		   ((null lv) (cons '(mlist simp) (nreverse ans)))
+		 (setq ans (cons (meval `(($ev)
+					  ,@(list (list '(mquote) form)
+						  (list '(mequal simp) 
+							arg 
+							(car lv)))))
+				 ans))))))
 
-(DEFUN INTERVAL (I J)
-   (DO ((NN I (ADD2 1 NN)) (M 0 (f1+ M)) (K (SUB* J I)) (ANS))
-       ((> M K) (NREVERSE ANS))
-       (SETQ ANS (CONS NN ANS))))
+(defun interval (i j)
+  (do ((nn i (add2 1 nn)) (m 0 (f1+ m)) (k (sub* j i)) (ans))
+      ((> m k) (nreverse ans))
+    (setq ans (cons nn ans))))
 
-(DEFMFUN $SUBLIST (A F)
-  (IF ($LISTP A)
-      (DO ((A (CDR A) (CDR A)) (X))
-	  ((NULL A) (CONS '(MLIST SIMP) (NREVERSE X)))
-	  (IF (MEVALP (LIST (NCONS F) (CAR A)))
-	      (SETQ X (CONS (CAR A) X))))
-      (MERROR "The first argument to SUBLIST must be a list:~%~M" A)))
+(defmfun $sublist (a f)
+  (if ($listp a)
+      (do ((a (cdr a) (cdr a)) (x))
+	  ((null a) (cons '(mlist simp) (nreverse x)))
+	(if (mevalp (list (ncons f) (car a)))
+	    (setq x (cons (car a) x))))
+      (merror "The first argument to SUBLIST must be a list:~%~M" a)))
 
-; Undeclarations for the file:
-#-NIL
-(DECLARE-TOP(NOTYPE N))
+;; Undeclarations for the file:
+#-nil
+(declare-top(notype n))
 
 

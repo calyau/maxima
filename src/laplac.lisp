@@ -11,940 +11,940 @@
 (in-package "MAXIMA")
 (macsyma-module laplac)
 
-(DECLARE-TOP(SPECIAL DVAR VAR-LIST VAR-PARM-LIST VAR PARM $SAVEFACTORS
-		  CHECKFACTORS $RATFAC $KEEPFLOAT NOUNL NOUNSFLAG)
-	 (*EXPR SUBFUNMAKE)
-	 (*LEXPR $DIFF $EXPAND $MULTTHRU $RATSIMP)
-	 ) 
+(declare-top(special dvar var-list var-parm-list var parm $savefactors
+		     checkfactors $ratfac $keepfloat nounl nounsflag)
+	    (*expr subfunmake)
+	    (*lexpr $diff $expand $multthru $ratsimp)
+	    ) 
 
-(DEFUN EXPONENTIATE (POW) 
+(defun exponentiate (pow) 
        ;;;COMPUTES %E**Z WHERE Z IS AN ARBITRARY EXPRESSION TAKING SOME OF THE WORK AWAY FROM SIMPEXPT
-       (COND ((ZEROP1 POW) 1)
-	     ((EQUAL POW 1) '$%E)
-	     (T (POWER '$%E POW)))) 
+  (cond ((zerop1 pow) 1)
+	((equal pow 1) '$%e)
+	(t (power '$%e pow)))) 
 
-(DEFUN FIXUPREST (REST) 
+(defun fixuprest (rest) 
        ;;;REST IS A PRODUCT WITHOUT THE MTIMES.FIXUPREST PUTS BACK THE MTIMES
-       (COND ((NULL REST) 1)
-	     ((CDR REST) (CONS '(MTIMES SIMP) REST))
-	     (T (CAR REST)))) 
+  (cond ((null rest) 1)
+	((cdr rest) (cons '(mtimes simp) rest))
+	(t (car rest)))) 
 
 
-;(DEFUN POSINT MACRO (X) (SUBST (CADR X) 'Y '(AND (INTEGERP Y) (> Y 0))))
-;(DEFUN NEGINT MACRO (X) (SUBST (CADR X) 'Y '(AND (INTEGERP Y) (< Y 0))))
+;;(DEFUN POSINT MACRO (X) (SUBST (CADR X) 'Y '(AND (INTEGERP Y) (> Y 0))))
+;;(DEFUN NEGINT MACRO (X) (SUBST (CADR X) 'Y '(AND (INTEGERP Y) (< Y 0))))
 
 (defmacro posint (x) `(and (integerp ,x) (> ,x 0)))
 (defmacro negint (x) `(and (integerp ,x) (< ,x 0)))
 
 
-(DEFUN ISQUADRATICP (E X)
-    ((LAMBDA (B)
-	(COND ((ZEROP1 B) (LIST 0 0 E))
-	      ((FREEOF X B) (LIST 0 B (MAXIMA-SUBSTITUTE 0 X E)))
-	      ((SETQ B (ISLINEAR B X))
-		(LIST (DIV* (CAR B) 2) (CDR B) (MAXIMA-SUBSTITUTE 0 X E)))))
-	(SDIFF E X)))
+(defun isquadraticp (e x)
+  ((lambda (b)
+     (cond ((zerop1 b) (list 0 0 e))
+	   ((freeof x b) (list 0 b (maxima-substitute 0 x e)))
+	   ((setq b (islinear b x))
+	    (list (div* (car b) 2) (cdr b) (maxima-substitute 0 x e)))))
+   (sdiff e x)))
  
 
 ;;;INITIALIZES SOME GLOBAL VARIABLES THEN CALLS THE DISPATCHING FUNCTION
 
-(DEFMFUN $LAPLACE (FUN VAR PARM) 
-       (SETQ FUN (MRATCHECK FUN))
-       (COND ((OR NOUNSFLAG (MEMQ '%LAPLACE NOUNL)) (SETQ FUN (REMLAPLACE FUN))))
-       (COND ((AND (NULL (ATOM FUN)) (EQ (CAAR FUN) 'MEQUAL))
-	      (LIST '(MEQUAL SIMP)
-		    (LAPLACE (CADR FUN))
-		    (LAPLACE (CADDR FUN))))
-	     (T (LAPLACE FUN)))) 
+(defmfun $laplace (fun var parm) 
+  (setq fun (mratcheck fun))
+  (cond ((or nounsflag (memq '%laplace nounl)) (setq fun (remlaplace fun))))
+  (cond ((and (null (atom fun)) (eq (caar fun) 'mequal))
+	 (list '(mequal simp)
+	       (laplace (cadr fun))
+	       (laplace (caddr fun))))
+	(t (laplace fun)))) 
 
 ;;;LAMBDA BINDS SOME SPECIAL VARIABLES TO NIL AND DISPATCHES
 
-(DEFUN REMLAPLACE (E)
- (COND ((ATOM E) E)
-       (T (CONS (DELQ 'LAPLACE (APPEND (CAR E) NIL) 1) (MAPCAR 'REMLAPLACE (CDR E))))))
+(defun remlaplace (e)
+  (cond ((atom e) e)
+	(t (cons (delq 'laplace (append (car e) nil) 1) (mapcar 'remlaplace (cdr e))))))
 
-(DEFUN LAPLACE (FUN) 
-       ((LAMBDA (DVAR VAR-LIST VAR-PARM-LIST) 
+(defun laplace (fun) 
+  ((lambda (dvar var-list var-parm-list) 
 	    ;;; Handles easy cases and calls appropriate function on others.
-		(COND ((EQUAL FUN 0) 0)
-		      ((EQUAL FUN 1)
-		       (COND ((ZEROP1 PARM) (SIMPLIFY (LIST '($DELTA) 0)))
-			     (T (POWER PARM -1))))
-		      ((ALIKE1 FUN VAR) (POWER PARM -2))
-		      ((OR (ATOM FUN) (FREEOF VAR FUN))
-		       (COND ((ZEROP1 PARM) (MUL2 FUN (SIMPLIFY (LIST '($DELTA) 0))))
-			     (T (MUL2 FUN (POWER PARM -1)))))
-		      (T ((LAMBDA (OP) 
-				  (COND ((EQ OP 'MPLUS)
-					 (LAPLUS FUN))
-					((EQ OP 'MTIMES)
-					 (LAPTIMES (CDR FUN)))
-					((EQ OP 'MEXPT)
-					 (LAPEXPT FUN NIL))
-					((EQ OP '%SIN)
-					 (LAPSIN FUN NIL NIL))
-					((EQ OP '%COS)
-					 (LAPSIN FUN NIL T))
-					((EQ OP '%SINH)
-					 (LAPSINH FUN NIL NIL))
-					((EQ OP '%COSH)
-					 (LAPSINH FUN NIL T))
-					((EQ OP '%LOG)
-					 (LAPLOG FUN))
-					((EQ OP '%DERIVATIVE)
-					 (LAPDIFF FUN))
-					((EQ OP '%INTEGRATE)
-					 (LAPINT FUN))
-					((EQ OP '%SUM)
-					 (LIST '(%SUM SIMP)
-					       (LAPLACE (CADR FUN))
-					       (CADDR FUN)
-					       (CADDDR FUN)
-					       (CAR (CDDDDR FUN))))
-					((EQ OP '%ERF)
-					 (LAPERF FUN))
-				((AND (EQ OP '%ILT)(EQ (CADDDR FUN) VAR))
-			(COND ((EQ PARM (CADDR FUN))(CADR FUN))
-				(T (SUBST PARM (CADDR FUN)(CADR FUN))))
-)					((EQ OP '$DELTA)
-					 (LAPDELTA FUN NIL))
-					((SETQ OP ($GET OP '$LAPLACE))
-					 (MCALL OP FUN VAR PARM))
-					(T (LAPDEFINT FUN))))
-			  (CAAR FUN)))))
-	NIL
-	NIL
-	NIL)) 
+     (cond ((equal fun 0) 0)
+	   ((equal fun 1)
+	    (cond ((zerop1 parm) (simplify (list '($delta) 0)))
+		  (t (power parm -1))))
+	   ((alike1 fun var) (power parm -2))
+	   ((or (atom fun) (freeof var fun))
+	    (cond ((zerop1 parm) (mul2 fun (simplify (list '($delta) 0))))
+		  (t (mul2 fun (power parm -1)))))
+	   (t ((lambda (op) 
+		 (cond ((eq op 'mplus)
+			(laplus fun))
+		       ((eq op 'mtimes)
+			(laptimes (cdr fun)))
+		       ((eq op 'mexpt)
+			(lapexpt fun nil))
+		       ((eq op '%sin)
+			(lapsin fun nil nil))
+		       ((eq op '%cos)
+			(lapsin fun nil t))
+		       ((eq op '%sinh)
+			(lapsinh fun nil nil))
+		       ((eq op '%cosh)
+			(lapsinh fun nil t))
+		       ((eq op '%log)
+			(laplog fun))
+		       ((eq op '%derivative)
+			(lapdiff fun))
+		       ((eq op '%integrate)
+			(lapint fun))
+		       ((eq op '%sum)
+			(list '(%sum simp)
+			      (laplace (cadr fun))
+			      (caddr fun)
+			      (cadddr fun)
+			      (car (cddddr fun))))
+		       ((eq op '%erf)
+			(laperf fun))
+		       ((and (eq op '%ilt)(eq (cadddr fun) var))
+			(cond ((eq parm (caddr fun))(cadr fun))
+			      (t (subst parm (caddr fun)(cadr fun))))
+			)					((eq op '$delta)
+			(lapdelta fun nil))
+		       ((setq op ($get op '$laplace))
+			(mcall op fun var parm))
+		       (t (lapdefint fun))))
+	       (caar fun)))))
+   nil
+   nil
+   nil)) 
 
-(DEFUN LAPLUS (FUN) 
-       (SIMPLUS (CONS '(MPLUS)
-		      (MAPCAR (FUNCTION LAPLACE) (CDR FUN)))
-		1.
-		T)) 
+(defun laplus (fun) 
+  (simplus (cons '(mplus)
+		 (mapcar (function laplace) (cdr fun)))
+	   1.
+	   t)) 
 
-(DEFUN LAPTIMES (FUN) 
+(defun laptimes (fun) 
        ;;;EXPECTS A LIST (PERHAPS EMPTY) OF FUNCTIONS MULTIPLIED TOGETHER WITHOUT THE MTIMES
        ;;;SEES IF IT CAN APPLY THE FIRST AS A TRANSFORMATION ON THE REST OF THE FUNCTIONS
-       (COND ((NULL FUN) (LIST '(MEXPT SIMP) PARM -1.))
-	     ((NULL (CDR FUN)) (LAPLACE (CAR FUN)))
-	     ((FREEOF VAR (CAR FUN))
-	      (SIMPTIMES (LIST '(MTIMES)
-			       (CAR FUN)
-			       (LAPTIMES (CDR FUN)))
-			 1.
-			 T))
-	     ((EQ (CAR FUN) VAR)
-	      (SIMPTIMES (LIST '(MTIMES)
-			       -1.
-			       (SDIFF (LAPTIMES (CDR FUN)) PARM))
-			 1.
-			 T))
-	     (T ((LAMBDA (OP) 
-			 (COND ((EQ OP 'MEXPT)
-				(LAPEXPT (CAR FUN) (CDR FUN)))
-			       ((EQ OP 'MPLUS)
-				(LAPLUS ($MULTTHRU (FIXUPREST (CDR FUN)) (CAR FUN))))
-			       ((EQ OP '%SIN)
-				(LAPSIN (CAR FUN) (CDR FUN) NIL))
-			       ((EQ OP '%COS)
-				(LAPSIN (CAR FUN) (CDR FUN) T))
-			       ((EQ OP '%SINH)
-				(LAPSINH (CAR FUN) (CDR FUN) NIL))
-			       ((EQ OP '%COSH)
-				(LAPSINH (CAR FUN) (CDR FUN) T))
-			       ((EQ OP '$DELTA)
-				(LAPDELTA (CAR FUN) (CDR FUN)))
+  (cond ((null fun) (list '(mexpt simp) parm -1.))
+	((null (cdr fun)) (laplace (car fun)))
+	((freeof var (car fun))
+	 (simptimes (list '(mtimes)
+			  (car fun)
+			  (laptimes (cdr fun)))
+		    1.
+		    t))
+	((eq (car fun) var)
+	 (simptimes (list '(mtimes)
+			  -1.
+			  (sdiff (laptimes (cdr fun)) parm))
+		    1.
+		    t))
+	(t ((lambda (op) 
+	      (cond ((eq op 'mexpt)
+		     (lapexpt (car fun) (cdr fun)))
+		    ((eq op 'mplus)
+		     (laplus ($multthru (fixuprest (cdr fun)) (car fun))))
+		    ((eq op '%sin)
+		     (lapsin (car fun) (cdr fun) nil))
+		    ((eq op '%cos)
+		     (lapsin (car fun) (cdr fun) t))
+		    ((eq op '%sinh)
+		     (lapsinh (car fun) (cdr fun) nil))
+		    ((eq op '%cosh)
+		     (lapsinh (car fun) (cdr fun) t))
+		    ((eq op '$delta)
+		     (lapdelta (car fun) (cdr fun)))
 
-			       (T (LAPSHIFT (CAR FUN) (CDR FUN)))))
-		 (CAAAR FUN))))) 
+		    (t (lapshift (car fun) (cdr fun)))))
+	    (caaar fun))))) 
 
-(DEFUN LAPEXPT (FUN REST) 
+(defun lapexpt (fun rest) 
        ;;;HANDLES %E**(A*T+B)*REST(T), %E**(A*T**2+B*T+C),
        ;;; 1/SQRT(A*T+B), OR T**K*REST(T)
-       (PROG (AB BASE-OF-FUN POWER RESULT) 
-	     (SETQ BASE-OF-FUN (CADR FUN) POWER (CADDR FUN))
-	     (COND
-	      ((AND
-		(FREEOF VAR BASE-OF-FUN)
-		(SETQ 
-		 AB
-		 (ISQUADRATICP
-		  (COND ((EQ BASE-OF-FUN '$%E) POWER)
-			(T (SIMPTIMES (LIST '(MTIMES)
-					    POWER
-					    (LIST '(%LOG)
-						  BASE-OF-FUN))
-				      1.
-				      NIL)))
-		  VAR)))
-	       (COND ((EQUAL (CAR AB) 0.) (GO %E-CASE-LIN))
-		     ((NULL REST) (GO %E-CASE-QUAD))
-		     (T (GO NOLUCK))))
-	      ((AND (EQ BASE-OF-FUN VAR) (FREEOF VAR POWER))
-	       (GO VAR-CASE))
-	      ((AND (ALIKE1 '((RAT) -1. 2.) POWER) (NULL REST)
-		    (SETQ AB (ISLINEAR BASE-OF-FUN VAR)))
-	       (SETQ RESULT (DIV* (CDR AB) (CAR AB)))
-	       (RETURN (SIMPTIMES
-		(LIST '(MTIMES)
-		      (LIST '(MEXPT)
-			    (DIV* '$%PI
-				  (LIST '(MTIMES)
-					(CAR AB)
-					PARM))
-			    '((RAT) 1. 2.))
-		      (EXPONENTIATE (LIST '(MTIMES) RESULT PARM))
-		      (LIST '(MPLUS)
-			    1.
-			    (LIST '(MTIMES)
-				  -1.
-				   (LIST '(%ERF)
-						 (LIST '(MEXPT)
-						       (LIST '(MTIMES)
-							     RESULT
-							     PARM)
-						       '((RAT)
-							 1.
-							 2.)))
-					   ))) 1 NIL)))
-	      (T (GO NOLUCK)))
-	%E-CASE-LIN
-	     (SETQ 
-	      RESULT
-	      (COND
-	       (REST ($RATSIMP ($AT (LAPTIMES REST)
-				    (LIST '(MEQUAL SIMP)
-					  PARM
-					  (LIST '(MPLUS SIMP)
-						PARM
-						(AFIXSIGN (CADR AB)
-							  NIL))))))
-	       (T (LIST '(MEXPT)
-			(LIST '(MPLUS)
-			      PARM
-			      (AFIXSIGN (CADR AB) NIL))
-			-1.))))
-	     (RETURN (SIMPTIMES (LIST '(MTIMES)
-				      (EXPONENTIATE (CADDR AB))
-				      RESULT)
-				1.
-				NIL))
-	%E-CASE-QUAD
-	     (SETQ RESULT (AFIXSIGN (CAR AB) NIL))
-	     (SETQ 
-	      RESULT
-	       (LIST
-		'(MTIMES)
-		(DIV* (LIST '(MEXPT)
-			    (DIV* '$%PI RESULT)
-			    '((RAT) 1. 2.))
-		      2.)
-		(EXPONENTIATE (DIV* (LIST '(MEXPT) PARM 2.)
-				    (LIST '(MTIMES)
-					  4.
-					  RESULT)))
-		(LIST '(MPLUS)
-		      1.
-		      (LIST '(MTIMES)
-			    -1.
-			     (LIST '(%ERF)
-					   (DIV* PARM
-						 (LIST '(MTIMES)
-						       2.
-						       (LIST '(MEXPT)
-							     RESULT
-							     '((RAT)
-							       1.
-							       2.)))))
-				))))
-	     (AND (NULL (EQUAL (CADR AB) 0.))
-		  (SETQ RESULT
-			(MAXIMA-SUBSTITUTE (LIST '(MPLUS)
-					  PARM
-					  (LIST '(MTIMES)
-						-1.
-						(CADR AB)))
-				    PARM
-				    RESULT)))
-	     (RETURN (SIMPTIMES  (LIST '(MTIMES)
-			   (EXPONENTIATE (CADDR AB))
-			   RESULT) 1 NIL))
-	VAR-CASE
-	     (COND ((OR (NULL REST) (FREEOF VAR (FIXUPREST REST)))
-		    (GO VAR-EASY-CASE)))
-	     (COND ((POSINT POWER)
-		    (RETURN (AFIXSIGN (APPLY '$DIFF
-					     (LIST (LAPTIMES REST)
-						   PARM
-						   POWER))
-				      (EVEN POWER))))
-		   ((NEGINT POWER)
-		    (RETURN (MYDEFINT (HACKIT POWER REST)
-				      (CREATENAME PARM (MINUS POWER))
-				      PARM)))
-		   (T (GO NOLUCK)))
-	VAR-EASY-CASE
-	     (SETQ POWER
-		   (SIMPLUS (LIST '(MPLUS) 1. POWER) 1. T))
-	     (OR (EQ (ASKSIGN POWER) '$POSITIVE) (GO NOLUCK))
-	     (SETQ RESULT (LIST (LIST '(%GAMMA) POWER)
-				(LIST '(MEXPT)
-				      PARM
-				      (AFIXSIGN POWER NIL))))
-	     (AND REST (SETQ RESULT (NCONC RESULT REST)))
-	     (RETURN (SIMPTIMES (CONS '(MTIMES) RESULT)
-				1.
-				NIL))
-	NOLUCK
-	     (RETURN
-	      (COND
-	       ((AND (POSINT POWER)
-		     (MEMQ (CAAR BASE-OF-FUN)
-			   '(MPLUS %SIN %COS %SINH %COSH)))
-		(LAPTIMES (CONS BASE-OF-FUN
-				(CONS (COND ((= POWER 2.) BASE-OF-FUN)
-					    (T (LIST '(MEXPT SIMP)
-						     BASE-OF-FUN
-						     (SUB1 POWER))))
-				      REST))))
-	       (T (LAPSHIFT FUN REST)))))) 
+  (prog (ab base-of-fun power result) 
+     (setq base-of-fun (cadr fun) power (caddr fun))
+     (cond
+       ((and
+	 (freeof var base-of-fun)
+	 (setq 
+	  ab
+	  (isquadraticp
+	   (cond ((eq base-of-fun '$%e) power)
+		 (t (simptimes (list '(mtimes)
+				     power
+				     (list '(%log)
+					   base-of-fun))
+			       1.
+			       nil)))
+	   var)))
+	(cond ((equal (car ab) 0.) (go %e-case-lin))
+	      ((null rest) (go %e-case-quad))
+	      (t (go noluck))))
+       ((and (eq base-of-fun var) (freeof var power))
+	(go var-case))
+       ((and (alike1 '((rat) -1. 2.) power) (null rest)
+	     (setq ab (islinear base-of-fun var)))
+	(setq result (div* (cdr ab) (car ab)))
+	(return (simptimes
+		 (list '(mtimes)
+		       (list '(mexpt)
+			     (div* '$%pi
+				   (list '(mtimes)
+					 (car ab)
+					 parm))
+			     '((rat) 1. 2.))
+		       (exponentiate (list '(mtimes) result parm))
+		       (list '(mplus)
+			     1.
+			     (list '(mtimes)
+				   -1.
+				   (list '(%erf)
+					 (list '(mexpt)
+					       (list '(mtimes)
+						     result
+						     parm)
+					       '((rat)
+						 1.
+						 2.)))
+				   ))) 1 nil)))
+       (t (go noluck)))
+     %e-case-lin
+     (setq 
+      result
+      (cond
+	(rest ($ratsimp ($at (laptimes rest)
+			     (list '(mequal simp)
+				   parm
+				   (list '(mplus simp)
+					 parm
+					 (afixsign (cadr ab)
+						   nil))))))
+	(t (list '(mexpt)
+		 (list '(mplus)
+		       parm
+		       (afixsign (cadr ab) nil))
+		 -1.))))
+     (return (simptimes (list '(mtimes)
+			      (exponentiate (caddr ab))
+			      result)
+			1.
+			nil))
+     %e-case-quad
+     (setq result (afixsign (car ab) nil))
+     (setq 
+      result
+      (list
+       '(mtimes)
+       (div* (list '(mexpt)
+		   (div* '$%pi result)
+		   '((rat) 1. 2.))
+	     2.)
+       (exponentiate (div* (list '(mexpt) parm 2.)
+			   (list '(mtimes)
+				 4.
+				 result)))
+       (list '(mplus)
+	     1.
+	     (list '(mtimes)
+		   -1.
+		   (list '(%erf)
+			 (div* parm
+			       (list '(mtimes)
+				     2.
+				     (list '(mexpt)
+					   result
+					   '((rat)
+					     1.
+					     2.)))))
+		   ))))
+     (and (null (equal (cadr ab) 0.))
+	  (setq result
+		(maxima-substitute (list '(mplus)
+					 parm
+					 (list '(mtimes)
+					       -1.
+					       (cadr ab)))
+				   parm
+				   result)))
+     (return (simptimes  (list '(mtimes)
+			       (exponentiate (caddr ab))
+			       result) 1 nil))
+     var-case
+     (cond ((or (null rest) (freeof var (fixuprest rest)))
+	    (go var-easy-case)))
+     (cond ((posint power)
+	    (return (afixsign (apply '$diff
+				     (list (laptimes rest)
+					   parm
+					   power))
+			      (even power))))
+	   ((negint power)
+	    (return (mydefint (hackit power rest)
+			      (createname parm (minus power))
+			      parm)))
+	   (t (go noluck)))
+     var-easy-case
+     (setq power
+	   (simplus (list '(mplus) 1. power) 1. t))
+     (or (eq (asksign power) '$positive) (go noluck))
+     (setq result (list (list '(%gamma) power)
+			(list '(mexpt)
+			      parm
+			      (afixsign power nil))))
+     (and rest (setq result (nconc result rest)))
+     (return (simptimes (cons '(mtimes) result)
+			1.
+			nil))
+     noluck
+     (return
+       (cond
+	 ((and (posint power)
+	       (memq (caar base-of-fun)
+		     '(mplus %sin %cos %sinh %cosh)))
+	  (laptimes (cons base-of-fun
+			  (cons (cond ((= power 2.) base-of-fun)
+				      (t (list '(mexpt simp)
+					       base-of-fun
+					       (sub1 power))))
+				rest))))
+	 (t (lapshift fun rest)))))) 
 
-(DEFUN MYDEFINT (F X A) 
+(defun mydefint (f x a) 
        ;;;INTEGRAL FROM A TO INFINITY OF F(X)
-       ((LAMBDA (TRYINT) (COND (TRYINT (CAR TRYINT))
-			       (T (LIST '(%INTEGRATE SIMP)
-					F
-					X
-					A
-					'$INF))))
-	(AND (NOT ($UNKNOWN F))
-	     (ERRSET ($DEFINT F X A '$INF))))) 
+  ((lambda (tryint) (cond (tryint (car tryint))
+			  (t (list '(%integrate simp)
+				   f
+				   x
+				   a
+				   '$inf))))
+   (and (not ($unknown f))
+	(errset ($defint f x a '$inf))))) 
 
-(DEFUN CREATENAME 
+(defun createname 
  ;;;CREATES HOPEFULLY UNIQUE NAMES FOR VARIABLE OF INTEGRATION
- (HEAD TAIL) 
- (implode (NCONC (EXPLODEC HEAD) (EXPLODEC TAIL))))
+    (head tail) 
+  (implode (nconc (explodec head) (explodec tail))))
 
-(declare-top (FIXNUM EXPONENT)) 
+(declare-top (fixnum exponent)) 
 
-(DEFUN HACKIT (EXPONENT REST) 
+(defun hackit (exponent rest) 
        ;;;REDUCES LAPLACE(F(T)/T**N,T,S) CASE TO LAPLACE(F(T)/T**(N-1),T,S) CASE
-       (COND ((EQUAL EXPONENT -1.)
-	      ((LAMBDA (PARM) (LAPTIMES REST)) (CREATENAME PARM 1.)))
-	     (T (MYDEFINT (HACKIT (f1+ EXPONENT) REST)
-			  (CREATENAME PARM (DIFFERENCE -1. EXPONENT))
-			  (CREATENAME PARM (MINUS EXPONENT)))))) 
+  (cond ((equal exponent -1.)
+	 ((lambda (parm) (laptimes rest)) (createname parm 1.)))
+	(t (mydefint (hackit (f1+ exponent) rest)
+		     (createname parm (difference -1. exponent))
+		     (createname parm (minus exponent)))))) 
 
-(DECLARE-TOP(NOTYPE EXPONENT)) 
+(declare-top(notype exponent)) 
 
-(DEFUN AFIXSIGN (FUNCT SIGNSWITCH) 
+(defun afixsign (funct signswitch) 
        ;;;MULTIPLIES FUNCT BY -1 IF SIGNSWITCH IS NIL
-       (COND (SIGNSWITCH FUNCT)
-	     (T (SIMPTIMES (LIST '(MTIMES) -1. FUNCT) 1. T)))) 
+  (cond (signswitch funct)
+	(t (simptimes (list '(mtimes) -1. funct) 1. t)))) 
 
  
 
-(DEFUN LAPSHIFT (FUN REST) 
-       (COND ((ATOM FUN) (merror "INTERNAL ERROR"))
-	     ((OR (MEMQ 'LAPLACE (CAR FUN)) (NULL REST))
-	      (LAPDEFINT (COND (REST (SIMPTIMES (CONS '(MTIMES)
-					   (CONS FUN REST)) 1 T))
-			       (T FUN))))
-	     (T (LAPTIMES (APPEND REST
-				  (NCONS (CONS (APPEND (CAR FUN)
-						       '(LAPLACE))
-					       (CDR FUN)))))))) 
+(defun lapshift (fun rest) 
+  (cond ((atom fun) (merror "INTERNAL ERROR"))
+	((or (memq 'laplace (car fun)) (null rest))
+	 (lapdefint (cond (rest (simptimes (cons '(mtimes)
+						 (cons fun rest)) 1 t))
+			  (t fun))))
+	(t (laptimes (append rest
+			     (ncons (cons (append (car fun)
+						  '(laplace))
+					  (cdr fun)))))))) 
 
-(DEFUN MOSTPART (F PARM SIGN A B) 
+(defun mostpart (f parm sign a b) 
        ;;;COMPUTES %E**(W*B*%I)*F(S-W*A*%I) WHERE W=-1 IF SIGN IS T ELSE W=1
-       ((LAMBDA (SUBSTINFUN) 
-		(COND ((ZEROP1 B) SUBSTINFUN)
-		      (T (LIST '(MTIMES)
-			       (EXPONENTIATE (AFIXSIGN (LIST '(MTIMES)
-							     B
-							     '$%I)
-						       (NULL SIGN)))
-			       SUBSTINFUN))))
-	($AT F
-	     (LIST '(MEQUAL SIMP)
-		   PARM
-		   (LIST '(MPLUS SIMP)
-			 PARM
-			 (AFIXSIGN (LIST '(MTIMES)
-					 A
-					 '$%I)
-				   SIGN)))))) 
+  ((lambda (substinfun) 
+     (cond ((zerop1 b) substinfun)
+	   (t (list '(mtimes)
+		    (exponentiate (afixsign (list '(mtimes)
+						  b
+						  '$%i)
+					    (null sign)))
+		    substinfun))))
+   ($at f
+	(list '(mequal simp)
+	      parm
+	      (list '(mplus simp)
+		    parm
+		    (afixsign (list '(mtimes)
+				    a
+				    '$%i)
+			      sign)))))) 
 
-(DEFUN COMPOSE 
+(defun compose 
  ;;;IF WHICHSIGN IS NIL THEN SIN TRANSFORM ELSE COS TRANSFORM
- (FUN PARM WHICHSIGN A B) 
-       ((LAMBDA (RESULT) 
-		($RATSIMP (SIMPTIMES (CONS '(MTIMES)
-					   (COND (WHICHSIGN RESULT)
-						 (T (CONS '$%I
-							  RESULT))))
-				     1 NIL)))
-	(LIST '((RAT) 1. 2.)
-	      (LIST '(MPLUS)
-		    (MOSTPART FUN PARM T A B)
-		    (AFIXSIGN (MOSTPART FUN PARM NIL A B)
-			      WHICHSIGN))))) 
+    (fun parm whichsign a b) 
+  ((lambda (result) 
+     ($ratsimp (simptimes (cons '(mtimes)
+				(cond (whichsign result)
+				      (t (cons '$%i
+					       result))))
+			  1 nil)))
+   (list '((rat) 1. 2.)
+	 (list '(mplus)
+	       (mostpart fun parm t a b)
+	       (afixsign (mostpart fun parm nil a b)
+			 whichsign))))) 
 
-(DEFUN LAPSIN 
+(defun lapsin 
  ;;;FUN IS OF THE FORM SIN(A*T+B)*REST(T) OR COS
- (FUN REST TRIGSWITCH) 
-       ((LAMBDA (AB) 
-	 (COND
-	  (AB
-	    (COND
-	     (REST (COMPOSE (LAPTIMES REST)
-			    PARM
-			    TRIGSWITCH
-			    (CAR AB)
-			    (CDR AB)))
-	     (T (SIMPTIMES
-	      (LIST
-	       '(MTIMES)
-	       (COND
-		((ZEROP1 (CDR AB))
-		 (COND (TRIGSWITCH PARM) (T (CAR AB))))
-		(T (COND (TRIGSWITCH (LIST '(MPLUS)
-					   (LIST '(MTIMES)
-						 PARM
-						 (LIST '(%COS)
-						       (CDR AB)))
-					   (LIST '(MTIMES)
-						 -1.
-						 (CAR AB)
-						 (LIST '(%SIN)
-						       (CDR AB)))))
-			 (T (LIST '(MPLUS)
-				  (LIST '(MTIMES)
-					PARM
-					(LIST '(%SIN)
-					      (CDR AB)))
-				  (LIST '(MTIMES)
-					(CAR AB)
-					(LIST '(%COS)
-					      (CDR AB))))))))
-	       (LIST '(MEXPT)
-		     (LIST '(MPLUS)
-			   (LIST '(MEXPT) PARM 2.)
-			   (LIST '(MEXPT) (CAR AB) 2.))
+    (fun rest trigswitch) 
+  ((lambda (ab) 
+     (cond
+       (ab
+	(cond
+	  (rest (compose (laptimes rest)
+			 parm
+			 trigswitch
+			 (car ab)
+			 (cdr ab)))
+	  (t (simptimes
+	      (list
+	       '(mtimes)
+	       (cond
+		 ((zerop1 (cdr ab))
+		  (cond (trigswitch parm) (t (car ab))))
+		 (t (cond (trigswitch (list '(mplus)
+					    (list '(mtimes)
+						  parm
+						  (list '(%cos)
+							(cdr ab)))
+					    (list '(mtimes)
+						  -1.
+						  (car ab)
+						  (list '(%sin)
+							(cdr ab)))))
+			  (t (list '(mplus)
+				   (list '(mtimes)
+					 parm
+					 (list '(%sin)
+					       (cdr ab)))
+				   (list '(mtimes)
+					 (car ab)
+					 (list '(%cos)
+					       (cdr ab))))))))
+	       (list '(mexpt)
+		     (list '(mplus)
+			   (list '(mexpt) parm 2.)
+			   (list '(mexpt) (car ab) 2.))
 		     -1.))
-	    1 NIL))))
-	  (T (LAPSHIFT FUN REST))))
-	(ISLINEAR (CADR FUN) VAR))) 
+	      1 nil))))
+       (t (lapshift fun rest))))
+   (islinear (cadr fun) var))) 
 
-(DEFUN LAPSINH 
+(defun lapsinh 
  ;;;FUN IS OF THE FORM SINH(A*T+B)*REST(T) OR IS COSH
- (FUN REST SWITCH) 
-	(COND ((ISLINEAR (CADR FUN) VAR)
-       ($RATSIMP
-	(LAPLUS
-	 (SIMPLUS
-	  (LIST '(MPLUS)
-		(NCONC (LIST '(MTIMES)
-			     (LIST '(MEXPT)
-				   '$%E
-				   (CADR FUN))
-			     '((RAT) 1. 2.))
-		       REST)
-		(AFIXSIGN (NCONC (LIST '(MTIMES)
-				       (LIST '(MEXPT)
-					     '$%E
-					     (AFIXSIGN (CADR FUN)
-						       NIL))
-				       '((RAT) 1. 2.))
-				 REST)
-			  SWITCH))
-	  1.
-	  NIL)))) 
-	(T (LAPSHIFT FUN REST))))
+    (fun rest switch) 
+  (cond ((islinear (cadr fun) var)
+	 ($ratsimp
+	  (laplus
+	   (simplus
+	    (list '(mplus)
+		  (nconc (list '(mtimes)
+			       (list '(mexpt)
+				     '$%e
+				     (cadr fun))
+			       '((rat) 1. 2.))
+			 rest)
+		  (afixsign (nconc (list '(mtimes)
+					 (list '(mexpt)
+					       '$%e
+					       (afixsign (cadr fun)
+							 nil))
+					 '((rat) 1. 2.))
+				   rest)
+			    switch))
+	    1.
+	    nil)))) 
+	(t (lapshift fun rest))))
 
-(DEFUN LAPLOG 
+(defun laplog 
  ;;;FUN IS OF THE FORM LOG(A*T)
- (FUN) ((LAMBDA (AB) 
-		(COND ((AND AB (ZEROP1 (CDR AB)))
-		       (SIMPTIMES (LIST '(MTIMES)
-					(LIST '(MPLUS)
-					      (subfunmake '$PSI
-							  '(0)
-							  (NCONS 1.))
-					      (LIST '(%LOG)
-						    (CAR AB))
-					      (LIST '(MTIMES)
-						    -1.
-						    (LIST '(%LOG)
-							  PARM)))
-					(LIST '(MEXPT)
-					      PARM
-					      -1.))
-				  1 NIL))
-		      (T (LAPDEFINT FUN))))
-	(ISLINEAR (CADR FUN) VAR))) 
+    (fun) ((lambda (ab) 
+	     (cond ((and ab (zerop1 (cdr ab)))
+		    (simptimes (list '(mtimes)
+				     (list '(mplus)
+					   (subfunmake '$psi
+						       '(0)
+						       (ncons 1.))
+					   (list '(%log)
+						 (car ab))
+					   (list '(mtimes)
+						 -1.
+						 (list '(%log)
+						       parm)))
+				     (list '(mexpt)
+					   parm
+					   -1.))
+			       1 nil))
+		   (t (lapdefint fun))))
+	   (islinear (cadr fun) var))) 
 
-(DEFUN RAISEUP (FBASE EXPONENT) 
-       (COND ((EQUAL EXPONENT 1.) FBASE)
-	     (T (LIST '(MEXPT) FBASE EXPONENT)))) 
+(defun raiseup (fbase exponent) 
+  (cond ((equal exponent 1.) fbase)
+	(t (list '(mexpt) fbase exponent)))) 
 
-(DEFUN LAPDELTA (FUN REST) 
-       ;;TAKES TRANSFORM OF DELTA(A*T+B)*F(T)
-       ((LAMBDA (AB SIGN RECIPA) 
-	 (COND
-	  (AB
-	   (SETQ RECIPA (POWER (CAR AB) -1) AB (DIV (CDR AB) (CAR AB)))
-	   (SETQ SIGN (ASKSIGN AB) RECIPA (SIMPLIFYA (LIST '(MABS) RECIPA) NIL))
-	   (SIMPLIFYA (COND ((EQ SIGN '$POSITIVE) 0)
-			    ((EQ SIGN '$ZERO)
-			     (LIST '(MTIMES)
-				   (MAXIMA-SUBSTITUTE 0 VAR (FIXUPREST REST))
-				   RECIPA))
-			    (T (LIST '(MTIMES)
-				     (MAXIMA-SUBSTITUTE (NEG AB)
-						 VAR
-						 (FIXUPREST REST))
-				     (LIST '(MEXPT)
-					   '$%E
-					   (CONS '(MTIMES)
-						 (CONS PARM (NCONS AB))))
-				     RECIPA)))
-		      NIL))
-	  (T (LAPSHIFT FUN REST))))
-	(ISLINEAR (CADR FUN) VAR) NIL NIL)) 
+(defun lapdelta (fun rest) 
+  ;;TAKES TRANSFORM OF DELTA(A*T+B)*F(T)
+  ((lambda (ab sign recipa) 
+     (cond
+       (ab
+	(setq recipa (power (car ab) -1) ab (div (cdr ab) (car ab)))
+	(setq sign (asksign ab) recipa (simplifya (list '(mabs) recipa) nil))
+	(simplifya (cond ((eq sign '$positive) 0)
+			 ((eq sign '$zero)
+			  (list '(mtimes)
+				(maxima-substitute 0 var (fixuprest rest))
+				recipa))
+			 (t (list '(mtimes)
+				  (maxima-substitute (neg ab)
+						     var
+						     (fixuprest rest))
+				  (list '(mexpt)
+					'$%e
+					(cons '(mtimes)
+					      (cons parm (ncons ab))))
+				  recipa)))
+		   nil))
+       (t (lapshift fun rest))))
+   (islinear (cadr fun) var) nil nil)) 
 
-(DEFUN LAPERF (FUN  )
-       ((LAMBDA (AB) 
-	 (COND
-	  ((AND AB (EQUAL (CDR AB) 0.))
-	   (SIMPTIMES (LIST '(MTIMES)
-		 (DIV* (EXPONENTIATE (DIV* (LIST '(MEXPT)
-						 PARM
-						 2.)
-					   (LIST '(MTIMES)
-						 4.
-						 (LIST '(MEXPT)
-						       (CAR AB)
-						       2.))))
-		       PARM)
-		 (LIST '(MPLUS)
-		       1.
-		       (LIST '(MTIMES)
-			     -1.
-			      (LIST '(%ERF)
-					    (DIV* PARM
-						  (LIST '(MTIMES)
-							2.
-							(CAR AB))))
-				      ))) 1 NIL))
-	  (T (LAPDEFINT FUN))))
-	(ISLINEAR (CADR FUN) VAR)))
-(DEFUN LAPDEFINT (FUN)
-  (PROG (TRYINT MULT)
-    (AND ($UNKNOWN FUN)(GO SKIP))
-    (SETQ MULT (SIMPTIMES (LIST '(MTIMES) (EXPONENTIATE
-					   (LIST '(MTIMES SIMP) -1 VAR PARM)) FUN) 1 NIL))
-    (MEVAL `(($ASSUME) ,@(LIST (LIST '(MGREATERP) PARM 0))))
-    (SETQ TRYINT (ERRSET ($DEFINT MULT VAR 0 '$INF)))
-    (MEVAL `(($FORGET) ,@(LIST (LIST '(MGREATERP) PARM 0))))
-    (AND TRYINT (NOT (EQ (CAAAR TRYINT) '%INTEGRATE))  (RETURN (CAR TRYINT)))
-   SKIP (RETURN (LIST '(%LAPLACE SIMP) FUN VAR PARM))))
+(defun laperf (fun  )
+  ((lambda (ab) 
+     (cond
+       ((and ab (equal (cdr ab) 0.))
+	(simptimes (list '(mtimes)
+			 (div* (exponentiate (div* (list '(mexpt)
+							 parm
+							 2.)
+						   (list '(mtimes)
+							 4.
+							 (list '(mexpt)
+							       (car ab)
+							       2.))))
+			       parm)
+			 (list '(mplus)
+			       1.
+			       (list '(mtimes)
+				     -1.
+				     (list '(%erf)
+					   (div* parm
+						 (list '(mtimes)
+						       2.
+						       (car ab))))
+				     ))) 1 nil))
+       (t (lapdefint fun))))
+   (islinear (cadr fun) var)))
+(defun lapdefint (fun)
+  (prog (tryint mult)
+     (and ($unknown fun)(go skip))
+     (setq mult (simptimes (list '(mtimes) (exponentiate
+					    (list '(mtimes simp) -1 var parm)) fun) 1 nil))
+     (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
+     (setq tryint (errset ($defint mult var 0 '$inf)))
+     (meval `(($forget) ,@(list (list '(mgreaterp) parm 0))))
+     (and tryint (not (eq (caaar tryint) '%integrate))  (return (car tryint)))
+     skip (return (list '(%laplace simp) fun var parm))))
  
 
-(DECLARE-TOP(FIXNUM ORDER)) 
+(declare-top(fixnum order)) 
 
-(DEFUN LAPDIFF 
+(defun lapdiff 
  ;;;FUN IS OF THE FORM DIFF(F(T),T,N) WHERE N IS A POSITIVE INTEGER
- (FUN) (PROG (DIFFLIST DEGREE FRONTEND RESULTLIST NEWDLIST ORDER
-	      ARG2) 
-	     (SETQ NEWDLIST (SETQ DIFFLIST (COPY (CDDR FUN))))
-	     (SETQ ARG2 (LIST '(MEQUAL SIMP) VAR 0.))
-	A    (COND ((NULL DIFFLIST)
-		    (RETURN (CONS '(%DERIVATIVE SIMP)
-				  (CONS (LIST '(%LAPLACE SIMP)
-					      (CADR FUN)
-					      VAR
-					      PARM)
-					NEWDLIST))))
-		   ((EQ (CAR DIFFLIST) VAR)
-		    (SETQ DEGREE (CADR DIFFLIST) 
-			  DIFFLIST (CDDR DIFFLIST))
-		    (GO OUT)))
-	     (SETQ DIFFLIST (CDR (SETQ FRONTEND (CDR DIFFLIST))))
-	     (GO A)
-	OUT  (COND ((NULL (POSINT DEGREE))
-		    (RETURN (LIST '(%LAPLACE SIMP) FUN VAR PARM))))
-	     (COND (FRONTEND (RPLACD FRONTEND DIFFLIST))
-		   (T (SETQ NEWDLIST DIFFLIST)))
-	     (COND (NEWDLIST (SETQ FUN (CONS '(%DERIVATIVE SIMP)
-					     (CONS (CADR FUN)
-						   NEWDLIST))))
-		   (T (SETQ FUN (CADR FUN))))
-	     (SETQ ORDER 0.)
-	LOOP (SETQ DEGREE (f1- DEGREE))
-	     (SETQ RESULTLIST
-		   (CONS (LIST '(MTIMES)
-			       (RAISEUP PARM DEGREE)
-			       ($AT ($DIFF FUN VAR ORDER) ARG2))
-			 RESULTLIST))
-	     (SETQ ORDER (f1+ ORDER))
-	     (AND (> DEGREE 0.) (GO LOOP))
-	     (SETQ RESULTLIST (COND ((CDR RESULTLIST)
-				     (CONS '(MPLUS)
-					   RESULTLIST))
-				    (T (CAR RESULTLIST))))
-	     (RETURN (SIMPLUS (LIST '(MPLUS)
-				      (LIST '(MTIMES)
-					    (RAISEUP PARM ORDER)
-					    (LAPLACE FUN))
-				      (LIST '(MTIMES)
-					    -1.
-					    RESULTLIST))
-				1 NIL)))) 
+    (fun) (prog (difflist degree frontend resultlist newdlist order
+		 arg2) 
+	     (setq newdlist (setq difflist (copy (cddr fun))))
+	     (setq arg2 (list '(mequal simp) var 0.))
+	     a    (cond ((null difflist)
+			 (return (cons '(%derivative simp)
+				       (cons (list '(%laplace simp)
+						   (cadr fun)
+						   var
+						   parm)
+					     newdlist))))
+			((eq (car difflist) var)
+			 (setq degree (cadr difflist) 
+			       difflist (cddr difflist))
+			 (go out)))
+	     (setq difflist (cdr (setq frontend (cdr difflist))))
+	     (go a)
+	     out  (cond ((null (posint degree))
+			 (return (list '(%laplace simp) fun var parm))))
+	     (cond (frontend (rplacd frontend difflist))
+		   (t (setq newdlist difflist)))
+	     (cond (newdlist (setq fun (cons '(%derivative simp)
+					     (cons (cadr fun)
+						   newdlist))))
+		   (t (setq fun (cadr fun))))
+	     (setq order 0.)
+	     loop (setq degree (f1- degree))
+	     (setq resultlist
+		   (cons (list '(mtimes)
+			       (raiseup parm degree)
+			       ($at ($diff fun var order) arg2))
+			 resultlist))
+	     (setq order (f1+ order))
+	     (and (> degree 0.) (go loop))
+	     (setq resultlist (cond ((cdr resultlist)
+				     (cons '(mplus)
+					   resultlist))
+				    (t (car resultlist))))
+	     (return (simplus (list '(mplus)
+				    (list '(mtimes)
+					  (raiseup parm order)
+					  (laplace fun))
+				    (list '(mtimes)
+					  -1.
+					  resultlist))
+			      1 nil)))) 
 
-(DECLARE-TOP(NOTYPE ORDER)) 
+(declare-top(notype order)) 
 
-(DEFUN LAPINT 
+(defun lapint 
  ;;;FUN IS OF THE FORM INTEGRATE(F(X)*G(T)*H(T-X),X,0,T)
- (FUN) (PROG (NEWFUN PARM-LIST F) 
-	     (AND DVAR (GO CONVOLUTION))
-	     (SETQ DVAR (CADR (SETQ NEWFUN (CDR FUN))))
-	     (AND (CDDR NEWFUN)
-		  (ZEROP1 (CADDR NEWFUN))
-		  (EQ (CADDDR NEWFUN) VAR)
-		  (GO CONVOLUTIONTEST))
-	NOTCON
-	     (SETQ NEWFUN (CDR FUN))
-	     (COND ((CDDR NEWFUN)
-		    (COND ((AND (FREEOF VAR (CADDR NEWFUN))
-				(FREEOF VAR (CADDDR NEWFUN)))
-			   (RETURN (LIST '(%INTEGRATE SIMP)
-					 (LAPLACE (CAR NEWFUN))
-					 DVAR
-					 (CADDR NEWFUN)
-					 (CADDDR NEWFUN))))
-			  (T (GO GIVEUP))))
-		   (T (RETURN (LIST '(%INTEGRATE SIMP)
-				    (LAPLACE (CAR NEWFUN))
-				    DVAR))))
-	GIVEUP
-	     (RETURN (LIST '(%LAPLACE SIMP) FUN VAR PARM))
-	CONVOLUTIONTEST
-	     (SETQ NEWFUN ($FACTOR (CAR NEWFUN)))
-	     (COND ((EQ (CAAR NEWFUN) 'MTIMES)
-		    (SETQ F (CADR NEWFUN) NEWFUN (CDDR NEWFUN)))
-		   (T (SETQ F NEWFUN NEWFUN NIL)))
-	GOTHRULIST
-	     (COND ((FREEOF DVAR F)
-		    (SETQ PARM-LIST (CONS F PARM-LIST)))
-		   ((FREEOF VAR F) (SETQ VAR-LIST (CONS F VAR-LIST)))
-		   ((FREEOF DVAR
-			    ($RATSIMP (MAXIMA-SUBSTITUTE (LIST '(MPLUS)
-							VAR
-							DVAR)
-						  VAR
-						  F)))
-		    (SETQ VAR-PARM-LIST (CONS F VAR-PARM-LIST)))
-		   (T (GO NOTCON)))
-	     (COND (NEWFUN (SETQ F (CAR NEWFUN) NEWFUN (CDR NEWFUN))
-			   (GO GOTHRULIST)))
-	     (AND
-	      PARM-LIST
-	      (RETURN
-	       (LAPLACE
-		(CONS
-		 '(MTIMES)
-		 (NCONC PARM-LIST
-			(NCONS (LIST '(%INTEGRATE)
-				     (CONS '(MTIMES)
-					   (APPEND VAR-LIST
-						   VAR-PARM-LIST))
-				     DVAR
-				     0.
-				     VAR)))))))
-	CONVOLUTION
-	     (RETURN
-	      (SIMPTIMES
-	       (LIST
-		'(MTIMES)
-		(LAPLACE ($EXPAND (MAXIMA-SUBSTITUTE VAR
-					      DVAR
-					      (FIXUPREST VAR-LIST))))
-		(LAPLACE
-		 ($EXPAND (MAXIMA-SUBSTITUTE 0.
-				      DVAR
-				      (FIXUPREST VAR-PARM-LIST)))))
-	       1.
-	       T)))) 
+    (fun) (prog (newfun parm-list f) 
+	     (and dvar (go convolution))
+	     (setq dvar (cadr (setq newfun (cdr fun))))
+	     (and (cddr newfun)
+		  (zerop1 (caddr newfun))
+		  (eq (cadddr newfun) var)
+		  (go convolutiontest))
+	     notcon
+	     (setq newfun (cdr fun))
+	     (cond ((cddr newfun)
+		    (cond ((and (freeof var (caddr newfun))
+				(freeof var (cadddr newfun)))
+			   (return (list '(%integrate simp)
+					 (laplace (car newfun))
+					 dvar
+					 (caddr newfun)
+					 (cadddr newfun))))
+			  (t (go giveup))))
+		   (t (return (list '(%integrate simp)
+				    (laplace (car newfun))
+				    dvar))))
+	     giveup
+	     (return (list '(%laplace simp) fun var parm))
+	     convolutiontest
+	     (setq newfun ($factor (car newfun)))
+	     (cond ((eq (caar newfun) 'mtimes)
+		    (setq f (cadr newfun) newfun (cddr newfun)))
+		   (t (setq f newfun newfun nil)))
+	     gothrulist
+	     (cond ((freeof dvar f)
+		    (setq parm-list (cons f parm-list)))
+		   ((freeof var f) (setq var-list (cons f var-list)))
+		   ((freeof dvar
+			    ($ratsimp (maxima-substitute (list '(mplus)
+							       var
+							       dvar)
+							 var
+							 f)))
+		    (setq var-parm-list (cons f var-parm-list)))
+		   (t (go notcon)))
+	     (cond (newfun (setq f (car newfun) newfun (cdr newfun))
+			   (go gothrulist)))
+	     (and
+	      parm-list
+	      (return
+		(laplace
+		 (cons
+		  '(mtimes)
+		  (nconc parm-list
+			 (ncons (list '(%integrate)
+				      (cons '(mtimes)
+					    (append var-list
+						    var-parm-list))
+				      dvar
+				      0.
+				      var)))))))
+	     convolution
+	     (return
+	       (simptimes
+		(list
+		 '(mtimes)
+		 (laplace ($expand (maxima-substitute var
+						      dvar
+						      (fixuprest var-list))))
+		 (laplace
+		  ($expand (maxima-substitute 0.
+					      dvar
+					      (fixuprest var-parm-list)))))
+		1.
+		t)))) 
 
-(DECLARE-TOP(SPECIAL VARLIST RATFORM ILS ILT)) 
+(declare-top(special varlist ratform ils ilt)) 
 
-(DEFMFUN $ILT (EXP ILS ILT) 
+(defmfun $ilt (exp ils ilt) 
  ;;;EXP IS F(S)/G(S) WHERE F AND G ARE POLYNOMIALS IN S AND DEGR(F) < DEGR(G)
-	 (LET (VARLIST ($SAVEFACTORS T) CHECKFACTORS $RATFAC $KEEPFLOAT) 
+  (let (varlist ($savefactors t) checkfactors $ratfac $keepfloat) 
 		;;; MAKES ILS THE MAIN VARIABLE
-		(SETQ VARLIST (LIST ILS))
-		(NEWVAR EXP)
-		(ORDERPOINTER VARLIST)
-		(SETQ VAR (CAADR (RATREP* ILS)))
-		(COND ((AND (NULL (ATOM EXP))
-			    (EQ (CAAR EXP) 'MEQUAL))
-		       (LIST '(MEQUAL)
-			     ($ILT (CADR EXP) ILS ILT)
-			     ($ILT (CADDR EXP) ILS ILT)))
-		      ((ZEROP1 EXP) 0.)
-		      ((FREEOF ILS EXP)
-		       (LIST '(%ILT SIMP) EXP ILS ILT))
-		      (T (ILT0 EXP))))) 
+    (setq varlist (list ils))
+    (newvar exp)
+    (orderpointer varlist)
+    (setq var (caadr (ratrep* ils)))
+    (cond ((and (null (atom exp))
+		(eq (caar exp) 'mequal))
+	   (list '(mequal)
+		 ($ilt (cadr exp) ils ilt)
+		 ($ilt (caddr exp) ils ilt)))
+	  ((zerop1 exp) 0.)
+	  ((freeof ils exp)
+	   (list '(%ilt simp) exp ils ilt))
+	  (t (ilt0 exp))))) 
 
-(DEFUN MAXIMA-RATIONALP (LE V) 
-       (COND ((NULL LE))
-	     ((AND (NULL (ATOM (CAR LE))) (NULL (FREEOF V (CAR LE))))
-	      NIL)
-	     (T (MAXIMA-RATIONALP (CDR LE) V)))) 
+(defun maxima-rationalp (le v) 
+  (cond ((null le))
+	((and (null (atom (car le))) (null (freeof v (car le))))
+	 nil)
+	(t (maxima-rationalp (cdr le) v)))) 
 
-(DEFUN ILT0 
+(defun ilt0 
  ;;;THIS FUNCTION DOES THE PARTIAL FRACTION DECOMPOSITION
- (EXP) (PROG (WHOLEPART FRPART NUM DENOM Y CONTENT REAL FACTOR
-	      APART BPART PARNUMER RATARG RATFORM) 
-	     (AND (MPLUSP EXP)
-		  (RETURN (SIMPLUS  (CONS '(MPLUS)
-				(MAPCAR (FUNCTION (LAMBDA(F)($ILT F ILS ILT))) (CDR EXP))) 1 T)))
-	     (AND (NULL (ATOM EXP))
-		  (EQ (CAAR EXP) '%LAPLACE)
-		  (EQ (CADDDR EXP) ILS)
-		  (RETURN (COND ((EQ (CADDR EXP) ILT) (CADR EXP))
-				(T (SUBST ILT
-					       (CADDR EXP)
-					       (CADR EXP))))))
-	     (SETQ RATARG (RATREP* EXP))
-	     (OR (MAXIMA-RATIONALP VARLIST ILS)
-		 (RETURN (LIST '(%ILT SIMP) EXP ILS ILT)))
-	     (SETQ RATFORM (CAR RATARG))
-	     (SETQ DENOM (RATDENOMINATOR (CDR RATARG)))
-	     (SETQ FRPART (PDIVIDE (RATNUMERATOR (CDR RATARG)) DENOM))
-	     (SETQ WHOLEPART (CAR FRPART))
-	     (SETQ FRPART (RATQU (CADR FRPART) DENOM))
-	     (COND ((NOT (ZEROP1 (CAR WHOLEPART)))
-		    (RETURN (LIST '(%ILT SIMP) EXP ILS ILT)))
-		   ((ZEROP1 (CAR FRPART)) (RETURN 0)))
-	     (SETQ NUM (CAR FRPART) DENOM (CDR FRPART))
-	     (SETQ Y (OLDCONTENT DENOM))
-	     (SETQ CONTENT (CAR Y))
-	     (SETQ REAL (CADR Y))
-	     (SETQ FACTOR (PFACTOR REAL))
-	LOOP (COND ((NULL (CDDR FACTOR))
-		    (SETQ APART REAL 
-			  BPART 1 
-			  Y '((0 . 1) 1 . 1))
-		    (GO SKIP)))
-	     (SETQ APART (PEXPT (CAR FACTOR) (CADR FACTOR)))
-	     (SETQ BPART (CAR (RATQU REAL APART)))
-	     (SETQ Y (BPROG APART BPART))
-	SKIP (SETQ FRPART
-		   (CDR (RATDIVIDE (RATTI (RATNUMERATOR NUM)
-					  (CDR Y)
-					  T)
-				   (RATTI (RATDENOMINATOR NUM)
-					  (RATTI CONTENT APART T)
-					  T))))
-	     (SETQ 
-	      PARNUMER
-	      (CONS (ILT1 (RATQU (RATNUMERATOR FRPART)
-				 (RATTI (RATDENOMINATOR FRPART)
-					(RATTI (RATDENOMINATOR NUM)
-					       CONTENT
-					       T)
-					T))
-			  (CAR FACTOR)
-			  (CADR FACTOR))
-		    PARNUMER))
-	     (SETQ FACTOR (CDDR FACTOR))
-	     (COND ((NULL FACTOR)
-		    (RETURN (SIMPLUS (CONS '(MPLUS) PARNUMER)
+    (exp) (prog (wholepart frpart num denom y content real factor
+		 apart bpart parnumer ratarg ratform) 
+	     (and (mplusp exp)
+		  (return (simplus  (cons '(mplus)
+					  (mapcar (function (lambda(f)($ilt f ils ilt))) (cdr exp))) 1 t)))
+	     (and (null (atom exp))
+		  (eq (caar exp) '%laplace)
+		  (eq (cadddr exp) ils)
+		  (return (cond ((eq (caddr exp) ilt) (cadr exp))
+				(t (subst ilt
+					  (caddr exp)
+					  (cadr exp))))))
+	     (setq ratarg (ratrep* exp))
+	     (or (maxima-rationalp varlist ils)
+		 (return (list '(%ilt simp) exp ils ilt)))
+	     (setq ratform (car ratarg))
+	     (setq denom (ratdenominator (cdr ratarg)))
+	     (setq frpart (pdivide (ratnumerator (cdr ratarg)) denom))
+	     (setq wholepart (car frpart))
+	     (setq frpart (ratqu (cadr frpart) denom))
+	     (cond ((not (zerop1 (car wholepart)))
+		    (return (list '(%ilt simp) exp ils ilt)))
+		   ((zerop1 (car frpart)) (return 0)))
+	     (setq num (car frpart) denom (cdr frpart))
+	     (setq y (oldcontent denom))
+	     (setq content (car y))
+	     (setq real (cadr y))
+	     (setq factor (pfactor real))
+	     loop (cond ((null (cddr factor))
+			 (setq apart real 
+			       bpart 1 
+			       y '((0 . 1) 1 . 1))
+			 (go skip)))
+	     (setq apart (pexpt (car factor) (cadr factor)))
+	     (setq bpart (car (ratqu real apart)))
+	     (setq y (bprog apart bpart))
+	     skip (setq frpart
+			(cdr (ratdivide (ratti (ratnumerator num)
+					       (cdr y)
+					       t)
+					(ratti (ratdenominator num)
+					       (ratti content apart t)
+					       t))))
+	     (setq 
+	      parnumer
+	      (cons (ilt1 (ratqu (ratnumerator frpart)
+				 (ratti (ratdenominator frpart)
+					(ratti (ratdenominator num)
+					       content
+					       t)
+					t))
+			  (car factor)
+			  (cadr factor))
+		    parnumer))
+	     (setq factor (cddr factor))
+	     (cond ((null factor)
+		    (return (simplus (cons '(mplus) parnumer)
 				     1.
-				     T))))
-	     (SETQ NUM (CDR (RATDIVIDE (RATTI NUM (CAR Y) T)
-				       (RATTI CONTENT BPART T))))
-	     (SETQ REAL BPART)
-	     (GO LOOP))) 
+				     t))))
+	     (setq num (cdr (ratdivide (ratti num (car y) t)
+				       (ratti content bpart t))))
+	     (setq real bpart)
+	     (go loop))) 
 
-(DECLARE-TOP(FIXNUM K) (SPECIAL Q Z)) 
+(declare-top(fixnum k) (special q z)) 
 
-(DEFUN ILT1 (P Q K)
-  ((LAMBDA (Z)
-  (COND (( ONEP1 K)(ILT3 P ))
-	(T (SETQ Z (BPROG Q (PDERIVATIVE Q VAR)))(ILT2 P K)))) NIL))
+(defun ilt1 (p q k)
+  ((lambda (z)
+     (cond (( onep1 k)(ilt3 p ))
+	   (t (setq z (bprog q (pderivative q var)))(ilt2 p k)))) nil))
 
 
-(DEFUN ILT2 
+(defun ilt2 
  ;;;INVERTS P(S)/Q(S)**K WHERE Q(S)  IS IRREDUCIBLE
  ;;;DOESN'T CALL ILT3 IF Q(S) IS LINEAR
-  (P K)
-       (PROG (Y A B) 
-		(AND (ONEP1 K)(RETURN (ILT3 P)))
-		(SETQ K (f1- K))
-	     (SETQ A (RATTI P (CAR Z) T))
-	     (SETQ B (RATTI P (CDR Z) T))
-	     (SETQ Y (PEXPT Q K))
-	     (COND
-	      ((OR (NULL (EQUAL (PDEGREE Q VAR) 1.))
-		   (> (PDEGREE (CAR P) VAR) 0.))
-	       (RETURN
-		(SIMPLUS
-		 (LIST
-		  '(MPLUS)
-		  (ILT2
-		   (CDR (RATDIVIDE (RATPLUS A
-					    (RATQU (RATDERIVATIVE B
-								  VAR)
-						   K))
-				   Y))
-		   K)
-		  ($MULTTHRU (SIMPTIMES (LIST '(MTIMES)
-				   ILT
-				   (POWER K -1)
-				   (ILT2 (CDR (RATDIVIDE B Y)) K))
-			     1.
-			     T)))
-		 1.
-		 T))))
-	     (SETQ A (DISREP (POLCOEF Q 1.)) 
-		   B (DISREP (POLCOEF Q 0.)))
-	     (RETURN
-	      (SIMPTIMES (LIST '(MTIMES)
-			       (DISREP P)
-			       (RAISEUP ILT K)
-			       (SIMPEXPT (LIST '(MEXPT)
-					       '$%E
-					       (LIST '(MTIMES)
-						     -1.
-						     ILT
-						     B
-						     (LIST '(MEXPT)
-							   A
-							   -1.)))
-					 1.
-					 NIL)
-			       (LIST '(MEXPT)
-				     A
-				     (DIFFERENCE -1. K))
-			       (LIST '(MEXPT)
-				     (FACTORIAL K)
-				     -1.))
-			 1.
-			 NIL)))) 
+    (p k)
+  (prog (y a b) 
+     (and (onep1 k)(return (ilt3 p)))
+     (setq k (f1- k))
+     (setq a (ratti p (car z) t))
+     (setq b (ratti p (cdr z) t))
+     (setq y (pexpt q k))
+     (cond
+       ((or (null (equal (pdegree q var) 1.))
+	    (> (pdegree (car p) var) 0.))
+	(return
+	  (simplus
+	   (list
+	    '(mplus)
+	    (ilt2
+	     (cdr (ratdivide (ratplus a
+				      (ratqu (ratderivative b
+							    var)
+					     k))
+			     y))
+	     k)
+	    ($multthru (simptimes (list '(mtimes)
+					ilt
+					(power k -1)
+					(ilt2 (cdr (ratdivide b y)) k))
+				  1.
+				  t)))
+	   1.
+	   t))))
+     (setq a (disrep (polcoef q 1.)) 
+	   b (disrep (polcoef q 0.)))
+     (return
+       (simptimes (list '(mtimes)
+			(disrep p)
+			(raiseup ilt k)
+			(simpexpt (list '(mexpt)
+					'$%e
+					(list '(mtimes)
+					      -1.
+					      ilt
+					      b
+					      (list '(mexpt)
+						    a
+						    -1.)))
+				  1.
+				  nil)
+			(list '(mexpt)
+			      a
+			      (difference -1. k))
+			(list '(mexpt)
+			      (factorial k)
+			      -1.))
+		  1.
+		  nil)))) 
 
-(DECLARE-TOP(NOTYPE K)) 
+(declare-top(notype k)) 
 
-;(DEFUN COEF MACRO (POL) (SUBST (CADR POL) (QUOTE DEG)
-;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
+;;(DEFUN COEF MACRO (POL) (SUBST (CADR POL) (QUOTE DEG)
+;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 
 (defmacro coef (pol)
-  `(DISREP (RATQU (POLCOEF (CAR P) ,pol) (CDR P))))
+  `(disrep (ratqu (polcoef (car p) ,pol) (cdr p))))
 
-(DEFmfUN LAPSUM N (CONS '(MPLUS)(LISTIFY N)))
-(DEFmfUN LAPPROD N (CONS '(MTIMES)(LISTIFY N)))
-(DEFmfUN EXPO N (CONS '(MEXPT)(LISTIFY N)))
-(DEFUN ILT3 
+(defmfun lapsum n (cons '(mplus)(listify n)))
+(defmfun lapprod n (cons '(mtimes)(listify n)))
+(defmfun expo n (cons '(mexpt)(listify n)))
+(defun ilt3 
  ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
- (P ) (PROG (DISCRIM SIGN A C D E B1 B0 R TERM1 TERM2 DEGR) 
-	     (SETQ E (DISREP (POLCOEF Q 0.)) 
-		   D (DISREP (POLCOEF Q 1.)) 
-		   DEGR (PDEGREE Q VAR))
-	      (AND (EQUAL DEGR 1.)
-	       (RETURN
-		(SIMPTIMES (LAPPROD
-				 (DISREP P)
-				 (EXPO D -1.)
-				 (EXPO
-				       '$%E
-				       (LAPPROD
-					     -1.
-					     ILT
-					     E
-					     (EXPO
-						   D
-						   -1.))))
-			   1.
-			   NIL)))
-		(SETQ C (DISREP (POLCOEF Q 2)))
-	      (AND (EQUAL DEGR 2.) (GO QUADRATIC))
-	      (AND (EQUAL DEGR 3.) (ZEROP1 C) (ZEROP1 D)
-	       (GO CUBIC))
-	(RETURN (LIST '(%ILT SIMP) (DIV* (DISREP P)(DISREP Q)) ILS ILT))
-	CUBIC (SETQ  A (DISREP (POLCOEF Q 3))
-		R (SIMPNRT (DIV* E A) 3))
-		(SETQ D (DIV* (DISREP P)(LAPPROD A (LAPSUM
-			(EXPO ILS 3)(EXPO '%R 3)))))
-		(RETURN (ILT0 (MAXIMA-SUBSTITUTE R '%R ($PARTFRAC D ILS))))
-	QUADRATIC (SETQ B0 (COEF 0) B1 (COEF 1))
-
-	     (SETQ DISCRIM
-		   (SIMPLUS (LAPSUM
-				  (LAPPROD
-					4.
-					E
-					C)
-				  (LAPPROD -1. D D))
-			    1.
-			    NIL))
-	     (SETQ SIGN (COND ((FREE DISCRIM '$%I) (ASKSIGN DISCRIM)) (T '$POSITIVE)) 
-		   TERM1 '(%COS) 
-		   TERM2 '(%SIN))
-	(SETQ DEGR (EXPO '$%E (LAPPROD ILT D (POWER C -1) '((RAT SIMP) -1 2))))
-	     (COND ((EQ SIGN '$ZERO)
-		    (RETURN (SIMPTIMES (LAPPROD DEGR (LAPSUM (DIV* B1 C)(LAPPROD
-		(DIV* (LAPSUM (LAPPROD 2 B0 C)(LAPPROD -1 B1 D))
-		(LAPPROD 2 C C)) ILT))) 1 NIL))
-)		   ((EQ SIGN '$NEGATIVE)
-		    (SETQ TERM1 '(%COSH) 
-			  TERM2 '(%SINH) 
-			  DISCRIM (SIMPTIMES (LAPPROD
-						   -1.
-						   DISCRIM)
-					     1.
-					     T))))
-	     (SETQ DISCRIM (SIMPNRT DISCRIM 2))
-	     (SETQ 
-	      SIGN
-	      (SIMPTIMES
-	       (LAPPROD
-		     (LAPSUM
-			   (LAPPROD
-				 2.
-				 B0
-				 C)
-			   (LAPPROD
+    (p ) (prog (discrim sign a c d e b1 b0 r term1 term2 degr) 
+	    (setq e (disrep (polcoef q 0.)) 
+		  d (disrep (polcoef q 1.)) 
+		  degr (pdegree q var))
+	    (and (equal degr 1.)
+		 (return
+		   (simptimes (lapprod
+			       (disrep p)
+			       (expo d -1.)
+			       (expo
+				'$%e
+				(lapprod
 				 -1.
-				 B1
-				 D))
-		     (EXPO DISCRIM -1.))
-	       1.
-	       NIL))
-	     (SETQ C (POWER C -1))
-	     (SETQ DISCRIM (SIMPTIMES (LAPPROD
-					    DISCRIM
-					    ILT
-					    '((RAT SIMP) 1. 2.)
-					    C)
-				      1.
-				      T))
-	     (RETURN
-	      (SIMPTIMES
-	       (LAPPROD
-		     C
-		     DEGR
-		     (LAPSUM
-			   (LAPPROD
-				 B1
-				 (LIST TERM1 DISCRIM))
-			   (LAPPROD
-				 SIGN
-				 (LIST TERM2 DISCRIM))))
-	       1.
-	       NIL)))) 
+				 ilt
+				 e
+				 (expo
+				  d
+				  -1.))))
+			      1.
+			      nil)))
+	    (setq c (disrep (polcoef q 2)))
+	    (and (equal degr 2.) (go quadratic))
+	    (and (equal degr 3.) (zerop1 c) (zerop1 d)
+		 (go cubic))
+	    (return (list '(%ilt simp) (div* (disrep p)(disrep q)) ils ilt))
+	    cubic (setq  a (disrep (polcoef q 3))
+			 r (simpnrt (div* e a) 3))
+	    (setq d (div* (disrep p)(lapprod a (lapsum
+						(expo ils 3)(expo '%r 3)))))
+	    (return (ilt0 (maxima-substitute r '%r ($partfrac d ils))))
+	    quadratic (setq b0 (coef 0) b1 (coef 1))
 
-#-NIL
-(DECLARE-TOP(UNSPECIAL DVAR ILS ILT NOUNL PARM Q RATFORM VAR VARLIST
-		    VAR-LIST VAR-PARM-LIST Z))
+	    (setq discrim
+		  (simplus (lapsum
+			    (lapprod
+			     4.
+			     e
+			     c)
+			    (lapprod -1. d d))
+			   1.
+			   nil))
+	    (setq sign (cond ((free discrim '$%i) (asksign discrim)) (t '$positive)) 
+		  term1 '(%cos) 
+		  term2 '(%sin))
+	    (setq degr (expo '$%e (lapprod ilt d (power c -1) '((rat simp) -1 2))))
+	    (cond ((eq sign '$zero)
+		   (return (simptimes (lapprod degr (lapsum (div* b1 c)(lapprod
+									(div* (lapsum (lapprod 2 b0 c)(lapprod -1 b1 d))
+									      (lapprod 2 c c)) ilt))) 1 nil))
+		   )		   ((eq sign '$negative)
+		   (setq term1 '(%cosh) 
+			 term2 '(%sinh) 
+			 discrim (simptimes (lapprod
+					     -1.
+					     discrim)
+					    1.
+					    t))))
+	    (setq discrim (simpnrt discrim 2))
+	    (setq 
+	     sign
+	     (simptimes
+	      (lapprod
+	       (lapsum
+		(lapprod
+		 2.
+		 b0
+		 c)
+		(lapprod
+		 -1.
+		 b1
+		 d))
+	       (expo discrim -1.))
+	      1.
+	      nil))
+	    (setq c (power c -1))
+	    (setq discrim (simptimes (lapprod
+				      discrim
+				      ilt
+				      '((rat simp) 1. 2.)
+				      c)
+				     1.
+				     t))
+	    (return
+	      (simptimes
+	       (lapprod
+		c
+		degr
+		(lapsum
+		 (lapprod
+		  b1
+		  (list term1 discrim))
+		 (lapprod
+		  sign
+		  (list term2 discrim))))
+	       1.
+	       nil)))) 
+
+#-nil
+(declare-top(unspecial dvar ils ilt nounl parm q ratform var varlist
+		       var-list var-parm-list z))

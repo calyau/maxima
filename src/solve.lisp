@@ -13,65 +13,65 @@
 
 (load-macsyma-macros ratmac strmac)
 
-(DECLARE-TOP (GENPREFIX V_)
-	 (SPECIAL VAR-LIST EXPSUMSPLIT $DISPFLAG $NOLABELS CHECKFACTORS *G
-		  $ALGEBRAIC EQUATIONS ;List of E-labels
-		  *POWER *VARB *FLG $DERIVSUBST $NUMER $FLOAT
-		  $%EMODE WFLAG GENVAR GENPAIRS VARLIST BROKEN-NOT-FREEOF
-		  $FACTORFLAG
-		  MULT ;Some crock which tracks multiplicities.
-		  *ROOTS ;alternating list of solutions and multiplicities
-		  *FAILURES ;alternating list of equations and multiplicities
-		  *MYVAR $LISTCONSTVARS
-		  *HAS*VAR *VAR $DONTFACTOR $LINENUM $LINECHAR
-		  LINELABLE $KEEPFLOAT $RATFAC
-		  ERRRJFFLAG ;A substitute for condition binding.
-		  LSOLVEFLAG XM* XN* MUL* SOLVEXP)
-	 (ARRAY* (NOTYPE XA* 2))
-	 (FIXNUM THISN $LINENUM))
+(declare-top (genprefix v_)
+	     (special var-list expsumsplit $dispflag $nolabels checkfactors *g
+		      $algebraic equations ;List of E-labels
+		      *power *varb *flg $derivsubst $numer $float
+		      $%emode wflag genvar genpairs varlist broken-not-freeof
+		      $factorflag
+		      mult    ;Some crock which tracks multiplicities.
+		      *roots ;alternating list of solutions and multiplicities
+		      *failures	;alternating list of equations and multiplicities
+		      *myvar $listconstvars
+		      *has*var *var $dontfactor $linenum $linechar
+		      linelable $keepfloat $ratfac
+		      errrjfflag  ;A substitute for condition binding.
+		      lsolveflag xm* xn* mul* solvexp)
+	     (array* (notype xa* 2))
+	     (fixnum thisn $linenum))
 
-(DEFMVAR $BREAKUP T
-	 "Causes solutions to cubic and quartic equations to be expressed in
+(defmvar $breakup t
+  "Causes solutions to cubic and quartic equations to be expressed in
 	 terms of common subexpressions.")
 
-(DEFMVAR $MULTIPLICITIES '$NOT_SET_YET
-	 "Set to a list of the multiplicities of the individual solutions
+(defmvar $multiplicities '$not_set_yet
+  "Set to a list of the multiplicities of the individual solutions
 	 returned by SOLVE, REALROOTS, or ALLROOTS.")
 
-(DEFMVAR $LINSOLVEWARN T
-	 "Needs to be documented.")
+(defmvar $linsolvewarn t
+  "Needs to be documented.")
 
-(DEFMVAR $SOLVE_INCONSISTENT_ERROR T
-	 "If T gives an MAXIMA-ERROR if SOLVE meets up with inconsistent linear
+(defmvar $solve_inconsistent_error t
+  "If T gives an MAXIMA-ERROR if SOLVE meets up with inconsistent linear
 	 equations.  If NIL, returns ((MLIST SIMP)) in this case.")
 
-(DEFMVAR $PROGRAMMODE T
-	 "Causes SOLVE to return its answers explicitly as elements
+(defmvar $programmode t
+  "Causes SOLVE to return its answers explicitly as elements
 	 in a list rather than printing E-labels.")
 
-(DEFMVAR $SOLVEDECOMPOSES T
-	 "Causes SOLVE to use POLYDECOMP in attempting to solve polynomials.")
+(defmvar $solvedecomposes t
+  "Causes SOLVE to use POLYDECOMP in attempting to solve polynomials.")
 
-(DEFMVAR $SOLVEEXPLICIT NIL
-	 "Causes SOLVE to return implicit solutions i.e. of the form F(x)=0.")
+(defmvar $solveexplicit nil
+  "Causes SOLVE to return implicit solutions i.e. of the form F(x)=0.")
 
-(DEFMVAR $SOLVEFACTORS T
-	 "If T, then SOLVE will try to factor the expression.  The FALSE
+(defmvar $solvefactors t
+  "If T, then SOLVE will try to factor the expression.  The FALSE
 	 setting may be desired in zl-SOME cases where factoring is not
 	 necessary.")
 
-(DEFMVAR $SOLVENULLWARN T
-	 "Causes the user will be warned if SOLVE is called with either a
+(defmvar $solvenullwarn t
+  "Causes the user will be warned if SOLVE is called with either a
 	 null equation list or a null variable list.  For example,
 	 SOLVE([],[]); would print two warning messages and return [].")
 
-(DEFMVAR $SOLVETRIGWARN T
-	 "Causes SOLVE to print a warning message when it is uses
+(defmvar $solvetrigwarn t
+  "Causes SOLVE to print a warning message when it is uses
 	 inverse trigonometric functions to solve an equation,
 	 thereby losing solutions.")
 
-(DEFMVAR $SOLVERADCAN NIL
-	 "SOLVE will use RADCAN which will make SOLVE slower but will allow
+(defmvar $solveradcan nil
+  "SOLVE will use RADCAN which will make SOLVE slower but will allow
 	 certain problems containing exponentials and logs to be solved.")
 
 ;; Utility macros
@@ -79,133 +79,133 @@
 ;; In MacLisp, this turns into SUBRCALL if we are compiling, FUNCALL if
 ;; interpreted.  In LMLisp and other random systems, just turn into FUNCALL.
 
-#+MacLisp
-(DEFMACRO SUBR-FUNCALL (FUNCTION . ARGS)
-	  (COND ((STATUS FEATURE COMPLR) `(SUBRCALL NIL ,FUNCTION . ,ARGS))
-		(T `(FUNCALL ,FUNCTION . ,ARGS))))
+#+maclisp
+(defmacro subr-funcall (function . args)
+  (cond ((status feature complr) `(subrcall nil ,function . ,args))
+	(t `(funcall ,function . ,args))))
 
-#-MacLisp
-(DEFMACRO SUBR-FUNCALL (FUNCTION . ARGS) `(FUNCALL ,FUNCTION . ,ARGS))
+#-maclisp
+(defmacro subr-funcall (function . args) `(funcall ,function . ,args))
 
 ;; This macro returns the number of trivial equations.  It counts up the
 ;; number of zeros in a list.
 
-(DEFMACRO NZLIST (lLIST)
-  `(DO ((L ,lLIST (CDR L))
-	(ZCOUNT 0))
-       ((NULL L) ZCOUNT)
-     (IF (AND (INTEGERP (CAR L)) (ZEROP (CAR L)))
-	 (INCREMENT ZCOUNT))))
+(defmacro nzlist (llist)
+  `(do ((l ,llist (cdr l))
+	(zcount 0))
+    ((null l) zcount)
+    (if (and (integerp (car l)) (zerop (car l)))
+	(increment zcount))))
 
 ;; This is only called on a variable.
 
-(DEFMACRO ALLROOT (EXP)
-  `(SETQ *FAILURES (LIST* (MAKE-MEQUAL-SIMP ,EXP ,EXP) 1 *FAILURES)))
+(defmacro allroot (exp)
+  `(setq *failures (list* (make-mequal-simp ,exp ,exp) 1 *failures)))
 
 
 ;; Finds variables, changes equations into expressions without MEQUAL.
 ;; Checks for consistency between the number of unknowns and equations.
 ;; Calls SOLVEX for simultaneous equations and SSOLVE for a single equation.
 
-(DEFMFUN $SOLVE (*EQL &OPTIONAL (VARL NIL VARL-P))
-  (SETQ $MULTIPLICITIES (MAKE-MLIST))
-  (PROG (EQL			   ;Expressions and variables being solved
-	 $KEEPFLOAT $RATFAC	   ;In case the user has set these
-	 *ROOTS *FAILURES	   ;*roots gets solutions, *failures "roots of"
-	 BROKEN-NOT-FREEOF)	   ;Has something to do with spliting up roots
-   (SETQ EQL
-	 (COND ((ATOM *EQL) (NCONS *EQL))
-	       ((EQ (G-REP-OPERATOR *EQL) 'MLIST)
-		(MAPCAR 'MEQHK (MAPCAR 'MEVAL (CDR *EQL))))
-	       ((MEMQ (G-REP-OPERATOR *EQL)
-		      '(MNOTEQUAL MGREATERP MLESSP MGEQP MLEQP))
-		(MERROR "Cannot solve inequalities. -SOLVE"))
-	       (T (NCONS (MEQHK *EQL)))))
+(defmfun $solve (*eql &optional (varl nil varl-p))
+  (setq $multiplicities (make-mlist))
+  (prog (eql		       ;Expressions and variables being solved
+	 $keepfloat $ratfac	       ;In case the user has set these
+	 *roots *failures ;*roots gets solutions, *failures "roots of"
+	 broken-not-freeof) ;Has something to do with spliting up roots
+     (setq eql
+	   (cond ((atom *eql) (ncons *eql))
+		 ((eq (g-rep-operator *eql) 'mlist)
+		  (mapcar 'meqhk (mapcar 'meval (cdr *eql))))
+		 ((memq (g-rep-operator *eql)
+			'(mnotequal mgreaterp mlessp mgeqp mleqp))
+		  (merror "Cannot solve inequalities. -SOLVE"))
+		 (t (ncons (meqhk *eql)))))
 
-   (COND ((NULL VARL-P)	   ;If the variable list wasn't supplied
-	  (SETQ VARL	   ;we have to supply it ourselves.
-		(LET (($LISTCONSTVARS NIL))
-		     (CDR ($LISTOFVARS
-			   ;If some trivial then use original equations
-			   ;(primarily for case of X=X etc.)
-			   (COND ((ZEROP (NZLIST EQL)) *EQL)
-				 (T EQL))))))	     ;Usually throw trivia out!
-	  (IF VARL (SETQ VARL (REMC VARL))))	      ;Remove all constants
-	 (T (SETQ VARL
-		  (COND (($LISTP VARL) (MAPCAR #'MEVAL (CDR VARL)))
-			(T (LIST VARL))))))
+     (cond ((null varl-p)	 ;If the variable list wasn't supplied
+	    (setq varl		      ;we have to supply it ourselves.
+		  (let (($listconstvars nil))
+		    (cdr ($listofvars
+					;If some trivial then use original equations
+					;(primarily for case of X=X etc.)
+			  (cond ((zerop (nzlist eql)) *eql)
+				(t eql)))))) ;Usually throw trivia out!
+	    (if varl (setq varl (remc varl)))) ;Remove all constants
+	   (t (setq varl
+		    (cond (($listp varl) (mapcar #'meval (cdr varl)))
+			  (t (list varl))))))
 
-      (IF (AND (NULL VARL) $SOLVENULLWARN)
-	  (MTELL "~&Got a null variable list, continuing - SOLVE~%"))
-      (IF (AND (NULL EQL) $SOLVENULLWARN)
-	  (MTELL "~&Got a null equation list, continuing - SOLVE~%"))
-      (IF (ORMAPC #'MNUMP VARL)
-	  (MERROR "A number was found where a variable was expected -SOLVE"))
+     (if (and (null varl) $solvenullwarn)
+	 (mtell "~&Got a null variable list, continuing - SOLVE~%"))
+     (if (and (null eql) $solvenullwarn)
+	 (mtell "~&Got a null equation list, continuing - SOLVE~%"))
+     (if (ormapc #'mnump varl)
+	 (merror "A number was found where a variable was expected -SOLVE"))
 
-      (COND ((EQUAL EQL '(0)) (RETURN '$ALL))
-	    ((OR (NULL VARL) (NULL EQL)) (RETURN (MAKE-MLIST-SIMP)))
-	    ((AND (NULL (CDR VARL)) (NULL (CDR EQL)))
-	     (RETURN (SSOLVE (CAR EQL) (CAR VARL))))
-	    ((OR VARL-P (= (LENGTH VARL) (LENGTH EQL)))
-	     (SETQ EQL (SOLVEX EQL VARL (NOT $PROGRAMMODE) T))
-	     (RETURN (COND ((AND (CDR EQL) (NOT ($LISTP (CADR EQL))))
-			    (MAKE-MLIST EQL))
-			   (T EQL)))))
-    (LET ((U (MAKE-MLIST-L VARL))
-	  (E (COND (($LISTP *EQL) *EQL)
-		   (T (MAKE-MLIST *EQL)))))
-      ;; MFORMAT doesn't have ~:[~] yet, so I just change this to
-      ;; make one of two possible calls to MERROR. Smaller codesize
-      ;; then what was here before anyway.
-      (IF (> (LENGTH VARL) (LENGTH EQL))
-	  (MERROR "More unknowns than equations -SOLVE~
+     (cond ((equal eql '(0)) (return '$all))
+	   ((or (null varl) (null eql)) (return (make-mlist-simp)))
+	   ((and (null (cdr varl)) (null (cdr eql)))
+	    (return (ssolve (car eql) (car varl))))
+	   ((or varl-p (= (length varl) (length eql)))
+	    (setq eql (solvex eql varl (not $programmode) t))
+	    (return (cond ((and (cdr eql) (not ($listp (cadr eql))))
+			   (make-mlist eql))
+			  (t eql)))))
+     (let ((u (make-mlist-l varl))
+	   (e (cond (($listp *eql) *eql)
+		    (t (make-mlist *eql)))))
+       ;; MFORMAT doesn't have ~:[~] yet, so I just change this to
+       ;; make one of two possible calls to MERROR. Smaller codesize
+       ;; then what was here before anyway.
+       (if (> (length varl) (length eql))
+	   (merror "More unknowns than equations -SOLVE~
 		  ~%Unknowns given :  ~%~M~
 		  ~%Equations given:  ~%~M"
-		  U E)
-	  (MERROR "More equations than unknowns -SOLVE~
+		   u e)
+	   (merror "More equations than unknowns -SOLVE~
 		  ~%Unknowns given :  ~%~M~
 		  ~%Equations given:  ~%~M"
-		  U E)))))
+		   u e)))))
 
 
 ;; Removes anything from its list arg which solve considers not to be a
 ;; variable, i.e.  constants, functions or subscripted variables without
 ;; numeric args.
 
-(DEFUN REMC (LST)
-  (DO ((L LST (CDR L)) (FL) (VL)) ((NULL L) VL)
-	(COND ((ATOM (SETQ FL (CAR L)))
-		(OR (MAXIMA-CONSTANTP FL) (SETQ VL (CONS FL VL))))
-	      ((ANDMAPC #'$CONSTANTP (CDR FL)) (SETQ VL (CONS FL VL))))))
+(defun remc (lst)
+  (do ((l lst (cdr l)) (fl) (vl)) ((null l) vl)
+    (cond ((atom (setq fl (car l)))
+	   (or (maxima-constantp fl) (setq vl (cons fl vl))))
+	  ((andmapc #'$constantp (cdr fl)) (setq vl (cons fl vl))))))
 
 ;; List of multiplicities.  Why is this special?
 
-(DECLARE-TOP (SPECIAL MULTI)) 
+(declare-top (special multi)) 
 
 ;; Solve a single equation for a single unknown.
 ;; Obtains roots via solve and prints them.
 
-(DEFUN SSOLVE (EXP *VAR &AUX EQUATIONS MULTI)
-  (LET (($SOLVETRIGWARN $SOLVETRIGWARN))
-    (COND ((NULL *VAR) '$ALL)
-	  (T (SOLVE EXP *VAR 1)
-	     (COND ((NOT (OR *ROOTS *FAILURES)) (MAKE-MLIST))
-		   ($PROGRAMMODE
-		    (PROG1 (MAKE-MLIST-L
-			    (NREVERSE
-			     (MAP2C #'(LAMBDA (EQN MULT) (PUSH MULT MULTI) EQN)
-				    (IF $SOLVEEXPLICIT
-					*ROOTS
-					(NCONC *ROOTS *FAILURES)))))
-			   (SETQ $MULTIPLICITIES
-				 (MAKE-MLIST-L (NREVERSE MULTI)))))
-		   (T (WHEN (AND *FAILURES (NOT $SOLVEEXPLICIT))
-			    (IF $DISPFLAG (MTELL "The roots of:~%"))
-			    (SOLVE2 *FAILURES))
-		      (WHEN *ROOTS
-			    (IF $DISPFLAG (MTELL "Solution:~%"))
-			    (SOLVE2 *ROOTS))
-		      (MAKE-MLIST-L EQUATIONS)))))))
+(defun ssolve (exp *var &aux equations multi)
+  (let (($solvetrigwarn $solvetrigwarn))
+    (cond ((null *var) '$all)
+	  (t (solve exp *var 1)
+	     (cond ((not (or *roots *failures)) (make-mlist))
+		   ($programmode
+		    (prog1 (make-mlist-l
+			    (nreverse
+			     (map2c #'(lambda (eqn mult) (push mult multi) eqn)
+				    (if $solveexplicit
+					*roots
+					(nconc *roots *failures)))))
+		      (setq $multiplicities
+			    (make-mlist-l (nreverse multi)))))
+		   (t (when (and *failures (not $solveexplicit))
+			(if $dispflag (mtell "The roots of:~%"))
+			(solve2 *failures))
+		      (when *roots
+			(if $dispflag (mtell "Solution:~%"))
+			(solve2 *roots))
+		      (make-mlist-l equations)))))))
 
 ;; Solve takes three arguments, the expression to solve for zero, the variable
 ;; to solve for, and what multiplicity this solution is assumed to have (from
@@ -217,93 +217,93 @@
 
 ;; Factors expression and reduces exponents by their gcd (via solventhp)
 
-(DEFMFUN SOLVE (*EXP *VAR MULT
-		   &AUX (GENVAR NIL)
-			($DERIVSUBST NIL)
-			(EXP (FLOAT2RAT (MRATCHECK *EXP)))
-			(*MYVAR *VAR)
-			($SAVEFACTORS T))
- (PROG (FACTORS *HAS*VAR GENPAIRS $DONTFACTOR TEMP SYMBOL *G CHECKFACTORS 
-	VARLIST EXPSUMSPLIT)
-     (LET (($RATFAC T)) (SETQ EXP (RATDISREP (RATF EXP))))
-		; Cancel out any simple 
-		; (non-algebraic) common factors in numerator and 
-		; denominator without altering the structure of the 
-		; expression too much.
-		; Also, RJFPROB in TEST;SOLVE TEST is now solved.
-		; - JPG
-   A (COND ((ATOM EXP)
-	    (COND ((EQ EXP *VAR)
-		   (SOLVE3 0 MULT))
-		  ((EQUAL EXP 0) (ALLROOT *VAR))
-		  (T NIL)))
-	   (T (SETQ EXP (MEQHK EXP))
-	      (COND ((EQUAL EXP '(0))
-		     (RETURN (ALLROOT *VAR)))
-		    ((FREE EXP *VAR)
-		     (RETURN NIL)))
-	      (COND ((NOT (ATOM *VAR))
-		     (SETQ SYMBOL (GENSYM))
-		     (SETQ EXP (MAXIMA-SUBSTITUTE SYMBOL *VAR EXP))
-		     (SETQ TEMP *VAR)
-		     (SETQ *VAR SYMBOL)
-		     (SETQ *MYVAR *VAR)))  ;keep *MYVAR up-to-date
+(defmfun solve (*exp *var mult
+		     &aux (genvar nil)
+		     ($derivsubst nil)
+		     (exp (float2rat (mratcheck *exp)))
+		     (*myvar *var)
+		     ($savefactors t))
+  (prog (factors *has*var genpairs $dontfactor temp symbol *g checkfactors 
+	 varlist expsumsplit)
+     (let (($ratfac t)) (setq exp (ratdisrep (ratf exp))))
+					; Cancel out any simple 
+					; (non-algebraic) common factors in numerator and 
+					; denominator without altering the structure of the 
+					; expression too much.
+					; Also, RJFPROB in TEST;SOLVE TEST is now solved.
+					; - JPG
+     a (cond ((atom exp)
+	      (cond ((eq exp *var)
+		     (solve3 0 mult))
+		    ((equal exp 0) (allroot *var))
+		    (t nil)))
+	     (t (setq exp (meqhk exp))
+		(cond ((equal exp '(0))
+		       (return (allroot *var)))
+		      ((free exp *var)
+		       (return nil)))
+		(cond ((not (atom *var))
+		       (setq symbol (gensym))
+		       (setq exp (maxima-substitute symbol *var exp))
+		       (setq temp *var)
+		       (setq *var symbol)
+		       (setq *myvar *var))) ;keep *MYVAR up-to-date
 	      
-	      (COND ($SOLVERADCAN (SETQ EXP (RADCAN1 EXP))
-				  (IF (ATOM EXP) (GO A))))
+		(cond ($solveradcan (setq exp (radcan1 exp))
+				    (if (atom exp) (go a))))
 	      
-	      (COND ((EASY-CASES EXP *VAR)
-		     (COND (SYMBOL (SETQ *ROOTS (SUBST TEMP *VAR *ROOTS))
-				   (SETQ *FAILURES (SUBST TEMP *VAR *FAILURES))))
-		     (ROOTSORT *ROOTS)
-		     (ROOTSORT *FAILURES)
-		     (RETURN NIL)))
+		(cond ((easy-cases exp *var)
+		       (cond (symbol (setq *roots (subst temp *var *roots))
+				     (setq *failures (subst temp *var *failures))))
+		       (rootsort *roots)
+		       (rootsort *failures)
+		       (return nil)))
 	      
-	      (COND ((SETQ FACTORS (FIRST-ORDER-P EXP *VAR))
-		     (SOLVE3 (RATDISREP
-			       (RATF (MAKE-MTIMES -1 (DIV* (CDR FACTORS)
-							   (CAR FACTORS)))))
-			     MULT))
+		(cond ((setq factors (first-order-p exp *var))
+		       (solve3 (ratdisrep
+				(ratf (make-mtimes -1 (div* (cdr factors)
+							    (car factors)))))
+			       mult))
 		    
-		    (T (SETQ VARLIST (LIST *VAR))
-		       (FNEWVAR EXP)
-		       (SETQ VARLIST (VARSORT VARLIST))
-		       (LET ((VARTEMP)
-			     (RATNUMER (MRAT-NUMER (RATREP* EXP)))
-			     (NUMER-VARLIST VARLIST)
-			     (SUBST-LIST (TRIG-SUBST-P VARLIST)))
-			  (SETQ VARLIST (NCONS *VAR))
-			 (COND (SUBST-LIST
-				 (SETQ EXP (TRIG-SUBST EXP SUBST-LIST))
-				 (FNEWVAR EXP)
-				 (SETQ VARLIST (VARSORT VARLIST))
-				 (SETQ EXP (MRAT-NUMER (RATREP* EXP)))
-				 (SETQ VARTEMP VARLIST))
-			       (T (SETQ VARTEMP NUMER-VARLIST)
-				  (SETQ EXP RATNUMER)))
-			 (SETQ VARLIST VARTEMP))
+		      (t (setq varlist (list *var))
+			 (fnewvar exp)
+			 (setq varlist (varsort varlist))
+			 (let ((vartemp)
+			       (ratnumer (mrat-numer (ratrep* exp)))
+			       (numer-varlist varlist)
+			       (subst-list (trig-subst-p varlist)))
+			   (setq varlist (ncons *var))
+			   (cond (subst-list
+				  (setq exp (trig-subst exp subst-list))
+				  (fnewvar exp)
+				  (setq varlist (varsort varlist))
+				  (setq exp (mrat-numer (ratrep* exp)))
+				  (setq vartemp varlist))
+				 (t (setq vartemp numer-varlist)
+				    (setq exp ratnumer)))
+			   (setq varlist vartemp))
 		       
-		       (COND ((ATOM EXP) (GO A))
-			     ((SPECASEP EXP) (SOLVE1A EXP MULT))
-			     ((AND (NOT (PCOEFP EXP))
-				   (CDDR EXP)
-				   (NOT (EQUAL 1 (SETQ *G
-						       (SOLVENTHP (CDDDR EXP) (CADR EXP))))))
-			      (SOLVENTH EXP *G))
-			     (T (MAP2C #'SOLVE1A
-				       (COND ($SOLVEFACTORS (PFACTOR EXP))
-					     (T (LIST EXP 1))))))))))
+			 (cond ((atom exp) (go a))
+			       ((specasep exp) (solve1a exp mult))
+			       ((and (not (pcoefp exp))
+				     (cddr exp)
+				     (not (equal 1 (setq *g
+							 (solventhp (cdddr exp) (cadr exp))))))
+				(solventh exp *g))
+			       (t (map2c #'solve1a
+					 (cond ($solvefactors (pfactor exp))
+					       (t (list exp 1))))))))))
 
-      (COND (SYMBOL (SETQ *ROOTS (SUBST TEMP *VAR *ROOTS))
-		    (SETQ *FAILURES (SUBST TEMP *VAR *FAILURES))))
-      (ROOTSORT *ROOTS)
-      (ROOTSORT *FAILURES)
-      (RETURN NIL)))
+     (cond (symbol (setq *roots (subst temp *var *roots))
+		   (setq *failures (subst temp *var *failures))))
+     (rootsort *roots)
+     (rootsort *failures)
+     (return nil)))
 
-(DEFUN FLOAT2RAT (EXP)
- (COND ((FLOATP EXP) (SETQ EXP (PREP1 EXP)) (MAKE-RAT-SIMP (CAR EXP) (CDR EXP)))
-       ((OR (ATOM EXP) (SPECREPP EXP)) EXP)
-       (T (RECUR-APPLY #'FLOAT2RAT EXP))))
+(defun float2rat (exp)
+  (cond ((floatp exp) (setq exp (prep1 exp)) (make-rat-simp (car exp) (cdr exp)))
+	((or (atom exp) (specrepp exp)) exp)
+	(t (recur-apply #'float2rat exp))))
 
 ;;; The following takes care of cases where the expression is already in 
 ;;; factored form. This can introduce spurious roots if one of the factors
@@ -313,13 +313,13 @@
 ;;; Solve is not fully recursive when it due to globals, $MULTIPLICIES
 ;;; may be screwed here. (Solve should be made recursive)
 
-(DEFUN EASY-CASES (*EXP *VAR)
-       (COND ((OR (ATOM *EXP) (ATOM (CAR *EXP))) NIL)
-             ((EQ (CAAR *EXP) 'MTIMES)
-	      (DO ((TERMS (CDR *EXP) (CDR TERMS)))
-		  ((NULL TERMS))
-		  (SOLVE (CAR TERMS) *VAR 1))
-	      'MTIMES)))
+(defun easy-cases (*exp *var)
+  (cond ((or (atom *exp) (atom (car *exp))) nil)
+	((eq (caar *exp) 'mtimes)
+	 (do ((terms (cdr *exp) (cdr terms)))
+	     ((null terms))
+	   (solve (car terms) *var 1))
+	 'mtimes)))
 
 ;; This code is commented out because it exposes a bug in the way
 ;; solve (or its friends) handles multiplicities. A previous 
@@ -340,25 +340,25 @@
 ;;; what you want to be able to do for example is to see if SIN and COS^2 
 ;;; are around and then make a reasonable substitution.
 
-(DEFUN TRIG-SUBST-P (VLIST)
-  (AND (NOT (TRIG-NOT-SUBST-P VLIST))
-       (DO ((VAR (CAR VLIST) (CAR VLIST))
-	    (VLIST (CDR VLIST) (CDR VLIST))
-	    (SUBST-LIST))
-	   ((NULL VAR) SUBST-LIST)
-	 (COND ((AND (NOT (ATOM VAR))
-		     (TRIG-CANNON (G-REP-OPERATOR VAR))
-		     (NOT (FREE VAR *VAR)))
-		(PUSH VAR SUBST-LIST))))))
+(defun trig-subst-p (vlist)
+  (and (not (trig-not-subst-p vlist))
+       (do ((var (car vlist) (car vlist))
+	    (vlist (cdr vlist) (cdr vlist))
+	    (subst-list))
+	   ((null var) subst-list)
+	 (cond ((and (not (atom var))
+		     (trig-cannon (g-rep-operator var))
+		     (not (free var *var)))
+		(push var subst-list))))))
 
 ;; Predicate to see when obviously not to substitute for trigs.
 ;; A hack in the direction of expression properties-table driven
 ;; substition. The "measure" of the expression is the total number
 ;; of different kinds of trig functions in the expression.
 
-(DEFUN TRIG-NOT-SUBST-P (VLIST)
-  (LET ((TRIGS '(%SIN %COS %TAN %COT %CSC %SEC)))
-    (< (MEASURE #'SIGN-GJC (OPERATOR-FREQUENCY-TABLE VLIST TRIGS) TRIGS)
+(defun trig-not-subst-p (vlist)
+  (let ((trigs '(%sin %cos %tan %cot %csc %sec)))
+    (< (measure #'sign-gjc (operator-frequency-table vlist trigs) trigs)
        2)))
 
 ;; To get the total "value" of things in a table, this case an assoc list.
@@ -366,10 +366,10 @@
 ;; the range of the ASSOCIATION-LIST viewed as a function on the SET, to the
 ;; integers.
 
-(DEFUN MEASURE (F ALIST SET &AUX (SUM 0))
-  (DOLIST (ELEMENT SET)
-    (INCREMENT SUM (FUNCALL F (CDR (ASSQ ELEMENT ALIST)))))
-  SUM)
+(defun measure (f alist set &aux (sum 0))
+  (dolist (element set)
+    (increment sum (funcall f (cdr (assq element alist)))))
+  sum)
 
 ;; (defun MEASURE (F AL S)
 ;;        (do ((j 0 (f1+ j))
@@ -379,10 +379,10 @@
 
 ;; Named for uniqueness only
 
-(DEFUN SIGN-GJC (X)
-  (COND ((OR (NULL X) (= X 0)) 0)
-	((< 0 X) 1)
-	(T -1)))
+(defun sign-gjc (x)
+  (cond ((or (null x) (= x 0)) 0)
+	((< 0 x) 1)
+	(t -1)))
 
 ;; A function that can EXTEND a function
 ;; over two association lists. Note that I have been using association lists
@@ -390,141 +390,141 @@
 ;; (EXTEND '+ L1 L2 S) could also be to take the union of two multi-sets in the
 ;; sample space S. (what the '&%%#?& has this got to do with SOLVE?) 
 
-(DEFUN EXTEND (F L1 L2 S)
-  (DO ((J 0 (f1+ J))
-       (VALUE NIL))
-      ((= J (LENGTH S)) VALUE)
-    (SETQ VALUE (CONS (CONS (NTH J S)
-			    (FUNCALL F (CDR (zl-ASSOC (NTH J S) L1))
-				     (CDR (zl-ASSOC (NTH J S) L2))))
-		      VALUE))))
+(defun extend (f l1 l2 s)
+  (do ((j 0 (f1+ j))
+       (value nil))
+      ((= j (length s)) value)
+    (setq value (cons (cons (nth j s)
+			    (funcall f (cdr (zl-assoc (nth j s) l1))
+				     (cdr (zl-assoc (nth j s) l2))))
+		      value))))
 
 ;; For the case where the value of assoc is NIL, we will need a special "+"
 
-(DEFUN +MSET (A B) (f+ (OR A 0) (OR B 0)))
+(defun +mset (a b) (f+ (or a 0) (or b 0)))
 
 ;; To recursively looks through a list
 ;; structure (the VLIST) for members of the SET appearing in the MACSYMA 
 ;; functional position (caar list). Returning an assoc. list of appearence
 ;; frequencies. Notice the use of EXTEND.
 
-(DEFUN OPERATOR-FREQUENCY-TABLE (VLIST SET)
-  (DO ((J 0 (f1+ J))
-       (IT)
-       (ASSL (DO ((K 0 (f1+ K))
-		  (MADE NIL))
-		 ((= K (LENGTH SET)) MADE)
-	       (SETQ MADE (CONS (CONS (NTH K SET) 0)
-				MADE)))))
-      ((= J (LENGTH VLIST)) ASSL)
-    (SETQ IT (NTH J VLIST))
-    (COND ((ATOM IT))
-	  (T (SETQ ASSL (EXTEND #'+MSET (CONS (CONS (CAAR IT) 1) NIL)
-				ASSL SET))
-	     (SETQ ASSL (EXTEND #'+MSET ASSL
-				(OPERATOR-FREQUENCY-TABLE (CDR IT) SET)
-				SET))))))
+(defun operator-frequency-table (vlist set)
+  (do ((j 0 (f1+ j))
+       (it)
+       (assl (do ((k 0 (f1+ k))
+		  (made nil))
+		 ((= k (length set)) made)
+	       (setq made (cons (cons (nth k set) 0)
+				made)))))
+      ((= j (length vlist)) assl)
+    (setq it (nth j vlist))
+    (cond ((atom it))
+	  (t (setq assl (extend #'+mset (cons (cons (caar it) 1) nil)
+				assl set))
+	     (setq assl (extend #'+mset assl
+				(operator-frequency-table (cdr it) set)
+				set))))))
 
-(DEFUN TRIG-SUBST (EXP SUB-LIST)
-  (DO ((EXP EXP)
-       (SUB-LIST (CDR SUB-LIST) (CDR SUB-LIST))
-       (VAR (CAR SUB-LIST) (CAR SUB-LIST)))
-      ((NULL VAR) EXP)
-    (SETQ EXP
-	  (MAXIMA-SUBSTITUTE (FUNCALL (TRIG-CANNON (G-REP-OPERATOR VAR))
-			       (MAKE-MLIST-L (G-REP-OPERANDS VAR)))
-		      VAR EXP))))
+(defun trig-subst (exp sub-list)
+  (do ((exp exp)
+       (sub-list (cdr sub-list) (cdr sub-list))
+       (var (car sub-list) (car sub-list)))
+      ((null var) exp)
+    (setq exp
+	  (maxima-substitute (funcall (trig-cannon (g-rep-operator var))
+				      (make-mlist-l (g-rep-operands var)))
+			     var exp))))
 
 ;; Here are the canonical trig substitutions.
 
-(DEFUN-prop (%SEC TRIG-CANNON) (X)
-  (INV* (MAKE-G-REP '%COS (G-REP-FIRST-OPERAND X))))
+(defun-prop (%sec trig-cannon) (x)
+  (inv* (make-g-rep '%cos (g-rep-first-operand x))))
 
-(DEFUN-prop (%CSC TRIG-CANNON) (X)
-  (INV* (MAKE-G-REP '%SIN (G-REP-FIRST-OPERAND X))))
+(defun-prop (%csc trig-cannon) (x)
+  (inv* (make-g-rep '%sin (g-rep-first-operand x))))
 
-(DEFUN-prop (%TAN TRIG-CANNON) (X)
-  (DIV* (MAKE-G-REP '%SIN (G-REP-FIRST-OPERAND X))
-	(MAKE-G-REP '%COS (G-REP-FIRST-OPERAND X))))
+(defun-prop (%tan trig-cannon) (x)
+  (div* (make-g-rep '%sin (g-rep-first-operand x))
+	(make-g-rep '%cos (g-rep-first-operand x))))
 
-(DEFUN-prop (%COT TRIG-CANNON) (X)
-  (DIV* (MAKE-G-REP '%COS (G-REP-FIRST-OPERAND X))
-	(MAKE-G-REP '%SIN (G-REP-FIRST-OPERAND X))))
+(defun-prop (%cot trig-cannon) (x)
+  (div* (make-g-rep '%cos (g-rep-first-operand x))
+	(make-g-rep '%sin (g-rep-first-operand x))))
 
-(DEFUN-prop (%SECH TRIG-CANNON) (X)
-  (INV* (MAKE-G-REP '%COSH (G-REP-FIRST-OPERAND X))))
+(defun-prop (%sech trig-cannon) (x)
+  (inv* (make-g-rep '%cosh (g-rep-first-operand x))))
 
-(DEFUN-prop (%CSCH TRIG-CANNON) (X)
-  (INV* (MAKE-G-REP '%SINH (G-REP-FIRST-OPERAND X))))
+(defun-prop (%csch trig-cannon) (x)
+  (inv* (make-g-rep '%sinh (g-rep-first-operand x))))
 
-(DEFUN-prop (%TANH TRIG-CANNON) (X)
-  (DIV* (MAKE-G-REP '%SINH (G-REP-FIRST-OPERAND X))
-	(MAKE-G-REP '%COSH (G-REP-FIRST-OPERAND X))))
+(defun-prop (%tanh trig-cannon) (x)
+  (div* (make-g-rep '%sinh (g-rep-first-operand x))
+	(make-g-rep '%cosh (g-rep-first-operand x))))
 
-(DEFUN-prop (%COTH TRIG-CANNON) (X)
-  (DIV* (MAKE-G-REP '%COSH (G-REP-FIRST-OPERAND X))
-	(MAKE-G-REP '%SINH (G-REP-FIRST-OPERAND X))))
+(defun-prop (%coth trig-cannon) (x)
+  (div* (make-g-rep '%cosh (g-rep-first-operand x))
+	(make-g-rep '%sinh (g-rep-first-operand x))))
 
 ;; Predicate to replace ISLINEAR....Returns NIL if not of for A*X+B, A and B
 ;; freeof X, else returns (A . B)
 
-(DEFUN FIRST-ORDER-P (EXP VAR &AUX TEMP)
+(defun first-order-p (exp var &aux temp)
   ;; Expand the expression at one level, i.e. distribute products
   ;; over sums, but leave exponentiations alone.
   ;; (X+1)^2*(X+Y) --> X*(X+1)^2 + Y*(X+1)^2
-  (SETQ EXP (EXPAND1 EXP 1 1))
-  (COND ((ATOM EXP) NIL)
-	(T (CASE (G-REP-OPERATOR EXP)
-		  (MTIMES
-		    (COND ((SETQ TEMP (LINEAR-TERM-P EXP VAR))
-			   (MAKE-LINEQ TEMP 0))
-			  (T NIL)))
-		  (MPLUS
-		    (DO ((ARG  (CAR (G-REP-OPERANDS EXP)) (CAR REST))
-			 (REST (CDR (G-REP-OPERANDS EXP)) (CDR REST))
-			 (LINEAR-TERM-LIST)
-			 (CONSTANT-TERM-LIST)
-			 (TEMP))
-			((NULL ARG)
-			 (IF LINEAR-TERM-LIST
-			     (MAKE-LINEQ (MAKE-MPLUS-L LINEAR-TERM-LIST)
-					 (IF CONSTANT-TERM-LIST
-					     (MAKE-MPLUS-L CONSTANT-TERM-LIST)
-					     0))))
-		      (COND ((SETQ TEMP (LINEAR-TERM-P ARG VAR))
-			     (PUSH TEMP LINEAR-TERM-LIST))
-			    ((BROKEN-FREEOF VAR ARG)
-			     (PUSH ARG CONSTANT-TERM-LIST))
-			    (T (RETURN NIL)))))
-		  (T NIL)))))
+  (setq exp (expand1 exp 1 1))
+  (cond ((atom exp) nil)
+	(t (case (g-rep-operator exp)
+	     (mtimes
+	      (cond ((setq temp (linear-term-p exp var))
+		     (make-lineq temp 0))
+		    (t nil)))
+	     (mplus
+	      (do ((arg  (car (g-rep-operands exp)) (car rest))
+		   (rest (cdr (g-rep-operands exp)) (cdr rest))
+		   (linear-term-list)
+		   (constant-term-list)
+		   (temp))
+		  ((null arg)
+		   (if linear-term-list
+		       (make-lineq (make-mplus-l linear-term-list)
+				   (if constant-term-list
+				       (make-mplus-l constant-term-list)
+				       0))))
+		(cond ((setq temp (linear-term-p arg var))
+		       (push temp linear-term-list))
+		      ((broken-freeof var arg)
+		       (push arg constant-term-list))
+		      (t (return nil)))))
+	     (t nil)))))
 
 ;; Function to test if a term from an expanded expression is a linear term
 ;; check and see that exactly one item in the product is the main var and
 ;; all others are free of the main var.  Returns NIL or a G-REP expression.
 
-(DEFUN LINEAR-TERM-P (EXP VAR)
-  (COND ((ATOM EXP)
-	 (COND ((EQ EXP VAR) 1)
-	       (T NIL)))
-	(T (CASE (G-REP-OPERATOR EXP)
-		  (MTIMES
-		    (DO ((FACTOR (CAR (G-REP-OPERANDS EXP))  ;individual factors
-				 (CAR REST))
-			 (REST (CDR (G-REP-OPERANDS EXP))    ;factors yet to be done
-			       (CDR REST))
-			 (MAIN-VAR-P)  ;nt -> main-var seen at top level
-			 (LIST-OF-FACTORS))  ;accumulate our factors
-			((NULL FACTOR)  ;for all factors
-			 (AND MAIN-VAR-P
-			      ;no-main-var at top level -=> not linear
-			      (MAKE-MTIMES-L LIST-OF-FACTORS)))
-		      (COND ((EQ FACTOR VAR)  ;if it's our main var
-			     ;note it...it has to be there to be a linear term
-			     (SETQ MAIN-VAR-P T))
-			    ((BROKEN-FREEOF VAR FACTOR)  ;if 
-			     (PUSH FACTOR LIST-OF-FACTORS))
-			    (T (RETURN NIL)))))
-		  (T NIL)))))
+(defun linear-term-p (exp var)
+  (cond ((atom exp)
+	 (cond ((eq exp var) 1)
+	       (t nil)))
+	(t (case (g-rep-operator exp)
+	     (mtimes
+	      (do ((factor (car (g-rep-operands exp)) ;individual factors
+			   (car rest))
+		   (rest (cdr (g-rep-operands exp)) ;factors yet to be done
+			 (cdr rest))
+		   (main-var-p)	     ;nt -> main-var seen at top level
+		   (list-of-factors))	;accumulate our factors
+		  ((null factor)	;for all factors
+		   (and main-var-p
+					;no-main-var at top level -=> not linear
+			(make-mtimes-l list-of-factors)))
+		(cond ((eq factor var)  ;if it's our main var
+					;note it...it has to be there to be a linear term
+		       (setq main-var-p t))
+		      ((broken-freeof var factor) ;if 
+		       (push factor list-of-factors))
+		      (t (return nil)))))
+	     (t nil)))))
 
 
 ;;; DISPATCHING FUNCTION ON DEGREE OF EXPRESSION
@@ -542,85 +542,85 @@
 ;;; on them.  The canonical example of mis-use of special variables!
 ;;; --RWK
 
-(DEFUN SOLVE1A (EXP MULT) 
-  (LET ((*MYVAR *MYVAR)
-	(*G NIL)) 
-    (COND ((ATOM EXP) NIL)
-	  ((NOT (MEMALIKE (SETQ *MYVAR (PDIS (LIST (CAR EXP) 1 1)))
-			  *HAS*VAR))
-	   NIL)
-	  ((EQUAL (CADR EXP) 1) (SOLVELIN EXP))
-	  ((SPECASEP EXP) (SOLVESPEC EXP T))
-	  ((EQUAL (CADR EXP) 2) (SOLVEQUAD EXP))
-	  ((NOT (EQUAL 1 (SETQ *G (SOLVENTHP (CDDDR EXP) (CADR EXP)))))
-	   (SOLVENTH EXP *G))
-	  ((EQUAL (CADR EXP) 3) (SOLVECUBIC EXP))
-	  ((EQUAL (CADR EXP) 4) (SOLVEQUARTIC EXP))
-	  (T (LET ((TT (SOLVE-BY-DECOMPOSITION EXP *MYVAR)))
-	       (SETQ *FAILURES (APPEND (SOLUTION-LOSSES TT) *FAILURES))
-	       (SETQ *ROOTS    (APPEND (SOLUTION-WINS TT) *ROOTS)))))))
+(defun solve1a (exp mult) 
+  (let ((*myvar *myvar)
+	(*g nil)) 
+    (cond ((atom exp) nil)
+	  ((not (memalike (setq *myvar (pdis (list (car exp) 1 1)))
+			  *has*var))
+	   nil)
+	  ((equal (cadr exp) 1) (solvelin exp))
+	  ((specasep exp) (solvespec exp t))
+	  ((equal (cadr exp) 2) (solvequad exp))
+	  ((not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp)))))
+	   (solventh exp *g))
+	  ((equal (cadr exp) 3) (solvecubic exp))
+	  ((equal (cadr exp) 4) (solvequartic exp))
+	  (t (let ((tt (solve-by-decomposition exp *myvar)))
+	       (setq *failures (append (solution-losses tt) *failures))
+	       (setq *roots    (append (solution-wins tt) *roots)))))))
 
-(DEFUN SOLVE-SIMPLIST (LIST-OF-THINGS)
-  (G-REP-OPERANDS (SIMPLIFYA (MAKE-MLIST-L LIST-OF-THINGS) NIL)))
+(defun solve-simplist (list-of-things)
+  (g-rep-operands (simplifya (make-mlist-l list-of-things) nil)))
 
 ;; The Solve-by-decomposition program returns the cons of (ROOTS . FAILURES).
 ;; It returns a "Solution" object, that is, a CONS with the CAR being the
 ;; failures and the CDR being the successes.
 ;; It takes a POLY as an argument and returns a SOLUTION.
 
-(DEFUN SOLVE-BY-DECOMPOSITION (POLY *$VAR)
- (LET ((DECOMP))
-  (COND ((OR (NOT $SOLVEDECOMPOSES)
-	     (= (LENGTH (SETQ DECOMP (POLYDECOMP POLY (POLY-VAR POLY)))) 1))
-	 (MAKE-SOLUTION NIL `(,(MAKE-MEQUAL 0 (PDIS POLY)) 1)))
-	(T (DECOMP-TRACE (MAKE-MEQUAL 0 (RDIS (CAR DECOMP)))
-			 DECOMP
-			 (POLY-VAR POLY) *$VAR 1)))))
+(defun solve-by-decomposition (poly *$var)
+  (let ((decomp))
+    (cond ((or (not $solvedecomposes)
+	       (= (length (setq decomp (polydecomp poly (poly-var poly)))) 1))
+	   (make-solution nil `(,(make-mequal 0 (pdis poly)) 1)))
+	  (t (decomp-trace (make-mequal 0 (rdis (car decomp)))
+			   decomp
+			   (poly-var poly) *$var 1)))))
 
 ;; DECOMP-TRACE is the recursive function which maps itself down the
 ;; intermediate solutions until the end is reached.  If it encounters
 ;; non-solvable equations it stops.  It returns a SOLUTION object, that is, a
 ;; CONS with the CAR being the failures and the CDR being the successes.
 
-(DEFUN DECOMP-TRACE (EQN DECOMP VAR *$VAR MULT &AUX SOL CHAIN-SOL WINS LOSSES)
-  (SETQ SOL (IF DECOMP
-		(RE-SOLVE EQN *$VAR MULT)
-		(MAKE-SOLUTION `(,EQN 1) NIL)))
-  (COND ((SOLUTION-LOSSES SOL) SOL)
+(defun decomp-trace (eqn decomp var *$var mult &aux sol chain-sol wins losses)
+  (setq sol (if decomp
+		(re-solve eqn *$var mult)
+		(make-solution `(,eqn 1) nil)))
+  (cond ((solution-losses sol) sol)
 	;; End test
-	((NULL DECOMP) SOL)
-	(T (DO ((L (SOLUTION-WINS SOL) (CDDR L)))
-	       ((NULL L))
-	       (SETQ CHAIN-SOL
-		     (DECOMP-CHAIN (CAR L) (CDR DECOMP) VAR *$VAR (CADR L)))
-	       (SETQ WINS (NCONC WINS
-				 (COPY-TOP-LEVEL (SOLUTION-WINS CHAIN-SOL))))
-	       (SETQ LOSSES (NCONC LOSSES
-				   (COPY-TOP-LEVEL (SOLUTION-LOSSES CHAIN-SOL)))))
-	   (MAKE-SOLUTION WINS LOSSES))))
+	((null decomp) sol)
+	(t (do ((l (solution-wins sol) (cddr l)))
+	       ((null l))
+	     (setq chain-sol
+		   (decomp-chain (car l) (cdr decomp) var *$var (cadr l)))
+	     (setq wins (nconc wins
+			       (copy-top-level (solution-wins chain-sol))))
+	     (setq losses (nconc losses
+				 (copy-top-level (solution-losses chain-sol)))))
+	   (make-solution wins losses))))
 
 ;; Decomp-chain is the function which formats the mess for the recursive call.
 ;; It returns a "Solution" object, that is, a CONS with the CAR being the
 ;; failures and the CDR being the successes.
 
-(DEFUN DECOMP-CHAIN (RSOL DECOMP VAR *$VAR MULT)
-  (LET ((SOL (SIMPLIFY (MAKE-MEQUAL (RDIS (IF DECOMP (CAR DECOMP)
-				 ;; Include the var itself in the decomposition
-				    (MAKE-MRAT-BODY (MAKE-MRAT-POLY VAR '(1 1)) 1)))
-				    (MEQUAL-RHS RSOL)))))
-    (DECOMP-TRACE SOL DECOMP VAR *$VAR MULT)))
+(defun decomp-chain (rsol decomp var *$var mult)
+  (let ((sol (simplify (make-mequal (rdis (if decomp (car decomp)
+					      ;; Include the var itself in the decomposition
+					      (make-mrat-body (make-mrat-poly var '(1 1)) 1)))
+				    (mequal-rhs rsol)))))
+    (decomp-trace sol decomp var *$var mult)))
 
 ;; RE-SOLVE calls SOLVE recursively, returning a SOLUTION object.
 ;; Will not decompose or factor.
 
-(DEFUN RE-SOLVE (EQN VAR MULT)
-  (LET ((*ROOTS NIL)
-	(*FAILURES NIL)
+(defun re-solve (eqn var mult)
+  (let ((*roots nil)
+	(*failures nil)
 	;; We've already decomposed and factored
-	($SOLVEDECOMPOSES)
-	($SOLVEFACTORS))
-    (SOLVE EQN VAR MULT)
-    (MAKE-SOLUTION *ROOTS *FAILURES)))
+	($solvedecomposes)
+	($solvefactors))
+    (solve eqn var mult)
+    (make-solution *roots *failures)))
 
 ;; SOLVENTH programs test to see if the variable of interest appears 
 ;; to some power in all terms.  If so, a new variable is substituted for it
@@ -628,193 +628,193 @@
 ;; adjusted accordingly.
 ;; SOLVENTHP returns gcd of exponents.
 
-(DEFUN SOLVENTHP (L GCD) 
-  (COND ((NULL L) GCD)
-	((EQUAL GCD 1) 1)
-	(T (SOLVENTHP (CDDR L)
-		      (GCD (CAR L) GCD)))))
+(defun solventhp (l gcd) 
+  (cond ((null l) gcd)
+	((equal gcd 1) 1)
+	(t (solventhp (cddr l)
+		      (gcd (car l) gcd)))))
 
 ;; Reduces exponents by their gcd.
 
-(DEFUN SOLVENTH (EXP *G) 
-  (LET ((*VARB (PDIS (MAKE-MRAT-POLY (POLY-VAR EXP) '(1 1))))
-	(EXP   (MAKE-MRAT-POLY (POLY-VAR EXP) (SOLVENTH1 (POLY-TERMS EXP)))))
-    (LET* ((RTS (RE-SOLVE-FULL (PDIS EXP) *VARB))
-	   (FAILS (SOLUTION-LOSSES RTS))
-	   (WINS (SOLUTION-WINS RTS))
-	   (*POWER (MAKE-MEXPT *VARB *G)))
-      (MAP2C #'(LAMBDA (W Z)
-		 (COND ((ATOM *VARB)
-			(SOLVE (MAKE-MEQUAL *POWER (MEQUAL-RHS W)) *VARB Z))
-		       (T (LET ((RTS (RE-SOLVE-FULL
-				       (MAKE-MEQUAL *POWER (MEQUAL-RHS W))
-				       *VARB)))
-			    (MAP2C #'(LAMBDA (ROOT MULT)
-				       (SOLVE (MAKE-MEQUAL (MEQUAL-RHS ROOT) 0)
-					      *MYVAR MULT))
-				   (SOLUTION-WINS RTS))))))
-	     WINS)
-      (MAP2C #'(LAMBDA (W Z)
-		 (PUSH Z *FAILURES)
-		 (PUSH (SOLVENTH3 W *POWER *VARB) *FAILURES))
-	     FAILS)
-      *ROOTS)))
+(defun solventh (exp *g) 
+  (let ((*varb (pdis (make-mrat-poly (poly-var exp) '(1 1))))
+	(exp   (make-mrat-poly (poly-var exp) (solventh1 (poly-terms exp)))))
+    (let* ((rts (re-solve-full (pdis exp) *varb))
+	   (fails (solution-losses rts))
+	   (wins (solution-wins rts))
+	   (*power (make-mexpt *varb *g)))
+      (map2c #'(lambda (w z)
+		 (cond ((atom *varb)
+			(solve (make-mequal *power (mequal-rhs w)) *varb z))
+		       (t (let ((rts (re-solve-full
+				      (make-mequal *power (mequal-rhs w))
+				      *varb)))
+			    (map2c #'(lambda (root mult)
+				       (solve (make-mequal (mequal-rhs root) 0)
+					      *myvar mult))
+				   (solution-wins rts))))))
+	     wins)
+      (map2c #'(lambda (w z)
+		 (push z *failures)
+		 (push (solventh3 w *power *varb) *failures))
+	     fails)
+      *roots)))
 
-(DEFUN SOLVENTH3 (W *POWER *VARB &AUX VARLIST GENVAR *FLG W1 W2)
-  (COND ((BROKEN-FREEOF *VARB W) W)
-	(T (SETQ W1 (RATF (CADR W)))
-	   (SETQ W2 (RATF (CADDR W)))
-	   (SETQ VARLIST
-		 (MAPCAR #'(LAMBDA (H) 
-			     (COND (*FLG H)
-				   ((ALIKE1 H *VARB)
-				    (SETQ *FLG T)
-				    *POWER)
-				   (T H)))
-			 VARLIST))
-	   (LIST (CAR W) (RDIS (CDR W1)) (RDIS (CDR W2))))))
+(defun solventh3 (w *power *varb &aux varlist genvar *flg w1 w2)
+  (cond ((broken-freeof *varb w) w)
+	(t (setq w1 (ratf (cadr w)))
+	   (setq w2 (ratf (caddr w)))
+	   (setq varlist
+		 (mapcar #'(lambda (h) 
+			     (cond (*flg h)
+				   ((alike1 h *varb)
+				    (setq *flg t)
+				    *power)
+				   (t h)))
+			 varlist))
+	   (list (car w) (rdis (cdr w1)) (rdis (cdr w2))))))
 
-(DECLARE-TOP (MUZZLED T))
-(DEFUN SOLVENTH1 (L) 
-  (COND ((NULL L) NIL)
-	(T (CONS (QUOTIENT (CAR L) *G)
-		 (CONS (CADR L) (SOLVENTH1 (CDDR L)))))))
-(DECLARE-TOP (MUZZLED NIL))
+(declare-top (muzzled t))
+(defun solventh1 (l) 
+  (cond ((null l) nil)
+	(t (cons (quotient (car l) *g)
+		 (cons (cadr l) (solventh1 (cddr l)))))))
+(declare-top (muzzled nil))
 
 ;; Will decompose or factor
 
-(DEFUN RE-SOLVE-FULL (X VAR &AUX *ROOTS *FAILURES)
-  (SOLVE X VAR MULT)
-  (MAKE-SOLUTION *ROOTS *FAILURES))
+(defun re-solve-full (x var &aux *roots *failures)
+  (solve x var mult)
+  (make-solution *roots *failures))
 
 ;; Sees if expression is of the form A*F(X)^N+B.
 
-(DEFUN SPECASEP (E)
-       (AND (MEMALIKE (PDIS (LIST (CAR E) 1 1)) *HAS*VAR)
-	    (OR (ATOM (CADDR E))
-		(NOT (MEMALIKE (PDIS (LIST (CAADDR E) 1 1))
-			     *HAS*VAR)))
-	    (OR (NULL (CDDDR E)) (EQUAL (CADDDR E) 0))))
+(defun specasep (e)
+  (and (memalike (pdis (list (car e) 1 1)) *has*var)
+       (or (atom (caddr e))
+	   (not (memalike (pdis (list (caaddr e) 1 1))
+			  *has*var)))
+       (or (null (cdddr e)) (equal (cadddr e) 0))))
 
 ;; Solves the special case A*F(X)^N+B.
 
-(DECLARE-TOP (MUZZLED T))
-(DEFUN SOLVESPEC (EXP $%EMODE) 
-  (PROG (A B C) 
-	(SETQ A (PDIS (CADDR EXP)))
-	(SETQ C (PDIS (LIST (CAR EXP) 1 1)))
-	(COND ((NULL (CDDDR EXP))
-	       (RETURN (SOLVE C *VAR (TIMES (CADR EXP) MULT)))))
-	(SETQ B (PDIS (PMINUS (CADDDR (CDR EXP)))))
-	(RETURN (SOLVESPEC1 C
-			    (SIMPNRT (DIV* B A) (CADR EXP))
-			    (MAKE-RAT 1 (CADR EXP))
-			    (CADR EXP)))))
-(DECLARE-TOP (MUZZLED NIL))
+(declare-top (muzzled t))
+(defun solvespec (exp $%emode) 
+  (prog (a b c) 
+     (setq a (pdis (caddr exp)))
+     (setq c (pdis (list (car exp) 1 1)))
+     (cond ((null (cdddr exp))
+	    (return (solve c *var (times (cadr exp) mult)))))
+     (setq b (pdis (pminus (cadddr (cdr exp)))))
+     (return (solvespec1 c
+			 (simpnrt (div* b a) (cadr exp))
+			 (make-rat 1 (cadr exp))
+			 (cadr exp)))))
+(declare-top (muzzled nil))
 
-(DEFUN SOLVESPEC1 (VAR ROOT N THISN) 
- (DO ((THISN THISN (f1- THISN))) ((ZEROP THISN))
-     (SOLVE (ADD* VAR (MUL* -1 ROOT
-			    (POWER* '$%E (MUL* 2 '$%PI '$%I THISN N))))
-	    *VAR MULT)))
+(defun solvespec1 (var root n thisn) 
+  (do ((thisn thisn (f1- thisn))) ((zerop thisn))
+    (solve (add* var (mul* -1 root
+			   (power* '$%e (mul* 2 '$%pi '$%i thisn n))))
+	   *var mult)))
 
 
 ;; ADISPLINE displays a line like DISPLINE, and in addition, notes that it is
 ;; not free of *VAR if it isn't.
 
-(DEFUN ADISPLINE (LINE)
+(defun adispline (line)
   ;; This may be redundant, but nice if ADISPLINE gets used where not needed.
-  (COND ((AND $BREAKUP (NOT $PROGRAMMODE))
-	 (LET ((LINELABEL (DISPLINE LINE)))
-	   (COND ((BROKEN-FREEOF *VAR LINE))
-		 (T (SETQ BROKEN-NOT-FREEOF
-			  (CONS LINELABEL BROKEN-NOT-FREEOF))))
-	   LINELABEL))
-	(T (DISPLINE LINE))))
+  (cond ((and $breakup (not $programmode))
+	 (let ((linelabel (displine line)))
+	   (cond ((broken-freeof *var line))
+		 (t (setq broken-not-freeof
+			  (cons linelabel broken-not-freeof))))
+	   linelabel))
+	(t (displine line))))
 
 ;; Predicate to check if an expression which may be broken up
 ;; is freeof
 
-(SETQ BROKEN-NOT-FREEOF NIL)
+(setq broken-not-freeof nil)
 
 ;; For consistency, use backwards args.
 
-(DEFUN BROKEN-FREEOF (VAR EXP)
-  (COND ($BREAKUP
-	  (DO ((B-N-FO VAR (CAR B-N-FO-L))
-	       (B-N-FO-L BROKEN-NOT-FREEOF (CDR B-N-FO-L)))
-	      ((NULL B-N-FO) T)
-	    (AND (NOT (ARGSFREEOF B-N-FO EXP))
-		 (RETURN NIL))))
-	(T (ARGSFREEOF VAR EXP))))
+(defun broken-freeof (var exp)
+  (cond ($breakup
+	 (do ((b-n-fo var (car b-n-fo-l))
+	      (b-n-fo-l broken-not-freeof (cdr b-n-fo-l)))
+	     ((null b-n-fo) t)
+	   (and (not (argsfreeof b-n-fo exp))
+		(return nil))))
+	(t (argsfreeof var exp))))
 
 ;; Adds solutions to roots list.
 ;; Solves for inverse of functions (via USOLVE)
 
-(DEFUN SOLVE3 (EXP MULT) 
-       (SETQ EXP (SIMPLIFY EXP))
-       (COND ((NOT (BROKEN-FREEOF *VAR EXP))
-	      (PUSH MULT *FAILURES)
-	      (PUSH (MAKE-MEQUAL-SIMP (SIMPLIFY *MYVAR) EXP) *FAILURES))
-	     (T (COND ((EQ *MYVAR *VAR)
-		       (PUSH MULT *ROOTS)
-		       (PUSH (MAKE-MEQUAL-SIMP *VAR EXP) *ROOTS))
-		      ((ATOM *MYVAR)
-		       (PUSH MULT *FAILURES)
-		       (PUSH (MAKE-MEQUAL-SIMP *MYVAR EXP) *FAILURES))
-		      (T (USOLVE EXP (G-REP-OPERATOR *MYVAR)))))))
+(defun solve3 (exp mult) 
+  (setq exp (simplify exp))
+  (cond ((not (broken-freeof *var exp))
+	 (push mult *failures)
+	 (push (make-mequal-simp (simplify *myvar) exp) *failures))
+	(t (cond ((eq *myvar *var)
+		  (push mult *roots)
+		  (push (make-mequal-simp *var exp) *roots))
+		 ((atom *myvar)
+		  (push mult *failures)
+		  (push (make-mequal-simp *myvar exp) *failures))
+		 (t (usolve exp (g-rep-operator *myvar)))))))
 
 
 ;; Solve a linear equation.  Argument is a polynomial in pseudo-cre form.
 ;; This function is called for side-effect only.
 
-(DEFUN SOLVELIN (EXP) 
-       (COND ((EQUAL 0. (PTERM (CDR EXP) 0.))
-	      (SOLVE1A (CADDR EXP) MULT)))
-       (SOLVE3 (RDIS (RATREDUCE (PMINUS (PTERM (CDR EXP) 0.))
-				(CADDR EXP)))
-	       MULT))
+(defun solvelin (exp) 
+  (cond ((equal 0. (pterm (cdr exp) 0.))
+	 (solve1a (caddr exp) mult)))
+  (solve3 (rdis (ratreduce (pminus (pterm (cdr exp) 0.))
+			   (caddr exp)))
+	  mult))
 
 ;; Solve a quadratic equation.  Argument is a polynomial in pseudo-cre form.
 ;; This function is called for side-effect only.
 ;; The code for handling the case where the discriminant = 0 seems to never
 ;; be run.  Presumably, the expression is factored higher up.
 
-(DECLARE-TOP (MUZZLED T))
-(DEFUN SOLVEQUAD (EXP &AUX DISCRIM A B C)
-   (SETQ A (CADDR EXP))
-   (SETQ B (PTERM (CDR EXP) 1.))
-   (SETQ C (PTERM (CDR EXP) 0.))
-   (SETQ DISCRIM (SIMPLIFY (PDIS (PPLUS (PEXPT B 2.)
-				       (PMINUS (PTIMES 4. (PTIMES A C)))))))
-   (SETQ B (PDIS (PMINUS B)))
-   (SETQ A (PDIS (PTIMES 2. A)))
-   ;; At this point, everything is back in general representation.
-   (let ((varlist nil)) ;;2/6/2002 RJF
-     (COND ((EQUAL 0. DISCRIM)
-	 (SOLVE3 (FULLRATSIMP `((MQUOTIENT) ,B ,A))
-		 (TIMES 2. MULT)))
-	(T (SETQ DISCRIM (SIMPNRT DISCRIM 2.))
-	   (SOLVE3 (FULLRATSIMP `((MQUOTIENT) ((MPLUS) ,B ,DISCRIM) ,A))
-		   MULT)
-	   (SOLVE3 (FULLRATSIMP `((MQUOTIENT) ((MPLUS) ,B ((MMINUS) ,DISCRIM)) ,A))
-		   MULT)))))
-(DECLARE-TOP (MUZZLED NIL))
+(declare-top (muzzled t))
+(defun solvequad (exp &aux discrim a b c)
+  (setq a (caddr exp))
+  (setq b (pterm (cdr exp) 1.))
+  (setq c (pterm (cdr exp) 0.))
+  (setq discrim (simplify (pdis (pplus (pexpt b 2.)
+				       (pminus (ptimes 4. (ptimes a c)))))))
+  (setq b (pdis (pminus b)))
+  (setq a (pdis (ptimes 2. a)))
+  ;; At this point, everything is back in general representation.
+  (let ((varlist nil)) ;;2/6/2002 RJF
+    (cond ((equal 0. discrim)
+	   (solve3 (fullratsimp `((mquotient) ,b ,a))
+		   (times 2. mult)))
+	  (t (setq discrim (simpnrt discrim 2.))
+	     (solve3 (fullratsimp `((mquotient) ((mplus) ,b ,discrim) ,a))
+		     mult)
+	     (solve3 (fullratsimp `((mquotient) ((mplus) ,b ((mminus) ,discrim)) ,a))
+		     mult)))))
+(declare-top (muzzled nil))
 
 ;; Reorders V so that members which contain the variable of
 ;; interest come first.
 
-(DEFUN VARSORT (V)
-  (LET ((*U NIL)
-	(*V (COPY-TOP-LEVEL V)))
-     (MAPC #'(LAMBDA (Z) 
-	       (COND ((BROKEN-FREEOF *VAR Z)
-		      (SETQ *U (CONS Z *U))
-		      (SETQ *V (zl-DELETE Z *V 1)))))
-	   V)
-     (SETQ $DONTFACTOR *U)
-     (SETQ *HAS*VAR *V)
-     (APPEND *U *V)))
+(defun varsort (v)
+  (let ((*u nil)
+	(*v (copy-top-level v)))
+    (mapc #'(lambda (z) 
+	      (cond ((broken-freeof *var z)
+		     (setq *u (cons z *u))
+		     (setq *v (zl-delete z *v 1)))))
+	  v)
+    (setq $dontfactor *u)
+    (setq *has*var *v)
+    (append *u *v)))
 
 ;; Solves for variable when it occurs within a function by taking the inverse.
 ;; When this code is fixed, the `((mplus) ,x ,y) forms should be rewritten as
@@ -823,149 +823,149 @@
 ;; You mean you didn't do it because you were buggy.  Hope you're fixed soon!
 ;; --RWK
 
-(DEFUN USOLVE (EXP OP) 
-   (PROG (INVERSE) 
-	 (SETQ INVERSE
-	       (COND
-		((EQ OP 'MEXPT)
-		 (COND ((BROKEN-FREEOF *VAR
-				(CADR *MYVAR))
-			(COND ((EQUAL EXP 0)
-			       (GO FAIL)))
-			`((mplus) ((mminus) ,(caddr *myvar))
-				  ,(div* `((%log) ,exp)
-					 `((%log) ,(cadr *myvar)))))
-		       ((BROKEN-FREEOF *VAR
-				(CADDR *MYVAR))
-			(COND ((EQUAL EXP 0)
-			       (COND ((MNEGP (CADDR *MYVAR))
-				      (GO FAIL))
-				     (T (CADR *MYVAR))))
-			      ;; There is a bug right here.
-			      ;; SOLVE(SQRT(U)+1) should return U=1
-			      ;; This code is entered with EXP = -1, OP = MEXPT
-			      ;; *VAR = U, and *MYVAR = ((MEXPT) U ((RAT) 1 2))
-			      ;; BULLSHIT -- RWK.  That is precisely the bug
-			      ;; this code was added to fix!
-			      ((and (not (eq (ask-integer (caddr *myvar)
-							  '$INTEGER)
-					     '$yes))
-				    (free exp '$%i)
-				    (eq ($asksign exp) '$neg))
-			       (go fail))				    
-			      (T `((mplus) ,(cadr *myvar)
-					   ((mminus)
-					    ((mexpt) ,exp
-						     ,(div* 1 (caddr *myvar))))))))
-		       (T (GO FAIL))))
-		((SETQ INVERSE (GET OP '$INVERSE))
-		 (WHEN (AND $SOLVETRIGWARN
-			    (MEMQ OP '(%SIN %COS %TAN %SEC
-				       %CSC %COT %COSH %SECH)))
-		   (MTELL "~&SOLVE is using arc-trig functions to get ~
+(defun usolve (exp op) 
+  (prog (inverse) 
+     (setq inverse
+	   (cond
+	     ((eq op 'mexpt)
+	      (cond ((broken-freeof *var
+				    (cadr *myvar))
+		     (cond ((equal exp 0)
+			    (go fail)))
+		     `((mplus) ((mminus) ,(caddr *myvar))
+		       ,(div* `((%log) ,exp)
+			      `((%log) ,(cadr *myvar)))))
+		    ((broken-freeof *var
+				    (caddr *myvar))
+		     (cond ((equal exp 0)
+			    (cond ((mnegp (caddr *myvar))
+				   (go fail))
+				  (t (cadr *myvar))))
+			   ;; There is a bug right here.
+			   ;; SOLVE(SQRT(U)+1) should return U=1
+			   ;; This code is entered with EXP = -1, OP = MEXPT
+			   ;; *VAR = U, and *MYVAR = ((MEXPT) U ((RAT) 1 2))
+			   ;; BULLSHIT -- RWK.  That is precisely the bug
+			   ;; this code was added to fix!
+			   ((and (not (eq (ask-integer (caddr *myvar)
+						       '$integer)
+					  '$yes))
+				 (free exp '$%i)
+				 (eq ($asksign exp) '$neg))
+			    (go fail))				    
+			   (t `((mplus) ,(cadr *myvar)
+				((mminus)
+				 ((mexpt) ,exp
+				  ,(div* 1 (caddr *myvar))))))))
+		    (t (go fail))))
+	     ((setq inverse (get op '$inverse))
+	      (when (and $solvetrigwarn
+			 (memq op '(%sin %cos %tan %sec
+				    %csc %cot %cosh %sech)))
+		(mtell "~&SOLVE is using arc-trig functions to get ~
 			    a solution.~%Some solutions will be lost.~%")
-		   (SETQ $SOLVETRIGWARN NIL))
-		 `((MPLUS) ((MMINUS) ,(CADR *MYVAR))
-			   ((,INVERSE) ,EXP)))
-		((EQ OP '%LOG)
-		 `((MPLUS) ((MMINUS) ,(CADR *MYVAR))
-			   ((MEXPT) $%E ,EXP)))
-		(T (GO FAIL))))
-	 (RETURN (SOLVE (SIMPLIFY INVERSE) *VAR MULT))
-    FAIL (RETURN (SETQ *FAILURES
-		       (CONS (SIMPLIFY `((MEQUAL) ,*MYVAR ,EXP))
-			     (CONS MULT *FAILURES))))))
+		(setq $solvetrigwarn nil))
+	      `((mplus) ((mminus) ,(cadr *myvar))
+		((,inverse) ,exp)))
+	     ((eq op '%log)
+	      `((mplus) ((mminus) ,(cadr *myvar))
+		((mexpt) $%e ,exp)))
+	     (t (go fail))))
+     (return (solve (simplify inverse) *var mult))
+     fail (return (setq *failures
+			(cons (simplify `((mequal) ,*myvar ,exp))
+			      (cons mult *failures))))))
 
 ;; Predicate for determining if an expression is messy enough to 
 ;; generate a new linelabel for it.
 ;; Expression must be in general form.
 
-(DEFUN COMPLICATED (EXP)
-       (AND $BREAKUP
-	    (NOT $PROGRAMMODE)
-	    (NOT (FREE EXP 'MPLUS))))
+(defun complicated (exp)
+  (and $breakup
+       (not $programmode)
+       (not (free exp 'mplus))))
 
-(DECLARE-TOP (MUZZLED T))
-(DEFUN ROOTSORT (L) 
-       (PROG (A FM FM1) 
-	G1   (COND ((NULL L) (RETURN NIL)))
-	     (SETQ A (CAR (SETQ FM L)))
-	     (SETQ FM1 (CDR FM))
-	LOOP (COND ((NULL (CDDR FM)) (SETQ L (CDDR L)) (GO G1))
-		   ((ALIKE1 (CADDR FM) A)
-		    (RPLACA FM1 (PLUS (CAR FM1) (CADDDR FM)))
-		    (RPLACD (CDR FM) (CDDDDR FM))
-		    (GO LOOP)))
-	     (SETQ FM (CDDR FM))
-	     (GO LOOP)))
-(DECLARE-TOP (MUZZLED NIL))
+(declare-top (muzzled t))
+(defun rootsort (l) 
+  (prog (a fm fm1) 
+   g1   (cond ((null l) (return nil)))
+   (setq a (car (setq fm l)))
+   (setq fm1 (cdr fm))
+   loop (cond ((null (cddr fm)) (setq l (cddr l)) (go g1))
+	      ((alike1 (caddr fm) a)
+	       (rplaca fm1 (plus (car fm1) (cadddr fm)))
+	       (rplacd (cdr fm) (cddddr fm))
+	       (go loop)))
+   (setq fm (cddr fm))
+   (go loop)))
+(declare-top (muzzled nil))
 
 ;; Stuff moving in from MAT to get it out of core.
 
-(DEFMFUN $LINSOLVE (EQL VARL)
-  (LET (($RATFAC))
-    (SETQ EQL (COND (($LISTP EQL) (CDR EQL))
-		    (T (NCONS EQL))))
-    (SETQ VARL (COND (($LISTP VARL) (REMRED (CDR VARL)))
-		     (T (NCONS VARL))))
-    (DO ((VARL VARL (CDR VARL))) ((NULL VARL))
-	(COND ((MNUMP (CAR VARL))
-	       (MERROR "Unacceptable variable to SOLVE: ~M"
-		       (CAR VARL)
-		       ))))
-    (COND ((NULL VARL) (MAKE-MLIST-SIMP))
-	  (T (SOLVEX (MAPCAR 'MEQHK EQL) VARL (NOT $PROGRAMMODE) NIL)))
+(defmfun $linsolve (eql varl)
+  (let (($ratfac))
+    (setq eql (cond (($listp eql) (cdr eql))
+		    (t (ncons eql))))
+    (setq varl (cond (($listp varl) (remred (cdr varl)))
+		     (t (ncons varl))))
+    (do ((varl varl (cdr varl))) ((null varl))
+      (cond ((mnump (car varl))
+	     (merror "Unacceptable variable to SOLVE: ~M"
+		     (car varl)
+		     ))))
+    (cond ((null varl) (make-mlist-simp))
+	  (t (solvex (mapcar 'meqhk eql) varl (not $programmode) nil)))
     ))
 
 ;; REMRED removes any repetition that may be in the variables list
 ;; The NREVERSE is significant here for some reason?
 
-(DEFUN REMRED (L) (IF L (NREVERSE (UNION1 L NIL))))
+(defun remred (l) (if l (nreverse (union1 l nil))))
 
-(DEFUN SOLVEX (EQL VARL IND FLAG &AUX ($ALGEBRAIC $ALGEBRAIC))
+(defun solvex (eql varl ind flag &aux ($algebraic $algebraic))
   (declare (special xa*))
-  (PROG (*VARL ANS VARLIST GENVAR LSOLVEFLAG XM* XN* MUL* SOLVEXP)
-	(SETQ *VARL VARL)
-	(SETQ SOLVEXP FLAG)
-	(SETQ LSOLVEFLAG T)
-	(SETQ EQL
-	      (MAPCAR #'(LAMBDA (X) ($RATDISREP ($RATNUMER X)))
-		      EQL))
-	(COND ((ATOM (LET ((ERRRJFFLAG  T))
-		       (CATCH 'RATERR (FORMX FLAG 'XA* EQL VARL))))
-	       ;; This flag is T if called from SOLVE
-	       ;; and NIL if called from LINSOLVE.
-	       (COND (FLAG (RETURN ($ALGSYS (MAKE-MLIST-L EQL)
-					    (MAKE-MLIST-L VARL))))
-		     (T (MERROR "LINSOLVE ran into a nonlinear equation.")))))
-	(SETQ ANS (TFGELI 'XA* XN* XM*))
-	(IF (AND $LINSOLVEWARN (CAR ANS))
-	    (MTELL "~&Dependent equations eliminated:  ~A~%" (CAR ANS)))
-	(IF (CADR ANS)
-	    (IF $SOLVE_INCONSISTENT_ERROR
-		(MERROR "Inconsistent equations:  ~A" (CADR ANS))
-		(RETURN '((MLIST SIMP)))))
-	(DO ((J 0 (f1+ J)))
-	    ((> J XM*))
-	  ;;I put this in the value cell--wfs 
-	   ; (STORE ( XA* 0 J) NIL))
-	  (STORE (ARRAYCALL T XA* 0 J) NIL))
-	(PTORAT 'XA* XN* XM*)
-	(SETQ VARL
-	      (XRUTOUT 'XA* XN* XM* 
-		       (MAPCAR #'(LAMBDA (X) (ITH VARL X))
-			       (CADDR ANS))
-		       IND))
-	(*REARRAY 'XA*)
-	(IF $PROGRAMMODE
-	    (SETQ VARL (MAKE-MLIST-L (LINSORT (CDR VARL) *VARL))))
-	(RETURN VARL)))
+  (prog (*varl ans varlist genvar lsolveflag xm* xn* mul* solvexp)
+     (setq *varl varl)
+     (setq solvexp flag)
+     (setq lsolveflag t)
+     (setq eql
+	   (mapcar #'(lambda (x) ($ratdisrep ($ratnumer x)))
+		   eql))
+     (cond ((atom (let ((errrjfflag  t))
+		    (catch 'raterr (formx flag 'xa* eql varl))))
+	    ;; This flag is T if called from SOLVE
+	    ;; and NIL if called from LINSOLVE.
+	    (cond (flag (return ($algsys (make-mlist-l eql)
+					 (make-mlist-l varl))))
+		  (t (merror "LINSOLVE ran into a nonlinear equation.")))))
+     (setq ans (tfgeli 'xa* xn* xm*))
+     (if (and $linsolvewarn (car ans))
+	 (mtell "~&Dependent equations eliminated:  ~A~%" (car ans)))
+     (if (cadr ans)
+	 (if $solve_inconsistent_error
+	     (merror "Inconsistent equations:  ~A" (cadr ans))
+	     (return '((mlist simp)))))
+     (do ((j 0 (f1+ j)))
+	 ((> j xm*))
+       ;;I put this in the value cell--wfs 
+					; (STORE ( XA* 0 J) NIL))
+       (store (arraycall t xa* 0 j) nil))
+     (ptorat 'xa* xn* xm*)
+     (setq varl
+	   (xrutout 'xa* xn* xm* 
+		    (mapcar #'(lambda (x) (ith varl x))
+			    (caddr ans))
+		    ind))
+     (*rearray 'xa*)
+     (if $programmode
+	 (setq varl (make-mlist-l (linsort (cdr varl) *varl))))
+     (return varl)))
 
 ;; (LINSORT '(((MEQUAL) A2 FOO) ((MEQUAL) A3 BAR)) '(A3 A2))
 ;; returns (((MEQUAL) A3 BAR) ((MEQUAL) A2 FOO)) .
 
-(DEFUN LINSORT (MEQ-LIST VAR-LIST)
-       (MAPCAR #'(LAMBDA (X) (CONS (CAAR MEQ-LIST) X))
-	       (SORTCAR (MAPCAR #'CDR MEQ-LIST)
-			#'(LAMBDA (X Y)
-			    (zl-MEMBER Y (zl-MEMBER X VAR-LIST))))))
+(defun linsort (meq-list var-list)
+  (mapcar #'(lambda (x) (cons (caar meq-list) x))
+	  (sortcar (mapcar #'cdr meq-list)
+		   #'(lambda (x y)
+		       (zl-member y (zl-member x var-list))))))

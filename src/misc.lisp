@@ -16,28 +16,28 @@
 ;;  *REARRAY of one arg is supposed to return the array.
 ;;  Rewrite at some point to use ADJUST-ARRAY-SIZE.
 
-(DEFUN *REARRAY (ARRAY-SYMBOL &OPTIONAL IGN &REST DIMS) ign
-  (CHECK-ARG ARRAY-SYMBOL
-	     (OR (SYMBOLP ARRAY-SYMBOL) (ARRAYP ARRAY-SYMBOL))
-	     "a symbol or an array")
-  ;;All references to *rearray now are to symbols with the
-  ;; value cell being used for the array.
-  (macrolet ((symbol-array (x) `(symbol-value ,x)))
-  (COND ((NULL DIMS))
-	((NULL (CDR DIMS))
-	 (LET ((OLD-ARRAY (IF (SYMBOLP ARRAY-SYMBOL)
-			      (SYMBOL-ARRAY ARRAY-SYMBOL) ARRAY-SYMBOL))
-	       (NEW-ARRAY (make-array (car dims)))
-	       (MIN-ARRAY-LENGTH))
-	   (SETQ MIN-ARRAY-LENGTH (MIN (ARRAY-DIMENSION-N 1 OLD-ARRAY)
-				       (ARRAY-DIMENSION-N 1 NEW-ARRAY)))
-	   (DO ((I 0 (f1+ I))) ((= I MIN-ARRAY-LENGTH))
-	       (ASET (AREF OLD-ARRAY I) NEW-ARRAY I))
-	   (IF (SYMBOLP ARRAY-SYMBOL) (setf (symbol-array  ARRAY-SYMBOL)  NEW-ARRAY))
-	   NEW-ARRAY))
-	(T (ERROR  "Can't handle *REARRAY with more than one dimension")))))
+(defun *rearray (array-symbol &optional ign &rest dims) ign
+       (check-arg array-symbol
+		  (or (symbolp array-symbol) (arrayp array-symbol))
+		  "a symbol or an array")
+       ;;All references to *rearray now are to symbols with the
+       ;; value cell being used for the array.
+       (macrolet ((symbol-array (x) `(symbol-value ,x)))
+	 (cond ((null dims))
+	       ((null (cdr dims))
+		(let ((old-array (if (symbolp array-symbol)
+				     (symbol-array array-symbol) array-symbol))
+		      (new-array (make-array (car dims)))
+		      (min-array-length))
+		  (setq min-array-length (min (array-dimension-n 1 old-array)
+					      (array-dimension-n 1 new-array)))
+		  (do ((i 0 (f1+ i))) ((= i min-array-length))
+		    (aset (aref old-array i) new-array i))
+		  (if (symbolp array-symbol) (setf (symbol-array  array-symbol)  new-array))
+		  new-array))
+	       (t (error  "Can't handle *REARRAY with more than one dimension")))))
 
-(DEFUN RUNTIME NIL (#-cl TIME
-		    #+cl get-internal-run-time))
+(defun runtime nil (#-cl time
+			 #+cl get-internal-run-time))
 
 

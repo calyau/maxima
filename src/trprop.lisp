@@ -17,33 +17,33 @@
 ;; These META-PROP functions allow selected commands to
 ;; also output DEFPROP's when processed in the Macsyma->lisp translation.
 
-(DEFMVAR META-PROP-P NIL)
-(DEFMVAR META-PROP-L NIL)
+(defmvar meta-prop-p nil)
+(defmvar meta-prop-l nil)
 
-(DEFUN META-OUTPUT (FORM)
-  (IF *IN-TRANSLATE-FILE* (PUSH FORM META-PROP-L))
+(defun meta-output (form)
+  (if *in-translate-file* (push form meta-prop-l))
   ;; unfortunately, MATCOM needs to see properties in order
   ;; to compose tellsimps. so eval it always.
-  (EVAL FORM))
+  (eval form))
 
-(DEFMFUN META-ADD2LNC (ITEM SSYMBOL)
-  (IF META-PROP-P
-      (META-OUTPUT `(ADD2LNC ',ITEM ,SSYMBOL))
-      (ADD2LNC ITEM (SYMBOL-VALUE SSYMBOL))))
+(defmfun meta-add2lnc (item ssymbol)
+  (if meta-prop-p
+      (meta-output `(add2lnc ',item ,ssymbol))
+      (add2lnc item (symbol-value ssymbol))))
 
-(DEFMFUN META-PUTPROP (SSYMBOL ITEM KEY)
-  (IF META-PROP-P
-      (PROG1 ITEM (META-OUTPUT `(DEFPROP ,SSYMBOL ,ITEM ,KEY)))
-      (PUTPROP SSYMBOL ITEM KEY)))
+(defmfun meta-putprop (ssymbol item key)
+  (if meta-prop-p
+      (prog1 item (meta-output `(defprop ,ssymbol ,item ,key)))
+      (putprop ssymbol item key)))
 
-(DEFMFUN META-MPUTPROP (SSYMBOL ITEM KEY)
-  (IF META-PROP-P
-      (PROG1 ITEM (META-OUTPUT `(MDEFPROP ,SSYMBOL ,ITEM ,KEY)))
-      (MPUTPROP SSYMBOL ITEM KEY)))
+(defmfun meta-mputprop (ssymbol item key)
+  (if meta-prop-p
+      (prog1 item (meta-output `(mdefprop ,ssymbol ,item ,key)))
+      (mputprop ssymbol item key)))
 
-(DEFMFUN META-FSET (SSYMBOL DEFINITION)
-  (IF META-PROP-P
-      (PROG1 DEFINITION (META-OUTPUT
-			 `(FSET ',SSYMBOL (coerce ',DEFINITION 'function))))
-      (FSET SSYMBOL (coerce definition 'function))))
+(defmfun meta-fset (ssymbol definition)
+  (if meta-prop-p
+      (prog1 definition (meta-output
+			 `(fset ',ssymbol (coerce ',definition 'function))))
+      (fset ssymbol (coerce definition 'function))))
 

@@ -62,8 +62,8 @@
 (defmacro inv* (x) `(power* ,x -1))
 
 (defmacro ncmul (&rest factors)
-	  (cond ((= (length factors) 2) `(ncmul2 . ,(copy-rest-arg factors)))
-		(t `(ncmuln (list . ,(copy-rest-arg factors)) t))))
+  (cond ((= (length factors) 2) `(ncmul2 . ,(copy-rest-arg factors)))
+	(t `(ncmuln (list . ,(copy-rest-arg factors)) t))))
 
 ;; (TAKE '(%TAN) X) = tan(x)
 ;; This syntax really loses.  Not only does this syntax lose, but this macro
@@ -74,54 +74,54 @@
 ;; (TAKE '(%SIN) A) --> (SIMP-%SIN (LIST '(%SIN) A) 1 T)
 
 (defmacro take (operator &rest args &aux simplifier)
-	  (setq simplifier
-		(and (not (atom operator))
-		     (eq (car operator) 'quote)
-		     (cdr (assq (caadr operator) '((%atan  . simp-%atan)
-						   (%tan   . simp-%tan)
-						   (%log   . simpln)
-						   (mabs   . simpabs)
-						   (%sin   . simp-%sin)
-						   (%cos   . simp-%cos)
-						   ($atan2 . simpatan2)
-						   )))))
-	  (cond (simplifier `(,simplifier (list ,operator . ,args) 1 t))
-		(t `(simplifya (list ,operator . ,args) t))))
+  (setq simplifier
+	(and (not (atom operator))
+	     (eq (car operator) 'quote)
+	     (cdr (assq (caadr operator) '((%atan  . simp-%atan)
+					   (%tan   . simp-%tan)
+					   (%log   . simpln)
+					   (mabs   . simpabs)
+					   (%sin   . simp-%sin)
+					   (%cos   . simp-%cos)
+					   ($atan2 . simpatan2)
+					   )))))
+  (cond (simplifier `(,simplifier (list ,operator . ,args) 1 t))
+	(t `(simplifya (list ,operator . ,args) t))))
 
-(defmacro min%i () ''((MTIMES SIMP) -1 $%I))			;-%I
-(defmacro 1//2 () ''((RAT SIMP) 1 2))				;1/2
-(defmacro half () ''((RAT SIMP) 1 2))			        ;1/2
-(defmacro I//2 () ''((MTIMES SIMP) ((RAT SIMP) 1 2) $%I))	;%I/2
+(defmacro min%i () ''((mtimes simp) -1 $%i)) ;-%I
+(defmacro 1//2 () ''((rat simp) 1 2))	;1/2
+(defmacro half () ''((rat simp) 1 2))	;1/2
+(defmacro i//2 () ''((mtimes simp) ((rat simp) 1 2) $%i)) ;%I/2
 
 ;; On PDP-10s, this is a function so as to save address space.  A one argument
 ;; call is shorter than a two argument call, and this function is called
 ;; several places.  In Franz, Multics, and the LISPM, this macros out on the
 ;; assumption that calls are more expensive than the additional memory.
 
-#+(or Cl Multics Franz NIL)
+#+(or cl multics franz nil)
 (defopt simplify (x) `(simplifya ,x nil))
 
 
 ;; Multics Lisp is broken in that it doesn't grab the subr definition
 ;; when applying.  If the macro definition is there first, it tries that and
 ;; loses.
-#+Multics (if (get 'simplify 'subr) (remprop 'simplify 'macro))
+#+multics (if (get 'simplify 'subr) (remprop 'simplify 'macro))
 
 ;; A hand-made DEFSTRUCT for dealing with the Macsyma MDO structure.
 ;; Used in GRAM, etc. for storing/retrieving from DO structures.
 
-(DEFMACRO MAKE-MDO () '(LIST (LIST 'MDO) NIL NIL NIL NIL NIL NIL NIL))
+(defmacro make-mdo () '(list (list 'mdo) nil nil nil nil nil nil nil))
 
-(DEFMACRO MDO-OP (X)     `(CAR (CAR ,X)))
+(defmacro mdo-op (x)     `(car (car ,x)))
 
-(DEFMACRO MDO-FOR (X)    `(CAR (CDR ,X)))
-(DEFMACRO MDO-FROM (X)   `(CAR (CDDR ,X)))
-(DEFMACRO MDO-STEP (X)   `(CAR (CDDDR ,X)))
-(DEFMACRO MDO-NEXT (X)   `(CAR (CDDDDR ,X)))
-(DEFMACRO MDO-THRU (X)   `(CAR (CDR (CDDDDR ,X))))
-(DEFMACRO MDO-UNLESS (X) `(CAR (CDDR (CDDDDR ,X))))
-(DEFMACRO MDO-BODY (X)	 `(CAR (CDDDR (CDDDDR ,X))))
+(defmacro mdo-for (x)    `(car (cdr ,x)))
+(defmacro mdo-from (x)   `(car (cddr ,x)))
+(defmacro mdo-step (x)   `(car (cdddr ,x)))
+(defmacro mdo-next (x)   `(car (cddddr ,x)))
+(defmacro mdo-thru (x)   `(car (cdr (cddddr ,x))))
+(defmacro mdo-unless (x) `(car (cddr (cddddr ,x))))
+(defmacro mdo-body (x)	 `(car (cdddr (cddddr ,x))))
 
-(DEFMACRO DEFGRAD (NAME ARGUMENTS . BODY)
-  `(DEFPROP ,NAME (,ARGUMENTS . ,BODY) GRAD))
+(defmacro defgrad (name arguments . body)
+  `(defprop ,name (,arguments . ,body) grad))
 

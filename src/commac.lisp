@@ -7,54 +7,54 @@
 
 (in-package "MAXIMA")
 
-;(eval-when (compile)
-;  (proclaim '(optimize (safety 0) (speed 3) (space 0))))
+;;(eval-when (compile)
+;;  (proclaim '(optimize (safety 0) (speed 3) (space 0))))
 
 (eval-when
     #+gcl (compile load eval)
     #-gcl (:compile-toplevel :load-toplevel :execute)
 
-  (defmacro defun-prop (f arg &body body)
-    (assert (listp f))
-    #+gcl (eval-when (eval)
-	    (compiler::compiler-def-hook (car f) body))
-    `(progn 'compile
-      (setf (get ',(car f) ',(second f))
-       #'(lambda ,arg ,@body))))
+    (defmacro defun-prop (f arg &body body)
+      (assert (listp f))
+      #+gcl (eval-when (eval)
+	      (compiler::compiler-def-hook (car f) body))
+      `(progn 'compile
+	(setf (get ',(car f) ',(second f))
+	 #'(lambda ,arg ,@body))))
 
-  )
+    )
 
-(defvar prin1 nil) ;a function called instead of prin1.
+(defvar prin1 nil)		  ;a function called instead of prin1.
 
 (eval-when
     #+gcl (load compile eval)
     #-gcl (:compile-toplevel :load-toplevel :execute)
 
-  (defun appears (tree var)
-    (cond ((equal tree var)
-	   (throw 'appears t))
-	  ((atom tree) nil)
-	  (t  (appears  (car tree) var)
-	      (appears (cdr tree)  var)))
-    nil)
+    (defun appears (tree var)
+      (cond ((equal tree var)
+	     (throw 'appears t))
+	    ((atom tree) nil)
+	    (t  (appears  (car tree) var)
+		(appears (cdr tree)  var)))
+      nil)
 
-  (defun appears1 (tree var)
-    (cond ((eq tree var)
-           (throw 'appears t))
-          ((atom tree) nil)
-          (t
-           (appears (car tree) var)
-           (appears (cdr tree) var)))
-    nil)
+    (defun appears1 (tree var)
+      (cond ((eq tree var)
+	     (throw 'appears t))
+	    ((atom tree) nil)
+	    (t
+	     (appears (car tree) var)
+	     (appears (cdr tree) var)))
+      nil)
 
-  (defun appears-in (tree var)
-    "Yields t if var appears in tree"
-    (catch 'appears
-      (cond ((or (symbolp var)
-		 (fixnump var))
-	     (appears1 tree var))
-	    (t (appears tree var)))))
-  )
+    (defun appears-in (tree var)
+      "Yields t if var appears in tree"
+      (catch 'appears
+	(cond ((or (symbolp var)
+		   (fixnump var))
+	       (appears1 tree var))
+	      (t (appears tree var)))))
+    )
 
 
 
@@ -70,7 +70,7 @@
 ;;;when there is only one argument.
 
 
-;in kcl one would use the number code given by type_of(x);
+;;in kcl one would use the number code given by type_of(x);
 
 (defvar *primitive-data-type-function* 'type-of)
 
@@ -85,39 +85,39 @@
 ;; This assumes way too much about how typep works, so don't use it.
 ;; We leave it here for reference to make sure the replacement below
 ;; does the same thing.
-;#+nil
-;(defun maclisp-typep (x &optional type)
-;  (cond (type
-;	 (lisp:let (( pred (get type 'ml-typep)))
-;        (cond (pred
-;		(funcall pred x))
-;	       (t (typep x type)))))
-;	(t
-;	(lisp:let ((.type. (#. (if (boundp '*primitive-data-type-function*)
-;				   *primitive-data-type-function* 'type-of)
-;				   x)))
-;	  (cond
-;	   ((one-of-types .type.  'hi nil) 'symbol)
-;	   ((one-of-types .type. '(a)) 'list)
-;	   ((one-of-types .type. 3) 'fixnum)
-;	   ((one-of-types .type.  (make-array 3) "abc")
-;	    (cond ((stringp x) 'string) ;;should really be symbol 'ugggh
-;		  #+ti ((hash-table-p x) 'hash-table)
-;		  (t 'array)))
-;	   ((one-of-types .type. (expt 2 50) 1.234 most-positive-single-float
-;			  most-positive-double-float most-positive-long-float )
-;	      (cond 
-;		    ((integerp x) 'bignum)
-;		    ((floatp x) 'flonum )
-;		    (t 'number)))
-;	   ;;note the following is 'random in maclisp
-;	   ((one-of-types .type. #'cons) 'compiled-function)
-;	   #-ti ((one-of-types .type.  (make-hash-table))
-;	    (cond ((hash-table-p x) 'hash-table)
-;		  (t (type-of x))))
-;	   ((arrayp x) 'array)
-;	   ;((one-of-types .type. (make-array '(2 3)))  'array)
-;	   (t (type-of x)))))))
+;;#+nil
+;;(defun maclisp-typep (x &optional type)
+;;  (cond (type
+;;	 (lisp:let (( pred (get type 'ml-typep)))
+;;        (cond (pred
+;;		(funcall pred x))
+;;	       (t (typep x type)))))
+;;	(t
+;;	(lisp:let ((.type. (#. (if (boundp '*primitive-data-type-function*)
+;;				   *primitive-data-type-function* 'type-of)
+;;				   x)))
+;;	  (cond
+;;	   ((one-of-types .type.  'hi nil) 'symbol)
+;;	   ((one-of-types .type. '(a)) 'list)
+;;	   ((one-of-types .type. 3) 'fixnum)
+;;	   ((one-of-types .type.  (make-array 3) "abc")
+;;	    (cond ((stringp x) 'string) ;;should really be symbol 'ugggh
+;;		  #+ti ((hash-table-p x) 'hash-table)
+;;		  (t 'array)))
+;;	   ((one-of-types .type. (expt 2 50) 1.234 most-positive-single-float
+;;			  most-positive-double-float most-positive-long-float )
+;;	      (cond 
+;;		    ((integerp x) 'bignum)
+;;		    ((floatp x) 'flonum )
+;;		    (t 'number)))
+;;	   ;;note the following is 'random in maclisp
+;;	   ((one-of-types .type. #'cons) 'compiled-function)
+;;	   #-ti ((one-of-types .type.  (make-hash-table))
+;;	    (cond ((hash-table-p x) 'hash-table)
+;;		  (t (type-of x))))
+;;	   ((arrayp x) 'array)
+;;	   ;((one-of-types .type. (make-array '(2 3)))  'array)
+;;	   (t (type-of x)))))))
 
 ;; A more portable implementation of maclisp-typep.  I (rtoy) think it
 ;; would probably be better to replace uses of maclisp-typep and/or
@@ -169,30 +169,30 @@
 
 ;;;note *array takes 'fixnum and 'flonum as its keyword args!!!!
 ;;need to use our selectq to ensure the type is correct
-;(ARRAY CONUNMRK NIL (f1+ CONNUMBER))
+;;(ARRAY CONUNMRK NIL (f1+ CONNUMBER))
 
 (defvar *maxima-arrays* nil
   "Trying to track down any functional arrays in maxima")
 
 ;;only remaining calls are for maclisp-type = nil
-(DEFUN *ARRAY (NAME MACLISP-TYPE &REST DIMLIST &AUX AARRAY)
-  (cond ((MEMQ MACLISP-TYPE '(READTABLE OBARRAY))
-	 (ERROR " bad type ~S" MACLISP-TYPE)))
+(defun *array (name maclisp-type &rest dimlist &aux aarray)
+  (cond ((memq maclisp-type '(readtable obarray))
+	 (error " bad type ~S" maclisp-type)))
   (pushnew name *maxima-arrays*)	;for tracking down old ones.
-  (SETQ AARRAY (make-array DIMLIST
-			   ':INITIAL-element
-			   (case MACLISP-TYPE 
-			     (FIXNUM 0)
-			     (FLONUM 0.0d0)
-			     (OTHERWISE NIL))))
-  (COND ((NULL NAME) AARRAY)
-	((SYMBOLP NAME)
-	 (setf (symbol-array NAME) AARRAY)
-	 NAME)
-	(T (error "~S is illegal first arg for *ARRAY" NAME))))
+  (setq aarray (make-array dimlist
+			   ':initial-element
+			   (case maclisp-type 
+			     (fixnum 0)
+			     (flonum 0.0d0)
+			     (otherwise nil))))
+  (cond ((null name) aarray)
+	((symbolp name)
+	 (setf (symbol-array name) aarray)
+	 name)
+	(t (error "~S is illegal first arg for *ARRAY" name))))
 
-(DEFMACRO ARRAY (NAME MACLISP-TYPE &REST DIMLIST)
-  `(*ARRAY ',NAME ',MACLISP-TYPE ,@DIMLIST))
+(defmacro array (name maclisp-type &rest dimlist)
+  `(*array ',name ',maclisp-type ,@dimlist))
 
 ;;;    Change maclisp array referencing.
 ;;;   Idea1: Make changes in the code which will allow the code to still run in maclisp,
@@ -204,28 +204,28 @@
 ;;;I.  change (array a typ dim1 dim2..) to expand to (defvar a (make-array (list dim1 dim2 ...) :type typ')
 ;;;II. change (a dim1 dim2..) to (arraycall nil (symbol-array a) dim1 dim2 ..)
 ;;;III define 
-;(defmacro symbol-array (ar)
-;    `(symbol-function ,ar))
-;(defmacro arraycall (ignore ar &rest dims)
-;  `(aref ,ar ,@ dims))
+;;(defmacro symbol-array (ar)
+;;    `(symbol-function ,ar))
+;;(defmacro arraycall (ignore ar &rest dims)
+;;  `(aref ,ar ,@ dims))
 ;;;IV. change array setting to use (setf (arraycall nil ar dim1.. ) val) 
 ;;;which will generate the correct setting code on the lispm and will
 ;;;still work in maclisp.
 
-(defmacro MAXIMA-ERROR (datum &rest args)
+(defmacro maxima-error (datum &rest args)
   `(cerror "without any special action" ,datum ,@args))
 
 (defmacro safe-value (sym)
   (cond ((symbolp sym)
 	 `(cond ((symbolp ',sym)
 		 (and (boundp ',sym) ,sym))
-		(t ,sym)))
+	   (t ,sym)))
 	(t nil)))
 
 (defmacro show (&rest l)
   (sloop for v in l
-	collecting `(format t "~%The value of ~A is ~A" ',v ,v) into tem
-	finally (return `(progn ,@ tem))))
+	 collecting `(format t "~%The value of ~A is ~A" ',v ,v) into tem
+	 finally (return `(progn ,@ tem))))
 
 (defmacro defquote  (fn (aa . oth) &body rest &aux help ans) 
   (setq help (intern (format nil "~a-aux" fn)))
@@ -233,16 +233,16 @@
 	 (setq ans
 	       (list
 		`(defmacro ,fn ( &rest ,(car oth) )
-		   `(,',help  ',,(car oth)))
+		  `(,',help  ',,(car oth)))
 		`(defun ,help (,(car oth)) . ,rest))))
 	(t (cond ((member '&rest oth)
 		  (error "at present &rest may only occur as first item in a defquote argument")))
 	   (setq ans
 		 (list
 		  `(defmacro ,fn (,aa . other  )
-		     (setq other (sloop for v in other collecting (list 'quote v)))
-		     (check-arg other (eql (length other) ,(length oth)) ,(format nil "wrong number of args to ~a" fn))
-		     `(,',help  ',,aa   ,@ other))
+		    (setq other (sloop for v in other collecting (list 'quote v)))
+		    (check-arg other (eql (length other) ,(length oth)) ,(format nil "wrong number of args to ~a" fn))
+		    `(,',help  ',,aa   ,@ other))
 		  `(defun ,help (,aa ,@ oth) . ,rest)))))
   `(progn 'compile . , ans))
 
@@ -253,13 +253,13 @@
 ;;the resulting function will translate to defvar and will behave
 ;;correctly for the evaluator.
 
-;(defun gg fexpr (ll)
-;       body)
-;(defquote gg (&rest ll)
-;       body)
+;;(defun gg fexpr (ll)
+;;       body)
+;;(defquote gg (&rest ll)
+;;       body)
 
-;(DEFQUOTE GG ( &rest C)
-; (list  (car c) (second c) ))
+;;(DEFQUOTE GG ( &rest C)
+;; (list  (car c) (second c) ))
 ;;the big advantage of using the following over defmspec is that it 
 ;;seems to translate more easily, since it is a fn.
 ;;New functions which wanted quoted arguments should be defined using
@@ -278,8 +278,8 @@
 		  (search ";" a-string :test #'char-equal)))
 	 (vector-push-extend #\$ a-string)))
   (with-input-from-string (stream a-string)
-			  (setq answer (third (mread stream)))
-			  answer))
+    (setq answer (third (mread stream)))
+    answer))
 
 (defvar *sharp-read-buffer*
   (make-array 140 :element-type ' #.(array-element-type "abc")
@@ -297,7 +297,7 @@
 	 (tyi stream)
 	 (setq meval-flag nil)))
   (with-output-to-string
-    (st *sharp-read-buffer*) 
+      (st *sharp-read-buffer*) 
     (let (char)
       (sloop while (not (eql char #\$))
 	     do
@@ -320,8 +320,8 @@
 	      (readtablep *macsyma-readtable*))
 	 *macsyma-readtable*)
 	(t (setq *macsyma-readtable* (copy-readtable nil))
-	  (set-dispatch-macro-character
-	   #\# #\$ 'x$-cl-macro-read *macsyma-readtable*)
+	   (set-dispatch-macro-character
+	    #\# #\$ 'x$-cl-macro-read *macsyma-readtable*)
 	   *macsyma-readtable*)))
 
 (defun set-readtable-for-macsyma ()
@@ -335,9 +335,9 @@
 ;;probably better not to shadow the listify etc. since someone might try to compile some maclisp code
 ;;and we should not break that.
 ;;REPLACEMENTS:
-;'(("arg" . "narg-arg")
-;  ("listify" . "narg-listify")
-;  ("setarg" . "narg-setarg"))
+;;'(("arg" . "narg-arg")
+;;  ("listify" . "narg-listify")
+;;  ("setarg" . "narg-setarg"))
 
 ;;new macros:
 
@@ -351,18 +351,18 @@
       (firstn x list)))
 
 (defmacro narg-listify (x)
-   `(narg-listify1 ,x narg-rest-argument))
+  `(narg-listify1 ,x narg-rest-argument))
 
 (defmacro narg-setarg (i val)
   `(setf (narg-arg ,i) ,val))
 
 ;;test of above
-;(defun foo (&rest narg-rest-argument &aux (narg (length narg-rest-argument)))
-;  (show  (narg-listify 3))
-;  (show  (narg-listify -3))
-;  (show  (narg-arg 2))
-;  (narg-setarg 2 8)
-;  (show (narg-listify 3)))
+;;(defun foo (&rest narg-rest-argument &aux (narg (length narg-rest-argument)))
+;;  (show  (narg-listify 3))
+;;  (show  (narg-listify -3))
+;;  (show  (narg-arg 2))
+;;  (narg-setarg 2 8)
+;;  (show (narg-listify 3)))
 
 (defvar *reset-var* t)
 
@@ -396,7 +396,7 @@ values")
 
 (defun $mkey (variable)
   "($mkey '$demo)==>:demo"
-   (intern (string-left-trim "$" (string variable)) 'keyword))
+  (intern (string-left-trim "$" (string variable)) 'keyword))
 
 ;;Problems with quote char / and #/ don't want to break editor or compiler.
 ;;Solution:
@@ -410,16 +410,16 @@ values")
 ;;to run in common (of course the numbers here need changing if not standard ascii):
 
 (defvar double-quote-char (code-char 34.)) ;; #\")
-(defvar semi-colon-char (code-char 59.))   ;; #\;)
-(defvar back-slash-char (code-char 92.))   ;; #\\)
+(defvar semi-colon-char (code-char 59.)) ;; #\;)
+(defvar back-slash-char (code-char 92.)) ;; #\\)
 (defvar forward-slash-char (code-char 47.)) ;; #\/)
-(defvar left-parentheses-char (code-char 40.))  ;(
+(defvar left-parentheses-char (code-char 40.)) ;(
 (defvar right-parentheses-char (code-char 41.)) ;)
-(defvar period-char (code-char 46.))            ;.
-(defvar vertical-stroke-char (code-char 124.))  ;|
+(defvar period-char (code-char 46.))	;.
+(defvar vertical-stroke-char (code-char 124.)) ;|
 (defvar $forward-slash-symbol #-cl '$// #+cl '$/ )
-;(defvar $colon-char (intern "$:"))
-;(defvar $comma-char (intern "$,"))
+;;(defvar $colon-char (intern "$:"))
+;;(defvar $comma-char (intern "$,"))
 
 
 (defvar forward-slash-string (string forward-slash-char))
@@ -429,15 +429,15 @@ values")
 
 (defun narg1 (x l &aux tem)
   (cond ((null x) (length l))
-	(T (setq tem (nthcdr (f1- x) l))
+	(t (setq tem (nthcdr (f1- x) l))
 	   (cond ((null tem) (error "arg ~A beyond range ~A " x (length l)))
 		 (t (car tem))))))
 
 (defmacro listify (x)
-   `(listify1 ,x narg-rest-argument))
+  `(listify1 ,x narg-rest-argument))
 
 (defmacro setarg (i val)
-   `(setarg1 ,i ,val narg-rest-argument))
+  `(setarg1 ,i ,val narg-rest-argument))
 
 (defun setarg1 (i val l)
   (setf (nth (f1- i)l) val) val)
@@ -447,18 +447,18 @@ values")
 	((zerop n) nil)
 	(t (firstn n narg-rest-argument))))
 
-(defmacro DEFMFUN (function &body  REST &aux .n.)
+(defmacro defmfun (function &body  rest &aux .n.)
   (cond ((and (car rest) (symbolp (car rest)))
 	 ;;old maclisp narg syntax
 	 (setq .n. (car rest))
 	 (setf (car rest)
 	       `(&rest narg-rest-argument &aux
-		       (, .n. (length narg-rest-argument))
-		       ;;(*lexpr-arglist*  narg-rest-argument) 
-		       ))))
+		 (, .n. (length narg-rest-argument))
+		 ;;(*lexpr-arglist*  narg-rest-argument) 
+		 ))))
   `(progn #-cl 'compile
-	 #+lispm (si::record-source-file-name ',function 'defmfun)
-	 (DEFUN ,FUNCTION . ,REST)))
+    #+lispm (si::record-source-file-name ',function 'defmfun)
+    (defun ,function . ,rest)))
 
 ;;sample usage
 ;;(defmfun foo a (show a )(show (listify a)) (show (arg 3)))
@@ -466,8 +466,8 @@ values")
 
 (defun exploden (symb)
   (let* (#+(and gcl (not gmp)) (big-chunk-size 120)
-	 #+(and gcl (not gmp)) (tentochunksize (expt 10 big-chunk-size))
-	 string)
+	   #+(and gcl (not gmp)) (tentochunksize (expt 10 big-chunk-size))
+	   string)
     (cond ((symbolp symb)(setq string (symbol-name symb)))
 	  ((floatp symb)
 	   (let ((a (abs symb)))
@@ -501,9 +501,9 @@ values")
 
 (defun explodec (symb &aux tem sstring)
   (setq sstring (format nil "~a" symb))
-  ;(setq sstring (coerce symb 'string))
+					;(setq sstring (coerce symb 'string))
   (sloop for v on (setq tem (coerce sstring 'list))
-	do (setf (car v)(intern (string (car v)))))
+	 do (setf (car v)(intern (string (car v)))))
   tem)
 
 (defvar *string-for-implode*
@@ -530,32 +530,32 @@ values")
   (cond ((not (eql (car lis) #\$))
 	 (return-from bothcase-implode (implode1 lis nil))))
   (multiple-value-bind
-   (sym there)
-   (implode1 lis nil)
-   (cond (there (if (setq tem (get sym 'upcase)) tem sym))
-	 (t
-	  ;; if all upper case lets not bother interning...
-	  (sloop for v in lis with haslower
-		 when (not (eql (char-upcase v) v))
-		 do (setq haslower t) (loop-finish)
-		 finally (or haslower (return-from bothcase-implode sym)))
-	  (multiple-value-bind
-	   (symup there)
-	   (implode1 lis t)
-	   (cond ((and there (or
-			      ;; not single symbols
-			      (cddr lis)
-			      (fboundp symup) (symbol-plist symup)))
+	(sym there)
+      (implode1 lis nil)
+    (cond (there (if (setq tem (get sym 'upcase)) tem sym))
+	  (t
+	   ;; if all upper case lets not bother interning...
+	   (sloop for v in lis with haslower
+		  when (not (eql (char-upcase v) v))
+		  do (setq haslower t) (loop-finish)
+		  finally (or haslower (return-from bothcase-implode sym)))
+	   (multiple-value-bind
+		 (symup there)
+	       (implode1 lis t)
+	     (cond ((and there (or
+				;; not single symbols
+				(cddr lis)
+				(fboundp symup) (symbol-plist symup)))
 		       
-		  (setf (get sym 'upcase) symup)
-		  symup)
-		 (t (or there (unintern symup))
-		    sym)))))))
+		    (setf (get sym 'upcase) symup)
+		    symup)
+		   (t (or there (unintern symup))
+		      sym)))))))
 
 
 (defun explode (symb &aux tem)
   (sloop for v on (setq tem (coerce (string symb) 'list))
-	do (setf (car v)(intern (string (car v)))))
+	 do (setf (car v)(intern (string (car v)))))
   tem)
 
 (defun getcharn (symb i)
@@ -567,8 +567,8 @@ values")
 (defun getchar (symb i)
   (let ((str (string symb)))
     (if (<= 1 i (length str))
-      (intern (string (char str (1- i))))
-      nil)))
+	(intern (string (char str (1- i))))
+	nil)))
 
 
 (defun getchars (symb start end)
@@ -582,14 +582,14 @@ values")
 
 (defun maknam (lis)
   (sloop for v in lis
-	when (symbolp v)
-	collecting (getcharn v 1) into tem
-	else
-	when (characterp v)
-	collecting v into tem
-	else do (MAXIMA-ERROR "bad entry")
-	finally 
-	(return (make-symbol (coerce tem 'string)))))
+	 when (symbolp v)
+	 collecting (getcharn v 1) into tem
+	 else
+	 when (characterp v)
+	 collecting v into tem
+	 else do (maxima-error "bad entry")
+	 finally 
+	 (return (make-symbol (coerce tem 'string)))))
 
 ;;for those window labels etc. that are wrong type.
 
@@ -608,13 +608,13 @@ values")
 (defmacro signp (sym x)
   (cond ((atom x)
 	 (let ((test
-	      (case sym
-		(e `(zerop ,x))
-		(l `(< ,x 0))    
-		(le `(<= ,x 0))
-		(g `(> ,x 0))
-		(ge `(>= ,x 0))
-		(n `(not (zerop ,x))))))
+		(case sym
+		  (e `(zerop ,x))
+		  (l `(< ,x 0))    
+		  (le `(<= ,x 0))
+		  (g `(> ,x 0))
+		  (ge `(>= ,x 0))
+		  (n `(not (zerop ,x))))))
 	   `(and (numberp ,x) ,test)))
 	(t `(let ((.x. ,x))
 	     (signp ,sym .x.)))))
@@ -636,7 +636,7 @@ values")
       (peek-char peek-type (car read-args))
       (peek-char peek-type)))
 
-;I don't think these are terribly useful so why use them.
+;;I don't think these are terribly useful so why use them.
 
 (progn 'compile
        (defmacro *expr (&rest x) x nil)
@@ -644,20 +644,20 @@ values")
        (defmacro *fexpr (&rest x) x nil))
 
 (defmacro local-declare (dcls &body body)
-  dcls ;ignore
-	  `(progn
-;	    (declare ,@ dcls)
-	    ,@ body))
+  dcls					;ignore
+  `(progn
+    ;;	    (declare ,@ dcls)
+    ,@ body))
 
 
 (defmacro arraycall (ign array &rest dims) ign
-  `(aref ,array . ,dims))
+	  `(aref ,array . ,dims))
 
 (defmacro copy-rest-arg (arg)
   arg)
 
-(defvar ^W nil)
-(defvar ^R nil)
+(defvar ^w nil)
+(defvar ^r nil)
 
 
 ;;essentially no common lisp support for cursor pos:
@@ -694,7 +694,7 @@ values")
   (arrayp (symbol-array sym)))
 
 ;; no generic way of knowing args numbers..
-(defmacro MARGCHK (FN ARGS) fn args ())
+(defmacro margchk (fn args) fn args ())
 
 (defun $timedate ()
   (let ((day-names #("Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun")))
@@ -704,14 +704,14 @@ values")
       (declare (ignore dst-p))
       (namestring (format nil "~2,'0d:~2,'0d:~2,'0d ~a, ~d/~2,'0d/~d (GMT~@d)~%"
 
-              hour minute second (aref day-names day-of-week)
-	      month date year (- tz))))))
+			  hour minute second (aref day-names day-of-week)
+			  month date year (- tz))))))
 
 
 ;;Some systems make everything functionp including macros:
 #+shadow-functionp
 (defun functionp (x)
-   (cond ((symbolp x)
-          (and (not (macro-function x))
-	       (fboundp x) t))
-	 ((lisp::functionp x))))
+  (cond ((symbolp x)
+	 (and (not (macro-function x))
+	      (fboundp x) t))
+	((lisp::functionp x))))

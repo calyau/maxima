@@ -12,32 +12,32 @@
 (macsyma-module trpred)
 (transl-module trpred)
 
-(DEFVAR WRAP-AN-IS 'IS-BOOLE-CHECK "How to verify booleans")
+(defvar wrap-an-is 'is-boole-check "How to verify booleans")
 
-(DEF%TR $IS (FORM)
-  (LET ((WRAP-AN-IS 'IS-BOOLE-CHECK))
-    (CONS '$BOOLEAN (TRANSLATE-PREDICATE (CADR FORM)))))
+(def%tr $is (form)
+  (let ((wrap-an-is 'is-boole-check))
+    (cons '$boolean (translate-predicate (cadr form)))))
 
-(DEF%TR $MAYBE (FORM)
-  (LET ((WRAP-AN-IS 'MAYBE-BOOLE-CHECK))
-    (CONS '$ANY (TRANSLATE-PREDICATE (CADR FORM)))))
+(def%tr $maybe (form)
+  (let ((wrap-an-is 'maybe-boole-check))
+    (cons '$any (translate-predicate (cadr form)))))
 
-(DEF%TR MNOT (FORM) (CONS '$BOOLEAN (TRANSLATE-PREDICATE FORM)))
-(DEF-SAME%TR MAND MNOT)
-(DEF-SAME%TR MOR MNOT)
+(def%tr mnot (form) (cons '$boolean (translate-predicate form)))
+(def-same%tr mand mnot)
+(def-same%tr mor mnot)
 
 ;;; these don't have an imperitive predicate semantics outside of
 ;;; being used in MNOT, MAND, MOR, MCOND, $IS.
 
-(DEF%TR MNOTEQUAL (FORM)
-       `($ANY . (SIMPLIFY (LIST '(,(CAAR FORM)) ,@(TR-ARGS (CDR FORM))))))
+(def%tr mnotequal (form)
+  `($any . (simplify (list '(,(caar form)) ,@(tr-args (cdr form))))))
 
-(DEF-SAME%TR MEQUAL    MNOTEQUAL)
-(DEF-SAME%TR $EQUAL    MNOTEQUAL)
-(DEF-SAME%TR MGREATERP MNOTEQUAL)
-(DEF-SAME%TR MGEQP     MNOTEQUAL)
-(DEF-SAME%TR MLESSP    MNOTEQUAL)
-(DEF-SAME%TR MLEQP     MNOTEQUAL)
+(def-same%tr mequal    mnotequal)
+(def-same%tr $equal    mnotequal)
+(def-same%tr mgreaterp mnotequal)
+(def-same%tr mgeqp     mnotequal)
+(def-same%tr mlessp    mnotequal)
+(def-same%tr mleqp     mnotequal)
 
 
 ;;; It looks like it was copied from MRG;COMPAR > with 
@@ -51,122 +51,122 @@
 ;;; so its suprising this was done. In order to make this change all
 ;;; special-forms need to do targetting.
 
-(DEFTRFUN TRANSLATE-PREDICATE (FORM)
+(deftrfun translate-predicate (form)
   ;; N.B. This returns s-exp, not (<mode> . <s-exp>)
-  (COND ((ATOM FORM)
-	 (let ((tform (TRANSLATE FORM)))
-	   (COND ((EQ '$BOOLEAN (CAR tFORM)) (CDR tFORM))
-		 (T
-		  (WRAP-AN-IS (CDR TFORM) FORM)))))
-	((EQ 'MNOT (CAAR FORM)) (TRP-MNOT FORM))
-	((EQ 'MAND (CAAR FORM)) (TRP-MAND FORM))
-	((EQ 'MOR (CAAR FORM)) (TRP-MOR FORM))
-	((EQ 'MNOTEQUAL (CAAR FORM)) (TRP-MNOTEQUAL FORM))
-	((EQ 'MEQUAL (CAAR FORM)) (TRP-MEQUAL FORM))
-	((EQ '$EQUAL (CAAR FORM)) (TRP-$EQUAL FORM))
-	((EQ 'MGREATERP (CAAR FORM)) (TRP-MGREATERP FORM))
-	((EQ 'MGEQP (CAAR FORM)) (TRP-MGEQP FORM))
-	((EQ 'MLESSP (CAAR FORM)) (TRP-MLESSP FORM))
-	((EQ 'MLEQP (CAAR FORM)) (TRP-MLEQP FORM))
-	((EQ 'MPROGN (CAAR FORM))
+  (cond ((atom form)
+	 (let ((tform (translate form)))
+	   (cond ((eq '$boolean (car tform)) (cdr tform))
+		 (t
+		  (wrap-an-is (cdr tform) form)))))
+	((eq 'mnot (caar form)) (trp-mnot form))
+	((eq 'mand (caar form)) (trp-mand form))
+	((eq 'mor (caar form)) (trp-mor form))
+	((eq 'mnotequal (caar form)) (trp-mnotequal form))
+	((eq 'mequal (caar form)) (trp-mequal form))
+	((eq '$equal (caar form)) (trp-$equal form))
+	((eq 'mgreaterp (caar form)) (trp-mgreaterp form))
+	((eq 'mgeqp (caar form)) (trp-mgeqp form))
+	((eq 'mlessp (caar form)) (trp-mlessp form))
+	((eq 'mleqp (caar form)) (trp-mleqp form))
+	((eq 'mprogn (caar form))
 	 ;; it was a pain not to have this case working, so I just
 	 ;; patched it in. Lets try not to lazily patch in every
 	 ;; special form in macsyma!
-	 `(PROGN ,@(TR-ARGS (NREVERSE (CDR (REVERSE (CDR FORM)))))
-		 ,(TRANSLATE-PREDICATE (CAR (LAST (CDR FORM))))))
-	(T
-	 (LET (((MODE . TFORM) (TRANSLATE FORM)))
-	   (BOOLEAN-CONVERT MODE TFORM FORM)))))
+	 `(progn ,@(tr-args (nreverse (cdr (reverse (cdr form)))))
+	   ,(translate-predicate (car (last (cdr form))))))
+	(t
+	 (let (((mode . tform) (translate form)))
+	   (boolean-convert mode tform form)))))
 
 
-(DEFUN BOOLEAN-CONVERT (MODE EXP FORM)
-  (IF (EQ MODE '$BOOLEAN)
-      EXP
-      (WRAP-AN-IS EXP FORM)))
+(defun boolean-convert (mode exp form)
+  (if (eq mode '$boolean)
+      exp
+      (wrap-an-is exp form)))
 
-(DEFUN TRP-MNOT (FORM) 
-       (SETQ FORM (TRANSLATE-PREDICATE (CADR FORM)))
-       (COND ((NOT FORM) T)
-	     ((EQ T FORM) NIL)
-	     ((AND (NOT (ATOM FORM)) (EQ (CAR FORM) 'NOT)) (CADR FORM))
-	     (T (LIST 'NOT FORM))))
+(defun trp-mnot (form) 
+  (setq form (translate-predicate (cadr form)))
+  (cond ((not form) t)
+	((eq t form) nil)
+	((and (not (atom form)) (eq (car form) 'not)) (cadr form))
+	(t (list 'not form))))
 
-(DEFUN TRP-MAND (FORM) 
-       (SETQ FORM (MAPCAR 'TRANSLATE-PREDICATE (CDR FORM)))
-       (DO ((L FORM (CDR L)) (NL))
-	   ((NULL L) (CONS 'AND (NREVERSE NL)))
-	   (COND ((CAR L) (SETQ NL (CONS (CAR L) NL)))
-		 (T (RETURN (CONS 'AND (NREVERSE (CONS NIL NL))))))))
+(defun trp-mand (form) 
+  (setq form (mapcar 'translate-predicate (cdr form)))
+  (do ((l form (cdr l)) (nl))
+      ((null l) (cons 'and (nreverse nl)))
+    (cond ((car l) (setq nl (cons (car l) nl)))
+	  (t (return (cons 'and (nreverse (cons nil nl))))))))
 
-(DEFUN TRP-MOR (FORM) 
-       (SETQ FORM (MAPCAR 'TRANSLATE-PREDICATE (CDR FORM)))
-       (DO ((L FORM (CDR L)) (NL))
-	   ((NULL L) (COND (NL (COND ((NULL (CDR NL))(CAR NL))
-				     (T (CONS 'OR (NREVERSE NL)))))))
-	   (COND ((CAR L) (SETQ NL (CONS (CAR L) NL))))))
+(defun trp-mor (form) 
+  (setq form (mapcar 'translate-predicate (cdr form)))
+  (do ((l form (cdr l)) (nl))
+      ((null l) (cond (nl (cond ((null (cdr nl))(car nl))
+				(t (cons 'or (nreverse nl)))))))
+    (cond ((car l) (setq nl (cons (car l) nl))))))
 
 
-(DEFUN WRAP-AN-IS (EXP IGNORE-FORM) IGNORE-FORM
-  (LIST WRAP-AN-IS EXP))
+(defun wrap-an-is (exp ignore-form) ignore-form
+       (list wrap-an-is exp))
 
 (defvar *number-types* '($float $number $fixnum ))
 
-(DEFUN TRP-MGREATERP (FORM) 
-  (LET (MODE ARG1 ARG2)
-    (SETQ ARG1 (TRANSLATE (CADR FORM)) ARG2 (TRANSLATE (CADDR FORM))
-	  MODE (*UNION-MODE (CAR ARG1) (CAR ARG2)))
-    (COND ((OR (EQ '$FIXNUM MODE) (EQ '$FLOAT MODE)
+(defun trp-mgreaterp (form) 
+  (let (mode arg1 arg2)
+    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
+	  mode (*union-mode (car arg1) (car arg2)))
+    (cond ((or (eq '$fixnum mode) (eq '$float mode)
 	       #+cl
 	       (and (memq (car arg1) *number-types*)
 		    (memq (car arg2) *number-types*)))
-	   `(> ,(DCONV ARG1 MODE) ,(DCONV ARG2 MODE)))
-	  ((EQ '$NUMBER MODE) `(GREATERP ,(CDR ARG1) ,(CDR ARG2)))
-	  ('ELSE
-	   (WRAP-AN-IS `(MGRP ,(DCONVX ARG1) ,(DCONVX ARG2))
-		       FORM)))))
+	   `(> ,(dconv arg1 mode) ,(dconv arg2 mode)))
+	  ((eq '$number mode) `(greaterp ,(cdr arg1) ,(cdr arg2)))
+	  ('else
+	   (wrap-an-is `(mgrp ,(dconvx arg1) ,(dconvx arg2))
+		       form)))))
  
-(DEFUN TRP-MLESSP (FORM) 
-  (LET (MODE ARG1 ARG2)
-    (SETQ ARG1 (TRANSLATE (CADR FORM)) ARG2 (TRANSLATE (CADDR FORM))
-	  MODE (*UNION-MODE (CAR ARG1) (CAR ARG2)))
-    (COND ((OR (EQ '$FIXNUM MODE) (EQ '$FLOAT MODE)
+(defun trp-mlessp (form) 
+  (let (mode arg1 arg2)
+    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
+	  mode (*union-mode (car arg1) (car arg2)))
+    (cond ((or (eq '$fixnum mode) (eq '$float mode)
 	       #+cl
-	   (and (memq (car arg1) *number-types*)
-		(memq (car arg2) *number-types*)))
-	   `(< ,(DCONV ARG1 MODE) ,(DCONV ARG2 MODE)))
-	  ((EQ '$NUMBER MODE) `(LESSP ,(CDR ARG1) ,(CDR ARG2)))
-	  ('ELSE
-	   (WRAP-AN-IS `(MLSP ,(DCONVX ARG1) ,(DCONVX ARG2))
-		       FORM)))))
+	       (and (memq (car arg1) *number-types*)
+		    (memq (car arg2) *number-types*)))
+	   `(< ,(dconv arg1 mode) ,(dconv arg2 mode)))
+	  ((eq '$number mode) `(lessp ,(cdr arg1) ,(cdr arg2)))
+	  ('else
+	   (wrap-an-is `(mlsp ,(dconvx arg1) ,(dconvx arg2))
+		       form)))))
 
-(DEFUN TRP-MEQUAL (FORM) 
-  (LET (MODE ARG1 ARG2)
-    (SETQ ARG1 (TRANSLATE (CADR FORM)) ARG2 (TRANSLATE (CADDR FORM))
-	  MODE (*UNION-MODE (CAR ARG1) (CAR ARG2)))
-    (COND
+(defun trp-mequal (form) 
+  (let (mode arg1 arg2)
+    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
+	  mode (*union-mode (car arg1) (car arg2)))
+    (cond
       #+cl
-      ((OR (EQ '$FIXNUM MODE)
-	   (EQ '$FLOAT MODE))
-       `(eql ,(DCONV ARG1 MODE) ,(DCONV ARG2 MODE)))
-      ((EQ '$NUMBER MODE) `(EQUAL ,(CDR ARG1) ,(CDR ARG2)))
-      (T `(LIKE ,(DCONV ARG1 MODE) ,(DCONV ARG2 MODE))))))
+      ((or (eq '$fixnum mode)
+	   (eq '$float mode))
+       `(eql ,(dconv arg1 mode) ,(dconv arg2 mode)))
+      ((eq '$number mode) `(equal ,(cdr arg1) ,(cdr arg2)))
+      (t `(like ,(dconv arg1 mode) ,(dconv arg2 mode))))))
 
-(DEFUN TRP-$EQUAL (FORM) 
-  (LET (MODE ARG1 ARG2) 
-    (SETQ ARG1 (TRANSLATE (CADR FORM)) ARG2 (TRANSLATE (CADDR FORM))
-	  MODE (*UNION-MODE (CAR ARG1) (CAR ARG2)))
-    (COND ((OR (EQ '$FIXNUM MODE) (EQ '$FLOAT MODE))
-	   `(= ,(DCONV ARG1 MODE) ,(DCONV ARG2 MODE)))
-	  ((EQ '$NUMBER MODE) `(MEQP ,(CDR ARG1) ,(CDR ARG2)))
-	  ('ELSE
-	   (WRAP-AN-IS `(MEQP ,(DCONVX ARG1) ,(DCONVX ARG2))
-		       FORM)))))
+(defun trp-$equal (form) 
+  (let (mode arg1 arg2) 
+    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
+	  mode (*union-mode (car arg1) (car arg2)))
+    (cond ((or (eq '$fixnum mode) (eq '$float mode))
+	   `(= ,(dconv arg1 mode) ,(dconv arg2 mode)))
+	  ((eq '$number mode) `(meqp ,(cdr arg1) ,(cdr arg2)))
+	  ('else
+	   (wrap-an-is `(meqp ,(dconvx arg1) ,(dconvx arg2))
+		       form)))))
 
-(DEFUN TRP-MNOTEQUAL (FORM) (LIST 'NOT (TRP-MEQUAL FORM)))
+(defun trp-mnotequal (form) (list 'not (trp-mequal form)))
 
-(DEFUN TRP-MGEQP (FORM) (LIST 'NOT (TRP-MLESSP FORM)))
+(defun trp-mgeqp (form) (list 'not (trp-mlessp form)))
 
-(DEFUN TRP-MLEQP (FORM) (LIST 'NOT (TRP-MGREATERP FORM)))
+(defun trp-mleqp (form) (list 'not (trp-mgreaterp form)))
 
 
 ;;; sigh, i have to copy a lot of the $assume function too.

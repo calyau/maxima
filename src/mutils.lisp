@@ -27,11 +27,11 @@
 ;;; false.
 ;;; Author Dan Stanger 12/1/02
 (defmfun $assoc (key ielist &optional default)
-   (let ((elist (margs ielist)))
-      (if (every #'(lambda (x) (= 3 (length x))) elist)
-         (let ((found (find key elist :test #'alike1 :key #'second)))
-            (if found (third found) default))
-         (MERROR "Improper form for list:~%~M" ielist))))
+  (let ((elist (margs ielist)))
+    (if (every #'(lambda (x) (= 3 (length x))) elist)
+	(let ((found (find key elist :test #'alike1 :key #'second)))
+	  (if found (third found) default))
+	(merror "Improper form for list:~%~M" ielist))))
 
 ;;; This function works like the every function in lisp.
 ;;; It can take a list, or a positive number of arguments returning
@@ -39,13 +39,13 @@
 ;;; Author Dan Stanger 12/1/02
 (defmfun $every (&rest args)
   (let ((n (length args)))
-     (cond ((= n 0) (merror "Every must have at least 1 argument"))
-           ((= n 1)
-               (let ((args (first args)))
-                  (if (and ($listp args) (> ($length args) 0))
-                      (notany #'not (margs args))
-                      (if (and ($listp args) (= ($length args) 0)) nil args))))
-           (t (notany #'not args)))))
+    (cond ((= n 0) (merror "Every must have at least 1 argument"))
+	  ((= n 1)
+	   (let ((args (first args)))
+	     (if (and ($listp args) (> ($length args) 0))
+		 (notany #'not (margs args))
+		 (if (and ($listp args) (= ($length args) 0)) nil args))))
+	  (t (notany #'not args)))))
 
 ;;; (ASSOL item A-list)
 ;;;
@@ -54,40 +54,40 @@
 ;;;
 ;;;  Meta-Synonym:	(ASS #'ALIKE1 ITEM ALIST)
 
-(DEFMFUN ASSOL (ITEM ALIST)
-  (DOLIST (PAIR ALIST)
-	  (IF (ALIKE1 ITEM (CAR PAIR)) (RETURN PAIR))))
+(defmfun assol (item alist)
+  (dolist (pair alist)
+    (if (alike1 item (car pair)) (return pair))))
 ;;; 
 
-(DEFMFUN ASSOLIKE (ITEM ALIST) 
-  (CDR (ASSOL ITEM ALIST)))
+(defmfun assolike (item alist) 
+  (cdr (assol item alist)))
 
-; Old ASSOLIKE definition:
-;
-; (defun assolike (e l) 
-;	 (prog nil 
-;	  loop (cond ((null l) (return nil))
-;		     ((alike1 e (caar l)) (return (cdar l))))
-;	       (setq l (cdr l))
-;	       (go loop)))
+;; Old ASSOLIKE definition:
+;;
+;; (defun assolike (e l) 
+;;	 (prog nil 
+;;	  loop (cond ((null l) (return nil))
+;;		     ((alike1 e (caar l)) (return (cdar l))))
+;;	       (setq l (cdr l))
+;;	       (go loop)))
 
 ;;; (MEM #'ALIKE1 X L)
 
-(DEFMFUN MEMALIKE (X L)
-  (DO ((L L (CDR L))) ((NULL L))
-      (COND ((ALIKE1 X (CAR L)) (RETURN L)))))
+(defmfun memalike (x l)
+  (do ((l l (cdr l))) ((null l))
+    (cond ((alike1 x (car l)) (return l)))))
 
 ;;;Do we want MACROS for these on MC and on Multics?? -Jim 1/29/81
-#+Multics
-(PROGN 'COMPILE
-  (DEFMFUN MSTRINGP (X)
-    (AND (SYMBOLP X)
-	 (EQUAL (GETCHARN X 1) #\&)))
+#+multics
+(progn 'compile
+       (defmfun mstringp (x)
+	 (and (symbolp x)
+	      (equal (getcharn x 1) #\&)))
 
-  (DEFMFUN MSTRING-TO-STRING (X)
-    (SUBSTRING (STRING X) 1))
+       (defmfun mstring-to-string (x)
+	 (substring (string x) 1))
 
-  (DEFMFUN STRING-TO-MSTRING (X)
-    (MAKE-SYMBOL (STRING-APPEND "&" X)))
-)
+       (defmfun string-to-mstring (x)
+	 (make-symbol (string-append "&" x)))
+       )
 

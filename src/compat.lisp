@@ -12,40 +12,40 @@
 ;; contained in this file.
 
 ;; Translated code still uses this.
-(DEFQUOTE includef (  FILENAME) FILENAME)
+(defquote includef (  filename) filename)
 
 ;; Couldn't this copy to some static area?
-(DEFMACRO PURCOPY (X) X)
+(defmacro purcopy (x) x)
 
 #-nocp
-(DEFMACRO CHARPOS (IGNOR)ignor  '(CDR (CURSORPOS)))
-(DEFMACRO MAXIMA-SLEEP (SECONDS) `(PROCESS-SLEEP (FIX (f* ,SECONDS 60.))))
+(defmacro charpos (ignor)ignor  '(cdr (cursorpos)))
+(defmacro maxima-sleep (seconds) `(process-sleep (fix (f* ,seconds 60.))))
 
-(DEFUN LINEL (&OPTIONAL STREAM)
-       #+lispm 
-  (FUNCALL (SI:DECODE-PRINT-ARG STREAM) ':SIZE-IN-CHARACTERS)
+(defun linel (&optional stream)
+  #+lispm 
+  (funcall (si:decode-print-arg stream) ':size-in-characters)
   #-lispm stream
   #-lispm 80 
   )
 
 ;; Perhaps this should do something.
-(DEFMACRO NOINTERRUPT (IGNOR)ignor  NIL)
+(defmacro nointerrupt (ignor)ignor  nil)
 
-(DEFMACRO WITHOUT-TTY-INTERRUPTS (&REST FORM)
-  `(LET (#+lispm (TV:KBD-INTERCEPTED-CHARACTERS NIL))
-     ,@ FORM))
+(defmacro without-tty-interrupts (&rest form)
+  `(let (#+lispm (tv:kbd-intercepted-characters nil))
+    ,@ form))
 
-(DEFMACRO FIXNUM-IDENTITY (X) X)
-(DEFMACRO FLONUM-IDENTITY (X) X)
+(defmacro fixnum-identity (x) x)
+(defmacro flonum-identity (x) x)
 
 (proclaim '(inline *quo *dif))
 #+cl
-(DEFun *QUO (X Y)
-       (cond ((and (integerp x) (integerp y))
-	      (truncate x y))
-	     (t (/ X Y))))
+(defun *quo (x y)
+  (cond ((and (integerp x) (integerp y))
+	 (truncate x y))
+	(t (/ x y))))
 #+cl
-(DEFun *DIF (X Y) (- X Y))
+(defun *dif (x y) (- x y))
 
 
 ;; Keep the compiler quiet.
@@ -56,18 +56,18 @@
 ;; Use STRING-LESSP instead of ALPHALESSP.
 #+lispm 
 (progn 
-(REMPROP 'EXPLODE       'COMPILER:STYLE-CHECKER)
-(REMPROP 'EXPLODEC      'COMPILER:STYLE-CHECKER)
-(REMPROP 'EXPLODEN      'COMPILER:STYLE-CHECKER)
-(REMPROP 'ALPHALESSP    'COMPILER:STYLE-CHECKER)
-(REMPROP 'GETCHARN      'COMPILER:STYLE-CHECKER)
-(REMPROP 'GETCHAR       'COMPILER:STYLE-CHECKER)
-(REMPROP 'IMPLODE       'COMPILER:STYLE-CHECKER)
-(REMPROP 'MAKNAM        'COMPILER:STYLE-CHECKER)
-)
+  (remprop 'explode       'compiler:style-checker)
+  (remprop 'explodec      'compiler:style-checker)
+  (remprop 'exploden      'compiler:style-checker)
+  (remprop 'alphalessp    'compiler:style-checker)
+  (remprop 'getcharn      'compiler:style-checker)
+  (remprop 'getchar       'compiler:style-checker)
+  (remprop 'implode       'compiler:style-checker)
+  (remprop 'maknam        'compiler:style-checker)
+  )
 
-(DEFMACRO SFA-CALL (STREAM OPERATION ARG)
-  `(FUNCALL ,STREAM (READ-FROM-STRING (STRING-APPEND #\: ,OPERATION)) ,ARG))
+(defmacro sfa-call (stream operation arg)
+  `(funcall ,stream (read-from-string (string-append #\: ,operation)) ,arg))
 
 ;; Things that appear within DECLARE bodies.
 
@@ -87,55 +87,55 @@
 ;; These are in global, so avoid redefinition warning by using FDEFINE
 ;; rather than DEFun.
 
-;(FDEFINE (kw FLONUM) #'(LAMBDA ( &REST IGNOR)ignor  NIL))
-;(FDEFINE (kw FIXNUM) #'(LAMBDA (&QUOTE &REST IGNOR)ignor  NIL))
-;(FDEFINE 'ARGS	 #'(LAMBDA (&QUOTE &REST IGNOR)ignor  NIL))
+;;(FDEFINE (kw FLONUM) #'(LAMBDA ( &REST IGNOR)ignor  NIL))
+;;(FDEFINE (kw FIXNUM) #'(LAMBDA (&QUOTE &REST IGNOR)ignor  NIL))
+;;(FDEFINE 'ARGS	 #'(LAMBDA (&QUOTE &REST IGNOR)ignor  NIL))
 
-(DEFMACRO ARGS (&REST IGNOR)ignor  NIL)
+(defmacro args (&rest ignor)ignor  nil)
 
 #-cl
 (progn
-(DEFMACRO FLONUM (&REST IGNOR)ignor  NIL)
-(DEFMACRO FIXNUM (&REST IGNOR)ignor  NIL)
-(DEFMACRO MACROS	     ( &REST IGNOR)ignor  NIL)
-(DEFMACRO CLOSED	     ( &REST IGNOR)ignor  NIL)
-(DEFMACRO NOTYPE	     ( &REST IGNOR)ignor  NIL)
-(DEFMACRO ARRAY*	     ( &REST IGNOR)ignor  NIL)
-(DEFMACRO GENPREFIX     ( &REST IGNOR)ignor  NIL)
-(DEFMACRO MUZZLED	     ( &REST IGNOR)ignor  NIL)
-(DEFMACRO MAPEX	     ( &REST IGNOR)ignor  NIL)
-(DEFMACRO SPLITFILE     ( &REST IGNOR)ignor  NIL)
-(DEFMACRO EXPR-HASH     ( &REST IGNOR)ignor  NIL)
-)
+  (defmacro flonum (&rest ignor)ignor  nil)
+  (defmacro fixnum (&rest ignor)ignor  nil)
+  (defmacro macros	     ( &rest ignor)ignor  nil)
+  (defmacro closed	     ( &rest ignor)ignor  nil)
+  (defmacro notype	     ( &rest ignor)ignor  nil)
+  (defmacro array*	     ( &rest ignor)ignor  nil)
+  (defmacro genprefix     ( &rest ignor)ignor  nil)
+  (defmacro muzzled	     ( &rest ignor)ignor  nil)
+  (defmacro mapex	     ( &rest ignor)ignor  nil)
+  (defmacro splitfile     ( &rest ignor)ignor  nil)
+  (defmacro expr-hash     ( &rest ignor)ignor  nil)
+  )
 ;; Run time stuff
 
-(DEFUN SYMBOLCONC (&REST SYMS)
-  (INTERN (APPLY #'concatenate 'string
-		 (MAPCAR #'(LAMBDA (SYM)
-			     (COND ((FLOATP SYM)
-				    (FORMAT NIL "~S" SYM))
-				   ((INTEGERP SYM)
-				    (FORMAT NIL "~D" SYM))
+(defun symbolconc (&rest syms)
+  (intern (apply #'concatenate 'string
+		 (mapcar #'(lambda (sym)
+			     (cond ((floatp sym)
+				    (format nil "~S" sym))
+				   ((integerp sym)
+				    (format nil "~D" sym))
 				   ((symbolp sym)
 				    (symbol-name sym))
-				   (T SYM)))
-			 SYMS))))
+				   (t sym)))
+			 syms))))
 
-;(DEFUN QUOTED-ARGS (&QUOTE &REST L)
-;  (MAPCAR #'(LAMBDA (X) (PUTPROP X '((1005 (FEF-ARG-OPT FEF-QT-QT))) 'ARGDESC))
-;	  L))
+;;(DEFUN QUOTED-ARGS (&QUOTE &REST L)
+;;  (MAPCAR #'(LAMBDA (X) (PUTPROP X '((1005 (FEF-ARG-OPT FEF-QT-QT))) 'ARGDESC))
+;;	  L))
 
 
 
-(DEFMACRO QUOTE-ARGS ( &REST L)
-  `(QUOTED-ARGS-AUX ',L))
-(DEFUN QUOTED-ARGS-AUX (L)
-  (MAPCAR #'(LAMBDA (X) (PUTPROP X '((1005 (FEF-ARG-OPT FEF-QT-QT))) 'ARGDESC))
-	  L))
+(defmacro quote-args ( &rest l)
+  `(quoted-args-aux ',l))
+(defun quoted-args-aux (l)
+  (mapcar #'(lambda (x) (putprop x '((1005 (fef-arg-opt fef-qt-qt))) 'argdesc))
+	  l))
 
 
 #+cl
-(PROGN 'COMPILE
+(progn 'compile
 
 ;;; On the 3600, STORE isn't implemented.  So, implement enough of
 ;;; it here to satisfy the cases the Macsyma uses.  I have yet to find
@@ -145,48 +145,48 @@
 ;;; of the first form isn't ARRAYCALL or FUNCALL, then it's a STORE of the third
 ;;; form.
 
-(DEFUN STORE-MACRO-HELPER (ARRAY-REF NEW-VALUE)
-  ;;this is redundant and should be caught by store but a bug in compiler..
-  (cond ((or (eql (car array-ref) 'aref))(equal (car array-ref) '(function aref))
-	 `(setf (aref ,@ (cdr array-ref)) ,new-value))
-	(t
-  (CASE (LENGTH ARRAY-REF)
-    (2 `(STORE-INTERNAL-1D ,@ARRAY-REF ,NEW-VALUE))
-    (3 `(STORE-INTERNAL-2D ,@ARRAY-REF ,NEW-VALUE))
-    (OTHERWISE (ERROR "Cannot expand STORE for array reference ~S" ARRAY-REF))))))
+       (defun store-macro-helper (array-ref new-value)
+	 ;;this is redundant and should be caught by store but a bug in compiler..
+	 (cond ((or (eql (car array-ref) 'aref))(equal (car array-ref) '(function aref))
+		`(setf (aref ,@ (cdr array-ref)) ,new-value))
+	       (t
+		(case (length array-ref)
+		  (2 `(store-internal-1d ,@array-ref ,new-value))
+		  (3 `(store-internal-2d ,@array-ref ,new-value))
+		  (otherwise (error "Cannot expand STORE for array reference ~S" array-ref))))))
 
 
 
-(DEFMACRO STORE (ARRAY-REF NEW-VALUE &aux expand-1 &environment env)
-  (cond ((not (memq (car array-ref ) '(aref arraycall)))
-	 (setq expand-1 (macroexpand-1 array-ref env))
-	 (setq array-ref
-	       (cond ((memq (car expand-1 ) '(aref arraycall))
-		      expand-1)
-		     (t  (macroexpand array-ref env))))))
+       (defmacro store (array-ref new-value &aux expand-1 &environment env)
+	 (cond ((not (memq (car array-ref ) '(aref arraycall)))
+		(setq expand-1 (macroexpand-1 array-ref env))
+		(setq array-ref
+		      (cond ((memq (car expand-1 ) '(aref arraycall))
+			     expand-1)
+			    (t  (macroexpand array-ref env))))))
   
-  (CASE (FIRST ARRAY-REF)
-    (FUNCALL (STORE-MACRO-HELPER (CDR ARRAY-REF) NEW-VALUE))
-;    (ARRAYCALL (STORE-MACRO-HELPER (CDDR ARRAY-REF) NEW-VALUE))
-    ;;the arrays ought to all be on in the symbol location by now --wfs
-    (ARRAYCALL `(setf ,array-ref ,new-value))
-    (aref `(setf ,array-ref ,new-value))
-    (OTHERWISE (STORE-MACRO-HELPER `(#',(FIRST ARRAY-REF) . ,(CDR ARRAY-REF)) NEW-VALUE))))
+	 (case (first array-ref)
+	   (funcall (store-macro-helper (cdr array-ref) new-value))
+	   ;;    (ARRAYCALL (STORE-MACRO-HELPER (CDDR ARRAY-REF) NEW-VALUE))
+	   ;;the arrays ought to all be on in the symbol location by now --wfs
+	   (arraycall `(setf ,array-ref ,new-value))
+	   (aref `(setf ,array-ref ,new-value))
+	   (otherwise (store-macro-helper `(#',(first array-ref) . ,(cdr array-ref)) new-value))))
 
 
-(DEFUN STORE-INTERNAL-1D (ARRAY-SPEC INDEX NEW-VALUE)
-  (SLOOP UNTIL (ARRAYP ARRAY-SPEC)
-	DO (COND ((SYMBOLP ARRAY-SPEC) (SETQ ARRAY-SPEC (SYMBOL-ARRAY ARRAY-SPEC)))
-		 (T (ERROR "STORE failed -- can't find array for ~S" ARRAY-SPEC))))
-  (SETF (AREF ARRAY-SPEC INDEX) NEW-VALUE))
+       (defun store-internal-1d (array-spec index new-value)
+	 (sloop until (arrayp array-spec)
+		do (cond ((symbolp array-spec) (setq array-spec (symbol-array array-spec)))
+			 (t (error "STORE failed -- can't find array for ~S" array-spec))))
+	 (setf (aref array-spec index) new-value))
 
-(DEFUN STORE-INTERNAL-2D (ARRAY-SPEC I1 I2 NEW-VALUE)
-  (SLOOP UNTIL (ARRAYP ARRAY-SPEC)
-	DO (COND ((SYMBOLP ARRAY-SPEC) (SETQ ARRAY-SPEC (SYMBOL-ARRAY ARRAY-SPEC)))
-		 (T (ERROR "STORE failed -- can't find array for ~S" ARRAY-SPEC))))
-  (SETF (AREF ARRAY-SPEC I1 I2) NEW-VALUE))
+       (defun store-internal-2d (array-spec i1 i2 new-value)
+	 (sloop until (arrayp array-spec)
+		do (cond ((symbolp array-spec) (setq array-spec (symbol-array array-spec)))
+			 (t (error "STORE failed -- can't find array for ~S" array-spec))))
+	 (setf (aref array-spec i1 i2) new-value))
 
-)  ;End PROGN 'COMPILE
+       )				;End PROGN 'COMPILE
 
 
 

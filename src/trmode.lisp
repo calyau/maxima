@@ -38,58 +38,58 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 	(mcall user-level value)))
   value)
 
-(DEFTRVAR DEFINED_VARIABLES ())
+(deftrvar defined_variables ())
 
-(DEFTRVAR $DEFINE_VARIABLE ())
+(deftrvar $define_variable ())
 
-(DEF%TR $DEFINE_VARIABLE (FORM) ;;VAR INIT MODE.
-  (COND ((> (LENGTH FORM) 3)
-	 (LET (((VAR VAL MODE) (CDR FORM)))
-	   (LET ((SPEC-FORM `(($DECLARE) ,VAR $SPECIAL))
-		 (MODE-FORM `(($MODEDECLARE) ,VAR ,MODE)))
+(def%tr $define_variable (form)	;;VAR INIT MODE.
+  (cond ((> (length form) 3)
+	 (let (((var val mode) (cdr form)))
+	   (let ((spec-form `(($declare) ,var $special))
+		 (mode-form `(($modedeclare) ,var ,mode)))
 	     (translate spec-form)
 	     (translate mode-form)
-	     (PUSH-PRE-TRANSL-FORM
+	     (push-pre-transl-form
 	      ;; POSSIBLE OVERKILL HERE
-	      `(declare (special ,VAR)))
-	     (PUSH VAR DEFINED_VARIABLES)
+	      `(declare (special ,var)))
+	     (push var defined_variables)
 	     ;; Get rid of previous definitions put on by
 	     ;; the translator.
-	     (DO ((L *PRE-TRANSL-FORMS* (CDR L)))
-		 ((NULL L))
+	     (do ((l *pre-transl-forms* (cdr l)))
+		 ((null l))
 	       ;; REMOVE SOME OVERKILL
-	       (COND ((AND (EQ (CAAR L) 'DEF-MTRVAR)
-			   (EQ (CADAR L) VAR))
-		      (SETQ *PRE-TRANSL-FORMS*
-			    (DELQ (CAR L) *PRE-TRANSL-FORMS*)))))
+	       (cond ((and (eq (caar l) 'def-mtrvar)
+			   (eq (cadar l) var))
+		      (setq *pre-transl-forms*
+			    (delq (car l) *pre-transl-forms*)))))
 	     (if (not (eq mode '$any))
 		 ;; so that the rest of the translation gronks this.
 		 (putprop var 'assign-mode-check 'assign))
 	     `($any . (eval-when (compile eval load)
-			     (meval* ',mode-form)
-			     (meval* ',spec-form)
-			     ,(if (not (eq mode '$any))
-				  `(defprop ,var
-				     assign-mode-check
-				     assign))
-			     (def-mtrvar ,(cadr form)
-			       ,(dtranslate (caddr form))
-			       )))
+			(meval* ',mode-form)
+			(meval* ',spec-form)
+			,(if (not (eq mode '$any))
+			     `(defprop ,var
+			       assign-mode-check
+			       assign))
+			(def-mtrvar ,(cadr form)
+			    ,(dtranslate (caddr form))
+			  )))
 	     )))
 	(t
-	 (TR-TELL "Wrong number of arguments" form)
+	 (tr-tell "Wrong number of arguments" form)
 	 nil)))
 
-#-CL
+#-cl
 ;; Not needed on LISPM because the MACRO definition is in effect.
 ;; For NIL we must do some fexpr abstraction anyway.
 (defun def-mtrvar fexpr (l)
-  (LET (((V A . IGNORE-CRUFTY) L))
-    ;; priority of setting is obsolete, but must be around for
-    ;; old translated files. i.e. TRMODE version < 69.
-    (if (mseemingly-unbound v)
-	(set v (eval a))
-	(SYMBOL-VALUE v))))
+       (let (((v a . ignore-crufty) l))
+	 ;; priority of setting is obsolete, but must be around for
+	 ;; old translated files. i.e. TRMODE version < 69.
+	 (if (mseemingly-unbound v)
+	     (set v (eval a))
+	     (symbol-value v))))
 
 ;; the priority fails when a DEF-MTRVAR is done, then the user
 ;; sets the variable, because the set-priority stays the same.
@@ -98,59 +98,59 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 ;; is pre-setting of variables of autoloading files.
 
 (defmspec $define_variable  (l) (setq l (cdr l))
-  (or (> (length l) 2)
-      (merror "Wrong number of arguments to DEFINE_VARIABLE"))
-  (or (symbolp (car l))
-      (merror "First arg to DEFINE_VARIABLE not a SYMBOL."))
-  (meval `(($modedeclare) ,(car l) ,(caddr l)))
-  (meval `(($declare) ,(car l) $special))
-  (if (not (eq (caddr l) '$any))
-      (putprop (car l) 'assign-mode-check 'assign))
-  (if (mseemingly-unbound (car l))
-      (meval `((msetq) ,(car l) ,(cadr l)))
-      (meval (car l))))
+	  (or (> (length l) 2)
+	      (merror "Wrong number of arguments to DEFINE_VARIABLE"))
+	  (or (symbolp (car l))
+	      (merror "First arg to DEFINE_VARIABLE not a SYMBOL."))
+	  (meval `(($modedeclare) ,(car l) ,(caddr l)))
+	  (meval `(($declare) ,(car l) $special))
+	  (if (not (eq (caddr l) '$any))
+	      (putprop (car l) 'assign-mode-check 'assign))
+	  (if (mseemingly-unbound (car l))
+	      (meval `((msetq) ,(car l) ,(cadr l)))
+	      (meval (car l))))
 
 
-(DEFMSPEC $MODE_IDENTITY (L) (SETQ L (CDR L))
-  (OR (= (LENGTH L) 2) (MERROR "MODE_IDENTITY takes 2 arguments."))
-  (LET* ((obj (cadr l)) (V (MEVAL obj)))
-    (CHEKVALUE obj (ir-or-extend (CAR L)) V)
-    V))
+(defmspec $mode_identity (l) (setq l (cdr l))
+	  (or (= (length l) 2) (merror "MODE_IDENTITY takes 2 arguments."))
+	  (let* ((obj (cadr l)) (v (meval obj)))
+	    (chekvalue obj (ir-or-extend (car l)) v)
+	    v))
 
 
-(DEF%TR $MODE_IDENTITY (FORM)
-  `(,(ir-or-extend (CADR FORM)) . ,(DTRANSLATE (CADDR FORM))))
+(def%tr $mode_identity (form)
+  `(,(ir-or-extend (cadr form)) . ,(dtranslate (caddr form))))
 
 (defun ir-or-extend (x)
-  (let ((built-in-type (CASE X
-			      (($FLOAT $REAL $FLOATP $FLONUM $FLOATNUM) '$FLOAT)
-			      (($FIXP $FIXNUM $integer) '$FIXNUM)
-			      (($RATIONAL $RAT) '$RATIONAL)
-			      (($NUMBER $BIGNUM $BIG) '$NUMBER)
-			      (($BOOLEAN $BOOL) '$BOOLEAN)
-			      (($LIST $LISTP) '$LIST)
-			      ($complex '$complex)
-			      (($ANY $NONE $ANY_CHECK) '$ANY))))
+  (let ((built-in-type (case x
+			 (($float $real $floatp $flonum $floatnum) '$float)
+			 (($fixp $fixnum $integer) '$fixnum)
+			 (($rational $rat) '$rational)
+			 (($number $bignum $big) '$number)
+			 (($boolean $bool) '$boolean)
+			 (($list $listp) '$list)
+			 ($complex '$complex)
+			 (($any $none $any_check) '$any))))
     (if built-in-type built-in-type
 	(prog1 x
-	       (if $macsyma_extend_warnp
-		   (mtell
-		    "WARNING: ~M is not a built-in type; assuming it is a MACSYMA EXTEND type" x))))))
+	  (if $macsyma_extend_warnp
+	      (mtell
+	       "WARNING: ~M is not a built-in type; assuming it is a MACSYMA EXTEND type" x))))))
 
-(DEF%TR $MODEDECLARE (FORM)
-  (DO ((L (CDR FORM) (CDDR L))) ((NULL L))
-      (DECLMODE (CAR L) (ir-or-extend (CADR L)) T)))
+(def%tr $modedeclare (form)
+  (do ((l (cdr form) (cddr l))) ((null l))
+    (declmode (car l) (ir-or-extend (cadr l)) t)))
 
-(DEFMFUN ASS-EQ-REF N
-  (LET ((VAL (ASSQ (ARG 2) (ARG 1))))
-	      (IF VAL (CDR VAL)
-		  (IF (= N 3) (ARG 3) NIL))))
+(defmfun ass-eq-ref n
+  (let ((val (assq (arg 2) (arg 1))))
+    (if val (cdr val)
+	(if (= n 3) (arg 3) nil))))
 
-(DEFMFUN ASS-EQ-SET (VAL TABLE KEY)
-	 (LET ((CELL (ASSQ KEY TABLE)))
-	      (IF CELL (SETF (CDR CELL) VAL)
-		  (PUSH (CONS KEY VAL) TABLE)))
-	 TABLE)
+(defmfun ass-eq-set (val table key)
+  (let ((cell (assq key table)))
+    (if cell (setf (cdr cell) val)
+	(push (cons key val) table)))
+  table)
 
 
 ;;; Possible calls to MODEDECLARE.
@@ -160,151 +160,151 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 ;;; a LIST, giving a list of objects of <mode>
 ;;;
 
-(DEFMSPEC $MODEDECLARE (X) (SETQ X (CDR X))
-	(IF (ODDP (LENGTH X))
-	    (MERROR "MODE_DECLARE takes an even number of arguments."))
-	(DO ((L X (CDDR L)) (NL))
-	    ((NULL L) (CONS '(MLIST) (NREVERSE NL)))
-	    (DECLMODE (CAR L) (ir-or-extend (CADR L)) NIL)
-	    (SETQ NL (CONS (CAR L) NL))))
+(defmspec $modedeclare (x) (setq x (cdr x))
+	  (if (oddp (length x))
+	      (merror "MODE_DECLARE takes an even number of arguments."))
+	  (do ((l x (cddr l)) (nl))
+	      ((null l) (cons '(mlist) (nreverse nl)))
+	    (declmode (car l) (ir-or-extend (cadr l)) nil)
+	    (setq nl (cons (car l) nl))))
 
-(DEFUN TR-DECLARE-VARMODE (VARIABLE MODE)
-  (DECLVALUE VARIABLE (ir-or-extend MODE) T))
+(defun tr-declare-varmode (variable mode)
+  (declvalue variable (ir-or-extend mode) t))
 
 ;;; If TRFLAG is TRUE, we are in the translator, if NIL, we are in the
 ;;; interpreter.
-(DECLARE-TOP (SPECIAL TRFLAG MODE FORM))
-(DEFUN DECLMODE (FORM MODE TRFLAG)
-  (COND ((ATOM FORM)
-	 (DECLVALUE FORM MODE TRFLAG)
-	 (AND (NOT TRFLAG) $MODE_CHECKP (CHEKVALUE FORM MODE)))
-	((EQ 'MLIST (CAAR FORM))
-	 (MAPC #'(LAMBDA (L)
-			(DECLMODE L MODE TRFLAG))
-	       (CDR FORM)))
-	((MEMQ 'array (CDAR FORM))
-	 (DECLARRAY (CAAR FORM) MODE))
-	((EQ '$FUNCTION (CAAR FORM))
-	 (MAPC #'(LAMBDA (L)
-			(DECLFUN L MODE))
-	       (CDR FORM)))
-	((MEMQ (CAAR FORM) '($FIXED_NUM_ARGS_FUNCTION
-			     $VARIABLE_NUM_ARGS_FUNCTION))
-	 (MAPC #'(LAMBDA (F)
-			(DECLFUN F MODE)
-			(MPUTPROP F T (CAAR FORM)))
-	       (CDR FORM)))
-	((EQ '$COMPLETEARRAY (CAAR FORM))
-	 (MAPC #'(LAMBDA (L)
-			(PUTPROP (COND ((ATOM L) L)
-				       (T (CAAR L)))
-				 MODE 'ARRAY-MODE))
-	       (CDR FORM)))
-	((EQ '$ARRAY (CAAR FORM))
-	 (MAPC #'(LAMBDA (L) (MPUTPROP L MODE 'ARRAY-MODE)) (CDR FORM)))
-	((EQ '$ARRAYFUN (CAAR FORM))
-	 (MAPC #'(LAMBDA (L) (MPUTPROP L MODE 'ARRAYFUN-MODE)) (CDR FORM)))
-	(T
-	 (DECLFUN (CAAR FORM) MODE))))
-(declare-top (UNSPECIAL TRFLAG MODE FORM))
+(declare-top (special trflag mode form))
+(defun declmode (form mode trflag)
+  (cond ((atom form)
+	 (declvalue form mode trflag)
+	 (and (not trflag) $mode_checkp (chekvalue form mode)))
+	((eq 'mlist (caar form))
+	 (mapc #'(lambda (l)
+		   (declmode l mode trflag))
+	       (cdr form)))
+	((memq 'array (cdar form))
+	 (declarray (caar form) mode))
+	((eq '$function (caar form))
+	 (mapc #'(lambda (l)
+		   (declfun l mode))
+	       (cdr form)))
+	((memq (caar form) '($fixed_num_args_function
+			     $variable_num_args_function))
+	 (mapc #'(lambda (f)
+		   (declfun f mode)
+		   (mputprop f t (caar form)))
+	       (cdr form)))
+	((eq '$completearray (caar form))
+	 (mapc #'(lambda (l)
+		   (putprop (cond ((atom l) l)
+				  (t (caar l)))
+			    mode 'array-mode))
+	       (cdr form)))
+	((eq '$array (caar form))
+	 (mapc #'(lambda (l) (mputprop l mode 'array-mode)) (cdr form)))
+	((eq '$arrayfun (caar form))
+	 (mapc #'(lambda (l) (mputprop l mode 'arrayfun-mode)) (cdr form)))
+	(t
+	 (declfun (caar form) mode))))
+(declare-top (unspecial trflag mode form))
 
-(DEFTRFUN DECLVALUE (V MODE TRFLAG)
-  (IF TRFLAG (SETQ V (TEVAL V)))
-  (ADD2LNC V $PROPS)
-  (PUTPROP V MODE 'MODE))
+(deftrfun declvalue (v mode trflag)
+  (if trflag (setq v (teval v)))
+  (add2lnc v $props)
+  (putprop v mode 'mode))
 
 
-(DEFMFUN CHEKVALUE (V MODE
+(defmfun chekvalue (v mode
 		      &optional
 		      (val (meval1 v) val-givenp))
-  (COND ((or val-givenp (not (eq v val)))
-	 ; hack because macsyma PROG binds variable
-	 ; to itself. 
-	 (let ((CHECKER (ASSQ MODE `(($FLOAT . FLOATP)
-				     ($FIXNUM . INTEGERP)
-				     ($NUMBER . NUMBERP)
-				     ($LIST . $LISTP)
-				     ($BOOLEAN . ,#'(LAMBDA (U)
- 						      (MEMQ U '(T NIL)))))))
+  (cond ((or val-givenp (not (eq v val)))
+					; hack because macsyma PROG binds variable
+					; to itself. 
+	 (let ((checker (assq mode `(($float . floatp)
+				     ($fixnum . integerp)
+				     ($number . numberp)
+				     ($list . $listp)
+				     ($boolean . ,#'(lambda (u)
+ 						      (memq u '(t nil)))))))
 	       (nchecker (assq mode '(($float . $real)
 				      ($fixnum . $integer)
 				      ($complex . $complex))))
-	       ;(extend-type nil) ;($extendp val))
+					;(extend-type nil) ;($extendp val))
 	       (not-done t))
-	   (if (cond ;(extend-type
-;		      (cond ((eql mode '$any) nil)
-;			    (t (not (eql mode extend-type)))))
-		     ((AND CHECKER
-			   (NOT (FUNCALL (CDR CHECKER) VAL))
-			   (if nchecker
-			       (prog1
-				(not (mfuncall '$featurep val (cdr nchecker)))
-				(setq not-done nil))
-			       t)))
-		     ((if not-done (and nchecker (not (mfuncall '$featurep val (cdr nchecker)))))))
-	       (SIGNAL-MODE-ERROR V MODE VAL))))))
+	   (if (cond			;(extend-type
+		 ;;		      (cond ((eql mode '$any) nil)
+		 ;;			    (t (not (eql mode extend-type)))))
+		 ((and checker
+		       (not (funcall (cdr checker) val))
+		       (if nchecker
+			   (prog1
+			       (not (mfuncall '$featurep val (cdr nchecker)))
+			     (setq not-done nil))
+			   t)))
+		 ((if not-done (and nchecker (not (mfuncall '$featurep val (cdr nchecker)))))))
+	       (signal-mode-error v mode val))))))
 
 
-(DEFUN SIGNAL-MODE-ERROR (OBJECT MODE VALUE)
-       (COND ((AND $MODE_CHECK_WARNP
-		   (NOT $MODE_CHECK_ERRORP))
-	      (MTELL "Warning: ~:M was declared mode ~:M, has value: ~M"
-		     OBJECT MODE VALUE))
-	     ($MODE_CHECK_ERRORP
-	      (MERROR "Error: ~:M was declared mode ~:M, has value: ~M"
-		      OBJECT MODE VALUE))))
+(defun signal-mode-error (object mode value)
+  (cond ((and $mode_check_warnp
+	      (not $mode_check_errorp))
+	 (mtell "Warning: ~:M was declared mode ~:M, has value: ~M"
+		object mode value))
+	($mode_check_errorp
+	 (merror "Error: ~:M was declared mode ~:M, has value: ~M"
+		 object mode value))))
 			  
-(DEFUN PUT-MODE (NAME MODE TYPE)
-       (IF (GET NAME 'TBIND)
-	   (SETF (GET NAME 'VAL-MODES)
-		 (ASS-EQ-SET MODE (GET NAME 'VAL-MODES) TYPE))
-	   (SETF (GET NAME TYPE) MODE)))
+(defun put-mode (name mode type)
+  (if (get name 'tbind)
+      (setf (get name 'val-modes)
+	    (ass-eq-set mode (get name 'val-modes) type))
+      (setf (get name type) mode)))
 
-(DEFUN DECLARRAY (AR MODE)
-       (PUT-MODE AR MODE 'ARRAY-MODE))
+(defun declarray (ar mode)
+  (put-mode ar mode 'array-mode))
 
-(DEFUN DECLFUN (F MODE) (PUT-MODE F MODE 'FUNCTION-MODE))
+(defun declfun (f mode) (put-mode f mode 'function-mode))
 
 ;;; 1/2 is not $RATIONAL. bad name. it means CRE form.
 
-(DEFUN IR (X)
-  (CASE X
-	 (($FLOAT $REAL $FLOATP $FLONUM $FLOATNUM) '$FLOAT)
-	 (($FIXP $FIXNUM) '$FIXNUM)
-	 (($RATIONAL $RAT) '$RATIONAL)
-	 (($NUMBER $BIGNUM $BIG) '$NUMBER)
-	 (($BOOLEAN $BOOL) '$BOOLEAN)
-	 (($LIST $LISTP) '$LIST)
-	 (($ANY $NONE $ANY_CHECK) '$ANY)
-	 (T (UDM-ERR X) X)))
+(defun ir (x)
+  (case x
+    (($float $real $floatp $flonum $floatnum) '$float)
+    (($fixp $fixnum) '$fixnum)
+    (($rational $rat) '$rational)
+    (($number $bignum $big) '$number)
+    (($boolean $bool) '$boolean)
+    (($list $listp) '$list)
+    (($any $none $any_check) '$any)
+    (t (udm-err x) x)))
 
-(DEFUN UDM-ERR (MODE)
-  (MTELL "Warning:  ~:M is not a known mode declaration ~
+(defun udm-err (mode)
+  (mtell "Warning:  ~:M is not a known mode declaration ~
 maybe you want ~:M mode.~%"
-	 MODE
-	 (CASE MODE
-		(($INTEGER $INTEGERP) '$FIXNUM)
-		(($COMPLEX) "&to ask about this")
-		(($FUCKED $SHITTY) "&to watch your language")
-		(T "&to see the documentation on"))))
+	 mode
+	 (case mode
+	   (($integer $integerp) '$fixnum)
+	   (($complex) "&to ask about this")
+	   (($fucked $shitty) "&to watch your language")
+	   (t "&to see the documentation on"))))
 
-(DEFMFUN FLUIDIZE (VARIABLE)
-  (MAPC #'(LAMBDA (V) (OR (BOUNDP V) (SET V ())))
+(defmfun fluidize (variable)
+  (mapc #'(lambda (v) (or (boundp v) (set v ())))
 	;; what a sorry crock to have all these switches.
-      '(*IN-COMPILE*
-	*IN-COMPFILE*
-	*IN-TRANSLATE*
-	*IN-TRANSLATE-FILE*))
+	'(*in-compile*
+	  *in-compfile*
+	  *in-translate*
+	  *in-translate-file*))
 
-  (PUTPROP VARIABLE T 'SPECIAL)
-  (IF (AND $TRANSCOMPILE
-	   (OR *IN-COMPILE*
-	       *IN-COMPFILE*
-	       *IN-TRANSLATE*
-	       *IN-TRANSLATE-FILE*))
-      (ADDL VARIABLE SPECIALS)))
+  (putprop variable t 'special)
+  (if (and $transcompile
+	   (or *in-compile*
+	       *in-compfile*
+	       *in-translate*
+	       *in-translate-file*))
+      (addl variable specials)))
 
-(DEFMSPEC $BIND_DURING_TRANSLATION (FORM)
-  (MEVALN (CDDR FORM)))
+(defmspec $bind_during_translation (form)
+  (mevaln (cddr form)))
 
 

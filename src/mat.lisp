@@ -11,162 +11,162 @@
 (in-package "MAXIMA")
 (macsyma-module mat)
 
-(COMMENT THIS IS THE MAT PACKAGE)
+(comment this is the mat package)
 
-(DECLARE-TOP(SPECIAL PIVSIGN* *ECH* *TRI* LSOLVEFLAG $ALGEBRAIC
-		  $MULTIPLICITIES EQUATIONS
-		  MUL* FORMATFORM DOSIMP $DISPFLAG $RATFAC
-		  *TB $NOLABELS ERRRJFFLAG *DET* GENVAR
-		  XM* XN* VARLIST AX LINELABLE $LINECHAR $LINENUM SOL)
-	 (*LEXPR $SOLVE $RAT)
-	 (ARRAY* (NOTYPE XA* 2))
-	 (FIXNUM TIM)
-	 (GENPREFIX MAT))
+(declare-top(special pivsign* *ech* *tri* lsolveflag $algebraic
+		     $multiplicities equations
+		     mul* formatform dosimp $dispflag $ratfac
+		     *tb $nolabels errrjfflag *det* genvar
+		     xm* xn* varlist ax linelable $linechar $linenum sol)
+	    (*lexpr $solve $rat)
+	    (array* (notype xa* 2))
+	    (fixnum tim)
+	    (genprefix mat))
 
 ;;these are arrays.
-(DECLARE-TOP(SPECIAL *ROW* *COL* *COLINV*))
+(declare-top(special *row* *col* *colinv*))
 ;; The array declarations of ROW, COL, and COLINV aren't having any
 ;; effect on the Lisp Machine.  Should be fixed somehow.
 
-;(DECLARE (ARRAY* (FIXNUM *ROW* 1 *COL* 1 *COLINV* 1)))
+;;(DECLARE (ARRAY* (FIXNUM *ROW* 1 *COL* 1 *COLINV* 1)))
 
-(DEFMVAR $GLOBALSOLVE NIL)
-(DEFMVAR $SPARSE NIL)
-(DEFMVAR $BACKSUBST T)
+(defmvar $globalsolve nil)
+(defmvar $sparse nil)
+(defmvar $backsubst t)
 
-(DEFMVAR *RANK* NIL)
-(DEFMVAR *INV* NIL)
-(DEFVAR SOLVEXP NIL)
+(defmvar *rank* nil)
+(defmvar *inv* nil)
+(defvar solvexp nil)
 
-(DEFUN SOLCOEF (M *C VARL FLAG)
-  (PROG (CC ANSWER LEFTOVER)
-	(SETQ CC (CDR (RATREP* *C)))
-	(IF (OR (ATOM (CAR CC))
-		(NOT (EQUAL (CDAR CC) '(1 1)))
-		(NOT (EQUAL 1 (CDR CC))))
-	    (MERROR "Unacceptable variable to SOLVE:~%~M" *C))
-	(SETQ ANSWER (RATREDUCE (PRODCOEF (CAR CC) (CAR M)) (CDR M)))
-	(IF (NOT FLAG) (RETURN ANSWER))
-	(SETQ LEFTOVER
-	      (RDIS (RATPLUS M (RATTIMES (RATMINUS ANSWER) CC T))))
-	(IF (OR (NOT (FREEOF *C LEFTOVER))
-		(DEPENDSALL (RDIS ANSWER) VARL))
-	    (ERRRJF "NON-LINEAR"))
-	(RETURN ANSWER)))
+(defun solcoef (m *c varl flag)
+  (prog (cc answer leftover)
+     (setq cc (cdr (ratrep* *c)))
+     (if (or (atom (car cc))
+	     (not (equal (cdar cc) '(1 1)))
+	     (not (equal 1 (cdr cc))))
+	 (merror "Unacceptable variable to SOLVE:~%~M" *c))
+     (setq answer (ratreduce (prodcoef (car cc) (car m)) (cdr m)))
+     (if (not flag) (return answer))
+     (setq leftover
+	   (rdis (ratplus m (rattimes (ratminus answer) cc t))))
+     (if (or (not (freeof *c leftover))
+	     (dependsall (rdis answer) varl))
+	 (errrjf "NON-LINEAR"))
+     (return answer)))
 
-(DEFUN FORMX (FLAG NAM EQL VARL)
-  (PROG (B AX X IX J)
-	(SETQ VARLIST VARL)
-	(MAPC #'NEWVAR EQL)
-	(AND (NOT $ALGEBRAIC)
-	     (ORMAPC #'ALGP VARLIST) 
-	     (SETQ $ALGEBRAIC T))
-	(SET NAM (*ARRAY nil t (f1+ (SETQ XN* (LENGTH EQL)))
-			  (f1+ (SETQ XM* (f1+ (LENGTH VARL))))))
-	(SETQ NAM (GET-ARRAY-POINTER NAM))
-	(SETQ IX 0)
-     LOOP1
-	(COND ((NULL EQL) (RETURN  VARLIST)))
-	(SETQ AX (CAR EQL))
-	(SETQ EQL (CDR EQL))
-	(SETQ IX (f1+ IX))
-	(STORE (aref NAM IX XM*) (CONST AX VARL))
-	(SETQ J 0)
-	(SETQ B VARL) (SETQ AX (CDR (RATREP* AX)))
-     LOOP2
-	(SETQ X (CAR B))
-	(SETQ B (CDR B))
-	(SETQ J (f1+ J))
-	(STORE (aref NAM IX J) (SOLCOEF AX X VARL FLAG))
-	(COND (B (GO LOOP2)))
-	(GO LOOP1)))
+(defun formx (flag nam eql varl)
+  (prog (b ax x ix j)
+     (setq varlist varl)
+     (mapc #'newvar eql)
+     (and (not $algebraic)
+	  (ormapc #'algp varlist) 
+	  (setq $algebraic t))
+     (set nam (*array nil t (f1+ (setq xn* (length eql)))
+		      (f1+ (setq xm* (f1+ (length varl))))))
+     (setq nam (get-array-pointer nam))
+     (setq ix 0)
+     loop1
+     (cond ((null eql) (return  varlist)))
+     (setq ax (car eql))
+     (setq eql (cdr eql))
+     (setq ix (f1+ ix))
+     (store (aref nam ix xm*) (const ax varl))
+     (setq j 0)
+     (setq b varl) (setq ax (cdr (ratrep* ax)))
+     loop2
+     (setq x (car b))
+     (setq b (cdr b))
+     (setq j (f1+ j))
+     (store (aref nam ix j) (solcoef ax x varl flag))
+     (cond (b (go loop2)))
+     (go loop1)))
 
-(DEFUN DEPENDSALL (EXP L)
-  (COND ((NULL L) NIL)
-	((OR (NOT (FREEOF (CAR L) EXP)) (DEPENDSALL EXP (CDR L))) T)
-	(T NIL)))
+(defun dependsall (exp l)
+  (cond ((null l) nil)
+	((or (not (freeof (car l) exp)) (dependsall exp (cdr l))) t)
+	(t nil)))
 
-(SETQ *DET* NIL *ECH* NIL *TRI* NIL)
+(setq *det* nil *ech* nil *tri* nil)
 
-(DEFUN PTORAT (AX M N)
-  (PROG (I J)
-	(SETQ AX (GET-ARRAY-POINTER AX))
-	(SETQ I (f1+ M) N (f1+ N)) 
-     LOOP1
-	(COND ((EQUAL I 1) (RETURN NIL)))
-	(SETQ I (f1- I) J N)
-     LOOP2
-	(COND ((EQUAL J 1) (GO LOOP1)))
-	(SETQ J (f1- J))
-	(STORE (AREF AX I J) (CONS (AREF AX I J) 1))
-	(GO LOOP2)))
+(defun ptorat (ax m n)
+  (prog (i j)
+     (setq ax (get-array-pointer ax))
+     (setq i (f1+ m) n (f1+ n)) 
+     loop1
+     (cond ((equal i 1) (return nil)))
+     (setq i (f1- i) j n)
+     loop2
+     (cond ((equal j 1) (go loop1)))
+     (setq j (f1- j))
+     (store (aref ax i j) (cons (aref ax i j) 1))
+     (go loop2)))
 
-(DEFUN MEQHK (Z)
-  (COND ((AND (NOT (ATOM Z)) (EQ (CAAR Z) 'MEQUAL))
-	 (SIMPLUS (LIST '(MPLUS) (CADR Z) (LIST '(MTIMES) -1 (CADDR Z))) 1 NIL))
-	(T Z)))
+(defun meqhk (z)
+  (cond ((and (not (atom z)) (eq (caar z) 'mequal))
+	 (simplus (list '(mplus) (cadr z) (list '(mtimes) -1 (caddr z))) 1 nil))
+	(t z)))
 
-(DEFUN CONST (E VARL)
-  (PROG (ZL)
-	(SETQ VARL (MAPCAR (FUNCTION (LAMBDA(X) (CAADR (RATREP* X)))) VARL))
-	(SETQ E (CDR(RATREP* E)))
-	(SETQ ZL (NZEROS (LENGTH VARL) NIL))
-	(RETURN (RATREDUCE (PCTIMES -1 (PCSUBSTY ZL VARL (CAR E)))
-			   (PCSUBSTY ZL VARL (CDR E))))))
+(defun const (e varl)
+  (prog (zl)
+     (setq varl (mapcar (function (lambda(x) (caadr (ratrep* x)))) varl))
+     (setq e (cdr(ratrep* e)))
+     (setq zl (nzeros (length varl) nil))
+     (return (ratreduce (pctimes -1 (pcsubsty zl varl (car e)))
+			(pcsubsty zl varl (cdr e))))))
 
 
 
-(DEFVAR *MOSESFLAG NIL)
+(defvar *mosesflag nil)
 
-(DEFMVAR $%RNUM 0)
+(defmvar $%rnum 0)
 
-(DEFMFUN MAKE-PARAM ()
-  (LET ((PARAM (CONCAT '$%R (SETQ $%RNUM (f1+ $%RNUM)))))
-    (TUCHUS $%RNUM_LIST PARAM)
-    PARAM))
+(defmfun make-param ()
+  (let ((param (concat '$%r (setq $%rnum (f1+ $%rnum)))))
+    (tuchus $%rnum_list param)
+    param))
 
-(DEFMVAR $LINSOLVE_PARAMS T "LINSOLVE generates %Rnums")
+(defmvar $linsolve_params t "LINSOLVE generates %Rnums")
 
-;(DECLARE (FIXNUM N))
+;;(DECLARE (FIXNUM N))
 
-(DEFUN NCDR (X N)
-  (NTHCDR (f1- N) X))
+(defun ncdr (x n)
+  (nthcdr (f1- n) x))
 
-(DEFUN ITH (X N) (COND ((ATOM X) NIL) (T (CAR (NCDR X N)))))
+(defun ith (x n) (cond ((atom x) nil) (t (car (ncdr x n)))))
 
-;(DECLARE (NOTYPE N))
+;;(DECLARE (NOTYPE N))
 
-(DEFUN POLYIZE (AX R M MUL)
-  (DECLARE (FIXNUM M))
-  (DO ((C 1 (f1+ C)) (D))
-      ((> C M) NIL)
-    (DECLARE (FIXNUM C))
-    (SETQ D (AREF AX R C))
-    (SETQ D (COND ((EQUAL MUL 1) (CAR D))
-		  (T (PTIMES (CAR D)
-			     (PQUOTIENTCHK MUL (CDR D))))))
-    (STORE (AREF AX R C) (IF $SPARSE (CONS D 1) D))))
+(defun polyize (ax r m mul)
+  (declare (fixnum m))
+  (do ((c 1 (f1+ c)) (d))
+      ((> c m) nil)
+    (declare (fixnum c))
+    (setq d (aref ax r c))
+    (setq d (cond ((equal mul 1) (car d))
+		  (t (ptimes (car d)
+			     (pquotientchk mul (cdr d))))))
+    (store (aref ax r c) (if $sparse (cons d 1) d))))
 
-; TWO-STEP FRACTION-FREE GAUSSIAN ELIMINATION ROUTINE
+;; TWO-STEP FRACTION-FREE GAUSSIAN ELIMINATION ROUTINE
 
-(DEFUN TFGELI (AX N M &AUX ($SPARSE (AND $SPARSE (OR *DET* *INV*))))
+(defun tfgeli (ax n m &aux ($sparse (and $sparse (or *det* *inv*))))
   ;;$sparse is also controlling whether polyize stores polys or ratforms
-  (SETQ AX (GET-ARRAY-POINTER AX))
-  (SETQ MUL* 1)
-  (DO ((R 1 (f1+ R)))
-      ((> R N) (COND ((AND $SPARSE *DET*)(SPRDET AX N))
-		     ((AND *INV* $SPARSE)(NEWINV AX N M))
-		     (T (TFGELI1 AX N M))))
-    (DO ((C 1 (f1+ C))
-	 (D)
-	 (MUL 1))
-	((> C M)
-	 (AND *DET* (SETQ MUL* (PTIMES MUL* MUL)))
-	 (POLYIZE AX R M MUL))
-      (COND ((EQUAL 1 (SETQ D (CDR (AREF AX R C)))) NIL)
-	    (T (SETQ MUL (PTIMES MUL (PQUOTIENT D (PGCD MUL D)))))))))
+  (setq ax (get-array-pointer ax))
+  (setq mul* 1)
+  (do ((r 1 (f1+ r)))
+      ((> r n) (cond ((and $sparse *det*)(sprdet ax n))
+		     ((and *inv* $sparse)(newinv ax n m))
+		     (t (tfgeli1 ax n m))))
+    (do ((c 1 (f1+ c))
+	 (d)
+	 (mul 1))
+	((> c m)
+	 (and *det* (setq mul* (ptimes mul* mul)))
+	 (polyize ax r m mul))
+      (cond ((equal 1 (setq d (cdr (aref ax r c)))) nil)
+	    (t (setq mul (ptimes mul (pquotient d (pgcd mul d)))))))))
 
-(SETQ LSOLVEFLAG NIL)
+(setq lsolveflag nil)
 
 ;; The author of the following programs is Tadatoshi Minamikawa (TM). 
 ;; This program is one-step fraction-free Gaussian elimination with
@@ -176,307 +176,307 @@
 
 ;; To debug, delete the comments around PRINT and BREAK statements.
 
-(DECLARE-TOP(SPECIAL PERMSIGN A RANK DELTA NROW NVAR N M VARIABLEORDER
-		  DEPENDENTROWS INCONSISTENTROWS L K)
-	 ;; We could just use fortran, you know.
-	 (FIXNUM NROW NVAR RANK I J K L M N))
+(declare-top(special permsign a rank delta nrow nvar n m variableorder
+		     dependentrows inconsistentrows l k)
+	    ;; We could just use fortran, you know.
+	    (fixnum nrow nvar rank i j k l m n))
 
-(DEFUN TFGELI1 (AX N M)
-  (PROG (K L DELTA VARIABLEORDER INCONSISTENTROWS
-	 DEPENDENTROWS NROW NVAR RANK PERMSIGN RESULT)
-	(#-cl *ARRAY #+cl cl-*array '*ROW* 'fixnum (f1+ N)) 
-	(#-cl *ARRAY #+cl cl-*array '*COL* 'fixnum (f1+ M))
-	(#-cl *ARRAY #+cl cl-*array '*COLINV* 'fixnum (f1+ M))
-;	#+LISPM (FILLARRAY (FUNCTION ROW) '(0)) ;implicit in *array
-;	#+LISPM (FILLARRAY (FUNCTION COL) '(0))
-;	#+LISPM (FILLARRAY (FUNCTION COLINV) '(0))
-	(SETQ AX (GET-ARRAY-POINTER AX))
-        (setq *COL* (GET-ARRAY-POINTER *COL*))
-	(setq *ROW* (GET-ARRAY-POINTER *ROW*))
-	(setq *COLINV* (get-array-pointer *COLINV*))
-	;; (PRINT 'ONESTEP-LIPSON-WITH-PIVOTTING)
-	(SETQ NROW N)
-	(SETQ NVAR (COND (*RANK* M) (*DET* M) (*INV* N) (*ECH* M) (*TRI* M) (T (f1- M))))
-	(DO ((I 1 (f1+ I))) ((> I N)) (STORE (AREF *ROW* I) I))
-	(DO ((I 1 (f1+ I))) ((> I M))
-	    (STORE (AREF *COL* I) I) (STORE (AREF *COLINV* I) I))
-	(SETQ RESULT
-	      (COND 
-		(*RANK* (FORWARD T) RANK)
-		(*DET* (FORWARD T)
-		       (COND ((= NROW N) (COND (PERMSIGN  (PMINUS DELTA))
-					       (T DELTA)))
-			     (T 0)))
-		(*INV* (FORWARD T) (BACKWARD) (RECOVERORDER1))
-		(*ECH* (FORWARD NIL) (RECOVERORDER2))
-		(*TRI* (FORWARD NIL) (RECOVERORDER2))
-		(T (FORWARD T) (COND ($BACKSUBST (BACKWARD)))
-		   (RECOVERORDER2)
-		   (LIST DEPENDENTROWS  INCONSISTENTROWS VARIABLEORDER))))
-	(*REARRAY '*ROW*) (*REARRAY '*COL*) (*REARRAY '*COLINV*)
-	(RETURN RESULT)))
+(defun tfgeli1 (ax n m)
+  (prog (k l delta variableorder inconsistentrows
+	 dependentrows nrow nvar rank permsign result)
+     (#-cl *array #+cl cl-*array '*row* 'fixnum (f1+ n)) 
+     (#-cl *array #+cl cl-*array '*col* 'fixnum (f1+ m))
+     (#-cl *array #+cl cl-*array '*colinv* 'fixnum (f1+ m))
+     ;;	#+LISPM (FILLARRAY (FUNCTION ROW) '(0)) ;implicit in *array
+     ;;	#+LISPM (FILLARRAY (FUNCTION COL) '(0))
+     ;;	#+LISPM (FILLARRAY (FUNCTION COLINV) '(0))
+     (setq ax (get-array-pointer ax))
+     (setq *col* (get-array-pointer *col*))
+     (setq *row* (get-array-pointer *row*))
+     (setq *colinv* (get-array-pointer *colinv*))
+     ;; (PRINT 'ONESTEP-LIPSON-WITH-PIVOTTING)
+     (setq nrow n)
+     (setq nvar (cond (*rank* m) (*det* m) (*inv* n) (*ech* m) (*tri* m) (t (f1- m))))
+     (do ((i 1 (f1+ i))) ((> i n)) (store (aref *row* i) i))
+     (do ((i 1 (f1+ i))) ((> i m))
+       (store (aref *col* i) i) (store (aref *colinv* i) i))
+     (setq result
+	   (cond 
+	     (*rank* (forward t) rank)
+	     (*det* (forward t)
+		    (cond ((= nrow n) (cond (permsign  (pminus delta))
+					    (t delta)))
+			  (t 0)))
+	     (*inv* (forward t) (backward) (recoverorder1))
+	     (*ech* (forward nil) (recoverorder2))
+	     (*tri* (forward nil) (recoverorder2))
+	     (t (forward t) (cond ($backsubst (backward)))
+		(recoverorder2)
+		(list dependentrows  inconsistentrows variableorder))))
+     (*rearray '*row*) (*rearray '*col*) (*rearray '*colinv*)
+     (return result)))
 
-;FORWARD ELIMINATION
-;IF THE SWITCH *CPIVOT IS NIL, IT AVOIDS THE COLUMN PIVOTTING.
-(DEFUN FORWARD (*CPIVOT)
-  (SETQ DELTA 1)			;DELTA HOLDS THE CURRENT DETERMINANT
-  (DO ((K 1 (f1+ K))
-       (NVAR NVAR)			;PROTECTS AGAINST TEMPORARAY RESETS DONE IN PIVOT
-       (M M))
-      ((OR (> K NROW) (> K NVAR)))
-    (COND ((PIVOT AX K *CPIVOT) (RETURN NIL)))
+;;FORWARD ELIMINATION
+;;IF THE SWITCH *CPIVOT IS NIL, IT AVOIDS THE COLUMN PIVOTTING.
+(defun forward (*cpivot)
+  (setq delta 1)		  ;DELTA HOLDS THE CURRENT DETERMINANT
+  (do ((k 1 (f1+ k))
+       (nvar nvar)   ;PROTECTS AGAINST TEMPORARAY RESETS DONE IN PIVOT
+       (m m))
+      ((or (> k nrow) (> k nvar)))
+    (cond ((pivot ax k *cpivot) (return nil)))
     ;; PIVOT IS T IF THERE IS NO MORE NON-ZERO ROW LEFT. THEN GET OUT OF THE LOOP
-    (DO ((I (f1+ K) (f1+ I)))
-	((> I NROW))
-      (DO ((J (f1+ K) (f1+ J)))
-	  ((> J M))
-	(STORE ( AREF AX (AREF *ROW* I) (AREF *COL* J))
-	       (PQUOTIENT (PDIFFERENCE (PTIMES ( AREF AX (AREF *ROW* K) (AREF *COL* K))
-					       (AREF AX (AREF *ROW* I) (AREF *COL* J)))
-				       (PTIMES ( AREF AX (AREF *ROW* I) (AREF *COL* K))
-					       ( AREF AX (AREF *ROW* K) (AREF *COL* J))))
-			  DELTA))))
-    (DO ((I (f1+ K) (f1+ I)))
-        ((> I NROW))
-      (STORE ( AREF AX (AREF *ROW* I) (AREF *COL* K))
+    (do ((i (f1+ k) (f1+ i)))
+	((> i nrow))
+      (do ((j (f1+ k) (f1+ j)))
+	  ((> j m))
+	(store ( aref ax (aref *row* i) (aref *col* j))
+	       (pquotient (pdifference (ptimes ( aref ax (aref *row* k) (aref *col* k))
+					       (aref ax (aref *row* i) (aref *col* j)))
+				       (ptimes ( aref ax (aref *row* i) (aref *col* k))
+					       ( aref ax (aref *row* k) (aref *col* j))))
+			  delta))))
+    (do ((i (f1+ k) (f1+ i)))
+        ((> i nrow))
+      (store ( aref ax (aref *row* i) (aref *col* k))
 	     0))
-    (SETQ DELTA ( AREF AX (AREF *ROW* K) (AREF *COL* K))))
+    (setq delta ( aref ax (aref *row* k) (aref *col* k))))
   ;; UNDOES COLUMN HACK IN PIVOT.
-  (OR *CPIVOT (DO ((I 1 (f1+ I))) ((> I M)) (STORE (AREF *COL* I) I)))
-  (SETQ RANK (MIN NROW NVAR)))
+  (or *cpivot (do ((i 1 (f1+ i))) ((> i m)) (store (aref *col* i) i)))
+  (setq rank (min nrow nvar)))
 
-; BACKWARD SUBSTITUTION
-(DEFUN BACKWARD ()
-  (DO ((I (f1- RANK) (f1- I)))
-      ((< I 1))
-    (DO ((L (f1+ RANK) (f1+ L)))
-	((> L M))
-      (STORE (AREF AX (AREF *ROW* I) (AREF *COL* L))
-	     (PQUOTIENT (PDIFFERENCE
-			  (PTIMES (AREF AX (AREF *ROW* I) (AREF *COL* L))
-				  (AREF AX (AREF *ROW* RANK) (AREF *COL* RANK)))
-			  (DO ((J (f1+ I) (f1+ J)) (SUM 0))
-			      ((> J RANK) SUM)
-			    (SETQ SUM (PPLUS SUM (PTIMES (AREF AX (AREF *ROW* I) (AREF *COL* J))
-							 (AREF AX (AREF *ROW* J) (AREF *COL* L)))))))
-			(AREF AX (AREF *ROW* I) (AREF *COL* I)))))
-    (DO ((L (f1+ I) (f1+ L)))
-	((> L RANK))
-      (STORE (AREF AX (AREF *ROW* I) (AREF *COL* L)) 0)))
+;; BACKWARD SUBSTITUTION
+(defun backward ()
+  (do ((i (f1- rank) (f1- i)))
+      ((< i 1))
+    (do ((l (f1+ rank) (f1+ l)))
+	((> l m))
+      (store (aref ax (aref *row* i) (aref *col* l))
+	     (pquotient (pdifference
+			 (ptimes (aref ax (aref *row* i) (aref *col* l))
+				 (aref ax (aref *row* rank) (aref *col* rank)))
+			 (do ((j (f1+ i) (f1+ j)) (sum 0))
+			     ((> j rank) sum)
+			   (setq sum (pplus sum (ptimes (aref ax (aref *row* i) (aref *col* j))
+							(aref ax (aref *row* j) (aref *col* l)))))))
+			(aref ax (aref *row* i) (aref *col* i)))))
+    (do ((l (f1+ i) (f1+ l)))
+	((> l rank))
+      (store (aref ax (aref *row* i) (aref *col* l)) 0)))
   ;; PUT DELTA INTO THE DIAGONAL MATRIX
-  (SETQ DELTA (AREF AX (AREF *ROW* RANK) (AREF *COL* RANK)))
-  (DO ((I 1 (f1+ I)))
-      ((> I RANK))
-    (STORE (AREF AX (AREF *ROW* I) (AREF *COL* I)) DELTA)))
+  (setq delta (aref ax (aref *row* rank) (aref *col* rank)))
+  (do ((i 1 (f1+ i)))
+      ((> i rank))
+    (store (aref ax (aref *row* i) (aref *col* i)) delta)))
 
-;RECOVER THE ORDER OF ROWS AND COLUMNS.
+;;RECOVER THE ORDER OF ROWS AND COLUMNS.
 
-(DEFUN RECOVERORDER1 ()
+(defun recoverorder1 ()
   ;;(PRINT 'REARRANGE)
-  (DO ((I NVAR (f1- I)))
-      ((= I 0))
-    (SETQ VARIABLEORDER (CONS I VARIABLEORDER)))
-  (DO ((I (f1+ RANK) (f1+ I)))
-      ((> I N))
-    (COND ((EQUAL (AREF AX (AREF *ROW* I) (AREF *COL* M)) 0) 
-	   (SETQ DEPENDENTROWS (CONS (AREF *ROW* I) DEPENDENTROWS)))
-	  (T (SETQ INCONSISTENTROWS (CONS (AREF *ROW* I) INCONSISTENTROWS)))))
-  (DO ((I 1 (f1+ I)))
-      ((> I N))
-    (COND ((NOT (= (AREF *ROW* (AREF *COLINV* I)) I))
-	   (PROG ()
-		 (MOVEROW AX N M I 0)
-		 (SETQ L I)
-	      LOOP
-		 (SETQ K (AREF *ROW* (AREF *COLINV* L)))
-		 (STORE (AREF *ROW* (AREF *COLINV* L)) L)
-		 (COND ((= K I) (MOVEROW AX N M 0 L))
-		       (T (MOVEROW AX N M K L)
-			  (SETQ L K)
-			  (GO LOOP))))))))
+  (do ((i nvar (f1- i)))
+      ((= i 0))
+    (setq variableorder (cons i variableorder)))
+  (do ((i (f1+ rank) (f1+ i)))
+      ((> i n))
+    (cond ((equal (aref ax (aref *row* i) (aref *col* m)) 0) 
+	   (setq dependentrows (cons (aref *row* i) dependentrows)))
+	  (t (setq inconsistentrows (cons (aref *row* i) inconsistentrows)))))
+  (do ((i 1 (f1+ i)))
+      ((> i n))
+    (cond ((not (= (aref *row* (aref *colinv* i)) i))
+	   (prog ()
+	      (moverow ax n m i 0)
+	      (setq l i)
+	      loop
+	      (setq k (aref *row* (aref *colinv* l)))
+	      (store (aref *row* (aref *colinv* l)) l)
+	      (cond ((= k i) (moverow ax n m 0 l))
+		    (t (moverow ax n m k l)
+		       (setq l k)
+		       (go loop))))))))
 
-(DEFUN RECOVERORDER2 ()
-  (DO ((I NVAR (f1- I)))
-      ((= I 0))
-    (SETQ VARIABLEORDER (CONS (AREF *COL* I) VARIABLEORDER)))
-  (DO ((I (f1+ RANK) (f1+ I)))
-      ((> I N))
-    (COND ((EQUAL (AREF AX (AREF *ROW* I) (AREF *COL* M)) 0)
-	   (SETQ DEPENDENTROWS (CONS (AREF *ROW* I) DEPENDENTROWS)))
-	  (T (SETQ INCONSISTENTROWS (CONS (AREF *ROW* I) INCONSISTENTROWS)))))
-  (DO ((I 1 (f1+ I)))
-      ((> I N))
-    (COND ((NOT (= (AREF *ROW* I) I))
-	   (PROG ()
-		 (MOVEROW AX N M I 0)
-		 (SETQ L I)
-	      LOOP
-		 (SETQ K (AREF *ROW* L))
-		 (STORE (AREF *ROW* L) L)
-		 (COND ((= K I) (MOVEROW AX N M 0 L))
-		       (T (MOVEROW AX N M K L)
-			  (SETQ L K)
-			  (GO LOOP)))))))
-  (DO ((I 1 (f1+ I)))
-      ((> I NVAR))
-    (COND ((NOT (= (AREF *COL* I) I))
-	   (PROG ()
-		 (MOVECOL AX N M I 0)
-		 (SETQ L I)
-	      LOOP2
-		 (SETQ K (AREF *COL* L))
-		 (STORE (AREF *COL* L) L)
-		 (COND ((= K I) (MOVECOL AX N M 0 L))
-		       (T (MOVECOL AX N M K L)
-			  (SETQ L K)
-			  (GO LOOP2))))))))
+(defun recoverorder2 ()
+  (do ((i nvar (f1- i)))
+      ((= i 0))
+    (setq variableorder (cons (aref *col* i) variableorder)))
+  (do ((i (f1+ rank) (f1+ i)))
+      ((> i n))
+    (cond ((equal (aref ax (aref *row* i) (aref *col* m)) 0)
+	   (setq dependentrows (cons (aref *row* i) dependentrows)))
+	  (t (setq inconsistentrows (cons (aref *row* i) inconsistentrows)))))
+  (do ((i 1 (f1+ i)))
+      ((> i n))
+    (cond ((not (= (aref *row* i) i))
+	   (prog ()
+	      (moverow ax n m i 0)
+	      (setq l i)
+	      loop
+	      (setq k (aref *row* l))
+	      (store (aref *row* l) l)
+	      (cond ((= k i) (moverow ax n m 0 l))
+		    (t (moverow ax n m k l)
+		       (setq l k)
+		       (go loop)))))))
+  (do ((i 1 (f1+ i)))
+      ((> i nvar))
+    (cond ((not (= (aref *col* i) i))
+	   (prog ()
+	      (movecol ax n m i 0)
+	      (setq l i)
+	      loop2
+	      (setq k (aref *col* l))
+	      (store (aref *col* l) l)
+	      (cond ((= k i) (movecol ax n m 0 l))
+		    (t (movecol ax n m k l)
+		       (setq l k)
+		       (go loop2))))))))
 
-;THIS PROGRAM IS USED IN REARRANGEMENT
-(DEFUN MOVEROW (AX N M I J)
-  (DO ((K 1 (f1+ K))) ((> K M))
-    (STORE (AREF AX J K) (AREF AX I K))))
+;;THIS PROGRAM IS USED IN REARRANGEMENT
+(defun moverow (ax n m i j)
+  (do ((k 1 (f1+ k))) ((> k m))
+    (store (aref ax j k) (aref ax i k))))
 
-(DEFUN MOVECOL (AX N M I J)
-  (DO ((K 1 (f1+ K))) ((> K N))
-    (STORE (AREF AX K J) (AREF AX K I))))
+(defun movecol (ax n m i j)
+  (do ((k 1 (f1+ k))) ((> k n))
+    (store (aref ax k j) (aref ax k i))))
 
-;COMPLEXITY IS DEFINED AS FOLLOWS
-; COMPLEXITY(0)=0
-; COMPLEXITY(CONSTANT)=1
-; COMPLEXITY(POLYNOMIAL)=1+SUM(COMPLEXITY(C(N))+COMPLEXITY(E(N)), FOR N=0,1 ...M)
-; WHERE POLYNOMIAL IS OF THE FORM
-;    SUM(C(N)*X^E(N), FOR N=0,1 ... M)     X IS THE VARIABLE
+;;COMPLEXITY IS DEFINED AS FOLLOWS
+;; COMPLEXITY(0)=0
+;; COMPLEXITY(CONSTANT)=1
+;; COMPLEXITY(POLYNOMIAL)=1+SUM(COMPLEXITY(C(N))+COMPLEXITY(E(N)), FOR N=0,1 ...M)
+;; WHERE POLYNOMIAL IS OF THE FORM
+;;    SUM(C(N)*X^E(N), FOR N=0,1 ... M)     X IS THE VARIABLE
 
-(DEFUN COMPLEXITY (EXP)
-  (COND ((NULL EXP) 0)
-	((EQUAL EXP 0) 0)
-	((ATOM  EXP) 1)
-	(T (PLUS (COMPLEXITY (CAR EXP)) (COMPLEXITY (CDR EXP))))))
+(defun complexity (exp)
+  (cond ((null exp) 0)
+	((equal exp 0) 0)
+	((atom  exp) 1)
+	(t (plus (complexity (car exp)) (complexity (cdr exp))))))
 
-(DEFUN COMPLEXITY/ROW (AX I J1 J2)
-  (DO ((J J1 (f1+ J)) (SUM 0))
-      ((> J J2) SUM)
-    (SETQ SUM (PLUS SUM (COMPLEXITY (AREF AX (AREF *ROW* I) (AREF *COL* J)))))))
+(defun complexity/row (ax i j1 j2)
+  (do ((j j1 (f1+ j)) (sum 0))
+      ((> j j2) sum)
+    (setq sum (plus sum (complexity (aref ax (aref *row* i) (aref *col* j)))))))
 
-(DEFUN COMPLEXITY/COL (AX J I1 I2)
-  (DO ((I I1 (f1+ I)) (SUM 0))
-      ((> I I2) SUM)
-    (SETQ SUM (PLUS SUM (COMPLEXITY (AREF AX (AREF *ROW* I) (AREF *COL* J)))))))
+(defun complexity/col (ax j i1 i2)
+  (do ((i i1 (f1+ i)) (sum 0))
+      ((> i i2) sum)
+    (setq sum (plus sum (complexity (aref ax (aref *row* i) (aref *col* j)))))))
 
-(DEFUN ZEROP/ROW (AX I J1 J2)
-   (DO ((J J1 (f1+ J)))
-       ((> J J2) T)
-      (COND ((NOT (EQUAL (AREF AX (AREF *ROW* I) (AREF *COL* J)) 0)) (RETURN NIL)))))
+(defun zerop/row (ax i j1 j2)
+  (do ((j j1 (f1+ j)))
+      ((> j j2) t)
+    (cond ((not (equal (aref ax (aref *row* i) (aref *col* j)) 0)) (return nil)))))
 
-;PIVOTTING ALGORITHM
-(DEFUN PIVOT (AX K *CPIVOT)
-  (PROG ( ROW/OPTIMAL COL/OPTIMAL COMPLEXITY/I/MIN COMPLEXITY/J/MIN
-	 COMPLEXITY/I COMPLEXITY/J COMPLEXITY/DET COMPLEXITY/DET/MIN DUMMY)
-	(SETQ ROW/OPTIMAL K COMPLEXITY/I/MIN 1000000. COMPLEXITY/J/MIN 1000000.)
-	;;TEST THE SINGULARITY
-	(COND ((DO ((I K (f1+ I)) (ISALLZERO T))
-		   ((> I NROW) ISALLZERO)
-		 LOOP (COND ((ZEROP/ROW AX I K NVAR)
-			     (COND (*INV* (MERROR "Singular"))
-				   (T (EXCHANGEROW I NROW)
-				      (SETQ NROW (f1- NROW))))
-			     (COND ((NOT (> I NROW)) (GO LOOP))))
-			    (T (SETQ ISALLZERO NIL))))
-	       (RETURN T)))
+;;PIVOTTING ALGORITHM
+(defun pivot (ax k *cpivot)
+  (prog ( row/optimal col/optimal complexity/i/min complexity/j/min
+	 complexity/i complexity/j complexity/det complexity/det/min dummy)
+     (setq row/optimal k complexity/i/min 1000000. complexity/j/min 1000000.)
+     ;;TEST THE SINGULARITY
+     (cond ((do ((i k (f1+ i)) (isallzero t))
+		((> i nrow) isallzero)
+	     loop (cond ((zerop/row ax i k nvar)
+			 (cond (*inv* (merror "Singular"))
+			       (t (exchangerow i nrow)
+				  (setq nrow (f1- nrow))))
+			 (cond ((not (> i nrow)) (go loop))))
+			(t (setq isallzero nil))))
+	    (return t)))
 
-	;; FIND AN OPTIMAL ROW
-	;; IF *CPIVOT IS NIL, (AX I K) WHICH IS TO BE THE PIVOT MUST BE NONZERO.
-	;; BUT IF *CPIVOT IS T, IT IS UNNECESSARY BECAUSE WE CAN DO THE COLUMN PIVOT.
-     FINDROW
-	(DO ((I K (f1+ I)))
-	    ((> I NROW))
-	  (COND ((OR *CPIVOT (NOT (EQUAL (AREF AX (AREF *ROW* I) (AREF *COL* K)) 0)))
-		 (COND ((> COMPLEXITY/I/MIN
-			   (SETQ COMPLEXITY/I (COMPLEXITY/ROW AX I K M)))
-			(SETQ ROW/OPTIMAL I COMPLEXITY/I/MIN COMPLEXITY/I))))))
-	;; EXCHANGE THE ROWS K AND ROW/OPTIMAL
-	(EXCHANGEROW K ROW/OPTIMAL)
+     ;; FIND AN OPTIMAL ROW
+     ;; IF *CPIVOT IS NIL, (AX I K) WHICH IS TO BE THE PIVOT MUST BE NONZERO.
+     ;; BUT IF *CPIVOT IS T, IT IS UNNECESSARY BECAUSE WE CAN DO THE COLUMN PIVOT.
+     findrow
+     (do ((i k (f1+ i)))
+	 ((> i nrow))
+       (cond ((or *cpivot (not (equal (aref ax (aref *row* i) (aref *col* k)) 0)))
+	      (cond ((> complexity/i/min
+			(setq complexity/i (complexity/row ax i k m)))
+		     (setq row/optimal i complexity/i/min complexity/i))))))
+     ;; EXCHANGE THE ROWS K AND ROW/OPTIMAL
+     (exchangerow k row/optimal)
 
-	;; IF THE FLAG *CPIVOT IS NIL, THE FOLLOWING STEPS ARE NOT EXECUTED.
-	;; THIS TREATMENT WAS DONE FOR THE LSA AND ECHELONTHINGS WHICH ARE NOT
-	;; HAPPY WITH THE COLUMN OPERATIONS.
-	(COND ((NULL *CPIVOT)
-	       (COND ((NOT (EQUAL (AREF AX (AREF *ROW* K) (AREF *COL* K)) 0))
-		      (RETURN NIL))
-		     (T (DO ((I K (f1+ I))) ((= I NVAR))
-			    (STORE (AREF *COL* I) (AREF *COL* (f1+ I))))
-			(SETQ NVAR (f1- NVAR) M (f1- M))
-			(GO FINDROW)))))
+     ;; IF THE FLAG *CPIVOT IS NIL, THE FOLLOWING STEPS ARE NOT EXECUTED.
+     ;; THIS TREATMENT WAS DONE FOR THE LSA AND ECHELONTHINGS WHICH ARE NOT
+     ;; HAPPY WITH THE COLUMN OPERATIONS.
+     (cond ((null *cpivot)
+	    (cond ((not (equal (aref ax (aref *row* k) (aref *col* k)) 0))
+		   (return nil))
+		  (t (do ((i k (f1+ i))) ((= i nvar))
+		       (store (aref *col* i) (aref *col* (f1+ i))))
+		     (setq nvar (f1- nvar) m (f1- m))
+		     (go findrow)))))
 
-	;;STEP3 ... FIND THE OPTIMAL COLUMN
-	(SETQ COL/OPTIMAL 0
-	      COMPLEXITY/DET/MIN 1000000.
-	      COMPLEXITY/J/MIN 1000000.)
+     ;;STEP3 ... FIND THE OPTIMAL COLUMN
+     (setq col/optimal 0
+	   complexity/det/min 1000000.
+	   complexity/j/min 1000000.)
 
-	(DO ((J K (f1+ J)))
-	    ((> J NVAR))
-	  (COND ((NOT (EQUAL (AREF AX (AREF *ROW* K) (AREF *COL* J)) 0))
-		 (COND ((> COMPLEXITY/DET/MIN
-			   (SETQ COMPLEXITY/DET
-				 (COMPLEXITY (AREF AX (AREF *ROW* K) (AREF *COL* J)))))
-			(SETQ COL/OPTIMAL J
-			      COMPLEXITY/DET/MIN COMPLEXITY/DET
-			      COMPLEXITY/J/MIN (COMPLEXITY/COL AX J (f1+ K) N)))
-		       ((EQUAL COMPLEXITY/DET/MIN COMPLEXITY/DET)
-			(COND ((> COMPLEXITY/J/MIN
-				  (SETQ COMPLEXITY/J
-					(COMPLEXITY/COL AX J (f1+ K) N)))
-			       (SETQ COL/OPTIMAL J
-				     COMPLEXITY/DET/MIN COMPLEXITY/DET
-				     COMPLEXITY/J/MIN COMPLEXITY/J))))))))
+     (do ((j k (f1+ j)))
+	 ((> j nvar))
+       (cond ((not (equal (aref ax (aref *row* k) (aref *col* j)) 0))
+	      (cond ((> complexity/det/min
+			(setq complexity/det
+			      (complexity (aref ax (aref *row* k) (aref *col* j)))))
+		     (setq col/optimal j
+			   complexity/det/min complexity/det
+			   complexity/j/min (complexity/col ax j (f1+ k) n)))
+		    ((equal complexity/det/min complexity/det)
+		     (cond ((> complexity/j/min
+			       (setq complexity/j
+				     (complexity/col ax j (f1+ k) n)))
+			    (setq col/optimal j
+				  complexity/det/min complexity/det
+				  complexity/j/min complexity/j))))))))
 
-	;(COND ((ZEROP COL/OPTIMAL) (COMMENT (PRINT '"SINGULAR!"))))
+					;(COND ((ZEROP COL/OPTIMAL) (COMMENT (PRINT '"SINGULAR!"))))
 
-	;; EXCHANGE THE COLUMNS K AND COL/OPTIMAL
-	(EXCHANGECOL  K COL/OPTIMAL)
-	(SETQ DUMMY (AREF *COLINV* (AREF *COL* K)))
-	(STORE (AREF *COLINV* (AREF *COL* K)) (AREF *COLINV* (AREF *COL* COL/OPTIMAL)))
-	(STORE (AREF *COLINV* (AREF *COL* COL/OPTIMAL)) DUMMY)
-	(RETURN NIL)))
+     ;; EXCHANGE THE COLUMNS K AND COL/OPTIMAL
+     (exchangecol  k col/optimal)
+     (setq dummy (aref *colinv* (aref *col* k)))
+     (store (aref *colinv* (aref *col* k)) (aref *colinv* (aref *col* col/optimal)))
+     (store (aref *colinv* (aref *col* col/optimal)) dummy)
+     (return nil)))
 
-(DEFUN EXCHANGEROW (I J)
-  (PROG (DUMMY)
-	(SETQ DUMMY (AREF *ROW* I))
-	(STORE (AREF *ROW* I) (AREF *ROW* J))
-	(STORE (AREF *ROW* J) DUMMY) 
-	(COND ((= I J) (RETURN NIL))
-	      (T (SETQ PERMSIGN (NOT PERMSIGN))))))
+(defun exchangerow (i j)
+  (prog (dummy)
+     (setq dummy (aref *row* i))
+     (store (aref *row* i) (aref *row* j))
+     (store (aref *row* j) dummy) 
+     (cond ((= i j) (return nil))
+	   (t (setq permsign (not permsign))))))
 
-(DEFUN EXCHANGECOL (I J)
-  (PROG (DUMMY)
-	(SETQ DUMMY (AREF *COL* I))
-	(STORE (AREF *COL* I) (AREF *COL* J))
-	(STORE (AREF *COL* J) DUMMY)
-	(COND ((= I J) (RETURN NIL))
-	      (T (SETQ PERMSIGN (NOT PERMSIGN))))))
+(defun exchangecol (i j)
+  (prog (dummy)
+     (setq dummy (aref *col* i))
+     (store (aref *col* i) (aref *col* j))
+     (store (aref *col* j) dummy)
+     (cond ((= i j) (return nil))
+	   (t (setq permsign (not permsign))))))
 
 ;; Displays list of solutions.
 
-(DEFUN SOLVE2 (Llist)
-  (SETQ $MULTIPLICITIES NIL)
-  (MAP2C #'(LAMBDA (EQUATN MULTIPL) 
-	     (SETQ EQUATIONS
-		   (NCONC EQUATIONS (LIST (DISPLINE EQUATN))))
-	     (PUSH MULTIPL $MULTIPLICITIES)
-	     (IF (AND (> MULTIPL 1) $DISPFLAG)
-		 (MTELL "Multiplicity ~A~%" MULTIPL)))
-	 Llist)
-  (SETQ $MULTIPLICITIES (CONS '(MLIST SIMP) (NREVERSE $MULTIPLICITIES))))
+(defun solve2 (llist)
+  (setq $multiplicities nil)
+  (map2c #'(lambda (equatn multipl) 
+	     (setq equations
+		   (nconc equations (list (displine equatn))))
+	     (push multipl $multiplicities)
+	     (if (and (> multipl 1) $dispflag)
+		 (mtell "Multiplicity ~A~%" multipl)))
+	 llist)
+  (setq $multiplicities (cons '(mlist simp) (nreverse $multiplicities))))
 
 ;; Displays an expression and returns its linelabel.
 
-(DEFMFUN DISPLINE (EXP)
- (LET ($NOLABELS (TIM 0)) 
-      (ELABEL EXP)
-      (COND ($DISPFLAG (REMPROP LINELABLE 'NODISP) 
-		       (SETQ TIM (RUNTIME))
-		       (MTERPRI)
-		       (DISPLA (LIST '(MLABLE) LINELABLE EXP))
-		       (TIMEORG TIM))
-	    (T (PUTPROP LINELABLE T 'NODISP)))
-      LINELABLE))
+(defmfun displine (exp)
+  (let ($nolabels (tim 0)) 
+    (elabel exp)
+    (cond ($dispflag (remprop linelable 'nodisp) 
+		     (setq tim (runtime))
+		     (mterpri)
+		     (displa (list '(mlable) linelable exp))
+		     (timeorg tim))
+	  (t (putprop linelable t 'nodisp)))
+    linelable))

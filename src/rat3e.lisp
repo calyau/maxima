@@ -15,523 +15,523 @@
 ;;	It includes the conversion and top-level routines used
 ;;	by the rest of the functions.
 
-(DECLARE-TOP(*LEXPR OUTERMAP1 $DIVIDE $CONTENT $GCD $RAT $RATSIMP $FACTOR FACTOR)
-	 (*EXPR $FLOAT)
-	 (SPECIAL INTBS* ALFLAG VAR DOSIMP ALC $MYOPTIONS TRUNCLIST
-		  VLIST SCANMAPP RADLIST EXPSUMSPLIT *RATSIMP* MPLC*
-		  $RATSIMPEXPONS $EXPOP $EXPON $NEGDISTRIB $GCD))
+(declare-top(*lexpr outermap1 $divide $content $gcd $rat $ratsimp $factor factor)
+	    (*expr $float)
+	    (special intbs* alflag var dosimp alc $myoptions trunclist
+		     vlist scanmapp radlist expsumsplit *ratsimp* mplc*
+		     $ratsimpexpons $expop $expon $negdistrib $gcd))
 
-(LOAD-MACSYMA-MACROS RZMAC RATMAC)
+(load-macsyma-macros rzmac ratmac)
 
-(DECLARE-TOP(GENPREFIX A_5))
+(declare-top(genprefix a_5))
 
-(DEFMVAR GENVAR NIL
-	 "List of gensyms used to point to kernels from within polynomials.
+(defmvar genvar nil
+  "List of gensyms used to point to kernels from within polynomials.
 	 The values cell and property lists of these symbols are used to
 	 store various information.")
-(DEFMVAR GENPAIRS NIL)
-(DEFMVAR VARLIST NIL "List of kernels")
-(DEFMVAR *FNEWVARSW NIL)
-(DEFMVAR *RATWEIGHTS NIL)
-(DEFVAR *RATSIMP* NIL)
-(DEFMVAR FACTORRESIMP NIL "If T resimplifies FACTOR(X-Y) to X-Y")
+(defmvar genpairs nil)
+(defmvar varlist nil "List of kernels")
+(defmvar *fnewvarsw nil)
+(defmvar *ratweights nil)
+(defvar *ratsimp* nil)
+(defmvar factorresimp nil "If T resimplifies FACTOR(X-Y) to X-Y")
 
 ;; User level global variables.
 
-(DEFMVAR $KEEPFLOAT NIL
-	 "If t floating point coeffs are not converted to rationals")
-(DEFMVAR $FACTORFLAG NIL "If t constant factor of polynomial is also factored")
-(DEFMVAR $DONTFACTOR '((MLIST)))
-(DEFMVAR $NOREPEAT T)
-(DEFMVAR $RATWEIGHTS '((MLIST SIMP)))
+(defmvar $keepfloat nil
+  "If t floating point coeffs are not converted to rationals")
+(defmvar $factorflag nil "If t constant factor of polynomial is also factored")
+(defmvar $dontfactor '((mlist)))
+(defmvar $norepeat t)
+(defmvar $ratweights '((mlist simp)))
 
-(DEFMVAR $RATFAC NIL "If t cre-forms are kept factored")
-(DEFMVAR $ALGEBRAIC NIL)
-(DEFMVAR $RATVARS '((MLIST SIMP)))
-(DEFMVAR $FACEXPAND T)
+(defmvar $ratfac nil "If t cre-forms are kept factored")
+(defmvar $algebraic nil)
+(defmvar $ratvars '((mlist simp)))
+(defmvar $facexpand t)
 
 ;; Constants required for Franz
-#+Franz
+#+franz
 (progn 'compile
-   (defvar two30f	(expt 2.0 30.))
-   (defvar two30 	(expt 2. 30.))
-   (defvar two53f	(expt 2.0 53.))
-   (defvar two53 	(expt 2. 53.)))
+       (defvar two30f	(expt 2.0 30.))
+       (defvar two30 	(expt 2. 30.))
+       (defvar two53f	(expt 2.0 53.))
+       (defvar two53 	(expt 2. 53.)))
 
-(DECLARE-TOP(SPECIAL EVP $INFEVAL))
+(declare-top(special evp $infeval))
 
-(DEFMFUN MRATEVAL (X)
-  (LET ((VARLIST (CADDAR X)))
-    (COND ((AND EVP $INFEVAL) (MEVAL ($RATDISREP X)))
-	  ((OR EVP
-	       (AND $FLOAT $KEEPFLOAT)
-	       (NOT (ALIKE VARLIST (MAPCAR #'MEVAL VARLIST))))
-	   (RATF (MEVAL ($RATDISREP X))))
-	  (T X))))
+(defmfun mrateval (x)
+  (let ((varlist (caddar x)))
+    (cond ((and evp $infeval) (meval ($ratdisrep x)))
+	  ((or evp
+	       (and $float $keepfloat)
+	       (not (alike varlist (mapcar #'meval varlist))))
+	   (ratf (meval ($ratdisrep x))))
+	  (t x))))
 
-;(DEFPROP MRAT (LAMBDA (X) (MRATEVAL X)) MFEXPR*)
-(DEFPROP MRAT mrateval MFEXPR*)
+;;(DEFPROP MRAT (LAMBDA (X) (MRATEVAL X)) MFEXPR*)
+(defprop mrat mrateval mfexpr*)
 
-(DEFMFUN $RATNUMER (X)
- (SETQ X (TAYCHK2RAT X)) (CONS (CAR X) (CONS (CADR X) 1)))
+(defmfun $ratnumer (x)
+  (setq x (taychk2rat x)) (cons (car x) (cons (cadr x) 1)))
 
-(DEFMFUN $RATDENOM (X)
- (SETQ X (TAYCHK2RAT X)) (CONS (CAR X) (CONS (CDDR X) 1)))
+(defmfun $ratdenom (x)
+  (setq x (taychk2rat x)) (cons (car x) (cons (cddr x) 1)))
 
-(DEFUN TAYCHK2RAT (X)
- (COND ((AND ($RATP X) (MEMQ 'TRUNC (CDAR X))) ($TAYTORAT X)) (T (RATF X))))
+(defun taychk2rat (x)
+  (cond ((and ($ratp x) (memq 'trunc (cdar x))) ($taytorat x)) (t (ratf x))))
 
 
-(DEFMVAR TELLRATLIST NIL)
+(defmvar tellratlist nil)
 
-(DEFUN TELLRATDISP (X)
-       (PDISREP+ (TRDISP1 (CDR X) (CAR X))))
+(defun tellratdisp (x)
+  (pdisrep+ (trdisp1 (cdr x) (car x))))
 
-(DEFUN TRDISP1 (P VAR)
-       (COND ((NULL P) NIL)
-	     (T (CONS (PDISREP* (IF (MTIMESP (CADR P)) (COPY1 (CADR P))
-				    (CADR P))		;prevents clobbering p
-				(PDISREP! (CAR P) VAR))
-		      (TRDISP1 (CDDR P) VAR)))))
+(defun trdisp1 (p var)
+  (cond ((null p) nil)
+	(t (cons (pdisrep* (if (mtimesp (cadr p)) (copy1 (cadr p))
+			       (cadr p)) ;prevents clobbering p
+			   (pdisrep! (car p) var))
+		 (trdisp1 (cddr p) var)))))
 
-(DEFMFUN $UNTELLRAT N
-  (DOLIST (X (LISTIFY N))
-	  (IF (SETQ X (ASSOL X TELLRATLIST))
-	      (SETQ TELLRATLIST (zl-REMOVE X TELLRATLIST))))
-  (CONS '(MLIST) (MAPCAR 'TELLRATDISP TELLRATLIST)))
+(defmfun $untellrat n
+  (dolist (x (listify n))
+    (if (setq x (assol x tellratlist))
+	(setq tellratlist (zl-remove x tellratlist))))
+  (cons '(mlist) (mapcar 'tellratdisp tellratlist)))
 
 #+cl
-(DEFMFUN $TELLRAT (&rest narg-rest-argument &aux
+(defmfun $tellrat (&rest narg-rest-argument &aux
 			 #+lispm (default-cons-area working-storage-area )
 			 (narg (length narg-rest-argument)) n)
-    (setq n narg)
-  (DO ((I 1 (f1+ I))) ((f> I N)) (TELLRAT1 (narg-ARG I)))
-  (OR (= N 0) (ADD2LNC 'TELLRATLIST $MYOPTIONS))
-  (CONS '(MLIST) (MAPCAR 'TELLRATDISP TELLRATLIST)))
+  (setq n narg)
+  (do ((i 1 (f1+ i))) ((f> i n)) (tellrat1 (narg-arg i)))
+  (or (= n 0) (add2lnc 'tellratlist $myoptions))
+  (cons '(mlist) (mapcar 'tellratdisp tellratlist)))
 
 #-cl
-(DEFMFUN $TELLRAT N
-  (DO ((I 1 (f1+ I))) ((f> I N)) (TELLRAT1 (ARG I)))
-  (OR (= N 0) (ADD2LNC 'TELLRATLIST $MYOPTIONS))
-  (CONS '(MLIST) (MAPCAR 'TELLRATDISP TELLRATLIST)))
+(defmfun $tellrat n
+  (do ((i 1 (f1+ i))) ((f> i n)) (tellrat1 (arg i)))
+  (or (= n 0) (add2lnc 'tellratlist $myoptions))
+  (cons '(mlist) (mapcar 'tellratdisp tellratlist)))
 
-(DEFUN TELLRAT1 (X &AUX VARLIST GENVAR $ALGEBRAIC $RATFAC ALGVAR)
-  (SETQ X ($TOTALDISREP X))
-  (AND (NOT (ATOM X)) (EQ (CAAR X) 'MEQUAL)
-       (NEWVAR (CADR X)))
-  (NEWVAR (SETQ X (MEQHK X)))
-  (OR VARLIST (MERROR "Improper polynomial"))
-  (SETQ ALGVAR (CAR (LAST VARLIST)))
-  (SETQ X (P-TERMS (PRIMPART (CADR (RATREP* X)))))
-  (IF (NOT (EQUAL (PT-LC X) 1)) (MERROR "Minimal polynomial must be monic"))
-  (DO ((P (PT-RED X) (PT-RED P))) ((PTZEROP P)) (SETF (PT-LC P) (PDIS (PT-LC P))))
-  (SETQ ALGVAR (CONS ALGVAR X))
-  (IF (SETQ X (ASSOL (CAR ALGVAR) TELLRATLIST))
-      (SETQ TELLRATLIST (zl-REMOVE X TELLRATLIST)))
-  (PUSH ALGVAR TELLRATLIST))
+(defun tellrat1 (x &aux varlist genvar $algebraic $ratfac algvar)
+  (setq x ($totaldisrep x))
+  (and (not (atom x)) (eq (caar x) 'mequal)
+       (newvar (cadr x)))
+  (newvar (setq x (meqhk x)))
+  (or varlist (merror "Improper polynomial"))
+  (setq algvar (car (last varlist)))
+  (setq x (p-terms (primpart (cadr (ratrep* x)))))
+  (if (not (equal (pt-lc x) 1)) (merror "Minimal polynomial must be monic"))
+  (do ((p (pt-red x) (pt-red p))) ((ptzerop p)) (setf (pt-lc p) (pdis (pt-lc p))))
+  (setq algvar (cons algvar x))
+  (if (setq x (assol (car algvar) tellratlist))
+      (setq tellratlist (zl-remove x tellratlist)))
+  (push algvar tellratlist))
 
 
-(DEFMFUN $PRINTVARLIST () (CONS '(MLIST) (COPY VARLIST)))
+(defmfun $printvarlist () (cons '(mlist) (copy varlist)))
 
-;(DEFMFUN $SHOWRATVARS (E)
-;  (CONS '(MLIST SIMP)
-;	(IF ($RATP E) (CADDAR E)
-;	    (LET (VARLIST)
-;	      (LNEWVAR E) 
-;	      VARLIST))))
-;Update from F302 --gsb
-(DEFMFUN $SHOWRATVARS (E)
-  (CONS '(MLIST SIMP)
-	(COND (($RATP E)
-	       (IF (MEMQ 'TRUNC (CDAR E)) (SETQ E ($TAYTORAT E)))
-	       (CADDAR (MINIMIZE-VARLIST E)))
-	      (T (LET (VARLIST) (LNEWVAR E) VARLIST)))))
+;;(DEFMFUN $SHOWRATVARS (E)
+;;  (CONS '(MLIST SIMP)
+;;	(IF ($RATP E) (CADDAR E)
+;;	    (LET (VARLIST)
+;;	      (LNEWVAR E) 
+;;	      VARLIST))))
+;;Update from F302 --gsb
+(defmfun $showratvars (e)
+  (cons '(mlist simp)
+	(cond (($ratp e)
+	       (if (memq 'trunc (cdar e)) (setq e ($taytorat e)))
+	       (caddar (minimize-varlist e)))
+	      (t (let (varlist) (lnewvar e) varlist)))))
 
-(DEFMFUN $RATVARS N
-  (ADD2LNC '$RATVARS $MYOPTIONS)
-  (SETQ $RATVARS
-	(CONS '(MLIST SIMP) (SETQ VARLIST (MAPFR1 (LISTIFY N) VARLIST)))))
+(defmfun $ratvars n
+  (add2lnc '$ratvars $myoptions)
+  (setq $ratvars
+	(cons '(mlist simp) (setq varlist (mapfr1 (listify n) varlist)))))
 
-(DEFUN MAPFR1 (L VARLIST) (MAPCAR #'(LAMBDA (Z) (FR1 Z VARLIST)) L))
+(defun mapfr1 (l varlist) (mapcar #'(lambda (z) (fr1 z varlist)) l))
 
-(DEFMVAR INRATSIMP NIL)
+(defmvar inratsimp nil)
 
-(DEFMFUN $FULLRATSIMP N
-       (IF (= N 0) (WNA-ERR '$FULLRATSIMP))
-       (PROG (EXP EXP1 ARGL)
-	     (SETQ EXP (ARG 1) ARGL (CDR (LISTIFY N)))
-	LOOP (SETQ EXP1 (SIMPLIFY (APPLY #'$RATSIMP (CONS EXP ARGL))))
-	     (COND ((ALIKE1 EXP EXP1) (RETURN EXP)))
-	     (SETQ EXP EXP1)
-	     (GO LOOP)))
+(defmfun $fullratsimp n
+  (if (= n 0) (wna-err '$fullratsimp))
+  (prog (exp exp1 argl)
+     (setq exp (arg 1) argl (cdr (listify n)))
+     loop (setq exp1 (simplify (apply #'$ratsimp (cons exp argl))))
+     (cond ((alike1 exp exp1) (return exp)))
+     (setq exp exp1)
+     (go loop)))
 
-(DEFUN FULLRATSIMP (L)
- (LET (($EXPOP 0) ($EXPON 0) (INRATSIMP T) $RATSIMPEXPONS)
-      (SETQ L ($TOTALDISREP L)) (FR1 L VARLIST))) 
+(defun fullratsimp (l)
+  (let (($expop 0) ($expon 0) (inratsimp t) $ratsimpexpons)
+    (setq l ($totaldisrep l)) (fr1 l varlist))) 
 
-(DEFMFUN $TOTALDISREP (L)
-  (COND ((ATOM L) L)
-	((NOT (AMONG 'MRAT L)) L)
-	((EQ (CAAR L) 'MRAT) (RATDISREP L))
-	(T (CONS (DELQ 'RATSIMP (CAR L)) (MAPCAR '$TOTALDISREP (CDR L))))))
+(defmfun $totaldisrep (l)
+  (cond ((atom l) l)
+	((not (among 'mrat l)) l)
+	((eq (caar l) 'mrat) (ratdisrep l))
+	(t (cons (delq 'ratsimp (car l)) (mapcar '$totaldisrep (cdr l))))))
 
 ;;;VARLIST HAS MAIN VARIABLE AT END
 
-(DEFUN JOINVARLIST (CDRL)
-       (MAPC #'(LAMBDA (Z) (IF (NOT (MEMALIKE Z VARLIST))
-			       (SETQ VARLIST (CONS Z VARLIST))))
-	     (REVERSE (MAPFR1 CDRL NIL))))
+(defun joinvarlist (cdrl)
+  (mapc #'(lambda (z) (if (not (memalike z varlist))
+			  (setq varlist (cons z varlist))))
+	(reverse (mapfr1 cdrl nil))))
 
-(DEFMFUN $RAT N
-       (IF (f= N 0) (WNA-ERR '$RAT))
-       (COND ((f> N 1)
-	      (LET (VARLIST) (JOINVARLIST (CDR (LISTIFY N)))
-			     (LNEWVAR (ARG 1))
-			     (RAT0 (ARG 1))))
-	     (T (LNEWVAR (ARG 1)) (RAT0 (ARG 1)))))
+(defmfun $rat n
+  (if (f= n 0) (wna-err '$rat))
+  (cond ((f> n 1)
+	 (let (varlist) (joinvarlist (cdr (listify n)))
+	      (lnewvar (arg 1))
+	      (rat0 (arg 1))))
+	(t (lnewvar (arg 1)) (rat0 (arg 1)))))
 
-(DEFUN RAT0 (EXP)					;SIMP FLAGS?
-  (IF (MBAGP EXP) (CONS (CAR EXP) (MAPCAR #'RAT0 (CDR EXP))) (RATF EXP)))
+(defun rat0 (exp)			;SIMP FLAGS?
+  (if (mbagp exp) (cons (car exp) (mapcar #'rat0 (cdr exp))) (ratf exp)))
 
-(DEFMFUN $RATSIMP N
-       (IF (f= N 0) (WNA-ERR '$RATSIMP))
-       (COND ((f> N 1)
-	      (LET (VARLIST) (JOINVARLIST (CDR (LISTIFY N)))
-			     (FULLRATSIMP (ARG 1))))
-	     (T (FULLRATSIMP (ARG 1)))))
+(defmfun $ratsimp n
+  (if (f= n 0) (wna-err '$ratsimp))
+  (cond ((f> n 1)
+	 (let (varlist) (joinvarlist (cdr (listify n)))
+	      (fullratsimp (arg 1))))
+	(t (fullratsimp (arg 1)))))
 
-; $RATSIMP, $FULLRATSIMP, and $RAT are LEXPRs to allow for optional extra 
-; arguments specifying the VARLIST.
+;; $RATSIMP, $FULLRATSIMP, and $RAT are LEXPRs to allow for optional extra 
+;; arguments specifying the VARLIST.
 
 ;;;PSQFR HAS NOT BEEN CHANGED TO MAKE USE OF THE SQFR FLAGS YET
 
-(DEFMFUN $SQFR (X)
- (LET ((VARLIST (CDR $RATVARS)) GENVAR $KEEPFLOAT $RATFAC)
-      (SUBLIS '((FACTORED . SQFRED) (IRREDUCIBLE . SQFR))
-	      (FFACTOR X (FUNCTION PSQFR)))))
+(defmfun $sqfr (x)
+  (let ((varlist (cdr $ratvars)) genvar $keepfloat $ratfac)
+    (sublis '((factored . sqfred) (irreducible . sqfr))
+	    (ffactor x (function psqfr)))))
 
-(DECLARE-TOP(SPECIAL FN CARGS))
+(declare-top(special fn cargs))
 
-(DEFUN WHICHFN (P)
-       (COND ((AND (MEXPTP P) (INTEGERP (CADDR P)))
-	      (LIST '(MEXPT) (WHICHFN (CADR P)) (CADDR P)))
-	     ((MTIMESP P)
-	      (CONS '(MTIMES) (MAPCAR (FUNCTION WHICHFN) (CDR P))))
-	     (FN (FFACTOR P (FUNCTION PFACTOR)))
-	     (T (FACTORALG P))))
+(defun whichfn (p)
+  (cond ((and (mexptp p) (integerp (caddr p)))
+	 (list '(mexpt) (whichfn (cadr p)) (caddr p)))
+	((mtimesp p)
+	 (cons '(mtimes) (mapcar (function whichfn) (cdr p))))
+	(fn (ffactor p (function pfactor)))
+	(t (factoralg p))))
 
-(DECLARE-TOP(SPECIAL VAR))
+(declare-top(special var))
 
-(DEFMVAR ADN* 1 "common denom for algebraic coefficients")
+(defmvar adn* 1 "common denom for algebraic coefficients")
 
-(DEFUN FACTORALG (P) 
-	 (PROG (ALC ANS ADN* $GCD)
-	       (SETQ $GCD '$ALGEBRAIC)
-	       (COND((OR (ATOM P) (NUMBERP P))(RETURN P)))
-	       (SETQ ADN* 1)
-	       (COND ((AND (NOT $NALGFAC) (NOT INTBS*))
-		      (SETQ INTBS* (FINDIBASE MINPOLY*))))
-	       (SETQ ALGFAC* T)
-	       (SETQ ANS (FFACTOR P (FUNCTION PFACTOR)))
-	       (COND ((EQ (CAAR ANS) 'MPLUS)(RETURN P))
-		     (MPLC* (SETQ ANS (ALBK ANS))))
-	       (IF (AND (NOT ALC) (EQUAL  1 ADN*)) (RETURN ANS))
-	       (SETQ ANS (PARTITION ANS (CAR (LAST VARLIST)) 1))
-	       (RETURN (MUL (LET ((DOSIMP T))
-			      (MUL `((RAT) 1 ,ADN*)
-				    (CAR ANS)
-				    (IF ALC (PDIS ALC) 1)))
-			    (CDR ANS)))))
+(defun factoralg (p) 
+  (prog (alc ans adn* $gcd)
+     (setq $gcd '$algebraic)
+     (cond((or (atom p) (numberp p))(return p)))
+     (setq adn* 1)
+     (cond ((and (not $nalgfac) (not intbs*))
+	    (setq intbs* (findibase minpoly*))))
+     (setq algfac* t)
+     (setq ans (ffactor p (function pfactor)))
+     (cond ((eq (caar ans) 'mplus)(return p))
+	   (mplc* (setq ans (albk ans))))
+     (if (and (not alc) (equal  1 adn*)) (return ans))
+     (setq ans (partition ans (car (last varlist)) 1))
+     (return (mul (let ((dosimp t))
+		    (mul `((rat) 1 ,adn*)
+			 (car ans)
+			 (if alc (pdis alc) 1)))
+		  (cdr ans)))))
 
-(DEFUN ALBK (P)					 ;to undo monicizing subst 
-  (let ((alpha (pdis alpha)) ($RATFAC T))
+(defun albk (p)				;to undo monicizing subst 
+  (let ((alpha (pdis alpha)) ($ratfac t))
     (declare (special alpha))
-;      (sratsimp    ;; don't multiply them back out
-    (MAXIMA-SUBSTITUTE (list '(mtimes simp) mplc* alpha)	;assumes mplc* is int
+    ;;      (sratsimp    ;; don't multiply them back out
+    (maxima-substitute (list '(mtimes simp) mplc* alpha) ;assumes mplc* is int
 		       alpha p)))
 
 
-(DEFMFUN $GFACTOR (P &AUX (GAUSS T)) 
-  (IF ($RATP P) (SETQ P ($RATDISREP P)))
-  (SETQ P ($FACTOR (SUBST '%I '$%I P)
-		   '((MPLUS) 1 ((MEXPT) %I 2))))
-  (SETQ P (SUBLIS '((FACTORED . GFACTORED)
-		    (IRREDUCIBLE . IRREDUCIBLEG))
-		  P))
-  (LET (($EXPOP 0) ($EXPON 0) $NEGDISTRIB) (MAXIMA-SUBSTITUTE '$%I '%I P)))
+(defmfun $gfactor (p &aux (gauss t)) 
+  (if ($ratp p) (setq p ($ratdisrep p)))
+  (setq p ($factor (subst '%i '$%i p)
+		   '((mplus) 1 ((mexpt) %i 2))))
+  (setq p (sublis '((factored . gfactored)
+		    (irreducible . irreducibleg))
+		  p))
+  (let (($expop 0) ($expon 0) $negdistrib) (maxima-substitute '$%i '%i p)))
 
 
 ;; (DEFMFUN $FACTOR (EXP &OPTIONAL MINIMUM-POLYNOMIAL) ...)
 
-(DEFMFUN $FACTOR NARGS
-  (UNLESS (OR (f= NARGS 1) (f= NARGS 2)) (WNA-ERR '$FACTOR))
-  (LET ($INTFACLIM (VARLIST (CDR $RATVARS)) GENVAR ANS)
-    (SETQ ANS (APPLY #'FACTOR (LISTIFY NARGS)))
-    (IF (AND FACTORRESIMP $NEGDISTRIB
-	     (MTIMESP ANS) (NULL (CDDDR ANS))
-	     (EQUAL (CADR ANS) -1) (MPLUSP (CADDR ANS)))
-	(LET (($EXPOP 0) ($EXPON 0)) ($MULTTHRU ANS))
-	ANS)))
+(defmfun $factor nargs
+  (unless (or (f= nargs 1) (f= nargs 2)) (wna-err '$factor))
+  (let ($intfaclim (varlist (cdr $ratvars)) genvar ans)
+    (setq ans (apply #'factor (listify nargs)))
+    (if (and factorresimp $negdistrib
+	     (mtimesp ans) (null (cdddr ans))
+	     (equal (cadr ans) -1) (mplusp (caddr ans)))
+	(let (($expop 0) ($expon 0)) ($multthru ans))
+	ans)))
 
 #+cl (defvar alpha nil)
 
-(DEFMFUN FACTOR NARGS
-  ((LAMBDA (TELLRATLIST VARLIST GENVAR $GCD $NEGDISTRIB)
-     (PROG (FN VAR MM* MPLC* INTBS* ALFLAG MINPOLY* ALPHA P ALGFAC* 
-	    $KEEPFLOAT $ALGEBRAIC CARGS)
-	   (OR (MEMQ $GCD *GCDL*) (SETQ $GCD (CAR *GCDL*)))
-	   (LET  ($RATFAC)
-	     (SETQ P (ARG 1) MM* 1 CARGS (CDR (LISTIFY NARGS)))
-	     (AND (EQ (ml-typep P)  'symbol) (GO OUT))
-	     (AND ($NUMBERP P) (GO NUM))
-	     (COND ((MBAGP P)
-		    (RETURN (CONS (CAR P)
-				  (MAPCAR #'(LAMBDA (X) (APPLY 'FACTOR (CONS X CARGS)))
-					  (CDR P))))))
-	     (COND ((f= NARGS 2)
-		    (SETQ ALPHA (MEQHK (ARG 2)))
-		    (NEWVAR ALPHA)
-		    (SETQ MINPOLY* (CADR (RATREP* ALPHA)))
-		    (IF (OR (PCOEFP MINPOLY*)
-			    (NOT (UNIVAR (CDR MINPOLY*)))
-			    (f< (CADR MINPOLY*) 2))
-			(MERROR
-			  "The second argument to FACTOR must be a non-linear, univariate polynomial:~%~M"
-			  ALPHA))
-		    (SETQ ALPHA (PDIS (LIST (CAR MINPOLY*) 1 1)) 
-			  MM* (CADR MINPOLY*))
-		    (COND ((NOT (EQUAL (CADDR MINPOLY*) 1))
-			   (SETQ MPLC* (CADDR MINPOLY*))
-			   (SETQ MINPOLY* (PMONZ MINPOLY*))
-			   (SETQ P (MAXIMA-SUBSTITUTE (DIV ALPHA MPLC*) ALPHA P)) ))
-		    (SETQ $ALGEBRAIC T)
-		    ($TELLRAT(PDIS MINPOLY*))
-		    (SETQ ALGFAC* T))
-		   (T (SETQ FN T)))
-	     (IF (NOT SCANMAPP) (SETQ P (LET (($RATFAC T)) (SRATSIMP P))))
-	     (NEWVAR P)
-	     (AND (EQ (ml-typep P)  'symbol) (GO OUT))
-	     (COND ((NUMBERP P) (GO NUM)))
-	     (SETQ $NEGDISTRIB NIL)
-	     (SETQ P (LET ($FACTORFLAG ($RATEXPAND $FACEXPAND)) (WHICHFN P))))
+(defmfun factor nargs
+  ((lambda (tellratlist varlist genvar $gcd $negdistrib)
+     (prog (fn var mm* mplc* intbs* alflag minpoly* alpha p algfac* 
+	    $keepfloat $algebraic cargs)
+	(or (memq $gcd *gcdl*) (setq $gcd (car *gcdl*)))
+	(let  ($ratfac)
+	  (setq p (arg 1) mm* 1 cargs (cdr (listify nargs)))
+	  (and (eq (ml-typep p)  'symbol) (go out))
+	  (and ($numberp p) (go num))
+	  (cond ((mbagp p)
+		 (return (cons (car p)
+			       (mapcar #'(lambda (x) (apply 'factor (cons x cargs)))
+				       (cdr p))))))
+	  (cond ((f= nargs 2)
+		 (setq alpha (meqhk (arg 2)))
+		 (newvar alpha)
+		 (setq minpoly* (cadr (ratrep* alpha)))
+		 (if (or (pcoefp minpoly*)
+			 (not (univar (cdr minpoly*)))
+			 (f< (cadr minpoly*) 2))
+		     (merror
+		      "The second argument to FACTOR must be a non-linear, univariate polynomial:~%~M"
+		      alpha))
+		 (setq alpha (pdis (list (car minpoly*) 1 1)) 
+		       mm* (cadr minpoly*))
+		 (cond ((not (equal (caddr minpoly*) 1))
+			(setq mplc* (caddr minpoly*))
+			(setq minpoly* (pmonz minpoly*))
+			(setq p (maxima-substitute (div alpha mplc*) alpha p)) ))
+		 (setq $algebraic t)
+		 ($tellrat(pdis minpoly*))
+		 (setq algfac* t))
+		(t (setq fn t)))
+	  (if (not scanmapp) (setq p (let (($ratfac t)) (sratsimp p))))
+	  (newvar p)
+	  (and (eq (ml-typep p)  'symbol) (go out))
+	  (cond ((numberp p) (go num)))
+	  (setq $negdistrib nil)
+	  (setq p (let ($factorflag ($ratexpand $facexpand)) (whichfn p))))
 								 
-	   (SETQ P (LET (($EXPOP 0) ($EXPON 0)) (SIMPLIFY P)))
-	   (COND ((MNUMP P) (RETURN (FACTORNUMBER P)))
-		 ((ATOM P) (GO OUT)))
-	   (AND $RATFAC (NOT $FACTORFLAG) ($RATP (ARG 1)) (RETURN ($RAT P)))
-	   (AND $FACTORFLAG (MTIMESP P) (MNUMP (CADR P))
-		(SETQ ALPHA (FACTORNUMBER (CADR P)))
-		(COND ((ALIKE1 ALPHA (CADR P)))
-		      ((MTIMESP ALPHA)
-		       (SETQ P (CONS (CAR P) (APPEND (CDR ALPHA) (CDDR P)))))
-		      (T (SETQ P (CONS (CAR P) (CONS ALPHA (CDDR P)))))))
-	   (AND (NULL (MEMQ 'FACTORED (CAR P)))
-		(SETQ P (CONS (APPEND (CAR P) '(FACTORED)) (CDR P))))
-	OUT  (RETURN P)
-	NUM (RETURN (LET (($FACTORFLAG (NOT SCANMAPP))) (FACTORNUMBER P)))))
-   NIL VARLIST NIL $GCD $NEGDISTRIB))
+	(setq p (let (($expop 0) ($expon 0)) (simplify p)))
+	(cond ((mnump p) (return (factornumber p)))
+	      ((atom p) (go out)))
+	(and $ratfac (not $factorflag) ($ratp (arg 1)) (return ($rat p)))
+	(and $factorflag (mtimesp p) (mnump (cadr p))
+	     (setq alpha (factornumber (cadr p)))
+	     (cond ((alike1 alpha (cadr p)))
+		   ((mtimesp alpha)
+		    (setq p (cons (car p) (append (cdr alpha) (cddr p)))))
+		   (t (setq p (cons (car p) (cons alpha (cddr p)))))))
+	(and (null (memq 'factored (car p)))
+	     (setq p (cons (append (car p) '(factored)) (cdr p))))
+	out  (return p)
+	num (return (let (($factorflag (not scanmapp))) (factornumber p)))))
+   nil varlist nil $gcd $negdistrib))
 
 
-(DEFUN FACTORNUMBER (N)
- (SETQ N (NRETFACTOR1 (NRATFACT (CDR ($RAT N)))))
- (COND ((CDR N) (CONS '(MTIMES SIMP FACTORED)
-		      (COND ((EQUAL (CAR N) -1)
-			     (CONS (CAR N) (NREVERSE (CDR N))))
-			    (T (NREVERSE N)))))
-       ((ATOM (CAR N)) (CAR N))
-       (T (CONS (CONS (CAAAR N) '(SIMP FACTORED)) (CDAR N)))))
+(defun factornumber (n)
+  (setq n (nretfactor1 (nratfact (cdr ($rat n)))))
+  (cond ((cdr n) (cons '(mtimes simp factored)
+		       (cond ((equal (car n) -1)
+			      (cons (car n) (nreverse (cdr n))))
+			     (t (nreverse n)))))
+	((atom (car n)) (car n))
+	(t (cons (cons (caaar n) '(simp factored)) (cdar n)))))
 
-(DEFUN NRATFACT (X)
- (COND ((EQUAL (CDR X) 1) (CFACTOR (CAR X)))
-       ((EQUAL (CAR X) 1) (REVSIGN (CFACTOR (CDR X))))
-       (T (NCONC (CFACTOR (CAR X)) (REVSIGN (CFACTOR (CDR X)))))))
+(defun nratfact (x)
+  (cond ((equal (cdr x) 1) (cfactor (car x)))
+	((equal (car x) 1) (revsign (cfactor (cdr x))))
+	(t (nconc (cfactor (car x)) (revsign (cfactor (cdr x)))))))
 
 ;;; FOR LISTS OF JUST NUMBERS
-(DEFUN NRETFACTOR1 (L)
-  (COND ((NULL L) NIL)
-	((EQUAL (CADR L) 1) (CONS (CAR L) (NRETFACTOR1 (CDDR L))))
-	(T (CONS (COND ((EQUAL (CADR L) -1)
-			(LIST '(RAT SIMP) 1 (CAR L)))
-		       (T (LIST '(MEXPT SIMP) (CAR L) (CADR L))))
-		 (NRETFACTOR1 (CDDR L))))))
+(defun nretfactor1 (l)
+  (cond ((null l) nil)
+	((equal (cadr l) 1) (cons (car l) (nretfactor1 (cddr l))))
+	(t (cons (cond ((equal (cadr l) -1)
+			(list '(rat simp) 1 (car l)))
+		       (t (list '(mexpt simp) (car l) (cadr l))))
+		 (nretfactor1 (cddr l))))))
 
-(DECLARE-TOP(UNSPECIAL VAR))
-
-
-(DEFMFUN $MOD NARGS
- (IF (NOT (OR (f= NARGS 1) (f= NARGS 2))) (WNA-ERR '$MOD))
- (LET ((MODULUS MODULUS))
-      (COND ((f= NARGS 2)
-	     (SETQ MODULUS (ARG 2))
-	     (IF (OR (NOT (INTEGERP MODULUS)) (ZEROP MODULUS))
-		 (MERROR "Improper value for MODULUS:~%~M" MODULUS))))
-      (IF (MINUSP MODULUS) (SETQ MODULUS (ABS MODULUS)))
-      (MOD1 (ARG 1))))
-
-(DEFUN MOD1 (E)
- (IF (MBAGP E) (CONS (CAR E) (MAPCAR 'MOD1 (CDR E)))
-     (LET (FORMFLAG)
-       (NEWVAR E)
-       (SETQ FORMFLAG ($RATP E) E (RATREP* E))
-       (SETQ E (CONS (CAR E) (RATREDUCE (PMOD (CADR E)) (PMOD (CDDR E)))))
-       (COND (FORMFLAG E) (T (RATDISREP E))))))
-
-(DEFMFUN $DIVIDE NARGS
-  (PROG (X Y H VARLIST TT TY FORMFLAG $RATFAC)
-	(IF (f< NARGS 2) (MERROR "DIVIDE needs at least two arguments."))
-	(SETQ X (ARG 1))
-	(IF (AND ($RATP X) (SETQ FORMFLAG T) (INTEGERP (CADR X)) (EQUAL (CDDR X) 1))
-	    (SETQ X (CADR X)))
-	(SETQ Y (ARG 2))
-	(IF (AND ($RATP Y) (SETQ FORMFLAG T) (INTEGERP (CADR Y)) (EQUAL (CDDR Y) 1))
-	    (SETQ Y (CADR Y)))
-	(IF (AND (INTEGERP X) (INTEGERP Y))
-	    (RETURN (LIST '(MLIST) (*QUO X Y) (REMAINDER X Y))))
-	(SETQ VARLIST (CDDR (LISTIFY NARGS)))
-	(MAPC #'NEWVAR (REVERSE (CDR $RATVARS)))
-	(NEWVAR Y)
-	(NEWVAR X)
-	(SETQ X (RATREP* X))
-	(SETQ H (CAR X))
-	(SETQ X (CDR X))
-	(SETQ Y (CDR (RATREP* Y)))
-	(COND ((AND (EQN (SETQ TT (CDR X)) 1) (EQN (CDR Y) 1)) 
-	       (SETQ X (PDIVIDE (CAR X) (CAR Y))))
-	      (T (SETQ TY (CDR Y))
-		 (SETQ X (PTIMES (CAR X) (CDR Y)))
-		 (SETQ X (PDIVIDE X (CAR Y))) 
-		 (SETQ X (LIST
-			  (RATQU (CAR X) TT)
-			  (RATQU (CADR X) (PTIMES TT TY))))))
-	(SETQ H (LIST (QUOTE (MLIST)) (CONS H (CAR X)) (CONS H (CADR X))))
-	(RETURN (IF FORMFLAG H ($TOTALDISREP H)))))
-
-(DEFMFUN $QUOTIENT NARGS (CADR (APPLY '$DIVIDE (LISTIFY NARGS))))
-
-(DEFMFUN $REMAINDER NARGS (CADDR (APPLY '$DIVIDE (LISTIFY NARGS))))
+(declare-top(unspecial var))
 
 
-(DEFMFUN $GCD NARGS
-  (PROG (X Y H VARLIST GENVAR $KEEPFLOAT FORMFLAG)
-	(IF (f< NARGS 2) (MERROR "GCD needs 2 arguments"))
-	(SETQ FORMFLAG ($RATP (SETQ X (ARG 1))))
-	(SETQ Y (ARG 2))
-	(AND ($RATP Y) (SETQ FORMFLAG T))
-	(SETQ VARLIST (CDDR (LISTIFY NARGS)))
-	(DOLIST (V VARLIST) (IF (NUMBERP V) (IMPROPER-ARG-ERR V '$GCD)))
-	(NEWVAR X)
-	(NEWVAR Y)
-	(WHEN (AND ($RATP X) ($RATP Y) (EQUAL (CAR X) (CAR Y)))
-	      (SETQ GENVAR (CAR (LAST (CAR X))) H (CAR X) X (CDR X) Y (CDR Y))
-	      (GO ON))
-	(SETQ X (RATREP* X))
-	(SETQ H (CAR X))
-	(SETQ X (CDR X))
-	(SETQ Y (CDR (RATREP* Y)))
-ON	(SETQ X (CONS (PGCD (CAR X) (CAR Y)) (PLCM (CDR X) (CDR Y))))
-	(SETQ H (CONS H X))
-	(RETURN (IF FORMFLAG H (RATDISREP H)))))
+(defmfun $mod nargs
+  (if (not (or (f= nargs 1) (f= nargs 2))) (wna-err '$mod))
+  (let ((modulus modulus))
+    (cond ((f= nargs 2)
+	   (setq modulus (arg 2))
+	   (if (or (not (integerp modulus)) (zerop modulus))
+	       (merror "Improper value for MODULUS:~%~M" modulus))))
+    (if (minusp modulus) (setq modulus (abs modulus)))
+    (mod1 (arg 1))))
 
-(DEFMFUN $CONTENT NARGS
-	(PROG (X Y H VARLIST FORMFLAG)
-	      (SETQ FORMFLAG ($RATP (SETQ X (ARG 1))))
-	      (SETQ VARLIST (CDR (LISTIFY NARGS)))
-	      (NEWVAR X)
-	      (DESETQ (H X . Y) (RATREP* X))
-	      (unless (atom x)
-		;; (CAR X) => gensym corresponding to apparent main var.
-		;; MAIN-GENVAR => gensym corresponding to the genuine main var.
-		(let ((main-genvar (nth (1- (length varlist)) genvar)))
-		  (unless (eq (car x) main-genvar)
-		    (setq x `(,main-genvar 0 ,x)))))
-	      (SETQ X (RCONTENT X)
-		    Y (CONS 1 Y))
-	      (SETQ H (LIST '(MLIST)
-			    (CONS H (RATTIMES (CAR X) Y NIL))
-			    (CONS H (CADR X))))
-	      (RETURN (IF FORMFLAG H ($TOTALDISREP H)))))
+(defun mod1 (e)
+  (if (mbagp e) (cons (car e) (mapcar 'mod1 (cdr e)))
+      (let (formflag)
+	(newvar e)
+	(setq formflag ($ratp e) e (ratrep* e))
+	(setq e (cons (car e) (ratreduce (pmod (cadr e)) (pmod (cddr e)))))
+	(cond (formflag e) (t (ratdisrep e))))))
+
+(defmfun $divide nargs
+  (prog (x y h varlist tt ty formflag $ratfac)
+     (if (f< nargs 2) (merror "DIVIDE needs at least two arguments."))
+     (setq x (arg 1))
+     (if (and ($ratp x) (setq formflag t) (integerp (cadr x)) (equal (cddr x) 1))
+	 (setq x (cadr x)))
+     (setq y (arg 2))
+     (if (and ($ratp y) (setq formflag t) (integerp (cadr y)) (equal (cddr y) 1))
+	 (setq y (cadr y)))
+     (if (and (integerp x) (integerp y))
+	 (return (list '(mlist) (*quo x y) (remainder x y))))
+     (setq varlist (cddr (listify nargs)))
+     (mapc #'newvar (reverse (cdr $ratvars)))
+     (newvar y)
+     (newvar x)
+     (setq x (ratrep* x))
+     (setq h (car x))
+     (setq x (cdr x))
+     (setq y (cdr (ratrep* y)))
+     (cond ((and (eqn (setq tt (cdr x)) 1) (eqn (cdr y) 1)) 
+	    (setq x (pdivide (car x) (car y))))
+	   (t (setq ty (cdr y))
+	      (setq x (ptimes (car x) (cdr y)))
+	      (setq x (pdivide x (car y))) 
+	      (setq x (list
+		       (ratqu (car x) tt)
+		       (ratqu (cadr x) (ptimes tt ty))))))
+     (setq h (list (quote (mlist)) (cons h (car x)) (cons h (cadr x))))
+     (return (if formflag h ($totaldisrep h)))))
+
+(defmfun $quotient nargs (cadr (apply '$divide (listify nargs))))
+
+(defmfun $remainder nargs (caddr (apply '$divide (listify nargs))))
+
 
-(DEFMFUN PGET (GEN) (CONS GEN '(1 1)))
+(defmfun $gcd nargs
+  (prog (x y h varlist genvar $keepfloat formflag)
+     (if (f< nargs 2) (merror "GCD needs 2 arguments"))
+     (setq formflag ($ratp (setq x (arg 1))))
+     (setq y (arg 2))
+     (and ($ratp y) (setq formflag t))
+     (setq varlist (cddr (listify nargs)))
+     (dolist (v varlist) (if (numberp v) (improper-arg-err v '$gcd)))
+     (newvar x)
+     (newvar y)
+     (when (and ($ratp x) ($ratp y) (equal (car x) (car y)))
+       (setq genvar (car (last (car x))) h (car x) x (cdr x) y (cdr y))
+       (go on))
+     (setq x (ratrep* x))
+     (setq h (car x))
+     (setq x (cdr x))
+     (setq y (cdr (ratrep* y)))
+     on	(setq x (cons (pgcd (car x) (car y)) (plcm (cdr x) (cdr y))))
+     (setq h (cons h x))
+     (return (if formflag h (ratdisrep h)))))
 
-(DEFUN M$EXP? (X) (AND (MEXPTP X) (EQ (CADR X) '$%E)))
+(defmfun $content nargs
+  (prog (x y h varlist formflag)
+     (setq formflag ($ratp (setq x (arg 1))))
+     (setq varlist (cdr (listify nargs)))
+     (newvar x)
+     (desetq (h x . y) (ratrep* x))
+     (unless (atom x)
+       ;; (CAR X) => gensym corresponding to apparent main var.
+       ;; MAIN-GENVAR => gensym corresponding to the genuine main var.
+       (let ((main-genvar (nth (1- (length varlist)) genvar)))
+	 (unless (eq (car x) main-genvar)
+	   (setq x `(,main-genvar 0 ,x)))))
+     (setq x (rcontent x)
+	   y (cons 1 y))
+     (setq h (list '(mlist)
+		   (cons h (rattimes (car x) y nil))
+		   (cons h (cadr x))))
+     (return (if formflag h ($totaldisrep h)))))
+
+(defmfun pget (gen) (cons gen '(1 1)))
 
-(DEFUN ALGP ($X) (ALGPCHK $X NIL))
+(defun m$exp? (x) (and (mexptp x) (eq (cadr x) '$%e)))
 
-(DEFUN ALGPGET ($X) (ALGPCHK $X T))
+(defun algp ($x) (algpchk $x nil))
 
-(DEFUN ALGPCHK ($X MPFLAG &AUX TEMP)
-  (COND ((EQ $X '$%I) '(2 -1))
-	((EQ $X '$%PHI) '(2 1 1 -1 0 -1))
-	((RADFUNP $X NIL)
-	 (IF (NOT MPFLAG) T
-	   (LET ((R (PREP1 (CADR $X))))
-	     (COND ((ONEP1 (CDR R))		;INTEGRAL ALG. QUANT.?
-		    (LIST (CADDR (CADDR $X))
-			  (CAR R)))
-		   (*RATSIMP* (SETQ RADLIST (CONS $X RADLIST)) NIL)))))
-	((NOT $ALGEBRAIC) NIL)
-	((AND (M$EXP? $X) (MTIMESP (SETQ TEMP (CADDR $X)))
-	      (EQUAL (CDDR TEMP) '($%I $%PI))
-	      (RATNUMP (SETQ TEMP (CADR TEMP))))
-	 (IF MPFLAG (PRIMCYCLO (f* 2 (CADDR TEMP))) T))
-	((NOT MPFLAG) (ASSOLIKE $X TELLRATLIST))
-	((SETQ TEMP (COPY1 (ASSOLIKE $X TELLRATLIST)))
-	 (DO ((P TEMP (CDDR P))) ((NULL P))
-	     (RPLACA (CDR P) (CAR (PREP1 (CADR P)))))
-	 (SETQ TEMP
-	       (COND ((PTZEROP (PT-RED TEMP)) (LIST (PT-LE TEMP) (PZERO)))
-		     ((ZEROP (PT-LE (PT-RED TEMP)))
-		      (LIST (PT-LE TEMP) (PMINUS (PT-LC (PT-RED TEMP)))))
-		     (T TEMP)))
-	 (IF (AND (f= (PT-LE TEMP) 1) (SETQ $X (ASSOL $X GENPAIRS)))
-	     (RPLACD $X (CONS (CADR TEMP) 1)))
-	 TEMP)))
+(defun algpget ($x) (algpchk $x t))
 
-(DEFUN RADFUNP (X FUNCFLAG)	;FUNCFLAG -> TEST FOR ALG FUNCTION NOT NUMBER
-       (COND ((ATOM X) NIL)
-	     ((NOT (EQ (CAAR X) 'MEXPT)) NIL)
-	     ((NOT (RATNUMP (CADDR X))) NIL)
-	     (FUNCFLAG (NOT (NUMBERP (CADR X))))
-	     (T T)))
+(defun algpchk ($x mpflag &aux temp)
+  (cond ((eq $x '$%i) '(2 -1))
+	((eq $x '$%phi) '(2 1 1 -1 0 -1))
+	((radfunp $x nil)
+	 (if (not mpflag) t
+	     (let ((r (prep1 (cadr $x))))
+	       (cond ((onep1 (cdr r))	;INTEGRAL ALG. QUANT.?
+		      (list (caddr (caddr $x))
+			    (car r)))
+		     (*ratsimp* (setq radlist (cons $x radlist)) nil)))))
+	((not $algebraic) nil)
+	((and (m$exp? $x) (mtimesp (setq temp (caddr $x)))
+	      (equal (cddr temp) '($%i $%pi))
+	      (ratnump (setq temp (cadr temp))))
+	 (if mpflag (primcyclo (f* 2 (caddr temp))) t))
+	((not mpflag) (assolike $x tellratlist))
+	((setq temp (copy1 (assolike $x tellratlist)))
+	 (do ((p temp (cddr p))) ((null p))
+	   (rplaca (cdr p) (car (prep1 (cadr p)))))
+	 (setq temp
+	       (cond ((ptzerop (pt-red temp)) (list (pt-le temp) (pzero)))
+		     ((zerop (pt-le (pt-red temp)))
+		      (list (pt-le temp) (pminus (pt-lc (pt-red temp)))))
+		     (t temp)))
+	 (if (and (f= (pt-le temp) 1) (setq $x (assol $x genpairs)))
+	     (rplacd $x (cons (cadr temp) 1)))
+	 temp)))
 
-(DEFMFUN RATSETUP (VL GL) (RATSETUP1 VL GL) (RATSETUP2 VL GL))
+(defun radfunp (x funcflag) ;FUNCFLAG -> TEST FOR ALG FUNCTION NOT NUMBER
+  (cond ((atom x) nil)
+	((not (eq (caar x) 'mexpt)) nil)
+	((not (ratnump (caddr x))) nil)
+	(funcflag (not (numberp (cadr x))))
+	(t t)))
 
-(DEFUN RATSETUP1 (VL GL)
-  (AND $RATWTLVL
-       (MAPC #'(LAMBDA (V G) 
-	        (SETQ V (ASSOLIKE V *RATWEIGHTS))
-	        (IF V (PUTPROP G V '$RATWEIGHT) (REMPROP G '$RATWEIGHT)))
-	     VL GL)))
+(defmfun ratsetup (vl gl) (ratsetup1 vl gl) (ratsetup2 vl gl))
 
-(DEFUN RATSETUP2 (VL GL)
-  (WHEN $ALGEBRAIC
-	(MAPC #'(LAMBDA (G) (REMPROP G 'ALGORD)) GL)
-	(MAPL #'(LAMBDA (V LG)
-		(COND ((SETQ V (ALGPGET (CAR V)))
-		       (ALGORDSET V LG) (PUTPROP (CAR LG) V 'TELLRAT))
-		      (T (REMPROP (CAR LG) 'TELLRAT))))
-	     VL GL))
-  (AND $RATFAC (LET ($RATFAC)
-		    (MAPC #'(LAMBDA (V G) 
-			     (IF (MPLUSP V)
-				 (PUTPROP G (CAR (PREP1 V)) 'UNHACKED)
-				 (REMPROP G 'UNHACKED)))
-			  VL GL))))
+(defun ratsetup1 (vl gl)
+  (and $ratwtlvl
+       (mapc #'(lambda (v g) 
+		 (setq v (assolike v *ratweights))
+		 (if v (putprop g v '$ratweight) (remprop g '$ratweight)))
+	     vl gl)))
 
-(defun porder (p) (IF (pcoefp p) 0 (valget (car p))))
+(defun ratsetup2 (vl gl)
+  (when $algebraic
+    (mapc #'(lambda (g) (remprop g 'algord)) gl)
+    (mapl #'(lambda (v lg)
+	      (cond ((setq v (algpget (car v)))
+		     (algordset v lg) (putprop (car lg) v 'tellrat))
+		    (t (remprop (car lg) 'tellrat))))
+	  vl gl))
+  (and $ratfac (let ($ratfac)
+		 (mapc #'(lambda (v g) 
+			   (if (mplusp v)
+			       (putprop g (car (prep1 v)) 'unhacked)
+			       (remprop g 'unhacked)))
+		       vl gl))))
+
+(defun porder (p) (if (pcoefp p) 0 (valget (car p))))
 
 (defun algordset (x gl)
-       (do ((p x (cddr p))
-	    (mv 0))
-	   ((null p)
-	    (do ((l gl (cdr l))) ((or (null l) (f> (valget (car l)) mv)))
-		(putprop (car l) t 'algord)))
-	   (setq mv (max mv (porder (cadr p))))))
+  (do ((p x (cddr p))
+       (mv 0))
+      ((null p)
+       (do ((l gl (cdr l))) ((or (null l) (f> (valget (car l)) mv)))
+	 (putprop (car l) t 'algord)))
+    (setq mv (max mv (porder (cadr p))))))
 
  
 #+cl
 (defun gensym-readable (name &aux #+lispm
-			     (default-cons-area working-storage-area ))
+			(default-cons-area working-storage-area ))
   (cond ((symbolp name)(gensym (string-trim "$" (string name))))
 	(t  (setq name (aformat nil "~:M" name))
 	    (cond (name (gensym name))
@@ -540,589 +540,589 @@ ON	(SETQ X (CONS (PGCD (CAR X) (CAR Y)) (PLCM (CDR X) (CDR Y))))
 #+cl
 (defun orderpointer (l)
   (sloop for v in l
-	for i below (f- (length l) (length genvar))
-	collecting  (gensym-readable v) into tem
-	finally (setq genvar (nconc tem genvar)) (return (prenumber genvar 1))))
+	 for i below (f- (length l) (length genvar))
+	 collecting  (gensym-readable v) into tem
+	 finally (setq genvar (nconc tem genvar)) (return (prenumber genvar 1))))
 #-cl
-(DEFUN ORDERPOINTER (L)
-       (CREATSYM (f- (LENGTH L) (LENGTH GENVAR)))
-       (PRENUMBER GENVAR 1))
+(defun orderpointer (l)
+  (creatsym (f- (length l) (length genvar)))
+  (prenumber genvar 1))
 
-(DEFUN CREATSYM (N)
+(defun creatsym (n)
   #+lispm (let ((default-cons-area working-storage-area))
-	    (COND ((f> N 0) (SETQ GENVAR (CONS (GENSYM) GENVAR))
-		   (CREATSYM (SUB1 N)))))
-  #-lispm   (COND ((f> N 0) (SETQ GENVAR (CONS (GENSYM) GENVAR))
-		   (CREATSYM (SUB1 N)))))
+	    (cond ((f> n 0) (setq genvar (cons (gensym) genvar))
+		   (creatsym (sub1 n)))))
+  #-lispm   (cond ((f> n 0) (setq genvar (cons (gensym) genvar))
+		   (creatsym (sub1 n)))))
 
-(DEFUN PRENUMBER (V N)
-       (DO ((VL V (CDR VL))
-	    (I N (f1+ I)))
-	   ((NULL VL) NIL)
-	   (SET (CAR VL) I)))
+(defun prenumber (v n)
+  (do ((vl v (cdr vl))
+       (i n (f1+ i)))
+      ((null vl) nil)
+    (set (car vl) i)))
 
-(DEFUN RGET (GENV)
-       (CONS (IF (AND $RATWTLVL
-		      (OR (fixnump $ratwtlvl) 
-			  (MERROR "Illegal value for RATWTLVL:~%~M" $RATWTLVL))
-		      (f> (OR (GET GENV '$RATWEIGHT) -1) $RATWTLVL))
-		 (PZERO)
-		 (PGET GENV))
-	     1))
+(defun rget (genv)
+  (cons (if (and $ratwtlvl
+		 (or (fixnump $ratwtlvl) 
+		     (merror "Illegal value for RATWTLVL:~%~M" $ratwtlvl))
+		 (f> (or (get genv '$ratweight) -1) $ratwtlvl))
+	    (pzero)
+	    (pget genv))
+	1))
 
-(DEFMFUN RATREP (X VARL) (SETQ VARLIST VARL) (RATREP* X))
+(defmfun ratrep (x varl) (setq varlist varl) (ratrep* x))
 
-(DEFMFUN RATREP* (X) 
-       (LET (GENPAIRS)
-	    (ORDERPOINTER VARLIST)
-	    (RATSETUP1 VARLIST GENVAR)
-	    (MAPC #'(LAMBDA (Y Z) (PUSH (CONS Y (RGET Z)) GENPAIRS))
-		  VARLIST GENVAR)
-	    (RATSETUP2 VARLIST GENVAR)
-	    (XCONS (PREP1 X)			      ; PREP1 changes VARLIST
-		   (LIST* 'MRAT 'SIMP VARLIST GENVAR  ;    when $RATFAC is T.
-			  (IF (AND (NOT (ATOM X)) (MEMQ 'IRREDUCIBLE (CDAR X)))
-			      '(IRREDUCIBLE))))))
+(defmfun ratrep* (x) 
+  (let (genpairs)
+    (orderpointer varlist)
+    (ratsetup1 varlist genvar)
+    (mapc #'(lambda (y z) (push (cons y (rget z)) genpairs))
+	  varlist genvar)
+    (ratsetup2 varlist genvar)
+    (xcons (prep1 x)			; PREP1 changes VARLIST
+	   (list* 'mrat 'simp varlist genvar ;    when $RATFAC is T.
+		  (if (and (not (atom x)) (memq 'irreducible (cdar x)))
+		      '(irreducible))))))
  
-(DEFVAR *WITHINRATF* NIL)
+(defvar *withinratf* nil)
 
-(DEFMFUN RATF (L)
- (PROG (U *WITHINRATF*)
-       (SETQ *WITHINRATF* T)
-       (WHEN (EQ '%% (CATCH 'RATF (NEWVAR L)))
-	     (SETQ *WITHINRATF* NIL) (RETURN (SRF L)))
-       (SETQ U (CATCH 'RATF (RATREP* L)))  ; for truncation routines
-       (RETURN (OR U (PROG2 (SETQ *WITHINRATF* NIL) (SRF L))))))
-
-
-(DEFUN PREP1 (X &AUX TEMP) 
-       (COND ((FLOATP X)
-	      (COND ($KEEPFLOAT (CONS X 1.0)) ((PREPFLOAT X))))
-	     ((INTEGERP X) (CONS (CMOD X) 1))
-	     #+cl ((rationalp x)
-		      (cond ((null modulus)(cons  (numerator x) (denominator x)))
-			    (t (cquotient (numerator x) (denominator x)))))
-	     ((ATOM X)(COND ((ASSOLIKE X GENPAIRS)) (T (NEWSYM X))))
-	     ((AND $RATFAC (ASSOLIKE X GENPAIRS)))
-	     ((EQ (CAAR X) 'MPLUS)
-	      (COND ($RATFAC
-		     (SETQ X (MAPCAR 'PREP1 (CDR X)))
-		     (COND ((ANDMAPC 'FRPOLY? X)
-			    (CONS (MFACPPLUS (MAPL #'(lambda (X)
-						      (RPLACA X (CAAR X)))
-						  X)) 
-				  1))
-			   (T (DO ((A (CAR X) (FACRPLUS A (CAR L)))
-				   (L (CDR X) (CDR L)))
-				  ((NULL L) A)))))
-		    (T (DO ((A (PREP1 (CADR X)) (RATPLUS A (PREP1 (CAR L))))
-			    (L (CDDR X) (CDR L)))
-			   ((NULL L) A)))))
-	     ((EQ (CAAR X) 'MTIMES)
-	      (DO ((A (SAVEFACTORS (PREP1 (CADR X)))
-		      (RATTIMES A (SAVEFACTORS (PREP1 (CAR L))) SW))
-		   (L (CDDR X) (CDR L))
-		   (SW (NOT (AND $NOREPEAT (MEMQ 'RATSIMP (CDAR X))))))
-		  ((NULL L) A)))
-	     ((EQ (CAAR X) 'MEXPT)
-	      (NEWVARMEXPT X (CADDR X) T))
-	     ((EQ (CAAR X) 'MQUOTIENT)
-	      (RATQUOTIENT (SAVEFACTORS (PREP1 (CADR X)))
-			   (SAVEFACTORS (PREP1 (CADDR X)))))
-	     ((EQ (CAAR X) 'MMINUS)
-	      (RATMINUS (PREP1 (CADR X))))
-	     ((EQ (CAAR X) 'RAT)
-	      (COND (MODULUS (CONS (CQUOTIENT (CMOD (CADR X)) (CMOD (CADDR X))) 1))
-		    (T (CONS (CADR X) (CADDR X)))))
-	     ((EQ (CAAR X) 'BIGFLOAT)(BIGFLOAT2RAT X))
-	     ((EQ (CAAR X) 'MRAT)
-	      (COND ((AND *WITHINRATF* (MEMQ 'TRUNC (CAR X)))
-		     (THROW 'RATF NIL))
-		    ((CATCH 'COMPATVL
-		       (PROGN (SETQ TEMP (COMPATVARL (CADDAR X)
-						     VARLIST
-						     (CADDDR (CAR X))
-						     GENVAR))
-			      T))
-		     (COND ((MEMQ 'TRUNC (CAR X))
-			    (CDR ($TAYTORAT X)))
-			   ((AND (NOT $KEEPFLOAT)
-				 (OR (PFLOATP (CADR X)) (PFLOATP (CDDR X))))
-			    (CDR (RATREP* ($RATDISREP X))))
-			   ((SUBLIS TEMP (CDR X)))))
-		    (T (CDR (RATREP* ($RATDISREP X))))))
-	     ((ASSOLIKE X GENPAIRS))
-	     (T (SETQ X (LITTLEFR1 X))
-		(COND ((ASSOLIKE X GENPAIRS))
-		      (T (NEWSYM X))))))
+(defmfun ratf (l)
+  (prog (u *withinratf*)
+     (setq *withinratf* t)
+     (when (eq '%% (catch 'ratf (newvar l)))
+       (setq *withinratf* nil) (return (srf l)))
+     (setq u (catch 'ratf (ratrep* l)))	; for truncation routines
+     (return (or u (prog2 (setq *withinratf* nil) (srf l))))))
 
 
-(DEFUN PUTONVLIST (X)
-       (PUSH X VLIST)
-       (AND $ALGEBRAIC
-	    (SETQ X (ASSOLIKE X TELLRATLIST))
-	    (MAPC 'NEWVAR1 X)))
+(defun prep1 (x &aux temp) 
+  (cond ((floatp x)
+	 (cond ($keepfloat (cons x 1.0)) ((prepfloat x))))
+	((integerp x) (cons (cmod x) 1))
+	#+cl ((rationalp x)
+	      (cond ((null modulus)(cons  (numerator x) (denominator x)))
+		    (t (cquotient (numerator x) (denominator x)))))
+	((atom x)(cond ((assolike x genpairs)) (t (newsym x))))
+	((and $ratfac (assolike x genpairs)))
+	((eq (caar x) 'mplus)
+	 (cond ($ratfac
+		(setq x (mapcar 'prep1 (cdr x)))
+		(cond ((andmapc 'frpoly? x)
+		       (cons (mfacpplus (mapl #'(lambda (x)
+						  (rplaca x (caar x)))
+					      x)) 
+			     1))
+		      (t (do ((a (car x) (facrplus a (car l)))
+			      (l (cdr x) (cdr l)))
+			     ((null l) a)))))
+	       (t (do ((a (prep1 (cadr x)) (ratplus a (prep1 (car l))))
+		       (l (cddr x) (cdr l)))
+		      ((null l) a)))))
+	((eq (caar x) 'mtimes)
+	 (do ((a (savefactors (prep1 (cadr x)))
+		 (rattimes a (savefactors (prep1 (car l))) sw))
+	      (l (cddr x) (cdr l))
+	      (sw (not (and $norepeat (memq 'ratsimp (cdar x))))))
+	     ((null l) a)))
+	((eq (caar x) 'mexpt)
+	 (newvarmexpt x (caddr x) t))
+	((eq (caar x) 'mquotient)
+	 (ratquotient (savefactors (prep1 (cadr x)))
+		      (savefactors (prep1 (caddr x)))))
+	((eq (caar x) 'mminus)
+	 (ratminus (prep1 (cadr x))))
+	((eq (caar x) 'rat)
+	 (cond (modulus (cons (cquotient (cmod (cadr x)) (cmod (caddr x))) 1))
+	       (t (cons (cadr x) (caddr x)))))
+	((eq (caar x) 'bigfloat)(bigfloat2rat x))
+	((eq (caar x) 'mrat)
+	 (cond ((and *withinratf* (memq 'trunc (car x)))
+		(throw 'ratf nil))
+	       ((catch 'compatvl
+		  (progn (setq temp (compatvarl (caddar x)
+						varlist
+						(cadddr (car x))
+						genvar))
+			 t))
+		(cond ((memq 'trunc (car x))
+		       (cdr ($taytorat x)))
+		      ((and (not $keepfloat)
+			    (or (pfloatp (cadr x)) (pfloatp (cddr x))))
+		       (cdr (ratrep* ($ratdisrep x))))
+		      ((sublis temp (cdr x)))))
+	       (t (cdr (ratrep* ($ratdisrep x))))))
+	((assolike x genpairs))
+	(t (setq x (littlefr1 x))
+	   (cond ((assolike x genpairs))
+		 (t (newsym x))))))
 
-(SETQ EXPSUMSPLIT T)			   ;CONTROLS SPLITTING SUMS IN EXPONS
+
+(defun putonvlist (x)
+  (push x vlist)
+  (and $algebraic
+       (setq x (assolike x tellratlist))
+       (mapc 'newvar1 x)))
 
-(DEFUN NEWVARMEXPT (X E FLAG) 
+(setq expsumsplit t)		    ;CONTROLS SPLITTING SUMS IN EXPONS
 
-       ;; WHEN FLAG IS T, CALL RETURNS RATFORM
-       (PROG (TOPEXP) 
-	     (COND ((AND (INTEGERP E) (NOT FLAG))
-		    (RETURN (NEWVAR1 (CADR X))))
+(defun newvarmexpt (x e flag) 
 
-		   ;; THIS MAKES PROBLEMS FOR RISCH ((AND(NOT(INTEGERP
-		   ;;E))(MEMQ 'RATSIMP (CDAR X))) (RETURN(SETQ VLIST
-		   ;;(CONS X VLIST))))
-		   )
-	     (SETQ TOPEXP 1)
-	TOP  (COND
+  ;; WHEN FLAG IS T, CALL RETURNS RATFORM
+  (prog (topexp) 
+     (cond ((and (integerp e) (not flag))
+	    (return (newvar1 (cadr x))))
 
-	      ;; X=B^N FOR N A NUMBER
-	      ((INTEGERP E)
-	       (SETQ TOPEXP (TIMES TOPEXP E))
-	       (SETQ X (CADR X)))
-	      ((ATOM E) NIL)
+	   ;; THIS MAKES PROBLEMS FOR RISCH ((AND(NOT(INTEGERP
+	   ;;E))(MEMQ 'RATSIMP (CDAR X))) (RETURN(SETQ VLIST
+	   ;;(CONS X VLIST))))
+	   )
+     (setq topexp 1)
+     top  (cond
 
-	      ;; X=B^(P/Q) FOR P AND Q INTEGERS
-	      ((EQ (CAAR E) 'RAT)
-	       (COND ((OR (MINUSP (CADR E)) (GREATERP (CADR E) 1))
-		      (SETQ TOPEXP (TIMES TOPEXP (CADR E)))
-		      (SETQ X (LIST '(MEXPT)
-				    (CADR X)
-				    (LIST '(RAT) 1 (CADDR E))))))
-	       (COND ((OR FLAG (NUMBERP (CADR X)) ))
-		     (*RATSIMP*
-		      (COND ((MEMALIKE X RADLIST) (RETURN NIL))
-			    (T (SETQ RADLIST (CONS X RADLIST))
-			       (RETURN (NEWVAR1 (CADR X))))) )
-		     ($ALGEBRAIC (NEWVAR1 (CADR X)))))
-	      ;; X=B^(A*C)
-	      ((EQ (CAAR E) 'MTIMES)
-	       (COND
-		((OR 
+	    ;; X=B^N FOR N A NUMBER
+	    ((integerp e)
+	     (setq topexp (times topexp e))
+	     (setq x (cadr x)))
+	    ((atom e) nil)
 
-		     ;; X=B^(N *C)
-		     (AND (ATOM (CADR E))
-			  (INTEGERP (CADR E))
-			  (SETQ TOPEXP (TIMES TOPEXP (CADR E)))
-			  (SETQ E (CDDR E)))
+	    ;; X=B^(P/Q) FOR P AND Q INTEGERS
+	    ((eq (caar e) 'rat)
+	     (cond ((or (minusp (cadr e)) (greaterp (cadr e) 1))
+		    (setq topexp (times topexp (cadr e)))
+		    (setq x (list '(mexpt)
+				  (cadr x)
+				  (list '(rat) 1 (caddr e))))))
+	     (cond ((or flag (numberp (cadr x)) ))
+		   (*ratsimp*
+		    (cond ((memalike x radlist) (return nil))
+			  (t (setq radlist (cons x radlist))
+			     (return (newvar1 (cadr x))))) )
+		   ($algebraic (newvar1 (cadr x)))))
+	    ;; X=B^(A*C)
+	    ((eq (caar e) 'mtimes)
+	     (cond
+	       ((or 
 
-		     ;; X=B^(P/Q *C)
-		     (AND (NOT (ATOM (CADR E)))
-			  (EQ (CAAADR E) 'RAT)
-			  (NOT (EQUAL 1 (CADADR E)))
-			  (SETQ TOPEXP (TIMES TOPEXP (CADADR E)))
-			  (SETQ E (CONS (LIST '(RAT)
-					      1
-					      (CADDR (CADR E)))
-					(CDDR E)))))
-		 (SETQ X
-		       (LIST '(MEXPT)
-			     (CADR X)
-			     (SETQ E (SIMPLIFY (CONS '(MTIMES)
-						      E)))))
-		 (GO TOP))))
+		 ;; X=B^(N *C)
+		 (and (atom (cadr e))
+		      (integerp (cadr e))
+		      (setq topexp (times topexp (cadr e)))
+		      (setq e (cddr e)))
 
-	      ;; X=B^(A+C)
-	      ((AND (EQ (CAAR E) 'MPLUS) EXPSUMSPLIT)	;SWITCH CONTROLS
-	       (SETQ					;SPLITTING EXPONENT
-		X					;SUMS
-		(CONS
-		 '(MTIMES)
-		 (MAPCAR 
-		  (FUNCTION (LAMBDA (LL) 
-				    (LIST '(MEXPT)
-					  (CADR X)
-					  (SIMPLIFY (LIST '(MTIMES)
-							   TOPEXP
-							   LL)))))
-		  (CDR E))))
-	       (COND (FLAG (RETURN (PREP1 X)))
-		     (T (RETURN (NEWVAR1 X))))))
-	     (COND (FLAG NIL)
-		   ((EQUAL 1 TOPEXP)
-		    (COND ((OR (ATOM X)
-			       (NOT (EQ (CAAR X) 'MEXPT)))
-			   (NEWVAR1 X))
-			  ((OR (MEMALIKE X VARLIST) (MEMALIKE X VLIST))
-			   NIL)
-			  (T (COND ((OR (ATOM X) (NULL *FNEWVARSW))
-				    (PUTONVLIST X))
-				   (T (SETQ X (LITTLEFR1 X))
-				      (MAPC (FUNCTION NEWVAR1)
-					    (CDR X))
-				     (OR (MEMALIKE X VLIST)
-					 (MEMALIKE X VARLIST)
-					 (PUTONVLIST X)))))))
-		   (T (NEWVAR1 X)))
-	     (RETURN
-	      (COND
-	       ((NULL FLAG) NIL)
-	       ((EQUAL 1 TOPEXP)
-		(COND
-		 ((AND (NOT (ATOM X)) (EQ (CAAR X) 'MEXPT))
-		  (COND ((ASSOLIKE X GENPAIRS))
-; *** SHOULD ONLY GET HERE IF CALLED FROM FR1. *FNEWVARSW=NIL
-			(T (SETQ X (LITTLEFR1 X))
-			 (COND ((ASSOLIKE X GENPAIRS))
-			       (T (NEWSYM X))))))
-		 (T (PREP1 X))))
-	       (T (RATEXPT (PREP1 X) TOPEXP))))))
+		 ;; X=B^(P/Q *C)
+		 (and (not (atom (cadr e)))
+		      (eq (caaadr e) 'rat)
+		      (not (equal 1 (cadadr e)))
+		      (setq topexp (times topexp (cadadr e)))
+		      (setq e (cons (list '(rat)
+					  1
+					  (caddr (cadr e)))
+				    (cddr e)))))
+		(setq x
+		      (list '(mexpt)
+			    (cadr x)
+			    (setq e (simplify (cons '(mtimes)
+						    e)))))
+		(go top))))
 
-(DEFUN NEWVAR1 (X) 
-       (COND ((NUMBERP X) NIL)
-	     ((MEMALIKE X VARLIST) NIL)
-	     ((MEMALIKE X VLIST) NIL)
-	     ((ATOM X) (PUTONVLIST X))
-	     ((MEMQ (CAAR X)
-		    '(MPLUS MTIMES RAT MDIFFERENCE
-			    MQUOTIENT MMINUS BIGFLOAT))
-	      (MAPC (FUNCTION NEWVAR1) (CDR X)))
-	     ((EQ (CAAR X) 'MEXPT)
-	      (NEWVARMEXPT X (CADDR X) NIL))
-	     ((EQ (CAAR X) 'MRAT)
-	      (AND *WITHINRATF* (MEMQ 'TRUNC (CDDDAR X)) (THROW 'RATF '%%))
-	      (COND ($RATFAC (MAPC 'NEWVAR3 (CADDAR X)))
-		    (T (MAPC (FUNCTION NEWVAR1) (REVERSE (CADDAR X))))))
-	     (T (COND (*FNEWVARSW (SETQ X (LITTLEFR1 X))
-				  (MAPC (FUNCTION NEWVAR1)
-					(CDR X))
-				  (OR (MEMALIKE X VLIST)
-				      (MEMALIKE X VARLIST)
-				      (PUTONVLIST X)))
-		      (T (PUTONVLIST X))))))
+	    ;; X=B^(A+C)
+	    ((and (eq (caar e) 'mplus) expsumsplit) ;SWITCH CONTROLS
+	     (setq			;SPLITTING EXPONENT
+	      x				;SUMS
+	      (cons
+	       '(mtimes)
+	       (mapcar 
+		(function (lambda (ll) 
+		  (list '(mexpt)
+			(cadr x)
+			(simplify (list '(mtimes)
+					topexp
+					ll)))))
+		(cdr e))))
+	     (cond (flag (return (prep1 x)))
+		   (t (return (newvar1 x))))))
+     (cond (flag nil)
+	   ((equal 1 topexp)
+	    (cond ((or (atom x)
+		       (not (eq (caar x) 'mexpt)))
+		   (newvar1 x))
+		  ((or (memalike x varlist) (memalike x vlist))
+		   nil)
+		  (t (cond ((or (atom x) (null *fnewvarsw))
+			    (putonvlist x))
+			   (t (setq x (littlefr1 x))
+			      (mapc (function newvar1)
+				    (cdr x))
+			      (or (memalike x vlist)
+				  (memalike x varlist)
+				  (putonvlist x)))))))
+	   (t (newvar1 x)))
+     (return
+       (cond
+	 ((null flag) nil)
+	 ((equal 1 topexp)
+	  (cond
+	    ((and (not (atom x)) (eq (caar x) 'mexpt))
+	     (cond ((assolike x genpairs))
+		   ;; *** SHOULD ONLY GET HERE IF CALLED FROM FR1. *FNEWVARSW=NIL
+		   (t (setq x (littlefr1 x))
+		      (cond ((assolike x genpairs))
+			    (t (newsym x))))))
+	    (t (prep1 x))))
+	 (t (ratexpt (prep1 x) topexp))))))
 
-(DEFUN NEWVAR3 (X)
-       (OR (MEMALIKE X VLIST)
-	   (MEMALIKE X VARLIST)
-	   (PUTONVLIST X)))
+(defun newvar1 (x) 
+  (cond ((numberp x) nil)
+	((memalike x varlist) nil)
+	((memalike x vlist) nil)
+	((atom x) (putonvlist x))
+	((memq (caar x)
+	       '(mplus mtimes rat mdifference
+		 mquotient mminus bigfloat))
+	 (mapc (function newvar1) (cdr x)))
+	((eq (caar x) 'mexpt)
+	 (newvarmexpt x (caddr x) nil))
+	((eq (caar x) 'mrat)
+	 (and *withinratf* (memq 'trunc (cdddar x)) (throw 'ratf '%%))
+	 (cond ($ratfac (mapc 'newvar3 (caddar x)))
+	       (t (mapc (function newvar1) (reverse (caddar x))))))
+	(t (cond (*fnewvarsw (setq x (littlefr1 x))
+			     (mapc (function newvar1)
+				   (cdr x))
+			     (or (memalike x vlist)
+				 (memalike x varlist)
+				 (putonvlist x)))
+		 (t (putonvlist x))))))
+
+(defun newvar3 (x)
+  (or (memalike x vlist)
+      (memalike x varlist)
+      (putonvlist x)))
  
 
 
-(DEFUN FR1 (X VARLIST)		;put radicands on initial varlist?
-  (PROG (GENVAR $NOREPEAT *RATSIMP* RADLIST VLIST NVARLIST OVARLIST GENPAIRS)
-	(NEWVAR1 X)
-	(SETQ NVARLIST (MAPCAR #'FR-ARGS VLIST))
-	(COND ((NOT *RATSIMP*)	;*ratsimp* not set for initial varlist
-	       (SETQ VARLIST (NCONC (SORTGREAT VLIST) VARLIST))
-	       (RETURN (RDIS (CDR (RATREP* X))))))
-	(SETQ OVARLIST (NCONC VLIST VARLIST)
-	      VLIST NIL)
-	(MAPC (FUNCTION NEWVAR1) NVARLIST) ;*RATSIMP*=T PUTS RADICANDS ON VLIST
-	(SETQ NVARLIST (NCONC NVARLIST VARLIST) ; RADICALS ON RADLIST
-	      VARLIST (NCONC (SORTGREAT VLIST) (RADSORT RADLIST) VARLIST))
-	(ORDERPOINTER VARLIST)
-	(SETQ GENPAIRS
-	      (MAPCAR (FUNCTION (LAMBDA (X Y) (CONS X (RGET Y))))
-		      VARLIST GENVAR))
-	(LET (($ALGEBRAIC $ALGEBRAIC) ($RATALGDENOM $RATALGDENOM) RADLIST)
-	     (AND (NOT $ALGEBRAIC)
-		  (ORMAPC (FUNCTION ALGPGET) VARLIST) ;NEEDS *RATSIMP*=T
-		  (SETQ $ALGEBRAIC T $RATALGDENOM NIL))
-	     (RATSETUP VARLIST GENVAR)
-	     (SETQ GENPAIRS
-		   (MAPCAR (FUNCTION (LAMBDA (X Y) (CONS X (PREP1 Y))))
-			   OVARLIST NVARLIST))
-	     (SETQ X (RDIS (PREP1 X)))
-	     (COND (RADLIST				;rational radicands
-		    (SETQ *RATSIMP* NIL)
-		    (SETQ X (RATSIMP (SIMPLIFY X) NIL NIL)))))
-	(RETURN X) ))
+(defun fr1 (x varlist)		    ;put radicands on initial varlist?
+  (prog (genvar $norepeat *ratsimp* radlist vlist nvarlist ovarlist genpairs)
+     (newvar1 x)
+     (setq nvarlist (mapcar #'fr-args vlist))
+     (cond ((not *ratsimp*)	;*ratsimp* not set for initial varlist
+	    (setq varlist (nconc (sortgreat vlist) varlist))
+	    (return (rdis (cdr (ratrep* x))))))
+     (setq ovarlist (nconc vlist varlist)
+	   vlist nil)
+     (mapc (function newvar1) nvarlist)	;*RATSIMP*=T PUTS RADICANDS ON VLIST
+     (setq nvarlist (nconc nvarlist varlist) ; RADICALS ON RADLIST
+	   varlist (nconc (sortgreat vlist) (radsort radlist) varlist))
+     (orderpointer varlist)
+     (setq genpairs
+	   (mapcar (function (lambda (x y) (cons x (rget y))))
+		   varlist genvar))
+     (let (($algebraic $algebraic) ($ratalgdenom $ratalgdenom) radlist)
+       (and (not $algebraic)
+	    (ormapc (function algpget) varlist) ;NEEDS *RATSIMP*=T
+	    (setq $algebraic t $ratalgdenom nil))
+       (ratsetup varlist genvar)
+       (setq genpairs
+	     (mapcar (function (lambda (x y) (cons x (prep1 y))))
+		     ovarlist nvarlist))
+       (setq x (rdis (prep1 x)))
+       (cond (radlist			;rational radicands
+	      (setq *ratsimp* nil)
+	      (setq x (ratsimp (simplify x) nil nil)))))
+     (return x) ))
 
-(DEFUN RATSIMP (X VARLIST GENVAR) ($RATDISREP (RATF X)))
+(defun ratsimp (x varlist genvar) ($ratdisrep (ratf x)))
 
-(DEFUN LITTLEFR1 (X) 
-       (CONS (REMQ 'SIMP (CAR X))
-	     (MAPFR1 (CDR X) NIL)))
+(defun littlefr1 (x) 
+  (cons (remq 'simp (car x))
+	(mapfr1 (cdr x) nil)))
 
 ;;IF T RATSIMP FACTORS RADICANDS AND LOGANDS
-(DEFMVAR FR-FACTOR NIL)				       
+(defmvar fr-factor nil)				       
 
-(DEFUN FR-ARGS (X)	;SIMP (A/B)^N TO A^N/B^N ?
-  (COND ((ATOM X)
-	 (WHEN (EQ X '$%I) (SETQ *RATSIMP* T)) ;indicates algebraic present
-	 X)
-	(T (SETQ *RATSIMP* T)	;FLAG TO CHANGED ELMT.
-	   (SIMPLIFY (ZP (CONS (REMQ 'SIMP (CAR X))
-			       (IF (OR (RADFUNP X NIL) (EQ (CAAR X) '%LOG))
-				   (CONS (IF FR-FACTOR (FACTOR (CADR X))
-					     (FR1 (CADR X) VARLIST))
-					 (CDDR X))
-				   (LET (MODULUS)
-					(MAPFR1 (CDR X) VARLIST)))))))))
+(defun fr-args (x)			;SIMP (A/B)^N TO A^N/B^N ?
+  (cond ((atom x)
+	 (when (eq x '$%i) (setq *ratsimp* t)) ;indicates algebraic present
+	 x)
+	(t (setq *ratsimp* t)		;FLAG TO CHANGED ELMT.
+	   (simplify (zp (cons (remq 'simp (car x))
+			       (if (or (radfunp x nil) (eq (caar x) '%log))
+				   (cons (if fr-factor (factor (cadr x))
+					     (fr1 (cadr x) varlist))
+					 (cddr x))
+				   (let (modulus)
+				     (mapfr1 (cdr x) varlist)))))))))
 
-;(DEFUN ZP (X)						;SIMPLIFY MEXPT'S &
-;       (COND ((ATOM X) X)				;RATEXPAND EXPONENT
-;	     ((NOT (EQ (CAAR X) 'MEXPT)) X)
-;	     ((EQUAL 0 (CADDR X)) 1)
-;	     ((EQUAL 0 (CADR X)) 0)
-;	     ((EQUAL 1 (CADR X)) 1)
-;	     ((ATOM (CADDR X)) X)
-;	     (T (LIST (CAR X) (CADR X)
-;		      ((LAMBDA (VARLIST *RATSIMP*) ($RATEXPAND (CADDR X)))
-;		       VARLIST NIL)))))
+;;(DEFUN ZP (X)						;SIMPLIFY MEXPT'S &
+;;       (COND ((ATOM X) X)				;RATEXPAND EXPONENT
+;;	     ((NOT (EQ (CAAR X) 'MEXPT)) X)
+;;	     ((EQUAL 0 (CADDR X)) 1)
+;;	     ((EQUAL 0 (CADR X)) 0)
+;;	     ((EQUAL 1 (CADR X)) 1)
+;;	     ((ATOM (CADDR X)) X)
+;;	     (T (LIST (CAR X) (CADR X)
+;;		      ((LAMBDA (VARLIST *RATSIMP*) ($RATEXPAND (CADDR X)))
+;;		       VARLIST NIL)))))
 
-(DEFUN ZP (X)
-       (IF (AND (MEXPTP X) (NOT (ATOM (CADDR X))))
-	   (LIST (CAR X) (CADR X)
-		 (LET ((VARLIST VARLIST) *RATSIMP*)
-		      ($RATEXPAND (CADDR X))))
-	   X))
+(defun zp (x)
+  (if (and (mexptp x) (not (atom (caddr x))))
+      (list (car x) (cadr x)
+	    (let ((varlist varlist) *ratsimp*)
+	      ($ratexpand (caddr x))))
+      x))
 
 
-(DEFUN NEWSYM (E)
-  (PROG (G P)
-	(COND ((SETQ G (ASSOLIKE E GENPAIRS))
-	       (RETURN G)))
-	#-cl
-	(SETQ G (GENSYM))
-	#+cl
-	(SETQ G (gensym-readable e))
-	(PUTPROP G E 'DISREP)
-	(PUSH E VARLIST)
-	(PUSH (CONS E (RGET G)) GENPAIRS)
-	(VALPUT G (IF GENVAR (SUB1 (VALGET (CAR GENVAR))) 1))
-	(PUSH G GENVAR)
-	(COND ((SETQ P (AND $ALGEBRAIC (ALGPGET E)))
-	       (ALGORDSET P GENVAR)
-	       (PUTPROP G P 'TELLRAT)))
-	(RETURN (RGET G))))
+(defun newsym (e)
+  (prog (g p)
+     (cond ((setq g (assolike e genpairs))
+	    (return g)))
+     #-cl
+     (setq g (gensym))
+     #+cl
+     (setq g (gensym-readable e))
+     (putprop g e 'disrep)
+     (push e varlist)
+     (push (cons e (rget g)) genpairs)
+     (valput g (if genvar (sub1 (valget (car genvar))) 1))
+     (push g genvar)
+     (cond ((setq p (and $algebraic (algpget e)))
+	    (algordset p genvar)
+	    (putprop g p 'tellrat)))
+     (return (rget g))))
 
 
 ;;  Any program which calls RATF on
 ;;  a floating point number but does not wish to see "RAT replaced ..."
 ;;  message, must bind $RATPRINT to NIL.
 
-(DEFMVAR $RATPRINT T)
+(defmvar $ratprint t)
 
-(DEFMVAR $RATEPSILON #-Franz 2.0E-8 
-		     #+(and Franz VAX) (expt 2.0 -56.)
-		     #+(and Franz 68k) (expt 2.0 -52.))
-				;; Some 68k stuff has a shorter significand.
+(defmvar $ratepsilon #-franz 2.0e-8 
+	 #+(and franz vax) (expt 2.0 -56.)
+	 #+(and franz 68k) (expt 2.0 -52.))
+;; Some 68k stuff has a shorter significand.
 ;; This control of conversion from float to rational appears to be explained
 ;; nowhere. - RJF
 
-(DEFMFUN MAXIMA-RATIONALIZE (X)
-  (COND ((NOT (FLOATP X)) X)
-	((< X 0.0) (SETQ X (RATION1 (*$ -1.0 X)))
-		   (RPLACA X (TIMES -1 (CAR X))))
-	(T (RATION1 X))))
+(defmfun maxima-rationalize (x)
+  (cond ((not (floatp x)) x)
+	((< x 0.0) (setq x (ration1 (*$ -1.0 x)))
+	 (rplaca x (times -1 (car x))))
+	(t (ration1 x))))
 
-; the following code patches the fact that fix(float(bignum))
-; sometimes fails in franz.
-#+Franz
+;; the following code patches the fact that fix(float(bignum))
+;; sometimes fails in franz.
+#+franz
 (defun ration1 (x)
- ((lambda (rateps)
-       (or (and (zerop x) (cons 0 1))
-	   (prog (y a)
-		 (return (do ((xx x (setq y (//$ 1.0 (-$ xx (float a)))))
-			      (num (setq a (newfix x)) 
-				   (plus (times (setq a (newfix y)) num) onum))
-			      (den 1 (plus (times a den) oden))
-			      (onum 1 num)
-			      (oden 0 den))
-			     ((and (not (zerop den))
-				   (< (abs (//$ (-$ x (//$ (float num) (float den)))
-						x))
-					  rateps))
-			      (cons num den))  )))))
- (cond ((not (floatp $ratepsilon)) ($float $ratepsilon)) (t $ratepsilon))))
+  ((lambda (rateps)
+     (or (and (zerop x) (cons 0 1))
+	 (prog (y a)
+	    (return (do ((xx x (setq y (//$ 1.0 (-$ xx (float a)))))
+			 (num (setq a (newfix x)) 
+			      (plus (times (setq a (newfix y)) num) onum))
+			 (den 1 (plus (times a den) oden))
+			 (onum 1 num)
+			 (oden 0 den))
+			((and (not (zerop den))
+			      (< (abs (//$ (-$ x (//$ (float num) (float den)))
+					   x))
+				 rateps))
+			 (cons num den))  )))))
+   (cond ((not (floatp $ratepsilon)) ($float $ratepsilon)) (t $ratepsilon))))
 
-#+Franz
+#+franz
 (defun newfix (x)
   (cond ((greaterp (abs x) two30f)
 	 (times two30 (newfix (quotient x two30f))))
 	(t (fix x))))
 
-#-Franz
-(DEFUN RATION1 (X)
- (let ((rateps
-	(COND ((NOT (FLOATP $RATEPSILON))
-	       ($FLOAT $RATEPSILON)) (T $RATEPSILON))))
-   (OR (AND (ZEROP X) (CONS 0 1))
-       (PROG
-	(Y A)
-	(RETURN
-	 (DO ((XX X (SETQ Y (/ 1.0 (- XX (FLOAT A x)))))
-	      (NUM (SETQ A (FIX X)) (PLUS (TIMES (SETQ A (FIX Y)) NUM) ONUM))
-	      (DEN 1 (PLUS (TIMES A DEN) ODEN))
-	      (ONUM 1 NUM)
-	      (ODEN 0 DEN))
-	     ((AND (NOT (ZEROP DEN))
-		   (NOT (> (ABS
-			    (/
-			     (- X
-				(/ (FLOAT NUM x)
-				   (FLOAT DEN x)))
-			     X))
-			   RATEPS)))
-	      (CONS NUM DEN))))))))
+#-franz
+(defun ration1 (x)
+  (let ((rateps
+	 (cond ((not (floatp $ratepsilon))
+		($float $ratepsilon)) (t $ratepsilon))))
+    (or (and (zerop x) (cons 0 1))
+	(prog
+	    (y a)
+	   (return
+	     (do ((xx x (setq y (/ 1.0 (- xx (float a x)))))
+		  (num (setq a (fix x)) (plus (times (setq a (fix y)) num) onum))
+		  (den 1 (plus (times a den) oden))
+		  (onum 1 num)
+		  (oden 0 den))
+		 ((and (not (zerop den))
+		       (not (> (abs
+				(/
+				 (- x
+				    (/ (float num x)
+				       (float den x)))
+				 x))
+			       rateps)))
+		  (cons num den))))))))
 
-(DEFUN PREPFLOAT (F)
- (COND ((< (ABS F) 1.0E-37) (SETQ F 0.0)))   ;changed 38 to 37 --wfs
- (COND (MODULUS (MERROR "Floating point meaningless unless MODULUS = FALSE"))
-       ($RATPRINT (MTELL "~&RAT replaced ~A by" F)))
- (SETQ F (MAXIMA-RATIONALIZE F))
- (IF $RATPRINT (MTELL " ~A//~A = ~A~%"  (CAR F) (CDR F)
-		      (FPCOFRAT1 (CAR F) (CDR F))))
- F)
+(defun prepfloat (f)
+  (cond ((< (abs f) 1.0e-37) (setq f 0.0))) ;changed 38 to 37 --wfs
+  (cond (modulus (merror "Floating point meaningless unless MODULUS = FALSE"))
+	($ratprint (mtell "~&RAT replaced ~A by" f)))
+  (setq f (maxima-rationalize f))
+  (if $ratprint (mtell " ~A//~A = ~A~%"  (car f) (cdr f)
+		       (fpcofrat1 (car f) (cdr f))))
+  f)
 
 
-(DEFUN PDISREP (P)
-       (COND ((ATOM P) P)
-	     (T (PDISREP+ (PDISREP2 (CDR P) (GET (CAR P) 'DISREP))))))
+(defun pdisrep (p)
+  (cond ((atom p) p)
+	(t (pdisrep+ (pdisrep2 (cdr p) (get (car p) 'disrep))))))
 
-(DEFUN PDISREP! (N VAR)
-       (COND ((ZEROP N) 1)
-	     ((EQN N 1) (COND ((ATOM VAR) VAR)
-			      ((OR (EQ (CAAR VAR) 'MTIMES)
-				   (EQ (CAAR VAR) 'MPLUS))
-			       (COPY1 VAR))
-			      (T VAR)))
-	     (T (LIST '(MEXPT RATSIMP) VAR N))))
+(defun pdisrep! (n var)
+  (cond ((zerop n) 1)
+	((eqn n 1) (cond ((atom var) var)
+			 ((or (eq (caar var) 'mtimes)
+			      (eq (caar var) 'mplus))
+			  (copy1 var))
+			 (t var)))
+	(t (list '(mexpt ratsimp) var n))))
 
-(DEFUN PDISREP+ (P)
-       (COND ((NULL (CDR P)) (CAR P))
-	     (T (LET ((A (LAST P)))
-		  (COND ((MPLUSP (CAR A))
-			 (RPLACD A (CDDAR A))
-			 (RPLACA A (CADAR A))))
-		  (CONS '(MPLUS RATSIMP) P)))))
+(defun pdisrep+ (p)
+  (cond ((null (cdr p)) (car p))
+	(t (let ((a (last p)))
+	     (cond ((mplusp (car a))
+		    (rplacd a (cddar a))
+		    (rplaca a (cadar a))))
+	     (cons '(mplus ratsimp) p)))))
 	 
-(DEFUN PDISREP* (A B)
-  (COND ((EQN A 1) B)
-	((EQN B 1) A)
-	(T (CONS '(MTIMES RATSIMP)
-		 (NCONC (PDISREP*CHK A) (PDISREP*CHK B))))))
+(defun pdisrep* (a b)
+  (cond ((eqn a 1) b)
+	((eqn b 1) a)
+	(t (cons '(mtimes ratsimp)
+		 (nconc (pdisrep*chk a) (pdisrep*chk b))))))
 
-(DEFUN PDISREP*CHK (A)
-  (IF (MTIMESP A) (CDR A) (NCONS A)))
+(defun pdisrep*chk (a)
+  (if (mtimesp a) (cdr a) (ncons a)))
 
-(DEFUN PDISREP2 (P VAR)
-       (COND ((NULL P) NIL)
-	     ($RATEXPAND (PDISREP2EXPAND P VAR))
-	     (T (DO ((L () (CONS (PDISREP* (PDISREP (CADR P))
-					   (PDISREP! (CAR P) VAR))
-				 L))
-		     (P P (CDDR P)))
-		    ((NULL P)
-		     (NREVERSE L))))))
+(defun pdisrep2 (p var)
+  (cond ((null p) nil)
+	($ratexpand (pdisrep2expand p var))
+	(t (do ((l () (cons (pdisrep* (pdisrep (cadr p))
+				      (pdisrep! (car p) var))
+			    l))
+		(p p (cddr p)))
+	       ((null p)
+		(nreverse l))))))
 
 ;; IF $RATEXPAND IS TRUE, (X+1)*(Y+1) WILL DISPLAY AS
 ;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
-(DEFMVAR $RATEXPAND NIL)
+(defmvar $ratexpand nil)
 
-(DEFMFUN $RATEXPAND (X)
- (COND ((MBAGP X) (CONS (CAR X) (MAPCAR '$RATEXPAND (CDR X))))
-       (T ((LAMBDA ($RATEXPAND $RATFAC) (RATDISREP (RATF X))) T NIL))))
+(defmfun $ratexpand (x)
+  (cond ((mbagp x) (cons (car x) (mapcar '$ratexpand (cdr x))))
+	(t ((lambda ($ratexpand $ratfac) (ratdisrep (ratf x))) t nil))))
 	 
-(DEFUN PDISREP*EXPAND (A B)
-  (COND ((EQN A 1) (LIST B))
-	((EQN B 1) (LIST A))
-	((OR (ATOM A) (NOT (EQ (CAAR A) 'MPLUS)))
-	 (LIST (CONS (QUOTE (MTIMES RATSIMP))
-		     (NCONC (PDISREP*CHK A) (PDISREP*CHK B)))))
-	(T (MAPCAR #'(LAMBDA (Z) (IF (EQN Z 1) B
-				     (CONS '(MTIMES RATSIMP)
-					   (NCONC (PDISREP*CHK Z)
-						  (PDISREP*CHK B)))))
-		   (CDR A)))))
+(defun pdisrep*expand (a b)
+  (cond ((eqn a 1) (list b))
+	((eqn b 1) (list a))
+	((or (atom a) (not (eq (caar a) 'mplus)))
+	 (list (cons (quote (mtimes ratsimp))
+		     (nconc (pdisrep*chk a) (pdisrep*chk b)))))
+	(t (mapcar #'(lambda (z) (if (eqn z 1) b
+				     (cons '(mtimes ratsimp)
+					   (nconc (pdisrep*chk z)
+						  (pdisrep*chk b)))))
+		   (cdr a)))))
 	 
-(DEFUN PDISREP2EXPAND (P VAR)
-  (COND ((NULL P) NIL)
-	(T (NCONC (PDISREP*EXPAND (PDISREP (CADR P))
-				  (PDISREP! (CAR P) VAR))
-		  (PDISREP2EXPAND (CDDR P) VAR)))))
+(defun pdisrep2expand (p var)
+  (cond ((null p) nil)
+	(t (nconc (pdisrep*expand (pdisrep (cadr p))
+				  (pdisrep! (car p) var))
+		  (pdisrep2expand (cddr p) var)))))
 
 
-(DEFMVAR $RATDENOMDIVIDE T)
+(defmvar $ratdenomdivide t)
 
-(DEFMFUN $RATDISREP (X)
-  (COND ((NOT ($RATP X)) X)
-	(T (SETQ X (RATDISREPD X))
-	   (IF (AND (NOT (ATOM X)) (MEMQ 'TRUNC (CDAR X)))
-	       (CONS (DELQ 'TRUNC (copy-top-level (CAR X)) 1) (CDR X))
-	       X))))
+(defmfun $ratdisrep (x)
+  (cond ((not ($ratp x)) x)
+	(t (setq x (ratdisrepd x))
+	   (if (and (not (atom x)) (memq 'trunc (cdar x)))
+	       (cons (delq 'trunc (copy-top-level (car x)) 1) (cdr x))
+	       x))))
 
-; RATDISREPD is needed by DISPLA. - JPG
-(DEFUN RATDISREPD (X)
-  (MAPC #'(LAMBDA (Y Z) (PUTPROP Y Z (QUOTE DISREP)))
-	(CADDDR (CAR X))
-	(CADDAR X))
-  (LET ((VARLIST (CADDAR X)))
-       (IF (MEMQ 'TRUNC (CAR X)) (SRDISREP X) (CDISREP (CDR X)))))
+;; RATDISREPD is needed by DISPLA. - JPG
+(defun ratdisrepd (x)
+  (mapc #'(lambda (y z) (putprop y z (quote disrep)))
+	(cadddr (car x))
+	(caddar x))
+  (let ((varlist (caddar x)))
+    (if (memq 'trunc (car x)) (srdisrep x) (cdisrep (cdr x)))))
 
-(DEFUN CDISREP (X &AUX N D SIGN)
-  (COND ((PZEROP (CAR X)) 0)
-	((OR (EQN 1 (CDR X)) (FLOATP (CDR X))) (PDISREP (CAR X)))
-	(T (SETQ SIGN (COND ($RATEXPAND (SETQ N (PDISREP (CAR X))) 1)
-			    ((PMINUSP (CAR X))
-			     (SETQ N (PDISREP (PMINUS (CAR X)))) -1)
-			    (T (SETQ N (PDISREP (CAR X))) 1)))
-	   (SETQ D (PDISREP (CDR X)))
-	   (COND ((AND (NUMBERP N) (NUMBERP D))
-		  (LIST '(RAT) (TIMES SIGN N) D))
-		 ((AND $RATDENOMDIVIDE $RATEXPAND
-		       (NOT (ATOM N))
-		       (EQ (CAAR N) 'MPLUS))
-		  (FANCYDIS N D))
-		 ((NUMBERP D)
-		  (LIST '(MTIMES RATSIMP)
-			(LIST '(RAT) SIGN D) N))
-		 ((EQN SIGN -1) 
-		  (CONS '(MTIMES RATSIMP)
-			(COND ((NUMBERP N)
-			       (LIST (TIMES N -1)
-				     (LIST '(MEXPT RATSIMP) D -1)))
-			      (T (LIST SIGN N (LIST '(MEXPT RATSIMP) D -1))))))
-		 ((EQN N 1)
-		  (LIST '(MEXPT RATSIMP) D -1))
-		 (T (LIST '(MTIMES RATSIMP) N
-			  (LIST '(MEXPT RATSIMP) D -1)))))))
+(defun cdisrep (x &aux n d sign)
+  (cond ((pzerop (car x)) 0)
+	((or (eqn 1 (cdr x)) (floatp (cdr x))) (pdisrep (car x)))
+	(t (setq sign (cond ($ratexpand (setq n (pdisrep (car x))) 1)
+			    ((pminusp (car x))
+			     (setq n (pdisrep (pminus (car x)))) -1)
+			    (t (setq n (pdisrep (car x))) 1)))
+	   (setq d (pdisrep (cdr x)))
+	   (cond ((and (numberp n) (numberp d))
+		  (list '(rat) (times sign n) d))
+		 ((and $ratdenomdivide $ratexpand
+		       (not (atom n))
+		       (eq (caar n) 'mplus))
+		  (fancydis n d))
+		 ((numberp d)
+		  (list '(mtimes ratsimp)
+			(list '(rat) sign d) n))
+		 ((eqn sign -1) 
+		  (cons '(mtimes ratsimp)
+			(cond ((numberp n)
+			       (list (times n -1)
+				     (list '(mexpt ratsimp) d -1)))
+			      (t (list sign n (list '(mexpt ratsimp) d -1))))))
+		 ((eqn n 1)
+		  (list '(mexpt ratsimp) d -1))
+		 (t (list '(mtimes ratsimp) n
+			  (list '(mexpt ratsimp) d -1)))))))
  
 
 ;; FANCYDIS GOES THROUGH EACH TERM AND DIVIDES IT BY THE DENOMINATOR.
 
-(DEFUN FANCYDIS (N D)
-  (SETQ D (SIMPLIFY (LIST '(MEXPT) D -1)))
-  (SIMPLIFY (CONS '(MPLUS)
-		  (MAPCAR #'(LAMBDA (Z)
-				    ($RATDISREP (RATF (LIST '(MTIMES) Z D))))
-			  (CDR N)))))
+(defun fancydis (n d)
+  (setq d (simplify (list '(mexpt) d -1)))
+  (simplify (cons '(mplus)
+		  (mapcar #'(lambda (z)
+			      ($ratdisrep (ratf (list '(mtimes) z d))))
+			  (cdr n)))))
 
 
-(DEFUN COMPATVARL (A B C D)
-       (COND ((NULL A) NIL)
-	     ((OR (NULL B) (NULL C) (NULL D)) (THROW 'COMPATVL NIL))
-	     ((ALIKE1 (CAR A) (CAR B))
-	      (SETQ A (COMPATVARL (CDR A) (CDR B) (CDR C) (CDR D)))
-	      (COND ((EQ (CAR C) (CAR D)) A)
-		    (T (CONS (CONS (CAR C) (CAR D)) A))))
-	     (T (COMPATVARL A (CDR B) C (CDR D)))))
+(defun compatvarl (a b c d)
+  (cond ((null a) nil)
+	((or (null b) (null c) (null d)) (throw 'compatvl nil))
+	((alike1 (car a) (car b))
+	 (setq a (compatvarl (cdr a) (cdr b) (cdr c) (cdr d)))
+	 (cond ((eq (car c) (car d)) a)
+	       (t (cons (cons (car c) (car d)) a))))
+	(t (compatvarl a (cdr b) c (cdr d)))))
 
-(DEFUN NEWVAR (L &AUX VLIST)
-  (NEWVAR1 L)
-  (SETQ VARLIST (NCONC (SORTGREAT VLIST) VARLIST)))
+(defun newvar (l &aux vlist)
+  (newvar1 l)
+  (setq varlist (nconc (sortgreat vlist) varlist)))
 
-(DEFUN SORTGREAT (L) (AND L (NREVERSE (SORT L 'GREAT))))
+(defun sortgreat (l) (and l (nreverse (sort l 'great))))
 
-(DEFUN FNEWVAR (L &AUX (*FNEWVARSW T)) (NEWVAR L))
+(defun fnewvar (l &aux (*fnewvarsw t)) (newvar l))
 
-(DEFUN NESTLEV (EXP)
-       (COND ((ATOM EXP) 0)
-	     (T (DO ((M (NESTLEV (CADR EXP)) (MAX M (NESTLEV (CAR L))))
-		     (L (CDDR EXP) (CDR L)))
-		    ((NULL L) (f1+ M))))))
+(defun nestlev (exp)
+  (cond ((atom exp) 0)
+	(t (do ((m (nestlev (cadr exp)) (max m (nestlev (car l))))
+		(l (cddr exp) (cdr l)))
+	       ((null l) (f1+ m))))))
 
-(DEFUN RADSORT (L)
-  (SORT L #'(LAMBDA (A B)
-	      ((LAMBDA (NA NB)
-		 (COND ((< NA NB) T)
-		       ((> NA NB) NIL)
-		       (T (GREAT B A))))
-	       (NESTLEV A) (NESTLEV B)))))
+(defun radsort (l)
+  (sort l #'(lambda (a b)
+	      ((lambda (na nb)
+		 (cond ((< na nb) t)
+		       ((> na nb) nil)
+		       (t (great b a))))
+	       (nestlev a) (nestlev b)))))
 
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 5
 ;;	IT INCLUDES THE CONVERSION AND TOP-LEVEL ROUTINES USED

@@ -13,10 +13,10 @@
 (load-macsyma-macros rzmac)
 
 (declare-top(special opers *a *n $factlim sum msump *i
-		  *opers-list opers-list $ratsimpexpons makef)
-	 (*expr sum)
-	 (fixnum %n %k %i %m $genindex)
-	 (genprefix sm))
+		     *opers-list opers-list $ratsimpexpons makef)
+	    (*expr sum)
+	    (fixnum %n %k %i %m $genindex)
+	    (genprefix sm))
 
 (sloop for (x y) on 
        '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
@@ -26,59 +26,59 @@
 
 (defmvar $zeta%pi t)
 
-	(comment Polynomial predicates and other such things)
+(comment polynomial predicates and other such things)
 
 (defun poly? (exp var)
-    (cond ((or (atom exp) (free exp var)))
-	  ((memq (caar exp) '(mtimes mplus))
-	   (do ((exp (cdr exp) (cdr exp)))
-	       ((null exp) t)
-	       (and (null (poly? (car exp) var)) (return nil))))
-	  ((and (eq (caar exp) 'mexpt)
-	 	(integerp (caddr exp))
-		(> (caddr exp) 0))
-	   (poly? (cadr exp) var))))
+  (cond ((or (atom exp) (free exp var)))
+	((memq (caar exp) '(mtimes mplus))
+	 (do ((exp (cdr exp) (cdr exp)))
+	     ((null exp) t)
+	   (and (null (poly? (car exp) var)) (return nil))))
+	((and (eq (caar exp) 'mexpt)
+	      (integerp (caddr exp))
+	      (> (caddr exp) 0))
+	 (poly? (cadr exp) var))))
 
 (defun smono (x var) (smonogen x var t))
 
 (defun smonop (x var) (smonogen x var nil))
 
-(defun smonogen (x var fl)  ; fl indicates whether to return *a *n
-    (cond ((free x var) (and fl (setq *n 0 *a x)) t)
-	  ((atom x) (and fl (setq *n (setq *a 1))) t)
-	  ((eq (caar x) 'mtimes)
-	   (do ((x (cdr x) (cdr x))
-		(a '(1)) (n '(0)))
-	       ((null x)
-		(and fl (setq *n (addn n nil) *a (muln a nil))) t)
-	       (let (*a *n)
-		 (if (smonogen (car x) var fl)
-		     (and fl (setq a (cons *a a) n (cons *n n)))
-		     (return nil)))))
-	  ((eq (caar x) 'mexpt)
-	   (cond ((and (free (caddr x) var) (eq (cadr x) var))
-		  (and fl (setq *n (caddr x) *a 1)) t)))))
+(defun smonogen (x var fl)	; fl indicates whether to return *a *n
+  (cond ((free x var) (and fl (setq *n 0 *a x)) t)
+	((atom x) (and fl (setq *n (setq *a 1))) t)
+	((eq (caar x) 'mtimes)
+	 (do ((x (cdr x) (cdr x))
+	      (a '(1)) (n '(0)))
+	     ((null x)
+	      (and fl (setq *n (addn n nil) *a (muln a nil))) t)
+	   (let (*a *n)
+	     (if (smonogen (car x) var fl)
+		 (and fl (setq a (cons *a a) n (cons *n n)))
+		 (return nil)))))
+	((eq (caar x) 'mexpt)
+	 (cond ((and (free (caddr x) var) (eq (cadr x) var))
+		(and fl (setq *n (caddr x) *a 1)) t)))))
 
-	(comment Factorial Stuff)
+(comment factorial stuff)
 
 (setq $factlim -1 makef nil)
 
-(DEFMFUN $genfact (&rest l)
+(defmfun $genfact (&rest l)
   (cons '(%genfact) (copy-rest-arg l)))
 
 (defun gfact (n %m i)
   (cond ((minusp %m) (improper-arg-err %m '$genfact))
 	((= %m 0) 1)
 	(t (prog (ans)
-		 (setq ans n)
-	       a (if (= %m 1) (return ans))
-	         (setq n (m- n i) %m (f1- %m) ans (m* ans n))
-		 (go a)))))
+	      (setq ans n)
+	      a (if (= %m 1) (return ans))
+	      (setq n (m- n i) %m (f1- %m) ans (m* ans n))
+	      (go a)))))
 
-;(defun factorial (%i)
-;	(cond ((< %i 2) 1)
-;	      (t (do ((x 1 (times %i x)) (%i %i (f1- %i)))
-;		     ((= %i 1) x)))))
+;;(defun factorial (%i)
+;;	(cond ((< %i 2) 1)
+;;	      (t (do ((x 1 (times %i x)) (%i %i (f1- %i)))
+;;		     ((= %i 1) x)))))
 ;; people like to do big factorials so do them a bit faster.
 ;; by breaking into chunks.
 
@@ -86,23 +86,23 @@
   (let* ((vec (make-array (if (< n 100) 1 20) :initial-element 1))
 	 (m (length vec))
 	 (j 0))
-  (sloop for i from 1 to n
-	 do (setq j (mod i m))
-	 (setf (aref vec j) (* (aref vec j) i)))
-  (sloop for v in-array vec
-	 do (setq ans (* ans v)))
-  ans))
+    (sloop for i from 1 to n
+	   do (setq j (mod i m))
+	   (setf (aref vec j) (* (aref vec j) i)))
+    (sloop for v in-array vec
+	   do (setq ans (* ans v)))
+    ans))
 
 (defmfun simpfact (x y z)
-	(oneargcheck x)
-	(setq y (simpcheck (cadr x) z))
-	(cond ((or (floatp y) (and (not makef) (ratnump y) (equal (caddr y) 2)))
-	       (simplifya (makegamma1 (list '(mfactorial) y)) nil))
-	      ((or (not (fixnump y)) (not (> y -1)))
-	       (eqtest (list '(mfactorial) y) x))
-	      ((or (minusp $factlim) (not (greaterp y $factlim)))
-	       (factorial y))
-	      (t (eqtest (list '(mfactorial) y) x))))
+  (oneargcheck x)
+  (setq y (simpcheck (cadr x) z))
+  (cond ((or (floatp y) (and (not makef) (ratnump y) (equal (caddr y) 2)))
+	 (simplifya (makegamma1 (list '(mfactorial) y)) nil))
+	((or (not (fixnump y)) (not (> y -1)))
+	 (eqtest (list '(mfactorial) y) x))
+	((or (minusp $factlim) (not (greaterp y $factlim)))
+	 (factorial y))
+	(t (eqtest (list '(mfactorial) y) x))))
 
 (defun makegamma1 (e)
   (cond ((atom e) e)
@@ -130,71 +130,71 @@
 			       ((mtimes simp) -4
 				((mexpt simp) 3 ((rat simp) 1 2))))
 			      -1)))
-		    ;; K((2+sqrt(3)/4))
-		    '((mtimes simp) ((rat simp) 1 4)
-		      ((mexpt simp) 3 ((rat simp) 1 4))
-		      ((mexpt simp) $%pi ((rat simp) -1 2))
-		      ((%gamma simp) ((rat simp) 1 6))
-		      ((%gamma simp) ((rat simp) 1 3))))
-		((or (alike1 (cadr e)
-			     ;; (2-sqrt(3))/4
-			     '((mtimes simp) ((rat simp) 1 4)
-			       ((mplus simp) 2
-				((mtimes simp) -1
-				 ((mexpt simp) 3 ((rat simp) 1 2))))))
-		     (alike1 (cadr e)
-			     ;; 1/2-sqrt(3)/4
-			     '((mplus simp) ((rat simp) 1 2)
-			       ((mtimes simp) ((rat simp) -1 4)
-				((mexpt simp) 3 ((rat simp) 1 2)))))
-		     (alike (cadr e)
-			    ;; 1/(4*sqrt(3)+8)
-			    '((mexpt simp)
-			      ((mplus simp) 8
-			       ((mtimes simp) 4
-				((mexpt simp) 3 ((rat simp) 1 2))))
-			      -1)))
-		     ;; K((2-sqrt(3))/4)
-		     '((mtimes simp) ((rat simp) 1 4)
-		       ((mexpt simp) 3 ((rat simp) -1 4))
-		       ((mexpt simp) $%pi ((rat simp) -1 2))
-		       ((%gamma simp) ((rat simp) 1 6))
-		       ((%gamma simp) ((rat simp) 1 3))))
-		 ((or
-		   ;; (3-2*sqrt(2))/(3+2*sqrt(2))
-		   (alike1 (cadr e)
-			   '((mtimes simp)
-			     ((mplus simp) 3 
-			      ((mtimes simp) -2 
-			       ((mexpt simp) 2 ((rat simp) 1 2))))
-			     ((mexpt simp)
-			      ((mplus simp) 3 
-			       ((mtimes simp) 2
-				((mexpt simp) 2 ((rat simp) 1 2)))) -1)))
-		   ;; 17 - 12*sqrt(2)
-		   (alike1 (cadr e)
-			   '((mplus simp) 17 
-			     ((mtimes simp) -12
-			      ((mexpt simp) 2 ((rat simp) 1 2)))))
-		   ;;   (2*SQRT(2) - 3)/(2*SQRT(2) + 3)
-		   (alike1 (cadr e)
-			   '((mtimes simp) -1
-			     ((mplus simp) -3
-			      ((mtimes simp) 2 
-			       ((mexpt simp) 2 ((rat simp) 1 2))))
-			     ((mexpt simp)
-			      ((mplus simp) 3
-			       ((mtimes simp) 2
-				((mexpt simp) 2 ((rat simp) 1 2))))
-			      -1))))
-		  '((mtimes simp) ((rat simp) 1 8)
-		    ((mexpt simp) 2 ((rat simp) -1 2))
-		    ((mplus simp) 1 ((mexpt simp) 2 ((rat simp) 1 2)))
-		    ((mexpt simp) $%pi ((rat simp) -1 2))
-		    ((mexpt simp) ((%gamma simp) ((rat simp) 1 4)) 2)))
-		 (t
-		  ;; Give up
-		  e)))
+		;; K((2+sqrt(3)/4))
+		'((mtimes simp) ((rat simp) 1 4)
+		  ((mexpt simp) 3 ((rat simp) 1 4))
+		  ((mexpt simp) $%pi ((rat simp) -1 2))
+		  ((%gamma simp) ((rat simp) 1 6))
+		  ((%gamma simp) ((rat simp) 1 3))))
+	       ((or (alike1 (cadr e)
+			    ;; (2-sqrt(3))/4
+			    '((mtimes simp) ((rat simp) 1 4)
+			      ((mplus simp) 2
+			       ((mtimes simp) -1
+				((mexpt simp) 3 ((rat simp) 1 2))))))
+		    (alike1 (cadr e)
+			    ;; 1/2-sqrt(3)/4
+			    '((mplus simp) ((rat simp) 1 2)
+			      ((mtimes simp) ((rat simp) -1 4)
+			       ((mexpt simp) 3 ((rat simp) 1 2)))))
+		    (alike (cadr e)
+			   ;; 1/(4*sqrt(3)+8)
+			   '((mexpt simp)
+			     ((mplus simp) 8
+			      ((mtimes simp) 4
+			       ((mexpt simp) 3 ((rat simp) 1 2))))
+			     -1)))
+		;; K((2-sqrt(3))/4)
+		'((mtimes simp) ((rat simp) 1 4)
+		  ((mexpt simp) 3 ((rat simp) -1 4))
+		  ((mexpt simp) $%pi ((rat simp) -1 2))
+		  ((%gamma simp) ((rat simp) 1 6))
+		  ((%gamma simp) ((rat simp) 1 3))))
+	       ((or
+		 ;; (3-2*sqrt(2))/(3+2*sqrt(2))
+		 (alike1 (cadr e)
+			 '((mtimes simp)
+			   ((mplus simp) 3 
+			    ((mtimes simp) -2 
+			     ((mexpt simp) 2 ((rat simp) 1 2))))
+			   ((mexpt simp)
+			    ((mplus simp) 3 
+			     ((mtimes simp) 2
+			      ((mexpt simp) 2 ((rat simp) 1 2)))) -1)))
+		 ;; 17 - 12*sqrt(2)
+		 (alike1 (cadr e)
+			 '((mplus simp) 17 
+			   ((mtimes simp) -12
+			    ((mexpt simp) 2 ((rat simp) 1 2)))))
+		 ;;   (2*SQRT(2) - 3)/(2*SQRT(2) + 3)
+		 (alike1 (cadr e)
+			 '((mtimes simp) -1
+			   ((mplus simp) -3
+			    ((mtimes simp) 2 
+			     ((mexpt simp) 2 ((rat simp) 1 2))))
+			   ((mexpt simp)
+			    ((mplus simp) 3
+			     ((mtimes simp) 2
+			      ((mexpt simp) 2 ((rat simp) 1 2))))
+			    -1))))
+		'((mtimes simp) ((rat simp) 1 8)
+		  ((mexpt simp) 2 ((rat simp) -1 2))
+		  ((mplus simp) 1 ((mexpt simp) 2 ((rat simp) 1 2)))
+		  ((mexpt simp) $%pi ((rat simp) -1 2))
+		  ((mexpt simp) ((%gamma simp) ((rat simp) 1 4)) 2)))
+	       (t
+		;; Give up
+		e)))
 	((eq (caar e) '%elliptic_ec)
 	 ;; Complete elliptic integral of the second kind
 	 (cond ((alike1 (cadr e) '((rat simp) 1 2))
@@ -264,7 +264,7 @@
 	(t (recur-apply #'makegamma1 e))))
 
 (defmfun simpgfact (x vestigial z)
-  vestigial ;Ignored.
+  vestigial				;Ignored.
   (if (not (= (length x) 4)) (wna-err '$genfact))
   (setq z (mapcar #'(lambda (q) (simpcheck q z)) (cdr x)))
   (let ((a (car z)) (b ($entier (cadr z))) (c (caddr z)))
@@ -276,29 +276,29 @@
 			       (cadr b)
 			       b)
 			   c)
-		      x)))))
+		     x)))))
 
-	(comment SUM begins)
+(comment sum begins)
 
 (defmvar $cauchysum nil
-	 "When multiplying together sums with INF as their upper limit, 
+  "When multiplying together sums with INF as their upper limit, 
 causes the Cauchy product to be used rather than the usual product.
 In the Cauchy product the index of the inner summation is a function of 
 the index of the outer one rather than varying independently."
-	 modified-commands '$sum)
+  modified-commands '$sum)
 
 (defmvar $gensumnum 0
-	 "The numeric suffix used to generate the next variable of
+  "The numeric suffix used to generate the next variable of
 summation.  If it is set to FALSE then the index will consist only of
 GENINDEX with no numeric suffix."
-	 modified-commands '$sum
-	 setting-predicate #'(lambda (x) (or (null x) (integerp x))))
+  modified-commands '$sum
+  setting-predicate #'(lambda (x) (or (null x) (integerp x))))
 
 (defmvar $genindex '$i
-	 "The alphabetic prefix used to generate the next variable of
+  "The alphabetic prefix used to generate the next variable of
 summation when necessary."
-	 modified-commands '$sum
-	 setting-predicate #'symbolp)
+  modified-commands '$sum
+  setting-predicate #'symbolp)
 
 (defmvar $zerobern t)
 (defmvar $simpsum nil)
@@ -323,30 +323,30 @@ summation when necessary."
 (defmacro sum-upper (sum) `(cadr (cdddr ,sum)))
 
 (defmspec $sum (l) (setq l (cdr l))
-  (if (= (length l) 4)
-      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
-      (wna-err '$sum)))
+	  (if (= (length l) 4)
+	      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
+	      (wna-err '$sum)))
 
 (defmspec $lsum (l) (setq l (cdr l))
-  (or (= (length l) 3) (wna-err '$lsum))
-  (let ((form (car l))
-	(ind (cadr l))
-	(lis (meval (caddr l)))
-	(ans 0))
-    (or (symbolp ind) (merror "Second argument not a variable ~M" ind))
-    (cond (($listp lis)
-	   (sloop for v in (cdr lis)
-		  with lind = (cons ind nil)
-		  for w = (cons v nil)
-		  do
-		  (setq ans (add* ans  (mbinding (lind w) (meval form)))))
-	   ans)
-	  (t `((%lsum) ,form ,ind ,lis)))))
+	  (or (= (length l) 3) (wna-err '$lsum))
+	  (let ((form (car l))
+		(ind (cadr l))
+		(lis (meval (caddr l)))
+		(ans 0))
+	    (or (symbolp ind) (merror "Second argument not a variable ~M" ind))
+	    (cond (($listp lis)
+		   (sloop for v in (cdr lis)
+			  with lind = (cons ind nil)
+			  for w = (cons v nil)
+			  do
+			  (setq ans (add* ans  (mbinding (lind w) (meval form)))))
+		   ans)
+		  (t `((%lsum) ,form ,ind ,lis)))))
     
 (defmfun simpsum (x y z)
   (let (($ratsimpexpons t)) (setq y (simplifya (sum-arg x) z)))
   (simpsum1 y (sum-index x) (simplifya (sum-lower x) z)
-			    (simplifya (sum-upper x) z)))
+	    (simplifya (sum-upper x) z)))
 
 (defun simpsum1 (exp i lo hi)
   (cond ((not (symbolp i)) (merror "Improper index to SUM:~%~M" i))
@@ -358,51 +358,51 @@ summation when necessary."
 	((null $simpsum) (list (get '%sum 'msimpind) exp i lo hi))
 	(t (simpsum2 exp i lo hi))))
 
-(DEFMFUN DOSUM (EXP IND LOW HI SUMP)
- (IF (NOT (SYMBOLP IND))
-     (MERROR "Improper index to ~:M:~%~M" (IF SUMP '$SUM '$PRODUCT) IND))
- (UNWIND-PROTECT 
-  (PROG (U *I LIND L*I *HL)
-	(WHEN (IF SUMP (NOT $SUMHACK) (NOT $PRODHACK))
-	      (ASSUME (LIST '(MGEQP) IND LOW))
-	      (IF (NOT (EQ HI '$INF))
-		  (ASSUME (LIST '(MGEQP) HI IND))))
-	(SETQ LIND (cons IND nil))
-	(COND ((NOT (FIXNUMP (SETQ *HL (M- HI LOW))))
-	       (SETQ EXP (MEVALSUMARG EXP IND))
-	       (RETURN (CONS (IF SUMP '(%SUM) '(%PRODUCT))
-			     (LIST EXP IND LOW HI))))
-	      ((EQUAL *HL -1) (RETURN (IF SUMP 0 1)))
-	      ((SIGNP L *HL)
-	       (COND ((AND SUMP $SUMHACK)
-		      (RETURN
-		       (M- (DOSUM EXP IND (M+ 1 HI) (M- LOW 1) T))))
-		     ((AND (NOT SUMP) $PRODHACK)
-		      (RETURN
-		       (M// (DOSUM EXP IND (M+ 1 HI) (M- LOW 1) NIL)))))
-	       (MERROR "Lower bound to ~:M: ~M~%is greater than the upper bound: ~M"
-		       (IF SUMP '$SUM '$PRODUCT) LOW HI)))
-	(SETQ *I LOW L*I (LIST *I) U (IF SUMP 0 1))
-    LO  (SETQ U (SIMPLIFYA
-		 (LIST (IF SUMP '(MPLUS) '(MTIMES))
-		       (MBINDING (LIND L*I) (MEVAL EXP)) 
-		       U)
-		 T))
-	(IF (EQUAL *I HI) (RETURN U))
-	(SETQ *I (CAR (RPLACA L*I (M+ *I 1))))
-	(GO LO))
-  (COND ((IF SUMP (NOT $SUMHACK) (NOT $PRODHACK))
-	 (FORGET (LIST '(MGEQP) IND LOW))
-	 (IF (NOT (EQ HI '$INF)) (FORGET (LIST '(MGEQP) HI IND)))))))
+(defmfun dosum (exp ind low hi sump)
+  (if (not (symbolp ind))
+      (merror "Improper index to ~:M:~%~M" (if sump '$sum '$product) ind))
+  (unwind-protect 
+       (prog (u *i lind l*i *hl)
+	  (when (if sump (not $sumhack) (not $prodhack))
+	    (assume (list '(mgeqp) ind low))
+	    (if (not (eq hi '$inf))
+		(assume (list '(mgeqp) hi ind))))
+	  (setq lind (cons ind nil))
+	  (cond ((not (fixnump (setq *hl (m- hi low))))
+		 (setq exp (mevalsumarg exp ind))
+		 (return (cons (if sump '(%sum) '(%product))
+			       (list exp ind low hi))))
+		((equal *hl -1) (return (if sump 0 1)))
+		((signp l *hl)
+		 (cond ((and sump $sumhack)
+			(return
+			  (m- (dosum exp ind (m+ 1 hi) (m- low 1) t))))
+		       ((and (not sump) $prodhack)
+			(return
+			  (m// (dosum exp ind (m+ 1 hi) (m- low 1) nil)))))
+		 (merror "Lower bound to ~:M: ~M~%is greater than the upper bound: ~M"
+			 (if sump '$sum '$product) low hi)))
+	  (setq *i low l*i (list *i) u (if sump 0 1))
+	  lo  (setq u (simplifya
+		       (list (if sump '(mplus) '(mtimes))
+			     (mbinding (lind l*i) (meval exp)) 
+			     u)
+		       t))
+	  (if (equal *i hi) (return u))
+	  (setq *i (car (rplaca l*i (m+ *i 1))))
+	  (go lo))
+    (cond ((if sump (not $sumhack) (not $prodhack))
+	   (forget (list '(mgeqp) ind low))
+	   (if (not (eq hi '$inf)) (forget (list '(mgeqp) hi ind)))))))
 
 (defmfun do%sum (l op)
-    (if (not (= (length l) 4)) (wna-err op))
-    (let ((ind (cadr l)))
-      (if (mquotep ind) (setq ind (cadr ind)))
-      (if (not (symbolp ind))
-	  (merror "Illegal index to ~:M:~%~M" op ind))
-      (list (mevalsumarg (car l) ind)
-	    ind (meval (caddr l)) (meval (cadddr l)))))
+  (if (not (= (length l) 4)) (wna-err op))
+  (let ((ind (cadr l)))
+    (if (mquotep ind) (setq ind (cadr ind)))
+    (if (not (symbolp ind))
+	(merror "Illegal index to ~:M:~%~M" op ind))
+    (list (mevalsumarg (car l) ind)
+	  ind (meval (caddr l)) (meval (cadddr l)))))
 
 (defun mevalsumarg (exp ind)
   (let ((msump t) (lind (list ind)))
@@ -415,7 +415,7 @@ summation when necessary."
 						   exp)
 					  exp))))))
 
-	(comment Multiplication of Sums)
+(comment multiplication of sums)
 
 (defun gensumindex nil
   (implode (nconc (exploden $genindex)
@@ -435,19 +435,19 @@ summation when necessary."
 	     (setq j (let ((ind (gensumindex)))
 		       (setq v (subst ind (sum-index v) v)) ind))
 	     (if (and $cauchysum (eq (sum-upper u) '$inf)
-				 (eq (sum-upper v) '$inf))
+		      (eq (sum-upper v) '$inf))
 		 (list '(%sum)
 		       (list '(%sum)
-			     (sumtimes (MAXIMA-SUBSTITUTE j i (sum-arg u))
-				       (MAXIMA-SUBSTITUTE (m- i j) j (sum-arg v)))
+			     (sumtimes (maxima-substitute j i (sum-arg u))
+				       (maxima-substitute (m- i j) j (sum-arg v)))
 			     j (sum-lower u) (m- i (sum-lower v)))
 		       i (m+ (sum-lower u) (sum-lower v)) '$inf)
 		 (list '(%sum)
 		       (list '(%sum) (sumtimes (sum-arg u) (sum-arg v))
-				     j (sum-lower v) (sum-upper v))
+			     j (sum-lower v) (sum-upper v))
 		       i (sum-lower u) (sum-upper u)))))))
 
-(defun sumultin (x s)  ; Multiplies x into a sum adjusting indices.
+(defun sumultin (x s)	  ; Multiplies x into a sum adjusting indices.
   (cond ((or (atom s) (not (eq (caar s) '%sum))) (m* x s))
 	((free x (sum-index s))
 	 (list* (car s) (sumultin x (sum-arg s)) (cddr s)))
@@ -457,96 +457,96 @@ summation when necessary."
 		    ind
 		    (cdddr s))))))
 
-	(comment Addition of Sums)
+(comment addition of sums)
 
 (defun sumpls (sum out)
   (prog (l)
-	(if (null out) (return (cons sum nil)))
-	(setq out (setq l (cons nil out)))
-   a 	(if (null (cdr out)) (return (cons sum (cdr l))))
-	(and (not (atom (cadr out)))
-	     (consp (caadr out))
-	     (eq (caar (cadr out)) '%sum)
-	     (alike1 (sum-arg (cadr out)) (sum-arg sum))
-	     (alike1 (sum-index (cadr out)) (sum-index sum))
-	     (cond ((onediff (sum-upper (cadr out)) (sum-lower sum))
-		    (setq sum (list (car sum)
-				    (sum-arg sum)
-				    (sum-index sum)
-				    (sum-lower (cadr out))
-				    (sum-upper sum)))
-		    (rplacd out (cddr out))
-		    (go a))
-		   ((onediff (sum-upper sum) (sum-lower (cadr out)))
-		    (setq sum (list (car sum)
-				    (sum-arg sum)
-				    (sum-index sum)
-				    (sum-lower sum)
-				    (sum-upper (cadr out))))
-		    (rplacd out (cddr out))
-		    (go a))))
-	(setq out (cdr out))
-	(go a)))
+     (if (null out) (return (cons sum nil)))
+     (setq out (setq l (cons nil out)))
+     a 	(if (null (cdr out)) (return (cons sum (cdr l))))
+     (and (not (atom (cadr out)))
+	  (consp (caadr out))
+	  (eq (caar (cadr out)) '%sum)
+	  (alike1 (sum-arg (cadr out)) (sum-arg sum))
+	  (alike1 (sum-index (cadr out)) (sum-index sum))
+	  (cond ((onediff (sum-upper (cadr out)) (sum-lower sum))
+		 (setq sum (list (car sum)
+				 (sum-arg sum)
+				 (sum-index sum)
+				 (sum-lower (cadr out))
+				 (sum-upper sum)))
+		 (rplacd out (cddr out))
+		 (go a))
+		((onediff (sum-upper sum) (sum-lower (cadr out)))
+		 (setq sum (list (car sum)
+				 (sum-arg sum)
+				 (sum-index sum)
+				 (sum-lower sum)
+				 (sum-upper (cadr out))))
+		 (rplacd out (cddr out))
+		 (go a))))
+     (setq out (cdr out))
+     (go a)))
 
 (defun onediff (x y) (equal 1 (m- y x)))
 
 (defun freesum (e b a q) (m* e q (m- (m+ a 1) b)))
 
-	(comment Linear operator stuff)
+(comment linear operator stuff)
 
 (defparameter *opers-list '(($linear . linearize1)))
 (defparameter  opers (list '$linear))
 
 (defun oper-apply (e z)
-       (cond ((null opers-list)
-	      (let ((w (get (caar e) 'operators)))
-		(if w (funcall w e 1 z) (simpargs e z))))
-	     ((get (caar e) (caar opers-list))
-	      (let ((opers-list (cdr opers-list))
-		    (fun (cdar opers-list)))
-		(funcall fun e z)))
-	     (t (let ((opers-list (cdr opers-list)))
-		  (oper-apply e z)))))
+  (cond ((null opers-list)
+	 (let ((w (get (caar e) 'operators)))
+	   (if w (funcall w e 1 z) (simpargs e z))))
+	((get (caar e) (caar opers-list))
+	 (let ((opers-list (cdr opers-list))
+	       (fun (cdar opers-list)))
+	   (funcall fun e z)))
+	(t (let ((opers-list (cdr opers-list)))
+	     (oper-apply e z)))))
 
-(defun linearize1 (e z)  ; z = t means args already simplified.
-       (linearize2
-	(cons (car e) (mapcar #'(lambda (q) (simpcheck q z)) (cdr e)))
-	nil))
+(defun linearize1 (e z)		; z = t means args already simplified.
+  (linearize2
+   (cons (car e) (mapcar #'(lambda (q) (simpcheck q z)) (cdr e)))
+   nil))
 
 (defun opident (op) (cond ((eq op 'mplus) 0) ((eq op 'mtimes) 1)))
 
-(defun rem-const (e)	;removes constantp stuff
-       (do ((l (cdr e) (cdr l))
-	    (a (list (opident (caar e))))
-	    (b (list (opident (caar e)))))
-	   ((null l)
-	    (cons (simplifya (cons (list (caar e)) a) nil)
-		  (simplifya (cons (list (caar e)) b) nil)))
-	   (if (or (mnump (car l)) (constant (car l)))
-	       (setq a (cons (car l) a))
-	       (setq b (cons (car l) b)))))
+(defun rem-const (e)			;removes constantp stuff
+  (do ((l (cdr e) (cdr l))
+       (a (list (opident (caar e))))
+       (b (list (opident (caar e)))))
+      ((null l)
+       (cons (simplifya (cons (list (caar e)) a) nil)
+	     (simplifya (cons (list (caar e)) b) nil)))
+    (if (or (mnump (car l)) (constant (car l)))
+	(setq a (cons (car l) a))
+	(setq b (cons (car l) b)))))
 
 (defun linearize2 (e times)
-       (cond ((linearconst e))
-	     ((atom (cadr e)) (oper-apply e t))
-	     ((eq (caar (cadr e)) 'mplus)
-	      (addn (mapcar #'(lambda (q)
-				      (linearize2 (list* (car e) q (cddr e)) nil))
-			    (cdr (cadr e)))
-		    t))
-	     ((and (eq (caar (cadr e)) 'mtimes) (null times))
-	      (let ((z (if (and (cddr e)
-				(or (atom (caddr e))
-				    ($subvarp (caddr e))))
- 			   (partition (cadr e) (caddr e) 1)
-			   (rem-const (cadr e))))
-		    (w))
-		(setq w (linearize2 (list* (car e)
-					   (simplifya (cdr z) t)
-					   (cddr e))
-				    t))
-		(linearize3 w e (car z))))
-	     (t (oper-apply e t))))
+  (cond ((linearconst e))
+	((atom (cadr e)) (oper-apply e t))
+	((eq (caar (cadr e)) 'mplus)
+	 (addn (mapcar #'(lambda (q)
+			   (linearize2 (list* (car e) q (cddr e)) nil))
+		       (cdr (cadr e)))
+	       t))
+	((and (eq (caar (cadr e)) 'mtimes) (null times))
+	 (let ((z (if (and (cddr e)
+			   (or (atom (caddr e))
+			       ($subvarp (caddr e))))
+		      (partition (cadr e) (caddr e) 1)
+		      (rem-const (cadr e))))
+	       (w))
+	   (setq w (linearize2 (list* (car e)
+				      (simplifya (cdr z) t)
+				      (cddr e))
+			       t))
+	   (linearize3 w e (car z))))
+	(t (oper-apply e t))))
 
 (defun linearconst (e)
   (if (or (mnump (cadr e))
@@ -566,41 +566,41 @@ summation when necessary."
 
 (defun linearize3 (w e x)
   (let (w1)
-       (if (and (memq w '($inf $minf $infinity)) (safe-zerop x))
-	   (merror "Undefined form 0*inf:~%~M" e))
-       (setq w (mul2 (simplifya x t) w))
-       (cond ((or (atom w) (getl (caar w) '($outative $linear))) (setq w1 1))
-	     ((eq (caar w) 'mtimes)
-	      (setq w1 (cons '(mtimes) nil))
-	      (do ((w2 (cdr w) (cdr w2)))
-		  ((null w2) (setq w1 (nreverse w1)))
-		  (if (or (atom (car w2))
-			  (not (getl (caaar w2) '($outative $linear))))
-		      (setq w1 (cons (car w2) w1)))))
-	     (t (setq w1 w)))
-       (if (and (not (atom w1)) (or (among '$inf w1) (among '$minf w1)))
-	   (infsimp w)
-	   w)))
+    (if (and (memq w '($inf $minf $infinity)) (safe-zerop x))
+	(merror "Undefined form 0*inf:~%~M" e))
+    (setq w (mul2 (simplifya x t) w))
+    (cond ((or (atom w) (getl (caar w) '($outative $linear))) (setq w1 1))
+	  ((eq (caar w) 'mtimes)
+	   (setq w1 (cons '(mtimes) nil))
+	   (do ((w2 (cdr w) (cdr w2)))
+	       ((null w2) (setq w1 (nreverse w1)))
+	     (if (or (atom (car w2))
+		     (not (getl (caaar w2) '($outative $linear))))
+		 (setq w1 (cons (car w2) w1)))))
+	  (t (setq w1 w)))
+    (if (and (not (atom w1)) (or (among '$inf w1) (among '$minf w1)))
+	(infsimp w)
+	w)))
 
 (setq opers (cons '$additive opers)
       *opers-list (cons '($additive . additive) *opers-list))
 
 (defun rem-opers-p (p)
-       (cond ((eq (caar opers-list) p)
-	      (setq opers-list (cdr p)))
-	     ((do ((l opers-list (cdr l)))
-		  ((null l))
-		  (if (eq (caar (cdr l)) p)
-		      (return (rplacd l (cddr l))))))))
+  (cond ((eq (caar opers-list) p)
+	 (setq opers-list (cdr p)))
+	((do ((l opers-list (cdr l)))
+	     ((null l))
+	   (if (eq (caar (cdr l)) p)
+	       (return (rplacd l (cddr l))))))))
 
 (defun additive (e z)
-  (cond ((get (caar e) '$outative)			;Really a linearize!
+  (cond ((get (caar e) '$outative)	;Really a linearize!
 	 (setq opers-list (copy-top-level opers-list ))
 	 (rem-opers-p '$outative)
 	 (linearize1 e z))
 	((mplusp (cadr e))
 	 (addn (mapcar #'(lambda (q)
-				 (oper-apply (list* (car e) q (cddr e)) z))
+			   (oper-apply (list* (car e) q (cddr e)) z))
 		       (cdr (cadr e)))
 	       z))
 	(t (oper-apply e z))))
@@ -613,7 +613,7 @@ summation when necessary."
 	 (simptimes
 	  (cons '(mtimes)
 		(mapcar #'(lambda (q)
-				  (oper-apply (list* (car e) q (cddr e)) z))
+			    (oper-apply (list* (car e) q (cddr e)) z))
 			(cdr (cadr e))))
 	  1 z))
 	(t (oper-apply e z))))
@@ -622,25 +622,25 @@ summation when necessary."
       *opers-list (cons '($outative . outative) *opers-list))
 
 (defun outative (e z)
-       (setq e (cons (car e) (mapcar #'(lambda (q) (simpcheck q z)) (cdr e))))
-       (cond ((get (caar e) '$additive)
-	      (setq opers-list (copy-top-level opers-list ))
-	      (rem-opers-p '$additive)
-	      (linearize1 e t))
-	     ((linearconst e))
-	     ((mtimesp (cadr e))
-	      (let ((u (if (and (cddr e)
-				(or (atom (caddr e))
-				    ($subvarp (caddr e))))
- 			   (partition (cadr e) (caddr e) 1)
-			   (rem-const (cadr e))))
-		    (w))
-		(setq w (oper-apply (list* (car e)
-					   (simplifya (cdr u) t)
-					   (cddr e))
-				    t))
-		(linearize3 w e (car u))))
-	     (t (oper-apply e t))))
+  (setq e (cons (car e) (mapcar #'(lambda (q) (simpcheck q z)) (cdr e))))
+  (cond ((get (caar e) '$additive)
+	 (setq opers-list (copy-top-level opers-list ))
+	 (rem-opers-p '$additive)
+	 (linearize1 e t))
+	((linearconst e))
+	((mtimesp (cadr e))
+	 (let ((u (if (and (cddr e)
+			   (or (atom (caddr e))
+			       ($subvarp (caddr e))))
+		      (partition (cadr e) (caddr e) 1)
+		      (rem-const (cadr e))))
+	       (w))
+	   (setq w (oper-apply (list* (car e)
+				      (simplifya (cdr u) t)
+				      (cddr e))
+			       t))
+	   (linearize3 w e (car u))))
+	(t (oper-apply e t))))
 
 (defprop %sum t $outative)
 (defprop %sum t opers)
@@ -656,17 +656,17 @@ summation when necessary."
       *opers-list (cons '($oddfun . oddfun) *opers-list))
 
 (defmfun evenfun (e z)
- (if (or (null (cdr e)) (cddr e))
-     (merror "Even function called with wrong number of arguments:~%~M" e))
- (let ((arg (simpcheck (cadr e) z)))
-   (oper-apply (list (car e) (if (mminusp arg) (neg arg) arg)) t)))
+  (if (or (null (cdr e)) (cddr e))
+      (merror "Even function called with wrong number of arguments:~%~M" e))
+  (let ((arg (simpcheck (cadr e) z)))
+    (oper-apply (list (car e) (if (mminusp arg) (neg arg) arg)) t)))
 
 (defmfun oddfun (e z)
- (if (or (null (cdr e)) (cddr e))
-     (merror "Odd function called with wrong number of arguments:~%~M" e))
- (let ((arg (simpcheck (cadr e) z)))
-   (if (mminusp arg) (neg (oper-apply (list (car e) (neg arg)) t))
-		     (oper-apply (list (car e) arg) t))))
+  (if (or (null (cdr e)) (cddr e))
+      (merror "Odd function called with wrong number of arguments:~%~M" e))
+  (let ((arg (simpcheck (cadr e) z)))
+    (if (mminusp arg) (neg (oper-apply (list (car e) (neg arg)) t))
+	(oper-apply (list (car e) arg) t))))
 
 (setq opers (cons '$commutative opers)
       *opers-list (cons '($commutative . commutative1) *opers-list))
@@ -675,12 +675,12 @@ summation when necessary."
       *opers-list (cons '($symmetric . commutative1) *opers-list))
 
 (defmfun commutative1 (e z)
-       (oper-apply (cons (car e)
-			 (reverse
-			  (sort (mapcar #'(lambda (q) (simpcheck q z))
-					(cdr e))
-				'great)))
-		   t))
+  (oper-apply (cons (car e)
+		    (reverse
+		     (sort (mapcar #'(lambda (q) (simpcheck q z))
+				   (cdr e))
+			   'great)))
+	      t))
 
 (setq opers (cons '$antisymmetric opers)
       *opers-list (cons '($antisymmetric . antisym) *opers-list))
@@ -688,36 +688,36 @@ summation when necessary."
 (declare-top (special sign))
 
 (defmfun antisym (e z)
- (let ((l (mapcar #'(lambda (q) (simpcheck q z)) (cdr e))))
-      (let (sign) (if (or (not (eq (caar e) 'mnctimes)) (freel l 'mnctimes))
-		      (setq l (bbsort1 l)))
-		  (cond ((equal l 0) 0)
-			((prog1 (null sign) (setq e (oper-apply (cons (car e) l) t)))
-			 e)
-			(t (neg e))))))
+  (let ((l (mapcar #'(lambda (q) (simpcheck q z)) (cdr e))))
+    (let (sign) (if (or (not (eq (caar e) 'mnctimes)) (freel l 'mnctimes))
+		    (setq l (bbsort1 l)))
+	 (cond ((equal l 0) 0)
+	       ((prog1 (null sign) (setq e (oper-apply (cons (car e) l) t)))
+		e)
+	       (t (neg e))))))
 
 (defun bbsort1 (l)
-       (prog (sl sl1)
-	     (if (or (null l) (null (cdr l))) (return l))
-	     (setq sign nil sl (list nil (car l)))
-	loop (setq l (cdr l))
-	     (if (null l) (return (nreverse (cdr sl))))
-	     (setq sl1 sl)
-	loop1(cond ((null (cdr sl1)) (rplacd sl1 (cons (car l) nil)))
-		   ((alike1 (car l) (cadr sl1)) (return 0))
-		   ((great (car l) (cadr sl1)) (rplacd sl1 (cons (car l) (cdr sl1))))
-		   (t (setq sign (not sign) sl1 (cdr sl1)) (go loop1)))
-	     (go loop)))
+  (prog (sl sl1)
+     (if (or (null l) (null (cdr l))) (return l))
+     (setq sign nil sl (list nil (car l)))
+     loop (setq l (cdr l))
+     (if (null l) (return (nreverse (cdr sl))))
+     (setq sl1 sl)
+     loop1(cond ((null (cdr sl1)) (rplacd sl1 (cons (car l) nil)))
+		((alike1 (car l) (cadr sl1)) (return 0))
+		((great (car l) (cadr sl1)) (rplacd sl1 (cons (car l) (cdr sl1))))
+		(t (setq sign (not sign) sl1 (cdr sl1)) (go loop1)))
+     (go loop)))
 
 (setq opers (cons '$nary opers)
       *opers-list (cons '($nary . nary1) *opers-list))
 
 (defmfun nary1 (e z)
- (do ((l (cdr e) (cdr l)) (ans))
-     ((null l) (oper-apply (cons (car e) (nreverse ans)) z))
-     (setq ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
-		   (nconc (reverse (cdar l)) ans)
-		   (cons (car l) ans)))))
+  (do ((l (cdr e) (cdr l)) (ans))
+      ((null l) (oper-apply (cons (car e) (nreverse ans)) z))
+    (setq ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
+		  (nconc (reverse (cdar l)) ans)
+		  (cons (car l) ans)))))
 
 (setq opers (cons '$lassociative opers)
       *opers-list (cons '($lassociative . lassociative) *opers-list))
@@ -733,14 +733,14 @@ summation when necessary."
 (setq opers (cons '$rassociative opers)
       *opers-list (cons '($rassociative . rassociative) *opers-list))
 
-;(defmfun rassociative (e z)
-;  (let ((ans (nreverse (cdr (oper-apply (cons (car e) (total-nary e)) z)))))
-;    (cond ((null (cddr ans)) (cons (car e) ans))
-;	  ((do ((newans (list (car e) (cadr ans) (car ans))
-;			(list (car e) (car ans) newans))
-;		(ans (cddr ans) (cdr ans)))
-;	       ((null ans) newans))))))
-;Update from F302 --gsb
+;;(defmfun rassociative (e z)
+;;  (let ((ans (nreverse (cdr (oper-apply (cons (car e) (total-nary e)) z)))))
+;;    (cond ((null (cddr ans)) (cons (car e) ans))
+;;	  ((do ((newans (list (car e) (cadr ans) (car ans))
+;;			(list (car e) (car ans) newans))
+;;		(ans (cddr ans) (cdr ans)))
+;;	       ((null ans) newans))))))
+;;Update from F302 --gsb
 (defmfun rassociative (e z)
   (let ((ans (cdr (oper-apply (cons (car e) (total-nary e)) z))))
     (cond ((null (cddr ans)) (cons (car e) ans))
@@ -753,11 +753,11 @@ summation when necessary."
 (defmfun total-nary (e)
   (do ((l (cdr e) (cdr l)) (ans))
       ((null l) (nreverse ans))
-      (setq ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
-		    (nconc (reverse (total-nary (car l))) ans)
-		    (cons (car l) ans)))))
+    (setq ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
+		  (nconc (reverse (total-nary (car l))) ans)
+		  (cons (car l) ans)))))
 
-#-NIL
+#-nil
 (setq opers (purcopy opers) *opers-list (purcopy *opers-list))
 
 (defparameter $opproperties (cons '(mlist simp) (reverse opers)))

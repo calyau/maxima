@@ -18,35 +18,35 @@
 ;;; EVAL_WHEN(TRANSLATE,FOO(ME),BAZ())$
 ;;; EVAL_WHEN([LOADFILE,BATCH],INITIALIZE())$
 
-(DECLARE-TOP(SPECIAL $VERSION STATE-PDL BATCONL))
+(declare-top(special $version state-pdl batconl))
 
 ;; Gosh. Seems it was really stupid to have EVAL_WHEN for BATCH and DEMO,
 ;; people use it for the most random things. -gjc
 
-(DEFMSPEC $EVAL_WHEN (ARGL)
-  (SETQ ARGL (CDR ARGL))
-  (COND ((OR (< (LENGTH ARGL) 2)
-	     (NOT (OR (ATOM (CAR ARGL))
-		      ($LISTP (CAR ARGL)))))
-	 (MERROR "Bad whens form to EVAL_WHEN~%~M" (CAR ARGL))))
-  (LET ((DEMOP #-MAXII (IF (AND (EQ (ml-typep $VERSION) 'fixnum)
-				(> $VERSION 296.))
-			   (CADDR BATCONL)
-			   (CADDDR BATCONL))
-	       #+Maxii  NIL)
-	(WHENS (COND (($LISTP (CAR ARGL)) (CDAR ARGL))
-		     (T (LIST (CAR ARGL))))))
-    (COND ((COND (#-MAXII (MEMQ 'BATCH STATE-PDL)
-		  #+MAXII T ; foo for now!
-		  (IF DEMOP (OR (MEMQ '$DEMO WHENS) (MEMQ '$BATCH WHENS))
-			    (MEMQ '$BATCH WHENS)))
-		 (T
+(defmspec $eval_when (argl)
+  (setq argl (cdr argl))
+  (cond ((or (< (length argl) 2)
+	     (not (or (atom (car argl))
+		      ($listp (car argl)))))
+	 (merror "Bad whens form to EVAL_WHEN~%~M" (car argl))))
+  (let ((demop #-maxii (if (and (eq (ml-typep $version) 'fixnum)
+				(> $version 296.))
+			   (caddr batconl)
+			   (cadddr batconl))
+	       #+maxii  nil)
+	(whens (cond (($listp (car argl)) (cdar argl))
+		     (t (list (car argl))))))
+    (cond ((cond (#-maxii (memq 'batch state-pdl)
+			  #+maxii t	; foo for now!
+			  (if demop (or (memq '$demo whens) (memq '$batch whens))
+			      (memq '$batch whens)))
+		 (t
 		  ;; this is a form typed in on a c-line by
 		  ;; the user. or, perhaps it is inside a
 		  ;; program. Which is an error in the translator.
 		  ;; What *was* I doing here? -gjc
-		  (MEMQ '$TOPLEVEL WHENS)))
-	   `(($EVALUATED_WHEN) ,@(MAPCAR 'MEVAL (CDR ARGL))))
-	  (T
-	   '$NOT_EVALUATED_WHEN))))
+		  (memq '$toplevel whens)))
+	   `(($evaluated_when) ,@(mapcar 'meval (cdr argl))))
+	  (t
+	   '$not_evaluated_when))))
 

@@ -11,7 +11,7 @@
 (in-package "MAXIMA")
 (macsyma-module db)
 
-(LOAD-MACSYMA-MACROS MRGMAC)
+(load-macsyma-macros mrgmac)
 
 ;; This file uses its own special syntax which is set up here.  The function
 ;; which does it is defined in LIBMAX;MRGMAC.  It sets up <, >, and : for
@@ -32,18 +32,18 @@
 ;; cell is created and the fixnum is stored in the car of the cell.  Fixnums
 ;; are consed only in PDP-10 MacLisp and Franz Lisp.
 
-#+(OR PDP10 Franz)
-(EVAL-WHEN (EVAL COMPILE) (SSTATUS FEATURE FIXCONS))
-#+NIL
-(EVAL-WHEN (EVAL COMPILE) (SET-NOFEATURE 'FIXCONS))
+#+(or pdp10 franz)
+(eval-when (eval compile) (sstatus feature fixcons))
+#+nil
+(eval-when (eval compile) (set-nofeature 'fixcons))
 
-(DECLARE-TOP(GENPREFIX DB)
-	 ;; LAB is not a special.  This declares all occurrences of LAB
-	 ;; as a local or a parameter to be a fixnum.  This should really
-	 ;; be done using a LOCAL-DECLARE around the entire file so as to
-	 ;; make sure any global compiler state gets undone.
-	 #+FIXCONS (FIXNUM LAB)
-	 (*LEXPR CONTEXT))
+(declare-top(genprefix db)
+	    ;; LAB is not a special.  This declares all occurrences of LAB
+	    ;; as a local or a parameter to be a fixnum.  This should really
+	    ;; be done using a LOCAL-DECLARE around the entire file so as to
+	    ;; make sure any global compiler state gets undone.
+	    #+fixcons (fixnum lab)
+	    (*lexpr context))
 
 ;; External specials
 ;; Please do not use DEFMVAR on these because some of them contain 
@@ -53,53 +53,53 @@
 ;; value in the file.) - JPG
 ;; Why don't you set PRINLEVEL and PRINLENGTH in your macsyma? -GJC
 
-(DEFMVAR CONTEXT 'GLOBAL)
-(DEFMVAR CONTEXTS NIL)
-(DEFMVAR CURRENT 'GLOBAL)
-(DEFMVAR +LABS NIL)
-(DEFMVAR -LABS NIL)
-(DEFMVAR DBTRACE NIL)
-(DEFMVAR DBCHECK NIL)
-(DEFMVAR DOBJECTS NIL)
-(DEFMVAR NOBJECTS NIL)
+(defmvar context 'global)
+(defmvar contexts nil)
+(defmvar current 'global)
+(defmvar +labs nil)
+(defmvar -labs nil)
+(defmvar dbtrace nil)
+(defmvar dbcheck nil)
+(defmvar dobjects nil)
+(defmvar nobjects nil)
 
 ;; Internal specials
 
-(DEFMVAR MARKS 0) 		
-(DECLARE-top (FIXNUM MARKS))
-(DEFMVAR +L)
-(DECLARE-top (FIXNUM +L))
-(DEFMVAR -L)
-(DECLARE-TOP (FIXNUM -L))
-(DEFMVAR ULABS NIL)
+(defmvar marks 0) 		
+(declare-top (fixnum marks))
+(defmvar +l)
+(declare-top (fixnum +l))
+(defmvar -l)
+(declare-top (fixnum -l))
+(defmvar ulabs nil)
 
-(DEFMVAR CONINDEX 0)
-(DECLARE-TOP (FIXNUM CONINDEX))
-(DEFMVAR CONNUMBER 50.)
-(declare-top (FIXNUM CONNUMBER))
+(defmvar conindex 0)
+(declare-top (fixnum conindex))
+(defmvar connumber 50.)
+(declare-top (fixnum connumber))
 
 ;; The most negative fixnum.  On the PDP-10, this is 1_35.
 
-(DEFMVAR LAB-HIGH-BIT #-cl (ROT 1 -1) #+cl most-negative-fixnum)
+(defmvar lab-high-bit #-cl (rot 1 -1) #+cl most-negative-fixnum)
 ;; One less than the number of bits in a fixnum.  On the PDP-10, this is 35.
-(DEFMVAR LABNUMBER (f1- (HAULONG LAB-HIGH-BIT)))
+(defmvar labnumber (f1- (haulong lab-high-bit)))
 ;; A cell with the high bit turned on.
-(DEFMVAR LAB-HIGH-LAB #+FIXCONS LAB-HIGH-BIT #-FIXCONS (LIST LAB-HIGH-BIT))
+(defmvar lab-high-lab #+fixcons lab-high-bit #-fixcons (list lab-high-bit))
 
-(DECLARE-TOP(SPECIAL +S +SM +SL -S -SM -SL LABS LPRS LABINDEX LPRINDEX WORLD *))
+(declare-top(special +s +sm +sl -s -sm -sl labs lprs labindex lprindex world *))
 
 ;; Macro for indirecting through the contents of a cell.
 
-(DEFMACRO UNLAB (CELL) 
-	  #+FIXCONS CELL #-FIXCONS `(CAR ,CELL))
+(defmacro unlab (cell) 
+  #+fixcons cell #-fixcons `(car ,cell))
 
-(DEFMACRO SETQ-UNLAB (CELL)
-	  #+FIXCONS NIL
-	  #-FIXCONS `(SETQ ,CELL (UNLAB ,CELL)))
+(defmacro setq-unlab (cell)
+  #+fixcons nil
+  #-fixcons `(setq ,cell (unlab ,cell)))
 
-(DEFMACRO SETQ-COPYN (CELL)
-	  #+FIXCONS NIL
-	  #-FIXCONS `(SETQ ,CELL (COPYN ,CELL)))
+(defmacro setq-copyn (cell)
+  #+fixcons nil
+  #-fixcons `(setq ,cell (copyn ,cell)))
 
 ;; Conditionalize primitive functions used in this file.  These are in
 ;; LAP for Lisp implementations which cons fixnums.  This interface
@@ -109,657 +109,657 @@
 ;; immediate fixnum and return a cell containing it."  As a result of
 ;; this, #+FIXCONS conditionalizations appear in the actual source code.
 
-#-FIXCONS
-(PROGN 'COMPILE
-  (DEFMACRO COPYN (N) `(LIST ,N))
-  (DEFMACRO IORM (CELL N)
-	    `(RPLACA ,CELL (LOGIOR (CAR ,CELL) (CAR ,N))))
-  (DEFMACRO XORM (CELL N)
-	    `(RPLACA ,CELL (LOGXOR (CAR ,CELL) (CAR ,N))))
-  )
+#-fixcons
+(progn 'compile
+       (defmacro copyn (n) `(list ,n))
+       (defmacro iorm (cell n)
+	 `(rplaca ,cell (logior (car ,cell) (car ,n))))
+       (defmacro xorm (cell n)
+	 `(rplaca ,cell (logxor (car ,cell) (car ,n))))
+       )
 
 (defun xxorm (cell n)
   (xorm cell n))
 ;; The LAP for the PDP-10 version.
 
-#+PDP10 (LAP-A-LIST '(
-(LAP COPYN SUBR)
-(MOVE TT 0 A)
-(JSP T FWCONS)
-(POPJ P)
-NIL
+#+pdp10 (lap-a-list '(
+		      (lap copyn subr)
+		      (move tt 0 a)
+		      (jsp t fwcons)
+		      (popj p)
+		      nil
 
-(LAP IORM SUBR)
-(MOVE B 0 B)
-(IORM B 0 A)
-(POPJ P)
-NIL
+		      (lap iorm subr)
+		      (move b 0 b)
+		      (iorm b 0 a)
+		      (popj p)
+		      nil
 
-(LAP XORM SUBR)
-(MOVE B 0 B)
-(XORM B 0 A)
-(POPJ P)
-NIL ))
+		      (lap xorm subr)
+		      (move b 0 b)
+		      (xorm b 0 a)
+		      (popj p)
+		      nil ))
 
-#+Franz
+#+franz
 (progn 'compile
        (defmacro copyn (n) `(copyint* ,n))
        (defmacro iorm (cell n) `(replace ,cell (logior ,cell ,n)))
        (defmacro xorm (cell n) `(replace ,cell (logxor ,cell ,n))) )
 
-(DEFPROP GLOBAL 1 CMARK)
-;(eval-when ( load )
-;(ARRAY CONUNMRK NIL (f1+ CONNUMBER))
-;(ARRAY CONMARK T (f1+ CONNUMBER))
-;)
+(defprop global 1 cmark)
+;;(eval-when ( load )
+;;(ARRAY CONUNMRK NIL (f1+ CONNUMBER))
+;;(ARRAY CONMARK T (f1+ CONNUMBER))
+;;)
 
-(defvar CONUNMRK (*array NIL t (f1+ CONNUMBER)))
-(defvar CONMARK (*ARRAY nil  T (f1+ CONNUMBER)))
+(defvar conunmrk (*array nil t (f1+ connumber)))
+(defvar conmark (*array nil  t (f1+ connumber)))
 
-(DEFMFUN MARK (X) (PUTPROP X T 'MARK))
-(DEFMFUN MARKP (X) (AND (SYMBOLP X) (ZL-GET X 'MARK)))
+(defmfun mark (x) (putprop x t 'mark))
+(defmfun markp (x) (and (symbolp x) (zl-get x 'mark)))
 
 ;;
 (defun zl-remprop (sym indicator)
   (cond ((symbolp sym) (remprop sym indicator))
 	(t (remf (cdr sym) indicator))))
 
-(DEFMFUN UNMRK (X) (zl-REMPROP X 'MARK))
+(defmfun unmrk (x) (zl-remprop x 'mark))
 
-(DEFUN MARKS (X) (COND ((NUMBERP X)) ((ATOM X) (MARK X)) (T (MAPC #'MARKS X))))
-(DEFUN UNMRKS (X)
-  (COND ((NUMBERP X))
-	((OR (ATOM X) (NUMBERP (CAR X))) (UNMRK X))
-	(T (MAPC #'UNMRKS X))))
+(defun marks (x) (cond ((numberp x)) ((atom x) (mark x)) (t (mapc #'marks x))))
+(defun unmrks (x)
+  (cond ((numberp x))
+	((or (atom x) (numberp (car x))) (unmrk x))
+	(t (mapc #'unmrks x))))
 
 (progn 'compile
-(DEFMODE TYPE ()
-  (ATOM (SELECTOR +LABS) (SELECTOR -LABS) (SELECTOR DATA))
-  SELECTOR)
-(DEFMODE INDV ()
-  (ATOM (SELECTOR =LABS) (SELECTOR NLABS) (SELECTOR DATA) (SELECTOR IN))
-  SELECTOR)
-(DEFMODE UNIV ()
-  (ATOM (SELECTOR =LABS) (SELECTOR NLABS) (SELECTOR DATA) (SELECTOR UN))
-  SELECTOR)
-(DEFMODE DATUM ()
-  (ATOM (SELECTOR ULABS) (SELECTOR CON) (SELECTOR WN))
-  SELECTOR)
-(DEFMODE CONTEXT ()
-  (ATOM (SELECTOR CMARK FIXNUM 0) (SELECTOR SUBC) (SELECTOR DATA)))
- )
+       (defmode type ()
+	 (atom (selector +labs) (selector -labs) (selector data))
+	 selector)
+       (defmode indv ()
+	 (atom (selector =labs) (selector nlabs) (selector data) (selector in))
+	 selector)
+       (defmode univ ()
+	 (atom (selector =labs) (selector nlabs) (selector data) (selector un))
+	 selector)
+       (defmode datum ()
+	 (atom (selector ulabs) (selector con) (selector wn))
+	 selector)
+       (defmode context ()
+	 (atom (selector cmark fixnum 0) (selector subc) (selector data)))
+       )
 
 
 
 
- ;; Is (COPYN 0) really needed in these next four macros instead of simply 0?
+;; Is (COPYN 0) really needed in these next four macros instead of simply 0?
 ;; If the fixnum were to get clobbered, then it would seem that (LIST 0) would
 ;; be the correct thing to return in the #-FIXCONS case. -cwh
 
-(DEFMACRO +LABZ (X)
-  `(COND ((+LABS ,X))
-	 (T #+FIXCONS (COPYN 0) #-FIXCONS '(0))))
+(defmacro +labz (x)
+  `(cond ((+labs ,x))
+    (t #+fixcons (copyn 0) #-fixcons '(0))))
 
-(DEFMACRO -LABZ (X)
-  `(COND ((-LABS ,X))
-	 (T #+FIXCONS (COPYN 0) #-FIXCONS '(0))))
+(defmacro -labz (x)
+  `(cond ((-labs ,x))
+    (t #+fixcons (copyn 0) #-fixcons '(0))))
 
-(DEFMACRO =LABZ (X)
-  `(COND ((=LABS ,X))
-	 (T #+FIXCONS (COPYN 0) #-FIXCONS '(0))))
+(defmacro =labz (x)
+  `(cond ((=labs ,x))
+    (t #+fixcons (copyn 0) #-fixcons '(0))))
 
-(DEFMACRO NLABZ (X)
-  `(COND ((NLABS ,X))
-	 (T #+FIXCONS (COPYN 0) #-FIXCONS '(0))))
+(defmacro nlabz (x)
+  `(cond ((nlabs ,x))
+    (t #+fixcons (copyn 0) #-fixcons '(0))))
 
-(DEFMACRO ULABZ (X)
-  `(COND ((ULABS ,X))
-	 (T #+FIXCONS 0 #-FIXCONS '(0))))
+(defmacro ulabz (x)
+  `(cond ((ulabs ,x))
+    (t #+fixcons 0 #-fixcons '(0))))
 
-(DEFMACRO SUBP (&rest X)
-  #-FIXCONS (SETQ X (MAPCAR #'(LAMBDA (FORM) `(UNLAB ,FORM)) X))
-  `(= ,(CAR X) (LOGAND . ,X)))
+(defmacro subp (&rest x)
+  #-fixcons (setq x (mapcar #'(lambda (form) `(unlab ,form)) x))
+  `(= ,(car x) (logand . ,x)))
 
-(DEFUN DBNODE (X) (IF (SYMBOLP X) X (LIST X)))
-(DEFUN NODEP (X) (OR (ATOM X) (MNUMP (CAR X))))
-(DEFUN DBVARP (X) (GETL X '(UN EX)))
+(defun dbnode (x) (if (symbolp x) x (list x)))
+(defun nodep (x) (or (atom x) (mnump (car x))))
+(defun dbvarp (x) (getl x '(un ex)))
 
 ;; Is this supposed to return a fixnum or a cell?
 
-(DEFUN LAB (N) (LSH 1 (f1- N)))
+(defun lab (n) (lsh 1 (f1- n)))
 
-(DEFUN LPR (M N)
-  (COND ((DO ((L LPRS (CDR L))) ((NULL L))
-	     (IF (AND (LABEQ M (CAAAR L)) (LABEQ N (CDAAR L)))
-		 (RETURN (CDAR L)))))
-	((= (SETQ LPRINDEX (f1- LPRINDEX)) LABINDEX) (BREAK 'LPR T))
-	(T (SETQ LPRS (CONS (CONS (CONS M N) (LSH 1 LPRINDEX)) LPRS))
-	   (CDAR LPRS))))
+(defun lpr (m n)
+  (cond ((do ((l lprs (cdr l))) ((null l))
+	   (if (and (labeq m (caaar l)) (labeq n (cdaar l)))
+	       (return (cdar l)))))
+	((= (setq lprindex (f1- lprindex)) labindex) (break 'lpr t))
+	(t (setq lprs (cons (cons (cons m n) (lsh 1 lprindex)) lprs))
+	   (cdar lprs))))
 
-(DEFUN LABEQ (X Y) (EQUAL (LOGIOR X LAB-HIGH-BIT) (LOGIOR Y LAB-HIGH-BIT)))
+(defun labeq (x y) (equal (logior x lab-high-bit) (logior y lab-high-bit)))
 
-(DEFUN MARKND (ND)
-  (COND ((+LABS ND))
-  	((= LPRINDEX (SETQ LABINDEX (f1+ LABINDEX))) (BREAK 'MARKND T))
-	(T (SETQ LABS (CONS (CONS ND (LAB LABINDEX)) LABS))
-	   (BEG ND (LAB LABINDEX))
-	   (CDAR LABS))))
+(defun marknd (nd)
+  (cond ((+labs nd))
+  	((= lprindex (setq labindex (f1+ labindex))) (break 'marknd t))
+	(t (setq labs (cons (cons nd (lab labindex)) labs))
+	   (beg nd (lab labindex))
+	   (cdar labs))))
 
-(DEFUN DBV (X R)
-  (DECLARE (FIXNUM X R ))
-  (DO ((L LPRS (CDR L)) (Y 0)) ((NULL L) Y)
-      (declare (fixnum y))
-      (IF (AND (NOT (= 0 (LOGAND R (CDAR L)))) (NOT (= 0 (LOGAND X (CAAAR L)))))
-	  (SETQ Y (LOGIOR (CDAAR L) Y)))))
+(defun dbv (x r)
+  (declare (fixnum x r ))
+  (do ((l lprs (cdr l)) (y 0)) ((null l) y)
+    (declare (fixnum y))
+    (if (and (not (= 0 (logand r (cdar l)))) (not (= 0 (logand x (caaar l)))))
+	(setq y (logior (cdaar l) y)))))
 
-(DEFUN DBA (R Y)
-  (DECLARE (FIXNUM  R Y ))
-  (DO ((L LPRS (CDR L)) (X 0)) ((NULL L) X)
-      (DECLARE (FIXNUM X ))
-      (IF (AND (NOT (= 0 (LOGAND R (CDAR L)))) (NOT (= 0 (LOGAND (CDAAR L) Y))))
-	  (SETQ X (LOGIOR X (CAAAR L))))))
+(defun dba (r y)
+  (declare (fixnum  r y ))
+  (do ((l lprs (cdr l)) (x 0)) ((null l) x)
+    (declare (fixnum x ))
+    (if (and (not (= 0 (logand r (cdar l)))) (not (= 0 (logand (cdaar l) y))))
+	(setq x (logior x (caaar l))))))
 #-cl
-(DEFUN PRLAB (X)
-  (SETQ-UNLAB X)
-  (SETQ X (LET ((*print-base* 2)) (EXPLODEN (BOOLE BOOLE-ANDC1 LAB-HIGH-BIT X))))
-  (DO ((I (fixnum-remainder (LENGTH X) 3) 3)) ((NULL X))
-      (DO ((J I (f1- J))) ((= 0 J)) (TYO (CAR X)) (SETQ X (CDR X)))
-      (TYO #\SPACE)))
+(defun prlab (x)
+  (setq-unlab x)
+  (setq x (let ((*print-base* 2)) (exploden (boole boole-andc1 lab-high-bit x))))
+  (do ((i (fixnum-remainder (length x) 3) 3)) ((null x))
+    (do ((j i (f1- j))) ((= 0 j)) (tyo (car x)) (setq x (cdr x)))
+    (tyo #\space)))
 
 #+cl
-(DEFUN PRLAB (X)
-  (SETQ-UNLAB X)
-  (SETQ X (LET ((*print-base* 2)(*read-base* 2))(and x (EXPLODEN (BOOLE BOOLE-ANDC1 LAB-HIGH-BIT X)))))
-  (DO ((I (fixnum-remainder (LENGTH X) 3) 3)) ((NULL X))
-      (DO ((J I (f1- J))) ((= 0 J)) (TYO (CAR X)) (SETQ X (CDR X)))
-      (TYO #\SPACE)))
+(defun prlab (x)
+  (setq-unlab x)
+  (setq x (let ((*print-base* 2)(*read-base* 2))(and x (exploden (boole boole-andc1 lab-high-bit x)))))
+  (do ((i (fixnum-remainder (length x) 3) 3)) ((null x))
+    (do ((j i (f1- j))) ((= 0 j)) (tyo (car x)) (setq x (cdr x)))
+    (tyo #\space)))
 
-(DEFUN ONP (CL LAB) (SUBP LAB (+LABZ CL)))
-(DEFUN OFFP (CL LAB) (SUBP LAB (-LABZ CL)))
-(DEFUN ONPU (LAB FACT) (SUBP LAB (ULABZ FACT)))
-(DEFMFUN VISIBLEP (DAT) (AND (NOT (ULABS DAT)) (CNTP DAT)))
+(defun onp (cl lab) (subp lab (+labz cl)))
+(defun offp (cl lab) (subp lab (-labz cl)))
+(defun onpu (lab fact) (subp lab (ulabz fact)))
+(defmfun visiblep (dat) (and (not (ulabs dat)) (cntp dat)))
 
-(DEFUN CANCEL (LAB DAT)
+(defun cancel (lab dat)
   (cond
-   ((SETQ * (ULABS DAT)) (IORM * LAB))
-   (t (SETQ ULABS (CONS DAT ULABS))
-      (SETQ-UNLAB LAB)
-      (PUTPROP DAT (COPYN LAB) 'ULABS))))
+    ((setq * (ulabs dat)) (iorm * lab))
+    (t (setq ulabs (cons dat ulabs))
+       (setq-unlab lab)
+       (putprop dat (copyn lab) 'ulabs))))
 
-(DEFUN BEG (ND LAB)
-  (SETQ-COPYN LAB)
-  (IF (QUEUE+P ND LAB) 
-      (IF (NULL +S)
-	  (SETQ +S (NCONS ND) +SM +S +SL +S)
-		    (SETQ +S (CONS ND +S)))))
+(defun beg (nd lab)
+  (setq-copyn lab)
+  (if (queue+p nd lab) 
+      (if (null +s)
+	  (setq +s (ncons nd) +sm +s +sl +s)
+	  (setq +s (cons nd +s)))))
 
-(DEFUN BEG- (ND LAB)
-  (SETQ-COPYN LAB)
-  (IF (QUEUE-P ND LAB)
-      (IF (NULL -S) (SETQ -S (NCONS ND) -SM -S -SL -S)
-		    (SETQ -S (CONS ND -S)))))
+(defun beg- (nd lab)
+  (setq-copyn lab)
+  (if (queue-p nd lab)
+      (if (null -s) (setq -s (ncons nd) -sm -s -sl -s)
+	  (setq -s (cons nd -s)))))
 
-(DEFUN MID (ND LAB)
-  (IF (QUEUE+P ND LAB)
+(defun mid (nd lab)
+  (if (queue+p nd lab)
       (cond
-       ((NULL +SM) (SETQ +S (NCONS ND) +SM +S +SL +S))
-       (t (RPLACD +SM (CONS ND (CDR +SM)))
-	  (IF (EQ +SM +SL) (SETQ +SL (CDR +SL)))
-	  (SETQ +SM (CDR +SM))))))
+	((null +sm) (setq +s (ncons nd) +sm +s +sl +s))
+	(t (rplacd +sm (cons nd (cdr +sm)))
+	   (if (eq +sm +sl) (setq +sl (cdr +sl)))
+	   (setq +sm (cdr +sm))))))
 
-(DEFUN MID- (ND LAB)
-  (IF (QUEUE-P ND LAB)
+(defun mid- (nd lab)
+  (if (queue-p nd lab)
       (cond
-       ((NULL -SM) (SETQ -S (NCONS ND) -SM -S -SL -S))
-       (t (RPLACD -SM (CONS ND (CDR -SM)))
-	  (IF (EQ -SM -SL) (SETQ -SL (CDR -SL)))
-	  (SETQ -SM (CDR -SM))))))
+	((null -sm) (setq -s (ncons nd) -sm -s -sl -s))
+	(t (rplacd -sm (cons nd (cdr -sm)))
+	   (if (eq -sm -sl) (setq -sl (cdr -sl)))
+	   (setq -sm (cdr -sm))))))
 
-(DEFUN END (ND LAB)
-  (IF (QUEUE+P ND LAB)
+(defun end (nd lab)
+  (if (queue+p nd lab)
       (cond
-       ((NULL +SL) (SETQ +S (NCONS ND) +SM +S +SL +S))
-       (t (RPLACD +SL (NCONS ND))
-	  (SETQ +SL (CDR +SL))))))
+	((null +sl) (setq +s (ncons nd) +sm +s +sl +s))
+	(t (rplacd +sl (ncons nd))
+	   (setq +sl (cdr +sl))))))
 
-(DEFUN END- (ND LAB)
-  (IF (QUEUE-P ND LAB) 
+(defun end- (nd lab)
+  (if (queue-p nd lab) 
       (cond
-       ((NULL -SL) (SETQ -S (NCONS ND) -SM -S -SL -S))
-       (t (RPLACD -SL (NCONS ND))
-	  (SETQ -SL (CDR -SL))))))
+	((null -sl) (setq -s (ncons nd) -sm -s -sl -s))
+	(t (rplacd -sl (ncons nd))
+	   (setq -sl (cdr -sl))))))
 
-(DEFUN QUEUE+P (ND LAB)
-  (COND ((NULL (SETQ * (+LABS ND)))
-	 (SETQ +LABS (CONS ND +LABS))
-	 (SETQ-UNLAB LAB)
-	 (PUT ND (COPYN (LOGIOR LAB-HIGH-BIT LAB)) '+LABS))
-	((SUBP LAB *) NIL)
-	((SUBP LAB-HIGH-LAB *) (IORM * LAB) NIL)
-	(T (IORM * (LOGIOR LAB-HIGH-BIT (UNLAB LAB))))))
+(defun queue+p (nd lab)
+  (cond ((null (setq * (+labs nd)))
+	 (setq +labs (cons nd +labs))
+	 (setq-unlab lab)
+	 (put nd (copyn (logior lab-high-bit lab)) '+labs))
+	((subp lab *) nil)
+	((subp lab-high-lab *) (iorm * lab) nil)
+	(t (iorm * (logior lab-high-bit (unlab lab))))))
 
-(DEFUN QUEUE-P (ND LAB)
-  (COND ((NULL (SETQ * (-LABS ND)))
-	 (SETQ -LABS (CONS ND -LABS))
-	 (SETQ-UNLAB LAB)
-	 (PUT ND (COPYN (LOGIOR LAB-HIGH-BIT LAB)) '-LABS))
-	((SUBP LAB *) NIL)
-	((SUBP LAB-HIGH-LAB *) (IORM * LAB) NIL)
-	(T (IORM * (LOGIOR LAB-HIGH-BIT (UNLAB LAB))))))
+(defun queue-p (nd lab)
+  (cond ((null (setq * (-labs nd)))
+	 (setq -labs (cons nd -labs))
+	 (setq-unlab lab)
+	 (put nd (copyn (logior lab-high-bit lab)) '-labs))
+	((subp lab *) nil)
+	((subp lab-high-lab *) (iorm * lab) nil)
+	(t (iorm * (logior lab-high-bit (unlab lab))))))
 
-(DEFUN DQ+ () 
-  (IF +S (PROG2 (xXORM (zl-get (car +s) '+labs) ;(+LABS (CAR +S))
-		      LAB-HIGH-LAB)
-		(CAR +S)
-		(COND ((NOT (EQ +S +SM)) (SETQ +S (CDR +S)))
-		      ((NOT (EQ +S +SL)) (SETQ +S (CDR +S) +SM +S))
-		      (T (SETQ +S NIL +SM NIL +SL NIL))))))
+(defun dq+ () 
+  (if +s (prog2 (xxorm (zl-get (car +s) '+labs) ;(+LABS (CAR +S))
+		       lab-high-lab)
+	     (car +s)
+	   (cond ((not (eq +s +sm)) (setq +s (cdr +s)))
+		 ((not (eq +s +sl)) (setq +s (cdr +s) +sm +s))
+		 (t (setq +s nil +sm nil +sl nil))))))
 
-(DEFUN DQ- ()
-  (IF -S (PROG2 (XORM (-LABS (CAR -S)) LAB-HIGH-LAB)
-		(CAR -S)
-		(COND ((NOT (EQ -S -SM)) (SETQ -S (CDR -S)))
-		      ((NOT (EQ -S -SL)) (SETQ -S (CDR -S) -SM -S))
-		      (T (setq -S NIL -SM NIL -SL NIL))))))
+(defun dq- ()
+  (if -s (prog2 (xorm (-labs (car -s)) lab-high-lab)
+	     (car -s)
+	   (cond ((not (eq -s -sm)) (setq -s (cdr -s)))
+		 ((not (eq -s -sl)) (setq -s (cdr -s) -sm -s))
+		 (t (setq -s nil -sm nil -sl nil))))))
 
-(DEFMFUN CLEAR ()
-  (IF DBTRACE (MTELL "~%Clearing ~A" MARKS))
-  (MAPC #'(LAMBDA (SYM) (_ (SEL SYM +LABS) NIL)) +LABS)
-  (MAPC #'(LAMBDA (SYM) (_ (SEL SYM -LABS) NIL)) -LABS)
-  (MAPC #'(LAMBDA (SYM) (ZL-REMPROP SYM 'ULABS)) ULABS)
-  (SETQ +S NIL +SM NIL +SL NIL -S NIL -SM NIL -SL NIL 
-	LABS NIL LPRS NIL LABINDEX 0 LPRINDEX LABNUMBER  
-	MARKS 0 +LABS NIL -LABS NIL ULABS NIL)
-  (CONTEXTMARK))
+(defmfun clear ()
+  (if dbtrace (mtell "~%Clearing ~A" marks))
+  (mapc #'(lambda (sym) (_ (sel sym +labs) nil)) +labs)
+  (mapc #'(lambda (sym) (_ (sel sym -labs) nil)) -labs)
+  (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
+  (setq +s nil +sm nil +sl nil -s nil -sm nil -sl nil 
+	labs nil lprs nil labindex 0 lprindex labnumber  
+	marks 0 +labs nil -labs nil ulabs nil)
+  (contextmark))
 
-(DEFMFUN TRUEP (PAT)
-  (CLEAR)
-  (COND ((ATOM PAT) PAT)
-	((PROG2 (SETQ PAT (MAPCAR #'SEMANT PAT)) NIL))
-	((EQ (CAR PAT) 'KIND) (BEG (CADR PAT) 1) (BEG- (CADDR PAT) 1) (PROPG))
-	(T (BEG (CADR PAT) 1) (BEG- (CADDR PAT) 2) (BEG (CAR PAT) (LPR 1 2)) (PROPG))))
+(defmfun truep (pat)
+  (clear)
+  (cond ((atom pat) pat)
+	((prog2 (setq pat (mapcar #'semant pat)) nil))
+	((eq (car pat) 'kind) (beg (cadr pat) 1) (beg- (caddr pat) 1) (propg))
+	(t (beg (cadr pat) 1) (beg- (caddr pat) 2) (beg (car pat) (lpr 1 2)) (propg))))
 
-(DEFMFUN FALSEP (PAT)
-  (CLEAR)
-  (COND ((EQ (CAR PAT) 'KIND)
-	 (BEG (CADR PAT) 1) (BEG (CADDR PAT) 1) (PROPG))))
+(defmfun falsep (pat)
+  (clear)
+  (cond ((eq (car pat) 'kind)
+	 (beg (cadr pat) 1) (beg (caddr pat) 1) (propg))))
 
-(DEFMFUN ISP (PAT) (COND ((TRUEP PAT)) ((FALSEP PAT) NIL) (T 'UNKNOWN)))
+(defmfun isp (pat) (cond ((truep pat)) ((falsep pat) nil) (t 'unknown)))
 
-(DEFMFUN KINDP (X Y &aux #+lispm (default-cons-area working-storage-area ))
-  (IF (NOT (SYMBOLP X)) (MERROR "KINDP called on a non-symbolic atom."))
-  (CLEAR)
-  (BEG X 1)
-  (DO ((P (DQ+) (DQ+))) ((NULL P))
-      (IF (EQ Y P) (RETURN T) (MARK+ P (+LABS P)))))
+(defmfun kindp (x y &aux #+lispm (default-cons-area working-storage-area ))
+  (if (not (symbolp x)) (merror "KINDP called on a non-symbolic atom."))
+  (clear)
+  (beg x 1)
+  (do ((p (dq+) (dq+))) ((null p))
+    (if (eq y p) (return t) (mark+ p (+labs p)))))
 
-(DEFMFUN TRUE* (PAT)
-  (LET ((DUM (SEMANT PAT))) (IF DUM (CNTXT (IND (NCONS DUM)) CONTEXT))))
+(defmfun true* (pat)
+  (let ((dum (semant pat))) (if dum (cntxt (ind (ncons dum)) context))))
 
-(DEFMFUN FACT (FUN ARG VAL) (CNTXT (IND (DATUM (LIST FUN ARG VAL))) CONTEXT))
+(defmfun fact (fun arg val) (cntxt (ind (datum (list fun arg val))) context))
 
-(DEFMFUN KIND (X Y &aux #+kcl (y y))
-  (SETQ Y (DATUM (LIST 'KIND X Y))) (CNTXT Y CONTEXT) (ADDF Y X))
+(defmfun kind (x y &aux #+kcl (y y))
+  (setq y (datum (list 'kind x y))) (cntxt y context) (addf y x))
 
-(DEFMFUN PAR (S Y)
-  (SETQ Y (DATUM (LIST 'PAR S Y))) (CNTXT Y CONTEXT)
-  (MAPC #'(LAMBDA (LIS) (ADDF Y LIS)) S))
+(defmfun par (s y)
+  (setq y (datum (list 'par s y))) (cntxt y context)
+  (mapc #'(lambda (lis) (addf y lis)) s))
 
-(DEFMFUN DATUM (PAT) (NCONS PAT))
+(defmfun datum (pat) (ncons pat))
 
-(DEFUN IND (DAT)
-  (MAPC #'(LAMBDA (LIS) (IND1 DAT LIS)) (CDAR DAT))
-  (MAPC #'IND2 (CDAR DAT))
-  DAT)
+(defun ind (dat)
+  (mapc #'(lambda (lis) (ind1 dat lis)) (cdar dat))
+  (mapc #'ind2 (cdar dat))
+  dat)
 
-(DEFUN IND1 (DAT PAT)
-  (COND ((NOT (NODEP PAT)) (MAPC #'(LAMBDA (LIS) (IND1 DAT LIS)) PAT))
-	((OR (MARKP PAT) (EQ 'UNKNOWN PAT)))
-	(T (ADDF DAT PAT) (MARK PAT))))
+(defun ind1 (dat pat)
+  (cond ((not (nodep pat)) (mapc #'(lambda (lis) (ind1 dat lis)) pat))
+	((or (markp pat) (eq 'unknown pat)))
+	(t (addf dat pat) (mark pat))))
 
-(DEFUN IND2 (ND) (IF (NODEP ND) (UNMRK ND) (MAPC #'IND2 ND)))
+(defun ind2 (nd) (if (nodep nd) (unmrk nd) (mapc #'ind2 nd)))
 
 
-(DEFMFUN ADDF (DAT ND &aux #+lispm (default-cons-area working-storage-area ))
-	 (_ (SEL ND DATA) (CONS DAT (SEL ND DATA))))
+(defmfun addf (dat nd &aux #+lispm (default-cons-area working-storage-area ))
+  (_ (sel nd data) (cons dat (sel nd data))))
 
-(DEFMFUN MAXIMA-REMF (DAT ND) (_ (SEL ND DATA) (FDEL DAT (SEL ND DATA))))
+(defmfun maxima-remf (dat nd) (_ (sel nd data) (fdel dat (sel nd data))))
 
-(DEFUN FDEL (FACT DATA)
+(defun fdel (fact data)
   (cond
-   ((AND (EQ (CAR FACT) (CAAAR DATA))
-	 (EQ (CADR FACT) (CADAAR DATA))
-	 (EQ (CADDR FACT) (CADDAAR DATA)))
-    (CDR DATA))
-   (t (DO ((DS DATA (CDR DS)) (D)) ((NULL (CDR DS)))
-	  (SETQ D (CAADR DS))
-	  (COND ((AND (EQ (CAR FACT) (CAR D))
-		      (EQ (CADR FACT) (CADR D))
-		      (EQ (CADDR FACT) (CADDR D)))
-		 (_ (SEL D CON DATA) (DELQ D (SEL D CON DATA)))
-		 (RPLACD DS (CDDR DS)) (RETURN T))))
-      DATA)))
+    ((and (eq (car fact) (caaar data))
+	  (eq (cadr fact) (cadaar data))
+	  (eq (caddr fact) (caddaar data)))
+     (cdr data))
+    (t (do ((ds data (cdr ds)) (d)) ((null (cdr ds)))
+	 (setq d (caadr ds))
+	 (cond ((and (eq (car fact) (car d))
+		     (eq (cadr fact) (cadr d))
+		     (eq (caddr fact) (caddr d)))
+		(_ (sel d con data) (delq d (sel d con data)))
+		(rplacd ds (cddr ds)) (return t))))
+       data)))
 
-(DEFUN SEMANTICS (PAT) (IF (ATOM PAT) PAT (LIST (SEMANT PAT))))
+(defun semantics (pat) (if (atom pat) pat (list (semant pat))))
 
-(DEFUN DB-MNUMP (X)
-       (OR (NUMBERP X)
-	   (AND (NOT (ATOM X))
-		(NOT (ATOM (CAR X)))
-		(MEMQ (CAAR X) '(RAT BIGFLOAT)))))       
+(defun db-mnump (x)
+  (or (numberp x)
+      (and (not (atom x))
+	   (not (atom (car x)))
+	   (memq (caar x) '(rat bigfloat)))))       
 
-(DEFUN SEMANT (PAT) 
-  (COND ((SYMBOLP PAT) (OR (ZL-GET PAT 'VAR) PAT))
-	((DB-MNUMP PAT) (DINTNUM PAT))
-	(T (MAPCAR #'SEMANT PAT))))
+(defun semant (pat) 
+  (cond ((symbolp pat) (or (zl-get pat 'var) pat))
+	((db-mnump pat) (dintnum pat))
+	(t (mapcar #'semant pat))))
 
-(DEFMFUN DINTERNP (X)
-  (COND ((MNUMP X) (DINTNUM X)) 
-	((ATOM X) X) 
-	((ASSOL X DOBJECTS))))
+(defmfun dinternp (x)
+  (cond ((mnump x) (dintnum x)) 
+	((atom x) x) 
+	((assol x dobjects))))
 
-(DEFMFUN DINTERN (X &aux #+lispm (default-cons-area working-storage-area ))
-  (COND ((MNUMP X) (DINTNUM X))
-	((ATOM X) X)
-	((ASSOL X DOBJECTS))
-	(T (SETQ DOBJECTS (CONS (DBNODE X) DOBJECTS))
-	   (CAR DOBJECTS))))
+(defmfun dintern (x &aux #+lispm (default-cons-area working-storage-area ))
+  (cond ((mnump x) (dintnum x))
+	((atom x) x)
+	((assol x dobjects))
+	(t (setq dobjects (cons (dbnode x) dobjects))
+	   (car dobjects))))
 
-(DEFUN DINTNUM (X)
-  (COND ((ASSOL X NOBJECTS))
-	((PROGN (SETQ X (DBNODE X)) NIL))
-	((NULL NOBJECTS) (SETQ NOBJECTS (LIST X)) X)
-	((EQ '$POS (RGRP (CAR X) (CAAR NOBJECTS)))
-	 (LET ((CONTEXT 'GLOBAL))
-	      (FACT 'MGRP X (CAR NOBJECTS)))
-	 (SETQ NOBJECTS (CONS X NOBJECTS))  X)
-	(T (DO ((LIS NOBJECTS (CDR LIS)) (CONTEXT '$GLOBAL))
-	       ((NULL (CDR LIS))
-		(LET ((CONTEXT 'GLOBAL))
-		     (FACT 'MGRP (CAR LIS) X)) (RPLACD LIS (LIST X)) X)
-	       (COND ((EQ '$POS (RGRP (CAR X) (CAADR LIS)))
-		      (LET ((CONTEXT 'GLOBAL))
-			   (FACT 'MGRP (CAR LIS) X) (FACT 'MGRP X (CADR LIS)))
-		      (RPLACD LIS (CONS X (CDR LIS)))
-		      (RETURN X)))))))
+(defun dintnum (x)
+  (cond ((assol x nobjects))
+	((progn (setq x (dbnode x)) nil))
+	((null nobjects) (setq nobjects (list x)) x)
+	((eq '$pos (rgrp (car x) (caar nobjects)))
+	 (let ((context 'global))
+	   (fact 'mgrp x (car nobjects)))
+	 (setq nobjects (cons x nobjects))  x)
+	(t (do ((lis nobjects (cdr lis)) (context '$global))
+	       ((null (cdr lis))
+		(let ((context 'global))
+		  (fact 'mgrp (car lis) x)) (rplacd lis (list x)) x)
+	     (cond ((eq '$pos (rgrp (car x) (caadr lis)))
+		    (let ((context 'global))
+		      (fact 'mgrp (car lis) x) (fact 'mgrp x (cadr lis)))
+		    (rplacd lis (cons x (cdr lis)))
+		    (return x)))))))
 
-(DEFMFUN DOUTERN (X) (IF (ATOM X) X (CAR X)))
+(defmfun doutern (x) (if (atom x) x (car x)))
 
-(DEFMFUN UNTRUE (PAT)
-  (KILL (CAR PAT) (SEMANT (CADR PAT)) (SEMANT (CADDR PAT))))
+(defmfun untrue (pat)
+  (kill (car pat) (semant (cadr pat)) (semant (caddr pat))))
 
-(DEFMFUN KILL (FUN ARG VAL) (KILL2 FUN ARG VAL ARG) (KILL2 FUN ARG VAL VAL))
+(defmfun kill (fun arg val) (kill2 fun arg val arg) (kill2 fun arg val val))
 
-(DEFUN KILL2 (FUN ARG VAL CL)
-  (COND ((NOT (ATOM CL)) (MAPC #'(LAMBDA (LIS) (KILL2 FUN ARG VAL LIS)) CL))
-	((NUMBERP CL))
-	(T (_ (SEL CL DATA) (KILL3 FUN ARG VAL (SEL CL DATA))))))
+(defun kill2 (fun arg val cl)
+  (cond ((not (atom cl)) (mapc #'(lambda (lis) (kill2 fun arg val lis)) cl))
+	((numberp cl))
+	(t (_ (sel cl data) (kill3 fun arg val (sel cl data))))))
 
-(DEFUN KILL3 (FUN ARG VAL DATA)
-       (cond
-	((AND (EQ FUN (CAAAR DATA))
-	      (EQ ARG (CADAAR DATA)) (EQ VAL (CADDAAR DATA)))
-	 (CDR DATA))
-	(t (DO ((DS DATA (CDR DS)) (D)) ((NULL (CDR DS)))
-	       (SETQ D (CAADR DS))
-	       (cond
-		((NOT (AND (EQ FUN (CAR D))
-			   (EQ ARG (CADR D))
-			   (EQ VAL (CADDR D))))
-		 T)
-		(t (_ (SEL D CON DATA) (DELQ D (SEL D CON DATA)))
-		   (RPLACD DS (CDDR DS)) (RETURN T))))
-	   DATA)))
+(defun kill3 (fun arg val data)
+  (cond
+    ((and (eq fun (caaar data))
+	  (eq arg (cadaar data)) (eq val (caddaar data)))
+     (cdr data))
+    (t (do ((ds data (cdr ds)) (d)) ((null (cdr ds)))
+	 (setq d (caadr ds))
+	 (cond
+	   ((not (and (eq fun (car d))
+		      (eq arg (cadr d))
+		      (eq val (caddr d))))
+	    t)
+	   (t (_ (sel d con data) (delq d (sel d con data)))
+	      (rplacd ds (cddr ds)) (return t))))
+       data)))
 
-(DEFMFUN UNKIND (X Y)
-       (setq y (car (datum (LIST 'kind x y))))
-       (kcntxt y context)
-       (MAXIMA-REMF y x))
+(defmfun unkind (x y)
+  (setq y (car (datum (list 'kind x y))))
+  (kcntxt y context)
+  (maxima-remf y x))
 
 (defmfun remov (fact)
-       (remov4 fact (cadar fact))
-       (remov4 fact (caddar fact)))
+  (remov4 fact (cadar fact))
+  (remov4 fact (caddar fact)))
 
 (defun remov4 (fact cl)	 
-  (cond ((or (symbolp cl)			;if CL is a symbol or
-	     (and (consp cl)			;an interned number, then we want to REMOV4 FACT
-		  (numberp (car cl))))		;from its property list.
+  (cond ((or (symbolp cl)		;if CL is a symbol or
+	     (and (consp cl) ;an interned number, then we want to REMOV4 FACT
+		  (numberp (car cl))))	;from its property list.
 	 (_ (sel cl data) (delq fact (sel cl data))))
-	((or (atom cl) (atom (car cl))))	;if CL is an atom (not a symbol)
-						;or its CAR is an atom then we don't want to do
-						;anything to it.
+	((or (atom cl) (atom (car cl)))) ;if CL is an atom (not a symbol)
+					;or its CAR is an atom then we don't want to do
+					;anything to it.
 	(t (mapc #'(lambda (lis) (remov4 fact lis))
 		 (cond ((atom (caar cl)) (cdr cl)) ;if CL's CAAR is
-						;an atom, then CL is an expression, and
-						;we want to REMOV4 FACT from the parts
-						;of the expression. 
+					;an atom, then CL is an expression, and
+					;we want to REMOV4 FACT from the parts
+					;of the expression. 
 		       ((atom (caaar cl)) (cdar cl)))))))
-			      ;if CL's CAAAR is an atom, then CL is a
-			      ;fact, and we want to REMOV4 FACT from
-			      ;the parts of the fact.
+					;if CL's CAAAR is an atom, then CL is a
+					;fact, and we want to REMOV4 FACT from
+					;the parts of the fact.
 
-(DEFMFUN KILLFRAME (CL)
-       (MAPC #'REMOV (SEL CL DATA))
-       (ZL-REMPROP CL '+LABS) (ZL-REMPROP CL '-LABS)
-       (ZL-REMPROP CL 'OBJ) (ZL-REMPROP CL 'VAR)
-       (ZL-REMPROP CL 'FACT)
-       (ZL-REMPROP CL 'WN))
+(defmfun killframe (cl)
+  (mapc #'remov (sel cl data))
+  (zl-remprop cl '+labs) (zl-remprop cl '-labs)
+  (zl-remprop cl 'obj) (zl-remprop cl 'var)
+  (zl-remprop cl 'fact)
+  (zl-remprop cl 'wn))
 
-(DEFMFUN ACTIVATE N 
-  (DO ((I 1 (f1+ I))) ((> I N))
-      (cond
-       ((MEMQ (ARG I) CONTEXTS) NIL)
-       (t (SETQ CONTEXTS (CONS (ARG I) CONTEXTS))
-	  (CMARK (ARG I))))))
+(defmfun activate n 
+  (do ((i 1 (f1+ i))) ((> i n))
+    (cond
+      ((memq (arg i) contexts) nil)
+      (t (setq contexts (cons (arg i) contexts))
+	 (cmark (arg i))))))
 
-(DEFMFUN DEACTIVATE N 
-  (DO ((I 1 (f1+ I))) ((> I N))
-      (cond
-       ((NOT (MEMQ (ARG I) CONTEXTS)) NIL)
-       (t (CUNMRK (ARG I))
-	  (SETQ CONTEXTS (DELQ (ARG I) CONTEXTS))))))
+(defmfun deactivate n 
+  (do ((i 1 (f1+ i))) ((> i n))
+    (cond
+      ((not (memq (arg i) contexts)) nil)
+      (t (cunmrk (arg i))
+	 (setq contexts (delq (arg i) contexts))))))
 
-(DEFMFUN CONTEXT N (NEWCON (LISTIFY N)))
+(defmfun context n (newcon (listify n)))
 
-(DEFUN NEWCON (C)
-  (IF (> CONINDEX CONNUMBER) (GCCON))
-  (SETQ C (IF (NULL C) (LIST '*GC NIL) (LIST '*GC NIL 'SUBC C)))
-  (store (AREF CONUNMRK CONINDEX) C)
-  (store (AREF CONMARK CONINDEX) (CDR C))
-  (SETQ CONINDEX (f1+ CONINDEX))
-  C)
+(defun newcon (c)
+  (if (> conindex connumber) (gccon))
+  (setq c (if (null c) (list '*gc nil) (list '*gc nil 'subc c)))
+  (store (aref conunmrk conindex) c)
+  (store (aref conmark conindex) (cdr c))
+  (setq conindex (f1+ conindex))
+  c)
 
 ;; To be used with the WITH-NEW-CONTEXT macro.
-(DEFUN CONTEXT-UNWINDER ()
-  (KILLC (AREF CONMARK CONINDEX))
-  (SETQ CONINDEX (f1- CONINDEX))
-  (SETF (AREF CONUNMRK CONINDEX) ())
+(defun context-unwinder ()
+  (killc (aref conmark conindex))
+  (setq conindex (f1- conindex))
+  (setf (aref conunmrk conindex) ())
   )
 
-(DEFUN GCCON () 
-  (GCCON1)
-  (WHEN (> CONINDEX CONNUMBER)
-	#+GC (GC)
-	(GCCON1)
-	(WHEN (> CONINDEX CONNUMBER)
-	      (MERROR "~%Too many contexts."))))
+(defun gccon () 
+  (gccon1)
+  (when (> conindex connumber)
+    #+gc (gc)
+    (gccon1)
+    (when (> conindex connumber)
+      (merror "~%Too many contexts."))))
 
-(DEFUN GCCON1 ()
-  (SETQ CONINDEX 0)
-  (DO ((I 0 (f1+ I))) ((> I CONNUMBER))
-      (cond
-       ((NOT (EQ (AREF CONMARK I) (CDR (AREF CONUNMRK I))))
-	(KILLC (AREF CONMARK I)))
-       (t (STORE (AREF CONUNMRK CONINDEX) (AREF CONUNMRK I))
+(defun gccon1 ()
+  (setq conindex 0)
+  (do ((i 0 (f1+ i))) ((> i connumber))
+    (cond
+      ((not (eq (aref conmark i) (cdr (aref conunmrk i))))
+       (killc (aref conmark i)))
+      (t (store (aref conunmrk conindex) (aref conunmrk i))
 	  
-	  (STORE (AREF CONMARK CONINDEX) (AREF CONMARK I))
+	 (store (aref conmark conindex) (aref conmark i))
 	  
-	  (SETQ CONINDEX (f1+ CONINDEX))))))
+	 (setq conindex (f1+ conindex))))))
 
-(DEFMFUN CNTXT (DAT CON)
-  (IF (NOT (ATOM CON)) (SETQ CON (CDR CON)))
-  (PUT CON (CONS DAT (ZL-GET CON 'DATA)) 'DATA)
-  (IF (NOT (EQ 'GLOBAL CON)) (PUT DAT CON 'CON))
-  DAT)
+(defmfun cntxt (dat con)
+  (if (not (atom con)) (setq con (cdr con)))
+  (put con (cons dat (zl-get con 'data)) 'data)
+  (if (not (eq 'global con)) (put dat con 'con))
+  dat)
 
 (defmfun kcntxt (fact con)
-       (if (not (atom con)) (setq con (cdr con)))
-       (put con (fdel fact (zl-get con 'data)) 'data)
-       (if (not (eq 'global con)) (zl-remprop fact 'con))
-       fact)
+  (if (not (atom con)) (setq con (cdr con)))
+  (put con (fdel fact (zl-get con 'data)) 'data)
+  (if (not (eq 'global con)) (zl-remprop fact 'con))
+  fact)
 
-(DEFUN CNTP (F)
-  (COND ((NOT (SETQ F (SEL F CON))))
-	((SETQ F (ZL-GET F 'CMARK)) (> F 0))))
+(defun cntp (f)
+  (cond ((not (setq f (sel f con))))
+	((setq f (zl-get f 'cmark)) (> f 0))))
 
-(DEFMFUN CONTEXTMARK (&aux #+lispm (default-cons-area working-storage-area ))
-  (LET ((CON CONTEXT))
-       (UNLESS (EQ CURRENT CON)
-	       (CUNMRK CURRENT) (SETQ CURRENT CON) (CMARK CON))))
+(defmfun contextmark (&aux #+lispm (default-cons-area working-storage-area ))
+  (let ((con context))
+    (unless (eq current con)
+      (cunmrk current) (setq current con) (cmark con))))
 
-(DEFUN CMARK (CON)
-  (IF (NOT (ATOM CON)) (SETQ CON (CDR CON)))
-  (LET ((CM (ZL-GET CON 'CMARK)))
-    (PUTPROP CON (IF CM (f1+ CM) 1) 'CMARK)
-    (MAPC #'CMARK (ZL-GET CON 'SUBC))))
+(defun cmark (con)
+  (if (not (atom con)) (setq con (cdr con)))
+  (let ((cm (zl-get con 'cmark)))
+    (putprop con (if cm (f1+ cm) 1) 'cmark)
+    (mapc #'cmark (zl-get con 'subc))))
 
-(DEFUN CUNMRK (CON)
-  (IF (NOT (ATOM CON)) (SETQ CON (CDR CON)))
-  (LET ((CM (ZL-GET CON 'CMARK)))
-       (COND (CM (PUTPROP CON (f1- CM) 'CMARK)))
-       (MAPC #'CUNMRK (ZL-GET CON 'SUBC))))
+(defun cunmrk (con)
+  (if (not (atom con)) (setq con (cdr con)))
+  (let ((cm (zl-get con 'cmark)))
+    (cond (cm (putprop con (f1- cm) 'cmark)))
+    (mapc #'cunmrk (zl-get con 'subc))))
 
-(DEFMFUN KILLC (CON)
-  (CONTEXTMARK)
-  (COND ((NOT (NULL CON))
-	 (MAPC #'REMOV (ZL-GET CON 'DATA))
-	 (ZL-REMPROP CON 'DATA)
-	 (ZL-REMPROP CON 'CMARK)
-	 (ZL-REMPROP CON 'SUBC)))
-  T)
+(defmfun killc (con)
+  (contextmark)
+  (cond ((not (null con))
+	 (mapc #'remov (zl-get con 'data))
+	 (zl-remprop con 'data)
+	 (zl-remprop con 'cmark)
+	 (zl-remprop con 'subc)))
+  t)
 
-(DEFUN PROPG ()
-  (DO ((X) (LAB)) (NIL)
-      (COND ((SETQ X (DQ+))
-	     (SETQ LAB (+LABS X))
-	     (IF (= 0 (LOGAND (UNLAB LAB) (UNLAB (-LABZ X))))
-		 (MARK+ X LAB) (RETURN T)))
-	    ((SETQ X (DQ-))
-	     (SETQ LAB (-LABS X))
-	     (IF (= 0 (LOGAND (UNLAB LAB) (UNLAB (+LABZ X))))
-		 (MARK- X LAB) (RETURN T)))
-	    (T (RETURN NIL)))))
+(defun propg ()
+  (do ((x) (lab)) (nil)
+    (cond ((setq x (dq+))
+	   (setq lab (+labs x))
+	   (if (= 0 (logand (unlab lab) (unlab (-labz x))))
+	       (mark+ x lab) (return t)))
+	  ((setq x (dq-))
+	   (setq lab (-labs x))
+	   (if (= 0 (logand (unlab lab) (unlab (+labz x))))
+	       (mark- x lab) (return t)))
+	  (t (return nil)))))
 
-(DEFUN MARK+ (CL LAB &aux #+lispm (default-cons-area working-storage-area ))
-  (COND (DBTRACE (SETQ MARKS (f1+ MARKS))
-	 (MTELL "~%Marking ~A +" CL) (PRLAB LAB)))
-  (MAPC #'(LAMBDA (LIS) (MARK+0 CL LAB LIS)) (SEL CL DATA)))
+(defun mark+ (cl lab &aux #+lispm (default-cons-area working-storage-area ))
+  (cond (dbtrace (setq marks (f1+ marks))
+		 (mtell "~%Marking ~A +" cl) (prlab lab)))
+  (mapc #'(lambda (lis) (mark+0 cl lab lis)) (sel cl data)))
 
-(DEFUN MARK+0 (CL LAB FACT)
-  (COND (DBCHECK (MTELL "~%Checking ~A from ~A+" (CAR FACT) CL) (PRLAB LAB)))
-  (COND ((ONPU LAB FACT))
-	((NOT (CNTP FACT)))
-	((NULL (SEL FACT WN)) (MARK+1 CL LAB FACT))
-	((ONP (SEL FACT WN) WORLD) (MARK+1 CL LAB FACT))
-	((OFFP (SEL FACT WN) WORLD) NIL)
-	(T (MARK+3 CL LAB FACT))))
+(defun mark+0 (cl lab fact)
+  (cond (dbcheck (mtell "~%Checking ~A from ~A+" (car fact) cl) (prlab lab)))
+  (cond ((onpu lab fact))
+	((not (cntp fact)))
+	((null (sel fact wn)) (mark+1 cl lab fact))
+	((onp (sel fact wn) world) (mark+1 cl lab fact))
+	((offp (sel fact wn) world) nil)
+	(t (mark+3 cl lab fact))))
 
-(DEFUN MARK+1 (CL LAB DAT)
-  (COND ((EQ (CAAR DAT) 'KIND)
-	 (IF (EQ (CADAR DAT) CL) (MID (CADDAR DAT) LAB)))  ; E1
-	((EQ (CAAR DAT) 'PAR)
-	 (IF (NOT (EQ (CADDAR DAT) CL))
-	     (PROGN (CANCEL LAB DAT)  ; PR1
-		    (MID (CADDAR DAT) LAB)
-		    (DO ((LIS (CADAR DAT) (CDR LIS))) ((NULL LIS))
-		        (IF (NOT (EQ (CAR LIS) CL)) (MID- (CAR LIS) LAB))))))
-	((EQ (CADAR DAT) CL)
-	 (IF (+LABS (CAAR DAT))  ; V1
-	     (END (CADDAR DAT) (DBV LAB (+LABS (CAAR DAT)))))
-	 (IF (-LABS (CADDAR DAT))  ; F4
-	     (END- (CAAR DAT) (LPR LAB (-LABS (CADDAR DAT))))))))
+(defun mark+1 (cl lab dat)
+  (cond ((eq (caar dat) 'kind)
+	 (if (eq (cadar dat) cl) (mid (caddar dat) lab))) ; E1
+	((eq (caar dat) 'par)
+	 (if (not (eq (caddar dat) cl))
+	     (progn (cancel lab dat)	; PR1
+		    (mid (caddar dat) lab)
+		    (do ((lis (cadar dat) (cdr lis))) ((null lis))
+		      (if (not (eq (car lis) cl)) (mid- (car lis) lab))))))
+	((eq (cadar dat) cl)
+	 (if (+labs (caar dat))		; V1
+	     (end (caddar dat) (dbv lab (+labs (caar dat)))))
+	 (if (-labs (caddar dat))	; F4
+	     (end- (caar dat) (lpr lab (-labs (caddar dat))))))))
 
-(DEFUN MARK+3 (CL LAB DAT) CL LAB ;Ignored
-  (IFN (= 0 (LOGAND (UNLAB (+LABZ (CADDAR DAT)))
-		    (UNLAB (DBV (+LABZ (CADAR DAT)) (-LABZ (CAAR DAT))))))
-       (BEG- (SEL DAT WN) WORLD)))
+(defun mark+3 (cl lab dat) cl lab	;Ignored
+       (ifn (= 0 (logand (unlab (+labz (caddar dat)))
+			 (unlab (dbv (+labz (cadar dat)) (-labz (caar dat))))))
+	    (beg- (sel dat wn) world)))
 
 
-(DEFUN MARK- (CL LAB &aux #+lispm (default-cons-area working-storage-area ))
-  (WHEN DBTRACE
-	(SETQ MARKS (f1+ MARKS)) (MTELL "Marking ~A -" CL) (PRLAB LAB))
-  (MAPC #'(LAMBDA (LIS) (MARK-0 CL LAB LIS)) (SEL CL DATA)))
+(defun mark- (cl lab &aux #+lispm (default-cons-area working-storage-area ))
+  (when dbtrace
+    (setq marks (f1+ marks)) (mtell "Marking ~A -" cl) (prlab lab))
+  (mapc #'(lambda (lis) (mark-0 cl lab lis)) (sel cl data)))
 
-(DEFUN MARK-0 (CL LAB FACT)
-  (WHEN DBCHECK (MTELL "~%Checking ~A from ~A-" (CAR FACT) CL) (PRLAB LAB))
-  (COND ((ONPU LAB FACT))
-	((NOT (CNTP FACT)))
-	((NULL (SEL FACT WN)) (MARK-1 CL LAB FACT))
-	((ONP (SEL FACT WN) WORLD) (MARK-1 CL LAB FACT))
-	((OFFP (SEL FACT WN) WORLD) NIL)))
+(defun mark-0 (cl lab fact)
+  (when dbcheck (mtell "~%Checking ~A from ~A-" (car fact) cl) (prlab lab))
+  (cond ((onpu lab fact))
+	((not (cntp fact)))
+	((null (sel fact wn)) (mark-1 cl lab fact))
+	((onp (sel fact wn) world) (mark-1 cl lab fact))
+	((offp (sel fact wn) world) nil)))
 
-(DEFUN MARK-1 (CL LAB DAT  &aux #+lispm (default-cons-area working-storage-area ))
-  (COND ((EQ (CAAR DAT) 'KIND)
-	 (IF (NOT (EQ (CADAR DAT) CL)) (MID- (CADAR DAT) LAB)))  ; E4
-	((EQ (CAAR DAT) 'PAR)
-	 (IF (EQ (CADDAR DAT) CL)
-	     (PROG2 (CANCEL LAB DAT)  ; S4
-		    (DO ((LIS (CADAR DAT) (CDR LIS))) ((NULL LIS)) (MID- (CAR LIS) LAB)))
-	     (PROGN (SETQ-UNLAB LAB)  ; ALL4
-		    (DO ((LIS (CADAR DAT) (CDR LIS))) ((NULL LIS))
-		        (SETQ LAB (LOGAND (UNLAB (-LABZ (CAR LIS))) LAB)))
-		    (SETQ-COPYN LAB)
-		    (CANCEL LAB DAT)
-		    (MID- (CADDAR DAT) LAB))))
-	((EQ (CADDAR DAT) CL)
-	 (IF (+LABS (CAAR DAT))  ; A2
-	     (END- (CADAR DAT) (DBA (+LABS (CAAR DAT)) LAB)))
-	 (IF (+LABS (CADAR DAT))  ; F6
-	     (END- (CAAR DAT) (LPR (+LABS (CADAR DAT)) LAB))))))
+(defun mark-1 (cl lab dat  &aux #+lispm (default-cons-area working-storage-area ))
+  (cond ((eq (caar dat) 'kind)
+	 (if (not (eq (cadar dat) cl)) (mid- (cadar dat) lab)))	; E4
+	((eq (caar dat) 'par)
+	 (if (eq (caddar dat) cl)
+	     (prog2 (cancel lab dat)	; S4
+		 (do ((lis (cadar dat) (cdr lis))) ((null lis)) (mid- (car lis) lab)))
+	     (progn (setq-unlab lab)	; ALL4
+		    (do ((lis (cadar dat) (cdr lis))) ((null lis))
+		      (setq lab (logand (unlab (-labz (car lis))) lab)))
+		    (setq-copyn lab)
+		    (cancel lab dat)
+		    (mid- (caddar dat) lab))))
+	((eq (caddar dat) cl)
+	 (if (+labs (caar dat))		; A2
+	     (end- (cadar dat) (dba (+labs (caar dat)) lab)))
+	 (if (+labs (cadar dat))	; F6
+	     (end- (caar dat) (lpr (+labs (cadar dat)) lab))))))
 
-;	     in out                    in out                  ins  in out
-;	-----------		-------------             ----------------
-;	E1 |     +		INV1 |     +              AB1 |(+)  +   +
-;	E2 |     -		INV2 |     -              AB2 |(+)  -   +
-;	E3 | +			INV3 | +                  AB3 |(+)  +   -
-;	E4 | -			INV4 | -                  AB4 |(+)  -   -
-;                                                         AB5 |(-)  +   +
-;            in out                    in out             AB6 |(-)  -   +
-;       -----------             -------------             AB7 |(-)  +   -
-;       S1 |    (+)             ALL1 |(+)  +              AB8 |(-)  -   -
-;       S2 |    (-)             ALL2 |(+)  -
-;       S3 |(+)                 ALL3 |(-)  +
-;       S4 |(-)                 ALL4 |(-)  -
+;;	     in out                    in out                  ins  in out
+;;	-----------		-------------             ----------------
+;;	E1 |     +		INV1 |     +              AB1 |(+)  +   +
+;;	E2 |     -		INV2 |     -              AB2 |(+)  -   +
+;;	E3 | +			INV3 | +                  AB3 |(+)  +   -
+;;	E4 | -			INV4 | -                  AB4 |(+)  -   -
+;;                                                         AB5 |(-)  +   +
+;;            in out                    in out             AB6 |(-)  -   +
+;;       -----------             -------------             AB7 |(-)  +   -
+;;       S1 |    (+)             ALL1 |(+)  +              AB8 |(-)  -   -
+;;       S2 |    (-)             ALL2 |(+)  -
+;;       S3 |(+)                 ALL3 |(-)  +
+;;       S4 |(-)                 ALL4 |(-)  -
 
 
 
-;	     in rel out	         in rel out	     in rel out
-;	---------------	    ---------------	---------------
-;	V1 |    (+)  +	    A1 | +  (+)		F1 |     +  (+)
-;	V2 |    (+)  -	    A2 | -  (+)		F2 |     +  (-)
-;	V3 |    (-)  +	    A3 | +  (-)		F3 |     -  (+)
-;	V4 |    (-)  -	    A4 | -  (-)		F4 |     -  (-)
-;						F5 |(+)  +
-;						F6 |(+)  -
-;						F7 |(-)  +
-;						F8 |(-)  -
+;;	     in rel out	         in rel out	     in rel out
+;;	---------------	    ---------------	---------------
+;;	V1 |    (+)  +	    A1 | +  (+)		F1 |     +  (+)
+;;	V2 |    (+)  -	    A2 | -  (+)		F2 |     +  (-)
+;;	V3 |    (-)  +	    A3 | +  (-)		F3 |     -  (+)
+;;	V4 |    (-)  -	    A4 | -  (-)		F4 |     -  (-)
+;;						F5 |(+)  +
+;;						F6 |(+)  -
+;;						F7 |(-)  +
+;;						F8 |(-)  -
 
 
-(DEFUN UNI (P1 P2 AL)
-  (COND ((DBVARP P1) (DBUNIVAR P1 P2 AL))
-	((NODEP P1)
-	 (COND ((DBVARP P2) (DBUNIVAR P2 P1 AL))
-	       ((NODEP P2) (IF (EQ P1 P2) AL))))
-	((DBVARP P2) (DBUNIVAR P2 P1 AL))
-	((NODEP P2) NIL)
-	((SETQ AL (UNI (CAR P1) (CAR P2) AL)) (UNI (CDR P1) (CDR P2) AL))))
+(defun uni (p1 p2 al)
+  (cond ((dbvarp p1) (dbunivar p1 p2 al))
+	((nodep p1)
+	 (cond ((dbvarp p2) (dbunivar p2 p1 al))
+	       ((nodep p2) (if (eq p1 p2) al))))
+	((dbvarp p2) (dbunivar p2 p1 al))
+	((nodep p2) nil)
+	((setq al (uni (car p1) (car p2) al)) (uni (cdr p1) (cdr p2) al))))
 
-(DEFUN DBUNIVAR (P V AL)
-  (LET ((DUM (ASSQ P AL)))
-    (COND ((NULL DUM) (CONS (CONS P V) AL))
-	  (T (UNI (CDR DUM) V AL)))))
+(defun dbunivar (p v al)
+  (let ((dum (assq p al)))
+    (cond ((null dum) (cons (cons p v) al))
+	  (t (uni (cdr dum) v al)))))
 
-; Undeclarations for the file:
+;; Undeclarations for the file:
 
-#-NIL
-(DECLARE-TOP(NOTYPE LAB))
+#-nil
+(declare-top(notype lab))

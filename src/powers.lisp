@@ -40,7 +40,7 @@
   (let ((save-ratfac $ratfac))
     (setq $ratfac nil)
     (unwind-protect
-	(apply '$rat `(,e ,@x))
+	 (apply '$rat `(,e ,@x))
       (setq $ratfac save-ratfac))))
             
 ;; If x list a Maxima list of symbols, return true iff the expression p
@@ -102,12 +102,12 @@
   (let ((x))
     (if ($listp v) (setq x (cdr v)) (setq x (list v)))
     (if (every #'$variablep x) x
-      (merror "The ~A argument of ~:M must be a symbol or a list of symbols, instead found ~:M" ($ordinal_string i) f v))))
+	(merror "The ~A argument of ~:M must be a symbol or a list of symbols, instead found ~:M" ($ordinal_string i) f v))))
       
 (defun require-poly (p v f i)
   (setq p (myrat p v))
   (if ($polynomialp p v) p
-    (merror "The ~A argument of ~:M requires a polynomial, instead found ~:M" ($ordinal_string i) f p)))
+      (merror "The ~A argument of ~:M requires a polynomial, instead found ~:M" ($ordinal_string i) f p)))
 
 (defun require-nonlist (e f i)
   (if ($listp e)
@@ -165,7 +165,7 @@
 	 (let ((acc))
 	   (dolist (ei (cdr e) (cons '(mlist simp) (nreverse acc)))
 	     (setq acc (if ($listp ei) (nconc (cdr (flatten-list ei)) acc)
-			 (cons ei acc))))))
+			   (cons ei acc))))))
 	(t e))) 
 
 ;; If e is a sum of powers of x, return a list of the coefficients
@@ -227,7 +227,7 @@
 
 (defun degree (p x)
   (if (null x) 0
-    (add ($hipower p (car x)) (degree (lcoeff p `(,(car x))) (cdr x)))))
+      (add ($hipower p (car x)) (degree (lcoeff p `(,(car x))) (cdr x)))))
 
 ;; Return the total degree of the polynomial.  Four cases:
 ;;   (a) total_degree(p) returns the total degree of the polynomial

@@ -31,40 +31,40 @@
   (if (and (not (atom form))
 	   (symbolp (car form))
 	   ;; we want an fboundp which gives T for special forms too.
-	   (OR (fboundp (car form))
-	       #+NIL (SI:MACRO-DEFINITION (CAR FORM))
-	       #+NIL (EQ (CAR FORM) 'SPECIAL)))
+	   (or (fboundp (car form))
+	       #+nil (si:macro-definition (car form))
+	       #+nil (eq (car form) 'special)))
       (eval form)))
 
 
-;(defmacro optimizing-declarations (dcls &body body) dcls
-;  #+NIL `(locally (declare (optimize ,@dcls)) ,@body)
-;  #-NIL `(progn ,@body))
+;;(defmacro optimizing-declarations (dcls &body body) dcls
+;;  #+NIL `(locally (declare (optimize ,@dcls)) ,@body)
+;;  #-NIL `(progn ,@body))
 
 ;; All these updating macros should be made from the same generalized
 ;; push/pop scheme as I mentioned to LispForum. As they are defined now
 ;; they have inconsistent return-values and multiple-evaluations of
 ;; arguments. -gjc
 
-(DEFMACRO ADDL (ITEM LIST)
-	  `(OR (MEMQ ,ITEM ,LIST) (SETQ ,LIST (CONS ,ITEM ,LIST))))
+(defmacro addl (item list)
+  `(or (memq ,item ,list) (setq ,list (cons ,item ,list))))
 
-#-Multics (PROGN 'COMPILE
-		 (DEFMACRO INCREMENT (COUNTER &OPTIONAL INCREMENT)
-		   (IF INCREMENT
-		       `(SETF ,COUNTER (f+ ,COUNTER ,INCREMENT))
-		       `(SETF ,COUNTER (f1+ ,COUNTER))))
+#-multics (progn 'compile
+		 (defmacro increment (counter &optional increment)
+		   (if increment
+		       `(setf ,counter (f+ ,counter ,increment))
+		       `(setf ,counter (f1+ ,counter))))
 
 
-		 (DEFMACRO DECREMENT (COUNTER &OPTIONAL DECREMENT)
-		   (IF DECREMENT
-		       `(SETF ,COUNTER (f- ,COUNTER ,DECREMENT))
-		       `(SETF ,COUNTER (f1- ,COUNTER))))
+		 (defmacro decrement (counter &optional decrement)
+		   (if decrement
+		       `(setf ,counter (f- ,counter ,decrement))
+		       `(setf ,counter (f1- ,counter))))
 
-		 (DEFMACRO COMPLEMENT (SWITCH)
-		   `(SETF ,SWITCH (NOT ,SWITCH)))
+		 (defmacro complement (switch)
+		   `(setf ,switch (not ,switch)))
 
-		 );; End of Lispm conditionalization.
+		 ) ;; End of Lispm conditionalization.
 
 
 ;; 'writefilep' and 'ttyoff' are system independent ways of expressing
@@ -74,38 +74,38 @@
 ;; it works in most cases.  
 ;;
 (eval-when (compile eval load)
-   (defvar writefilep #-Franz '^R #+Franz 'ptport)
-   (defvar ttyoff    '^W))
+  (defvar writefilep #-franz '^r #+franz 'ptport)
+  (defvar ttyoff    '^w))
 
 ;; (IFN A B) --> (COND ((NOT A) B))
 ;; (IFN A B C D) --> (COND ((NOT A) B) (T C D))
 ;; (IFN A B) is equivalent to (OR A B) as (IF A B) is equivalent to (AND A B).
 
-(DEFMACRO IFN (PREDICATE THEN . ELSE)
-	  (COND ((NULL ELSE) `(COND ((NOT ,PREDICATE) ,THEN)))
-		(T `(COND ((NOT ,PREDICATE) ,THEN) (T . ,ELSE)))))
+(defmacro ifn (predicate then . else)
+  (cond ((null else) `(cond ((not ,predicate) ,then)))
+	(t `(cond ((not ,predicate) ,then) (t . ,else)))))
 
-(DEFMACRO FN (BVL &REST BODY)
-	  `(FUNCTION (LAMBDA ,BVL . ,BODY)))
+(defmacro fn (bvl &rest body)
+  `(function (lambda ,bvl . ,body)))
 
 ;; Like PUSH, but works at the other end.
 
-(DEFMACRO TUCHUS (LIST OBJECT)
-	  `(SETF ,LIST (NCONC ,LIST (NCONS ,OBJECT))))
+(defmacro tuchus (list object)
+  `(setf ,list (nconc ,list (ncons ,object))))
 
 ;; Copy a single cons, the top level and all levels (repectively) of a piece of
 ;; list structure.  Something similar for strings, structures, etc. would be
 ;; useful.  These functions should all be open-coded subrs.
 
-(DEFMACRO COPY-CONS (CONS)
-  (IF (ATOM CONS)
-      `(CONS (CAR ,CONS) (CDR ,CONS))
-      (LET ((VAR (GENSYM)))
-	   `(LET ((,VAR ,CONS)) `(CONS (CAR ,VAR) (CDR ,VAR))))))
+(defmacro copy-cons (cons)
+  (if (atom cons)
+      `(cons (car ,cons) (cdr ,cons))
+      (let ((var (gensym)))
+	`(let ((,var ,cons)) `(cons (car ,var) (cdr ,var))))))
 
-(DEFMACRO COPY-TOP-LEVEL (LIST)
-  #+(or cl NIL) `(COPY-LIST ,LIST)
-  #-(or cl NIL) `(APPEND ,LIST NIL))
+(defmacro copy-top-level (list)
+  #+(or cl nil) `(copy-list ,list)
+  #-(or cl nil) `(append ,list nil))
 
 ;; (DEFMACRO COPY-ALL-LEVELS (LIST)
 ;;   #+(or cl NIL) `(COPY-TREE ,LIST)
@@ -113,66 +113,66 @@
 
 ;; Old names kept around for compatibility.
 
-(DEFMACRO COPY1* (LIST)
-  #+(or cl NIL) `(COPY-LIST ,LIST)
-  #-(or cl NIL) `(APPEND ,LIST NIL))
-(DEFMACRO COPY1 (LIST)
-  #+(or cl NIL) `(COPY-LIST ,LIST)
-  #-(or cl NIL) `(APPEND ,LIST NIL))
-#-Franz
-(DEFMACRO COPY (LIST)
-  #+(or cl nil  symbolics) `(COPY-TREE ,LIST)
-  #-(or cl nil symbolics) `(SUBST NIL NIL ,LIST))
+(defmacro copy1* (list)
+  #+(or cl nil) `(copy-list ,list)
+  #-(or cl nil) `(append ,list nil))
+(defmacro copy1 (list)
+  #+(or cl nil) `(copy-list ,list)
+  #-(or cl nil) `(append ,list nil))
+#-franz
+(defmacro copy (list)
+  #+(or cl nil  symbolics) `(copy-tree ,list)
+  #-(or cl nil symbolics) `(subst nil nil ,list))
 
 ;; Use this instead of GETL when looking for "function" properties,
 ;; i.e. one of EXPR, SUBR, LSUBR, FEXPR, FSUBR, MACRO.
 ;; Use FBOUNDP, SYMBOL-FUNCTION, or FMAKUNBOUND if possible.
 
-(DEFMACRO GETL-FUN (FUN L)
-	  #+MacLisp `(GETL ,FUN ,L)
-	  #+CL   `(GETL-LM-FCN-PROP ,FUN ,L)
-	  #+Franz   `(GETL-FRANZ-FCN-PROP ,FUN ,L)
-	  #+NIL     `(GETL-NIL-FCN-PROP ,FUN ,L)
-	  )
+(defmacro getl-fun (fun l)
+  #+maclisp `(getl ,fun ,l)
+  #+cl   `(getl-lm-fcn-prop ,fun ,l)
+  #+franz   `(getl-franz-fcn-prop ,fun ,l)
+  #+nil     `(getl-nil-fcn-prop ,fun ,l)
+  )
 
 ;; Non-destructive versions of DELQ and DELETE.  Already part of NIL
 ;; and LMLisp.  These should be rewritten as SUBRS and placed
 ;; in UTILS.  The subr versions can be more memory efficient.
 
-;#-(OR Lispm NIL Multics Franz cl)
-;(DEFMACRO REMQ (ITEM LIST &OPTIONAL (COUNT () COUNTING?))
-;	  (IF COUNTING? `(DELQ ,ITEM (APPEND ,LIST NIL) ,COUNT)
-;	      `(DELQ ,ITEM (APPEND ,LIST NIL))))
+;;#-(OR Lispm NIL Multics Franz cl)
+;;(DEFMACRO REMQ (ITEM LIST &OPTIONAL (COUNT () COUNTING?))
+;;	  (IF COUNTING? `(DELQ ,ITEM (APPEND ,LIST NIL) ,COUNT)
+;;	      `(DELQ ,ITEM (APPEND ,LIST NIL))))
 
 
-(DEFMACRO REMQ (ITEM LIST &OPTIONAL (COUNT () COUNTING?))
- `(remove ,item ,list :test 'eq ,@ (and counting? `(:count ,count))))
+(defmacro remq (item list &optional (count () counting?))
+  `(remove ,item ,list :test 'eq ,@ (and counting? `(:count ,count))))
 
-;#+cl ;in clmacs
-;(DEFMACRO ZL-REMOVE (ITEM LIST &OPTIONAL (COUNT () COUNTING?))
-; `(remove ,item ,list :test 'equal ,@ (and counting? `(:count ,count))))	
+;;#+cl ;in clmacs
+;;(DEFMACRO ZL-REMOVE (ITEM LIST &OPTIONAL (COUNT () COUNTING?))
+;; `(remove ,item ,list :test 'equal ,@ (and counting? `(:count ,count))))	
 
-;#-(OR Lispm NIL Multics Franz)
-;(DEFMACRO zl-REMOVE (ITEM LIST &OPTIONAL (COUNT () COUNTING?))
-;	  (IF COUNTING? `(zl-DELETE ,ITEM (APPEND ,LIST NIL) ,COUNT)
-;	      `(zl-DELETE ,ITEM (APPEND ,LIST NIL))))
+;;#-(OR Lispm NIL Multics Franz)
+;;(DEFMACRO zl-REMOVE (ITEM LIST &OPTIONAL (COUNT () COUNTING?))
+;;	  (IF COUNTING? `(zl-DELETE ,ITEM (APPEND ,LIST NIL) ,COUNT)
+;;	      `(zl-DELETE ,ITEM (APPEND ,LIST NIL))))
 
-#-Lispm (DEFMACRO CATCH-ALL (FORM) `(CATCH NIL ,FORM))
+#-lispm (defmacro catch-all (form) `(catch nil ,form))
 
 ;; (EXCH A B) exchanges the bindings of A and B
 ;; Maybe it should turn into (PSETF A B B A)?
 
-(DEFMACRO EXCH (X Y) `(SETF ,X (PROG1 ,Y (SETF ,Y ,X))))
+(defmacro exch (x y) `(setf ,x (prog1 ,y (setf ,y ,x))))
 
 ;; These are here for old code only.
 ;; Use FIFTH rather than CADDDDR.  Better, use DEFSTRUCT.
 
-#-Franz (DEFMACRO CADDADR (X) `(CAR (CDDADR ,X)))
-#-Franz (DEFMACRO CADDDDR (X) `(CAR (CDDDDR ,X)))
+#-franz (defmacro caddadr (x) `(car (cddadr ,x)))
+#-franz (defmacro caddddr (x) `(car (cddddr ,x)))
 
 ;; The following is a bit cleaner than the kludgy (PROGN 'COMPILE . <FORMS>)
 
-(DEFMACRO COMPILE-FORMS (&REST <FORMS>) `(PROGN 'COMPILE . ,<FORMS>))
+(defmacro compile-forms (&rest <forms>) `(progn 'compile . ,<forms>))
 
 ;; The following macros pertain only to Macsyma.
 
@@ -183,43 +183,43 @@
 
 ;; Obsolete.  Use MERROR.
 
-(DEFMACRO ERLIST (MESSAGE)
-  (MAXIMA-ERROR "ERLIST is obsolete, all calls to it have been removed, so where
+(defmacro erlist (message)
+  (maxima-error "ERLIST is obsolete, all calls to it have been removed, so where
 	 did you dig this one up loser?" message))
 
 ;; All functions are present on non-autoloading systems.  Definition
 ;; for autoloading systems is in SUPRV.
 ;; If you have dynamic linking you might as well take advantage of it.
 
-#-(OR PDP10 NIL)
-(DEFMACRO FIND-FUNCTION (FUNCTION) FUNCTION NIL)
+#-(or pdp10 nil)
+(defmacro find-function (function) function nil)
 
 ;; Facility for loading auxilliary macro files such as RATMAC or MHAYAT.
 ;; Global macro files are loaded by the prelude file.
 
-#+LISPM (DEFUN MACRO-DIR (X) (FORMAT NIL "LMMAXQ;~A QFASL" X))
-#+PDP10 (DEFUN MACRO-DIR (X) `((LIBMAX) ,X))
-#+Franz (defun macro-dir (x)  (cond ((cdr (zl-ASSOC x '((rzmac  . "rz//macros")
-						     (mhayat . "rat//mhayat")
-						     (ratmac . "rat//ratmac")))))
+#+lispm (defun macro-dir (x) (format nil "LMMAXQ;~A QFASL" x))
+#+pdp10 (defun macro-dir (x) `((libmax) ,x))
+#+franz (defun macro-dir (x)  (cond ((cdr (zl-assoc x '((rzmac  . "rz//macros")
+							(mhayat . "rat//mhayat")
+							(ratmac . "rat//ratmac")))))
 				    (t (concat "libmax//" x))))
-#+NIL (defun macro-dir (x) (merge-pathname-defaults x "[VASL]"))
+#+nil (defun macro-dir (x) (merge-pathname-defaults x "[VASL]"))
 
-(comment Sample definition only on
-	 ITS   see "LIBMAX;MODULE"
-	 LISPM see "LMMAX;SYSDEF"
-	 NIL   see   "VAXMAX;VAXCL"
-	 Multics see "???"
-	 Franz see "/usr/lib/lisp/machacks.l"
-()
-(defmacro macsyma-module (name &rest options)
-  (maybe-load-macros options)
-  (maybe-load-declarations options)
-  `(eval-when (compile eval load)
-	  (print '(loading ,name) msgfiles)
-	  (defprop ,name t loaded?)
-	  ,@(maybe-have-some-runtime-options options)))
-)
+(comment sample definition only on
+	 its   see "LIBMAX;MODULE"
+	 lispm see "LMMAX;SYSDEF"
+	 nil   see   "VAXMAX;VAXCL"
+	 multics see "???"
+	 franz see "/usr/lib/lisp/machacks.l"
+	 ()
+	 (defmacro macsyma-module (name &rest options)
+	   (maybe-load-macros options)
+	   (maybe-load-declarations options)
+	   `(eval-when (compile eval load)
+	     (print '(loading ,name) msgfiles)
+	     (defprop ,name t loaded?)
+	     ,@(maybe-have-some-runtime-options options)))
+	 )
 
 ;; Except on the Lisp Machine, load the specified macro files.
 ;; On the Lisp Machine, the DEFSYSTEM facility is used for loading
@@ -228,47 +228,47 @@
 ;; is far from fool-proof. See LMMAX;SYSDEF for the Lispm
 ;; definition of MACSYMA-MODULE.
 
-#+CL
-(DEFUN LOAD-MACSYMA-MACROS-AT-RUNTIME (&REST L)
-  (MAPCAR #'(LAMBDA (X)
-	      (IF (GET X 'MACSYMA-MODULE)
-		   X 
-		   (ERROR  "Missing Macsyma macro file -- ~A" X)))
-	  L))
-#-CL
-(DEFUN LOAD-MACSYMA-MACROS-AT-RUNTIME (&REST L)
-  (MAPCAR #'load-when-needed L))
+#+cl
+(defun load-macsyma-macros-at-runtime (&rest l)
+  (mapcar #'(lambda (x)
+	      (if (get x 'macsyma-module)
+		  x 
+		  (error  "Missing Macsyma macro file -- ~A" x)))
+	  l))
+#-cl
+(defun load-macsyma-macros-at-runtime (&rest l)
+  (mapcar #'load-when-needed l))
 
-(DEFMACRO LOAD-MACSYMA-MACROS (&REST MACRO-FILES)
-  `(COMMENT *MACRO*FILES*
-	    ,(APPLY #'LOAD-MACSYMA-MACROS-AT-RUNTIME MACRO-FILES)))
+(defmacro load-macsyma-macros (&rest macro-files)
+  `(comment *macro*files*
+    ,(apply #'load-macsyma-macros-at-runtime macro-files)))
 
 
-#+Multics
+#+multics
 (defmacro find-documentation-file (x)
   (cond ((eq x 'manual)
 	 `(let ((filep (probe-file (list (catenate macsyma-dir ">documentation")
-				     "macsyma.manual"))))
-	    (cond (filep filep)
-		  (t (MAXIMA-ERROR "Cannot MAXIMA-FIND the Macsyma manual")))))
+					 "macsyma.manual"))))
+	   (cond (filep filep)
+		 (t (maxima-error "Cannot MAXIMA-FIND the Macsyma manual")))))
 	((eq x 'manual-index)
 	 `(let ((filep (probe-file (list (catenate macsyma-dir ">documentation")
-				     "macsyma.index.lisp"))))
-	    (cond (filep filep)
-		  (t (MAXIMA-ERROR "Cannot MAXIMA-FIND the Macsyma manual index")))))
-	(t (MAXIMA-ERROR "Unknown documentation: " x))))
+					 "macsyma.index.lisp"))))
+	   (cond (filep filep)
+		 (t (maxima-error "Cannot MAXIMA-FIND the Macsyma manual index")))))
+	(t (maxima-error "Unknown documentation: " x))))
 
-#+Multics
+#+multics
 (defmacro load-documentation-file (x)
   `(load (find-documentation-file ,x)))
 
 ;;;Reset the stream to its starting position.
 (defmacro rewind-stream (stream)
   
-#-(or LispM NIL) `(filpos ,stream 0)
-;#+LispM          `(send ,stream ':rewind)
-#+cl `(file-position ,stream 0)
-#+NIL            `(open ,stream))
+  #-(or lispm nil) `(filpos ,stream 0)
+  ;;#+LispM          `(send ,stream ':rewind)
+  #+cl `(file-position ,stream 0)
+  #+nil            `(open ,stream))
 
 ;; Used to temporarily bind contexts in such a way as to not cause
 ;; the context garbage collector to run. Used when you don't want to
@@ -279,104 +279,104 @@
 
 (defmacro with-new-context (sub-context &rest forms)
   `(let ((context (context ,@sub-context)))
-     (prog1 ,@forms
-	    (context-unwinder))))
+    (prog1 ,@forms
+      (context-unwinder))))
 
 ;; For creating a macsyma evaluator variable binding context.
 ;; (MBINDING (VARIABLES &OPTIONAL VALUES FUNCTION-NAME)
 ;;    ... BODY ...)
 
-(DEFMACRO MBINDING (VARIABLE-SPECIFICATION &REST BODY &AUX (TEMP (GENSYM)))
-  `(LET ((,TEMP ,(CAR VARIABLE-SPECIFICATION)))
-     ;; Don't optimize out this temporary, even if (CAR VARIABLE-SPECICIATION)
-     ;; is an ATOM. We don't want to risk side-effects.
-     ,(CASE (LENGTH VARIABLE-SPECIFICATION)
-	((1)
-	 `(MBINDING-SUB ,TEMP ,TEMP NIL ,@BODY))
-	((2)
-	 `(MBINDING-SUB ,TEMP ,(CADR VARIABLE-SPECIFICATION) NIL ,@BODY))
-	((3)
-	 `(MBINDING-SUB ,TEMP ,(CADR VARIABLE-SPECIFICATION)
-			,(CADDR VARIABLE-SPECIFICATION)
-			,@BODY))
-	(T
-	  (MAXIMA-ERROR "Bad variable specification:" variable-specification)))))
+(defmacro mbinding (variable-specification &rest body &aux (temp (gensym)))
+  `(let ((,temp ,(car variable-specification)))
+    ;; Don't optimize out this temporary, even if (CAR VARIABLE-SPECICIATION)
+    ;; is an ATOM. We don't want to risk side-effects.
+    ,(case (length variable-specification)
+	   ((1)
+	    `(mbinding-sub ,temp ,temp nil ,@body))
+	   ((2)
+	    `(mbinding-sub ,temp ,(cadr variable-specification) nil ,@body))
+	   ((3)
+	    `(mbinding-sub ,temp ,(cadr variable-specification)
+	      ,(caddr variable-specification)
+	      ,@body))
+	   (t
+	    (maxima-error "Bad variable specification:" variable-specification)))))
 
-(DEFVAR MBINDING-USAGE
-  #+(and PDP10 Maclisp)    'PROG1
-  #+(and Multics Maclisp)  'UNWIND-PROTECT
-  #+Franz                  'PROG1
-  #+CL                  'UNWIND-PROTECT
-  #+NIL                    'UNWIND-PROTECT
+(defvar mbinding-usage
+  #+(and pdp10 maclisp)    'prog1
+  #+(and multics maclisp)  'unwind-protect
+  #+franz                  'prog1
+  #+cl                  'unwind-protect
+  #+nil                    'unwind-protect
   )
   
-(DEFMACRO MBINDING-SUB (VARIABLES VALUES FUNCTION-NAME &REST BODY
-				  &AUX (WIN (GENSYM)))
-  (CASE MBINDING-USAGE
-    ((PROG1)
-     `(PROG1 (PROGN (MBIND ,VARIABLES ,VALUES ,FUNCTION-NAME) ,@BODY)
-	     (MUNBIND ,VARIABLES)))
-    ((UNWIND-PROTECT)
-     `(LET ((,WIN NIL))
-	(UNWIND-PROTECT
-	 (PROGN (MBIND ,VARIABLES ,VALUES ,FUNCTION-NAME)
-		(SETQ ,WIN T)
-		,@BODY)
-	 (IF ,WIN (MUNBIND ,VARIABLES)))))
-    ((PROGV)
-     `(LET ((,WIN (MBINDING-CHECK ,VARIABLES ,VALUES ,FUNCTION-NAME)))
-	(PROGV ,VARIABLES
-	       ,WIN
-	       ,@BODY)))
-    (T
-     (MAXIMA-ERROR "Unknown setting of MBINDING-USAGE" MBINDING-USAGE))))
+(defmacro mbinding-sub (variables values function-name &rest body
+			&aux (win (gensym)))
+  (case mbinding-usage
+    ((prog1)
+     `(prog1 (progn (mbind ,variables ,values ,function-name) ,@body)
+       (munbind ,variables)))
+    ((unwind-protect)
+     `(let ((,win nil))
+       (unwind-protect
+	    (progn (mbind ,variables ,values ,function-name)
+		   (setq ,win t)
+		   ,@body)
+	 (if ,win (munbind ,variables)))))
+    ((progv)
+     `(let ((,win (mbinding-check ,variables ,values ,function-name)))
+       (progv ,variables
+	   ,win
+	 ,@body)))
+    (t
+     (maxima-error "Unknown setting of MBINDING-USAGE" mbinding-usage))))
 
-#+NIL
-(DEFMACRO MDEFPROP (A B C) `(MPUTPROP ',A ',B ',C))
+#+nil
+(defmacro mdefprop (a b c) `(mputprop ',a ',b ',c))
 
-#-Franz ;; Franz uses a function definition in COMM.
-	;; For MLISTP its arg is known not to be an atom.
-	;; Otherwise, just use $LISTP.
-	;; MLISTP exists just to support a Franz hack, so you can just 
-	;;   ignore it. - JPG
-(DEFMACRO MLISTP (X) `(EQ (CAAR ,X) 'MLIST))
+#-franz	;; Franz uses a function definition in COMM.
+;; For MLISTP its arg is known not to be an atom.
+;; Otherwise, just use $LISTP.
+;; MLISTP exists just to support a Franz hack, so you can just 
+;;   ignore it. - JPG
+(defmacro mlistp (x) `(eq (caar ,x) 'mlist))
 
 ;; How About MTYPEP like (MTYPEP EXP 'TAN) or (MTYPEP EXP '*) - Jim.
 ;; Better, (EQ (MTYPEP EXP) 'TAN).
 
-(DEFMACRO MTANP (X) 
-  `(LET ((THING ,X))
-     (AND (NOT (ATOM THING)) (EQ (CAAR THING) '%TAN))))
+(defmacro mtanp (x) 
+  `(let ((thing ,x))
+    (and (not (atom thing)) (eq (caar thing) '%tan))))
 
-(DEFMACRO MATANP (X)
-  `(LET ((THING ,X))
-     (AND (NOT (ATOM THING)) (EQ (CAAR THING) '%ATAN))))
+(defmacro matanp (x)
+  `(let ((thing ,x))
+    (and (not (atom thing)) (eq (caar thing) '%atan))))
 
 ;; Macros used in LIMIT, DEFINT, RESIDU.
 ;; If we get a lot of these, they can be split off into a separate macro
 ;; package.
 
-(DEFMACRO REAL-INFINITYP (X) `(MEMQ ,X REAL-INFINITIES))
+(defmacro real-infinityp (x) `(memq ,x real-infinities))
 
-(DEFMACRO INFINITYP (X) `(MEMQ ,X INFINITIES))
+(defmacro infinityp (x) `(memq ,x infinities))
 
-(DEFMACRO REAL-EPSILONP (X) `(MEMQ ,X INFINITESIMALS))
+(defmacro real-epsilonp (x) `(memq ,x infinitesimals))
 
-(DEFMACRO FREE-EPSILONP (X)
-  `(DO ((ONE-EPS INFINITESIMALS (CDR ONE-EPS)))
-       ((NULL ONE-EPS) T)
-     (IF (NOT (FREE (CAR ONE-EPS) ,X))  (RETURN ()))))
+(defmacro free-epsilonp (x)
+  `(do ((one-eps infinitesimals (cdr one-eps)))
+    ((null one-eps) t)
+    (if (not (free (car one-eps) ,x))  (return ()))))
 
-(DEFMACRO FREE-INFP (X)
-  `(DO ((ONE-INF INFINITIES (CDR ONE-INF)))
-       ((NULL ONE-INF) T)
-     (IF (NOT (FREE (CAR ONE-INF) ,X))  (RETURN ()))))
+(defmacro free-infp (x)
+  `(do ((one-inf infinities (cdr one-inf)))
+    ((null one-inf) t)
+    (if (not (free (car one-inf) ,x))  (return ()))))
 
-(DEFMACRO INF-TYPEP (X)
-  `(CAR (AMONGL INFINITIES ,X)))
+(defmacro inf-typep (x)
+  `(car (amongl infinities ,x)))
 
-(DEFMACRO HOT-COEF (P)
- `(PDIS (CADDR (CADR (RAT-NO-RATFAC ,P)))))
+(defmacro hot-coef (p)
+  `(pdis (caddr (cadr (rat-no-ratfac ,p)))))
 
 ;; Special form for declaring Macsyma external variables.  It may be used for
 ;; User level variables, or those referenced by other Lisp programs.
@@ -399,32 +399,32 @@
 ;; so if *reset-var* is true defmvar will restore the original value on lispm--Wfs
 ;; definition is in commac.
 
-#-(or Franz ITS lispm cl)
-(DEFMACRO DEFMVAR (VARIABLE &OPTIONAL (INITIAL-VALUE NIL IV-P) DOCUMENTATION
-                            &REST FLAGS &AUX DEFINER TYPE)
-  DOCUMENTATION FLAGS ;; Ignored certain places.
-  (SETQ DEFINER #+(or Multics ) 'DEFCONST
-		#-(or Multics  ) 'DEFVAR)
-  #-(or Lispm NIL)
-  (SETQ TYPE (COND ((MEMQ 'fixnum FLAGS) 'fixnum)
-		   ((MEMQ 'flonum FLAGS) 'flonum)
-		   (T NIL)))
-  #+NIL (macsyma-defmvar-declarations variable flags)
-  `(PROGN 'COMPILE
-	  ,(IF IV-P
-	       `(,DEFINER ,VARIABLE ,INITIAL-VALUE
-		    #+NIL ,@(AND DOCUMENTATION `(,DOCUMENTATION)))
-	       `(,DEFINER ,VARIABLE #+LISPM () ))
-	  #-NIL ,@(IF TYPE `((DECLARE (,TYPE ,VARIABLE))))))
+#-(or franz its lispm cl)
+(defmacro defmvar (variable &optional (initial-value nil iv-p) documentation
+		   &rest flags &aux definer type)
+  documentation flags ;; Ignored certain places.
+  (setq definer #+(or multics ) 'defconst
+	#-(or multics  ) 'defvar)
+  #-(or lispm nil)
+  (setq type (cond ((memq 'fixnum flags) 'fixnum)
+		   ((memq 'flonum flags) 'flonum)
+		   (t nil)))
+  #+nil (macsyma-defmvar-declarations variable flags)
+  `(progn 'compile
+    ,(if iv-p
+	 `(,definer ,variable ,initial-value
+	   #+nil ,@(and documentation `(,documentation)))
+	 `(,definer ,variable #+lispm () ))
+    #-nil ,@(if type `((declare (,type ,variable))))))
 
 ;;see commac
 #-(or cl lispm)
-(Defmacro DEFMFUN (function &body  REST &aux .n.)
-  #+NIL (macsyma-defmfun-declarations function rest)
-       `(DEFUN ,FUNCTION  ,REST))
+(defmacro defmfun (function &body  rest &aux .n.)
+  #+nil (macsyma-defmfun-declarations function rest)
+  `(defun ,function  ,rest))
 
-;#+LISPM
-;(DEFPROP DEFMSPEC "Macsyma special form" SI:DEFINITION-TYPE-NAME)
+;;#+LISPM
+;;(DEFPROP DEFMSPEC "Macsyma special form" SI:DEFINITION-TYPE-NAME)
 
 ;; Special form for declaring Macsyma external procedures.  Version for ITS
 ;; is in LIBMAX;DEFINE.
@@ -433,17 +433,17 @@
 
 
 #+cl
-(DEFMACRO DEFMSPEC (FUNCTION . REST)
+(defmacro defmspec (function . rest)
   `(progn
-	  (DEFUN-prop ( ,FUNCTION MFEXPR*) . ,REST)
-	  #+lispm (SI::RECORD-SOURCE-FILE-NAME ',FUNCTION 'DEFMSPEC)))
+    (defun-prop ( ,function mfexpr*) . ,rest)
+    #+lispm (si::record-source-file-name ',function 'defmspec)))
 
-;#+LISPM
-;(DEFMACRO DEFMSPEC (FUNCTION . REST)
-;  `(LOCAL-DECLARE ((SYS:FUNCTION-PARENT ,FUNCTION DEFMSPEC))
-;     (DEFUN (:PROPERTY ,FUNCTION MFEXPR*) . ,REST)
-;     (SI:RECORD-SOURCE-FILE-NAME ',FUNCTION 'DEFMSPEC)
-;     ))
+;;#+LISPM
+;;(DEFMACRO DEFMSPEC (FUNCTION . REST)
+;;  `(LOCAL-DECLARE ((SYS:FUNCTION-PARENT ,FUNCTION DEFMSPEC))
+;;     (DEFUN (:PROPERTY ,FUNCTION MFEXPR*) . ,REST)
+;;     (SI:RECORD-SOURCE-FILE-NAME ',FUNCTION 'DEFMSPEC)
+;;     ))
 
 
 ;;How bout the following for a replacement for the defmspec type.
@@ -455,22 +455,22 @@
 ;;a macro but they needed to be told anyway.--wfs
 
 ;;see commac
-;#+lispm
-;(defmacro defmspec (fn (aa) &rest rest &aux ans help )
-;  (setq help (intern (format nil "~A-AUX" fn)))
-;  (setq ans
-;	(list    ;;copy-list aa
-;    `(defmacro ,fn (&rest ,aa &aux e)(setq ,aa (copy-list ,aa))
-;	       (setq e (cons (list ',fn) ,aa))
-;               `(meval* '(,', help  ',e)))
-;    `(defun ,help (,aa) . ,rest)))
-;  `(progn 'compile . , ans))
+;;#+lispm
+;;(defmacro defmspec (fn (aa) &rest rest &aux ans help )
+;;  (setq help (intern (format nil "~A-AUX" fn)))
+;;  (setq ans
+;;	(list    ;;copy-list aa
+;;    `(defmacro ,fn (&rest ,aa &aux e)(setq ,aa (copy-list ,aa))
+;;	       (setq e (cons (list ',fn) ,aa))
+;;               `(meval* '(,', help  ',e)))
+;;    `(defun ,help (,aa) . ,rest)))
+;;  `(progn 'compile . , ans))
 
 ;;eg.
-;(defmspecial $ssum (l) (setq l (cdr l))
-;  (if (= (length l) 4)
-;      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
-;      (wna-err '$$sum)))
+;;(defmspecial $ssum (l) (setq l (cdr l))
+;;  (if (= (length l) 4)
+;;      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
+;;      (wna-err '$$sum)))
 
 
 ;;;	The following MAUTOLOAD macro makes setting up autoload props for files
@@ -495,31 +495,31 @@
 ;;;	Note that the first arg must be of the form (FN2 DEV DIR) if a file
 ;;; mask is being used; this macro could be much more elaborate.
 
-;#+ITS
-;(DEFMACRO MAUTOLOAD (FN2-DEV-DIR &REST MASTER-LIST)
-;  `(DOLIST (L ',MASTER-LIST)
-;     (DO ((FILE (IF (ATOM (CAR L))
-;		    (CONS (CAR L) ,FN2-DEV-DIR)
-;		    (CAR L)))
-;	  (FUNLIST (CDR L) (CDR FUNLIST)))
-;	 ((NULL FUNLIST))
-;       (PUTPROP (CAR FUNLIST) FILE 'AUTOLOAD))))
+;;#+ITS
+;;(DEFMACRO MAUTOLOAD (FN2-DEV-DIR &REST MASTER-LIST)
+;;  `(DOLIST (L ',MASTER-LIST)
+;;     (DO ((FILE (IF (ATOM (CAR L))
+;;		    (CONS (CAR L) ,FN2-DEV-DIR)
+;;		    (CAR L)))
+;;	  (FUNLIST (CDR L) (CDR FUNLIST)))
+;;	 ((NULL FUNLIST))
+;;       (PUTPROP (CAR FUNLIST) FILE 'AUTOLOAD))))
 
-#-Multics
-(DEFMACRO SYS-DEFAULTF (X) `(DEFAULTF ,X))
+#-multics
+(defmacro sys-defaultf (x) `(defaultf ,x))
 ;;; For #+Multics a function definition for SYS-DEFAULTF can be found 
 ;;; in SUPRV.
 
 (defmacro sys-user-id ()
-  #+Franz '(getenv '|USER|)
+  #+franz '(getenv '|USER|)
   #+lispm 'user-id
-  #+Multics '(status uname)
-  #-(or Franz Multics lispm) '(status userid))
+  #+multics '(status uname)
+  #-(or franz multics lispm) '(status userid))
 
 (defmacro sys-free-memory ()
-  #-(or Multics lispm) '(status memfree)
-  #+(or Multics lispm) 10000.) ;This should look at the pdir size
-                               ;and mung it to give a good approximation.
+  #-(or multics lispm) '(status memfree)
+  #+(or multics lispm) 10000.)	    ;This should look at the pdir size
+					;and mung it to give a good approximation.
 
 ;; Setf hacking.
 ;;
@@ -529,68 +529,68 @@
 ;;		  `(,sym ,tag ,value)
 ;;		  '`((PUTPROP ,nsym ,nvalue ,ntag))))
 
-;#+PDP10
-;(defsetf MGET ((() sym tag) value) T 
-;  (eval-ordered* '(nsym ntag nvalue)
-;		 `(,sym ,tag ,value)
-;		 '`((MPUTPROP ,nsym ,nvalue ,ntag))))
+;;#+PDP10
+;;(defsetf MGET ((() sym tag) value) T 
+;;  (eval-ordered* '(nsym ntag nvalue)
+;;		 `(,sym ,tag ,value)
+;;		 '`((MPUTPROP ,nsym ,nvalue ,ntag))))
 
-;#+PDP10
-;(defsetf $GET ((() sym tag) value) T 
-;  (eval-ordered* '(nsym ntag nvalue)
-;		 `(,sym ,tag ,value)
-;		 '`(($PUT ,nsym ,nvalue ,ntag))))
+;;#+PDP10
+;;(defsetf $GET ((() sym tag) value) T 
+;;  (eval-ordered* '(nsym ntag nvalue)
+;;		 `(,sym ,tag ,value)
+;;		 '`(($PUT ,nsym ,nvalue ,ntag))))
 
-;#+Franz
-;(defsetf mget (expr value)
-;   `(mputprop ,(cadr expr) ,value ,(caddr expr)))
+;;#+Franz
+;;(defsetf mget (expr value)
+;;   `(mputprop ,(cadr expr) ,value ,(caddr expr)))
 
-;#+Franz
-;(defsetf $get (expr value)
-;   `($put ,(cadr expr) ,value ,(caddr expr)))
+;;#+Franz
+;;(defsetf $get (expr value)
+;;   `($put ,(cadr expr) ,value ,(caddr expr)))
 
-;#+NIL
-;(DEFPROP MGET SETF-MGET SI:SETF-SUBR)
-;#+NIL
-;(DEFPROP $GET SETF-$GET SI:SETF-SUBR)
+;;#+NIL
+;;(DEFPROP MGET SETF-MGET SI:SETF-SUBR)
+;;#+NIL
+;;(DEFPROP $GET SETF-$GET SI:SETF-SUBR)
 
 ;;;DIFFERENT version of setf on Multics and LM ...Bummer... -JIM 3/4/81
-;#+MULTICS
-;(defsetf MGET (sym tag) value
-;  `(MPUTPROP ,sym ,value ,tag))
+;;#+MULTICS
+;;(defsetf MGET (sym tag) value
+;;  `(MPUTPROP ,sym ,value ,tag))
 
-(DEFMFUN MGET (ATOM IND)
-  (LET ((PROPS (AND (SYMBOLP ATOM) (GET ATOM 'MPROPS))))
-    (AND PROPS (GETf (cdr PROPS) IND))))
+(defmfun mget (atom ind)
+  (let ((props (and (symbolp atom) (get atom 'mprops))))
+    (and props (getf (cdr props) ind))))
 
 #+(or cl ti)
-(defsetf MGET (sym tag) (value)
-  `(MPUTPROP ,sym ,value ,tag))
+(defsetf mget (sym tag) (value)
+  `(mputprop ,sym ,value ,tag))
 
 (defmacro old-get (plist tag)
   `(getf (cdr ,plist) ,tag))
 
-;#+ MULTICS
-;(defsetf $GET (sym tag) value
-;  `($PUT ,sym ,value ,tag))
+;;#+ MULTICS
+;;(defsetf $GET (sym tag) value
+;;  `($PUT ,sym ,value ,tag))
 
-(DEFMFUN $GET (ATOM IND) (PROP1 '$GET ATOM NIL IND))
+(defmfun $get (atom ind) (prop1 '$get atom nil ind))
 
 #+(or cl ti)
-(defsetf $GET (sym tag) (value)
-  `($PUT ,sym ,value ,tag))
-;
-;#+(and LISPM (not (or cl ti)))
-;(DEFUN (:PROPERTY MGET SI:SETF) (REF VAL)
-;  `(MPUTPROP ,(SECOND REF) ,VAL ,(THIRD REF)))
-;
-;#+(and LISPM (not (or cl ti)))
-;(DEFUN (:PROPERTY $GET SI:SETF) (REF VAL)
-;  `($PUT ,(SECOND REF) ,VAL ,(THIRD REF)))
+(defsetf $get (sym tag) (value)
+  `($put ,sym ,value ,tag))
+;;
+;;#+(and LISPM (not (or cl ti)))
+;;(DEFUN (:PROPERTY MGET SI:SETF) (REF VAL)
+;;  `(MPUTPROP ,(SECOND REF) ,VAL ,(THIRD REF)))
+;;
+;;#+(and LISPM (not (or cl ti)))
+;;(DEFUN (:PROPERTY $GET SI:SETF) (REF VAL)
+;;  `($PUT ,(SECOND REF) ,VAL ,(THIRD REF)))
 
 (defmacro initialize-random-seed ()
-;  #+(or PDP10 NIL) '(sstatus random 0)
-  #+CL () ;;(si:random-initialize si:random-array) obsolete. what now?
+  ;;  #+(or PDP10 NIL) '(sstatus random 0)
+  #+cl () ;;(si:random-initialize si:random-array) obsolete. what now?
   )
 
 ;; These idiot macros are used in some places in macsyma.
@@ -599,15 +599,15 @@
 ;; NIL (common-lisp) has the nth accessors through to tenth, the rest
 ;; frobs through to rest5.  However i had thought that the latter were
 ;; obsolete, and had been going to flush them. --gsb
-#-(or cl ti NIL)
-(DEFMACRO EIGHTH  (FORM) `(CADDDR (CDDDDR ,FORM)))
-#-(or cl ti NIL)
-(DEFMACRO NINTH   (FORM) `(CAR (CDDDDR (CDDDDR ,FORM))))
-#-(or cl ti NIL)
-(DEFMACRO TENTH	  (FORM) `(CADR (CDDDDR (CDDDDR ,FORM))))
-#-NIL
-(DEFMACRO REST5 (FORM) `(CDR (CDDDDR ,FORM)))
-(DEFMACRO REST6 (FORM) `(CDDR (CDDDDR ,FORM)))
+#-(or cl ti nil)
+(defmacro eighth  (form) `(cadddr (cddddr ,form)))
+#-(or cl ti nil)
+(defmacro ninth   (form) `(car (cddddr (cddddr ,form))))
+#-(or cl ti nil)
+(defmacro tenth	  (form) `(cadr (cddddr (cddddr ,form))))
+#-nil
+(defmacro rest5 (form) `(cdr (cddddr ,form)))
+(defmacro rest6 (form) `(cddr (cddddr ,form)))
 
 ;;; We should probably move these into the compatibility package on
 ;;; multics.
@@ -618,33 +618,33 @@
 ;;; To satisfy GJC's speed mainia I resisted changing these in the
 ;;; code. -Jim.
 
-;#+Multics
-;(defmacro +tyi (&rest args)
-;  `(tyi ,@args))
+;;#+Multics
+;;(defmacro +tyi (&rest args)
+;;  `(tyi ,@args))
 
-;#+Multics 
-;(defmacro +tyo (&rest args)
-;  `(tyo ,@args))
+;;#+Multics 
+;;(defmacro +tyo (&rest args)
+;;  `(tyo ,@args))
 
 ;;;; Let the compiler know that x is a fixnum. I guess it will also
 ;;;; then optimize the call to +.
-;#+Multics
-;(defmacro fixnum-identity (x)
-;  `(f+ ,x))
+;;#+Multics
+;;(defmacro fixnum-identity (x)
+;;  `(f+ ,x))
 
 ;;this was not called.
-;(defmacro get-symbol-array-pointer (x)
-;  #+franz `(getd ,x)
-;  #+nil `(si:get-symbol-array-pointer ,x)
-;  #+cl `(symbol-array ,x)
-;  #+maclisp `(get ,x 'array))
+;;(defmacro get-symbol-array-pointer (x)
+;;  #+franz `(getd ,x)
+;;  #+nil `(si:get-symbol-array-pointer ,x)
+;;  #+cl `(symbol-array ,x)
+;;  #+maclisp `(get ,x 'array))
 
 
 (defmacro  mdefprop (sym val indicator)
   `(mputprop ',sym ',val ',indicator))
 
 
-(DEFMFUN MPUTPROP (ATOM VAL IND)
-  (LET ((PROPS (GET ATOM 'MPROPS)))
-    (IF (NULL PROPS) (PUTPROP ATOM (SETQ PROPS (NCONS NIL)) 'MPROPS))
-    (PUTPROP PROPS VAL IND)))
+(defmfun mputprop (atom val ind)
+  (let ((props (get atom 'mprops)))
+    (if (null props) (putprop atom (setq props (ncons nil)) 'mprops))
+    (putprop props val ind)))

@@ -13,70 +13,70 @@
 ;; Compile-time support for defining things which dispatch
 ;; off the property list. The Macsyma parser uses this.
 
-(DEFUN CHECK-SUBR-ARGL (L)
-  (IF (OR (> (LENGTH L) 5.)
-	  (MEMQ '&REST L)
-	  (MEMQ '&OPTIONAL L)
-	  (MEMQ '&RESTV L)
-	  (MEMQ '&QUOTE L))
-      (MAXIMA-ERROR "Can't DEF-PROPL-CALL with non-subr arglist" L)))
+(defun check-subr-argl (l)
+  (if (or (> (length l) 5.)
+	  (memq '&rest l)
+	  (memq '&optional l)
+	  (memq '&restv l)
+	  (memq '&quote l))
+      (maxima-error "Can't DEF-PROPL-CALL with non-subr arglist" l)))
 
-(DEFVAR USE-SUBRCALL
-  #+CL NIL
-  #+MACLISP T
-  #+NIL NIL)
+(defvar use-subrcall
+  #+cl nil
+  #+maclisp t
+  #+nil nil)
 
-(DEFMACRO DEF-PROPL-CALL (NAME (OP . L) DEFAULT-ACTION
-			       &AUX
-			       (TEMP (GENSYM))
-			       (SUBR? (IF USE-SUBRCALL
-					  (LIST (SYMBOLCONC NAME '-SUBR))
-					  ())))
-  (IF SUBR? (CHECK-SUBR-ARGL L))
-  `(PROGN 'COMPILE
-          #+lispm   (si:record-source-file-name ',name 'def-propl-call)
-	  (DEFMACRO ,(SYMBOLCONC 'DEF- NAME '-EQUIV) (OP EQUIV)
-           #+lispm  (declare (si:function-parent ,name 'def-propl-call))
-	    `(PUTPROP ',OP #',EQUIV ',',NAME))
-	  (DEFMACRO ,(SYMBOLCONC NAME '-PROPL) ()
-	    #+lispm  (declare (si:function-parent ,name 'def-propl-call))
+(defmacro def-propl-call (name (op . l) default-action
+			  &aux
+			  (temp (gensym))
+			  (subr? (if use-subrcall
+				     (list (symbolconc name '-subr))
+				     ())))
+  (if subr? (check-subr-argl l))
+  `(progn 'compile
+    #+lispm   (si:record-source-file-name ',name 'def-propl-call)
+    (defmacro ,(symbolconc 'def- name '-equiv) (op equiv)
+      #+lispm  (declare (si:function-parent ,name 'def-propl-call))
+      `(putprop ',op #',equiv ',',name))
+    (defmacro ,(symbolconc name '-propl) ()
+      #+lispm  (declare (si:function-parent ,name 'def-propl-call))
 
-	    ''(,NAME ,@SUBR?))
-	  (DEFMACRO ,(SYMBOLCONC 'DEF- NAME '-FUN) (OP-NAME OP-L . BODY)
-;	    #+lispm  (declare (si:function-parent ,name 'def-propl-call))
-;	    `(DEFUN (,OP-NAME ,',NAME  ,@',SUBR?)
-;		    ,OP-L . ,BODY))
-	    `(DEFUN-prop (,OP-NAME ,',NAME  ,@',SUBR?)
-		    ,OP-L
-       		    #+lispm  (declare (si:function-parent ,op-name 'def-nud-fun))
-	       ,@ BODY))
-	  (DEFUN ,(SYMBOLCONC NAME '-CALL) (,OP . ,L)
-	    #+lispm  (declare (si:function-parent ,name 'def-propl-call))
-	    (LET ((,TEMP (AND (SYMBOLP ,OP)
-			      (GETL ,OP '(,NAME ,@SUBR?)))))
-	      (IF (NULL ,TEMP)
-		  ,DEFAULT-ACTION
-		  ,(IF SUBR?
-		       `(IF (EQ (CAR ,TEMP) ',(CAR SUBR?))
-			    (SUBRCALL NIL (CADR ,TEMP) ,OP ,@L)
-			    (FUNCALL (CADR ,TEMP) ,OP ,@L))
-		       `(FUNCALL (CADR ,TEMP) ,OP ,@L)))))))
+      ''(,name ,@subr?))
+    (defmacro ,(symbolconc 'def- name '-fun) (op-name op-l . body)
+      ;;	    #+lispm  (declare (si:function-parent ,name 'def-propl-call))
+      ;;	    `(DEFUN (,OP-NAME ,',NAME  ,@',SUBR?)
+      ;;		    ,OP-L . ,BODY))
+      `(defun-prop (,op-name ,',name  ,@',subr?)
+	,op-l
+	#+lispm  (declare (si:function-parent ,op-name 'def-nud-fun))
+	,@ body))
+    (defun ,(symbolconc name '-call) (,op . ,l)
+      #+lispm  (declare (si:function-parent ,name 'def-propl-call))
+      (let ((,temp (and (symbolp ,op)
+			(getl ,op '(,name ,@subr?)))))
+	(if (null ,temp)
+	    ,default-action
+	    ,(if subr?
+		 `(if (eq (car ,temp) ',(car subr?))
+		   (subrcall nil (cadr ,temp) ,op ,@l)
+		   (funcall (cadr ,temp) ,op ,@l))
+		 `(funcall (cadr ,temp) ,op ,@l)))))))
 
 
-(DEFUN MAKE-PARSER-FUN-DEF (OP P BVL BODY)
+(defun make-parser-fun-def (op p bvl body)
   ;; Used by the Parser at compile time.
-  (IF (NOT (consp OP))
-      `(,(SYMBOLCONC 'DEF- P '-FUN) ,OP ,BVL
-				    ,(CAR BVL)
-				    ;; so compiler won't warn about
-				    ;; unused lambda variable.
-				    . ,BODY)
-      `(PROGN 'COMPILE
-	      ,(MAKE-PARSER-FUN-DEF (CAR OP) P BVL BODY)
-	      ,@(MAPCAR #'(LAMBDA (X)
-			    `(INHERIT-PROPL ',X ',(CAR OP)
-					    (,(SYMBOLCONC P '-PROPL))))
-			(CDR OP)))))
+  (if (not (consp op))
+      `(,(symbolconc 'def- p '-fun) ,op ,bvl
+	,(car bvl)
+	;; so compiler won't warn about
+	;; unused lambda variable.
+	. ,body)
+      `(progn 'compile
+	,(make-parser-fun-def (car op) p bvl body)
+	,@(mapcar #'(lambda (x)
+		      `(inherit-propl ',x ',(car op)
+			(,(symbolconc p '-propl))))
+		  (cdr op)))))
 
 
 ;;; The tokenizer use the famous CSTR to represent the possible extended token
@@ -99,76 +99,76 @@
 ;;;  Note: Names containing shorter names as initial segments
 ;;;        must follow the shorter names in arg to CSTRSETUP.
 
-(DEFVAR SYMBOLS-DEFINED () "For safe keeping.")
-(DEFVAR MACSYMA-OPERATORS ())
+(defvar symbols-defined () "For safe keeping.")
+(defvar macsyma-operators ())
 
 (eval-when (eval compile load)
-  (DEFUN *DEFINE-INITIAL-SYMBOLS (L)
-    (SETQ SYMBOLS-DEFINED
-	  (SORT (copy-list L) #'(LAMBDA (X Y) (< (FLATC X) (FLATC Y)))))
-    (SETQ MACSYMA-OPERATORS (CSTRSETUP SYMBOLS-DEFINED)))
+  (defun *define-initial-symbols (l)
+    (setq symbols-defined
+	  (sort (copy-list l) #'(lambda (x y) (< (flatc x) (flatc y)))))
+    (setq macsyma-operators (cstrsetup symbols-defined)))
   )
 
 
-(DEFMACRO DEFINE-INITIAL-SYMBOLS (&REST L)
-  (LET ((SYMBOLS-DEFINED ())
-	(MACSYMA-OPERATORS ()))
-    (*DEFINE-INITIAL-SYMBOLS L)
-    `(PROGN 'COMPILE
-	    (DECLARE-TOP (SPECIAL SYMBOLS-DEFINED MACSYMA-OPERATORS))
-	    (SETQ SYMBOLS-DEFINED (copy-list ',SYMBOLS-DEFINED))
-	    (SETQ MACSYMA-OPERATORS (SUBST () () ',MACSYMA-OPERATORS)))))
+(defmacro define-initial-symbols (&rest l)
+  (let ((symbols-defined ())
+	(macsyma-operators ()))
+    (*define-initial-symbols l)
+    `(progn 'compile
+      (declare-top (special symbols-defined macsyma-operators))
+      (setq symbols-defined (copy-list ',symbols-defined))
+      (setq macsyma-operators (subst () () ',macsyma-operators)))))
 
-(DEFUN UNDEFINE-SYMBOL (OP)
-  (*DEFINE-INITIAL-SYMBOLS (DELQ (STRIPDOLLAR OP) SYMBOLS-DEFINED)))
+(defun undefine-symbol (op)
+  (*define-initial-symbols (delq (stripdollar op) symbols-defined)))
 
-(DEFUN DEFINE-SYMBOL (X)
-  (SETQ X (STRIPDOLLAR X))
-  (*DEFINE-INITIAL-SYMBOLS (CONS X SYMBOLS-DEFINED))
-  ;(IMPLODE (CONS #/$ (EXPLODEN X)))
+(defun define-symbol (x)
+  (setq x (stripdollar x))
+  (*define-initial-symbols (cons x symbols-defined))
+					;(IMPLODE (CONS #/$ (EXPLODEN X)))
   (symbolconc '$ x))
 
-(DEFUN CSTRSETUP (ARG)
-  (DO ((ARG ARG (CDR ARG)) (TREE NIL))
-      ((NULL ARG) (LIST* () '(ANS ()) TREE))
-    (COND ((ATOM (CAR ARG))
-	   (SETQ TREE 
-		 (ADD2CSTR (CAR ARG) 
-			   TREE 
-			   ;(IMPLODE (CONS '$ (EXPLODEC (CAR ARG))))
+(defun cstrsetup (arg)
+  (do ((arg arg (cdr arg)) (tree nil))
+      ((null arg) (list* () '(ans ()) tree))
+    (cond ((atom (car arg))
+	   (setq tree 
+		 (add2cstr (car arg) 
+			   tree 
+					;(IMPLODE (CONS '$ (EXPLODEC (CAR ARG))))
 			   (symbolconc '$ (car arg))
 			   )))
-	  (T
-	   (SETQ TREE 
-		 (ADD2CSTR (CAAR ARG) TREE (CADAR ARG)))))))
+	  (t
+	   (setq tree 
+		 (add2cstr (caar arg) tree (cadar arg)))))))
    
 ;;; (ADD2CSTR <name> <tree> <translation>)
 ;;; 
 ;;;  Adds the information <name> -> <translation> to a 
 ;;;  CSTR-style <tree>.
 
-(DEFUN ADD2CSTR (X TREE ANS) 
-  (ADD2CSTR1 (NCONC (EXPLODEN X) (NCONS (LIST 'ANS ANS)))
-	     TREE))
+(defun add2cstr (x tree ans) 
+  (add2cstr1 (nconc (exploden x) (ncons (list 'ans ans)))
+	     tree))
    
 ;;; (ADD2CSTR1 <translation-info> <tree>)
 ;;;
 ;;;  Helping function for ADD2CSTR. Puts information about a 
 ;;;  keyword into the <tree>
 
-(DEFUN ADD2CSTR1 (X TREE)
-  (COND ((NULL TREE) X)
-	((ATOM (CAR TREE))
-	 (COND ((EQUAL (CAR TREE) (CAR X))
-		(RPLACD TREE (ADD2CSTR1 (CDR X) (CDR TREE))))
-	       (T (LIST TREE (COND ((ATOM (CAR X)) X)
-				   ((EQUAL (CAAR X) 'ANS) (CAR X))
-				   (T X))))))
-	((EQUAL (CAAR TREE) (CAR X))
-	 (RPLACD (CAR TREE) (ADD2CSTR1 (CDR X) (CDAR TREE)))
-	 TREE)
-	((NULL (CDR TREE))
-	 (RPLACD TREE (LIST X))
-	 TREE)
-	(T (RPLACD TREE (ADD2CSTR1 X (CDR TREE)))
-	   TREE)))
+(defun add2cstr1 (x tree)
+  (cond ((null tree) x)
+	((atom (car tree))
+	 (cond ((equal (car tree) (car x))
+		(rplacd tree (add2cstr1 (cdr x) (cdr tree))))
+	       (t (list tree (cond ((atom (car x)) x)
+				   ((equal (caar x) 'ans) (car x))
+				   (t x))))))
+	((equal (caar tree) (car x))
+	 (rplacd (car tree) (add2cstr1 (cdr x) (cdar tree)))
+	 tree)
+	((null (cdr tree))
+	 (rplacd tree (list x))
+	 tree)
+	(t (rplacd tree (add2cstr1 x (cdr tree)))
+	   tree)))

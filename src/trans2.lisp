@@ -18,21 +18,21 @@
 (macsyma-module trans2)
 
 
-(TRANSL-MODULE TRANS2)
+(transl-module trans2)
 
-(DEF%TR $RANDOM (FORM) `($FIXNUM . (RANDOM ,@(TR-ARGS (CDR FORM)))))
+(def%tr $random (form) `($fixnum . (random ,@(tr-args (cdr form)))))
 
-(DEF%TR MEQUAL (FORM)
-	`($ANY . (SIMPLIFY (LIST '(MEQUAL) ,@(TR-ARGS (CDR FORM))))))
+(def%tr mequal (form)
+  `($any . (simplify (list '(mequal) ,@(tr-args (cdr form))))))
 
-(DEF%TR MCALL (FORM)
-	(SETQ FORM (CDR FORM))
-	(LET ((MODE (COND ((ATOM (CAR FORM))
-			   (FUNCTION-MODE (CAR FORM)))
-			  (T '$ANY))))
-	     (SETQ FORM (TR-ARGS FORM))
-	     (LET ((OP (CAR FORM)))
-		  (CALL-AND-SIMP MODE 'MCALL `(,OP . ,(CDR FORM))))))
+(def%tr mcall (form)
+  (setq form (cdr form))
+  (let ((mode (cond ((atom (car form))
+		     (function-mode (car form)))
+		    (t '$any))))
+    (setq form (tr-args form))
+    (let ((op (car form)))
+      (call-and-simp mode 'mcall `(,op . ,(cdr form))))))
 
 ;;; Meaning of the mode properties: most names are historical.
 ;;; (GETL X '(ARRAY-MODE)) means it is an array callable by the
@@ -76,7 +76,7 @@
 #+cl
 (defun maset1 ( val ar  &rest inds &aux  )
   (lisp:let
-   ((.type. (#. *primitive-data-type-function*  ar)))
+      ((.type. (#. *primitive-data-type-function*  ar)))
     (cond
       ((one-of-types .type. (make-array 3))
        (setf (apply #'aref ar inds)  val))
@@ -99,38 +99,38 @@
 ;;array
 
 ;;COULD USE THE FOLLOWING TO handle fast_arrays:true.
-;(defun set-up-hash-table (&optional val key &aux tab)
-;  (setq tab (make-hash-table :test 'equal)) ;alike?
-;  (setf (gethash key tab) val) tab)
-;
-;(defun maset-help1 ( val ar  &rest inds &aux  )
-;  "returns t if it set and nil if what went in could not be set but is a variable that
-;    should be set to hash array"
-;  (cond ((hash-table-p ar)
-;	 (setf (gethash (car inds) ar) val))
-;	((symbolp ar) nil)
-;	(($listp ar)
-;	 (setf (nth (car inds) ar) val)  t)
-;	(($matrixp ar) (setf (nth (second inds) (nth  (car inds) ar)) val) t)
-;	(t (error "not valid place ~A to put an array" ar))))
-;
-;
+;;(defun set-up-hash-table (&optional val key &aux tab)
+;;  (setq tab (make-hash-table :test 'equal)) ;alike?
+;;  (setf (gethash key tab) val) tab)
+;;
+;;(defun maset-help1 ( val ar  &rest inds &aux  )
+;;  "returns t if it set and nil if what went in could not be set but is a variable that
+;;    should be set to hash array"
+;;  (cond ((hash-table-p ar)
+;;	 (setf (gethash (car inds) ar) val))
+;;	((symbolp ar) nil)
+;;	(($listp ar)
+;;	 (setf (nth (car inds) ar) val)  t)
+;;	(($matrixp ar) (setf (nth (second inds) (nth  (car inds) ar)) val) t)
+;;	(t (error "not valid place ~A to put an array" ar))))
+;;
+;;
 ;;;;doesn't prevent multiple evaluation of inds val and ar.. but doesn't use locf
-;(defmacro maset (val ar &rest  inds )
-;  `(cond
-;     ((arrayp ar) (setf (aref ar ,@ inds) ,val))
-;     ((maset-help1 ,val ,ar ,@ inds) ,val)
-;      (t (setf ,ar (set-up-hash-table ,val (car ,ind))),val)))
-;
-;(defmacro maref ( ar &rest inds)
-;  `(cond ((arrayp ,ar) (aref ,ar ,@ inds))
-;	 ((hash-table-p ,ar) (gethash ,ar (car ,inds)))
-;	 ((symbolp ,ar)`((,ar ,@ (copy-list ,inds))))))
+;;(defmacro maset (val ar &rest  inds )
+;;  `(cond
+;;     ((arrayp ar) (setf (aref ar ,@ inds) ,val))
+;;     ((maset-help1 ,val ,ar ,@ inds) ,val)
+;;      (t (setf ,ar (set-up-hash-table ,val (car ,ind))),val)))
+;;
+;;(defmacro maref ( ar &rest inds)
+;;  `(cond ((arrayp ,ar) (aref ,ar ,@ inds))
+;;	 ((hash-table-p ,ar) (gethash ,ar (car ,inds)))
+;;	 ((symbolp ,ar)`((,ar ,@ (copy-list ,inds))))))
 
 ;;in maref in transl now
 #+cl
 (defun tr-maref (ar inds)
-    `(nil maref , ar ,@ (copy-list inds)))
+  `(nil maref , ar ,@ (copy-list inds)))
 
 #+cl
 (defun maref1 (ar  &rest inds &aux )
@@ -145,93 +145,93 @@
       (t (error "not a valid array reference to ~A" ar)))))
 
 
-(DEFTRFUN TR-ARRAYCALL (FORM &aux all-inds)
-       (COND ((GET (CAAR FORM) 'ARRAY-MODE)
-	      (ADDL (CAAR FORM) ARRAYS)
-	      `(,(ARRAY-MODE (CAAR FORM))
-		. (,(CAAR FORM) ,@(TR-ARGS (CDR FORM)))))
-	     ;;((MEMQ (MGET (CAAR FORM) 'ARRAYFUN-MODE) '($FLOAT $FIXNUM))
-	     ;;`(,(MGET (CAAR FORM) 'ARRAYFUN-MODE)
-	     ;;MAFCALL ,(CAAR FORM) . ,(MAPCAR 'DTRANSLATE (CDR FORM))))
+(deftrfun tr-arraycall (form &aux all-inds)
+  (cond ((get (caar form) 'array-mode)
+	 (addl (caar form) arrays)
+	 `(,(array-mode (caar form))
+	   . (,(caar form) ,@(tr-args (cdr form)))))
+	;;((MEMQ (MGET (CAAR FORM) 'ARRAYFUN-MODE) '($FLOAT $FIXNUM))
+	;;`(,(MGET (CAAR FORM) 'ARRAYFUN-MODE)
+	;;MAFCALL ,(CAAR FORM) . ,(MAPCAR 'DTRANSLATE (CDR FORM))))
 	     
-	     #+cl
-	     ($translate_fast_arrays (setq all-inds (mapcar 'dtranslate (cdr form)))
-				     ;;not apply changed 'tr-maref
-	      (funcall 'tr-maref (cdr (translate (caar form)))   all-inds))
-	     (T
-	      (TRANSLATE `((MARRAYREF)
-			   ,(IF $TR_ARRAY_AS_REF (CAAR FORM)
-					   `((MQUOTE) ,(CAAR FORM)))     
-			   ,@(CDR FORM))))))
+	#+cl
+	($translate_fast_arrays (setq all-inds (mapcar 'dtranslate (cdr form)))
+				;;not apply changed 'tr-maref
+				(funcall 'tr-maref (cdr (translate (caar form)))   all-inds))
+	(t
+	 (translate `((marrayref)
+		      ,(if $tr_array_as_ref (caar form)
+			   `((mquote) ,(caar form)))     
+		      ,@(cdr form))))))
 
 
 
-(DEFTRFUN TR-ARRAYSETQ (array-ref value)
-       ;; actually an array SETF, but it comes from A[X]:FOO
-       ;; which is ((MSETQ) ... ...)
-       (COND ((GETL (CAAR array-ref) '(ARRAY-MODE))
-	      (LET ((T-REF (TRANSLATE ARRAY-REF))
-		    (T-VALUE (TRANSLATE VALUE))
-		    (MODE))
-		   (WARN-MODE ARRAY-REF (CAR T-REF) (CAR T-VALUE))
-		   (SETQ MODE (CAR T-REF)) ; ooh, could be bad.
-		   `(,MODE
-		     . (STORE ,(CDR T-REF) ,(CDR T-VALUE)))))
-	     #+cl
-	     ($translate_fast_arrays 
-	      (funcall 'tr-maset (caar array-ref) (dtranslate value)
-			     (mapcar 'dtranslate (copy-list (cdr array-ref)))))
-	     (T
-	      ;; oops. Hey, I switch around order of evaluation
-	      ;; here. no need to either man. gee.
-	      (TRANSLATE `((MARRAYSET) ,Value
-				       ,(IF $TR_ARRAY_AS_REF (CAAR ARRAY-REF)
-					   `((MQUOTE) ,(CAAR ARRAY-REF)))
-				       ,@(CDR ARRAY-REF))))))
+(deftrfun tr-arraysetq (array-ref value)
+  ;; actually an array SETF, but it comes from A[X]:FOO
+  ;; which is ((MSETQ) ... ...)
+  (cond ((getl (caar array-ref) '(array-mode))
+	 (let ((t-ref (translate array-ref))
+	       (t-value (translate value))
+	       (mode))
+	   (warn-mode array-ref (car t-ref) (car t-value))
+	   (setq mode (car t-ref))	; ooh, could be bad.
+	   `(,mode
+	     . (store ,(cdr t-ref) ,(cdr t-value)))))
+	#+cl
+	($translate_fast_arrays 
+	 (funcall 'tr-maset (caar array-ref) (dtranslate value)
+		  (mapcar 'dtranslate (copy-list (cdr array-ref)))))
+	(t
+	 ;; oops. Hey, I switch around order of evaluation
+	 ;; here. no need to either man. gee.
+	 (translate `((marrayset) ,value
+		      ,(if $tr_array_as_ref (caar array-ref)
+			   `((mquote) ,(caar array-ref)))
+		      ,@(cdr array-ref))))))
  
 
-(DEF%TR MARRAYREF (FORM)
-  (SETQ FORM (CDR FORM))
-  (LET ((MODE (COND ((ATOM (CAR FORM))
-		     (MGET (CAR FORM) 'ARRAY-MODE)))))
-    (COND ((NULL MODE) (SETQ MODE '$ANY)))
-    (SETQ FORM (TR-ARGS FORM))
-    (LET ((OP (CAR FORM)))
-      `(,MODE . (,(IF (AND (= (LENGTH FORM) 2)
-			   (EQ MODE '$FLOAT))
-		      (PROGN (PUSH-AUTOLOAD-DEF 'MARRAYREF '(MARRAYREF1$))
-			     'MARRAYREF1$)
-		      'MARRAYREF)
-		 ,OP . ,(CDR FORM))))))
+(def%tr marrayref (form)
+  (setq form (cdr form))
+  (let ((mode (cond ((atom (car form))
+		     (mget (car form) 'array-mode)))))
+    (cond ((null mode) (setq mode '$any)))
+    (setq form (tr-args form))
+    (let ((op (car form)))
+      `(,mode . (,(if (and (= (length form) 2)
+			   (eq mode '$float))
+		      (progn (push-autoload-def 'marrayref '(marrayref1$))
+			     'marrayref1$)
+		      'marrayref)
+		 ,op . ,(cdr form))))))
 
-(DEF%TR MARRAYSET (FORM)
-  (SETQ FORM (CDR FORM))
-  (LET ((MODE (COND ((ATOM (CADR FORM))
-		     (MGET (CADR FORM) 'ARRAY-MODE)))))
-    (COND ((NULL MODE) (SETQ MODE '$ANY)))
-    (SETQ FORM (TR-ARGS FORM))
-    (LET (((VAL AARRAY . INDS) FORM))
-      `(,MODE . (,(IF (AND (= (LENGTH INDS) 1)
-			   (EQ MODE '$FLOAT))
-		      (PROGN (PUSH-AUTOLOAD-DEF 'MARRAYSET '(MARRAYSET1$))
-			     'MARRAYSET1$)
-		      'MARRAYSET)
-		 ,VAL ,AARRAY . ,INDS)))))
+(def%tr marrayset (form)
+  (setq form (cdr form))
+  (let ((mode (cond ((atom (cadr form))
+		     (mget (cadr form) 'array-mode)))))
+    (cond ((null mode) (setq mode '$any)))
+    (setq form (tr-args form))
+    (let (((val aarray . inds) form))
+      `(,mode . (,(if (and (= (length inds) 1)
+			   (eq mode '$float))
+		      (progn (push-autoload-def 'marrayset '(marrayset1$))
+			     'marrayset1$)
+		      'marrayset)
+		 ,val ,aarray . ,inds)))))
 
-(DEF%TR MLIST (FORM)
-	(COND ((NULL (CDR FORM)) ;;; []
-	       '($ANY . '((MLIST))))
-	      (T
-	       `($ANY . (LIST '(MLIST) . ,(TR-ARGS (CDR FORM)))))))
+(def%tr mlist (form)
+  (cond ((null (cdr form)) ;;; []
+	 '($any . '((mlist))))
+	(t
+	 `($any . (list '(mlist) . ,(tr-args (cdr form)))))))
 
-(DEF%TR $FIRST (FORM)
-  (SETQ FORM (TRANSLATE (CADR FORM)))
-  (call-and-simp '$ANY
-		 (COND ((EQ '$LIST (CAR FORM))
-			'CADR)
-		       (T
-			'$FIRST))
-		 (list (CDR FORM))))
+(def%tr $first (form)
+  (setq form (translate (cadr form)))
+  (call-and-simp '$any
+		 (cond ((eq '$list (car form))
+			'cadr)
+		       (t
+			'$first))
+		 (list (cdr form))))
 
 
 

@@ -13,13 +13,13 @@
 
 ;; Needed at read time, by e.g. JPG;SUPRV.  There should be a better
 ;; way of setting this up for #+.
-(SSTATUS FEATURE MAXII)
+(sstatus feature maxii)
 
-(DEFMACRO MACSYMA-MODULE (MODULE &REST OPTIONS)
+(defmacro macsyma-module (module &rest options)
   (setq *macro-file* (if (member 'macro options) t nil))
-  (IF (NULL OPTIONS)
-      (PUSH 'RUNTIME OPTIONS))
-  `(DEFPROP ,MODULE ,OPTIONS MACSYMA-MODULE))
+  (if (null options)
+      (push 'runtime options))
+  `(defprop ,module ,options macsyma-module))
 
 
 (macsyma-module mormac macro)

@@ -12,14 +12,14 @@
 (in-package "MAXIMA")
 (macsyma-module sublis)
 
-(DEFMVAR $SUBLIS_APPLY_LAMBDA T 
+(defmvar $sublis_apply_lambda t 
   "a flag which controls whether LAMBDA's substituted are applied in
    simplification after the SUBLIS or whether you have to do an
    EV to get things to apply. A value of TRUE means perform the application.")
 
-    ; The EXPR stuff here should eventually be flushed.
-(declare-top #-cl (*EXPR $LISTP $RAT $RATP $RATDISREP GETOPR) 
-	 (SPECIAL *MSUBLIS-MARKER*))
+					; The EXPR stuff here should eventually be flushed.
+(declare-top #-cl (*expr $listp $rat $ratp $ratdisrep getopr) 
+	     (special *msublis-marker*))
 
 ;;; SUBLIS([sym1=form1,sym2=form2,...],expression)$
 ;;;
@@ -28,99 +28,99 @@
 ;;;  parallel, so having occurrences of sym1 in form2, etc. will have
 ;;;  the `desired' (non-interfering) effect.
 
-(DEFMFUN $SUBLIS (SUBSTITUTIONS FORM)
-  (COND
-   (($LISTP SUBSTITUTIONS)
-    (DO ((L  (CDR SUBSTITUTIONS) (CDR L))
-	 (NL ())
-	 (TEMP))
-	((NULL L) (SETQ SUBSTITUTIONS NL))
-      (SETQ TEMP (CAR L))
-      (COND ((AND (NOT (ATOM TEMP))
-		  (NOT (ATOM (CAR TEMP)))
-		  (EQ (CAAR TEMP) 'MEQUAL)
-		  (SYMBOLP (CAR (POP TEMP))))
-	     (PUSH (CONS (POP TEMP) (POP TEMP)) NL))
-	    (T (MERROR "Usage is SUBLIS([sym1=form1,...],expression)")))))
-   (T
-    (MERROR "Usage is SUBLIS([sym1=form1,...],expression)")))
-  (MSUBLIS SUBSTITUTIONS FORM))
+(defmfun $sublis (substitutions form)
+  (cond
+    (($listp substitutions)
+     (do ((l  (cdr substitutions) (cdr l))
+	  (nl ())
+	  (temp))
+	 ((null l) (setq substitutions nl))
+       (setq temp (car l))
+       (cond ((and (not (atom temp))
+		   (not (atom (car temp)))
+		   (eq (caar temp) 'mequal)
+		   (symbolp (car (pop temp))))
+	      (push (cons (pop temp) (pop temp)) nl))
+	     (t (merror "Usage is SUBLIS([sym1=form1,...],expression)")))))
+    (t
+     (merror "Usage is SUBLIS([sym1=form1,...],expression)")))
+  (msublis substitutions form))
 
-(DEFUN MSUBLIS (S Y)
-  (DECLARE (SPECIAL S))
-  (LET ((*MSUBLIS-MARKER* (COPY-SYMBOL '*MSUBLIS-MARKER* NIL)))
-    (MSUBLIS-SETUP)
-    (UNWIND-PROTECT (MSUBLIS-SUBST Y T) (MSUBLIS-UNSETUP))))
+(defun msublis (s y)
+  (declare (special s))
+  (let ((*msublis-marker* (copy-symbol '*msublis-marker* nil)))
+    (msublis-setup)
+    (unwind-protect (msublis-subst y t) (msublis-unsetup))))
 
-(DEFUN MSUBLIS-SETUP ()
-  (DECLARE (SPECIAL S))
-       (DO ((X S (CDR X)) (TEMP) (TEMP1)) ((NULL X))
-	(COND ((NOT (SYMBOLP (SETQ TEMP (CAAR X))))
-	       (MERROR "SUBLIS: Bad 1st arg")))
-	(SETPLIST TEMP (LIST* *MSUBLIS-MARKER* (CDAR X) (SYMBOL-PLIST TEMP)))
-	(COND ((NOT (EQ TEMP (SETQ TEMP1 (GETOPR TEMP))))
-	       (SETPLIST TEMP1 (LIST* *MSUBLIS-MARKER* (CDAR X) (SYMBOL-PLIST TEMP1)))
-	       (PUSH (NCONS TEMP1) S))))) ; Remember extra cleanup
+(defun msublis-setup ()
+  (declare (special s))
+  (do ((x s (cdr x)) (temp) (temp1)) ((null x))
+    (cond ((not (symbolp (setq temp (caar x))))
+	   (merror "SUBLIS: Bad 1st arg")))
+    (setplist temp (list* *msublis-marker* (cdar x) (symbol-plist temp)))
+    (cond ((not (eq temp (setq temp1 (getopr temp))))
+	   (setplist temp1 (list* *msublis-marker* (cdar x) (symbol-plist temp1)))
+	   (push (ncons temp1) s)))))	; Remember extra cleanup
 
-(DEFUN MSUBLIS-UNSETUP ()
-  (DECLARE (SPECIAL S))
-       (DO ((X S (CDR X))) ((NULL X)) (REMPROP (CAAR X) *MSUBLIS-MARKER*)))
+(defun msublis-unsetup ()
+  (declare (special s))
+  (do ((x s (cdr x))) ((null x)) (remprop (caar x) *msublis-marker*)))
 
-(DEFUN MSUBLIS-SUBST (FORM FLAG)
-       (COND ((ATOM FORM)
-	      (COND ((AND (NULL FORM) (NOT FLAG)) NIL) ;preserve trailing NILs
-		    ((SYMBOLP FORM)
-		     (COND ((EQ (CAR (SYMBOL-PLIST FORM)) *MSUBLIS-MARKER*)
-			    (CADR (SYMBOL-PLIST FORM)))
-			   (T FORM)))
-		    (T FORM)))
-	     (FLAG
-	      (COND (($RATP FORM)
-		     (LET* ((DISREP ($RATDISREP FORM))
-			    (SUB    (MSUBLIS-SUBST DISREP T)))
-			   (COND ((EQ DISREP SUB) FORM)
-				 (T ($RAT SUB)))))
-		    ((ATOM (CAR FORM))
-		     (MERROR
-		       "SUBLIS: Illegal object in expression being substituted for."))
-		    (T
-		     (LET ((CDR-VALUE (MSUBLIS-SUBST (CDR FORM) NIL))
-			   (CAAR-VALUE (MSUBLIS-SUBST (CAAR FORM) T)))
-			  (COND ((AND (EQ CDR-VALUE (CDR FORM))
-				      (EQ (CAAR FORM) CAAR-VALUE))
-				 FORM)
-				((AND $SUBLIS_APPLY_LAMBDA
-				      (EQ (CAAR FORM) 'MQAPPLY)
-				      (EQ CAAR-VALUE 'MQAPPLY)
-				      (ATOM (CADR FORM))
-				      (NOT (ATOM (CAR CDR-VALUE)))
-				      (EQ (CAAR (CAR CDR-VALUE)) 'LAMBDA))
-				 (CONS (CONS (CAR CDR-VALUE)
-					     (COND ((MEMQ 'array (CAR FORM))
-						    '(ARRAY))
-						   (T NIL)))
-				       (CDR CDR-VALUE)))
-				((AND (NOT (ATOM CAAR-VALUE))
-				      (OR (NOT (OR (EQ (CAR CAAR-VALUE) 'LAMBDA)
-						   (EQ (CAAR CAAR-VALUE) 'LAMBDA)))
-					  (NOT $SUBLIS_APPLY_LAMBDA)))
-				 (LIST* (CONS 'MQAPPLY
-					      (COND ((MEMQ 'array (CAR FORM))
-						     '(ARRAY))
-						    (T NIL)))
-					CAAR-VALUE
-					CDR-VALUE))
-				(T (CONS (CONS CAAR-VALUE
-					       (COND ((MEMQ 'array (CAR FORM))
-						      '(ARRAY))
-						     (T NIL)))
-					 CDR-VALUE)))))))
-	     (T
-	      (LET ((CAR-VALUE (MSUBLIS-SUBST (CAR FORM) T))
-		    (CDR-VALUE (MSUBLIS-SUBST (CDR FORM) NIL)))
-		   (COND ((AND (EQ (CAR FORM) CAR-VALUE)
-			       (EQ (CDR FORM) CDR-VALUE))
-			  FORM)
-			 (T
-			  (CONS CAR-VALUE CDR-VALUE)))))))
+(defun msublis-subst (form flag)
+  (cond ((atom form)
+	 (cond ((and (null form) (not flag)) nil) ;preserve trailing NILs
+	       ((symbolp form)
+		(cond ((eq (car (symbol-plist form)) *msublis-marker*)
+		       (cadr (symbol-plist form)))
+		      (t form)))
+	       (t form)))
+	(flag
+	 (cond (($ratp form)
+		(let* ((disrep ($ratdisrep form))
+		       (sub    (msublis-subst disrep t)))
+		  (cond ((eq disrep sub) form)
+			(t ($rat sub)))))
+	       ((atom (car form))
+		(merror
+		 "SUBLIS: Illegal object in expression being substituted for."))
+	       (t
+		(let ((cdr-value (msublis-subst (cdr form) nil))
+		      (caar-value (msublis-subst (caar form) t)))
+		  (cond ((and (eq cdr-value (cdr form))
+			      (eq (caar form) caar-value))
+			 form)
+			((and $sublis_apply_lambda
+			      (eq (caar form) 'mqapply)
+			      (eq caar-value 'mqapply)
+			      (atom (cadr form))
+			      (not (atom (car cdr-value)))
+			      (eq (caar (car cdr-value)) 'lambda))
+			 (cons (cons (car cdr-value)
+				     (cond ((memq 'array (car form))
+					    '(array))
+					   (t nil)))
+			       (cdr cdr-value)))
+			((and (not (atom caar-value))
+			      (or (not (or (eq (car caar-value) 'lambda)
+					   (eq (caar caar-value) 'lambda)))
+				  (not $sublis_apply_lambda)))
+			 (list* (cons 'mqapply
+				      (cond ((memq 'array (car form))
+					     '(array))
+					    (t nil)))
+				caar-value
+				cdr-value))
+			(t (cons (cons caar-value
+				       (cond ((memq 'array (car form))
+					      '(array))
+					     (t nil)))
+				 cdr-value)))))))
+	(t
+	 (let ((car-value (msublis-subst (car form) t))
+	       (cdr-value (msublis-subst (cdr form) nil)))
+	   (cond ((and (eq (car form) car-value)
+		       (eq (cdr form) cdr-value))
+		  form)
+		 (t
+		  (cons car-value cdr-value)))))))
 

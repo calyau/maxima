@@ -38,15 +38,15 @@
 (defmfun add2 (x y)
   (cond
     ((=0 x) y)
-	((=0 y) x)
-	(t (simplifya `((mplus) ,x ,y) t))))
+    ((=0 y) x)
+    (t (simplifya `((mplus) ,x ,y) t))))
 
 #+cl
 (defmfun add2 (x y)
   (cond ((numberp x)
-	(cond ((numberp y) (+ x y))
-	      ((zerop x) y)
-	      (t (simplifya `((mplus) ,x ,y) t))))
+	 (cond ((numberp y) (+ x y))
+	       ((zerop x) y)
+	       (t (simplifya `((mplus) ,x ,y) t))))
 	((eql y 0) x)
 	(t (simplifya `((mplus) ,x ,y) t))))
 
@@ -54,8 +54,8 @@
   (cond
     #+cl ((and (numberp x) (numberp y)) (+ x y))
     ((=0 x) (simplifya y nil))
-	((=0 y) (simplifya x nil))
-	(t (simplifya `((mplus) ,x ,y) nil))))
+    ((=0 y) (simplifya x nil))
+    (t (simplifya `((mplus) ,x ,y) nil))))
 
 ;; The first two cases in this cond shouldn't be needed, but exist
 ;; for compatibility with the old OPERS package.  The old ADDLIS
@@ -70,7 +70,7 @@
 (defmfun neg (x)
   (cond ((numberp x) (minus x))
 	(t (let (($negdistrib t))
-		(simplifya `((mtimes) -1 ,x) t)))))
+	     (simplifya `((mtimes) -1 ,x) t)))))
 
 (declare-top (muzzled nil))
 
@@ -90,7 +90,7 @@
      (add (simplifya x nil) (mul -1 (simplifya y nil))))))
 #-cl
 (defmfun sub* (x y)
-     (add (simplifya x nil) (mul -1 (simplifya y nil))))
+  (add (simplifya x nil) (mul -1 (simplifya y nil))))
 
 ;; Multiplication primitives -- is it worthwhile to handle the 3-arg
 ;; case specially?  Don't simplify x*0 --> 0 since x could be non-scalar.

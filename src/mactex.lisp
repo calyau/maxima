@@ -53,23 +53,23 @@
 ;; in case a file-name is supplied, the output will be sent
 ;; (perhaps appended) to that file.
 
-;(macsyma-module tex ); based on "mrg/grind"
+;;(macsyma-module tex ); based on "mrg/grind"
 
 #+franz
 ($bothcases t) ;; allow alpha and Alpha to be different
 (declare-top
-	 (special lop rop ccol $gcprint texport $labels $inchar
-		  vaxima-main-dir
-		  )
-	 (*expr tex-lbp tex-rbp))
+ (special lop rop ccol $gcprint texport $labels $inchar
+	  vaxima-main-dir
+	  )
+ (*expr tex-lbp tex-rbp))
 
 ;; top level command the result of tex'ing the expression x.
 ;; Lots of messing around here to get C-labels verbatim printed
 ;; and function definitions verbatim "ground"
 
-;(defmspec $tex(l) ;; mexplabel, and optional filename
-;  (let ((args (cdr l)))
-;  (apply 'tex1  args)))
+;;(defmspec $tex(l) ;; mexplabel, and optional filename
+;;  (let ((args (cdr l)))
+;;  (apply 'tex1  args)))
 
 (defmspec $tex(l) ;; mexplabel, and optional filename
   ;;if filename supplied but 'nil' then return a string
@@ -92,72 +92,72 @@
 
 (defun tex1 (mexplabel &optional filename ) ;; mexplabel, and optional filename
   (prog (mexp  texport $gcprint ccol x y itsalabel)
-	;; $gcprint = nil turns gc messages off
-	(setq ccol 1)
-	(cond ((null mexplabel)
-	       (displa " No eqn given to TeX")
-	       (return nil)))
-	;; collect the file-name, if any, and open a port if needed
-	(setq texport (cond((null filename) *standard-output* ); t= output to terminal
-			   (t
-			     (open (string (stripdollar filename))
-				   :direction :output
-				   :if-exists :append
-				   :if-does-not-exist :create))))
-	;; go back and analyze the first arg more thoroughly now.
-	;; do a normal evaluation of the expression in macsyma
-	(setq mexp (meval mexplabel))
-	(cond ((memq mexplabel $labels); leave it if it is a label
-	       (setq mexplabel (concat "(" (stripdollar mexplabel) ")"))
-	       (setq itsalabel t))
-	      (t (setq mexplabel nil)));flush it otherwise
+     ;; $gcprint = nil turns gc messages off
+     (setq ccol 1)
+     (cond ((null mexplabel)
+	    (displa " No eqn given to TeX")
+	    (return nil)))
+     ;; collect the file-name, if any, and open a port if needed
+     (setq texport (cond((null filename) *standard-output* ) ; t= output to terminal
+			(t
+			 (open (string (stripdollar filename))
+			       :direction :output
+			       :if-exists :append
+			       :if-does-not-exist :create))))
+     ;; go back and analyze the first arg more thoroughly now.
+     ;; do a normal evaluation of the expression in macsyma
+     (setq mexp (meval mexplabel))
+     (cond ((memq mexplabel $labels)	; leave it if it is a label
+	    (setq mexplabel (concat "(" (stripdollar mexplabel) ")"))
+	    (setq itsalabel t))
+	   (t (setq mexplabel nil)))	;flush it otherwise
 
-	;; maybe it is a function?
-	(cond((symbolp (setq x mexp)) ;;exclude strings, numbers
-	      (setq x ($verbify x))
-	      (cond ((setq y (mget x 'mexpr))
-		     (setq mexp (list '(mdefine) (cons (list x) (cdadr y)) (caddr y))))
-		    ((setq y (mget x 'mmacro))
-		     (setq mexp (list '(mdefmacro) (cons (list x) (cdadr y)) (caddr y))))
-		    ((setq y (mget x 'aexpr))
-		     (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
-	(cond ((and (null(atom mexp))
-		    (memq (caar mexp) '(mdefine mdefmacro)))
-               (if mexplabel (setq mexplabel (quote-% mexplabel)))
-	       (format texport "|~%" ) ;delimit with |marks
-	       (cond (mexplabel (format texport "~a " mexplabel)))
-	       (mgrind mexp texport) ;write expression as string
-	       (format texport ";|~%"))
-	      ((and
-		itsalabel ;; but is it a user-command-label?
-                (<= (length (string $inchar)) (length (string mexplabel)))
-		(eq (getchars $inchar 2 (1+ (length (string $inchar))))
-		    (getchars mexplabel 2 (1+ (length (string $inchar)))))
-                ;; Check to make sure it isn't an outchar in disguise
-                (not
-                 (and
-                  (<= (length (string $outchar)) (length (string mexplabel)))
-                  (eq (getchars $outchar 2 (1+ (length (string $outchar))))
-                      (getchars mexplabel 2 (1+ (length (string $outchar))))))))
-	       ;; aha, this is a C-line: do the grinding:
-	       (format texport "~%|~a " mexplabel) ;delimit with |marks
-	       (mgrind mexp texport) ;write expression as string
-	       (format texport ";|~%"))
-	      (t 
-                 (if mexplabel (setq mexplabel (quote-% mexplabel)))
-                 ; display the expression for TeX now:
-		 (myprinc "$$")
-		 (mapc #'myprinc
-		       ;;initially the left and right contexts are
-		       ;; empty lists, and there are implicit parens
-		       ;; around the whole expression
-		       (tex mexp nil nil 'mparen 'mparen))
-		 (cond (mexplabel
-			(format texport "\\leqno{\\tt ~a}" mexplabel)))
-		 (format texport "$$")))
-	(cond(filename(terpri texport); and drain port if not terminal
-		      (close texport)))
-	(return mexplabel)))
+     ;; maybe it is a function?
+     (cond((symbolp (setq x mexp)) ;;exclude strings, numbers
+	   (setq x ($verbify x))
+	   (cond ((setq y (mget x 'mexpr))
+		  (setq mexp (list '(mdefine) (cons (list x) (cdadr y)) (caddr y))))
+		 ((setq y (mget x 'mmacro))
+		  (setq mexp (list '(mdefmacro) (cons (list x) (cdadr y)) (caddr y))))
+		 ((setq y (mget x 'aexpr))
+		  (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
+     (cond ((and (null(atom mexp))
+		 (memq (caar mexp) '(mdefine mdefmacro)))
+	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
+	    (format texport "|~%" )	;delimit with |marks
+	    (cond (mexplabel (format texport "~a " mexplabel)))
+	    (mgrind mexp texport)	;write expression as string
+	    (format texport ";|~%"))
+	   ((and
+	     itsalabel ;; but is it a user-command-label?
+	     (<= (length (string $inchar)) (length (string mexplabel)))
+	     (eq (getchars $inchar 2 (1+ (length (string $inchar))))
+		 (getchars mexplabel 2 (1+ (length (string $inchar)))))
+	     ;; Check to make sure it isn't an outchar in disguise
+	     (not
+	      (and
+	       (<= (length (string $outchar)) (length (string mexplabel)))
+	       (eq (getchars $outchar 2 (1+ (length (string $outchar))))
+		   (getchars mexplabel 2 (1+ (length (string $outchar))))))))
+	    ;; aha, this is a C-line: do the grinding:
+	    (format texport "~%|~a " mexplabel) ;delimit with |marks
+	    (mgrind mexp texport)	;write expression as string
+	    (format texport ";|~%"))
+	   (t 
+	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
+					; display the expression for TeX now:
+	    (myprinc "$$")
+	    (mapc #'myprinc
+		  ;;initially the left and right contexts are
+		  ;; empty lists, and there are implicit parens
+		  ;; around the whole expression
+		  (tex mexp nil nil 'mparen 'mparen))
+	    (cond (mexplabel
+		   (format texport "\\leqno{\\tt ~a}" mexplabel)))
+	    (format texport "$$")))
+     (cond(filename(terpri texport)   ; and drain port if not terminal
+		   (close texport)))
+     (return mexplabel)))
 
 ;;; myprinc is an intelligent low level printing routine.  it keeps track of
 ;;; the size of the output for purposes of allowing the TeX file to
@@ -165,47 +165,47 @@
 ;;; once it crosses a threshold.
 ;;; this has nothign to do with breaking the resulting equations.
 
-;-      arg:    chstr -  string or number to princ
-;-      scheme: This function keeps track of the current location
-;-              on the line of the cursor and makes sure
-;-              that a value is all printed on one line (and not divided
-;-              by the crazy top level os routines)
+;;-      arg:    chstr -  string or number to princ
+;;-      scheme: This function keeps track of the current location
+;;-              on the line of the cursor and makes sure
+;;-              that a value is all printed on one line (and not divided
+;;-              by the crazy top level os routines)
 
 (defun myprinc (chstr)
-       (prog (chlst)
-              (cond ((greaterp (plus (length (setq chlst (exploden chstr)))
-                                 ccol)
-                           70.)
-                  (terpri texport)      ;would have exceeded the line length
-                      (setq ccol 1.)
-		      (myprinc " ")   ; lead off with a space for safety
-                      )) ;so we split it up.
-             (do ((ch chlst (cdr ch))
-                  (colc ccol (add1 colc)))
-                 ((null ch) (setq ccol colc))
-                 (tyo (car ch) texport))))
+  (prog (chlst)
+     (cond ((greaterp (plus (length (setq chlst (exploden chstr)))
+			    ccol)
+		      70.)
+	    (terpri texport)      ;would have exceeded the line length
+	    (setq ccol 1.)
+	    (myprinc " ")	    ; lead off with a space for safety
+	    ))				;so we split it up.
+     (do ((ch chlst (cdr ch))
+	  (colc ccol (add1 colc)))
+	 ((null ch) (setq ccol colc))
+       (tyo (car ch) texport))))
 
 (defun myterpri nil
   (cond (texport (terpri texport))
 	(t (mterpri)))
-	(setq ccol 1))
+  (setq ccol 1))
 
 (defun tex (x l r lop rop)
-	;; x is the expression of interest; l is the list of strings to its
-	;; left, r to its right. lop and rop are the operators on the left
-	;; and right of x in the tree, and will determine if parens must
-	;; be inserted
-	(setq x (nformat x))
-	(cond ((atom x) (tex-atom x l r))
-	      ((or (<= (tex-lbp (caar x)) (tex-rbp lop)) (> (tex-lbp rop) (tex-rbp (caar x))))
-	       (tex-paren x l r))
-	      ;; special check needed because macsyma notates arrays peculiarly
-	      ((memq 'array (cdar x)) (tex-array x l r))
-	      ;; dispatch for object-oriented tex-ifiying
-	      ((get (caar x) 'tex) (funcall (get (caar x) 'tex) x l r))
-	      (t (tex-function x l r nil))))
+  ;; x is the expression of interest; l is the list of strings to its
+  ;; left, r to its right. lop and rop are the operators on the left
+  ;; and right of x in the tree, and will determine if parens must
+  ;; be inserted
+  (setq x (nformat x))
+  (cond ((atom x) (tex-atom x l r))
+	((or (<= (tex-lbp (caar x)) (tex-rbp lop)) (> (tex-lbp rop) (tex-rbp (caar x))))
+	 (tex-paren x l r))
+	;; special check needed because macsyma notates arrays peculiarly
+	((memq 'array (cdar x)) (tex-array x l r))
+	;; dispatch for object-oriented tex-ifiying
+	((get (caar x) 'tex) (funcall (get (caar x) 'tex) x l r))
+	(t (tex-function x l r nil))))
 
-(defun tex-atom (x l r) ;; atoms: note: can we lose by leaving out {}s ?
+(defun tex-atom (x l r)	;; atoms: note: can we lose by leaving out {}s ?
   (append l
 	  (list (cond ((numberp x) (texnumformat x))
 		      ((and (symbolp x) (get x 'texword)))
@@ -216,15 +216,15 @@
 
 (defun tex-string (x)
   (cond ((equal x "") "")
-    ((eql (elt x 0) #\\) x)
-    (t (concatenate 'string "\\mbox{{}" x "{}}"))))
+	((eql (elt x 0) #\\) x)
+	(t (concatenate 'string "\\mbox{{}" x "{}}"))))
 
 (defun tex-char (x)
   (if (eql x #\|) "\\mbox{\\verb/|/}"
-    (concatenate 'string "\\mbox{\\verb|" (string x) "|}")))
+      (concatenate 'string "\\mbox{\\verb|" (string x) "|}")))
 
 (defvar *tex-translations* nil)
-;; '(("AB" . "a")("X" . "x")) would cause  AB12 and X3 C4 to print a_{12} and x_3 C_4
+;; '(("ab" . "a")("x" . "x")) would cause  AB12 and X3 C4 to print a_{12} and x_3 C_4
 
 ;; Read forms from file F1 and output them to F2
 (defun tex-forms (f1 f2 &aux tem (eof *mread-eof-obj*))
@@ -253,8 +253,8 @@
 				  (vector-push (aref a i) tem)))))
 		  (vector-push #\_ tem)
 		  (unless (eql i (- l 1))
-			 (vector-push #\{ tem)
-			 (setq begin-sub t))))
+		    (vector-push #\{ tem)
+		    (setq begin-sub t))))
 	   (cond ((not (and (eql i 0) (eql (aref pname i) #\$)))
 		  (vector-push (aref pname i) tem)))
 	   finally
@@ -263,14 +263,14 @@
     (intern tem)))
 
 ;; A.G. 2001: I prefer the following version:
-;(defun tex-stripdollar (sym)
-;  (or (symbolp sym) (return-from tex-stripdollar sym))
-;  (let* ((name (symbol-name sym))
-;      (pname (if (eql (elt name 0) #\$) (subseq name 1) name))
-;      (l (length pname)))
-;    (cond
-;      ((eql l 1) pname)
-;      (t (concatenate 'string "\\mathrm{" pname "}")))))
+;;(defun tex-stripdollar (sym)
+;;  (or (symbolp sym) (return-from tex-stripdollar sym))
+;;  (let* ((name (symbol-name sym))
+;;      (pname (if (eql (elt name 0) #\$) (subseq name 1) name))
+;;      (l (length pname)))
+;;    (cond
+;;      ((eql l 1) pname)
+;;      (t (concatenate 'string "\\mathrm{" pname "}")))))
 
 (defun strcat (&rest args)
   (apply #'concatenate 'string (mapcar #'string args)))
@@ -283,9 +283,9 @@
 	   atom)
 	  (t
 	   (setq r (explode atom))
-	   (setq exponent (member 'e r :test #'string-equal));; is it ddd.ddde+EE
+	   (setq exponent (member 'e r :test #'string-equal)) ;; is it ddd.ddde+EE
 	   (cond ((null exponent)
-		   ;; it is not. go with it as given
+		  ;; it is not. go with it as given
 		  atom)
 		 (t
 		  (setq firstpart
@@ -304,8 +304,8 @@
 	(setq f (cadr x)
 	      x (cdr x)
 	      l (tex f (append l (list "\\left(")) (list "\\right)") 'mparen 'mparen))
-      (setq f (caar x)
-	    l (tex (texword f) l nil lop 'mfunction)))
+	(setq f (caar x)
+	      l (tex (texword f) l nil lop 'mfunction)))
     (setq
      r (nconc (tex-list (cdr x) nil (list "}") ",") r))
     (nconc l (list "_{") r  )))
@@ -314,9 +314,9 @@
 ;; operator
 
 (defun tex-function (x l r op) op
-	(setq l (tex (texword (caar x)) l nil 'mparen 'mparen)
-	      r (tex (cons '(mprogn) (cdr x)) nil r 'mparen 'mparen))
-	(nconc l r))
+       (setq l (tex (texword (caar x)) l nil 'mparen 'mparen)
+	     r (tex (cons '(mprogn) (cdr x)) nil r 'mparen 'mparen))
+       (nconc l r))
 
 ;; set up a list , separated by symbols (, * ...)  and then tack on the
 ;; ending item (e.g. "]" or perhaps ")"
@@ -327,9 +327,9 @@
 	  ((null (cdr x))
 	   (setq nl (nconc nl (tex (car x)  l r 'mparen 'mparen)))
 	   nl)
-	  (setq nl (nconc nl (tex (car x)  l (list sym) 'mparen 'mparen))
-		  x (cdr x)
-		  l nil))))
+	(setq nl (nconc nl (tex (car x)  l (list sym) 'mparen 'mparen))
+	      x (cdr x)
+	      l nil))))
 
 (defun tex-prefix (x l r)
   (tex (cadr x) (append l (texsym (caar x))) r (caar x) rop))
@@ -349,9 +349,9 @@
           ((null (cdr y)) (tex-function x l r t)) ; this should not happen, too
           (t (do ((nl) (lop ext-lop op) (rop op (if (null (cdr y)) ext-rop op)))
                  ((null (cdr y)) (setq nl (nconc nl (tex (car y)  l r lop rop))) nl)
-	         (setq nl (nconc nl (tex (car y)  l (list sym)   lop rop))
-		       y (cdr y)
-		       l nil))))))
+	       (setq nl (nconc nl (tex (car y)  l (list sym)   lop rop))
+		     y (cdr y)
+		     l nil))))))
 
 (defun tex-nofix (x l r) (tex (caar x) l r (caar x) rop))
 
@@ -393,7 +393,7 @@
 (defun tex-mqapply (x l r)
   (setq l (tex (cadr x) l (list "(" ) lop 'mfunction)
 	r (tex-list (cddr x) nil (cons ")" r) ","))
-  (append l r));; fixed 9/24/87 RJF
+  (append l r))	;; fixed 9/24/87 RJF
 
 (defprop $%i "i" texword)
 (defprop $%pi "\\pi" texword)
@@ -413,7 +413,7 @@
 (defprop $theta "\\vartheta" texword)
 (defprop $iota "\\iota" texword)
 (defprop $kappa "\\varkappa" texword)
-;(defprop $lambda "\\lambda" texword)
+;;(defprop $lambda "\\lambda" texword)
 (defprop $mu "\\mu" texword)
 (defprop $nu "\\nu" texword)
 (defprop $xi "\\xi" texword)
@@ -464,59 +464,59 @@
 (defprop mexpt 140. tex-lbp)
 (defprop mexpt 139. tex-rbp)
 
-(defprop %sum 110. tex-rbp)  ;; added by BLW, 1 Oct 2001
-(defprop %product 115. tex-rbp) ;; added by BLW, 1 Oct 2001
+(defprop %sum 110. tex-rbp) ;; added by BLW, 1 Oct 2001
+(defprop %product 115. tex-rbp)	;; added by BLW, 1 Oct 2001
 
 ;; insert left-angle-brackets for mncexpt. a^<n> is how a^^n looks.
 (defun tex-mexpt (x l r)
-  (let((nc (eq (caar x) 'mncexpt))); true if a^^b rather than a^b
-     ;; here is where we have to check for f(x)^b to be displayed
-     ;; as f^b(x), as is the case for sin(x)^2 .
-     ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2.
-     ;; yet we must not display (a+b)^2 as +^2(a,b)...
-     ;; or (sin(x))^(-1) as sin^(-1)x, which would be arcsine x
-     (cond ;; this whole clause
-	   ;; should be deleted if this hack is unwanted and/or the
-	   ;; time it takes is of concern.
-	   ;; it shouldn't be too expensive.
-	   ((and (eq (caar x) 'mexpt) ; don't do this hack for mncexpt
-		 (let*
-		  ((fx (cadr x)); this is f(x)
-		   (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
-		   (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
-		   (expon (caddr x)) ;; this is the exponent
-		   (doit (and
-			  f ; there is such a function
-			  (memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
-                          (not (eq (car (last (car fx))) 'array)) ; fix for x[i]^2
-                              ; Jesper Harder <harder@ifa.au.dk>
-                          (not (memq f '(%sum %product %derivative %integrate %at
-					      %lsum %limit))) ;; what else? what a hack...
-			  (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
-			      (and (atom expon) (numberp expon) (> expon 0))))))
-			      ; f(x)^3 is ok, but not f(x)^-1, which could
-			      ; inverse of f, if written f^-1 x
-			      ; what else? f(x)^(1/2) is sqrt(f(x)), ??
-		  (cond (doit
-			(setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
-			(if (and (null (cdr bascdr))
-				 (eq (get f 'tex) 'tex-prefix))
-			    (setq r (tex (car bascdr) nil r f 'mparen))
-			  (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen))))
-		        (t nil))))) ; won't doit. fall through
+  (let((nc (eq (caar x) 'mncexpt)))	; true if a^^b rather than a^b
+    ;; here is where we have to check for f(x)^b to be displayed
+    ;; as f^b(x), as is the case for sin(x)^2 .
+    ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2.
+    ;; yet we must not display (a+b)^2 as +^2(a,b)...
+    ;; or (sin(x))^(-1) as sin^(-1)x, which would be arcsine x
+    (cond ;; this whole clause
+      ;; should be deleted if this hack is unwanted and/or the
+      ;; time it takes is of concern.
+      ;; it shouldn't be too expensive.
+      ((and (eq (caar x) 'mexpt)      ; don't do this hack for mncexpt
+	    (let*
+		((fx (cadr x))		; this is f(x)
+		 (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
+		 (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
+		 (expon (caddr x)) ;; this is the exponent
+		 (doit (and
+			f		; there is such a function
+			(memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
+			(not (eq (car (last (car fx))) 'array))	; fix for x[i]^2
+					; Jesper Harder <harder@ifa.au.dk>
+			(not (memq f '(%sum %product %derivative %integrate %at
+				       %lsum %limit))) ;; what else? what a hack...
+			(or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
+			    (and (atom expon) (numberp expon) (> expon 0))))))
+					; f(x)^3 is ok, but not f(x)^-1, which could
+					; inverse of f, if written f^-1 x
+					; what else? f(x)^(1/2) is sqrt(f(x)), ??
+	      (cond (doit
+		     (setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
+		     (if (and (null (cdr bascdr))
+			      (eq (get f 'tex) 'tex-prefix))
+			 (setq r (tex (car bascdr) nil r f 'mparen))
+			 (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen))))
+		    (t nil)))))		; won't doit. fall through
       (t (setq l (tex (cadr x) l nil lop (caar x))
 	       r (if (mmminusp (setq x (nformat (caddr x))))
-		    ;; the change in base-line makes parens unnecessary
-		    (if nc
-			(tex (cadr x) '("^ {-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
-			(tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
-		    (if nc
-			(tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
-			(if (and (numberp x) (< x 10))
-			    (tex x (list "^")(cons "" r) 'mparen 'mparen)
-			    (tex x (list "^{")(cons "}" r) 'mparen 'mparen))
-			)))))
-      (append l r)))
+		     ;; the change in base-line makes parens unnecessary
+		     (if nc
+			 (tex (cadr x) '("^ {-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
+			 (tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
+		     (if nc
+			 (tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
+			 (if (and (numberp x) (< x 10))
+			     (tex x (list "^")(cons "" r) 'mparen 'mparen)
+			     (tex x (list "^{")(cons "}" r) 'mparen 'mparen))
+			 )))))
+    (append l r)))
 
 (defprop mncexpt tex-mexpt tex)
 
@@ -554,7 +554,7 @@
 (defun tex-mquotient (x l r)
   (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
   (setq l (tex (cadr x) (append l '("{{")) nil 'mparen 'mparen)
-	;the divide bar groups things
+					;the divide bar groups things
 	r (tex (caddr x) (list "}\\over{") (append '("}}")r) 'mparen 'mparen))
   (append l r))
 
@@ -562,10 +562,10 @@
 
 (defun tex-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)
   (append l `("\\pmatrix{")
-	 (mapcan #'(lambda(y)
-			  (tex-list (cdr y) nil (list "\\cr ") "&"))
-		 (cdr x))
-	 '("}") r))
+	  (mapcan #'(lambda(y)
+		      (tex-list (cdr y) nil (list "\\cr ") "&"))
+		  (cdr x))
+	  '("}") r))
 
 ;; macsyma sum or prod is over integer range, not  low <= index <= high
 ;; TeX is lots more flexible .. but
@@ -581,10 +581,10 @@
 		  ;; extend here
 		  ))
 	;; gotta be one of those above 
-	(s1 (tex (cadr x) nil nil 'mparen rop));; summand
+	(s1 (tex (cadr x) nil nil 'mparen rop))	;; summand
 	(index ;; "index = lowerlimit"
-	       (tex `((min simp) , (caddr x), (cadddr x))  nil nil 'mparen 'mparen)))
-       (append l `( ,op ,@index "}}{" ,@s1 "}") r)))
+	 (tex `((min simp) , (caddr x), (cadddr x))  nil nil 'mparen 'mparen)))
+    (append l `( ,op ,@index "}}{" ,@s1 "}") r)))
 
 (defun tex-sum(x l r)
   (let ((op (cond ((eq (caar x) '%sum) "\\sum_{")
@@ -592,33 +592,33 @@
 		  ;; extend here
 		  ))
 	;; gotta be one of those above
-	(s1 (tex (cadr x) nil nil 'mparen rop));; summand
+	(s1 (tex (cadr x) nil nil 'mparen rop))	;; summand
 	(index ;; "index = lowerlimit"
-	       (tex `((mequal simp) ,(caddr x),(cadddr x)) nil nil 'mparen 'mparen))
+	 (tex `((mequal simp) ,(caddr x),(cadddr x)) nil nil 'mparen 'mparen))
 	(toplim (tex (car(cddddr x)) nil nil 'mparen 'mparen)))
-       (append l `( ,op ,@index "}^{" ,@toplim "}{" ,@s1 "}") r)))
+    (append l `( ,op ,@index "}^{" ,@toplim "}{" ,@s1 "}") r)))
 
 (defprop %integrate tex-int tex)
 (defun tex-int (x l r)
-  (let ((s1 (tex (cadr x) nil nil 'mparen 'mparen));;integrand delims / & d
+  (let ((s1 (tex (cadr x) nil nil 'mparen 'mparen)) ;;integrand delims / & d
 	(var (tex (caddr x) nil nil 'mparen rop))) ;; variable
-       (cond((= (length x) 3)
-	     (append l `("\\int {" ,@s1 "}{\\;d" ,@var "}") r))
-	    (t ;; presumably length 5
-	       (let ((low (tex (nth 3 x) nil nil 'mparen 'mparen))
-		     ;; 1st item is 0
-		     (hi (tex (nth 4 x) nil nil 'mparen 'mparen)))
-		    (append l `("\\int_{" ,@low "}^{" ,@hi "}{" ,@s1 "\\;d" ,@var "}") r))))))
+    (cond((= (length x) 3)
+	  (append l `("\\int {" ,@s1 "}{\\;d" ,@var "}") r))
+	 (t ;; presumably length 5
+	  (let ((low (tex (nth 3 x) nil nil 'mparen 'mparen))
+		;; 1st item is 0
+		(hi (tex (nth 4 x) nil nil 'mparen 'mparen)))
+	    (append l `("\\int_{" ,@low "}^{" ,@hi "}{" ,@s1 "\\;d" ,@var "}") r))))))
 
 (defprop %limit tex-limit tex)
 
-(defun tex-limit(x l r) ;; ignoring direction, last optional arg to limit
-  (let ((s1 (tex (cadr x) nil nil 'mparen rop));; limitfunction
-	(subfun ;; the thing underneath "limit"
+(defun tex-limit(x l r)	;; ignoring direction, last optional arg to limit
+  (let ((s1 (tex (cadr x) nil nil 'mparen rop))	;; limitfunction
+	(subfun	;; the thing underneath "limit"
 	 (subst "\\rightarrow " '=
 		(tex `((mequal simp) ,(caddr x),(cadddr x))
 		     nil nil 'mparen 'mparen))))
-       (append l `("\\lim_{" ,@subfun "}{" ,@s1 "}") r)))
+    (append l `("\\lim_{" ,@subfun "}{" ,@s1 "}") r)))
 
 (defprop %at tex-at tex)
 
@@ -626,7 +626,7 @@
 (defun tex-at (x l r)
   (let ((s1 (tex (cadr x) nil nil lop rop))
 	(sub (tex (caddr x) nil nil 'mparen 'mparen)))
-       (append l '("\\left.") s1  '("\\right|_{") sub '("}") r)))
+    (append l '("\\left.") s1  '("\\right|_{") sub '("}") r)))
 
 (defprop mbox tex-mbox tex)
 
@@ -639,8 +639,8 @@
 (defprop mlabox tex-mlabox tex)
 
 (defun tex-mlabox (x l r)
-   (append l '("\\stackrel{") (tex (caddr x) nil nil 'mparen 'mparen)
-	   '("}{\\boxed{") (tex (cadr x) nil nil 'mparen 'mparen) '("}}") r))
+  (append l '("\\stackrel{") (tex (caddr x) nil nil 'mparen 'mparen)
+	  '("}{\\boxed{") (tex (cadr x) nil nil 'mparen 'mparen) '("}}") r))
 
 ;;binomial coefficients
 
@@ -665,24 +665,24 @@
 (defprop mplus 100. tex-rbp)
 
 (defun tex-mplus (x l r)
- ;(declare (fixnum w))
- (cond ((memq 'trunc (car x))(setq r (cons "+\\cdots " r))))
- (cond ((null (cddr x))
-	(if (null (cdr x))
-	    (tex-function x l r t)
-	    (tex (cadr x) (cons "+" l) r 'mplus rop)))
-       (t (setq l (tex (cadr x) l nil lop 'mplus)
-		x (cddr x))
-	  (do ((nl l)  (dissym))
-	      ((null (cdr x))
-	       (if (mmminusp (car x)) (setq l (cadar x) dissym (list "-"))
-		   (setq l (car x) dissym (list "+")))
-	       (setq r (tex l dissym r 'mplus rop))
-	       (append nl r))
-	      (if (mmminusp (car x)) (setq l (cadar x) dissym (list "-"))
-		  (setq l (car x) dissym (list "+")))
-	      (setq nl (append nl (tex l dissym nil 'mplus 'mplus))
-		    x (cdr x))))))
+					;(declare (fixnum w))
+  (cond ((memq 'trunc (car x))(setq r (cons "+\\cdots " r))))
+  (cond ((null (cddr x))
+	 (if (null (cdr x))
+	     (tex-function x l r t)
+	     (tex (cadr x) (cons "+" l) r 'mplus rop)))
+	(t (setq l (tex (cadr x) l nil lop 'mplus)
+		 x (cddr x))
+	   (do ((nl l)  (dissym))
+	       ((null (cdr x))
+		(if (mmminusp (car x)) (setq l (cadar x) dissym (list "-"))
+		    (setq l (car x) dissym (list "+")))
+		(setq r (tex l dissym r 'mplus rop))
+		(append nl r))
+	     (if (mmminusp (car x)) (setq l (cadar x) dissym (list "-"))
+		 (setq l (car x) dissym (list "+")))
+	     (setq nl (append nl (tex l dissym nil 'mplus 'mplus))
+		   x (cdr x))))))
 
 (defprop mminus tex-prefix tex)
 (defprop mminus ("-") texsym)
@@ -741,10 +741,10 @@
 (defun tex-setup (x)
   (let((a (car x))
        (b (cadr x)))
-      (setf (get a 'tex) 'tex-prefix)
-      (setf (get a 'texword) b)  ;This means "sin" will always be roman
-      (setf (get a 'texsym) (list b))
-      (setf (get a 'tex-rbp) 130)))
+    (setf (get a 'tex) 'tex-prefix)
+    (setf (get a 'texword) b)	;This means "sin" will always be roman
+    (setf (get a 'texsym) (list b))
+    (setf (get a 'tex-rbp) 130)))
 
 ;; JM 09/01 expand and re-order to follow table of "log-like" functions,
 ;; see table in Lamport, 2nd edition, 1994, p. 44, table 3.9.
@@ -752,42 +752,42 @@
 ;; them if you use plain Tex.
 
 (mapc #'tex-setup
-  '(
-     (%acos "\\arccos ")
-     (%asin "\\arcsin ")
-     (%atan "\\arctan ")
-     ; Latex's arg(x) is ... ?
-     (%cos "\\cos ")
-     (%cosh "\\cosh ")
-     (%cot "\\cot ")
-     (%coth "\\coth ")
-     (%csc "\\csc ")
-     ; Latex's "deg" is ... ?
-     (%determinant "\\det ")
-     (%dim "\\dim ")
-     (%exp "\\exp ")
-     (%gcd "\\gcd ")
-     ; Latex's "hom" is ... ?
-     (%inf "\\inf ") ; many will prefer "\\infty". Hmmm.
-     ; Latex's "ker" is ... ?
-     ; Latex's "lg" is ... ?
-     ; lim is handled by tex-limit.
-     ; Latex's "liminf" ... ?
-     ; Latex's "limsup" ... ?
-     (%ln "\\ln ")
-     (%log "\\log ")
-     (%max "\\max ")
-     (%min "\\min ")
-     ; Latex's "Pr" ... ?
-     (%sec "\\sec ")
-     (%sin "\\sin ")
-     (%sinh "\\sinh ")
-     ; Latex's "sup" ... ?
-     (%tan "\\tan ")
-     (%tanh "\\tanh ")
-    ;; (%erf "{\\rm erf}") this would tend to set erf(x) as erf x. Unusual
-     ;(%laplace "{\\cal L}")
-     )) ;; etc
+      '(
+	(%acos "\\arccos ")
+	(%asin "\\arcsin ")
+	(%atan "\\arctan ")
+					; Latex's arg(x) is ... ?
+	(%cos "\\cos ")
+	(%cosh "\\cosh ")
+	(%cot "\\cot ")
+	(%coth "\\coth ")
+	(%csc "\\csc ")
+					; Latex's "deg" is ... ?
+	(%determinant "\\det ")
+	(%dim "\\dim ")
+	(%exp "\\exp ")
+	(%gcd "\\gcd ")
+					; Latex's "hom" is ... ?
+	(%inf "\\inf ")		   ; many will prefer "\\infty". Hmmm.
+					; Latex's "ker" is ... ?
+					; Latex's "lg" is ... ?
+					; lim is handled by tex-limit.
+					; Latex's "liminf" ... ?
+					; Latex's "limsup" ... ?
+	(%ln "\\ln ")
+	(%log "\\log ")
+	(%max "\\max ")
+	(%min "\\min ")
+					; Latex's "Pr" ... ?
+	(%sec "\\sec ")
+	(%sin "\\sin ")
+	(%sinh "\\sinh ")
+					; Latex's "sup" ... ?
+	(%tan "\\tan ")
+	(%tanh "\\tanh ")
+	;; (%erf "{\\rm erf}") this would tend to set erf(x) as erf x. Unusual
+					;(%laplace "{\\cal L}")
+	)) ;; etc
 
 (defprop mor tex-nary tex)
 (defprop mor 50. tex-lbp)
@@ -802,22 +802,22 @@
 	   (tex-dabbrev x)
 	   (tex-d x '$|d|)) l r lop rop ))
 
-(defun tex-d(x dsym) ;dsym should be $d or "$\\partial"
+(defun tex-d(x dsym)		    ;dsym should be $d or "$\\partial"
   ;; format the macsyma derivative form so it looks
   ;; sort of like a quotient times the deriva-dand.
   (let*
-   ((arg (cadr x)) ;; the function being differentiated
-    (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
-    (ords (odds difflist 0)) ;; e.g. (1 2)
-    (vars (odds difflist 1)) ;; e.g. (x y)
-    (numer `((mexpt) ,dsym ((mplus) ,@ords))) ; d^n numerator
-    (denom (cons '(mtimes)
-		 (mapcan #'(lambda(b e)
-				  `(,dsym ,(simplifya `((mexpt) ,b ,e) nil)))
-			 vars ords))))
-   `((mtimes)
-     ((mquotient) ,(simplifya numer nil) ,denom)
-     ,arg)))
+      ((arg (cadr x)) ;; the function being differentiated
+       (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
+       (ords (odds difflist 0))	;; e.g. (1 2)
+       (vars (odds difflist 1))	;; e.g. (x y)
+       (numer `((mexpt) ,dsym ((mplus) ,@ords))) ; d^n numerator
+       (denom (cons '(mtimes)
+		    (mapcan #'(lambda(b e)
+				`(,dsym ,(simplifya `((mexpt) ,b ,e) nil)))
+			    vars ords))))
+    `((mtimes)
+      ((mquotient) ,(simplifya numer nil) ,denom)
+      ,arg)))
 
 (defun tex-dabbrev (x)
   ;; Format diff(f,x,1,y,1) so that it looks like
@@ -847,12 +847,12 @@
 
 (defun tex-mcond (x l r)
   (append l
-    (tex (cadr x) '("\\mathbf{if}\\;")
-      '("\\;\\mathbf{then}\\;") 'mparen 'mparen)
-    (if (eql (fifth x) '$false)
-      (tex (caddr x) nil r 'mcond rop)
-      (append (tex (caddr x) nil nil 'mparen 'mparen)
-        (tex (fifth x) '("\\;\\mathbf{else}\\;") r 'mcond rop)))))
+	  (tex (cadr x) '("\\mathbf{if}\\;")
+	       '("\\;\\mathbf{then}\\;") 'mparen 'mparen)
+	  (if (eql (fifth x) '$false)
+	      (tex (caddr x) nil r 'mcond rop)
+	      (append (tex (caddr x) nil nil 'mparen 'mparen)
+		      (tex (fifth x) '("\\;\\mathbf{else}\\;") r 'mcond rop)))))
 
 (defprop mdo tex-mdo tex)
 (defprop mdo 30. tex-lbp)
@@ -872,7 +872,7 @@
   (tex-list (texmdoin x) l r "\\;"))
 
 (defun texmdo (x)
-   (nconc (cond ((second x) `("\\mathbf{for}" ,(second x))))
+  (nconc (cond ((second x) `("\\mathbf{for}" ,(second x))))
 	 (cond ((equal 1 (third x)) nil)
 	       ((third x)  `("\\mathbf{from}" ,(third x))))
 	 (cond ((equal 1 (fourth x)) nil)
@@ -930,23 +930,23 @@
 
 (defun tex-mtext (x l r)
   (tex-list (list* (cadr x)
-                 (texsym (caddr x))
-                 (cadddr x)
-                 (cond ((cddddr x)
-                        (list*
-                         (texsym (caddddr x))
-                         (cdddddr x)))))
-          l r ""))
+		   (texsym (caddr x))
+		   (cadddr x)
+		   (cond ((cddddr x)
+			  (list*
+			   (texsym (caddddr x))
+			   (cdddddr x)))))
+	    l r ""))
 
 ;; end of additions by Marek Rychlik
 
 (defun tex-mlable (x l r)
   (tex (caddr x)
-    (append l
-      (if (cadr x)
-        (list (format nil "\\mbox{\\tt\\red(~A) \\black}" (tex-stripdollar (cadr x))))
-        nil))
-    r 'mparen 'mparen))
+       (append l
+	       (if (cadr x)
+		   (list (format nil "\\mbox{\\tt\\red(~A) \\black}" (tex-stripdollar (cadr x))))
+		   nil))
+       r 'mparen 'mparen))
 
 (defun tex-spaceout (x l r)
   (append l (list "\\mbox{\\verb|" (make-string (cadr x) :initial-element #\space) "|}") r))
@@ -958,7 +958,7 @@
   (funcall 'exec (list
 		  (concat "cp "
 			  vaxima-main-dir
-			  "//ucb//verbwin "  ;extra slashes for maclisp // = /
+			  "//ucb//verbwin " ;extra slashes for maclisp // = /
 			  (stripdollar file))))
   '$done )
 ;; this just prints a \\end on the file;  this is something a TeXnician would
@@ -967,11 +967,11 @@
 ;; stuff into larger files that would have their own \\end or equivalent.
 (defun $texend(filename)
   (with-open-file (st      (stripdollar filename)
-				   :direction :output
-				   :if-exists :append
-				   :if-does-not-exist :create)
-  (format st "\\end~%")
-  '$done))
+			   :direction :output
+			   :if-exists :append
+			   :if-does-not-exist :create)
+    (format st "\\end~%")
+    '$done))
 
 ;; Undone and trickier:
 ;; handle reserved symbols stuff, just in case someone
@@ -1008,7 +1008,7 @@
 	       (t
 		(putprop e (list (list (nth 0 s)) (nth 1 s) (nth 2 s)) 'texsym))))
 
-          ; The left and right binding powers may be wrong.
+					; The left and right binding powers may be wrong.
 
 	((eq tx '$prefix)
 	 (putprop e 'tex-prefix 'tex)

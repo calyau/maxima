@@ -91,8 +91,8 @@
   (if (null args)
       nil
       (let* ((arg (car args))
-	    (rest (expand-args (cdr args)))
-	    (listarg (list arg)))
+	     (rest (expand-args (cdr args)))
+	     (listarg (list arg)))
 	(cond ((< (length arg) 2) nil)
 	      ((and (equal (subseq arg 0 2) "--") (search "=" arg))
 	       (setf listarg (expand-equals-arg arg)))
@@ -106,24 +106,24 @@
   (parse-args (expand-args args) cl-option-list))
 
 (defun get-application-args ()
-    #+clisp (rest ext:*args*)
+  #+clisp (rest ext:*args*)
     
-    #+cmu (let ((result lisp::lisp-command-line-list))
-	    (do ((removed-arg nil (pop result)))
-		 ((or (equal removed-arg "--") (equal nil result)) result)))
+  #+cmu (let ((result lisp::lisp-command-line-list))
+	  (do ((removed-arg nil (pop result)))
+	      ((or (equal removed-arg "--") (equal nil result)) result)))
 
-    #+sbcl (rest sb-ext:*posix-argv*)
+  #+sbcl (rest sb-ext:*posix-argv*)
 
-    #+gcl  (let ((result  si::*command-args*))
-	    (do ((removed-arg nil (pop result)))
-		 ((or (equal removed-arg "--") (equal nil result)) result)))
+  #+gcl  (let ((result  si::*command-args*))
+	   (do ((removed-arg nil (pop result)))
+	       ((or (equal removed-arg "--") (equal nil result)) result)))
 
-    #+allegro
-    (let ((args (system:command-line-arguments :application t)))
-      ;; Skip the first arg, which is the full path to alisp.
-      (rest args))
+  #+allegro
+  (let ((args (system:command-line-arguments :application t)))
+    ;; Skip the first arg, which is the full path to alisp.
+    (rest args))
       
       
 
-    ;; FIXME: openmcl version missing
-)
+  ;; FIXME: openmcl version missing
+  )

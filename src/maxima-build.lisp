@@ -5,4 +5,4 @@
   (mk:oos "maxima" :load))
 (defun maxima-dump ()
   #+clisp(ext:saveinitmem "binary-clisp/maxima.mem" 
-		   :init-function (function user::run)))
+			  :init-function (function user::run)))

@@ -16,55 +16,55 @@
 ;;TR_ARRAY_AS_REF:TRUE;
 ;;TR_NUMER:FALSE;
 ;;DEFINE_VARIABLE:FALSE;
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $ADJOINT T TRANSLATED)
- (ADD2LNC '$ADJOINT $PROPS)
- (DEFMTRFUN
-  ($ADJOINT $ANY MDEFINE NIL NIL)
-  ($MAT)
-  NIL
-  ((LAMBDA
-    ($ADJ $N)
-    NIL
-    (SETQ $N ($LENGTH $MAT))
-    (SETQ $ADJ (SIMPLIFY ($IDENT $N)))
-    (COND
-     ((NOT (LIKE $N 1))
-      (DO (($I 1 (f+ 1 $I)))
-          ((> $I $N) '$DONE)
-        (DO (($J 1 (f+ 1 $J)))
-            ((> $J $N) '$DONE)
-         (MASET (MUL* (POWER -1 (f+ $I $J))
-                      (SIMPLIFY ($DETERMINANT (SIMPLIFY ($MINOR $MAT
-                                                                $J
-                                                                $I)))))
-                $ADJ
-                $I
-                $J)))))
-    $ADJ)
-   '$ADJ
-   '$N)))
-(EVAL-WHEN (COMPILE EVAL LOAD)
-       (DEFPROP $INVERT T TRANSLATED)
-       (ADD2LNC '$INVERT $PROPS)
-       (DEFMTRFUN ($INVERT $ANY MDEFINE NIL NIL)
-                  ($MAT)
-                  NIL
-                  ((LAMBDA ($ADJ $ANS)
-                       NIL
-                       (SETQ $ADJ (SIMPLIFY ($ADJOINT $MAT)))
-                       (SETQ $ANS ((LAMBDA ($SCALARMATRIXP)
-                                       NIL
-                                       (DIV $ADJ
-                                            (NCMUL2 (SIMPLIFY ($ROW $MAT 1))
-                                                    (SIMPLIFY ($COL $ADJ
-                                                                    1)))))
-                                   T))
-                       (COND ((AND (LIKE (TRD-MSYMEVAL $SCALARMATRIXP
-                                                       '$SCALARMATRIXP)
-                                         T)
-                                   (EQL ($LENGTH $MAT) 1))
-                              (MAREF $ANS 1 1))
-                             (T $ANS)))
-                   '$ADJ
-                   '$ANS)))
+(eval-when (compile eval load)
+  (defprop $adjoint t translated)
+  (add2lnc '$adjoint $props)
+  (defmtrfun
+      ($adjoint $any mdefine nil nil)
+      ($mat)
+    nil
+    ((lambda
+	 ($adj $n)
+       nil
+       (setq $n ($length $mat))
+       (setq $adj (simplify ($ident $n)))
+       (cond
+	 ((not (like $n 1))
+	  (do (($i 1 (f+ 1 $i)))
+	      ((> $i $n) '$done)
+	    (do (($j 1 (f+ 1 $j)))
+		((> $j $n) '$done)
+	      (maset (mul* (power -1 (f+ $i $j))
+			   (simplify ($determinant (simplify ($minor $mat
+								     $j
+								     $i)))))
+		     $adj
+		     $i
+		     $j)))))
+       $adj)
+     '$adj
+     '$n)))
+(eval-when (compile eval load)
+  (defprop $invert t translated)
+  (add2lnc '$invert $props)
+  (defmtrfun ($invert $any mdefine nil nil)
+      ($mat)
+    nil
+    ((lambda ($adj $ans)
+       nil
+       (setq $adj (simplify ($adjoint $mat)))
+       (setq $ans ((lambda ($scalarmatrixp)
+		     nil
+		     (div $adj
+			  (ncmul2 (simplify ($row $mat 1))
+				  (simplify ($col $adj
+						  1)))))
+		   t))
+       (cond ((and (like (trd-msymeval $scalarmatrixp
+				       '$scalarmatrixp)
+			 t)
+		   (eql ($length $mat) 1))
+	      (maref $ans 1 1))
+	     (t $ans)))
+     '$adj
+     '$ans)))

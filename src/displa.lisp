@@ -15,125 +15,125 @@
 
 (load-macsyma-macros displm)
 
-(declare-top (special $LINEL))
+(declare-top (special $linel))
 
 
 ;; Global variables defined in this file.  Most of these are switches
 ;; controlling display format
 
-;(DEFMVAR CHARACTER-GRAPHICS-TTY NIL
-;	 "If T, then console can draw lines and math symbols using
-;	 an extended character set.")
+;;(DEFMVAR CHARACTER-GRAPHICS-TTY NIL
+;;	 "If T, then console can draw lines and math symbols using
+;;	 an extended character set.")
 
-;(DEFMVAR LINE-GRAPHICS-TTY NIL
-;	 "If T, then console can draw lines and math symbols using
-;	 vector graphics.")
+;;(DEFMVAR LINE-GRAPHICS-TTY NIL
+;;	 "If T, then console can draw lines and math symbols using
+;;	 vector graphics.")
 
-(DEFMVAR $CURSORDISP T
-	 "If T, causes expressions to be drawn by the displayer in logical 
+(defmvar $cursordisp t
+  "If T, causes expressions to be drawn by the displayer in logical 
 	  sequence.  This only works with a console which can do cursor 
 	  movement.
 	  If NIL, expressions are simply printed line by line.
 	  CURSORDISP is NIL when a WRITEFILE is in effect."
-	 NO-RESET)
+  no-reset)
 
-(DEFMVAR $STARDISP NIL
-	 "Causes factors of products are separated by * when displayed.")
+(defmvar $stardisp nil
+  "Causes factors of products are separated by * when displayed.")
 
-(DEFMVAR $LEFTJUST NIL
-	 "Causes equations to be drawn left justified rather than centered.
+(defmvar $leftjust nil
+  "Causes equations to be drawn left justified rather than centered.
 	 For slow consoles.")
 
-(DEFMVAR $DISPLAY2D T
-	 "Causes equations to be drawn in two dimensions.  Otherwise, drawn
+(defmvar $display2d t
+  "Causes equations to be drawn in two dimensions.  Otherwise, drawn
 	 linearly.")
 
-(DEFMVAR $LISPDISP NIL
-	 "Causes symbols not having $ as the first character in their pnames
+(defmvar $lispdisp nil
+  "Causes symbols not having $ as the first character in their pnames
 	 to be preceded with a ? when displayed.")
 
 ;; This may be flushed in the future if nobody dislikes the graphics crocks.
 
-(DEFMVAR $LINEDISP T
-	 "Causes quotients, matrices, and boxes to be drawn with straight
+(defmvar $linedisp t
+  "Causes quotients, matrices, and boxes to be drawn with straight
 	 lines, if possible.  This will work on graphic terminals or
 	 video terminals with line drawing character sets.  If enabled,
 	 the values of LMXCHAR, RMXCHAR, ABSBOXCHAR, and BOXCHAR are ignored.")
 
-(DEFMVAR $DERIVABBREV NIL)
+(defmvar $derivabbrev nil)
 
-(DEFMVAR $NOUNDISP NIL)
+(defmvar $noundisp nil)
 
-(DEFMVAR STRINGDISP NIL
-	 "Causes strings to be bracketed in double quotes when displayed.
+(defmvar stringdisp nil
+  "Causes strings to be bracketed in double quotes when displayed.
 	 Normally this is off, but is turned on when a procedure definition is
 	 being displayed.")
-;#+Franz
-;(defmvar $typeset nil
-; 	"Causes equations to be output in a typesetter readable form if t.")
+;;#+Franz
+;;(defmvar $typeset nil
+;; 	"Causes equations to be output in a typesetter readable form if t.")
 
-(DEFMVAR DISPLAYP NIL "Is T when inside of DISPLA")
+(defmvar displayp nil "Is T when inside of DISPLA")
 
 ;; More messages which appear during the middle of display.  Different
 ;; from those which appear during typein.  MOREMSG and MOREFLUSH get
 ;; bound to these.
 
-(DEFVAR D-MOREMSG "--More Display?--")
-(DEFVAR D-MOREFLUSH "--Display Flushed--")
+(defvar d-moremsg "--More Display?--")
+(defvar d-moreflush "--Display Flushed--")
 
 ;; Parameters which control how boxes, absolute value signs,
 ;; evaluation-at-a-point bars, and matrices are drawn.
 
-(DEFMVAR $BOXCHAR '|&"|
+(defmvar $boxchar '|&"|
   "Character used for drawing boxes.")
-(DEFMVAR $ABSBOXCHAR '|&!|
+(defmvar $absboxchar '|&!|
   "Character used for drawing absolute value signs and 'evaluation at' signs.")
-(DEFMVAR $LMXCHAR '|&[|
+(defmvar $lmxchar '|&[|
   "Character used for drawing the left edge of a matrix.")
-(DEFMVAR $RMXCHAR '|&]|
+(defmvar $rmxchar '|&]|
   "Character used for drawing the right edge of a matrix.")
 
 ;; These variables are bound within Macsyma Listeners since they are different
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
-;#+lispm
-;(SETQ SMART-TTY T RUBOUT-TTY T LINE-GRAPHICS-TTY t SCROLLP NIL)
+;;#+lispm
+;;(SETQ SMART-TTY T RUBOUT-TTY T LINE-GRAPHICS-TTY t SCROLLP NIL)
 
-(SETQ SMART-TTY nil RUBOUT-TTY nil SCROLLP t)
+(setq smart-tty nil rubout-tty nil scrollp t)
 
 
-(setq   LINEL 79. $LINEL 79. TTYHEIGHT 24.)
+(setq   linel 79. $linel 79. ttyheight 24.)
 
-;#+lispm
-;(multiple-value-bind (a b)
-;  (send *terminal-io* :send-if-handles :size-in-characters)
-;  (when (and a b) (setq linel a ttyheight b)
-;    (setq linel 79 ttyheight 24)))
+;;#+lispm
+;;(multiple-value-bind (a b)
+;;  (send *terminal-io* :send-if-handles :size-in-characters)
+;;  (when (and a b) (setq linel a ttyheight b)
+;;    (setq linel 79 ttyheight 24)))
 
-;#+NIL
-;(multiple-value-bind (a b)
-;  (send *terminal-io* :send-if-handles :size-in-characters)
-;  (when (and a b) (setq linel a ttyheight b)
-;    (setq linel 79 ttyheight 24))
-;  (setq smart-tty nil rubout-tty nil scrollp t))
+;;#+NIL
+;;(multiple-value-bind (a b)
+;;  (send *terminal-io* :send-if-handles :size-in-characters)
+;;  (when (and a b) (setq linel a ttyheight b)
+;;    (setq linel 79 ttyheight 24))
+;;  (setq smart-tty nil rubout-tty nil scrollp t))
 
 ;; Default settings for random systems.
-;#-(OR ITS LISPM cl)
-;(SETQ SMART-TTY NIL RUBOUT-TTY NIL SCROLLP T
-;      LINEL 79. $LINEL 79. TTYHEIGHT 24.)
+;;#-(OR ITS LISPM cl)
+;;(SETQ SMART-TTY NIL RUBOUT-TTY NIL SCROLLP T
+;;      LINEL 79. $LINEL 79. TTYHEIGHT 24.)
 
 
 
 
-(DEFVAR LINEARRAY (MAKE-array 80. :initial-element nil))
+(defvar linearray (make-array 80. :initial-element nil))
 
-(DEFMFUN MAXIMA-DISPLAY (FORM &key (stream *standard-output*) )
-	 (let ((*standard-output* stream))
-	   (displa form)))
+(defmfun maxima-display (form &key (stream *standard-output*) )
+  (let ((*standard-output* stream))
+    (displa form)))
 
 (defun maxima-draw-form (form &key (stream *standard-output*) (at-x 0) (at-y 0) 
-			      $linedisp $cursordisp &aux dim-list prev-x prev-y )
+			 $linedisp $cursordisp &aux dim-list prev-x prev-y )
   "First try at getting an interface to allow one to draw a form at any 
   position. The at-x and at-y amount to the initial position which will be in
   the middle left of a matrix, or the main line for a polynomial.  On a stream
@@ -143,451 +143,451 @@
   (desetq (prev-x . prev-y) (cursorpos))
   (let ((*standard-output* stream) )
     (unwind-protect
-    (let ((MRATP (CHECKRAT FORM))
-	  (#.WRITEFILEP #.WRITEFILEP)
-	  (MAXHT     1) (MAXDP   0) (WIDTH   0)
-	  (HEIGHT    0) (DEPTH   0) (LEVEL   0) (SIZE   2)
-	  (BREAK     0) (RIGHT   0) (LINES   1) BKPT
-	  (BKPTWD    0) (BKPTHT  1) (BKPTDP  0) (BKPTOUT 0)
-	  (BKPTLEVEL 0) IN-P
-	  (MOREFLUSH D-MOREFLUSH)
-	  MORE-^W
-	  (MOREMSG D-MOREMSG))
-      (PROGN (SETQ dim-list (DIMENSION FORM
-				       NIL 'MPAREN 'MPAREN 0 0)))
-    (cond ($cursordisp  (draw-2d (nreverse dim-list) at-x at-y))
-	  (t (cursorpos (f- at-x (sub1 height)) 0)
-	   (draw-linear (nreverse dim-list) (f+ at-x height) at-y)
+	 (let ((mratp (checkrat form))
+	       (#.writefilep #.writefilep)
+	       (maxht     1) (maxdp   0) (width   0)
+	       (height    0) (depth   0) (level   0) (size   2)
+	       (break     0) (right   0) (lines   1) bkpt
+	       (bkptwd    0) (bkptht  1) (bkptdp  0) (bkptout 0)
+	       (bkptlevel 0) in-p
+	       (moreflush d-moreflush)
+	       more-^w
+	       (moremsg d-moremsg))
+	   (progn (setq dim-list (dimension form
+					    nil 'mparen 'mparen 0 0)))
+	   (cond ($cursordisp  (draw-2d (nreverse dim-list) at-x at-y))
+		 (t (cursorpos (f- at-x (sub1 height)) 0)
+		    (draw-linear (nreverse dim-list) (f+ at-x height) at-y)
 	   
-	   (sloop for i downfrom (sub1 (length linearray)) to 0
-		 when (aref linearray i)
-		 do (output-linear-one-line i)))))
-            (clear-linearray))
-	    (cursorpos prev-x prev-y)))
+		    (sloop for i downfrom (sub1 (length linearray)) to 0
+			   when (aref linearray i)
+			   do (output-linear-one-line i)))))
+      (clear-linearray))
+    (cursorpos prev-x prev-y)))
 
 (defmacro bind-dimension (form dim-list &rest body)
   
-  `(let ((MRATP (CHECKRAT ,FORM))
-	 (#.WRITEFILEP #.WRITEFILEP)
-	 (MAXHT     1) (MAXDP   0) (WIDTH   0)
-	 (HEIGHT    0) (DEPTH   0) (LEVEL   0) (SIZE   2)
-	 (BREAK     0) (RIGHT   0) (LINES   1) BKPT
-	 (BKPTWD    0) (BKPTHT  1) (BKPTDP  0) (BKPTOUT 0)
-	 (BKPTLEVEL 0) IN-P
-	 (MOREFLUSH D-MOREFLUSH)
-	 MORE-^W
-	 (MOREMSG D-MOREMSG))
-     (PROGN (SETQ ,dim-list (DIMENSION ,FORM
-				       NIL 'MPAREN 'MPAREN 0 0))
-	    ,@ body)))
+  `(let ((mratp (checkrat ,form))
+	 (#.writefilep #.writefilep)
+	 (maxht     1) (maxdp   0) (width   0)
+	 (height    0) (depth   0) (level   0) (size   2)
+	 (break     0) (right   0) (lines   1) bkpt
+	 (bkptwd    0) (bkptht  1) (bkptdp  0) (bkptout 0)
+	 (bkptlevel 0) in-p
+	 (moreflush d-moreflush)
+	 more-^w
+	 (moremsg d-moremsg))
+    (progn (setq ,dim-list (dimension ,form
+				      nil 'mparen 'mparen 0 0))
+	   ,@ body)))
 
 (defvar *alt-display2d* nil)
 (defvar *alt-display1d* nil)
 
-(DEFMFUN DISPLA (FORM &aux #+kcl(form form))
-  (IF (OR (NOT #.TTYOFF) #.WRITEFILEP)
-      (cond #+Franz ($typeset (apply #'$photot (list form)))
-	    ($DISPLAY2D 
+(defmfun displa (form &aux #+kcl(form form))
+  (if (or (not #.ttyoff) #.writefilep)
+      (cond #+franz ($typeset (apply #'$photot (list form)))
+	    ($display2d 
 	     (cond
-	      (*alt-display2d* (apply *alt-display2d* form ()))
-	      (t 
-	       (LET ((DISPLAYP T)
-		     (LINEARRAY (IF DISPLAYP (MAKE-array 80.) LINEARRAY))
-		     (MRATP (CHECKRAT FORM))
-		     (#.WRITEFILEP #.WRITEFILEP)
-		     (MAXHT     1) (MAXDP   0) (WIDTH   0)
-		     (HEIGHT    0) (DEPTH   0) (LEVEL   0) (SIZE   2)
-		     (BREAK     0) (RIGHT   0) (LINES   1) BKPT
-		     (BKPTWD    0) (BKPTHT  1) (BKPTDP  0) (BKPTOUT 0)
-		     (BKPTLEVEL 0) IN-P
-		     (MOREFLUSH D-MOREFLUSH)
-		     MORE-^W
-		     (MOREMSG D-MOREMSG))
-		    (UNWIND-PROTECT
-		     (PROGN (SETQ FORM (DIMENSION FORM
-						  NIL 'MPAREN 'MPAREN 0 0))
-			    (CHECKBREAK FORM WIDTH)
-			    (OUTPUT FORM (IF (AND (NOT $LEFTJUST) (= 2 LINES))
-					     (f- LINEL (f- WIDTH BKPTOUT))
-					     0))
-;			    (IF (AND SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
-;				     (> (CAR (CURSORPOS)) (f- TTYHEIGHT 3)))
-;				(LET (#.writefilep) (MTERPRI)))
-			    )
-		     ;; make sure the linearray gets cleared out.
-		     (CLEAR-LINEARRAY))))))
-	    (T 
+	       (*alt-display2d* (apply *alt-display2d* form ()))
+	       (t 
+		(let ((displayp t)
+		      (linearray (if displayp (make-array 80.) linearray))
+		      (mratp (checkrat form))
+		      (#.writefilep #.writefilep)
+		      (maxht     1) (maxdp   0) (width   0)
+		      (height    0) (depth   0) (level   0) (size   2)
+		      (break     0) (right   0) (lines   1) bkpt
+		      (bkptwd    0) (bkptht  1) (bkptdp  0) (bkptout 0)
+		      (bkptlevel 0) in-p
+		      (moreflush d-moreflush)
+		      more-^w
+		      (moremsg d-moremsg))
+		  (unwind-protect
+		       (progn (setq form (dimension form
+						    nil 'mparen 'mparen 0 0))
+			      (checkbreak form width)
+			      (output form (if (and (not $leftjust) (= 2 lines))
+					       (f- linel (f- width bkptout))
+					       0))
+			      ;;			    (IF (AND SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
+			      ;;				     (> (CAR (CURSORPOS)) (f- TTYHEIGHT 3)))
+			      ;;				(LET (#.writefilep) (MTERPRI)))
+			      )
+		    ;; make sure the linearray gets cleared out.
+		    (clear-linearray))))))
+	    (t 
 	     (cond
-	      (*alt-display1d* (apply *alt-display1d* form ()))
-	      (t (LINEAR-DISPLA FORM)))))))
+	       (*alt-display1d* (apply *alt-display1d* form ()))
+	       (t (linear-displa form)))))))
 
-;(defun transform-extends (x)
-;  (cond (($extendp x)
-;	 (let ((nom (send x ':macsyma-extend-type)))
-;	   (append `((${) ,nom)
-;		   (mapcar #'(lambda (u v) (list '(mequal) u (transform-extends v)))
-;			   #-cl
-;			   (cdr (mfunction-call $get nom '$accessors))
-;			   #+cl  ;;wouldn't compile because mfunction-call not defined
-;			   (cdr (funcall '$get nom '$acessors))
-;			   (listarray (send x ':macsyma-extend-elements))))))
-;	((atom x) x)
-;	(t
-;	 (do ((obj x (cdr obj))
-;	      (new x)
-;	      (slot 0 (f1+ slot)))
-;	     ((null obj) new)
-;	     (let* ((element (car obj))
-;		    (result (transform-extends element)))
-;	       (if (not (eq element result))
-;		   (block nil
-;		     (if (eq new x) (setq new (copy-seq x)))
-;		     (setf (nth slot new) result))))))))
+;;(defun transform-extends (x)
+;;  (cond (($extendp x)
+;;	 (let ((nom (send x ':macsyma-extend-type)))
+;;	   (append `((${) ,nom)
+;;		   (mapcar #'(lambda (u v) (list '(mequal) u (transform-extends v)))
+;;			   #-cl
+;;			   (cdr (mfunction-call $get nom '$accessors))
+;;			   #+cl  ;;wouldn't compile because mfunction-call not defined
+;;			   (cdr (funcall '$get nom '$acessors))
+;;			   (listarray (send x ':macsyma-extend-elements))))))
+;;	((atom x) x)
+;;	(t
+;;	 (do ((obj x (cdr obj))
+;;	      (new x)
+;;	      (slot 0 (f1+ slot)))
+;;	     ((null obj) new)
+;;	     (let* ((element (car obj))
+;;		    (result (transform-extends element)))
+;;	       (if (not (eq element result))
+;;		   (block nil
+;;		     (if (eq new x) (setq new (copy-seq x)))
+;;		     (setf (nth slot new) result))))))))
 
-(DEFMVAR $DISPLAY_FORMAT_INTERNAL NIL
-	 "Setting this TRUE can help give the user a greater understanding
+(defmvar $display_format_internal nil
+  "Setting this TRUE can help give the user a greater understanding
 	 of the behavior of macsyma on certain of his problems,
 	 especially those involving roots and quotients")
 
-(DEFUN NFORMAT-CHECK (FORM)
-  (IF (AND $DISPLAY_FORMAT_INTERNAL
-	   (NOT (OR (ATOM FORM) (ATOM (CAR FORM)) (SPECREPP FORM))))
-      FORM
-      (NFORMAT FORM)))
+(defun nformat-check (form)
+  (if (and $display_format_internal
+	   (not (or (atom form) (atom (car form)) (specrepp form))))
+      form
+      (nformat form)))
 
-(DEFUN DIMENSION (FORM RESULT LOP ROP W RIGHT)
-  (LET ((LEVEL (f1+ LEVEL)) (BREAK (IF (AND W BREAK) (f+ W BREAK))))
-    (SETQ FORM (NFORMAT-CHECK FORM))
-    (COND ((ATOM FORM)
-	   (DIMENSION-ATOM FORM RESULT))
-	  ((AND (ATOM (CAR FORM)) (SETQ FORM (CONS '(MPROGN) FORM)) NIL))
-	  ((OR (<= (LBP (CAAR FORM)) (RBP LOP)) (> (LBP ROP) (RBP (CAAR FORM))))
-	   (DIMENSION-PAREN FORM RESULT))
-	  ((MEMQ 'array (CAR FORM)) (DIMENSION-ARRAY FORM RESULT))
-	  ((safe-GET (CAAR FORM) 'DIMENSION) 
-	   (FUNCALL (GET (CAAR FORM) 'DIMENSION) FORM RESULT))
-	  (T (DIMENSION-FUNCTION FORM RESULT)))))
+(defun dimension (form result lop rop w right)
+  (let ((level (f1+ level)) (break (if (and w break) (f+ w break))))
+    (setq form (nformat-check form))
+    (cond ((atom form)
+	   (dimension-atom form result))
+	  ((and (atom (car form)) (setq form (cons '(mprogn) form)) nil))
+	  ((or (<= (lbp (caar form)) (rbp lop)) (> (lbp rop) (rbp (caar form))))
+	   (dimension-paren form result))
+	  ((memq 'array (car form)) (dimension-array form result))
+	  ((safe-get (caar form) 'dimension) 
+	   (funcall (get (caar form) 'dimension) form result))
+	  (t (dimension-function form result)))))
 
-(DEFVAR ATOM-CONTEXT 'DIMENSION-LIST)
+(defvar atom-context 'dimension-list)
 ;; bound by DIMENSION-ARRAY and DIMENSION-FUNCTION.
 ;; This ATOM-CONTEXT put in by GJC so that MCW could have a clean
 ;; hook by which to write his extensions for vector-underbars.
 
-;(declare-top (*EXPR DIMENSION-ARRAY-OBJECT)) ;to be defined someplace else.
+;;(declare-top (*EXPR DIMENSION-ARRAY-OBJECT)) ;to be defined someplace else.
 
 ;; Referenced externally by RAT;FLOAT.
 
-(DEFMFUN DIMENSION-ATOM (FORM RESULT)
-	 (COND ((AND (SYMBOLP FORM) (GET FORM ATOM-CONTEXT))
-		(FUNCALL (GET FORM ATOM-CONTEXT) FORM RESULT))
-	       ((STRINGP FORM) (DIMENSION-STRING (MAKESTRING FORM) RESULT))
-	       ((ml-typep FORM 'array)
-		  (DIMENSION-ARRAY-OBJECT FORM RESULT))
-	       (T (DIMENSION-STRING (MAKESTRING FORM) RESULT))))
+(defmfun dimension-atom (form result)
+  (cond ((and (symbolp form) (get form atom-context))
+	 (funcall (get form atom-context) form result))
+	((stringp form) (dimension-string (makestring form) result))
+	((ml-typep form 'array)
+	 (dimension-array-object form result))
+	(t (dimension-string (makestring form) result))))
 
 ;; Referenced externally by anyone who wants to display something as
 ;; a funny looking atom, e.g. Trace, Mformat.
 
-(DEFMFUN DIMENSION-STRING (DUMMY RESULT &AUX CRP)
-	 ;; N.B. String is a list of fixnums.
-	 (SETQ WIDTH 0 HEIGHT 1 DEPTH 0)
-	 (DO ((L DUMMY (CDR L))) ((NULL L))
-	     (INCREMENT WIDTH)
-	     (IF (char= (CAR L) #\NEWLINE) (SETQ CRP T)))
-	 (cond
-	  ((OR (AND (CHECKFIT WIDTH) (NOT CRP)) (NOT BREAK))
-	   (NRECONC DUMMY RESULT))
-	  (t (SETQ WIDTH 0)
-	     (DO ((L DUMMY) (W (f- LINEL (f- BREAK BKPTOUT))))
-		 ((NULL L) (CHECKBREAK RESULT WIDTH) RESULT)
-		 (SETQ DUMMY L L (CDR L))
-		 (COND ((char= (CAR DUMMY) #\NEWLINE)
-			(FORCEBREAK RESULT WIDTH)
-			(SETQ RESULT NIL W (f+ LINEL WIDTH)))
-		       (T (INCREMENT WIDTH)
-			  (WHEN (AND (= W WIDTH) L)
-				(FORCEBREAK (CONS #\# RESULT) WIDTH)
-				(SETQ RESULT NIL W (f+ LINEL WIDTH))
-				(INCREMENT WIDTH))
-			  (SETQ RESULT (RPLACD DUMMY RESULT))))))))
+(defmfun dimension-string (dummy result &aux crp)
+  ;; N.B. String is a list of fixnums.
+  (setq width 0 height 1 depth 0)
+  (do ((l dummy (cdr l))) ((null l))
+    (increment width)
+    (if (char= (car l) #\newline) (setq crp t)))
+  (cond
+    ((or (and (checkfit width) (not crp)) (not break))
+     (nreconc dummy result))
+    (t (setq width 0)
+       (do ((l dummy) (w (f- linel (f- break bkptout))))
+	   ((null l) (checkbreak result width) result)
+	 (setq dummy l l (cdr l))
+	 (cond ((char= (car dummy) #\newline)
+		(forcebreak result width)
+		(setq result nil w (f+ linel width)))
+	       (t (increment width)
+		  (when (and (= w width) l)
+		    (forcebreak (cons #\# result) width)
+		    (setq result nil w (f+ linel width))
+		    (increment width))
+		  (setq result (rplacd dummy result))))))))
 
-(DEFMFUN MAKESTRING (ATOM)
-  (LET (DUMMY)
-    (COND ((NUMBERP ATOM) (EXPLODEN ATOM))
-	  #+(or NIL CL)
-	  ((NOT (SYMBOLP ATOM)) (EXPLODEN ATOM))
-	  ((AND (SETQ DUMMY (GET ATOM 'REVERSEALIAS))
-		(NOT (AND (MEMQ ATOM $ALIASES) (GET ATOM 'NOUN))))
-	   (EXPLODEN DUMMY))
-	  ((NOT (EQ (GETOP ATOM) ATOM))
-	   (SETQ DUMMY (EXPLODEN (GETOP ATOM)))
-	   (IF (char= #\& (CAR DUMMY))
-	       (CONS DOUBLE-QUOTE-CHAR (NCONC (CDR DUMMY) (LIST DOUBLE-QUOTE-CHAR)))
-	       (CDR DUMMY)))
-	  (T (SETQ DUMMY (EXPLODEN ATOM))
-	     (COND ((char= #\$ (CAR DUMMY)) (CDR DUMMY))
-		   ((AND STRINGDISP (char= #\& (CAR DUMMY)))
-		    (CONS DOUBLE-QUOTE-CHAR (NCONC (CDR DUMMY) (LIST DOUBLE-QUOTE-CHAR))))
-		   ((OR (char= #\% (CAR DUMMY)) (char= #\& (CAR DUMMY))) (CDR DUMMY))
-		   ($LISPDISP (CONS #\? DUMMY))
-		   (T DUMMY))))))
-(DEFUN DIMENSION-PAREN (FORM RESULT)
-  (SETQ RESULT (CONS RIGHT-PARENTHESES-CHAR (DIMENSION FORM (CONS LEFT-PARENTHESES-CHAR RESULT) 'MPAREN 'MPAREN 1 (f1+ RIGHT))))
-  (SETQ WIDTH (f+ 2 WIDTH))
-  RESULT)
+(defmfun makestring (atom)
+  (let (dummy)
+    (cond ((numberp atom) (exploden atom))
+	  #+(or nil cl)
+	  ((not (symbolp atom)) (exploden atom))
+	  ((and (setq dummy (get atom 'reversealias))
+		(not (and (memq atom $aliases) (get atom 'noun))))
+	   (exploden dummy))
+	  ((not (eq (getop atom) atom))
+	   (setq dummy (exploden (getop atom)))
+	   (if (char= #\& (car dummy))
+	       (cons double-quote-char (nconc (cdr dummy) (list double-quote-char)))
+	       (cdr dummy)))
+	  (t (setq dummy (exploden atom))
+	     (cond ((char= #\$ (car dummy)) (cdr dummy))
+		   ((and stringdisp (char= #\& (car dummy)))
+		    (cons double-quote-char (nconc (cdr dummy) (list double-quote-char))))
+		   ((or (char= #\% (car dummy)) (char= #\& (car dummy))) (cdr dummy))
+		   ($lispdisp (cons #\? dummy))
+		   (t dummy))))))
+(defun dimension-paren (form result)
+  (setq result (cons right-parentheses-char (dimension form (cons left-parentheses-char result) 'mparen 'mparen 1 (f1+ right))))
+  (setq width (f+ 2 width))
+  result)
 
-(DEFUN DIMENSION-ARRAY (X RESULT)
-  (PROG (DUMMY BAS (W 0) (H 0) (D 0) SUB) (DECLARE (FIXNUM W H D))
-    ;(SETQ W 0)
-    (IF (EQ (CAAR X) 'MQAPPLY) (SETQ DUMMY (CADR X) X (CDR X))
-			       (SETQ DUMMY (CAAR X)))
-    (COND ((OR (NOT $NOUNDISP) (NOT (SYMBOLP (CAAR X)))))
-	  ((AND (GET (CAAR X) 'VERB) (GET (CAAR X) 'ALIAS))
-	   (PUSH-STRING "''" RESULT) (SETQ W 2))
-	  ((AND (GET (CAAR X) 'NOUN) (NOT (MEMQ (CAAR X) (CDR $ALIASES)))
-		(NOT (GET (CAAR X) 'REVERSEALIAS)))
-	   (SETQ RESULT (CONS #\' RESULT) W 1)))
-    (SETQ SUB (LET ((LOP 'MPAREN) (ROP 'MPAREN) (BREAK NIL) (SIZE 1))
-		   (DIMENSION-LIST X NIL))
-	  W (f+ W WIDTH) H HEIGHT D DEPTH)
-    (SETQ BAS (IF (AND (NOT (ATOM DUMMY)) (MEMQ 'array (CAR DUMMY)))
-		  (LET ((BREAK NIL) (RIGHT 0)) (DIMENSION-PAREN DUMMY RESULT))
-		  (LET ((ATOM-CONTEXT 'DIMENSION-ARRAY))
-		       (DIMENSION DUMMY RESULT LOP 'MFUNCTION NIL 0))))
-    (COND ((NOT (CHECKFIT (SETQ WIDTH (f+ W WIDTH))))
-	   (RETURN (DIMENSION-FUNCTION (CONS '(SUBSCRIPT) (CONS DUMMY (CDR X))) RESULT)))
-	  ((char= RIGHT-PARENTHESES-CHAR (CAR BAS))
-	   (SETQ RESULT (CONS (CONS 0 (CONS (f- H) SUB)) BAS) DEPTH (MAX (f+ H D) DEPTH)))
-	  (T (SETQ RESULT (CONS (CONS 0 (CONS (f- (f+ DEPTH H)) SUB)) BAS)
-		   DEPTH (f+ H D DEPTH))))
-    (UPDATE-HEIGHTS HEIGHT DEPTH)
-    (RETURN RESULT)))
+(defun dimension-array (x result)
+  (prog (dummy bas (w 0) (h 0) (d 0) sub) (declare (fixnum w h d))
+					;(SETQ W 0)
+	(if (eq (caar x) 'mqapply) (setq dummy (cadr x) x (cdr x))
+	    (setq dummy (caar x)))
+	(cond ((or (not $noundisp) (not (symbolp (caar x)))))
+	      ((and (get (caar x) 'verb) (get (caar x) 'alias))
+	       (push-string "''" result) (setq w 2))
+	      ((and (get (caar x) 'noun) (not (memq (caar x) (cdr $aliases)))
+		    (not (get (caar x) 'reversealias)))
+	       (setq result (cons #\' result) w 1)))
+	(setq sub (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1))
+		    (dimension-list x nil))
+	      w (f+ w width) h height d depth)
+	(setq bas (if (and (not (atom dummy)) (memq 'array (car dummy)))
+		      (let ((break nil) (right 0)) (dimension-paren dummy result))
+		      (let ((atom-context 'dimension-array))
+			(dimension dummy result lop 'mfunction nil 0))))
+	(cond ((not (checkfit (setq width (f+ w width))))
+	       (return (dimension-function (cons '(subscript) (cons dummy (cdr x))) result)))
+	      ((char= right-parentheses-char (car bas))
+	       (setq result (cons (cons 0 (cons (f- h) sub)) bas) depth (max (f+ h d) depth)))
+	      (t (setq result (cons (cons 0 (cons (f- (f+ depth h)) sub)) bas)
+		       depth (f+ h d depth))))
+	(update-heights height depth)
+	(return result)))
 
-(DEFUN DIMENSION-FUNCTION (X RESULT)
-  (PROG (FUN (W 0) (H 0) (D 0)) (DECLARE (FIXNUM W H D))
-    ;(SETQ W 0)
-    (COND ((or (NOT $NOUNDISP) (not (symbolp (caar x)))))
-	  ((AND (GET (CAAR X) 'VERB) (GET (CAAR X) 'ALIAS))
-	   (PUSH-STRING "''" RESULT) (SETQ W 2))
-	  ((AND (GET (CAAR X) 'NOUN) (NOT (MEMQ (CAAR X) (CDR $ALIASES)))
-		(NOT (GET (CAAR X) 'REVERSEALIAS)))
-	   (SETQ RESULT (CONS #\' RESULT) W 1)))
-    (IF (EQ (CAAR X) 'MQAPPLY) (SETQ FUN (CADR X) X (CDR X)) (SETQ FUN (CAAR X)))
-    (SETQ RESULT (LET ((ATOM-CONTEXT 'DIMENSION-FUNCTION))
-		      (DIMENSION FUN RESULT LOP 'MPAREN 0 1))
-	  W (f+ W WIDTH) H HEIGHT D DEPTH)
-    (COND ((NULL (CDR X))
-	   (SETQ RESULT (LIST* RIGHT-PARENTHESES-CHAR LEFT-PARENTHESES-CHAR RESULT) WIDTH (f+ 2 W)))
-	  (T (SETQ RESULT (LET ((LOP 'MPAREN) (ROP 'MPAREN)
-				(BREAK (IF BREAK (f+ 1 W BREAK))))
-			       (CONS RIGHT-PARENTHESES-CHAR (DIMENSION-LIST X (CONS LEFT-PARENTHESES-CHAR RESULT))))
-		   WIDTH (f+ 2 W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))))
-    (RETURN RESULT)))
+(defun dimension-function (x result)
+  (prog (fun (w 0) (h 0) (d 0)) (declare (fixnum w h d))
+					;(SETQ W 0)
+	(cond ((or (not $noundisp) (not (symbolp (caar x)))))
+	      ((and (get (caar x) 'verb) (get (caar x) 'alias))
+	       (push-string "''" result) (setq w 2))
+	      ((and (get (caar x) 'noun) (not (memq (caar x) (cdr $aliases)))
+		    (not (get (caar x) 'reversealias)))
+	       (setq result (cons #\' result) w 1)))
+	(if (eq (caar x) 'mqapply) (setq fun (cadr x) x (cdr x)) (setq fun (caar x)))
+	(setq result (let ((atom-context 'dimension-function))
+		       (dimension fun result lop 'mparen 0 1))
+	      w (f+ w width) h height d depth)
+	(cond ((null (cdr x))
+	       (setq result (list* right-parentheses-char left-parentheses-char result) width (f+ 2 w)))
+	      (t (setq result (let ((lop 'mparen) (rop 'mparen)
+				    (break (if break (f+ 1 w break))))
+				(cons right-parentheses-char (dimension-list x (cons left-parentheses-char result))))
+		       width (f+ 2 w width) height (max h height) depth (max d depth))))
+	(return result)))
 
-(DEFMFUN DIMENSION-PREFIX (FORM RESULT)
-  (PROG (DISSYM (SYMLENGTH 0))
-	(DECLARE (FIXNUM SYMLENGTH))
-	(SETQ DISSYM (safe-GET (CAAR FORM) 'DISSYM) SYMLENGTH (LENGTH DISSYM))
-	(SETQ RESULT
-	      (DIMENSION (CADR FORM) (RECONC DISSYM RESULT) (CAAR FORM) ROP SYMLENGTH RIGHT)
-	      WIDTH (f+ SYMLENGTH WIDTH))
-	(RETURN RESULT)))
+(defmfun dimension-prefix (form result)
+  (prog (dissym (symlength 0))
+     (declare (fixnum symlength))
+     (setq dissym (safe-get (caar form) 'dissym) symlength (length dissym))
+     (setq result
+	   (dimension (cadr form) (reconc dissym result) (caar form) rop symlength right)
+	   width (f+ symlength width))
+     (return result)))
 
-(DEFUN DIMENSION-LIST (FORM RESULT)
-  (PROG ((W 0) (H 0) (D 0))
-	(DECLARE (FIXNUM W H D))
-	(SETQ RESULT (DIMENSION (CADR FORM) RESULT LOP 'MCOMMA 0 RIGHT)
-	      W WIDTH H HEIGHT D DEPTH)
-	(DO ((L (CDDR FORM) (CDR L))) ((NULL L))
-	    (PUSH-STRING ", " RESULT)
-	    (INCREMENT W 2)
-	    (CHECKBREAK RESULT W)
-	    (SETQ RESULT (DIMENSION (CAR L) RESULT 'MCOMMA 'MCOMMA W RIGHT)
-		  W (f+ W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH)))
-	(SETQ WIDTH W HEIGHT H DEPTH D)
-	(RETURN RESULT)))
+(defun dimension-list (form result)
+  (prog ((w 0) (h 0) (d 0))
+     (declare (fixnum w h d))
+     (setq result (dimension (cadr form) result lop 'mcomma 0 right)
+	   w width h height d depth)
+     (do ((l (cddr form) (cdr l))) ((null l))
+       (push-string ", " result)
+       (increment w 2)
+       (checkbreak result w)
+       (setq result (dimension (car l) result 'mcomma 'mcomma w right)
+	     w (f+ w width) h (max h height) d (max d depth)))
+     (setq width w height h depth d)
+     (return result)))
 
-(DEFMFUN DIMENSION-INFIX (FORM RESULT)
-  (IF (OR (NULL (CDDR FORM)) (CDDDR FORM)) (WNA-ERR (CAAR FORM)))
-  (PROG (DISSYM (SYMLENGTH 0) (W 0) (H 0) (D 0))
-	(DECLARE (FIXNUM SYMLENGTH W H D))
-	(SETQ DISSYM (safe-GET (CAAR FORM) 'DISSYM) SYMLENGTH (LENGTH DISSYM)
-	      RESULT (DIMENSION (CADR FORM) RESULT LOP (CAAR FORM) 0 SYMLENGTH)
-	      W WIDTH H HEIGHT D DEPTH)
-	(SETQ RESULT (RECONC DISSYM RESULT))
-	(CHECKBREAK RESULT (f+ SYMLENGTH W))
-	(SETQ RESULT (DIMENSION (CADDR FORM) RESULT (CAAR FORM) ROP (f+ SYMLENGTH W) RIGHT)
-	      WIDTH (f+ W SYMLENGTH WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
-	(RETURN RESULT)))
+(defmfun dimension-infix (form result)
+  (if (or (null (cddr form)) (cdddr form)) (wna-err (caar form)))
+  (prog (dissym (symlength 0) (w 0) (h 0) (d 0))
+     (declare (fixnum symlength w h d))
+     (setq dissym (safe-get (caar form) 'dissym) symlength (length dissym)
+	   result (dimension (cadr form) result lop (caar form) 0 symlength)
+	   w width h height d depth)
+     (setq result (reconc dissym result))
+     (checkbreak result (f+ symlength w))
+     (setq result (dimension (caddr form) result (caar form) rop (f+ symlength w) right)
+	   width (f+ w symlength width) height (max h height) depth (max d depth))
+     (return result)))
 
-(DEFMFUN DIMENSION-NARY (FORM RESULT)
+(defmfun dimension-nary (form result)
   ;; If only 0 or 1 arguments, then print "*"() or "*"(A)
-  (COND ((NULL (CDDR FORM)) (DIMENSION-FUNCTION FORM RESULT))
-	(T (PROG (DISSYM (SYMLENGTH 0) (W 0) (H 0) (D 0))
-	    (DECLARE (FIXNUM SYMLENGTH W H D))
-	    (SETQ DISSYM (safe-GET (CAAR FORM) 'DISSYM)
-		  SYMLENGTH (LENGTH DISSYM)
-		  RESULT (DIMNARY (CADR FORM) RESULT LOP (CAAR FORM) (CAAR FORM) 0)
-		  W WIDTH H HEIGHT D DEPTH)
-	    (DO ((L (CDDR FORM) (CDR L))) (NIL)
-		(CHECKBREAK RESULT W)
-		(SETQ RESULT (RECONC DISSYM RESULT) W (f+ SYMLENGTH W))
-		(COND ((NULL (CDR L))
-		       (SETQ RESULT (DIMNARY (CAR L) RESULT (CAAR FORM) (CAAR FORM) ROP W)
-			     WIDTH (f+ W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
-		       (RETURN T))
-		      (T (SETQ RESULT (DIMNARY (CAR L) RESULT (CAAR FORM)
-					       (CAAR FORM) (CAAR FORM) W)
-			       W (f+ W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH)))))
-	    (RETURN RESULT)))))
+  (cond ((null (cddr form)) (dimension-function form result))
+	(t (prog (dissym (symlength 0) (w 0) (h 0) (d 0))
+	      (declare (fixnum symlength w h d))
+	      (setq dissym (safe-get (caar form) 'dissym)
+		    symlength (length dissym)
+		    result (dimnary (cadr form) result lop (caar form) (caar form) 0)
+		    w width h height d depth)
+	      (do ((l (cddr form) (cdr l))) (nil)
+		(checkbreak result w)
+		(setq result (reconc dissym result) w (f+ symlength w))
+		(cond ((null (cdr l))
+		       (setq result (dimnary (car l) result (caar form) (caar form) rop w)
+			     width (f+ w width) height (max h height) depth (max d depth))
+		       (return t))
+		      (t (setq result (dimnary (car l) result (caar form)
+					       (caar form) (caar form) w)
+			       w (f+ w width) h (max h height) d (max d depth)))))
+	      (return result)))))
 
 ;; Check for (f* A (f* B C)) --> A*(B*C)
 
-(DEFUN DIMNARY (FORM RESULT LOP OP ROP W)
-  (IF (AND (NOT (ATOM FORM)) (EQ (CAAR FORM) OP))
-      (DIMENSION-PAREN FORM RESULT)
-      (DIMENSION FORM RESULT LOP ROP W RIGHT)))
+(defun dimnary (form result lop op rop w)
+  (if (and (not (atom form)) (eq (caar form) op))
+      (dimension-paren form result)
+      (dimension form result lop rop w right)))
 
-(DEFMFUN DIMENSION-POSTFIX (FORM RESULT)
-  (PROG (DISSYM (SYMLENGTH 0)) (DECLARE (FIXNUM SYMLENGTH))
-	(SETQ DISSYM (safe-GET (CAAR FORM) 'DISSYM) SYMLENGTH (LENGTH DISSYM))
-	(SETQ RESULT (DIMENSION (CADR FORM) RESULT LOP (CAAR FORM) 0 (f+ SYMLENGTH RIGHT))
-	      WIDTH (f+ SYMLENGTH WIDTH))
-	(RETURN (RECONC DISSYM RESULT))))
+(defmfun dimension-postfix (form result)
+  (prog (dissym (symlength 0)) (declare (fixnum symlength))
+	(setq dissym (safe-get (caar form) 'dissym) symlength (length dissym))
+	(setq result (dimension (cadr form) result lop (caar form) 0 (f+ symlength right))
+	      width (f+ symlength width))
+	(return (reconc dissym result))))
 
-(DEFMFUN DIMENSION-NOFIX (FORM RESULT)
-  (SETQ FORM (safe-GET (CAAR FORM) 'DISSYM) WIDTH (LENGTH FORM))
-  (RECONC FORM RESULT))
+(defmfun dimension-nofix (form result)
+  (setq form (safe-get (caar form) 'dissym) width (length form))
+  (reconc form result))
 
-(DEFUN DIMENSION-MATCH (FORM RESULT)
-  (PROG (DISSYM (SYMLENGTH 0))
-	(DECLARE (FIXNUM SYMLENGTH))
-	(SETQ DISSYM (safe-GET (CAAR FORM) 'DISSYM) SYMLENGTH (LENGTH (CAR DISSYM)))
-	(COND ((NULL (CDR FORM))
-	       (SETQ WIDTH (f+ SYMLENGTH (LENGTH (CDR DISSYM))) HEIGHT 1 DEPTH 0)
-	       (RETURN (RECONC (CDR DISSYM) (RECONC (CAR DISSYM) RESULT))))
-	      (T (SETQ RESULT (LET ((LOP 'MPAREN)
-				    (ROP 'MPAREN)
-				    (BREAK (IF BREAK (f+ SYMLENGTH BREAK)))
-				    (RIGHT (f+ SYMLENGTH RIGHT)))
-				(DIMENSION-LIST FORM (RECONC (CAR DISSYM) RESULT))))
-		 (SETQ WIDTH (f+ (LENGTH (CDR DISSYM)) SYMLENGTH WIDTH))
-		 (RETURN (RECONC (CDR DISSYM) RESULT))))))
+(defun dimension-match (form result)
+  (prog (dissym (symlength 0))
+     (declare (fixnum symlength))
+     (setq dissym (safe-get (caar form) 'dissym) symlength (length (car dissym)))
+     (cond ((null (cdr form))
+	    (setq width (f+ symlength (length (cdr dissym))) height 1 depth 0)
+	    (return (reconc (cdr dissym) (reconc (car dissym) result))))
+	   (t (setq result (let ((lop 'mparen)
+				 (rop 'mparen)
+				 (break (if break (f+ symlength break)))
+				 (right (f+ symlength right)))
+			     (dimension-list form (reconc (car dissym) result))))
+	      (setq width (f+ (length (cdr dissym)) symlength width))
+	      (return (reconc (cdr dissym) result))))))
 
-(DEFMFUN DIMENSION-SUPERSCRIPT (FORM RESULT)
-  (PROG (EXP (W 0) (H 0) (D 0) BAS)
-    (DECLARE (FIXNUM W H D ))
-    (SETQ EXP (LET ((SIZE 1)) (DIMENSION (CADDR FORM) NIL 'MPAREN 'MPAREN NIL 0))
-	  W WIDTH H HEIGHT D DEPTH)
-    (COND ((AND (NOT (ATOM (CADR FORM))) (MEMQ 'array (CDAADR FORM)))
-	   (PROG (SUB (W2 0) (H2 0) (D2 0))
-		 (DECLARE (FIXNUM W2 H2 D2))
-	     (SETQ SUB (IF (EQ 'MQAPPLY (CAAADR FORM))
-			   (CDADR FORM) (CADR FORM)))
-	     (SETQ SUB (LET ((LOP 'MPAREN) (BREAK NIL) (SIZE 1))
-			 (DIMENSION-LIST SUB NIL))
-		   W2 WIDTH H2 HEIGHT D2 DEPTH)
-	     (SETQ BAS (DIMENSION (MOP (CADR FORM)) RESULT LOP 'MEXPT NIL 0))
-	     (WHEN (NOT (CHECKFIT (f+ WIDTH (MAX W W2))))
-	        (SETQ RESULT (DIMENSION-FUNCTION (CONS '($EXPT) (CDR FORM)) RESULT))
-	        (RETURN RESULT))
-	     (SETQ RESULT (CONS (CONS 0 (CONS (f+ HEIGHT D) EXP)) BAS))
-	     (SETQ RESULT (CONS (CONS (f- W) (CONS (f- (f+ DEPTH H2)) SUB)) RESULT))
-	     (SETQ RESULT (CONS (LIST (f- (MAX W W2) W2) 0) RESULT)
-		   WIDTH (f+ WIDTH (MAX W W2)) HEIGHT (f+ H D HEIGHT) DEPTH (f+ D2 H2 DEPTH)))
-	   (UPDATE-HEIGHTS HEIGHT DEPTH)
-	   (RETURN RESULT))
-	  ((AND (ATOM (CADDR FORM))
-		(NOT (ATOM (CADR FORM)))
-		(NOT (safe-GET (CAAADR FORM) 'DIMENSION))
-		(PROG2 (SETQ BAS (NFORMAT-CHECK (CADR FORM)))
-		       (NOT (safe-GET (CAAR BAS) 'DIMENSION))))
-	   (RETURN (DIMENSION-FUNCTION
-		    (LIST* '(MQAPPLY) (LIST '(MEXPT) (MOP BAS) (CADDR FORM)) (MARGS BAS))
-		    RESULT)))
-	  (T (SETQ BAS (DIMENSION (CADR FORM) RESULT LOP 'MEXPT NIL 0) WIDTH (f+ W WIDTH))
-	     (IF (NOT (CHECKFIT WIDTH))
-		 (RETURN (DIMENSION-FUNCTION (CONS '($EXPT) (CDR FORM)) RESULT)))
-	     (IF
+(defmfun dimension-superscript (form result)
+  (prog (exp (w 0) (h 0) (d 0) bas)
+     (declare (fixnum w h d ))
+     (setq exp (let ((size 1)) (dimension (caddr form) nil 'mparen 'mparen nil 0))
+	   w width h height d depth)
+     (cond ((and (not (atom (cadr form))) (memq 'array (cdaadr form)))
+	    (prog (sub (w2 0) (h2 0) (d2 0))
+	       (declare (fixnum w2 h2 d2))
+	       (setq sub (if (eq 'mqapply (caaadr form))
+			     (cdadr form) (cadr form)))
+	       (setq sub (let ((lop 'mparen) (break nil) (size 1))
+			   (dimension-list sub nil))
+		     w2 width h2 height d2 depth)
+	       (setq bas (dimension (mop (cadr form)) result lop 'mexpt nil 0))
+	       (when (not (checkfit (f+ width (max w w2))))
+		 (setq result (dimension-function (cons '($expt) (cdr form)) result))
+		 (return result))
+	       (setq result (cons (cons 0 (cons (f+ height d) exp)) bas))
+	       (setq result (cons (cons (f- w) (cons (f- (f+ depth h2)) sub)) result))
+	       (setq result (cons (list (f- (max w w2) w2) 0) result)
+		     width (f+ width (max w w2)) height (f+ h d height) depth (f+ d2 h2 depth)))
+	    (update-heights height depth)
+	    (return result))
+	   ((and (atom (caddr form))
+		 (not (atom (cadr form)))
+		 (not (safe-get (caaadr form) 'dimension))
+		 (prog2 (setq bas (nformat-check (cadr form)))
+		     (not (safe-get (caar bas) 'dimension))))
+	    (return (dimension-function
+		     (list* '(mqapply) (list '(mexpt) (mop bas) (caddr form)) (margs bas))
+		     result)))
+	   (t (setq bas (dimension (cadr form) result lop 'mexpt nil 0) width (f+ w width))
+	      (if (not (checkfit width))
+		  (return (dimension-function (cons '($expt) (cdr form)) result)))
+	      (if
 	       #-cl
-	       (AND (NUMBERP (CAR BAS)) (char= RIGHT-PARENTHESES-CHAR (CAR BAS)))
-	       #+cl  (eql RIGHT-PARENTHESES-CHAR (CAR BAS))
-		 (SETQ RESULT (CONS (LIST* 0 (f1+ D) EXP) BAS) HEIGHT (MAX (f+ 1 H D) HEIGHT))
-		 (SETQ RESULT (CONS (LIST* 0 (f+ HEIGHT D) EXP) BAS) HEIGHT (f+ H D HEIGHT)))
-	     (UPDATE-HEIGHTS HEIGHT DEPTH)
-	     (RETURN RESULT)))))
+	       (and (numberp (car bas)) (char= right-parentheses-char (car bas)))
+	       #+cl  (eql right-parentheses-char (car bas))
+	       (setq result (cons (list* 0 (f1+ d) exp) bas) height (max (f+ 1 h d) height))
+	       (setq result (cons (list* 0 (f+ height d) exp) bas) height (f+ h d height)))
+	      (update-heights height depth)
+	      (return result)))))
 
-(DEFUN DSUMPROD (FORM RESULT D-FORM SW SH SD)
-  (DECLARE (FIXNUM  SW SH SD))
-  (PROG (DUMMY (W 0) (H 0) (D 0) DUMMY2 (lsum (eq (caar form) '%lsum)))
-	(DECLARE (FIXNUM W H D ))
-	(SETQ DUMMY2 (DIMENSION (CADDR FORM) NIL 'MPAREN 'MEQUAL NIL 0)
-	      W WIDTH H HEIGHT D DEPTH)
-	(if lsum (PUSH-STRING " in "  DUMMY2)
-	  (PUSH-STRING " = " DUMMY2))
-	(SETQ DUMMY2 (DIMENSION (CADDDR FORM) DUMMY2 'MEQUAL 'MPAREN NIL 0)
-	      W (f+ 3 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))
-	(or lsum
-          (SETQ DUMMY (DIMENSION (CADR (CDDDR FORM)) NIL 'MPAREN 'MPAREN NIL 0)))
-	(COND ((NOT (CHECKFIT (MAX W WIDTH))) (RETURN (DIMENSION-FUNCTION FORM RESULT))))
-	(SETQ DUMMY2 (CONS (CONS (f- SW) (CONS (f- (f+ SD H)) DUMMY2)) (CONS D-FORM RESULT)))
-	(COND ((> WIDTH SW) (SETQ SW 0))
-	      (T (SETQ SW (// (f- SW WIDTH) 2) WIDTH (f+ SW WIDTH))))
-	(SETQ DUMMY (CONS (CONS (f- SW W) (CONS (f+ SH DEPTH) DUMMY)) DUMMY2)
-	      W (MAX W WIDTH) D (f+ SD H D) H (f+ SH HEIGHT DEPTH))
-	(UPDATE-HEIGHTS H D)
-	(SETQ DUMMY (DIMENSION (CADR FORM) (CONS (LIST (f1+ (f- W WIDTH)) 0) DUMMY)
-			       (CAAR FORM) ROP W RIGHT)
-	      WIDTH (f+ 1 W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
-	(RETURN DUMMY)))
+(defun dsumprod (form result d-form sw sh sd)
+  (declare (fixnum  sw sh sd))
+  (prog (dummy (w 0) (h 0) (d 0) dummy2 (lsum (eq (caar form) '%lsum)))
+     (declare (fixnum w h d ))
+     (setq dummy2 (dimension (caddr form) nil 'mparen 'mequal nil 0)
+	   w width h height d depth)
+     (if lsum (push-string " in "  dummy2)
+	 (push-string " = " dummy2))
+     (setq dummy2 (dimension (cadddr form) dummy2 'mequal 'mparen nil 0)
+	   w (f+ 3 w width) h (max h height) d (max d depth))
+     (or lsum
+	 (setq dummy (dimension (cadr (cdddr form)) nil 'mparen 'mparen nil 0)))
+     (cond ((not (checkfit (max w width))) (return (dimension-function form result))))
+     (setq dummy2 (cons (cons (f- sw) (cons (f- (f+ sd h)) dummy2)) (cons d-form result)))
+     (cond ((> width sw) (setq sw 0))
+	   (t (setq sw (// (f- sw width) 2) width (f+ sw width))))
+     (setq dummy (cons (cons (f- sw w) (cons (f+ sh depth) dummy)) dummy2)
+	   w (max w width) d (f+ sd h d) h (f+ sh height depth))
+     (update-heights h d)
+     (setq dummy (dimension (cadr form) (cons (list (f1+ (f- w width)) 0) dummy)
+			    (caar form) rop w right)
+	   width (f+ 1 w width) height (max h height) depth (max d depth))
+     (return dummy)))
 
-(DISPLA-DEF BIGFLOAT  DIM-BIGFLOAT)
-(DISPLA-DEF MQUOTE    DIMENSION-PREFIX "'")
-(DISPLA-DEF MSETQ     DIMENSION-INFIX  " : ")
-(DISPLA-DEF MSET      DIMENSION-INFIX  " :: ")
-(DISPLA-DEF MDEFINE   DIM-MDEFINE      " := ")
-(DISPLA-DEF MDEFMACRO DIM-MDEFINE      " ::= ")
+(displa-def bigfloat  dim-bigfloat)
+(displa-def mquote    dimension-prefix "'")
+(displa-def msetq     dimension-infix  " : ")
+(displa-def mset      dimension-infix  " :: ")
+(displa-def mdefine   dim-mdefine      " := ")
+(displa-def mdefmacro dim-mdefine      " ::= ")
 
-(DEFUN DIM-MDEFINE (FORM RESULT)
- (LET (($NOUNDISP T) (STRINGDISP T))
-      (DIMENSION-INFIX (IF (CDDDR FORM)
-			   (LIST (CAR FORM) (CADR FORM) (CONS '(MPROGN) (CDDR FORM)))
-			   FORM)
-			RESULT)))
+(defun dim-mdefine (form result)
+  (let (($noundisp t) (stringdisp t))
+    (dimension-infix (if (cdddr form)
+			 (list (car form) (cadr form) (cons '(mprogn) (cddr form)))
+			 form)
+		     result)))
 
-(DISPLA-DEF MFACTORIAL DIMENSION-POSTFIX "!")
-(DISPLA-DEF MEXPT      DIMENSION-SUPERSCRIPT)
-(DISPLA-DEF MNCEXPT    DIM-MNCEXPT "^^")
+(displa-def mfactorial dimension-postfix "!")
+(displa-def mexpt      dimension-superscript)
+(displa-def mncexpt    dim-mncexpt "^^")
 
-(DEFUN DIM-MNCEXPT (FORM RESULT)
- (DIMENSION-SUPERSCRIPT (LIST '(MNCEXPT) (CADR FORM) (CONS '(MANGLE) (CDDR FORM)))
-			RESULT))
+(defun dim-mncexpt (form result)
+  (dimension-superscript (list '(mncexpt) (cadr form) (cons '(mangle) (cddr form)))
+			 result))
 
-(DISPLA-DEF MNCTIMES DIMENSION-NARY " . ")
+(displa-def mnctimes dimension-nary " . ")
 
-(DISPLA-DEF %PRODUCT DIM-%PRODUCT 115.)
+(displa-def %product dim-%product 115.)
 
-(DEFUN DIM-%PRODUCT (FORM RESULT) (DSUMPROD FORM RESULT '(D-PRODSIGN) 5 3 1))
+(defun dim-%product (form result) (dsumprod form result '(d-prodsign) 5 3 1))
 
-(DISPLA-DEF RAT DIM-RAT #.forward-slash-string) ;;(setq forward-slash-string "//")
+(displa-def rat dim-rat #.forward-slash-string)	;;(setq forward-slash-string "//")
 
-(DEFUN DIM-RAT (FORM RESULT)
-  (IF $PFEFORMAT (DIMENSION-NARY FORM RESULT) (DIM-MQUOTIENT FORM RESULT)))
+(defun dim-rat (form result)
+  (if $pfeformat (dimension-nary form result) (dim-mquotient form result)))
 
-(DISPLA-DEF MQUOTIENT DIM-MQUOTIENT #.forward-slash-string)
+(displa-def mquotient dim-mquotient #.forward-slash-string)
 
-(DEFUN DIM-MQUOTIENT (FORM RESULT)
-   (IF (OR (NULL (CDDR FORM)) (CDDDR FORM)) (WNA-ERR (CAAR FORM)))
-   (PROG (NUM (W 0) (H 0) (D 0) DEN)
-     (DECLARE (FIXNUM W H D))
-     (IF (AND (= 1 SIZE) (ATOM (CADR FORM)) (ATOM (CADDR FORM)))
-	 (RETURN (DIMENSION-NARY FORM RESULT)))
-     (SETQ NUM (DIMENSION (CADR FORM) NIL 'MPAREN 'MPAREN NIL RIGHT)
-	   W WIDTH H HEIGHT D DEPTH)
-     (IF (NOT (CHECKFIT W)) (RETURN (DIMENSION-NARY FORM RESULT)))
-     (SETQ DEN (DIMENSION (CADDR FORM) NIL 'MPAREN 'MPAREN NIL RIGHT))
-     (IF (NOT (CHECKFIT WIDTH)) (RETURN (DIMENSION-NARY FORM RESULT)))
-     (RETURN (DRATIO RESULT NUM W H D DEN WIDTH HEIGHT DEPTH))))
+(defun dim-mquotient (form result)
+  (if (or (null (cddr form)) (cdddr form)) (wna-err (caar form)))
+  (prog (num (w 0) (h 0) (d 0) den)
+     (declare (fixnum w h d))
+     (if (and (= 1 size) (atom (cadr form)) (atom (caddr form)))
+	 (return (dimension-nary form result)))
+     (setq num (dimension (cadr form) nil 'mparen 'mparen nil right)
+	   w width h height d depth)
+     (if (not (checkfit w)) (return (dimension-nary form result)))
+     (setq den (dimension (caddr form) nil 'mparen 'mparen nil right))
+     (if (not (checkfit width)) (return (dimension-nary form result)))
+     (return (dratio result num w h d den width height depth))))
 
 ;;            <--     W1     -->
 ;;            ------------------
@@ -601,511 +601,511 @@
 
 ;; Hack to recycle slots on the stack.  Compiler should be doing this.
 ;; Use different names to preserve sanity.
-(defvar X1)
-(defvar X2)
+(defvar x1)
+(defvar x2)
 (eval-when (compile eval load)
-  (SETQ X1 'H1 X2 'D2))
+  (setq x1 'h1 x2 'd2))
 
 
-(DEFUN DRATIO (RESULT NUM W1 H1 D1 DEN W2 H2 D2)
-  (DECLARE (FIXNUM W1 H1 D1 W2 H2 D2))
-  (SETQ WIDTH (MAX W1 W2) HEIGHT (f+ 1 H1 D1) DEPTH (f+ H2 D2))
-  (SETQ #.X1 (// (f- WIDTH W1) 2) #.X2 (// (f- WIDTH W2) 2))
-  (UPDATE-HEIGHTS HEIGHT DEPTH)
-  (PUSH `(,#.X1 ,(f1+ D1) . ,NUM) RESULT)
-  (PUSH `(,(f- #.X2 (f+ #.X1 W1)) ,(f- H2) . ,DEN) RESULT)
-  (PUSH `(,(f- 0 #.X2 W2) 0) RESULT)
-  (PUSH `(D-HBAR ,WIDTH) RESULT)
-  RESULT)
+(defun dratio (result num w1 h1 d1 den w2 h2 d2)
+  (declare (fixnum w1 h1 d1 w2 h2 d2))
+  (setq width (max w1 w2) height (f+ 1 h1 d1) depth (f+ h2 d2))
+  (setq #.x1 (// (f- width w1) 2) #.x2 (// (f- width w2) 2))
+  (update-heights height depth)
+  (push `(,#.x1 ,(f1+ d1) . ,num) result)
+  (push `(,(f- #.x2 (f+ #.x1 w1)) ,(f- h2) . ,den) result)
+  (push `(,(f- 0 #.x2 w2) 0) result)
+  (push `(d-hbar ,width) result)
+  result)
 
-(DISPLA-DEF MTIMES DIMENSION-NARY " ")
+(displa-def mtimes dimension-nary " ")
 
 ;; This code gets run when STARDISP is assigned a value.
 
-(DEFPROP $STARDISP STARDISP ASSIGN)
-(DEFUN STARDISP (SYMBOL VAL)
-       SYMBOL ;ignored -- always bound to $STARDISP
-       (PUTPROP 'MTIMES (IF VAL '(#\*) '(#\SPACE)) 'DISSYM))
+(defprop $stardisp stardisp assign)
+(defun stardisp (symbol val)
+  symbol			 ;ignored -- always bound to $STARDISP
+  (putprop 'mtimes (if val '(#\*) '(#\space)) 'dissym))
 
-(DISPLA-DEF %INTEGRATE DIM-%INTEGRATE 115.)
+(displa-def %integrate dim-%integrate 115.)
 
-(DEFUN DIM-%INTEGRATE (FORM RESULT)
-  (PROG (DUMMY (W 0)(H 0)(D 0) DUMMY2)
-    (DECLARE (FIXNUM W H D))
-    (COND ((NULL (CDDR FORM)) (WNA-ERR (CAAR FORM)))
-	  ((NULL (CDDDR FORM))
-	   (SETQ DUMMY `(#\SPACE (D-INTEGRALSIGN) . ,RESULT) W 2 H 3 D 2))
-	  (T (SETQ DUMMY (DIMENSION (CADR (CDDDR FORM)) NIL 'MPAREN 'MPAREN NIL 0)
-		   W WIDTH H HEIGHT D DEPTH)
-	     (SETQ DUMMY2 (DIMENSION (CADDDR FORM) NIL 'MPAREN 'MPAREN NIL 0))
-	     (IF (NOT (CHECKFIT (f+ 2 (MAX W WIDTH))))
-		 (RETURN (DIMENSION-FUNCTION FORM RESULT)))
-	     (SETQ DUMMY `((0 ,(f+ 3 D) . ,DUMMY) (D-INTEGRALSIGN) . ,RESULT))
-	     (SETQ DUMMY (CONS (CONS (f- W) (CONS (f- (f+ 2 HEIGHT)) DUMMY2)) DUMMY)
-		   W (f+ 2 (MAX W WIDTH)) H (f+ 3 H D) D (f+ 2 HEIGHT DEPTH)
-		   DUMMY (CONS (LIST (f- W 1 WIDTH) 0) DUMMY))))
-    (UPDATE-HEIGHTS H D)
-    (SETQ DUMMY (DIMENSION (CADR FORM) DUMMY '%INTEGRATE 'MPAREN W 2)
-	  W (f+ W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))
-    (PUSH-STRING " d" DUMMY)
-    (SETQ DUMMY (DIMENSION (CADDR FORM) DUMMY 'MPAREN ROP (f+ 2 W) RIGHT)
-	  WIDTH (f+ 2 W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
-    (RETURN DUMMY)))
+(defun dim-%integrate (form result)
+  (prog (dummy (w 0)(h 0)(d 0) dummy2)
+     (declare (fixnum w h d))
+     (cond ((null (cddr form)) (wna-err (caar form)))
+	   ((null (cdddr form))
+	    (setq dummy `(#\space (d-integralsign) . ,result) w 2 h 3 d 2))
+	   (t (setq dummy (dimension (cadr (cdddr form)) nil 'mparen 'mparen nil 0)
+		    w width h height d depth)
+	      (setq dummy2 (dimension (cadddr form) nil 'mparen 'mparen nil 0))
+	      (if (not (checkfit (f+ 2 (max w width))))
+		  (return (dimension-function form result)))
+	      (setq dummy `((0 ,(f+ 3 d) . ,dummy) (d-integralsign) . ,result))
+	      (setq dummy (cons (cons (f- w) (cons (f- (f+ 2 height)) dummy2)) dummy)
+		    w (f+ 2 (max w width)) h (f+ 3 h d) d (f+ 2 height depth)
+		    dummy (cons (list (f- w 1 width) 0) dummy))))
+     (update-heights h d)
+     (setq dummy (dimension (cadr form) dummy '%integrate 'mparen w 2)
+	   w (f+ w width) h (max h height) d (max d depth))
+     (push-string " d" dummy)
+     (setq dummy (dimension (caddr form) dummy 'mparen rop (f+ 2 w) right)
+	   width (f+ 2 w width) height (max h height) depth (max d depth))
+     (return dummy)))
 
-(DISPLA-DEF %DERIVATIVE DIM-%DERIVATIVE 125.)
+(displa-def %derivative dim-%derivative 125.)
 
-(DEFUN DIM-%DERIVATIVE (FORM RESULT)
-  (PROG ()
-    (COND ((NULL (CDDR FORM))
-	   (RETURN (DIMENSION-FUNCTION (CONS '(%DIFF) (CDR FORM)) RESULT))))
-    (COND ((NULL (CDDDR FORM)) (SETQ FORM (APPEND FORM '(1)))))
-    (COND ((AND $DERIVABBREV 
-		(DO ((L (CDDR FORM) (CDDR L))) ((NULL L) T)
-		    (COND ((AND (ATOM (CAR L)) (INTEGERP (CADR L)) (> (CADR L) 0)))
-			  (T (RETURN NIL)))))
-	   (RETURN (DMDERIVABBREV FORM RESULT)))
-	  ((OR (> (RBP LOP) 130.) (> (LBP ROP) 130.)
-	       (AND (NOT (ATOM (CADR FORM))) (OR (> (RBP LOP) 110.) (> (LBP ROP) 110.))))
-	   (RETURN (DIMENSION-PAREN FORM RESULT)))
-	  (T (RETURN (DMDERIVLONG FORM RESULT))))))
+(defun dim-%derivative (form result)
+  (prog ()
+     (cond ((null (cddr form))
+	    (return (dimension-function (cons '(%diff) (cdr form)) result))))
+     (cond ((null (cdddr form)) (setq form (append form '(1)))))
+     (cond ((and $derivabbrev 
+		 (do ((l (cddr form) (cddr l))) ((null l) t)
+		   (cond ((and (atom (car l)) (integerp (cadr l)) (> (cadr l) 0)))
+			 (t (return nil)))))
+	    (return (dmderivabbrev form result)))
+	   ((or (> (rbp lop) 130.) (> (lbp rop) 130.)
+		(and (not (atom (cadr form))) (or (> (rbp lop) 110.) (> (lbp rop) 110.))))
+	    (return (dimension-paren form result)))
+	   (t (return (dmderivlong form result))))))
 
-(DEFUN DMDERIVABBREV (FORM RESULT)
-  (PROG (DUMMY (W 0)) (DECLARE (FIXNUM W))
-	(DO ((L (CDDR FORM) (CDDR L)) (VAR))
-	    ((NULL L) (SETQ DUMMY (CDR DUMMY) W (f1- W)))
-	    (SETQ VAR (DIMENSION (CAR L) NIL 'MPAREN 'MPAREN NIL 0))
-	    (DO ((I (CADR L) (f1- I))) ((= 1 I)) (SETQ DUMMY (CONS #\SPACE (APPEND VAR DUMMY))))
-	    (SETQ DUMMY (CONS #\SPACE (NCONC VAR DUMMY)) W (f+ W (CADR L) (f* (CADR L) WIDTH))))
-	(SETQ RESULT (DIMENSION (CADR FORM) RESULT LOP '%DERIV 0 RIGHT))
-	(SETQ RESULT (CONS (CONS 0 (CONS (f- 0 DEPTH 1) DUMMY)) RESULT)
-	      WIDTH (f+ W WIDTH) DEPTH (MAX 1 (f1+ DEPTH)))
-	(UPDATE-HEIGHTS HEIGHT DEPTH)
-	(RETURN RESULT)))
+(defun dmderivabbrev (form result)
+  (prog (dummy (w 0)) (declare (fixnum w))
+	(do ((l (cddr form) (cddr l)) (var))
+	    ((null l) (setq dummy (cdr dummy) w (f1- w)))
+	  (setq var (dimension (car l) nil 'mparen 'mparen nil 0))
+	  (do ((i (cadr l) (f1- i))) ((= 1 i)) (setq dummy (cons #\space (append var dummy))))
+	  (setq dummy (cons #\space (nconc var dummy)) w (f+ w (cadr l) (f* (cadr l) width))))
+	(setq result (dimension (cadr form) result lop '%deriv 0 right))
+	(setq result (cons (cons 0 (cons (f- 0 depth 1) dummy)) result)
+	      width (f+ w width) depth (max 1 (f1+ depth)))
+	(update-heights height depth)
+	(return result)))
 
-(DEFUN DMDERIVLONG (FORM RESULT)
-  (PROG (NUM (W1 0) (H1 0) (D1 0) DEN (W2 0)( H2 0)  (D2 0))
-	(DECLARE (FIXNUM W1 H1 D1 W2 H2 D2))
-	(SETQ NUM (LIST (CADDDR FORM))
-	      DEN (COND ((EQUAL 1 (CADDDR FORM))
-			 (DIMENSION (CADDR FORM)
-				    (LIST #\d) 'MPAREN 'MPAREN NIL 0))
-			(T (DIMENSION-SUPERSCRIPT
-			    (CONS '(DIFF)(CDDR FORM)) (LIST #\d))))
-	      W2 (f1+ WIDTH) H2 HEIGHT D2 DEPTH)
-	(DO ((L (CDDDDR FORM) (CDDR L))) ((NULL L))
-	    (SETQ NUM (CONS (CADR L) NUM)
-		  DEN (COND ((EQUAL 1 (CADR L))
-			     (DIMENSION (CAR L) (CONS #\d (CONS #\SPACE DEN))
-					'MPAREN 'MPAREN NIL 0))
-			    (T (DIMENSION-SUPERSCRIPT
-				(CONS '(DIFF) L) (CONS #\d (CONS #\SPACE DEN)))))
-		  W2 (f+ 2 W2 WIDTH) H2 (MAX H2 HEIGHT) D2 (f+ D2 DEPTH)))
-	(SETQ NUM (NFORMAT-CHECK (ADDN NUM T)))
-	(COND ((EQUAL 1 NUM) (SETQ NUM (LIST #\d) W1 1 H1 1 D1 0))
-	      (T (SETQ NUM (DIMENSION-SUPERSCRIPT (LIST '(DIFF) '|d| NUM) NIL)
-		       W1 WIDTH H1 HEIGHT D1 DEPTH)))
-	(COND ((ATOM (SETQ FORM (NFORMAT-CHECK (CADR FORM))))
-	       (SETQ NUM (DIMENSION FORM NUM '%DERIV 'MPAREN NIL 0) W1 (f+ W1 WIDTH))
-	       (RETURN (DRATIO RESULT NUM W1 H1 D1 DEN W2 H2 D2)))
-	      (T (SETQ RESULT (DRATIO RESULT NUM W1 H1 D1 DEN W2 H2 D2) W1 WIDTH H1 HEIGHT D1 DEPTH)
-		 (SETQ RESULT (DIMENSION FORM (CONS #\SPACE RESULT) '%DERIV ROP W1 RIGHT)
-		       WIDTH (f+ 1 W1 WIDTH) HEIGHT (MAX H1 HEIGHT) DEPTH (MAX D1 DEPTH))
-		 (UPDATE-HEIGHTS HEIGHT DEPTH)
-		 (RETURN RESULT)))))
+(defun dmderivlong (form result)
+  (prog (num (w1 0) (h1 0) (d1 0) den (w2 0)( h2 0)  (d2 0))
+     (declare (fixnum w1 h1 d1 w2 h2 d2))
+     (setq num (list (cadddr form))
+	   den (cond ((equal 1 (cadddr form))
+		      (dimension (caddr form)
+				 (list #\d) 'mparen 'mparen nil 0))
+		     (t (dimension-superscript
+			 (cons '(diff)(cddr form)) (list #\d))))
+	   w2 (f1+ width) h2 height d2 depth)
+     (do ((l (cddddr form) (cddr l))) ((null l))
+       (setq num (cons (cadr l) num)
+	     den (cond ((equal 1 (cadr l))
+			(dimension (car l) (cons #\d (cons #\space den))
+				   'mparen 'mparen nil 0))
+		       (t (dimension-superscript
+			   (cons '(diff) l) (cons #\d (cons #\space den)))))
+	     w2 (f+ 2 w2 width) h2 (max h2 height) d2 (f+ d2 depth)))
+     (setq num (nformat-check (addn num t)))
+     (cond ((equal 1 num) (setq num (list #\d) w1 1 h1 1 d1 0))
+	   (t (setq num (dimension-superscript (list '(diff) '|d| num) nil)
+		    w1 width h1 height d1 depth)))
+     (cond ((atom (setq form (nformat-check (cadr form))))
+	    (setq num (dimension form num '%deriv 'mparen nil 0) w1 (f+ w1 width))
+	    (return (dratio result num w1 h1 d1 den w2 h2 d2)))
+	   (t (setq result (dratio result num w1 h1 d1 den w2 h2 d2) w1 width h1 height d1 depth)
+	      (setq result (dimension form (cons #\space result) '%deriv rop w1 right)
+		    width (f+ 1 w1 width) height (max h1 height) depth (max d1 depth))
+	      (update-heights height depth)
+	      (return result)))))
 
-(DISPLA-DEF %AT DIM-%AT 105. 105.)
+(displa-def %at dim-%at 105. 105.)
 
-(DEFUN DIM-%AT (FORM RESULT)
-  (PROG (EXP  EQS (W 0) (H 0) (D 0))
-    (DECLARE (FIXNUM W H D))
-    (IF (OR (NULL (CDDR FORM)) (CDDDR FORM)) (WNA-ERR (CAAR FORM)))
-    (SETQ EXP (DIMENSION (CADR FORM) RESULT LOP '%AT NIL 0)
-	  W WIDTH H HEIGHT D DEPTH)
-    (SETQ EQS (DIMENSION (COND ((NOT (EQ 'MLIST (CAAR (CADDR FORM)))) (CADDR FORM))
-			       ((NULL (CDDR (CADDR FORM))) (CADR (CADDR FORM)))
-			       (T (CONS '(MCOMMA) (CDADDR FORM))))
-			 NIL 'MPAREN 'MPAREN NIL 0))
-    (COND ((NOT (CHECKFIT (f+ 1 W WIDTH))) (RETURN (DIMENSION-FUNCTION FORM RESULT))))
-    (SETQ RESULT (CONS (CONS 0 (CONS (f- 0 1 D) EQS))
-		       (CONS `(D-VBAR ,(f1+ H) ,(f1+ D) ,(GETCHARN $ABSBOXCHAR 2)) EXP))
-	  WIDTH (f+ 1 W WIDTH) HEIGHT (f1+ H) DEPTH (f+ 1 D DEPTH))
-    (UPDATE-HEIGHTS HEIGHT DEPTH)
-    (RETURN RESULT)))
+(defun dim-%at (form result)
+  (prog (exp  eqs (w 0) (h 0) (d 0))
+     (declare (fixnum w h d))
+     (if (or (null (cddr form)) (cdddr form)) (wna-err (caar form)))
+     (setq exp (dimension (cadr form) result lop '%at nil 0)
+	   w width h height d depth)
+     (setq eqs (dimension (cond ((not (eq 'mlist (caar (caddr form)))) (caddr form))
+				((null (cddr (caddr form))) (cadr (caddr form)))
+				(t (cons '(mcomma) (cdaddr form))))
+			  nil 'mparen 'mparen nil 0))
+     (cond ((not (checkfit (f+ 1 w width))) (return (dimension-function form result))))
+     (setq result (cons (cons 0 (cons (f- 0 1 d) eqs))
+			(cons `(d-vbar ,(f1+ h) ,(f1+ d) ,(getcharn $absboxchar 2)) exp))
+	   width (f+ 1 w width) height (f1+ h) depth (f+ 1 d depth))
+     (update-heights height depth)
+     (return result)))
 
-(DISPLA-DEF MMINUS DIMENSION-PREFIX "- ")
-(DISPLA-DEF MPLUS  DIM-MPLUS)
-(DEFPROP MUNARYPLUS (#\+ #\SPACE) DISSYM)
+(displa-def mminus dimension-prefix "- ")
+(displa-def mplus  dim-mplus)
+(defprop munaryplus (#\+ #\space) dissym)
 
-(DEFUN DIM-MPLUS (FORM RESULT)
+(defun dim-mplus (form result)
   ;; If only 0 or 1 arguments, then print "+"() or +A
-  (COND ((AND (NULL (CDDR FORM))
-	      (NOT (MEMQ (CADAR FORM) '(TRUNC EXACT))))
-	 (IF (NULL (CDR FORM))
-	     (DIMENSION-FUNCTION FORM RESULT)
-	     (DIMENSION-PREFIX (CONS '(MUNARYPLUS) (CDR FORM)) RESULT)))
-	(T (SETQ RESULT (DIMENSION (CADR FORM) RESULT LOP 'MPLUS 0 0))
-	   (CHECKBREAK RESULT WIDTH)
-	   (DO ((L (CDDR FORM) (CDR L))
-		(W WIDTH) (H HEIGHT) (D DEPTH)
-		(TRUNC (MEMQ 'TRUNC (CDAR FORM))) (DISSYM))
-	       ((NULL L) (COND (TRUNC (SETQ WIDTH (f+ 8 W) HEIGHT H DEPTH D)
-				      (PUSH-STRING " + . . ." RESULT)))
-			 RESULT)
-	       (DECLARE (FIXNUM W H D))
-	       (IF (MMMINUSP (CAR L))
-		   (SETQ DISSYM '(#\SPACE #\- #\SPACE) FORM (CADAR L))
-		   (SETQ DISSYM '(#\SPACE #\+ #\SPACE) FORM (CAR L)))
-	       (COND ((AND (NOT TRUNC) (NULL (CDR L)))
-		      (SETQ RESULT (DIMENSION FORM (APPEND DISSYM RESULT)
-					      'MPLUS ROP (f+ 3 W) RIGHT)
-			    WIDTH (f+ 3 W WIDTH)
-			    HEIGHT (MAX H HEIGHT)
-			    DEPTH (MAX D DEPTH))
-		      (RETURN RESULT))
-		     (T (SETQ RESULT
-			      (DIMENSION FORM (APPEND DISSYM RESULT)
-					 'MPLUS 'MPLUS (f+ 3 W) 0)
-			      W (f+ 3 W WIDTH)
-			      H (MAX H HEIGHT)
-			      D (MAX D DEPTH))
-			(CHECKBREAK RESULT W)))))))
+  (cond ((and (null (cddr form))
+	      (not (memq (cadar form) '(trunc exact))))
+	 (if (null (cdr form))
+	     (dimension-function form result)
+	     (dimension-prefix (cons '(munaryplus) (cdr form)) result)))
+	(t (setq result (dimension (cadr form) result lop 'mplus 0 0))
+	   (checkbreak result width)
+	   (do ((l (cddr form) (cdr l))
+		(w width) (h height) (d depth)
+		(trunc (memq 'trunc (cdar form))) (dissym))
+	       ((null l) (cond (trunc (setq width (f+ 8 w) height h depth d)
+				      (push-string " + . . ." result)))
+		result)
+	     (declare (fixnum w h d))
+	     (if (mmminusp (car l))
+		 (setq dissym '(#\space #\- #\space) form (cadar l))
+		 (setq dissym '(#\space #\+ #\space) form (car l)))
+	     (cond ((and (not trunc) (null (cdr l)))
+		    (setq result (dimension form (append dissym result)
+					    'mplus rop (f+ 3 w) right)
+			  width (f+ 3 w width)
+			  height (max h height)
+			  depth (max d depth))
+		    (return result))
+		   (t (setq result
+			    (dimension form (append dissym result)
+				       'mplus 'mplus (f+ 3 w) 0)
+			    w (f+ 3 w width)
+			    h (max h height)
+			    d (max d depth))
+		      (checkbreak result w)))))))
 
-(DISPLA-DEF %SUM   DIM-%SUM 110.)
-(DISPLA-DEF %LIMIT DIM-%LIMIT 90. 90.)
+(displa-def %sum   dim-%sum 110.)
+(displa-def %limit dim-%limit 90. 90.)
 
-(DISPLA-DEF %LSUM   DIM-%LSUM 110.)
-(DEFUN DIM-%LSUM (FORM RESULT) (DSUMPROD FORM RESULT '(D-SUMSIGN) 4 3 2))
-(DEFUN DIM-%SUM (FORM RESULT) (DSUMPROD FORM RESULT '(D-SUMSIGN) 4 3 2))
+(displa-def %lsum   dim-%lsum 110.)
+(defun dim-%lsum (form result) (dsumprod form result '(d-sumsign) 4 3 2))
+(defun dim-%sum (form result) (dsumprod form result '(d-sumsign) 4 3 2))
 
-(DEFUN DIM-%LIMIT (FORM RESULT)
-  (PROG ((W 0) (H 0) (D 0) DUMMY) (DECLARE (FIXNUM W H D))
-	(IF (NULL (CDDR FORM)) (RETURN (DIMENSION-FUNCTION FORM RESULT)))
-	(IF (NULL (CDDDR FORM)) (WNA-ERR (CAAR FORM)))
-	(SETQ DUMMY (DIMENSION (THIRD FORM) NIL 'MPAREN 'MPAREN NIL 0)
-	      W WIDTH H HEIGHT D DEPTH)
-	(PUSH-STRING " -> " DUMMY)
-	(SETQ DUMMY (DIMENSION (FOURTH FORM) DUMMY 'MPAREN 'MPAREN NIL 0)
-	      W (f+ 4 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))
-	(COND ((NULL (CDDDDR FORM)))
-	      ((EQ '$PLUS (FIFTH FORM))
-	       (PUSH #\+ DUMMY)
-	       (INCREMENT W))
-	      (T (PUSH #\- DUMMY)
-		 (INCREMENT W)))
-	(PUSH-STRING "limit" RESULT)
-	(SETQ DUMMY (CONS (LIST* -5 (f- H) DUMMY) RESULT) D (f+ H D))
-	(UPDATE-HEIGHTS 1 D)
-	(SETQ DUMMY (DIMENSION (CADR FORM) (CONS '(1 0) DUMMY) '%LIMIT ROP (f1+ W) RIGHT))
-	(SETQ WIDTH (f+ 1 W WIDTH) DEPTH (MAX D DEPTH))
-	(RETURN DUMMY)))
+(defun dim-%limit (form result)
+  (prog ((w 0) (h 0) (d 0) dummy) (declare (fixnum w h d))
+	(if (null (cddr form)) (return (dimension-function form result)))
+	(if (null (cdddr form)) (wna-err (caar form)))
+	(setq dummy (dimension (third form) nil 'mparen 'mparen nil 0)
+	      w width h height d depth)
+	(push-string " -> " dummy)
+	(setq dummy (dimension (fourth form) dummy 'mparen 'mparen nil 0)
+	      w (f+ 4 w width) h (max h height) d (max d depth))
+	(cond ((null (cddddr form)))
+	      ((eq '$plus (fifth form))
+	       (push #\+ dummy)
+	       (increment w))
+	      (t (push #\- dummy)
+		 (increment w)))
+	(push-string "limit" result)
+	(setq dummy (cons (list* -5 (f- h) dummy) result) d (f+ h d))
+	(update-heights 1 d)
+	(setq dummy (dimension (cadr form) (cons '(1 0) dummy) '%limit rop (f1+ w) right))
+	(setq width (f+ 1 w width) depth (max d depth))
+	(return dummy)))
 
 ;; Some scheme needs to be worked out to allow use of mathematical character
 ;; sets on consoles which have them.
 
-(DISPLA-DEF MARROW    DIMENSION-INFIX  " -> " 80. 80.)
-(DISPLA-DEF MGREATERP DIMENSION-INFIX  " > ")
-(DISPLA-DEF MGEQP     DIMENSION-INFIX  " >= ")
-(DISPLA-DEF MEQUAL    DIMENSION-INFIX  " = ")
-(DISPLA-DEF MNOTEQUAL DIMENSION-INFIX  " # ")
-(DISPLA-DEF MLEQP     DIMENSION-INFIX  " <= ")
-(DISPLA-DEF MLESSP    DIMENSION-INFIX  " < ")
-(DISPLA-DEF MNOT      DIMENSION-PREFIX "NOT ")
-(DISPLA-DEF MAND      DIMENSION-NARY   " AND ")
-(DISPLA-DEF MOR	      DIMENSION-NARY   " OR ")
-(DISPLA-DEF MCOND     DIM-MCOND)
+(displa-def marrow    dimension-infix  " -> " 80. 80.)
+(displa-def mgreaterp dimension-infix  " > ")
+(displa-def mgeqp     dimension-infix  " >= ")
+(displa-def mequal    dimension-infix  " = ")
+(displa-def mnotequal dimension-infix  " # ")
+(displa-def mleqp     dimension-infix  " <= ")
+(displa-def mlessp    dimension-infix  " < ")
+(displa-def mnot      dimension-prefix "NOT ")
+(displa-def mand      dimension-nary   " AND ")
+(displa-def mor	      dimension-nary   " OR ")
+(displa-def mcond     dim-mcond)
 
-(DEFUN DIM-MCOND (FORM RESULT)
-  (PROG ((W 0) (H 0) (D 0))	(DECLARE (FIXNUM W H D))
-    (PUSH-STRING "IF " RESULT)
-    (SETQ RESULT (DIMENSION (CADR FORM) RESULT 'MCOND 'MPAREN 3 0)
-	  W (f+ 3 WIDTH) H HEIGHT D DEPTH)
-    (CHECKBREAK RESULT W)
-    (PUSH-STRING " THEN " RESULT)
-    (SETQ RESULT (DIMENSION (CADDR FORM) RESULT 'MCOND 'MPAREN (f+ 6 W) 0)
-	  W (f+ 6 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))
-    (UNLESS (EQ '$FALSE (FIFTH FORM))
-	    (CHECKBREAK RESULT W)
-	    (PUSH-STRING " ELSE " RESULT)
-	    (SETQ RESULT (DIMENSION (FIFTH FORM) RESULT 'MCOND ROP (f+ 6 W) RIGHT)
-		  W (f+ 6 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH)))
-    (SETQ WIDTH W HEIGHT H DEPTH D)
-    (RETURN RESULT)))
-
-
-(DISPLA-DEF MDO DIM-MDO)
-
-(DEFUN DIM-MDO (FORM RESULT)
- (PROG ((W 0) (H 0) (D 0) BRKFLAG) (DECLARE (FIXNUM W H D))
-   (COND ((NOT (NULL (CADR FORM)))
-	  (PUSH-STRING "FOR " RESULT)
-	  (SETQ RESULT (CONS #\SPACE (DIMENSION (CADR FORM) RESULT 'MDO 'MPAREN 4 RIGHT))
-		W (f+ 4 WIDTH) H HEIGHT D DEPTH BRKFLAG T)))
-   (COND ((OR (NULL (CADDR FORM)) (EQUAL 1 (CADDR FORM))))
-	 (T (PUSH-STRING "FROM " RESULT)
-	    (SETQ RESULT
-		  (CONS #\SPACE (DIMENSION (CADDR FORM) RESULT 'MDO 'MPAREN (f+ 6 W) 0))
-		  W (f+ 6 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))))
-   (SETQ FORM (CDDDR FORM))
-   (COND ((EQUAL 1 (CAR FORM)))
-	 ((NOT (NULL (CAR FORM)))
-	  (PUSH-STRING "STEP " RESULT)
-	  (SETQ RESULT (CONS #\SPACE (DIMENSION (CAR FORM) RESULT 'MDO 'MPAREN (f+ 6 W) 0))
-		W (f+ 6 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH)))
-	 ((NOT (NULL (CADR FORM)))
-	  (PUSH-STRING "NEXT " RESULT)
-	  (SETQ RESULT (CONS #\SPACE (DIMENSION (CADR FORM) RESULT 'MDO 'MPAREN (f+ 6 W) 0))
-		W (f+ 6 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))))
-   (COND ((NOT (NULL (CADDR FORM)))
-	  (PUSH-STRING "THRU " RESULT)
-	  (SETQ RESULT (CONS #\SPACE (DIMENSION (CADDR FORM) RESULT 'MDO 'MPAREN (f+ 6 W) 0))
-		W (f+ 6 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH) BRKFLAG T)))
-   (COND ((NOT (NULL (CADDDR FORM)))
-	  (COND ((AND (NOT (ATOM (CADDDR FORM))) (EQ (CAAR (CADDDR FORM)) 'MNOT))
-		 (PUSH-STRING "WHILE " RESULT)
-		 (SETQ RESULT
-		       (CONS #\SPACE (DIMENSION (CADR (CADDDR FORM)) RESULT 'MDO 'MPAREN (f+ 7 W) 0))
-		       W (f+ 7 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH)))
-		(T (PUSH-STRING "UNLESS " RESULT)
-		   (SETQ RESULT
-			 (CONS #\SPACE (DIMENSION (CADDDR FORM) RESULT 'MDO 'MPAREN (f+ 8 W) 0))
-			 W (f+ 8 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))))))
-   (IF BRKFLAG (CHECKBREAK RESULT W))
-   (PUSH-STRING "DO " RESULT)
-   (SETQ RESULT (DIMENSION (CAR (CDDDDR FORM)) RESULT 'MDO ROP (f+ 4 W) RIGHT)
-	 WIDTH (f+ 4 W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
-   (RETURN RESULT)))
+(defun dim-mcond (form result)
+  (prog ((w 0) (h 0) (d 0))	(declare (fixnum w h d))
+	(push-string "IF " result)
+	(setq result (dimension (cadr form) result 'mcond 'mparen 3 0)
+	      w (f+ 3 width) h height d depth)
+	(checkbreak result w)
+	(push-string " THEN " result)
+	(setq result (dimension (caddr form) result 'mcond 'mparen (f+ 6 w) 0)
+	      w (f+ 6 w width) h (max h height) d (max d depth))
+	(unless (eq '$false (fifth form))
+	  (checkbreak result w)
+	  (push-string " ELSE " result)
+	  (setq result (dimension (fifth form) result 'mcond rop (f+ 6 w) right)
+		w (f+ 6 w width) h (max h height) d (max d depth)))
+	(setq width w height h depth d)
+	(return result)))
 
 
-(DISPLA-DEF MDOIN DIM-MDOIN)
+(displa-def mdo dim-mdo)
 
-(DEFUN DIM-MDOIN (FORM RESULT)
-  (PROG ((W 0) (H 0)  ( D 0)) (DECLARE (FIXNUM W H D))
-	(PUSH-STRING "FOR " RESULT)
-	(SETQ RESULT (DIMENSION (CADR FORM) RESULT 'MDO 'MPAREN 4 0)
-	      W (f+ 4 WIDTH) H HEIGHT D DEPTH)
-	(PUSH-STRING " IN " RESULT)
-	(SETQ RESULT (DIMENSION (CADDR FORM) RESULT 'MDO 'MPAREN (f+ 4 W) 0)
-	      W (f+ 4 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))
-	(SETQ FORM (CDR (CDDDDR FORM)))
-	(COND ((NOT (NULL (CAR FORM)))
-	       (PUSH-STRING " THRU " RESULT)
-	       (SETQ RESULT (DIMENSION (CAR FORM) RESULT 'MDO 'MPAREN (f+ 6 W) 0)
-		     W (f+ 6 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))))
-	(COND ((NOT (NULL (CADR FORM)))
-	       (PUSH-STRING " UNLESS " RESULT)
-	       (SETQ RESULT (DIMENSION (CADR FORM) RESULT 'MDO 'MPAREN (f+ 8 W) 0)
-		     W (f+ 8 W WIDTH) H (MAX H HEIGHT) D (MAX D DEPTH))))
-	(PUSH-STRING " DO " RESULT)
-	(SETQ RESULT (DIMENSION (CADDR FORM) RESULT 'MDO ROP (f+ 4 W) RIGHT)
-	      WIDTH (f+ 4 W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
-	(RETURN RESULT)))
-
-(DISPLA-DEF MPROGN DIMENSION-MATCH "(" ")")
-(DISPLA-DEF MLIST  DIMENSION-MATCH "[" "]")
-(DISPLA-DEF MANGLE DIMENSION-MATCH "<" ">")
-(DISPLA-DEF MCOMMA DIMENSION-NARY  ", " 20. 20.)
-(DISPLA-DEF MABS   DIM-MABS)
-
-(DEFUN DIM-MABS (FORM RESULT &AUX ARG BAR)
-  (SETQ ARG (DIMENSION (CADR FORM) NIL 'MPAREN 'MPAREN NIL 0))
-  (COND ((OR (> (f+ 2 WIDTH) LINEL) (AND (= 1 HEIGHT) (= 0 DEPTH)))
-	 (DIMENSION-FUNCTION FORM RESULT))
-	(T (SETQ WIDTH (f+ 2 WIDTH))
-	   (UPDATE-HEIGHTS HEIGHT DEPTH)
-	   (SETQ BAR `(D-VBAR ,HEIGHT ,DEPTH ,(GETCHARN $ABSBOXCHAR 2)))
-	   (CONS BAR (NCONC ARG (CONS BAR RESULT))))))
-
-(DISPLA-DEF $MATRIX DIM-$MATRIX)
-
-(DEFUN DIM-$MATRIX (FORM RESULT)
-  (PROG (DMSTR RSTR CSTR consp)
-    (IF (OR (NULL (CDR FORM))
-	    (NOT (MEMQ 'SIMP (CDAR FORM)))
-	    (MEMALIKE '((MLIST SIMP)) (CDR FORM))
-	    (DOLIST (ROW (CDR FORM)) (IF (NOT ($LISTP ROW)) (RETURN T))))
-	(RETURN (DIMENSION-FUNCTION FORM RESULT)))
-    (DO ((L (CDADR FORM) (CDR L))) ((NULL L))
-	(SETQ DMSTR (CONS NIL DMSTR) CSTR (CONS 0 CSTR)))
-    (DO ((R (CDR FORM) (CDR R)) (H1 0) (D1 0))
-	((OR consp (NULL R))
-	 (SETQ WIDTH 0)
-	 (DO ((CS CSTR (CDR CS))) ((NULL CS)) (SETQ WIDTH (f+ 2 (CAR CS) WIDTH)))
-	 (SETQ H1 (f1- (f+ H1 D1)) DEPTH (// H1 2) HEIGHT (f- H1 DEPTH)))
-	(DECLARE (FIXNUM H1 D1))
-	(DO ((C (CDAR R) (CDR C))
-	     (NC DMSTR (CDR NC))
-	     (CS CSTR (CDR CS)) (DUMMY) (H2 0) (D2 0))
-	    ((NULL C) (SETQ D1 (f+ D1 H1 H2) H1 (f1+ D2)))
-	    (DECLARE (FIXNUM H2 D2))
-	    (SETQ DUMMY (DIMENSION (CAR C) NIL 'MPAREN 'MPAREN NIL 0)
-		  H2 (MAX H2 HEIGHT) D2 (MAX D2 DEPTH))
-	    (COND ((NOT (CHECKFIT (f+ 14. WIDTH))) (SETQ consp T) (RETURN NIL))
-		  (T (RPLACA NC (CONS (LIST* WIDTH HEIGHT DEPTH DUMMY) (CAR NC)))
-		     (RPLACA CS (MAX WIDTH (CAR CS))))))
-	(SETQ RSTR (CONS D1 RSTR)))
-    (IF (> (f+ HEIGHT DEPTH)
-	   (LINEARRAY-DIM)
-	   )
-	(SETQ consp T))
-    (RETURN
-     (COND ((AND (NOT consp) (CHECKFIT (f+ 2 WIDTH)))
-	    (MATOUT DMSTR CSTR RSTR RESULT))
-	   ((AND (NOT consp) (<= LEVEL 2)) (COLOUT DMSTR CSTR RESULT))
-	   (T (DIMENSION-FUNCTION FORM RESULT))))))
-
-(DEFUN MATOUT (DMSTR CSTR RSTR RESULT)
-  (PUSH `(D-MATRIX LEFT ,HEIGHT ,DEPTH) RESULT)
-  (PUSH #\SPACE RESULT)
-  (DO ((D DMSTR (CDR D)) (C CSTR (CDR C)) (W 0 0)) ((NULL D))
-      (DECLARE (FIXNUM W))
-      (DO ((D (CAR D) (CDR D)) (R RSTR (CDR R))) ((NULL D))
-	  (RPLACA (CDDAR D) (f- HEIGHT (CAR R)))
-	  (RPLACA (CDAR D) (f- (// (f- (CAR C) (CAAR D)) 2) W))
-	  (SETQ W (// (f+ (CAR C) (CAAR D)) 2))
-	  (RPLACA D (CDAR D)))
-      (SETQ RESULT (CONS (LIST (f+ 2 (f- (CAR C) W)) 0) (NRECONC (CAR D) RESULT))))
-  (SETQ WIDTH (f+ 2 WIDTH))
-  (UPDATE-HEIGHTS HEIGHT DEPTH)
-  (RPLACA (CAR RESULT) (f1- (CAAR RESULT)))
-  (PUSH `(D-MATRIX RIGHT ,HEIGHT ,DEPTH) RESULT)
-  RESULT)
-
-(DEFUN COLOUT (DMSTR CSTR RESULT)
-  (SETQ WIDTH 0 HEIGHT 1 DEPTH 0)
-  (DO ((R DMSTR (CDR R)) (C CSTR (CDR C)) (COL 1 (f1+ COL)) (W 0 0) (H -1 -1) (D 0))
-      ((NULL R))
-      (DECLARE (FIXNUM COL W H D))
-      (PUSH-STRING " Col " RESULT)
-      (SETQ RESULT (NRECONC (EXPLODEN COL) RESULT))
-      (PUSH-STRING " = " RESULT)
-      (SETQ WIDTH (f+ 8 (FLATC COL) WIDTH))
-      (DO ((R (CAR R) (CDR R))) ((NULL R))
-	  (SETQ H (f+ 1 H (CADAR R) (CADDAR R)))
-	  (RPLACA (CDDAR R) (f- H (CADAR R)))
-	  (RPLACA (CDAR R) (f- (// (f- (CAR C) (CAAR R)) 2) W))
-	  (SETQ W (// (f+ (CAR C) (CAAR R)) 2))
-	  (RPLACA R (CDAR R)))
-      (SETQ D (// H 2) H (f- H D))
-      (PUSH `(D-MATRIX LEFT ,H ,D) RESULT)
-      (PUSH #\SPACE RESULT)
-      (PUSH `(0 ,(f- D) . ,(NREVERSE (CAR R))) RESULT)
-      (PUSH `(,(f1+ (f- (CAR C) W)) 0) RESULT)
-      (PUSH `(D-MATRIX RIGHT ,H ,D) RESULT)
-      (SETQ WIDTH (f+ 4 (CAR C) WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
-      (UPDATE-HEIGHTS H D)
-      (CHECKBREAK RESULT WIDTH))
-  RESULT)
-
-(DISPLA-DEF MBOX DIM-MBOX)
-
-(DEFUN DIM-MBOX (FORM RESULT &AUX DUMMY)
-  (SETQ DUMMY (DIMENSION (CADR FORM) NIL 'MPAREN 'MPAREN NIL 0))
-  (COND ((NOT (CHECKFIT (f+ 2 WIDTH)))
-	 (DIMENSION-FUNCTION (CONS '($BOX) (CDR FORM)) RESULT))
-	(T (PUSH `(D-BOX ,HEIGHT ,DEPTH ,WIDTH ,(NREVERSE DUMMY)) RESULT)
-	   (SETQ WIDTH (f+ 2 WIDTH) HEIGHT (f1+ HEIGHT) DEPTH (f1+ DEPTH))
-	   (UPDATE-HEIGHTS HEIGHT DEPTH)
-	   RESULT)))
-
-(DISPLA-DEF MLABOX DIM-MLABOX)
-
-(DEFUN DIM-MLABOX (FORM RESULT)
-  (PROG (DUMMY CH)
-    (SETQ DUMMY (DIMENSION (CADR FORM) NIL 'MPAREN 'MPAREN NIL 0))
-    (COND ((NOT (CHECKFIT (f+ 2 WIDTH)))
-	   (RETURN (DIMENSION-FUNCTION (CONS '($BOX) (CDR FORM)) RESULT))))
-    (SETQ WIDTH (f+ 2 WIDTH) HEIGHT (f1+ HEIGHT) DEPTH (f1+ DEPTH))
-    (SETQ CH (GETCHARN $BOXCHAR 2))
-    (SETQ RESULT
-	  (CONS (DO ((L (MAPCAR #'(LAMBDA (L) (GETCHARN L 1))
-				(MAKSTRING (CADDR FORM))) (CDR L))
-		     (W 0) (NL))
-		    ((OR (NULL L) (= WIDTH W))
-		     (CONS 0 (CONS (f1- HEIGHT)
-				   (COND ((< W WIDTH)
-					  (CONS `(D-HBAR ,(f- WIDTH W) ,CH) NL))
-					 (T NL)))))
-			   (DECLARE (FIXNUM W))
-			   (SETQ NL (CONS (CAR L) NL) W (f1+ W)))
-		       RESULT))
-    (SETQ RESULT (NCONC DUMMY (LIST* `(D-VBAR ,(f1- HEIGHT) ,(f1- DEPTH) ,CH)
-				     (LIST (f- WIDTH) 0) RESULT)))
-    (SETQ RESULT (CONS (LIST (f- 1 WIDTH) (f- DEPTH) `(D-HBAR ,WIDTH ,CH)) RESULT))
-    (SETQ RESULT (LIST* `(D-VBAR ,(f1- HEIGHT) ,(f1- DEPTH) ,CH) '(-1 0) RESULT))
-    (UPDATE-HEIGHTS HEIGHT DEPTH)
-    (RETURN RESULT)))
-
-(DISPLA-DEF MTEXT DIM-MTEXT 1 1)
-
-(DEFUN DIM-MTEXT (FORM RESULT)
-  (IF (NULL (CDDR FORM)) (DIMENSION (CADR FORM) RESULT LOP ROP 0 0)
-      (DIMENSION-NARY FORM RESULT)))
-
-(DISPLA-DEF MLABLE DIM-MLABEL 0 0)
-
-(DEFUN DIM-MLABEL (FORM RESULT)
-  (PROG (DUMMY (W 0) (H 0) (D 0)) (DECLARE (FIXNUM W H D))
-    (COND ((EQ NIL (CADR FORM)) (SETQ W 0 H 0 D 0))
-	  (MRATP (SETQ RESULT (APPEND MRATP (DIMENSION-PAREN (CADR FORM) RESULT))
-		       W (f+ 4 WIDTH) H HEIGHT D DEPTH))
-	  (T (SETQ RESULT (CONS #\SPACE (DIMENSION-PAREN (CADR FORM) RESULT))
-		   W (f1+ WIDTH) H HEIGHT D DEPTH)))
-    (LET ((LEVEL LINEL)) (CHECKBREAK RESULT W))
-    (SETQ DUMMY (LIST 0 0))
-    (SETQ RESULT (DIMENSION (CADDR FORM) (CONS DUMMY RESULT) 'MLABLE ROP W RIGHT))
-    (COND ((AND (NOT $LEFTJUST) (= 0 BKPTOUT))
-	   (RPLACA DUMMY (MAX 0 (f- (// (f- LINEL WIDTH) 2) W)))
-	   (SETQ WIDTH (f+ (CAR DUMMY) WIDTH))))
-    (SETQ WIDTH (f+ W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
-    (RETURN RESULT)))
-
-(DEFPROP MPAREN -1. LBP)
-(DEFPROP MPAREN -1. RBP)
+(defun dim-mdo (form result)
+  (prog ((w 0) (h 0) (d 0) brkflag) (declare (fixnum w h d))
+	(cond ((not (null (cadr form)))
+	       (push-string "FOR " result)
+	       (setq result (cons #\space (dimension (cadr form) result 'mdo 'mparen 4 right))
+		     w (f+ 4 width) h height d depth brkflag t)))
+	(cond ((or (null (caddr form)) (equal 1 (caddr form))))
+	      (t (push-string "FROM " result)
+		 (setq result
+		       (cons #\space (dimension (caddr form) result 'mdo 'mparen (f+ 6 w) 0))
+		       w (f+ 6 w width) h (max h height) d (max d depth))))
+	(setq form (cdddr form))
+	(cond ((equal 1 (car form)))
+	      ((not (null (car form)))
+	       (push-string "STEP " result)
+	       (setq result (cons #\space (dimension (car form) result 'mdo 'mparen (f+ 6 w) 0))
+		     w (f+ 6 w width) h (max h height) d (max d depth)))
+	      ((not (null (cadr form)))
+	       (push-string "NEXT " result)
+	       (setq result (cons #\space (dimension (cadr form) result 'mdo 'mparen (f+ 6 w) 0))
+		     w (f+ 6 w width) h (max h height) d (max d depth))))
+	(cond ((not (null (caddr form)))
+	       (push-string "THRU " result)
+	       (setq result (cons #\space (dimension (caddr form) result 'mdo 'mparen (f+ 6 w) 0))
+		     w (f+ 6 w width) h (max h height) d (max d depth) brkflag t)))
+	(cond ((not (null (cadddr form)))
+	       (cond ((and (not (atom (cadddr form))) (eq (caar (cadddr form)) 'mnot))
+		      (push-string "WHILE " result)
+		      (setq result
+			    (cons #\space (dimension (cadr (cadddr form)) result 'mdo 'mparen (f+ 7 w) 0))
+			    w (f+ 7 w width) h (max h height) d (max d depth)))
+		     (t (push-string "UNLESS " result)
+			(setq result
+			      (cons #\space (dimension (cadddr form) result 'mdo 'mparen (f+ 8 w) 0))
+			      w (f+ 8 w width) h (max h height) d (max d depth))))))
+	(if brkflag (checkbreak result w))
+	(push-string "DO " result)
+	(setq result (dimension (car (cddddr form)) result 'mdo rop (f+ 4 w) right)
+	      width (f+ 4 w width) height (max h height) depth (max d depth))
+	(return result)))
 
 
-(DEFUN CHECKRAT (FORM)
-  (COND ((ATOM FORM) NIL)
-	((AND (NOT (ATOM (CAR FORM))) (EQ (CAAR FORM) 'MRAT))
-	 (IF (MEMQ 'TRUNC (CDAR FORM)) '(#\SPACE #.FORWARD-SLASH-CHAR #\T #.FORWARD-SLASH-CHAR)
-				       '(#\SPACE #.FORWARD-SLASH-CHAR #\R #.FORWARD-SLASH-CHAR)))
-	((AND (NOT (ATOM (CAR FORM))) (EQ (CAAR FORM) 'MPOIS))
-	 '(#\space #.forward-slash-char #\P #.FORWARD-SLASH-CHAR))
-	(T (DO ((L (CDR FORM) (CDR L))) ((NULL L))
-	       (COND ((ATOM L)
-		      (MERROR "~S has an atomic cdr - DISPLAY" FORM))
-		     ((SETQ FORM (CHECKRAT (CAR L))) (RETURN FORM)))))))
+(displa-def mdoin dim-mdoin)
+
+(defun dim-mdoin (form result)
+  (prog ((w 0) (h 0)  ( d 0)) (declare (fixnum w h d))
+	(push-string "FOR " result)
+	(setq result (dimension (cadr form) result 'mdo 'mparen 4 0)
+	      w (f+ 4 width) h height d depth)
+	(push-string " IN " result)
+	(setq result (dimension (caddr form) result 'mdo 'mparen (f+ 4 w) 0)
+	      w (f+ 4 w width) h (max h height) d (max d depth))
+	(setq form (cdr (cddddr form)))
+	(cond ((not (null (car form)))
+	       (push-string " THRU " result)
+	       (setq result (dimension (car form) result 'mdo 'mparen (f+ 6 w) 0)
+		     w (f+ 6 w width) h (max h height) d (max d depth))))
+	(cond ((not (null (cadr form)))
+	       (push-string " UNLESS " result)
+	       (setq result (dimension (cadr form) result 'mdo 'mparen (f+ 8 w) 0)
+		     w (f+ 8 w width) h (max h height) d (max d depth))))
+	(push-string " DO " result)
+	(setq result (dimension (caddr form) result 'mdo rop (f+ 4 w) right)
+	      width (f+ 4 w width) height (max h height) depth (max d depth))
+	(return result)))
+
+(displa-def mprogn dimension-match "(" ")")
+(displa-def mlist  dimension-match "[" "]")
+(displa-def mangle dimension-match "<" ">")
+(displa-def mcomma dimension-nary  ", " 20. 20.)
+(displa-def mabs   dim-mabs)
+
+(defun dim-mabs (form result &aux arg bar)
+  (setq arg (dimension (cadr form) nil 'mparen 'mparen nil 0))
+  (cond ((or (> (f+ 2 width) linel) (and (= 1 height) (= 0 depth)))
+	 (dimension-function form result))
+	(t (setq width (f+ 2 width))
+	   (update-heights height depth)
+	   (setq bar `(d-vbar ,height ,depth ,(getcharn $absboxchar 2)))
+	   (cons bar (nconc arg (cons bar result))))))
+
+(displa-def $matrix dim-$matrix)
+
+(defun dim-$matrix (form result)
+  (prog (dmstr rstr cstr consp)
+     (if (or (null (cdr form))
+	     (not (memq 'simp (cdar form)))
+	     (memalike '((mlist simp)) (cdr form))
+	     (dolist (row (cdr form)) (if (not ($listp row)) (return t))))
+	 (return (dimension-function form result)))
+     (do ((l (cdadr form) (cdr l))) ((null l))
+       (setq dmstr (cons nil dmstr) cstr (cons 0 cstr)))
+     (do ((r (cdr form) (cdr r)) (h1 0) (d1 0))
+	 ((or consp (null r))
+	  (setq width 0)
+	  (do ((cs cstr (cdr cs))) ((null cs)) (setq width (f+ 2 (car cs) width)))
+	  (setq h1 (f1- (f+ h1 d1)) depth (// h1 2) height (f- h1 depth)))
+       (declare (fixnum h1 d1))
+       (do ((c (cdar r) (cdr c))
+	    (nc dmstr (cdr nc))
+	    (cs cstr (cdr cs)) (dummy) (h2 0) (d2 0))
+	   ((null c) (setq d1 (f+ d1 h1 h2) h1 (f1+ d2)))
+	 (declare (fixnum h2 d2))
+	 (setq dummy (dimension (car c) nil 'mparen 'mparen nil 0)
+	       h2 (max h2 height) d2 (max d2 depth))
+	 (cond ((not (checkfit (f+ 14. width))) (setq consp t) (return nil))
+	       (t (rplaca nc (cons (list* width height depth dummy) (car nc)))
+		  (rplaca cs (max width (car cs))))))
+       (setq rstr (cons d1 rstr)))
+     (if (> (f+ height depth)
+	    (linearray-dim)
+	    )
+	 (setq consp t))
+     (return
+       (cond ((and (not consp) (checkfit (f+ 2 width)))
+	      (matout dmstr cstr rstr result))
+	     ((and (not consp) (<= level 2)) (colout dmstr cstr result))
+	     (t (dimension-function form result))))))
+
+(defun matout (dmstr cstr rstr result)
+  (push `(d-matrix left ,height ,depth) result)
+  (push #\space result)
+  (do ((d dmstr (cdr d)) (c cstr (cdr c)) (w 0 0)) ((null d))
+    (declare (fixnum w))
+    (do ((d (car d) (cdr d)) (r rstr (cdr r))) ((null d))
+      (rplaca (cddar d) (f- height (car r)))
+      (rplaca (cdar d) (f- (// (f- (car c) (caar d)) 2) w))
+      (setq w (// (f+ (car c) (caar d)) 2))
+      (rplaca d (cdar d)))
+    (setq result (cons (list (f+ 2 (f- (car c) w)) 0) (nreconc (car d) result))))
+  (setq width (f+ 2 width))
+  (update-heights height depth)
+  (rplaca (car result) (f1- (caar result)))
+  (push `(d-matrix right ,height ,depth) result)
+  result)
+
+(defun colout (dmstr cstr result)
+  (setq width 0 height 1 depth 0)
+  (do ((r dmstr (cdr r)) (c cstr (cdr c)) (col 1 (f1+ col)) (w 0 0) (h -1 -1) (d 0))
+      ((null r))
+    (declare (fixnum col w h d))
+    (push-string " Col " result)
+    (setq result (nreconc (exploden col) result))
+    (push-string " = " result)
+    (setq width (f+ 8 (flatc col) width))
+    (do ((r (car r) (cdr r))) ((null r))
+      (setq h (f+ 1 h (cadar r) (caddar r)))
+      (rplaca (cddar r) (f- h (cadar r)))
+      (rplaca (cdar r) (f- (// (f- (car c) (caar r)) 2) w))
+      (setq w (// (f+ (car c) (caar r)) 2))
+      (rplaca r (cdar r)))
+    (setq d (// h 2) h (f- h d))
+    (push `(d-matrix left ,h ,d) result)
+    (push #\space result)
+    (push `(0 ,(f- d) . ,(nreverse (car r))) result)
+    (push `(,(f1+ (f- (car c) w)) 0) result)
+    (push `(d-matrix right ,h ,d) result)
+    (setq width (f+ 4 (car c) width) height (max h height) depth (max d depth))
+    (update-heights h d)
+    (checkbreak result width))
+  result)
+
+(displa-def mbox dim-mbox)
+
+(defun dim-mbox (form result &aux dummy)
+  (setq dummy (dimension (cadr form) nil 'mparen 'mparen nil 0))
+  (cond ((not (checkfit (f+ 2 width)))
+	 (dimension-function (cons '($box) (cdr form)) result))
+	(t (push `(d-box ,height ,depth ,width ,(nreverse dummy)) result)
+	   (setq width (f+ 2 width) height (f1+ height) depth (f1+ depth))
+	   (update-heights height depth)
+	   result)))
+
+(displa-def mlabox dim-mlabox)
+
+(defun dim-mlabox (form result)
+  (prog (dummy ch)
+     (setq dummy (dimension (cadr form) nil 'mparen 'mparen nil 0))
+     (cond ((not (checkfit (f+ 2 width)))
+	    (return (dimension-function (cons '($box) (cdr form)) result))))
+     (setq width (f+ 2 width) height (f1+ height) depth (f1+ depth))
+     (setq ch (getcharn $boxchar 2))
+     (setq result
+	   (cons (do ((l (mapcar #'(lambda (l) (getcharn l 1))
+				 (makstring (caddr form))) (cdr l))
+		      (w 0) (nl))
+		     ((or (null l) (= width w))
+		      (cons 0 (cons (f1- height)
+				    (cond ((< w width)
+					   (cons `(d-hbar ,(f- width w) ,ch) nl))
+					  (t nl)))))
+		   (declare (fixnum w))
+		   (setq nl (cons (car l) nl) w (f1+ w)))
+		 result))
+     (setq result (nconc dummy (list* `(d-vbar ,(f1- height) ,(f1- depth) ,ch)
+				      (list (f- width) 0) result)))
+     (setq result (cons (list (f- 1 width) (f- depth) `(d-hbar ,width ,ch)) result))
+     (setq result (list* `(d-vbar ,(f1- height) ,(f1- depth) ,ch) '(-1 0) result))
+     (update-heights height depth)
+     (return result)))
+
+(displa-def mtext dim-mtext 1 1)
+
+(defun dim-mtext (form result)
+  (if (null (cddr form)) (dimension (cadr form) result lop rop 0 0)
+      (dimension-nary form result)))
+
+(displa-def mlable dim-mlabel 0 0)
+
+(defun dim-mlabel (form result)
+  (prog (dummy (w 0) (h 0) (d 0)) (declare (fixnum w h d))
+	(cond ((eq nil (cadr form)) (setq w 0 h 0 d 0))
+	      (mratp (setq result (append mratp (dimension-paren (cadr form) result))
+			   w (f+ 4 width) h height d depth))
+	      (t (setq result (cons #\space (dimension-paren (cadr form) result))
+		       w (f1+ width) h height d depth)))
+	(let ((level linel)) (checkbreak result w))
+	(setq dummy (list 0 0))
+	(setq result (dimension (caddr form) (cons dummy result) 'mlable rop w right))
+	(cond ((and (not $leftjust) (= 0 bkptout))
+	       (rplaca dummy (max 0 (f- (// (f- linel width) 2) w)))
+	       (setq width (f+ (car dummy) width))))
+	(setq width (f+ w width) height (max h height) depth (max d depth))
+	(return result)))
+
+(defprop mparen -1. lbp)
+(defprop mparen -1. rbp)
+
+
+(defun checkrat (form)
+  (cond ((atom form) nil)
+	((and (not (atom (car form))) (eq (caar form) 'mrat))
+	 (if (memq 'trunc (cdar form)) '(#\space #.forward-slash-char #\T #.forward-slash-char)
+	     '(#\space #.forward-slash-char #\R #.forward-slash-char)))
+	((and (not (atom (car form))) (eq (caar form) 'mpois))
+	 '(#\space #.forward-slash-char #\P #.forward-slash-char))
+	(t (do ((l (cdr form) (cdr l))) ((null l))
+	     (cond ((atom l)
+		    (merror "~S has an atomic cdr - DISPLAY" form))
+		   ((setq form (checkrat (car l))) (return form)))))))
 
 
 
 
-(DEFUN CHECKFIT (W)
-  (DECLARE (FIXNUM W))
-  (OR (NOT BREAK) (<= (f- (f+ W BREAK RIGHT 1) BKPTWD) LINEL)))
+(defun checkfit (w)
+  (declare (fixnum w))
+  (or (not break) (<= (f- (f+ w break right 1) bkptwd) linel)))
 
-(DEFUN CHECKBREAK (RESULT W)
-  (DECLARE (FIXNUM W))
-  (COND ((NOT BREAK))
-	((> (f- (SETQ W (f+ W BREAK)) BKPTOUT) LINEL)
-	 (IF (OR (NULL BKPT) (EQ RESULT BKPT))
-	     (MERROR "Expression is too wide to be displayed."))
-	 (DO ((L RESULT (CDR L))) ((EQ BKPT (CDR L)) (RPLACD L NIL))
-	   (IF (NULL L) (MERROR "CHECKBREAK not found in DISPLAY")))
-	 (OUTPUT BKPT 0) 
- 	 #-Franz (LET ((#.TTYOFF (OR #.TTYOFF MORE-^W))) (MTERPRI))
+(defun checkbreak (result w)
+  (declare (fixnum w))
+  (cond ((not break))
+	((> (f- (setq w (f+ w break)) bkptout) linel)
+	 (if (or (null bkpt) (eq result bkpt))
+	     (merror "Expression is too wide to be displayed."))
+	 (do ((l result (cdr l))) ((eq bkpt (cdr l)) (rplacd l nil))
+	   (if (null l) (merror "CHECKBREAK not found in DISPLAY")))
+	 (output bkpt 0) 
+ 	 #-franz (let ((#.ttyoff (or #.ttyoff more-^w))) (mterpri))
 
-	 (SETQ LINES (f1+ LINES) BKPT RESULT BKPTOUT BKPTWD BKPTWD W
-	       BKPTHT MAXHT BKPTDP MAXDP BKPTLEVEL LEVEL MAXHT 1 MAXDP 0))
-	((OR (NULL BKPT) (<= LEVEL BKPTLEVEL) (> (// LINEL 2) (f- BKPTWD BKPTOUT)))
-	 (SETQ BKPT RESULT BKPTWD W BKPTLEVEL LEVEL
-	       BKPTHT (MAX MAXHT BKPTHT) BKPTDP (MAX MAXDP BKPTDP) MAXHT 1 MAXDP 0))))
+	 (setq lines (f1+ lines) bkpt result bkptout bkptwd bkptwd w
+	       bkptht maxht bkptdp maxdp bkptlevel level maxht 1 maxdp 0))
+	((or (null bkpt) (<= level bkptlevel) (> (// linel 2) (f- bkptwd bkptout)))
+	 (setq bkpt result bkptwd w bkptlevel level
+	       bkptht (max maxht bkptht) bkptdp (max maxdp bkptdp) maxht 1 maxdp 0))))
 
-(DEFUN FORCEBREAK (RESULT W)
-  (OUTPUT RESULT 0) (MTERPRI)
-  (SETQ LINES (f+ 2 LINES) BKPT NIL BKPTOUT (f+ W BREAK) MAXHT 1 MAXDP 0))
+(defun forcebreak (result w)
+  (output result 0) (mterpri)
+  (setq lines (f+ 2 lines) bkpt nil bkptout (f+ w break) maxht 1 maxdp 0))
 
-(DEFUN UPDATE-HEIGHTS (HT* DP*)
-  (DECLARE (FIXNUM HT* DP*))
-  (IF BREAK (SETQ MAXHT (MAX MAXHT HT*) MAXDP (MAX MAXDP DP*))))
+(defun update-heights (ht* dp*)
+  (declare (fixnum ht* dp*))
+  (if break (setq maxht (max maxht ht*) maxdp (max maxdp dp*))))
 
 ;;; BKPT	dimension structure for last breakpoint saved
 ;;; BKPTWD	width at last bkpt
@@ -1147,33 +1147,33 @@
 ;; flag which is T for linear output and NIL for 2D output.  A
 ;; <drawing function> is also expected to return the new column position.
 
-(DEFUN OUTPUT (RESULT W)
-  (DECLARE (FIXNUM W))
-  #+nocp (if (not (or (OR #.ttyoff MORE-^W)))(fresh-line))
+(defun output (result w)
+  (declare (fixnum w))
+  #+nocp (if (not (or (or #.ttyoff more-^w)))(fresh-line))
   #-nocp
-  (IF (NOT (OR #.ttyoff MORE-^W  (ZEROP (CHARPOS T))))
-      (MTERPRI))
-;  (IF (AND (NOT (OR #.ttyoff MORE-^W))
-;	   SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
-;	   (< (f+ BKPTHT BKPTDP) (f1- TTYHEIGHT))
-;	   ;;If (STATUS TTY) is NIL, then we don't have the console.
-;	   ;#+PDP10 (STATUS TTY)
-;	   (> (f+ BKPTHT BKPTDP) (f- (f1- TTYHEIGHT) (CAR (CURSORPOS)))))
-;      (MORE-FUN T))
-  (COND
-   ;; If output is turned off to the console and no WRITEFILE is taking
-   ;; place, then don't output anything.
-   ((AND (OR #.ttyoff MORE-^W) (NOT #.writefilep)))
-   ;; If the terminal can't do cursor movement, or we are writing 
-   ;; to a WRITEFILE (#.writefilep is on) or the terminal is scrolling or
-   ;; something else random, then draw equations line by line.
-   ((> (f+ BKPTHT BKPTDP) 80.)
-    (MERROR "Expression is too high to be displayed."))
-   ((OR (NOT (AND SMART-TTY $CURSORDISP))
-	#.writefilep SCROLLP (> (f+ BKPTHT BKPTDP) (f- TTYHEIGHT 2)))
-    (OUTPUT-LINEAR (NREVERSE RESULT) W))
-   ;; Otherwise, draw equations in the same order as they are dimensioned.
-   (T (OUTPUT-2D (NREVERSE RESULT) W))))
+  (if (not (or #.ttyoff more-^w  (zerop (charpos t))))
+      (mterpri))
+  ;;  (IF (AND (NOT (OR #.ttyoff MORE-^W))
+  ;;	   SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
+  ;;	   (< (f+ BKPTHT BKPTDP) (f1- TTYHEIGHT))
+  ;;	   ;;If (STATUS TTY) is NIL, then we don't have the console.
+  ;;	   ;#+PDP10 (STATUS TTY)
+  ;;	   (> (f+ BKPTHT BKPTDP) (f- (f1- TTYHEIGHT) (CAR (CURSORPOS)))))
+  ;;      (MORE-FUN T))
+  (cond
+    ;; If output is turned off to the console and no WRITEFILE is taking
+    ;; place, then don't output anything.
+    ((and (or #.ttyoff more-^w) (not #.writefilep)))
+    ;; If the terminal can't do cursor movement, or we are writing 
+    ;; to a WRITEFILE (#.writefilep is on) or the terminal is scrolling or
+    ;; something else random, then draw equations line by line.
+    ((> (f+ bkptht bkptdp) 80.)
+     (merror "Expression is too high to be displayed."))
+    ((or (not (and smart-tty $cursordisp))
+	 #.writefilep scrollp (> (f+ bkptht bkptdp) (f- ttyheight 2)))
+     (output-linear (nreverse result) w))
+    ;; Otherwise, draw equations in the same order as they are dimensioned.
+    (t (output-2d (nreverse result) w))))
 
 ;; Output function for terminals without cursor positioning capability.
 ;; Characters are drawn into LINEARRAY instead.  Each element of LINEARRAY is a
@@ -1183,56 +1183,56 @@
 ;; Block mode i/o isn't needed since PRINC is used instead of TYO and
 ;; CURSORPOS.
 
-(DEFUN OUTPUT-LINEAR (RESULT W)
-  (DECLARE (FIXNUM W))
-  (DRAW-LINEAR RESULT BKPTDP W)
-  (DO (#+PDP10 (TERPRI T) (I (f1- (f+ BKPTHT BKPTDP)) (f1- I)))
-      ((< I 0))
-      (DECLARE (FIXNUM I))
-      (COND ((NULL (LINEARRAY I)))
-	    (MORE-^W (SAFE-PRINT (OUTPUT-LINEAR-ONE-LINE I)))
-	    (T (OUTPUT-LINEAR-ONE-LINE I)))))
+(defun output-linear (result w)
+  (declare (fixnum w))
+  (draw-linear result bkptdp w)
+  (do (#+pdp10 (terpri t) (i (f1- (f+ bkptht bkptdp)) (f1- i)))
+      ((< i 0))
+    (declare (fixnum i))
+    (cond ((null (linearray i)))
+	  (more-^w (safe-print (output-linear-one-line i)))
+	  (t (output-linear-one-line i)))))
 
-;#+NIL
-;(PROGN
-; (DEFPARAMETER *OLOL-BUF*
-;   (MAKE-STRING 512))
-; (DEFUN OUTPUT-LINEAR-ONE-LINE (I)
-;   (LET* ((LINE (NREVERSE (CDR (LINEARRAY I)))) (N (CAR LINE)))
-;     (SET-LINEARRAY I NIL)
-;     (TYOTBSP N)
-;     (LET ((B (OR *OLOL-BUF* (SETQ *OLOL-BUF* (MAKE-STRING 512))))
-;	   (*OLOL-BUF* NIL)
-;	   (I 0))
-;       (MAPC #'(LAMBDA (X) (SETF (SCHAR B I) (CODE-CHAR X)) (SETQ I (f1+ I)))
-;	     (CDR LINE))
-;       (OUSTR B NIL 0 I)
-;       (MTERPRI)
-;       NIL)))
-; ) ;#+NIL
+;;#+NIL
+;;(PROGN
+;; (DEFPARAMETER *OLOL-BUF*
+;;   (MAKE-STRING 512))
+;; (DEFUN OUTPUT-LINEAR-ONE-LINE (I)
+;;   (LET* ((LINE (NREVERSE (CDR (LINEARRAY I)))) (N (CAR LINE)))
+;;     (SET-LINEARRAY I NIL)
+;;     (TYOTBSP N)
+;;     (LET ((B (OR *OLOL-BUF* (SETQ *OLOL-BUF* (MAKE-STRING 512))))
+;;	   (*OLOL-BUF* NIL)
+;;	   (I 0))
+;;       (MAPC #'(LAMBDA (X) (SETF (SCHAR B I) (CODE-CHAR X)) (SETQ I (f1+ I)))
+;;	     (CDR LINE))
+;;       (OUSTR B NIL 0 I)
+;;       (MTERPRI)
+;;       NIL)))
+;; ) ;#+NIL
 
-#-NIL
-(DEFUN OUTPUT-LINEAR-ONE-LINE (I) (DECLARE (FIXNUM I))
-  (PROG (LINE (N 0))
-	(DECLARE (FIXNUM n))
-    (SETQ LINE (LINEARRAY I) LINE (NREVERSE (CDR LINE)) N (CAR LINE))
-    (SET-LINEARRAY I NIL)
-    (TYOTBSP N)
-    (sloop for v in (cdr line) do (tyo v))
-;    (PRINC (MAKNAM (CDR LINE)))
-    (MTERPRI)))
+#-nil
+(defun output-linear-one-line (i) (declare (fixnum i))
+       (prog (line (n 0))
+	  (declare (fixnum n))
+	  (setq line (linearray i) line (nreverse (cdr line)) n (car line))
+	  (set-linearray i nil)
+	  (tyotbsp n)
+	  (sloop for v in (cdr line) do (tyo v))
+	  ;;    (PRINC (MAKNAM (CDR LINE)))
+	  (mterpri)))
 
 ;; Move the cursor over N spaces to the left by outputting tabs and spaces.
 ;; This function assumes that the cursor is in the left margin when
 ;; it is called.  This is only called from OUTPUT-LINEAR, so it is
 ;; used only for printing terminals or for file output.
 
-(DEFUN TYOTBSP (N)
-  (DECLARE (FIXNUM N))
-  (DO () ((< N (TABLEN))) (TYO #\TAB) (DECREMENT N (TABLEN)))
-  (DO () ((< N 1)) (TYO #\space) (DECREMENT N)))
+(defun tyotbsp (n)
+  (declare (fixnum n))
+  (do () ((< n (tablen))) (tyo #\tab) (decrement n (tablen)))
+  (do () ((< n 1)) (tyo #\space) (decrement n)))
 
-(DEFUN DRAW-LINEAR (DMSTR OLDROW OLDCOL)
+(defun draw-linear (dmstr oldrow oldcol)
   "This puts the LINE lists into LINEARRAY ready to be drawn.
    Each LINE consists of first an initial number of columns to space
    (or tab over) and then the characters to be printed.
@@ -1240,38 +1240,38 @@
    given in the dimension string DMSTR.  It does not check that oldrow
    is big enough for possible negative y offsets in DMSTR, but BKPTDP is the
    right global to use for  oldrow (see Draw-2d)."
-  (DO ((LINE)) ((NULL DMSTR))
-      (COND ((ATOM (CAR DMSTR))
-	     (SETQ LINE (LINEARRAY OLDROW))
-	     (COND ((NULL LINE) (SETQ LINE (LIST OLDCOL)))
-		   (T (PROG (n)	#-cl (DECLARE (FIXNUM N))
-			(SETQ N (CAR LINE) LINE (CDR LINE))
-			(DO ((M (f+ (TABLEN) (f* (TABLEN) (// N (TABLEN))))
-				(f+ (TABLEN) M)))
-			    ((NOT (< M OLDCOL))
-			     (SETQ N (MAX N (f- M (TABLEN)))))
-			    (DECLARE (FIXNUM M))
-			    (SETQ LINE (CONS #\TAB LINE)))
-			(DO () ((<= OLDCOL N))
-			    (PUSH #\space LINE)
-			    (INCREMENT N)))))
-	     (DO () ((OR (NULL DMSTR) (NOT (ATOM (CAR DMSTR))))
-		     (SET-LINEARRAY OLDROW (CONS OLDCOL LINE)))
-		 (INCREMENT OLDCOL)
-		 (PUSH (CAR DMSTR) LINE)
-		 (POP DMSTR)))
-	    ((INTEGERP (CAAR DMSTR))
-	     ;; Why update OLDCOL and not OLDROW?  Should either update both
-	     ;; (requiring multiple value return) or neither (analagous to lambda
-	     ;; binding).
-	     (SETQ OLDCOL (DRAW-LINEAR (REVERSE (CDDAR DMSTR))
-				       (f+ OLDROW (CADAR DMSTR))
-				       (f+ OLDCOL (CAAR DMSTR))))
-	     (POP DMSTR))
-	    (T (SETQ OLDCOL (APPLY (CAAR DMSTR) T (CDAR DMSTR)))
-	       (POP DMSTR))))
+  (do ((line)) ((null dmstr))
+    (cond ((atom (car dmstr))
+	   (setq line (linearray oldrow))
+	   (cond ((null line) (setq line (list oldcol)))
+		 (t (prog (n)	#-cl (declare (fixnum n))
+			  (setq n (car line) line (cdr line))
+			  (do ((m (f+ (tablen) (f* (tablen) (// n (tablen))))
+				  (f+ (tablen) m)))
+			      ((not (< m oldcol))
+			       (setq n (max n (f- m (tablen)))))
+			    (declare (fixnum m))
+			    (setq line (cons #\tab line)))
+			  (do () ((<= oldcol n))
+			    (push #\space line)
+			    (increment n)))))
+	   (do () ((or (null dmstr) (not (atom (car dmstr))))
+		   (set-linearray oldrow (cons oldcol line)))
+	     (increment oldcol)
+	     (push (car dmstr) line)
+	     (pop dmstr)))
+	  ((integerp (caar dmstr))
+	   ;; Why update OLDCOL and not OLDROW?  Should either update both
+	   ;; (requiring multiple value return) or neither (analagous to lambda
+	   ;; binding).
+	   (setq oldcol (draw-linear (reverse (cddar dmstr))
+				     (f+ oldrow (cadar dmstr))
+				     (f+ oldcol (caar dmstr))))
+	   (pop dmstr))
+	  (t (setq oldcol (apply (caar dmstr) t (cdar dmstr)))
+	     (pop dmstr))))
   ;; Be sure to return this.
-  OLDCOL)
+  oldcol)
 
 ;; Output function for terminals with cursor positioning capability.  Draws
 ;; equations in the order they are dimensioned.  To be efficient, it does block
@@ -1285,110 +1285,110 @@
 ;; (PROG (H) (DECLARE (FIXNUM H)) ...) doesn't try binding it to NIL as
 ;; this does.
 
-;#+ITS
-;(DEFUN OUTPUT-2D (RESULT W &AUX (H 0))
-; (DECLARE (FIXNUM W H CH))
-; (UNWIND-PROTECT
-;  (PROGN (TTYINTSOFF)
-;	 (SETQ OLDROW (CAR (CURSORPOS)) OLDCOL 0 H (f+ OLDROW BKPTHT BKPTDP))
-;	 ;; Move the cursor to the left edge of the screen.
-;	 (CURSORPOS* OLDROW 0)
-;	 ;; Then print CRLFs from the top of the expression to the bottom.
-;	 ;; The purpose of this is to clear the appropriate section of the
-;	 ;; screen.  If RUBOUT-TTY is NIL (i.e. we are using a storage tube
-;	 ;; display), then only print LFs since the entire screen is cleared
-;	 ;; anyway.  %TDCRL = carriage return, line feed.  %TDLF = line feed.
-;	 (DO ((CH (IF RUBOUT-TTY #.%TDCRL #.%TDLF))) ((= H OLDROW))
-;	     (TYO* CH) (INCREMENT OLDROW))
-;	 (DRAW-2D RESULT (f- OLDROW BKPTDP 1) W)
-;	 ;; Why is this necessary?  Presumably, we never go off the bottom
-;	 ;; of the screen.
-;	 (SETQ H (MIN (f- TTYHEIGHT 2) H))
-;	 ;; Leave the cursor at the bottom of the expression.
-;	 (CURSORPOS* H 0)
-;	 ;; Output is buffered for efficiency.
-;	 (FORCE-OUTPUT DISPLAY-FILE)
-;	 ;; Let ITS know where the cursor is now.  This does not do
-;	 ;; cursor movement.  :CALL SCPOS for information.
-;	 (SETCURSORPOS H 0)
-;	 ;; Gobble any characters the poor user may have typed during display.
-;	 (LISTEN))
-;  (TTYINTSON))
-; (NOINTERRUPT NIL))
+;;#+ITS
+;;(DEFUN OUTPUT-2D (RESULT W &AUX (H 0))
+;; (DECLARE (FIXNUM W H CH))
+;; (UNWIND-PROTECT
+;;  (PROGN (TTYINTSOFF)
+;;	 (SETQ OLDROW (CAR (CURSORPOS)) OLDCOL 0 H (f+ OLDROW BKPTHT BKPTDP))
+;;	 ;; Move the cursor to the left edge of the screen.
+;;	 (CURSORPOS* OLDROW 0)
+;;	 ;; Then print CRLFs from the top of the expression to the bottom.
+;;	 ;; The purpose of this is to clear the appropriate section of the
+;;	 ;; screen.  If RUBOUT-TTY is NIL (i.e. we are using a storage tube
+;;	 ;; display), then only print LFs since the entire screen is cleared
+;;	 ;; anyway.  %TDCRL = carriage return, line feed.  %TDLF = line feed.
+;;	 (DO ((CH (IF RUBOUT-TTY #.%TDCRL #.%TDLF))) ((= H OLDROW))
+;;	     (TYO* CH) (INCREMENT OLDROW))
+;;	 (DRAW-2D RESULT (f- OLDROW BKPTDP 1) W)
+;;	 ;; Why is this necessary?  Presumably, we never go off the bottom
+;;	 ;; of the screen.
+;;	 (SETQ H (MIN (f- TTYHEIGHT 2) H))
+;;	 ;; Leave the cursor at the bottom of the expression.
+;;	 (CURSORPOS* H 0)
+;;	 ;; Output is buffered for efficiency.
+;;	 (FORCE-OUTPUT DISPLAY-FILE)
+;;	 ;; Let ITS know where the cursor is now.  This does not do
+;;	 ;; cursor movement.  :CALL SCPOS for information.
+;;	 (SETCURSORPOS H 0)
+;;	 ;; Gobble any characters the poor user may have typed during display.
+;;	 (LISTEN))
+;;  (TTYINTSON))
+;; (NOINTERRUPT NIL))
 
 ;; I/O is much simpler on the Lisp Machine.
 
-(DEFUN OUTPUT-2D (RESULT W &AUX (H 0))
-  (DECLARE (FIXNUM W H ))
-  (SETQ OLDROW (CAR (CURSORPOS)) OLDCOL 0 H (f+ OLDROW BKPTHT BKPTDP))
-  (CURSORPOS* OLDROW 0)
+(defun output-2d (result w &aux (h 0))
+  (declare (fixnum w h ))
+  (setq oldrow (car (cursorpos)) oldcol 0 h (f+ oldrow bkptht bkptdp))
+  (cursorpos* oldrow 0)
   ;; Move the cursor vertically until we are at the bottom line of the
   ;; new expression.
-  (DO () ((= H OLDROW)) (TYO* #\NEWLINE) (INCREMENT OLDROW))
-  (DRAW-2D RESULT (f- OLDROW BKPTDP 1) W)
-  (CURSORPOS* (SETQ H (MIN (f- TTYHEIGHT 2) H)) 0))
+  (do () ((= h oldrow)) (tyo* #\newline) (increment oldrow))
+  (draw-2d result (f- oldrow bkptdp 1) w)
+  (cursorpos* (setq h (min (f- ttyheight 2) h)) 0))
 
 ;; For now, cursor movement is only available on ITS and the Lisp
 ;; Machine.  But define this to catch possible errors.
 
-;#-(OR CL ITS NIL)
-;(DEFUN OUTPUT-2D (RESULT W)
-;       RESULT W ;Ignored.
-;       (MERROR "OUTPUT-2D called on system without display support."))
+;;#-(OR CL ITS NIL)
+;;(DEFUN OUTPUT-2D (RESULT W)
+;;       RESULT W ;Ignored.
+;;       (MERROR "OUTPUT-2D called on system without display support."))
 
 ;;see +lispm below for cl fix.
-(DEFUN DRAW-2D (DMSTR ROW COL)
-  (DECLARE (FIXNUM ROW COL))
-  (CURSORPOS* ROW COL)
-  (DO ((L DMSTR)) ((NULL L))
-      (COND ((INTEGERP (CAR L)) (TYO* (CAR L)) (POP L))
-	    ((INTEGERP (CAAR L))
-	     (SETQ COL OLDCOL)
-	     (DO ()
-	       ((OR (INTEGERP (CAR L)) (NOT (INTEGERP (CAAR L)))))
-	       (cond
-		((NULL (CDDAR L)) (SETQ COL (f+ COL (CAAR L))))
-		(t (DRAW-2D (REVERSE (CDDAR L))
-			    (f-  ROW (CADAR L)) (f+ COL (CAAR L)))
-		   (SETQ COL OLDCOL)))
-	       (POP L))
-	     (CURSORPOS* ROW COL))
-	    (T (APPLY (CAAR L) NIL (CDAR L))
-	       (POP L)))))
+(defun draw-2d (dmstr row col)
+  (declare (fixnum row col))
+  (cursorpos* row col)
+  (do ((l dmstr)) ((null l))
+    (cond ((integerp (car l)) (tyo* (car l)) (pop l))
+	  ((integerp (caar l))
+	   (setq col oldcol)
+	   (do ()
+	       ((or (integerp (car l)) (not (integerp (caar l)))))
+	     (cond
+	       ((null (cddar l)) (setq col (f+ col (caar l))))
+	       (t (draw-2d (reverse (cddar l))
+			   (f-  row (cadar l)) (f+ col (caar l)))
+		  (setq col oldcol)))
+	     (pop l))
+	   (cursorpos* row col))
+	  (t (apply (caar l) nil (cdar l))
+	     (pop l)))))
 
 (defun check-dimstring (str)
   (sloop for v in str when (integerp v) do (error "bad entry ~A" v)))
 
-;#+lispm
-;(DEFUN DRAW-2D (DMSTR ROW COL)
-;  "This bypasses draw-linear and draws the Dimension-string directly
-;   using cursor positioning.  It won't work for files or the editor"
-; #-cl (DECLARE (FIXNUM ROW COL))
-;  (CURSORPOS* ROW COL)
-;    (DO ((LL DMSTR)) ((NULL LL))
-;     ;;should not have a integerp (car ll) but somewhere #\space is getting 32.
-;      (COND ((or (integerp (car ll))
-;		 (characterp (CAR LL)))
-;	     (TYO* (CAR LL)) (POP LL))
-;	    ((integerp (CAAR LL))
-;	     (SETQ COL OLDCOL)
-;	     (DO ()
-;	       ((OR (CHARACTERP (CAR LL))  (NOT (integerp (CAAR LL)))))
-;	       (cond
-;		((NULL (CDDAR LL)) (SETQ COL (f+ COL (CAAR LL))))
-;		(t (DRAW-2D (REVERSE (CDDAR LL))
-;			    (f-  ROW (CADAR LL)) (f+ COL (CAAR LL)))
-;		   (SETQ COL OLDCOL)))
-;	       (POP LL))
-;	     (CURSORPOS* ROW COL)
-;	     )
-;	    (T (APPLY (CAAR LL) NIL (CDAR LL))
-;	       (POP LL)))))
+;;#+lispm
+;;(DEFUN DRAW-2D (DMSTR ROW COL)
+;;  "This bypasses draw-linear and draws the Dimension-string directly
+;;   using cursor positioning.  It won't work for files or the editor"
+;; #-cl (DECLARE (FIXNUM ROW COL))
+;;  (CURSORPOS* ROW COL)
+;;    (DO ((LL DMSTR)) ((NULL LL))
+;;     ;;should not have a integerp (car ll) but somewhere #\space is getting 32.
+;;      (COND ((or (integerp (car ll))
+;;		 (characterp (CAR LL)))
+;;	     (TYO* (CAR LL)) (POP LL))
+;;	    ((integerp (CAAR LL))
+;;	     (SETQ COL OLDCOL)
+;;	     (DO ()
+;;	       ((OR (CHARACTERP (CAR LL))  (NOT (integerp (CAAR LL)))))
+;;	       (cond
+;;		((NULL (CDDAR LL)) (SETQ COL (f+ COL (CAAR LL))))
+;;		(t (DRAW-2D (REVERSE (CDDAR LL))
+;;			    (f-  ROW (CADAR LL)) (f+ COL (CAAR LL)))
+;;		   (SETQ COL OLDCOL)))
+;;	       (POP LL))
+;;	     (CURSORPOS* ROW COL)
+;;	     )
+;;	    (T (APPLY (CAAR LL) NIL (CDAR LL))
+;;	       (POP LL)))))
 
-;#-(OR CL ITS NIL)
-;(DEFUN DRAW-2D (DMSTR ROW COL)
-;       DMSTR ROW COL ;Ignored.
-;       (MERROR "DRAW-2D called on system without display support."))
+;;#-(OR CL ITS NIL)
+;;(DEFUN DRAW-2D (DMSTR ROW COL)
+;;       DMSTR ROW COL ;Ignored.
+;;       (MERROR "DRAW-2D called on system without display support."))
 
 ;; Crude line graphics.  The interface to a graphics device is via the
 ;; functions LG-SET-POINT, LG-DRAW-VECTOR, LG-END-VECTOR and via the
@@ -1398,55 +1398,55 @@
 ;; in pixels, and the -2 variables are simply those numbers divided by 2.  LG
 ;; stands for "Line Graphics".  See MAXSRC;ARDS for a sample ctl.
 
-;(declare-top ;(*EXPR LG-SET-POINT LG-DRAW-VECTOR LG-END-VECTOR)
-; (NOTYPE (LG-SET-POINT FIXNUM FIXNUM)
-;	 (LG-DRAW-VECTOR FIXNUM FIXNUM)
-;	 (LG-END-VECTOR FIXNUM FIXNUM))
-; (SPECIAL LG-CHARACTER-X LG-CHARACTER-X-2
-;	  LG-CHARACTER-Y LG-CHARACTER-Y-2))
+;;(declare-top ;(*EXPR LG-SET-POINT LG-DRAW-VECTOR LG-END-VECTOR)
+;; (NOTYPE (LG-SET-POINT FIXNUM FIXNUM)
+;;	 (LG-DRAW-VECTOR FIXNUM FIXNUM)
+;;	 (LG-END-VECTOR FIXNUM FIXNUM))
+;; (SPECIAL LG-CHARACTER-X LG-CHARACTER-X-2
+;;	  LG-CHARACTER-Y LG-CHARACTER-Y-2))
 
 ;; Make this work in the new window system at some point.
 
-;#+LISPM
-;(PROGN 'COMPILE
+;;#+LISPM
+;;(PROGN 'COMPILE
 
-;(declare-top (SPECIAL LG-OLD-X LG-OLD-Y))
+;;(declare-top (SPECIAL LG-OLD-X LG-OLD-Y))
 
-;(DEFUN LG-SET-POINT (X Y)
-;  (SETQ LG-OLD-X (f- X 1) LG-OLD-Y (f- Y 2)))
+;;(DEFUN LG-SET-POINT (X Y)
+;;  (SETQ LG-OLD-X (f- X 1) LG-OLD-Y (f- Y 2)))
 
-;(DEFUN LG-DRAW-VECTOR (X Y)
-;  (SETQ X (f- X 1) Y (f- Y 2))
-;  (FUNCALL *standard-output* ':DRAW-LINE LG-OLD-X LG-OLD-Y X Y)
-;  (WHEN (> LG-CHARACTER-Y 20)
-;	(LET ((DELTA-X (f- X LG-OLD-X))
-;	      (DELTA-Y (f- Y LG-OLD-Y)))
-;	  (IF (> (ABS DELTA-X) (ABS DELTA-Y))
-;	      (FUNCALL *standard-output* ':DRAW-LINE LG-OLD-X (f1- LG-OLD-Y) X (f1- Y))
-;	      (FUNCALL *standard-output* ':DRAW-LINE (f1- LG-OLD-X) LG-OLD-Y (f1- X) Y))))
-;  (SETQ LG-OLD-X X LG-OLD-Y Y))
+;;(DEFUN LG-DRAW-VECTOR (X Y)
+;;  (SETQ X (f- X 1) Y (f- Y 2))
+;;  (FUNCALL *standard-output* ':DRAW-LINE LG-OLD-X LG-OLD-Y X Y)
+;;  (WHEN (> LG-CHARACTER-Y 20)
+;;	(LET ((DELTA-X (f- X LG-OLD-X))
+;;	      (DELTA-Y (f- Y LG-OLD-Y)))
+;;	  (IF (> (ABS DELTA-X) (ABS DELTA-Y))
+;;	      (FUNCALL *standard-output* ':DRAW-LINE LG-OLD-X (f1- LG-OLD-Y) X (f1- Y))
+;;	      (FUNCALL *standard-output* ':DRAW-LINE (f1- LG-OLD-X) LG-OLD-Y (f1- X) Y))))
+;;  (SETQ LG-OLD-X X LG-OLD-Y Y))
 
 ;;; Set these so that DISPLA can be called from top-level.  The size
 ;;; of TERMINAL-IO is wired in here.
 ;;; These should be bound at time of call to DISPLA.
 
-;(SETQ LG-CHARACTER-X (FUNCALL tv:main-screen ':CHAR-WIDTH))
-;(SETQ LG-CHARACTER-Y (FUNCALL tv:main-screen ':LINE-HEIGHT))
+;;(SETQ LG-CHARACTER-X (FUNCALL tv:main-screen ':CHAR-WIDTH))
+;;(SETQ LG-CHARACTER-Y (FUNCALL tv:main-screen ':LINE-HEIGHT))
 
-;(SETQ LG-CHARACTER-X-2 (// LG-CHARACTER-X 2))
-;(SETQ LG-CHARACTER-Y-2 (// LG-CHARACTER-Y 2))
+;;(SETQ LG-CHARACTER-X-2 (// LG-CHARACTER-X 2))
+;;(SETQ LG-CHARACTER-Y-2 (// LG-CHARACTER-Y 2))
 
-;) ;; End of Lispm Graphics definitions.
+;;) ;; End of Lispm Graphics definitions.
 
 ;; Even cruder character graphics.  Interface to the ctl is via functions
 ;; which draw lines and corners.  CG means "Character Graphics".  See
 ;; MAXSRC;VT100 for a sample ctl.  Note that these functions do not modify
 ;; the values of OLDROW and OLDCOL.
 
-;(declare-top (*EXPR CG-BEGIN-GRAPHICS CG-END-GRAPHICS
-;		CG-UL-CORNER CG-UR-CORNER CG-LL-CORNER CG-LR-CORNER
-;		CG-VERTICAL-BAR CG-HORIZONTAL-BAR
-;		CG-D-SUMSIGN CG-D-PRODSIGN))
+;;(declare-top (*EXPR CG-BEGIN-GRAPHICS CG-END-GRAPHICS
+;;		CG-UL-CORNER CG-UR-CORNER CG-LL-CORNER CG-LR-CORNER
+;;		CG-VERTICAL-BAR CG-HORIZONTAL-BAR
+;;		CG-D-SUMSIGN CG-D-PRODSIGN))
 
 ;; Special form for turning on and turning off character graphics.
 ;; Be sure to turn of character graphics if we throw out of here.
@@ -1467,233 +1467,233 @@
 ;; in the 2D case.  This should work for both cases.  (See end of
 ;; program.)
 
-(DEFUN D-HBAR (LINEAR? W &OPTIONAL (CHAR #\-) &AUX NL)
-  (DECLARE (FIXNUM W ))
-  (COND (LINEAR? (DOTIMES (I W) (PUSH CHAR NL))
-		 (DRAW-LINEAR NL OLDROW OLDCOL))
-;	((AND LINE-GRAPHICS-TTY $LINEDISP)
-;	 (LET ((GY (f+ (f* LG-CHARACTER-Y OLDROW) LG-CHARACTER-Y-2)))
-;	      (DECLARE (FIXNUM gy))
-;	      (LG-SET-POINT  (f* OLDCOL LG-CHARACTER-X) GY)
-;	      (LG-END-VECTOR (f* (f+ OLDCOL W) LG-CHARACTER-X) GY))
-;	 (CURSORPOS* OLDROW (f+ OLDCOL W)))
-;       ((AND CHARACTER-GRAPHICS-TTY $LINEDISP)
-;	 (CG-BEGIN-GRAPHICS)
-;	 (DOTIMES (I W) (CG-HORIZONTAL-BAR))
-;	 (INCREMENT OLDCOL W)
-;	 (CG-END-GRAPHICS))
-	(T (DOTIMES (I W) (TYO* CHAR)))))
+(defun d-hbar (linear? w &optional (char #\-) &aux nl)
+  (declare (fixnum w ))
+  (cond (linear? (dotimes (i w) (push char nl))
+		 (draw-linear nl oldrow oldcol))
+	;;	((AND LINE-GRAPHICS-TTY $LINEDISP)
+	;;	 (LET ((GY (f+ (f* LG-CHARACTER-Y OLDROW) LG-CHARACTER-Y-2)))
+	;;	      (DECLARE (FIXNUM gy))
+	;;	      (LG-SET-POINT  (f* OLDCOL LG-CHARACTER-X) GY)
+	;;	      (LG-END-VECTOR (f* (f+ OLDCOL W) LG-CHARACTER-X) GY))
+	;;	 (CURSORPOS* OLDROW (f+ OLDCOL W)))
+	;;       ((AND CHARACTER-GRAPHICS-TTY $LINEDISP)
+	;;	 (CG-BEGIN-GRAPHICS)
+	;;	 (DOTIMES (I W) (CG-HORIZONTAL-BAR))
+	;;	 (INCREMENT OLDCOL W)
+	;;	 (CG-END-GRAPHICS))
+	(t (dotimes (i w) (tyo* char)))))
 
 ;; Notice that in all of the height computations, an offset of 2 is added or
 ;; subtracted to the y-dimension.  This is to get the lines to fit within the
 ;; character cell precisely and not get clipped when moving things around in
 ;; the equation editor.
 
-(DEFUN D-VBAR (LINEAR? H D &OPTIONAL (CHAR VERTICAL-STROKE-CHAR))
-  (DECLARE (FIXNUM H D ))
-  (COND (LINEAR? (SETQ D (f- D))
-	 (DO ((I (f- H 2) (f1- I))
-	      (NL `((0 ,(f1- H) ,CHAR))))
-	     ((< I D) (DRAW-LINEAR (NREVERSE NL) OLDROW OLDCOL))
-	     (PUSH `(-1 ,I ,CHAR) NL)))
-;	((AND LINE-GRAPHICS-TTY $LINEDISP)
-;	 (LET ((GX (f+ (f* LG-CHARACTER-X OLDCOL) LG-CHARACTER-X-2)))
-;	      (DECLARE (FIXNUM GX ))
-;	      (LG-SET-POINT  GX (f- (f* (f+ OLDROW D 1) LG-CHARACTER-Y) 2))
-;	      (LG-END-VECTOR GX (f+ (f* (f+ OLDROW 1 (f- H)) LG-CHARACTER-Y) 2)))
-;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
-;	((AND CHARACTER-GRAPHICS-TTY $LINEDISP)
-;	 (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
-;	 (CG-BEGIN-GRAPHICS)
-;	 (CG-VERTICAL-BAR)
-;	 (DOTIMES (I (f+ H D -1))
-;		  (CURSORPOS* (f1+ OLDROW) OLDCOL)
-;		  (CG-VERTICAL-BAR))
-;	 (CG-END-GRAPHICS)
-;	 (CURSORPOS* (f- OLDROW D) (f1+ OLDCOL)))
-	(T (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
-	   (TYO* CHAR)
-	   (DOTIMES (I (f+ H D -1))
-	       (CURSORPOS* (f1+ OLDROW) (f1- OLDCOL))
-	       (TYO* CHAR))
-	   (CURSORPOS* (f- OLDROW D) OLDCOL))))
+(defun d-vbar (linear? h d &optional (char vertical-stroke-char))
+  (declare (fixnum h d ))
+  (cond (linear? (setq d (f- d))
+		 (do ((i (f- h 2) (f1- i))
+		      (nl `((0 ,(f1- h) ,char))))
+		     ((< i d) (draw-linear (nreverse nl) oldrow oldcol))
+		   (push `(-1 ,i ,char) nl)))
+	;;	((AND LINE-GRAPHICS-TTY $LINEDISP)
+	;;	 (LET ((GX (f+ (f* LG-CHARACTER-X OLDCOL) LG-CHARACTER-X-2)))
+	;;	      (DECLARE (FIXNUM GX ))
+	;;	      (LG-SET-POINT  GX (f- (f* (f+ OLDROW D 1) LG-CHARACTER-Y) 2))
+	;;	      (LG-END-VECTOR GX (f+ (f* (f+ OLDROW 1 (f- H)) LG-CHARACTER-Y) 2)))
+	;;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
+	;;	((AND CHARACTER-GRAPHICS-TTY $LINEDISP)
+	;;	 (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
+	;;	 (CG-BEGIN-GRAPHICS)
+	;;	 (CG-VERTICAL-BAR)
+	;;	 (DOTIMES (I (f+ H D -1))
+	;;		  (CURSORPOS* (f1+ OLDROW) OLDCOL)
+	;;		  (CG-VERTICAL-BAR))
+	;;	 (CG-END-GRAPHICS)
+	;;	 (CURSORPOS* (f- OLDROW D) (f1+ OLDCOL)))
+	(t (cursorpos* (f+ oldrow 1 (f- h)) oldcol)
+	   (tyo* char)
+	   (dotimes (i (f+ h d -1))
+	     (cursorpos* (f1+ oldrow) (f1- oldcol))
+	     (tyo* char))
+	   (cursorpos* (f- oldrow d) oldcol))))
 
-(DEFUN D-INTEGRALSIGN (LINEAR? &AUX DMSTR)
-  (COND ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
-;	 (LET ((X-MIN (f* LG-CHARACTER-X OLDCOL))
-;	       (X-1   (f1- LG-CHARACTER-X-2))
-;	       (X-2   LG-CHARACTER-X-2)
-;	       (X-MAX (f* LG-CHARACTER-X (f1+ OLDCOL)))
-;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f- OLDROW 2)) LG-CHARACTER-Y-2))
-;	       (Y-1   LG-CHARACTER-Y-2)
-;	       (Y-2   (f+ LG-CHARACTER-Y LG-CHARACTER-Y-2))
-;	       (Y-MAX (f+ (f* LG-CHARACTER-Y (f+ OLDROW 2)) LG-CHARACTER-Y-2)))
-;	      (DECLARE (FIXNUM X-MIN X-1 X-2 X-MAX Y-MIN Y-1 Y-2 Y-MAX))
-;	    (DOLIST (X '(0 -1))
-;	       (LG-SET-POINT   (f+ X X-MAX) Y-MIN)
-;	       (LG-DRAW-VECTOR (f+ X X-MAX (f- X-1)) (f+ Y-MIN Y-1))
-;	       (LG-DRAW-VECTOR (f+ X X-MAX (f- X-2)) (f+ Y-MIN Y-2))
-;	       (LG-DRAW-VECTOR (f+ X X-MIN X-2)	   (f- Y-MAX Y-2))
-;	       (LG-DRAW-VECTOR (f+ X X-MIN X-1)	   (f- Y-MAX Y-1))
-;	       (LG-END-VECTOR  (f+ X X-MIN)	   Y-MAX)))
-;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
-	(T (SETQ DMSTR
-		 `((0 2 #.forward-slash-char) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #.FORWARD-SLASH-CHAR)))
-	   (IF LINEAR?
-	       (DRAW-LINEAR DMSTR OLDROW OLDCOL)
-	       (DRAW-2D	    DMSTR OLDROW OLDCOL)))))
+(defun d-integralsign (linear? &aux dmstr)
+  (cond		     ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
+    ;;	 (LET ((X-MIN (f* LG-CHARACTER-X OLDCOL))
+    ;;	       (X-1   (f1- LG-CHARACTER-X-2))
+    ;;	       (X-2   LG-CHARACTER-X-2)
+    ;;	       (X-MAX (f* LG-CHARACTER-X (f1+ OLDCOL)))
+    ;;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f- OLDROW 2)) LG-CHARACTER-Y-2))
+    ;;	       (Y-1   LG-CHARACTER-Y-2)
+    ;;	       (Y-2   (f+ LG-CHARACTER-Y LG-CHARACTER-Y-2))
+    ;;	       (Y-MAX (f+ (f* LG-CHARACTER-Y (f+ OLDROW 2)) LG-CHARACTER-Y-2)))
+    ;;	      (DECLARE (FIXNUM X-MIN X-1 X-2 X-MAX Y-MIN Y-1 Y-2 Y-MAX))
+    ;;	    (DOLIST (X '(0 -1))
+    ;;	       (LG-SET-POINT   (f+ X X-MAX) Y-MIN)
+    ;;	       (LG-DRAW-VECTOR (f+ X X-MAX (f- X-1)) (f+ Y-MIN Y-1))
+    ;;	       (LG-DRAW-VECTOR (f+ X X-MAX (f- X-2)) (f+ Y-MIN Y-2))
+    ;;	       (LG-DRAW-VECTOR (f+ X X-MIN X-2)	   (f- Y-MAX Y-2))
+    ;;	       (LG-DRAW-VECTOR (f+ X X-MIN X-1)	   (f- Y-MAX Y-1))
+    ;;	       (LG-END-VECTOR  (f+ X X-MIN)	   Y-MAX)))
+    ;;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
+    (t (setq dmstr
+	     `((0 2 #.forward-slash-char) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #.forward-slash-char)))
+       (if linear?
+	   (draw-linear dmstr oldrow oldcol)
+	   (draw-2d	    dmstr oldrow oldcol)))))
 
-(DEFUN D-PRODSIGN (LINEAR? &AUX DMSTR)
-  (COND ;((AND (NOT LINEAR?) $LINEDISP (FBOUNDP 'CG-D-PRODSIGN))
-;	 (CG-BEGIN-GRAPHICS)
-;	 (CG-D-PRODSIGN)
-;	 (CG-END-GRAPHICS)
-;	 (INCREMENT OLDCOL 5))
-	(T (SETQ DMSTR '((0 2 #.BACK-SLASH-CHAR (D-HBAR 3 #\=) #.forward-slash-char)
-			 (-4 0) (D-VBAR 2 1 #\!) #\space (D-VBAR 2 1 #\!) (1 0)))
-	   (IF LINEAR?
-	       (DRAW-LINEAR DMSTR OLDROW OLDCOL)
-	       (DRAW-2D DMSTR OLDROW OLDCOL)))))
+(defun d-prodsign (linear? &aux dmstr)
+  (cond	      ;((AND (NOT LINEAR?) $LINEDISP (FBOUNDP 'CG-D-PRODSIGN))
+    ;;	 (CG-BEGIN-GRAPHICS)
+    ;;	 (CG-D-PRODSIGN)
+    ;;	 (CG-END-GRAPHICS)
+    ;;	 (INCREMENT OLDCOL 5))
+    (t (setq dmstr '((0 2 #.back-slash-char (d-hbar 3 #\=) #.forward-slash-char)
+		     (-4 0) (d-vbar 2 1 #\!) #\space (d-vbar 2 1 #\!) (1 0)))
+       (if linear?
+	   (draw-linear dmstr oldrow oldcol)
+	   (draw-2d dmstr oldrow oldcol)))))
 
-(DEFUN D-SUMSIGN (LINEAR? &AUX DMSTR)
-  (COND ;((AND (NOT LINEAR?) $LINEDISP LINE-GRAPHICS-TTY)
-;	 (LET ((X-MIN  (f* LG-CHARACTER-X OLDCOL))
-;	       (X-HALF (f* LG-CHARACTER-X (f+ OLDCOL 2)))
-;	       (X-MAX  (f* LG-CHARACTER-X (f+ OLDCOL 4)))
-;	       (Y-MIN  (f+ (f* LG-CHARACTER-Y (f- OLDROW 2)) LG-CHARACTER-Y-2))
-; 	       (Y-HALF (f+ (f* LG-CHARACTER-Y OLDROW) LG-CHARACTER-Y-2))
-;	       (Y-MAX  (f+ (f* LG-CHARACTER-Y (f+ OLDROW 2))
-;			   LG-CHARACTER-Y-2)))
-;	      (DECLARE (FIXNUM X-MIN X-HALF X-MAX Y-MIN Y-HALF Y-MAX))
+(defun d-sumsign (linear? &aux dmstr)
+  (cond		     ;((AND (NOT LINEAR?) $LINEDISP LINE-GRAPHICS-TTY)
+    ;;	 (LET ((X-MIN  (f* LG-CHARACTER-X OLDCOL))
+    ;;	       (X-HALF (f* LG-CHARACTER-X (f+ OLDCOL 2)))
+    ;;	       (X-MAX  (f* LG-CHARACTER-X (f+ OLDCOL 4)))
+    ;;	       (Y-MIN  (f+ (f* LG-CHARACTER-Y (f- OLDROW 2)) LG-CHARACTER-Y-2))
+    ;; 	       (Y-HALF (f+ (f* LG-CHARACTER-Y OLDROW) LG-CHARACTER-Y-2))
+    ;;	       (Y-MAX  (f+ (f* LG-CHARACTER-Y (f+ OLDROW 2))
+    ;;			   LG-CHARACTER-Y-2)))
+    ;;	      (DECLARE (FIXNUM X-MIN X-HALF X-MAX Y-MIN Y-HALF Y-MAX))
 
-;	      (LG-SET-POINT (f+ X-MAX 4) (f+ Y-MIN 6))
-;	      (MAPC #'(LAMBDA (X) (LG-DRAW-VECTOR (CAR X) (CDR X)))
-;		    `((,X-MAX . ,Y-MIN)
-;		      (,(f1+ X-MIN)  . ,Y-MIN)
-;		      (,(f1+ X-HALF) . ,Y-HALF)
-;		      (,(f1+ X-MIN)  . ,Y-MAX)
-;		      (,X-MIN	    . ,Y-MAX)
-;		      (,X-HALF	    . ,Y-HALF)
-;		      (,X-MIN	    . ,Y-MIN)
-;		      (,(f1- X-MIN)  . ,Y-MIN)
-;		      (,(f1- X-HALF) . ,Y-HALF)))
-;	      (LG-SET-POINT (f+ X-MAX 4) (f- Y-MAX 6))
-;	      (LG-DRAW-VECTOR X-MAX Y-MAX)
-;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
-;	      (LG-DRAW-VECTOR X-MIN (f1- Y-MAX))
-;	      (LG-END-VECTOR X-MAX (f1- Y-MAX)))
-;	 (CURSORPOS* OLDROW (f+ OLDCOL 4)))
-;	((AND (NOT LINEAR?) $LINEDISP (FBOUNDP 'CG-D-SUMSIGN))
-;	 (CG-BEGIN-GRAPHICS)
-;	 (CG-D-SUMSIGN)
-;	 (CG-END-GRAPHICS)
-;	 (INCREMENT OLDCOL 4))
-    (T
-     (SETQ DMSTR '((0 2 (D-HBAR 4 #\=))
+    ;;	      (LG-SET-POINT (f+ X-MAX 4) (f+ Y-MIN 6))
+    ;;	      (MAPC #'(LAMBDA (X) (LG-DRAW-VECTOR (CAR X) (CDR X)))
+    ;;		    `((,X-MAX . ,Y-MIN)
+    ;;		      (,(f1+ X-MIN)  . ,Y-MIN)
+    ;;		      (,(f1+ X-HALF) . ,Y-HALF)
+    ;;		      (,(f1+ X-MIN)  . ,Y-MAX)
+    ;;		      (,X-MIN	    . ,Y-MAX)
+    ;;		      (,X-HALF	    . ,Y-HALF)
+    ;;		      (,X-MIN	    . ,Y-MIN)
+    ;;		      (,(f1- X-MIN)  . ,Y-MIN)
+    ;;		      (,(f1- X-HALF) . ,Y-HALF)))
+    ;;	      (LG-SET-POINT (f+ X-MAX 4) (f- Y-MAX 6))
+    ;;	      (LG-DRAW-VECTOR X-MAX Y-MAX)
+    ;;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
+    ;;	      (LG-DRAW-VECTOR X-MIN (f1- Y-MAX))
+    ;;	      (LG-END-VECTOR X-MAX (f1- Y-MAX)))
+    ;;	 (CURSORPOS* OLDROW (f+ OLDCOL 4)))
+    ;;	((AND (NOT LINEAR?) $LINEDISP (FBOUNDP 'CG-D-SUMSIGN))
+    ;;	 (CG-BEGIN-GRAPHICS)
+    ;;	 (CG-D-SUMSIGN)
+    ;;	 (CG-END-GRAPHICS)
+    ;;	 (INCREMENT OLDCOL 4))
+    (t
+     (setq dmstr '((0 2 (d-hbar 4 #\=))
 		   (-4 1 #.back-slash-char) #\> (-2 -1 #.forward-slash-char)
-		   (-1 -2 (D-HBAR 4 #\=))))
-     (IF LINEAR?
-	 (DRAW-LINEAR DMSTR OLDROW OLDCOL)
-	 (DRAW-2D DMSTR OLDROW OLDCOL)))))
+		   (-1 -2 (d-hbar 4 #\=))))
+     (if linear?
+	 (draw-linear dmstr oldrow oldcol)
+	 (draw-2d dmstr oldrow oldcol)))))
 
 ;; Notice how this calls D-VBAR in the non-graphic case.  The entire output
 ;; side should be structured this way, with no consing of intermediate
 ;; dimension strings.
 
-(DEFUN D-MATRIX (LINEAR? DIRECTION H D)
-  (DECLARE (FIXNUM H D))
-  (COND ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
-;	 (LET ((X-MIN (f1+ (f* LG-CHARACTER-X OLDCOL)))
-;	       (X-MAX (f1- (f* LG-CHARACTER-X (f1+ OLDCOL))))
-;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f+ OLDROW 1 (f- H))) 2))
-;	       (Y-MAX (f- (f* LG-CHARACTER-Y (f+ OLDROW 1 D)) 2)))
-;	      (declare (fixnum  X-MIN X-MAX Y-MIN Y-MAX))
-;	      (IF (EQ DIRECTION 'RIGHT) (PSETQ X-MIN X-MAX X-MAX X-MIN))
-;	      (LG-SET-POINT   X-MAX Y-MIN)
-;	      (LG-DRAW-VECTOR X-MIN Y-MIN)
-;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
-;	      (LG-END-VECTOR  X-MAX Y-MAX))
-;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
-;	((AND (NOT LINEAR?) CHARACTER-GRAPHICS-TTY $LINEDISP)
-;	 (COND ((= (f+ H D) 1)
-;		(TYO* (GETCHARN (IF (EQ DIRECTION 'RIGHT) $RMXCHAR $LMXCHAR)
-;				2)))
-;	       (T (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
-;		  (CG-BEGIN-GRAPHICS)
-;		  (IF (EQ DIRECTION 'RIGHT) (CG-UR-CORNER) (CG-UL-CORNER))
-;		  (CG-END-GRAPHICS)
-;		  (CURSORPOS* (f+ OLDROW -1 H) OLDCOL)
-;		  (COND ((> (f+ H D) 2)
-;			 (D-VBAR NIL (f1- H) (f1- D))
-;			 (CURSORPOS* (f+ OLDROW D) (f1- OLDCOL)))
-;			(T (CURSORPOS* (f+ OLDROW D) OLDCOL)))
-;		  (CG-BEGIN-GRAPHICS)
-;		  (IF (EQ DIRECTION 'RIGHT) (CG-LR-CORNER) (CG-LL-CORNER))
-;		  (CG-END-GRAPHICS)
-;		  (CURSORPOS* (f- OLDROW D) (f1+ OLDCOL)))))
-    (T (D-VBAR LINEAR? H D 
-	       (GETCHARN (IF (EQ DIRECTION 'RIGHT) $RMXCHAR $LMXCHAR) 2)))))
+(defun d-matrix (linear? direction h d)
+  (declare (fixnum h d))
+  (cond		     ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
+    ;;	 (LET ((X-MIN (f1+ (f* LG-CHARACTER-X OLDCOL)))
+    ;;	       (X-MAX (f1- (f* LG-CHARACTER-X (f1+ OLDCOL))))
+    ;;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f+ OLDROW 1 (f- H))) 2))
+    ;;	       (Y-MAX (f- (f* LG-CHARACTER-Y (f+ OLDROW 1 D)) 2)))
+    ;;	      (declare (fixnum  X-MIN X-MAX Y-MIN Y-MAX))
+    ;;	      (IF (EQ DIRECTION 'RIGHT) (PSETQ X-MIN X-MAX X-MAX X-MIN))
+    ;;	      (LG-SET-POINT   X-MAX Y-MIN)
+    ;;	      (LG-DRAW-VECTOR X-MIN Y-MIN)
+    ;;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
+    ;;	      (LG-END-VECTOR  X-MAX Y-MAX))
+    ;;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
+    ;;	((AND (NOT LINEAR?) CHARACTER-GRAPHICS-TTY $LINEDISP)
+    ;;	 (COND ((= (f+ H D) 1)
+    ;;		(TYO* (GETCHARN (IF (EQ DIRECTION 'RIGHT) $RMXCHAR $LMXCHAR)
+    ;;				2)))
+    ;;	       (T (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
+    ;;		  (CG-BEGIN-GRAPHICS)
+    ;;		  (IF (EQ DIRECTION 'RIGHT) (CG-UR-CORNER) (CG-UL-CORNER))
+    ;;		  (CG-END-GRAPHICS)
+    ;;		  (CURSORPOS* (f+ OLDROW -1 H) OLDCOL)
+    ;;		  (COND ((> (f+ H D) 2)
+    ;;			 (D-VBAR NIL (f1- H) (f1- D))
+    ;;			 (CURSORPOS* (f+ OLDROW D) (f1- OLDCOL)))
+    ;;			(T (CURSORPOS* (f+ OLDROW D) OLDCOL)))
+    ;;		  (CG-BEGIN-GRAPHICS)
+    ;;		  (IF (EQ DIRECTION 'RIGHT) (CG-LR-CORNER) (CG-LL-CORNER))
+    ;;		  (CG-END-GRAPHICS)
+    ;;		  (CURSORPOS* (f- OLDROW D) (f1+ OLDCOL)))))
+    (t (d-vbar linear? h d 
+	       (getcharn (if (eq direction 'right) $rmxchar $lmxchar) 2)))))
 
 ;; There is wired knowledge of character offsets here.
 
-(DEFUN D-BOX (LINEAR? H D W BODY &AUX (CHAR 0) DMSTR)
-       ;char a char?
- (DECLARE (FIXNUM H D W ))
- (COND ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
-;	 (LET ((X-MIN (f* LG-CHARACTER-X OLDCOL))
-;	       (X-MAX (f* LG-CHARACTER-X (f+ OLDCOL W 2)))
-;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f- OLDROW H)) 2))
-;	       (Y-MAX (f- (f* LG-CHARACTER-Y (f+ OLDROW D 2)) 2)))
-;	      (declare (fixnum X-MIN X-MAX Y-MIN Y-MAX))
-;	      (LG-SET-POINT X-MIN Y-MIN)
-;	      (LG-DRAW-VECTOR X-MAX Y-MIN)
-;	      (LG-DRAW-VECTOR X-MAX Y-MAX)
-;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
-;	      (LG-END-VECTOR  X-MIN Y-MIN))
-;	 (CURSORPOS* OLDROW (f1+ OLDCOL))
-;	 (DRAW-2D BODY OLDROW OLDCOL)
-;	 (CURSORPOS* OLDROW (f+ OLDCOL 1)))
-;	((AND (NOT LINEAR?) CHARACTER-GRAPHICS-TTY $LINEDISP)
-;	 (D-MATRIX NIL 'LEFT (f1+ H) (f1+ D))
-;	 (CURSORPOS* (f- OLDROW H) OLDCOL)
-;	 (D-HBAR NIL W)
-;	 (CURSORPOS* (f+ OLDROW H) (f- OLDCOL W))
-;	 (DRAW-2D BODY OLDROW OLDCOL)
-;	 (CURSORPOS* (f+ OLDROW D 1) (f- OLDCOL W))
-;	 (D-HBAR NIL W)
-;	 (CURSORPOS* (f- OLDROW D 1) OLDCOL)
-;	 (D-MATRIX NIL 'RIGHT (f1+ H) (f1+ D)))
-	(T (SETQ CHAR (GETCHARN $BOXCHAR 2))
-	   (SETQ DMSTR
-		 `((0 ,H (D-HBAR ,(f+ 2 W) ,CHAR))
-		   (,(f- (f+ W 2)) 0)
-		   (D-VBAR ,H ,D ,CHAR)
-		   ,@BODY
-		   (,(f- (f1+ W)) ,(f- (f1+ D)) (D-HBAR ,(f+ W 2) ,CHAR))
-		   (-1 0)
-		   (D-VBAR ,H ,D ,CHAR)))
-	   (IF LINEAR?
-	       (DRAW-LINEAR DMSTR OLDROW OLDCOL)
-	       (DRAW-2D DMSTR OLDROW OLDCOL)))))
+(defun d-box (linear? h d w body &aux (char 0) dmstr)
+					;char a char?
+  (declare (fixnum h d w ))
+  (cond		     ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
+    ;;	 (LET ((X-MIN (f* LG-CHARACTER-X OLDCOL))
+    ;;	       (X-MAX (f* LG-CHARACTER-X (f+ OLDCOL W 2)))
+    ;;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f- OLDROW H)) 2))
+    ;;	       (Y-MAX (f- (f* LG-CHARACTER-Y (f+ OLDROW D 2)) 2)))
+    ;;	      (declare (fixnum X-MIN X-MAX Y-MIN Y-MAX))
+    ;;	      (LG-SET-POINT X-MIN Y-MIN)
+    ;;	      (LG-DRAW-VECTOR X-MAX Y-MIN)
+    ;;	      (LG-DRAW-VECTOR X-MAX Y-MAX)
+    ;;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
+    ;;	      (LG-END-VECTOR  X-MIN Y-MIN))
+    ;;	 (CURSORPOS* OLDROW (f1+ OLDCOL))
+    ;;	 (DRAW-2D BODY OLDROW OLDCOL)
+    ;;	 (CURSORPOS* OLDROW (f+ OLDCOL 1)))
+    ;;	((AND (NOT LINEAR?) CHARACTER-GRAPHICS-TTY $LINEDISP)
+    ;;	 (D-MATRIX NIL 'LEFT (f1+ H) (f1+ D))
+    ;;	 (CURSORPOS* (f- OLDROW H) OLDCOL)
+    ;;	 (D-HBAR NIL W)
+    ;;	 (CURSORPOS* (f+ OLDROW H) (f- OLDCOL W))
+    ;;	 (DRAW-2D BODY OLDROW OLDCOL)
+    ;;	 (CURSORPOS* (f+ OLDROW D 1) (f- OLDCOL W))
+    ;;	 (D-HBAR NIL W)
+    ;;	 (CURSORPOS* (f- OLDROW D 1) OLDCOL)
+    ;;	 (D-MATRIX NIL 'RIGHT (f1+ H) (f1+ D)))
+    (t (setq char (getcharn $boxchar 2))
+       (setq dmstr
+	     `((0 ,h (d-hbar ,(f+ 2 w) ,char))
+	       (,(f- (f+ w 2)) 0)
+	       (d-vbar ,h ,d ,char)
+	       ,@body
+	       (,(f- (f1+ w)) ,(f- (f1+ d)) (d-hbar ,(f+ w 2) ,char))
+	       (-1 0)
+	       (d-vbar ,h ,d ,char)))
+       (if linear?
+	   (draw-linear dmstr oldrow oldcol)
+	   (draw-2d dmstr oldrow oldcol)))))
 
 ;; Primitive functions for doing equation drawing.
 
 ;; Position the cursor at a given place on the screen.  %TDMV0 does
 ;; absolute cursor movement.
 
-;#+ITS
-;(DEFUN CURSORPOS* (ROW COL)
-;  (DECLARE (FIXNUM ROW COL))
-;  (+TYO #.%TDMV0 DISPLAY-FILE)
-;  (+TYO ROW DISPLAY-FILE)
-;  (+TYO COL DISPLAY-FILE)
-;  (SETQ OLDROW ROW OLDCOL COL))
+;;#+ITS
+;;(DEFUN CURSORPOS* (ROW COL)
+;;  (DECLARE (FIXNUM ROW COL))
+;;  (+TYO #.%TDMV0 DISPLAY-FILE)
+;;  (+TYO ROW DISPLAY-FILE)
+;;  (+TYO COL DISPLAY-FILE)
+;;  (SETQ OLDROW ROW OLDCOL COL))
 
-#-ITS
-(DEFUN CURSORPOS* (ROW COL)
-  (DECLARE (FIXNUM ROW COL))
-  (CURSORPOS ROW COL)
-  (SETQ OLDROW ROW OLDCOL COL))
+#-its
+(defun cursorpos* (row col)
+  (declare (fixnum row col))
+  (cursorpos row col)
+  (setq oldrow row oldcol col))
 
 ;; This function is transmitting ITS output buffer codes in addition to
 ;; standard ascii characters.  See INFO;ITSTTY > for documentation.  This
@@ -1703,25 +1703,25 @@
 ;; but its nearly impossible to get a string with backspace in it in Macsyma.
 ;; Also, DISPLA can't dimension it correctly.
 
-(DEFUN TYO* (char)
-  (COND ((char= #\Backspace char)
-	 (decf oldcol))	   ;Backspace
+(defun tyo* (char)
+  (cond ((char= #\backspace char)
+	 (decf oldcol))			;Backspace
 	((char< char #.(code-char 128))
-	 (incf oldcol)))   ;Printing graphic
+	 (incf oldcol)))		;Printing graphic
   (tyo char))
 
-;#-(or ITS NIL cl)
-;(DEFUN TYO* (CHAR)
-;  (DECLARE (FIXNUM CHAR))
-;  (IF (< CHAR 128.) (SETQ OLDCOL (f1+ OLDCOL)))	;Printing graphic
-;  (TYO CHAR))
+;;#-(or ITS NIL cl)
+;;(DEFUN TYO* (CHAR)
+;;  (DECLARE (FIXNUM CHAR))
+;;  (IF (< CHAR 128.) (SETQ OLDCOL (f1+ OLDCOL)))	;Printing graphic
+;;  (TYO CHAR))
 
 ;; Functions used by the packages for doing character graphics.
 ;; See MAXSRC;H19 or VT100.
 
-;#+ITS (PROGN 'COMPILE
+;;#+ITS (PROGN 'COMPILE
 
-;(DEFMFUN CG-TYO (CHAR) (+TYO CHAR DISPLAY-FILE))
+;;(DEFMFUN CG-TYO (CHAR) (+TYO CHAR DISPLAY-FILE))
 
 ;;; ITS does not change its idea of where the cursor position is when characters
 ;;; are slipped by it using %TDQOT.  This is used for operations which just
@@ -1730,43 +1730,43 @@
 ;;; moved forward a position.  Fortunately, it only takes one character to draw
 ;;; each of the special characters.
 
-;(DEFMFUN CG-IMAGE-TYO (CHAR)
-;	 (CG-TYO #.%TDQOT)
-;	 (CG-TYO CHAR))
+;;(DEFMFUN CG-IMAGE-TYO (CHAR)
+;;	 (CG-TYO #.%TDQOT)
+;;	 (CG-TYO CHAR))
 
-;) ;; End of conditional
+;;) ;; End of conditional
 
-;#+NIL (progn
-;(defmfun cg-tyo (char-code)
-;  (send *terminal-io* :write-char (code-char char-code)))
+;;#+NIL (progn
+;;(defmfun cg-tyo (char-code)
+;;  (send *terminal-io* :write-char (code-char char-code)))
 
-;(defmfun cg-image-tyo (char-code)
-;  (send *terminal-io* :write-raw-char (code-char char-code)))
+;;(defmfun cg-image-tyo (char-code)
+;;  (send *terminal-io* :write-raw-char (code-char char-code)))
 
 ;;Moving the stuff to a buffer to ensure that it will get output in one blast
 ;; is worth it on the vax...
-;(defvar *cg-tyo-list-buf*
-;  nil)
+;;(defvar *cg-tyo-list-buf*
+;;  nil)
 
-;(defun cg-tyo-list (l imagep &aux (msg (if imagep :raw-oustr :oustr)))
-;  (prog ((b (or *cg-tyo-list-buf* (setq *cg-tyo-list-buf* (make-string 20))))
-;	 (*cg-tyo-list-buf* nil)
-;	 (i 0))
-;   a	(cond ((or (null l) (=& i 20))
-;	         (send *terminal-io* msg b 0 i)
-;		 (if (null l) (return nil) (setq i 0)))
-;	      (t (setf (schar b i) (code-char (car l)))
-;		 (setq l (cdr l) i (1+& i))
-;		 (go a)))))
+;;(defun cg-tyo-list (l imagep &aux (msg (if imagep :raw-oustr :oustr)))
+;;  (prog ((b (or *cg-tyo-list-buf* (setq *cg-tyo-list-buf* (make-string 20))))
+;;	 (*cg-tyo-list-buf* nil)
+;;	 (i 0))
+;;   a	(cond ((or (null l) (=& i 20))
+;;	         (send *terminal-io* msg b 0 i)
+;;		 (if (null l) (return nil) (setq i 0)))
+;;	      (t (setf (schar b i) (code-char (car l)))
+;;		 (setq l (cdr l) i (1+& i))
+;;		 (go a)))))
 
-;) ;; End of conditional
+;;) ;; End of conditional
 
-(PROGN 'COMPILE
+(progn 'compile
 
-       (DEFMFUN CG-TYO (CHAR)		;Surely you jest. `(TYO ,CHAR)
+       (defmfun cg-tyo (char)		;Surely you jest. `(TYO ,CHAR)
 	 (tyo char))
        
-       (DEFMFUN CG-IMAGE-TYO (CHAR)	;Ditto. `(TYO ,CHAR)
+       (defmfun cg-image-tyo (char)	;Ditto. `(TYO ,CHAR)
 	 (tyo char)))
 
 
@@ -1787,9 +1787,9 @@
 ;; * Fix display of MLABOX for graphic consoles.
 
 
-(DEFMFUN CG-TYO-N (L)
-  (MAPC #'CG-TYO L))
+(defmfun cg-tyo-n (l)
+  (mapc #'cg-tyo l))
 
-(DEFMFUN CG-IMAGE-TYO-N (L)
-  (MAPC #'CG-IMAGE-TYO L))
+(defmfun cg-image-tyo-n (l)
+  (mapc #'cg-image-tyo l))
 

@@ -24,24 +24,24 @@
 
 ;; Defined in LIBMAX;MAXMAC.
 
-;(DEFUN COPY (L) (SUBST NIL NIL L))  
-;(DEFUN COPY1 (X) (APPEND X NIL))
+;;(DEFUN COPY (L) (SUBST NIL NIL L))  
+;;(DEFUN COPY1 (X) (APPEND X NIL))
 
 ;; Defined in RAT;RATMAC.
 
-;(DEFUN EQN (X Y) (EQUAL X Y))
-;(DEFUN PCOEFP (X) (ATOM X))
-;(DEFUN PZEROP (L) (SIGNP E L))
-;(DEFUN RCINV (X) (RATINVERT X))
+;;(DEFUN EQN (X Y) (EQUAL X Y))
+;;(DEFUN PCOEFP (X) (ATOM X))
+;;(DEFUN PZEROP (L) (SIGNP E L))
+;;(DEFUN RCINV (X) (RATINVERT X))
 
 ;; Defined in RAT;LESFAC.
 
-;(DEFUN GETDIS (X) (GET X 'DISREP))
-;(DEFUN CONS1 (X) (CONS X 1))
+;;(DEFUN GETDIS (X) (GET X 'DISREP))
+;;(DEFUN CONS1 (X) (CONS X 1))
 
 ;; Defined in LIBMAX;MAXMAC.
 
-;(DEFPROP ERLIST ERLIST1 EXPR)
+;;(DEFPROP ERLIST ERLIST1 EXPR)
 
 ;; Subr definitions of ADD* and MUL* needed at runtime for functions generated
 ;; by TRANSL.  If a function is defined as both a macro and a function, the
@@ -52,60 +52,60 @@
 ;; ADD and MUL to be flushed shortly.  Around for compatibility only.
 ;; (another CWH comment????) -gjc
 
-#+PDP10
-(PROGN 'COMPILE
-       (DEFUN ADD (&REST L) (SIMPLIFYA (CONS '(MPLUS) L) t))
-       (DEFUN MUL (&REST L) (SIMPLIFYA (CONS '(MTIMES) L) t))
-       (DEFUN ADD* (&REST L) (SIMPLIFYA (CONS '(MPLUS) L) nil))
-       (DEFUN MUL* (&REST L) (SIMPLIFYA (CONS '(MTIMES) L) nil)))
+#+pdp10
+(progn 'compile
+       (defun add (&rest l) (simplifya (cons '(mplus) l) t))
+       (defun mul (&rest l) (simplifya (cons '(mtimes) l) t))
+       (defun add* (&rest l) (simplifya (cons '(mplus) l) nil))
+       (defun mul* (&rest l) (simplifya (cons '(mtimes) l) nil)))
 
-#+NIL
-(PROGN 'COMPILE
-       (DEFUN ADD (&RESTL L) (SIMPLIFYA (CONS '(MPLUS) L) t))
-       (DEFUN MUL (&RESTL L) (SIMPLIFYA (CONS '(MTIMES) L) t))
-       (DEFUN ADD* (&RESTL L) (SIMPLIFYA (CONS '(MPLUS) L) nil))
-       (DEFUN MUL* (&RESTL L) (SIMPLIFYA (CONS '(MTIMES) L) nil))
+#+nil
+(progn 'compile
+       (defun add (&restl l) (simplifya (cons '(mplus) l) t))
+       (defun mul (&restl l) (simplifya (cons '(mtimes) l) t))
+       (defun add* (&restl l) (simplifya (cons '(mplus) l) nil))
+       (defun mul* (&restl l) (simplifya (cons '(mtimes) l) nil))
 
-(DEFUN SETF-MGET (A B VALUE) (MPUTPROP A VALUE B))
+       (defun setf-mget (a b value) (mputprop a value b))
 
-(DEFUN SETF-$GET (A B VALUE) ($PUT A VALUE B))
-)
+       (defun setf-$get (a b value) ($put a value b))
+       )
 
-#+CL
-(PROGN 'COMPILE
+#+cl
+(progn 'compile
 
-;; on the LISPM the &REST list is a stack-allocated cdr-coded list.
-;; We have to copy it, so might as well try out some optimizations.
+       ;; on the LISPM the &REST list is a stack-allocated cdr-coded list.
+       ;; We have to copy it, so might as well try out some optimizations.
 
-(DEFUN ADD (&REST V)
-  (DO ((L NIL)(R)
-	      (ACC 0))
-      ((NULL V)
-       (IF (NULL L)
-	   ACC
-	   (IF (ZEROP ACC)
-	       (SIMPLIFYA (CONS '(MPLUS) L) T)
-	       (SIMPLIFYA (LIST* '(MPLUS) ACC L) T))))
-    (SETQ R (POP V))
-    (IF (NUMBERP R)
-	(SETQ ACC (PLUS R ACC))
-	(PUSH R L))))
+       (defun add (&rest v)
+	 (do ((l nil)(r)
+	      (acc 0))
+	     ((null v)
+	      (if (null l)
+		  acc
+		  (if (zerop acc)
+		      (simplifya (cons '(mplus) l) t)
+		      (simplifya (list* '(mplus) acc l) t))))
+	   (setq r (pop v))
+	   (if (numberp r)
+	       (setq acc (plus r acc))
+	       (push r l))))
 
-(DEFUN MUL (&REST V)
-  (DO ((L NIL)(R)
-	      (ACC 1))
-      ((NULL V)
-       (IF (NULL L)
-	   ACC
-	   (IF (EQUAL ACC 1)
-	       (SIMPLIFYA (CONS '(MTIMES) L) T)
-	       (SIMPLIFYA (LIST* '(MTIMES) ACC L) T))))
-    (SETQ R (POP V))
-    (IF (NUMBERP R)
-	(SETQ ACC (TIMES R ACC))
-	(PUSH R L))))
+       (defun mul (&rest v)
+	 (do ((l nil)(r)
+	      (acc 1))
+	     ((null v)
+	      (if (null l)
+		  acc
+		  (if (equal acc 1)
+		      (simplifya (cons '(mtimes) l) t)
+		      (simplifya (list* '(mtimes) acc l) t))))
+	   (setq r (pop v))
+	   (if (numberp r)
+	       (setq acc (times r acc))
+	       (push r l))))
 
-(DEFUN ADD* (&REST L) (SIMPLIFYA (CONS '(MPLUS) (copy-list L)) nil))
-(DEFUN MUL* (&REST L) (SIMPLIFYA (CONS '(MTIMES)(copy-list L)) nil))
+       (defun add* (&rest l) (simplifya (cons '(mplus) (copy-list l)) nil))
+       (defun mul* (&rest l) (simplifya (cons '(mtimes)(copy-list l)) nil))
 
-)
+       )

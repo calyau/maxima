@@ -11,53 +11,53 @@
 (in-package "MAXIMA")
 (macsyma-module ratpoi)
 
-(DECLARE-top (SPECIAL $RATVARS POISCOM1 POISHIFT $LIM))
+(declare-top (special $ratvars poiscom1 poishift $lim))
 
-(DECLARE-top (SPECIAL $GCDOFF $RATEXPAND GENVAR VARLIST POISCO1 POISCOM1 GEN TR TLIST)) 
+(declare-top (special $gcdoff $ratexpand genvar varlist poisco1 poiscom1 gen tr tlist)) 
 
-(SETQ POISCO1 '(1. . 1.) POISCOM1 '(-1. . 1.)) 
+(setq poisco1 '(1. . 1.) poiscom1 '(-1. . 1.)) 
 
 ;;; THESE PROGRAMS MAKE POISSON COEFFICIENTS RATIONAL FUNCTIONS (CRE)
 ;;; POISCDECODE DECODES A COEFFICIENT
 
-(DEFUN POISCDECODE (X) 
-       ($RATDISREP (CONS (LIST 'MRAT 'SIMP (CDR $RATVARS) GENVAR) X))) 
+(defun poiscdecode (x) 
+  ($ratdisrep (cons (list 'mrat 'simp (cdr $ratvars) genvar) x))) 
 
 ;;; INTOPOISCO PUTS AN EXPRESSION INTO POISSON COEFFICIENT FORM
 
-;(defmacro nonperiod (&rest p)
-;  (setq p (cons 'nonperiod p))
-;  (AND (NULL (CADR P)) (EQUAL (CAADDR P) POISHIFT) (NULL (CDDR (CADDR P)))))
+;;(defmacro nonperiod (&rest p)
+;;  (setq p (cons 'nonperiod p))
+;;  (AND (NULL (CADR P)) (EQUAL (CAADDR P) POISHIFT) (NULL (CDDR (CADDR P)))))
 
-(DEFUN INTOPOISCO (X) 
-       (COND ((AND (NOT (ATOM X)) (NUMBERP (CDR X))) X)
-             (T (CDR(RATREP X (CDR $RATVARS))))))
+(defun intopoisco (x) 
+  (cond ((and (not (atom x)) (numberp (cdr x))) x)
+	(t (cdr(ratrep x (cdr $ratvars))))))
 
 ;;; POISCO+ ADDS 2 COEFFICIENTS
 ;;; POISCO* MULTIPLIES 2 COEFFICIENTS
 
-(DEFUN POISCO* (X Y) (RATTIMES X Y T)) 
+(defun poisco* (x y) (rattimes x y t)) 
 
-(DEFUN POISCO+ (X Y) (RATPLUS X Y)) 
+(defun poisco+ (x y) (ratplus x y)) 
 
 ;;; HALVE DIVIDES A COEFFICIENT BY 2
 
-(DEFUN HALVE (R) (RATTIMES '(1. . 2.) R T)) 
+(defun halve (r) (rattimes '(1. . 2.) r t)) 
 
 ;;; POISSUBSTCO SUBSTITUTES AN EXPRESSION FOR  A VARIABLE IN A COEFFICIENT.
 
-(DEFUN POISSUBSTCO (A B X) 
-       (INTOPOISCO (MAXIMA-SUBSTITUTE A
-                               B
-                               ($RATDISREP (CONS (LIST 'MRAT
-                                                       'SIMP
- (CDR $RATVARS) GENVAR)
-                                                 X))))) 
+(defun poissubstco (a b x) 
+  (intopoisco (maxima-substitute a
+				 b
+				 ($ratdisrep (cons (list 'mrat
+							 'simp
+							 (cdr $ratvars) genvar)
+						   x))))) 
 
-(DEFUN POISPZERO (X) (EQUAL 0. (CAR X))) 
+(defun poispzero (x) (equal 0. (car x))) 
 
 
 ;;; TEST FOR ZERO
 
-(DEFUN POISCOINTEG (H VAR) (INTOPOISCO ($INTEGRATE (POISCDECODE H) VAR))) 
+(defun poiscointeg (h var) (intopoisco ($integrate (poiscdecode h) var))) 
 

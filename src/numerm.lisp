@@ -15,40 +15,40 @@
 ;;; for use with the functions in Maxsrc;Numer.
 
 (defmacro make-array$ (&rest l)
-  ;I guess macsyma has to know the default "flonum" type... --gsb
-  #+Maclisp
+					;I guess macsyma has to know the default "flonum" type... --gsb
+  #+maclisp
   `(*array nil 'flonum ,@l)
-  #+(or cl NIL) `(make-array (list ,@l) :element-type 'double-float)
+  #+(or cl nil) `(make-array (list ,@l) :element-type 'double-float)
   )
 
 
 (defmacro make-array% (&rest l)
-  #+Maclisp
+  #+maclisp
   `(*array nil 'fixnum ,@l)
-  #+(or cl NIL)
+  #+(or cl nil)
   `(make-array (list ,@l) :element-type 'fixnum)
   )
 
 (defmacro aref$ (&rest l)
-  #+Maclisp
+  #+maclisp
   `(arraycall flonum ,@l)
-  #+(or cl NIL)
+  #+(or cl nil)
   `(aref (the (simple-array double-float) ,(car l)) ,@(cdr l))
-  #+(or Franz)
+  #+(or franz)
   `(aref ,@l)
   )
 
 (defmacro aref% (&rest l)
-  #+Maclisp
+  #+maclisp
   `(arraycall fixnum ,@l)
-  #+(or cl NIL)
+  #+(or cl nil)
   `(aref (the (simple-array fixnum) ,(car l)) ,@(cdr l))
-)
+  )
 
 (defmacro free-array% (a)
-  #+Maclisp
+  #+maclisp
   `(*rearray ,a)
-  #+(OR Cl NIL)
+  #+(or cl nil)
   ;; not useful to call return-array unless it is at end of area.
   ;; programs do better to save arrays as a resource, this works
   ;; in maclisp too.
@@ -57,43 +57,43 @@
 (defmacro free-array$ (a)
   #+maclisp
   `(*rearray ,a)
-  #+(OR Cl NIL)
+  #+(or cl nil)
   a
   )
 
 
-(DEFMACRO DEFBINDTRAMP$ (NARGS)
-  (LET ((BIND-TRAMP$ #-Multics (SYMBOLCONC 'bind-tramp nargs '$)
-		     #+Multics (implode (mapcan 'exploden
+(defmacro defbindtramp$ (nargs)
+  (let ((bind-tramp$ #-multics (symbolconc 'bind-tramp nargs '$)
+		     #+multics (implode (mapcan 'exploden
 						(list 'bind-tramp nargs '$))))
-	(TRAMP$ #-Multics (SYMBOLCONC 'tramp nargs '$)
-		#+Multics (implode (mapcan 'exploden (list 'tramp nargs '$)))))
+	(tramp$ #-multics (symbolconc 'tramp nargs '$)
+		#+multics (implode (mapcan 'exploden (list 'tramp nargs '$)))))
 ;;;When Multics gets symbolconc the above conditionalization can be removed.
-    `(PROGN 'COMPILE
-	   #-cl (IF (FBOUNDP 'SPECIAL) (SPECIAL ,TRAMP$))
-	    (PROCLAIM (QUOTE (SPECIAL ,TRAMP$)))
-	     (DEFMACRO ,BIND-TRAMP$ (F G &REST BODY)
-	      `(LET ((,',TRAMP$))
-		 (LET ((,F (MAKE-TRAMP$ ,G ,',NARGS)))
-		   ,@BODY))))))
+    `(progn 'compile
+      #-cl (if (fboundp 'special) (special ,tramp$))
+      (proclaim (quote (special ,tramp$)))
+      (defmacro ,bind-tramp$ (f g &rest body)
+	`(let ((,',tramp$))
+	  (let ((,f (make-tramp$ ,g ,',nargs)))
+	    ,@body))))))
 
-(DEFBINDTRAMP$ 1)
-(DEFBINDTRAMP$ 2)
-(DEFBINDTRAMP$ 3)
+(defbindtramp$ 1)
+(defbindtramp$ 2)
+(defbindtramp$ 3)
 
 (defmacro fcall$ (&rest l)
-  #+Maclisp
+  #+maclisp
   `(subrcall flonum ,@l)
-  #+(OR Cl NIL)
+  #+(or cl nil)
   `(funcall ,@l)
   )
 
 ;; Central location for some important declarations.
-#+Maclisp
-(IF (FBOUNDP 'flonum)
-    (FLONUM (GCALL1$ NIL NIL)
-	    (GCALL2$ NIL NIL NIL)
-	    (MTO-FLOAT NIL)
+#+maclisp
+(if (fboundp 'flonum)
+    (flonum (gcall1$ nil nil)
+	    (gcall2$ nil nil nil)
+	    (mto-float nil)
 	    ))
 
 

@@ -13,30 +13,30 @@
 (in-package "MAXIMA")
 (macsyma-module mdefun macro)
 
-;(TRANSL-MODULE MDEFUN) IS CORRECT. But doesn't work in the MPRELU
+;;(TRANSL-MODULE MDEFUN) IS CORRECT. But doesn't work in the MPRELU
 ;; environment.
 
 (load-macsyma-macros transm)
 
 ;;; $FIX_NUM_ARGS_FUNCTION $VARIABLE_NUM_ARGS_FUNCTION.
 
-(DEFVAR *KNOWN-FUNCTIONS-INFO-STACK* NIL
+(defvar *known-functions-info-stack* nil
   "When MDEFUN-TR expands it puts stuff here for MFUNCTION-CALL
   to use.")
 
-(DEFVAR *UNKNOWN-FUNCTIONS-INFO-STACK* NIL
+(defvar *unknown-functions-info-stack* nil
   "When MFUNCTION-CALL expands without info from
   *KNOWN-FUNCTIONS-INFO-STACK* it puts stuff here to be barfed
   at the end of compilation.")
 
 
-(DEFmacro MDEFUN-TR (&rest FORM)
-  (MAXIMA-ERROR "obsolete macro form, please retranslate source code"
-	 form 'fail-act))
+(defmacro mdefun-tr (&rest form)
+  (maxima-error "obsolete macro form, please retranslate source code"
+		form 'fail-act))
 
-(DEFmacro MDEFUN (&rest FORM)
-  (MAXIMA-ERROR "obsolete macro form, please retranslate source code"
-	 form 'fail-act))
+(defmacro mdefun (&rest form)
+  (maxima-error "obsolete macro form, please retranslate source code"
+		form 'fail-act))
 
 ;;; DEFMTRFUN will be the new standard.
 ;;; It will punt macsyma fexprs since the macro scheme is now
@@ -46,29 +46,29 @@
 ;;; (DEFMTRFUN-EXTERNAL ($FOO <mode> <property> <&restp>))
 
 
-#+PDP10
-(DEFUN COMPILER-STATE () COMPILER-STATE)
-#+CL
-(DEFUN COMPILER-STATE () (Y-OR-N-P "Is COMPILER-STATE true?"))
-#-(OR CL PDP10) 
-(DEFUN COMPILER-STATE () T)
-#-cl ;is this used.??
+#+pdp10
+(defun compiler-state () compiler-state)
+#+cl
+(defun compiler-state () (y-or-n-p "Is COMPILER-STATE true?"))
+#-(or cl pdp10) 
+(defun compiler-state () t)
+#-cl					;is this used.??
 (defmacro defmtrfun-external ((name mode prop &rest restp))
-    #+pdp10
-    (and (eq prop 'mdefine) (COMPILER-STATE)
-	 (PUSH-INFO NAME (COND (RESTP 'LEXPR)
-			       (T 'EXPR))
-		    *KNOWN-FUNCTIONS-INFO-STACK*))
-    #-(or cl NIL)
-    `(declare (,(cond (restp '*lexpr) (t '*expr))
-	       ,name)
-	      ;; FLONUM declaration is most important
-	      ;; for numerical work on the pdp-10.
-	      ,@(IF (AND (EQ PROP 'MDEFINE) (EQ MODE '$FLOAT))
-		    `((FLONUM (,NAME))))
+  #+pdp10
+  (and (eq prop 'mdefine) (compiler-state)
+       (push-info name (cond (restp 'lexpr)
+			     (t 'expr))
+		  *known-functions-info-stack*))
+  #-(or cl nil)
+  `(declare (,(cond (restp '*lexpr) (t '*expr))
+	     ,name)
+    ;; FLONUM declaration is most important
+    ;; for numerical work on the pdp-10.
+    ,@(if (and (eq prop 'mdefine) (eq mode '$float))
+	  `((flonum (,name))))
     ))
 
-#+cl  ;;we don't make function type declarations yet.
+#+cl ;;we don't make function type declarations yet.
 (defmacro defmtrfun-external (&rest ig) ig nil)
 
 ;;; (DEFMTRFUN ($FOO <mode> <property> <&restp>) <ARGL> . BODY)
@@ -78,163 +78,163 @@
 
 ;;; For the LISPM this sucks, since &REST is built-in.
 #+cl
-(DEfmacro DEFMTRFUN  ((NAME MODE PROP RESTP . ARRAY-FLAG) ARGL . BODY )
-  (let ((	DEF-HEADER))
-     (AND ARRAY-FLAG
+(defmacro defmtrfun  ((name mode prop restp . array-flag) argl . body )
+  (let ((	def-header))
+    (and array-flag
 	 ;; old DEFMTRFUN's might have this extra bit NIL
 	 ;; new ones will have (NIL) or (T)
-	 (SETQ ARRAY-FLAG (CAR ARRAY-FLAG)))
+	 (setq array-flag (car array-flag)))
     
-    (SETQ DEF-HEADER
-	  (COND ((EQ PROP 'MDEFINE)
-		 (COND (ARRAY-FLAG #-CL `(,NAME A-EXPR #+MACLISP A-SUBR)
-				   #+CL `(:PROPERTY ,NAME A-SUBR))
-		       (T NAME)))
-		(T `(,NAME TRANSLATED-MMACRO))))
-    #+PDP10
-    (AND (EQ PROP 'MDEFINE) (COMPILER-STATE) (NOT ARRAY-FLAG)
-	 (PUSH-INFO NAME (COND (RESTP 'LEXPR)
-			       (T 'EXPR))
-		    *KNOWN-FUNCTIONS-INFO-STACK*))
+    (setq def-header
+	  (cond ((eq prop 'mdefine)
+		 (cond (array-flag #-cl `(,name a-expr #+maclisp a-subr)
+				   #+cl `(:property ,name a-subr))
+		       (t name)))
+		(t `(,name translated-mmacro))))
+    #+pdp10
+    (and (eq prop 'mdefine) (compiler-state) (not array-flag)
+	 (push-info name (cond (restp 'lexpr)
+			       (t 'expr))
+		    *known-functions-info-stack*))
     
-    `(EVAL-WHEN (COMPILE EVAL LOAD)
-	    ,@(AND (NOT ARRAY-FLAG) `((REMPROP ',NAME 'TRANSLATE)))
-	    ,@(AND MODE `((DEFPROP ,NAME ,MODE
-			    ,(COND (ARRAY-FLAG 'ARRAYFUN-MODE)
-				   (T 'FUNCTION-MODE)))))
-	    ,@(COND (ARRAY-FLAG
-		     ;; when loading in hashed array properties
-		     ;; most exist or be created. Other
-		     ;; array properties must be consistent if
-		     ;; they exist.
-		     `((INSURE-ARRAY-PROPS ',NAME ',MODE
-					   ',(LENGTH ARGL)))))
-	    ,@(COND ((AND (EQ PROP 'MDEFINE) (NOT ARRAY-FLAG))
-		     `((COND ((STATUS FEATURE MACSYMA)
-			      (mputprop ',name t
-					,(COND
-					   ((NOT RESTP)
-					    ''$fixed_num_args_function)
-					   (T
-					    ''$variable_num_args_function)))))
-		       ,(COND ((NOT RESTP)
-			       `(ARGS ',NAME '(NIL . ,(LENGTH ARGL))))))))
-	    (,(if (consp def-header) 'DEFUN-prop 'defmfun)
-	     ,DEF-HEADER ,(COND ((NOT RESTP) ARGL)
-				      (T '|mlexpr NARGS|))
-	      ,@(COND ((NOT RESTP)
-		       BODY)
-		      (t
-		       (LET ((NL (f1- (LENGTH ARGL))))
-			 `((COND ((< |mlexpr NARGS| ,NL)
-				  ($ERROR
-				    'MAXIMA-ERROR ',NAME
-				    '| takes no less than |
-				    ,NL
-				    ',(COND ((= NL 1)
-					     '| argument.|)
-					    (T
-					     '| arguments.|))))
-				 (T
-				  ((LAMBDA ,ARGL
-				     ,@BODY)
-				   ;; this conses up the
-				   ;; calls to ARGS and LISTIFY.
-				   ,@(DO ((J 1 (f1+ J))
-					  (P-ARGL NIL))
-					 ((> J NL)
-					  (PUSH
-					    `(CONS
-					       '(MLIST)
-					       (LISTIFY
-						 (f- ,NL
-						    |mlexpr NARGS|)))
-					    P-ARGL)
-					  (NREVERSE P-ARGL))
-				       (PUSH `(ARG ,J)
-					     P-ARGL)))))))))))))
+    `(eval-when (compile eval load)
+      ,@(and (not array-flag) `((remprop ',name 'translate)))
+      ,@(and mode `((defprop ,name ,mode
+		      ,(cond (array-flag 'arrayfun-mode)
+			     (t 'function-mode)))))
+      ,@(cond (array-flag
+	       ;; when loading in hashed array properties
+	       ;; most exist or be created. Other
+	       ;; array properties must be consistent if
+	       ;; they exist.
+	       `((insure-array-props ',name ',mode
+		  ',(length argl)))))
+      ,@(cond ((and (eq prop 'mdefine) (not array-flag))
+	       `((cond ((status feature macsyma)
+			(mputprop ',name t
+				  ,(cond
+				    ((not restp)
+				     ''$fixed_num_args_function)
+				    (t
+				     ''$variable_num_args_function)))))
+		 ,(cond ((not restp)
+			 `(args ',name '(nil . ,(length argl))))))))
+      (,(if (consp def-header) 'defun-prop 'defmfun)
+       ,def-header ,(cond ((not restp) argl)
+			  (t '|mlexpr NARGS|))
+       ,@(cond ((not restp)
+		body)
+	       (t
+		(let ((nl (f1- (length argl))))
+		  `((cond ((< |mlexpr NARGS| ,nl)
+			   ($error
+			    'maxima-error ',name
+			    '| takes no less than |
+			    ,nl
+			    ',(cond ((= nl 1)
+				     '| argument.|)
+				    (t
+				     '| arguments.|))))
+			  (t
+			   ((lambda ,argl
+			      ,@body)
+			    ;; this conses up the
+			    ;; calls to ARGS and LISTIFY.
+			    ,@(do ((j 1 (f1+ j))
+				   (p-argl nil))
+				  ((> j nl)
+				   (push
+				    `(cons
+				      '(mlist)
+				      (listify
+				       (f- ,nl
+					|mlexpr NARGS|)))
+				    p-argl)
+				   (nreverse p-argl))
+				  (push `(arg ,j)
+					p-argl)))))))))))))
 
 
 
 
 #-cl
-(DEFUN-prop (DEFMTRFUN MACRO) (FORM)
-  (LET (( ((NAME MODE PROP RESTP . ARRAY-FLAG) ARGL . BODY) (CDR FORM))
-	(DEF-HEADER))
+(defun-prop (defmtrfun macro) (form)
+  (let (( ((name mode prop restp . array-flag) argl . body) (cdr form))
+	(def-header))
     
-    (AND ARRAY-FLAG
+    (and array-flag
 	 ;; old DEFMTRFUN's might have this extra bit NIL
 	 ;; new ones will have (NIL) or (T)
-	 (SETQ ARRAY-FLAG (CAR ARRAY-FLAG)))
+	 (setq array-flag (car array-flag)))
 
-    (SETQ DEF-HEADER
-	  (COND ((EQ PROP 'MDEFINE)
-		 (COND (ARRAY-FLAG #-CL `(,NAME A-EXPR #+MACLISP A-SUBR)
-				   #+CL `(:PROPERTY ,NAME A-SUBR))
-		       (T NAME)))
-		(T `(,NAME TRANSLATED-MMACRO))))
-    #+PDP10
-    (AND (EQ PROP 'MDEFINE) (COMPILER-STATE) (NOT ARRAY-FLAG)
-	 (PUSH-INFO NAME (COND (RESTP 'LEXPR)
-			       (T 'EXPR))
-		    *KNOWN-FUNCTIONS-INFO-STACK*))
+    (setq def-header
+	  (cond ((eq prop 'mdefine)
+		 (cond (array-flag #-cl `(,name a-expr #+maclisp a-subr)
+				   #+cl `(:property ,name a-subr))
+		       (t name)))
+		(t `(,name translated-mmacro))))
+    #+pdp10
+    (and (eq prop 'mdefine) (compiler-state) (not array-flag)
+	 (push-info name (cond (restp 'lexpr)
+			       (t 'expr))
+		    *known-functions-info-stack*))
     
-    `(EVAL-WHEN (COMPILE EVAL LOAD)
-	    ,@(AND (NOT ARRAY-FLAG) `((REMPROP ',NAME 'TRANSLATE)))
-	    ,@(AND MODE `((DEFPROP ,NAME ,MODE
-			    ,(COND (ARRAY-FLAG 'ARRAYFUN-MODE)
-				   (T 'FUNCTION-MODE)))))
-	    ,@(COND (ARRAY-FLAG
-		     ;; when loading in hashed array properties
-		     ;; most exist or be created. Other
-		     ;; array properties must be consistent if
-		     ;; they exist.
-		     `((INSURE-ARRAY-PROPS ',NAME ',MODE
-					   ',(LENGTH ARGL)))))
-	    ,@(COND ((AND (EQ PROP 'MDEFINE) (NOT ARRAY-FLAG))
-		     `((COND ((STATUS FEATURE MACSYMA)
-			      (mputprop ',name t
-					,(COND
-					  ((NOT RESTP)
-					   ''$fixed_num_args_function)
-					  (T
-					   ''$variable_num_args_function)))))
-		       ,(COND ((NOT RESTP)
-			       `(ARGS ',NAME '(NIL . ,(LENGTH ARGL))))))))
-	    (,(if (consp def-header) 'DEFUN-prop 'defun)
-	     ,DEF-HEADER ,(COND ((NOT RESTP) ARGL)
-				      (T '|mlexpr NARGS|))
-	      ,@(COND ((NOT RESTP)
-		       BODY)
-		      (t
-		       (LET ((NL (f1- (LENGTH ARGL))))
-			 `((COND ((< |mlexpr NARGS| ,NL)
-				  ($ERROR
-				   'MAXIMA-ERROR ',NAME
-				   '| takes no less than |
-				   ,NL
-				   ',(COND ((= NL 1)
-					    '| argument.|)
-					   (T
-					    '| arguments.|))))
-				 (T
-				  ((LAMBDA ,ARGL
-				     ,@BODY)
-				   ;; this conses up the
-				   ;; calls to ARGS and LISTIFY.
-				   ,@(DO ((J 1 (f1+ J))
-					  (P-ARGL NIL))
-					 ((> J NL)
-					  (PUSH
-					   `(CONS
-					     '(MLIST)
-					     (LISTIFY
-					      (f- ,NL
-						 |mlexpr NARGS|)))
-					   P-ARGL)
-					  (NREVERSE P-ARGL))
-				       (PUSH `(ARG ,J)
-					     P-ARGL)))))))))))))
+    `(eval-when (compile eval load)
+      ,@(and (not array-flag) `((remprop ',name 'translate)))
+      ,@(and mode `((defprop ,name ,mode
+		      ,(cond (array-flag 'arrayfun-mode)
+			     (t 'function-mode)))))
+      ,@(cond (array-flag
+	       ;; when loading in hashed array properties
+	       ;; most exist or be created. Other
+	       ;; array properties must be consistent if
+	       ;; they exist.
+	       `((insure-array-props ',name ',mode
+		  ',(length argl)))))
+      ,@(cond ((and (eq prop 'mdefine) (not array-flag))
+	       `((cond ((status feature macsyma)
+			(mputprop ',name t
+				  ,(cond
+				    ((not restp)
+				     ''$fixed_num_args_function)
+				    (t
+				     ''$variable_num_args_function)))))
+		 ,(cond ((not restp)
+			 `(args ',name '(nil . ,(length argl))))))))
+      (,(if (consp def-header) 'defun-prop 'defun)
+       ,def-header ,(cond ((not restp) argl)
+			  (t '|mlexpr NARGS|))
+       ,@(cond ((not restp)
+		body)
+	       (t
+		(let ((nl (f1- (length argl))))
+		  `((cond ((< |mlexpr NARGS| ,nl)
+			   ($error
+			    'maxima-error ',name
+			    '| takes no less than |
+			    ,nl
+			    ',(cond ((= nl 1)
+				     '| argument.|)
+				    (t
+				     '| arguments.|))))
+			  (t
+			   ((lambda ,argl
+			      ,@body)
+			    ;; this conses up the
+			    ;; calls to ARGS and LISTIFY.
+			    ,@(do ((j 1 (f1+ j))
+				   (p-argl nil))
+				  ((> j nl)
+				   (push
+				    `(cons
+				      '(mlist)
+				      (listify
+				       (f- ,nl
+					|mlexpr NARGS|)))
+				    p-argl)
+				   (nreverse p-argl))
+				  (push `(arg ,j)
+					p-argl)))))))))))))
 
 
 

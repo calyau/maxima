@@ -13,36 +13,36 @@
 
 ;; Macros for manipulating rational functions.
 
-(DEFMACRO PCOEFP (E) `(ATOM ,E))
+(defmacro pcoefp (e) `(atom ,e))
 
 
 
-#-CL
-(DEFMACRO PZEROP (X) `(SIGNP E ,X))			;TRUE FOR 0 OR 0.0
+#-cl
+(defmacro pzerop (x) `(signp e ,x))	;TRUE FOR 0 OR 0.0
 ;;;(DEFMACRO PZEROP (X) `(LET ((gg1032 ,X)) (AND (NUMBERP gg1032) (ZEROP gg1032))))
 
 (proclaim '(inline pzerop))
-#+CL
+#+cl
 (defun pzerop (x) (if (fixnump x) (zerop (the fixnum x))
-		    (if (consp x) nil
-		      (and (floatp x) (zerop x)))))
+		      (if (consp x) nil
+			  (and (floatp x) (zerop x)))))
 
-#+CL
-(DEFMACRO PZERO () 0)
-(DEFMACRO PTZEROP (TERMS) `(NULL ,TERMS))		;for poly terms
-(DEFMACRO PTZERO () '())
+#+cl
+(defmacro pzero () 0)
+(defmacro ptzerop (terms) `(null ,terms)) ;for poly terms
+(defmacro ptzero () '())
 
-#-CL
-(DEFMACRO CZEROP (C) `(SIGNP E ,C))
-#+CL
+#-cl
+(defmacro czerop (c) `(signp e ,c))
+#+cl
 (defmacro czerop (c) `(pzerop ,c))
 
-(DEFMACRO CMINUS (C) `(MINUS ,C))
-(DEFMACRO CMINUSP (C) `(MINUSP ,C))
-(DEFMACRO CDERIVATIVE (ign ign1)ign ign1 0)
+(defmacro cminus (c) `(minus ,c))
+(defmacro cminusp (c) `(minusp ,c))
+(defmacro cderivative (ign ign1)ign ign1 0)
 
 ;; Similar to REMOVE on the Lisp Machine
-(DEFMACRO DELET (ITEM LLIST) `(ZL-DELETE ,ITEM (COPY-TOP-LEVEL ,LLIST )))
+(defmacro delet (item llist) `(zl-delete ,item (copy-top-level ,llist )))
 
 ;; the rational function package uses GENSYM's to represent variables.
 ;; The PDP-10 implementation used to use the PRINTNAME of the gensym
@@ -51,32 +51,32 @@
 ;; to use the property list, as thats a lot cheaper than creating a value
 ;; cell. Actually, better to use the PACKAGE slot, a kludge is a kludge right?
 
-(DEFMACRO VALGET (ITEM)
-  #+NIL `(GET ,ITEM 'GENSYMVAL)
-  #-NIL `(SYMBOL-VALUE ,ITEM))
+(defmacro valget (item)
+  #+nil `(get ,item 'gensymval)
+  #-nil `(symbol-value ,item))
 
-(DEFMACRO VALPUT (ITEM VAL)
-  `(SETF (VALGET ,ITEM) ,VAL))
+(defmacro valput (item val)
+  `(setf (valget ,item) ,val))
 
 (proclaim '(inline pointergp))
-(DEFun POINTERGP (A B) (f> (valget A) (VALGET B)))
+(defun pointergp (a b) (f> (valget a) (valget b)))
 
-;(macro ALGV (L) `(AND $ALGEBRAIC (GET ,(CADR L) 'TELLRAT)))
+;;(macro ALGV (L) `(AND $ALGEBRAIC (GET ,(CADR L) 'TELLRAT)))
 (defmacro algv (v)
   `(and $algebraic (get ,v 'tellrat)))
 
 
-(DEFMACRO EQN (&REST L) `(EQUAL . ,L))
+(defmacro eqn (&rest l) `(equal . ,l))
 
-(DEFMACRO RZERO () ''(0 . 1))
-(DEFMACRO RZEROP (A) `(PZEROP (CAR ,A)))
+(defmacro rzero () ''(0 . 1))
+(defmacro rzerop (a) `(pzerop (car ,a)))
 
-(defmacro PRIMPART (p) `(cadr (oldcontent ,p)))
+(defmacro primpart (p) `(cadr (oldcontent ,p)))
 
 ;;poly constructor
 
 (defmacro make-poly (var &optional (terms-or-e nil options?) (c nil e-c?)
-			 (terms nil terms?))
+		     (terms nil terms?))
   (cond ((null options?) `(cons ,var '(1 1)))
 	((null e-c?) `(psimp ,var ,terms-or-e))
 	((null terms?) `(list ,var ,terms-or-e ,c))
@@ -84,54 +84,54 @@
 
 ;;Poly selector functions
 
-(defmacro P-VAR (p) `(car ,p))
+(defmacro p-var (p) `(car ,p))
 
-(defmacro P-TERMS (p) `(cdr ,p))
+(defmacro p-terms (p) `(cdr ,p))
 
-(defmacro P-LC (p) `(caddr ,p))			;leading coefficient
+(defmacro p-lc (p) `(caddr ,p))		;leading coefficient
 
-(defmacro P-LE (p) `(cadr ,p))
+(defmacro p-le (p) `(cadr ,p))
 
-(defmacro P-RED (p) `(cdddr ,p))
+(defmacro p-red (p) `(cdddr ,p))
 
 ;;poly terms selectors
 
-(defmacro PT-LC (terms) `(cadr ,terms))
+(defmacro pt-lc (terms) `(cadr ,terms))
 
-(defmacro PT-LE (terms) `(car ,terms))
+(defmacro pt-le (terms) `(car ,terms))
 
-(defmacro PT-RED (terms) `(cddr ,terms))
+(defmacro pt-red (terms) `(cddr ,terms))
 
 ;; Taken from SININT and RISCH.  Somebody document these please.
 
-(DEFMACRO R+ (R . L)
-	  (COND ((NULL L) R)
-		(T `(RATPL ,R (R+ ,@L)))))
+(defmacro r+ (r . l)
+  (cond ((null l) r)
+	(t `(ratpl ,r (r+ ,@l)))))
 
-(DEFMACRO R* (R . L)
-	  (COND ((NULL L) R)
-		(T `(RATTI ,R (R* ,@L) T))))
+(defmacro r* (r . l)
+  (cond ((null l) r)
+	(t `(ratti ,r (r* ,@l) t))))
 
-(DEFMACRO R- (R . L)
-	  (COND ((NULL L) `(RATMINUS (RATFIX ,R)))
-		(T `(RATDIF (RATFIX ,R) (R+ ,@L)))))
+(defmacro r- (r . l)
+  (cond ((null l) `(ratminus (ratfix ,r)))
+	(t `(ratdif (ratfix ,r) (r+ ,@l)))))
 
 
 (defvar $ratvarswitch t)
 
-;(defvar *rational-function-files* '(
-;ratmac
-;rat3a
-;rat3b
-;rat3c
-;rat3e
-;nrat4
-;ratout
-;lesfac
-;factor
-;algfac
-;nalgfa
-;newfac
-;ufact
-;result
-;spgcd))
+;;(defvar *rational-function-files* '(
+;;ratmac
+;;rat3a
+;;rat3b
+;;rat3c
+;;rat3e
+;;nrat4
+;;ratout
+;;lesfac
+;;factor
+;;algfac
+;;nalgfa
+;;newfac
+;;ufact
+;;result
+;;spgcd))

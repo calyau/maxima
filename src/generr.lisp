@@ -5,8 +5,8 @@
 #+(or lispm kcl)
 (error "the errset special form is defined elsewhere for these machines")
 
-#||
-#+excl ;for franz common lisp
+					#||
+#+excl					;for franz common lisp
 (defmacro errset (&rest l)
   `(multiple-value-bind
     (noerr val)
@@ -19,17 +19,17 @@
 #+lucid
 (defmacro errset (&rest l)
   `(multiple-value-bind
-     (val err)
-     (lucid::with-error-trapping ,(car l))
-     (cond ((null err) val)
-	   ((null errset) nil)
-	   (t (eval val)))))
+    (val err)
+    (lucid::with-error-trapping ,(car l))
+    (cond ((null err) val)
+	  ((null errset) nil)
+	  (t (eval val)))))
     
 
 ;;here is the  desired behavior of errset
-;(let ((errset t)) (errset (+ 2 'a))) ;==> signals error
-;(let ((errset nil)) (errset (+ 2 'a))) ;==> nil
-;(let ((errset nil)) (errset (+ 2 3))) ;==> (5)
+;;(let ((errset t)) (errset (+ 2 'a))) ;==> signals error
+;;(let ((errset nil)) (errset (+ 2 'a))) ;==> nil
+;;(let ((errset nil)) (errset (+ 2 3))) ;==> (5)
 
 ;;a generic one if you have no error handling 
 ;;at all, that caught no errors but at least
@@ -37,8 +37,8 @@
 
 #+(or cmu sbcl clisp allegro mcl)
 (defmacro errset (&rest l)
-   `(handler-case (list ,(car l))
-     (error (e) (when errset (error e)))))
+  `(handler-case (list ,(car l))
+    (error (e) (when errset (error e)))))
 
 
 #-(or excl clisp cmu sbcl mcl lucid)

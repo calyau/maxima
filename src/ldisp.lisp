@@ -12,12 +12,12 @@
 ;;; See KMP for details
 
 (in-package "MAXIMA")
-(declare-top (*EXPR MSTRING STRIPDOLLAR)
-	 (SPECIAL LINEAR-DISPLAY-BREAK-TABLE FORTRANP))
+(declare-top (*expr mstring stripdollar)
+	     (special linear-display-break-table fortranp))
 
-#+Maclisp
-(EVAL-WHEN (EVAL COMPILE)
-	   (SSTATUS MACRO /# '+INTERNAL-/#-MACRO SPLICING))
+#+maclisp
+(eval-when (eval compile)
+  (sstatus macro /# '+internal-/#-macro splicing))
 
 ;;; (LINEAR-DISPLA <thing-to-display>)
 ;;;
@@ -31,33 +31,33 @@
 ;;;like x^2.  --wfs
 
 #+cl
-(DEFUN LINEAR-DISPLA (X )
-       (declare (special chrps))
-       (fresh-line *standard-output*)
-       (COND ((NOT (ATOM X))
-	      (COND ((EQ (CAAR X) 'MLABLE)
-		     (setq chrps 0)
-		     (COND ((CADR X)
-			    (princ "(")
-			    (setq chrps
-				  (+  3 (length (mgrind (cadr x) nil))))
-			    (princ ") ")))
-		     (MPRINT (MSIZE (caddr x) NIL NIL 'MPAREN 'MPAREN)
-			     *standard-output*))
-		    ((EQ (CAAR X) 'MTEXT)
-		     (DO ((X (CDR X) (CDR X))
-			  (FORTRANP))			; Atoms in MTEXT
-			 ((NULL X))			;  should omit ?'s
-			 (SETQ FORTRANP (ATOM (CAR X)))
-			 ;(LINEAR-DISPLA1 (CAR X) 0.)
-			 (mgrind (car x) *standard-output*)
-			 ;(tyo #\space )
-			 ))
-		    (T
-		     (mgrind x *standard-output*))))
-	     (T
-	      (mgrind X *standard-output*)))
-        (TERPRI))
+(defun linear-displa (x )
+  (declare (special chrps))
+  (fresh-line *standard-output*)
+  (cond ((not (atom x))
+	 (cond ((eq (caar x) 'mlable)
+		(setq chrps 0)
+		(cond ((cadr x)
+		       (princ "(")
+		       (setq chrps
+			     (+  3 (length (mgrind (cadr x) nil))))
+		       (princ ") ")))
+		(mprint (msize (caddr x) nil nil 'mparen 'mparen)
+			*standard-output*))
+	       ((eq (caar x) 'mtext)
+		(do ((x (cdr x) (cdr x))
+		     (fortranp))	; Atoms in MTEXT
+		    ((null x))		;  should omit ?'s
+		  (setq fortranp (atom (car x)))
+					;(LINEAR-DISPLA1 (CAR X) 0.)
+		  (mgrind (car x) *standard-output*)
+					;(tyo #\space )
+		  ))
+	       (t
+		(mgrind x *standard-output*))))
+	(t
+	 (mgrind x *standard-output*)))
+  (terpri))
 
 
 
@@ -67,27 +67,27 @@
 ;;;  DISPLA is usable and will attempt to do something reasonable with
 ;;;  its input.
 #-cl
-(DEFUN LINEAR-DISPLA (X)
-       (TERPRI)
-       (COND ((NOT (ATOM X))
-	      (COND ((EQ (CAAR X) 'MLABLE)
-		     (COND ((CADR X)
-			    (PRIN1 (LIST (STRIPDOLLAR (CADR X))))
-			    (TYO #\space)))
-		     (LINEAR-DISPLA1 (CADDR X) (CHARPOS T)))
-		    ((EQ (CAAR X) 'MTEXT)
-		     (DO ((X (CDR X) (CDR X))
-			  (FORTRANP))			; Atoms in MTEXT
-			 ((NULL X))			;  should omit ?'s
-			 (SETQ FORTRANP (ATOM (CAR X)))
-			 (LINEAR-DISPLA1 (CAR X) 0.)
-			 ;(TYO #\space)
-			 ))
-		    (T
-		     (LINEAR-DISPLA1 X 0.))))
-	     (T
-	      (LINEAR-DISPLA1 X 0.)))
-        (TERPRI))
+(defun linear-displa (x)
+  (terpri)
+  (cond ((not (atom x))
+	 (cond ((eq (caar x) 'mlable)
+		(cond ((cadr x)
+		       (prin1 (list (stripdollar (cadr x))))
+		       (tyo #\space)))
+		(linear-displa1 (caddr x) (charpos t)))
+	       ((eq (caar x) 'mtext)
+		(do ((x (cdr x) (cdr x))
+		     (fortranp))	; Atoms in MTEXT
+		    ((null x))		;  should omit ?'s
+		  (setq fortranp (atom (car x)))
+		  (linear-displa1 (car x) 0.)
+					;(TYO #\space)
+		  ))
+	       (t
+		(linear-displa1 x 0.))))
+	(t
+	 (linear-displa1 x 0.)))
+  (terpri))
 
 
 ;;********** old linear-displa *************
@@ -99,7 +99,7 @@
 ;;;  <illegal-predecessor> characters.
 
 #-cl
-(SETQ LINEAR-DISPLAY-BREAK-TABLE
+(setq linear-display-break-table
       '((#\= #\: #\=)
 	(#. left-parentheses-char #. left-parentheses-char #\[)
 	(#. right-parentheses-char #. right-parentheses-char #\])
@@ -116,15 +116,15 @@
 ;;;   text break in a list of chars.
 
 #-cl
-(DEFUN FIND-NEXT-BREAK (L)
-       (DO ((I 0. (f1+ I))
-	    (TEMP)
-	    (L L (CDR L)))
-	   ((NULL L) I)
-	   (COND ((zl-MEMBER (CAR L) '(#\SPACE #\,)) (RETURN I))
-		 ((AND (SETQ TEMP (ASSQ (CADR L) LINEAR-DISPLAY-BREAK-TABLE))
-		       (NOT (MEMQ (CAR L) (CDR TEMP))))
-		  (RETURN I)))))
+(defun find-next-break (l)
+  (do ((i 0. (f1+ i))
+       (temp)
+       (l l (cdr l)))
+      ((null l) i)
+    (cond ((zl-member (car l) '(#\space #\,)) (return i))
+	  ((and (setq temp (assq (cadr l) linear-display-break-table))
+		(not (memq (car l) (cdr temp))))
+	   (return i)))))
 
 ;;; (LINEAR-DISPLA1 <object> <indent-level>)
 ;;;  Displays <object> as best it can on this line.
@@ -133,21 +133,21 @@
 ;;;   (see FIND-NEXT-BREAK), it will type a carriage return and indent
 ;;;   <indent-level> spaces.
 #-cl
-(DEFUN LINEAR-DISPLA1 (X INDENT)
-       (LET ((CHARS (MSTRING X)))
-	    (DO ((END-COLUMN  (f- (LINEL T) 3.))
-		 (CHARS CHARS (CDR CHARS))
-		 (I (CHARPOS T) (f1+ I))
-		 (J (FIND-NEXT-BREAK CHARS) (f1- J)))
-		((NULL CHARS) T)
-		(TYO (CAR CHARS))
-		(COND ((< J 1)
-		       (SETQ J (FIND-NEXT-BREAK (CDR CHARS)))
-		       (COND ((> (f+ I J) END-COLUMN)
-			      (TERPRI)
-			      (DO ((I 0. (f1+ I))) ((= I INDENT)) (TYO #\space))
-			      (SETQ I INDENT))))
-		      ((= I END-COLUMN)
-		       (PRINC '/#)
-		       (TERPRI)
-		       (SETQ I -1.))))))
+(defun linear-displa1 (x indent)
+  (let ((chars (mstring x)))
+    (do ((end-column  (f- (linel t) 3.))
+	 (chars chars (cdr chars))
+	 (i (charpos t) (f1+ i))
+	 (j (find-next-break chars) (f1- j)))
+	((null chars) t)
+      (tyo (car chars))
+      (cond ((< j 1)
+	     (setq j (find-next-break (cdr chars)))
+	     (cond ((> (f+ i j) end-column)
+		    (terpri)
+		    (do ((i 0. (f1+ i))) ((= i indent)) (tyo #\space))
+		    (setq i indent))))
+	    ((= i end-column)
+	     (princ '/#)
+	     (terpri)
+	     (setq i -1.))))))

@@ -10,273 +10,273 @@
 (in-package "MAXIMA")
 (macsyma-module psolve)
 
-(DECLARE-TOP(GENPREFIX PSO)
-	 (SPECIAL MULT *ROOTS *FAILURES $SOLVEFACTORS))
+(declare-top(genprefix pso)
+	    (special mult *roots *failures $solvefactors))
 
-(DECLARE-TOP(SPLITFILE SCUBIC))
+(declare-top(splitfile scubic))
 
-(DEFMVAR FLAG4 NIL)
+(defmvar flag4 nil)
 
-(DEFMFUN SOLVECUBIC (X) 
-       (PROG (S1 A0 A1 A2 DISCR LCOEF ADIV3 OMEGA^2 PDIV3 QDIV-2
-	      OMEGA Y1 U y2) 
-	     (SETQ X (CDR X))
-	     (SETQ LCOEF (CADR X))
-	     (SETQ ADIV3
-		   (LIST '(MTIMES)
-			 '((RAT) -1. 3.)
-			 (RDIS (SETQ A2 (RATREDUCE (PTERM X 2.)
-						   LCOEF)))))
-	     (SETQ A1 (RATREDUCE (PTERM X 1.) LCOEF))
-	     (SETQ A0 (RATREDUCE (PTERM X 0.) LCOEF))
-	     (SETQ S1 '((MTIMES)
-			((RAT) 1. 2.)
-			$%I
-			((MEXPT) 3. ((RAT) 1. 2.))))
-	     (SETQ OMEGA (LIST '(MPLUS)
-			       '((RAT) -1. 2.)
-			       S1) 
-		   OMEGA^2 (LIST '(MPLUS)
-				 '((RAT) -1. 2.)
-				 (LIST '(MTIMES) -1. S1)))
-	     (SETQ PDIV3
-		   (MEVAL* (RDIS (RATPLUS (RATTIMES A1 '(1. . 3.) T)
-					  (RATTIMES (RATEXPT A2 2.)
-						    '(-1. . 9.)
-						    T)))))
-	     (AND (NOT (EQUAL PDIV3 0.)) (GO HARDER))
-	     (SETQ 
-	      Y1
-	      (SIMPTIMES
-	       (LIST
-		'(MTIMES)
-		'((RAT) 1. 3.)
-		(LIST '(MPLUS)
-		       (SIMPNRT (RDIS (setq y2 (RATPLUS (RATEXPT A2 3.)
-						       (RATTIMES '(-27. . 1.)
-								 A0
-								 T))))
-				3)
-		      (LIST '(MTIMES) -1. (RDIS A2))))
-	       1.
-	       NIL))
-	     (AND FLAG4 (RETURN (SOLVE3 Y1 MULT)))
-	     (setq y2 (simpnrt (rdis (rattimes  y2 '(1. . 27.) t))
-			       3))
-	     (RETURN (MAPC #'(LAMBDA (J) (SOLVE3 J MULT))
-			   (LIST Y1
-				 (LIST '(MPLUS)
-				       (LIST '(MTIMES)
-					     OMEGA
-					     Y2)
-				       ADIV3)
-				 (LIST '(MPLUS)
-				       (LIST '(MTIMES)
-					     OMEGA^2
-					     Y2)
-				       ADIV3))))
-	HARDER
-	     (SETQ 
-	      QDIV-2
-	      (RDIS (RATPLUS (RATTIMES (RATPLUS (RATTIMES A1 A2 T)
-						(RATTIMES '(-3. . 1.)
-							  A0
-							  T))
-				       '(1. . 6.)
-				       T)
-			     (RATTIMES (RATEXPT A2 3.)
-				       '(-1. . 27.)
-				       T))))
-	     (COND ((EQUAL QDIV-2 0.)
-		    (SETQ U (SIMPNRT PDIV3 2))
-		    (SETQ Y1 ADIV3))
-		   (T (SETQ DISCR (SIMPLUS (LIST '(MPLUS)
-						 (LIST '(MEXPT)
-						       PDIV3
-						       3.)
-						 (LIST '(MEXPT)
-						       QDIV-2
-						       2.))
-					   1.
-					   NIL))
-		      (COND ((EQUAL DISCR 0.)
-			     (SETQ U (SIMPNRT QDIV-2 3)))
-			    (T (SETQ DISCR (SIMPNRT DISCR 2))
-			       (AND (COMPLICATED DISCR)
-				    (SETQ DISCR (adispline DISCR)))
-			       (SETQ U (SIMPEXPT (LIST '(MEXPT)
-					     (LIST '(MPLUS)
-						   QDIV-2
-						   DISCR)
-					     '((RAT) 1 3)) 1 NIL))
-			       (AND (COMPLICATED U)
-				    (SETQ U (adispline U)))))))
-	     (IF (EQUAL U 0) (MERROR "Arithmetic overflow - SOLVECUBIC"))
-	     (OR Y1
-		 (SETQ Y1 (SIMPLUS (LIST '(MPLUS)
-					 ADIV3
-					 U
-					 (LIST '(MTIMES)
-					       -1.
-					       PDIV3
-					       (LIST '(MEXPT)
-						     U
-						     -1.)))
+(defmfun solvecubic (x) 
+  (prog (s1 a0 a1 a2 discr lcoef adiv3 omega^2 pdiv3 qdiv-2
+	 omega y1 u y2) 
+     (setq x (cdr x))
+     (setq lcoef (cadr x))
+     (setq adiv3
+	   (list '(mtimes)
+		 '((rat) -1. 3.)
+		 (rdis (setq a2 (ratreduce (pterm x 2.)
+					   lcoef)))))
+     (setq a1 (ratreduce (pterm x 1.) lcoef))
+     (setq a0 (ratreduce (pterm x 0.) lcoef))
+     (setq s1 '((mtimes)
+		((rat) 1. 2.)
+		$%i
+		((mexpt) 3. ((rat) 1. 2.))))
+     (setq omega (list '(mplus)
+		       '((rat) -1. 2.)
+		       s1) 
+	   omega^2 (list '(mplus)
+			 '((rat) -1. 2.)
+			 (list '(mtimes) -1. s1)))
+     (setq pdiv3
+	   (meval* (rdis (ratplus (rattimes a1 '(1. . 3.) t)
+				  (rattimes (ratexpt a2 2.)
+					    '(-1. . 9.)
+					    t)))))
+     (and (not (equal pdiv3 0.)) (go harder))
+     (setq 
+      y1
+      (simptimes
+       (list
+	'(mtimes)
+	'((rat) 1. 3.)
+	(list '(mplus)
+	      (simpnrt (rdis (setq y2 (ratplus (ratexpt a2 3.)
+					       (rattimes '(-27. . 1.)
+							 a0
+							 t))))
+		       3)
+	      (list '(mtimes) -1. (rdis a2))))
+       1.
+       nil))
+     (and flag4 (return (solve3 y1 mult)))
+     (setq y2 (simpnrt (rdis (rattimes  y2 '(1. . 27.) t))
+		       3))
+     (return (mapc #'(lambda (j) (solve3 j mult))
+		   (list y1
+			 (list '(mplus)
+			       (list '(mtimes)
+				     omega
+				     y2)
+			       adiv3)
+			 (list '(mplus)
+			       (list '(mtimes)
+				     omega^2
+				     y2)
+			       adiv3))))
+     harder
+     (setq 
+      qdiv-2
+      (rdis (ratplus (rattimes (ratplus (rattimes a1 a2 t)
+					(rattimes '(-3. . 1.)
+						  a0
+						  t))
+			       '(1. . 6.)
+			       t)
+		     (rattimes (ratexpt a2 3.)
+			       '(-1. . 27.)
+			       t))))
+     (cond ((equal qdiv-2 0.)
+	    (setq u (simpnrt pdiv3 2))
+	    (setq y1 adiv3))
+	   (t (setq discr (simplus (list '(mplus)
+					 (list '(mexpt)
+					       pdiv3
+					       3.)
+					 (list '(mexpt)
+					       qdiv-2
+					       2.))
 				   1.
-				   NIL)))
-	     (RETURN
-	      (COND (FLAG4 (SOLVE3 Y1 MULT))
-		    (T (MAPC 
-			#'(LAMBDA (J) (SOLVE3 J MULT))
-			(LIST Y1
-			      (LIST '(MPLUS)
-				    ADIV3
-				    (LIST '(MTIMES) OMEGA U)
-				    (LIST '(MTIMES)
-					  -1.
-					  PDIV3
-					  OMEGA^2
-					  (LIST '(MEXPT)
-						U
-						-1.)))
-			      (LIST '(MPLUS)
-				    ADIV3
-				    (LIST '(MTIMES) OMEGA^2 U)
-				    (LIST '(MTIMES)
-					  -1.
-					  PDIV3
-					  OMEGA
-					  (LIST '(MEXPT)
-						U
-						-1.))))))))))
+				   nil))
+	      (cond ((equal discr 0.)
+		     (setq u (simpnrt qdiv-2 3)))
+		    (t (setq discr (simpnrt discr 2))
+		       (and (complicated discr)
+			    (setq discr (adispline discr)))
+		       (setq u (simpexpt (list '(mexpt)
+					       (list '(mplus)
+						     qdiv-2
+						     discr)
+					       '((rat) 1 3)) 1 nil))
+		       (and (complicated u)
+			    (setq u (adispline u)))))))
+     (if (equal u 0) (merror "Arithmetic overflow - SOLVECUBIC"))
+     (or y1
+	 (setq y1 (simplus (list '(mplus)
+				 adiv3
+				 u
+				 (list '(mtimes)
+				       -1.
+				       pdiv3
+				       (list '(mexpt)
+					     u
+					     -1.)))
+			   1.
+			   nil)))
+     (return
+       (cond (flag4 (solve3 y1 mult))
+	     (t (mapc 
+		 #'(lambda (j) (solve3 j mult))
+		 (list y1
+		       (list '(mplus)
+			     adiv3
+			     (list '(mtimes) omega u)
+			     (list '(mtimes)
+				   -1.
+				   pdiv3
+				   omega^2
+				   (list '(mexpt)
+					 u
+					 -1.)))
+		       (list '(mplus)
+			     adiv3
+			     (list '(mtimes) omega^2 u)
+			     (list '(mtimes)
+				   -1.
+				   pdiv3
+				   omega
+				   (list '(mexpt)
+					 u
+					 -1.))))))))))
 
-(declare-top (SPLITFILE SQUART))
+(declare-top (splitfile squart))
 
-(DEFMFUN SOLVEQUARTIC (X) 
-       (PROG (A0 A1 A2 B1 B2 B3 B0 LCOEF Z1 R TR1 TR2 D D1 E SQB3) 
-	     (SETQ X (CDR X) LCOEF (CADR X))
-	     (SETQ B3 (RATREDUCE (PTERM X 3.) LCOEF))
-	     (SETQ B2 (RATREDUCE (PTERM X 2.) LCOEF))
-	     (SETQ B1 (RATREDUCE (PTERM X 1.) LCOEF))
-	     (SETQ B0 (RATREDUCE (PTERM X 0.) LCOEF))
-	     (SETQ A2 (RATMINUS B2))
-	     (SETQ A1 (RATDIF (RATTIMES B1 B3 T)
-			      (SETQ A0 (RATTIMES B0
-						 '(4. . 1.)
-						 T))))
-	     (SETQ A0
-		   (RATDIF (RATDIF (RATTIMES B2 A0 T)
-				   (RATTIMES (SETQ SQB3
-						   (RATEXPT B3 2.))
-					     B0
-					     T))
-			   (RATEXPT B1 2.)))
-	     (SETQ 
-	      TR2
-	      (SIMPLIFY (RDIS
-	       (RATTIMES
-		'(1. . 4.)
-		(RATDIF (RATDIF (RATTIMES B3
-					  (RATTIMES B2
-						    '(4. . 1.)
-						    T)
-					  T)
-				(RATTIMES '(8. . 1.) B1 T))
-			(RATTIMES SQB3 B3 NIL))
-		T))))
-	     (SETQ Z1 (RESOLVENT A2 A1 A0))
-	     (SETQ R
-		   (SIMPLUS (LIST '(MPLUS)
-				  Z1
-				  (RDIS (RATDIF (RATTIMES SQB3
-							  '(1. . 4.)
-							  T)
-						B2)))
-			    1.
-			    NIL))
-	     (AND (EQUAL R 0.) (GO L0))
-	     (SETQ R (SIMPNRT R 2))
-	     (AND (COMPLICATED R) (SETQ R (adispline R)))
-	     (AND (COMPLICATED TR2) (SETQ TR2 (adispline TR2)))
-	     (SETQ TR1
-		   (SIMPLUS (LIST '(MPLUS)
-				  (RDIS (RATDIF (RATTIMES SQB3
-							  '(1. . 2.)
-							  T)
-						B2))
-				  (LIST '(MTIMES) -1. Z1))
-			    1.
-			    NIL))
-	     (AND (COMPLICATED TR1) (SETQ TR1 (adispline TR1)))
-	     (SETQ TR2 (DIV* TR2 R))
-	     (GO LB1)
-	L0   (SETQ D1
-		   (SIMPNRT (SIMPLIFY (LIST '(MPLUS)
-				  (LIST '(MEXPT) Z1 2.)
-				  (LIST '(MTIMES)
-					-4.
-					(RDIS B0))))
-			    2))
-	     (SETQ TR2 (SIMPLIFY (LIST '(MTIMES) 2. D1)))
-	     (AND (COMPLICATED TR2) (SETQ TR2 (adispline TR2)))
-	     (SETQ TR1
-		   (SIMPLIFY (RDIS (RATDIF (RATTIMES SQB3 '(3. . 4.) T)
-				 (RATTIMES B2 '(2. . 1.) T)))))
-	     (AND (COMPLICATED TR1) (SETQ TR1 (adispline TR1)))
-	LB1  (SETQ D (SIMPNRT (SIMPLIFY (LIST '(MPLUS) TR1 TR2)) 2))
-	     (SETQ E
-		   (SIMPNRT (SIMPLIFY (LIST '(MPLUS)
-				  TR1
-				  (LIST '(MTIMES) -1. TR2)))
-			    2))
-	     (SETQ D (DIV* D 2.))
-	     (AND (COMPLICATED D) (SETQ D (adispline D)))
-	     (SETQ E (DIV* E 2.))
-	     (AND (COMPLICATED E) (SETQ E (adispline E)))
-	     (SETQ A2 (RDIS (RATTIMES B3 '(-1. . 4.) T)))
-	     (SETQ A1 (DIV* R 2.))
-	     (SETQ Z1
-		   (LIST (LIST '(MPLUS) A2 A1 D)
-			 (LIST '(MPLUS)
-			       A2
-			       A1
-			       (LIST '(MTIMES) -1. D))
-			 (LIST '(MPLUS)
-			       A2
-			       (LIST '(MTIMES) -1. A1)
-			       E)
-			 (LIST '(MPLUS)
-			       A2
-			       (LIST '(MTIMES) -1. A1)
-			       (LIST '(MTIMES) -1. E))))
-	     (RETURN (MAPC #'(LAMBDA (J) (SOLVE3 J MULT))
-			   Z1))))
+(defmfun solvequartic (x) 
+  (prog (a0 a1 a2 b1 b2 b3 b0 lcoef z1 r tr1 tr2 d d1 e sqb3) 
+     (setq x (cdr x) lcoef (cadr x))
+     (setq b3 (ratreduce (pterm x 3.) lcoef))
+     (setq b2 (ratreduce (pterm x 2.) lcoef))
+     (setq b1 (ratreduce (pterm x 1.) lcoef))
+     (setq b0 (ratreduce (pterm x 0.) lcoef))
+     (setq a2 (ratminus b2))
+     (setq a1 (ratdif (rattimes b1 b3 t)
+		      (setq a0 (rattimes b0
+					 '(4. . 1.)
+					 t))))
+     (setq a0
+	   (ratdif (ratdif (rattimes b2 a0 t)
+			   (rattimes (setq sqb3
+					   (ratexpt b3 2.))
+				     b0
+				     t))
+		   (ratexpt b1 2.)))
+     (setq 
+      tr2
+      (simplify (rdis
+		 (rattimes
+		  '(1. . 4.)
+		  (ratdif (ratdif (rattimes b3
+					    (rattimes b2
+						      '(4. . 1.)
+						      t)
+					    t)
+				  (rattimes '(8. . 1.) b1 t))
+			  (rattimes sqb3 b3 nil))
+		  t))))
+     (setq z1 (resolvent a2 a1 a0))
+     (setq r
+	   (simplus (list '(mplus)
+			  z1
+			  (rdis (ratdif (rattimes sqb3
+						  '(1. . 4.)
+						  t)
+					b2)))
+		    1.
+		    nil))
+     (and (equal r 0.) (go l0))
+     (setq r (simpnrt r 2))
+     (and (complicated r) (setq r (adispline r)))
+     (and (complicated tr2) (setq tr2 (adispline tr2)))
+     (setq tr1
+	   (simplus (list '(mplus)
+			  (rdis (ratdif (rattimes sqb3
+						  '(1. . 2.)
+						  t)
+					b2))
+			  (list '(mtimes) -1. z1))
+		    1.
+		    nil))
+     (and (complicated tr1) (setq tr1 (adispline tr1)))
+     (setq tr2 (div* tr2 r))
+     (go lb1)
+     l0   (setq d1
+		(simpnrt (simplify (list '(mplus)
+					 (list '(mexpt) z1 2.)
+					 (list '(mtimes)
+					       -4.
+					       (rdis b0))))
+			 2))
+     (setq tr2 (simplify (list '(mtimes) 2. d1)))
+     (and (complicated tr2) (setq tr2 (adispline tr2)))
+     (setq tr1
+	   (simplify (rdis (ratdif (rattimes sqb3 '(3. . 4.) t)
+				   (rattimes b2 '(2. . 1.) t)))))
+     (and (complicated tr1) (setq tr1 (adispline tr1)))
+     lb1  (setq d (simpnrt (simplify (list '(mplus) tr1 tr2)) 2))
+     (setq e
+	   (simpnrt (simplify (list '(mplus)
+				    tr1
+				    (list '(mtimes) -1. tr2)))
+		    2))
+     (setq d (div* d 2.))
+     (and (complicated d) (setq d (adispline d)))
+     (setq e (div* e 2.))
+     (and (complicated e) (setq e (adispline e)))
+     (setq a2 (rdis (rattimes b3 '(-1. . 4.) t)))
+     (setq a1 (div* r 2.))
+     (setq z1
+	   (list (list '(mplus) a2 a1 d)
+		 (list '(mplus)
+		       a2
+		       a1
+		       (list '(mtimes) -1. d))
+		 (list '(mplus)
+		       a2
+		       (list '(mtimes) -1. a1)
+		       e)
+		 (list '(mplus)
+		       a2
+		       (list '(mtimes) -1. a1)
+		       (list '(mtimes) -1. e))))
+     (return (mapc #'(lambda (j) (solve3 j mult))
+		   z1))))
 
 ;;; SOLVES RESOLVENT CUBIC EQUATION
 ;;; GENERATED FROM QUARTIC
 
-(DEFUN RESOLVENT (A2 A1 A0) 
-       (PROG (*ROOTS FLAG4 *FAILURES $solvefactors)	;undoes binding in
-	     (SETQ FLAG4 T $solvefactors t)		;algsys
-	     (SOLVE (SIMPLUS (LIST '(MPLUS)
-				   (LIST '(MEXPT)
-					 'YY
-					 3.)
-				   (LIST '(MTIMES)
-					 (RDIS A2)
-					 (LIST '(MEXPT)
-					       'YY
-					       2.))
-				   (LIST '(MTIMES)
-					 (RDIS A1)
-					 'YY)
-				   (RDIS A0))
-			     1.
-			     NIL)
-		    'YY
-		    1.)
-	     (COND ((zl-MEMBER 0. *ROOTS) (RETURN 0.)))
-	     (RETURN (CADDAR (CDR (REVERSE *ROOTS))))))
+(defun resolvent (a2 a1 a0) 
+  (prog (*roots flag4 *failures $solvefactors) ;undoes binding in
+     (setq flag4 t $solvefactors t)	;algsys
+     (solve (simplus (list '(mplus)
+			   (list '(mexpt)
+				 'yy
+				 3.)
+			   (list '(mtimes)
+				 (rdis a2)
+				 (list '(mexpt)
+				       'yy
+				       2.))
+			   (list '(mtimes)
+				 (rdis a1)
+				 'yy)
+			   (rdis a0))
+		     1.
+		     nil)
+	    'yy
+	    1.)
+     (cond ((zl-member 0. *roots) (return 0.)))
+     (return (caddar (cdr (reverse *roots))))))
 
-#-NIL
-(DECLARE-TOP(UNSPECIAL MULT))
+#-nil
+(declare-top(unspecial mult))

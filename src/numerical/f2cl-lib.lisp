@@ -1,43 +1,43 @@
-; macros.l - all the basic macros
+;; macros.l - all the basic macros
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;Copyright (c) University of Waikato;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;Hamilton, New Zeland 1992-95 - all rights reserved;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (in-package :f2cl-lib)
 
-; macros:
-;	rexpt
-;	fexport
-;	fproclaim
-;	fuse-package 
-;	fin-package
-;	map-defvar
-;	do1 
-;	do!
-;	double-cdr
-;	putproperty
-;	defprop
-;	array-cl
-;	store-cl
-;	apply!
+;; macros:
+;;	rexpt
+;;	fexport
+;;	fproclaim
+;;	fuse-package 
+;;	fin-package
+;;	map-defvar
+;;	do1 
+;;	do!
+;;	double-cdr
+;;	putproperty
+;;	defprop
+;;	array-cl
+;;	store-cl
+;;	apply!
 
-;	rfref
-;	rfset
-;	fref
-;	fset
+;;	rfref
+;;	rfset
+;;	fref
+;;	fset
 
-;	while
-;       fdo
-;	reset-vble - a defun
-;       arithmetic-if
-;	computed-goto
-;	assigned-goto
-;	eqv
-;	constant-list
-;----------------------------------------------------------------------------
+;;	while
+;;       fdo
+;;	reset-vble - a defun
+;;       arithmetic-if
+;;	computed-goto
+;;	assigned-goto
+;;	eqv
+;;	constant-list
+;;----------------------------------------------------------------------------
 
 (eval-when (compile load eval) (proclaim '(special *verbose*)))
-;----------------------------------------------------------------------------
+;;----------------------------------------------------------------------------
 #+aclpc (defmacro rexpt (x y) `(realpart (expt ,x ,y)))
 #-aclpc (defmacro rexpt (x y) `(expt ,x ,y))
 
@@ -81,11 +81,11 @@ is not included")
   `(complex double-float))
 
 (deftype array-double-float ()
-    `(array double-float (*)))
+  `(array double-float (*)))
 (deftype array-integer4 ()
-    `(array integer4 (*)))
+  `(array integer4 (*)))
 (deftype array-single-float ()
-    `(array single-float (*)))
+  `(array single-float (*)))
 (deftype array-strings ()
   `(array string (*)))
 
@@ -130,12 +130,12 @@ is not included")
 	  ((endp d)
 	   idx)
 	(setf idx `(the fixnum (+ ,(get-offset (first n) (first d))
-				  (the fixnum (* ,(get-size (first d)) ,idx)))))))))
+				(the fixnum (* ,(get-size (first d)) ,idx)))))))))
 
 (defun check-array-bounds (indices bounds)
   `(and ,@(mapcar #'(lambda (idx dim)
-		     `(<= ,(first dim) ,idx ,(second dim)))
-		 indices bounds)))
+		      `(<= ,(first dim) ,idx ,(second dim)))
+		  indices bounds)))
 
 (defmacro fref (arr indices bounds &optional offset)
   (if *check-array-bounds*
@@ -167,17 +167,17 @@ is not included")
     (declare (type fixnum offset)
 	     (optimize (speed 3) (safety 0)))
     (loop
-	(multiple-value-bind (displaced-to index-offset)
-	    (array-displacement array)
-	  (when (null displaced-to)
-	    (return-from find-array-data (values array offset)))
-	  (incf offset index-offset)
-	  (setf array displaced-to)))))
+     (multiple-value-bind (displaced-to index-offset)
+	 (array-displacement array)
+       (when (null displaced-to)
+	 (return-from find-array-data (values array offset)))
+       (incf offset index-offset)
+       (setf array displaced-to)))))
 
 (defmacro with-array-data ((data-var offset-var array) &rest body)
   `(multiple-value-bind (,data-var ,offset-var)
     (find-array-data ,array)
-     ,@body))
+    ,@body))
 
 (defun multi-array-data-aux (array-info body)
   (let ((results body))
@@ -245,27 +245,27 @@ is not included")
 	(total-length (gensym)))
     `(let* ((,data-list ',data)
 	    (,total-length (reduce #'* (list ,@dims))))
-       (cond ((< ,data-len ,total-length)
-	      ;; Need to append some data.
-	      (append ,data-list (make-list (- ,total-length ,data-len)
-					    :initial-element (coerce 0 ',type))))
-	     ((> ,data-len ,total-length)
-	      ;; Need to truncate some data
-	      (subseq ,data-list 0 ,total-length))
-	     (t
-	      ,data-list)))))  
+      (cond ((< ,data-len ,total-length)
+	     ;; Need to append some data.
+	     (append ,data-list (make-list (- ,total-length ,data-len)
+					   :initial-element (coerce 0 ',type))))
+	    ((> ,data-len ,total-length)
+	     ;; Need to truncate some data
+	     (subseq ,data-list 0 ,total-length))
+	    (t
+	     ,data-list)))))  
 
-;----------------------------------------------------------------------------
+;;----------------------------------------------------------------------------
 
 #-aclpc (defmacro while (con &rest body)
-            `(loop (if (not ,con) (return t)) ,@body))
-;------------------------------------------------------------------
+	  `(loop (if (not ,con) (return t)) ,@body))
+;;------------------------------------------------------------------
 
 (defmacro fortran_comment (&rest args)
   (declare (ignore args)))
 
-;----------------------------------------------------------------------------
-; fdo has similar syntax as do except there will only be one do_vble
+;;----------------------------------------------------------------------------
+;; fdo has similar syntax as do except there will only be one do_vble
 
 (defmacro fdo (do_vble_clause predicate_clause &rest body)
   (let ((step (gensym (symbol-name '#:step-)))
@@ -295,39 +295,39 @@ is not included")
 			     ,iteration_count (the integer4 (1- ,iteration_count)))))
 		  '((go loop)))))))))
 
-;(defmacro fdo (do-vbles predicate-clause &rest body)
-;   `(prog nil
-;          (setq ,(caar do-vbles) ,(cadar do-vbles)) 
-;          loop
-;          (return
-;          (cond ,(reset-vble predicate-clause)
-;                ,(cons 't 
-;                       (append 
-;                        (append body `((setq ,(caar do-vbles) ,(caddar do-vbles))))
-;                        '((go loop))))))))
-;(defmacro fdo (do-vbles predicate-clause &rest body)
-;   `(prog (iteration-count)
-;          ,(append '(psetq) 
-;                   (do ((do-vars do-vbles (cdr do-vars))
-;                        (ret nil (append ret (list (caar do-vars) (cadar do-vars)))))
-;                       ((null do-vars) ret)))
-;          loop
-;          (return
-;          (cond ,predicate-clause
-;                ,(cons 't 
-;                       (append 
-;                        (append body
-;                                (list
-;                                (append '(psetq)
-;                                (do ((do-vars do-vbles (cdr do-vars))
-;                                     (ret nil (append ret (if (null (caddar do-vars)) 
-;                                                              nil 
-;                                                              (list (caar do-vars) 
-;                                                                    (caddar do-vars))))))
-;                                    ((null do-vars) ret)))))
-;                        '((go loop))))))))
+;;(defmacro fdo (do-vbles predicate-clause &rest body)
+;;   `(prog nil
+;;          (setq ,(caar do-vbles) ,(cadar do-vbles)) 
+;;          loop
+;;          (return
+;;          (cond ,(reset-vble predicate-clause)
+;;                ,(cons 't 
+;;                       (append 
+;;                        (append body `((setq ,(caar do-vbles) ,(caddar do-vbles))))
+;;                        '((go loop))))))))
+;;(defmacro fdo (do-vbles predicate-clause &rest body)
+;;   `(prog (iteration-count)
+;;          ,(append '(psetq) 
+;;                   (do ((do-vars do-vbles (cdr do-vars))
+;;                        (ret nil (append ret (list (caar do-vars) (cadar do-vars)))))
+;;                       ((null do-vars) ret)))
+;;          loop
+;;          (return
+;;          (cond ,predicate-clause
+;;                ,(cons 't 
+;;                       (append 
+;;                        (append body
+;;                                (list
+;;                                (append '(psetq)
+;;                                (do ((do-vars do-vbles (cdr do-vars))
+;;                                     (ret nil (append ret (if (null (caddar do-vars)) 
+;;                                                              nil 
+;;                                                              (list (caar do-vars) 
+;;                                                                    (caddar do-vars))))))
+;;                                    ((null do-vars) ret)))))
+;;                        '((go loop))))))))
 
-;----------------------------------------------------------------------------
+;;----------------------------------------------------------------------------
 ;; macro for division 
 
 (defmacro f2cl/ (x y)
@@ -394,11 +394,11 @@ is not included")
 ;; macro for a lisp equivalent of Fortran assigned GOTOs
 #+nil
 (defmacro assigned-goto (i &optional tag-lst)
-   `(if ,tag-lst
-        (if (member ,i ,tag-lst) 
-            (go ,i)
-            (error "bad statement number in assigned goto"))
-        (go ,i)))
+  `(if ,tag-lst
+    (if (member ,i ,tag-lst) 
+	(go ,i)
+	(error "bad statement number in assigned goto"))
+    (go ,i)))
 
 (defun assigned-goto-aux (tag-list)
   (let ((cases nil))
@@ -410,7 +410,7 @@ is not included")
 
 (defmacro assigned-goto (var tag-list)
   `(case ,var
-     ,@(assigned-goto-aux tag-list)))
+    ,@(assigned-goto-aux tag-list)))
 
 ;;-----------------------------------------------------------------------------
 ;;
@@ -512,13 +512,13 @@ is not included")
     (single-float
      (let ((const (scale-float 1f0 24)))
        (if (>= x 0)
-	 (+ (- (- x 0.5f0) const) const)
-	 (- (+ (+ x 0.5f0) const) const))))
+	   (+ (- (- x 0.5f0) const) const)
+	   (- (+ (+ x 0.5f0) const) const))))
     (double-float
      (let ((const (scale-float 1d0 53)))
        (if (>= x 0)
-	 (+ (- (- x 0.5d0) const) const)
-	 (- (+ (+ x 0.5d0) const) const))))))
+	   (+ (- (- x 0.5d0) const) const)
+	   (- (+ (+ x 0.5d0) const) const))))))
 
 #+(and cmu x86)
 (let ((junks (make-array 1 :element-type 'single-float))
@@ -551,11 +551,11 @@ is not included")
   (etypecase x
     (single-float
      (locally 
-       (declare (optimize (space 0) (speed 3)))
+	 (declare (optimize (space 0) (speed 3)))
        (values (ftruncate (the single-float x)))))
     (double-float
      (locally 
-       (declare (optimize (space 0) (speed 3)))
+	 (declare (optimize (space 0) (speed 3)))
        (values (ftruncate (the double-float x)))))))
 
 (defun dint (x)
@@ -715,31 +715,31 @@ is not included")
 ;; Define some compile macros for these max/min functions.
 #+(or cmu scl)
 (progn
-(define-compiler-macro max0 (&rest args)
-  `(max ,@args))
-(define-compiler-macro amax1 (&rest args)
-  `(max ,@args))
-(define-compiler-macro dmax1 (&rest args)
-  `(max ,@args))
-(define-compiler-macro min0 (&rest args)
-  `(min ,@args))
-(define-compiler-macro amin1 (&rest args)
-  `(min ,@args))
-(define-compiler-macro dmin1 (&rest args)
-  `(min ,@args))
-(define-compiler-macro min1 (&rest args)
-  `(nint (min ,@args)))
+  (define-compiler-macro max0 (&rest args)
+    `(max ,@args))
+  (define-compiler-macro amax1 (&rest args)
+    `(max ,@args))
+  (define-compiler-macro dmax1 (&rest args)
+    `(max ,@args))
+  (define-compiler-macro min0 (&rest args)
+    `(min ,@args))
+  (define-compiler-macro amin1 (&rest args)
+    `(min ,@args))
+  (define-compiler-macro dmin1 (&rest args)
+    `(min ,@args))
+  (define-compiler-macro min1 (&rest args)
+    `(nint (min ,@args)))
 
-(define-compiler-macro amax0 (&rest args)
-  `(float (max ,@args)))
-(define-compiler-macro max1 (&rest args)
-  `(nint (max ,@args)))
+  (define-compiler-macro amax0 (&rest args)
+    `(float (max ,@args)))
+  (define-compiler-macro max1 (&rest args)
+    `(nint (max ,@args)))
 
-(define-compiler-macro amin0 (&rest args)
-  `(float (min ,@args)))
-(define-compiler-macro min1 (&rest args)
-  `(nint (min ,@args)))
-) ; end progn
+  (define-compiler-macro amin0 (&rest args)
+    `(float (min ,@args)))
+  (define-compiler-macro min1 (&rest args)
+    `(nint (min ,@args)))
+  )					; end progn
 
 (defun len (s)
   (length s))
@@ -935,10 +935,10 @@ is not included")
 		       `(fset (fref ,(first x) ,(second x) ((,b)))
 			 ,(convert-type vt)))
 		   v low-bnds var-types)))
-    `(do ((,index-var ,start (+ ,index-var ,(or step 1))))
-         ((> ,index-var ,end))
-       ,@(map-vars data-vars))
-    )))
+      `(do ((,index-var ,start (+ ,index-var ,(or step 1))))
+	((> ,index-var ,end))
+	,@(map-vars data-vars))
+      )))
 
 
 ;; Process implied do loops for data statements
@@ -947,7 +947,7 @@ is not included")
     `(let ((,v ',vals))
       ,(process-implied-do implied-do low-bnds var-types v))))
 
-;-----------------------------------------------------------------------------  ; end of macros.l
+;;-----------------------------------------------------------------------------  ; end of macros.l
    
 ;; Map Fortran logical unit numbers to Lisp streams
 
@@ -1007,7 +1007,7 @@ causing all pending operations to be flushed"
 	       (when (and (streamp val) (not (member key '(5 6 t))))
 		 (format t "Closing unit ~A: ~A~%" key val)
 		 (close val)))
-	       *lun-hash*))
+	   *lun-hash*))
 
 #-gcl
 (declaim (ftype (function (t) stream) lun->stream))
@@ -1047,13 +1047,13 @@ causing all pending operations to be flushed"
 	   (setf formats (rest formats))
 	   ;;(format t "  cont with format = ~S~%" formats)
 	   )
-	   ((eq (first formats) t)
-	    ;; Repeat "forever" (until we run out of data)
-	    (loop while arg-list do
-		  (setf arg-list
-			(execute-format nil stream (second formats) arg-list))
-		  ;; Output a newline after the repeat (I think Fortran says this)
-		  (format stream "~%")))
+	  ((eq (first formats) t)
+	   ;; Repeat "forever" (until we run out of data)
+	   (loop while arg-list do
+		 (setf arg-list
+		       (execute-format nil stream (second formats) arg-list))
+		 ;; Output a newline after the repeat (I think Fortran says this)
+		 (format stream "~%")))
 	  (t
 	   (format stream (car formats))))))
 	   
@@ -1071,7 +1071,7 @@ causing all pending operations to be flushed"
     (execute-format t stream format-list arg-list)))
 
 
-#||
+					#||
 (defmacro fformat1 (dest directive arg)
   (let ((val (gensym)))
     `(let ((,val ,arg))
@@ -1090,9 +1090,9 @@ causing all pending operations to be flushed"
 (defun expand-format (dest cilist args)
   (if (equal cilist '("~A~%"))
       (append (mapcar #'(lambda (arg) `(fformat1 ,dest "~A " ,arg)) args)
-	   `((format ,dest "~%")))
+	      `((format ,dest "~%")))
 
-      ;loop through directives, consume arguments
+					;loop through directives, consume arguments
       (do ((res '())
 	   (directives cilist (cdr directives))
 	   (arglist args arglist))
@@ -1127,10 +1127,10 @@ causing all pending operations to be flushed"
     `(let ((,init (make-array ,new-dims
 			      :element-type `(simple-array base-char (,',@len))
 			      :initial-element (make-string ,@len))))
-       (dotimes (k (array-total-size ,init))
-	 (setf (aref ,init k)
-	       (make-string ,@len :initial-element #\Space)))
-       ,init)))
+      (dotimes (k (array-total-size ,init))
+	(setf (aref ,init k)
+	      (make-string ,@len :initial-element #\Space)))
+      ,init)))
 
 ;; This macro is supposed to set LHS to the RHS assuming that the LHS
 ;; is a Fortran CHARACTER type of length LEN.
@@ -1317,9 +1317,13 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.5 2003-11-26 17:27:16 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.6 2004-10-04 02:25:54 amundson Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.5  2003-11-26 17:27:16  rtoy
+;;; Revision 1.6  2004-10-04 02:25:54  amundson
+;;; Downcasing of source complete. Code compiles and passes tests with
+;;; clisp, cmucl, gcl and sbcl.
+;;;
+;;; Revision 1.5  2003/11/26 17:27:16  rtoy
 ;;; Synchronize to the current versions of f2cl.
 ;;;
 ;;; Revision 1.4  2003/07/24 18:46:30  rtoy

@@ -13,10 +13,10 @@
 (in-package "MAXIMA")
 (macsyma-module trans3)
 
-(TRANSL-MODULE TRANS3)
+(transl-module trans3)
 
 (declare-top(*lexpr sum-var-sets)
-	 (genprefix trans3_))
+	    (genprefix trans3_))
 
 ;;; The translation of macsyma LAMBDA into lexicaly scoped closures.
 ;;; Two cases [1] the downward transmission of variable binding environment,
@@ -37,207 +37,207 @@
 ;;; do any if it used the lambda-bound plist scheme of GJC;UTRANS >
 ;;; a compiler is allowed to cons though, isn't it?
 
-(DEFTRFUN FREE-LISP-VARS (EXP &AUX PROP)
-       (COND ((ATOM EXP)
-	      (COND ((OR (NULL EXP)(EQ T EXP)) NIL)
-		    ((SYMBOLP EXP) `((,EXP . NIL)))
-		    (T NIL)))
-	     ((ATOM (CAR EXP))
-	      (COND ((SETQ PROP (GET (CAR EXP) 'FREE-LISP-VARS))
-		     (FUNCALL PROP EXP))
-		    ((setq prop (get (car exp) 'free-lisp-vars-macro))
-		     (free-lisp-vars (funcall prop exp)))
-		    ((SETQ PROP (GET (CAR EXP) 'MACRO))
-		     (FREE-LISP-VARS (FUNCALL PROP EXP)))
-		    ((GETL (CAR EXP) '(FSUBR FEXPR))
-		     (WARN-FEXPR (CAR EXP)
-				 "environment may fail to be correct.")
-		     (FREE-LISP-VARS-OF-ARGL (CDR EXP)))
-		    (T
-		     (FREE-LISP-VARS-OF-ARGL (CDR EXP)))))
-	     ((EQ (CAAR EXP) 'LAMBDA)
-	      (SUM-VAR-SETS (FREE-LISP-VARS (CAR EXP))
-			    (FREE-LISP-VARS-OF-ARGL (CDR EXP))))
-	     (T
-	      (BARFO "Bad lisp expression generated."))))
+(deftrfun free-lisp-vars (exp &aux prop)
+  (cond ((atom exp)
+	 (cond ((or (null exp)(eq t exp)) nil)
+	       ((symbolp exp) `((,exp . nil)))
+	       (t nil)))
+	((atom (car exp))
+	 (cond ((setq prop (get (car exp) 'free-lisp-vars))
+		(funcall prop exp))
+	       ((setq prop (get (car exp) 'free-lisp-vars-macro))
+		(free-lisp-vars (funcall prop exp)))
+	       ((setq prop (get (car exp) 'macro))
+		(free-lisp-vars (funcall prop exp)))
+	       ((getl (car exp) '(fsubr fexpr))
+		(warn-fexpr (car exp)
+			    "environment may fail to be correct.")
+		(free-lisp-vars-of-argl (cdr exp)))
+	       (t
+		(free-lisp-vars-of-argl (cdr exp)))))
+	((eq (caar exp) 'lambda)
+	 (sum-var-sets (free-lisp-vars (car exp))
+		       (free-lisp-vars-of-argl (cdr exp))))
+	(t
+	 (barfo "Bad lisp expression generated."))))
 
 
-(DEFUN FREE-LISP-VARS-OF-ARGL (ARGL)
-       (UNION-VAR-SET (MAPCAR #'FREE-LISP-VARS ARGL)))
+(defun free-lisp-vars-of-argl (argl)
+  (union-var-set (mapcar #'free-lisp-vars argl)))
 
 ;;; (REDUCE-VAR-SET '((A . NIL) NIL (B . T) (B . NIL))) => ((A . NIL) (B . T))
 ;;;  mult-set reduction.
 
-(DEFUN REDUCE-VAR-SET&OP (VAR-SET OP)
-       (DO ((VAR-SET VAR-SET (CDR VAR-SET))
-	    (REDUCED-VAR-SET NIL)
-	    (VAR1)
-	    (VAR2))
-	   ((NULL VAR-SET) REDUCED-VAR-SET)
-	   (SETQ VAR1 (CAR VAR-SET))
-	   (COND ((NULL VAR1))
-		 ((SETQ VAR2 (ASSQ (CAR VAR1) REDUCED-VAR-SET))
-		  (RPLACD VAR2 (FUNCALL OP (CDR VAR1) (CDR VAR2))))
-		 (T
-		  (PUSH VAR1 REDUCED-VAR-SET)))))
+(defun reduce-var-set&op (var-set op)
+  (do ((var-set var-set (cdr var-set))
+       (reduced-var-set nil)
+       (var1)
+       (var2))
+      ((null var-set) reduced-var-set)
+    (setq var1 (car var-set))
+    (cond ((null var1))
+	  ((setq var2 (assq (car var1) reduced-var-set))
+	   (rplacd var2 (funcall op (cdr var1) (cdr var2))))
+	  (t
+	   (push var1 reduced-var-set)))))
 
 
-(DEFUN REDUCE-VAR-SET (VAR-SET)
-       (REDUCE-VAR-SET&OP VAR-SET #'(LAMBDA (P1 P2)(OR P1 P2))))
+(defun reduce-var-set (var-set)
+  (reduce-var-set&op var-set #'(lambda (p1 p2)(or p1 p2))))
 
 ;;; S1 - S2. S1 reduced, minus any vars that are in S2.
 
-(DEFUN DIFFERENCE-VAR-SETS (S1 S2)
-       (SETQ S1 (REDUCE-VAR-SET S1))
-       (DO ((S NIL))
-	   ((NULL S1) S)
-	   (COND ((ASSQ (CAAR S1) S2)) ;;; is the first elem of S1 a member of S2?
-		 (T
-		  (PUSH (CAR S1) S)))  ;;; yes. shove it in.
-	   (POP S1)))
+(defun difference-var-sets (s1 s2)
+  (setq s1 (reduce-var-set s1))
+  (do ((s nil))
+      ((null s1) s)
+    (cond ((assq (caar s1) s2))	;;; is the first elem of S1 a member of S2?
+	  (t
+	   (push (car s1) s)))  ;;; yes. shove it in.
+    (pop s1)))
 
 ;;; N.B. union of var sets is defined classicaly ala G.F.
 
-(DEFUN UNION-VAR-SET (SET-OF-VAR-SETS)
-       (REDUCE-VAR-SET (APPLY #'APPEND SET-OF-VAR-SETS)))
+(defun union-var-set (set-of-var-sets)
+  (reduce-var-set (apply #'append set-of-var-sets)))
 
 ;;; SUM-VAR-SETS is the usual convention.
 
-(DEFUN SUM-VAR-SETS (&REST L)
-       (REDUCE-VAR-SET (APPLY #'APPEND L))) ; consing up a storm aren't we?
+(defun sum-var-sets (&rest l)
+  (reduce-var-set (apply #'append l))) ; consing up a storm aren't we?
 
-(DEFUN MAKE-VAR-SET (VARS)
-       (sloop for v in vars collect (ncons v)))
+(defun make-var-set (vars)
+  (sloop for v in vars collect (ncons v)))
 
 ;;; (LAMBDA <BVL> . <BODY>)
 
-(DEFUN-prop (LAMBDA FREE-LISP-VARS) (FORM)
-       (DIFFERENCE-VAR-SETS (FREE-LISP-VARS-OF-ARGL (CDDR FORM))
-			    (COND ((NULL (CADR FORM))
-				   NIL)
-				  ((ATOM (CADR FORM))
-				   (MAKE-VAR-SET (LIST (CADR FORM))))
-				  (T
-				   (MAKE-VAR-SET (CADR FORM))))))
+(defun-prop (lambda free-lisp-vars) (form)
+  (difference-var-sets (free-lisp-vars-of-argl (cddr form))
+		       (cond ((null (cadr form))
+			      nil)
+			     ((atom (cadr form))
+			      (make-var-set (list (cadr form))))
+			     (t
+			      (make-var-set (cadr form))))))
 
 ;;; (PROG <BVL> . <BODY>)
 
-(DEFUN-prop (PROG FREE-LISP-VARS) (FORM)
-       (DIFFERENCE-VAR-SETS (UNION-VAR-SET
-			     (MAPCAR #'(LAMBDA (U)
-					       (COND ((ATOM U) NIL) ;; go tag.
-						     (T
-						      (FREE-LISP-VARS U))))
-				     (CDDR FORM)))
-			    (MAKE-VAR-SET (CADR FORM))))
+(defun-prop (prog free-lisp-vars) (form)
+  (difference-var-sets (union-var-set
+			(mapcar #'(lambda (u)
+				    (cond ((atom u) nil) ;; go tag.
+					  (t
+					   (free-lisp-vars u))))
+				(cddr form)))
+		       (make-var-set (cadr form))))
 
 ;;; no computed gos please.
-(DEFUN-prop (GO FREE-LISP-VARS) (IGNOR)IGNOR NIL)
+(defun-prop (go free-lisp-vars) (ignor)ignor nil)
 
 
 
 ;;; (DO ((<V> <V> <V>) ...) ((<in-scope>) ..) ...)
 
-(DEFUN-prop (DO FREE-LISP-VARS) (FORM)
-       (DIFFERENCE-VAR-SETS
-	(SUM-VAR-SETS (FREE-LISP-VARS-OF-ARGL (CDDDR FORM))
-		      (FREE-LISP-VARS-OF-ARGL (CADDR FORM))
-		      (UNION-VAR-SET (MAPCAR #'(LAMBDA (DO-ITER)
-						       (FREE-LISP-VARS-OF-ARGL 
-							(CDR DO-ITER)))
-					     (CADR FORM))))
-	(MAKE-VAR-SET (MAPCAR #'CAR (CADR FORM)))))
+(defun-prop (do free-lisp-vars) (form)
+  (difference-var-sets
+   (sum-var-sets (free-lisp-vars-of-argl (cdddr form))
+		 (free-lisp-vars-of-argl (caddr form))
+		 (union-var-set (mapcar #'(lambda (do-iter)
+					    (free-lisp-vars-of-argl 
+					     (cdr do-iter)))
+					(cadr form))))
+   (make-var-set (mapcar #'car (cadr form)))))
 
 
 ;;; (COND (<I> ..) (<J> ..) ...)
 
-(DEFUN-prop (COND FREE-LISP-VARS) (FORM)
-       (UNION-VAR-SET (MAPCAR #'FREE-LISP-VARS-OF-ARGL (CDR FORM))))
+(defun-prop (cond free-lisp-vars) (form)
+  (union-var-set (mapcar #'free-lisp-vars-of-argl (cdr form))))
 			      
 
-(DEFUN-prop (QUOTE FREE-LISP-VARS) (IGNOR)IGNOR NIL)
-(DEFUN-prop (FUNCTION FREE-LISP-VARS) (IGNOR)IGNOR NIL)
+(defun-prop (quote free-lisp-vars) (ignor)ignor nil)
+(defun-prop (function free-lisp-vars) (ignor)ignor nil)
 
 ;;; (SETQ ... ODD AND EVENS...)
 
-(DEFUN-prop (SETQ FREE-LISP-VARS) (FORM)
-       (DO ((FREE-VARS NIL (SUM-VAR-SETS `((,(CAR FORM) . T))
-					 (FREE-LISP-VARS (CADR FORM))
-					 FREE-VARS))
-	    (FORM (CDR FORM) (CDDR FORM)))
-	   ((NULL FORM) FREE-VARS)))
+(defun-prop (setq free-lisp-vars) (form)
+  (do ((free-vars nil (sum-var-sets `((,(car form) . t))
+				    (free-lisp-vars (cadr form))
+				    free-vars))
+       (form (cdr form) (cddr form)))
+      ((null form) free-vars)))
 
 ;;; uhm. LAMBDA, PROG, GO, DO, COND, QUOTE, SETQ.
 
-(DEFUN-prop (AND FREE-LISP-VARS)(FORM)(FREE-LISP-VARS-OF-ARGL (CDR FORM)))
-(DEFUN-prop (OR FREE-LISP-VARS)(FORM)(FREE-LISP-VARS-OF-ARGL (CDR FORM)))
+(defun-prop (and free-lisp-vars)(form)(free-lisp-vars-of-argl (cdr form)))
+(defun-prop (or free-lisp-vars)(form)(free-lisp-vars-of-argl (cdr form)))
 
-(DEFUN-prop (COMMENT FREE-LISP-VARS) (IGNOR)IGNOR NIL)
-(DEFUN-prop (DECLARE FREE-LISP-VARS) (IGNOR) IGNOR NIL)
+(defun-prop (comment free-lisp-vars) (ignor)ignor nil)
+(defun-prop (declare free-lisp-vars) (ignor) ignor nil)
 
 ;;; these next forms are generated by TRANSLATE.
 
-(DEFPROP $PIECE T SORT-OF-LEXICAL)
+(defprop $piece t sort-of-lexical)
 
-(defun-prop (trd-msymeval free-lisp-vars) (FORM)
-  (IF (GET (CADR FORM) 'SORT-OF-LEXICAL)
+(defun-prop (trd-msymeval free-lisp-vars) (form)
+  (if (get (cadr form) 'sort-of-lexical)
       ;; acts like a lexical variable because of the $SUBSTPART translator.
-      (LIST (LIST (CADR FORM)))
+      (list (list (cadr form)))
       ()))
 
-(DEFUN-prop (MFUNCTION-CALL FREE-LISP-VARS) (FORM)
-       ; it is not strictly known if the name of the function being called
-       ; is a variable or not. lets say its not.
-       (FREE-LISP-VARS-OF-ARGL (CDDR FORM)))
+(defun-prop (mfunction-call free-lisp-vars) (form)
+					; it is not strictly known if the name of the function being called
+					; is a variable or not. lets say its not.
+  (free-lisp-vars-of-argl (cddr form)))
 
 ;;; (FUNGEN&ENV-FOR-MEVAL () () EXP)
-(DEFUN-prop (FUNGEN&ENV-FOR-MEVAL FREE-LISP-VARS) (FORM)
-       (FREE-LISP-VARS (CAR (CDDDr form))))
+(defun-prop (fungen&env-for-meval free-lisp-vars) (form)
+  (free-lisp-vars (car (cdddr form))))
 ;;; (FUNGEN&ENV-FOR-MEVALSUMARG () () EXP MACSYMA-EXP)
-(DEFUN-prop (FUNGEN&ENV-FOR-MEVALSUMARG FREE-LISP-VARS) (FORM)
-       (FREE-LISP-VARS (CAR (CDDR form))))
+(defun-prop (fungen&env-for-mevalsumarg free-lisp-vars) (form)
+  (free-lisp-vars (car (cddr form))))
 ;;; the various augmented lambda forms.
 
-(DEFUN free-lisp-vars-m-tlambda (FORM)
-       (DIFFERENCE-VAR-SETS (FREE-LISP-VARS-OF-ARGL (CDDR FORM))
-			    (FREE-LISP-VARS-OF-ARGL (CADR FORM))))
-(MAPC #'(LAMBDA (U)(PUTPROP U 'FREE-LISP-VARS-m-tLAMBDA 'FREE-LISP-VARS))
-      '(M-TLAMBDA M-TLAMBDA&))
+(defun free-lisp-vars-m-tlambda (form)
+  (difference-var-sets (free-lisp-vars-of-argl (cddr form))
+		       (free-lisp-vars-of-argl (cadr form))))
+(mapc #'(lambda (u)(putprop u 'free-lisp-vars-m-tlambda 'free-lisp-vars))
+      '(m-tlambda m-tlambda&))
 (defun free-lisp-vars-m-tlambda&env (form)
-       (difference-var-sets (free-lisp-vars-of-argl (cddr form))
-			    (free-lisp-vars-of-argl (car (cadr form)))))
+  (difference-var-sets (free-lisp-vars-of-argl (cddr form))
+		       (free-lisp-vars-of-argl (car (cadr form)))))
 (defprop m-tlambda&env free-lisp-vars-m-tlambda&env free-lisp-vars)
 (defprop m-tlambda&env& free-lisp-vars-m-tlambda&env free-lisp-vars)
-; (m-tlambda-i mode env ...)
+;; (m-tlambda-i mode env ...)
 (defun-prop (m-tlambda-i free-lisp-vars-macro) (form)
-       `(lambda ,@(cdddr form)))
+  `(lambda ,@(cdddr form)))
 
 
 ;;; Other entry points: 
 
-(DEFUN TBOUND-FREE-VARS (FREE-VARL)
-       ; Takes a FREE-VAR list and returns a list of two lists.
-       ; the tbound free vars and the tbound free vars that are
-       ; side effected also.
-       (DO ((FREE NIL)
-	    (FREE&S NIL))
-	   ((NULL FREE-VARL) (LIST FREE FREE&S))
-	   (LET ((V (POP FREE-VARL)))
-		(COND ((AND (TBOUNDP (CAR V))
-			    (NOT (GET (CAR V) 'SPECIAL)))
-		       (PUSH (CAR V) FREE)
-		       (COND ((CDR V)
-			      (PUSH (CAR V) FREE&S))))))))
+(defun tbound-free-vars (free-varl)
+					; Takes a FREE-VAR list and returns a list of two lists.
+					; the tbound free vars and the tbound free vars that are
+					; side effected also.
+  (do ((free nil)
+       (free&s nil))
+      ((null free-varl) (list free free&s))
+    (let ((v (pop free-varl)))
+      (cond ((and (tboundp (car v))
+		  (not (get (car v) 'special)))
+	     (push (car v) free)
+	     (cond ((cdr v)
+		    (push (car v) free&s))))))))
 
-(DEFUN SIDE-EFFECT-FREE-CHECK (VARL FORM)
-       (COND ((NULL VARL) T)
-	     (T
-	      (TR-TELL "This form:" FORM
-			      "has side effects on these variables:"
-			      `((MLIST) ,@VARL)
-			      "which cannot be supported in the translated code."
-			      "(at this time)")
-	     NIL)))
+(defun side-effect-free-check (varl form)
+  (cond ((null varl) t)
+	(t
+	 (tr-tell "This form:" form
+		  "has side effects on these variables:"
+		  `((mlist) ,@varl)
+		  "which cannot be supported in the translated code."
+		  "(at this time)")
+	 nil)))
 
 
 ;;; O.K. here is the translate property for LAMBDA.
@@ -289,60 +289,60 @@
 ;;; is meaningless in the present macsyma evaluator of course, since
 ;;; it uses dynamic binding and just hopes for the best.
 
-(DEF%TR $LAMBDA_I (FORM)
-	(GEN-TR-LAMBDA FORM))
-(def%tr lambda-I (form) (gen-tr-lambda form))
-(DEF%TR LAMBDA (FORM)
-	(GEN-TR-LAMBDA FORM))
+(def%tr $lambda_i (form)
+  (gen-tr-lambda form))
+(def%tr lambda-i (form) (gen-tr-lambda form))
+(def%tr lambda (form)
+  (gen-tr-lambda form))
 
 ;;; we keep a pointer to the original FORM so that we can
 ;;; generate messages with it if need be.
 
-(DEFUN GEN-TR-LAMBDA (FORM &AUX ARG-INFO MODE FREES T-FORM)
-	(SETQ ARG-INFO (MAPCAR #'(LAMBDA (V)
-					 (COND ((ATOM V) NIL)
-					       ((AND (EQ (CAAR V) 'MLIST)
-						     (ATOM (CADR V)))
-						T)
-					       (T '*BAD*)))
-			       (CDR (CADR FORM))))
-	(COND ((OR (MEMQ '*BAD* ARG-INFO)
-		   (AND (MEMQ T ARG-INFO) 
-			(CDR (MEMQ T ARG-INFO)))) ;;; the &REST is not the last one.
-	       (TR-TELL (CADR FORM) " bad LAMBDA list. -TRANSLATE")
-	       (SETQ TR-ABORT T)
-	       NIL)
-	      (T
-	       (SETQ ARG-INFO (MEMQ T ARG-INFO) ;; &RESTP
-		     T-FORM
-		     (TR-LAMBDA `((LAMBDA)
-				  ((MLIST) ,@(MAPCAR #'(LAMBDA (V)
-							       (COND ((ATOM V) V)
-								     (T (CADR V))))
-						     (CDR (CADR FORM))))
-				  ,@(CDDR FORM)))
-		     MODE (CAR T-FORM)   ; not much to do with the mode now,
-		     T-FORM (CDR T-FORM) ; could be use by a global optimizer.
-		     FREES (TBOUND-FREE-VARS (FREE-LISP-VARS T-FORM)))))
-	; with this info we now dispatch to the various macros forms.
-	; (cadr t-form) is a lambda list. (cddr t-form) is a progn body.
-	(COND ((NULL (CAR FREES)) ; woopie.
-	       (COND ((NULL ARG-INFO)
-		      `($ANY . (M-TLAMBDA ,@(CDR T-FORM))))
-		     (T
-		     `($ANY . (M-TLAMBDA& ,@(CDR T-FORM))))))
-	      ((NULL (CADR FREES))
-	       (COND ((EQ (CAAR FORM) 'LAMBDA-I)
-		      `($ANY . (M-TLAMBDA-I ,MODE ,(CAR FREES) ,@(CDR T-FORM))))
-		     (T
-		      `($ANY . (,(COND ((NULL ARG-INFO) 'M-TLAMBDA&ENV)
-				       (T               'M-TLAMBDA&ENV&))
-				(,(CADR T-FORM) ,(CAR FREES))
-				,@(CDDR T-FORM))))))
-	      (T
-	       (WARN-MEVAL FORM)
-	       (side-EFFECT-FREE-CHECK (CADR FREES) FORM)
-	       `($ANY . (MEVAL ',FORM)))))
+(defun gen-tr-lambda (form &aux arg-info mode frees t-form)
+  (setq arg-info (mapcar #'(lambda (v)
+			     (cond ((atom v) nil)
+				   ((and (eq (caar v) 'mlist)
+					 (atom (cadr v)))
+				    t)
+				   (t '*bad*)))
+			 (cdr (cadr form))))
+  (cond ((or (memq '*bad* arg-info)
+	     (and (memq t arg-info) 
+		  (cdr (memq t arg-info)))) ;;; the &REST is not the last one.
+	 (tr-tell (cadr form) " bad LAMBDA list. -TRANSLATE")
+	 (setq tr-abort t)
+	 nil)
+	(t
+	 (setq arg-info (memq t arg-info) ;; &RESTP
+	       t-form
+	       (tr-lambda `((lambda)
+			    ((mlist) ,@(mapcar #'(lambda (v)
+						   (cond ((atom v) v)
+							 (t (cadr v))))
+					       (cdr (cadr form))))
+			    ,@(cddr form)))
+	       mode (car t-form)   ; not much to do with the mode now,
+	       t-form (cdr t-form) ; could be use by a global optimizer.
+	       frees (tbound-free-vars (free-lisp-vars t-form)))))
+					; with this info we now dispatch to the various macros forms.
+					; (cadr t-form) is a lambda list. (cddr t-form) is a progn body.
+  (cond ((null (car frees))		; woopie.
+	 (cond ((null arg-info)
+		`($any . (m-tlambda ,@(cdr t-form))))
+	       (t
+		`($any . (m-tlambda& ,@(cdr t-form))))))
+	((null (cadr frees))
+	 (cond ((eq (caar form) 'lambda-i)
+		`($any . (m-tlambda-i ,mode ,(car frees) ,@(cdr t-form))))
+	       (t
+		`($any . (,(cond ((null arg-info) 'm-tlambda&env)
+				 (t               'm-tlambda&env&))
+			  (,(cadr t-form) ,(car frees))
+			  ,@(cddr t-form))))))
+	(t
+	 (warn-meval form)
+	 (side-effect-free-check (cadr frees) form)
+	 `($any . (meval ',form)))))
 
 	       
 

@@ -12,7 +12,7 @@
 (macsyma-module trutil)
 
 
-(TRANSL-MODULE TRUTIL)
+(transl-module trutil)
 
 ;;; takes a list, and returns a cons of an a-list of (gensym . exp)
 ;;; and the origonal list with gensyms substututed for non-atom elements
@@ -20,128 +20,128 @@
 
 (declare-top(special tr-gensym-kounter))
 (setq tr-gensym-kounter 0)
-(DEFTRFUN TR-GENSYM (&OPTIONAL k)
-	  (and k (setq tr-gensym-kounter k))
-	  (prog2 nil
-		 (implode (nconc (explodec '|tr-gensym~|)
-				 (explodec tr-gensym-kounter)))
-		 (setq tr-gensym-kounter (f1+ tr-gensym-kounter))))
+(deftrfun tr-gensym (&optional k)
+  (and k (setq tr-gensym-kounter k))
+  (prog2 nil
+      (implode (nconc (explodec '|tr-gensym~|)
+		      (explodec tr-gensym-kounter)))
+    (setq tr-gensym-kounter (f1+ tr-gensym-kounter))))
 (declare-top (unspecial tr-gensym-kounter))
 
-(DEFTRFUN CONSERVE-EVAL-ARGS-DATA (L)
-       (DO ((SUBLIS NIL)
-	    (L L (CDR L))
-	    (NL NIL))
-	   ((NULL L) (CONS SUBLIS (NREVERSE NL)))
-	   (COND ((ATOM (CAR L))
-		  (PUSH (CAR L) NL))
-		 (T
-		  (LET ((SYM (TR-GENSYM)))
-		       (PUSH (CONS SYM (CAR L)) SUBLIS)
-		       (PUSH SYM NL))))))
+(deftrfun conserve-eval-args-data (l)
+  (do ((sublis nil)
+       (l l (cdr l))
+       (nl nil))
+      ((null l) (cons sublis (nreverse nl)))
+    (cond ((atom (car l))
+	   (push (car l) nl))
+	  (t
+	   (let ((sym (tr-gensym)))
+	     (push (cons sym (car l)) sublis)
+	     (push sym nl))))))
 
 
-(DEFUN TR-TRACE-HANDLE (FORM)
-       (LET* ((LEVEL-SYM (GET (CAAR FORM) 'TR-TRACE-LEVEL))
-	      (LEVEL (f1+ (SYMBOL-VALUE LEVEL-SYM)))
-	      (OP (CAAR FORM)))
-	     (PROGV (LIST LEVEL-SYM)
-		    (LIST LEVEL)
-		    (MTELL-OPEN "~%~S Enter ~:@M~%" level op)
-		    (mgrind form nil)
-		    (setq form (subrcall nil (get op 'otranslate) form))
-		    (mtell-OPEN "~%~S Exit  ~:@M" level op)
-		    (sprinter form)
-		    form)))
-#+(or PDP10 Franz)
+(defun tr-trace-handle (form)
+  (let* ((level-sym (get (caar form) 'tr-trace-level))
+	 (level (f1+ (symbol-value level-sym)))
+	 (op (caar form)))
+    (progv (list level-sym)
+	(list level)
+      (mtell-open "~%~S Enter ~:@M~%" level op)
+      (mgrind form nil)
+      (setq form (subrcall nil (get op 'otranslate) form))
+      (mtell-open "~%~S Exit  ~:@M" level op)
+      (sprinter form)
+      form)))
+#+(or pdp10 franz)
 (defprop get! (mtrace fasl dsk macsym) autoload)
 
 (defun tr-trace (op)
-       (if (get op 'otranslate) (tr-untrace op))
-       (let ((sym (gensym)))
-	 (set sym 0)
-	    (putprop op sym 'TR-TRACE-LEVEL))
-       (putprop op (get! op 'translate) 'otranslate)
-       (putprop op (get! 'tr-trace-handle 'subr) 'translate))
+  (if (get op 'otranslate) (tr-untrace op))
+  (let ((sym (gensym)))
+    (set sym 0)
+    (putprop op sym 'tr-trace-level))
+  (putprop op (get! op 'translate) 'otranslate)
+  (putprop op (get! 'tr-trace-handle 'subr) 'translate))
 
 (defun tr-untrace (op)
-       (remprop op 'tr-trace-level)
-       (putprop op (get! op 'otranslate) 'translate)
-       (remprop op 'otranslate))
+  (remprop op 'tr-trace-level)
+  (putprop op (get! op 'otranslate) 'translate)
+  (remprop op 'otranslate))
 
-(DEFTRFUN PUSH-DEFVAR (VAR VAL)
+(deftrfun push-defvar (var val)
   ;; makes sure there is a form in the beginning of the
   ;; file that insures the special variable is declared and bound.
-  (OR (MEMQ VAR DEFINED_VARIABLES)
+  (or (memq var defined_variables)
       ;; $NO_DEFAULT says that the user takes responsibility for binding.
-      (EQ $DEFINE_VARIABLE '$NO_DEFAULT)
+      (eq $define_variable '$no_default)
       ;; $MODE is same, but double-checks with the declarations available.
-      (AND (EQ $DEFINE_VARIABLE '$MODE)
-	   (GET VAR 'MODE))
-      (DO ((L *PRE-TRANSL-FORMS* (CDR L)))
-	  ((NULL L)
+      (and (eq $define_variable '$mode)
+	   (get var 'mode))
+      (do ((l *pre-transl-forms* (cdr l)))
+	  ((null l)
 	   ;; push one with a priority of 1, which will be over-rided
 	   ;; by any user-specified settings.
-	   (IF (EQ $DEFINE_VARIABLE '$MODE)
-	       (TR-FORMAT "~%Note: ~:M being given a default setting of ~:M"
-			  var (IF (atom val) val
+	   (if (eq $define_variable '$mode)
+	       (tr-format "~%Note: ~:M being given a default setting of ~:M"
+			  var (if (atom val) val
 				  ;; strip off the quote
 				  (cadr val))))
-	   (PUSH-PRE-TRANSL-FORM `(DEF-mtrVAR ,VAR ,VAL 1)))
-	(LET ((FORM (CAR L)))
-	  (AND (EQ (CAR FORM) 'DEF-mtrVAR)
-	       (EQ (CADR FORM) VAR)
-	       (RETURN ()))))))
+	   (push-pre-transl-form `(def-mtrvar ,var ,val 1)))
+	(let ((form (car l)))
+	  (and (eq (car form) 'def-mtrvar)
+	       (eq (cadr form) var)
+	       (return ()))))))
 
-(DEFTRFUN PUSH-PRE-TRANSL-FORM (FORM)
-	  (COND ((zl-MEMBER FORM *PRE-TRANSL-FORMS*))
-		(T
-		 (PUSH FORM *PRE-TRANSL-FORMS*)
-		 (AND *IN-TRANSLATE*
-		      (LET ((WINP NIL))
-			   (UNWIND-PROTECT (PROGN (EVAL FORM) (SETQ WINP T))
-					   (OR WINP
-					       (BARFO "Bad *PRE-TRANSL-FORM*"))))))))
+(deftrfun push-pre-transl-form (form)
+  (cond ((zl-member form *pre-transl-forms*))
+	(t
+	 (push form *pre-transl-forms*)
+	 (and *in-translate*
+	      (let ((winp nil))
+		(unwind-protect (progn (eval form) (setq winp t))
+		  (or winp
+		      (barfo "Bad *PRE-TRANSL-FORM*"))))))))
 
-(DEFTRFUN PUSH-AUTOLOAD-DEF (OLD-ENTRY NEW-ENTRIES)
-	       (AND (GET OLD-ENTRY 'AUTOLOAD)
-		    ; don't need this if it is IN-CORE.
-		    ; this automaticaly punts this shit for systems
-		    ; that don't need it.
-		    (DO ((ENTRY))
-			((NULL NEW-ENTRIES))
-			(SETQ ENTRY (POP NEW-ENTRIES))
-			(OR (MEMQ ENTRY *NEW-AUTOLOAD-ENTRIES*)
-			    (PUSH-PRE-TRANSL-FORM
-			     `(PUTPROP ',ENTRY
-				       ; this ensures that the autoload definition
-				       ; will not get out of date.
-				       (OR (GET ',OLD-ENTRY 'AUTOLOAD)
-					   T)
-				       'AUTOLOAD))))))
+(deftrfun push-autoload-def (old-entry new-entries)
+  (and (get old-entry 'autoload)
+					; don't need this if it is IN-CORE.
+					; this automaticaly punts this shit for systems
+					; that don't need it.
+       (do ((entry))
+	   ((null new-entries))
+	 (setq entry (pop new-entries))
+	 (or (memq entry *new-autoload-entries*)
+	     (push-pre-transl-form
+	      `(putprop ',entry
+					; this ensures that the autoload definition
+					; will not get out of date.
+		(or (get ',old-entry 'autoload)
+		 t)
+		'autoload))))))
 
 
 
-(DEFTRFUN TR-NARGS-CHECK (FORM &OPTIONAL
-			       (ARGS-P (ARGS (CAAR FORM)))
-			       (NARGS (LENGTH (CDR FORM))))
-	   ; the maclisp args info format is NIL meaning no info,
-	   ; probably a lexpr. or cons (min . max)
-	   (AND
-	    ARGS-P
-	    (LET ((NARGS (LENGTH (CDR FORM)))
-		  (MIN (OR (CAR ARGS-P) (CDR ARGS-P)))
-		  (MAX (CDR ARGS-P)))
-		 (COND ((AND MIN (< NARGS MIN))
-			(MFORMAT 
-			 *TRANSLATION-MSGS-FILES*
-			 "~%ERROR: Too few arguments supplied to ~:@M~%"
-			 (CAAR FORM))
-			(MGRIND FORM *TRANSLATION-MSGS-FILES*))
-		       ((AND MAX (> NARGS MAX))
-			(TR-FORMAT 
-			 "~%ERROR: Too many arguments supplied to ~:@M~%"
-			 (caar form))
-			(MGRIND FORM *TRANSLATION-MSGS-FILES*)))))
-	   ; return the number of arguments.
-	   NARGS)
+(deftrfun tr-nargs-check (form &optional
+			       (args-p (args (caar form)))
+			       (nargs (length (cdr form))))
+					; the maclisp args info format is NIL meaning no info,
+					; probably a lexpr. or cons (min . max)
+  (and
+   args-p
+   (let ((nargs (length (cdr form)))
+	 (min (or (car args-p) (cdr args-p)))
+	 (max (cdr args-p)))
+     (cond ((and min (< nargs min))
+	    (mformat 
+	     *translation-msgs-files*
+	     "~%ERROR: Too few arguments supplied to ~:@M~%"
+	     (caar form))
+	    (mgrind form *translation-msgs-files*))
+	   ((and max (> nargs max))
+	    (tr-format 
+	     "~%ERROR: Too many arguments supplied to ~:@M~%"
+	     (caar form))
+	    (mgrind form *translation-msgs-files*)))))
+					; return the number of arguments.
+  nargs)

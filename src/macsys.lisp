@@ -15,8 +15,8 @@
 (in-package "MAXIMA")
 (macsyma-module system)
 
-;(eval-when (:execute :compile-toplevel :load-toplevel)
-;  (sstatus feature maxii))
+;;(eval-when (:execute :compile-toplevel :load-toplevel)
+;;  (sstatus feature maxii))
 
 ;;; Standard Kinds of Input Prompts
 
@@ -24,18 +24,18 @@
 (defvar *prompt-suffix* "")
 (defvar *general-display-prefix* "")
 
-(DEFUN MAIN-PROMPT ()
+(defun main-prompt ()
   ;; instead off using this STRIPDOLLAR hackery, the
   ;; MREAD function should call MFORMAT to print the prompt,
   ;; and take a format string and format arguments.
   ;; Even easier and more general is for MREAD to take
   ;; a FUNARG as the prompt. -gjc
-  (FORMAT () "~A(~A~D) ~A" *prompt-prefix* 
-(STRIPDOLLAR $INCHAR) $LINENUM *prompt-suffix*))
+  (format () "~A(~A~D) ~A" *prompt-prefix* 
+	  (stripdollar $inchar) $linenum *prompt-suffix*))
 
-(DEFUN BREAK-PROMPT ()
+(defun break-prompt ()
   (declare (special $prompt))
-  (STRIPDOLLAR $PROMPT))
+  (stripdollar $prompt))
 
 
 ;; there is absoletely no need to catch errors here, because
@@ -45,8 +45,8 @@
 (defmacro toplevel-macsyma-eval (x) `(meval* ,x))
 
 (defmvar $_ '$_ "last thing read in, cooresponds to lisp +")
-;Also defined in JPG;SUPRV
-#-CL (defmvar $% '$% "last thing printed out, cooresponds to lisp *")
+;;Also defined in JPG;SUPRV
+#-cl (defmvar $% '$% "last thing printed out, cooresponds to lisp *")
 (defmvar $__ '$__ "thing read in which will be evaluated, cooresponds to -")
 
 (declare-top (special *mread-prompt*  $file_search_demo))
@@ -54,16 +54,16 @@
 (defvar accumulated-time 0.0)
 #-cl
 (defun fixnum-char-upcase (x) (char-upcase x))
-;#-ti
-;(defun get-internal-real-time () (time:microsecond-time))
-;#-ti
-;(defun get-internal-run-time ()  (* 1000 (send current-process :cpu-time)) )
-;(defvar internal-time-units-per-second  1000000)
+;;#-ti
+;;(defun get-internal-real-time () (time:microsecond-time))
+;;#-ti
+;;(defun get-internal-run-time ()  (* 1000 (send current-process :cpu-time)) )
+;;(defvar internal-time-units-per-second  1000000)
 
-;#+lispm
-;(defun used-area ( &optional (area working-storage-area ))
-;  (multiple-value-bind (nil used)(si:room-get-area-length-used area)
-;    used))
+;;#+lispm
+;;(defun used-area ( &optional (area working-storage-area ))
+;;  (multiple-value-bind (nil used)(si:room-get-area-length-used area)
+;;    used))
 
 #+cmu
 (defun used-area (&optional unused)
@@ -93,97 +93,97 @@
   (declare (ignore unused))
   0)
 
-(DEFUN CONTINUE (&OPTIONAL (input-stream *standard-input*)
-			   BATCH-OR-DEMO-FLAG)
-  (declare (special *SOCKET-CONNECTION*))
- (if (eql BATCH-OR-DEMO-FLAG :demo)
-     (format t "~% At the _ prompt, type ';' followed by enter to get next demo"))
- (catch 'abort-demo
-  (DO ((R)
-       (time-before)
-       (time-after)
-       (time-used)
-       (EOF (LIST NIL))
-       (etime-before)
-       (etime-after)
-       (area-before)
-       (area-after)
-       (etime-used)
-       (c-tag)
-       (d-tag))
-      (NIL)
-(catch 'return-from-debugger
-    (when (not (checklabel $inchar))
+(defun continue (&optional (input-stream *standard-input*)
+		 batch-or-demo-flag)
+  (declare (special *socket-connection*))
+  (if (eql batch-or-demo-flag :demo)
+      (format t "~% At the _ prompt, type ';' followed by enter to get next demo"))
+  (catch 'abort-demo
+    (do ((r)
+	 (time-before)
+	 (time-after)
+	 (time-used)
+	 (eof (list nil))
+	 (etime-before)
+	 (etime-after)
+	 (area-before)
+	 (area-after)
+	 (etime-used)
+	 (c-tag)
+	 (d-tag))
+	(nil)
+      (catch 'return-from-debugger
+	(when (not (checklabel $inchar))
 	  (setq $linenum (f1+ $linenum)))
-    #+akcl(si::reset-stack-limits)
-    (setq c-tag (makelabel $inchar))
-    (LET ((*MREAD-PROMPT* (if batch-or-demo-flag nil (MAIN-PROMPT)))
-	  (eof-count 0))
-    (tagbody
-     top
-     (SETQ R      (dbm-read input-stream nil eof))
-     ; This is something of a hack. If we are running in a server mode
-     ; (which we determine by checking *socket-connection*) and we get
-     ; an eof on an input-stream that is not *standard-input*, switch
-     ; the input stream to *standard-input*.
-     ; There should probably be a better scheme for server mode.
-     ; jfa 10/09/2002.
-     (if (and
-	  (eq r eof)
-	   (not (eq input-stream *standard-input*))
-	   (boundp '*socket-connection*))
-	 (progn
-	       (setq input-stream *standard-input*)
-	       (setq *mread-prompt* nil)
-	       (setq r (dbm-read input-stream nil eof))))
+	#+akcl(si::reset-stack-limits)
+	(setq c-tag (makelabel $inchar))
+	(let ((*mread-prompt* (if batch-or-demo-flag nil (main-prompt)))
+	      (eof-count 0))
+	  (tagbody
+	   top
+	     (setq r      (dbm-read input-stream nil eof))
+					; This is something of a hack. If we are running in a server mode
+					; (which we determine by checking *socket-connection*) and we get
+					; an eof on an input-stream that is not *standard-input*, switch
+					; the input stream to *standard-input*.
+					; There should probably be a better scheme for server mode.
+					; jfa 10/09/2002.
+	     (if (and
+		  (eq r eof)
+		  (not (eq input-stream *standard-input*))
+		  (boundp '*socket-connection*))
+		 (progn
+		   (setq input-stream *standard-input*)
+		   (setq *mread-prompt* nil)
+		   (setq r (dbm-read input-stream nil eof))))
 
-     (cond ((and (eq r eof) (boundp '*socket-connection*)
-		 (eq input-stream *socket-connection*))
-	    (cond ((>=  (setq eof-count (+ 1 eof-count)) 10)
-		   (print "exiting on eof")
-		   ($quit))
-		  (t (go top)))))
+	     (cond ((and (eq r eof) (boundp '*socket-connection*)
+			 (eq input-stream *socket-connection*))
+		    (cond ((>=  (setq eof-count (+ 1 eof-count)) 10)
+			   (print "exiting on eof")
+			   ($quit))
+			  (t (go top)))))
 		 
-     (cond ((and (consp r) (keywordp (car r)))
-	    (break-call (car r) (cdr r) 'break-command)
-	      (go top)))
+	     (cond ((and (consp r) (keywordp (car r)))
+		    (break-call (car r) (cdr r) 'break-command)
+		    (go top)))
 	      
-     )
-    )
+	     )
+	  )
     
-    (format t "~a" *general-display-prefix*)
-    (cond (#.writefilep ;write out the c line to the dribble file
-	    (let ( (#.ttyoff t) smart-tty  $linedisp)
-	      (displa `((mlable) , c-tag , $__)))))
-    (IF (EQ R EOF) (RETURN '$DONE))
-    (fresh-line *standard-output*)
-;    #+lispm (SEND *standard-output* :SEND-IF-HANDLES ':FORCE-OUTPUT)
-    (SETQ $__ (CADDR R))
-    (SET  C-TAG $__)
-    (cond (batch-or-demo-flag
-	   (displa `((mlable) ,c-tag , $__))))
-    (setq time-before (get-internal-run-time)
-	  etime-before (get-internal-real-time))
-    (setq area-before (used-area))
-    (SETQ $% (TOPLEVEL-MACSYMA-EVAL $__))
-    (setq etime-after (get-internal-real-time)
-	  time-after (get-internal-run-time))
-    (setq area-after (used-area))
-    (setq time-used (quotient (float (difference time-after time-before))
-			      internal-time-units-per-second)
-	  etime-used (quotient (float (difference etime-after etime-before))
-			       internal-time-units-per-second))
-    (setq accumulated-time (plus accumulated-time time-used))
-    (SET (setq D-TAG (makelabel $outchar)) $%)
-    (SETQ $_ $__)
-    (when $showtime
-;	  #+NIL (format t "~&Evaluation took ~$ seconds (~$ elapsed)."
-;		    time-used etime-used)
-;	  #-(or NIL cl) (mtell "Evaluation took ~S seconds (~S elapsed)."
-;			   time-used etime-used)
+	(format t "~a" *general-display-prefix*)
+	(cond (#.writefilep  ;write out the c line to the dribble file
+	       (let ( (#.ttyoff t) smart-tty  $linedisp)
+		 (displa `((mlable) , c-tag , $__)))))
+	(if (eq r eof) (return '$done))
+	(fresh-line *standard-output*)
+	;;    #+lispm (SEND *standard-output* :SEND-IF-HANDLES ':FORCE-OUTPUT)
+	(setq $__ (caddr r))
+	(set  c-tag $__)
+	(cond (batch-or-demo-flag
+	       (displa `((mlable) ,c-tag , $__))))
+	(setq time-before (get-internal-run-time)
+	      etime-before (get-internal-real-time))
+	(setq area-before (used-area))
+	(setq $% (toplevel-macsyma-eval $__))
+	(setq etime-after (get-internal-real-time)
+	      time-after (get-internal-run-time))
+	(setq area-after (used-area))
+	(setq time-used (quotient (float (difference time-after time-before))
+				  internal-time-units-per-second)
+	      etime-used (quotient (float (difference etime-after etime-before))
+				   internal-time-units-per-second))
+	(setq accumulated-time (plus accumulated-time time-used))
+	(set (setq d-tag (makelabel $outchar)) $%)
+	(setq $_ $__)
+	(when $showtime
+	  ;;	  #+NIL (format t "~&Evaluation took ~$ seconds (~$ elapsed)."
+	  ;;		    time-used etime-used)
+	  ;;	  #-(or NIL cl) (mtell "Evaluation took ~S seconds (~S elapsed)."
+	  ;;			   time-used etime-used)
 	  (format t "~&Evaluation took ~$ seconds (~$ elapsed)"
-       		    time-used etime-used )
-;	  #+lispm (format t "using ~A words." (f-  area-after area-before))
+		  time-used etime-used )
+	  ;;	  #+lispm (format t "using ~A words." (f-  area-after area-before))
 	  #+(or cmu sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
 	    (cond ((> total-bytes (* 1024 1024))
@@ -194,184 +194,184 @@
 		  (t
 		   (format t " using ~:D bytes." total-bytes))))
 
-      )
-    (UNLESS $NOLABELS
-		     (PUTPROP d-tag
-			      (cons time-used  0)
-			      'TIME))
-    (fresh-line *standard-output*)
-;    #+never(let ((tem (read-char-no-hang)))
-;      (or (eql tem #\newline) (and tem (unread-char tem))))
-    (IF (EQ (CAAR R) 'DISPLAYINPUT)
-	(DISPLA `((MLABLE) ,D-TAG ,$%)))
-    (when (eq batch-or-demo-flag ':demo)
-      (mtell "~&~A_~A" *prompt-prefix* *prompt-suffix*)
-      (let (quitting)	  
-       (do ((char)) (nil)
-	     ;;those are common lisp characters you'r reading here
-	    (case
-	     (setq char (read-char *terminal-io*))
-	     ((#\page) (unless (cursorpos 'c input-stream) (terpri *standard-output*))
-	      (princ "_" *standard-output*))
-	     ((#\?) (mtell "  Pausing.  Type a ';' and Enter to continue demo.~%_"))
-	     ((#\space #\; #\n #\e #\x #\t))
-	     ((#\newline )
-	      (if quitting (throw 'abort-demo nil) (return nil))) 
-	     (t (setq quitting t)
-		)))))
-    ;; This is sort of a kludge -- eat newlines and blanks so that they don't echo
-    (AND BATCH-OR-DEMO-FLAG
-;	 #+lispm
-;	 (send input-stream :operation-handled-p :read-char-no-echo)
-;	 #+lispm
-;	 (send input-stream :operation-handled-p :unread-char-no-echo)
-	 (do ((char)) (())
-	   (setq char (read-char input-stream nil #+cl nil)) 
+	  )
+	(unless $nolabels
+	  (putprop d-tag
+		   (cons time-used  0)
+		   'time))
+	(fresh-line *standard-output*)
+	;;    #+never(let ((tem (read-char-no-hang)))
+	;;      (or (eql tem #\newline) (and tem (unread-char tem))))
+	(if (eq (caar r) 'displayinput)
+	    (displa `((mlable) ,d-tag ,$%)))
+	(when (eq batch-or-demo-flag ':demo)
+	  (mtell "~&~A_~A" *prompt-prefix* *prompt-suffix*)
+	  (let (quitting)	  
+	    (do ((char)) (nil)
+	      ;;those are common lisp characters you'r reading here
+	      (case
+		  (setq char (read-char *terminal-io*))
+		((#\page) (unless (cursorpos 'c input-stream) (terpri *standard-output*))
+		 (princ "_" *standard-output*))
+		((#\?) (mtell "  Pausing.  Type a ';' and Enter to continue demo.~%_"))
+		((#\space #\; #\n #\e #\x #\t))
+		((#\newline )
+		 (if quitting (throw 'abort-demo nil) (return nil))) 
+		(t (setq quitting t)
+		   )))))
+	;; This is sort of a kludge -- eat newlines and blanks so that they don't echo
+	(and batch-or-demo-flag
+	     ;;	 #+lispm
+	     ;;	 (send input-stream :operation-handled-p :read-char-no-echo)
+	     ;;	 #+lispm
+	     ;;	 (send input-stream :operation-handled-p :unread-char-no-echo)
+	     (do ((char)) (())
+	       (setq char (read-char input-stream nil #+cl nil)) 
 
 ;;;; INSERTED BY MASAMI 
-           (when (null char) 
-             (throw 'MACSYMA-QUIT NIL)) 
+	       (when (null char) 
+		 (throw 'macsyma-quit nil)) 
 ;;;; END INSERT 
 
-	   (unless (zl-MEMBER char '(#\space #\newline #\return #\tab))
-	       (unread-char char input-stream)  
-	     (return nil)))))))) 
+	       (unless (zl-member char '(#\space #\newline #\return #\tab))
+		 (unread-char char input-stream)  
+		 (return nil)))))))) 
 
 
-(DEFUN $BREAK (&REST ARG-LIST)
-  (PROG1 (apply #'$PRINT ARG-LIST)
-	 (MBREAK-LOOP)))
+(defun $break (&rest arg-list)
+  (prog1 (apply #'$print arg-list)
+    (mbreak-loop)))
 
 
 
-(DEFUN MBREAK-LOOP ()
-  (LET ((*standard-input* #+nil (make-synonym-stream '*terminal-io*)
-			#-nil *debug-io*)
+(defun mbreak-loop ()
+  (let ((*standard-input* #+nil (make-synonym-stream '*terminal-io*)
+			  #-nil *debug-io*)
 	(*standard-output* *debug-io*))
-    (CATCH 'BREAK-EXIT
+    (catch 'break-exit
       (format t "~%Entering a Macsyma break point. Type EXIT; to resume")
-      (DO ((R)) (NIL)
+      (do ((r)) (nil)
 	(fresh-line)
-	(SETQ R (CADDR (LET ((*MREAD-PROMPT* (BREAK-PROMPT)))
-			 (MREAD *standard-input*))))
-	(CASE R
-	  (($EXIT) (THROW 'BREAK-EXIT T))
-	  (T (ERRSET (DISPLA (MEVAL R)) T)))))))
+	(setq r (caddr (let ((*mread-prompt* (break-prompt)))
+			 (mread *standard-input*))))
+	(case r
+	  (($exit) (throw 'break-exit t))
+	  (t (errset (displa (meval r)) t)))))))
 
 (defun merrbreak (&optional arg)
   (format *debug-io* "~%Merrbreak:~A" arg)
   (mbreak-loop))
 
 #-cl
-(DEFUN RETRIEVE (MSG FLAG &AUX (PRINT? NIL))
-  (DECLARE (SPECIAL MSG FLAG PRINT?))
-  (OR (EQ FLAG 'NOPRINT) (SETQ PRINT? T))
-  (MREAD-TERMINAL
-    (CLOSURE '(MSG FLAG)
-       #'(LAMBDA (STREAM CHAR) STREAM CHAR
-	   (COND ((NOT PRINT?) (SETQ PRINT? T))
-		 ((NULL MSG))
-		 ((ATOM MSG) (PRINC MSG) (MTERPRI))
-		 ((EQ FLAG T) (MAPC #'PRINC (CDR MSG)) (MTERPRI))
-		 (T (DISPLA MSG) (MTERPRI)))))))
+(defun retrieve (msg flag &aux (print? nil))
+  (declare (special msg flag print?))
+  (or (eq flag 'noprint) (setq print? t))
+  (mread-terminal
+   (closure '(msg flag)
+	    #'(lambda (stream char) stream char
+		      (cond ((not print?) (setq print? t))
+			    ((null msg))
+			    ((atom msg) (princ msg) (mterpri))
+			    ((eq flag t) (mapc #'princ (cdr msg)) (mterpri))
+			    (t (displa msg) (mterpri)))))))
 #+cl
-(DEFUN RETRIEVE (MSG FLAG &AUX (PRINT? NIL))
-  (DECLARE (SPECIAL MSG FLAG PRINT?))
-  (OR (EQ FLAG 'NOPRINT) (SETQ PRINT? T))
-  (COND ((NOT PRINT?) 
-	 (SETQ PRINT? T)
+(defun retrieve (msg flag &aux (print? nil))
+  (declare (special msg flag print?))
+  (or (eq flag 'noprint) (setq print? t))
+  (cond ((not print?) 
+	 (setq print? t)
 	 (princ *prompt-prefix*)
 	 (princ *prompt-suffix*))
-	((NULL MSG)
+	((null msg)
 	 (princ *prompt-prefix*)
 	 (princ *prompt-suffix*))
-	((ATOM MSG) 
-	 (format t "~a~a~a" *prompt-prefix* MSG *prompt-suffix*) 
-	 (MTERPRI))
-	((EQ FLAG T)
+	((atom msg) 
+	 (format t "~a~a~a" *prompt-prefix* msg *prompt-suffix*) 
+	 (mterpri))
+	((eq flag t)
 	 (princ *prompt-prefix*) 
-	 (MAPC #'PRINC (CDR MSG)) 
+	 (mapc #'princ (cdr msg)) 
 	 (princ *prompt-suffix*)
-	 (MTERPRI))
-	(T 
+	 (mterpri))
+	(t 
 	 (princ *prompt-prefix*)
-	 (displa MSG) 
+	 (displa msg) 
 	 (princ *prompt-suffix*)
-	 (MTERPRI)))
+	 (mterpri)))
   (mread-noprompt *query-io* nil))
 
 
-(DEFMFUN $READ (&REST L)
-  (MEVAL (APPLY #'$READONLY L)))
+(defmfun $read (&rest l)
+  (meval (apply #'$readonly l)))
 
-(DEFMFUN $READONLY (&REST L)
+(defmfun $readonly (&rest l)
   (let ((*mread-prompt*
 	 (if l (string-right-trim '(#\n)
 				  (with-output-to-string (*standard-output*)
 				    (apply '$print l))) "")))
     (setf *mread-prompt* (format nil "~a~a~a" *prompt-prefix* *mread-prompt* 
-				*prompt-suffix*))
+				 *prompt-suffix*))
     (setf answer (third (mread *query-io*)))))
 
 
-;#-cl
-;(DEFUN MREAD-TERMINAL (PROMPT)
-;  (prog1 (let (#+NIL (si:*ttyscan-dispatch-table *macsyma-ttyscan-operators*))
-;	    (CADDR (send *terminal-io* ':RUBOUT-HANDLER
-;			 `((:PROMPT ,PROMPT) #+NIL (:reprompt ,prompt))
-;			 #'MREAD-RAW *terminal-io*)))
-;	 (fresh-line *terminal-io*)))
+;;#-cl
+;;(DEFUN MREAD-TERMINAL (PROMPT)
+;;  (prog1 (let (#+NIL (si:*ttyscan-dispatch-table *macsyma-ttyscan-operators*))
+;;	    (CADDR (send *terminal-io* ':RUBOUT-HANDLER
+;;			 `((:PROMPT ,PROMPT) #+NIL (:reprompt ,prompt))
+;;			 #'MREAD-RAW *terminal-io*)))
+;;	 (fresh-line *terminal-io*)))
 
 
-(DEFUN MAKE-INPUT-STREAM (X Y) Y ;ignore
-  X)
+(defun make-input-stream (x y) y	;ignore
+       x)
 
-(DEFUN BATCH (FILENAME &OPTIONAL DEMO-P
-	      &AUX (orig filename )
+(defun batch (filename &optional demo-p
+	      &aux (orig filename )
 	      list
-	      FILE-OBJ (accumulated-time 0.0) (abortp t))
+	      file-obj (accumulated-time 0.0) (abortp t))
   (setq list (if demo-p '$file_search_demo '$file_search_maxima))
   (setq filename ($file_search filename (symbol-value list)))
   (or filename (merror "Could not find ~M in ~M: ~M"
 		       orig list (symbol-value list)))
   
-  (UNWIND-PROTECT
-    (progn (batch-internal (setq file-obj (open filename)) demo-p)
-	   (setq abortp nil)
-	   (when $showtime
-	     (format t "~&Batch spent ~$ seconds in evaluation.~%"
-		     accumulated-time)))
-    (IF FILE-OBJ (CLOSE FILE-OBJ))
+  (unwind-protect
+       (progn (batch-internal (setq file-obj (open filename)) demo-p)
+	      (setq abortp nil)
+	      (when $showtime
+		(format t "~&Batch spent ~$ seconds in evaluation.~%"
+			accumulated-time)))
+    (if file-obj (close file-obj))
     (when abortp (format t "~&(Batch of ~A aborted.)~%" filename))))
 
 
 (defun batch-internal (fileobj demo-p)
-  (CONTINUE (MAKE-ECHO-STREAM
-	      (MAKE-INPUT-STREAM fileobj "Batch Input Stream")
-	      *standard-output*)
-	    (IF DEMO-P ':DEMO ':BATCH)))
+  (continue (make-echo-stream
+	     (make-input-stream fileobj "Batch Input Stream")
+	     *standard-output*)
+	    (if demo-p ':demo ':batch)))
 #-cl
-(DEFUN $BATCH (&REST ARG-LIST)
-  (BATCH (FILENAME-FROM-ARG-LIST ARG-LIST) NIL))
+(defun $batch (&rest arg-list)
+  (batch (filename-from-arg-list arg-list) nil))
 
-(DEFUN FILENAME-FROM-ARG-LIST (ARG-LIST)
-  (IF (= (LENGTH ARG-LIST) 1)
-      ($FILENAME_MERGE (CAR ARG-LIST))
-      ($FILENAME_MERGE `((MLIST),@ARG-LIST))))
+(defun filename-from-arg-list (arg-list)
+  (if (= (length arg-list) 1)
+      ($filename_merge (car arg-list))
+      ($filename_merge `((mlist),@arg-list))))
 
 (defmspec $grindef (form)
   (eval `(grindef ,@(cdr form)))
-  '$DONE)
+  '$done)
 
 #+cl
-(DEFUN $DEMO (&REST ARG-LIST)
+(defun $demo (&rest arg-list)
   (let ((tem ($file_search (car arg-list) $file_search_demo)))
     (or tem (merror "Could not find ~M in  ~M: ~M" (car arg-list) '$file_search_demo $file_search_demo   ))
-    ($BATCH tem	  '$demo)))
+    ($batch tem	  '$demo)))
 
 #-cl
-(DEFUN $DEMO (&REST ARG-LIST)
-  (BATCH (FILENAME-FROM-ARG-LIST ARG-LIST) T))
+(defun $demo (&rest arg-list)
+  (batch (filename-from-arg-list arg-list) t))
 
 (defmfun $bug_report ()
   (format t "~%The Maxima bug database is available at~%")
@@ -404,7 +404,7 @@
   (format t "  i i i i i i i       ooooo    o        ooooooo   ooooo   ooooo~%")
   (format t "  I I I I I I I      8     8   8           8     8     o  8    8~%")
   (format t "  I  \\ `+' /  I      8         8           8     8        8    8~%")
-  (format t "   \\  `-+-'  /       8         8           8      ooooo   8oooo~%");
+  (format t "   \\  `-+-'  /       8         8           8      ooooo   8oooo~%") ;
   (format t "    `-__|__-'        8         8           8           8  8~%")
   (format t "        |            8     o   8           8     o     8  8~%")
   (format t "  ------+------       ooooo    8oooooo  ooo8ooo   ooooo   8~%")
@@ -417,7 +417,7 @@
 	  "--------------------------------------------------------------~%~%"))
 
 #-lispm
-(defun macsyma-top-level (&OPTIONAL (input-stream *standard-input*)
+(defun macsyma-top-level (&optional (input-stream *standard-input*)
 			  batch-flag)
   (let ((*package* (find-package "MAXIMA")))
     (if *maxima-started*
@@ -455,88 +455,88 @@
 #-lispm
 (progn 
   
-#+kcl
-(si::putprop :t 'throw-macsyma-top 'si::break-command)
+  #+kcl
+  (si::putprop :t 'throw-macsyma-top 'si::break-command)
 
-(defun throw-macsyma-top ()
-  (throw 'macsyma-quit t))
+  (defun throw-macsyma-top ()
+    (throw 'macsyma-quit t))
 
 
-(defmfun $writefile (x) (dribble (subseq (string x) 1)))
+  (defmfun $writefile (x) (dribble (subseq (string x) 1)))
 
-(defvar $appendfile nil )
+  (defvar $appendfile nil )
 
-(defvar *appendfile-data*)
+  (defvar *appendfile-data*)
 
-(defmfun $appendfile (name)
-  (if (and (symbolp name)
-	   (member (getcharn name 1) '(#\& #\$)))
-      (setq name (subseq (symbol-name name) 1)))
-  (if $appendfile (merror "already in appendfile, use closefile first"))
-  (let ((stream  (open name :direction :output
-                                       :if-exists :append
-                                       :if-does-not-exist :create)))
-  (setq *appendfile-data* (list stream *terminal-io* name ))
+  (defmfun $appendfile (name)
+    (if (and (symbolp name)
+	     (member (getcharn name 1) '(#\& #\$)))
+	(setq name (subseq (symbol-name name) 1)))
+    (if $appendfile (merror "already in appendfile, use closefile first"))
+    (let ((stream  (open name :direction :output
+			 :if-exists :append
+			 :if-does-not-exist :create)))
+      (setq *appendfile-data* (list stream *terminal-io* name ))
   
-  (setq $appendfile (make-two-way-stream
-		     (make-echo-stream *terminal-io* stream)
-		     (make-broadcast-stream *terminal-io* stream))
-	*terminal-io* $appendfile)
-  (multiple-value-bind (sec min hour day month year)
-		       (get-decoded-time)
-		       (format t
-			       "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/"
-			       name year month day hour min sec))
-  '$done))
+      (setq $appendfile (make-two-way-stream
+			 (make-echo-stream *terminal-io* stream)
+			 (make-broadcast-stream *terminal-io* stream))
+	    *terminal-io* $appendfile)
+      (multiple-value-bind (sec min hour day month year)
+	  (get-decoded-time)
+	(format t
+		"~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/"
+		name year month day hour min sec))
+      '$done))
   
-(defmfun $closefile ()
-  (cond ($appendfile
+  (defmfun $closefile ()
+    (cond ($appendfile
 	 
-	 (cond ((eq $appendfile *terminal-io*)
-                 (format t "~&/*Finished dribbling to ~A.*/"
-			 (nth 2 *appendfile-data*))
-		(setq *terminal-io* (nth 1 *appendfile-data*))
-		)
-	       (t  (warn "*TERMINAL-IO* was rebound while APPENDFILE is on.~%~
+	   (cond ((eq $appendfile *terminal-io*)
+		  (format t "~&/*Finished dribbling to ~A.*/"
+			  (nth 2 *appendfile-data*))
+		  (setq *terminal-io* (nth 1 *appendfile-data*))
+		  )
+		 (t  (warn "*TERMINAL-IO* was rebound while APPENDFILE is on.~%~
                    You may miss some dribble output.")))
-	 (close (nth 0 *appendfile-data*))
-	 (setq *appendfile-data* nil $appendfile nil)
+	   (close (nth 0 *appendfile-data*))
+	   (setq *appendfile-data* nil $appendfile nil)
 	 
-	 )
-	(t (dribble))))
+	   )
+	  (t (dribble))))
  
 
-(defmfun $ed (x) (ed (subseq (string x) 1))) 
+  (defmfun $ed (x) (ed (subseq (string x) 1))) 
  
-(defmfun $cli () (merror "Not implemented!") )
+  (defmfun $cli () (merror "Not implemented!") )
  
-(defun nsubstring (x y) (subseq x y)) 
+  (defun nsubstring (x y) (subseq x y)) 
  
-(defun filestrip (x) (subseq (string (car x)) 1)) 
-)
+  (defun filestrip (x) (subseq (string (car x)) 1)) 
+  )
 
 (defmspec $with_stdout ( arg) (setq arg (cdr arg))
- (let ((body (cdr arg)) res)
-   (with-open-file (*standard-output* (NAMESTRING (maxima-string (car arg)))
-				      :direction :output)
-		   (dolist (v body)
-			     (setq res (meval* v)))
-		   res)))
+	  (let ((body (cdr arg)) res)
+	    (with-open-file (*standard-output* (namestring (maxima-string (car arg)))
+					       :direction :output)
+	      (dolist (v body)
+		(setq res (meval* v)))
+	      res)))
 
 
 
 (defun $sconcat(&rest x)
   (let ((ans "") )
-  (dolist (v x)
-	  (setq ans (concatenate 'string ans
+    (dolist (v x)
+      (setq ans (concatenate 'string ans
 				   
-	  (cond ((and (symbolp v) (eql (getcharn v 1)
-				       #\&))
-		 (subseq (symbol-name v) 1))
-		((stringp v) v)
-		(t
-		 (coerce (mstring v) 'string))))))
-  ans))
+			     (cond ((and (symbolp v) (eql (getcharn v 1)
+							  #\&))
+				    (subseq (symbol-name v) 1))
+				   ((stringp v) v)
+				   (t
+				    (coerce (mstring v) 'string))))))
+    ans))
 					;
 
 (defun $system (&rest args)

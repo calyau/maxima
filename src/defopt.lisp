@@ -47,56 +47,56 @@
 
 ;;;what's that damn defmacro1 doing here..
 
-;#+LISPM
-;(progn 'compile
-;(defmacro defopt-internal (name . other)
-;  `(defun (,name opt) . ,other))
-;(defun opt-driver (form)
-;  (funcall (get (car form) 'opt) form))
-;(defmacro defopt (name . other)
-;  `(progn 'compile
-;	  ,(si:defmacro1 (cons name other) 'defopt-internal)
-;	  (defprop ,name (opt-driver) compiler:optimizers)))
-;
-;)
+;;#+LISPM
+;;(progn 'compile
+;;(defmacro defopt-internal (name . other)
+;;  `(defun (,name opt) . ,other))
+;;(defun opt-driver (form)
+;;  (funcall (get (car form) 'opt) form))
+;;(defmacro defopt (name . other)
+;;  `(progn 'compile
+;;	  ,(si:defmacro1 (cons name other) 'defopt-internal)
+;;	  (defprop ,name (opt-driver) compiler:optimizers)))
+;;
+;;)
 
 
 #+(and cl (not lispm))
 (defmacro defopt (&rest other)
   `(#-gcl define-compiler-macro #+gcl si::define-compiler-macro ,.other)) 
 
-#+(and lispm CL)
+#+(and lispm cl)
 (progn 'compile
-(defun opt-driver (form)
-  (apply (get (car form) 'opt) (cdr form)))
+       (defun opt-driver (form)
+	 (apply (get (car form) 'opt) (cdr form)))
 
-(defmacro defopt (name . other)
-  `(progn 'compile
-	  (defun-prop (,name opt) . , other)
-	  (defprop ,name (opt-driver) compiler:optimizers)))
-)
+       (defmacro defopt (name . other)
+	 `(progn 'compile
+	   (defun-prop (,name opt) . , other)
+	   (defprop ,name (opt-driver) compiler:optimizers)))
+       )
 
 
-#+PDP10
+#+pdp10
 (progn 'compile
-(defun opt-driver (form)
-  (values (apply (get (car form) 'opt)
-		 (cdr form))
-	  t))
-;; pdp10 maclisp has argument destructuring available in
-;; vanilla defun.
-(defmacro defopt (name . other)
-  `(progn 'compile
-	  (defun-prop (,name opt) . ,other)
-	  (defprop ,name (opt-driver) source-trans)))
-)
+       (defun opt-driver (form)
+	 (values (apply (get (car form) 'opt)
+			(cdr form))
+		 t))
+       ;; pdp10 maclisp has argument destructuring available in
+       ;; vanilla defun.
+       (defmacro defopt (name . other)
+	 `(progn 'compile
+	   (defun-prop (,name opt) . ,other)
+	   (defprop ,name (opt-driver) source-trans)))
+       )
 
-#+NIL
+#+nil
 (defmacro defopt (name argl &rest other &aux (form (gensym)))
-    `(defun-prop (,name source-code-rewrite) (,form)
-       (compiler:debind-args ,argl ,form (list (progn ,@other)))))
+  `(defun-prop (,name source-code-rewrite) (,form)
+    (compiler:debind-args ,argl ,form (list (progn ,@other)))))
 
-#+(or Multics Franz)
+#+(or multics franz)
 (defmacro defopt (name argl . other)
   `(defmacro ,name ,argl . ,other))
 

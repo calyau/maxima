@@ -8,15 +8,15 @@
 
 (in-package "MAXIMA")
 ;;to do add for other cl implementations.
-;(defun remove-type ( l)
-;  (sloop for v in l
-;	 when (consp v) do (setq v (car v))
-;	 when (symbolp v)
-;	 do (remprop v
-;		     #+ti 'compiler::variable-type
-;		     #+kcl 'compiler::cmp-type
-;		     #-(or ti kcl) nil
-;		     )))
+;;(defun remove-type ( l)
+;;  (sloop for v in l
+;;	 when (consp v) do (setq v (car v))
+;;	 when (symbolp v)
+;;	 do (remprop v
+;;		     #+ti 'compiler::variable-type
+;;		     #+kcl 'compiler::cmp-type
+;;		     #-(or ti kcl) nil
+;;		     )))
 
 (defvar *macro-file* nil)
 
@@ -49,97 +49,97 @@
 
 (declaim
  (special
-  $% $%% $%EDISPFLAG $%EMODE $%ENUMER $%E_TO_NUMLOG $%IARGS $%PIARGS
-  $%RNUM $%RNUM_LIST $ABSBOXCHAR $ACTIVECONTEXTS $ALGEBRAIC $ALGEXACT
-  $ALIASES $ARRAYS $ASKEXP $ASSUMESCALAR $BACKSUBST $BERLEFACT
-  $BETA_ARGS_SUM_TO_INTEGER $BFTORAT $BFTRUNC $BOTHCASES $BOXCHAR
-  $BREAKUP $CAUCHYSUM $CHANGE_FILEDEFAULTS $COMPGRIND $CONTEXT
-  $CONTEXTS $CURRENT_LET_RULE_PACKAGE $CURSORDISP $DEBUGMODE
-  $DEFAULT_LET_RULE_PACKAGE $DEMOIVRE $DEPENDENCIES $DERIVABBREV
-  $DERIVSUBST $DETOUT $DIREC $DISPFLAG $DISPLAY2D $DISPLAYSET
-  $DISPLAY_FORMAT_INTERNAL $DOALLMXOPS $DOMAIN $DOMXEXPT $DOMXMXOPS
-  $DOMXNCTIMES $DOMXPLUS $DOMXTIMES $DONTFACTOR $DOSCMXOPS
-  $DOSCMXPLUS $DOT0NSCSIMP $DOT0SIMP $DOT1SIMP $DOTASSOC
-  $DOTCONSTRULES $DOTDISTRIB $DOTEXPTSIMP $DOTIDENT $DOTSCRULES
-  $DSKGC $ERFFLAG $ERREXP $ERROR $ERROR_SIZE $ERROR_SYMS $EXPON
-  $EXPONENTIALIZE $EXPOP $EXPTDISPFLAG $EXPTISOLATE $EXPTSUBST
-  $FACEXPAND $FACTORFLAG $FEATURES $FILE_SEARCH $FILE_STRING_PRINT
-  $FILE_TYPES $FLOAT $FLOAT2BF $FLOATFORMAT $FLOATFRAC $FLOATINT
-  $FLOATOPTIONS $FLOATPREC $FLOATWIDTH $FORTFLOAT $FORTINDENT
-  $FORTSPACES $FPPREC $FPPRINTPREC $FPTRUNC $FUNCTIONS $GAMMALIM $GCD
-  $GENINDEX $GENSUMNUM $GLOBALSOLVE $GRADEFS $HALFANGLES $HOMOG_HACK
-  $INCHAR $INFEVAL $INFLAG $INTEGRATION_CONSTANT_COUNTER $INTFACLIM
-  $ISOLATE_WRT_TIMES $KEEPFLOAT $LABELS $LEFTJUST $LETRAT $LETVARSIMP
-  $LET_RULE_PACKAGES $LIFLAG $LINECHAR $LINEDISP $LINENUM $linel
-  $LINSOLVEWARN $LINSOLVE_PARAMS $LISPDISP $LISTARITH $LISTCONSTVARS
-  $LMXCHAR $LOGARC $LOGCONCOEFFP $LOGEXPAND $LOGNEGINT $LOGNUMER
-  $LOGSIMP $M1PBRANCH $MACROEXPANSION $MACROS $MAPERROR $MAPPRINT
-  $MATRIX_ELEMENT_ADD $MATRIX_ELEMENT_MULT $MATRIX_ELEMENT_TRANSPOSE
-  $MAXAPPLYDEPTH $MAXAPPLYHEIGHT $MAXNEGEX $MAXPOSEX $MAXPRIME
-  $MAXTAYORDER $MODE_CHECKP $MODE_CHECK_ERRORP $MODE_CHECK_WARNP
-  $MOREWAIT $MULTIPLICITIES $MX0SIMP $MYOPTIONS $NALGFAC $NEGDISTRIB
-  $NEGSUMDISPFLAG $NEWFAC $NOLABELS $NOREPEAT $NOUNDISP $NUMER
-  $NUMER_PBRANCH $OPERATORS $OPSUBST $OPTIMPREFIX $OPTIONSET $OUTCHAR
-  $PAGEPAUSE $PARSEWINDOW $PARTSWITCH $PFEFORMAT $PIECE $POINTBOUND
-  $POISLIM $POWERDISP $PREDERROR $PRODHACK $PROGRAMMODE $PROPS
-  $RADEXPAND $RATALGDENOM $RATDENOMDIVIDE $RATEPSILON $RATEXPAND
-  $RATFAC $RATMX $RATPRINT $RATSIMPEXPONS $RATVARS $RATWEIGHTS
-  $RATWTLVL $REALONLY $REFCHECK $RESULTANT $RMXCHAR $ROMBERGABS
-  $ROMBERGIT $ROMBERGIT_USED $ROMBERGMIN $ROMBERGTOL $ROOTSCONMODE
-  $RULES $SAVEDEF $SAVEFACTORS $SCALARMATRIXP $SETCHECK
-  $SETCHECKBREAK $SETVAL $SHOWTIME $SIGNBFLOAT $SIMP $SIMPSUM
-  $SOLVEDECOMPOSES $SOLVEEXPLICIT $SOLVEFACTORS $SOLVENULLWARN
-  $SOLVERADCAN $SOLVETRIGWARN $SOLVE_INCONSISTENT_ERROR $SPARSE
-  $SPECIAL $SQRTDISPFLAG $STARDISP $STORENUM $SUBLIS_APPLY_LAMBDA
-  $SUBNUMSIMP $SUBSCRMAP $SUMEXPAND $SUMHACK $SUMSPLITFACT
-  $SUPERLOGCON $SUSPEND $TAYLOR_LOGEXPAND
-  $TAYLOR_TRUNCATE_POLYNOMIALS $TIMER $TIMER_DEVALUE
-  $TO_CALL_LISP_COMPILER $TRACE $TRACE_BREAK_ARG $TRACE_MAX_INDENT
-  $TRACE_SAFETY $TRANSBIND $TRANSCOMPILE $TRANSLATE $TRANSRUN
-  $TRIGEXPAND $TRIGEXPANDPLUS $TRIGEXPANDTIMES $TRIGINVERSES
-  $TRIGSIGN $TR_ARRAY_AS_REF $TR_BOUND_FUNCTION_APPLYP
-  $TR_FILE_TTY_MESSAGESP $TR_FLOAT_CAN_BRANCH_COMPLEX
-  $TR_FUNCTION_CALL_DEFAULT $TR_GEN_TAGS $TR_NUMER
-  $TR_OPTIMIZE_MAX_LOOP $TR_OUTPUT_FILE_DEFAULT
-  $TR_PREDICATE_BRAIN_DAMAGE $TR_SEMICOMPILE $TR_STATE_VARS
-  $TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED $TR_WARN_BAD_FUNCTION_CALLS
-  $TR_WARN_FEXPR $TR_WARN_MEVAL $TR_WARN_MODE $TR_WARN_UNDECLARED
-  $TR_WARN_UNDEFINED_VARIABLE $TR_WINDY $TTYINTFUN $TTYINTNUM
-  $UNIVERSE $USER_MESFILE $USE_FAST_ARRAYS $VALUES $VECT_CROSS
-  $ZEROBERN %E-VAL %P%I %PI-VAL %PI//2 %PI//4 %PI2 &** *$ANY-MODES*
-  *ALPHA *CONST* *FNEWVARSW *GCDL* *IN *IN-$BATCHLOAD* *IN-COMPILE*
-  *IN-MACSYMA-INDEXER* *IN-TRANSLATE-FILE* *INV* *IRREDS *MIN* *MX*
-  *N *OPERS-LIST *OUT *RATWEIGHTS *TR-WARN-BREAK* *TRANSL-BACKTRACE*
-  *TRANSL-DEBUG* *TRANSL-FILE-DEBUG* *WARNED-FEXPRS*
-  *WARNED-MODE-VARS* *WARNED-UN-DECLARED-VARS* *ZEXPTSIMP? |-1//2|
-  -SQRT2//2 -SQRT3//2 |1//2| ADN* AEXPRP ALGFAC* ALGNOTEXACT
-  ALIASLIST ALPHA ALPHABET ARRAYS ARYP ASSIGNS ATP ATVARS BAKTRCL
-  BFHALF BFMHALF BIGFLOAT%E BIGFLOAT%PI BIGFLOATONE BIGFLOATZERO
-  BIGPRIMES BINDLIST BVARS CASEP DEBUG
-  DECLARES DEFINED_VARIABLES DEFINTDEBUG DERIVFLAG DERIVLIST
-  DERIVSIMP DISPLAYP DN* DOSIMP DSKSETP DUMMY-VARIABLE-OPERATORS
-  DUMPING ENVLIST ERRORSW ERRRJFFLAG EVARRP EVP EXPANDFLAG EXPANDP
-  EXPRS EXPTRLSW FACTLIST FEATUREL FEXPRERRP FEXPRS FMAPLVL
-  FORMS-TO-COMPILE-QUEUE FOURTH%PI FR-FACTOR FUNDEFSIMP GAUSS
-  GENERATE-ATAN2 GENPAIRS GENVAR HALF%PI HALF%PI3 HMODULUS
-  IMPLICIT-REAL IN-P INFINITESIMALS INFINITIES INRATSIMP INSIDE-MPROG
-  INTEGERL ISLINP LEXPRS LIMIT-ANSWERS LIMITP LINEL
-  LINELABLE LNORECURSE LOCAL LOCLIST LOW* MAPLP MASTER-MESFILE MDOP
-  META-PROP-L META-PROP-P MFEXPRP MINPOLY* MLOCP MM* MODULUS MOPL
-  MPLC* MPROGP MPROPLIST MSPECLIST MSPECLIST2 MSUMP MUNBINDP
-  NEED-PROG? NEGPRODS NEGSUMS NN* NOEVALARGS NOITEMS NONINTEGERL
-  NOUNL NOUNSFLAG OPERS OPERS-LIST OPEXPRP OUTARGS1 OUTARGS2 OUTFILES
-  PLUSFLAG PRESERVE-DIRECTION PRODS PUTL RADCANP RADPE RD*
-  REAL-INFINITIES REALONLYRATNUM REFCHKL RETURN-MODE RETURNS RULEFCNL
-  RULESW SCANMAPP SFINDEX SIGN-IMAG-ERRP SIMPLIMPLUS-PROBLEMS
-  SMALLPRIMES SPECIALS SQRT2//2 SQRT3//2 STATE-PDL STRINGDISP SUBSTP
-  SUMS TELLRATLIST TIMESINP TIMESP TR-ABORT TR-PROGRET TR-UNIQUE
-  TRAMP1$ TRAMP2$ TRAMP3$ TRANSL-FILE TRANSLATE-TIME-EVALABLES TRANSP
-  TSTACK TYPEL USER-MESFILE USER-TIMESOFAR VARLIST WFLAG ^DMSG-OFF
-  ^DMSG-ON
+  $% $%% $%edispflag $%emode $%enumer $%e_to_numlog $%iargs $%piargs
+  $%rnum $%rnum_list $absboxchar $activecontexts $algebraic $algexact
+  $aliases $arrays $askexp $assumescalar $backsubst $berlefact
+  $beta_args_sum_to_integer $bftorat $bftrunc $bothcases $boxchar
+  $breakup $cauchysum $change_filedefaults $compgrind $context
+  $contexts $current_let_rule_package $cursordisp $debugmode
+  $default_let_rule_package $demoivre $dependencies $derivabbrev
+  $derivsubst $detout $direc $dispflag $display2d $displayset
+  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
+  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
+  $doscmxplus $dot0nscsimp $dot0simp $dot1simp $dotassoc
+  $dotconstrules $dotdistrib $dotexptsimp $dotident $dotscrules
+  $dskgc $erfflag $errexp $error $error_size $error_syms $expon
+  $exponentialize $expop $exptdispflag $exptisolate $exptsubst
+  $facexpand $factorflag $features $file_search $file_string_print
+  $file_types $float $float2bf $floatformat $floatfrac $floatint
+  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
+  $fortspaces $fpprec $fpprintprec $fptrunc $functions $gammalim $gcd
+  $genindex $gensumnum $globalsolve $gradefs $halfangles $homog_hack
+  $inchar $infeval $inflag $integration_constant_counter $intfaclim
+  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
+  $let_rule_packages $liflag $linechar $linedisp $linenum $linel
+  $linsolvewarn $linsolve_params $lispdisp $listarith $listconstvars
+  $lmxchar $logarc $logconcoeffp $logexpand $lognegint $lognumer
+  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint
+  $matrix_element_add $matrix_element_mult $matrix_element_transpose
+  $maxapplydepth $maxapplyheight $maxnegex $maxposex $maxprime
+  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
+  $morewait $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
+  $negsumdispflag $newfac $nolabels $norepeat $noundisp $numer
+  $numer_pbranch $operators $opsubst $optimprefix $optionset $outchar
+  $pagepause $parsewindow $partswitch $pfeformat $piece $pointbound
+  $poislim $powerdisp $prederror $prodhack $programmode $props
+  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
+  $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratweights
+  $ratwtlvl $realonly $refcheck $resultant $rmxchar $rombergabs
+  $rombergit $rombergit_used $rombergmin $rombergtol $rootsconmode
+  $rules $savedef $savefactors $scalarmatrixp $setcheck
+  $setcheckbreak $setval $showtime $signbfloat $simp $simpsum
+  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
+  $solveradcan $solvetrigwarn $solve_inconsistent_error $sparse
+  $special $sqrtdispflag $stardisp $storenum $sublis_apply_lambda
+  $subnumsimp $subscrmap $sumexpand $sumhack $sumsplitfact
+  $superlogcon $suspend $taylor_logexpand
+  $taylor_truncate_polynomials $timer $timer_devalue
+  $to_call_lisp_compiler $trace $trace_break_arg $trace_max_indent
+  $trace_safety $transbind $transcompile $translate $transrun
+  $trigexpand $trigexpandplus $trigexpandtimes $triginverses
+  $trigsign $tr_array_as_ref $tr_bound_function_applyp
+  $tr_file_tty_messagesp $tr_float_can_branch_complex
+  $tr_function_call_default $tr_gen_tags $tr_numer
+  $tr_optimize_max_loop $tr_output_file_default
+  $tr_predicate_brain_damage $tr_semicompile $tr_state_vars
+  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
+  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
+  $tr_warn_undefined_variable $tr_windy $ttyintfun $ttyintnum
+  $universe $user_mesfile $use_fast_arrays $values $vect_cross
+  $zerobern %e-val %p%i %pi-val %pi//2 %pi//4 %pi2 &** *$any-modes*
+  *alpha *const* *fnewvarsw *gcdl* *in *in-$batchload* *in-compile*
+  *in-macsyma-indexer* *in-translate-file* *inv* *irreds *min* *mx*
+  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
+  *transl-debug* *transl-file-debug* *warned-fexprs*
+  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
+  -sqrt2//2 -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
+  aliaslist alpha alphabet arrays aryp assigns atp atvars baktrcl
+  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
+  bigprimes bindlist bvars casep debug
+  declares defined_variables defintdebug derivflag derivlist
+  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
+  dumping envlist errorsw errrjfflag evarrp evp expandflag expandp
+  exprs exptrlsw factlist featurel fexprerrp fexprs fmaplvl
+  forms-to-compile-queue fourth%pi fr-factor fundefsimp gauss
+  generate-atan2 genpairs genvar half%pi half%pi3 hmodulus
+  implicit-real in-p infinitesimals infinities inratsimp inside-mprog
+  integerl islinp lexprs limit-answers limitp linel
+  linelable lnorecurse local loclist low* maplp master-mesfile mdop
+  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus mopl
+  mplc* mprogp mproplist mspeclist mspeclist2 msump munbindp
+  need-prog? negprods negsums nn* noevalargs noitems nonintegerl
+  nounl nounsflag opers opers-list opexprp outargs1 outargs2 outfiles
+  plusflag preserve-direction prods putl radcanp radpe rd*
+  real-infinities realonlyratnum refchkl return-mode returns rulefcnl
+  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
+  smallprimes specials sqrt2//2 sqrt3//2 state-pdl stringdisp substp
+  sums tellratlist timesinp timesp tr-abort tr-progret tr-unique
+  tramp1$ tramp2$ tramp3$ transl-file translate-time-evalables transp
+  tstack typel user-mesfile user-timesofar varlist wflag ^dmsg-off
+  ^dmsg-on
   $wtlevel $cflength $weightlevels *trunclist $taylordepth
   $maxtaydiff $verbose $psexpand ps-bmt-disrep
-  silent-taylor-flag $DEFINE_VARIABLE))
+  silent-taylor-flag $define_variable))
 
 (declaim (declaration splitfile unspecial muzzled no-type genprefix flonum
 		      *lexpr *fexpr *expr mapex macros array* object))

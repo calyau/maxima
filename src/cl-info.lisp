@@ -46,21 +46,21 @@
 			(code-char 10) (code-char 32) (code-char 9) 
 			(code-char 9) (code-char 10) (code-char 10)
 			(code-char 10)))
-      (precomp-nil-string1
-       (compile nil
-		(nregex:regex-compile 
-		 string1
-		 :case-sensitive nil)))
-      (precomp-t-string2
-       (compile nil
-		(nregex:regex-compile 
-		 string2
-		 :case-sensitive t)))
-      (precomp-t-string3
-       (compile nil
-		(nregex:regex-compile 
-		 string3
-		 :case-sensitive t))))
+       (precomp-nil-string1
+	(compile nil
+		 (nregex:regex-compile 
+		  string1
+		  :case-sensitive nil)))
+       (precomp-t-string2
+	(compile nil
+		 (nregex:regex-compile 
+		  string2
+		  :case-sensitive t)))
+       (precomp-t-string3
+	(compile nil
+		 (nregex:regex-compile 
+		  string3
+		  :case-sensitive t))))
   (defun compile-regex (pat &key (case-sensitive t))
     (cond
       ((and (equal case-sensitive nil)
@@ -116,26 +116,26 @@
 ;; #u"" is a C-style string where \n, \t, and \r are converted just as
 ;; in C.
 (eval-when (compile eval load)
-(defun sharp-u-reader (stream subchar arg)
-  (declare (ignore subchar arg))
-  (let ((tem (make-array 10 :element-type 'base-char
-			 :fill-pointer 0 :adjustable t)))
-    (unless (eql (read-char stream) #\")
-      (error "sharp-u-reader reader needs a \"right after it"))
-    (loop
-     (let ((ch (read-char stream)))
-       (cond ((eql ch #\") (return tem))
-	     ((eql ch #\\)
-	      (setq ch (read-char stream))
-	      (setq ch (or (cdr (assoc ch '((#\n . #\newline)
-					    (#\t . #\tab)
-					    (#\r . #\return))))
-			   ch))))
-       (vector-push-extend ch tem)))
-    (coerce tem '(simple-array base-char (*)))))
+  (defun sharp-u-reader (stream subchar arg)
+    (declare (ignore subchar arg))
+    (let ((tem (make-array 10 :element-type 'base-char
+			   :fill-pointer 0 :adjustable t)))
+      (unless (eql (read-char stream) #\")
+	(error "sharp-u-reader reader needs a \"right after it"))
+      (loop
+       (let ((ch (read-char stream)))
+	 (cond ((eql ch #\") (return tem))
+	       ((eql ch #\\)
+		(setq ch (read-char stream))
+		(setq ch (or (cdr (assoc ch '((#\n . #\newline)
+					      (#\t . #\tab)
+					      (#\r . #\return))))
+			     ch))))
+	 (vector-push-extend ch tem)))
+      (coerce tem '(simple-array base-char (*)))))
 
-(set-dispatch-macro-character #\# #\u 'sharp-u-reader)
-)
+  (set-dispatch-macro-character #\# #\u 'sharp-u-reader)
+  )
 
 (defvar *info-data* nil)
 (defvar *current-info-data* nil)
@@ -175,53 +175,53 @@
 ;; Return a list of the tag table text itself and an alist of the
 ;; starting index for each file and the name of the corresponding
 ;; file.
-(let ((pat-indirect-start (compile-regex #u"[\n]+Indirect:"
+(let ((pat-indirect-start (compile-regex #u"[\n]+indirect:"
 					 :case-sensitive t))
       (pat-end-ind (compile-regex #u""
 				  :case-sensitive t))
       (pat-indirect (compile-regex #u"\n([^\n]+): ([0-9]+)"
 				   :case-sensitive t))
-      (pat-tag-table (compile-regex #u"[\n]+Tag Table:"
+      (pat-tag-table (compile-regex #u"[\n]+tag table:"
 				    :case-sensitive t))
       )
-(defun info-get-tags (file)
-  (let ((lim 0)
-	(*case-fold-search* t)
-	*match-data* tags files)
-    (declare (fixnum lim))
-    (let ((s (file-to-string file))
-	  (i 0))
-      (declare (fixnum i)
-	       (string s))
-      ;;(format t "match = ~A~%" (string-match #u"[\n]+Indirect:" s 0))
-      (when (>= (string-match pat-indirect-start s 0) 0)
-	;; The file has multiple parts, so save the filename and the
-	;; offset of each part.
-	(setq i (match-end 0))
-	;;(format t "looking for end of Indirect, from ~a~%" i)
-	(setq lim (string-match pat-end-ind s i))
-	;;(format t "found Indirect at ~A.  limit = ~A~%" i lim)
-	(while (>= (string-match pat-indirect s i lim)
-		   0)
-	  ;;(format t "found entry at ~a.~%" (match-start 0))
+  (defun info-get-tags (file)
+    (let ((lim 0)
+	  (*case-fold-search* t)
+	  *match-data* tags files)
+      (declare (fixnum lim))
+      (let ((s (file-to-string file))
+	    (i 0))
+	(declare (fixnum i)
+		 (string s))
+	;;(format t "match = ~a~%" (string-match #u"[\n]+indirect:" s 0))
+	(when (>= (string-match pat-indirect-start s 0) 0)
+	  ;; The file has multiple parts, so save the filename and the
+	  ;; offset of each part.
 	  (setq i (match-end 0))
-	  (setq files
-		(cons (cons
-		       (atoi s (match-beginning 2))
-		       (get-match s 1)
-		       )
-		      files))))
-      ;;(format t "looking for Tag Table~%")
-      (when (>=  (string-match pat-tag-table s i) 0)
-	(setq i (match-end 0))
-	;;(format t "Found Tag Table:  ~A ~A~%" (match-start 0) i)
-	(when (>= (string-match pat-end-ind s i) 0)
-	  ;;(format t "Found end at ~A ~A~%" i (match-start 0))
-	  (setq tags (subseq s i (match-end 0)))))
-      (if files
-	  (or tags (info-error "Need tags if have multiple files")))
-      (list* tags (nreverse files)))))
-)
+	  ;;(format t "looking for end of indirect, from ~a~%" i)
+	  (setq lim (string-match pat-end-ind s i))
+	  ;;(format t "found indirect at ~a.  limit = ~a~%" i lim)
+	  (while (>= (string-match pat-indirect s i lim)
+		     0)
+	    ;;(format t "found entry at ~a.~%" (match-start 0))
+	    (setq i (match-end 0))
+	    (setq files
+		  (cons (cons
+			 (atoi s (match-beginning 2))
+			 (get-match s 1)
+			 )
+			files))))
+	;;(format t "looking for tag table~%")
+	(when (>=  (string-match pat-tag-table s i) 0)
+	  (setq i (match-end 0))
+	  ;;(format t "found tag table:  ~a ~a~%" (match-start 0) i)
+	  (when (>= (string-match pat-end-ind s i) 0)
+	    ;;(format t "found end at ~a ~a~%" i (match-start 0))
+	    (setq tags (subseq s i (match-end 0)))))
+	(if files
+	    (or tags (info-error "need tags if have multiple files")))
+	(list* tags (nreverse files)))))
+  )
 
 ;; Quote the given string, protecting any special regexp characters so
 ;; that they stand for themselves.
@@ -268,7 +268,7 @@
     (when node-string
       (let ((compiled-pat
 	     (compile-regex
-	      (string-concatenate "Node: ([^]*"
+	      (string-concatenate "node: ([^]*"
 				  (re-quote-string pat)
 				  "[^]*)")
 	      :case-sensitive (not *case-fold-search*))))
@@ -316,7 +316,7 @@
 	  (t
 	   (setq pat
 		 (compile-regex
-		  (string-concatenate "Node: "
+		  (string-concatenate "node: "
 				      (re-quote-string pat)
 				      "([0-9]+)")
 		  :case-sensitive (not *case-fold-search*)))
@@ -330,21 +330,21 @@
 	*match-data*)
     (declare (fixnum start))
     (loop while (>= (setq start (string-match pat st start)) 0)
-      collect (list start (setq start (match-end 0))))))
+	  collect (list start (setq start (match-end 0))))))
 
 
 
 (defmacro node (prop x)
   `(nth ,(position prop '(string begin end header name
-				 info-subfile
-				 file tags)) ,x)) 
+			  info-subfile
+			  file tags)) ,x)) 
 
 (defun node-offset (node)
   (+ (car (node info-subfile node)) (node begin node)))
 
 (defun file-search (name &optional (dirs *info-paths*) extensions (fail-p t))
-  "Search for the first occurrence of a file in the directory list DIRS
-that matches the name NAME with extention EXT"
+  "search for the first occurrence of a file in the directory list dirs
+that matches the name name with extention ext"
   (dolist (dir dirs)
     (let ((base-name (make-pathname :directory (pathname-directory dir))))
       (dolist (type extensions)
@@ -357,7 +357,7 @@ that matches the name NAME with extention EXT"
 	    (return-from file-search pathname))))))
   ;; We couldn't find the file
   (when fail-p
-    (error "Lookup failed in directores: ~S for name ~S with extensions ~S"
+    (error "lookup failed in directores: ~s for name ~s with extensions ~s"
 	   dirs name extensions))
   nil)
 
@@ -365,7 +365,7 @@ that matches the name NAME with extention EXT"
 
 (defun setup-info (name)
   (let (tem file)
-    (when (equal name "DIR")
+    (when (equal name "dir")
       (setq name "dir"))
     (setq file (file-search name *info-paths* '("" "info") nil))
     (cond ((and (null file)
@@ -381,9 +381,9 @@ that matches the name NAME with extention EXT"
 	   ;; rlt: I think the code is trying to find the Top entry in
 	   ;; the file "dir" and looking in there for the location of
 	   ;; the maxima file.  If you don't have a dir file, we lose.
-	   (error "Failed to find info directory")
-	   (format t "looking for dir~A~%")
-	   (let* ((tem (show-info "(dir)Top" nil))
+	   (error "failed to find info directory")
+	   (format t "looking for dir~a~%")
+	   (let* ((tem (show-info "(dir)top" nil))
 		  *case-fold-search*)
 	     (cond ((>= (string-match
 			 (string-concatenate "(([^(]*"
@@ -435,9 +435,9 @@ that matches the name NAME with extention EXT"
 		  (cons pathname (file-to-string pathname)))))))
 
 (defun info-subfile (n)
-;  "For an index N return (START . FILE) for info subfile
-; which contains N.   A second value bounding the limit if known
-; is returned.   At last file this limit is nil."
+  ;;  "for an index n return (start . file) for info subfile
+  ;; which contains N.   A second value bounding the limit if known
+  ;; is returned.   At last file this limit is nil."
   (let ((lis (cdr (nth 1 *current-info-data*)))
 	ans lim)
     (when (and lis (>= n 0))
@@ -455,24 +455,24 @@ that matches the name NAME with extention EXT"
 		 #u"[\n][^\n]*Node:[ \t]+([^\n\t,]+)[\n\t,][^\n]*\n"
 		 :case-sensitive t))
       (pat-marker2 (compile-regex "[]")))
-(defun info-node-from-position (n &aux  (i 0))
-  (let* ((info-subfile (info-subfile n))
-	 (s (info-get-file (cdr info-subfile)))
-	 (end (- n (car info-subfile))))
-    (while (>=  (string-match pat-marker s i end) 0)
-      (setq i (match-end 0)))
-    (setq i (- i 1))
-    (if (>= (string-match pat-node s i) 0)
-	(let* ((i (match-beginning 0))
-	       (beg (match-end 0))
-	       (name (get-match s 1))
-	       (end (if (>= (string-match pat-marker2 s beg) 0)
-			(match-beginning 0)
-			(length s)))
-	       (node (list* s beg end i name info-subfile
-			    *current-info-data*)))
-	  node))))
-)
+  (defun info-node-from-position (n &aux  (i 0))
+    (let* ((info-subfile (info-subfile n))
+	   (s (info-get-file (cdr info-subfile)))
+	   (end (- n (car info-subfile))))
+      (while (>=  (string-match pat-marker s i end) 0)
+	(setq i (match-end 0)))
+      (setq i (- i 1))
+      (if (>= (string-match pat-node s i) 0)
+	  (let* ((i (match-beginning 0))
+		 (beg (match-end 0))
+		 (name (get-match s 1))
+		 (end (if (>= (string-match pat-marker2 s beg) 0)
+			  (match-beginning 0)
+			  (length s)))
+		 (node (list* s beg end i name info-subfile
+			      *current-info-data*)))
+	    node))))
+  )
     
 ;; SHOW-INFO is the main routine to find the desired documentation.
 
@@ -619,19 +619,19 @@ the general info file.  The search goes over all files."
 	(setq start lim)))
     -1))
 
-#+debug ; try searching
+#+debug					; try searching
 (defun try (pat &aux (tem 0) s )
- (while (>= tem 0)
-  (cond ((>= (setq tem (info-search pat tem)) 0)
-	 (setq s (cdr *last-info-file*))
-	 (print (list
-		 tem
-		 (list-matches s 0 1 2)
-		 (car *last-info-file*)
-		 (subseq s
-			 (max 0 (- (match-beginning 0) 50))
-			 (min (+ (match-end 0) 50) (length s)))))
-	 (setq tem (+ tem (- (match-end 0) (match-beginning 0))))))))
+  (while (>= tem 0)
+    (cond ((>= (setq tem (info-search pat tem)) 0)
+	   (setq s (cdr *last-info-file*))
+	   (print (list
+		   tem
+		   (list-matches s 0 1 2)
+		   (car *last-info-file*)
+		   (subseq s
+			   (max 0 (- (match-beginning 0) 50))
+			   (min (+ (match-end 0) 50) (length s)))))
+	   (setq tem (+ tem (- (match-end 0) (match-beginning 0))))))))
    
 (defun idescribe (name)
   (let* ((items (info-aux name *default-info-files*)))
@@ -655,38 +655,38 @@ the general info file.  The search goes over all files."
     (when tem
       (let ((nitems (length tem)))
 	(loop for i from 0 for name in tem with prev
-	   do
-	   (setq file nil
-		 position-pattern nil)
-	   (progn
-	     ;; decode name
-	     (when (and (consp name) (consp (cdr name)))
-	       (setq file (cadr name)
-		     name (car name)))
-	     (when (consp name)
-	       (setq position-pattern (car name) name (cdr name))))
-	   (when (> nitems 1)
-	     (format t "~% ~d: ~@[~a :~]~@[(~a)~]~a." i
-		     position-pattern
-		     (if (eq file prev) nil (setq prev file)) name)))
+	      do
+	      (setq file nil
+		    position-pattern nil)
+	      (progn
+		;; decode name
+		(when (and (consp name) (consp (cdr name)))
+		  (setq file (cadr name)
+			name (car name)))
+		(when (consp name)
+		  (setq position-pattern (car name) name (cdr name))))
+	      (when (> nitems 1)
+		(format t "~% ~d: ~@[~a :~]~@[(~a)~]~a." i
+			position-pattern
+			(if (eq file prev) nil (setq prev file)) name)))
 	(setq wanted
 	      (if (> nitems 1)
 		  (loop
-		     for prompt-count from 0
-		     thereis (progn
-			       (finish-output *debug-io*)
-			       (print-prompt prompt-count)
-			       (force-output)
-			       (clear-input)
-			       (select-info-items
-				(parse-user-choice nitems) tem)))
+		   for prompt-count from 0
+		   thereis (progn
+			     (finish-output *debug-io*)
+			     (print-prompt prompt-count)
+			     (force-output)
+			     (clear-input)
+			     (select-info-items
+			      (parse-user-choice nitems) tem)))
 		  tem))
 	(clear-input)
 	(finish-output *debug-io*)
 	(when (consp wanted)
 	  (format t "~%Info from file ~a:" (car *current-info-data*))
 	  (loop for item in wanted
-	     do (princ (show-info item)))))))
+		do (princ (show-info item)))))))
   (values))
 
 (defvar *prompt-prefix* "")
@@ -705,35 +705,35 @@ the general info file.  The search goes over all files."
 
 (defun parse-user-choice (nitems)
   (loop
-     with line = (read-line) and nth and pos = 0
-     while (multiple-value-setq (nth pos)
-	     (parse-integer line :start pos :junk-allowed t))
-     if (or (minusp nth) (>= nth nitems))
-     do (format *debug-io*
-		"~&Discarding invalid number ~d." nth)
-     else collect nth into list
-     finally
-     (let ((keyword
-	    (car (rassoc
-		  (string-right-trim
-		   '(#\Space #\Tab #\Newline #\;) (subseq line pos))
-		  +select-by-keyword-alist+
-		  :test #'(lambda (item list)
-			    (member item list :test #'string-equal))))))
-       (unless keyword
-	 (setq keyword 'noop)
-	 (format *debug-io* "~&Ignoring trailing garbage in input."))
-       (return (cons keyword list)))))
+   with line = (read-line) and nth and pos = 0
+   while (multiple-value-setq (nth pos)
+	   (parse-integer line :start pos :junk-allowed t))
+   if (or (minusp nth) (>= nth nitems))
+   do (format *debug-io*
+	      "~&Discarding invalid number ~d." nth)
+   else collect nth into list
+   finally
+   (let ((keyword
+	  (car (rassoc
+		(string-right-trim
+		 '(#\space #\tab #\newline #\;) (subseq line pos))
+		+select-by-keyword-alist+
+		:test #'(lambda (item list)
+			  (member item list :test #'string-equal))))))
+     (unless keyword
+       (setq keyword 'noop)
+       (format *debug-io* "~&Ignoring trailing garbage in input."))
+     (return (cons keyword list)))))
 
 (defun select-info-items (selection items)
   (case (pop selection)
     (noop (loop
-	     for i in selection
-	     collect (nth i items)))
+	   for i in selection
+	   collect (nth i items)))
     (all items)
     (none 'none)))
 
-#||
+					#||
 ;; idea make info_text window have previous,next,up bindings on keys
 ;; and on menu bar.    Have it bring up apropos menu. allow selection
 ;; to say spawn another info_text window.   The symbol that is the window
@@ -750,22 +750,22 @@ the general info file.  The search goes over all files."
 (defun add-to-hotlist (node )
   (if (symbolp node) (setq node (get node 'node)))
   (cond
-   (node
-    (with-open-file
-     (st (default-info-hotlist)
-	 :direction :output
-	 :if-exists :append
-	 :if-does-not-exist :create)
-     (cond ((< (file-position st) 10)
-	    (princ  #u"\nFile:\thotlist\tNode: Top\n\n* Menu: Hot list of favrite info items.\n\n" st)))
-     (format st "* (~a)~a::~%" 
-	     (node file node)(node name node))))))
+    (node
+     (with-open-file
+	 (st (default-info-hotlist)
+	     :direction :output
+	     :if-exists :append
+	     :if-does-not-exist :create)
+       (cond ((< (file-position st) 10)
+	      (princ  #u"\nFile:\thotlist\tNode: Top\n\n* Menu: Hot list of favrite info items.\n\n" st)))
+       (format st "* (~a)~a::~%" 
+	       (node file node)(node name node))))))
 
 (defun list-matches (s &rest l)
   (loop for i in l 
-	 collect
-	 (and (>= (match-beginning i) 0)
-	      (get-match s i))))
+	collect
+	(and (>= (match-beginning i) 0)
+	     (get-match s i))))
 ||#
 
 

@@ -19,58 +19,58 @@
 ;;; as a fix (i.e. hack) file. so be careful.
 
 
-(TRANSL-MODULE TRDATA)
+(transl-module trdata)
 
-(EVAL-WHEN (COMPILE)
-	   (SETQ *DEF%TR-PRODUCES-AUTOLOAD-FILE* NIL))
+(eval-when (compile)
+  (setq *def%tr-produces-autoload-file* nil))
 
 ;; this should go someplace else perhaps.
 
-(DEF-AUTOLOAD-TRANSLATE $romberg $interpolate)
+(def-autoload-translate $romberg $interpolate)
 
 ;;; MODEDECLARE(FUNCTION(LENGTH),FIXNUM)
 
 ;;I think all this can be done at load time only:--wfs
 (eval-when (load)
 
-(MAPC #'(LAMBDA (X) (PUTPROP X '$FIXNUM 'FUNCTION-MODE))
-      '($LENGTH $NTERMS RANDOM $NROOTS $RANK $POLYSIGN $TIME
-		$ARRAY_DIMENSION_N))
+  (mapc #'(lambda (x) (putprop x '$fixnum 'function-mode))
+	'($length $nterms random $nroots $rank $polysign $time
+	  $array_dimension_n))
 
 ;;; MODEDECLARE(FUNCTION(ROMBERG_SUBR),FLOAT)
 ;;; ROMBERG is a macsyma macro.
 
-(MAPC #'(LAMBDA (X) (PUTPROP X '$FLOAT 'FUNCTION-MODE))
-      '($ROMBERG_SUBR $INTERPOLATE_SUBR))
+  (mapc #'(lambda (x) (putprop x '$float 'function-mode))
+	'($romberg_subr $interpolate_subr))
 
 ;;; Functions of BOOLEAN return VALUE. i.e. PREDICATES
 
-(MAPC #'(LAMBDA (X) (PUTPROP X '$BOOLEAN 'FUNCTION-MODE))
-      '($ARRAY $BFLOATP $LISTP $MATRIXP $RATNUMP $CONSTANTP
-	$ATOM $FREEOF $subvarp $SYMBOLP
-	$evenp $oddp $orderlessp $ordergreatp $mapatom
-	$INTEGERP $FLOATNUMP $NONSCALARP $NUMBERP $RATP $MEMBER
-	$EMPTYP))
+  (mapc #'(lambda (x) (putprop x '$boolean 'function-mode))
+	'($array $bfloatp $listp $matrixp $ratnump $constantp
+	  $atom $freeof $subvarp $symbolp
+	  $evenp $oddp $orderlessp $ordergreatp $mapatom
+	  $integerp $floatnump $nonscalarp $numberp $ratp $member
+	  $emptyp))
 
 ;;; MODEDECLARE(TRUE,BOOLEAN)
 
-(MAPC #'(LAMBDA (X) (PUTPROP X '$BOOLEAN 'MODE))
-      '($TRUE $FALSE $DOALLMXOPS $DOMXMXOPS $DOSCMXOPS $DETOUT
-	      $DOTASSOC $DOTDISTRIB $DOTSCRULES $EXPONENTIALIZE
-	      $KEEPFLOAT $LISTARITH $LOGSIMP
-	      $MAXAPPLYHEIGHT $MAXAPPLYDEPTH $MAPERROR $POWERDISP
-	      $SCALARMATRIX $SIMP $TTYOFF $UNDERFLOW $INFEVAL
-	      $XAXIS $YAXIS $RATFAC))
+  (mapc #'(lambda (x) (putprop x '$boolean 'mode))
+	'($true $false $doallmxops $domxmxops $doscmxops $detout
+	  $dotassoc $dotdistrib $dotscrules $exponentialize
+	  $keepfloat $listarith $logsimp
+	  $maxapplyheight $maxapplydepth $maperror $powerdisp
+	  $scalarmatrix $simp $ttyoff $underflow $infeval
+	  $xaxis $yaxis $ratfac))
 
-(MAPC #'(LAMBDA (X) (PUTPROP X (STRIPDOLLAR X) 'LISP-FUNCTION-TO-USE))
-      '(%LOG %SIN %COS %TAN %COT %CSC %SEC %ACOT
-	     %ASIN %ACOS %ACSC %ASEC
-	%SINH %COSH %TANH %COTH %CSCH %SECH %ASINH %ACSCH %ERF))
+  (mapc #'(lambda (x) (putprop x (stripdollar x) 'lisp-function-to-use))
+	'(%log %sin %cos %tan %cot %csc %sec %acot
+	  %asin %acos %acsc %asec
+	  %sinh %cosh %tanh %coth %csch %sech %asinh %acsch %erf))
 
-(MAPC #'(LAMBDA (X) (PUTPROP X T 'IMPLIED-QUOTEP))
-      '($EVAL $DONE $%I $%PI $%E $%PHI $%GAMMA
-	      MQAPPLY ; important for array referencing conventions.
-	      ))
+  (mapc #'(lambda (x) (putprop x t 'implied-quotep))
+	'($eval $done $%i $%pi $%e $%phi $%gamma
+	  mqapply	; important for array referencing conventions.
+	  ))
 
 
 ;;; The result of a part function never needs simplification.
@@ -83,41 +83,41 @@
 ;;; cost of the extra SIMPLFY call is not much compared with the
 ;;; consing involved. Above all, we must have correct code !!!
 
-(MAPC #'(LAMBDA (L) (PUTPROP L t 'TR-NOSIMP))
-      '(;$FIRST $REST $LAST
-	$PRINT
-	$NUM $DENOM $LHS $RHS $PART
-	$CONS $REVERSE $ENDCONS $APPEND
-	$UNION $INTERSECTION $SETDIFF $SYMDIFF
-	$MAPSET $PREDSET |${| $ELEMENTOF
-	))
+  (mapc #'(lambda (l) (putprop l t 'tr-nosimp))
+	'(				;$FIRST $REST $LAST
+	  $print
+	  $num $denom $lhs $rhs $part
+	  $cons $reverse $endcons $append
+	  $union $intersection $setdiff $symdiff
+	  $mapset $predset |${| $elementof
+	  ))
 
-(DEFPROP $REALPART $REALPART LISP-FUNCTION-TO-USE)
+  (defprop $realpart $realpart lisp-function-to-use)
 
 
-(SETQ TRANSL-MODULES '(
+  (setq transl-modules '(
 
-TRANSS
-TRANSL
-TRUTIL
-TRANS1
-TRANS2
-TRANS3
-TRANS4
-TRANS5
-TRANSF
-TROPER
-TRPRED
+			 transs
+			 transl
+			 trutil
+			 trans1
+			 trans2
+			 trans3
+			 trans4
+			 trans5
+			 transf
+			 troper
+			 trpred
 
-MTAGS
-MDEFUN
-TRANSQ
-FCALL
-ACALL
-TRDATA
-MCOMPI
-TRMODE
-TRHOOK
-))
+			 mtags
+			 mdefun
+			 transq
+			 fcall
+			 acall
+			 trdata
+			 mcompi
+			 trmode
+			 trhook
+			 ))
 
-)
+  )

@@ -12,157 +12,157 @@
 (macsyma-module troper)
 
 
-(TRANSL-MODULE TROPER)
+(transl-module troper)
 
 ;;; The basic OPERATORS properties translators.
 
 
-(declare-top (MUZZLED T)) ; TURN OFF CLOSED COMPILATION MESSAGE
+(declare-top (muzzled t))	 ; TURN OFF CLOSED COMPILATION MESSAGE
 
-(DEF%TR MMINUS (FORM)
-  (SETQ FORM (TRANSLATE (CADR FORM)))
-  (COND ((NUMBERP (CDR FORM))
-	 `(,(CAR FORM) . ,(MINUS (CDR FORM))))
-	((EQ '$FIXNUM (CAR FORM)) `($FIXNUM - ,(CDR FORM)))
-	((EQ '$FLOAT (CAR FORM)) `($FLOAT -$ ,(CDR FORM)))
-	((EQ '$NUMBER (CAR FORM)) `($NUMBER MINUS ,(CDR FORM)))
-	((EQ '$RATIONAL (CAR FORM))
-	 (COND ((AND (NOT (ATOM (CADDR FORM))) (EQ 'RAT (CAAR (CADDR FORM))))
-		(SETQ FORM (CDADDR FORM))
-		`($RATIONAL QUOTE ((RAT) ,(f- (CAR FORM)) ,(CADR FORM))))
-	       (T `($RATIONAL RTIMES -1 ,(CDR FORM)))))
-	(T `($ANY . (*MMINUS ,(CDR FORM))))))
-(declare-top (MUZZLED NIL))
+(def%tr mminus (form)
+  (setq form (translate (cadr form)))
+  (cond ((numberp (cdr form))
+	 `(,(car form) . ,(minus (cdr form))))
+	((eq '$fixnum (car form)) `($fixnum - ,(cdr form)))
+	((eq '$float (car form)) `($float -$ ,(cdr form)))
+	((eq '$number (car form)) `($number minus ,(cdr form)))
+	((eq '$rational (car form))
+	 (cond ((and (not (atom (caddr form))) (eq 'rat (caar (caddr form))))
+		(setq form (cdaddr form))
+		`($rational quote ((rat) ,(f- (car form)) ,(cadr form))))
+	       (t `($rational rtimes -1 ,(cdr form)))))
+	(t `($any . (*mminus ,(cdr form))))))
+(declare-top (muzzled nil))
 
-(DEF%TR MPLUS (FORM)
-  (LET   (ARGS MODE)
-    (DO ((L (CDR FORM) (CDR L))) ((NULL L))
-	(SETQ ARGS (CONS (TRANSLATE (CAR L)) ARGS)
-	      MODE (*UNION-MODE (CAR (CAR ARGS)) MODE)))
-    (SETQ ARGS (NREVERSE ARGS))
-    (COND ((EQ '$FIXNUM MODE) `($FIXNUM f+ . ,(MAPCAR 'CDR ARGS)))
-	  ((EQ '$FLOAT MODE) `($FLOAT +$ . ,(MAPCAR 'DCONV-$FLOAT ARGS)))
-	  ((EQ '$RATIONAL MODE) `($RATIONAL RPLUS . ,(MAPCAR 'CDR ARGS)))
-	  ((EQ '$NUMBER MODE) `($NUMBER PLUS . ,(MAPCAR 'CDR ARGS)))
-	  (T `($ANY ADD* . ,(MAPCAR 'DCONVX ARGS))))))
+(def%tr mplus (form)
+  (let   (args mode)
+    (do ((l (cdr form) (cdr l))) ((null l))
+      (setq args (cons (translate (car l)) args)
+	    mode (*union-mode (car (car args)) mode)))
+    (setq args (nreverse args))
+    (cond ((eq '$fixnum mode) `($fixnum f+ . ,(mapcar 'cdr args)))
+	  ((eq '$float mode) `($float +$ . ,(mapcar 'dconv-$float args)))
+	  ((eq '$rational mode) `($rational rplus . ,(mapcar 'cdr args)))
+	  ((eq '$number mode) `($number plus . ,(mapcar 'cdr args)))
+	  (t `($any add* . ,(mapcar 'dconvx args))))))
 
 
-(DEFUN NESTIFY (OP L)
-  (DO ((L (CDR L) (CDR L)) (NL (CAR L))) ((NULL L) NL)
-      (SETQ NL (LIST OP NL (CAR L)))))
+(defun nestify (op l)
+  (do ((l (cdr l) (cdr l)) (nl (car l))) ((null l) nl)
+    (setq nl (list op nl (car l)))))
 
-(DEF%TR MTIMES (FORM)
-  (LET
-   (ARGS MODE)
-   (COND
-    ((EQUAL -1 (CADR FORM))
-     (TRANSLATE `((MMINUS) ((MTIMES) . ,(CDDR FORM)))))
-    (t
-     (DO ((L (CDR FORM) (CDR L))) ((NULL L))
-	 (SETQ ARGS (CONS (TRANSLATE (CAR L)) ARGS)
-	       MODE (*UNION-MODE (CAR (CAR ARGS)) MODE)))
-     (SETQ ARGS (NREVERSE ARGS))
-     (COND ((EQ '$FIXNUM MODE) `($FIXNUM f* . ,(MAPCAR 'CDR ARGS)))
-	   ((EQ '$FLOAT MODE) `($FLOAT *$ . ,(MAPCAR 'DCONV-$FLOAT ARGS)))
-	   ((EQ '$RATIONAL MODE) `($RATIONAL RTIMES . ,(MAPCAR 'CDR ARGS)))
-	   ((EQ '$NUMBER MODE) `($NUMBER TIMES . ,(MAPCAR 'CDR ARGS)))
-	   (T `($ANY MUL* . ,(MAPCAR 'DCONVX ARGS))))))))
+(def%tr mtimes (form)
+  (let
+      (args mode)
+    (cond
+      ((equal -1 (cadr form))
+       (translate `((mminus) ((mtimes) . ,(cddr form)))))
+      (t
+       (do ((l (cdr form) (cdr l))) ((null l))
+	 (setq args (cons (translate (car l)) args)
+	       mode (*union-mode (car (car args)) mode)))
+       (setq args (nreverse args))
+       (cond ((eq '$fixnum mode) `($fixnum f* . ,(mapcar 'cdr args)))
+	     ((eq '$float mode) `($float *$ . ,(mapcar 'dconv-$float args)))
+	     ((eq '$rational mode) `($rational rtimes . ,(mapcar 'cdr args)))
+	     ((eq '$number mode) `($number times . ,(mapcar 'cdr args)))
+	     (t `($any mul* . ,(mapcar 'dconvx args))))))))
 
 
-(DEF%TR MQUOTIENT (FORM)
-	(let (ARG1 ARG2 MODE)
-	     (SETQ ARG1 (TRANSLATE (CADR FORM)) ARG2 (TRANSLATE (CADDR FORM))
-		   MODE (*UNION-MODE (CAR ARG1) (CAR ARG2))
-		   ARG1 (DCONV ARG1 MODE) ARG2 (DCONV ARG2 MODE))
-	     (COND ((EQ '$FLOAT MODE)
-		    (SETQ ARG1 (IF (zl-MEMBER ARG1 '(1 1.0)) (LIST ARG2)
-				   (LIST ARG1 ARG2)))
-		    `($FLOAT //$ . ,ARG1))
-		   ((AND (EQ MODE '$FIXNUM) $TR_NUMER)
-		    `($FLOAT . (//$ (FLOAT ,ARG1) (FLOAT ,ARG2))))
-		   ((MEMQ MODE '($FIXNUM $RATIONAL))
-		    `($RATIONAL RREMAINDER ,ARG1 ,ARG2))
-		   (T `($ANY DIV ,ARG1 ,ARG2)))))
+(def%tr mquotient (form)
+  (let (arg1 arg2 mode)
+    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
+	  mode (*union-mode (car arg1) (car arg2))
+	  arg1 (dconv arg1 mode) arg2 (dconv arg2 mode))
+    (cond ((eq '$float mode)
+	   (setq arg1 (if (zl-member arg1 '(1 1.0)) (list arg2)
+			  (list arg1 arg2)))
+	   `($float //$ . ,arg1))
+	  ((and (eq mode '$fixnum) $tr_numer)
+	   `($float . (//$ (float ,arg1) (float ,arg2))))
+	  ((memq mode '($fixnum $rational))
+	   `($rational rremainder ,arg1 ,arg2))
+	  (t `($any div ,arg1 ,arg2)))))
 
 (defvar $tr_exponent nil "If True it allows translation of x^n to generate (expt $x $n) if $n is fixnum and $x is fixnum, or number" )
 
-(DEF%TR MEXPT (FORM)
-  (IF (EQ '$%E (CADR FORM)) (TRANSLATE `(($EXP) ,(CADDR FORM)))
-      (LET   (BAS EXP)
-	(SETQ BAS (TRANSLATE (CADR FORM)) EXP (TRANSLATE (CADDR FORM)))
-	(COND ((EQ '$FIXNUM (CAR EXP))
-	       (SETQ EXP (CDR EXP))
-	       (COND ((EQ '$FLOAT (CAR BAS))
-		      (COND ((NOT (INTEGERP EXP)) `($FLOAT ^$ ,(CDR BAS) ,EXP))
-			    (T `($FLOAT EXPT$ ,(CDR BAS) ,EXP))))
-		     ((AND (EQ (CAR BAS) '$FIXNUM)
-			   $TR_NUMER)
+(def%tr mexpt (form)
+  (if (eq '$%e (cadr form)) (translate `(($exp) ,(caddr form)))
+      (let   (bas exp)
+	(setq bas (translate (cadr form)) exp (translate (caddr form)))
+	(cond ((eq '$fixnum (car exp))
+	       (setq exp (cdr exp))
+	       (cond ((eq '$float (car bas))
+		      (cond ((not (integerp exp)) `($float ^$ ,(cdr bas) ,exp))
+			    (t `($float expt$ ,(cdr bas) ,exp))))
+		     ((and (eq (car bas) '$fixnum)
+			   $tr_numer)
 		      ;; when NUMER:TRUE we have 1/2 evaluating to 0.5
 		      ;; therefore we have a TR_NUMER switch to control
 		      ;; this form numerical hackers at translate time
 		      ;; where it does the most good. -gjc
-		      `($FLOAT . (^$ (FLOAT ,(CDR BAS)) ,EXP)))
+		      `($float . (^$ (float ,(cdr bas)) ,exp)))
 		     ;; This next optimization was just plain wrong!
 		     ;; -gjc
 		     ;;((MEMQ (CAR BAS) '($FIXNUM $NUMBER))
 		     ;;`($NUMBER EXPT ,(CDR BAS) ,EXP))
-		     #+cl  ;;It seems to me we can do this,
+		     #+cl ;;It seems to me we can do this,
 		     ;; although 2^-3 would result in a "cl rat'l number"
-		     ((and $tr_exponent (MEMQ (CAR BAS) '($FIXNUM $NUMBER)))
-		     `($NUMBER EXPT ,(CDR BAS) ,EXP))
-		     (T `($ANY POWER ,(CDR BAS) ,EXP))))
-	      ((AND (EQ '$FLOAT (CAR BAS))
-		    (EQ '$RATIONAL (CAR EXP))
-		    (NOT (ATOM (CADDR EXP)))
-		    (COND ((EQUAL 2 (CADDR (CADDR EXP)))
-			   (SETQ EXP (CADR (CADDR EXP)))
-			   (COND ((= 1 EXP) `($FLOAT SQRT ,(CDR BAS)))
-				 ((= -1 EXP) `($FLOAT //$ (SQRT ,(CDR BAS))))
-				 (T `($FLOAT EXPT$ (SQRT ,(CDR BAS)) ,EXP))))
-			  ((EQ 'RAT (CAAR (CADDR EXP)))
-			   `($FLOAT EXPT ,(CDR BAS) ,($FLOAT (CADDR EXP)))))))
-	      ((AND (COVERS '$NUMBER (CAR BAS)) (COVERS '$NUMBER (CAR EXP)))
-	       `(,(*UNION-MODE (CAR BAS) (CAR EXP)) EXPT ,(CDR BAS) ,(CDR EXP)))
-	      (T `($ANY POWER ,(CDR BAS) ,(CDR EXP)))))))
+		     ((and $tr_exponent (memq (car bas) '($fixnum $number)))
+		      `($number expt ,(cdr bas) ,exp))
+		     (t `($any power ,(cdr bas) ,exp))))
+	      ((and (eq '$float (car bas))
+		    (eq '$rational (car exp))
+		    (not (atom (caddr exp)))
+		    (cond ((equal 2 (caddr (caddr exp)))
+			   (setq exp (cadr (caddr exp)))
+			   (cond ((= 1 exp) `($float sqrt ,(cdr bas)))
+				 ((= -1 exp) `($float //$ (sqrt ,(cdr bas))))
+				 (t `($float expt$ (sqrt ,(cdr bas)) ,exp))))
+			  ((eq 'rat (caar (caddr exp)))
+			   `($float expt ,(cdr bas) ,($float (caddr exp)))))))
+	      ((and (covers '$number (car bas)) (covers '$number (car exp)))
+	       `(,(*union-mode (car bas) (car exp)) expt ,(cdr bas) ,(cdr exp)))
+	      (t `($any power ,(cdr bas) ,(cdr exp)))))))
 
 
 
-(DEF%TR RAT (FORM) `($RATIONAL . ',FORM))
+(def%tr rat (form) `($rational . ',form))
 
-(DEF%TR BIGFLOAT (FORM) `($ANY . ',FORM))
+(def%tr bigfloat (form) `($any . ',form))
 
 
 
-(DEF%TR %SQRT (FORM)
-  (SETQ FORM (TRANSLATE (CADR FORM)))
-  (IF (EQ '$FLOAT (CAR FORM)) `($FLOAT SQRT ,(CDR FORM))
-      `($ANY SIMPLIFY (LIST '(%SQRT) ,(CDR FORM)))))
+(def%tr %sqrt (form)
+  (setq form (translate (cadr form)))
+  (if (eq '$float (car form)) `($float sqrt ,(cdr form))
+      `($any simplify (list '(%sqrt) ,(cdr form)))))
 
-(DEF%TR MABS (FORM) 
-  (SETQ FORM (TRANSLATE (CADR FORM)))
-  (IF (COVERS '$NUMBER (CAR FORM)) (LIST (CAR FORM) 'ABS (CDR FORM))
-      `($ANY SIMPLIFY (LIST '(MABS) ,(DCONVX FORM)))))
+(def%tr mabs (form) 
+  (setq form (translate (cadr form)))
+  (if (covers '$number (car form)) (list (car form) 'abs (cdr form))
+      `($any simplify (list '(mabs) ,(dconvx form)))))
 
 
-(DEF%TR %SIGNUM (FORM)
-	(LET (( (MODE . ARG) (TRANSLATE (CADR FORM))))
-	     (COND ((MEMQ MODE '($FIXNUM $FLOAT))
-		    (LET ((TEMP (TR-GENSYM)))
-			 `($FIXNUM . ((LAMBDA (,TEMP)
-					      (DECLARE (,(IF (EQ MODE '$FLOAT)	
-							     'flonum
-							     'fixnum)
-							,TEMP))
-					      (COND ((MINUSP ,TEMP) -1)
-						    ((PLUSP ,TEMP) 1)
-						    (T 0)))
-				      ,ARG))))
-		   (T
-		    ;; even in this unknown case we can do a hell
-		    ;; of a lot better than consing up a form to
-		    ;; call the macsyma simplifier. I mean, shoot
-		    ;; have a little SUBR called SIG-NUM or something.
-		    `($ANY SIMPLIFY (LIST '(%SIGNUM) ,ARG))))))
+(def%tr %signum (form)
+  (let (( (mode . arg) (translate (cadr form))))
+    (cond ((memq mode '($fixnum $float))
+	   (let ((temp (tr-gensym)))
+	     `($fixnum . ((lambda (,temp)
+			    (declare (,(if (eq mode '$float)	
+					   'flonum
+					   'fixnum)
+				       ,temp))
+			    (cond ((minusp ,temp) -1)
+				  ((plusp ,temp) 1)
+				  (t 0)))
+			  ,arg))))
+	  (t
+	   ;; even in this unknown case we can do a hell
+	   ;; of a lot better than consing up a form to
+	   ;; call the macsyma simplifier. I mean, shoot
+	   ;; have a little SUBR called SIG-NUM or something.
+	   `($any simplify (list '(%signum) ,arg))))))
 
 ;; The optimization of using -1.0, +1.0 and 0.0 cannot be made unless we
 ;; know the TARGET MODE. The action of the simplifier is that
@@ -195,37 +195,37 @@
 ;;	 (T `($ANY SIMPLIFY (LIST '(%SIGNUM) ,(CDR FORM))))))
 
 
-(DEF%TR $ENTIER (FORM) 
-  (SETQ FORM (TRANSLATE (CADR FORM)))
-  (COND ((EQ '$FIXNUM (CAR FORM)) FORM)
-        ((MEMQ (CAR FORM) '($FLOAT $NUMBER))
-	 (IF (EQ 'SQRT (CADR FORM)) `($FIXNUM $ISQRT ,(CADDR FORM))
-	     `($FIXNUM FIX ,(CDR FORM))))
-        (T `(,(IF (EQ (CAR FORM) '$RATIONAL) '$FIXNUM '$ANY)
-	      $ENTIER ,(CDR FORM)))))
+(def%tr $entier (form) 
+  (setq form (translate (cadr form)))
+  (cond ((eq '$fixnum (car form)) form)
+        ((memq (car form) '($float $number))
+	 (if (eq 'sqrt (cadr form)) `($fixnum $isqrt ,(caddr form))
+	     `($fixnum fix ,(cdr form))))
+        (t `(,(if (eq (car form) '$rational) '$fixnum '$any)
+	     $entier ,(cdr form)))))
 
-(DEF%TR $FLOAT (FORM)
-  (SETQ FORM (TRANSLATE (CADR FORM)))
-  (IF (COVERS '$FLOAT (CAR FORM)) (CONS '$FLOAT (DCONV-$FLOAT FORM))
-      `($ANY $FLOAT ,(CDR FORM))))
+(def%tr $float (form)
+  (setq form (translate (cadr form)))
+  (if (covers '$float (car form)) (cons '$float (dconv-$float form))
+      `($any $float ,(cdr form))))
 
 
 
-(DEF%TR $EXP (FORM)
-  (SETQ FORM (TRANSLATE (CADR FORM)))
-  (IF (EQ '$FLOAT (CAR FORM)) `($FLOAT EXP ,(CDR FORM))
-      `($ANY SIMPLIFY ($EXP ,(CDR FORM)))))
+(def%tr $exp (form)
+  (setq form (translate (cadr form)))
+  (if (eq '$float (car form)) `($float exp ,(cdr form))
+      `($any simplify ($exp ,(cdr form)))))
 
-(DEF%TR $ATAN2 (FORM)
-   (SETQ FORM (CDR FORM))
-   (LET   ((X (TRANSLATE (CAR FORM))) (Y (TRANSLATE (CADR FORM))))
-      (IF (EQ '$FLOAT (*UNION-MODE (CAR X) (CAR Y)))
-	  `($FLOAT ATAN2 ,(CDR X) ,(CDR Y))
-	`($ANY SIMPLIFY (LIST '($ATAN2) ,(CDR X) ,(CDR Y))))))
+(def%tr $atan2 (form)
+  (setq form (cdr form))
+  (let   ((x (translate (car form))) (y (translate (cadr form))))
+    (if (eq '$float (*union-mode (car x) (car y)))
+	`($float atan2 ,(cdr x) ,(cdr y))
+	`($any simplify (list '($atan2) ,(cdr x) ,(cdr y))))))
 
-(DEF%TR %ATAN (FORM)
-   (SETQ FORM (CDR FORM))
-   (LET   ((X (TRANSLATE (CAR FORM))))
-      (IF (EQ '$FLOAT (CAR X)) `($FLOAT ATAN1 ,(CDR X))
-	  `($ANY SIMPLIFY (LIST '(%ATAN) ,(CDR X))))))
+(def%tr %atan (form)
+  (setq form (cdr form))
+  (let   ((x (translate (car form))))
+    (if (eq '$float (car x)) `($float atan1 ,(cdr x))
+	`($any simplify (list '(%atan) ,(cdr x))))))
 

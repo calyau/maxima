@@ -12,103 +12,103 @@
 (macsyma-module mformt)
 (load-macsyma-macros mforma)
 
-(EVAL-WHEN (EVAL)
-	   (SETQ MACRO-EXPANSION-USE 'DISPLACE))
+(eval-when (eval)
+  (setq macro-expansion-use 'displace))
 
 
 #+lispm
 (record-source-file-name 'mformat-loop 'macro t)
 ;;macro expand the following!!
 
-(DEF-MFORMAT)
+(def-mformat)
 ;;macro expansion of the (def-mformat)  --wfs
-;(PROGN 'COMPILE
-;       (DEFMACRO DEF-MFORMAT-OP (CHAR &REST BODY)
-;           `(+DEF-MFORMAT-OP || ,CHAR . ,BODY))
-;       (DEFMACRO DEF-MFORMAT-VAR (VAR VAL INIT)
-;           `(+DEF-MFORMAT-VAR || ,VAR ,VAL ,INIT))
-;       (DEFMACRO MFORMAT-LOOP (&REST ENDCODE)
-;           `(+MFORMAT-LOOP || . ,ENDCODE)))
+;;(PROGN 'COMPILE
+;;       (DEFMACRO DEF-MFORMAT-OP (CHAR &REST BODY)
+;;           `(+DEF-MFORMAT-OP || ,CHAR . ,BODY))
+;;       (DEFMACRO DEF-MFORMAT-VAR (VAR VAL INIT)
+;;           `(+DEF-MFORMAT-VAR || ,VAR ,VAL ,INIT))
+;;       (DEFMACRO MFORMAT-LOOP (&REST ENDCODE)
+;;           `(+MFORMAT-LOOP || . ,ENDCODE)))
 #+lispm
 (record-source-file-name 'def-format-var 'defmacro t)
 ;;see above-wfs
 
 
-(DEF-MFORMAT-VAR |:-FLAG|     NIL T)
-(DEF-MFORMAT-VAR |@-FLAG|     NIL T)
-(DEF-MFORMAT-VAR PARAMETER   0  T) ; Who can read "~33,34,87A" ?
-(DEF-MFORMAT-VAR PARAMETER-P NIL T)
-(DEF-MFORMAT-VAR TEXT       NIL NIL)
-(DEF-MFORMAT-VAR TEXT-TEMP NIL NIL)
-(DEF-MFORMAT-VAR DISPLA-P NIL NIL)
-(DEF-MFORMAT-VAR PRE-%-P NIL NIL)
-(DEF-MFORMAT-VAR POST-%-P NIL NIL)
+(def-mformat-var |:-FLAG|     nil t)
+(def-mformat-var |@-FLAG|     nil t)
+(def-mformat-var parameter   0  t)	; Who can read "~33,34,87A" ?
+(def-mformat-var parameter-p nil t)
+(def-mformat-var text       nil nil)
+(def-mformat-var text-temp nil nil)
+(def-mformat-var displa-p nil nil)
+(def-mformat-var pre-%-p nil nil)
+(def-mformat-var post-%-p nil nil)
 
-#-PDP10
-(DEFMFUN CHECK-OUT-OF-CORE-STRING (sstring) sstring)
+#-pdp10
+(defmfun check-out-of-core-string (sstring) sstring)
 
-(DEFMACRO PUSH-TEXT-TEMP ()
-	  '(IF TEXT-TEMP (SETQ TEXT (CONS (CONS '(TEXT-STRING) (NREVERSE TEXT-TEMP))
-					  TEXT)
-			       TEXT-TEMP NIL)))
+(defmacro push-text-temp ()
+  '(if text-temp (setq text (cons (cons '(text-string) (nreverse text-temp))
+			     text)
+		  text-temp nil)))
 
-(DEFMACRO OUTPUT-TEXT ()
-	  '(PROGN (PUSH-TEXT-TEMP)
-		  (OUTPUT-TEXT* STREAM TEXT DISPLA-P PRE-%-P POST-%-P)
-		  (SETQ TEXT NIL DISPLA-P NIL PRE-%-P NIL POST-%-P NIL)))
+(defmacro output-text ()
+  '(progn (push-text-temp)
+    (output-text* stream text displa-p pre-%-p post-%-p)
+    (setq text nil displa-p nil pre-%-p nil post-%-p nil)))
 
-(DEF-MFORMAT-OP (#\% #\&)
-		(COND ((OR TEXT TEXT-TEMP)
-		       (SETQ POST-%-P T)
-		       ;; there is text to output.
-		       (OUTPUT-TEXT))
-		      (T
-		       (SETQ PRE-%-P T))))
+(def-mformat-op (#\% #\&)
+    (cond ((or text text-temp)
+	   (setq post-%-p t)
+	   ;; there is text to output.
+	   (output-text))
+	  (t
+	   (setq pre-%-p t))))
 
-(DEF-MFORMAT-OP #\M
-		(PUSH-TEXT-TEMP)
-		(LET ((ARG (POP-MFORMAT-ARG)))
-		     (AND @-FLAG (ATOM ARG) 
-			  (SETQ ARG (OR (GET ARG 'OP) ARG)))
-		     (COND (|:-FLAG|
-			    (PUSH (CONS '(TEXT-STRING) (MSTRING ARG)) TEXT))
-			   (T
-			    (SETQ DISPLA-P T)
-			    (PUSH ARG TEXT)))))
+(def-mformat-op #\M
+    (push-text-temp)
+  (let ((arg (pop-mformat-arg)))
+    (and @-flag (atom arg) 
+	 (setq arg (or (get arg 'op) arg)))
+    (cond (|:-FLAG|
+	   (push (cons '(text-string) (mstring arg)) text))
+	  (t
+	   (setq displa-p t)
+	   (push arg text)))))
 
-(DEF-MFORMAT-OP #\A
-		(PUSH-TEXT-TEMP)
-		(PUSH (CONS '(TEXT-STRING) (EXPLODEN (POP-MFORMAT-ARG))) TEXT))
+(def-mformat-op #\A
+    (push-text-temp)
+  (push (cons '(text-string) (exploden (pop-mformat-arg))) text))
 
-(DEF-MFORMAT-OP #\S
-		(PUSH-TEXT-TEMP)
-		(PUSH (CONS '(TEXT-STRING)
-			    (MAPL #'(LAMBDA (C)
-					   (RPLACA C (GETCHARN (CAR C) 1)))
-				 (EXPLODE (POP-MFORMAT-ARG))))
-		      TEXT))
+(def-mformat-op #\S
+    (push-text-temp)
+  (push (cons '(text-string)
+	      (mapl #'(lambda (c)
+			(rplaca c (getcharn (car c) 1)))
+		    (explode (pop-mformat-arg))))
+	text))
 
-(DEFMFUN MFORMAT N
-  (OR (> N 1)
+(defmfun mformat n
+  (or (> n 1)
       ;; make error message without new symbols.
       ;; This error should not happen in compiled code because
       ;; this check is done at compile time too.
-      (MAXIMA-ERROR 'WRNG-NO-ARGS 'MFORMAT))
-  (LET* ((STREAM (ARG 1))
-	 (sSTRING (exploden (check-out-of-core-string (ARG 2))))
+      (maxima-error 'wrng-no-args 'mformat))
+  (let* ((stream (arg 1))
+	 (sstring (exploden (check-out-of-core-string (arg 2))))
 	 (arg-index 2))
-	;(or (eql (car sstring) #\&) (push #\& sstring))
+					;(or (eql (car sstring) #\&) (push #\& sstring))
 	
-    (AND (OR (NULL STREAM)
-	     (EQ T STREAM))
-	 (SETQ STREAM *standard-output*))
+    (and (or (null stream)
+	     (eq t stream))
+	 (setq stream *standard-output*))
     ;; This is all done via macros to save space,
     ;; (No functions, no special variable symbols.)
     ;; If the lack of flexibilty becomes an issue then
     ;; it can be changed easily.
-    (MFORMAT-LOOP (OUTPUT-TEXT))
+    (mformat-loop (output-text))
     ;; Keep from getting bitten by buffering.
-    (FORCE-OUTPUT STREAM)
+    (force-output stream)
     ))
 
 ;;can't change mformat since there are various places where stream = nil means
@@ -116,19 +116,19 @@
 ;;note: compile whole file, incremental compiling will not work.
 
 
-(DEFMFUN aFORMAT N
-  (OR (> N 1)
+(defmfun aformat n
+  (or (> n 1)
       ;; make error message without new symbols.
       ;; This error should not happen in compiled code because
       ;; this check is done at compile time too.
-      (MAXIMA-ERROR 'WRNG-NO-ARGS 'MFORMAT))
-  (LET ((STREAM (ARG 1))
-	(sSTRING (exploden (check-out-of-core-string (ARG 2))))
+      (maxima-error 'wrng-no-args 'mformat))
+  (let ((stream (arg 1))
+	(sstring (exploden (check-out-of-core-string (arg 2))))
 	(arg-index 2))
-    #+NIL
-    (AND (OR (NULL STREAM)
-	     (EQ T STREAM))
-	 (SETQ STREAM *standard-output*))
+    #+nil
+    (and (or (null stream)
+	     (eq t stream))
+	 (setq stream *standard-output*))
 
     (cond((null stream)
 	  (with-output-to-string (stream)
@@ -138,75 +138,75 @@
     ;; (No functions, no special variable symbols.)
     ;; If the lack of flexibilty becomes an issue then
     ;; it can be changed easily.
-    #+Multics
-    (FORCE-OUTPUT STREAM)
+    #+multics
+    (force-output stream)
     ))
 
 
-(DEFUN OUTPUT-TEXT* (STREAM TEXT DISPLA-P PRE-%-P POST-%-P)
-  (SETQ TEXT (NREVERSE TEXT))
+(defun output-text* (stream text displa-p pre-%-p post-%-p)
+  (setq text (nreverse text))
   ;; outputs a META-LINE of text.
-  (COND (DISPLA-P (DISPLAF (CONS '(MTEXT) TEXT) STREAM))
-	(T
-	 (IF PRE-%-P (TERPRI STREAM))
-	 (DO ()
-	     ((NULL TEXT))
-	   (DO ((L (CDR (POP TEXT)) (CDR L)))
-	       ((NULL L))
-	     (TYO (CAR L) STREAM)))
-	 (IF POST-%-P (TERPRI STREAM)))))
+  (cond (displa-p (displaf (cons '(mtext) text) stream))
+	(t
+	 (if pre-%-p (terpri stream))
+	 (do ()
+	     ((null text))
+	   (do ((l (cdr (pop text)) (cdr l)))
+	       ((null l))
+	     (tyo (car l) stream)))
+	 (if post-%-p (terpri stream)))))
 
-(DEFUN-prop (TEXT-STRING DIMENSION) (FORM RESULT)
+(defun-prop (text-string dimension) (form result)
   ;; come up with something more efficient later.
-  (DIMENSION-ATOM (MAKNAM (CDR FORM)) RESULT))
+  (dimension-atom (maknam (cdr form)) result))
 
-(DEFMFUN DISPLAF (OBJECT STREAM)
+(defmfun displaf (object stream)
   ;; for DISPLA to a file. actually this works for SFA's and
   ;; other streams in maclisp.
-  #-(or cl NIL)
-  (IF (EQ STREAM NIL)
-      (DISPLA OBJECT)
-      (LET ((|^R| T)
-	    (|^W| T)
-	     (OUTFILES (NCONS STREAM))
+  #-(or cl nil)
+  (if (eq stream nil)
+      (displa object)
+      (let ((|^R| t)
+	    (|^W| t)
+	    (outfiles (ncons stream))
 	    )
-	(DISPLA OBJECT)))
-  #+(or cl NIL)
+	(displa object)))
+  #+(or cl nil)
   ;; a bit of a kludge here. ^R and ^W still communicate something
   ;; to the displa package, but OUTFILES has not been implemented/hacked.
-  (IF (OR (EQ STREAM NIL)
-	  (EQ STREAM *standard-output*))
-      (DISPLA OBJECT)
-    (LET ((*standard-output* STREAM)
-	  (|^R| T)
-	  (|^W| T))
-	 (DISPLA OBJECT))))
+  (if (or (eq stream nil)
+	  (eq stream *standard-output*))
+      (displa object)
+      (let ((*standard-output* stream)
+	    (|^R| t)
+	    (|^W| t))
+	(displa object))))
 
-(DEFMFUN MTELL (&REST L)
-  (APPLY #'MFORMAT NIL L))
+(defmfun mtell (&rest l)
+  (apply #'mformat nil l))
 
 
 ;; Calling-sequence optimizations.
-#+PDP10
-(PROGN 'COMPILE
-       (LET ((X (GETL 'MFORMAT '(EXPR LSUBR))))
-	 (REMPROP '*MFORMAT (CAR X))
-	 (PUTPROP '*MFORMAT (CADR X) (CAR X)))
-       (DECLARE (*LEXPR *MFORMAT))
-       (DEFMFUN *MFORMAT-2 (A B) (*MFORMAT A B))
-       (DEFMFUN *MFORMAT-3 (A B C) (*MFORMAT A B C))
-       (DEFMFUN *MFORMAT-4 (A B C D) (*MFORMAT A B C D))
-       (DEFMFUN *MFORMAT-5 (A B C D E) (*MFORMAT A B C D E))
+#+pdp10
+(progn 'compile
+       (let ((x (getl 'mformat '(expr lsubr))))
+	 (remprop '*mformat (car x))
+	 (putprop '*mformat (cadr x) (car x)))
+       (declare (*lexpr *mformat))
+       (defmfun *mformat-2 (a b) (*mformat a b))
+       (defmfun *mformat-3 (a b c) (*mformat a b c))
+       (defmfun *mformat-4 (a b c d) (*mformat a b c d))
+       (defmfun *mformat-5 (a b c d e) (*mformat a b c d e))
 
-       (LET ((X (GETL 'MTELL '(EXPR LSUBR))))
-	 (REMPROP '*MTELL (CAR X))
-	 (PUTPROP '*MTELL (CADR X) (CAR X)))
-       (DECLARE (*LEXPR *MTELL))
-       (DEFMFUN MTELL1 (A)         (*MTELL A))
-       (DEFMFUN MTELL2 (A B)       (*MTELL A B))
-       (DEFMFUN MTELL3 (A B C)     (*MTELL A B C))
-       (DEFMFUN MTELL4 (A B C D)   (*MTELL A B C D))
-       (DEFMFUN MTELL5 (A B C D E) (*MTELL A B C D E))
+       (let ((x (getl 'mtell '(expr lsubr))))
+	 (remprop '*mtell (car x))
+	 (putprop '*mtell (cadr x) (car x)))
+       (declare (*lexpr *mtell))
+       (defmfun mtell1 (a)         (*mtell a))
+       (defmfun mtell2 (a b)       (*mtell a b))
+       (defmfun mtell3 (a b c)     (*mtell a b c))
+       (defmfun mtell4 (a b c d)   (*mtell a b c d))
+       (defmfun mtell5 (a b c d e) (*mtell a b c d e))
        )
 
 

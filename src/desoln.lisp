@@ -16,74 +16,74 @@
 ;;TR_ARRAY_AS_REF:TRUE;
 ;;TR_NUMER:FALSE;
 ;;DEFINE_VARIABLE:FALSE;
-(EVAL-WHEN (COMPILE EVAL LOAD)
- (DEFPROP $DESOLVE T TRANSLATED)
- (ADD2LNC '$DESOLVE $PROPS)
- (DEFMTRFUN
-  ($DESOLVE $ANY MDEFINE NIL NIL)
-  ($EQNS $VARS)
-  NIL
-  ((LAMBDA
-    ($TEQNS $TVARS $OVAR $LVAR $FLAG $DISPFLAG)
-    NIL
-    NIL
-    (SETQ $FLAG NIL)
-    (COND ((NOT ($LISTP $VARS))
-           (SETQ $EQNS (LIST '(MLIST) $EQNS))
-           (SETQ $VARS (LIST '(MLIST) $VARS))
-           (SETQ $FLAG T)))
-    (COND
-     ((NOT (EQL ($LENGTH (SETQ $OVAR (MAREF $VARS 1)))
-                1))
-      (SIMPLIFY ($ERROR $OVAR
-                        '|&contains more than one independent variable.|))))
-    (SETQ $OVAR (SIMPLIFY ($INPART $OVAR 1)))
-    (SETQ $DISPFLAG NIL)
-    (SETQ
-     $TEQNS
-     (SIMPLIFY (MAP1 (GETOPR (M-TLAMBDA&ENV (($Z) ($OVAR $LVAR))
-                                            NIL
-                                            (SIMPLIFY ($LAPLACE $Z
-                                                                $OVAR
-                                                                $LVAR))))
-                     $EQNS)))
-    (SETQ
-     $TVARS
-     (SIMPLIFY (MAP1 (GETOPR (M-TLAMBDA&ENV (($Z) ($OVAR $LVAR))
-                                            NIL
-                                            (SIMPLIFY `((%LAPLACE) ,$Z ,
-                                                        $OVAR ,$LVAR))))
-                     $VARS)))
-    (SETQ
-     $TEQNS
-     ((LAMBDA (ERRCATCH RET)
-          (COND ((NULL (SETQ RET (ERRSET (PROGN (SIMPLIFY ($SOLVE $TEQNS
-                                                                  $TVARS)))
-                                         LISPERRPRINT)))
-                 (ERRLFUN1 ERRCATCH)))
-          (CONS '(MLIST) RET))
-      (CONS BINDLIST LOCLIST)
-      NIL))
-    (COND ((OR (LIKE $TEQNS '((MLIST)))
-               (LIKE $TEQNS (LIST '(MLIST) '((MLIST)))))
-           (SIMPLIFY ($ERROR '|&DESOLVE can't handle this case.|)))
-          (T (SETQ $TEQNS (SIMPLIFY ($FIRST $TEQNS)))))
-    (COND ((NOT (LIKE $FLAG T))
-           (SETQ $TEQNS (SIMPLIFY ($FIRST $TEQNS)))))
-    (SETQ
-     $TEQNS
-     (SIMPLIFY (MAP1 (GETOPR (M-TLAMBDA&ENV (($Z) ($LVAR $OVAR))
-                                            NIL
-                                            (SIMPLIFY ($ILT $Z
-                                                            $LVAR
-                                                            $OVAR))))
-                     $TEQNS)))
-    (COND ((AND $FLAG (EQL ($LENGTH $TVARS) 1))
-           (MAREF $TEQNS 1))
-          (T $TEQNS)))
-   '$TEQNS
-   '$TVARS
-   '$OVAR
-   '$LVAR
-   '$FLAG
-   '$DISPFLAG)))
+(eval-when (compile eval load)
+  (defprop $desolve t translated)
+  (add2lnc '$desolve $props)
+  (defmtrfun
+      ($desolve $any mdefine nil nil)
+      ($eqns $vars)
+    nil
+    ((lambda
+	 ($teqns $tvars $ovar $lvar $flag $dispflag)
+       nil
+       nil
+       (setq $flag nil)
+       (cond ((not ($listp $vars))
+	      (setq $eqns (list '(mlist) $eqns))
+	      (setq $vars (list '(mlist) $vars))
+	      (setq $flag t)))
+       (cond
+	 ((not (eql ($length (setq $ovar (maref $vars 1)))
+		    1))
+	  (simplify ($error $ovar
+			    '|&contains more than one independent variable.|))))
+       (setq $ovar (simplify ($inpart $ovar 1)))
+       (setq $dispflag nil)
+       (setq
+	$teqns
+	(simplify (map1 (getopr (m-tlambda&env (($z) ($ovar $lvar))
+					       nil
+					       (simplify ($laplace $z
+								   $ovar
+								   $lvar))))
+			$eqns)))
+       (setq
+	$tvars
+	(simplify (map1 (getopr (m-tlambda&env (($z) ($ovar $lvar))
+					       nil
+					       (simplify `((%laplace) ,$z ,
+							   $ovar ,$lvar))))
+			$vars)))
+       (setq
+	$teqns
+	((lambda (errcatch ret)
+	   (cond ((null (setq ret (errset (progn (simplify ($solve $teqns
+								   $tvars)))
+					  lisperrprint)))
+		  (errlfun1 errcatch)))
+	   (cons '(mlist) ret))
+	 (cons bindlist loclist)
+	 nil))
+       (cond ((or (like $teqns '((mlist)))
+		  (like $teqns (list '(mlist) '((mlist)))))
+	      (simplify ($error '|&DESOLVE can't handle this case.|)))
+	     (t (setq $teqns (simplify ($first $teqns)))))
+       (cond ((not (like $flag t))
+	      (setq $teqns (simplify ($first $teqns)))))
+       (setq
+	$teqns
+	(simplify (map1 (getopr (m-tlambda&env (($z) ($lvar $ovar))
+					       nil
+					       (simplify ($ilt $z
+							       $lvar
+							       $ovar))))
+			$teqns)))
+       (cond ((and $flag (eql ($length $tvars) 1))
+	      (maref $teqns 1))
+	     (t $teqns)))
+     '$teqns
+     '$tvars
+     '$ovar
+     '$lvar
+     '$flag
+     '$dispflag)))

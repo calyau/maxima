@@ -38,7 +38,7 @@
 (defun $equalp (x y)
   (cond ((or ($listp x) ($listp y))
 	 (merror "Both arguments to EQUALP must be non-lists."))	
-	 (t ($xequalp x y))))
+	(t ($xequalp x y))))
 
 ;; If you are certain that x and y are not lists, you might call
 ;; (at Maxima level) ?xequalp instead of equalp.
@@ -197,7 +197,7 @@
 	 (setq a (margs a))
 	 (let ((acc nil))
 	   (dolist (x a (cons '(mlist) acc))
-		      (if (mfuncall f x) (setq acc (cons x acc))))))
+	     (if (mfuncall f x) (setq acc (cons x acc))))))
 	(t (merror "First argument to SUBSET must be a list."))))
 
 ;; Return the union of a - b and b - a; signal an error if a or b
@@ -213,7 +213,7 @@
 (defun $complement (a b)
   (cond ((and ($listp a) ($listp b))
 	 ($setdifference b a))
-	 (t (merror "Both arguments to COMPLEMENT must be lists."))))
+	(t (merror "Both arguments to COMPLEMENT must be lists."))))
 
 ;; Return true if and only if the argument is a Maxima list and the
 ;; list does not have duplicate elements.  setp doesn't check that

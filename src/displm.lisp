@@ -13,89 +13,89 @@
 
 (declare-top
  ;; evaluate for declarations
- (SPECIAL
-   ^W			   ;If T, then no output goes to the console.
-   ^R			   ;If T, then output also goes to any
-			   ;file opened by UWRITE.  People learning
-			   ;Lisp: there are better ways of doing IO
-			   ;than this -- don't copy this scheme.
-   SMART-TTY		   ;LOADER sets this flag.  If T, then
-			   ;then this console can do cursor movement
-			   ;and equations can be drawn in two dimensions.
-   RUBOUT-TTY		   ;If T, then console either selectively erasable
-			   ;or is a glass tty.  Characters can be rubbed
-			   ;out in either case.
-   SCROLLP		   ;If T, then the console is scrolling.
-			   ;This should almost always be equal to
-			   ;(NOT SMART-TTY) except when somebody has
-			   ;done :TCTYP SCROLL on a display console.
-			   ;This is the %TSROL bit of the TTYSTS word.
+ (special
+  ^w			    ;If T, then no output goes to the console.
+  ^r				   ;If T, then output also goes to any
+					;file opened by UWRITE.  People learning
+					;Lisp: there are better ways of doing IO
+					;than this -- don't copy this scheme.
+  smart-tty			   ;LOADER sets this flag.  If T, then
+					;then this console can do cursor movement
+					;and equations can be drawn in two dimensions.
+  rubout-tty	       ;If T, then console either selectively erasable
+					;or is a glass tty.  Characters can be rubbed
+					;out in either case.
+  scrollp			 ;If T, then the console is scrolling.
+					;This should almost always be equal to
+					;(NOT SMART-TTY) except when somebody has
+					;done :TCTYP SCROLL on a display console.
+					;This is the %TSROL bit of the TTYSTS word.
 
-   LINEL		   ;Width of screen.
-   TTYHEIGHT		   ;Height of screen.
+  linel					;Width of screen.
+  ttyheight				;Height of screen.
 
-   WIDTH HEIGHT DEPTH MAXHT MAXDP LEVEL SIZE LOP ROP BREAK RIGHT
-   BKPT BKPTWD BKPTHT BKPTDP BKPTLEVEL BKPTOUT LINES 
-   OLDROW OLDCOL DISPLAY-FILE IN-P
-   MOREMSG MOREFLUSH MORE-^W MRATP $ALIASES ALIASLIST)
+  width height depth maxht maxdp level size lop rop break right
+  bkpt bkptwd bkptht bkptdp bkptlevel bkptout lines 
+  oldrow oldcol display-file in-p
+  moremsg moreflush more-^w mratp $aliases aliaslist)
 
-(FIXNUM WIDTH HEIGHT DEPTH MAXHT MAXDP LEVEL SIZE RIGHT 
-	BKPTWD BKPTHT BKPTDP BKPTLEVEL BKPTOUT
-	LINEL TTYHEIGHT OLDROW OLDCOL)
+ (fixnum width height depth maxht maxdp level size right 
+	 bkptwd bkptht bkptdp bkptlevel bkptout
+	 linel ttyheight oldrow oldcol)
 
-(NOTYPE (TYO* FIXNUM) (SETCURSORPOS FIXNUM FIXNUM))
+ (notype (tyo* fixnum) (setcursorpos fixnum fixnum))
 
-(*EXPR +TYO SETCURSORPOS MTERPRI FORCE-OUTPUT LINEAR-DISPLA
-       TTYINTSON TTYINTSOFF MORE-FUN GETOP
-       LBP RBP NFORMAT FULLSTRIP1 MAKSTRING $LISTP)
+ (*expr +tyo setcursorpos mterpri force-output linear-displa
+	ttyintson ttyintsoff more-fun getop
+	lbp rbp nformat fullstrip1 makstring $listp)
 
-;; stuff other packages might want to reference selectively.
-(*expr displa dimension checkrat checkbreak)
-;; looks like missplaced declarations to me.
-;; does DISPLA really call $integrate?
-(*lexpr $box $diff $expand $factor $integrate $multthru $ratsimp)
-)
+ ;; stuff other packages might want to reference selectively.
+ (*expr displa dimension checkrat checkbreak)
+ ;; looks like missplaced declarations to me.
+ ;; does DISPLA really call $integrate?
+ (*lexpr $box $diff $expand $factor $integrate $multthru $ratsimp)
+ )
 
 ;;; macros for the DISPLA package.
 
-(DEFMACRO TABLEN () #-(or Franz CL) (STATUS TABSIZE) #+(or Franz CL) 8)
+(defmacro tablen () #-(or franz cl) (status tabsize) #+(or franz cl) 8)
 
 ;; macros to handle systemic array differences.
 ;; NIL has various types of arrays, and supports *ARRAY in compatibility,
 ;; but might as well use the natural thing here, a vector.
 
-(DEFMACRO MAKE-LINEARRAY (SIZE)
-  #+(or Maclisp Franz) `(*ARRAY NIL T ,SIZE)
-  #+(or cl NIL) `(make-array ,size :initial-element nil)
+(defmacro make-linearray (size)
+  #+(or maclisp franz) `(*array nil t ,size)
+  #+(or cl nil) `(make-array ,size :initial-element nil)
   )
 
-(DEFMACRO SET-LINEARRAY (I X)
-  #+(or Maclisp Franz) `(STORE (ARRAYCALL T LINEARRAY ,I) ,X)
-  #+(or cl NIL) `(SETF (SVREF LINEARRAY ,I) ,X)
+(defmacro set-linearray (i x)
+  #+(or maclisp franz) `(store (arraycall t linearray ,i) ,x)
+  #+(or cl nil) `(setf (svref linearray ,i) ,x)
   )
 
-(DEFMACRO LINEARRAY (J)
-  #+cl `(AREF LINEARRAY ,J)
-  #+(or Maclisp Franz) `(ARRAYCALL T LINEARRAY ,J)
-  #+NIL `(SVREF LINEARRAY ,J)
+(defmacro linearray (j)
+  #+cl `(aref linearray ,j)
+  #+(or maclisp franz) `(arraycall t linearray ,j)
+  #+nil `(svref linearray ,j)
   )
 
-(DEFMACRO LINEARRAY-DIM ()
-  #+(OR  MACLISP FRANZ) '(ARRAY-DIMENSION-N 1 LINEARRAY)
-  #+(or cl NIL) '(LENGTH (the vector LINEARRAY)))
+(defmacro linearray-dim ()
+  #+(or  maclisp franz) '(array-dimension-n 1 linearray)
+  #+(or cl nil) '(length (the vector linearray)))
 
-(DEFMACRO CLEAR-LINEARRAY ()
-  #+(OR  MACLISP FRANZ) '(FILLARRAY LINEARRAY '(NIL))
-  #+(or cl NIL) '(FILL LINEARRAY NIL))
+(defmacro clear-linearray ()
+  #+(or  maclisp franz) '(fillarray linearray '(nil))
+  #+(or cl nil) '(fill linearray nil))
 
 ;; (PUSH-STRING "foo" RESULT) --> (SETQ RESULT (APPEND '(#/o #/o #/f) RESULT))
 ;; CHECK-ARG temporarily missing from Multics.
 
-(DEFMACRO PUSH-STRING (STRING SYMBOL)
-  #-(or Franz Multics) (CHECK-ARG STRING STRINGP "a string")
-  #-(or Franz Multics) (CHECK-ARG SYMBOL SYMBOLP "a symbol")
-  ;`(SETQ ,SYMBOL (APPEND ',(NREVERSE (EXPLODEN STRING)) ,SYMBOL))
-  ;The string is usually short.  Do it out...
+(defmacro push-string (string symbol)
+  #-(or franz multics) (check-arg string stringp "a string")
+  #-(or franz multics) (check-arg symbol symbolp "a symbol")
+					;`(SETQ ,SYMBOL (APPEND ',(NREVERSE (EXPLODEN STRING)) ,SYMBOL))
+					;The string is usually short.  Do it out...
   `(setq ,symbol (list* ,@(nreverse (exploden string)) ,symbol))
   )
 
@@ -109,25 +109,25 @@
 ;; object is placed directly on the symbol's property list and subrcall
 ;; is used when dispatching.
 
-(DEFMACRO DISPLA-DEF (OPERATOR DIM-FUNCTION &REST REST
-			       &AUX L-DISSYM R-DISSYM LBP RBP)
-  (DOLIST (X REST)
-    (COND ((STRINGP X)
-	   (IF L-DISSYM (SETQ R-DISSYM X) (SETQ L-DISSYM X)))
-	  ((INTEGERP X)
-	   (IF RBP (SETQ LBP RBP))
-	   (SETQ RBP X))
-	  (T (MAXIMA-ERROR "Random object in DISPLA-DEF form" X))))
-  (IF L-DISSYM
-      (SETQ L-DISSYM
-	    (IF R-DISSYM
-		(CONS (EXPLODEN L-DISSYM) (EXPLODEN R-DISSYM))
-		(EXPLODEN L-DISSYM))))
-  `(PROGN 
-	  (DEFPROP ,OPERATOR ,DIM-FUNCTION DIMENSION)
-	  ,(IF L-DISSYM  `(DEFPROP ,OPERATOR ,L-DISSYM DISSYM))
-	  ,(IF LBP       `(DEFPROP ,OPERATOR ,LBP LBP))
-	  ,(IF RBP       `(DEFPROP ,OPERATOR ,RBP RBP))))
+(defmacro displa-def (operator dim-function &rest rest
+		      &aux l-dissym r-dissym lbp rbp)
+  (dolist (x rest)
+    (cond ((stringp x)
+	   (if l-dissym (setq r-dissym x) (setq l-dissym x)))
+	  ((integerp x)
+	   (if rbp (setq lbp rbp))
+	   (setq rbp x))
+	  (t (maxima-error "Random object in DISPLA-DEF form" x))))
+  (if l-dissym
+      (setq l-dissym
+	    (if r-dissym
+		(cons (exploden l-dissym) (exploden r-dissym))
+		(exploden l-dissym))))
+  `(progn 
+    (defprop ,operator ,dim-function dimension)
+    ,(if l-dissym  `(defprop ,operator ,l-dissym dissym))
+    ,(if lbp       `(defprop ,operator ,lbp lbp))
+    ,(if rbp       `(defprop ,operator ,rbp rbp))))
 
 ;; Why must interrupts be turned off?  Is there some problem with keeping
 ;; internal state consistent?  If this is the case, then scheduling should be
@@ -140,16 +140,16 @@
 ;; So it was written, so it shall be done, eventually.
 ;; Ah, got around to it... 9:32pm  Wednesday, 2 December 1981
 
-(DEFMACRO SAFE-PRINT (PRINT-FORM)
+(defmacro safe-print (print-form)
   ;;`(WITHOUT-INTERRUPTS (LET ((^W T)) ,PRINT-FORM))
   ;; Still can't figure out what the ^W is bound for. - GJC
   ;;	Answer: SAFE-PRINT is used when the user types <RETURN> to 
   ;;	--More Display?-- but has a WRITEFILE open.  In that case,
   ;;	you want to write out to the file but not to the TTY. - JPG
-  #+PDP10 `(LET ((^W T)) ,PRINT-FORM)
-  #-PDP10  PRINT-FORM)
+  #+pdp10 `(let ((^w t)) ,print-form)
+  #-pdp10  print-form)
 
-(DEFMACRO LG-END-VECTOR (X Y) `(LG-DRAW-VECTOR ,X ,Y))
+(defmacro lg-end-vector (x y) `(lg-draw-vector ,x ,y))
 
 
 

@@ -6,13 +6,13 @@
     #+gcl (compile eval)
     #-gcl (:compile-toplevel :execute)
 
-  (defmacro f (op &rest args)
-    `(the fixnum (,op ,@ (mapcar #'(lambda (x) `(the fixnum ,x)) args) )))
+    (defmacro f (op &rest args)
+      `(the fixnum (,op ,@ (mapcar #'(lambda (x) `(the fixnum ,x)) args) )))
 
-  (defmacro fb (op &rest args)
-    `(,op ,@ (mapcar #'(lambda (x) `(the fixnum ,x)) args) ))
+    (defmacro fb (op &rest args)
+      `(,op ,@ (mapcar #'(lambda (x) `(the fixnum ,x)) args) ))
 
-  )
+    )
 
 (defun $bt()
   (sloop for v in baktrcl
@@ -49,18 +49,18 @@
     (setq params (aref ar (f- m 3)))
     (setq backtr (aref ar (f- m 4)))
     (setq bdlist (if (< m (fill-pointer ar)) (aref ar m) bindlist))
-   ; (setq lineinfo (get-lineinfo backtr))
+					; (setq lineinfo (get-lineinfo backtr))
     (setq lineinfo (if ( < m (fill-pointer ar))
-	      (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
-	      (get-lineinfo (bak-top-form *last-meval1-form*))))
-;    #+if-you-use-baktrcl 
-;	  (if ( < m (fill-pointer ar))
-;	      (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
-;	    (or (get-lineinfo (bak-top-form *last-meval1-form*
-;					    ;baktrcl
-;					    ))
-;		;(get-lineinfo (bak-top-form (cdr baktrcl)))
-;		))
+		       (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
+		       (get-lineinfo (bak-top-form *last-meval1-form*))))
+    ;;    #+if-you-use-baktrcl 
+    ;;	  (if ( < m (fill-pointer ar))
+    ;;	      (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
+    ;;	    (or (get-lineinfo (bak-top-form *last-meval1-form*
+    ;;					    ;baktrcl
+    ;;					    ))
+    ;;		;(get-lineinfo (bak-top-form (cdr baktrcl)))
+    ;;		))
     (values fname vals params backtr lineinfo bdlist)
     ))
 
@@ -74,11 +74,11 @@
 		      ($sconcat  fname "("))
 		  st)
 	   (sloop for v on params for w in vals
-		   do (setq val ($sconcat w))
-		   (if (> (length val) 100)
-		       (setq val ($sconcat (subseq val 0 100) "...")))
-		   (format st "~(~a~)=~a~a" ($sconcat (car v)) val
-			   (if (cdr v) "," "")))
+		  do (setq val ($sconcat w))
+		  (if (> (length val) 100)
+		      (setq val ($sconcat (subseq val 0 100) "...")))
+		  (format st "~(~a~)=~a~a" ($sconcat (car v)) val
+			  (if (cdr v) "," "")))
 	   (princ ")" st)
 	   (and lineinfo
 		(format st "(~a line ~a)"
@@ -90,18 +90,18 @@
 ;; these are in the system package in gcl...
 #-gcl
 (progn 'compile
-;; return path as a string  or nil if none.
-;#+nil
-;(defun stream-name (path)
-;  (let ((tem (errset (namestring (pathname path)))))
-;    (car tem)))
+       ;; return path as a string  or nil if none.
+       ;;#+nil
+       ;;(defun stream-name (path)
+       ;;  (let ((tem (errset (namestring (pathname path)))))
+       ;;    (car tem)))
 
        (defun break-call (key args prop &aux fun )
 	 (setq fun (complete-prop key 'keyword prop))
 	 (setq key fun)
 	 (or fun (return-from break-call nil))
-	; jfa commented out the following line. Did it ever work?
-	;#+clisp (eval '(setq *break-env* (the-environment)))
+					; jfa commented out the following line. Did it ever work?
+					;#+clisp (eval '(setq *break-env* (the-environment)))
 	 (setq fun (get fun prop))
 	 (unless (symbolp fun)
 	   (let ((gen (gensym)))
@@ -109,7 +109,7 @@
 	     (setq fun gen)))
 	 (cond (fun
 		(setq args (cons fun args))
-		; jfa temporary hack
+					; jfa temporary hack
 		#+gcl(evalhook args nil nil *break-env*)
 		#-gcl(eval args)
 		)
@@ -164,7 +164,7 @@
 
 (defun step-into (&optional (n 1))
   ;;FORM is the next form about to be evaluated.
-   n
+  n
   (or *break-points* (init-break-points))
   (setq *break-step* 'break-step-into)
   :resume)
@@ -190,7 +190,7 @@
 ;; These following functions, when they are the value of *break-step*
 ;; are invoked by an inner hook in eval.   They may choose to stop
 ;; things.
-(defvar *BREAK-STEP* nil)
+(defvar *break-step* nil)
 (defun break-step-into (form &optional env)
   (let ((fun (current-step-fun)))
     (let ((line-info (set-full-lineinfo fun)))
@@ -199,9 +199,9 @@
 
 (defun break-step-next (form &optional env)
   (let ((fun (current-step-fun)))
-      (cond ((eql (cdr *step-next*) fun)
-	     (let ((line-info (set-full-lineinfo fun )))
-	       (maybe-break form line-info fun env))))))
+    (cond ((eql (cdr *step-next*) fun)
+	   (let ((line-info (set-full-lineinfo fun )))
+	     (maybe-break form line-info fun env))))))
 
 (defvar *lineinfo-array-internal* nil)
 ;; the lineinfo for a function will be a vector of forms
@@ -219,8 +219,8 @@
 		    (vector-push (car te) *lineinfo-array-internal*)
 		    (walk-get-lineinfo body  *lineinfo-array-internal*)))
 	     (cond ((> (fill-pointer *lineinfo-array-internal*) 0)
-			    (setf (get fname 'lineinfo)
-				  (copy-seq *lineinfo-array-internal*)))
+		    (setf (get fname 'lineinfo)
+			  (copy-seq *lineinfo-array-internal*)))
 		   (t (setf (get fname 'lineinfo) nil)))))))
 
 (defun walk-get-lineinfo (form ar &aux (i 0) tem)
@@ -265,15 +265,15 @@
 	 finally
 	 (if all
 	     (return-from split-string
-			      (cons
-			       (make-array (setq l (length all))
-					   :fill-pointer l
-                                           :adjustable t
-					   :initial-contents (nreverse all)
-					   :element-type
-                                         ' #.(array-element-type "ab")
-                                    )
-			       (split-string string bag start))))))
+	       (cons
+		(make-array (setq l (length all))
+			    :fill-pointer l
+			    :adjustable t
+			    :initial-contents (nreverse all)
+			    :element-type
+			    ' #.(array-element-type "ab")
+			    )
+		(split-string string bag start))))))
 
 (declaim (special *mread-prompt*))
 
@@ -282,8 +282,8 @@
 ;; we just flush it?  Can probably get rid of the &aux stuff too.
 
 (defun dbm-read (&optional (stream *standard-input*) (eof-error-p t)
-			   (eof-value nil) repeat-if-newline  &aux tem  ch
-			   (mprompt *mread-prompt*) (*mread-prompt* ""))
+		 (eof-value nil) repeat-if-newline  &aux tem  ch
+		 (mprompt *mread-prompt*) (*mread-prompt* ""))
 
   (when (> (length mprompt) 0)
     (fresh-line *standard-output*)
@@ -295,15 +295,15 @@
   ;; Read a character to see what we should do.
   (tagbody
    top
-   (setq ch (read-char stream eof-error-p eof-value))
-   (cond ((or (eql ch #\newline) (eql ch #\return))
-	  (if (and repeat-if-newline *last-dbm-command*)
-	      (return-from dbm-read *last-dbm-command*)) 
-	  (go top))
-	 ((eq ch eof-value)
-	  (return-from dbm-read eof-value)))
+     (setq ch (read-char stream eof-error-p eof-value))
+     (cond ((or (eql ch #\newline) (eql ch #\return))
+	    (if (and repeat-if-newline *last-dbm-command*)
+		(return-from dbm-read *last-dbm-command*)) 
+	    (go top))
+	   ((eq ch eof-value)
+	    (return-from dbm-read eof-value)))
      ;; Put that character back, so we can reread the line correctly.
-   (unread-char ch stream))
+     (unread-char ch stream))
 
   ;; Figure out what to do
   (cond ((eql #\: ch)
@@ -333,7 +333,7 @@
 	 ;; First, read and discard the #\? since we don't need it anymore.
 	 (read-char stream)
 	 (let ((next (peek-char nil stream nil)))
-	   (cond ((member next '(#\Space #\Tab))
+	   (cond ((member next '(#\space #\tab))
 		  ;; Got "? <stuff>".  This means describe.
 		  (let* ((line (string-trim '(#\space #\tab #\; #\$)
 					    (subseq (read-line stream eof-error-p eof-value) 1))))
@@ -359,17 +359,17 @@
 	 (let ((in (get-instream stream)))
 	   (and in
 		(progn
-		 (multiple-value-bind
-		  (line pos)
-		  (read-from-string li nil nil)
-		  (let ((file (read-from-string li nil nil
-						:start pos)))
-		    (cond ((and (stringp file) (fixnump line))
-			   (setf (instream-stream-name in)
-				 file)
-			   (setf (instream-line in)
-				 line)))
-		    )))))))
+		  (multiple-value-bind
+			(line pos)
+		      (read-from-string li nil nil)
+		    (let ((file (read-from-string li nil nil
+						  :start pos)))
+		      (cond ((and (stringp file) (fixnump line))
+			     (setf (instream-stream-name in)
+				   file)
+			     (setf (instream-line in)
+				   line)))
+		      )))))))
 
   )
 
@@ -414,34 +414,34 @@
     (catch 'step-continue
       (catch *quit-tag*
 	(unwind-protect
-	    (do () (())
-		(format *debug-io*
-		    "~a~&~@[(~a:~a) ~]~a"  *prompt-prefix* 
-		    (unless (stringp at) "dbm")
-		    (length *quit-tags*) *prompt-suffix*)
-	        (finish-output *debug-io*)
-		(setq val
-		      (catch 'macsyma-quit
-			(let ((res (dbm-read *debug-io*  nil *top-eof* t)))
-			  (declare (special *mread-prompt*))
-			  (cond ((and (consp res) (keywordp (car res)))
-				 (let ((value (break-call (car res)
-							  (cdr res) 'break-command)))
-				   (cond ((eq value :resume) (return)))
-				   ))
-				(t
-				 (setq $__ (nth 2 res))
-				 (setq $% (meval* $__))
-				 (SETQ $_ $__)
-				 (displa $%)
-				 ))
-			  nil
-			  )))
-		(and (eql val 'top)
-		     (throw-macsyma-top))
-		      )
-	 (restore-bindings)
-	)))))
+	     (do () (())
+	       (format *debug-io*
+		       "~a~&~@[(~a:~a) ~]~a"  *prompt-prefix* 
+		       (unless (stringp at) "dbm")
+		       (length *quit-tags*) *prompt-suffix*)
+	       (finish-output *debug-io*)
+	       (setq val
+		     (catch 'macsyma-quit
+		       (let ((res (dbm-read *debug-io*  nil *top-eof* t)))
+			 (declare (special *mread-prompt*))
+			 (cond ((and (consp res) (keywordp (car res)))
+				(let ((value (break-call (car res)
+							 (cdr res) 'break-command)))
+				  (cond ((eq value :resume) (return)))
+				  ))
+			       (t
+				(setq $__ (nth 2 res))
+				(setq $% (meval* $__))
+				(setq $_ $__)
+				(displa $%)
+				))
+			 nil
+			 )))
+	       (and (eql val 'top)
+		    (throw-macsyma-top))
+	       )
+	  (restore-bindings)
+	  )))))
 
 (defun break-quit (&optional (level 0)
                    &aux (current-level (length *break-level*)))
@@ -450,10 +450,10 @@
     (let ((x (nth (- current-level level 1) *quit-tags*)))
       (if (eq (cdr x) 'macsyma-quit)
 	  (throw 'macsyma-quit 'top)
-	(throw (cdr x) (cdr x)))
+	  (throw (cdr x) (cdr x)))
       ))
   (throw 'macsyma-quit 'top)
-)
+  )
 
 
 (defun break-current ()
@@ -471,7 +471,7 @@
   (cond (key
 	 (if (keywordp key)
 	     (dolist (v (complete-prop key 'keyword 'break-doc t))
-		     (format t "~&~%~(~s~)   ~a" v (get v 'break-doc)))))
+	       (format t "~&~%~(~s~)   ~a" v (get v 'break-doc)))))
 	(t
 	 (sloop for vv in-package 'keyword
 		when (get vv 'break-command)
@@ -482,7 +482,7 @@
 --------     --------------------------------------")   
 		(sloop for vv in all
 		       do (format t "~% ~(~s~)     ~a" (car vv) (cdr vv)))
-            ))))
+		))))
 
 (def-break :help 'break-help "Print help on a break command or with no arguments on all break commands")
 (def-break :_none #'(lambda()) nil)
@@ -490,7 +490,7 @@
   "Like :step, except that subroutine calls are stepped over")
 (def-break :step  'step-into
   "Step program until it reaches a new source line")
-;(def-break :location  'loc "" )
+;;(def-break :location  'loc "" )
 (def-break :quit 'break-quit "Quit this level")
 (def-break :top  #'(lambda( &rest l)l (throw 'macsyma-quit 'top)) "Throw to top level")
 
@@ -516,11 +516,11 @@
 ;; 
 
 (defun break-function (fun &optional (li 0)  absolute  &aux i tem info form
-			   fun-line
-			   )
+		       fun-line
+		       )
   (unless debug
-	  (format t "~&Turning on debugging debugmode(true)")
-	  (setq debug t))
+    (format t "~&Turning on debugging debugmode(true)")
+    (setq debug t))
   (cond ((or (stringp fun)
 	     (and (mstringp fun) (setq fun ($sconcat fun))))
 	 (let ((file fun)  start)
@@ -532,26 +532,26 @@
 			    (fb >= li (setq start (aref tem 0)))
 			    (fb <= li (f + start (length (the vector tem)))))
 		  do (setq fun vv li (f - li start -1 ))
-		 ; (print (list 'found fun fun li  (aref tem 0)))
+					; (print (list 'found fun fun li  (aref tem 0)))
 		  (return-from joe nil)
 		  finally
 		  (format t "No line info for ~a " fun)
 		  (return-from break-function nil)))))
   (setq fun ($concat fun))
-  ;(print (list 'fun fun 'hi))
+					;(print (list 'fun fun 'hi))
   (cond ((and (setq tem (second (mgetl  fun '(mexpr mmacro))))
 	      (setq info (get-lineinfo (setq form (third tem))))
 	      (eq (third info) 'src))
 	 (setq fun-line (fifth info))
 	 (or (fixnump fun-line) (setq fun-line (line-info-line info)))
-	 ;(print (list 'fun-line fun-line))
+					;(print (list 'fun-line fun-line))
 	 (setq form (first-form-line
-			    form
-			    (setq i (+
-				     (if absolute 0 fun-line) li))))
+		     form
+		     (setq i (+
+			      (if absolute 0 fun-line) li))))
 	 (unless form
-		 (if (eql li 0)
-		     (return-from break-function (break-function fun 1)))
+	   (if (eql li 0)
+	       (return-from break-function (break-function fun 1)))
            (format t "~& No instructions recorded for this line ~a of ~a" li
 		   ($sconcat fun))
 	   (return-from break-function nil))
@@ -559,21 +559,21 @@
 						    :file-line i
 						    :file (line-info-file info)
 						    :function fun))))
-		(format t "~&Bkpt ~a for ~a (in ~a line ~a) ~%"
-			n ($sconcat fun) (line-info-file info) i)
-		n
-	      ))
+	   (format t "~&Bkpt ~a for ~a (in ~a line ~a) ~%"
+		   n ($sconcat fun) (line-info-file info) i)
+	   n
+	   ))
 	(t (format t "No line info for ~a " fun))))
 
 
-  ;; note  need to make the redefine function, fixup the break point
-  ;; list.. 
+;; note  need to make the redefine function, fixup the break point
+;; list.. 
 
 (defun make-break-point (fun ar i)
   (declare (fixnum i) (type (vector t) ar))
   (let* ((tem (aref ar i))
 	 (linfo (get-lineinfo tem)))
-	;(defstruct (bkpt (:type list)) form file file-line function)    
+					;(defstruct (bkpt (:type list)) form file file-line function)    
     (and linfo (list tem (cadr linfo) (car linfo) fun))))
 
 (defun dbm-up (n &aux (cur *current-frame*) (m (length *mlambda-call-stack*)))
@@ -599,7 +599,7 @@
   at)
 
 (defun short-name (name)
-  (let ((Pos (position #\/ name :from-end t)))
+  (let ((pos (position #\/ name :from-end t)))
     (if pos (subseq name (f + 1 pos)) name)))
 
 (defun show-break-point (n &aux disabled)
@@ -619,32 +619,32 @@
 (defun relative-line (fun l)
   (let ((info (set-full-lineinfo fun)))
     (if info (f - l (aref info 0))
-      0)))
+	0)))
 
 (defun iterate-over-bkpts (l action)
   (dotimes (i (length *break-points*))
-	   (if (or (member i l)
-		   (null l))
-	       (let ((tem (aref *break-points* i)))
-		 (setf (aref *break-points* i)
-		       (case action
-			 (:delete
-			  (unless (car tem)
-			    (pop tem))	; disabled or already deleted bkpt
-			  (if tem (setf (get (bkpt-function tem) 'break-points)
-					(delete i (get (bkpt-function tem) 'break-points))))
-			  nil)
-			 (:enable
-			  (if (eq (car tem) nil) (cdr tem) tem))
-			 (:disable
-			  (if (and tem (not (eq (car tem) nil)))
-			      (cons nil tem)
-			    tem))
-			 (:show
-			  (when tem (show-break-point i)
-				(terpri))
-			  tem
-			  )))))))
+    (if (or (member i l)
+	    (null l))
+	(let ((tem (aref *break-points* i)))
+	  (setf (aref *break-points* i)
+		(case action
+		  (:delete
+		   (unless (car tem)
+		     (pop tem))	    ; disabled or already deleted bkpt
+		   (if tem (setf (get (bkpt-function tem) 'break-points)
+				 (delete i (get (bkpt-function tem) 'break-points))))
+		   nil)
+		  (:enable
+		   (if (eq (car tem) nil) (cdr tem) tem))
+		  (:disable
+		   (if (and tem (not (eq (car tem) nil)))
+		       (cons nil tem)
+		       tem))
+		  (:show
+		   (when tem (show-break-point i)
+			 (terpri))
+		   tem
+		   )))))))
 
 ;; get the most recent function on the stack with step info.
 
@@ -661,25 +661,25 @@
 
 
 (def-break :info #'(lambda (&optional type)
-	 (case type
-	   (:bkpt  (iterate-over-bkpts nil :show)(values))
-	   (otherwise
-	    (format *debug-io* "usage: :info :bkpt -- show breakpoints")
-	    ))) "Print information about item")
+		     (case type
+		       (:bkpt  (iterate-over-bkpts nil :show)(values))
+		       (otherwise
+			(format *debug-io* "usage: :info :bkpt -- show breakpoints")
+			))) "Print information about item")
 
 
 
 (defmacro lisp-quiet (&rest l)
-   (setq *mread-prompt* "")
-   (eval (cons 'progn l)))
+  (setq *mread-prompt* "")
+  (eval (cons 'progn l)))
 
 (def-break :lisp-quiet 'lisp-quiet "Evaluate the lisp form without printing a prompt")
 
 (def-break :lisp 'lisp-eval "Evaluate the lisp form following on the line")
 (defmacro lisp-eval (&rest l)
   (dolist  (v (multiple-value-list (eval (cons 'progn l))))
-	   (fresh-line *standard-output*)
-	   (princ v))
+    (fresh-line *standard-output*)
+    (princ v))
   )
    
 (def-break :delete  #'(lambda (&rest l) (iterate-over-bkpts l :delete)(values))
@@ -693,8 +693,8 @@ Otherwise the current frame." )
 
 
 (def-break :disable 
-      #'(lambda (&rest l) (iterate-over-bkpts l :disable)(values))
-      "Disable the specified breakpoints, or all if none are specified")
+    #'(lambda (&rest l) (iterate-over-bkpts l :disable)(values))
+  "Disable the specified breakpoints, or all if none are specified")
 (def-break :enable  #'(lambda (&rest l) (iterate-over-bkpts l :enable)(values))
   "Enable the specified breakpoints, or all if none are specified" )
 
@@ -714,8 +714,8 @@ a FILE and LINE is the offset from the beginning of the file." )
   (declare (special *last-dbl-break*))
   (cond ((null name)
 	 (if *last-dbl-break*
-		(let ((fun  (nth 3 *last-dbl-break*)))
-		  (break-function fun (nth 2 *last-dbl-break*) t)))
+	     (let ((fun  (nth 3 *last-dbl-break*)))
+	       (break-function fun (nth 2 *last-dbl-break*) t)))
 	 )
 	(t (eval `(break-function ',name ,@l)))))
 
@@ -727,11 +727,11 @@ a FILE and LINE is the offset from the beginning of the file." )
 ;;========
 (defun get-lineinfo (form )
   (cond ((consp form)
-	  (if (consp (cadar form))
-	      (cadar form)
-	    (if (consp (caddar form))
-		(caddar form)
-		nil)))
+	 (if (consp (cadar form))
+	     (cadar form)
+	     (if (consp (caddar form))
+		 (caddar form)
+		 nil)))
 	(t nil)))
 
 ;; restore-bindings from an original binding list.
@@ -747,19 +747,19 @@ a FILE and LINE is the offset from the beginning of the file." )
 	 (setq var (car v))
 	 (push var *diff-bindlist*)
 	 (push (symbol-value var) *diff-mspeclist*)
-	 (COND ((EQ (CAR MSPECLIST) MUNBOUND)
-		(MAKUNBOUND VAR) (DELQ VAR $VALUES 1))
-	       (T (LET ((MUNBINDP T)) (MSET VAR (CAR MSPECLIST)))))
-	 (SETQ MSPECLIST (CDR MSPECLIST) BINDLIST (CDR BINDLIST))))
+	 (cond ((eq (car mspeclist) munbound)
+		(makunbound var) (delq var $values 1))
+	       (t (let ((munbindp t)) (mset var (car mspeclist)))))
+	 (setq mspeclist (cdr mspeclist) bindlist (cdr bindlist))))
 
 (defun $frame (&optional (n 0) (print-frame-number t))
   (restore-bindings)
   (multiple-value-bind (fname vals params backtr lineinfo bdlist)
-   (print-one-frame n print-frame-number)
-   backtr params vals fname
-   (remove-bindings bdlist)
-   (when lineinfo
-	 (fresh-line *debug-io*)
-	 (format *debug-io* "~a:~a::~%" (cadr lineinfo)
-		 (+ 0 (car lineinfo))))
-   (values)))
+      (print-one-frame n print-frame-number)
+    backtr params vals fname
+    (remove-bindings bdlist)
+    (when lineinfo
+      (fresh-line *debug-io*)
+      (format *debug-io* "~a:~a::~%" (cadr lineinfo)
+	      (+ 0 (car lineinfo))))
+    (values)))

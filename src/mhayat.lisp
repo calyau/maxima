@@ -50,7 +50,7 @@
 (declare-top (special tlist ivars key-vars last-exp))
 
 
-		(Comment Subtitle HAYAT macros)
+(comment subtitle hayat macros)
 
 (defmacro pszero (var pw) var pw ''(0 . 1)) ; until constants are fixed
 
@@ -59,8 +59,8 @@
 (defmacro pscoefp (e) `(null (psp ,e)))
 
 (defmacro psquo (ps1 &optional ps2)
-   (ifn ps2 `(psexpt ,ps1 (rcmone))
-      `(pstimes ,ps1 (psexpt ,ps2 (rcmone)))))
+  (ifn ps2 `(psexpt ,ps1 (rcmone))
+       `(pstimes ,ps1 (psexpt ,ps2 (rcmone)))))
 
 (defmacro pslog-gvar (gvar) `(pslog2 (get-inverse ,gvar)))
 
@@ -97,25 +97,25 @@
 (defmacro term (e c) `(cons ,e ,c))
 
 (defmacro make-ps (var-or-data-poly pdata-or-terms
-				      &optional (terms () var-pdata-case?))
-   (if var-pdata-case?
-       `(cons 'ps (cons ,var-or-data-poly (cons ,pdata-or-terms ,terms)))
-       `(cons 'ps (cons (gvar-o ,var-or-data-poly)
-			(cons (poly-data ,var-or-data-poly)
-			      ,pdata-or-terms)))))
+		   &optional (terms () var-pdata-case?))
+  (if var-pdata-case?
+      `(cons 'ps (cons ,var-or-data-poly (cons ,pdata-or-terms ,terms)))
+      `(cons 'ps (cons (gvar-o ,var-or-data-poly)
+		  (cons (poly-data ,var-or-data-poly)
+		   ,pdata-or-terms)))))
 
 ;; Be sure that PS has more than one term when deleting the first with del-lt
 
 (defmacro del-lt (ps) `(rplacd (cddr ,ps) (cddddr ,ps)))
 
 (defmacro add-term (terms &optional (term-or-e nil adding?) (c nil e-c?))
-	  (cond ((null adding?) `(rplacd ,terms nil))
-		((null e-c?)
-		 `(rplacd ,terms (cons ,term-or-e (cdr ,terms))))
-		(`(rplacd ,terms (cons (cons ,term-or-e ,c) (cdr ,terms))))))
+  (cond ((null adding?) `(rplacd ,terms nil))
+	((null e-c?)
+	 `(rplacd ,terms (cons ,term-or-e (cdr ,terms))))
+	(`(rplacd ,terms (cons (cons ,term-or-e ,c) (cdr ,terms))))))
 
 (defmacro add-term-&-pop (terms &rest args)
-   `(progn (add-term ,terms . ,args) (setq ,terms (n-term ,terms))))
+  `(progn (add-term ,terms . ,args) (setq ,terms (n-term ,terms))))
 
 ;; Keep both def'ns around until a new hayat is stable.
 
@@ -128,15 +128,15 @@
 (defmacro getdiff (var)  `(get (car ,var) 'diff))
 
 (defmacro lt-poly (p)
-	  `(make-ps (gvar-o ,p) (poly-data ,p)
-		      (list (lt (terms ,p)))))
+  `(make-ps (gvar-o ,p) (poly-data ,p)
+    (list (lt (terms ,p)))))
 
 (defmacro oper-name (func)  `(if (atom ,func) ,func (caar ,func)))
 				     
 (defmacro oper-namep (oper-form) `(atom ,oper-form))
 
 (defmacro integer-subscriptp (subscr-fun)
-	  `(apply 'and (mapcar #'integerp (cdr ,subscr-fun))))
+  `(apply 'and (mapcar #'integerp (cdr ,subscr-fun))))
 
 (defmacro mlet (varl vals comp)
   `(mbinding (,varl ,vals) ,comp))
@@ -168,11 +168,11 @@
 
 ;;; The following two macros are now functions.
 
-; (defmacro push-pw (datum pw)
-;	  `(rplaca (cdr ,datum) (cons ,pw (cadr ,datum))))
+;; (defmacro push-pw (datum pw)
+;;	  `(rplaca (cdr ,datum) (cons ,pw (cadr ,datum))))
 
-; (defmacro pop-pw (datum)
-;	  `(rplaca (cdr ,datum) (cdadr ,datum)))
+;; (defmacro pop-pw (datum)
+;;	  `(rplaca (cdr ,datum) (cdadr ,datum)))
 
 (defmacro datum-var (datum) `(car ,datum))
 
@@ -209,10 +209,10 @@
 (defmacro first-datum () '(car tlist))
 
 (defmacro get-datum (expr &optional not-canonicalized?)
-   (if not-canonicalized? `(assol ,expr tlist)
-      `(zl-ASSOC ,expr tlist)))
+  (if not-canonicalized? `(assol ,expr tlist)
+      `(zl-assoc ,expr tlist)))
 
-(defmacro var-data (var) `(zl-ASSOC ,var tlist))
+(defmacro var-data (var) `(zl-assoc ,var tlist))
 
 (defmacro gvar-data (gvar) `(var-data (gvar->var ,gvar)))
 
@@ -239,46 +239,46 @@
 (defmacro getexp-lc (fun) `(cdr (getexp-lt ,fun)))
 
 (defmacro let-pw (datum pw comp)
-	  `(let ((d ,datum))
-		(prog2 (push-pw d ,pw)
-		       ,comp
-		       (pop-pw d))))
+  `(let ((d ,datum))
+    (prog2 (push-pw d ,pw)
+	,comp
+      (pop-pw d))))
 
 (defmacro if-pw (pred datum pw comp)
-	  `(let ((p ,pred) (d ,datum))
-		(prog2 (and p (push-pw d ,pw))
-		       ,comp
-		       (and p (pop-pw d ,pw)))))
+  `(let ((p ,pred) (d ,datum))
+    (prog2 (and p (push-pw d ,pw))
+	,comp
+      (and p (pop-pw d ,pw)))))
 
 (defmacro tlist-mapc (datum-var &rest comp)
-	  `(mapc #'(lambda (,datum-var) . ,comp) tlist))
+  `(mapc #'(lambda (,datum-var) . ,comp) tlist))
 
 (defmacro find-lexp (exp &optional e-start errflag accum-vars)
-	  `(get-lexp ,exp ,e-start ,errflag ,(and accum-vars '(ncons t))))
+  `(get-lexp ,exp ,e-start ,errflag ,(and accum-vars '(ncons t))))
 
 (defmacro tay-err (msg) `(throw 'tay-err (list ,msg last-exp)))
 
 (defmacro zero-warn (exp)
   `(mtell "~%~M~%Assumed to be zero in TAYLOR~%"
-	  `((MLABLE) () ,,exp)))
+    `((mlable) () ,,exp)))
 
 
 (defmacro merrcatch (form) `(catch 'errorsw ,form))
 
-;There is a duplicate version of this in MAXMAC
-;(defmacro infinities () ''($INF $MINF $INFINITY))
+;;There is a duplicate version of this in MAXMAC
+;;(defmacro infinities () ''($INF $MINF $INFINITY))
 
 ;; Macros for manipulating expansion data in the expansion table.
 
 (defmacro exp-datum-lt (fun exp-datum)
-	  `(if (atom (cadr ,exp-datum))
-	       (funcall (cadr ,exp-datum) (cdr ,fun))
-	       (copy (cadr ,exp-datum))))
+  `(if (atom (cadr ,exp-datum))
+    (funcall (cadr ,exp-datum) (cdr ,fun))
+    (copy (cadr ,exp-datum))))
 
 (defmacro exp-datum-le (fun exp-datum)  `(e (exp-datum-lt ,fun ,exp-datum)))
 
 (defmacro exp-fun (exp-datum)
-	  `(if (atom (car ,exp-datum)) (car ,exp-datum) (caar ,exp-datum)))
+  `(if (atom (car ,exp-datum)) (car ,exp-datum) (caar ,exp-datum)))
 
 ;;; These macros are used to access the various extendable
 ;;; portions of a polynomial.
@@ -288,10 +288,10 @@
 (defmacro ext-args (p) `(caddr (poly-data ,p)))
 
 (defmacro extendablep (p)
-	  `((lambda (d)
-		   (or (null (car d))
-		       (cdr d)))
-	   (poly-data ,p)))
+  `((lambda (d)
+      (or (null (car d))
+	  (cdr d)))
+    (poly-data ,p)))
 
 (defmacro exactp (p) `(null (trunc-lvl ,p)))
 
@@ -302,11 +302,11 @@
 (defmacro get-ps-form (fun) `(get ,fun 'sp2))
 
 (defmacro term-disrep (term p) `(m* (srdis (c ,term))
-				    (m^ (get-inverse (gvar ,p))
-					(edisrep (e ,term)))))
+				 (m^ (get-inverse (gvar ,p))
+				  (edisrep (e ,term)))))
 
 
-		(comment coefficient arithmetic)
+(comment coefficient arithmetic)
 
 (defmacro rczero ()  ''(0 . 1))
 
@@ -319,23 +319,23 @@
 (defmacro rcmone () ''(-1 . 1))
 
 (defmacro rczerop (r)
-	  `(signp e (car ,r)))
+  `(signp e (car ,r)))
 
 (defmacro rcintegerp (c) `(and (integerp (car ,c)) (equal (cdr ,c) 1)))
 
 (defmacro rcpintegerp (c)
   `(and (rcintegerp ,c)
-	;(signp g (car ,c))
-	;What is this obsession with signp?  Even in maclisp it's slower
-	; and more code, since it doesn't assume the thing is a number.
-	;The car is integerp, after all (as implied by rcintegerp).
-	(plusp (car ,c))))
+					;(signp g (car ,c))
+					;What is this obsession with signp?  Even in maclisp it's slower
+					; and more code, since it doesn't assume the thing is a number.
+					;The car is integerp, after all (as implied by rcintegerp).
+    (plusp (car ,c))))
 
 (defmacro rcmintegerp (c)
   `(and (rcintegerp ,c)
-	;(signp l (car ,c))
-	;Similar to above.
-	(minusp (car ,c))))
+					;(signp l (car ,c))
+					;Similar to above.
+    (minusp (car ,c))))
 
 (defmacro rcplus (x y) `(ratplus ,x ,y))
 
@@ -353,7 +353,7 @@
 
 (defmacro rcderivx (x) `(ratdx1 (car ,x) (cdr ,x)))
 
-		(comment exponent arithmetic)
+(comment exponent arithmetic)
 
 ;; These macros are also used in BMT;PADE and RAT;NALGFA.
 
@@ -362,12 +362,12 @@
 (defmacro inf nil nil)
 
 (defmacro e- (e1 &optional (e2 nil 2e?))
-	  (cond (2e? `(ediff ,e1 ,e2))
-		(`(cons (f- (car ,e1)) (cdr ,e1)))))
+  (cond (2e? `(ediff ,e1 ,e2))
+	(`(cons (f- (car ,e1)) (cdr ,e1)))))
 
 (defmacro e// (e1 &optional (e2 nil 2e?))
-	  (cond (2e? `(equo ,e1 ,e2))
-		(`(erecip ,e1))))
+  (cond (2e? `(equo ,e1 ,e2))
+	(`(erecip ,e1))))
 
 (defmacro e>= (e1 e2) `(or (e> ,e1 ,e2) (e= ,e1 ,e2)))
 

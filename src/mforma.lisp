@@ -11,9 +11,9 @@
 (in-package "MAXIMA")
 (macsyma-module mforma macro)
 
-;#+ti
-;(eval-when (compile)
-;  (load "cl-maxima-source:maxima;mforma.lisp"))
+;;#+ti
+;;(eval-when (compile)
+;;  (load "cl-maxima-source:maxima;mforma.lisp"))
 
 
 ;;; A mini version of FORMAT for macsyma error messages, and other
@@ -50,383 +50,384 @@
 ;; for an interpreter loop. I only do this to save address space (sort of
 ;; kidding.) -gjc
 
-;#-ti
-;(DEFMACRO DEF-MFORMAT (&OPTIONAL  #-ti (type '||)
-;		       #+ti (TYPE  (intern "")))
-;  ;; Call to this macro at head of file.
-;  (PUTPROP TYPE NIL 'MFORMAT-OPS)
-;  (PUTPROP TYPE NIL 'MFORMAT-STATE-VARS)
-;  `(PROGN 'COMPILE
-;	  (DEFMACRO ,(SYMBOLCONC 'DEF-MFORMAT-OP TYPE)
-;	    (CHAR &REST BODY)
-;	    `(+DEF-MFORMAT-OP ,',TYPE ,CHAR ,@BODY))
-;	  (DEFMACRO ,(SYMBOLCONC 'DEF-MFORMAT-VAR TYPE)
-;	    (VAR VAL INIT)
-;	    `(+DEF-MFORMAT-VAR ,',TYPE ,VAR ,VAL ,INIT))
-;	  (DEFMACRO ,(SYMBOLCONC 'MFORMAT-LOOP TYPE)
-;	    (&REST ENDCODE)
-;	    `(+MFORMAT-LOOP ,',TYPE ,@ENDCODE))))
+;;#-ti
+;;(DEFMACRO DEF-MFORMAT (&OPTIONAL  #-ti (type '||)
+;;		       #+ti (TYPE  (intern "")))
+;;  ;; Call to this macro at head of file.
+;;  (PUTPROP TYPE NIL 'MFORMAT-OPS)
+;;  (PUTPROP TYPE NIL 'MFORMAT-STATE-VARS)
+;;  `(PROGN 'COMPILE
+;;	  (DEFMACRO ,(SYMBOLCONC 'DEF-MFORMAT-OP TYPE)
+;;	    (CHAR &REST BODY)
+;;	    `(+DEF-MFORMAT-OP ,',TYPE ,CHAR ,@BODY))
+;;	  (DEFMACRO ,(SYMBOLCONC 'DEF-MFORMAT-VAR TYPE)
+;;	    (VAR VAL INIT)
+;;	    `(+DEF-MFORMAT-VAR ,',TYPE ,VAR ,VAL ,INIT))
+;;	  (DEFMACRO ,(SYMBOLCONC 'MFORMAT-LOOP TYPE)
+;;	    (&REST ENDCODE)
+;;	    `(+MFORMAT-LOOP ,',TYPE ,@ENDCODE))))
 
 
 
-(DEFMACRO DEF-MFORMAT (&OPTIONAL  
-		        (TYPE  (intern "")))
+(defmacro def-mformat (&optional  
+		       (type  (intern "")))
   ;; Call to this macro at head of file.
-  (PUTPROP TYPE NIL 'MFORMAT-OPS)
-  (PUTPROP TYPE NIL 'MFORMAT-STATE-VARS)
+  (putprop type nil 'mformat-ops)
+  (putprop type nil 'mformat-state-vars)
   `(eval-when (compile load eval)
-	  (DEFMACRO ,(SYMBOLCONC 'DEF-MFORMAT-OP TYPE)
-	    (CHAR &REST BODY)
-	    `(+DEF-MFORMAT-OP ,',TYPE ,CHAR ,@BODY))
-	  (DEFMACRO ,(SYMBOLCONC 'DEF-MFORMAT-VAR TYPE)
-	    (VAR VAL INIT)
-	    `(+DEF-MFORMAT-VAR ,',TYPE ,VAR ,VAL ,INIT))
-	  (DEFMACRO ,(SYMBOLCONC 'MFORMAT-LOOP TYPE)
-	    (&REST ENDCODE)
-	    `(+MFORMAT-LOOP ,',TYPE ,@ENDCODE))))
+    (defmacro ,(symbolconc 'def-mformat-op type)
+	(char &rest body)
+      `(+def-mformat-op ,',type ,char ,@body))
+    (defmacro ,(symbolconc 'def-mformat-var type)
+	(var val init)
+      `(+def-mformat-var ,',type ,var ,val ,init))
+    (defmacro ,(symbolconc 'mformat-loop type)
+	(&rest endcode)
+      `(+mformat-loop ,',type ,@endcode))))
 
 
-(defmacro +def-mformat-var (TYPE var val INIT-CONDITION)
-  (LET ()
+(defmacro +def-mformat-var (type var val init-condition)
+  (let ()
     ;; How about that bullshit LISPM conditionalization put in
     ;; by BEE? It is needed of course or else conses will go away. -gjc
-    (PUSH (LIST VAR VAL)
-	  (CDR (OR (ASSOC INIT-CONDITION
-			  (GET TYPE 'MFORMAT-STATE-VARS) :test #'equal)
-		   (CAR (PUSH (NCONS INIT-CONDITION)
-			      (GET TYPE 'MFORMAT-STATE-VARS)))))))
-  `',VAR)
+    (push (list var val)
+	  (cdr (or (assoc init-condition
+			  (get type 'mformat-state-vars) :test #'equal)
+		   (car (push (ncons init-condition)
+			      (get type 'mformat-state-vars)))))))
+  `',var)
 
-(defmacro +def-mformat-op (TYPE char &rest body)
-  ; can also be a list of CHAR's
-  (LET ()
-    (IF (ATOM CHAR) (SETQ CHAR (LIST CHAR)))
-    (PUSH (CONS CHAR BODY) (GET TYPE 'MFORMAT-OPS))
-    `',(MAKNAM (NCONC (EXPLODEN "MFORMAT-")
-		      (MAPCAR #'ASCII CHAR)))))
+(defmacro +def-mformat-op (type char &rest body)
+					; can also be a list of CHAR's
+  (let ()
+    (if (atom char) (setq char (list char)))
+    (push (cons char body) (get type 'mformat-ops))
+    `',(maknam (nconc (exploden "MFORMAT-")
+		      (mapcar #'ascii char)))))
 
-(DEFMACRO POP-MFORMAT-ARG ()
-  `(COND ((= ARG-INDEX N)
-	  (MAXIMA-ERROR "Ran out of mformat args" (LISTIFY N) 'FAIL-ACT))
-	 (T (PROGN (SETQ ARG-INDEX (f1+ ARG-INDEX))
-		   (ARG ARG-INDEX)))))
+(defmacro pop-mformat-arg ()
+  `(cond ((= arg-index n)
+	  (maxima-error "Ran out of mformat args" (listify n) 'fail-act))
+    (t (progn (setq arg-index (f1+ arg-index))
+	      (arg arg-index)))))
 
-(DEFMACRO LEFTOVER-MFORMAT-ARGS? ()
+(defmacro leftover-mformat-args? ()
   ;; To be called after we are done.
-  '(OR (= ARG-INDEX N)
-       (MAXIMA-ERROR "Extra mformat args" (LISTIFY N) 'FAIL-ACT)))
+  '(or (= arg-index n)
+    (maxima-error "Extra mformat args" (listify n) 'fail-act)))
 
-(DEFMACRO BIND-MFORMAT-STATE-VARS (TYPE &REST BODY)
-  `(LET ,(DO ((L NIL)
-	      (V (GET TYPE 'MFORMAT-STATE-VARS) (CDR V)))
-	     ((NULL V) L)
-	   (DO ((CONDS (CDR (CAR V)) (CDR CONDS)))
-	       ((NULL CONDS))
-	     (PUSH (CAR CONDS) L)))
-     ,@BODY))
+(defmacro bind-mformat-state-vars (type &rest body)
+  `(let ,(do ((l nil)
+	      (v (get type 'mformat-state-vars) (cdr v)))
+	     ((null v) l)
+	     (do ((conds (cdr (car v)) (cdr conds)))
+		 ((null conds))
+	       (push (car conds) l)))
+    ,@body))
 
-(DEFMACRO POP-MFORMAT-STRING ()
-  '(IF (NULL SSTRING) 
-       (MAXIMA-ERROR "Runout of MFORMAT string" NIL 'FAIL-ACT)
-       (POP sSTRING)))
+(defmacro pop-mformat-string ()
+  '(if (null sstring) 
+    (maxima-error "Runout of MFORMAT string" nil 'fail-act)
+    (pop sstring)))
 
-(DEFMACRO NULL-MFORMAT-STRING () '(NULL sSTRING))
-(DEFMACRO TOP-MFORMAT-STRING ()
-  '(IF (NULL sSTRING)
-       (MAXIMA-ERROR "Runout of MFORMAT string" NIL 'FAIL-ACT)
-       (CAR sSTRING)))
+(defmacro null-mformat-string () '(null sstring))
+(defmacro top-mformat-string ()
+  '(if (null sstring)
+    (maxima-error "Runout of MFORMAT string" nil 'fail-act)
+    (car sstring)))
 
-(DEFMACRO CDR-MFORMAT-STRING ()
-  `(SETQ sSTRING (CDR sSTRING)))
+(defmacro cdr-mformat-string ()
+  `(setq sstring (cdr sstring)))
 
-(DEFMACRO MFORMAT-DISPATCH-ON-CHAR (TYPE)
-  `(PROGN (COND ,@(MAPCAR #'(LAMBDA (PAIR)
-			      `(,(IF (ATOM (CAR PAIR))
-				     `(char= CHAR ,(CAR PAIR))
-				     `(OR-1 ,@(MAPCAR
-					       #'(LAMBDA (C)
-						   `(char= CHAR,C))
-					       (CAR PAIR))))
-				,@(CDR PAIR)))
-			  (GET TYPE 'MFORMAT-OPS))
+(defmacro mformat-dispatch-on-char (type)
+  `(progn (cond ,@(mapcar #'(lambda (pair)
+			      `(,(if (atom (car pair))
+				     `(char= char ,(car pair))
+				     `(or-1 ,@(mapcar
+					       #'(lambda (c)
+						   `(char= char,c))
+					       (car pair))))
+				,@(cdr pair)))
+			  (get type 'mformat-ops))
 		;; perhaps optimize the COND to use ">" "<".
 		(t
-		 (MAXIMA-ERROR "Unknown format op." (ascii char) 'FAIL-ACT)))
-	  ,@(MAPCAR #'(LAMBDA (STATE)
-			`(IF ,(CAR STATE)
-			     (SETQ ,@(APPLY #'APPEND (CDR STATE)))))
-		    (GET TYPE 'MFORMAT-STATE-VARS))))
+;		 (maxima-error "Unknown format op." (ascii char) 'fail-act)))
+		 (maxima-error (format nil "Unknown format op. _~a_" ',type) (ascii char) 'fail-act)))
+    ,@(mapcar #'(lambda (state)
+		  `(if ,(car state)
+		    (setq ,@(apply #'append (cdr state)))))
+	      (get type 'mformat-state-vars))))
 
-(DEFMACRO OR-1 (FIRST &REST REST)
+(defmacro or-1 (first &rest rest)
   ;; So the style warnings for one argument case to OR don't
   ;; confuse us.
-  (IF (NULL REST) FIRST `(OR ,FIRST ,@REST)))
+  (if (null rest) first `(or ,first ,@rest)))
 
-;(DEFMACRO WHITE-SPACE-P (X)
-;  `(zl-MEMBER ,X '(#\LINEFEED #\Return #\SPACE #\TAB #-lispm #\VT #\Page)))
+;;(DEFMACRO WHITE-SPACE-P (X)
+;;  `(zl-MEMBER ,X '(#\LINEFEED #\Return #\SPACE #\TAB #-lispm #\VT #\Page)))
 
-(DEFMACRO WHITE-SPACE-P (X)
+(defmacro white-space-p (x)
   `(member ,x '(#\linefeed #\return #\space #\tab #\page #-gcl #\vt)
     :test #'char=))
 
 
 
-(DEFMACRO +MFORMAT-LOOP (TYPE &REST end-code)
-  `(BIND-MFORMAT-STATE-VARS
-    ,TYPE
-    (DO ((CHAR))
-	((NULL-MFORMAT-STRING)
-	 (LEFTOVER-MFORMAT-ARGS?)
+(defmacro +mformat-loop (type &rest end-code)
+  `(bind-mformat-state-vars
+    ,type
+    (do ((char))
+	((null-mformat-string)
+	 (leftover-mformat-args?)
 	 ,@end-code)
-      (SETQ CHAR (POP sSTRING))
-      (COND ((char= CHAR #\~)
-	     (DO ()
-		 (NIL)
-	       (SETQ CHAR (POP-MFORMAT-STRING))
-	       (COND ((char= CHAR #\@)
-		      (SETQ |@-FLAG| T))
-		     ((char= CHAR #\:)
-		      (SETQ |:-FLAG| T))
-		     ((char= CHAR #\~)
-		      (PUSH CHAR TEXT-TEMP)
-		      (RETURN NIL))
-		     ((WHITE-SPACE-P CHAR)
-		      (DO ()
-			  ((NOT (WHITE-SPACE-P (TOP-MFORMAT-STRING))))
-			(CDR-MFORMAT-STRING))
-		      (RETURN NIL))
-		     ((OR (char< CHAR #\0) (char> CHAR #\9))
-		      (MFORMAT-DISPATCH-ON-CHAR ,TYPE)
-		      (RETURN NIL))
-		     (T
-		      (SETQ PARAMETER
+      (setq char (pop sstring))
+      (cond ((char= char #\~)
+	     (do ()
+		 (nil)
+	       (setq char (pop-mformat-string))
+	       (cond ((char= char #\@)
+		      (setq |@-FLAG| t))
+		     ((char= char #\:)
+		      (setq |:-FLAG| t))
+		     ((char= char #\~)
+		      (push char text-temp)
+		      (return nil))
+		     ((white-space-p char)
+		      (do ()
+			  ((not (white-space-p (top-mformat-string))))
+			(cdr-mformat-string))
+		      (return nil))
+		     ((or (char< char #\0) (char> char #\9))
+		      (mformat-dispatch-on-char ,type)
+		      (return nil))
+		     (t
+		      (setq parameter
 			    (f+ (f- (char-code char) (char-code #\0))
-			       (f* 10. PARAMETER))
-			    PARAMETER-P T)))))
+				(f* 10. parameter))
+			    parameter-p t)))))
 
-	    (T
-	     (PUSH CHAR TEXT-TEMP))))))
+	    (t
+	     (push char text-temp))))))
 
 ;;; The following definitions of MFORMAT ops are for compile-time,
 ;;; the runtime definitions are in MFORMT.
 
-(defvar WANT-OPEN-COMPILED-MFORMAT NIL)
-(defvar CANT-OPEN-COMPILE-MFORMAT NIL)
+(defvar want-open-compiled-mformat nil)
+(defvar cant-open-compile-mformat nil)
 
 
-(DEF-MFORMAT |-C|)
+(def-mformat |-C|)
 
 	 
-(DEF-MFORMAT-VAR-C |:-FLAG|     NIL T)
-(DEF-MFORMAT-VAR-C |@-FLAG|     NIL T)
-(DEF-MFORMAT-VAR-C PARAMETER   0  T) 
-(DEF-MFORMAT-VAR-C PARAMETER-P NIL T)
-(DEF-MFORMAT-VAR-C TEXT-TEMP NIL NIL)
-(DEF-MFORMAT-VAR-C CODE NIL NIL)
+(def-mformat-var-c |:-FLAG|     nil t)
+(def-mformat-var-c |@-FLAG|     nil t)
+(def-mformat-var-c parameter   0  t) 
+(def-mformat-var-c parameter-p nil t)
+(def-mformat-var-c text-temp nil nil)
+(def-mformat-var-c code nil nil)
 
-(DEFMACRO EMITC (X)
-  `(PUSH ,X CODE))
+(defmacro emitc (x)
+  `(push ,x code))
 
-(DEFMACRO PUSH-TEXT-TEMP-C ()
-  '(AND TEXT-TEMP
-	(PROGN (EMITC `(PRINC ',(MAKNAM (NREVERSE TEXT-TEMP)) ,STREAM))
-	       (SETQ TEXT-TEMP NIL))))
+(defmacro push-text-temp-c ()
+  '(and text-temp
+    (progn (emitc `(princ ',(maknam (nreverse text-temp)) ,stream))
+	   (setq text-temp nil))))
 
-(DEF-MFORMAT-OP-C (#\% #\&)
-  (COND (WANT-OPEN-COMPILED-MFORMAT
-	 (PUSH-TEXT-TEMP-C)
-	 (IF (char= CHAR #\&)
-	     (EMITC `(CURSORPOS 'A ,STREAM))
-	     (EMITC `(TERPRI ,STREAM))))))
+(def-mformat-op-c (#\% #\&)
+    (cond (want-open-compiled-mformat
+	   (push-text-temp-c)
+	   (if (char= char #\&)
+	       (emitc `(cursorpos 'a ,stream))
+	       (emitc `(terpri ,stream))))))
 
-(DEF-MFORMAT-OP-C #\M
-  (COND (WANT-OPEN-COMPILED-MFORMAT
-	 (PUSH-TEXT-TEMP-C)
-	 (EMITC `(,(IF |:-FLAG| 'MGRIND 'DISPLAF)
-		  (,(IF |@-FLAG| 'GETOP 'PROGN)
-		   ,(POP-MFORMAT-ARG))
-		  ,STREAM)))
-	(T (POP-MFORMAT-ARG))))
+(def-mformat-op-c #\M
+    (cond (want-open-compiled-mformat
+	   (push-text-temp-c)
+	   (emitc `(,(if |:-FLAG| 'mgrind 'displaf)
+		    (,(if |@-FLAG| 'getop 'progn)
+		     ,(pop-mformat-arg))
+		    ,stream)))
+	  (t (pop-mformat-arg))))
 
-(DEF-MFORMAT-OP-C (#\A #\S)
-  (COND (WANT-OPEN-COMPILED-MFORMAT
-	 (PUSH-TEXT-TEMP-C)
-	 (EMITC `(,(IF (char= CHAR #\A) 'PRINC 'PRIN1)
-		  ,(POP-MFORMAT-ARG)
-		  ,STREAM)))
-	(T (POP-MFORMAT-ARG))))
+(def-mformat-op-c (#\A #\S)
+    (cond (want-open-compiled-mformat
+	   (push-text-temp-c)
+	   (emitc `(,(if (char= char #\A) 'princ 'prin1)
+		    ,(pop-mformat-arg)
+		    ,stream)))
+	  (t (pop-mformat-arg))))
 
-(DEFUN OPTIMIZE-PRINT-INST (L)
+(defun optimize-print-inst (l)
   ;; Should remove extra calls to TERPRI around DISPLA.
   ;; Mainly want to remove (PRINC FOO NIL) => (PRINC FOO)
   ;; although I'm not sure this is correct. geezz.
-  (DO ((NEW NIL))
-      ((NULL L) `(PROGN ,@NEW))
-    (LET ((A (POP L)))
-      (COND ((EQ (CAR A) 'TERPRI)
-	     (COND ((EQ (CADR A) NIL)
-		    (PUSH '(TERPRI) NEW))
-		   (T (PUSH A NEW))))
-	    ((AND (EQ (CADDR A) NIL)
-		  (NOT (EQ (CAR A) 'MGRIND)))
-	     (COND ((EQ (CAR A) 'DISPLAF)
-		    (PUSH `(DISPLA ,(CADR A)) NEW))
-		   (T
-		    (PUSH `(,(CAR A) ,(CADR A)) NEW))))
-	    (T
-	     (PUSH A NEW))))))
+  (do ((new nil))
+      ((null l) `(progn ,@new))
+    (let ((a (pop l)))
+      (cond ((eq (car a) 'terpri)
+	     (cond ((eq (cadr a) nil)
+		    (push '(terpri) new))
+		   (t (push a new))))
+	    ((and (eq (caddr a) nil)
+		  (not (eq (car a) 'mgrind)))
+	     (cond ((eq (car a) 'displaf)
+		    (push `(displa ,(cadr a)) new))
+		   (t
+		    (push `(,(car a) ,(cadr a)) new))))
+	    (t
+	     (push a new))))))
 
-(DEFMACRO NORMALIZE-STREAM (STREAM)
-  STREAM
-  NIL)
+(defmacro normalize-stream (stream)
+  stream
+  nil)
 
-(DEFmfUN MFORMAT-TRANSLATE-OPEN N
-  (LET ((STREAM (ARG 1))
-	(sSTRING (EXPLODEN (ARG 2)))
-	(WANT-OPEN-COMPILED-MFORMAT T)
-	(CANT-OPEN-COMPILE-MFORMAT NIL)
-	(ARG-INDEX 2))
-    (NORMALIZE-STREAM STREAM)
-    (MFORMAT-LOOP-C
-     (PROGN (PUSH-TEXT-TEMP-C)
-	    (IF CANT-OPEN-COMPILE-MFORMAT
-		(MAXIMA-ERROR "CAN'T OPEN COMPILE MFORMAT ON THIS CASE."
-		       (LISTIFY N)
-		       'FAIL-ACT
-		       ))
-	    (OPTIMIZE-PRINT-INST CODE)))))
+(defmfun mformat-translate-open n
+  (let ((stream (arg 1))
+	(sstring (exploden (arg 2)))
+	(want-open-compiled-mformat t)
+	(cant-open-compile-mformat nil)
+	(arg-index 2))
+    (normalize-stream stream)
+    (mformat-loop-c
+     (progn (push-text-temp-c)
+	    (if cant-open-compile-mformat
+		(maxima-error "CAN'T OPEN COMPILE MFORMAT ON THIS CASE."
+			      (listify n)
+			      'fail-act
+			      ))
+	    (optimize-print-inst code)))))
 
-(DEFmfUN MFORMAT-SYNTAX-CHECK N
-  (LET ((ARG-INDEX 2)
-	(STREAM NIL)
-	(sSTRING (EXPLODEN (ARG 2)))
-	(WANT-OPEN-COMPILED-MFORMAT NIL))
-    (MFORMAT-LOOP-C NIL)))
+(defmfun mformat-syntax-check n
+  (let ((arg-index 2)
+	(stream nil)
+	(sstring (exploden (arg 2)))
+	(want-open-compiled-mformat nil))
+    (mformat-loop-c nil)))
 
 
 (defmacro progn-pig (&rest l) `(progn ,@l))
 
-(DEFUN PROCESS-MESSAGE-ARGUMENT (X)
+(defun process-message-argument (x)
   ;; Return NIL if we have already processed this
   ;; message argument, NCONS of object if not
   ;; processed.
-  (IF (AND (NOT (ATOM X))
-	   (MEMQ (CAR X) '(OUT-OF-CORE-STRING PROGN-pig)))
-      NIL
-      (NCONS (IF (AND (STRINGP X) (STATUS FEATURE ITS))
-		 `(OUT-OF-CORE-STRING ,X)
-		 `(PROGN-pig ,X)))))
+  (if (and (not (atom x))
+	   (memq (car x) '(out-of-core-string progn-pig)))
+      nil
+      (ncons (if (and (stringp x) (status feature its))
+		 `(out-of-core-string ,x)
+		 `(progn-pig ,x)))))
 
-(DEFUN MFORMAT-TRANSLATE (ARGUMENTS COMPILING?)
-  (LET (((STREAM sSTRING . OTHER-SHIT) ARGUMENTS))
+(defun mformat-translate (arguments compiling?)
+  (let (((stream sstring . other-shit) arguments))
     (let ((mess (process-message-argument sstring)))
-      (COND ((NULL MESS) NIL)
-	    ('On-the-other-hand
-	     (SETQ MESS (CAR MESS))
-	     (NORMALIZE-STREAM STREAM)
-	     (IF (AND (STRINGP sSTRING) COMPILING?)
-		 (APPLY #'MFORMAT-SYNTAX-CHECK
-				STREAM sSTRING OTHER-SHIT))
-	     `(,(OR (CDR (ASSOC (f+ 2	; two leading args.
-				    (LENGTH OTHER-SHIT))
-				'((2 . *MFORMAT-2)
-				  (3 . *MFORMAT-3)
-				  (4 . *MFORMAT-4)
-				  (5 . *MFORMAT-5)) :test #'equal))
-		   'MFORMAT)
-	       ,STREAM
-	       ,MESS
-	       ,@OTHER-SHIT))))))
+      (cond ((null mess) nil)
+	    ('on-the-other-hand
+	     (setq mess (car mess))
+	     (normalize-stream stream)
+	     (if (and (stringp sstring) compiling?)
+		 (apply #'mformat-syntax-check
+			stream sstring other-shit))
+	     `(,(or (cdr (assoc (f+ 2	; two leading args.
+				    (length other-shit))
+				'((2 . *mformat-2)
+				  (3 . *mformat-3)
+				  (4 . *mformat-4)
+				  (5 . *mformat-5)) :test #'equal))
+		    'mformat)
+	       ,stream
+	       ,mess
+	       ,@other-shit))))))
 
-(DEFUN MTELL-TRANSLATE (ARGUMENTS COMPILING?)
-  (LET (((sSTRING . OTHER-SHIT) ARGUMENTS))
-    (LET ((MESS (PROCESS-MESSAGE-ARGUMENT sSTRING)))
-      (COND ((NULL MESS) NIL)
-	    ('ON-THE-OTHER-HAND
-	     (SETQ MESS (CAR MESS))
-	     (IF (AND (STRINGP sSTRING) COMPILING?)
-		 (APPLY #'MFORMAT-SYNTAX-CHECK
-				NIL SSTRING OTHER-SHIT))
-	     `(,(OR (CDR (ASSOC (1+ (LENGTH OTHER-SHIT))
-				'((1 . MTELL1)
-				  (2 . MTELL2)
-				  (3 . MTELL3)
-				  (4 . MTELL4)
-				  (5 . MTELL5)) :test #'equal))
-		    'MTELL)
-	       ,MESS
-	       ,@OTHER-SHIT))))))
+(defun mtell-translate (arguments compiling?)
+  (let (((sstring . other-shit) arguments))
+    (let ((mess (process-message-argument sstring)))
+      (cond ((null mess) nil)
+	    ('on-the-other-hand
+	     (setq mess (car mess))
+	     (if (and (stringp sstring) compiling?)
+		 (apply #'mformat-syntax-check
+			nil sstring other-shit))
+	     `(,(or (cdr (assoc (1+ (length other-shit))
+				'((1 . mtell1)
+				  (2 . mtell2)
+				  (3 . mtell3)
+				  (4 . mtell4)
+				  (5 . mtell5)) :test #'equal))
+		    'mtell)
+	       ,mess
+	       ,@other-shit))))))
 
-(DEFMACRO MFORMAT-OPEN (STREAM SSTRING &REST OTHER-SHIT)
-  (IF (NOT (STRINGP SSTRING))
-      (MAXIMA-ERROR "Not a string, can't open-compile the MFORMAT call"
-	     SSTRING 'FAIL-ACT)
-      (APPLY #'MFORMAT-TRANSLATE-OPEN
-		     STREAM
-		     SSTRING
-		     OTHER-SHIT)))
+(defmacro mformat-open (stream sstring &rest other-shit)
+  (if (not (stringp sstring))
+      (maxima-error "Not a string, can't open-compile the MFORMAT call"
+		    sstring 'fail-act)
+      (apply #'mformat-translate-open
+	     stream
+	     sstring
+	     other-shit)))
 
-(DEFMACRO MTELL-OPEN (MESSAGE &REST OTHER-SHIT)
-  `(MFORMAT-OPEN NIL ,MESSAGE . ,OTHER-SHIT))
+(defmacro mtell-open (message &rest other-shit)
+  `(mformat-open nil ,message . ,other-shit))
 
-(DEFUN MERROR-TRANSLATE (ARGUMENTS COMPILING?)
-  (LET (((MESSAGE . OTHER-SHIT) ARGUMENTS))
-    (LET ((MESS (PROCESS-MESSAGE-ARGUMENT MESSAGE)))
-      (COND ((NULL MESS) NIL)
-	    ('ON-THE-OTHER-HAND
-	     (IF (AND (STRINGP MESSAGE) COMPILING?)
-		 (APPLY #'MFORMAT-SYNTAX-CHECK
-		       NIL
-		       MESSAGE OTHER-SHIT))
-	     (SETQ MESS (CAR MESS))
-	     `(,(OR (CDR (ASSOC (1+ (LENGTH OTHER-SHIT))
-				'((1 . *MERROR-1)
-				  (2 . *MERROR-2)
-				  (3 . *MERROR-3)
-				  (4 . *MERROR-4)
-				  (5 . *MERROR-5)) :test #'equal))
-		    'MERROR)
-	       ,MESS
-	       ,@OTHER-SHIT))))))
+(defun merror-translate (arguments compiling?)
+  (let (((message . other-shit) arguments))
+    (let ((mess (process-message-argument message)))
+      (cond ((null mess) nil)
+	    ('on-the-other-hand
+	     (if (and (stringp message) compiling?)
+		 (apply #'mformat-syntax-check
+			nil
+			message other-shit))
+	     (setq mess (car mess))
+	     `(,(or (cdr (assoc (1+ (length other-shit))
+				'((1 . *merror-1)
+				  (2 . *merror-2)
+				  (3 . *merror-3)
+				  (4 . *merror-4)
+				  (5 . *merror-5)) :test #'equal))
+		    'merror)
+	       ,mess
+	       ,@other-shit))))))
 
-(DEFUN ERRRJF-TRANSLATE (ARGUMENTS COMPILING?)
-  (LET (((MESSAGE . OTHER-SHIT) ARGUMENTS))
-    (LET ((MESS (PROCESS-MESSAGE-ARGUMENT MESSAGE)))
-      (COND ((NULL MESS) NIL)
-	    ('ON-THE-OTHER-HAND
-	     (IF (AND (STRINGP MESSAGE) COMPILING?)
-		 (APPLY #'MFORMAT-SYNTAX-CHECK
-		       NIL
-		       MESSAGE OTHER-SHIT))
-	     (SETQ MESS (CAR MESS))
-	     `(,(OR (CDR (ASSOC (1+ (LENGTH OTHER-SHIT))
-				'((1 . *ERRRJF-1)) :test #'equal))
-		    'ERRRJF)
-	       ,MESS ,@OTHER-SHIT))))))
-;#+PDP10
-;(PROGN 'COMPILE
+(defun errrjf-translate (arguments compiling?)
+  (let (((message . other-shit) arguments))
+    (let ((mess (process-message-argument message)))
+      (cond ((null mess) nil)
+	    ('on-the-other-hand
+	     (if (and (stringp message) compiling?)
+		 (apply #'mformat-syntax-check
+			nil
+			message other-shit))
+	     (setq mess (car mess))
+	     `(,(or (cdr (assoc (1+ (length other-shit))
+				'((1 . *errrjf-1)) :test #'equal))
+		    'errrjf)
+	       ,mess ,@other-shit))))))
+;;#+PDP10
+;;(PROGN 'COMPILE
 
-;(DEFUN GET-TRANSLATOR (OP)
-;  (OR (GET OP 'TRANSLATOR)
-;      (GET-TRANSLATOR (MAXIMA-ERROR "has no translator" OP 'wrng-type-arg))))
+;;(DEFUN GET-TRANSLATOR (OP)
+;;  (OR (GET OP 'TRANSLATOR)
+;;      (GET-TRANSLATOR (MAXIMA-ERROR "has no translator" OP 'wrng-type-arg))))
 
-;(DEFVAR SOURCE-TRANS-DRIVE NIL)
-;(DEFUN SOURCE-TRANS-DRIVE (FORM)
-;  (LET ((X (FUNCALL (GET-TRANSLATOR (CAR FORM)) (CDR FORM) T)))
-;    (WHEN (AND X SOURCE-TRANS-DRIVE)
-;	  (PRINT FORM TYO)
-;	  (PRINC "==>" TYO)
-;	  (PRINT X TYO))
-;    (IF (NULL X) (VALUES FORM NIL) (VALUES X T))))
-;(DEFUN PUT-SOURCE-TRANS-DRIVE (OP TR)
-;  (PUTPROP OP '(SOURCE-TRANS-DRIVE) 'SOURCE-TRANS)
-;  (PUTPROP OP TR 'TRANSLATOR))
+;;(DEFVAR SOURCE-TRANS-DRIVE NIL)
+;;(DEFUN SOURCE-TRANS-DRIVE (FORM)
+;;  (LET ((X (FUNCALL (GET-TRANSLATOR (CAR FORM)) (CDR FORM) T)))
+;;    (WHEN (AND X SOURCE-TRANS-DRIVE)
+;;	  (PRINT FORM TYO)
+;;	  (PRINC "==>" TYO)
+;;	  (PRINT X TYO))
+;;    (IF (NULL X) (VALUES FORM NIL) (VALUES X T))))
+;;(DEFUN PUT-SOURCE-TRANS-DRIVE (OP TR)
+;;  (PUTPROP OP '(SOURCE-TRANS-DRIVE) 'SOURCE-TRANS)
+;;  (PUTPROP OP TR 'TRANSLATOR))
 
-;(PUT-SOURCE-TRANS-DRIVE 'MFORMAT 'MFORMAT-TRANSLATE)
-;(PUT-SOURCE-TRANS-DRIVE 'MTELL 'MTELL-TRANSLATE)
-;(PUT-SOURCE-TRANS-DRIVE 'MERROR 'MERROR-TRANSLATE)
-;(PUT-SOURCE-TRANS-DRIVE 'ERRRJF 'ERRRJF-TRANSLATE)
-;)
+;;(PUT-SOURCE-TRANS-DRIVE 'MFORMAT 'MFORMAT-TRANSLATE)
+;;(PUT-SOURCE-TRANS-DRIVE 'MTELL 'MTELL-TRANSLATE)
+;;(PUT-SOURCE-TRANS-DRIVE 'MERROR 'MERROR-TRANSLATE)
+;;(PUT-SOURCE-TRANS-DRIVE 'ERRRJF 'ERRRJF-TRANSLATE)
+;;)
 
 ;;; Other systems won't get the syntax-checking at compile-time
 ;;; unless we hook into their way of doing optimizers.

@@ -12,94 +12,94 @@
     #+gcl (compile load eval)
     #-gcl (:compile-toplevel :load-toplevel :execute)
 
-;  (defmacro if (test &rest args)
-;    (cond ((> (length args) 2)
-;	(format t "~%Warning: Too many args for if:~% ~a"
-;		(cons 'if (cons test args)))
-;	   `(lisp::if ,test ,(car args) (progn ,@(cdr args))))
-;	  (t `(lisp:if ,test ,@args))))
+    ;;  (defmacro if (test &rest args)
+    ;;    (cond ((> (length args) 2)
+    ;;	(format t "~%Warning: Too many args for if:~% ~a"
+    ;;		(cons 'if (cons test args)))
+    ;;	   `(lisp::if ,test ,(car args) (progn ,@(cdr args))))
+    ;;	  (t `(lisp:if ,test ,@args))))
 
 
 
-;;this will make operators which 
-;;declare the type and result of numerical operations
+    ;;this will make operators which 
+    ;;declare the type and result of numerical operations
 
 
-  (defmacro def-op (name type op &optional return-type)
-    `(setf (macro-function ',name)
-      (make-operation ',type ',op ',return-type)))
+    (defmacro def-op (name type op &optional return-type)
+      `(setf (macro-function ',name)
+	(make-operation ',type ',op ',return-type)))
   
-;;make very sure .type .op and .return are not special!!
-  (defun make-operation (.type .op .return)
-    (or .return (setf .return .type))
-    #'(lambda (bod env) env
-	      (sloop for v in (cdr bod)
-		     when (eq t .type) collect v into body
-		     else
-		     collect `(the , .type ,v) into body
-		     finally (setq body `(, .op ,@ body))
-		     (return
-		       (if (eq t .return) body
-			   `(the , .return ,body))))))
+    ;;make very sure .type .op and .return are not special!!
+    (defun make-operation (.type .op .return)
+      (or .return (setf .return .type))
+      #'(lambda (bod env) env
+		(sloop for v in (cdr bod)
+		       when (eq t .type) collect v into body
+		       else
+		       collect `(the , .type ,v) into body
+		       finally (setq body `(, .op ,@ body))
+		       (return
+			 (if (eq t .return) body
+			     `(the , .return ,body))))))
 
-  #+fix-debug
-  (progn  ;; these allow running of code and they print out where the error
-          ;; occurred
+    #+fix-debug
+    (progn ;; these allow running of code and they print out where the error
+      ;; occurred
     
-    (defvar *dbreak* t)
+      (defvar *dbreak* t)
     
-    (defun chk-type (lis na typ sho)
-      (unless (every #'(lambda (v) (typep v typ)) lis)
+      (defun chk-type (lis na typ sho)
+	(unless (every #'(lambda (v) (typep v typ)) lis)
 	  (format t "~%Bad call ~a types:~a" (cons na sho)
 		  (mapcar #'type-of lis))
 	  (when *dbreak*
 	    (break "hi"))))
 	 
-    (defmacro def-op (name type old)
-      `(defmacro ,name (&rest l)
-	`(progn (chk-type (list ,@l) ',',name ',',type ',l)
-	  (,',old ,@l)))))
+      (defmacro def-op (name type old)
+	`(defmacro ,name (&rest l)
+	  `(progn (chk-type (list ,@l) ',',name ',',type ',l)
+	    (,',old ,@l)))))
 
-  ;;note 1+ and 1- in the main macsyma code were for fixnum 1+, 
-;;so we should replace them by f1+ and f1- and then add the appropriate
-;;definitions here.
+    ;;note 1+ and 1- in the main macsyma code were for fixnum 1+, 
+    ;;so we should replace them by f1+ and f1- and then add the appropriate
+    ;;definitions here.
 
-  (def-op f+ fixnum +)
-  (def-op f* fixnum *)
-  (def-op f- fixnum -)
-  (def-op +$ double-float +)
-  (def-op *$ double-float *)
-  (def-op -$ double-float -)
-  (def-op 1-$ double-float 1-)
-  (def-op 1+$ double-float 1+)
-  (def-op f1- fixnum 1-)
-  (def-op f1+ fixnum 1+)
-  (def-op sub1 t 1-)
-  (def-op add1 t 1+)
-  (def-op plus t +)
-  (def-op times t *)
-  (def-op difference t -)
-  (def-op quotient t quot)
-  (def-op // t quot)			;(def-op // fixnum quot) ??
-  (def-op //$ double-float quot)
-  (def-op ^ fixnum expt)
-  (def-op ^$ double-float expt)
-  (def-op greaterp t > )
-  (def-op f> fixnum > t)
-  (def-op f< fixnum <  t)
-  (def-op f= fixnum = t)
-  (def-op lessp t < t)
-  (def-op remainder t rem)
-  #-mcl
-  (def-op lsh fixnum ash)
-  (def-op fixnum-remainder fixnum rem)
-  (def-op minus t -)
-;(def-op \\ fixnum rem) ;no calls any more
+    (def-op f+ fixnum +)
+    (def-op f* fixnum *)
+    (def-op f- fixnum -)
+    (def-op +$ double-float +)
+    (def-op *$ double-float *)
+    (def-op -$ double-float -)
+    (def-op 1-$ double-float 1-)
+    (def-op 1+$ double-float 1+)
+    (def-op f1- fixnum 1-)
+    (def-op f1+ fixnum 1+)
+    (def-op sub1 t 1-)
+    (def-op add1 t 1+)
+    (def-op plus t +)
+    (def-op times t *)
+    (def-op difference t -)
+    (def-op quotient t quot)
+    (def-op // t quot)			;(def-op // fixnum quot) ??
+    (def-op //$ double-float quot)
+    (def-op ^ fixnum expt)
+    (def-op ^$ double-float expt)
+    (def-op greaterp t > )
+    (def-op f> fixnum > t)
+    (def-op f< fixnum <  t)
+    (def-op f= fixnum = t)
+    (def-op lessp t < t)
+    (def-op remainder t rem)
+    #-mcl
+    (def-op lsh fixnum ash)
+    (def-op fixnum-remainder fixnum rem)
+    (def-op minus t -)
+    ;;(def-op \\ fixnum rem) ;no calls any more
 
-;exp is shadowed to save trouble for other packages--its declared special
-  (setf (symbol-function 'exp) (symbol-function 'lisp::exp))
+    ;;exp is shadowed to save trouble for other packages--its declared special
+    (setf (symbol-function 'exp) (symbol-function 'lisp::exp))
 
-  );;end eval-when (symbolics needed this).
+    ) ;;end eval-when (symbolics needed this).
 
 ;;this is essentially what the quotient is supposed to do.
 
@@ -112,7 +112,7 @@
 	 (cond ((and (integerp a) (integerp b))
 		(values (truncate a b)))
 	       (t 
-		 ( / a b))))
+		( / a b))))
 	(t (apply 'quot (quot a (car b)) (cdr b)))))
 
 
@@ -120,7 +120,7 @@
   (let ((it (intern (string item) (find-package 'keyword))))
     (cond ((equal (symbol-name option) "FEATURE")
 	   `(member ,it *features*))
-	  ((equal option 'GCTIME) 0))))
+	  ((equal option 'gctime) 0))))
 
 (defmacro sstatus (option item )
   (let ((it (intern (string item) (find-package 'keyword))))
@@ -134,7 +134,7 @@
 (defun sortcar (lis &optional (test 'alphalessp))
   (sort lis test :key 'car))
 
-;numbers<strings<symbols<lists<?
+;;numbers<strings<symbols<lists<?
 (defun alphalessp (x y)
   (cond ((numberp x)
 	 (if (numberp y) (< x y) t))
@@ -165,17 +165,17 @@
 	       ((listp y)
 		(or (alphalessp (car x) (car y))
 		    (and (equal (car x) (car y))
-		    (alphalessp (cdr x) (cdr y)))))
+			 (alphalessp (cdr x) (cdr y)))))
 	       (t nil)))
 	((or (numberp y) (stringp y) (symbolp y)(consp y))
 	 nil)
-	(t ;neither is of known type:
-	  (alphalessp (format nil "~s" x)(format nil "~s" y)))))
+	(t				;neither is of known type:
+	 (alphalessp (format nil "~s" x)(format nil "~s" y)))))
 
 
 	       
-;(defmacro array-active-length (ar)
-;  `(length (the vector ,ar)))
+;;(defmacro array-active-length (ar)
+;;  `(length (the vector ,ar)))
 
 (defmacro symbol-array (sym) `(get ,sym 'array))
 
@@ -184,7 +184,7 @@
 
 (defun arraydims (ar)
   (when (symbolp ar) (setq ar (symbol-array ar)))
-   (cons (array-type ar) (array-dimensions ar)))
+  (cons (array-type ar) (array-dimensions ar)))
 
 (defun array-dimension-n (n ar)
   (declare (fixnum n))
@@ -211,7 +211,7 @@
 
 (defun mapatoms (func &optional (pack *package*))
   (do-symbols (x pack)
-	      (funcall func x)))
+    (funcall func x)))
 
 ;;actually this was for lists too.   
 
@@ -268,12 +268,12 @@
 	(logand x (1- (ash 1 (- n))))
 	(ash x (min (- n (integer-length x)) 0)))))
 
-; also correct but slower.
-;(defun haipart (integer count)
-;  (let ((x (abs integer)))
-;    (if (minusp count)
-;      (ldb (byte (- count) 0) x)
-;      (ldb (byte count (max 0 (- (integer-length x) count))) x))))
+;; also correct but slower.
+;;(defun haipart (integer count)
+;;  (let ((x (abs integer)))
+;;    (if (minusp count)
+;;      (ldb (byte (- count) 0) x)
+;;      (ldb (byte count (max 0 (- (integer-length x) count))) x))))
 
 (defmacro aset (val ar &rest inds)
   `(setf (aref ,ar ,@inds) ,val))
@@ -311,15 +311,15 @@
 
 ;;this is the get of maclisp
 ;; works on symbols and plists
-;(defun maclisp-get (sym-or-plist prop)
-;  (cond ((symbolp sym-or-plist)
-;	 (get sym-or-plist prop))
-;	((consp sym-or-plist)
-;	 (getf (cdr sym-or-plist) prop))
-;	(t nil)))
+;;(defun maclisp-get (sym-or-plist prop)
+;;  (cond ((symbolp sym-or-plist)
+;;	 (get sym-or-plist prop))
+;;	((consp sym-or-plist)
+;;	 (getf (cdr sym-or-plist) prop))
+;;	(t nil)))
 
 (defmacro ncons (x)
-  `(cons ,x nil))  ;;can one optimize this??
+  `(cons ,x nil)) ;;can one optimize this??
 
 (defun zl-remove (item list &optional n)
   (remove item list :count n :test #'equal))
@@ -351,15 +351,15 @@
 		     (aref curs 4) (aref curs 5)) val)))
     ;; set the index (`cursor') for the next call to ASET-BY-CURSOR
     (sloop for j downfrom (aref curs 0)
-       do (cond ((< (aref curs j) (aref curs (f+ 5 j)))
-		 (setf (aref curs j) (f+  (aref curs j) 1))
-		 (return-from aset-by-cursor t))
-		(t (setf (aref curs j) 0)))
-       (cond ((eql j 0) (return-from aset-by-cursor nil))))))
+	   do (cond ((< (aref curs j) (aref curs (f+ 5 j)))
+		     (setf (aref curs j) (f+  (aref curs j) 1))
+		     (return-from aset-by-cursor t))
+		    (t (setf (aref curs j) 0)))
+	   (cond ((eql j 0) (return-from aset-by-cursor nil))))))
 
 (defun fillarray (ar x)
   (when (symbolp ar)
-    (setq ar (get ar 'ARRAY)))
+    (setq ar (get ar 'array)))
   (when (/= (array-rank ar) 1)
     (setq ar (make-array (array-total-size ar) :displaced-to ar)))
   (setq x
@@ -371,47 +371,47 @@
 	      ((arrayp x)(listarray x))
 	      ((atom x) (list x))
 	      (t x)))
-   (when (> (length ar) 0)  
-     (set-up-cursor ar)
-     (sloop while (aset-by-cursor ar (car x))
-	do (and (cdr x) (setq x (cdr x))))))
+  (when (> (length ar) 0)  
+    (set-up-cursor ar)
+    (sloop while (aset-by-cursor ar (car x))
+	   do (and (cdr x) (setq x (cdr x))))))
 
-;(defun fillarray (ar x)
-;  (when (symbolp ar)
-;    (setq ar (get ar 'ARRAY)))
-;  (let ((leng (length (the (lisp:array  t ) ar))))
-;    (declare (fixnum leng))
-;  (cond ((null x)
-;	 (setq x (ecase (array-element-type ar)
-;			     (fixnum 0)
-;			     (float 0.0)
-;			     ((t) nil)))
-;	 (sloop for i below leng
-;		do (setf (aref ar i) x)))
-;	((consp x)
-;	 (sloop for i below leng
-;		for u in x
-;		do (setf (aref ar i) u)
-;		finally
-;		(sloop for j from i below leng
-;		       do (setf (aref ar j) u))))
-;	((arrayp x)
-;	 (sloop for i below (min leng (length x))
-;		do (setf (aref ar i) (aref x i))
-;		finally (sloop for j from i below leng
-;			       with u = (aref x (f- i 1))
-;			       do (setf (aref ar j ) u))))
-;	(t (error "bad second arg to fillarray")))))
+;;(defun fillarray (ar x)
+;;  (when (symbolp ar)
+;;    (setq ar (get ar 'ARRAY)))
+;;  (let ((leng (length (the (lisp:array  t ) ar))))
+;;    (declare (fixnum leng))
+;;  (cond ((null x)
+;;	 (setq x (ecase (array-element-type ar)
+;;			     (fixnum 0)
+;;			     (float 0.0)
+;;			     ((t) nil)))
+;;	 (sloop for i below leng
+;;		do (setf (aref ar i) x)))
+;;	((consp x)
+;;	 (sloop for i below leng
+;;		for u in x
+;;		do (setf (aref ar i) u)
+;;		finally
+;;		(sloop for j from i below leng
+;;		       do (setf (aref ar j) u))))
+;;	((arrayp x)
+;;	 (sloop for i below (min leng (length x))
+;;		do (setf (aref ar i) (aref x i))
+;;		finally (sloop for j from i below leng
+;;			       with u = (aref x (f- i 1))
+;;			       do (setf (aref ar j ) u))))
+;;	(t (error "bad second arg to fillarray")))))
 
  
 (defun listarray (x)
   (when (symbolp x)
-    (setq x (get x 'ARRAY)))
+    (setq x (get x 'array)))
   (if (eql (array-rank x) 1)
       (coerce x 'list)
       (coerce (make-array (apply '* (array-dimensions x)) :displaced-to x
 			  :element-type (array-element-type x))
-		   'list)))
+	      'list)))
 
 (defmacro check-arg (place pred &rest res)
   (when (atom pred)
@@ -425,7 +425,7 @@
   (cond ((atom x) `(cons ,y,x))
 	(t (let ((g (gensym)))
 	     `(let ((,g ,x))
-		(cons ,y ,g))))))
+	       (cons ,y ,g))))))
 
 (defun nleft (n x &optional tail)
   (sloop for v on (nthcdr n x)
@@ -441,20 +441,20 @@
 
 ;;range of atan should be [0,2*pi]
 (defun atan (y x)
- (let ((tem (lisp::atan y x)))
-   (if (>= tem 0)
-       tem
-       (+ tem (* 2 pi)))))
+  (let ((tem (lisp::atan y x)))
+    (if (>= tem 0)
+	tem
+	(+ tem (* 2 pi)))))
 
 ;;range of atan2 should be (-pi,pi]
 ;;CL manual says that's what lisp::atan is supposed to have.
 
 (setf (symbol-function 'atan2) (symbol-function 'lisp::atan))
 
-(setq *READ-DEFAULT-FLOAT-FORMAT* 'double-float)
+(setq *read-default-float-format* 'double-float)
 
-#+clisp (setq custom:*DEFAULT-FLOAT-FORMAT* 'double-float)
-;don't care about float contagion for now
-#+clisp (setq CUSTOM::*WARN-ON-FLOATING-POINT-CONTAGION* nil)
+#+clisp (setq custom:*default-float-format* 'double-float)
+;;don't care about float contagion for now
+#+clisp (setq custom::*warn-on-floating-point-contagion* nil)
 
 (defmacro float (x &optional (y 1.0d0)) `(lisp::float ,x ,y))

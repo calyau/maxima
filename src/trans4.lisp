@@ -15,81 +15,81 @@
 
 (macsyma-module trans4)
 
-(TRANSL-MODULE TRANS4)
+(transl-module trans4)
 
 ;;; These are translation properties for various operators.
 
-(DEF%TR MNCTIMES (FORM)
-	(SETQ FORM (TR-ARGS (CDR FORM)))
-	(COND ((= (LENGTH FORM) 2)
-	       `($ANY NCMUL2 . ,FORM))
-	      (T
-	       `($ANY NCMULN (LIST . ,FORM) NIL))))
+(def%tr mnctimes (form)
+  (setq form (tr-args (cdr form)))
+  (cond ((= (length form) 2)
+	 `($any ncmul2 . ,form))
+	(t
+	 `($any ncmuln (list . ,form) nil))))
 
-(DEF%TR MNCEXPT (FORM)
-	`($ANY . (NCPOWER ,@(TR-ARGS (CDR FORM)))))
+(def%tr mncexpt (form)
+  `($any . (ncpower ,@(tr-args (cdr form)))))
 
-; maybe this ?
-(COMMENT 
-(DEFUN STRICT-UNION-MODE-OF-TFORMS (L)
-       (DO ((M (CAAR L))
-	    (L (CDR L)(CDR L)))
-	   ((NULL L) M)
-	   (AND (NOT (EQ M (CAAR L))) (RETURN '$ANY))))
+;; maybe this ?
+(comment 
+ (defun strict-union-mode-of-tforms (l)
+   (do ((m (caar l))
+	(l (cdr l)(cdr l)))
+       ((null l) m)
+     (and (not (eq m (caar l))) (return '$any))))
 
-(DEFMACRO DEF%MODAL1%TR (NAME ARGS &REST CASES)
-	  `(DEF%TR ,NAME (*TR-FORM-ARGUMENT*)
-		   (COND ((= (LENGTH *TR-FORM-ARGUMENT*) ,(f1+ (LENGTH ARGS)))
-			  (LET* ((*TR-ARGS* (MAPCAR #'TRANSLATE
-						    (CDR *TR-FORM-ARGUMENT*)))
-				 (*MODE* (STRICT-UNION-MODE-OF-TFORMS  *TR-ARGS*)))
-				(SETQ *TR-ARGS* (MAPCAR #'CDR *TR-ARGS*)))))))
+ (defmacro def%modal1%tr (name args &rest cases)
+   `(def%tr ,name (*tr-form-argument*)
+     (cond ((= (length *tr-form-argument*) ,(f1+ (length args)))
+	    (let* ((*tr-args* (mapcar #'translate
+				      (cdr *tr-form-argument*)))
+		   (*mode* (strict-union-mode-of-tforms  *tr-args*)))
+	      (setq *tr-args* (mapcar #'cdr *tr-args*)))))))
 				
 
-(DEF-MODAL-TR $BETA (X Y)
-	      ($FLOAT (//$ (*$ ($GAMMA X) ($GAMMA Y))
-			    ($GAMMA (+$ X Y))))
-	      ($NUMBER (QUOTIENT (TIMES ($GAMMA X) ($GAMMA Y))
-				  ($GAMMA (PLUS X Y))))
-	      ($ANY (SIMPLIFY (LIST '($BETA) X Y))))
+ (def-modal-tr $beta (x y)
+   ($float (//$ (*$ ($gamma x) ($gamma y))
+		($gamma (+$ x y))))
+   ($number (quotient (times ($gamma x) ($gamma y))
+		      ($gamma (plus x y))))
+   ($any (simplify (list '($beta) x y))))
 
-(DEF-MODAL-TR $GAMMA (X)
-	      ($FLOAT ($GAMMA X))
-	      ($ANY (SIMPLIFY ($GAMMA X)))))
+ (def-modal-tr $gamma (x)
+   ($float ($gamma x))
+   ($any (simplify ($gamma x)))))
 
 ;;; end of commented out code.
 
-(DEF%TR $REMAINDER (FORM)
-	(let ((n (TR-NARGS-CHECK FORM '(2 . NIL)))
-	      (tr-args (mapcar 'translate (cdr form))))
-	     (cond ((and (= n 2)
-			 (eq (caar tr-args) '$fixnum)
-			 (EQ (CAR (CADR TR-ARGS)) '$FIXNUM))
-		    `($FIXNUM . (REMAINDER ,(CDR (CAR TR-ARGS))
-					   ,(CDR (CADR TR-ARGS)))))
-		   (T
-		    (CALL-AND-SIMP '$ANY '$REMAINDER (MAPCAR 'CDR TR-ARGS))))))
+(def%tr $remainder (form)
+  (let ((n (tr-nargs-check form '(2 . nil)))
+	(tr-args (mapcar 'translate (cdr form))))
+    (cond ((and (= n 2)
+		(eq (caar tr-args) '$fixnum)
+		(eq (car (cadr tr-args)) '$fixnum))
+	   `($fixnum . (remainder ,(cdr (car tr-args))
+			,(cdr (cadr tr-args)))))
+	  (t
+	   (call-and-simp '$any '$remainder (mapcar 'cdr tr-args))))))
 
-(DEF%TR $BETA (FORM)
-	`($ANY . (SIMPLIFY (LIST '($BETA) ,@(TR-ARGS (CDR FORM))))))
+(def%tr $beta (form)
+  `($any . (simplify (list '($beta) ,@(tr-args (cdr form))))))
 
-(DEF%TR MFACTORIAL (FORM)
-	(SETQ FORM (TRANSLATE (CADR FORM)))
-	(COND ((EQ (CAR FORM) '$FIXNUM)
-	       `($NUMBER . (FACTORIAL ,(CDR FORM))))
-	      (T
-	       `($ANY . (SIMPLIFY  `((MFACTORIAL) ,,(CDR FORM)))))))
+(def%tr mfactorial (form)
+  (setq form (translate (cadr form)))
+  (cond ((eq (car form) '$fixnum)
+	 `($number . (factorial ,(cdr form))))
+	(t
+	 `($any . (simplify  `((mfactorial) ,,(cdr form)))))))
 
-(DEF%TR %SUM (FORM)
-	;; this is WRONG. ---FIX--THIS--YOU--LOSER----*****
-	`($ANY . (MEVAL ',FORM)))
+(def%tr %sum (form)
+  ;; this is WRONG. ---FIX--THIS--YOU--LOSER----*****
+  `($any . (meval ',form)))
 
-(DEF%TR %PRODUCT (FORM)
-	`($ANY . (MEVAL ',FORM)))
+(def%tr %product (form)
+  `($any . (meval ',form)))
 
-;(DEF%TR %BINOMIAL (FORM)
-;	(TR-NARGS-CHECK FORM '(2 .2))
-;	`($ANY . ($BINOMIAL ,@(TR-ARGS (CDR FORM)))))
+;;(DEF%TR %BINOMIAL (FORM)
+;;	(TR-NARGS-CHECK FORM '(2 .2))
+;;	`($ANY . ($BINOMIAL ,@(TR-ARGS (CDR FORM)))))
 
 
 
@@ -97,59 +97,59 @@
 ;; Temp autoloads needed for pdp-10. There is a better way
 ;; to distribute this info, too bad I never implemented it.
 
-(MAPC #'(LAMBDA (X)
-         (LET ((OLD-PROP (GET (CDR X) 'AUTOLOAD)))
-           (IF (NOT (NULL OLD-PROP))
-	       (PUTPROP (CAR X) OLD-PROP 'AUTOLOAD))))
-      '((PROC-$MATCHDECLARE . $MATCHDECLARE)
-	(PROC-$DEFMATCH .     $DEFMATCH)
-	(PROC-$DEFRULE . $DEFRULE)
-	(PROC-$TELLSIMPAFTER . $TELLSIMPAFTER)
-	(PROC-$TELLSIMP	 . $TELLSIMP	)))
+(mapc #'(lambda (x)
+	  (let ((old-prop (get (cdr x) 'autoload)))
+	    (if (not (null old-prop))
+		(putprop (car x) old-prop 'autoload))))
+      '((proc-$matchdeclare . $matchdeclare)
+	(proc-$defmatch .     $defmatch)
+	(proc-$defrule . $defrule)
+	(proc-$tellsimpafter . $tellsimpafter)
+	(proc-$tellsimp	 . $tellsimp	)))
 
-(DEFUN YUK-SU-META-PROP (F FORM)
-  (LET ((META-PROP-P T)
-	(META-PROP-L NIL))
-    (FUNCALL F (CDR FORM))
-    `($ANY . (PROGN 'compile ,@(MAPCAR #'PATCH-UP-MEVAL-IN-FSET (NREVERSE META-PROP-L))))))
+(defun yuk-su-meta-prop (f form)
+  (let ((meta-prop-p t)
+	(meta-prop-l nil))
+    (funcall f (cdr form))
+    `($any . (progn 'compile ,@(mapcar #'patch-up-meval-in-fset (nreverse meta-prop-l))))))
 
-(DEF%TR $MATCHDECLARE (FORM)
-  (DO ((L (CDR FORM) (CDDR L))
-       (VARS ()))
-      ((NULL L)
-       `($ANY . (PROGN 'COMPILE
-		      ,@(MAPCAR #'(LAMBDA (VAR)
-				    (DTRANSLATE `(($DEFINE_VARIABLE)
-						  ,VAR
-						  ((MQUOTE) ,VAR)
-						  $ANY)))
-				VARS)
-		      ,(DTRANSLATE `((SUB_$MATCHDECLARE) ,@(CDR FORM))))))
-    (COND ((ATOM (CAR L))
-	   (PUSH (CAR L) VARS))
-	  ((EQ (CAAAR L) 'MLIST)
-	   (SETQ VARS (APPEND (CDAR L) VARS))))))
+(def%tr $matchdeclare (form)
+  (do ((l (cdr form) (cddr l))
+       (vars ()))
+      ((null l)
+       `($any . (progn 'compile
+		       ,@(mapcar #'(lambda (var)
+				     (dtranslate `(($define_variable)
+						   ,var
+						   ((mquote) ,var)
+						   $any)))
+				 vars)
+		       ,(dtranslate `((sub_$matchdeclare) ,@(cdr form))))))
+    (cond ((atom (car l))
+	   (push (car l) vars))
+	  ((eq (caaar l) 'mlist)
+	   (setq vars (append (cdar l) vars))))))
 
-(DEF%TR SUB_$MATCHDECLARE (FORM)
-  (YUK-SU-META-PROP 'PROC-$MATCHDECLARE `(($MATCHDECLARE) ,@(CDR FORM))))
+(def%tr sub_$matchdeclare (form)
+  (yuk-su-meta-prop 'proc-$matchdeclare `(($matchdeclare) ,@(cdr form))))
 
-(DEF%TR $DEFMATCH (FORM)
-  (YUK-SU-META-PROP 'PROC-$DEFMATCH FORM))
+(def%tr $defmatch (form)
+  (yuk-su-meta-prop 'proc-$defmatch form))
 
-(DEF%TR $TELLSIMP (FORM)
-  (YUK-SU-META-PROP 'PROC-$TELLSIMP FORM))
+(def%tr $tellsimp (form)
+  (yuk-su-meta-prop 'proc-$tellsimp form))
 
-(DEF%TR $TELLSIMPAFTER (FORM)
-  (YUK-SU-META-PROP 'PROC-$TELLSIMPAFTER FORM))
+(def%tr $tellsimpafter (form)
+  (yuk-su-meta-prop 'proc-$tellsimpafter form))
 
-(DEF%TR $DEFRULE (FORM)
-  (YUK-SU-META-PROP 'PROC-$DEFRULE FORM))
+(def%tr $defrule (form)
+  (yuk-su-meta-prop 'proc-$defrule form))
 
-(DEFUN PATCH-UP-MEVAL-IN-FSET (FORM)
-  (COND ((NOT (EQ (CAR FORM) 'FSET))
-	 FORM)
+(defun patch-up-meval-in-fset (form)
+  (cond ((not (eq (car form) 'fset))
+	 form)
 	
-	(T
+	(t
 	 ;; FORM is always generated by META-FSET
 	 (let ((((nil ssymbol) (nil (nil definition) nil)) (cdr form)))
 	   (unless (eq (car definition) 'lambda)
@@ -157,117 +157,117 @@
 	      "~%PATCH-UP-MEVAL-IN-FSET: Not a lambda expression:~%~A"
 	      definition)
 	     (barfo))
-	   (TR-FORMAT "~%Translating rule or match ~:M" ssymbol)
-	   (setq definition (LISP->LISP-TR-LAMBDA definition))
-	   (IF (NULL definition)
-	       FORM
+	   (tr-format "~%Translating rule or match ~:M" ssymbol)
+	   (setq definition (lisp->lisp-tr-lambda definition))
+	   (if (null definition)
+	       form
 	       `(fset ',ssymbol ,definition))))))
 
-(DEFVAR LISP->LISP-TR-LAMBDA T)
+(defvar lisp->lisp-tr-lambda t)
 
-(DEFUN LISP->LISP-TR-LAMBDA (L)
+(defun lisp->lisp-tr-lambda (l)
   ;; basically, a lisp->lisp translation, setting up
   ;; the proper lambda contexts for the special forms,
   ;; and calling TRANSLATE on the "lusers" generated by
   ;; Fateman braindamage, (MEVAL '$A), (MEVAL '(($F) $X)).
-  (IF LISP->LISP-TR-LAMBDA
-      (CATCH 'LISP->LISP-TR-LAMBDA
-	(TR-LISP->LISP L))
+  (if lisp->lisp-tr-lambda
+      (catch 'lisp->lisp-tr-lambda
+	(tr-lisp->lisp l))
       ()))
 
-(DEFUN TR-LISP->LISP (EXP)
-  (IF (ATOM EXP)
-      (CDR (TRANSLATE-ATOM EXP))
-      (LET ((OP (CAR EXP)))
-	(IF (SYMBOLP OP)
-	    (FUNCALL (OR (GET OP 'TR-LISP->LISP) #'TR-LISP->LISP-DEFAULT)
-		     EXP)
-	    (PROGN (TR-TELL "Punting: non-symbolic operator")
-		   (THROW 'LISP->LISP-TR-LAMBDA ()))))))
+(defun tr-lisp->lisp (exp)
+  (if (atom exp)
+      (cdr (translate-atom exp))
+      (let ((op (car exp)))
+	(if (symbolp op)
+	    (funcall (or (get op 'tr-lisp->lisp) #'tr-lisp->lisp-default)
+		     exp)
+	    (progn (tr-tell "Punting: non-symbolic operator")
+		   (throw 'lisp->lisp-tr-lambda ()))))))
 
-(DEFUN TR-LISP->LISP-DEFAULT (EXP)
-  (COND ((MACSYMA-SPECIAL-OP-P (CAR EXP))
-	 (TR-TELL "Punting: unhandled special operator ~:@M" (CAR EXP))
-	 (THROW 'LISP->LISP-TR-LAMBDA ()))
-	('ELSE
-	 (TR-LISP->LISP-FUN EXP))))
+(defun tr-lisp->lisp-default (exp)
+  (cond ((macsyma-special-op-p (car exp))
+	 (tr-tell "Punting: unhandled special operator ~:@M" (car exp))
+	 (throw 'lisp->lisp-tr-lambda ()))
+	('else
+	 (tr-lisp->lisp-fun exp))))
 
-(DEFUN TR-LISP->LISP-FUN (EXP)
-  (CONS (CAR EXP) (MAPTR-LISP->LISP (CDR EXP))))
+(defun tr-lisp->lisp-fun (exp)
+  (cons (car exp) (maptr-lisp->lisp (cdr exp))))
 
-(DEFUN MAPTR-LISP->LISP (L)
-  (MAPCAR #'TR-LISP->LISP L))
-(DEFUN-prop (declare TR-LISP->LISP) (FORM)
+(defun maptr-lisp->lisp (l)
+  (mapcar #'tr-lisp->lisp l))
+(defun-prop (declare tr-lisp->lisp) (form)
   form)
 
-(DEFUN-prop (LAMBDA TR-LISP->LISP) (FORM)
-  (LET (((() ARGLIST . BODY) FORM))
-    (MAPC #'TBIND  ARGLIST)
-    (SETQ BODY (MAPTR-LISP->LISP BODY))
-    `(LAMBDA ,(TUNBINDS ARGLIST) ,@BODY)))
+(defun-prop (lambda tr-lisp->lisp) (form)
+  (let (((() arglist . body) form))
+    (mapc #'tbind  arglist)
+    (setq body (maptr-lisp->lisp body))
+    `(lambda ,(tunbinds arglist) ,@body)))
 
-(DEFUN-prop (PROG TR-LISP->LISP) (FORM)
-  (LET (((() ARGLIST . BODY) FORM))
-    (MAPC #'TBIND ARGLIST)
-    (SETQ BODY (MAPCAR #'(LAMBDA (X)
-			   (IF (ATOM X) X
-			       (TR-LISP->LISP X)))
-		       BODY))
-    `(PROG ,(TUNBINDS ARGLIST) ,@BODY)))
+(defun-prop (prog tr-lisp->lisp) (form)
+  (let (((() arglist . body) form))
+    (mapc #'tbind arglist)
+    (setq body (mapcar #'(lambda (x)
+			   (if (atom x) x
+			       (tr-lisp->lisp x)))
+		       body))
+    `(prog ,(tunbinds arglist) ,@body)))
 
 ;;(DEFUN RETLIST FEXPR (L)
 ;;  (CONS '(MLIST SIMP)
 ;;       (MAPCAR #'(LAMBDA (Z) (LIST '(MEQUAL SIMP) Z (MEVAL Z))) L)))
 
-(DEFUN-prop (RETLIST TR-LISP->LISP) (FORM)
-  (PUSH-AUTOLOAD-DEF 'MARRAYREF '(RETLIST_TR))
-  `(RETLIST_TR ,@(MAPCAN #'(LAMBDA (Z)
-			     (LIST `',Z (TR-LISP->LISP Z)))
-			 (CDR FORM))))
+(defun-prop (retlist tr-lisp->lisp) (form)
+  (push-autoload-def 'marrayref '(retlist_tr))
+  `(retlist_tr ,@(mapcan #'(lambda (z)
+			     (list `',z (tr-lisp->lisp z)))
+			 (cdr form))))
 
-(DEFUN-prop (QUOTE TR-LISP->LISP) (FORM) FORM)
-(DEFPROP CATCH TR-LISP->LISP-FUN TR-LISP->LISP)
-(DEFPROP THROW TR-LISP->LISP-FUN TR-LISP->LISP)
-(DEFPROP RETURN TR-LISP->LISP-FUN TR-LISP->LISP)
-(DEFPROP FUNCTION TR-LISP->LISP-FUN TR-LISP->LISP)
+(defun-prop (quote tr-lisp->lisp) (form) form)
+(defprop catch tr-lisp->lisp-fun tr-lisp->lisp)
+(defprop throw tr-lisp->lisp-fun tr-lisp->lisp)
+(defprop return tr-lisp->lisp-fun tr-lisp->lisp)
+(defprop function tr-lisp->lisp-fun tr-lisp->lisp)
 
-(DEFUN-prop (SETQ TR-LISP->LISP) (FORM)
-  (DO ((L (CDR FORM) (CDDR L))
-       (N ()))
-      ((NULL L) (CONS 'SETQ (NREVERSE N)))
-    (PUSH (CAR L) N)
-    (PUSH (TR-LISP->LISP (CADR L)) N)))
+(defun-prop (setq tr-lisp->lisp) (form)
+  (do ((l (cdr form) (cddr l))
+       (n ()))
+      ((null l) (cons 'setq (nreverse n)))
+    (push (car l) n)
+    (push (tr-lisp->lisp (cadr l)) n)))
 
-(DEFUN-prop (MSETQ TR-LISP->LISP) (FORM)
-  (CDR (TRANSLATE `((MSETQ) ,@(CDR FORM)))))
+(defun-prop (msetq tr-lisp->lisp) (form)
+  (cdr (translate `((msetq) ,@(cdr form)))))
 
-(DEFUN-prop (COND TR-LISP->LISP) (FORM)
-  (CONS 'COND (MAPCAR #'MAPTR-LISP->LISP (CDR FORM))))
+(defun-prop (cond tr-lisp->lisp) (form)
+  (cons 'cond (mapcar #'maptr-lisp->lisp (cdr form))))
 
-(DEFPROP NOT TR-LISP->LISP-FUN TR-LISP->LISP)
-(DEFPROP AND TR-LISP->LISP-FUN TR-LISP->LISP)
-(DEFPROP OR TR-LISP->LISP-FUN TR-LISP->LISP)
+(defprop not tr-lisp->lisp-fun tr-lisp->lisp)
+(defprop and tr-lisp->lisp-fun tr-lisp->lisp)
+(defprop or tr-lisp->lisp-fun tr-lisp->lisp)
 
-(DEFVAR UNBOUND-MEVAL-KLUDGE-FIX T)
+(defvar unbound-meval-kludge-fix t)
 
-(DEFUN-prop (MEVAL TR-LISP->LISP) (FORM)
-  (SETQ FORM (CADR FORM))
-  (COND ((AND (NOT (ATOM FORM))
-	      (EQ (CAR FORM) 'QUOTE))
-	 (CDR (TRANSLATE (CADR FORM))))
-	(UNBOUND-MEVAL-KLUDGE-FIX
+(defun-prop (meval tr-lisp->lisp) (form)
+  (setq form (cadr form))
+  (cond ((and (not (atom form))
+	      (eq (car form) 'quote))
+	 (cdr (translate (cadr form))))
+	(unbound-meval-kludge-fix
 	 ;; only case of unbound MEVAL is in output of DEFMATCH,
 	 ;; and appears like a useless double-evaluation of arguments.
-	 FORM)
-	('ELSE
-	 (TR-TELL "Punting: Unbound MEVAL found!")
-	 (THROW 'LISP->LISP-TR-LAMBDA ()))))
+	 form)
+	('else
+	 (tr-tell "Punting: Unbound MEVAL found!")
+	 (throw 'lisp->lisp-tr-lambda ()))))
 
-(DEFUN-prop (IS TR-LISP->LISP) (FORM)
-  (SETQ FORM (CADR FORM))
-  (COND ((AND (NOT (ATOM FORM))
-	      (EQ (CAR FORM) 'QUOTE))
-	 (CDR (TRANSLATE `(($IS) ,(CADR FORM)))))
-	('ELSE
-	 (TR-TELL "Punting: Unbound IS found!")
-	 (THROW 'LISP->LISP-TR-LAMBDA ()))))
+(defun-prop (is tr-lisp->lisp) (form)
+  (setq form (cadr form))
+  (cond ((and (not (atom form))
+	      (eq (car form) 'quote))
+	 (cdr (translate `(($is) ,(cadr form)))))
+	('else
+	 (tr-tell "Punting: Unbound IS found!")
+	 (throw 'lisp->lisp-tr-lambda ()))))

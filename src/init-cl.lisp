@@ -1,9 +1,9 @@
-;********************************************************
-; file:        init-cl.lisp                              
-; description: Initialize Maxima                         
-; date:        Wed Jan 13 1999 - 20:27                   
-; author:      Liam Healy <Liam.Healy@nrl.navy.mil>      
-;********************************************************
+;;********************************************************
+;; file:        init-cl.lisp                              
+;; description: Initialize Maxima                         
+;; date:        Wed Jan 13 1999 - 20:27                   
+;; author:      Liam Healy <Liam.Healy@nrl.navy.mil>      
+;;********************************************************
 
 (in-package :maxima)
 (use-package "COMMAND-LINE")
@@ -78,7 +78,7 @@
 		       (concatenate 'string
 				    (string-right-trim 
 				     ":" dev) ":")
-		     ""))
+		       ""))
 		 "/"
 		 (combine-path
 		  (rest (pathname-directory str))))))
@@ -89,7 +89,7 @@
 	(datadir)
 	(infodir)
 	(package-version (combine-path (list *autoconf-package*
-					 *autoconf-version*)))
+					     *autoconf-version*)))
 	(binary-subdirectory (concatenate 'string 
 					  "binary-" *maxima-lispname*)))
     (if maxima-prefix-env
@@ -294,14 +294,14 @@
 	(setf lisp-string (unix-like-basename lisp))
 	(when (search "binary-" lisp-string)
 	  (setf lisp-string (subseq lisp-string (length "binary-") 
-				  (length lisp-string)))
+				    (length lisp-string)))
 	  (format t "version ~a, lisp ~a~%" version-string lisp-string))))
     (bye)))
 
 (defun process-maxima-args (input-stream batch-flag)
-;    (format t "processing maxima args = ")
-;    (mapc #'(lambda (x) (format t "\"~a\"~%" x)) (get-application-args))
-;    (terpri)
+  ;;    (format t "processing maxima args = ")
+  ;;    (mapc #'(lambda (x) (format t "\"~a\"~%" x)) (get-application-args))
+  ;;    (terpri)
   (let ((maxima-options nil))
     (setf maxima-options
 	  (list 
@@ -417,8 +417,8 @@
       #+(or cmu sbcl clisp allegro mcl)
       (progn
 	(loop 
-	   (with-simple-restart (macsyma-quit "Macsyma top-level")
-	     (macsyma-top-level input-stream batch-flag))))
+	 (with-simple-restart (macsyma-quit "Macsyma top-level")
+	   (macsyma-top-level input-stream batch-flag))))
       #-(or cmu sbcl clisp allegro mcl)
       (catch 'macsyma-quit
 	(macsyma-top-level input-stream batch-flag)))))
@@ -432,10 +432,10 @@
   (let ((old-debugger-hook *debugger-hook*))
     (catch 'to-maxima
       (unwind-protect
-	  (maxima-read-eval-print-loop)
+	   (maxima-read-eval-print-loop)
 	(setf *debugger-hook* old-debugger-hook)
 	(format t "Returning to Maxima~%"))))
-)
+  )
 
 (defun to-maxima ()
   (throw 'to-maxima t))

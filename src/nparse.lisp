@@ -14,7 +14,7 @@
 (load-macsyma-macros defcal mopers)
 
 (proclaim '(optimize (safety 2) (speed 2) (space 2)))
-(DEFMVAR ALPHABET
+(defmvar alphabet
   '(#\_ #\%)
   "alphabetic exceptions list")
 ;;;  Note: The following algorithms work only in environments where 
@@ -22,8 +22,8 @@
 ;;;	   Normal ASCII and LispM encoding makes this true. If we ever
 ;;;	   bring this up on EBCDIC machines, we may lose.
 
-(DEFMACRO IMEMBER (X L)
-  `(MEMBER ,X ,L))
+(defmacro imember (x l)
+  `(member ,x ,l))
 
 ;#-cl ;;defined in commac or via common
 ;(cond ((not (fboundp 'char<=)))
@@ -31,21 +31,21 @@
 ; (defun char>= (a b) (>= a b)))
 
 
-(PROGN
+(progn
 
-  (DEFMVAR ALPHABET '(#\_ #\%))
+  (defmvar alphabet '(#\_ #\%))
 
-  (DEFMFUN ALPHABETP (N)
-    #-cl (DECLARE (FIXNUM N))
+  (defmfun alphabetp (n)
+    #-cl (declare (fixnum n))
     (and (characterp n)
-	 (OR (AND (CHAR>= N #\A) (CHAR<= N #\Z)) ; upper case
-	     (AND (CHAR>= N #\a) (CHAR<= N #\z)) ; lower case
+	 (or (and (char>= n #\A) (char<= n #\Z)) ; upper case
+	     (and (char>= n #\a) (char<= n #\z)) ; lower case
 	     (imember n '(#\_ #\%))
-	     (IMEMBER N ALPHABET))))
+	     (imember n alphabet))))
 ; test for %, _, or other declared
 					;    alphabetic characters.
-  (DEFMFUN ASCII-NUMBERP (NUM)
-    (AND (characterp num) (CHAR<= NUM #\9) (CHAR>= NUM #\0))))
+  (defmfun ascii-numberp (num)
+    (and (characterp num) (char<= num #\9) (char>= num #\0))))
 
  ;End of #-LISPM
  
@@ -55,11 +55,11 @@
 
 (defvar *parse-window* nil)
 
-(DEFUN MREAD-SYNERR (sSTRING &REST L)
+(defun mread-synerr (sstring &rest l)
 ;  #+lispm (sys:parse-ferror    (format nil sstring l)  :correct-input )
 ;  #+lispm (dbg:parse-ferror    (format nil sstring l)  :correct-input )
-  #+(OR  NIL) (APPLY #'ERROR #+LISPM NIL #+NIL ':READ-ERROR sSTRING L)
-  #-(OR LISPM NIL)
+  #+(or  nil) (apply #'error #+lispm nil #+nil ':read-error sstring l)
+  #-(or lispm nil)
   (progn 
     (let (tem 
 	  errset
@@ -119,26 +119,26 @@
 ;;;  Otherwise, it returns its argument.
 
 #+cl
-(DEFUN FIXNUM-CHAR-UPCASE (C)
+(defun fixnum-char-upcase (c)
   (char-upcase c))
 
 ;  (char-code (char-upcase (code-char c))))
 
 
-(DEFUN FIRSTCHARN (X)
+(defun firstcharn (x)
   (aref (string x) 0))
 
-(DEFVAR *PARSE-STREAM*		()	  "input stream for Macsyma parser")
-(DEFVAR MACSYMA-OPERATORS	()	  "Macsyma operators structure")
-(DEFVAR *MREAD-PROMPT*		nil	  "prompt used by MREAD")
-(DEFVAR *MREAD-EOF-OBJ* () "Bound by MREAD for use by MREAD-RAW")
+(defvar *parse-stream*		()	  "input stream for Macsyma parser")
+(defvar macsyma-operators	()	  "Macsyma operators structure")
+(defvar *mread-prompt*		nil	  "prompt used by MREAD")
+(defvar *mread-eof-obj* () "Bound by MREAD for use by MREAD-RAW")
 
 (defun tyi-parse-int (stream eof)
   (or *parse-window*
       (progn (setq *parse-window* (make-list 25))
 	     (setf (get '*parse-window* 'length) (length *parse-window*))
 	     (nconc *parse-window* *parse-window*)))
-  (let ((tem (TYI stream eof)))
+  (let ((tem (tyi stream eof)))
     (setf (car *parse-window*) tem *parse-window*
 	  (cdr *parse-window*))
     (if (eql tem #\newline) (newline stream #\newline))
@@ -179,14 +179,14 @@
 
 
 
-(DEFUN *MREAD-PROMPT* (OUT-STREAM CHAR)
-  CHAR
-  (FORMAT OUT-STREAM "~&~A" *MREAD-PROMPT*))
+(defun *mread-prompt* (out-stream char)
+  char
+  (format out-stream "~&~A" *mread-prompt*))
   
-(DEFUN ALIASLOOKUP (OP)
-  (IF (SYMBOLP OP)
-      (OR (GET OP 'ALIAS) OP)
-      OP))
+(defun aliaslookup (op)
+  (if (symbolp op)
+      (or (get op 'alias) op)
+      op))
 
 
 ;;;; Tokenizing
@@ -198,15 +198,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; gobble whitespace, recognize '#' comments..
-(DEFUN GOBBLE-WHITESPACE ( &aux saw-newline ch saw-other)
-  (DO () (NIL) ; Gobble whitespace
-      (setq ch (PARSE-TYIPEEK))
+(defun gobble-whitespace ( &aux saw-newline ch saw-other)
+  (do () (nil) ; Gobble whitespace
+      (setq ch (parse-tyipeek))
       (cond ((eql ch #\newline)
 	     (setq saw-other nil)
 	     (setq saw-newline t))
-	    ((IMEMBER ch
-		  '(#\TAB #\SPACE #\Linefeed #\return ;#\control-C
-			  #\Page))
+	    ((imember ch
+		  '(#\tab #\space #\linefeed #\return ;#\control-C
+			  #\page))
 	     (setq saw-other t))
 	    ;; allow comments to be lines which are whitespace and then
 	    ;; a '#' character.
@@ -223,9 +223,9 @@
      (parse-tyi)
      ))
 
-(DEFUN READ-COMMAND-TOKEN (OBJ)
-  (GOBBLE-WHITESPACE)
-  (READ-COMMAND-TOKEN-AUX OBJ))
+(defun read-command-token (obj)
+  (gobble-whitespace)
+  (read-command-token-aux obj))
 
 (defun ch-minusp (z)
   (and (numberp z) (< z 0)))
@@ -283,7 +283,7 @@
 (defun parse-tyi ()
   (let ((tem  *parse-tyi*))
     (cond ((null tem)
-	   (tyi-parse-int *PARSE-STREAM* -1))
+	   (tyi-parse-int *parse-stream* -1))
 	  ((atom tem)
 	   (setq *parse-tyi* nil)
 	   tem)
@@ -349,11 +349,11 @@
 	     result))))
 
 
-(DEFUN SCAN-MACSYMA-TOKEN ()
+(defun scan-macsyma-token ()
   ;; note that only $-ed tokens are GETALIASed.
-  (let ((tem (CONS '#\$ (SCAN-TOKEN T))))
+  (let ((tem (cons '#\$ (scan-token t))))
     (setq tem (if $bothcases (bothcase-implode tem) (implode1 tem nil)))
-  (GETALIAS tem)))
+  (getalias tem)))
 
 (defun scan-lisp-token ()
   (let ((charlist (scan-token nil)))
@@ -393,21 +393,21 @@
 	      (setq preserve (not preserve))))))))
 
 (defvar $bothcases t)
-(DEFUN SCAN-TOKEN (FLAG)
-  (DO ((C (PARSE-TYIPEEK) (PARSE-TYIPEEK))
-       (L () (CONS C L)))
-      ((AND FLAG (NOT (OR (ASCII-NUMBERP C) (ALPHABETP C) (char= C #.back-slash-char)))) ;;#/\
-       (NREVERSE (OR L (NCONS (PARSE-TYI))))) ; Read at least one char ...
-    (IF (char= (PARSE-TYI) #. back-slash-char);; #/\
-	(SETQ C (PARSE-TYI))
-	(or $bothcases  (SETQ C (FIXNUM-CHAR-UPCASE C))))
-    (SETQ FLAG T)))
+(defun scan-token (flag)
+  (do ((c (parse-tyipeek) (parse-tyipeek))
+       (l () (cons c l)))
+      ((and flag (not (or (ascii-numberp c) (alphabetp c) (char= c #.back-slash-char)))) ;;#/\
+       (nreverse (or l (ncons (parse-tyi))))) ; Read at least one char ...
+    (if (char= (parse-tyi) #. back-slash-char);; #/\
+	(setq c (parse-tyi))
+	(or $bothcases  (setq c (fixnum-char-upcase c))))
+    (setq flag t)))
 
-(DEFUN SCAN-LISP-STRING () (INTERN (SCAN-STRING)))
+(defun scan-lisp-string () (intern (scan-string)))
 
-(DEFUN SCAN-MACSYMA-STRING () (INTERN (SCAN-STRING #\&)))
+(defun scan-macsyma-string () (intern (scan-string #\&)))
 
-(DEFUN SCAN-STRING (&optional init)
+(defun scan-string (&optional init)
   (let ((buf (or *scan-string-buffer*
 		 (setq *scan-string-buffer*
 		       (make-array 50 :element-type ' #.(array-element-type "abc")
@@ -415,13 +415,13 @@
 	(*scan-string-buffer* nil))
     (setf (fill-pointer buf) 0)
     (when init (vector-push-extend (coerce init 'character) buf))
-    (DO ((C (PARSE-TYIPEEK) (PARSE-TYIPEEK)))
+    (do ((c (parse-tyipeek) (parse-tyipeek)))
 	((cond ((eql c -1))
 	       ((char= c #. double-quote-char)
 		(parse-tyi) t))
 	 (copy-seq buf))
-      (IF (char= (PARSE-TYI) #. back-slash-char) ;; #/\ )
-	  (SETQ C (PARSE-TYI)))
+      (if (char= (parse-tyi) #. back-slash-char) ;; #/\ )
+	  (setq c (parse-tyi)))
       #-cl
       (vector-push-extend (code-char c) buf)
       #+cl
@@ -435,55 +435,55 @@
   (read-from-string   *string-register*))
 
 
-(DEFUN MAKE-NUMBER (DATA)
-  (SETQ DATA (NREVERSE DATA))
+(defun make-number (data)
+  (setq data (nreverse data))
   ;; Maxima really wants to read in any number as a double-float
   ;; (except when we have a bigfloat, of course!).  So convert an E or
   ;; S exponent marker to D.
   (when (member (car (nth 3. data)) '(#\E #\S))
     (setf (nth 3. data) (list #\D)))
-  (IF (NOT (EQUAL (NTH 3. DATA) '(#\B)))
-      (READLIST (APPLY #'APPEND DATA))
+  (if (not (equal (nth 3. data) '(#\B)))
+      (readlist (apply #'append data))
       ;; For bigfloats, turn them into rational numbers then convert to bigfloat
-      ($BFLOAT `((MTIMES) ((MPLUS) ,(READLIST (or (FIRST DATA) '(#\0)))
-				   ((MTIMES) ,(READLIST (or (THIRD DATA) '(#\0)))
-					     ((MEXPT) 10. ,(f- (LENGTH (THIRD DATA))))))
-			  ((MEXPT) 10. ,(FUNCALL (IF (char= (FIRST (FIFTH DATA)) #\-) #'- #'+)
-						 (READLIST (SIXTH DATA))))))))
+      ($bfloat `((mtimes) ((mplus) ,(readlist (or (first data) '(#\0)))
+				   ((mtimes) ,(readlist (or (third data) '(#\0)))
+					     ((mexpt) 10. ,(f- (length (third data))))))
+			  ((mexpt) 10. ,(funcall (if (char= (first (fifth data)) #\-) #'- #'+)
+						 (readlist (sixth data))))))))
 
-(DEFUN SCAN-DIGITS (DATA CONTINUATION? CONTINUATION &optional exponent-p)
-  (DO ((C (PARSE-TYIPEEK) (PARSE-TYIPEEK))
-       (L () (CONS C L)))
-      ((NOT (ASCII-NUMBERP C))
-       (COND ((IMEMBER C CONTINUATION?)
-	      (FUNCALL CONTINUATION (LIST* (NCONS (FIXNUM-CHAR-UPCASE
-						   (PARSE-TYI)))
-					   (NREVERSE L)
-					   Data)
+(defun scan-digits (data continuation? continuation &optional exponent-p)
+  (do ((c (parse-tyipeek) (parse-tyipeek))
+       (l () (cons c l)))
+      ((not (ascii-numberp c))
+       (cond ((imember c continuation?)
+	      (funcall continuation (list* (ncons (fixnum-char-upcase
+						   (parse-tyi)))
+					   (nreverse l)
+					   data)
 				   ))
 	     ((and (null l) exponent-p)
 	      ;; We're trying to parse the exponent part of a number,
 	      ;; and we didn't get a value after the exponent marker.
 	      ;; That's an error.
 	      (merror "Incomplete number.  Missing exponent?"))
-	     (T
-	      (MAKE-NUMBER (CONS (NREVERSE L) DATA)))))
-    (PARSE-TYI)))
+	     (t
+	      (make-number (cons (nreverse l) data)))))
+    (parse-tyi)))
 
 ;#+nil
 ;(DEFUN SCAN-NUMBER-BEFORE-DOT (DATA)
 ;  (SCAN-DIGITS DATA '(#. period-char) #'SCAN-NUMBER-AFTER-DOT))
 
-(DEFUN SCAN-NUMBER-AFTER-DOT (DATA)
-  (SCAN-DIGITS DATA '(#\E #\e #\B #\b #\D #\d #\S #\s) #'SCAN-NUMBER-EXPONENT))
+(defun scan-number-after-dot (data)
+  (scan-digits data '(#\E #\e #\B #\b #\D #\d #\S #\s) #'scan-number-exponent))
 
-(DEFUN SCAN-NUMBER-EXPONENT (DATA)
-  (PUSH (NCONS (IF (OR (char= (PARSE-TYIPEEK) #\+)
-		       (char= (PARSE-TYIPEEK) #\-))
-		   (PARSE-TYI)
+(defun scan-number-exponent (data)
+  (push (ncons (if (or (char= (parse-tyipeek) #\+)
+		       (char= (parse-tyipeek) #\-))
+		   (parse-tyi)
 		   #\+))
-	DATA)
-  (SCAN-DIGITS DATA () () t))
+	data)
+  (scan-digits data () () t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;                                                                    ;;;;;
@@ -554,59 +554,59 @@
 
 ;; "First character" and "Pop character"
 
-(DEFVAR SCAN-BUFFERED-TOKEN (LIST NIL)
+(defvar scan-buffered-token (list nil)
   "put-back buffer for scanner, a state-variable of the reader")
 
-(DEFUN PEEK-ONE-TOKEN ()
-  (PEEK-ONE-TOKEN-G NIL NIL))
+(defun peek-one-token ()
+  (peek-one-token-g nil nil))
 
-(DEFUN PEEK-ONE-TOKEN-G (EOF-OK? EOF-OBJ)
+(defun peek-one-token-g (eof-ok? eof-obj)
   (cond
-   ((CAR SCAN-BUFFERED-TOKEN)
-    (CDR SCAN-BUFFERED-TOKEN))
-   (t (RPLACD SCAN-BUFFERED-TOKEN (SCAN-ONE-TOKEN-G EOF-OK? EOF-OBJ))
-      (CDR (RPLACA SCAN-BUFFERED-TOKEN T)))))
+   ((car scan-buffered-token)
+    (cdr scan-buffered-token))
+   (t (rplacd scan-buffered-token (scan-one-token-g eof-ok? eof-obj))
+      (cdr (rplaca scan-buffered-token t)))))
 
-(DEFUN SCAN-ONE-TOKEN ()
-  (SCAN-ONE-TOKEN-G NIL NIL))
+(defun scan-one-token ()
+  (scan-one-token-g nil nil))
 
-(DEFUN SCAN-ONE-TOKEN-G (EOF-OK? EOF-OBJ)
-  (COND ((CAR SCAN-BUFFERED-TOKEN)
-	 (RPLACA SCAN-BUFFERED-TOKEN ())
-	 (CDR SCAN-BUFFERED-TOKEN))
-	((READ-COMMAND-TOKEN MACSYMA-OPERATORS))
-	(T
-	 (LET ((TEST (PARSE-TYIPEEK)))
+(defun scan-one-token-g (eof-ok? eof-obj)
+  (cond ((car scan-buffered-token)
+	 (rplaca scan-buffered-token ())
+	 (cdr scan-buffered-token))
+	((read-command-token macsyma-operators))
+	(t
+	 (let ((test (parse-tyipeek)))
 	   (cond  ((eql test -1.)
-		   (PARSE-TYI)
-		   (IF EOF-OK? EOF-OBJ
-		       (MAXIMA-ERROR "End of file while scanning expression")))
+		   (parse-tyi)
+		   (if eof-ok? eof-obj
+		       (maxima-error "End of file while scanning expression")))
 		  ((eql test forward-slash-char) ;;#//)
-		   (PARSE-TYI)
-		   (COND ((char= (PARSE-TYIPEEK) #\*)
-			  (GOBBLE-COMMENT)
-			  (SCAN-ONE-TOKEN-G EOF-OK? EOF-OBJ))
-			 (T '#-cl $// #+cl $/ )))
-		  ((eql test #. period-char) (PARSE-TYI)	; Read the dot
-		   (IF (ASCII-NUMBERP (PARSE-TYIPEEK))
-		       (SCAN-NUMBER-AFTER-DOT (LIST (NCONS #. period-char) NIL))
+		   (parse-tyi)
+		   (cond ((char= (parse-tyipeek) #\*)
+			  (gobble-comment)
+			  (scan-one-token-g eof-ok? eof-obj))
+			 (t '#-cl $// #+cl $/ )))
+		  ((eql test #. period-char) (parse-tyi)	; Read the dot
+		   (if (ascii-numberp (parse-tyipeek))
+		       (scan-number-after-dot (list (ncons #. period-char) nil))
 		       '|$.|))
 		  ((eql test double-quote-char );;#/")
-		   (PARSE-TYI)
-		   (SCAN-MACSYMA-STRING))
+		   (parse-tyi)
+		   (scan-macsyma-string))
 		  ((eql test #\?)
-		   (PARSE-TYI)
-		   (COND ((char= (PARSE-TYIPEEK) double-quote-char );;#/")
-			  (PARSE-TYI)
-			  (SCAN-LISP-STRING))
+		   (parse-tyi)
+		   (cond ((char= (parse-tyipeek) double-quote-char );;#/")
+			  (parse-tyi)
+			  (scan-lisp-string))
 			 ((char= (parse-tyipeek) #\:)
 			  (scan-keyword-token))
 			 (t
-			  (SCAN-LISP-TOKEN))))
-		  (T
-		   (IF (ASCII-NUMBERP TEST)
-		       (SCAN-NUMBER-BEFORE-DOT ())
-		       (SCAN-MACSYMA-TOKEN))))))))
+			  (scan-lisp-token))))
+		  (t
+		   (if (ascii-numberp test)
+		       (scan-number-before-dot ())
+		       (scan-macsyma-token))))))))
 
 ;; nested comments are permitted.
 (defun gobble-comment ()
@@ -646,30 +646,30 @@
   (scan-digits data '(#. period-char #\E #\e #\B #\b #\D #\d #\S #\s)
 	       #'scan-number-rest))
 
-    
-
-(DEFMACRO FIRST-C () '(PEEK-ONE-TOKEN))
-(DEFMACRO POP-C   () '(SCAN-ONE-TOKEN))
 
 
-(DEFUN MSTRINGP (X)
-  (AND (SYMBOLP X) (char= (FIRSTCHARN X) #\&)))
+(defmacro first-c () '(peek-one-token))
+(defmacro pop-c   () '(scan-one-token))
+
+
+(defun mstringp (x)
+  (and (symbolp x) (char= (firstcharn x) #\&)))
 
 
 ;(DEFUN AMPERCHK (NAME)
 ;  (IF (MSTRINGP NAME) (DOLLARIFY-NAME NAME) NAME))
 ;;see suprv1
 
-(DEFUN INHERIT-PROPL (OP-TO OP-FROM GETL)
-  (LET ((PROPL (GETL OP-FROM GETL)))
-    (IF PROPL
-	(PROGN (REMPROP OP-TO (CAR PROPL))
-	       (PUTPROP OP-TO (CADR PROPL) (CAR PROPL)))
-	(INHERIT-PROPL OP-TO
-		       (MAXIMA-ERROR (LIST "has no" GETL "properties.")
-			      OP-FROM
-			      'WRNG-TYPE-ARG)
-		       GETL))))
+(defun inherit-propl (op-to op-from getl)
+  (let ((propl (getl op-from getl)))
+    (if propl
+	(progn (remprop op-to (car propl))
+	       (putprop op-to (cadr propl) (car propl)))
+	(inherit-propl op-to
+		       (maxima-error (list "has no" getl "properties.")
+			      op-from
+			      'wrng-type-arg)
+		       getl))))
 
 
 ;;; (NUD <op>)
@@ -681,53 +681,53 @@
 
 (eval-when (eval compile load)
   #+already-expanded-below
-  (DEF-PROPL-CALL NUD (OP)
-    (IF (OPERATORP OP)
+  (def-propl-call nud (op)
+    (if (operatorp op)
 	;; If first element is an op, it better have a NUD
-	(MREAD-SYNERR "~A is not a prefix operator" (MOPSTRIP OP))
+	(mread-synerr "~A is not a prefix operator" (mopstrip op))
 	;; else take it as is.
-	(CONS '$ANY OP)))
+	(cons '$any op)))
 ;;begin expansion
-  (DEFMACRO DEF-NUD-EQUIV (OP EQUIV)
-    (LIST 'PUTPROP (LIST 'QUOTE OP) (LIST 'FUNCTION EQUIV)
-          (LIST 'QUOTE 'NUD)))
-  (DEFMACRO NUD-PROPL () ''(NUD))
-  (DEFMACRO DEF-NUD-FUN (OP-NAME OP-L . BODY)
-    (LIST* 'DEFUN-PROP (LIST* OP-NAME 'NUD 'NIL) OP-L BODY))
-  (DEFUN NUD-CALL (OP)
-    (LET ((TEM (AND (SYMBOLP OP) (GETL OP '(NUD)))) res)
+  (defmacro def-nud-equiv (op equiv)
+    (list 'putprop (list 'quote op) (list 'function equiv)
+          (list 'quote 'nud)))
+  (defmacro nud-propl () ''(nud))
+  (defmacro def-nud-fun (op-name op-l . body)
+    (list* 'defun-prop (list* op-name 'nud 'nil) op-l body))
+  (defun nud-call (op)
+    (let ((tem (and (symbolp op) (getl op '(nud)))) res)
       (setq res	 
-	    (IF (NULL TEM)
-		(IF (OPERATORP OP)
-		    (MREAD-SYNERR "~A is not a prefix operator"
-				  (MOPSTRIP OP))
-		    (CONS '$ANY OP))
-		(FUNCALL (CADR TEM) OP)))
+	    (if (null tem)
+		(if (operatorp op)
+		    (mread-synerr "~A is not a prefix operator"
+				  (mopstrip op))
+		    (cons '$any op))
+		(funcall (cadr tem) op)))
       res))
 ;;end expansion 
 
 ;;following defines def-led-equiv led-propl def-led-fun led-call
   #+already-expanded-below
-  (DEF-PROPL-CALL LED (OP L)
-    (MREAD-SYNERR "~A is not an infix operator" (MOPSTRIP OP))))
+  (def-propl-call led (op l)
+    (mread-synerr "~A is not an infix operator" (mopstrip op))))
 
 ;;begin expansion
-(DEFMACRO DEF-LED-EQUIV (OP EQUIV)
-    (LIST 'PUTPROP (LIST 'QUOTE OP) (LIST 'FUNCTION EQUIV)
-          (LIST 'QUOTE 'LED)))
+(defmacro def-led-equiv (op equiv)
+    (list 'putprop (list 'quote op) (list 'function equiv)
+          (list 'quote 'led)))
 
 (eval-when (compile load eval)
-  (DEFMACRO LED-PROPL () ''(LED)))
+  (defmacro led-propl () ''(led)))
 
-(DEFMACRO DEF-LED-FUN (OP-NAME OP-L . BODY)
-    (LIST* 'DEFUN-PROP (LIST* OP-NAME 'LED 'NIL) OP-L BODY))
-(DEFUN LED-CALL (OP L)
+(defmacro def-led-fun (op-name op-l . body)
+    (list* 'defun-prop (list* op-name 'led 'nil) op-l body))
+(defun led-call (op l)
    
-    (LET ((TEM (AND (SYMBOLP OP) (GETL OP '(LED)))) res)
+    (let ((tem (and (symbolp op) (getl op '(led)))) res)
 	 (setq res
-      (IF (NULL TEM)
-          (MREAD-SYNERR "~A is not an infix operator" (MOPSTRIP OP))
-          (FUNCALL (CADR TEM) OP L))
+      (if (null tem)
+          (mread-synerr "~A is not an infix operator" (mopstrip op))
+          (funcall (cadr tem) op l))
       )
 	 res
       ))
@@ -745,36 +745,36 @@
 ;;;      It will get bound to the operator being parsed.
 ;;;  lispm:Optional args not allowed in release 5 allowed, necessary afterwards..
 
-(DEFMACRO DEF-NUD ((OP . LBP-RBP) BVL . BODY)
+(defmacro def-nud ((op . lbp-rbp) bvl . body)
   (let (( lbp (nth 0 lbp-rbp))
 	( rbp (nth 1 lbp-rbp)))
-    `(PROGN 'COMPILE 	  ,(MAKE-PARSER-FUN-DEF OP 'NUD BVL BODY)
-	    (SET-LBP-AND-RBP ',OP ',LBP ',RBP))))
+    `(progn 'compile 	  ,(make-parser-fun-def op 'nud bvl body)
+	    (set-lbp-and-rbp ',op ',lbp ',rbp))))
 
 ;#-cl
 ;(DEFMACRO DEF-NUD ((OP #+nil &OPTIONAL LBP RBP) BVL . BODY)
 ;  `(PROGN 'COMPILE 	  ,(MAKE-PARSER-FUN-DEF OP 'NUD BVL BODY)
 ;	  (SET-LBP-AND-RBP ',OP ',LBP ',RBP)))
 
-(DEFUN SET-LBP-AND-RBP (OP LBP RBP)
-  (COND ((NOT (consp OP))
-	 (LET ((EXISTING-LBP (GET OP 'LBP))
-	       (EXISTING-RBP (GET OP 'RBP)))
-	   (COND ((NOT LBP)
-		  (COMMENT IGNORE OMITTED ARG))
-		 ((NOT EXISTING-LBP)
-		  (PUTPROP OP LBP 'LBP))
-		 ((NOT (EQUAL EXISTING-LBP LBP))
-		  (MAXIMA-ERROR "Incompatible LBP's defined for this operator" OP)))
-	   (COND ((NOT RBP)
-		  (COMMENT IGNORE OMITTED ARG))
-		 ((NOT EXISTING-RBP)
-		  (PUTPROP OP RBP 'RBP))
-		 ((NOT (EQUAL EXISTING-RBP RBP))
-		  (MAXIMA-ERROR "Incompatible RBP's defined for this operator" OP)))))
-	('ELSE
-	 (MAPCAR #'(LAMBDA (X) (SET-LBP-AND-RBP X LBP RBP))
-		 OP))))
+(defun set-lbp-and-rbp (op lbp rbp)
+  (cond ((not (consp op))
+	 (let ((existing-lbp (get op 'lbp))
+	       (existing-rbp (get op 'rbp)))
+	   (cond ((not lbp)
+		  (comment ignore omitted arg))
+		 ((not existing-lbp)
+		  (putprop op lbp 'lbp))
+		 ((not (equal existing-lbp lbp))
+		  (maxima-error "Incompatible LBP's defined for this operator" op)))
+	   (cond ((not rbp)
+		  (comment ignore omitted arg))
+		 ((not existing-rbp)
+		  (putprop op rbp 'rbp))
+		 ((not (equal existing-rbp rbp))
+		  (maxima-error "Incompatible RBP's defined for this operator" op)))))
+	('else
+	 (mapcar #'(lambda (x) (set-lbp-and-rbp x lbp rbp))
+		 op))))
 				   
 
 ;;; (DEF-LED (op lbp rbp) bvl . body)
@@ -790,12 +790,12 @@
 ;;;	  get bound to the parsed structure which was to the left of Arg1.
 
 
-(DEFMACRO DEF-LED((OP . LBP-RBP) BVL . BODY)
+(defmacro def-led((op . lbp-rbp) bvl . body)
   (let (( lbp (nth 0 lbp-rbp))
 	( rbp (nth 1 lbp-rbp)))
-    `(PROGN 'COMPILE
-	    ,(MAKE-PARSER-FUN-DEF  OP 'LED BVL BODY)
-	    (SET-LBP-AND-RBP ',OP ',LBP ',RBP))))
+    `(progn 'compile
+	    ,(make-parser-fun-def  op 'led bvl body)
+	    (set-lbp-and-rbp ',op ',lbp ',rbp))))
 
 ;#-cl
 ;(DEFMACRO DEF-LED ((OP #+(or cl NIL) &OPTIONAL LBP RBP) BVL . BODY)
@@ -803,48 +803,48 @@
 ;	  ,(MAKE-PARSER-FUN-DEF  OP 'LED BVL BODY)
 ;	  (SET-LBP-AND-RBP ',OP ',LBP ',RBP)))
 
-(DEFMACRO DEF-COLLISIONS (OP &REST ALIST)
-  (LET ((KEYS (DO ((I  1.    (#+cl ash #-cl LSH I 1.))
-		   (LIS  ALIST (CDR LIS))
-		   (NL ()    (CONS (CONS (CAAR LIS) I) NL)))
-		  ((NULL LIS) NL))))
-    `(PROGN 'COMPILE
-       (DEFPROP ,OP ,(let #+lispm ((default-cons-area working-storage-area))
+(defmacro def-collisions (op &rest alist)
+  (let ((keys (do ((i  1.    (#+cl ash #-cl lsh i 1.))
+		   (lis  alist (cdr lis))
+		   (nl ()    (cons (cons (caar lis) i) nl)))
+		  ((null lis) nl))))
+    `(progn 'compile
+       (defprop ,op ,(let #+lispm ((default-cons-area working-storage-area))
 			  #-lispm nil
-		       (copy-tree KEYS )) KEYS)
-       ,@(MAPCAR #'(LAMBDA (DATA)
-		     `(DEFPROP ,(CAR DATA)
-			       ,(DO ((I 0 (LOGIOR I  (CDR (ASSQ (CAR LIS) KEYS))))
-				     (LIS (CDR DATA) (CDR LIS)))
-				    ((NULL LIS) I))
-			       ,OP))
-		 ALIST))))
+		       (copy-tree keys )) keys)
+       ,@(mapcar #'(lambda (data)
+		     `(defprop ,(car data)
+			       ,(do ((i 0 (logior i  (cdr (assq (car lis) keys))))
+				     (lis (cdr data) (cdr lis)))
+				    ((null lis) i))
+			       ,op))
+		 alist))))
 
 
-(DEFUN COLLISION-LOOKUP (OP ACTIVE-BITMASK KEY-BITMASK)
-  (LET ((RESULT (LOGAND ACTIVE-BITMASK KEY-BITMASK)))
-    (IF (NOT (ZEROP RESULT))
-	(DO ((L (GET OP 'KEYS) (CDR L)))
-	    ((NULL L) (PARSE-BUG-ERR 'COLLISION-CHECK))
-	  (IF (NOT (ZEROP (LOGAND RESULT (CDAR L))))
-	      (RETURN (CAAR L)))))))
+(defun collision-lookup (op active-bitmask key-bitmask)
+  (let ((result (logand active-bitmask key-bitmask)))
+    (if (not (zerop result))
+	(do ((l (get op 'keys) (cdr l)))
+	    ((null l) (parse-bug-err 'collision-check))
+	  (if (not (zerop (logand result (cdar l))))
+	      (return (caar l)))))))
 
-(DEFUN COLLISION-CHECK (OP ACTIVE-BITMASK KEY)
-  (LET ((KEY-BITMASK (GET KEY OP)))
-    (IF (NOT KEY-BITMASK)
-	(MREAD-SYNERR "~A is an unknown keyword in a ~A statement."
-		      (MOPSTRIP KEY) (MOPSTRIP OP)))
-    (LET ((COLLISION (COLLISION-LOOKUP OP ACTIVE-BITMASK KEY-BITMASK)))
-      (IF COLLISION
-	  (IF (EQ COLLISION KEY)
-	      (MREAD-SYNERR "This ~A's ~A slot is already filled."
-			    (MOPSTRIP OP)
-			    (MOPSTRIP KEY))
-	      (MREAD-SYNERR "A ~A cannot have a ~A with a ~A field."
-			    (MOPSTRIP OP)
-			    (MOPSTRIP KEY)
-			    (MOPSTRIP COLLISION))))
-      (LOGIOR (CDR (ASSQ KEY (GET OP 'KEYS))) ACTIVE-BITMASK))))
+(defun collision-check (op active-bitmask key)
+  (let ((key-bitmask (get key op)))
+    (if (not key-bitmask)
+	(mread-synerr "~A is an unknown keyword in a ~A statement."
+		      (mopstrip key) (mopstrip op)))
+    (let ((collision (collision-lookup op active-bitmask key-bitmask)))
+      (if collision
+	  (if (eq collision key)
+	      (mread-synerr "This ~A's ~A slot is already filled."
+			    (mopstrip op)
+			    (mopstrip key))
+	      (mread-synerr "A ~A cannot have a ~A with a ~A field."
+			    (mopstrip op)
+			    (mopstrip key)
+			    (mopstrip collision))))
+      (logior (cdr (assq key (get op 'keys))) active-bitmask))))
       
 
 ;;;; Data abstraction
@@ -854,20 +854,20 @@
 ;;; (LBP <op>)		 - reads an operator's Left Binding Power
 ;;; (DEF-LBP <op> <val>) - defines an operator's Left Binding Power
 
-(DEFMFUN LBP (LEX) (COND ((safe-GET LEX 'LBP)) (T 200.)))
+(defmfun lbp (lex) (cond ((safe-get lex 'lbp)) (t 200.)))
 
-(DEFMACRO DEF-LBP (SYM VAL) `(DEFPROP ,SYM ,VAL LBP))
+(defmacro def-lbp (sym val) `(defprop ,sym ,val lbp))
 
 ;;; RBP = Right Binding Power
 ;;;
 ;;; (RBP <op>)		 - reads an operator's Right Binding Power
 ;;; (DEF-RBP <op> <val>) - defines an operator's Right Binding Power
 
-(DEFMFUN RBP (LEX) (COND ((safe-GET LEX 'RBP)) (T 200.)))
+(defmfun rbp (lex) (cond ((safe-get lex 'rbp)) (t 200.)))
 
-(DEFMACRO DEF-RBP (SYM VAL) `(DEFPROP ,SYM ,VAL RBP))
+(defmacro def-rbp (sym val) `(defprop ,sym ,val rbp))
 
-(DEFMACRO DEF-MATCH (X M) `(DEFPROP ,X ,M MATCH))
+(defmacro def-match (x m) `(defprop ,x ,m match))
 
 ;;; POS = Part of Speech!
 ;;; 
@@ -876,45 +876,45 @@
 ;;; (POS  <op>)
 ;;;
 
-(DEFUN LPOS (OP) (COND ((safe-GET OP 'LPOS)) (T '$ANY)))
-(DEFUN RPOS (OP) (COND ((safe-GET OP 'RPOS)) (T '$ANY)))
-(DEFUN POS (OP) (COND ((safe-GET OP 'POS)) (T '$ANY)))
+(defun lpos (op) (cond ((safe-get op 'lpos)) (t '$any)))
+(defun rpos (op) (cond ((safe-get op 'rpos)) (t '$any)))
+(defun pos (op) (cond ((safe-get op 'pos)) (t '$any)))
 
-(DEFMACRO DEF-POS  (OP POS) `(DEFPROP ,OP ,POS  POS))
-(DEFMACRO DEF-RPOS (OP POS) `(DEFPROP ,OP ,POS RPOS))
-(DEFMACRO DEF-LPOS (OP POS) `(DEFPROP ,OP ,POS LPOS))
+(defmacro def-pos  (op pos) `(defprop ,op ,pos  pos))
+(defmacro def-rpos (op pos) `(defprop ,op ,pos rpos))
+(defmacro def-lpos (op pos) `(defprop ,op ,pos lpos))
 
 ;;; MHEADER
 
-(DEFUN MHEADER (OP) (add-lineinfo (OR (safe-GET OP 'MHEADER) (NCONS OP))))
+(defun mheader (op) (add-lineinfo (or (safe-get op 'mheader) (ncons op))))
 
-(DEFMACRO DEF-MHEADER (OP HEADER) `(DEFPROP ,OP ,HEADER MHEADER))
+(defmacro def-mheader (op header) `(defprop ,op ,header mheader))
 
 
-(DEFMVAR $PARSEWINDOW 10.
+(defmvar $parsewindow 10.
 	 "The maximum number of 'lexical tokens' that are printed out on
 each side of the error-point when a syntax (parsing) MAXIMA-ERROR occurs.  This
 option is especially useful on slow terminals.  Setting it to -1 causes the
 entire input string to be printed out when an MAXIMA-ERROR occurs."
-	 FIXNUM)
+	 fixnum)
 
 
 ;;;; Misplaced definitions
 
-(DEFMACRO DEF-OPERATORP ()
-  `(DEFMFUN OPERATORP (LEX)
-     (AND (SYMBOLP LEX) (GETL LEX '(,@(NUD-PROPL) ,@(LED-PROPL))))))
+(defmacro def-operatorp ()
+  `(defmfun operatorp (lex)
+     (and (symbolp lex) (getl lex '(,@(nud-propl) ,@(led-propl))))))
 
-(DEF-OPERATORP)
+(def-operatorp)
 
-(DEFMACRO DEF-OPERATORP1 ()
+(defmacro def-operatorp1 ()
   ;Defmfun -- used by SYNEX if not others.
-  `(DEFMFUN OPERATORP1 (LEX)
+  `(defmfun operatorp1 (lex)
      ;; Referenced outside of package: OP-SETUP, DECLARE1
      ;; Use for truth value only, not for return-value.
-     (AND (SYMBOLP LEX) (GETL LEX '(LBP RBP ,@(NUD-PROPL) ,@(LED-PROPL))))))
+     (and (symbolp lex) (getl lex '(lbp rbp ,@(nud-propl) ,@(led-propl))))))
 
-(DEF-OPERATORP1)
+(def-operatorp1)
 
 ;;;; The Macsyma Parser
 
@@ -961,11 +961,11 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (defvar *current-line-info* nil)
 
 ;;Important for lispm rubout handler
-(DEFUN MREAD (&REST READ-ARGS)
-  #+NIL (let ((*mread-prompt-internal* *mread-prompt*)
+(defun mread (&rest read-args)
+  #+nil (let ((*mread-prompt-internal* *mread-prompt*)
 	      (si:*ttyscan-dispatch-table *macsyma-ttyscan-operators*))
 	  (declare (special *mread-prompt-internal*))
-	  (SI:READ-APPLY ':MREAD #'MREAD-RAW (coerce READ-ARGS 'sys:vector)
+	  (si:read-apply ':mread #'mread-raw (coerce read-args 'sys:vector)
 			 '(:prompt mread-prompter)
 			 '(:reprompt mread-prompter)))
   #+cl (progn
@@ -976,8 +976,8 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	       (force-output))
 	 (apply 'mread-raw read-args)
 		    )
-  #-(or NIL cl)
-  (READ-APPLY #'MREAD-RAW READ-ARGS))
+  #-(or nil cl)
+  (read-apply #'mread-raw read-args))
 
 (defun mread-prompter (stream char)
   (declare (special *mread-prompt-internal*))
@@ -985,12 +985,12 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   (fresh-line stream)
   (princ *mread-prompt-internal* stream))
 
-#+NIL
-(DEFUN MREAD-WITH-PROMPT (PROMPT)
+#+nil
+(defun mread-with-prompt (prompt)
   (let ((*mread-prompt-internal* prompt)
 	(si:*ttyscan-dispatch-table *macsyma-ttyscan-operators*))
     (declare (special *mread-prompt-internal*))
-    (SI:READ-APPLY ':MREAD #'MREAD-RAW (SYS:VECTOR)
+    (si:read-apply ':mread #'mread-raw (sys:vector)
 		   '(:prompt mread-prompter)
 		   '(:reprompt mread-prompter))))
 
@@ -998,30 +998,30 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;aa && bb && jim:3;
 
 
-(DEFUN MREAD-RAW (*PARSE-STREAM* &OPTIONAL *MREAD-EOF-OBJ*)
-  (LET ((SCAN-BUFFERED-TOKEN (LIST NIL))
+(defun mread-raw (*parse-stream* &optional *mread-eof-obj*)
+  (let ((scan-buffered-token (list nil))
 	*parse-tyi*
 	)
-    (IF (EQ SCAN-BUFFERED-TOKEN ;; a handly unique object for the EQ test.
-	    (PEEK-ONE-TOKEN-G T SCAN-BUFFERED-TOKEN))
-	*MREAD-EOF-OBJ*
-	(DO ((LABELS ())
-	     (INPUT (PARSE '$ANY 0.) (PARSE '$ANY 0.)))
-	    (NIL)
-	  (CASE (FIRST-C)
+    (if (eq scan-buffered-token ;; a handly unique object for the EQ test.
+	    (peek-one-token-g t scan-buffered-token))
+	*mread-eof-obj*
+	(do ((labels ())
+	     (input (parse '$any 0.) (parse '$any 0.)))
+	    (nil)
+	  (case (first-c)
 	    ((|$;| |$$|)
 	      ;force a separate line info structure
-	     (SETF *CURRENT-LINE-INFO* NIL)
-	     (RETURN (LIST (MHEADER (POP-C))
-			   (IF LABELS (CONS (MHEADER '|$[|) (NREVERSE LABELS)))
-			   INPUT)))
+	     (setf *current-line-info* nil)
+	     (return (list (mheader (pop-c))
+			   (if labels (cons (mheader '|$[|) (nreverse labels)))
+			   input)))
 	    ((|$&&|)
-	     (POP-C)
-	     (IF (SYMBOLP INPUT)
-		 (PUSH INPUT LABELS)
-		 (MREAD-SYNERR "Invalid && tag. Tag must be a symbol")))
-	    (T
-	     (PARSE-BUG-ERR 'MREAD-RAW)))))))
+	     (pop-c)
+	     (if (symbolp input)
+		 (push input labels)
+		 (mread-synerr "Invalid && tag. Tag must be a symbol")))
+	    (t
+	     (parse-bug-err 'mread-raw)))))))
 
 ;;; (PARSE <mode> <rbp>)
 ;;;
@@ -1044,11 +1044,11 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;	     than calling that operator.
 ;;;
 
-(DEFUN PARSE (MODE RBP) 
-  (DO ((LEFT (NUD-CALL (POP-C))		; Envoke the null left denotation
-	     (LED-CALL (POP-C) LEFT)))	;  and keep calling LED ops as needed
-      ((>= RBP (LBP (FIRST-C)))		; Until next op lbp too low
-       (CONVERT LEFT MODE))))		;  in which case, return stuff seen
+(defun parse (mode rbp) 
+  (do ((left (nud-call (pop-c))		; Envoke the null left denotation
+	     (led-call (pop-c) left)))	;  and keep calling LED ops as needed
+      ((>= rbp (lbp (first-c)))		; Until next op lbp too low
+       (convert left mode))))		;  in which case, return stuff seen
 
 ;;; (PARSE-PREFIX <op>)
 ;;;
@@ -1059,10 +1059,10 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;  according to its right binding power, returning
 ;;;  ( <mode> . ((<op>) <arg1>) )
 
-(DEFUN PARSE-PREFIX (OP)
-  (LIST (POS OP)			; Operator mode
-	(MHEADER OP)			; Standard Macsyma expression header
-	(PARSE (RPOS OP) (RBP OP))))	; Convert single argument for use
+(defun parse-prefix (op)
+  (list (pos op)			; Operator mode
+	(mheader op)			; Standard Macsyma expression header
+	(parse (rpos op) (rbp op))))	; Convert single argument for use
 
 ;;; (PARSE-POSTFIX <op> <left>)
 ;;;
@@ -1072,10 +1072,10 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;  has been accumulated and <op> has been seen and gobbled up. It returns
 ;;;  ( <mode> . ((<op>) <arg1>) )
 
-(DEFUN PARSE-POSTFIX (OP L)
-  (LIST (POS OP)			; Operator's mode
-	(MHEADER OP)			; Standard Macsyma expression header
-	(CONVERT L (LPOS OP))))		; Convert single argument for use
+(defun parse-postfix (op l)
+  (list (pos op)			; Operator's mode
+	(mheader op)			; Standard Macsyma expression header
+	(convert l (lpos op))))		; Convert single argument for use
 
 ;;; (PARSE-INFIX <op> <left>)
 ;;;
@@ -1085,11 +1085,11 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;  has been accumulated and <op> has been seen and gobbled up. It returns
 ;;;  ( <mode> . ((<op>) <arg1> <arg2>) )
 
-(DEFUN PARSE-INFIX (OP L)
-  (LIST (POS OP)			; Operator's mode
-	(MHEADER OP)			; Standard Macsyma expression header
-	(CONVERT L (LPOS OP))		; Convert arg1 for immediate use
-	(PARSE (RPOS OP) (RBP OP))))	; Look for an arg2 
+(defun parse-infix (op l)
+  (list (pos op)			; Operator's mode
+	(mheader op)			; Standard Macsyma expression header
+	(convert l (lpos op))		; Convert arg1 for immediate use
+	(parse (rpos op) (rbp op))))	; Look for an arg2 
 
 ;;; (PARSE-NARY <op> <left>)
 ;;;
@@ -1102,11 +1102,11 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;  <left> is the stuff that has been seen to the left of <op> which 
 ;;;         rightly belongs to <op> on the basis of parse precedence rules.
 
-(DEFUN PARSE-NARY (OP L)
-  (LIST* (POS OP)			    ; Operator's mode
-	 (MHEADER OP)			    ; Normal Macsyma operator header
-	 (CONVERT L (LPOS OP))		    ; Check type-match of arg1
-	 (PRSNARY OP (LPOS OP) (LBP OP))))  ; Search for other args
+(defun parse-nary (op l)
+  (list* (pos op)			    ; Operator's mode
+	 (mheader op)			    ; Normal Macsyma operator header
+	 (convert l (lpos op))		    ; Check type-match of arg1
+	 (prsnary op (lpos op) (lbp op))))  ; Search for other args
 
 ;;; (PARSE-MATCHFIX <lop>)
 ;;;
@@ -1116,10 +1116,10 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;  has been seen. It parses <lop><form1>,<form2>,...<rop> returning
 ;;;  ( <mode> . ((<lop>) <form1> <form2> ...) ).
 
-(DEFUN PARSE-MATCHFIX (OP)
-  (LIST* (POS OP)			         ; Operator's mode
-	 (MHEADER OP)			         ; Normal Macsyma operator header
-	 (PRSMATCH (SAFE-GET OP 'MATCH) (LPOS OP))))  ; Search for matchfixed forms
+(defun parse-matchfix (op)
+  (list* (pos op)			         ; Operator's mode
+	 (mheader op)			         ; Normal Macsyma operator header
+	 (prsmatch (safe-get op 'match) (lpos op))))  ; Search for matchfixed forms
 
 ;;; (PARSE-NOFIX <op>)
 ;;;
@@ -1136,7 +1136,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;   a nofix op, then @(3,4) parses, but parses as "@"()(3,4) would -- ie, 
 ;;;   to ((MQAPPLY) (($@)) 3 4) which is perhaps not what the user will expect.
 
-(DEFUN PARSE-NOFIX (OP) (LIST (POS OP) (MHEADER OP)))
+(defun parse-nofix (op) (list (pos op) (mheader op)))
 
 ;;; (PRSNARY <op> <mode> <rbp>)
 ;;;
@@ -1153,12 +1153,12 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;	     recursive parses as a binding power to parse for.
 ;;;  <mode> is the name of the mode that each form must be.
 
-(DEFUN PRSNARY (OP MODE RBP) 
-  (DO ((NL (LIST (PARSE MODE RBP))	   ; Get at least one form
-	   (CONS (PARSE MODE RBP) NL)))	   ;  and keep getting forms
-      ((NOT (EQ OP (FIRST-C)))		   ; until a parse pops on a new op
-       (NREVERSE NL))			   ;  at which time return forms
-      (POP-C)))				   ; otherwise pop op
+(defun prsnary (op mode rbp) 
+  (do ((nl (list (parse mode rbp))	   ; Get at least one form
+	   (cons (parse mode rbp) nl)))	   ;  and keep getting forms
+      ((not (eq op (first-c)))		   ; until a parse pops on a new op
+       (nreverse nl))			   ;  at which time return forms
+      (pop-c)))				   ; otherwise pop op
 
 ;;; (PRSMATCH <match> <mode>)
 ;;;
@@ -1169,18 +1169,18 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;; <match> is the token to look for as a matchfix character.
 ;;; <mode>  is the name of the mode that each form must be.
 
-(DEFUN PRSMATCH (MATCH MODE)			  ; Parse for matchfix char
-  (COND ((EQ MATCH (FIRST-C)) (POP-C) NIL)	  ; If immediate match, ()
-	(T					  ; Else, ...
-	 (DO ((NL (LIST (PARSE MODE 10.))	  ;  Get first element
-		  (CONS (PARSE MODE 10.) NL)))	  ;   and Keep adding elements
-	     ((EQ MATCH (FIRST-C))		  ;  Until we hit the match.
-	      (POP-C)				  ;   Throw away match.
-	      (NREVERSE NL))			  ;   Put result back in order
-	   (IF (EQ '|$,| (FIRST-C))		  ;  If not end, look for ","
-	       (POP-C)				  ;   and pop it if it's there
-	       (MREAD-SYNERR "Missing ~A"	  ;   or give an error message.
-			     (MOPSTRIP MATCH)))))))
+(defun prsmatch (match mode)			  ; Parse for matchfix char
+  (cond ((eq match (first-c)) (pop-c) nil)	  ; If immediate match, ()
+	(t					  ; Else, ...
+	 (do ((nl (list (parse mode 10.))	  ;  Get first element
+		  (cons (parse mode 10.) nl)))	  ;   and Keep adding elements
+	     ((eq match (first-c))		  ;  Until we hit the match.
+	      (pop-c)				  ;   Throw away match.
+	      (nreverse nl))			  ;   Put result back in order
+	   (if (eq '|$,| (first-c))		  ;  If not end, look for ","
+	       (pop-c)				  ;   and pop it if it's there
+	       (mread-synerr "Missing ~A"	  ;   or give an error message.
+			     (mopstrip match)))))))
 
 ;;; (CONVERT <exp> <mode>)
 ;;;
@@ -1191,85 +1191,85 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;;
 ;;;  If <expressionmode> and <mode> are compatible, returns <expression>.
 
-(DEFUN CONVERT (ITEM MODE) 
-  (IF (OR (EQ MODE (CAR ITEM))		; If modes match exactly
-	  (EQ '$ANY MODE)		;    or target is $ANY
-	  (EQ '$ANY (CAR ITEM)))	;    or input is $ANY
-      (CDR ITEM)			;  then return expression
-      (MREAD-SYNERR "Found ~A expression where ~A expression expected" 
-		    (GET (CAR ITEM) 'ENGLISH)
-		    (GET MODE       'ENGLISH))))
+(defun convert (item mode) 
+  (if (or (eq mode (car item))		; If modes match exactly
+	  (eq '$any mode)		;    or target is $ANY
+	  (eq '$any (car item)))	;    or input is $ANY
+      (cdr item)			;  then return expression
+      (mread-synerr "Found ~A expression where ~A expression expected" 
+		    (get (car item) 'english)
+		    (get mode       'english))))
 
-(DEFPROP $ANY    "untyped"   ENGLISH)
-(DEFPROP $CLAUSE "logical"   ENGLISH)
-(DEFPROP $EXPR   "algebraic" ENGLISH)
+(defprop $any    "untyped"   english)
+(defprop $clause "logical"   english)
+(defprop $expr   "algebraic" english)
 
 ;;;; Parser Error Diagnostics
 
  ;; Call this for random user-generated parse errors
 
-(DEFUN PARSE-ERR () (MREAD-SYNERR "Syntax error")) 
+(defun parse-err () (mread-synerr "Syntax error")) 
 
  ;; Call this for random internal parser lossage (eg, code that shouldn't
  ;;  be reachable.)
 
-(DEFUN PARSE-BUG-ERR (OP)
-  (MREAD-SYNERR
+(defun parse-bug-err (op)
+  (mread-synerr
     "Parser bug in ~A. Please report this to the Macsyma maintainers,~
    ~%including the characters you just typed which caused the error. Thanks."
-    (MOPSTRIP OP)))
+    (mopstrip op)))
 
 ;;; Random shared error messages
 
-(DEFUN DELIM-ERR (OP)
-  (MREAD-SYNERR "Illegal use of delimiter ~A" (MOPSTRIP OP)))
+(defun delim-err (op)
+  (mread-synerr "Illegal use of delimiter ~A" (mopstrip op)))
 
-(DEFUN ERB-ERR (OP L) L ;Ignored
-  (MREAD-SYNERR "Too many ~A's" (MOPSTRIP OP)))
+(defun erb-err (op l) l ;Ignored
+  (mread-synerr "Too many ~A's" (mopstrip op)))
 
-(DEFUN PREMTERM-ERR (OP)
-  (MREAD-SYNERR "Premature termination of input at ~A."
-		(MOPSTRIP OP)))
+(defun premterm-err (op)
+  (mread-synerr "Premature termination of input at ~A."
+		(mopstrip op)))
 
 ;;;; Operator Specific Data
 
-(DEF-NUD-EQUIV |$]| DELIM-ERR)
-(DEF-LED-EQUIV |$]| ERB-ERR)
-(DEF-LBP     |$]| 5.)
+(def-nud-equiv |$]| delim-err)
+(def-led-equiv |$]| erb-err)
+(def-lbp     |$]| 5.)
 
-(DEF-NUD-EQUIV	|$[| PARSE-MATCHFIX)
-(DEF-MATCH	|$[| |$]|)
-(DEF-LBP	|$[| 200.)
+(def-nud-equiv	|$[| parse-matchfix)
+(def-match	|$[| |$]|)
+(def-lbp	|$[| 200.)
 ;No RBP
-(DEF-MHEADER	|$[| (MLIST))
-(DEF-POS	|$[| $ANY)
-(DEF-LPOS	|$[| $ANY)
+(def-mheader	|$[| (mlist))
+(def-pos	|$[| $any)
+(def-lpos	|$[| $any)
 ;No RPOS
 
-(DEF-LED (|$[| 200.) (OP LEFT)
-  (SETQ LEFT (CONVERT LEFT '$ANY))
-  (IF (NUMBERP LEFT) (PARSE-ERR))			; number[...] invalid
-  (LET ((header (if (atom left)
-		    (add-lineinfo (LIST (AMPERCHK LEFT) 'array))
-		  (add-lineinfo '(MQAPPLY ARRAY))))
+(def-led (|$[| 200.) (op left)
+  (setq left (convert left '$any))
+  (if (numberp left) (parse-err))			; number[...] invalid
+  (let ((header (if (atom left)
+		    (add-lineinfo (list (amperchk left) 'array))
+		  (add-lineinfo '(mqapply array))))
 		  
-	(RIGHT (PRSMATCH '|$]| '$ANY)))			; get sublist in RIGHT
-    (COND ((NULL RIGHT)					; 1 subscript minimum
-	   (MREAD-SYNERR "No subscripts given"))
-	  ((ATOM LEFT)					; atom[...]
-	   (SETQ RIGHT (CONS header
-			     RIGHT))
-	   (CONS '$ANY (ALIASLOOKUP RIGHT)))
-	  (T						; exp[...]
-	   (CONS '$ANY (CONS header
-			     (CONS LEFT RIGHT)))))))
+	(right (prsmatch '|$]| '$any)))			; get sublist in RIGHT
+    (cond ((null right)					; 1 subscript minimum
+	   (mread-synerr "No subscripts given"))
+	  ((atom left)					; atom[...]
+	   (setq right (cons header
+			     right))
+	   (cons '$any (aliaslookup right)))
+	  (t						; exp[...]
+	   (cons '$any (cons header
+			     (cons left right)))))))
 
 
-(DEF-NUD-EQUIV |$)| DELIM-ERR)
-(DEF-LED-EQUIV |$)| ERB-ERR)
-(DEF-LBP       |$)| 5.)
+(def-nud-equiv |$)| delim-err)
+(def-led-equiv |$)| erb-err)
+(def-lbp       |$)| 5.)
 
-(DEF-MHEADER   |$(| (MPROGN))
+(def-mheader   |$(| (mprogn))
 
   ;; KMP: This function optimizes out (exp) into just exp. 
   ;;  This is useful for mathy expressions, but obnoxious for non-mathy
@@ -1283,383 +1283,383 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   ;;  comes inside quoted expressions. There are many other problems with
   ;;  the "QUOTE" concept however.
 
-(DEF-NUD (|$(| 200.) (OP)
-  (LET ((RIGHT)(hdr (MHEADER '|$(|)))        ; make mheader first for lineinfo
-    (COND ((EQ '|$)| (FIRST-C)) (PARSE-ERR))		  ; () is illegal
-	  ((OR (NULL (SETQ RIGHT (PRSMATCH '|$)| '$ANY))) ; No args to MPROGN??
-	       (CDR RIGHT))				  ;  More than one arg.
-	   (CONS '$ANY (CONS hdr RIGHT)))	  ; Return an MPROGN
-	  (T (CONS '$ANY (CAR RIGHT))))))		  ; Optimize out MPROGN
+(def-nud (|$(| 200.) (op)
+  (let ((right)(hdr (mheader '|$(|)))        ; make mheader first for lineinfo
+    (cond ((eq '|$)| (first-c)) (parse-err))		  ; () is illegal
+	  ((or (null (setq right (prsmatch '|$)| '$any))) ; No args to MPROGN??
+	       (cdr right))				  ;  More than one arg.
+	   (cons '$any (cons hdr right)))	  ; Return an MPROGN
+	  (t (cons '$any (car right))))))		  ; Optimize out MPROGN
 
-(DEF-LED (|$(| 200.) (OP LEFT)
-  (SETQ LEFT (CONVERT LEFT '$ANY))		        ;De-reference LEFT
-  (IF (NUMBERP LEFT) (PARSE-ERR))			;number(...) illegal
-  (LET ((HDR (AND (ATOM LEFT)(MHEADER (AMPERCHK LEFT))))
-	(R (PRSMATCH '|$)| '$ANY))                       ;Get arglist in R
+(def-led (|$(| 200.) (op left)
+  (setq left (convert left '$any))		        ;De-reference LEFT
+  (if (numberp left) (parse-err))			;number(...) illegal
+  (let ((hdr (and (atom left)(mheader (amperchk left))))
+	(r (prsmatch '|$)| '$any))                       ;Get arglist in R
 	)
-    (CONS '$ANY						;Result is type $ANY
-	  (COND ((ATOM LEFT)				;If atom(...) =>
-		 (CONS hdr R))    ;(($atom) exp . args)
-		(T				        ;Else exp(...) =>
-		 (CONS '(MQAPPLY) (CONS LEFT R)))))))	;((MQAPPLY) op . args)
+    (cons '$any						;Result is type $ANY
+	  (cond ((atom left)				;If atom(...) =>
+		 (cons hdr r))    ;(($atom) exp . args)
+		(t				        ;Else exp(...) =>
+		 (cons '(mqapply) (cons left r)))))))	;((MQAPPLY) op . args)
 
-(DEF-MHEADER |$'| (MQUOTE))
+(def-mheader |$'| (mquote))
 
-(DEF-NUD (|$'|) (OP)
-  (LET (RIGHT)
-    (COND ((EQ '|$(| (FIRST-C))
-	   (LIST '$ANY (MHEADER '|$'|) (PARSE '$ANY 190.)))
-	  ((OR (ATOM (SETQ RIGHT (PARSE '$ANY 190.)))
-	       (MEMQ (CAAR RIGHT) '(MQUOTE MLIST MPROG MPROGN LAMBDA)))
-	   (LIST '$ANY (MHEADER '|$'|) RIGHT))
-	  ((EQ 'MQAPPLY (CAAR RIGHT))
-	   (COND ((EQ (CAAADR RIGHT) 'LAMBDA)
-		  (LIST '$ANY (MHEADER '|$'|) RIGHT))
-		 (T (RPLACA (CDR RIGHT)
-			    (CONS (CONS ($NOUNIFY (CAAADR RIGHT))
-					(CDAADR RIGHT))
-				  (CDADR RIGHT)))
-		    (CONS '$ANY RIGHT))))
-	  (T (CONS '$ANY (CONS (CONS ($NOUNIFY (CAAR RIGHT)) (CDAR RIGHT))
-			       (CDR RIGHT)))))))
+(def-nud (|$'|) (op)
+  (let (right)
+    (cond ((eq '|$(| (first-c))
+	   (list '$any (mheader '|$'|) (parse '$any 190.)))
+	  ((or (atom (setq right (parse '$any 190.)))
+	       (memq (caar right) '(mquote mlist mprog mprogn lambda)))
+	   (list '$any (mheader '|$'|) right))
+	  ((eq 'mqapply (caar right))
+	   (cond ((eq (caaadr right) 'lambda)
+		  (list '$any (mheader '|$'|) right))
+		 (t (rplaca (cdr right)
+			    (cons (cons ($nounify (caaadr right))
+					(cdaadr right))
+				  (cdadr right)))
+		    (cons '$any right))))
+	  (t (cons '$any (cons (cons ($nounify (caar right)) (cdar right))
+			       (cdr right)))))))
 
-(DEF-NUD (|$''|) (OP)
-  (LET (RIGHT)
-    (CONS '$ANY
-	  (COND ((EQ '|$(| (FIRST-C))  (MEVAL (PARSE '$ANY 190.)))
-		((ATOM (SETQ RIGHT (PARSE '$ANY 190.))) (MEVAL1 RIGHT))
-		((EQ 'MQAPPLY (CAAR RIGHT))
-		 (RPLACA (CDR RIGHT)
-			 (CONS (CONS ($VERBIFY (CAAADR RIGHT)) (CDAADR RIGHT))
-			       (CDADR RIGHT)))
-		 RIGHT)
-		(T (CONS (CONS ($VERBIFY (CAAR RIGHT)) (CDAR RIGHT))
-			 (CDR RIGHT)))))))
+(def-nud (|$''|) (op)
+  (let (right)
+    (cons '$any
+	  (cond ((eq '|$(| (first-c))  (meval (parse '$any 190.)))
+		((atom (setq right (parse '$any 190.))) (meval1 right))
+		((eq 'mqapply (caar right))
+		 (rplaca (cdr right)
+			 (cons (cons ($verbify (caaadr right)) (cdaadr right))
+			       (cdadr right)))
+		 right)
+		(t (cons (cons ($verbify (caar right)) (cdar right))
+			 (cdr right)))))))
 
-(DEF-LED-EQUIV |$:| PARSE-INFIX)
-(DEF-LBP       |$:| 180.)
-(DEF-RBP       |$:|  20.)
-(DEF-POS       |$:| $ANY)
-(DEF-RPOS      |$:| $ANY)
-(DEF-LPOS      |$:| $ANY)
-(DEF-MHEADER   |$:| (MSETQ))
+(def-led-equiv |$:| parse-infix)
+(def-lbp       |$:| 180.)
+(def-rbp       |$:|  20.)
+(def-pos       |$:| $any)
+(def-rpos      |$:| $any)
+(def-lpos      |$:| $any)
+(def-mheader   |$:| (msetq))
 
-(DEF-LED-EQUIV |$::| PARSE-INFIX)
-(DEF-LBP       |$::| 180.)
-(DEF-RBP       |$::|  20.)
-(DEF-POS       |$::| $ANY)
-(DEF-RPOS      |$::| $ANY)
-(DEF-LPOS      |$::| $ANY)
-(DEF-MHEADER   |$::| (MSET))
+(def-led-equiv |$::| parse-infix)
+(def-lbp       |$::| 180.)
+(def-rbp       |$::|  20.)
+(def-pos       |$::| $any)
+(def-rpos      |$::| $any)
+(def-lpos      |$::| $any)
+(def-mheader   |$::| (mset))
 
-(DEF-LED-EQUIV |$:=| PARSE-INFIX)
-(DEF-LBP       |$:=| 180.)
-(DEF-RBP       |$:=|  20.)
-(DEF-POS       |$:=| $ANY)
-(DEF-RPOS      |$:=| $ANY)
-(DEF-LPOS      |$:=| $ANY)
-(DEF-MHEADER   |$:=| (MDEFINE))
+(def-led-equiv |$:=| parse-infix)
+(def-lbp       |$:=| 180.)
+(def-rbp       |$:=|  20.)
+(def-pos       |$:=| $any)
+(def-rpos      |$:=| $any)
+(def-lpos      |$:=| $any)
+(def-mheader   |$:=| (mdefine))
 
-(DEF-LED-EQUIV |$::=| PARSE-INFIX)
-(DEF-LBP       |$::=| 180.)
-(DEF-RBP       |$::=|  20.)
-(DEF-POS       |$::=| $ANY)
-(DEF-RPOS      |$::=| $ANY)
-(DEF-LPOS      |$::=| $ANY)
-(DEF-MHEADER   |$::=| (MDEFMACRO))
+(def-led-equiv |$::=| parse-infix)
+(def-lbp       |$::=| 180.)
+(def-rbp       |$::=|  20.)
+(def-pos       |$::=| $any)
+(def-rpos      |$::=| $any)
+(def-lpos      |$::=| $any)
+(def-mheader   |$::=| (mdefmacro))
 
-(DEF-LED-EQUIV	|$!| PARSE-POSTFIX)
-(DEF-LBP	|$!| 160.)
+(def-led-equiv	|$!| parse-postfix)
+(def-lbp	|$!| 160.)
 ;No RBP
-(DEF-POS	|$!| $EXPR)
-(DEF-LPOS	|$!| $EXPR)
+(def-pos	|$!| $expr)
+(def-lpos	|$!| $expr)
 ;No RPOS
-(DEF-MHEADER	|$!| (MFACTORIAL))
+(def-mheader	|$!| (mfactorial))
 
-(DEF-MHEADER |$!!| ($GENFACT))
+(def-mheader |$!!| ($genfact))
 
-(DEF-LED (|$!!| 160.) (OP LEFT)
-  (LIST '$EXPR
-	(MHEADER '$!!)
-	(CONVERT LEFT '$EXPR)
-	(LIST (MHEADER '#-cl $// #+cl $/ ) (CONVERT LEFT '$EXPR) 2)
+(def-led (|$!!| 160.) (op left)
+  (list '$expr
+	(mheader '$!!)
+	(convert left '$expr)
+	(list (mheader '#-cl $// #+cl $/ ) (convert left '$expr) 2)
 	2))
 
-(DEF-LBP     |$^| 140.) 
-(DEF-RBP     |$^| 139.)
-(DEF-POS     |$^| $EXPR)
-(DEF-LPOS    |$^| $EXPR)
-(DEF-RPOS    |$^| $EXPR)
-(DEF-MHEADER |$^| (MEXPT))
+(def-lbp     |$^| 140.) 
+(def-rbp     |$^| 139.)
+(def-pos     |$^| $expr)
+(def-lpos    |$^| $expr)
+(def-rpos    |$^| $expr)
+(def-mheader |$^| (mexpt))
 
-(DEF-LED ((|$^| |$^^|)) (OP LEFT)
-  (CONS '$EXPR 
-	(ALIASLOOKUP (LIST (MHEADER OP)
-			   (CONVERT LEFT (LPOS OP))
-			   (PARSE (RPOS OP) (RBP OP))))))
+(def-led ((|$^| |$^^|)) (op left)
+  (cons '$expr 
+	(aliaslookup (list (mheader op)
+			   (convert left (lpos op))
+			   (parse (rpos op) (rbp op))))))
 
-(MAPC #'(LAMBDA (PROP) ; Make $** like $^
-	  (LET ((PROPVAL (GET '$^ PROP)))
-	    (IF PROPVAL (PUTPROP '$** PROPVAL PROP))))
-      '(LBP RBP POS RPOS LPOS MHEADER))
-(INHERIT-PROPL  '$** '$^ (LED-PROPL))
+(mapc #'(lambda (prop) ; Make $** like $^
+	  (let ((propval (get '$^ prop)))
+	    (if propval (putprop '$** propval prop))))
+      '(lbp rbp pos rpos lpos mheader))
+(inherit-propl  '$** '$^ (led-propl))
 
-(DEF-LBP     |$^^| 140.)
-(DEF-RBP     |$^^| 139.)
-(DEF-POS     |$^^| $EXPR)
-(DEF-LPOS    |$^^| $EXPR)
-(DEF-RPOS    |$^^| $EXPR)
-(DEF-MHEADER |$^^| (MNCEXPT))
+(def-lbp     |$^^| 140.)
+(def-rbp     |$^^| 139.)
+(def-pos     |$^^| $expr)
+(def-lpos    |$^^| $expr)
+(def-rpos    |$^^| $expr)
+(def-mheader |$^^| (mncexpt))
 
 ;; note y^^4.z gives an error because it scans the number 4 together with
 ;; the trailing '.' as a decimal place.    I think the error is correct.
-(DEF-LED-EQUIV	|$.| PARSE-INFIX)
-(DEF-LBP	|$.| 130.)
-(DEF-RBP	|$.| 129.)
-(DEF-POS	|$.| $EXPR)
-(DEF-LPOS	|$.| $EXPR)
-(DEF-RPOS	|$.| $EXPR)
-(DEF-MHEADER	|$.| (MNCTIMES))
+(def-led-equiv	|$.| parse-infix)
+(def-lbp	|$.| 130.)
+(def-rbp	|$.| 129.)
+(def-pos	|$.| $expr)
+(def-lpos	|$.| $expr)
+(def-rpos	|$.| $expr)
+(def-mheader	|$.| (mnctimes))
 
-(DEF-LED-EQUIV	|$*| PARSE-NARY)
-(DEF-LBP	|$*| 120.)
+(def-led-equiv	|$*| parse-nary)
+(def-lbp	|$*| 120.)
 ;RBP not needed
-(DEF-POS	|$*| $EXPR)
+(def-pos	|$*| $expr)
 ;RPOS not needed
-(DEF-LPOS	|$*| $EXPR)
-(DEF-MHEADER	|$*| (MTIMES))
+(def-lpos	|$*| $expr)
+(def-mheader	|$*| (mtimes))
 
-(DEF-LED-EQUIV	#-cl |$//| #+cl $/  PARSE-INFIX)
-(DEF-LBP	#-cl |$//| #+cl $/  120.)
-(DEF-RBP	#-cl |$//| #+cl $/  120.)
-(DEF-POS	#-cl |$//| #+cl $/  $EXPR)
-(DEF-RPOS	#-cl |$//| #+cl $/  $EXPR)
-(DEF-LPOS	#-cl |$//| #+cl $/  $EXPR)
-(DEF-MHEADER	#-cl |$//| #+cl $/  (MQUOTIENT))
+(def-led-equiv	#-cl |$//| #+cl $/  parse-infix)
+(def-lbp	#-cl |$//| #+cl $/  120.)
+(def-rbp	#-cl |$//| #+cl $/  120.)
+(def-pos	#-cl |$//| #+cl $/  $expr)
+(def-rpos	#-cl |$//| #+cl $/  $expr)
+(def-lpos	#-cl |$//| #+cl $/  $expr)
+(def-mheader	#-cl |$//| #+cl $/  (mquotient))
 
-(DEF-NUD-EQUIV	|$+| PARSE-PREFIX)
-(DEF-LBP	|$+| 100.)
-(DEF-RBP	|$+| 100.)
-(DEF-POS	|$+| $EXPR)
-(DEF-RPOS	|$+| $EXPR)
+(def-nud-equiv	|$+| parse-prefix)
+(def-lbp	|$+| 100.)
+(def-rbp	|$+| 100.)
+(def-pos	|$+| $expr)
+(def-rpos	|$+| $expr)
 ;LPOS not needed
-(DEF-MHEADER	|$+| (MPLUS))
+(def-mheader	|$+| (mplus))
 
-(DEF-LED ((|$+| |$-|) 100.) (OP LEFT)
-  (SETQ LEFT (CONVERT LEFT '$EXPR))
-  (DO ((NL (LIST (IF (EQ OP '$-)
-		     (LIST (MHEADER '$-) (PARSE '$EXPR 100.))
-		     (PARSE '$EXPR 100.))
-		 LEFT)
-	   (CONS (PARSE '$EXPR 100.) NL)))
-      ((NOT (MEMQ (FIRST-C) '($+ $-)))
-       (LIST* '$EXPR (MHEADER '$+) (NREVERSE NL)))
-    (IF (EQ (FIRST-C) '$+) (POP-C))))
+(def-led ((|$+| |$-|) 100.) (op left)
+  (setq left (convert left '$expr))
+  (do ((nl (list (if (eq op '$-)
+		     (list (mheader '$-) (parse '$expr 100.))
+		     (parse '$expr 100.))
+		 left)
+	   (cons (parse '$expr 100.) nl)))
+      ((not (memq (first-c) '($+ $-)))
+       (list* '$expr (mheader '$+) (nreverse nl)))
+    (if (eq (first-c) '$+) (pop-c))))
 
-(DEF-NUD-EQUIV	|$-| PARSE-PREFIX)
-(DEF-LBP	|$-| 100.)
-(DEF-RBP	|$-| 134.)
-(DEF-POS	|$-| $EXPR)
-(DEF-RPOS	|$-| $EXPR)
+(def-nud-equiv	|$-| parse-prefix)
+(def-lbp	|$-| 100.)
+(def-rbp	|$-| 134.)
+(def-pos	|$-| $expr)
+(def-rpos	|$-| $expr)
 ;LPOS not needed
-(DEF-MHEADER	|$-| (MMINUS))
+(def-mheader	|$-| (mminus))
 
-(DEF-LED-EQUIV	|$=| PARSE-INFIX)
-(DEF-LBP	|$=| 80.)
-(DEF-RBP	|$=| 80.)
-(DEF-POS	|$=| $CLAUSE)
-(DEF-RPOS	|$=| $EXPR)
-(DEF-LPOS	|$=| $EXPR)
-(DEF-MHEADER	|$=| (MEQUAL))
+(def-led-equiv	|$=| parse-infix)
+(def-lbp	|$=| 80.)
+(def-rbp	|$=| 80.)
+(def-pos	|$=| $clause)
+(def-rpos	|$=| $expr)
+(def-lpos	|$=| $expr)
+(def-mheader	|$=| (mequal))
 
-(DEF-LED-EQUIV	|$#| PARSE-INFIX)
-(DEF-LBP	|$#| 80.)
-(DEF-RBP	|$#| 80.)
-(DEF-POS	|$#| $CLAUSE)
-(DEF-RPOS	|$#| $EXPR)
-(DEF-LPOS	|$#| $EXPR)
-(DEF-MHEADER	|$#| (MNOTEQUAL))
+(def-led-equiv	|$#| parse-infix)
+(def-lbp	|$#| 80.)
+(def-rbp	|$#| 80.)
+(def-pos	|$#| $clause)
+(def-rpos	|$#| $expr)
+(def-lpos	|$#| $expr)
+(def-mheader	|$#| (mnotequal))
 
-(DEF-LED-EQUIV	|$>| PARSE-INFIX)
-(DEF-LBP	|$>| 80.)
-(DEF-RBP	|$>| 80.)
-(DEF-POS	|$>| $CLAUSE)
-(DEF-RPOS	|$>| $EXPR)
-(DEF-LPOS	|$>| $EXPR)
-(DEF-MHEADER	|$>| (MGREATERP))
+(def-led-equiv	|$>| parse-infix)
+(def-lbp	|$>| 80.)
+(def-rbp	|$>| 80.)
+(def-pos	|$>| $clause)
+(def-rpos	|$>| $expr)
+(def-lpos	|$>| $expr)
+(def-mheader	|$>| (mgreaterp))
 
-(DEF-LED-EQUIV	|$>=| PARSE-INFIX)
-(DEF-LBP	|$>=| 80.)
-(DEF-RBP	|$>=| 80.)
-(DEF-POS	|$>=| $CLAUSE)
-(DEF-RPOS	|$>=| $EXPR)
-(DEF-LPOS	|$>=| $EXPR)
-(DEF-MHEADER	|$>=| (MGEQP))
+(def-led-equiv	|$>=| parse-infix)
+(def-lbp	|$>=| 80.)
+(def-rbp	|$>=| 80.)
+(def-pos	|$>=| $clause)
+(def-rpos	|$>=| $expr)
+(def-lpos	|$>=| $expr)
+(def-mheader	|$>=| (mgeqp))
 
 
-(DEF-NUD (|$>| 80.) (OP) ; > is a single-char object
-  '($ANY . |$>|))
+(def-nud (|$>| 80.) (op) ; > is a single-char object
+  '($any . |$>|))
 
-(DEF-LED-EQUIV	|$<| PARSE-INFIX)
-(DEF-LBP	|$<| 80.)
-(DEF-RBP	|$<| 80.)
-(DEF-POS	|$<| $CLAUSE)
-(DEF-RPOS	|$<| $EXPR)
-(DEF-LPOS	|$<| $EXPR)
-(DEF-MHEADER	|$<| (MLESSP))
+(def-led-equiv	|$<| parse-infix)
+(def-lbp	|$<| 80.)
+(def-rbp	|$<| 80.)
+(def-pos	|$<| $clause)
+(def-rpos	|$<| $expr)
+(def-lpos	|$<| $expr)
+(def-mheader	|$<| (mlessp))
 
-(DEF-LED-EQUIV	|$<=| PARSE-INFIX)
-(DEF-LBP	|$<=| 80.)
-(DEF-RBP	|$<=| 80.)
-(DEF-POS	|$<=| $CLAUSE)
-(DEF-RPOS	|$<=| $EXPR)
-(DEF-LPOS	|$<=| $EXPR)
-(DEF-MHEADER	|$<=| (MLEQP))
+(def-led-equiv	|$<=| parse-infix)
+(def-lbp	|$<=| 80.)
+(def-rbp	|$<=| 80.)
+(def-pos	|$<=| $clause)
+(def-rpos	|$<=| $expr)
+(def-lpos	|$<=| $expr)
+(def-mheader	|$<=| (mleqp))
 
-(DEF-NUD-EQUIV	|$NOT| PARSE-PREFIX)
+(def-nud-equiv	|$NOT| parse-prefix)
 ;LBP not needed
-(DEF-RBP	|$NOT| 70.)
-(DEF-POS	|$NOT| $CLAUSE)
-(DEF-RPOS	|$NOT| $CLAUSE)
-(DEF-LPOS	|$NOT| $CLAUSE)
-(DEF-MHEADER	|$NOT| (MNOT))
+(def-rbp	|$NOT| 70.)
+(def-pos	|$NOT| $clause)
+(def-rpos	|$NOT| $clause)
+(def-lpos	|$NOT| $clause)
+(def-mheader	|$NOT| (mnot))
 
-(DEF-LED-EQUIV	|$AND| PARSE-NARY)
-(DEF-LBP	|$AND| 65.)
+(def-led-equiv	|$AND| parse-nary)
+(def-lbp	|$AND| 65.)
 ;RBP not needed
-(DEF-POS	|$AND| $CLAUSE)
+(def-pos	|$AND| $clause)
 ;RPOS not needed
-(DEF-LPOS	|$AND| $CLAUSE)
-(DEF-MHEADER	|$AND| (MAND))
+(def-lpos	|$AND| $clause)
+(def-mheader	|$AND| (mand))
 
-(DEF-LED-EQUIV	|$OR| PARSE-NARY)
-(DEF-LBP	|$OR| 60.)
+(def-led-equiv	|$OR| parse-nary)
+(def-lbp	|$OR| 60.)
 ;RBP not needed
-(DEF-POS	|$OR| $CLAUSE)
+(def-pos	|$OR| $clause)
 ;RPOS not needed
-(DEF-LPOS	|$OR| $CLAUSE)
-(DEF-MHEADER	|$OR| (MOR))
+(def-lpos	|$OR| $clause)
+(def-mheader	|$OR| (mor))
 
-(DEF-LED-EQUIV	|$,| PARSE-NARY)
-(DEF-LBP	|$,| 10.)
+(def-led-equiv	|$,| parse-nary)
+(def-lbp	|$,| 10.)
 ;RBP not needed
-(DEF-POS	|$,| $ANY)
+(def-pos	|$,| $any)
 ;RPOS not needed
-(DEF-LPOS	|$,| $ANY)
-(DEF-MHEADER	|$,| ($EV))
+(def-lpos	|$,| $any)
+(def-mheader	|$,| ($ev))
 
-(DEF-NUD-EQUIV |$THEN| DELIM-ERR)
-(DEF-LBP |$THEN| 5.)
-(DEF-RBP |$THEN| 25.)
+(def-nud-equiv |$THEN| delim-err)
+(def-lbp |$THEN| 5.)
+(def-rbp |$THEN| 25.)
 
-(DEF-NUD-EQUIV |$ELSE| DELIM-ERR)
-(DEF-LBP |$ELSE| 5.)
-(DEF-RBP |$ELSE| 25.)
+(def-nud-equiv |$ELSE| delim-err)
+(def-lbp |$ELSE| 5.)
+(def-rbp |$ELSE| 25.)
 
-(DEF-NUD-EQUIV |$ELSEIF| DELIM-ERR)
-(DEF-LBP  |$ELSEIF| 5.)
-(DEF-RBP  |$ELSEIF| 45.)
-(DEF-POS  |$ELSEIF| $ANY)
-(DEF-RPOS |$ELSEIF| $CLAUSE)
+(def-nud-equiv |$ELSEIF| delim-err)
+(def-lbp  |$ELSEIF| 5.)
+(def-rbp  |$ELSEIF| 45.)
+(def-pos  |$ELSEIF| $any)
+(def-rpos |$ELSEIF| $clause)
 
 ;No LBP - Default as high as possible
-(DEF-RBP     $IF 45.)
-(DEF-POS     $IF $ANY)
-(DEF-RPOS    $IF $CLAUSE)
+(def-rbp     $if 45.)
+(def-pos     $if $any)
+(def-rpos    $if $clause)
 ;No LPOS
-(DEF-MHEADER $IF (MCOND))
+(def-mheader $if (mcond))
 
-(DEF-NUD (|$IF|) (OP)
-  (LIST* (POS OP)
-	 (MHEADER OP)
-	 (PARSE-CONDITION OP)))
+(def-nud (|$IF|) (op)
+  (list* (pos op)
+	 (mheader op)
+	 (parse-condition op)))
 
-(DEFUN PARSE-CONDITION (OP)
-  (LIST* (PARSE (RPOS OP) (RBP OP))
-	 (IF (EQ (FIRST-C) '$THEN)
-	     (PARSE '$ANY (RBP (POP-C)))
-	     (MREAD-SYNERR "Missing THEN"))
-	 (CASE (FIRST-C)
-	   (($ELSE)   (LIST T (PARSE '$ANY (RBP (POP-C)))))
-	   (($ELSEIF) (PARSE-CONDITION (POP-C)))
-	   (T ; Note: $FALSE instead of () makes DISPLA suppress display!
-	    (LIST T '$FALSE)))))
+(defun parse-condition (op)
+  (list* (parse (rpos op) (rbp op))
+	 (if (eq (first-c) '$then)
+	     (parse '$any (rbp (pop-c)))
+	     (mread-synerr "Missing THEN"))
+	 (case (first-c)
+	   (($else)   (list t (parse '$any (rbp (pop-c)))))
+	   (($elseif) (parse-condition (pop-c)))
+	   (t ; Note: $FALSE instead of () makes DISPLA suppress display!
+	    (list t '$false)))))
 
-(DEF-MHEADER $DO (MDO))
+(def-mheader $do (mdo))
 
-(DEFUN PARSE-$DO (LEX &aux (left (make-mdo)))
-  (setf (car LEFT) (mheader 'mdo))
-  (DO ((OP LEX (POP-C))  (ACTIVE-BITMASK 0))
-      (NIL)
-    (IF (EQ OP '|$:|) (SETQ OP '$FROM))
-    (SETQ ACTIVE-BITMASK (COLLISION-CHECK '$DO ACTIVE-BITMASK OP))
-    (LET ((DATA (PARSE (RPOS OP) (RBP OP))))
-      (CASE OP
-	($DO		(SETF (MDO-BODY LEFT) DATA) (RETURN (CONS '$ANY LEFT)))
-	($FOR		(SETF (MDO-FOR  LEFT) DATA))
-	($FROM		(SETF (MDO-FROM LEFT) DATA))
-	($IN		(SETF (MDO-OP   LEFT) 'MDOIN)
-			(SETF (MDO-FROM LEFT) DATA))
-	($STEP		(SETF (MDO-STEP LEFT) DATA))
-	($NEXT		(SETF (MDO-NEXT LEFT) DATA))
-	($THRU		(SETF (MDO-THRU LEFT) DATA))
-	(($UNLESS $WHILE)
-			(IF (EQ OP '$WHILE)
-			    (SETQ DATA (LIST (MHEADER '$NOT) DATA)))
-			(SETF (MDO-UNLESS LEFT)
-			   (IF (NULL (MDO-UNLESS LEFT))
-			       DATA
-			       (LIST (MHEADER '$OR) DATA (MDO-UNLESS LEFT)))))
-	(T (PARSE-BUG-ERR '$DO))))))
+(defun parse-$do (lex &aux (left (make-mdo)))
+  (setf (car left) (mheader 'mdo))
+  (do ((op lex (pop-c))  (active-bitmask 0))
+      (nil)
+    (if (eq op '|$:|) (setq op '$from))
+    (setq active-bitmask (collision-check '$do active-bitmask op))
+    (let ((data (parse (rpos op) (rbp op))))
+      (case op
+	($do		(setf (mdo-body left) data) (return (cons '$any left)))
+	($for		(setf (mdo-for  left) data))
+	($from		(setf (mdo-from left) data))
+	($in		(setf (mdo-op   left) 'mdoin)
+			(setf (mdo-from left) data))
+	($step		(setf (mdo-step left) data))
+	($next		(setf (mdo-next left) data))
+	($thru		(setf (mdo-thru left) data))
+	(($unless $while)
+			(if (eq op '$while)
+			    (setq data (list (mheader '$not) data)))
+			(setf (mdo-unless left)
+			   (if (null (mdo-unless left))
+			       data
+			       (list (mheader '$or) data (mdo-unless left)))))
+	(t (parse-bug-err '$do))))))
 
-(DEF-LBP $FOR    25.)
-(DEF-LBP $FROM   25.)
-(DEF-LBP $STEP   25.)
-(DEF-LBP $NEXT   25.)
-(DEF-LBP $THRU   25.)
-(DEF-LBP $UNLESS 25.)
-(DEF-LBP $WHILE  25.)
-(DEF-LBP $DO	 25.)
+(def-lbp $for    25.)
+(def-lbp $from   25.)
+(def-lbp $step   25.)
+(def-lbp $next   25.)
+(def-lbp $thru   25.)
+(def-lbp $unless 25.)
+(def-lbp $while  25.)
+(def-lbp $do	 25.)
 
-(DEF-NUD-EQUIV $FOR    PARSE-$DO)
-(DEF-NUD-EQUIV $FROM   PARSE-$DO)
-(DEF-NUD-EQUIV $STEP   PARSE-$DO)
-(DEF-NUD-EQUIV $NEXT   PARSE-$DO)
-(DEF-NUD-EQUIV $THRU   PARSE-$DO)
-(DEF-NUD-EQUIV $UNLESS PARSE-$DO)
-(DEF-NUD-EQUIV $WHILE  PARSE-$DO)
-(DEF-NUD-EQUIV $DO     PARSE-$DO)
+(def-nud-equiv $for    parse-$do)
+(def-nud-equiv $from   parse-$do)
+(def-nud-equiv $step   parse-$do)
+(def-nud-equiv $next   parse-$do)
+(def-nud-equiv $thru   parse-$do)
+(def-nud-equiv $unless parse-$do)
+(def-nud-equiv $while  parse-$do)
+(def-nud-equiv $do     parse-$do)
 
-(DEF-RBP $DO      25.)
-(DEF-RBP $FOR    200.)
-(DEF-RBP $FROM    95.)
-(DEF-RBP $IN      95.)
-(DEF-RBP $STEP    95.)
-(DEF-RBP $NEXT    45.)
-(DEF-RBP $THRU    95.)
-(DEF-RBP $UNLESS  45.)
-(DEF-RBP $WHILE	  45.)
+(def-rbp $do      25.)
+(def-rbp $for    200.)
+(def-rbp $from    95.)
+(def-rbp $in      95.)
+(def-rbp $step    95.)
+(def-rbp $next    45.)
+(def-rbp $thru    95.)
+(def-rbp $unless  45.)
+(def-rbp $while	  45.)
 
-(DEF-RPOS $DO     $ANY)
-(DEF-RPOS $FOR    $ANY)
-(DEF-RPOS $FROM   $ANY)
-(DEF-RPOS $STEP   $EXPR)
-(DEF-RPOS $NEXT   $ANY)
-(DEF-RPOS $THRU   $EXPR)
-(DEF-RPOS $UNLESS $CLAUSE)
-(DEF-RPOS $WHILE  $CLAUSE)
+(def-rpos $do     $any)
+(def-rpos $for    $any)
+(def-rpos $from   $any)
+(def-rpos $step   $expr)
+(def-rpos $next   $any)
+(def-rpos $thru   $expr)
+(def-rpos $unless $clause)
+(def-rpos $while  $clause)
 
 
-(DEF-COLLISIONS $DO
-  ($DO	   . ())
-  ($FOR    . ($FOR))
-  ($FROM   . ($IN $FROM))
-  ($IN     . ($IN $FROM $STEP $NEXT))
-  ($STEP   . ($IN       $STEP $NEXT))
-  ($NEXT   . ($IN	$STEP $NEXT))
-  ($THRU   . ($IN $THRU)) ;$IN didn't used to get checked for
-  ($UNLESS . ())
-  ($WHILE  . ()))
+(def-collisions $do
+  ($do	   . ())
+  ($for    . ($for))
+  ($from   . ($in $from))
+  ($in     . ($in $from $step $next))
+  ($step   . ($in       $step $next))
+  ($next   . ($in	$step $next))
+  ($thru   . ($in $thru)) ;$IN didn't used to get checked for
+  ($unless . ())
+  ($while  . ()))
 
 ;#+ti  ;;because of a bug the preceding doesn't give this..
 ;(defprop $do (($WHILE . 256) ($UNLESS . 128)
@@ -1672,32 +1672,32 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;                ($DO . 1)) keys)
 
 
-(DEF-MHEADER   |$$| (NODISPLAYINPUT))
-(DEF-NUD-EQUIV |$$| PREMTERM-ERR)
-(DEF-LBP       |$$| -1)
+(def-mheader   |$$| (nodisplayinput))
+(def-nud-equiv |$$| premterm-err)
+(def-lbp       |$$| -1)
 ;No RBP, POS, RPOS, RBP, or MHEADER
 
-(DEF-MHEADER   |$;| (DISPLAYINPUT))
-(DEF-NUD-EQUIV |$;| PREMTERM-ERR)
-(DEF-LBP       |$;| -1)
+(def-mheader   |$;| (displayinput))
+(def-nud-equiv |$;| premterm-err)
+(def-lbp       |$;| -1)
 ;No RBP, POS, RPOS, RBP, or MHEADER
 
-(DEF-NUD-EQUIV  |$&&| DELIM-ERR)
-(DEF-LBP	|$&&| -1)
+(def-nud-equiv  |$&&| delim-err)
+(def-lbp	|$&&| -1)
 
-(defun MOPSTRIP (x)
+(defun mopstrip (x)
   ;; kludge interface function to allow the use of lisp PRINC in places.
-  (COND ((NULL X) 'FALSE)
-	((OR (EQ X T) (EQ X 'T)) 'TRUE)
-	((NUMBERP X) X)
-	((SYMBOLP X)
-	 (OR (GET X 'REVERSEALIAS)
-	     (IF (IMEMBER (FIRSTCHARN X) '(#\$ #\% #\&))
-		 (IMPLODE (CDR (EXPLODEN X)))
-		 X)))
-	(T (MAKNAM (MSTRING X)))))
+  (cond ((null x) 'false)
+	((or (eq x t) (eq x 't)) 'true)
+	((numberp x) x)
+	((symbolp x)
+	 (or (get x 'reversealias)
+	     (if (imember (firstcharn x) '(#\$ #\% #\&))
+		 (implode (cdr (exploden x)))
+		 x)))
+	(t (maknam (mstring x)))))
 	
-(DEFINE-INITIAL-SYMBOLS
+(define-initial-symbols
   ;; * Note: /. is looked for explicitly rather than
   ;;     existing in this chart. The reason is that
   ;;     it serves a dual role (as a decimal point) and
@@ -1718,48 +1718,48 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (defmacro upcase (operator)
  `(setq operator (intern (string-upcase (string ,operator)))))
 
-(DEFMFUN $PREFIX (OPERATOR &OPTIONAL (RBP  180.)
-			             (RPOS '$ANY)
-				     (POS  '$ANY))
+(defmfun $prefix (operator &optional (rbp  180.)
+			             (rpos '$any)
+				     (pos  '$any))
 	 (upcase operator)
-  (DEF-OPERATOR OPERATOR POS ()  ()     RBP RPOS () T
-    '(NUD . PARSE-PREFIX) 'MSIZE-PREFIX 'DIMENSION-PREFIX ()   ))
+  (def-operator operator pos ()  ()     rbp rpos () t
+    '(nud . parse-prefix) 'msize-prefix 'dimension-prefix ()   ))
 
-(DEFMFUN $POSTFIX (OPERATOR &OPTIONAL (LBP  180.)
-			             (LPOS '$ANY)
-				     (POS  '$ANY))
+(defmfun $postfix (operator &optional (lbp  180.)
+			             (lpos '$any)
+				     (pos  '$any))
 	 	 (upcase operator)
-  (DEF-OPERATOR OPERATOR POS LBP LPOS   ()  ()   T  ()
-    '(LED . PARSE-POSTFIX) 'MSIZE-POSTFIX 'DIMENSION-POSTFIX  ()   ))
+  (def-operator operator pos lbp lpos   ()  ()   t  ()
+    '(led . parse-postfix) 'msize-postfix 'dimension-postfix  ()   ))
 
-(DEFMFUN $INFIX  (OPERATOR &OPTIONAL (LBP  180.)
-			             (RBP  180.)
-				     (LPOS '$ANY)
-				     (RPOS '$ANY)
-				     (POS  '$ANY))
+(defmfun $infix  (operator &optional (lbp  180.)
+			             (rbp  180.)
+				     (lpos '$any)
+				     (rpos '$any)
+				     (pos  '$any))
 	 	 (upcase operator)
-  (DEF-OPERATOR OPERATOR POS LBP LPOS   RBP RPOS T T
-    '(LED . PARSE-INFIX) 'MSIZE-INFIX 'DIMENSION-INFIX () ))
+  (def-operator operator pos lbp lpos   rbp rpos t t
+    '(led . parse-infix) 'msize-infix 'dimension-infix () ))
 
-(DEFMFUN $NARY   (OPERATOR &OPTIONAL (BP     180.)
-			             (ARGPOS '$ANY)
-				     (POS    '$ANY))
+(defmfun $nary   (operator &optional (bp     180.)
+			             (argpos '$any)
+				     (pos    '$any))
 	 	 (upcase operator)
-  (DEF-OPERATOR OPERATOR POS BP  ARGPOS BP  ()   T T
-    '(LED . PARSE-NARY) 'MSIZE-NARY 'DIMENSION-NARY () ))
+  (def-operator operator pos bp  argpos bp  ()   t t
+    '(led . parse-nary) 'msize-nary 'dimension-nary () ))
 
-(DEFMFUN $MATCHFIX (OPERATOR
-		    MATCH  &OPTIONAL (ARGPOS '$ANY)
-				     (POS    '$ANY))
+(defmfun $matchfix (operator
+		    match  &optional (argpos '$any)
+				     (pos    '$any))
   ;shouldn't MATCH be optional?
 	 	 (upcase operator)
-  (DEF-OPERATOR OPERATOR POS ()  ARGPOS ()  ()  () () 
-    '(NUD . PARSE-MATCHFIX) 'MSIZE-MATCHFIX 'DIMENSION-MATCH MATCH))
+  (def-operator operator pos ()  argpos ()  ()  () () 
+    '(nud . parse-matchfix) 'msize-matchfix 'dimension-match match))
 
-(DEFMFUN $NOFIX  (OPERATOR &OPTIONAL (POS '$ANY))
+(defmfun $nofix  (operator &optional (pos '$any))
 	 	 (upcase operator)
-  (DEF-OPERATOR OPERATOR POS ()  ()     ()  () () ()
-    '(NUD . PARSE-NOFIX) 'MSIZE-NOFIX 'DIMENSION-NOFIX ()   ))
+  (def-operator operator pos ()  ()     ()  () () ()
+    '(nud . parse-nofix) 'msize-nofix 'dimension-nofix ()   ))
 
 ;;; (DEF-OPERATOR op pos lbp lpos rbp rpos sp1 sp2 
 ;;;	parse-data grind-fn dim-fn match)
@@ -1782,66 +1782,66 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;; For more complete descriptions of these naming conventions, see
 ;;; the comments in GRAM package, which describe them in reasonable detail.
 
-(DEFUN DEF-OPERATOR (OP POS LBP LPOS RBP RPOS SP1 SP2
-			PARSE-DATA GRIND-FN DIM-FN MATCH)
-  (LET ((X))
-    (IF (OR (AND RBP (NOT (INTEGERP (SETQ X RBP))))
-	    (AND LBP (NOT (INTEGERP (SETQ X LBP)))))
-	(MERROR "Binding powers must be integers.~%~M is not an integer." X))
-    (IF (MSTRINGP OP) (SETQ OP (DEFINE-SYMBOL OP)))
-    (OP-SETUP OP)
-    (LET ((NOUN   ($NOUNIFY OP))
-	  (DISSYM (CDR (EXPLODEN OP))))
+(defun def-operator (op pos lbp lpos rbp rpos sp1 sp2
+			parse-data grind-fn dim-fn match)
+  (let ((x))
+    (if (or (and rbp (not (integerp (setq x rbp))))
+	    (and lbp (not (integerp (setq x lbp)))))
+	(merror "Binding powers must be integers.~%~M is not an integer." x))
+    (if (mstringp op) (setq op (define-symbol op)))
+    (op-setup op)
+    (let ((noun   ($nounify op))
+	  (dissym (cdr (exploden op))))
       (cond
-       ((NOT MATCH)
-	(SETQ DISSYM (APPEND (IF SP1 '(#\Space)) DISSYM (IF SP2 '(#\Space)))))
-       (t (IF (MSTRINGP MATCH) (SETQ MATCH (DEFINE-SYMBOL MATCH)))
-	  (OP-SETUP MATCH)
-	  (PUTPROP OP    MATCH 'MATCH)
-	  (PUTPROP MATCH 5.    'LBP)
-	  (SETQ DISSYM (CONS DISSYM (CDR (EXPLODEN MATCH))))))
-      (PUTPROP OP POS 'POS)
-      (PUTPROP OP (CDR PARSE-DATA) (CAR PARSE-DATA))
-      (PUTPROP OP   GRIND-FN  'GRIND)
-      (PUTPROP OP   DIM-FN    'DIMENSION)
-      (PUTPROP NOUN DIM-FN    'DIMENSION)
-      (PUTPROP OP   DISSYM 'DISSYM)
-      (PUTPROP NOUN DISSYM 'DISSYM)
-      (WHEN RBP
-	(PUTPROP OP   RBP  'RBP)
-	(PUTPROP NOUN RBP  'RBP))
-      (WHEN LBP
-	(PUTPROP OP   LBP  'LBP)
-	(PUTPROP NOUN LBP  'LBP))
-      (WHEN LPOS (PUTPROP OP   LPOS 'LPOS))
-      (WHEN RPOS (PUTPROP OP   RPOS 'RPOS))
-      (GETOPR OP))))
+       ((not match)
+	(setq dissym (append (if sp1 '(#\space)) dissym (if sp2 '(#\space)))))
+       (t (if (mstringp match) (setq match (define-symbol match)))
+	  (op-setup match)
+	  (putprop op    match 'match)
+	  (putprop match 5.    'lbp)
+	  (setq dissym (cons dissym (cdr (exploden match))))))
+      (putprop op pos 'pos)
+      (putprop op (cdr parse-data) (car parse-data))
+      (putprop op   grind-fn  'grind)
+      (putprop op   dim-fn    'dimension)
+      (putprop noun dim-fn    'dimension)
+      (putprop op   dissym 'dissym)
+      (putprop noun dissym 'dissym)
+      (when rbp
+	(putprop op   rbp  'rbp)
+	(putprop noun rbp  'rbp))
+      (when lbp
+	(putprop op   lbp  'lbp)
+	(putprop noun lbp  'lbp))
+      (when lpos (putprop op   lpos 'lpos))
+      (when rpos (putprop op   rpos 'rpos))
+      (getopr op))))
 
-(DEFUN OP-SETUP (OP)
+(defun op-setup (op)
   (declare (special mopl))
-  (LET ((DUMMY (OR (GET OP 'OP)
-		   (IMPLODE (CONS '& (STRING* OP))))))
-    (PUTPROP OP    DUMMY 'OP )
-    (PUTPROP DUMMY OP    'OPR)
-    (IF (AND (OPERATORP1 OP) (NOT (MEMQ DUMMY (CDR $PROPS))))
-	(PUSH DUMMY MOPL))
-    (ADD2LNC DUMMY $PROPS)))
+  (let ((dummy (or (get op 'op)
+		   (implode (cons '& (string* op))))))
+    (putprop op    dummy 'op )
+    (putprop dummy op    'opr)
+    (if (and (operatorp1 op) (not (memq dummy (cdr $props))))
+	(push dummy mopl))
+    (add2lnc dummy $props)))
 
-(DEFUN KILL-OPERATOR (OP)
-  (UNDEFINE-SYMBOL (STRIPDOLLAR OP))
-  (LET ((OPR (GET OP 'OP)) (NOUN-FORM ($NOUNIFY OP)))
-    (REMPROP OPR 'OPR)
-    (REMPROPCHK OPR)
-    (MAPC #'(LAMBDA (X) (REMPROP OP X))
- 	  '(NUD-EXPR NUD-SUBR			; NUD info
-		     LED LED-EXPR LED-SUBR		; LED info
-		     LBP RBP			; Binding power info
-		     LPOS RPOS POS		; Part-Of-Speech info
-		     GRIND DIMENSION DISSYM	; Display info
-		     OP
+(defun kill-operator (op)
+  (undefine-symbol (stripdollar op))
+  (let ((opr (get op 'op)) (noun-form ($nounify op)))
+    (remprop opr 'opr)
+    (rempropchk opr)
+    (mapc #'(lambda (x) (remprop op x))
+ 	  '(nud-expr nud-subr			; NUD info
+		     led led-expr led-subr		; LED info
+		     lbp rbp			; Binding power info
+		     lpos rpos pos		; Part-Of-Speech info
+		     grind dimension dissym	; Display info
+		     op
 		     ))			; Operator info
-    (MAPC #'(LAMBDA (X) (REMPROP NOUN-FORM X))
- 	  '(DIMENSION DISSYM LBP RBP))))
+    (mapc #'(lambda (x) (remprop noun-form x))
+ 	  '(dimension dissym lbp rbp))))
 
 
 
