@@ -698,7 +698,7 @@
      (setq qq (list (second cf) 1))
      (show pp qq)
      (setq cf (cddr cf))
-     (sloop for i from 2 to n
+     (loop for i from 2 to n
 	    while cf
 	    do 
 	    (push (+  (* (car cf) (car pp))
@@ -732,7 +732,7 @@
 ;; "returns the continued fraction for p and q integers, q not zero"
 ;;  (setq start (floor p q))
 ;;  (setq p (f- p (f* start q)))
-;;  (sloop until (zerop q)
+;;  (loop until (zerop q)
 ;;	when start
 ;;	  collecting start
 ;;	and
@@ -752,7 +752,7 @@
   and not calculating intermediate quotients.
   The numerator and denom are relatively
    prime"
-  (sloop for v in (reverse cf)
+  (loop for v in (reverse cf)
 	 do (setq tem (* den-gg v))
 	 (setq tem (+ tem num-gg))
 	 (setq num-gg den-gg)

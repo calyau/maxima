@@ -358,7 +358,7 @@
 
 (defun $clear_rules ()
   (mapc 'kill1 (cdr $rules))
-  (sloop for v in '(mexpt mplus mtimes)
+  (loop for v in '(mexpt mplus mtimes)
 	 do (setf (mget v 'rulenum) nil)))
 
 (defun proc-$tellsimp (l) 

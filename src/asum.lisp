@@ -18,9 +18,9 @@
 	    (fixnum %n %k %i %m $genindex)
 	    (genprefix sm))
 
-(sloop for (x y) on 
+(loop for (x y) on 
        '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
-       by 'cddr do (putprop x y 'recip) (putprop y x 'recip))
+       by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
 
 (defun nill () '(nil))
 
@@ -86,10 +86,10 @@
   (let* ((vec (make-array (if (< n 100) 1 20) :initial-element 1))
 	 (m (length vec))
 	 (j 0))
-    (sloop for i from 1 to n
+    (loop for i from 1 to n
 	   do (setq j (mod i m))
 	   (setf (aref vec j) (* (aref vec j) i)))
-    (sloop for v in-array vec
+    (loop for v across vec
 	   do (setq ans (* ans v)))
     ans))
 
@@ -335,7 +335,7 @@ summation when necessary."
 		(ans 0))
 	    (or (symbolp ind) (merror "Second argument not a variable ~M" ind))
 	    (cond (($listp lis)
-		   (sloop for v in (cdr lis)
+		   (loop for v in (cdr lis)
 			  with lind = (cons ind nil)
 			  for w = (cons v nil)
 			  do

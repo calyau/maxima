@@ -163,7 +163,7 @@
 				      (mapcar (function algsys0)
 					      (distrep (mapcar (function lofactors)
 							       tlhslist))))))
-  ;;     (displa  (cons '(mlist)  (sloop for v in answ collecting
+  ;;     (displa  (cons '(mlist)  (loop for v in answ collecting
   ;;				  (cons '(mlist) v))))
   answ)
 
@@ -419,7 +419,7 @@
 
 (defun bakalevel (solnl lhsl var)
 					;(apply #'append (mapcar #'(lambda (q) (bakalevel1 q lhsl var)) solnl))
-  (sloop for q in solnl append (bakalevel1 q lhsl var))
+  (loop for q in solnl append (bakalevel1 q lhsl var))
   )
 
 (defun bakalevel1 (solnl lhsl var) 

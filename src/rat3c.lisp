@@ -234,7 +234,7 @@
 ;;polynomial gcd using reduced prs
 
 (defun redgcd (p q &aux (d 0))
-  (sloop until (zerop (pdegree q (p-var p)))
+  (loop until (zerop (pdegree q (p-var p)))
 	 do (psetq p q
 		   q (pquotientchk (prem p q) (pexpt (p-lc p) d))
 		   d (f+ (p-le p) 1 (f- (p-le q))))
@@ -243,7 +243,7 @@
 ;;computes gcd's using subresultant prs TOMS Sept. 1978
 
 (defun subresgcd (p q)					
-  (sloop for g = 1 then (p-lc p)
+  (loop for g = 1 then (p-lc p)
 	 for h = 1 then (pquotient (pexpt g d) h^1-d)
 	 for d = (f- (p-le p) (p-le q))
 	 for h^1-d = (if (equal h 1) 1 (pexpt h (f1- d)))
@@ -414,7 +414,7 @@
 (defun pgcdu1 (u v pquo*)
   (let ((invv (painvmod (pt-lc v))) (k 0) q*)
     (declare (special k quo q*) (fixnum k))
-    (sloop until (minusp (setq k (f- (pt-le u) (pt-le v))))
+    (loop until (minusp (setq k (f- (pt-le u) (pt-le v))))
 	   do (setq q* (ptimes invv (pt-lc u)))
 	   if pquo* do (setq quo (nconc quo (list k q*)))
 	   when (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))
@@ -548,8 +548,8 @@
 (defun poly-in-var (p v)
   (cond ((or (pcoefp p) (pointergp v (p-var p))) (list 0 p))
 	((eq (p-var p) v) (p-terms p))
-	((sloop with ans
-		for (exp coef) on (p-terms p) by 'pt-red
+	((loop with ans
+		for (exp coef) on (p-terms p) by #'pt-red
 		do (setq ans (pplus1 ans
 				     (everysubst2 (poly-in-var coef v)
 						  (list (p-var p) exp 1))))

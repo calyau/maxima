@@ -63,7 +63,7 @@
 
 (defun show-msize (lis)
   (format t "~%Length is ~A" (car lis))
-  (sloop for v in (cdr lis)
+  (loop for v in (cdr lis)
 	 when (numberp v) do (princ (ascii v))
 	 else when (consp v)
 	 do   (show-msize v)))
@@ -76,7 +76,7 @@
 ;;if the current distance to the margin is bigger than the first element of lis
 
 (defun msize-print (lis)
-  (sloop for v in (cdr lis)
+  (loop for v in (cdr lis)
 	 when (numberp v)
 	 do (princ (ascii v))
 	 else do (msize-print v)))

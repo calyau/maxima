@@ -332,7 +332,7 @@
 
 (defun scep (expr var &aux trigl exp)  ; Product of SIN, COS, EXP
   (and (mtimesp expr)		       ;	of linear args.
-       (sloop for fac in (cdr expr) do
+       (loop for fac in (cdr expr) do
 	     (cond ((atom fac) (return nil))
 		   ((trig1 (car fac))
 		    (if (linearp (cadr fac) var) (push fac trigl)

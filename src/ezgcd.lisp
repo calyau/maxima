@@ -184,7 +184,7 @@
      (fixvl valist ovarlist)
      (cond ((equal 1 lc1)
 	    (setq modulus plim builder (newrep builder))
-	    (setq dlp #+nil (sloop for x in (cdr (oddelm builder))
+	    (setq dlp #+nil (loop for x in (cdr (oddelm builder))
 				   maximize (multideg x))
 		  #-nil (apply 'max
 			       (mapcar (function multideg) 
@@ -198,7 +198,7 @@
      (setq factrs (list (ptimes mult (car factrs))
 			(ptimes lcd0 (cadr factrs))))
      (setq builder (newrep builder))
-     (setq dlp #+nil (sloop for x in (cdr (oddelm builder))
+     (setq dlp #+nil (loop for x in (cdr (oddelm builder))
 			    maximize (multideg x))
 	   #-nil (apply 'max (mapcar (function multideg) 
 				     (cdr (oddelm builder)))))

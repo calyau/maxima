@@ -223,7 +223,7 @@
 	(t nil)))
 
 (defmacro show (&rest l)
-  (sloop for v in l
+  (loop for v in l
 	 collecting `(format t "~%The value of ~A is ~A" ',v ,v) into tem
 	 finally (return `(progn ,@ tem))))
 
@@ -240,7 +240,7 @@
 	   (setq ans
 		 (list
 		  `(defmacro ,fn (,aa . other  )
-		    (setq other (sloop for v in other collecting (list 'quote v)))
+		    (setq other (loop for v in other collecting (list 'quote v)))
 		    (check-arg other (eql (length other) ,(length oth)) ,(format nil "wrong number of args to ~a" fn))
 		    `(,',help  ',,aa   ,@ other))
 		  `(defun ,help (,aa ,@ oth) . ,rest)))))
@@ -299,7 +299,7 @@
   (with-output-to-string
       (st *sharp-read-buffer*) 
     (let (char)
-      (sloop while (not (eql char #\$))
+      (loop while (not (eql char #\$))
 	     do
 	     (setq char (tyi stream))
 	     (tyo char st)
@@ -443,7 +443,7 @@ values")
   (setf (nth (f1- i)l) val) val)
 
 (defun listify1 (n narg-rest-argument)
-  (cond ((minusp n) (copy-list (nleft (f- n) narg-rest-argument)) )
+  (cond ((minusp n) (copy-list (last narg-rest-argument (f- n))) )
 	((zerop n) nil)
 	(t (firstn n narg-rest-argument))))
 
@@ -483,16 +483,16 @@ values")
 	   (let* ((big symb)
 		  ans rem tem
 		  (chunks
-		   (sloop 
+		   (loop 
 		    do (multiple-value-setq (big rem)
 			 (floor big tentochunksize))
 		    collect rem 
 		    while (not (eql 0 big)))))
 	     (setq chunks (nreverse chunks))
 	     (setq ans (coerce (format nil "~d" (car chunks)) 'list))
-	     (sloop for v in (cdr chunks)
+	     (loop for v in (cdr chunks)
 		    do (setq tem (coerce (format nil "~d" v) 'list))
-		    (sloop for i below (- big-chunk-size (length tem))
+		    (loop for i below (- big-chunk-size (length tem))
 			   do (setq tem (cons #\0 tem)))
 		    (setq ans (nconc ans tem)))
 	     (return-from exploden ans)))
@@ -503,7 +503,7 @@ values")
 (defun explodec (symb &aux tem sstring)
   (setq sstring (print-invert-case symb))
 					;(setq sstring (coerce symb 'string))
-  (sloop for v on (setq tem (coerce sstring 'list))
+  (loop for v on (setq tem (coerce sstring 'list))
 	 do (setf (car v)(intern (string (car v)))))
   tem)
 
@@ -561,7 +561,7 @@ values")
   (or (> (array-total-size ar) (setq leng (length lis)))
       (adjust-array ar (+ leng 20)))
   (setf (fill-pointer ar) leng)
-  (sloop for v in lis
+  (loop for v in lis
 	 for i below leng
 	 do
 	 (cond ((typep v 'character))
@@ -573,10 +573,9 @@ values")
 (defun bothcase-implode (lis  &aux tem )
   (implode1 lis nil))
 
-
 (defun list-string (strin &aux tem)
   (setq tem (make-list (length (the string  strin))))
-  (sloop for v on tem
+  (loop for v on tem
 	for i from 0
 	do (setf (car v) (aref strin i)))
   tem)
@@ -584,7 +583,7 @@ values")
 (defun explode (symb &aux tem sstring)
   ;; Note:  symb can also be a number, not just a symbol.
   (setq sstring (format nil "~S" symb))
-  (sloop for v on (setq tem (list-string sstring))
+  (loop for v on (setq tem (list-string sstring))
 	 do (setf (car v)(intern (string (car v)))))
   tem)
 
@@ -611,7 +610,7 @@ values")
   (intern (string n)))
 
 (defun maknam (lis)
-  (sloop for v in lis
+  (loop for v in lis
 	 when (symbolp v)
 	 collecting (getcharn v 1) into tem
 	 else

@@ -120,7 +120,7 @@
 	((memalike (pdis (make-poly y)) $dontfactor) t)))
 
 (defun removealg (l)
-  (sloop for var in l
+  (loop for var in l
 	 unless (algv var) collect var))
 
 (defun degvecdisrep (degl)

@@ -133,7 +133,7 @@
 ;;       (or (pathnamep (second paths))
 ;;	(setf (cdr paths)
 ;;	      (mapcar  'macsyma-namestring-sub (cdr paths)))))
-;;  (sloop for v in (cdr paths)
+;;  (loop for v in (cdr paths)
 ;;	 for tem = (merge-pathnames x v)
 ;;	 when (probe-file tem)
 ;;	 do (return tem)
@@ -151,7 +151,7 @@
 ;;       (or (pathnamep (second paths))
 ;;	(setf (cdr paths)
 ;;	      (mapcar  'macsyma-namestring-sub (cdr paths)))))
-;;  (sloop for v in (cdr paths)
+;;  (loop for v in (cdr paths)
 ;;	 for tem = (merge-pathnames x v)
 ;;	 do 
 ;;	 (setq tem (directory tem))
@@ -459,7 +459,7 @@
 			      (truename in-stream))))
     (cleanup)
     (newline in-stream #\n)
-    (sloop while (and
+    (loop while (and
 		  (setq  expr (mread in-stream nil))
 		  (consp expr))
 	   do (meval* (third expr)))
@@ -581,7 +581,7 @@
 	     (t ($simple_equal (cdr f) (cdr g))))))
 
 (defun unequal-pairlis (var gen)
-  (sloop for v in var
+  (loop for v in var
 	 for u in gen
 	 collecting (cons v u)))
 
@@ -604,7 +604,7 @@
 			(cdr g))))
 	(t(and (equal (caar f) (caar g))
 	       (eql (length f) (length g))
-	       (sloop for v in (cdr f)
+	       (loop for v in (cdr f)
 		      for w in (cdr g)
 		      when (not ($simple_equal v w))
 		      do (return nil)
@@ -775,7 +775,7 @@
   (unwind-protect 
        (with-open-file
 	   (st filename)
-	 (sloop with expr 
+	 (loop with expr 
 		for i from 1
 		do
 		(setq expr (mread st eof))
@@ -865,7 +865,7 @@
 
 ;;to keep track of global values during the error:
 (defun list-variable-bindings (expr &optional str &aux tem)
-  (sloop for v in(cdr ($listofvars  expr))
+  (loop for v in(cdr ($listofvars  expr))
 	 when (zl-member v $values)
 	 collecting (setq tem`((mequal) ,v ,(meval* v)))
 	 and
@@ -893,13 +893,13 @@
 	 (setq template (namestring ($filename_merge template  name)))
 					;(print (list 'template template))
 	 (setq lis 
-	       (sloop for w in (split-string template "{}")
+	       (loop for w in (split-string template "{}")
 		      when (null (position #\, w))
 		      collect w
 		      else
 		      collect (split-string w ",")))
 	 (new-file-search1 "" lis))
-	(t (sloop for v in template
+	(t (loop for v in template
 		  when (setq temp (new-file-search name v))
 		  do (return temp)))))
 
@@ -909,14 +909,14 @@
 	 (new-file-search1 (if begin
 			       ($sconcat begin (car lis)) (car lis))
 			   (cdr lis)))
-	(t (sloop for v in (car lis) with tem
+	(t (loop for v in (car lis) with tem
 		  when (setq tem  (new-file-search1 begin (cons v (cdr lis))))
 		  do (return tem)))))
 
 (defun save-linenumbers (&key (c-lines t) d-lines (from 1) (below $linenum) a-list
 			 (file  "/tmp/lines")
 			 &aux input-symbol (linel 79))
-  (cond ((null a-list) (setq a-list(sloop for i from from below below collecting i))))
+  (cond ((null a-list) (setq a-list(loop for i from from below below collecting i))))
   (with-open-file  (st file  #-cl '( :out) #+cl :direction #+cl :output  )
     (format st "/* -*- Mode: MACSYMA; Package: MACSYMA -*- */")
     (format st "~%~%       /*    ~A     */  ~%"
@@ -925,7 +925,7 @@
 				(multiple-value-list (get-decoded-time)))))
 		      (format nil "~a:~a:~a" (car tem) (cadr tem) (caadr tem)))
 	    )
-    (sloop for i in a-list
+    (loop for i in a-list
 	   when (and c-lines (boundp (setq input-symbol (intern (format nil "$C~A" i)))))
 	   do
 	   (format st "~% C~3A;  "   i)
@@ -945,7 +945,7 @@
 (defun $printfile (file)
   (setq file ($file_search1 file '((mlist) $file_search_usage)))
   (with-open-file (st file)
-    (sloop while (setq tem (read-char st)) with tem
+    (loop while (setq tem (read-char st)) with tem
 	   do
 	   (princ tem))
     (namestring file)
@@ -965,7 +965,7 @@
     (let ((error-break-file)
 	  (testresult))
       (time 
-       (sloop with errs = '() for testentry in *testsuite-files*
+       (loop with errs = '() for testentry in *testsuite-files*
 	      do
 	      (if (atom testentry)
 		  (progn

@@ -92,7 +92,7 @@
 ;;computes resultant using subresultant p.r.s. TOMS Sept. 1978
 
 (defun subresult (p q)
-  (sloop for g = 1 then (p-lc p)
+  (loop for g = 1 then (p-lc p)
 	 for h = 1 then (pquotient (pexpt g d) h^1-d)
 	 for degq = (pdegree q (p-var p))
 	 for d = (f- (p-le p) degq)

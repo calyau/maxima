@@ -36,12 +36,12 @@
 (defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
 (defmvar $gammalim 1000000.)
 
-(sloop for (a b) on 
+(loop for (a b) on 
        '(%sin %asin %cos %acos %tan %atan
 	 %cot %acot %sec %asec %csc %acsc
 	 %sinh %asinh %cosh %acosh %tanh %atanh
 	 %coth %acoth %sech %asech %csch %acsch)
-       by 'cddr
+       by #'cddr
        do  (putprop a b '$inverse) (putprop b a '$inverse))
 
 (defmfun $demoivre (exp)

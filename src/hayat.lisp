@@ -1847,7 +1847,7 @@
 ;;;      <data for the expanding routine>)
 
 
-(sloop for (fun exp) on
+(loop for (fun exp) on
  '(%EX    ((EXPEXP-FUNS 1 . 1) ((0 . 1) 1 . 1) (1 . 1) (1 . 1) (1 . 1))
   %SIN   (EXPEXP-FUNS ((1 . 1) 1 . 1) (-1 . 1) (-1 . 1) (2 . 1))
   %COS   ((EXPEXP-FUNS 2 . 1) ((0 . 1) 1 . 1) (-1 . 1) (-1 . 1) (2 . 1))
@@ -1868,7 +1868,7 @@
   %ASINH (EXPASIN-FUNS ((1 . 1) 1 . 1) -1)
   %GAMMA (EXPGAM-FUN ((-1 . 1) 1 . 1))
   $PSI   (EXPPLYGAM-FUNS plygam-ord))
-  by 'cddr
+  by #'cddr
   do  (putprop fun exp 'EXP-FORM))
 
 

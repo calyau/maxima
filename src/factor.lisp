@@ -62,7 +62,7 @@
   (null (zl-delete 1 (oddelm (cdr (cfactor $factorflag))))))
 
 (defun primcyclo (n &aux *g* (nl (cfactorw n)))
-  (setq nl (sloop for (c e) on nl by 'cddr
+  (setq nl (loop for (c e) on nl by #'cddr
 		  nconc (*make-list e c)))
   (let ((res (cyclotomic (list n nl))))
     (cond ((consp res) (p-terms res))
@@ -104,7 +104,7 @@
 
 
 (defun cyclp (n ind)
-  (sloop for i downfrom (f1- n) to 0
+  (loop for i downfrom (f1- n) to 0
 	 nconc (list (f* ind i) 1)))
 
 (defun csf (l) 

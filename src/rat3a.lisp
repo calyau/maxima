@@ -404,7 +404,7 @@
 	(t (psimp (p-var p) (pcsub2 (p-terms p) vals vars)))))
 
 (defun pcsub2 (terms vals vars)
-  (sloop for (exp coef) on terms by 'pt-red
+  (loop for (exp coef) on terms by #'pt-red
 	 unless (pzerop (setq coef (pcsub coef vals vars)))
 	 nconc (list exp coef)))
 
@@ -517,13 +517,13 @@
 			(cons (p-var p) (pminus1 (p-terms p)))))
 
 (defun pminus1 (x)
-  (sloop for (exp coef) on x by 'pt-red
+  (loop for (exp coef) on x by #'pt-red
 	 nconc (list exp (pminus coef))))
 
 (defmfun pmod (p)
   (if (pcoefp p) (cmod p)
       (psimp (car p)
-	     (sloop for (exp coef) on (p-terms p) by 'pt-red
+	     (loop for (exp coef) on (p-terms p) by #'pt-red
 		    unless (pzerop (setq coef (pmod coef)))
 		    nconc (list exp coef)))))
 
@@ -548,7 +548,7 @@
   (psimp (p-var p) (pcquotient1 (p-terms p) q)))
 
 (defun pcquotient1 (p1 q)
-  (sloop for (exp coef) on p1 by 'pt-red
+  (loop for (exp coef) on p1 by #'pt-red
 	 nconc (list exp (pquotient coef q))))
 
 (declare-top(special k q*)
@@ -556,7 +556,7 @@
 
 (defun pquotient1 (u v &aux q* (k 0))
   (declare (fixnum k))
-  (sloop do (setq  k (f- (pt-le u) (pt-le v)))
+  (loop do (setq  k (f- (pt-le u) (pt-le v)))
 	 when (minusp k) do (errrjf "Polynomial quotient is not exact")
 	 nconc (list k (setq q* (pquotient (pt-lc u) (pt-lc v))))
 	 until (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))))
@@ -698,7 +698,7 @@
   uuu)
 
 (defun pcetimes1 (y e c)		;C*V^E*Y
-  (sloop for (exp coef) on y by 'pt-red
+  (loop for (exp coef) on y by #'pt-red
 	 unless (pzerop (setq coef (ptimes c coef)))
 	 nconc (list (f+ e exp) coef)))
 
@@ -707,7 +707,7 @@
       (psimp (p-var p) (pctimes1 c (p-terms p)))))
 
 (defun pctimes1 (c terms)
-  (sloop for (exp coef) on terms by 'pt-red
+  (loop for (exp coef) on terms by #'pt-red
 	 unless (pzerop (setq coef (ptimes c coef)))
 	 nconc (list exp coef)))
 

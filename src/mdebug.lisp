@@ -15,7 +15,7 @@
     )
 
 (defun $bt()
-  (sloop for v in baktrcl
+  (loop for v in baktrcl
 	 do 
 	 (and (consp v)
 	      (consp (cadar v))
@@ -73,7 +73,7 @@
 		      ($sconcat "#" n ": "  fname "(")
 		      ($sconcat  fname "("))
 		  st)
-	   (sloop for v on params for w in vals
+	   (loop for v on params for w in vals
 		  do (setq val ($sconcat w))
 		  (if (> (length val) 100)
 		      (setq val ($sconcat (subseq val 0 100) "...")))
@@ -120,7 +120,7 @@
 	 (cond ((and (symbolp sym)(get sym prop)(equal (symbol-package sym)
 						       (find-package package)))
 		(return-from complete-prop sym)))
-	 (sloop for vv in-package package 
+	 (loop for vv being the symbols of package 
 		when (and (get vv prop)
 			  (eql #+gcl (string-match sym vv)
 			       #-gcl (search (symbol-name sym)
@@ -143,7 +143,7 @@
 
 (defun $backtrace (&optional (n 30))
   (let ( $display2d   (st *debug-io* ))
-    (sloop for i below n
+    (loop for i below n
 	   for j from *current-frame*
 	   while (print-one-frame j t))))
 
@@ -235,11 +235,11 @@
 		      (adjust-array ar (+ i 20) :fill-pointer (fill-pointer ar)
 				    ))
 		  
-		  (sloop for j from (fill-pointer ar) below i
+		  (loop for j from (fill-pointer ar) below i
 			 do (setf (aref ar j) nil))
 		  (setf (fill-pointer ar) (f + i 1))
 		  (setf (aref ar i) form)))
-	 (sloop for v in (cdr form)
+	 (loop for v in (cdr form)
 		do (or (atom v)
 		       (walk-get-lineinfo v ar))))))
 
@@ -247,7 +247,7 @@
   (cond ((atom form) nil)
 	((and (setq tem (get-lineinfo form)) (eql (car tem) line))
 	 form)
-	(t (sloop for v in (cdr form)
+	(t (loop for v in (cdr form)
 		  when (setq tem (first-form-line v line))
 		  do (return-from first-form-line tem)))))
 
@@ -257,7 +257,7 @@
 ;; in bag.  Returns a list.  They will have fill pointers..
 (defun split-string (string  bag &optional (start 0) &aux all pos v l)
   (declare (fixnum start) (type string string))
-  (sloop for i from start below (length string)
+  (loop for i from start below (length string)
 	 do  (setq pos (position (setq v (aref string i)) bag))
 	 (setq start (+ start 1))
 	 (cond ((null pos) (push v all))
@@ -473,14 +473,14 @@
 	     (dolist (v (complete-prop key 'keyword 'break-doc t))
 	       (format t "~&~%~(~s~)   ~a" v (get v 'break-doc)))))
 	(t
-	 (sloop for vv in-package 'keyword
+	 (loop for vv being the symbols of 'keyword
 		when (get vv 'break-command)
 		collect (cons vv (or (get vv 'break-doc) "Undocumented"))
 		into all
 		finally (setq all (sort all 'alphalessp))
 		(format t "Break commands start with ':' Any unique substring may be used, eg :r :re :res all work for :resume.~%Command     Description~%
 --------     --------------------------------------")   
-		(sloop for vv in all
+		(loop for vv in all
 		       do (format t "~% ~(~s~)     ~a" (car vv) (cdr vv)))
 		))))
 
@@ -524,7 +524,7 @@
   (cond ((or (stringp fun)
 	     (and (mstringp fun) (setq fun ($sconcat fun))))
 	 (let ((file fun)  start)
-	   (sloop named joe for vv in-package 'maxima with tem  and linfo
+	   (loop named joe for vv being the symbols of 'maxima with tem with linfo
 		  when (and (typep (setq tem (set-full-lineinfo vv))
 				   'vector)
 			    (setq linfo (get-lineinfo (aref tem 1)))
@@ -649,7 +649,7 @@
 ;; get the most recent function on the stack with step info.
 
 (defun current-step-fun ( &aux fun)
-  (sloop for i below 100000
+  (loop for i below 100000
 	 while (setq fun (frame-info i))
 	 do (cond ((and (symbolp fun) (set-full-lineinfo fun))
 		   (return-from current-step-fun fun))))
@@ -740,7 +740,7 @@ a FILE and LINE is the offset from the beginning of the file." )
   (setf *diff-bindlist* nil *diff-mspeclist* nil))
 
 (defun remove-bindings (the-bindlist)
-  (sloop for v on bindlist with var
+  (loop for v on bindlist with var
 	 while v
 	 until (eq v the-bindlist)
 	 do

@@ -144,7 +144,7 @@
 
 
 (defun getoptimvar ()
-  (sloop with var
+  (loop with var
 	 do
 	 (increment optimcount)
 	 (setq var

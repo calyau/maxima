@@ -326,7 +326,7 @@
 					   (null (funcall *break-step* form))))
 			      (let ((ar *break-points*))
 				(declare (type (vector t) ar))
-				(sloop for i below (fill-pointer ar)
+				(loop for i below (fill-pointer ar)
 				       when (eq (car (aref ar i)) form)
 				       do (*break-points* form)
 				       (loop-finish))))

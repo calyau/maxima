@@ -175,13 +175,13 @@
 
 
        (defun store-internal-1d (array-spec index new-value)
-	 (sloop until (arrayp array-spec)
+	 (loop until (arrayp array-spec)
 		do (cond ((symbolp array-spec) (setq array-spec (symbol-array array-spec)))
 			 (t (error "STORE failed -- can't find array for ~S" array-spec))))
 	 (setf (aref array-spec index) new-value))
 
        (defun store-internal-2d (array-spec i1 i2 new-value)
-	 (sloop until (arrayp array-spec)
+	 (loop until (arrayp array-spec)
 		do (cond ((symbolp array-spec) (setq array-spec (symbol-array array-spec)))
 			 (t (error "STORE failed -- can't find array for ~S" array-spec))))
 	 (setf (aref array-spec i1 i2) new-value))

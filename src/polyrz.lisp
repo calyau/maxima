@@ -49,7 +49,7 @@
 (defun unipoly (exp) 
   (setq exp (cadr (ratf exp)))
   (cond ((and (not (atom exp))
-	      (sloop for v in (cdr exp)
+	      (loop for v in (cdr exp)
 		     when (not (atom v))
 
 		     do (return nil)

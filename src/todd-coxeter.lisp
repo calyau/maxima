@@ -99,7 +99,7 @@
 (defun todd-coxeter (nvars rels subgp &aux (i 1) (c 0 ))
   (declare (fixnum i c))
   (set-up nvars rels subgp)
-  (sloop while (>= (ncosets) i)
+  (loop while (>= (ncosets) i)
 	 do  (incf c) ;; count how many row tries.. 
 	 (cond
 	   ;; row still being done
@@ -123,13 +123,13 @@
   (setf (fill-pointer *todo*) 0)
   (setf (multiply-table) (make-array (* 2 (1+ (nvars)))))
   (with-multiply-table
-      (sloop for rel in (row1-relations) do
-	     (sloop for v in rel
+      (loop for rel in (row1-relations) do
+	     (loop for v in rel
 		    do (or (<= 1 (abs v)  nvars)
 			   (error
 			    "Vars must be integers with absolute value between 1 and ~a"
 			    nvars))))
-    (sloop for i from (f- nvars)  to nvars
+    (loop for i from (f- nvars)  to nvars
 	   when (not (zerop i))
 	   do (setf (table i) (make-array 10 :adjustable t :element-type 'coset)))
     ))
@@ -156,11 +156,11 @@
   (declare (fixnum j  k i r s))
   (setf relations (if (eql i 1) (row1-relations) (relations)))
   (with-multiply-table
-      (sloop for rel in relations
+      (loop for rel in relations
 	     for v on relations
 	     do
 	     (setq k i)
-	     (sloop 
+	     (loop 
 	      do
 	      (setq r (car rel))
 	      (setq s (tc-mult  k r))
@@ -198,12 +198,12 @@
   (declare (fixnum s sp))
 					;(format t "~%In fillThere are now ~a cosets" (ncosets))
   (with-multiply-table
-      (sloop for i from 1 to nvars
+      (loop for i from 1 to nvars
 	     do (let ((ta1 (table i))
 		      (ta2 (table (- i))))
 		  (declare (type (vector (coset)) ta1 ta2))
-		  (sloop for j from 1 to (ncosets) do (setf (aref ta2 j) 0))
-		  (sloop for j from 1 to (ncosets)  do
+		  (loop for j from 1 to (ncosets) do (setf (aref ta2 j) 0))
+		  (loop for j from 1 to (ncosets)  do
 			 (setf s (aref ta1 j))
 			 when (not (eql 0 s))
 			 do
@@ -232,7 +232,7 @@
 	   (dprint-state)
 	   (if *debug* (format t "     ~a --> ~a " n m))
 	   
-	   (sloop for i from 1 to nvars
+	   (loop for i from 1 to nvars
 		  do
 		  (let ((ta (table i)))
 		    (declare (type  (vector (coset)) ta))
@@ -243,17 +243,17 @@
 			((undef s) (setf (tc-mult m i) s2))
 			((< s s2) (push-todo s s2))
 			((> s s2)(push-todo s2 s))))
-		    (sloop for  j downfrom (f- n 1) to 1
+		    (loop for  j downfrom (f- n 1) to 1
 			   do (setq s (aref ta j))
 			   (cond ((>  s n) (setf (aref ta j) (f- s 1)))
 				 ((eql s n) (setf (aref ta j) m) )))
-		    (sloop for  j from n below (ncosets)
+		    (loop for  j from n below (ncosets)
 			   do (setq s (aref ta (f+ j 1)))
 			   (cond ((>  s n) (setf (aref ta j) (f- s 1)))
 				 ((eql s n) (setf (aref ta j) m) )
 				 (t  (setf (aref ta j) s))))))
 		
-	   (sloop for i downfrom (f- (fill-pointer *todo*) 1) to 0
+	   (loop for i downfrom (f- (fill-pointer *todo*) 1) to 0
 		  do (setf s (aref *todo* i))
 		  (cond ((> s n) (setf (aref *todo* i) (f- s 1)))
 			((eql s n)(setf (aref *todo* i)  m))))
@@ -278,11 +278,11 @@
 	(let ((ta (table 1)))
 	  (unless (> (the fixnum (array-total-size ta)) (f+ n 1))
 	    (setf m (f+ n  (ash n -1)))
-	    (sloop for i from (f- 0 nvars) to nvars 
+	    (loop for i from (f- 0 nvars) to nvars 
 		   when (not (eql i 0))
 		   do (setf ta (table i))
 		   (setf (table i) (adjust-array   ta m ))))
-	  (sloop for i from 1  to nvars
+	  (loop for i from 1  to nvars
 		 do (setf (aref (table i) n) 0)
 		 (setf (aref (table (f- i)) n) 0))))
     (setf (ncosets) n)))
@@ -314,7 +314,7 @@
 		     (neg (signum n))
 		     (v (coerce-rel (second rel))))
 		(declare (special neg))
-		(sloop for i below (abs (third rel))
+		(loop for i below (abs (third rel))
 		       append v)))
 	     (otherwise (error "bad rel"))))))
 
@@ -330,9 +330,9 @@
       ;;  (print ro)
       (format t "Row ~a " i)
       (setq relations (if (eql i 1) (row1-relations) (relations)))
-      (sloop for rel in relations
+      (loop for rel in relations
 	     do 
-	     (sloop for v on rel
+	     (loop for v on rel
 		    do (format t
 			       (if (> (car v) 0) "~a" "~(~a~)")
 			       (nth (abs (car v)) *names*))
@@ -341,7 +341,7 @@
 			(format t "~a | ~a" i i))))))
      
   (defun has-repeat (ar &aux (j (+ 1 (ncosets)))  ans tem)
-    (sloop for k from 1 to (ncosets)
+    (loop for k from 1 to (ncosets)
 	   do (setq tem (aref ar k))
 	   (cond ((and  (not (eql tem 0))
 			(find tem ar :start (+ k 1) :end j))
@@ -351,7 +351,7 @@
   (defun dcheck-tables ( &aux tem )
     (when *debug*
       (with-multiply-table
-	  (sloop for i from 1 to (nvars)
+	  (loop for i from 1 to (nvars)
 		 do (if (setq tem (has-repeat (table i )) )
 			(format t "~%Table ~a has repeat ~a " i tem))))))
      
@@ -359,7 +359,7 @@
     (when *debug*
       (with-multiply-table
 	  (format t "~%Ncosets = ~a, *todo*=" (ncosets) *todo*)
-	(sloop for i from 1 to (nvars) do
+	(loop for i from 1 to (nvars) do
 	       (format t "~%~a:~a" (nth i *names*)
 		       (subseq (table i ) 1  (+ 1 (ncosets)))))
 	(my-print (reverse *this-row*) 0)

@@ -564,7 +564,7 @@
 ;; to which to lift 
 
 (defun dlf-mumblify (a b)
-  (sloop for x in a for y in b sum (difference x y)))
+  (loop for x in a for y in b sum (difference x y)))
 
 (defun determine-lifting-factor (f-degv g-degv gcd-degv)
   (let* ((fv		       ;(apply '+ (mapcar '- f-degv gcd-degv))

@@ -192,19 +192,19 @@
 			(everysubst00 a (car b) (cdr c))))))
 
 (defun everysubst00 (x i z)
-  (sloop with ans = (rzero)
-	 for (exp coef) on (everysubst i z *alpha) by 'pt-red
+  (loop with ans = (rzero)
+	 for (exp coef) on (everysubst i z *alpha) by #'pt-red
 	 do (setq ans (ratplus ans (rattimes (cons coef 1) (ratexpt x exp) t)))
 	 finally (return ans)))
 
 (defun everysubst0 (x i z)
-  (sloop with ans = (pzero)
-	 for (exp coef) on (everysubst i z *alpha) by 'pt-red
+  (loop with ans = (pzero)
+	 for (exp coef) on (everysubst i z *alpha) by #'pt-red
 	 do (setq ans (pplus ans (xptimes coef (pexpt x exp))))
 	 finally (return ans)))
 
 (defun everysubst1 (a b maxpow)
-  (sloop for (exp coef) on (p-terms b) by 'pt-red
+  (loop for (exp coef) on (p-terms b) by #'pt-red
 	 for part = (everysubst a coef maxpow)
 	 nconc (if (= 0 exp) part
 		   (everysubst2 part (make-poly (p-var b) exp 1)))))
@@ -298,8 +298,8 @@
       (pzero)))
 
 (defun prodcoef1 (a b)
-  (sloop with ans = (pzero)
-	 for (bexp bcoef) on (p-terms b) by 'pt-red
+  (loop with ans = (pzero)
+	 for (bexp bcoef) on (p-terms b) by #'pt-red
 	 for part = (prodcoef a bcoef)
 	 unless (pzerop part)
 	 do (setq ans (pplus ans (psimp (p-var b) (list bexp part))))
@@ -389,7 +389,7 @@
 	(argsfreeofp (freeofl var (margs e)))
 	(t (freeofl var (cdr e)))))
 
-(defun freeofl (var l) (sloop for x in l always (freeof var x)))
+(defun freeofl (var l) (loop for x in l always (freeof var x)))
 
 (defmfun hand-side (e flag)
   (setq e (if (eq (caar e) 'mequal) (ncons e) (cdr e)))
@@ -434,7 +434,7 @@
      (mapc (function spc7) varlist)))	;simplify radicals
 
 (defun allatoms (l)
-  (sloop for x in l always (atom x)))
+  (loop for x in l always (atom x)))
 
 (defun rjfsimp (x &aux expon) 
   (cond ((and *radsubst $radsubstflag) x)
@@ -568,7 +568,7 @@
 
 
 (defun goodform (l) ;;bad -> good
-  (sloop for (exp coef) on l by 'pt-red
+  (loop for (exp coef) on l by #'pt-red
 	 collect (cons exp coef)))
 
 (defun factorlogs (l)
@@ -608,7 +608,7 @@
 	      (go a)))))
 
 (defun flevenp (pl)
-  (sloop for l in pl never (oddp (cdar l))))
+  (loop for l in pl never (oddp (cdar l))))
 
 (defun flred (pl p)
   (mapl #'(lambda (x) (if (equal p (caaar x))
@@ -633,7 +633,7 @@
 (defun nmt (p any)
   (cond ((pcoefp p)
 	 (if (or any (cminusp p)) 1 0))
-	(t (sloop for lp on (p-terms p) by 'pt-red
+	(t (loop for lp on (p-terms p) by #'pt-red
 		  sum (nmt (cadr lp) any)))))
 
 (defun nmterms (p)

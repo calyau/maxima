@@ -107,14 +107,13 @@
 			 (setq top (car l) l (cdr l))
 			 (setq top (meval* top))
 			 (numberp top)))
-		  (sloop for i from lis to top
-			 nodeclare t
+		  (loop for i from lis to top
 			 do (set var1 i)
 			 append
 			 (apply 'create-list1
 				form l)))
 		 (($listp lis)
-		  (sloop for v in (cdr lis)
+		  (loop for v in (cdr lis)
 			 do (set var1 v)
 			 append
 			 (apply 'create-list1

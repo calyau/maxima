@@ -159,7 +159,7 @@
 		 (t (cursorpos (f- at-x (sub1 height)) 0)
 		    (draw-linear (nreverse dim-list) (f+ at-x height) at-y)
 	   
-		    (sloop for i downfrom (sub1 (length linearray)) to 0
+		    (loop for i downfrom (sub1 (length linearray)) to 0
 			   when (aref linearray i)
 			   do (output-linear-one-line i)))))
       (clear-linearray))
@@ -1218,7 +1218,7 @@
 	  (setq line (linearray i) line (nreverse (cdr line)) n (car line))
 	  (set-linearray i nil)
 	  (tyotbsp n)
-	  (sloop for v in (cdr line) do (tyo v))
+	  (loop for v in (cdr line) do (tyo v))
 	  ;;    (PRINC (MAKNAM (CDR LINE)))
 	  (mterpri)))
 
@@ -1357,7 +1357,7 @@
 	     (pop l)))))
 
 (defun check-dimstring (str)
-  (sloop for v in str when (integerp v) do (error "bad entry ~A" v)))
+  (loop for v in str when (integerp v) do (error "bad entry ~A" v)))
 
 ;;#+lispm
 ;;(DEFUN DRAW-2D (DMSTR ROW COL)

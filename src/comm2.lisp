@@ -688,8 +688,7 @@
 	       (let ((dim1 (gethash 'dim1 arra)))
 		 (return
 		   (list* '(mlist) '$hash_table (if dim1 1 t)
-			  (sloop for (u v)
-				 in-table arra
+			  (loop for u being the hash-keys in arra using (hash-value v)
 				 when (not (eq u 'dim1))
 				 collect
 				 (if (progn v dim1) ;;ignore v

@@ -33,7 +33,7 @@
     (defun make-operation (.type .op .return)
       (or .return (setf .return .type))
       #'(lambda (bod env) env
-		(sloop for v in (cdr bod)
+		(loop for v in (cdr bod)
 		       when (eq t .type) collect v into body
 		       else
 		       collect `(the , .type ,v) into body
@@ -289,9 +289,9 @@
 	 (setq plist (symbol-plist plist)))
 	((consp plist) (setq plist (cdr plist)))
 	(t (return-from oldget nil)))
-  (sloop for tail on plist by 'cddr
+  (loop for tail on plist by #'cddr
 	 when (eq (car tail) indic)
-	 do (loop-return (second tail))))
+	 do (return (second tail))))
 
 (defun safe-get (sym prop)
   (and (symbolp sym) (get sym prop)))
@@ -305,9 +305,9 @@
 	 (setq plist (symbol-plist plist)))
 	((consp plist) (setq plist (cdr plist)))
 	(t (return-from getl nil)))
-  (sloop for tail on plist by 'cddr
+  (loop for tail on plist by #'cddr
 	 when (memq (car tail) indicator-list)
-	 do (loop-return tail)))
+	 do (return tail)))
 
 ;;this is the get of maclisp
 ;; works on symbols and plists
@@ -350,7 +350,7 @@
       (5 (setf (aref ar (aref curs 1) (aref curs 2) (aref curs 3)
 		     (aref curs 4) (aref curs 5)) val)))
     ;; set the index (`cursor') for the next call to ASET-BY-CURSOR
-    (sloop for j downfrom (aref curs 0)
+    (loop for j downfrom (aref curs 0)
 	   do (cond ((< (aref curs j) (aref curs (f+ 5 j)))
 		     (setf (aref curs j) (f+  (aref curs j) 1))
 		     (return-from aset-by-cursor t))
@@ -373,7 +373,7 @@
 	      (t x)))
   (when (> (length ar) 0)  
     (set-up-cursor ar)
-    (sloop while (aset-by-cursor ar (car x))
+    (loop while (aset-by-cursor ar (car x))
 	   do (and (cdr x) (setq x (cdr x))))))
 
 ;;(defun fillarray (ar x)
@@ -386,19 +386,19 @@
 ;;			     (fixnum 0)
 ;;			     (float 0.0)
 ;;			     ((t) nil)))
-;;	 (sloop for i below leng
+;;	 (loop for i below leng
 ;;		do (setf (aref ar i) x)))
 ;;	((consp x)
-;;	 (sloop for i below leng
+;;	 (loop for i below leng
 ;;		for u in x
 ;;		do (setf (aref ar i) u)
 ;;		finally
-;;		(sloop for j from i below leng
+;;		(loop for j from i below leng
 ;;		       do (setf (aref ar j) u))))
 ;;	((arrayp x)
-;;	 (sloop for i below (min leng (length x))
+;;	 (loop for i below (min leng (length x))
 ;;		do (setf (aref ar i) (aref x i))
-;;		finally (sloop for j from i below leng
+;;		finally (loop for j from i below leng
 ;;			       with u = (aref x (f- i 1))
 ;;			       do (setf (aref ar j ) u))))
 ;;	(t (error "bad second arg to fillarray")))))
@@ -426,12 +426,6 @@
 	(t (let ((g (gensym)))
 	     `(let ((,g ,x))
 	       (cons ,y ,g))))))
-
-(defun nleft (n x &optional tail)
-  (sloop for v on (nthcdr n x)
-	 for w on x
-	 when (eq v tail) do (return w)
-	 finally (return w)))
 
 (defun make-equal-hash-table (not-dim1)
   (let ((table (make-hash-table :test 'equal)))

@@ -13,15 +13,12 @@
 ;; GCL has SLOOP built in but it's slightly different now...
 (defpackage "CL-SLOOP"
   (:use "COMMON-LISP")
-  (:shadow "LOOP-FINISH")
-  (:export "LOOP-RETURN" "SLOOP" "DEF-LOOP-COLLECT" "DEF-LOOP-MAP"
-	   "DEF-LOOP-FOR" "DEF-LOOP-MACRO" "LOCAL-FINISH" "LOOP-FINISH"))
+  (:export "SLOOP"))
 
 (defpackage "MAXIMA"
   (:use "COMMON-LISP" "COMMAND-LINE")
   (:nicknames "CL-MACSYMA" "CL-MAXIMA" "MACSYMA")
-  (:shadowing-import-from "CL-SLOOP" "LOOP-FINISH")
-  (:import-from "CL-SLOOP" "LOOP-RETURN" "LOCAL-FINISH" "SLOOP")
+  (:import-from "CL-SLOOP" "SLOOP")
   (:shadow complement                   ;(maxmac)
 	   continue		 ;(macsys): part of the top-level loop
 	   //                           ;(clmacs): arithmetic operator

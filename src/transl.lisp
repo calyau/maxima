@@ -1099,7 +1099,7 @@ APPLY means like APPLY.")
 	;; Case with EASY or no ASSIGN's
 	(progn ;;-have to undo any local assignments. --wfs
 	  #+lispm
-	  (sloop for v in nbody when (and (consp v) (eq (car v) 'mlocal))
+	  (loop for v in nbody when (and (consp v) (eq (car v) 'mlocal))
 		 do
 		 (setq nbody `((unwind-protect (progn ,@nbody) (munlocal))))
 		 (return 'done))
@@ -1364,7 +1364,7 @@ APPLY means like APPLY.")
 ;; Perhaps a mere expansion into an MPROG would be best.
 
 (defun new-end-symbol ( &aux tem)
-  (sloop for i from 0
+  (loop for i from 0
 	 do (setq tem (intern (format nil "test-~A" i)))
 	 when (null (symbol-plist tem))
 	 do (return tem)))

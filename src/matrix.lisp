@@ -680,7 +680,7 @@
 (defun $list_matrix_entries (m)
   (or ($matrixp m) (error "not a matrix"))
   (cons (if (null (cdr m)) '(mlist) (caadr m))
-	(sloop for row in (cdr m) append (cdr row))))
+	(loop for row in (cdr m) append (cdr row))))
 
 ;; Undeclarations for the file:
 #-nil

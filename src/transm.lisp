@@ -543,7 +543,7 @@
 (defun tr-format (sstring &rest argl &aux strs)
   (cond ((consp *translation-msgs-files*)(setq strs *translation-msgs-files*))
 	(t (setq strs (list *translation-msgs-files*))))
-  (sloop for v in strs
+  (loop for v in strs
 	 do (apply 'mformat v sstring argl)))
 
  

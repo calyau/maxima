@@ -24,7 +24,7 @@
        (cond ((not (null vars))
 					;`((lambda ,(reverse vars) . ,body) .
 					;,(reverse *let-macro-vals*))
-	      `(cl:let ,(nreverse (sloop for v in vars for w in
+	      `(cl:let ,(nreverse (loop for v in vars for w in
 					   *let-macro-vals* collect
 					   (list v w)))
 		,@ body)
@@ -122,7 +122,7 @@
 	  (let-macro-get-last-var (cdr pattern))))))
 
 (defmacro destructuring-let* (pairs &body body)
-  (cond ((sloop for v in pairs
+  (cond ((loop for v in pairs
 		always (or (symbolp v) (and (consp v) (symbolp (car v)))))
 	 `(cl:let* ,pairs ,@body))
 	(t

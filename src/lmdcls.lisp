@@ -9,7 +9,7 @@
 (in-package "MAXIMA")
 ;;to do add for other cl implementations.
 ;;(defun remove-type ( l)
-;;  (sloop for v in l
+;;  (loop for v in l
 ;;	 when (consp v) do (setq v (car v))
 ;;	 when (symbolp v)
 ;;	 do (remprop v
@@ -31,12 +31,12 @@
     ,(cond (*macro-file*  #+gcl '(compile eval load)
 			  #-gcl '(:compile-toplevel :load-toplevel :execute) )
 	   (t #+gcl '(eval compile) #-gcl '(:compile-toplevel :execute)))
-    ,@(sloop for v in decl-specs
-	     unless (member (car v) '(special unspecial)) do nil 
+    ,@(loop for v in decl-specs
+	     unless (member (car v) '(special unspecial)) nconc nil
 	     else
 	     when (eql (car v) 'unspecial)
 	     collect `(progn
-		       ,@(sloop for w in (cdr v)
+		       ,@(loop for w in (cdr v)
 				collect #-gcl  `(remprop ',w
 						 #-excl 'special
 						 #+excl 'excl::.globally-special.)

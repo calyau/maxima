@@ -77,7 +77,7 @@
 		   some ch
 		   k
 		   )
-	       (sloop for   i below 20
+	       (loop for   i below 20
 		      while (setq ch (nth (- n i 1) *parse-window*))
 					  
 		      do
@@ -90,17 +90,17 @@
 			    (t (push ch some))))
 	       (setq k (length some))
 	       (setq some (append some
-				  (sloop for i below 20 for tem =
+				  (loop for i below 20 for tem =
 					 nil 
 					 ;(read-char-no-hang)
 					 while tem collect tem)))
 	       (terpri)
-	       (sloop for v in some do (princ v))
+	       (loop for v in some do (princ v))
 	       (terpri)
-	       (sloop for i from 2 below k do (princ #\space))
+	       (loop for i from 2 below k do (princ #\space))
 	       (princ "^")
 	       
-	       ;(sloop while (read-char-no-hang) )
+	       ;(loop while (read-char-no-hang) )
 	       )))
       (terpri)
       (throw-macsyma-top) 
@@ -232,7 +232,7 @@
 
 (defun safe-assoc (item lis)
   "maclisp would not complain about (car 3) it gives nil"
-  (sloop for v in lis
+  (loop for v in lis
 	when (and (consp v)
 		  (equal (car v) item))
 	do
@@ -264,7 +264,7 @@
 ;; (parser-assoc 1 '(2 (1 4) 3)) ==>(1 4)
 
 (defun parser-assoc (c lis )
-  (sloop for v on lis
+  (loop for v on lis
 	 do
 	 (cond ((consp (car v))
 		(if (eq (caar v) c)
@@ -437,7 +437,7 @@
 (defvar *string-register* (make-array 100 :fill-pointer 0 :adjustable t :element-type '#.(array-element-type "a")))
 (defun readlist (lis)
   (setf (fill-pointer *string-register*) 0)
-  (sloop for u in lis do (vector-push-extend u *string-register*))
+  (loop for u in lis do (vector-push-extend u *string-register*))
   (read-from-string   *string-register*))
 
 

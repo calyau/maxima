@@ -245,7 +245,7 @@
 
 (defun compile-forms-to-compile-queue-now ()  
   (cond ( forms-to-compile-queue
-	 (sloop for v in forms-to-compile-queue
+	 (loop for v in forms-to-compile-queue
 		do (eval v) (compile (second v)))))
   (setq forms-to-compile-queue nil))
 
@@ -335,7 +335,7 @@
        ,@body))))
 
 ;; ???
-;; (sloop for v in '(m-tlambda m-tlambda& m-tlambda&env m-tlambda&env&)
+;; (loop for v in '(m-tlambda m-tlambda& m-tlambda&env m-tlambda&env&)
 ;;        do
 ;;        (remprop v 'opt)
 ;;        #+lispm
@@ -359,7 +359,7 @@
 ;;  `(lambda (,@ reg-argl) ,@ (copy-rest-arg body)))
 ;;(defmacro M-TLAMBDA&ENV&  ( argl &REST BODY &aux (reg-argl (first argl)))
 ;;  `(lambda ( ,@REG-ARGL) ,@ (copy-rest-arg BODY)))
-;;(sloop for v in '(m-tlambda m-tlambda& m-tlambda&env m-tlambda&env&)
+;;(loop for v in '(m-tlambda m-tlambda& m-tlambda&env m-tlambda&env&)
 ;;      do
 ;;      (remprop v 'opt)
 ;;      (remprop v 'compiler:optimizers))

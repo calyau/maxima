@@ -444,7 +444,7 @@
     
     (catch 'quit-to-lisp
       (in-package "MAXIMA")
-      (sloop 
+      (loop 
        do
        (catch #+kcl si::*quit-tag* #+(or cmu sbcl) 'continue #-(or kcl cmu sbcl) nil
 	      (catch 'macsyma-quit

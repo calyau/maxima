@@ -539,7 +539,7 @@
 
 #+cl
 (defun orderpointer (l)
-  (sloop for v in l
+  (loop for v in l
 	 for i below (f- (length l) (length genvar))
 	 collecting  (gensym-readable v) into tem
 	 finally (setq genvar (nconc tem genvar)) (return (prenumber genvar 1))))

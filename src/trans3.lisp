@@ -107,7 +107,7 @@
   (reduce-var-set (apply #'append l))) ; consing up a storm aren't we?
 
 (defun make-var-set (vars)
-  (sloop for v in vars collect (ncons v)))
+  (loop for v in vars collect (ncons v)))
 
 ;;; (LAMBDA <BVL> . <BODY>)
 

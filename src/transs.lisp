@@ -304,7 +304,7 @@
   (cleanup)
   ;; we want the thing to start with a newline..
   (newline in-stream #\n)
-  (sloop while (and (setq  expr	  (mread in-stream))
+  (loop while (and (setq  expr	  (mread in-stream))
 		    (consp expr))
 	 do (setq transl (translate-macexpr-toplevel (third expr)))
 	 (cond (*pretty-print-translation* (pprint transl out-stream))
@@ -314,14 +314,14 @@
  
 (defun translate-from-stream (from-stream &key to-stream eval pretty (print-function #'prin1) &aux expr transl )
   (bind-transl-state			
-   (sloop while (and (setq expr (mread from-stream)) (consp expr))
+   (loop while (and (setq expr (mread from-stream)) (consp expr))
 	  with *in-translate-file* = t
 	  with *print-pretty* = pretty
 	  do (setq transl (translate-macexpr-toplevel (third expr)))
 					;(show transl  forms-to-compile-queue)
 	  (cond (eval (eval transl)))
 	  (cond (to-stream (funcall print-function transl to-stream)))
-	  (sloop for v in forms-to-compile-queue
+	  (loop for v in forms-to-compile-queue
 		 do (show v to-stream)
 		 when to-stream
 		 do (funcall print-function v to-stream)
@@ -434,7 +434,7 @@ translated."
 		 (namestring (pathname in-stream)))
 	 (mformat out-stream
 		  "~%;;** Variable settings were **~%~%")
-	 (sloop for v in (cdr $tr_state_vars)
+	 (loop for v in (cdr $tr_state_vars)
 		do (mformat out-stream   ";;~:M:~:M;~%" v (symbol-value v)))
 	 (mformat *terminal-io* "~%Translation begun on ~A.~%"
 		  (pathname in-stream))

@@ -86,7 +86,7 @@
 
 
 (defun $get_plot_option (name &optional n)
-  (sloop for v in (cdr $plot_options)
+  (loop for v in (cdr $plot_options)
 	 when (eq (nth 1 v) name) do
 	 (return (if n (nth n  v) v))))
 
@@ -102,7 +102,7 @@
   (or (eql (length lis) length)
       (merror "~M items were expected in the ~M list" length name))
   `((mlist) , name ,@
-    (sloop for v in lis
+    (loop for v in lis
      do (setq v (meval* v))
      when (not (typep v type))
      do
@@ -150,7 +150,7 @@
 	  ($adapt_depth (check-list-items name (cddr value) 'fixnum 1))
 	  (t
 	   (merror "Unknown plot option specified:  ~M" name))))
-  (sloop for v on (cdr $plot_options)
+  (loop for v on (cdr $plot_options)
 	 when (eq (nth 1 (car v)) name)
 	 do (setf (car v) value))
   $plot_options
@@ -225,10 +225,10 @@
     (declare (double-float x y epsy epsx)
 	     (fixnum nx  ny l)
 	     (type (cl:array double-float) ar))
-    (sloop for j below ny
+    (loop for j below ny
 	   initially (setq y miny)
 	   do (setq x minx)
-	   (sloop for i below nx
+	   (loop for i below nx
 		  do
 		  (setf (x-pt ar l) x)
 		  (setf (y-pt ar l) y)
@@ -260,7 +260,7 @@
 	 )
     (declare (fixnum i nxpt m)
 	     (type (cl:array (mod 65000)) tem))
-    (sloop for k below (length tem)
+    (loop for k below (length tem)
 	   do
 	   (setf (aref tem k) i)
 	   (setf (aref tem (incf k))
@@ -278,10 +278,10 @@
 
 (defun add-axes (pts vert)
   (let ((origin (/ (length pts) 3)))
-    (sloop for i from -3 below 9
+    (loop for i from -3 below 9
 	   do
 	   (vector-push-extend  (if (eql 0 (mod i 4)) $axes_length 0.0) pts))
-    (sloop for i below 15
+    (loop for i below 15
 	   do (vector-push-extend
 	       (if (eql 1 (mod i 5)) (+ origin (ceiling i 5))  origin)
 	       vert)
@@ -325,14 +325,13 @@
     ;;    (setf (rot rot  1 2) 0.0)
     ;;    (setf (rot rot 2 2) cosphi)
 
-    (sloop with j = 0
+    (loop with j = 0
 	   while (< j l)
 	   do
 	   (setq x (aref pts j))
 	   (setq y (aref pts (+ j 1)))
 	   (setq z (aref pts (+ j 2)))
-	   (sloop for i below 3 with a = 0.0
-		  declare (double-float a)
+	   (loop for i below 3 with a of-type double-float = 0.0
 		  do
 		  (setq a (* x (aref rot (+ (* 3 i) 0))))
 		  (setq a (+ a (* y (aref rot (+ (* 3 i) 1)))))
@@ -348,7 +347,7 @@
 (defun $get_range (pts k &aux (z 0.0) (max most-negative-double-float) (min most-positive-double-float))
   (declare (double-float z max min))
   (declare (type (vector double-float) pts))
-  (sloop for i from k below (length pts) by 3
+  (loop for i from k below (length pts) by 3
 	 do (setq z (aref pts i))
 	 (cond ((< z min) (setq min z)))
 	 (cond ((> z max) (setq max z))))
@@ -382,9 +381,9 @@ setrgbcolor} def
 	   (double-float maxz))
   (setq j (length ngons))
   (add-ps-finish opts)
-  (sloop while (< i j) 
+  (loop while (< i j) 
 	 do 
-	 (sloop initially (setq s number_edges)
+	 (loop initially (setq s number_edges)
 		do
 					;(print-pt (aref pts (f* 3 (aref ngons i))))
 		(print-pt (x-pt pts  (aref ngons i)))
@@ -417,9 +416,9 @@ setrgbcolor} def
 ;; ans = transpose(matrix( v,u,p))
 
 (defun length-one (pt)
-  (flet (($norm (pt) (sloop for v in (cdr pt) sum (* v v))))
+  (flet (($norm (pt) (loop for v in (cdr pt) sum (* v v))))
     (let ((len (sqrt ($norm pt))))
-      (cons '(mlist) (sloop for v in (cdr pt) collect (/  (float v) len))))))
+      (cons '(mlist) (loop for v in (cdr pt) collect (/  (float v) len))))))
 
 (defun cross-product (u v)
   (flet ((cp (i j)
@@ -472,7 +471,7 @@ setrgbcolor} def
   (declare (double-float r th))
   (declare (type (cl:array double-float) pts))
   (assert (typep pts '(vector double-float)))
-  (sloop for i below (length pts) by 3
+  (loop for i below (length pts) by 3
 	 do (setq r (aref pts i))
 	 (setq th (aref pts (f+ i 1)))
 	 (setf (aref pts i) (* r (cos th)))
@@ -492,7 +491,7 @@ setrgbcolor} def
 	  #'(lambda (pts &aux  (x1 0.0)(x2 0.0)(x3 0.0))
 	      (declare (double-float  x1 x2 x3))
 	      (declare (type (cl:array double-float) pts))
-	      (sloop for i below (length pts) by 3
+	      (loop for i below (length pts) by 3
 		     do 
 		     (setq x1 (aref pts i))
 		     (setq x2 (aref pts (f+ i 1)))
@@ -577,13 +576,13 @@ setrgbcolor} def
     (declare (double-float z z1))
     
     (setq lis
-	  (sloop  for i0 below leng by (+ n 1)
+	  (loop  for i0 below leng by (+ n 1)
 		  do 
 		  (setq i i0)
 		  (setq at 0)
 		  (setq z (zval points edges i))
 		  (setq i (+ i 1))
-		  (sloop for j below n1
+		  (loop for j below n1
 			 do (if (> (setq z1 (zval points edges i))  z)
 				(setq z z1 at (aref edges i) ))
 			 (setq i (+ i 1))
@@ -592,9 +591,9 @@ setrgbcolor} def
 		  collect (cons z i0)))
     (setq lis (sortcar lis))
     (setq i 0)
-    (sloop for v in lis
+    (loop for v in lis
 	   do
-	   (sloop for j from (cdr v) 
+	   (loop for j from (cdr v) 
 		  for k to n
 		  do (setf (aref new i) (aref edges j))
 		  (incf i))
@@ -604,7 +603,7 @@ setrgbcolor} def
 
 (defun copy-array-portion (ar1 ar2 i1 i2 n1)
   (declare (fixnum i1 i2 n1))
-  (sloop while (>= (setq n1 (- n1 1)) 0)
+  (loop while (>= (setq n1 (- n1 1)) 0)
 	 do (setf (aref ar1 i1) (aref ar2 i2))
          (setq i1 (+ i1 1))
 	 (setq i2 (+ i2 1))))
@@ -612,7 +611,7 @@ setrgbcolor} def
 
 (defun $concat_polygons (pl1 pl2 &aux tem new)
   (setq new
-	(sloop for v in pl1 
+	(loop for v in pl1 
 	       for w in pl2
 	       for l = (+ (length v) (length w))
 	       do (setq tem (make-array l
@@ -630,7 +629,7 @@ setrgbcolor} def
 		      0 (length (polygon-pts pl2)))
   (copy-array-portion (polygon-edges pl1) (polygon-edges new)
 		      0 0 (length (polygon-edges pl1)))
-  (sloop for i from (length (polygon-edges pl1))
+  (loop for i from (length (polygon-edges pl1))
 	 for j from 0 below (length (polygon-edges pl2))
 	 with  lpts1  =  (length (polygon-pts pl1))
 	 with ar2   =  (polygon-edges pl2)
@@ -688,7 +687,7 @@ setrgbcolor} def
     (setq f1 (coerce-float-fun (nth 2 param) `((mlist), (nth 1 trange))))
     (setq f2 (coerce-float-fun (nth 3 param) `((mlist), (nth 1 trange))))
     (cons '(mlist simp)    
-	  (sloop 
+	  (loop 
 	   do 
 	   (setq x (funcall f1 tt))
 	   (setq y (funcall f2 tt))
@@ -738,7 +737,7 @@ setrgbcolor} def
 ;;					;(print (list 'ymin ymin 'ymax ymax epsy))
 ;;      (setq x ($- x eps))  
 ;;      (cons '(mlist)
-;;	    (sloop   do
+;;	    (loop   do
 ;;		     (setq x1 ($+ eps x))
 ;;		     (setq y1 (funcall f x1))
 ;;		     (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
@@ -951,7 +950,7 @@ setrgbcolor} def
   (setq range (meval* range))
   (or supplied (setq delta (/ (- (nth   2 range) (nth 1 range)) (nth 2 ($get_plot_option '$nticks)))))
   (setq pts(cons '(mlist)
-		 (sloop with tt = (coerce-float (nth 1 range))
+		 (loop with tt = (coerce-float (nth 1 range))
 			with end = (coerce-float (nth 2 range))
 			while (float-< tt end)
 			collect (funcall f tt)
@@ -1134,7 +1133,7 @@ MT~@d)~%"
 	($mgnuplot
 	 (format st "~%~%# \"~a\"~%" plot-name))
 	)
-      (sloop for (v w) on (cdr (draw2d v range )) by 'cddr
+      (loop for (v w) on (cdr (draw2d v range )) by #'cddr
 	     do
 	     (cond ((eq v 'moveto)
 		    (cond 
@@ -1175,7 +1174,7 @@ MT~@d)~%"
    (with-output-to-string
        (st )
      (format st "~%{plot2d ~%")
-     (sloop for f in (cdr fun)
+     (loop for f in (cdr fun)
 	    do
 	    (incf i)
 	    (format st " {label \"~a\"}~% "
@@ -1186,10 +1185,10 @@ MT~@d)~%"
 	    (format st "{xversusy ~%")
 	    (let ((lis (cdr (draw2d f range ))))
 
-	      (sloop while lis
+	      (loop while lis
 		     do
 
-		     (sloop while (and lis (not (eq (car lis) 'moveto)))
+		     (loop while (and lis (not (eq (car lis) 'moveto)))
 
 			    collecting (car lis) into xx
 			    collecting (cadr lis) into yy
@@ -1215,7 +1214,7 @@ MT~@d)~%"
 	 )))
 
 ;;(defun $sprint(&rest args )
-;;  (sloop for v in args do
+;;  (loop for v in args do
 ;;	 (cond ((symbolp v)
 ;;		(setq v (string-left-trim '(#\$ #\&) (symbol-name v))))
 ;;	       ((numberp v) v)
@@ -1236,13 +1235,13 @@ MT~@d)~%"
   ($listp_check 'list lis )
   (format *standard-output* "~% {")
   (cond (($listp (nth 1 lis))
-	 (sloop for v in lis
+	 (loop for v in lis
 		do
 		(format *standard-output* "~,10g " (nth i v)))
 	 )
 	(t
 	 (setq lis (nthcdr i lis))
-	 (sloop  with v = lis  while v
+	 (loop  with v = lis  while v
 		 do
 		 (format *standard-output* "~,10g " (car v))
 		 (setq v (nthcdr skip v))
@@ -1256,7 +1255,7 @@ MT~@d)~%"
   (cond ((null lis) )
 	((atom (car lis))
 	 (princ " {  " st)
-	 (sloop for v in lis
+	 (loop for v in lis
 		count t into n
 		when (eql 0 (mod n 5))
 		do (terpri st)
@@ -1278,19 +1277,19 @@ MT~@d)~%"
      (or (and ($listp lis) ($listp (nth 1 lis)))
 	 (merror "Need a list of curves, [[x1,y1,x2,y2,...],[u1,v1,u2,v2,...]] or [[[x1,y1],[x2,y2],...]"))
     
-     (sloop for v in (cdr lis)
+     (loop for v in (cdr lis)
 	    do
 	    (or ($listp v) (merror "should be a list"))
 	    (setq v (cdr v))
 	    (format st "~%~%")
-	    (sloop while (and (car v) (symbolp (car v)))
+	    (loop while (and (car v) (symbolp (car v)))
 		   do   (mformat st "~M~%" ($concat (car v)))
 		   (setq v (cdr v))
 		   )
 	    when v
 	    do	
 	    (format st "~%{ xversusy  ")
-	    (sloop while v
+	    (loop while v
 		   with this with xvals with yvals
 		   do
 		   (cond   ((numberp (car v))
@@ -1320,11 +1319,11 @@ MT~@d)~%"
   options
   (with-open-file (st  "xgraph-out" :direction :output :if-exists :supersede)
     (format st "=600x600~%")
-    (sloop for v in (cdr lis)
+    (loop for v in (cdr lis)
 	   do
 	   (setq v (cdr v))
 	   (format st "~%~%")
-	   (sloop while v
+	   (loop while v
 		  do
 		  (cond
 		    ((symbolp (car v))
@@ -1368,11 +1367,11 @@ MT~@d)~%"
 
 (defun p (&rest l)
   (assureps)
-  (sloop for v in l do
+  (loop for v in l do
 	 (if (symbolp v) (setq v (maxima-string v)))
 					; (if (numberp v) (setq v (* 70 v)))
 	 (cond ((consp v)
-		(sloop for w in (cdr v) do (p w)))
+		(loop for w in (cdr v) do (p w)))
 	       ((floatp v) (format $pstream "~,4g" v))
 	       (t(princ v $pstream)))
 	 (princ " " $pstream))
@@ -1387,7 +1386,7 @@ MT~@d)~%"
   (p (psx x) (psy y) "moveto ")) 
 
 (defun $join (x y)
-  (cons '(mlist)(sloop for w in (cdr x) for u in (cdr y)
+  (cons '(mlist)(loop for w in (cdr x) for u in (cdr y)
 		       collect w collect u)))
 
 (defun $psline (a b c d)
@@ -1488,7 +1487,7 @@ MT~@d)~%"
   (setq lis (cdr lis))
   (cond ((numberp (car lis)))
 	((and ($listp (car lis)) (numberp (nth 1 (car lis))))
-	 (setq lis (sloop for w in lis collect
+	 (setq lis (loop for w in lis collect
 			  (nth 1 w)
 			  collect (nth 2 w))))
 	(t (error
@@ -1499,7 +1498,7 @@ MT~@d)~%"
   (declare (fixnum n))
   (setq lis (ps-fixup-points lis))
   (p "newpath" (nth 0 lis) (nth 1 lis) "moveto")
-  (sloop while lis with second
+  (loop while lis with second
 	 do
 	 (cond ((eq (car lis) 'moveto)
 		(or (eql n 0) (p "stroke"))
@@ -1578,9 +1577,9 @@ MT~@d)~%"
 
 (defun $sort_polys (lis)
   (let ((tem
-	 (sloop for v in (cdr lis)
+	 (loop for v in (cdr lis)
 		collect (cons
-			 (sloop for w in (cdr v)
+			 (loop for w in (cdr v)
 				maximize (nth 3 w))
 			 v))))
     (print 'next)
@@ -1590,7 +1589,7 @@ MT~@d)~%"
   (p "gsave")
   (p (cdadr x) "moveto")
   (setq x (cddr x))
-  (sloop for edge in x
+  (loop for edge in x
 	 do (p (cdr edge) "lineto")
 	 finally (p "1 setgray fill"))
   ($psdrawline x)
@@ -1615,13 +1614,13 @@ MT~@d)~%"
 	  (t (setq begy (nth 1 lengy))
 	     (setq endy (nth 2 lengy))))
 
-    (sloop for i from (floor begx) below (ceiling endx)
+    (loop for i from (floor begx) below (ceiling endx)
 	   do 
 	   ($psdrawline i 0 (+ i 1) 0)
 	   (p i 0 "drawtick")
 	   (p (+ i 1) 0 "drawtick"))
 
-    (sloop for i from (floor begy) below (ceiling endy)
+    (loop for i from (floor begy) below (ceiling endy)
 	   do
 	   ($psdrawline 0 i 0 (+ i 1) )
 	   (p 0 i "drawtick")
@@ -1633,7 +1632,7 @@ MT~@d)~%"
 (defun $psdraw_points(lis)
   (assert (and ($listp lis)
 	       ($listp (cadr lis))))
-  (sloop for w in (cdr lis)
+  (loop for w in (cdr lis)
 	 do (p (nth 1 w)
 	       (nth 2 w)
 	       "drawdot")))
@@ -1667,7 +1666,7 @@ MT~@d)~%"
 
 (defun plot-zic-colors (&aux (ncolors  (/ (length *some-colours*) 4))) 
   (format $pstream "couleurs ~% ~a ~% " ncolors  )
-  (sloop for v in *some-colours*
+  (loop for v in *some-colours*
 	 with do-ind = t with ind = -1 
 	 do
 	 (cond (do-ind
@@ -1702,7 +1701,7 @@ MT~@d)~%"
   "If m is supplied print blank line every m lines"
   (let ((j -1))
     (declare (fixnum j))
-    (sloop for i below (length (polygon-pts pl))
+    (loop for i below (length (polygon-pts pl))
 	   with ar = (polygon-pts pl)
 	   do (print-pt (aref ar i))
 	   (setq i (+ i 1))
@@ -1823,16 +1822,15 @@ MT~@d)~%"
 	      (progn
 		(format $pstream "{plot3d {matrix_mesh ~%")
 		;; we do the x y z  separately:
-		(sloop for off from 0 to 2
+		(loop for off from 0 to 2
 		       with ar = (polygon-pts pl)
-		       with  i = 0
-		       declare (fixnum i)
+		       with  i of-type fixnum = 0
 		       do (setq i off)
 		       (format $pstream "~%{")
-		       (sloop 
+		       (loop 
 			while (< i (length ar))
 			do (format $pstream "~% {")
-			(sloop for j to (nth 2 grid)
+			(loop for j to (nth 2 grid)
 			       do (print-pt (aref ar i))
 			       (setq i (+ i 3)))
 			(format $pstream "} ")
@@ -1846,17 +1844,16 @@ MT~@d)~%"
 		(format $pstream "{plot3d {variable_grid ~%")
 		(let* ((ar (polygon-pts pl))
 		       (x-coords
-			(sloop for i to (nth 2 grid)
+			(loop for i to (nth 2 grid)
 			       collect (aref ar (* i 3))))
 		       (y-coords
-			(sloop for i to (nth 3 grid)
+			(loop for i to (nth 3 grid)
 			       with m = (* 3 (+ 1 (nth 2 grid)))
 			       collect (aref ar (+ 1 (* i m)))))
-		       (z  (sloop for i to (nth 3 grid)
-				  with k = 2
-				  declare (fixnum k)
+		       (z  (loop for i to (nth 3 grid)
+				  with k of-type fixnum = 2
 				  collect
-				  (sloop for j to (nth 2 grid)
+				  (loop for j to (nth 2 grid)
 					 collect (aref ar k)
 					 do(setq k (+ k 3))))))
 		  (tcl-output-list $pstream x-coords)

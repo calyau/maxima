@@ -942,7 +942,7 @@
 					(get (p-var denom) 'rischarg)))
 			denom (p-lc denom))
 		  (go again))
-     (sloop for (coef exparg exppoly) in (explist num arg 1)
+     (loop for (coef exparg exppoly) in (explist num arg 1)
 	    do (setq coef (ratqu coef denom)
 		     nerf (or (erfarg2 exparg coef) (erfarg exparg coef)))
 	    (if nerf (push nerf erfans) (setq fails
@@ -956,8 +956,8 @@
 (defun explist (p oarg exps)
   (cond ((or (pcoefp p) (not (eq 'mexpt (get (p-var p) 'leadop))))
 	 (list (list p oarg (ptimes p exps))))
-	(t (sloop with narg = (get (p-var p) 'rischarg)
-		  for (exp coef) on (p-terms p) by 'pt-red
+	(t (loop with narg = (get (p-var p) 'rischarg)
+		  for (exp coef) on (p-terms p) by #'pt-red
 		  nconc (explist coef
 				 (r+ oarg (r* exp narg))
 				 (ptimes exps

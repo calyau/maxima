@@ -27,7 +27,7 @@
 
 (defun proclaim-property (arg)
   (let ((prop (car arg)))
-    (sloop for v in (cdr arg)
+    (loop for v in (cdr arg)
 	   do (assert (symbolp v))
 	   (setf (get v prop) t))))
 

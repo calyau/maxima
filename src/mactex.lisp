@@ -229,7 +229,7 @@
 ;; Read forms from file F1 and output them to F2
 (defun tex-forms (f1 f2 &aux tem (eof *mread-eof-obj*))
   (with-open-file (st f1)
-    (sloop while (not (eq (setq tem (mread-raw st eof)) eof))
+    (loop while (not (eq (setq tem (mread-raw st eof)) eof))
 	   do (tex1 (third tem) f2))))
 
 (defun tex-stripdollar(sym &aux )
@@ -237,18 +237,18 @@
   (let* ((pname (symbol-name sym))
 	 (l (length pname))
 	 (begin-sub
-	  (sloop for i downfrom (1- l)
+	  (loop for i downfrom (1- l)
 		 when (not (digit-char-p (aref pname i)))
 		 do (return (1+ i))))
 	 (tem  (make-array (+ l 4) :element-type ' #.(array-element-type "abc") :fill-pointer 0)))
-    (sloop for i below l
+    (loop for i below l
 	   do
 	   (cond ((eql i begin-sub)
 		  (let ((a (assoc tem  *tex-translations* :test 'equal)))
 		    (cond (a
 			   (setq a (cdr a))
 			   (setf (fill-pointer tem) 0)
-			   (sloop for i below (length a)
+			   (loop for i below (length a)
 				  do
 				  (vector-push (aref a i) tem)))))
 		  (vector-push #\_ tem)

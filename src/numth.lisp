@@ -290,7 +290,7 @@
 ;;       (return (nconc plis ans))))
 
 ;;(defun test-gcfactor (n &aux facts numb prod orig-facts prod1 tem dif)
-;;  (setq orig-facts  (sloop for i below (f+ 2 (random n))
+;;  (setq orig-facts  (loop for i below (f+ 2 (random n))
 ;;		     do (setq tem (list (random 10) (random 12)))
 ;;		     when (not (equal tem (list 0 0)))
 ;;		     collecting tem
@@ -371,7 +371,7 @@
      (return ans)))
 
 (defun multiply-gcfactors (lis)
-  (sloop for (term exp) on (cddr lis) by 'cddr
+  (loop for (term exp) on (cddr lis) by #'cddr
 	 with answ = (cond ((numberp (car lis))(list (pexpt (car lis) (second lis)) 0))
 			   (t(gcexpt (car lis) (second lis))))
 	 when (numberp term)
