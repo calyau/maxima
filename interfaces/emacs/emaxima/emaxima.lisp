@@ -58,6 +58,8 @@
 	)))))
 
 (setq $display2d 'true)
+(defun qndispla (form)
+  (funcall displa form))
 
 ;; TeX-printing
 ;; (c) copyright 1987, Richard J. Fateman
@@ -775,7 +777,7 @@
   (mapc #'princ
 	(if (and (listp x) (cdr x)
 		 (equal (string-right-trim '(#\Space) (cadr x)) "Is"))
-	    (tex x '("") '("") 'mparen 'mparen)
+	   (qndispla x)      ;(tex x '("") '("") 'mparen 'mparen)
 	  (tex x '("") '("
 ") 'mparen 'mparen))))
 
@@ -784,3 +786,7 @@
     (if (eq $display2d '$emaxima)
         (latex form)
       (funcall old-displa form))))
+
+(defun qndispla (form)
+  (let (($display2d nil))
+    (displa form)))
