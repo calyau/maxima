@@ -4,6 +4,16 @@ use POSIX qw(tmpnam);
 
 use Text::Tabs;
 
+$topdir = substr(`pwd`,0,-1);
+
+if (index($topdir,"/maxima/doc/info") != -1) {
+  $topdir =~ s/\/maxima\/doc\/info// ;
+} else {
+  $topdir = ""
+}
+
+$strip_topdir = $ENV{"STRIP_TOPDIR"} || $topdir ;
+
 $maxima_command = $ENV{"MAXIMA_EXAMPLE_COMMAND"} || "../../maxima-local" ;  
 
 $line_cnt = 0;
@@ -31,6 +41,8 @@ sub rem_codes {
 
     $res =~ s/\cB//g;
     $res =~ s/\cE//g;
+    
+    $res =~ s/$strip_topdir//g;
     
     $res =~ s/\{/\@\{/g;
     $res =~ s/\}/\@\}/g;

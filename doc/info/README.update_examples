@@ -68,6 +68,11 @@ script `../../maxima-local' but this can be changed
 by setting MAXIMA_EXAMPLE_COMMAND environment
 variable.
 
+The environment variable STRIP_TOPDIR controls 
+which path is stripped out of the output (load, 
+batch commands).  If the variable isn't set then
+anything above /maxima/doc/info is stripped.
+
 IMPORTANT: `update_examples' script works only 
 in combination with special Maxima initialization 
 file `maxima-init.lisp'.  This init file ensures
