@@ -10,8 +10,8 @@
 .ds Cl "Common L\s-2ISP\s+2
 .ds Li "L\s-2ISP\s+2
 .ds Ky "GNU Common L\s-2ISP\s+2
-.ds Pr \fIprefix\fR
-.ds Vr \fIversion\fR
+.ds Pr @prefix@
+.ds Vr @VERSION@
 
 .SH NAME
 maxima \- Common LISP version of MACSYMA symbolic mathematics package
@@ -293,7 +293,7 @@ with \fIMAXIMA_\fR. They should not need to be modified by the user.
 .SH CUSTOMIZATION FILES
 .TP
 \fBmaximarc\fR
-\fBmaixmarc\fR is sourced by the maxima script at startup. It should
+\fBmaximarc\fR is sourced by the maxima script at startup. It should
 be located in \fB$MAXIMA_USERDIR\fR (see above). \fBmaximarc\fR can be
 used, \fIe.g.\fR, to change the user's default lisp implementation
 choice to CMUCL by including the line "MAXIMA_LISP=cmucl".
