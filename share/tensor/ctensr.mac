@@ -180,13 +180,17 @@ symmetricp(m,n):=(modedeclare(n,fixnum),
 motion(dis):=block([s],depends(omega,s),
   for i thru dim do
     em[i]:if diagmetric
-      then ratsimp(1/2*sum(
-	diff(lg[a,a],omega[i])
-	    *diff(omega[a],s)^2,a,1,dim))
-      else 1/2*sum(sum(diff(lg[a,b],omega[i])
-			   *diff(omega[a],s)*diff(omega[b],s),a,
-		       1,dim),b,1,dim),
-	       if dis#false then for i thru dim do ldisplay(em[i]),done)$
+      then ratsimp(lg[i,i]*diff(omega[i],s,2)+
+        sum(diff(lg[i,i],omega[a])*diff(omega[i],s)*diff(omega[a],s),a,1,dim)-
+         1/2*sum( diff(lg[a,a],omega[i]) *diff(omega[a],s)^2,a,1,dim) )
+      else ratsimp( sum(lg[i,a]*diff(omega[a],s,2),a,1,dim)+
+           sum( sum(
+             diff(lg[i,b],omega[a])*diff(omega[b],s)*diff(omega[a],s)
+             -1/2*diff(lg[a,b],omega[i])
+                           *diff(omega[a],s)*diff(omega[b],s),a,
+                       1,dim),b,1,dim) ),
+               if dis#false then for i thru dim do ldisplay(em[i]),done)$
+
 		 
 /* computes d'alembertian of a 2nd rank covariant tensor and does not work 
    feb. 10, 1980 */
