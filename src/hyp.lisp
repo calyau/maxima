@@ -1490,7 +1490,7 @@
   ;; extended to any expression?  We'll have to ask the user for the
   ;; sign if we can' figure it out ourselves.  Should we?)
   (let ((n (if (and (mnump n)
-		    (lessp n 0))
+		    (eq (checksigntm n) '$negative))
 	       (mul -1 (add 1 n))
 	       n)))
     (cond ((equal m 0)
