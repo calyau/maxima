@@ -5,16 +5,6 @@
 
 @node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
 @section Introduction to Command Line
-@c @node %TH
-@c @unnumberedsec phony
-@defun %TH (i)
-is the ith previous computation.  That is, if the next
-expression to be computed is D(j) this is D(j-i).  This is useful in
-BATCH files or for referring to a group of D expressions.  For
-example, if SUM is initialized to 0 then FOR I:1 THRU 10 DO
-SUM:SUM+%TH(I) will set SUM to the sum of the last ten D expressions.
-
-@end defun
 @c @node operator
 @c @unnumberedsec phony
 @deffn operator "'"
@@ -389,15 +379,6 @@ causes all Maxima options to be set to their default values.
 (Please note that this does not include features of terminals such as
 LINEL which can only be changed by assignment as they are not
 considered to be computational features of Maxima.)
-
-@end defun
-@c @node RESTORE
-@c @unnumberedsec phony
-@defun RESTORE (file-specification)
-reinitializes all quantities filed away
-by a use of the SAVE or STORE functions, in a prior Maxima session,
-from the file given by file-specification without bringing them into
-core.
 
 @end defun
 @c @node SHOWTIME
