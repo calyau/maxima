@@ -453,26 +453,6 @@ the double-single-quotes operator @code{'@w{}'} defeats quotation.
 
 @end defun
 
-@c OBSOLETE, NONEXISTENT FUNCTION. CUT IT ON NEXT PASS THROUGH.
-@c @defun compile_lisp_file ("input filename")
-@c which takes an optional second
-@c argument of "output filename," can be used in conjunction with
-@c 
-@c @example
-@c TRANSLATE_FILE("filename").
-@c @end example
-@c For convenience you might define
-@c 
-@c @example
-@c Compile_and_load(FILENAME):=
-@c     LOAD(COMPILE_LISP_FILE(TRANSLATE_FILE(FILENAME)[2]))[2]);
-@c @end example
-@c 
-@c These file-oriented commands are to be preferred over the use of
-@c @code{compile}, @code{compfile}, and the @code{translate} @code{save} combination.
-@c 
-@c @end defun
-
 @defun define (f(x1, ...), body)
 is equivalent to f(x1,...):='@w{}'(body) but when
 used inside functions it happens at execution time rather than at the
@@ -954,17 +934,6 @@ every time you take the first of a list of numbers.
 
 @end defun
 
-@c OBSOLETE AND MARKED AS SUCH IN src/transl.lisp
-@c @defvar transbind
-@c Default value: @code{false}
-@c 
-@c When @code{transbind} is @code{true} removes global declarations in
-@c the local context.  This applies to variables which are formal
-@c parameters to functions which one is @code{translate}-ing from Maxima code
-@c to Lisp.
-@c 
-@c @end defvar
-
 @c IS THERE ANY REASON TO SET transcompile: false ??
 @c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
 @defvar transcompile
@@ -1190,15 +1159,6 @@ translated and compiled code with the Maxima interpreter.
 
 @end defvar
 
-@c OBSOLETE: DECLARED IN src/transs.lisp BUT NEVER USED
-@c @defvar tr_gen_tags
-@c Default value: @code{false}
-@c 
-@c When @code{tr_gen_tags} is @code{true}, @code{translate_file} generates a
-@c @code{tags} file for use by the text editor.
-@c 
-@c @end defvar
-
 @defvar tr_numer
 Default value: @code{false}
 
@@ -1216,26 +1176,6 @@ considering a form.  This is to catch macro expansion errors, and
 non-terminating optimization properties.
 
 @end defvar
-
-@c OBSOLETE: USED ONLY IN A MACRO trlisp-outputname-d1 IN src/transs.lisp
-@c WHICH IS NEVER USED
-@c @defvar tr_output_file_default
-@c Default value: @code{trlisp}
-@c 
-@c @code{tr_output_file_default} is the second file
-@c name to be used for translated Lisp output.
-@c 
-@c @end defvar
-
-@c OBSOLETE: DECLARED IN src/transl.lisp BUT NEVER USED
-@c @defvar tr_predicate_brain_damage
-@c Default value: @code{false}
-@c 
-@c When @code{tr_predicate_brain_damage} is @code{true}, output possible
-@c multiple evaluations in an attempt to interface to the @code{compare}
-@c package.
-@c 
-@c @end defvar
 
 @defvar tr_semicompile
 Default value: @code{false}
@@ -1264,24 +1204,6 @@ to what should have been produced for a given state, it is possible to
 track down bugs.
 
 @end defvar
-
-@c OBSOLETE: DECLARED IN src/transl.lisp BUT NEVER USED
-@c @defvar tr_true_name_of_file_being_translated
-@c Default value: @code{false}
-@c 
-@c @code{tr_true_name_of_file_being_translated} is bound to
-@c the quoted string form of the true name of the file most recently
-@c translated by @code{translate_file}.
-@c 
-@c @end defvar
-
-@c OBSOLETE: $tr_version APPEARS IN src/transs.lisp BUT 
-@c IT IS NEVER ASSIGNED A VALUE. 
-@c @defvar tr_version
-@c 
-@c @code{tr_version} is the version number of the translator.
-@c 
-@c @end defvar
 
 @c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- RETURNS *tr-runtime-warned*
 @c WHICH HAS ONLY A FEW KINDS OF WARNINGS PUSHED ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE
@@ -1355,31 +1277,6 @@ programming hints.
 
 @end defvar
 
-@c OBSOLETE, DOES NOT OCCUR ANYWHERE IN THE SOURCE CODE
-@c @defvar undeclaredwarn
-@c Default value: @code{compfile}
-@c 
-@c - A switch in the translator.
-@c There are four relevant settings:
-@c 
-@c @itemize @bullet
-@c @item
-@c @code{false} -- never print warning messages. 
-@c @item
-@c @code{compfile} --  warn when in @code{compfile}.
-@c @item
-@c @code{translate} -- warn when in @code{translate} and when @code{translate: true}.
-@c @item
-@c @code{all} -- warn in @code{compfile} and @code{translate}.
-@c @end itemize
-@c 
-@c Do @code{mode_declare (<variable>, any)} to declare a variable to be a general 
-@c Maxima variable (i.e. not limited to being @code{float} or @code{fixnum}).  The extra 
-@c work in declaring all your variables in code  to be compiled should pay 
-@c off.
-@c 
-@c @end defvar
-
 @defun compile_file (filename)
 @defunx compile_file (filename, compiled_filename)
 @defunx compile_file (filename, compiled_filename, lisp_filename)
@@ -1418,18 +1315,3 @@ assignments to the translation flags (@code{tr_numer}, etc.) have no effect on t
 
 @end defun
 
-@c OBSOLETE: declare_translate EXISTS BUT THE VARIABLE IT MANAGES, *declared-translated-functions*,
-@c HAS NO EFFECT ASIDE FROM CAUSING A USELESS ADVISORY ABOUT declare_translated 
-@c (*declared-translated-functions* HAS NO EFFECT ON TRANSLATED CODE)
-@c CUT EVERYTHING RELATED TO *declared-translated-functions* IN transs.lisp, transl.lisp
-@c @defun declare_translated (f_1, f_2, ...)
-@c When translating a file of Maxima code
-@c to Lisp, it is important for the translator to know which functions it
-@c sees in the file are to be called as translated or compiled functions,
-@c and which ones are just Maxima functions or undefined.  Putting this
-@c declaration at the top of the file, lets it know that although a symbol
-@c does which does not yet have a Lisp function value, will have one at
-@c call time.  (MFUNCTION-CALL fn arg1 arg2.. ) is generated when
-@c the translator does not know fn is going to be a Lisp function.
-@c 
-@c @end defun
