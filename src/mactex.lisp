@@ -123,7 +123,7 @@
 		     (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
 	(cond ((and (null(atom mexp))
 		    (memq (caar mexp) '(mdefine mdefmacro)))
-               (setq mexplabel (quote-% mexplabel))
+               (if mexplabel (setq mexplabel (quote-% mexplabel)))
 	       (format texport "|~%" ) ;delimit with |marks
 	       (cond (mexplabel (format texport "~a " mexplabel)))
 	       (mgrind mexp texport) ;write expression as string
@@ -144,7 +144,7 @@
 	       (mgrind mexp texport) ;write expression as string
 	       (format texport ";|~%"))
 	      (t 
-                 (setq mexplabel (quote-% mexplabel))
+                 (if mexplabel (setq mexplabel (quote-% mexplabel)))
                  ; display the expression for TeX now:
 		 (myprinc "$$")
 		 (mapc #'myprinc
