@@ -10,7 +10,8 @@ dnl n.b. clisp_default_name is hardcoded in "with" message
 clisp_default_name=clisp
 AC_ARG_ENABLE(clisp,[--enable-clisp                   Use clisp],
      	[case "${enableval}" in
-       		yes) clisp=true ;;
+       		yes) clisp=true 
+                     explicit_lisp=true ;;
        		no)  clisp=false ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-clisp) ;;
      	esac
@@ -34,7 +35,8 @@ dnl n.b. cmucl_default_name is hardcoded in "with" message
 cmucl_default_name=lisp
 AC_ARG_ENABLE(cmucl,[--enable-cmucl                   Use CMUCL],
      	[case "${enableval}" in
-       		yes) cmucl=true ;;
+       		yes) cmucl=true 
+                     explicit_lisp=true ;;
        		no)  cmucl=false ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-cmucl) ;;
      	esac
@@ -57,7 +59,8 @@ dnl n.b. gcl_default_name is hardcoded in "with" message
 gcl_default_name=gcl
 AC_ARG_ENABLE(gcl,[--enable-gcl                     Use GCL],
      	[case "${enableval}" in
-       		yes) gcl=true ;;
+       		yes) gcl=true 
+		     explicit_lisp=true;;
        		no)  gcl=false ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-gcl) ;;
      	esac],
