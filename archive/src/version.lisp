@@ -1,1 +1,1 @@
-(setf (get :maxima :version) (quote ( 5 6 "Tue Jun 5 02:01:18 CDT 2001" )))
+(setf (get :maxima :version) (quote ( 5 6 "Tue Jul 3 13:13:38 CDT 2001" )))

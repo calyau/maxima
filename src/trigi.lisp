@@ -407,12 +407,20 @@
 (DEFUN COEFFICIENT (EXP VAR POW) (COEFF (EXPAND1 EXP 1 0) VAR POW))
 
 (DEFUN MMOD (X MOD)
-  (COND ((INTEGERP X)
-	   (IF (MINUSP (if (zerop mod) x (SETQ X (f- X (f* MOD (// X MOD))))))
-	       (f+ X MOD)
-	       X))
-	((AND (NOT (ATOM X)) (EQ 'RAT (CAAR X)))
-	 (LIST '(RAT) (MMOD (CADR X) (f* MOD (CADDR X))) (CADDR X)))))
+  (COND ((and (INTEGERP X) (INTEGERP mod))
+		(IF (MINUSP (if (zerop mod) x (SETQ X (f- X (f* MOD (// X MOD))))))
+		    (f+ X MOD)
+		    X))
+        ((and ($ratnump x) ($ratnump mod))
+			   (let
+			       ((d (lcm ($denom x) ($denom mod))))
+			     (setq x (mul* d x))
+			     (setq mod (mul* d mod))
+			     (div (mod x mod) d)))
+	(t nil)))
+;	((AND (NOT (ATOM X)) (EQ 'RAT (CAAR X)))
+;	 (LIST '(RAT) (MMOD (CADR X) (f* MOD (CADDR X))) (CADDR X))
+
 
 (DEFUN MULTIPLEP (EXP VAR)
   (AND (NOT (ZEROP1 EXP)) (ZEROP1 (SUB EXP (MUL VAR (COEFF EXP VAR 1))))))
