@@ -7,7 +7,7 @@
 ;(load (pathname "../src/elim"))
 ;(load (pathname "../src/trgsmp"))
 
-(si::set-gmp-allocate-relocatable t)
+#+gmp (si::set-gmp-allocate-relocatable t)
 
 (setf (get 'maxima::%cosh 'maxima::translated) t);;so that kill won't remprop.
 
