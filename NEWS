@@ -1,11 +1,11 @@
 Release notes for Maxima 5.9.0:
 
-This is the first of a series of develoment releases which will
-culminate in Maxima 6.0, which will be the first truly stable release
-of the new Maxima project. This release has known bugs. However, we
-believe it is stable enough for use by a wide audience. We are relying
-on bug reports from users to help us make 6.0 the most bug-free
-version of Maxima ever.
+This is the first of a series of development releases which will
+culminate in Maxima 6.0, the first truly stable release of the new
+Maxima project. This release has known bugs; see "Known issues..."
+below. However, we believe it is stable enough for use by a wide
+audience. We are relying on bug reports from users to help us make 6.0
+the most bug-free version of Maxima ever.
 
 Changes in this release include:
 
@@ -34,4 +34,55 @@ Changes in this release include:
     8) Precision of some numerical special functions has been
     dramatically enhanced.
 
-    9) Last, but not least, many bugs have been fixed.
+    9) New and improved binary packages for Windows and Linux are now
+    part of the official distribution.
+
+    10) Last, but not least, many bugs have been fixed.
+
+Known issues in this release include:
+
+    1) One of the (many) tests in the Maxima test suite fails. When
+    the test suite is run via "make check" this known failure (Problem
+    4 in rtest15.mac) will be listed as an expected error in the
+    summary.
+
+    2) The test suite is available in xmaxima. Xmaxima should also
+    flag the known failure described above as expected, but it does
+    not. This behavior will be improved in a later version of
+    (X)Maxima.
+
+    3) When compiled with GCL, Maxima will fail to compile functions
+    when the current working directory is not writable. This will
+    typically cause the test suite to fail when run from xmaxima under
+    Unix-like systems because it sets the current working directory to
+    the installed tests directory. The end result will look like this:
+
+------------------------------------------------------------------
+/* ********************** Problem 43. *************** */ 
+%Input is
+DESOLVE([EQN1, EQN2], [f(x), G(x)])
+x + 2 contains more than one independent variable.
+ -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);)
+------------------------------------------------------------------
+
+    4) The maxima command-line executable is only fully functional
+    under Unix-like systems, which includes Win32+MSYS, but not plain
+    Win32. Under Win32, the executable maxima.bat is available but it
+    has limited functionality. (The Win32 distribution does contain
+    xmaxima, however, which is fully functional under Win32.) This
+    problem will be fixed in a later version of Maxima.
+
+    5) maxima.bat does not properly set the Maxima directory. This
+    will cause several problems including the inability to access
+    on-line help and plotting. As a workaround, set the environment
+    variable MAXIMA_PREFIX to the installed location of Maxima, which
+    is usually "C:/Program Files/Maxima-5.9.0".  This problem will be
+    fixed in a later version of Maxima.
+
+    6) The share and demo files have many problems. These problems
+    will be addressed in a later release.
+
+    7) There are still many open bugs in the Maxima bug tracking
+    database. See
+    <http://sourceforge.net/tracker/?atid=104933&group_id=4933&func=browse>
+    for details.
