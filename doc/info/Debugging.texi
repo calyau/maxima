@@ -190,24 +190,22 @@ completing the computation
 
 @node Definitions for Debugging, , Keyword Commands, Debugging
 @section Definitions for Debugging
-@c @node REFCHECK
-@c @unnumberedsec phony
-@defvar REFCHECK
-Default value: FALSE
 
-If REFCHECK is TRUE, Maxima prints a message
+@defvar refcheck
+Default value: @code{false}
+
+When @code{refcheck} is @code{true}, Maxima prints a message
 each time a bound variable is used for the first time in a
 computation.
 
 @end defvar
-@c @node SETCHECK
-@c @unnumberedsec phony
-@defvar SETCHECK
-Default value: FALSE
 
-If SETCHECK is set to a list of variables (which can
+@defvar setcheck
+Default value: @code{false}
+
+If @code{setcheck} is set to a list of variables (which can
 be subscripted), 
-Maxima will print a message whenever the variables, or
+Maxima prints a message whenever the variables, or
 subscripted occurrences of them, are bound with the
 ordinary assignment operator @code{:}, the @code{::} assignment
 operator, or function argument binding,
@@ -216,233 +214,232 @@ but not the function assignment @code{:=} nor the macro assignment
 The message comprises the name of the variable and the
 value it is bound to.
 
-SETCHECK may be set to ALL or TRUE thereby
+@code{setcheck} may be set to @code{all} or @code{true} thereby
 including all variables.
 
-Each new assignment of SETCHECK establishes a new list of variables
-to check, and any variables previously assigned to SETCHECK are forgotten.
+Each new assignment of @code{setcheck} establishes a new list of variables
+to check, and any variables previously assigned to @code{setcheck} are forgotten.
 
-The names assigned to SETCHECK must be quoted if they would otherwise
+The names assigned to @code{setcheck} must be quoted if they would otherwise
 evaluate to something other than themselves.
-For example, if X, Y, and Z are already bound, then enter
+For example, if @code{x}, @code{y}, and @code{z} are already bound, then enter
 
 @example
-SETCHECK:['X, 'Y, 'Z]$
+setcheck: ['x, 'y, 'z]$
 @end example
 
 to put them on the list of variables to check.
 
 No printout is generated when a
-variable on the SETCHECK list is set to itself, e.g., @code{X: 'X}.
+variable on the @code{setcheck} list is assigned to itself, e.g., @code{X: 'X}.
 
 @end defvar
-@c @node SETCHECKBREAK
-@c @unnumberedsec phony
-@defvar SETCHECKBREAK
-Default value: FALSE
 
-When SETCHECKBREAK is TRUE,
+@defvar setcheckbreak
+Default value: @code{false}
+
+When @code{setcheckbreak} is @code{true},
 Maxima will present a break prompt 
-whenever a variable on the SETCHECK list is assigned a new value.
+whenever a variable on the @code{setcheck} list is assigned a new value.
 The break occurs before the assignment is carried out.
-At this point, SETVAL holds the value to which the variable is 
+At this point, @code{setval} holds the value to which the variable is 
 about to be assigned.
-Hence, one may assign a different value by assigning to SETVAL.
+Hence, one may assign a different value by assigning to @code{setval}.
 
-See also SETCHECK and SETVAL.
+See also @code{setcheck} and @code{setval}.
 
 @end defvar
-@c @node SETVAL
-@c @unnumberedsec phony
-@defvar SETVAL
+
+@defvar setval
 Holds the value to which a variable is about to be set when
-a SETCHECKBREAK occurs.
-Hence, one may assign a different value by assigning to SETVAL.
+a @code{setcheckbreak} occurs.
+Hence, one may assign a different value by assigning to @code{setval}.
 
-See also SETCHECK and SETCHECKBREAK.
+See also @code{setcheck} and @code{setcheckbreak}.
 
 @end defvar
-@c @node TIMER
-@c @unnumberedsec phony
-@defun TIMER (F1, F2, ...)
-@defunx TIMER ()
-Given functions F1, F2, F3, ...,
-TIMER puts each one on the list of functions for which timing statistics are collected.
-With no arguments, 
-TIMER returns the list of timed functions.
-@code{TIMER(F)$ TIMER(G)$} will put F and then G onto the list;
+
+@defun timer (@var{f_1}, ..., @var{f_n})
+@defunx timer ()
+Given functions @var{f_1}, ..., @var{f_n},
+@code{timer} puts each one on the list of functions for which timing statistics are collected.
+@code{timer(f)$ timer(g)$} puts @code{f} and then @code{g} onto the list;
 the list accumulates from one call to the next.
+
+With no arguments, 
+@code{timer} returns the list of timed functions.
 
 Maxima records how much time is spent executing each function
 on the list of timed functions.
-TIMER_INFO returns the timing statistics, including the
+@code{timer_info} returns the timing statistics, including the
 average time elapsed per function call, the number of calls, and the
 total time elapsed.
-UNTIMER removes functions from the list of timed functions.
+@code{untimer} removes functions from the list of timed functions.
 
-TIMER quotes its arguments. 
-@code{F(X) := X^2$ G:F$ TIMER(G)$} will not put F on the timer list.
+@code{timer} quotes its arguments. 
+@code{f(x) := x^2$ g:f$ timer(g)$} does not put @code{f} on the timer list.
 
-If TRACE(F) is in effect, then TIMER(F) has no effect; TRACE and
-TIMER can't both be in effect at the same time.
+If @code{trace(f)} is in effect, then @code{timer(f)} has no effect; @code{trace} and
+@code{timer} cannot both be in effect at the same time.
 
-See also TIMER_DEVALUE.
+See also @code{timer_devalue}.
 
 @end defun
-@defun UNTIMER (F1, F2, F3, ...)
-@defunx UNTIMER ()
-Given functions F1, F2, F3, ...,
-UNTIMER removes each function from the timer list.
-With no arguments, UNTIMER removes all functions currently on the timer list.
+@defun untimer (@var{f_1}, ..., @var{f_n})
+@defunx untimer ()
+Given functions @var{f_1}, ..., @var{f_n},
+@code{untimer} removes each function from the timer list.
 
-After UNTIMER (F) is executed, TIMER_INFO (F) will still return
+With no arguments, @code{untimer} removes all functions currently on the timer list.
+
+After @code{untimer (f)} is executed, @code{timer_info (f)} still returns
 previously collected timing statistics,
-although TIMER_INFO() (with no arguments) does not
+although @code{timer_info()} (with no arguments) does not
 return information about any function not currently on the timer list.
-TIMER (F) resets all timing statistics to zero
-and puts F on the timer list again.
+@code{timer (f)} resets all timing statistics to zero
+and puts @code{f} on the timer list again.
 
 @end defun
-@c @node TIMER_DEVALUE
-@c @unnumberedsec phony
-@defvar TIMER_DEVALUE
-Default value: FALSE
 
-If set to TRUE, Maxima subtracts from each timed function
+@defvar timer_devalue
+Default value: @code{false}
+
+When @code{timer_devalue} is @code{true}, Maxima subtracts from each timed function
 the time spent in other timed functions. Otherwise, the time reported 
 for each function includes the time spent in other functions.
 Note that time spent in untimed functions is not subtracted from the
 total time.
 
-See also TIMER and TIMER_INFO.
+See also @code{timer} and @code{timer_info}.
 
 @end defvar
-@c @node TIMER_INFO
-@c @unnumberedsec phony
-@defun TIMER_INFO (F1, F2, F3, ...)
-@defunx TIMER_INFO ()
-Given functions F1, F2, F3, ...,
-TIMER_INFO returns a matrix containing timing information for each function.
-With no arguments, TIMER_INFO returns timing information for
+
+@defun timer_info (@var{f_1}, ..., @var{f_n})
+@defunx timer_info ()
+Given functions @var{f_1}, ..., @var{f_n},
+@code{timer_info} returns a matrix containing timing information for each function.
+With no arguments, @code{timer_info} returns timing information for
 all functions currently on the timer list.
 
-The matrix returned by TIMER_INFO contains the function name,
+The matrix returned by @code{timer_info} contains the function name,
 time per function call, number of function calls, total time,
-and "GCTIME", which meant "garbage collection time" in the original Macsyma
+and @code{gctime}, which meant "garbage collection time" in the original Macsyma
 but is now always zero.
 
-The data from which TIMER_INFO constructs its return value
-can also be obtained by the GET function:
+The data from which @code{timer_info} constructs its return value
+can also be obtained by the @code{get} function:
 
 @example
-GET(F, 'CALLS);  GET(F, 'RUNTIME);  GET(F, 'GCTIME);
+get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 @end example
 
-See also TIMER.
+See also @code{timer}.
 
 @end defun
-@c @node TRACE
-@c @unnumberedsec phony
-@defun TRACE (F1, F2, F3, ...)
-@defunx TRACE ()
-Given functions F1, F2, F3, ..., 
-TRACE instructs Maxima to print out
+
+@defun trace (@var{f_1}, ..., @var{f_n})
+@defunx trace ()
+Given functions @var{f_1}, ..., @var{f_n},
+@code{trace} instructs Maxima to print out
 debugging information whenever those functions are called.
-With no arguments,
-TRACE returns a list of all the functions currently being traced.
-@code{TRACE(F)$ TRACE(G)$} will put F and then G onto the list of functions
+@code{trace(f)$ trace(g)$} puts @code{f} and then @code{g} onto the list of functions
 to be traced; the list accumulates from one call to the next.
 
-The UNTRACE function disables tracing.
-See also TRACE_OPTIONS. 
+With no arguments,
+@code{trace} returns a list of all the functions currently being traced.
 
-TRACE quotes its arguments. Thus,
-@code{F(X) := X^2$ G:F$ TRACE(G)$} will not put F on the timer list.
+The @code{untrace} function disables tracing.
+See also @code{trace_options}. 
+
+@code{trace} quotes its arguments. Thus,
+@code{f(x) := x^2$ g:f$ trace(g)$} does not put @code{f} on the trace list.
 
 When a function is redefined, it is removed from the timer list.
-Thus after @code{TIMER(F)$ F(X) := X^2$},
-function F is no longer on the timer list.
+Thus after @code{timer(f)$ f(x) := x^2$},
+function @code{f} is no longer on the timer list.
 
-If TIMER (F) is in effect, then TRACE (F) has no effect; TRACE and
-TIMER can't both be in effect for the same function.
+If @code{timer (f)} is in effect, then @code{trace (f)} has no effect; @code{trace} and
+@code{timer} can't both be in effect for the same function.
 
 @end defun
-@c @node TRACE_OPTIONS
-@c @unnumberedsec phony
-@defun TRACE_OPTIONS (F, option1, option2, ...)
-@defunx TRACE_OPTIONS (F)
-Sets the trace options for function F.
-Any previous options are superseded.
-TRACE_OPTIONS (F, ...) has no effect unless
-TRACE (F) is also called (either before or after TRACE_OPTIONS). 
 
-TRACE_OPTIONS (F) resets all options to their default values.
+@defun trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
+@defunx trace_options (@code{f})
+Sets the trace options for function @var{f}.
+Any previous options are superseded.
+@code{trace_options (@var{f}, ...)} has no effect unless
+@code{trace (@var{f})} is also called (either before or after @code{trace_options}). 
+
+@code{trace_options (@var{f})} resets all options to their default values.
 
 The option keywords are:
 
-@example
- Keyword     If specified...
-----------------------------------------------------------------
- NOPRINT     Do not print a message at function entry and exit.
-
- BREAK       Put a breakpoint before the function is entered,
-             and after the function is exited. See BREAK.
-
- LISP_PRINT  Display arguments and return values as Lisp objects.
-
- INFO        Print "-> TRUE" at function entry and exit.
-
- ERRORCATCH  Catch errors, giving the option to signal an error,
-             retry the function call, or specify a return value.
-@end example
+@itemize @bullet
+@item
+@code{noprint}
+Do not print a message at function entry and exit.
+@item
+@code{break}
+Put a breakpoint before the function is entered,
+and after the function is exited. See @code{break}.
+@item
+@code{lisp_print}
+Display arguments and return values as Lisp objects.
+@item
+@code{info}
+Print @code{-> true} at function entry and exit.
+@item
+@code{errorcatch}
+Catch errors, giving the option to signal an error,
+retry the function call, or specify a return value.
+@end itemize
 
 Trace options are specified in two forms. The presence of the option 
 keyword alone puts the option into effect unconditionally.
-(Note that option FOO is not put into effect by specifying 
-FOO:TRUE or a similar form; note also that keywords need not
+(Note that option @var{foo} is not put into effect by specifying 
+@code{@var{foo}: true} or a similar form; note also that keywords need not
 be quoted.) Specifying the option keyword with a predicate
 function makes the option conditional on the predicate.
 
 The argument list to the predicate function is always 
-[LEVEL, DIRECTION, FUNCTION, ITEM] where LEVEL is the recursion level
-for the function,  DIRECTION is either ENTER or EXIT, FUNCTION is the
-name of the function, and ITEM is the argument list (on entering)
+@code{[level, direction, function, item]} where @code{level} is the recursion level
+for the function,  @code{direction} is either @code{enter} or @code{exit}, @code{function} is the
+name of the function, and @code{item} is the argument list (on entering)
 or the return value (on exiting).
 
 Here is an example of unconditional trace options:
 
 @example
-(%i1) ff(n) := IF EQUAL(n, 0) THEN 1 ELSE n * ff(n - 1)$
+(%i1) ff(n) := if equal(n, 0) then 1 else n * ff(n - 1)$
 
-(%i2) TRACE (ff)$
+(%i2) trace (ff)$
 
-(%i3) TRACE_OPTIONS (ff, LISP_PRINT, BREAK)$
+(%i3) trace_options (ff, lisp_print, break)$
 
 (%i4) ff(3);
 @end example
 
-Here is the same function, with the BREAK option conditional
+Here is the same function, with the @code{break} option conditional
 on a predicate:
 
 @example
-(%i5) TRACE_OPTIONS (ff, BREAK(pp))$
+(%i5) trace_options (ff, break(pp))$
 
-(%i6) pp (LEVEL, DIRECTION, FUNCTION, ITEM) := BLOCK (PRINT (ITEM),
-    RETURN (FUNCTION = 'ff AND LEVEL = 3 AND DIRECTION = EXIT))$
+(%i6) pp (level, direction, function, item) := block (print (item),
+    return (function = 'ff and level = 3 and direction = exit))$
 
 (%i7) ff(6);
 @end example
 
 @end defun
-@c @node UNTRACE
-@c @unnumberedsec phony
-@defun UNTRACE (F1, F2, F3, ...)
-@defunx UNTRACE ()
-Given functions F1, F2, F3, ...,
-UNTRACE disables tracing enabled by the TRACE function.
-With no arguments, UNTRACE disables tracing for all functions.
 
-UNTRACE returns a list of the functions for which 
+@defun untrace (@var{f_1}, ..., @var{f_n})
+@defunx untrace ()
+Given functions @var{f_1}, ..., @var{f_n},
+@code{untrace} disables tracing enabled by the @code{trace} function.
+With no arguments, @code{untrace} disables tracing for all functions.
+
+@code{untrace} returns a list of the functions for which 
 it disabled tracing.
 
 @end defun
