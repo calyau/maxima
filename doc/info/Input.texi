@@ -454,21 +454,6 @@ list of the form [<name of file>,<size of file in blocks>,...] where
 large files.  FASSAVE may be used while a WRITEFILE is in progress.
 
 @end defun
-@c @node FILEDEFAULTS, FILENAME, FASSAVE, Input and Output
-@c @unnumberedsec phony
-@defun FILEDEFAULTS ()
-returns the current default filename, in whatever
-format is used by the specific Macsyma implementation.  (See
-DESCRIBE(FILE) for what that format is.)  This is the file specification
-used by LOADFILE, BATCH, and a number of other file-accessing commands.
-FILEDEFAULTS('file) - sets the current filedefaults to "file".  The
-argument to FILEDEFAULTS is evaulated as it is anticipated that the
-command will be used mainly in programs.  The "file" need not be a
-real file, so one can use this function e.g. if one's real purpose is
-to set only the "device" field to something, where one does not care
-about the settings of the other fields.
-
-@end defun
 @c @node FILENAME, FILENAME_MERGE, FILEDEFAULTS, Input and Output
 @c @unnumberedsec phony
 @defvar FILENAME
