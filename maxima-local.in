@@ -13,5 +13,5 @@ export MAXIMA_PLOTDIR
 in_maxima_local=true
 export in_maxima_local
 
-POSIX_SHELL=`head -n 1 $top_srcdir/src/maxima | sed 's/#!//'`
+POSIX_SHELL=@POSIX_SHELL@
 exec $POSIX_SHELL $top_srcdir/src/maxima "$@"

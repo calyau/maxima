@@ -229,7 +229,7 @@ AC_SUBST(expanded_libexecdir)
 AC_SUBST(expanded_datadir)
 AC_SUBST(expanded_infodir)
 
-AC_OUTPUT(Makefile src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl share/Makefile demo/Makefile plotting/Makefile)
+AC_OUTPUT(Makefile maxima-local src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl share/Makefile demo/Makefile plotting/Makefile)
 
 echo
 echo "Summary:"
