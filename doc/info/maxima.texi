@@ -161,7 +161,6 @@ Input and Output
 
 * Introduction to Input and Output::  
 * FILES::                       
-* PLAYBACK::                    
 * Definitions for Input and Output::  
 
 Floating Point
