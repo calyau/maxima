@@ -1,26 +1,24 @@
 eval_when([translate,batch,demo,load,loadfile],
-MATCHDECLARE(N,INTEGERP))$
+matchdeclare(n,integerp))$
 
-TELLSIMPAFTER(SIN(N*%PI/10),USIN(N))$
-TELLSIMPAFTER(COS(N*%PI/10),UCOS(N))$
-TELLSIMPAFTER(TAN(N*%PI/10),USIN(N)/UCOS(N))$
-TELLSIMPAFTER(COT(N*%PI/10),UCOS(N)/USIN(N))$
-TELLSIMPAFTER(SEC(N*%PI/10),1/UCOS(N))$
-TELLSIMPAFTER(CSC(N*%PI/10),1/USIN(N))$ 
+tellsimpafter(sin(n*%pi/10),usin(n))$
+tellsimpafter(cos(n*%pi/10),ucos(n))$
+tellsimpafter(tan(n*%pi/10),usin(n)/ucos(n))$
+tellsimpafter(cot(n*%pi/10),ucos(n)/usin(n))$
+tellsimpafter(sec(n*%pi/10),1/ucos(n))$
+tellsimpafter(csc(n*%pi/10),1/usin(n))$
 
-USIN(N):= BLOCK([YUK:ABS(REMAINDER(N,10))], 
-IF (YUK=1) OR (YUK=9) THEN (SQRT(5)-1)/4 ELSE 			
-IF (YUK=2) OR (YUK=8) THEN (SQRT(5)-1)*SQRT(SQRT(5)+5)/(4*SQRT(2)) ELSE
-IF (YUK=3) OR (YUK=7) THEN (SQRT(5)+1)/4 ELSE 
-IF (YUK=4) OR (YUK=6) THEN SQRT(SQRT(5)+5)/(2*SQRT(2)))$
+usin(n):= block([yuk:remainder(remainder(n,10)+10,10),
+                 sgn:if remainder(remainder(n,20)+20,20)>=10 then -1 else 1],
+if yuk=1 or yuk=9 then sgn*(sqrt(5)-1)/4 else
+if yuk=2 or yuk=8 then sgn*(sqrt(5)-1)*sqrt(sqrt(5)+5)/(4*sqrt(2)) else
+if yuk=3 or yuk=7 then sgn*(sqrt(5)+1)/4 else
+if yuk=4 or yuk=6 then sgn*sqrt(sqrt(5)+5)/(2*sqrt(2)))$
 
-UCOS(N):= BLOCK([YUK:ABS(REMAINDER(N,10))], 
-IF YUK=1 THEN SQRT(SQRT(5)+5)/(2*SQRT(2)) ELSE 
-IF YUK=2 THEN (SQRT(5)+1)/4 ELSE 
-IF YUK=3 THEN (SQRT(5)-1)*SQRT(SQRT(5)+5)/(4*SQRT(2)) ELSE 
-IF YUK=4 THEN (SQRT(5)-1)/4 ELSE 
-IF YUK=6 THEN -(SQRT(5)-1)/4 ELSE 
-IF YUK=7 THEN -(SQRT(5)-1)*SQRT(SQRT(5)+5)/(4*SQRT(2)) ELSE
-IF YUK=8 THEN -(SQRT(5)+1)/4 ELSE 
-IF YUK=9 THEN -SQRT(SQRT(5)+5)/(2*SQRT(2)))$
-
+ucos(n):= block([yuk:remainder(remainder(n,10)+10,10),
+                 sgn:if remainder(remainder(n,20)+20,20)>5 and
+                        remainder(remainder(n,20)+20,20)<15 then -1 else 1],
+if yuk=1 or yuk=9 then sgn*sqrt(sqrt(5)+5)/(2*sqrt(2)) else
+if yuk=2 or yuk=8 then sgn*(sqrt(5)+1)/4 else
+if yuk=3 or yuk=7 then sgn*(sqrt(5)-1)*sqrt(sqrt(5)+5)/(4*sqrt(2)) else
+if yuk=4 or yuk=6 then sgn*(sqrt(5)-1)/4)$
