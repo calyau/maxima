@@ -249,7 +249,6 @@
 ;      ((eql l 1) pname)
 ;      (t (concatenate 'string "\\mathrm{" pname "}")))))
 
-#+(or cmu gcl) ;; any others?
 (defun strcat (&rest args)
   (apply #'concatenate 'string (mapcar #'string args)))
 
