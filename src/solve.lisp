@@ -774,23 +774,24 @@
 ;; be run.  Presumably, the expression is factored higher up.
 
 (DECLARE-TOP (MUZZLED T))
-(DEFUN SOLVEQUAD (EXP &AUX DISCRIM A B C) 
-  (SETQ A (CADDR EXP))
-  (SETQ B (PTERM (CDR EXP) 1.))
-  (SETQ C (PTERM (CDR EXP) 0.))
-  (SETQ DISCRIM (SIMPLIFY (PDIS (PPLUS (PEXPT B 2.)
+(DEFUN SOLVEQUAD (EXP &AUX DISCRIM A B C)
+   (SETQ A (CADDR EXP))
+   (SETQ B (PTERM (CDR EXP) 1.))
+   (SETQ C (PTERM (CDR EXP) 0.))
+   (SETQ DISCRIM (SIMPLIFY (PDIS (PPLUS (PEXPT B 2.)
 				       (PMINUS (PTIMES 4. (PTIMES A C)))))))
-  (SETQ B (PDIS (PMINUS B)))
-  (SETQ A (PDIS (PTIMES 2. A)))
-  ;; At this point, everything is back in general representation.
-  (COND ((EQUAL 0. DISCRIM)
+   (SETQ B (PDIS (PMINUS B)))
+   (SETQ A (PDIS (PTIMES 2. A)))
+   ;; At this point, everything is back in general representation.
+   (let ((varlist nil)) ;;2/6/2002 RJF
+     (COND ((EQUAL 0. DISCRIM)
 	 (SOLVE3 (FULLRATSIMP `((MQUOTIENT) ,B ,A))
 		 (TIMES 2. MULT)))
 	(T (SETQ DISCRIM (SIMPNRT DISCRIM 2.))
 	   (SOLVE3 (FULLRATSIMP `((MQUOTIENT) ((MPLUS) ,B ,DISCRIM) ,A))
 		   MULT)
 	   (SOLVE3 (FULLRATSIMP `((MQUOTIENT) ((MPLUS) ,B ((MMINUS) ,DISCRIM)) ,A))
-		   MULT))))
+		   MULT)))))
 (DECLARE-TOP (MUZZLED NIL))
 
 ;; Reorders V so that members which contain the variable of
