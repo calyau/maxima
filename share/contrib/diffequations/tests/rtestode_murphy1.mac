@@ -1193,9 +1193,13 @@ bernoulli;
 
 /* 195 */
 (pn_(195),ans:contrib_ode(eqn:x*'diff(y,x)=4*(y-sqrt(y)),y,x));
-[LOG(SQRT(y)-1)/2=LOG(x)+%C]; /* CHECKME */
-method;
-separable;
+[log(sqrt(y)-1)/2=log(x)+%c];
+map(exp,2*ans[1]);
+sqrt(y)-1 = %e^(2*(log(x)+%c));
+solve(%,y);
+[y = %e^(4*%c)*x^4+2*%e^(2*%c)*x^2+1];
+[method,radcan(ode_check(eqn,%[1]))];
+[separable,0];
 
 /* 196 */
 (pn_(196),ans:contrib_ode(eqn:x*'diff(y,x)+2*y=sqrt(1+y^2),y,x));
@@ -1205,15 +1209,36 @@ separable;
 
 /* 197 */
 (pn_(197),ans:contrib_ode(eqn:x*'diff(y,x)=y+sqrt(x^2+y^2),y,x));
-[x=%c*%e^(x*asinh(y/x)/abs(x))]; /* CHECKME */
-method;
-genhom;
+[x=%c*%e^(x*asinh(y/x)/abs(x))];
+assume(x>0);
+[x > 0];
+ratsimp(ans[1]);
+x = %c*%e^asinh(y/x);
+map(log,%/%c);
+log(x/%c) = asinh(y/x);
+solve(%,y);   
+[y = x*sinh(log(x/%c))];
+[method,trigsimp(ode_check(eqn,%))];
+[genhom,0];
+forget(x>0);
+[x > 0];
+
 
 /* 198 */
 (pn_(198),ans:contrib_ode(eqn:x*'diff(y,x)=y+sqrt(x^2-y^2),y,x));
 [x = %c*%e^(x*asin(y/x)/abs(x))];
+assume(x>0);
+[x > 0]
+ratsimp(ans[1]);
+x = %c*%e^asin(y/x);
+map(log,%/%c);
+log(x/%c) = asin(y/x);
+solve(%,y);   
+[y = x*sin(log(x/%c))]; /* CHECK ME */
 method;
 genhom;
+forget(x>0);
+[x > 0];
 
 /* 199 */
 assume(x>0,y>0);
