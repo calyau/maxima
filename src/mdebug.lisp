@@ -318,8 +318,25 @@
 	 (let* ((line (string-trim '(#\space #\tab #\; #\$)
 				   (subseq (read-line stream eof-error-p eof-value) 1))))
 	   `((displayinput) nil (($describe) ,line))))
-	(t (setq *last-dbm-command* nil)
-	     (mread stream eof-value))))
+	(t
+	 (setq *last-dbm-command* nil)
+	 #-cmu
+	 (mread stream eof-value)
+
+	   ;; At this point, we have peeked at the next character, but
+	   ;; CMUCL has also deleted that character.  This is a hack.
+	   ;;
+	   ;; Read the char that we unread back to the stream.
+	   ;; Make a new stream consisting of the next char and the
+	   ;; rest of the actual input.
+	 #+cmu
+	 (let* ((first-char (read-char stream))
+		(new-stream (make-concatenated-stream
+			     (make-string-input-stream
+			      (concatenate 'string (string first-char)
+					   (string next)))
+			     stream)))
+	   (mread new-stream eof-value)))))
 
 
 (defun grab-line-number (li stream)
