@@ -13,6 +13,9 @@
 
    ;; Bessel function: I
    "DBESI0" "DBESI1" "DBESI" "DBSI0E" "DBSI1E" "ZBESI"
+
+   ;; Bessel function : K
+   "DBESK0" "DBESK1" "DBESK" "ZBESK"
    
    ;; Airy functions
    "DAI"
