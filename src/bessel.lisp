@@ -241,15 +241,15 @@
 	       (floor (float $order))
 	     (let ((cyr (make-array (1+ n) :element-type 'double-float))
 		   (cyi (make-array (1+ n) :element-type 'double-float)))
-	       (zbesj (float ($realpart $arg))
-		      (float ($imagpart $arg))
-		      alpha
-		      1
-		      (1+ n)
-		      cyr
-		      cyi
-		      0
-		      0)
+	       (slatec:zbesj (float ($realpart $arg))
+			     (float ($imagpart $arg))
+			     alpha
+			     1
+			     (1+ n)
+			     cyr
+			     cyi
+			     0
+			     0)
 	       (narray $besselarray $complete (1+ n))
 	       (dotimes (k (1+ n)
 			 (arraycall 'flonum (nsymbol-array '$besselarray) n))
