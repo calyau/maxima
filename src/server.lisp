@@ -61,6 +61,7 @@
   (setq $show_openplot nil)
   (setup-server port host))
 
+#-gcl
 (defun getpid-from-environment ()
   (handler-case
       (values (parse-integer (maxima-getenv "PID")))
