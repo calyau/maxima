@@ -77,10 +77,21 @@
 ;; autoload from a .mc file
 ($auto_mexpr '$gcdex '|gcdex|)
 
+($auto_mexpr '$expandwrt "simplification/stopex")
+($auto_mexpr '$expandwrt_factored "simplification/stopex")
+(declaim (special $expandwrt_denom $expandwrt_nonrat))
 
+($auto_mexpr '$facsum "simplification/facexp")
+($auto_mexpr '$factorfacsum "simplification/facexp")
+($auto_mexpr '$collectterms "simplification/facexp")
+(declaim (special $nextlayerfactor $facsum_combine))
 
+($auto_mexpr '$disolate "simplification/disol")
 
+($auto_mexpr '$linsimp "misc/declin")
+($auto_mexpr '$declare_linear_operator "misc/declin")
 
+($auto_mexpr '$nonumfactor "simplification/genut")
 
 ;;From main source files.
 (AUTOF '$GET '|maxmac|)
