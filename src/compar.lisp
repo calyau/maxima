@@ -497,7 +497,7 @@ Maybe you want to use NOT EQUAL."))
 ;;; Preparation for asking questions from DEFINT or LIMIT.
 (defun sign-prep (x)
   (if limitp
-      (let (((rpart . ipart) (trisplit x)))
+      (destructuring-let (((rpart . ipart) (trisplit x)))
 	(cond ((and (equal (sratsimp ipart) 0)
 		    (free rpart '$infinity))
 	       (setq x (nmr (sratsimp rpart)))

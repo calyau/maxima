@@ -265,7 +265,7 @@
 
 (defun mqapply1 (form)
   (declare (special aryp))
-  (let (((fn . argl) (cdr form)) (aexprp))
+  (destructuring-let (((fn . argl) (cdr form)) (aexprp))
     (cond ((not (mquotep fn)) (setq fn (meval fn))))
     (cond ((atom fn) (meval (cons (cons fn aryp) argl)))
 	  ((eq (caar fn) 'lambda)

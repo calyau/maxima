@@ -143,7 +143,7 @@
 	(t (funcall fn (car x)))))
 	 
 (defun floatfact (p)
-  (let (((cont primp) (ptermcont p)))
+  (destructuring-let (((cont primp) (ptermcont p)))
     (setq cont (monom->facl cont))
     (cond ((equal primp 1) cont)
 	  (t (append cont (list primp 1))))))

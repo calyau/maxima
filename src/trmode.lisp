@@ -44,7 +44,7 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 
 (def%tr $define_variable (form)	;;VAR INIT MODE.
   (cond ((> (length form) 3)
-	 (let (((var val mode) (cdr form)))
+	 (destructuring-let (((var val mode) (cdr form)))
 	   (let ((spec-form `(($declare) ,var $special))
 		 (mode-form `(($modedeclare) ,var ,mode)))
 	     (translate spec-form)

@@ -761,8 +761,8 @@
 (defun algnormal (p) (car (rquotient p (leadalgcoef p))))
 
 (defun algcontent (p)
-  (let* ((lcf (leadalgcoef p))
-	 ((prim . denom) (rquotient p lcf)))
+  (destructuring-let* ((lcf (leadalgcoef p))
+		       ((prim . denom) (rquotient p lcf)))
     (list (ratreduce lcf denom) prim)))
 
 (defun rquotient (p q &aux algfac* a e)	;FINDS PSEUDO QUOTIENT IF PSEUDOREM=0

@@ -97,7 +97,7 @@
 (defun residue (zn factors pl)
   (cond (leadcoef 
 	 (mapcar #'(lambda (j)
-		     (let (((factor1 factor2) (remfactor factors (car j) zn)))
+		     (destructuring-let (((factor1 factor2) (remfactor factors (car j) zn)))
 		       (resm0 factor1 factor2 (car j) (cadr j))))
 		 pl))
 	(t (mapcar #'(lambda (j)

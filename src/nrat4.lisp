@@ -511,8 +511,8 @@
       (push (caddr x) *v)))
 
 (defun rzcontent (r)
-  (let (((c1 p) (pcontent (car r)))
-	((c2 q) (pcontent (cdr r))))
+  (destructuring-let (((c1 p) (pcontent (car r)))
+		      ((c2 q) (pcontent (cdr r))))
     (if (pminusp p) (setq p (pminus p) c1 (cminus c1)))
     (cons (cons c1 c2) (cons p q))))
 
@@ -525,8 +525,8 @@
 
 (defun spc5 (vl oldvarlist oldgenvar &aux gcdlist varlist genvar)
   (dolist (v vl)
-    (let* ((((nil . c) . r) (rzcontent (rform v)))
-	   (g (zl-assoc r gcdlist)))
+    (destructuring-let* ((((nil . c) . r) (rzcontent (rform v)))
+			 (g (zl-assoc r gcdlist)))
       (cond (g (setf (cadr g) (plcm c (cadr g)))
 	       (push (list ($exp v) c) (cddr g)))
 	    (t (push (list r c (list ($exp v) c)) gcdlist)))))

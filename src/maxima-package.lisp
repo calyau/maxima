@@ -91,8 +91,6 @@
 (shadow '(
 	  array	;;"CL-MAXIMA-SOURCE: MAXIMA; COMMAC" ;not a function in common lisp but symbol in the package
 	  exp ;;various files declare this special which is bad since it is in LISP package.
-	  let ;;"CL-MAXIMA-SOURCE: MAXIMA; LET" ;;like let*
-	  let* ;;"CL-MAXIMA-SOURCE: MAXIMA; LET" ;;maxima:let* does destructuring.  
 	  listen ;;"CL-MAXIMA-SOURCE: MAXIMA; SUPRV" ;;has trivial definition in suprv (listen any) ==> 0
 	  signum ;;"CL-MAXIMA-SOURCE: MAXIMA; COMMAC" ;same except (cl:signum 1.3)==1.0 not 1 but I think this is ok for macsyma
 	  atan ;; (zl:atan y x) == (cl:atan y x) + 2 pi if latter is  negative

@@ -126,7 +126,7 @@
 		`((mprog) ((mlist) ((msetq) $numer t) ((msetq) $%enumer t))
 		  (($romberg_subr) ,@form)))))
 	((= (length form) 4)
-	 (let (((exp var . bnds) form))
+	 (destructuring-let (((exp var . bnds) form))
 	   (cond (translatep
 		  `(($romberg_subr)
 		    ((lambda-i) ((mlist) ,var)

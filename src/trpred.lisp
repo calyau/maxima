@@ -75,7 +75,7 @@
 	 `(progn ,@(tr-args (nreverse (cdr (reverse (cdr form)))))
 	   ,(translate-predicate (car (last (cdr form))))))
 	(t
-	 (let (((mode . tform) (translate form)))
+	 (destructuring-let (((mode . tform) (translate form)))
 	   (boolean-convert mode tform form)))))
 
 

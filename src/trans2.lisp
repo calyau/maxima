@@ -210,7 +210,7 @@
 		     (mget (cadr form) 'array-mode)))))
     (cond ((null mode) (setq mode '$any)))
     (setq form (tr-args form))
-    (let (((val aarray . inds) form))
+    (destructuring-let (((val aarray . inds) form))
       `(,mode . (,(if (and (= (length inds) 1)
 			   (eq mode '$float))
 		      (progn (push-autoload-def 'marrayset '(marrayset1$))

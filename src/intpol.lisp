@@ -89,7 +89,7 @@
 		`((mprog) ((mlist) ((msetq) $numer t))
 		  (($interpolate_subr)  ,@form)))))
 	((= (length form) 4)
-	 (let (((exp var . bnds) form))
+	 (destructuring-let (((exp var . bnds) form))
 	   (setq exp (sub ($lhs exp) ($rhs exp)))
 	   (cond (translp
 		  `(($interpolate_subr)

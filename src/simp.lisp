@@ -2253,9 +2253,9 @@
 (defmfun ratfix (a) (cond ((equal a (ratnumerator a)) (cons a 1)) (t a)))
 	 
 (defmfun ratdivide (f g)
-  (let* (((fnum . fden) (ratfix f))
-	 ((gnum . gden) (ratfix g))
-	 ((q r) (pdivide fnum gnum)))
+  (destructuring-let* (((fnum . fden) (ratfix f))
+		       ((gnum . gden) (ratfix g))
+		       ((q r) (pdivide fnum gnum)))
     (cons (ratqu (ratti q gden t) fden)
 	  (ratqu r fden))))
 

@@ -319,7 +319,7 @@
 		 `(progn-pig ,x)))))
 
 (defun mformat-translate (arguments compiling?)
-  (let (((stream sstring . other-shit) arguments))
+  (destructuring-let (((stream sstring . other-shit) arguments))
     (let ((mess (process-message-argument sstring)))
       (cond ((null mess) nil)
 	    ('on-the-other-hand
@@ -340,7 +340,7 @@
 	       ,@other-shit))))))
 
 (defun mtell-translate (arguments compiling?)
-  (let (((sstring . other-shit) arguments))
+  (destructuring-let (((sstring . other-shit) arguments))
     (let ((mess (process-message-argument sstring)))
       (cond ((null mess) nil)
 	    ('on-the-other-hand
@@ -371,7 +371,7 @@
   `(mformat-open nil ,message . ,other-shit))
 
 (defun merror-translate (arguments compiling?)
-  (let (((message . other-shit) arguments))
+  (destructuring-let (((message . other-shit) arguments))
     (let ((mess (process-message-argument message)))
       (cond ((null mess) nil)
 	    ('on-the-other-hand
@@ -391,7 +391,7 @@
 	       ,@other-shit))))))
 
 (defun errrjf-translate (arguments compiling?)
-  (let (((message . other-shit) arguments))
+  (destructuring-let (((message . other-shit) arguments))
     (let ((mess (process-message-argument message)))
       (cond ((null mess) nil)
 	    ('on-the-other-hand

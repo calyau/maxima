@@ -2395,7 +2395,7 @@
        (ans ()))
       ((null l)
        (m+l ans))
-    (let (((const . integrand) (rmconst1 (car l))))
+    (destructuring-let (((const . integrand) (rmconst1 (car l))))
       (setq ans (cons (m* const (dintrad0 integrand d))
 		      ans)))))
 
@@ -2479,7 +2479,7 @@
   (let ((plog (simplify `((%plog) ,x))))
     (cond ((not (free plog '%plog))
 	   (subst '%log '%plog plog))
-	  (t (let (((real . imag) (trisplit plog)))
+	  (t (destructuring-let (((real . imag) (trisplit plog)))
 	       (cond ((eq ($asksign imag) '$neg)
 		      (setq imag (m+ imag %pi2)))
 		     ((eq ($asksign (m- imag %pi2)) '$pos)

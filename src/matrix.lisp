@@ -636,7 +636,7 @@
 	       ((mnctimesp mat)
 		`((mnctimes) .,(nreverse (mapcar #'$transpose (cdr mat)))))
 	       ((mncexptp mat)
-		(let (((mat pow) (cdr mat)))
+		(destructuring-let (((mat pow) (cdr mat)))
 		  `((mncexpt) ,($transpose mat) ,pow)))
 	       
 	       (t ($nounify '$transpose) (list '(%transpose) mat))))

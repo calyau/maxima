@@ -310,7 +310,8 @@
 	     ((null x)
 	      (cond ((null roots) (subst0 (cons '(mtimes) (nreverse notroots)) e))
 		    (t (if $rootsconmode
-			   (let (((min gcd lcm) (rtc-getinfo roots)))
+			   (destructuring-let (m
+					       ((min gcd lcm) (rtc-getinfo roots)))
 			     (cond ((and (= min gcd) (not (= gcd 1))
 					 (not (= min lcm))
 					 (not (eq $rootsconmode '$all)))

@@ -145,7 +145,7 @@
 
 
 (def%tr %signum (form)
-  (let (( (mode . arg) (translate (cadr form))))
+  (destructuring-let (( (mode . arg) (translate (cadr form))))
     (cond ((memq mode '($fixnum $float))
 	   (let ((temp (tr-gensym)))
 	     `($fixnum . ((lambda (,temp)

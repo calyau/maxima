@@ -9,23 +9,23 @@
 (in-package "MAXIMA")
 ;; Destructuring DEFUN must be added to this at some point.
 
-(declare-top (special let-macro-vals))
+(defvar *let-macro-vals* nil)
 
 ;; Kludge to avoid warning that a different file is redefining
 ;; LET and LET*.  SI has LET and LET* externed, so there is no
 ;; "illegally defining" warning.
 
-(defmacro let (pairs &body body)
+(defmacro destructuring-let (pairs &body body)
   (do ((pairs pairs (cdr pairs))
        (vars nil)
-       (let-macro-vals nil)
+       (*let-macro-vals* nil)
        (tem))
       ((null pairs)
        (cond ((not (null vars))
 					;`((lambda ,(reverse vars) . ,body) .
-					;,(reverse let-macro-vals))
+					;,(reverse *let-macro-vals*))
 	      `(lisp:let ,(nreverse (sloop for v in vars for w in
-					   let-macro-vals collect
+					   *let-macro-vals* collect
 					   (list v w)))
 		,@ body)
 	      )
@@ -37,14 +37,14 @@
 	       (error 
 		"Garbage found in LET pattern: ~S" (car pairs)))
 	   (setq vars (cons (car pairs) vars))
-	   (setq let-macro-vals (cons nil let-macro-vals)))
+	   (setq *let-macro-vals* (cons nil *let-macro-vals*)))
 	  (t
 	   (setq tem vars)
 	   (setq vars (let-macro-get-vars (caar pairs) vars))
 	   (or (eq tem vars)
 	       (setq body (nconc (let-macro-hair (caar pairs)
 						 (cadar pairs)
-						 let-macro-vals)
+						 *let-macro-vals*)
 				 body)))))))
 
 (defun let-macro-get-vars (pattern vars)
@@ -53,7 +53,7 @@
 	 (or (symbolp pattern)
 	     (error 
 	      "Garbage found in LET pattern: ~S" pattern))
-	 (setq let-macro-vals (cons nil let-macro-vals))
+	 (setq *let-macro-vals* (cons nil *let-macro-vals*))
 	 (cons pattern vars))
 	(t (let-macro-get-vars (cdr pattern)
 			       (let-macro-get-vars (car pattern) vars)))))
@@ -121,13 +121,13 @@
 	  (let-macro-get-last-var (car pattern))
 	  (let-macro-get-last-var (cdr pattern))))))
 
-(defmacro let* (pairs &body body)
+(defmacro destructuring-let* (pairs &body body)
   (cond ((sloop for v in pairs
 		always (or (symbolp v) (and (consp v) (symbolp (car v)))))
 	 `(lisp::let* ,pairs ,@body))
 	(t
 	 (do ((a (reverse pairs) (cdr a))
-	      (b body `((let (,(car a)) . ,b))))
+	      (b body `((destructuring-let (,(car a)) . ,b))))
 	     ((null a)
 	      (cond ((null (cdr b)) (car b))
 		    (t `(progn . ,b))))))))

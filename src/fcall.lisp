@@ -297,7 +297,7 @@ translated properly.")
 ;;; (FUNGEN&ENV-for-meval <eval vars list> <late eval vars list>  <EXP>)
 ;;won't work in cl.  fix later.
 (defquote fungen&env-for-meval (&rest args)
-  (let (((evl levl . body) args))
+  (destructuring-let (((evl levl . body) args))
 	    ;;; all we want to do here is make sure that the EVL gets
 	    ;;; evaluated now so that we have some kind of compatibility
 	    ;;; with compiled code. we could just punt and pass the body.
@@ -356,7 +356,7 @@ translated properly.")
 (defquote fungen&env-for-mevalsumarg (&rest args)
   (let ((res (assq args *fcall-memory*)))
     (cond ((null res)
-	   (let (((evl levl t-body m-body) args))
+	   (destructuring-let (((evl levl t-body m-body) args))
 	     (setq res (gensym))
 	     (putprop res
 		      (coerce

@@ -45,7 +45,7 @@
 (defmfun $pade (taylor-form n-bound d-bound)
   (cond ((not (and ($ratp taylor-form) (memq 'trunc (car taylor-form))))
 	 (merror "First argument to Pade must be a taylor series")))
-  (let (((nil nil varlist genvar tlist) (car taylor-form)))
+  (destructuring-let (((nil nil varlist genvar tlist) (car taylor-form)))
     (cons '(mlist)
 	  (pade (cdr taylor-form)
 		(cons (car (tay-order n-bound))

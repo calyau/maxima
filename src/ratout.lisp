@@ -637,7 +637,7 @@
 		    (cons '(mplus) 
 			  (mapcar
 			   (fn (l)
-			       (let (((coef poly exp) l))
+			       (destructuring-let (((coef poly exp) l))
 				 (list '(mtimes)
 				       (disrep  coef)
 				       (list '(mexpt)
@@ -646,7 +646,7 @@
 			   (cdr exp))))))))
 
 (defun partfraca (llist)
-  (let (((coef poly exp) llist))
+  (destructuring-let (((coef poly exp) llist))
     (do ((nc (ratdivide coef poly) (ratdivide (car nc) poly))
 	 (n exp (f1- n))
 	 (ans))
@@ -654,11 +654,11 @@
       (push (list (cdr nc) poly n) ans))))
 
 (defun partfrac (rat var &optional facdenom)		
-  (let* (((wholepart frpart) (pdivide (car rat) (cdr rat)))
-	 ((num . denom) (ratqu frpart (cdr rat))))
+  (destructuring-let* (((wholepart frpart) (pdivide (car rat) (cdr rat)))
+		       ((num . denom) (ratqu frpart (cdr rat))))
     (cond ((pzerop num) (cons wholepart nil))
 	  ((or (pcoefp denom) (pointergp var (car denom))) (cons rat nil))
-	  (t (let (((content bpart) (oldcontent denom)))
+	  (t (destructuring-let (((content bpart) (oldcontent denom)))
 	       (do ((factor (or facdenom (pfactor bpart)) (cddr factor))
 		    (apart) (y) (parnumer))
 		   ((null factor) (cons wholepart parnumer))

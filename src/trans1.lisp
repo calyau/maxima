@@ -89,7 +89,7 @@
 ;;; (DEFMFUN $MAP FEXPR (L) (APPLY 'MAP1 (MMAPEV 'MAP L)))
 
 (def%tr $map (form)
-  (let (((fun . args) (tr-args (cdr form))))
+  (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'map1 `((getopr ,fun) . ,args))))
 
 ;;; (DEFMFUN $MAPLIST FEXPR (L) 
@@ -101,7 +101,7 @@
 ;;;    T NIL))
 
 (def%tr $maplist (form)
-  (let (((fun . args) (tr-args (cdr form))))
+  (destructuring-let (((fun . args) (tr-args (cdr form))))
     ;; this statement saves the trouble of adding autoload definitions
     ;; for runtime translator support.
     (push-autoload-def 'marrayref '(maplist_tr))
@@ -111,14 +111,14 @@
 ;;;        (SETQ L (MMAPEV 'FULLMAP L)) (FMAP1 (CAR L) (CDR L) NIL))
 
 (def%tr $fullmap (form)
-  (let (((fun . args) (tr-args (cdr form))))
+  (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'fmap1 `((getopr ,fun) (list . ,args) nil))))
 
 ;;; (DEFMFUN $MATRIXMAP FEXPR (L)
 ;;;        ((LAMBDA (FMAPLVL) (APPLY 'FMAPL1 (MMAPEV 'MATRIXMAP L))) 2))
 
 (def%tr $matrixmap (form)
-  (let (((fun . args) (tr-args (cdr form))))
+  (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any `(lambda (fmaplvl)
 			   (fmapl1 (getopr ,fun) . ,args))
 		   '(2))))
@@ -126,14 +126,14 @@
 ;;; (DEFMFUN $FULLMAPL FEXPR (L) (APPLY 'FMAPL1 (MMAPEV 'FULLMAPL L)))
 
 (def%tr $fullmapl (form)
-  (let (((fun . args) (tr-args (cdr form))))
+  (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'fmapl1 `((getopr ,fun) . ,args))))
 
 ;;;(DEFMFUN $OUTERMAP FEXPR (L)
 ;;; (APPLY (COND ((= (LENGTH L) 2) 'FMAPL1) (T 'OUTERMAP1)) (MMAPEV 'OUTERMAP L)))
 
 (def%tr $outermap (form)
-  (let (((fun . args) (tr-args (cdr form))))
+  (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any (cond ((= (length args) 1) 'fmapl1)
 			       (t 'outermap1))
 		   `((getopr ,fun)  ,@args))))
@@ -146,7 +146,7 @@
   (push-autoload-def '$scanmap '(scanmap1))
   ;; there's something more fundamental about the above than
   ;; just autoload definitions.
-  (let (((fun . args) (tr-args (cdr form))))
+  (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'scanmap1 `((getopr ,fun) ,@args))))
 
 ;;;(DEFMFUN $QPUT FEXPR (L)
@@ -267,7 +267,7 @@
 ;;; on the assumption that the mode of the PROGN is enough to tell.
 
 (def%tr $catch (form)
-  (let (((mode . body) (translate `((mprogn) . ,(cdr form)))))
+  (destructuring-let (((mode . body) (translate `((mprogn) . ,(cdr form)))))
     `(,mode . ((lambda ()
 		 ((lambda (mcatch)
 		    (prog2 nil
@@ -281,7 +281,7 @@
 ;; (THROW 'MCATCH X)))
 
 (def%tr $throw (form)
-  (let (((mode . exp) (translate (cadr form))))
+  (destructuring-let (((mode . exp) (translate (cadr form))))
     `(,mode . ((lambda (x)
 		 (cond ((null mcatch)
 			(displa x)
@@ -313,7 +313,7 @@
      (if sump 0 1))))
 
 (def%tr $sum (form)
-  (let (((|0| n) (mapcar #'translate (cdddr form)))
+  (destructuring-let (((|0| n) (mapcar #'translate (cdddr form)))
 	(flag (eq (caar form) '$sum))
 	(var (caddr form))
 	(sum (tr-gensym)))
@@ -396,9 +396,9 @@
 (def%tr $makelist (form)
   (setq form (cdr form))
   (cond ((= (length form) 3)
-	 (let  (((exp x llist) form)
-		(sum (tr-gensym))
-		(lil (tr-gensym)))
+	 (destructuring-let (((exp x llist) form)
+			      (sum (tr-gensym))
+			      (lil (tr-gensym)))
 	   `($any . (do ((,lil (cdr ,(dtranslate llist)) (cdr ,lil))
 			 (,sum nil)
 			 (,x))
@@ -410,10 +410,10 @@
 							   (value-mode x)))
 				       ,sum))))))
 	((= (length form) 4)
-	 (let (((exp x |0| n) form)
-	       (|00| (tr-gensym))
-	       (nn (tr-gensym))
-	       (sum (tr-gensym)))
+	 (destructuring-let (((exp x |0| n) form)
+			     (|00| (tr-gensym))
+			     (nn (tr-gensym))
+			     (sum (tr-gensym)))
 	   (setq |0| (dtranslate |0|)	; I had forgotten this before!
 		 n (dtranslate n))	; never noticed.
 	   `($any . ((lambda (,|00| ,nn)
@@ -489,7 +489,7 @@ a replacement form. Translating anyway though.")))
 ;;; MDEFINE is an FSUBR also.
 
 (def%tr $define (form)
-  (let (((header body) (cdr form)))
+  (destructuring-let (((header body) (cdr form)))
     `($any . (apply 'mdefine
 	      (list ',(cond ((mquotep header) (cadr header))
 			    (t (disp2 header)))

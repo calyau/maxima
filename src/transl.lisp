@@ -452,8 +452,8 @@ APPLY means like APPLY.")
 ;;; macro package.
 
 (defun tr-mdefine-toplevel (form &aux (and-restp nil))
-  (let (( (((name . flags) . args) body) (cdr form))
-	(a-args) kind out-forms)
+  (destructuring-let (( (((name . flags) . args) body) (cdr form))
+		      (a-args) kind out-forms)
 
     (do ((args args (cdr args))
 	 ;; array functions cannot be LEXPR-like. gee.
@@ -1082,8 +1082,8 @@ APPLY means like APPLY.")
   ;; that the use of DECLARE(FOO,SPECIAL) will be phased out at that level.
 
   (mapc #'tbind arglist)
-  (let (((mode . nbody) (apply tr-body (cddr form) tr-body-argl))
-	(local-declares (make-declares arglist t)))
+  (destructuring-let (((mode . nbody) (apply tr-body (cddr form) tr-body-argl))
+		      (local-declares (make-declares arglist t)))
     ;; -> BINDING of variables with ASSIGN properties may be difficult to
     ;; do correctly and efficiently if arbitrary code is to be run.
     (if (or tr-lambda-punt-assigns
