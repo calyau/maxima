@@ -853,29 +853,48 @@
 (defun whitfun (k m var)
   (list '(mqapply) (list '($%m array) k m) var))
 
-;; Enable STEP7 algorithm if non-NIL.  Currently, it's majorly broken
-;; because it calls functions that seem to be incomplete.
-(defvar *enable-step7* nil)
+;; Enable STEP7 algorithm if non-NIL.  
+(defvar *enable-step7* t)
+
+(defvar $trace2f1 nil
+  "Enables simple tracing of simp2f1 so you can see how it decides
+  what approach to use to simplify hypergeometric functions")
 
 (defun simp2f1 (arg-l1 arg-l2)
   (prog (a b c lgf)
      (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
+     (when $trace2f1
+       (format t "Tracing SIMP2F1~%")
+       (format t " Test F(1,1,2)...~%"))
      (cond ((and (alike1 a 1)
 		 (alike1 b 1)
 		 (alike1 c 2))
 	    ;; F(1,1;2;z), A&S 15.1.3
+	    (when $trace2f1
+	      (format t " Yes~%"))
 	    (return (mul (inv (mul -1 var))
 			 (mlog (add 1 (mul -1 var)))))))
+     (when $trace2f1
+       (format t " Test c = 1/2 or c = 3/2...~%"))
      (cond ((or (alike1 c  (div 3 2))
 		(alike1 c  (div 1 2)))
 	    ;; F(a,b; 3/2; z) or F(a,b;1/2;z)
 	    (cond ((setq lgf (trig-log (list a b) (list c)))
+		   (when $trace2f1
+		     (format t " Yes: trig-log~%"))
 		   (return lgf)))))
+     (when $trace2f1
+       (format t " Test |a-b|=1/2...~%"))
      (cond ((or
 	     (alike1 (sub a b) (div 1 2))
 	     (alike1 (sub b a) (div 1 2)))
 	    ;; F(a,b;c;z) where |a-b|=1/2 
-	    (cond ((setq lgf (hyp-cos a b c))(return lgf)))))
+	    (cond ((setq lgf (hyp-cos a b c))
+		   (when $trace2f1
+		     (format t " Yes: hyp-cos~%"))
+		   (return lgf)))))
+     (when $trace2f1
+       (format t " Test a,b are integers, c is a numerical integer...~%"))
      (cond ((and (maxima-integerp a)
 		 (maxima-integerp b)
 		 (hyp-integerp c))
@@ -883,30 +902,56 @@
 	    ;; to be integers) and c is a integral number.
 	    (setf lgf (simpr2f1 (list a b) (list c)))
 	    (unless (atom lgf)
+	      (when $trace2f1
+		(format t " Yes: simpr2f1~%"))
 	      (return lgf))))
+     (when $trace2f1
+       (format t " Test a+b and c+1/2 are numerical integers...~%"))
      (cond ((and (hyp-integerp (add c (inv 2)))
 		 (hyp-integerp (add a b)))
 	    ;; F(a,b;c;z) where a+b is an integer and c+1/2 is an
 	    ;; integer.
+	    (when $trace2f1
+	      (format t " Yes: step4~%"))
 	    (return (step4 a b c))))
+     (when $trace2f1
+       (format t " Test a-b+1/2 is a numerical integer...~%"))
      (cond ((hyp-integerp (add (sub a b) (inv 2)))
 	    ;; F(a,b;c,z) where a-b+1/2 is an integer
 	    (cond ((and *enable-step7*
 			(setq lgf (step7 a b c)))
-		   (return lgf)))))
+		   (unless (atom lgf)
+		     (when $trace2f1
+		       (format t " Yes: step7~%"))
+		     (return lgf))))))
+     (when $trace2f1
+       (format t " Test for Legendre function...~%"))
      (cond ((setq lgf (legfun a b c))
 	    (unless (atom lgf)
 	      ;; LEGFUN returned something interesting, so we're done.
+	      (when $trace2f1
+		(format t " Yes: case 1~%"))
 	      (return lgf))
 	    ;; LEGFUN didn't return anything, so try it with the args
 	    ;; reversed, since F(a,b;c;z) is F(b,a;c;z).
 	    (setf lgf (legfun b a c))
 	    (when lgf
+	      (when $trace2f1
+		(format t " Yes: case 2~%"))
 	      (return lgf))))
      (print 'simp2f1-will-continue-in)
      (terpri)
      (return  (fpqform arg-l1 arg-l2 var))))
 
+;; As best as I (rtoy) can tell, step7 is meant to handle an extension
+;; of hyp-cos, which handles |a-b|=1/2 and either a+b-1/2 = c or
+;; c=a+b+1/2.
+;;
+;; Based on the code, step7 wants a = s + m/n and c = 2*s+k/l.  For
+;; hyp-cos, we want c-2*a to be a integer.  Or k/l-2*m/n is an
+;; integer.
+#+(or)
+(progn
 (defun step7 (a b c)
   (prog (l m n k mn kl sym sym1 r)
      ;; Write a = sym + mn, c = sym1 + kl
@@ -914,7 +959,7 @@
 	   sym (cdras 'f l)
 	   mn  (cdras 'c l)
 	   l (s+c c)
-	   sym1 (cdras 'f l))
+	   syrm1 (cdras 'f l))
      ;; We only handle the case where 2*sym = sym1.
      (cond ((not (equal (mul sym 2) sym1))
 	    (return nil)))
@@ -1014,7 +1059,93 @@
 			     'ell (sub b (sub a (sub x (inv 2)))))
 		      'ell (- x y)))
 	  'ell y)))
+)
 
+;; A new version of step7.
+(defun step7 (a b c)
+  ;; To get here, we know that a-b+1/2 is an integer.  To make further
+  ;; progress, we want a+b-1/2-c to be an integer too.
+  ;;
+  ;; Let a-b+1/2 = p and a+b+1/2-c = q where p and q are (numerical)
+  ;; integers.
+  ;;
+  ;; A&S 15.2.3 and 15.2.5 allows us to increase or decrease a.  Then
+  ;; F(a,b;c;z) can be written in terms of F(a',b;c;z) where a' = a-p
+  ;; and a'-b = a-p-b = 1/2.  Also, a'+b+1/2-c = a-p+b+1/2-c = q-p =
+  ;; r, which is also an integer.
+  ;;
+  ;; A&S 15.2.4 and 15.2.6 allows us to increase or decrese c.  Thus,
+  ;; we can write F(a',b;c;z) in terms of F(a',b;c',z) where c' =
+  ;; c+r.  Now a'-b=1/2 and a'+b+1/2-c' = a-p+b+1/2-c-r =
+  ;; a+b+1/2-c-p-r = q-p-(q-p)=0.
+  ;;
+  ;; Thus F(a',b;c';z) is exactly the form we want for hyp-cos.  In
+  ;; fact, it's A&S 15.1.14: F(a,a+1/2,;1+2a;z) =
+  ;; 2^(2*a)*(1+sqrt(1-z))^(-2*a).
+  (declare (special var))
+  (let* ((p (add (sub a b) (inv 2)))
+	 (q (sub (add a b (inv 2))
+		 c))
+	 (r (sub q p))
+	 (a-prime (sub a p))
+	 (c-prime (add c r)))
+    (unless (hyp-integerp q)
+      ;; Wrong form, so return NIL
+      (return-from step7 nil))
+    ;; Ok, p and q are integers.  We can compute something.  There are
+    ;; four cases to handle depending on the sign of p and r.
+
+    (let ((fun (mul (power 2 (mul 2 a-prime))
+		    (power (add 1
+				(power (sub 1 var)
+				       (inv 2)))
+			   (mul -2 a-prime)))))
+      (cond ((>= p 0)
+	     (cond ((>= r 0)
+		    (step-7-pp a-prime b c-prime p r var fun))
+		   (t
+		    (step-7-pm a-prime b c-prime p r var fun))))
+	    (t
+	     (cond ((>= r 0)
+		    (step-7-mp a-prime b c-prime p r var fun))
+		   (t
+		    (step-7-mm a-prime b c-prime p r var fun))))))))
+
+;; F(a,b;c;z) in terms of F(a',b;c';z)
+;;
+;; F(a'+p,b;c'-r;z) where p >= 0, r >= 0.
+(defun step-7-pp (a b c p r var fun)
+  ;; Apply A&S 15.2.4 and 15.2.3
+  (let ((res (as-15.2.4 a b c r var fun)))
+    (as-15.2.3 a b (sub c r) p var res)))
+
+;; p >= 0, r < 0
+;;
+;; Let r' = -r
+;; F(a'+p,b;c'-r;z) = F(a'+p,b;c'+r';z)
+(defun step-7-pm (a b c p r var fun)
+  ;; Apply A&S 15.2.6 and 15.2.3
+  (let ((res (as-15.2.6 a b c (- r) var fun)))
+    (as-15.2.3 a b (sub c r) p var res)))
+;;
+;; p < 0, r >= 0
+;;
+;; Let p' = -p
+;; F(a'+p,b;c'-r;z) = F(a'-p',b;c'-r;z)
+(defun step-7-mp (a b c p r var fun)
+  ;; Apply A&S 15.2.4 and 15.2.5
+  (let ((res (as-15.2.6 a b c r var fun)))
+    (as-15.2.5 a b (sub c r) (- p) var res)))
+
+;; p < 0 r < 0
+;;
+;; Let p' = - p, r' = -r
+;;
+;; F(a'+p,b;c'-r;z) = F(a'-p',b;c'+r';z)
+(defun step-7-mm (a b c p r var fun)
+  ;; Apply A&S 15.2.6 and A&S 15.2.5
+  (let ((res (as-15.2.6 a b c (- r) var fun)))
+    (as-15.2.5 a b (sub c r) (- p) var res)))
 
 ;; F(a,b;c;z) when a and b are integers (or declared to be integers)
 ;; and c is an integral number.
@@ -1159,7 +1290,12 @@
 		  c)
 	   ;; a+b-1/2 = c
 	   ;;
-	   ;; 2^(2*a1 - 1)/sqrt(z1)*(1+sqrt(z1))^(1-2*a1)
+	   ;; A&S 15.1.14
+	   ;;
+	   ;; F(a,a+1/2;2*a;z)
+	   ;;    = 2^(2*a-1)*(1-z)^(-1/2)*(1+sqrt(1-z))^(1-2*a)
+	   (when $trace2f1
+	     (format t "   Case a+b-1/2=c~%"))
 	   (mul (power 2 (sub (mul a1 2) 1))
 		(inv (power  z1 (div 1 2)))
 		(power (add 1
@@ -1170,7 +1306,11 @@
 	  ((alike1 (add 1 (mul 2 a1)) c)
 	   ;; c = 1+2*a1 = a+b+1/2
 	   ;;
-	   ;; 2^(c-1)*(1+sqrt(z1))^(-(c-1))
+	   ;; A&S 15.1.13:
+	   ;;
+	   ;; F(a,1/2+a;1+2*a;z) = 2^(2*a)*(1+sqrt(1-z))^(-2*a)
+	   (when $trace2f1
+	     (format t "   Case c=1+2*a=a+b+1/2~%"))
 	   (mul (power 2 (sub c 1))
 		(power (add 1
 			    (power z1
@@ -1854,9 +1994,13 @@
 (defun trig-log (arg-l1 arg-l2)
   (cond ((equal (simplifya (car arg-l2) nil) '((rat simp) 3 2))
 	 ;; c = 3/2
+	 (when $trace2f1
+	   (format t "  trig-log:  Test c=3/2~%"))
 	 (trig-log-3 arg-l1 arg-l2))
 	((equal (simplifya (car arg-l2) nil) '((rat simp) 1 2))
 	 ;; c = 1/2
+	 (when $trace2f1
+	   (format t "  trig-log:  Test c=1/2~%"))
 	 (trig-log-1 arg-l1 arg-l2))
 	(t nil)))
 
@@ -1866,19 +2010,27 @@
 	      (or (equal (car arg-l1) (div 1 2))
 		  (equal (cadr arg-l1) (div 1 2))))
 	 ;; (a = 1 or b = 1) and (a = 1/2 or b = 1/2)
+	 (when $trace2f1
+	   (format t "   Case a or b is 1 and the other is 1/2~%"))
 	 (trig-log-3-exec arg-l1 arg-l2))
 	((and (equal (car arg-l1) (cadr arg-l1))
 	      (or (equal 1 (car arg-l1))
 		  (equal (div 1 2) (car arg-l1))))
 	 ;; a = b and (a = 1 or a = 1/2)
+	 (when $trace2f1
+	   (format t "   Case a=b and a is 1 or 1/2~%"))
 	 (trig-log-3a-exec arg-l1 arg-l2))
 	((or (equal (add (car arg-l1) (cadr arg-l1)) 1)
 	     (equal (add (car arg-l1) (cadr arg-l1)) 2))
 	 ;; a + b = 1 or a + b = 2
+	 (when $trace2f1
+	   (format t "   Case a+b is 1 or 2~%"))
 	 (trig-sin arg-l1 arg-l2))
 	((or (equal (sub (car arg-l1) (cadr arg-l1)) (div 1 2))
 	     (equal (sub (cadr arg-l1) (car arg-l1)) (div 1 2)))
 	 ;; a - b = 1/2 or b - a = 1/2
+	 (when $trace2f1
+	   (format t "   Case a-b=1/2 or b-a=1/2~%"))
 	 (trig-3 arg-l1 arg-l2))
 	(t nil)))
 
@@ -2998,6 +3150,7 @@
 
 (defun as-15.2.3 (a b c n arg fun)
   (declare (ignore b c))
+  (assert (>= n 0))
   ;; A&S 15.2.3:
   ;; F(a+n,b;c;z) = z^(1-a)/poch(a,n)*diff(z^(a+n-1)*fun,z,n)
   (mul (inv (factf a n))
@@ -3008,6 +3161,7 @@
 
 (defun as-15.2.4 (a b c n arg fun)
   (declare (ignore a b))
+  (assert (>= n 0))
   ;; A&S 15.2.4
   ;; F(a,b;c-n;z) = 1/poch(c-n,n)/z^(c-n-1)*diff(z^(c-1)*fun,z,n)
   (mul (inv (factf (sub c n) n))
@@ -3015,11 +3169,27 @@
        ($diff (mul (power arg (sub c 1))
 		   fun)
 	      arg n)))
+(defun as-15.2.5 (a b c n arg fun)
+  ;; A&S 15.2.5
+  ;; F(a-n,b;c;z) = 1/poch(c-a,n)*z^(1+a-c)*(1-z)^(c+n-a-b)
+  ;;                 *diff(z^(c-a+n-1)*(1-z)^(a+b-c)*F(a,b;c;z),z,n)
+  (assert (>= n 0))
+  (mul (inv (factf (sub c a) n))
+       (power arg (sub (add a 1) c))
+       (power (sub 1 arg)
+	      (sub (add c n) (add a b)))
+       ($diff (mul (power arg (sub (add c n)
+				   (add a 1)))
+		   (power (sub 1 arg)
+			  (sub (add a b) c))
+		   fun)
+	      arg n)))
 
 (defun as-15.2.6 (a b c n arg fun)
   ;; A&S 15.2.6
   ;; F(a,b;c+n;z) = poch(c,n)/poch(c-a,n)/poch(c-b,n)*(1-z)^(c+n-a-b)
   ;;                 *diff((1-z)^(a+b-c)*fun,z,n)
+  (assert (>= n 0))
   (mul (factf c n)
        (inv (factf (sub c a) n))
        (inv (factf (sub c b) n))
