@@ -1,0 +1,306 @@
+
+@menu
+* Introduction to Elliptic Functions and Integrals::
+* Definitions for Elliptic Functions::
+* Definitions for Elliptic Integrals::
+@end menu
+
+@node Introduction to Elliptic Functions and Integrals
+@comment  node-name,  next,  previous,  up
+
+@section Introduction to Elliptic Functions and Integrals
+
+Maxima includes support for Jacobian elliptic functions and for
+complete and incomplete elliptic integrals.  This includes symbolic
+manipulation of these functions and numerical evaluation as well.
+Definitions of these functions and many of their properties can by
+found in Abramowitz and Stegun, Chapter 16--17.  As much as possible,
+we use the definitions and relationships given there.
+
+In particular, all elliptic functions and integrals use the parameter
+@math{m} instead of the modulus @math{k} or the modular angle
+@math{\alpha}.  This is one area where we differ from Abramowitz and
+Stegun who use the modular angle for the elliptic functions.  The
+following relationships are true:
+@ifinfo
+@math{m = k^2} and @math{k = \sin(\alpha)}
+@end ifinfo
+@tex
+$$m = k^2$$ and $$k = \sin\alpha $$
+@end tex
+
+The elliptic functions and integrals are primarily intended to support
+symbolic computation.  Therefore, most of derivatives of the functions
+and integrals are known.  However, if floating-point values are given,
+a floating-point result is returned.
+
+Support for most of the other properties of elliptic functions and
+integrals other than derivatives has not yet been written.
+
+Some examples of elliptic functions:
+@example
+(C1) jacobi_sn(u,m);
+(D1)                            JACOBI_SN(u, m)
+(C2) jacobi_sn(u,1);
+(D2)                                TANH(u)
+(C3) jacobi_sn(u,0);
+(D3)                                SIN(u)
+(C4) diff(jacobi_sn(u,m),u);
+(D4)                    JACOBI_CN(u, m) JACOBI_DN(u, m)
+(C5) diff(jacobi_sn(u,m),m);
+(D5) JACOBI_CN(u, m) JACOBI_DN(u, m)
+
+      ELLIPTIC_E(ASIN(JACOBI_SN(u, m)), m)
+ (u - ------------------------------------)/(2 m)
+                     1 - m
+
+            2
+   JACOBI_CN (u, m) JACOBI_SN(u, m)
+ + --------------------------------
+              2 (1 - m)
+@end example
+
+Some examples of elliptic integrals:
+@example
+(C1) elliptic_f(phi,m);
+(D1)                          ELLIPTIC_F(PHI, m)
+(C2) elliptic_f(phi,0);
+(D2)                                  PHI
+(C3) elliptic_f(phi,1);
+                                      PHI   %PI
+(D3)                          LOG(TAN(--- + ---))
+                                       2     4
+(C4) elliptic_e(phi,1);
+(D4)                               SIN(PHI)
+(C5) elliptic_e(phi,0);
+(D5)                                  PHI
+(C6) elliptic_kc(1/2);
+                                            1
+(D6)                            ELLIPTIC_KC(-)
+                                            2
+(C7) makegamma(%);
+                                        2 1
+                                   GAMMA (-)
+                                          4
+(D7)                              -----------
+                                  4 SQRT(%PI)
+(C8) diff(elliptic_f(phi,m),phi);
+                                       1
+(D8)                         ---------------------
+                                           2
+                             SQRT(1 - m SIN (PHI))
+(C9) diff(elliptic_f(phi,m),m);
+      ELLIPTIC_E(PHI, m) - (1 - m) ELLIPTIC_F(PHI, m)
+(D9) (-----------------------------------------------
+                             m
+
+                            COS(PHI) SIN(PHI)
+                        - ---------------------)/(2 (1 - m))
+                                        2
+                          SQRT(1 - m SIN (PHI))
+@end example
+
+Support for elliptic functions and integrals was written by Raymond
+Toy.  It is placed under the terms of the General Public License (GPL)
+that governs the distribution of Maxima.
+
+@node Definitions for Elliptic Functions
+@comment  node-name,  next,  previous,  up
+
+@section Definitions for Elliptic Functions
+
+@defun JACOBI_SN (u, m)
+The Jacobian elliptic function @math{sn(u,m)}.
+@end defun
+
+@defun JACOBI_CN (u, m)
+The Jacobian elliptic function @math{cn(u,m)}.
+@end defun
+
+@defun JACOBI_DN (u, m)
+The Jacobian elliptic function @math{dn(u,m)}.
+@end defun
+
+@defun JACOBI_NS (u, m)
+The Jacobian elliptic function @math{ns(u,m) = 1/sn(u,m)}.
+@end defun
+
+@defun JACOBI_SC (u, m)
+The Jacobian elliptic function @math{sc(u,m) = sn(u,m)/cn(u,m)}.
+@end defun
+
+@defun JACOBI_SD (u, m)
+The Jacobian elliptic function @math{sd(u,m) = sn(u,m)/dn(u,m)}.
+@end defun
+
+@defun JACOBI_NC (u, m)
+The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
+@end defun
+
+@defun JACOBI_CS (u, m)
+The Jacobian elliptic function @math{cs(u,m) = cn(u,m)/sn(u,m)}.
+@end defun
+
+@defun JACOBI_CD (u, m)
+The Jacobian elliptic function @math{cd(u,m) = cn(u,m)/dn(u,m)}.
+@end defun
+
+@defun JACOBI_ND (u, m)
+The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
+@end defun
+
+@defun JACOBI_DS (u, m)
+The Jacobian elliptic function @math{ds(u,m) = dn(u,m)/sn(u,m)}.
+@end defun
+
+@defun JACOBI_DC (u, m)
+The Jacobian elliptic function @math{dc(u,m) = dn(u,m)/cn(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_SN (u, m)
+The inverse of the Jacobian elliptic function @math{sn(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_CN (u, m)
+The inverse of the Jacobian elliptic function @math{cn(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_DN (u, m)
+The inverse of the Jacobian elliptic function @math{dn(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_NS (u, m)
+The inverse of the Jacobian elliptic function @math{ns(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_SC (u, m)
+The inverse of the Jacobian elliptic function @math{sc(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_SD (u, m)
+The inverse of the Jacobian elliptic function @math{sd(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_NC (u, m)
+The inverse of the Jacobian elliptic function @math{nc(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_CS (u, m)
+The inverse of the Jacobian elliptic function @math{cs(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_CD (u, m)
+The inverse of the Jacobian elliptic function @math{cd(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_ND (u, m)
+The inverse of the Jacobian elliptic function @math{nc(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_DS (u, m)
+The inverse of the Jacobian elliptic function @math{ds(u,m)}.
+@end defun
+
+@defun INVERSE_JACOBI_DC (u, m)
+The inverse of the Jacobian elliptic function @math{dc(u,m)}.
+@end defun
+
+
+@node Definitions for Elliptic Integrals
+@comment  node-name,  next,  previous,  up
+
+@section Definitions for Elliptic Integrals
+
+@anchor{ELLIPTIC_F}
+@defun ELLIPTIC_F (phi, m)
+The incomplete elliptic integral of the first kind, defined as
+
+@ifinfo
+@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifinfo
+
+@tex
+$$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
+@end tex
+
+See also @ref{ELLIPTIC_E}, @ref{ELLIPTIC_KC}
+@end defun
+
+@anchor{ELLIPTIC_E}
+@defun ELLIPTIC_E (phi, m)
+The incomplete elliptic integral of the second kind, defined as
+@ifinfo
+@math{ELLIPTIC_E(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifinfo
+See also @ref{ELLIPTIC_E}, @ref{ELLIPTIC_EC}
+@end defun
+
+@anchor{ELLIPTIC_EU}
+@defun ELLIPTIC_EU (u, m)
+The incomplete elliptic integral of the second kind, defined as
+@ifinfo
+@math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
+
+where @math{tau = sn(u,m)} 
+@end ifinfo
+@tex
+$$\int_0^u {\rm dn}(v, m) dv  = \int_0^\tau \sqrt{{1-m t^2}\over{1-t^2}} d\t$$
+
+where $\tau = {\rm sn}(u, m)$
+@end tex
+
+
+This is related to @math{ELLIPTIC_E} by
+@ifinfo
+@math{ELLIPTIC_EU(u, m) = ELLIPTIC_E(asin(sn(u,m)),m)}
+@end ifinfo
+@tex
+$$E(u,m) = E(\phi, m)$$
+
+where $\phi = \sin^{-1} {\rm sn}(u, m),m)$
+@end tex
+See also @ref{ELLIPTIC_E}.
+@end defun
+
+@defun ELLIPTIC_PI (n, phi, m)
+The incomplete elliptic integral of the third kind, defined as
+@ifinfo
+@math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifinfo
+@tex
+$$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
+@end tex
+
+Only the derivative with respect to @math{phi} is known by MAXIMA.
+@end defun
+
+@anchor{ELLIPTIC_KC}
+@defun ELLIPTIC_KC (m)
+The complete elliptic integral of the first kind, defined as
+
+@ifinfo
+@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@end ifinfo
+
+@tex
+$$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
+@end tex
+For certain values of @math{m}, the value of the integral is known in
+terms of @math{Gamma} functions.  Use MAKEGAMMA to evaluate them.
+@end defun
+
+@anchor{ELLIPTIC_EC}
+@defun ELLIPTIC_EC (m)
+The complete elliptic integral of the second kind, defined as
+
+@ifinfo
+@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@end ifinfo
+
+@tex
+$$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
+@end tex
+For certain values of @math{m}, the value of the integral is known in
+terms of @math{Gamma} functions.  Use MAKEGAMMA to evaluate them.
+@end defun
+
