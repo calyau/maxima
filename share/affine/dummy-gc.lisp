@@ -1,6 +1,6 @@
 ;;; -*- mode: lisp; package: cl-maxima; syntax: common-lisp; Base: 10 -*-
 
-(in-package 'maxima)
+(in-package "MAXIMA")
 
 (defmacro :maybe-reset (&rest copy) copy
   nil)

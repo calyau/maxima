@@ -4,7 +4,7 @@
 ;;;     Copyright (c) 1984 by William Schelter,University of Texas     ;;;;;
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(in-package 'maxima)
+(in-package "MAXIMA")
 
 (eval-when (compile)
 	   (proclaim '(declaration values)))

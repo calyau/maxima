@@ -1,5 +1,5 @@
 ;;; -*- Package: CL-MAXIMA; Mode: LISP; Syntax: Common-lisp -*-
-(in-package 'maxima)
+(in-package "MAXIMA")
 
 ;(defun $check_associative (a b c &aux tem tem1 tem2)
 ;;  (show (dotsimp (n. a b)))

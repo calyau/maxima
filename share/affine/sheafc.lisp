@@ -5,7 +5,7 @@
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package 'maxima)
+(in-package "MAXIMA")
 
 ;(defun grobner-subset (id1 id2 &optional ( may-invert 1) &aux answ unit-ideal)
 ;  (declare   (values  answ unit-ideal))
