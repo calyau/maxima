@@ -251,7 +251,7 @@ combines products and powers of trigonometric
 and hyperbolic SINs and COSs of var into those of multiples of var.
 It also tries to eliminate these functions when they occur in
 denominators.  If var is omitted then all variables in exp are used.
-Also see the POISSIMP function (6.6).
+Also see POISSIMP.
 @example
 (%i4) TRIGREDUCE(-SIN(X)^2+3*COS(X)^2+X);
 (%o4)                        2 COS(2 X) + X + 1
