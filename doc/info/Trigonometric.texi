@@ -198,12 +198,16 @@ expansion of sums (e.g. @code{sin(x+y)}) will take place only if
 expansion of products (e.g. @code{sin(2*x)}) will take place only if
 @code{trigexpandtimes} is @code{true}.
 
+@c ===beg===
+@c x+sin(3*x)/sin(x),trigexpand=true,expand;
+@c trigexpand(sin(10*x+y));
+@c ===end===
 @example
-(%i1) X+SIN(3*X)/SIN(X),TRIGEXPAND=TRUE,EXPAND;
-                              2           2
-(%o1)                     - SIN (X) + 3 COS (X) + X
-(%i2) TRIGEXPAND(SIN(10*X+Y));
-(%o2)               COS(10 X) SIN(Y) + SIN(10 X) COS(Y)
+(%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
+                         2           2
+(%o1)               - sin (x) + 3 cos (x) + x
+(%i2) trigexpand(sin(10*x+y));
+(%o2)          cos(10 x) sin(y) + sin(10 x) cos(y)
 
 @end example
 
@@ -247,9 +251,14 @@ It also tries to eliminate these functions when they occur in
 denominators.  If @var{var} is omitted then all variables in @var{exp} are used.
 Also see @code{poissimp}.
 
+@c ===beg===
+@c trigreduce(-sin(x)^2+3*cos(x)^2+x);
+@c ===end===
 @example
-(%i4) TRIGREDUCE(-SIN(X)^2+3*COS(X)^2+X);
-(%o4)                        2 COS(2 X) + X + 1
+(%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
+               cos(2 x)      cos(2 x)   1        1
+(%o1)          -------- + 3 (-------- + -) + x - -
+                  2             2       2        2
 
 @end example
 
@@ -257,12 +266,17 @@ The trigonometric simplification routines will use declared
 information in some simple cases.  Declarations about variables are
 used as follows, e.g.
 
+@c ===beg===
+@c declare(j, integer, e, even, o, odd)$
+@c sin(x + (e + 1/2)*%pi);
+@c sin(x + (o + 1/2)*%pi);
+@c ===end===
 @example
-(%i5) DECLARE(J, INTEGER, E, EVEN, O, ODD)$
-(%i6) SIN(X + (E + 1/2)*%PI)$
-(%o6)                      COS(X)
-(%i7) SIN(X + (O + 1/2) %PI);
-(%o7)                     - COS(X)
+(%i1) declare(j, integer, e, even, o, odd)$
+(%i2) sin(x + (e + 1/2)*%pi);
+(%o2)                        cos(x)
+(%i3) sin(x + (o + 1/2)*%pi);
+(%o3)                       - cos(x)
 
 @end example
 
@@ -292,9 +306,12 @@ kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients. The
 simplifyed fraction with numerator and denominator linear in @code{sin} and @code{cos}.
 Thus @code{trigrat} linearize always when it is possible.  (written by D. Lazard).
 
+@c ===beg===
+@c trigrat(sin(3*a)/sin(a+%pi/3));
+@c ===end===
 @example
 (%i1) trigrat(sin(3*a)/sin(a+%pi/3));
-(%o1)              sqrt(3) sin(2 a) + cos(2 a) - 1
+(%o1)            sqrt(3) sin(2 a) + cos(2 a) - 1
 
 @end example
 
@@ -302,20 +319,27 @@ Here is another example (for which the function was intended); see
 [Davenport, Siret, Tournier, Calcul Formel, Masson (or in english,
 Addison-Wesley), section 1.5.5, Morley theorem)].
 
+@c ===beg===
+@c c: %pi/3 - a - b;
+@c bc: sin(a)*sin(3*c)/sin(a+b);
+@c ba: bc, c=a, a=c$
+@c ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
+@c trigrat (ac2);
+@c ===end===
 @example
-(%i2) c: %pi/3 - a - b;
-                                      %pi
-(%o2)                       - b - a + ---
-                                       3
-(%i3) bc: sin(a)*sin(3*c)/sin(a+b);
-                        sin(a) sin(3 b + 3 a)
-(%o3)                   ---------------------
-                             sin(b + a)
-(%i4) ba: bc, c=a, a=c$
-(%i5) ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
+(%i1) c: %pi/3 - a - b;
+                                    %pi
+(%o1)                     - b - a + ---
+                                     3
+(%i2) bc: sin(a)*sin(3*c)/sin(a+b);
+                      sin(a) sin(3 b + 3 a)
+(%o2)                 ---------------------
+                           sin(b + a)
+(%i3) ba: bc, c=a, a=c$
+(%i4) ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
          2       2
       sin (a) sin (3 b + 3 a)
-(%o5) -----------------------
+(%o4) -----------------------
                2
             sin (b + a)
 
@@ -334,8 +358,8 @@ Addison-Wesley), section 1.5.5, Morley theorem)].
              2     %pi
           sin (a - ---)
                     3
-(%i6) trigrat (ac2);
-(%o6) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
+(%i5) trigrat (ac2);
+(%o5) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
 
  - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
 

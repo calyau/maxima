@@ -77,11 +77,15 @@ recursively scans an @var{exp}, transforming
 subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
 
+@c ===beg===
+@c 2*(a*log(x) + 2*a*log(y))$
+@c logcontract(%);
+@c ===end===
 @example
 (%i1) 2*(a*log(x) + 2*a*log(y))$
 (%i2) logcontract(%);
-                                     2  4
-(%o3)                         a log(x  y )
+                                 2  4
+(%o2)                     a log(x  y )
 
 @end example
 

@@ -90,9 +90,12 @@ removes all occurrences of @var{exp1} from @var{exp2}.  @var{exp1}
 may be a term of @var{exp2} (if it is a sum) or a factor of @var{exp2}
 (if it is a product).
 
+@c ===beg===
+@c delete(sin(x), x+sin(x)+y);
+@c ===end===
 @example
-(%i1)  delete(sin(x),x+sin(x)+y);
-(%o1)               y + x
+(%i1) delete(sin(x), x+sin(x)+y);
+(%o1)                         y + x
 
 @end example
 
@@ -100,11 +103,15 @@ may be a term of @var{exp2} (if it is a sum) or a factor of @var{exp2}
 @var{exp1} from @var{exp2}.  If there are fewer than @var{n}
 occurrences of @var{exp1} in @var{exp2} then all occurrences will be deleted.
 
+@c ===beg===
+@c delete(a, f(a,b,c,d,a));
+@c delete(a, f(a,b,a,c,d,a), 2);
+@c ===end===
 @example
-(%i1)  delete(a,f(a,b,c,d,a));
-(%o1)             f(b, d)
-(%i2)  delete(a,f(a,b,c,d,a),2);
-(%o2)           f(b, d, a)
+(%i1) delete(a, f(a,b,c,d,a));
+(%o1)                      f(b, c, d)
+(%i2) delete(a, f(a,b,a,c,d,a), 2);
+(%o2)                     f(b, c, d, a)
 
 @end example
 
@@ -164,9 +171,24 @@ See @code{first} for more details.
 retrieves the user property indicated by @var{i} associated with
 atom @var{a} or returns @code{false} if a doesn't have property @var{i}.
 
+@c ===beg===
+@c put (%e, 'transcendental, 'type);
+@c put (%pi, 'transcendental, 'type)$
+@c put (%i, 'algebraic, 'type)$
+@c typeof (expr) := block ([q],
+@c         if numberp (expr)
+@c         then return ('algebraic),
+@c         if not atom (expr)
+@c         then return (maplist ('typeof, expr)),
+@c         q: get (expr, 'type),
+@c         if q=false
+@c         then errcatch (error(expr,"is not numeric.")) else q)$
+@c typeof (2*%e + x*%pi);
+@c typeof (2*%e + %pi);
+@c ===end===
 @example
 (%i1) put (%e, 'transcendental, 'type);
-(%o1)                      transcendental
+(%o1)                    transcendental
 (%i2) put (%pi, 'transcendental, 'type)$
 (%i3) put (%i, 'algebraic, 'type)$
 (%i4) typeof (expr) := block ([q],
@@ -176,12 +198,13 @@ atom @var{a} or returns @code{false} if a doesn't have property @var{i}.
         then return (maplist ('typeof, expr)),
         q: get (expr, 'type),
         if q=false
-        then errcatch (error (expr, "is not numeric.")) else q)$
+        then errcatch (error(expr,"is not numeric.")) else q)$
 (%i5) typeof (2*%e + x*%pi);
 x is not numeric.
-(%o5)    [[transcendental, []], [algebraic, transcendental]]
+(%o5)  [[transcendental, []], [algebraic, transcendental]]
 (%i6) typeof (2*%e + %pi);
-(%o6)       [transcendental, [algebraic, transcendental]]
+(%o6)     [transcendental, [algebraic, transcendental]]
+
 @end example
 
 @end deffn
@@ -224,11 +247,16 @@ returns a list as value.  @code{makelist} may be called as
 @code{sum}, whereas in the second case @code{makelist} is similar to @code{map}.
 Examples:
 
+@c ===beg===
+@c makelist(concat(x,i),i,1,6);
+@c makelist(x=y,y,[a,b,c]);
+@c ===end===
 @example
 (%i1) makelist(concat(x,i),i,1,6);
-(%o1)          [x1, x2, x3, x4, x5, x6]
+(%o1)               [x1, x2, x3, x4, x5, x6]
 (%i2) makelist(x=y,y,[a,b,c]);
-(%o2)            [x = a, x = b, x = c]
+(%o2)                 [x = a, x = b, x = c]
+
 @end example
 
 @end deffn
