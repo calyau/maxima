@@ -10,9 +10,11 @@ MACSYMA has several routines for handling integration.
 The INTEGRATE command makes use of most of them.  There is also the
 ANTID package, which handles an unspecified function (and its
 derivatives, of course).  For numerical uses, there is the ROMBERG
-function.  There is also an
+function; an
 adaptave integrator which uses the Newton-Cotes 8 panel quadrature
-rule, called QUANC8.  Hypergeometric Functions are being worked on,
+rule, called QUANC8; and a set of adaptive integrators from QUADPACK,
+named QUAD_QAG, QUAD_QAGS, etc.
+Hypergeometric Functions are being worked on,
 do DESCRIBE(SPECINT); for details.
 Generally speaking, MACSYMA only handles integrals which are
 integrable in terms of the "elementary functions" (rational functions,
@@ -645,3 +647,575 @@ will try halving the stepsize ROMBERGIT times before it gives up.
 is just LDEFINT with TLIMSWITCH set to TRUE.
 
 @end defun
+@defun QUAD_QAG (fun, var, a, b, key, [epsrel, [limit]])
+Numerically evaluate the integral
+
+@ifinfo
+@math{integrate(f(x), x, a, b)}
+@end ifinfo
+@tex
+$$\int_a^b {f(x) dx}$$
+@end tex
+
+using a simple adaptive integrator.
+
+The function to be integrated is @code{fun}, with dependent
+variable @code{var}, and the function is to be integrated between the
+limits @code{a} and @code{b}.  @code{key} is the integrator to be used
+and should be an integer between 1 and 6, inclusive.  The value of
+@code{key} selects the order of the Gauss-Kronrod integration rule.
+
+The numerical integration is done adaptively by subdividing the
+integration region into sub-intervals until the desired accuracy is
+achieved.
+
+The optional arguments @code{epsrel} and @code{limit} are the desired
+relative error and the maximum number of subintervals, respectively.
+@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+
+A list is returned containing the following elements:  
+@itemize
+@item
+an approximation to the integral,
+@item
+the estimated absolute error of the approximation, 
+@item
+the number integrand evaluations,
+@item
+an error code.
+@end itemize
+
+The error code is 
+@table @code
+@item 0
+if no problems were encountered; 
+@item 1
+if too many sub-intervals were done;
+@item 2
+if excessive roundoff error is detected;
+@item 3
+if extremely bad integrand behavior occurs;
+@item 6
+if the input is invalid.
+
+@end table
+
+Examples:
+@example
+        (C1) quad_qag(x^(1/2)*log(1/x),x,0,1,3);
+        (D1)  [.4444444444492108, 3.170096850288723e-9, 961, 0]
+        (C2) integrate(x^(1/2)*log(1/x),x,0,1);
+
+                   4
+        (D2)       -
+                   9
+
+@end example
+@end defun
+
+@defun QUAD_QAGS (fun, var, a, b, [epsrel, [limit]])
+
+Numerically integrate the given function using adaptive quadrature with
+extrapolation.  The function to be integrated is @code{fun}, with
+dependent variable @code{var}, and the function is to be integrated
+between the limits @code{a} and @code{b}.
+
+The optional arguments @code{epsrel} and @code{limit} are the desired
+relative error and the maximum number of subintervals, respectively.
+@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+
+A list is returned containing the following elements:  
+@itemize
+@item
+an approximation to the integral,
+@item
+the estimated absolute error of the approximation, 
+@item
+the number integrand evaluations,
+@item
+an error code.
+@end itemize
+
+The error code is 
+@table @code
+@item 0
+no problems were encountered; 
+@item 1
+too many sub-intervals were done;
+@item 2
+excessive roundoff error is detected;
+@item 3
+extremely bad integrand behavior occurs;
+@item 4
+failed to converge
+@item 5
+integral is probably divergent or slowly convergent
+@item 6
+if the input is invalid.
+
+@end table
+
+Examples:
+@example
+        (C1) quad_qags(x^(1/2)*log(1/x), x, 0 ,1);
+        (D1)   [.4444444444444448, 1.11022302462516e-15, 315, 0]
+@end example
+We that QAGS is more accurate and efficient than QAG for this integrand.
+
+@end defun
+
+@defun QUAD_QAGI (fun, var, a, inftype, [epsrel, [limit]])
+
+Numerically evaluate one of the following integrals
+
+@ifinfo
+@math{integrate(f(x), x, a, inf)}
+@end ifinfo
+@tex
+$$\int_a^\infty {f(x) dx}$$
+@end tex
+
+@ifinfo
+@math{integrate(f(x), x, minf, a)}
+@end ifinfo
+@tex
+$$\int_\infty^a {f(x) dx}$$
+@end tex
+
+@ifinfo
+@math{integrate(f(x), x, a, minf, inf)}
+@end ifinfo
+@tex
+$$\int_\infty^\infty {f(x) dx}$$
+@end tex
+
+using the Quadpack QAGI routine.  The function to be integrated is
+@code{fun}, with dependent variable @code{var}, and the function is to
+be integrated over an infinite range.
+
+The parameter @code{inftype} determines the integration interval as
+follows:
+@table @code
+@item inf
+The interval is from @code{a} to positive infinity.
+@item minf
+The interval is from negative infinity to @code{a}.
+@item both
+The interval is the entire real line.
+@end table
+
+The optional arguments @code{epsrel} and @code{limit} are the desired
+relative error and the maximum number of subintervals, respectively.
+@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+
+A list is returned containing the following elements:  
+@itemize
+@item
+an approximation to the integral,
+@item
+the estimated absolute error of the approximation, 
+@item
+the number integrand evaluations,
+@item
+an error code.
+@end itemize
+
+The error code is 
+@table @code
+@item 0
+no problems were encountered; 
+@item 1
+too many sub-intervals were done;
+@item 2
+excessive roundoff error is detected;
+@item 3
+extremely bad integrand behavior occurs;
+@item 4
+failed to converge
+@item 5
+integral is probably divergent or slowly convergent
+@item 6
+if the input is invalid.
+
+@end table
+
+Examples:
+@example
+        (C1) quad_qagi(x^2*exp(-4*x),x,0,inf);
+
+        (D1) 		    [0.03125, 2.95916102995002e-11, 105, 0]
+        (C2) integrate(x^2*exp(-4*x),x,0,inf);
+
+                              1
+        (D2)                  --
+                              32
+@end example
+
+@end defun
+
+@defun QUAD_QAWC (fun, var, c, a, b, [epsrel, [limit]])
+
+Numerically compute the Cauchy principal value of
+
+@ifinfo
+@math{integrate(f(x)/(x - c), x, a, b)}
+@end ifinfo
+@tex
+$$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
+@end tex
+
+using the Quadpack QAWC routine.  The function to be integrated is
+@code{fun/(x-c)}, with dependent variable @code{var}, and the function
+is to be integrated over the interval @code{a} to @code{b}.
+
+The optional arguments @code{epsrel} and @code{limit} are the desired
+relative error and the maximum number of subintervals, respectively.
+@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+
+
+A list is returned containing the following elements:  
+@itemize
+@item
+an approximation to the integral,
+@item
+the estimated absolute error of the approximation, 
+@item
+the number integrand evaluations,
+@item
+an error code.
+@end itemize
+
+The error code is 
+@table @code
+@item 0
+no problems were encountered; 
+@item 1
+too many sub-intervals were done;
+@item 2
+excessive roundoff error is detected;
+@item 3
+extremely bad integrand behavior occurs;
+@item 6
+if the input is invalid.
+
+@end table
+
+Examples:
+@example
+    (C1) quad_qawc(2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
+
+    (D2) 	      [- 3.130120337415925, 1.306830140249558e-8, 495, 0]
+
+    (C2) integrate(2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1), x, 0, 5);
+
+                           ALPHA
+            ALPHA       9 4                 9
+           4      LOG(------------- + -------------)
+                          ALPHA           ALPHA
+                      64 4      + 4   64 4      + 4
+    (D3) (-----------------------------------------
+                            ALPHA
+                         2 4      + 2
+
+              3 ALPHA
+              -------
+                 2            ALPHA/2
+           2 4        ATAN(4 4       )
+         - ---------------------------
+                     ALPHA
+                  2 4      + 2
+
+              3 ALPHA
+              -------
+                 2          ALPHA/2
+           2 4        ATAN(4       )   ALPHA
+         - -------------------------)/2
+                    ALPHA
+                 2 4      + 2
+    (C3) ev(%,alpha=5,numer);
+
+    (D3) 	       - 3.130120337415917
+@end example
+
+@end defun
+
+
+@defun QUAD_QAWF (fun, var, a, omega, trig, [epsabs, limit, maxp1, limlst])
+
+Numerically compute the a Fourier-type integral using the Quadpack QAWF
+routine.  The integral is
+
+@ifinfo
+@math{integrate(f(x)*w(x), x, a, inf)}
+@end ifinfo
+@tex
+$$\int_a^\infty f(x) w(x) dx$$
+@end tex
+
+The weight function w(x) is selected by @code{trig}:
+@table @code
+@item cos
+w(x) = cos(omega*x)
+@item sin
+w(x) = sin(omega*x)
+@end table
+
+The optional arguments are:
+@table @code
+@item epsabs
+Desired absolute error of approximation.  Default is 1d-10.
+@item limit
+Size of internal work array.  (@code{limit}-@code{limlst})/2 is the
+maximum number of subintervals to use.  Default is 200.
+@item maxp1
+Maximum number of Chebyshev moments.  Must be greater than 0.  Default
+is 100.
+@item limlst
+Upper bound on the number of cycles.  Must be greater than or equal to
+3.  Default is 10.
+@end table
+@code{epsabs} and @code{limit} are the desired
+relative error and the maximum number of subintervals, respectively.
+@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+
+
+A list is returned containing the following elements:  
+@itemize
+@item
+an approximation to the integral,
+@item
+the estimated absolute error of the approximation, 
+@item
+the number integrand evaluations,
+@item
+an error code.
+@end itemize
+
+The error code is 
+@table @code
+@item 0
+no problems were encountered; 
+@item 1
+too many sub-intervals were done;
+@item 2
+excessive roundoff error is detected;
+@item 3
+extremely bad integrand behavior occurs;
+@item 6
+if the input is invalid.
+
+@end table
+
+Examples:
+@example
+    (C1) quad_qawf(2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
+
+    (D2) 	      [- 3.130120337415925, 1.306830140249558e-8, 495, 0]
+
+    (C2) integrate(2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1), x, 0, 5);
+
+                           ALPHA
+            ALPHA       9 4                 9
+           4      LOG(------------- + -------------)
+                          ALPHA           ALPHA
+                      64 4      + 4   64 4      + 4
+    (D3) (-----------------------------------------
+                            ALPHA
+                         2 4      + 2
+
+              3 ALPHA
+              -------
+                 2            ALPHA/2
+           2 4        ATAN(4 4       )
+         - ---------------------------
+                     ALPHA
+                  2 4      + 2
+
+              3 ALPHA
+              -------
+                 2          ALPHA/2
+           2 4        ATAN(4       )   ALPHA
+         - -------------------------)/2
+                    ALPHA
+                 2 4      + 2
+    (C3) ev(%,alpha=5,numer);
+
+    (D3) 	       - 3.130120337415917
+@end example
+
+@end defun
+
+@defun QUAD_QAWO (fun, var, a, b, omega, trig, [epsabs, limit, maxp1, limlst])
+
+Numerically compute the integral using the Quadpack QAWO
+routine:
+
+@ifinfo
+@math{integrate(f(x)*w(x), x, a, b)}
+@end ifinfo
+@tex
+$$\int_a^b f(x) w(x) dx$$
+@end tex
+
+The weight function w(x) is selected by @code{trig}:
+@table @code
+@item cos
+w(x) = cos(omega*x)
+@item sin
+w(x) = sin(omega*x)
+@end table
+
+The optional arguments are:
+@table @code
+@item epsabs
+Desired absolute error of approximation.  Default is 1d-10.
+@item limit
+Size of internal work array.  (@code{limit}-@code{limlst})/2 is the
+maximum number of subintervals to use.  Default is 200.
+@item maxp1
+Maximum number of Chebyshev moments.  Must be greater than 0.  Default
+is 100.
+@item limlst
+Upper bound on the number of cycles.  Must be greater than or equal to
+3.  Default is 10.
+@end table
+@code{epsabs} and @code{limit} are the desired
+relative error and the maximum number of subintervals, respectively.
+@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+
+
+A list is returned containing the following elements:  
+@itemize
+@item
+an approximation to the integral,
+@item
+the estimated absolute error of the approximation, 
+@item
+the number integrand evaluations,
+@item
+an error code.
+@end itemize
+
+The error code is 
+@table @code
+@item 0
+no problems were encountered; 
+@item 1
+too many sub-intervals were done;
+@item 2
+excessive roundoff error is detected;
+@item 3
+extremely bad integrand behavior occurs;
+@item 6
+if the input is invalid.
+
+@end table
+
+Examples:
+@example
+    (C1) quad_qawo(x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
+
+    (D2) 	      [1.376043389877607, 4.72710759424899e-11, 765, 0]
+
+    (C2) rectform(integrate(x^(-1/2)*exp(-2^(-alpha)*x) * cos(x), x, 0, inf));
+
+                            ALPHA/2 - 1/2            2 ALPHA
+                 SQRT(%PI) 2              SQRT(SQRT(2        + 1) + 1)
+    (D29)        -----------------------------------------------------
+                                        2 ALPHA
+                                  SQRT(2        + 1)
+    (C3) ev(%,alpha=2,numer);
+
+    (D3) 	       1.376043390090716
+@end example
+
+@end defun
+
+@defun QUAD_QAWS (fun, var, a, b, alfa, beta, wfun, [epsabs, limit])
+
+Numerically compute the integral using the Quadpack QAWS
+routine:
+
+@ifinfo
+@math{integrate(f(x)*w(x), x, a, b)}
+@end ifinfo
+@tex
+$$\int_a^b f(x) w(x) dx$$
+@end tex
+
+The weight function w(x) is selected by @code{wfun}:
+@table @code
+@item 1
+w(x) = (x-a)^alfa*(b-x)^beta
+@item 2
+w(x) = (x-a)^alfa*(b-x)^beta*log(x-a)
+@item 3
+w(x) = (x-a)^alfa*(b-x)^beta*log(b-x)
+@item 2
+w(x) = (x-a)^alfa*(b-x)^beta*log(x-a)*log(b-x)
+@end table
+
+The optional arguments are:
+@table @code
+@item epsabs
+Desired absolute error of approximation.  Default is 1d-10.
+@item limit
+Size of internal work array.  (@code{limit}-@code{limlst})/2 is the
+maximum number of subintervals to use.  Default is 200.
+@end table
+@code{epsabs} and @code{limit} are the desired
+relative error and the maximum number of subintervals, respectively.
+@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+
+
+A list is returned containing the following elements:  
+@itemize
+@item
+an approximation to the integral,
+@item
+the estimated absolute error of the approximation, 
+@item
+the number integrand evaluations,
+@item
+an error code.
+@end itemize
+
+The error code is 
+@table @code
+@item 0
+no problems were encountered; 
+@item 1
+too many sub-intervals were done;
+@item 2
+excessive roundoff error is detected;
+@item 3
+extremely bad integrand behavior occurs;
+@item 6
+if the input is invalid.
+
+@end table
+
+Examples:
+@example
+    (C1) quad_qaws(1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1);
+
+    (D1) 	      [8.750097361672832, 1.24321522715422e-10, 170, 0]
+
+    (C2) integrate((1-x*x)^(-1/2)/(x+1+2^(-alpha)),x, -1, 1);
+
+           ALPHA
+    Is  4 2	     - 1  positive, negative, or zero?
+
+    pos;
+                                   ALPHA	     ALPHA
+                            2 %PI 2	     SQRT(2 2	   + 1)
+    (D2) 		        -------------------------------
+                                        ALPHA
+                                     4 2	  + 2
+    (C3) ev(%,alpha=4,numer);
+
+    (D3) 			       8.750097361672829
+@end example
+
+@end defun
+
