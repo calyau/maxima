@@ -5,7 +5,8 @@
 ***     All rights reserved                                            *****
 ***************************************************************************/
 
-
+kill(all);
+done;
 X^2*'DIFF(Y,X,1)+3*X*Y = SIN(X)/X;
 X^2*'DIFF(Y,X,1)+3*X*Y = SIN(X)/X$
 SOLN1:ODE2(%,Y,X);
