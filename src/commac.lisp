@@ -468,7 +468,8 @@ values")
   (let* (#+(and gcl (not gmp)) (big-chunk-size 120)
 	   #+(and gcl (not gmp)) (tentochunksize (expt 10 big-chunk-size))
 	   string)
-    (cond ((symbolp symb)(setq string (symbol-name symb)))
+    (cond ((symbolp symb)
+	   (setq string (print-invert-case symb)))
 	  ((floatp symb)
 	   (let ((a (abs symb)))
 	     (cond ((or (eql a 0.0)
@@ -500,7 +501,7 @@ values")
     (coerce string 'list)))
 
 (defun explodec (symb &aux tem sstring)
-  (setq sstring (format nil "~a" symb))
+  (setq sstring (print-invert-case symb))
 					;(setq sstring (coerce symb 'string))
   (sloop for v on (setq tem (coerce sstring 'list))
 	 do (setf (car v)(intern (string (car v)))))
@@ -512,6 +513,49 @@ values")
 
 (defun implode (lis) (implode1 lis nil))
 
+
+(defun intern-invert-case (string)
+  ;; Like read-from-string with readtable-case :invert
+  (flet ((alpha-upper-case-p (s)
+	   (not (some #'lower-case-p s)))
+	 (alpha-lower-case-p (s)
+	   (not (some #'upper-case-p s))))
+    ;; Don't explicitly add a package here.  It seems maxima sets
+    ;; *package* as needed.
+    (intern (cond ((alpha-upper-case-p string)
+		   (string-downcase string))
+		  ((alpha-lower-case-p string)
+		   (string-upcase string))
+		  (t
+		   string)))))
+
+#-gcl
+(let ((local-table (copy-readtable nil)))
+  (setf (readtable-case local-table) :invert)
+  (defun print-invert-case (sym)
+    (let ((*readtable* local-table)
+	  (*print-case* :upcase))
+      (princ-to-string sym))))
+
+#+gcl
+(defun print-invert-case (sym)
+  (let* ((str (princ-to-string sym))
+	 (have-upper nil)
+	 (have-lower nil)
+	 (converted-str 
+	  (map 'string (lambda (c)
+			 (cond ((upper-case-p c) 
+				(setf have-upper t)
+				(char-downcase c))
+			       ((lower-case-p c) 
+				(setf have-lower t)
+				(char-upcase c))
+			       (t c)))
+	       str)))
+    (if (and have-upper have-lower)
+	str
+	converted-str)))
+				      
 (defun implode1 (lis upcase &aux (ar *string-for-implode*) (leng 0))
   (declare (type string ar) (fixnum leng))
   (or (> (array-total-size ar) (setq leng (length lis)))
@@ -523,34 +567,11 @@ values")
 	 (cond ((typep v 'character))
 	       ((symbolp v) (setq v (aref (symbol-name v) 0)))
 	       ((numberp v) (setq v (code-char v))))
-	 (setf (aref ar i) (if upcase (char-upcase v) v)))
-  (intern ar))
+	 (setf (aref ar i) v))
+  (intern-invert-case ar))
 
 (defun bothcase-implode (lis  &aux tem )
-  (cond ((not (eql (car lis) #\$))
-	 (return-from bothcase-implode (implode1 lis nil))))
-  (multiple-value-bind
-	(sym there)
-      (implode1 lis nil)
-    (cond (there (if (setq tem (get sym 'upcase)) tem sym))
-	  (t
-	   ;; if all upper case lets not bother interning...
-	   (sloop for v in lis with haslower
-		  when (not (eql (char-upcase v) v))
-		  do (setq haslower t) (loop-finish)
-		  finally (or haslower (return-from bothcase-implode sym)))
-	   (multiple-value-bind
-		 (symup there)
-	       (implode1 lis t)
-	     (cond ((and there (or
-				;; not single symbols
-				(cddr lis)
-				(fboundp symup) (symbol-plist symup)))
-		       
-		    (setf (get sym 'upcase) symup)
-		    symup)
-		   (t (or there (unintern symup))
-		      sym)))))))
+  (implode1 lis nil))
 
 
 (defun list-string (strin &aux tem)

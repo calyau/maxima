@@ -879,7 +879,7 @@
 (defun $file_search (name &optional paths)
   (if (and (symbolp name)
 	   (member (getcharn name 1) '(#\& #\$)))
-      (setq name (subseq (symbol-name name) 1)))
+      (setq name (subseq (print-invert-case name) 1)))
   (if (symbolp name)  (setf name (string name)))
   (if (probe-file name) (return-from $file_search name))
   (or paths (setq paths ($append $file_search_lisp  $file_search_maxima

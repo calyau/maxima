@@ -380,7 +380,7 @@
      (cond ((null rulenum) (setq rulenum 1.)))
      (setq oname (getop name))
      (setq pgname (implode (append (%to$ (explodec oname))
-				   '(r u l e)
+				   '(|r| |u| |l| |e|)
 				   (mexploden rulenum))))
      (meta-mputprop pgname name 'ruleof)
      (meta-add2lnc pgname '$rules)

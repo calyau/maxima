@@ -374,6 +374,7 @@
 ;; except that || is a literal |.
 
 ;; Note that this function modifies LIST destructively.
+#+nil
 (defun lisp-token-fixup-case (list)
   (let* ((list (cons nil list))
 	 (todo list)
@@ -392,6 +393,9 @@
 	      (pop todo)
 	      (setq preserve (not preserve))))))))
 
+(defun lisp-token-fixup-case (list)
+  list)
+
 (defvar $bothcases t)
 (defun scan-token (flag)
   (do ((c (parse-tyipeek) (parse-tyipeek))
@@ -403,9 +407,11 @@
 	(or $bothcases  (setq c (fixnum-char-upcase c))))
     (setq flag t)))
 
-(defun scan-lisp-string () (intern (scan-string)))
+(defun scan-lisp-string ()
+  (intern (scan-string)))
 
-(defun scan-macsyma-string () (intern (scan-string #\&)))
+(defun scan-macsyma-string ()
+  (intern-invert-case (scan-string #\&)))
 
 (defun scan-string (&optional init)
   (let ((buf (or *scan-string-buffer*

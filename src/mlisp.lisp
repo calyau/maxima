@@ -2326,7 +2326,7 @@
 	 (princ "Warning - you are redefining the MACSYMA ")
 	 (if (getl fnname '(verb operators))
 	     (princ "command ") (princ "function "))
-	 (princ (stripdollar fnname))
+	 (princ (print-invert-case (stripdollar fnname)))
 	 (terpri)
 	 t)))
 

@@ -31,7 +31,7 @@
   ;; Even easier and more general is for MREAD to take
   ;; a FUNARG as the prompt. -gjc
   (format () "~A(~A~D) ~A" *prompt-prefix* 
-	  (stripdollar $inchar) $linenum *prompt-suffix*))
+	  (print-invert-case (stripdollar $inchar)) $linenum *prompt-suffix*))
 
 (defun break-prompt ()
   (declare (special $prompt))
@@ -532,7 +532,7 @@
 				   
 			     (cond ((and (symbolp v) (eql (getcharn v 1)
 							  #\&))
-				    (subseq (symbol-name v) 1))
+				    (subseq (print-invert-case v) 1))
 				   ((stringp v) v)
 				   (t
 				    (coerce (mstring v) 'string))))))
