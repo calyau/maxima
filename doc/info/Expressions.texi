@@ -877,7 +877,7 @@ evaluate to a Maxima list then the answer is left in noun form
  - the opposite of "noun", i.e. a function form which "does
 something" ("action" - for most functions the usual case).  E.g.
 INTEGRATE integrates a function, unless it is DECLAREd to be a "noun",
-in which case it represents the INTEGRAL of the function.  See NOUN,
+in which case it represents the integral of the function.  See NOUN,
 NOUNIFY, and VERBIFY.
 
 @end defvr
