@@ -98,9 +98,9 @@
 ;;	  (T `(MBUILDQ ',VARLIST ',(CAR EXPRESSIONS)))))
 
 
-(defun mbuildq (varlist expression)
-  (cond ((not ($listp varlist))
-	 (merror "First arg to `buildq' not a list: ~M" varlist)))
+(defun mbuildq (substitutions expression)
+  (cond ((not ($listp substitutions))
+	 (merror "First arg to `buildq' not a list: ~M" substitutions)))
   (mbuildq-subst
    (mapcar #'(lambda (form)             ; make a variable/value alist
 	       (cond ((symbolp form)
@@ -112,7 +112,7 @@
 		      (merror "Illegal form in variable list--`buildq': ~M"
 			      form
 			      ))))
-	   (cdr varlist))
+	   (cdr substitutions))
    expression))
 
 
@@ -190,11 +190,11 @@
 ;; otherwise it returns nil.  Notice that the list returned is an 
 ;; MLIST and hence the cdr of the return value is what gets spliced in.
 
-(defun mbuildq-splice-associate (expression varlist)
+(defun mbuildq-splice-associate (expression alist)
   (and (eq (caar expression) '$splice)
        (cdr expression)
        (null (cddr expression))
-       (let ((match (assq (cadr expression) varlist)))
+       (let ((match (assq (cadr expression) alist)))
 	 (cond ((null match) () )
 	       ((not ($listp (cdr match)))
 		(merror "~M returned ~M~%But `splice' must return a list"
