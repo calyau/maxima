@@ -12,7 +12,10 @@
 
 @node DCADRE, ELLIPT, Introduction to Numerical, Numerical
 @section DCADRE
-The following is obsolete.   To make an interface to fortran
+The following is obsolete and does not exist in Maxima 5.9.  We leave
+the documentation here for historical purposes.
+
+To make an interface to fortran
 libraries in the current MAXIMA look at the examples in
 "maxima/src/fortdef.lsp"
  - The IMSL version of Romberg integration is now available in
