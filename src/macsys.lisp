@@ -333,6 +333,8 @@
     (if (boundp '*autoconf-version*)
 	(format t "Maxima ~a (with enhancements by W. Schelter).~%Licensed under the GNU Public License (see file COPYING)~%" *autoconf-version*)
       (format t "Maxima pre59 (with enhancements by W. Schelter).~%Built with old build system. The old build system is depcrecated.~%Please see the 'for59' directory to convert to the new build system.~%Licensed under the GNU Public License (see file COPYING)~%" *autoconf-version*))
+    (if ($file_search "maxima-init.lisp") ($load "maxima-init.lisp"))
+    (if ($file_search "maxima-init.mac") ($batchload "maxima-init.mac"))
     
    (catch 'quit-to-lisp
      (in-package "MAXIMA")
