@@ -87,79 +87,126 @@
 			 (:module slatec :source-pathname "slatec"
 				  :components
 				  (
-				   ;; Utilities
 				   (:file "fdump")
 				   (:file "j4save")
-				   (:file "initds")
+				   (:file "initds"
+					  :depends-on ("xermsg"))
 				   (:file "xgetua")
-				   (:file "xermsg")
+				   (:file "xermsg"
+					  :depends-on ("fdump" "j4save" "xercnt" "xerhlt" "xerprn" "xersve"))
 				   (:file "xercnt")
 				   (:file "xerhlt")
-				   (:file "xerprn")
-				   (:file "xersve")
-				   (:file "dcsevl")
+				   (:file "xerprn"
+					  :depends-on ("xgetua"))
+				   (:file "xersve"
+					  :depends-on ("j4save"))
+				   (:file "dcsevl"
+					  :depends-on ("xermsg"))
+	     
 				   ;; Gamma function
-				   (:file "d9lgmc")
-				   (:file "dgamlm")
-				   (:file "dgamma")
+				   (:file "d9lgmc"
+					  :depends-on ("dcsevl" "initds" "xermsg"))
+				   (:file "dgamlm"
+					  :depends-on ("xermsg"))
+				   (:file "dgamma"
+					  :depends-on ("d9lgmc" "dcsevl" "dgamlm" "initds" "xermsg"))
 				   (:file "dgamln")
-				   (:file "dlngam")
+				   (:file "dlngam"
+					  :depends-on ("d9lgmc" "dgamma" "xermsg"))
+	     
 				   ;; Bessel J functions
-				   (:file "d9b0mp")
-				   (:file "d9b1mp")
-				   (:file "dbesj0")
-				   (:file "dbesj1")
+				   (:file "d9b0mp"
+					  :depends-on ("dcsevl" "initds" "xermsg"))
+				   (:file "d9b1mp"
+					  :depends-on ("dcsevl" "initds" "xermsg"))
+				   (:file "dbesj0"
+					  :depends-on ("d9b0mp" "dcsevl" "initds"))
+				   (:file "dbesj1"
+					  :depends-on ("d9b1mp" "dcsevl" "initds" "xermsg"))
 				   (:file "djairy")
 				   (:file "dasyjy")
-				   (:file "dbesj")
+				   (:file "dbesj"
+					  :depends-on ("dasyjy" "djairy" "dlngam" "xermsg"))
 				   ;; Bessel I functions
-				   (:file "dbsi0e")
-				   (:file "dbsi1e")
-				   (:file "dbesi0")
-				   (:file "dbesi1")
+				   (:file "dbsi0e"
+					  :depends-on ("dcsevl" "initds"))
+				   (:file "dbsi1e"
+					  :depends-on ("dcsevl" "initds" "xermsg"))
+				   (:file "dbesi0"
+					  :depends-on ("dbsi0e" "dcsevl" "initds" "xermsg"))
+				   (:file "dbesi1"
+					  :depends-on ("dbsi1e" "dcsevl" "initds" "xermsg"))
 				   (:file "dasyik")
-				   (:file "dbesi")
-				   ;; Bessel Y functions
-				   (:file "dbesy0")
-				   (:file "dbesy1")
+				   (:file "dbesi"
+					  :depends-on ("dasyik" "dlngam" "xermsg"))
+	     
 				   ;; Bessel J function for complex
 				   ;; arg and real order.
-				   (:file "zacai")
-				   (:file "zairy")
-				   (:file "zasyi")
-				   (:file "zbesj")
-				   (:file "zbinu")
-				   (:file "zbknu")
-				   (:file "zbuni")
-				   (:file "zmlri")
-				   (:file "zmlt")
-				   (:file "zrati")
-				   (:file "zs1s2")
-				   (:file "zseri")
-				   (:file "zshch")
-				   (:file "zsqrt")
-				   (:file "zuchk")
-				   (:file "zunhj")
-				   (:file "zuni1")
-				   (:file "zuni2")
-				   (:file "zunik")
-				   (:file "zuoik")
-				   (:file "zwrsk")
+
 				   (:file "zabs")
+				   (:file "zacai"
+					  :depends-on ("zabs" "zasyi" "zbknu" "zmlri" "zs1s2" "zseri"))
+				   (:file "zairy"
+					  :depends-on ("zabs" "zacai" "zbknu" "zexp" "zsqrt"))
+				   (:file "zasyi"
+					  :depends-on ("zabs" "zdiv" "zexp" "zmlt" "zsqrt"))
+				   (:file "zbesj"
+					  :depends-on ("zabs" "zbinu"))
+				   (:file "zbinu"
+					  :depends-on ("zabs" "zasyi" "zbuni" "zmlri" "zseri" "zuoik" "zwrsk"))
+				   (:file "zbknu"
+					  :depends-on ("dgamln" "zabs" "zdiv" "zexp" "zkscl"
+								"zlog" "zmlt" "zshch" "zsqrt" "zuchk"))
+				   (:file "zbuni"
+					  :depends-on ("zabs" "zuni1" "zuni2"))
 				   (:file "zdiv")
 				   (:file "zexp")
-				   (:file "zkscl")
-				   (:file "zlog")
+				   (:file "zkscl"
+					  :depends-on ("zabs" "zlog" "zuchk"))
+				   (:file "zlog"
+					  :depends-on ("zabs"))
+				   (:file "zmlri"
+					  :depends-on ("dgamln" "zabs" "zexp" "zlog" "zmlt"))
+				   (:file "zmlt")
+				   (:file "zrati"
+					  :depends-on ("zabs" "zdiv"))
+				   (:file "zs1s2"
+					  :depends-on ("zabs" "zexp" "zlog"))
+				   (:file "zseri"
+					  :depends-on ("dgamln" "zabs" "zdiv" "zlog" "zmlt" "zuchk"))
+				   (:file "zshch")
+				   (:file "zsqrt" :depends-on ("zabs"))
+				   (:file "zuchk")
+				   (:file "zunhj"
+					  :depends-on ("zabs" "zdiv" "zlog" "zsqrt"))
+				   (:file "zuni1"
+					  :depends-on ("zabs" "zuchk" "zunik" "zuoik"))
+				   (:file "zuni2"
+					  :depends-on ("zabs" "zairy" "zuchk" "zunhj" "zuoik"))
+				   (:file "zunik"
+					  :depends-on ("zdiv" "zlog" "zsqrt"))
+				   (:file "zuoik"
+					  :depends-on ("zabs" "zlog" "zuchk" "zunhj" "zunik"))
+				   (:file "zwrsk"
+					  :depends-on ("zabs" "zbknu" "zrati"))
+	     
 				   ;; Airy functions
-				   (:file "d9aimp")
-				   (:file "daie")
-				   (:file "dai")
+				   (:file "d9aimp"
+					  :depends-on ("dcsevl" "initds" "xermsg"))
+				   (:file "daie"
+					  :depends-on ("d9aimp" "dcsevl" "initds"))
+				   (:file "dai"
+					  :depends-on ("d9aimp" "daie" "dcsevl" "initds" "xermsg"))
 				   ;; Error functions
-				   (:file "derf")
-				   (:file "derfc")
+				   (:file "derf"
+					  :depends-on ("dcsevl" "derfc" "initds"))
+				   (:file "derfc"
+					  :depends-on ("dcsevl" "initds" "xermsg"))
 				   ;; Exponential integrals
-				   (:file "de1")
-				   (:file "dei")))))
+				   (:file "de1"
+					  :depends-on ("dcsevl" "initds" "xermsg"))
+				   (:file "dei"
+					  :depends-on ("de1"))))))
                (:module simplification :source-pathname ""
                         :components ((:file "simp") 
                                      (:file "float") 
