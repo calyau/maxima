@@ -706,6 +706,25 @@ setrgbcolor} def
 	   )))
   )
 
+(defun draw2d-discrete (f)
+  (let ((x (third f))
+	(y (fourth f)))
+    (cond 
+      ((= (length f) 4)			; [discrete,x,y]
+       (if (not ($listp x))
+	   (merror "draw2d (discrete): ~M must be a list." x))
+       (if (not ($listp y))
+	   (merror "draw2d (discrete): ~M must be a list." y))
+       (cons '(mlist) (mapcan #'list (rest x) (rest y))))
+      ((= (length f) 3)			; [discrete,xy]
+       (if (not ($listp x))
+	   (merror "draw2d (discrete): ~M must be a list." x))
+       (let ((tmp (mapcar #'rest (rest x))))
+	 (cons '(mlist) (mapcan #'append tmp))))
+      (t				; error
+       (merror 
+	"draw2d (discrete): expression is not of the form [discrete,x,y] or ~%[discrete,xy].")))))
+
 ;; arrange so that the list of points x0,y0,x1,y1,.. on the curve
 ;; never have abs(y1-y0 ) and (x1-x0) <= deltax
 
@@ -852,6 +871,8 @@ setrgbcolor} def
 (defun draw2d (f range)
   (if (and ($listp f) (equal '$parametric (cadr f)))
       (return-from draw2d (draw2d-parametric f range)))
+  (if (and ($listp f) (equal '$discrete (cadr f)))
+      (return-from draw2d (draw2d-discrete f)))
   (let* ((nticks (nth 2 ($get_plot_option '$nticks)))
 	 (yrange ($get_plot_option '|$y|))
 	 (depth (nth 2 ($get_plot_option '$adapt_depth)))
@@ -1074,6 +1095,8 @@ MT~@d)~%"
   (cond ((and (consp fun) (eq (cadr fun) '$parametric))
 	 (or range (setq range (nth 4 fun)))
 	 (setf fun `((mlist) ,fun))))
+  (cond ((and (consp fun) (eq (cadr fun) '$discrete))
+	 (setf fun `((mlist) ,fun))))
   (cond ((eq ($get_plot_option '$plot_format 2) '$ps)
          (return-from $plot2d (apply '$plot2d_ps fun range options))))
   (cond ((eq ($get_plot_option '$plot_format 2) '$openmath)
@@ -1082,8 +1105,17 @@ MT~@d)~%"
   ;; this has to come after the checks for ps and openmath 
   ;; (see bug report #834729)
   (or ($listp fun ) (setf fun `((mlist) ,fun)))	
-
-  (check-range range)
+  (let ((no-range-required t))
+    (if (not ($listp fun))
+	(setf no-range-required nil)
+	(dolist (subfun (rest fun))
+	  (if (not ($listp subfun))
+	      (setf no-range-required nil))))
+    (unless no-range-required
+      (check-range range))
+    (if (and no-range-required range)
+      ;;; second argument was really a plot option, not a range
+	($set_plot_option range)))
   (setf plot-format  ($get_plot_option '$plot_format 2))
   (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
   (if ($get_plot_option '$gnuplot_out_file 2)
@@ -1102,9 +1134,19 @@ MT~@d)~%"
     (dolist (v (cdr fun))
       (incf i)
       (setq plot-name
-	    (let ((string (coerce (mstring v) 'string)))
-	      (cond ((< (length string) 20) string)
-		    (t (format nil "Fun~a" i)))))
+	    (let ((string ""))
+	      (cond ((atom v) 
+		     (setf string (coerce (mstring v) 'string)))
+		    ((eq (second v) '$parametric)
+		     (setf string 
+			   (concatenate 
+			    'string (coerce (mstring (third v)) 'string)
+			    ", " (coerce (mstring (fourth v)) 'string))))
+		    ((eq (second v) '$discrete)
+		     (setf string (format nil "discrete~a" i)))
+		    (t (setf string (coerce (mstring v) 'string))))
+	      (cond ((< (length string) 80) string)
+		    (t (format nil "fun~a" i)))))
       (case plot-format
 	($gnuplot
 	 (if (> i 1)
@@ -1134,18 +1176,18 @@ MT~@d)~%"
 	 (format st "~%~%# \"~a\"~%" plot-name))
 	)
       (loop for (v w) on (cdr (draw2d v range )) by #'cddr
-	     do
-	     (cond ((eq v 'moveto)
-		    (cond 
-		      ((equal plot-format '$gnuplot)
-		       ;; A blank line means a discontinuity
-		       (format st "~%"))
-		      ((equal plot-format '$mgnuplot)
-		       ;; A blank line means a discontinuity
-		       (format st "~%"))
-		      (t
-		       (format st "move "))))
-		   (t  (format st "~g ~g ~%" v w))))))
+	    do
+	    (cond ((eq v 'moveto)
+		   (cond 
+		     ((equal plot-format '$gnuplot)
+		      ;; A blank line means a discontinuity
+		      (format st "~%"))
+		     ((equal plot-format '$mgnuplot)
+		      ;; A blank line means a discontinuity
+		      (format st "~%"))
+		     (t
+		      (format st "move "))))
+		  (t  (format st "~g ~g ~%" v w))))))
   (case plot-format
     ($gnuplot 
      (gnuplot-process file))
@@ -1690,9 +1732,13 @@ MT~@d)~%"
 	   (symbolp (car tem))
 	   (numberp (setq a (meval* (second tem))))
 	   (numberp (setq b (meval* (third tem))))
-	   (< a b)
-	   )
-      (merror "Bad Range ~%~M must be of the form [variable,min,max]" range))
+	   (< a b))
+      (if range
+	  (merror 
+	   "Bad range: ~M.~%Range must be of the form [variable,min,max]"
+	   range)
+	  (merror 
+	   "No range given. Must supply range of the form [variable,min,max]")))
   `((mlist) ,(car tem) ,(float a) ,(float b)))
 
 (defun $zero_fun (x y) x y 0.0)
