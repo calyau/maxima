@@ -20,7 +20,7 @@ insttestsdir = $(verpkgdatadir)/tests
 # genericdirDATA may contain subdirectories. Subdirectories will
 # be created if necessary.
 
-install-data-am: install-datafiles
+install-data-am: install-datafiles install-info-am
 install-datafiles: $(genericdirDATA)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(genericdir)
