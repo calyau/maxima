@@ -1,0 +1,42 @@
+/*
+       ***************************************************************
+       *                    Zeilberger Package                       *
+       *                                                             *
+       *      Zeilberger is a Maxima implementation of Gosper's      *
+       *      and Zeilberger's algorithm for proving and finding     *
+       *      indefinite and definite hypergeometric summation       *
+       *      identities, implementing Axel Riese's filtering        *
+       *      optimization. This is the code discussed in:           *
+       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
+       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
+       *      Kepler University, Linz, 1999.                         *
+       *                                                             *
+       *                 					     *
+       *                                                             *
+       *                        Version 2.0                          *
+       *                       March 15, 2004                        *
+       *             License:  GPL (version 2 or later)              *
+       *                                                             *
+       *                 --------------------------                  *
+       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
+       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
+       *                                                             *
+       *   Filename: settings.mac                                    *
+       *                                                             *
+       ***************************************************************
+*/
+
+/* Maxium order of the recurrence equation searched in Zeilberger's alg. */
+MAX_ORD: 5;
+
+
+/* Constant values used to set OUTPUT_FORMAT */
+SIMPLIFIED: 1;
+
+NON_SIMPLIFIED: 0;
+
+
+
+/* Flag that controls the simplification of the output */
+OUTPUT_FORMAT: NON_SIMPLIFIED;
+

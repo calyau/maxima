@@ -1,0 +1,99 @@
+/*
+       ***************************************************************
+       *                    Zeilberger Package                       *
+       *                                                             *
+       *      Zeilberger is a Maxima implementation of Gosper's      *
+       *      and Zeilberger's algorithm for proving and finding     *
+       *      indefinite and definite hypergeometric summation       *
+       *      identities, implementing Axel Riese's filtering        *
+       *      optimization. This is the code discussed in:           *
+       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
+       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
+       *      Kepler University, Linz, 1999.                         *
+       *                                                             *
+       *                 					     *
+       *                                                             *
+       *                        Version 2.0                          *
+       *                       March 15, 2004                        *
+       *             License:  GPL (version 2 or later)              *
+       *                                                             *
+       *                 --------------------------                  *
+       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
+       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
+       *                                                             *
+       *   Filename:  testZeilberger.mac                             *
+       *                                                             *
+       ***************************************************************
+*/
+
+/* Zeiberger's Algorithm's Test File */
+
+
+f1 : binomial(n,k);
+
+f2 : binomial(n,k)^2;
+
+f3 : binomial(n,k)^3;
+
+f4 : binomial(n,k)^4;
+
+f5 : binomial(n,k)^5;
+
+f6 : binomial(n,k)^6;
+
+f7 : binomial(n,k)^7;
+
+f8 : binomial(n,k)^8;
+
+f9: binomial(n,k)^9;
+
+f10: binomial(n,k)^10;
+
+/* Binomial theorem */
+h1: binomial(n,k)*x^k;
+
+/* Vandermonde identity recurrence */
+h2: binomial(a, k)* binomial(b, n-k);
+
+/* Dixon's identity */
+h3: binomial(n+b, n+k)* binomial(n+c, c+k)*binomial(b+c, b+k)*(-1)^k;
+
+/* Karlsson-Gosper identity 1 */
+h4: binomial(n,k)*(n-1/4)!/(n-k-1/4)!/(2*n+k + 1/4)!*9^(-k);
+
+/* Karlsson-Gosper identity 2 */
+h5: binomial(n,k) * (n-1/4)! / (n-k-1/4)! / (2*n+k+5/4)! * 9^(-k);
+
+/* Wilson polynomials recurrence */
+h6: binomial(n,k) * (n+a+b+c+d-2+k)! * (a+x+k-1)! * (a-x+k-1)! /
+               (n+a+b+c+d-2)! / (a+b+k-1)! / (a+c+k-1)! / (a+d+k-1)! * (-1)^k;
+
+/* Laguerre-Orthogonality */
+h7: (k+k2)! * (n1)! * (n2)! / (k)! / (n1-k)! / (k2)! / (n2-k2)! / 
+                (k)! / (k2)! * (-1)^k;
+
+/*  Fibonacci-Recurrence */
+h8: (-k+n)! / k! / (-2*k+n)!;
+
+/* Trinomial coefficients */
+h9: n! / k! / (k+m)! / (-2*k-m+n)!;
+
+/*  First special case of Strehl identity (MEMO, Feb 25, 1992) */
+h10: binomial(n, k)^2 * binomial( 2*k, k);
+
+
+/* Second special case of Strehl identity (MEMO, Feb 25, 1992) */ 
+h11: binomial(n, k)^2 * binomial( 2*k, k+a);
+
+/* Third special case of Strehl identity (MEMO, Feb 25, 1992) */
+h12: binomial(n, k)^2 * binomial( 2*k, k) * binomial(2*k,n-k);
+
+/* Fibonacci recurrence */
+h13: (n+k)! * n! / k!^3 / (n-k)!^2;
+
+
+/* Debugging examples */
+d1 : (2*n+k-1)!/(4*n+2*k)!;
+
+d2 : (3*n+k-1)!/(6*n+2*k)!;
+

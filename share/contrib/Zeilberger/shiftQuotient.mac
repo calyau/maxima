@@ -1,0 +1,190 @@
+/*
+       ***************************************************************
+       *                    Zeilberger Package                       *
+       *                                                             *
+       *      Zeilberger is a Maxima implementation of Gosper's      *
+       *      and Zeilberger's algorithm for proving and finding     *
+       *      indefinite and definite hypergeometric summation       *
+       *      identities, implementing Axel Riese's filtering        *
+       *      optimization. This is the code discussed in:           *
+       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
+       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
+       *      Kepler University, Linz, 1999.                         *
+       *                                                             *
+       *                 					     *
+       *                                                             *
+       *                        Version 2.0                          *
+       *                       March 15, 2004                        *
+       *             License:  GPL (version 2 or later)              *
+       *                                                             *
+       *                 --------------------------                  *
+       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
+       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
+       *                                                             *
+       *   Filename: shiftQuotient.mac                               *
+       *                                                             *
+       ***************************************************************
+*/
+
+/* Routines for computing:                                                 */
+/* i) application of a linear recurrence operator on a hypergeometric term */
+/* ii) shift quotient of a hypergeometric term                             */
+
+/* by Fabrizio Caruso                                                      */
+                                                                                                                             
+/* Copyrighted to Fabrizio Caruso and to the RISC Combinatorics Group */
+/* Johannes Kepler Universitaet, Linz, Austria                        */
+
+
+dependent(expr,var) :=
+  block([res,count],
+    if(expr=var) then
+      return(TRUE)
+    else
+      if(atom(expr)) then
+        return(FALSE)
+      else
+        (
+        res:FALSE,
+    
+        for count:1 unless (res=TRUE)or(count>length(expr)) do
+           (
+           res : dependent(part(expr,count),var)
+
+           ),
+        return(res)
+        )
+);
+       
+
+poly2list(pol) :=
+   block(
+   if atom(pol) or not(operatorp(pol,"*")) then
+     return([pol])
+   else
+     return(cons(first(pol),poly2list(pol/first(pol))))
+   );
+
+extractConstant(polyList,var) :=
+   block([resConst, resDep,i],
+   resDep : 1,
+   resConst : 1,
+   for i : 1 thru length(polyList) do
+      if (atom(polyList[i]) and polyList[i]=var) or 
+         (not(atom(polyList[i])) and dependent(polyList[i],var)) then
+         resDep : resDep * polyList[i]
+      else
+         resConst : resConst * polyList[i],
+   return([resDep,resConst])
+   );
+
+
+/* It computes the rat. factor out of the appl. of a lin. op. to a hyp. seq. */
+niceForm(hyp,var,parName,ord,sumVar) :=
+    block(
+    [shQuo,numConst,denConst,num,den,res],    
+
+    res:parName[ord],
+    shQuo : shiftQuo(hyp,var),
+
+    numConst : extractConstant(poly2list(factor(num(shQuo))),sumVar),
+    denConst : extractConstant(poly2list(factor(denom(shQuo))),sumVar),
+
+    num : numConst[1],
+    den : denConst[1],
+    shQuo : num/den,
+    for i : ord step -1 thru 1 do
+      res : xthru(parName[i-1] + factor(shiftFactPoly(shQuo,var,i-1))*res),
+    return([res,numConst[2],denConst[2]])
+    );
+
+/* It computes the rat. factor out of the appl. of a lin. op. to a hyp. seq. */
+niceFormDB(hyp,var,parName,ord) :=
+    block(
+    [shQuo,num,den,res],    
+
+    res:parName[ord],
+    shQuo : shiftQuo(hyp,var),
+    print("Shift quotient computed!"),
+    print("Order : ", ord),
+    for i : ord step -1 thru 1 do
+      (
+      res : xthru(parName[i-1] + shiftFactPoly(shQuo,n,i-1)*res),
+      print("i : ", i)
+      ),
+    return(res)
+    );
+
+
+
+shiftFactPoly(expr,k,j) :=
+  if atom(expr) then
+    subst(k+j,k,expr)
+  else
+  if op(expr) = "/" then
+     shiftFactPoly(first(expr),k,j)*shiftFactPoly(second(expr),k,j)^(-1) 
+  else
+  if op(expr) = "*" then
+     product(shiftFactPoly(part(expr,i),k,j),i,1,length(expr)) 
+  else
+  if op(expr) = "^" then
+     if integerp(second(expr)) then 
+         shiftFactPoly(first(expr),k,j)^second(expr)
+     else 
+        0
+  else
+    expand(subst(k+j,k,expr));     
+     
+
+
+
+shiftQuo(expr,k) :=
+  if freeof(k,expr) then
+     1
+  else
+     if expr = k then
+       (k+1)/k
+     else
+     if op(expr) = "*" then
+       product(shiftQuo(part(expr,i),k),i,1,length(expr))
+     else
+     if op(expr) = "//" then
+       shiftQuo(first(expr),k)*shiftQuo(second(expr),k)^(-1)
+     else
+     if op(expr) = "^" then
+       if freeof(k,first(expr)) then     
+         first(expr)^leadCoeff(second(expr),k)
+       else 
+         shiftQuo(first(expr),k)^second(expr)
+     else
+     if op(expr) = "!" then
+        if leadCoeff(first(expr),k)>0 then           
+          product(factor(first(expr)+i),i,1,leadCoeff(first(expr),k))
+        else
+           1/product(factor(first(expr)-i+1), 
+                     i,1,-leadCoeff(first(expr),k))
+     else
+     if op(expr) = binomial then
+        shiftQuo(factorial(first(expr)),k)/           
+           (shiftQuo(factorial(first(expr)-second(expr)),k)*   
+            shiftQuo(factorial(second(expr)),k))
+     else
+       shiftFactPoly(expr,k,1)/expr; 
+
+
+testOld(hyp,ord) :=
+   frat(parShift(hyp,n,a,ord),k);
+
+
+testNewRaw(hyp,ord) :=
+   shiftQuo(niceForm(hyp,n,a,ord),k);
+
+testNew(hyp,ord) := 
+  block(
+
+  rs:testNewRaw(hyp,ord),
+  return(shiftQuo(hyp/denom(res),k))
+  );
+
+
+

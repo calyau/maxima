@@ -1,0 +1,44 @@
+/*
+       ***************************************************************
+       *                    Zeilberger Package                       *
+       *                                                             *
+       *      Zeilberger is a Maxima implementation of Gosper's      *
+       *      and Zeilberger's algorithm for proving and finding     *
+       *      indefinite and definite hypergeometric summation       *
+       *      identities, implementing Axel Riese's filtering        *
+       *      optimization. This is the code discussed in:           *
+       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
+       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
+       *      Kepler University, Linz, 1999.                         *
+       *                                                             *
+       *                 					     *
+       *                                                             *
+       *                        Version 2.0                          *
+       *                       March 15, 2004                        *
+       *             License:  GPL (version 2 or later)              *
+       *                                                             *
+       *                 --------------------------                  *
+       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
+       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
+       *                                                             *
+       *   Filename: testGosper.mac                                  *
+       *                                                             *
+       ***************************************************************
+*/
+
+/* Gosper's algorithm's Test File */
+
+g1:(-1)^k*k/(4*k^2-1);
+
+g2:1/(4*k^2-1);
+
+g3:x^k;
+
+g4:(-1)^k*a!/(k!*(a-k)!);
+
+g5:k*k!;
+
+g6:(k+1)*k!/(k+1)!;
+
+g7:1/((a-k)!*k!);
+

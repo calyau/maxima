@@ -1,0 +1,22 @@
+
+dir : "C:/maxima/Zeilberger/";
+
+modLoad(modName) :=
+  load(concat(dir,modName));
+
+modLoad("settings.mac");
+
+modLoad("algUtil.mac");
+modLoad("shiftQuotient.mac");
+modLoad("compatible.mac");
+
+modLoad("norm.mac");
+modLoad("makeGosperForm.mac");
+
+modLoad("GosperEq.mac");
+
+modLoad("Gosper.mac");
+modLoad("Zeilberger.mac");
+
+modLoad("testZeilberger.mac");
+

@@ -1,0 +1,75 @@
+/*
+       ***************************************************************
+       *                    Zeilberger Package                       *
+       *                                                             *
+       *      Zeilberger is a Maxima implementation of Gosper's      *
+       *      and Zeilberger's algorithm for proving and finding     *
+       *      indefinite and definite hypergeometric summation       *
+       *      identities, implementing Axel Riese's filtering        *
+       *      optimization. This is the code discussed in:           *
+       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
+       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
+       *      Kepler University, Linz, 1999.                         *
+       *                                                             *
+       *                 					     *
+       *                                                             *
+       *                        Version 2.0                          *
+       *                       March 15, 2004                        *
+       *             License:  GPL (version 2 or later)              *
+       *                                                             *
+       *                 --------------------------                  *
+       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
+       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
+       *                                                             *
+       *   Filename:  debug.mac                                      *
+       *                                                             *
+       ***************************************************************
+*/
+
+/* RISC Institute, Linz, Austria */
+/* by Fabrizio Caruso            */
+                                                                                                                             
+/* Copyrighted to Fabrizio Caruso and to the RISC Combinatorics Group */
+/* Johannes Kepler Universitaet, Linz, Austria                        */
+
+
+checkZeilbergerVerbose(f,ZRes,k,n) :=
+   block(
+      [ZAnsatzOrder, parf, GsummF, _aux],
+
+      ZAnsatzOrder: length(ZRes[2]),
+      print("ZAnsatzOrder: ", ZAnsatzOrder),
+      parF : parShift(f,n,"_aux",ZAnsatzOrder-1),
+      print("Parametric input : " , parF),
+      GsummF : subst(makelist("_aux"[i]=ZRes[2][i+1],i,0,ZAnsatzOrder-1),parF),
+      print("Gosper summable function : " , GsummF),
+      print("Telescoping solution: " , ZRes[1]),
+      print("Shifted telescoping solution: " , subst(k+1,k,ZRes[1])),
+      ratsimp(minfactorial(makefact(subst(k+1,k,ZRes[1])-ZRes[1]-GsummF)))       
+      );
+
+
+checkZeilberger(f,ZRes,k,n) :=
+   block(
+      [ZAnsatzOrder, parf, GsummF, _aux],
+
+      ZAnsatzOrder: length(ZRes[2]),
+      parF : parShift(f,n,"_aux",ZAnsatzOrder-1),
+      GsummF : subst(makelist("_aux"[i]=ZRes[2][i+1],i,0,ZAnsatzOrder-1),parF),
+      ratsimp(minfactorial(makefact(subst(k+1,k,ZRes[1])-ZRes[1]-GsummF)))       
+      );
+
+
+ if mode = "very" or mode = "debugging" then
+     sysSol: SolveZSysVerbose( Gpoly,_g,GAnsatzDegree+1,_z,ZAnsatzDegree+1,k)
+ else if  mode = "linsys" then
+        sysSol: SolveZSysVerboseSys(Gpoly,_g,GAnsatzDegree+1,_z,ZAnsatzDegree+1,k))
+      else
+        sysSol: SolveZSys(Gpoly,_g,GAnsatzDegree+1,_z,ZAnsatzDegree+1,k),
+
+
+
+
+
+
+
