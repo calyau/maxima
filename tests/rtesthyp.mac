@@ -399,3 +399,28 @@ hgfred([2,2],[3],z);
 hgfred([3,3],[4],z);
 3*(1/((1-z)^2*z)-2/((1-z)*z^2)-2*log(1-z)/z^3)/2$
 
+/*
+ * A&S 15.3.9:
+ * F(a,b;c;z) = A*z^(-a)*F(a,a-c+1;a+b-c+1;1-1/z)
+ *              + B*(1-z)^(c-a-b)*z^(a-c)*F(c-a,1-a;c-a-b+1,1-1/z)
+ *
+ * where A = gamma(c)*gamma(c-a-b)/gamma(c-a)/gamma(c-b)
+ *       B = gamma(c)*gamma(a+b-c)/gamma(a)/gamma(b)
+ *
+ * F(2,b;3;z) = A*z^(-2)*F(2,0;b;1-1/z) + B*(1-z)^(1-b)*z^(-1)*F(1,-1;2-b;1-1/z)
+ * where A = gamma(3)*gamma(1-b)/gamma(1)/gamma(3-b) = 2*gamma(1-b)/gamma(3-b)
+ *       B = gamma(3)*gamma(b-1)/gamma(2)/gamma(b) = 2*gamma(b-1)/gamma(b)
+ *
+ * And we know that F(2,0;b;1-1/z) = 1 and 
+ * F(1,-1;2-b;1-1/z) = jacobi_p(1,1-b,b-2,1-2*(1-1/z))/(2-b).
+ *
+ * This tests geredf in hyp.lisp.
+ *
+ */
+declare(ia,integer,ib,integer,ic,integer);
+done$
+
+hgfred([2,ib],[3],z);
+2*jacobi_p(1,1-ib,ib-2,1-2*(1-1/z))*gamma(ib-1)*(1-z)^(1-ib)/((2-ib)*gamma(ib)*z)
+	+2*gamma(1-ib)/(gamma(3-ib)*z^2)$
+
