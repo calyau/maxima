@@ -738,7 +738,7 @@
      ;; Derivative wrt to order n.  A&S 9.1.64.  Do we really want to
      ;; do this?  It's quite messy.
      ;;
-     ;; J[n](x)*log(x) - (x/2)^n*sum((-1)^k*psi(n+k+1)/gamma(n+k+1)*(z^2/4)^k/k!,k,0,inf)
+     ;; J[n](x)*log(x/2) - (x/2)^n*sum((-1)^k*psi(n+k+1)/gamma(n+k+1)*(z^2/4)^k/k!,k,0,inf)
      ((mplus)
       ((mtimes simp)
        ((%bessel_j simp) n x)
@@ -977,7 +977,21 @@
 
 (defprop %bessel_y
     ((n x)
-     ((%derivative) ((%bessel_y simp) n x) n 1)
+     ;; A&S 9.1.65
+     ;;
+     ;; cot(n*%pi)*[diff(bessel_j(n,x),n)-%pi*bessel_y(n,x)]
+     ;;  - csc(n*%pi)*diff(bessel_j(-n,x),n)-%pi*bessel_j(n,x)
+     ((mplus simp)
+      ((mtimes simp) $%pi ((%bessel_j simp) n x))
+      ((mtimes simp)
+       -1
+       ((%csc simp) ((mtimes simp) $%pi n))
+       ((%derivative simp) ((%bessel_j simp) ((mtimes simp) -1 n) x) x 1))
+      ((mtimes simp)
+       ((%cot simp) ((mtimes simp) $%pi n))
+       ((mplus simp)
+	((mtimes simp) -1 $%pi ((%bessel_y simp) n x))
+	((%derivative simp) ((%bessel_j simp) n x) n 1))))
      ((mplus)
       ((%bessel_y) ((mplus) -1 n) x)
       ((mtimes) -1 n ((%bessel_y) n x) ((mexpt) x -1))))
@@ -1025,7 +1039,22 @@
 
 (defprop %bessel_i
     ((n x)
-     ((%derivative) ((%bessel_i simp) n x) n 1)
+     ;; A&S 9.6.42
+     ;;
+     ;; I[n](x)*log(x/2) - (x/2)^n*sum(psi(n+k+1)/gamma(n+k+1)*(z^2/4)^k/k!,k,0,inf)
+     ((mplus)
+      ((mtimes simp)
+       ((%bessel_i simp) n x)
+       ((%log) ((mtimes) ((rat simp) 1 2) x)))
+      ((mtimes simp) -1
+       ((mexpt simp) ((mtimes simp) x ((rat simp) 1 2)) n)
+       ((%sum simp)
+	((mtimes simp)
+	 ((mexpt simp) ((mfactorial simp) |$%k|) -1)
+	 (($psi simp) ((mplus simp) 1 |$%k| n))
+	 ((mexpt simp) ((%gamma simp) ((mplus simp) 1 |$%k| n)) -1)
+	 ((mexpt simp) ((mtimes simp) x x ((rat simp) 1 4)) |$%k|))
+	|$%k| 0 $inf)))
      ((mplus)
       ((%bessel_i) ((mplus) -1 n) x)
       ((mtimes) -1 n ((%bessel_i) n x) ((mexpt) x -1))))
@@ -1067,7 +1096,22 @@
 
 (defprop %bessel_k
     ((n x)
-     ((%derivative) ((%bessel_k simp) n x) n 1)
+     ;; A&S 9.6.43
+     ;;
+     ;; %pi/2*csc(n*%pi)*['diff(bessel_i(-n,x),n)-'diff(bessel_i(n,x),n)]
+     ;;    - %pi*cot(n*%pi)*bessel_k(n,x)
+     ((mplus simp)
+      ((mtimes simp) -1 $%pi
+       ((%bessel_k simp) n x)
+       ((%cot simp) ((mtimes simp) $%pi n)))
+      ((mtimes simp)
+       ((rat simp) 1 2)
+       $%pi
+       ((%csc simp) ((mtimes simp) $%pi n))
+       ((mplus simp)
+	((%derivative simp) ((%bessel_i simp) ((mtimes simp) -1 n) x) n 1)
+	((mtimes simp) -1
+	 ((%derivative simp) ((%bessel_i simp) n x) n 1)))))
      ((mplus simp)
       ((mtimes) -1 ((%bessel_k) n x))
       ((mtimes) -1 n ((mexpt) x -1)
