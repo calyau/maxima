@@ -235,36 +235,21 @@ the dot operator.
 automatically.
 
 @code{evfun} makes ai known to the @code{ev} function so that it will get applied
-if its name is mentioned.  Initial evfuns are
-
-@c NEED TO CHECK THIS LIST !!!
-@example
-factor, trigexpand,
-trigreduce, bfloat, ratsimp, ratexpand, and radcan
-@end example
+if its name is mentioned.  See @code{evfun}.
 
 @code{evflag} makes ai known to the @code{ev} function so that it will be bound to
-@code{true} during the execution of @code{ev} if it is mentioned.  Initial evflags
-are
-@c NEED TO CHECK THIS LIST !!!
-
-@example
-float, pred, simp, numer, detout, exponentialize, demoivre,
-keepfloat, listarith, trigexpand, simpsum, algebraic,
-ratalgdenom, factorflag, %emode, logarc, lognumer,
-radexpand, ratsimpexpons, ratmx, ratfac, infeval, %enumer,
-programmode, lognegint, logabs, letrat, halfangles,
-exptisolate, isolate_wrt_times, sumexpand, cauchysum,
-numer_pbranch, m1pbranch, dotscrules, and logexpand
-@end example
+@code{true} during the execution of @code{ev} if it is mentioned.  See @code{evflag}.
 
 @code{bindtest} causes ai to signal an error if it ever is used in a
 computation unbound.  @code{declare ([var1, var2, ...], bindtest)} causes
 Maxima to give an error message whenever any of the vari occur
 unbound in a computation.
+
 Maxima currently recognizes and uses the following features of
 objects:
 
+@c THIS LIST AND NEXT ONE COMPRISE features !!!
+@c SHOULD GIVE A REFERENCE TO features INSTEAD OF LISTING !!!
 @c NEED TO CHECK THIS LIST !!!
 @example
 even, odd, integer, rational, irrational, real, imaginary,
@@ -281,8 +266,6 @@ commutative (or symmetric), antisymmetric, lassociative and
 rassociative
 @end example
 
-@code{declare (f, increasing)} is in all respects equivalent to
-@code{assume (kind (f, increasing))}.
 The ai and fi may also be lists of
 objects or features.  The command @code{featurep (object, feature)}
 may be used
@@ -361,22 +344,45 @@ The exponential function.  It is represented internally as
 @code{%e^x}.
 
 @code{demoivre} if @code{true} will cause @code{%e^(a+b*%i)} to become
-@code{%e^a*(cos(b)+%i*sin(b))} if @code{b} is free of @code{%i}.  @code{a} and @code{b} are not expanded.
+@code{%e^a*(cos(b)+%i*sin(b))} if @code{b} is free of @code{%i}. See @code{demoivre}.
 
-@c %emode AND %enumer NEED THEIR OWN DESCRIPTIONS !!!
-@code{%emode} (default value: @code{true}) when @code{true}, 
-@code{%e^(%pi*%i*x)} will be simplified as
-follows: it will become @code{cos (%pi*x)+%i * sin (%pi*x)} if @code{x} is an integer or
-a multiple of 1/2, 1/3, 1/4, or 1/6 and thus will simplify further.
-For other numerical @code{x} it will become @code{%e^(%pi*%i*y)} where @code{y} is @code{x-2*k}
-for some integer @code{k} such that @code{abs(y)<1}.  If @code{%emode} is @code{false} no
-simplification of @code{%e^(%pi*%i*x)} will take place.
+@code{%emode}, when @code{true}, 
+causes @code{%e^(%pi*%i*x)} to be simplified. See @code{%emode}.
 
-@code{%enumer} (default value: @code{false}) when @code{true} will cause @code{%e} to be converted into
-2.718...  whenever @code{numer} is @code{true}.  The default is that this conversion
-will take place only if the exponent in @code{%e^x} evaluates to a number.
+@code{%enumer}, when @code{true} will cause @code{%e} to be replaced by
+2.718...  whenever @code{numer} is @code{true}. See @code{%enumer}.
 
 @end defun
+
+@defvar %emode
+Default value: @code{true}
+
+When @code{%emode} is @code{true},
+@code{%e^(%pi*%i*x)} is simplified as
+follows: it is expressed as @code{cos (%pi*x) + %i*sin (%pi*x)} if @code{x} is an integer or
+a multiple of 1/2, 1/3, 1/4, or 1/6, and thus further simplified.
+For other numerical @code{x},
+it is expressed as @code{%e^(%pi*%i*y)} where @code{y} is @code{x-2*k}
+for some integer @code{k} such that @code{abs(y) < 1}.  
+
+When @code{%emode} is @code{false}, no
+special simplification of @code{%e^(%pi*%i*x)} is carried out.
+
+@end defvar
+
+@defvar %enumer
+Default value: @code{false}
+
+When @code{%enumer} is @code{true},
+@code{%e} is replaced by its numeric value
+2.718...  whenever @code{numer} is @code{true}. 
+
+When @code{%enumer} is @code{false}, this substitution is carried out
+only if the exponent in @code{%e^x} evaluates to a number.
+
+See also @code{ev} and @code{numer}.
+
+@end defvar
 
 @defvar exptisolate
 Default value: @code{false}
@@ -394,15 +400,87 @@ for @code{%e^x} in @code{%e^(a*x)} to take place.
 
 @end defvar
 
-@defun freeof (x1, x2, ..., expr)
-Returns @code{true} if the xi do not occur in @code{expr}
-and @code{false} otherwise.  The xi are atoms or they may be subscripted
-names, functions (e.g. @code{sin(x)}), or operators enclosed in "s.  If
-'var' is a "dummy variable" of @code{expr}, then @code{freeof (var, expr)} will
-return @code{true}.  "Dummy variables" are mathematical things like the index
-of a sum or product, the limit variable, and the definite integration
-variable.  Example: @code{freeof (i, 'sum (f(i), i, 0, n))} returns @code{true}.  Do
-@code{example (freeof)} for more examples.
+@defun freeof (x_1, x_2, x_3, ..., expr)
+Returns @code{true}
+if no subexpression of @code{expr} is equal to @code{x_1}, or @code{x_2}, or @code{x_3}, ..., 
+and @code{false} otherwise.
+
+@code{x_1}, etc., may be names of functions and variables, subscripted names,
+operators (enclosed in double quotes), or general expressions.
+@code{freeof} evaluates its arguments.
+@code{freeof} operates only on @code{expr} as it stands (after evaluation) and
+does not attempt to determine if some equivalent expression would give a different result.
+
+If @code{x} is a dummy variable of @code{expr}, then @code{freeof (x, expr)} will
+return @code{true}. 
+A variable is a dummy variable in an expression if it has no binding outside of the expression.
+Dummy variables include
+the index of a sum or product, the limit variable in @code{limit},
+the integration variable in the definite integral form of @code{integrate},
+the original variable in @code{laplace},
+formal variables in @code{at} expressions,
+and arguments in @code{lambda} expressions.
+
+@itemize @bullet
+@item
+Arguments are names of functions, variables, subscripted names, operators, and expressions.
+@code{freeof (a, b, expr)} is equivalent to
+@code{freeof (a, expr) and freeof (b, expr)}.
+
+@example
+(%i1) expr: z^3 * cos (a[1]) * b^(c+d);
+                                 d + c  3
+(%o1)                   cos(a ) b      z
+                             1
+(%i2) freeof (z, expr);
+(%o2)                         false
+(%i3) freeof (cos, expr);
+(%o3)                         false
+(%i4) freeof (a[1], expr);
+(%o4)                         false
+(%i5) freeof (cos (a[1]), expr);
+(%o5)                         false
+(%i6) freeof (b^(c+d), expr);
+(%o6)                         false
+(%i7) freeof ("^", expr);
+(%o7)                         false
+(%i8) freeof (w, sin, a[2], sin (a[2]), b*(c+d), expr);
+(%o8)                         true
+@end example
+
+@item
+@code{freeof} evaluates its arguments.
+
+@example
+(%i1) expr: (a+b)^5$
+(%i2) c: a$
+(%i3) freeof (c, expr);
+(%o3)                         false
+@end example
+
+@item
+@code{freeof} does not consider equivalent expressions.
+
+@example
+(%i1) expr: (a+b)^5$
+(%i2) expand (expr);
+          5        4       2  3       3  2      4      5
+(%o2)    b  + 5 a b  + 10 a  b  + 10 a  b  + 5 a  b + a
+(%i3) freeof (a+b, %);
+(%o3)                         true
+(%i4) freeof (a+b, expr);
+(%o4)                         false
+@end example
+
+@item A summation or integration is free of its dummy variable.
+
+@example
+(%i1) freeof (i, 'sum (f(i), i, 0, n));
+(%o1)                         true
+(%i2) freeof (x, 'integrate (x^2, x, 0, 1));
+(%o2)                         true
+@end example
+@end itemize
 
 @end defun
 
