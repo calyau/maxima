@@ -234,7 +234,7 @@ Examples:
 @end defun
 
 @defun member (exp, list)
-returns @code{true} if @var{exp} occurs as a member of @vare{list} (not
+returns @code{true} if @var{exp} occurs as a member of @var{list} (not
 within a member).  Otherwise @code{false} is returned.  @code{member} also works on
 non-list expressions, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
 
