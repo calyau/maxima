@@ -77,7 +77,7 @@ declare("@L",additive);
   temp1:ev(temp1|_vec,noeval),
   temp1:ev(temp1,eval),
   temp2:rename(forma),
-  temp2:ev(forma|_vec,noeval),
+  temp2:ev(temp2|_vec,noeval),
   temp2:ev(temp2,eval)@ind1,
   temp1+temp2));
 

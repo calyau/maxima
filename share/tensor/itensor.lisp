@@ -561,15 +561,15 @@
 				 ;contract G. If F is Kronecker delta then see
                                  ;which of the covariant, contravariant, or
                                  ;derivative indices matches those in G.
-	     (AND (CDDDR F) (RETURN NIL))
+	     (WHEN (CDDDR F) (RETURN NIL))
 	     (SETQ A (CDADR F)
 		   B (CDADDR F)
 		   C (CADR G)
 		   D (CADDR G)
 		   E (CDDDR G))
 	     (COND
-	      ((WHEN (EQ (CAAR F) '%KDELTA) (EQ (CAAR F) '$KDELTA))
-	       (WHEN (EQ (LENGTH A) 1) (RETURN NIL))
+	      ((OR (EQ (CAAR F) '%KDELTA) (EQ (CAAR F) '$KDELTA))
+	       (AND (> (LENGTH A) 1) (RETURN NIL))
 	       (SETQ A (CAR A) B (CAR B))
 	       (RETURN
 		(SIMPLIFYA (COND ((AND (CDR C) (AND (NOT (NUMBERP B)) (MEMQ B (CDR C))))
