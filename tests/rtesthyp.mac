@@ -638,3 +638,29 @@ b*(1-z)^(-b-1)*z/(a+2)+1/(1-z)^b$
 hgfred([b,a+4],[a+2],z);
 b*(b+1)*(1-z)^(-b-2)*z^2/((a+2)*(a+3))
 	+2*b*(1-z)^(-b-1)*z/(a+2)+1/(1-z)^b$
+
+/*
+ * Bug 1155241:  F(1/2,-1/2;3/2,z)
+ *
+ * Applying A&S 15.3.3 gives
+ *
+ *  F(1/2,-1/2;3/2,z) = (1-z)^(3/2)*F(1,2;3/2;z)
+ *
+ * And we know what F(1,2;3/2;z) is.
+ *
+ * Alternatively, apply A&S 15.2.5 to get
+ *
+ * diff(z*(1-z)^(-1/2)*F(1/2,1/2;3/2;z),z,1)
+ *   = (1-z)^(-3/2)*F(-1/2,1/2;3/2;z)
+ *
+ * Both of these give the same answer:
+ *
+ * (sqrt(1-z)*sqrt(z)+asin(sqrt(z)))/(2*sqrt(z))
+ *
+ * when z > 0.
+ */
+(assume(zp > 0), true);
+true$
+
+ratsimp(hgfred([1/2,-1/2],[3/2],zp));
+(sqrt(1-zp)*sqrt(zp)+asin(sqrt(zp)))/(2*sqrt(zp))$
