@@ -1,4 +1,5 @@
 .DS L
+.ft CR
                             \fBCONTENTS\fR
 
 
@@ -20,8 +21,8 @@
           2.3.3.  The \fBlsetq\fR Function
           2.3.4.  The \fBlrsetq\fR Function
     2.4.  Type Declarations
-	  2.4.1.  Subprogram Type Declarations
-	  2.4.2.  A Note on Subscripted Variables
+          2.4.1.  Subprogram Type Declarations
+          2.4.2.  A Note on Subscripted Variables
     2.5.  Comments and Literal Strings
     2.6.  The \fBfortran\fR, \fBratfor\fR, and \fBc\fR Mode Switches
     2.7.  Code Optimization
@@ -31,14 +32,14 @@
     2.9.  Generation of Temporary Variable Names
           2.9.1.  Marking Temporary Variables
           2.9.2.  Unmarking Temporary Variables
-	  2.9.3.  The Marked Variable Predicate
+          2.9.3.  The Marked Variable Predicate
     2.10. Generation of Statement Numbers
 
 3.  TEMPLATE PROCESSING  ....................................  41
 
     3.1.  The Template Processing Command
-	  3.1.1.  Copying Files into Template Files
-	  3.1.2.  The Template File Stack
+          3.1.1.  Copying Files into Template Files
+          3.1.2.  The Template File Stack
     3.2.  Insertion of Generated Declarations
     3.3. Special Template Variables
 
@@ -58,9 +59,9 @@
     5.2.  Variables
           5.2.1.  Target Language Selection
           5.2.2.  Expression Optimization & Segmentation Con-
-		  trol
+                  trol
           5.2.3.  Temporary Variable Names &  Statement  Num-
-		  bers
+                  bers
           5.2.4.  Code Formatting
 
 6.  EXAMPLES  ...............................................  70
@@ -68,13 +69,13 @@
     6.1.  Example 1:  Interactive Code Generation
     6.2.  Example 2:  Template Processing
     6.3.  Example 3:  Segmentation & Optimization  Techniques
-	  6.3.1.  Code Generation
-	  6.3.2.  Segmentation
-	  6.3.3.  Expression Optimization
-	  6.3.4.  Generation of Temporary Variables  to  Sup-
-		  press Simplification
+          6.3.1.  Code Generation
+          6.3.2.  Segmentation
+          6.3.3.  Expression Optimization
+          6.3.4.  Generation of Temporary Variables  to  Sup-
+                  press Simplification
           6.3.5.  Expression  Optimization  &  Generation  of
-	          Temporary Variables
+                  Temporary Variables
           6.3.6.  Comparison of Code Optimization  Techniques
 
 
@@ -87,4 +88,5 @@ A.  TRANSLATABLE VAXIMA STATEMENTS & EXPRESSIONS  ........... 101
     A.2.  Examples
 
 B.  LIST OF GENTRAN FUNCTIONS, SWITCHES AND VARIABLES  ...... 108
+.ft
 .DE

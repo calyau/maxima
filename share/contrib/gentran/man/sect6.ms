@@ -18,34 +18,42 @@ C. E. Froberg, Addison-Wesley Publishing Company, 1966.
 method states that the roots
 .RS
 .DS L
+.ft CR
 x
  i
+.ft
 .DE
 .RE
 of a polynomial
 .RS
 .DS L
+.ft CR
        ------
         \e         n-i
 P (x) =  >    a  x
  n      /      i
        ------
+.ft
 .DE
 .RE
 can be found by constructing the polynomial
 .RS
 .DS L
+.ft CR
      2          n      n-2       2       n-1      n-3       2
 P* (x )  =  (a x  + a x    + ...)  - (a x    + a x    + ...)
   n           0      2                 1        3
+.ft
 .DE
 .RE
 with roots
 .RS
 .DS L
+.ft CR
   2
 x
  i
+.ft
 .DE
 .RE
 .LP
@@ -53,13 +61,16 @@ When \fIbatch\fR'd into VAXIMA, the following file of
 VAXIMA statements will place the coefficients of
 .RS
 .DS L
+.ft CR
 P*
   n
+.ft
 .DE
 .RE
 into array b for some user-entered value of n greater than
 zero:
 .DS L
+.ft CR
 Contents of file graeffe.in:
 +-----------------------------+
 |q : 0$                       |
@@ -73,6 +84,7 @@ Contents of file graeffe.in:
 |for i:0 thru n do            |
 |    b[i] : ratcoeff(p, y, i)$|
 +-----------------------------+
+.ft
 .DE
 .FS
 [5] In accordance with section 2.4, the subscripts of a are
@@ -82,16 +94,20 @@ Now a numerical subprogram can be generated with assignment statements
 for the coefficients of
 .RS
 .DS L
+.ft CR
 P*
   n
+.ft
 .DE
 .RE
 (now stored in array b in VAXIMA).  Since these coefficients
 are given in terms of the coefficients of
 .RS
 .DS L
+.ft CR
 P
  n
+.ft
 .DE
 .RE
 (i.e., subscripted variable a in VAXIMA), the subprogram will
@@ -101,9 +117,12 @@ size n+1.
 The following VAXIMA session will create subroutine graeff for
 a polynomial of degree n=10 and write it to file graeffe.f:
 .DS L
+.ft CR
 (c1) n : 10$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) batch("graeffe.in");
 
 (c3) q : 0$
@@ -124,16 +143,22 @@ a polynomial of degree n=10 and write it to file graeffe.f:
     b[i] : ratcoeff(p, y, i)$
 
 (d10)                      BATCH DONE
+.ft
 .DE
 .DS L
+.ft CR
 (c11) gentranlang(fortran)$
+.ft
 .DE
 .DS L
+.ft CR
 (c12) gentranpush("graeffe.f");
 
 (d12)                      graeffe.f
+.ft
 .DE
 .DS L
+.ft CR
 (c13) gentran( subroutine( graeff(a,b) ),
                type("real*8", a(eval(n+1)), b(eval(n+1))),
                literal("c",cr),
@@ -142,24 +167,32 @@ a polynomial of degree n=10 and write it to file graeffe.f:
                literal("c",cr) );
 
 (d13)                      graeffe.f
+.ft
 .DE
 .DS L
+.ft CR
 (c14) for i:1 thru n+1 do
           gentran( lrsetq( b[i], b[i-1] ) );
 
 (d14)                      done
+.ft
 .DE
 .DS L
+.ft CR
 (c15) gentran( return(), end() );
 
 (d15)                      graeffe.f
+.ft
 .DE
 .DS L
+.ft CR
 (c16) gentranpop(false);
 
 (d16)                      true
+.ft
 .DE
 .DS L
+.ft CR
 Contents of file graeffe.f:
 +------------------------------------------------------------------------+
 |      subroutine graeff(a,b)                                            |
@@ -185,6 +218,7 @@ Contents of file graeffe.f:
 |      return                                                            |
 |      end                                                               |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .bp
 .NH 2
@@ -211,6 +245,7 @@ code generation than the \fIwrite\fR statement method.
 First we will put all VAXIMA calculations into two files:  rk.in
 and ham.in.
 .DS L
+.ft CR
 Contents of file rk.in:
 +----------------------------------------------------------------+
 |/*  Runge-Kutta Method  */                                      |
@@ -218,35 +253,37 @@ Contents of file rk.in:
 |rungekutta(p1, p2, p, q, tt) :=                                 |
 |  block( [k11, k12, k21, k22, k31, k32, k41, k42],              |
 |         k11 : hh*p1,                                           |
-|	  k12 : hh*p2,                                           |
-|	  k21 : hh*ratsubst(q+k12/2, q,                          |
-|			    ratsubst(p+k11/2, p,                 |
-|				     ratsubst(tt+hh/2, tt, p1))),|
-|	  k22 : hh*ratsubst(q+k12/2, q,                          |
-|			    ratsubst(p+k11/2, p,                 |
-|			 	     ratsubst(tt+hh/2, tt, p2))),|
-|	  k31 : hh*ratsubst(q+k22/2, q,                          |
-|			    ratsubst(p+k21/2, p,                 |
-|				     ratsubst(tt+hh/2, tt, p1))),|
-|	  k32 : hh*ratsubst(q+k22/2, q,                          |
-|			    ratsubst(p+k21/2, p,                 |
-|				     ratsubst(tt+hh/2, tt, p2))),|
-|	  k41 : hh*ratsubst(q+k32, q,                            |
-|			    ratsubst(p+k31, p,                   |
-|				     ratsubst(tt+hh, tt, p1))),  |
-|	  k42 : hh*ratsubst(q+k32, q,                            |  [7]
-|			    ratsubst(p+k31, p,                   |
-|				     ratsubst(tt+hh, tt, p2))),  |
-|	  pn : ratsimp(p + (k11 + 2*k21 + 2*k31 + k41)/6),       |
-|	  qn : ratsimp(q + (k12 + 2*k22 + 2*k32 + k42)/6)        |
+|         k12 : hh*p2,                                           |
+|         k21 : hh*ratsubst(q+k12/2, q,                          |
+|                           ratsubst(p+k11/2, p,                 |
+|                                    ratsubst(tt+hh/2, tt, p1))),|
+|         k22 : hh*ratsubst(q+k12/2, q,                          |
+|                           ratsubst(p+k11/2, p,                 |
+|                                    ratsubst(tt+hh/2, tt, p2))),|
+|         k31 : hh*ratsubst(q+k22/2, q,                          |
+|                           ratsubst(p+k21/2, p,                 |
+|                                    ratsubst(tt+hh/2, tt, p1))),|
+|         k32 : hh*ratsubst(q+k22/2, q,                          |
+|                           ratsubst(p+k21/2, p,                 |
+|                                    ratsubst(tt+hh/2, tt, p2))),|
+|         k41 : hh*ratsubst(q+k32, q,                            |
+|                           ratsubst(p+k31, p,                   |
+|                                    ratsubst(tt+hh, tt, p1))),  |
+|         k42 : hh*ratsubst(q+k32, q,                            |  [7]
+|                           ratsubst(p+k31, p,                   |
+|                                    ratsubst(tt+hh, tt, p2))),  |
+|         pn : ratsimp(p + (k11 + 2*k21 + 2*k31 + k41)/6),       |
+|         qn : ratsimp(q + (k12 + 2*k22 + 2*k32 + k42)/6)        |
 |       )$                                                       |
 +----------------------------------------------------------------+
+.ft
 .DE
 .FS
 [7] Line 20 of procedure rungekutta was changed from an assignment
 to k41, as given in [6], to an assignment to k42.
 .FE
 .DS L
+.ft CR
 Contents of file ham.in:
 +--------------------------------------------------------+
 |/*  Hamiltonian Calculation  */                         |
@@ -255,11 +292,13 @@ Contents of file ham.in:
 |difp : -diff(h, q) - ratsubst(p/m, qdot, diff(d, qdot))$|
 |rungekutta(difp, difq, p, q, tt)$                       |
 +--------------------------------------------------------+
+.ft
 .DE
 .LP
 Next we will create a template file with an outline of the target
 FORTRAN program and GENTRAN commands.
 .DS L
+.ft CR
 Contents of file runge.tem:
 +---------------------------------------------------------------------+
 |      program runge                                                  |
@@ -288,15 +327,17 @@ Contents of file runge.tem:
 |      write(6,*) 'Final Value of t'                                  |
 |      read(5,*) tp                                                   |
 |      write(6,*) ' Final Value of t = ', tp                          |
+.ft
 .DE
 .DS L
+.ft CR
 |c                                                                    |
 |c  Initialization                                                    |
 |c                                                                    |
 |      tt=0.0                                                         |
 |<<                                                                   |
 |      gentran( literal(tab, "write(9,*) ' h = ", eval(h), "'", cr),  |
-|	        literal(tab, "write(9,*) ' d = ", eval(d), "'", cr) )$|
+|               literal(tab, "write(9,*) ' d = ", eval(d), "'", cr) )$|
 |>>                                                                   |
 |      write(9,901) c                                                 |
 |901   format(' c= ',e20.10)                                          |
@@ -308,44 +349,56 @@ Contents of file runge.tem:
 |<<                                                                   |
 |      gentran( unless tt >= tf do                                    |
 |               (                                                     |
-|		     rsetq(pn, ev(pn,expand)),                        |
-|		     rsetq(q, ev(qn,expand)),                         |
-|		     p : pn,                                          |
-|		     tt : tt + hh,                                    |
-|		     literal(tab, "write(9,910) tt, q, p", cr)        |
+|                    rsetq(pn, ev(pn,expand)),                        |
+|                    rsetq(q, ev(qn,expand)),                         |
+|                    p : pn,                                          |
+|                    tt : tt + hh,                                    |
+|                    literal(tab, "write(9,910) tt, q, p", cr)        |
 |               ) )$                                                  |
 |>>                                                                   |
 |      stop                                                           |
 |      end                                                            |
 +---------------------------------------------------------------------+
+.ft
 .DE
 .LP
 Now we can generate a circuit simulation program simply by
 starting a VAXIMA session and following three steps:
 .RS
 .DS L
+.ft CR
 (1)  enter circuit specifications
 (2)  perform calculations
 (3)  call the GENTRAN template processor
+.ft
 .DE
 .RE
 For example, the following VAXIMA session will write a simulation
 program to the file runge.f:
 .DS L
+.ft CR
 /*  Enter Circuit Specifications  */
 
 (c1) k : 1/(2*m)*p^2$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) u : k0/2*q^2$
+.ft
 .DE
 .DS L
+.ft CR
 (c3) d : b/2*qdot$
+.ft
 .DE
 .DS L
+.ft CR
 (c4) h : k + u$
+.ft
 .DE
 .DS L
+.ft CR
 /*  Perform Calculations  */
 
 (c5) batch("rk.in");
@@ -355,32 +408,34 @@ program to the file runge.f:
 rungekutta(p1, p2, p, q, tt) :=
   block( [k11, k12, k21, k22, k31, k32, k41, k42],
          k11 : hh*p1,
-	 k12 : hh*p2,
-	 k21 : hh*ratsubst(q+k12/2, q,
-			   ratsubst(p+k11/2, p,
-				    ratsubst(tt+hh/2, tt, p1))),
-	 k22 : hh*ratsubst(q+k12/2, q,
-			   ratsubst(p+k11/2, p,
-				    ratsubst(tt+hh/2, tt, p2))),
-	 k31 : hh*ratsubst(q+k22/2, q,
-			   ratsubst(p+k21/2, p,
-				    ratsubst(tt+hh/2, tt, p1))),
-	 k32 : hh*ratsubst(q+k22/2, q,
-			   ratsubst(p+k21/2, p,
-				    ratsubst(tt+hh/2, tt, p2))),
-	 k41 : hh*ratsubst(q+k32, q,
-			   ratsubst(p+k31, p,
-				    ratsubst(tt+hh, tt, p1))),
-	 k42 : hh*ratsubst(q+k32, q,
-			   ratsubst(p+k31, p,
-				    ratsubst(tt+hh, tt, p2))),
-	 pn : ratsimp(p + (k11 + 2*k21 + 2*k31 + k41)/6),
-	 qn : ratsimp(q + (k12 + 2*k22 + 2*k32 + k42)/6)
+         k12 : hh*p2,
+         k21 : hh*ratsubst(q+k12/2, q,
+                           ratsubst(p+k11/2, p,
+                                    ratsubst(tt+hh/2, tt, p1))),
+         k22 : hh*ratsubst(q+k12/2, q,
+                           ratsubst(p+k11/2, p,
+                                    ratsubst(tt+hh/2, tt, p2))),
+         k31 : hh*ratsubst(q+k22/2, q,
+                           ratsubst(p+k21/2, p,
+                                    ratsubst(tt+hh/2, tt, p1))),
+         k32 : hh*ratsubst(q+k22/2, q,
+                           ratsubst(p+k21/2, p,
+                                    ratsubst(tt+hh/2, tt, p2))),
+         k41 : hh*ratsubst(q+k32, q,
+                           ratsubst(p+k31, p,
+                                    ratsubst(tt+hh, tt, p1))),
+         k42 : hh*ratsubst(q+k32, q,
+                           ratsubst(p+k31, p,
+                                    ratsubst(tt+hh, tt, p2))),
+         pn : ratsimp(p + (k11 + 2*k21 + 2*k31 + k41)/6),
+         qn : ratsimp(q + (k12 + 2*k22 + 2*k32 + k42)/6)
        )$
 
 (d7)                       BATCH DONE
+.ft
 .DE
 .DS L
+.ft CR
 (c8) batch("ham.in");
 
 (c9) /*  Hamiltonian Calculation  */
@@ -392,20 +447,28 @@ difq : diff(h, p)$
 (c11) rungekutta(difp, difq, p, q, tt)$
 
 (d12)                      BATCH DONE
+.ft
 .DE
 /*  Call Template Processor  */
 .DS L
+.ft CR
 (c13) gentranlang(fortran)$
+.ft
 .DE
 .DS L
+.ft CR
 (c14) on(gentranfloat)$
+.ft
 .DE
 .DS L
+.ft CR
 (c15) gentranin("runge.tem", ["runge.f"]);
 
 (d15)                      runge.f
+.ft
 .DE
 .DS L
+.ft CR
 Contents of file runge.f:
 +------------------------------------------------------------------------+
 |      program runge                                                     |
@@ -444,8 +507,10 @@ Contents of file runge.f:
 |901   format(' c= ',e20.10)                                             |
 |      write(9,910) tt, q, p                                             |
 |910   format(' ',3e20.10)                                               |
+.ft
 .DE
 .DS L
+.ft CR
 |c                                                                       |
 |c  Loop                                                                 |
 |c                                                                       |
@@ -467,6 +532,7 @@ Contents of file runge.f:
 |      stop                                                              |
 |      end                                                               |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .bp
 .NH 2
@@ -481,59 +547,77 @@ Bond Graph Modelling and Simulation of Large Mechanical Systems",
 Vol. 319, No. 1/2, pp. 51-65, January/February 1985.
 .FE
 .DS L
+.ft CR
 mat[1,1] :
-             2    2	          2		  2
+             2    2               2               2
     - 9 m30 p  sin (q3) + j30z sin (q3) - j30y sin (q3)
-	        2			    2        2
+                2                           2        2
       + 18 m30 p  cos(q2) cos(q3) + 18 m30 p  + m10 p  + j30y
 
       + j10y
+.ft
 .DE
 .DS L
+.ft CR
 mat[1,2] :
-	     2    2		  2		  2
+             2    2               2               2
     - 9 m30 p  sin (q3) + j30z sin (q3) - j30y sin (q3)
-	       2                          2
+               2                          2
       + 9 m30 p  cos(q2) cos(q3) + 9 m30 p  + j30y
+.ft
 .DE
 .DS L
+.ft CR
 mat[1,3] :
              2
     - 9 m30 p  sin(q2) sin(q3)
+.ft
 .DE
 .DS L
+.ft CR
 mat[2,1] :
-	     2    2		  2		  2
+             2    2               2               2
     - 9 m30 p  sin (q3) + j30z sin (q3) - j30y sin (q3)
-	       2                          2
+               2                          2
       + 9 m30 p  cos(q2) cos(q3) + 9 m30 p  + j30y
+.ft
 .DE
 .DS L
+.ft CR
 mat[2,2] :
              2    2               2               2              2
     - 9 m30 p  sin (q3) + j30z sin (q3) - j30y sin (q3) + 9 m30 p
 
       + j30y
+.ft
 .DE
 .DS L
+.ft CR
 mat[2,3] :
 
     0
+.ft
 .DE
 .DS L
+.ft CR
 mat[3,1] :
             2
     - 9 m30 p  sin(q2) sin(q3)
+.ft
 .DE
 .DS L
+.ft CR
 mat[3,2] :
 
     0
+.ft
 .DE
 .DS L
+.ft CR
 mat[3,3] :
            2
     9 m30 p  + j30x
+.ft
 .DE
 .LP
 We know mat is symmetric.  We wish to generate numerical code to
@@ -553,6 +637,7 @@ nested loops to copy elements across the main diagonals.
 .LP
 The following VAXIMA session will write to the file matrix.f:
 .DS L
+.ft CR
 (c1) batch("matrix.v");
 
 (c2) mat : genmatrix(mat, 3,3, 1,1)$
@@ -570,8 +655,10 @@ The following VAXIMA session will write to the file matrix.f:
 (c5) mat[3,1] :
      mat[1,3] :
      -9*sin(q3)*sin(q2)*m30*p^2$
+.ft
 .DE
 .DS L
+.ft CR
 (c6) mat[2,2] :
      -sin(q3)^2*j30y + sin(q3)^2*j30z - 9*sin(q3)^2 *m30*p^2
      + j30y + 9*m30*p^2$
@@ -584,46 +671,64 @@ The following VAXIMA session will write to the file matrix.f:
      9*m30*p^2 + j30x$
 
 (d9)                       BATCH DONE
+.ft
 .DE
 .DS L
+.ft CR
 (c10) gentranout("matrix.f")$
+.ft
 .DE
 .DS L
+.ft CR
 (c11) gentran( literal("c", cr,
-		       "c --- Calculate Matrix Values ---", cr,
-		       "c", cr) )$
+                       "c --- Calculate Matrix Values ---", cr,
+                       "c", cr) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c12) for i:1 thru 3 do
-	  for j:i thru 3 do
-	      gentran( lrsetq(mat[i,j], mat[i,j]) )$
+          for j:i thru 3 do
+              gentran( lrsetq(mat[i,j], mat[i,j]) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c13) inv : mat^^(-1)$
+.ft
 .DE
 .DS L
+.ft CR
 (c14) gentran( literal("c", cr,
                        "c --- Calculate Inverse Matrix Values ---",
-		       cr, "c", cr) )$
+                       cr, "c", cr) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c15) for i:1 thru 3 do
-	  for j:i thru 3 do
-	      gentran( lrsetq( inv[i,j], inv[i,j]) )$
+          for j:i thru 3 do
+              gentran( lrsetq( inv[i,j], inv[i,j]) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c16) gentran( literal("c", cr,
                        "c --- Copy Entries Across Main Diagonals ---",
-		       cr, "c", cr),
+                       cr, "c", cr),
                for i:1 thru 3 do
-		   for j:i+1 thru 3 do
-		   (   mat[j,i] : mat[i,j],  inv[j,i] : inv[i,j]   )
+                   for j:i+1 thru 3 do
+                   (   mat[j,i] : mat[i,j],  inv[j,i] : inv[i,j]   )
              )$
+.ft
 .DE
 .DS L
+.ft CR
 (c17) gentranshut("matrix.f")$
+.ft
 .DE
 .DS L
+.ft CR
 Contents of file matrix.f:
 +------------------------------------------------------------------------+
 |c                                                                       |
@@ -735,6 +840,7 @@ Contents of file matrix.f:
 |25002     continue                                                      |
 |25001 continue                                                          |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .NH 3
 Segmentation
@@ -752,10 +858,13 @@ setting the special variable \fI?maxexpprintlen\e*\fR to a smaller
 value.  By preceding the VAXIMA session given in the previous
 subsection by
 .DS L
+.ft CR
 (c1) ?maxexpprintlen\e* : 300$
+.ft
 .DE
 we would generate the following:
 .DS L
+.ft CR
 Contents of file matrix.f:
 +------------------------------------------------------------------------+
 |c                                                                       |
@@ -773,8 +882,10 @@ Contents of file matrix.f:
 |c                                                                       |
 |c --- Calculate Inverse Matrix Values ---                               |
 |c                                                                       |
+.ft
 .DE
 .DS L
+.ft CR
 |      t2=-(-j30x*j30y+(-9.0*j30x-9.0*j30y)*m30*p**2-81.0*m30**2*p**4+(  |
 |     . j30x*j30y-j30x*j30z+(9.0*j30x+9.0*j30y-9.0*j30z)*m30*p**2+81.0*  |
 |     . m30**2*p**4)*sin(q3)**2)                                         |
@@ -878,6 +989,7 @@ Contents of file matrix.f:
 |25002     continue                                                      |
 |25001 continue                                                          |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .NH 3
 Expression Optimization
@@ -891,11 +1003,14 @@ subexpressions.  This command can be applied to expressions generated
 by GENTRAN by turning the \fIgentranopt\fR switch on.  Thus, if we issue
 the command
 .DS L
+.ft CR
 (c1) on(gentranopt)$
+.ft
 .DE
 followed by the commands given in subsection 6.3.1, the following
 will be generated:
 .DS L
+.ft CR
 Contents of file matrix.f:
 +------------------------------------------------------------------------+
 |c                                                                       |
@@ -934,8 +1049,10 @@ Contents of file matrix.f:
 |      t13=p**6                                                          |
 |      t14=-729.0*t12*t13                                                |
 |      t15=sin(q2)**2                                                    |
+.ft
 .DE
 .DS L
+.ft CR
 |      inv(1,1)=-(t0+(t1+t2)*m30*t3-81.0*t4*t5+(j30x*j30y-j30x*j30z+(t6+ |
 |     . t7-9.0*j30z)*m30*t3+81.0*t4*t5)*t9)/(j10y*j30x*j30y+(j30x*j30y*  |
 |     . m10+(9.0*j10y*j30x+t10*j30y)*m30)*t3+((t6+t7)*m10*m30+(81.0*j10y+|
@@ -1093,6 +1210,7 @@ Contents of file matrix.f:
 |25002     continue                                                      |
 |25001 continue                                                          |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .LP
 VAXIMA's optimize facility is limited in that it can only optimize
@@ -1114,6 +1232,7 @@ substitution in the numerical program being generated.
 The following VAXIMA session will write generated code to file
 matrix.f:
 .DS L
+.ft CR
 (c1) batch("matrix.v");
 
 (c2) mat : genmatrix(mat, 3,3, 1,1)$
@@ -1144,70 +1263,94 @@ matrix.f:
      9*m30*p^2 + j30x$
 
 (d9)                       BATCH DONE
+.ft
 .DE
 .DS L
+.ft CR
 (c10) gentranout("matrix.f")$
+.ft
 .DE
 .DS L
+.ft CR
 (c11) gentran( literal("c", cr,
-		       "c --- Calculate Matrix Values ---", cr,
-		       "c", cr) )$
+                       "c --- Calculate Matrix Values ---", cr,
+                       "c", cr) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c12) for i:1 thru 3 do
           for j:i thru 3 do
-	      gentran( lrsetq(mat[i,j], mat[i,j]) )$
+              gentran( lrsetq(mat[i,j], mat[i,j]) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c13) gentran( literal("c", cr,
-		       "c --- Assign Non-Zero Matrix Values to ",
-		       "Temporary Variables ---", cr, "c", cr) )$
+                       "c --- Assign Non-Zero Matrix Values to ",
+                       "Temporary Variables ---", cr, "c", cr) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c14) for i:1 thru 3 do
           for j:i thru 3 do
-	      if mat[i,j]#0 then
-	      (
-	          markvar( var : tempvar(false) ),
-	          mat[i,j] : mat[j,i] : var,
-	          gentran( eval(var) : mat[eval(i),eval(j)] )
+              if mat[i,j]#0 then
+              (
+                  markvar( var : tempvar(false) ),
+                  mat[i,j] : mat[j,i] : var,
+                  gentran( eval(var) : mat[eval(i),eval(j)] )
               )$
+.ft
 .DE
 .DS L
+.ft CR
 (c15) mat;        /***  Contents of Matrix mat:  ***/
 
-	                   [ t0   t1   t2 ]
-	                   [              ]
+                           [ t0   t1   t2 ]
+                           [              ]
 (d15)                      [ t1   t3    0 ]
-	                   [              ]
-	                   [ t2    0   t4 ]
+                           [              ]
+                           [ t2    0   t4 ]
+.ft
 .DE
 .DS L
+.ft CR
 (c16) inv : mat^^(-1)$
+.ft
 .DE
 .DS L
+.ft CR
 (c17) gentran( literal("c", cr,
-		       "c --- Calculate Inverse Matrix Values ---",
-		       cr, "c", cr) )$
+                       "c --- Calculate Inverse Matrix Values ---",
+                       cr, "c", cr) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c18) for i:1 thru 3 do
           for j:i thru 3 do
-	      gentran( lrsetq(inv[i,j], inv[i,j]) )$
+              gentran( lrsetq(inv[i,j], inv[i,j]) )$
+.ft
 .DE
 .DS L
+.ft CR
 (c19) gentran( literal("c", cr,
-		       "c --- Copy Entries Across Main Diagonals ---",
-		       cr, "c", cr),
+                       "c --- Copy Entries Across Main Diagonals ---",
+                       cr, "c", cr),
                for i:1 thru 3 do
-	           for j:i+1 thru 3 do
-	           (   mat[j,i] : mat[i,j],  inv[j,i] : inv[i,j]   )
+                   for j:i+1 thru 3 do
+                   (   mat[j,i] : mat[i,j],  inv[j,i] : inv[i,j]   )
              )$
+.ft
 .DE
 .DS L
+.ft CR
 (c20) gentranshut("matrix.f")$
+.ft
 .DE
 .DS L
+.ft CR
 Contents of file matrix.f:
 +------------------------------------------------------------------------+
 |c                                                                       |
@@ -1249,6 +1392,7 @@ Contents of file matrix.f:
 |25002     continue                                                      |
 |25001 continue                                                          |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .NH 3
 Expression Optimization & Generation of Temporary Variables
@@ -1262,6 +1406,7 @@ By turning on the \fIgentranopt\fR flag before issuing the VAXIMA
 commands given in the previous subsection, the following code will be
 generated:
 .DS L
+.ft CR
 Contents of file matrix.f:
 +------------------------------------------------------------------------+
 |c                                                                       |
@@ -1300,8 +1445,10 @@ Contents of file matrix.f:
 |      inv(2,3)=t1*t2/(-t2**2*t3+(-t1**2+t0*t3)*t4)                      |
 |      t5=-t1**2+t0*t3                                                   |
 |      inv(3,3)=t5/(-t2**2*t3+t5*t4)                                     |
+.ft
 .DE
 .DS L
+.ft CR
 |c                                                                       |
 |c --- Copy Entries Across Main Diagonals ---                            |
 |c                                                                       |
@@ -1312,6 +1459,7 @@ Contents of file matrix.f:
 |25002     continue                                                      |
 |25001 continue                                                          |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .NH 3
 Comparison of Code Optimization Techniques
@@ -1326,6 +1474,7 @@ as we did in the previous subsection under VAXIMA, but call van Hulzen's code
 optimizer to optimize the assignments, the following code will be
 generated:
 .DS L
+.ft CR
 Contents of file matrix.f:
 +--------------------------------------------------------------+
 |c                                                             |
@@ -1346,8 +1495,10 @@ Contents of file matrix.f:
 |      mat(1,1)=18.0*t13+t11+j30y+j10y+t7*m10                  |
 |      t9=t14+j30y                                             |
 |      mat(2,2)=t11+t9                                         |
+.ft
 .DE
 .DS L
+.ft CR
 |      mat(1,2)=mat(2,2)+9.0*t4                                |
 |      t3=sin(q2)                                              |
 |      mat(1,3)=-t14*t2*t3                                     |
@@ -1386,12 +1537,13 @@ Contents of file matrix.f:
 |c --- Copy Entries Across Main Diagonals ---                  |
 |c                                                             |
 |      do 25001 i=1,3                                          |
-|	  do 25002 j=i+1,3                                     |
-|	      mat(j,i)=mat(i,j)                                |
-|	      inv(j,i)=inv(i,j)                                |
+|         do 25002 j=i+1,3                                     |
+|             mat(j,i)=mat(i,j)                                |
+|             inv(j,i)=inv(i,j)                                |
 |25002     continue                                            |
 |25001 continue                                                |
 +--------------------------------------------------------------+
+.ft
 .DE
 .LP
 Not only was van Hulzen's Code Optimizer able to detect and
@@ -1402,6 +1554,7 @@ exponentiations by optimal sequences of products.
 The following table compares the efficiency of code generated
 in each of the previous subsections:
 .DS L
+.ft CR
                                     | +,- | *,/ |  ** | sin,cos |
  -----------------------------------+-----+-----+-----+---------+
  6.3.1. code generation             | 369 | 645 | 257 |      73 |
@@ -1411,4 +1564,5 @@ in each of the previous subsections:
  6.3.5. temp. vars. & opt. (VAXIMA) |  47 |  65 |  20 |       9 |
  6.3.6. temp. vars. & opt. (REDUCE) |  21 |  28 |   0 |       4 |
  -----------------------------------+-----+-----+-----+---------+
+.ft
 .DE

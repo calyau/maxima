@@ -14,15 +14,19 @@ The Template Processing Command
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIgentranin(\fRf1,f2,...,fn {,[f1,f2,...,fm]});
+.ft
 .DE
 .RE
 where f1,f2,...,fn is an argument list containing one or more
 f's, each of which is one of the following:
 .RS
 .DS L
+.ft CR
 a string  =  a template (input) file
 \fItrue\fR      =  the terminal
+.ft
 .DE
 .RE
 and [f1,f2,...,fm] is an optional argument list which, if
@@ -30,26 +34,32 @@ supplied, contains one or more f's, each of which is one
 of the following:
 .RS
 .DS L
+.ft CR
 a string  =  an output file
 \fItrue\fR      =  the terminal
 \fIfalse\fR     =  the current output file(s)
 \fIall\fR       =  all files currently open for output by GENTRAN
              (see section 4)
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(gentranin '(\fRf1 f2 ... fn) '(f1 f2 ... fm))
+.ft
 .DE
 .RE
 where f1 f2 ... fn is an argument list containing one or
 more f's, each of which is one of the following:
 .RS
 .DS L
+.ft CR
 a string  =  a template (input) file
 \fIt\fR         =  the terminal
+.ft
 .DE
 .RE
 and (f1 f2 ... fm) is an argument list which
@@ -57,11 +67,13 @@ contains zero or more f's, each of which is one of the
 following:
 .RS
 .DS L
+.ft CR
 a string  =  an output file
 \fIt\fR         =  the terminal
 \fInil\fR       =  the current output file(s)
 \fI$all\fR      =  all files currently open for output by GENTRAN
              (see section 4)
+.ft
 .DE
 .RE
 .SH
@@ -81,10 +93,12 @@ part is copied to the output.  Each comment delimited by the
 appropriate characters,
 .RS
 .DS L
+.ft CR
 C  ... <cr>    for FORTRAN (beginning in column 1) or
 *  ... <cr>    for FORTRAN (beginning in column 1),
 #  ... <cr>    for RATFOR, and
 /* ...  */     for C
+.ft
 .DE
 .RE
 is also copied in its entirety to the output.  Thus the character
@@ -133,6 +147,7 @@ Suppose we wish to generate a FORTRAN subprogram to compute the determinant
 of a 3 x 3 matrix.  We can construct a template file with an outline of the
 FORTRAN subprogram and VAXIMA and GENTRAN commands to fill it in:
 .DS L
+.ft CR
 Contents of file det.tem:
 +----------------------------------------------+
 |      real*8 function det(m)                  |
@@ -144,18 +159,24 @@ Contents of file det.tem:
 |      return                                  |
 |      end                                     |
 +----------------------------------------------+
+.ft
 .DE
 .LP
 Now we can generate a FORTRAN subprogram with the following VAXIMA session:
 .DS L
+.ft CR
 (c1) gentranlang(fortran)$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentranin("det.tem", ["det.f"]);
 
 (d2)                       det.f
+.ft
 .DE
 .DS L
+.ft CR
 Contents of file det.f:
 +------------------------------------------------------------------------+
 |      real*8 function det(m)                                            |
@@ -165,6 +186,7 @@ Contents of file det.f:
 |      return                                                            |
 |      end                                                               |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .NH 3
 Copying Files into Template Files
@@ -178,6 +200,7 @@ generated in the previous section, into a file containing a main
 program.  The template file for the main program, main.tem, will
 contain an active part to copy the contents of det.f:
 .DS L
+.ft CR
 Contents of file main.tem:
 +----------------------------------------+
 |c                                       |
@@ -198,15 +221,19 @@ Contents of file main.tem:
 |      gentranin("det.f")$               |
 |>>                                      |
 +----------------------------------------+
+.ft
 .DE
 .LP
 The following VAXIMA session will create the file main.f:
 .DS L
+.ft CR
 (c1) gentranin("main.tem", ["main.f"]);
 
 (d1)                       main.f
+.ft
 .DE
 .DS L
+.ft CR
 Contents of file main.f:
 +------------------------------------------------------------------------+
 |c                                                                       |
@@ -220,8 +247,10 @@ Contents of file main.f:
 |      write(6,*) 'Determinant = ',det(m)                                |
 |      stop                                                              |
 |      end                                                               |
+.ft
 .DE
 .DS L
+.ft CR
 |c                                                                       |
 |c --- Determinant Calculation ---                                       |
 |c                                                                       |
@@ -232,6 +261,7 @@ Contents of file main.f:
 |      return                                                            |
 |      end                                                               |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .NH 3
 The Template File Stack
@@ -256,10 +286,12 @@ n x n matrix, m, and initialize its entries to
 m(1,1), m(1,2), ..., m(n,n), for some user-entered value
 n:
 .DS L
+.ft CR
 Contents of file init.in:
 +---------------------------+
 |m : genmatrix(m, n,n, 1,1)$|
 +---------------------------+
+.ft
 .DE
 .LP
 We have also created template files det.tem and inv.tem
@@ -267,6 +299,7 @@ which contain outlines of FORTRAN subprograms to compute the
 determinant and inverse of an n x n matrix, m,
 respectively:
 .DS L
+.ft CR
 Contents of file det.tem:
 +-------------------------------------------------------+
 |      real*8 function det(m)                           |
@@ -277,8 +310,10 @@ Contents of file det.tem:
 |      return                                           |
 |      end                                              |
 +-------------------------------------------------------+
+.ft
 .DE
 .DS L
+.ft CR
 Contents of file inv.tem:
 +-------------------------------------------------------+
 |      subroutine inv(m,minv)                           |
@@ -290,6 +325,7 @@ Contents of file inv.tem:
 |      return                                           |
 |      end                                              |
 +-------------------------------------------------------+
+.ft
 .DE
 .LP
 Now we can construct a template file with a generalized version of
@@ -297,6 +333,7 @@ the main program given in section 3.2 and can place \fIgentranin\fR
 commands in this file to generate code recursively from the template
 files det.tem and inv.tem:
 .DS L
+.ft CR
 Contents of file main.tem:
 +-------------------------------------------------------------------+
 |c                                                                  |
@@ -321,8 +358,10 @@ Contents of file main.tem:
 |200   continue                                                     |
 |      stop                                                         |
 |      end                                                          |
+.ft
 .DE
 .DS L
+.ft CR
 |c                                                                  |
 |c  Determinant Calculation                                         |
 |c                                                                  |
@@ -336,47 +375,59 @@ Contents of file main.tem:
 |      gentranin("inv.tem")$                                        |
 |>>                                                                 |
 +-------------------------------------------------------------------+
+.ft
 .DE
 .LP
 The following VAXIMA session will create the file main.f:
 .DS L
+.ft CR
 (c1) n : 3$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) batch("init.in");
 
 (c3) m : genmatrix(m, n,n, 1,1)$
 
 (d4)                       BATCH DONE
+.ft
 .DE
 .DS L
+.ft CR
 (c5) gentranlang(fortran)$
+.ft
 .DE
 .DS L
+.ft CR
 (c6) gentranin("main.tem", ["main.f"]);
 
 (d6)                       main.f
+.ft
 .DE
 .DS L
+.ft CR
 Contents of file main.f:
 +------------------------------------------------------------------------+
 |c                                                                       |
 |c  Main Program                                                         |
 |c                                                                       |
+.ft
 .DE
 .DS L
+.ft CR
 |      real*8 m(3,3),det,minv(3,3)                                       |
 |      integer n                                                         |
 |      data n/3/                                                         |
 |      write(6,*) 'Enter ',n,' x ',n,' Matrix:'                          |
 |      do 100 i=1,n                                                      |
-| 	   read(5,*) (m(i,j),j=1,n)                                      |
+|          read(5,*) (m(i,j),j=1,n)                                      |
 |100   continue                                                          |
 |      write(6,*) 'Determinant = ',det(m)                                |
 |      write(6,*) 'Inverse Matrix:'                                      |
 |      call inv(m,minv)                                                  |
 |      do 200 i=1,n                                                      |
-|	   write(6,*) (minv(i,j),j=1,n)                                  |
+|          write(6,*) (minv(i,j),j=1,n)                                  |
 |200   continue                                                          |
 |      stop                                                              |
 |      end                                                               |
@@ -424,6 +475,7 @@ Contents of file main.f:
 |      return                                                            |
 |      end                                                               |
 +------------------------------------------------------------------------+
+.ft
 .DE
 .LP
 This is an example of a modular approach to code generation;
@@ -452,7 +504,9 @@ Construct the template file as usual, but with two additions:
 Insert an active part at the beginning of the file to turn the
 \fIgendecs\fR flag off:
 .DS L
+.ft CR
 <<  off(gendecs)$  >>
+.ft
 .DE
 .IP 2)
 Insert an active part immediately after the subprogram heading to write
@@ -460,11 +514,14 @@ an active part to the output file.  This active part will cause the
 \fIgendecs\fR flag to be switched back on during the second pass over
 the template file:
 .DS L
+.ft CR
 <<  gentran( literal("<<  on(gendecs)\e$  \e>\e>", cr) )$  >>
+.ft
 .DE
 .LP
 For example, suppose the original template file contains the following:
 .DS L
+.ft CR
 Contents of file detinv.tem:
 +------------------------------------------------------------+
 |      subroutine detinv(m,det,inv)                          |
@@ -487,30 +544,40 @@ Contents of file detinv.tem:
 |      return                                                |
 |      end                                                   |
 +------------------------------------------------------------+
+.ft
 .DE
 Now we are ready to invoke the template processor.  Since it must make
 two passes over the template file, we will invoke it twice and have it
 write to a temporary file as follows:
 .DS L
+.ft CR
 (c1) n : 3$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) ?maxexpprintlen\* : 60$
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranin("detinv.tem", ["##detinv"]);
 
 (d3)                       ##detinv
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentranin("##detinv", ["detinv.f"]);
 
 (d4)                       detinv.f
+.ft
 .DE
 .LP
 After the first template processing command has been executed, ##detinv
 contains the following:
 .DS L
+.ft CR
 Contents of file ##detinv:
 +------------------------------------------------------------+
 |      subroutine detinv(m,det,inv)                          |
@@ -557,12 +624,14 @@ Contents of file ##detinv:
 |      return                                                |
 |      end                                                   |
 +------------------------------------------------------------+
+.ft
 .DE
 This is a temporary file.  It can be removed after the second \fIgentranin\fR
 command has been executed.
 .LP
 The final output file will contain the following:
 .DS L
+.ft CR
 Contents of file detinv.f:
 +------------------------------------------------------------+
 |      subroutine detinv(m,det,inv)                          |
@@ -609,6 +678,7 @@ Contents of file detinv.f:
 |      return                                                |
 |      end                                                   |
 +------------------------------------------------------------+
+.ft
 .DE
 .NH 2
 Special Template Variables

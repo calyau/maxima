@@ -94,19 +94,27 @@ the original expression is preserved.
 .LP
 For example, in VAXIMA,
 .DS L
+.ft CR
     not a = b    and    not (a = b)
+.ft
 .DE
 are equivalent, whereas in C,
 .DS L
+.ft CR
     ! a == b     and    (!a) == b
+.ft
 .DE
 are equivalent.  Therefore,
 .DS L
+.ft CR
     not a = b
+.ft
 .DE
 is translated into C code which forces the VAXIMA precedence rules:
 .DS L
+.ft CR
     !(a == b)
+.ft
 .DE
 .SH
 Statements
@@ -228,7 +236,7 @@ logexp  ::=  \fIt\fR  |  \fInil\fR  |  var  |  funcall  |
 .br
              \fI((mgeqp) \fRexp exp)  |
 .br
-	     \fI((mequal) \fRexp exp)  |
+             \fI((mequal) \fRexp exp)  |
 .br
              \fI((mnotequal)\fR exp exp)  |
 .br
@@ -321,178 +329,183 @@ The following table contains a list of VAXIMA statement types
 that can be translated by GENTRAN.  Examples of each statement
 type, along with equivalent FORTRAN, RATFOR and C code, are given.
 .DS L
+.ft CR
   STATEMENT TYPE   |   USER LEVEL EXAMPLE   |        LISP LEVEL EXAMPLE
 -------------------+------------------------+-----------------------------------
                    |                        |
 Assignments        |                        |
-		   |                        |
+                   |                        |
   - simple         |p : a*x^2 + b*x + c$    |((msetq) p
                    |                        |         ((mplus)
                    |                        |          ((mtimes) a
                    |                        |                    ((mexpt) x 2))
                    |                        |          ((mtimes) b x)
-		   |                        |          c))
-		   |                        |
+                   |                        |          c))
+                   |                        |
   - matrix         |m : matrix( [u, v],     |((msetq) m
                    |            [w, x] )$   |         (($matrix) ((mlist) u v)
-		   |                        |                    ((mlist) w x)))
-		   |                        |
+                   |                        |                    ((mlist) w x)))
+                   |                        |
 Control Structures |                        |
-		   |                        |
+                   |                        |
   Loops            |                        |
-		   |                        |
+                   |                        |
   - for-step-thru  |for i:1 step 2 thru 9   |((mdo) i 1 2 nil 9 nil
                    |    do p : p + a[i]$    |       ((msetq) p ((mplus) p
                    |                        |                           ((a) i))
                    |                        |       ))
-		   |                        |
+                   |                        |
   - for-next-thru  |for n:2 next n*2        |((mdo) n 2 nil ((mtimes) n 2) 500
                    |        thru 500        |       nil
                    |    do s : s + n$       |       ((msetq) s ((mplus) s n)))
-		   |                        |
+                   |                        |
   - while          |while f(x)>=0           |((mdo) nil nil nil nil nil
                    |      do x : x + 0.25$  |       ((mnot) ((mgeqp) ((f) x) 0))
-		   |                        |       ((msetq) x ((mplus) x 0.25))
+                   |                        |       ((msetq) x ((mplus) x 0.25))
                    |                        |)
-		   |                        |
+                   |                        |
   - unless         |unless f(x)>=0          |((mdo) nil nil nil nil nil
                    |       do x : x + 0.25$ |       ((mgeqp) ((f) x) 0)
-		   |                        |       ((msetq) x ((mplus) x 0.25))
-		   |                        |)
-		   |                        |
+                   |                        |       ((msetq) x ((mplus) x 0.25))
+                   |                        |)
+                   |                        |
   Conditional      |                        |
   Transfer of      |                        |
   Control          |                        |
-		   |                        |
+                   |                        |
   - if-then        |if tot>=0               |((mcond) ((mgeqp) tot 0)
                    |   then flag : true$    |         ((msetq) flag t)
-		   |                        |         t
-		   |                        |         $false)
-		   |                        |
+                   |                        |         t
+                   |                        |         $false)
+                   |                        |
   - if-then-else   |if tot>=0               |((mcond) ((mgeqp) tot 0)
                    |   then flag : true     |         ((msetq) flag t)
-		   |   else flag : false$   |         t
-		   |                        |         ((msetq) flag nil))
-		   |                        |
+                   |   else flag : false$   |         t
+                   |                        |         ((msetq) flag nil))
+                   |                        |
   Unconditional    |                        |
   Transfer of      |                        |
   Control          |                        |
-		   |                        |
+                   |                        |
   - goto           |go(loop)$               |((mgo) loop)
-		   |                        |
+                   |                        |
   - call           |calcz(a,b,c,z)$         |((calcz) a b c z)
-		   |                        |
+                   |                        |
   - return         |return(x^2)$            |((mreturn) ((mexpt) x 2))
-		   |                        |
+                   |                        |
 Statement Sequences|                        |
 & Groups           |                        |
-		   |                        |
+                   |                        |
   - sequence       |( u : x^2, v : y^2 )$   |((mprogn) ((msetq) u ((mexpt) x 2))
                    |                        |          ((msetq) v ((mexpt) y 2))
-		   |                        |)
-		   |                        |
+                   |                        |)
+                   |                        |
   - group          |block( u : x^2,         |((mprog) ((msetq) u ((mexpt) x 2))
                    |       v : y^2 )$       |         ((msetq) v ((mexpt) y 2)))
-		   |                        |
+                   |                        |
 I/O Statements     |                        |
-		   |                        |
+                   |                        |
   - input          |x : readonly("Enter x")$|((msetq) x (($readonly) |&Enter x|)
                    |                        |)
-		   |                        |
+                   |                        |
   - output         |print("x = ", x)$       |(($print) |&x = | x)
-		   |                        |
+                   |                        |
 Subprograms        |                        |
-		   |                        |
+                   |                        |
   - function       |f(a,b,c,x) :=           |((mdefine) ((f) a b c x)
                    |  block( z : a*b*c + x, | ((mprog)
                    |         return(z) )$   |  ((msetq) z ((mplus)
                    |                        |              ((mtimes) a b c)
                    |                        |              x))
                    |                        |  ((mreturn) z)))
-		   |                        |
+                   |                        |
   - subroutine     |f(a,b,c,x) :=           |((mdefine) ((f) a b c x)
                    |  block( z : a*b*c + x, | ((mprog)
                    |         print(z) )$    |  ((msetq) z ((mplus)
                    |                        |              ((mtimes) a b c)
-		   |                        |              x))
+                   |                        |              x))
                    |                        |  (($print) z)))
 -------------------+------------------------+-----------------------------------
+.ft
 .DE
 .DS L
-	     FORTRAN CODE             |        RATFOR CODE
+.ft CR
+             FORTRAN CODE             |        RATFOR CODE
 --------------------------------------+----------------------------
-				      |
+                                      |
       p=a*x**2+b*x+c                  |p=a*x**2+b*x+c
-				      |
+                                      |
       m(1,1)=u                        |m(1,1)=u
       m(1,2)=v                        |m(1,2)=v
       m(2,1)=w                        |m(2,1)=w
       m(2,2)=x                        |m(2,2)=x
-				      |
+                                      |
       do 25001 i=1,9,2                |do i=1,9,2
-	  p=p+a(i)                    |    p=p+a(i)
+          p=p+a(i)                    |    p=p+a(i)
 25001 continue                        |
-				      |
+                                      |
       n=2.0                           |for (n=2.0;!n>500.0;n=n*2.0)
 25002 if (n.gt.500.0) goto 25003      |    s=s+n
-	  s=s+n                       |
-	  n=n*2.0                     |
-	  goto 25002                  |
+          s=s+n                       |
+          n=n*2.0                     |
+          goto 25002                  |
 25003 continue                        |
-				      |
+                                      |
 25004 if (.not.f(x).ge.0.0) goto 25005|while (f(x)>=0.0)
-	  x=x+0.25                    |    x=x+0.25
-	  goto 25004                  |
+          x=x+0.25                    |    x=x+0.25
+          goto 25004                  |
 25005 continue                        |
-				      |
+                                      |
 25006 if (f(x).ge.0.0) goto 25007     |while (!f(x)>=0.0)
-	  x=x+0.25                    |    x=x+0.25
-	  goto 25006                  |
+          x=x+0.25                    |    x=x+0.25
+          goto 25006                  |
 25007 continue                        |
-				      |
+                                      |
       if (.not.tot.ge.0.0) goto 25008 |if (tot>=0.0)
           flag=.true.                 |    flag=.true.
 25008 continue                        |
-				      |
+                                      |
       if (.not.tot.ge.0.0) goto 25009 |if (tot>=0.0)
-	  flag=.true.                 |    flag=.true.
-	  goto 25010                  |else
+          flag=.true.                 |    flag=.true.
+          goto 25010                  |else
 25009 continue                        |    flag=.false.
-	  flag=.false.                |
+          flag=.false.                |
 25010 continue                        |
-				      |
+                                      |
       goto 25011                      |goto 25011
-				      |
+                                      |
       \fIfunctionname\fR=x**2               |return(x**2)
       return                          |
-				      |
+                                      |
       u=x**2                          |u=x**2
       v=y**2                          |v=y**2
-				      |
+                                      |
       u=x**2                          |{
       v=y**2                          |    u=x**2
-				      |    v=y**2
-				      |}
-				      |
+                                      |    v=y**2
+                                      |}
+                                      |
       write(*,*) "Enter x"            |write(*,*) "Enter x"
       read(*,*) x                     |read(*,*) x
-				      |
+                                      |
       write(*,*) "x = ", x            |write(*,*) "x = ", x
-				      |
+                                      |
       function f(a,b,c,x)             |function f(a,b,c,x)
       z=a*b*c+x                       |z=a*b*c+x
       f=z                             |return(z)
       return                          |end
       end                             |
-				      |
+                                      |
       subroutine f(a,b,c,x)           |subroutine f(a,b,c,x)
       z=a*b*c+x                       |z=a*b*c+x
       write(*,*) z                    |write(*,*) z
       return                          |return
       end                             |end
 --------------------------------------+--------------------------------
+.ft
 .DE
 .DS L
+.ft CR
             C CODE
 -------------------------------
 
@@ -535,4 +548,5 @@ v=power(y,2);
     v=power(y,2);
 }
 -------------------------------
+.ft
 .DE

@@ -15,10 +15,14 @@ the user to turn GENTRAN mode switches on and off:
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIon(\fRflag1,flag2,...,flagn);
+.ft
 .DE
 .DS L
+.ft CR
 \fIoff(\fRflag1,flag2,...,flagn);
+.ft
 .DE
 .RE
 where flag1,flag2,...,flagn is a list of one or more
@@ -28,10 +32,14 @@ described in this section.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(on '(\fRflag1 flag2 ... flagn))
+.ft
 .DE
 .DS L
+.ft CR
 \fI(off \fR'(flag1 flag2 ... flagn))
+.ft
 .DE
 .RE
 where flag1 flag2 ... flagn is a list of one or more flag's,

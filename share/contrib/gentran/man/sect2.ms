@@ -26,7 +26,9 @@ only three atoms have special meaning:  \fIfortran\fR, \fIratfor\fR, and
 \fIfortran\fR.  \fI*gentranlang\fR is always initialized to \fIfortran\fR.
 At the Macsyma user level,
 .DS
+.ft CR
 gentranlang(ratfor);
+.ft
 .DE
 for example, sets \fI*gentranlang\fR to \fIratfor\fR.
 .NH 2
@@ -47,7 +49,9 @@ into code in the target language.
 User-Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIgentran(\fRstmt1,stmt2,...,stmtn {,[f1,f2,...,fm]});
+.ft
 .DE
 .RE
 where stmt1,stmt2,...,stmtn is a sequence of
@@ -65,18 +69,22 @@ sections 2.2.1 - 2.2.5 and 2.3.1 - 2.3.4.
 more f's, where each f is one of:
 .RS
 .DS L
+.ft CR
 a string  =  an output file
 \fItrue\fR      =  the terminal
 \fIfalse\fR     =  the current output file(s)
 \fIall\fR       =  all files currently open for output by GENTRAN
              (see sect. 4)
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(gentran '(\fRstmt1 stmt2 ... stmtn) '(f1 f2 ... fm))
+.ft
 .DE
 .RE
 where stmt1 stmt2 ... stmtn is a sequence of one or more
@@ -94,11 +102,13 @@ sections 2.2.1 - 2.2.5 and 2.3.1 - 2.3.4.
 of f's, where each f is one of:
 .RS
 .DS L
+.ft CR
 a string  =  an output file
 \fIt\fR         =  the terminal
 \fInil\fR       =  the current output file(s)
 \fI$all\fR      =  all files currently open for output by GENTRAN
              (see sect. 4)
+.ft
 .DE
 .RE
 .SH
@@ -134,20 +144,27 @@ cannot be translated
 .SH
 User Level Examples:
 .DS L
+.ft CR
 (c1) gentranlang(fortran)$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentran( for i:1 thru n do v[i]:0.0 );
       do 25001 i=1,n
           v(i)=0.0
 25001 continue
 
 (d2)                       true
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranlang(ratfor)$
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentran( for i:1 thru n do
                      for j:i+1 thru n do
                      (
@@ -162,34 +179,46 @@ do i=1,n
         }
 
 (d4)                       true
+.ft
 .DE
 .DS L
+.ft CR
 (c5) gentranlang(c)$
+.ft
 .DE
 .DS L
+.ft CR
 (c6) gentran( p : a*x^2 + b*x + c );
 p=a*power(x,2)+b*x+c;
 
 (d6)                       true
+.ft
 .DE
 .SH
 LISP Level Examples:
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'fortran)
 fortran
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '(((mdo) i 1 nil nil n nil ((msetq) ((v) i) 0.0))) ())
       do 25001 i=1,n
           v(i)=0.0
 25001 continue
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'ratfor)
 ratfor
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '(((mdo) i 1 nil nil n nil
                        ((mdo) j ((mplus) i 1) nil nil n nil
                               ((mprogn)
@@ -202,17 +231,22 @@ do i=1,n
             y(j,i)=y(i,j)
         }
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'c)
 c
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '(((msetq) p ((mplus) ((mtimes) a ((mexpt) x 2))
                                     ((mtimes) b x)
                                     c))) ())
 p=a*power(x,2)+b*x+c;
 t
+.ft
 .DE
 .NH 3
 Special Arguments
@@ -231,6 +265,7 @@ of code with the arguments given in this section.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIsubroutine(\fRname(p1,p2,...,pn))
 .sp
 \fIfunction({\fRtype,} name(p1,p2,...,pn))
@@ -238,6 +273,7 @@ User Level Syntax:
 \fIcprocedure(\fR{type,} name(p1,p2,...,pn))
 .sp
 \fIbody(\fRstmt1,stmt2,...,stmtn)
+.ft
 .DE
 .RE
 where name is an atom, and p1,p2,...,pn is a sequence
@@ -253,6 +289,7 @@ body of a subprogram.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(($subroutine) \fR((name) p1 p2 ... pn))
 .sp
 \fI(($function) \fR{type} ((name) p1 p2 ... pn))
@@ -260,6 +297,7 @@ LISP Level Syntax:
 \fI(($cprocedure) \fR{type} ((name) p1 p2 ... pn))
 .sp
 \fI(($body) \fRstmt1 stmt2 ... stmtn)
+.ft
 .DE
 .RE
 where name is an atom, and p1 p2 ... pn is a sequence
@@ -274,9 +312,12 @@ subprogram.
 .SH
 User Level Examples:
 .DS L
+.ft CR
 (c1) gentranlang(fortran)$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentran( function("real", f(x,y)),
               body( x:x^2, y:y^2, f:abs(x-y) ) )$
       real function f(x,y)
@@ -285,38 +326,50 @@ User Level Examples:
       f=abs(x-y)
       return
       end
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranlang(ratfor)$
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentran( subroutine(f(x,y)),
               body( y:abs(x^2-y^2) ) )$
 subroutine f(x,y)
 y=abs(x**2-y**2)
 return
 end
+.ft
 .DE
 .DS L
+.ft CR
 (c5) gentranlang(c)$
+.ft
 .DE
 .DS L
+.ft CR
 (c6) gentran( cprocedure("float", f(x,y)) )$
 float f(x,y)
+.ft
 .DE
 .SH
 LISP Level Examples:
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'fortran)
 fortran
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '( (($function) real ((f) x y))
-		 (($body) ((msetq) x ((mexpt) x 2))
-			  ((msetq) y ((mexpt) y 2))
-			  ((msetq) f ((mabs)
-				      ((mplus) x ((mminus) y))))))
-	      ())
+                 (($body) ((msetq) x ((mexpt) x 2))
+                          ((msetq) y ((mexpt) y 2))
+                          ((msetq) f ((mabs)
+                                      ((mplus) x ((mminus) y))))))
+              ())
       real function f(x,y)
       x=x**2
       y=y**2
@@ -324,32 +377,41 @@ fortran
       return
       end
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'ratfor)
 ratfor
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '( (($subroutine) ((f) x y))
-		 (($body) ((msetq) y
-				   ((mabs)
-				    ((mplus) ((mexpt) x 2)
-					     ((mminus) ((mexpt) y 2)))))))
-	      ())
+                 (($body) ((msetq) y
+                                   ((mabs)
+                                    ((mplus) ((mexpt) x 2)
+                                             ((mminus) ((mexpt) y 2)))))))
+              ())
 subroutine f(x,y)
 y=abs(x**2-y**2)
 return
 end
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'c)
 c
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '( (($cprocedure) float ((f) x y)) ) ())
 float f(x,y)
 t
+.ft
 .DE
 .SH
 Other Special Arguments
@@ -361,157 +423,209 @@ the VAXIMA programming language.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIbreak()\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fIstop()\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fIend()\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fIbegin_group\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fIend_group\fR
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(($break))\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fI(($stop))\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fI(($end))\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fI$begin_group\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fI$end_group\fR
+.ft
 .DE
 .RE
 .SH
 User Level Examples:
 .DS L
+.ft CR
 (c1) gentranlang(fortran)$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentran( for n:1 thru 100 do
-		  if f(n)<0 then break() )$
+                  if f(n)<0 then break() )$
       do 25001 n=1,100
-	  if (.not.f(n).lt.0.0) goto 25002
-	      goto 25003
+          if (.not.f(n).lt.0.0) goto 25002
+              goto 25003
 25002     continue
 25001 continue
 25003 continue
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentran( stop(), end() )$
       stop
       end
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentranlang(ratfor)$
+.ft
 .DE
 .DS L
+.ft CR
 (c5) gentran( for n:1 thru 100 do
-		  if f(n)<0 then break() )$
+                  if f(n)<0 then break() )$
 do n=1,100
     if (f(n)<0.0)
-	break
+        break
+.ft
 .DE
 .DS L
+.ft CR
 (c6) gentranlang(c)$
+.ft
 .DE
 .DS L
+.ft CR
 (c7) gentran( begin_group,
-	      for n:1 thru 100 do
-		  if f(n)<0 then break() )$
+              for n:1 thru 100 do
+                  if f(n)<0 then break() )$
 {
     for (n=1;!(n>100);n=n+1)
-	fi(f(n)<0.0)
-	    break;
+        fi(f(n)<0.0)
+            break;
+.ft
 .DE
 .DS L
+.ft CR
 (c8) gentran( if n>100 then stop(),
               end_group )$
       if (n>100.0)
-	  exit(0);
+          exit(0);
 }
+.ft
 .DE
 .SH
 LISP Level Examples:
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'fortran)
 fortran
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '( ((mdo) n 1 nil nil 100 nil
-			((mcond) ((mlessp) ((f) n) 0)
-				 (($break))
-				 t
-				 $false)) ) ())
+                        ((mcond) ((mlessp) ((f) n) 0)
+                                 (($break))
+                                 t
+                                 $false)) ) ())
       do 25001 n=1,100
-	  if (.not.f(n).lt.0.0) goto 25002
-	      goto 25003
+          if (.not.f(n).lt.0.0) goto 25002
+              goto 25003
 25002     continue
 25001 continue
 25003 continue
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '( (($stop)) (($end)) ) ())
       stop
       end
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'ratfor)
 ratfor
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '( ((mdo) n 1 nil nil 100 nil
-			((mcond) ((mlessp) ((f) n) 0)
-				 (($break))
-				 t
-				 (($false)))) ) ())
+                        ((mcond) ((mlessp) ((f) n) 0)
+                                 (($break))
+                                 t
+                                 (($false)))) ) ())
 do n=1,100
     if (f(n)<0.0)
-	break
+        break
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'c)
 c
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '( $begin_group
-		 ((mdo) n 1 nil nil 100 nil
-			((mcond) ((mlessp) ((f) n) 0)
-				 (($break))
-				 t
-				 $false)) ) ())
+                 ((mdo) n 1 nil nil 100 nil
+                        ((mcond) ((mlessp) ((f) n) 0)
+                                 (($break))
+                                 t
+                                 $false)) ) ())
 {
     for (n=1;!(n>100);n=n+1)
-	if (f(n)<0.0)
-	    break;
+        if (f(n)<0.0)
+            break;
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '( ((mcond) ((mgreaterp) n 100)
-			  (($stop))
-			  t
-			  $false)
-		 $end_group ) ())
+                          (($stop))
+                          t
+                          $false)
+                 $end_group ) ())
     if (n>100.0)
-	exit(0);
+        exit(0);
 }
 t
+.ft
 .DE
 .LP
 Translation is a convenient method of producing numerical code
@@ -546,7 +660,9 @@ The eval Function
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIeval(\fRexp)
+.ft
 .DE
 .RE
 where exp is any VAXIMA user level expression or statement which,
@@ -556,7 +672,9 @@ be translated by \fIgentran\fR into the target language.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(($eval) \fRexp)
+.ft
 .DE
 .RE
 where exp is any VAXIMA LISP level expression or statement
@@ -574,17 +692,21 @@ User Level Example:
 The following formula, f, has been derived symbolically:
 .RS
 .DS L
+.ft CR
    2
 2 x  - 5 x + 6
+.ft
 .DE
 .RE
 We wish to generate an assignment statement for the quotient
 of f and its derivative.
 .DS L
+.ft CR
 (c1) gentran( q : eval(f)/eval(diff(f,x)) );
       q=(6.0-5.0*x+2.0*x**2)/(-5.0+4.0*x)
 
 (d1)                       true
+.ft
 .DE
 .SH
 LISP Level Example:
@@ -592,18 +714,22 @@ LISP Level Example:
 The following formula, f, has been derived symbolically:
 .RS
 .DS L
+.ft CR
 ((mplus) ((mtimes) 2 ((mexpt) x 2))
          ((mtimes) -5 x)
          6)
+.ft
 .DE
 .RE
 We wish to generate an assignment statement for the quotient of
 f and its derivative.
 .DS L
+.ft CR
 <1>: (gentran '(((msetq) q ((mquotient) (($eval) f)
                                         (($eval) (($diff) f x))))) ())
       q=(6.0-5.0*x+2.0*x**2)/(-5.0+4.0*x)
 t
+.ft
 .DE
 .NH 3
 The rsetq Function
@@ -618,7 +744,9 @@ evaluated prior to translation.  This special function is \fIrsetq\fR.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIrsetq(\fRvar, exp)
+.ft
 .DE
 .RE
 where var is any VAXIMA user level variable, matrix or array
@@ -629,7 +757,9 @@ be translated by \fIgentran\fR into the target language.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(($rsetq) \fRvar exp)
+.ft
 .DE
 .RE
 where var is any VAXIMA LISP level variable, matrix or array
@@ -639,20 +769,25 @@ be translated by \fIgentran\fR into the target language.
 .SH
 User Level Example:
 .DS L
+.ft CR
 (c1) gentran( rsetq( deriv, diff(x^4-x^3+2*x^2-1,x) ) );
       deriv=4.0*x-3.0*x**2+4.0*x**3
 
 (d1)                       true
+.ft
 .DE
 Note:  This is equivalent to a call of the form
 .RS
 .DS L
+.ft CR
 gentran( deriv : eval(diff(x^4-x^3+2*x^2-1,x)) );
+.ft
 .DE
 .RE
 .SH
 LISP Level Example:
 .DS L
+.ft CR
 <1>: (gentran '((($rsetq) deriv
                           (($diff) ((mplus) ((mexpt) x 4)
                                             ((mminus) ((mexpt) x 3))
@@ -661,6 +796,7 @@ LISP Level Example:
                                    x))) ())
       deriv=4.0*x-3.0*x**2+4.0*x**3
 t
+.ft
 .DE
 .NH 3
 The lsetq Function
@@ -675,7 +811,9 @@ translation.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIlsetq(\fRvar, exp)
+.ft
 .DE
 .RE
 where var is any VAXIMA user level matrix or array element
@@ -687,7 +825,9 @@ target language.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(($lsetq) \fRvar exp)
+.ft
 .DE
 .RE
 where var is any VAXIMA LISP level matrix or array element with
@@ -700,6 +840,7 @@ User Level Example:
 We wish to generate assignments which assign zeros to all
 elements on the main diagonal of m, an n x n matrix.
 .DS L
+.ft CR
 (c1) for j:1 thru n do
          gentran( lsetq( m[j,j], 0.0 ) );
       m(1,1)=0.0
@@ -710,11 +851,14 @@ elements on the main diagonal of m, an n x n matrix.
       m(\fIn\fR,\fIn\fR)=0.0
 
 (d1)                       done
+.ft
 .DE
 Note:  This is equivalent to a call of the form
 .DS L
+.ft CR
 for j:1 thru n do
     gentran( m[eval(j),eval(j)] : 0.0 );
+.ft
 .DE
 .SH
 LISP Level Example:
@@ -722,9 +866,10 @@ LISP Level Example:
 We wish to generate assignments which assign zeros to all
 elements on the main diagonal of m, an n x n matrix.
 .DS L
+.ft CR
 <1>: (do ((j 1 (1+ j)))
-	 ((> j n))
-	 (gentran '((($lsetq) ((m) j j) 0.0)) ()))
+         ((> j n))
+         (gentran '((($lsetq) ((m) j j) 0.0)) ()))
       m(1,1)=0.0
       m(2,2)=0.0
        .
@@ -732,6 +877,7 @@ elements on the main diagonal of m, an n x n matrix.
        .
       m(\fIn\fR,\fIn\fR)=0.0
 nil
+.ft
 .DE
 .NH 3
 The lrsetq Function
@@ -744,7 +890,9 @@ function can be used.  It is a combination of the \fIlsetq\fR and
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIlrsetq(\fRvar, exp)
+.ft
 .DE
 .RE
 where var is any VAXIMA user level matrix or array
@@ -757,7 +905,9 @@ will result in an expression that can be translated by
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(($lrsetq) \fRvar exp)
+.ft
 .DE
 .RE
 where var is any VAXIMA LISP level matrix or array element
@@ -772,6 +922,7 @@ User Level Example:
 The following matrix, m, has been derived symbolically:
 .RS
 .DS  L
+.ft CR
 [    a   0  - 1    1 ]
 [                    ]
 [    0   b    0    0 ]
@@ -779,11 +930,13 @@ The following matrix, m, has been derived symbolically:
 [  - 1   0    c  - 1 ]
 [                    ]
 [    1   0  - 1    d ]
+.ft
 .DE
 .RE
 We wish to generate assignment statements for those elements
 on the main diagonal of the matrix.
 .DS L
+.ft CR
 (c1) for j:1 thru 4 do
          gentran( lrsetq( m[j,j], m[j,j] ) );
       m(1,1)=a
@@ -792,11 +945,14 @@ on the main diagonal of the matrix.
       m(4,4)=d
 
 (d1)                       done
+.ft
 .DE
 Note:  This is equivalent to a call of the form
 .DS L
+.ft CR
 for j:1 thru 4 do
     gentran( m[eval(j),eval(j)] : eval(m[j,j]) );
+.ft
 .DE
 .SH
 LISP Level Example:
@@ -804,6 +960,7 @@ LISP Level Example:
 The following matrix, m, has been derived symbolically:
 .RS
 .DS L
+.ft CR
 [     a   0    1    1 ]
 [                     ]
 [     0   b    0    0 ]
@@ -811,20 +968,23 @@ The following matrix, m, has been derived symbolically:
 [   - 1   0    c  - 1 ]
 [                     ]
 [     1   0  - 1    d ]
+.ft
 .DE
 .RE
 We wish to generate assignment statements for those elements on the main
 diagonal of the matrix.
 .DS L
+.ft CR
 <1>: (do ((j 1 (1+ j)))
-	 ((> j 4))
-	 (gentran '((($lrsetq) ((m array) j j)
-		               ((m array) j j))) ()))
+         ((> j 4))
+         (gentran '((($lrsetq) ((m array) j j)
+                               ((m array) j j))) ()))
       m(1,1)=a
       m(2,2)=b
       m(3,3)=c
       m(4,4)=d
 nil
+.ft
 .DE
 .NH 2
 Type Declarations
@@ -838,7 +998,9 @@ explicitly through calls to the special GENTRAN function \fItype\fR.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fItype(\fRtype, v1,v2,...,vn);
+.ft
 .DE
 .RE
 where v1,v2,...,vn is one or more variables (optionally
@@ -852,7 +1014,9 @@ argument to \fIeval\fR.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(($type) \fRtype v1 v2 ... vn)
+.ft
 .DE
 .RE
 where v1 v2 ... vn is one or more variables (optionally in
@@ -873,6 +1037,7 @@ statements are printed.
 .SH
 User Level Example:
 .DS L
+.ft CR
 (c1) gentran( type("implicit real*8", "a-h","o-z"),
               type("real*8", m(4,4)),
               for i:1 thru 4 do
@@ -885,8 +1050,10 @@ User Level Example:
                 .
                 .
             );
+.ft
 .DE
 .DS L
+.ft CR
       implicit real*8 (a-h,o-z)
       real*8 m(4,4)
       integer i,j
@@ -903,13 +1070,17 @@ User Level Example:
        .
        .
        .
+.ft
 .DE
 .DS L
+.ft CR
 (d1)                       true
+.ft
 .DE
 .SH
 LISP Level Example:
 .DS L
+.ft CR
 <1>: (gentran '((($type) |implicit real*8| a-h o-z)
                 (($type) real*8 ((m) 4 4))
                 ((mdo) i 1 nil nil 4 nil
@@ -940,6 +1111,7 @@ LISP Level Example:
        .
        .
 t
+.ft
 .DE
 .NH 3
 Subprogram Type Declarations
@@ -950,9 +1122,12 @@ code, and function types for FORTRAN, RATFOR, and C code.
 .SH
 User Level Examples:
 .DS L
+.ft CR
 (c1) gentranlang(ratfor)$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentran( fac(n) := block( type(function, fac),
                                type(integer, fac,n),
                                f : 1,
@@ -969,11 +1144,15 @@ return(f)
 end
 
 (d2)                       true
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranlang(c)$
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentran( fac(n) := block( type(int, fac,n,i,f),
                                f : 1,
                                for i:2 thru n do
@@ -990,14 +1169,18 @@ int n;
 }
 
 (d4)                       done
+.ft
 .DE
 .SH
 LISP Level Examples:
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'ratfor)
 ratfor
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '(((mdefine) ((fac) n)
                            ((mprog)
                             (($type) function fac)
@@ -1015,12 +1198,16 @@ do i=2,n
 return(f)
 end
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'c)
 c
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '(((mdefine) ((fac) n)
                            ((mprog)
                             (($type) int fac n i f)
@@ -1038,6 +1225,7 @@ int n;
     return(f);
 }
 t
+.ft
 .DE
 .NH 3
 A Note on Subscripted Variables
@@ -1048,7 +1236,9 @@ mind.  First of all, when a VAXIMA array is declared with a declaration
 such as
 .RS
 .DS L
+.ft CR
 array(a, \fIn\fR);
+.ft
 .DE
 .RE
 where \fIn\fR is a positive integer, a is actually being declared to
@@ -1056,14 +1246,18 @@ be of size \fIn\fR+1.  Each of the elements a[0], a[1], ..., a[\fIn\fR]
 can be used.  However, a FORTRAN or RATFOR declaration such as
 .RS
 .DS L
+.ft CR
 dimension a(\fIn\fR)
+.ft
 .DE
 .RE
 only declares a to be of size \fIn\fR.  Only the elements a(1),
 a(2), ..., a(\fIn\fR) can be used.  Furthermore, a C declaration such as
 .RS
 .DS L
+.ft CR
 float a[\fIn\fR];
+.ft
 .DE
 .RE
 declares a to be of size \fIn\fR with elements referred to as
@@ -1091,7 +1285,9 @@ into the stream of generated code through a call to the special function
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIliteral(\fRarg1,arg2,...,argn)
+.ft
 .DE
 .RE
 where arg1,arg2,...,argn is an argument list containing one or
@@ -1102,7 +1298,9 @@ are not evaluated unless given as arguments to \fIeval\fR.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(($literal) \fRarg1 arg2 ... argn)
+.ft
 .DE
 .RE
 where arg1 arg2 ... argn is an argument list containing one or
@@ -1121,10 +1319,13 @@ indentation, or an end-of-line character.
 .SH
 User Level Examples:
 .DS L
+.ft CR
 (c1) gentranlang(fortran)$
+.ft
 .DE
 Suppose \fBn\fR has value 10.
 .DS L
+.ft CR
 (c2) gentran( literal( "c", tab, "--This is a FORTRAN Comment--", cr,
                        "c", cr ),
               literal( tab, "data ", "n/", eval(n), "/", cr ) );
@@ -1133,11 +1334,15 @@ c
       data n/10/
 
 (d2)                       true
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranlang(ratfor)$
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentran( for i:1 thru n do
               (
                   literal( tab, "# --This is a RATFOR Comment--", cr ),
@@ -1152,11 +1357,15 @@ do i=1,n
     }
 
 (d4)                       true
+.ft
 .DE
 .DS L
+.ft CR
 (c5) gentranlang(c)$
+.ft
 .DE
 .DS L
+.ft CR
 (c6) gentran( x : 0.0,
               literal( tab, "/*", cr,
                        tab, " * This is a C Comment", cr,
@@ -1167,15 +1376,19 @@ x=0.0;
  */
 
 (d6)                       true
+.ft
 .DE
 .SH
 LISP Level Examples:
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'fortran)
 fortran
+.ft
 .DE
 Suppose \fBn\fR has value 10.
 .DS L
+.ft CR
 <1>: (gentran '((($literal) |c| $tab |--This is a FORTRAN Comment--| $cr
                             |c| $cr)
                 (($literal) $tab |data | |n//| (($eval) n) |//| $cr)) ())
@@ -1183,12 +1396,16 @@ c     --This is a FORTRAN Comment--
 c
       data n/10/
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'ratfor)
 ratfor
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '(((mdo) i 1 nil nil n nil
                        ((mprogn)
                         (($literal) $tab |# --This is a RATFOR Comment--| $cr)
@@ -1201,12 +1418,16 @@ do i=1,n
 10      format(1x,10(i5,3x))
     }
 t
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq *gentranlang 'c)
 c
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '(((msetq) x 0.0)
                 (($literal) $tab |//*| $cr
                             $tab | * This is a C Comment| $cr
@@ -1216,6 +1437,7 @@ x=0.0;
  * This is a C Comment
  */
 t
+.ft
 .DE
 .NH 2
 The fortran, ratfor, and c Mode Switches
@@ -1251,9 +1473,12 @@ code generation.
 .SH
 User Level Examples:
 .DS L
+.ft CR
 (c1) m : genmatrix(m, 2,2, 1,1)$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) on(fortran);
 
      rsetq( minv, m^^(-1) );
@@ -1268,15 +1493,19 @@ User Level Examples:
      off(fortran);
 
 (d2)                       done
+.ft
 .DE
 .SH
 LISP Level Examples:
 .DS L
+.ft CR
 <1>: (meval '((msetq) m (($genmatrix) m 2 2 1 1)) )
 (($matrix simp) ((mlist simp) ((m simp array) 1 1) ((m simp array
 ) 1 2)) ((mlist simp) ((m simp array) 2 1) ((m simp array) 2 2)))
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (on '(fortran))
 
      rsetq( minv, ?m^^(-1) );
@@ -1290,6 +1519,7 @@ LISP Level Examples:
 
      off(fortran);
 $done
+.ft
 .DE
 .NH 2
 Code Optimization
@@ -1306,13 +1536,17 @@ off initially.)  The following command will turn the \fIgentranopt\fR flag
 on:
 .RS
 .DS L
+.ft CR
 \fIon(gentranopt);\fR
+.ft
 .DE
 .RE
 and
 .RS
 .DS L
+.ft CR
 \fIoff(gentranopt);\fR
+.ft
 .DE
 .RE
 will turn it back off again.
@@ -1321,41 +1555,48 @@ Example:
 .LP
 Suppose the following expression, ans, has been derived:
 .DS L
+.ft CR
 (c10) ans;
 
-	    2  7  4  8	    2  6  3  8	     3  7  4  6	     3  6  3  6
+            2  7  4  8      2  6  3  8       3  7  4  6      3  6  3  6
 (d10) - 36 w  x  y  z  + 3 w  x  y  z  - 24 w  x  y  z  + 2 w  x  y  z
 
-       2  8  6  5	 4  7  6  5	  2  7  6  5	    2  10  5  5
- + 96 w  x  y  z  - 168 w  x  y  z  + 12 w  x  y  z  - 216 w  x	  y  z
+       2  8  6  5        4  7  6  5       2  7  6  5        2  10  5  5
+ + 96 w  x  y  z  - 168 w  x  y  z  + 12 w  x  y  z  - 216 w  x   y  z
 
-      2	 7  5  5      7	 5  5	    4  6  5  5	  2  6  5  5	   2  9	 4  5
+      2  7  5  5      7  5  5       4  6  5  5    2  6  5  5       2  9  4  5
  - 8 w  x  y  z  + 9 x  y  z  + 14 w  x  y  z  - w  x  y  z  + 18 w  x  y  z
 
-       7  3  5	    2  6  3  5	      7	 5  3	      7	 3  3	   3  6	 3  3
+       7  3  5      2  6  3  5        7  5  3         7  3  3      3  6  3  3
  + 87 x  y  z  - 3 w  x  y  z  + 6 w x  y  z  + 58 w x  y  z  - 2 w  x  y  z
 
-       8  7  2	     2  7  7  2	     7  7  2	   10  6  2	   8  5	 2
+       8  7  2       2  7  7  2      7  7  2       10  6  2        8  5  2
  - 24 x  y  z  + 42 w  x  y  z  - 3 x  y  z  + 54 x   y  z  - 232 x  y  z
 
-	2  7  5	 2	 7  5  2       4  6  5  2    2  6  5  2	       10  4  2
- + 414 w  x  y  z  - 29 x  y  z  - 14 w  x  y  z  + w  x  y  z  + 522 x	  y  z
+        2  7  5  2       7  5  2       4  6  5  2    2  6  5  2        10  4  2
+ + 414 w  x  y  z  - 29 x  y  z  - 14 w  x  y  z  + w  x  y  z  + 522 x   y  z
 
        2  9  4  2
  - 18 w  x  y  z
+.ft
 .DE
 We wish to generate optimized FORTRAN code to compute this value.
 .LP
 The following VAXIMA session will generate the code:
 .DS L
+.ft CR
 (c11) on(gentranopt);
 
 (d11)                      done
+.ft
 .DE
 .DS L
+.ft CR
 (c12) gentran( rsetq(ans,ans) );
+.ft
 .DE
 .DS L
+.ft CR
       t0=w**2
       t1=x**9
       t2=y**4
@@ -1374,8 +1615,10 @@ The following VAXIMA session will generate the code:
       t15=z**5
       t16=z**6
       t17=z**8
+.ft
 .DE
 .DS L
+.ft CR
       ans=-18.0*t0*t1*t2*t3+522.0*t4*t2*t3+t0*t5*t6*t3-14.0*t7*t5*t6*t3
      . -29.0*t8*t6*t3+414.0*t0*t8*t6*t3-232.0*t9*t6*t3+54.0*t4*t10*t3
      . -3.0*t8*t11*t3+42.0*t0*t8*t11*t3-24.0*t9*t11*t3-2.0*t12*t5*t13*
@@ -1384,9 +1627,12 @@ The following VAXIMA session will generate the code:
      . t6*t15-8.0*t0*t8*t6*t15-216.0*t0*t4*t6*t15+12.0*t0*t8*t10*t15
      . -168.0*t7*t8*t10*t15+96.0*t0*t9*t10*t15+2.0*t12*t5*t13*t16-24.0*
      . t12*t8*t2*t16+3.0*t0*t5*t13*t17-36.0*t0*t8*t2*t17
+.ft
 .DE
 .DS L
+.ft CR
 (d12)                      true
+.ft
 .DE
 .LP
 Unfortunately, VAXIMA's \fIoptimize\fR facility is not as powerful
@@ -1395,6 +1641,7 @@ optimal sequence of assignments to calculate an
 expression's value.  For example, in the code above,
 .RS
 .DS L
+.ft CR
       t3=z**2
        .
        .
@@ -1403,11 +1650,13 @@ expression's value.  For example, in the code above,
       t15=z**5
       t16=z**6
       t17=z**8
+.ft
 .DE
 .RE
 could be calculated more efficiently with
 .RS
 .DS L
+.ft CR
       t3=z*z
        .
        .
@@ -1416,6 +1665,7 @@ could be calculated more efficiently with
       t15=t3*t14
       t16=t15*z
       t17=t16*t3
+.ft
 .DE
 .RE
 In addition, the \fIoptimize\fR facility does not detect all possible
@@ -1465,17 +1715,24 @@ initialized to 800.
 .SH
 User Level Examples:
 .DS L
+.ft CR
 (c1) on(gentranseg)$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) ?maxexpprintlen\e* : 120$
+.ft
 .DE
 .DS L
+.ft CR
 (c3) ( poly : 0,
        for i:0 thru 20 do
            poly : poly + c(i+1)*x^i )$
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentran( rsetq( poly, poly ) );
       t0=c(1)+c(2)*x+c(3)*x**2+c(4)*x**3+c(5)*x**4+c(6)*x**5+c(7)*x**6+c
      . (8)*x**7+c(9)*x**8+c(10)*x**9
@@ -1484,18 +1741,24 @@ User Level Examples:
       poly=t0+c(19)*x**18+c(20)*x**19+c(21)*x**20
 
 (d4)                       true
+.ft
 .DE
 .SH
 LISP Level Examples:
 .DS L
+.ft CR
 <1>: (on '(gentranseg))
 $done
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (setq maxexpprintlen* 120)
 120
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (meval '((mprogn)
               ((msetq) poly 0)
               ((mdo) i 0 nil nil 20 nil
@@ -1503,8 +1766,10 @@ $done
                                             ((mtimes) ((c) ((mplus) i 1))
                                                       ((mexpt) x i)))) ) ) )
 $done
+.ft
 .DE
 .DS L
+.ft CR
 <1>: (gentran '((($rsetq) poly poly)) ())
       t0=c(1)+c(2)*x+c(3)*x**2+c(4)*x**3+c(5)*x**4+c(6)*x**5+c(7)*x**6+c
      . (8)*x**7+c(9)*x**8+c(10)*x**9
@@ -1512,6 +1777,7 @@ $done
      . c(16)*x**15+c(17)*x**16+c(18)*x**17
       poly=t0+c(19)*x**18+c(20)*x**19+c(21)*x**20
 t
+.ft
 .DE
 .NH 3
 Implicit Type Declarations
@@ -1534,15 +1800,22 @@ Otherwise, the variables are not declared.
 .SH
 Example:
 .DS L
+.ft CR
 (c1) on(gentranseg)$
+.ft
 .DE
 .DS L
+.ft CR
 (c2) ?maxexpprintlen\e* : 20$
+.ft
 .DE
 .DS L
+.ft CR
 (c3) ?tempvartype\e* : real$
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentran( type(integer, isum),
                .
                .
@@ -1563,6 +1836,7 @@ Example:
        .
 
 (d4)                       true
+.ft
 .DE
 .NH 3
 Controlling Generation of Declarations
@@ -1588,7 +1862,9 @@ is:
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIgendecs(\fRname);
+.ft
 .DE
 .RE
 where name is an atom.
@@ -1596,7 +1872,9 @@ where name is an atom.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(gendecs '\fRname)
+.ft
 .DE
 .RE
 where name is an atom.
@@ -1607,20 +1885,28 @@ The \fIgendecs\fR flag can be turned on and off with the \fIon\fR and
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIon(gendecs);\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fIoff(gendecs);\fR
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(on '(gendecs))\fR
+.ft
 .DE
 .DS L
+.ft CR
 \fI(off '(gendecs))\fR
+.ft
 .DE
 .RE
 .LP
@@ -1648,7 +1934,9 @@ the example in section 6.3.4.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fItempvar(\fRtype);
+.ft
 .DE
 .RE
 where type is either a string which indicates the variable
@@ -1658,7 +1946,9 @@ is \fIfalse\fR if the variable type is unknown.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(tempvar '\fRtype)
+.ft
 .DE
 .RE
 where type is either an atom which indicates the variable
@@ -1715,7 +2005,9 @@ that the values they hold are no longer significant.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fImarkvar(\fRvar);
+.ft
 .DE
 .RE
 where var is an atom.
@@ -1723,7 +2015,9 @@ where var is an atom.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(markvar \fRvar)
+.ft
 .DE
 .RE
 where var is an atom.
@@ -1742,12 +2036,14 @@ User Level Example:
 The following matrix, m, has been derived symbolically:
 .RS
 .DS L
+.ft CR
 [ x (z + y)         0     x z ]
 [                             ]
 [       - x     y + x       0 ]
 [                             ]
 [                           2 ]
 [       x z         0      z  ]
+.ft
 .DE
 .RE
 We wish to replace each non-zero element by a generated variable name
@@ -1755,6 +2051,7 @@ to prevent these expressions from being resubstituted into further
 calculations.  (We will also record these substitutions in the numerical
 program we are constructing by generating assignment statements.)
 .DS L
+.ft CR
 (c1) for i:1 thru 3 do
          for j:1 thru 3 do
              if m[i,j]#0 then
@@ -1764,26 +2061,33 @@ program we are constructing by generating assignment statements.)
                  gentran( eval(var) : eval(m[i,j]) ),
                  m[i,j] : var
              );
+.ft
 .DE
 .DS L
+.ft CR
       t0=x*(y+z)
       t1=x*z
       t2=-x
       t3=x+y
       t4=x*z
       t5=z**2
+.ft
 .DE
 .DS L
+.ft CR
 (d1)                       done
+.ft
 .DE
 Now matrix m contains the following entries:
 .RS
 .DS L
+.ft CR
 [ t0     0    t1 ]
 [                ]
 [ t2    t3     0 ]
 [                ]
 [ t4     0    t5 ]
+.ft
 .DE
 .RE
 .SH
@@ -1792,12 +2096,14 @@ LISP Level Example:
 The following matrix, m, has been derived symbolically:
 .RS
 .DS L
+.ft CR
 [ x (z + y)         0     x z ]
 [                             ]
 [       - x     y + x       0 ]
 [                             ]
 [                           2 ]
 [       x z         0      z  ]
+.ft
 .DE
 .RE
 We wish to replace each non-zero element by a generated variable
@@ -1806,6 +2112,7 @@ calculations.  (We will also record these substitutions in the
 numerical program we are constructing by generating assignment
 statements.)
 .DS L
+.ft CR
 <1>: (meval '((mdo) i 1 nil nil 3 nil
                     ((mdo) j 1 nil nil 3 nil
                            ((mcond) ((mnotequal) ((m array) i j) 0)
@@ -1818,17 +2125,22 @@ statements.)
                                      ((msetq) ((m array) i j) var))
                                     t
                                     $false))))
+.ft
 .DE
 .DS L
+.ft CR
       t0=x*(y+z)
       t1=x*z
       t2=-x
       t3=x+y
       t4=x*z
       t5=z**2
+.ft
 .DE
 .DS L
+.ft CR
 $done
+.ft
 .DE
 .NH 3
 Unmarking Temporary Variables
@@ -1841,7 +2153,9 @@ function.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIunmarkvar(\fRvar);
+.ft
 .DE
 .RE
 where var is an atom.
@@ -1849,7 +2163,9 @@ where var is an atom.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(unmarkvar \fRvar)
+.ft
 .DE
 .RE
 where var is an atom.
@@ -1866,7 +2182,9 @@ expression.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIrecurunmark(\fRexp);
+.ft
 .DE
 .RE
 where exp is an expression containing one or more variable
@@ -1875,7 +2193,9 @@ names.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(recurunmark \fRexp)
+.ft
 .DE
 .RE
 where exp is an expression containing one or more variable
@@ -1895,7 +2215,9 @@ with the marked variable predicate.
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fImarkedvarp(\fRvar);
+.ft
 .DE
 .RE
 where var is an atom.
@@ -1903,7 +2225,9 @@ where var is an atom.
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(markedvarp '\fRvar)
+.ft
 .DE
 .RE
 where var is an atom.
@@ -1922,14 +2246,18 @@ statement number must be generated.  The syntax is as follows:
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIgenstmtno();\fR
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(genstmtno)\fR
+.ft
 .DE
 .RE
 .SH

@@ -62,34 +62,42 @@ gentranout
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIgentranout(\fRf1,f2,...,fn);
+.ft
 .DE
 .RE
 where f1,f2,...,fn is a list of one or more f's, and
 each f is one of:
 .RS
 .DS L
+.ft CR
 a string  =  an output file
 \fItrue\fR      =  the terminal
 \fIfalse\fR     =  the current output file(s)
 \fIall\fR       =  all files currently open for output by GENTRAN
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(gentranout '(\fRf1 f2 ... fn))
+.ft
 .DE
 .RE
 where f1 f2 ... fn is a sequence of one or more f's, and
 each f is one of:
 .RS
 .DS L
+.ft CR
 an atom  =  an output file
 \fIt\fR        =  the terminal
 \fInil\fR      =  the current output file(s)
 \fI$all\fR     =  all files currently open for output by GENTRAN
+.ft
 .DE
 .RE
 .SH
@@ -113,6 +121,7 @@ Wrong Type of Arg
 .SH
 Examples:
 .DS L
+.ft CR
 Output file list:
 
   current-output
@@ -121,13 +130,17 @@ Output file list:
 +------+
 | t    |
 +------+
+.ft
 .DE
 .DS L
+.ft CR
 (c1) gentranout("f1");
 
 (d1)                       f1
+.ft
 .DE
 .DS L
+.ft CR
 Output file list:
 
          current-output
@@ -136,13 +149,17 @@ Output file list:
 +------+------+
 | t    | "f1" |
 +------+------+
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentranout("f2");
 
 (d2)                       f2
+.ft
 .DE
 .DS L
+.ft CR
 Output file list:
 
                 current-output
@@ -151,13 +168,17 @@ Output file list:
 +------+------+------+
 | t    | "f1" | "f2" |
 +------+------+------+
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranout(true,"f3");
 
 (d3)                       [true,f3]
+.ft
 .DE
 .DS L
+.ft CR
 Output file list:
 
   +--------------------+------current-output
@@ -166,13 +187,17 @@ Output file list:
 +------+------+------+------+
 | t    | "f1" | "f2" | "f3" |
 +------+------+------+------+
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentranout("f1");
 
 (d4)                       f1
+.ft
 .DE
 .DS L
+.ft CR
 Output file list:
 
          current-output
@@ -181,6 +206,7 @@ Output file list:
 +------+------+------+------+
 | t    | "f1" | "f2" | "f3" |
 +------+------+------+------+
+.ft
 .DE
 .NH 3
 gentranshut
@@ -188,32 +214,40 @@ gentranshut
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIgentranshut(\fRf1,f2,...,fn);
+.ft
 .DE
 .RE
 where f1,f2,...,fn is a list of one or more f's, and each
 f is one of:
 .RS
 .DS L
+.ft CR
 a string  =  an output file
 \fIfalse\fR     =  the current output file(s)
 \fIall\fR       =  all files currently open for output by GENTRAN
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(gentranshut '(\fRf1 f2 ... fn))
+.ft
 .DE
 .RE
 where f1 f2 ... fn is a list of one or more f's, and
 each f is one of:
 .RS
 .DS L
+.ft CR
 an atom  =  an output file
 \fInil\fR      =  the current output file(s)
 \fI$all\fR     =  all files currently open for output by GENTRAN
+.ft
 .DE
 .RE
 .SH
@@ -238,6 +272,7 @@ Wrong Type of Arg
 .SH
 User Level Examples:
 .DS L
+.ft CR
 Output file list:
 
   current-output ------+------+--------------------+
@@ -246,13 +281,17 @@ Output file list:
 +------+------+------+------+------+------+------+------+
 | t    | "f1" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" |
 +------+------+------+------+------+------+------+------+
+.ft
 .DE
 .DS L
+.ft CR
 (c1) gentranshut("f1","f2","f7");
 
 (d1)                       [f3,f4]
+.ft
 .DE
 .DS L
+.ft CR
 Output file list:
 
          +------+----------- current-output
@@ -261,13 +300,17 @@ Output file list:
 +------+------+------+------+------+
 | t    | "f3" | "f4" | "f5" | "f6" |
 +------+------+------+------+------+
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentranshut(false);
 
 (d2)                       true
+.ft
 .DE
 .DS L
+.ft CR
 Output file list:
 
   current-output
@@ -276,13 +319,17 @@ Output file list:
 +------+------+------+
 | t    | "f5" | "f6" |
 +------+------+------+
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranshut(all);
 
 (d3)                       true
+.ft
 .DE
 .DS L
+.ft CR
 Output file list:
 
   current-output
@@ -291,6 +338,7 @@ Output file list:
 +------+
 | t    |
 +------+
+.ft
 .DE
 .NH 2
 Operations on the Output File Stack
@@ -326,34 +374,42 @@ gentranpush
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIgentranpush(\fRf1,f2,...,fn);
+.ft
 .DE
 .RE
 where f1,f2,...,fn is a list of one or more f's, and each
 f is one of:
 .RS
 .DS L
+.ft CR
 a string  =  an output file
 \fItrue\fR      =  the terminal
 \fIfalse\fR     =  the current output file(s)
 \fIall\fR       =  all files currently open for output by GENTRAN
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(gentranpush '(\fRf1 f2 ... fn))
+.ft
 .DE
 .RE
 where f1 f2 ... fn is a list of one or more f's, and
 each f is one of:
 .RS
 .DS L
+.ft CR
 an atom  =  an output file
 \fIt\fR        =  the terminal
 \fInil\fR      =  the current output file(s)
 \fI$all\fR     =  all files currently open for output by GENTRAN
+.ft
 .DE
 .RE
 .SH
@@ -378,31 +434,40 @@ Wrong Type of Arg
 .SH
 User Level Examples:
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
 | t           |  <-- current-output
 +-------------+
+.ft
 .DE
 .DS L
+.ft CR
 (c1) gentranpush("f1");
 
 (d1)                       f1
+.ft
 .DE
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
 | "f1"        |  <-- current-output
 | t           |
 +-------------+
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentranpush("f2","f3");
 
 (d2)                       [f2,f3]
+.ft
 .DE
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
@@ -410,13 +475,17 @@ Output stack:
 | "f1"        |
 | t           |
 +-------------+
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranpush(false,true);
 
 (d3)                       [f2,f3,true]
+.ft
 .DE
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
@@ -425,13 +494,17 @@ Output stack:
 | "f1"        |
 | t           |
 +-------------+
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentranpush("f1");
 
 (d4)                       f1
+.ft
 .DE
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
@@ -441,6 +514,7 @@ Output stack:
 | "f1"        |
 | t           |
 +-------------+
+.ft
 .DE
 .NH 3
 gentranpop
@@ -448,34 +522,42 @@ gentranpop
 User Level Syntax:
 .RS
 .DS L
+.ft CR
 \fIgentranpop(\fRf1,f2,...,fn);
+.ft
 .DE
 .RE
 where f1,f2,...,fn is a list of one or more f's, and each
 f is one of:
 .RS
 .DS L
+.ft CR
 a string  =  an output file
 \fItrue\fR      =  the terminal
 \fIfalse\fR     =  the current output file(s)
 \fIall\fR       =  all files currently open for output by GENTRAN
+.ft
 .DE
 .RE
 .SH
 LISP Level Syntax:
 .RS
 .DS L
+.ft CR
 \fI(gentranpop '(\fRf1 f2 ... fn))
+.ft
 .DE
 .RE
 where f1 f2 ... fn is a list of one or more f's, and
 each f is one of:
 .RS
 .DS L
+.ft CR
 an atom  =  an output file
 \fIf\fR        =  the terminal
 \fInil\fR      =  the current output file(s)
 \fI$all\fR     =  all files currently open for output by GENTRAN
+.ft
 .DE
 .RE
 .SH
@@ -501,6 +583,7 @@ Wrong Type of Arg
 .SH
 User Level Examples:
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
@@ -512,13 +595,17 @@ Output stack:
 | "f2" "f1"   |
 | t           |
 +-------------+
+.ft
 .DE
 .DS L
+.ft CR
 (c1) gentranpop(false);
 
 (d1)                       [f4,f2,true]
+.ft
 .DE
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
@@ -529,13 +616,17 @@ Output stack:
 | "f2" "f1"   |
 | t           |
 +-------------+
+.ft
 .DE
 .DS L
+.ft CR
 (c2) gentranpop("f2","f1");
 
 (d2)                       [f4,f2,true]
+.ft
 .DE
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
@@ -545,13 +636,17 @@ Output stack:
 | "f3"        |
 | t           |
 +-------------+
+.ft
 .DE
 .DS L
+.ft CR
 (c3) gentranpop(false);
 
 (d3)                       f4
+.ft
 .DE
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
@@ -560,18 +655,23 @@ Output stack:
 | "f3"        |
 | t           |
 +-------------+
+.ft
 .DE
 .DS L
+.ft CR
 (c4) gentranpop(all);
 
 (d4)                       true
+.ft
 .DE
 .DS L
+.ft CR
 Output stack:
 
 +-------------+
 | t           |  <-- current-output
 +-------------+
+.ft
 .DE
 .NH 2
 Temporary Output Redirection
@@ -581,13 +681,17 @@ and template processing commands.  The syntax for these two
 commands is:
 .RS
 .DS L
+.ft CR
 \fIgentran(\fRstmt1,stmt2,...,stmtn {,[f1,f2,...,fn]});
+.ft
 .DE
 .RS
 and
 .RE
 .DS L
+.ft CR
 \fIgentranin(\fRf1,f2,...,fn {,[f1,f2,...,fm]});
+.ft
 .DE
 .RE
 The optional parts of these two commands can be used for \fItemporary\fR
@@ -597,16 +701,20 @@ is to be temporarily reset, for this command only.
 Thus the following two sequences of commands are equivalent:
 .RS
 .DS  L
+.ft CR
 (c1) \fIgentranpush\fR(f1,f2,...,fm)$
 
 (c2) \fIgentran\fR(stmt1,stmt2,...,stmtn)$
 
 (c3) \fIgentranpop\fR(false)$
+.ft
 .DE
 .RS
 and
 .RE
 .DS L
+.ft CR
 (c1) \fIgentran(\fRstmt1,stmt2,...,stmtn, [f1,f2,...,fm])$
+.ft
 .DE
 .RE

@@ -1,6 +1,8 @@
 .DS C
+.ft CR
 \fIREFERENCES\fR
 
+.ft
 .DE
 .IP /1/
 American National Standards Institute.  "American National

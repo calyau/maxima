@@ -1,12 +1,15 @@
 .SH
 B.  LIST OF GENTRAN FUNCTIONS, SWITCHES AND VARIABLES
 .DS L
+.ft CR
 User Level Syntax               | LISP Level Syntax
 --------------------------------+----------------------------------------------
+.ft
 .DE
 .DS L
+.ft CR
 Functions:                      | Functions:
-				|
+                                |
   \fIgentran(\fRstmt1,stmt2,...,stmtn |   (\fIgentran '(\fRstmt1 stmt2 ...
           {,[f1,f2,...,fm]});   |                          stmtn)
                            [16] |            '(f1 f2 ... fm))[16]
@@ -16,6 +19,7 @@ Functions:                      | Functions:
   \fIgentranpop(\fRf1,f2,...,fn);     |   \fI(gentranpop '(\fRf1 f2 ... fn))
   \fIgentranpush(\fRf1,f2,...,fn);    |   \fI(gentranpush '(\fRf1 f2 ... fn))
   \fIgentranshut(\fRf1,f2,...,fn);    |   \fI(gentranshut '(\fRf1 f2 ... fn))
+.ft
 .DE
 .FS
 [16] In addition to the subset of translatable VAXIMA
@@ -23,6 +27,7 @@ statements given in Appendix A, the following special functions
 and arguments can also be given as arguments to the
 \fIgentran\fR function:
 .DS L
+.ft CR
   \fIbegin_group\fR                   |   \fI$begin_group\fR
   \fIbody(\fRstmt1,stmt2,...,stmtn)   |   \fI(($body) \fRstmt1 stmt2 ...
                                 |                          stmtn)
@@ -45,14 +50,18 @@ and arguments can also be given as arguments to the
   \fIsubroutine(\fRname(p1,p2,...,pn))|   \fI(($subroutine) ((\fRname) p1 p2
                                 |                        ... pn))
   \fItype(\fRtype, v1,v2,...,vn)      |   \fI(($type) \fRtype v1 v2 ... vn)
+.ft
 .DE
 .FE
 .DS L
+.ft CR
   \fIoff(\fRflag1,flag2,...,flagn);   |   \fI(off '(\fRflag1 flag2 ...
                                 |                         flagn))
   \fIon(\fRflag1,flag2,...,flagn);    |   \fI(on '(\fRflag1 flag2 ... flagn))
+.ft
 .DE
 .DS L
+.ft CR
   \fIgendecs(\fRname);                |   \fI(gendecs \fR'name)
   \fIgenstmtno();\fR                  |   \fI(genstmtno)\fR
   \fImarkedvarp(\fRvar);              |   \fI(markedvarp \fR'var)
@@ -60,10 +69,12 @@ and arguments can also be given as arguments to the
   \fIrecurunmark(\fRexp);             |   \fI(recurunmark \fR'exp)
   \fItempvar(\fRtype);                |   \fI(tempvar \fR'type)
   \fIunmarkvar(\fRvar);               |   \fI(unmarkvar \fR'var)
+.ft
 .DE
 .DS L
+.ft CR
 Flags & Mode Switches:          | Flags & Mode Switches:
-				|
+                                |
   \fIc\fR                             |   \fIc\fR
   \fIfloat\fR                         |   \fIfloat\fR
   \fIfortran\fR                       |   \fIfortran\fR
@@ -72,10 +83,12 @@ Flags & Mode Switches:          | Flags & Mode Switches:
   \fIgentranparser\fR                 |   \fIgentranparser\fR
   \fIgentranseg\fR                    |   \fIgentranseg\fR
   \fIratfor\fR                        |   \fIratfor\fR
+.ft
 .DE
 .DS L
+.ft CR
 Global Variables:               | Global Variables:
-				|
+                                |
   \fI?ccurrind\e*\fR                   |   \fIccurrind*\fR
   \fI?clinelen\e*\fR                   |   \fIclinelen*\fR
   \fI?fortcurrind\e*\fR                |   \fIfortcurrind*\fR
@@ -91,4 +104,5 @@ Global Variables:               | Global Variables:
   \fI?tempvarname\e*\fR                |   \fItempvarname*\fR
   \fI?tempvarnum\e*\fR                 |   \fItempvarnum*\fR
   \fI?tempvartype\e*\fR                |   \fItempvartype*\fR
+.ft
 .DE

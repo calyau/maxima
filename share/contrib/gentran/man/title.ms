@@ -14,10 +14,12 @@ Kent, Ohio  44242
 December 1985
 .PP
 .DS C
+.ft CR
 
 
 
 \fIABSTRACT\fR
+.ft
 .DE
 .LP
 GENTRAN is an automatic code GENerator and TRANslator which runs

@@ -97,19 +97,27 @@ the original expression is preserved.
 .LP
 For example, in VAXIMA,
 .DS L
+.ft CR
     not a = b    and    not (a = b)
+.ft
 .DE
 are equivalent, whereas in C,
 .DS L
+.ft CR
     ! a == b     and    (!a) == b
+.ft
 .DE
 are equivalent.  Therefore,
 .DS L
+.ft CR
     not a = b
+.ft
 .DE
 is translated into C code which forces the VAXIMA precedence rules:
 .DS L
+.ft CR
     !(a == b)
+.ft
 .DE
 .SH
 Statements
@@ -231,7 +239,7 @@ logexp  ::=  \fIt\fR  |  \fInil\fR  |  var  |  funcall  |
 .br
              \fI((mgeqp) \fRexp exp)  |
 .br
-	     \fI((mequal) \fRexp exp)  |
+             \fI((mequal) \fRexp exp)  |
 .br
              \fI((mnotequal)\fR exp exp)  |
 .br
