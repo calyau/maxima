@@ -426,7 +426,7 @@
   (if (and (numberp order)
 	   (numberp ($realpart arg))
 	   (numberp ($imagpart arg)))
-      ($bessel (complex ($realpart arg) ($imagpart arg)) order)
+      ($bessel arg order)
       (subfunmakes '$bessel_j (ncons order) (ncons arg))))
 
 ;; Bessel function of the second kind, Y[n](z), for real or complex z
@@ -482,13 +482,14 @@
 			     (aref jvals n))
 			    (t
 			     (let* ((j ($bessel (- arg) order))
-				    (s1 (cis (- (* v pi))))
-				    (s2 (* #c(0 2) (cos (* v pi)))))
+				    (s1 (cis (- (* order pi))))
+				    (s2 (* #c(0 2) (cos (* order pi)))))
 			       (slatec:dbesy (- (float arg)) alpha (1+ n) jvals)
 			       (narray $yarray $complete n)
 			       (dotimes (k (1+ n))
 				 (let ((v (+ (* s1 (aref jvals k))
-					     (* s2 (arraycall 'flonum (nsymbol-array $besselarray) k)))))
+					     (* s2 (arraycall 'flonum (nsymbol-array '$besselarray)
+							      k)))))
 				   (setf (arraycall 'flonum (nsymbol-array '$yarray) k)
 					 (simplify `((mplus)
 						     ,(realpart v)
@@ -987,8 +988,13 @@
 	(rat-order nil))
     (subargcheck exp 1 1 '$bessel_y)
     (let* ((arg (simpcheck (car (subfunargs exp)) z)))
-      (cond ((and $numer (numberp order)
-		  (complex-number-p arg))
+      (cond ((or (and (numberp order) (complex-number-p arg)
+		      (or (floatp order) (floatp ($realpart arg)) (floatp ($imagpart arg))))
+		 (and $numer (numberp order)
+		      (complex-number-p arg)))
+	     ;; We have numeric order and arg and $numer is true, or
+	     ;; we have either the order or arg being floating-point,
+	     ;; so let's evaluate it numerically.
 	     (let ((real-arg ($realpart arg))
 		   (imag-arg ($imagpart arg)))
 	       (cond ((or (and (floatp real-arg) (numberp imag-arg))
