@@ -74,8 +74,8 @@ to give explicit solutions.
 
 
 For first order ODEs contrib_ode calls ode2.  It then tries the
-following methods: factorization, Clairault, Lagrange, Riccati and Lie
-symmetry methods.
+following methods: factorization, Clairault, Lagrange, Riccati,
+Abel and Lie symmetry methods.
 
 For second order ODEs contrib_ode calls ode2.  No other methods are
 implemented yet.
@@ -100,9 +100,10 @@ These routines are work in progress.  I still need to:
 * Add additional methods for Riccati equations.
 
 * Work out how to return partial solutions, such as those obtained for
-  Riccati equations.
+  Riccati and Abel equations.
 
-* Add routines for Abel equations.
+* Improve the detection of Abel equations of second kind.  The exisiting
+  pattern matching is weak.
 
 * Work on the Lie symmetry group routine ode1_lie.  There are quite a
   few problems with it: some parts are unimplemented; some test cases
@@ -141,3 +142,21 @@ References
 
 [3] D Zwillinger, Handbook of Differential Equations, 3rd edition,
     Academic Press, 1998
+
+[4] F Schwarz, Symmetry Analysis of Abel's Equation, Studies in
+    Applied Mathematics, 100:269-294 (1998)
+
+[5] F Schwarz, Algorithmic Solution of Abel's Equation, 
+    Computing 61, 39-49 (1998)
+
+[6] E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order 
+    ODE Patterns, Computer Physics Communications 113 (1998), p 239. 
+    (http://lie.uwaterloo.ca/papers/ode_vii.pdf)
+  
+[7] E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs, 
+    Symmetries and Linear Transformations, European Journal of 
+    Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
+    (http://lie.uwaterloo.ca/papers/ode_iv.pdf)
+
+[8] G W Bluman, S C Anco, Symmetry and Integration Methods for
+    Differential Equations, Springer, (2002)
