@@ -169,7 +169,7 @@
 
 (import 'user::run)
   
-($setup_autoload "eigen.mc" '$eigenvectors '$eigenvalues)
+($setup_autoload "eigen.mac" '$eigenvectors '$eigenvalues)
 
 (defun $to_lisp ()
   (format t "~%Type (run) to restart~%")
