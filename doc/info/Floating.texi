@@ -91,22 +91,6 @@ a floating point number is converted into a bigfloat number (since
 this may lead to loss of precision).
 
 @end defvar
-@c @node FLOATDEFUNK
-@c @unnumberedsec phony
-@defun FLOATDEFUNK
- - is a utility for making floating point functions from
-mathematical expression. It will take the input expression and FLOAT it,
-then OPTIMIZE it, and then insert MODE_DECLAREations for all the variables.
-This is THE way to use ROMBERG, PLOT2, INTERPOLATE, etc. e.g.
-EXP:some-hairy-Maxima-expression;
-
-@example
-FLOATDEFUNK('F,['X],EXP);
-@end example
-will define the function F(X) for you.
-(Do PRINTFILE(MCOMPI,DOC,MAXDOC); for more details.)
-
-@end defun
 @c @node FLOATNUMP
 @c @unnumberedsec phony
 @defun FLOATNUMP (exp)
