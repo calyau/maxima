@@ -28,6 +28,7 @@ affine/polysmp.lisp\
 affine/sheafa.lisp\
 affine/sheafb.lisp\
 affine/sheafc.lisp\
+affine/sloop.lisp\
 affine/sparsemat.lisp\
 affine/sub-proj.lisp\
 affine/sys-declaim.lisp\
