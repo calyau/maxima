@@ -39,6 +39,10 @@ by people who know better. I don't know much about windows (and it
 shows.) Also, I am reconstructing these steps from memory, so I may be
 leaving out steps.
 
+The instructions below apply to the maxima release tarball. In order
+to build from the cvs repository, cvs, autoconf and automake are also
+required. Follow the directions in INSTALL.cvs before proceding.
+
 1) Get a working msys+mingw installation from www.mingw.org.
         a) Follow the links to
 <http://sourceforge.net/project/showfiles.php?group_id=2435>. Get MinGW
@@ -92,7 +96,9 @@ make install
 <http://members1.chello.nl/~j.nijtmans/mingw.html>. I installed it in
 c:\tcltk.
 
-4) Get and install ActivePerl from <http://www.activestate.com>.
+4) Get and install ActivePerl from
+<http://www.activestate.com>. Follow the download link at
+<http://www.activestate.com/Products/ActivePerl/>.
 
 5) Get and install TclKit and Starkit sdx from
 <http://www.equi4.com>. Frankly, I found this step confusing. Although
@@ -100,6 +106,10 @@ Starkit are very simply to use, it took me quite a while to understand
 what needed to be download, installed etc. In the end, I have the
 following files installed in c:\star
 	sdx.bat  sdx.kit  tclkit.exe  tclkitsh.exe
+
+Download sdx.bat and sdx.kit from
+<http://www.equi4.com/pub/sk/>. Download tclkit-win32.exe.gz and
+tclkitsh-win32.exe.gz from <http://www.equi4.com/pub/tk/>.
 
 6) Get and install Inno Setup from
 <http://www.jrsoftware.org/isinfo.php>. 
