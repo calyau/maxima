@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.14 2002-09-19 16:26:42 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.15 2002-10-25 17:03:29 amundson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -11,7 +11,7 @@ proc textWindowWidth { w } {
 
 proc resizeMaxima { win width height } {
     linkLocal $win pid
-    if { [info exists pid] && $pid != -1 } {
+    if { [info exists pid] && $pid != "none" } {
 	set wid [expr [textWindowWidth $win]-6]
 	sendMaxima $win ":lisp-quiet (setq linel $wid)\n"
     }
@@ -288,17 +288,17 @@ proc runOneMaxima { win } {
 
     closeMaxima $win
     linkLocal $win pid
-    set pid -1
+    set pid "none"
 
     openMaxima $win littleFilter
 
-    while { $pid == -1 } {
-	set af [after $maxima_priv(timeout) oset $win pid -1 ]
+    while { $pid == "none" } {
+	set af [after $maxima_priv(timeout) oset $win pid "none" ]
 	# puts "waiting pid=$pid"
 	gui status "Starting Maxima"
 	vwait [oloc $win pid]
 	after cancel $af
-	if { $pid  == -1 } {
+	if { $pid  == "none" } {
 	    if {[tide_yesno {Starting maxima timed out.  Wait longer?}]} {
 		continue
 	    } else {
@@ -465,7 +465,7 @@ proc CMkill {  signal pid } {
 proc CMinterrupt { win } {
 
     set pid [oget $win pid]
-    if {$pid != ""} {
+    if {$pid != "" && $pid != "none"} {
 	CMkill   -INT $pid
     }
     CMresetFilter $win
