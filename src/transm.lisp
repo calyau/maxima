@@ -548,7 +548,14 @@
 
  
 ;;; for debugging convenience:
-(DEFMACRO TR (EXP) `(BIND-TRANSL-STATE (TRANSLATE ,EXP)))
+;;(DEFMACRO TR (EXP) `(BIND-TRANSL-STATE (TRANSLATE ,EXP)))
+
+;; to use in mixing maxima and lisp
+;; (tr #$$f(x):=x+2$)
+(defmacro tr (u)
+ (and (consp u) (eq (car u) 'quote)
+  (BIND-TRANSL-STATE (translate-macexpr-toplevel  (second u)))))
+
 
 ;;; These are used by MDEFUN and MFUNCTION-CALL.
 ;;; N.B. this has arguments evaluated twice because I am too lazy to

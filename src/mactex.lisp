@@ -1,8 +1,9 @@
+(in-package "MAXIMA")
 ;; TeX-printing
 ;; (c) copyright 1987, Richard J. Fateman
 ;; small corrections and additions: Andrey Grozin, 2001
 
-(in-package "MAXIMA")
+
 
 ;; Usage: tex(d8,"/tmp/foo.tex"); tex(d10,"/tmp/foo.tex"); ..
 ;; to append lines d8 and d10 to the tex file.  If given only
@@ -480,7 +481,10 @@
 			(tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
 		    (if nc
 			(tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
-			(tex x (list "^{")(cons "}" r) 'mparen 'mparen))))))
+			(if (< x 10)
+			    (tex x (list "^")(cons "" r) 'mparen 'mparen)
+			    (tex x (list "^{")(cons "}" r) 'mparen 'mparen))
+			)))))
       (append l r)))
 
 (defprop mncexpt tex-mexpt tex)

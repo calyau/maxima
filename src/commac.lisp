@@ -453,7 +453,7 @@ compiler:
   (declare (special *mread-prompt*))
   arg					;ignore
   (setf (fill-pointer *sharp-read-buffer* ) 0)
-  (cond ((eql #\$ (tyipeek t stream))(send stream :tyi)
+  (cond ((eql #\$ (peektyipeek t stream))(tyi stream)
 	 (setq meval-flag nil)))
   (with-output-to-string
    (st *sharp-read-buffer*) 
@@ -471,7 +471,6 @@ compiler:
  
 
 (set-dispatch-macro-character  #\#  #\$ 'x$-cl-macro-read)
-
 (defvar *macsyma-readtable*)
 
 (defun find-lisp-readtable-for-macsyma ()
