@@ -113,19 +113,19 @@
 			      ))
 		      (T (merror "BAD ARG")))))))
 
-(defun $describe (x)
-  (setq x ($sconcat x))
-  (if (and (find-package "CL-INFO")
-           (fboundp (intern "INFO" "CL-INFO")))
-      (return-from $describe (funcall (intern "INFO" "CL-INFO") x
-				      '("maxima.info") #-gcl *info-paths*)))
-  
+;; The documentation is now in INFO format and can be printed using
+;; tex, or viewed using info or gnu emacs or using a web browser:
+;; http://www.ma.utexas.edu/maxima/ Some versions of maxima built
+;; have a builtin info retrieval mechanism.
 
-      "The documentation is now in INFO format and can be printed using
-tex, or viewed using info or gnu emacs or using a web browser:
-http://www.ma.utexas.edu/maxima/
-   Some versions of maxima built have a builtin info retrieval mechanism."
-      )
+(defmspec $describe (x)
+  (setq x ($sconcat (cadr x)))
+  #-gcl
+  (let ((cl-info::*prompt-prefix* *prompt-prefix*)
+	(cl-info::*prompt-suffix* *prompt-suffix*))
+    (cl-info:info x '("maxima.info") *info-paths*))
+  #+gcl
+  (cl-info:info x '("maxima.info")))
 
 (defun $apropos ( s ) 
   (cons '(mlist) (apropos-list s "MAXIMA"))) 
