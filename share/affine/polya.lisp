@@ -194,7 +194,9 @@
 	 col)
     (setq answer (MAKE-ARRAY (f* 2 (length terms)) :fill-pointer 0 :adjustable t))
     (cond ((null last-column-number)
-	   (setq last-column-number (send hash-table :filled-elements))))
+	   (setq last-column-number
+		 #-cl(send hash-table :filled-elements)
+		 #+cl(hash-table-count hash-table))))
     (cond ((null parts-of-monomial) (setq parts-of-monomial
 					  'numerical-coefficient-and-monomial)))
     (sloop for u in terms
@@ -449,7 +451,7 @@
 		 (setq poly-vector (make-one-dimensional
 				     (aref (pv-array-of-polynomials self) i)))
 		(setf (aref (pv-array-of-polynomials self) i)   poly-vector)
-		 (setq a-row (MAKE-ARRAY :fill-pointer 0 :adjustable t))
+		 (setq a-row (make-array (length poly-vector) :fill-pointer 0 :adjustable t))
 		(setf (aref  (pv-rows self) i)  a-row)
 		 (sloop for ii below (array-total-size poly-vector)
 		       do
