@@ -80,6 +80,8 @@ distclean: distclean-gcl
 
 binary-gcl/maxima:
 	test -d binary-gcl || mkdir binary-gcl
+	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
+	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
 	LISPTYPE=gcl ; export LISPTYPE ;\
 	$(RUNLISP) \
         -x '(load "../lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
