@@ -26,5 +26,12 @@ buildq([foo:sin(baz+bar)],1);
 buildq([foo:[sin(baz+bar),sin(baz-bar)]],+splice(foo));
 sin(baz+bar)+sin(baz-bar)$
 
+/* Fixed in series.lisp rev 1.5, 04 Feb 2004.  
+   First case returned second result */
+powerseries(1/sqrt(1+x),x,0);
+2*'sum(x^i1/beta(1/2-i1,i1+1),i1,0,inf);
+powerseries(sqrt(1+x),x,0);
+2*('sum(x^i2/beta(3/2-i2,i2+1),i2,0,inf))/3;
+
 end;
 end$
