@@ -228,7 +228,7 @@
   linelable)
 
 (defmfun printlabel nil
-  (mtell-open "(~A) " (maknam (cdr (exploden linelable)))))
+  (mtell-open "(~A) " (subseq (print-invert-case linelable) 1)))
 
 (defmfun mexploden (x)
   (let (*print-radix*
