@@ -2639,6 +2639,26 @@
 	(return (f50p188-simp d m v a))))
      (return 'fail-in-f50cond))) 
 
+;; Table of Integral Transforms
+;;
+;; p. 188, formula 50:
+;;
+;; t^(u-1/2)*bessel_y(2*v,2*sqrt(a)*sqrt(t))
+;;    -> a^(-1/2)*p^(-u)*exp(-a/2/p)
+;;       * [tan((u-v)*%pi)*gamma(u+v+1/2)/gamma(2*v+1)*M[u,v](a/p)
+;;          -sec((u-v)*%pi)*W[u,v](a/p)]
+(defun f50p188-simp (d u v a)
+  (mul d
+       (power a (inv -2))
+       (power par (mul -1 u))
+       (power '$%e (div a (mul -2 par)))
+       (sub (mul (tan% (mul '$%pi (sub u v)))
+		 (gm (add u v (inv 2)))
+		 (inv (gm (add v v 1)))
+		 (mwhit (div a par) u v))
+	    (mul `((%sec) ,(mul '$%pi (sub u v)))
+		 (wwhit (div a par) u v)))))
+
 (defun f2p105v2cond-simp (m v a) 
   (mul -2.
        (power '$%pi -1.)
