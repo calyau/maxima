@@ -1819,7 +1819,8 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
 			(pop abs-directory)))
 	 ;; Stig (July 2001):
 	 ;; Somehow CLISP dies on the next line, but NIL is ok.
-	 (abs-name (ignore-errors (file-namestring abs-dir))) ; was pathname-name
+	 #-:gcl(abs-name (ignore-errors (file-namestring abs-dir))) ; was pathname-name
+	 #+:gcl(abs-name (file-namestring abs-dir))
 	 (rel-directory (directory-to-list (pathname-directory rel-dir)))
 	 (rel-keyword (when (keywordp (car rel-directory))
 			(pop rel-directory)))
