@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.16 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: Constants.tcl,v 1.17 2004-10-28 18:26:29 vvzhy Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -102,13 +102,13 @@ static unsigned char disc_bits[] = {
 }
 
 # from xmaxima.tcl
-set maxima_priv(options,maxima) {{doinsert 0 [M "Do an insertion"] boolean}}
+set maxima_priv(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
 
 # from EOctave.tcl
-set maxima_priv(options,octave) {{doinsert 1 [M "Do an insertion"] boolean}}
+set maxima_priv(options,octave) {{doinsert 1 "Do an insertion" boolean}}
 
 # from EOpenplot.tcl
-set maxima_priv(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
+set maxima_priv(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
 
 # from EHref.tcl
 set maxima_priv(options,href) {
@@ -146,7 +146,7 @@ set maxima_priv(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzg
 
 global evalPrograms
 set evalPrograms {  gp gap gb }
-#set maxima_priv(options,maxima) {{doinsert 1 [M "Do an insertion"] boolean}}
-#set maxima_priv(options,gp) {{doinsert 1 [M "Do an insertion"] boolean}}
-# set maxima_priv(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
+#set maxima_priv(options,maxima) {{doinsert 1 "Do an insertion" boolean}}
+#set maxima_priv(options,gp) {{doinsert 1 "Do an insertion" boolean}}
+#set maxima_priv(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
 

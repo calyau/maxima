@@ -150,7 +150,7 @@ mcset ru "Edit" "Редактировать"
 mcset ru "Bring down a menu with some edit options" "Выпадающее меню с настройками редактирования"
 mcset ru "show edit bar" "показать панель редактирования"
 mcset ru "Mark the currently selected region of the text window, so that clicking on the region will cause evaluation by a program specified below." \
-         "Помечает текущую выделенную область в текстовом окне, чтобы при otkxrt она был вычислена выбранной ниже программой."
+         "Помечает текущую выделенную область в текстовом окне, чтобы при щелчке она был вычислена выбранной ниже программой."
 mcset ru "mark for eval" "выделить для вычисления"
 mcset ru "Set `%s' to be the current type used by 'mark for eval' for making the selected region sensitive to double clicking." \
          "Устанавливает `%s' в качестве текущего типа, используемого 'выделить для вычисления' для установки выделенного участка чувствительным к двойному щелчку."
@@ -199,6 +199,9 @@ mcset ru "Double clicking (with the left mouse button), in the marked region wil
 mcset ru "No result field with" "Отсутствует поле результата с"
 mcset ru "Failed to eval region" "Ошибка вычисления области"
 mcset ru "Reload the current URL displayed in the window." "Перезагрузка URL, отображенного в окне."
+mcset ru " by %s." " %s"
+mcset ru " The result will be inserted." " Результат будет вставлен."
+mcset ru " The result field is named" " Наименование результирующего поля"
 
 
 ### Proxy.tcl

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.15 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: OpenMath.tcl,v 1.16 2004-10-28 18:26:29 vvzhy Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -974,13 +974,13 @@ proc textShowHelp { win tag index msg } {
 	set program [programFromTags $tags]
 	if { "$program" != ""} {
 	    set msg [string trimright $msg ". "]
-	    append msg " by $program."
+	    append msg [M [mc " by %s."] "$program"]
 	}
 	if { [doInsertp $tags] } {
-	    append msg " The result will be inserted."
+	    append msg [mc " The result will be inserted."]
 	}
 	if { "[getPrefixed name: $tags]" != "" } {
-	    append msg  "  The result field is named `[getPrefixed name: $tags]'."
+	    append msg [concat [mc "  The result field is named"] "`[getPrefixed name: $tags]'."]
 	}
     }
     if { [catch { desetq "x y wid hei" [eval textBbox $win  $this] } ] } {
