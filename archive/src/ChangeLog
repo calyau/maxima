@@ -1,4 +1,13 @@
+2001-04-06  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* Fix the install to install all share/*.lisp
+	* Fix auto-mexpr which had a bug, but only seen
+	with 'trigrat'
+	* Fix file_search to also look for .lisp in share/*
+	* have the install on MS Windows add the .mc and .lisp files in
+	share
 	
+
 2001-03-30  Raymond Toy <toy@rtp.ericsson.se>
 	
 	compile-cmulisp.lisp:
