@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.4 $
-;; $Date: 2002-05-14 18:26:28 $
+;; $Revision: 1.5 $
+;; $Date: 2002-07-22 21:33:32 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -1307,8 +1307,7 @@
 (defun maxima-font-setup ()
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults 
-        '(maxima-keywords 
-          nil t nil maxima-beginning-of-form)))
+        '(maxima-keywords nil t)))
 
 (add-hook 'maxima-mode-hook 'maxima-font-setup)
 
