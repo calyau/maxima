@@ -38,15 +38,11 @@
 	       when (eql (car v) 'unspecial)
 	       collect `(progn ,@ (sloop for w in
 					 (cdr v)
-;					 do
-;					 (cond ((eql
-;						  (aref (symbol-name w) 0) #\$)
-;		(format t "Removing special property of  ~a " w)))
-					 collect ` #-gcl(remprop ',w
+					 collect #-gcl  `(remprop ',w
 							   #-excl 'special
 							   #+excl 'excl::.globally-special.
 							   )
-				     #+gcl (make-unspecial ',w)
+				     #+gcl `(make-unspecial ',w)
 				     
 				     ))
 	       else when (eql (car v) 'fixnum)
@@ -286,7 +282,7 @@
 ;;I have tried to eliminate anything other than plain functions and macros
 ;;with one or two defsubsts ;;which I should get rid of  --wfs
 ;; Definitions needed to use lmdcls.lisp
-(defmacro fixnum (&rest ign)ign nil)
+#+gcl (defmacro fixnum (&rest ign)ign nil)
 (defmacro flonum (&rest ign)ign nil)
 ;
 ;(proclaim '(special RULEFCNL $use_fast_arrays ))

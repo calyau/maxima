@@ -262,6 +262,13 @@ sys-proclaim.lisp:
 	'(in-package "MAXIMA")(make::make :maxima :proclaims t)' | $(LISP)
 	cat var-proclaims.lisp >> sys-proclaim.lisp
 
+CLISP=
+clisp-compile:
+	echo '(progn (load "compile-clisp.lisp")(compile-maxima))' | ${CLISP}
+
+maxima.clisp: clisp-compile
+	echo '(progn (load "compile-clisp.lisp")(save-maxima))' | ${CLISP}
+
 
 
 

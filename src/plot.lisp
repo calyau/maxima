@@ -1,28 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
-
-(in-package 'maxima :use '(lisp))
-#|
-Examples
-
-/* plot of z^(1/3)...*/
-plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true],['plot_format,zic]);
-
-/* plot of z^(1/2)...*/
-plot3d(r^.5*cos(th/2),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true],['plot_format,zic]);
-
-/* moebius */
-plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],[x,-%pi,%pi],[y,-1,1],['grid,50,15]);
-
-/* klein bottle */
-plot3d([5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0) - 10.0,
-          -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0),
-           5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))],[x,-%pi,%pi],[y,-%pi,%pi],
-          ['grid,40,40]);
-/* torus */
-plot3d([cos(y)*(10.0+6*cos(x)),
-           sin(y)*(10.0+6*cos(x)),
-           -6*sin(x)], [x,0,2*%pi],[y,0,2*%pi],['grid,40,40]);
-|#
+(in-package "MAXIMA" :use '(lisp))
+;; see bottom of file for examples
 
 
 (eval-when (compile) (proclaim '(optimize (safety 0))))
@@ -410,11 +388,15 @@ setrgbcolor} def
 	 (setf (aref pts i) (* r (cos th)))
 	 (setf (aref pts (f+ i 1)) (* r (sin th)))))
 
+(defun coerce-function-body (f lvars)
+  (setq f (coerce-float-fun f lvars))
+  (if (symbolp f) (symbol-function f) f))
+
 ;; return a function suitable for the transform function in plot3d.
 (defun $make_transform (lvars fx fy fz  &aux ( $numer t))
-  (setq fx (symbol-function (coerce-float-fun fx lvars)))
-  (setq fy (symbol-function (coerce-float-fun fy lvars)))
-  (setq fz (symbol-function (coerce-float-fun fz lvars)))
+  (setq fx (coerce-function-body fx lvars))
+  (setq fy (coerce-function-body fy lvars))
+  (setq fz (coerce-function-body fz lvars))
   (let ((sym (gensym "transform")))
     (setf (symbol-function sym)
   #'(lambda (pts &aux  (x1 0.0)(x2 0.0)(x3 0.0))
@@ -450,6 +432,24 @@ setrgbcolor} def
 		      ((mprog) ((mlist) ((msetq) tem ,expr))
 		       ((mcond) ((complexp) tem) ((realpart) tem) t tem)))))
 	 (coerce-float-fun na)))))
+
+(defun coerce-float-fun (expr &optional lvars)
+  (cond ((and (consp expr) (functionp expr))
+	 expr)
+	((and (symbolp expr) (not (member expr lvars)))
+	 (cond ((fboundp expr) expr)
+	       (t
+		(let ((mexpr (mget expr 'mexpr))
+		      (args (nth 1 mexpr)))
+		  (or mexpr (merror "Undefined function ~a" expr))
+		(coerce `(lambda ,(cdr args)
+			     (declare (special ,@(cdr args)))
+			     ($realpart(meval* ',(nth 2 mexpr)))) 'function)))))
+	(t
+	 (let ((vars (or lvars ($sort ($listofvars expr))))
+	       (na (gensym "TMPF")))
+	   (coerce `(lambda ,(cdr vars) (declare (special ,@(cdr vars)))
+			($realpart (meval* ',expr)))'function)))))
 	   
 (defun $concat_polygons (pl1 pl2 &aux tem new)
   (setq new
@@ -568,6 +568,7 @@ setrgbcolor} def
     (declare (long-float ymin ymax))
     (do ((l lis (cddr l)))
 	((null l))
+	(or (floatp (car l)) (setf (car l) (float (car l) #. (coerce 2 'long-float))))
       (cond ((float-<   (car l)ymin)
 	     (setq ymin (car l))))
       (cond ((float-<  ymax  (car l))
@@ -582,10 +583,12 @@ setrgbcolor} def
   (or xrange (setq xrange (cdr (get-range (cdr x)))))
   (setup-for-ps-range xrange yrange nil))
  
-(defun $paramplot (f g range &optional (delta .1) &aux pts ($numer t))
+(defun $paramplot (f g range &optional (delta .1 supplied) &aux pts ($numer t)
+		     )
   (setq f (coerce-float-fun f))
   (setq g (coerce-float-fun g))
   (setq range (meval* range))
+  (or supplied (setq delta (/ (- (nth   2 range) (nth 1 range)) (nth 2 ($get_plot_option '$nticks)))))
   (setq pts(cons '(Mlist)
 		 (sloop with tt = (lisp::float (nth 1 range))
 		    with end = (lisp::float (nth 2 range))
@@ -833,39 +836,6 @@ setrgbcolor} def
 	 #. (expt 10 30))
 	(t ($/ ($- y2 y1) del))))
 	   
-#|
-Here is what the user inputs to draw the lattice picture.
-
-/*Initially 1 unit = 1 pt = 1/72 inch
-This makes 1 unit be 50/72 inch
-*/
-ps_scale:[50,50];
-
-/*This moves the origin to 400/72 inches up and over from bottom left corner
-[ie roughly center of page]
-*/
-ps_translate:[8,8];
-
-
-f(x):=if (x = 0) then 100  else 1/x;
-
-foo():=block([],
-closeps(),
-ps_translate:[6,6],
-ps_scale:[50,50],
-psdraw_curve(join(xcord,map(f,xcord))),
-psdraw_curve(join(-xcord,map(f,xcord))),
-psdraw_curve(join(xcord,-map(f,xcord))),
-psdraw_curve(join(-xcord,-map(f,xcord))),
-psdraw_points(lattice),
-psaxes(8));
-
-
-And here is the output .ps file which you should be
-able to print on a laserwriter, or view on screen if you have
-ghostscript (or another postscript screen previewer).
-
-|#
 
 ;;When we initialize we move the origin to the middle of $window_size
 ;;Then to offset from that use translate.
@@ -1406,5 +1376,60 @@ ghostscript (or another postscript screen previewer).
 (setf (symbol-function '-$) (symbol-function '-))
 (setf (symbol-function '/$) (symbol-function '/))
 
+#|
+Here is what the user inputs to draw the lattice picture.
 
+/*Initially 1 unit = 1 pt = 1/72 inch
+This makes 1 unit be 50/72 inch
+*/
+ps_scale:[50,50];
+
+/*This moves the origin to 400/72 inches up and over from bottom left corner
+[ie roughly center of page]
+*/
+ps_translate:[8,8];
+
+
+f(x):=if (x = 0) then 100  else 1/x;
+
+foo():=block([],
+closeps(),
+ps_translate:[6,6],
+ps_scale:[50,50],
+psdraw_curve(join(xcord,map(f,xcord))),
+psdraw_curve(join(-xcord,map(f,xcord))),
+psdraw_curve(join(xcord,-map(f,xcord))),
+psdraw_curve(join(-xcord,-map(f,xcord))),
+psdraw_points(lattice),
+psaxes(8));
+
+
+And here is the output .ps file which you should be
+able to print on a laserwriter, or view on screen if you have
+ghostscript (or another postscript screen previewer).
+
+|#
+
+#|
+Examples
+
+/* plot of z^(1/3)...*/
+plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true],['plot_format,zic]);
+
+/* plot of z^(1/2)...*/
+plot3d(r^.5*cos(th/2),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true],['plot_format,zic]);
+
+/* moebius */
+plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],[x,-%pi,%pi],[y,-1,1],['grid,50,15]);
+
+/* klein bottle */
+plot3d([5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0) - 10.0,
+          -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0),
+           5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))],[x,-%pi,%pi],[y,-%pi,%pi],
+          ['grid,40,40]);
+/* torus */
+plot3d([cos(y)*(10.0+6*cos(x)),
+           sin(y)*(10.0+6*cos(x)),
+           -6*sin(x)], [x,0,2*%pi],[y,0,2*%pi],['grid,40,40]);
+|#
 

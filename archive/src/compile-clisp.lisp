@@ -9,8 +9,8 @@
   (savemem "maxima.clisp"))
 
 ;; compile maxima
-(make::make :maxima :compile t)
-(load "init_max1.lisp")
+;(make::make :maxima :compile t)
+;(load "init_max1.lisp")
 ;; load it
 ;(make::make :maxima )
 ;(savemem "maxima.clisp")
