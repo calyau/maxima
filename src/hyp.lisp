@@ -823,9 +823,8 @@
 (defun whitfun(k m var)
   (list '(mqapply) (list '($%m array) k m) var))
 
-(defun simp2f1
-    (l1 l2)
-  (prog(a b c lgf)
+(defun simp2f1 (l1 l2)
+  (prog (a b c lgf)
      (setq a (car l1) b (cadr l1) c (car l2))
      (cond ((and (alike1 a 1)
 		 (alike1 b 1)
@@ -1225,9 +1224,9 @@
 		(inv var))))
 
 
-(defun legfun                      
-    (a b c)			   
-  (prog(1-c a-b c-a-b inv2)
+;; Is F(a, b; c; z) is Legendre function?
+(defun legfun (a b c)			   
+  (prog (1-c a-b c-a-b inv2)
      (setq 1-c
 	   (sub 1 c)
 	   a-b
@@ -1236,28 +1235,41 @@
 	   (sub (sub c a) b)
 	   inv2
 	   (inv 2))
-     (cond ((alike1 a-b inv2)   
+     (cond ((alike1 a-b inv2)
+	    ;; a-b = 1/2
 	    (return (gered1 (list a b) (list c) #'legf24))))
      (cond ((alike1 a-b (mul -1 inv2))
+	    ;; a-b = -1/2
 	    (return (legf24 (list a b) (list c) var))))
      (cond ((alike1 c-a-b inv2)
+	    ;; c-a-b = 1/2
 	    (return (legf20 (list a b) (list c) var))))
      (cond ((alike1 c-a-b (mul -1 inv2))
+	    ;; c-a-b = -1/2
 	    (return (gered1 (list a b) (list c) #'legf20))))
      (cond ((alike1 1-c a-b)
+	    ;; 1-c = a-b
 	    (return (legf16 (list a b) (list c) var))))
      (cond ((alike1 1-c (mul -1 a-b))
+	    ;; 1-c = b-a
 	    (return (gered1 (list a b) (list c) #'legf16))))
      (cond ((alike1 1-c c-a-b)
+	    ;; 1-c = c-a-b
 	    (return (gered1 (list a b) (list c) #'legf14))))
      (cond ((alike1 1-c (mul -1 c-a-b))
+	    ;; 1-c = a+b-c
+	    ;;
+	    ;; For example F(a,1-a;c;x)
 	    (return (legf14 (list a b) (list c) var))))
      (cond ((alike1 a-b (mul -1 c-a-b))
+	    ;; a-b = a+b-c
 	    (return (legf36 (list a b) (list c) var))))
      (cond ((or (alike1 1-c inv2)
 		(alike1 1-c (mul -1 inv2)))
+	    ;; 1-c = 1/2 or 1-c = -1/2
 	    (return (legpol a b c))))
      (cond ((alike1 a-b c-a-b)
+	    ;; a-b = c-a-b
 	    (return 'legendre-funct-to-be-discovered)))
      (return nil)))
 
@@ -1316,17 +1328,44 @@
        (inv (gm (sub 1 m)))))
 
 
-(defun legf14
-    (l1 l2 var)
-  (prog(m n a c b)
+;; Handle the case 1-c = a+b-c.
+;;
+;; See, for example, A&S 8.1.2 (which
+;; might have a bug?) or
+;; http://functions.wolfram.com/HypergeometricFunctions/LegendreP2General/26/01/02/
+;;
+
+;; I think this version is wrong.
+#+nil
+(defun legf14 (l1 l2 var)
+  (prog (m n a c b)
      (setq l (s+c (car l1))
 	   a (cond ((eq (cdras 'c l) 0) (cdras 'f l))
 		   (t (mul -1 (cdras 'f l))))
 	   c (car l2) m (sub 1 c)
 	   n (mul -1 a))
-     (return (mul (power  (add var 1)(div m 2))
-		  (power (sub var 1)(div m -2))
+     (return (mul (power (add var 1) (div m 2))
+		  (power (sub var 1) (div m -2))
 		  (inv (gm (sub 1 m)))
+		  (legen n m (sub 1 (mul 2 var)) '$p)))))
+
+;; I (rtoy) think this produces the right thing, and matches the
+;; formula given in the link above.  Basically the multipliers needed
+;; to inverted, and we forgot to account for the difference in args
+;; between F and P.
+(defun legf14 (l1 l2 var)
+  (prog (m n a c b z)
+     (setq l (s+c (car l1))
+	   a (cond ((eq (cdras 'c l) 0)
+		    (cdras 'f l))
+		   (t (mul -1 (cdras 'f l))))
+	   c (car l2)
+	   m (sub 1 c)
+	   n (mul -1 a)
+	   z (sub 1 (mul 2 var)))
+     (return (mul (power (add z 1) (div m -2))
+		  (power (sub 1 z) (div m 2))
+		  (gm (sub 1 m))
 		  (legen n m (sub 1 (mul 2 var)) '$p)))))
 
 
