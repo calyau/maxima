@@ -471,13 +471,13 @@
 		  (multiple-value-bind (n alpha)
 		      (floor (float order))
 		    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
-		      (cond ((>= $arg 0)
+		      (cond ((>= arg 0)
 			     (slatec:dbesy (float (realpart arg)) alpha (1+ n) jvals)
 			     (narray $besselarray $float n)
 			     (fillarray (nsymbol-array '$besselarray) jvals)
 			     (aref jvals n))
 			    (t
-			     (let* ((j ($bessel (- $arg) $order))
+			     (let* ((j ($bessel (- arg) order))
 				    (s1 (cis (- (* v pi))))
 				    (s2 (* #c(0 2) (cos (* v pi)))))
 			       (slatec:dbesy (- (float arg)) alpha (1+ n) jvals)
@@ -766,7 +766,7 @@
 	       ,(simplify ($diff exp arg)))
 	     arg
 	     (1- n))))
-      
+
 ;; Compute the Bessel function of half-integral order.
 ;;
 ;; ARG is the argument of the Bessel function
@@ -805,11 +805,13 @@
 	 (let* ((n (floor order))
 		(var (gensym))
 		;; deriv = diff(sin(z)/z,z,n)
-		(deriv (diffz `((mtimes simp)
-				((mexpt simp) ,arg -1)
-				((,pos-function simp) ,arg))
-			      arg
-			      n)))
+		(deriv (subst arg
+			      var
+			      (diffz `((mtimes simp)
+				       ((mexpt simp) ,var -1)
+				       ((,pos-function simp) ,var))
+				     var
+				     n))))
 	   (simplify `((mtimes)
 		       ((mexpt) 2 ((rat) 1 2))
 		       ((mexpt) $%pi ((rat) -1 2))
@@ -825,11 +827,12 @@
 	 (let* ((n (floor (- order)))
 		(var (gensym))
 		;; deriv = diff(cos(z)/z,z,n)
-		(deriv (diffz `((mtimes simp)
-				((mexpt simp) ,arg -1)
-				((,neg-function simp) ,arg))
-			      arg
-			      n)))
+		(deriv (subst arg var
+			      (diffz `((mtimes simp)
+				       ((mexpt simp) ,var -1)
+				       ((,neg-function simp) ,var))
+				     var
+				     n))))
 	   (simplify `((mtimes)
 		       ((mexpt) 2 ((rat) 1 2))
 		       ((mexpt) $%pi ((rat) -1 2))
@@ -881,8 +884,15 @@
   ;; I[1/2+k](z) = sqrt(z) * z^k * sqrt(2/%pi) [--- ---]  [sinh(z)/z]
   ;;                                           [ z   dz]
   ;;
-  ;; Similarly, for the second equation above with v = -1/2
   ;;
+  ;; Similarly, for the first equation above with v = -1/2
+  ;;
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [1/sqrt(z)* sqrt(2/%pi) * cosh(z)/sqrt(z)] = 1/sqrt(z)/z^k * I[-1/2-k](z)
+  ;; [ z   dz]
+  ;;
+  ;; or
   ;;                                                    k
   ;;                                            [ 1   d ]
   ;; I[-1/2-k](z) = sqrt(z) * z^k * sqrt(2/%pi) [--- ---]  [cosh(z)/z]
@@ -890,12 +900,13 @@
 
   (let* ((n (truncate (abs order)))
 	 (var (gensym))
-	 (deriv (diffz `((mtimes simp)
-			 ((mexpt simp) ,arg -1)
-			 ((,(if (plusp order) pos-function neg-function)
-			   simp) ,arg))
-		       arg
-		       n)))
+	 (deriv (subst arg var
+		       (simplify (diffz `((mtimes simp)
+					  ((mexpt simp) ,var -1)
+					  ((,(if (plusp order) pos-function neg-function)
+					    simp) ,var))
+					var
+					n)))))
     (simplify `((mtimes)
 		((mexpt) 2 ((rat) 1 2))
 		((mexpt) $%pi ((rat) -1 2))
@@ -932,8 +943,7 @@
 		   (t
 		    (eqtest (subfunmakes '$%j (ncons order) (ncons arg))
 			    exp))))
-	    ((and (setq rat-order (max-numeric-ratio-p order 2))
-		  (not (or (numberp real-arg) (numberp imag-arg))))
+	    ((setq rat-order (max-numeric-ratio-p order 2))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
@@ -1012,8 +1022,7 @@
 		   (t
 		    (eqtest (subfunmakes '$%ibes (ncons order) (ncons arg))
 			    exp))))
-	    ((and (setq rat-order (max-numeric-ratio-p order 2))
-		  (not (or (numberp real-arg) (numberp imag-arg))))
+	    ((setq rat-order (max-numeric-ratio-p order 2))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
@@ -1030,58 +1039,71 @@
 (defprop $%k bessel-k-simp specsimp)
 
 (defun bessel-k-half-order (arg order)
-  ;; K[n+1/2](z). See A&S 9.6.28
+  ;; K[n+1/2](z) and K[-n-1/2](z) can be expressed in terms of
+  ;; elementary functions.  See A&S 9.6.28.  Let G[v](z) =
+  ;; exp(v*%pi*%i)*K[v](z).
+  ;;
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [z^v*G[v](z)] = z^(v-k) * G[v-k](z)
+  ;; [ z   dz]
+  ;;
+  ;;
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [z^(-v)*G[v](z)] = z^(-v-k) * G[v+k](z)
+  ;; [ z   dz]
+  ;;
+  ;;
+  ;; or
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [z^v*K[v](z)] = z^(v-k) * K[v-k](z) * exp(k*%pi*%i)
+  ;; [ z   dz]
+  ;;
+  ;;
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [z^(-v)*K[v](z)] = z^(-v-k) * K[v+k](z) * exp(k*%pi*%i)
+  ;; [ z   dz]
+  ;;
+  ;;
   ;;
   ;; We have
   ;;
-  ;;   K[1/2](z) = 
+  ;;   K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[-1/2](z)
   ;;
-  ;; and
-  ;;   I[-1/2](z) = sqrt(2/%pi)*cosh(z)/sqrt(z)
+  ;; From the second equation, we have, with v = 1/2:
   ;;
-  (cond ((plusp order)
-	 ;; Setting v = 1/2 in the second formula of A&S 9.6.28 we have
-	 ;;
-	 ;; I[n+1/2](z) = sqrt(z)*diff(1/sqrt(z)*I[1/2](z), z, n)
-	 ;;
-	 ;; or, using the expressin for J[1/2](z) above:
-	 ;;
-	 ;; I[n+1/2](z) = sqrt(z) * sqrt(2/%pi) *
-	 ;;                    diff(sinh(z)/z,z,n)
-	 ;;
-	 (let* ((n (floor order))
-		(var (gensym))
-		;; deriv = diff(sinh(z)/z,z,n)
-		(deriv (subst arg var
-			      ($diff `((mtimes simp)
-				       ((mexpt simp) ,var -1)
-				       ((,pos-function simp) ,var))
-				     var
-				     n))))
-	   (simplify `((mtimes)
-		       ((mexpt) 2 ((rat) 1 2))
-		       ((mexpt) $%pi ((rat) -1 2))
-		       ((mexpt) ,arg ((rat) 1 2))
-		       ,deriv))))
-	(t
-	 ;; We use the first formula and I[-1/2](z) above to get
-	 ;;
-	 ;; I[-n-1/2](z) = sqrt(z) * sqrt(2/%pi) *
-	 ;;                    diff(cosh(z)/z, z, n);
-	 (let* ((n (floor (- order)))
-		(var (gensym))
-		;; deriv = diff(cosh(z)/z,z,n)
-		(deriv (subst arg var
-			      ($diff `((mtimes simp)
-				       ((mexpt simp) ,var -1)
-				       ((,neg-function simp) ,var))
-				     var
-				     n))))
-	   (simplify `((mtimes)
-		       ((mexpt) 2 ((rat) 1 2))
-		       ((mexpt) $%pi ((rat) -1 2))
-		       ((mexpt) ,arg ((rat) 1 2))
-		       ,deriv))))))
+  ;;          k
+  ;; [ 1   d ]
+  ;; [--- ---]  [1/sqrt(z) * sqrt(2/%pi/z) * exp(-z)] = 1/sqrt(z)/z^k * K[1/2+k](z) * exp(k*%pi*%i)
+  ;; [ z   dz]
+  ;; 
+  ;; or
+  ;;
+  ;;                        k
+  ;;               [ 1   d ]
+  ;; K[1/2+k](z) = [--- ---]  [exp(-z)/z] * sqrt(2/%pi) * sqrt(z) * z^k * (-1)^k
+  ;;               [ z   dz]
+
+  
+  (let* ((n (floor (abs order)))
+	 (var (gensym))
+	 ;; deriv = diff(exp(-z)/z,z,n)
+	 (deriv (subst arg var
+		       ($diff `((mtimes simp)
+				((mexpt simp) ,var -1)
+				((mexpt simp) $%e ((mtimes simp) -1 ,var)))
+			      var
+			      n))))
+    (simplify `((mtimes)
+		,(if (evenp n) 1 -1)
+		((mexpt) 2 ((rat) 1 2))
+		((mexpt) $%pi ((rat) -1 2))
+		((mexpt) ,arg ((rat) 1 2))
+		((mexpt) ,arg ,n)
+		,deriv))))
   
 (defun bessel-k-simp (exp ignored z)
   (declare (ignore ignored))
@@ -1100,7 +1122,7 @@
 		    (bessel-k (complex real-arg imag-arg) (float order)))
 		   ((minusp order)
 		    ;; A&S 9.6.6
-		    ;; K[-n](x) = K[n](x)
+		    ;; K[-v](x) = K[v](x)
 		    (subfunmakes '$%k (ncons (- order)) (ncons arg)))
 		   (t
 		    (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
@@ -1110,8 +1132,7 @@
 	     ;; can express the result in terms of elementary
 	     ;; functions.
 	     ;;
-	     ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z)
-	     ;; K[-1/2](z) = sqrt(2/%pi/z)*exp(-z)
+	     ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
 	     (bessel-k-half-order arg rat-order))
 	    (t
 	     (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
