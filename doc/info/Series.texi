@@ -11,51 +11,48 @@ capable of finding the closed form of some series.   Operations such as addition
 @c end concepts Series
 @node Definitions for Series,  , Introduction to Series, Series
 @section Definitions for Series
-@c @node CAUCHYSUM
-@c @unnumberedsec phony
-@defvar CAUCHYSUM
- default: [FALSE] - When multiplying together sums with INF
-as their upper limit, if SUMEXPAND is TRUE and CAUCHYSUM is set to
-TRUE then the Cauchy product will be used rather than the usual
+
+@defvar cauchysum
+ default: @code{false} - When multiplying together sums with @code{inf}
+as their upper limit, if @code{sumexpand} is @code{true} and @code{cauchysum} is set to
+@code{true} then the Cauchy product will be used rather than the usual
 product.  In the Cauchy product the index of the inner summation is a
 function of the index of the outer one rather than varying
-independently.  That is: SUM(F(I),I,0,INF)*SUM(G(J),J,0,INF) becomes
-SUM(SUM(F(I)*G(J-I),I,0,J),J,0,INF)
+independently.  That is: @code{sum(f(i),i,0,inf)*sum(g(j),j,0,inf)} becomes
+@code{sum(sum(f(i)*g(j-i),i,0,j),j,0,inf)}
 
 @end defvar
-@c @node DEFTAYLOR
-@c @unnumberedsec phony
-@defun DEFTAYLOR (function, exp)
+
+@defun deftaylor (function, exp)
 allows the user to define the Taylor series
 (about 0) of an arbitrary function of one variable as exp which may be
 a polynomial in that variable or which may be given implicitly as a
-power series using the SUM function.
-    In order to display the information given to DEFTAYLOR one can use
-POWERSERIES(F(X),X,0). (see below).
+power series using the @code{sum} function.
+
+    In order to display the information given to @code{deftaylor} one can use
+@code{powerseries(f(x),x,0).} (see below).
+
 @example
-(%i1) DEFTAYLOR(F(X),X**2+SUM(X**I/(2**I*I!**2),
-        I,4,INF));
-(%o1)                          [F]
-(%i2) TAYLOR(%E**SQRT(F(X)),X,0,4);
+(%i1) deftaylor(f(x),x**2+sum(x**i/(2**i*i!**2),
+        i,4,inf));
+(%o1)                          [f]
+(%i2) taylor(%e**sqrt(f(x)),x,0,4);
                      2         3          4
-                    X    3073 X    12817 X
-(%o2)/R/     1 + X + -- + ------- + -------- +  . . .
+                    x    3073 x    12817 x
+(%o2)/r/     1 + x + -- + ------- + -------- +  . . .
                     2     18432     307200
-
-
 @end example
+
 @end defun
-@c @node MAXTAYORDER
-@c @unnumberedsec phony
-@defvar MAXTAYORDER
- default: [TRUE] - if TRUE, then during algebraic
-manipulation of (truncated) Taylor series, TAYLOR will try to retain
+
+@defvar maxtayorder
+ default: @code{true} - if @code{true,} then during algebraic
+manipulation of (truncated) Taylor series, @code{taylor} will try to retain
 as many terms as are certain to be correct.
 
 @end defvar
-@c @node NICEINDICES
-@c @unnumberedsec phony
-@defun NICEINDICES (expr)
+
+@defun niceindices (expr)
 will take the expression and change all the
 indices of sums and products to something easily understandable. It
 makes each index it can "I" , unless "I" is in the internal
@@ -63,22 +60,20 @@ expression, in which case it sequentially tries
 J,K,L,M,N,I0,I1,I2,I3,I4,...  until it finds a legal index.
 
 @end defun
-@c @node NICEINDICESPREF
-@c @unnumberedsec phony
-@defvar NICEINDICESPREF
- default: [I,J,K,L,M,N] - the list which NICEINDICES
+
+@defvar niceindicespref
+ default: [I,J,K,L,M,N] - the list which @code{niceindices}
 uses to find indices for sums and products.  This allows the user to
-set the order of preference of how NICEINDICES finds the "nice
-indices".  E.g.  NICEINDICESPREF:[Q,R,S,T,INDEX]$.  Then if
-NICEINDICES finds that it cannot use any of these as indices in a
+set the order of preference of how @code{niceindices} finds the "nice
+indices".  E.g.  @code{niceindicespref:[q,r,s,t,index]$.}  Then if
+@code{niceindices} finds that it cannot use any of these as indices in a
 particular summation, it uses the first as a base to try and tack on
 numbers.  Here, if the list is exhausted, Q0, then Q1, etc, will be
 tried.
 
 @end defvar
-@c @node NUSUM
-@c @unnumberedsec phony
-@defun NUSUM (exp,var,low,high)
+
+@defun nusum (exp,var,low,high)
 performs indefinite hypergeometric summation of exp with
 respect to var using a decision procedure due to R.W. Gosper.  exp and
 the potential answer must be expressible as products of nth powers,
@@ -87,7 +82,7 @@ and "indefinite summation" are used analogously to "definite" and
 "indefinite integration".  To sum indefinitely means to give a closed
 form for the sum over intervals of variable length, not just e.g. 0 to
 inf.  Thus, since there is no formula for the general partial sum of
-the binomial series, NUSUM can't do it.
+the binomial series, @code{nusum} can't do it.
 
 @code{nusum} and @code{unsum} know a little about sums and differences of finite products.
 See also @code{unsum}.
@@ -128,9 +123,8 @@ Dependent equations eliminated:  (2 3)
 @end example
 
 @end defun
-@c @node PADE
-@c @unnumberedsec phony
-@defun PADE (taylor-series,num-deg-bound,denom-deg-bound)
+
+@defun pade (taylor-series,num-deg-bound,denom-deg-bound)
 returns a list of
 all rational functions which have the given taylor-series expansion
 where the sum of the degrees of the numerator and the denominator is
@@ -139,8 +133,8 @@ are "best" approximants, and which additionally satisfy the specified
 degree bounds.  Its first argument must be a univariate taylor-series;
 the second and third are positive integers specifying degree bounds on
 the numerator and denominator.
-PADE's first argument can also be a Laurent series, and the degree
-bounds can be INF which causes all rational functions whose total
+@code{pade}'s first argument can also be a Laurent series, and the degree
+bounds can be @code{inf} which causes all rational functions whose total
 degree is less than or equal to the length of the power series to be
 returned.  Total degree is num-degree + denom-degree.  Length of a
 power series is "truncation level" + 1 - minimum(0,"order of series").
@@ -148,19 +142,19 @@ power series is "truncation level" + 1 - minimum(0,"order of series").
 @example
 (%i15) ff:taylor(1+x+x^2+x^3,x,0,3);
                                      2    3
-(%o15)/T/                    1 + X + X  + X  + . . .
+(%o15)/t/                    1 + x + x  + x  + . . .
 (%i16) pade(ff,1,1);
                                         1
 (%o16)                              [- -----]
-                                      X - 1
-(%i1) ff:taylor(-(83787*X^10-45552*X^9-187296*X^8
-                  +387072*X^7+86016*X^6-1507328*X^5
-                  +1966080*X^4+4194304*X^3-25165824*X^2
-                  +67108864*X-134217728)
+                                      x - 1
+(%i1) ff:taylor(-(83787*x^10-45552*x^9-187296*x^8
+                  +387072*x^7+86016*x^6-1507328*x^5
+                  +1966080*x^4+4194304*x^3-25165824*x^2
+                  +67108864*x-134217728)
        /134217728,x,0,10);
 @c EXAMPLE FAILS HERE WITH ERROR MESSAGE: !!!
 @c  CDR: 134217728 is not a LIST !!!
-(%i25) PADE(ff,4,4);
+(%i25) pade(ff,4,4);
 (%o25) []
 @end example
 There is no rational function of degree 4 numerator/denominator, with this
@@ -170,253 +164,239 @@ in order to have enough unknown coefficients to solve.
 @example
 @c EXAMPLE FAILS HERE WITH ERROR MESSAGE: !!!
 @c  CDR: 134217728 is not a LIST !!!
-(%i26) PADE(ff,5,5);
-(%o26) [-(520256329*X^5-96719020632*X^4-489651410240*X^3
-           -1619100813312*X^2 -2176885157888*X-2386516803584)
-	/(47041365435*X^5+381702613848*X^4+1360678489152*X^3
-                +2856700692480*X^2
-	        +3370143559680*X+2386516803584)]
-
+(%i26) pade(ff,5,5);
+(%o26) [-(520256329*x^5-96719020632*x^4-489651410240*x^3
+           -1619100813312*x^2 -2176885157888*x-2386516803584)
+	/(47041365435*x^5+381702613848*x^4+1360678489152*x^3
+                +2856700692480*x^2
+	        +3370143559680*x+2386516803584)]
 @end example
 
 @end defun
-@c @node POWERDISP
-@c @unnumberedsec phony
-@defvar POWERDISP
- default: [FALSE] - if TRUE will cause sums to be displayed
+
+@defvar powerdisp
+ default: @code{false} - if @code{true} will cause sums to be displayed
 with their terms in the reverse order.  Thus polynomials would display
 as truncated power series, i.e., with the lowest power first.
 
 @end defvar
-@c @node POWERSERIES
-@c @unnumberedsec phony
-@defun POWERSERIES (exp, var, pt)
+
+@defun powerseries (exp, var, pt)
 generates the general form of the power
 series expansion for exp in the variable var about the point pt (which
-may be INF for infinity).  If POWERSERIES is unable to expand exp, the
-TAYLOR function may give the first several terms of the series.
-VERBOSE[FALSE] - if TRUE will cause comments about the progress of
-POWERSERIES to be printed as the execution of it proceeds.
+may be @code{inf} for infinity).  If @code{powerseries} is unable to expand exp, the
+@code{taylor} function may give the first several terms of the series.
+@code{verbose} - if @code{true} will cause comments about the progress of
+@code{powerseries} to be printed as the execution of it proceeds.
+
 @example
-(%i1) VERBOSE:TRUE$
-(%i2) POWERSERIES(LOG(SIN(X)/X),X,0);
-Can't expand 
-                                 LOG(SIN(X))
-So we'll try again after applying the rule:
+(%i1) verbose:true$
+(%i2) powerseries(log(sin(x)/x),x,0);
+can't expand 
+                                 log(sin(x))
+so we'll try again after applying the rule:
                                         d
-                                      / -- (SIN(X))
-                                      [ dX
-                        LOG(SIN(X)) = I ----------- dX
-                                      ]   SIN(X)
+                                      / -- (sin(x))
+                                      [ dx
+                        log(sin(x)) = i ----------- dx
+                                      ]   sin(x)
                                       /
-In the first simplification we have returned:
+in the first simplification we have returned:
                              /
                              [
-                             I COT(X) dX - LOG(X)
+                             i cot(x) dx - log(x)
                              ]
                              /
-                    INF
-                    ====        I1  2 I1             2 I1
-                    \      (- 1)   2     BERN(2 I1) X
+                    inf
+                    ====        i1  2 i1             2 i1
+                    \      (- 1)   2     bern(2 i1) x
                      >     ------------------------------
-                    /                I1 (2 I1)!
+                    /                i1 (2 i1)!
                     ====
-                    I1 = 1
+                    i1 = 1
 (%o2)                -------------------------------------
                                       2
-
-
 @end example
+
 @end defun
-@c @node PSEXPAND
-@c @unnumberedsec phony
-@defvar PSEXPAND
- default: [FALSE] - if TRUE will cause extended rational
-function expressions to display fully expanded.  (RATEXPAND will also
-cause this.)  If FALSE, multivariate expressions will be displayed
-just as in the rational function package.  If PSEXPAND:MULTI, then
+
+@defvar psexpand
+ default: @code{false} - if @code{true} will cause extended rational
+function expressions to display fully expanded.  (@code{ratexpand} will also
+cause this.)  If @code{false,} multivariate expressions will be displayed
+just as in the rational function package.  If @code{psexpand:multi,} then
 terms with the same total degree in the variables are grouped
 together.
 
 @end defvar
-@c @node REVERT
-@c @unnumberedsec phony
-@defun REVERT (expression,variable)
+
+@defun revert (expression,variable)
 Does reversion of Taylor Series.
 "Variable" is the variable the original Taylor expansion is in.  Do
-LOAD(REVERT) to access this function.  Try
+@code{load(revert)} to access this function.  Try
 
 @example
-REVERT2(expression,variable,hipower)
+revert2(expression,variable,hipower)
 @end example
- also.  REVERT only works on
+
+also.  @code{revert} only works on
 expansions around 0.
 
 @end defun
-@c @node SRRAT
-@c @unnumberedsec phony
-@defun SRRAT (exp)
-this command has been renamed to TAYTORAT.
+
+@defun srrat (exp)
+this command has been renamed to @code{taytorat.}
 
 @end defun
-@c @node TAYLOR
-@c @unnumberedsec phony
-@defun TAYLOR (exp, var, pt, pow)
+
+@defun taylor (exp, var, pt, pow)
 expands the expression exp in a truncated
 Taylor series (or Laurent series, if required) in the variable var
 around the point pt.  The terms through (var-pt)**pow are generated.
 If exp is of the form f(var)/g(var) and g(var) has no terms up to
-degree pow then TAYLOR will try to expand g(var) up to degree 2*pow.
-If there are still no non-zero terms TAYLOR will keep doubling the
+degree pow then @code{taylor} will try to expand g(var) up to degree 2*pow.
+If there are still no non-zero terms @code{taylor} will keep doubling the
 degree of the expansion of g(var) until reaching pow*2**n where n is
-the value of the variable TAYLORDEPTH[3].  If MAXTAYORDER[FALSE] is
-set to TRUE, then during algebraic manipulation of (truncated) Taylor
-series, TAYLOR will try to retain as many terms as are certain to be
-correct.  Do EXAMPLE(TAYLOR); for examples.
-TAYLOR(exp,[var1,pt1,ord1],[var2,pt2,ord2],...)  returns a truncated
+the value of the variable @code{taylordepth} [3].  If @code{maxtayorder} [FALSE] is
+set to @code{true,} then during algebraic manipulation of (truncated) Taylor
+series, @code{taylor} will try to retain as many terms as are certain to be
+correct.  Do @code{example(taylor);} for examples.
+
+@code{taylor(exp,[var1,pt1,ord1],[var2,pt2,ord2],...)}  returns a truncated
 power series in the variables vari about the points pti, truncated at
 ordi.
-PSEXPAND[FALSE] if TRUE will cause extended rational function
-expressions to display fully expanded.  (RATEXPAND will also cause
-this.) If FALSE, multivariate expressions will be displayed just as in
-the rational function package.  If PSEXPAND:MULTI, then terms with the
+
+@code{psexpand} [FALSE] if @code{true} will cause extended rational function
+expressions to display fully expanded.  (@code{ratexpand} will also cause
+this.) If @code{false,} multivariate expressions will be displayed just as in
+the rational function package.  If @code{psexpand:multi,} then terms with the
 same total degree in the variables are grouped together.
-TAYLOR(exp, [var1, var2, .  . .], pt, ord) where each of pt and ord
+
+@code{taylor(exp, [var1, var2, .  . .], pt, ord)} where each of pt and ord
 may be replaced by a list which will correspond to the list of
 variables.  that is, the nth items on each of the lists will be
 associated together.
-TAYLOR(exp, [x,pt,ord,ASYMP]) will give an expansion of exp in
+
+@code{taylor(exp, [x,pt,ord,ASYMP])} will give an expansion of exp in
 negative powers of (x-pt).  The highest order term will be (x-pt)^(-ord).
-The ASYMP is a syntactic device and not to be assigned to.
-See also the TAYLOR_LOGEXPAND switch for controlling expansion.
+The @code{asymp} is a syntactic device and not to be assigned to.
+See also the @code{taylor_logexpand} switch for controlling expansion.
 
 @end defun
-@c @node TAYLORDEPTH
-@c @unnumberedsec phony
-@defvar TAYLORDEPTH
+
+@defvar taylordepth
  default: [3] - If there are still no non-zero terms
-TAYLOR will keep doubling the degree of the expansion of g(var) until
-reaching pow*2**n where n is the value of the variable TAYLORDEPTH[3].
+@code{taylor} will keep doubling the degree of the expansion of g(var) until
+reaching pow*2**n where n is the value of the variable @code{taylordepth} [3].
 
 @end defvar
-@c @node TAYLORINFO
-@c @unnumberedsec phony
-@defun TAYLORINFO (exp)
-returns FALSE if exp is not a Taylor series.
+
+@defun taylorinfo (exp)
+returns @code{false} if exp is not a Taylor series.
 Otherwise, a list of lists is returned describing the particulars of
 the Taylor expansion.  For example,
+
 @example
-(%i3) TAYLOR((1-Y^2)/(1-X),X,0,3,[Y,A,INF]);
+(%i3) taylor((1-y^2)/(1-x),x,0,3,[y,a,inf]);
              2                        2
-(%o3)/R/ 1 - A  - 2 A (Y - A) - (Y - A)
+(%o3)/r/ 1 - a  - 2 a (y - a) - (y - a)
                     2                        2
-            + (1 - A  - 2 A (Y - A) - (Y - A) ) X
+            + (1 - a  - 2 a (y - a) - (y - a) ) x
          2                        2   2
- + (1 - A  - 2 A (Y - A) - (Y - A) ) X
+ + (1 - a  - 2 a (y - a) - (y - a) ) x
                     2                        2   3
-            + (1 - A  - 2 A (Y - A) - (Y - A) ) X
+            + (1 - a  - 2 a (y - a) - (y - a) ) x
      + . . .
-(%i4) TAYLORINFO(%o3);
-(%o4)                       [[Y, A, INF], [X, 0, 3]]
-
-
+(%i4) taylorinfo(%o3);
+(%o4)                       [[y, a, inf], [x, 0, 3]]
 @end example
+
 @end defun
-@c @node TAYLORP
-@c @unnumberedsec phony
-@defun TAYLORP (exp)
-a predicate function which returns TRUE if and only if
+
+@defun taylorp (exp)
+a predicate function which returns @code{true} if and only if
 the expression 'exp' is in Taylor series representation.
 
 @end defun
-@c @node TAYLOR_LOGEXPAND
-@c @unnumberedsec phony
-@defvar TAYLOR_LOGEXPAND
- default: [TRUE] controls expansions of logarithms in
-TAYLOR series.  When TRUE all log's are expanded fully so that
+
+@defvar taylor_logexpand
+ default: @code{true} controls expansions of logarithms in
+@code{taylor} series.  When @code{true} all log's are expanded fully so that
 zero-recognition problems involving logarithmic identities do not
 disturb the expansion process.  However, this scheme is not always
 mathematically correct since it ignores branch information.  If
-TAYLOR_LOGEXPAND is set to FALSE, then the only expansion of log's
+@code{taylor_logexpand} is set to @code{false,} then the only expansion of log's
 that will occur is that necessary to obtain a formal power series.
 
 @end defvar
-@c @node TAYLOR_ORDER_COEFFICIENTS
-@c @unnumberedsec phony
-@defvar TAYLOR_ORDER_COEFFICIENTS
- default: [TRUE] controls the ordering of
-coefficients in the expression.  The default (TRUE) is that
+
+@defvar taylor_order_coefficients
+ default: @code{true} controls the ordering of
+coefficients in the expression.  The default @code{true} is that
 coefficients of taylor series will be ordered canonically.
 
 @end defvar
-@c @node TAYLOR_SIMPLIFIER
-@c @unnumberedsec phony
-@defun TAYLOR_SIMPLIFIER
- - A function of one argument which TAYLOR uses to
+
+@defun taylor_simplifier
+ - A function of one argument which @code{taylor} uses to
 simplify coefficients of power series.
 
 @end defun
-@c @node TAYLOR_TRUNCATE_POLYNOMIALS
-@c @unnumberedsec phony
-@defvar TAYLOR_TRUNCATE_POLYNOMIALS
- default: [TRUE] When FALSE polynomials
-input to TAYLOR are considered to have infinite precison; otherwise
+
+@defvar taylor_truncate_polynomials
+ default: @code{true} When @code{false} polynomials
+input to @code{taylor} are considered to have infinite precison; otherwise
 (the default) they are truncated based upon the input truncation
 levels.
 
 @end defvar
-@c @node TAYTORAT
-@c @unnumberedsec phony
-@defun TAYTORAT (exp)
-converts exp from TAYLOR form to CRE form, i.e. it is
-like RAT(RATDISREP(exp)) although much faster.
+
+@defun taytorat (exp)
+converts exp from @code{taylor} form to CRE form, i.e. it is
+like @code{rat(ratdisrep(exp))} although much faster.
 
 @end defun
-@c @node TRUNC
-@c @unnumberedsec phony
-@defun TRUNC (exp)
+
+@defun trunc (exp)
 causes exp which is in general representation to be
 displayed as if its sums were truncated Taylor series.  E.g. compare
-EXP1:X^2+X+1; with EXP2:TRUNC(X^2+X+1); .  Note that IS(EXP1=EXP2);
-gives TRUE.
+@code{exp1:x^2+x+1;} with @code{exp2:trunc(x^2+x+1);} .  Note that @code{is(exp1=exp2);}
+gives @code{true.}
 
 @end defun
-@c @node UNSUM
-@c @unnumberedsec phony
-@defun UNSUM (fun,n)
+
+@defun unsum (fun,n)
 is the first backward difference fun(n) - fun(n-1).
 Thus @code{unsum} in a sense is the inverse of @code{sum}.
 See also @code{nusum}.
 
 @example
-(%i1) G(P):=P*4^N/BINOMIAL(2*N,N);
-                                            N
-                                         P 4
-(%o1)                       G(P) := ----------------
-                                   BINOMIAL(2 N, N)
-(%i2) G(N^4);
-                                     4  N
-                                    N  4
+(%i1) g(p):=p*4^n/binomial(2*n,n);
+                                            n
+                                         p 4
+(%o1)                       g(p) := ----------------
+                                   binomial(2 n, n)
+(%i2) g(n^4);
+                                     4  n
+                                    n  4
 (%o2)                           ----------------
-                               BINOMIAL(2 N, N)
-(%i3) NUSUM(%o2,N,0,N);
-                         4        3       2              N
-          2 (N + 1) (63 N  + 112 N  + 18 N  - 22 N + 3) 4      2
+                               binomial(2 n, n)
+(%i3) nusum(%o2,n,0,n);
+                         4        3       2              n
+          2 (n + 1) (63 n  + 112 n  + 18 n  - 22 n + 3) 4      2
 (%o3)      ------------------------------------------------ - ------
-                        693 BINOMIAL(2 N, N)                 3 11 7
-(%i4) UNSUM(%,N);
-                                     4  N
-                                    N  4
+                        693 binomial(2 n, n)                 3 11 7
+(%i4) unsum(%,n);
+                                     4  n
+                                    n  4
 (%o4)                           ----------------
-                               BINOMIAL(2 N, N)
-
-
+                               binomial(2 n, n)
 @end example
+
 @end defun
-@c @node VERBOSE
-@c @unnumberedsec phony
-@defvar VERBOSE
- default: [FALSE] - if TRUE will cause comments about the
-progress of POWERSERIES to be printed as the execution of it proceeds.
+
+@defvar verbose
+ default: @code{false} - if @code{true} will cause comments about the
+progress of @code{powerseries} to be printed as the execution of it proceeds.
 
 @end defvar

@@ -6,63 +6,63 @@
 @node Definitions for Differentiation,  , Differentiation, Differentiation
 @section Definitions for Differentiation
 
-@c @node ANTID, ANTIDIFF, Differentiation, Differentiation
-@c @unnumberedsec phony
-@defun ANTID (G,X,U(X)) 
+
+@defun antid (@var{g}, @var{x}, @var{u(x)}) 
 A routine for evaluating integrals of expressions involving
 an arbitrary unspecified function and its derivatives.  It may be used
-by LOAD(ANTID); , after which, the function ANTIDIFF may be used.
-E.g.  ANTIDIFF(G,X,U(X)); where G is the expression involving U(X)
+by @code{load(antid)} , after which, the function @code{antidiff} may be used.
+E.g.  @code{antidiff(g,x,u(x))} where G is the expression involving U(X)
 (U(X) arbitrary) and its derivatives, whose integral with respect to X
 is desired.
-The functions NONZEROANDFREEOF and LINEAR are also defined, as well as
-ANTID.  ANTID is the same as ANTIDIFF except that it returns a list of
+
+The functions @code{nonzeroandfreeof} and @code{linear} are also defined, as well as
+@code{antid}.  @code{antid} is the same as @code{antidiff} except that it returns a list of
 two parts, the first part is the integrated part of the expression and
 the second part of the list is the non-integrable remainder.
 
 @end defun
-@c @node ANTIDIFF, property, ANTID, Differentiation
-@c @unnumberedsec phony
-@defun ANTIDIFF  -
-See ANTID.
+
+@defun antidiff  -
+See @code{antid}.
 
 @end defun
-@c @node property, ATVALUE, ANTIDIFF, Differentiation
-@c @unnumberedsec phony
-@defvr property ATOMGRAD
+
+@defvr property atomgrad
  - the atomic gradient property of an expression.
-May be set by GRADEF.
+May be set by @code{gradef}.
 
 @end defvr
-@c @node ATVALUE, CARTAN, property, Differentiation
-@c @unnumberedsec phony
-@defun ATVALUE (form, list, value)
+
+@defun atvalue (@var{form}, @var{list}, @var{value})
 enables the user to assign the boundary
 value value to form at the points specified by list.
-@example
-(%i1) ATVALUE(F(X,Y),[X=0,Y=1],A**2)$
-    The form must be a function, f(v1,v2,...), or a derivative,
 
+@example
+(%i1) atvalue(f(x,y),[x=0,y=1],a**2)$
 @end example
-DIFF(f(v1,v2,...),vi,ni,vj,nj,...) in which the functional arguments
+
+The form must be a function, f(v1,v2,...), or a derivative,
+@code{diff(f(v1,v2,...),vi,ni,vj,nj,...)} in which the functional arguments
 explicitly appear (ni is the order of differentiation with respect
 vi).
-    The list of equations determine the "boundary" at which the value
+
+The list of equations determine the "boundary" at which the value
 is given; list may be a list of equations, as above, or a single
 equation, vi = expr.
-    The symbols @@1, @@2,... will be used to represent the functional
+
+The symbols @@1, @@2,... will be used to represent the functional
 variables v1,v2,... when atvalues are displayed.
-    PRINTPROPS([f1, f2,...], ATVALUE) will display the atvalues of
+
+@code{printprops([f1, f2,...], atvalue)} will display the atvalues of
 the functions f1,f2,... as specified in previously given uses of the
-ATVALUE function. If the list contains just one element then the
+@code{atvalue} function. If the list contains just one element then the
 element can be given without being in a list.  If a first argument of
-ALL is given then atvalues for all functions which have them will be
-displayed.  Do EXAMPLE(ATVALUE); for an example.
+@code{all} is given then atvalues for all functions which have them will be
+displayed.  Do @code{example(atvalue)} for an example.
 
 @end defun
-@c @node CARTAN, DELTA, ATVALUE, Differentiation
-@c @unnumberedsec phony
-@defun CARTAN  -
+
+@defun cartan  -
 The exterior calculus of differential forms is a basic tool
 of differential geometry developed by Elie Cartan and has important
 applications in the theory of partial differential equations.  The
@@ -73,10 +73,12 @@ of a form with a vector.) Type @code{demo(tensor)} to see a brief
 description of these commands along with examples.
 
 @end defun
-@defun DEL (v)
+
+@defun del (@var{v})
 This is the differential of the variable @math{v}.  This commonly occurs
-when DIFF is called without the dependent variable being given.  Then
+when @code{diff} is called without the dependent variable being given.  Then
 the differential of the expression is computed.  For example:
+
 @example
 (%i1) diff (x);
 (%o1)                          del(x)
@@ -88,309 +90,325 @@ the differential of the expression is computed.  For example:
 @end example
 
 @end defun
-@c @node DELTA, DEPENDENCIES, CARTAN, Differentiation
-@c @unnumberedsec phony
-@defun DELTA (t)
-This is the Dirac Delta function.  Currently only LAPLACE
-knows about the DELTA function:
+
+@defun delta (@var{t})
+This is the Dirac Delta function.  Currently only @code{laplace}
+knows about the @code{delta} function:
+
 @example
-(%i1) LAPLACE(DELTA(T-A)*SIN(B*T),T,S);
-Is A positive, negative or zero?
-POS;
-                                          - A S
-(%o1)                           SIN(A B) %E
-
-
+(%i1) laplace(delta(t-a)*sin(b*t),t,s);
+is a positive, negative or zero?
+pos;
+                                          - a s
+(%o1)                           sin(a b) %e
 @end example
+
 @end defun
-@c @node DEPENDENCIES, DEPENDS, DELTA, Differentiation
-@c @unnumberedsec phony
-@defvar DEPENDENCIES
+
+@defvar dependencies
  default: [] - the list of atoms which have functional
-dependencies (set up by the DEPENDS or GRADEF functions).  The command
-DEPENDENCIES has been replaced by the DEPENDS command.  Do
-DESCRIBE(DEPENDS);
+dependencies (set up by the @code{depends} or @code{gradef} functions).  The command
+@code{dependencies} has been replaced by the @code{depends} command.  Do
+@code{describe(depends)}
 
 @end defvar
-@c @node DEPENDS, DERIVABBREV, DEPENDENCIES, Differentiation
-@c @unnumberedsec phony
-@defun DEPENDS (funlist1,varlist1,funlist2,varlist2,...)
+
+@defun depends (@var{funlist1}, @var{varlist1}, @var{funlist2}, @var{varlist2}, ...)
 declares functional
-dependencies for variables to be used by DIFF.
+dependencies for variables to be used by @code{diff}.
 
 @example
-DEPENDS([F,G],[X,Y],[R,S],[U,V,W],U,T)
+depends([f,g],[x,y],[r,s],[u,v,w],u,t)
 @end example
-informs DIFF that F and G
+
+informs @code{diff} that F and G
 depend on X and Y, that R and S depend on U,V, and W, and that U
-depends on T.  The arguments to DEPENDS are evaluated.  The variables
+depends on T.  The arguments to @code{depends} are evaluated.  The variables
 in each funlist are declared to depend on all the variables in the
 next varlist.  A funlist can contain the name of an atomic variable or
 array.  In the latter case, it is assumed that all the elements of the
 array depend on all the variables in the succeeding varlist.
-Initially, DIFF(F,X) is 0; executing DEPENDS(F,X) causes future
+Initially, @code{diff(f,x)} is 0; executing @code{depends(f,x)} causes future
 differentiations of F with respect to X to give dF/dX or Y (if
-DERIVABBREV:TRUE).
+@code{derivabbrev:true)}.
+
 @example
-(%i1) DEPENDS([F,G],[X,Y],[R,S],[U,V,W],U,T);
-(%o1)           [F(X, Y), G(X, Y), R(U, V, W), S(U, V, W), U(T)]
-(%i2) DEPENDENCIES;
-(%o2)           [F(X, Y), G(X, Y), R(U, V, W), S(U, V, W), U(T)]
-(%i3) DIFF(R.S,U);
-                               dR           dS
-(%o3)                           -- . S + R . --
-                               dU           dU
+(%i1) depends([f,g],[x,y],[r,s],[u,v,w],u,t);
+(%o1)           [f(x, y), g(x, y), r(u, v, w), s(u, v, w), u(t)]
+(%i2) dependencies;
+(%o2)           [f(x, y), g(x, y), r(u, v, w), s(u, v, w), u(t)]
+(%i3) diff(r.s,u);
+                               dr           ds
+(%o3)                           -- . s + r . --
+                               du           du
 @end example
+
 Since Maxima knows the chain rule for symbolic derivatives, it takes
 advantage of the given dependencies as follows:
+
 @example
-(%i4) DIFF(R.S,T);
-                           dR dU             dS dU
-(%o4)                      (-- --) . S + R . (-- --)
-                           dU dT             dU dT
-If we set
-(%i5) DERIVABBREV:TRUE;
-(%o5)                                 TRUE
-then re-executing the command %i4, we obtain
-(%i6) '@w{}'%i4;
-(%o6)                      (R  U ) . S + R . (S  U )
-                            U  T              U  T
+(%i4) diff(r.s,t);
+                           dr du             ds du
+(%o4)                      (-- --) . s + r . (-- --)
+                           du dt             du dt
+if we set
+(%i5) derivabbrev:true;
+(%o5)                                 true
 @end example
-To eliminate a previously declared dependency, the REMOVE command can
+
+then re-executing the command %i4, we obtain
+
+@example
+(%i6) '@w{}'%i4;
+(%o6)                      (r  u ) . s + r . (s  u )
+                            u  t              u  t
+@end example
+
+To eliminate a previously declared dependency, the @code{remove} command can
 be used.  For example, to say that R no longer depends on U as
 declared in %i1, the user can type
+
 @example
-REMOVE(R,DEPENDENCY)
+remove(r,dependency)
 @end example
+
 This will
 eliminate all dependencies that may have been declared for R.
-@example
-(%i7) REMOVE(R,DEPENDENCY);
-(%o7)                                 DONE
-(%i8) '@w{}'%i4;
-(%o8)                             R . (S  U )
-                                  U    T
 
+@example
+(%i7) remove(r,dependency);
+(%o7)                                 done
+(%i8) '@w{}'%i4;
+(%o8)                             r . (s  u )
+                                  u    t
 @end example
-CAVEAT: DIFF is the only Maxima command which uses DEPENDENCIES
-information.  The arguments to INTEGRATE, LAPLACE, etc. must be given
-their dependencies explicitly in the command, e.g., INTEGRATE(F(X),X).
+
+CAVEAT: @code{diff} is the only Maxima command which uses @code{dependencies}
+information.  The arguments to @code{integrate}, @code{laplace}, etc. must be given
+their dependencies explicitly in the command, e.g., @code{integrate(f(x),x)}.
 
 @end defun
-@c @node DERIVABBREV, DERIVDEGREE, DEPENDS, Differentiation
-@c @unnumberedsec phony
-@defvar DERIVABBREV
- default: [FALSE] if TRUE will cause derivatives to
+
+@defvar derivabbrev
+ default: @code{false} if @code{true} will cause derivatives to
 display as subscripts.
 
 @end defvar
-@c @node DERIVDEGREE, DERIVLIST, DERIVABBREV, Differentiation
-@c @unnumberedsec phony
-@defun DERIVDEGREE (exp, dv, iv)
+
+@defun derivdegree (@var{expr}, @var{dv}, @var{iv})
 finds the highest degree of the derivative
 of the dependent variable dv with respect to the independent variable
 iv occuring in exp.
+
 @example
-(%i1) 'DIFF(Y,X,2)+'DIFF(Y,Z,3)*2+'DIFF(Y,X)*X**2$
-(%i2) DERIVDEGREE(%,Y,X);
+(%i1) 'diff(y,x,2)+'diff(y,z,3)*2+'diff(y,x)*x**2$
+(%i2) derivdegree(%,y,x);
 (%o2)                           2
-
-
 @end example
+
 @end defun
-@c @node DERIVLIST, DERIVSUBST, DERIVDEGREE, Differentiation
-@c @unnumberedsec phony
-@defun DERIVLIST (var1,...,vark)
+
+@defun derivlist (@var{var_1}, ..., @var{var_k})
 causes only differentiations with respect to
-the indicated variables, within the EV command.
+the indicated variables, within the @code{ev} command.
 
 @end defun
-@c @node DERIVSUBST, {special symbol}, DERIVLIST, Differentiation
-@c @unnumberedsec phony
-@defvar DERIVSUBST
- default: [FALSE] - controls non-syntactic substitutions
+
+@defvar derivsubst
+ default: @code{false} - controls non-syntactic substitutions
 such as
+
 @example
-SUBST(X,'DIFF(Y,T),'DIFF(Y,T,2));
+subst(x,'diff(y,t),'diff(y,t,2));
 @end example
-If DERIVSUBST is set to
-true, this gives 'DIFF(X,T).
+
+If @code{derivsubst} is set to
+true, this gives @code{'diff(x,t)}.
 
 @end defvar
-@c @node DIFF, DSCALAR, {special symbol}, Differentiation
-@c @unnumberedsec phony
-@defun DIFF (exp, v1, n1, v2, n2, ...)
-DIFF differentiates exp with respect to
+
+@defun diff (@var{expr}, @var{v1}, @var{n1}, @var{v2}, @var{n2}, ...)
+@code{diff} differentiates exp with respect to
 each vi, ni times.  If just the first derivative with respect to one
-variable is desired then the form DIFF(exp,v) may be used.  If the
+variable is desired then the form @code{diff(exp,v)} may be used.  If the
 noun form of the function is required (as, for example, when writing a
-differential equation), 'DIFF should be used and this will display in
+differential equation), @code{'diff} should be used and this will display in
 a two dimensional format.
-DERIVABBREV[FALSE] if TRUE will cause derivatives to display as
+
+@code{derivabbrev} if @code{true} will cause derivatives to display as
 subscripts.
-DIFF(exp) gives the "total differential", that is, the sum of the
+
+@code{diff(exp)} gives the "total differential", that is, the sum of the
 derivatives of exp with respect to each of its variables times the
-function DEL of the variable.  No further simplification of DEL is
+function @code{del} of the variable.  No further simplification of @code{del} is
 offered.
+
 @example
-(%i1) DIFF(EXP(F(X)),X,2);
+(%i1) diff(exp(f(x)),x,2);
                              2
-                      F(X)  d             F(X)  d         2
-(%o1)                %E     (--- F(X)) + %E     (-- (F(X)))
-                              2                 dX
-                            dX
-(%i2) DERIVABBREV:TRUE$
-(%i3) 'INTEGRATE(F(X,Y),Y,G(X),H(X));
-                                H(X)
+                      f(x)  d             f(x)  d         2
+(%o1)                %e     (--- f(x)) + %e     (-- (f(x)))
+                              2                 dx
+                            dx
+(%i2) derivabbrev:true$
+(%i3) 'integrate(f(x,y),y,g(x),h(x));
+                                h(x)
                                /
                                [
-(%o3)                           I     F(X, Y) dY
+(%o3)                           i     f(x, y) dy
                                ]
                                /
-                                G(X)
-(%i4) DIFF(%,X);
-            H(X)
+                                g(x)
+(%i4) diff(%,x);
+            h(x)
            /
            [
-(%o4)       I     F(X, Y)  dY + F(X, H(X)) H(X)  - F(X, G(X)) G(X)
-           ]            X                     X                  X
+(%o4)       i     f(x, y)  dy + f(x, h(x)) h(x)  - f(x, g(x)) g(x)
+           ]            x                     x                  x
            /
-            G(X)
-
+            g(x)
 @end example
+
 For the tensor package, the following modifications have been
 incorporated:
+
 1) the derivatives of any indexed objects in exp will have the
 variables vi appended as additional arguments.  Then all the
 derivative indices will be sorted.
+
 2) the vi may be integers from 1 up to the value of the variable
-DIMENSION[default value: 4].  This will cause the differentiation to
-be carried out wrt the vith member of the list COORDINATES which
+@code{dimension} [default value: 4].  This will cause the differentiation to
+be carried out wrt the vith member of the list @code{coordinates} which
 should be set to a list of the names of the coordinates, e.g.,
-[x,y,z,t]. If COORDINATES is bound to an atomic variable, then that
+[x,y,z,t]. If @code{coordinates} is bound to an atomic variable, then that
 variable subscripted by vi will be used for the variable of
 differentiation.  This permits an array of coordinate names or
-subscripted names like X[1], X[2],... to be used.  If COORDINATES has
+subscripted names like X[1], X[2],... to be used.  If @code{coordinates} has
 not been assigned a value, then the variables will be treated as in 1)
 above.
 
 @end defun
 
-@c @node DIFF
-@c @unnumberedsec phony
-@defvr {special symbol} DIFF
+
+@defvr {special symbol} diff
 [flag] for ev causes all differentiations indicated in exp to be
 performed.
 @end defvr
 
-@c @node DSCALAR, EXPRESS, DIFF, Differentiation
-@c @unnumberedsec phony
-@defun DSCALAR (function)
+
+@defun dscalar (@var{function})
 applies the scalar d'Alembertian to the scalar
 function.
+
 @example
-(%i41) DEPENDENCIES(FIELD(R));
-(%o41)                           [FIELD(R)]
-(%i42) DSCALAR(FIELD);
+(%i41) dependencies(field(r));
+(%o41)                           [field(r)]
+(%i42) dscalar(field);
 (%o43)
-    -M
-  %E  ((FIELD  N - FIELD  M + 2 FIELD   ) R + 4 FIELD )
-             R  R       R  R         R R             R
+    -m
+  %e  ((field  n - field  m + 2 field   ) r + 4 field )
+             r  r       r  r         r r             r
 
 - -----------------------------------------------------
-                             2 R
-
+                             2 r
 @end example
+
 @end defun
-@c @node EXPRESS, GENDIFF, DSCALAR, Differentiation
-@c @unnumberedsec phony
-@defun EXPRESS (expression)
+
+@defun express (@var{expr})
 The result uses the noun form of any
 derivatives arising from expansion of the vector differential
-operators.  To force evaluation of these derivatives, the built-in EV
-function can be used together with the DIFF evflag, after using the
-built-in DEPENDS function to establish any new implicit dependencies.
+operators.  To force evaluation of these derivatives, the built-in @code{ev}
+function can be used together with the @code{diff} evflag, after using the
+built-in @code{depends} function to establish any new implicit dependencies.
 
 @end defun
-@c @node GENDIFF, GRADEF, EXPRESS, Differentiation
-@c @unnumberedsec phony
-@defun GENDIFF
-Sometimes DIFF(E,X,N) can be reduced even though N is
+
+@defun gendiff
+Sometimes @code{diff(e,x,n)} can be reduced even though N is
 symbolic.
+
 @example
 batch("gendif")$
 @end example
+
 and you can try, for example,
 
 @example
-DIFF(%E^(A*X),X,Q)
+diff(%e^(a*x),x,q)
 @end example
-by using GENDIFF rather than DIFF.  Unevaluable
-items come out quoted.  Some items are in terms of "GENFACT", which
+
+by using @code{gendiff} rather than @code{diff}.  Unevaluable
+items come out quoted.  Some items are in terms of @code{genfact}, which
 see.
 
 @end defun
-@c @node GRADEF, GRADEFS, GENDIFF, Differentiation
-@c @unnumberedsec phony
-@defun GRADEF (f(x1, ..., xn), g1, ..., gn)
+
+@defun gradef (@var{f(x1, ..., xn)}, @var{g_1}, ..., @var{g_n})
 defines the derivatives of the
 function f with respect to its n arguments.  That is, df/dxi = gi,
 etc.  If fewer than n gradients, say i, are given, then they refer to
 the first i arguments of f.  The xi are merely dummy variables as in
 function definition headers and are used to indicate the ith argument
-of f.  All arguments to GRADEF except the first are evaluated so that
+of f.  All arguments to @code{gradef} except the first are evaluated so that
 if g is a defined function then it is invoked and the result is used.
+It is not permissible to use @code{gradef} on subscripted functions.
+
 Gradients are needed when, for example, a function is not known
 explicitly but its first derivatives are and it is desired to obtain
-higher order derivatives.  GRADEF may also be used to redefine the
+higher order derivatives.
+
+@code{gradef} may also be used to redefine the
 derivatives of Maxima's predefined functions (e.g.
-GRADEF(SIN(X),SQRT(1-SIN(X)**2)) ).  It is not permissible to use
-GRADEF on subscripted functions.
-GRADEFS is a list of the functions which have been given gradients by
-use of the GRADEF command (i.e. GRADEF(f(x1, ..., xn), g1, ..., gn)).
-PRINTPROPS([f1,f2,...],GRADEF) may be used to display the gradefs of
+@code{gradef(sin(x),sqrt(1-sin(x)**2)))} .
+
+@code{gradefs} is a list of the functions which have been given gradients by
+use of the @code{gradef} command (i.e. @code{gradef(f(x1,...,xn),g1, ..., gn))} .
+
+@code{printprops([f1,f2,...],gradef)} may be used to display the gradefs of
 the functions f1,f2,..
-GRADEF(a,v,exp) may be used to state that the derivative of the atomic
+
+@code{gradef(a,v,exp)} may be used to state that the derivative of the atomic
 variable a with respect to v is exp.  This automatically does a
-DEPENDS(a,v).
-PRINTPROPS([a1,a2,...],ATOMGRAD) may be used to display the atomic
+@code{depends(a,v)}.
+
+@code{printprops([a1,a2,...],atomgrad)} may be used to display the atomic
 gradient properties of a1,a2,...
 
 @end defun
-@c @node GRADEFS, LAPLACE, GRADEF, Differentiation
-@c @unnumberedsec phony
-@defvar GRADEFS
+
+@defvar gradefs
  default: [] - a list of the functions which have been given
-gradients by use of the GRADEF command (i.e. GRADEF(f(x1, ..., xn),
-g1, ..., gn).)
+gradients by use of the @code{gradef} command (i.e. @code{gradef(f(x1, ..., xn), g1, ..., gn)}.)
 
 @end defvar
-@c @node LAPLACE, GRADEFS, Differentiation
-@c @unnumberedsec phony
-@defun LAPLACE (exp, ovar, lvar)
+
+@defun laplace (@var{expr}, @var{ovar}, @var{lvar})
 takes the Laplace transform of exp with
-respect to the variable ovar and transform parameter lvar.  Exp may
-only involve the functions EXP, LOG, SIN, COS, SINH, COSH, and ERF.
+respect to the variable ovar and transform parameter lvar.
+
+@var{expr} may
+only involve the functions @code{exp}, @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf}.
 It may also be a linear, constant coefficient differential equation in
-which case ATVALUE of the dependent variable will be used.  These may
+which case @code{atvalue} of the dependent variable will be used.  These may
 be supplied either before or after the transform is taken.  Since the
 initial conditions must be specified at zero, if one has boundary
 conditions imposed elsewhere he can impose these on the general
 solution and eliminate the constants by solving the general solution
 for them and substituting their values back. Exp may also involve
 convolution integrals.  Functional relationships must be explicitly
-represented in order for LAPLACE to work properly. That is, if F
+represented in order for @code{laplace} to work properly. That is, if F
 depends on X and Y it must be written as F(X,Y) wherever F occurs as
-in LAPLACE('DIFF(F(X,Y),X),X,S).  LAPLACE is not affected by DEPENDENCIES
-set up with the DEPENDS command.
+in @code{laplace('diff(f(x,y),x),x,s)}.  @code{laplace} is not affected by @code{dependencies}
+set up with the @code{depends} command.
+
 @example
-(%i1) LAPLACE(%E**(2*T+A)*SIN(T)*T,T,S);
-                     A
-                 2 %E  (S - 2)
+(%i1) laplace(%e**(2*t+a)*sin(t)*t,t,s);
+                     a
+                 2 %e  (s - 2)
 (%o1)            ---------------
                         2     2
-                ((S - 2)  + 1)
-
-
+                ((s - 2)  + 1)
 @end example
+
 @end defun
