@@ -95,18 +95,23 @@ numerical analysis.  Do BATCH("asympa.mc"); .
 @end defun
 @c @node BESSEL
 @c @unnumberedsec phony
-@defun BESSEL (Z,A)
-returns the Bessel function J for complex Z and real A >
-0.0 .  Also an array BESSELARRAY is set up such that BESSELARRAY[I] =
-J[I+A- ENTIER(A)](Z).
+@defun BESSEL (Z,A) 
+returns the value of Bessel function J for complex argument Z and real
+order A > 0.0 .  Also an array BESSELARRAY is set up such that
+BESSELARRAY[I] = J[I+A- ENTIER(A)](Z).
+
+This function is deprecated.  Use BESSEL_J instead.
 
 @end defun
 
 @c @node BESSEL_J
 @c @unnumberedsec phony
-@defun BESSEL_J [v](z)
+@defun BESSEL_J (v, z)
 The Bessel function of the first kind of order @math{v} and argument
-@math{z}.  It is defined by 
+@math{z}.  Also, the array BESSELARRAY is computed such that
+BESSELARRAY[I] = J[I + V - INT(V)](z).
+
+It is defined by 
 @ifinfo
 @example
 		       INF
@@ -127,14 +132,16 @@ $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
 
 @c @node BESSEL_Y
 @c @unnumberedsec phony
-@defun BESSEL_Y [v](z)
+@defun BESSEL_Y (v, z)
 The Bessel function of the second kind of order @math{v} and argument
-@math{z}.  It is defined by
+@math{z}.  Also, the array BESSELARRAY is computed such that
+BESSELARRAY[I] = Y[I + V - INT(V)](z).
+
+It is defined by
 @ifinfo
 @example
-                   COS(%PI v) BESSEL_J (z) - BESSEL_J   (z)
-                                      v              - v
-                   ----------------------------------------
+                   COS(%PI v) BESSEL_J(v, z) - BESSEL_J(-v, z)
+                   -------------------------------------------
                                   SIN(%PI v)
 @end example
 @end ifinfo
@@ -151,19 +158,22 @@ the limit as @math{v} approaches @math{n} is taken.
 
 @c @node BESSEL_I
 @c @unnumberedsec phony
-@defun BESSEL_I [v](z)
+@defun BESSEL_I (v, z)
 The modified Bessel function of the first kind of order @math{v} and
-argument @math{z}.    It is defined by 
+argument @math{z}.  Also, the array BESSELARRAY is computed such that
+BESSELARRAY[I] = I[I + V - INT(V)](z).
+
+It is defined by 
 @ifinfo
 @example
 
-			   INF
-			   ====	  - v - 2 k  v + 2 k
-			   \	 2	    z
-(D1) 			    >	 -------------------
-			   /	 k! GAMMA(v + k + 1)
-			   ====
-			   k = 0
+	   INF
+	   ====	  - v - 2 k  v + 2 k
+	   \	 2	    z
+	    >	 -------------------
+	   /	 k! GAMMA(v + k + 1)
+	   ====
+	   k = 0
 @end example
 @end ifinfo
 
@@ -176,16 +186,18 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
 
 @c @node BESSEL_K
 @c @unnumberedsec phony
-@defun BESSEL_K [v](z)
+@defun BESSEL_K (v, z)
 The modified Bessel function of the second kind of order @math{v} and
-argument @math{z}.  It is defined by
+argument @math{z}.  Also, the array BESSELARRAY is computed such that
+BESSELARRAY[I] = K[I + V - INT(V)](z).
+
+It is defined by
 @ifinfo
 @example
 
-		%PI CSC(%PI v) (BESSEL_I   (z) - BESSEL_I (z))
-					- v		 v
-(D3) 	        ----------------------------------------------
-				      2
+	%PI CSC(%PI v) (BESSEL_I(-v, z) - BESSEL_I(v, z))
+        ----------------------------------------------
+			      2
 @end example
 @end ifinfo
 @tex
@@ -197,32 +209,79 @@ then the limit as @math{v} approaches @math{n} is taken.
 
 @defvar BESSELEXPAND
  default: FALSE
- Controls expansion of the Bessel functions when the order half of an
- odd integer.  In this case, the Bessel functions can be expanded in
- terms of other elementary functions.  When BESSELEXPAND is true, the
- Bessel function is expanded.
+
+ Controls expansion of the Bessel functions when the order is half of
+ an odd integer.  In this case, the Bessel functions can be expanded
+ in terms of other elementary functions.  When BESSELEXPAND is true,
+ the Bessel function is expanded.
 
 @example
 (C1) bessel_j[3/2](z);
 
-(D1)                            BESSEL_J   (z)
-                                        3/2
+                                         3
+(D1)                            BESSEL_J(-, z)
+                                         2
+
 (C2) besselexpand:true;
 
 (D2)                                 TRUE
-(C3) bessel_j[3/2](z);
+(C3) bessel_j(3/2, z);
 
-                                         COS(z)   SIN(z)
-                        SQRT(2) SQRT(z) (------ - ------)
-                                           z         2
-                                                    z
-(D3)                  - ---------------------------------
-                                    SQRT(%PI)
 
+                               2 z   SIN(z)   COS(z)
+(D3)                      SQRT(---) (------ - ------)
+                               %PI      2       z
+                                       z
 @end example
 @end defvar
 
-@c @node BETA
+@c @node J0
+@c @unnumberedsec phony
+@defun J0 (X)
+The Bessel function of the first kind of order 0.
+
+Deprecated.  Used BESSEL_J(0,X).
+
+@end defun
+
+@c @node J1
+@c @unnumberedsec phony
+@defun J1 (X)
+The Bessel function of the first kind of order 1.
+
+Deprecated.  Used BESSEL_J(1, X).
+
+@end defun
+
+@c @node J1
+@c @unnumberedsec phony
+@defun JN (X, N)
+The Bessel function of the first kind of order N.
+
+Deprecated.  Used BESSEL_J(N, X).
+
+@end defun
+
+@c @node I0
+@c @unnumberedsec phony
+@defun I0 (X)
+The modified Bessel function of the first kind of order 0.
+
+Deprecated.  Used BESSEL_I(0,X).
+
+@end defun
+
+@c @node I1
+@c @unnumberedsec phony
+@defun I1 (X)
+The Bessel function of the first kind of order 1.
+
+Deprecated.  Used BESSEL_I(1, X).
+
+@end defun
+
+
+@comment  node-name,  next,  previous,  up@c @node BETA
 @c @unnumberedsec phony
 @defun BETA (X, Y)
 same as GAMMA(X)*GAMMA(Y)/GAMMA(X+Y).
