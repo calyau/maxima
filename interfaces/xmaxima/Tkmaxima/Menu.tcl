@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.11 2003-01-27 07:55:38 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.12 2003-02-04 08:14:43 mikeclarkson Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -153,7 +153,7 @@ proc vMAXAddSystemMenu {fr text} {
     if {[info commands console] == "console" } {
 	$m add sep
 	$m add command -underline 0 -label "Show Tcl Console" \
-	    -command "console show"
+	    -command [list console show]
     }
 
     # Add a Maxima menubutton
@@ -207,15 +207,10 @@ proc vMAXAddSystemMenu {fr text} {
     # FIXME: get a browser object
     if {$tcl_platform(platform) == "windows"} {
 	if {$tcl_platform(os) == "Windows 95"} {
-	    # Windows 95/98
-	    if {[info exists env(COMSPEC)]} {
-		# This should always exist
-		lappend browse $env(COMSPEC) /c start
-	    } else {
-		lappend browse c:/command.com /c start
-	    }
+	    # Windows 95/98/ME
+	    lappend browse start
 	} else {
-	    # Windows NT / 2000 - untested
+	    # Windows NT / 2000
 	    lappend browse cmd.exe /c start
 	}
     } else {
@@ -237,3 +232,5 @@ proc vMAXAddSystemMenu {fr text} {
     # Backwards compatability
     return $win
 }
+
+
