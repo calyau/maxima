@@ -1713,7 +1713,7 @@ and such that no line contains an incomplete form."
 	  (forward-line 1)
 	  (end-of-line)
 	  (setq end (point))))
-      (skip-chars-backward "[ \t;]")
+      (skip-chars-backward "[ \t;$]")
       (if (looking-at "[;$]")
 	  (maxima-send-region beg (1+ (point)))
 	(error "; or $ at end"))
