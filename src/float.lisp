@@ -574,7 +574,9 @@ One extra decimal digit in actual representation for rounding purposes.")
 	  (RETURN (FPSHIFT L (MINUS *M)))))))
 
 (DEFUN FPSHIFT (L N) 
-       (COND ((NULL *DECFP) (BIGLSH L N))
+       ;; It seems that BIGLSH is broken so we replace it by ASH
+       ;(COND ((NULL *DECFP) (BIGLSH L N))
+       (COND ((NULL *DECFP) (ASH L N))
 	     ((GREATERP N 0.) (TIMES L (EXPT 10. N)))
 	     ((LESSP N 0.) (QUOTIENT L (EXPT 10. (MINUS N))))
 	     (T L))) 
