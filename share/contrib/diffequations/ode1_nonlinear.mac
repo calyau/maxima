@@ -34,6 +34,8 @@ if get('ode1_lie,'version)=false then
   load("ode1_lie.mac")$
 if get('ode1_factor,'version)=false then
   load("ode1_factor.mac")$
+if get('ode1_abel,'version)=false then
+  load("ode1_abel.mac")$
 
 
 ode1_nonlinear(de,y,x):=block(
@@ -55,6 +57,10 @@ ode1_nonlinear(de,y,x):=block(
 
   ode_disp("       -> ode1_riccati"),
   q:ode1_riccati(de,y,x),
+  if (is(q#false)) then return([q]),
+
+  ode_disp("       -> ode1_abel"),
+  q:ode1_abel(de,y,x),
   if (is(q#false)) then return([q]),
 
   ode_disp("       -> ode1_lie"),
