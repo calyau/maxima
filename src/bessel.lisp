@@ -105,7 +105,7 @@
 	(abs x) 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0))
 
 
-(eval-when (compile eval)
+(eval-when (compile eval load)
   ;; These are some macros and functions stolen from f2cl that we
   ;; need.
   (defmacro fdo (do_vble_clause predicate_clause &rest body)
