@@ -241,5 +241,8 @@ will start up a demonstration of how command works
 on some expressions.  After each command line it will pause and wait
 for a space to be typed, as in the DEMO command.
 
+The name of the file containing the examples is given by the
+variable manual_demo, which defaults to "maxima.demo".
+
 @end defun
 
