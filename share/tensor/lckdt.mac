@@ -66,7 +66,7 @@ _lcprod(lc1,lc2):=block([temp1,tempk,ln11,lf,l1,l2,l11,l22,lku,lkl],
 				(
 					tempk:1,
 					for i thru lf do
-						tempk:tempk*d([],[ln11[i],l11[i]])
+						tempk:tempk*kdelta([],[ln11[i],l11[i]])
 				),
 				kdelta(ln11,l22)*tempk
 			)
@@ -77,7 +77,7 @@ _lcprod(lc1,lc2):=block([temp1,tempk,ln11,lf,l1,l2,l11,l22,lku,lkl],
 				(
 					tempk:1,
 					for i thru lf do
-						tempk:tempk*d([l1[i],ln11[i]],[])
+						tempk:tempk*kdelta([l1[i],ln11[i]],[])
 				),
 				kdelta(l2,ln11)*tempk
 			)

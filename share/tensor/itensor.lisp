@@ -901,6 +901,8 @@
 		   E (CDDDR G))
 	     (COND
 	      ((OR (EQ (CAAR F) '%KDELTA) (EQ (CAAR F) '$KDELTA))
+          ;; VTT1 Special exception for kdelta([],[a,b])
+           (AND (not (= (LENGTH (cadr f)) (LENGTH (caddr f)))) (return nil))
 	       (AND (> (LENGTH A) 1) (RETURN NIL))
 	       (SETQ A (CAR A) B (CAR B))
 	       (RETURN
@@ -996,14 +998,48 @@
 	     (RETURN F)))
 
 
-(DEFMFUN $KDELTA (L1 L2)
-       (COND ((NULL (AND ($LISTP L1)
-			 ($LISTP L2)
-			 (= (LENGTH L1) (LENGTH L2))))
-	      (merror "Improper arg to DELTA: ~M"
-		      (LIST '(%KDELTA) L1 L2)
-		      ))
-	     (T (DELTA (CDR L1) (CDR L2))))) 
+;; In what amounts to quite an abuse of the Kronecker delta concept, we
+;; permit an exceptional index combination of two contravariant indices.
+;; This helps lc2kdt convert Levi-Civita symbols in a manner that does
+;; not require resorting to numeric indices, causing all sorts of problems
+;; with RENAME and CONTRACT.
+(defmfun $kdelta (l1 l2)
+  (cond
+    (
+      (and ($listp l1) ($listp l2) (= ($length l1) 0) (= ($length l2) 2))
+      (cond
+        ((eq (cadr l2) (caddr l2)) 1)
+        (
+          (and (numberp (cadr l2)) (numberp (caddr l2)))
+          (cond
+            ((= (cadr l2) (caddr l2)) t)
+            (t 0)
+          )
+        )
+        (t (list '(%kdelta) l1 l2))
+      )
+    )
+    (
+      (and ($listp l1) ($listp l2) (= ($length l1) 2) (= ($length l2) 0))
+      (cond
+        ((eq (cadr l1) (caddr l1)) 1)
+        (
+          (and (numberp (cadr l1)) (numberp (caddr l1)))
+          (cond
+            ((= (cadr l1) (caddr l1)) t)
+            (t 0)
+          )
+        )
+        (t (list '(%kdelta) l1 l2))
+      )
+    )
+    (
+      (null (and ($listp l1) ($listp l2) (= (length l1) (length l2))))
+      (merror "Improper arg to DELTA: ~M" (list '(%kdelta) l1 l2))
+    )
+    (t (delta (cdr l1) (cdr l2)))
+  )
+)
 
 ;kdels defines the symmetric combination of the Kronecker symbols
 
