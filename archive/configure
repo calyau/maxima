@@ -4,14 +4,17 @@
 # there to link with maxima
 GCLDIR=/home/wfs/cvs/gcl
 # the directory where this file is, and where you will build maxima
+# could use
+MAXDIR=`pwd`
 MAXDIR=/home/wfs/cvs/maxima
+# where to put some maxima .el files
 EMACS_SITE_LISP=/usr/local/lib/emacs/site-lisp
 
 # determines where to install
 # PREFIX_DIR=/usr/local puts things in /usr/local/lib/maxima-x.y
 # and /usr/local/bin
 PREFIX_DIR=/usr/local
-
+INFO_DIR=${PREFIX_DIR}/info
 ##### end editing #########
 
 if [ -f ${GCLDIR}/makedefs ] ;then 
@@ -25,6 +28,7 @@ echo GCLDIR=${GCLDIR} >>makedefs
 echo MAXDIR=${MAXDIR} >>makedefs
 echo PREFIX_DIR=${PREFIX_DIR} >>makedefs
 echo EMACS_SITE_LISP=${EMACS_SITE_LISP} >> makedefs
+echo INFO_DIR=${INFO_DIR} >> makedefs
 echo '# end maxmakedefs' >> makedefs
 
 echo inserting makedefs  in ..

@@ -9,13 +9,13 @@ PREFIX_DIR=/usr/local
 
 # begin makedefs
 
-# use=solaris
+# use=386-linux
 
 # for main link of raw_gcl
-LIBS= -lm -lsocket -lnsl
+LIBS= -lm
 
 #The multi precision library stuff
-MPFILES=$(MPDIR)/ $(MPDIR)/libmport.a
+MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 
 
 # root for the installation, eg /usr/local
@@ -24,107 +24,97 @@ MPFILES=$(MPDIR)/ $(MPDIR)/libmport.a
 prefix=/usr/local
 
 # where to place the info files
-INFO_DIR=/local/sol/2.6/depot/emacs-20.3/info/
+INFO_DIR=/usr/local/info/
 
 # where to put emacs lisp files.
-EMACS_SITE_LISP=/local/sol/2.6/depot/emacs-20.3/share/emacs/20.3/site-lisp
+EMACS_SITE_LISP=/usr/share/emacs/20.3/site-lisp
 
 # the default.el file
-EMACS_DEFAULT_EL=/local/sol/2.6/depot/emacs-20.3/share/emacs/20.3/site-lisp/default.el
+EMACS_DEFAULT_EL=/usr/share/emacs/20.3/site-lisp/default.el
 
 # numerous TCL/TK variables culled from the tkConfig.sh and tclConfig.sh
 # if these are found.
-TK_CONFIG_PREFIX=/local/sol/2.6/depot/tk8.0/lib
-TK_LIBRARY=/local/sol/2.6/depot/tk8.0/lib/tk8.0
+TK_CONFIG_PREFIX=
+TK_LIBRARY=
 TCL_LIBRARY=
-TK_XINCLUDES=-I/usr/openwin/include
-TK_INCLUDE=-I/local/sol/2.6/depot/tk8.0/lib/../include
-TCL_INCLUDE=-I/local/sol/2.6/depot/tcl8.0/lib/../include
-TK_LIB_SPEC=-L/local/sol/2.6/depot/tk8.0/lib -ltk8.0
-TK_BUILD_LIB_SPEC=-L/local/sol/2.6/src/tk8.0/unix -ltk8.0
-TK_XLIBSW=-L/usr/openwin/lib -lX11
-TK_XINCLUDES=-I/usr/openwin/include
-TCL_LIB_SPEC=-L/local/sol/2.6/depot/tcl8.0/lib -ltcl8.0
+TK_XINCLUDES=
+TK_INCLUDE=
+TCL_INCLUDE=-I/usr/local/lib/../include
+TK_LIB_SPEC=
+TK_BUILD_LIB_SPEC=
+TK_XLIBSW=
+TK_XINCLUDES=
+TCL_LIB_SPEC=-L/usr/local/lib -ltcl8.2${TCL_DBGX}
 TCL_DL_LIBS=-ldl
-TCL_LIBS=-ldl  -lsocket -lnsl -lm
+TCL_LIBS=-ldl  -lm
 
 NOTIFY=yes
-GCC=yes
+GCC=gcc
 
 
 
 
 
-GCLDIR=/local/sol/2.6/depot/build/GCL/gcl-2.3
+GCLDIR=/home/wfs/cvs/gcl
 SHELL=/bin/sh
-MACHINE=solaris
+MACHINE=386-linux
 
-OFLAG	=  -O
-LIBS	= -lm -lsocket -lnsl
+# notes for redhat 6.0
+#  the configure should select the compiler GCC=/usr/bin/i386-glibc20-linux-gcc
+#  However for the gcl-tk directory, you must use plain 'gcc' since
+#  that must link with the tcl tk libs which have been compiled with it.
+#  so after configure change to GCC=gcc in the gcl-tk/makefile
 
-# tell linker to remember where it got the shared object...
-# should have the same for TCL/TK if you used shared libs..
-X11_LIBS=-Xlinker -R${X11_LIBS_DIR} -L${X11_LIBS_DIR} -lX11
 
-ODIR_DEBUG=-O4
+# Machine dependent makefile definitions for intel 386,486 running linux
 
-#gcc 2.1 and 2.2 compile akcl correctly as far as I have been able to determine.
-#gcc 2.3.3 does not compile akcl correctly
-#gcc 2.4.5 does compile akcl, but does fail on some subsequent tests.
-#gcc 2.5.3 does compile gcl correctly however it has a known bug.
-#gcc 2.6.3 appears to compile gcl ok
-# gcc 2.7.2 and 2.7.2.1 cause the gcl to core dump on start up of saved
-#    image.  something to do with 'ctor'..   Add -B flag as in:
-#    get gcc -B /lusr/gnu/lib/gcc-lib/sparc-sun-solaris2.5/2.6.3/
-#    to use previous gcc.   Note final '/'
-# gcc  2.8.1 compiles gcl ok (running on solaris 2.6).
-# used sun's make from /usr/ccs/bin
+LBINDIR=/usr/local/bin
 
-CC = gcc -I${GCLDIR}/o  -DVOL=volatile -fsigned-char
-# LDCC= ${CC} -static
-# we can use non static linking now
-LDCC= ${CC}
-ODIR_DEBUG= -O
+OFLAG	=  -O 
+LIBS	= -lm 
 
-#The new optional for money compiler has not been tested recently.
-# it used to fail to compile o/format.o correctly.
-#CC =  /usr/local/lang/cc  -DVOL=  -I$(GCLDIR)/o -Bstatic -temp=. -pipe
-ODIR_DEBUG= -O4
+ODIR_DEBUG= -O4 
 
-AS=/usr/ccs/bin/as -P -D__svr4__
+# This CC string will be used for compilation of the system,
+# and also in the compiler::*cc* variable for later compilation of
+# lisp files.
+# (the -pipe is just since our file system is slow..)
+CC = ${GCC} -pipe -fwritable-strings  -DVOL=volatile -I$(GCLDIR)/o -fsigned-char
 
-CFLAGS	= -c $(DEFS)  -I../h
+# under redhat 6.1 and slackware 7.0 we needed to have this
+# link be static, but should be ok with the fix to unixport/rsym_elf.c
+LDCC=${CC} -static
+LDCC=${CC}
 
-MAIN    = ../o/main.o
+# note for linuxaout on an elf machine add -b i486-linuxaout 
+# CC = gcc -pipe -fwritable-strings  -DVOL=volatile -I$(GCLDIR)/o -fsigned-char -b i486-linuxaout 
 
-MPFILES=$(MPDIR)/mpi-sol-sparc.o $(MPDIR)/sparcdivul3.o $(MPDIR)/libmport.a
-#MPFILES=${MPDIR}/mpi.o ${MPDIR}/libmport.a
+# Enable the fastloading mechanism which does not use ld -A
+# requires c/rel_.. machine dependent code.
 
 RSYM	= rsym
 SFASL	= $(ODIR)/sfasl.o
 
-# This function will be run before dumping.
+
+#MPFILES= $(MPDIR)/mpi-386d.o   $(MPDIR)/libmport.a
+
+
 # When using SFASL it is good to have (si::build-symbol-table)
 INITFORM=(si::build-symbol-table)
 
-GNULIB1=
-
 # Use symbolic links
 SYMB=-s
+
+LIBFILES=bsearch.o
+
 # the  make to use for saved_kcp the profiler.
-KCP=kcp-sun
-
-NULLFILE = ../h/secondary_sun_magic
-# no ranlib so use dummy
-RANLIB=true
-# use the sun ar
-AR=/usr/ccs/bin/ar qc
-
+KCP=kcp-bsd
 # end makedefs
-GCLDIR=/local/sol/2.6/depot/build/GCL/gcl-2.3
-MAXDIR=/local/sol/2.6/depot/build/Maxima/maxima-5.4
-PREFIX_DIR=/local/sol/2.6/depot/maxima-5.4
-EMACS_SITE_LISP=/local/sol/2.6/depot/emacs-20.3/share/emacs/site-lisp
+GCLDIR=/home/wfs/cvs/gcl
+MAXDIR=/home/wfs/cvs/maxima
+PREFIX_DIR=/usr/local
+EMACS_SITE_LISP=/usr/local/lib/emacs/site-lisp
+INFO_DIR=/usr/local/info
 # end maxmakedefs
 
 #

@@ -26,29 +26,37 @@ EMACS_DEFAULT_EL=/usr/share/emacs/20.3/site-lisp/default.el
 
 # numerous TCL/TK variables culled from the tkConfig.sh and tclConfig.sh
 # if these are found.
-TK_CONFIG_PREFIX=/usr/lib
-TK_LIBRARY=/usr/lib/tk8.0
-TCL_LIBRARY=/usr/lib/tcl8.0
-TK_XINCLUDES=-I/usr/X11R6/include
-TK_INCLUDE=-I/usr/lib/../include
-TK_LIB_SPEC=-L/usr/lib -ltk8.0
-TK_BUILD_LIB_SPEC=-L/work-in-progress/tk8.0/unix -ltk8.0
-TK_XLIBSW=-L/usr/X11R6/lib -lX11
-TK_XINCLUDES=-I/usr/X11R6/include
-TCL_LIB_SPEC=-L/usr/lib -ltcl8.0
+TK_CONFIG_PREFIX=
+TK_LIBRARY=
+TCL_LIBRARY=
+TK_XINCLUDES=
+TK_INCLUDE=
+TCL_INCLUDE=-I/usr/local/lib/../include
+TK_LIB_SPEC=
+TK_BUILD_LIB_SPEC=
+TK_XLIBSW=
+TK_XINCLUDES=
+TCL_LIB_SPEC=-L/usr/local/lib -ltcl8.2${TCL_DBGX}
 TCL_DL_LIBS=-ldl
-TCL_LIBS=-ldl  -lieee -lm
+TCL_LIBS=-ldl  -lm
 
 NOTIFY=yes
+GCC=gcc
 
 
 
 
 
-
-GCLDIR=/home/wfs/gcl-2.3
+GCLDIR=/home/wfs/cvs/gcl
 SHELL=/bin/sh
 MACHINE=386-linux
+
+# notes for redhat 6.0
+#  the configure should select the compiler GCC=/usr/bin/i386-glibc20-linux-gcc
+#  However for the gcl-tk directory, you must use plain 'gcc' since
+#  that must link with the tcl tk libs which have been compiled with it.
+#  so after configure change to GCC=gcc in the gcl-tk/makefile
+
 
 # Machine dependent makefile definitions for intel 386,486 running linux
 
@@ -63,8 +71,13 @@ ODIR_DEBUG= -O4
 # and also in the compiler::*cc* variable for later compilation of
 # lisp files.
 # (the -pipe is just since our file system is slow..)
-CC = gcc -pipe -fwritable-strings  -DVOL=volatile -I$(GCLDIR)/o -fsigned-char
-LDCC=${CC} 
+CC = ${GCC} -pipe -fwritable-strings  -DVOL=volatile -I$(GCLDIR)/o -fsigned-char
+
+# under redhat 6.1 and slackware 7.0 we needed to have this
+# link be static, but should be ok with the fix to unixport/rsym_elf.c
+LDCC=${CC} -static
+LDCC=${CC}
+
 # note for linuxaout on an elf machine add -b i486-linuxaout 
 # CC = gcc -pipe -fwritable-strings  -DVOL=volatile -I$(GCLDIR)/o -fsigned-char -b i486-linuxaout 
 
@@ -89,8 +102,11 @@ LIBFILES=bsearch.o
 # the  make to use for saved_kcp the profiler.
 KCP=kcp-bsd
 # end makedefs
-GCLDIR=/home/wfs/gcl-2.3
-MAXDIR=/home/wfs/maxima-5.4
+GCLDIR=/home/wfs/cvs/gcl
+MAXDIR=/home/wfs/cvs/maxima
+PREFIX_DIR=/usr/local
+EMACS_SITE_LISP=/usr/local/lib/emacs/site-lisp
+INFO_DIR=/usr/local/info
 # end maxmakedefs
 
 
@@ -126,7 +142,7 @@ maxima.fns: maxima.fn
 	texindex maxima.fn
 
 install:
-	if [  -d ${INFO_DIR} ] ; then true ; else exit 0; fi
+	if [  -d ${INFO_DIR} ] ; then true ; else mkdir ${INFO_DIR}; fi
 	-if fgrep maxima ${INFO_DIR}/dir > /dev/null ; then true ; else \
 	echo "* Maxima : (maxima.info).	  Maxima Symbolic Algebra and Computation." >> ${INFO_DIR}/dir ; fi
 	cp *.info* ${INFO_DIR}
