@@ -297,12 +297,14 @@ One extra decimal digit in actual representation for rounding purposes.")
     ;;and then convert it to a floating point fraction.
     (SETQ MANTISSA (QUOTIENT (FPROUND MANTISSA)
 			     #.(EXPT 2.0 MACHINE-MANTISSA-PRECISION)))
-    ;;Multiply the mantissa by the exponent portion.  I'm not sure
-    ;;why the exponent computation is so complicated.
-    (SETQ PRECISION
-	  (ERRSET (TIMES MANTISSA (EXPT 2.0 (f+ EXPONENT (MINUS PRECISION) *M
-					       #.MACHINE-MANTISSA-PRECISION)))
-		  NIL))
+    ;; Multiply the mantissa by the exponent portion.  I'm not sure
+    ;; why the exponent computation is so complicated. Using
+    ;; scale-float will prevent possible overflow unless the result
+    ;; really would.
+    (setq precision
+	  (errset (scale-float mantissa (f+ exponent (minus precision) *m
+					    #.machine-mantissa-precision))
+		  nil))
     (IF PRECISION
 	(CAR PRECISION)
 	(MERROR "Floating point overflow in converting ~:M to flonum" L))))
