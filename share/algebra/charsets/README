@@ -1,5 +1,5 @@
 CharSets is a program which I translated from the Maple package CharSets,
-written by Dr. Dongming Wang.
+written by Dr. Dongming Wang.  His homepage is  http://calfor.lip6.fr/~wang.
 A good reference for Characteristic sets is his book Elimination Methods.
 
 I wish to thank Dr. Wang for making this code available to the maxima
