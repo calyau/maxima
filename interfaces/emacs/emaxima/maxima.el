@@ -1420,6 +1420,7 @@ if completion is ambiguous."
       'maxima-send-completed-region-and-goto-next-form)
     (define-key map [(control meta return)] 'maxima-send-buffer)
     (define-key map "\C-c\C-k" 'maxima-stop)
+    (define-key map "\C-c\C-q" 'maxima-clear-queue)
     (define-key map "\C-c\C-l" 'maxima-load-file)
     ;; Completion
     (if maxima-use-dynamic-complete
@@ -1644,8 +1645,9 @@ To get apropos with the symbol under point, use:
   (cond ((string-match "?" str)
          (maxima-ask-question str))
         ((string-match inferior-maxima-prompt str)
-         (if (not (string= maxima-block ""))
+         (if (and inferior-maxima-process (not (string= maxima-block "")))
              (maxima-single-string (maxima-get-command))
+           (maxima-clear-queue)
            (setq inferior-maxima-waiting-for-output nil)))))
 
 (defun maxima-start ()
@@ -1763,6 +1765,11 @@ Remove it from the front of maxima-block."
         (setq maxima-block stuff)
         (maxima-single-string (maxima-get-command)))
     (setq maxima-block (concat maxima-block stuff))))
+
+(defun maxima-clear-queue ()
+  "Clear out the queue of commands to send to the maxima process."
+  (interactive)
+  (setq maxima-block ""))
 
 ;;; Getting information back from Maxima.
 
@@ -2183,6 +2190,7 @@ The following commands are available:
       (add-local-hook 'kill-buffer-hook
                       (function
                        (lambda ()
+                         (maxima-clear-queue)
                          (if (processp inferior-maxima-process)
                              (delete-process inferior-maxima-process))
                          (setq inferior-maxima-process nil)
@@ -2190,6 +2198,7 @@ The following commands are available:
     (add-hook 'kill-buffer-hook
               (function
                (lambda ()
+                 (maxima-clear-queue)
                  (if (processp inferior-maxima-process)
                      (delete-process inferior-maxima-process))
                  (setq inferior-maxima-process nil)
