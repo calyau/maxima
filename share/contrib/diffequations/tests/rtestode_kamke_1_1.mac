@@ -149,6 +149,8 @@ solve(map(exp,2*ans[1]-2*x),y);
 /* 16 This is a Riccati eqn */
 (pn_(16),ans:contrib_ode(eqn:'diff(y,x) + y^2 +(x*y-1)*f(x),y,x));
 [[y='diff(%u,x,1)/%u,-'diff(%u,x,1)*x*f(x)+%u*f(x)-'diff(%u,x,2)=0]];
+method;
+riccati;
 
 /* 17 */
 (pn_(17),ans:contrib_ode(eqn:'diff(y,x) - y^2 -3*y + 4,y,x));
@@ -161,6 +163,8 @@ solve(map(exp,ans[1]*5),y);
 /* 18 */
 (pn_(18),ans:contrib_ode(eqn:'diff(y,x)-y^2-x*y-x+1,y,x));
 [[y=-'diff(%u,x,1)/%u,-'diff(%u,x,1)*x+%u*(x-1)+'diff(%u,x,2)=0]];
+method;
+riccati;
 
 /* 19 */
 (pn_(19),ans:contrib_ode(eqn:'diff(y,x) - (y + x)^2,y,x));
@@ -337,7 +341,9 @@ forget(b^2+4*a>0);
 (pn_(42),ans:contrib_ode(eqn:'diff(y,x)-x*(x+2)*y^3-(x+3)*y^2,y,x));
 false;
 
-/* 43 - runs "forever" */
+/* 43 */
+(pn_(43),ans:contrib_ode(eqn:'diff(y,x)+(3*a*x^2+4*a^2*x+b)*y^3+3*x*y^2,y,x));
+false;
 
 /* 44 */
 (pn_(44),ans:contrib_ode(eqn:'diff(y,x)+2*a*x^3*y^3+2*x*y,y,x));
@@ -371,13 +377,150 @@ done;
 forget(a>1);
 [a>1];
 
-/* 47 - Too general */
+/* 47 - Too general - E S Cheb-Terrab and T Kolokolnikov */
+/* 48 - Too general - E S Cheb-Terrab and T Kolokolnikov */
+/* 49 - Crash */
+/* 50 - Too general - E S Cheb-Terrab and T Kolokolnikov */
+/* 51 infinite run time */
 
-/* 48 - Too general */
-
+/* 52 Asks if n is integer */
+/* (pn_(52),ans:'diff(y,x)-a*y^n-b*x^(n/(1-n)),y,x)); */
 
 /* 53 */
+/* (pn_(53),ans:contrib_ode(eqn:'diff(y,x)-f(x)^(1-n)*'diff(g(x),x)*y^n/(a*g(x)+b)^n-'diff(f(x),x)*y/f(x)-f(x)*'diff(g(x),x),y,x));
+false; */
 
+/* 54 */
+/* (pn_(54),ans:contrib_ode(eqn:'diff(y,x)-a^n*f(x)^(1-n)*'diff(g(x),x)*y^n-'diff(f(x),x)*y/f(x)-f(x)*'diff(g(x),x),y,x));
+false; */
+
+/* 55 - Too general - E S Cheb-Terrab and T Kolokolnikov */
+/* 56 - Too general - E S Cheb-Terrab and T Kolokolnikov */
+
+/* 57 */
+(pn_(57),ans:contrib_ode(eqn:'diff(y,x)-sqrt(abs(y)),y,x));
+['integrate(1/sqrt(abs(y)),y)=x+%c];
+
+/* 58 */
+assume((8*b+a^2)>0,x>0);
+[(8*b+a^2)>0,x>0];
+(pn_(58),ans:contrib_ode(eqn:'diff(y,x)-a*sqrt(y)-b*x,y,x));
+[x=%c*%e^-((sqrt(8*b+a^2)*log(-(-2*y+a*x*sqrt(y)+b*x^2)/x^2)+a*log(-(-4*sqrt(y)+sqrt(8*b+a^2)*x+a*x)/(4*sqrt(y)+sqrt(8*b+a^2)*x-a*x)))/(2*sqrt(8*b+a^2)))];
+forget((8*b+a^2)>0,x>0);
+[(8*b+a^2)>0,x>0];
+
+/* 59 */
+(pn_(59),ans:contrib_ode(eqn:'diff(y,x)-a*sqrt(y^2+1)-b,y,x));
+['integrate(1/(a*sqrt(y^2+1)+b),y) = x+%c];
+
+/* 60 */
+(pn_(60),ans:contrib_ode(eqn:'diff(y,x)-sqrt(y^2-1)/sqrt(x^2-1),y,x));
+[log(2*sqrt(y^2-1)+2*y)=log(2*sqrt(x^2-1)+2*x)+%c];
+method;
+separable;
+
+/* 61 */
+(pn_(61),ans:contrib_ode(eqn:'diff(y,x)-sqrt(x^2-1)/sqrt(y^2-1),y,x));
+[(y*sqrt(y^2-1)-log(2*sqrt(y^2-1)+2*y))/2=(x*sqrt(x^2-1)-log(2*sqrt(x^2-1)+2*x))/2+%c];
+method;
+separable;
+
+/* 62 "infinite" run time */
+
+/* 63 */
+/* (pn_(63),ans:contrib_ode(eqn:'diff(y,x)-(1+ y^2)/(abs(y+sqrt(1+y))*sqrt(1+x)^3),y,x));
+['integrate(abs(sqrt(y+1)+y)/(y^2+1),y)= %c-2/sqrt(x+1)];
+method;
+separable; */
+
+/* 64 */
+assume(a>0,b>0,4*a*c>b^2);
+[a>0,b>0,4*a*c>b^2];
+(pn_(64),ans:contrib_ode(eqn: 'diff(y,x)-sqrt((a*y^2+b*y+c)/(a*x^2+b*x+c)),y,x));
+[(sqrt(a)*sqrt(2*a*y^2+2*b*y+2*c)*asinh((4*a*y+2*b)/sqrt(16*a*c-4*b^2))-sqrt(2)*sqrt(a)*asinh((2*a*x+b)/sqrt(4*a*c-b^2))*sqrt(a*y^2+b*y+c))/(sqrt(2)*a*sqrt(2*a*y^2+2*b*y+2*c))=%c];
+method;
+exact;
+forget(a>0,b>0,4*a*c>b^2);
+[a>0,b>0,4*a*c>b^2];
+
+/* 65 */
+(pn_(65),ans:contrib_ode(eqn:'diff(y,x)-sqrt((y^3+1)/(x^3+1)),y,x));
+[-(sqrt(2*y^3+2)*'integrate((3*y^2*'integrate(sqrt((y^3+1)/(x^3+1)),x)+(-3*y^5-3*y^2)*'integrate(1/((x^3+1)*sqrt((y^3+1)/(x^3+1))),x)-2*y^3-2)/(2*y^3+2)^(3/2),y)+'integrate(sqrt((y^3+1)/(x^3+1)),x))/sqrt(2*y^3+2)=%c];
+method;
+exact;
+
+/* 66 */
+(pn_(66),ans:contrib_ode(eqn:'diff(y,x)-sqrt(abs(y*(1-y)*(1-a*y)))/sqrt(abs(x*(1-x)*(1-a*x))),y,x));
+['integrate(1/(sqrt(abs(y-1))*sqrt(abs(y))*sqrt(abs(a*y-1))),y)='integrate(1/(sqrt(abs(x-1))*sqrt(abs(x))*sqrt(abs(a*x-1))),x)+%c];
+method;
+separable;
+
+/* 67 */
+(pn_(67),ans:contrib_ode(eqn:'diff(y,x)-sqrt(1-y^4)/sqrt(1-x^4),y,x));
+['integrate(1/sqrt(1-y^4),y) = 'integrate(1/sqrt(1-x^4),x)+%c];
+
+/* 68 */
+(pn_(68),ans:contrib_ode(eqn:'diff(y,x)-sqrt((a*y^4+b*y^2+1)/(a*x^4+b*x^2+1)),y,x));
+['integrate(1/sqrt(a*y^4+b*y^2+1),y)='integrate(1/sqrt(a*x^4+b*x^2+1),x)+%c];
+
+/* 69 */
+
+/* 74 - Too general - E S Cheb-Terrab and T Kolokolnikov */
+
+/* 75 */
+(pn_(75),ans:contrib_ode(eqn:'diff(y,x)-exp(x-y)+exp(x),y,x));
+[log(%e^y-1)+%e^x=%c];
+solve(ans[1],y);
+[y = log(%e^%e^x+%e^%c)-%e^x];
+[method,ode_check(eqn,%[1])];
+[exact,0];
+
+/* 76 */
+assume(4*a^2-4*b^2>0);
+[4*a^2-4*b^2>0];
+(pn_(76),ans:contrib_ode(eqn:'diff(y,x)-a*cos(y)+b,y,x));
+[-log(-((-b-a)*sin(y)+sqrt(a^2-b^2)*(cos(y)+1))/((b+a)*sin(y)+sqrt(a^2-b^2)*(cos(y)+1)))/sqrt(a^2-b^2)=x+%c];
+method;
+separable;
+forget(4*a^2-4*b^2>0);
+[4*a^2-4*b^2>0];
+
+/* 77 infinite run time */
+/* 78 infinite run time */
+/* 79 - Too general - E S Cheb-Terrab and T Kolokolnikov */
+
+/* 80 */
+(pn_(80),ans:contrib_ode(eqn:'diff(y,x)+f(x)*sin(y)+(1-'diff(f(x),x))*cos(y)-'diff(f(x),x)-1,y,x));
+false;
+
+/* 81 - Crash */
+/* 82 - Too general - E S Cheb-Terrab and T Kolokolnikov */
+
+/* 83 */
+(pn_(83),ans:contrib_ode(eqn:'diff(y,x)-tan(x*y),y,x));
+false;
+
+/* 84 */
+/* (pn_(84),ans:contrib_ode(eqn:'diff(y,x)-f(a*x+b*y),y,x));
+[b*'integrate(f(b*y+a*x)/(b*f(b*y+a*x)+a),x)-'integrate(((a*b^3*f(b*y+a*x)+a^2*b^2)*'integrate(pderivop(f,1)(b*y+a*x)/(b^2*f(b*y+a*x)^2+2*a*b*f(b*y+a*x)+a^2),x)+b)/(b*f(b*y+a*x)+a),y)=%c];
+method;
+lie; */
+
+/* 85 - Crash */
+/* 86 infinite run time */
+/* 87 infinite run time */
+
+/* 88 */
+(pn_(88),ans:contrib_ode(eqn:2*'diff(y,x)-3*y^2-4*a*y-b-c*exp(-2*a*x),y,x));
+[[y=-2*'diff(%u,x,1)/(3*%u),9*%u*(c*%e^-(2*a*x)/2+b/2)/4-3*'diff(%u,x,1)*a+3*'diff(%u,x,2)/2=0]];
+method;
+riccati;
+
+/* 89 */ /* [a>0] */
+/* 97 */ /* [a>0,b>0] */
+/* 98 */ /* [a>0,b>0,c>0] */
+/* 99 Asks question */
+/* 100 */ /* [a>0] */
 
 (kill(besjident,besiident,beskident),done);
 done;
