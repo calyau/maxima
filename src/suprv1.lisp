@@ -475,8 +475,15 @@
 	 ((and $dont_kill_symbols_with_lisp_source_files
 	       (symbolp x)(or (get x 'translated)
 			      (and (fboundp x)
+				   #-sbcl
 				   (compiled-function-p
-				     (symbol-function x))))))
+				     (symbol-function x))
+				   #+sbcl
+				   (symbolp
+				    (nth-value 
+				     2
+				     (function-lambda-expression
+				      (symbol-function x))))))))
 	 ((ATOM X)
 	  (SETQ Z (OR (AND (MEMQ X (CDR $ALIASES)) (GET X 'NOUN)) (GET X 'VERB)))
 	  (COND ((OR (NULL ALLBUTL) (NOT (MEMQ Z ALLBUTL)))
