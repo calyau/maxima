@@ -1,26 +1,26 @@
 emptyp(set());
-TRUE$
+true$
 
 emptyp([]);
-TRUE$
+true$
 
 emptyp(set(false));
-FALSE$
+false$
 
 emptyp([false]);
-FALSE$
+false$
 
 emptyp(set(true));
-FALSE$
+false$
 
 emptyp(set(set()));
-FALSE$
+false$
 
 emptyp(set([]));
-FALSE$
+false$
 
 emptyp(set(u,n,k));
-FALSE$
+false$
 
 adjoin(set(),set());
 set(set())$
@@ -213,25 +213,25 @@ set(a)$
 
 
 subsetp(set(),set());
-TRUE$
+true$
 
 subsetp(set(),set(a));
-TRUE$
+true$
 
 subsetp(set(a),set())$
-FALSE$
+false$
 
 subsetp(set(),set(set()));
-TRUE$
+true$
 
 subsetp(set(set()),set(set()));
-TRUE$
+true$
 
 subsetp(set(a,b),set(a,b,c));
-TRUE$
+true$
 
 subsetp(set(a,b,c),set(a,b));
-FALSE$
+false$
 
 errcatch(subsetp(a,b));
 []$
@@ -243,10 +243,10 @@ errcatch(subsetp(set(a),b));
 []$
 
 disjointp(set(),set());
-TRUE$
+true$
 
 disjointp(set(set()),set());
-TRUE$
+true$
 
 errcatch(disjointp(a,a+b));
 []$
@@ -258,10 +258,10 @@ errcatch(disjointp(a,set(a+b)));
 []$
 
 disjointp(set(a),set(b));
-TRUE$
+true$
 
 disjointp(set(b,a),set(a));
-FALSE$
+false$
 
 subset(set(),evenp);
 set()$
@@ -1055,16 +1055,16 @@ makelist(0,i,-5,5)$
 0$
 
 is(cardinality(set_partitions(set())) = belln(0));
-TRUE$
+true$
 
 is(cardinality(set_partitions(set(1))) = belln(1));
-TRUE$
+true$
 
 is(cardinality(set_partitions(set(1,2))) = belln(2));
-TRUE$
+true$
 
 is(cardinality(set_partitions(set(1,2,3))) = belln(3));
-TRUE$
+true$
 
 belln([5,6]);
 [belln(5),belln(6)]$
@@ -1079,7 +1079,7 @@ integer_partitions(2);
 set([1,1],[2])$
 
 is(cardinality(integer_partitions(25)) = 1958)$
-TRUE;
+true;
 
 map(lambda([x], apply("+",x)), integer_partitions(25));
 set(25)$
