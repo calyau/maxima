@@ -2,6 +2,7 @@
 * Introduction to Numerical::   
 * Fourier::                     
 * Definitions for Numerical::   
+* Definitions for Fourier Series::
 @end menu
 
 @node Introduction to Numerical, Fourier, Numerical, Numerical
@@ -19,7 +20,7 @@ a list of the functions included.
 
 @c end concepts Numerical
 
-@node Definitions for Numerical,  , Fourier, Numerical
+@node Definitions for Numerical, Definitions for Fourier Series, Fourier, Numerical
 @section Definitions for Numerical
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
@@ -363,5 +364,113 @@ is symbolic all the way.  INTERPOLATE(x^2-a^2,x,a/2,2*a); complains
 that .5*a is not flonum...
 An adaptive integrator which uses the Newton-Cotes 8 panel quadrature
 rule is available.  Do DESCRIBE(QQ) for details.
+
+@end defun
+
+@node Definitions for Fourier Series, , Definitions for Numerical, Numerical
+@section Definitions for Fourier Series
+
+@defun equalp (x, y)
+Returns @code{true} if @code{equal (x, y)} otherwise @code{false} (doesn't give an
+error message like @code{equal (x, y)} would do in this case).
+
+@end defun
+
+@defun remfun (fun, expr)
+Replaces all occurrences of @code{@var{fun} (@var{arg})} by @var{arg} in @var{expr}.
+
+@end defun
+
+@defun remfun (fun, expr, var)
+Replaces all occurrences of @code{@var{fun} (@var{arg})} by @var{arg} in @var{expr}
+only if @var{arg} contains the variable @var{var}.
+
+@end defun
+
+@defun funp (fun, expr)
+Returns @code{true} if @var{expr} contains the function @var{fun}.
+
+@end defun
+
+@defun funp (fun, expr, var)
+Returns @code{true} if @var{expr} contains the function @var{fun} and the variable
+@var{var} is somewhere in the argument of one of the
+occurences of @var{fun}.
+
+@end defun
+
+@defun absint (fun, var, halfplane)
+Returns the indefinite integral of @var{fun} with respect to
+@var{var} in the given halfplane (@code{pos}, @code{neg}, or @code{both}).
+If @var{halfplane} is omitted, @code{pos} is assumed as a
+default. @var{fun} may contain expressions of the form
+@code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
+
+@end defun
+
+@defun absint (fun, var, a, b)
+Returns the definite integral of @var{fun} with respect to @var{var} from @var{a} to
+@var{b}. @var{fun} may include absolute values.
+
+@end defun
+
+@defun fourier (f, x, p)
+Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
+on the interval @code{[-%pi, %pi]}.
+
+@end defun
+
+@defun foursimp (l)
+Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
+@code{cos (n %pi)} to @code{(-1)^n} if @code{cosnpiflag} is @code{true}.
+
+@end defun
+
+@defvar sinnpiflag
+Default value: @code{true}
+
+@end defvar
+
+@defvar cosnpiflag
+Default value: @code{true}
+
+@end defvar
+
+@defun fourexpand (l, x, p, limit)
+Constructs and returns the Fourier series from the list of
+Fourier coefficients @var{l} up through @var{limit} terms (@var{limit}
+may be @code{inf}). @var{x} and @var{p} have same meaning as in
+@code{fourier}.
+
+@end defun
+
+@defun fourcos (f, x, p)
+Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, %pi]}.
+
+@end defun
+
+@defun foursin (f, x, p)
+Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, %pi]}.
+
+@end defun
+
+@defun totalfourier (f, x, p)
+Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
+
+@end defun
+
+@defun fourint (f, x)
+Constructs and returns a list of the Fourier integral coefficients of @code{@var{f}(@var{x})}
+defined on @code{[minf, inf]}.
+
+@end defun
+
+@defun fourintcos (f, x)
+Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})} on @code{[0, inf]}.
+
+@end defun
+
+@defun fourintsin (f, x)
+Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
 @end defun

@@ -239,6 +239,7 @@ Numerical
 * Introduction to Numerical::   
 * Fourier::                     
 * Definitions for Numerical::   
+* Definitions for Fourier Series::
 
 Statistics
 
