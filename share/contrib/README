@@ -12,6 +12,10 @@ Filename:  share/contrib/README
 
 Notes on specific packages:
 
+format/         This directory contains most of Bruce Miller's
+                Format package.
+		http://math.nist.gov/~BMiller/computer-algebra/
+
 gentran/        This is the gentran package from 
                 http://www.symbolicnet.org/ftpsoftware/gentran.tgz
 
@@ -21,3 +25,11 @@ Grobner/        This is Marek Rychlik's MaximaGrobner package
 maximaMathML/   The MathML package created and used by the 
 		Internet Accessible Mathematical Computation
 		group at http://icm.mcs.kent.edu. 
+
+nset/           This is nset by Barton Willis and Stavros
+                Macrakis.  This is a high quality package and
+		is recommended over all old set packages.
+		http://www.unk.edu/acad/math/people/willisb/
+
+pdiff/          This is Barton Willis's pdiff package from
+                http://www.unk.edu/acad/math/people/willisb/
