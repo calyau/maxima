@@ -1,8 +1,7 @@
-#include "config.h"
-#include "windows.h"
-
-#include <stdio.h>
 #include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
 
 #define signal_mask(n)  (1 << (n))
 
@@ -138,7 +137,7 @@ sigNameStruct sigNames[]=
 { 0,0}
 };
 
-ErrorHandler(char *s)
+int ErrorHandler(char *s)
 {
   fprintf(stderr,s);
   fflush(stderr);
@@ -157,7 +156,7 @@ void close_shared_memory()
 
 
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 { int sig=-1;
  int pid=-1; 
  char *in; 

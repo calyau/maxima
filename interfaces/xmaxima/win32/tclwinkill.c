@@ -18,8 +18,6 @@
 */
 #define USE_TCL_STUBS
 
-#include "config.h"
-
 #include "windows.h"
 
 #include "tcl.h"
