@@ -9,11 +9,11 @@
 
 ;;; An ANSI-CL portable initializer to replace init_max1.lisp
 
-;;; Each installation must make sure that this logical path is defined,
-;;; or each user must define the environment variable MAXIMA_DIRECTORY
-#-gcl(defparameter *maxima-directory*
-    (ignore-errors (translate-logical-pathname "maxima:maxima-54;")))
-#+gcl(defvar *maxima-directory* "/home/amundson/notwork/src/maxima-clocc")
+(defvar *maxima-directory*)
+(defvar *maxima-prefix*)
+(defvar *maxima-datadir*)
+(defvar *maxima-infodir*)
+(defvar *maxima-verpkgdatadir*)
 
 (defun maxima-path (dir file)
    (format nil "~a/~a/~a" *maxima-prefix* dir file))
