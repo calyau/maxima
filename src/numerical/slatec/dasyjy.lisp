@@ -1,19 +1,14 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:38
+;;; Compiled by f2cl version 2.0 beta on 2002/04/26 at 10:05:50
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
-;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
+;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing nil) (:declare-common nil)
 ;;;           (:float-format double-float))
 
 (in-package "SLATEC")
 
 
-(let ((alfa1 0.0f0)
-      (alfa2 0.0f0)
-      (beta1 0.0f0)
-      (beta2 0.0f0)
-      (beta3 0.0f0)
-      (tols -6.90775527898214)
+(let ((tols -6.90775527898214)
       (con1 0.666666666666667)
       (con2 0.33333333333333304)
       (con548 0.10416666666666702)
@@ -23,14 +18,13 @@
       (alfa (make-array 104 :element-type 'double-float))
       (beta (make-array 130 :element-type 'double-float))
       (gama (make-array 26 :element-type 'double-float)))
-  (declare (type (simple-array double-float (26)) gama)
-           (type (simple-array double-float (130)) beta)
-           (type (simple-array double-float (104)) alfa)
-           (type (simple-array double-float (65)) c)
-           (type (simple-array double-float (10)) br)
-           (type (simple-array double-float (8)) ar)
-           (type double-float con548 con2 con1 tols)
-           (type single-float beta3 beta2 beta1 alfa2 alfa1))
+  (declare (type (array double-float (26)) gama)
+           (type (array double-float (130)) beta)
+           (type (array double-float (104)) alfa)
+           (type (array double-float (65)) c)
+           (type (array double-float (10)) br)
+           (type (array double-float (8)) ar)
+           (type double-float con548 con2 con1 tols))
   (f2cl-lib:fset (f2cl-lib:fref ar (1) ((1 8))) 0.0835503472222222)
   (f2cl-lib:fset (f2cl-lib:fref ar (2) ((1 8))) 0.128226574556327)
   (f2cl-lib:fset (f2cl-lib:fref ar (3) ((1 8))) 0.29184902646414)
@@ -581,7 +575,7 @@
   (f2cl-lib:fset (f2cl-lib:fref gama (25) ((1 26))) 0.0144193250839955)
   (f2cl-lib:fset (f2cl-lib:fref gama (26) ((1 26))) 0.0138184805735342)
   (defun dasyjy (funjy x fnu flgjy in y wk iflw)
-    (declare (type (simple-array double-float (*)) wk y)
+    (declare (type (array double-float (*)) wk y)
              (type f2cl-lib:integer4 iflw in)
              (type double-float flgjy fnu x)
              (type single-float funjy)
@@ -612,10 +606,10 @@
                (klast 0) (kp1 0) (ks 0) (ksp1 0) (kstemp 0) (l 0) (lr 0)
                (lrp1 0) (iseta 0) (isetb 0) (t_ 0.0f0))
           (declare (type single-float t_)
-                   (type (simple-array f2cl-lib:integer4 (5)) kmax)
+                   (type (array f2cl-lib:integer4 (5)) kmax)
                    (type f2cl-lib:integer4 isetb iseta lrp1 lr l kstemp ksp1 ks
                     kp1 klast kb k ju jr jn j i)
-                   (type (simple-array double-float (10)) upol dr cr)
+                   (type (array double-float (10)) upol dr cr)
                    (type double-float z32 z xx t2 tol tfn tb tau ta s1 sumb
                     suma sb sa rzden rtz rfn2 relb rden rcz phi fn2 fn fi elim
                     dfi crz32 bsum az asum ap akm abw2))
