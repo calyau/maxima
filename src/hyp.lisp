@@ -233,15 +233,21 @@
 (defun 1f1polys (l2 n)
   (let* ((c (car l2))
 	 (n (mul -1 n))
-	 (fact1 (mul (factorial n)
-		     (power -1 n)))
-	 (fact2 (power var (inv 2))))
+	 (fact1 (mul (power 2 n)
+		     (factorial n)
+		     (inv (power -1 n))))
+	 (fact2 (mul (power 2 (inv 2))
+		     (power var (inv 2)))))
     (cond ((equal c (div 1 2))
 	   ;; A&S 22.5.56
 	   ;; hermite(2*n,x) = (-1)^n*(2*n)!/n!*M(-n,1/2,x^2)
 	   ;;
 	   ;; So
 	   ;; M(-n,1/2,x) = n!/(2*n)!*(-1)^n*hermite(2*n,sqrt(x))
+	   ;;
+	   ;; But hermite(m,x) = 2^(m/2)*He(sqrt(2)*sqrt(x)), so
+	   ;;
+	   ;; M(-n,1/2,x) = (-1)^n*n!*2^n/(2*n)!*He(2*n,sqrt(2)*sqrt(x))
 	   (mul fact1
 		(inv (factorial (add n n)))
 		(hermpol (add n n) fact2)))
@@ -251,10 +257,15 @@
 	   ;;
 	   ;; So
 	   ;; M(-n,3/2,x) = n!/(2*n+1)!*(-1)^n*hermite(2*n+1,sqrt(x))/2/sqrt(x)
+	   ;;
+	   ;; and in terms of He, we get
+	   ;;
+	   ;; M(-n,3/2,x) = (-1)^n*n!*2^(n-1/2)/(2*n+1)!/sqrt(x)*He(2*n+1,sqrt(2)*sqrt(x))
 	   (mul fact1
+		(inv (power 2 (inv 2)))
 		(inv (factorial (add n n 1)))
 		(hermpol (add n n 1) fact2)
-		(inv (mul 2 fact2))))
+		(inv (power var (inv 2)))))
 	  (t
 	   ;; A&S 22.5.54:
 	   ;;
@@ -269,14 +280,26 @@
 		      (gm (add c n))))
 		(lagpol n (sub c 1) var))))))
 
-;; Hermite polynomial
+;; Hermite polynomial.  Note: The Hermite polynomial used here is the
+;; He polynomial, defined as (A&S 22.5.18, 22.5.19)
+;;
+;; He(n,x) = 2^(-n/2)*H(n,x/sqrt(2))
+;;
+;; or
+;;
+;; H(n,x) = 2^(n/2)*He(x*sqrt(2))
+;;
+;; We want to use H, as used in specfun, so we need to convert it.
+
 (defun hermpol (n arg)
-  `(($hermite) ,n ,arg))
+  (let ((fact (inv (power 2 (div n 2))))
+	(x (mul arg (inv (power 2 (div 1 2))))))
+    (mul fact `(($hermite) ,n ,x))))
 
 
 ;; Generalized Laguerre polynomial
 (defun lagpol (n a arg)
-  (if (zerop a)
+  (if (and (numberp a) (zerop a))
       `(($laguerre) ,n ,arg)
       `(($gen_laguerre) ,n ,a, arg)))
 
