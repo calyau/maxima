@@ -29,7 +29,7 @@
 	  "rtest8"
 	  "rtest9"
 	  "rtest9a" "rtest10" "rtest11" "rtest12" "rtest13" "rtest13s"
-	  "rtest14" "rtest15" "rexamples"
+	  "rtest14" "rtest15" "rexamples" "rtestode"
 	  )
 	do
 	(format t "~%Testing ~a.mac" testv)
