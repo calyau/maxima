@@ -20,7 +20,12 @@
 (defvar $rot nil)
 
 (defvar $plot_options '((mlist)
-			((mlist) |$x| -3 3)
+			;; Make the default range on X large.  This
+			;; doesn't impact 2-D plotting, but is useful
+			;; for parametric plots so that the plots
+			;; don't get prematurely clipped.
+			((mlist) |$x| #.(- (/ most-positive-double-float 1024))
+			              #.(/ most-positive-double-float 1024))
 			;; Make the default range on Y large.  Don't
 			;; use most-positive-double-float because this
 			;; causes overflow in the draw2d routine.
@@ -160,7 +165,7 @@
 			 )))
     (declare (double-float x y epsy epsx)
 	     (fixnum nx  ny l)
-	     (type (array double-float) ar))
+	     (type (cl:array double-float) ar))
     (sloop for j below ny
 	   initially (setq y miny)
 	   do (setq x minx)
@@ -195,7 +200,7 @@
 	 (i 0)
 	 )
     (declare (fixnum i nxpt m)
-	     (type (array (mod 65000)) tem))
+	     (type (cl:array (mod 65000)) tem))
     (sloop for k below (length tem)
 	   do
 	   (setf (aref tem k) i)
@@ -246,7 +251,7 @@
 	 (x 0.0) (y 0.0) (z 0.0)
 	 )
     (declare (double-float  x y z))
-    (declare (type (array double-float) rot))
+    (declare (type (cl:array double-float) rot))
     ($copy_pts rotation-matrix *rot* 0)
 	
 ;    (setf (rot rot  0 0) (* cosphi costh))
@@ -311,8 +316,8 @@ setrgbcolor} def
 (defun $draw_ngons(pts ngons number_edges &aux (i 0)(j 0) (s 0)
 		       (opts *original-points*)
 		       (maxz  most-negative-double-float))
-  (declare (type (array double-float) pts opts)
-	   (type (array (mod 64000)) ngons)
+  (declare (type (cl:array double-float) pts opts)
+	   (type (cl:array (mod 64000)) ngons)
 	   (fixnum number_edges i s j number_edges)
 	   (double-float maxz))
   (setq j (length ngons))
@@ -405,7 +410,7 @@ setrgbcolor} def
 
 (defun $polar_to_xy (pts &aux (r 0.0) (th 0.0))
   (declare (double-float r th))
-  (declare (type (array double-float) pts))
+  (declare (type (cl:array double-float) pts))
   (assert (typep pts '(vector double-float)))
   (sloop for i below (length pts) by 3
 	 do (setq r (aref pts i))
@@ -426,7 +431,7 @@ setrgbcolor} def
     (setf (symbol-function sym)
   #'(lambda (pts &aux  (x1 0.0)(x2 0.0)(x3 0.0))
       (declare (double-float  x1 x2 x3))
-      (declare (type (array double-float) pts))
+      (declare (type (cl:array double-float) pts))
       (sloop for i below (length pts) by 3
 	     do 
 	 (setq x1 (aref pts i))
@@ -799,7 +804,7 @@ setrgbcolor} def
 	   (eps 1d-5)
 	   x-samples y-samples result
 	   )
-      (declare (double-float x1 y1 x y dy eps2 eps ymin ymax ))
+      (declare (double-float eps ymin ymax))
       ;; Divide the region into NTICKS regions.  Each region has a
       ;; start, mid and endpoint. Then adaptively plot over each of
       ;; these regions.  So it's probably a good idea not to make
