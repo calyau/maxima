@@ -740,13 +740,14 @@
 
 ;; Define the Bessel funtion J[n](z)
 
-(defprop $%j bessel-j-simp specsimp)
+(defprop $bessel_j bessel-j-simp specsimp)
 
 (defprop $bessel_j
     ((n x)
      ((%derivative) ((mqapply) (($bessel_j array) n) x) n 1)
-		     ((mplus) ((mqapply) (($bessel_j array) ((mplus) -1 n)) x)
-			      ((mtimes) -1 n ((mqapply) (($bessel_j array) n) x) ((mexpt) x -1))))
+     ((mplus)
+      ((mqapply) (($bessel_j array) ((mplus) -1 n)) x)
+      ((mtimes) -1 n ((mqapply) (($bessel_j array) n) x) ((mexpt) x -1))))
   grad)
 
 ;; If E is a maxima ratio with a denominator of DEN, return the ratio
@@ -922,7 +923,7 @@
   (declare (ignore ignored))
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
-    (subargcheck exp 1 1 '$%j)
+    (subargcheck exp 1 1 '$bessel_j)
     (let* ((arg (simpcheck (car (subfunargs exp)) z)))
       (cond ((and $numer (numberp order)
 		  (complex-number-p arg))
@@ -945,10 +946,10 @@
 		      ;; A&S 9.1.5
 		      ;; J[-n](x) = (-1)^n*J[n](x)
 		      (if (evenp order)
-			  (subfunmakes '$%j (ncons (- order)) (ncons arg))
-			  `((mtimes simp) -1 ,(subfunmakes '$%j (ncons (- order)) (ncons arg)))))
+			  (subfunmakes '$bessel_j (ncons (- order)) (ncons arg))
+			  `((mtimes simp) -1 ,(subfunmakes '$bessel_j (ncons (- order)) (ncons arg)))))
 		     (t
-		      (eqtest (subfunmakes '$%j (ncons order) (ncons arg))
+		      (eqtest (subfunmakes '$bessel_j (ncons order) (ncons arg))
 			      exp)))))
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
@@ -959,19 +960,19 @@
 	     ;; function of cos.
 	     (bessel-jy-half-order arg rat-order '%sin '%cos))
 	    (t
-	     (eqtest (subfunmakes '$%j (ncons order) (ncons arg))
+	     (eqtest (subfunmakes '$bessel_j (ncons order) (ncons arg))
 		     exp))))))
 
 
 ;; Define the Bessel funtion Y[n](z)
 
-(defprop $%y bessel-y-simp specsimp)
+(defprop $bessel_y bessel-y-simp specsimp)
 
 (defun bessel-y-simp (exp ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
-    (subargcheck exp 1 1 '$%y)
+    (subargcheck exp 1 1 '$bessel_y)
     (let* ((arg (simpcheck (car (subfunargs exp)) z)))
       (cond ((and $numer (numberp order)
 		  (complex-number-p arg))
@@ -987,10 +988,10 @@
 		      ;; A&S 9.1.5
 		      ;; Y[-n](x) = (-1)^n*Y[n](x)
 		      (if (evenp order)
-			  (subfunmakes '$%y (ncons (- order)) (ncons arg))
-			  `((mtimes simp) -1 ,(subfunmakes '$%y (ncons (- order)) (ncons arg)))))
+			  (subfunmakes '$bessel_y (ncons (- order)) (ncons arg))
+			  `((mtimes simp) -1 ,(subfunmakes '$bessel_y (ncons (- order)) (ncons arg)))))
 		     (t
-		      (eqtest (subfunmakes '$%y (ncons order) (ncons arg))
+		      (eqtest (subfunmakes '$bessel_y (ncons order) (ncons arg))
 			      exp)))))
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
@@ -1001,18 +1002,18 @@
 	     ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
 	     (simplify `((mtimes) -1 ,(bessel-jy-half-order arg rat-order '%sin '%cos))))
 	    (t
-	     (eqtest (subfunmakes '$%y (ncons order) (ncons arg))
+	     (eqtest (subfunmakes '$bessel_y (ncons order) (ncons arg))
 		     exp))))))
 
 ;; Define the Bessel funtion I[n](z)
 
-(defprop $%ibes bessel-i-simp specsimp)
+(defprop $bessel_i bessel-i-simp specsimp)
 
 (defun bessel-i-simp (exp ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
-    (subargcheck exp 1 1 '$%ibes)
+    (subargcheck exp 1 1 '$bessel_i)
     (let* ((arg (simpcheck (car (subfunargs exp)) z)))
       (cond ((and $numer (numberp order)
 		  (complex-number-p arg))
@@ -1027,9 +1028,9 @@
 		     ((minusp order)
 		      ;; A&S 9.6.6
 		      ;; I[-n](x) = I[n](x)
-		      (subfunmakes '$%ibes (ncons (- order)) (ncons arg)))
+		      (subfunmakes '$bessel_i (ncons (- order)) (ncons arg)))
 		     (t
-		      (eqtest (subfunmakes '$%ibes (ncons order) (ncons arg))
+		      (eqtest (subfunmakes '$bessel_i (ncons order) (ncons arg))
 			      exp)))))
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
@@ -1040,12 +1041,12 @@
 	     ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
 	     (bessel-i-half-order arg rat-order '%sinh '%cosh))
 	    (t
-	     (eqtest (subfunmakes '$%ibes (ncons order) (ncons arg))
+	     (eqtest (subfunmakes '$bessel_i (ncons order) (ncons arg))
 		     exp))))))
 
 ;; Define the Bessel funtion K[n](z)
 
-(defprop $%k bessel-k-simp specsimp)
+(defprop $bessel_k bessel-k-simp specsimp)
 
 (defun bessel-k-half-order (arg order)
   ;; K[n+1/2](z) and K[-n-1/2](z) can be expressed in terms of
@@ -1118,7 +1119,7 @@
   (declare (ignore ignored))
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
-    (subargcheck exp 1 1 '$%k)
+    (subargcheck exp 1 1 '$bessel_k)
     (let* ((arg (simpcheck (car (subfunargs exp)) z)))
       (cond ((and $numer (numberp order)
 		  (complex-number-p arg))
@@ -1133,9 +1134,9 @@
 		     ((minusp order)
 		      ;; A&S 9.6.6
 		      ;; K[-v](x) = K[v](x)
-		      (subfunmakes '$%k (ncons (- order)) (ncons arg)))
+		      (subfunmakes '$bessel_k (ncons (- order)) (ncons arg)))
 		     (t
-		      (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
+		      (eqtest (subfunmakes '$bessel_k (ncons order) (ncons arg))
 			      exp)))))
 	    ((and $besselexpand
 		  (setq rat-order (max-numeric-ratio-p order 2)))
@@ -1146,5 +1147,5 @@
 	     ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
 	     (bessel-k-half-order arg rat-order))
 	    (t
-	     (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
+	     (eqtest (subfunmakes '$bessel_k (ncons order) (ncons arg))
 		     exp))))))
