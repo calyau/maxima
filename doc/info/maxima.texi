@@ -237,8 +237,7 @@ Differential Equations
 Numerical
 
 * Introduction to Numerical::   
-* FOURIER::                     
-* NDIFFQ::                      
+* Fourier::                     
 * Definitions for Numerical::   
 
 Statistics
