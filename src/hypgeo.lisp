@@ -2836,18 +2836,21 @@
 ;; all real p and a.  So I (rtoy) don't think this is the right thing
 ;; to use.
 ;;
-;; Perhaps we should use A&S 8.1.6 or 8.1.7 combined with 8.3.4 is
-;; what we want.
-(defun leg2fsimp (v m z) 
-  (mul (power '$%e (mul m '$%pi '$%i))
-       (power '$%pi (inv 2.))
-       (gm (add m v 1.))
-       (inv (power 2. (add v 1.)))
-       (inv (gm (add v (div 3. 2.))))
-       (power z (sub -1. (add m v)))
-       (power (sub (mul z z) 1.) (mul (inv 2.) m))
-       (hgfsimp-exec (list (div (add m v 1.) 2.)
-			   (div (add m v 2.) 2.))
-		     (list (add v (mul 3. (inv 2.))))
-		     (inv (mul z z))))) 
+;; So, for now, just return the Legendre Q function and hope that
+;; someone else can simplify it.
+(defun leg2fsimp (m v z)
+  (cond (t
+	 (legen m v z '$q))
+	(nil
+	 (mul (power '$%e (mul m '$%pi '$%i))
+	      (power '$%pi (inv 2.))
+	      (gm (add m v 1.))
+	      (inv (power 2. (add v 1.)))
+	      (inv (gm (add v (div 3. 2.))))
+	      (power z (sub -1. (add m v)))
+	      (power (sub (mul z z) 1.) (mul (inv 2.) m))
+	      (hgfsimp-exec (list (div (add m v 1.) 2.)
+				  (div (add m v 2.) 2.))
+			    (list (add v (mul 3. (inv 2.))))
+			    (inv (mul z z)))))))
 
