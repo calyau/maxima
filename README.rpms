@@ -1,0 +1,102 @@
+These RPMs were created on a RedHat 7.3 system. They have been tested
+on RedHat 7.3 and 7.1 systems; see the note below for issues with 7.1.
+
+Executive summary: The maxima package is required. One or more of the
+maxima-exec_* package is required. The maxima-exec_cmucl package is
+the fastest option. For details on Lisp implementations, see the
+attached file README.lisps. The maxima-xmaxima package is optional. It
+provides a maxima GUI.
+
+Packages:
+
+* maxima : The maxima package is required for all uses of maxima. It
+contains the maxima wrapper scripts as well as various input and
+documentation files. One or more of the maxima-exec_* packages is also
+required.
+
+* maxima-exec_* : These packages contain the compiled maxima code
+using various lisp implementations. Only one maxima-exec_ package is
+required. Any combination of the maxima_exec_ packages may be
+installed simultaneously, however. If more than one exec package is
+installed, the lisp implementation can be selected at runtime. See
+"maxima --help" or the maxima man page for details.
+
+    ** maxima-exec_clisp : Maxima compiled with CLISP 2.29. This package
+requires the CLISP 2.29 rpm, which is available from
+<http://clisp.cons.org/> by following the link "SourceForge
+downloads/HTTP" to
+<http://sourceforge.net/project/showfiles.php?group_id=1355>.
+
+    ** maxima-exec_cmucl : Maxima compiled with CMUCL 18d. This package
+requires the CMUCL 18d rpm, which is available from
+<http://www.caddr.com/lisp/>. Since CMUCL lacks readline support,
+ledit is recommended. (See README.lisps below.) ledit is available in
+rpm format from
+<ftp://ftp.inria.fr/INRIA/Projects/cristal/Daniel.de_Rauglaudre/Tools/>.
+
+    ** maxima-exec_gcl : Maxima compiled with GCL
+2.5.0.cvs20020625. This package *does not* require a GCL
+rpm. Nonetheless, the GCL rpm used for this build is available from
+the GCL project page, <http://savannah.gnu.org/projects/gcl/>. Follow
+the "Files" link and look in the cvs subdirectory,
+<ftp://ftp.gnu.org/pub/gnu/gcl/cvs>. The gcl rpm has a dependency
+problem on RedHat 7.x. Fortunately, the dependency can be safely
+ignored. Install with --nodeps.
+
+* maxima-xmaxima : The maxima-xmaxima package provides a TCL/Tk
+frontend to maxima. Not surprisingly, it requires the Tk rpm. The
+standard RedHat Tk rpm will do.
+
+Issues with RedHat 7.1: maxima-exec_gcl requires libreadline.so.4, as
+does the clisp-2.29 rpm. Due to a packaging problem, RedHat 7.1
+*appears* to be lacking libreadline.so.4. In fact, the readline
+package on 7.1 does contain the file in question. The RPMs can be
+installed on 7.1 using the --nodeps option.
+
+-------------------------------------------------------------------
+README.lisps
+
+Executive summary: CMUCL is fast, but lacks readline support. Adding
+readline support to Maxima with CMUCL is as simple as installing ledit
+(see below). clisp and gcl contain native readline support. clisp and
+CMUCL are currently far closer to ANSI Common Lisp than GCL.
+
+Preliminary notes on lisp implementations for Maxima:
+
+clisp, CMUCL and GCL are fully supported by Maxima; previous versions
+of Maxima only fully supported GCL. Ports to other ANSI lisps should
+be straightforward and are welcome; please contact the developers if
+you are interested in working on a port.
+
+clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
+-----
+	clisp includes GNU readline support, so Maxima will have
+advanced command-line editing facilities when built with it.
+
+clisp versions: Maxima will fail to build with 2.26 because of a bug
+in clisp. 2.28 and 2.29 are known to work. There are currently
+unresolved problems with floating point numbers in Maxima with clisp
+2.30. 2.29 is recommended.
+
+CMUCL <http://cmucl.cons.org>
+-----
+	CMUCL is the fastest option for Maxima on platforms where it
+is available. Unfortunately, it does not include readline
+support. However, readline support can be added by wrapping maxima
+with the ledit executable. See
+<ftp://ftp.inria.fr/INRIA/Projects/cristal/Daniel.de_Rauglaudre/Tools/>
+for ledit.
+
+CMUCL versions: Maxima will build with CMUCL 18c, but will hang on
+some run-time operations. 18d is known to work.
+
+GCL <http://savannah.gnu.org/projects/gcl>
+---
+	GCL versions starting with 2.4.3 can be built with readline
+support, so Maxima will have advanced command-line editing facilities
+when build with it.
+
+GCL versions: 2.5.0 should work. Unfortunately, 2.5.0 has not yet been
+released as of this writing. The cvs version of 2.5.0 has been used to 
+successfully build Maxima.
+
