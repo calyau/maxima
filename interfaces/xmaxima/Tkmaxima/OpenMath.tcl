@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.12 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.13 2002-09-19 16:25:50 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -144,7 +144,7 @@ proc omPanel { w args } {
     oset $win history ""
     oset $win historyIndex 0
     wmenubar $menubar
-    pack $menubar -side top -expand 0 -fill x -anchor nw
+    pack $menubar -side top -expand 1 -fill x -anchor nw
 
     foreach v { file  } {
 	label $win.$v -text [string totit $v] -relief raised
@@ -195,6 +195,7 @@ proc omPanel { w args } {
 
     # ====begin Help button===
     set m [oget $win.help menu]
+    $win.help configure -text Options
     setHelp $win.help "Offer possible help options, including toggling \n	whether to show balloon help messages"
 
     global show_balloons showHelpMessages
@@ -235,9 +236,11 @@ proc omPanel { w args } {
     $m add command -label "Forget" \
 	-command  "forgetCurrent $win"   \
 	-help {Move back one in the history, and remove the current one from the history, unless it was the first window.}
+    if {0} {
     $m add command -label "History" \
 	-command  "showHistory $win"   \
 	-help {Display the history list, so that one may be selected by clicking.}
+    }
     $m add command -label "Base Program" \
 	-command  {fileBaseprogram [oget [omPanel %W] textwin]  %W %x %y}   \
 	-help {Show and allow altering of the base program, which shows which is the default host for programs to run on.   May also be specified in <body baseprogram= ...> in the .html file.}
@@ -250,19 +253,37 @@ proc omPanel { w args } {
 	-command "fontDialog .fontdialog" \
 	-help {set the default font sizes and types}
     $m add command -label "Exit" \
-	-command  "vMAXExit"   \
+	-command  "tkmaxima exit"   \
 	-help {Exit this program}
 
 
-
     global location
-    button $win.loclabel -text " Url:" \
-	-command "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win"
-    setHelp $win.loclabel {Fetch the URL or FILE indicated in the entry box. \
-			       A local file is something like file:/home/wfs/foo.om, and a URL \
-			       begins with http.}
+    if {1} {
+	menubutton $win.url -text Url: -bd 1 -relief raised
+	menu $win.url.m -tearoff 0 \
+	    -postcommand [list vMaxOMUrlPostCommand $win $win.url.m]
+	$win.url configure -menu $win.url.m
+	pack $win.url -side left -fill both -expand 0
+	proc vMaxOMUrlPostCommand {win m} {
+	    $m delete 0 end
+	    foreach v [oget $win history] {
+		set url [oget $v location]
+		$m add command -label $url \
+		    -command [list OpenMathOpenUrl $url -commandpanel  $win]
+		
+	    }
+	}
+    } else {
+	#mike slate the old histroy list for demolition
+	button $win.loclabel -text " Url:" \
+	    -command "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win"
+	setHelp $win.loclabel {Fetch the URL or FILE indicated in the entry box. \
+				   A local file is something like file:/home/wfs/foo.om, and a URL \
+				   begins with http.}
 
-    pack $win.loclabel -side left -fill x -expand 0
+	pack $win.loclabel -side left -fill x -expand 0
+    }
+
     entry $win.location -textvariable [oloc $win location] -width 40
     setHelp $win.location {Address of the current document.  You may modify it and type Enter, to fetch a new document.}
     bind $win.location <Key-Return> "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win"
@@ -273,16 +294,7 @@ proc omPanel { w args } {
     oset $win history ""
     pack $win -side top -expand 1 -fill x
 
-    ######## make status panel....
-    set st $top.status
-    frame $st
-    oset $win status $st
-
-    set maxima_priv(status_window) $st
-    scale $st.scale -showvalue 0 -length 200 -orient horizontal
-    label $st.rate -width 35 -textvariable maxima_priv(load_rate)
-    pack $st.rate $st.scale -side left
-    pack $st -side bottom
+    oset $win status $maxima_priv(cStatusWindow)
     return $win
 }
 
@@ -307,7 +319,7 @@ proc forgetCurrent { win } {
 
 proc omDoStop { win } {
     global maxima_priv
-    set st $maxima_priv(status_window)
+    set st $maxima_priv(cStatusWindow)
     set var [$st.scale cget -variable]
     if { [regexp {sock[0-9]+} $var sock] } {
 	oset $sock done -1
@@ -505,7 +517,7 @@ proc mkOpenMath { win  } {
     global    maxima_priv
 
     set w $win
-    catch {destroy $w}
+    if {[winfo exists $w]} {catch {destroy $w}}
     if { [catch { package require Safesock } ] } {
 	# policy network home
 	catch {  policy  outside }
@@ -530,10 +542,12 @@ proc mkOpenMath { win  } {
     # raise  $commandPanel
 
     text $w.text -yscrollcommand "$w.scroll set" \
+	-selectbackground "#808080" \
 	-width $width_chars  -height $height_chars -font $font -wrap word
     bind $w.text <Configure> "resizeSubPlotWindows $w.text %w %h"
     set maxima_priv(currentwin) $w.text
     set maxima_priv(point) end
+
     $w.text tag bind "currenteval" <Leave> "$w.text tag remove currenteval 0.0 end ; addTagSameRange %W Teval currenteval @%x,%y;"
     $w.text tag config "currenteval" -foreground red
     $w.text tag bind Teval <Double-Button-1> {doInvoke %W @%x,%y }
@@ -983,7 +997,7 @@ proc textShowHelp { win tag index msg } {
 proc getTagsMatching { win regexp range } {
     foreach ind $range {
 	foreach v [$win tag names $ind] {
-	    if { [regexp $regexp $v] } {
+	    if { [regexp -- $regexp $v] } {
 		set there($v) 1
 	    }
 	}
@@ -993,7 +1007,7 @@ proc getTagsMatching { win regexp range } {
     set ll [llength $dump]
     while { $i < $ll } {
 	set v [lindex $dump $i]
-	if { [regexp $regexp $v] } {
+	if { [regexp -- $regexp $v] } {
 	    set there($v) 1
 	}
 	incr i 3
