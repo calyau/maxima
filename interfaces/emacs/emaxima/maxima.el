@@ -1397,8 +1397,10 @@ which is in a comment which begins on a previous line."
       (info "Maxima")
     (info-other-window (concat "(Maxima)" node))))
 
-(defun maxima-get-info-on-subject (subject)
-  (if maxima-running-xemacs
+(defun maxima-get-info-on-subject (subject &optional same-window)
+  (if (or
+       maxima-running-xemacs
+       same-window)
       (progn
         (info "Maxima")
         (Info-menu "Function and Variable Index"))
@@ -1423,7 +1425,7 @@ which is in a comment which begins on a previous line."
       (search-forward ":")
       (skip-chars-backward ": ")
       (setq name (buffer-substring-no-properties pt (point))))
-    (maxima-get-info-on-subject name)))
+    (maxima-get-info-on-subject name t)))
 ;    (if (not maxima-running-xemacs)
 ;        (info-other-window (concat "(Maxima)" place))
 ;      (info "Maxima")
