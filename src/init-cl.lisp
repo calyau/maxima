@@ -128,7 +128,7 @@
 	 (lisp-patterns (concatenate 'string
 				     "###.{"
 				     (concatenate 'string ext ",lisp,lsp}")))
-	 (share-with-subdirs "{share,share/algebra,share/calculus,share/combinatorics,share/contrib,share/diffequations,share/graphics,share/integequations,share/integration,share/macro,share/matrix,share/misc,share/numeric,share/physics,share/simplification,share/specfunctions,share/sym,share/tensor,share/trigonometry,share/utils,share/vector}"))
+	 (share-with-subdirs "{share,share/algebra,share/calculus,share/combinatorics,share/contrib,share/contrib/nset,share/contrib/pdiff,share/diffequations,share/graphics,share/integequations,share/integration,share/macro,share/matrix,share/misc,share/numeric,share/physics,share/simplification,share/specfunctions,share/sym,share/tensor,share/trigonometry,share/utils,share/vector}"))
     (setq $file_search_lisp
 	  (list '(mlist)
 		;; actually, this entry is not correct.

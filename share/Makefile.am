@@ -329,6 +329,17 @@ contrib/diag.mac\
 contrib/diag.dem\
 contrib/impdiff.mac\
 contrib/lindstedt.mac\
-contrib/makeOrders.mac
+contrib/makeOrders.mac\
+contrib/nset/nset-init.lisp\
+contrib/nset/nset.html\
+contrib/nset/nset.lisp\
+contrib/nset/nset.texi\
+contrib/nset/README\
+contrib/nset/test-nset.mac\
+contrib/pdiff/battex.sty\
+contrib/pdiff/history.txt\
+contrib/pdiff/pdiff-doc.pdf\
+contrib/pdiff/pdiff-doc.tex\
+contrib/pdiff/pdiff.lisp
 
 EXTRA_DIST = $(genericdirDATA)
