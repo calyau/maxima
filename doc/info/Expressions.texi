@@ -828,34 +828,91 @@ error message is given.
 
 @end defvar
 
-@defun pickapart (expr,depth)
-will assign E labels to all subexpressions of
-@code{expr} down to the specified integer depth.  This is useful for dealing
-with large expressions and for automatically assigning parts of an
-expression to a variable without having to use the part functions.
+@defun pickapart (expr, n)
+Assigns intermediate expression labels to subexpressions of
+@code{expr} at depth @code{n}, an integer.
+Subexpressions at greater or lesser depths are not assigned labels.
+@code{pickapart} returns an expression in terms of intermediate expressions
+equivalent to the original expression @code{expr}.
+
+See also @code{part}, @code{dpart}, @code{lpart}, and @code{inpart}.
 
 @example
-(%i1) (a+b)/2 + sin (x^2)/3 - log (1 + sqrt(x+1));
+(%i1) expr: (a+b)/2 + sin (x^2)/3 - log (1 + sqrt(x+1));
                                           2
                                      sin(x )   b + a
 (%o1)       - log(sqrt(x + 1) + 1) + ------- + -----
                                         3        2
-(%i2) pickapart (%, 1);
+(%i2) pickapart (expr, 0);
 
-(%t2)                - log(sqrt(x + 1) + 1)
+                                          2
+                                     sin(x )   b + a
+(%t2)       - log(sqrt(x + 1) + 1) + ------- + -----
+                                        3        2
+
+(%o2)                          %t2
+(%i3) pickapart (expr, 1);
+
+(%t3)                - log(sqrt(x + 1) + 1)
 
 
                                   2
                              sin(x )
-(%t3)                        -------
+(%t4)                        -------
                                 3
 
 
                               b + a
-(%t4)                         -----
+(%t5)                         -----
                                 2
 
-(%o4)                    %t4 + %t3 + %t2
+(%o5)                    %t5 + %t4 + %t3
+(%i5) pickapart (expr, 2);
+
+(%t6)                 log(sqrt(x + 1) + 1)
+
+
+                                  2
+(%t7)                        sin(x )
+
+
+(%t8)                         b + a
+
+                         %t8   %t7
+(%o8)                    --- + --- - %t6
+                          2     3
+(%i8) pickapart (expr, 3);
+
+(%t9)                    sqrt(x + 1) + 1
+
+
+                                2
+(%t10)                         x
+
+                  b + a              sin(%t10)
+(%o10)            ----- - log(%t9) + ---------
+                    2                    3
+(%i10) pickapart (expr, 4);
+
+(%t11)                     sqrt(x + 1)
+
+                      2
+                 sin(x )   b + a
+(%o11)           ------- + ----- - log(%t11 + 1)
+                    3        2
+(%i11) pickapart (expr, 5);
+
+(%t12)                        x + 1
+
+                   2
+              sin(x )   b + a
+(%o12)        ------- + ----- - log(sqrt(%t12) + 1)
+                 3        2
+(%i12) pickapart (expr, 6);
+                  2
+             sin(x )   b + a
+(%o12)       ------- + ----- - log(sqrt(x + 1) + 1)
+                3        2
 @end example
 
 @end defun
