@@ -63,15 +63,15 @@ trigrat(sin(3*a)/sin(a+%pi/3));
 sqrt(3)*sin(2*a)+cos(2*a)-1;
 
 /* compile() will fail with gcl if gcc not installed */
-f(x):=x+2;
-f(x):=x+2;
-f(2);
+ffffcompile(x):=x+2;
+ffffcompile(x):=x+2;
+ffffcompile(2);
 4;
-compile(f);
-[f];
-f(2);
+compile(ffffcompile);
+[ffffcompile];
+ffffcompile(2);
 4;
-kill(f);
+kill(ffffcompile);
 done;
 
 /* Trignometric and hyperbolic functions of complex arguments */
