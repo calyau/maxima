@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.7 2002-09-19 16:26:42 mikeclarkson Exp $
+#       $Id: Plotconf.tcl,v 1.8 2004-03-28 07:28:27 vvzhy Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -46,43 +46,36 @@ proc makeFrame { w type } {
     set buttonFont $buttonfont
     oset $win buttonFont $buttonfont
 
+    menubutton $w.plotmenu -text "Menu Here" -direction below -menu $w.plotmenu.m  -relief flat -borderwidth 0 -background white -font $buttonFont
+    menu $w.plotmenu.m -tearoff 0
+
     #    puts "children wb=[winfo children $w]"
     set wb $w.buttons
     frame $wb
     set dismiss [concat $dismiss "; clearLocal $win "]
 
-    button $wb.dismiss -text Dismiss -command $dismiss -font $buttonFont
-    setBalloonhelp $win $wb.dismiss {Close this plot window}
-
-    button $wb.zoom -text "Zoom" -command "showZoom $w" -font $buttonFont
-    setBalloonhelp $win $wb.zoom {Magnify the plot.  Causes clicking with the left mouse button on the plot, to magnify (zoom in) the plot where you click.  Also causes Shift+Click to  it to unmagnify (zoom out) at that point}
-    oset $w position ""
-
+    $w.plotmenu.m add command -label "Dismiss" -command $dismiss -font $buttonFont
+    ##setBalloonhelp $win $wb.dismiss {Close this plot window}
+    $w.plotmenu.m add command -label "Zoom" -command "showZoom $w" -font $buttonFont
+    ##setBalloonhelp $win $wb.zoom {Magnify the plot.  Causes clicking with the left mouse button on the plot, to magnify (zoom in) the plot where you click.  Also causes Shift+Click to  it to unmagnify (zoom out) at that point}
+    ##oset $w position ""
     #    button $w.position -textvariable [oloc $w position] -font $buttonFont -width 10
-    label $w.position  -textvariable [oloc $w position] -font $buttonFont -width 10
-    setBalloonhelp $win $w.position {Position of the pointer in real x y coordinates.  For 3d it is the position of the nearest vertex of the polygon the pointer is over.}
-
-    button $wb.help -text "Help" -command "doHelp$type $win" -font $buttonFont
-    setBalloonhelp $win $wb.help {Give more help about this plot window}
-    button $wb.postscript -textvariable writefile -command "writePostscript $w" -font $buttonFont
-    setBalloonhelp $win $wb.postscript {Prints or Saves the plot in postscript format.  The region to be printed is marked using Mark.   Other print options can be obtained by using "Print Options" in the Config menu }
-
-
-    button $wb.markrect -text "Mark" -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
-    setBalloonhelp $win $wb.markrect {Mark the region to be printed.  Causes the left mouse button to allow marking of a rectangle by clicking at the upper left corner, and dragging the mouse to the lower right corner.  The title can be set under "Print Options" under Config}
-    button $wb.replot -text "Replot" -command "replot$type $win" -font $buttonFont
-    setBalloonhelp $win $wb.replot {Use the current settings and recompute the plot.  The settings may be altered in Config}
-
-
-
-    button $wb.config -text "Config" -command "doConfig$type $win" -font $buttonFont
-    setBalloonhelp $win $wb.config {Configure various options about the plot window.  After doing this one may do replot.  Hint: you may leave the config menu on the screen and certain actions take place immediately, such as rotating or computing a trajectory at a point.  To make room for the window you might slide the graph to the right, and possibly shrink it using the unzoom feature}
-
-
+    ##label $w.position  -textvariable [oloc $w position] -font $buttonFont -width 10
+    ##setBalloonhelp $win $w.position {Position of the pointer in real x y coordinates.  For 3d it is the position of the nearest vertex of the polygon the pointer is over.}
+    $w.plotmenu.m add command -label "Help" -command "doHelp$type $win" -font $buttonFont
+    ##setBalloonhelp $win $wb.help {Give more help about this plot window}
+    $w.plotmenu.m add command -label "Save" -command "writePostscript $w" -font $buttonFont
+    ##setBalloonhelp $win $wb.postscript {Prints or Saves the plot in postscript format.  The region to be printed is marked using Mark.   Other print options can be obtained by using "Print Options" in the Config menu }
+    $w.plotmenu.m add command -label "Mark" -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
+    ##setBalloonhelp $win $wb.markrect {Mark the region to be printed.  Causes the left mouse button to allow marking of a rectangle by clicking at the upper left corner, and dragging the mouse to the lower right corner.  The title can be set under "Print Options" under Config}
+    $w.plotmenu.m add command -label "Replot" -command "replot$type $win" -font $buttonFont
+    ##setBalloonhelp $win $wb.replot {Use the current settings and recompute the plot.  The settings may be altered in Config}
+    $w.plotmenu.m add command -label "Config" -command "doConfig$type $win" -font $buttonFont
+    ##setBalloonhelp $win $wb.config {Configure various options about the plot window.  After doing this one may do replot.  Hint: you may leave the config menu on the screen and certain actions take place immediately, such as rotating or computing a trajectory at a point.  To make room for the window you might slide the graph to the right, and possibly shrink it using the unzoom feature}
 
     #mike FIXME: this is a wrong use of after cancel
-    bind $win.position <Enter> "+place $win.buttons -in $win.position -x 0 -rely 1.0 ;  after cancel lower $win.position ; raise $win.buttons "
-    bind $win.buttons <Leave> "deleteBalloon $c ; place forget $win.buttons"
+    ##bind $win.position <Enter> "+place $win.buttons -in $win.position -x 0 -rely 1.0 ;  after cancel lower $win.position ; raise $win.buttons "
+    ##bind $win.buttons <Leave> "deleteBalloon $c ; place forget $win.buttons"
 
     # pack $wb
     scrollbar $w.hscroll -orient horiz -command "$c xview"
@@ -107,13 +100,13 @@ proc makeFrame { w type } {
     bind $c <B3-Motion> "$c scan dragto %x %y"
     bind $c <Motion> "showPosition $w %x %y"
     bind $c <Configure> "reConfigure $c %w %h"
-    bind $c <Enter> "raise $win.position"
-    bind $c <Leave> "after 200 lower $win.position"
-    $w.position config -background [$c cget -background]
+    ##bind $c <Enter> "raise $win.position"
+    ##bind $c <Leave> "after 200 lower $win.position"
+    $w.plotmenu config -background [$c cget -background]
 
 
-    pack  $wb.dismiss $wb.help $wb.zoom   \
-	$wb.postscript $wb.markrect $wb.replot $wb.config -side top -expand 1 -fill x
+    ##pack  $wb.dismiss $wb.help $wb.zoom   \
+    ##	$wb.postscript $wb.markrect $wb.replot $wb.config -side top -expand 1 -fill x
     if { 0 } {
 	pack $w.hscroll -side bottom -expand 1 -fill x
 	pack $w.vscroll -side right -expand 1 -fill y
@@ -121,22 +114,22 @@ proc makeFrame { w type } {
     pack $w.c -side right -expand 1 -fill both
 
     pack $w
-    place $w.position -in $w -x 2 -y 2 -anchor nw
-    oset $w position "Menu Here"
+    place $w.plotmenu -in $w -x 2 -y 2 -anchor nw
+    
     if { ![info exists maxima_priv(showedplothelp)] ||
 	 [llength $maxima_priv(showedplothelp)] < 2 } {
 	lappend maxima_priv(showedplothelp) 1
 	
-	after 100 balloonhelp $w $w.position [list \
-						  "Initial help: Moving the mouse over the position \
-		window (top left corner), will bring up a menu.  Holding down \
+	after 100 balloonhelp $w $w.plotmenu [list \
+		"Initial help: Clicking the left mouse button on the plot menu \
+		(top left corner), will bring up a menu.  Holding down \
 		right mouse button and dragging will translate the plot"]
-	after 2000 $w.c delete balloon
+	after 3000 $w.c delete balloon
 	
 
     }
 
-    raise $w.position
+    raise $w.plotmenu
 
     pack [winfo parent $wb]
     # update
@@ -217,7 +210,7 @@ proc showPosition { win x y } {
     makeLocal $win c
     # we catch so that in case have no functions or data..
     catch {
-	oset $win position \
+	$win.plotmenu config -text \
 	    "[format {(%.2f,%.2f)}  [storx$win [$c canvasx $x]] [story$win [$c canvasy $y]]]"
     }
 }
@@ -225,7 +218,7 @@ proc showPosition { win x y } {
 proc showZoom  { win } {
     #  global c position
     makeLocal $win c
-    oset $win position "Click to Zoom\nShift+Click Unzoom"
+    $win.plotmenu config -text "Click to Zoom\nShift+Click Unzoom"
 
     bind $c <1> "doZoom $win %x %y 1"
     bind $c  <Shift-1> "doZoom $win %x %y -1"
