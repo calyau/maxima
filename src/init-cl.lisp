@@ -122,7 +122,10 @@
 	      (maxima-data-path share-with-subdirs "###.mac")
 	      (maxima-data-path share-with-subdirs "###.mc")))
   (setq $file_search_demo
-	(list '(mlist) (maxima-data-path share-with-subdirs
+	(list '(mlist)
+	      (maxima-data-path share-with-subdirs
+					 "###.{dem,dm1,dm2,dm3,dmt}")
+	      (maxima-data-path "{demo}"
 					 "###.{dem,dm1,dm2,dm3,dmt}")))
   (setq $file_search_usage
 	(list '(mlist) (maxima-data-path share-with-subdirs
