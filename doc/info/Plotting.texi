@@ -26,7 +26,7 @@ The following plots two curves, using big points, labeling the first one
 @code{jim} and the second one @code{jane}.   
 @example
 openplot_curves([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
-      @{text @{xaxislabel @{joe is nice@}@}"] ,
+      @{text @{xaxislabel @{joe is nice@}@}@}"] ,
       [1,2,3,4,5,6,7,8],
       ["@{label jane@} @{color pink @} "], [3,1,4,2,5,7]]);
 @end example
@@ -155,18 +155,17 @@ and similarly the y range.
 
 [COLOUR_Z,false] applies to colouring done with plot_format ps.
 
-[PLOT_FORMAT,ZIC] is for plot3d and currently  ZIC, GNUPLOT, PS, and
-GEOMVIEW are supported.
+[PLOT_FORMAT,OPENMATH] is for plot3d and currently  OPENMATH,
+GNUPLOT, PS, and GEOMVIEW are supported.
 
 There are good quality public domain viewers for these formats.
-They are izic, gnuplot, ghostview, and geomview.
+They are openmath, izic, gnuplot, ghostview, and geomview.
 
-izic is available by ftp from zenon.inria.fr.  Contact one of
-
-@{fournier,kajler,mourrain@}@@sophia.inria.fr.
-
-It has beautiful colour gouraud shading, and very fast wireframe.  It
-runs on X windows.
+The Openmath viewer is in the distribution, and is based on tcl/tk.
+The executable is @file{maxima/bin/omplotdata}.  The viewer lets you
+zoom in, slide around, and rotate (if 3 dimensional).  This format is
+also the one used by netmath, for making plots with Netmath. (see
+@file{http://www.ma.utexas.edu/users/wfs/netmath.html})
 
 geomview is from the Geometry Center at the University of Minnesota, and
 is available from
@@ -178,6 +177,15 @@ for multiple objects and multiple lights.
 gnuplot is everywhere as is ghostview.   We also provide mgnuplot,
 a tcl interface for gnuplot, which lets you rotate the plots using
 the mouse and a scale.
+
+izic is available by ftp from zenon.inria.fr.  Contact one of
+
+@{fournier,kajler,mourrain@}@@sophia.inria.fr.
+
+It has beautiful colour gouraud shading, and very fast wireframe.  It
+runs on X windows.
+
+
 
 
 @end defvar
