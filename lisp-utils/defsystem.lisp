@@ -986,6 +986,9 @@
 #+cormanlisp
 (defpackage "MAKE" (:use "COMMON-LISP") (:nicknames "MK"))
 
+#+gcl
+(defpackage "MAKE" (:use "LISP") (:nicknames "MK"))
+
 #-(or :sbcl :cltl2 :lispworks)
 (in-package "MAKE" :nicknames '("MK"))
 
