@@ -243,6 +243,7 @@
   (let (($domain '$complex) ($m1pbranch t) $logarc op)
     (cond
      ((atom l) (cond ((eq l '$%i) (cons 0 1))
+		     ((eq l '$infinity) (cons '$und '$und))
 		     ((decl-complexp l) (risplit-noun l))
 		     (t (cons l 0))))
      ((eq (caar l) 'rat) (cons l 0))
@@ -439,6 +440,7 @@
 		    ((numberp l)
 		     (cons (abs l) (argnum l)))
 		    ((memq l '($%e $%pi)) (cons l 0))
+		    ((eq l '$infinity) (cons '$inf '$ind))
 		    (absflag (cons (take '(mabs) l) 0))
 		    (t ((lambda (gs)
 				(cond ((eq gs '$positive) (cons l 0))
