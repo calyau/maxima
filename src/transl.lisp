@@ -223,11 +223,12 @@ APPLY means like APPLY.")
 	      ((NULL X))
 	      (COND ((ATOM (CAR X)) ;;; simple heuristic that seems to work.
 		     (COND ((OR TP (> (FLATC (CAR X)) 10.))
-			    (TERPRI *TRANSLATION-MSGS-FILES*)
+			    (dolist (v *TRANSLATION-MSGS-FILES*) (TERPRI v))
 			    (SETQ TP NIL)))
-		     (PRINC (STRIPDOLLAR (CAR X)) *TRANSLATION-MSGS-FILES*))
+		     (dolist (v *TRANSLATION-MSGS-FILES*)
+		       (PRINC (STRIPDOLLAR (CAR X)) v)))
 		    (T
-		     (MGRIND (CAR X) *TRANSLATION-MSGS-FILES*)))))
+		     (dolist (v *TRANSLATION-MSGS-FILES*) (MGRIND (CAR X) v))))))
 
 (DEFTRFUN BARFO (&REST L)
 	  (APPLY #'TR-TELL
