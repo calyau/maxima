@@ -37,7 +37,7 @@ itself, since after it has been through the simplifier the list would become
 @node Definitions for Lists,  , Introduction to Lists, Lists
 @section Definitions for Lists
 
-@c @node APPEND, ATOM, Lists, Lists
+@c @node APPEND, ASSOC, Lists, Lists
 @c @unnumberedsec 
 @defun APPEND (list1, list2, ...)
 returns a single list of the elements of
@@ -45,6 +45,17 @@ list1 followed by the elements of list2,...  APPEND also works on
 general expressions, e.g. APPEND(F(A,B), F(C,D,E)); -> F(A,B,C,D,E).
 Do EXAMPLE(APPEND); for an example.
 
+@end defun
+@c @node ASSOC, ATOM, APPEND, Lists
+@c @unnumberedsec 
+@defun ASSOC (exp)
+This function searches for the key in the left hand side of the input list
+of the form [x,y,z...] where each of the list elements is a expression of
+a binary operand and 2 elements.  For example x=1, 2^3, [a,b] etc.
+The key checked againts the first operand and and returns the second
+operand if the key is found.
+If the key is not found it either returns the default value if supplied or
+false.
 @end defun
 @c @node ATOM, CONS, APPEND, Lists
 @c @unnumberedsec 
@@ -84,7 +95,7 @@ exp1 from exp2.  Of course, if there are fewer than integer
 occurrences of exp1 in exp2 then all occurrences will be deleted.
 
 @end defun
-@c @node ENDCONS, FIRST, DELETE, Lists
+@c @node ENDCONS, EVERY, DELETE, Lists
 @c @unnumberedsec 
 @defun ENDCONS (exp, list)
 returns a new list consisting of the elements of
@@ -92,7 +103,15 @@ list followed by exp.  ENDCONS also works on general expressions, e.g.
 ENDCONS(X, F(A,B,C));  ->  F(A,B,C,X).
 
 @end defun
-@c @node FIRST, FLATTEN, ENDCONS, Lists
+@c @node EVERY, FIRST, DELETE, Lists
+@c @unnumberedsec 
+@defun EVERY (exp)
+This function takes a list, or a positive number of arguments and returns
+true if all its arguments are not false.
+
+@end defun
+
+@c @node FIRST, FLATTEN, EVERY, Lists
 @c @unnumberedsec 
 @defun FIRST (exp) SECOND (exp) .. TENTH (exp)
 yields the first part of exp which may result in the first
