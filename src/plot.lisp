@@ -465,11 +465,18 @@ setrgbcolor} def
 			;; also assume that for such errors, it's
 			;; because the function is not defined there,
 			;; not because of some other maxima error.
+			;;
+			;; Hmm, gcl 2.5.1 does appear to have handler-case.  Ick. 
 			(let ((result
-			       (handler-case 
+			       #-gcl
+				(handler-case 
 				   (catch 'errorsw
 				     ($float ($realpart (meval* ',expr))))
-				 (arithmetic-error () t))))
+				 (arithmetic-error () t))
+				#+gcl
+				(catch 'errorsw
+				     ($float ($realpart (meval* ',expr))))
+				))
 			  result)))
 		   'function)))))
 
