@@ -1,10 +1,10 @@
 #!/bin/sh
-# comment \
+#  -*- tcl -*- \
 exec wish "$0" "$@"
 #############################################
 ##### Copyright William Schelter 1997 #######
 #############################################
-set ws_openMath(date) 05/30/2001
+set ws_openMath(date) 04/28/2002
 
 ###### maxima-browser.tcl ######
 
@@ -13025,10 +13025,12 @@ proc CMresetFilter { win } {
 
 proc CMkill {  signal pid } {
     global ws_openMath
-    if { [info command "winkill"] == "winkill" } {
-	winkill -pid $pid -signal $signal
-    } else {
-	exec $ws_openMath(kill) $signal $pid
+    if { $pid > 0 } {
+	if { [info command "winkill"] == "winkill" } {
+	    winkill -pid $pid -signal $signal
+	} else {
+	    exec $ws_openMath(kill) $signal $pid
+	}
     }
 }
 
