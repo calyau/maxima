@@ -8,3 +8,12 @@ their assistance with this project.
 Finally, I wish to dedicate this work to the late Dr. Paul Karmel.
 Dan Stanger
 11/28/02
+
+The CharSets package depends on the set functions in set.lisp, which was
+previously in maxima/src/ and is now in maxima/share/algebra/charsets/.
+To use CharSets, set.lisp must be loaded first, as it is no longer part
+of the compiled Maxima code. For general use, nset.lisp in
+maxima/share/contrib/nset/ supersedes set.lisp.
+
+Robert Dodier
+2005/02/07
