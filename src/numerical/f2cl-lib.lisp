@@ -582,19 +582,19 @@ is not included")
 ;; Should we make these macros that expand directly to the appropriate
 ;; max?
 (defun max0 (x y &rest z)
-  (declare (integer x y))
+  #-gcl(declare (integer x y))
   (apply #'max x y z))
 (defun amax1 (x y &rest z)
-  (declare (single-float x y))
+  #-gcl(declare (single-float x y))
   (apply #'max x y z))
 (defun dmax1 (x y &rest z)
-  (declare (double-float x y))
+  #-gcl(declare (double-float x y))
   (apply #'max x y z))
 (defun max1 (x y &rest z)
-  (declare (single-float x y))
+  #-gcl(declare (single-float x y))
   (int (apply #'max x y z)))
 (defun amax0 (x y &rest z)
-  (declare (integer4 x y))
+  #-gcl(declare (integer4 x y))
   (float (apply #'max x y z) 1f0))
 
 (defun min0 (x y &rest z)
@@ -848,7 +848,16 @@ is not included")
    
 ;; Map Fortran logical unit numbers to Lisp streams
 
+#-gcl
 (defparameter *lun-hash*
+  (let ((table (make-hash-table)))
+    (setf (gethash 6 table) *standard-output*)
+    (setf (gethash 5 table) *standard-input*)
+    (setf (gethash t table) *standard-output*)
+    table))
+
+#+gcl
+(defvar *lun-hash*
   (let ((table (make-hash-table)))
     (setf (gethash 6 table) *standard-output*)
     (setf (gethash 5 table) *standard-input*)
@@ -897,6 +906,7 @@ causing all pending operations to be flushed"
 		 (close val)))
 	       *lun-hash*))
 
+#-gcl
 (declaim (ftype (function (t) stream) lun->stream))
 
 (defmacro fformat (dest-lun format-cilist &rest args)
@@ -1065,6 +1075,13 @@ causing all pending operations to be flushed"
 ;;  D1MACH( 4) = B**(1-T), THE LARGEST RELATIVE SPACING.
 ;;  D1MACH( 5) = LOG10(B)
 ;;
+
+#+gcl
+(defconstant least-positive-normalized-double-float least-positive-double-float)
+#+gcl
+(defconstant least-positive-normalized-single-float least-positive-single-float)
+
+
 (defun d1mach (i)
   (ecase i
     (1
@@ -1197,9 +1214,17 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.2 2002-05-05 23:44:35 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.3 2002-05-19 20:24:22 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.2  2002-05-05 23:44:35  rtoy
+;;; Revision 1.3  2002-05-19 20:24:22  rtoy
+;;; o GCL doesn't like the declarations in our max functions, so don't
+;;;   declare the variables.
+;;; o GCL doesn't like our defparameter for *lun-hash*.  Make it defvar.
+;;; o GCL doesn't have least-positive-normalized-double-float, so
+;;;   make it the same as least-positive-double-float.  Do likewise for
+;;;   single-float.
+;;;
+;;; Revision 1.2  2002/05/05 23:44:35  rtoy
 ;;; Update to latest version of macros.l:
 ;;; o Fixes bug in int-sub.
 ;;; o GCL doesn't have least-positive-normalized float constants
