@@ -100,9 +100,11 @@
   (catch 'to-lisp
     (set-pathnames)
     #+cmu
-    (with-simple-restart (macsyma-quit "Macsyma top-level")
-          (init-maxima) 
-	  (macsyma-top-level))
+    (progn
+     (init-maxima)
+      (loop 
+       (with-simple-restart (macsyma-quit "Macsyma top-level")
+	  (macsyma-top-level))))
     #-cmu
     (catch 'macsyma-quit
       (macsyma-top-level))))

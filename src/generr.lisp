@@ -38,7 +38,7 @@
    `(handler-case (list ,(car l))
      (error (e) (when errset (error e)))))
 
-#-(or excl clisp lucid)
+#-(or excl clisp cmu lucid)
 (defmacro errset (&rest l) `(list ,(car l)))
 
 

@@ -1,4 +1,15 @@
+2001-04-20  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* Now clisp and gcl work ok on all tests No errors found,
+	and apparently cmulisp does too.
+
 2001-04-18  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* trying to correct all the remaining bugs for clisp.
+	there is still one lurking, but have eliminated 7 more in
+	trprop.lisp, rat3e.lisp,	mstuff.lisp
+	* fixed the source level debugging code and debugger code
+	for both clisp and gcl versions.  
 
 	* Multiple changes to make maxima under cmulisp perform all the
 	tests.

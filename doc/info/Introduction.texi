@@ -10,7 +10,7 @@ sonia$ maxima
 GCL (GNU Common Lisp)  Version(2.3) Tue Mar 21 14:15:15 CST 2000
 Licensed under GNU Library General Public License
 Contains Enhancements by W. Schelter
-Maxima 5.4 Tue Mar 21 14:14:45 CST 2000 (with enhancements by W. Schelter)
+Maxima 5.4 Tue Mar 21 14:14:45 CST 2000 (enhancements by W. Schelter)
 Licensed under the GNU Public License (see file COPYING)
 (C1) factor(10!);
 
@@ -37,7 +37,7 @@ documentation:
 (C1) describe(factor);
 
 
- 0: DONTFACTOR :(maxima.info)Definitions for Matrices and Linear Algebra.
+ 0: DONTFACTOR :(maxima.info)Definitions for Matrices and ..
  1: EXPANDWRT_FACTORED :Definitions for Simplification.
  2: FACTOR :Definitions for Polynomials.
  3: FACTORFLAG :Definitions for Polynomials.

@@ -635,8 +635,8 @@ MAXIMA>>:q
 
 By examining the file system we find the file is actually in
 /public/maxima/share/eigen.mc.   So we add that to the file_search
-path.   This can be done at start up (see sys-init.lsp in the
-system directory or, else it can be done and then the system resaved
+path.   This can be done at start up (see init.lsp) or,
+else it can be done and then the system resaved
 once it has been customized for local directories and pathnames.
 At lisp level we would do
 (in-package "MAXIMA")

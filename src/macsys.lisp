@@ -292,7 +292,7 @@
      (in-package "MAXIMA")
      (sloop 
 	 do
-       (catch #+kcl si::*quit-tag* #-kcl nil
+       (catch #+kcl si::*quit-tag* #+cmu 'continue #-(or kcl cmu) nil
 	      (catch 'macsyma-quit
 		(continue)(bye)))))))
 

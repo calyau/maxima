@@ -151,15 +151,15 @@ listed.
  - MACSYMA has built-in properties which are handled by the
 data base.  These are called FEATURES.  One can do DECLARE(N,INTEGER),
 etc.  One can also DECLARE one's own FEATURES by e.g.
-DECLARE(INCREASING,FEATURE); which will then allow one to say
-DECLARE(F,INCREASING);.  One can then check if F is INCREASING by
-using the predicate FEATUREP via FEATUREP(F,INCREASING).  There is
+DECLARE( INCREASING, FEATURE); which will then allow one to say
+DECLARE(F, INCREASING);.  One can then check if F is INCREASING by
+using the predicate FEATUREP via FEATUREP(F, INCREASING).  There is
 an infolist FEATURES which is a list of known FEATURES.  At present
 known FEATURES are: INTEGER, NONINTEGER, EVEN, ODD, RATIONAL,
 IRRATIONAL, REAL, IMAGINARY, COMPLEX, ANALYTIC, INCREASING,
 DECREASING, ODDFUN, EVENFUN, POSFUN, COMMUTATIVE, LASSOCIATIVE,
 RASSOCIATIVE, SYMMETRIC, and ANTISYMMETRIC.  [Note: system "features"
-may be checked with STATUS(FEATURE,...); See DESCRIBE(STATUS); or
+may be checked with STATUS(FEATURE, ...); See DESCRIBE(STATUS); or
 DESCRIBE(FEATURE); for details.]
 
 @end defvr

@@ -34,7 +34,7 @@
 ;; leave a conditional here.
 (DEFUN MFUNCTION1 (FUN)
   #+cmu
-   `(LAMBDA (X Y) (MEVALP `((,',FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y))))
+   (LAMBDA (X Y) (MEVALP `((,FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y))))
   #-cmu 
   (function (LAMBDA (X Y) (MEVALP `((,FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y)))))
   )

@@ -474,7 +474,11 @@ internal representation of exp.
               Additional Information
 If the last argument to a part function is a list of indices then
 several subexpressions are picked out, each one corresponding to an
-index of the list.  Thus PART(X+Y+Z,[1,3]) is Z+X.
+index of the list.  Thus
+@example
+(C1) PART(X+Y+Z,[1,3]);
+(D1) Z+X
+@end example
 PIECE holds the value of the last expression selected when using the
 part functions.  It is set during the execution of the function and
 thus may be referred to in the function itself as shown below.

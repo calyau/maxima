@@ -1,10 +1,6 @@
-This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  20 APR 2001 03:10
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  20 APR 2001 14:49
 **maxima.texi
-(maxima.texi[/usr/share/texmf/pdftex/config/pdftex.cfg]
-Babel <v3.6x> and hyphenation patterns for american, french, german, ngerman, n
-ohyphenation, loaded.
-(texinfo.tex Loading texinfo [version 1999-04-25.15]:
-(/usr/share/texmf/pdftex/plain/misc/pdfcolor.tex) Basics,
+(maxima.texi (texinfo.tex Loading texinfo [version 1999-04-25.15]: Basics,
 \bindingoffset=\dimen16
 \normaloffset=\dimen17
 \pagewidth=\dimen18
@@ -23,14 +19,14 @@ ohyphenation, loaded.
 \mil=\dimen25
 \exdentamount=\skip19
 \inmarginspacing=\skip20
- pdf,
+
+pdf,
 \tempnum=\count26
 \lnkcount=\count27
 \filename=\toks14
 \filenamelength=\count28
 \pgn=\count29
- (maxima.toc)
-(maxima.toc) fonts,
+ fonts,
 \sffam=\fam8
 \mainmagstep=\count30
 \fontdepth=\count31
@@ -67,15 +63,15 @@ ohyphenation, loaded.
 \chapheadingskip=\skip27
 \secheadingskip=\skip28
 \subsecheadingskip=\skip29
-
-toc,
+ toc,
 \tocfile=\write0
 \contentsrightmargin=\skip30
 \savepageno=\count41
 \lastnegativepageno=\count42
 \shortappendixwidth=\dimen32
 \tocindent=\dimen33
- environments,
+
+environments,
 \dblarrowbox=\box19
 \longdblarrowbox=\box20
 \pushcharbox=\box21
@@ -147,71 +143,16 @@ and turning on texinfo input format.) (maxima.aux)
 
 \openout8 = `maxima.pg'.
 
-[/usr/share/texmf/dvips/config/pdftex.map]] ()
+] ()
 \openout0 = `maxima.toc'.
 
- Chapter 1
-Warning (ext1): destination with the same identifier (name{1@}) already exists!
+ Chapter 1 [1]
+[2] (Introduction.texi [3] [4] [5]) Chapter 2 [6] (Help.texi [7] [8] [9])
+Chapter 3 [10] (Command.texi [11] [12] [13] [14] [15] [16]
+Underfull \hbox (badness 10000) in paragraph at lines 460--464
+ []@textrm - mean-ing SET STA-TUS. It can be used to SSTA-TUS( FEA-TURE,
 
-\pdfmkdest #1->\pdfdest name{#1@}
-                                  xyz
-\onepageout ...i \ifpdf \pdfmkdest {\the \pageno }
-                                                  \fi \ifcropmarks \egroup \...
-<output> {\onepageout {\pagecontents \PAGE }
-                                            }
-<to be read again> 
-                   \footnoteno 
-\supereject ->\par \penalty -20000\footnoteno 
-                                              =0 
-\pchapsepmacro ->\chappager 
-                            \ifodd \pageno \else \hbox to 0pt{} \chappager \fi 
-...
-l.327 @chapter Introduction to MAXIMA
-                                      [1] [2] (Introduction.texi
-Overfull \hbox (20.69044pt too wide) in paragraph at lines 13--13
- []@texttt Maxima 5.4 Tue Mar 21 14:14:45 CST 2000 (with en-hance-ments by W. S
-chelter)[] |
-
-@hbox(7.60416+2.43333)x433.62
-.@glue(@leftskip) 28.90755
-.@hbox(0.0+0.0)x0.0
-.@texttt M
-.@texttt a
-.@texttt x
-.etc.
-
-
-Overfull \hbox (14.94176pt too wide) in paragraph at lines 40--40
- [] @texttt 0: DONTFACTOR :(maxima.info)Definitions for Matrices and Linear Alg
-ebra.[] |
-
-@hbox(7.60416+2.43333)x433.62
-.@glue(@leftskip) 28.90755
-.@hbox(0.0+0.0)x0.0
-.@penalty 10000
-.@glue 5.74869
-.@texttt 0
-.etc.
-
-[3] [4] [5]) Chapter 2 [6] (Help.texi [7] [8]
-Overfull \hbox (14.94176pt too wide) in paragraph at lines 188--188
- []@texttt (D5)  test(f) := BLOCK([u], u : INTEGRATE(f, x), RATSIMP(f - DIFF(u,
- x)))[] |
-
-@hbox(7.60416+1.52081)x433.62
-.@glue(@leftskip) 28.90755
-.@hbox(0.0+0.0)x0.0
-.@texttt (
-.@texttt D
-.@texttt 5
-.etc.
-
-[9]) Chapter 3 [10] (Command.texi [11] [12] [13] [14] [15] [16]
-Overfull \hbox (0.10513pt too wide) in paragraph at lines 460--464
- []@textrm - mean-ing SET STA-TUS. It can be used to SSTA-TUS(FEATURE,HACK[]PAC
-KAGE)|
-
-@hbox(8.2125+2.73749)x433.62, glue set - 1.0
+@hbox(8.2125+2.73749)x433.62, glue set 4.43147
 .@glue(@leftskip) 28.90755
 .@hbox(0.0+0.0)x0.0
 .@textrm -
@@ -220,7 +161,7 @@ KAGE)|
 .etc.
 
 [17]) Chapter 4 [18] (Operators.texi [19] [20] [21] [22] [23] [24]
-Overfull \hbox (15.10587pt too wide) in paragraph at lines 478--478
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 482--482
  []@texttt PIECE holds the value of the last expression selected when using the
 [] |
 
@@ -235,20 +176,8 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 478--478
 [25] [26]) Chapter 5 [27] [28] (Expressions.texi [29] [30] [31] [32] [33]
 [34] [35] [36] [37] [38] [39]) Chapter 6 [40] (Simplification.texi [41]
 [42] [43] [44] [45] [46]) Chapter 7 [47] [48] (Plotting.texi [49] [50] [51])
-Chapter 8 [52] (Input.texi [53] [54] [55] [56] [57] [58] [59] [60]
-Overfull \hbox (15.10587pt too wide) in paragraph at lines 639--639
- []@texttt system directory or, else it can be done and then the system resaved
-[] |
-
-@hbox(6.69167+2.43333)x433.62
-.@glue(@leftskip) 57.8151
-.@hbox(0.0+0.0)x0.0
-.@texttt s
-.@texttt y
-.@texttt s
-.etc.
-
-[61] [62] [63] [64]
+Chapter 8 [52] (Input.texi [53] [54] [55] [56] [57] [58] [59] [60] [61]
+[62] [63] [64]
 Overfull \hbox (15.10587pt too wide) in paragraph at lines 924--924
  []@texttt $$-{{\log \left(x^{2}-x+1\right)}\over{6}}+{{\arctan {{2\>x-1}\over{
 [] |
@@ -276,33 +205,6 @@ Overfull \hbox (84.09012pt too wide) in paragraph at lines 925--925
 
 [65]) Chapter 9 [66] (Floating.texi [67] [68]) Chapter 10 [69] [70]
 (Contexts.texi [71]
-Underfull \hbox (badness 2050) in paragraph at lines 151--164
- @textrm then check if F is IN-CREAS-ING by us-ing the pred-i-cate FEA-TUREP vi
-a
-
-@hbox(7.60416+2.12917)x433.62, glue set 2.74031
-.@glue(@leftskip) 28.90755
-.@textrm t
-.@textrm h
-.@textrm e
-.@textrm n
-.etc.
-
-
-Underfull \hbox (badness 2452) in paragraph at lines 151--164
- @textrm FEA-TUREP(F,INCREASING). There is an in-folist FEA-TURES which is a
-
-@hbox(8.2125+2.73749)x433.62, glue set 2.90892
-.@glue(@leftskip) 28.90755
-.@textrm F
-.@textrm E
-.@discretionary replacing 2
-..@textrm A
-..@textrm -
-.@textrm A
-.etc.
-
-
 Underfull \hbox (badness 3954) in paragraph at lines 151--164
  @textrm and AN-TI-SYM-MET-RIC. [Note: sys-tem @texttt "@textrm fea-tures@textt
 t " @textrm may be checked with
@@ -850,14 +752,12 @@ elter).[] |
 [266])) [267] [268] (maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6]
 [-7] [-8] ) 
 Here is how much of TeX's memory you used:
- 2367 strings out of 63189
- 29134 string characters out of 966977
- 57035 words of memory out of 263001
- 2876 multiletter control sequences out of 10000+60000
+ 1676 strings out of 63548
+ 23122 string characters out of 972269
+ 53233 words of memory out of 263001
+ 2482 multiletter control sequences out of 10000+60000
  30088 words of font info for 104 fonts, out of 400000 for 1000
  19 hyphenation exceptions out of 1000
  15i,6n,13p,247b,310s stack positions out of 300i,100n,500p,50000b,10000s
-<cmbxti10.pfb><cmr12.pfb><cmtt12.pfb><cmr9.pfb><cmti9.pfb><cmtt9.pfb
-><cmmi10.pfb><cmb10.pfb><cmsy10.pfb><cmss10.pfb><cmbx10.pfb><cmti10.pfb><cmsl10
-.pfb><cmsltt10.pfb><cmtt10.pfb><cmr10.pfb><cmbx12.pfb>
-Output written on maxima.pdf (277 pages, 863494 bytes).
+
+Output written on maxima.dvi (277 pages, 998960 bytes).

@@ -60,7 +60,7 @@
 					      ($FIXNUM . FIXNUM)))))
     (COND ((NOT LTYPE)
 	   (COND ((EQ TYPE '$ANY)
-		  #+cl (make-array diml)
+		  #+cl (make-array diml :initial-element nil)
 		  #-cl
 		  (MAKE-MGENARRAY  #+cl :type #-cl type  '$ANY
 				  #+cl :CONTENT #-cl CONTENT (APPLY '*ARRAY NIL T DIML)))

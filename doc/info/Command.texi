@@ -458,7 +458,7 @@ computation and hence may in rare cases even be larger than "time=").
 @c @unnumberedsec phony
 @defun SSTATUS (feature,package)
 - meaning SET STATUS.  It can be used to
-SSTATUS(FEATURE,HACK_PACKAGE) so that STATUS(FEATURE,HACK_PACKAGE)
+SSTATUS( FEATURE, HACK_PACKAGE) so that STATUS( FEATURE, HACK_PACKAGE)
 will then return TRUE.  This can be useful for package writers, to
 keep track of what FEATURES they have loaded in.
 
