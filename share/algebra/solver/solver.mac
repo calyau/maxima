@@ -1,0 +1,2367 @@
+/******************************************************************************/
+/*                                                                            */
+/* SOLVER - THE NEXT GENERATION                                               */
+/*                                                                            */
+/* Copyright (C) 2000 : Eckhard Hennig, Ralf Sommer                           */
+/* This library is free software; you can redistribute it and/or modify it    */
+/* under the terms of the GNU Library General Public License as published     */
+/* by the Free Software Foundation; either version 2 of the License, or (at   */
+/* your option) any later version.                                            */
+/*                                                                            */
+/* This library is distributed in the hope that it will be useful, but        */
+/* WITHOUT ANY WARRANTY; without even the implied warranty of                 */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU          */
+/* Library General Public License for more details.                           */
+/*                                                                            */
+/* You should have received a copy of the GNU Library General Public          */
+/* License along with this library; if not, write to the Free Software        */
+/* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                  */
+/******************************************************************************/
+/* Credits: This program is based on many ideas from Henning Trispel's work   */
+/*          on the EASY-Solver in 1991.                                       */
+/*                                                                            */
+/******************************************************************************/
+/* Author(s)    : Eckhard Hennig, Ralf Sommer                                 */
+/* Project start: 19.01.1994                                                  */
+/* Completed    : 16.07.1994                                                  */
+/* Last change  : 29.06.1995                                                  */
+/* Time         : 09:26                                                       */
+/******************************************************************************/
+/* Changes      : ||||| ||||| ||||| |||                                       */
+/******************************************************************************/
+/* Modified by  : Dan Stanger dan.stanger@ieee.org to work under maxima       */
+/******************************************************************************/
+Load( "./linsolve.mac" )$
+Load( "./slvrtbox.mac" )$
+Load( "./slvrmsgs.mac" )$
+
+Put( 'SOLVER, 1, 'Version )$
+
+SetVersion(
+  /* KEY    = */ 'SOLVER,
+  'MODULE      = "SOLVER",
+  'DESCRIPTION = "Symbolic solver for parametric systems of equations.",
+  'AUTHORS     = "Eckhard Hennig, Ralf Sommer",
+  'DATE        = "19.01.1994",
+  'LASTCHANGE  = "29.06.1995",
+  'TIME        = "09:26",
+  'PLAN        = "Add a-priori transforms"
+)$
+
+
+/******************************************************************************/
+/* Last change: 29.06.1995                                                    */
+/* Time       : 09:26                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Option variable Solver_Valuate_All_Nonlin_Vars added.         */
+/*              Bug in ValuationSolver removed: RHS variables of solutions    */
+/*              were not added to the list of variables.                      */
+/******************************************************************************/
+/* Last change: 28.05.1995                                                    */
+/* Time       : 11:59                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Solver break test added.                                      */
+/******************************************************************************/
+/* Last change: 18.05.1995                                                    */
+/* Time       : 16:10                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Name conflict with AI keyword PARAMS removed.                 */
+/******************************************************************************/
+/* Last change: 30.01.1995                                                    */
+/* Time       : 21.42                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Removal of Map( 'Num, ... ) has revealed some side effects on */
+/*              the list of equations in ValuationSolver. Bug repaired by     */
+/*              inserting two additional CopyList calls.                      */
+/*              Arguments to both load commands above now written in lower-   */
+/*              case letters to avoid problems with UNIX versions.            */
+/******************************************************************************/
+/* Last change: 24.01.1995                                                    */
+/* Time       : 16.33                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Mapping 'Num to expressions caused some invalid solutions,    */
+/*              therefore removed. Version property added.                    */
+/******************************************************************************/
+/* Last change: 19.01.1995                                                    */
+/* Time       : 13.04                                                         */
+/* By         : Eckhard Hennig, Ralf Sommer                                   */
+/* Description: Bug in ImmediateAssignments corrected, Function AppendImmed   */
+/*              removed.                                                      */
+/******************************************************************************/
+/* Last change: 19.01.1995                                                    */
+/* Time       : 11.28                                                         */
+/* By         : Eckhard Hennig, Ralf Sommer                                   */
+/* Description: SLVRTBOX and SLVRMSGS now autoloading.                        */
+/******************************************************************************/
+/* Last change: 17.01.1995                                                    */
+/* Time       : 20.15                                                         */
+/* By         : Eckhard Hennig, Ralf Sommer                                   */
+/* Description: Option variables modified (underscores inserted according to  */
+/*              R. Petti's suggestions)                                       */
+/*              Function SetValuation added.                                  */
+/******************************************************************************/
+/* Last change: 25.10.1994                                                    */
+/* Time       : 12.46                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: ErrorMsg renamed to ErrMsg.                                   */
+/******************************************************************************/
+/* Last change: 12.09.1994                                                    */
+/* Time       : 11.50                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: ErrCatch wrapped around final FullRatSimp.                    */
+/******************************************************************************/
+/* Last change: 05.09.1994                                                    */
+/* Time       : 15.59                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Mode_Identity's inserted.                                     */
+/******************************************************************************/
+/* Last change: 05.09.1994                                                    */
+/* Time       : 15.21                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Number of linear equations is now correctly displayed.        */
+/*              Bug in DumpToFile corrected.                                  */
+/*              Numbers of solution sets are now printed by the postprocessor.*/
+/******************************************************************************/
+/* Last change: 30.08.1994                                                    */
+/* Time       : 13.45                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Single inconsistent solution paths are no longer returned.    */
+/******************************************************************************/
+/* Last change: 29.08.1994                                                    */
+/* Time       : 17.16                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Slight modification of Immediate Assignment Solver.           */
+/*              Valuation property for sqrt added.                            */
+/*              New option variable SolverDefaultValuation.                   */
+/*              Change in Valuation. Now making use of the above option var.  */
+/******************************************************************************/
+/* Last change: 26.08.1994                                                    */
+/* Time       : 15.29                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Bug in Linear Solver removed.                                 */
+/******************************************************************************/
+/* Last change: 25.08.1994                                                    */
+/* Time       : 12.41                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: New option variable SolverRatSimpSols.                        */
+/*              Linear Solver now calls the consistency check.                */
+/*              Capabilities of the transforms in ValuationSolver strongly    */
+/*              enhanced.                                                     */
+/******************************************************************************/
+/* Last change: 24.08.1994                                                    */
+/* Time       : 23.14                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Bug fixed in postprocessor: compound expressions are now cor- */
+/*              rectly evaluated.                                             */
+/*              Linear Solver now checks for remaining equations & variables, */
+/*              and removes those "linear" eqs and vars which do not really   */
+/*              belong to the "true" linear subsystem.                        */
+/******************************************************************************/
+/* Last change: 11.08.1994                                                    */
+/* Time       : 19.09                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Variable SolverDelEq2VarPref replaced by function variable    */
+/*              SolverDelEq. Heuristic algorithm for linear equation          */
+/*              extraction improved.                                          */
+/******************************************************************************/
+/* Last change: 19.07.1994                                                    */
+/* Time       : 18.01                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Bug in post processor corrected.                              */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Global variables for Solver                                                */
+/******************************************************************************/
+
+/******************************************************************************/
+/* If Solver_Immed_Assign is TRUE then the Solver searches the equations      */
+/* for immediate assignments of the form variable = constant and immediately  */
+/* inserts these constraints into the remaining equations.                    */
+/******************************************************************************/
+
+Define_Variable( Solver_Immed_Assign, TRUE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* Solver_Repeat_Immed controls whether the search for immediate assignments  */
+/* is performed repeatedly until no more of them are found.                   */
+/******************************************************************************/
+
+Define_Variable( Solver_Repeat_Immed, TRUE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* Solver_Subst_Powers controls whether the Solver substitutes powers of a    */
+/* variable by new symbols in one of the following cases:                     */
+/* 1. var^n appears raised to exactly one power n                             */
+/* 2. For all var^m in the equations : m=n*k , k integer                      */
+/******************************************************************************/
+
+Define_Variable( Solver_Subst_Powers, FALSE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* Solver_Incons_Params controls whether the Solver terminates when a non-    */
+/* trivial equation containing only parameters is encountered. For example,   */
+/* if A and B are defined as parameters and the solution process yields       */
+/* A = B^2  then the Solver stops if Solver_Incons_Params is = 'BREAK. If set */
+/* to 'ASK the Solver asks whether  A - B^2  is zero and continues if it is.  */
+/* If set to 'IGNORE the Solver quietly assumes that the expression is zero   */
+/* if it does not directly contradict with any of the assumptions made before.*/
+/******************************************************************************/
+
+Define_Variable( Solver_Incons_Params, 'ASK, ANY_CHECK )$
+
+Put(
+  'Solver_Incons_Params,
+  Lambda( [ x ],
+    IF NOT Member( x, [ 'ASK, 'BREAK, 'IGNORE ] ) THEN
+      ErrorHandler( "InvIncPar", x, 'Fatal )
+  ),
+  'VALUE_CHECK
+)$
+
+
+/******************************************************************************/
+/* Solver_Linear controls whether the Solver tries to find and solve blocks   */
+/* of linear equations before submitting the remaining equations to the       */
+/* heuristic valuation solver. This is useful if the equations to be solved   */
+/* are known to contain a large linear part.                                  */
+/******************************************************************************/
+
+Define_Variable( Solver_Linear, TRUE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* If Solver_Repeat_Linear is TRUE then the LinearSolver will be called       */
+/* repeatedly until no more linear equations are found. If FALSE then         */
+/* LinearSolver will be called only once.                                     */
+/******************************************************************************/
+
+Define_Variable( Solver_Repeat_Linear, TRUE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* If Solver_Find_All_Linear_Vars is TRUE then LinearSolver will try to find  */
+/* linear equations with respect to all available variables and solve these   */
+/* equations simultaneously. If FALSE then LinearSolver will only search for  */
+/* linear equations with respect to the variables passed over in the function */
+/* call.                                                                      */
+/******************************************************************************/
+
+Define_Variable( Solver_Find_All_Linear_Vars, TRUE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* Solver_Assumptions contains constraints on the parameters which should be  */
+/* checked by the user after the termination of Solver. These constraints     */
+/* result from the parameter consistency check the behavior of which is       */
+/* controlled by the setting of the option variable Solver_Incons_Params.     */
+/* Any numerical solution of the equations obtained by assigning numerical    */
+/* values to symbolic parameters should be checked for consistency with all   */
+/* expressions in Solver_Assumptions.                                         */
+/******************************************************************************/
+
+Define_Variable( Solver_Assumptions, [], LIST )$
+
+
+/******************************************************************************/
+/* Solver_Del_Eq holds the name of a function which controls the behavior of  */
+/* the heuristic search algorithm which extract linear equations from the     */
+/* entire system of equations.                                                */
+/******************************************************************************/
+
+Define_Variable( Solver_Del_Eq, 'MakeSquareLinearBlocks, ANY )$
+
+
+/******************************************************************************/
+/* If Solver_Valuate_All_Nonlin_Vars is TRUE then the ValuationSolver will    */
+/* valuate the equations w.r.t. all remaining variables and not only w.r.t    */
+/* variables which are being searched for at the current step.                */
+/******************************************************************************/
+
+Define_Variable( Solver_Valuate_All_Nonlin_Vars, FALSE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* Solver_Valuation_Strategy holds the name of the equation valuation         */
+/* strategy called by the valuation solver to determine the order by which    */
+/* the equations are to be solved.                                            */
+/******************************************************************************/
+
+Define_Variable( Solver_Valuation_Strategy, 'MinVarPathsFirst, ANY_CHECK )$
+
+Put(
+  'Solver_Valuation_Strategy,
+  Lambda(
+    [ x ],
+    IF NOT FunctionP( x ) THEN
+      ErrorHandler( "UndefStrat", x, 'Fatal )
+  ),
+  'VALUE_CHECK
+)$
+
+
+/******************************************************************************/
+/* Solver_Default_Valuation contains the default valuation for arithmetic     */
+/* operators. Whenever an operator is encountered for which no valuation has  */
+/* been defined by SetProp( <operator>, 'Valuation, <valuation> ) this value  */
+/* is taken for the formula complexity calculations.                          */
+/******************************************************************************/
+
+Define_Variable( Solver_Default_Valuation, 10, FIXNUM )$
+
+
+/******************************************************************************/
+/* Solver_Max_Len_Val_Order limits the length of the list of candidates for   */
+/* the solve calls in ValuationSolver. A low value will usually increase the  */
+/* efficiency of the valuation solver since, in general, the first or second  */
+/* attempt to solve an equation (hopefully) succeeds.                         */
+/******************************************************************************/
+
+Define_Variable( Solver_Max_Len_Val_Order, 5, FIXNUM )$
+
+
+/******************************************************************************/
+/* Solver_Transforms is a list containing the names of functions which can be */
+/* applied to an equation after a failed Solve call. These functions must     */
+/* take three arguments: the equation to be transformed, the variable to be   */
+/* solved for, and a list of (probably implicit) solutions the Solver has     */
+/* already found for the equation.                                            */
+/******************************************************************************/
+
+Define_Variable( Solver_Transforms, [], LIST )$
+
+
+/******************************************************************************/
+/* If Solver_Postprocess is set to FALSE no postprocessing of the results will*/
+/* be done. Instead, the solutions are displayed in the internal hierarchical */
+/* list format. Useful for debugging purposes.                                */
+/******************************************************************************/
+
+Define_Variable( Solver_Postprocess, TRUE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* Solver_Backsubst controls the output format of Solver. If Solver_Backsubst */
+/* is TRUE then the result will be displayed with fully evaluated right-hand  */
+/* sides for each variable. If the option variable is set to FALSE then the   */
+/* right-hand sides of the solutions may still contain references to some     */
+/* of the other variables which have been solved for.                         */
+/******************************************************************************/
+
+Define_Variable( Solver_Backsubst, TRUE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* With Solver_Disp_All_Sols set to TRUE all solutions will be displayed      */
+/* including those for the variables which have been solved for in the        */
+/* solution process but have not been explicitly asked for.                   */
+/******************************************************************************/
+
+Define_Variable( Solver_Disp_All_Sols, FALSE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* If Solver_RatSimp_Sols is TRUE then the Solver Postprocessor will          */
+/* FullRatSimp the solutions before returning them.                           */
+/******************************************************************************/
+
+Define_Variable( Solver_RatSimp_Sols, TRUE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* If Solver_Dump_To_File is TRUE then the ValuationSolver writes the         */
+/* solutions and yet unsolved equations to a file after each iteration. This  */
+/* might help if the Solver crashes.                                          */
+/******************************************************************************/
+
+Define_Variable( Solver_Dump_To_File, FALSE, BOOLEAN )$
+
+
+/******************************************************************************/
+/* Solver_Dump_File contains the name of the file to which the dump is        */
+/* written.                                                                   */
+/******************************************************************************/
+
+Define_Variable( Solver_Dump_File, "SOLVER.DMP", ANY )$
+
+
+/******************************************************************************/
+/* Solver_Break_Test holds the name of a function which is called immediately */
+/* before attempting to solve an equation. This function then decides whether */
+/* Solver should try to solve the equation or whether it should stop, e.g.    */
+/* because the problem has become too complex. The arguments passed to the    */
+/* Solver_Break_Test are 1. the equation, 2. the variable, 3. the valuation.  */
+/* The Solver stops if the Solver_Break_Test returns TRUE, it continues if    */
+/* the return value is FALSE.                                                 */
+/******************************************************************************/
+
+Define_Variable( Solver_Break_Test, 'SolverJustDoIt, ANY )$
+
+
+/******************************************************************************/
+/* Solver, main program                                                       */
+/******************************************************************************/
+
+Solver( Equations, [ SolverParams ] ) := (
+
+  Mode_Declare(
+    [ Equations, SolverParams ], LIST
+  ),
+
+  BLOCK(
+
+    [
+      Variables,       /* List of variables to be solved for            */
+      UserVars,        /* List of variables specified by user           */
+      Parameters,      /* List of symbols to be used as parameters      */
+      Expressions,     /* List of compound expressions to be solved for */
+      PowerSubst,      /* List of substituted symbols for powers        */
+
+      Solutions,       /* List of solutions found by Solver             */
+      RemainingEqs,    /* List of remaining equations                   */
+
+      Active
+    ],
+
+    Mode_Declare(
+      [
+        Variables, UserVars, Parameters, Expressions, PowerSubst,
+        Solutions
+      ], LIST,
+      Active, BOOLEAN
+    ),
+
+    /* No assumptions to start with */
+    Solver_Assumptions : [],
+
+    /* Initialize list of solutions */
+    Solutions : [],
+
+    /* Do all necessary preprocessing */
+    Map(
+      lambda([x,y],x::y),
+      [
+        'Equations, 'SolverParams, 'Variables, 'Parameters,
+        'Expressions, 'PowerSubst, 'UserVars
+      ],
+      SetupSolver( Equations, SolverParams )
+    ),
+
+    IF MsgLevel = 'DEBUG THEN
+      Display(
+        Equations, SolverParams, Variables, Parameters, Expressions,
+        PowerSubst, UserVars, Solutions
+      ),
+
+    BLOCK(
+      [],
+
+      /* Search for and apply immediate assignments */
+
+      Active : Solver_Immed_Assign,
+      WHILE Active DO (
+        Map(
+          lambda([x,y],x::y),
+          [ 'Active, 'Solutions, 'Equations, 'Variables ],
+          ImmediateAssignments( Solutions, Equations, Variables, Parameters )
+        ),
+
+        Active : Active AND Solver_Repeat_Immed,
+
+        IF MsgLevel = 'DEBUG THEN
+          Display(
+            Equations, SolverParams, Variables, Parameters, Expressions,
+            PowerSubst, UserVars, Solutions
+          )
+      ),
+
+      IF Empty( Equations ) OR Empty( Variables ) THEN
+        RETURN( FALSE ),
+
+      Equations : Map(
+        Lambda(
+          [ Eq ],
+          FullRatSimp( LHS( Eq ) - RHS( Eq ) )
+        ),
+        Equations
+      ),
+
+      /* Find and solve linear equations */
+
+      Active : Solver_Linear,
+      WHILE Active DO (
+        Map(
+          lambda([x,y],x::y),
+          [ 'Active, 'Solutions, 'Equations, 'Variables ],
+          LinearSolver( Solutions, Equations, Variables, Parameters )
+        ),
+
+        Active : Active AND Solver_Repeat_Linear,
+
+        IF MsgLevel = 'DEBUG THEN
+          Display(
+            Equations, SolverParams, Variables, Parameters, Expressions,
+            PowerSubst, UserVars, Solutions
+          )
+      ),
+
+      IF Empty( Equations ) OR Empty( Variables ) THEN
+        RETURN( FALSE ),
+
+
+      IF Solver_Valuate_All_Nonlin_Vars THEN
+        Variables : Union(
+          SetDifference( ListOfVars( Equations ), Parameters ),
+          Variables
+        ),
+
+      /* Apply valuation strategies to solve the nonlinear equations. */
+      Map(
+        lambda([x,y],x::y),
+        [ 'Active, 'Solutions, 'Equations, 'Variables ],
+        ValuationSolver( Solutions, Equations, Variables, Parameters )
+      )
+
+    ), /* END BLOCK */
+
+
+    /* Return the solutions and the unsolved equations */
+
+    IF Solver_Postprocess THEN
+      RETURN( PostProcess( Solutions, UserVars, Expressions, PowerSubst ) )
+    ELSE
+      RETURN( Solutions )
+  )
+)$
+
+
+/******************************************************************************/
+/* TerminateSolver terminates the Solver.                                     */
+/******************************************************************************/
+
+TerminateSolver() := Error( ErrMsg["SolvrTerm"] )$
+
+
+/******************************************************************************/
+/* SetupSolver preprocesses the equations and optional parameters before      */
+/* submitting them to the Solver. The equations are checked if they are       */
+/* really equations, and all equations of the form  NUMBER = NUMBER  or       */
+/* f( PARAMETERS ) = g( PARAMETERS )  are checked for consistency and then    */
+/* dropped.                                                                   */
+/******************************************************************************/
+
+SetupSolver( Equations, SolverParams ) := (
+
+  Mode_Declare(
+    [ Equations, SolverParams ], LIST
+  ),
+
+  BLOCK(
+
+    [
+       i, AllVars, Var, SubstSym, Power,
+       Variables, Parameters, Expressions,
+       PowerSubst, UserVars
+    ],
+
+    Mode_Declare(
+      i, FIXNUM,
+      [
+        AllVars, Power, Variables, Parameters, Expressions,
+        PowerSubst, UserVars
+      ], LIST,
+      [ Var, SubstSym ], ANY
+    ),
+
+
+    Expressions : [],
+    PowerSubst  : [],
+    Parameters  : [],
+
+
+    /* Make sure that Equations is a list. Abort if it is not. */
+
+    IF NOT ListP( Equations ) THEN
+      ErrorHandler( "EqsNotLst", Equations, 'Fatal ),
+
+    /* Delete all entries from Equations which are not equations */
+
+    Equations : Sublist( Equations, 'EquationP ),
+
+    /* Convert all floating-point numbers to rational numbers. If this was */
+    /* not done then rounding errors could fool the consistency check.     */
+
+    Equations : Map( 'Rat, Equations ),
+
+    /* Process the optional arguments to Solver */
+
+    IF NOT Empty( SolverParams ) THEN (
+
+      Variables : SolverParams[1],
+
+      /* Make sure that Variables is a list. Abort if it is not. */
+
+      IF NOT ListP( Variables ) THEN
+        ErrorHandler( "VarNotLst", Variables, 'Fatal ),
+
+      /* Delete multiple occurences of identical symbols */
+
+      Variables : Setify( Variables ),
+
+      PrintMsg( 'DETAIL, SolverMsg["VarsAre"], Variables ),
+
+      IF Length( SolverParams ) > 1 THEN (
+
+        Parameters : SolverParams[2],
+
+        /* Make sure that Parameters is a list. Abort if it is not. */
+
+        IF NOT ListP( Parameters ) THEN
+          ErrorHandler( "ParNotLst", Parameters, 'Fatal ),
+
+        /* Delete multiple occurences of identical symbols */
+
+        Parameters : Setify( Parameters ),
+
+        PrintMsg( 'DETAIL, SolverMsg["ParsAre"], Parameters )
+      )
+
+    ),
+
+
+    /* Check if Variables and Parameters are disjoint sets of symbols */
+
+    IF NOT DisjointP( Variables, Parameters ) THEN
+      ErrorHandler(
+        "VarParConfl", Intersection( Variables, Parameters ), 'Fatal
+      ),
+
+
+    /* Make a list of all variables to be solved for. This list may contain */
+    /* more symbols than Variables when either no SolverParams have been    */
+    /* given or when the user has specified only a subset of all existing   */
+    /* symbols.                                                             */
+
+    AllVars : SetDifference( ListOfVars( Equations ), Parameters ),
+
+    /* Solve for all available variables if Variables is empty. */
+
+    IF Empty( Variables ) THEN
+      Variables : AllVars,
+
+
+    /* Check all those equations which contain only equations of the form  */
+    /* NUMBER = NUMBER or which contain only parameters and none of the    */
+    /* variables of interest for consistency. Remove consistent equations  */
+    /* and store the assumptions made in the list Solver_Assumptions.      */
+
+    Equations : ParamConsistency( Equations, Parameters ),
+
+    /* Abort if no equations are left after the above step. */
+
+    IF Empty( Equations ) OR Empty( Variables ) THEN (
+      PrintMsg( 'SHORT, SolverMsg["NoEqOrVar"] ),
+      RETURN( [ [], SolverParams, Variables, Parameters, [], [], [] ] )
+    ),
+
+    /* If there are compound expressions to be solved for then the solver     */
+    /* tries to solve for the variables contained in them first.              */
+    /* Subsequently the expressions are rebuilt from the solutions of         */
+    /* these variables and the parameters.                                    */
+
+    FOR i THRU Length( Variables ) DO
+
+      /* Search the variable list for non-atomic expressions. */
+
+      IF NOT Atom( Var : Variables[i] ) THEN (
+
+        /* Append expression to the expression list */
+        Expressions : Endcons( Var, Expressions ),
+
+        /* Insert the variables in the expression into the list of variables  */
+        /* but keep the parameters out.                                       */
+        Variables[i] : SetDifference( ListOfVars( Var ), Parameters ),
+
+        PrintMsg( 'SHORT, SolverMsg["TrySolve4"], Variables[i] ),
+        PrintMsg( 'SHORT, SolverMsg["Solve4Exp"], Var )
+      ),
+
+    /* Make a list of all the variables the user actually wants to know */
+    UserVars : Sublist( Variables, 'Atom ),
+
+    /* Flatten the list of variables and make it a set. */
+    Variables : Setify( Flatten( Variables ) ),
+
+
+    /* If Solver_Subst_Powers is TRUE then substitute powers by new symbols */
+
+    IF Solver_Subst_Powers THEN (
+
+      PrintMsg( 'SHORT, SolverMsg["SubstPwrs"] ),
+
+      FOR Var IN AllVars DO (
+
+        /* Get all powers of Var in Equations. Convert negative powers to */
+        /* positive ones.                                                 */
+        Power : Setify( Abs( ListOfPowers( Equations, Var ) ) ),
+
+        /* If there is more than one power of Var then substitute each  */
+        /* var^m only if all m are integer multiples of the lowest      */
+        /* power > 0. The check is done by examining the modulus of all */
+        /* powers with respect to the lowest power.                     */
+
+        IF
+          NOT Member( 'FALSE, Map( 'IntegerP, Power ) )
+          AND
+          Power[1] # 1
+        THEN
+
+          IF ( Length( Power ) = 1 ) OR
+
+            BLOCK(
+              [ Modulus : Power[1] ],
+              NOT Member(
+                'FALSE,
+                Map( 'ZeroP, TotalDisrep( Rat( Rest( Power ) ) ) )
+              )
+            )
+
+          THEN (
+            /* Make a new symbol for var^power */
+            SubstSym : Concat( Var, "^", Power[1] ),
+
+            /* Store a reference to the original term in an assoc list */
+            PowerSubst : Endcons( SubstSym = Var^Power[1], PowerSubst ),
+
+            /* Substitute the new symbol for the original term */
+            Equations  : RatSubst( SubstSym, Var^Power[1], Equations ),
+            Variables  : Subst( SubstSym, Var, Variables ),
+
+            /* Notify user */
+            PrintMsg( 'DETAIL, SolverMsg["Subst"], Var^Power )
+          )
+
+      ) /* END FOR Var IN AllVars */
+
+    ), /* END IF Solver_Subst_Powers */
+
+    RETURN(
+      [
+        Equations, SolverParams, Variables, Parameters, Expressions,
+        PowerSubst, UserVars
+      ]
+    )
+  )
+)$
+
+
+/******************************************************************************/
+/* ParamConsistency checks equations of the form NUMBER = NUMBER and equa-    */
+/* tions which contain only parameters for consistency. If the system cannot  */
+/* determine whether a parametric expression is zero then the user is optio-  */
+/* nally asked to supply the required information. The assumptions made are   */
+/* stored in the list Solver_Assumptions.                                     */
+/******************************************************************************/
+
+ParamConsistency( Eqs, Pars, [ Action ] ) := (
+
+  Mode_Declare(
+    [ Eqs, Pars ], LIST,
+    Action, ANY
+  ),
+
+  BLOCK(
+
+    [ Eq, LHSminusRHS, i, consistent ],
+
+    Mode_Declare(
+      [ Eq, LHSminusRHS ], ANY,
+      i, FIXNUM,
+      consistent, BOOLEAN
+    ),
+
+    PrintMsg( 'SHORT, SolverMsg["ConsChk"] ),
+
+    IF Empty( Action ) THEN
+      Action : 'BREAK
+    ELSE
+      Action : Action[1],
+
+    consistent : TRUE,
+
+    FOR i THRU Length( Eqs ) DO (
+
+      Eq : Eqs[i],
+
+      /* Does the equation contain only numbers or parameters? */
+      IF Empty(
+        SetDifference( ListOfVars( Eq ), Pars )
+      )
+      THEN (
+
+        /* If so, check for consistency */
+        LHSminusRHS :  Expand( LHS( Eq ) - RHS( Eq ) ),
+
+        /* Test if difference of both RHS's is zero */
+        IF LHSminusRHS # 0 THEN
+
+          IF SolverAssumeZero( LHSminusRHS ) THEN
+            PrintMsg( 'SHORT, SolverMsg["Assum"], LHSminusRHS = 0 )
+          ELSE
+            IF Action = 'BREAK THEN (
+              /* Abort if difference is non-zero */
+              PrintMsg( 'SHORT, SolverMsg["Incons"], LHS( Eq ) = RHS( Eq ) ),
+              TerminateSolver()
+            )
+            ELSE
+              RETURN( consistent : FALSE ),
+
+        /* Kill the now redundant equation */
+        IF Action = 'BREAK THEN
+          Eqs[i] : []
+
+      ) /* END IF Empty */
+
+    ), /* END FOR i */
+
+    IF consistent THEN
+      PrintMsg( 'SHORT, SolverMsg["NoneFnd"] ),
+
+    IF Action = 'BREAK THEN
+      RETURN( Delete( [], Eqs ) )
+    ELSE
+      RETURN( consistent )
+  )
+)$
+
+
+/******************************************************************************/
+/* SolverAssumeZero checks whether Expression is (assumed to be) equal to     */
+/* zero. If it isn't, the function returns false or asks the user for his     */
+/* decision. New assumptions are appended to the list Solver_Assumptions.     */
+/******************************************************************************/
+
+SolverAssumeZero( Expression ) := (
+
+  Mode_Declare(
+    Expression, ANY
+  ),
+
+  BLOCK(
+
+    [ AssumptionExists, i ],
+
+    Mode_Declare(
+      i, FIXNUM,
+      AssumptionExists, BOOLEAN
+    ),
+
+    /* Return FALSE immediately if Expression is a number # 0 or if  */
+    /* Solver_Incons_Params is set to 'BREAK.                          */
+
+    IF
+      Empty( ListOfVars( Expression ) )
+      OR ( Solver_Incons_Params = 'BREAK )
+    THEN
+      RETURN( FALSE ),
+
+    /* Do a simple check to find out whether assumption already exists:    */
+    /* Zero is substituted for Expression in the stored assumption. If the */
+    /* result is zero then the assumption already exists.                  */
+
+    AssumptionExists : FALSE,
+    FOR i THRU Length( Solver_Assumptions ) WHILE NOT AssumptionExists DO
+      IF
+        FullRatSimp(
+          RatSubst( 0, Expression, LHS( Solver_Assumptions[i] ) )
+        ) = 0
+      THEN
+        AssumptionExists : TRUE,
+
+    /* If the expression is not yet assumed to be equal to zero, ask the user */
+    /* to decide whether it is.                                               */
+
+    IF NOT AssumptionExists THEN
+
+      IF
+        ( Solver_Incons_Params = 'ASK )
+        AND
+        ( AskCSign( Expression ) # 'ZERO )
+      THEN
+        RETURN( FALSE )
+      ELSE
+        /* If difference is equal to zero or assumed to be so then store    */
+        /* the constraint in the global list Solver_Assumptions. So the user*/
+        /* has access to all assumptions made during the solution process   */
+        /* and can check any numerical solutions for consistency with the   */
+        /* assumptions.                                                     */
+        Solver_Assumptions : Endcons(  Expression = 0, Solver_Assumptions )
+
+    ELSE
+      PrintMsg( 'DETAIL, SolverMsg["AssmFnd"], Expression = 0 ),
+
+    RETURN( TRUE )
+  )
+)$
+
+
+/******************************************************************************/
+/* ListOfPowers returns the list of powers # 0 of a variable in a set of      */
+/* equations.                                                                 */
+/******************************************************************************/
+
+ListOfPowers( Eqs, Var ) := (
+
+  Mode_Declare(
+    Eqs, LIST,
+    Var, ANY
+  ),
+
+  Delete(
+    0,
+    Apply(
+      'Union,
+      Map(
+        Lambda(
+          [ Eq ],
+          Powers( Expand( LHS( Eq ) - RHS( Eq ) ), Var )
+        ),
+        Eqs
+      )
+    )
+  )
+)$
+
+
+/******************************************************************************/
+/* ImmediateAssignments directly applies all immediate assignments of the     */
+/* form  var = rhs...  before the actual Solver is called.                    */
+/******************************************************************************/
+
+ImmediateAssignments( Solutions, RemainingEqs, Variables, Parameters ) := (
+
+  Mode_Declare(
+    [ Solutions, RemainingEqs, Variables, Parameters ], LIST
+  ),
+
+  BLOCK(
+
+    [ i, Vars, AssignmentMade, Left, Right ],
+
+    Mode_Declare(
+      i, FIXNUM,
+      Vars, LIST,
+      AssignmentMade, BOOLEAN,
+      [ Left, Right ], ANY
+    ),
+
+    PrintMsg( 'SHORT, SolverMsg["SrchImmed"] ),
+
+    AssignmentMade : FALSE,
+
+    FOR i THRU Length( RemainingEqs ) DO BLOCK(
+      [],
+
+      Left  : LHS( RemainingEqs[i] ),
+      Right : RHS( RemainingEqs[i] ),
+
+      /* Scan the equations for simple assignments of the form  X = Expr or   */
+      /* Expr = X  and apply this assignment only if X is not a parameter and */
+      /* if Expr contains only numbers or parameters.                         */
+      /* Remark: Equations containing only parameters have already been remo- */
+      /* ved from the equation list in SetupSolver.                           */
+
+      IF SymbolP( Left ) THEN (
+
+        Vars : ListOfVars( Right ),
+
+        /* Check if LHS is an isolated variable and make sure that there are */
+        /* only parameters on the right-hand side.                           */
+
+        IF FreeOf( Left, Right )
+          AND Empty( SetDifference( Vars, Parameters ) )
+        THEN (
+
+          IF Assoc( Left, Solutions ) = FALSE THEN (
+            PrintMsg(
+              'DETAIL,
+              SolverMsg["Assign"], TotalDisrep( Left = Right )
+            ),
+            
+            Solutions : Endcons( Left = Right, Solutions ),
+            RemainingEqs[i] : [],
+
+            AssignmentMade : TRUE
+          ),
+
+          /* This RETURN prevents Macsyma from entering the next IF statement */
+          /* which must only be executed when the current outer IF statement  */
+          /* has not been entered.                                            */
+          RETURN( 'DONE )
+        )
+      ),
+
+      IF SymbolP( Right ) THEN (
+
+        Vars : ListOfVars( Left ),
+
+        IF FreeOf( Right, Left )
+          AND Empty( SetDifference( Vars, Parameters ) )
+        THEN (
+        
+          IF Assoc( Right, Solutions ) = FALSE THEN (
+            PrintMsg(
+              'DETAIL,
+              SolverMsg["Assign"], TotalDisrep( Right = Left )
+            ),
+
+            Solutions : Endcons( Right = Left, Solutions ),
+            RemainingEqs[i] : [],
+
+            AssignmentMade : TRUE
+          )
+          
+        )
+      )
+    ), /* END FOR i THRU Length */
+
+    IF AssignmentMade THEN (
+
+      /* Delete the used equations from the list */
+      RemainingEqs : Delete( [], RemainingEqs ),
+
+      IF NOT Empty( RemainingEqs ) THEN (
+
+        /* Remove all the variables from the working list which have been */
+        /* determined by an immediate assignment.                         */
+        Variables : SetDifference( Variables, Map( 'LHS, Solutions ) ),
+
+        /* Evaluate the remaining equations with the constraints */
+        RemainingEqs : Ev( RemainingEqs, Solutions ),
+
+        /* Do a parameter consistency check */
+        RemainingEqs : ParamConsistency( RemainingEqs, Parameters )
+      )
+
+      ELSE
+        PrintMsg( 'SHORT, SolverMsg["NoEqTerm"] )
+
+    )
+    ELSE
+      PrintMsg( 'SHORT, SolverMsg["NoImmed"] ),
+
+    /* END IF AssignmentMade */
+
+    RETURN( [ AssignmentMade, Solutions, RemainingEqs, Variables ] )
+  )
+)$
+
+
+/******************************************************************************/
+/* LinearSolver extracts blocks of linear equations from an arbitrary system  */
+/* of equations by a heuristic searching strategy and solves the linear block */
+/* if there is one.                                                           */
+/******************************************************************************/
+
+LinearSolver( Solutions, Equations, Variables, Parameters ) := (
+
+  Mode_Declare(
+    [ Solutions, Equations, Variables, Parameters ], LIST
+  ),
+
+  BLOCK(
+
+    [
+      CoeffMatrix, ValuationMatrix, ActiveVars,
+      LinEqNos, LinVarNos, NewVars, LinSolVars,
+      LinearEqs, LinearVars, LinearSolutions,
+      i, j, me, mv, NumVars, NumEqs,
+      MaxValVar, MaxValEq,
+      EqValuation, VarValuation,
+      RHSExpressions,
+
+      LinsolveWarn             : FALSE,
+      Linsolve_Params          : FALSE,
+      Solve_Inconsistent_Error : FALSE,
+
+      EqWasLast : FALSE
+    ],
+
+    Mode_Declare(
+      [ CoeffMatrix, ValuationMatrix ], ANY,
+      [
+        LinEqNos, LinVarNos, ActiveVars, LinearEqs, LinearVars, LinSolVars,
+        EqValuation, VarValuation, LinearSolutions, NewVars, RHSExpressions
+      ], LIST,
+      [ i, j, me, mv, NumVars, NumEqs, MaxValVar, MaxValEq ], FIXNUM
+    ),
+
+    IF Empty( Equations ) THEN (
+
+      IF Empty( Variables ) THEN
+        PrintMsg( 'SHORT, SolverMsg["AllSolved"] )
+      ELSE
+        PrintMsg( 'SHORT, SolverMsg["NoEqLeft"], Variables ),
+
+      RETURN( [ FALSE, Solutions, Equations, Variables ] )
+    )
+    ELSE IF Empty( Variables ) THEN (
+      PrintMsg( 'SHORT, SolverMsg["EqLeft"] ),
+      RETURN( [ FALSE, Solutions, Equations, Variables ] )
+    ),
+
+    PrintMsg( 'SHORT, SolverMsg["SrchLinEq"] ),
+
+    /* Make a list of all remaining variables */
+    NewVars : ListOfVars( Equations ),
+
+    IF Solver_Find_All_Linear_Vars THEN (
+
+      /* The following rather weird commands put the variables into the order */
+      /* [ variables to be currently solved for, other variables ]. If the    */
+      /* current variables are linear variables then it is more likely that   */
+      /* they will have explicit solutions if they are located in the left    */
+      /* half of the system of equations. Otherwise the will more likely be   */
+      /* used as parameters of the null space (if there is one).              */
+
+      ActiveVars : Append(
+        Intersection( Variables, NewVars ),
+        SetDifference( NewVars, Append( Variables, Parameters ) )
+      ),
+      LinearEqs : Equations,
+      Equations : []
+    )
+    ELSE (
+      ActiveVars : Intersection( Variables, NewVars ),
+      LinearEqs : [],
+      FOR i THRU Length( Equations ) DO
+        IF
+          NOT Empty( Intersection( ListOfVars( Equations[i] ), ActiveVars ) )
+        THEN (
+          LinearEqs : Endcons( Equations[i], LinearEqs ),
+          Equations[i] : []
+        ),
+      Equations : Delete( [], Equations )
+    ),
+
+    PrintMsg( 'SHORT, SolverMsg["wrt"], ActiveVars ),
+
+    /* Set up the complete coefficient matrix w.r.t. all variables */
+    CoeffMatrix : ComplCoeffMatrix( LinearEqs, ActiveVars ),
+
+    /* The valuation matrix contains a 1 at each position where a variable */
+    /* appears in a nonlinear form, and 0's otherwise.                     */
+
+    ValuationMatrix : MatrixMap(
+      Lambda(
+        [ x ],
+        IF x = 'FALSE THEN
+          1
+        ELSE
+          0
+      ),
+      CoeffMatrix
+    ),
+
+    /* EqValuation contains the number of nonlinear variables for each eq. */
+    EqValuation : Map(
+      Lambda( [ Row ], Apply( "+", Row ) ),
+      ListMatrix( ValuationMatrix )
+    ),
+
+    /* VarValuation contains for all vars the number of equations in which */
+    /* var[i] appears in a nonlinear form.                                 */
+    VarValuation : Map(
+      Lambda( [ Row ], Apply( "+", Row ) ),
+      ListMatrix( Transpose( ValuationMatrix ) )
+    ),
+
+    LinEqNos  : MakeList( i, i, 1, NumEqs : Length( EqValuation ) ),
+    LinVarNos : MakeList( i, i, 1, NumVars : Length( VarValuation ) ),
+
+
+    /* Remove nonlinear equations and/or variables until only a linear    */
+    /* block remains, i.e. for all i, j VarValuation[i] = 0 and           */
+    /* EqValuation[j] = 0.                                                */
+
+    WHILE
+      ( Apply( "+", VarValuation ) # 0 )
+      AND
+      ( Apply( "+", EqValuation ) # 0 )
+    DO (
+
+      /* Determine maximum equation valuation and number of corresponding */
+      /* equation.                                                        */
+
+      me : 0,
+      MaxValEq : -1,
+      FOR i THRU NumEqs DO
+        IF EqValuation[i] > MaxValEq THEN (
+          me : i,
+          MaxValEq : Mode_Identity( FIXNUM, EqValuation[i] )
+        ),
+
+      /* Determine maximum variable valuation and number of corresponding */
+      /* variable.                                                        */
+
+      mv : 0,
+      MaxValVar : -1,
+      FOR j THRU NumVars DO
+        IF VarValuation[j] > MaxValVar THEN (
+          mv : j,
+          MaxValVar : Mode_Identity( FIXNUM, VarValuation[j] )
+        ),
+
+
+      IF Apply( Solver_Del_Eq, [ MaxValEq, MaxValVar ] ) THEN (
+        i : me,
+
+        FOR j THRU NumVars DO (
+          VarValuation[j] : VarValuation[j] - ValuationMatrix[i, j],
+          ValuationMatrix[i, j] : 0
+        ),
+
+        /* Mark equation as deleted */
+        EqValuation[i] : 0,
+        LinEqNos[i]    : 0
+      )
+      ELSE (
+        j : mv,
+
+        FOR i THRU NumEqs DO (
+          EqValuation[i] : EqValuation[i] - ValuationMatrix[i, j],
+          ValuationMatrix[i, j] : 0
+        ),
+
+        /* Mark variable as deleted */
+        VarValuation[j] : 0,
+        LinVarNos[j]    : 0
+      )
+
+    ), /* END WHILE */
+
+    /* Make list of linear equations */
+    LinEqNos  : Delete( 0, LinEqNos ),
+
+    /* Make list of linear variables */
+    LinVarNos : Delete( 0, LinVarNos ),
+
+    IF Empty( LinEqNos ) OR Empty( LinVarNos ) THEN (
+      PrintMsg( 'SHORT, SolverMsg["NoLinEqs"] ),
+      RETURN( [ FALSE, Solutions, Append( LinearEqs, Equations ), Variables ] )
+    ),
+
+    /* Extract linear equations. Append all nonlinear equations to Equations */
+    /* again.                                                                */
+    FOR i THRU Length( LinearEqs ) DO
+      IF NOT Member( i, LinEqNos ) THEN (
+        Equations : Endcons( LinearEqs[i], Equations ),
+        LinearEqs[i] : []
+      ),
+
+    LinearEqs : Delete( [], LinearEqs ),
+
+
+    /* Extract linear variables. Since the extraction of linear equations may */
+    /* also have removed linear variables (the coefficients are now 0) it is  */
+    /* necessary to intersect the set of the linear variables with the set of */
+    /* those variables which actually appear in the linear equations.         */
+
+    LinearVars : Intersection(
+      Map( Lambda( [ i ], ActiveVars[i] ), LinVarNos ),
+      ListOfVars( LinearEqs )
+    ),
+
+    /* By analogy, the same applies to the linear equations. Thus, keep only  */
+    /* those equations which still contain any of the linear variables.       */
+
+    FOR i THRU Length( LinearEqs ) DO
+      IF DisjointP( ListOfVars( LinearEqs[i] ), LinearVars ) THEN (
+        Equations : Endcons( LinearEqs[i], Equations ),
+        LinearEqs[i] : []
+      ),
+
+    LinearEqs : Delete( [], LinearEqs ),
+
+    /* Return if no linear equations are left */
+
+    IF Empty( LinearVars ) OR Empty( LinearEqs ) THEN (
+      PrintMsg( 'SHORT, SolverMsg["NoLinEqs"] ),
+      RETURN( [ FALSE, Solutions, Append( LinearEqs, Equations ), Variables ] )
+    ),
+
+    PrintMsg(
+      'SHORT,
+      SolverMsg["Found"], Length( LinearEqs ), SolverMsg["LinEqs"],
+      Length( LinearVars ), SolverMsg["LinVars"]
+    ),
+    PrintMsg( 'SHORT,  SolverMsg["VarsAre"],  LinearVars ),
+    PrintMsg( 'DETAIL, SolverMsg["EqsAre"],   LinearEqs ),
+    PrintMsg( 'SHORT,  SolverMsg["SolvLinEq"] ),
+
+    RHSExpressions : [],
+    Solve_Inconsistent_Eqn_Nos : [ 0 ],
+
+    WHILE NOT Empty( Solve_Inconsistent_Eqn_Nos ) DO (
+
+      /* Solve the linear equations */
+      LinearSolutions : LinsolveM( LinearEqs , LinearVars ),
+
+      /* Check for "inconsistent" equations. */
+      IF NOT Empty( Solve_Inconsistent_Eqn_Nos ) THEN (
+
+        PrintMsg( 'DEBUG, SolverMsg["Incons"], Solve_Inconsistent_Eqn_Nos ),
+
+        /* Remove "inconsistent" equations */
+        FOR i IN Solve_Inconsistent_Eqn_Nos DO
+          LinearEqs[i] : [],
+
+        LinearEqs : Delete( [], LinearEqs ),
+
+        /* Append RHS = 0 to Solver_Assumptions if RHS contains only */
+        /* parameters.                                               */
+        RHSExpressions : ParamConsistency(
+          Solve_Inconsistent_Terms, Parameters
+        )
+
+      )
+
+    ),
+
+    /* Append RHS's which have led to "inconsistencies" but still   */
+    /* contain variables to the list of equations.                  */
+    Equations : Append( Equations, RHSExpressions ),
+
+    PrintMsg( 'DETAIL, SolverMsg["Solutions"], LinearSolutions ),
+
+    /* Insert the solutions from linsolve into the remaining equations */
+    Equations : ParamConsistency(
+        FullRatSimp( Ev( Equations, LinearSolutions ) ),
+        Parameters
+    ),
+
+    /* Append the linear solutions to the list of solutions */
+    Solutions : Append( Solutions, LinearSolutions ),
+
+    /* Append all variables to the working list which appear on the RHS's of  */
+    /* the linear solutions. Delete all variables which have been solved for. */
+
+    /* Linear variables for which a solution has been obtained. */
+    LinSolVars : Map( 'LHS, LinearSolutions ),
+
+    /* Linear variables which are free parameters of the null space. */
+    LinearVars : SetDifference( LinearVars, LinSolVars ),
+
+    /* Append all those variables which are parameters of the null space of */
+    /* the linear equations and which do not appear in the remaining        */
+    /* equations to the list of parameters.                                 */
+
+    FOR Var IN LinearVars DO
+      IF FreeOf( Var, Equations ) THEN (
+        PrintMsg( 'SHORT, SolverMsg["FreeVar2Par"], Var ),
+        Parameters : Endcons( Var, Parameters ),
+        Variables  : Delete( Var, Variables )
+      ),
+
+    NewVars : SetDifference(
+      ListOfVars( Map( 'RHS, LinearSolutions ) ),
+      Parameters
+    ),
+
+    Variables : Union(
+      SetDifference( Variables, LinSolVars ),
+      NewVars
+    ),
+
+    RETURN( [ TRUE, Solutions, Equations, Variables ] )
+  )
+)$
+
+
+/******************************************************************************/
+/* The following strategies decide whether the linear solver should delete a  */
+/* nonlinear equation or a nonlinear variable from the system while searching */
+/* for linear subblocks of equations.                                         */
+/******************************************************************************/
+
+Define_Variable( EqWasLast, FALSE, BOOLEAN )$
+
+MakeSquareLinearBlocks( ValEq, ValVar ) := (
+
+  Mode_Declare(
+    [ ValEq, ValVar ], FIXNUM
+  ),
+
+  IF ValEq = ValVar THEN
+    EqWasLast : NOT EqWasLast
+  ELSE
+    IF ValEq > ValVar THEN
+      EqWasLast : TRUE
+    ELSE
+      EqWasLast : FALSE
+)$
+
+
+DelEqBeforeVar( ValEq, ValVar ) := (
+
+  Mode_Declare(
+    [ ValEq, ValVar ], FIXNUM
+  ),
+
+  IF ValEq >= ValVar THEN
+    TRUE
+  ELSE
+    FALSE
+)$
+
+
+/******************************************************************************/
+/* ComplCoeffMatrix returns a matrix whose row size is equal to the number of */
+/* equations and whose column size is equal to the number of variables. The   */
+/* entry at position [i,j] is RatCoeff( equation[i], variable[j] ) if         */
+/* equation[i] is linear w.r.t. variable[j] and 'FALSE if equation[i] is      */
+/* nonlinear w.r.t. variable[j].                                              */
+/******************************************************************************/
+
+ComplCoeffMatrix( Eqs, ActiveVars ) := (
+
+  Mode_Declare(
+    [ Eqs, ActiveVars ], LIST
+  ),
+
+  BLOCK(
+
+
+    Apply(
+
+      'Matrix,
+
+      /* For each equation do */
+      Map(
+
+        Lambda(
+          [ Eq ],
+
+          /* For each variable do */
+          Map(
+            Lambda(
+              [ Var ],
+              BLOCK(
+                [ rc ],
+                rc  : LinCoeff( Eq, Var ),
+
+                /* Return the RatCoeff only if it contains none of the active */
+                /* variables or if the equation doesn't contain var at all.   */
+
+                IF
+                  ( ( rc # 0 ) AND DisjointP( ListOfVars( rc ), ActiveVars ) )
+                  OR
+                  FreeOf( Var, Eq )
+                THEN
+                  rc
+                ELSE
+                  FALSE
+              )
+            ),
+
+            ActiveVars
+          ) /* END Lambda( [ Var ] ) */
+
+        ), /* END Lambda( [ Eq ] ) */
+
+
+        /* Map target: Transform all equations into homogeneous form. */
+
+        Map(
+          Lambda(
+            [ Eq ],
+            Num( FullRatSimp( Expand( LHS( Eq ) - RHS( Eq ) ) ) )
+          ),
+          Eqs
+        )
+
+
+      ) /* END Map( Lambda( [ Eq ] ) ) */
+
+    ) /* END Apply */
+  )
+)$
+
+
+/******************************************************************************/
+/* LinCoeff returns the linear coefficient of Var within Eq if Var appears    */
+/* raised to the first power only.                                            */
+/******************************************************************************/
+
+LinCoeff( Eq, Var ) := (
+
+  Mode_Declare(
+    [ Eq, Var ], ANY
+  ),
+
+  BLOCK(
+
+    [ BCoeff ],
+
+    Mode_Declare(
+      BCoeff, LIST
+    ),
+
+    IF ListOfPowers( [ Eq ], Var ) = [ 1 ] THEN (
+      BCoeff : BothCoeff( Eq, Var ),
+      IF FreeOf( Var, Second( BCoeff ) ) THEN
+        RETURN( First( BCoeff ) )
+    ),
+
+    RETURN( 0 )
+  )
+)$
+
+
+/******************************************************************************/
+/* ValuationSolver                                                            */
+/******************************************************************************/
+
+ValuationSolver( Solutions, Equations, Variables, Parameters ) := (
+
+  Mode_Declare(
+    [ Solutions, Equations, Variables, Parameters ], LIST
+  ),
+
+  BLOCK(
+
+    [
+      VarPaths, ValMatrix, Eq, Var, Trans, TempEq, TransEq,
+      SolveOrder, SolveInfo, Transform, Solution, SolCheck,
+      Status, Solved, Failed, UniqueSol, TryToSolve, CheckSol,
+      i, k
+    ],
+
+    Mode_Declare(
+      [ VarPaths, ValMatrix, Eq, Var, Trans, TempEq, TransEq ], ANY,
+      [ SolveOrder, SolveInfo, Transform, Solution, SolCheck ], LIST,
+      [ Status, Solved, Failed, UniqueSol, TryToSolve, CheckSol ], BOOLEAN,
+      [ i, k ], FIXNUM
+    ),
+
+
+    UniqueSol : TRUE,
+
+    LOOP,
+
+    PrintMsg( 'SHORT, SolverMsg["Chk4RemEq"] ),
+
+    IF Empty( Equations ) THEN (
+
+      IF Empty( Variables ) THEN
+        PrintMsg( 'SHORT, SolverMsg["AllSolved"] )
+      ELSE
+        PrintMsg( 'SHORT, SolverMsg["NoEqLeft"], Variables ),
+
+      Status : FALSE
+
+    )
+    ELSE IF Empty( Variables ) THEN (
+      PrintMsg( 'SHORT, SolverMsg["EqLeft"] ),
+      Status : FALSE
+    )
+    ELSE (
+
+      PrintMsg(
+        'SHORT,
+        Length( Equations ), SolverMsg["Eqs"],
+        Length( Variables ), SolverMsg["Vars"]
+      ),
+      PrintMsg( 'DETAIL, SolverMsg["VarsAre"], Variables ),
+      PrintMsg( 'DEBUG, SolverMsg["EqsAre"], Equations ),
+
+      /* Dump solutions and remaining equations to file if requested. */
+      IF Solver_Dump_To_File THEN
+        DumpToFile( Solutions, Equations, Variables ),
+
+      IF ( Length( Variables ) = 1 ) AND ( Length( Equations ) = 1 ) THEN
+        SolveOrder : [ [ 1, 1, "(irrelevant)" ] ]
+
+      ELSE (
+        PrintMsg( 'SHORT, SolverMsg["ValStrat"] ),
+
+        /* Set up the valuation matrices. */
+        VarPaths  : OccurrenceMatrix( Equations, Variables ),
+        ValMatrix : ValuationMatrix( Equations, Variables ),
+
+        /* Determine an order by which the equations should be solved. */
+        SolveOrder : Apply( Solver_Valuation_Strategy, [ VarPaths, ValMatrix ] )
+      ),
+
+      Solved : FALSE,
+
+      UNLESS Solved OR Empty( SolveOrder ) DO (
+
+        SolveInfo : Pop( SolveOrder ),
+        k   : Mode_Identity( FIXNUM, First( SolveInfo ) ),
+        Eq  : Part( Equations, k ),
+        Var : Variables[ Second( SolveInfo ) ],
+
+        PrintMsg( 
+          'SHORT, 
+          SolverMsg["TrySolveEq"], k, SolverMsg["ForVar"], Var 
+        ),
+        PrintMsg( 'SHORT, SolverMsg["Valuation"], Third( SolveInfo ) ),
+        PrintMsg( 'DETAIL, SolverMsg["EqIs"], Eq = 0 ),
+
+        TryToSolve : TRUE,
+        CheckSol   : TRUE,
+        Transform  : CopyList( Solver_Transforms ),
+
+        /* Do the solver break test to check whether it is worth */
+        /* attempting to solve the equation at all.              */
+        Failed : Apply( Solver_Break_Test, [Eq, Var, Third( SolveInfo )] ),
+        
+        UNLESS Solved OR Failed DO (
+
+          /* Try to solve the selected equation */
+          IF TryToSolve THEN
+            Solution : Solve( Eq, Var ),
+
+          /* Check if the equation was solved correctly */
+          IF CheckSol THEN (
+            PrintMsg( 'SHORT, SolverMsg["CheckSol"] ),
+            SolCheck : SolutionOK( Solution, Var ),
+
+            PrintMsg( 'DETAIL, SolverMsg["Solutions"], Solution )
+          )
+          ELSE
+            SolCheck : [ FALSE ],
+
+          /* All solutions OK? */
+          IF Member( TRUE, SolCheck ) THEN (
+            PrintMsg( 'SHORT, SolverMsg["SolOK"] ),
+            Solved : TRUE
+          )
+
+          /* If not, apply transformations */
+          ELSE (
+            IF CheckSol THEN
+              PrintMsg( 'SHORT, SolverMsg["SolNotOK"] ),
+
+            /* Give up if no transformations are left */
+            IF Empty( Transform ) THEN (
+              PrintMsg( 'SHORT, SolverMsg["GiveUp"] ),
+              Failed : TRUE
+            )
+
+            ELSE (
+              /* Retrieve one transformation function */
+              Trans : Pop( Transform ),
+              PrintMsg( 'SHORT,  SolverMsg["AppTrans"], Trans ),
+
+              /* and apply it to the equation, the variable, and the solution */
+              TransEq : Apply( Trans, [ Eq, Var, Solution ] ),
+
+              /* The transformation should return an equation as its function */
+              /* value. However, if no reasonable transformation of the       */
+              /* equation was possible then the SOLVE function should not be  */
+              /* tried again. Hence, to signal a failure, the transformation  */
+              /* must return an empty list, which will instruct the Solver to */
+              /* try the next transformation instead. In addition, the        */
+              /* transformation may itself take care of solving the equation. */
+              /* It must then return a list of solutions:                     */
+              /*   [ var = solution_1, var = solution_2, ... ]                */
+
+              /* Did the transformation fail? */
+              IF TransEq = [] THEN (
+                PrintMsg( 'SHORT, SolverMsg["TransFail"] ),
+
+                /* Instruct the Solver to try the next transformation */
+                TryToSolve : FALSE,
+                CheckSol   : FALSE
+              )
+
+              /* Did it solve the equation by itself? */
+              ELSE IF ListP( TransEq ) THEN (
+                PrintMsg( 'SHORT, SolverMsg["TransSolv"] ),
+                Solution : TransEq,
+
+                /* Instruct the Solver not to call SOLVE again */
+                TryToSolve : FALSE,
+                CheckSol   : TRUE
+              )
+
+              /* Transformation thinks it has succeeded, so try again */
+              ELSE (
+                Eq : TransEq,
+                PrintMsg( 'DETAIL, SolverMsg["ResTrans"], Eq = 0 ),
+                PrintMsg( 'SHORT,  SolverMsg["RetryTrans"] ),
+
+                TryToSolve : TRUE,
+                CheckSol   : TRUE
+              )
+
+            ) /* END IF Empty( Transform ) ELSE */
+
+          ) /* IF Member( TRUE, SolCheck ) ELSE */
+
+        ) /* END UNLESS Solved OR Failed */
+
+      ), /* END UNLESS Solved OR Empty( SolveOrder ) */
+
+      IF Solved THEN (
+        IF Length( Solution ) > 1 THEN
+          PrintMsg( 'SHORT, SolverMsg["NotUnique"] ),
+
+        IF Member( FALSE, SolCheck ) THEN
+          PrintMsg( 'SHORT, SolverMsg["SolsLost"] ),
+
+        /* Remove solved equation from list of equations. Store it in TempEq  */
+        /* so it can be appended to Equations again if the consistency check  */
+        /* fails.                                                             */
+        TempEq : Part( Equations, k ),
+        Equations : Delete( [], Set_Element( Equations, k, [] ) ),
+
+        /* Check solutions for consistency with remaining equations. */
+        FOR i THRU Length( Solution ) DO (
+
+          IF Part( SolCheck, i ) THEN (
+
+            PrintMsg(
+              'DETAIL, SolverMsg["Solution"], i, SolverMsg["ForVar"], Var
+            ),
+
+            IF NOT ParamConsistency(
+              FullRatSimp( Ev( Equations, Part( Solution, i ) ) ),
+              Parameters,
+              'CONTINUE
+            ) THEN (
+              PrintMsg( 'SHORT, SolverMsg["Contradict"], Part( Solution, i ) ),
+              Set_Element( Solution, i, 'INCONSISTENT_PATH )
+            )
+
+          )
+          ELSE (
+            PrintMsg( 'DETAIL, SolverMsg["Dropped"], Part( Solution, i ) ),
+            Set_Element( Solution, i, [] )
+          )
+
+        ),
+
+        /* Delete all implicit or empty solutions */
+        Solution : Delete( [], Solution ),
+
+        IF Empty( Solution ) THEN (
+          PrintMsg( 'SHORT, SolverMsg["NoValidSol"], Var ),
+
+          Equations : Endcons( TempEq, Equations ),
+          Solved : FALSE
+        ) 
+
+        /* Check if there are any consistent solutions */
+        ELSE IF NOT Member( 
+          TRUE, 
+          Map( 
+            Lambda( 
+              [x], 
+              IF x = 'INCONSISTENT_PATH THEN
+                FALSE
+              ELSE
+                TRUE
+            ), 
+            Solution
+          ) 
+        ) 
+        THEN (
+          PrintMsg( 'SHORT, SolverMsg["NoConsSol"], Var ),
+
+          Solutions : Endcons( 'INCONSISTENT_PATH, Solutions ),
+          Solved : FALSE
+        )
+ 
+        /* Append consistent solutions to the solution list */
+        ELSE (
+          PrintMsg( 'DETAIL, SolverMsg["ConsSol"], Var, ":", Solution ),
+
+          Variables : Delete( Var, Variables ),
+
+          /* If the solution is unique or if there's only one consistent */
+          /* solution then ...                                           */
+          IF Length( Solution ) = 1 THEN (
+
+            /* ... store it, insert it into the remaining equations, and */
+            /* add its RHS variables to the list of unknowns.            */
+            Solutions : Append( Solutions, Solution ),
+            Equations : CopyList(
+              FullRatSimp( Ev( Equations, Solution ) )
+            ),
+            Variables : Union(
+              Variables,
+              SetDifference(
+                ListOfVars( RHS( First( Solution ) ) ),
+                Parameters
+              )
+            )
+          )
+          
+          ELSE /* Length( Solution ) > 1, call ValuationSolver recursively */
+
+            BLOCK(
+              [ MultipleSolutions, RSolutions, RVars, REqs, Sol, Stat ],
+
+              Mode_Declare(
+                [ MultipleSolutions, RSolutions, RVars, REqs ], LIST,
+                Sol, ANY,
+                Stat, BOOLEAN
+              ),
+
+              MultipleSolutions : [],
+
+              FOR Sol IN Solution DO (
+
+                Map(
+                  lambda([x,y],x::y),
+                  [ 'Stat, 'RSolutions, 'REqs, 'RVars ],
+                  ValuationSolver(
+                    [ Sol ],
+                    CopyList( FullRatSimp( Ev( Equations, Sol ) ) ),
+                    Union(
+                      Variables,
+                      SetDifference( ListOfVars( RHS( Sol ) ), Parameters )
+                    ),
+                    Parameters
+                  )
+                ),
+
+                MultipleSolutions : Endcons( RSolutions, MultipleSolutions )
+
+              ), /* END FOR Sol */
+
+              Solutions : Endcons( MultipleSolutions, Solutions ),
+
+              UniqueSol : FALSE
+            ) /* END BLOCK */
+
+        ) /* END IF Empty( Solution ) */
+
+      )
+
+      ELSE (
+
+        /* Append remaining equations to the solutions if no further */
+        /* solutions could be determined.                            */
+
+        Solutions : Endcons( [ Equations ], Solutions )
+      ), /* END IF Solved */
+
+      Status : Solved
+    ),
+
+    IF Status AND UniqueSol THEN
+      GO( LOOP )
+    ELSE
+      RETURN( [ Status, Solutions, Equations, Variables ] )
+  )
+)$
+
+
+/******************************************************************************/
+/* SolutionOK checks whether the result of a call to the solve function is    */
+/* indeed a solution of the form  var = expression_free_of_var.               */
+/******************************************************************************/
+
+SolutionOK( Solution, Var ) := (
+
+  Mode_Declare(
+    [ Solution, Var ], ANY
+  ),
+
+  IF ListP( Solution ) THEN
+
+    /* List of solutions must not be empty. */
+    IF Empty( Solution ) THEN
+      [ FALSE ]
+
+    ELSE
+
+      /* Check if the lhs of each solution is equal to var and make sure */
+      /* that var does not appear on the rhs's.                          */
+      Map(
+        Lambda(
+          [ Sol ],
+          ( LHS( Sol ) = Var ) AND FreeOf( Var, RHS( Sol ) )
+        ),
+        Solution
+      )
+
+  ELSE
+    [ FALSE ]
+
+)$
+
+
+/******************************************************************************/
+/* ValuationMatrix generates a matrix of valuations with respect to each      */
+/* equation and each variable.                                                */
+/******************************************************************************/
+
+ValuationMatrix( Equations, Variables ) := (
+
+  Mode_Declare(
+    [ Equations, Variables ], LIST
+  ),
+
+  GenMatrix(
+    Lambda( [ i, j ], Valuation( Equations[i], Variables[j] ) ),
+    Length( Equations ), Length( Variables )
+  )
+)$
+
+
+/******************************************************************************/
+/* Operator valuation factors for expression valuation.                       */
+/******************************************************************************/
+
+SetProp( 'sin,   'Valuation, 10 )$
+SetProp( 'cos,   'Valuation, 10 )$
+SetProp( 'tan,   'Valuation, 10 )$
+SetProp( 'asin,  'Valuation, 12 )$
+SetProp( 'acos,  'Valuation, 12 )$
+SetProp( 'atan,  'Valuation, 12 )$
+SetProp( 'sinh,  'Valuation, 12 )$
+SetProp( 'cosh,  'Valuation, 12 )$
+SetProp( 'tanh,  'Valuation, 12 )$
+SetProp( 'asinh, 'Valuation, 12 )$
+SetProp( 'acosh, 'Valuation, 12 )$
+SetProp( 'atanh, 'Valuation, 12 )$
+SetProp( "+",    'Valuation,  1 )$
+SetProp( "-",    'Valuation,  1 )$
+SetProp( "*",    'Valuation,  4 )$
+SetProp( "/",    'Valuation,  4 )$
+SetProp( "^",    'Valuation, 10 )$
+SetProp( 'sqrt,  'Valuation, 10 )$
+SetProp( 'exp,   'Valuation, 10 )$
+SetProp( 'log,   'Valuation, 10 )$
+
+
+/******************************************************************************/
+/* With SetValuation, the operator valuation factors can be redefined.        */
+/******************************************************************************/
+
+SetValuation( Operator, Valuation ) :=
+  SetProp( Operator, 'Valuation, Valuation )$
+  
+
+/******************************************************************************/
+/* Valuation measures the complexity of an expression with respect to Var by  */
+/* weighting the operator tree representation of Expr.                        */
+/******************************************************************************/
+
+Valuation( Expr, Var ) := (
+
+  Mode_Declare(
+    [ Expr, Var ], ANY
+  ),
+
+
+  BLOCK(
+
+    [ OpFactor ],
+
+    Mode_Declare(
+      OpFactor, FIXNUM
+    ),
+
+    /* Return zero if Expr does not contain Var. */
+    IF FreeOf( Var, Expr ) THEN
+      RETURN( 0 )
+
+    ELSE
+      /* Return 1 if Expr is an atom, i.e. Expr = Var. */
+      IF Atom( Expr ) THEN
+        RETURN( 1 )
+
+      /* If Expr is an algebraic expression then retrieve the valuation    */
+      /* factor associated with the operator of Expr and recursively apply */
+      /* the valuation function to each subexpression of Expr.             */
+      ELSE (
+
+        IF (
+            OpFactor : Mode_Identity( FIXNUM, Get( Op( Expr ), 'Valuation ) ) 
+           ) = FALSE
+        THEN
+          OpFactor : Solver_Default_Valuation,
+
+        RETURN(
+          OpFactor * Apply(
+            "+",
+            Map(
+              Lambda( [ SubExpr ], Valuation( SubExpr, Var ) ),
+              SubstPart( "[", Expr, 0 )
+            )
+          )
+        )
+
+      ) /* END IF Atom */
+
+  )
+)$
+
+
+/******************************************************************************/
+/* OccurrenceMatrix sets up a matrix in which the number of occurences of     */
+/* each variable in each equation is counted.                                 */
+/******************************************************************************/
+
+OccurrenceMatrix( Equations, Variables ) := (
+
+  Mode_Declare(
+    [ Equations, Variables ], LIST
+  ),
+
+  GenMatrix(
+    Lambda( [ i, j ], Occurences( Equations[i], Variables[j] ) ),
+    Length( Equations ), Length( Variables )
+  )
+)$
+
+
+/******************************************************************************/
+/* Occurences counts the number of occurences of Var in Expr, i.e. the number */
+/* of paths to distinct occurrences of the atom Var in the internal tree      */
+/* representation of Expr.                                                    */
+/******************************************************************************/
+
+Occurences( Expr, Var ) := (
+
+  Mode_Declare(
+    [ Expr, Var ], ANY
+  ),
+
+  IF Atom( Expr ) THEN
+
+    IF Expr = Var THEN
+      1
+    ELSE
+      0
+
+  ELSE
+    Apply(
+      "+",
+      Map(
+        Lambda( [ SubExpr], Occurences( SubExpr, Var ) ),
+        SubstPart( "[", Expr, 0)
+      )
+    )
+)$
+
+
+/******************************************************************************/
+/* MinVarPathsFirst tries to find variables which can be easily isolated.     */
+/* These are variables which appear only once in an entire expression tree    */
+/* (= 1 in OccurrenceMatrix).                                                 */
+/******************************************************************************/
+
+MinVarPathsFirst( OccMat, ValMat ) := (
+
+  Mode_Declare(
+    [ OccMat, ValMat ], ANY
+  ),
+
+  BLOCK(
+
+    [
+      SolveOrder, SolveOrder1, SumVarPaths,
+      i, j, v, ne, nv
+    ],
+
+    Mode_Declare(
+      [ SolverOrder, SolveOrder1, SumVarPaths ], LIST,
+      [ i, j, v, ne, nv, Function( RowSize, ColSize, Position ) ], FIXNUM
+    ),
+
+    SolveOrder : [],
+
+    ne : RowSize( OccMat ),
+    nv : ColSize( OccMat ),
+
+    SumVarPaths : Map(
+      Lambda( [ Row ], Apply( "+", Row ) ),
+      ListMatrix( OccMat )
+    ),
+
+    /* Search for equations which contain only one variable in one path. */
+    FOR i THRU Length( SumVarPaths ) DO
+      IF SumVarPaths[i] = 1 THEN (
+        SolveOrder : Endcons(
+          [ i, j : Position( 1, OccMat[i] ), ValMat[i, j] ],
+          SolveOrder
+        ),
+        /* Mark eq/var position as used. */
+        OccMat[i, j] : 0,
+        ValMat[i, j] : 0
+      ),
+
+    /* Sort SolveOrder by least valuation. */
+    IF NOT Empty( SolveOrder ) THEN
+      SolveOrder : SortSolveOrder( SolveOrder ),
+
+    /* Find all variables with only one path in the expression tree. */
+    SolveOrder1 : [],
+    FOR i THRU ne DO
+      FOR j THRU nv DO
+        IF OccMat[i, j] = 1 THEN (
+          SolveOrder1 : Endcons( [ i, j, ValMat[i, j] ], SolveOrder1 ),
+          OccMat[i, j] : 0,
+          ValMat[i, j] : 0
+        ),
+
+    /* Sort variables by least valuation. */
+    IF NOT Empty( SolveOrder1 ) THEN
+      SolveOrder : Append(
+        SolveOrder,
+        SortSolveOrder( SolveOrder1 )
+      ),
+
+    /* Append additional candidates if necessary. */
+    IF Length( SolveOrder ) < Solver_Max_Len_Val_Order THEN (
+
+      SolveOrder1 : [],
+      FOR i THRU ne DO
+        FOR j THRU nv DO
+          IF ( v : Mode_Identity( FIXNUM, ValMat[i, j] ) ) # 0 THEN
+            SolveOrder1 : Endcons( [ i, j, v ], SolveOrder1 ),
+
+      SolveOrder : Append(
+        SolveOrder,
+        SortSolveOrder( SolveOrder1 )
+      ),
+
+      /* Return only as many candidates as given by Solver_Max_Len_Val_Order */
+      IF ( i : Length( SolveOrder ) ) > Solver_Max_Len_Val_Order THEN
+        SolveOrder : Rest(
+          SolveOrder, Solver_Max_Len_Val_Order - i
+        )
+    ),
+
+    RETURN( SolveOrder )
+  )
+)$
+
+
+/******************************************************************************/
+/* PostProcess does all the postprocessing needed to display the results.     */
+/* This includes expansion of the solution list hierarchies, backsubsitution, */
+/* and extraction of the variables which the user explicitly asked for.       */
+/******************************************************************************/
+
+PostProcess( Solutions, UserVars, Expressions, PowerSubst ) := (
+
+  Mode_Declare(
+    [ Solutions, UserVars, Expressions, PowerSubst ], LIST
+  ),
+
+  BLOCK(
+    [
+      SolSet, UsrSolSet, UserSolutions, UnsolvedEqs, InternalSols,
+      Var, TempVar, EvalVar, 
+      i
+    ],
+
+    Mode_Declare(
+      [ SolSet, UsrSolSet, UserSolutions, UnsolvedEqs, InternalSols ], LIST,
+      [ Var, TempVar, EvalVar ], ANY,
+      i, FIXNUM
+    ),
+
+
+    PrintMsg( 'SHORT, SolverMsg["PostPr"] ),
+
+    /* First of all, flatten the solution list hierarchy and drop all */
+    /* inconsistent solution paths.                                   */
+    Solutions : Sublist(
+      ExpandSolutionHierarchy( Solutions ),
+      Lambda( [Set], Last( Set ) # 'INCONSISTENT_PATH )
+    ),
+
+    /* Return an empty list if no consistent solution paths are left. */
+    IF Empty( Solutions ) THEN
+      RETURN( [] ),
+
+    /* Do the backsubstitutions. */
+    IF NOT Empty( Solutions ) THEN (
+
+      UserSolutions : [],
+      i : 0,
+
+      FOR SolSet IN Solutions DO (
+
+        i : i + 1,
+        PrintMsg( 'SHORT, SolverMsg["SolSet"], i ),
+
+        UsrSolSet   : [],
+
+        /* Extract the unsolved equations */
+        UnsolvedEqs : Sublist( SolSet, Lambda( [x], NOT EquationP( x ) ) ),
+
+        /* and the solutions. */
+        SolSet : Sublist( SolSet, 'EquationP ),
+
+        /* If no complete backsubstitution is requested then variables on the */
+        /* right-hand sides of the solutions will only be substituted if they */
+        /* do not belong to the variables specified in the command line.      */
+        IF NOT Solver_Backsubst THEN
+          InternalSols : Sublist(
+            SolSet,
+            Lambda( [x], NOT Member( LHS( x ), UserVars ) )
+          ),
+
+        /* Evaluate all variables and expressions with the solutions. */
+        FOR Var IN Append( UserVars, Expressions ) DO (
+
+          EvalVar : IF ( Assoc( Var, SolSet ) # FALSE ) OR NOT Atom( Var ) THEN
+
+            /* There may be errors when indeterminate expressions are */
+            /* encountered.                                           */
+
+            ErrCatch(
+              IF Solver_Backsubst THEN
+                Ev( Var, SolSet, InfEval )
+              ELSE (
+                TempVar : Ev( Var, SolSet ),
+                Ev( TempVar, InternalSols, InfEval )
+              )
+            )
+
+          ELSE
+            [],
+
+          IF EvalVar # [] THEN
+            UsrSolSet : Endcons( Var = EvalVar[1], UsrSolSet )
+          ELSE
+            PrintMsg( 'SHORT, SolverMsg["NoSol"], Var )
+        ),
+
+
+        /* Append the unsolved equations. */
+        IF NOT Empty( UnsolvedEqs ) THEN
+          UsrSolSet : Endcons( UnsolvedEqs, UsrSolSet ),
+
+        IF Solver_RatSimp_Sols THEN
+          UsrSolSet : ErrCatch( FullRatSimp( UsrSolSet ) ),
+
+        IF UsrSolSet = [] THEN
+          PrintMsg( 'SHORT, SolverMsg["SolSetDrp"] )
+        ELSE
+          UserSolutions : Endcons( UsrSolSet[1], UserSolutions )
+
+      ), /* END FOR SolSet */
+
+      IF Solver_Dump_To_File THEN
+        DumpToFile( UserSolutions, [], [] )
+
+    ), /* END IF NOT Empty( Solutions ) */
+
+
+    RETURN( UserSolutions )
+
+  ) /* END BLOCK */
+)$
+
+
+/******************************************************************************/
+/* ExpandSolutionHierarchy transforms the hierarchically structured list of   */
+/* solutions into a list of flat lists of solutions.                          */
+/******************************************************************************/
+
+ExpandSolutionHierarchy( Solutions ) := (
+
+  Mode_Declare(
+    Solutions, LIST
+  ),
+
+  BLOCK(
+    [ FlatSolutions ],
+
+    Mode_Declare(
+      FlatSolutions, LIST
+    ),
+
+    /* ListP = TRUE indicates an additional recursion level */
+    IF ListP( Last( Solutions ) ) THEN (
+
+      FlatSolutions : Rest( Solutions, -1 ),
+
+      RETURN(
+
+        Map(
+          Lambda( [ x ], Append( FlatSolutions, x ) ),
+
+          Apply(
+            'Append,
+            Map( 'ExpandSolutionHierarchy, Last( Solutions ) )
+          )
+        )
+
+      )
+
+    )
+
+    ELSE
+      RETURN( [ Solutions ] )
+
+  )
+)$
+
+
+/******************************************************************************/
+/* DumpToFile dumps the current set of solutions, equations and variables to  */
+/* the file <Solver_Dump_File>.                                               */
+/******************************************************************************/
+
+DumpToFile( Sols, Eqs, Vars ) := (
+
+  Mode_Declare(
+    [ Sols, Eqs, Vars ], LIST
+  ),
+
+  BLOCK(
+    [ Solutions, Equations, Variables ],
+
+    PrintMsg( 'SHORT, SolverMsg["Dump"], Solver_Dump_File ),
+
+    Apply(
+      'StringOut,
+      [
+        Solver_Dump_File,
+        'Solutions = Sols,
+        'Equations = Eqs,
+        'Variables = Vars
+      ]
+    )
+  )
+)$
+
+tma():=trace(
+TerminateSolver,
+SetupSolver,
+ParamConsistency,
+SolverAssumeZero,
+ListOfPowers,
+ImmediateAssignments,
+LinearSolver,
+MakeSquareLinearBlocks,
+DelEqBeforeVar,
+ComplCoeffMatrix,
+LinCoeff,
+ValuationSolver,
+SolutionOK,
+ValuationMatrix,
+SetValuation,
+Valuation,
+OccurrenceMatrix,
+Occurences,
+MinVarPathsFirst,
+PostProcess,
+ExpandSolutionHierarchy,
+DumpToFile)$

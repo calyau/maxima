@@ -1,0 +1,529 @@
+/******************************************************************************/
+/*                                                                            */
+/* SLVRTBOX.MAC                                                               */
+/*                                                                            */
+/* Copyright (C) 2000 : Eckhard Hennig, Ralf Sommer                           */
+/* This library is free software; you can redistribute it and/or modify it    */
+/* under the terms of the GNU Library General Public License as published     */
+/* by the Free Software Foundation; either version 2 of the License, or (at   */
+/* your option) any later version.                                            */
+/*                                                                            */
+/* This library is distributed in the hope that it will be useful, but        */
+/* WITHOUT ANY WARRANTY; without even the implied warranty of                 */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU          */
+/* Library General Public License for more details.                           */
+/*                                                                            */
+/* You should have received a copy of the GNU Library General Public          */
+/* License along with this library; if not, write to the Free Software        */
+/* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                  */
+/******************************************************************************/
+/* Author(s)    : Eckhard Hennig, Ralf Sommer                                 */
+/* Project start: 17.01.1995                                                  */
+/* Completed    : 17.01.1995                                                  */
+/* Last change  : 17.08.1995                                                  */
+/* Time         : 15:38                                                       */
+/******************************************************************************/
+/* Changes      : ||||| |                                                     */
+/******************************************************************************/
+
+Put( 'SLVRTBOX, 1, 'Version )$
+
+/* Version information: see below function definition of SetVersion */
+
+/******************************************************************************/
+/* Last change: 17.08.1995                                                    */
+/* Time       : 15:38                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Function Position now accepts non list arguments              */
+/******************************************************************************/
+/* Last change: 28.06.1995                                                    */
+/* Time       : 13:53                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Function SortSolveOrder added.                                */
+/******************************************************************************/
+/* Last change: 28.05.1995                                                    */
+/* Time       : 12:06                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Default function for Solver_Break_Test added.                 */
+/******************************************************************************/
+/* Last change: 13.02.1995                                                    */
+/* Time       : 09.19                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Initial value of MsgLvl set to 0.                             */
+/******************************************************************************/
+/* Last change: 31.01.1995                                                    */
+/* Time       : 10.06                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Problem with Solver_Verbose:FALSE fixed.                      */
+/******************************************************************************/
+/* Last change: 24.01.1995                                                    */
+/* Time       : 16.40                                                         */
+/* By         : Eckhard Hennig                                                */
+/* Description: Version property added.                                       */
+/******************************************************************************/
+/* Last change: 17.01.1995                                                    */
+/* Time       : 18.20                                                         */
+/* By         : Eckhard Hennig, Ralf Sommer                                   */
+/* Description: Most functions moved from AI's TOOLBOX.MAC into SLVRTBOX.MAC  */
+/*              Variable Solver_Verbose added (linked to MsgLevel via         */
+/*              VALUE_CHECK property)                                         */
+/******************************************************************************/
+
+/******************************************************************************/
+/* SetProp does the same as Put but the order of arguments is different. This */
+/* is useful because sometimes the Property is a rather lengthy segment of    */
+/* code which would otherwise have to be scrolled through to inspect the      */
+/* Indicator.                                                                 */
+/******************************************************************************/
+
+SetProp( Atom, Indicator, Property ) := Put( Atom, Property, Indicator )$
+
+
+/******************************************************************************/
+/* SetVersion stores some information about the loaded Analog Insydes package */
+/* for online version inspection.                                             */
+/******************************************************************************/
+
+SetVersion( [ InfoList ] ) := (
+
+  Mode_Declare(
+    InfoList, LIST
+  ),
+
+  SetProp(
+    'AI,
+    InfoList[1],
+
+    Map(
+      '(
+        Lambda(
+          [ x ],
+          Assoc( x, Rest( InfoList ), "???" )
+        )
+      ),
+      [ 'MODULE, 'DESCRIPTION, 'AUTHORS, 'DATE, 'LASTCHANGE, 'TIME, 'PLAN ]
+    )
+  )
+)$
+
+
+SetVersion(
+  /* KEY    = */ 'SLVRTBOX,
+  'MODULE      = "SLVRTBOX",
+  'DESCRIPTION = "Collection of utility functions for SOLVER",
+  'AUTHORS     = "Eckhard Hennig, Ralf Sommer",
+  'DATE        = "17.01.1995",
+  'LASTCHANGE  = "17.08.1995",
+  'TIME        = "15:38",
+  'PLAN        = ""
+)$
+
+
+/******************************************************************************/
+/* Global variables                                                           */
+/******************************************************************************/
+
+Define_Variable( MsgLvl, 0, FIXNUM )$
+
+/******************************************************************************/
+/* MsgLevel controls the amount of output AI generates. If MsgLevel is        */
+/* 'OFF there will be no screen output at all. 'SHORT restricts the output to */
+/* some important messages only whereas 'DETAIL allows extended information   */
+/* to be printed. The priority corresponding with a message must be supplied  */
+/* by the PrintMsg command:                                                   */
+/* PrintMsg( <'OFF | 'FALSE  |'SHORT | 'DETAIL | 'ALWAYS>, <stuff> ).         */
+/******************************************************************************/
+
+Define_Variable( MsgLevel, 'FALSE, ANY_CHECK )$
+
+Put(
+  'MsgLevel,
+  Lambda(
+    [ x ],
+    IF Member( x, [ 'OFF, 'FALSE, 'SHORT, 'DETAIL ] )
+      OR ( DebugMode AND ( x = 'DEBUG ) )
+    THEN
+      MsgLvl : Mode_Identity(
+        FIXNUM,
+        Assoc(
+          x,
+          [
+            'OFF = 0, 'FALSE = 0, FALSE = 0,
+            'SHORT = 1, 'DETAIL = 2, 'DEBUG = 10
+          ]
+        )
+      )
+    ELSE
+      ErrorHandler( "InvMsgLvl", x, 'Fatal )
+  ),
+  'VALUE_CHECK
+)$
+
+
+Define_Variable( Solver_Verbose, FALSE, ANY_CHECK )$
+
+Put(
+  'Solver_Verbose,
+  Lambda(
+    [ VerboseMode ],
+
+    CASE( VerboseMode,
+
+      [ FALSE,     MsgLevel : 'FALSE  ],
+      [ TRUE,      MsgLevel : 'SHORT  ],
+      [ ALL,       MsgLevel : 'DETAIL ],
+      [ OTHERWISE, ErrorHandler( "InvVerbMode", VerboseMode, 'Fatal ) ]
+    )
+  ),
+  'VALUE_CHECK
+)$
+
+
+/******************************************************************************/
+/* GetUserProperties retrieves the list of user properties associated with    */
+/* Symbol.                                                                    */
+/******************************************************************************/
+
+GetUserProperties( Symbol ) := (
+
+  Mode_Declare(
+    Symbol, ANY
+  ),
+
+  BLOCK(
+    [ UserProps ],
+
+    Mode_Declare(
+      User_Props, LIST
+    ),
+
+    /* Get all properties of Symbol and extract the sublist which begins      */
+    /* with the keyword "User Properties".                                    */
+
+    UserProps : Sublist(
+      Apply( 'Properties, [ Symbol ] ),
+      Lambda( [x],
+        ListP(x) AND ( Length(x) > 1 ) AND ( First(x) = "User Properties" )
+      )
+    ),
+
+    /* If the list of user properties is nonempty then return the list with   */
+    /* the "User Properties" keyword removed. Otherwise, return an empty list.*/
+
+    IF NOT Empty( UserProps ) THEN
+      RETURN( Rest( First( UserProps ) ) )
+    ELSE
+      RETURN( [] )
+  )
+)$
+
+
+/******************************************************************************/
+/* GetVersion prints out the information stored by SetVersion.                */
+/******************************************************************************/
+
+GetVersion() := BLOCK(
+
+  [ Package, VersionInfo, Fancy_Display : FALSE ],
+
+  Mode_Declare(
+    Package, ANY,
+    VersionInfo, LIST
+  ),
+
+  Print( "Analog Insydes version information:" ),
+
+  FOR Package IN GetUserProperties( 'AI ) DO (
+
+    VersionInfo : Get( 'AI, Package ),
+    Print( " " ),
+    Print( "Module name :", VersionInfo[1] ),
+    Print( "Description :", VersionInfo[2] ),
+    Print( "Author(s)   :", VersionInfo[3] ),
+    Print( "Implemented :", VersionInfo[4] ),
+    Print( "Last change :", VersionInfo[5] ),
+    Print( "Time        :", VersionInfo[6] ),
+    Print( "Plan        :", VersionInfo[7] )
+
+  )
+)$
+
+
+/******************************************************************************/
+/* The ErrorHandler prints out the error message belonging to ErrorCode and   */
+/* displays Arg as the error cause. Then the function variable Action is      */
+/* applied to Arg so corrective actions can be taken if necessary. If no      */
+/* action is required then use 'Ignore or 'Fatal as Action.                   */
+/******************************************************************************/
+
+ErrorHandler( ErrorCode, Arg, Action ) := (
+
+   Mode_Declare(
+     [ ErrorCode, Arg, Action ], ANY
+   ),
+
+   Print( "Error:", ErrMsg[ErrorCode] ),
+
+   IF Arg # "" THEN
+     Print( "Cause:", Arg ),
+
+   Apply( Action, [ Arg ] )
+)$
+
+
+/******************************************************************************/
+/* Error handler: ignore error and continue program execution.                */
+/******************************************************************************/
+
+Ignore( Arg ) := Print( ErrMsg["Ignore"] )$
+
+
+/******************************************************************************/
+/* Error handler: abort program execution and return to Macsyma toplevel.     */
+/******************************************************************************/
+
+Fatal( Arg ) := Error( ErrMsg["FatalErr"] )$
+
+
+/******************************************************************************/
+/* AssocP tests whether Object is an association list.                        */
+/******************************************************************************/
+
+AssocP( Object ) :=
+  ListP( Object ) AND NOT Member( 'FALSE, Map( 'EquationP, Object ) )$
+
+
+/******************************************************************************/
+/* SumP tests whether Exp is a sum.                                           */
+/******************************************************************************/
+
+SumP( Exp ) :=
+  IF Part( Exp, 0 ) = "+" THEN
+    TRUE
+  ELSE
+    FALSE$
+
+
+/******************************************************************************/
+/* FunctionP tests whether Object is a function.                              */
+/******************************************************************************/
+
+FunctionP( Object ) := (
+
+  Mode_Declare(
+    Object, ANY
+  ),
+
+  BLOCK(
+
+    [ ObjectProps ],
+
+    Mode_Declare(
+      ObjectProps, LIST
+    ),
+
+    ObjectProps : Apply( 'Properties,  [ Object ] ),
+
+    RETURN(
+      Member( 'TRANSFUN, ObjectProps ) OR Member( 'FUNCTION, ObjectProps )
+    )
+  )
+)$
+
+
+/******************************************************************************/
+/* Empty tests whether a list is empty.                                       */
+/******************************************************************************/
+
+Empty( Lst ) :=
+  IF Lst = [] THEN
+    TRUE
+  ELSE
+    FALSE$
+
+
+/******************************************************************************/
+/* RowSize determines the row dimension of a matrix.                          */
+/******************************************************************************/
+
+RowSize( Mat ) := (
+
+  Mode_Declare(
+    Mat, ANY,
+    Function( Length ), FIXNUM
+  ),
+
+  Length( Mat )
+)$
+
+
+/******************************************************************************/
+/* ColSize determines the column dimension of a matrix.                       */
+/******************************************************************************/
+
+ColSize( Mat ) := (
+
+  Mode_Declare(
+    Mat, ANY,
+    Function( Length), FIXNUM
+  ),
+
+  Length( First( Mat ) )
+)$
+
+
+/******************************************************************************/
+/* AppendRows appends an additional row to a matrix.                          */
+/******************************************************************************/
+
+AppendRows( Mat, r ) := (
+
+  Mode_Declare(
+    Mat, ANY,
+    [ r, Function( ColSize ) ], FIXNUM
+  ),
+
+  AddRow( Mat, ZeroMatrix( r, ColSize( Mat ) ) )
+)$
+
+
+/******************************************************************************/
+/* AppendCols appends an additional column to a matrix.                       */
+/******************************************************************************/
+
+AppendCols( Mat, c ) := (
+
+  Mode_Declare(
+    Mat, ANY,
+    [ c, Function( RowSize ) ], FIXNUM
+  ),
+
+  AddCol( Mat, ZeroMatrix( RowSize( Mat ), c ) )
+)$
+
+
+/******************************************************************************/
+/* PrintMsg prints a message on the screen if MsgLevel is set appropriately.  */
+/******************************************************************************/
+
+PrintMsg( Level, [ Messages ]) := (
+
+  Mode_Declare(
+    Level, ANY,
+    Messages, LIST
+  ),
+
+  BLOCK(
+
+    [ MsgPriority ],
+
+    Mode_Declare(
+      [ MsgPriority, Function( Assoc ) ], FIXNUM
+    ),
+
+    IF (
+      MsgPriority : Assoc(
+        Level,
+        [ 'ALWAYS = 0, 'SHORT = 1, 'DETAIL = 2, 'DEBUG = 10 ]
+      )
+    ) # FALSE THEN (
+      IF MsgPriority <= MsgLvl THEN
+        Apply( 'Print, Messages )
+    )
+  )
+)$
+
+
+/******************************************************************************/
+/* Flatten flattens out hierarchical lists.                                   */
+/******************************************************************************/
+
+Flatten( Lst ) := (
+
+  Mode_Declare(
+    Lst, LIST
+  ),
+
+  Apply(
+    'Append,
+    Map(
+      Lambda(
+        [ Sublst ],
+        IF ListP( Sublst ) THEN
+          Flatten( Sublst )
+        ELSE
+          [ Sublst ]
+      ),
+      Lst
+    )
+  )
+)$
+
+
+/******************************************************************************/
+/* ListMatrix transforms a matrix into a list of lists.                       */
+/******************************************************************************/
+
+ListMatrix( Mat ) :=
+  IF MatrixP( Mat ) THEN
+    SubstPart( "[", copymatrix(Mat), 0 )
+  ELSE
+    FALSE$
+
+
+/******************************************************************************/
+/* Position determines the position of Element within the list Lst.           */
+/* If Element does not exist, Position returns 0.                             */
+/******************************************************************************/
+
+Position( Element, Lst ) := (
+
+  Mode_Declare(
+    [ Element, Lst ], ANY
+  ),
+
+  BLOCK(
+
+    [ i, p, Found ],
+
+    Mode_Declare(
+      [ i, p ], FIXNUM,
+      Found, BOOLEAN
+    ),
+
+    IF NOT ListP( Lst ) THEN
+      Lst : [ Lst ],
+
+    Found : FALSE,
+    FOR i THRU Length( Lst ) UNLESS Found DO
+      IF Element = Lst[i] THEN (
+        p : i,
+        Found : TRUE
+      ),
+
+    IF Found THEN
+      RETURN( p )
+    ELSE
+      RETURN( 0 )
+  )
+)$
+
+
+/******************************************************************************/
+/* SolverJustDoIt is the default Solver_Break_Test function. It simply returns*/
+/* FALSE, hence the Solver never stops.                                       */
+/******************************************************************************/
+
+SolverJustDoIt( Eq, Var, Val ) := FALSE$
+
+
+/******************************************************************************/
+/* SortSolveOrder sorts the list of valuations by least valuation.            */
+/******************************************************************************/
+
+SortSolveOrder( SlvOrd ) :=
+  Sort(
+    SlvOrd,
+    Lambda( [a, b], Third( a ) < Third( b ) )
+  )$
+
