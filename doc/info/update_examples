@@ -32,6 +32,9 @@ sub rem_codes {
     $res =~ s/\cB//g;
     $res =~ s/\cE//g;
     
+    $res =~ s/\{/\@\{/g;
+    $res =~ s/\}/\@\}/g;
+    
     $res = expand($res);
 
     return $res;
