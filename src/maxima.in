@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# jfa:
-# This script is not complete. (Not even close!) 
-# More funtionality will be added.
 usage () {
 	cat << EOF
 usage: maxima [options]
