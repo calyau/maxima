@@ -603,7 +603,7 @@
 	     ((NULL (CDR LOWER))
 	      (COND ((EQUAL (CAR UPPER) (CAR LOWER))
 		     (COND ((NUMBERP (CAR UPPER)) 1.) (T $DIM)))
-		    ((NUMBERP (CAR UPPER)) 0.)
+		    ((AND (NUMBERP (CAR UPPER)) (NUMBERP (CAR LOWER))) 0.)
 		    (T (LIST '(%KDELTA)
 			     (CONS SMLIST LOWER)
 			     (CONS SMLIST UPPER)))))
