@@ -301,8 +301,7 @@ first argument evaluated as well as its second.
 
 @end defun
 
-@c @node BLOCK, BREAK, BINDTEST, Function Definition
-@c @unnumberedsec phony
+
 @defun BLOCK ([v1,...,vk], statement1,...,statementj)
 Blocks in Maxima are
 somewhat analogous to subroutines in FORTRAN or procedures in ALGOL or
@@ -340,8 +339,7 @@ transfer to a tag in a BLOCK other than the one containing the GO.
 but can be used in other places as well.
 
 @end defun
-@c @node BREAK, BUILDQ, BLOCK, Function Definition
-@c @unnumberedsec phony
+
 @defun BREAK (arg1, ...)
 will evaluate and print its arguments and will then
 cause a Maxima break at which point the user can examine and change
@@ -352,8 +350,7 @@ used inside the Maxima break to quit locally, without quitting the
 main computation.
 
 @end defun
-@c @node CATCH, COMPFILE, BUILDQ, Function Definition
-@c @unnumberedsec phony
+
 @defun CATCH (exp1,...,expn)
 evaluates its arguments one by one; if the
 structure of the expi leads to the evaluation of an expression of the
@@ -377,22 +374,19 @@ consists only of non-negative numbers; otherwise, G "catches" the
 first negative element of L and "throws" it up.
 
 @end defun
-@c @node COMPFILE, COMPGRIND, CATCH, Function Definition
-@c @unnumberedsec phony
+
 @defun COMPFILE ([filespec], f1, f2, ..., fn)
 Compiles functions fi into
 the file "filespec".  For convenience, see the COMPILE function.
 
 @end defun
-@c @node COMPGRIND, COMPILE, COMPFILE, Function Definition
-@c @unnumberedsec phony
+
 @defvar COMPGRIND
  default: [FALSE] when TRUE function definitions output by
 COMPFILE are pretty-printed.
 
 @end defvar
-@c @node COMPILE, COMPILE_LISP_FILE, COMPGRIND, Function Definition
-@c @unnumberedsec phony
+
 @defun COMPILE (f)
 The COMPILE command is a convenience feature in Maxima. It
 handles the calling of the function COMPFILE, which translates Maxima
@@ -411,8 +405,7 @@ Therefore, if you have variables with the same name as part of the
 file you can not ignore that fact.
 
 @end defun
-@c @node COMPILE_LISP_FILE, DEFINE, COMPILE, Function Definition
-@c @unnumberedsec phony
+
 @defun COMPILE_LISP_FILE ("input filename")
 which takes an optional second
 argument of "output filename," can be used in conjunction with
@@ -431,16 +424,14 @@ These file-oriented commands are to be preferred over the use of
 COMPILE, COMPFILE, and the TRANSLATE SAVE combination.
 
 @end defun
-@c @node DEFINE, DEFINE_VARIABLE, COMPILE_LISP_FILE, Function Definition
-@c @unnumberedsec phony
+
 @defun DEFINE (f(x1, ...), body)
 is equivalent to f(x1,...):='@w{}'(body) but when
 used inside functions it happens at execution time rather than at the
 time of definition of the function which contains it.
 
 @end defun
-@c @node DEFINE_VARIABLE, DISPFUN, DEFINE, Function Definition
-@c @unnumberedsec phony
+
 @defun DEFINE_VARIABLE (name,default-binding,mode,optional-documentation)
 
 introduces a global variable into the Maxima environment.  This is
@@ -483,8 +474,7 @@ ANY_CHECK is a mode which means the same as ANY, but which keeps
 DEFINE_VARIABLE from optimizing away the assign property.
 
 @end defun
-@c @node DISPFUN, FUNCTIONS, DEFINE_VARIABLE, Function Definition
-@c @unnumberedsec phony
+
 @defun DISPFUN (f1, f2, ...)
 displays the definition of the user defined
 functions f1, f2, ... which may also be the names of array associated
@@ -496,30 +486,26 @@ with constant subscripts.  E.g. if the user has defined a function
 F(x), DISPFUN(F); will display the definition.
 
 @end defun
-@c @node FUNCTIONS, FUNDEF, DISPFUN, Function Definition
-@c @unnumberedsec phony
+
 @defvar FUNCTIONS
  default: [] - all user defined functions (set up by
 f(x):=...).
 
 @end defvar
-@c @node FUNDEF, FUNMAKE, FUNCTIONS, Function Definition
-@c @unnumberedsec phony
+
 @defun FUNDEF (functionname)
 returns the function definition associated
 with "functionname".  FUNDEF(fnname); is similar to DISPFUN(fnname);
 except that FUNDEF does not invoke display.
 
 @end defun
-@c @node FUNMAKE, LOCAL, FUNDEF, Function Definition
-@c @unnumberedsec phony
+
 @defun FUNMAKE (name,[arg1,...,argn])
 returns name(arg1,...,argn) without
 calling the function name.
 
 @end defun
-@c @node LOCAL, MACROEXPANSION, FUNMAKE, Function Definition
-@c @unnumberedsec phony
+
 @defun LOCAL (v1, v2, ...)
 causes the variables v1,v2,... to be local with
 respect to all the properties in the statement in which this function
@@ -528,8 +514,7 @@ definitions or LAMBDA expressions, or in the EV function and only one
 occurrence is permitted in each.  LOCAL is independent of CONTEXT.
 
 @end defun
-@c @node MACROEXPANSION, MODE_CHECKP, LOCAL, Function Definition
-@c @unnumberedsec phony
+
 @defvar MACROEXPANSION
  default:[FALSE] - Controls advanced features which
 affect the efficiency of macros. Possible settings:
@@ -547,29 +532,25 @@ remembered and hence the expansion will be seen if DISPLAY or GRIND is
 called.  See documentation for TRANSLATE and MACROS for more details.
 
 @end defvar
-@c @node MODE_CHECKP, MODE_CHECK_ERRORP, MACROEXPANSION, Function Definition
-@c @unnumberedsec phony
+
 @defvar MODE_CHECKP
  default: [TRUE] - If TRUE, MODE_DECLARE checks the modes
 of bound variables.
 
 @end defvar
-@c @node MODE_CHECK_ERRORP, MODE_CHECK_WARNP, MODE_CHECKP, Function Definition
-@c @unnumberedsec phony
+
 @defvar MODE_CHECK_ERRORP
  default: [FALSE] - If TRUE, MODE_DECLARE calls
 error.
 
 @end defvar
-@c @node MODE_CHECK_WARNP, MODE_DECLARE, MODE_CHECK_ERRORP, Function Definition
-@c @unnumberedsec phony
+
 @defvar MODE_CHECK_WARNP
  default: [TRUE] - If TRUE, mode errors are
 described.
 
 @end defvar
-@c @node MODE_DECLARE, MODE_IDENTITY, MODE_CHECK_WARNP, Function Definition
-@c @unnumberedsec phony
+
 @defun MODE_DECLARE (y1, mode1, y2, mode2, ...)
 MODEDECLARE is a synonym
 for this.  MODE_DECLARE is used to declare the modes of variables and
@@ -617,8 +598,7 @@ PRINTFILE(MCOMPI,DOC,MAXDOC); for some examples of the use of
 MODE_DECLARE in translation and compilation.
 
 @end defun
-@c @node MODE_IDENTITY, TRANSBIND, MODE_DECLARE, Function Definition
-@c @unnumberedsec phony
+
 @defun MODE_IDENTITY (arg1,arg2)
 A special form used with MODE_DECLARE and
 MACROS to delcare, e.g., a list of lists of flonums, or other compound
@@ -644,8 +624,7 @@ and use FIRSTNUMB
 every time you take the first of a list of numbers.
 
 @end defun
-@c @node TRANSBIND, TRANSCOMPILE, MODE_IDENTITY, Function Definition
-@c @unnumberedsec phony
+
 @defvar TRANSBIND
  default: [FALSE] - if TRUE removes global declarations in
 the local context.  This applies to variables which are formal
@@ -653,16 +632,14 @@ parameters to functions which one is TRANSLATE-ing from Maxima code
 to Lisp.
 
 @end defvar
-@c @node TRANSCOMPILE, TRANSLATE, TRANSBIND, Function Definition
-@c @unnumberedsec phony
+
 @defvar TRANSCOMPILE
  default:[FALSE] - if true, TRANSLATE will generate the
 declarations necessary for possible compilation.  The COMPFILE command
 uses TRANSCOMPILE:TRUE;.
 
 @end defvar
-@c @node TRANSLATE, TRANSLATE_FILE, TRANSCOMPILE, Function Definition
-@c @unnumberedsec phony
+
 @defun TRANSLATE (f1, f2, ...)
 translates the user defined functions
 f1,f2,... from the Maxima language to Lisp (i.e. it makes them
@@ -721,8 +698,7 @@ file of Lisp code may be read into Maxima by using the LOADFILE
 function.
 
 @end defun
-@c @node TRANSLATE_FILE, TRANSRUN, TRANSLATE, Function Definition
-@c @unnumberedsec phony
+
 @defun TRANSLATE_FILE (file)
 translates a file of Maxima code into a file
 of Lisp code.  It takes one or two arguments.  The first argument is
@@ -741,30 +717,26 @@ BATCH("foo.mc") modulo certain restrictions (the use of '@w{}' and % for
 example).
 
 @end defun
-@c @node TRANSRUN, TR_ARRAY_AS_REF, TRANSLATE_FILE, Function Definition
-@c @unnumberedsec phony
+
 @defvar TRANSRUN
  default: [TRUE] - if FALSE will cause the interpreted
 version of all functions to be run (provided they are still around)
 rather than the translated version.
 
 @end defvar
-@c @node TR_ARRAY_AS_REF, TR_BOUND_FUNCTION_APPLYP, TRANSRUN, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_ARRAY_AS_REF
  default: [TRUE] - If TRUE runtime code uses the value
 of the variable as the array.
 
 @end defvar
-@c @node TR_BOUND_FUNCTION_APPLYP, TR_FILE_TTY_MESSAGESP, TR_ARRAY_AS_REF, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_BOUND_FUNCTION_APPLYP
  default: [TRUE] - Gives a warning if a bound
 variable is found being used as a function.
 
 @end defvar
-@c @node TR_FILE_TTY_MESSAGESP, TR_FLOAT_CAN_BRANCH_COMPLEX, TR_BOUND_FUNCTION_APPLYP, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_FILE_TTY_MESSAGESP
  default: [FALSE] - Determines whether messages
 generated by TRANSLATE_FILE during translation of a file will be sent
@@ -773,8 +745,7 @@ file are only inserted into the UNLISP file.  If TRUE, the messages
 are sent to the TTY and are also inserted into the UNLISP file.
 
 @end defvar
-@c @node TR_FLOAT_CAN_BRANCH_COMPLEX, TR_FUNCTION_CALL_DEFAULT, TR_FILE_TTY_MESSAGESP, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_FLOAT_CAN_BRANCH_COMPLEX
  default: [TRUE] - States whether the arc
 functions might return complex results.  The arc functions are SQRT,
@@ -783,8 +754,7 @@ even if X is of mode FLOAT. When FALSE then ACOS(X) will be of mode
 FLOAT if and only if X is of mode FLOAT.
 
 @end defvar
-@c @node TR_FUNCTION_CALL_DEFAULT, TR_GEN_TAGS, TR_FLOAT_CAN_BRANCH_COMPLEX, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_FUNCTION_CALL_DEFAULT
  default: [GENERAL] - FALSE means give up and
 call MEVAL, EXPR means assume Lisp fixed arg function.  GENERAL, the
@@ -797,22 +767,19 @@ default settings, no warning messages implies full compatibility of
 translated and compiled code with the Maxima interpreter.
 
 @end defvar
-@c @node TR_GEN_TAGS, TR_NUMER, TR_FUNCTION_CALL_DEFAULT, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_GEN_TAGS
  default: [FALSE] - If TRUE, TRANSLATE_FILE generates a
 TAGS file for use by the text editor.
 
 @end defvar
-@c @node TR_NUMER, TR_OPTIMIZE_MAX_LOOP, TR_GEN_TAGS, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_NUMER
  default: [FALSE] - If TRUE numer properties are used for
 atoms which have them, e.g. %PI.
 
 @end defvar
-@c @node TR_OPTIMIZE_MAX_LOOP, TR_OUTPUT_FILE_DEFAULT, TR_NUMER, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_OPTIMIZE_MAX_LOOP
  default: [100] - The maximum number of times the
 macro-expansion and optimization pass of the translator will loop in
@@ -820,31 +787,27 @@ considering a form.  This is to catch MACRO expansion errors, and
 non-terminating optimization properties.
 
 @end defvar
-@c @node TR_OUTPUT_FILE_DEFAULT, TR_PREDICATE_BRAIN_DAMAGE, TR_OPTIMIZE_MAX_LOOP, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_OUTPUT_FILE_DEFAULT
  default: [TRLISP] - This is the second file
 name to be used for translated Lisp output.
 
 @end defvar
-@c @node TR_PREDICATE_BRAIN_DAMAGE, TR_SEMICOMPILE, TR_OUTPUT_FILE_DEFAULT, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_PREDICATE_BRAIN_DAMAGE
  default: [FALSE] - If TRUE, output possible
 multiple evaluations in an attempt to interface to the COMPARE
 package.
 
 @end defvar
-@c @node TR_SEMICOMPILE, TR_STATE_VARS, TR_PREDICATE_BRAIN_DAMAGE, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_SEMICOMPILE
  default: [FALSE] - If TRUE TRANSLATE_FILE and COMPFILE
 output forms which will be macroexpanded but not compiled into machine
 code by the Lisp compiler.
 
 @end defvar
-@c @node TR_STATE_VARS, TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED, TR_SEMICOMPILE, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_STATE_VARS
  default:
 @example
@@ -860,81 +823,70 @@ to what should have been produced for a given state, it is possible to
 track down bugs.
 
 @end defvar
-@c @node TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED, TR_VERSION, TR_STATE_VARS, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED
  default: [FALSE] is bound to
 the quoted string form of the true name of the file most recently
 translated by TRANSLATE_FILE.
 
 @end defvar
-@c @node TR_VERSION, TR_WARNINGS_GET, TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_VERSION
  - The version number of the translator.
 
 @end defvar
-@c @node TR_WARNINGS_GET, TR_WARN_BAD_FUNCTION_CALLS, TR_VERSION, Function Definition
-@c @unnumberedsec phony
+
 @defun TR_WARNINGS_GET ()
 Prints a list of warnings which have been given by
 the translator during the current translation.
 
 @end defun
-@c @node TR_WARN_BAD_FUNCTION_CALLS, TR_WARN_FEXPR, TR_WARNINGS_GET, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_WARN_BAD_FUNCTION_CALLS
  default: [TRUE] - Gives a warning when
 when function calls are being made which may not be correct due to
 improper declarations that were made at translate time.
 
 @end defvar
-@c @node TR_WARN_FEXPR, TR_WARN_MEVAL, TR_WARN_BAD_FUNCTION_CALLS, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_WARN_FEXPR
  default: [COMPFILE] - Gives a warning if any FEXPRs are
 encountered.  FEXPRs should not normally be output in translated code,
 all legitimate special program forms are translated.
 
 @end defvar
-@c @node TR_WARN_MEVAL, TR_WARN_MODE, TR_WARN_FEXPR, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_WARN_MEVAL
  default: [COMPFILE] - Gives a warning if the function
 MEVAL gets called.  If MEVAL is called that indicates problems in the
 translation.
 
 @end defvar
-@c @node TR_WARN_MODE, TR_WARN_UNDECLARED, TR_WARN_MEVAL, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_WARN_MODE
  default: [ALL] - Gives a warning when variables are
 assigned values inappropriate for their mode.
 
 @end defvar
-@c @node TR_WARN_UNDECLARED, TR_WARN_UNDEFINED_VARIABLE, TR_WARN_MODE, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_WARN_UNDECLARED
  default: [COMPILE] - Determines when to send
 warnings about undeclared variables to the TTY.
 
 @end defvar
-@c @node TR_WARN_UNDEFINED_VARIABLE, TR_WINDY, TR_WARN_UNDECLARED, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_WARN_UNDEFINED_VARIABLE
  default: [ALL] - Gives a warning when
 undefined global variables are seen.
 
 @end defvar
-@c @node TR_WINDY, UNDECLAREDWARN, TR_WARN_UNDEFINED_VARIABLE, Function Definition
-@c @unnumberedsec phony
+
 @defvar TR_WINDY
  default: [TRUE] - Generate "helpfull" comments and
 programming hints.
 
 @end defvar
-@c @node UNDECLAREDWARN, COMPILE_FILE, TR_WINDY, Function Definition
-@c @unnumberedsec phony
+
 @defvar UNDECLAREDWARN
  default: [COMPFILE] - A switch in the Translator.
 There are four relevant settings:
@@ -951,8 +903,7 @@ work in declaring all your variables in code  to be compiled should pay
 off.
 
 @end defvar
-@c @node COMPILE_FILE, DECLARE_TRANSLATED, UNDECLAREDWARN, Function Definition
-@c @unnumberedsec phony
+
 @defun COMPILE_FILE (filename,&optional-outfile)
 It takes filename which
 contains Maxima code, and translates this to Lisp and then compiles the
@@ -961,8 +912,7 @@ notes on translation and the compiled code).
 
 
 @end defun
-@c @node DECLARE_TRANSLATED,  , COMPILE_FILE, Function Definition
-@c @unnumberedsec phony
+
 @defun DECLARE_TRANSLATED (FN1,FN2..)
 When translating a file of Maxima code
 to Lisp, it is important for the translator to know which functions it
