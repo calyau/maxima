@@ -16,38 +16,92 @@ constructs such as @code{go}.
 @defun backtrace ()
 @defunx backtrace (n)
 Prints the call stack, that is, the list of functions which
-called the currently active function. @code{backtrace()} prints the
-entire stack, while @code{backtrace(n)} prints the n most recent 
+called the currently active function.
+
+@code{backtrace()} prints the entire call stack.
+
+@code{backtrace (@var{n})} prints the @var{n} most recent 
 functions, including the currently active function.
-@code{backtrace} can be called at any time (not only in a debugging context).
+
+@c IS THIS STATMENT REALLY NEEDED ?? 
+@c (WHY WOULD ANYONE BELIEVE backtrace CANNOT BE CALLED OUTSIDE A DEBUGGING CONTEXT??)
+@code{backtrace} can be called from a script, a function, or the interactive prompt
+(not only in a debugging context).
+
+@itemize @bullet
+@item
+@code{backtrace()} prints the entire call stack.
+
+@example
+(%i1) h(x) := g(x/7)$
+(%i2) g(x) := f(x-11)$
+(%i3) f(x) := e(x^2)$
+(%i4) e(x) := (backtrace(), 2*x + 13)$
+(%i5) h(10);
+#0: e(x=4489/49)
+#1: f(x=-67/7)
+#2: g(x=10/7)
+#3: h(x=10)
+                              9615
+(%o5)                         ----
+                               49
+@end example
+@end itemize
+
+@itemize @bullet
+@item
+@code{backtrace (@var{n})} prints the @var{n} most recent 
+functions, including the currently active function.
+
+@example
+(%i1) h(x) := (backtrace(1), g(x/7))$
+(%i2) g(x) := (backtrace(1), f(x-11))$
+(%i3) f(x) := (backtrace(1), e(x^2))$
+(%i4) e(x) := (backtrace(1), 2*x + 13)$
+(%i5) h(10);
+#0: h(x=10)
+#0: g(x=10/7)
+#0: f(x=-67/7)
+#0: e(x=4489/49)
+                              9615
+(%o5)                         ----
+                               49
+@end example
+@end itemize
 
 @end defun
 
 @deffn {special operator} do
- - The @code{do} statement is used for performing iteration.  Due to its
+The @code{do} statement is used for performing iteration.  Due to its
 great generality the @code{do} statement will be described in two parts.
 First the usual form will be given which is analogous to that used in
 several other programming languages (Fortran, Algol, PL/I, etc.); then
 the other features will be mentioned.
-1.  There are three variants of this form that differ only in their
+
+There are three variants of this form that differ only in their
 terminating conditions.  They are:
+
 @itemize @bullet
 @item
-(a)  @code{for} variable : initial-value @code{step} increment
-      @code{thru} limit @code{do} body
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      thru @var{limit} do @var{body}}
 @item
-(b)  @code{for} variable : initial-value @code{step} increment
-      @code{while} condition @code{do} body
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      while @var{condition} do @var{body}}
 @item
-(c)  @code{for} variable : initial-value @code{step} increment
-      @code{unless} condition @code{do} body
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      unless @var{condition} do @var{body}}
 @end itemize
+
+@c UGH. DO WE REALLY NEED TO MENTION THIS??
 (Alternatively, the @code{step} may be given after the termination condition
 or limit.)
-    The initial-value, increment, limit, and body can be any
+
+@var{initial_value}, @var{increment}, @var{limit}, and @var{body} can be any
 expressions.  If the increment is 1 then "@code{step 1}" may be omitted.
-    The execution of the @code{do} statement proceeds by first assigning the
-initial-value to the variable (henceforth called the
+
+The execution of the @code{do} statement proceeds by first assigning the
+initial_value to the variable (henceforth called the
 control-variable). Then: (1) If the control-variable has exceeded the
 limit of a @code{thru} specification, or if the condition of the @code{unless} is
 @code{true}, or if the condition of the @code{while} is @code{false} then the @code{do}
@@ -56,7 +110,8 @@ the control-variable.  The process from (1) to (3) is performed
 repeatedly until the termination condition is satisfied.  One may also
 give several termination conditions in which case the @code{do} terminates
 when any of them is satisfied.
-    In general the @code{thru} test is satisfied when the control-variable is
+
+In general the @code{thru} test is satisfied when the control-variable is
 greater than the limit if the increment was non-negative, or when the
 control-variable is less than the limit if the increment was negative.
 The increment and limit may be non-numeric expressions as long as this
@@ -65,135 +120,158 @@ syntactically negative (e.g. is a negative number) at the time the @code{do}
 statement is input, Maxima assumes it will be positive when the @code{do} is
 executed.  If it is not positive, then the @code{do} may not terminate
 properly.
-    Note that the limit, increment, and termination condition are
+
+Note that the limit, increment, and termination condition are
 evaluated each time through the loop.  Thus if any of these involve
 much computation, and yield a result that does not change during all
 the executions of the body, then it is more efficient to set a
 variable to their value prior to the @code{do} and use this variable in the
 @code{do} form.
-    The value normally returned by a @code{do} statement is the atom @code{done}, as
-every statement in Maxima returns a value.  However, the function
+
+The value normally returned by a @code{do} statement is the atom @code{done}.
+However, the function
 @code{return} may be used inside the body to exit the @code{do} prematurely and give
-it any desired value.  Note however that a @code{return} within a @code{do} that
+it any desired value.
+Note however that a @code{return} within a @code{do} that
 occurs in a @code{block} will exit only the @code{do} and not the @code{block}.  Note also
 that the @code{go} function may not be used to exit from a @code{do} into a
 surrounding @code{block}.
-    The control-variable is always local to the @code{do} and thus any
+
+The control-variable is always local to the @code{do} and thus any
 variable may be used without affecting the value of a variable with
 the same name outside of the @code{do}.  The control-variable is unbound
 after the @code{do} terminates.
+
 @example
-(%i1)   for a:-3 thru 26 step 7 do ldisplay(a)$
-(%t1)          a = -3
-(%t2)          a =  4
-(%t3)          a = 11
-(%t4)          a = 18
-(%t5)          a = 25
-@end example
-The function @code{ldisplay} generates intermediate labels; @code{display} does not.
-@example
-(%i6)   s:0$
-(%i7)   for i:1 while i<=10 do s:s+i;
-(%o7)          done
-(%i8)   s;
-(%o8)          55
-@end example
-Note that the condition in %i7 is equivalent to @code{unless I > 10} and also
-@code{thru 10}
-@example
-(%i9)   series:1$
-(%i10)  term:exp(sin(x))$
-(%i11)  for p:1 unless p>7 do
-          (term:diff(term,x)/p,
-          series:series+subst(x=0,term)*x^p)$
-(%i12)   series;
-                7    6     5    4    2
-(%o12)          x    x     x    x    x
-               -- - --- - -- - -- + -- + x + 1
-               96   240   15   8    2
-which gives 8 terms of the taylor series for e^sin(x).
-(%i13) poly:0$
-(%i14) for i:1 thru 5 do
-        for j:i step -1 thru 1 do
-           poly:poly+i*x^j$
-(%i15) poly;
-              5      4       3       2
-(%o15)      5 x  + 9 x  + 12 x  + 14 x  + 15 x
-(%i16) guess:-3.0$
-(%i17) for i:1 thru 10 do (guess:subst(guess,x,.5*(x+10/x)),
-         if abs(guess^2-10)<.00005 then return(guess));
-(%o17)                  - 3.1622807
+(%i1) for a:-3 thru 26 step 7 do display(a)$
+                             a = - 3
+
+                              a = 4
+
+                             a = 11
+
+                             a = 18
+
+                             a = 25
 @end example
 
-    This example computes the negative square root of 10 using the
+@example
+(%i1) s: 0$
+(%i2) for i: 1 while i <= 10 do s: s+i;
+(%o2)                         done
+(%i3) s;
+(%o3)                          55
+@end example
+
+Note that the condition @code{while i <= 10}
+is equivalent to @code{unless i > 10} and also @code{thru 10}.
+
+@example
+(%i1) series: 1$
+(%i2) term: exp (sin (x))$
+(%i3) for p: 1 unless p > 7 do
+          (term: diff (term, x)/p, 
+           series: series + subst (x=0, term)*x^p)$
+(%i4) series;
+                  7    6     5    4    2
+                 x    x     x    x    x
+(%o4)            -- - --- - -- - -- + -- + x + 1
+                 90   240   15   8    2
+@end example
+
+which gives 8 terms of the Taylor series for @code{e^sin(x)}.
+
+@example
+(%i1) poly: 0$
+(%i2) for i: 1 thru 5 do
+          for j: i step -1 thru 1 do
+              poly: poly + i*x^j$
+(%i3) poly;
+                  5      4       3       2
+(%o3)          5 x  + 9 x  + 12 x  + 14 x  + 15 x
+(%i4) guess: -3.0$
+(%i5) for i: 1 thru 10 do
+          (guess: subst (guess, x, 0.5*(x + 10/x)),
+           if abs (guess^2 - 10) < 0.00005 then return (guess));
+(%o5)                  - 3.162280701754386
+@end example
+
+This example computes the negative square root of 10 using the
 Newton- Raphson iteration a maximum of 10 times.  Had the convergence
 criterion not been met the value returned would have been @code{done}.
 Additional Forms of the @code{do} Statement
-    Instead of always adding a quantity to the control-variable one
+
+Instead of always adding a quantity to the control-variable one
 may sometimes wish to change it in some other way for each iteration.
 In this case one may use @code{next @var{expression}} instead of @code{step @var{increment}}.
 This will cause the control-variable to be set to the
 result of evaluating expression each time through the loop.
-@example
 
-(%i1)  for count:2 next 3*count thru 20
-         do display(count)$
-                    count = 2
-                    count = 6
-                    count = 18
+@example
+(%i6) for count: 2 next 3*count thru 20 do display (count)$
+                            count = 2
+
+                            count = 6
+
+                           count = 18
 @end example
 
-    As an alternative to @code{for @var{variable}: @var{value} ...do...} the syntax
+@c UGH. DO WE REALLY NEED TO MENTION THIS??
+As an alternative to @code{for @var{variable}: @var{value} ...do...} the syntax
 @code{for @var{variable} from @var{value} ...do...}  may be used.  This permits the
 @code{from @var{value}} to be placed after the step or next value or after the
 termination condition.  If @code{from @var{value}} is omitted then 1 is used as
 the initial value.
-    Sometimes one may be interested in performing an iteration where
+
+Sometimes one may be interested in performing an iteration where
 the control-variable is never actually used.  It is thus permissible
 to give only the termination conditions omitting the initialization
 and updating information as in the following example to compute the
 square-root of 5 using a poor initial guess.
+
 @example
-(%i1) x:1000;
-(%i2)  thru 10 while x#0.0 do x:.5*(x+5.0/x)$
+(%i1) x: 1000$
+(%i2) thru 20 do x: 0.5*(x + 5.0/x)$
 (%i3) x;
-(%o3)               2.236068
+(%o3)                   2.23606797749979
+(%i4) sqrt(5), numer;
+(%o4)                   2.23606797749979
 @end example
-    If it is desired one may even omit the termination conditions
+
+If it is desired one may even omit the termination conditions
 entirely and just give @code{do @var{body}} which will continue to evaluate the
 body indefinitely.  In this case the function @code{return} should be used to
 terminate execution of the @code{do}.
-@example
-(%i1) newton(f,guess):=
-  block([numer,y],
-        local(df),
-        numer:true,
-        define(df(x),diff(f(x),x)),
-        do (y:df(guess),
-            if y=0.0 then error("derivative at:",guess," is zero."),
-            guess:guess-f(guess)/y,
-            if abs(f(guess))<5.0e-6 then return(guess)))$
-(%i2) sqr(x):=x^2-5.0$
-(%i3) newton(sqr,1000);
-(%o3)                    2.236068
-@end example
-    (Note that @code{return}, when executed, causes the current value of
-@code{guess} to be returned as the value of the @code{do}.  The @code{block} is exited and
-this value of the @code{do} is returned as the value of the @code{block} because the
-@code{do} is the last statement in the block.)
-    One other form of the @code{do} is available in Maxima.  The syntax is:
 
 @example
-for variable in list [end-tests] do body
+(%i1) newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
+          do (y: ev(df), x: x - f(x)/y, 
+              if abs (f (x)) < 5e-6 then return (x)))$
+(%i2) sqr (x) := x^2 - 5.0$
+(%i3) newton (sqr, 1000);
+(%o3)                   2.236068027062195
 @end example
-    The members of the list are any expressions which will
+
+@c DUNNO IF WE NEED THIS LEVEL OF DETAIL; THIS ARTICLE IS GETTING PRETTY LONG
+(Note that @code{return}, when executed, causes the current value of
+@code{x} to be returned as the value of the @code{do}.  The @code{block} is exited and
+this value of the @code{do} is returned as the value of the @code{block} because the
+@code{do} is the last statement in the block.)
+
+One other form of the @code{do} is available in Maxima.  The syntax is:
+
+@example
+for @var{variable} in @var{list} @var{end_tests} do @var{body}
+@end example
+
+The elements of @var{list} are any expressions which will
 successively be assigned to the variable on each iteration of the
-body.  The optional end-tests can be used to terminate execution of
+body.  The optional termination tests @var{end_tests} can be used to terminate execution of
 the @code{do}; otherwise it will terminate when the list is exhausted or when
 a @code{return} is executed in the body.  (In fact, list may be any
 non-atomic expression, and successive parts are taken.)
-@example
 
+@example
 (%i1)  for f in [log, rho, atan] do ldisp(f(1))$
 (%t1)                                  0
 (%t2)                                rho(1)
@@ -202,8 +280,8 @@ non-atomic expression, and successive parts are taken.)
                                       4
 (%i4) ev(%t3,numer);
 (%o4)                             0.78539816
-
 @end example
+
 @end deffn
 
 @defun errcatch (expr_1, expr_2, ...)
