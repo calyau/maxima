@@ -46,16 +46,36 @@ goto continueparseargs
 
 :endparseargs
 
+if "%MAXIMA_LAYOUT_AUTOTOOLS%" == "" goto defaultlayout
+set layout_autotools="true"
+goto endlayout
+
+:defaultlayout
+set layout_autotools="@default_layout_autotools@"
+
+:endlayout
+
 if "%MAXIMA_PREFIX%" == "" goto defaultvars
+if "%layout_autotools%" == "true" goto maxim_autotools
+set maxima_imagesdir=%MAXIMA_PREFIX%\src
+goto endsetupvars
+
+:maxim_autotools
 set maxima_imagesdir=%MAXIMA_PREFIX%\lib\%package%\%version%
 goto endsetupvars
 
 :defaultvars
+if "%layout_autotools%" == "true" goto defmaxim_autotools
+set maxima_imagesdir=%prefix%\src
+goto endsetupvars
+
+:defmaxim_autotools
 set maxima_imagesdir=%prefix%\lib\%package%\%version%
+goto endsetupvars
 
 :endsetupvars
 
-set maxima_image_base="%maxima_imagesdir%\binary-%lisp%\maxima"
+set maxima_image_base=%maxima_imagesdir%\binary-%lisp%\maxima
 
 if "%verbose%" == "true" @echo on
 if "%lisp%" == "gcl" goto dogcl
@@ -69,6 +89,11 @@ goto end
 goto end
 
 :doclisp
+if "%layout_autotools%" == "true" goto clisp_autotools
+clisp -q -M %maxima_image_base%.mem "" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+goto end
+
+:clisp_autotools
 %maxima_imagesdir%\binary-clisp\lisp.exe -q -M %maxima_image_base%.mem "" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
