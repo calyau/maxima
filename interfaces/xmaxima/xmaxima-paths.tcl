@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.2 2002-09-06 00:17:31 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.3 2002-09-06 09:08:07 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -61,4 +61,5 @@ proc setMaxDir {} {
     }
 }
 
-# setMaxDir now called in doit
+# setMaxDir must be called here as it is used by xmaxima-trailer.tcl
+setMaxDir

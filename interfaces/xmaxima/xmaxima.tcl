@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.21 2002-09-06 06:53:14 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.22 2002-09-06 09:08:07 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -139,9 +139,6 @@ proc usage {} {
 
 proc doit { fr } {
     global NCtextHelp ws_openMath xmaximaPreferences argv argv0 env
-
-    #mike Move this in from being at the global level
-    setMaxDir
 
     #mike Move this in from being at the global level
     if {[file isfile ~/xmaxima.ini]} {
@@ -287,3 +284,4 @@ proc doit { fr } {
   
 
 }
+
