@@ -634,11 +634,6 @@ ifb   = ( ifri    - ifri    ) ifr   ifr
    ab         d,e       e,d      a     b
 @end example
 
-Note that the frame bracket is not actually used in this version of
-Ctensor; the Ricci connection coefficients are computed directly. The
-@code{frame_bracket} function is included for compatibility with
-commercial MACSYMA.
-
 @end defun
 
 @subsection Algebraic classification
@@ -651,8 +646,29 @@ For a demonstration of this capability, see the file
 @c @node nptetrad
 @c @unnumberedsec phony
 @defun nptetrad ()
-Computes a Newman-Penrose null tetrad (@code{np}) and its inverse (@code{npi}).
-See @code{petrov()} for an example.
+Computes a Newman-Penrose null tetrad (@code{np}) and its raised-index
+counterpart (@code{npi}). See @code{petrov()} for an example.
+
+The null tetrad is constructed on the assumption that a four-diemensional
+orthonormal frame metric with metric signature (-,+,+,+) is being used.
+The components of the null tetrad are related to the inverse frame matrix
+as follows:
+
+@example
+
+np  = (fri  + fri ) / sqrt(2)
+  1       1      2
+
+np  = (fri  - fri ) / sqrt(2)
+  2       1      2
+
+np  = (fri  + %i fri ) / sqrt(2)
+  3       3         4
+
+np  = (fri  - %i fri ) / sqrt(2)
+  4       3         4
+
+@end example
 
 @end defun
 
@@ -662,6 +678,21 @@ See @code{petrov()} for an example.
 Computes the five Newman-Penrose coefficients @code{psi[0]}...@code{psi[4]}.
 If @code{psi} is set to @code{true}, the coefficients are displayed.
 See @code{petrov()} for an example.
+
+These coefficients are computed from the Weyl-tensor in a coordinate base.
+If a frame base is used, the Weyl-tensor is first converted to a coordinate
+base, which can be a computationally expensive procedure. For this reason,
+in some cases it may be more advantageous to use a coordinate base in the
+first place before the Weyl tensor is computed. Note however, that
+constructing a Newman-Penrose null tetrad requires a frame base. Therefore,
+a meaningful computation sequence may begin with a frame base, which
+is then used to compute @code{lg} (computed automatically by @code{cmetric()}
+and then @code{ug}. At this point, you can switch back to a coordinate base
+by setting @code{cframe_flag} to false before beginning to compute the
+Christoffel symbols. Changing to a frame base at a later stage could yield
+inconsistent results, as you may end up with a mixed bag of tensors, some
+computed in a frame base, some in a coordinate base, with no means to
+distinguish between the two.
 
 @end defun
 
@@ -1522,7 +1553,19 @@ A Newman-Penrose null tetrad. Computed by @code{nptetrad()}.
 @c @unnumberedsec phony
 @defvar npi
 
-The inverse Newman-Penrose null tetrad. Computed by @code{nptetrad()}.
+The raised-index Newman-Penrose null tetrad. Computed by @code{nptetrad()}.
+Defined as @code{ug.np}. The product @code{np.transpose(npi)} is constant:
+
+@example
+(%i39) trigsimp(np.transpose(npi));
+                              [  0   - 1  0  0 ]
+                              [                ]
+                              [ - 1   0   0  0 ]
+(%o39)                        [                ]
+                              [  0    0   0  1 ]
+                              [                ]
+                              [  0    0   1  0 ]
+@end example
 
 @end defvar
 
@@ -1616,24 +1659,24 @@ package compatible with the commercial version of MACSYMA.
 
 @example
   New Name     Old Name        Description
-  --------------------------------------------------
-  ctaylor()    DLGTAYLOR()
+  --------------------------------------------------------------------------
+  ctaylor()    DLGTAYLOR()     Taylor-series expansion of an expression
   lgeod[]      EM              Geodesic equations
   ein[]        G[]             Mixed Einstein-tensor
   ric[]        LR[]            Mixed Ricci-tensor
   ricci()      LRICCICOM()     Compute the mixed Ricci-tensor
-  ctaypov      MINP
-  cgeodesic()  MOTION
+  ctaypov      MINP            Maximum power in Taylor-series expansion
+  cgeodesic()  MOTION          Compute geodesic equations
   ct_coords    OMEGA           Metric coordinates
-  ctayvar      PARAM
+  ctayvar      PARAM           Taylor-series expansion variable
   lriem[]      R[]             Covariant Riemann-tensor
   uriemann()   RAISERIEMANN()  Compute the contravariant Riemann-tensor
   ratriemann   RATRIEMAN       Rational simplification of the Riemann-tensor
   uric[]       RICCI[]         Contravariant Ricci-tensor
   uricci()     RICCICOM()      Compute the contravariant Ricci-tensor
   cmetric()    SETMETRIC()     Set up the metric
-  ctaypt       TAYPT
-  ctayswitch   TAYSWITCH
+  ctaypt       TAYPT           Point for Taylor-series expansion
+  ctayswitch   TAYSWITCH       Taylor-series setting switch
   csetup()     TSETUP()        Start interactive setup session
   ctransform() TTRANSFORM()    Interactive coordinate transformation
   uriem[]      UR[]            Contravariant Riemann-tensor
@@ -1648,12 +1691,10 @@ functionality was reconstructed on the basis of two things: code I
 developed earlier for computations in a tetrad base, and the documentation
 of commercial MACSYMA.
 
-This implementation differs from commercial MACSYMA in an important
-respect: when a frame base is used, the Ricci rotation coefficients are
-computed directly, without referencing the frame bracket. (Hence the
-lack of an implementation, at least for now, of @code{frame_bracket}.)
 The algorithms have been verified through several examples, some of
 which are included as demos: see @code{tetrad.dem} or @code{petrov.dem},
-for instance.
+for instance. That said, it'll be a while before I have full confidence
+in all the algorithms that I added to this package, especially
+@code{nptetrad()} and @code{petrov()}, and the computation of the
+connection coefficients in a frame base.
 
-Implementation of torsion and nonmetricity is a work-in-progress.

@@ -1218,13 +1218,9 @@ second kind (@code{ichr2}).  In order to evaluate these, one should use
 (%o1)      /share/tensor/itensor.lisp
 (%i2) entertensor()$
 Enter tensor name: a;
-
 Enter a list of the covariant indices: [i,j];
-
 Enter a list of the contravariant indices: [k];
-
 Enter a list of the derivative indices: [];
-
                                       k
 (%t2)                                a
                                       i j
@@ -1704,6 +1700,46 @@ by the following example:
 
 @end defvar
 
+@subsection Exporting TeX expressions
+
+The ITENSOR package provides limited support for exporting tensor
+expressions to TeX. Since ITENSOR expressions appear as function calls,
+the regular Maxima @code{tex()} command will not produce the expected
+output. You can try instead the @code{tentex} command, which attempts
+to translate tensor expressions into appropriately indexed TeX objects.
+
+@c @node tentex
+@c @unnumberedsec phony
+@defun tentex (exp)
+
+To use the @code{tentex()} function, you must first load @code{tentex},
+as in the following example:
+
+@example
+
+(%i1) load(itensor);
+(%o1)      /share/tensor/itensor.lisp
+(%i2) load(tentex);
+(%o2)       /share/tensor/tentex.lisp
+(%i3) idummyx:m;
+(%o3)                                  m
+(%i4) ishow(icurvature([j,k,l],[i]))$
+            m1       i           m1       i           i            i
+(%t4)  ichr2    ichr2     - ichr2    ichr2     - ichr2      + ichr2
+            j k      m1 l        j l      m1 k        j l,k        j k,l
+(%i5) tentex(%)$
+$$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
+ \Gamma_@{k\,m_1@}^@{i@}-\Gamma_@{j\,l,k@}^@{i@}+\Gamma_@{j\,k,l@}^@{i@}$$
+
+@end example
+
+Note the use of the @code{idummyx} assignment, to avoid the appearance
+of the percent sign in the TeX expression, which may lead to compile errors.
+
+NB: This version of the @code{tentex()} function is somewhat experimental.
+
+@end defun
+
 @subsection Interfacing with CTENSOR
 
 The ITENSOR package has the ability to generate MAXIMA code that can
@@ -1776,13 +1812,15 @@ should not be redefined:
   ------------------------------------------
   indices2() Internal version of indices()
   conti      Lists contravariant indices
-  covi       Lists covariant indices
-  deri       Lists derivative indices
-  name
+  covi       Lists covariant indices of a indexed object
+  deri       Lists derivative indices of an indexed object
+  name       Returns the name of an indexed object
   concan
   irpmon
-  %c
   lc0
+  _lc2kdt0
+  _lcprod
+  _extlc
 
 @end example
 
