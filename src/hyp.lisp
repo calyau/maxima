@@ -179,6 +179,7 @@
 (defun intdiffl1l2 (arg-l1 arg-l2)
   (cond ((null arg-l1)  nil)(t (intdiff arg-l1 arg-l2))))
 
+#+nil
 (defun intdiff (arg-l1 arg-l2)
   (prog(l a dif)
      (setq l arg-l2 a (car arg-l1))
@@ -187,8 +188,28 @@
      (cond ((nni (setq dif (sub a (car l))))
 	    (return (list a dif))))
      (setq l (cdr l))
-     (go jump)))		     
+     (go jump)))
 
+;; For each element x in arg-l1 and y in arg-l2, compute d = x - y.
+;; Find the smallest such non-negative integer d and return (list x
+;; d).
+(defun intdiff (arg-l1 arg-l2)
+  (let ((result nil))
+    ;; Compute all possible differences between elements in arg-l1 and
+    ;; arg-l2.  Only save the ones where the difference is a positive
+    ;; integer
+    (dolist (x arg-l1)
+      (dolist (y arg-l2)
+	(let ((diff (sub x y)))
+	  (when (nni diff)
+	    (push (list x diff) result)))))
+    ;; Find the smallest one and return it.
+    (let ((min (first result)))
+      (dolist (x (rest result))
+	(when (lessp (second x) (second min))
+	  (setf min x)))
+      min)))
+    
 
 ;; Create the appropriate polynomial for the hypergeometric function.
 (defun create-poly (arg-l1 arg-l2 n)
