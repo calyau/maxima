@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.10 2002-09-05 08:57:06 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.11 2002-09-05 09:33:58 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -79,20 +79,23 @@ proc readDataTilEof { channel var timeout } {
     set _readDataData ""
     set readDataDone_ 0
     set $var ""
-    after $timeout "set readDataDone_ -1"
+
+    set after_id [after $timeout "set readDataDone_ -1"]
     fconfigure $channel -blocking 0
-    fileevent $channel readable "readDataTilEof1 $channel _readDataData $timeout"
+    fileevent $channel readable \
+	[list readDataTilEof1 $channel _readDataData $timeout $after_id]
             
     myVwait readDataDone_
-    after cancel "set readDataDone_ -1"
+    after cancel $after_id
     catch { close $channel}
     set res $readDataDone_
     if {$res > 0 } { append variable $_readDataData }
     return $res
 }
     
-proc readDataTilEof1 { channel var timeout} {
+proc readDataTilEof1 { channel var timeout after_id} {
     global readDataDone_  $var
+
     set new  [read $channel]
     append $var $new
 
@@ -100,7 +103,7 @@ proc readDataTilEof1 { channel var timeout} {
 	set readDataDone_ 1
 	close $channel
     } else {
-	 after cancel "set readDataDone_ -1"	
+	after cancel $after_id
         after $timeout "set readDataDone_ -1"
     }
 }
@@ -155,6 +158,7 @@ proc readDataTilEof1 { channel var timeout} {
 
 proc readAllData { sock args } {
     global readAllData [oarray $sock] ws_openMath
+
     array set [oarray $sock] {
 	timeout 5000
 	command ""
@@ -273,6 +277,7 @@ proc readMimeHeader { sock } {
 proc readAllData1 { sock } {
     #puts "readAllData1 $sock" ; flush stdout
     global ws_openMath [oarray $sock]
+
     makeLocal $sock timeout tovar tochannel docommand chunksize after contentlength begin
 
     upvar #0 [oloc $sock bytesread] bytesread
@@ -1094,10 +1099,10 @@ proc assureProgram { program timeout tries } {
     if { $tries <=  0   } { return 0}
     
     if  { [catch { set socket $pdata($program,socket) } ]
-    || [catch { eof $socket}]
-    || [eof $socket]
-    || [catch { set s [read $socket] ;
-    append pdata(input,$socket) $s }] } {
+	  || [catch { eof $socket}]
+	  || [eof $socket]
+	  || [catch { set s [read $socket] ;
+	      append pdata(input,$socket) $s }] } {
 	cleanPdata $program
 	message "connecting [lindex $MathServer 0]"
 	set msg "OPEN [programName $program] MMTP/1.0\nLineLength: [currentTextWinWidth]\n\n\n"
@@ -1248,15 +1253,16 @@ proc isAlive1 { s } {
 	
 proc isAlive { server {timeout 1000} } {
     global ws_openMath
+
     if { [ catch { set s [eval socket -async $server] } ] } { return -1 }
     set ws_openMath(isalive) 0
     fconfigure $s -blocking 0
     fileevent    $s writable     "isAlive1 $s"
     set c1 "set ws_openMath(isalive) -2"
-    after $timeout $c1
+    set after_id [after $timeout $c1]
     myVwait ws_openMath(isalive)
     catch { close $s}
-    after cancel $c1
+    after cancel $after_id
     return $ws_openMath(isalive)
 }
     
@@ -2312,6 +2318,7 @@ proc makeFrame { w type } {
     
 
 
+    #mike FIXME: this is a wrong use of after cancel
     bind $win.position <Enter> "+place $win.buttons -in $win.position -x 0 -rely 1.0 ;  after cancel lower $win.position ; raise $win.buttons "
     bind $win.buttons <Leave> "deleteBalloon $c ; place forget $win.buttons"
 
@@ -2782,6 +2789,7 @@ proc ftpDialog { win args } {
 
 proc doFtpSend { fr } {
     global ftpInfo om_ftp
+
     set error ""
     if { [winfo exists $fr.filename] } {
 	set filename $ftpInfo(filename)
@@ -3329,7 +3337,8 @@ set show_balloons 0
 
 proc balloonhelp { win subwin msg } {
     global show_balloons
-    if { $show_balloons == 0 } return;
+
+    if { $show_balloons == 0 } {return}
     linkLocal  [oget $win c] helpPending
     if { [info exists helpPending] } {after cancel $helpPending}
     set helpPending [after 1000 [list balloonhelp1 $win $subwin $msg]]
@@ -4246,7 +4255,8 @@ proc sliderCommandDf { win var val } {
     linkLocal $win recompute
     updateParameters $win $var $val
     set com "recomputeDF $win"
-# allow for fast move of slider...    
+    # allow for fast move of slider...
+    #mike FIXME: this is a wrong use of after cancel
     after cancel $com
     after 50 $com
 }
@@ -5070,9 +5080,11 @@ proc getPoint { size color } {
 
 proc sliderCommandPlot2d { win var val } {
     linkLocal $win recompute
+
     updateParameters $win $var $val
     set com "recomputePlot2d $win"
-# allow for fast move of slider...    
+    # allow for fast move of slider...    
+    #mike FIXME: this is a wrong use of after cancel
     after cancel $com
     after 10 $com
 }
@@ -5729,8 +5741,8 @@ proc replot3d { win } {
 proc setView { win ignore } {
     global timer
     foreach v [after info] {
-	 #puts "$v=<[after info $v]>"
-	if { "[lindex [after info $v] 0]" == "setView1" } {
+	#puts "$v=<[after info $v]>"
+	if {[lindex [after info $v] 0] == "setView1" } {
 	    after cancel $v
 	}
     }
@@ -6083,9 +6095,11 @@ proc doRotateScreenMotion {win x y } {
     
 proc sliderCommandPlot3d { win var val } {
     linkLocal $win recompute
+
     updateParameters $win $var $val
     set com "recomputePlot3d $win"
-# allow for fast move of slider...    
+    # allow for fast move of slider...    
+    #mike FIXME: this is a wrong use of after cancel
     after cancel $com
     after 10 $com
 }
@@ -7867,18 +7881,22 @@ proc backgroundGetImage1  { image res width height }   {
 #----------------------------------------------------------------
 #
 proc readData { s { timeout 10000 }} {
-   global ws_openMath
-   after $timeout "set ws_openMath($s,done) -1"
-   fconfigure $s  -blocking 0
-   set ws_openMath($s,done) 0
-   set ws_openMath($s,url_result) ""
-   fileevent $s readable \
+    global ws_openMath
+
+    after $timeout "set ws_openMath($s,done) -1"
+    fconfigure $s  -blocking 0
+    set ws_openMath($s,done) 0
+    set ws_openMath($s,url_result) ""
+
+    #mike FIXME: this is a wrong use of after cancel
+    fileevent $s readable \
 	   "after cancel {set ws_openMath($s,done) -1} ; after $timeout {set ws_openMath($s,done) -1} ; set da \[read $s 8000] ; append ws_openMath($s,url_result) \$da; if { \[string length \$da] < 8000  && \[eof $s] } {after cancel {set ws_openMath($s,done) -1} ; set ws_openMath($s,done) 1; fileevent $s readable {} ;  }"
-   myVwait ws_openMath($s,done)
-	catch { close $s } 
-	after cancel "set ws_openMath($s,done) -1"
-	return $ws_openMath($s,done)
-    }
+    myVwait ws_openMath($s,done)
+    catch { close $s } 
+    #mike FIXME: this is a wrong use of after cancel
+    after cancel "set ws_openMath($s,done) -1"
+    return $ws_openMath($s,done)
+}
 
 			
 
@@ -8396,11 +8414,12 @@ proc deleteHelp { win } {
 	after cancel $helpPending
 	unset helpPending
     }
-   set top [winfo toplevel $win]
-   set helpwin [oget $top helpwin]
-    if { "$helpwin" != ""} {
-     place forget $helpwin 
-}   }
+    set top [winfo toplevel $win]
+    set helpwin [oget $top helpwin]
+   if { "$helpwin" != ""} {
+       place forget $helpwin 
+   }   
+}
     
 proc setHelp {win  help args } {
    # set c [ogetr $win c "cant"]
@@ -8740,6 +8759,7 @@ if { "[info commands vwait]" == "vwait" && "[info commands myVwait]" == "" } {
 
 proc submitFtp { viahost host name password directory filename} {
     global ftpInfo 
+
     if  { [catch { set sock [socket $viahost 80] } ] } {
 	set sock [socket $viahost 4080]
     }
@@ -8766,7 +8786,9 @@ proc submitFtp { viahost host name password directory filename} {
     # puts $sock $ftpInfo(data) ; flush $sock
     # puts sock=$sock
     set ftpInfo(message) ""
-    after 10000 "set ftpInfo($sock,done) -1"
+
+    set after_id [after 10000 "set ftpInfo($sock,done) -1"]
+
     set ftpInfo($sock,datalength) $len
     set ftpInfo($sock,datanext) 0
     set ftpInfo($sock,log) "none.."
@@ -8776,11 +8798,13 @@ proc submitFtp { viahost host name password directory filename} {
     myVwait ftpInfo($sock,done)
     set res $ftpInfo($sock,done)
     set ftpInfo(message) $ftpInfo($sock,log)
-    after cancel "set ftpInfo($sock,done) -1"
+
+    #mike FIXME: this is a wrong use of after cancel
+    after cancel $after_id
+
     # puts $ftpInfo($sock,return)
-     ftp2Close $sock
+    ftp2Close $sock
     return $res
-    
 }
 
 proc ftp2Close { sock } {
@@ -8807,6 +8831,7 @@ proc ftp2WatchReturn { sock } {
 	set ftpInfo($sock,done) -1
 	set ftpInfo($sock,log) $msg
     }
+    #mike FIXME: this is a wrong use of after cancel
     after cancel "set ftpInfo($sock,done) -1"
     after 3000 "set ftpInfo($sock,done) -1"
 }
@@ -8820,6 +8845,7 @@ proc ftp2SendData { sock } {
     set ftpInfo(percent) [expr {($dn >= $dl ? 100.0 : 100.0 * $dn/$dl)}]
     # puts "storing data to $sock $percent %"
     if { $ftpInfo($sock,datanext) >= $ftpInfo($sock,datalength) } {
+	#mike FIXME: this is a wrong use of after cancel
 	after cancel "set ftpInfo($sock,done) -1"
 	after 10000 "set ftpInfo($sock,done) -1"
 	fileevent $sock writable ""
@@ -8831,6 +8857,8 @@ proc ftp2SendData { sock } {
     puts -nonewline $sock [string range $ftpInfo($sock,data) $ftpInfo($sock,datanext) [expr {$ftpInfo($sock,datanext) + $amtToSend -1}]]
     # puts  $sock $tosend
     flush $sock
+
+    #mike FIXME: this is a wrong use of after cancel
     set ftpInfo($sock,datanext) [expr {$ftpInfo($sock,datanext) + $amtToSend}]
 	after cancel "set ftpInfo($sock,done) -1"
     after 10000 "set ftpInfo($sock,done) -1"
