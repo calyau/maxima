@@ -35,7 +35,7 @@ resolvante_produit_SYM (p,x):=
         A[0]:makelist(binomial(n,r),r,0,n),
         A[1] :cons(n,makelist(coeff(p,x,n-i)*(-1)^i/coeff(p,x,n),i,1,n)),
         pui_depart:ele2pui(binomial(n,krmax)*krmax,A[1]),
-        For i:1 thru quotient(n,2)
+        for i:1 thru quotient(n,2)
            do for k:binomial(n,i-1)+1 thru binomial(n,i)
               do A[k] : pui2ele(n-i,makelist(part(pui_depart,r*k+1),
                                           r,0,n-i)),
