@@ -1442,21 +1442,28 @@ Specifies how the frame bracket (@code{ifb}) is computed. Default is
 
 @end defvar
 
-@subsection Torsion
+@subsection Torsion and nonmetricity
 
 MAXIMA can now take into account torsion and nonmetricity. When the flag
 @code{itorsion_flag} is set to @code{true}, the contribution of torsion
 is added to the connection coefficients. Similarly, when the flag
 @code{inonmet_flag} is true, nonmetricity components are included.
-Note that in order for connection coefficients to be used, the flag
-@code{iframe_flag} must also be set to @code{true}.
-
 
 @c @node inm
 @c @unnumberedsec phony
 @defvar inm
 
-The nonmetricity vector.
+The nonmetricity vector. Conformal nonmetricity is defined through the
+covariant derivative of the metric tensor. Normally zero, the metric
+tensor's covariant derivative will evaluate to the following when
+@code{inonmet_flag} is set to @code{true}:
+
+@example
+
+g     = g  nm  + g  nm  - g  nm
+ ij;k    ki  j    kj  i    ij  k
+
+@end example
 
 @end defvar
 
@@ -1600,6 +1607,20 @@ by the following example:
                       ,%3         %2 %1     j i      i j
 (%t12)               ------------------------------------
                                       2
+(%i13) decsym(itr,2,1,[anti(all)],[]);
+
+(%o13)                               done
+(%i14) defcon(g,g,kdelta);
+
+(%o14)                               done
+(%i15) subst(g,nounify(g),%th(3))$
+
+(%i16) ishow(canform(contract(%)))$
+
+                                           %1
+(%t16)                           - f    itr
+                                    ,%1    i j
+
 
 
 @end example
