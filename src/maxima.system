@@ -215,7 +215,23 @@
 					  :depends-on ("zabs" "zs1s2" "zuchk" "zunik"))
 				   (:file "zunk2"
 					  :depends-on ("zabs" "zairy" "zs1s2" "zuchk" "zunhj"))
-	     
+
+				   ;; Bessel K functions
+				   (:file "dbesk0"
+					  :depends-on ("dbesi0" "dbsk0e" "dcsevl" "initds" "xermsg"))
+				   (:file "dbsk0e"
+					  :depends-on ("dbesi0" "dcsevl" "initds" "xermsg"))
+				   (:file "dbesk1"
+					  :depends-on ("dbesi1" "dbsk1e" "dcsevl" "initds" "xermsg"))
+				   (:file "dbsk1e"
+					  :depends-on ("dbesi1" "dcsevl" "initds" "xermsg"))
+				   (:file "dbesk"
+					  :depends-on ("dasyik" "dbesk0" "dbesk1" "dbsk0e" "dbsk1e" "dbsknu" "xermsg"))
+				   (:file "dbsknu"
+					  :depends-on ("dgamma" "xermsg"))
+				   (:file "zbesk"
+					  :depends-on ("zabs" "zacon" "zbknu" "zbunk" "zuoik"))
+				   
 				   ;; Airy functions
 				   (:file "d9aimp"
 					  :depends-on ("dcsevl" "initds" "xermsg"))
