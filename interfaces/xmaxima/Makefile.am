@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.17 2002-09-06 01:38:11 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.18 2002-09-06 01:51:18 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -21,6 +21,8 @@ TKSOURCES = \
 	Tkmaxima/Parse.tcl \
 	Tkmaxima/Textinsert.tcl \
 	Tkmaxima/Printops.tcl \
+	Tkmaxima/Push.tcl \
+	Tkmaxima/Plotconf.tcl \
 	xmaxima.tcl 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl

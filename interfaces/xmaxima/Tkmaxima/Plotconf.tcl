@@ -1,87 +1,8 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: plotconf.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
 ###### plotconf.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
-
-## source private.tcl
-
-###### private.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
-############################################################
-
-# a private way of storing variables on a window by window
-# basis
-
-proc makeLocal { win args } {
-  foreach v $args {
-     uplevel 1 set  $v \[oget $win $v\]
- }
-}
-
-proc linkLocal { win args } {
-  foreach v $args {
-      uplevel 1 upvar #0 _WinInfo${win}\($v) $v
- }
-}
-
-proc clearLocal { win } {
-    global _WinInfo$win
-       # puts "clearing info for $win in [info level 1]"
-
-    catch { unset _WinInfo$win }
-}
- 
-
-proc oset { win var val } {
-  global _WinInfo$win
-  set _WinInfo[set win]($var) $val
-}
-
-proc oarraySet { win vals } {
-  global _WinInfo$win
-  array set  _WinInfo$win $vals
-}
-
-proc oloc { win var } {
-  return _WinInfo[set win]($var)
-}
-
-proc oarray { win  } {
-  return _WinInfo[set win]
-}
-
-proc oget { win var } {
-  global _WinInfo$win
-  return [set _WinInfo[set win]($var)]
-}
-
-
-## endsource private.tcl
-source parse.tcl
-source textinsert.tcl
-source printops.tcl
-# set font {Courier 8}
-set fontCourier8 "-*-Courier-Medium-R-Normal--*-120-*-*-*-*-*-*"
-
-if { "[winfo screenvisual .]" == "staticgray" } { set axisGray black
-}     else  { set axisGray gray60}
-
-set writefile  "Save"
-# make printing be by ftp'ing a file..
-
-if {[catch { set doExit }] } { set doExit ""}
-set width_ [winfo screenwidth .]
-if { $width_ >= 1280 } { set fontSize 12
-  } elseif { $width_ <= 640} { set fontSize 8 } else {
-    set fontSize 10}
-unset width_    
 
 proc makeFrame { w type } {
     global   writefile doExit fontSize buttonfont ws_openMath   
@@ -154,6 +75,7 @@ proc makeFrame { w type } {
     
 
 
+    #mike FIXME: this is a wrong use of after cancel
     bind $win.position <Enter> "+place $win.buttons -in $win.position -x 0 -rely 1.0 ;  after cancel lower $win.position ; raise $win.buttons "
     bind $win.buttons <Leave> "deleteBalloon $c ; place forget $win.buttons"
 
@@ -264,106 +186,6 @@ proc doHelp { win msg } {
     pushBind $c <1> "$c delete help; popBind $c <1>"
 }
 
-## source push.tcl
-
-###### push.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
-############################################################
-
-
-
-#
- #-----------------------------------------------------------------
- #
- # pushl --  push VALUE onto a stack stored under KEY
- #
- #  Results:
- #
- #  Side Effects: 
- #
- #----------------------------------------------------------------
-#
-
-global __pushl_ar
-proc pushl { val key  } {
-    global __pushl_ar
-  append __pushl_ar($key) " [list $val]"
-}
-
-
-#
- #-----------------------------------------------------------------
- #
- # peekl --  if a value has been pushl'd under KEY return the 
- # last value otherwise return DEFAULT.   If M is supplied, get the
- # M'th one pushed... M == 1 is the last one pushed.
- #  Results:  a previously pushed value or DEFAULT
- #
- #  Side Effects: none
- #
- #----------------------------------------------------------------
-#
-proc peekl {key default {m 1}} {
-    global __pushl_ar
-    if { [catch { set val [set __pushl_ar($key) ] } ] } {
-	return $default } else {
-	    set n [llength $val]
-	    if { $m > 0 && $m <= $n } {
-		return [lindex $val [incr n -$m]]
-	    } else { return $default }
-	}
-    }
-    
-    
-
-#
- #-----------------------------------------------------------------
- #
- # popl --  pop off  last value stored under KEY, or else return DFLT
- #
- #  Results: last VALUE stored or DEFAULT
- #
- #  Side Effects: List stored under KEY becomes one shorter
- #
- #----------------------------------------------------------------
-#
-proc popl { key  dflt} {
-    global __pushl_ar
-    
-    if { [catch { set val [set __pushl_ar($key) ] } ] } {
-	return $dflt } else {
-	    set n [llength $val]
-   	    set result [lindex $val [incr n -1]]
-
-	    if { $n > 0 } {
-		set __pushl_ar($key) [lrange $val 0 [expr {$n -1}]]
-	    } else {unset __pushl_ar($key) }
-	    return $result
-	}
-    }
-
-
-#
- #-----------------------------------------------------------------
- #
- # clearl --  clear the list stored under KEY
- # 
- #  Result: none
- #
- #  Side Effects:  clear the list stored under KEY
- #
- #----------------------------------------------------------------
-#
-proc clearl { key } {
-    global __pushl_ar
-    catch { unset __pushl_ar($key) }
-}
-    
-
-
-## endsource push.tcl
 proc pushBind { win key action } {
     pushl [bind $win $key] [list $win $key ] 
     bind $win $key $action
@@ -581,9 +403,6 @@ set y2 [expr {$y2-.01 * $diag}]
  #----------------------------------------------------------------
 #
 
-set ftpInfo(host) genie1.ma.utexas.edu
-set ftpInfo(viahost) genie1.ma.utexas.edu
-
 proc ftpDialog { win args } {
     global ftpInfo buttonFont fontSize
     set fr ${win}plot
@@ -624,6 +443,7 @@ proc ftpDialog { win args } {
 
 proc doFtpSend { fr } {
     global ftpInfo om_ftp
+
     set error ""
     if { [winfo exists $fr.filename] } {
 	set filename $ftpInfo(filename)
@@ -1165,11 +985,14 @@ proc doConfig { win }  {
 }
 # mkentry { newframe textvar text } 
 
-set show_balloons 1
+# turn off the horrible show_balloons by default.
+global show_balloons
+set show_balloons 0
 
 proc balloonhelp { win subwin msg } {
     global show_balloons
-    if { $show_balloons == 0 } return;
+
+    if { $show_balloons == 0 } {return}
     linkLocal  [oget $win c] helpPending
     if { [info exists helpPending] } {after cancel $helpPending}
     set helpPending [after 1000 [list balloonhelp1 $win $subwin $msg]]
