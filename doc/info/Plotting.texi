@@ -150,66 +150,191 @@ A temporary file @file{xgraph-out} is used.
 Members of this list indicate defaults for plotting.  They may
 be altered using SET_PLOT_OPTION
 
+PLOT_FORMAT determines which plotting package will be used. The
+supported values for PLOT_FORMAT are:
+@example
+[PLOT_FORMAT, GNUPLOT]
+@end example
+Gnuplot is the default, and most advanced, plotting package. It
+requires an external gnuplot installation.
+
+@example
+[PLOT_FORMAT, MGNUPLOT]
+@end example
+Mgnuplot is a Tk-based wrapper around gnuplot. It is included in the
+Maxima distribution. Mgnuplot offers a rudimentary GUI for gnuplot,
+but has fewer overall features than the plain gnuplot
+interface. Mgnuplot requires an external gnuplot installation and
+TCL/Tk.
+
+@example
+[PLOT_FORMAT, OPENMATH]
+@end example
+Openmath is a TCL/Tk GUI plotting program. It is included in the
+Maxima distribution.
+
+@example
+[PLOT_FORMAT, PS]
+@end example
+The PS plot format generates simple postcript files directly from
+Maxima. Much more advanced postscript output is available using the
+gnuplot plot format and gnuplot_term set to ps.
+
+RUN_VIEWER controls whether or not the appropriate viewer for the plot
+format should be run.
+@example
+[RUN_VIEWER, FALSE]
+@end example
+The default value for RUN_VIEWER is TRUE.
+
+GNUPLOT_TERM is specific to the gnuplot plot format. It sets the
+output terminal type for gnuplot
+@example
+[GNUPLOT_TERM, DEFAULT]
+@end example
+The default gnuplot terminal is a separate graphical window.
+
+@example
+[GNUPLOT_TERM, DUMB]
+@end example
+The dumb terminal produces an ASCII art approximation to graphics.
+
+@example
+[GNUPLOT_TERM, PS]
+@end example
+The ps terminal produces postscript. Use it in conjunction with
+GNUPLOT_OUT_FILE in order to write postscript to a file instead of the
+screen.
+
+GNUPLOT_OUT_FILE is specific to the gnuplot plot format. It sends
+gnuplot output to a file.
+@example
+[GNUPLOT_OUT_FILE, "myplot.ps"]
+@end example
+This example sends postscript output to the file ``myplot.ps'' when
+used in conjunction with the postscript gnuplot terminal.
+
+
+X and Y are the default horizontal and vertical ranges, respectively.
 @example
 [X, - 3, 3]
 [Y, - 3, 3]
 @end example
+Sets the horizontal and vertical ranges to [-3,3].
 
-are the x range and y range respectively.
+T is the default range for the parameter in parametric plots.
+@example
+[T, 0, 10]
+@end example
+Sets the parametric variable range to [0, 10].
 
+NTICKS and ADAPT_DEPTH control the initial number of points and the
+maximum number of splittings used by the adaptive plotting routine.
+@example
+[NTICKS 20]
+[ADAPT_DEPTH 5]
+@end example
+The default for both NTICKS and ADAPT_DEPTH is 10.
+
+GRID sets the number of grid points to use in the x- and y-directions
+for three-dimensional plotting.
+@example
+[GRID, 50, 50]
+@end example
+sets the grid to 50 by 50 points. The default grid is 30 by 30.
+
+TRANSFORM_XY allows transformations to be applied to three-dimensional
+plots.
+@example
 [TRANSFORM_XY, FALSE]
-if not false, should be the output of
-
+@end example
+The default TRANSFORM_XY is FALSE. If it is not FALSE, it should be
+the output of
 @example
 make_transform([x,y,z], [f1(x,y,z),f2(x,y,z),f3(x,y,z)])
 @end example
-which produces a transformation from 3 space to 3 space, which
-will be applied to the graph.   A built in one is polar_xy which
-gives the same as
-
+The POLAR_XY transformation is built in. It gives the same
+transformation as
 @example
 make_transform([r,th,z],[r*cos(th),r*sin(th),z])
-
 @end example
 
-[RUN_VIEWER,TRUE] if not false, means run the viewer software - don't just
-output a data file.
+COLOUR_Z is specific to the PS plot format.
+@example
+[COLOUR_Z, TRUE]
+@end example
+The default value for COLOUR_Z is FALSE.
 
-[GRID,30,30] means plot3d should divide the x range into 30 intervals
-and similarly the y range.
+VIEW_DIRECTION is specific to the PS plot format.
+@example
+[VIEW_DIRECTION, 1, 1, 1]
+@end example
+The default VIEW_DIRECTION is [1,1,1].
 
-[COLOUR_Z,false] applies to colouring done with plot_format ps.
+GNUPLOT_PM3D, GNUPLOT_PREAMBLE, GNUPLOT_CURVE_TITLES,
+GNUPLOT_CURVE_STYLES, GNUPLOT_DEFAULT_TERM_COMMAND,
+GNUPLOT_DUMB_TERM_COMMAND and GNUPLOT_PS_TERM_COMMAND are advanced
+gnuplot options. All of these options (except GNUPLOT_PM3D) take raw
+gnuplot commands. Refer to the gnuplot documentation for more details.
 
-[PLOT_FORMAT,OPENMATH] is for plot3d and currently  OPENMATH,
-GNUPLOT, PS, and GEOMVIEW are supported.
+@example
+[GNUPLOT_PM3D, TRUE]
+@end example
+GNUPLOT_PM3D controls the usage PM3D mode, which has advanced 3D
+features. PM3D is only available in gnuplot versions after 3.7. The
+default value for GNUPLOT_PM3D is FALSE.
 
-There are good quality public domain viewers for these formats.
-They are openmath, izic, gnuplot, ghostview, and geomview.
+@example
+[GNUPLOT_PREAMBLE, "set log y"]
+@end example
+GNUPLOT_PREAMBLE inserts gnuplot commands before the plot is
+drawn. Any valid gnuplot commands may be used. Multiple commands
+should be separated with a semi-colon. The example shown produces a
+log scale plot. The default value for GNUPLOT_PREAMBLE is ``''.
 
-The Openmath viewer is in the distribution, and is based on tcl/tk.
-The executable is @file{maxima/bin/omplotdata}.  The viewer lets you
-zoom in, slide around, and rotate (if 3 dimensional).  This format is
-also the one used by netmath, for making plots with Netmath. (see
-@file{http://www.ma.utexas.edu/users/wfs/netmath.html})
+@example
+[GNUPLOT_CURVE_TITLES, ["my first function","my second function"]]
+@end example
+GNUPLOT_CURVE_TITLES controls the titles given in the plot key. The
+default value is DEFAULT, which automatically sets the title of each
+curve to the function plotted. If not DEFAULT, GNUPLOT_CURVE_TITLES
+should contain a list of strings. (To disable the plot key entirely,
+add ``set nokey'' to GNUPLOT_PREAMBLE.)
 
-geomview is from the Geometry Center at the University of Minnesota, and
-is available from
-@file{http://www.geom.umn.edu/software/download/geomview.html} or by
-anonymous ftp from @file{ftp://ftp.geom.umn.edu/pub/software/geomview/}.  It
-is currently not quite as pretty as izic, but provides excellent support
-for multiple objects and multiple lights.
+@example
+[GNUPLOT_CURVE_STYLES, ["with lines 7", "with lines 2"]]
+@end example
+GNUPLOT_CURVE_STYLES is a list of strings controlling the appearance
+of curves, i.e., color, width, dashing, etc., to be sent to the
+gnuplot plot command. The default value is ["with lines 3", "with
+lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines
+6", "with lines 7"], which cycles through different colors. See the
+gnuplot documentation for ``plot'' for more information.
 
-gnuplot is everywhere as is ghostview.   We also provide mgnuplot,
-a tcl interface for gnuplot, which lets you rotate the plots using
-the mouse and a scale.
+@example
+[GNUPLOT_DEFAULT_TERM_COMMAND, "set term x11"]
+@end example
+GNUPLOT_DEFAULT_TERM_COMMAND is the gnuplot command to set the
+terminal type for the default terminal. The default value is ``'',
+i.e., use gnuplot's default.
 
-izic is available by ftp from zenon.inria.fr.  Contact one of
+@example
+[GNUPLOT_DUMB_TERM_COMMAND, "set term dumb 132 50"]
+@end example
+GNUPLOT_DUMB_TERM_COMMAND is the gnuplot command to set the
+terminal type for the dumb terminal. The default value is ``set term
+dumb 79 22'', which makes the text output 79 characters by 22
+characters.
 
-@{fournier,kajler,mourrain@}@@sophia.inria.fr.
-
-It has beautiful colour gouraud shading, and very fast wireframe.  It
-runs on X windows.
-
+@example
+[GNUPLOT_PS_TERM_COMMAND, "set term postscript eps enhanced color solid 18"]
+@end example
+GNUPLOT_PS_TERM_COMMAND is the gnuplot command to set the terminal
+type for the postscript terminal. The default value is ``set size 1.5,
+1.5;set term postscript eps enhanced color solid 24'', which sets the
+size to 1.5 times gnuplot's default, and the font size to 24, among
+other things. See the gnuplot documentation for ``set term
+postscript'' for more information.
 
 
 
