@@ -244,7 +244,7 @@ clean:
 	rm -f  $(OBJS) $(MACROS) core saved_max_compile make.o $(PORTDIR)/raw_maxima
 
 eliminate-source:
-	rm -f `echo  $(OBJS) | sed -e "s:[.]o:.lisp"`
+	rm -f `echo  $(OBJS) | sed -e "s:[.]o:.lisp:g"`
 	rm -f $(OBJS) sysdef.lisp make.lisp
 	rm -f info/*.texi
 	rm -f $(PORTDIR)/raw_maxima
