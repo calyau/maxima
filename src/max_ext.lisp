@@ -574,7 +574,7 @@
 (autof 'strmeval '|suprv1|)
 (autof 'makstring '|suprv1|)
 (auto-mspec '$string '|suprv1|)
-(autof '$random '|suprv1|)
+(autof '$random '|rand-mt19937|)
 (autof 'dollarify-name '|suprv1|)
 (autof '$verbify '|suprv1|)
 (autof '$nounify '|suprv1|)
