@@ -1421,8 +1421,10 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 
 (defprop $elliptic_e
     ((phi m)
-     ;; (1-m*sin(phi)^2)
-     ((mplus simp) 1 ((mtimes simp) -1 m ((mexpt simp) ((%sin simp) phi) 2)))
+     ;; sqrt(1-m*sin(phi)^2)
+     ((mexpt simp)
+      ((mplus simp) 1 ((mtimes simp) -1 m ((mexpt simp) ((%sin simp) phi) 2)))
+      ((rat simp) 1 2))
      ;; diff wrt m
      ((mtimes simp) ((rat simp) 1 2) ((mexpt simp) m -1)
       ((mplus simp) (($elliptic_e simp) phi m)
