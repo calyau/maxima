@@ -1,5 +1,9 @@
 #!/bin/sh
 top_srcdir=`cd \`dirname $0\`;/bin/pwd`
+
+MAXIMA_VERPKGDATADIR=$top_srcdir
+export MAXIMA_VERPKGDATADIR
+
 MAXIMA_XMAXIMADIR=$top_srcdir/interfaces/xmaxima
 export MAXIMA_XMAXIMADIR
 XMAXIMA_MAXIMA=$top_srcdir/maxima-local

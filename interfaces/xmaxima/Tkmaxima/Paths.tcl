@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.2 2002-09-19 16:18:57 mikeclarkson Exp $
+#       $Id: Paths.tcl,v 1.3 2002-10-28 02:31:02 amundson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -69,12 +69,38 @@ proc setMaxDir {} {
 	    }
 	}
     }
+
     #mike Could someone document all of these environment variables?
     # autoconf(prefix) does not seem to me to be the equivalent of
     # $env(MAXIMA_DIRECTORY) so I don't understand the next statement
+
+    # jfa: MAXIMA_PREFIX supersedes MAXIMA_DIRECTORY. (Why? Because the
+    #      option to configure is --prefix. MAXIMA_PREFIX is thus a runtime
+    #      change of --prefix.)
+    #      Yes, MAXIMA_DIRECTORY means the same thing. We only include
+    #      it for some level of backward compatibility.
     if { [info exists env(MAXIMA_DIRECTORY)] } {
 	set env(MAXIMA_PREFIX) $env(MAXIMA_DIRECTORY)
     }
+
+    # jfa: This whole routine is a disaster. The general plan for maxima
+    # paths is as follows:
+    #   1) Use the environment variables if they exist.
+    #   2) Otherwise, attempt to use the compile-time settings from
+    #      autoconf.
+    #   3) If the entire package has been moved to a prefix other than
+    #      that given at compile time, use the location of the (x)maxima
+    #      executable to determine the new prefix.
+    # The corresponding path setting procedure in the maxima source can
+    # be found in init-cl.lisp.
+
+    # The following section should be considered temporary work-around.
+        if { [info exists env(MAXIMA_VERPKGDATADIR)] } {
+	set maxima_priv(maxima_verpkgdatadir) $env(MAXIMA_VERPKGDATADIR)
+    }
+    # End temporary workaround. It's only a workaround because the next
+    # section is backwards: 
+    
 
     #mike Is it correct to assume that autoconf exists and is valid
     # for binary windows distributions? I think it would be better
@@ -89,7 +115,7 @@ proc setMaxDir {} {
 	set maxima_priv(maxima_prefix) $autoconf(prefix)
     }
 
-    if {[info exists maxima_priv(maxima_verpkglibdir)]} {
+    if {[info exists maxima_priv(maxima_verpkgdatadir)]} {
 	# drop through
     } else {
 	if { [info exists env(MAXIMA_DATADIR)] } {
