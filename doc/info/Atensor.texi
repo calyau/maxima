@@ -32,19 +32,14 @@ endeavour to build the quaternion multiplication table as a matrix:
 @example
 
 (%i1) load(atensor);
-
 (%o1)       /share/tensor/atensor.mac
 (%i2) init_atensor(clifford,0,0,2);
-
 (%o2)                                done
 (%i3) atensimp(v[1].v[1]);
-
 (%o3)                                 - 1
 (%i4) atensimp((v[1].v[2]).(v[1].v[2]));
-
 (%o4)                                 - 1
 (%i5) q:zeromatrix(4,4);
-
                                 [ 0  0  0  0 ]
                                 [            ]
                                 [ 0  0  0  0 ]
@@ -53,21 +48,16 @@ endeavour to build the quaternion multiplication table as a matrix:
                                 [            ]
                                 [ 0  0  0  0 ]
 (%i6) q[1,1]:1;
-
 (%o6)                                  1
 (%i7) for i thru adim do q[1,i+1]:q[i+1,1]:v[i];
-
 (%o7)                                done
 (%i8) q[1,4]:q[4,1]:v[1].v[2];
-
 (%o8)                               v  . v
                                      1    2
 (%i9) for i from 2 thru 4 do for j from 2 thru 4 do
       q[i,j]:atensimp(q[i,1].q[1,j]);
-
 (%o9)                                done
 (%i10) q;
-
                    [    1        v         v      v  . v  ]
                    [              1         2      1    2 ]
                    [                                      ]
@@ -254,23 +244,18 @@ For instance:
 
 @example
 (%i1) load(atensor);
-
 (%o1)       /share/tensor/atensor.mac
 (%i2) adim:3;
-
 (%o2)                                  3
 (%i3) aform:matrix([0,3,2],[3,0,1],[2,1,0]);
-
                                   [ 0  3  2 ]
                                   [         ]
 (%o3)                             [ 3  0  1 ]
                                   [         ]
                                   [ 2  1  0 ]
 (%i4) asymbol:x;
-
 (%o4)                                  x
 (%i5) av(x[1],x[2]);
-
 (%o5)                                 x
                                        3
 @end example

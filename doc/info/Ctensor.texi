@@ -30,10 +30,8 @@ solution) as an example. Many of the functions in CTENSR will be
 displayed for the standard metric as examples.
 @example
 (%i1) load(ctensor);
-
 (%o1)      /usr/local/lib/maxima/share/tensor/ctensor.mac
 (%i2) csetup();
-
 Enter the dimension of the coordinate system: 
 4;
 Do you wish to change the coordinate names?
@@ -72,10 +70,8 @@ y;
                           [ 0  0   x  sin (y)   0  ]
                           [                        ]
                           [ 0  0       0       - d ]
-
 (%o2)                                done
 (%i3) christof(mcs);
-
                                             a
                                              x
 (%t3)                          mcs        = ---
@@ -114,7 +110,6 @@ y;
                                              x
 (%t11)                         mcs        = ---
                                   4, 4, 1   2 a
-
 (%o11)                               done
 
 @end example
@@ -200,14 +195,11 @@ you can specify a spherical metric as follows:
 @example
 
 (%i1) load(ctensor);
-
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
       r*sin(theta),[r,theta,phi]]);
-
 (%o2)                                done
 (%i3) lg:trigsimp(lg);
-
                            [ 1  0         0        ]
                            [                       ]
                            [     2                 ]
@@ -216,10 +208,8 @@ you can specify a spherical metric as follows:
                            [         2    2        ]
                            [ 0  0   r  cos (theta) ]
 (%i4) ct_coords;
-
 (%o4)                           [r, theta, phi]
 (%i5) dim;
-
 (%o5)                                  3
 
 @end example
@@ -229,27 +219,21 @@ Transformation functions can also be used when @code{cframe_flag} is @code{true}
 @example
 
 (%i1) load(ctensor);
-
 (%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
-
 (%o2)                                true
 (%i3) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
       r*sin(theta),[r,theta,phi]]);
-
 (%o3)                                done
 (%i4) fri;
-
       [ cos(phi) cos(theta)  - cos(phi) r sin(theta)  - sin(phi) r cos(theta) ]
       [                                                                       ]
 (%o4) [ sin(phi) cos(theta)  - sin(phi) r sin(theta)   cos(phi) r cos(theta)  ]
       [                                                                       ]
       [     sin(theta)            r cos(theta)                   0            ]
 (%i5) cmetric();
-
 (%o5)                                false
 (%i6) lg:trigsimp(lg);
-
                            [ 1  0         0        ]
                            [                       ]
                            [     2                 ]
@@ -472,6 +456,166 @@ factored as well.
 
 @end defun
 
+@subsection Taylor series expansion
+
+The Ctensor package has the ability to truncate results by assuming
+that they are Taylor-series approximations. This behavior is controlled by
+the @code{ctayswitch} variable; when set to true, Ctensor makes use
+internally of the function @code{ctaylor()} when simplifying results.
+
+The @code{ctaylor()} function is invoked by the following Ctensor functions:
+
+@example
+
+    Function     Comments
+    ---------------------------------
+    christof()   For mcs only
+    ricci()
+    uricci()
+    einstein()
+    riemann()
+    weyl()
+    checkdiv()
+@end example
+
+@c @node ctaylor
+@c @unnumberedsec phony
+@defun ctaylor ()
+
+The @code{ctaylor()} function truncates its argument by converting
+it to a Taylor-series using @code{taylor()}, and then calling
+@code{ratdisrep()}. This has the combined effect of dropping terms
+higher order in the expansion variable @code{ctayvar}. The order
+of terms that should be dropped is defined by @code{ctaypov}; the
+point around which the series expansion is carried out is specified
+in @code{ctaypt}.
+
+As an example, consider a simple metric that is a perturbation of
+the Minkowski metric. Without further restrictions, even a diagonal
+metric produces expressions for the Einstein tensor that are far too
+complex:
+
+@example
+
+(%i1) load(ctensor);
+(%o1)       /share/tensor/ctensor.mac
+(%i2) ratfac:true;
+(%o2)                                true
+(%i3) derivabbrev:true;
+(%o3)                                true
+(%i4) ct_coords:[t,r,theta,phi];
+(%o4)                         [t, r, theta, phi]
+(%i5) lg:matrix([-1,0,0,0],[0,1,0,0],[0,0,r^2,0],[0,0,0,r^2*sin(theta)^2]);
+                        [ - 1  0  0         0        ]
+                        [                            ]
+                        [  0   1  0         0        ]
+                        [                            ]
+(%o5)                   [          2                 ]
+                        [  0   0  r         0        ]
+                        [                            ]
+                        [              2    2        ]
+                        [  0   0  0   r  sin (theta) ]
+(%i6) h:matrix([h11,0,0,0],[0,h22,0,0],[0,0,h33,0],[0,0,0,h44]);
+                            [ h11   0    0    0  ]
+                            [                    ]
+                            [  0   h22   0    0  ]
+(%o6)                       [                    ]
+                            [  0    0   h33   0  ]
+                            [                    ]
+                            [  0    0    0   h44 ]
+(%i7) depends(l,r);
+(%o7)                               [l(r)]
+(%i8) lg:lg+l*h;
+         [ h11 l - 1      0          0                 0            ]
+         [                                                          ]
+         [     0      h22 l + 1      0                 0            ]
+         [                                                          ]
+(%o8)    [                        2                                 ]
+         [     0          0      r  + h33 l            0            ]
+         [                                                          ]
+         [                                    2    2                ]
+         [     0          0          0       r  sin (theta) + h44 l ]
+(%i9) cmetric(false);
+(%o9)                                done
+(%i10) einstein(false);
+(%o10)                               done
+(%i11) ntermst(ein);
+[[1, 1], 62] 
+[[1, 2], 0] 
+[[1, 3], 0] 
+[[1, 4], 0] 
+[[2, 1], 0] 
+[[2, 2], 24] 
+[[2, 3], 0] 
+[[2, 4], 0] 
+[[3, 1], 0] 
+[[3, 2], 0] 
+[[3, 3], 46] 
+[[3, 4], 0] 
+[[4, 1], 0] 
+[[4, 2], 0] 
+[[4, 3], 0] 
+[[4, 4], 46] 
+(%o12)                               done
+
+@end example
+
+However, if we recompute this example as an approximation that is
+linear in the variable @code{l}, we get much simpler expressions:
+
+@example
+
+(%i14) ctayswitch:true;
+(%o14)                               true
+(%i15) ctayvar:l;
+(%o15)                                 l
+(%i16) ctaypov:1;
+(%o16)                                 1
+(%i17) ctaypt:0;
+(%o17)                                 0
+(%i18) christof(false);
+(%o18)                               done
+(%i19) ricci(false);
+(%o19)                               done
+(%i20) einstein(false);
+(%o20)                               done
+(%i21) ntermst(ein);
+[[1, 1], 6] 
+[[1, 2], 0] 
+[[1, 3], 0] 
+[[1, 4], 0] 
+[[2, 1], 0] 
+[[2, 2], 13] 
+[[2, 3], 2] 
+[[2, 4], 0] 
+[[3, 1], 0] 
+[[3, 2], 2] 
+[[3, 3], 9] 
+[[3, 4], 0] 
+[[4, 1], 0] 
+[[4, 2], 0] 
+[[4, 3], 0] 
+[[4, 4], 9] 
+(%o21)                               done
+(%i22) ratsimp(ein[1,1]);
+                         2      2  4               2     2
+(%o22) - (((h11 h22 - h11 ) (l )  r  - 2 h33 l    r ) sin (theta)
+                              r               r r
+
+                                2               2      4    2
+                  - 2 h44 l    r  - h33 h44 (l ) )/(4 r  sin (theta))
+                           r r                r
+
+
+
+@end example
+
+This capability can be useful, for instance, when working in the weak
+field limit far from a gravitational source.
+
+@end defun
+    
+
 @subsection Frame fields
 
 When the variable @code{cframe_flag} is set to true, the CTENSOR package
@@ -482,7 +626,19 @@ performs its calculations using a moving frame.
 @defun frame_bracket (fr,fri,diagframe)
 The frame bracket (@code{fb[]}).
 
-*** TO BE WRITTEN ***
+Computes the frame bracket according to the following definition:
+
+@example
+   c          c         c        d     e
+ifb   = ( ifri    - ifri    ) ifr   ifr
+   ab         d,e       e,d      a     b
+@end example
+
+Note that the frame bracket is not actually used in this version of
+Ctensor; the Ricci connection coefficients are computed directly. The
+@code{frame_bracket} function is included for compatibility with
+commercial MACSYMA.
+
 @end defun
 
 @subsection Algebraic classification
@@ -519,21 +675,15 @@ of the Kerr metric:
 
 @example
 (%i1) load(ctensor);
-
 (%o1)       /share/tensor/ctensor.mac
 (%i2) (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
-
 (%o2)                                true
 (%i3) ct_coordsys(exteriorschwarzschild,all);
-
 (%o3)                                done
 (%i4) ug:invert(lg)$
-
 (%i5) weyl(false);
-
 (%o5)                                done
 (%i6) nptetrad(true);
-
 (%t6) np = 
 
        [  sqrt(r - 2 m)           sqrt(r)                                     ]
@@ -570,7 +720,6 @@ of the Kerr metric:
 
 (%o7)                                done
 (%i7) psi(true);
-
 (%t8)                              psi  = 0
                                       0
 
@@ -587,10 +736,8 @@ of the Kerr metric:
 
 (%t12)                             psi  = 0
                                       4
-
 (%o12)                               done
 (%i12) petrov();
-
 (%o12)                             Type is D
 
 @end example
@@ -697,16 +844,12 @@ below, @code{findde} gives the following independent differential equations:
 
 @example
 (%i1) load(ctensor);
-
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
-
 (%o2)                                true
 (%i3) dim:4;
-
 (%o3)                                  4
 (%i4) lg:matrix([a,0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,-d]);
-
                           [ a  0       0        0  ]
                           [                        ]
                           [     2                  ]
@@ -717,19 +860,14 @@ below, @code{findde} gives the following independent differential equations:
                           [                        ]
                           [ 0  0       0       - d ]
 (%i5) depends([a,d],x);
-
 (%o5)                            [a(x), d(x)]
 (%i6) ct_coords:[x,y,z,t];
-
 (%o6)                            [x, y, z, t]
 (%i7) cmetric();
-
 (%o7)                                done
 (%i8) einstein(false);
-
 (%o8)                                done
 (%i9) findde(ein,2);
-
                                             2
 (%o9) [d  x - a d + d, 2 a d d    x - a (d )  x - a  d d  x + 2 a d d
         x                     x x         x        x    x            x
@@ -738,9 +876,7 @@ below, @code{findde} gives the following independent differential equations:
                                                 - 2 a  d , a  x + a  - a]
                                                      x      x
 (%i10) deindex;
-
 (%o10)                     [[1, 1], [2, 2], [4, 4]]
-
 
 @end example
 
@@ -763,31 +899,22 @@ below for the Schwarzschild metric illustrates:
 
 @example
 
-
 (%i1) load(ctensor);
-
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
-
 (%o2)                                true
 (%i3) ct_coordsys(exteriorschwarzschild,all);
-
 (%o3)                                done
 (%i4) depends(f,r);
-
 (%o4)                               [f(r)]
 (%i5) cograd(f,g1);
-
 (%o5)                                done
 (%i6) listarray(g1);
-
 (%o6)                            [0, f , 0, 0]
                                       r
 (%i7) contragrad(f,g2);
-
 (%o7)                                done
 (%i8) listarray(g2);
-
                                f  r - 2 f  m
                                 r        r
 (%o8)                      [0, -------------, 0, 0]
@@ -804,19 +931,14 @@ dependencies have been declared upon the function. For example:
 
 @example
 (%i1) load(ctensor);
-
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
-
 (%o2)                                true
 (%i3) ct_coordsys(exteriorschwarzschild,all);
-
 (%o3)                                done
 (%i4) depends(p,r);
-
 (%o4)                               [p(r)]
 (%i5) factor(dscalar(p));
-
                           2
                     p    r  - 2 m p    r + 2 p  r - 2 m p
                      r r           r r        r          r
@@ -932,19 +1054,14 @@ the Schwarzschild metric can be viewed as:
 
 @example
 (%i1) load(ctensor);
-
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
-
 (%o2)                                true
 (%i3) ct_coordsys(exteriorschwarzschild,all);
-
 (%o3)                                done
 (%i4) riemann(false);
-
 (%o4)                                done
 (%i5) cdisplay(riem);
-
                [ 0               0                    0            0      ]
                [                                                          ]
                [                              2                           ]
@@ -1229,6 +1346,33 @@ setting.
 
 @end defvar
 
+@c @node ctayvar
+@c @unnumberedsec phony
+@defvar ctayvar
+
+Variable used for Taylor-series expansion if @code{ctayswitch} is set to
+@code{true}.
+
+@end defvar
+
+@c @node ctaypov
+@c @unnumberedsec phony
+@defvar ctaypov
+
+Maximum power used in Taylor-series expansion when @code{ctayswitch} is
+set to @code{true}.
+
+@end defvar
+
+@c @node ctaypt
+@c @unnumberedsec phony
+@defvar ctaypt
+
+Point around which Taylor-series expansion is carried out when
+@code{ctayswitch} is set to @code{true}.
+
+@end defvar
+
 @c @node gdet
 @c @unnumberedsec phony
 @defvar gdet
@@ -1440,20 +1584,20 @@ should not be redefined:
 @example
   Name         Description
   ---------------------------------------
-  _lg()
-  _ug()
-  cleanup()
+  _lg()        Evaluates to lfg if frame metric used, lg otherwise
+  _ug()        Evaluates to ufg if frame metric used, ug otherwise
+  cleanup()    Removes items drom the deindex list
   contract4()  Used by psi()
   filemet()    Used by csetup() when reading the metric from a file
   findde1()    Used by findde()
   findde2()    Used by findde()
   findde3()    Used by findde()
-  kdelt()
+  kdelt()      Kronecker-delta (not generalized)
   newmet()     Used by csetup() for setting up a metric interactively
   setflags()   Used by init_ctensor()
   readvalue()
   resimp()
-  sermet()
+  sermet()     Used by csetup() for entering a metric as Taylor-series
   txyzsum()
   tmetric()    Frame metric, used by cmetric() when cframe_flag:true
   triemann()   Riemann-tensor in frame base, used when cframe_flag:true
@@ -1473,7 +1617,6 @@ package compatible with the commercial version of MACSYMA.
 @example
   New Name     Old Name        Description
   --------------------------------------------------
-  vect_coords  COORDINATES
   ctaylor()    DLGTAYLOR()
   lgeod[]      EM              Geodesic equations
   ein[]        G[]             Mixed Einstein-tensor
