@@ -604,9 +604,29 @@ then 1 is subtracted."
     (indent-line-to (max indent 0))))
 
 (defun maxima-standard-indent ()
-  "Add a level of indentation"
+  "Indent the line based on the previous line.
+If the previous line opened a parenthesis, `maxima-indent-amount' is
+added to the indentation, if the previous line closed a parenthesis, 
+`maxima-indent-amount' is subtracted, otherwise the indentation 
+is the same as the previous line."
   (interactive)
-  (indent-to (+ (current-indentation) maxima-indent-amount)))
+  (let ((indent 0)
+        (pt))
+    (save-excursion
+      (when (= (forward-line -1) 0)
+        (progn
+          (setq indent (current-indentation))
+          (setq pt (line-end-position))
+          (while (re-search-forward "[()]" pt t)
+            (cond ((string= (match-string 0) ")")
+                   (setq indent (- indent maxima-indent-amount)))
+                  ((string= (match-string 0) "(")
+                   (setq indent (+ indent maxima-indent-amount))))))))
+    (save-excursion
+      (beginning-of-line)
+      (delete-horizontal-space)
+      (indent-line-to (max indent 0)))
+    (skip-chars-forward " \t")))
 
 (defun maxima-untab ()
   "Delete a level of indentation"
@@ -751,6 +771,15 @@ rigidly along with this one."
 	   (> end beg))
 	 (indent-code-rigidly beg end shift-amt))))
 
+(defun maxima-perhaps-smart-indent-line ()
+  "Reindent the current line."
+  (interactive)
+  (save-excursion
+    (beginning-of-line)
+    (delete-horizontal-space)
+    (maxima-perhaps-smart-indent))
+  (skip-chars-forward " \t"))
+
 (defun maxima-perhaps-smart-newline ()
   "Indent current line, insert newline and go to the appropriate column."
   (interactive)
@@ -776,7 +805,7 @@ rigidly along with this one."
  ((eq maxima-indent-style 'perhaps-smart)
   (defun maxima-indent-line ()
     (interactive)
-    (maxima-perhaps-smart-indent))
+    (maxima-perhaps-smart-indent-line))
   (defun maxima-newline ()
     (interactive)
     (maxima-perhaps-smart-newline))))
@@ -809,16 +838,6 @@ rigidly along with this one."
     (defun maxima-newline ()
       (interactive)
       (maxima-perhaps-smart-newline)))))
-
-(defun maxima-reindent-line ()
-  "Reindent the current line."
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (delete-horizontal-space)
-    (maxima-indent-line))
-  (if (looking-at " *$")
-      (end-of-line)))
 
 ;;;; Commenting
 
@@ -1346,7 +1365,7 @@ if completion is ambiguous."
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate paragraph-start)
   (make-local-variable 'indent-line-function)
-  (setq indent-line-function 'maxima-reindent-line)
+  (setq indent-line-function 'maxima-indent-line)
   (make-local-variable 'indent-tabs-mode)
   (unless maxima-use-tabs
     (setq indent-tabs-mode nil))
