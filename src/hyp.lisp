@@ -2032,20 +2032,21 @@
   (cond ((eq m 2) (mul a (add a 1)))
 	(t (mul (add a (sub1 m))(prod a (sub1 m))))))
 
-;; M(a,c,z), when a and c are numbers, and a-c is an integer
+;; M(a,c,z), when a and c are numbers, and a-c is a negative integer
 (defun erfgamnumred (a c z)
   (cond ((hyp-integerp (sub c (inv 2)))
 	 (erfred a c z))
 	(t (gammareds a c z))))
 
 ;; M(a,c,z) when a and c are numbers and c-1/2 is an integer and a-c
-;; is an integer.  Thus, we have M(p+1/2, q+1/2,z)
+;; is a negative integer.  Thus, we have M(p+1/2, q+1/2,z)
 (defun erfred (a c z)
   (prog (n m)
      (setq n (sub a (inv 2))
 	   m (sub c (div 3 2)))
      ;; a = n + 1/2
      ;; c = m + 3/2
+     ;; a - c < 0 so n - m - 1 < 0
      (cond ((not (or (greaterp n m) (minusp n)))
 	    ;; 0 <= n <= m
 	    (return (thno33 n m z))))
@@ -2055,13 +2056,14 @@
      (cond ((and (minusp n) (plusp m))
 	    ;; n < 0 and m > 0
 	    (return (thno34 (mul -1 n) m z))))
+     ;; n = 0 or m = 0
      (return (gammareds (add n (inv 2))
 			(add m (div 3 2))
 			z))))
 ;; Compute M(n+1/2, m+3/2, z) with 0 <= n <= m.
 ;;
-;; I (rtoy) think this is what this routine is doing.  (I'm guess that
-;; thno33 means theorem number 33 from Yannis Avgoustis' thesis.)
+;; I (rtoy) think this is what this routine is doing.  (I'm guessing
+;; that thno33 means theorem number 33 from Yannis Avgoustis' thesis.)
 ;;
 ;; I don't have his thesis, but I see there are similar ways to derive
 ;; the result we want.
@@ -2166,13 +2168,26 @@
 
 ;; M(n+1/2,m+3/2,z), with n < 0 and m > 0
 ;;
-;; Let p = -n.  Then we basically have M(-p+1/2,m+3/2,z).  If we apply
-;; Kummer's transformation, we get
+;; Let's write it more explicitly as M(-n+1/2,m+3/2,z) with n > 0 and
+;; m > 0.
 ;;
-;;    M(-p+1/2,m+3/2,z) = exp(z)*M(m+p+1,m+3/2,-z)
+;; First, use Kummer's transformation to get
 ;;
-;; And we know how to compute M(m+p+1,m+3/2,z), so why don't we do
-;; that?  I don't really know how thno34 works.
+;;    M(-n+1/2,m+3/2,z) = exp(z)*M(m+n+1,m+3/2,-z)
+;;
+;; We also have
+;;
+;;    diff(z^(n+m)*M(m+1,m+3/2,z),z,n) = poch(m+1,n)*z^m*M(m+n+1,m+3/2,z)
+;;
+;; And finally
+;;
+;;    diff(M(1,3/2,z),z,m) = poch(1,m)/poch(3/2,m)*M(m+1,m+3/2,z)
+;;
+;; Thus, we can compute M(-n+1/2,m+3/2,z) from M(1,3/2,z).
+;;
+;; The second formula above can be derived easily by multiplying the
+;; series for M(m+1,m+3/2,z) by z^(n+m) and differentiating n times.
+;;
 (defun thno34 (n m x)
   (subst x
 	 'yannis
@@ -2196,7 +2211,35 @@
 			   'yannis
 			   n)))))
 
-;; M(n+1/2,m+3/2,z), with n < 0 and m < 0 
+;; M(n+1/2,m+3/2,z), with n < 0 and m < 0
+;;
+;; Write it more explicitly as M(-n+1/2,-m+3/2,z) with n > 0 and m >
+;; 0.
+;;
+;; We know that
+;;
+;;    diff(sqrt(z)*M(-n+1/2,3/2,z),z,m) = poch(3/2-m,m)*M(-n+1/2,-m+3/2,z).
+;;
+;; Apply Kummer's transformation:
+;;
+;;    M(-n+1/2,3/2,z) = exp(z) * M(n+1,3/2,-z)
+;;
+;; Finally
+;;
+;;    diff(z^n*M(1,3/2,z),z,n) = n!*M(n+1,3/2,z)
+;;
+;; So we can express M(-n+1/2,-m+3/2,z) in terms of M(1,3/2,z).
+;;
+;; The first formula above follows from the more general formula
+;;
+;;    diff(z^(b-1)*M(a,b,z),z,n) = poch(b-n,n)*z^(b-n-1)*M(a,b-n,z)
+;;
+;; The last formula follows from the general result
+;;
+;;    diff(z^(a+n-1)*M(a,b,z),z,n) = poch(a,n)*z^(a-1)*M(a+n,b,z)
+;;
+;; Both of these are easily derived by using the series for M and
+;; differentiating.
 (defun thno35 (n m x)
   (subst x
 	 'yannis
@@ -2219,14 +2262,18 @@
 					     n)))
 			   'yannis
 			   m)))))
-(defun fctrl
-    (a n)
-  (cond ((zerop n) 1)
-	((one n) a)
-	(t (mul (add a (sub1 n))(fctrl a (sub1 n))))))
 
-(defun one (x)(equal x 1))
-
+;; Pochhammer symbol. fctrl(a,n) = a*(a+1)*(a+2)*...*(a+n-1).
+;;
+;; N must be a positive integer!
+(defun fctrl (a n)
+  (cond ((zerop n)
+	 1)
+	((equal n 1)
+	 a)
+	(t
+	 (mul (add a (sub1 n))
+	      (fctrl a (sub1 n))))))
 
 
 ;;(DEFUN CHECKSIGNTM			
