@@ -410,12 +410,14 @@ baserules(currentunitlist,unitlistname,baseunitrules):=
          if ?equal(abbrevsimp,1) then (
 	     unitlet([unitlistname[i][1][j],
 	        unitlistname[i][2]/currentunitlist[2]*
-		first(currentunitlist[1])],baseunitrules)
+		first(currentunitlist[1])],baseunitrules),
+	     nonfinalunitlist : append([unitlistname[i][1][j]],nonfinalunitlist)
 	 )else(
 	 if ?equal(abbrevsimp,1) then (
 	     unitlet([unitlistname[i][1][j],
 	        unitlistname[i][2]/currentunitlist[2]*
-		last(currentunitlist[1])],baseunitrules)
+		last(currentunitlist[1])],baseunitrules),
+	     nonfinalunitlist : append([unitlistname[i][1][j]],nonfinalunitlist)
 	 )else(
 	     a : length(unitlistname[i][1]),
 	     b : length(currentlistname[1]),
@@ -423,13 +425,17 @@ baserules(currentunitlist,unitlistname,baseunitrules):=
 	     if (?equal(a,b) or ?equal(j,1)) then (
 	         unitlet([unitlistname[i][1][j],
 		    unitlistname[i][2]/currentunitlist[2]*
-		    currentunitlist[1][j]],baseunitrules)
+		    currentunitlist[1][j]],baseunitrules),
+		 nonfinalunitlist : append([unitlistname[i][1][j]],nonfinalunitlist)
 	     )else(
 		 unitlet([unitlistname[i][1][j],
 		    unitlistname[i][2]/currentunitlist[2]*
-		    last(currentunitlist[1])],baseunitrules)
+		    last(currentunitlist[1])],baseunitrules),
+		 nonfinalunitlist : append([unitlistname[i][1][j]],nonfinalunitlist)
 	     ))
-	))))
+	))),
+   for j : 1 thru length(unitlistname[i][1]) do (
+   nonfinalunitlistd : append([unitlistname[i][1][j]],nonfinalunitlistd)))
 );
 
 /*--------------------Derived Quantity rank assignment ----------------------*/
@@ -542,18 +548,57 @@ derivedrules(currentunitlist):= block([letrat:true,i,j,a,b,fakerule],
       if not(?equal(found,0)) then (
         for i : 2 thru length(ev(unitlistname)) do (
          if not(lfreeof(unitlistname[i][1],currentunitlist[found])) then (
-         unitlet([unitlistname[1],unitlistname[i][1][1]/unitlistname[i][2]],derivedexpandunitrules)))
+         unitlet([unitlistname[1],unitlistname[i][1][1]/unitlistname[i][2]],derivedexpandunitrules)
+	 ) else (
+         for j : 1 thru length(unitlistname[i][1]) do (
+	 nonfinalunitlistd : append([unitlistname[i][1][j]],nonfinalunitlistd))
+	 )
+	)
       ) else (
-      unitlet([unitlistname[1],unitlistname[2][1][1]],derivedexpandunitrules))
-    ))
+      unitlet([unitlistname[1],unitlistname[2][1][1]],derivedexpandunitrules),
+      for i : 3 thru length(ev(unitlistname)) do (
+         for j : 1 thru length(unitlistname[i][1]) do (
+	   nonfinalunitlistd : append([unitlistname[i][1][j]],nonfinalunitlistd)
+	 )
+      )
+    )))
 );
-makenonfinalunitlist() := block([letrat:true,result1],
-   for a : 1 thru length(globalderivedunitlisting_use) do (
-      unitlistname : concat(globalderivedunitlisting_use[a][2],listing_use),
-      for i : 2 thru length(ev(unitlistname)) do (
-       for j : 1 thru length(unitlistname[i][1]) do (
-        if not(?equal(unitlistname[i][1][1]/unitlistname[i][2]]
 
+/* Sets the units used in the global tellsimpafter evaluation.  Takes
+as its arguments either a single unit or a list of units.  Checks to
+make sure the list contains only one unit per quantity.  Will need to
+update to handle derived quantities - map won't work.*/
+dosetunits(units):= block([letrat:true,unittype,unitlistname,
+                         unitrules,currentunitlist, flag, i, derivedunits],
+derivedunits : [],
+if listp(units) then (
+  if (checkforuniqueness(makequantlist(units))) then (
+    for i : 1 thru length(units) do (
+      if (not(isbase(units[i])) and (isunit(units[i]))) then ( 
+	 derivedunits : append([units[i]],derivedunits)
+      ) else (
+	dosetunits(units[i])
+      )),
+    if (not(?equal(length(derivedunits),0))) then (
+	derivedrules(derivedunits))
+  ) else (
+  error ("Error - two or more of these units describe the same quantity."))
+ ) else (
+  isunit(units),
+  unittype : letsimp(units,toquantities),
+  unitlistname : concat(unittype,listing_use),
+  unitrules : concat(unittype,'rules),
+  flag : 0, i:0,
+  while ?equal(flag,0) do (
+     i : i+1,
+     if not(lfreeof(unitlistname[i][1],units)) then (
+        currentunitlist : unitlistname[i],
+        flag : 1),
+     if ?equal(i, length(ev(unitlistname))) then (flag : 1)
+  ),
+  baserules(currentunitlist,unitlistname,unitrules)
+  )
+);
 
 processunits(expression) := block([letrat:true,result1],
    result1 : letsimp(expression,derivedsimpunitrules),
@@ -610,42 +655,12 @@ showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
 /* Prints out information about a unit */
 unitinfo(unit):= block([letrat:true,result,quantity],
 
-/* Sets the units used in the global tellsimpafter evaluation.  Takes
-as its arguments either a single unit or a list of units.  Checks to
-make sure the list contains only one unit per quantity.  Will need to
-update to handle derived quantities - map won't work.*/
-setunits(units):= block([letrat:true,unittype,unitlistname,
-                         unitrules,currentunitlist, flag, derivedunits],
-derivedunits : [],
-if listp(units) then (
-  if (checkforuniqueness(makequantlist(units))) then (
-    for i : 1 thru length(units) do (
-      if (not(isbase(units[i])) and (isunit(units[i]))) then ( 
-	 derivedunits : append([units[i]],derivedunits)
-      ) else (
-	setunits(units[i])
-      )),
-    if (not(?equal(length(derivedunits),0))) then (
-	derivedrules(derivedunits))
-  ) else (
-  error ("Error - two or more of these units describe the same quantity."))
- ) else (
-  isunit(units),
-  unittype : letsimp(units,toquantities),
-  unitlistname : concat(unittype,listing_use),
-  unitrules : concat(unittype,'rules),
-  flag : 0, i:0,
-  while ?equal(flag,0) do (
-     i : i+1,
-     if not(lfreeof(unitlistname[i][1],units)) then (
-        currentunitlist : unitlistname[i],
-        flag : 1),
-     if ?equal(i, length(ev(unitlistname))) then (flag : 1)
-  ),
-  baserules(currentunitlist,unitlistname,unitrules)
-  ),
-  makenonfinalunitlist()
-);
+/* Initializes the nonfinalunitlist and calls dosetunits.  This is
+the user level command to set up unit definitions. */
+setunits(units) := block([letrat:true],
+  nonfinalunitlist : [],
+  nonfinalunitlistd : [],
+  dosetunits(units));
 
 /*  Allows the user to create their own units */
 addunits([[unitname(s)],definition,0]):=
@@ -686,11 +701,13 @@ maketoquantitiesruleset();
 /* Instruct the global simplification routines to call the simplification
    function defined in this package, to allow automatic unit conversion
    without the user having to explicitly call a function.*/
-freeofunitsp([x]) := lfreeof(nonfinalunitslist,x);
+freeofunitspd([x]) := lfreeof(nonfinalunitlistd,x);
+notfreeofunitspd([x]) := not(freeofunitspd(x));
+freeofunitsp([x]) := lfreeof(nonfinalunitlist,x);
 notfreeofunitsp([x]) := not(freeofunitsp(x));
-matchdeclare(a,freeofunitsp(a),b,notfreeofunitsp(b));
-processunits(x) := letsimp(x,currentunitsimprules);
+matchdeclare(a,freeofunitspd(a),b,notfreeofunitspd(b));
+matchdeclare(c,freeofunitsp(c),d,notfreeofunitsp(d));
 tellsimpafter(a*b,a*processunits(b));
-
+tellsimpafter(c*d,c*processunits(d));
 
 ttyoff: nolabels, false$
