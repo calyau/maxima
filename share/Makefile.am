@@ -239,11 +239,15 @@ contrib/mcclim/listeneroutput.png\
 contrib/mcclim/postscriptoutput.png\
 contrib/mnewton.dem\
 contrib/mnewton.mac\
-contrib/nset/README\
-contrib/nset/nset-init.lisp\
+contrib/nset/announce-1.2.txt\
+contrib/nset/changes_1.0_to_1.2.txt\
+contrib/nset/maxima-init.lisp\
 contrib/nset/nset.html\
+contrib/nset/nset-init.lisp\
 contrib/nset/nset.lisp\
 contrib/nset/nset.texi\
+contrib/nset/nset_toc.html\
+contrib/nset/README\
 contrib/nset/test-nset.mac\
 contrib/numericalio/README\
 contrib/numericalio/array.data\
