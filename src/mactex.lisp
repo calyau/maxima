@@ -1,5 +1,6 @@
 ;; TeX-printing
 ;; (c) copyright 1987, Richard J. Fateman
+;; small corrections and additions: Andrey Grozin, 2001
 
 (in-package "MAXIMA")
 
@@ -189,7 +190,7 @@
 
 (defun tex-atom (x l r) ;; atoms: note: can we lose by leaving out {}s ?
   (append l 
-	  (list (cond ((numberp x)(texnumformat x) )
+	  (list (cond ((numberp x) (texnumformat x))
 		      ((and (symbolp x) (get x 'texword)))
 		      (t (tex-stripdollar x))))
 	  
@@ -236,7 +237,16 @@
 		  (vector-push #\} tem))))
     (intern tem)))
 
-    
+;; A.G. 2001: I prefer the following version:
+;(defun tex-stripdollar (sym)
+;  (or (symbolp sym) (return-from tex-stripdollar sym))
+;  (let* ((name (symbol-name sym))
+;      (pname (if (eql (elt name 0) #\$) (subseq name 1) name))
+;      (l (length pname)))
+;    (cond
+;      ((eql l 1) pname)
+;      (t (concatenate 'string "\\mathrm{" pname "}")))))
+
 #+cmu
 (defun strcat (&rest args)
   (apply #'concatenate 'string (mapcar #'string args)))
@@ -279,21 +289,20 @@
 ;; operator
 
 (defun tex-function (x l r op) op
-	(setq l (tex (texword (caar x)) ;;see if a function has a special symbol
-		     l 
-		     (list "\\left(" ) 'mparen 'mparen)
-		     r (tex-list (cdr x) nil (cons "\\right)" r) ","))
+	(setq l (tex (texword (caar x)) l nil 'mparen 'mparen)
+	      r (tex (cons '(mprogn) (cdr x)) nil r 'mparen 'mparen))
 	(nconc l r))
+
 ;; set up a list , separated by symbols (, * ...)  and then tack on the
 ;; ending item (e.g. "]" or perhaps ")"
 
 (defun tex-list (x l r sym)
-  (if (null x) nil
+  (if (null x) r
       (do ((nl))
 	  ((null (cdr x))
-	   (setq nl (nconc nl (tex (car x)  l r lop rop)))
+	   (setq nl (nconc nl (tex (car x)  l r 'mparen 'mparen)))
 	   nl)
-	  (setq nl (nconc nl (tex (car x)  l (list sym)   lop rop))
+	  (setq nl (nconc nl (tex (car x)  l (list sym) 'mparen 'mparen))
 		  x (cdr x) 
 		  l nil))))
 
@@ -303,30 +312,31 @@
 (defun tex-infix (x l r)
   ;; check for 2 args
   (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
-  
   (setq l (tex (cadr x) l nil lop (caar x)))
   (tex (caddr x) (append l (texsym (caar x))) r (caar x) rop))
   
-
-
 (defun tex-postfix (x l r)
   (tex (cadr x) l (append (texsym (caar x)) r) lop (caar x)))
 
-(defun tex-nary (x l r) (texnary x l r (texsym (caar x))))
+(defun tex-nary (x l r)
+  (let* ((op (caar x)) (sym (texsym op)) (y (cdr x)) (ext-lop lop) (ext-rop rop))
+    (cond ((null y)       (tex-function x l r t)) ; this should not happen
+          ((null (cdr y)) (tex-function x l r t)) ; this should not happen, too
+          (t (do ((nl) (lop ext-lop op) (rop op (if (null (cdr y)) ext-rop op)))
+                 ((null (cdr y)) (setq nl (nconc nl (tex (car y)  l r lop rop))) nl)
+	         (setq nl (nconc nl (tex (car y)  l (list sym)   lop rop))
+		       y (cdr y) 
+		       l nil))))))
 
 (defun tex-nofix (x l r) (tex (caar x) l r (caar x) rop))
 
 (defun tex-matchfix (x l r)
-  (setq l (append l (car(texsym (caar x))) )
+  (setq l (append l (car (texsym (caar x))))
 	;; car of texsym of a matchfix operator is the lead op
 	r (append (cdr (texsym (caar x))) r) 
 	;; cdr is the trailing op
 	x (tex-list (cdr x) nil r ","))
   (append l x))
-
-(defun texnary (x l r dissym)
- (cond ((null (cddr x)) (tex-function x l r t))
-       (t (tex-list (cdr x) l r dissym))))
 
 (defun texsym (x) (or (get x 'texsym) (get x 'strsym)(get x 'dissym)
 		      (stripdollar x)))
@@ -337,12 +347,14 @@
 
 (defun tex-bigfloat (x l r) (fpformat x))
 
-(defprop mprog "{\\bf block\\>}" texword)
-(defprop %erf "{\\rm erf}" texword)
-(defprop $erf "{\\rm erf}" texword) ;; etc for multicharacter names
+(defprop mprog "\\mathbf{block}\\>" texword)
+(defprop %erf "\\mathrm{erf}" texword)
+(defprop $erf "\\mathrm{erf}" texword) ;; etc for multicharacter names
+(defprop $true  "\\mathbf{true}"  texword)
+(defprop $false "\\mathbf{false}" texword)
 
 (defprop mprogn tex-matchfix tex) ;; mprogn is (<progstmnt>, ...)
-(defprop mprogn (("(") ")") texsym)
+(defprop mprogn (("\\left(") "\\right)") texsym)
 
 (defprop mlist tex-matchfix tex)
 (defprop mlist (("\\left[ ")" \\right] ") texsym)
@@ -358,17 +370,36 @@
 	r (tex-list (cddr x) nil (cons ")" r) ","))
   (append l r));; fixed 9/24/87 RJF
 
-;; simple trial data
-(setf (get '$omega 'texword) "\\omega")
-;; alternative syntax for above..
-(defprop $Omega "\\Omega " texword)
 (defprop $%i "i" texword)
 (defprop $%pi "\\pi" texword)
 (defprop $%e "e" texword)
 (defprop $inf "\\infty " texword)
 (defprop $minf " -\\infty " texword)
 (defprop %laplace "{\\cal L}" texword)
-(defprop $alpha "\\alpha" texword) ;; etc
+(defprop $alpha "\\alpha" texword)
+(defprop $beta "\\beta" texword)
+(defprop $gamma "\\gamma" texword)
+(defprop %gamma "\\Gamma" texword)
+(defprop $delta "\\delta" texword)
+(defprop $epsilon "\\varepsilon" texword)
+(defprop $zeta "\\zeta" texword)
+(defprop $eta "\\eta" texword)
+(defprop $theta "\\vartheta" texword)
+(defprop $iota "\\iota" texword)
+(defprop $kappa "\\varkappa" texword)
+;(defprop $lambda "\\lambda" texword)
+(defprop $mu "\\mu" texword)
+(defprop $nu "\\nu" texword)
+(defprop $xi "\\xi" texword)
+(defprop $pi "\\pi" texword)
+(defprop $rho "\\rho" texword)
+(defprop $sigma "\\sigma" texword)
+(defprop $tau "\\tau" texword)
+(defprop $upsilon "\\upsilon" texword)
+(defprop $phi "\\varphi" texword)
+(defprop $chi "\\chi" texword)
+(defprop $psi "\\psi" texword)
+(defprop $omega "\\omega" texword)
 
 (defprop mquote tex-prefix tex)
 (defprop mquote ("'") texsym)
@@ -394,6 +425,11 @@
 (defprop mdefmacro 180. tex-lbp)
 (defprop mdefmacro 20. tex-rbp)
 
+(defprop marrow tex-infix tex)
+(defprop marrow ("\\rightarrow ") texsym)
+(defprop marrow 25 tex-lbp)
+(defprop marrow 25 tex-rbp)
+
 (defprop mfactorial tex-postfix tex)
 (defprop mfactorial ("!") texsym)
 (defprop mfactorial 160. tex-lbp)
@@ -411,46 +447,37 @@
      ;; yet we must not display (a+b)^2 as +^2(a,b)...
      ;; or (sin(x))^(-1) as sin^(-1)x, which would be arcsine x
      (cond ;; this whole clause
-	   ;;should be deleted if this hack is unwanted and/or the
-	   ;;time it takes is of concern.
-	   ;;it shouldn't be too expensive.
+	   ;; should be deleted if this hack is unwanted and/or the
+	   ;; time it takes is of concern.
+	   ;; it shouldn't be too expensive.
 	   ((and (eq (caar x) 'mexpt) ; don't do this hack for mncexpt
 		 (let* 
 		  ((fx (cadr x)); this is f(x)
-		   (f (and (not(atom fx)) (atom (caar fx))(caar fx))); this is f [or nil]
-		   (bascdr (and f (cdr fx))) ;this is (x) [maybe (x,y..), or nil]
+		   (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
+		   (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
 		   (expon (caddr x)) ;; this is the exponent
 		   (doit (and 
 			  f ; there is such a function
-			  (memq(getchar f 1) '(% $)) ;; insist it is a % or $ function
-			  (not (memq f '(%sum %product))) ;; what else? whata hack...
-			  (or (and(atom expon)(not(numberp expon))) ; f(x)^y is ok
-			      (and (atom expon)(numberp expon)(> expon 0))
+			  (memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
+			  (not (memq f '(%sum %product))) ;; what else? what a hack...
+			  (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
+			      (and (atom expon) (numberp expon) (> expon 0))))))
 			      ; f(x)^3 is ok, but not f(x)^-1, which could 
 			      ; inverse of f, if written f^-1 x
-			      ); what else? f(x)^(1/2) is sqrt(f(x)), ??
-			  )))
-		  (cond(doit
+			      ; what else? f(x)^(1/2) is sqrt(f(x)), ??
+		  (cond (doit
 			(setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
-			(setq r (tex
-				 (cond((cdr bascdr)
-				       
-				       `((mprogn),@bascdr));;handle f(x,y)^2 as f^2(x,y)
-				      (t(car bascdr))) ;; but f(x)^2 as f^2 x.
-				 nil r 'mtimes 'mtimes)))
-		       (t nil); won't doit. fall through
-		       ))))
-      (t(setq l (tex (cadr x) l nil lop (caar x))
-	      r (if (mmminusp (setq x (nformat (caddr x))))
+			(setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen)))
+		        (t nil))))) ; won't doit. fall through
+      (t (setq l (tex (cadr x) l nil lop (caar x))
+	       r (if (mmminusp (setq x (nformat (caddr x))))
 		    ;; the change in base-line makes parens unnecessary
 		    (if nc
 			(tex (cadr x) '("^ {-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
 			(tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
-		    
 		    (if nc
 			(tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
 			(tex x (list "^{")(cons "}" r) 'mparen 'mparen))))))
-
       (append l r)))
 
 (defprop mncexpt tex-mexpt tex)
@@ -463,13 +490,10 @@
 (defprop mnctimes 110. tex-lbp)
 (defprop mnctimes 109. tex-rbp)
 
-(defprop mtimes tex-mtimes tex)
+(defprop mtimes tex-nary tex)
+(defprop mtimes "\\," texsym)
 (defprop mtimes 120. tex-lbp)
 (defprop mtimes 120. tex-rbp)
-
-(defun tex-mtimes (x l r) (let ((lop 'mtimes) ;; is this right?
-				(rop 'mtimes))
-			       (texnary x l r "\\>")))
 
 (defprop %sqrt tex-sqrt tex)
 
@@ -542,7 +566,7 @@
 (defun tex-limit(x l r) ;; ignoring direction, last optional arg to limit
   (let ((s1 (tex (cadr x) nil nil 'mparen rop));; limitfunction
 	(subfun ;; the thing underneath "limit"
-	 (subst "\\to " '=
+	 (subst "\\rightarrow " '=
 		(tex `((mequal simp) ,(caddr x),(cadddr x))
 		     nil nil 'mparen 'mparen))))
        (append l `("\\lim_{" ,@subfun "}{" ,@s1 "}") r)))
@@ -553,7 +577,12 @@
 (defun tex-at (x l r)
   (let ((s1 (tex (cadr x) nil nil lop rop))
 	(sub (tex (caddr x) nil nil 'mparen 'mparen)))
-       (append l s1  '("\\bigg|_{") sub '("}") r)))
+       (append l '("\\left.") s1  '("\\right|_{") sub '("}") r)))
+
+(defprop mbox tex-mbox tex)
+
+(defun tex-mbox (x l r)
+  (append l '("\\framebox{") (tex (cadr x) nil nil 'mparen 'mparen) '("}")))
 
 ;;binomial coefficients
 
@@ -561,9 +590,9 @@
 	   
 (defun tex-choose (x l r)
   `(,@l 
-    "{" 
+    "\\pmatrix{" 
     ,@(tex (cadr x) nil nil 'mparen 'mparen)
-    "\\choose "
+    "\\\\"
     ,@(tex (caddr x) nil nil 'mparen 'mparen)
     "}"
     ,@r))
@@ -572,11 +601,7 @@
 (defprop rat tex-rat tex) 
 (defprop rat 120. tex-lbp)
 (defprop rat 121. tex-rbp)
-(defun tex-rat(x l r)
-  (let ((p (tex-mquotient x nil nil))
-	(q  (list "{" (cadr x) "//" (caddr x) "}"))) 
-       ;; do we ever need (1/2) instead of 1/2 ?
-       `(,@l  "\\mathchoice " ,@p ,@p ,@q ,@q ,@r )))
+(defun tex-rat(x l r) (tex-mquotient x l r))
 
 (defprop mplus tex-mplus tex)
 (defprop mplus 100. tex-lbp)
@@ -607,7 +632,6 @@
 (defprop mminus 100. tex-rbp)
 (defprop mminus 100. tex-lbp)
 
-
 (defprop mequal tex-infix tex)
 (defprop mequal (=) texsym)
 (defprop mequal 80. tex-lbp)
@@ -623,7 +647,7 @@
 (defprop mgreaterp 80. tex-rbp)
 
 (defprop mgeqp tex-infix tex)
-(defprop mgeqp ("\\ge") texsym)
+(defprop mgeqp ("\\geq") texsym)
 (defprop mgeqp 80. tex-lbp)
 (defprop mgeqp 80. tex-rbp)
 
@@ -633,21 +657,21 @@
 (defprop mlessp 80. tex-rbp)
 
 (defprop mleqp tex-infix tex)
-(defprop mleqp ("\\le") texsym) ;; etc
+(defprop mleqp ("\\leq") texsym)
 (defprop mleqp 80. tex-lbp)
 (defprop mleqp 80. tex-rbp)
 
 (defprop mnot tex-prefix tex)
-(defprop mnot ("\\lnot ") texsym)
+(defprop mnot ("\\not ") texsym)
 (defprop mnot 70. tex-rbp)
 
 (defprop mand tex-nary tex)
-(defprop mand ("\\land") texsym) ;; fill in the rest of the operators..
+(defprop mand ("\\and") texsym)
 (defprop mand 60. tex-lbp)
 (defprop mand 60. tex-rbp)
 
 (defprop mor tex-nary tex)
-(defprop mor ("\\lor") texsym)
+(defprop mor ("\\or") texsym)
 
 ;; make sin(x) display as sin x , but sin(x+y) as sin(x+y)
 ;; etc
@@ -658,16 +682,24 @@
       (setf (get a 'tex) 'tex-prefix)
       (setf (get a 'texword) b)  ;This means "sin" will always be roman
       (setf (get a 'texsym) (list b))
-      (setf (get a 'tex-rbp) 110)))
+      (setf (get a 'tex-rbp) 130)))
 
 (mapc #'tex-setup 
   '( (%sin "\\sin ")
      (%cos "\\cos ")
+     (%tan "\\tan ")
+     (%cot "\\cot ")
+     (%sec "\\sec ")
+     (%csc "\\csc ")
+     (%asin "\\arcsin ")
      (%acos "\\arccos ")
+     (%atan "\\arctan ")
+     (%sinh "\\sinh ")
+     (%cosh "\\cosh ")
+     (%tanh "\\tanh ")
+     (%coth "\\coth ")
      (%ln "\\ln ")
      (%log "\\log ")
-     (%atan "\\arctan ")
-     (%tan "\\tan ")
     ;; (%erf "{\\rm erf}") this would tend to set erf(x) as erf x. Unusual
      ;(%laplace "{\\cal L}")
      )) ;; etc
@@ -705,24 +737,15 @@
   (cond ((null n) nil) 
 	((= c 1)(cons (car n)(odds (cdr n) 0)))
 	((= c 0)(odds (cdr n) 1))))
-    
-(defun tex-mcond (x l r &aux if)
-    (setq if (nreconc l '("{\\bf if\\>}")) 
-	  l (tex (cadr x) nil nil 'mcond 'mparen))
-    (cond ((eq '$false (fifth x))
-	   (setq x (tex (caddr x)
-			  '("{\\bf \\> then\\>}")
-			  r 'mcond rop))
-	   (append if l x))
-	  (t (setq r (tex (fifth x)
-			    '("{\\bf \\> else \\>}")
-			    r 'mcond rop)
-		   x (tex (caddr x)
-			  '("{\\bf \\> then\\>}")
-			    
-			    nil 'mcond 'mparen))
-	     (append  if l x r))))
 
+(defun tex-mcond (x l r)
+  (append l
+    (tex (cadr x) '("\\mathbf{if}\\>")
+      '("\\>\\mathbf{then}\\>") 'mparen 'mparen)
+    (if (eql (fifth x) '$false)
+      (tex (caddr x) nil r 'mcond rop)
+      (append (tex (caddr x) nil nil 'mparen 'mparen)
+        (tex (fifth x) '("\\>\\mathbf{else}\\>") r 'mcond rop)))))
 
 (defprop mdo tex-mdo tex)
 (defprop mdo 30. tex-lbp)
@@ -736,33 +759,33 @@
 ;; these aren't quite right
 
 (defun tex-mdo (x l r)
-  (texnary (cons '(mdo) (texmdo x)) l r "\\>"))
+  (tex-list (texmdo x) l r "\\>"))
 
 (defun tex-mdoin (x l r)
-  (texnary (cons '(mdo) (texmdoin x)) l r "\\>"))
+  (tex-list (texmdoin x) l r "\\>"))
 
 (defun texmdo (x)
-   (nconc (cond ((second x) `("{\\bf for}" ,(second x))))
+   (nconc (cond ((second x) `("\\mathbf{for}" ,(second x))))
 	 (cond ((equal 1 (third x)) nil)
-	       ((third x)  `("{\\bf from}" ,(third x))))
+	       ((third x)  `("\\mathbf{from}" ,(third x))))
 	 (cond ((equal 1 (fourth x)) nil)
-	       ((fourth x) `("{\\bf step}" ,(fourth x)))
-	       ((fifth x)  `("{\\bf next}" ,(fifth x))))
-	 (cond ((sixth x)  `("{\\bf thru}" ,(sixth x))))
+	       ((fourth x) `("\\mathbf{step}" ,(fourth x)))
+	       ((fifth x)  `("\\mathbf{next}" ,(fifth x))))
+	 (cond ((sixth x)  `("\\mathbf{thru}" ,(sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((eq 'mnot (caar (seventh x)))
-		`("{\\bf while}" ,(cadr (seventh x))))
-	       (t `("{\\bf unless}" ,(seventh x))))
-	 `("{\\bf do}" ,(eighth x))))
+		`("\\mathbf{while}" ,(cadr (seventh x))))
+	       (t `("\\mathbf{unless}" ,(seventh x))))
+	 `("\\mathbf{do}" ,(eighth x))))
 
 (defun texmdoin (x)
-  (nconc `("{\\bf for}" ,(second x) $|in| ,(third x))
-	 (cond ((sixth x) `("{\\bf thru}" ,(sixth x))))
+  (nconc `("\\mathbf{for}" ,(second x) $|in| ,(third x))
+	 (cond ((sixth x) `("\\mathbf{thru}" ,(sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((eq 'mnot (caar (seventh x)))
-		`("{\\bf while}" ,(cadr (seventh x))))
-	       (t `("{\\bf unless}" ,(seventh x))))
-	 `("{\\bf do}" ,(eighth x))))
+		`("\\mathbf{while}" ,(cadr (seventh x))))
+	       (t `("\\mathbf{unless}" ,(seventh x))))
+	 `("\\mathbf{do}" ,(eighth x))))
 
 ;; initialize a file so that c-lines will look ok in verbatim mode
 ;; run this first before tex(<whatever>, file);
@@ -784,10 +807,6 @@
 				   :if-exists :append)
   (format st "\\end~%")
   '$done))
-
-;; Undone and easy:
-;; type in all the greek letters and other funny stuff that TeX
-;; knows about.
 
 ;; Undone and trickier:
 ;; handle reserved symbols stuff, just in case someone
