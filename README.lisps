@@ -11,18 +11,16 @@ clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
 	clisp includes GNU readline support, so Maxima will have
 advanced command-line editing facilities when built with it.
 
-clisp versions: Clisp version 2.32 or later is recommended, though
-2.31 is known to work. Clisp 2.30 is not compatible with Maxima and
-should be avoided.
+clisp versions: Clisp version 2.33.1 or later is recommended. Clisp
+2.30 is not compatible with Maxima and should be avoided.
 
 CMUCL <http://cmucl.cons.org>
 -----
-	CMUCL is the fastest option for Maxima on platforms where it
-is available. Unfortunately, it does not include readline
-support. However, readline support can be added by wrapping maxima
-with the ledit executable. See
-<ftp://ftp.inria.fr/INRIA/Projects/cristal/Daniel.de_Rauglaudre/Tools/>
-for ledit.
+
+	CMUCL is generally the fastest option for Maxima on platforms
+where it is available. The rmaxima front-end provides advanced
+line-editing facilities for Maxima when compiled with CMUCL. rlwrap is
+available from <http://utopia.knoware.nl/~hlub/uck/rlwrap/> .
 
 CMUCL versions: 18e is known to work.
 
@@ -30,14 +28,16 @@ GCL <http://savannah.gnu.org/projects/gcl>
 ---
 	GCL versions starting with 2.4.3 can be built with readline
 support, so Maxima will have advanced command-line editing facilities
-when build with it.
+when built with it.
 
 GCL versions: The soon-to-be-released GCL 2.6.2 is the best bet for
 Maxima. Only the ANSI build of GCL is currently supported.
 
 SBCL <http://sbcl.sourceforge.net>
 ----
-	SBCL version 0.8.4 is known to work.
+	rmaxima is recommended for use with SBCL. See CMUCL above.
+
+	SBCL version 0.8.9 is known to work.
 
 Allegro Common Lisp and OpenMCL:
 -------------------------------

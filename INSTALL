@@ -17,19 +17,7 @@ configure supports many options. Type
 to see them enumerated.
 
 The "make check" step runs the Maxima test suite. The Maxima test
-suite may contain tests that are known to fail. In that case, the
-output will look something like this:
-
----------------------------------------------------------------
-*** Summary results for tests recorded in
-*** log file tests-cmucl.log:
-Error summary:
-Error(s) found in rtest15.mac: (4)
-
-Expected failures (known bugs in this version of Maxima):
-rtest15.mac: (4)
----------------------------------------------------------------
-
+suite is also available at run time via the command run_testsuite();.
 
 Generic Autotools build instructions follow.
 

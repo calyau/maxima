@@ -1,88 +1,94 @@
-Release notes for Maxima 5.9.0:
+These are the release notes for Maxima 5.9.1. For a detailed list of
+changes in this release, see the file ChangeLog.
 
-This is the first of a series of development releases which will
-culminate in Maxima 6.0, the first truly stable release of the new
-Maxima project. This release has known bugs; see "Known issues..."
-below. However, we believe it is stable enough for use by a wide
-audience. We are relying on bug reports from users to help us make 6.0
-the most bug-free version of Maxima ever.
+The updates and new features in Maxima 5.9.1 fall into three
+categories: infrastructure, functionality and bug fixes.
 
-Changes in this release include:
+1) Infrastructure
 
-    1) Maxima is now compatible with ANSI Common Lisp. CMUCL, Clisp
-    and GCL are fully supported.
+   a) Windows
+      - A command-line version of Maxima is now available in
+        addition to the xmaxima GUI. The new command-line version
+        supports batch mode as well as interfacing with other
+        programs such as Emacs.
+      - Clisp is now a supported lisp on Windows.
 
-    2) Maxima has a new build system based on the GNU
-    Autotools. Installation should be easier and more flexible than
-    ever before.
+   b) Support for external interfaces
+      - Maxima now provides a mechanism for robust interface to
+        external front-ends such as TeXmacs.
 
-    3) The Maxima build now uses mk:defsystem from CLOCC at the Lisp
-    level. mk:defsystem provides a powerful and familiar environment
-    for Lisp developers.
+   c) Lisp debugger disables by default
+      - Maxima will no longer dump the user into the lisp debugger
+        when it encounters an error. The debugger can be re-enabled
+        if desired.
 
-    4) Maxima has a new User Manual, which is provided as a complement
-    to the detailed reference manual from earlier versions of Maxima.
+   d) More Lisp implementations supported
+      - CMUCL, Clisp and GCL support is actively maintained.
+      - SBCL, ACL, and OpenMCL support is included, but no active
+        maintainers for Maxima using these Lisps have yet volunteered.
 
-    5) The command-line interface has been enhanced with several
-    options, including a batch mode.
+   e) Static installs
+      - Maxima installs are now independent of the Lisp
+        implementation for CMUCL, Clisp and GCL. This will simplify 
+	binary distributions as well as removing problems caused by
+        Lisp upgrades breaking existing Maxima installations.
 
-    6) The bundled Emacs/XEmacs modes have been improved.
+   f) "Pure" Lisp builds
+      - It is now possible to build Maxima using nothing but
+        Lisp. See the file INSTALL.lisp for details.
 
-    7) The internal layout of source code and shared Maxima files has
-    been vastly improved.
+   g) Simplified use of shell scripts
+      - The use of shell scripts in Maxima has been greatly
+        simplified. The old maxima-run-lisp script has been
+        completely eliminated.
+	- Maxima is now more portable.
+        - Porting to non-Unix platforms is simplified.
+	- Maxima is easier to maintain.
 
-    8) Precision of some numerical special functions has been
-    dramatically enhanced.
+   h) rmaxima
+      - rmaxima is a simple new front-end that gives Maxima better
+        command-line editing abilities, including persistent history,
+        for Lisps that did not have it before, e.g., CMUCL. rmaxima
+        requires the external program rlwrap.
+   
+   i) Test suite improvements
+      - The test suite is now available at run time through the
+        new command run_testsuite().
+      - Test suite output has been made more readable.
 
-    9) New and improved binary packages for Windows and Linux are now
-    part of the official distribution.
+2) Functionality
 
-    10) Last, but not least, many bugs have been fixed.
+   a) Enhanced plotting
+      - 2D Adaptive plotting allows smooth plotting even in the
+        presence of singularities. The 2D plotting algorithms were
+        adapted from Yacas, <http://yacas.sourceforge.net>.
+      - Maxima's default plotter is now gnuplot. The gnuplot
+        interface has been greatly enhanced; see
+        <http://maxima.sourceforge.net> for examples.
 
-Known issues in this release include:
+   b) New input/output labels
+      - Before this release, the labels input, output, and
+        intermediate output were C#, D# and E#. They are now %i#, %o#
+   	and %t#, respectively. This change was made because many
+    	users became confused when labels such as C1 clashed with
+   	user-defined variables with similar names.
+      - The old behavior can be restored by with the commands:
+      	    inchar:C ; outchar:D ; linechar:E ; 
 
-    1) One of the (many) tests in the Maxima test suite fails. When
-    the test suite is run via "make check" this known failure (Problem
-    4 in rtest15.mac) will be listed as an expected error in the
-    summary.
+   b) Quadpack
+      - The quadpack routines for robust numerical integration have
+        been added.
 
-    2) The test suite is available in xmaxima. Xmaxima should also
-    flag the known failure described above as expected, but it does
-    not. This behavior will be improved in a later version of
-    (X)Maxima.
+   c) Tensor
+      - The tensor package is now being actively maintained.
 
-    3) When compiled with GCL, Maxima will fail to compile functions
-    when the current working directory is not writable. This will
-    typically cause the test suite to fail when run from xmaxima under
-    Unix-like systems because it sets the current working directory to
-    the installed tests directory. The end result will look like this:
+   d) Differential Equations
+      - Enhanced differential equation solvers have been added. See
+        share/contrib/diffequations. 
 
-------------------------------------------------------------------
-/* ********************** Problem 43. *************** */ 
-%Input is
-DESOLVE([EQN1, EQN2], [f(x), G(x)])
-x + 2 contains more than one independent variable.
- -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);)
-------------------------------------------------------------------
-
-    4) The maxima command-line executable is only fully functional
-    under Unix-like systems, which includes Win32+MSYS, but not plain
-    Win32. Under Win32, the executable maxima.bat is available but it
-    has limited functionality. (The Win32 distribution does contain
-    xmaxima, however, which is fully functional under Win32.) This
-    problem will be fixed in a later version of Maxima.
-
-    5) maxima.bat does not properly set the Maxima directory. This
-    will cause several problems including the inability to access
-    on-line help and plotting. As a workaround, set the environment
-    variable MAXIMA_PREFIX to the installed location of Maxima, which
-    is usually "C:/Program Files/Maxima-5.9.0".  This problem will be
-    fixed in a later version of Maxima.
-
-    6) The share and demo files have many problems. These problems
-    will be addressed in a later release.
-
-    7) There are still many open bugs in the Maxima bug tracking
-    database. See
-    <http://sourceforge.net/tracker/?atid=104933&group_id=4933&func=browse>
-    for details.
+3) Bug fixes
+   
+   Many bugs found in Maxima 5.9.0 have been fixed. Many bugs still
+   exist, however. The 5.9.3 release will focus primarily on bug
+   fixes. (The 5.9.2 release will focus only on case-sensitivity
+   issues.)
