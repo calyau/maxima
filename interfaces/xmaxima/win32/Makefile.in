@@ -43,7 +43,6 @@ gcccopy:
 	test -d "$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include" \
 		|| mkdir -p "$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include"
 	cp $(GCCPREFIX)/bin/gcc.exe $(prefix)/bin
-	cp $(GCCPREFIX)/bin/as.exe $(prefix)/bin
 	cp $(GCCPREFIX)/bin/mingwm10.dll $(prefix)/bin
 	cp $(GCCPREFIX)/bin/tclpip84.dll $(prefix)/bin
 	cp $(GCCPREFIX)/include/stdio.h $(prefix)/include
@@ -58,6 +57,8 @@ gcccopy:
 	cp $(GCCPREFIX)/include/getopt.h $(prefix)/include
 	cp $(GCCPREFIX)/include/sys/*.h $(prefix)/include/sys
 	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cc1.exe \
+		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
+	cp $(GCCPREFIX)/bin/as.exe \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
 	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/specs  \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
