@@ -47,6 +47,7 @@ gcccopy:
 	cp $(GCCPREFIX)/bin/mingwm10.dll $(prefix)/bin
 	cp $(GCCPREFIX)/bin/tclpip84.dll $(prefix)/bin
 	cp $(GCCPREFIX)/include/stdio.h $(prefix)/include
+	cp $(GCCPREFIX)/include/stdlib.h $(prefix)/include
 	cp $(GCCPREFIX)/include/varargs.h $(prefix)/include
 	cp $(GCCPREFIX)/include/setjmp.h $(prefix)/include
 	cp $(GCCPREFIX)/include/stddef.h $(prefix)/include
