@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.17 2003-01-27 08:02:24 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.18 2004-06-14 02:14:24 billingd Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -222,7 +222,7 @@ proc maximaFilter { win sock } {
     if { [regexp -indices "\{plot\[d23]\[fd]" $it inds] } {
 	set plotPending [string range $it [lindex $inds 0] end]
 	set it ""
-	if { [regexp {\(C[0-9]+\) $} $it ff] } {
+	if { [regexp {\((C|%i)[0-9]+\) $} $it ff] } {
 	    regexp "\{plot\[d23]\[df].*\}" $ff it
 	    #	set it $ff
 	}
@@ -231,7 +231,7 @@ proc maximaFilter { win sock } {
 	#puts "plotPending=<$plotPending>,it=<$it>"
 	append plotPending $it
 	set it ""
-	if { [regexp -indices "\n\\(D\[0-9\]+\\)" $plotPending  inds] } {
+	if { [regexp -indices "\n\\((D|%o)\[0-9\]+\\)" $plotPending  inds] } {
 	    set it [string range $plotPending [lindex $inds 0] end]
 	    set plotPending [string range $plotPending 0 [lindex $inds 0]]
 	    set data $plotPending
@@ -245,7 +245,7 @@ proc maximaFilter { win sock } {
 
     $win insert end $it "output"
     $win mark set  lastStart "end -1char"
-    if { [regexp {\(C[0-9]+\) $|\(dbm:[0-9]+\) $|([A-Z]+>[>]*)$} $it junk lisp]  } {
+    if { [regexp {\((C|%i)[0-9]+\) $|\(dbm:[0-9]+\) $|([A-Z]+>[>]*)$} $it junk lisp]  } {
 	#puts "junk=$junk, lisp=$lisp,[expr { 0 == [string compare $lisp {}] }]"
 	#puts "it=<$it>,pdata={[array get pdata *]},[$win index end],[$win index insert]"
 
@@ -400,7 +400,7 @@ proc sendMaximaCall { win form call } {
 
     global pdata
     set begin [$win index lastStart]
-    if { [regexp {C([0-9]+)} [$win get "$begin linestart" $begin] junk \
+    if { [regexp {(C|%i)([0-9]+)} [$win get "$begin linestart" $begin] junk \
 	      counter ] } {
 	#	set af [after 5000 set pdata($maximaSocket,wait) -1]
 	set pdata($maximaSocket,wait) 1
@@ -539,7 +539,7 @@ proc trim_maxima { string } {
     if { [string first \n $string] == 0 } {
 	set string [string range $string 1 end]
     }
-    if { [regexp -indices "(^|\n)(\\(D\[0-9\]+\\))" $string all junk inds] } {
+    if { [regexp -indices "(^|\n)(\\((D|%o)\[0-9\]+\\))" $string all junk inds] } {
         set len [expr {[lindex $inds 1]  - [lindex $inds 0] }]
         set repl [genword " " $len]
         set ans [string range $string 0 [expr {[lindex $inds 0 ] -1}]]
