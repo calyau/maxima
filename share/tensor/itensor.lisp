@@ -228,7 +228,7 @@
 	    (NOT (EQ (CAAR E) '$MATRIX))
 	    ($LISTP (CADR E))
 	    (COND ((CDDR E) ($LISTP (CADDR E)))
-		  (T (NCONC E '(((MLIST SIMP))))))))))
+		  (T (NCONC E '(((MLIST SIMP))))  T  ))))))
                                           ;Transforms F([...]) into F([...],[])
 
 ;RPOBJ is the predicate for indexed objects. In the case of no contravariant
