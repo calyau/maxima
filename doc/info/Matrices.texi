@@ -636,6 +636,25 @@ simplified.  If set to FALSE, no conversion will be done.
 
 @end defvar
 
+@c MOVED scalefactors HERE FROM Miscellaneous.texi, SEEMS MORE AT HOME HERE
+@defun scalefactors (coordinatetransform)
+Here coordinatetransform
+evaluates to the form [[expression1, expression2, ...],
+indeterminate1, indeterminat2, ...], where indeterminate1,
+indeterminate2, etc. are the curvilinear coordinate variables and
+where a set of rectangular Cartesian components is given in terms of
+the curvilinear coordinates by [expression1, expression2, ...].
+@code{coordinates} is set to the vector [indeterminate1, indeterminate2,...],
+and @code{dimension} is set to the length of this vector.  SF[1], SF[2],
+..., SF[DIMENSION] are set to the coordinate scale factors, and @code{sfprod}
+is set to the product of these scale factors.  Initially, @code{coordinates}
+is [X, Y, Z], @code{dimension} is 3, and SF[1]=SF[2]=SF[3]=SFPROD=1,
+corresponding to 3-dimensional rectangular Cartesian coordinates.
+To expand an expression into physical components in the current
+coordinate system, there is a function with usage of the form
+
+@end defun
+
 @defun SETELMX (x, i, j, M)
 changes the i,j element of M to x.  The altered
 matrix is returned as the value.  The notation M[i,j]:x may also be
