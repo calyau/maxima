@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# jfa:
+# This script is not complete. (Not even close!) 
+# More funtionality will be added.
+
+MAXIMA_VERSION=@VERSION@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+MAXIMA_VERPKGLIBEXECDIR=@libexecdir@/@PACKAGE@/@VERSION@
+MAXIMA_VERPKGLIBDIR=@libdir@/@PACKAGE@/@VERSION@
+
+MAXIMA_LISP=clisp
+
+if [ -n "$1" ]; then
+  case $1 in
+    --clisp)
+	     MAXIMA_LISP=clisp
+	     ;;
+    --cmucl)
+	     MAXIMA_LISP=cmucl
+	     ;;
+    --gcl)
+	   MAXIMA_LISP=gcl
+	   ;;
+    *)
+       echo "Option $1 not recognized" 1>&2
+       echo "Valid options are --clisp, --cmucl and --gcl" 1>&2
+       exit 1
+       ;;
+  esac
+fi
+
+LISPTYPE=$MAXIMA_LISP
+export LISPTYPE
+exec $MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp -run $MAXIMA_VERPKGLIBDIR/binary-$LISPTYPE/maxima

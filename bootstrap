@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "Please ignore \"error while copying messages\" for"
+echo "./install-sh, ./mkinstalldirs and ./missing."
+set -x
+aclocal
+automake --foreign --add-missing --copy --verbose
+autoconf

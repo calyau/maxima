@@ -1,0 +1,226 @@
+; -*- Lisp -*-
+(in-package :user)
+
+(pushnew :cl *features*)
+(pushnew :nocp *features*)
+
+(mk:defsystem "maxima"
+  :source-extension "lisp"  
+  :binary-pathname #+clisp "binary-clisp"  #+cmu "binary-cmucl" #+gcl "binary-gcl"
+  :components ((:module package :source-pathname ""
+			:load-only t
+			:components ((:file "maxima-package")))
+	       #+later(:module info :source-pathname ""
+			:components ((:file "cl-info")))
+	       (:module sloop :source-pathname ""
+			:components ((:file "sloop")))
+	       (:module declarations :source-pathname ""
+                         :components ((:file "lmdcls")))
+               (:module declarations :source-pathname ""
+                        :components ((:file "lmdcls"))) 
+               (:module destructuring-let :source-pathname ""
+                        :components ((:file "letmac")))
+               (:module compatibility-macros1 :source-pathname ""
+                        :components (#-gcl (:file "generr") ; jfa
+				     #+gcl (:file "kclmac")
+				     (:file "clmacs")))
+               (:module compatibility-macros :source-pathname ""
+                        :components ((:file "commac"))) 
+               (:module prerequisites :source-pathname ""
+                        :components ((:file "mormac") 
+                                     (:file "compat")))
+               (:module fundamental-macros :source-pathname ""
+                        :components ((:file "defopt") 
+                                     (:file "defcal") 
+                                     (:file "maxmac")))
+               (:module utility-macros :source-pathname ""
+                        :components ((:file "mopers") 
+                                     (:file "mforma")))
+               (:module other-macros :source-pathname ""
+                        :components ((:file "mrgmac") 
+                                     (:file "procs") 
+                                     (:file "rzmac")    
+                                     (:file "strmac") 
+                                     (:file "displm")))
+               (:module rat-macros :source-pathname ""
+                        :components ((:file "ratmac") 
+                                     (:file "mhayat")))
+               (:module numerical-macros :source-pathname ""
+                        :components ((:file "numerm")))
+               #+gcl (:file "optimize") ; jfa check this
+	       (:module declaim :source-pathname ""
+			:load-only t
+			:components (#-ansi-cl (:file "SYS-PROCLAIM")
+			             #+ansi-cl (:file "SYS-DECLAIM")))
+               (:module utilities :source-pathname ""
+                        :components ((:file "opers")
+                                     (:file "utils") 
+                                     (:file "sumcon") 
+                                     (:file "sublis") 
+                                     (:file "runtim") 
+                                     (:file "merror") 
+                                     (:file "mformt") 
+                                     (:file "mutils") 
+                                     (:file "outmis") 
+                                     (:file "ar") 
+                                     (:file "misc")))
+               (:module commands :source-pathname ""
+                        :components ((:file "comm")
+                                     (:file "comm2")))
+               (:module evaluator :source-pathname ""
+                        :components ((:file "mlisp") 
+                                     (:file "mmacro") 
+                                     (:file "buildq")))
+               (:module simplification :source-pathname ""
+                        :components ((:file "simp") 
+                                     (:file "float") 
+                                     (:file "csimp") 
+                                     (:file "csimp2") 
+                                     (:file "zero")
+                                     (:file "logarc") 
+                                     (:file "rpart")))
+               (:module i-o :source-pathname ""
+                        :components ((:file "macsys") 
+                                     (:file "mload") 
+                                     (:file "suprv1")
+                                     (:file "dskfn")))
+               (:module factoring :source-pathname ""
+                        :components ((:file "lesfac") 
+                                     (:file "factor") 
+                                     (:file "algfac") 
+                                     (:file "nalgfa") 
+                                     (:file "ufact") 
+                                     (:file "result")))
+	       (:module rational-functions :source-pathname ""
+			:components ((:file "rat3a") 
+				     (:file "rat3b") 
+				     (:file "rat3d") 
+				     (:file "rat3c") 
+				     (:file "rat3e") 
+				     (:file "nrat4") 
+				     (:file "ratout")))
+	       (:module maxima-language-compiler-macros :source-pathname ""
+			:components ((:file "transm")))
+	       (:module maxima-language-compiler :source-pathname ""
+			:components ((:file "transl") 
+				     (:file "transs") 
+				     (:file "trans1") 
+				     (:file "trans2") 
+				     (:file "trans3") 
+				     (:file "trans4") 
+				     (:file "trans5") 
+				     (:file "transf") 
+				     (:file "troper") 
+				     (:file "trutil") 
+				     (:file "trmode") 
+				     (:file "trdata") 
+				     (:file "trpred") 
+				     (:file "transq") 
+				     (:file "acall")
+				     (:file "fcall") 
+				     (:file "evalw") 
+				     (:file "trprop") 
+				     (:file "mdefun")))
+	       (:module numerical-functions :source-pathname ""
+			:components ((:file "bessel") 
+				     (:file "ellipt") 
+				     (:file "numer") 
+				     (:file "intpol") 
+				     (:file "rombrg")))
+	       (:module reader :source-pathname ""
+			:components ((:file "nparse")))
+	       (:module display :source-pathname ""
+			:components ((:file "displa") 
+				     (:file "nforma") 
+				     (:file "ldisp") 
+				     (:file "grind")))
+	       (:module gcd :source-pathname ""
+			:components ((:file "spgcd")
+				     (:file "ezgcd")))
+	       (:module documentation :source-pathname ""
+			:components ((:file "option")
+				     (:file "macdes")))
+	       (:module algebraic-database :source-pathname ""
+			:components ((:file "inmis") 
+				     (:file "db") 
+				     (:file "compar") 
+				     (:file "askp"))) ;does this belong here?
+	       (:module integration :source-pathname ""
+			:components ((:file "sinint") 
+				     (:file "sin") 
+				     (:file "risch")))
+	       (:module taylor-series :source-pathname ""
+			:components ((:file "hayat")))
+	       (:module definite-integration :source-pathname ""
+			:components ((:file "defint") 
+				     (:file "residu")))
+	       (:module trigonometry :source-pathname ""
+			:components ((:file "trigi") 
+				     (:file "trigo") 
+				     (:file "trgred")))
+	       (:module special-functions :source-pathname ""
+			:components ((:file "specfn")))
+	       (:module matrix-algebra :source-pathname ""
+			:components ((:file "mat") 
+				     (:file "matrix")))
+	       (:module determinants :source-pathname ""
+			:components ((:file "sprdet") 
+				     (:file "newinv") 
+				     (:file "linnew") 
+				     (:file "newdet")))
+	       (:module pattern-matching :source-pathname ""
+			:components ((:file "schatc") 
+				     (:file "matcom") 
+				     (:file "matrun") 
+				     (:file "nisimp")))
+	       (:module limits :source-pathname ""
+			:components ((:file "tlimit") 
+				     (:file "limit")))
+	       (:module solve :source-pathname ""
+			:components ((:file "solve") 
+				     (:file "psolve") 
+				     (:file "algsys") 
+				     (:file "polyrz") 
+				     (:file "cpoly")))
+	       (:module debugging :source-pathname ""
+			:components ((:file "mtrace")
+				     (:file "mdebug")))
+	       (:module miscellaneous :source-pathname ""
+			:components ((:file "scs") 
+				     (:file "asum") 
+				     (:file "fortra") 
+				     (:file "optim") 
+				     (:file "marray") 
+				     (:file "mdot") 
+				     (:file "irinte") 
+				     (:file "series") 
+				     (:file "numth") 
+				     (:file "laplac") 
+				     (:file "pade") 
+				     (:file "homog") 
+				     (:file "combin") 
+				     (:file "mstuff")))
+	       (:module poisson-series :source-pathname ""
+			:components ((:file "ratpoi")
+				     (:file "pois2") 
+				     (:file "pois3")))
+	       (:module translated-packages :source-pathname ""
+			:components
+			((:file "nusum")
+			 (:file "desoln")
+			 (:file "elim")
+			 (:file "trgsmp")
+			 (:file "ode2")
+			 (:file "invert")
+			 (:file "hypgeo")
+			 (:file "hyp")
+			 (:file "todd-coxeter")
+			 (:file "mactex")
+			 (:file "plot")))
+	       (:module final :source-pathname ""
+			;; These are not compiled, for whatever reason
+			:load-only t
+			:components ((:file "version")
+				     (:file "autol")
+				     (:file "max_ext")
+				     (:file "init-cl")))))

@@ -1,0 +1,27 @@
+-real maxima script
+	-batch mode
+	-user preferences
+	-interface to external programs
+	-docs
+		-man page
+		-dynamic (--help)
+	-interface for invoking tests
+
+-make dependencies for defsystem
+
+-install emacs files
+	-options for emacs, xemacs
+
+-install packages
+
+-install docs
+
+-install xmaxima
+	-option to not install
+
+-spec files
+	-separate packages for base, each lisp impl, emacs, xemacs...
+
+-configure options
+	-fix default lisp
+	-optional paths to specific lisps
