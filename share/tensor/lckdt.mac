@@ -55,7 +55,7 @@ _lc2kdt0(exp):=block([temp1:1,temp2:1,temp,i1],
 
 _lc2kdt0(exp):=block(
   [res:1,fre:1,fac],
-  if op(exp)="-" then return(-_lc2kdt0(part(num(exp),1))),
+  if op(exp)="-" then return(-_lc2kdt0(part(exp,1))),
   if op(num(exp))#"*" then return(exp),
   for i thru length(num(exp)) do
   (
