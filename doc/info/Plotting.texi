@@ -82,7 +82,7 @@ and finally we plot this together with an ordinary function of X.
 
 @end defun
 
-@defun xgraph_curves(list)
+@defun xgraph_curves (list)
 graphs the list of `point sets' given in list by using xgraph.
 
 A point set may be of the form

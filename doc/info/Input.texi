@@ -899,8 +899,8 @@ progress.
 @end defun
 
 @defun TEX (expr)
-@defunx TEX(expr,filename)
-@defunx TEX(label,filename)
+@defunx TEX (expr,filename)
+@defunx TEX (label,filename)
 
 In the case of a label,
 a left-equation-number will be produced.
@@ -931,7 +931,7 @@ $$-\cos x$$
 @end example
 where the last expression will be appended to the file @file{/tmp/jo.tex}
 @end defun
-@defun SYSTEM(command)
+@defun SYSTEM (command)
 Execute COMMAND as a subprocess.  The command will be passed to the
 default shell for execution.   System is not supported by all operating
 systems, but generally exists in the unix environment.
@@ -958,7 +958,7 @@ console.
 
 @end defvar
 
-@deffn {macro} WITH_STDOUT(file,stmt1,stmt2,...)
+@deffn {macro} WITH_STDOUT (file,stmt1,stmt2,...)
 Opens file and then evaluates stmt1, stmt2, ....  Any printing
 to standard output goes to the file instead of the terminal.
 It always returns FALSE.   Note the binding of display2d to be
