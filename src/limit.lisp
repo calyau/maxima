@@ -2491,6 +2491,7 @@ OON  (SETQ Y (M+L (APPEND MINFL INFL)))
 			(SIMPLIFY (LIST (NCONS FN) (RIDOFAB ARG)))
 			FN))))
 
+#+nil
 (DEFUN SIMPLIM%TAN (ARG) 
    (let ((arg1 (ridofab (limit arg var val 'think))))
      (COND
@@ -2519,6 +2520,14 @@ OON  (SETQ Y (M+L (APPEND MINFL INFL)))
 	     ((equal arg1 -1) '$zerob)
 	     (t 0)))
       (t (SIMP-%TAN (LIST '(%TAN) ARG1) 1. NIL)))))
+
+;; Instead of the complicated implementation above, why not use the
+;; fact that tan = sin/cos?  Takes care of the bug that
+;; limit(tan(x+%pi/4),x,0) doesn't return 1.
+(defun simplim%tan (arg)
+  (simplimit `((mtimes simp) ((%sin simp) ,arg)
+	       ((mexpt simp) ((%cos simp) ,arg) -1))
+	     var val))
 
 (DEFUN SIMPLIM%ASINH (ARG) 
        (COND ((MEMQ ARG '($INF $MINF $ZEROA $ZEROB $IND $UND))
