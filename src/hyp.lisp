@@ -1695,8 +1695,8 @@
   (add (div (mul (gm c)
 		 (gm (add c (mul -1 a)(mul -1 b)))
 		 (power var (mul -1 a))
-		 (hgfsimp (list a (add a 1 (mul -1 c)))
-			  (list (add a b (mul -1 c) 1))
+		 ($hgfred `((mlist) ,a ,(add a 1 (mul -1 c)))
+			  `((mlist) ,(add a b (mul -1 c) 1))
 			  (sub 1 (div 1 var))))
 	    (mul (gm (sub c a))(gm (sub c b))))
        (div (mul (gm c)
@@ -1704,11 +1704,11 @@
 		 (power (sub 1 var)
 			(add c (mul -1 a)(mul -1 b)))
 		 (power var (sub a c))
-		 (hgfsimp (list (sub c a)(sub 1 a))
-			  (list (add c
-				     (mul -1 a)
-				     (mul -1 b)
-				     1))
+		 ($hgfred `((mlist) ,(sub c a) ,(sub 1 a))
+			  `((mlist) ,(add c
+					  (mul -1 a)
+					  (mul -1 b)
+					  1))
 			  (sub 1 (div 1 var))))
 	    (mul (gm a)(gm b)))))
 
