@@ -517,7 +517,7 @@
 		     ((ADD-TO (CAR ALA) EXP))))
 	      ((COND ((AND LOC (ATOM (CADR ALA))
 			   (FBOUNDP (CADR ALA)))
-	       (MAPC '(LAMBDA (Q V) (AND (NULL (MEMQ Q SPLIST))
+	       (MAPC #'(LAMBDA (Q V) (AND (NULL (MEMQ Q SPLIST))
 					 (ADD-TO Q V)))
 		     (CAR ALA)
 		     (APPLY (CADR ALA) (FINDTHEM EXP (CDDR ALA)))))))))
@@ -528,7 +528,7 @@
 
 (DEFUN FINDTHEM (EXP ARGS)  
     (CONS EXP
-	  (MAPCAR '(LAMBDA (Q)
+	  (MAPCAR #'(LAMBDA (Q)
 			  (COND ((ATOM Q)
 				 (OR (CDR (ASSQ Q ANS))
 				     (EVAL Q)))

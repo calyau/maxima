@@ -2099,7 +2099,7 @@
 	  (IF (AND (MEMQ (SETQ FUN (CAR (ARRAYDIMS ARY))) '(FIXNUM FLONUM))
 		   (NOT (EQ (ml-typep R) FUN)))
 	      (MERROR "Improper assignment to complete array:~%~M" R))
-	  #-3600(EVAL (LIST 'STORE (CONS ARY SUB) (LIST 'QUOTE R)))
+	  #-lispm(EVAL (LIST 'STORE (CONS ARY SUB) (LIST 'QUOTE R)))
 	  )
 	 ((SETQ ARY (MGET FUN 'HASHAR))
 	  (WHEN (MFILEP ARY)

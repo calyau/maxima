@@ -682,7 +682,7 @@ compiler:
 	do (setf (car v)(intern (string (car v)))))
   tem)
 
-(defvar *string-for-implode* (make-array 20 :fill-pointer 0 :adjustable t :element-type 'string-char))
+(defvar *string-for-implode* (make-array 20 :fill-pointer 0 :adjustable t :element-type ' #. (array-element-type "ab")))
 (defun implode (lis) (implode1 lis nil))
 
 (defun implode1 (lis upcase &aux (ar *string-for-implode*) (leng 0))

@@ -239,7 +239,7 @@ STEP3	(SETQMODULUS P)
 	    (SETQ P (COND ((> (CADR Q) (CADR P)) (BEZOUT Q P))
 			  (T (BEZOUT P Q))))
 	    (CONS '($MATRIX)
-		  (MAPCAR '(LAMBDA (L) (CONS '(MLIST) (MAPCAR 'PDIS L)))
+		  (MAPCAR #'(LAMBDA (L) (CONS '(MLIST) (MAPCAR 'PDIS L)))
 			  P))))
 
 (DEFUN VMAKE (POLY N *L)

@@ -8,7 +8,7 @@
 
 (setf (get :maxima :source-path) "foo.lisp")
 (setf (get :maxima :object-path)
-      #+lucid "foo.lbin" #+excl "foo.fasl" #-(or excl lucid) "foo.o")
+      #+lucid "foo.lbin" #+excl "foo.fasl" #+clisp "foo.fas" #-(or :CLISP excl lucid) "foo.o")
 
 
 #+lispm

@@ -40,7 +40,7 @@
 
 #-(or cl NIL)
 (and (not (get '*f 'subr)) 
-     (mapc '(lambda (x) (putprop x '(arith fasl dsk liblsp) 'autoload))
+     (mapc #'(lambda (x) (putprop x '(arith fasl dsk liblsp) 'autoload))
 	   '(*f //f _f +f -f)))
 
 #-NIL

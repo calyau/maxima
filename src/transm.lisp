@@ -395,7 +395,7 @@
   #+PDP10
   `(LET ((A-SUBR (OR (GET 'AUTOLOAD-TRANSLATE 'SUBR)
 		     (MAXIMA-ERROR 'LOSE 'AUTOLOAD-TRANSLATE 'FAIL-ACT))))
-     (mapc '(lambda (u)
+     (mapc #'(lambda (u)
 	      (or (get u 'translate)
 		  (putprop u A-SUBR 'TRANSLATE)))
 	   ',FUNS))
@@ -534,7 +534,7 @@
 #+(and Multics (not cl))
 (defmacro tr-format (string &rest argl)
   `(cond ((consp *translation-msgs-files*)
-	  (mapcar '(lambda (file)
+	  (mapcar #'(lambda (file)
 		     (mformat file ,string ,@argl))
 		  *translation-msgs-files*))
 	 (t (mformat *translation-msgs-files* ,string ,@argl))))

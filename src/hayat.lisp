@@ -2030,7 +2030,7 @@
 	(setup-multivar-disrep () )
 	(setq mainvar-datum (car (last tlist)))
 ;	(comment
-;	 (mapc '(lambda (d)
+;	 (mapc #'(lambda (d)
 ;		  (when (and (not (atom (datum-var d)))
 ;			     (memq (caar (datum-var d)) '(MEXPT %LOG)))
 ;		     (adjoin-tvar (datum-var d))))

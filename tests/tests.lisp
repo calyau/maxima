@@ -17,6 +17,7 @@
 #+sgc (si::sgc-on t)
 
 ;;we won't bother collecting the errors
+
 (setq *collect-errors* nil)
 (time 
   (sloop with errs = '((mlist)) for v in 

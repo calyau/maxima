@@ -591,7 +591,7 @@
 (DEFUN *RED1 (X)
  (COND ((MEMQ 'SIMP (CDAR X)) (COND ($FLOAT (FPCOFRAT X)) (T X)))
        (T (*RED (CADR X) (CADDR X)))))
-#-3600
+#-lispm
 (DEFUN *RED (N D)
        (COND ((ZEROP N) 0)
 	     ((EQUAL D 1) N)
@@ -604,7 +604,7 @@
 
 
 
-#+3600
+#+lispm
 (DEFUN *RED (N D &aux tem )
   (COND ((ZEROP N) 0)
 	((EQUAL D 1) N)

@@ -333,7 +333,7 @@
 (defun $sconcat(&rest x)
   (let ((ans "") )
   (dolist (v x)
-	  (setq ans (SYSTEM::STRING-CONCATENATE ans
+	  (setq ans (concatenate 'string ans
 				   
 	  (cond ((and (symbolp v) (eql (getcharn v 1)
 				       #\&))

@@ -441,7 +441,7 @@
 #-cl ;;it already has a value thank you very much
 (SETQ PI #.(ATAN 0.0 -1.0))
 (eval-when (load eval compile)
-  (defvar piby2 (//$ pi 2.0)))
+  (defvar piby2 (coerce (/ pi 2.0) 'double-float)))
 
 ;; This function is in LAP for PDP10 systems.  On the Lisp Machine and
 ;; in NIL, this should CONDITION-BIND the appropriate arithmetic overflow

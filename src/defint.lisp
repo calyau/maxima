@@ -2680,7 +2680,7 @@ AG (SETQ NVAR (COND ((EQ R '%LOG) `((%LOG) ,ARG))
 				(t '$unknown)))))))
 
 (defun sort-poles (pole-list)
-       (sort pole-list '(lambda (x y)
+       (sort pole-list #'(lambda (x y)
 				(cond ((eq (ask-greateq (car x) (car y))
 					   '$yes)
 				       nil)

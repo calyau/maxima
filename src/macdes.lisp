@@ -120,7 +120,7 @@
 (defun $describe(x &aux (si::*info-paths* si::*info-paths*))
   (setq x ($sconcat x))
   (setq  SYSTEM::*INFO-PATHS*
-	 (cons  (si::string-concatenate *maxima-directory*
+	 (cons  (concatenate 'string *maxima-directory*
 				     "info/")
 		SYSTEM::*INFO-PATHS*))
   (if (fboundp 'si::info)

@@ -128,6 +128,10 @@
 #+cl
 (defmacro cpoly-small-flonum () (float least-positive-long-float))
 
+#+clisp
+(eval-when (compile load eval)
+  (setq sys::*inhibit-floating-point-underflow* t))
+
 ;;; Returns precision of floating point representation as least significant possible
 ;;; floating point number?  (again, why not just a constant?)
 #-cl

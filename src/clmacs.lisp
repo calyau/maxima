@@ -365,7 +365,8 @@
 (defvar *acursor* nil)
 
 (defun set-up-cursor (ar)
-  (or *acursor* (setf *acursor* (make-array 10 :element-type 'fixnum)))
+  (or *acursor* (setf *acursor* (make-array 10 :element-type 'fixnum
+					    :initial-element 0)))
   (let ((lis (array-dimensions ar)))
     (setf (aref *acursor* 0) (length lis))
     (sloop for v in lis for i from 6 do (setf (aref *acursor* i) (f- v 1)))

@@ -201,7 +201,7 @@
 (DEFUN free-lisp-vars-m-tlambda (FORM)
        (DIFFERENCE-VAR-SETS (FREE-LISP-VARS-OF-ARGL (CDDR FORM))
 			    (FREE-LISP-VARS-OF-ARGL (CADR FORM))))
-(MAPC '(LAMBDA (U)(PUTPROP U 'FREE-LISP-VARS-m-tLAMBDA 'FREE-LISP-VARS))
+(MAPC #'(LAMBDA (U)(PUTPROP U 'FREE-LISP-VARS-m-tLAMBDA 'FREE-LISP-VARS))
       '(M-TLAMBDA M-TLAMBDA&))
 (defun free-lisp-vars-m-tlambda&env (form)
        (difference-var-sets (free-lisp-vars-of-argl (cddr form))

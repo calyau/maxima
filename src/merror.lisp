@@ -76,7 +76,7 @@
 ;  (AND $ERRORMSG ($ERRORMSG))
 ;  (MAXIMA-ERROR #+(OR CL NIL) STRING))
 
-)
+
 #+(and cl (not lispm))
 (DEFUN MERROR (SSTRING &REST L)
 	 (declare (special state-pdl errcatch debug))

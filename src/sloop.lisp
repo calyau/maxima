@@ -69,15 +69,20 @@
 ;;; should put (require "SLOOP") and then (use-package "SLOOP") early in
 ;;; his init file.  Note use of the string to avoid interning 'sloop in
 ;;; some other package.
+(in-package "SLOOP")
 
-(or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
-(in-package "SLOOP" )
-(eval-when (compile eval load)
-;(provide "SLOOP")
-(export '(loop-return sloop def-loop-collect def-loop-map
-		      def-loop-for def-loop-macro local-finish
-		      loop-finish) (find-package "SLOOP"))
-)
+;(or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
+;(eval-when (compile eval load)
+;(shadow '(LOOP-FINISH) (find-package "SLOOP"))
+;)
+;(in-package "SLOOP" )
+;
+;(eval-when (compile eval load)
+;;(provide "SLOOP")
+;(export '(loop-return sloop def-loop-collect def-loop-map
+;		      def-loop-for def-loop-macro local-finish
+;		      loop-finish) (find-package "SLOOP"))
+;)
 
 ;;; some variables that may be changed to suit different implementations:
 

@@ -97,7 +97,7 @@
 ;; Temp autoloads needed for pdp-10. There is a better way
 ;; to distribute this info, too bad I never implemented it.
 
-(MAPC '(LAMBDA (X)
+(MAPC #'(LAMBDA (X)
          (LET ((OLD-PROP (GET (CDR X) 'AUTOLOAD)))
            (IF (NOT (NULL OLD-PROP))
 	       (PUTPROP (CAR X) OLD-PROP 'AUTOLOAD))))
@@ -197,7 +197,7 @@
   (LET (((() ARGLIST . BODY) FORM))
     (MAPC #'TBIND  ARGLIST)
     (SETQ BODY (MAPTR-LISP->LISP BODY))
-    `(LAMBDA ,(TUNBINDS ARGLIST) ,@BODY)))
+    `(function (LAMBDA ,(TUNBINDS ARGLIST) ,@BODY))))
 
 (DEFUN-prop (PROG TR-LISP->LISP) (FORM)
   (LET (((() ARGLIST . BODY) FORM))

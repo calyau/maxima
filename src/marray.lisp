@@ -164,5 +164,7 @@
 (defun lispm-rearray (ar &rest dims)
   (cond ((eql (array-rank ar) (length dims))
 	 (adjust-array ar (mapcar '1+ (copy-list dims)) :element-type (array-element-type ar)  ))
-	(t (merror "Rearray only works for arrays with same rank ie number of subscripts"))))p
+	(t (merror "Rearray only works for arrays with same rank ie number of subscripts"))))
+
+
 

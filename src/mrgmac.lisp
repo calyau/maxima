@@ -97,7 +97,7 @@
 #+CL
 (DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
   (FIX-LM
-    (COND ((ATOM LAMBDA-EXP) (SETQ LAMBDA-EXP (symbol-function LAMBDA-EXP))))
+    (COND ((SYMBOLP LAMBDA-EXP) (SETQ LAMBDA-EXP (symbol-function LAMBDA-EXP))))
     #-cl(si:record-source-file-name name 'macro)
     #-cl(FSET NAME (CONS 'MACRO LAMBDA-EXP))
     #+cl ;note need two args for cl macro
@@ -200,6 +200,8 @@
 (defMACRO DEFMODE (&rest X)
   (setq X (cons ' DEFMODE X ))
   (LET ((SELECTOR (MEMQ 'SELECTOR (CDDDDR X))))
+       (setq billy `(DEFINE-MODE ,(CADR X) ,(CADDDR X)))
+       
     (DEFINE-MODE (CADR X) (CADDDR X))
     (MAPC 'EVAL (CDDDDR X))
     `',(CADR X)))
@@ -212,6 +214,7 @@
 	  C (INTERN (FORMAT NIL "C-~A" NAME)) 
 	  S (INTERN (FORMAT NIL "S-~A" NAME)) 
 	  A (INTERN (FORMAT NIL "A-~A" NAME)))
+     (setq silly `    (DEFINE-MACRO ,C ,(DEFC DESC))	)
     (DEFINE-MACRO C (DEFC DESC))
     (DEFINE-MACRO S (DEFS DESC))
     (DEFINE-MACRO A (DEFA DESC))
@@ -232,8 +235,8 @@
     (RETURN NAME)))
 
 
-(DEFUN DEFC (DESC) (LET ((BAS 'X)) `(LAMBDA (X &optional env) env
-					    ,(DEFC1 DESC))))
+(DEFUN DEFC (DESC) (LET ((BAS 'X)) (coerce `(LAMBDA (X &optional env) env
+					    ,(DEFC1 DESC)) 'function)))
 
 (DEFUN DEFC1 (DESC)
   (COND ((ATOM DESC) (LIST 'QUOTE DESC))
@@ -253,8 +256,8 @@
 
 
 (DEFUN DEFS (DESC)
-  `(LAMBDA (X &optional env)env
-	   (COND . ,(NREVERSE (DEFS1 DESC '(CADR X) NIL)))))
+  (coerce `(LAMBDA (X &optional env)env
+	   (COND . ,(NREVERSE (DEFS1 DESC '(CADR X) NIL))))'function )) 
 
 (DEFUN DEFS1 (DESC BAS RESULT)
   (COND ((ATOM DESC) RESULT)
@@ -289,8 +292,8 @@
 	(T RESULT)))
 
 (DEFUN DEFA (DESC)
-  `(LAMBDA (X &optional env) env
-	   (COND . ,(NREVERSE (DEFA1 DESC '(CADR X) NIL NIL)))))
+  (coerce `(LAMBDA (X &optional env) env
+	   (COND . ,(NREVERSE (DEFA1 DESC '(CADR X) NIL NIL)))) 'function))
 
 (DEFUN DEFA1 (DESC BAS CDR RESULT)
   (COND ((ATOM DESC) RESULT)

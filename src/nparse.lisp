@@ -1814,13 +1814,15 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	(cond ((eq stream (instream-stream v))
 	       (return v))))
   )
+
+
 (defun add-lineinfo (lis)
   (if (or (atom lis) (and (eq *parse-window* *standard-input*)
 			  (not (find-stream *parse-stream*))))
 			  lis
     (let* ((st (get-instream *parse-stream*))
  	   (n (instream-line st))
-	   (nam (instream-name st))
+	   (nam (instream-stream-name st))
 	   )
       (or nam (return-from add-lineinfo lis))
       (setq *current-line-info*
@@ -1842,6 +1844,14 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 #-gcl
 (eval-when (compile eval load)
+
+(defvar *stream-alist* nil)
+
+(defun instream-name (instr)
+  (or (instream-stream-name instr)
+      (stream-name (instream-stream instr))))
+
+(defun stream-name (str) (namestring (pathname str)))
 
 (defstruct instream stream (line 0 :type fixnum) stream-name)
 
@@ -1865,7 +1875,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 (defun newline (str ch) ch
   (let ((in (get-instream str)))
-    (setf (instream-line in) (the fixnum (f + 1 (instream-line in)))))
+    (setf (instream-line in) (the fixnum (+ 1 (instream-line in)))))
   ;; if the next line begins with '(', then record all cons's eg arglist )
   ;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
   (values))

@@ -92,10 +92,33 @@
 (defun break-call (key args prop &aux fun)
   (setq fun (complete-prop key 'keyword prop))
   (or fun (return-from break-call nil))
+  #+clisp (eval '(setq *break-env* (the-environment)))
   (setq fun (get fun prop))
   (if fun
       (evalhook (cons fun args) nil nil *break-env*)
       (format *debug-io* "~&~S is undefined break command.~%" key)))
+
+(defun complete-prop (sym package prop &optional return-list)
+  (cond ((and (symbolp sym)(get sym prop)(equal (symbol-package sym)
+						 (find-package package)))
+	 (return-from complete-prop sym)))
+  (sloop for v in-package package 
+	 when (and (get v prop)
+		   (eql (string-match sym v) 0))
+	 collect v into all
+	 finally
+       
+         (cond (return-list (return-from complete-prop all))
+               ((> (length all) 1)
+	                (format t "~&Not unique with property ~(~a: ~{~s~^, ~}~)."
+			prop all))
+
+		       ((null all)
+			(format t "~& ~a is not break command" sym))
+		       (t (return-from complete-prop
+				       (car all))))))
+
+
 
 )
 
@@ -225,7 +248,9 @@
 			       (make-array (setq l (length all))
 					   :fill-pointer l
 					   :initial-contents (nreverse all)
-					   :element-type 'string-char)
+					   :element-type
+                                         ' #. (array-element-type "ab")
+                                    )
 			       (split-string string bag start))))))
 
 (eval-when (compile) (proclaim '(special *mread-prompt*)))
@@ -280,8 +305,9 @@
 	(t (setq *last-dbm-command* nil)
 	     (mread stream eof-value))))
 
+
 (defun grab-line-number (li stream)
-  (declare (type (vector (string-char)) li))
+  (declare (type (vector ( #. (array-element-type "ab"))) li))
   (cond ((and (> (length li) 3)
 	      (digit-char-p (aref li 1)))
 	 (let ((in (get-instream stream)))
@@ -399,13 +425,13 @@
 		     (format t "~&~%~(~s~)   ~a" v (get v 'break-doc)))))
 	(t (print "not yet"))))
 (def-break :help 'break-help nil)
-(def-break :_none '(lambda()) nil)
+(def-break :_none #'(lambda()) nil)
 (def-break :next  'step-next
   "Like :step, except that subroutine calls are stepped over")
 (def-break :step  'step-into "Step program until it reaches a new source line" )
 ;(def-break :location  'loc "" )
 (def-break :quit 'break-quit "Quit this level")
-(def-break :top  '(lambda( &rest l) (throw 'macsyma-quit 'top)) "Throw to top level")
+(def-break :top  #'(lambda( &rest l) (throw 'macsyma-quit 'top)) "Throw to top level")
 
 
 
@@ -527,6 +553,10 @@
   (setf (aref *break-points* at) bpt)
   at)
 
+(defun short-name (name)
+  (let ((Pos (position #\/ name :from-end t)))
+    (if pos (subseq name (f + 1 pos)) name)))
+
 (defun show-break-point (n &aux disabled)
   (let ((bpt (aref *break-points* n)))
     (when bpt
@@ -534,7 +564,7 @@
 	(setq disabled t)
 	(setq bpt (cdr bpt)))
       (format t "Bkpt ~a:(~a line ~a)~@[(disabled)~]"
-	      n (si::short-name (second bpt))
+	      n (short-name (second bpt))
 	      (third bpt) disabled)
       (let ((fun (fourth bpt)))
 	(format t "(line ~a of ~a)"  (relative-line fun (nth 2 bpt))
@@ -582,7 +612,7 @@
 (setf (get :bt 'break-command) '$backtrace)
 
 (setf (get :info 'break-command)
-      '(lambda (type)
+      #'(lambda (type)
 	 (case type
 	   (:bkpt  (iterate-over-bkpts nil :show))
 	   (otherwise
@@ -601,23 +631,23 @@
 	   (princ v))
   )
    
-(def-break :delete  '(lambda (&rest l) (iterate-over-bkpts l :delete)(values))
+(def-break :delete  #'(lambda (&rest l) (iterate-over-bkpts l :delete)(values))
   "Delete all breakpoints, or if arguments are supplied delete the specified
 breakpoints" )
 (def-break :frame  '$frame "With an argument print the selected stack frame.
 Otherwise the current frame." )
-(def-break :resume  '(lambda () :resume) "Continue the computation." )
-(def-break :continue  '(lambda () :resume)  "Continue the computation." )
+(def-break :resume  #'(lambda () :resume) "Continue the computation." )
+(def-break :continue  #'(lambda () :resume)  "Continue the computation." )
 
 
 
 (def-break :disable 
-      '(lambda (&rest l) (iterate-over-bkpts l :disable)(values))
+      #'(lambda (&rest l) (iterate-over-bkpts l :disable)(values))
       "Disable the specified breakpoints, or all if none are specified")
-(def-break :enable  '(lambda (&rest l) (iterate-over-bkpts l :enable)(values))
+(def-break :enable  #'(lambda (&rest l) (iterate-over-bkpts l :enable)(values))
   "Enable the specified breakpoints, or all if none are specified" )
 
-)
+
 (def-break :break  'do-break
   "Set a breakpoint in the specified FUNCTION at the
 specified LINE offset from the beginning of the function.

@@ -475,7 +475,7 @@ It appears in LIMIT and DEFINT.......")
 		   (not (free (cadr x) var)))
 	      ($trigexpand x))
 	     (t (simplify (cons (ncons (caar x))
-				(mapcar '(lambda (x)
+				(mapcar #'(lambda (x)
 						 (expand-trigs x var))
 					(cdr x)))))))
 

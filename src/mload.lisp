@@ -347,7 +347,7 @@
 ;       (p "" (merge-pathnames
 ;	       (macsyma-namestring-sub (svref file-specs i)) p)))
 ;      ((< i 0) (to-macsyma-namestring p))))
-) ;#+NIL
+;) ;#+NIL
 
 (DEFUN MACSYMA-NAMESTRING-SUB (USER-OBJECT)
   (IF (MACSYMA-NAMESTRINGP USER-OBJECT) USER-OBJECT

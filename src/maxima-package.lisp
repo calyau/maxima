@@ -1,13 +1,20 @@
 
-(or (find-package "SLOOP") (make-package "SLOOP"))
-(in-package "SLOOP")
+(or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
+
+
+(in-package "SLOOP" )
+(shadow '(LOOP-FINISH) (find-package "SLOOP"))
+
+
 (or (find-package "MAXIMA")
     (make-package  "MAXIMA"
 			:nicknames '("CL-MACSYMA"   "CL-MAXIMA" "MACSYMA"  )
-			 :use '( "LISP" "SLOOP")))
+			 :use '( "LISP" )))
 
+(shadowing-import '(sloop::loop-return sloop::local-finish sloop::loop-finish sloop::sloop) "MAXIMA")
 
-(shadow '(tan sinh cosh tanh #+ti file-position ) 'cl-maxima) 
+(shadow '(complement continue   tan sinh cosh tanh #+ti file-position ) 'cl-maxima)
+
 
 ;;defined in polyrz
 (shadow '(signum ) 'cl-maxima)
@@ -94,6 +101,8 @@
 
 ;;redefined in commac  lucid 2.1 does (functionp 'jiljay)-->t
 (if (lisp::functionp 'dotimes) (push :shadow-functionp *features*))
+(unless (lisp::functionp 'lisp::functionp)
+   (pushnew :shadow-functionp *features*))
 
 #+shadow-functionp
 (shadow 'lisp::functionp 'cl-maxima)
