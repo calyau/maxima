@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.1 2002-09-17 22:35:18 mikeclarkson Exp $
+#       $Id: Paths.tcl,v 1.2 2002-09-19 16:18:57 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -35,13 +35,13 @@ proc setMaxDir {} {
 		      [file isdir $up/share]} {
 	    set autoconf(prefix) $up
 	    set autoconf(exec_prefix) $up
-	    set autoconf(package) "maxima"
-	    # FIXME: hard coding of release version
-	    set autoconf(version) "5.9.0rc1"
 	    set autoconf(libdir) "$up/lib"
 	    set autoconf(libexecdir) "$up/libexec"
 	    set autoconf(datadir) "$up/share"
 	    set autoconf(infodir) "$up/info"
+	    # These two should be valid
+	    # set autoconf(package) "maxima"
+	    # set autoconf(version) "5.9.0rc1"
 	} else {
 	    # Old windows 5.5 layout
 	    # Assume we are in the same directory as saved_maxima
@@ -182,6 +182,12 @@ proc setMaxDir {} {
 	set maxima_priv(firstUrl) file:/$file
     }
 
+    # set up for autoloading
+    global auto_path
+    set dir [file join $maxima_priv(maxima_xmaximadir) Tkmaxima]
+    if {[file isdir $dir]} {
+	lappend auto_path $dir
+    }
 
 }
 
@@ -189,6 +195,7 @@ proc vMAXSetMaximaCommand {} {
     global maxima_priv tcl_platform env
 
     set maxima_opts [lMaxInitSetOpts]
+    set maxima_priv(localMaximaServer) ""
 
     if {[info exists maxima_priv(xmaxima_maxima)] && \
 	    $maxima_priv(xmaxima_maxima) != ""} {
