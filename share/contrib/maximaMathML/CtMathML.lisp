@@ -31,9 +31,9 @@
 ;
 ;=============================================================================
 
-(in-package 'maxima)
+(in-package "MAXIMA")
 (macsyma-module mathml)
-(proclaim '(special lop rop ccol *row *indent* mPrport))
+(declaim (special lop rop ccol *row *indent* mPrport))
 
 
 (defmfun $ctmathml (&rest margs)

@@ -16,7 +16,7 @@
 ; the copyright notice, author and support credits above are retained.
 ;
 ;=============================================================================
-(in-package 'maxima)
+(in-package "MAXIMA")
 (macsyma-module mathml)
 
 ;; mcmPr-lib must be set as a directory name where your PrMathML 
@@ -25,7 +25,7 @@
 (setq mcmPr-lib "/usr/local/MP/maxima/")
 
 ;; special variables used in TeXetting
-(proclaim '(special *row* *indent* ccol mPrport $mPrautolabel $mPrworksheet $lamPrworksheet
+(declaim (special *row* *indent* ccol mPrport $mPrautolabel $mPrworksheet $lamPrworksheet
              $mPrlabelleft $lamPrautolabel $mPrdisplaytype $mPrevaluate
              macmPr-lib lop rop $labels casep))
 
