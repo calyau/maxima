@@ -57,6 +57,8 @@
 \maximasessionpretexskip = 8pt
 \newdimen\maximapostpretexskip
 \maximapostpretexskip = 8pt
+\newdimen\maximapreoutputskip
+\maximapreoutputskip = 8pt
 
 %% Process options
 \newif\ifmaxusebreqn
@@ -345,6 +347,8 @@
 
 %% Now to take care of the various types of output
 
+\def\m@ximapreoutputskip{\par\vspace{\maximapreoutputskip}\par}
+
 \def\maximaoutput{
      \endm@ximainputverbatim
      \maximasm@llsk
@@ -364,6 +368,7 @@
      \maximasm@llsk
      \begingroup
      \catcode`\%=12\relax
+     \def\ps{\m@ximapreoutputskip}
      \def\D{\begingroup\par\m@ximatexd}
      \def\E{\begingroup\par\m@ximatexe}
      \def\p{\begingroup\setupm@ximasessionverbatim\dom@ximasessionpreprompt}
@@ -511,6 +516,7 @@
       \catcode`\%=12\relax
       \m@ximainsessioninputfalse
       \m@ximasessionsessiontrue
+      \def\ps{\m@ximapreoutputskip}
       \def\C{\begingroup\color{\maximainputcolor}
         \setupm@ximasessionverbatim\dom@ximatexsessionverbatim}
       \def\D{\begingroup\color{\maximaoutputcolor}\par\m@ximasessionoutput}
