@@ -170,13 +170,22 @@ chebyshev_t(10,1-2*x)$
 hgfred([-n,n+1],[1],x);
 legendre_p(n,1-2*x);
 
-/* A&S 8.1.2 */
-((z+1)/(z-1))^(u/2)/gamma(1-u)*hgfred([-v,v+1],[1-u],(1-z)/2);
+/* A&S 8.1.2
+ * Is there a bug in that formula?
+ * http://functions.wolfram.com/HypergeometricFunctions/LegendreP2General/26/01/02/ 
+ * shows the formula with (1+z) and (1-z).  I'm going to use the formula from the 
+ * given link.
+ *
+ * This tests the legf14 function.
+ */
+radcan(((1+z)/(1-z))^(u/2)/gamma(1-u)*hgfred([-v,v+1],[1-u],(1-z)/2));
 assoc_legendre_p(v,u,z)$
 
-/* A&S 15.4.17 */
+/* A&S 15.4.17 
+ * This tests the legf14 function.
+ */
 hgfred([a,1-a],[c],x);
-gamma(c)*x^((1-c)/2)*(1-x)^((c-1)/2)*assoc_legendre_p(-a, 1-c, 1-2*x)$
+assoc_legendre_p(-a, 1-c, 1-2*x)*gamma(c)*2^((1-c)/2)*x^((1-c)/2)/(2-2*x)^((1-c)/2)$
 
 
 
