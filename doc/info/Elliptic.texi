@@ -246,7 +246,7 @@ The incomplete elliptic integral of the second kind, defined as
 where @math{tau = sn(u,m)} 
 @end ifinfo
 @tex
-$$\int_0^u {\rm dn}(v, m) dv  = \int_0^\tau \sqrt{{1-m t^2}\over{1-t^2}} d\t$$
+$$\int_0^u {\rm dn}(v, m) dv  = \int_0^\tau \sqrt{{1-m t^2}\over{1-t^2}} dt$$
 
 where $\tau = {\rm sn}(u, m)$
 @end tex
