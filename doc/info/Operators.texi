@@ -122,6 +122,13 @@ MACSYMA it denotes a total relation that holds between two expressions
 if and only if the expressions are syntactically identical.
 
 @end deffn
+@c @node ABS
+@c @unnumberedsec phony
+@defun ABS (exp)
+returns the absolute value exp.  If exp is complex, returns the complex
+modulus of exp.
+
+@end defun
 @c end concepts Operators
 @c @node ADDITIVE
 @c @unnumberedsec phony
