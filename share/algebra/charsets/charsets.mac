@@ -78,8 +78,8 @@ primpart(e,x):=part(content(e,x),2)$
 
 /* This function is true if x is a name in the maple sense */
 namep(x):=is(symbolp(x) or subvarp(x))$
-/* This function is used to debug setify */
-setify1(x):=if listp(x) then setify(x) else setify([x])$
+/* This function is used to debug charsets_setify */
+setify1(x):=if listp(x) then charsets_setify(x) else charsets_setify([x])$
 
 /* This macro is used to deconstruct a list of 2 elements */
 ml2(u,v,l)::=buildq([u,v,l],
@@ -154,7 +154,7 @@ charsets_charset ( ps,lst,[args]):= block( [ mset,ord,qs,y],
    if not every(map(namep, lst)) then ( error ("bad variable list")),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
-   qs : setdifference( setify1(charsets_expand( ps)), setify1([ 0 ])),
+   qs : charsets_setdifference( setify1(charsets_expand( ps)), setify1([ 0 ])),
    /* sort qs to try to get it in the same order as maple for testing */
    qs : sort(qs, charsets_setorderp),
    if listp(lst) then ( ord : lst)
@@ -173,7 +173,7 @@ charsets_charset ( ps,lst,[args]):= block( [ mset,ord,qs,y],
 charsets_expand ( s) :=block(
       if listp(s)
           then (maplist(expand,s))
-         else if setp(s) then (
+         else if charsets_setp(s) then (
              apply(setify1,maplist(expand,s)))
          else (
             expand ( s))
@@ -187,7 +187,7 @@ charsets_mcharset ( ps,lst,[args]):= block( [ mset,ord,qs,y],
    if not every(map(namep, lst)) then (error ("bad variable list")),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
-   qs : setdifference (  setify1(charsets_expand ( ps)),  setify1([ 0 ]) ),
+   qs : charsets_setdifference (  setify1(charsets_expand ( ps)),  setify1([ 0 ]) ),
    /* sort qs to try to get it in the same order as maple for testing */
    qs : sort(qs, charsets_setorderp),
    if listp(lst) then ( ord : lst)
@@ -234,7 +234,7 @@ charsets_charser ( ps,lst,[args]):=block( [ mset,ord,qs, y],
    if not every(map(namep, lst)) then ( error ("bad variable list")),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
-   qs : setdifference (  setify1(charsets_expand( ps)), setify1([ 0 ]) ),
+   qs : charsets_setdifference (  setify1(charsets_expand( ps)), setify1([ 0 ]) ),
    /* sort qs to try to get it in the same order as maple for testing */
    qs : sort(qs, charsets_setorderp),
    if listp(lst) then ( ord : lst)
@@ -264,7 +264,7 @@ charsets_mcs ( ps,lst,[args]):=block(
       if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps))
           then (
             error ("input must be polynomials over Q in", lst)),
-      qs : setdifference (  setify1([ (charsets_expand ( ps)) ]),  setify1([ 0 ]) ),
+      qs : charsets_setdifference (  setify1([ (charsets_expand ( ps)) ]),  setify1([ 0 ]) ),
       if listp(lst)
           then (
             ord : lst)
@@ -293,9 +293,9 @@ charsets_ecs ( ps,lst,[args]):=block( [ mset,ord,qs,y],
       else if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
          error ("input must be polynomials over Q in", lst)),
       if  operatorp(ps[1], charsets_ListOrSet) then (
-         qs:[setdifference(setify1(charsets_expand(ps[1])),setify1([0])),ps[2]])
+         qs:[charsets_setdifference(setify1(charsets_expand(ps[1])),setify1([0])),ps[2]])
       else (
-            qs : setdifference (setify1(charsets_expand ( ps)),setify1([ 0 ]))),
+            qs : charsets_setdifference (setify1(charsets_expand ( ps)),setify1([ 0 ]))),
       if listp(lst) then ( ord : lst)
       else (
          if  operatorp(ps[1], charsets_ListOrSet) then (
@@ -324,10 +324,10 @@ charsets_mecs ( ps,lst,[args]):=block( [ mset,ord,qs,y],
    else if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
    if  operatorp(ps[1], charsets_ListOrSet) then (
-      qs:[sort(setdifference(setify1(charsets_expand (ps[1])),setify1([0])),
+      qs:[sort(charsets_setdifference(setify1(charsets_expand (ps[1])),setify1([0])),
          charsets_setorderp),ps[2]])
    else (
-      qs : sort(setdifference(setify1(charsets_expand(ps)), setify1([0])),
+      qs : sort(charsets_setdifference(setify1(charsets_expand(ps)), setify1([0])),
            charsets_setorderp)),
    if listp(lst) then ( ord : lst)
    else (
@@ -351,7 +351,7 @@ charsets_ics ( ps,lst,[args]):=block( [ mset,ord,qs,y],
    if not every(map(namep, lst)) then ( error ("bad variable list")),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
        error ("input must be polynomials over Q in", lst)),
-   qs : setdifference( setify1(charsets_expand ( ps)),  setify1([ 0 ]) ),
+   qs : charsets_setdifference( setify1(charsets_expand ( ps)),  setify1([ 0 ]) ),
    if listp(lst) then ( ord : lst)
    else ( ord : charsets_reorder (  [ (lst) ], charsets_degord, qs)),
    if length(args) = 0 then (mset:charsetn, y:ord)
@@ -374,10 +374,10 @@ charsets_eics ( ps,lst,[args]):=block( [ mset,ord,qs,y],
    else if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
    if  operatorp(ps[1], charsets_ListOrSet) then (
-      qs:[sort(setdifference(setify1(charsets_expand (ps[1])),setify1([0])),
+      qs:[sort(charsets_setdifference(setify1(charsets_expand (ps[1])),setify1([0])),
          charsets_setorderp),ps[2]])
    else (
-      qs : sort(setdifference(setify1(charsets_expand(ps)), setify1([0])),
+      qs : sort(charsets_setdifference(setify1(charsets_expand(ps)), setify1([0])),
            charsets_setorderp)),
    if listp(lst) then ( ord : lst)
    else (
@@ -402,7 +402,7 @@ charsets_qics ( ps,lst,[args]):=block( [ mset,ord,qs,y],
    if not every(map(namep, lst)) then ( error ("bad variable list")),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
-   qs : setdifference ( setify1(charsets_expand ( ps)),  setify1([ 0 ]) ),
+   qs : charsets_setdifference ( setify1(charsets_expand ( ps)),  setify1([ 0 ]) ),
    if listp(lst) then ( ord : lst)
    else ( ord : charsets_reorder (  [ (lst) ], charsets_degord, qs)),
    if length(args) = 0 then (mset:charsetn, y:ord)
@@ -457,7 +457,7 @@ charsets_triser ( ps,[args]):=block( [ i,ord,qs, lst,y],
       if not every(map(namep, lst)) then ( error ("bad variable list"))),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
-   qs : setdifference( setify1(charsets_expand ( ps)), setify1([ 0 ])),
+   qs : charsets_setdifference( setify1(charsets_expand ( ps)), setify1([ 0 ])),
    if length(args) < 1 then (
       ord : charsets_reorder ( maplist(listofvars, ps), charsets_degord, qs))
    else if listp(lst) then ( ord : lst)
@@ -477,7 +477,7 @@ charsets_csolve ( ps,[args]):=block( [ i,ord,qsi,qs, lst,y],
       if not every(map(namep, lst)) then ( error ("bad variable list"))),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
-   qs : setdifference( setify1(charsets_expand ( ps)), setify1([ 0 ])),
+   qs : charsets_setdifference( setify1(charsets_expand ( ps)), setify1([ 0 ])),
    if length(args) < 1 then (
       ord : charsets_reorder ( maplist(listofvars, ps), charsets_degord, qs))
    /* else if listp(lst) then ( ord : lst) Needed if sets are not lists */
@@ -499,7 +499,7 @@ charsets_ivd ( ps,lst,[args]):=block( [ mset,ord,qs,y],
    if not every(map(namep, lst)) then ( error ("bad variable list")),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
-   qs : setdifference( setify1(charsets_expand ( ps)), setify1([ 0 ]) ),
+   qs : charsets_setdifference( setify1(charsets_expand ( ps)), setify1([ 0 ]) ),
    if listp(lst) then ( ord : lst)
    else ( ord : charsets_reorder (  [ (lst) ], charsets_degord, qs)),
    if length(args) = 0 then (mset:charsetn, y:ord)
@@ -520,7 +520,7 @@ charsets_pid ( ps,lst,[args]):=block( [ mset,ord,qs,y],
    if not every(map(namep, lst)) then ( error ("bad variable list")),
    if not every(map(lambda([p],polynomialp(p,lst,'ratnump)),ps)) then (
       error ("input must be polynomials over Q in", lst)),
-   qs : setdifference (  setify1(charsets_expand ( ps)),  setify1([ 0 ]) ),
+   qs : charsets_setdifference (  setify1(charsets_expand ( ps)),  setify1([ 0 ]) ),
    if listp(lst) then ( ord : lst)
    else ( ord : charsets_reorder (  [ (lst) ], charsets_degord, qs)),
    if length(args) = 0 then (mset:charsetn, y:ord)
@@ -558,7 +558,7 @@ charsets_lvar ( f,ord):=block([ i,r:0],
 charsets_index( f,ord):=block( [ i,g,ng,O],
    if listp(f) then (
        map(lambda([p],charsets_index( p, ord)), f))
-   else if /* WARNING: listp should be setp */listp(f) then (
+   else if /* WARNING: listp should be charsets_setp */listp(f) then (
        apply(setify1,map(lambda([p],charsets_index( p, ord)), f)))
    else (
       g : expand ( f),
@@ -712,7 +712,7 @@ charsets_premas ( f,as,ord):=block([ remd,i],
 /* set of non-zero remainders of polys in ps wrt ascending set as */
 
 charsets_remseta ( ps,as,ord):=block([retval],
-   retval:sort(setdifference (
+   retval:sort(charsets_setdifference (
       setify1(maplist(lambda([p],charsets_premas( p, as, ord)),ps)),
       setify1([ 0 ])),charsets_setorder_reversep),
    retval
@@ -735,13 +735,13 @@ charsets_premasb ( f,as,ord):=block(
 
 charsets_remsetb ( ps,as,ord):=block([last],
    last:maplist(lambda([p],charsets_premasb( p, as, ord)),ps),
-   setdifference( setify1(if listp(last) then last else [last]),setify1([0]))
+   charsets_setdifference( setify1(if listp(last) then last else [last]),setify1([0]))
 )$
 /* reorder the list ord of variables wrt poly set ps */
 
 charsets_reorder ( ord,p,ps):=block([last],
    last:charsets_reordera ( ord, ps),
-   append(charsets_reorderb(setdifference(setify1(ord),setify1(last)),p,ps),
+   append(charsets_reorderb(charsets_setdifference(setify1(ord),setify1(last)),p,ps),
       last)
 )$
 /* subroutine for reorder: first criterion */
@@ -755,8 +755,8 @@ charsets_reordera ( ord,ps):=block([ qs,pp,orb,i,last],
       for i in orb do (
          pp : charsets_deg0 ( ps, i),
          if length ( pp)  = 1 then (
-            return (last:cons(i,charsets_reordera(setdifference(orb,setify1(i)),
-               setdifference( qs, pp) ))))),
+            return (last:cons(i,charsets_reordera(charsets_setdifference(orb,setify1(i)),
+               charsets_setdifference( qs, pp) ))))),
    last)
 )$
 
@@ -828,7 +828,7 @@ charsets_degpsmax ( qs,x):=block(
 
 charsets_degpsmin ( qs,x):=block( [ i,m,mm,ps,last],
    ps : expand ( qs),
-   last:setdifference( setify1(map(lambda([p],degree( p, x)),ps)),
+   last:charsets_setdifference( setify1(map(lambda([p],degree( p, x)),ps)),
           setify1([ 0 ]) ),
    if last =  setify1([]) then ( m : 0)
    else m : apply(min, last),
@@ -843,7 +843,7 @@ charsets_deg0 ( ps,x):=block( [ i,ms],
    ms :  setify1([]),
    for i in ps do (
       if length( ms)  >= 2 then return(false),
-      if member(x, listofvars( i)) then ms : adjoin( i, ms)),
+      if member(x, listofvars( i)) then ms : charsets_adjoin( i, ms)),
    ms
 )$
 /* the minimal total degree of lcoeffs of polys in PS wrt x  */
@@ -855,7 +855,7 @@ charsets_deg1 ( _PS,x):=block( [ i,ps,qs,k],
    qs :  setify1([]),
    k : part( charsets_degpsmin( ps, x), 2),
    for i : 1 thru length ( ps)  do (
-      if degree( ps[i], x) = k then qs : adjoin(lcoeff( ps[i], x),qs)),
+      if degree( ps[i], x) = k then qs : charsets_adjoin(lcoeff( ps[i], x),qs)),
    [ apply(min, maplist(lambda([u],degree( u, listofvars( u))),qs)),
      apply(min, maplist(lambda([u],length( expand (u))),qs))]
 )$
@@ -880,11 +880,11 @@ charsets_sort ( ps,theRankFunction,ord):=block(
 /* the difference of two lists */
 
 charsets_minus ( ps,qs):=block(
-   setdifference (  setify1(ps),  setify1(qs))
+   charsets_setdifference (  setify1(ps),  setify1(qs))
 )$
-/* the union of three lists */
+/* the charsets_union of three lists */
 
-charsets_union ( ps1,ps2,ps3):=setify(append(ps1,ps2,ps3))$
+charsets_union ( ps1,ps2,ps3):=charsets_setify(append(ps1,ps2,ps3))$
 
 /* the product of all elements in a list */
 
@@ -952,7 +952,7 @@ charsets_charseta ( ps,ord,medset):=block(
       if 0 < charsets_class ( cs[1], ord) then (
          if member(medset,setify1([charsets_wbasset,charsets_qbasset,
                 charsets_basset])) then (
-            rs:charsets_remseta(setdifference(setify1(ps),setify1(cs)),cs,ord))
+            rs:charsets_remseta(charsets_setdifference(setify1(ps),setify1(cs)),cs,ord))
          else if medset = charsets_qcharsetn and charsets_checkwith(
                 charsets_with, charsets_initialset1 ( cs, ord) )  then (
             if 1 < charsets_printlevel then (
@@ -961,14 +961,14 @@ charsets_charseta ( ps,ord,medset):=block(
             else (
                if medset = charsets_qcharsetn and 1 < charsets_printlevel then (
                   print("Strategy for 0 remainder failed")),
-                    block([temp:canonlt,sd],
-                       canonlt:charsets_setorder_reversep,
-                       sd:setdifference(
+                    block([temp:charsets_canonlt,sd],
+                       charsets_canonlt:charsets_setorder_reversep,
+                       sd:charsets_setdifference(
                              setify1(if listp(ps) then ps else [ps]),
                              setify1(if listp(cs) then cs else [cs])),
                         sd:sort(sd,lambda([x,y],not charsets_lenord(x,y))),
                         rs : charsets_remsetb( sd, cs, ord),
-                        canonlt:temp
+                        charsets_canonlt:temp
                         )))
       else (
          return (  [ 1 ] )),
@@ -987,14 +987,14 @@ changesign(l):=block([i],
 */
 changesign(l):=l$
 charsets_unigcd(PS,ord):=block([_ps,p,c],
-     _ps :setify([]),
+     _ps :charsets_setify([]),
      for p in PS do (
          c : charsets_class(p,ord),
-         if c = 0 then return(setify([1]))
-         else (if c = 1 then _ps : union(_ps, setify( [p])))
+         if c = 0 then return(charsets_setify([1]))
+         else (if c = 1 then _ps : charsets_union(_ps, charsets_setify( [p])))
     ),
      if length(_ps) < 2 then PS
-     else union(setdifference(PS,_ps), setify1(apply(charsets_GCD,_ps)))
+     else charsets_union(charsets_setdifference(PS,_ps), setify1(apply(charsets_GCD,_ps)))
 )$
  
 charsets_GCD([args]) :=
@@ -1033,14 +1033,14 @@ charsets_fcharsetsub ( _ps,ord,medset,fset1):=block(
          if 0 < charsets_class ( last, ord) then (
             if fmedset = charsets_fqcharsetn and
                charsets_checkwith ( charsets_with,
-                    union ( charsets_initialset1 ( cs, ord), fset2[1])) then (
+                    charsets_union ( charsets_initialset1 ( cs, ord), fset2[1])) then (
                if 1 < charsets_printlevel then (
                   print("Strategy for 0 remainder succeed")),
                return ( [cs,fset2]))
             else (
                if medset = charsets_qcharsetn and 1 < charsets_printlevel then (
                   print("Strategy for 0 remainder failed")),
-                  rs : charsets_remsetb(setdifference(setify1(ps),setify1(cs)),
+                  rs : charsets_remsetb(charsets_setdifference(setify1(ps),setify1(cs)),
                      cs, ord)))
          else (
             return ( [[ 1 ],fset2] )),
@@ -1050,13 +1050,13 @@ charsets_fcharsetsub ( _ps,ord,medset,fset1):=block(
             charsets_fcharsetsub(charsets_union(rs,cs, ps),ord,medset,fset2)))
       else (
          cs : medset ( ps, ord),
-         fset2 : [ fset1[1], union( fset1[2], charsets_initialset1( cs, ord))],
+         fset2 : [ fset1[1], charsets_union( fset1[2], charsets_initialset1( cs, ord))],
          if 0 < charsets_class ( cs[1], ord) then (
-            rs:charsets_remseta(setdifference(setify1(ps),setify1(cs)),cs,ord),
+            rs:charsets_remseta(charsets_setdifference(setify1(ps),setify1(cs)),cs,ord),
             if length(rs) # 0  then (
                ml2(rs,ts,charsets_removecont(rs,ord)),
                ml2(rs,fset3,charsets_removefactor ( rs, ord, fset2)),
-               fset3:[union(fset3[1],ts),fset3[2]])
+               fset3:[charsets_union(fset3[1],ts),fset3[2]])
             else ( rs:[], fset3:fset2))
          else (
             return ( [[ 1 ],fset2])),
@@ -1093,15 +1093,15 @@ charsets_premA ( uu,vv,x):=block( [ r,v,dr,dv,l,t,lu,lv,g],
          if dr = 0 then ( r : 0)
          else ( r : subst(x ^ dr = 0, r)),
          r : expand ( lu * r)  - t,
-         if not ratnump(lu) and /* WARNING: listp should be setp */listp(charsets_with)
+         if not ratnump(lu) and /* WARNING: listp should be charsets_setp */listp(charsets_with)
                    then (
-            charsets_with : union ( charsets_with,  setify1([ lu ]) )),
+            charsets_with : charsets_union ( charsets_with,  setify1([ lu ]) )),
             dr : degree ( r, x) 
       ),
       r)
 )$
 charsets_remsetaA ( ps,as,ord):=block( [ i],
-   setdifference(setify1([map(charsets_premasA(ps[i],as,ord))]),setify1([0])) 
+   charsets_setdifference(setify1([map(charsets_premasA(ps[i],as,ord))]),setify1([0])) 
 )$
 charsets_premasA ( f,as,ord):=block( [ remd,i],
    remd : f,
@@ -1112,7 +1112,7 @@ charsets_premasA ( f,as,ord):=block( [ remd,i],
    else ( 0)
 )$
 charsets_checkwith ( ps1,ps2):=block( [ rs,i,j,r,g,last],
-   rs : setdifference ( ps1, ps2),
+   rs : charsets_setdifference ( ps1, ps2),
    if rs =  setify1([]) then ( true)
    else (
      if ps2 =  setify1([])  then ( false)
@@ -1179,13 +1179,13 @@ makeFcharsetnFunction(theName,theSetType)::=buildq([theName,theSetType],
          else (
             ps : charsets_unigcd(_ps,ord),
             cs : theSetType( ps, ord),
-            fset2 : [ fset1[1], union ( fset1[2], charsets_initialset1 ( cs, ord) )],
+            fset2 : [ fset1[1], charsets_union ( fset1[2], charsets_initialset1 ( cs, ord) )],
             if 0 < charsets_class ( cs[1], ord)  then (
                   rs:charsets_remseta ( charsets_minus ( ps, cs), cs, ord),
                   if length(rs) # 0 then (
                       ml2(rs,ts,charsets_removecont(rs,ord)),
                       ml2(rs,fset3, charsets_removefactor ( rs, ord, fset2)),
-                      fset3 : [union(fset3[1],ts),fset3[2]])
+                      fset3 : [charsets_union(fset3[1],ts),fset3[2]])
                   else (
                       rs:[],
                       fset3:fset2))
@@ -1279,9 +1279,9 @@ charsets_removefactor ( ps,ord,fset1):=block(
          if rr # k then (
             ml2(rr,ja,charsets_movefactor ( rr, k, ord)),
             if ja then (
-               fset2 : adjoin(num( k / lcoeff( expand( k),ord)), fset2))),
-      fs :  [ union ( fs[1], fset2), setdifference ( fs[2], fset2)  ],
-      rs :  adjoin( rr, rs)),
+               fset2 : charsets_adjoin(num( k / lcoeff( expand( k),ord)), fset2))),
+      fs :  [ charsets_union ( fs[1], fset2), charsets_setdifference ( fs[2], fset2)  ],
+      rs :  charsets_adjoin( rr, rs)),
    rs : charsets_nopower ( rs),
    fset : fs,
    if  not operatorp(ps,charsets_ListOrSet) then ( [rs[1],fset])
@@ -1301,7 +1301,7 @@ charsets_removecont ( ps,ord):=block(
                if charsets_class ( ps[i], ord)  > 0 then (
                ml2(cc,pp, content ( ps[i], charsets_lvar ( ps[i], ord))),
                cc:charsets_nopower(cc),
-               if 0 < charsets_class ( cc, ord) then (fs : adjoin(cc, fs)),
+               if 0 < charsets_class ( cc, ord) then (fs : charsets_adjoin(cc, fs)),
                pp :  expand( pp),
                qs :  endcons( pp,qs))),
             [qs,fs]))
@@ -1327,7 +1327,7 @@ charsets_ftriset ( ps,ord,fset1):=block([i,fset2,var,last],
       for i : length ( ord)  thru 1 step  -  1 do 
          if charsets_qs[0] =  [] then (
             last : charsets_fsubtriset ( i, ord, ps, var),
-            fset2 : union ( fset2, last)
+            fset2 : charsets_union ( fset2, last)
          )
          else ( return ( last:[[ 1 ],[ fset2,  setify1([]) ]])),
       if last # [] then return(last),
@@ -1349,10 +1349,10 @@ charsets_fsubtriset ( i,ord,ps,var):=block(
             if pp # charsets_fact and charsets_fsubtrisetsub(var,charsets_fact) 
                 and  not  member(charsets_fact, qq) then (
                ml2(p,ts, charsets_removecont ( pp, ord)),
-               fset2 :  setify1(append(fset2,ts)), /* could be union */
+               fset2 :  setify1(append(fset2,ts)), /* could be charsets_union */
                ml2(p,ja,charsets_movefactor ( p, charsets_fact, ord)),
                if ja then (
-                  fset2:adjoin(num(charsets_fact
+                  fset2:charsets_adjoin(num(charsets_fact
                       /lcoeff(expand(charsets_fact),ord)),fset2)
                ))
             else ( p : pp),
@@ -1360,7 +1360,7 @@ charsets_fsubtriset ( i,ord,ps,var):=block(
                if p # k and  not  member(k, qq) then (
                   ml2(p,ja,charsets_movefactor ( p, k, ord)),
                   if ja then (
-                     fset2 :  adjoin( k, fset2)))),
+                     fset2 :  charsets_adjoin( k, fset2)))),
             charsets_qs[charsets_class ( p, ord) ] :
                endcons( charsets_nopower(num(p/lcoeff(p,ord))),
                charsets_qs[charsets_class ( p, ord)])
@@ -1368,7 +1368,7 @@ charsets_fsubtriset ( i,ord,ps,var):=block(
          last:charsets_initial ( ss1, ord),
          charsets_fact : num( last / lcoeff ( expand ( last),ord ) ),
          last : charsets_fsubtriset ( i, ord, ps, var),
-         union ( fset2, last ))
+         charsets_union ( fset2, last ))
       else ( setify1([]))
 )$
 /* subroutine for fsubtriset */
@@ -1434,13 +1434,13 @@ charsets_initialset1 ( as,ord):=block(
       for i in as do (
          last:charsets_initial ( i, ord),
          if 0 < (charsets_class ( last, ord)) then (
-               __is : adjoin(charsets_pfactor ( last), __is))),
+               __is : charsets_adjoin(charsets_pfactor ( last), __is))),
       __is : charsets_compress ( __is, ord),
       iss :  setify1([]),
       for i in __is do 
          if 0 < charsets_class ( i, ord) 
              then (
-               iss : adjoin(i, iss)),
+               iss : charsets_adjoin(i, iss)),
       iss
 )$
 /* compress some repeated factors */
@@ -1463,8 +1463,8 @@ charsets_compress ( ps,ord):=block([_is,is1,i,j,ss],
                for j : i + 1 thru length ( is1) do 
                   ss : first(charsets_movefactor ( ss, is1[j], ord)),
                if 0 < charsets_class ( ss, ord) then (
-                  _is :  setify1(adjoin( charsets_pfactor ( ss),_is)))),
-            setify1(adjoin( is1[length ( is1) ],_is)))
+                  _is :  setify1(charsets_adjoin( charsets_pfactor ( ss),_is)))),
+            setify1(charsets_adjoin( is1[length ( is1) ],_is)))
          else ( setify1(is1)))
       else ( setify1(_is))
 )$
@@ -1557,7 +1557,7 @@ charsets_charseries ( ps,ord,medset):=block(
       ppi : charsets_select ( ppi, length ( qs) ),
       qqi :  setify1(append(ppi[2], qqi)),
       if n = 0 then ( ppi :  setify1([]))
-      else ( ppi :  adjoin(qs,ppi[1])),
+      else ( ppi :  charsets_adjoin(qs,ppi[1])),
       cs : charsets_charseta ( qs, ord, medset),
       if 1 < charsets_printlevel then (
          csno : csno + 1,
@@ -1567,7 +1567,7 @@ charsets_charseries ( ps,ord,medset):=block(
       if 0 < charsets_class ( cs[1], ord) then (
          iss : charsets_initialset ( cs, ord),
          if charsets_simpa ( iss, cs, ord)  # 0 then (
-            qsi : adjoin( cs, qsi)),
+            qsi : charsets_adjoin( cs, qsi)),
          iss : charsets_adjoin ( iss, qs, qqi))
       else ( iss :  setify1([])),
       /* if read("reorder") = 1 then iss:charsets_hack1iss, */
@@ -1593,7 +1593,7 @@ charsets_fcharser ( ps,ord,medset):=block(
       ppi : charsets_select ( ppi, length ( qs) ),
       qqi :  setify1(append(ppi[2], qqi)),
       if n = 0 then ( ppi :  setify1([]))
-      else ( ppi :  adjoin(qs,ppi[1])),
+      else ( ppi :  charsets_adjoin(qs,ppi[1])),
       if length ( qs)  - 3 < length ( ord) then (
             cs : charsets_fcharseta (qs, ord, medset),
             factorset : cs[2],
@@ -1609,8 +1609,8 @@ charsets_fcharser ( ps,ord,medset):=block(
       if 0 < charsets_class ( cs[1], ord)  then (
             iss : charsets_initialset ( cs, ord),
             if charsets_simpa ( iss, cs, ord)  # 0 then (
-               qsi : adjoin( cs, qsi)),
-            iss : union ( iss, charsets_factorps ( factorset) ))
+               qsi : charsets_adjoin( cs, qsi)),
+            iss : charsets_union ( iss, charsets_factorps ( factorset) ))
          else (
             iss : charsets_factorps ( factorset)),
       iss : charsets_adjoin ( iss, qs, qqi),
@@ -1635,25 +1635,25 @@ charsets_excharser ( ps,ord,medset):=block(
                print ( cs)),
       if 0 < charsets_class ( cs[1], ord) then (
          _is : charsets_initialset ( cs, ord),
-         rr : charsets_nopower( charsets_prod( adjoin(qhi[1][2],_is))),
+         rr : charsets_nopower( charsets_prod( charsets_adjoin(qhi[1][2],_is))),
          last:charsets_premas ( rr, cs, ord),
          last:factor(last),
          r : charsets_simp ( last, cs, ord),
          if r # 0 then (
             if r = 1 then ( qsi : setify1(cons( cs, qsi )))
-            else ( qsi : adjoin([ cs, charsets_simpb( r, rr)], qsi))))
+            else ( qsi : charsets_adjoin([ cs, charsets_simpb( r, rr)], qsi))))
       else ( _is : []),
       iss :  setify1([]),
       if length ( ord)  <= length ( ps)  + 1 then (
-         for i in _is do ( iss : setify1(cons([ adjoin( i,qs),qhi[1][2]],iss))))
+         for i in _is do ( iss : setify1(cons([ charsets_adjoin( i,qs),qhi[1][2]],iss))))
       else (
          for i : 1 thru length ( _is)  do ( 
             last:if i = 1 then 1 else product ( _is[j], j, 1, i - 1),
-            iss:adjoin([adjoin(_is[i],qs),last*qhi[1][2]],iss)
+            iss:charsets_adjoin([charsets_adjoin(_is[i],qs),last*qhi[1][2]],iss)
          )
       ),
       if 1 < length ( qhi) then (
-         qhi : union(iss, rest(qhi)))
+         qhi : charsets_union(iss, rest(qhi)))
       else ( qhi : iss)
    ),
    if qsi =  setify1([]) then ( [])
@@ -1729,8 +1729,8 @@ charsets_fexcharser ( ps,ord,medset):=block(
          print("Characteristic set produced"),
          print ( cs)),
       if 0 < charsets_class ( cs[1], ord) then (
-         _is : union(charsets_initialset(cs,ord),charsets_factorps(factorset)),
-         rr : charsets_nopower( charsets_prod( adjoin(qhi[1][2],_is))),
+         _is : charsets_union(charsets_initialset(cs,ord),charsets_factorps(factorset)),
+         rr : charsets_nopower( charsets_prod( charsets_adjoin(qhi[1][2],_is))),
          last:charsets_premas ( rr, cs, ord),
          last:factor(last),
          r : charsets_simp ( last, cs, ord),
@@ -1740,14 +1740,14 @@ charsets_fexcharser ( ps,ord,medset):=block(
       else ( _is : charsets_factorps ( factorset)),
       iss :  setify1([]),
       if length ( ord)  <= length ( ps)  + 1 then (
-         for i in _is do ( iss : setify1(endcons([adjoin( i,qs),qhi[1][2]],iss))))
+         for i in _is do ( iss : setify1(endcons([charsets_adjoin( i,qs),qhi[1][2]],iss))))
       else (
          for i : 1 thru length ( _is)  do (
             last:if i = 1 then 1 else product ( _is[j], j, 1, i - 1),
-            iss:adjoin([adjoin(_is[i],qs),last*qhi[1][2]],iss)
+            iss:charsets_adjoin([charsets_adjoin(_is[i],qs),last*qhi[1][2]],iss)
          )
       ),
-      if 1 < length ( qhi) then qhi : union(iss,rest(qhi))
+      if 1 < length ( qhi) then qhi : charsets_union(iss,rest(qhi))
       else qhi : iss
    ),
    if qsi =  setify1([]) then ( [])
@@ -1772,9 +1772,9 @@ charsets_irrcharser ( ps,ord,medset,[m]):=block(
       qhi : sort ( qhi, charsets_nopsord),
       qs : qhi[1],
       ppi : charsets_select ( ppi, length ( qs) ),
-      qqi :  union(ppi[2], qqi),
+      qqi :  charsets_union(ppi[2], qqi),
       if n = 0 then ( ppi :  setify1([]))
-      else ( ppi : adjoin(qs, ppi[1])),
+      else ( ppi : charsets_adjoin(qs, ppi[1])),
       if length ( qs)  - 3 < length ( ord) then (
          if not mind then (
             ml2(cs,fset, apply( assoc(medset,charsets_fcharsetsub_alist),
@@ -1790,7 +1790,7 @@ charsets_irrcharser ( ps,ord,medset,[m]):=block(
          if ind = 0 then (
             cs :  [ charsets_fcnormal ( cs, ord, 2)  ],
             if 1 < length ( cs) then (
-               factorset : union ( factorset, part( cs[2], 2))),
+               factorset : charsets_union ( factorset, part( cs[2], 2))),
             cs : cs[1]))
       else (
          if mind then ml2(cs,factorset,
@@ -1801,25 +1801,25 @@ charsets_irrcharser ( ps,ord,medset,[m]):=block(
          if ts[2] = 0 then (
             if  not  mind then (
                if  medset = charsets_autored then
-                  cs:charsets_charseta(union(qs,cs),ord, charsets_charsetn)
+                  cs:charsets_charseta(charsets_union(qs,cs),ord, charsets_charsetn)
                else (
                   if  not charsets_subset ( cs, qs) then
-                     cs : charsets_charseta( union(qs, cs), ord, medset)),
+                     cs : charsets_charseta( charsets_union(qs, cs), ord, medset)),
                if 1 < charsets_printlevel and ind = 1 then (
                   csno : csno + 1,
                   print("Characteristic set produced in irrcharser",
                       csno,length ( qhi),length ( qsi),length ( qs)),
                   print ( cs))),
             if  not  member(cs, pi) then (
-               pi :  adjoin(cs, pi),
+               pi :  charsets_adjoin(cs, pi),
                if 0 < charsets_class ( cs[1], ord) then (
                   ts:charsets_irras ( cs, ord, ind),
                   if ts[2] = 0 then (
-                     qsi : adjoin( cs, qsi),
+                     qsi : charsets_adjoin( cs, qsi),
                      if length ( cs)  = length ( ord) then (
                         _is : charsets_factorps ( factorset))
                      else (
-                        _is : union ( charsets_initialset ( cs, ord),
+                        _is : charsets_union ( charsets_initialset ( cs, ord),
                            charsets_factorps ( factorset) )),
                      iss : charsets_adjoin ( _is, qs, qqi)))
                else (
@@ -1828,18 +1828,18 @@ charsets_irrcharser ( ps,ord,medset,[m]):=block(
          if ts[2] # 0 then ( _is : charsets_factorps ( factorset),
             if 1 < ts[2] then (
                cst : part(cs, makelist(i,i,1,ts[2] - 1)),
-               _is : union ( _is, charsets_initialset ( cst, ord) ),
-               iss : union ( charsets_adjoin ( _is, qs, qqi),
+               _is : charsets_union ( _is, charsets_initialset ( cst, ord) ),
+               iss : charsets_union ( charsets_adjoin ( _is, qs, qqi),
                   charsets_adjoinb ( ts[1], qs, qqi, cst) ))
-            else ( iss : charsets_adjoin ( union ( _is, ts[1]), qs, qqi))))
+            else ( iss : charsets_adjoin ( charsets_union ( _is, ts[1]), qs, qqi))))
       else ( iss : charsets_adjoin ( charsets_factorps ( factorset), qs, qqi)),
-      if 1 < length ( qhi) then ( qhi :  union(iss, rest(qhi)))
+      if 1 < length ( qhi) then ( qhi :  charsets_union(iss, rest(qhi)))
       else ( qhi : iss),
       last:if qsi =  setify1([]) then ([])
       else (sort( charsets_contract ( qsi, ord, 1), charsets_lenord))),
   last
 )$
-/* test whether ps is a subset or sublist of qs */
+/* test whether ps is a charsets_subset or sublist of qs */
 
 charsets_subset ( ps,qs):=block( [ p,flag:true],
    for p in ps do 
@@ -1850,15 +1850,15 @@ charsets_subset ( ps,qs):=block( [ p,flag:true],
 
 charsets_adjoinb ( _is,qs,qh,cs):=block( [ iss,i,j,ind,qhi,itt,qs_],
    iss :  setify1([]),
-   qhi : setdifference ( qh, (qs_:setify1(qs))),
+   qhi : charsets_setdifference ( qh, (qs_:setify1(qs))),
    if _is #  setify1([]) then (
       for i in _is do (
-         itt :  setify1(cons( i, union(qs_, setify1(cs)))),
+         itt :  setify1(cons( i, charsets_union(qs_, setify1(cs)))),
          ind : 0,
          if 0 < length ( qhi) then (
             for j in qhi while ind = 0 do (
                if charsets_subset ( j, itt) then ( ind : 1))),
-         if ind = 0 then ( iss : adjoin(itt,iss)))),
+         if ind = 0 then ( iss : charsets_adjoin(itt,iss)))),
    iss
 )$
 /* examine the irreducibility of as for irrcharser */
@@ -1875,7 +1875,7 @@ charsets_irras ( as,ord,inda):=block([ ind,i,j,p,qs,n,fs,ja,dd,last],
    /* print("irras after dfactors",fs), */
       qs :  setify1([]),
       for j : 1 thru length ( fs)  do (
-            if 0 < charsets_class ( fs[j], ord) then qs : adjoin(fs[j],qs)),
+            if 0 < charsets_class ( fs[j], ord) then qs : charsets_adjoin(fs[j],qs)),
    /* print("irras after qs loop",qs), */
       last:charsets_lvar ( p, ord),
       if charsets_degree ( qs[1], last)  < charsets_degree ( p, last) then (
@@ -1922,7 +1922,7 @@ charsets_dfactors ( q):=block( [ qs,j],
             if  operatorp(part( q, j),"^") then (
                qs :  setify1([ qs, num( part( part( q, j), 1)
                       / lcoeff ( part( part( q, j), 1)))]))
-            else ( qs : adjoin( num( part( q, j)/lcoeff( part( q, j))),qs))))
+            else ( qs : charsets_adjoin( num( part( q, j)/lcoeff( part( q, j))),qs))))
    else if  operatorp(q,"^") then (
       qs :  setify1([ num( part( q, 1) / lcoeff ( part( q, 1)) )  ]))
    else (
@@ -2080,24 +2080,24 @@ charsets_exirrcharser ( ps,ord,medset):=block(
                ts:charsets_irras ( cs, ord, ind),
                den:ts[3],
                if ts[2] = 0 then (
-                  _is : union( charsets_initialset( cs, ord), charsets_factorps( factorset)),
+                  _is : charsets_union( charsets_initialset( cs, ord), charsets_factorps( factorset)),
                   if length ( cs)  = length ( ord)  then (
                      rr : charsets_nopower ( qhi[1][2]))
                   else (
-                     rr:charsets_nopower(charsets_prod(adjoin(qhi[1][2],_is)))),
+                     rr:charsets_nopower(charsets_prod(charsets_adjoin(qhi[1][2],_is)))),
                      last:charsets_premas ( rr, cs, ord),
                      r : charsets_simp ( last, cs, ord),
                      if r # 0 then (
                            if r = 1 then (
-                              qsi : adjoin( cs, qsi))
+                              qsi : charsets_adjoin( cs, qsi))
                            else (
-                              qsi : adjoin([cs,charsets_simpb ( r, rr)],qsi))))
+                              qsi : charsets_adjoin([cs,charsets_simpb ( r, rr)],qsi))))
                         else (
                            _is : charsets_factorps ( factorset),
                            ts :  [ 1, 0 ]))),
          if ts[2] # 0 then (
             if 1 < ts[2] then (
-               _is : union( charsets_initialset( setify1(
+               _is : charsets_union( charsets_initialset( setify1(
                    makelist(cs[i],i,1,ts[2]-1)),ord),
                    charsets_factorps(factorset)))
             else ( _is : charsets_factorps ( factorset))))
@@ -2107,11 +2107,11 @@ charsets_exirrcharser ( ps,ord,medset):=block(
       iss :  setify1([]),
       if length ( ord)  <= length ( ps)  + 1 then (
          for i in _is do (
-            iss :  adjoin( [adjoin( i,qs ), qhi[1][2]],iss)))
+            iss :  charsets_adjoin( [charsets_adjoin( i,qs ), qhi[1][2]],iss)))
       else (
          for i : 1 thru length ( _is)  do (
             last:if i = 1 then ( 1) else product ( _is[j], j, 1, i - 1),
-            iss :  adjoin([adjoin(_is[i],qs), last * second(first(qhi))],iss))),
+            iss :  charsets_adjoin([charsets_adjoin(_is[i],qs), last * second(first(qhi))],iss))),
       if ts[2] # 0 and ts[1] #  setify1([])  then (
          if  not  mind then (
             last:"jello",
@@ -2126,12 +2126,12 @@ charsets_exirrcharser ( ps,ord,medset):=block(
                else cs : setify1(append( qs, makelist(cs[i],i,1,ts[2] - 1))))
          ),
          for i in ts[1] do (
-            iss : adjoin([adjoin(i,cs),
-               charsets_prod(adjoin(den,adjoin(second(first(qhi)),_is)))],iss)),
+            iss : charsets_adjoin([charsets_adjoin(i,cs),
+               charsets_prod(charsets_adjoin(den,charsets_adjoin(second(first(qhi)),_is)))],iss)),
             if 0 < charsets_class ( den, ord) and
                   ts[2] < charsets_class ( ts[1][1], ord)  then (
-               iss :  adjoin([ adjoin( den, cs ), second(first(qhi))],iss))),
-      if 1 < length ( qhi)  then ( qhi :  union(iss, rest(qhi)))
+               iss :  charsets_adjoin([ charsets_adjoin( den, cs ), second(first(qhi))],iss))),
+      if 1 < length ( qhi)  then ( qhi :  charsets_union(iss, rest(qhi)))
       else ( qhi : iss)),
    if qsi =  setify1([]) then ( [])
    else ( (sort (qsi,charsets_lenord)))
@@ -2142,15 +2142,15 @@ charsets_select ( ppi,n):=block([ i,pp,qq],
    pp :  setify1([]),
    qq :  setify1([]),
    for i in ppi do (
-      if n <= length ( i) then ( qq :  adjoin( i, qq))
-      else ( pp :  adjoin( i, pp))),
+      if n <= length ( i) then ( qq :  charsets_adjoin( i, qq))
+      else ( pp :  charsets_adjoin( i, pp))),
    [ pp, qq ] 
 )$
 /* subroutine for irrcharser, qirrcharser and others */
 
 charsets_adjoin ( _is,qs,qh):=block( [ iss,i,j,ind,qhi,itt],
    iss : setify1([]),
-   qhi : setdifference ( qh, setify1(qs)),
+   qhi : charsets_setdifference ( qh, setify1(qs)),
    if _is #  setify1([]) then (
       for i in _is do (
          itt : setify1(endcons( i, qs )),
@@ -2165,15 +2165,15 @@ charsets_adjoin ( _is,qs,qh):=block( [ iss,i,j,ind,qhi,itt],
 
 charsets_adjoina ( _is,qs,qh):=block( [ iss,i,j,ind,qhi,itt],
    iss :  setify1([]),
-   qhi : setdifference ( qh,  setify1([ qs ])),
+   qhi : charsets_setdifference ( qh,  setify1([ qs ])),
    if _is #  setify1([]) then (
       for i in _is do (
-         itt :  adjoin(i, qs),
+         itt :  charsets_adjoin(i, qs),
          ind : 0,
          if 0 < length ( qhi) then (
             for j in qhi while ind = 0 do (
                if charsets_subset ( j, itt) then ( ind : 1))),
-         if ind = 0 then ( iss :  adjoin(cons( i, qs),iss)))),
+         if ind = 0 then ( iss :  charsets_adjoin(cons( i, qs),iss)))),
    iss
 )$
 /* subroutine for irrcharser, qirrcharser and others */
@@ -2187,7 +2187,7 @@ charsets_nopsord(a,b):=if length( b) < length( a) then ( true) else ( false)$
 charsets_contract ( cs,ord,irr):=block( [ i,j,mem,ts],
    mem :  setify1([]),
    ts :  setify1([]),
-   if not (listp(cs) or setp(cs)) then break("Contract cs not list or set"),
+   if not (listp(cs) or charsets_setp(cs)) then break("Contract cs not list or set"),
    if length ( cs)  < 2 then cs
    else (
       for i : 1 thru length ( cs)  - 1 do 
@@ -2196,13 +2196,13 @@ charsets_contract ( cs,ord,irr):=block( [ i,j,mem,ts],
                if  not  member(j, mem) then (
                   if charsets_linas(cs[j],ord,irr)
                         and charsets_contractsub ( cs[i], cs[j], ord) then (
-                     ts :  adjoin(cs[j], ts),
-                     mem :  adjoin( j, mem))
+                     ts :  charsets_adjoin(cs[j], ts),
+                     mem :  charsets_adjoin( j, mem))
                   else (
                      if charsets_linas ( cs[i], ord, irr)
                         and charsets_contractsub ( cs[j], cs[i], ord) then (
-                           ts :  adjoin( cs[i], ts ))))),
-      setdifference( setify1(cs), ts))
+                           ts :  charsets_adjoin( cs[i], ts ))))),
+      charsets_setdifference( setify1(cs), ts))
 )$
 /* check whether all polys in cs1 have remainders 0 wrt cs2  */
 /*      but none of their initials does: subroutine for contract */
@@ -2267,9 +2267,9 @@ charsets_qirrcharser ( ps,ord,medset):=block(
       qhi : sort (qhi, charsets_nopsord),
       qs : qhi[1],
       ppi : charsets_select ( ppi, length ( qs) ),
-      qqi :  union( qqi, ppi[2]),
+      qqi :  charsets_union( qqi, ppi[2]),
       if n = 0 then ( ppi :  setify1([]))
-      else ( ppi :  adjoin( qs, ppi[1])),
+      else ( ppi :  charsets_adjoin( qs, ppi[1])),
       if length ( qs)  - 3 < length ( ord) then (
          if mind then (
             ml2(cs,fset, apply( assoc(medset,charsets_fcharsetsub_alist),
@@ -2291,37 +2291,37 @@ charsets_qirrcharser ( ps,ord,medset):=block(
             if ts[2] = 0 then (
                if mind then (
                   if  medset = charsets_autored then (
-                     cs : charsets_charseta(union(qs,cs),ord,charsets_charsetn))
+                     cs : charsets_charseta(charsets_union(qs,cs),ord,charsets_charsetn))
                   else (
                      if  not  charsets_subset ( cs, qs)  then (
-                        cs : charsets_charseta( union( qs, cs), ord, medset))),
+                        cs : charsets_charseta( charsets_union( qs, cs), ord, medset))),
                   if 1 < charsets_printlevel then (
                      csno : csno + 1,
                      print("Characteristic set produced in qirrcharser ",csno,length ( qhi),length ( qsi),length ( qs)),
                      print ( cs))),
                if  not  member(cs, pi) then (
-                  pi :  adjoin( cs, pi),
+                  pi :  charsets_adjoin( cs, pi),
                   if 0 < charsets_class ( cs[1], ord)  then (
                      ts : charsets_qirras ( cs, ord),
                      if ts[2] = 0 then (
-                        qsi :  adjoin( cs, qsi),
+                        qsi :  charsets_adjoin( cs, qsi),
                         if length ( cs) = length ( ord) then (
                            _is : charsets_factorps ( factorset))
                         else (
-                           _is : union ( charsets_initialset ( cs, ord), charsets_factorps ( factorset) )),
+                           _is : charsets_union ( charsets_initialset ( cs, ord), charsets_factorps ( factorset) )),
                         iss : charsets_adjoin ( _is, qs, qqi)))
                   else (
                      iss : charsets_adjoin ( charsets_factorps ( factorset), qs, qqi)))
                else (
                   iss : charsets_adjoin ( charsets_factorps ( factorset), qs, qqi))),
             if ts[2] # 0 then (
-               _is : union ( charsets_factorps ( factorset), ts[1]),
+               _is : charsets_union ( charsets_factorps ( factorset), ts[1]),
                if 1 < ts[2] then (
-                  _is : union ( _is, charsets_initialset (  [ part(cs, makelist(i,i,1,ts[2] - 1)) ], ord) )),
+                  _is : charsets_union ( _is, charsets_initialset (  [ part(cs, makelist(i,i,1,ts[2] - 1)) ], ord) )),
                   iss : charsets_adjoin ( _is, qs, qqi)))
             else (
                iss : charsets_adjoin( charsets_factorps( factorset), qs, qqi)),
-      if 1 < length ( qhi) then ( qhi :  union(iss, rest(qhi)))
+      if 1 < length ( qhi) then ( qhi :  charsets_union(iss, rest(qhi)))
       else ( qhi : iss)),
       if qsi =  setify1([]) then ( [])
       else ( (sort ( charsets_contract ( qsi, ord, 2), charsets_lenord)))
@@ -2339,7 +2339,7 @@ charsets_qirras ( as,ord):=block([ ind,i,j,p,qs,fs,n,m,ja,last],
          if "-" = op(p) then -charsets_dfactors(-p) else charsets_dfactors(p)),
       qs :  setify1([]),
       for j : 1 thru length ( fs)  do (
-         if 0 < charsets_class ( fs[j], ord) then qs : adjoin(fs[j],qs)),
+         if 0 < charsets_class ( fs[j], ord) then qs : charsets_adjoin(fs[j],qs)),
       last:charsets_lvar ( p, ord),
       if charsets_degree ( qs[1], last)  < charsets_degree ( p, last) then (
          ja : 1,
@@ -2395,7 +2395,7 @@ charsets_newfactoras ( f,as,ord):=block( [ pf,pas,aas,con,vf,va,i,fn,last],
    for i : 1 thru length ( as)  do (
       last:charsets_degreel ( as[i], ord),
       if 1 < last then (
-         con : adjoin(last,con),
+         con : charsets_adjoin(last,con),
          aas :  endcons(expand(as[i]),aas))),
    if aas =  [] then ( return ( f)) ,
    va : charsets_lvar ( aas[1], ord),
@@ -2416,7 +2416,7 @@ charsets_newfactoras ( f,as,ord):=block( [ pf,pas,aas,con,vf,va,i,fn,last],
          if apply(max , map(lambda([x],degree(x,vf)),num( fn)))
             < degree ( pf, vf) then (
             return( charsets_cfactorsub( num( fn), pas, ord) / denom( fn))))),
-   if  adjoin( charsets_degreel ( pf, ord),con ) = setify1([ 2 ])
+   if  charsets_adjoin( charsets_degreel ( pf, ord),con ) = setify1([ 2 ])
          and length ( pas) < 3 then (
             charsets_factoras ( pf, pas, ord))
    else (
@@ -2500,7 +2500,7 @@ charsets_newfactorassub ( f,as,ord,[args]):=block(
          m : charsets_degree ( as[1], nord[2]),
          n : charsets_degree ( f, vf),
          if gcd ( m, n)  = 1 then ( return ( f)))),
-   last:setdifference( listofvars(adjoin( f, as)), setify1([nord])),
+   last:charsets_setdifference( listofvars(charsets_adjoin( f, as)), setify1([nord])),
    if length ( last)  = 1 and args = false then (
       return ( charsets_tefactor ( f, as, mord,  [ last ] ) )) ,
    indb : true,
@@ -2529,7 +2529,7 @@ charsets_newfactorassub ( f,as,ord,[args]):=block(
          fmedset : charsets_fqcharsetn,
          _is : nord[length ( nord) ],
          if length(as) = 1 and degree( as[1], _is) > 5 and degree( ff, _is) > 5
-            and length( union( listofvars( as), listofvars( ff))) = 2 then (
+            and length( charsets_union( listofvars( as), listofvars( ff))) = 2 then (
             ccs : factor ( resultant ( ff, as[1], _is) ),
             if "+" = inpart(ccs, 0) then (return ( flag:true))
             else(
@@ -2542,22 +2542,22 @@ charsets_newfactorassub ( f,as,ord,[args]):=block(
          _is : charsets_initialset ( ccs, nord),
          fs : charsets_factorps ( charsets_movefactorps ( fs[1], _is, nord) ),
          cs : setify1(charsets_qfactor( factor( charsets_movefactorps(
-             ccs[1], union ( _is, fs), ord) ), nord))),
+             ccs[1], charsets_union ( _is, fs), ord) ), nord))),
       if not indb or cs =  setify1([]) then (
          charsets_with :  setify1([]),
          if fs =  setify1([]) then (
             bb : _is[1],
-            _is : setdifference ( _is,  setify1([ _is[1] ]) ))
+            _is : charsets_setdifference ( _is,  setify1([ _is[1] ]) ))
          else (
             bb : fs[1],
-            fs : setdifference ( fs,  setify1([ fs[1] ]) )),
+            fs : charsets_setdifference ( fs,  setify1([ fs[1] ]) )),
             ccs : charsets_charsetn(  [ (as), ff, bb ], nord),
             _is : charsets_initialset ( ccs, nord),
             cs : setify1(charsets_qfactor ( factor ( charsets_movefactorps (
-                ccs[1], union ( _is, fs), ord) ), nord)),
+                ccs[1], charsets_union ( _is, fs), ord) ), nord)),
             indb : true) ,
       if cs #  setify1([]) then (
-         if charsets_checkwith(charsets_with,union( _is, fs)) then ( inda:true)
+         if charsets_checkwith(charsets_with,charsets_union( _is, fs)) then ( inda:true)
          else ( inda : false),
          if charsets_linearas ( ccs, nord)  or 1 < length ( cs) then (
             if length ( cs)  = 1 then (
@@ -2570,10 +2570,10 @@ charsets_newfactorassub ( f,as,ord,[args]):=block(
                while (charsets_class ( ccs1[1], nord)  = 0) do (
                   if fs =  setify1([]) then (
                      bb : _is[1],
-                     _is : setdifference ( _is,  setify1([ _is[1] ]) ))
+                     _is : charsets_setdifference ( _is,  setify1([ _is[1] ]) ))
                   else (
                      bb : fs[1],
-                     fs : setdifference ( fs,  setify1([ fs[1] ]) )),
+                     fs : charsets_setdifference ( fs,  setify1([ fs[1] ]) )),
                      ccs1 : charsets_charseta (  [ (as), ff, bb ], nord,
                         charsets_charsetn)),
                if ccs1 # ccs then (
@@ -2583,7 +2583,7 @@ charsets_newfactorassub ( f,as,ord,[args]):=block(
                if charsets_linearas ( ccs, nord) then (
                   cc :charsets_algcd(f,subst(vf = vf - der,ccs[1]),as,mord),
                   if 0 < charsets_degree ( cc, vf) then (
-                     cs :  [ charsets_arrange ( union ( _is, fs), vf)  ],
+                     cs :  [ charsets_arrange ( charsets_union ( _is, fs), vf)  ],
                      if 1 < charsets_printlevel then (
                         print("A non-trivial factor found:",cc)),
                      if length ( cs)  = 0 then ( ci :  [ fff ], fff : 1)
@@ -2608,7 +2608,7 @@ charsets_newfactorassub ( f,as,ord,[args]):=block(
             else (
                ncs : length ( cs),
                cs : append(charsets_arrange(cs,vf),
-                     charsets_arrange(union(_is,fs),vf)),
+                     charsets_arrange(charsets_union(_is,fs),vf)),
                _CS : subst(vf = vf - der,cs),
                for i : 1 thru length ( _CS)  do (
                   if 2 < charsets_printlevel then (
@@ -2666,7 +2666,7 @@ charsets_algcd ( f,g,as,mord):=block( [ nas,fs,last,temp],
 charsets_fcharsetnA ( as,ps,ord,fset1):=block([cs,rs,fset2,fset3,nas],
    nas : length ( as)  + 1,
    cs : append(as, charsets_basset ( ps, ord)),
-   fset2 : [ fset1[1], union ( fset1[2], charsets_initialset1( cs, ord) )],
+   fset2 : [ fset1[1], charsets_union ( fset1[2], charsets_initialset1( cs, ord) )],
    if 0 < charsets_degree ( cs[nas], ord[nas]) then (
       rs : charsets_remseta ( charsets_minus ( ps, cs), cs, ord),
       /* print("before removefactor3"), */
@@ -2823,7 +2823,7 @@ charsets_tefactor ( f,as,ord,var):=block(
          length ( gg),
          /* where is _y and _y1 defined */
          gg : gg + sum ( _y [ % + i] * tt[i], i, 1, length ( tt) ),
-         yvar : union ( yvar,  setify1([ map(_y [ %% + i]) ]) ),
+         yvar : charsets_union ( yvar,  setify1([ map(_y [ %% + i]) ]) ),
          hs :  setify1([]),
          ffs : fs,
          for j : 1 thru length ( fs[1])  do (
@@ -2840,7 +2840,7 @@ charsets_tefactor ( f,as,ord,var):=block(
                            return ( charsets_newfactorassub ( f, as, ord, 0) ))
                         else (
                            gs :  [ (gs), % ]),
-                     setdifference ( fs[i],  setify1([ fs[i][ja] ]) ),
+                     charsets_setdifference ( fs[i],  setify1([ fs[i][ja] ]) ),
                      if i = length ( fs) 
                          then (
                            fs :  [ part(fs, makelist(i,i,1,i - 1)), % ])
@@ -2850,7 +2850,7 @@ charsets_tefactor ( f,as,ord,var):=block(
             sol :  setify1([ solve ( sol, yvar)  ]),
             if sol #  setify1([]) 
                 then (
-                  hs : union ( hs,  setify1([ expand ( subst(gg, ( (sol))))  ]) ))),
+                  hs : charsets_union ( hs,  setify1([ expand ( subst(gg, ( (sol))))  ]) ))),
          fs : ffs,
          ff : f,
          for j in hs do (
@@ -2858,7 +2858,7 @@ charsets_tefactor ( f,as,ord,var):=block(
             if % # false
                 then (
                   ff : %,
-                  ci : union ( ci,  setify1([ j ]) ),
+                  ci : charsets_union ( ci,  setify1([ j ]) ),
                   if 1 < charsets_printlevel
                       then (
                         print("A factor found:",j)))),
@@ -2879,12 +2879,12 @@ charsets_tefactor ( f,as,ord,var):=block(
                         if % # false
                             then (
                               ff : %,
-                              ci : union ( ci,  setify1([ sol ]) ),
+                              ci : charsets_union ( ci,  setify1([ sol ]) ),
                               if 1 < charsets_printlevel
                                   then (
                                     print("A non-trivial factor found:",j))))))),
       if ci #  setify1([]) then (
-            ci : union ( ci,  setify1([ ff ]) ),
+            ci : charsets_union ( ci,  setify1([ ff ]) ),
             charsets_prod ( map(ci,charsets_newfactoras,as, ord)))
          else (
             if 1 < charsets_printlevel
@@ -3096,7 +3096,7 @@ the table rather than being recomputed.
          m : charsets_degree ( pas[1], nord[2]),
          n : charsets_degree ( pf, vf),
          if gcd ( m, n)  = 1 then ( return ( pf)))),
-   last:setdifference( listofvars( adjoin( pf, pas)), setify1(nord)),
+   last:charsets_setdifference( listofvars( charsets_adjoin( pf, pas)), setify1(nord)),
    if length ( last)  = 1 and args = false then (
       /* here it is assumed that sets are implemented as lists */
       return ( charsets_tsfactor ( pf, pas, mord, last) )),
@@ -3139,7 +3139,7 @@ the table rather than being recomputed.
          ff : expand ( charsets_premas ( ff, as, ord) ),
          fact :  setify1([]),
          for i : 0 thru df - 1 do 
-            fact:union(charsets_coeff(as,setify1([coeff(ff,z,i)]),r,ord),fact),
+            fact:charsets_union(charsets_coeff(as,setify1([coeff(ff,z,i)]),r,ord),fact),
          sol :  [ charsets_solveps ( fact, charsets_getvars ( fact) )  ],
          if sol =  [ fair ]  then (
             if 1 < charsets_printlevel then (
@@ -3211,21 +3211,21 @@ charsets_coeff(as,ss,r,ord):=block([k,i,j,qs, temp],
    for j : r thru 1 step -1 do (
       for i : 1 thru length(qs) do (
          for k : 0 thru charsets_m[j] -1 do (
-            temp : adjoin(coeff(qs[i],charsets_lvar( as[j], ord),k),temp)))),
-   setdifference( temp, setify1([0])) 
+            temp : charsets_adjoin(coeff(qs[i],charsets_lvar( as[j], ord),k),temp)))),
+   charsets_setdifference( temp, setify1([0])) 
 )$
 /* subroutine for factoras */
 
 charsets_getvars ( as):=block([ ind,ind1,i],
    if operatorp(as, charsets_ListOrSet) then
-      apply(union,map(charsets_getvars,as))
+      apply(charsets_union,map(charsets_getvars,as))
    else (
       ind :  setify1([]),
       ind1 : listofvars ( as),
       for i in ind1 do 
          if subvarp(i) then (
             if part( i, 0) = charsets_g or part( i, 0) = charsets_h then (
-               ind : adjoin(i, ind))),
+               ind : charsets_adjoin(i, ind))),
       ind)
 )$
 /* find rational zeros of poly set ps */
@@ -3249,11 +3249,11 @@ charsets_solveps ( ps,lst):=block(
          cs : charsets_charseta ( phi[1], ord, charsets_wcharsetn),
          factorset :  setify1([])),
       ml2(temp,qs1,charsets_solveasr( cs, ord)),
-      sol : union(temp, sol),
+      sol : charsets_union(temp, sol),
       if n = 1 then (sol : charsets_verify ( sol, ps, ord)),
-      qs : union ( charsets_factorps ( qs1), charsets_factorps ( factorset) ),
+      qs : charsets_union ( charsets_factorps ( qs1), charsets_factorps ( factorset) ),
       last:charsets_qbasset ( qs, ord),
-      qs :  union(last, setdifference ( qs,  setify1([ (last) ]) )),
+      qs :  charsets_union(last, charsets_setdifference ( qs,  setify1([ (last) ]) )),
       if qs #  setify1([])  then (
          if 1 < length ( phi)  then (
             phi :  setify1([ part(phi, makelist(i,i,2,length ( phi))), map( [ (phi[1]), qs[j] ] /* $ ( ( j
@@ -3276,14 +3276,14 @@ charsets_solveps ( ps,lst):=block(
 /* subroutine for solveps */
 
 charsets_verify ( sol,ps,ord):=block( [ i,j,sss,last,retval],
-   retval:setify([]),
+   retval:charsets_setify([]),
    for soli in sol  do 
       if setify1(simplify( subst(soli,ps))) = setify1([0]) then
          return( retval:setify1(soli))
       else (
-         last:setify([]),
-         for solij in soli do last:adjoin(first(solij)- second(solij),last),
-         sss : setify1(charsets_solveps( union ( ps,last), ord)),
+         last:charsets_setify([]),
+         for solij in soli do last:charsets_adjoin(first(solij)- second(solij),last),
+         sss : setify1(charsets_solveps( charsets_union ( ps,last), ord)),
          if sss #  setify1([])  then return( retval:sss)),
    retval
 )$
@@ -3309,10 +3309,10 @@ charsets_trisersub ( ps,ord):=block(
       qhi : sort ( qhi, charsets_nopsord),
       qs : qhi[1],
       ppi : charsets_select ( ppi, length ( qs) ),
-      qqi :  union(qqi,setify1(ppi[2])),
+      qqi :  charsets_union(qqi,setify1(ppi[2])),
       if n = 0 then ( ppi :  setify1([]))
       else (
-         ppi : union( qs, setify1(ppi[1])),
+         ppi : charsets_union( qs, setify1(ppi[1])),
          ind : 0,
          for i : 1 thru length ( ps)  do(
             if length ( expand ( ps[i])) < 3 then ( ind : 1,return(false))),
@@ -3338,12 +3338,12 @@ charsets_trisersub ( ps,ord):=block(
       if 0 < charsets_class ( cs[1], ord)  then (
          iss : charsets_initialset ( cs, ord),
          if charsets_simpa ( iss, cs, ord)  # 0 then (
-             qsi : union([setify1(cs)],qsi)),
-         iss : union ( iss, charsets_factorps ( factorset)))
+             qsi : charsets_union([setify1(cs)],qsi)),
+         iss : charsets_union ( iss, charsets_factorps ( factorset)))
          else (
             iss : charsets_factorps ( factorset)),
       iss : charsets_adjoina ( iss, qs, qqi),
-      if 1 < length ( qhi) then ( qhi : union(iss, rest(qhi)))
+      if 1 < length ( qhi) then ( qhi : charsets_union(iss, rest(qhi)))
       else ( qhi : iss)
    ),
    if qsi =  setify1([])  then ( [])
@@ -3364,7 +3364,7 @@ charsets_solveas ( cs,ord):=block( [ _is,ss,sol,solm,i,j,k,temp],
                temp:subst(ss[k],_is),
                temp:subst(sol[j],temp),
                if temp # 0 then (
-                  solm : adjoin(append(sol[j], ss[k]),solm)))),
+                  solm : charsets_adjoin(append(sol[j], ss[k]),solm)))),
          sol : solm)),
    sol
 )$
@@ -3392,7 +3392,7 @@ charsets_solveasr ( cs,ord):=block([ _is,ss,ts,sol,solm,i,j,k],
                      ss :setify1(charsets_solvel( subst(flatten(sol[j]),cs[i]),
                         charsets_lvar( cs[i], ord))),
                      for k in ss do
-                        solm : adjoin(union(k, sol[j]),solm)),
+                        solm : charsets_adjoin(charsets_union(k, sol[j]),solm)),
                      sol : solm)
                else ( return(false))))
       else ( sol :  setify1([])),
@@ -3406,12 +3406,12 @@ charsets_solvel ( f,x):=block( [ g,i,sol],
    if length( listofvars ( f) )  = 1 then (
       g : charsets_getfactor( f, x),
       for i in g do 
-         sol :  union(solve (  setify1([ i ]),  setify1([ x ]) ),sol))
+         sol :  charsets_union(solve (  setify1([ i ]),  setify1([ x ]) ),sol))
    else (
       g : charsets_factorps(  setify1([ num( f)  ]) ),
       for i in g do 
          if charsets_degree ( i, x)  = 1 then (
-            sol : union(solve( setify1([ i ]), setify1([ x ])),sol))),
+            sol : charsets_union(solve( setify1([ i ]), setify1([ x ])),sol))),
    (sol)
 )$
 /* find a list of distinct linear factors of univariate poly f */
@@ -3420,7 +3420,7 @@ charsets_getfactor ( ff,x):=block( [ last,f,i],
    if charsets_degree(f,x) = 1 then [f]
    else (
       last:setify1([]),
-      for i in f do if charsets_degree(i,x) = 1 then last:adjoin(i,last),
+      for i in f do if charsets_degree(i,x) = 1 then last:charsets_adjoin(i,last),
       last)
 )$
 /*
@@ -3450,7 +3450,7 @@ charsets_getfact ( ff,x):=block([i,f,last],
    f: factor(ratsimp(ff/gcd(ff,diff(ff,x)))),
    last:setify1([]),
    for i in f do
-      if charsets_degree(i,x) = 1 then last:adjoin(i,last),
+      if charsets_degree(i,x) = 1 then last:charsets_adjoin(i,last),
    apply("*",last)
 )$
 /*  irreducible decomposition of algebraic variety defined by ps */
@@ -3522,7 +3522,7 @@ charsets_saturbasis ( ps,js,ord):=block(
       gb : grobner::gbasis ( qs,  [ (zz), reverse(ord) ], plex),
       qs :  [],
       for j : 1 thru length ( gb)  do 
-         if setdifference (  setify1([ (zz) ]), listofvars ( gb[j]) ) 
+         if charsets_setdifference (  setify1([ (zz) ]), listofvars ( gb[j]) ) 
                 =  setify1([ (zz) ]) 
              then (
                qs :  [ gb[j], qs ]))
@@ -3534,7 +3534,7 @@ charsets_saturbasis ( ps,js,ord):=block(
 
 charsets_pridealdec ( qs,ord,medset):=block(
    [ ps,phi,psi,fs,pi,ph,e,i,ss,S,j,gb,gb1,urd,vrd,f,gs,k,n,ind,indb,con,sep,wtd,tc,tco,last],
-   ps : setdifference (  setify1([ (charsets_expand ( qs)) ]),  setify1([ 0 ]) ),
+   ps : charsets_setdifference (  setify1([ (charsets_expand ( qs)) ]),  setify1([ 0 ]) ),
    ps : grobner::gbasis ( ps, charsets_reverse ( ord), plex),
    phi :  [  [ ps, 1, 0,  setify1([ 1 ])  ]  ],
    psi :  setify1([]),
@@ -3565,7 +3565,7 @@ charsets_pridealdec ( qs,ord,medset):=block(
                if 1 < e then (
                   for j : 1 thru e do 
                      if j # i then (
-                        ss : union ( ss,  setify1([ charsets_takele ( setdifference (  setify1([ (pi[j]) ]),  setify1([ (pi[i]) ]) ), pi[i], ord)  ]) )),
+                        ss : charsets_union ( ss,  setify1([ charsets_takele ( charsets_setdifference (  setify1([ (pi[j]) ]),  setify1([ (pi[i]) ]) ), pi[i], ord)  ]) )),
                   ss : charsets_prod ( charsets_factorps ( ss) ),
                   gb : charsets_saturbasis ( fs,  setify1([ ss ]), ord))
                else (
@@ -3574,7 +3574,7 @@ charsets_pridealdec ( qs,ord,medset):=block(
                   urd : charsets_maxindset ( pi[i], ord),
                   if urd =  []  then ( f : 1)
                   else (
-                     vrd : (setdifference (  setify1([ (ord) ]),  setify1([ (urd) ]) )),
+                     vrd : (charsets_setdifference (  setify1([ (ord) ]),  setify1([ (urd) ]) )),
                      gb1 : grobner::gbasis ( gb,  [ vrd, (urd) ], plex),
                      f : lcm ( map(part( grobner::leadmon ( gb1[j],  [ vrd ] ), 1)/* $ ( ( j = 1 .. length ( gb1) ))*/))),
                   f : charsets_prod ( charsets_factorps (  setify1([ f ]) ) ),
@@ -3586,7 +3586,7 @@ charsets_pridealdec ( qs,ord,medset):=block(
                   if psi =  setify1([])  then (
                      psi :  setify1([  [ gs, pi[i] ]  ]), ph : gs)
                   else (
-                     union ( psi,  setify1([  [ gs, pi[i] ]  ]) ),
+                     charsets_union ( psi,  setify1([  [ gs, pi[i] ]  ]) ),
                      if % # psi then (
                         psi : %,
                         ph : charsets_idealint ( ph, gs, ord),
@@ -3596,20 +3596,20 @@ charsets_pridealdec ( qs,ord,medset):=block(
                             * ss ]), ord), ord),
                   if 0 < charsets_class ( f, ord)  then (
                      if charsets_class ( sep * ss, ord)  = 0 then (
-                        union (  setify1([ (gb) ]),  setify1([ f  ^ k ]) ))
+                        charsets_union (  setify1([ (gb) ]),  setify1([ f  ^ k ]) ))
                   else (
-                     charsets_saturbasis ( union (  setify1([ (gb) ]),  setify1([ f
+                     charsets_saturbasis ( charsets_union (  setify1([ (gb) ]),  setify1([ f
                          ^ k ]) ),  setify1([ sep * ss ]), ord)),
                   indb :  not  charsets_contain ( %, charsets_idealintR ( ph, tc, ord), ord, plex),
                   if indb = true then (
-                     indb : charsets_satisfy ( union (  setify1([ (gb) ]),  setify1([ f
+                     indb : charsets_satisfy ( charsets_union (  setify1([ (gb) ]),  setify1([ f
                                         ^ k ]) ), sep * ss, ord),
                      if indb  then (
-                        phi :  [ (phi),  [ union (  setify1([ (gb) ]),  setify1([ f
+                        phi :  [ (phi),  [ charsets_union (  setify1([ (gb) ]),  setify1([ f
                                               ^ k ]) ), sep * ss, wtd + 2, tc ]  ]))),
-            S : union ( S,  setify1([ ss ^ charsets_exponent ( fs, ss, gb, ord)  ]) )),
+            S : charsets_union ( S,  setify1([ ss ^ charsets_exponent ( fs, ss, gb, ord)  ]) )),
             if con then return(false),
-            S : union (  setify1([ (fs) ]), S),
+            S : charsets_union (  setify1([ (fs) ]), S),
             if  not  member(1, S) then (
                if charsets_class ( sep, ord)  = 0 then  S
                else (
@@ -3620,7 +3620,7 @@ charsets_pridealdec ( qs,ord,medset):=block(
          phi : sort ( phi, charsets_wtdorder))),
    if psi =  setify1([])  or psi =  setify1([  [ 1 ]  ])  then ( [])
    else (
-      (sort (  [ charsets_remred (  [ (setdifference ( psi,  setify1([  [ 1 ]  ]) )) ], ord)  ], charsets_lenord)))
+      (sort (  [ charsets_remred (  [ (charsets_setdifference ( psi,  setify1([  [ 1 ]  ]) )) ], ord)  ], charsets_lenord)))
 )$
 /* weight ordering */
 
@@ -3706,9 +3706,9 @@ charsets_maxindset ( gb,ord):=block(
       urd :  setify1([]),
       for x in ord do 
          ind : true,
-         u : union ( urd,  setify1([ x ]) ),
+         u : charsets_union ( urd,  setify1([ x ]) ),
          for g in gb do 
-            if setdifference ( listofvars ( part( grobner::leadmon ( g, charsets_reverse ( ord), plex), 2)), u) 
+            if charsets_setdifference ( listofvars ( part( grobner::leadmon ( g, charsets_reverse ( ord), plex), 2)), u) 
                 =  setify1([]) 
                 then (
                   ind : false,
@@ -3750,13 +3750,13 @@ charsets_idealquo ( ps,f,ord):=block(
             qs : charsets_idealint ( ps, f, ord),
             grobner::gbasis (  setify1([ map(simplify ( qs[j] / f) /* $ ( ( j = 1 .. length ( qs) ))*/) ]), charsets_reverse ( ord), plex))
 )$
-/* ideal intersection */
+/* ideal charsets_intersection */
 
 charsets_idealint ( ps,f,ord):=block(
    [ qs,gb,zz,j],
       if 1 < charsets_printlevel
           then (
-            print("ideal intersection starts at",time ())),
+            print("ideal charsets_intersection starts at",time ())),
       if  operatorp(f, charsets_ListOrSet)
           then (
             qs :  [ map(zz * ps[j]/* $ ( ( j = 1 .. length ( ps) ))*/), map(( ( 1 - zz))
@@ -3767,21 +3767,21 @@ charsets_idealint ( ps,f,ord):=block(
       gb : grobner::gbasis ( qs,  [ zz, map(ord[length ( ord)  - j + 1]/* $ ( ( j = 1 .. length ( ord) ))*/) ], plex),
       qs :  [],
       for j : 1 thru length ( gb)  do 
-         if setdifference (  setify1([ zz ]), listofvars ( gb[j]) )  =  setify1([ zz ]) 
+         if charsets_setdifference (  setify1([ zz ]), listofvars ( gb[j]) )  =  setify1([ zz ]) 
              then (
                qs :  [ gb[j], qs ]),
       if 1 < charsets_printlevel
           then (
-            print("ideal intersection finished at",time ())),
+            print("ideal charsets_intersection finished at",time ())),
       qs
 )$
-/* ideal intersection - with remember */
+/* ideal charsets_intersection - with remember */
 /* I think this should be memoized */
 charsets_idealintR ( ps,f,ord):=block(
    [ qs,gb,zz,j],
       if 1 < charsets_printlevel
           then (
-            print("ideal intersection starts at",time ())),
+            print("ideal charsets_intersection starts at",time ())),
       if  operatorp(f, charsets_ListOrSet)
           then (
             qs :  [ map(zz * ps[j]/* $ ( ( j = 1 .. length ( ps) ))*/), map(( ( 1 - zz))
@@ -3792,12 +3792,12 @@ charsets_idealintR ( ps,f,ord):=block(
       gb : grobner::gbasis ( qs,  [ zz, map(ord[length ( ord)  - j + 1]/* $ ( ( j = 1 .. length ( ord) ))*/) ], plex),
       qs :  [],
       for j : 1 thru length ( gb)  do 
-         if setdifference (  setify1([ zz ]), listofvars ( gb[j]) )  =  setify1([ zz ]) 
+         if charsets_setdifference (  setify1([ zz ]), listofvars ( gb[j]) )  =  setify1([ zz ]) 
              then (
                qs :  [ gb[j], qs ]),
       if 1 < charsets_printlevel
           then (
-            print("ideal intersection finished at",time ())),
+            print("ideal charsets_intersection finished at",time ())),
       qs
 )$
 /* basis of the saturation of ideal(ps) wrt js */
@@ -3811,7 +3811,7 @@ charsets_saturbasisR ( ps,js,ord):=block(
                 - j + 1]/* $ ( ( j = 1 .. length ( ord) ))*/) ], plex),
       qs :  [],
       for j : 1 thru length ( gb)  do(
-         if setdifference (  setify1([ (zz) ]), listofvars ( gb[j]) ) 
+         if charsets_setdifference (  setify1([ (zz) ]), listofvars ( gb[j]) ) 
                 =  setify1([ (zz) ]) 
              then (
                qs :  [ gb[j], qs ])))
@@ -3837,7 +3837,7 @@ charsets_eicsTest ( ps,ord,medset):=block(
          if n < 20 then (
             last:apply(eval_string(concat("charsets_f", substring(medset,9,length ( medset)  - 1))),[ qs, ord,  [  setify1([]), listofvars ( qs)  ], fset ]),
             ml2(cs,factorset, charsets_removecont ( last, ord)),
-            factorset : union ( factorset, fset[1]))
+            factorset : charsets_union ( factorset, fset[1]))
          else (
             last:apply(eval_string(concat("charsets_", substring(medset,9,length ( medset)  - 1))), [ qs, ord ]),
             ml2(cs,factorset, charsets_removecont ( last, ord))))
@@ -3846,7 +3846,7 @@ charsets_eicsTest ( ps,ord,medset):=block(
             cs : charsets_fcharseta (  [ qs ], ord, medset),
             factorset : part( cs[2], 2),
             ml2(cs,ts, charsets_removecont ( cs[1],ord)),
-            factorset : union ( factorset, ts))
+            factorset : charsets_union ( factorset, ts))
          else (
             last:charsets_charseta (  [ qs ], ord, medset),
             ml2(cs,factorset, charsets_removecont ( last, ord))),
@@ -3867,7 +3867,7 @@ charsets_eicsTest ( ps,ord,medset):=block(
                   ml2(ts,den, charsets_irras ( cs, ord, ind)),
          break("irras6"),
                   if ts[2] = 0 then (
-                     __is : union ( charsets_initialset ( cs, ord), charsets_factorps ( factorset) ),
+                     __is : charsets_union ( charsets_initialset ( cs, ord), charsets_factorps ( factorset) ),
                      if length ( cs)  = length ( ord)  then (
                         rr : charsets_nopower ( qhi[1][2]))
                      else (
@@ -3884,7 +3884,7 @@ charsets_eicsTest ( ps,ord,medset):=block(
                      ts :  [ 1, 0 ])),
          if ts[2] # 0 then (
                if 1 < ts[2] then (
-                     __is : union ( charsets_initialset (  setify1([ part(cs, makelist(i,i,1,ts[2]
+                     __is : charsets_union ( charsets_initialset (  setify1([ part(cs, makelist(i,i,1,ts[2]
                          - 1)) ]), ord), charsets_factorps ( factorset) ))
                   else (
                      __is : charsets_factorps ( factorset))))
@@ -3977,10 +3977,10 @@ charsets_setorderp(a,b):=
    if length(a) < length(b) then true
    else(if length(a) > length(b) then false else orderlessp(a,b))$
 
-canonlt:charsets_setorderp$
+charsets_canonlt:charsets_setorderp$
 utma():=apply(untrace,trace)$
-tracesets():=trace(intersect, union, complement, setdifference,symmdifference,
-powerset, setify, subset, setp, subsetp, disjointp,canonlt)$
+tracesets():=trace(intersect, charsets_union, charsets_complement, charsets_setdifference,charsets_symmdifference,
+charsets_powerset, charsets_setify, charsets_subset, charsets_setp, charsets_subsetp, charsets_disjointp,charsets_canonlt)$
 
 tma():=trace(
 charsets_mcharset, charsets_iniset, charsets_irrvardec,
