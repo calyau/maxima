@@ -78,6 +78,17 @@
     (defmacro =-1//2 (x) `(alike1 ,x -1//2))
     )
 
+(defun hyp-integerp (x)
+  ;; In this file, maxima-integerp was used in many places.  But it
+  ;; seems that this code expects maxima-integerp to return T when it
+  ;; is really an integer, not something that was declared an integer.
+  ;; But I'm not really sure if this is true everywhere, but it is
+  ;; true in some places.
+  ;;
+  ;; Thus, we replace all calls to maxima-integerp with hyp-integerp,
+  ;; which, for now, returns T only when the arg is an integer.
+  ;; Should we do something more?
+  (and (maxima-integerp x) (integerp x)))
 
 ;; Main entry point for simplification of hypergeometric functions.
 ;;
@@ -133,9 +144,9 @@
      (return (simpg-exec (del il l1) (del il l2)))))
 
 
+
 (defun del (a b)
   (cond ((null a) b)(t (del (cdr a) (zl-delete (car a) b 1)))))
-
 
 (defun simpg-exec (l1 l2)
   (prog(n)
@@ -351,7 +362,7 @@
      ;; gamma(a)*x^((1-a)/2)
      (setq res (mul (gm a) (power x (div (sub 1 a) 2))))
      #+(or)
-     (cond ((and (maxima-integerp (add a a))
+     (cond ((and (hyp-integerp (add a a))
 		 (numberp (setq n (sub a (inv 2))))
 		 (lessp n $bestriglim))
 	    ;; This is totally broken.  It's got an extra (-1)^foo
@@ -479,7 +490,7 @@
 
 (defun hyp-negp-in-l (l)
   (cond ((null l) nil)
-	((maxima-integerp (car l))
+	((hyp-integerp (car l))
 	 (cond ((minusp (car l)) (car l))
 	       (t (hyp-negp-in-l (cdr l)))))
 	(t (hyp-negp-in-l (cdr l)))))
@@ -499,7 +510,7 @@
      loop
      (cond ((and (null l)(greaterp count 1))(return t)))
      (cond ((null l)(return nil)))
-     (cond ((maxima-integerp (car l))(setq count (add1 count))))
+     (cond ((hyp-integerp (car l))(setq count (add1 count))))
      (setq l (cdr l))
      (go loop)))
 
@@ -551,16 +562,16 @@
 	     (equal (sub b a) (div 1 2)))
 	    ;; F(a,b;c;z) where |a-b|=1/2 
 	    (cond ((setq lgf (hyp-cos a b c))(return lgf)))))
-     (cond ((and (maxima-integerp a)
-		 (maxima-integerp b) (maxima-integerp c))
+     (cond ((and (hyp-integerp a)
+		 (hyp-integerp b) (hyp-integerp c))
 	    ;; F(a,b;c;z) when a, b, c are integers.
 	    (return (simpr2f1 (list a b) (list c)))))
-     (cond ((and (maxima-integerp (add c (inv 2)))
-		 (maxima-integerp (add a b)))
+     (cond ((and (hyp-integerp (add c (inv 2)))
+		 (hyp-integerp (add a b)))
 	    ;; F(a,b;c;z) where a+b is an integer and c+1/2 is an
 	    ;; integer.
 	    (return (step4 a b c))))
-     (cond ((maxima-integerp (add (sub a b) (inv 2)))
+     (cond ((hyp-integerp (add (sub a b) (inv 2)))
 	    ;; F(a,b;c,z) where a-b+1/2 is an integer
 	    (cond ((setq lgf (step7 a b c))
 		   (return lgf)))))
@@ -585,15 +596,15 @@
 	   k ($num kl)
 	   l ($denom kl))
      (cond ((equal (* 2 l) n)
-	    (cond ((maxima-integerp (// (- k m) n))
+	    (cond ((hyp-integerp (// (- k m) n))
 		   (return (hyp-algv k l m n a b c))))))
-     (cond ((maxima-integerp (// k (* 2 l)))
-	    (cond ((maxima-integerp (// m n))
+     (cond ((hyp-integerp (// k (* 2 l)))
+	    (cond ((hyp-integerp (// m n))
 		   (return (hyp-algv k l m n a b c)))
 		  (t (return nil))))
-	   ((maxima-integerp (// m n))
+	   ((hyp-integerp (// m n))
 	    (return nil))
-	   ((maxima-integerp (/ (- (* k n) (* 2 l m)) (* 2 l n)))
+	   ((hyp-integerp (/ (- (* k n) (* 2 l m)) (* 2 l n)))
 	    (return (hyp-algv k l m n a b c))))
      (return nil)))
 
@@ -602,7 +613,7 @@
   (prog (x y)
      (setq y 0)
      loop
-     (cond ((maxima-integerp (setq x
+     (cond ((hyp-integerp (setq x
 				   (// (+ y
 					  (// k l)
 					  (* -2 (// m n)))
@@ -694,9 +705,9 @@
 	   ((eq (caaar l1) 'rat)
 	    (cond (inl1bp 'c) (t 'd)))
 	   (t 'failg)))
-   (maxima-integerp (car l1))
-   (maxima-integerp (cadr l1))
-   (maxima-integerp (car l2))))
+   (hyp-integerp (car l1))
+   (hyp-integerp (cadr l1))
+   (hyp-integerp (car l2))))
 (defun geredno1
     (l1 l2)
   (cond ((and (greaterp (car l2)(car l1))
@@ -841,10 +852,10 @@
 
 
 
-(defun nni(a)(cond ((maxima-integerp a)(not (minusp a)))))
+(defun nni(a)(cond ((hyp-integerp a)(not (minusp a)))))
 
 
-(defun ni(a)(not (maxima-integerp a)))
+(defun ni(a)(not (hyp-integerp a)))
 
 
 (defun hyp-deg
@@ -1484,13 +1495,13 @@
 				  (div (mul z z) 4))))))
 					 
 		
-     (cond ((not (maxima-integerp (setq a-c (sub a c))))
+     (cond ((not (hyp-integerp (setq a-c (sub a c))))
 	    (go kumcheck)))
      (cond ((minusp a-c)
 	    (return (erfgammared a c var))))
      (return (kummer l1 l2))
      kumcheck
-     (cond ((maxima-integerp a)
+     (cond ((hyp-integerp a)
 	    (return (kummer l1 l2))))
      (setq m
 	   (div (sub c 1) 2)
@@ -1561,7 +1572,7 @@
 	(t (mul (add a (sub1 m))(prod a (sub1 m))))))
 
 (defun erfgamnumred (a c z)
-  (cond ((maxima-integerp (sub c (inv 2)))
+  (cond ((hyp-integerp (sub c (inv 2)))
 	 (erfred a c z))
 	(t (gammareds a c z))))
 
