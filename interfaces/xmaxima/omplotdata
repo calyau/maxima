@@ -4,7 +4,7 @@ exec wish "$0" "$@"
 #############################################
 ##### Copyright William Schelter 1997 #######
 #############################################
-set ws_openMath(date) 10/28/2000
+set ws_openMath(date) 12/09/2000
 
 ###### plotting.tcl ######
 ############################################################
@@ -241,6 +241,7 @@ proc optLoc { op ar }  {
 
 proc getOptions { optlist options_supplied args } {
    # global  getOptionSpecs
+
     set ar [assoc -usearray $args 0]
     set help [assoc -help $args ""]
     if { "$ar" != "0" } { global $ar }
@@ -1078,6 +1079,9 @@ proc makeFrame { w type } {
     if { "$parent" == "." } {
 	set dismiss "destroy ."
     }
+    if { [string match .plot* [winfo toplevel $win]] } {
+	set dismiss "destroy [winfo toplevel $win]"
+    }
     }
     
     if { "$doExit" != "" } {set dismiss $doExit } 	
@@ -1127,7 +1131,7 @@ proc makeFrame { w type } {
 
 
     bind $win.position <Enter> "+place $win.buttons -in $win.position -x 0 -rely 1.0 ;  after cancel lower $win.position ; raise $win.buttons "
-    bind $win.buttons <Leave> "place forget $win.buttons"
+    bind $win.buttons <Leave> "deleteBalloon $c ; place forget $win.buttons"
 
     # pack $wb
     scrollbar $w.hscroll -orient horiz -command "$c xview"
@@ -1397,7 +1401,12 @@ proc doZoom { win x y direction } {
 #
 
 proc doZoomXY { win x y facx facy } {
-    makeLocal $win c transform
+    if { [catch {
+	makeLocal $win c transform
+    } ] } {
+	# not ready
+	return
+    }
     
     set x [$c canvasx $x]
     set y [$c canvasy $y]
@@ -1457,6 +1466,7 @@ proc reConfigure { c width height  } {
     set oldy [$c canvasy [expr {$oldCheight/2.0}]]
     doZoomXY $w [expr {$oldCwidth/2.0}] [expr {$oldCheight/2.0}] \
 	    [expr {1.0*$width/$oldCwidth}] [expr {1.0*$height/$oldCheight}]
+    
     scrollPointTo $c $oldx $oldy [expr {$width/2.0}] [expr {$height/2.0}]
    # update
     oset $w oldCwidth $width
@@ -2136,6 +2146,13 @@ set show_balloons 1
 proc balloonhelp { win subwin msg } {
     global show_balloons
     if { $show_balloons == 0 } return;
+    linkLocal  [oget $win c] helpPending
+    if { [info exists helpPending] } {after cancel $helpPending}
+    set helpPending [after 1000 [list balloonhelp1 $win $subwin $msg]]
+}
+
+proc balloonhelp1 { win subwin msg } {
+    if { ![winfo exists $win] } { return }
     makeLocal $win c buttonFont
     set x0 [winfo rootx $win]
     set y0 [winfo rooty $win]
@@ -2172,9 +2189,17 @@ proc balloonhelp { win subwin msg } {
 proc setBalloonhelp { win subwin msg } {
     makeLocal $win c
     bind $subwin <Enter> "balloonhelp $win $subwin [list $msg]"
-    bind $subwin <Leave> "$c delete balloon"
+    bind $subwin <Leave> "deleteBalloon $c"
 }
     
+proc deleteBalloon { c } {
+    linkLocal $c helpPending
+    if { [info exists helpPending] } {
+	after cancel $helpPending
+	unset helpPending
+    }
+    $c delete balloon
+}
 
 
 #
@@ -3967,13 +3992,15 @@ proc mkMultLeftExpr { mat n prefix { constant "" } } {
 	}
 	incr j
     }
+    # puts [list $vars $ans]
      return [list $vars $ans]
 }
 
 proc mkMultLeftFun { mat n name { constant ""} } {
     set expr [mkMultLeftExpr $mat $n _a $constant]
     set bod1 [string trim [lindex $expr 1] " "]
-    set bod "return \"$bod1\""
+#    set bod "return \"$bod1\""
+    set bod [concat list [lindex $expr 1]]
     proc $name [lindex $expr 0] $bod
 }
 
@@ -4192,10 +4219,11 @@ proc calculatePlot3data {win fun  nx ny } {
 	}
 	lappend matrix $row
     }
+    global silly
+    set silly [list variable_grid $rowx $rowy $matrix ]
     return [list variable_grid $rowx $rowy $matrix ]
     
 }
-
 
 proc addAxes { win } {
     #global plot3dPoints plot3dMeshes xradius yradius xcenter ycenter
@@ -4337,8 +4365,9 @@ proc calculateRotated { win } {
 	set constant [vectorOp $tem - [eval $rot $rotationcenter]]
 	mkMultLeftFun  $rotmatrix 3 _rot$win $constant
     }
+    #puts "win $win"
     foreach { x y z } [oget $win points] {
-	if { [catch { append ans " [$rot $x $y $z]" } ] } {
+	if { [catch { append ans " " [$rot $x $y $z] } ] } {
 	    append ans "  nam nam nam " }
 	}
     oset $win rotatefun $rot
@@ -4350,53 +4379,46 @@ proc getOrderedMeshIndices { win } {
  #    set meshes plot3dMeshes$win
     linkLocal $win lmesh
     # puts "array names $meshes =[array names $meshes ]"
-    set pts [oget $win rotated]
+    # get the list offset by 2, so the lindex indices grab the Z coordinate.
+    # without having to add 2.
+    set pts2 [lrange [oget $win rotated] 2 end]
     set i 0
     foreach tem $lmesh {
         set k [llength $tem]
        if { [catch {
         if {  $k == 4 } {
-	    set z [expr { ([lindex $pts [expr {[lindex $tem 0] +2}]] \
-		    +[lindex $pts [expr {[lindex $tem 1] +2}]] \
-		    + [lindex $pts [expr {[lindex $tem 2] +2}]] \
-		    + [lindex $pts [expr {[lindex $tem 3] +2}]])/4.0 }]
+	    set z [expr { ([lindex $pts2 [lindex $tem 0]] \
+		    +[lindex $pts2 [lindex $tem 1]] \
+		    + [lindex $pts2 [lindex $tem 2]] \
+		    + [lindex $pts2 [lindex $tem 3]])/4.0 }]
 	} elseif { $k == 2 } {
-            set z [expr { ([lindex $pts [expr {[lindex $tem 0] +2}]] \
-		    +[lindex $pts [expr {[lindex $tem 1] +2}]])/2.0 }]
+            set z [expr { ([lindex $pts2 [lindex $tem 0]] \
+		    +[lindex $pts2 [lindex $tem 1]])/2.0 }]
 	} else {
 	    set z 0
             foreach w $tem {
-		set z [expr {$z + [lindex $pts [expr {$w + 2}]] } ]
+		set z [expr {$z + [lindex $pts2 $w] }  ]
 		
 	    }	
 	    set z [expr { $z/double($k)}]
         }
-	append pp($z) "$i "
+	lappend ans [list $z $i]
+	# append pp($z) "$i "
 	incr i
 	
          } ]} {
 	    set lmesh [lreplace $lmesh $i $i]
 	 }
     }
-    #puts "pp=[array get pp]"
-    
-    set tem [lsort -real [array names pp]]
-    set ans ""
-    foreach v $tem {
-	append ans $pp($v)
+    set ttem [lsort -real -index 0 $ans]
+    set ans {}
+    foreach v $ttem {
+	lappend ans [lindex $v 1]
     }
     oset $win meshes $ans
     return
 }
 
-# we dont want xy plane to fill whole page!
-proc setUpTransforms3d { win } {
-    global screenwindow
-    #set scr $screenwindow
-    setUpTransforms $win .7
-    # set screenwindow $scr
-
-}
 
 proc setUpTransforms3d { win } {
     global screenwindow
@@ -4405,12 +4427,15 @@ proc setUpTransforms3d { win } {
     # set screenwindow $scr
     linkLocal $win scale
         makeLocal $win xcenter ycenter xradius yradius c zmin zmax xmin xmax ymin ymax zradius
+    #dshow xcenter ycenter xradius yradius c zmin zmax xmin xmax ymin ymax zradius
     set fac .5
 
     set delx [$c cget -width]
     set dely [$c cget -height]
     set f1 [expr {(1 - $fac)/2.0}]
+
     set scale [list [expr {1.5/($xradius)}] 0 0 0 [expr {1.5/($yradius)}] 0 0 0 [expr {1.5/($zradius)}] ]
+
     set x1 [expr {$f1 *$delx}]
     set y1 [expr {$f1 *$dely}]
     set x2 [expr {$x1 + $fac*$delx}]
@@ -4444,11 +4469,12 @@ proc plot3d { args } {
 	set win [getOptionDefault windowname $plot3dOptions] }
     clearLocal $win
     apply mkPlot3d  $win $args
+#    bind $win <Configure> {}	
     replot3d $win
 }
 
 proc replot3d { win } {
-    global   printOption
+    global   printOption plot2dOptions
     makeLocal $win nsteps zfun data c
     linkLocal $win parameters sliders
     
@@ -4471,12 +4497,28 @@ proc replot3d { win } {
 	addOnePlot3d $win [calculatePlot3data $win _xf  [lindex $nsteps 0] [lindex $nsteps 1]]
 	# calculatePlot3d $win _xf [lindex $nsteps 0] [lindex $nsteps 1]
     }
+
     if { "$data" != "" } {
+	if { 0 } {
+        puts "here"
+	set ranges [ plot3dGetDataRange [list $data]]
+	linkLocal $win zmin zmax
+	desetq "zmin zmax" [lindex $ranges 2]
+	puts "ranges=$ranges"
+	set some [plot2dRangesToRadius [lindex $ranges 0] [lindex $ranges 1] ""]
+	puts "and now"
+	foreach {v k} $some {
+	    puts "oset $win [string range $v 1 end] $k"
+	    oset $win [string range $v 1 end] $k
+	}
+        }
+	
 	addOnePlot3d $win $data
     }
 
 
     setUpTransforms3d $win
+
     oset $win colorfun plot3dcolorFun
 #    addAxes $win
     oset $win cmap c1
@@ -4587,10 +4629,19 @@ proc drawMeshes {win canv} {
     # only delete afterwards, to avoid relinquishing the colors
     $canv addtag oldpoly withtag poly 
     $canv delete axis
+    makeLocal $win lmesh rotated cmap
+    upvar #0 [oarray $win] ar
+    proc _xf { x} [info body rtosx$win]
+    proc _yf { y} [info body rtosy$win]
+    foreach { x y z} $rotated { lappend rotatedxy [_xf $x] [_yf $y] 0 }
+
     foreach k [oget $win meshes] {
 	#puts "drawOneMesh $win $canv $k"
 	#puts "drawOneMesh $win $canv $k"
-	drawOneMesh $win $canv $k
+	set mesh [lindex $lmesh $k]
+	set col gray70
+	catch { set col $ar($cmap,[lindex $mesh 0]) }
+	drawOneMesh $win $canv $k $mesh $col
     }
     $canv delete oldpoly
 }
@@ -4610,29 +4661,24 @@ proc drawMeshes {win canv} {
  #----------------------------------------------------------------
 #
 
-proc drawOneMesh { win  canv k } {
+proc drawOneMesh { win  canv k mesh color } {
     #k=i*(ny+1)+j
     # k,k+1,k+1+nyp,k+nyp
-    set pts [oget $win rotated]
-    set coords ""
-    set n 0
- #   set meshes plot3dMeshes$win
-    set rtosx rtosx$win ; set rtosy rtosy$win
-    makeLocal $win lmesh cmap
+    upvar 1 rotatedxy ptsxy
+    set n [llength $mesh]
 
-    set mesh [lindex $lmesh $k]
     foreach kk $mesh {
-	incr n
-	append coords "[$rtosx [lindex $pts $kk]] [$rtosy [lindex $pts [expr {$kk + 1}]]] "
+	lappend coords [lindex $ptsxy $kk] [lindex $ptsxy [expr {$kk + 1}]]
     }
     if { $n <= 2 } {
 	#puts "drawing $k,n=$n $coords, points $mesh "
 	#desetq "a b" $mesh
 	#puts "<[lrange $points $a [expr {$a +2}]]> <[lrange $points $b [expr {$b +2}]]"
 	if { $n == 2 } {
-	    set color gray70
-	    catch { set color [oget $win $cmap,$mesh]}
-	    eval $canv create line $coords -tags "{axis mesh.$k}" \
+#	    set color gray70
+#	    catch { set color [oget $win $cmap,$mesh]}
+            
+	    eval $canv create line $coords -tags [list [list axis mesh.$k]] \
 		    -fill $color -width 5 
 	} else {
 	   # puts "doing special $mesh, $coords"
@@ -4641,9 +4687,7 @@ proc drawOneMesh { win  canv k } {
 	}
 	}
     } else {
-	if { [catch { set color [oget $win $cmap,[lindex $mesh 0]] }] } { set color white}
-	
-	eval $canv create polygon $coords -tags "{poly mesh.$k}" \
+	 eval $canv create polygon $coords -tags [list [list poly mesh.$k]] \
 		-fill $color \
 		-outline black
     }
@@ -5027,12 +5071,15 @@ proc addOnePlot3d { win data } {
 	set nx [expr {[llength $xrow] -1}]
 	set ny [expr {[llength $yrow] -1}]
 	#puts "nx=$nx,ny=$ny"
-	set xmin [lindex $xrow 0]
-	set xmax [lindex $xrow $nx]
-	set ymin [lindex $yrow 0]
-	set ymax [lindex $yrow $ny]
+#	set xmin [lindex $xrow 0]
+#	set xmax [lindex $xrow $nx]
+#	set ymin [lindex $yrow 0]
+#	set ymax [lindex $yrow $ny]
+	desetq "xmin xmax" [minMax $xrow ""]
+	desetq "ymin ymax" [minMax $yrow ""]
 	desetq "zmin zmax" [matrixMinMax [list $zmat]]
-	
+#	puts "and now"
+#	dshow nx xmin xmax ymin ymax zmin zmax
 	if { $dotruncate } {
 	    if { $flatten } { set dotruncate 0 }
 
