@@ -233,8 +233,8 @@ e.g.  FUNCTION, MODE_DECLARE, etc.  It may also be TRANSFUN implying
 that the translated LISP version of the function is to be removed.
 This is useful if one wishes to have the MACSYMA version of the
 function executed rather than the translated version. Pi may also be
-OP or OPERATOR to remove a syntax extension given to ai (see Appendix
-II).  If ai is "ALL" then the property indicated by pi is removed from
+OP or OPERATOR to remove a syntax extension given to ai.
+If ai is "ALL" then the property indicated by pi is removed from
 all atoms which have it.  Unlike the more specific remove functions
 (REMVALUE, REMARRAY, REMFUNCTION, and REMRULE) REMOVE does not
 indicate when a given property is non-existent; it always returns
