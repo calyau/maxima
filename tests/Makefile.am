@@ -1,4 +1,4 @@
-MAXIMA = $(SHELL) $(top_srcdir)/src/maxima
+MAXIMA = @POSIX_SHELL@ $(top_srcdir)/src/maxima
 if CLISP
 check: clisp-check
 clisp-check:

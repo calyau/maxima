@@ -1,4 +1,4 @@
-#!/bin/sh
+#!@POSIX_SHELL@
 
 usage () {
 	cat << EOF
