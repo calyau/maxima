@@ -305,6 +305,59 @@ constant of integration (called by MACSYMA, e.g., "INTEGRATIONCONSTANT1")
 is introduced into an expression by indefinite integration of an equation.
 
 @end defvar
+
+@defvar INTEGRATE_USE_ROOTSOF
+default: [false] If not false then when the denominator of
+an rational function cannot be factored, we give the integral
+in a form which is a sum over the roots of the denominator:
+
+@example
+(C4) integrate(1/(1+x+x^5),x);
+
+      /	 2
+      [ x  - 4 x + 5
+      I ------------ dx				   2 x + 1
+      ]	 3    2		       2	    5 ATAN(-------)
+      / x  - x  + 1	  LOG(x  + x + 1)	   SQRT(3)
+(D4)  ----------------- - --------------- + ---------------
+	      7		        14	       7 SQRT(3)
+@end example
+but now we set the flag to be true and the first part of the
+integral will undergo further simplification.
+@example
+(C5) INTEGRATE_USE_ROOTSOF:true;
+
+(D5) 			      TRUE
+@end example
+@example
+(C6) integrate(1/(1+x+x^5),x);
+
+     ====	 2
+     \	     (%R1  - 4 %R1 + 5) LOG(x - %R1)
+      >	     -------------------------------
+     /			  2
+     ====	     3 %R1  - 2 %R1
+		     3	  2
+     %R1 in ROOTSOF(x  - x  + 1)
+(D6) ----------------------------------------------------------
+	      7
+
+							 2 x + 1
+				     2		  5 ATAN(-------)
+				LOG(x  + x + 1)		 SQRT(3)
+			      - --------------- + ---------------
+				      14	     7 SQRT(3)
+(C7) 
+@end example
+
+Note that it may be that we want to approximate the roots in the
+complex plane, and then provide the function factored, since we
+will then be able to group the roots and their complex conjugates,
+so as to give a better answer.
+
+@end defvar
+
+
 @c @node INTSCE, LDEFINT, INTEGRATION_CONSTANT_COUNTER, Integration
 @c @unnumberedsec phony
 @defun INTSCE (expr,var)

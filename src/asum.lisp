@@ -161,7 +161,22 @@ summation when necessary."
       (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
       (wna-err '$sum)))
 
-
+(defmspec $lsum (l) (setq l (cdr l))
+  (or (= (length l) 3) (wna-err '$lsum))
+  (let ((form (car l))
+	(ind (cadr l))
+	(lis (meval (caddr l)))
+	(ans 0))
+    (or (symbolp ind) (merror "Second argument not a variable ~M" ind))
+    (cond (($listp lis)
+	   (sloop for v in (cdr lis)
+		  with lind = (cons ind nil)
+		  for w = (cons v nil)
+		  do
+		  (setq ans (add* ans  (mbinding (lind w) (meval form)))))
+	   ans)
+	  (t `((%lsum) ,form ,ind ,lis)))))
+    
 (defmfun simpsum (x y z)
   (let (($ratsimpexpons t)) (setq y (simplifya (sum-arg x) z)))
   (simpsum1 y (sum-index x) (simplifya (sum-lower x) z)

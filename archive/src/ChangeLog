@@ -1,3 +1,19 @@
+2001-04-15  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+	* added the file specfun.mc from Barton Willis, and the
+	documentation to the manual under Orthogonal Polynomials,
+	just after Special Functions.
+
+	*  added the special declarations, to the maxima to lisp
+	compiler, so that the correct dynamic binding scenario is
+	respected.
+
+	* changed the default optimize level for compilation
+	of the maxima files to -O4, by changing this in GCL. 
+	
+	*  added changes to integrate to handle the irreducible
+	denominators if given rational function f/g, using the
+	rootsof method.   To enable that use INTEGRATE_USE_ROOTSOF:true;
+
 2001-04-06  Bill Schelter  <wfs@sonia.ma.utexas.edu>
 
 	* Fix the install to install all share/*.lisp

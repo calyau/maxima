@@ -108,7 +108,7 @@
 	 "If TRUE TRANSLATE_FILE and COMPFILE output forms which will~
 	 be macroexpanded but not compiled into machine code by the~
 	 lisp compiler.")
-(DEFMVAR  $TRANSCOMPILE  NIL
+(DEFMVAR  $TRANSCOMPILE  t
 	  "If TRUE TRANSLATE_FILE outputs declarations for the COMPLR.
 	  The only use of the switch is to save the space declarations take
 	  up in interpreted code.")
@@ -1146,19 +1146,23 @@ APPLY means like APPLY.")
    (IF LEXPRS (ADDL `(*LEXPR . ,(REVERSE LEXPRS)) DECLARES))
    (IF FEXPRS (ADDL `(*FEXPR . ,(REVERSE FEXPRS)) DECLARES)))
 
-(DEFUN MAKE-DECLARES (VARLIST LOCALP &AUX (DL) (FX) (FL))
+(DEFUN MAKE-DECLARES (VARLIST LOCALP &AUX (DL) (FX) (FL) specs)
   (WHEN $TRANSCOMPILE
 	(DO ((L VARLIST (CDR L))
-	     (MODE) (VAR))
+	     (MODE) (VAR)
+	     )
 	    ((NULL L))
 	  (when (OR (NOT LOCALP)
 		    (NOT (GET (CAR L) 'SPECIAL)))
 		;; don't output local declarations on special variables.
 		(SETQ VAR (TEVAL (CAR L)) MODE (VALUE-MODE VAR))
+		(setq specs (cons var specs))
+		
 		(COND ((EQ '$FIXNUM MODE) (ADDL VAR FX))
 		      ((EQ '$FLOAT MODE)  (ADDL VAR FL)))))
 	(IF FX (ADDL `(FIXNUM  . ,FX) DL))
 	(IF FL (ADDL `(FLONUM  . ,FL) DL))
+	(IF specs (ADDL `(special  . ,specs) DL))
 	(IF DL `(DECLARE . ,DL))))
 
 (DEF%TR DOLIST (FORM) (TRANSLATE `((MPROGN) . ,(CDR FORM))))

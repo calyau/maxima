@@ -137,6 +137,22 @@
 	      (LEARN `((MNOTEQUAL) ,EXP 0) T) (ASKSIGN EXP))
 	     (T '$POSITIVE)))
 
+(defvar $INTEGRATE_USE_ROOTSOF nil "Use the rootsof form for integrals when denominator does not factor")
+
+(defun integrate-use-rootsof (f q variable &aux qprime ff qq
+				(dummy (make-param)) lead)
+  ;; p2e is squarefree in polynomial in cre form p1e is lower degreee
+  (setq lead (p-lc q))
+  (setq qprime (disrep (pderivative q (p-var q))))
+  (setq ff (disrep f) qq (disrep q))
+  `((%lsum) ((mtimes)
+	     ,(div* (mul* lead (subst dummy variable ff))
+		    (subst dummy variable qprime))
+	             ((%LOG) ,(sub* variable  dummy)))  ,dummy
+		     (($rootsOf) ,qq)
+		     )
+  )
+
 (DEFUN EPROG (P)
   (PROG (P1E P2E A1E A2E A3E DISCRIM REPART SIGN NCC DCC ALLCC XX DEG)
 	(IF (OR (EQUAL P 0) (EQUAL (CAR P) 0)) (RETURN 0))
@@ -170,6 +186,10 @@
 	       (RETURN (E3PROG P1E P2E ALLCC)))
 	      ((AND (zl-MEMBER DEG '(4 5 6)) (ZEROCOEFL P2E DEG))
 	       (RETURN (ENPROG P1E P2E ALLCC DEG))))
+	(cond ((and $INTEGRATE_USE_ROOTSOF (equal (car (psqfr p2e)) p2e))
+	       (return (list '(mtimes) (disrep allcc)
+			     (integrate-use-rootsof p1e p2e
+						    (car (last varlist)))))))
 	(RETURN (LIST '(MTIMES)
 		      (DISREP ALLCC)
 		      (LIST '(%INTEGRATE)

@@ -373,11 +373,16 @@ Debugging
 @chapter Trigonometric
 @include Trigonometric.texi
 
-@node Special Functions, Limits, Trigonometric, Top
+@node Special Functions, Orthogonal Polynomials, Trigonometric, Top
 @chapter Special Functions
 @include Special.texi
 
-@node Limits, Differentiation, Special Functions, Top
+@node Orthogonal Polynomials, Limits, Trigonometric, Top
+@chapter Orthogonal Polynomials
+@include SpecfunII.texi
+
+
+@node Limits, Differentiation, Orthogonal Polynomials, Top
 @chapter Limits
 @include Limits.texi
 

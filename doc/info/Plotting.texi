@@ -11,7 +11,7 @@ If not nil, then plot2d will output a representation of the plot
 which is suitable for openplot functions.  
 @end defvar
 
-@defun OPENPLOT_CURVES(list &rest-options)
+@defun OPENPLOT_CURVES list rest-options
 Takes a list of curves such as
 @example
 [[x1,y1,x2,y2,...],[u1,v1,u2,v2,...],..]

@@ -168,7 +168,7 @@ install-html:
 	cp *.html /d/www/maxima
 
 clean:
-	rm -f *.info* maxima.toc maxima.tp maxima.vr maxima.pg maxima.ky TAGS maxima.aux maxima.dvi maxima.fn *.log
+	rm -f *.info* maxima.toc maxima.tp maxima.vr maxima.pg maxima.ky TAGS maxima.aux maxima.dvi maxima.fn *.log *.fn *.vr *.pg *.ky *.toc *a.ux *.dvi
 
 
 
