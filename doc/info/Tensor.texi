@@ -6,12 +6,46 @@
 @node Introduction to Tensor, Definitions for Tensor, Tensor, Tensor
 @section Introduction to Tensor
 
- - Indicial Tensor Manipulation package.  It may be loaded by
-@code{load(itensor)}. Demos are also available: try @code{demo(itensor)}.
+MAXIMA implements symbolic tensor manipulation of two distinct types:
+component tensor manipulation and indicial tensor manipulation.
 
- - There are two tensor packages in Maxima, CTENSOR and
-ITENSOR.  CTENSOR is Component Tensor Manipulation, and may be accessed
-with @code{load(ctensor)}.
+Component tensor manipulation means that geometrical tensor
+objects are represented as arrays or matrices. Tensor operations such
+as contraction or covariant differentiation are carried out by
+actually summing over repeated (dummy) indices with @code{do} statements.
+That is, one explicitly performs operations on the appropriate tensor
+components stored in an array or matrix.
+
+Indicial tensor manipulation is implemented by representing
+tensors as functions of their covariant, contravariant and derivative
+indices. Tensor operations such as contraction or covariant
+differentiation are performed by manipulating the indices themselves
+rather than the components to which they correspond.
+
+These two approaches to the treatment of differential, algebraic and
+analytic processes in the context of Riemannian geometry have various
+advantages and disadvantages which reveal themselves only through the
+particular nature and difficulty of the user's problem.  However, one
+should keep in mind the following characteristics of the two
+implementations:
+
+i) The representation of tensors and tensor operations explicitly in
+terms of their components makes CTENSOR easy to use. Specification of
+the metric and the computation of the induced tensors and invariants
+is straightforward.
+
+ii) Although all of MAXIMA's powerful simplification capacity is at
+hand, a complex metric with intricate functional and coordinate
+dependencies can easily lead to expressions whose size is excessive
+and whose structure is hidden. In addition, many calculations involve
+intermediate expressions which swell causing programs to terminate
+before completion. Through experience, a user can avoid avoid many of
+these difficulties.
+
+@section Indicial Tensor Manipulation
+
+The Indicial Tensor Manipulation package may be loaded by
+@code{load(itensor)}. Demos are also available: try @code{demo(tensor)}.
 
 In ITENSOR a tensor is represented as an "indexed object" .  This is a
 function of 3 groups of indices which represent the covariant,
