@@ -166,7 +166,6 @@ binary-gcl/maxima : evalw.lisp
 binary-gcl/maxima : trprop.lisp
 binary-gcl/maxima : mdefun.lisp
 binary-gcl/maxima : bessel.lisp
-binary-gcl/maxima : parse-body.lisp
 binary-gcl/maxima : ellipt.lisp
 binary-gcl/maxima : numer.lisp
 binary-gcl/maxima : intpol.lisp
