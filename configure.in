@@ -148,16 +148,21 @@ AC_SUBST(CMUCL_NAME)
 AC_SUBST(GCL_NAME)
 AC_SUBST(DEFAULTLISP)
 
+if test x"${prefix}" = xNONE ; then
+	tmp_prefix="/usr/local"
+else
+	tmp_prefix=${prefix}
+fi
 if test x"${exec_prefix}" = xNONE ; then
-	tmp_exec_prefix="${prefix}"
+	tmp_exec_prefix="${tmp_prefix}"
 else
 	tmp_exec_prefix="${exec_prefix}"
 fi
 expanded_exec_prefix="${tmp_exec_prefix}"
 expanded_libdir="`eval "exec_prefix=${tmp_exec_prefix};echo ${libdir}"`"
 expanded_libexecdir="`eval "exec_prefix=${tmp_exec_prefix};echo ${libexecdir}"`"
-expanded_datadir="`eval "echo ${datadir}"`"
-expanded_infodir="`eval "echo ${infodir}"`"
+expanded_datadir="`eval "prefix=${tmp_prefix};echo ${datadir}"`"
+expanded_infodir="`eval "prefix=${tmp_prefix};echo ${infodir}"`"
 
 AC_SUBST(expanded_exec_prefix)
 AC_SUBST(expanded_libdir)
