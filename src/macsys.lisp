@@ -79,7 +79,7 @@
   (declare (ignore unused))
   0)
 
-(DEFUN CONTINUE (&OPTIONAL (*standard-input* *standard-input*)
+(DEFUN CONTINUE (&OPTIONAL (input-stream *standard-input*)
 			   BATCH-OR-DEMO-FLAG)
  (if (eql BATCH-OR-DEMO-FLAG :demo)
      (format t "~% At the _ prompt, type ';' followed by enter to get next demo"))
@@ -105,9 +105,24 @@
 	  (eof-count 0))
     (tagbody
      top
-     (SETQ R      (dbm-read *standard-input* nil eof))
+     (SETQ R      (dbm-read input-stream nil eof))
+     ; This is something of a hack. If we are running in a server mode
+     ; (which we determine by checking *socket-connection*) and we get
+     ; an eof on an input-stream that is not *standard-input*, switch
+     ; the input stream to *standard-input*.
+     ; There should probably be a better scheme for server mode.
+     ; jfa 10/09/2002.
+     (if (and
+	  (eq r eof)
+	   (not (eq input-stream *standard-input*))
+	   (boundp '*socket-connection*))
+	 (progn
+	       (setq input-stream *standard-input*)
+	       (setq *mread-prompt* nil)
+	       (setq r (dbm-read input-stream nil eof))))
+
      (cond ((and (eq r eof) (boundp '*socket-connection*)
-		 (eq *standard-input* *socket-connection*))
+		 (eq input-stream *socket-connection*))
 	    (cond ((>=  (setq eof-count (+ 1 eof-count)) 10)
 		   (print "exiting on eof")
 		   ($quit))
@@ -181,7 +196,7 @@
 	     ;;those are common lisp characters you'r reading here
 	    (case
 	     (setq char (read-char *terminal-io*))
-	     ((#\page) (unless (cursorpos 'c *standard-input*) (terpri *standard-output*))
+	     ((#\page) (unless (cursorpos 'c input-stream) (terpri *standard-output*))
 	      (princ "_" *standard-output*))
 	     ((#\?) (mtell "  Pausing.  Type a ';' and Enter to continue demo.~%_"))
 	     ((#\space #\; #\n #\e #\x #\t))
@@ -192,11 +207,11 @@
     ;; This is sort of a kludge -- eat newlines and blanks so that they don't echo
     (AND BATCH-OR-DEMO-FLAG
 	 #+lispm
-	 (send *standard-input* :operation-handled-p :read-char-no-echo)
+	 (send input-stream :operation-handled-p :read-char-no-echo)
 	 #+lispm
-	 (send *standard-input* :operation-handled-p :unread-char-no-echo)
+	 (send input-stream :operation-handled-p :unread-char-no-echo)
 	 (do ((char)) (())
-	   (setq char (read-char *standard-input* nil #+cl nil)) 
+	   (setq char (read-char input-stream nil #+cl nil)) 
 
 ;;;; INSERTED BY MASAMI 
            (when (null char) 
@@ -204,7 +219,7 @@
 ;;;; END INSERT 
 
 	   (unless (zl-MEMBER char '(#\space #\newline #\return #\tab))
-	       (unread-char char *standard-input*)  
+	       (unread-char char input-stream)  
 	     (return nil))))))) 
 
 
