@@ -61,6 +61,17 @@ Possible choices are 'auctex, 'tex or nil"
   :group 'emaxima
   :type '(file))
 
+(defcustom emaxima-tex-lisp-file (locate-library "emaxima.lisp" t)
+  "The file to be loaded that allows TeX output."
+  :group 'emaxima
+  :type '(file))
+
+
+(defcustom emaxima-output-marker "---"
+  "The file to be loaded that allows TeX output."
+  :group 'emaxima
+  :type 'string)
+
 (defcustom emaxima-abbreviations-allowed t
   "If non-nil, then `...' abbreviations are allowed in cell labels 
 and references. Note that enabling this options will slow cell and 
@@ -1736,6 +1747,202 @@ output."
   (end-of-line)
   (newline)
   (insert (maxima-last-output-noprompt)))
+
+;;; The following section adds a command which will comment out all the 
+;;; cells, and replace them by a more-or-less LaTeX equivalent.
+;;; Very preliminary
+
+(defun emaxima-tex-up-standard-cell (string)
+  (let* ((tmpfile (maxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (end))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (make-local-hook 'kill-buffer-hook)
+      (setq kill-buffer-hook nil)
+      (insert string)
+      ;; Replace beginning \maxima with \begin{verbatim}
+      (goto-char (point-min))
+      (kill-line)
+      (insert "\\begin{verbatim}")
+      ;; Take care of the output
+      (if (re-search-forward "^\\\\maxima" nil t)
+          (progn
+            (beginning-of-line)
+            (if (looking-at "\\\\maximaoutput")
+                (progn
+                  (kill-line)
+                  (insert "\\end{verbatim}\n")
+                  (insert emaxima-output-marker "\n")
+                  (insert "\\begin{verbatim}")
+                  (re-search-forward "\\\\endmaxima")
+                  (beginning-of-line)
+                  (kill-line)
+                  (insert "\\end{verbatim}\n")
+                  (insert "%% End of cell\n"))
+              ;; Else, in a TeX cell
+              (kill-line)
+              (insert "\\end{verbatim}\n")
+              (insert emaxima-output-marker "\\\\")
+              (let ((pt (point)))
+                ;; First, for the standard cells
+                ;; Get rid of the \Ds
+                (while (re-search-forward "^\\\\D" nil t)
+                  (delete-region (line-beginning-position) (point))
+                  (insert "\\[")
+                  (search-forward "\\\\")
+                  (delete-char -2)
+                  (insert "\\]"))
+                ;; Next, get rid of the \Es
+                (goto-char pt)
+                (while (re-search-forward "^\\\\E[^N]" nil t)
+                  (delete-region (line-beginning-position) (point))
+                  (insert "\\[ E")
+                  (search-forward ".")
+                  (delete-char -1)
+                  (insert "=")
+                  (search-forward "\\\\")
+                  (delete-char -2)
+                  (insert "\\]"))
+                ;; Next, get rid of the \ms
+                (goto-char pt)
+                (while (re-search-forward "^\\\\m" nil t)
+                  (delete-region (line-beginning-position) (point))
+                  (insert "\\[")
+                  (search-forward "\\\\")
+                  (delete-char -2)
+                  (insert "\\]"))
+                ;; Finally, get rid of the \ps
+                (goto-char pt)
+                (while (re-search-forward "^\\\\p" nil t)
+                  (delete-region (line-beginning-position) (point))
+                  (insert "\\begin{verbatim}")
+                  (search-forward "\\\\")
+                  (delete-char -2)
+                  (insert "\n\\end{verbatim}"))
+                (re-search-forward "\\\\endmaxima")
+                (beginning-of-line)
+                (kill-line)
+                (insert "%% End of cell\n"))))
+        ;; No output
+        (re-search-forward "^\\\\endmaxima")
+        (beginning-of-line)
+        (kill-line)
+        (insert "\\end{verbatim}\n")
+        (insert "%% End of cell\n"))
+      (setq string (buffer-substring-no-properties (point-min) (point-max))))
+    (kill-buffer tmpbuf)
+    string))
+
+(defun emaxima-tex-up-session-cell (string)
+  (let* ((tmpfile (maxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (end))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (make-local-hook 'kill-buffer-hook)
+      (setq kill-buffer-hook nil)
+      (insert string)
+      (goto-char (point-min))
+      ;; Take care of the output
+      (if (re-search-forward "^\\\\maxima" nil t)
+          (progn
+            (beginning-of-line)
+            (delete-region (point-min) (point))
+            (if (looking-at "\\\\maximasession")
+                (progn
+                  (kill-line)
+                  (insert "\\begin{verbatim}")
+                  (re-search-forward "\\\\endmaxima")
+                  (beginning-of-line)
+                  (kill-line)
+                  (insert "\\end{verbatim}\n")
+                  (insert "%% End of cell"))
+              ;; Else, in a TeX cell
+              (kill-line)
+              (insert "\\noindent\n")
+              ;; First, take care of the Cs
+              (while (re-search-forward "^\\\\C" nil t)
+                (delete-region (line-beginning-position) (point))
+                (insert "\\begin{verbatim}\n")
+                (insert "(C")
+                (search-forward ".")
+                (delete-char -1)
+                (insert ")")
+                (search-forward "\\\\")
+                (delete-char -2)
+                (insert "\n\\end{verbatim}"))
+              ;; Next, get rid of the \Ds
+              (goto-char (point-min))
+              (while (re-search-forward "^\\\\D" nil t)
+                (delete-region (line-beginning-position) (point))
+                (insert "\\verb+(D")
+                (search-forward ".")
+                (delete-char -1)
+                (insert ")+\n\\[")
+                (search-forward "\\\\")
+                (delete-char -2)
+                (insert "\\]"))
+              ;; Next, get rid of the \Es
+              (goto-char (point-min))
+              (while (re-search-forward "^\\\\E[^N]" nil t)
+                (delete-region (line-beginning-position) (point))
+                (insert "\verb+(E")
+                (search-forward ".")
+                (delete-char -1)
+                (insert ")+\n\\[")
+                (search-forward "\\\\")
+                (delete-char -2)
+                (insert "\\]"))
+              ;; Finally, get rid of the \ps
+              (goto-char pt)
+              (while (re-search-forward "^\\\\p" nil t)
+                (delete-region (line-beginning-position) (point))
+                (insert "\\begin{verbatim}")
+                (search-forward "\\\\")
+                (delete-char -2)
+                (insert "\n\\end{verbatim}"))
+              (re-search-forward "\\\\endmaxima")
+              (beginning-of-line)
+              (kill-line)
+              (insert "%% End of cell\n")))
+        ;; No output
+        (erase-buffer)
+        (insert "%% End of cell\n"))
+      (setq string (buffer-substring-no-properties (point-min) (point-max))))
+    (kill-buffer tmpbuf)
+    string))
+
+(defun emaxima-replace-cells-by-latex ()
+  (interactive)
+  (let ((cell-type)
+        (beg)
+        (end))
+    (save-excursion
+      (goto-char (point-min))
+      (while (emaxima-forward-cell)
+        (if (get-char-property (point) 'preview-state)
+            (preview-clearout-at-point))
+        (forward-line -1)
+        (setq beg (point))
+        (cond
+         ((looking-at "\\\\beginmaximanoshow")
+          (setq cell-type 0))
+         ((looking-at "\\\\beginmaximasession")
+          (setq cell-type 1))
+         (t
+          (setq cell-type 2)))
+        (re-search-forward "^\\\\endmaxima")
+        (end-of-line)
+        (setq end (point))
+        (setq cell (buffer-substring-no-properties beg end))
+        (comment-region beg end)
+        (forward-line 1)
+        (cond 
+         ((= cell-type 1)
+          (insert (emaxima-tex-up-session-cell cell)))
+         ((= cell-type 2)
+          (insert (emaxima-tex-up-standard-cell cell))))))))
 
 ;;; Some preview abilities
 (defun emaxima-preview-cell ()
