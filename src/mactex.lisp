@@ -156,8 +156,9 @@
 	    (cond (mexplabel
 		   (format texport "\\leqno{\\tt ~a}" mexplabel)))
 	    (format texport "$$")))
-     (cond(filename(terpri texport)   ; and drain port if not terminal
-		   (close texport)))
+     (terpri texport)
+     (cond (filename   ; and close port if not terminal
+	    (close texport)))
      (return mexplabel)))
 
 ;;; myprinc is an intelligent low level printing routine.  it keeps track of
