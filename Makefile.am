@@ -13,7 +13,24 @@ extradocinstall:
 $(distdir).tar.gz: Makefile.am
 	$(MAKE) dist
 
-iss: extradocinstall
+GCCPREFIX=/mingw
+gcccopy:
+	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
+	test -d "$(prefix)/include" || mkdir -p "$(prefix)/include"
+	test -d "$(prefix)/lib/gcc-lib/mingw32/3.2" || mkdir -p "$(prefix)/lib/gcc-lib/mingw32/3.2"
+	cp $(GCCPREFIX)/bin/gcc.exe $(prefix)/bin
+	cp $(GCCPREFIX)/bin/as.exe $(prefix)/bin
+	cp $(GCCPREFIX)/bin/mingwm10.dll $(prefix)/bin
+	cp $(GCCPREFIX)/include/stdio.h $(prefix)/include
+	cp $(GCCPREFIX)/include/varargs.h $(prefix)/include
+	cp $(GCCPREFIX)/include/setjmp.h $(prefix)/include
+	cp $(GCCPREFIX)/include/stddef.h $(prefix)/include
+	cp $(GCCPREFIX)/include/_mingw.h $(prefix)/include
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/3.2/cc1.exe $(prefix)/lib/gcc-lib/mingw32/3.2
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/3.2/cpp0.exe $(prefix)/lib/gcc-lib/mingw32/3.2
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/3.2/specs  $(prefix)/lib/gcc-lib/mingw32/3.2
+
+iss: extradocinstall gcccopy
 	$(MAKE) -C interfaces/xmaxima/win32 install
 
 # Build the Maxima rpms. Optionally, use
