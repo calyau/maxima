@@ -481,13 +481,15 @@ It appears in LIMIT and DEFINT.......")
 
 
 (DEFUN TANSC (E) 
-       (COND ((NOT (INVOLVE E
-			    '(%COT %CSC %BINOMIAL
-				   %SEC %COTH %SECH %CSCH
-				   %ACOT %ACSC %ASEC %ACOTH
-				   %ASECH %ACSCH)))
-	      E)
-	     (T ($RATSIMP (TANSC1 E))))) 
+  (COND ((NOT (INVOLVE E
+		       '(%COT %CSC %BINOMIAL
+			      %SEC %COTH %SECH %CSCH
+			      %ACOT %ACSC %ASEC %ACOTH
+			      %ASECH %ACSCH
+			      %jacobi_ns %jacobi_nc %jacobi_cs
+			      %jacobi_ds %jacobi_dc)))
+	 E)
+	(T ($RATSIMP (TANSC1 E))))) 
 
 (DEFUN TANSC1 (E &aux tem)
   (COND ((ATOM E) E)
@@ -496,6 +498,14 @@ It appears in LIMIT and DEFINT.......")
 				    (%SEC . %COS) (%SECH . %COSH)
 				    (%CSC . %SIN) (%CSCH . %SINH))))
 	 (TANSC1 (m^ (LIST (NCONS (CDR TEM)) (CADR E)) -1.)))
+	((SETQ TEM (ASSQ (CAAR E) '((%jacobi_nc . %jacobi_cn)
+				    (%jacobi_ns . %jacobi_sn)
+				    (%jacobi_cs . %jacobi_sc)
+				    (%jacobi_ds . %jacobi_sd)
+				    (%jacobi_dc . %jacobi_cd))))
+	 ;; Converts Jacobi elliptic function to its reciprocal
+	 ;; function.
+	 (TANSC1 (m^ (LIST (NCONS (CDR TEM)) (CADR E) (third e)) -1.)))
 	((SETQ TEM (MEMQ (CAAR E) '(%SINH %COSH %TANH)))
 	 (let (($EXPONENTIALIZE t)) 
 	   (RESIMPLIFY E)))
@@ -1568,6 +1578,18 @@ CP   (SETQ N ($EXPAND N) DN ($EXPAND DN))
     (SIMPLIM%ACOSH (LIMIT (CADR EXP) VAR VAL 'THINK)))
    ((EQ (CAAR EXP) '%ASINH)
     (SIMPLIM%ASINH (LIMIT (CADR EXP) VAR VAL 'THINK)))
+   ((eq (caar exp) '%inverse_jacobi_ns)
+    (simplim%inverse_jacobi_ns (LIMIT (CADR EXP) VAR VAL 'THINK) (third exp)))
+   ((eq (caar exp) '%inverse_jacobi_nc)
+    (simplim%inverse_jacobi_nc (LIMIT (CADR EXP) VAR VAL 'THINK) (third exp)))
+   ((eq (caar exp) '%inverse_jacobi_sc)
+    (simplim%inverse_jacobi_sc (LIMIT (CADR EXP) VAR VAL 'THINK) (third exp)))
+   ((eq (caar exp) '%inverse_jacobi_cs)
+    (simplim%inverse_jacobi_cs (LIMIT (CADR EXP) VAR VAL 'THINK) (third exp)))
+   ((eq (caar exp) '%inverse_jacobi_dc)
+    (simplim%inverse_jacobi_dc (LIMIT (CADR EXP) VAR VAL 'THINK) (third exp)))
+   ((eq (caar exp) '%inverse_jacobi_ds)
+    (simplim%inverse_jacobi_ds (LIMIT (CADR EXP) VAR VAL 'THINK) (third exp)))
    ((and (eq (caar exp) 'mqapply)
 	 (eq (subfunname exp) '$li))
     (simplim$li (subfunsubs exp) (subfunargs exp) val))
@@ -2557,6 +2579,44 @@ OON  (SETQ Y (M+L (APPEND MINFL INFL)))
 			    ((equal (getsignl rpart) -1)  (throw 'limit ()))
 			    (t (simplify (subfunmake '$psi (list order)
 						     (list rpart)))))))))))
+
+(defun simplim%inverse_jacobi_ns (arg m)
+  (cond ((or (eq arg '$inf) (eq arg '$minf))
+	 0)
+	(t
+	 `((%inverse_jacobi_ns) ,arg ,m))))
+
+(defun simplim%inverse_jacobi_nc (arg m)
+  (cond ((or (eq arg '$inf) (eq arg '$minf))
+	 `((%elliptic_kc) ,m))
+	(t
+	 `((%inverse_jacobi_nc) ,arg ,m))))
+
+(defun simplim%inverse_jacobi_sc (arg m)
+  (cond ((or (eq arg '$inf) (eq arg '$minf))
+	 `((%elliptic_kc) ,m))
+	(t
+	 `((%inverse_jacobi_sc) ,arg ,m))))
+
+(defun simplim%inverse_jacobi_dc (arg m)
+  (cond ((or (eq arg '$inf) (eq arg '$minf))
+	 `((%elliptic_kc) ,m))
+	(t
+	 `((%inverse_jacobi_dc) ,arg ,m))))
+
+(defun simplim%inverse_jacobi_cs (arg m)
+  (cond ((or (eq arg '$inf) (eq arg '$minf))
+	 0)
+	(t
+	 `((%inverse_jacobi_cs) ,arg ,m))))
+
+(defun simplim%inverse_jacobi_ds (arg m)
+  (cond ((or (eq arg '$inf) (eq arg '$minf))
+	 0)
+	(t
+	 `((%inverse_jacobi_ds) ,arg ,m))))
+
+
 
 (COMMENT MORE FUNCTIONS FOR LIMIT TO HANDLE)
 
