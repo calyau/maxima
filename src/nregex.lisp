@@ -41,7 +41,7 @@
 
 (defmacro info (message &rest args)
   (if *regex-debug*
-      `(format *standard-output* ,message ,@args)))
+      `(format *trace-output* ,message ,@args)))
 
 ;;;
 ;;; Declare the global variables for storing the paren index list.
@@ -89,7 +89,7 @@
 ;;; Now for the main regex compiler routine.
 ;;;
 (defun regex-compile (source &key (anchored nil) (case-sensitive t))
-  "Usage: (regex-compile <expression> [ :anchored (t/nil) ])
+  "Usage: (regex-compile <expression> [ :anchored (t/nil) ] [ :case-sensitive (t/nil) ])
        This function take a regular expression (supplied as source) and
        compiles this into a lambda list that a string argument can then
        be applied to.  It is also possible to compile this lambda list
@@ -147,10 +147,12 @@
 	     (not (position (char source 0) *regex-special-chars*))
 	     (not (and (> (length source) 1)
 		       (position (char source 1) *regex-special-chars*))))
-	(setf fast-first `((if (not (dotimes (i (- length start) nil)
-				     (if (eql (char string (+ i start))
-					      ,(char source 0))
-					 (return (setf start (+ i start))))))
+	(setf fast-first `((if (not (do ((i start (+ i 1)))
+					((>= i length))
+				      (if (,(if case-sensitive 'eql 'char-equal)
+					    (char string i)
+					    ,(char source 0))
+					  (return (setf start i)))))
 			      (return-from final-return nil)))))
     ;;
     ;; Generate the very first expression to save the starting index
