@@ -1,11 +1,9 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
-(in-package "MAXIMA" :use '(lisp))
+(in-package "MAXIMA")
 ;; see bottom of file for examples
 
 
 (eval-when (compile) (proclaim '(optimize (safety 0))))
-
-(clines "#include \"drawps.hc\"")
 
 (defvar *z-range* nil)
 (defvar *original-points* nil)
@@ -73,7 +71,8 @@
   
 (defvar $pstream nil)
 
-(defentry sort-ngons  (object object int) (int "sort_ngons"))
+
+
 (defun print-pt1 (f str)
   (format str "~,3f " f))
 
@@ -113,9 +112,6 @@
 
 (defmacro print-pt (f)
   `(print-pt1 ,f $pstream ))
-
-(push '((long-float t) t #.(compiler::flags compiler::set) "(((#1)->sm.sm_fp ? fprintf((#1)->sm.sm_fp,\"%.3f\",(#0)): 0),Cnil)") (get 'print-pt1 'compiler::inline-unsafe))
-(push '((long-float t) t #.(compiler::flags compiler::set) "(((#1)->sm.sm_fp ? fprintf((#1)->sm.sm_fp,\"%.3f\",(#0)): 0),Cnil)") (get 'print-pt1 'compiler::inline-unsafe))
 
 (defstruct (polygon (:type list)
 		    (:constructor make-polygon (pts edges))
@@ -175,7 +171,7 @@
 	 (i 0)
 	 )
     (declare (fixnum i nxpt m)
-	     (type (array (mod 65000))))
+	     (type (array (mod 65000)) tem))
     (sloop for k below (length tem)
 	   do
 	   (setf (aref tem k) i)
@@ -258,7 +254,7 @@
 
 (defun $rotate_list (x)
   (cond ((and ($listp x) (not (mbagp (nth 1 x))))
-         ($list_matrix_entries (ncmul*  $rot x)))
+         ($list_matrix_entries (ncmul2  $rot x)))
         ((mbagp x) (cons (car x) (mapcar '$rotate_list (cdr x))))))
 
 (defun $get_range (pts k &aux (z 0.0) (max most-negative-long-float) (min most-positive-long-float))
@@ -286,6 +282,7 @@ setrgbcolor} def
 /myfinish { myset  gsave fill grestore 0 setgray stroke  } def"
 
        "/myfinish {.9 setgray gsave fill grestore .1 setgray stroke  } def")))
+
 
 (defun $draw_ngons(pts ngons number_edges &aux (i 0)(j 0) (s 0)
 		       (opts *original-points*)
@@ -344,7 +341,7 @@ setrgbcolor} def
 (defun $GET_ROTATION (pt)
   (setq pt ($length_one pt))
   (let (v tem u)
-    (cond ((setq tem (find 0.0 pt))
+    (cond((setq tem (position 0.0 pt))
 	   (setq v (cons '(mlist) (list 0.0 0.0 0.0)))
 	   (setf (nth tem v) 1.0))
 	  (t (setq v ($length_one `((mlist) ,(- (nth 2 pt))      , (nth 1 pt) 0.0)))))
@@ -354,7 +351,7 @@ setrgbcolor} def
 		(nth 3 (nth 1 $rot))
 		(nth 3 (nth 2 $rot)))))
       (or (zerop th)
-	  (setq $rot (ncmul* ($rotation1 0.0 th)     $rot)))
+	  (setq $rot (ncmul2 ($rotation1 0.0 th)     $rot)))
       $rot)))
 
 (defun get-theta-for-vertical-z (z1 z2)
@@ -439,18 +436,67 @@ setrgbcolor} def
 	((and (symbolp expr) (not (member expr lvars)))
 	 (cond ((fboundp expr) expr)
 	       (t
-		(let ((mexpr (mget expr 'mexpr))
-		      (args (nth 1 mexpr)))
+		(let* ((mexpr (mget expr 'mexpr))
+		       (args (nth 1 mexpr)))
 		  (or mexpr (merror "Undefined function ~a" expr))
 		(coerce `(lambda ,(cdr args)
 			     (declare (special ,@(cdr args)))
 			     ($realpart(meval* ',(nth 2 mexpr)))) 'function)))))
 	(t
 	 (let ((vars (or lvars ($sort ($listofvars expr))))
-	       (na (gensym "TMPF")))
+	       ;(na (gensym "TMPF"))
+		)
 	   (coerce `(lambda ,(cdr vars) (declare (special ,@(cdr vars)))
 			($realpart (meval* ',expr)))'function)))))
-	   
+
+(defmacro zval (points verts i) `(aref ,points (f+ 2 (f* 3 (aref ,verts ,i)))))
+
+(defun sort-ngons (points edges n &aux lis )
+  (declare (type (array (long-float))  points)
+	   (type (array (mod 65000)) edges)
+	   (fixnum n))
+  (let ((new (make-array (length edges) :element-type  (array-element-type edges)))
+	(i 0)
+        (i0 0)
+	(z 0.0)
+	(z1 0.0)
+	(n1 (- n 1))
+	(leng (length edges))
+	)
+    (declare (type (array (mod 65000)) new)
+		 (fixnum i leng n1 i0)
+		 )
+    (declare (long-float z z1))
+    
+  (setq lis
+	(sloop while (< i leng)
+	       do 
+	       (setq i0 i)
+	       (setq z (zval points edges i))
+	       (setq i (+ i 1))
+	       (sloop for j below n1
+			 do (if (> (setq z1 (zval points edges i))  z)
+				(setq z z1))
+			 (setq i (+ i 1))
+			 )
+	       collect (cons z i0)))
+  (setq lis (sortcar lis))
+  (setq i 0)
+  (sloop for v in lis
+	 do (sloop for j from (cdr v) 
+		   for k below n
+		   do (setf (aref new i) (aref edges j))
+		   (incf i)))
+  (copy-array-portion new edges 0 0 (length edges))
+  ))
+
+(defun copy-array-portion (ar1 ar2 i1 i2 n1)
+ (declare (fixnum i1 i2 n1))
+ (sloop while (>= (setq n1 (- n1 1)) 0)
+        do (setf (aref ar1 i1) (aref ar2 i2))
+         (setq i1 (+ i1 1))
+        (setq i2 (+ i2 1))))
+
 (defun $concat_polygons (pl1 pl2 &aux tem new)
   (setq new
 	  (sloop for v in pl1 
@@ -464,12 +510,12 @@ setrgbcolor} def
 		 collect tem))
   (setq new (make-polygon (first new) (second new)) )
 
-  (si::copy-array-portion (polygon-pts pl1) (polygon-pts new)
+  (copy-array-portion (polygon-pts pl1) (polygon-pts new)
 			  0 0 (length (polygon-pts pl1)))
-  (si::copy-array-portion (polygon-pts pl2) (polygon-pts new)
+  (copy-array-portion (polygon-pts pl2) (polygon-pts new)
 			  (length (polygon-pts pl1))
 			  0 (length (polygon-pts pl2)))
-  (si::copy-array-portion (polygon-edges pl1) (polygon-edges new)
+  (copy-array-portion (polygon-edges pl1) (polygon-edges new)
 			  0 0 (length (polygon-edges pl1)))
   (sloop for i from (length (polygon-edges pl1))
 	 for j from 0 below (length (polygon-edges pl2))
@@ -614,6 +660,19 @@ setrgbcolor} def
     (p "showpage")
     ($viewps)))
 
+
+(defvar $gnuplot_command (maxima-path "bin" "mgnuplot"))
+(defvar $geomview_command "geomview maxout.geomview")
+
+(defvar $openmath_plot_command
+  ($sconcat   #+winnt
+;	      (maxima-directory "bin" "cygwish80 ")
+              "wish84 "   
+	      (maxima-path "bin" "omplotdata") " "
+	      "maxout.openmath"))
+
+
+
 (defun $plot2d(fun range &rest options &aux ($numer t) $display2d
                           (i 0) plot-format file plot-name
 			  ($plot_options $plot_options))
@@ -715,7 +774,7 @@ setrgbcolor} def
   )
 
 (defun $show_file(file)
-  (princ (si::file-to-string ($file_search file)))
+  (princ (file-to-string ($file_search file)))
   '$done)
 
 
@@ -815,6 +874,7 @@ setrgbcolor} def
 
 
 (defun $xgraph_curves (lis &rest options &aux w)
+  options
   (with-open-file (st  "xgraph-out" :direction :output)
     (format st "=600x600~%")
     (sloop for v in (cdr lis)
@@ -953,10 +1013,11 @@ setrgbcolor} def
 } def
 "))))
 
+
 (defun $closeps ()
   (prog1
       (when (and (streamp $pstream)
-		 (si::fp-output-stream $pstream))
+		 )
 	        (p "showpage")
 		(close  $pstream))
     (setq $pstream nil)))
@@ -1008,14 +1069,15 @@ setrgbcolor} def
 
 	;; allow this to be set in a system init file (sys-init.lsp)
 
+
 (defun $viewps ( &optional file)
-  (cond  ((and (streamp $pstream)(si::fp-output-stream $pstream))
+  (cond  ((and (streamp $pstream))
 	  ($pscom "showpage")
 	  (force-output $pstream)))
   (cond (file (setq file (maxima-string file)))
 	(t(setq file "maxout.ps")
 	 
-	 (if (and (streamp $pstream)(si::fp-output-stream $pstream))
+	 (if (and (streamp $pstream))
 	     (force-output $pstream))))
   (if (equal $viewps_command "(gs -I. -Q  ~a)")
         (format t "~%type `quit' to exit back to affine or maxima
@@ -1128,6 +1190,7 @@ setrgbcolor} def
 		 (nth 2 w)
 		 "drawdot")))
 
+
 (defun $view_zic ()
   (let ((izdir (si::getenv "IZICDIR")))
     (or (probe-file
@@ -1205,19 +1268,6 @@ setrgbcolor} def
 		   (terpri $pstream)
 		   (setq j -1)))))
      )))
-
-
-
-(defvar $gnuplot_command (maxima-path "bin" "mgnuplot"))
-(defvar $geomview_command "geomview maxout.geomview")
-
-(defvar $openmath_plot_command
-  ($sconcat   #+winnt
-;	      (maxima-directory "bin" "cygwish80 ")
-              "wish84 "   
-	      (maxima-path "bin" "omplotdata") " "
-	      "maxout.openmath"))
-
 
 (defvar $show_openplot t)
 (defun show-open-plot (ans)
@@ -1362,16 +1412,20 @@ setrgbcolor} def
 	   ($rotate_pts ar rot)
 	   (setup-for-ps-range ($get_range ar 0) ($get_range ar 1) t)
 	   (sort-ngons (polygon-pts pl) (polygon-edges pl) 4 )
+           ;(print (polygon-edges pl))
 	   ($ps_axes rot)
 	   ($draw_ngons (polygon-pts pl) (polygon-edges pl) 4 )
 	   (p "[.1] 0 setdash")    ($ps_axes rot)
 	   (p "[] 0 setdash") (p " showpage "))))
       ;; close the stream and plot..
       (cond ($in_netmath (return-from $plot3d ""))
-	    (t (close $pstream)))
+	    (t (close $pstream)
+	       (setq $pstream nil)
+	       ))
       )
       (cond (($get_plot_option '$run_viewer 2)
 	     (case plot-format
+	       #-cmu
 	       ($zic ($view_zic))
 	       ($ps ($viewps))
 	       ($openmath

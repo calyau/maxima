@@ -855,6 +855,7 @@
   (if (and (symbolp name)
 	   (member (getcharn name 1) '(#\& #\$)))
       (setq name ($sconcat name)))
+  (if (symbolp name)  (setf name (string name)))
   (if (probe-file name) (return-from $file_search name))
   (or paths (setq paths ($append $file_search_lisp  $file_search_maxima
 				 $file_search_demo)))

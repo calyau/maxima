@@ -1,32 +1,56 @@
 @menu
 * Introduction to Help::        
-* LISP-AND-MACSYMA::            
-* GARBAGE_COLLECTION::          
-* DOCUMENTATION::               
+* Lisp and Maxima::            
+* Garbage Collection::          
+* Documentation::               
 * Definitions for Help::        
 @end menu
 
-@node Introduction to Help, LISP-AND-MACSYMA, Help, Help
+@node Introduction to Help, Lisp and Maxima, Help, Help
 @section Introduction to Help
 
 The most useful online help command is DESCRIBE which obtains help
 on all commands containing a particular string.  Here by command we
-mean a built in operator such as INTEGRATE or FACTOR etc.
+mean a built in operator such as INTEGRATE or FACTOR etc.   As a typing
+short cut you may type @code{? fact} in lieu of @code{describe("fact")}
+@example
+(C3) ? inte;
 
-Online documentation is also available using INFO and printed documentation
-is available by using tex on the file info/maxima.texi in the maxima
-distribution.
 
+ 0: (maxima.info)Integration.
+ 1: Introduction to Integration.
+ 2: Definitions for Integration.
+ 3: INTERRUPTS.
+ 4: ASKINTEGER :Definitions for Simplification.
+ 5: DISPLAY_FORMAT_INTERNAL :Definitions for Input and Output.
+ 6: INTEGERP :Definitions for Miscellaneous Options.
+ 7: INTEGRATE :Definitions for Integration.
+ 8: INTEGRATION_CONSTANT_COUNTER :Definitions for Integration.
+ 9: INTERPOLATE :Definitions for Numerical.
+Enter n, all, none, or multiple choices eg 1 3 : 7 8;
 
-@node LISP-AND-MACSYMA, GARBAGE_COLLECTION, Introduction to Help, Help
-@section LISP-AND-MACSYMA
+Info from file /d/linux2/local/share/info/maxima.info:
+ - Function: INTEGRATE (EXP, VAR)
+     integrates exp with respect to var or returns an integral
+     expression (the noun form) if it cannot perform the integration
+     (see note 1 below).  Roughly speaking three stages are used:
+...
+@end example
+In the above the user said he wanted items 7 and 8.  Note the @code{;}
+following the two numbers.  He might have typed @code{all} to
+see help on all the items.
+
+@node Lisp and Maxima, Garbage Collection, Introduction to Help, Help
+@section Lisp and Maxima
  All of Maxima is of course written in lisp.  There is
 a naming convention for functions and variables:  All symbols which
 begin with a "$" sign at lisp level, are read with the "$" sign stripped
 off at Macsyma level.  For example, there are two lisp functions
 TRANSLATE and $TRANSLATE.   If at macsyma level you enter
 TRANSLATE(FOO); the function which is called is the $translate function.
-To access the other function you must prefix with a "?":
+To access the other function you must prefix with a "?".   Note you
+may @i{not} put a space after the @code{?} since that would indicate
+you were looking for help!   
 
 @example
 (C1) ?TRANSLATE(FOO); 
@@ -35,20 +59,49 @@ To access the other function you must prefix with a "?":
 Of course, this may well not do what you wanted it to do since it is a
 completely different function.
 
-To enter lisp level on the lisp machine, you should type Suspend or
-Control-Suspend.  This will cause a lisp break loop to be entered.  You
-could now evaluate $d2 (or macsyma:$d2 if you have not done (pkg-goto
-'macsyma)) and view the value of the line label D2, in its internal lisp
-format.  Resume or abort will return to Macsyma top level.
-
-Thus if you intend to write lisp functions to be called at macsyma
-level you should name them by names beginning with a "$".
-
-If you are at lisp level and wish to read a macsyma expression you
-may enter
+To enter a lisp command you may use
 @example
+(C1) :lisp (foo 1 2)
+@end example
+or to get a lisp prompt use @code{to_lisp();}, or alternately type
+@code{Ctrl-c} to enter into a debug break.
+This will cause a lisp break loop to be entered.  You
+could now evaluate $d2
+and view the value of the line label D2, in its internal lisp
+format.   Typing @code{:q} will quit to top level, if you are in
+a debug break.  If you had exited maxima with @code{to_lisp();}
+then you should type
+@example
+MAXIMA>(run)
+@end example
+at the lisp prompt, to restart the Maxima session.
 
-			  (setq $foo #$[x,y]$)
+If you intend to write lisp functions to be called at macsyma
+level you should name them by names beginning with a "$".   Note
+that all symbols typed at lisp level are automatically read in
+upper case, unless you do something like @code{|$odeSolve|} to
+force the case to be respected.   Maxima interprets symbols
+as mixed case, if the symbol has already been read before
+or at the time it was first read there
+was not an already existing symbol with the same letters but upper
+case only.   Thus if you type
+@example
+(C1) Integrate;
+(D1) INTEGRATE
+(C2) Integ;
+(D2) Integ
+@end example
+The symbol @code{Integrate} already existed in upper case since it
+is a Maxima primitive, but INTEG, does not already exist, so the Integ
+is permitted.   This may seem a little bizarre, but we wish to keep
+old maxima code working, which assumes that Maxima primitives may
+be in upper or lower case.   An advantage of this system is that if
+you type in lower case, you will immediately see which are the maxima
+keywords and functions.
+
+To enter Maxima forms at lisp level, you may use the @code{#$} macro.
+@example
+                          (setq $foo #$[x,y]$)
 @end example
 
 This will have the same effect as entering
@@ -72,26 +125,12 @@ In this case we shall usually try to use lower case for the lisp symbol
 and upper case for the macsyma symbol.  For example LIST for $list and
 list for the lisp symbol whose printname is "list".
 
-To enter more complicated lisp expressions at macsyma level you may need
-the quoting character \ eg. for the lisp function make-array
-
-@example
-AA:?MAKE\-ARRAY(3,?:FILL\-POINTER,0);
-@end example
-@noindent
-
-would be have the same result as the lisp form
-
-@example
-(setq $aa (make-array 3  :fill-pointer 0)).
-@end example
-
 Since functions defined using the MAXIMA language are not ordinary
 lisp functions, you must use mfuncall to call them.
 For example:
 
 @example
-(D2) 			    FOO(X, Y) := X + Y + 3
+(D2)                        FOO(X, Y) := X + Y + 3
 @end example
 @noindent
 
@@ -116,12 +155,12 @@ common lisp).  Thus
 
 @end example
 
-To see which symbols are shadowed look in "Maxima-source:maxima;sysdef.lisp" or
-do a describe of the package.
+To see which symbols are shadowed look in "src/maxima-package.lisp" or
+do a describe of the package at lisp level.
 
 
-@node GARBAGE_COLLECTION, DOCUMENTATION, LISP-AND-MACSYMA, Help
-@section GARBAGE_COLLECTION
+@node Garbage Collection, Documentation, Lisp and Maxima, Help
+@section Garbage Collection
  Symbolic computation tends to create a good deal
 of garbage, and effective handling of this can be crucial to successful
 completion of some programs.
@@ -133,60 +172,66 @@ written to.    See the GCL documentation under ALLOCATE and GBC.   At the
 lisp level doing (setq si::*notify-gbc* t) will help you determine which
 areas might need more space.
 
-@node DOCUMENTATION, Definitions for Help, GARBAGE_COLLECTION, Help
-@section DOCUMENTATION
-  The function DESCRIBE(item) will offer a list of topics
-which include the substring item.  The documentation will then be printed
-on the screen.  It may also be put into a buffer by using the 
-command MACSYMA DESCRIBE in the zmacs editor.
+@node Documentation, Definitions for Help, Garbage Collection, Help
+@section Documentation
 
-The variable ALL_MACSYMA_DOCUMENTATION is a list of file names which
-contain documentation in a format suitable to be read by DESCRIBE.  You
-may of course add to any of these files, or add another file to the
-list.  Each separate item should begin with "&" on a new line separated
-by a blank line.  The key which will be used for searching, is the
-string up to the first blank space.
+The source for the documentation is in @file{.texi} texinfo format.
+From this format we can produce the info files used by the online
+commands @code{? } and @code{describe}.   Also @code{html} and @code{pdf}
+files can be produced.
 
-
-The function set-up-index will then be called to make an index and
-add it to *DESCRIBE-INDICES*, so that future calls to DESCRIBE will also
-see the additional documentation.
+Additionally there are examples so that you may do
 @example
+example(integrate);
+(C4) example(integrate);
+(C5) test(f):=BLOCK([u],u:INTEGRATE(f,x),RATSIMP(f-DIFF(u,x)))
+(D5)  test(f) := BLOCK([u], u : INTEGRATE(f, x), RATSIMP(f - DIFF(u, x)))
+(C6) test(SIN(x))
+(D6) 						       0
+(C7) test(1/(x+1))
+(D7) 						       0
+(C8) test(1/(x^2+1))
+(D8) 						       0
+(C9) INTEGRATE(SIN(X)^3,X)
+...
+@end example	
 
-(set-up-index "MAXIMA-source:maxima;foo.bar" :make-new-one t)
-@end example
-@noindent
-
-would cause a new index to be made even if foo-index.bin already
-existed containing the appropriate index.
 
 
-@node Definitions for Help,  , DOCUMENTATION, Help
+@node Definitions for Help,  , Documentation, Help
 @section Definitions for Help
 @c @node DEMO
 @c @unnumberedsec phony
 @defun DEMO (file)
 this is the same as BATCH but pauses after each command
-line and continues when a space is typed.
-In NIL macsyma, DEMO does file searching like BATCH does, and in addition
-searches for files on the [DEMO] directory in the Macsyma directory
-hierarchy, and also for files with extensions of .DEM, .DM1, and .DM2
-in addition to .MAC.  This is to make it easier to run demo files which
-come supplied with NIL macsyma, which are named things like
-MAX$DISK:[DEMO]MAT.DEM.
+line and continues when a space is typed (you may need to type
+@code{;} followed by a newline, if running under xmaxima).   The demo
+files have suffix @code{.dem}
 
 @end defun
 @c @node DESCRIBE
 @c @unnumberedsec phony
 @defun DESCRIBE (cmd)
-prints out information about "cmd", which may be any
-MACSYMA command, switch or variable.  Certain key words have also been
-included, where they seem appropriate, thus DESCRIBE(TRIG); will print
-out a list of the trig functions implemented in MACSYMA.  Some
-function names or operators may require quotation marks around them,
-e.g.  DESCRIBE("DO"); or DESCRIBE(".");.  See also APROPOS(string)
-which allows you to locate command names even if you aren't sure of
-the full name.  Do DESCRIBE(APROPOS); for details.
+
+This command prints documentation on all commands which contain
+the substring "cmd".   Thus
+@example
+(C1) describe("integ");
+ 0: (maxima.info)Integration.
+ 1: Introduction to Integration.
+ 2: Definitions for Integration.
+ 3: ASKINTEGER :Definitions for Simplification.
+..
+Enter n, all, none, or multiple choices eg 1 3 : 2 3;
+Info from file /d/linux2/local/share/info/maxima.info:
+Definitions for Integration
+===========================
+
+ - Function: CHANGEVAR (EXP,F(X,Y),Y,X)
+...
+@end example
+@pxref{Introduction to Help}
+
 
 @end defun
 @c @node EXAMPLE
@@ -197,3 +242,4 @@ on some expressions.  After each command line it will pause and wait
 for a space to be typed, as in the DEMO command.
 
 @end defun
+

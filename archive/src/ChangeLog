@@ -1,3 +1,11 @@
+2001-04-18  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* Multiple changes to make maxima under cmulisp perform all the
+	tests.
+	* changes to plot.lisp to remove gcl dependencies.
+	* move some system specific stuff to the compile-{clisp,cmulisp}
+	files.  
+
 2001-04-15  Bill Schelter  <wfs@sonia.ma.utexas.edu>
 	* added the file specfun.mc from Barton Willis, and the
 	documentation to the manual under Orthogonal Polynomials,

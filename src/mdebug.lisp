@@ -89,14 +89,21 @@
   (let ((tem (errset (namestring (pathname path)))))
     (car tem)))
 
-(defun break-call (key args prop &aux fun)
+(defun break-call (key args prop &aux fun )
   (setq fun (complete-prop key 'keyword prop))
+  (setq key fun)
   (or fun (return-from break-call nil))
   #+clisp (eval '(setq *break-env* (the-environment)))
   (setq fun (get fun prop))
-  (if fun
-      (evalhook (cons 'funcall (cons fun args)) nil nil *break-env*)
-      (format *debug-io* "~&~S is undefined break command.~%" key)))
+  (unless (symbolp fun)  (let ((gen (gensym)))
+     (setf (symbol-function gen) fun) (setf (get key prop) gen)
+     (setq fun gen)))
+  (cond (fun
+	 (setq args (cons fun args))
+	 (evalhook args nil nil *break-env*)
+	 )
+	(t (format *debug-io* "~&~S is undefined break command.~%" key)))
+ )
 
 (defun complete-prop (sym package prop &optional return-list)
   (cond ((and (symbolp sym)(get sym prop)(equal (symbol-package sym)
@@ -422,13 +429,26 @@
   (setf (get keyword 'break-command) fun)
   (and doc (setf (get keyword 'break-doc) doc))
   )
+
 (defun break-help (&optional key)
   (cond (key
 	 (if (keywordp key)
 	     (dolist (v (complete-prop key 'keyword 'break-doc t))
 		     (format t "~&~%~(~s~)   ~a" v (get v 'break-doc)))))
-	(t (print "not yet"))))
-(def-break :help 'break-help nil)
+	(t
+	 (sloop for v in-package 'keyword
+		with doc
+		when
+		(get v 'break-command)
+		collect (cons v (or (get v 'break-doc) "Undocumented"))
+		into all
+		finally (setq all (sort all 'alphalessp))
+		(format t "Break commands start with ':' Any unique substring may be used, eg :r :re :res all work for :resume.~%Command     Description~%
+--------     --------------------------------------")   
+		(sloop for v in all
+		       do (format t "~% ~(~s~)     ~a" (car v) (cdr v)))
+            ))))
+(def-break :help 'break-help "Print help on a break command or with no arguments on all break commands")
 (def-break :_none #'(lambda()) nil)
 (def-break :next  'step-next
   "Like :step, except that subroutine calls are stepped over")
@@ -613,22 +633,26 @@
   )
 
 
-(setf (get :bt 'break-command) '$backtrace)
 
-(setf (get :info 'break-command)
-      #'(lambda (type)
+(def-break :bt '$backtrace "Print a backtrace of the stack frames")
+
+
+(def-break :info #'(lambda (&optional type)
 	 (case type
-	   (:bkpt  (iterate-over-bkpts nil :show))
+	   (:bkpt  (iterate-over-bkpts nil :show)(values))
 	   (otherwise
 	    (format t "usage: :info :bkpt -- show breakpoints")
-	    ))))
+	    ))) "Print information about item")
 
-(setf (get :lisp-quiet 'break-command) 'lisp-quiet)
+
+
 (defmacro lisp-quiet (&rest l)
    (setq *mread-prompt* "")
    (eval (cons 'progn l)))
 
-(setf (get :lisp 'break-command) 'lisp-eval)
+(def-break :lisp-quiet 'lisp-quiet "Evaluate the lisp form without printing a prompt")
+
+(def-break :lisp 'lisp-eval "Evaluate the lisp form following on the line")
 (defmacro lisp-eval (&rest l)
   (dolist  (v (multiple-value-list (eval (cons 'progn l))))
 	   (fresh-line *standard-output*)

@@ -1,159 +1,985 @@
-This is Info file maxima.info, produced by Makeinfo version 1.67 from
-the input file maxima.texi.
+This is maxima.info, produced by makeinfo version 4.0 from maxima.texi.
 
    This is a Texinfo Maxima Manual
 
-   Copyright 1994 William F. Schelter
+   Copyright 1994,2001 William F. Schelter
+
+START-INFO-DIR-ENTRY
+* Maxima: (maxima).     A computer algebra system.
+END-INFO-DIR-ENTRY
 
 
-File: maxima.info,  Node: Definitions for Ctensor,  Prev: Introduction to Ctensor,  Up: Ctensor
+File: maxima.info,  Node: Function and Variable Index,  Prev: Debugging,  Up: Top
 
-Definitions for Ctensor
-=======================
+Indices
+*******
 
-           - Function: CHR1 ([I,J,K])
-               yields the Christoffel symbol of the first kind via the
-               definition
-                           (g      + g      - g     )/2 .
-                             ik,j     jk,i     ij,k
+Function and Variable Index
+***************************
 
-               To evaluate the Christoffel symbols for a particular
-               metric, the variable METRIC must be assigned a name as
-               in the example under CHR2.
+* Menu:
 
-
-           - Function: CHR2 ([I,J],[K])
-               yields the Christoffel symbol of the second kind defined
-               by the relation
-                                           ks
-                        CHR2([i,j],[k]) = g    (g      + g      - g     )/2
-                                                 is,j     js,i     ij,s
-
-           - Function: CHRISTOF (ARG)
-               A function in the CTENSR (Component Tensor Manipulation)
-               package.  It computes the Christoffel symbols of both
-               kinds.  The arg determines which results are to be
-               immediately displayed.  The Christoffel symbols of the
-               first and second kinds are stored in the arrays
-               LCS[i,j,k] and MCS[i,j,k] respectively and defined to be
-               symmetric in the first two indices. If the argument to
-               CHRISTOF is LCS or MCS then the unique non-zero values
-               of LCS[i,j,k] or MCS[i,j,k], respectively, will be
-               displayed. If the argument is ALL then the unique
-               non-zero values of LCS[i,j,k] and MCS[i,j,k] will be
-               displayed.  If the argument is FALSE then the display of
-               the elements will not occur. The array elements
-               MCS[i,j,k] are defined in such a manner that the final
-               index is contravariant.
-
-
-           - Function: COVDIFF (EXP,V1,V2,...)
-               yields the covariant derivative of exp with respect to
-               the variables vi in terms of the Christoffel symbols of
-               the second kind (CHR2).  In order to evaluate these, one
-               should use EV(exp,CHR2).
-
-
-           - Function: CURVATURE ([I,J,K],[H])
-               Indicial Tensor Package) yields the Riemann curvature
-               tensor in terms of the Christoffel symbols of the second
-               kind (CHR2).  The following notation is used:
-                                   h            h           h        %1        h
-                          CURVATURE     = - CHR2      - CHR2     CHR2    + CHR2
-                                   i j k        i k,j       %1 j     i k       i j,k
-                                                  h         %1
-                                            + CHR2      CHR2
-                                                  %1 k      i j
-
-           - Variable: DIAGMETRIC
-               default:[] - An option in the CTENSR (Component Tensor
-               Manipulation) package.  If DIAGMETRIC is TRUE special
-               routines compute all geometrical objects (which contain
-               the metric tensor explicitly) by taking into
-               consideration the diagonality of the metric. Reduced run
-               times will, of course, result. Note: this option is set
-               automatically by TSETUP if a diagonal metric is
-               specified.
-
-
-           - Variable: DIM
-               default:[4] - An option in the CTENSR (Component Tensor
-               Manipulation) package.  DIM is the dimension of the
-               manifold with the default 4. The command DIM:N; will
-               reset the dimension to any other integral value.
-
-
-           - Function: EINSTEIN (DIS)
-               A function in the CTENSR (Component Tensor Manipulation)
-               package.  EINSTEIN computes the mixed Einstein tensor
-               after the Christoffel symbols and Ricci tensor have been
-               obtained (with the functions CHRISTOF and RICCICOM).  If
-               the argument dis is TRUE, then the non-zero values of
-               the mixed Einstein tensor G[i,j] will be displayed where
-               j is the contravariant index.  RATEINSTEIN[TRUE] if TRUE
-               will cause the rational simplification on these
-               components. If RATFAC[FALSE] is TRUE then the components
-               will also be factored.
-
-
-           - Function: LRICCICOM (DIS)
-               A function in the CTENSR (Component Tensor Manipulation)
-               package.  LRICCICOM computes the covariant (symmetric)
-               components LR[i,j] of the Ricci tensor.  If the argument
-               dis is TRUE, then the non-zero components are displayed.
-
-
-           - Function: MOTION (DIS)
-               A function in the CTENSR (Component Tensor Manipulation)
-               package.  MOTION computes the geodesic equations of
-               motion for a given metric.  They are stored in the array
-               EM[i].  If the argument dis is TRUE then these equations
-               are displayed.
-
-
-           - Variable: OMEGA
-               default:[] - An option in the CTENSR (Component Tensor
-               Manipulation) package.  OMEGA assigns a list of
-               coordinates to the variable. While normally defined when
-               the function TSETUP is called, one may redefine the
-               coordinates with the assignment OMEGA:[j1,j2,...jn]
-               where the j's are the new coordinate names. A call to
-               OMEGA will return the coordinate name list.  Also see
-               DESCRIBE(TSETUP); .
-
-
-           - Function: RIEMANN (DIS)
-               A function in the CTENSR (Component Tensor Manipulation)
-               Package.  RIEMANN computes the Riemann curvature tensor
-               from the given metric and the corresponding Christoffel
-               symbols.  If dis is TRUE, the non-zero components
-               R[i,j,k,l] will be displayed. All the indicated indices
-               are covariant.  As with the Einstein tensor, various
-               switches set by the user control the simplification of
-               the components of the Riemann tensor.  If
-               RATRIEMAN[TRUE] is TRUE then rational simplification
-               will be done. If RATFAC[FALSE] is TRUE then each of the
-               components will also be factored.
-
-
-           - Function: TRANSFORM
-               - The TRANSFORM command in the CTENSR package has been
-               renamed to TTRANSFORM.
-
-
-           - Function: TSETUP ()
-               A function in the CTENSR (Component Tensor Manipulation)
-               package which automatically loads the CTENSR package
-               from within MACSYMA (if it is not already loaded) and
-               then prompts the user to make use of it.  Do
-               DESCRIBE(CTENSR); for more details.
-
-
-           - Function: TTRANSFORM (MATRIX)
-               A function in the CTENSR (Component Tensor Manipulation)
-               package which will perform a coordinate transformation
-               upon an arbitrary square symmetric matrix. The user must
-               input the functions which define the transformation.
-               (Formerly called TRANSFORM.)
+* :                                      Introduction to Special Functions.
+* ":                                     Definitions for Matrices and Linear Algebra.
+* "!!":                                  Definitions for Operators.
+* "!":                                   Definitions for Operators.
+* "#":                                   Definitions for Operators.
+* "'":                                   Introduction to Command Line.
+* "''":                                  Introduction to Command Line.
+* ".":                                   Definitions for Operators.
+* ":":                                   Definitions for Operators.
+* "::":                                  Definitions for Operators.
+* "::=":                                 Definitions for Operators.
+* ":=":                                  Definitions for Operators.
+* "=":                                   Definitions for Operators.
+* "?":                                   Definitions for Input and Output.
+* %:                                     Definitions for Input and Output.
+* %%:                                    Definitions for Input and Output.
+* %EDISPFLAG:                            Definitions for Input and Output.
+* %RNUM_LIST:                            Definitions for Equations.
+* %TH <1>:                               Definitions for Input and Output.
+* %TH:                                   Introduction to Command Line.
+* ?ROUND:                                Definitions for Floating Point.
+* ?TRUNCATE:                             Definitions for Floating Point.
+* [:                                     Introduction to Special Functions.
+* ABSBOXCHAR:                            Definitions for Input and Output.
+* ACOS:                                  Definitions for Trigonometric.
+* ACOSH:                                 Definitions for Trigonometric.
+* ACOT:                                  Definitions for Trigonometric.
+* ACOTH:                                 Definitions for Trigonometric.
+* ACSC:                                  Definitions for Trigonometric.
+* ACSCH:                                 Definitions for Trigonometric.
+* ACTIVATE:                              Definitions for Contexts.
+* ACTIVECONTEXTS:                        Definitions for Contexts.
+* ADDCOL:                                Definitions for Matrices and Linear Algebra.
+* ADDITIVE:                              Definitions for Operators.
+* ADDROW:                                Definitions for Matrices and Linear Algebra.
+* ADJOINT:                               Definitions for Matrices and Linear Algebra.
+* AIRY:                                  Definitions for Special Functions.
+* ALARMCLOCK:                            Definitions for Runtime Environment.
+* ALGEBRAIC:                             Definitions for Polynomials.
+* ALGEPSILON:                            Definitions for Floating Point.
+* ALGEXACT:                              Definitions for Equations.
+* ALGSYS:                                Definitions for Equations.
+* ALIAS:                                 Definitions for Command Line.
+* ALIASES:                               Definitions for Miscellaneous Options.
+* ALL_DOTSIMP_DENOMS:                    Definitions for Affine.
+* ALLBUT:                                Definitions for Operators.
+* ALLOC:                                 Definitions for Runtime Environment.
+* ALLROOTS:                              Definitions for Equations.
+* ALLSYM:                                Definitions for Miscellaneous Options.
+* ALPHABETIC:                            Definitions for Miscellaneous Options.
+* ANTID:                                 Definitions for Differentiation.
+* ANTIDIFF:                              Definitions for Differentiation.
+* ANTISYMMETRIC:                         Definitions for Operators.
+* APPEND:                                Definitions for Lists.
+* APPENDFILE:                            Definitions for Input and Output.
+* APPLY:                                 Definitions for Function Definition.
+* APPLY1:                                Definitions for Rules and Patterns.
+* APPLY2:                                Definitions for Rules and Patterns.
+* APPLY_NOUNS:                           Definitions for Simplification.
+* APPLYB1:                               Definitions for Rules and Patterns.
+* APROPOS:                               Definitions for Miscellaneous Options.
+* ARGS:                                  Definitions for Miscellaneous Options.
+* ARRAY:                                 Definitions for Arrays and Tables.
+* ARRAYAPPLY:                            Definitions for Arrays and Tables.
+* ARRAYINFO:                             Definitions for Arrays and Tables.
+* ARRAYMAKE:                             Definitions for Arrays and Tables.
+* ARRAYS:                                Definitions for Arrays and Tables.
+* ASEC:                                  Definitions for Trigonometric.
+* ASECH:                                 Definitions for Trigonometric.
+* ASIN:                                  Definitions for Trigonometric.
+* ASINH:                                 Definitions for Trigonometric.
+* ASKEXP:                                Definitions for Simplification.
+* ASKINTEGER:                            Definitions for Simplification.
+* ASKSIGN:                               Definitions for Simplification.
+* ASSOC_LEGENDRE_P:                      Definitions for Orthogonal Polynomials.
+* ASSOC_LEGENDRE_Q:                      Definitions for Orthogonal Polynomials.
+* ASSUME:                                Definitions for Contexts.
+* ASSUME_POS:                            Definitions for Contexts.
+* ASSUME_POS_PRED:                       Definitions for Contexts.
+* ASSUMESCALAR:                          Definitions for Contexts.
+* ASYMP:                                 Definitions for Special Functions.
+* ASYMPA:                                Definitions for Special Functions.
+* AT:                                    Definitions for Expressions.
+* ATAN:                                  Definitions for Trigonometric.
+* ATAN2:                                 Definitions for Trigonometric.
+* ATANH:                                 Definitions for Trigonometric.
+* ATOM:                                  Definitions for Lists.
+* ATOMGRAD:                              Definitions for Differentiation.
+* ATRIG1:                                Definitions for Trigonometric.
+* ATVALUE:                               Definitions for Differentiation.
+* AUGCOEFMATRIX:                         Definitions for Matrices and Linear Algebra.
+* BACKSUBST:                             Definitions for Equations.
+* BACKTRACE:                             Definitions for Program Flow.
+* BACKUP:                                Definitions for Input and Output.
+* BASHINDICES:                           Definitions for Arrays and Tables.
+* BATCH:                                 Definitions for Input and Output.
+* BATCHKILL:                             Definitions for Input and Output.
+* BATCHLOAD:                             Definitions for Input and Output.
+* BATCON:                                Definitions for Input and Output.
+* BATCOUNT:                              Definitions for Input and Output.
+* BERLEFACT:                             Definitions for Polynomials.
+* BERN:                                  Definitions for Number Theory.
+* BERNPOLY:                              Definitions for Number Theory.
+* BESSEL:                                Definitions for Special Functions.
+* BETA:                                  Definitions for Special Functions.
+* BEZOUT:                                Definitions for Polynomials.
+* BFFAC:                                 Definitions for Floating Point.
+* BFLOAT:                                Definitions for Floating Point.
+* BFLOATP:                               Definitions for Floating Point.
+* BFPSI:                                 Definitions for Floating Point.
+* BFTORAT:                               Definitions for Floating Point.
+* BFTRUNC:                               Definitions for Floating Point.
+* BFZETA:                                Definitions for Number Theory.
+* BGZETA:                                Definitions for Number Theory.
+* BHZETA:                                Definitions for Number Theory.
+* BINDTEST:                              Definitions for Function Definition.
+* BINOMIAL:                              Definitions for Number Theory.
+* BLOCK:                                 Definitions for Function Definition.
+* BOTHCASES:                             Definitions for Input and Output.
+* BOTHCOEF:                              Definitions for Polynomials.
+* BOX:                                   Definitions for Expressions.
+* BOXCHAR:                               Definitions for Expressions.
+* BREAK:                                 Definitions for Function Definition.
+* BREAKUP:                               Definitions for Equations.
+* BUG:                                   Definitions for Runtime Environment.
+* BUILDQ <1>:                            Definitions for Function Definition.
+* BUILDQ:                                MACROS.
+* BURN:                                  Definitions for Number Theory.
+* BZETA:                                 Definitions for Number Theory.
+* CABS:                                  Definitions for Operators.
+* CANFORM:                               Definitions for Tensor.
+* CANTEN:                                Definitions for Tensor.
+* CARG:                                  Definitions for Tensor.
+* CARTAN:                                Definitions for Differentiation.
+* CATCH:                                 Definitions for Function Definition.
+* CAUCHYSUM:                             Definitions for Series.
+* CBFAC:                                 Definitions for Floating Point.
+* CF:                                    Definitions for Number Theory.
+* CFDISREP:                              Definitions for Number Theory.
+* CFEXPAND:                              Definitions for Number Theory.
+* CFLENGTH:                              Definitions for Number Theory.
+* CGAMMA:                                Definitions for Number Theory.
+* CGAMMA2:                               Definitions for Number Theory.
+* CHANGE_FILEDEFAULTS:                   Definitions for Input and Output.
+* CHANGEVAR:                             Definitions for Integration.
+* CHARPOLY:                              Definitions for Matrices and Linear Algebra.
+* CHEBYSHEV_T:                           Definitions for Orthogonal Polynomials.
+* CHEBYSHEV_U:                           Definitions for Orthogonal Polynomials.
+* CHECK_OVERLAPS:                        Definitions for Affine.
+* CHR1:                                  Definitions for Ctensor.
+* CHR2:                                  Definitions for Ctensor.
+* CHRISTOF:                              Definitions for Ctensor.
+* CLEARSCREEN:                           Definitions for Runtime Environment.
+* CLOSEFILE:                             Definitions for Input and Output.
+* CLOSEPS:                               Definitions for Plotting.
+* COEFF:                                 Definitions for Polynomials.
+* COEFMATRIX:                            Definitions for Matrices and Linear Algebra.
+* COL:                                   Definitions for Matrices and Linear Algebra.
+* COLLAPSE:                              Definitions for Input and Output.
+* COLUMNVECTOR:                          Definitions for Matrices and Linear Algebra.
+* COMBINE:                               Definitions for Polynomials.
+* COMMUTATIVE:                           Definitions for Operators.
+* COMP2PUI:                              Definitions for Symmetries.
+* COMPFILE:                              Definitions for Function Definition.
+* COMPGRIND:                             Definitions for Function Definition.
+* COMPILE:                               Definitions for Function Definition.
+* COMPILE_FILE:                          Definitions for Function Definition.
+* COMPILE_LISP_FILE:                     Definitions for Function Definition.
+* CONCAT:                                Definitions for Input and Output.
+* CONJUGATE:                             Definitions for Matrices and Linear Algebra.
+* CONS:                                  Definitions for Lists.
+* CONSTANT:                              Definitions for Expressions.
+* CONSTANTP:                             Definitions for Expressions.
+* CONT2PART:                             Definitions for Symmetries.
+* CONTENT:                               Definitions for Polynomials.
+* CONTEXT:                               Definitions for Contexts.
+* CONTEXTS:                              Definitions for Contexts.
+* CONTINUE:                              Definitions for Runtime Environment.
+* CONTRACT <1>:                          Definitions for Symmetries.
+* CONTRACT:                              Definitions for Expressions.
+* COPYLIST:                              Definitions for Lists.
+* COPYMATRIX:                            Definitions for Matrices and Linear Algebra.
+* COS:                                   Definitions for Trigonometric.
+* COSH:                                  Definitions for Trigonometric.
+* COT:                                   Definitions for Trigonometric.
+* COTH:                                  Definitions for Trigonometric.
+* COUNTER:                               Definitions for Tensor.
+* COVDIFF:                               Definitions for Ctensor.
+* CREATE_LIST:                           Definitions for Affine.
+* CSC:                                   Definitions for Trigonometric.
+* CSCH:                                  Definitions for Trigonometric.
+* CURRENT_LET_RULE_PACKAGE:              Definitions for Rules and Patterns.
+* CURSORDISP:                            Definitions for Input and Output.
+* CURVATURE:                             Definitions for Ctensor.
+* DBLINT:                                Definitions for Integration.
+* DDT:                                   Definitions for Runtime Environment.
+* DEACTIVATE:                            Definitions for Contexts.
+* DEBUG:                                 Definitions for Command Line.
+* DEBUGMODE:                             Definitions for Command Line.
+* DEBUGPRINTMODE:                        Definitions for Command Line.
+* DECLARE:                               Definitions for Expressions.
+* DECLARE_TRANSLATED:                    Definitions for Function Definition.
+* DECLARE_WEIGHT:                        Definitions for Affine.
+* DEFAULT_LET_RULE_PACKAGE:              Definitions for Rules and Patterns.
+* DEFCON:                                Definitions for Tensor.
+* DEFINE:                                Definitions for Function Definition.
+* DEFINE_VARIABLE:                       Definitions for Function Definition.
+* DEFINT:                                Definitions for Integration.
+* DEFMATCH:                              Definitions for Rules and Patterns.
+* DEFRULE:                               Definitions for Rules and Patterns.
+* DEFTAYLOR:                             Definitions for Series.
+* DELETE:                                Definitions for Lists.
+* DELFILE:                               Definitions for Runtime Environment.
+* DELTA:                                 Definitions for Differentiation.
+* DEMO:                                  Definitions for Help.
+* DEMOIVRE:                              Definitions for Simplification.
+* DENOM:                                 Definitions for Polynomials.
+* DEPENDENCIES:                          Definitions for Differentiation.
+* DEPENDS:                               Definitions for Differentiation.
+* DERIVABBREV:                           Definitions for Differentiation.
+* DERIVDEGREE:                           Definitions for Differentiation.
+* DERIVLIST:                             Definitions for Differentiation.
+* DERIVSUBST:                            Definitions for Differentiation.
+* DESCRIBE:                              Definitions for Help.
+* DESOLVE:                               Definitions for Differential Equations.
+* DETERMINANT:                           Definitions for Matrices and Linear Algebra.
+* DETOUT:                                Definitions for Matrices and Linear Algebra.
+* DIAGMATRIX:                            Definitions for Matrices and Linear Algebra.
+* DIAGMETRIC:                            Definitions for Ctensor.
+* DIFF:                                  Definitions for Differentiation.
+* DIM:                                   Definitions for Ctensor.
+* DIMENSION:                             Definitions for Equations.
+* DIREC:                                 Definitions for Input and Output.
+* DIRECT:                                Definitions for Symmetries.
+* DISKFREE:                              Definitions for Runtime Environment.
+* DISOLATE:                              Definitions for Expressions.
+* DISP:                                  Definitions for Input and Output.
+* DISPCON:                               Definitions for Input and Output.
+* DISPFLAG:                              Definitions for Equations.
+* DISPFORM:                              Definitions for Expressions.
+* DISPFUN:                               Definitions for Function Definition.
+* DISPLAY:                               Definitions for Input and Output.
+* DISPLAY2D:                             Definitions for Input and Output.
+* DISPLAY_FORMAT_INTERNAL:               Definitions for Input and Output.
+* DISPRULE:                              Definitions for Rules and Patterns.
+* DISPTERMS:                             Definitions for Input and Output.
+* DISTRIB:                               Definitions for Expressions.
+* DIVIDE:                                Definitions for Polynomials.
+* DIVSUM:                                Definitions for Number Theory.
+* DO:                                    Definitions for Program Flow.
+* DOALLMXOPS:                            Definitions for Matrices and Linear Algebra.
+* DOMAIN:                                Definitions for Simplification.
+* DOMXEXPT:                              Definitions for Matrices and Linear Algebra.
+* DOMXMXOPS:                             Definitions for Matrices and Linear Algebra.
+* DOMXNCTIMES:                           Definitions for Matrices and Linear Algebra.
+* DONTFACTOR:                            Definitions for Matrices and Linear Algebra.
+* DOSCMXOPS:                             Definitions for Matrices and Linear Algebra.
+* DOSCMXPLUS:                            Definitions for Matrices and Linear Algebra.
+* DOT0NSCSIMP:                           Definitions for Matrices and Linear Algebra.
+* DOT0SIMP:                              Definitions for Matrices and Linear Algebra.
+* DOT1SIMP:                              Definitions for Matrices and Linear Algebra.
+* DOTASSOC:                              Definitions for Matrices and Linear Algebra.
+* DOTCONSTRULES:                         Definitions for Matrices and Linear Algebra.
+* DOTDISTRIB:                            Definitions for Matrices and Linear Algebra.
+* DOTEXPTSIMP:                           Definitions for Matrices and Linear Algebra.
+* DOTIDENT:                              Definitions for Matrices and Linear Algebra.
+* DOTSCRULES:                            Definitions for Matrices and Linear Algebra.
+* DOTSIMP:                               Definitions for Affine.
+* DPART:                                 Definitions for Expressions.
+* DSCALAR:                               Definitions for Differentiation.
+* DSKALL:                                Definitions for Input and Output.
+* DUMMY:                                 Definitions for Miscellaneous Options.
+* E:                                     Definitions for Constants.
+* ECHELON:                               Definitions for Matrices and Linear Algebra.
+* EIGENVALUES:                           Definitions for Matrices and Linear Algebra.
+* EIGENVECTORS:                          Definitions for Matrices and Linear Algebra.
+* EINSTEIN:                              Definitions for Ctensor.
+* ELE2COMP:                              Definitions for Symmetries.
+* ELE2POLYNOME:                          Definitions for Symmetries.
+* ELE2PUI:                               Definitions for Symmetries.
+* ELEM:                                  Definitions for Symmetries.
+* ELIMINATE:                             Definitions for Polynomials.
+* EMATRIX:                               Definitions for Matrices and Linear Algebra.
+* ENDCONS:                               Definitions for Lists.
+* ENTERMATRIX:                           Definitions for Matrices and Linear Algebra.
+* ENTIER:                                Definitions for Operators.
+* EQUAL:                                 Definitions for Operators.
+* ERF:                                   Definitions for Integration.
+* ERFFLAG:                               Definitions for Integration.
+* ERRCATCH:                              Definitions for Program Flow.
+* ERREXP:                                Definitions for Program Flow.
+* ERRINTSCE:                             Definitions for Integration.
+* ERROR:                                 Definitions for Program Flow.
+* ERROR_SIZE:                            Definitions for Input and Output.
+* ERROR_SYMS:                            Definitions for Input and Output.
+* ERRORFUN:                              Definitions for Program Flow.
+* ERRORMSG:                              Definitions for Program Flow.
+* EULER:                                 Definitions for Number Theory.
+* EV:                                    Definitions for Command Line.
+* EVAL:                                  Definitions for Operators.
+* EVENP:                                 Definitions for Operators.
+* EVFLAG:                                Definitions for Command Line.
+* EVFUN:                                 Definitions for Command Line.
+* EXAMPLE:                               Definitions for Help.
+* EXP:                                   Definitions for Expressions.
+* EXPAND:                                Definitions for Simplification.
+* EXPANDWRT:                             Definitions for Simplification.
+* EXPANDWRT_DENOM:                       Definitions for Simplification.
+* EXPANDWRT_FACTORED:                    Definitions for Simplification.
+* EXPLOSE:                               Definitions for Symmetries.
+* EXPON:                                 Definitions for Simplification.
+* EXPONENTIALIZE:                        Definitions for Simplification.
+* EXPOP:                                 Definitions for Simplification.
+* EXPRESS:                               Definitions for Differentiation.
+* EXPT:                                  Definitions for Input and Output.
+* EXPTDISPFLAG:                          Definitions for Input and Output.
+* EXPTISOLATE:                           Definitions for Expressions.
+* EXPTSUBST:                             Definitions for Expressions.
+* EXTRACT_LINEAR_EQUATIONS:              Definitions for Affine.
+* EZGCD:                                 Definitions for Polynomials.
+* FACEXPAND:                             Definitions for Polynomials.
+* FACTCOMB:                              Definitions for Polynomials.
+* FACTLIM:                               Definitions for Simplification.
+* FACTOR:                                Definitions for Polynomials.
+* FACTORFLAG:                            Definitions for Polynomials.
+* FACTORIAL:                             Definitions for Number Theory.
+* FACTOROUT:                             Definitions for Polynomials.
+* FACTORSUM:                             Definitions for Polynomials.
+* FACTS:                                 Definitions for Contexts.
+* FALSE:                                 Definitions for Constants.
+* FASSAVE:                               Definitions for Input and Output.
+* FAST_CENTRAL_ELEMENTS:                 Definitions for Affine.
+* FAST_LINSOLVE:                         Definitions for Affine.
+* FASTTIMES:                             Definitions for Polynomials.
+* FEATURE:                               Definitions for Runtime Environment.
+* FEATUREP:                              Definitions for Runtime Environment.
+* FEATURES:                              Definitions for Contexts.
+* FFT:                                   Definitions for Numerical.
+* FIB:                                   Definitions for Number Theory.
+* FIBTOPHI:                              Definitions for Number Theory.
+* FILE_SEARCH:                           Definitions for Input and Output.
+* FILE_STRING_PRINT:                     Definitions for Input and Output.
+* FILE_TYPE:                             Definitions for Input and Output.
+* FILEDEFAULTS:                          Definitions for Input and Output.
+* FILENAME:                              Definitions for Input and Output.
+* FILENAME_MERGE:                        Definitions for Input and Output.
+* FILENUM:                               Definitions for Input and Output.
+* FILLARRAY:                             Definitions for Arrays and Tables.
+* FIRST:                                 Definitions for Lists.
+* FIX:                                   Definitions for Operators.
+* FLOAT:                                 Definitions for Floating Point.
+* FLOAT2BF:                              Definitions for Floating Point.
+* FLOATDEFUNK:                           Definitions for Floating Point.
+* FLOATNUMP:                             Definitions for Floating Point.
+* FLUSH:                                 Definitions for Tensor.
+* FLUSHD:                                Definitions for Tensor.
+* FLUSHND:                               Definitions for Tensor.
+* FOR:                                   Definitions for Program Flow.
+* FORGET:                                Definitions for Contexts.
+* FORTINDENT:                            Definitions for Numerical.
+* FORTMX:                                Definitions for Numerical.
+* FORTRAN:                               Definitions for Numerical.
+* FORTSPACES:                            Definitions for Numerical.
+* FPPREC:                                Definitions for Floating Point.
+* FPPRINTPREC:                           Definitions for Floating Point.
+* FREEOF:                                Definitions for Expressions.
+* FULLMAP:                               Definitions for Operators.
+* FULLMAPL:                              Definitions for Operators.
+* FULLRATSIMP:                           Definitions for Polynomials.
+* FULLRATSUBST:                          Definitions for Polynomials.
+* FUNCSOLVE:                             Definitions for Equations.
+* FUNCTIONS:                             Definitions for Function Definition.
+* FUNDEF:                                Definitions for Function Definition.
+* FUNMAKE:                               Definitions for Function Definition.
+* GAMMA:                                 Definitions for Special Functions.
+* GAMMALIM:                              Definitions for Special Functions.
+* GAUSS:                                 Definitions for Statistics.
+* GCD:                                   Definitions for Polynomials.
+* GCFACTOR:                              Definitions for Polynomials.
+* GEN_LAGUERRE:                          Definitions for Orthogonal Polynomials.
+* GENDIFF:                               Definitions for Differentiation.
+* GENFACT:                               Definitions for Expressions.
+* GENINDEX:                              Definitions for Miscellaneous Options.
+* GENMATRIX:                             Definitions for Matrices and Linear Algebra.
+* GENSUMNUM:                             Definitions for Miscellaneous Options.
+* GET:                                   Definitions for Lists.
+* GETCHAR:                               Definitions for Arrays and Tables.
+* GFACTOR:                               Definitions for Polynomials.
+* GFACTORSUM:                            Definitions for Polynomials.
+* GLOBALSOLVE:                           Definitions for Equations.
+* GO:                                    Definitions for Program Flow.
+* GRADEF:                                Definitions for Differentiation.
+* GRADEFS:                               Definitions for Differentiation.
+* GRAMSCHMIDT:                           Definitions for Matrices and Linear Algebra.
+* GRIND:                                 Definitions for Input and Output.
+* GROBNER_BASIS:                         Definitions for Affine.
+* HACH:                                  Definitions for Matrices and Linear Algebra.
+* HALFANGLES:                            Definitions for Trigonometric.
+* HERMITE:                               Definitions for Orthogonal Polynomials.
+* HIPOW:                                 Definitions for Polynomials.
+* HORNER:                                Definitions for Numerical.
+* IBASE:                                 Definitions for Input and Output.
+* IC1:                                   Definitions for Differential Equations.
+* IDENT:                                 Definitions for Matrices and Linear Algebra.
+* IEQN:                                  Definitions for Equations.
+* IEQNPRINT:                             Definitions for Equations.
+* IF:                                    Definitions for Program Flow.
+* IFT:                                   Definitions for Numerical.
+* ILT:                                   Definitions for Integration.
+* IMAGPART:                              Definitions for Expressions.
+* IN_NETMATH:                            Definitions for Plotting.
+* INCHAR:                                Definitions for Input and Output.
+* INDICES:                               Definitions for Expressions.
+* INF:                                   Definitions for Miscellaneous Options.
+* INFEVAL:                               Definitions for Command Line.
+* INFINITY:                              Definitions for Miscellaneous Options.
+* INFIX:                                 Definitions for Expressions.
+* INFLAG:                                Definitions for Expressions.
+* INFOLISTS:                             Definitions for Miscellaneous Options.
+* INNERPRODUCT:                          Definitions for Matrices and Linear Algebra.
+* INPART:                                Definitions for Expressions.
+* INRT:                                  Definitions for Number Theory.
+* INTEGERP:                              Definitions for Miscellaneous Options.
+* INTEGRATE:                             Definitions for Integration.
+* INTEGRATE_USE_ROOTSOF:                 Definitions for Integration.
+* INTEGRATION_CONSTANT_COUNTER:          Definitions for Integration.
+* INTERPOLATE:                           Definitions for Numerical.
+* INTFACLIM:                             Definitions for Polynomials.
+* INTOPOIS:                              Definitions for Special Functions.
+* INTOSUM:                               Definitions for Simplification.
+* INTPOLABS:                             Definitions for Numerical.
+* INTPOLERROR:                           Definitions for Numerical.
+* INTPOLREL:                             Definitions for Numerical.
+* INTSCE:                                Definitions for Integration.
+* INVERT:                                Definitions for Matrices and Linear Algebra.
+* IS:                                    Definitions for Operators.
+* ISOLATE:                               Definitions for Expressions.
+* ISOLATE_WRT_TIMES:                     Definitions for Expressions.
+* ISQRT:                                 Definitions for Operators.
+* JACOBI:                                Definitions for Number Theory.
+* JACOBI_P:                              Definitions for Orthogonal Polynomials.
+* KDELTA:                                Definitions for Tensor.
+* KEEPFLOAT:                             Definitions for Polynomials.
+* KILL:                                  Definitions for Command Line.
+* KILLCONTEXT:                           Definitions for Contexts.
+* KOSTKA:                                Definitions for Symmetries.
+* LABELS:                                Definitions for Command Line.
+* LAGUERRE:                              Definitions for Orthogonal Polynomials.
+* LAPLACE:                               Definitions for Differentiation.
+* LASSOCIATIVE:                          Definitions for Simplification.
+* LAST:                                  Definitions for Lists.
+* LASTTIME:                              Definitions for Command Line.
+* LC:                                    Definitions for Tensor.
+* LCM:                                   Definitions for Number Theory.
+* LDEFINT:                               Definitions for Integration.
+* LDISP:                                 Definitions for Input and Output.
+* LDISPLAY:                              Definitions for Input and Output.
+* LEGENDRE_P:                            Definitions for Orthogonal Polynomials.
+* LEGENDRE_Q:                            Definitions for Orthogonal Polynomials.
+* LENGTH:                                Definitions for Lists.
+* LET:                                   Definitions for Rules and Patterns.
+* LET_RULE_PACKAGES:                     Definitions for Rules and Patterns.
+* LETRAT:                                Definitions for Rules and Patterns.
+* LETRULES:                              Definitions for Rules and Patterns.
+* LETSIMP:                               Definitions for Rules and Patterns.
+* LGTREILLIS:                            Definitions for Symmetries.
+* LHOSPITALLIM:                          Definitions for Limits.
+* LHS:                                   Definitions for Equations.
+* LIMIT:                                 Definitions for Limits.
+* LINEAR:                                Definitions for Simplification.
+* LINECHAR:                              Definitions for Input and Output.
+* LINEDISP:                              Definitions for Input and Output.
+* LINEL:                                 Definitions for Input and Output.
+* LINENUM:                               Definitions for Command Line.
+* LINSOLVE:                              Definitions for Equations.
+* LINSOLVE_PARAMS:                       Definitions for Equations.
+* LINSOLVEWARN:                          Definitions for Equations.
+* LISPDEBUGMODE:                         Definitions for Program Flow.
+* LIST_NC_MONOMIALS:                     Definitions for Affine.
+* LISTARITH:                             Definitions for Lists.
+* LISTARRAY:                             Definitions for Arrays and Tables.
+* LISTCONSTVARS:                         Definitions for Expressions.
+* LISTDUMMYVARS:                         Definitions for Expressions.
+* LISTOFVARS:                            Definitions for Expressions.
+* LISTP:                                 Definitions for Lists.
+* LMXCHAR:                               Definitions for Matrices and Linear Algebra.
+* LOAD:                                  Definitions for Input and Output.
+* LOADFILE:                              Definitions for Input and Output.
+* LOADPRINT:                             Definitions for Input and Output.
+* LOCAL:                                 Definitions for Function Definition.
+* LOG:                                   Definitions for Logarithms.
+* LOGABS:                                Definitions for Logarithms.
+* LOGARC:                                Definitions for Logarithms.
+* LOGCONCOEFFP:                          Definitions for Logarithms.
+* LOGCONTRACT:                           Definitions for Logarithms.
+* LOGEXPAND:                             Definitions for Logarithms.
+* LOGNEGINT:                             Definitions for Logarithms.
+* LOGNUMER:                              Definitions for Logarithms.
+* LOGSIMP:                               Definitions for Logarithms.
+* LOPOW:                                 Definitions for Expressions.
+* LORENTZ:                               Definitions for Tensor.
+* LPART:                                 Definitions for Expressions.
+* LRATSUBST:                             Definitions for Polynomials.
+* LRICCICOM:                             Definitions for Ctensor.
+* LSUM:                                  Definitions for Expressions.
+* LTREILLIS:                             Definitions for Symmetries.
+* M1PBRANCH:                             Definitions for Miscellaneous Options.
+* MACROEXPANSION:                        Definitions for Function Definition.
+* MAINVAR:                               Definitions for Simplification.
+* MAKE_ARRAY:                            Definitions for Arrays and Tables.
+* MAKEBOX:                               Definitions for Tensor.
+* MAKEFACT:                              Definitions for Special Functions.
+* MAKEGAMMA:                             Definitions for Special Functions.
+* MAKELIST:                              Definitions for Lists.
+* MAP:                                   Definitions for Program Flow.
+* MAPATOM:                               Definitions for Program Flow.
+* MAPERROR:                              Definitions for Program Flow.
+* MAPLIST:                               Definitions for Program Flow.
+* MATCHDECLARE:                          Definitions for Rules and Patterns.
+* MATCHFIX:                              Definitions for Rules and Patterns.
+* MATRIX:                                Definitions for Matrices and Linear Algebra.
+* MATRIX_ELEMENT_ADD:                    Definitions for Matrices and Linear Algebra.
+* MATRIX_ELEMENT_MULT:                   Definitions for Matrices and Linear Algebra.
+* MATRIX_ELEMENT_TRANSPOSE:              Definitions for Matrices and Linear Algebra.
+* MATRIXMAP:                             Definitions for Matrices and Linear Algebra.
+* MATRIXP:                               Definitions for Matrices and Linear Algebra.
+* MATTRACE:                              Definitions for Matrices and Linear Algebra.
+* MAX:                                   Definitions for Operators.
+* MAXAPPLYDEPTH:                         Definitions for Simplification.
+* MAXAPPLYHEIGHT:                        Definitions for Simplification.
+* MAXNEGEX:                              Definitions for Simplification.
+* MAXPOSEX:                              Definitions for Simplification.
+* MAXPRIME:                              Definitions for Number Theory.
+* MAXTAYORDER:                           Definitions for Series.
+* MEMBER:                                Definitions for Lists.
+* METRIC:                                Definitions for Tensor.
+* MIN:                                   Definitions for Operators.
+* MINF:                                  Definitions for Constants.
+* MINFACTORIAL:                          Definitions for Number Theory.
+* MINOR:                                 Definitions for Matrices and Linear Algebra.
+* MOD:                                   Definitions for Operators.
+* MODE_CHECK_ERRORP:                     Definitions for Function Definition.
+* MODE_CHECK_WARNP:                      Definitions for Function Definition.
+* MODE_CHECKP:                           Definitions for Function Definition.
+* MODE_DECLARE:                          Definitions for Function Definition.
+* MODE_IDENTITY:                         Definitions for Function Definition.
+* MODULUS:                               Definitions for Polynomials.
+* MON2SCHUR:                             Definitions for Symmetries.
+* MONO:                                  Definitions for Affine.
+* MONOMIAL_DIMENSIONS:                   Definitions for Affine.
+* MOTION:                                Definitions for Ctensor.
+* MULTI_ELEM:                            Definitions for Symmetries.
+* MULTI_ORBIT:                           Definitions for Symmetries.
+* MULTI_PUI:                             Definitions for Symmetries.
+* MULTINOMIAL:                           Definitions for Symmetries.
+* MULTIPLICATIVE:                        Definitions for Simplification.
+* MULTIPLICITIES:                        Definitions for Equations.
+* MULTSYM:                               Definitions for Symmetries.
+* MULTTHRU:                              Definitions for Expressions.
+* MYOPTIONS:                             Definitions for Command Line.
+* NC_DEGREE:                             Definitions for Affine.
+* NCEXPT:                                Definitions for Matrices and Linear Algebra.
+* NCHARPOLY:                             Definitions for Matrices and Linear Algebra.
+* NEGDISTRIB:                            Definitions for Simplification.
+* NEGSUMDISPFLAG:                        Definitions for Simplification.
+* NEW-DISREP:                            Definitions for Affine.
+* NEWCONTEXT:                            Definitions for Contexts.
+* NEWDET:                                Definitions for Matrices and Linear Algebra.
+* NEWFAC:                                Definitions for Polynomials.
+* NEWTON:                                Definitions for Numerical.
+* NICEINDICES:                           Definitions for Series.
+* NICEINDICESPREF:                       Definitions for Series.
+* NOEVAL:                                Definitions for Simplification.
+* NOLABELS:                              Definitions for Command Line.
+* NONSCALAR:                             Definitions for Matrices and Linear Algebra.
+* NONSCALARP:                            Definitions for Matrices and Linear Algebra.
+* NOSTRING:                              Definitions for Input and Output.
+* NOUN:                                  Definitions for Simplification.
+* NOUNDISP:                              Definitions for Simplification.
+* NOUNIFY:                               Definitions for Expressions.
+* NOUNS:                                 Definitions for Simplification.
+* NROOTS:                                Definitions for Equations.
+* NTERMS:                                Definitions for Expressions.
+* NTERMSG:                               Definitions for Tensor.
+* NTERMSRCI:                             Definitions for Tensor.
+* NTHROOT:                               Definitions for Equations.
+* NUM:                                   Definitions for Polynomials.
+* NUMBERP:                               Definitions for Miscellaneous Options.
+* NUMER:                                 Definitions for Simplification.
+* NUMERVAL:                              Definitions for Simplification.
+* NUMFACTOR:                             Definitions for Special Functions.
+* NUSUM:                                 Definitions for Series.
+* NZETA:                                 Definitions for Tensor.
+* OBASE:                                 Definitions for Input and Output.
+* ODDP:                                  Definitions for Operators.
+* ODE:                                   Definitions for Differential Equations.
+* ODE2:                                  Definitions for Differential Equations.
+* OMEGA:                                 Definitions for Ctensor.
+* OPENPLOT_CURVES:                       Definitions for Plotting.
+* OPPROPERTIES:                          Definitions for Simplification.
+* OPSUBST:                               Definitions for Simplification.
+* OPTIMIZE:                              Definitions for Expressions.
+* OPTIMPREFIX:                           Definitions for Expressions.
+* OPTIONSET:                             Definitions for Command Line.
+* ORBIT:                                 Definitions for Symmetries.
+* ORDERGREAT:                            Definitions for Expressions.
+* ORDERGREATP:                           Definitions for Expressions.
+* ORDERLESS:                             Definitions for Expressions.
+* ORDERLESSP:                            Definitions for Expressions.
+* OUTATIVE:                              Definitions for Simplification.
+* OUTCHAR:                               Definitions for Input and Output.
+* OUTOFPOIS:                             Definitions for Special Functions.
+* PACKAGEFILE:                           Definitions for Input and Output.
+* PADE:                                  Definitions for Series.
+* PARSEWINDOW:                           Definitions for Input and Output.
+* PART:                                  Definitions for Expressions.
+* PART2CONT:                             Definitions for Symmetries.
+* PARTFRAC:                              Definitions for Number Theory.
+* PARTITION:                             Definitions for Expressions.
+* PARTPOL:                               Definitions for Symmetries.
+* PARTSWITCH:                            Definitions for Expressions.
+* PCOEFF:                                Definitions for Affine.
+* PERMANENT:                             Definitions for Matrices and Linear Algebra.
+* PERMUT:                                Definitions for Symmetries.
+* PFEFORMAT:                             Definitions for Input and Output.
+* PI:                                    Definitions for Constants.
+* PICKAPART:                             Definitions for Expressions.
+* PIECE:                                 Definitions for Expressions.
+* PLAYBACK:                              Definitions for Command Line.
+* PLOG:                                  Definitions for Logarithms.
+* PLOT2D:                                Definitions for Plotting.
+* PLOT2D_PS:                             Definitions for Plotting.
+* PLOT3D:                                Definitions for Plotting.
+* PLOT_OPTIONS:                          Definitions for Plotting.
+* POISDIFF:                              Definitions for Special Functions.
+* POISEXPT:                              Definitions for Special Functions.
+* POISINT:                               Definitions for Special Functions.
+* POISLIM:                               Definitions for Special Functions.
+* POISMAP:                               Definitions for Special Functions.
+* POISPLUS:                              Definitions for Special Functions.
+* POISSIMP:                              Definitions for Special Functions.
+* POISSON:                               Definitions for Special Functions.
+* POISSUBST:                             Definitions for Special Functions.
+* POISTIMES:                             Definitions for Special Functions.
+* POISTRIM:                              Definitions for Special Functions.
+* POLARFORM:                             Definitions for Logarithms.
+* POLARTORECT:                           Definitions for Numerical.
+* POLYNOME2ELE:                          Definitions for Symmetries.
+* POSFUN:                                Definitions for Simplification.
+* POTENTIAL:                             Definitions for Integration.
+* POWERDISP:                             Definitions for Series.
+* POWERS:                                Definitions for Expressions.
+* POWERSERIES:                           Definitions for Series.
+* PRED:                                  Definitions for Operators.
+* PREDERROR:                             Definitions for Program Flow.
+* PRIME:                                 Definitions for Number Theory.
+* PRIMEP:                                Definitions for Number Theory.
+* PRINT:                                 Definitions for Input and Output.
+* PRINTPOIS:                             Definitions for Special Functions.
+* PRINTPROPS:                            Definitions for Command Line.
+* PRODHACK:                              Definitions for Simplification.
+* PRODRAC:                               Definitions for Symmetries.
+* PRODUCT:                               Definitions for Expressions.
+* PROGRAMMODE:                           Definitions for Equations.
+* PROMPT:                                Definitions for Command Line.
+* PROPERTIES:                            Definitions for Miscellaneous Options.
+* PROPS:                                 Definitions for Miscellaneous Options.
+* PROPVARS:                              Definitions for Miscellaneous Options.
+* PSCOM:                                 Definitions for Plotting.
+* PSDRAW_CURVE:                          Definitions for Plotting.
+* PSEXPAND:                              Definitions for Series.
+* PSI:                                   Definitions for Special Functions.
+* PUI:                                   Definitions for Symmetries.
+* PUI2COMP:                              Definitions for Symmetries.
+* PUI2ELE:                               Definitions for Symmetries.
+* PUI2POLYNOME:                          Definitions for Symmetries.
+* PUI_DIRECT:                            Definitions for Symmetries.
+* PUIREDUC:                              Definitions for Symmetries.
+* PUT:                                   Definitions for Miscellaneous Options.
+* QPUT:                                  Definitions for Miscellaneous Options.
+* QQ:                                    Definitions for Integration.
+* QUANC8:                                Definitions for Integration.
+* QUIT:                                  Definitions for Command Line.
+* QUNIT:                                 Definitions for Number Theory.
+* QUOTIENT:                              Definitions for Polynomials.
+* RADCAN:                                Definitions for Simplification.
+* RADEXPAND:                             Definitions for Simplification.
+* RADPRODEXPAND:                         Definitions for Simplification.
+* RADSUBSTFLAG:                          Definitions for Simplification.
+* RAISERIEMANN:                          Definitions for Tensor.
+* RANDOM:                                Definitions for Operators.
+* RANK:                                  Definitions for Matrices and Linear Algebra.
+* RASSOCIATIVE:                          Definitions for Simplification.
+* RAT:                                   Definitions for Polynomials.
+* RATALGDENOM:                           Definitions for Polynomials.
+* RATCOEF:                               Definitions for Polynomials.
+* RATDENOM:                              Definitions for Polynomials.
+* RATDENOMDIVIDE:                        Definitions for Polynomials.
+* RATDIFF:                               Definitions for Polynomials.
+* RATDISREP:                             Definitions for Polynomials.
+* RATEINSTEIN:                           Definitions for Tensor.
+* RATEPSILON:                            Definitions for Polynomials.
+* RATEXPAND:                             Definitions for Polynomials.
+* RATFAC:                                Definitions for Polynomials.
+* RATMX:                                 Definitions for Matrices and Linear Algebra.
+* RATNUMER:                              Definitions for Polynomials.
+* RATNUMP:                               Definitions for Polynomials.
+* RATP:                                  Definitions for Polynomials.
+* RATPRINT:                              Definitions for Polynomials.
+* RATRIEMAN:                             Definitions for Tensor.
+* RATRIEMANN:                            Definitions for Tensor.
+* RATSIMP:                               Definitions for Polynomials.
+* RATSIMPEXPONS:                         Definitions for Polynomials.
+* RATSUBST:                              Definitions for Polynomials.
+* RATVARS:                               Definitions for Polynomials.
+* RATWEIGHT:                             Definitions for Polynomials.
+* RATWEIGHTS:                            Definitions for Polynomials.
+* RATWEYL:                               Definitions for Polynomials.
+* RATWTLVL:                              Definitions for Polynomials.
+* READ:                                  Definitions for Input and Output.
+* READONLY:                              Definitions for Input and Output.
+* REALONLY:                              Definitions for Equations.
+* REALPART:                              Definitions for Expressions.
+* REALROOTS:                             Definitions for Equations.
+* REARRAY:                               Definitions for Arrays and Tables.
+* RECTFORM:                              Definitions for Expressions.
+* RECTTOPOLAR:                           Definitions for Numerical.
+* REFCHECK:                              Definitions for Debugging.
+* REM:                                   Definitions for Miscellaneous Options.
+* REMAINDER:                             Definitions for Polynomials.
+* REMARRAY:                              Definitions for Arrays and Tables.
+* REMBOX:                                Definitions for Expressions.
+* REMCON:                                Definitions for Tensor.
+* REMFUNCTION:                           Definitions for Command Line.
+* REMLET:                                Definitions for Rules and Patterns.
+* REMOVE:                                Definitions for Miscellaneous Options.
+* REMRULE:                               Definitions for Rules and Patterns.
+* REMTRACE:                              Definitions for Debugging.
+* REMVALUE:                              Definitions for Miscellaneous Options.
+* RENAME:                                Definitions for Miscellaneous Options.
+* RESET:                                 Definitions for Command Line.
+* RESIDUE:                               Definitions for Integration.
+* RESOLVANTE:                            Definitions for Symmetries.
+* RESOLVANTE_ALTERNEE1:                  Definitions for Symmetries.
+* RESOLVANTE_BIPARTITE:                  Definitions for Symmetries.
+* RESOLVANTE_DIEDRALE:                   Definitions for Symmetries.
+* RESOLVANTE_KLEIN:                      Definitions for Symmetries.
+* RESOLVANTE_KLEIN3:                     Definitions for Symmetries.
+* RESOLVANTE_PRODUIT_SYM:                Definitions for Symmetries.
+* RESOLVANTE_UNITAIRE:                   Definitions for Symmetries.
+* RESOLVANTE_VIERER:                     Definitions for Symmetries.
+* REST:                                  Definitions for Lists.
+* RESTORE:                               Definitions for Command Line.
+* RESULTANT:                             Definitions for Polynomials.
+* RETURN:                                Definitions for Program Flow.
+* REVEAL:                                Definitions for Input and Output.
+* REVERSE:                               Definitions for Lists.
+* REVERT:                                Definitions for Series.
+* RHS:                                   Definitions for Equations.
+* RICCICOM:                              Definitions for Tensor.
+* RIEMANN:                               Definitions for Ctensor.
+* RINVARIANT:                            Definitions for Tensor.
+* RISCH:                                 Definitions for Integration.
+* RMXCHAR:                               Definitions for Input and Output.
+* RNCOMBINE:                             Definitions for Miscellaneous Options.
+* ROMBERG:                               Definitions for Integration.
+* ROMBERGABS:                            Definitions for Integration.
+* ROMBERGIT:                             Definitions for Integration.
+* ROMBERGMIN:                            Definitions for Integration.
+* ROMBERGTOL:                            Definitions for Integration.
+* ROOM:                                  Definitions for Runtime Environment.
+* ROOTSCONMODE:                          Definitions for Equations.
+* ROOTSCONTRACT:                         Definitions for Equations.
+* ROOTSEPSILON:                          Definitions for Equations.
+* ROW:                                   Definitions for Matrices and Linear Algebra.
+* SAVE:                                  Definitions for Input and Output.
+* SAVEDEF:                               Definitions for Input and Output.
+* SAVEFACTORS:                           Definitions for Polynomials.
+* SCALARMATRIXP:                         Definitions for Matrices and Linear Algebra.
+* SCALARP:                               Definitions for Miscellaneous Options.
+* SCALEFACTORS:                          Definitions for Miscellaneous Options.
+* SCANMAP:                               Definitions for Program Flow.
+* SCHUR2COMP:                            Definitions for Symmetries.
+* SCONCAT:                               Definitions for Input and Output.
+* SCSIMP:                                Definitions for Simplification.
+* SCURVATURE:                            Definitions for Tensor.
+* SEC:                                   Definitions for Trigonometric.
+* SECH:                                  Definitions for Trigonometric.
+* SET_PLOT_OPTION:                       Definitions for Plotting.
+* SET_UP_DOT_SIMPLIFICATIONS:            Definitions for Affine.
+* SETCHECK:                              Definitions for Debugging.
+* SETCHECKBREAK:                         Definitions for Debugging.
+* SETELMX:                               Definitions for Matrices and Linear Algebra.
+* SETUP:                                 Definitions for Tensor.
+* SETUP_AUTOLOAD:                        Definitions for Miscellaneous Options.
+* SETVAL:                                Definitions for Debugging.
+* SHOW:                                  Definitions for Input and Output.
+* SHOWRATVARS:                           Definitions for Input and Output.
+* SHOWTIME:                              Definitions for Command Line.
+* SIGN:                                  Definitions for Operators.
+* SIGNUM:                                Definitions for Operators.
+* SIMILARITYTRANSFORM:                   Definitions for Matrices and Linear Algebra.
+* SIMP:                                  Definitions for Simplification.
+* SIMPSUM:                               Definitions for Simplification.
+* SIN:                                   Definitions for Trigonometric.
+* SINH:                                  Definitions for Trigonometric.
+* SOLVE:                                 Definitions for Equations.
+* SOLVE_INCONSISTENT_ERROR:              Definitions for Equations.
+* SOLVEDECOMPOSES:                       Definitions for Equations.
+* SOLVEEXPLICIT:                         Definitions for Equations.
+* SOLVEFACTORS:                          Definitions for Equations.
+* SOLVENULLWARN:                         Definitions for Equations.
+* SOLVERADCAN:                           Definitions for Equations.
+* SOLVETRIGWARN:                         Definitions for Equations.
+* SOMRAC:                                Definitions for Symmetries.
+* SORT:                                  Definitions for Operators.
+* SPARSE:                                Definitions for Matrices and Linear Algebra.
+* SPHERICAL_BESSEL_J:                    Definitions for Orthogonal Polynomials.
+* SPHERICAL_BESSEL_Y:                    Definitions for Orthogonal Polynomials.
+* SPHERICAL_HANKEL1:                     Definitions for Orthogonal Polynomials.
+* SPHERICAL_HANKEL2:                     Definitions for Orthogonal Polynomials.
+* SPHERICAL_HARMONIC:                    Definitions for Orthogonal Polynomials.
+* SPLICE:                                MACROS.
+* SPRINT:                                Definitions for Input and Output.
+* SQFR:                                  Definitions for Polynomials.
+* SQRT:                                  Definitions for Operators.
+* SQRTDISPFLAG:                          Definitions for Operators.
+* SRRAT:                                 Definitions for Series.
+* SSTATUS:                               Definitions for Command Line.
+* STARDISP:                              Definitions for Input and Output.
+* STATUS:                                Definitions for Runtime Environment.
+* STRING:                                Definitions for Input and Output.
+* STRINGOUT:                             Definitions for Input and Output.
+* SUBLIS:                                Definitions for Operators.
+* SUBLIS_APPLY_LAMBDA:                   Definitions for Operators.
+* SUBLIST:                               Definitions for Operators.
+* SUBMATRIX:                             Definitions for Matrices and Linear Algebra.
+* SUBST:                                 Definitions for Operators.
+* SUBSTINPART:                           Definitions for Operators.
+* SUBSTPART:                             Definitions for Operators.
+* SUBVARP:                               Definitions for Operators.
+* SUM:                                   Definitions for Expressions.
+* SUMCONTRACT:                           Definitions for Simplification.
+* SUMEXPAND:                             Definitions for Simplification.
+* SUMHACK:                               Definitions for Simplification.
+* SUMSPLITFACT:                          Definitions for Simplification.
+* SUPCONTEXT:                            Definitions for Contexts.
+* SYMBOLP:                               Definitions for Operators.
+* SYMMETRIC:                             Definitions for Simplification.
+* SYSTEM:                                Definitions for Input and Output.
+* TAN:                                   Definitions for Trigonometric.
+* TANH:                                  Definitions for Trigonometric.
+* TAYLOR:                                Definitions for Series.
+* TAYLOR_LOGEXPAND:                      Definitions for Series.
+* TAYLOR_ORDER_COEFFICIENTS:             Definitions for Series.
+* TAYLOR_SIMPLIFIER:                     Definitions for Series.
+* TAYLOR_TRUNCATE_POLYNOMIALS:           Definitions for Series.
+* TAYLORDEPTH:                           Definitions for Series.
+* TAYLORINFO:                            Definitions for Series.
+* TAYLORP:                               Definitions for Series.
+* TAYTORAT:                              Definitions for Series.
+* TCL_OUTPUT:                            Definitions for Input and Output.
+* TCONTRACT:                             Definitions for Symmetries.
+* TELLRAT:                               Definitions for Polynomials.
+* TELLSIMP:                              Definitions for Rules and Patterns.
+* TELLSIMPAFTER:                         Definitions for Rules and Patterns.
+* TEX:                                   Definitions for Input and Output.
+* THROW:                                 Definitions for Program Flow.
+* TIME:                                  Definitions for Runtime Environment.
+* TIMER:                                 Definitions for Debugging.
+* TIMER_DEVALUE:                         Definitions for Debugging.
+* TIMER_INFO:                            Definitions for Debugging.
+* TLDEFINT:                              Definitions for Integration.
+* TLIMIT:                                Definitions for Limits.
+* TLIMSWITCH:                            Definitions for Limits.
+* TO_LISP:                               Definitions for Command Line.
+* TOBREAK:                               Definitions for Command Line.
+* TODD_COXETER:                          Definitions for Groups.
+* TOPLEVEL:                              Definitions for Command Line.
+* TOTALDISREP:                           Definitions for Polynomials.
+* TOTIENT:                               Definitions for Number Theory.
+* TPARTPOL:                              Definitions for Symmetries.
+* TR_ARRAY_AS_REF:                       Definitions for Function Definition.
+* TR_BOUND_FUNCTION_APPLYP:              Definitions for Function Definition.
+* TR_FILE_TTY_MESSAGESP:                 Definitions for Function Definition.
+* TR_FLOAT_CAN_BRANCH_COMPLEX:           Definitions for Function Definition.
+* TR_FUNCTION_CALL_DEFAULT:              Definitions for Function Definition.
+* TR_GEN_TAGS:                           Definitions for Function Definition.
+* TR_NUMER:                              Definitions for Function Definition.
+* TR_OPTIMIZE_MAX_LOOP:                  Definitions for Function Definition.
+* TR_OUTPUT_FILE_DEFAULT:                Definitions for Function Definition.
+* TR_PREDICATE_BRAIN_DAMAGE:             Definitions for Function Definition.
+* TR_SEMICOMPILE:                        Definitions for Function Definition.
+* TR_STATE_VARS:                         Definitions for Function Definition.
+* TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED: Definitions for Function Definition.
+* TR_VERSION:                            Definitions for Function Definition.
+* TR_WARN_BAD_FUNCTION_CALLS:            Definitions for Function Definition.
+* TR_WARN_FEXPR:                         Definitions for Function Definition.
+* TR_WARN_MEVAL:                         Definitions for Function Definition.
+* TR_WARN_MODE:                          Definitions for Function Definition.
+* TR_WARN_UNDECLARED:                    Definitions for Function Definition.
+* TR_WARN_UNDEFINED_VARIABLE:            Definitions for Function Definition.
+* TR_WARNINGS_GET:                       Definitions for Function Definition.
+* TR_WINDY:                              Definitions for Function Definition.
+* TRACE:                                 Definitions for Debugging.
+* TRACE_OPTIONS:                         Definitions for Debugging.
+* TRANSBIND:                             Definitions for Function Definition.
+* TRANSCOMPILE:                          Definitions for Function Definition.
+* TRANSFORM:                             Definitions for Ctensor.
+* TRANSLATE:                             Definitions for Function Definition.
+* TRANSLATE_FILE:                        Definitions for Function Definition.
+* TRANSPOSE:                             Definitions for Matrices and Linear Algebra.
+* TRANSRUN:                              Definitions for Function Definition.
+* TREILLIS:                              Definitions for Symmetries.
+* TREINAT:                               Definitions for Symmetries.
+* TRIANGULARIZE:                         Definitions for Matrices and Linear Algebra.
+* TRIGEXPAND:                            Definitions for Trigonometric.
+* TRIGEXPANDPLUS:                        Definitions for Trigonometric.
+* TRIGEXPANDTIMES:                       Definitions for Trigonometric.
+* TRIGINVERSES:                          Definitions for Trigonometric.
+* TRIGRAT:                               Definitions for Trigonometric.
+* TRIGREDUCE:                            Definitions for Trigonometric.
+* TRIGSIGN:                              Definitions for Trigonometric.
+* TRIGSIMP:                              Definitions for Trigonometric.
+* TRUE:                                  Definitions for Constants.
+* TRUNC:                                 Definitions for Series.
+* TSETUP:                                Definitions for Ctensor.
+* TTRANSFORM:                            Definitions for Ctensor.
+* TTYINTFUN:                             Definitions for Command Line.
+* TTYINTNUM:                             Definitions for Command Line.
+* TTYOFF:                                Definitions for Input and Output.
+* ULTRASPHERICAL:                        Definitions for Orthogonal Polynomials.
+* UNDECLAREDWARN:                        Definitions for Function Definition.
+* UNDIFF:                                Definitions for Differentiation.
+* UNITEIGENVECTORS:                      Definitions for Matrices and Linear Algebra.
+* UNITVECTOR:                            Definitions for Matrices and Linear Algebra.
+* UNKNOWN:                               Definitions for Simplification.
+* UNORDER:                               Definitions for Operators.
+* UNSUM:                                 Definitions for Series.
+* UNTELLRAT:                             Definitions for Polynomials.
+* UNTRACE:                               Definitions for Debugging.
+* USE_FAST_ARRAYS:                       Definitions for Arrays and Tables.
+* VALUES:                                Definitions for Command Line.
+* VECT_CROSS:                            Definitions for Matrices and Linear Algebra.
+* VECTORPOTENTIAL:                       Definitions for Operators.
+* VECTORSIMP:                            Definitions for Matrices and Linear Algebra.
+* VERB:                                  Definitions for Expressions.
+* VERBIFY:                               Definitions for Expressions.
+* VERBOSE:                               Definitions for Series.
+* WEYL:                                  Definitions for Tensor.
+* WITH_STDOUT:                           Definitions for Input and Output.
+* WRITEFILE:                             Definitions for Input and Output.
+* xgraph_curves:                         Definitions for Plotting.
+* XTHRU:                                 Definitions for Operators.
+* ZEROBERN:                              Definitions for Number Theory.
+* ZEROEQUIV:                             Definitions for Operators.
+* ZEROMATRIX:                            Definitions for Matrices and Linear Algebra.
+* ZETA:                                  Definitions for Number Theory.
+* ZETA%PI:                               Definitions for Number Theory.
+* ZRPOLY:                                Definitions for Equations.
+* ZSOLVE:                                Definitions for Equations.
+* ZUNDERFLOW:                            Definitions for Floating Point.
 
 

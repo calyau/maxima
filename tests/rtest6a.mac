@@ -17,7 +17,7 @@ RISCH(X^2*ERF(X),X);
 (%PI*X^3*ERF(X)+(SQRT(%PI)*X^2+SQRT(%PI))*%E^-X^2)/(3*%PI);
 EV(DIFF(%,X),RATSIMP);
 X^2*ERF(X);
-assume(a>0);
+ASSUME(A>0);
 [a>0];
 'INTEGRATE(%E^(SQRT(A)*SQRT(Y)),Y,0,4);
 'INTEGRATE(%E^(SQRT(A)*SQRT(Y)),Y,0,4);
@@ -100,8 +100,8 @@ SUBST(X = 0,DIFF(SIN(X),X));
 1;
 ERRCATCH(EV(DIFF(SIN(X),X),X = 0));
 [];
-assume(not(equal(i,-1)));
-[not equal(i,-1)]$
+ASSUME(NOT(EQUAL(I,-1)));
+[NOT EQUAL(I,-1)]$
 EV(INTEGRATE(X^I,X),I = -1);
 LOG(X);
 ERRCATCH(SUBST(-1,I,INTEGRATE(X^I,X)));

@@ -344,12 +344,8 @@
   ans))
 					;
 
+#+gcl
 (defun $system (&rest x) (system (apply '$sconcat x)))
-
-
-
-
-
 
 
 

@@ -25,7 +25,7 @@
       (st file)
       (let ( ;*mread-prompt*
 	     )
-	(prog (show tem this all c-tag d-tag)
+	(prog ( tem  all c-tag d-tag)
 
 	  AGAIN
 	  (setq tem (read-char st nil))
@@ -111,38 +111,28 @@
 				     form l)
 			      ))
 		      (T (merror "BAD ARG")))))))
-
-#+gcl
-(progn
-(defvar si::*info-paths* nil)
+(defvar *info-paths* nil)
 
 
-(defun $describe(x &aux (si::*info-paths* si::*info-paths*))
+
+(defun $describe(x &aux (*info-paths* *info-paths*) have)
   (setq x ($sconcat x))
-  (setq  SYSTEM::*INFO-PATHS*
+  (setq  *INFO-PATHS*
 	 (cons  (concatenate 'string *maxima-directory*
-				     "info/")
-		SYSTEM::*INFO-PATHS*))
+			     "info/")
+		*INFO-PATHS*))
+  #+(or gcl cmulisp)
   (if (fboundp 'si::info)
-      (si::info x '("maxima.info"))
-    "The documentation is now in INFO format and can be printed using
-tex, or viewed using info or gnu emacs.   Versions of maxima built
-on GCL have a builtin info retrieval mechanism" ))
-)
+      (return-from $describe (si::info x '("maxima.info"))))
+  
+  "The documentation is now in INFO format and can be printed using
+tex, or viewed using info or gnu emacs or using a web browser:
+http://www.ma.utexas.edu/maxima/
+   Versions of maxima built 
+on GCL or CMULISP have a builtin info retrieval mechanism"
+  )
 
-#+cmu
-(progn
 
-(defun $describe(x &aux (si::*info-paths* si::*info-paths*))
-  (setq x ($sconcat x))
-  (setq  SYSTEM::*INFO-PATHS*
-	 (cons  (concatenate 'string *maxima-directory*
-				     "info/")
-		SYSTEM::*INFO-PATHS*))
-  (if (fboundp 'si::info)
-      (si::info x '("maxima.info"))
-    "The documentation is now in INFO format and can be printed using
-tex, or viewed using info or gnu emacs.   Versions of maxima built
-on GCL or CMUCL have a builtin info retrieval mechanism" ))
-)
+
+
 

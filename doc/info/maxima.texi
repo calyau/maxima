@@ -20,7 +20,7 @@
 @ifinfo
 This is a Texinfo Maxima Manual
 
-Copyright 1994 William F. Schelter
+Copyright 1994,2001 William F. Schelter
 
 @format
 START-INFO-DIR-ENTRY
@@ -119,9 +119,9 @@ Introduction
 Help
 
 * Introduction to Help::        
-* LISP-AND-MACSYMA::            
-* GARBAGE_COLLECTION::          
-* DOCUMENTATION::               
+* Lisp and Maxima::            
+* Garbage Collection::          
+* Documentation::               
 * Definitions for Help::        
 
 Command Line

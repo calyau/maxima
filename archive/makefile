@@ -133,6 +133,9 @@ clean:
 test:
 	make test1 "MAXIMA=`pwd`/src/saved_maxima `pwd`/src/"
 
+test-clisp:
+	(cd ../doc ; ${CLISP} -M ../src/maxima-clisp.mem tests.lisp)
+
 test1:
 	date
 	(cd doc ; ${MAXIMA} -dir `pwd`/../src/   -load "tests.lisp" < /dev/null )

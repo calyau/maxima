@@ -1,4 +1,5 @@
-#+gcl (allocate 'cons (round (* 800 (/ 2048.0 si::lisp-pagesize))))
+#+gcl
+(allocate 'cons (round (* 800 (/ 2048.0 si::lisp-pagesize))))
 
 ;;there is no way this file will run in non common lisps...!!
 (pushnew :cl *features*)
@@ -43,9 +44,7 @@
 (defun set-pathnames ()
   ;; need to get one when were are.
   
-  (let* ((tem #+gcl (system::getenv "MAXIMA_DIRECTORY")
-	      #+cmu (cdr (assoc :maxima_directory ext:*environment-list*))
-	      )
+  (let* ((tem  (getenv "MAXIMA_DIRECTORY"))
 	 (n (length tem)))
     (setq *maxima-directory* tem)
     (cond ((> n 0)
@@ -62,7 +61,8 @@
                                    (si::argv 0)))
 			     "../"))))))
 
-   #+(or gcl cmu) (push  (maxima-path "info" "") SI::*INFO-PATHS*)
+    (or (boundp '*INFO-PATHS*) (setq *INFO-PATHS* nil) )
+    (push  (maxima-path "info" "") *INFO-PATHS*)
     (let ((ext #+gcl "o"
 	       #+cmu (c::backend-fasl-file-type c::*target-backend*)
 	       #-(or gcl cmu)
@@ -95,23 +95,17 @@
 
     ))
 
-
-
 (defun user::run ()
-  ;; Turn off gc messages
-  #+cmu
-  (progn 'cmulisp
-	 (setf ext:*gc-verbose* nil)
-	 ;; Reload the documentation stuff
-         (cond 	((probe-file "/apps/gnu/src/regex-0.12/regex.o")
-		 (ext:load-foreign "/apps/gnu/src/regex-0.12/regex.o")	
-		 (load "cmulisp-regex" :if-source-newer :compile)
-		 (load "cl-info" :if-source-newer :compile))
-		(t (format t "~&/apps/gnu/src/regex-0.12/regex.o not found .. skipping regexp stuff for describe"))))
   (in-package "MAXIMA")
   (catch 'to-lisp
     (set-pathnames)
-    (macsyma-top-level)))
+    #+cmu
+    (with-simple-restart (macsyma-quit "Macsyma top-level")
+          (init-maxima) 
+	  (macsyma-top-level))
+    #-cmu
+    (catch 'macsyma-quit
+      (macsyma-top-level))))
 
 (import 'user::run)
 ($setup_autoload "eigen.mc" '$eigenvectors '$eigenvalues)
@@ -123,7 +117,8 @@
   )
 (defvar $help "type describe(topic) or example(topic);")
 (defun $help() $help);
-#+gcl (load "init_max2.lisp")
+#+gcl
+(load "init_max2.lisp")
 
 
   

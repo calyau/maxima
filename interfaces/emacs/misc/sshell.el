@@ -256,8 +256,14 @@ This regexp should start with \"^\"."
 	(goto-char last-input-start)
 	(sshell-set-directory))
     (error (funcall sshell-set-directory-error-hook)))
-  (let ((process (get-buffer-process (current-buffer))))
-    (process-send-region process last-input-start last-input-end)
+  (let ((process (get-buffer-process (current-buffer)))
+	(s (buffer-substring last-input-start last-input-end))
+	)
+    ;; avoid sending emacs's idea of what an international character
+    ;; set string is to a subprocess..
+    (if (fboundp 'string-make-unibyte)
+	(setq s (string-make-unibyte s)))
+    (process-send-string process s)
     (set-marker (process-mark process) (point))))
 
 ;;;  If this code changes (sshell-send-input and sshell-set-directory),

@@ -1,6 +1,7 @@
 (push :main-files-loaded *features*)
 (load "sysdef.lisp")
 (load "make.lisp")
+(import '(system::GETENV) (find-package "MAXIMA"))
 (defun compile-maxima ()
   (make::make :maxima :compile t))
 
@@ -25,6 +26,8 @@ Quit to top    :q       Quit to MAXIMA top level"
           (commands1.orig)
 )
 )
+
+(defun $system (&rest x) (system::run-shell-command  (apply '$sconcat x)))
 
 
 

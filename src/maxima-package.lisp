@@ -87,6 +87,9 @@
 (import '(si::modulus si::cmod si::ctimes si::cdifference si::cplus)
    'cl-maxima)
 
+#+(or clisp gcl)
+(import '(system::getenv) (find-package "MAXIMA"))
+
 ;;get
 #+gcl
 (import '( si::cleanup

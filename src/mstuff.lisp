@@ -25,8 +25,13 @@
 	   (SETQ LLIST (MAPCAR #'RATDISREP LLIST)))
        (CONS '(MLIST SIMP) (SORT LLIST COMPARFUN))))
 
+;; old non closure version
+;;(DEFUN MFUNCTION1 (FUN)
+;;  `(LAMBDA (X Y) (MEVALP `((,',FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y)))))
+
+#+cl
 (DEFUN MFUNCTION1 (FUN)
-  `(LAMBDA (X Y) (MEVALP `((,',FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y)))))
+  (function (LAMBDA (X Y) (MEVALP `((,FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y))))))
 
 (DEFUN LESSTHAN (A B) (IF (GREAT B A) T))
 

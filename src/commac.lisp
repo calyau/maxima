@@ -1123,5 +1123,19 @@ format:
 	       (fboundp x) t))
 	 ((lisp::functionp x))))
 	  
-
+(defun file-to-string (x)
+  (with-open-file
+   (st x)
+   (let* ((n (file-length st))
+	  (ar (make-array n :element-type '#.(array-element-type "a")))
+	  )
+     (declare (type (array #.(array-element-type "a")) ar))
+     (sloop for i below n 
+	    for tem = (read-char st nil)
+	    do 
+	    (if tem    (setf (aref ar i) tem)))
+     ar)))
+     
+		  
+		  
 

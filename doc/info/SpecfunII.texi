@@ -5,7 +5,9 @@
 @end menu
 
 
-@node Introduction to Orthogonal Polynomials, Definitions for Orthogonal Polynomials, Orthogonal Polynomials, Orthogonal Polynomials
+
+@node Introduction to Orthogonal Polynomials, Definitions for Orthogonal Polynomials, , Orthogonal Polynomials
+@comment  node-name,  next,  previous,  up
 @section Introduction to Orthogonal Polynomials
 
 The specfun package, located in the share directory,  contains Maxima
@@ -166,7 +168,7 @@ version may be found using get:
  @end example
 
 @c end concepts Orthogonal Polynomials
-@node Definitions for Orthogonal Polynomials,  , Orthogonal Polynomials, Orthogonal Polynomials
+@node Definitions for Orthogonal Polynomials, , Introduction to Orthogonal Polynomials, Orthogonal Polynomials
 @section Definitions for Orthogonal Polynomials
 
 @defun ASSOC_LEGENDRE_P (n, m, x)

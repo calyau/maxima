@@ -1,39 +1,156 @@
 @c end concepts Debugging
 @menu
-* Introduction to Debugging::
+* Source Level Debugging::
+* Keyword Commands::
 * Definitions for Debugging::   
 @end menu
 
-@node Introduction to Debugging, , Definitions for Debugging, Debugging
-@section Introduction to Debugging
-The Maxima has source level capabilities.  We can set a breakpoint
-at a line in a file, and then step line by line from there.  The
-call stack may be examined, together with the variables bound at that
-level.
+@node Source Level Debugging, Keyword Commands, , Debugging
+@section Source Level Debugging
 
-The ideal way to run Maxima is using dbl mode in GNU emacs.   Then
-when we break in a function, the source code auto magically appears
-in the other window.  One can step line by line, seeing a little arrow
-in the other window, indicating where you are.   As you go up the
-call stack, the other window changes showing where you were inside
-that function.   Even if you do not use the debugger, it is convenient
-to be able to evaluate forms directly from your source file into the
-inferior maxima.
+Maxima has source level capabilities.  A user can set a breakpoint at
+a line in a file, and then step line by line from there.  The call
+stack may be examined, together with the variables bound at that
+level.  If the user is running the code under GNU emacs in a shell
+window (dbl shell), or is running @code{xmaxima} the graphical
+interface version, then if he stops at a break point, he will see his
+current position in the source file which will be displayed in the
+other half of the window, either highlighted in red, or with a little
+arrow pointing at the right line.  He can advance single lines at a
+time by typing M-n (Alt-n) or alternately by entering @code{:n}.  To
+see the names of the keyword commands type :help (or :h).  In general
+commands may be abbreviated if the abbreviation is unique.  If not
+unique the alternatives will be listed.
 
-To do all this in emacs type
+Under Emacs you should run in a @code{dbl} shell, which requires the
+dbl.el file in the elisp directory.
+Make sure you install the elisp files or add the maxima elisp directory to
+your path:
+eg add the following to your @file{.emacs} file or the @code{site-init.el}
 
 @example
-M-x dbl
-maxima
+(setq load-path (cons "/usr/local/maxima-5.5/elisp" load-path))
+(autoload 'dbl "dbl")
 @end example
-This will give you a window, and then you invoke maxima as you usually
-would.    Look at the Mode help (c-h m) in emacs to get more information.
+then in emacs 
+@example
+M-x dbl
+@end example
+should start a shell window in which you can run programs, for example
+maxima, gcl, gdb etc.   This shell window also knows about source level
+debugging, and display of source code in the other window.  
 
-Maxima now allows special commands beginning with a ':'.   This was
-introduced because of the debugger.  
+@example
+maxima
+Maxima 5.5 Wed Apr 18 19:02:00 CDT 2001 (with enhancements by W. Schelter).
+Licensed under the GNU Public License (see file COPYING)
+(C1) batchload("/tmp/joe.mac");
+(D1) 				 /tmp/joe.mac
+(C2) :br joe
+Turning on debugging debugmode(true)
+Bkpt 0 for joe (in /tmp/joe.mac line 8) 
+(C2) foo(2,3);
+Bkpt 0:(joe.mac 8)
+(dbm:1) :bt                        <-- :bt typed here gives a backtrace 
+#0: joe(y=5)(joe.mac line 8)
+#1: foo(x=2,y=3)(joe.mac line 5)
+(joe.mac 9)                        <-- Here type M-n to advance line 
+(joe.mac 10)                       <-- Here type M-n to advance line
+                                   In the other buffer the source code
+                                   appears with an arrow.
+(dbm:1) u;                         Investigate value of 'u
+28
+(dbm:1) u:33;                      Alter it to be 33
+(dbm:1) :r                         :r Resumes the computation
+(D3) 				     1094
+@end example
+
+The actual file /tmp/joe.mac is the following:
+@example
+
+foo(x,y):=(
+  x:x+2,
+  y:y+2,
+  x:joe(y),
+  x+y);
+    
+joe(y):=block([u:y^2],
+  u:u+3,
+  u:u^2,
+   u);
+     
+@end example
 
 
-@node Definitions for Debugging, Introduction to Debugging, Debugging, Debugging
+
+If you are running in Gnu Emacs then if you are looking at the
+file joe.mac, you may set a break point at a certain line of that
+file by typing @code{C-x space}.  This figures out which function
+your cursor is in, and then it sees which line of that function
+you are on.   If you are on say line 2 of joe, then it will
+insert in the other window @code{:br joe 2} the command to
+break joe at its second line.   To have this enabled you must have
+maxima-mode.el on in the window in which the file joe.mac is visiting.
+There are additional commands available in that file window, such as
+evaluating the function into the maxima, by typing @code{Alt-Control-x}
+
+@node Keyword Commands, Definitions for Debugging, Source Level Debugging, Debugging
+@section Keyword Commands
+
+Break commands start with ':'.   Thus to evaluate a lisp form you
+may type @code{:lisp } followed by the argument which is the form
+to be evaluated.  
+@example
+(C3) :lisp (+ 2 3)
+5
+(C3)
+@end example
+The number of arguments taken depends on the particular command.  Also
+you need not type the whole command, just enough to be unique among
+the keyword commands.   Thus @code{:br} would suffice for @code{:break}.
+The current commands are:
+
+@table @code
+@item :break
+Set a breakpoint in the specified FUNCTION at the
+specified LINE offset from the beginning of the function.
+If FUNCTION is given as a string, then it is presumed to be
+a FILE and LINE is the offset from the beginning of the file.
+@item :bt
+Undocumented
+@item :continue
+Continue the computation.
+@item :delete
+Delete all breakpoints, or if arguments are supplied delete the specified
+breakpoints
+@item :disable
+Disable the specified breakpoints, or all if none are specified
+@item :enable
+Enable the specified breakpoints, or all if none are specified
+@item :frame
+With an argument print the selected stack frame.
+Otherwise the current frame.
+@item :help
+Print help on a break command or with no arguments on all break commands
+@item :info
+Undocumented
+@item :lisp
+Evaluate the lisp form following on the line
+@item :lisp-quiet
+Evaluate its arg as a lisp form without printing a prompt.
+@item :next     Like :step, except that subroutine calls are stepped over
+@item :quit
+Quit this level
+@item :resume
+Continue the computation.
+@item :step
+Step program until it reaches a new source line
+@item :top
+Throw to top level
+@end table 
+
+
+@node Definitions for Debugging, , Keyword Commands, Debugging
 @section Definitions for Debugging
 @c @node REFCHECK
 @c @unnumberedsec phony

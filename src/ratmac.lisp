@@ -25,7 +25,7 @@
 #+CL
 (defun pzerop (x) (if (fixnump x) (zerop (the fixnum x))
 		    (if (consp x) nil
-		      (zerop x))))
+		      (and (floatp x) (zerop x)))))
 
 #+CL
 (DEFMACRO PZERO () 0)

@@ -18,6 +18,7 @@
 ;;; an appropriate value.)
 ;;;
 
+;; this is now in maxima package
 (defpackage "SI"
     (:use "COMMON-LISP" "ALIEN" "C-CALL"))
 (defvar si::*info-paths* nil)
@@ -83,9 +84,48 @@
                :load-init-file nil :site-init nil))
 
 (in-package "MAXIMA")
+(shadow '(lisp::compiled-function-p) (find-package "MAXIMA"))
+
+(defun compiled-function-p (x)
+  (and (functionp x) (not (symbolp x))
+    (not (eval:interpreted-function-p x))))
+
+(defmacro clines (x) nil)
+(defun getenv (x)
+  (cdr (assoc (intern x (find-package "KEYWORD")) ext:*environment-list*)))
+
+(defun $system (&rest x)
+  (let ((cmdline (apply '$sconcat x)))
+    ;; Have the command line.  Now extract out the parts.  Note: this
+    ;; assumes that the command is first and that there is exactly one
+    ;; argument.  If not, we need a fancier parser to break all of the
+    ;; arguments up and put them in a list for run-program.
+    (let ((space (position #\space cmdline)))
+      (ext:run-program (subseq cmdline 0 space)
+		       (list (subseq cmdline (1+ space)))))))
+
+(defvar *init-run* nil)
+(defun init-maxima ()
+  ;; Turn off gc messages
+  (unless *init-run*
+    (setq *init-run*)
+  (setf ext:*gc-verbose* nil)
+  ;; Reload the documentation stuff.
+  (handler-case
+      (progn
+	(ext:load-foreign *regex-lib*)
+	(load (maxima-path "src" "cmulisp-regex") :if-source-newer :compile)
+	(load (maxima-path "src" "cl-info") :if-source-newer :compile))
+    (file-error ()
+      (format t "~&Regex support files not found.  Skipping regexp stuff for describe~%")))
+))
 
 (defvar maxima::*maxima-directory* nil)
 
+
+;; Set this to where GNU regex.o can be found.
+(defvar *regex-lib*
+  "/apps/src/regex-0.12/regex.o")
 #+nil
 (ext:defswitch "dir"
     #'(lambda (switch)

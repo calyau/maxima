@@ -1,7 +1,9 @@
 
-(load "make.lisp")
+(or (find-package "MAKE") (make-package "MAKE" :use '(LISP)))
+
 (in-package "MAKE")
 
+(or (fboundp 'make) (load  "make.lisp" ))
 (or (member :cl *features*) (setq *features* (cons :cl *features*)))
 
 (setf (get :maxima :source-path) "foo.lisp")
@@ -276,7 +278,13 @@
 	  elim
 	  trgsmp
 	  ode2
-	  invert)
+	  invert
+          hypgeo
+          hyp
+          todd-coxeter
+          mactex
+
+        )
 	(:load-source autol max_ext)
 	(:progn
 	  (format t "~%Setting object path default to ~a"
