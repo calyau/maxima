@@ -7,13 +7,13 @@
 @section Introduction to Ctensor
 
  - Component Tensor Manipulation Package.  To use the CTENSOR
-package, type load(ctensor).
-To begin an interactive session with CTENSOR, type csetup().  You are
+package, type @code{load(ctensor)}.
+To begin an interactive session with CTENSOR, type @code{csetup()}.  You are
 first asked to specify the dimension of the manifold. If the dimension
-is 2, 3 or 4 then the list of coordinates defaults to [x,y], [x,y,z]
-or [x,y,z,t] respectively.
+is 2, 3 or 4 then the list of coordinates defaults to @code{[x,y]}, @code{[x,y,z]}
+or @code{[x,y,z,t]} respectively.
 These names may be changed by assigning a new list of coordinates to
-the variable OMEGA (described below) and the user is queried about
+the variable @code{ct_coords} (described below) and the user is queried about
 this.
 ** Care must be taken to avoid the coordinate names conflicting
 with other object definitions **.
@@ -157,9 +157,52 @@ metric @code{ufg} are computed.
 @c @unnumberedsec phony
 @defun ct_coordsys (coordinate_system,[extra_args])
 Sets up a predefined coordinate system and metric. The argument
-coordinate_system can be one of the following symbols:
+@code{coordinate_system} can be one of the following symbols:
 
-*** TO BE WRITTEN ***
+@example
+
+  SYMBOL               Dim Coordinates     Description
+  -----------------------------------------------------------------------
+  cartesian2d           2  [x,y]           Cartesian 2D coordinate system
+  polar                 2  [r,phi]         Polar coordinate system
+  elliptic              2  NOT YET IMPLEMENTED
+  confocalelliptic      2  NOT YET IMPLEMENTED
+  bipolar               2  NOT YET IMPLEMENTED
+  parabolic             2  NOT YET IMPLEMENTED
+  cartesian3d           3  [x,y,z]         Cartesian 3D coordinate system
+  polarcylindrical      3  NOT YET IMPLEMENTED
+  ellipticcylindrical   3  NOT YET IMPLEMENTED
+  confocalellipsoidal   3  NOT YET IMPLEMENTED
+  bipolarcylindrical    3  NOT YET IMPLEMENTED
+  paraboliccylindrical  3  NOT YET IMPLEMENTED
+  paraboloidal          3  NOT YET IMPLEMENTED
+  conical               3  NOT YET IMPLEMENTED
+  toroidal              3  NOT YET IMPLEMENTED
+  spherical             3  [r,theta,phi]   Spherical coordinate system
+  oblatespheroidal      3  NOT YET IMPLEMENTED
+  oblatespheroidalsqrt  3  NOT YET IMPLEMENTED
+  prolatespheroidal     3  NOT YET IMPLEMENTED
+  prolatespheroidalsqrt 3  NOT YET IMPLEMENTED
+  ellipsoidal           3  NOT YET IMPLEMENTED
+  cartesian4d           4  [x,y,z,t]       Cartesian 4D coordinate system
+  spherical4d           4  NOT YET IMPLEMENTED
+  exteriorschwarzschild 4  [r,theta,phi,t] Schwarzschild metric
+  interiorschwarzschild 4  NOT YET IMPLEMENTED
+  kerr_newman           4  NOT YET IMPLEMENTED
+
+@end example
+
+@code{coordinate_system} can also be a list of transformation functions.
+
+The optional arguments can be any one of the following:
+
+@code{cylindrical} tells @code{ct_coordsys} to attach an additional cylindrical coordinate.
+
+@code{minkowski} tells @code{ct_coordsys} to attach an additional coordinate with negative metric signature.
+
+@code{all} tells @code{ct_coordsys} to call @code{cmetric} and @code{christof(false)} after setting up the metric.
+
+if the option variable @code{verbose} is set to @code{true}, @code{ct_coordsys} displays the values of @{dim}, @{ct_coords}, and either @code{lg} or @code{lfg} and @code{fri}, depending on the value of @code{cframe_flag}.
 
 @end defun
 
@@ -168,7 +211,8 @@ coordinate_system can be one of the following symbols:
 @defun init_ctensor ()
 Initializes the CTENSOR package.
 
-*** TO BE WRITTEN ***
+The @code{init_ctensor()} function reinitializes the CTENSOR package. It removes all arrays and matrices used by CTENSOR, resets all flags, resets @code{dim} to 4, and resets the frame metric to the Lorentz-frame.
+
 @end defun
 
 
@@ -236,6 +280,7 @@ A function in the CTENSOR (Component Tensor
 Manipulation) package. @code{ricci} computes the covariant (symmetric)
 components @code{ric[i,j]} of the Ricci tensor.  If the argument @code{dis} is @code{true},
 then the non-zero components are displayed.
+@end defun
 
 @c @node uricci
 @c @unnumberedsec phony
@@ -248,10 +293,6 @@ is @code{true}, then these mixed components, @code{uric[i,j]} (the index i is
 covariant and the index j is contravariant), will be displayed
 directly.  Otherwise, @code{ricci(false)} will simply compute the entries
 of the array @code{uric[i,j]} without displaying the results.
-
-@end defun
-
-*** TO BE WRITTEN ***
 
 @end defun
 @c @node scurvature
@@ -279,9 +320,7 @@ also be factored.
 @c @node leinstein
 @c @unnumberedsec phony
 @defun leinstein (dis)
-Covariant Einstein-tensor.
-
-*** TO BE WRITTEN ***
+Covariant Einstein-tensor. @code{leinstein()} stores the values of the covariant Einstein tensor in the array @code{lein}. The covariant Einstein-tensor is computed from the mixed Einstein tensor @code{ein} by multiplying it with the metric tensor. If the argument @code{dis} is @code{true}, then the non-zero values of the covariant Einstein tensor are displayed.
 
 @end defun
 
@@ -310,6 +349,11 @@ rational simplification will be done. If @code{ratfac} (default:
 @code{false}) is @code{true} then
 each of the components will also be factored.
 
+If the variable @code{cframe_flag} is @code{false}, the Riemann tensor is
+computed directly from the Christoffel-symbols. If @code{cframe_flag} is
+@code{false}, the covariant Riemann-tensor is computed first from the
+frame field coefficients.
+
 @end defun
 
 @c @node lriemann
@@ -317,14 +361,21 @@ each of the components will also be factored.
 @defun lriemann (dis)
 Covariant Riemann-tensor (@code{lriem[]}).
 
-*** TO BE WRITTEN ***
+Computes the covariant Riemann-tensor as the array @code{lriem}. If the
+argument @code{dis} is @code{true}, unique nonzero values are displayed.
+
+If the variable @code{cframe_flag} is @code{true}, the covariant Riemann
+tensor is computed directly from the frame field coefficients. Otherwise,
+the (3,1) Riemann tensor is computed first.
+
+For information on index ordering, see @code{riemann()}.
 
 @end defun
 
 @c @node uriemann
 @c @unnumberedsec phony
 @defun uriemann (dis)
-returns the contravariant components of the Riemann
+Computes the contravariant components of the Riemann
 curvature tensor as array elements @code{uriem[i,j,k,l]}.  These are displayed
 if @code{dis} is @code{true}.
 
@@ -333,7 +384,6 @@ if @code{dis} is @code{true}.
 @c @node rinvariant
 @c @unnumberedsec phony
 @defun rinvariant ()
-*** TO BE WRITTEN ***
 Tensor package) forms the Kretchmann-invariant (@code{kinvariant}) obtained by
 contracting the tensors
 @example
@@ -379,26 +429,150 @@ For a demonstration of this capability, see the file
 @c @node nptetrad
 @c @unnumberedsec phony
 @defun nptetrad ()
-Compute a Newman-Penrose null tetrad (@code{np}) and its inverse (@code{npi}).
+Computes a Newman-Penrose null tetrad (@code{np}) and its inverse (@code{npi}).
+See @code{petrov()} for an example.
 
-*** TO BE WRITTEN ***
 @end defun
 
 @c @node psi
 @c @unnumberedsec phony
 @defun psi (dis)
-Compute the five Newman-Penrose coefficients @code{psi[0]}...@code{psi[4]}.
-
-*** TO BE WRITTEN ***
+Computes the five Newman-Penrose coefficients @code{psi[0]}...@code{psi[4]}.
+If @code{psi} is set to @code{true}, the coefficients are displayed.
+See @code{petrov()} for an example.
 
 @end defun
 
 @c @node petrov
 @c @unnumberedsec phony
 @defun petrov ()
-Compute the Petrov classification of the metric characterized by @code{psi[0]}...@code{psi[4]}.
+Computes the Petrov classification of the metric characterized by @code{psi[0]}...@code{psi[4]}.
 
-*** TO BE WRITTEN ***
+For example, the following demonstrates how to obtain the Petrov-classification
+of the Kerr metric:
+
+@example
+
+(%i1) load(ctensor);
+
+(%o1)       /share/tensor/ctensor.mac
+(%i2) init_ctensor();
+
+(%o2)                                done
+(%i3) ct_coords:[t,r,h,p];
+
+(%o3)                            [t, r, h, p]
+(%i4) declare([a,m],constant);
+
+(%o4)                                done
+(%i5) s(r,h):=r^2+(a*cos(h))^2;
+
+                                      2             2
+(%o5)                     s(r, h) := r  + (a cos(h))
+(%i6) d(r):=a^2-2*m*r+r^2;
+
+                                     2            2
+(%o6)                       d(r) := a  - 2 m r + r
+(%i7) fri:matrix(
+ [sqrt(d(r)/s(r,h)), 0, 0, -sqrt(d(r)/s(r,h))*a*sin(h)^2],
+ [0, sqrt(s(r,h)/d(r)), 0, 0],
+ [0, 0, sqrt(s(r,h)), 0 ],
+ [-a/sqrt(s(r,h))*sin(h), 0, 0, (s(r,h)+(a*sin(h))^2)*sin(h)/sqrt(s(r,h))]);
+
+               [        2            2   ]
+               [  sqrt(r  - 2 m r + a )  ]         [           0           ]
+               [  ---------------------  ]         [                       ]
+               [        2    2    2      ]         [       2    2    2     ]
+               [  sqrt(r  + a  cos (h))  ]         [ sqrt(r  + a  cos (h)) ]
+               [                         ]         [ --------------------- ]
+(%o7)  Col 1 = [            0            ] Col 2 = [       2            2  ]
+               [                         ]         [ sqrt(r  - 2 m r + a ) ]
+               [            0            ]         [                       ]
+               [                         ]         [           0           ]
+               [         a sin(h)        ]         [                       ]
+               [ - --------------------- ]         [           0           ]
+               [         2    2    2     ]
+               [   sqrt(r  + a  cos (h)) ]
+
+         [           0           ]
+         [                       ]
+         [           0           ]
+ Col 3 = [                       ]
+         [       2    2    2     ]
+         [ sqrt(r  + a  cos (h)) ]
+         [                       ]
+         [           0           ]
+
+         [          2          2            2    ]
+         [     a sin (h) sqrt(r  - 2 m r + a )   ]
+         [   - -------------------------------   ]
+         [                2    2    2            ]
+         [          sqrt(r  + a  cos (h))        ]
+         [                                       ]
+         [                   0                   ]
+ Col 4 = [                                       ]
+         [                   0                   ]
+         [                                       ]
+         [          2    2    2       2    2     ]
+         [ sin(h) (r  + a  sin (h) + a  cos (h)) ]
+         [ ------------------------------------- ]
+         [               2    2    2             ]
+         [         sqrt(r  + a  cos (h))         ]
+(%i8) ctrgsimp:true;                         
+
+(%o8)                                true
+(%i9) ratfac:true;
+
+(%o9)                                true
+(%i10) cframe_flag:true;
+
+(%o10)                               true
+(%i11) cmetric();
+
+(%o11)                               false
+(%i12) ug:invert(lg)$
+
+(%i13) nptetrad(false);
+
+(%o13)                               done
+(%i14) christof(false);
+
+(%o14)                               done
+(%i15) lriemann(false);
+
+(%o15)                               done
+(%i16) ricci(false);
+
+(%o16)                               done
+(%i17) weyl(false);
+
+(%o17)                               done
+(%i18) psi(true);
+
+(%t18)                             psi  = 0
+                                      0
+
+(%t19)                             psi  = 0
+                                      1
+
+                                          m
+(%t20)                     psi  = ------------------
+                              2                    3
+                                  (r + %i a cos(h))
+
+(%t21)                             psi  = 0
+                                      3
+
+(%t22)                             psi  = 0
+                                      4
+
+(%o22)                               done
+(%i22) petrov();
+
+(%o22)                             Type is D
+
+@end example
+
 
 @end defun
 
@@ -408,7 +582,7 @@ Compute the Petrov classification of the metric characterized by @code{psi[0]}..
 *** TO BE WRITTEN - NOT YET IMPLEMENTED ***
 
 
-@section miscellaneous features
+@section Miscellaneous features
 
 @c @node ctransform
 @c @unnumberedsec phony
@@ -422,28 +596,154 @@ functions which define the transformation.  (Formerly called TRANSFORM.)
 
 @c @node findde
 @c @unnumberedsec phony
-@defun findde ()
-*** TO BE WRITTEN ***
+@defun findde (array, n)
+
+returns a list of the unique differential equations (expressions)
+corresponding to the elements of the @code{n} dimensional square
+@code{array}. Presently, @code{n} may be 2 or 3. @code{deindex} is a global list
+containing the indices of @code{array} corresponding to these unique
+differential equations. For the Einstein tensor (@code{ein}), which
+is a two dimensional array, if computed for the metric in the example
+below, @code{findde} gives the following independent differential equations:
+
+
+@example
+(%i1) load(ctensor);
+
+(%o1)       /share/tensor/ctensor.mac
+(%i2) derivabbrev:true;
+
+(%o2)                                true
+(%i3) dim:4;
+
+(%o3)                                  4
+(%i4) lg:matrix([a,0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,-d]);
+
+                          [ a  0       0        0  ]
+                          [                        ]
+                          [     2                  ]
+                          [ 0  x       0        0  ]
+(%o4)                     [                        ]
+                          [         2    2         ]
+                          [ 0  0   x  sin (y)   0  ]
+                          [                        ]
+                          [ 0  0       0       - d ]
+(%i5) depends([a,d],x);
+
+(%o5)                            [a(x), d(x)]
+(%i6) ct_coords:[x,y,z,t];
+
+(%o6)                            [x, y, z, t]
+(%i7) cmetric();
+
+(%o7)                                done
+(%i8) einstein(false);
+
+(%o8)                                done
+(%i9) findde(ein,2);
+
+                                            2
+(%o9) [d  x - a d + d, 2 a d d    x - a (d )  x - a  d d  x + 2 a d d
+        x                     x x         x        x    x            x
+
+                                                              2          2
+                                                      - 2 a  d , a  x + a  - a]
+                                                           x      x
+
+@end example
+
+
 @end defun
 @c @node cograd
 @c @unnumberedsec phony
 @defun cograd ()
-*** TO BE WRITTEN ***
+computes the COvariant GRADient of a scalar function allowing the
+user to choose the corresponding vector name as the example under
+@code{contragrad} illustrates.
 @end defun
 @c @node contragrad
 @c @unnumberedsec phony
 @defun contragrad ()
-*** TO BE WRITTEN ***
+
+computes the CONTRAvariant GRADient of a scalar ^F2function^F* allowing
+the user to choose the corresponding vector^F2name^F* as the example
+below for the Schwarzschild metric illustrates:
+
+@example
+
+
+(%i1) load(ctensor);
+
+(%o1)       /share/tensor/ctensor.mac
+(%i2) derivabbrev:true;
+
+(%o2)                                true
+(%i3) ct_coordsys(exteriorschwarzschild,all);
+
+(%o3)                                done
+(%i4) depends(f,r);
+
+(%o4)                               [f(r)]
+(%i5) cograd(f,g1);
+
+(%o5)                                done
+(%i6) listarray(g1);
+
+(%o6)                            [f , 0, 0, 0]
+                                   r
+(%i7) contragrad(f,g2);
+
+(%o7)                                done
+(%i8) listarray(g2);
+
+                            f  r - 2 f  m
+                             r        r
+(%o8)                      [-------------, 0, 0, 0]
+                                  r
+
+@end example
+
 @end defun
 @c @node dscalar
 @c @unnumberedsec phony
 @defun dscalar ()
-*** TO BE WRITTEN ***
+computes the tensor d'Alembertian of the scalar function once
+dependencies have been declared upon the function. For example:
+
+@example
+(%i1) load(ctensor);
+
+(%o1)       /share/tensor/ctensor.mac
+(%i2) derivabbrev:true;
+
+(%o2)                                true
+(%i3) ct_coordsys(exteriorschwarzschild,all);
+
+(%o3)                                done
+(%i4) depends(p,r);
+
+(%o4)                               [p(r)]
+(%i5) factor(dscalar(p));
+
+                          2
+                    p    r  - 2 m p    r + 2 p  r - 2 m p
+                     r r           r r        r          r
+(%o5)               --------------------------------------
+                                       2
+                                      r
+@end example
+
 @end defun
 @c @node checkdiv
 @c @unnumberedsec phony
 @defun checkdiv ()
-*** TO BE WRITTEN ***
+
+computes the covariant divergence of the mixed second rank tensor
+(whose first index must be covariant) by printing the
+corresponding n components of the vector field (the divergence) where
+n = @code{dim}. If the argument to the function is @code{g} then the
+divergence of the Einstein tensor will be formed and must be zero.
+In addition, the divergence (vector) is given the array name @code{div}.
 @end defun
 
 @c @node cgeodesic
@@ -460,50 +760,310 @@ the argument @code{dis} is @code{true} then these equations are displayed.
 @c @node bdvac
 @c @unnumberedsec phony
 @defun bdvac ()
-*** TO BE WRITTEN ***
+
+generates the covariant components of the vacuum field equations of
+the Brans- Dicke gravitational theory. There are two field equations.
+The components of the second rank covariant field tensor are
+represented by the array @code{bd2}. The scalar field equation requires the
+user to input the name of a scalar and declare its functional
+dependencies. This field equation is represented by the scalar @code{bd0}.
+
 @end defun
 @c @node invariant1
 @c @unnumberedsec phony
 @defun invariant1 ()
-*** TO BE WRITTEN ***
+
+generates the mixed Euler- Lagrange tensor (field equations) for the
+invariant density of R^2. The field equations are the components of an
+array named @code{inv1}.
+
 @end defun
 @c @node invariant2
 @c @unnumberedsec phony
 @defun invariant2 ()
-*** TO BE WRITTEN - NOT YET IMPLEMENTED ***
+
+*** NOT YET IMPLEMENTED ***
+
+generates the mixed Euler- Lagrange tensor (field equations) for the
+invariant density of @code{ric[i,j]*uriem[i,j]}. The field equations are the
+components of an array named @code{inv2}.
+
+
 @end defun
 @c @node bimetric
 @c @unnumberedsec phony
 @defun bimetric ()
-*** TO BE WRITTEN - NOT YET IMPLEMENTED ***
+
+*** NOT YET IMPLEMENTED ***
+
+generates the field equations of Rosen's bimetric theory. The field
+equations are the components of an array named @code{rosen}.
+
 @end defun
 
 @section Utility functions
 
 @c @node diagmatrixp
 @c @unnumberedsec phony
-@defun diagmatrixp ()
-*** TO BE WRITTEN ***
+@defun diagmatrixp (m)
+
+Returns @code{true} if @code{m} is a diagonal matrix or (2D) array.
+
 @end defun
 @c @node symmetricp
 @c @unnumberedsec phony
-@defun symmetricp ()
-*** TO BE WRITTEN ***
+@defun symmetricp (m)
+
+Returns @code{true} if @code{m} is a symmetric matrix or (2D) array.
+
 @end defun
 @c @node ntermst
 @c @unnumberedsec phony
-@defun ntermst ()
-*** TO BE WRITTEN ***
+@defun ntermst (f)
+gives the user a quick picture of the "size" of the doubly subscripted
+tensor (array) @code{f}.  It prints two element lists where the second
+element corresponds to NTERMS of the components specified by the first
+elements.  In this way, it is possible to quickly find the non-zero
+expressions and attempt simplification.
+
 @end defun
 @c @node cdisplay
 @c @unnumberedsec phony
-@defun cdisplay ()
-*** TO BE WRITTEN ***
+@defun cdisplay (ten)
+displays all the elements of the tensor @code{ten}, as represented by
+a multidimensional array. Tensors of rank 0 and 1, as well as other types
+of variables, are displayed as with @code{ldisplay}. Tensors of rank 2 are
+displayed as 2-dimensional matrices, while tensors of higher rank are displayed
+as a list of 2-dimensional matrices. For instance, the Riemann-tensor of
+the Schwarzschild metric can be viewed as:
+
+@example
+(%i1) load(ctensor);
+
+(%o1)       /share/tensor/ctensor.mac
+(%i2) ct_coordsys(exteriorschwarzschild,all);
+
+(%o2)                                done
+(%i3) riemann(false);
+
+(%o3)                                done
+(%i4) cdisplay(riem);
+
+riem     = 
+    1, 1
+
+       [ 0         0                 0                        0               ]
+       [                                                                      ]
+       [            m                                                         ]
+       [ 0  - --------------         0                        0               ]
+       [          2                                                           ]
+       [      r (r  - 2 m r)                                                  ]
+       [                                                                      ]
+       [                              m                                       ]
+       [ 0         0          - --------------                0               ]
+       [                            2                                         ]
+       [                        r (r  - 2 m r)                                ]
+       [                                                                      ]
+       [                                                               2      ]
+       [                                        m (2 r - 2 m)       2 m       ]
+       [ 0         0                 0          ------------- - ------------- ]
+       [                                          2         2     2         2 ]
+       [                                        (r  - 2 m r)    (r  - 2 m r)  ]
+
+                                 [         m            ]
+                                 [ 0  -----------  0  0 ]
+                                 [     3        2       ]
+                                 [    r  - 2 m r        ]
+                      riem     = [                      ]
+                          1, 2   [ 0       0       0  0 ]
+                                 [                      ]
+                                 [ 0       0       0  0 ]
+                                 [                      ]
+                                 [ 0       0       0  0 ]
+
+                                 [            m         ]
+                                 [ 0  0  -----------  0 ]
+                                 [        3        2    ]
+                                 [       r  - 2 m r     ]
+                      riem     = [                      ]
+                          1, 3   [ 0  0       0       0 ]
+                                 [                      ]
+                                 [ 0  0       0       0 ]
+                                 [                      ]
+                                 [ 0  0       0       0 ]
+
+                                [                2 m     ]
+                                [ 0  0  0  - ----------- ]
+                                [             3        2 ]
+                                [            r  - 2 m r  ]
+                     riem     = [                        ]
+                         1, 4   [ 0  0  0        0       ]
+                                [                        ]
+                                [ 0  0  0        0       ]
+                                [                        ]
+                                [ 0  0  0        0       ]
+
+                                      [ 0  0  0  0 ]
+                                      [            ]
+                                      [ m          ]
+                                      [ -  0  0  0 ]
+                           riem     = [ r          ]
+                               2, 1   [            ]
+                                      [ 0  0  0  0 ]
+                                      [            ]
+                                      [ 0  0  0  0 ]
+
+                           [   m                              ]
+                           [ - -  0       0            0      ]
+                           [   r                              ]
+                           [                                  ]
+                           [  0   0       0            0      ]
+                           [                                  ]
+                riem     = [         2 m - r                  ]
+                    2, 2   [  0   0  ------- + 1       0      ]
+                           [            r                     ]
+                           [                                  ]
+                           [                      m (2 m - r) ]
+                           [  0   0       0       ----------- ]
+                           [                       2          ]
+                           [                      r  - 2 m r  ]
+
+                                    [ 0  0    0    0 ]
+                                    [                ]
+                                    [         2 m    ]
+                                    [ 0  0  - ---  0 ]
+                         riem     = [          r     ]
+                             2, 3   [                ]
+                                    [ 0  0    0    0 ]
+                                    [                ]
+                                    [ 0  0    0    0 ]
+
+                                      [ 0  0  0  0 ]
+                                      [            ]
+                                      [          m ]
+                                      [ 0  0  0  - ]
+                           riem     = [          r ]
+                               2, 4   [            ]
+                                      [ 0  0  0  0 ]
+                                      [            ]
+                                      [ 0  0  0  0 ]
+
+                                [       0        0  0  0 ]
+                                [                        ]
+                                [       0        0  0  0 ]
+                                [                        ]
+                     riem     = [      2                 ]
+                         3, 1   [ m sin (theta)          ]
+                                [ -------------  0  0  0 ]
+                                [       r                ]
+                                [                        ]
+                                [       0        0  0  0 ]
+
+                              [ 0          0          0  0 ]
+                              [                            ]
+                              [ 0          0          0  0 ]
+                              [                            ]
+                   riem     = [             2              ]
+                       3, 2   [      2 m sin (theta)       ]
+                              [ 0  - ---------------  0  0 ]
+                              [             r              ]
+                              [                            ]
+                              [ 0          0          0  0 ]
+
+             [        2                                                     ]
+             [   m sin (theta)                                              ]
+             [ - -------------         0         0             0            ]
+             [         r                                                    ]
+             [                                                              ]
+             [                         2                                    ]
+             [                  2 m sin (theta)                             ]
+             [        0         ---------------  0             0            ]
+  riem     = [                         r                                    ]
+      3, 3   [                                                              ]
+             [        0                0         0             0            ]
+             [                                                              ]
+             [                                                     2        ]
+             [                                      m (2 m - r) sin (theta) ]
+             [        0                0         0  ----------------------- ]
+             [                                             2                ]
+             [                                            r  - 2 m r        ]
+
+                                [ 0  0  0        0       ]
+                                [                        ]
+                                [ 0  0  0        0       ]
+                                [                        ]
+                     riem     = [               2        ]
+                         3, 4   [          m sin (theta) ]
+                                [ 0  0  0  ------------- ]
+                                [                r       ]
+                                [                        ]
+                                [ 0  0  0        0       ]
+
+                                [      0        0  0  0 ]
+                                [                       ]
+                                [      0        0  0  0 ]
+                                [                       ]
+                                [      0        0  0  0 ]
+                     riem     = [                       ]
+                         4, 1   [            2          ]
+                                [ 2 m r - 4 m           ]
+                                [ ------------  0  0  0 ]
+                                [       4               ]
+                                [      r                ]
+
+                                [ 0       0        0  0 ]
+                                [                       ]
+                                [ 0       0        0  0 ]
+                                [                       ]
+                                [ 0       0        0  0 ]
+                     riem     = [                       ]
+                         4, 2   [               2       ]
+                                [      m r - 2 m        ]
+                                [ 0  - ----------  0  0 ]
+                                [           4           ]
+                                [          r            ]
+
+                                [ 0  0       0        0 ]
+                                [                       ]
+                                [ 0  0       0        0 ]
+                                [                       ]
+                                [ 0  0       0        0 ]
+                     riem     = [                       ]
+                         4, 3   [                  2    ]
+                                [         m r - 2 m     ]
+                                [ 0  0  - ----------  0 ]
+                                [              4        ]
+                                [             r         ]
+
+                      [              2                            ]
+                      [   2 m r - 4 m                             ]
+                      [ - ------------      0           0       0 ]
+                      [         4                                 ]
+                      [        r                                  ]
+                      [                                           ]
+                      [                          2                ]
+                      [                 m r - 2 m                 ]
+                      [       0         ----------      0       0 ]
+           riem     = [                      4                    ]
+               4, 4   [                     r                     ]
+                      [                                           ]
+                      [                                      2    ]
+                      [                             m r - 2 m     ]
+                      [       0             0       ----------  0 ]
+                      [                                  4        ]
+                      [                                 r         ]
+                      [                                           ]
+                      [       0             0           0       0 ]
+
+(%o4)                                done
+
+@end example
 @end defun
 @c @node deleten
 @c @unnumberedsec phony
-@defun deleten ()
-*** TO BE WRITTEN ***
+@defun deleten (list,n)
+returns a new list consisting of @code{list} with the @code{n}th element
+deleted.
 @end defun
 
 @section Variables used by CTENSOR
@@ -543,7 +1103,7 @@ ratchristof
 @c @node rateinstein
 @c @unnumberedsec phony
 @defvar rateinstein
- default: @code{false} - if @code{true} rational simplification will be
+ default: @code{true} - if @code{true} rational simplification will be
 performed on the non-zero components of Einstein tensors; if
 @code{ratfac} is @code{true} then the components will also be factored.
 
@@ -551,20 +1111,41 @@ performed on the non-zero components of Einstein tensors; if
 @c @node ratriemann
 @c @unnumberedsec phony
 @defvar ratriemann
- default: @code{false} - one of the switches which controls
+ default: @code{true} - one of the switches which controls
 simplification of Riemann tensors; if @code{true}, then rational
 simplification will be done; if @code{ratfac} is @code{true} then each of the
 components will also be factored.
 
 @end defvar
 
-ratweyl
+@c @node ratweyl
+@c @unnumberedsec phony
+@defvar ratweyl
+ default: @code{true} - If @code{true}, this switch causes the @code{Weyl()} function
+to apply rational simplification to the values of the Weyl tensor. If
+@code{ratfac} is @code{true}, then the components will also be factored.
+@end defvar
 
-lfg
+@c @node lfg
+@c @unnumberedsec phony
+@defvar lfg
+The covariant frame metric. By default, it is initialized to the 4-dimensional Lorentz frame with signature (+,+,+,-). Used when @code{cframe_flag} is @code{true}.
+@end defvar
 
-ufg
+@c @node ufg
+@c @unnumberedsec phony
+@defvar ufg
+The inverse frame metric. Computed from @code{lfg} when @code{cmetric()} is claled while @code{cframe_flag} is set to @code{true}.
+@end defvar
 
-riem
+@c @note riem
+@c @unnumberedsec phony
+@defvar riem
+The (3,1) Riemann tensor. Computed when the function @code{riemann()} is invoked. For information about index ordering, see the description of @code{riemann()}.
+
+if @code{cframe_flag} is @code{true}, @code{riem} is computed from the covariant Riemann-tensor @code{lriem}.
+
+@end defvar
 
 lriem
 
@@ -609,47 +1190,30 @@ See also @code{csetup}.
 The following names are used internally by the CTENSOR package and
 should not be redefined:
 
-_lg()
-
-_ug()
-
-cleanup()
-
-contract4()
-
-ctaylor()
-
-filemet()
-
-findde1()
-
-findde2()
-
-findde3()
-
-kdelt()
-
-newmet()
-
-setflags()
-
-readvalue()
-
-resimp()
-
-sermet()
-
-txyzsum()
-
-tmetric()
-
-triemann()
-
-tricci()
-
-trrc()
-
-yesp()
+@example
+  Name         Description
+  ---------------------------------------
+  _lg()
+  _ug()
+  cleanup()
+  contract4()  Used by psi()
+  filemet()    Used by csetup() when reading the metric from a file
+  findde1()    Used by findde()
+  findde2()    Used by findde()
+  findde3()    Used by findde()
+  kdelt()
+  newmet()     Used by csetup() for setting up a metric interactively
+  setflags()   Used by init_ctensor()
+  readvalue()
+  resimp()
+  sermet()
+  txyzsum()
+  tmetric()    Frame metric, used by cmetric() when cframe_flag:true
+  triemann()   Riemann-tensor in frame base, used when cframe_flag:true
+  tricci()     Ricci-tensor in frame base, used when cframe_flag:true
+  trrc()       Ricci rotation coefficients, used by christof()
+  yesp()
+@end example
 
 
 @section Changes
@@ -659,55 +1223,31 @@ Many functions and variables have been renamed in order to make the
 package compatible with the commercial version of MACSYMA.
 
 
-@code{vect_coords}				Was: COORDINATES
+@example
+  New Name     Old Name        Description
+  --------------------------------------------------
+  vect_coords  COORDINATES
+  ctaylor()    DLGTAYLOR()
+  lgeod[]      EM              Geodesic equations
+  ein[]        G[]             Mixed Einstein-tensor
+  ric[]        LR[]            Mixed Ricci-tensor
+  ricci()      LRICCICOM()     Compute the mixed Ricci-tensor
+  ctaypov      MINP
+  cgeodesic()  MOTION
+  ct_coords    OMEGA           Metric coordinates
+  ctayvar      PARAM
+  lriem[]      R[]             Covariant Riemann-tensor
+  uriemann()   RAISERIEMANN()  Compute the contravariant Riemann-tensor
+  ratriemann   RATRIEMAN       Rational simplification of the Riemann-tensor
+  uric[]       RICCI[]         Contravariant Ricci-tensor
+  uricci()     RICCICOM()      Compute the contravariant Ricci-tensor
+  cmetric()    SETMETRIC()     Set up the metric
+  ctaypt       TAYPT
+  ctayswitch   TAYSWITCH
+  csetup()     TSETUP()        Start interactive setup session
+  ctransform() TTRANSFORM()    Interactive coordinate transformation
+  uriem[]      UR[]            Contravariant Riemann-tensor
+  weyl[]       W[]             (3,1) Weyl-tensor
 
-@code{ctaylor()}				Was: DLGTAYLOR()
-
-@code{lgeod[]}					Was: EM
-
-@code{ein[]}					Was: G[]
-
-@code{ric[]}					Was: LR[]
-
-@code{ricci()}					Was: LRICCICOM()
-
-@code{ctaypov}					Was: MINP
-
-@code{cgeodesic()}				Was: MOTION
-
-@code{ct_coords}				Was: OMEGA
-
-@code{ctayvar}					Was: PARAM
-
-@code{riem[]}					Was: R[]
-
-@code{uriemann()}				Was: RAISERIEMANN()
-
-@code{ratriemann}				Was: RATRIEMAN
-
-@code{uric[]}					Was: RICCI[]
-
-@code{uricci()}					Was: RICCICOM()
-
-@code{cmetric()}				Was: SETMETRIC()
-
-@code{ctaypt}					Was: TAYPT
-
-@code{ctayswitch}				Was: TAYSWITCH
-
-@code{csetup()}					Was: TSETUP()
-
-@code{ctransform()}				Was: TTRANSFORM()
-
-@code{uriem[]}					Was: UR[]
-
-@code{weyl[]}					Was: W[]
-
-
-
-
-
-
-
-
+@end example
 

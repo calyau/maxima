@@ -13,6 +13,152 @@
 ITENSOR.  CTENSOR is Component Tensor Manipulation, and may be accessed
 with @code{load(ctensor)}.
 
+In ITENSOR a tensor is represented as an "indexed object" .  This is a
+function of 3 groups of indices which represent the covariant,
+contravariant and derivative indices.  The covariant indices are
+specified by a list as the first argument to the indexed object, and
+the contravariant indices by a list as the second argument. If the
+indexed object lacks either of these groups of indices then the empty
+list [] is given as the corresponding argument.  Thus, @code{g([a,b],[c])}
+represents an indexed object called @code{g} which has two covariant indices
+@code{(a,b)}, one contravariant index (@code{c}) and no derivative indices.
+
+The derivative indices, if they are present, are appended as
+additional arguments to the symbolic function representing the tensor.
+They can be explicitly specified by the user or be created in the
+process of differentiation with respect to some coordinate variable.
+Since ordinary differentiation is commutative, the derivative indices
+are sorted alphanumerically, unless @code{iframe_flag} is set to @code{true},
+indicating that a frame metric is being used.. This canonical ordering makes it
+possible for MAXIMA to recognize that, for example, @code{t([a],[b],i,j)} is
+the same as @code{t([a],[b],j,i)}.  Differentiation of an indexed object with
+respect to some coordinate whose index does not appear as an argument
+to the indexed object would normally yield zero. This is because
+MAXIMA would not know that the tensor represented by the indexed
+object might depend implicitly on the corresponding coordinate.  By
+modifying the existing MAXIMA function @code{diff} in ITENSOR, MAXIMA now
+assumes that all indexed objects depend on any variable of
+differentiation unless otherwise stated.  This makes it possible for
+the summation convention to be extended to derivative indices. It
+should be noted that ITENSOR does not possess the capabilities of
+raising derivative indices, and so they are always treated as
+covariant.
+
+The following functions are available in the tensor package for
+manipulating indexed objects.  At present, with respect to the
+simplification routines, it is assumed that indexed objects do not
+by default possess symmetry properties. This can be overridden by
+setting the variable @code{allsym[false]} to @code{true}, which will
+result in treating all indexed objects completely symmetric in their
+lists of covariant indices and symmetric in their lists of
+contravariant indices.
+
+The ITENSOR package generally treats tensors as opaque objects. Tensorial
+equations are manipulated based on algebraic rules, specifically symmetry
+and contraction rules. In addition, the ITENSOR package understands
+covariant differentiation, curvature, and torsion. Calculations can be
+performed relative to a metric of moving frame, depending on the setting
+of the @code{itorsion_flag} variable.
+
+A sample session below demonstrates how to load the ITENSOR package,
+specify the name of the metric, and perform some simple calculations.
+
+@example
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) imetric(g);
+
+(%o2)                                done
+(%i3) components(g([i,j],[]),p([i,j],[])*e([],[]))$
+
+(%i4) ishow(g([k,l],[]))$
+
+(%t4)                               e p
+                                       k l
+(%i5) ishow(diff(v([i],[]),t))$
+
+(%t5)                                  0
+(%i6) depends(v,t);
+
+(%o6)                               [v(t)]
+(%i7) ishow(diff(v([i],[]),t))$
+
+                                    d
+(%t7)                               -- (v )
+                                    dt   i
+(%i8) ishow(idiff(v([i],[]),j))$
+
+(%t8)                                v
+                                      i,j
+(%i9) ishow(extdiff(v([i],[]),j))$
+
+(%t9)                             v    - v
+                                   j,i    i,j
+(%i10) ishow(liediff(v,w([i],[])))$
+
+                               %3          %3
+(%t10)                        v   w     + v   w
+                                   i,%3    ,i  %3
+(%i11) ishow(covdiff(v([i],[]),j))$
+
+                                              %4
+(%t11)                        v    - v   ichr2
+                               i,j    %4      i j
+(%i12) ishow(ev(%,ichr2))$
+
+               %4 %5
+(%t12) v    - g      v   (e p       + e   p     - e p       - e    p
+        i,j           %4     j %5,i    ,i  j %5      i j,%5    ,%5  i j
+
+                                                     + e p       + e   p    )/2
+                                                          i %5,j    ,j  i %5
+(%i13) iframe_flag:true;
+
+(%o13)                               true
+(%i14) ishow(covdiff(v([i],[]),j))$
+
+                                             %6
+(%t14)                        v    - v   icc2
+                               i,j    %6     i j
+(%i15) ishow(ev(%,icc2))$
+
+                                        %6         %6
+(%t15)                  v    - v   (ifc2    + ichr2   )
+                         i,j    %6      i j        i j
+(%i16) ishow(radcan(ev(%,ifc2)))$
+
+               %1               %1     %3 %2    %1
+(%t16) (v   ifb    - 2 v   ichr2    + g      ifb     v   g     + 2 v
+         %1    i j      %1      i j             %2 j  %3  i %1      i,j
+
+                                                     %3 %1    %2
+                                                  - g      ifb     g     v  )/2
+                                                              %1 i  %2 j  %3
+(%i17) ishow(canform(s([i,j],[])-s([j,i])))$
+
+(%t17)                            s    - s
+                                   i j    j i
+(%i18) decsym(s,2,0,[sym(all)],[]);
+
+(%o18)                               done
+(%i19) ishow(canform(s([i,j],[])-s([j,i])))$
+
+(%t19)                                 0
+(%i20) ishow(canform(a([i,j],[])+a([j,i])))$
+
+(%t20)                            a    + a
+                                   j i    i j
+(%i21) decsym(a,2,0,[anti(all)],[]);
+
+(%o21)                               done
+(%i22) ishow(canform(a([i,j],[])+a([j,i])))$
+
+(%t22)                                 0
+@end example
+
+
+
 @c end concepts Tensor
 
 @node Definitions for Tensor,  , Introduction to Tensor, Tensor
@@ -21,14 +167,25 @@ with @code{load(ctensor)}.
 
 @c @node entertensor
 @c @unnumberedsec phony
-@defun entertensor
-*** TO BE WRITTEN ***
+@defun entertensor (name)
+
+is a function which, by prompting, allows one to create an indexed
+object called @code{name} with any number of tensorial and derivative
+indices. Either a single index or a list of indices (which may be
+null) is acceptable input (see the example under @code{covdiff}).
+
 @end defun
 
 @c @node changename
 @c @unnumberedsec phony
-@defun changename
-*** TO BE WRITTEN ***
+@defun changename (old,new,exp)
+
+will change the name of all indexed objects called @code{old} to @code{new}
+in @code{exp}. @code{old} may be either a symbol or a list of the form
+@code{[name, m, n]} in which case only those indexed objects called
+@code{name} with @code{m} covariant and @code{n} contravariant indices will be
+renamed to @code{new}.
+
 @end defun
 
 @c @node listoftens
@@ -39,21 +196,137 @@ with @code{load(ctensor)}.
 
 @c @node ishow
 @c @unnumberedsec phony
-@defun ishow
-*** TO BE WRITTEN ***
+@defun ishow (exp)
+
+displays @code{exp} with the indexed objects in it shown having their
+covariant indices as subscripts and contravariant indices as
+superscripts. The derivative indices are displayed as subscripts,
+separated from the covariant indices by a comma (see the examples
+throughout this document).
+
 @end defun
 
 @c @node indices
 @c @unnumberedsec phony
-@defun indices
-*** TO BE WRITTEN ***
+@defun indices (exp)
+
+Returns a list of two elements.  The first is a list of the free
+indices in @code{exp} (those that occur only once). The second is the
+list of the dummy indices in @code{exp} (those that occur exactly twice)
+as the following example demonstrates.
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) ishow(a([i,j],[k,l],m,n)*b([k,o],[j,m,p],q,r))$
+
+                                k l      j m p
+(%t2)                          a        b
+                                i j,m n  k o,q r
+(%i3) indices(%);
+
+(%o3)                 [[l, p, i, n, o, q, r], [k, j, m]]
+
+@end example
+
+A tensor product containing the same index more than twice is syntactically
+illegal. @code{indices} attempts to deal with these expressions in a
+reasonable manner; however, when it is called to operate upon such an
+illegal expression, its behavior should be considered undefined.
+
+
 @end defun
 
-@c @node rename
+@c @node rename (exp[, count])
 @c @unnumberedsec phony
 @defun rename
-*** TO BE WRITTEN ***
+
+Returns an expression equivalent to @code{exp} but with the dummy indices
+in each term chosen from the set @code{[%1, %2,...]}, if the optional second
+argument is omitted. Otherwise, the dummy indices are indexed
+beginning at the value of @code{count}.  Each dummy index in a product
+will be different. For a sum, @code{rename} will operate upon each term in
+the sum resetting the counter with each term. In this way @code{rename} can
+serve as a tensorial simplifier. In addition, the indices will be
+sorted alphanumerically (if @code{allsym} is @code{true}) with respect to
+covariant or contravariant indices depending upon the value of @code{flipflag}.
+If @code{flipflag} is @code{false} then the indices will be renamed according
+to the order of the contravariant indices. If @code{flipflag} is @code{true}
+the renaming will occur according to the to the order of the contravariant
+indices. It often happens that the combined effect of the two renamings will
+reduce an expression more than either one by itself.
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) allsym:true;
+
+(%o2)                                true
+(%i3) g([],[%4,%5])*g([],[%6,%7])*ichr2([%1,%4],[%3])*
+ichr2([%2,%3],[u])*ichr2([%5,%6],[%1])*ichr2([%7,r],[%2])-
+g([],[%4,%5])*g([],[%6,%7])*ichr2([%1,%2],[u])*
+ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
+
+(%i4) exp:ishow(%)$
+
+       %4 %5  %6 %7      %3         u          %1         %2
+(%t4) g      g      ichr2      ichr2      ichr2      ichr2
+                         %1 %4      %2 %3      %5 %6      %7 r
+
+                        %4 %5  %6 %7      u          %1         %3         %2
+                     - g      g      ichr2      ichr2      ichr2      ichr2
+                                          %1 %2      %3 %5      %4 %6      %7 r
+(%i5) flipflag:true;
+
+(%o5)                                true
+(%i6) ishow(rename(exp))$
+
+       %2 %5  %6 %7      %4         u          %1         %3
+(%t6) g      g      ichr2      ichr2      ichr2      ichr2
+                         %1 %2      %3 %4      %5 %6      %7 r
+
+                        %4 %5  %6 %7      u          %1         %3         %2
+                     - g      g      ichr2      ichr2      ichr2      ichr2
+                                          %1 %2      %3 %4      %5 %6      %7 r
+(%i7) flipflag:false;
+
+(%o7)                                false
+(%i8) rename(%th(2));
+
+(%o8)                                  0
+(%i9) ishow(rename(exp))$
+
+       %1 %2  %3 %4      %5         %6         %7        u
+(%t9) g      g      ichr2      ichr2      ichr2     ichr2
+                         %1 %6      %2 %3      %4 r      %5 %7
+
+                        %1 %2  %3 %4      %6         %5         %7        u
+                     - g      g      ichr2      ichr2      ichr2     ichr2
+                                          %1 %3      %2 %6      %4 r      %5 %7
+@end example
+
 @end defun
+
+@c @node flipflag
+@c @unnumberedsec phony
+@defvar flipflag
+
+Default: @code{false}. if @code{false} then the indices will be
+renamed according to the order of the contravariant indices,
+otherwise according to the order of the covariant indices.
+The function influences @code{rename()} in the following way:
+If @code{flipflag} is @code{false} then @code{rename} forms a list
+of the contravariant indices as they are encountered from left to right
+(if @code{true} then of the covariant indices). The first dummy
+index in the list is renamed to @code{%1}, the next to @code{%2}, etc.
+Then sorting occurs after the @code{rename()}-ing (see the example
+under @code{rename()}).
+
+@end defvar
 
 @c @node defcon
 @c @unnumberedsec phony
@@ -88,25 +361,57 @@ all indexed objects.
 @c @node contract
 @c @unnumberedsec phony
 @defun contract (exp)
-*** TO BE WRITTEN ***
+
+Carries out the tensorial contractions in @code{exp} which may be any
+combination of sums and products.  This function uses the information
+given to the @code{defcon} function.  When using @code{contract}, @code{exp}
+must be fully expanded. Also see the function @code{imetric} and the
+ example under @code{dim}.
+
+
 @end defun
 
 @c @node indexed_tensor
 @c @unnumberedsec phony
-@defun indexed_tensor
-*** TO BE WRITTEN ***
+@defun indexed_tensor (tensor)
+
+Must be executed before assigning components to a @code{tensor} for which
+a built in value already exists as with @code{ichr1}, @code{ichr2},
+@code{icurvature}. See the example under @code{icurvature}.
+
 @end defun
 
 @c @node components
 @c @unnumberedsec phony
-@defun components
-*** TO BE WRITTEN ***
+@defun components (tensor, exp)
+
+permits one to assign an indicial value to an expression
+@code{exp} giving the values of the components of @code{tensor}. These
+are automatically substituted for the tensor whenever it occurs with
+all of its indices. The tensor must be of the form @code{t([...],[...])}
+where either list may be empty. @code{exp} can be any indexed expression
+involving other objects with the same free indices as @code{tensor}. When
+used to assign values to the metric tensor wherein the components
+contain dummy indices one must be careful to define these indices to
+avoid the generation of multiple dummy indices. Removal of this
+assignment is given to the function @code{remcomps}.
+
+The example under @code{defcon} demonstrates the use of the
+@code{components} function to define an algebraically special metric and
+also shows how the null property of the vector field can be given
+with the property assignment functions. The example above under @code{ichr2}
+gives the basic syntax used in the @code{components} statement.
+
+
 @end defun
 
 @c @node remcomps
 @c @unnumberedsec phony
-@defun remcomps
-*** TO BE WRITTEN ***
+@defun remcomps (tensor)
+
+Unbinds all values from @code{tensor} which were assigned with the
+@code{components} function.
+
 @end defun
 
 @c @node showcomps
@@ -118,13 +423,20 @@ all indexed objects.
 @c @node idummy
 @c @unnumberedsec phony
 @defun idummy ()
-*** TO BE WRITTEN ***
+
+Increments @code{icounter} and returns as its value an index of the form
+@code{%n} where n is a positive integer.  This guarantees that dummy indices
+which are needed in forming expressions will not conflict with indices
+already in use (see the example under @code{indices}).
+
 @end defun
 
 @c @node idummyx
 @c @unnumberedsec phony
 @defvar idummyx
-*** TO BE WRITTEN ***
+
+Is the prefix for dummy indices (see the example under @code{indices}).
+
 @end defvar
 
 @c @node icounter
@@ -188,16 +500,96 @@ required simplification.
 
 @section Tensor symmetries
 
+@c @node allsym
+@c @unnumberedsec phone
+@defvar allsym
+
+Default: @code{false}. if @code{true} then all indexed objects
+are assumed symmetric in all of their covariant and contravariant
+indices. If @code{false} then no symmetries of any kind are assumed
+in these indices. Derivative indices are always taken to be symmetric
+unless @code{iframe_flag} is set to @code{true}.
+
+@end defvar
+
 @c @node decsym
 @c @unnumberedsec phony
-@defun decsym
-*** TO BE WRITTEN ***
+@defun decsym (tensor, m, n, [cov1,cov2,...], [contr1,contr2,...])
+
+Declares symmetry properties for @code{tensor} of @code{m} covariant and
+@code{n} contravariant indices. The @code{covi} and @code{contri} are
+pseudofunctions expressing symmetry relations among the covariant and
+contravariant indices respectively.  These are of the form
+@code{symoper(index1, index2,...)} where @code{symoper} is one of
+@code{sym}, @code{anti} or @code{cyc} and the @code{indexi} are integers
+indicating the position of the index in the @code{tensor}.  This will
+declare @code{tensor} to be symmetric, antisymmetric or cyclic respectively
+in the @code{indexi}. @code{symoper(all)} is also an allowable form which
+indicates all indices obey the symmetry condition. For example, given an
+object @code{b} with 5 covariant indices,
+@code{decsym(b,5,3,[sym(1,2),anti(3,4)],[cyc(all)])} declares @code{b}
+symmetric in its first and second and antisymmetric in its third and
+fourth covariant indices, and cyclic in all of its contravariant indices.
+Either list of symmetry declarations may be null.  The function which
+performs the simplifications is @code{canform} as the example below
+illustrates.
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%i2) exp:contract(expand(a([i1,j1,k1],[])*kdels([i,j,k],[i1,j1,k1])))$
+
+(%i3) ishow(exp)$
+
+(%t3)         a      + a      + a      + a      + a      + a
+               k j i    k i j    j k i    j i k    i k j    i j k
+(%i4) decsym(a,3,0,[sym(all)],[]);
+
+(%o4)                                done
+(%i5) ishow(canform(exp))$
+
+(%t5)                              6 a
+                                      i j k
+(%i6) remsym(a,3,0);
+
+(%o6)                                done
+(%i7) decsym(a,3,0,[anti(all)],[]);
+
+(%o7)                                done
+(%i8) ishow(canform(exp))$
+
+(%t8)                                  0
+(%i9) remsym(a,3,0);
+
+(%o9)                                done
+(%i10) decsym(a,3,0,[cyc(all)],[]);
+
+(%o10)                               done
+(%i11) ishow(canform(exp))$
+
+(%t11)                        3 a      + 3 a
+                                 i k j      i j k
+(%i12) dispsym(a,3,0);
+
+(%o12)                     [[cyc, [[1, 2, 3]], []]]
+
+
+
+@end example
+
+
 @end defun
 
 @c @node remsym
 @c @unnumberedsec phony
 @defun remsym
-*** TO BE WRITTEN ***
+
+Removes all symmetry properties from @code{tensor} which has @code{m}
+covariant indices and @code{n} contravariant indices.
+
+
 @end defun
 
 @c @node canform
@@ -218,11 +610,40 @@ always return a mathematically correct result.
 
 @section Indicial tensor calculus
 
+@c @node diff
+@c @unnumberedsec phony
+@defun diff (exp, v1,[n1,[v2,n2]...])
+
+is the usual MAXIMA differentiation function which has been expanded
+in its abilities for ITENSOR. It takes the derivative of @code{exp} with
+respect to @code{v1} @code{n1} times, with respect to @code{v2} @code{n2}
+times, etc. For the tensor package, the function has been modified so
+that the @code{vi} may be integers from 1 up to the value of the variable
+@code{dim}.  This will cause the differentiation to be carried out with
+respect to the @code{vi}th member of the list @code{vect_coords}.  If
+@code{vect_coords} is bound to an atomic variable, then that variable
+subscripted by @code{vi} will be used for the variable of
+differentiation.  This permits an array of coordinate names or
+subscripted names like @code{x[1]}, @code{x[2]},...  to be used.
+@end defun
 
 @c @node idiff
 @c @unnumberedsec phony
-@defun idiff
-*** TO BE WRITTEN ***
+@defun idiff (exp, v1,[n1,[v2,n2]...])
+Indicial differentiation. Unlike @code{diff()}, which differentiates
+with respect to an independent variable, @code{idiff()} can be used
+to differentiate with respect to a coordinate. For an indexed object,
+this amounts to appending the @code{vi} as derivative indices.
+Subsequently, derivative indices will be sorted, unless @code{iframe_flag}
+is set to @code{true}.
+
+@code{idiff()} can also differentiate the determinant of th metric
+tensor. Thus, if @code{imetric} has been bound to @code{G} then
+@code{idiff(determinant(g),k)} will return
+@code{2*determinant(g)*ichr2([%i,k],[%i])} where the dummy index @code{%i}
+is chosen appropriately.
+
+
 @end defun
 
 @c @node liediff
@@ -239,8 +660,16 @@ always return a mathematically correct result.
 
 @c @node undiff
 @c @unnumberedsec phony
-@defun undiff
-*** TO BE WRITTEN ***
+@defun undiff (exp)
+
+Returns an expression equivalent to @code{exp} but with all derivatives
+of indexed objects replaced by the noun form of the @code{idiff} function. Its
+arguments would yield that indexed object if the differentiation were
+carried out.  This is useful when it is desired to replace a
+differentiated indexed object with some function definition resulting
+in @code{exp} and then carry out the differentiation by saying
+@code{ev(exp, idiff)}.
+
 @end defun
 
 @c @node evundiff
@@ -267,33 +696,47 @@ exp, all occurrences of the @code{tensori} that have derivative indices.
 
 @c @node flushnd
 @c @unnumberedsec phony
-@defun FLUSHND (exp,tensor,n)
+@defun flushnd (exp,tensor,n)
 Tensor Package - will set to zero, in exp, all
 occurrences of the differentiated object tensor that have n or more
 derivative indices as the following example demonstrates.
 @example
-(%i1) ishow(a([i],[J,r],k,r)+a([i],[j,r,s],k,r,s));
-                               j r s      j r
-(%o1)                         a        + a
-                               i,k r s    I,k r
-(%i2) ishow(flushnd(%o1,a,3));
-                                     j r
-(%o2)                               a
+
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) ishow(a([i],[J,r],k,r)+a([i],[j,r,s],k,r,s))$
+
+                                J r      j r s
+(%t2)                          a      + a
+                                i,k r    i,k r s
+(%i3) ishow(flushnd(%,a,3))$
+
+                                     J r
+(%t3)                               a
                                      i,k r
-
-
 @end example
 @end defun
 
 @c @node coord
 @c @unnumberedsec phony
-@defun coord
-*** TO BE WRITTEN ***
+@defun coord (tensor1, tensor2, ...)
+
+Gives @code{tensori} the coordinate differentiation property that the
+derivative of contravariant vector whose name is one of the
+@code{tensori} yields a Kronecker delta. For example, if @code{coord(x)} has
+been done then @code{idiff(x([],[i]),j)} gives @code{kdelta([i],[j])}.
+@code{coord} is a list of all indexed objects having this property.
+
 @end defun
 @c @node remcoord
 @c @unnumberedsec phony
-@defun remcoord
-*** TO BE WRITTEN ***
+@defun remcoord (tensor1, tensor2, ...)
+
+Removes the coordinate differentiation property from the @code{tensori}
+that was established by the function @code{coord}.  @code{remcoord(all)}
+removes this property from all indexed objects.
+
 @end defun
 
 @c @node makebox
@@ -308,13 +751,40 @@ symbol [].  For example, @code{[]p([m],[n])} represents
 
 @c @node conmetderiv
 @c @unnumberedsec phony
-@defun conmetderiv
-*** TO BE WRITTEN ***
+@defun conmetderiv (exp, tensor)
+
+is used to simplify expressions containing ordinary derivatives of
+both covariant and contravariant forms of the metric tensor (the
+current restriction).  For example, CONMETDERIV can relate the
+derivative of the contravariant metric tensor with the Christoffel
+symbols as seen from the following:
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) ishow(g([],[a,b],c))$
+
+                                      a b
+(%t2)                                g
+                                      ,c
+(%i3) ishow(conmetderiv(%,g))$
+
+                         %1 b      a       %1 a      b
+(%t3)                 - g     ichr2     - g     ichr2
+                                   %1 c              %1 c
+
+@end example
+
 @end defun
 @c @node flush1deriv
 @c @unnumberedsec phony
-@defun flush1deriv
-*** TO BE WRITTEN ***
+@defun flush1deriv (exp, tensor)
+
+Will set to zero, in @code{exp}, all occurrences of @code{tensor} that have
+exactly one derivative index.
+
 @end defun
 
 @section Tensors in curved spaces
@@ -381,6 +851,32 @@ respect to the variables vi in terms of the Christoffel symbols of the
 second kind (@code{ichr2}).  In order to evaluate these, one should use
 @code{ev(exp,ichr2)}.
 
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) entertensor()$
+
+Enter tensor name: a;
+
+Enter a list of the covariant indices: [i,j];
+
+Enter a list of the contravariant indices: [k];
+
+Enter a list of the derivative indices: [];
+
+                                      k
+(%t2)                                a
+                                      i j
+(%i3) ishow(covdiff(%,s))$
+
+             k         %1     k         %1     k            k     %1
+(%t3)     - a     ichr2    - a     ichr2    + a      + ichr2     a
+             i %1      j s    %1 j      i s    i j,s        %1 s  i j
+
+@end example
+
 @end defun
 
 @c @node lorentz_gauge
@@ -394,63 +890,233 @@ contravariant index.
 
 @c @node igeodesic_coords
 @c @unnumberedsec phony
-@defun igeodesic_coords
-*** TO BE WRITTEN ***
+@defun igeodesic_coords (exp, name)
+
+Enables the user to cause undifferentiated Christoffel symbols and
+first derivatives of the metric tensor vanish in @code{exp}. The @code{name}
+in the @code{igeodesic_coords} function refers to the metric @code{name}
+(if it appears in @code{exp}) while the connection coefficients must be
+called with the names @code{ichr1} and/or @code{ichr2}. The following example
+demonstrates the verification of the cyclic identity satisfied by the Riemann
+curvature tensor using the @code{igeodesic_coords} function.
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) ishow(icurvature([r,s,t],[u]))$
+
+             u            u         %1         u            u         %1
+(%t2) - ichr2      - ichr2     ichr2    + ichr2      + ichr2     ichr2
+             r t,s        %1 s      r t        r s,t        %1 t      r s
+(%i3) ishow(igeodesic_coords(%,ichr2))$
+
+                                 u            u
+(%t3)                       ichr2      - ichr2
+                                 r s,t        r t,s
+(%i4) ishow(igeodesic_coords(icurvature([r,s,t],[u]),ichr2)+
+            igeodesic_coords(icurvature([s,t,r],[u]),ichr2)+
+            igeodesic_coords(icurvature([t,r,s],[u]),ichr2))$
+
+             u            u            u            u            u
+(%t4) - ichr2      + ichr2      + ichr2      - ichr2      - ichr2
+             t s,r        t r,s        s t,r        s r,t        r t,s
+
+                                                                          u
+                                                                   + ichr2
+                                                                          r s,t
+(%i5) canform(%);
+
+(%o5)                                  0
+
+@end example
+
 @end defun
 
 @section Moving frames
 
-ifb
+@c @node ifb
+@c @unnumberedsec phony
+@defvar ifb
 
-icc1
+*** TO BE WRITTEN ***
+@end defvar
 
-icc2
 
-ifc1
+@c @node icc1
+@c @unnumberedsec phony
+@defvar icc1
 
-ifc2
+*** TO BE WRITTEN ***
+@end defvar
 
-ifr
+@c @node icc2
+@c @unnumberedsec phony
+@defvar icc2
 
-ifri
+*** TO BE WRITTEN ***
+@end defvar
+
+@c @node ifc1
+@c @unnumberedsec phony
+@defvar ifc1
+
+*** TO BE WRITTEN ***
+@end defvar
+
+@c @node ifc2
+@c @unnumberedsec phony
+@defvar ifc2
+
+*** TO BE WRITTEN ***
+@end defvar
+
+@c @node ifr
+@c @unnumberedsec phony
+@defvar ifr
+
+*** TO BE WRITTEN ***
+@end defvar
+
+@c @node ifri
+@c @unnumberedsec phony
+@defvar ifri
+
+*** TO BE WRITTEN ***
+@end defvar
 
 @section Torsion
 
 
-inmc1
 
-inmc2
+@c @node inmc1
+@c @unnumberedsec phony
+@defvar inmc1
 
-inm
+*** TO BE WRITTEN ***
+@end defvar
 
-ikt1
+@c @node inmc2
+@c @unnumberedsec phony
+@defvar inmc2
 
-ikt2
+*** TO BE WRITTEN ***
+@end defvar
 
-itr
+@c @node inm
+@c @unnumberedsec phony
+@defvar inm
+
+*** TO BE WRITTEN ***
+@end defvar
+
+@c @node ikt1
+@c @unnumberedsec phony
+@defvar ikt1
+
+*** TO BE WRITTEN ***
+@end defvar
+
+@c @node ikt2
+@c @unnumberedsec phony
+@defvar ikt2
+
+*** TO BE WRITTEN ***
+@end defvar
+
+@c @node itr
+@c @unnumberedsec phony
+@defvar itr
+
+*** TO BE WRITTEN ***
+@end defvar
+
+@section Interfacing with CTENSOR
+
+The ITENSOR package has the ability to generate MAXIMA code that can
+then be executed in the context of CTENSOR. The function that performs
+this task is called @code{ic_convert()}.
+
+@c @node ic_convert
+@c @unnumberedsec phony
+@defun ic_convert (eqn)
+
+Converts the ITENSOR equation @code{eqn} to a CTENSOR assignment statement.
+Implied sums over dummy indices are made explicit while indexed
+objects are transformed into arrays (the array subscripts are in the
+order of covariant followed by contravariant indices of the indexed
+objects). The derivative of an indexed object will be replaced by the
+noun form of @code{diff} taken with respect to @code{ct_coords} subscripted
+by the derivative index. The Christoffel symbols @code{ichr1} and @code{ichr2}
+will be translated to @code{lcs} and @code{mcs}, respectively and if
+@code{metricconvert} is @code{true} then all occurrences of the metric
+with two covariant (contravariant) indices will be renamed to @code{lg}
+(@code{ug}). In addition, @code{do} loops will be introduced summing over
+all free indices so that the
+transformed assignment statement can be evaluated by just doing
+@code{ev()}. The following examples demonstrate the features of this
+function.
 
 
-@section Interfacing with CTENsOR
 
-ic_convert
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)*b([i],[l,k]))$
+
+                             k        m   l k
+(%t2)                       t    = f a   b    g
+                             i j      ,j  i    l m
+(%i3) ic_convert(eqn);
+
+(%o3) for i thru dim do (for j thru dim 
+
+do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
+                       i, j, k                   m           j   i, l, k
+
+ g    , l, 1, dim), m, 1, dim)))
+  l, m
+(%i4) imetric(g);
+
+(%o4)                                done
+(%i5) metricconvert:true;
+
+(%o5)                                true
+(%i6) ic_convert(eqn);
+
+(%o6) for i thru dim do (for j thru dim 
+
+do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
+                       i, j, k                   m           j   i, l, k
+
+ lg    , l, 1, dim), m, 1, dim)))
+   l, m
+
+
+
+@end example
 
 @section Reserved Words
 
-indices2
+The following MAXIMA words are used by the ITENSOR package internally and
+should not be redefined:
 
-conti
+@example
 
-covi
+  Keyword    Comments
+  ------------------------------------------
+  indices2() Internal version of indices()
+  conti      Lists contravariant indices
+  covi       Lists covariant indices
+  deri       Lists derivative indices
+  name
+  concan
+  irpmon
+  %c
+  lc0
 
-name
-
-concan
-
-deri
-
-irpmon
-
-%c
-
-lc0
+@end example
 
