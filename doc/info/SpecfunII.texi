@@ -179,7 +179,7 @@ we have   @math{assoc_legendre_p (n, m, x) = 0}.
 Reference: A&S 22.5.37 page 779,  A&S 8.6.6 (second 
 equation) page 334, and A&S 8.2.5 page 333.
 To access this function, load("specfun").
-(@pxref{ASSOC_LEGENDRE_Q}), (@pxref{LEGENDRE_P}), and LEGENDRE_Q.
+See @ref{ASSOC_LEGENDRE_Q}, @ref{LEGENDRE_P}, and @ref{LEGENDRE_Q}.
 @end defun
 
 @anchor{ASSOC_LEGENDRE_Q}
@@ -297,10 +297,11 @@ Reference: A&S 22.5.35 page 779.
 
 To access this function, load("specfun").
 
-See also LEGENDRE_Q.
+See @ref{LEGENDRE_Q}.
 
 @end defun
 
+@anchor{LEGENDRE_Q}
 @defun  LEGENDRE_Q (n, x)
 
 [specfun package] return the Legendre polynomial of the 

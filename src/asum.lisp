@@ -75,10 +75,23 @@
 	         (setq n (m- n i) %m (f1- %m) ans (m* ans n))
 		 (go a)))))
 
-(defun factorial (%i)
-	(cond ((< %i 2) 1)
-	      (t (do ((x 1 (times %i x)) (%i %i (f1- %i)))
-		     ((= %i 1) x)))))
+;(defun factorial (%i)
+;	(cond ((< %i 2) 1)
+;	      (t (do ((x 1 (times %i x)) (%i %i (f1- %i)))
+;		     ((= %i 1) x)))))
+;; people like to do big factorials so do them a bit faster.
+;; by breaking into chunks.
+
+(defun factorial (n &aux (ans 1)  )
+  (let* ((vec (make-array (if (< n 100) 1 20) :initial-element 1))
+	 (m (length vec))
+	 (j 0))
+  (sloop for i from 1 to n
+	 do (setq j (mod i m))
+	 (setf (aref vec j) (* (aref vec j) i)))
+  (sloop for v in-array vec
+	 do (setq ans (* ans v)))
+  ans))
 
 (defmfun simpfact (x y z)
 	(oneargcheck x)

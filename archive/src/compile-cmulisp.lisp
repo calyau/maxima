@@ -67,6 +67,8 @@
 (load "sysdef.lisp")
 (load "make.lisp")
 
+
+
 (defun compile-maxima ()
   (compile-file "cmulisp-regex")
   (compile-file "cl-info")
@@ -85,6 +87,8 @@
 
 (in-package "MAXIMA")
 (shadow '(lisp::compiled-function-p) (find-package "MAXIMA"))
+
+(defun getpid () (unix:unix-getpid))
 
 (defun compiled-function-p (x)
   (and (functionp x) (not (symbolp x))

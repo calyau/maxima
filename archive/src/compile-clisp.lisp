@@ -2,6 +2,7 @@
 (load "sysdef.lisp")
 (load "make.lisp")
 (import '(system::GETENV) (find-package "MAXIMA"))
+
 (defun compile-maxima ()
   (make::make :maxima :compile t))
 
@@ -13,6 +14,15 @@
 )
 
 (in-package "MAXIMA")
+
+(defun getpid ( &aux tem)
+  ; if we start a shell and set the PID in the environment and exec...!
+  ; to do: fix this more portably
+   (cond ((consp (setq tem (errset (system::getenv "PID"))))
+	  (read-from-string (car tem)))
+	 (t (format t "using fake value for pid") -1))
+  )
+
 
 (or (fboundp 'commands1.orig)
   (setf (fdefinition 'commands1.orig) (fdefinition 'sys::commands1)))

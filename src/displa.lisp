@@ -18,6 +18,7 @@
 (declare-top (special $LINEL))
 ;; Read time parameters.  ITS only.
 
+
 #+(or ITS NIL)				;sigh (inside of #.)
 (eval-when (eval compile)
   (SETQ %TDCRL #o207 %TDLF #o212 %TDQOT #o215 %TDMV0 #o217))
@@ -1806,3 +1807,40 @@
   #+NIL (cg-tyo-list l t)
   #-NIL (MAPC #'CG-IMAGE-TYO L))
 
+(defvar *big-chunk-size*  9)
+(setq *tentochunksize* (expt 10 *big-chunk-size*))
+
+(defun exploden (symb &aux string)
+  (cond ((symbolp symb)(setq string (symbol-name symb)))
+        ((floatp symb)
+	 (let ((a (abs symb)))
+	   (cond ((or (eql a 0.0)
+		      (and (>= a .001)
+			   (<= a 10000000.0)))
+		    (setq string (format nil "~vf" (+ 1 $fpprec) symb)))
+		 (t (setq string (format nil "~ve" (+ 4 $fpprec) symb)))))
+	 (setq string (string-left-trim " " string))
+	 )
+	((bignump symb)
+	 (let* ((big symb)
+		ans rem tem
+	       (chunks
+		(sloop 
+		 do (multiple-value-setq (big rem)
+					 (floor big *tentochunksize*))
+		 collect rem 
+		 while (not (eql 0 big))
+		 )))
+	   (setq chunks (nreverse chunks))
+	   (setq ans (list-string  (format nil "~d" (car chunks))))
+	   (sloop for v in (cdr chunks)
+		  with i
+		  do (setq tem (list-string (format nil "~d" v)))
+		  (sloop for i below (-  *big-chunk-size* (length tem))
+			 do (setq tem (cons #\0 tem)))
+		  (setq ans (nconc ans tem)))
+	   (return-from exploden ans)))
+	(t (setq string (format nil "~A" symb))))
+  (assert (stringp string))
+  (list-string string)
+  )

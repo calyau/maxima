@@ -153,8 +153,10 @@ install:
 	echo "* Maxima : (maxima.info).	  Maxima Symbolic Algebra and Computation." >> ${INFO_DIR}/dir ; fi
 	cp *.info* ${INFO_DIR}
 
-maxima.html:
-	texi2html -split_chapter maxima.texi
+maxima.html: maxima_toc.html
+
+maxima_toc.html: maxima.texi ${OBJS}
+	./texi2html -split_chapter maxima.texi
 
 maxima.notes.idx: maxima-primer.tex
 	latex maxima-primer.tex

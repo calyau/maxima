@@ -4,8 +4,11 @@
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (in-package "MAXIMA")
+(eval-when (compile)
+(proclaim '(optimize (safety 0) (speed 3) (space 0)))
+)
+
 (eval-when (compile load eval)
 
 (defmacro deffif (new old)
@@ -643,7 +646,10 @@ compiler:
 	       (t (error "unknown type")))
 	  finally (return str))))
   
-;#-symbolics
+
+(defvar *big-chunk-size*  120)
+(defvar *tentochunksize* (expt 10 *big-chunk-size*))
+
 (defun exploden (symb &aux string)
   (cond ((symbolp symb)(setq string (symbol-name symb)))
         ((floatp symb)
@@ -655,25 +661,30 @@ compiler:
 		 (t (setq string (format nil "~ve" (+ 4 $fpprec) symb)))))
 	 (setq string (string-left-trim " " string))
 	 )
-	
+	((bignump symb)
+	 (let* ((big symb)
+		ans rem tem
+	       (chunks
+		(sloop 
+		 do (multiple-value-setq (big rem)
+					 (floor big *tentochunksize*))
+		 collect rem 
+		 while (not (eql 0 big))
+		 )))
+	   (setq chunks (nreverse chunks))
+	   (setq ans (list-string  (format nil "~d" (car chunks))))
+	   (sloop for v in (cdr chunks)
+		  do (setq tem (list-string (format nil "~d" v)))
+		  (sloop for i below (-  *big-chunk-size* (length tem))
+			 do (setq tem (cons #\0 tem)))
+		  (setq ans (nconc ans tem)))
+	   (return-from exploden ans)))
 	(t (setq string (format nil "~A" symb))))
   (assert (stringp string))
   (list-string string)
   )
-;;there's a bug in SCL which mucks up pnames so we have to revert to zetalisp:
-;;It appears to be ok in generra 7.2
-#+buggy-symbolics
-(defun exploden (symb &aux string)
-  ;;like princ
-  (cond ((symbolp symb)
-	 (sloop for i below (global:string-length (setq string
-						       (global:string symb)))
-	       collecting (code-char(aref string i))))
-	(t (setq string (format nil "~A" symb))
-	   ;;just for a while with this scl compat package
-	   (assert (stringp string))
-	   (list-string string)
-	   )))
+
+
 
 (defun explodec (symb &aux tem sstring)
   (setq sstring (format nil "~a" symb))

@@ -89,6 +89,8 @@
 
 #+(or clisp gcl)
 (import '(system::getenv) (find-package "MAXIMA"))
+#+gcl
+(import '(si::getpid) (find-package "MAXIMA"))
 
 ;;get
 #+gcl

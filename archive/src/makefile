@@ -263,21 +263,23 @@ sys-proclaim.lisp:
 	cat var-proclaims.lisp >> sys-proclaim.lisp
 
 CLISP=clisp
-CMULISP=cmulisp
+CMULISP=lisp
 clisp-compile:
 	echo '(progn (load "compile-clisp.lisp")(compile-maxima))' | ${CLISP}
 maxima-clisp.mem: clisp-compile
 	echo '(progn (load "compile-clisp.lisp")(save-maxima))' | ${CLISP}
 # invoke clisp maxima on the test suite
-test-clisp:
+test-clisp: maxima-clisp.mem
 	(cd ../doc ; ${CLISP} -M ../src/maxima-clisp.mem tests.lisp)
 
 
 cmulisp-compile:
 	echo '(progn (load "compile-cmulisp.lisp")(compile-maxima))' | ${CMULISP}
-maxima-cmulisp.mem:
+maxima.core:  cmulisp-compile
 	echo '(progn (load "compile-cmulisp.lisp")(save-maxima))' | ${CMULISP}
 
+test-cmulisp: maxima.core
+	(cd ../doc ; ${CMULISP} -core ../src/maxima.core -load ../src/maxima-clisp.mem tests.lisp)
 
 
 

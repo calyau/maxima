@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  25 APR 2001 03:10
+This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  27 APR 2001 03:10
 **maxima.texi
 (maxima.texi[/usr/share/texmf/pdftex/config/pdftex.cfg]
 Babel <v3.6x> and hyphenation patterns for american, french, german, ngerman, n
@@ -374,8 +374,21 @@ Overfull \hbox (0.746pt too wide) in paragraph at lines 52--52
 .@textrm r
 .etc.
 
-[105] [106] [107] [108]
-Underfull \hbox (badness 7133) in paragraph at lines 326--328
+[105] [106]
+Underfull \hbox (badness 3029) in paragraph at lines 175--183
+ @textrm load(@texttt "@textrm specfun@texttt "@textrm ). See [][][AS-SOC[]LEGE
+NDRE[]Q], page 107[][], [][][LEG-EN-DRE[]P],
+
+@hbox(8.2125+2.73749)x433.62, glue set 3.1191
+.@glue(@leftskip) 28.90755
+.@textrm l
+.@textrm o
+.@textrm a
+.@textrm d
+.etc.
+
+[107] [108]
+Underfull \hbox (badness 7133) in paragraph at lines 327--329
  []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]HANKEL2, and SPHER-I-
 
 @hbox(7.60416+2.12917)x433.62, glue set 4.14972
@@ -387,7 +400,7 @@ Underfull \hbox (badness 7133) in paragraph at lines 326--328
 .etc.
 
 
-Underfull \hbox (badness 7133) in paragraph at lines 340--342
+Underfull \hbox (badness 7133) in paragraph at lines 341--343
  []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]HANKEL2, and SPHER-I-
 
 @hbox(7.60416+2.12917)x433.62, glue set 4.14972
@@ -399,7 +412,7 @@ Underfull \hbox (badness 7133) in paragraph at lines 340--342
 .etc.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 354--356
+Underfull \hbox (badness 10000) in paragraph at lines 355--357
  []@textrm See also SPHER-I-CAL[]HANKEL2, SPHER-I-CAL[]BESSEL[]J, and SPHER-I-
 
 @hbox(7.60416+2.12917)x433.62, glue set 4.5232
@@ -411,7 +424,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 354--356
 .etc.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 368--370
+Underfull \hbox (badness 10000) in paragraph at lines 369--371
  []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]BESSEL[]J, and SPHER-I-
 
 @hbox(7.60416+2.12917)x433.62, glue set 4.5232
@@ -773,14 +786,14 @@ elter).[] |
 [268])) [269] [270] (maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6]
 [-7] [-8] ) 
 Here is how much of TeX's memory you used:
- 2379 strings out of 63189
- 29506 string characters out of 966977
- 57133 words of memory out of 263001
- 2882 multiletter control sequences out of 10000+60000
+ 2384 strings out of 63189
+ 29640 string characters out of 966977
+ 57180 words of memory out of 263001
+ 2885 multiletter control sequences out of 10000+60000
  30088 words of font info for 104 fonts, out of 400000 for 1000
  19 hyphenation exceptions out of 1000
  15i,6n,13p,247b,310s stack positions out of 300i,100n,500p,50000b,10000s
 <cmbxti10.pfb><cmr12.pfb><cmtt12.pfb><cmr9.pfb><cmti9.pfb><cmtt9.pfb
 ><cmmi10.pfb><cmb10.pfb><cmsy10.pfb><cmss10.pfb><cmbx10.pfb><cmti10.pfb><cmsl10
 .pfb><cmsltt10.pfb><cmtt10.pfb><cmr10.pfb><cmbx12.pfb>
-Output written on maxima.pdf (279 pages, 866259 bytes).
+Output written on maxima.pdf (279 pages, 867062 bytes).
