@@ -1227,13 +1227,15 @@ Return nil if no name or error in name."
 	    (setq end (point)))))
       (buffer-substring-no-properties start end))))
 
+(defun emaxima-fix-tex-output (string)
+  (maxima-replace-in-string ":=" "\\mathbin{:=}" string))
+
 (defun emaxima-insert-preoutput (string &optional strip)
   (if (and (> (length string) 1)
            (string= "$$" (substring string 0 2)))
       (progn
         (insert "\\ps\n")
-        (insert (maxima-replace-in-string ":=" "\\mathbin{:=}" 
-                                          string) "\n" ))
+        (insert (emaxima-fix-tex-output string) "\n" ))
     (if strip 
         (setq string (maxima-strip-string-end string)))
     (insert "\\p\n")
@@ -1256,7 +1258,8 @@ Return nil if no name or error in name."
       (setq out (maxima-strip-string-beginning (substring out me)))
       (string-match "([DE][0-9]+)" out)
       (setq ie (match-beginning 0))
-      (insert (maxima-strip-string-end (substring out 0 ie)))
+      (insert (emaxima-fix-tex-output 
+               (maxima-strip-string-end (substring out 0 ie))))
       (insert " \\\\\n")
       (setq out (maxima-strip-string-beginning (substring out ie))))
     (if (string-match "(D[0-9]+)" out)
@@ -1268,7 +1271,8 @@ Return nil if no name or error in name."
           (insert "\\D")
           (insert (substring out (+ mb 2) (- me 1)))
           (insert ".  ")
-          (insert (maxima-strip-string (substring out me)))
+          (insert (emaxima-fix-tex-output 
+                   (maxima-strip-string (substring out me))))
           (insert " \\\\\n"))
       (when (not (string= out ""))
         (emaxima-insert-preoutput out)))))
@@ -1289,7 +1293,8 @@ Return nil if no name or error in name."
       (setq out (maxima-strip-string-beginning (substring out me)))
       (string-match "([DE][0-9]+)" out)
       (setq ie (match-beginning 0))
-      (insert (maxima-strip-string-end (substring out 0 ie)))
+      (insert (emaxima-fix-tex-output
+               (maxima-strip-string-end (substring out 0 ie))))
       (insert " \\\\\n")
       (setq out (substring out ie)))
     (if (string-match "(D[0-9]+)" out)
@@ -1301,7 +1306,7 @@ Return nil if no name or error in name."
           (setq out (maxima-strip-string-beginning (substring out me)))
           (insert "\\m")
           (insert "  ")
-          (insert out);(substring out me))
+          (insert (emaxima-fix-tex-output out));(substring out me))
           (insert " \\\\\n"))
       (when (not (string= out ""))
         (emaxima-insert-preoutput out)))))
