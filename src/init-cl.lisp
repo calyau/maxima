@@ -9,7 +9,6 @@
 
 ;;; An ANSI-CL portable initializer to replace init_max1.lisp
 
-(defvar *maxima-directory*)
 (defvar *maxima-prefix*)
 (defvar *maxima-datadir*)
 (defvar *maxima-infodir*)
@@ -44,7 +43,7 @@
 
 #+cmu
 (defun maxima-getenv (envvar)
-  (car (assoc envvar ext:*environment-list* :test #'string=)))
+  (cdr (assoc envvar ext:*environment-list* :test #'string=)))
 
 #+clisp
 (defun maxima-getenv (envvar)
@@ -55,7 +54,7 @@
 	 (maxima-datadir-env (maxima-getenv "MAXIMA_DATADIR"))
 	 (maxima-infodir-env (maxima-getenv "MAXIMA_INFODIR")))
 	 (if maxima-prefix-env
-	     (setq *maxima-directory* maxima-prefix-env)
+	     (setq *maxima-prefix* maxima-prefix-env)
 	   (setq *maxima-prefix* *autoconf-prefix*))
 	 (if maxima-datadir-env
 	     (setq *maxima-datadir* maxima-datadir-env)
