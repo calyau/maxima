@@ -75,6 +75,7 @@ Support for specific areas of mathematics
 * Trigonometric::               Manipulating expressions with trig and
                                 inverse trig functions.
 * Special Functions::           Special functions
+* Orthogonal Polynomials::      Orthogonal Polynomials and Special functions
 * Limits::                      Limits of expressions.
 * Differentiation::             Differential calculus.
 * Integration::                 Integral calculus.
@@ -193,6 +194,11 @@ Special Functions
 * GAMALG::                      
 * SPECINT::                     
 * Definitions for Special Functions::  
+
+Orthogonal Polynomials
+
+* Introduction to Orthogonal Polynomials::
+* Definitions for Orthogonal Polynomials::
 
 Limits
 
@@ -377,7 +383,7 @@ Debugging
 @chapter Special Functions
 @include Special.texi
 
-@node Orthogonal Polynomials, Limits, Trigonometric, Top
+@node Orthogonal Polynomials, Limits, Special Functions, Top
 @chapter Orthogonal Polynomials
 @include SpecfunII.texi
 

@@ -205,7 +205,7 @@ PREAMBLE='(load "sysdef.lisp")' \
 
 PREAMBLE='(load "sysdef.lisp")' \
 	'(load "'${GCLDIR}'/lsp/sys-proclaim.lisp")' '(load "sys-proclaim.lisp")' \
-	'(proclaim (quote (optimize (safety 0) (speed 0) (space 0))))' \
+	'(proclaim (quote (optimize (safety 0) (speed 3) (space 0))))' \
 	'(setq *load-verbose* nil)'
 
 

@@ -1822,7 +1822,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 			  lis
     (let* ((st (get-instream *parse-stream*))
  	   (n (instream-line st))
-	   (nam (instream-stream-name st))
+	   (nam (instream-name st))
 	   )
       (or nam (return-from add-lineinfo lis))
       (setq *current-line-info*

@@ -1,140 +1,260 @@
-This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  13 APR 2001 03:10
+This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  17 APR 2001 03:10
 **maxima.texi
 (maxima.texi[/usr/share/texmf/pdftex/config/pdftex.cfg]
 Babel <v3.6x> and hyphenation patterns for american, french, german, ngerman, n
 ohyphenation, loaded.
-(texinfo.tex Loading texinfo package [Version 2.137/K]: Basics,
+(texinfo.tex Loading texinfo [version 1999-04-25.15]:
+(/usr/share/texmf/pdftex/plain/misc/pdfcolor.tex) Basics,
 \bindingoffset=\dimen16
 \normaloffset=\dimen17
 \pagewidth=\dimen18
 \pageheight=\dimen19
-\cornerlong=\dimen20
-\cornerthick=\dimen21
-\topandbottommargin=\dimen22
-\outerhsize=\dimen23
-\outervsize=\dimen24
+\outerhsize=\dimen20
+\outervsize=\dimen21
+\cornerlong=\dimen22
+\cornerthick=\dimen23
+\topandbottommargin=\dimen24
+\headlinebox=\box16
+\footlinebox=\box17
 \margin=\insert252
 \EMsimple=\toks12
 \singlespaceskip=\skip18
 \groupinvalidhelp=\toks13
 \mil=\dimen25
 \exdentamount=\skip19
- fonts,
+\inmarginspacing=\skip20
+ pdf,
+\tempnum=\count26
+\lnkcount=\count27
+\filename=\toks14
+\filenamelength=\count28
+\pgn=\count29
+ (maxima.toc)
+(maxima.toc) fonts,
 \sffam=\fam8
-\fontdepth=\count26
-
-page headings,
-\titlepagetopglue=\skip20
-\titlepagebottomglue=\skip21
-\evenheadline=\toks14
-\oddheadline=\toks15
-\evenfootline=\toks16
-\oddfootline=\toks17
+\mainmagstep=\count30
+\fontdepth=\count31
+ page headings,
+\titlepagetopglue=\skip21
+\titlepagebottomglue=\skip22
+\evenheadline=\toks15
+\oddheadline=\toks16
+\evenfootline=\toks17
+\oddfootline=\toks18
  tables,
 \tableindent=\dimen26
 \itemindent=\dimen27
 \itemmargin=\dimen28
 \itemmax=\dimen29
-\itemno=\count27
-\intableparskip=\dimen30
-\intableparindent=\dimen31
-\spacebetweencols=\dimen32
-\spacebetweenlines=\dimen33
-\colcount=\count28
- indexing,
-\initialskipamount=\skip22
-\secondaryindent=\skip23
-\partialpage=\box16
-\doublecolumnhsize=\dimen34
+\itemno=\count32
+\multitableparskip=\skip23
+\multitableparindent=\skip24
+\multitablecolspace=\dimen30
+\multitablelinespace=\skip25
+\colcount=\count33
+ conditionals, indexing,
+\secondaryindent=\skip26
+\partialpage=\box18
+\doublecolumnhsize=\dimen31
  sectioning,
-\chapno=\count29
-\secno=\count30
-\subsecno=\count31
-\subsubsecno=\count32
-\appendixno=\count33
-\contentsfile=\write0
-\absseclevel=\count34
-\secbase=\count35
-\chapheadingskip=\skip24
-\subsecheadingskip=\skip25
-\secheadingskip=\skip26
- toc printing,
-\contentsrightmargin=\skip27
-\shortappendixwidth=\dimen35
-\tocindent=\dimen36
+\chapno=\count34
+\secno=\count35
+\subsecno=\count36
+\subsubsecno=\count37
+\appendixno=\count38
+\absseclevel=\count39
+\secbase=\count40
+\chapheadingskip=\skip27
+\secheadingskip=\skip28
+\subsecheadingskip=\skip29
+
+toc,
+\tocfile=\write0
+\contentsrightmargin=\skip30
+\savepageno=\count41
+\lastnegativepageno=\count42
+\shortappendixwidth=\dimen32
+\tocindent=\dimen33
  environments,
-\dblarrowbox=\box17
-\longdblarrowbox=\box18
-\pushcharbox=\box19
-\bullbox=\box20
-\equivbox=\box21
-\errorbox=\box22
-\lispnarrowing=\skip28
-\envskipamount=\skip29
-\circthick=\dimen37
-\cartouter=\dimen38
-\cartinner=\dimen39
-\normbskip=\skip30
-\normpskip=\skip31
-\normlskip=\skip32
-\lskip=\skip33
-\rskip=\skip34
+\dblarrowbox=\box19
+\longdblarrowbox=\box20
+\pushcharbox=\box21
+\bullbox=\box22
+\equivbox=\box23
+\errorbox=\box24
+\lispnarrowing=\skip31
+\envskipamount=\skip32
+\circthick=\dimen34
+\cartouter=\dimen35
+\cartinner=\dimen36
+\normbskip=\skip33
+\normpskip=\skip34
+\normlskip=\skip35
+\lskip=\skip36
+\rskip=\skip37
+ defuns,
+\defbodyindent=\skip38
+\defargsindent=\skip39
+\deftypemargin=\skip40
+\deflastargmargin=\skip41
+\parencount=\count43
+ macros,
+\macscribble=\write1
+\paramno=\count44
+\macname=\toks19
+ cross references,
+\auxfile=\write2
+\@savsk=\dimen37
+\@savsf=\count45
+\footnoteno=\count46
 
-defuns,
-\defbodyindent=\skip35
-\defargsindent=\skip36
-\deftypemargin=\skip37
-\deflastargmargin=\skip38
-\parencount=\count36
- cross reference,
-\auxfile=\write1
-\footnoteno=\count37
- and turning on texinfo input format.
-\defaultparindent=\dimen40
-) (maxima.aux)
-@cpindfile=@write2
-@fnindfile=@write3
-@vrindfile=@write4
-@tpindfile=@write5
-@kyindfile=@write6
-@pgindfile=@write7
+(/usr/share/texmf/tex/plain/dvips/epsf.tex
+\epsffilein=\read0
+\epsfframemargin=\dimen38
+\epsfframethickness=\dimen39
+\epsfrsize=\dimen40
+\epsftmp=\dimen41
+\epsftsize=\dimen42
+\epsfxsize=\dimen43
+\epsfysize=\dimen44
+\pspoints=\dimen45
+\epsfnoopenhelp=\toks20
+)
+\noepsfhelp=\toks21
+ localization,
+\nolanghelp=\toks22
+\defaultparindent=\dimen46
 
-[1
-\openout1 = `maxima.aux'.
+and turning on texinfo input format.) (maxima.aux)
+@cpindfile=@write3
+@fnindfile=@write4
+@vrindfile=@write5
+@tpindfile=@write6
+@kyindfile=@write7
+@pgindfile=@write8
+ [1
+\openout2 = `maxima.aux'.
 
+\openout3 = `maxima.cp'.
+
+\openout4 = `maxima.fn'.
+
+\openout5 = `maxima.vr'.
+
+\openout6 = `maxima.tp'.
+
+\openout7 = `maxima.ky'.
+
+\openout8 = `maxima.pg'.
+
+[/usr/share/texmf/dvips/config/pdftex.map]] ()
 \openout0 = `maxima.toc'.
 
-\openout2 = `maxima.cp'.
+ Chapter 1
+Warning (ext1): destination with the same identifier (name{1@}) already exists!
 
-\openout3 = `maxima.fn'.
+\pdfmkdest #1->\pdfdest name{#1@}
+                                  xyz
+\onepageout ...i \ifpdf \pdfmkdest {\the \pageno }
+                                                  \fi \ifcropmarks \egroup \...
+<output> {\onepageout {\pagecontents \PAGE }
+                                            }
+<to be read again> 
+                   \footnoteno 
+\supereject ->\par \penalty -20000\footnoteno 
+                                              =0 
+\pchapsepmacro ->\chappager 
+                            \ifodd \pageno \else \hbox to 0pt{} \chappager \fi 
+...
+l.327 @chapter Introduction to MAXIMA
+                                      [1] [2] (Introduction.texi
+Overfull \hbox (20.69044pt too wide) in paragraph at lines 13--13
+ []@texttt Maxima 5.4 Tue Mar 21 14:14:45 CST 2000 (with en-hance-ments by W. S
+chelter)[] |
 
-\openout4 = `maxima.vr'.
+@hbox(7.60416+2.43333)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@texttt M
+.@texttt a
+.@texttt x
+.etc.
 
-\openout5 = `maxima.tp'.
 
-\openout6 = `maxima.ky'.
+Overfull \hbox (14.94176pt too wide) in paragraph at lines 40--40
+ [] @texttt 0: DONTFACTOR :(maxima.info)Definitions for Matrices and Linear Alg
+ebra.[] |
 
-\openout7 = `maxima.pg'.
+@hbox(7.60416+2.43333)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@penalty 10000
+.@glue 5.74869
+.@texttt 0
+.etc.
 
-[/usr/share/texmf/dvips/config/pdftex.map]] () Chapter1 [1] [2]
-<opening Introduction.texi> (Introduction.texi [3] [4] [5])
-<closing Introduction.texi> Chapter2 [6] <opening Help.texi> (Help.texi
-[7] [8]) <closing Help.texi> Chapter3 [9] [10] <opening Command.texi>
-(Command.texi [11] [12] [13] [14] [15] [16]) <closing Command.texi> Chapter4
-[17] [18] <opening Operators.texi> (Operators.texi [19] [20] [21] [22] [23]
-[24] [25] [26]) <closing Operators.texi> Chapter5 [27] [28]
-<opening Expressions.texi> (Expressions.texi [29] [30] [31] [32] [33] [34]
-[35] [36] [37] [38] [39]) <closing Expressions.texi> Chapter6 [40]
-<opening Simplification.texi> (Simplification.texi [41] [42] [43] [44] [45]
-[46]) <closing Simplification.texi> Chapter7 [47] [48] <opening Plotting.texi>
-(Plotting.texi [49] [50] [51]) <closing Plotting.texi> Chapter8 [52]
-<opening Input.texi> (Input.texi [53] [54] [55] [56] [57] [58] [59] [60]
-[61] [62] [63]
-Overfull \hbox (76.86267pt too wide) in paragraph at lines 925--925
+[3] [4] [5]) Chapter 2 [6] (Help.texi [7] [8]) Chapter 3 [9] [10] (Command.texi
+[11] [12] [13] [14] [15] [16]
+Overfull \hbox (0.10513pt too wide) in paragraph at lines 460--464
+ []@textrm - mean-ing SET STA-TUS. It can be used to SSTA-TUS(FEATURE,HACK[]PAC
+KAGE)|
+
+@hbox(8.2125+2.73749)x433.62, glue set - 1.0
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm -
+.@discretionary
+.@glue 3.65 plus 1.825 minus 1.21666
+.etc.
+
+[17]) Chapter 4 [18] (Operators.texi [19] [20] [21] [22] [23] [24]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 478--478
+ []@texttt PIECE holds the value of the last expression selected when using the
+[] |
+
+@hbox(6.69167+2.43333)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@texttt P
+.@texttt I
+.@texttt E
+.etc.
+
+[25] [26]) Chapter 5 [27] [28] (Expressions.texi [29] [30] [31] [32] [33]
+[34] [35] [36] [37] [38] [39]) Chapter 6 [40] (Simplification.texi [41]
+[42] [43] [44] [45] [46]) Chapter 7 [47] [48] (Plotting.texi [49] [50] [51])
+Chapter 8 [52] (Input.texi [53] [54] [55] [56] [57] [58] [59] [60]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 639--639
+ []@texttt system directory or, else it can be done and then the system resaved
+[] |
+
+@hbox(6.69167+2.43333)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@texttt s
+.@texttt y
+.@texttt s
+.etc.
+
+[61] [62] [63] [64]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 924--924
+ []@texttt $$-{{\log \left(x^{2}-x+1\right)}\over{6}}+{{\arctan {{2\>x-1}\over{
+[] |
+
+@hbox(7.60416+2.43333)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@texttt $
+.@texttt $
+.@texttt -
+.etc.
+
+
+Overfull \hbox (84.09012pt too wide) in paragraph at lines 925--925
  [] @texttt \sqrt{3}}}}\over{\sqrt{3}}}+{{\log \left(x+1\right)}\over{3}}\leqno
-{\tt (D1)}$$[]  |
+{\tt (D1)}$$[] |
 
-@hbox(7.60416+2.43333)x469.75499
+@hbox(7.60416+2.43333)x433.62
 .@glue(@leftskip) 57.8151
 .@hbox(0.0+0.0)x0.0
 .@penalty 10000
@@ -142,78 +262,578 @@ Overfull \hbox (76.86267pt too wide) in paragraph at lines 925--925
 .@texttt \
 .etc.
 
-[64]) <closing Input.texi> Chapter9 [65] [66] <opening Floating.texi>
-(Floating.texi [67]) <closing Floating.texi> Chapter10 [68]
-<opening Contexts.texi> (Contexts.texi [69] [70]) <closing Contexts.texi>
-Chapter11 [71] [72] <opening Polynomials.texi> (Polynomials.texi [73] [74]
-[75] [76] [77] [78] [79] [80] [81] [82] [83] [84]) <closing Polynomials.texi>
-Chapter12 [85] [86] <opening Constants.texi> (Constants.texi)
-<closing Constants.texi> Chapter13 [87] [88] <opening Logarithms.texi>
-(Logarithms.texi [89]) <closing Logarithms.texi> Chapter14 [90]
-<opening Trigonometric.texi> (Trigonometric.texi [91] [92] [93] [94])
-<closing Trigonometric.texi> Chapter15 [95] [96] <opening Special.texi>
-(Special.texi [97] [98] [99]) <closing Special.texi> Chapter16 [100]
-<opening Limits.texi> (Limits.texi) <closing Limits.texi> Chapter17 [101]
-[102] <opening Differentiation.texi> (Differentiation.texi [103] [104] [105]
-[106] [107]) <closing Differentiation.texi> Chapter18 [108]
-<opening Integration.texi> (Integration.texi [109]
-Overfull \hbox (0.79964pt too wide) in paragraph at lines 126--129
- @textrm bolic meth-ods, if you wish to use a nu-mer-i-cal method try ROMBERG(e
-xp,var,low,high).  |
+[65]) Chapter 9 [66] (Floating.texi [67] [68]) Chapter 10 [69] [70]
+(Contexts.texi [71]
+Underfull \hbox (badness 2050) in paragraph at lines 151--164
+ @textrm then check if F is IN-CREAS-ING by us-ing the pred-i-cate FEA-TUREP vi
+a
 
-@hbox(8.2125+2.73749)x469.75499, glue set - 1.0
+@hbox(7.60416+2.12917)x433.62, glue set 2.74031
 .@glue(@leftskip) 28.90755
-.@textrm b
-.@kern0.30417
-.@textrm o
-.@textrm l
+.@textrm t
+.@textrm h
+.@textrm e
+.@textrm n
 .etc.
 
-[110] [111] [112] [113] [114] [115] [116]) <closing Integration.texi>
-Chapter19 [117] [118] <opening Equations.texi> (Equations.texi [119] [120]
-[121] [122] [123] [124]) <closing Equations.texi> Chapter20 [125] [126]
-<opening Differential.texi> (Differential.texi [127] [128])
-<closing Differential.texi> Chapter21 [129] [130] <opening Numerical.texi>
-(Numerical.texi [131] [132] [133] [134] [135] [136]) <closing Numerical.texi>
-Chapter22 [137] [138] <opening Statistics.texi> (Statistics.texi)
-<closing Statistics.texi> Chapter23 [139] [140] <opening Arrays.texi>
-(Arrays.texi [141] [142]) <closing Arrays.texi> Chapter24 [143] [144]
-<opening Matrices.texi> (Matrices.texi [145] [146] [147] [148] [149] [150]
-[151] [152] [153]) <closing Matrices.texi> Chapter25 [154]
-<opening Affine.texi> (Affine.texi [155] [156]) <closing Affine.texi>
-Chapter26 [157] [158] <opening Tensor.texi> (Tensor.texi [159] [160] [161])
-<closing Tensor.texi> Chapter27 [162] <opening Ctensor.texi> (Ctensor.texi
-[163] [164] [165]) <closing Ctensor.texi> Chapter28 [166]
-<opening Series.texi> (Series.texi [167] [168] [169] [170] [171])
-<closing Series.texi> Chapter29 [172] <opening Number.texi> (Number.texi
-[173] [174] [175]) <closing Number.texi> Chapter30 [176]
-<opening Symmetries.texi> (Symmetries.texi [177] [178] [179] [180] [181]
-[182] [183] [184] [185] [186] [187] [188] [189] [190] [191] [192] [193])
-<closing Symmetries.texi> Chapter31 [194] <opening Groups.texi> (Groups.texi
-[195]) <closing Groups.texi> Chapter32 [196] <opening Runtime.texi>
-(Runtime.texi [197] [198]) <closing Runtime.texi> Chapter33 [199] [200]
-<opening Miscellaneous.texi> (Miscellaneous.texi [201] [202] [203])
-<closing Miscellaneous.texi> Chapter34 [204] <opening Rules.texi> (Rules.texi
-[205] [206] [207] [208] [209]) <closing Rules.texi> Chapter35 [210]
-<opening Lists.texi> (Lists.texi [211] [212]) <closing Lists.texi> Chapter36
-[213] [214] <opening Function.texi> (Function.texi [215] [216] [217] [218]
-[219] [220] [221] [222] [223] [224] [225] [226]) <closing Function.texi>
-Chapter37 [227] [228] <opening Program.texi> (Program.texi [229] [230] [231]
-[232] [233] [234]) <closing Program.texi> Chapter38 [235] [236]
-<opening Debugging.texi> (Debugging.texi [237]) <closing Debugging.texi>
-Chapter39 [238] <opening Indices.texi> (Indices.texi Appendix @char 65 [239]
-[240] (maxima.fns [241] [242] [243] [244] [245] [246] [247] [248] [249]
-[250])) <closing Indices.texi> [251] [252] (maxima.toc) [-1] [-2] (maxima.toc
-[-3] [-4] [-5]) [-6] ) 
+
+Underfull \hbox (badness 2452) in paragraph at lines 151--164
+ @textrm FEA-TUREP(F,INCREASING). There is an in-folist FEA-TURES which is a
+
+@hbox(8.2125+2.73749)x433.62, glue set 2.90892
+.@glue(@leftskip) 28.90755
+.@textrm F
+.@textrm E
+.@discretionary replacing 2
+..@textrm A
+..@textrm -
+.@textrm A
+.etc.
+
+
+Underfull \hbox (badness 3954) in paragraph at lines 151--164
+ @textrm and AN-TI-SYM-MET-RIC. [Note: sys-tem @texttt "@textrm fea-tures@textt
+t " @textrm may be checked with
+
+@hbox(8.2125+2.73749)x433.62, glue set 3.40854
+.@glue(@leftskip) 28.90755
+.@textrm a
+.@textrm n
+.@textrm d
+.@glue 3.65 plus 1.825 minus 1.21666
+.etc.
+
+[72]) Chapter 11 [73] [74] (Polynomials.texi [75] [76] [77] [78] [79]
+Underfull \hbox (badness 2050) in paragraph at lines 386--389
+ []@textrm the high-est ex-plicit ex-po-nent of v in exp. Some-times it may be 
+nec-es-
+
+@hbox(7.60416+2.12917)x433.62, glue set 2.73763
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm t
+.@textrm h
+.@textrm e
+.etc.
+
+[80] [81] [82] [83] [84] [85] [86] [87]) Chapter 12 [88] (Constants.texi)
+Chapter 13 [89] [90] (Logarithms.texi [91]) Chapter 14 [92] (Trigonometric.texi
+[93] [94] [95] [96]) Chapter 15 [97] [98] (Special.texi [99] [100] [101])
+Chapter 16 [102] (SpecfunII.texi
+Underfull \hbox (badness 10000) in paragraph at lines 39--40
+ @textrm A&S 22.4.40,
+
+@hbox(7.60416+2.12917)x108.405, glue set 18.34305
+.@glue(@leftskip) 12.0
+.@textrm A
+.@textrm &
+.@textrm S
+.@glue 3.65 plus 1.82317 minus 1.21786
+.etc.
+
+
+Overfull \hbox (17.48125pt too wide) in paragraph at lines 41--41
+ @textrm assoc[]legendre[]p(n,m,x)| 
+
+@hbox(9.34993+3.85005)x108.405
+.@glue(@leftskip) 12.0
+.@textrm a
+.@textrm s
+.@textrm s
+.@textrm o
+.etc.
+
+
+Overfull \hbox (17.17706pt too wide) in paragraph at lines 42--42
+ @textrm assoc[]legendre[]q(n,m,x)| 
+
+@hbox(9.34993+3.85005)x108.405
+.@glue(@leftskip) 12.0
+.@textrm a
+.@textrm s
+.@textrm s
+.@textrm o
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 45--45
+ @textrm spherical[]hankel1(n,
+
+@hbox(8.2125+2.73749)x108.405
+.@glue(@leftskip) 12.0
+.@textrm s
+.@textrm p
+.@textrm h
+.@textrm e
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--46
+ @textrm spherical[]hankel2(n,
+
+@hbox(8.2125+2.73749)x108.405
+.@glue(@leftskip) 12.0
+.@textrm s
+.@textrm p
+.@textrm h
+.@textrm e
+.etc.
+
+
+Overfull \hbox (8.1129pt too wide) in paragraph at lines 47--47
+ @textrm spherical[]bessel[]j(n,x)| 
+
+@hbox(9.34993+3.85005)x108.405
+.@glue(@leftskip) 12.0
+.@textrm s
+.@textrm p
+.@textrm h
+.@textrm e
+.etc.
+
+
+Overfull \hbox (10.54625pt too wide) in paragraph at lines 48--48
+ @textrm spherical[]bessel[]y(n,x)| 
+
+@hbox(9.34993+3.85005)x108.405
+.@glue(@leftskip) 12.0
+.@textrm s
+.@textrm p
+.@textrm h
+.@textrm e
+.etc.
+
+
+Overfull \hbox (38.45056pt too wide) in paragraph at lines 49--49
+ @textrm spherical[]harmonic(n,m,x,y)| 
+
+@hbox(9.34993+3.85005)x108.405
+.@glue(@leftskip) 12.0
+.@textrm s
+.@textrm p
+.@textrm h
+.@textrm e
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 50--50
+@textrm ultraspherical
+
+@hbox(7.60416+2.12917)x108.405
+.@textrm u
+.@textrm l
+.@textrm t
+.@textrm r
+.@textrm a
+.etc.
+
+
+Overfull \hbox (0.746pt too wide) in paragraph at lines 50--50
+ @textrm ultraspherical(n,a,x)| 
+
+@hbox(9.34993+3.85005)x108.405
+.@glue(@leftskip) 12.0
+.@textrm u
+.@textrm l
+.@textrm t
+.@textrm r
+.etc.
+
+[103] [104] [105] [106]
+Underfull \hbox (badness 7133) in paragraph at lines 326--328
+ []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]HANKEL2, and SPHER-I-
+
+@hbox(7.60416+2.12917)x433.62, glue set 4.14972
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm S
+.@textrm e
+.@textrm e
+.etc.
+
+
+Underfull \hbox (badness 7133) in paragraph at lines 340--342
+ []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]HANKEL2, and SPHER-I-
+
+@hbox(7.60416+2.12917)x433.62, glue set 4.14972
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm S
+.@textrm e
+.@textrm e
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 354--356
+ []@textrm See also SPHER-I-CAL[]HANKEL2, SPHER-I-CAL[]BESSEL[]J, and SPHER-I-
+
+@hbox(7.60416+2.12917)x433.62, glue set 4.5232
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm S
+.@textrm e
+.@textrm e
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 368--370
+ []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]BESSEL[]J, and SPHER-I-
+
+@hbox(7.60416+2.12917)x433.62, glue set 4.5232
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm S
+.@textrm e
+.@textrm e
+.etc.
+
+[107]) Chapter 17 [108] (Limits.texi) Chapter 18 [109] [110]
+(Differentiation.texi [111] [112] [113] [114] [115]) Chapter 19 [116]
+(Integration.texi [117]
+Underfull \hbox (badness 3668) in paragraph at lines 126--129
+ []@textrm DEFinite IN-Te-gra-tion, the same as IN-TE-GRATE(exp,var,low,high). 
+This
+
+@hbox(8.2125+2.73749)x433.62, glue set 3.32346
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm D
+.@textrm E
+.@textrm F
+.etc.
+
+
+Underfull \hbox (badness 7685) in paragraph at lines 126--129
+ @textrm uses sym-bolic meth-ods, if you wish to use a nu-mer-i-cal method try
+
+@hbox(7.60416+2.12917)x433.62, glue set 4.25424
+.@glue(@leftskip) 28.90755
+.@textrm u
+.@textrm s
+.@textrm e
+.@textrm s
+.etc.
+
+[118]
+Underfull \hbox (badness 10000) in paragraph at lines 156--158
+ []@textrm then the reg-u-lar in-te-gra-tion pro-gram will be in-voked if the s
+witch
+
+@hbox(7.60416+2.12917)x433.62, glue set 4.91435
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm t
+.@textrm h
+.@textrm e
+.etc.
+
+
+Underfull \hbox (badness 6708) in paragraph at lines 156--158
+ @textrm ERRINTSCE[TRUE] is TRUE. If it is FALSE then INTSCE will err
+
+@hbox(8.2125+2.73749)x433.62, glue set 4.06725
+.@glue(@leftskip) 28.90755
+.@textrm E
+.@textrm R
+.@textrm R
+.@textrm I
+.etc.
+
+[119] [120] [121] [122] [123] [124] [125]) Chapter 20 [126] (Equations.texi
+[127] [128] [129] [130]
+Underfull \hbox (badness 6675) in paragraph at lines 355--357
+ []@textrm There is an op-tion ROOTSCON-MODE (de-fault value TRUE), af-fect-ing
+
+
+@hbox(8.2125+2.73749)x433.62, glue set 4.05801
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm T
+.@textrm h
+.@textrm e
+.etc.
+
+[131] [132]
+Underfull \hbox (badness 2012) in paragraph at lines 505--513
+ []@textrm - The IMSL ZR-POLY rou-tine for find-ing the ze-ros of sim-ple poly-
+no-mi-als
+
+@hbox(7.60416+2.12917)x433.62, glue set 2.72263
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm -
+.@discretionary
+.@glue 3.65 plus 1.825 minus 1.21666
+.etc.
+
+[133]) Chapter 21 [134] (Differential.texi
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 22--22
+ []@texttt If initial conditions at 0 are known, they should be supplied before
+[] |
+
+@hbox(6.69167+2.43333)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@texttt I
+.@texttt f
+.@penalty 10000
+.etc.
+
+[135] [136]) Chapter 22 [137] [138] (Numerical.texi
+Underfull \hbox (badness 2173) in paragraph at lines 15--27
+@textrm of Romberg in-te-gra-tion is now avail-able in Mac-syma. For doc-u-men-
+ta-tion, Do
+
+@hbox(7.60416+2.12917)x433.62, glue set 2.79456
+.@textrm o
+.@textrm f
+.@glue 3.65 plus 1.825 minus 1.21666
+.@textrm R
+.@textrm o
+.etc.
+
+[139]
+Overfull \hbox (32.18782pt too wide) in paragraph at lines 96--96
+ []@texttt |   / B               |        [                              | / B 
+     | ][] |
+
+@hbox(7.60416+0.91246)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@texttt |
+.@penalty 10000
+.@glue 5.74869
+.etc.
+
+
+Overfull \hbox (32.18782pt too wide) in paragraph at lines 97--97
+ []@texttt |   [                 |        [                              | [   
+     | ][] |
+
+@hbox(7.60416+0.91246)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@texttt |
+.@penalty 10000
+.@glue 5.74869
+.etc.
+
+
+Overfull \hbox (32.18782pt too wide) in paragraph at lines 98--98
+ []@texttt |   I F(x)dx - DCADRE | <= max [ ROMBERG_AERR, ROMBERG_RERR * | I F(
+x)dx | ][] |
+
+@hbox(7.60416+1.52081)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@texttt |
+.@penalty 10000
+.@glue 5.74869
+.etc.
+
+
+Overfull \hbox (32.18782pt too wide) in paragraph at lines 99--99
+ []@texttt |   ]                 |        [                              | ]   
+     | ][] |
+
+@hbox(7.60416+0.91246)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@texttt |
+.@penalty 10000
+.@glue 5.74869
+.etc.
+
+
+Overfull \hbox (32.18782pt too wide) in paragraph at lines 100--100
+ []@texttt |   / A               |        [                              | / A 
+     | ][] |
+
+@hbox(7.60416+0.91246)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@texttt |
+.@penalty 10000
+.@glue 5.74869
+.etc.
+
+[140] [141] [142] [143] [144]) Chapter 23 [145] [146] (Statistics.texi)
+Chapter 24 [147] [148] (Arrays.texi [149] [150]) Chapter 25 [151] [152]
+(Matrices.texi [153] [154] [155] [156] [157] [158]
+Underfull \hbox (badness 2158) in paragraph at lines 457--474
+ @textrm from scratch by EX-PAND(ADJOINT(mat))/EXPAND(DETERMINANT(mat)).
+
+@hbox(8.2125+2.73749)x433.62, glue set 2.78667
+.@glue(@leftskip) 28.90755
+.@textrm f
+.@textrm r
+.@textrm o
+.@textrm m
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 457--474
+ @textrm IN-VERT(mat):=ADJOINT(mat)/DETERMINANT(mat). See also DE-
+
+@hbox(8.2125+2.73749)x433.62, glue set 6.27869
+.@glue(@leftskip) 28.90755
+.@textrm I
+.@textrm N
+.@discretionary
+..@textrm -
+.@textrm V
+.etc.
+
+[159] [160] [161]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 753--753
+ []@texttt EXPANDDIV, EXPANDDIVPLUS, EXPANDDIVPROD, EXPANDCURL, EXPANDCURLPLUS,
+[] |
+
+@hbox(6.69167+1.52081)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@texttt E
+.@texttt X
+.@texttt P
+.etc.
+
+[162]) Chapter 26 [163] [164] (Affine.texi [165] [166]) Chapter 27 [167]
+[168] (Tensor.texi [169] [170] [171]) Chapter 28 [172] (Ctensor.texi [173]
+[174] [175]) Chapter 29 [176] (Series.texi [177] [178] [179] [180] [181])
+Chapter 30 [182] (Number.texi [183] [184] [185] [186]) Chapter 31 [187]
+[188] (Symmetries.texi [189] [190]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 136--136
+ []    @texttt 2   2   3        2   2   2                2   2     3      2   2
+[] |
+
+@hbox(6.69167+0.0)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@penalty 10000
+.@glue 5.74869
+.@penalty 10000
+.etc.
+
+[191] [192] [193] [194]
+Underfull \hbox (badness 3701) in paragraph at lines 496--497
+ []@textrm CONTRACT, CONT2PART, EX-PLOSE, PART2CONT, PART-POL, TCON-
+
+@hbox(7.48248+2.12917)x433.62, glue set 3.33536
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm C
+.@textrm O
+.@textrm N
+.etc.
+
+[195] [196] [197] [198] [199] [200] [201]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 943--943
+ []           @texttt 10              9            8            7             6
+[] |
+
+@hbox(6.69167+0.0)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@penalty 10000
+.@glue 5.74869
+.@penalty 10000
+.etc.
+
+
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 955--955
+ []@texttt X  - 40 X  + 4080 X  - 92928 X  + 3772160 X  + 37880832 X + 93392896
+[] |
+
+@hbox(6.69167+0.0)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@texttt X
+.@penalty 10000
+.@glue 5.74869
+.etc.
+
+[202]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 1033--1033
+ [] @texttt 15       12       11       10        9         8         7        6
+[] |
+
+@hbox(6.69167+0.0)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@penalty 10000
+.@glue 5.74869
+.@texttt 1
+.etc.
+
+[203] [204] [205]
+Underfull \hbox (badness 3701) in paragraph at lines 1215--1216
+ []@textrm CONTRACT, CONT2PART, EX-PLOSE, PART2CONT, PART-POL, TCON-
+
+@hbox(7.48248+2.12917)x433.62, glue set 3.33536
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm C
+.@textrm O
+.@textrm N
+.etc.
+
+) Chapter 32 [206] (Groups.texi [207]) Chapter 33 [208] (Runtime.texi [209]
+[210]) Chapter 34 [211] [212] (Miscellaneous.texi [213] [214] [215] [216])
+Chapter 35 [217] [218] (Rules.texi [219]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 102--102
+ []    @texttt This has caused the function LINEAR(exp,var1) to be defined.  It
+[] |
+
+@hbox(7.60416+2.43333)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@penalty 10000
+.@glue 5.74869
+.@penalty 10000
+.etc.
+
+[220]
+Underfull \hbox (badness 2035) in paragraph at lines 180--203
+ []@textrm LETRAT[FALSE] when FALSE, LET-SIMP will sim-plify the nu-mer-a-tor a
+nd
+
+@hbox(8.2125+2.73749)x433.62, glue set 2.7332
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@textrm L
+.@textrm E
+.@textrm T
+.etc.
+
+[221] [222] [223]) Chapter 36 [224] (Lists.texi [225] [226]) Chapter 37
+[227] [228] (Function.texi [229] [230] [231] [232] [233] [234] [235] [236]
+[237] [238] [239] [240]) Chapter 38 [241] [242] (Program.texi [243] [244]
+Overfull \hbox (15.10587pt too wide) in paragraph at lines 171--171
+ []            @texttt IF Y=0.0 THEN ERROR("Derivative at:",GUESS," is zero."),
+[] |
+
+@hbox(7.60416+1.52081)x433.62
+.@glue(@leftskip) 57.8151
+.@hbox(0.0+0.0)x0.0
+.@penalty 10000
+.@glue 5.74869
+.@penalty 10000
+.etc.
+
+[245] [246] [247] [248]) Chapter 39 [249] [250] (Debugging.texi [251])
+Chapter 40 [252] (Indices.texi Appendix @char 65 [253] [254] (maxima.fns
+[255] [256] [257] [258] [259] [260] [261] [262] [263] [264])) [265] [266]
+(maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6] [-7] [-8] ) 
 Here is how much of TeX's memory you used:
- 1345 strings out of 63189
- 18815 string characters out of 966977
- 48488 words of memory out of 263001
- 2270 multiletter control sequences out of 10000+60000
- 26608 words of font info for 90 fonts, out of 400000 for 1000
- 18 hyphenation exceptions out of 1000
- 16i,5n,13p,247b,371s stack positions out of 300i,100n,500p,50000b,10000s
-<cmti10.pfb><cmr12.pfb><cmti12.pfb><cmtt12.pfb><cmr9.pfb>
-<cmsl9.pfb><cmtt9.pfb><cmb10.pfb><cmsy10.pfb><cmsl10.pfb><cmss10.pfb><cmbx10.pf
-b><cmtt10.pfb><cmr10.pfb><cmbx12.pfb>
-Output written on maxima.pdf (259 pages, 735130 bytes).
+ 2359 strings out of 63189
+ 29026 string characters out of 966977
+ 57002 words of memory out of 263001
+ 2871 multiletter control sequences out of 10000+60000
+ 30088 words of font info for 104 fonts, out of 400000 for 1000
+ 19 hyphenation exceptions out of 1000
+ 15i,6n,13p,247b,310s stack positions out of 300i,100n,500p,50000b,10000s
+<cmbxti10.pf
+b><cmr12.pfb><cmtt12.pfb><cmr9.pfb><cmti9.pfb><cmtt9.pfb><cmmi10.pfb><cmti10.pf
+b><cmb10.pfb><cmsy10.pfb><cmss10.pfb><cmbx10.pfb><cmsl10.pfb><cmsltt10.pfb><cmt
+t10.pfb><cmr10.pfb><cmbx12.pfb>
+Output written on maxima.pdf (275 pages, 857497 bytes).

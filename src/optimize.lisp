@@ -56,9 +56,10 @@
 
 ;(and (not (consp x)) (if (si::fixnump x) (= 0 (the fixnum x)) (zerop x)))
 (definline inline-always boolean nil nil pzerop (t )
-  "@0;(type_of(#0) != t_cons && (type_of(#0)==t_fixnum ?  (fix(#0)==0) 
+  "@0;(type_of(#0)==t_fixnum ?  (fix(#0)==0)
+       :type_of(#0) == t_cons ? 0 
        :type_of(#0)==t_shortfloat ? (sf(#0)==0.0)
-       :(type_of(#0)==t_longfloat && (lf(#0)==0.0))))")
+       :(type_of(#0)==t_longfloat && (lf(#0)==0.0)))")
 
 ;(definline inline-always boolean nil nil pzerop (t )
 ;  "(type_of(#0)==t_fixnum ?  (fix(#0)==0)

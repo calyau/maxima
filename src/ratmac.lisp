@@ -23,8 +23,9 @@
 
 (proclaim '(inline pzerop))
 #+CL
-(defun pzerop (x) (and (numberp x) (zerop x)))
-
+(defun pzerop (x) (if (fixnump x) (zerop (the fixnum x))
+		    (if (consp x) nil
+		      (zerop x))))
 
 #+CL
 (DEFMACRO PZERO () 0)
