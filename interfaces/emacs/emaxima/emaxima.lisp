@@ -392,7 +392,8 @@
 		   (doit (and 
 			  f ; there is such a function
 			  (memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
-			  (not (memq f '(%sum %product))) ;; what else? what a hack...
+			  (not (memq f '(%sum %lsum %product %derivative 
+					      %integrate %limit))) ;; what else? what a hack...
 			  (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 			      (and (atom expon) (numberp expon) (> expon 0))))))
 			      ; f(x)^3 is ok, but not f(x)^-1, which could 
