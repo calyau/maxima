@@ -7,18 +7,16 @@ procedure in INSTALL.lisp.
 
 Maxima can be simply compiled and installed under MSYS or Cygwin by
 following the GNU Autotools instructions in INSTALL. With a few more
-steps, Maxima will create a windows installer executable. (N.b., the
-following documentation has not been updated for the post-5.9.0
-releases.)  The instructions for doing so are contained in this
-file. Note, however, that this process is not as polished as the
-unix-like install process.
+steps, Maxima will create a windows installer executable.  The
+instructions for doing so are contained in this file. Note, however,
+that this process is not as polished as the unix-like install process.
 
 In principle, creating a Windows (X)maxima installer executable is a
 straightforward exercise. In order to create the maxima windows
 installer from the maxima tarball distribution, I do the following in
 a msys window:
 -----------------------------
-./configure  --with-wish=wish83 --prefix=c:/msys/1.0/maxinstall
+./configure  --with-wish=wish84 --prefix=c:/maxima
 make
 make install
 make iss
@@ -49,58 +47,44 @@ The instructions below apply to the maxima release tarball. In order
 to build from the cvs repository, cvs, autoconf and automake are also
 required. Follow the directions in INSTALL.cvs before proceding.
 
-1) Get a working msys+mingw installation from www.mingw.org.
-        a) Follow the links to
-<http://sourceforge.net/project/showfiles.php?group_id=2435>. Get MinGW
-2.0.0-3.exe. I installed it in c:\MinGW
-        b) From the same page, get msys Snapshot 1.0.8. I installed it in
-c:\msys\1.0. The installer should magically find your mingw installation
-and add it to your path.
+1) Get a working msys+mingw installation from www.mingw.org. At this
+time (June 2004) it is essential to install the versions of gcc and
+binutils listed here to obtain a working gcl.  The files are available
+from <http://sourceforge.net/project/showfiles.php?group_id=2435>:
+   a) Get MinGW-3.1.0-1.exe. I installed it in c:\MinGW
+   b) Get MSYS-1.0.10.exe. I installed it in c:\msys\1.0. 
+      The installer should magically find your mingw installation
+      and add it to your path.
+   c) Install tcltk-8.4.1-1.exe
+   d) Install gcc-3.3.1
+   e) Install binutils-2.14.90 from 
+      ftp://ftp.sf.net/m/mi/mingw/binutils-2.14.90-20030807-1.tar.gz
 
-2) Get a working GCL using either (2a) or (2b):
+NOTE: gcc 3.3.3 and gcc 3.4.0 do NOT work; likewise binutils 2.13.90
+and 2.15.90.
 
-2a) Get GCL 2.5.0 snapshot binary from
-<http://savannah.gnu.org/projects/gcl/>. Follow the links to
-<ftp://ftp.gnu.org/pub/gnu/gcl/cvs/>. I installed it in c:\gcl.
+2) Get a working GCL 
 
-Edit the paths in the gcl wrapper script (c:\gcl\bin\gcl) to reflect
-the installation directory. Pay careful attention to the format of the
-path descriptions (g:/gclm vs. /g/gclm). If you change the format of
-the paths, you will get strange errors when you try to run
-gcl. Unfortunately, recent binaries (as of Feb 4, 2003) have crashed
-for me during maxima compiles and/or checks.
-
-2b) Get a GCL 2.5.0 tarball. The recent CVS versions of GCL have also
-crashed for me. I am currently using a CVS snapshot from approximately
-January 3, 2003. Follow the cvs instructions at
-<http://savannah.gnu.org/projects/gcl/> to check out GCL. The cvs
-command to check out the version from January 3 is
-
-cvs -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/gcl checkout -D
-"2003-01-03" gcl
-
-I leave getting a cvs checkout on a windows machine as an exercise for
-the reader. Personally, I check it out under Linux, then tar up the
-results and copy them to my windows partition.
+Get the GCL 2.6.2 release tarball from any GNU mirror See
+<http://savannah.gnu.org/projects/gcl/>.  I installed it in the 
+mingw path /usr/local/src/gcl-2.6.2 == c:\msys\1.0\local\src\gcl-2.6.2
 
 Once the gcl sources are available, compile it with
 
-./configure  --prefix=c:/gcl
+./configure  --enable-ansi 
 make
 make install
 
 For extra portability, I do, instead,
 
-./configure --prefix=c:/gcl
-cs gmp3
+./configure --enable-ansi
+cd gmp3
 ./configure --build=i486-unknown-linux-gnu
 cd ..
 make
 make install
 
-3) Get Tcl/Tk 8.3 from
-<http://members1.chello.nl/~j.nijtmans/mingw.html>. I installed it in
-c:\tcltk.
+3) Install the msys tcltk-8.4
 
 4) Get and install ActivePerl from
 <http://www.activestate.com>. Follow the download link at
@@ -129,7 +113,7 @@ after the initial setting of PATH:
 maxima so that it will install in some sort of temporary
 directory. The directory does not need to exist ahead of time.
 
-./configure  --with-wish=wish83 --prefix=c:/msys/1.0/maxinstall
+./configure  --with-wish=wish84 --prefix=c:/maxima
 make
 make check
 make install
@@ -167,7 +151,19 @@ and Makefile.am in the top level maxima directory.
 
 10) Once "make iss" is complete, run Inno Setup on the maxima.iss
 file. I recommend completely removing the temporary maxima install
-directory (c:/msys/1.0/maxinstall above) before testing the
-installation.
+directory (c:/maxima above) before testing the installation.
+
+11) Test the installed package.  For example
+ o Run the maxima testsuite: run_testsuite()
+ o Try compling a function.  This has been a problem in the past
+    - f(x):=x+2;
+    - compile(f);
+    - f(2);
+ o Plot something
+ o try out the on-line help: describe(sin)
 
  LocalWords:  iss Tcl mingw gmp linux
+
+Local Variables: ***
+mode: Text ***
+End: ***
