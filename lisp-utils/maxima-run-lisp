@@ -6,7 +6,7 @@
 #   License: LGPL (See file GNU-LGPL for details)
 # -----------------------------------------------------------------------------
 #  (c) copyright 1999 by Gilbert Baumann, Sam Steingold, Bruno Haible
-# $Id: maxima-run-lisp,v 1.4 2002-10-17 21:08:38 amundson Exp $
+# $Id: maxima-run-lisp,v 1.5 2003-02-22 09:23:46 wjenkner Exp $
 # $Source: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/lisp-utils/maxima-run-lisp,v $
 
 # Prior to invocation the LISPTYPE environment variable must been set to
@@ -129,7 +129,7 @@ case "$1" in
             echo 'o' # but also 'data' on same platforms
             ;;
         sbcl )
-            echo 'x86f' # How about other platforms?
+            echo 'fasl' # How about other platforms?
             ;;
         * )
             # Since make does not stop when the exit status is 1, we simply
@@ -185,6 +185,14 @@ case "$1" in
 	    # jfa: fixme 04/24/02
 	    # jfa: The -eval part of the following line is a big hack!
             ${CMUCL-lisp} -eval "(user::run)" $extra_args $load_arg -core "$1".core
+            ;;
+        sbcl )
+	    if [ -n "$load_file" ]; then
+	      load_arg="--load $load_file"
+	    fi
+	    # jfa: fixme 04/24/02
+	    # jfa: The --eval part of the following line is a big hack!
+            ${SBCL-sbcl}  --core "$1".core --eval "(user::run)" $extra_args $load_arg
             ;;
         acl43 )
 	    if [ -n "$load_file" ]; then
