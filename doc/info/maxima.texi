@@ -193,7 +193,6 @@ Trigonometric
 Special Functions
 
 * Introduction to Special Functions::  
-* GAMALG::                      
 * SPECINT::                     
 * Definitions for Special Functions::  
 
@@ -232,7 +231,6 @@ Differential Equations
 Numerical
 
 * Introduction to Numerical::   
-* DCADRE::                      
 * FOURIER::                     
 * NDIFFQ::                      
 * Definitions for Numerical::   
