@@ -505,7 +505,7 @@ AC_SUBST(expanded_infodir)
 default_layout_autotools="true"
 AC_SUBST(default_layout_autotools)
 
-AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss src/Makefile src/maxima src/maxima.bat src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/emaxima/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl interfaces/xmaxima/Tkmaxima/Header.tcl interfaces/xmaxima/win32/Makefile share/Makefile demo/Makefile plotting/Makefile)
+AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss src/Makefile src/maxima src/maxima.bat src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/emaxima/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl interfaces/xmaxima/Tkmaxima/Header.tcl interfaces/xmaxima/win32/Makefile plotting/header.tcl plotting/mgnuplot share/Makefile demo/Makefile plotting/Makefile)
 
 chmod +x maxima-local
 chmod +x xmaxima-local
