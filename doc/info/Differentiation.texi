@@ -68,7 +68,7 @@ of differential geometry developed by Elie Cartan and has important
 applications in the theory of partial differential equations.  The
 present implementation is due to F.B. Estabrook and H.D. Wahlquist.
 It implements the functions @code{ext_diff} and @code{lie_diff},
-along with the operators @code{~} (wedge product) and ~code{|} (contraction
+along with the operators @code{~} (wedge product) and @code{|} (contraction
 of a form with a vector.) Type @code{demo(tensor)} to see a brief
 description of these commands along with examples.
 
