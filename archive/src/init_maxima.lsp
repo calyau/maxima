@@ -90,7 +90,7 @@
  (unintern 'lisp)
  (unintern 'compiler)
  (unintern 'user)
- (si::chdir "/home/wfs/maxima-5.4/src")(si::save-system "saved_maxima")
+ (si::chdir "/home/wfs/cvs/maxima/src")(si::save-system "saved_maxima")
  (if (fboundp 'user-init) (user-init))
  (si::set-up-top-level)
  (in-package "USER")
