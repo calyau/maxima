@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Push.tcl,v 1.3 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: Push.tcl,v 1.4 2003-01-22 02:59:02 mikeclarkson Exp $
 #
 ###### push.tcl ######
 ############################################################
@@ -43,7 +43,9 @@ proc pushl { val key  } {
 #
 proc peekl {key default {m 1}} {
     global __pushl_ar
-    if { [catch { set val [set __pushl_ar($key) ] } ] } {
+    if {![info exists __pushl_ar($key)]} {
+	return $default
+    } elseif { [catch { set val [set __pushl_ar($key) ] } ] } {
 	return $default
     } else {
 	set n [llength $val]
