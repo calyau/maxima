@@ -892,6 +892,11 @@
 		   (f-fun (1+ n) z))
 	      (f-fun (+ n 2) z)))))
 
+;; Compute sqrt(2*z/%pi)
+(defun root-2z/pi (z)
+  (let ((half (div 1 2)))
+    (simplify (power (mul 2 z (inv '$%pi)) half))))
+
 (defun bessel-j-half-order (order arg)
   "Compute J[n+1/2](z)"
   (let* ((n (floor order))
@@ -901,7 +906,7 @@
 		  (mul sign
 		       ($expand (f-fun (- (- n) 1) arg))
 		       `((%cos) ,arg)))))
-    (mul `((mexpt) ,(div (mul 2 arg) '$%pi) ,(div 1 2))
+    (mul (root-2z/pi arg)
 	 jn)))
 
 (defun bessel-y-half-order (order arg)
@@ -958,7 +963,7 @@
 
 (defun bessel-i-half-order (order arg)
   (let ((order (floor order)))
-    (mul `((mexpt) ,(div (mul 2 arg) '$%pi) ,(div 1 2))
+    (mul (root-2z/pi arg)
 	 (add (mul ($expand (g-fun order arg))
 		   `((%sinh) ,arg))
 	      (mul ($expand (g-fun (- (+ order 1)) arg))
