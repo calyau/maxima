@@ -4,13 +4,19 @@
   (:export
    ;; Error functions
    "DERF" "DERFC"
-   ;; Bessel functions
-   "DBESJ0" "DBESJ1" "DBESJ"
-   "DBESI0" "DBESI1" "DBESI"
-   "DBSI0E" "DBSI1E"
-   "ZBESJ"
+
+   ;; Bessel function: J
+   "DBESJ0" "DBESJ1" "DBESJ" "ZBESJ"
+
+   ;; Bessel function: Y
+   "DBESY0" "DBESY1" "DBESY" "ZBESY"
+
+   ;; Bessel function: I
+   "DBESI0" "DBESI1" "DBESI" "DBSI0E" "DBSI1E" "ZBESI"
+   
    ;; Airy functions
    "DAI"
+
    ;; Exponential integrals
    "DE1")
   (:documentation "Package for the Fortran routines we need from SLATEC"))
