@@ -38,7 +38,7 @@ Eu(l1,l2):=d_t*v(l1,[])+v([],[j])*v(l1,[],j)+
            1/rho([])*diff(p([],[]),l1[1])+diff(phi([],[]),l1[1])$
 ishow(Eu([i],[]))$
 ("Another definition can be given using the metric g")$
-Eu(l1,l2):=block(j1:idummy(), if l2=[] then
+Eu(l1,l2):=block([j1:idummy()], if l2=[] then
              d_t* v(l1,[])+v([],[j1])*v(l1,[],j1)+
              1/rho([])*diff(p([],[]),l1[1])+diff(phi([],[]),l1[1])
            else d_t*v([],l2)+v([],[j1])*v([],l2,j1)+

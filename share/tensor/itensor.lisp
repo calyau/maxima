@@ -1,4 +1,5 @@
 ;;; -*- Mode:LISP; Package:MACSYMA -*-
+;;	** (c) Copyright 1981 Massachusetts Institute of Technology **
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -27,11 +28,9 @@
       (t ($put '$itensor '$v20041126 '$version))
 )
 
-;	** (c) Copyright 1981 Massachusetts Institute of Technology **
-
 ;    Various functions in Itensor have been parceled out to separate files. A
 ;    function in one of these files will only be loaded in (automatically) if
-;    explicitly used in the Macsyma. (It is necessary to have first loaded in
+;    explicitly used in the Maxima. (It is necessary to have first loaded in
 ;    ITENSOR FASL for this autoloading to take place.) The current status of
 ;    these separate files are:
 
@@ -43,58 +42,59 @@
 ;    SYMTRY FASL       CANFORM, DECSYM, DISPSYM, REMSYM
 
 #+maclisp(progn
-(putprop '$IC_CONVERT '((dsk tensor) gener fasl) 'autoload)
-(putprop '$DECSYM '((dsk tensor) symtry fasl) 'autoload)
-(putprop '$CANFORM '((dsk tensor) symtry fasl) 'autoload)
-(putprop '$CANTEN '((dsk tensor) canten fasl) 'autoload)
-(putprop '$MAKEBOX '((dsk tensor) gener fasl) 'autoload)
-(putprop '$IGEODESIC_COORDS '((dsk tensor) gener fasl) 'autoload)
-(putprop '$CONMETDERIV '((dsk tensor) gener fasl) 'autoload))
+(putprop '$ic_convert '((dsk tensor) gener fasl) 'autoload)
+(putprop '$decsym '((dsk tensor) symtry fasl) 'autoload)
+(putprop '$canform '((dsk tensor) symtry fasl) 'autoload)
+(putprop '$canten '((dsk tensor) canten fasl) 'autoload)
+(putprop '$makebox '((dsk tensor) gener fasl) 'autoload)
+(putprop '$igeodesic_coords '((dsk tensor) gener fasl) 'autoload)
+(putprop '$conmetderiv '((dsk tensor) gener fasl) 'autoload))
 #+Franz (progn
-(putprop '$IC_CONVERT (concat vaxima-main-dir '|//tensor//gener|) 'autoload)
-(putprop '$DECSYM (concat vaxima-main-dir  '|//tensor//symtry| )'autoload)
-(putprop '$CANFORM (concat vaxima-main-dir  '|//tensor//symtry| )'autoload)
-(putprop '$CANTEN (concat vaxima-main-dir  '|//tensor//canten| )'autoload)
-(putprop '$MAKEBOX (concat vaxima-main-dir  '|//tensor//gener| )'autoload)
-(putprop '$IGEODESIC_COORDS  (concat vaxima-main-dir '|//tensor//gener| )'autoload)
-(putprop '$CONMETDERIV  (concat vaxima-main-dir '|//tensor//gener| )'autoload))
+(putprop '$ic_convert (concat vaxima-main-dir '|//tensor//gener|) 'autoload)
+(putprop '$decsym (concat vaxima-main-dir  '|//tensor//symtry| )'autoload)
+(putprop '$canform (concat vaxima-main-dir  '|//tensor//symtry| )'autoload)
+(putprop '$canten (concat vaxima-main-dir  '|//tensor//canten| )'autoload)
+(putprop '$makebox (concat vaxima-main-dir  '|//tensor//gener| )'autoload)
+(putprop '$igeodesic_coords (concat vaxima-main-dir '|//tensor//gener| )'autoload)
+(putprop '$conmetderiv (concat vaxima-main-dir '|//tensor//gener| )'autoload))
 
 #+cl
 (progn
-(autof '$IC_CONVERT '|gener|)
-(autof '$DECSYM '|symtry|)
-(autof '$CANFORM '|symtry|)
-(autof '$CANTEN '|canten|)
-(autof '$MAKEBOX '|gener|)
-(autof '$IGEODESIC_COORDS '|gener|)
-(autof '$CONMETDERIV '|gener|)
-(autof '$NAME '|canten|)
-;(autof '$CONTI '|canten|)
-;(autof '$COVI '|canten|)
-(autof '$DERI '|canten|)
+(autof '$ic_convert '|gener|)
+(autof '$decsym '|symtry|)
+(autof '$canform '|symtry|)
+(autof '$canten '|canten|)
+(autof '$makebox '|gener|)
+(autof '$igeodesic_coords '|gener|)
+(autof '$conmetderiv '|gener|)
+(autof '$name '|canten|)
+(autof '$deri '|canten|)
 )
+
 #+cl
 (eval-when (eval compile)
-	   (defmacro fixp (x) `(typep ,x 'fixnum)))
+  (defmacro fixp (x) `(typep ,x 'fixnum))
+)
 
+#+maclisp ($UUO) 	           ;Restore calls to SDIFF so it can be redefined	
 
+(declare-top
+  (special smlist $idummyx $vect_coords $imetric $icounter $dim
+           $contractions $coord $allsym $metricconvert $iframe_flag
+           $itorsion_flag $inonmet_flag)
+  (*lexpr $rename $diff $idiff $coord $remcoord $lorentz_gauge)
+)
 
-#+maclisp ($UUO) 	                        ;Restore calls to SDIFF so it can be redefined	
-
-(DECLARE-TOP (SPECIAL SMLIST $IDUMMYX $VECT_COORDS $IMETRIC $ICOUNTER $DIM
-		  $CONTRACTIONS $COORD $ALLSYM $METRICCONVERT $IFRAME_FLAG
-          $ITORSION_FLAG)
-	 (*LEXPR $RENAME $DIFF $COORD $REMCOORD $LORENTZ_GAUGE))
-
-(SETQ $IDUMMYX '$%                   ;Prefix for dummy indices
-      $ICOUNTER 0.                   ;Dummy variable numeric indexs
-      SMLIST '(MLIST SIMP)           ;Simplified MLIST header
-      $VECT_COORDS NIL               ;Used when differentiating w.r.t. a number
-      $COORD '((MLIST SIMP))         ;Objects treated liked coordinates in DIFF
-      $ALLSYM NIL                    ;If T then all indexed objects symmetric
-      $METRICCONVERT T               ;Flag used by $IC_CONVERT
-      $IFRAME_FLAG NIL
-      $ITORSION_FLAG NIL)
+(setq $idummyx '$%                   ;Prefix for dummy indices
+      $icounter 0.                   ;Dummy variable numeric indexs
+      smlist '(mlist simp)           ;Simplified mlist header
+      $vect_coords nil               ;Used when differentiating w.r.t. a number
+      $coord '((mlist simp))         ;Objects treated liked coordinates in diff
+      $allsym nil                    ;If T then all indexed objects symmetric
+      $metricconvert t               ;Flag used by $ic_convert
+      $iframe_flag nil
+      $itorsion_flag nil
+)
 
 ;(DEFUN IFNOT MACRO (CLAUSE) (CONS 'OR (CDR CLAUSE)))
 (DEFmacro IFNOT  (&rest CLAUSE) `(or ,@ clause))
@@ -111,12 +111,11 @@
 
 (DEFPROP $KDELTA ((/  . / )) CONTRACTIONS)
 
-
 (defun isprod (x) (or (equal x '(mtimes)) (equal x '(mtimes simp))
                       (equal x '(mtimes simp ratsimp)))
 )
 
-;; Remove occurrences of RATSIMP from elements of x
+;; Remove occurrences of ratsimp from elements of x
 (defun derat (x)
   (cond
     ((null x) nil)
@@ -808,43 +807,85 @@
                       $inmc2 %inmc2 $ikt2 %ikt2))
 (setq christoffels (append christoffels1 christoffels2 '(%ifb $ifb)))
 
-(DEFMFUN $CONTRACT (E)                                 ;Main contraction function
-       (COND ((ATOM E) E)
-	     ((RPOBJ E) (CONTRACT5 E))
-	     ((EQ (CAAR E) 'MTIMES)
-	      (MYSUBST0 (SIMPLIFYA (CONS '(MTIMES) (CONTRACT4 E))
-				   T)
-			E))
-	     ((EQ (CAAR E) 'MPLUS)
-	      (MYSUBST0 (SIMPLUS (CONS '(MPLUS)
-				       (MAPCAR '$CONTRACT
-					       (CDR E)))
-				 1.
-				 T)
-			E))
-	     (T (MYSUBST0 (SIMPLIFYA (CONS (CAR E) (MAPCAR '$CONTRACT (CDR E)))
-				     NIL) E))))
+;; Main contraction function
+(defmfun $contract (e)
+  (cond
+    ((atom e) e)
+    ((rpobj e) (contract5 e))
+    (
+      (eq (caar e) 'mtimes)
+      (mysubst0 (simplifya (cons '(mtimes) (contract4 e)) t) e)
+    )
+    (
+      (eq (caar e) 'mplus)
+      (mysubst0 (simplus (cons '(mplus) (mapcar '$contract (cdr e))) 1. t) e)
+    )
+    (t
+      (mysubst0 (simplifya (cons (car e) (mapcar '$contract (cdr e))) nil) e)
+    )
+  )
+)
 
-(DEFUN CONTRACT5 (E) 
-       ((LAMBDA (K) (COND ((AND (NOT (MEMQ (CAAR E) CHRISTOFFELS)) K)
-			   (NCONC (LIST (CAR E)
-					(CONS SMLIST (CAR K))
-					(CONS SMLIST (CDR K)))
-				  (CDDDR E)))
-			  (T E)))
-	(CONTRACT2 (CDADR E) (CDADDR E)))) 
+;; Contract a single tensor with itself
+(defun contract5 (e)
+  (prog (cov con)
+    (setq cov (contractinside (derat (cadr e))) con (derat (caddr e)))
+    ; Calling contract2 here won't do the trick as it messes up the
+    ; order of indices. So we remove indices that appear both in cov
+    ; and in con the hard way, with a do loop.
+    (do
+      ((i cov (cdr i)))
+      ((null i))
+      (cond
+        ((not (atom (car i))))
+        (
+          (member (car i) con)
+          (setq con (delete (car i) con) cov (delete (car i) cov))
+        )
+      )
+    )
+    (return (nconc (list (car e) cov con) (cdddr e)))
+  )
+)
+;  (
+;    (lambda (k)
+;      (cond
+;        (
+;          (and (not (memq (caar e) christoffels)) k)
+;          (nconc
+;            (list
+;              (car e)
+;              (cons smlist (car k))
+;              (cons smlist (cdr k))
+;            )
+;            (cdddr e)
+;          )
+;        )
+;        (t e)
+;      )
+;    )
+;    (contract2 (covi e) (conti e))
+;  )
 
-;L1 and L2 are lists. This function removes all like members from L1 and L2 and
-;returns their cons or returns NIL if there aren't any like members.
+;; Remove like members. Return (cons l1 l2) or nil if no like members found.
+(defun contract2 (l1 l2)
+  (
+    (lambda (i) (and i (cons (setdiff l1 i) (setdiff l2 i))))
+    (intersect l1 l2)
+  )
+)
 
-(DEFUN CONTRACT2 (L1 L2)             
-       ((LAMBDA (I) (AND I (CONS (SETDIFF L1 I) (SETDIFF L2 I))))
-	(INTERSECT L1 L2))) 
-
-(DEFUN SETDIFF (S1 S2)                             ;Set difference of S1 and S2
-       (DO ((J S1 (CDR J)) (A))
-	   ((NULL J) A)
-	   (OR (AND (NOT (NUMBERP (CAR J))) (MEMQ (CAR J) S2)) (SETQ A (CONS (CAR J) A)))))
+;; Return a list with those members of s1 that are not in s2
+(defun setdiff (s1 s2)
+  (do
+    ((j s1 (cdr j)) (a))
+    ((null j) (reverse a))
+    (or
+      (and (not (numberp (car j))) (memq (car j) s2))
+      (setq a (cons (car j) a))
+    )
+  )
+)
 
 (DEFUN CONTRACT3 (IT LST)      ;Tries to contract IT with some element of LST.
        (PROG (FRST R REST)     ;If none occurs then return NIL otherwise return
@@ -1155,13 +1196,53 @@
         ; what we need to do is find the corresponding items in c, and remove
         ; all other negative indices (i.e., those that were dropped by
         ; contract2).
-        (setq c (removenotin (cdr f) c))
-        (setq a (car f))
+;;; THIS IS not OK. What we need to do is remove items from c one by one,
+;;; and substitute an item from (car f), which we should remove from
+;;; (car f).
+;;; for i thru length(c)
+;;;    if c[i] not in (cdr f)
+;;;       if (car f) is nil, remove c[i]
+;;;       otherwise subst c[i]
+;;; endfor
+;;; Now set c to what we made of c, a to whatever is left of (cdr f)
+
+(do
+  (
+    (i c (cdr i))
+    (j (car f))
+    (k)
+  )
+  ((null i) (setq a (removenotin j a) c (reverse k)))
+  (cond
+    ((or (atom (car i)) (member (caddar i) (cdr f))) (setq k (cons (car i) k)))
+    (
+      (not (null j))
+      (setq k (cons (car j) k) j (cdr j))
+    )
+  )
+)
+;--        (setq c (removenotin (cdr f) c))
+;--        (setq a (car f))
       )
       (
         (and (minusi a) c (setq f (contract2 (minusi a) c)))
-        (setq a (removenotin (car f) a))
-        (setq c (cdr f))
+(do
+  (
+    (i c (cdr i))
+    (j (car f))
+    (k)
+  )
+  ((null i) (setq c (reverse k) a j))
+  (cond
+    ((member (car i) (cdr f)) (setq k (cons (car i) k)))
+    (
+      (not (null j))
+      (setq k (cons (list '(mtimes simp) -1 (car j)) k) j (cdr j))
+    )
+  )
+)
+;--        (setq a (removenotin (car f) a))
+;--        (setq c (cdr f))
       )
       (t (return nil))
     )
@@ -1170,6 +1251,7 @@
     (and c (setq a (append c a)))
     ;Zl-remove repeated indices
     (and (setq f (contract2 a b)) (setq a (car f) b (cdr f)))
+    (setq a (contractinside a))
 
     ;VTT: Special handling of Christoffel symbols. We can only contract them
     ;when we turn ICHR1 into ICHR2 or vice versa; other index combinations are

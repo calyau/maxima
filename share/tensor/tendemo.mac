@@ -21,11 +21,10 @@ print("This is the main demonstration program for MAXIMA tensors."),
 print("The following demos are available:"),
 while sel#x and sel#X do
 (
-kill(all),
-(
 /* This block of code restores trigonometric
    simplification properties that are removed
    when a kill(all) is executed. */
+  kill(all),
   put('sin,'cos,'complement_function),
   put('cos,'sin,'complement_function),
   put('sinh,'cosh,'complement_function),
@@ -41,8 +40,7 @@ kill(all),
   put('sin,'trigonometric,'type),
   put('cos,'trigonometric,'type),
   put('sinh,'hyper_trigonometric,'type),
-  put('cosh,'hyper_trigonometric,'type)
-),
+  put('cosh,'hyper_trigonometric,'type),
 print(""),
 print("INDICIAL TENSOR MANIPULATION        COMPONENT TENSOR MANIPULATION"),
 print("1. Basics                           11. Initialization"),
