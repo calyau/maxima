@@ -27,7 +27,7 @@ AZETB(S,FPP):=BLOCK([FPPREC:15],
 			   +P*BERN(2*K)/(S-1),(1/2+M)/P^S+SUM(K^-S,K,1,P-1),
 		     BFLOAT(%\%))
 	  ELSE (IF S = 0 THEN -1/2
-		    ELSE ((2*%PI)^S*SIN(%PI*S/2)*BFAC(-S,FPPREC)
+		    ELSE ((2*%PI)^S*SIN(%PI*S/2)*BFFAC(-S,FPPREC)
 				   *BZETA(1-S,FPPREC)
 			   /%PI,BFLOAT(%\%))));
 
@@ -62,7 +62,7 @@ OBZETA(S,FPPREC):=IF S > 0
 			 +P*BERN(2*K)/(S-1),(1/2+M)/P^S+SUM(K^-S,K,1,P-1),
 		   BFLOAT(%\%))
         ELSE (IF S = 0 THEN -1/2
-		  ELSE ?DOLIST((2*%PI)^S*SIN(%PI*S/2)*BFAC(-S,FPPREC)
+		  ELSE ((2*%PI)^S*SIN(%PI*S/2)*BFFAC(-S,FPPREC)
 					*BZETA(1-S,FPPREC)
 				/%PI,BFLOAT(%\%)));
 
@@ -83,7 +83,7 @@ BZETA(S,FPP):=IF S > 0
 			       (FPPREC:FPP-ENTIER(EV(S*LOG(K)/LOG(10),NUMER)),
 				T:T+K^-S),BFLOAT((1/2+M)/P^S+T))
        ELSE (IF S = 0 THEN -1/2
-		 ELSE ((2*%PI)^S*SIN(%PI*S/2)*BFAC(-S,FPPREC)
+		 ELSE ((2*%PI)^S*SIN(%PI*S/2)*BFFAC(-S,FPPREC)
 				*BZETA(1-S,FPPREC)
 			/%PI,BFLOAT(%\%)));
 
@@ -156,5 +156,5 @@ BFZETA(S,FPP):=IF S > 0
 					-ENTIER(EV(LOG(K)*S/LOG(10),NUMER)),
 				 T:T+1/K^S),BFLOAT(T+(M+1/2)/P^S))
         ELSE (IF S = 0 THEN -1/2
-		  ELSE (BFZETA(1-S,FPPREC)*%PI^(S-1)*2^S*BFAC(-S,FPPREC)
+		  ELSE (BFZETA(1-S,FPPREC)*%PI^(S-1)*2^S*BFFAC(-S,FPPREC)
 					  *SIN(%PI*S/2),BFLOAT(%\%)));
