@@ -442,6 +442,7 @@
         $X)))
    1
    (SIMPLIFY ($RATSIMP (ADD* $%3 (*MMINUS (TRD-MSYMEVAL $% '$%))))))))
+#+nil
 (EVAL-WHEN (COMPILE EVAL LOAD)
        (DEFPROP $NUSUM T TRANSLATED)
        (ADD2LNC '$NUSUM $PROPS)
