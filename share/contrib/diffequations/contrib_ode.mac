@@ -1,0 +1,80 @@
+/* contrib_ode.mac
+
+  Driver for contributed ODE routines
+
+
+  Copyright (C) 2004 David Billinghurst		 
+  		       								 
+  This program is free software; you can redistribute it and/or modify	 
+  it under the terms of the GNU General Public License as published by	 
+  the Free Software Foundation; either version 2 of the License, or		 
+  (at your option) any later version.					 
+ 		       								 
+  This program is distributed in the hope that it will be useful,		 
+  but WITHOUT ANY WARRANTY; without even the implied warranty of		 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		 
+  GNU General Public License for more details.				 
+ 		       								 
+  You should have received a copy of the GNU General Public License	
+  along with this program; if not, write to the Free Software 		 
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.	
+*/
+
+if get('ode1_nonlinear,'version)=false then
+  load('ode1_nonlinear)$
+
+contrib_ode(eqn,y,x) := block(
+  [soln,degree:derivdegree(eqn,y,x)],
+  
+  ode_disp("-> ode_contrib"),
+
+  /* Try ode2 if first or second order*/
+  if (degree < 1) then (
+    ode_disp("   Degree of equation less than 1"),
+    false
+  ) 
+  else if (degree > 2) then (
+    ode_disp("   Degree of equation greater then 2"),
+    false
+  ) 
+  else if (degree=1) then (
+    ode_disp("   First order equation"),
+    ode_disp("   -> ode2"),
+    soln:ode2(eqn,y,x),
+    if (soln#false) then (
+      ode_disp("    Successful"),
+      return([soln])
+    )
+    else (
+      return(ode1_nonlinear(eqn,y,x))
+    )
+  )
+  else if (degree=2) then (
+    ode_disp("   Second order equation"),
+    ode_disp("    -> ode2"),
+    soln:ode2(eqn,y,x),
+    if (soln#false) then (
+      ode_disp("     Successful"),
+      [soln]
+    )
+    else
+      false
+  )
+  else (
+    error("contrib_ode: This case cannot occur"),
+    false
+  )
+)$
+
+/* Check the solution of an ode. */
+ode_check(e_,a_) := block(
+  ratsimp(ev(lhs(e_)-rhs(e_),a_,diff))
+)$
+
+ode_disp(msg) := block(
+  if get('contrib_ode,'verbose) then print(msg)
+)$
+
+ode_disp2(msg,e) := block(
+  if get('contrib_ode,'verbose) then print(msg,e)
+)$
