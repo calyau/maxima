@@ -15,6 +15,8 @@
 (defvar *maxima-plotdir*)
 (defvar *maxima-verpkglibexecdir*)
 (defvar *maxima-verpkgdatadir*)
+(defvar *maxima-libexecdir*)
+(defvar *maxima-userdir*)
 
 (defun maxima-path (dir file)
    (format nil "~a/~a/~a" *maxima-prefix* dir file))
@@ -104,7 +106,7 @@
 	(setq *maxima-userdir* maxima-userdir-env)
       (setq *maxima-userdir* (concatenate 'string home-env "/.maxima"))))
 	 
-  (setq share-with-subdirs "{share,share/algebra,share/calculus,share/combinatorics,share/contrib,share/diffequations,share/graphics,share/integequations,share/integration,share/macro,share/matrix,share/misc,share/numeric,share/physics,share/simplification,share/specfunctions,share/sym,share/tensor,share/trigonometry,share/utils,share/vector}")
+  
   (let* ((ext #+gcl "o"
 	      #+cmu (c::backend-fasl-file-type c::*target-backend*)
 	      #+clisp "fas"
@@ -113,7 +115,8 @@
 	      "")
 	 (lisp-patterns (concatenate 'string
 				     "###.{"
-				     (concatenate 'string ext ",lisp,lsp}"))))
+				     (concatenate 'string ext ",lisp,lsp}")))
+	 (share-with-subdirs "{share,share/algebra,share/calculus,share/combinatorics,share/contrib,share/diffequations,share/graphics,share/integequations,share/integration,share/macro,share/matrix,share/misc,share/numeric,share/physics,share/simplification,share/specfunctions,share/sym,share/tensor,share/trigonometry,share/utils,share/vector}"))
     (setq $file_search_lisp
 	  (list '(mlist)
 		;; actually, this entry is not correct.
@@ -121,7 +124,7 @@
 		;; lisp code. jfa 04/11/02
 		(concatenate 'string *maxima-userdir* "/" lisp-patterns)
 		(maxima-data-path share-with-subdirs lisp-patterns)
-		(maxima-data-path "src" lisp-patterns))))
+		(maxima-data-path "src" lisp-patterns)))
   (setq $file_search_maxima
 	(list '(mlist)
 	      (concatenate 'string *maxima-userdir* "/" "###.{mac,mc}")
@@ -139,7 +142,7 @@
   (setq $chemin
 	(maxima-data-path "sym" ""))
   (setq si::*info-paths* (list (concatenate 'string
-					    *maxima-infodir* "/")))
+					    *maxima-infodir* "/"))))
   )
 
 ;#+gcl (setq si::*top-level-hook* 'user::run)
