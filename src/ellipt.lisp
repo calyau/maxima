@@ -86,43 +86,55 @@
   ;; Could use the descending transform, but some of my tests show
   ;; that it has problems with roundoff errors.
   (defun elliptic-dn-ascending (u m)
-    (if (< (abs (- 1 m)) (* 4 double-float-epsilon))
-	;; A&S 16.6.3
-	(/ (cl:cosh u))
-	(multiple-value-bind (v mu root-mu1)
-	    (ascending-transform u m)
-	  ;; A&S 16.14.4
-	  (let* ((new-dn (elliptic-dn-ascending v mu)))
-	    (* (/ (- 1 root-mu1) mu)
-	       (/ (+ root-mu1 (* new-dn new-dn))
-		  new-dn))))))
+    (cond ((zerop m)
+	   ;; A&S 16.6.3
+	   1d0)
+	  ((< (abs (- 1 m)) (* 4 double-float-epsilon))
+	   ;; A&S 16.6.3
+	   (/ (cl:cosh u)))
+	  (t
+	   (multiple-value-bind (v mu root-mu1)
+	       (ascending-transform u m)
+	     ;; A&S 16.14.4
+	     (let* ((new-dn (elliptic-dn-ascending v mu)))
+	       (* (/ (- 1 root-mu1) mu)
+		  (/ (+ root-mu1 (* new-dn new-dn))
+		     new-dn)))))))
 
   ;; Don't use the descending version because it requires cn, dn, and
   ;; sn.
   (defun elliptic-cn-ascending (u m)
-    (if (< (abs (- 1 m)) (* 4 double-float-epsilon))
-	;; A&S 16.6.2
-	(/ (cl:cosh u))
-	(multiple-value-bind (v mu root-mu1)
-	    (ascending-transform u m)
-	  ;; A&S 16.14.3
-	  (let* ((new-dn (elliptic-dn-ascending v mu)))
-	    (* (/ (+ 1 root-mu1) mu)
-	       (/ (- (* new-dn new-dn) root-mu1)
-		  new-dn))))))
+    (cond ((zerop m)
+	   ;; A&S 16.6.2
+	   (cl:cos u))
+	  ((< (abs (- 1 m)) (* 4 double-float-epsilon))
+	   ;; A&S 16.6.2
+	   (/ (cl:cosh u)))
+	  (t
+	   (multiple-value-bind (v mu root-mu1)
+	       (ascending-transform u m)
+	     ;; A&S 16.14.3
+	     (let* ((new-dn (elliptic-dn-ascending v mu)))
+	       (* (/ (+ 1 root-mu1) mu)
+		  (/ (- (* new-dn new-dn) root-mu1)
+		     new-dn)))))))
 
   ;; We don't use the ascending transform here because it requires
   ;; evaluating sn, cn, and dn.  The ascending transform only needs
   ;; sn.
   (defun elliptic-sn-descending (u m)
-    ;; A&S 16.12.2
-    (if (< (abs m) double-float-epsilon)
-	(cl:sin u)
-	(multiple-value-bind (v mu root-mu)
-	    (descending-transform u m)
-	  (let* ((new-sn (elliptic-sn-descending v mu)))
-	    (/ (* (1+ root-mu) new-sn)
-	       (1+ (* root-mu new-sn new-sn)))))))
+    (cond ((= m 1)
+	   ;; A&S 16.6.1
+	   (cl:tanh u))
+	  ((< (abs m) double-float-epsilon)
+	   ;; A&S 16.6.1
+	   (cl:sin u))
+	  (t
+	   (multiple-value-bind (v mu root-mu)
+	       (descending-transform u m)
+	     (let* ((new-sn (elliptic-sn-descending v mu)))
+	       (/ (* (1+ root-mu) new-sn)
+		  (1+ (* root-mu new-sn new-sn))))))))
   #+nil
   (defun elliptic-sn-ascending (u m)
     (if (< (abs (- 1 m)) (* 4 double-float-epsilon))
@@ -764,7 +776,11 @@
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; asn(x,m) = F(asin(x),m)
-	   (elliptic-f (cl:asin u) m))
+	   (elliptic-f (cl:asin (float u)) m))
+	  ((and $numer (complex-number-p u)
+		(complex-number-p m))
+	   (complexify (elliptic-f (cl:asin (complex ($realpart u) ($imagpart u)))
+				   (complex ($realpart m) ($imagpart m)))))
 	  ((zerop1 u)
 	   ;; asn(0,m) = 0
 	   0)
@@ -794,7 +810,11 @@
 	   ;; Numerically evaluate acn
 	   ;;
 	   ;; acn(x,m) = F(acos(x),m)
-	   (elliptic-f (acos u) m))
+	   (elliptic-f (acos (float u)) m))
+	  ((and $numer (complex-number-p u)
+		(complex-number-p m))
+	   (complexify (elliptic-f (cl:acos (complex ($realpart u) ($imagpart u)))
+				   (complex ($realpart m) ($imagpart m)))))
 	  ((zerop1 m)
 	   ;; asn(x,0) = F(acos(x),0) = acos(x)
 	   `((%elliptic_f) ((%acos) ,u) 0))
@@ -825,9 +845,18 @@
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
 	   ;; Numerically evaluate adn
-	   (let ((phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
-			 (sqrt m))))
+	   (let* ((u (float u))
+		  (m (float m))
+		  (phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
+			  (sqrt m))))
 	     (elliptic-f (asin phi) m)))
+	  ((and $numer (complex-number-p u)
+		(complex-number-p m))
+	   (let* ((u (complex ($realpart u) ($imagpart u)))
+		  (phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
+			 (sqrt m))))
+	     (complexify (elliptic-f (cl:asin phi)
+				     (complex ($realpart m) ($imagpart m))))))
 	  ((onep1 m)
 	   ;; x = dn(u,1) = sech(u).  so u = asech(x)
 	   `((%asech) ,u))
@@ -966,6 +995,57 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	   (setf y (* (+ y lam) 1/4))
 	   (setf z (* (+ z lam) 1/4))))))))
 
+(let ((errtol (expt (* 4 double-float-epsilon) 1/6))
+      (uplim (/ most-positive-double-float 5))
+      (lolim (* #-gcl least-positive-normalized-double-float
+		#+gcl least-positive-double-float
+		5))
+      (c1 (float 1/24 1d0))
+      (c2 (float 3/44 1d0))
+      (c3 (float 1/14 1d0)))
+  (declare (double-float errtol c1 c2 c3))
+  (defun crf (x y z)
+    "Compute Carlson's incomplete or complete elliptic integral of the
+first kind:
+
+                   INF
+                  /
+                  [                     1
+  RF(x, y, z) =   I    ----------------------------------- dt
+                  ]    SQRT(x + t) SQRT(y + t) SQRT(z + t)
+                  /
+                   0
+
+  x, y, and z may be complex.
+"
+    (declare (number x y z))
+    (let ((x (coerce x '(complex double-float)))
+	  (y (coerce y '(complex double-float)))
+	  (z (coerce z '(complex double-float))))
+      (declare (type (complex double-float) x y z)
+	       (optimize (speed 3)))
+      (loop
+	 (let* ((mu (/ (+ x y z) 3))
+		(x-dev (- 2 (/ (+ mu x) mu)))
+		(y-dev (- 2 (/ (+ mu y) mu)))
+		(z-dev (- 2 (/ (+ mu z) mu))))
+	   (when (< (max (abs x-dev) (abs y-dev) (abs z-dev)) errtol)
+	     (let ((e2 (- (* x-dev y-dev) (* z-dev z-dev)))
+		   (e3 (* x-dev y-dev z-dev)))
+	       (return (/ (+ 1
+			     (* e2 (- (* c1 e2)
+				      1/10
+				      (* c2 e3)))
+			     (* c3 e3))
+			  (sqrt mu)))))
+	   (let* ((x-root (sqrt x))
+		  (y-root (sqrt y))
+		  (z-root (sqrt z))
+		  (lam (+ (* x-root (+ y-root z-root)) (* y-root z-root))))
+	     (setf x (* (+ x lam) 1/4))
+	     (setf y (* (+ y lam) 1/4))
+	     (setf z (* (+ z lam) 1/4))))))))
+
 ;; Elliptic integral of the first kind (Legendre's form):
 ;;
 ;;
@@ -978,47 +1058,59 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 ;;     0
 
 (defun elliptic-f (phi-arg m-arg)
-  (let ((phi (float phi-arg 1d0))
-	(m (float m-arg 1d0)))
-    (cond ((> m 1)
-	   ;; A&S 17.4.15
-	   (/ (elliptic-f (asin (* (sqrt m) (sin phi))) (/ m))))
-	  ((< m 0)
-	   ;; A&S 17.4.17
-	   (let* ((m (- m))
-		  (m+1 (+ 1 m))
-		  (root (sqrt m+1))
-		  (m/m+1 (/ m m+1)))
-	     (- (/ (elliptic-f (float (/ pi 2) 1d0) m/m+1)
-		   root)
-		(/ (elliptic-f (- (float (/ pi 2) 1d0) phi) m/m+1)
-		   root))))
-	  ((= m 0)
-	   ;; A&S 17.4.19
-	   phi)
-	  ((= m 1)
-	   ;; A&S 17.4.21
-	   (log (cl:tan (+ (/ phi 2) (float (/ pi 2) 1d0)))))
-	  ((minusp phi)
-	   (- (elliptic-f (- phi) m)))
-	  ((> phi pi)
-	   ;; A&S 17.4.3
-	   (multiple-value-bind (s phi-rem)
-	       (truncate phi (float pi 1d0))
-	     (+ (* 2 s (elliptic-k m))
-		(elliptic-f phi-rem m))))
-	  ((<= phi (/ pi 2))
+  (cond ((and (realp m-arg) (realp phi-arg))
+	 (let ((phi (float phi-arg))
+	       (m (float m-arg)))
+	   (cond ((> m 1)
+		  ;; A&S 17.4.15
+		  (/ (elliptic-f (asin (* (sqrt m) (sin phi))) (/ m))))
+		 ((< m 0)
+		  ;; A&S 17.4.17
+		  (let* ((m (- m))
+			 (m+1 (+ 1 m))
+			 (root (sqrt m+1))
+			 (m/m+1 (/ m m+1)))
+		    (- (/ (elliptic-f (float (/ pi 2) 1d0) m/m+1)
+			  root)
+		       (/ (elliptic-f (- (float (/ pi 2) 1d0) phi) m/m+1)
+			  root))))
+		 ((= m 0)
+		  ;; A&S 17.4.19
+		  phi)
+		 ((= m 1)
+		  ;; A&S 17.4.21
+		  (log (cl:tan (+ (/ phi 2) (float (/ pi 2) 1d0)))))
+		 ((minusp phi)
+		  (- (elliptic-f (- phi) m)))
+		 ((> phi pi)
+		  ;; A&S 17.4.3
+		  (multiple-value-bind (s phi-rem)
+		      (truncate phi (float pi 1d0))
+		    (+ (* 2 s (elliptic-k m))
+		       (elliptic-f phi-rem m))))
+		 ((<= phi (/ pi 2))
+		  (let ((sin-phi (sin phi))
+			(cos-phi (cos phi))
+			(k (sqrt m)))
+		    (* sin-phi
+		       (drf (* cos-phi cos-phi)
+			    (* (- 1 (* k sin-phi))
+			       (+ 1 (* k sin-phi)))
+			    1d0))))
+		 ((< phi pi)
+		  (+ (* 2 (elliptic-k m))
+		     (elliptic-f (- phi (float pi 1d0)) m))))))
+	(t
+	 (let ((phi (coerce phi-arg '(complex double-float)))
+	       (m (coerce m-arg '(complex double-float))))
 	   (let ((sin-phi (sin phi))
 		 (cos-phi (cos phi))
 		 (k (sqrt m)))
 	     (* sin-phi
-		(drf (* cos-phi cos-phi)
+		(crf (* cos-phi cos-phi)
 		     (* (- 1 (* k sin-phi))
 			(+ 1 (* k sin-phi)))
-		     1d0))))
-	  ((< phi pi)
-	   (+ (* 2 (elliptic-k m))
-	      (elliptic-f (- phi (float pi 1d0)) m))))))
+		     1d0)))))))
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
@@ -1446,7 +1538,11 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
     (cond ((or (and (floatp phi) (floatp m))
 	       (and $numer (numberp phi) (numberp m)))
 	   ;; Numerically evaluate it
-	   (elliptic-f (float phi 1d0) (float m 1d0)))
+	   (elliptic-f (float phi) (float m)))
+	  ((and $numer (complex-number-p u)
+		(complex-number-p m))
+	   (complexify (elliptic-f (complex ($realpart u) ($imagpart u)))
+				   (complex ($realpart m) ($imagpart m))))
 	  ((zerop1 phi)
 	   0)
 	  ((zerop1 m)
@@ -3033,7 +3129,11 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; ans(x,m) = asn(1/x,m) = F(asin(1/x),m)
-	   (elliptic-f (cl:asin (/ u)) m))
+	   (elliptic-f (cl:asin (/ (float u 1d0))) (float m 1d0)))
+	  ((and $numer (complex-number-p u)
+		(complex-number-p m))
+	   (complexify (elliptic-f (cl:asin (/ (complex ($realpart u) ($imagpart u))))
+				   (complex ($realpart m) ($imagpart m)))))
 	  ((zerop1 m)
 	   ;; ans(x,0) = F(asin(1/x),0) = asin(1/x)
 	   `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) 0))
