@@ -11,5 +11,6 @@
 	"rtest9a.mac" "rtest10.mac" "rtest11.mac" "rtest13.mac" "rtest13s.mac"
 	"rtest14.mac" 
 	("rtest15.mac" 4)
+	("rtest16.mac" 4)
 	"rtestode.mac" "rtestode_zp.mac" "rtestflatten.mac"
 	"rtest3.mac" "rtest8.mac" "rtest12.mac" "rexamples.mac"))
