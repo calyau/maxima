@@ -811,7 +811,7 @@
 			((and (not correct) expected-error)
 			 (if (or show-all show-expected)
 			     (progn
-			       (format t "~%This is a known error in Maxima. The correct result is:")
+			       (format t "~%This is a known error in Maxima. The correct result is:~%")
 			       (displa next-result))))
 			(t (format t "~%This differed from the expected result:~%")
 			   (push i all-differences)
