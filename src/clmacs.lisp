@@ -260,18 +260,12 @@
   (typep x 'bignum))
 
 (defun haipart (x n)
-  (setq x (abs x))
-  (cond ((< x 0)
-	 (logand x (1- (ash 1 (- n)))))
-	(t (ash x (min (- n (integer-length x))
-		       0)))))
-
-(defun haipart (x n)
-  (setq x (abs x))
-  (cond ((< n 0)
-	 (logand x (1- (ash 1 (- n)))))
-	(t (ash x (min (- n (integer-length x))
-		       0)))))
+  (let ((x (abs x)))
+    (cond ((< x 0)
+	   (logand x (1- (ash 1 (- n)))))
+	  (t
+	   (ash x (min (- n (integer-length x))
+		       0))))))
 
 ; also correct but slower.
 ;(defun haipart (integer count)
