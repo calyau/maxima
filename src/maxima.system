@@ -27,9 +27,18 @@
 		   #+allegro "binary-acl6"
 		   #+openmcl "binary-openmcl"
 		   #-(or clisp cmu sbcl gcl allegro openmcl) "binary-unknownlisp"
-  :components ((:module package :source-pathname ""
+  :components (#+gcl
+	       (:module proclaim :source-pathname ""
 			:load-only t
 			:components ((:file "maxima-package")
+				     (:file "numerical/f2cl-package")
+				     (:file "numerical/slatec")
+				     (:file "command-line")
+				     (:file "nregex")
+				     (:file "sys-proclaim")))
+	       (:module package :source-pathname ""
+			:load-only t
+			:components (#-gcl(:file "maxima-package")
 				     (:file "autoconf-variables")))
 	       (:module info :source-pathname ""
 			:components ((:file "nregex")
@@ -70,10 +79,6 @@
                (:module numerical-macros :source-pathname ""
                         :components ((:file "numerm")))
                #+gcl (:file "optimize") ; jfa check this
-	       (:module declaim :source-pathname ""
-			:load-only t
-			:components (#-ansi-cl (:file "SYS-PROCLAIM")
-			             #+ansi-cl (:file "SYS-DECLAIM")))
                (:module utilities :source-pathname ""
                         :components ((:file "opers")
                                      (:file "utils") 

@@ -24,7 +24,6 @@ binary-cmucl/maxima.core : displm.lisp
 binary-cmucl/maxima.core : ratmac.lisp
 binary-cmucl/maxima.core : mhayat.lisp
 binary-cmucl/maxima.core : numerm.lisp
-binary-cmucl/maxima.core : SYS-DECLAIM.lisp
 binary-cmucl/maxima.core : opers.lisp
 binary-cmucl/maxima.core : utils.lisp
 binary-cmucl/maxima.core : sumcon.lisp

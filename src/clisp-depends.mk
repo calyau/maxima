@@ -24,7 +24,6 @@ binary-clisp/maxima.mem : displm.lisp
 binary-clisp/maxima.mem : ratmac.lisp
 binary-clisp/maxima.mem : mhayat.lisp
 binary-clisp/maxima.mem : numerm.lisp
-binary-clisp/maxima.mem : SYS-DECLAIM.lisp
 binary-clisp/maxima.mem : opers.lisp
 binary-clisp/maxima.mem : utils.lisp
 binary-clisp/maxima.mem : sumcon.lisp

@@ -1,5 +1,12 @@
 binary-gcl/maxima : maxima-package.lisp
+binary-gcl/maxima : numerical/f2cl-package.lisp
+binary-gcl/maxima : numerical/slatec.lisp
+binary-gcl/maxima : command-line.lisp
+binary-gcl/maxima : nregex.lisp
+binary-gcl/maxima : sys-proclaim.lisp
 binary-gcl/maxima : autoconf-variables.lisp
+binary-gcl/maxima : nregex.lisp
+binary-gcl/maxima : cl-info.lisp
 binary-gcl/maxima : sloop.lisp
 binary-gcl/maxima : lmdcls.lisp
 binary-gcl/maxima : letmac.lisp
@@ -23,7 +30,6 @@ binary-gcl/maxima : ratmac.lisp
 binary-gcl/maxima : mhayat.lisp
 binary-gcl/maxima : numerm.lisp
 binary-gcl/maxima : optimize.lisp
-binary-gcl/maxima : SYS-DECLAIM.lisp
 binary-gcl/maxima : opers.lisp
 binary-gcl/maxima : utils.lisp
 binary-gcl/maxima : sumcon.lisp
