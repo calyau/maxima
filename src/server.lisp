@@ -49,14 +49,11 @@
 
 #+clisp
 (defun getpid ( &aux tem)
-  
-  (cond ((fboundp 'sys::program-id)
-	 (sys::program-id))
-					; ;under windows above does not work.
+  (cond #-win32((fboundp 'sys::program-id)
+		(sys::program-id))
 	((consp (setq tem (errset (system::getenv "PID"))))
 	 (read-from-string (car tem)))
-	(t (format t "using fake value for pid") -1))
-  )
+	(t (format t "using fake value for pid") -1)))
 #+cmu
 (defun getpid () (unix:unix-getpid))
 
