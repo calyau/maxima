@@ -30,6 +30,7 @@ clean-clisp:
 	rm -rf binary-clisp
 
 clisp-depends.mk: maxima.system
+	test -d binary-clisp || mkdir binary-clisp
 	LISPTYPE=clisp ; export LISPTYPE ;\
 	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-clisp/maxima.mem" "clisp-depends.mk")'
 include clisp-depends.mk
@@ -64,6 +65,7 @@ uninstall-cmucl:
 clean-cmucl:
 	rm -rf binary-cmucl
 cmucl-depends.mk: maxima.system
+	test -d binary-cmucl || mkdir binary-cmucl
 	LISPTYPE=cmucl ; export LISPTYPE ;\
 	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-cmucl/maxima.core" "cmucl-depends.mk")'
 include cmucl-depends.mk
@@ -99,6 +101,7 @@ uninstall-acl6:
 clean-acl6:
 	rm -rf binary-acl6
 acl6-depends.mk: maxima.system
+	test -d binary-acl6 || mkdir binary-acl6
 	LISPTYPE=acl6 ; export LISPTYPE ;\
 	ACL6=$(ACL6_NAME); export ACL6 ;\
 	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-acl6/maxima.dxl" "acl6-depends.mk")'
@@ -139,6 +142,7 @@ clean-sbcl:
 	rm -rf binary-sbcl
 	rm -f numerical/binary-sbcl numerical/slatec/binary-sbcl
 sbcl-depends.mk: maxima.system
+	test -d binary-sbcl || mkdir binary-sbcl
 	LISPTYPE=sbcl ; export LISPTYPE ;\
 	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-sbcl/maxima.core" "sbcl-depends.mk")'
 include sbcl-depends.mk
@@ -194,6 +198,7 @@ clean-gcl:
 	rm -rf binary-gcl
 
 gcl-depends.mk: maxima.system
+	test -d binary-gcl || mkdir binary-gcl
 	LISPTYPE=gcl ; export LISPTYPE ;\
 	$(RUNLISP) -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(load "$(top_srcdir)/lisp-utils/make-depends.lisp")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-gcl/maxima" "gcl-depends.mk")'
 include gcl-depends.mk
@@ -225,6 +230,7 @@ uninstall-openmcl:
 clean-openmcl:
 	rm -rf binary-openmcl
 openmcl-depends.mk: maxima.system
+	test -d binary-openmcl || mkdir binary-openmcl
 	LISPTYPE=openmcl ; export LISPTYPE ;\
 	OPENMCL=$(OPENMCL_NAME) ; export OPENMCL;\
 	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-openmcl/maxima.image" "openmcl-depends.mk")'
@@ -493,4 +499,4 @@ numerical/f2cl-lib.lisp
 
 genericdirDATA = $(real_lisp_sources) autoconf-variables.lisp
 
-EXTRA_DIST = $(real_lisp_sources) maxima.system clisp-depends.mk  cmucl-depends.mk  gcl-depends.mk numerical/slatec/fortran
+EXTRA_DIST = $(real_lisp_sources) maxima.system clisp-depends.mk  cmucl-depends.mk  gcl-depends.mk acl6-depends.mk openmcl-depends.mk sbcl-depends.mk numerical/slatec/fortran
