@@ -29,7 +29,8 @@
 		   #-(or clisp cmu sbcl gcl allegro openmcl) "binary-unknownlisp"
   :components ((:module package :source-pathname ""
 			:load-only t
-			:components ((:file "maxima-package")))
+			:components ((:file "maxima-package")
+				     (:file "autoconf-variables")))
 	       (:module info :source-pathname ""
 			:components (#-gcl(:file "nregex")
 				     #-gcl(:file "cl-info")))
@@ -511,5 +512,4 @@
 			:load-only t
 			:components ((:file "autol")
 				     (:file "max_ext")
-				     (:file "autoconf-variables")
 				     (:file "init-cl")))))
