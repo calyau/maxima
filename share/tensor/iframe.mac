@@ -46,7 +46,7 @@ ifb(l,[ld]):=if length(ld)>0 and rest(ld)#[] then
      if iframe_bracket_form or itorsion_flag then
        'ifr([l[2]],[e])*'ifr([l[3]],[f])*
        ('ifri([l[1],e],[],f)-'ifri([l[1],f],[],e)-
-        _itr([e,f],[m])*ifri([m,l[1]],[])
+        _itr([e,f],[m])*ifri([l[1],m],[])
        )
      else 'ifri([l[1],e],[])*('ifr([l[2]],[f])*'ifr([l[3]],[e],f)-
                          'ifr([l[2]],[e],f)*'ifr([l[3]],[f]))
@@ -104,8 +104,8 @@ ikt2(l1,l2,[ld]):=if not itorsion_flag then 0
 decsym(ichr1,3,0,[sym(1,2)],[]);
 decsym(ichr2,2,1,[sym(all)],[]);
 decsym(icurvature,3,1,[anti(2,3)],[]);
-decsym(ifb,3,0,[anti(2,3)],[]);
-/* decsym(icc1,3,0,[sym(1,2)],[]);
+/* decsym(ifb,3,0,[anti(2,3)],[]);	<-- not valid with torsion
+ * decsym(icc1,3,0,[sym(1,2)],[]);
  * decsym(icc2,2,1,[sym(all)],[]);
  * decsym(ifc1,3,0,[sym(1,2)],[]);
  * decsym(ifc2,2,1,[sym(all)],[]);
