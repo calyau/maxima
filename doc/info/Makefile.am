@@ -26,8 +26,8 @@ include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
 genericdirDATA = $(MAXIMAHTML)
 
-clean: clean-info
-clean: clean-html
+clean-local: clean-info
+clean-local: clean-html
 
 clean-info:
 	rm -f maxima.info*
