@@ -20,11 +20,38 @@
 
 
 (in-package "SI")
-#+clisp
-(progn
+
 (defvar *match-data*)
 (defvar *case-fold-search* nil)
-)
+
+(defun match-start (n)
+  (first (aref *match-data* n)))
+(defun match-beginning (n)
+  (match-start n))
+(defun match-end (n)
+  (second (aref *match-data* n)))
+(defun get-match (s n)
+  (subseq s (match-start n) (match-end n)))
+
+(defun compile-regex (pat &key (case-sensitive t))
+  (let ((*compile-print* nil)
+	(*compile-verbose* nil)
+	#+cmu
+	(*compile-progress* nil)
+	)
+    (compile nil
+	     (nregex:regex-compile pat :case-sensitive case-sensitive))))
+
+(defun string-match (pat string &optional (start 0) (end (length string)))
+  (when (stringp pat)
+    (setf pat (compile-regex pat :case-sensitive (not *case-fold-search*))))
+  (if (funcall pat string :start start :end end)
+      (progn
+	(setf *match-data* (make-array nregex:*regex-groupings*))
+	(dotimes (k nregex:*regex-groupings*)
+	  (setf (aref *match-data* k) (aref nregex:*regex-groups* k)))
+	(match-start 0))
+      -1))
 
 (eval-when (compile eval)
   (defmacro while (test &body body)
@@ -88,6 +115,15 @@
 ;; Return a list of the tag table text itself and an alist of the
 ;; starting index for each file and the name of the corresponding
 ;; file.
+(let ((pat-indirect-start (compile-regex #u"[\n]+Indirect:"
+					 :case-sensitive t))
+      (pat-end-ind (compile-regex #u""
+				  :case-sensitive t))
+      (pat-indirect (compile-regex #u"\n([^\n]+): ([0-9]+)"
+				   :case-sensitive t))
+      (pat-tag-table (compile-regex #u"[\n]+Tag Table:"
+				    :case-sensitive t))
+      )
 (defun info-get-tags (file)
   (let ((lim 0)
 	(*case-fold-search* t)
@@ -97,15 +133,17 @@
 	  (i 0))
       (declare (fixnum i)
 	       (string s))
-      ;;(format t "match = ~A~%" (string-match #u"[\n]\\+Indirect:" s 0))
-      (when (>= (string-match #u"[\n]\\+Indirect:" s 0) 0)
+      ;;(format t "match = ~A~%" (string-match #u"[\n]+Indirect:" s 0))
+      (when (>= (string-match pat-indirect-start s 0) 0)
 	;; The file has multiple parts, so save the filename and the
 	;; offset of each part.
 	(setq i (match-end 0))
-	(setq lim (string-match #u"" s i))
-	(while (>= (string-match #u"\n\\([^\n]\\+\\): \\([0-9]\\+\\)" s i lim)
+	;;(format t "looking for end of Indirect, from ~a~%" i)
+	(setq lim (string-match pat-end-ind s i))
+	;;(format t "found Indirect at ~A.  limit = ~A~%" i lim)
+	(while (>= (string-match pat-indirect s i lim)
 		   0)
-	     
+	  ;;(format t "found entry at ~a.~%" (match-start 0))
 	  (setq i (match-end 0))
 	  (setq files
 		(cons (cons
@@ -113,17 +151,20 @@
 		       (get-match s 1)
 		       )
 		      files))))
-      (when (>=  (string-match #u"[\n]\\+Tag Table:" s i) 0)
+      ;;(format t "looking for Tag Table~%")
+      (when (>=  (string-match pat-tag-table s i) 0)
 	(setq i (match-end 0))
-	(when (>= (string-match "" s i) 0)
+	;;(format t "Found Tag Table:  ~A ~A~%" (match-start 0) i)
+	(when (>= (string-match pat-end-ind s i) 0)
+	  ;;(format t "Found end at ~A ~A~%" i (match-start 0))
 	  (setq tags (subseq s i (match-end 0)))))
       (if files
 	  (or tags (info-error "Need tags if have multiple files")))
       (list* tags (nreverse files)))))
+)
 
 ;; Quote the given string, protecting any special regexp characters so
 ;; that they stand for themselves.
-#-clisp
 (defun re-quote-string (x)
   (let ((i 0)
 	(len (length x))
@@ -137,7 +178,7 @@
 	 (while (< i len)
 	   (setq ch (aref x i))
 	   ;; (cond ((position ch "\\()[]+.*|^$?")
-	   (when (position ch "\\[].*|^$")
+	   (when (position ch "\\()[].*|^$")
 	     (if tem 
 		 (vector-push-extend #\\ tem)
 		 (incf extra)))
@@ -154,9 +195,6 @@
 	       (t (setq tem x)))
 	 )
       tem)))
-#+clisp
-(defun re-quote-string (x)
-  (regexp:regexp-quote x))
 
 (defun get-match (string i)
   (subseq string (match-beginning i) (match-end i)))
@@ -171,14 +209,17 @@
 	(*match-data* nil))
     (declare (fixnum i))
     (when node-string
-      (setq pat
-	    (string-concatenate "Node: \\([^]*" (re-quote-string
-						  pat) "[^]*\\)"))
-      (while (>= (string-match pat node-string i) 0)
-	(setq i (match-end 0))
-	(setq ans (cons (get-match node-string 1) 
-			ans)))
-      (nreverse ans))))
+      (let ((compiled-pat
+	     (compile-regex
+	      (string-concatenate "Node: ([^]*"
+				  (re-quote-string pat)
+				  "[^]*)")
+	      :case-sensitive (not *case-fold-search*))))
+	(while (>= (string-match compiled-pat node-string i) 0)
+	  (setq i (match-end 0))
+	  (setq ans (cons (get-match node-string 1) 
+			  ans)))
+	(nreverse ans)))))
 
 (defun get-index-node ()
   (or (third *current-info-data*) 
@@ -190,6 +231,8 @@
 	  (setq s (show-info node nil))
 	  (setf (third *current-info-data*) s)))))
 
+;; Most of the cost of retrieving documentation is here.  This should
+;; be fast.
 (defun nodes-from-index (pat)
   (let ((i 0)
 	ans
@@ -197,15 +240,17 @@
 	*match-data*
 	(index-string (get-index-node)))
     (when index-string
-      (setq pat 
-	    (string-concatenate #u"\n\\* \\([^:\n]*" (re-quote-string
-						    pat)
-				#u"[^:\n]*\\):[ \t]\\+\\([^\t\n,.]\\+\\)"))
-      (while (>= (string-match pat index-string i) 0)
-	(setq i (match-end 0))
-	(push (cons (get-match index-string 1) (get-match index-string 2))
-	      ans))
-      (nreverse ans))))
+      (let ((compiled-pat
+	     (compile-regex
+	      (string-concatenate #u"\n\\* ([^:\n]*"
+				  (re-quote-string pat)
+				  #u"[^:\n]*):[ \t]+([^\t\n,.]+)")
+	      :case-sensitive (not *case-fold-search*))))
+	(while (>= (string-match compiled-pat index-string i) 0)
+	  (setq i (match-end 0))
+	  (push (cons (get-match index-string 1) (get-match index-string 2))
+		ans))
+	(nreverse ans)))))
 
 (defun get-node-index (pat node-string)
   (let ((node pat)
@@ -213,9 +258,11 @@
     (cond ((null node-string) 0)
 	  (t
 	   (setq pat
-		 (string-concatenate "Node: "
-				     (re-quote-string pat)
-				     "\\([0-9]\\+\\)"))
+		 (compile-regex
+		  (string-concatenate "Node: "
+				      (re-quote-string pat)
+				      "([0-9]+)")
+		  :case-sensitive (not *case-fold-search*)))
 	   (cond ((>= (string-match pat node-string) 0)
 		  (atoi node-string (match-beginning 1)))
 		 (t
@@ -259,6 +306,7 @@ that matches the name NAME with extention EXT"
   nil)
 
 (defvar *old-lib-directory* nil)
+
 (defun setup-info (name)
   (let (tem file)
     (when (equal name "DIR")
@@ -266,12 +314,13 @@ that matches the name NAME with extention EXT"
     (setq file (file-search name *info-paths* '("" "info") nil))
     (cond ((and (null file)
 		(not (equal name "dir")))
+	   (format t "looking for dir~A~%")
 	   (let* ((tem (show-info "(dir)Top" nil))
 		  *case-fold-search*)
 	     (cond ((>= (string-match
-			 (string-concatenate "\\(([^(]*"
+			 (string-concatenate "(([^(]*"
 					     (re-quote-string name)
-					     "(.info)?)\\)")
+					     "(.info)?))")
 			 tem)
 			0)
 		    (setq file (get-match tem 1)))))))
@@ -333,24 +382,29 @@ that matches the name NAME with extention EXT"
     (values (or ans (cons 0 (car *current-info-data*))) lim)))
 
 ;;used by search
+(let ((pat-marker (compile-regex #u"^_" :case-sensitive t))
+      (pat-node (compile-regex
+		 #u"[\n][^\n]*Node:[ \t]+([^\n\t,]+)[\n\t,][^\n]*\n"
+		 :case-sensitive t))
+      (pat-marker2 (compile-regex "[]")))
 (defun info-node-from-position (n &aux  (i 0))
   (let* ((info-subfile (info-subfile n))
 	 (s (info-get-file (cdr info-subfile)))
 	 (end (- n (car info-subfile))))
-    (while (>=  (string-match #u"" s i end) 0)
+    (while (>=  (string-match pat-marker s i end) 0)
       (setq i (match-end 0)))
     (setq i (- i 1))
-    (if (>= (string-match
-	       #u"[\n][^\n]*Node:[ \t]\\+\\([^\n\t,]\\+\\)[\n\t,][^\n]*\n"  s i) 0)
+    (if (>= (string-match pat-node s i) 0)
 	(let* ((i (match-beginning 0))
 	       (beg (match-end 0))
 	       (name (get-match s 1))
-	       (end(if (>= (string-match "[]" s beg) 0)
-		       (match-beginning 0)
-		     (length s)))
+	       (end (if (>= (string-match pat-marker2 s beg) 0)
+			(match-beginning 0)
+			(length s)))
 	       (node (list* s beg end i name info-subfile
-				 *current-info-data*)))
+			    *current-info-data*)))
 	  node))))
+)
     
 #+nil
 (defun show-info (name &optional position-pattern)
@@ -366,7 +420,7 @@ that matches the name NAME with extention EXT"
       (setq position-pattern (car name) name (cdr name)))
     (unless (stringp name)
       (info-error "bad arg"))
-    (when (>= (string-match "^\\(([^(]+)\\)([^)]*)" name) 0)
+    (when (>= (string-match "^(([^(]+))([^)]*)" name) 0)
       ;; (file)node
       (setq file (get-match name 1))
       (setq name (get-match name 2))
@@ -386,7 +440,7 @@ that matches the name NAME with extention EXT"
 	     (start (- indirect-index (car info-subfile))))
 	(cond ((>= (string-match
 		      (string-concatenate
-		       #u"[\n][^\n]*Node:[ \t]\\+"
+		       #u"[\n][^\n]*Node:[ \t]+"
 		       (re-quote-string name)
 		       #u"[,\t\n][^\n]*\n") 
 		      s start)
@@ -404,7 +458,7 @@ that matches the name NAME with extention EXT"
 		      (when (or (>= (setq subnode
 					  (string-match
 					   (string-concatenate
-					    #u"\n - [A-Za-z ]\\+: "
+					    #u"\n - [A-Za-z ]+: "
 					    position-pattern
 					    #u"[ \n]"
 					    )
@@ -431,6 +485,9 @@ that matches the name NAME with extention EXT"
 	      (t
 	       (info-error "Can't find node  ~a?" name)))))))
 
+(let ((pat-file-node (compile-regex "^(\\([^(]+\\))([^)]*)"))
+      (pat-markers (compile-regex "[]"))
+      (pat-subnode (compile-regex #u"\n - [A-Z]")))
 (defun show-info (name &optional position-pattern)
   (let ((*match-data* nil)
 	(initial-offset 0)
@@ -444,7 +501,7 @@ that matches the name NAME with extention EXT"
       (setq position-pattern (car name) name (cdr name)))
     (unless (stringp name)
       (info-error "bad arg"))
-    (when (>= (string-match "^\\(([^(]+)\\)([^)]*)" name) 0)
+    (when (>= (string-match pat-file-node name) 0)
       ;; (file)node
       (setq file (get-match name 1))
       (setq name (get-match name 2))
@@ -464,7 +521,7 @@ that matches the name NAME with extention EXT"
 	     (start (- indirect-index (car info-subfile))))
 	(unless (>= (string-match
 		     (string-concatenate
-		      #u"[\n][^\n]*Node:[ \t]\\+"
+		      #u"[\n][^\n]*Node:[ \t]+"
 		      (re-quote-string name)
 		      #u"[,\t\n][^\n]*\n") 
 		     (or s "") start)
@@ -472,7 +529,7 @@ that matches the name NAME with extention EXT"
 	  (info-error "Can't find node  ~a?" name))
 	(let* ((i (match-beginning 0))
 	       (beg (match-end 0))
-	       (end (if (>= (string-match "[]" s beg) 0)
+	       (end (if (>= (string-match pat-markers s beg) 0)
 			(match-beginning 0)
 			(length s))))
 
@@ -483,7 +540,7 @@ that matches the name NAME with extention EXT"
 	      (when (or (>= (setq subnode
 				  (string-match
 				   (string-concatenate
-				    #u"\n - [A-Za-z ]\\+: "
+				    #u"\n - [A-Za-z ]+: "
 				    position-pattern
 				    #u"[ \n]"
 				    )
@@ -496,7 +553,7 @@ that matches the name NAME with extention EXT"
 
 	  (let ((e (if (and (>= subnode 0)
 			    (>=
-			     (string-match #u"\n - [A-Z]"
+			     (string-match pat-subnode
 					   s (+ beg 1
 						initial-offset)
 					   end)
@@ -504,6 +561,7 @@ that matches the name NAME with extention EXT"
 		       (match-beginning 0)
 		       end)))
 	    (subseq s (+ initial-offset beg) e )))))))
+)
 
 (defvar *default-info-files* '( "gcl-si.info" "gcl-tk.info" "gcl.info"))
 
