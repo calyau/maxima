@@ -10,12 +10,12 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
  *
- * Classification of Gödel's universe
+ * Classification of Godel's universe
  *
  */
 
 if get('ctensor,'version)=false then load(ctensor);
-("Computing the Petrov classification of Gödel's universe")$
+("Computing the Petrov classification of Godel's universe")$
 ("We use frames")$
 cframe_flag:true;
 ("We set up the metric by hand")$
