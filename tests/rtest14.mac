@@ -183,16 +183,26 @@ factor(ratsimp(specint(t^2*bessel_j(1,a*t)*%e^(-p*t),t)));
  * From the f19p220, the Laplace transform of this, with s = 7/2,
  * c=-1/4, k = 1, is
  *
- * gamma(7/2)/p^(7/2)*%f[2,2]([1,7/2],[3/2,5/2],-1/4/p)
+ * 2/(3*%pi)*gamma(7/2)/p^(7/2)*%f[2,2]([1,7/2],[3/2,5/2],-1/4/p)
  *
+ * From the derivation of SPLITPFQ, we can simplify this
+ * hypergeometric function.
  *
+ * %f[2,2]([1,7/2],[3/2,5/2],z) =
  *
+ *      1
+ *     sum z^k/poch(5/2,k)*binomial(1,k) *diff(%f[2,2]([1,5/2],[3/2,5/2],z,k)
+ *     k=0
  * 
+ * But %f[2,2]([1,5/2],[3/2,5/2],z) = %f[1,1]([1],[3/2],z) 
+ * and Maxima knows how to compute this.
  */
-radcan(specint(t^(3/2)*hstruve[1](t^(1/2))*%e^(-p*t),t));
-%e^-(1/(4*p))*((140*p^(3/2)+10*sqrt(p))*%e^(1/(4*p))+140*sqrt(%pi)*%i*erf(%i/ 
- (2*sqrt(p)))*p^2+20*sqrt(%pi)*%i*erf(%i/(2*sqrt(p)))*p+5*sqrt(%pi)*%i*erf 
- (%i/(2*sqrt(p))))/(8*%pi*p^4) $
+ratsimp(specint(t^(3/2)*hstruve[1](t^(1/2))*%e^(-p*t),t));
+-%e^-(1/(4*p))*(sqrt(%pi)*sqrt(p)
+				*(8*%i*erf(%i/(2*sqrt(p)))*p
+				 -%i*erf(%i/(2*sqrt(p))))
+		      -2*p*%e^(1/(4*p)))
+	/(8*sqrt(%pi)*p^(9/2)) $
  
 specint(t*%ibes[0](a*t/2)*%ibes[1](a*t/2)*%e^(-p*t),t);
 %ibes[0](a*t/2)*%ibes[1](a*t/2)/p^2 $
