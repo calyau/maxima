@@ -16,9 +16,11 @@
 (in-package "MAXIMA")
 
 (defun getpid ( &aux tem)
-  ; if we start a shell and set the PID in the environment and exec...!
-  ; to do: fix this more portably
-   (cond ((consp (setq tem (errset (system::getenv "PID"))))
+
+   (cond ((fboundp 'sys::program-id)
+           (sys::program-id))
+  ; ;under windows above does not work.
+         ((consp (setq tem (errset (system::getenv "PID"))))
 	  (read-from-string (car tem)))
 	 (t (format t "using fake value for pid") -1))
   )
