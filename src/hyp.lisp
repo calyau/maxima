@@ -32,6 +32,8 @@
 ;;
 (defmvar $bestriglim 3)
 
+(defmvar $prefer_whittaker nil)
+
 (eval-when
     #+gcl (eval compile)
     #-gcl (:execute :compile-toplevel)
@@ -297,9 +299,11 @@
   (cond ((equal v 0) (tchebypol n x))
 	(t (list '(mqapply)(list '($%c array) n v) x)))) 
 
-(defun legenpol(n x)
-  (list '(mqapply) (list '($%p array) n) x))
+;; Legendre polynomial
+(defun legenpol (n x)
+  `(($legendre_p) ,n ,x))
 
+;; Chebyshev polynomial
 (defun tchebypol (n x)
   `(($chebyshev_t) ,n ,x))
 
@@ -1521,13 +1525,17 @@
      kumcheck
      (cond ((hyp-integerp a)
 	    (return (kummer l1 l2))))
-     (setq m
-	   (div (sub c 1) 2)
-	   k
-	   (add (inv 2) m (mul -1 a)))
-     (return (mul (power var (mul -1 (add (inv 2) m)))
-		  (power '$%e (div var 2))
-		  (whitfun k m var)))))
+
+     (cond ($prefer_whittaker
+	    (setq m
+		  (div (sub c 1) 2)
+		  k
+		  (add (inv 2) m (mul -1 a)))
+	    (return (mul (power var (mul -1 (add (inv 2) m)))
+			 (power '$%e (div var 2))
+			 (whitfun k m var))))
+	   (t
+	    (fpqform l1 l2 var)))))
 
 ;; Return sqrt(%pi)*erf(%i*sqrt(x))/2/(%i*sqrt(x))
 (defun hyprederf (x)
