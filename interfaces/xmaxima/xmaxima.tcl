@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.29 2002-09-10 09:16:12 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.30 2002-09-11 01:09:40 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -213,7 +213,7 @@ proc vMAXExit {{text ""} {val "0"}} {
 	    set text ""
 	}
     }
-    catch \{closeMaxima $text\}
+    catch {closeMaxima $text}
     tkexit $val
 }
 proc exit {{val "0"}} {vMAXExit "" $val}

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.7 2002-09-10 09:19:14 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.8 2002-09-11 01:09:40 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -122,26 +122,36 @@ proc runMaxima { win  filter sock args } {
 proc closeMaxima { win } {
     global pdata
     linkLocal $win maximaSocket pid
-    foreach v [array names pdata maxima*] { unset pdata($v) }
+
+    # close the socket first
+    if {[info exists maximaSocket]} {
+	if {$maximaSocket != ""} {
+	    set err ""
+	    catch {
+		close $maximaSocket
+	    } err
+	    # puts stdout  "Closed socket $maximaSocket\n$err"
+	    unset maximaSocket
+	}
+    }
 
     if {[info exists pid]} {
 	if {$pid != "" && [string is int $pid]} {
+	    set err ""
 	    catch {
 		CMkill -TERM $pid
-	    }
+	    } err
+	    # puts stdout "Killed process '$pid'\n$err"
 	    unset pid
 	}
     }
 
-    if {[info exists maximaSocket]} {
-	if {$maximaSocket != ""} {
-	    catch {
-		close $maximaSocket
-	    }
-	    unset maximaSocket
-	}
+    if {[info exists pdata]} {
+	foreach v [array names pdata maxima*] { unset pdata($v) }
     }
+
 }
+ 
 
 
 
@@ -389,9 +399,11 @@ proc CMresetFilter { win } {
 }
 
 proc CMkill {  signal pid } {
-    global maxima_priv
-    if { $pid > 0 } {
-	if { [info command "winkill"] == "winkill" } {
+    global maxima_priv tcl_platform
+
+    # Windows pids can be negative
+    if {[string is int $pid]} {
+	if {$tcl_platform(platform) == "windows" } {
 	    winkill -pid $pid -signal $signal
 	} else {
 	    exec $maxima_priv(kill) $signal $pid
