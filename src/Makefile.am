@@ -91,7 +91,7 @@ binary-gcl/maxima:
                  grep file | \
                  awk 'BEGIN {a="$(shell pwd)"}\
                           {gsub("\"","",$$NF);b=b " \"" a "/" $$NF "\""}\
-                      END {printf("(%s (list %s) %s %s )",\
+                      END {printf("(%s (list %s) %s %s \"\" t)",\
                             "compiler::link",b,"\"" a "/$@\"",\
                             "\"(provide \\\"maxima\\\")\"")}') && \
         $(RUNLISP) -x "$$j" < /dev/null
