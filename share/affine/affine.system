@@ -1,0 +1,38 @@
+;;; -*- Mode:Lisp; Package:CL-MAXIMA; Syntax:COMMON-LISP; Base:10 -*-;;;
+
+(mk:defsystem "affine"
+    :source-extension "lisp"
+    :binary-pathname #+clisp "binary-clisp"
+    #+cmu (truename "binary-cmucl")
+    #+sbcl "binary-sbcl"
+    #+gcl "binary-gcl"
+    #+allegro "binary-acl6"
+    #+openmcl "binary-openmcl"
+    #-(or clisp cmu sbcl gcl allegro openmcl) "binary-unknownlisp"
+    :components
+    ((:module affine-declaim :source-pathname ""
+	      :load-only t
+	      :components (#-ansi-cl (:file "sys-proclaim")
+			   #+ansi-cl (:file "sys-declaim")))
+     (:module affine-all :source-pathname ""
+	      :components ((:file "compat") ;new
+			   (:file "amacros")
+			   (:file "dummy-gc")
+			   (:file "polybas")
+			   (:file "sparsemat")
+			   (:file "aquotient")
+			   (:file "new-rat")
+			   (:file "polya")
+			   (:file "ndotsimp")
+			   (:file "polyb")
+			   (:file "polysmp")
+			   (:file "sub-proj")
+			   (:file "polyc")
+			   (:file "polyd")
+			   (:file "sheafa")
+			   (:file "sheafb")
+			   (:file "sheafc")
+			   (:file "dim-3")
+			   (:file "modsimp")))))
+
+;;; affine.system ends here
