@@ -877,24 +877,29 @@
 
 ;; Check if conditions for f24p146 hold
 (defun f24p146test (c v a)
-  (cond ((not (or (neginp a)
-		  (neginp v)))
+  (cond ((and (eq (asksign a) '$positive)
+	      (eq (asksign v) '$positive))
+	;; Both a and v must be positive
 	 (f24p146 c v a))
 	(t 'fail-on-f24p146test)))
 
-(defun f35p147test
-    (c v a)
-  (cond ((not (neginp v))(f35p147 c v a))
+;; Check if conditions for f35p147 hold
+(defun f35p147test (c v a)
+  (cond ((eq (asksign v) '$positive)
+	 ;; v must be positive
+	 (f35p147 c v a))
 	(t 'fail-on-f35p147test)))
 
+;; Check if conditions for f29p146test hold
 (defun f29p146test (v a)
-  (cond ((not (neginp a))
+  (cond ((eq (asksign a) '$positive)
 	 (f29p146 v a))
 	(t 'fail-on-f29p146test)))
 
-(defun f1p137test
-    (pow)
-  (cond ((not (neginp (add pow 1)))(f1p137 pow))
+;; Check if conditions for f1p137 hold
+(defun f1p137test (pow)
+  (cond ((eq (asksign (add pow 1)) '$positive)
+	 (f1p137 pow))
 	(t 'fail-in-arbpow))) 
 
 ;; Table of Integral Transforms
