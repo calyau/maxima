@@ -3,7 +3,6 @@ binary-gcl/maxima : numerical/f2cl-package.lisp
 binary-gcl/maxima : numerical/slatec.lisp
 binary-gcl/maxima : command-line.lisp
 binary-gcl/maxima : nregex.lisp
-binary-gcl/maxima : sys-proclaim.lisp
 binary-gcl/maxima : autoconf-variables.lisp
 binary-gcl/maxima : nregex.lisp
 binary-gcl/maxima : cl-info.lisp
