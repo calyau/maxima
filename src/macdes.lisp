@@ -129,8 +129,10 @@
     ;; are not empty. --jfa 07/25/04
     #+gcl
     (if (and (string= *prompt-prefix* "") (string= *prompt-suffix* ""))
-	(system::info x '("maxima.info") *info-paths*)
-	(cl-info:info x '("maxima.info") *info-paths*))))
+	(progn
+	  (setf system::*info-paths* *info-paths*)
+	  (system::info x '("maxima.info")))
+	(cl-info:info x '("maxima.info")))))
 
 (defun $apropos ( s ) 
   (cons '(mlist) (apropos-list s "MAXIMA"))) 
