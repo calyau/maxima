@@ -18,7 +18,8 @@
                    #+cmu (truename "binary-cmucl")
 		   #+sbcl "binary-sbcl"
 		   #+gcl "binary-gcl"
-		   #-(or clisp cmu sbcl gcl) "binary-unknownlisp"
+		   #+allegro "binary-acl6"
+		   #-(or clisp cmu sbcl gcl allegro) "binary-unknownlisp"
   :components ((:module package :source-pathname ""
 			:load-only t
 			:components ((:file "maxima-package")))

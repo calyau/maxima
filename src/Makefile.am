@@ -69,6 +69,43 @@ cmucl-depends.mk: maxima.system
 include cmucl-depends.mk
 endif
 
+
+if ACL6
+all-local: binary-acl6/maxima.dxl
+install-exec-local: install-acl6
+uninstall: uninstall-acl6
+clean: clean-acl6
+distclean: clean-acl6
+
+binary-acl6/maxima.dxl:
+	test -d binary-acl6 || mkdir binary-acl6
+	test -d binary-acl6/numerical || mkdir binary-acl6/numerical
+	test -d binary-acl6/numerical/slatec || mkdir binary-acl6/numerical/slatec
+	LISPTYPE=acl6 ; export LISPTYPE ;\
+	ACL6=$(ACL6_NAME) ; export ACL6 ;\
+	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
+        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
+        $(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
+        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
+        -d binary-acl6/maxima
+
+install-acl6:
+	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-acl6"
+	$(INSTALL_DATA) binary-acl6/maxima.dxl "$(DESTDIR)$(verpkglibdir)/binary-acl6/maxima.dxl"
+
+uninstall-acl6:
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-acl6/maxima.dxl"
+
+clean-acl6:
+	rm -rf binary-acl6
+acl6-depends.mk: maxima.system
+	LISPTYPE=acl6 ; export LISPTYPE ;\
+	ACL6=$(ACL6_NAME); export ACL6 ;\
+	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-acl6/maxima.dxl" "acl6-depends.mk")'
+include acl6-depends.mk
+endif
+
+
 if SBCL
 all-local: binary-sbcl/maxima.core
 install-exec-local: install-sbcl

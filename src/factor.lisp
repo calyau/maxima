@@ -35,9 +35,11 @@
 	 (FIXNUM #-cl (LOG2))) 
 
 (declare-top(special afixn fctcfixn invcfixn))
+(eval-when (load compile eval)
 (defmacro afixn (row col) `(arraycall fixnum afixn ,row ,col))
 (defmacro fctcfixn (ind) `(arraycall fixnum fctcfixn ,ind))
 (defmacro invcfixn (ind) `(arraycall fixnum invcfixn ,ind))
+)
 
 ;; Internal specials
 

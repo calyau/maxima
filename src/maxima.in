@@ -28,7 +28,8 @@ setup_vars() {
   CMUCL=@CMUCL_NAME@
   SBCL=@SBCL_NAME@
   GCL=@GCL_NAME@
-  export CLISP CMUCL SBCL GCL
+  ACL6=@ACL6_NAME@
+  export CLISP CMUCL SBCL GCL ACL6
   MAXIMA_VERSION=@VERSION@
   prefix=@prefix@
   exec_prefix=@exec_prefix@

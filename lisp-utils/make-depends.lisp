@@ -10,7 +10,7 @@
 	  (component-source-extension component)))
 (component-operation :list-dependencies 'list-dependencies-operation)
 (defun create-dependency-file (target file)
-  (setq dependency-file (open file :direction :output))
+  (setq dependency-file (open file :direction :output :if-exists :supersede))
   (setq *oos-dependency-target* target)
   (setq *oos-dependency-stream* dependency-file)
   (setq oos-output (operate-on-system 'maxima :list-dependencies))

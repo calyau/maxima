@@ -1329,7 +1329,7 @@ setrgbcolor} def
 (defvar $show_openplot t)
 (defun show-open-plot (ans)
   (cond ($show_openplot
-	 (with-open-file (st1 "maxout.openmath" :direction :output)
+	 (with-open-file (st1 "maxout.openmath" :direction :output :if-exists :supersede)
 			(princ  ans st1))
 	 ($system (concatenate 'string *maxima-plotdir* "/" $openmath_plot_command) " maxout.openmath" ))
 	(t (princ ans) "")))

@@ -419,6 +419,11 @@
 
 (DEFUN MAKE-NUMBER (DATA)
   (SETQ DATA (NREVERSE DATA))
+  ;; Maxima really wants to read in any number as a double-float
+  ;; (except when we have a bigfloat, of course!).  So convert an E or
+  ;; S exponent marker to D.
+  (when (member (car (nth 3. data)) '(#\E #\S))
+    (setf (nth 3. data) (list #\D)))
   (IF (NOT (EQUAL (NTH 3. DATA) '(#\B)))
       (READLIST (APPLY #'APPEND DATA))
       ;; For bigfloats, turn them into rational numbers then convert to bigfloat
@@ -693,7 +698,8 @@
 (DEFMACRO DEF-LED-EQUIV (OP EQUIV)
     (LIST 'PUTPROP (LIST 'QUOTE OP) (LIST 'FUNCTION EQUIV)
           (LIST 'QUOTE 'LED)))
-(DEFMACRO LED-PROPL () ''(LED))
+(eval-when (compile load eval)
+  (DEFMACRO LED-PROPL () ''(LED)))
 (DEFMACRO DEF-LED-FUN (OP-NAME OP-L . BODY)
     (LIST* 'DEFUN-PROP (LIST* OP-NAME 'LED 'NIL) OP-L BODY))
 (DEFUN LED-CALL (OP L)

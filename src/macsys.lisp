@@ -488,6 +488,10 @@
 (defun $system (&rest args)
   (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args))))
 
+#+allegro
+(defun $system (&rest args)
+  (excl:run-shell-command (apply '$sconcat args) :wait t))
+
 #+sbcl
 (defun $system (&rest args)
   (sb-ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output t))

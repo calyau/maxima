@@ -269,6 +269,7 @@
 
 (eval-when (compile) (proclaim '(special *mread-prompt*)))
 
+#-allegro
 (defun dbm-read (&optional (stream *standard-input*) (eof-error-p t)
 			   (eof-value nil) repeat-if-newline  &aux tem  ch
 			   (mprompt *mread-prompt*) (*mread-prompt* "")
@@ -339,6 +340,89 @@
 				 stream)))
 	       (mread new-stream eof-value))
 	     (mread stream eof-value)))))
+
+;; This needs work!  It doesn't handle input spread across lines.
+#+allegro
+(defun dbm-read (&optional (stream *standard-input*) (eof-error-p t)
+			   (eof-value nil) repeat-if-newline  &aux tem  ch
+			   (mprompt *mread-prompt*) (*mread-prompt* "")
+			   next
+			   )
+
+  (when (> (length mprompt) 0)
+    (fresh-line *standard-output*)
+    (princ mprompt *standard-output*)
+    (force-output *standard-output*)
+    ;;(format t "~&~a" mprompt)
+    )
+  (let ((unread-ch '()))
+    (flet ((prepend-read-line (stream eof-error-p eof-value)
+	     (prog1
+		 (concatenate 'string (string unread-ch)
+			      (read-line stream eof-error-p eof-value))
+	       (setf unread-ch nil))))
+      (tagbody
+       top
+	 (setq ch (read-char stream eof-error-p eof-value))
+	 (cond ((or (eql ch #\newline) (eql ch #\return))
+		(if (and repeat-if-newline *last-dbm-command*)
+		    (return-from dbm-read *last-dbm-command*)) 
+		(go top)
+		)
+	       ((eq ch eof-value) (return-from dbm-read eof-value)))
+	 ;; ANSI CL portability bug here.  It's undefined if you do a
+	 ;; stream operation and then unread-char, so we save the
+	 ;; character we want to unread in UNREAD-CH.  Then remember
+	 ;; that when we read from the stream STREAM, we need to prepend
+	 ;; UNREAD-CH.  This makes it portable.
+	 (and (eql ch #\?) (setq next (peek-char nil  stream  nil)))
+	 (setf unread-ch ch)
+	 )
+      (cond ((eql #\: ch)
+	     (let* ((line (prepend-read-line stream eof-error-p eof-value))
+		    fun)
+	       (multiple-value-bind
+		     (keyword n)
+		   (read-from-string line)
+		 (setq fun (complete-prop keyword 'keyword 'break-command))
+		 (and (consp fun) (setq fun (car fun)))
+					;(print (list 'line line))
+		 (setq *last-dbm-command*
+		       (cond ((null fun) '(:_none))
+			     ((get fun 'maxima-read)
+			      (cons keyword (mapcar 'macsyma-read-string
+						    (split-string line " " n ))))
+			     (t (setq tem
+				      ($sconcat "(" (string-right-trim  ";" line) ")"))
+					;(print (list 'tem tem))
+				(read  (make-string-input-stream tem)
+				       eof-error-p eof-value)))))))
+	    ((and (eql #\? ch) (member next '(#\space #\tab)))
+	     (let* ((line (string-trim '(#\space #\tab #\; #\$)
+				       (subseq
+					(prepend-read-line stream eof-error-p eof-value) 1))))
+	       `((displayinput) nil (($describe) ,line))))
+	    (t
+	     (setq *last-dbm-command* nil)
+	     ;; At this point, we have peeked at the next character, but
+	     ;; CMUCL has also deleted that character.  This is a hack.
+	     ;;
+	     ;; Read the char that we unread back to the stream.
+	     ;; Make a new stream consisting of the next char and the
+	     ;; rest of the actual input.
+	     (if (eql #\? ch)
+		 (let* ((first-char (read-char stream))
+			(new-stream (make-concatenated-stream
+				     (make-string-input-stream
+				      (concatenate 'string (string first-char)
+						   (string next)))
+				     stream)))
+		   (mread new-stream eof-value))
+		 (let* ((new-stream (make-concatenated-stream
+				     (make-string-input-stream
+				      (string unread-ch))
+				     stream)))
+		   (mread new-stream eof-value))))))))
 
 
 (defun grab-line-number (li stream)

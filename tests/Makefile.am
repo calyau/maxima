@@ -32,6 +32,14 @@ gcl-check:
 	./summarize-log tests-gcl.log
 endif
 
+if ACL6
+check: acl6-check
+acl6-check:
+	echo "Running test suite with acl6..."; \
+	$(MAXIMA) --lisp=acl6 --batch-lisp=tests.lisp > tests-acl6.log < /dev/null 2>&1; \
+	./summarize-log tests-acl6.log
+endif
+
 install-exec-local:
 	$(mkinstalldirs) $(DESTDIR)$(insttestsdir)
 	$(INSTALL_PROGRAM) summarize-log $(DESTDIR)$(insttestsdir)/summarize-log

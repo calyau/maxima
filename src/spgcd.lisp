@@ -135,6 +135,7 @@
 		  (eval-mon (car l) pt))))	;Should think about a better
 					;way to do this evaluation.
 
+#-allegro
 (defun SWAP-ROWS (mat m n)		;Interchange row m and n
        (do ((k 0 (f1+ k))
 	    (l (ncols mat)))

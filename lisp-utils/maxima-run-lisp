@@ -6,7 +6,7 @@
 #   License: LGPL (See file GNU-LGPL for details)
 # -----------------------------------------------------------------------------
 #  (c) copyright 1999 by Gilbert Baumann, Sam Steingold, Bruno Haible
-# $Id: maxima-run-lisp,v 1.5 2003-02-22 09:23:46 wjenkner Exp $
+# $Id: maxima-run-lisp,v 1.6 2003-02-23 18:04:45 rtoy Exp $
 # $Source: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/lisp-utils/maxima-run-lisp,v $
 
 # Prior to invocation the LISPTYPE environment variable must been set to
@@ -16,6 +16,7 @@
 #    cmucl      uses ${CMUCL} if set, else "lisp"
 #    acl43      uses ${ACL43} if set, else "cl"
 #    acl5       uses ${ACL5} if set, else "cl"
+#    acl6       uses $(ACL6) if set, else "alisp    
 #    gcl        uses ${GCL} if set, else "gcl"
 #    sbcl       uses ${SBCL} if set, else "sbcl"
 
@@ -89,7 +90,7 @@ case "$1" in
   "-cat" )
       shift
       case "$LISPTYPE" in
-        clisp | cmucl | acl43 | acl5 )
+        clisp | cmucl | acl43 | acl[56] )
             cat "$@"
             ;;
         * )
@@ -122,7 +123,7 @@ case "$1" in
                   ;;
             esac
             ;;
-        acl43 | acl5 )
+        acl43 | acl[56] )
             echo 'fasl'
             ;;
         gcl )
@@ -148,7 +149,7 @@ case "$1" in
           acl43)
               echo ""
           ;;
-          acl5)
+          acl[56])
               echo .dxl
           ;;
           cmucl)
@@ -206,6 +207,17 @@ case "$1" in
 	      load_arg="-i $load_file"
 	    fi
             ${ACL5-cl} $extra_args $load_arg -I "$1".dxl -e '(unwind-protect (run) (excl:exit))'
+            ;;
+        acl6 )
+	    if [ -n "$load_file" ]; then
+	      load_arg="-i $load_file"
+	    fi
+
+	    # I (RLT) am not sure the -e is quite right, but this
+	    # allows us to get back to lisp when the user does
+	    # to_lisp(), like the way CMUCL does it.
+
+	    ${ACL6-alisp} $extra_args $load_arg -I "$1".dxl -e '(user::run)'
             ;;
         gcl )
 	    if [ -n "$load_file" ]; then
@@ -308,7 +320,7 @@ case "$1" in
               acl43 )
                   todo=$todo" (excl:dumplisp :name \"${arg}\")"
                   ;;
-              acl5 )
+              acl[56] )
                   todo=$todo" (excl:dumplisp :name \"${arg}.dxl\")"
                   ;;
               gcl )
@@ -379,6 +391,10 @@ case "$1" in
       acl5 )
           test -z "$image" || image="-I ${image}.dxl";
           exec echo "$todo" | ${ACL5-cl} ${image+"-I ${image}.dxl"} $extra_args -batch
+          ;;
+      acl6 )
+          test -z "$image" || image="-I ${image}.dxl";
+          exec echo "$todo" | ${ACL6-alisp} ${image+"-I ${image}.dxl"} $extra_args -batch
           ;;
       gcl )
 	    echo ${image-${GCL-gcl}} $extra_args -batch -eval "$todo"

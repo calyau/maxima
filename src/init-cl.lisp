@@ -163,6 +163,11 @@
 	(load maxima_int_lisp_preload))
     (if maxima_int_input_string
 	(setq input-string (make-string-input-stream maxima_int_input_string)))
+
+    #+allegro
+    (progn
+      (set-readtable-for-macsyma)
+      (setf *read-default-float-format* 'lisp::double-float))
       
     (catch 'to-lisp
       (set-pathnames)
