@@ -139,16 +139,12 @@ AC_ARG_WITH(default-lisp,
 			fi
 		fi
 	fi])
-AC_ARG_WITH(elispdir,
-	[--with-elispdir=<dir>            Install (X)Emacs lisp files in <dir>],
-	[lispdir=$withval],
-	[AM_PATH_LISPDIR])
 
 AC_SUBST(CLISP_NAME)
 AC_SUBST(CMUCL_NAME)
 AC_SUBST(GCL_NAME)
 AC_SUBST(DEFAULTLISP)
-AC_OUTPUT(Makefile src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile)
+AC_OUTPUT(Makefile src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile share/Makefile demo/Makefile)
 
 echo
 echo "Summary:"
@@ -162,4 +158,3 @@ if test x"${gcl}" = xtrue ; then
 	echo "GCL enabled. Executable name ${GCL_NAME}"
 fi
 echo "default lisp: $DEFAULTLISP"
-echo "(X)Emacs lisp files will be installed in $lispdir"

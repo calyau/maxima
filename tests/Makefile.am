@@ -2,7 +2,7 @@ MAXIMA = $(SHELL) $(top_srcdir)/src/maxima
 if CLISP
 check: clisp-check
 clisp-check:
-	MAXIMA_VERPKGLIBEXECDIR=$(top_srcdir)/lisp-utils;\
+	@MAXIMA_VERPKGLIBEXECDIR=$(top_srcdir)/lisp-utils;\
 	export MAXIMA_VERPKGLIBEXECDIR; \
 	MAXIMA_VERPKGLIBDIR=$(top_srcdir)/src; \
 	export MAXIMA_VERPKGLIBDIR; \
@@ -14,7 +14,7 @@ endif
 if CMUCL
 check: cmucl-check
 cmucl-check:
-	MAXIMA_VERPKGLIBEXECDIR=$(top_srcdir)/lisp-utils;\
+	@MAXIMA_VERPKGLIBEXECDIR=$(top_srcdir)/lisp-utils;\
 	export MAXIMA_VERPKGLIBEXECDIR; \
 	MAXIMA_VERPKGLIBDIR=$(top_srcdir)/src; \
 	export MAXIMA_VERPKGLIBDIR; \
@@ -26,7 +26,7 @@ endif
 if GCL
 check: gcl-check
 gcl-check:
-	MAXIMA_VERPKGLIBEXECDIR=$(top_srcdir)/lisp-utils;\
+	@MAXIMA_VERPKGLIBEXECDIR=$(top_srcdir)/lisp-utils;\
 	export MAXIMA_VERPKGLIBEXECDIR; \
 	MAXIMA_VERPKGLIBDIR=$(top_srcdir)/src; \
 	export MAXIMA_VERPKGLIBDIR; \

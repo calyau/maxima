@@ -1,1 +1,2 @@
-SUBDIRS = info
+SUBDIRS = info man intromax share
+

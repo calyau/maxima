@@ -1,1 +1,1 @@
-SUBDIRS = emaxima original
+SUBDIRS = emaxima misc

@@ -1,1 +1,1 @@
-SUBDIRS = src lisp-utils tests doc interfaces
+SUBDIRS = src lisp-utils tests doc interfaces share demo
