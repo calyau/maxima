@@ -153,9 +153,16 @@ The next time the file is loaded, it will then be in EMaxima mode"
 	(open-line 1)
       (insert "%-*-EMaxima-*-"))))
 
+(defun emaxima-single-string (string)
+  "Send a single string to the maxima process,
+waiting for output after."
+  (inferior-maxima-wait-for-output)
+  (maxima-single-string string)
+  (inferior-maxima-wait-for-output))
+
 (defun emaxima-load-tex-library ()
   (when emaxima-tex-lisp-file
-    (maxima-single-string
+    (emaxima-single-string
                            (concat "block(load(\"" 
                                    emaxima-tex-lisp-file
                                    "\"), linenum:linenum-1)$"))))
@@ -163,13 +170,13 @@ The next time the file is loaded, it will then be in EMaxima mode"
 (defun emaxima-tex-on ()
   (maxima-start)
   (when emaxima-tex-lisp-file
-    (maxima-single-string 
+    (emaxima-single-string 
        "block(origdisplay:display2d, display2d:emaxima, linenum:linenum-1)$")))
 
 (defun emaxima-tex-off ()
   (maxima-start)
   (when emaxima-tex-lisp-file
-    (maxima-single-string "block(display2d:origdisplay, linenum:linenum-1)$")))
+    (emaxima-single-string "block(display2d:origdisplay, linenum:linenum-1)$")))
 
 ;;; Which type of cell, if any, is the point in.
 
@@ -1371,7 +1378,7 @@ Return nil if no name or error in name."
                 (setq end  (emaxima-get-form-end cell)))
               (if (and tex emaxima-tex-lisp-file (not (inferior-maxima-running)))
                   (emaxima-tex-on))
-              (maxima-single-string (substring cell 0 end))
+              (emaxima-single-string (substring cell 0 end))
               (setq cell (substring cell end))
               (if (and tex 
                        (not (emaxima-noshow-cell-p))
@@ -1398,7 +1405,7 @@ Return nil if no name or error in name."
         (if (eq (string-match "[ \n]*:lisp" cell) 0)
             (setq end (emaxima-get-lisp-end cell))
           (setq end (emaxima-get-form-end cell)))
-        (maxima-single-string (substring cell 0 end))
+        (emaxima-single-string (substring cell 0 end))
         (insert (emaxima-last-input-prompt))
         (insert " ")
         (while (or (string= "\n" (substring cell 0 1))
@@ -1433,7 +1440,7 @@ Return nil if no name or error in name."
             (setq end (emaxima-get-form-end cell)))
           (if (and emaxima-tex-lisp-file (not (inferior-maxima-running)))
               (emaxima-tex-on))
-          (maxima-single-string (substring cell 0 end))
+          (emaxima-single-string (substring cell 0 end))
           (while (or (string= "\n" (substring cell 0 1))
                      (string= " " (substring cell 0 1)))
             (setq cell (substring cell 1))
@@ -1548,7 +1555,7 @@ With C-u prefix, update without confirmation at each cell."
               (if (eq (string-match "[ \n]*:lisp" cell) 0)
                   (setq end (emaxima-get-lisp-end cell))
                 (setq end (emaxima-get-form-end cell)))
-              (maxima-single-string (substring cell 0 end))
+              (emaxima-single-string (substring cell 0 end))
               (setq cell (substring cell end))
               (if (and tex 
                        (not (emaxima-noshow-cell-p))
@@ -1624,7 +1631,7 @@ If TEX is non-nil, then insert \\maximatexoutput instead of \\maximaoutput."
   (if (not (emaxima-cell-p))
       (message "Not in cell.")
     (maxima-start)
-    (maxima-single-string 
+    (emaxima-single-string 
      (buffer-substring-no-properties (emaxima-cell-start) (emaxima-cell-end)))))
 
 (defun emaxima-replace-line-with-tex ()
@@ -1635,7 +1642,7 @@ output in TeX form."
       (emaxima-replace-line)
     (maxima-start)
     (emaxima-tex-on)
-    (maxima-single-string 
+    (emaxima-single-string 
      (buffer-substring-no-properties 
       (maxima-line-beginning-position) (maxima-line-end-position)))
 ;    (emaxima-maxima-string "tex(%);")
@@ -1652,7 +1659,7 @@ output in TeX form."
 output."
   (interactive)
   (maxima-start)
-  (maxima-single-string 
+  (emaxima-single-string 
    (buffer-substring-no-properties 
     (maxima-line-beginning-position) (maxima-line-end-position)))
   (beginning-of-line)
