@@ -80,6 +80,43 @@ if test x"${cmucl}" = xtrue ; then
 		AC_MSG_WARN(cmucl executable ${CMUCL_NAME} not found in PATH)
 	fi
 fi
+
+dnl n.b. sbcl_default_name is hardcoded in "with" message
+sbcl_default_name=sbcl
+AC_ARG_ENABLE(sbcl,[  --enable-sbcl                    Use SBCL],
+     	[case "${enableval}" in
+       		yes) sbcl=true 
+                     explicit_lisp=true ;;
+       		no)  sbcl=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-sbcl) ;;
+     	esac
+	explicit_lisp=true],
+	[sbcl=false])
+AC_ARG_WITH(sbcl,
+	[  --with-sbcl=<prog>               Use SBCL executable <prog> (default sbcl)],
+	[sbcl=true
+	explicit_lisp=true
+	if test "$withval" = "yes"; then
+		SBCL_NAME="${sbcl_default_name}"
+	else
+		SBCL_NAME="$withval"
+	fi],
+	[SBCL_NAME=${sbcl_default_name}])
+if test x"${sbcl}" = xtrue ; then
+	if test `echo "$SBCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
+		if test -x "$SBCL_NAME" ; then
+			sbcl_found=true
+		else
+			sbcl_found=false
+		fi
+	else
+		AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
+	fi
+	AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
+	if test x"${sbcl_found}" = xfalse ; then
+		AC_MSG_WARN(sbcl executable ${SBCL_NAME} not found in PATH)
+	fi
+fi
 	
 dnl n.b. gcl_default_name is hardcoded in "with" message
 gcl_default_name=gcl
@@ -129,7 +166,12 @@ if test x"${explicit_lisp}" = xfalse ; then
 			if test x"${cmucl_found}" = xtrue ; then
 				cmucl=true
 			else
-				AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL)] were found in PATH)
+				AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
+				if test x"${sbcl_found}" = xtrue ; then
+				   	sbcl=true
+				else
+					AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL)] were found in PATH)
+				fi
 			fi
 		fi
 	fi
@@ -138,6 +180,7 @@ fi
 AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
 AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
+AM_CONDITIONAL(SBCL, test x$sbcl = xtrue)
 
 AC_ARG_ENABLE(gcl-alt-link,
 	[  --enable-gcl-alt-link            Use GCL's alternate linking mechanism],
@@ -167,6 +210,13 @@ AC_ARG_WITH(default-lisp,
 				AC_MSG_ERROR(cmucl not enabled)
 			fi
 			;;
+		sbcl)
+			if test x"${sbcl}" = xtrue ; then
+				DEFAULTLISP=sbcl
+			else
+				AC_MSG_ERROR(sbcl not enabled)
+			fi
+			;;
 		gcl)
 			if test x"${gcl}" = xtrue ; then
 				DEFAULTLISP=gcl
@@ -184,16 +234,21 @@ AC_ARG_WITH(default-lisp,
 		if test x"${cmucl}" = xtrue ; then
 			DEFAULTLISP=cmucl
 		else
-			if test x"${gcl}" = xtrue ; then
-				DEFAULTLISP=gcl
+			if test x"${sbcl}" = xtrue ; then
+			   	DEFAULTLISP=sbcl
 			else
-				AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
+				if test x"${gcl}" = xtrue ; then
+				   	DEFAULTLISP=gcl
+				else
+					AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
+				fi
 			fi
 		fi
 	fi])
 
 AC_SUBST(CLISP_NAME)
 AC_SUBST(CMUCL_NAME)
+AC_SUBST(SBCL_NAME)
 AC_SUBST(GCL_NAME)
 AC_SUBST(DEFAULTLISP)
 
@@ -271,6 +326,9 @@ if test x"${clisp}" = xtrue ; then
 fi
 if test x"${cmucl}" = xtrue ; then
 	echo "CMUCL enabled. Executable name: \"${CMUCL_NAME}\""
+fi
+if test x"${sbcl}" = xtrue ; then
+	echo "SBCL enabled. Executable name: \"${SBCL_NAME}\""
 fi
 if test x"${gcl}" = xtrue ; then
 	echo "GCL enabled. Executable name: \"${GCL_NAME}\""

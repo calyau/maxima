@@ -69,6 +69,44 @@ cmucl-depends.mk: maxima.system
 include cmucl-depends.mk
 endif
 
+if SBCL
+all-local: binary-sbcl/maxima.core
+install-exec-local: install-sbcl
+uninstall: uninstall-sbcl
+clean: clean-sbcl
+distclean: clean-sbcl
+
+binary-sbcl/maxima.core:
+	test -d binary-sbcl || mkdir binary-sbcl
+	test -d binary-sbcl/numerical || mkdir binary-sbcl/numerical
+	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
+# Work around some problem that sbcl has with defsystem
+	test -h numerical/binary-sbcl || ln -s ../binary-sbcl numerical
+	test -h  numerical/slatec/binary-sbcl || ln -s ../../binary-sbcl numerical/slatec
+	LISPTYPE=sbcl ; export LISPTYPE ;\
+	SBCL=$(SBCL_NAME) ; export SBCL ;\
+	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
+        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
+        $(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
+        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
+        -d binary-sbcl/maxima
+
+install-sbcl:
+	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-sbcl
+	$(INSTALL_DATA) binary-sbcl/maxima.core $(DESTDIR)$(verpkglibdir)/binary-sbcl/maxima.core
+
+uninstall-sbcl:
+	rm -f $(DESTDIR)$(verpkglibdir)/binary-sbcl/maxima.core
+
+clean-sbcl:
+	rm -rf binary-sbcl
+	rm -f numerical/binary-sbcl numerical/slatec/binary-sbcl
+sbcl-depends.mk: maxima.system
+	LISPTYPE=sbcl ; export LISPTYPE ;\
+	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-sbcl/maxima.core" "sbcl-depends.mk")'
+include sbcl-depends.mk
+endif
+
 if GCL
 all-local: binary-gcl/maxima
 install-exec-local: install-gcl

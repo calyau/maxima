@@ -16,6 +16,14 @@ cmucl-check:
 	./summarize-log tests-cmucl.log
 endif
 
+if SBCL
+check: sbcl-check
+sbcl-check:
+	echo "Running test suite with sbcl..."; \
+	$(MAXIMA) --lisp=sbcl --batch-lisp=tests.lisp > tests-sbcl.log < /dev/null 2>&1; \
+	./summarize-log tests-sbcl.log
+endif
+
 if GCL
 check: gcl-check
 gcl-check:

@@ -7,6 +7,8 @@
 %define clisp_version 2.29
 %define enable_cmucl 1
 %define cmucl_flags --enable-cmucl
+%define enable_sbcl 1
+%define sbcl_flags --enable-sbcl
 %define enable_gcl 1
 %define gcl_flags --enable-gcl
 
@@ -63,6 +65,16 @@ Provides: maxima_exec
 Maxima compiled with CMUCL.
 %endif
 
+%if %{enable_sbcl}
+%package exec_sbcl
+Summary: Maxima compiled with SBCL
+Group: Development/Languages
+Requires: sbcl maxima
+Provides: maxima_exec
+%description exec_sbcl
+Maxima compiled with SBCL.
+%endif
+
 %if %{enable_gcl}
 %package exec-gcl
 Summary: Maxima compiled with GCL
@@ -75,7 +87,7 @@ Maxima compiled with Gnu Common Lisp.
 
 %prep
 %setup -q
-%configure  %{?cmucl_flags:} %{?gcl_flags:} %{?clisp_flags:}
+%configure  %{?sbcl_flags:} %{?cmucl_flags:} %{?gcl_flags:} %{?clisp_flags:}
 
 %build
 make
@@ -115,6 +127,11 @@ rm -rf $RPM_BUILD_ROOT
 %if %{enable_cmucl}
 %files exec-cmucl
 %{_libdir}/maxima/%{version}/binary-cmucl/*
+%endif
+
+%if %{enable_sbcl}
+%files exec_sbcl
+/usr/lib/maxima/%{version}/binary-sbcl/*
 %endif
 
 %if %{enable_gcl}
