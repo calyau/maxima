@@ -88,7 +88,7 @@
 
 
 (defun print-pt1 (f str)
-  (format str "~,3f " f))
+  (format str "~g " f))
 
 (defmacro defbinop (name op type)
   `(progn
@@ -614,6 +614,7 @@ setrgbcolor} def
 ;; arrange so that the list of points x0,y0,x1,y1,.. on the curve
 ;; never have abs(y1-y0 ) and (x1-x0) <= deltax
 
+#+nil
 (defun draw2d (f range )
   (if (and ($listp f) (equal '$parametric (cadr f)))
       (return-from draw2d (draw2d-parametric f range)))
@@ -672,6 +673,89 @@ setrgbcolor} def
 		     collect (let ((tem (funcall f xend)))
 			       (if (>= tem ymax) ymax (if (<= tem ymin) ymin tem)))
 		     and do (sloop::loop-finish))))))
+
+(defun slow-oscillation-p (f0 f1 f2 f3 f4)
+  (flet ((sign-change (x y z)
+	   (if (or (and (> y x) (> y z))
+		   (and (< y x) (< y z)))
+	       1
+	       0)))
+    (<= (+ (sign-change f0 f1 f2)
+	   (sign-change f1 f2 f3)
+	   (sign-change f2 f3 f4))
+	2)))
+
+(defun smooth-enough-p (f-a f-a1 f-b f-b1 f-c eps)
+  (let ((quad (/ (+ f-a
+		    (* -5 f-a1)
+		    (* 9 f-b)
+		    (* -7 f-b1)
+		    (* 2 f-c))
+		 24))
+	(quad-b (/ (+ (* 5 f-b)
+		      (* 8 f-b1)
+		      (- f-c))
+		   12)))
+    (<= (abs quad)
+	(* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c))))))
+		    
+    
+(defun adaptive-plot (f a b c f-a f-b f-c depth eps)
+  ;; Step 1:  Split the interval [a, c] into 5 points
+  (let* ((a1 (/ (+ a b) 2))
+	 (b1 (/ (+ b c) 2))
+	 (f-a1 (funcall f a1))
+	 (f-b1 (funcall f b1))
+	 )
+    (cond ((or (minusp depth)
+	       (and (slow-oscillation-p f-a f-a1 f-b f-b1 f-c)
+		    (smooth-enough-p f-a f-a1 f-b f-b1 f-c eps)))
+	   ;; Done.  Don't refine anymore
+	   (list a f-a
+		 a1 f-a1
+		 b f-b
+		 b1 f-b1
+		 c f-c))
+	  (t
+	   ;; Need to refine
+	   (let ((left (adaptive-plot f a a1 b f-a f-a1 f-b (1- depth) (* 2 eps)))
+		 (right (adaptive-plot f b b1 c f-b f-b1 f-c (1- depth) (* 2 eps))))
+	     (append left (cddr right)))))))
+
+(defun draw2d (f range)
+  (if (and ($listp f) (equal '$parametric (cadr f)))
+      (return-from draw2d (draw2d-parametric f range)))
+  (let* ((nticks (nth 2($get_plot_option '$nticks)))
+	 (yrange ($get_plot_option '|$y|))
+	 ($numer t)
+	 )
+
+    (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
+
+    (let* ((x (coerce-float (nth 2 range)))
+	   (xend (coerce-float (nth 3 range)))
+	   (xmid (* 0.5d0 (+ x xend)))
+	   (y (funcall f x))
+	   (yend (funcall f xend))
+	   (ymid (funcall f xmid))
+	   (ymin (coerce-float (nth 2 yrange)))
+	   (ymax (coerce-float (nth 3 yrange)))
+	   ;; What is a good EPS value for adaptive plotting?
+	   (eps 1d-5)
+	   )
+      (declare (double-float x1 y1 x y dy eps2 eps ymin ymax ))
+					;(print (list 'ymin ymin 'ymax ymax epsy))
+      (let ((result (adaptive-plot f x (* 0.5d0 (+ x xend)) xend
+				   y ymid yend 10 1d-5)))
+	(format t "Points = ~D~%" (length result))
+	;; Fix up out-of-range values
+	(do ((x result (cddr x))
+	     (y (cdr result) (cddr y)))
+	    ((null y))
+	  (unless (<= ymin (car y) ymax)
+	    (setf (car x) 'moveto)
+	    (setf (car y) 'moveto)))
+	(cons '(mlist) result)))))
 
 (defun get-range (lis)
   (let ((ymin most-positive-double-float)
