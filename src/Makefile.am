@@ -361,7 +361,6 @@ schatc.lisp \
 scs.lisp \
 series.lisp \
 server.lisp \
-set.lisp \
 simp.lisp \
 sin.lisp \
 sinint.lisp \
