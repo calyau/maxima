@@ -8,8 +8,14 @@
 @c @node ARRAY
 @c @unnumberedsec phony
 @defun ARRAY (name, dim1, dim2, ..., dimk)
+@defunx ARRAY (name, type, dim1, dim2, ..., dimk)
 This sets up a k-dimensional
-array.  A maximum of five dimensions may be used.  The subscripts for
+array.  A maximum of five dimensions may be used.  In the first form, a
+general array is created.  In the second form, an array meant to have
+elements of the specified type is created.  TYPE can be fixnum for
+integers of limited size or flonum for floating-point numbers.
+
+The subscripts for
 the ith dimension are the integers running from 0 to dimi.  If the
 user assigns to a subscripted variable before declaring the
 corresponding array, an undeclared array is set up.  If the user has
