@@ -9,9 +9,6 @@ prefix=@prefix@
 TCLKITSH = tclkitsh.exe
 TCLKITDIR = /c/star
 SDXDIR = $(TCLKITDIR)
-TCLTKDIR = /c/tcltk
-TCLTKINCFLAGS = -I $(TCLTKDIR)/include
-TCLTKLINKFLAGS = -L $(TCLTKDIR)/lib
 
 GCCPREFIX=/mingw
 GCCVER=3.3.1
@@ -26,15 +23,16 @@ xmaxima.tcl: ../xmaxima
 
 xmaxima.exe: xmaxima.tcl
 	rm -rf xmaxima.vfs
-	$(TCLKITSH) $(SDXDIR)/sdx.kit qwrap xmaxima.tcl && \
-	$(TCLKITSH) $(SDXDIR)/sdx.kit unwrap xmaxima.kit && \
-	$(TCLKITSH) $(SDXDIR)/sdx.kit wrap xmaxima.exe -runtime $(TCLKITDIR)/tclkit.exe xmaxima.kit
+	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit qwrap xmaxima.tcl && \
+	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit unwrap xmaxima.kit && \
+	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit wrap xmaxima.exe \
+		-runtime $(TCLKITDIR)/tclkit.exe xmaxima.kit
 
 winkill.exe: winkill.c
 	gcc -Wall -o winkill.exe winkill.c 
 
 tclwinkill.dll: tclwinkill.c
-	gcc -Wall $(TCLTKINCFLAGS) -shared tclwinkill.c $(TCLTKLINKFLAGS) -ltclstub84 -o tclwinkill.dll
+	gcc -Wall -shared tclwinkill.c -ltclstub84 -o tclwinkill.dll
 
 gcccopy:
 	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
@@ -57,7 +55,7 @@ gcccopy:
 	cp $(GCCPREFIX)/include/unistd.h $(prefix)/include
 	cp $(GCCPREFIX)/include/io.h $(prefix)/include
 	cp $(GCCPREFIX)/include/process.h $(prefix)/include
-	cp $(GCCPREFIX)/include/getopts.h $(prefix)/include
+	cp $(GCCPREFIX)/include/getopt.h $(prefix)/include
 	cp $(GCCPREFIX)/include/sys/*.h $(prefix)/include/sys
 	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cc1.exe \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
@@ -68,4 +66,3 @@ gcccopy:
 
 install: xmaxima.exe winkill.exe tclwinkill.dll
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
-	cp maxima.bat "@prefix@/lib/@PACKAGE@/@VERSION@/binary-gcl/maxima.bat"
