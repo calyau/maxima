@@ -2,10 +2,11 @@
 
 (eval-when (load eval compile)
   (setf (logical-pathname-translations "slatec")
-	'(("**;*.*.*" "/apps/public/src/toy/maxima/src/numerical/slatec/**/*.*"))))
+	'(("**;*.*.*" "/home/toy/apps/sourceforge/maxima/src/numerical/slatec/**/*.*"))))
 
 (mk:define-language :f2cl
     :compiler #'f2cl:f2cl
+    :loader #'identity
     :source-extension "f")
 
 (mk:defsystem "slatec"
@@ -16,7 +17,10 @@
 	    :source-pathname (translate-logical-pathname "slatec:fortran;")
 	    :binary-pathname (translate-logical-pathname "slatec:")
 	    :language :f2cl
-	    :compiler-options (:array-slicing nil :array-type :simple-array :float-format double-float :package "SLATEC")
+	    :compiler-options (:array-slicing nil
+			       :array-type :simple-array
+			       :float-format double-float
+			       :package "SLATEC")
 	    :compile-only t
 	    :components
 	    (
@@ -47,7 +51,7 @@
 	     (:file "dlngam"
 		    :depends-on ("d9lgmc" "dgamma" "xermsg"))
 	     
-	     ;; Bessel J functions
+	     ;; Bessel J functions for real arg and order
 	     (:file "d9b0mp"
 		    :depends-on ("dcsevl" "initds" "xermsg"))
 	     (:file "d9b1mp"
@@ -68,30 +72,13 @@
 				       :array-type :simple-array
 				       :float-format double-float
 				       :package "SLATEC"))
-	     ;; Bessel I functions
-	     (:file "dbsi0e"
-		    :depends-on ("dcsevl" "initds"))
-	     (:file "dbsi1e"
-		    :depends-on ("dcsevl" "initds" "xermsg"))
-	     (:file "dbesi0"
-		    :depends-on ("dbsi0e" "dcsevl" "initds" "xermsg"))
-	     (:file "dbesi1"
-		    :depends-on ("dbsi1e" "dcsevl" "initds" "xermsg"))
-	     (:file "dasyik"
-		    :compiler-options (:array-slicing nil
-				       :array-type :array
-				       :float-format double-float
-				       :package "SLATEC"))
-	     (:file "dbesi"
-		    :depends-on ("dasyik" "dlngam" "xermsg")
-		    :compiler-options (:array-slicing t
-				       :array-type :array
-				       :float-format double-float
-				       :package "SLATEC"))
-	     
-	     ;; Bessel J function for complex
-	     ;; arg and real order.
+	     (:file "dbsynu"
+		    :depends-on ("dgamma" "xermsg"))
 
+	     (:file "dyairy")
+
+	     
+	     ;; Bessel J function for complex arg and real order.
 	     (:file "zabs")
 	     (:file "zacai"
 		    :depends-on ("zabs" "zasyi" "zbknu" "zmlri" "zs1s2" "zseri"))
@@ -139,6 +126,53 @@
 	     (:file "zwrsk"
 		    :depends-on ("zabs" "zbknu" "zrati"))
 
+	     ;; Bessel Y functions for real or complex arg and real order
+	     (:file "dbesy0"
+		    :depends-on ("d9b0mp" "dbesj0" "dcsevl" "initds" "xermsg"))
+	     (:file "dbesy1"
+		    :depends-on ("d9b1mp" "dbesj1" "dcsevl" "initds" "xermsg"))
+	     (:file "dbesy"
+		    :depends-on ("dasyjy" "dbesy0" "dbesy1" "dbsynu" "dyairy" "xermsg"))
+	     (:file "dbsynu"
+		    :depends-on ("dgamma" "xermsg"))
+	     (:file "dyairy")
+	     
+	     (:file "zbesy"
+		    :depends-on ("zbesh"))
+	     (:file "zbesh"
+		    :depends-on ("zabs" "zacon" "zbknu" "zbunk" "zuoik"))
+	     (:file "zacon"
+		    :depends-on ("zabs" "zbinu" "zbknu" "zmlt" "zs1s2"))
+	     (:file "zbunk"
+		    :depends-on ("zunk1" "zunk2"))
+	     (:file "zunk1"
+		    :depends-on ("zabs" "zs1s2" "zuchk" "zunik"))
+	     (:file "zunk2"
+		    :depends-on ("zabs" "zairy" "zs1s2" "zuchk" "zunhj"))
+
+	     ;; Bessel I functions for real or complex arg and real order
+	     (:file "dbsi0e"
+		    :depends-on ("dcsevl" "initds"))
+	     (:file "dbsi1e"
+		    :depends-on ("dcsevl" "initds" "xermsg"))
+	     (:file "dbesi0"
+		    :depends-on ("dbsi0e" "dcsevl" "initds" "xermsg"))
+	     (:file "dbesi1"
+		    :depends-on ("dbsi1e" "dcsevl" "initds" "xermsg"))
+	     (:file "dasyik"
+		    :compiler-options (:array-slicing nil
+				       :array-type :array
+				       :float-format double-float
+				       :package "SLATEC"))
+	     (:file "dbesi"
+		    :depends-on ("dasyik" "dlngam" "xermsg")
+		    :compiler-options (:array-slicing t
+				       :array-type :array
+				       :float-format double-float
+				       :package "SLATEC"))
+	     (:file "zbesi"
+		    :depends-on ("zabs" "zbinu"))
+	     
 	     ;; Airy functions
 	     (:file "d9aimp"
 		    :depends-on ("dcsevl" "initds" "xermsg"))
@@ -146,11 +180,13 @@
 		    :depends-on ("d9aimp" "dcsevl" "initds"))
 	     (:file "dai"
 		    :depends-on ("d9aimp" "daie" "dcsevl" "initds" "xermsg"))
+	     
 	     ;; Error functions
 	     (:file "derf"
 		    :depends-on ("dcsevl" "derfc" "initds"))
 	     (:file "derfc"
 		    :depends-on ("dcsevl" "initds" "xermsg"))
+	     
 	     ;; Exponential integrals
 	     (:file "de1"
 		    :depends-on ("dcsevl" "initds" "xermsg"))
