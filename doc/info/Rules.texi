@@ -186,126 +186,182 @@ will display all rules.
 @end defun
 
 @defun let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
-defines a
-substitution rule for @code{letsimp} such that prod gets replaced by repl.
-prod is a product of positive or negative powers of the following
-types of terms:
+@defunx let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})
+Defines a substitution rule for @code{letsimp} such that @var{prod} is replaced by @var{repl}.
+@var{prod} is a product of positive or negative powers of the following terms:
+
 @itemize @bullet
 @item
-    (1) Atoms which @code{letsimp} will search for literally unless previous
+Atoms which @code{letsimp} will search for literally unless previous
 to calling @code{letsimp} the @code{matchdeclare} function is used to associate a
 predicate with the atom.  In this case @code{letsimp} will match the atom to
 any term of a product satisfying the predicate.
 @item
-    (2) Kernels such as SIN(X), N!, F(X,Y), etc.  As with atoms above
+Kernels such as @code{sin(x)}, @code{n!}, @code{f(x,y)}, etc.  As with atoms above
 @code{letsimp} will look for a literal match unless @code{matchdeclare} is used to
 associate a predicate with the argument of the kernel.
+@end itemize
+
 A term to a positive power will only match a term having at least that
 power in the expression being @code{letsimp}'ed.  A term to a negative power
 on the other hand will only match a term with a power at least as
-negative.  In the case of negative powers in "product" the switch
-@code{letrat} must be set to @code{true} (see below).
+negative.  In the case of negative powers in @var{prod} the switch
+@code{letrat} must be set to @code{true}.
+See below for more on @code{letrat}.
+
 If a predicate is included in the @code{let} function followed by a list of
 arguments, a tentative match (i.e. one that would be accepted if the
 predicate were omitted) will be accepted only if
-predname(arg1',...,argn') evaluates to @code{true} where argi' is the value
-matched to argi.  The argi may be the name of any atom or the argument
-of any kernel appearing in prod.  repl may be any rational expression.
-If any of the atoms or arguments from prod appear in repl the
+@code{predname (arg1', ..., argn')} evaluates to @code{true} where @var{argi'} is the value
+matched to @var{argi}.  The @var{argi} may be the name of any atom or the argument
+of any kernel appearing in @var{prod}.  @var{repl} may be any rational expression.
+If any of the atoms or arguments from @var{prod} appear in @var{repl} the
 appropriate substitutions will be made.
-@end itemize
-    @code{letrat}[@code{false}] when @code{false}, @code{letsimp} will simplify the numerator and
+
+@code{letrat} when @code{false}, @code{letsimp} will simplify the numerator and
 denominator of expr independently and return the result.
-Substitutions such as N!/N goes to (N-1)!  will fail.  To handle such
+Substitutions such as @code{n!/n} goes to @code{(n-1)!} will fail.  To handle such
 situations @code{letrat} should be set to @code{true}, then the numerator,
 denominator, and their quotient will be simplified in that order.
-    These substitution functions allow you to work with several
-rulepackages at once. Each rulepackage can contain any number of @code{let}'ed
-rules and is referred to by a user supplied name.  To insert a rule
-into the rulepackage name, do LET([prod,repl,pred,arg1,...],name).  To
-apply the rules in rulepackage name, do LETSIMP(expr, name).  The
-function LETSIMP(expr,name1,name2,...)  is equivalent to doing
-LETSIMP(expr,name1) followed by LETSIMP(%,name2) etc.
+
+These substitution functions allow you to work with several
+rule packages at once. Each rule package can contain any number of @code{let}'ed
+rules and is referred to by a user supplied name.
+@code{let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})}
+adds the rule @var{predname} to the rule package @var{package_name}.
+@code{letsimp (@var{expr}, @var{package_name})} 
+applies the rules in @var{package_name}.
+@code{letsimp (@var{expr}, @var{package_name1}, @var{package_name2}, ...)}
+is equivalent to @code{letsimp (@var{expr}, @var{package_name1})}
+followed by @code{letsimp (%, @var{package_name2})}, ....
+
 @code{current_let_rule_package} is the name of the rule package that is
-presently being used.  The user may reset this variable to the name of
-any rule package previously defined via the @code{let} command.  Whenever any
-of the functions comprising the let package are called with no package
-name the value of @code{current_let_rule_package} is used.  If a call such as
-LETSIMP(expr,rule_pkg_name); is made, the rule package rule_pkg_name
-is used for that @code{letsimp} command only, i.e.  the value of
-@code{current_let_rule_package} is not changed.
-There is a @code{default_let_rule_package} which is assumed when no other
-name is supplied to any of the functions.  Whenever a @code{let} includes a
-rulepackage name that is used as the @code{current_let_rule_package}.
+presently being used.
+The user may reset this variable to the name of
+any rule package previously defined via the @code{let} command.
+Whenever any of the functions comprising the @code{let} package are called with no package name,
+the @code{current_let_rule_package} is used.
+If a call such as @code{letsimp (@var{expr}, @var{rule_pkg_name})} is made,
+the rule package @var{rule_pkg_name} is used for that @code{letsimp} command only,
+and @code{current_let_rule_package} is not changed.
+If not otherwise specified,
+@code{current_let_rule_package} defaults to @code{default_let_rule_package}.
+
+@example
+(%i1) matchdeclare ([a, a1, a2], true)$
+(%i2) oneless (x, y) := is (x = y-1)$
+(%i3) let (a1*a2!, a1!, oneless, a2, a1);
+(%o3)         a1 a2! --> a1! where oneless(a2, a1)
+(%i4) letrat: true$
+(%i5) let (a1!/a1, (a1-1)!);
+                        a1!
+(%o5)                   --- --> (a1 - 1)!
+                        a1
+(%i6) letsimp (n*m!*(n-1)!/m);
+(%o6)                      (m - 1)! n!
+(%i7) let (sin(a)^2, 1 - cos(a)^2);
+                        2               2
+(%o7)                sin (a) --> 1 - cos (a)
+(%i8) letsimp (sin(x)^4);
+                        4           2
+(%o8)                cos (x) - 2 cos (x) + 1
+@end example
 
 @end defun
 
 @defvar letrat
- default: [@code{false}] - when @code{false}, @code{letsimp} will simplify the
-numerator and denominator of expr independently and return the result.
-Substitutions such as N!/N goes to (N-1)! will fail.  To handle such
-situations @code{letrat} should be set to @code{true}, then the numerator,
-denominator, and their quotient will be simplified in that order.
+Default value: @code{false}
+
+When @code{letrat} is @code{false}, @code{letsimp} simplifies the
+numerator and denominator of a ratio separately,
+and does not simplify the quotient.
+
+When @code{letrat} is @code{true},
+the numerator, denominator, and their quotient will be simplified in that order.
+
+@example
+(%i1) matchdeclare (n, true)$
+(%i2) let (n!/n, (n-1)!);
+                         n!
+(%o2)                    -- --> (n - 1)!
+                         n
+(%i3) letrat: false$
+(%i4) letsimp (a!/a);
+                               a!
+(%o4)                          --
+                               a
+(%i5) letrat: true$
+(%i6) letsimp (a!/a);
+(%o6)                       (a - 1)!
+@end example
 
 @end defvar
 
 @defun letrules ()
-displays the rules in the current rulepackage.
-LETRULES(name) displays the rules in the
-named rulepackage.
-The current rulepackage is the value of
-@example
-current_let_rule_package
-@end example
-The initial value of the rules is
-@example
-default_let_rule_package
-@end example
+@defunx letrules (@var{package_name})
+Displays the rules in a rule package.
+@code{letrules ()} displays the rules in the current rule package.
+@code{letrules (@var{package_name})} displays the rules in @code{package_name}.
+
+The current rule package is named by @code{current_let_rule_package}.
+If not otherwise specified, @code{current_let_rule_package}
+defaults to @code{default_let_rule_package}.
 
 @end defun
 
 @defun letsimp (@var{expr})
-will continually apply the substitution rules previously
-defined by the function @code{let} until no further change is made to exp.
-LETSIMP(expr,rule_pkg_name); will cause the rule package rule_pkg_name
-to be used for that @code{letsimp} command only, i.e.  the value of
-@code{current_let_rule_package} is not changed.
+@defunx letsimp (@var{expr}, @var{package_name})
+Applies the substitution rules previously
+defined by the function @code{let} until no further change is made to @var{expr}.
+
+@code{letsimp (@var{expr})} uses the rules from @code{current_let_rule_package}.
+
+@code{letsimp (@var{expr}, @var{package_name})} uses the rules from @var{package_name}
+without changing @code{current_let_rule_package}.
 
 @end defun
 
 @defvar let_rule_packages
- default:[@code{default_let_rule_package}] - The value of
+default: @code{[default_let_rule_package]}
+
 @code{let_rule_packages} is a list of all the user-defined let rule packages
-plus the special package
-@example
-default_let_rule_package
-@end example
-This is the name of the rule package used when one
-is not explicitly set by the user.
+plus the special package @code{default_let_rule_package},
+which is the rule package used when a rule package is not otherwise specified.
 
 @end defvar
 
-@defun matchdeclare (@var{patternvar}, @var{predicate}, ...)
-associates a predicate with
-a pattern variable so that the variable will only match expressions
-for which the predicate is not @code{false}.  (The matching is accomplished
-by one of the functions described below).  For example after
-@example
-matchdeclare(q,freeof(x,%e))
-@end example
-is executed, Q will match any expression
-not containing X or %E.  If the match succeeds then the variable is
-set to the matched expression.  The predicate (in this case @code{freeof}) is
+@defun matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+Associates a predicate @var{pred_k} 
+with a variable or list of variables @var{a_k}
+so that @var{a_k} matches expressions
+for which the predicate is not @code{false}.
+@c REPLACE NEXT SENTENCE WITH EXHAUSTIVE LIST
+Pattern matches are evaluated by one of the functions described below.
+
+If the match succeeds then the variable is
+set to the matched expression.
+The predicate (in this case @code{freeof}) is
 written without the last argument which should be the one against
-which the pattern variable is to be tested.  Note that the patternvar
+which the pattern variable is to be tested.
+Note that the variable
 and the arguments to the predicate are evaluated at the time the match
-is performed.
-The odd numbered argument may also be a list of pattern variables all
-of which are to have the associated predicate.  Any even number of
-arguments may be given.
+is evaluated.
+
 For pattern matching, predicates refer to functions which are either
-@code{false} or not @code{false} (any non @code{false} value acts like @code{true}).
-MATCHDECLARE(var,TRUE) will permit var to match any expression.
+@code{false} or not @code{false}. 
+Any non @code{false} value acts like @code{true}.
+
+@code{matchdeclare (@var{a}, true)} permits @var{a} to match any expression.
+
+Examples:
+
+@itemize @bullet
+@item
+@code{q} matches an expression not containing @code{x} or @code{%e}.
+@end itemize
+@example
+(%i1) matchdeclare (q, freeof (x, %e))$
+@end example
 
 @end defun
 
@@ -430,8 +486,8 @@ Matchfix operators are ordinary user-defined functions.
 deletes the substitution rule, prod --> repl, most
 recently defined by the @code{let} function.  If name is supplied the rule is
 deleted from the rule package name.  REMLET() and REMLET(ALL) delete
-all substitution rules from the current rulepackage. If the name of a
-rulepackage is supplied, e.g. REMLET(ALL,name), the rulepackage, name,
+all substitution rules from the current rule package. If the name of a
+rule package is supplied, e.g. REMLET(ALL,name), the rule package, name,
 is also deleted.  If a substitution is to be changed using the same
 product, @code{remlet} need not be called, just redefine the substitution
 using the same product (literally) with the @code{let} function and the new
@@ -451,13 +507,20 @@ be removed.
 @defun tellsimp (@var{pattern}, @var{replacement})
 is similar to @code{tellsimpafter} but places
 new information before old so that it is applied before the built-in
-simplification rules.  @code{tellsimp} is used when it is important to modify
+simplification rules.
+
+@code{tellsimp} is used when it is important to modify
 the expression before the simplifier works on it, for instance if the
 simplifier "knows" something about the expression, but what it returns
-is not to your liking.  If the simplifier "knows" something about the
+is not to your liking.
+If the simplifier "knows" something about the
 main operator of the expression, but is simply not doing enough for
-you, you probably want to use @code{tellsimpafter}.  The pattern may not be a
-sum, product, single variable, or number.  @code{rules} is a list of names
+you, you probably want to use @code{tellsimpafter}.
+
+The pattern may not be a
+sum, product, single variable, or number.
+
+@code{rules} is a list of names
 having simplification rules added to them by @code{defrule}, @code{defmatch},
 @code{tellsimp}, or @code{tellsimpafter}.
 
