@@ -3,9 +3,6 @@
 ;; Copyright: (C) 2001 Jay Belanger
 
 ;; Author: Jay Belanger <belanger@truman.edu>
-;; $Name:  $
-;; $Revision: 1.2 $
-;; $Date: 2001-11-11 01:47:41 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -1079,7 +1076,11 @@
   "Regexp to match the Maxima constants.")
 
 (defvar maxima-match-constants-3
-  "[0-9]"
+  "\\<\\([0-9]+\\)\\>"
+  "Regexp to match the Maxima constants.")
+
+(defvar maxima-match-constants-4
+  "\\<\\([0-9]+\.\\)?\\([0-9]+B[+-]?[0-9]\\)\\>"
   "Regexp to match the Maxima constants.")
 
 (defvar maxima-match-keywords
@@ -1311,6 +1312,7 @@
 ;;; Now, the keywords
 (defvar maxima-keywords
   `(
+    (,maxima-match-operators (0  maxima-operator-face t))
     (,maxima-match-variables-1 (0 maxima-variable-face t))
     (,maxima-match-variables-2 (0 maxima-variable-face t))
     (,maxima-match-variables-3 (0  maxima-variable-face t))
@@ -1324,8 +1326,8 @@
     (,maxima-match-constants-1 (0  maxima-constant-face t))
     (,maxima-match-constants-2 (0  maxima-constant-face t))
     (,maxima-match-constants-3 (0  maxima-constant-face t))
+    (,maxima-match-constants-4 (0  maxima-constant-face t))
     (,maxima-match-keywords (0  maxima-keyword-face t))
-    (,maxima-match-operators (0  maxima-operator-face t))
     (,maxima-match-properties (0  maxima-property-face t))
     (,maxima-match-macros (0  maxima-macro-face t))
     (,maxima-match-specops (0  maxima-specop-face t))
