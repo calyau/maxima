@@ -1,5 +1,5 @@
 /*  Sample usage of difference equation package  -*-Macsyma-*- */
-IF GET('DIFFER,'VERSION)=FALSE THEN LOAD(DIFFER)$
+if get('differ,'version)=false then load(differ)$
 
 a:matrix([1,-1],[-5,5]);
 eigenvalues(a);
