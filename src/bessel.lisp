@@ -192,9 +192,9 @@
 	 ;; and i1 instead of jn, if possible.
 	 (let ((arg (realpart arg)))
 	   (cond ((zerop order)
-		  (slatec:dbesi0 arg))
+		  (slatec:dbesi0 (float arg)))
 		 ((= order 1)
-		  (slatec:dbesi1 arg))
+		  (slatec:dbesi1 (float arg)))
 		 (t
 		  (multiple-value-bind (n alpha)
 		      (floor (float order))
@@ -245,9 +245,9 @@
 	 ;; and i1 instead of jn, if possible.
 	 (let ((arg (realpart arg)))
 	   (cond ((zerop order)
-		  (slatec:dbesk0 arg))
+		  (slatec:dbesk0 (float arg)))
 		 ((= order 1)
-		  (slatec:dbesk1 arg))
+		  (slatec:dbesk1 (float arg)))
 		 (t
 		  (multiple-value-bind (n alpha)
 		      (floor (float order))
@@ -443,28 +443,28 @@
 	 (let ((arg (realpart arg)))
 	   (cond ((zerop order)
 		  (cond ((>= arg 0)
-			 (slatec:dbesy0 arg))
+			 (slatec:dbesy0 (float arg)))
 			(t
 			 ;; For v = 0, this simplifies to
 			 ;;
 			 ;; %y[0](-z) = %y[0](z) + 2*%i*%j[0](z)
 			 (simplify `((mplus)
-				     ,(slatec:dbesy0 (- arg))
+				     ,(slatec:dbesy0 (float (- arg)))
 				     ((mtimes)
 				      $%i
-				      ,(* 2 (slatec:dbesj0 (- arg)))))))))
+				      ,(* 2 (slatec:dbesj0 (float (- arg))))))))))
 		 ((= order 1)
 		  (cond ((>= arg 0)
-			 (slatec:dbesy1 arg))
+			 (slatec:dbesy1 (float arg)))
 			(t
 			 ;; For v = 1, this simplifies to
 			 ;;
 			 ;; %y[1](-z) = -%y[1](z) - 2*%i*%j[1](v)
 			 (simplify `((mplus)
-				       ,(slatec:dbesy1 (- arg))
+				       ,(slatec:dbesy1 (float (- arg)))
 				       ((mtimes)
 					$%i
-					,(* -2 (slatec:dbesj1 (- arg)))))))))
+					,(* -2 (slatec:dbesj1 (float (- arg))))))))))
 		 (t
 		  (multiple-value-bind (n alpha)
 		      (floor (float order))
