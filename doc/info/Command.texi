@@ -467,6 +467,8 @@ The double single quotes operator, @code{'@w{}'}, defeats the quotation.
 
 @code{playback ()} (with no arguments) displays all input, output, and intermediate expressions
 generated so far.
+An output expression is displayed even if it was suppressed by the @code{$} terminator
+when it was originally computed.
 
 @code{playback (n)} displays the most recent @code{n} expressions.
 Each input, output, and intermediate expression counts as one.
