@@ -1721,11 +1721,11 @@ and such that no line contains an incomplete form."
 	  (forward-line 1)
 	  (end-of-line)
 	  (setq end (point))))
-      (skip-chars-backward "[ \t;$]")
-      (if (looking-at "[;$]")
-	  (maxima-send-region beg (1+ (point)))
-	(error "; or $ at end"))
-      end))) 
+      (skip-chars-backward " \t;$")
+      (if (re-search-forward "[;$]" end t)
+	  (maxima-send-region beg (point))
+	(error "No ; or $ at end"))
+      end)))
 
 (defun maxima-send-full-line-and-goto-next-form ()
   "Do a maxima-send-full-line and go to the beginning of the next form."
