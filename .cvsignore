@@ -16,6 +16,7 @@ mkinstalldirs
 xmaxima-local
 maxima-local
 maxima.spec
+maxima.iss
 
 maxout.*
 maxima*.tar.gz
