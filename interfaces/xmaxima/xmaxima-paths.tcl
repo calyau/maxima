@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.15 2002-09-11 01:19:38 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.16 2002-09-12 06:58:01 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -24,8 +24,8 @@ proc setMaxDir {} {
 		[info exists autoconf(package)] && \
 		[file isdir  $autoconf(datadir)] && \
 		[file isdir \
-		  [file join $autoconf(datadir) \
-		   $autoconf(package) $autoconf(version)]]} {
+		     [file join $autoconf(datadir) \
+			  $autoconf(package) $autoconf(version)]]} {
 
 	    # Assume it's CYGWIN or  MSYS in /usr/local
 	} elseif {[file isdir $up/lib] && \
@@ -176,7 +176,7 @@ proc vMAXSetMaximaCommand {} {
     set maxima_opts [lMaxInitSetOpts]
 
     if {[info exists maxima_priv(xmaxima_maxima)] && \
-	$maxima_priv(xmaxima_maxima) != ""} {
+	    $maxima_priv(xmaxima_maxima) != ""} {
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
 
 	    tide_failure [M "Error: Maxima executable not found\n%s\n\n Try setting the environment variable  XMAXIMA_MAXIMA." \
@@ -195,15 +195,19 @@ proc vMAXSetMaximaCommand {} {
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
 	    
 	    if {$tcl_platform(platform) == "windows"} {
-		# maybe it's in maxima_priv(maxima_verpkglibdir)
-		set exe [file join $maxima_priv(maxima_verpkglibdir) maxima.exe]
-		if {![file isfile $exe]} {
+		# maybe it's in lib - I don't like this
+		set dir $maxima_priv(maxima_verpkglibdir)
+		# FIXME - need autoconf(lisp) so we don't need glob
+		set exes [glob -nocomplain $dir/binary-*/maxima.exe]
+		if {[llength $exes] != "1" || \
+			[set exe [lindex $exes 0]] == "" || \
+			![file isfile $exe]} {
 		    tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 		    return
 		}
 
 	    } else {
-		    tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 	    }
 	}
     }
