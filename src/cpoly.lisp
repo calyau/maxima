@@ -676,12 +676,12 @@
 ;;;the variable si appears not to be used here
 
 (declare-top(special sr u v a b c d a1 a3 a7 e f g h szr szi lzr lzi are mre n nn nz
-		  type ui vi s $polyfactor arp-sl)
+		  #+gcl type ui vi s $polyfactor arp-sl)
 	 (flonum a a0 a1 a3 a4 a5 a6 a7 aa are b b0 b1 b2 logbas bb betas betav bnd c c0
 		 c1 c2 c3 c4 cc cosr d d0 e ee f g h infin kv lzi lzr mp mre ms omp
 		 oss ots otv ovv pv relstp s sinr smalno sr ss svu svv szi szr t1 ts
 		 tss tv tvv u ui v vi vv xx yy zm arp-sl)
-	 (fixnum cnt degree i iflag j jj l l2 n nn nz type)) 
+	 (fixnum cnt degree i iflag j jj l l2 n nn nz #+gcl type)) 
 
 (declare-top(fixnum (realit-sl))
 	 (notype (rpoly-sl fixnum) (fxshfr-sl fixnum) (quadit-sl) (calcsc-sl) (nextk-sl)
@@ -1035,10 +1035,10 @@
 (declare-top(unspecial logbas infin smalno are mre cr ci sr si tr ti zr zi
 		    n nn bool conv pvr pvi acp-sl polysc polysc1 sr u v a
 		    b c d a1 a3 a7 e f g h szr szi lzr lzi are mre n nn nz
-		    type ui vi s arp-sl ))
+		    #+gcl type ui vi s arp-sl ))
 
 (declare-top(unspecial logbas infin smalno are mre cr ci sr si tr ti zr zi
 		    n nn bool conv pvr pvi acp-sl polysc polysc1 sr u v a
 		    b c d a1 a3 a7 e f g h szr szi lzr lzi are mre n nn nz
-		    type ui vi s arp-sl))
+		    #+gcl type ui vi s arp-sl))
 
