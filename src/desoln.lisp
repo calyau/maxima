@@ -66,7 +66,7 @@
 	 nil))
        (cond ((or (like $teqns '((mlist)))
 		  (like $teqns (list '(mlist) '((mlist)))))
-	      (simplify ($error '|&DESOLVE can't handle this case.|)))
+	      (simplify ($error '|&`desolve' can't handle this case.|)))
 	     (t (setq $teqns (simplify ($first $teqns)))))
        (cond ((not (like $flag t))
 	      (setq $teqns (simplify ($first $teqns)))))

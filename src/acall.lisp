@@ -332,7 +332,7 @@
 (defmfun mapply-tr (fun list)
   (or ($listp list)
       (merror "Second arg to `apply' was not a list:~%~M" list))
-  (mapply1 fun (cdr list) '|the first arg to a translated APPLY| list))
+  (mapply1 fun (cdr list) '|the first arg to a translated `apply'| list))
 
 
 (defmfun assign-check (var val)
