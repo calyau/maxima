@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.10 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.11 2002-09-16 17:55:12 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -389,7 +389,7 @@ proc sendMaximaCall { win form call } {
     if {[catch {
 	puts -nonewline $maximaSocket $form
 	flush $maximaSocket} err]} {
-	set mes "Error sending to Maxima:"
+	set mess "Error sending to Maxima:"
 	if {[string match "can not find channel named*" err]} {
 	    # The maxima went away
 	    set maximaSocket ""
