@@ -27,7 +27,7 @@ AC_ARG_WITH(clisp,
 if test x"${clisp}" = xtrue ; then
 	AC_CHECK_PROG(clisp_found,$CLISP_NAME,true,false)
 	if test x"${clisp_found}" = xfalse ; then
-		AC_MSG_ERROR(clisp executable ${CLISP_NAME} not found in PATH)
+		AC_MSG_WARN(clisp executable ${CLISP_NAME} not found in PATH)
 	fi
 fi
 
@@ -51,7 +51,7 @@ AC_ARG_WITH(cmucl,
 if test x"${cmucl}" = xtrue ; then
 	AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
 	if test x"${cmucl_found}" = xfalse ; then
-		AC_MSG_ERROR(cmucl executable ${CMUCL_NAME} not found in PATH)
+		AC_MSG_WARN(cmucl executable ${CMUCL_NAME} not found in PATH)
 	fi
 fi
 	
@@ -74,7 +74,7 @@ AC_ARG_WITH(gcl,
 if test x"${gcl}" = xtrue ; then
 	AC_CHECK_PROG(gcl_found,$GCL_NAME,true,false)
 	if test x"${gcl_found}" = xfalse ; then
-		AC_MSG_ERROR(gcl executable ${GCL_NAME} not found in PATH)
+		AC_MSG_WARN(gcl executable ${GCL_NAME} not found in PATH)
 	fi
 fi
 
