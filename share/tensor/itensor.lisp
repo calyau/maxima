@@ -518,7 +518,7 @@
 					 E))
 				 ((AND E (MEMQ B E))
 				  (NCONC (LIST (CAR G) C D)
-					 (MYSORT (SUBST A B E))))
+					 (itensor-SORT (SUBST A B E))))
 				 ((AND (CDR D) (MEMQ A (CDR D)))
 				  (SETQ D (SUBST B A (CDR D)))
 				  (AND (CDR C)
@@ -790,7 +790,7 @@
 	      (delta (ncons x) (cdaddr e)))
 	     (t (NCONC (LIST (CAR E) (CADR E) (CADDR E))
 		       (COND ((NULL (CDDDR E)) (NCONS X))
-			     (T (MYSORT (APPEND (CDDDR E) (NCONS X)))))))))
+			     (T (itensor-SORT (APPEND (CDDDR E) (NCONS X)))))))))
 
 
 
@@ -969,7 +969,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	((ATOM E) E)
 	((OR (RPOBJ E) (EQ (CAAR E) 'MTIMES));If an indexed object or a product
 	 ((LAMBDA  (L) 
-	(SIMPTIMES (REORDER (COND (L (SUBLIS (CLEANUP L INDEX) E))(T E))) 1 T))
+	(SIMPTIMES (REORDER (COND (L (SUBLIS (itensor-CLEANUP L INDEX) E))(T E))) 1 T))
 	  (CDADDR ($INDICES E))                     ;Gets list of dummy indices
 	  ))
 	(T            ;Otherwise map $RENAME on each of the subparts e.g. a sum
@@ -988,19 +988,19 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	    (COND ((RPOBJ X)
 		   (NCONC (LIST (CAR X)                              ;($F SIMP)
 				(CONS SMLIST
-				      (COND ($ALLSYM (MYSORT (COPY (CDADR X))))
+				      (COND ($ALLSYM (itensor-SORT (COPY (CDADR X))))
 					    (T (CDADR X))))          ;($A $B)
 				(CONS SMLIST
 				      (COND ($ALLSYM
-					     (MYSORT (COPY (CDADDR X))))
+					     (itensor-SORT (COPY (CDADDR X))))
 					    (T (CDADDR X)))))        ;($C $D)
-			  (MYSORT (COPY (CDDDR X)))))                ;($E $F)
+			  (itensor-SORT (COPY (CDDDR X)))))                ;($E $F)
 		  (T X)))
 	  (COND ((EQ (CAAR E) 'MTIMES) (CDR E))
 		(T (NCONS E)))))
 	E))
 
-(DEFUN CLEANUP (A N)((LAMBDA (DUMX)(CLEANUP1 A)) NIL))        ;Sets DUMX to NIL
+(DEFUN itensor-CLEANUP (A N)((LAMBDA (DUMX)(CLEANUP1 A)) NIL))        ;Sets DUMX to NIL
  
 (DEFUN CLEANUP1 (A)
   (AND A (SETQ DUMX (IMPLODE (NCONC (EXPLODEN $DUMMYX)    ;Keep proper order of
@@ -1011,7 +1011,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 
 (DECLARE-TOP (NOTYPE N INDEX)(UNSPECIAL N DUMX INDEX))
 
-(DEFUN MYSORT (L) (COND ((CDR L) (SORT L 'LESS)) (T L)))
+(DEFUN itensor-SORT (L) (COND ((CDR L) (SORT L 'LESS)) (T L)))
 ;Sort into ascending order
 
 (DEFMFUN $REMCOMPS (TENSOR)

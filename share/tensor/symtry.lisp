@@ -58,10 +58,10 @@
 	     (add2lnc tensor $symmetries)
 	     (return '$DONE)))
 
-(defun INTERVAL (i j)     ;INTERVAL returns the list of integers from I thru J.
-       (do ((n i (1+ n)) (ans))             ;Thus (INTERVAL 3 5) yields (3 4 5)
-           ((> n j) (nreverse ans))
-           (setq ans (cons n ans))))
+;; (defun INTERVAL (i j)     ;INTERVAL returns the list of integers from I thru J.
+;;        (do ((n i (1+ n)) (ans))             ;Thus (INTERVAL 3 5) yields (3 4 5)
+;;            ((> n j) (nreverse ans))
+;;            (setq ans (cons n ans))))
 
 (defun CHECK-SYMARGS (ll n)            ;Returns an ascending list of the unique
 				       ;elements of LL and checks that they are
@@ -134,7 +134,7 @@
 		   csign nil)       ;Set when reordering antisymmetric indices.
                                     ;Indicates whether overall sign of
                                     ;expression needs changing.
-	     (cond ($allsym (setq cov (mysort cov) contr (mysort contr)))
+	     (cond ($allsym (setq cov (itensor-sort cov) contr (itensor-sort contr)))
 		   ((zl-member tensor (cdr $symmetries))
 		    (do ((q symtypes (cdr q)) (type))
 			((null q))
@@ -142,18 +142,18 @@
 			(do ((props (car (zl-get tensor type)) (cdr props)) (p))
 			    ((null props))
 			    (setq p (car props)
-				  cov (inserts (symsort (extract p cov) type)
+				  cov (inserts (symsort (extract-elements p cov) type)
 					       cov p)))
 			(do ((props (cdr (zl-get tensor type)) (cdr props)) (p))
 			    ((null props))
 			    (setq p (car props)
-				    contr (inserts (symsort (extract p contr)
+				    contr (inserts (symsort (extract-elements p contr)
 							    type)
 						   contr p))))))
 	     (setq tensor (mysubst0 (append (list (car e)
 						  (consmlist cov)
 						  (consmlist contr))
-					    (mysort deriv)) e))
+					    (itensor-sort deriv)) e))
 	     (cond (csign (setq tensor (neg tensor))))
 	     (return tensor)))
 
@@ -167,8 +167,8 @@
 	   (cond ((not (eq dumx (car b)))
 		  (setq l (cons (cons (car b) dumx) l))))))
 
-(defun EXTRACT (a b)  ;Extracts the elements from B specified by the indices in
-                      ;i.e. (EXTRACT '(2 5) '(A B C D E F)) yields (B E)
+(defun EXTRACT-elements (a b)  ;Extracts the elements from B specified by the indices in A,
+                      ;i.e. (EXTRACT-elements '(2 5) '(A B C D E F)) yields (B E)
        (do ((a a) (b b (cdr b)) (n 1 (1+ n)) (l))
 	   ((null a) (nreverse l))
 	   (cond ((equal (car a) n)

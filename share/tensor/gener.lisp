@@ -31,7 +31,7 @@
 		    (merror "Cannot assign to indexed objects with derivative ~
 			    indices:~%~M"
 			    (ishow lhs))))
-	     (setq free (nreverse (mysort (cdadr free)))  ;Set FREE to just the
+	     (setq free (nreverse (itensor-sort (cdadr free)))  ;Set FREE to just the
 		   indlist nil)                           ;free indices
 	     (and $METRICCONVERT (boundp '$METRIC)
 		  (setq lhs (changename $METRIC t 0 2 '$UG
@@ -146,7 +146,7 @@ GENERATE cannot currently handle indexed objects of the same name~
 		      (cond ((not (null indexed))
 		             (do ((indxd (simptimes (cons '(MTIMES) indexed)
 						    1 nil))
-			          (dummy (mysort dummy2) (cdr dummy)))
+			          (dummy (itensor-sort dummy2) (cdr dummy)))
 			         ((null dummy) (ncons indxd))
 			         (setq indxd (nconc (ncons '($SUM))
 						    (ncons indxd)
