@@ -2033,7 +2033,7 @@ ABS: NIL          REL: NIL               Result: ""
   (setq absolute-dir (logical-pathname absolute-dir))
   (etypecase relative-dir
     (string (setq relative-dir (parse-namestring relative-dir)))
-    (pathname #| do nothing |#))
+    (pathname ))
 
   (translate-logical-pathname
    (make-pathname
@@ -3812,12 +3812,11 @@ D
   (unless *dont-redefine-require*
     (let (#+(or :mcl (and :CCL (not :lispworks)))
 	  (ccl:*warn-if-redefine-kernel* nil))
-      #-(or (and allegro-version>= (version>= 4 1)) :lispworks)
+      #-(or (and allegro-version>= (version>= 4 1)) :lispworks :sbcl)
       (setf (symbol-function
 	     #-(or (and :excl :allegro-v4.0) :mcl :sbcl :lispworks) 'lisp:require
 	     #+(and :excl :allegro-v4.0) 'cltl1:require
 	     #+:lispworks3.1 'common-lisp::require
-	     #+:sbcl 'cl:require
 	     #+(and :lispworks (not :lispworks3.1)) 'system::require
 	     #+:openmcl 'cl:require
 	     #+(and :mcl (not :openmcl)) 'ccl:require
@@ -3836,8 +3835,11 @@ D
       #+(and allegro-version>= (version>= 4 1))
       (excl:without-package-locks
        (setf (symbol-function 'lisp:require)
-	 (symbol-function 'new-require))))))
-)
+	 (symbol-function 'new-require)))
+      #+:sbcl
+      (sb-ext:without-package-locks
+       (setf (symbol-function 'cl:require)
+         (symbol-function 'new-require)))))))
 
 ;;; ********************************
 ;;; Language-Dependent Characteristics

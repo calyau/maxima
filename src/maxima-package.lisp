@@ -1,6 +1,11 @@
-#+(or sbcl mcl)
+#+mcl
 (or (find-package "LISP")
     (rename-package "COMMON-LISP" "COMMON-LISP" '("LISP" "CL")))
+
+#+:sbcl
+(progn
+  (sb-ext:unlock-package "COMMON-LISP")
+    (rename-package "COMMON-LISP" "COMMON-LISP" '("LISP" "CL"))) 
 
 ;; SI is used for the regex info implementation. This line should be removed
 ;; when the info regex implementation no longer requires SI in all lisps.
