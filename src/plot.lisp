@@ -313,10 +313,11 @@ setrgbcolor} def
        "/myfinish {.9 setgray gsave fill grestore .1 setgray stroke  } def")))
 
 
-(defun $draw_ngons(pts ngons number_edges &aux (i 0)(j 0) (s 0)
+(defun $draw_ngons (pts ngons number_edges &aux (i 0) (j 0) (s 0)
 		       (opts *original-points*)
 		       (maxz  most-negative-double-float))
-  (declare (type (cl:array double-float) pts opts)
+  (declare (type (cl:array double-float) pts)
+           #-(or cmu sbcl) (type (cl:array double-float) opts)
 	   (type (cl:array (mod 64000)) ngons)
 	   (fixnum number_edges i s j number_edges)
 	   (double-float maxz))
@@ -392,7 +393,7 @@ setrgbcolor} def
 	 (lisp::atan  z2 z1 ))))
 
 (defun $ps_axes ( rot )
-  (let ((tem (make-array 9 :element-type 'double-float)))
+  (let ((tem (make-array 9 :element-type 'double-float :initial-element 0d0)))
     (setf (aref tem 0) 4.0)
     (setf (aref tem 4) 4.0)
     (setf (aref tem 8) 4.0)
