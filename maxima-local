@@ -4,6 +4,7 @@ MAXIMA_VERPKGLIBEXECDIR=$top_srcdir/lisp-utils
 export MAXIMA_VERPKGLIBEXECDIR
 MAXIMA_VERPKGLIBDIR=$top_srcdir/src
 export MAXIMA_VERPKGLIBDIR
-
+MAXIMA_INFODIR=$top_srcdir/doc/info
+export MAXIMA_INFODIR
 
 exec /bin/sh $top_srcdir/src/maxima "$@"
