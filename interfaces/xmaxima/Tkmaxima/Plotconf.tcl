@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.9 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: Plotconf.tcl,v 1.10 2004-10-30 08:21:07 vvzhy Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -1097,7 +1097,7 @@ proc omPlotAny { data args } {
     if { "[lindex $command 0]" == "plot2d" } {
 	lappend command -xfun {}
     }
-    foreach v $args { [lappend command $v] }
+    foreach v $args { lappend command $v }
     eval $command
     #eval [lindex [lindex $data 0] 0] -xfun [list {}] -data [list [lindex $data 0]] $args
 }

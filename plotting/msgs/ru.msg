@@ -58,6 +58,7 @@ mcset ru "Error: maxima executable not found." "Ошибка: Исполняем
 
 ##### Plotdf.tcl
 mcset ru "A direction field plotter by William Schelter" "Построитель поля направлений Вильяма Шелтера"
+mcset ru "Direction Fields" "Поля направлений"
 mcset ru "Integrate" "Интегрировать"
 mcset ru {Causes clicking on the  plot with the left mouse button at a point, to draw a trajectory passing through that point.   Under Config there is an entry box which allows entering exact x,y coordinates, and which also records the place of the last trajectory computed.} \
          {Нажатие на графике левой кнопкой мыши приводит к рисованию траектории, проходящую через данную точку. В меню Настройка есть поля ввода, позволяющие ввести точные координаты x, y, и указать местоположение последней вычисленной траектории.}

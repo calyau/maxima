@@ -192,6 +192,11 @@ contrib/impdiff.mac\
 contrib/lindstedt.mac\
 contrib/lsquares.dem\
 contrib/lsquares.mac\
+contrib/lurkmathml/mathml.lisp\
+contrib/lurkmathml/mathml_ref_list_for_IE\
+contrib/lurkmathml/mathmltest\
+contrib/lurkmathml/maximadiffs.txt\
+contrib/lurkmathml/README\
 contrib/makeOrders.mac\
 contrib/maximaMathML/CtMathML.lisp\
 contrib/maximaMathML/load-mathml.lisp\
@@ -199,6 +204,10 @@ contrib/maximaMathML/mathmldisplay.lisp\
 contrib/maximaMathML/mathml-maxima.lisp\
 contrib/maximaMathML/mathml.readme\
 contrib/maximaMathML/PrMathML.lisp\
+contrib/mcclim/formula.lisp\
+contrib/mcclim/listeneroutput.png\
+contrib/mcclim/postscriptoutput.png\
+contrib/mcclim/README\
 contrib/mnewton.dem\
 contrib/mnewton.mac\
 contrib/nset/nset.html\
@@ -226,6 +235,9 @@ contrib/pdiff/history.txt\
 contrib/pdiff/pdiff-doc.pdf\
 contrib/pdiff/pdiff-doc.tex\
 contrib/pdiff/pdiff.lisp\
+contrib/plotdf.dem\
+contrib/plotdf.lisp\
+contrib/plotdf.usg\
 contrib/plsquares.dem\
 contrib/plsquares.mac\
 contrib/rand/asympexp.mac\

@@ -1,0 +1,41 @@
+load("plotdf")$
+
+
+/* To show the direction field of the differential equation
+  y' = exp(-x) + y
+and the solution that goes through (2, -0.1): */
+
+  plotdf(exp(-x)+y,[trajectory_at,2,-0.1]);
+
+
+/* To obtain the direction field for the equation
+  diff(y,x) = x - y^2
+and the solution with initial condition y(-1) = 3, we can use the
+command: */
+
+  plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],[trajectory_at,-1,3],
+                        [direction,forward],[yradius,5],[xcenter,6]);
+
+
+/* The following example shows the direction field of a harmonic oscillator,
+and the integral curve through (x,y) = (6,0), with a slider that
+will allow you to change the value of m interactively (k is fixed at 2) */
+
+  plotdf([y,-k*x/m],[parameters,"m=2,k=2"],[sliders,"m=1:5"],
+                                                   [trajectory_at,6,0]);
+
+
+/* The direction field of a Duffing equation: */
+
+  plotdf([y,-(k*x + c*y + l*x^3)/m],[parameters,"k=-1,m=1.0,c=0,l=1"],
+                 [sliders,"k=-2:2,m=-1:1"],[bbox,-3,-3,3,3],[tstep,0.1]);
+
+
+/* The direction field for a damped pendulum, including the
+solution for the given initial conditions, and with a slider that
+can be used to change the value of the mass m: */
+
+  plotdf([y,-g*sin(x)/l - b*y/m/l],[parameters,"g=9.8,l=0.5,m=0.3,b=0.05"],
+         [trajectory_at,1.05,-9],[tstep,0.01],[xradius,6],[yradius,14],
+         [xcenter,-4],[direction,forward],[nsteps,300],[sliders,"m=0.1:1"]);
+
