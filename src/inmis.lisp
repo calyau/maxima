@@ -78,7 +78,7 @@
 ;; I already fixed several bugs in it, but the +ITS version works fine on MC 
 ;; and takes less address space. - JPG
 (DECLARE-TOP(SPECIAL MODULUS $FPPREC))
-#-(or ITS Multics NIL) ;This version should be eventually used on Multics.
+#-(or cl ITS Multics NIL) ;This version should be eventually used on Multics.
 (DEFMFUN $RESET ()
 	(SETQ *print-base* 10. *read-base* 10. ; *NOPOINT T
 	      MODULUS NIL
@@ -95,3 +95,11 @@
 	;; *** with DEFMVAR.  This is part of an older mechanism.
  #+PDP10 (LOAD '((MACSYM) RESET FASL))
 	'$DONE)
+
+(defmfun $reset ()
+  (setq *print-base* 10.)
+  (setq *read-base* 10.)
+  (maphash #'(lambda (key val)
+	       (format t "Resetting ~S to ~S~%" key val)
+	       (setf (symbol-value key) val))
+	   *variable-initial-values*))

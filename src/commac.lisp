@@ -537,15 +537,22 @@ compiler:
 
 (defvar *reset-var* t)
 
+(defvar *variable-initial-values* (make-hash-table)
+  "Hash table containing all Maxima defmvar variables and their initial
+values")
+
 (defmacro defmvar (var &rest val-and-doc)
   "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
   (cond ((> (length val-and-doc) 2)
 	 (setq val-and-doc (list (car val-and-doc) (second val-and-doc)))))
   `(progn
-	   #+lispm (si::record-source-file-name ',var 'defmvar)
-	  (defvar ,var ,@ val-and-doc)
-	  #+debug
-	  (maybe-reset ',var ',(if val-and-doc (list (car val-and-doc))))))
+    #+lispm (si::record-source-file-name ',var 'defmvar)
+    (unless (gethash ',var *variable-initial-values*)
+      (setf (gethash ',var *variable-initial-values*)
+	    ,(first val-and-doc)))
+    (defvar ,var ,@ val-and-doc)
+    #+debug
+    (maybe-reset ',var ',(if val-and-doc (list (car val-and-doc))))))
 
 (defun maybe-reset (var val-and-doc &aux val)
   (cond (*reset-var*
