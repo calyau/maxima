@@ -1,0 +1,799 @@
+%-*-EMaxima-*-
+
+Here we will attempt to address universal concepts which you will 
+need to know when using Maxima for a wide variety of tasks. 
+
+
+\section{The Very Beginning}
+
+All computer algebra systems have syntactical rules, i.e. a structured
+language by which the user communicates his/her commands to the system.
+Without being able to communicate in this language, it is impossible
+to accomplish anything in such as system. So we will attempt to describe
+herein the basics.
+
+
+\subsection{Our first Maxima Session}
+
+We will start by demonstrating the ultimate basics: \( + \), \( - \),
+\( * \), and /. These symbols are virtually universal in any mathematical
+system, and mean exactly what you think they mean. We will demonstrate
+this, and at the same time introduce you to your first session in
+Maxima. In the interface of your choice, try the following:
+
+\vspace{3ex}
+
+\texttt{\label{Example1}GCL (GNU Common Lisp)~ Version(2.3.8) Wed
+Sep~ 5 08:00:22 CDT 2001}
+
+\texttt{Licensed under GNU Library General Public License}
+
+\texttt{Contains Enhancements by W. Schelter}
+
+\texttt{Maxima 5.5 Wed Sep 5 07:59:43 CDT 2001 (with enhancements
+by W. Schelter).}
+
+\texttt{Licensed under the GNU Public License (see file COPYING)}
+
+\beginmaximasession
+2+2;
+3-1;
+3*4;
+9/3;
+9/4;
+quit();
+\maximatexsession
+\C1.  2+2; \\
+\D1.   4 \\
+\C2.  3-1; \\
+\D2.   2 \\
+\C3.  3*4; \\
+\D3.   12 \\
+\C4.  9/3; \\
+\D4.   3 \\
+\C5.  9/4; \\
+\D5.   {{9}\over{4}} \\
+\C6.  quit(); \\
+\endmaximasession
+
+\vspace{3ex}
+
+Above is our first example of a Maxima session. We notice already
+several characteristics of a Maxima session: The startup message,
+which gives the version of Maxima being used, the date of compilation, 
+which is the day your executable was created, the labels in front of
+each line, the semicolon at the end of each line, and the way we exit
+the session. The startup message is not important to the session,
+but you should take note of what version of Maxima you are using,
+especially if there is a known problem in an earlier version which
+might impact what you are trying to do. 
+
+
+\subsubsection{Exiting\index{Exiting} \index{Quitting}\index{Debugging!Exiting}a
+Maxima Session}
+
+You want to be able to get out of what you get into. So the first
+command we discuss will be the command that gets you out of Maxima,
+and while we are at it we will discuss how to get out of debugging
+mode. Debugging mode is quite useful for some things, and the reader
+is encouraged to look to later chapters for an in-depth look at the
+debugging mode, but for now we will stick to basics. As you see above,
+\texttt{quit();} is the command which will exit Maxima. This is a
+bit confusing for new users, but you must type that full command.
+Simply typing \texttt{quit} or \texttt{exit} will not work, nor will
+pressing \texttt{CTRL-C} - if you try the latter you will be dumped
+into the debugging mode. If that happens, simply type \texttt{:q}
+if you are running GNU Common Lisp, or \texttt{:a} if running CLISP.
+(If in doubt use \texttt{:q} - most binary packages use GCL at this
+time.) Here's an example of what not to do, and how to get out of
+it if you do:
+
+\vspace{3ex}
+
+\texttt{\label{Quitting Maxima (Example 2)}(C1) quit;}
+
+\texttt{~}
+
+\texttt{(D1)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+QUIT}
+
+\texttt{(C2) exit;}
+
+\texttt{~}
+
+\texttt{(D2)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+EXIT}
+
+\texttt{(C3) }
+
+\texttt{Correctable error: Console interrupt.}
+
+\texttt{Signalled by MACSYMA-TOP-LEVEL.}
+
+\texttt{If continued: Type :r to resume execution, or :q to quit to
+top level.}
+
+\texttt{Broken at SYSTEM:TERMINAL-INTERRUPT.~ Type :H for Help.}
+
+\texttt{MAXIMA>\,{}>}
+
+\texttt{Correctable error: Console interrupt.}
+
+\texttt{Signalled by SYSTEM:UNIVERSAL-ERROR-HANDLER.}
+
+\texttt{If continued: Type :r to resume execution, or :q to quit to
+top level.}
+
+\texttt{Broken at SYSTEM:TERMINAL-INTERRUPT.}
+
+\texttt{MAXIMA>\,{}>\,{}>:q}
+
+\texttt{~}
+
+\texttt{(C3) quit()};
+
+\vspace{3ex}
+
+The first two lines show what happens if you forget the \texttt{()}
+or type \texttt{exit}. Nothing major, but you won't exit Maxima. \texttt{CTRL-C}
+causes a few more problems - if you actually read the message, you
+will see it tells you how to handle it. In the above example, \texttt{CTRL-C}
+was hit twice - that is not a proper way to exit Maxima either. Just
+remember to use \texttt{:q} to exit debugging and \texttt{quit();}
+to exit Maxima, and you should always be able to escape trouble.  If you find
+youself trying to read a long output going by quickly on a terminal, press 
+\texttt{CTRL-S} to temporarily halt the output, and \texttt{CTRL-Q} to resume.
+
+
+\subsubsection{The End of Entry Character}
+
+All expressions entered into Maxima must end with either the ; character
+or the \$ character. The ; character is the standard character to
+use for this purpose. \index{Hiding output}The \$ symbol, while performing
+the same job of ending the line, suppresses the output of that line.
+This example illustrates these properties:
+
+\vspace{3ex}
+
+\label{End of Entry Characters (Example 3)}
+
+\beginmaximasession
+x^5+3*x^4+2*x^3+5*x^2+4*x+7;
+x^5+3*x^4+2*x^3+5*x^2+4*x+7$
+D2;
+x^5+3*x^4+2*x^3
++5*x^2+4*x+7;
+x^5+3*x^4+2*x^3
+     +5*x^2+4*x+7;
+\maximatexsession
+\C1.  x^5+3*x^4+2*x^3+5*x^2+4*x+7; \\
+\D1.   x^{5}+3\*x^{4}+2\*x^{3}+5\*x^{2}+4\*x+7 \\
+\C2.  x^5+3*x^4+2*x^3+5*x^2+4*x+7$ \\
+\p   \\
+\C3.  D2; \\
+\D3.   x^{5}+3\*x^{4}+2\*x^{3}+5\*x^{2}+4\*x+7 \\
+\C4.  x^5+3*x^4+2*x^3
++5*x^2+4*x+7; \\
+\D4.   x^{5}+3\*x^{4}+2\*x^{3}+5\*x^{2}+4\*x+7 \\
+\C5.  x^5+3*x^4+2*x^3
+     +5*x^2+4*x+7; \\
+\D5.   x^{5}+3\*x^{4}+2\*x^{3}+5\*x^{2}+4\*x+7 \\
+\endmaximasession
+
+\vspace{3ex}
+
+In (C1), we input the expression using the ; character to end the
+expression, and on the return line we see that D1 now contains that
+expression. In (C2), we input an identical expression, except that
+we use the \$ to end the line. (D2) is assigned the contents of (C2),
+but does not visually display those contents. Just to verify that
+(D2) does in fact contain what we think it contains we ask Maxima
+to display it's contents on (C3) and we see that the are in fact present.
+This is extremely useful if you are working on a problem which has
+many steps, and some of those steps would produce long outputs you
+don't need to actually see. In (C4), we input part of the expression,
+press return, finish the expression, and then use the ; character.
+Notice that the input did not end until we used that character and
+pressed return - return by itself does nothing. You see (D4) contains
+the same expression as (D1) shown above. To Maxima, the inputs are
+the same. This can be useful if you are going to input a long expression
+and wish to keep it straight visually, to avoid errors. You can also
+input spaces without adversely affecting the formula, as shown in
+(C5).
+
+
+\subsubsection{The (C{*}) and (D{*}) Labels}
+
+These labels are more than just line markers - they are actually the
+names in memory of the contents of the lines. This is quite useful
+for a number of tasks. Let's say you wish to apply a routine, say
+a \texttt{solve} routine, to an expression for several different values.
+Rather than retyping the entire expression, we can use the fact that
+the line numbers act as markers to shorten our task considerably,
+as in this example:
+
+\vspace{3ex}
+
+\label{Line Labels (Example 4)}
+
+\beginmaximasession
+3*x^2+7*x+5;
+solve(D1=3,x);
+solve(D1=7,x);
+solve(D1=a,x);
+\maximatexsession
+\C1.  3*x^2+7*x+5; \\
+\D1.   3\*x^{2}+7\*x+5 \\
+\C2.  solve(D1=3,x); \\
+\D2.   \left[ x=-{{1}\over{3}},\linebreak[0]x=-2 \right]  \\
+\C3.  solve(D1=7,x); \\
+\D3.   \left[ x=-{{\sqrt{73}+7}\over{6}},\linebreak[0]x={{\sqrt{73}-7
+ }\over{6}} \right]  \\
+\C4.  solve(D1=a,x); \\
+\D4.   \left[ x=-{{\sqrt{12\*a-11}+7}\over{6}},\linebreak[0]x={{\sqrt{
+ 12\*a-11}-7}\over{6}} \right]  \\
+\endmaximasession
+
+\vspace{3ex}
+
+In this example, we desire to solve the expression \( 3x^{2}+7x+5 \)
+for \( x \) when \( 3x^{2}+7x+5=3 \), \( 3x^{2}+7x+5=7 \), and
+\( 3x^{2}+7x+5=a \). (\( a \) in this case is an arbitrary constant.)
+Rather than retype the equation many times, we merely enter it once,
+and then use that label to set up the similar problems more easily.
+
+You do not need to settle for this method of labeling - you can define
+your own expressions if you so choose, by using the : assign operator.
+Let us say, for example, that we wish to solve the problem above,
+but would rather call our equation FirstEquation than D1. We will
+show that process here, with one deliberate error for illustration
+of a property:
+
+\vspace{3ex}
+
+\label{Labeling an Equation (Example 5)}
+
+\beginmaximasession
+FirstEquation:3*x^2+7*x+5;
+solve(FirstEquation=3,x);
+solve(FirstEquation=7,x);
+solve(FirstEquation=a,x);
+solve(firstequation=a,x);
+\maximatexsession
+\C5.  FirstEquation:3*x^2+7*x+5; \\
+\D5.   3\*x^{2}+7\*x+5 \\
+\C6.  solve(FirstEquation=3,x); \\
+\D6.   \left[ x=-{{1}\over{3}},\linebreak[0]x=-2 \right]  \\
+\C7.  solve(FirstEquation=7,x); \\
+\D7.   \left[ x=-{{\sqrt{73}+7}\over{6}},\linebreak[0]x={{\sqrt{73}-7
+ }\over{6}} \right]  \\
+\C8.  solve(FirstEquation=a,x); \\
+\D8.   \left[ x=-{{\sqrt{12\*a-11}+7}\over{6}},\linebreak[0]x={{\sqrt{
+ 12\*a-11}-7}\over{6}} \right]  \\
+\C9.  solve(firstequation=a,x); \\
+\D9.   \left[  \right]  \\
+\endmaximasession
+
+\vspace{3ex}
+
+You see that this process works exactly the same as before. On line
+(C5), you see we entered the name of FirstEquation as lower case,
+and the calculation failed. These names are case sensitive. This is
+true of all variables. Later on you will see cases in Maxima such
+as sin, where SIN and sin are the same, but it is not safe to assume
+this is always true and when in doubt, watch your cases. In general 
+we suggest you use lower case for your maxima commands and programs - 
+it will make them easier to read and debug.
+
+
+\subsection{To Evaluate or Not to Evaluate}
+
+Operators in Maxima, such as diff for derivative, are a common feature
+in many Maxima expressions. The problem is, while you need to include
+an operator at a given point in your process, you may not want to
+deal with the output from it at that point in the problem. Therefore,
+Maxima provides the ' toggle for operators. See the example below
+for an example of how this works.
+
+\vspace{3ex}
+
+\label{Evaluation Toggle (Example 6)}
+
+\beginmaximasession
+diff(1/sqrt(1+x^3),x);
+'diff(1/sqrt(1+x^3),x);
+\maximatexsession
+\C10.  diff(1/sqrt(1+x^3),x); \\
+\D10.   -{{3\*x^{2}}\over{2\*\left(x^{3}+1\right)^{{{3}\over{2}}}}} \\
+\C11.  'diff(1/sqrt(1+x^3),x); \\
+\D11.   {{d}\over{d\*x}}\*{{1}\over{\sqrt{x^{3}+1}}} \\
+\endmaximasession
+
+\vspace{3ex}
+
+\subsection{The Concept of Environment - The \texttt{ev} Command}
+
+All mathematical operations in Maxima take place in an environment,
+which is to say the system is assuming it should do some things and
+not do other things. There will be many times you will want to change
+this behavior, without doing so on a global scale. Maxima provides
+a way to define a local environment on a per command basis, using
+the \texttt{ev} command. \texttt{ev} is one of the most powerful commands
+in Maxima, and the user will benefit greatly if they master this command
+early on while using Maxima. 
+
+
+\subsubsection{From the top}
+
+We will begin with a very simple example:
+
+\vspace{3ex}
+
+\label{Basic Use of ev Command (Example 7)}
+
+\beginmaximasession
+ev(solve(a*x^2+b*x+c=d,x),a=3,b=4,c=5,d=6);
+a;
+\maximatexsession
+\C1.  ev(solve(a*x^2+b*x+c=d,x),a=3,b=4,c=5,d=6); \\
+\D1.   \left[ x=-{{\sqrt{7}+2}\over{3}},\linebreak[0]x={{\sqrt{7}-2
+ }\over{3}} \right]  \\
+\C2.  a; \\
+\D2.   a \\
+\endmaximasession
+
+\vspace{3ex}
+
+The first line uses the ev command to solve for \( x \) without setting
+variables in the global environment. To make sure that our variables
+remain undefined, we check that \( a \) is still undefined in line
+(C2), and it is.
+
+Now lets examine some of the more interesting features of ev. The
+general syntax of the ev command is ev(exp, arg1, ..., argn). exp is
+an expression, like the one in the example above. You can also use
+a D{*} entry name or your own name for an expression. arg{*} has many
+possibilities, and we will try to step through them here.
+
+
+\subsubsection{EXPAND(m,n)}
+
+Expand is an argument which allows you to limit how Maxima expands
+an expression - i.e., how high a power you want it to expand. m is
+the maximum positive power to expand, and n is the largest negative
+power to expand. Here is an example:
+
+\vspace{3ex}
+
+
+\label{ev's Expand Option (Example 8)}
+
+\beginmaximasession
+ev((x+y)^5+(x+y)^4+(x+y)^3+(x+y)^2+(x+y)+(x+y)^-1+(x+y)^-2+(x+y)^-3+(x+y)^-4+(x+y)^-5,EXPAND(3,3));
+\maximasession
+(C3) ev((x+y)^5+(x+y)^4+(x+y)^3+(x+y)^2+(x+y)+(x+y)^-1+(x+y)^-2+(x+y)^-3+(x+y)^-4+(x+y)^-5,EXPAND(3,3));
+
+                 1                      1                 5          4     1
+(D3) ------------------------- + --------------- + (y + x)  + (y + x)  + -----
+      3        2      2      3    2            2                         y + x
+     y  + 3 x y  + 3 x  y + x    y  + 2 x y + x
+
+         1          1        3        2    2      2                  3    2
+    + -------- + -------- + y  + 3 x y  + y  + 3 x  y + 2 x y + y + x  + x  + x
+             4          5
+      (y + x)    (y + x)
+\endmaximasession
+
+\vspace{3ex}
+
+This may be a little hard to read at first, but if you look closely
+you will see that every power of \( -3\leq p\leq 3 \) has been expanded,
+otherwise the subexpression has remained in it's original form. This
+is extremely useful if you want to avoid filling up your screen with
+large expansions that no one can read or use.
+
+
+\subsubsection{Numerical Output - FLOAT and NUMER}
+
+When one of the arguments of \texttt{ev} is FLOAT, \texttt{ev} will
+convert non-integer rational numbers to floating point. NUMER will
+do everything that FLOAT will, since FLOAT in invoked as part of NUMER.
+NUMER also handles variables defined by the user with the NUMERVAL command,
+which the FLOAT toggle will leave unevaluated.  In order to evaluate these
+expressions, you can also use the \texttt{float} command.
+
+\vspace{3ex}
+
+\label{FLOAT/NUMER example (Example 9)}
+
+\beginmaximasession
+a:9/4;
+exp(a);
+ev(exp(a),FLOAT);
+ev(exp(a*x),FLOAT);
+numerval(b, 25);
+a*b;
+ev(a*b,FLOAT);
+ev(a*b,NUMER);
+float(a);
+float(b);
+float(a*b);
+\maximatexsession
+\C1.  a:9/4; \\
+\D1.   {{9}\over{4}} \\
+\C2.  exp(a); \\
+\D2.   e^{{{9}\over{4}}} \\
+\C3.  ev(exp(a),FLOAT); \\
+\D3.   9.487735836358526 \\
+\C4.  ev(exp(a*x),FLOAT); \\
+\D4.   e^{2.25\*x} \\
+\C5.  numerval(b, 25); \\
+\D5.   \left[ b \right]  \\
+\C6.  a*b; \\
+\D6.   {{9\*b}\over{4}} \\
+\C7.  ev(a*b,FLOAT); \\
+\D7.   2.25\*b \\
+\C8.  ev(a*b,NUMER); \\
+\D8.   56.25 \\
+\C9.  float(a); \\
+\D9.   2.25 \\
+\C10.  float(b); \\
+\D10.   25 \\
+\C11.  float(a*b); \\
+\D11.   56.25 \\
+\endmaximasession
+
+\vspace{3ex}
+
+\subsubsection{Specifying Local Values for Variables, Functions, etc.}
+
+One of the best things about the ev command is that for one evaluation
+you may specify in an arg what values are to be used for the evaluation
+in place of variables, how to define functions, which functions to
+evaluate, etc. We will work through a series of examples here, probably
+this will be the best way to illustrate the various possibilities
+of this aspect of ev.
+
+\vspace{3ex}
+
+\beginmaximasession
+eqn1:'diff(x/(x+y)+y/(y+z)+z/(z+x),x);
+ev(eqn1,diff);
+ev(eqn1,y=x+z);
+ev(eqn1,y=x+z,diff);
+\maximatexsession
+\C8.  eqn1:'diff(x/(x+y)+y/(y+z)+z/(z+x),x); \\
+\D8.   {{d}\over{d\*x}}\*\left({{y}\over{z+y}}+{{z}\over{z+x}}+{{x
+ }\over{y+x}}\right) \\
+\C9.  ev(eqn1,diff); \\
+\D9.   -{{z}\over{\left(z+x\right)^{2}}}+{{1}\over{y+x}}-{{x}\over{
+ \left(y+x\right)^{2}}} \\
+\C10.  ev(eqn1,y=x+z); \\
+\D10.   {{d}\over{d\*x}}\*\left({{z+x}\over{2\*z+x}}+{{x}\over{z+2\*x}}
+ +{{z}\over{z+x}}\right) \\
+\C11.  ev(eqn1,y=x+z,diff); \\
+\D11.   {{1}\over{2\*z+x}}-{{z+x}\over{\left(2\*z+x\right)^{2}}}+{{1
+ }\over{z+2\*x}}-{{2\*x}\over{\left(z+2\*x\right)^{2}}}-{{z}\over{
+ \left(z+x\right)^{2}}} \\
+\endmaximasession
+
+\vspace{3ex}
+
+In this example, we define eqn1 to be the derivative of a function,
+but use the ' character in front of the diff operator to notify Maxima
+that we don't want it to evaluate that derivative at this time. (More
+on that in the ?? section.) In the next line, we use the ev with the
+diff argument, which instructs ev to take all derivatives in this
+expression. Now, let's say we want to define \( y \) as a function
+of \( z \) and \( x \), but again avoid evaluating the derivative.
+We supply our definition of \( y \) as an argument to ev, and in
+(D3) we see that the substitution has been made. Now, let's evaluate
+the derivative after the substitution has been made. We work as before,
+except this time we supply both the new definition of \( y \) and
+the diff argument, telling ev to make the substitution and then take
+the derivative. In this particular case, the order of the arguments
+does not matter. The case where it will matter is if you are making
+multiple substitutions - then they are handled in sequence from left
+to right. 
+
+\vspace{3ex}
+
+(need example here, one where the difference is noticeable).
+
+\vspace{3ex}
+
+We can also locally define functions:
+
+\vspace{3ex}
+
+\beginmaximasession
+eqn4:f(x,y)*'diff(g(x,y),x);
+ev(eqn4,f(x,y)=x+y,g(x,y)=x^2+y^2);
+ev(eqn4,f(x,y)=x+y,g(x,y)=x^2+y^2,DIFF);
+\maximatexsession
+\C12.  eqn4:f(x,y)*'diff(g(x,y),x); \\
+\D12.   f\left(x,\linebreak[0]y\right)\*\left({{d}\over{d\*x}}\*g\left(
+ x,\linebreak[0]y\right)\right) \\
+\C13.  ev(eqn4,f(x,y)=x+y,g(x,y)=x^2+y^2); \\
+\D13.   \left(y+x\right)\*\left({{d}\over{d\*x}}\*\left(y^{2}+x^{2}
+ \right)\right) \\
+\C14.  ev(eqn4,f(x,y)=x+y,g(x,y)=x^2+y^2,DIFF); \\
+\D14.   2\*x\*\left(y+x\right) \\
+\endmaximasession
+
+\vspace{3ex}
+
+(At the moment, ev seems to take only the first argument in the following
+example from solve: the manual seems to indicate it should be taking
+both as a list??)
+
+\vspace{3ex}
+
+\beginmaximasession
+eqn1:f(x,y)*'diff(g(x,y),x);
+eqn2:3*y^2+5*y+7;
+ev(eqn1,g(x,y)=x^2+y^2,f(x,y)=5*x+y^3,solve(eqn2=5,y));
+ev(eqn1,g(x,y)=x^2+y^2,f(x,y)=5*x+y^3,solve(eqn2=1,y),diff);
+ev(eqn1,g(x,y)=x^2+y^2,f(x,y)=5*x+y^3,solve(eqn2=1,y),diff,FLOAT);
+\maximatexsession
+\C15.  eqn1:f(x,y)*'diff(g(x,y),x); \\
+\D15.   f\left(x,\linebreak[0]y\right)\*\left({{d}\over{d\*x}}\*g\left(
+ x,\linebreak[0]y\right)\right) \\
+\C16.  eqn2:3*y^2+5*y+7; \\
+\D16.   3\*y^{2}+5\*y+7 \\
+\C17.  ev(eqn1,g(x,y)=x^2+y^2,f(x,y)=5*x+y^3,solve(eqn2=5,y)); \\
+\D17.   \left(5\*x-{{8}\over{27}}\right)\*\left({{d}\over{d\*x}}\*
+ \left(x^{2}+{{4}\over{9}}\right)\right) \\
+\C18.  ev(eqn1,g(x,y)=x^2+y^2,f(x,y)=5*x+y^3,solve(eqn2=1,y),diff); \\
+\D18.   2\*x\*\left(5\*x-{{\left(\sqrt{47}\*i+5\right)^{3}}\over{216}}
+ \right) \\
+\C19.  ev(eqn1,g(x,y)=x^2+y^2,f(x,y)=5*x+y^3,solve(eqn2=1,y),diff,FLOAT); \\
+\D19.   2\*x\*\left(5\*x-0.00462962962963\*\left(\sqrt{47}\*i+5\right)
+ ^{3}\right) \\
+\endmaximasession
+
+\vspace{3ex}
+
+\subsubsection{Other arguments for ev}
+
+INFEVAL - This option leads to an "infinite evaluation" mode, where ev 
+repeatedly evaluates an expression until it stops changing. To prevent a
+variable, say X, from being evaluated a way in this mode, simply include 
+X='X as an argument to ev. There are dangers with this command - it is 
+quite possible to generate infinite evaluation loops. For example, 
+ev(X,X=X+1,INFEVAL); will generate such a loop. Here is an example: (need
+example where this is useful.)
+
+\subsubsection{How ev works}
+
+The flow of the ev command works like this:
+\begin{enumerate}
+\item The environment is set up by scanning the arguments.  During this 
+step, a list is made of non-subscripted variables appearing on the left 
+side of equations in the arguments or in the value of some arguments if 
+the value is an equation.  Both subscripted variables which do not have 
+associated array functions and non-subscripted variables in the 
+expression exp are replaced by their global values, except for those 
+appearing in the generated list.
+\item If any substitutions are indicated, they are carried out.
+\item The resulting expression is then re-evaluated, unless one of the 
+      arguments was NO-EVAL, and simplified according to the arguments.  
+      Note that any function calls in exp will be carried out AFTER the 
+      variables in it are evaluated.
+\item If one of the arguments was EVAL, the previous two steps are repeated.
+\end{enumerate}
+
+\subsection{Clearing values from the system - the \texttt{kill} command}
+
+Many times you will define something in Maxima, only to want to remove 
+that definition later in the computation.  The way you do this in Maxima 
+is quite simple - using the \texttt{kill} command.  Here is an example:
+
+\beginmaximasession
+A:7$
+A;
+kill(A);
+A;
+\maximatexsession
+\C5.  A:7$ \\
+\C6.  A; \\
+\D6.   7 \\
+\C7.  kill(A); \\
+\D7.   \mathrm{DONE} \\
+\C8.  A; \\
+\D8.   A \\
+\endmaximasession
+
+\texttt{kill} is used in many situations, and has many uses.  You will 
+see it appear throughout this manual, in different contexts.  There are
+general arguements you can use, such as \texttt{kill(all)}, which will 
+essentially start you out in a new, clean environment. (Add any relevant 
+general kill options here - save kill(rules) for rules section, etc.)
+
+\section{Common Operators in Maxima}
+
+An operator is simply something that signals a specific operation is 
+to be performed. There are many, many possible operators in Maxima.  
+We will address various operators for specific jobs all throughout this 
+manual - this section is not comprehensive.  
+
+\subsection{Assignment Operators}
+
+In mathematics, we quite often want to declare functions, assign values to 
+numbers, and do many similarly useful things.  Maxima has a variety of 
+operators for this purpose.
+
+\begin{enumerate}
+\item [\bf{:}] The basic assignment operator.  We have already seen this 
+operator in action; it is one of the most common in maxima.
+\end{enumerate}
+
+\vspace{3ex}
+
+\beginmaximasession
+A:7;
+A;
+\maximatexsession
+\C20.  A:7; \\
+\D20.   7 \\
+\C21.  A; \\
+\D21.   7 \\
+\endmaximasession
+
+\vspace{3ex}
+
+\begin{enumerate}
+\item [\bf{:=}] This is the operator you would use to define functions. 
+ This is a common thing to do in computer algebra, so we will illustrate
+both how to and how not to do this.  
+\end{enumerate}
+
+\vspace{2ex}
+
+The right way:
+
+\beginmaximasession
+y(x):=x^2;
+y(2);
+\maximatexsession
+\C2.  y(x):=x^2; \\
+\D2.   y\left(x\right):=x^{2} \\
+\C3.  y(2); \\
+\D3.   4 \\
+\endmaximasession
+
+\vspace{2ex}
+
+Several possible wrong ways:
+
+\beginmaximasession
+y:=x^2;
+y=x^2;
+y(2);
+y(x)=x^2;
+y(2);
+y[x]=x^2;
+y[2];
+\maximatexsession
+\C22.  y:=x^2; \\
+\p  Improper function definition:
+y
+ -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);) \\
+\C23.  y=x^2; \\
+\D23.   y=x^{2} \\
+\C24.  y(2); \\
+\D24.   y\left(2\right) \\
+\C25.  y(x)=x^2; \\
+\D25.   y\left(x\right)=x^{2} \\
+\C26.  y(2); \\
+\D26.   y\left(2\right) \\
+\C27.  y[x]=x^2; \\
+\D27.   y_{x}=x^{2} \\
+\C28.  y[2]; \\
+\D28.   y_{2} \\
+\C29.  y(x):=x^2; \\
+\D29.   y\left(x\right):=x^{2} \\
+\C30.  y(2); \\
+\D30.   4 \\
+\endmaximasession
+
+\vspace{3ex}
+
+\begin{enumerate}
+\item [~] Look over the above example - it pays to
+know what doesn't work.  If you recognize the error or incorrect
+result you get, it will make for faster debugging.  
+\end{enumerate}
+
+\begin{enumerate}
+\item [\bf{::}] This operator is related to the : operator, but does 
+not function in quite the same way.  This is more what a programmer 
+would refer to as a pointer.  The best way to explain is to give you 
+an example of how it behaves:
+\end{enumerate}
+
+\vspace{3ex}
+
+\beginmaximasession
+A:3$
+B:5;
+C:'A;
+C::B;
+C;
+A;
+\maximatexsession
+\C9.  A:3$ \\
+\C10.  B:5; \\
+\D10.   5 \\
+\C11.  C:'A; \\
+\D11.   A \\
+\C12.  C::B; \\
+\D12.   5 \\
+\C13.  C; \\
+\D13.   A \\
+\C14.  A; \\
+\D14.   5 \\
+\endmaximasession
+
+\vspace{3ex}
+
+You see C points to A, and A is thus assigned the value of B.
+
+\begin{enumerate}
+\item [\bf{!}] This is the factorial operator.
+\end{enumerate}
+
+\vspace{3ex}
+
+\beginmaximasession
+8!;
+\maximatexsession
+\C4.  8!; \\
+\D4.   40320 \\
+\endmaximasession
+
+\vspace{3ex}
+
+\begin{enumerate}
+\item [\bf{!!}] This is the double factorial operator.  This is 
+defined in Maxima as the product of all the consecutive odd
+(or even) integers from 1 (or 2) to the odd (or even) arguement.
+\end{enumerate}
+
+\vspace{3ex}
+
+\beginmaximasession
+8!!;
+2*4*6*8;
+\maximatexsession
+\C6.  8!!; \\
+\D6.   384 \\
+\C7.  2*4*6*8; \\
+\D7.   384 \\
+\endmaximasession
+
+\vspace{3ex}
+
+\begin{enumerate}
+\item [\bf{sqrt(x)}] This is your basic square root operator.
+\end{enumerate}
+
+\vspace{3ex}
+
+\beginmaximasession
+sqrt(x^2);
+sqrt(1/2);
+sqrt(9);
+\maximatexsession
+\C13.  sqrt(x^2); \\
+\D13.   \left| x\right|  \\
+\C14.  sqrt(1/2); \\
+\D14.   {{1}\over{\sqrt{2}}} \\
+\C15.  sqrt(9); \\
+\D15.   3 \\
+\endmaximasession
+
+\vspace{3ex}
+
+Of course, this hardly begins to describe all the operators in the 
+system, but what you see here are some of the more common and useful ones. 

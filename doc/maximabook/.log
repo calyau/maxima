@@ -1,0 +1,29 @@
+This is pdfTeX, Version 3.14159-1.00a-pretest-20010806 (Web2C 7.3.3.1) (format=pdflatex 2001.9.12)  25 NOV 2001 15:36
+**book
+(/u/desouza/tex/Macros/.tex{/local/sol/2.6/depot/tetex-20000212/pdftex/config/p
+dftex.cfg}
+! Interruption.
+<to be read again> 
+                   \begingroup 
+l.1 
+    \relax
+? 
+LaTeX2e <1999/12/01> patch level 1
+Babel <v3.6Z> and hyphenation patterns for american, french, german, ngerman, p
+olish, russian, nohyphenation, loaded.
+! You can't use `\spacefactor' in vertical mode.
+\@->\spacefactor 
+                 \@m 
+l.2 \@
+      setckpt{/u/desouza/tex/Macros/macros}{
+? x
+ 
+Here is how much of TeX's memory you used:
+ 6 strings out of 15393
+ 92 string characters out of 438212
+ 46334 words of memory out of 263001
+ 3089 multiletter control sequences out of 10000+20000
+ 3640 words of font info for 14 fonts, out of 400000 for 1000
+ 44 hyphenation exceptions out of 1000
+ 5i,0n,1p,49b,7s stack positions out of 300i,100n,500p,50000b,4000s
+No pages of output.

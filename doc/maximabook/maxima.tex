@@ -1,0 +1,267 @@
+%%  
+%%  This is the file that controls everything - maxima.tex
+%%
+%%
+%%  Initialization Stuff
+\documentclass[oneside,english]{book}
+\usepackage{pslatex} %%Used pslatex here because the maxima examples 
+                     %%fit properly on the page in a PDF document
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{geometry}
+\usepackage{multicol}
+\geometry{verbose,letterpaper,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{babel}
+\usepackage{makeidx}
+\makeindex
+\usepackage{emaxima}
+\maximatexsessionbaselineskip = 0pt
+\usepackage{graphics}
+\usepackage{rotating}
+\usepackage{color}
+%\usepackage{mathtime}
+\usepackage{titlesec}
+\usepackage{thumbpdf}
+
+\ifx\pdfoutput\undefined
+     \usepackage[backref=false,
+                 colorlinks=false,
+                 breaklinks=true,
+                 hyperindex=false]{hyperref}
+%       \usepackage[dvips]{graphicx}
+%               \DeclareGraphicsExtensions{.eps,.ps,.bmp,.tif,.tiff,.tga}  
+%               \graphicspath{{EPS/}}
+  \else
+%       \usepackage[pdftex]{graphicx}
+%               \pdfcompresslevel=9
+%               \DeclareGraphicsExtensions{.jpg,.pdf,.mps,.png} 
+%               \graphicspath{{PDF/}}
+     \usepackage[pdftex=true,
+                     plainpages=false,
+                 backref=section,
+                 colorlinks=true,
+                 breaklinks=true,
+%                 hyperindex=true,
+                 hyperindex=false,
+                 pdfpagelabels, 
+%--------- Cropping -----------------------------------------------------------
+% For on-line PDF generation only.
+%        pdfpagescrop={98 100 512 692},
+%-------- Better Color for Links ----------------------------------------------
+%        linkcolor=webgreen,
+%        citecolor=webgreen,
+%        filecolor=webbrown,
+%------ Doc Info --------------------------------------------------------------
+        pdftitle={The Maxima Book},
+        pdfauthor={Paulo Ney de Souza, Richard Fateman, Joel Moses, Cliff Yapp},
+        pdfsubject={Maxima},
+        pdfkeywords={Maxima, Macsyma, CAS, Symbolic Computation},
+        pdfproducer={pdfTeX 0.14e},
+        pdfcreator={LaTeX + Hyperref},
+%------ Doc View --------------------------------------------------------------
+        bookmarksopen=false,
+        pdfnewwindow=true,
+%
+%       The following option controls how the document is initially displayed
+%       in viewers - the whole page visible, fit width, etc.  Here are the
+%       various options:
+%       Fit    fit whole page in window
+%       FitH   fit whole width of page 
+%       FitV   fit whole height of page 
+%       FitB   fit whole "Bounding Box" page 
+%       FitBH  fit whole width of "Bounding Box" of page 
+%       FitBV  fit whole height of "Bounding Box" of page 
+%
+        pdfstartview=FitH,
+%
+        pdfpagemode=UseOutlines]{hyperref}
+%------ Fill in deficiencies of Hyperref --------------------------------------
+        \pdfinfo{ 
+              /CreationDate (D:20010321000000)
+              /ModDate      (D:20010321000000) }
+\fi
+
+\definecolor{webgreen}{rgb}{0,.5,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{webyellow}{rgb}{0.98,0.92,0.73}
+
+%------------ These are the fancy Chapter and Section headings:
+\renewcommand{\thechapter}{\arabic{chapter}}
+\titleformat{\chapter}[display]
+{\bfseries\Large}
+{\filleft\MakeUppercase{\chaptername} \Huge\thechapter}
+{4ex}
+{\titlerule
+\vspace{2ex}%
+\filright}
+[\vspace{2ex}%
+\titlerule]
+
+\titleformat{\section}%[block]
+{\large\sffamily}
+{\bfseries\thesection}{.5em}{\bfseries}
+
+\titleformat{\subsection}
+%{\titlerule
+{
+\vspace{.8ex}%
+\normalfont\itshape\bfseries}
+{\hskip1cm\thesubsection.}{.5em}{}
+%--------- End of fancy headings for Chapter and Sections ...
+
+
+% Name of the program:
+\newcommand{\maxi}{maxima}
+\newcommand{\Max}{Maxima}
+\newcommand{\maxp}{m\ae{}xim\raisebox{1.0ex}{\begin{turn}{-180}e\end{turn}}}
+
+% Some custom definitions
+\newdimen\firstcol
+\firstcol=.35\textwidth
+\newdimen\secondcol
+\secondcol=.65\textwidth
+
+\begin{document}
+
+\title{The Maxima Book}
+
+\author{Paulo Ney de Souza\\
+        Richard J. Fateman \\
+                Joel Moses \\
+                Cliff Yapp}
+                
+
+\maketitle
+
+\subsection*{Credits}
+
+~
+
+Paulo Ney de Souza
+
+Jay Belanger
+
+Richard Fateman
+
+Joel Moses
+
+Cliff Yapp\\
+\newpage
+
+
+\tableofcontents
+\newpage
+
+\addcontentsline{toc}{part}{Preface}
+ \input{preface/pref.tex}
+
+\subsection*{Examples}
+\begin{multicols}{2}
+\begin{tabbing}
+1. First Example~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\= \pageref{Example1} \\
+2. Quitting Maxima \>\pageref{Quitting Maxima (Example 2)}\\
+3. End of Entry Characters \>\pageref{End of Entry Characters (Example 3)}\\
+4. Line Labels \>\pageref{Line Labels (Example 4)}\\
+5. Labeling an Example Equation \>\pageref{Labeling an Equation (Example 5)}\\
+6. Evaluation Toggle \>\pageref{Evaluation Toggle (Example 6)} \\
+7. Basic Use of ev Command \>\pageref{Basic Use of ev Command (Example 7)}\\
+8. ev's Expand Option \>\pageref{ev's Expand Option (Example 8)}\\
+9. Float Example \>\pageref{FLOAT example (Example 9)}\\
+\end{tabbing}
+\end{multicols}
+
+\part{The Maxima Program and Standard Packages}
+
+\chapter{Introduction}
+  \input{introduction/introduction.tex}
+
+\chapter{Installing}
+  \input{install/install.tex}
+
+\chapter{Available Interfaces to Maxima}
+  \input{interfaces/interfaces.tex}
+
+\chapter{The Basics - What you need to know to operate in Maxima}
+  \input{basics/basics.tex}
+
+\chapter{Trig through Through Calculus}
+
+    This chapter and the next will probably split into many more - Trig,
+    Algebra, Calculus, Programming, etc,etc,etc. I just don't know at
+    this point. These chapters will probably largely be example based.
+    Using things such as ratsimp, trigsimp, etc.
+   
+   \input{algcal/algcal.tex}
+ 
+\chapter{Advanced Mathematics - ODEs and Beyond}
+
+    Mathematics
+
+\chapter{Matrix Operations and Vectors}
+
+    Maxima has many matrix capabilities. Unfortunately it's vector handling
+    at the time of this writing is not terribly robust, and the reader
+    is cautioned to use it with care.
+
+\chapter{Introduction to Maxima's Programming Language}
+  \input{programming/prog.tex}
+
+
+\chapter{Graphics and Forms of Output}
+
+  \input{output/output.tex}
+
+\chapter{Maxims for the Maxima User}
+  \input{maxims/maxims.tex}
+
+\chapter{Help Systems and Debugging}
+
+    Using the debugger and the online help system.
+
+\chapter{Troubleshooting}
+
+    Common errors, their cause and solution.
+
+\chapter{Advanced Examples}
+
+    These examples try to draw on everything in the manual to show you
+    what can be done with Maxima in advanced usages. 
+    This is NOT a good starting point for new users.
+
+   \input{examples/examples.tex}
+
+\part{External, Additional, and Contributed Packages}
+
+
+\chapter{The Concept of Packages - Expanding Maxima's Abilities}
+
+    This chapter will try to give some in depth information on the why
+    and how of Maxima packages. It is true that many {}``standard''
+    abilities of Maxima, such as vectors, are due to packages, but this
+    part of the book will deal with more specialized contributed packages,
+    such as elliptical integrals, special scientific packages, etc. That
+    way the first part of the book can be rewritten less frequently, but
+    we can still have all the information here.
+
+
+\chapter{Available Packages for Maxima}
+
+    Maybe we can do this in one chapter, maybe each package will warrant
+    a chapter. Not sure. For now, I'll assume one Section per package,
+    not one Chapter.
+
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+
+%\addcontentsline{toc}{chapter}{List of Tables}
+%\listoftables
+
+\addcontentsline{toc}{chapter}{Index}
+\printindex
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{maxima}
+\bibliographystyle{alpha}
+\nocite{*}
+
+\end{document}

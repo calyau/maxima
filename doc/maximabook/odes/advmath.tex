@@ -1,0 +1,24 @@
+%-*-EMaxima-*-
+Maxima has many abilities beyond those of basic calculus.  Here we will examine
+its ability to solve certain classes of ordinary differential equations.
+
+\section{Ordinary Differential Equations}
+
+We'll start things off with a basic example.  Suppose we wish to solve the
+basic first-order separable differential equation $$dy/dx=y^3*\sin(x)$$
+
+\beginmaximasession
+load(ode2)$
+odeeqn1 : 'diff(y,x) = y^3*sin(x);
+ode(odeeqn1,y,x);
+\maximatexsession
+\C1.  load(ode2); \\
+\p  \\
+\D\endmaximasession
+
+This of course is a trivial equation, which can be checked using separation of
+variables, but it illustrates several properties of the ode solver.  First and
+most important, any expression like \texttt{diff} needs the \texttt{'} 
+character in front of it, to prevent Maxima from trying to evaluate it.  
+Another feature to note is the importance of the order of the variables in the \texttt{ode} command.  \texttt{y} is the dependant variable, \texttt{x} the 
+independant.  

@@ -1,0 +1,158 @@
+\label{maxims}
+
+Some beginning users of algebraic manipulation systems
+find that their
+previous experiences with traditional programming systems do
+not translate easily into algebraic programming; others find
+\Max\
+descriptions inadequate because the emphasis is on
+the mixture of mathematical notations and algorithms, and not on 
+{\it efficient} use of machine or human resources (no one likes to wait
+longer than necessary for an answer!).
+While we cannot provide a complete education in efficient and effective
+programming,
+we have collected a few
+{\it maxims} in an attempt to help you with some of these {\it start-up}
+problems.
+
+\begin{quote}
+{\it Algebraic manipulation is a new and different
+computational approach for which prior experience with
+computational methods may be misleading.
+You should attempt to learn the ways in which algebraic
+manipulation differs from other approaches.}
+\end{quote}
+
+
+For
+example, consider the problem of inverting an $n \times n$
+matrix.  In numerical analysis we learn that the problem
+requires on the order of $n^3$ operations.  Theoreticians
+will point out that for $n$ sufficiently large, one can
+reduce the number of multiplications below $ n^3$ to $n^{2.8}$.
+This analysis is unfortunately not relevant in dealing with matrices
+with symbolic entries.  Consider the number of terms in
+the determinant of the general $n \times n$ matrix whose elements
+are the symbols $ a_{i,j} $.  When the inverse is written out
+in a fully expanded form, just the
+determinant (a necessary part of representing
+the inverse) has $n !$
+terms. It is impossible to compute this determinant in less than {\it time
+proportional to $n !$}  In fact,
+for large $n$, it is just not feasible
+to compute this form explicitly on existing computers.
+The combinatorial
+or exponential character that some algebraic manipulation
+problems have when they are approached with an inefficient algorithm, makes for a vastly
+different game from, say, numerical computation, where the size of objects
+is generally known at the onset of the calculation, and does not increase.
+
+\begin{quote}
+{\it Needlessly generalizing a problem usually results in unnecessary expense.}
+\end{quote}
+
+For example, if you wish to obtain determinants
+for a collection of matrices whose general
+pattern of entries is represented by parametric formulas,
+you might consider obtaining the determinant
+of the general matrix and substituting various values for the parameters
+into the 
+result.  This may work for matrices of low order, but
+is probably a poor plan for dealing with the exponential
+growth inherent in computing symbolic determinants. It would probably
+be better to substitute the parameters first, since this would
+drastically reduce the cost of the determinant calculation.
+
+Sometimes, when humans are dealing with formulas, it is
+preferable to use an indeterminate, say $G$ in a formula 
+which is really known to be, say, 3/5.  On the other
+hand, it is likely (although not certain!) that the calculation
+using 3/5 will take less time than the calculation with $G$.
+Since the cost inherent in some computations is usually
+a function
+of the number of variables in the expression, {\it it pays to reduce the
+number of variables in a problem as much as possible.}
+
+\begin{quote}
+{\it You should be aware of the types of calculations which in the general
+case have exponential growth} (e.g. many matrix calculations with symbolic
+entries, repeated differentiation of products or quotients, solution of systems
+of polynomial equations).
+\end{quote}
+
+
+\begin{quote}
+{\it Your should anticipate a certain amount of trial-and-error in calculations.} 
+\end{quote}
+Just as in other problem-solving activities,
+often the first technique that comes to mind is not the best.  While it
+occasionally happens that brute force carries the day, cleverness in computing
+can be as important as cleverness in hand calculations.
+It is natural, during hand calculations, to apply critical simplificiations
+or substitutions in computations. These simplifications include
+collecting terms selectively or striking out terms which do not ultimately
+contribute to the final answer because of physical interpretations.
+Computer algorithms which do not incorporate these same tricks may bog down
+surprisingly soon.  Thinking about these shortcuts may be important. In fact,
+it is one of the more
+rewarding aspects of computer algebra systems that they give the problem solver
+an opportunity to organize, encapsulate and distribute
+a particularly clever piece of mathematical manipulation.
+
+
+\begin{quote}
+{\it Try to reduce your problem so that it can be performed in a simpler 
+domain.}
+\end{quote}
+For example, if your problem appears to involve trigonometric functions, logs,
+exponentials, etc. see if you can reduce it to a rational function (ratio of
+polynomials) problem.
+If it appears to be a rational function, see if you can, by substitutions,
+make it into a polynomial problem, or a truncated power-series problem.
+If it appears to be a problem involving rational numbers, consider the use of
+floating-point numbers as an alternative, if the growth in the size of numbers
+presents difficulties.
+
+There are other special forms that are especially efficient.  In a number
+of areas of investigation %
+{\it it pays to convert all expressions to the internal rational form
+(using  {\tt rat}) or into Poisson-series form (using {\tt intopois}) to
+avoid the overhead the the general representation}.
+The price you may
+pay here is thtat the structure of the formulas may be significantly different
+from those you began with:  The canonical transformations used by these
+representations drastically re-order, expand, and modify the original expressions.
+
+
+\begin{quote}
+{\it Sometimes someone else has already started on your problem.}
+\end{quote}
+You should look through the {\it share} directory programs available to see
+if there are contributed packages that might be of use either as subroutines or as
+models for programming.  You should also consider writing programs that
+you develop in solving your problems in a form suitable for sharing with
+others.
+
+
+\begin{quote}
+{\it Pattern matching allows you to {\it tune} the system simplifier to your
+application, and develop rule-replacement programs}. 
+\end{quote}
+
+Learning to use
+the pattern-matching facilities effectively is a nontrivial task.  Nevertheless
+if you have a fairly complex problem involvilng the recognition and application
+of identities, you should consider making an effort to use these facilities.
+In recent years, advocates of {\it rule-based expert systems} have claimed
+that this type of formalism can or should be used to incorporate varied types of
+knowledge.  Algebraic manipulation programs have depended on pattern matching
+since at least 1961, for some of their power.
+
+
+Finally, we would like to point out that algebraic manipulation systems,
+in spite of their pitfalls, can be of major assistance in solving difficult
+problems.  If you are willing to invest some time in learning, there may be
+enormous benefits in using such a system.  We think it is unfortunate that
+some users reserve \Max\ for difficult problems.  Those of us who have 
+grown up with \Max\
+near at hand find it of great use in routine computations as well.

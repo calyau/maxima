@@ -1,0 +1,365 @@
+%-*-EMaxima-*-
+
+Here we will discuss Maxima's ability to handle integration, 
+differentiation, and other related concepts.
+
+\section{Trigonometric Functions}
+
+These operate more or less as you would expect.  The following functions
+are defined by default:
+
+~
+
+{\center \begin{tabular}{|c|c|c|c|}
+\hline 
+sin&
+Sine&
+asin&
+Arc Sine\\
+\hline
+cos&
+Cosine&
+acos&
+Arc Cosine\\
+\hline 
+tan&
+Tangent&
+atan&
+Arc Tangent\\
+\hline 
+csc&
+Cosecant&
+acsc&
+Arc Cosecant\\
+\hline 
+sec&
+Secant&
+asec&
+Arc Secant\\
+\hline 
+cot&
+Cotangent&
+acot&
+Arc Cotangent\\
+\hline 
+sinh&
+Hyperbolic Sine&
+asinh&
+Hyperbolic Arc Sine\\
+\hline 
+cosh&
+Hyperbolic Cosine&
+acosh&
+Hyperbolic Arc Cosine\\
+\hline 
+tanh&
+Hyperbolic Tangent&
+atanh&
+Hyperbolic Arc Tangent\\
+\hline 
+csch&
+Hyperbolic Cosecant&
+acsch&
+Hyperbolic Arc Cosecant\\
+\hline 
+sech&
+Hyperbolic Secant&
+asech&
+Hyperbolic Arc Secant\\
+\hline 
+coth&
+Hyperbolic Cotangent&
+acoth&
+Hyperbolic Arc Cotangent\\
+\hline
+\end{tabular} \par}
+
+~\\
+
+~
+
+There are a couple wrinkles worth noting - by default, Maxima will not
+simplify expressions which numerically are nice fractions of $\pi$, so
+there exists a package which may be loaded to allow this called
+atrig1.  Here is an example:
+
+\beginmaximasession
+acos(1/sqrt(2));
+load(atrig1)$
+acos(1/sqrt(2));
+\maximatexsession
+\C1.  acos(1/sqrt(2)); \\
+\D1.   \arccos \left({{1}\over{\sqrt{2}}}\right) \\
+\C2.  load(atrig1)$ \\
+\C3.  acos(1/sqrt(2)); \\
+\D3.   {{\pi}\over{4}} \\
+\endmaximasession
+
+Maxima is aware of the Half Angle relations, but by default will not use
+them.  There is a variable which can be set called \texttt{halfangles}, and when
+that is set to true the Half Angle definitions will be used.
+
+\beginmaximasession
+sin(a/2);
+halfangles:true;
+sin(a/2);
+\maximatexsession
+\C1.  sin(a/2); \\
+\D1.   \sin \left({{a}\over{2}}\right) \\
+\C2.  halfangles:true; \\
+\D2.   \mathbf{true} \\
+\C3.  sin(a/2); \\
+\D3.   {{\sqrt{1-\cos a}}\over{\sqrt{2}}} \\
+\endmaximasession
+
+You should be aware that when solving expressions 
+involving trig functions, not all solutions will be presented.  This
+is inevitable, since in many cases there are an infinite number - 
+typically one will be displayed.  Usually you are warned when this
+is happens.
+
+\beginmaximasession
+solve(sin(x)=%PI/2,x);
+\maximatexsession
+\C4.  solve(sin(x)=%PI/2,x); \\
+\p 
+SOLVE is using arc-trig functions to get a solution.
+Some solutions will be lost.
+ \\
+\D4.   \left[ x=\arcsin \left({{\pi}\over{2}}\right) \right]  \\
+\endmaximasession
+
+There are a few global variables you can set which will change how
+Maxima handles trig expressions:
+
+\begin{itemize}
+\item TRIGINVERSES \\
+      This can be set to one of three values:  ALL, TRUE, or FALSE. The
+      default is ALL
+      \begin{itemize}
+       \item ALL~~~When set to ALL, both arctfun(tfun(x)) and
+            fun(arctfun(x)) are evaluated to x.
+       \item TRUE~~~When set to TRUE, the arctfun(tfun(x)) simplification
+             is turned off.
+       \item FALSE~~~When set to FALSE, both simplifications are turned
+             off.
+      \end{itemize}
+\item TRIGSIGN \\
+      Can be set to TRUE or FALSE.  The default is TRUE.  If TRUE,
+      for example, sin(-x) simplifies to -sin(x).
+\end{itemize}
+
+\section{Differentiation}
+
+To differentiate an expression, use the {\tt diff} command.  {\tt diff(expr,var)}  differentiates an expression with respect to the variable {\tt var}.
+
+\beginmaximasession
+sin(x)*cos(x);
+diff(%,x);
+\maximatexsession
+\C1.  sin(x)*cos(x); \\
+\D1.   \cos x\*\sin x \\
+\C2.  diff(%,x); \\
+\D2.   \cos ^{2}x-\sin ^{2}x \\
+\endmaximasession
+
+To take a second order derivative, use {\tt diff(expr,var,2)}.
+
+\beginmaximasession
+diff(sin(x)*cos(x),x,2);
+\maximatexsession
+\C4.  diff(sin(x)*cos(x),x,2); \\
+\D4.   -4\*\cos x\*\sin x \\
+\endmaximasession
+
+Differentiation, unlike integration, can be handled in a fairly general
+way by computer algebra.  As a result, you will be able to take derivatives
+in most cases.  We will show some examples here:
+
+Basic Algebraic Examples:
+
+\beginmaximasession
+diff(3*x^5+x^4+7*x^3-x^2+17,x);
+diff((x^2+1)/(x^2-1),x);
+diff((x^2+1)^5*(x^7-5*x-2)^19,x);
+diff(x^(2/3)+x^(5/7),x);
+\maximatexsession
+\C1.  diff(3*x^5+x^4+7*x^3-x^2+17,x); \\
+\D1.   15\*x^{4}+4\*x^{3}+21\*x^{2}-2\*x \\
+\C2.  diff((x^2+1)/(x^2-1),x); \\
+\D2.   {{2\*x}\over{x^{2}-1}}-{{2\*x\*\left(x^{2}+1\right)}\over{\left(
+ x^{2}-1\right)^{2}}} \\
+\C3.  diff((x^2+1)^5*(x^7-5*x-2)^19,x); \\
+\D3.   10\*x\*\left(x^{2}+1\right)^{4}\*\left(x^{7}-5\*x-2\right)^{19}+
+ 19\*\left(x^{2}+1\right)^{5}\*\left(7\*x^{6}-5\right)\*\left(x^{7}-5
+ \*x-2\right)^{18} \\
+\C4.  diff(x^(2/3)+x^(5/7),x); \\
+\D4.   {{5}\over{7\*x^{{{2}\over{7}}}}}+{{2}\over{3\*x^{{{1}\over{3}}}
+ }} \\
+\endmaximasession
+
+Chain Rule Example:
+
+In order to handle the problem of a function which depends
+in an unknown way upon some variable, Maxima provides
+the {\tt depends} command.  Using it, you can derive
+general chain rule formulas.  It should be noted these
+relations are understood only by the diff command - 
+for operations such as integration you must give their 
+dependencies explicitly in the command.
+
+\beginmaximasession
+DEPENDS([U],[r,theta],[r,theta],[x,y]);
+diff(U,x)+diff(U,y);
+\maximatexsession
+\C1.  DEPENDS([U],[r,theta],[r,theta],[x,y]); \\
+\D1.   \left[ U\left(r,\linebreak[0]\vartheta\right),\linebreak[0]r
+ \left(x,\linebreak[0]y\right),\linebreak[0]\vartheta\left(x
+ ,\linebreak[0]y\right) \right]  \\
+\C2.  diff(U,x)+diff(U,y); \\
+\D2.   {{d}\over{d\*y}}\*\vartheta\*\left({{d}\over{d\*\vartheta}}\*U
+ \right)+{{d}\over{d\*x}}\*\vartheta\*\left({{d}\over{d\*\vartheta}}
+ \*U\right)+{{d}\over{d\*y}}\*r\*\left({{d}\over{d\*r}}\*U\right)+{{d
+ }\over{d\*x}}\*r\*\left({{d}\over{d\*r}}\*U\right) \\
+\endmaximasession
+
+If we wish to take derivatives with respect to multiple variables,
+for example $d^2\over{dxdy}$, the syntax for derivatives is quite
+general and we can perform the operation as follows:
+
+\beginmaximasession
+diff(U,x,1,y,1);
+\maximatexsession
+\C7.  diff(U,x,1,y,1); \\
+\D7.   {{d}\over{d\*x}}\*\vartheta\*\left({{d}\over{d\*y}}\*\vartheta\*
+ \left({{d^{2}}\over{d\*\vartheta^{2}}}\*U\right)+{{d}\over{d\*y}}\*r
+ \*\left({{d^{2}}\over{d\*r\*d\*\vartheta}}\*U\right)\right)+{{d^{2}
+ }\over{d\*x\*d\*y}}\*\vartheta\*\left({{d}\over{d\*\vartheta}}\*U
+ \right)+{{d}\over{d\*x}}\*r\*\left({{d}\over{d\*y}}\*r\*\left({{d^{2
+ }}\over{d\*r^{2}}}\*U\right)+{{d}\over{d\*y}}\*\vartheta\*\left({{d
+ ^{2}}\over{d\*r\*d\*\vartheta}}\*U\right)\right)+{{d^{2}}\over{d\*x
+ \*d\*y}}\*r\*\left({{d}\over{d\*r}}\*U\right) \\
+\endmaximasession
+
+This is the same thing as doing
+
+\beginmaximasession
+diff(diff(U,x),y);
+\maximatexsession
+\C6.  diff(diff(U,x),y); \\
+\D6.   {{d}\over{d\*x}}\*\vartheta\*\left({{d}\over{d\*y}}\*\vartheta\*
+ \left({{d^{2}}\over{d\*\vartheta^{2}}}\*U\right)+{{d}\over{d\*y}}\*r
+ \*\left({{d^{2}}\over{d\*r\*d\*\vartheta}}\*U\right)\right)+{{d^{2}
+ }\over{d\*x\*d\*y}}\*\vartheta\*\left({{d}\over{d\*\vartheta}}\*U
+ \right)+{{d}\over{d\*x}}\*r\*\left({{d}\over{d\*y}}\*r\*\left({{d^{2
+ }}\over{d\*r^{2}}}\*U\right)+{{d}\over{d\*y}}\*\vartheta\*\left({{d
+ ^{2}}\over{d\*r\*d\*\vartheta}}\*U\right)\right)+{{d^{2}}\over{d\*x
+ \*d\*y}}\*r\*\left({{d}\over{d\*r}}\*U\right) \\
+\endmaximasession
+
+Trigonometric Derivatives:
+
+\beginmaximasession
+diff(cos(x),x);
+diff(acos(x),x);
+diff(tan(x),x);
+diff(atan(x),x);
+diff(sinh(x),x);
+diff(asinh(x),x);
+\maximatexsession
+\C3.  diff(cos(x),x); \\
+\D3.   -\sin x \\
+\C4.  diff(acos(x),x); \\
+\D4.   -{{1}\over{\sqrt{1-x^{2}}}} \\
+\C5.  diff(tan(x),x); \\
+\D5.   \sec ^{2}x \\
+\C6.  diff(atan(x),x); \\
+\D6.   {{1}\over{x^{2}+1}} \\
+\C7.  diff(sinh(x),x); \\
+\D7.   \cosh x \\
+\C8.  diff(asinh(x),x); \\
+\D8.   {{1}\over{\sqrt{x^{2}+1}}} \\
+\endmaximasession
+
+\section{Integration}
+
+Unlike differentiation, integration cannot be readily expressed in a general
+way.  Maxima is quite capable when it comes to to such problems, although
+like all computer algebra systems it has its limits.
+
+(Figure out what and how to discuss here.  Will need to discuss the assume
+options.)
+
+Since integration is such a major feature, we will include here a fairly
+extensive collection of examples of integrals.
+
+\beginmaximasession
+integrate(x,x);
+assume(a>0)$
+assume(n>0)$
+integrate(a*x^n,x);
+assume(b>0)$
+integrate(a*exp(x*b),x);
+assume(c>0)$
+integrate(a*b^(x*c),x);
+integrate(log(x),x);
+integrate(a/(b^2+x^2),x);
+assume(m>0)$
+integrate(x^m*(a+b*x)^5,x);
+integrate(x/(a+b*x)^n,x);
+integrate(x^2/(a+b*x)^n,x);
+integrate(1/(x^2-c^2)^5,x);
+integrate(1/(a+b*x^2)^4,x);
+integrate(sqrt(a+b*x)/(x^5),x);
+\maximatexsession
+\C59.  integrate(x,x); \\
+\D59.   {{x^{2}}\over{2}} \\
+\C60.  assume(a>0)$ \\
+\C61.  assume(n>0)$ \\
+\C62.  integrate(a*x^n,x); \\
+\D62.   {{a\*x^{n+1}}\over{n+1}} \\
+\C63.  assume(b>0)$ \\
+\C64.  integrate(a*exp(x*b),x); \\
+\D64.   {{a\*e^{b\*x}}\over{b}} \\
+\C65.  assume(c>0)$ \\
+\C66.  integrate(a*b^(x*c),x); \\
+\D66.   {{a\*b^{c\*x}}\over{\log b\*c}} \\
+\C67.  integrate(log(x),x); \\
+\D67.   x\*\log x-x \\
+\C68.  integrate(a/(b^2+x^2),x); \\
+\D68.   {{a\*\arctan \left({{x}\over{b}}\right)}\over{b}} \\
+\C69.  assume(m>0)$ \\
+\C70.  integrate(x^m*(a+b*x)^5,x); \\
+\D70.   {{b^{5}\*x^{m+6}}\over{m+6}}+{{5\*a\*b^{4}\*x^{m+5}}\over{m+5}}
+ +{{10\*a^{2}\*b^{3}\*x^{m+4}}\over{m+4}}+{{10\*a^{3}\*b^{2}\*x^{m+3}
+ }\over{m+3}}+{{5\*a^{4}\*b\*x^{m+2}}\over{m+2}}+{{a^{5}\*x^{m+1}
+ }\over{m+1}} \\
+\C71.  integrate(x/(a+b*x)^n,x); \\
+\D71.   -{{\left(b^{2}\*\left(n-1\right)\*x^{2}+a\*b\*n\*x+a^{2}\right)
+ \*e^ {- n\*\log \left(b\*x+a\right) }}\over{b^{2}\*\left(n^{2}-3\*n+
+ 2\right)}} \\
+\C72.  integrate(x^2/(a+b*x)^n,x); \\
+\D72.   -{{\left(b^{3}\*\left(n^{2}-3\*n+2\right)\*x^{3}+a\*b^{2}\*
+ \left(n^{2}-n\right)\*x^{2}+2\*a^{2}\*b\*n\*x+2\*a^{3}\right)\*e
+ ^ {- n\*\log \left(b\*x+a\right) }}\over{b^{3}\*\left(n^{3}-6\*n^{2}
+ +11\*n-6\right)}} \\
+\C73.  integrate(1/(x^2-c^2)^5,x); \\
+\D73.   -{{35\*\log \left(x+c\right)}\over{256\*c^{9}}}+{{35\*\log 
+ \left(x-c\right)}\over{256\*c^{9}}}+{{105\*x^{7}-385\*c^{2}\*x^{5}+
+ 511\*c^{4}\*x^{3}-279\*c^{6}\*x}\over{384\*c^{8}\*x^{8}-1536\*c^{10}
+ \*x^{6}+2304\*c^{12}\*x^{4}-1536\*c^{14}\*x^{2}+384\*c^{16}}} \\
+\C74.  integrate(1/(a+b*x^2)^4,x); \\
+\D74.   {{5\*\arctan \left({{\sqrt{b}\*x}\over{\sqrt{a}}}\right)}\over{
+ 16\*a^{{{7}\over{2}}}\*\sqrt{b}}}+{{15\*b^{2}\*x^{5}+40\*a\*b\*x^{3}
+ +33\*a^{2}\*x}\over{48\*a^{3}\*b^{3}\*x^{6}+144\*a^{4}\*b^{2}\*x^{4}
+ +144\*a^{5}\*b\*x^{2}+48\*a^{6}}} \\
+\C75.  integrate(sqrt(a+b*x)/(x^5),x); \\
+\D75.   -{{5\*b^{4}\*\log \left({{2\*\sqrt{b\*x+a}-2\*\sqrt{a}}\over{2
+ \*\sqrt{b\*x+a}+2\*\sqrt{a}}}\right)}\over{128\*a^{{{7}\over{2}}}}}-
+ {{15\*b^{4}\*\left(b\*x+a\right)^{{{7}\over{2}}}-55\*a\*b^{4}\*
+ \left(b\*x+a\right)^{{{5}\over{2}}}+73\*a^{2}\*b^{4}\*\left(b\*x+a
+ \right)^{{{3}\over{2}}}+15\*a^{3}\*b^{4}\*\sqrt{b\*x+a}}\over{192\*a
+ ^{3}\*\left(b\*x+a\right)^{4}-768\*a^{4}\*\left(b\*x+a\right)^{3}+
+ 1152\*a^{5}\*\left(b\*x+a\right)^{2}-768\*a^{6}\*\left(b\*x+a\right)
+ +192\*a^{7}}} \\
+\endmaximasession

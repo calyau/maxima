@@ -1,0 +1,120 @@
+%-*-EMaxima-*-
+
+\subsection*{Establishing a Minimum for the Rayleigh Quotient}
+
+We begin by defining the Rayleigh Quotient in general.  From basic
+Regular Sturm-Liouville Eigenvalue principles, we know that the 
+Rayleigh Quotient is defined as
+
+\[\lambda =\frac{-p\phi \left. \frac{d\phi }{dx}\right| ^{b}_{a}+\int _{a}^{b}\, \left[p \left( \frac{d\phi }{dx}\right)^{2}-q\phi ^{2}\right] \, dx}{\int _{a}^{b}\, \phi ^{2}\sigma \, dx}\]
+
+
+given the Sturm-Liouville differential equation
+
+\[\frac{d}{dx}\left( p\left( x\right) \frac{d\phi }{dx}\right) +q\left( x\right) \phi +\lambda \sigma \left( x\right) \phi =0\]
+
+
+where $a<x<b$.
+
+\beginmaxima
+RQ:(-p*('ev('ev(u(x)*'diff(u(x),x)),x=a)-'ev('ev(u(x)*diff(u(x),x)),x=b))+
+'integrate(p*'diff(u(x),x)^2-q*u(x)^2,x,a,b))/'integrate(u(x)^2*sigma,x,a,b);
+\maximatexoutput
+{\small$$  {{\int_{a}^{b}{p\*\mathrm{\%DERIVATIVE}^{2}\left(\left(u\left(x
+ \right),\linebreak[0]x,\linebreak[0]1\right)\right)-q\*u^{2}\left(
+ \left(x\right)\right)\;dx}-p\*\left(\mathrm{EV}\left(\mathrm{EV}
+ \left(u\left(x\right)\*\left({{d}\over{d\*x}}\*u\left(x\right)
+ \right)\right),\linebreak[0]x=a\right)-\mathrm{EV}\left(\mathrm{EV}
+ \left(u\left(x\right)\*\left({{d}\over{d\*x}}\*u\left(x\right)
+ \right)\right),\linebreak[0]x=b\right)\right)}\over{\sigma\*\int_{a
+ }^{b}{u^{2}\left(\left(x\right)\right)\;dx}}} $$
+}
+\endmaxima
+
+Now we evaluate it.  This must be done in stages, otherwise the ev command
+will not understand its arguements.
+
+\beginmaxima
+ev(RQ,p=1,q=0,sigma=1,u(x)=x-x^2,a=0,b=1);
+ev(%,diff,integrate);
+ev(%,ev);
+\maximatexoutput
+{\small$$   {{\mathrm{EV}\left(\mathrm{EV}\left(\left(x-x^{2}\right)\*\left(
+ {{d}\over{d\*x}}\*\left(x-x^{2}\right)\right)\right),\linebreak[0]x=
+ 1\right)-\mathrm{EV}\left(\mathrm{EV}\left(\left(x-x^{2}\right)\*
+ \left({{d}\over{d\*x}}\*\left(x-x^{2}\right)\right)\right)
+ ,\linebreak[0]x=0\right)+\int_{0}^{1}{\mathrm{\%DERIVATIVE}^{2}
+ \left(\left(x-x^{2},\linebreak[0]x,\linebreak[0]1\right)\right)\;dx}
+ }\over{\int_{0}^{1}{\left(x-x^{2}\right)^{2}\;dx}}} $$
+}
+$$   30\*\left(\mathrm{EV}\left(\mathrm{EV}\left(\left(1-2\*x\right)
+ \*\left(x-x^{2}\right)\right),\linebreak[0]x=1\right)-\mathrm{EV}
+ \left(\mathrm{EV}\left(\left(1-2\*x\right)\*\left(x-x^{2}\right)
+ \right),\linebreak[0]x=0\right)+{{1}\over{3}}\right) $$
+$$   10 $$
+\endmaxima
+
+This can be checked by hand.  Seeing that it is correct, we now can use it to 
+search for the minimum eigenvalue on a more difficult problem:
+
+\beginmaxima
+ev(RQ,p=1,q:-(x^2),sigma=1,u(x)=x-1,a=0,b=1)$
+ev(%,diff,integrate)$
+EV(%,EV,NUMER);
+\maximatexoutput
+$$   6.1 $$
+\endmaxima
+
+\beginmaxima
+ev(RQ,p=1,q:-(x^2),sigma=1,u(x)=-2*x^2+2,a=0,b=1)$
+ev(%,diff,integrate)$
+ev(%,ev,NUMER);
+\maximatexoutput
+$$   2.642857142857143 $$
+\endmaxima
+
+\beginmaxima
+ev(RQ,p=1,q:-(x^2),sigma=1,u(x)=x^3+x^2-2,a=0,b=1)$
+ev(%,diff,integrate)$
+ev(%,ev,NUMER);
+\maximatexoutput
+$$   2.776084010840108 $$
+\endmaxima
+
+The smallest eigenvalue must therefore be less than or equal to 2.642857...
+
+\subsection*{Laplacian in Different Coordinate Systems}
+
+This will probably go in the main documentation somewhere, but for now I'll
+stick it here.
+
+It is possible to express the Laplacian in different coordinate 
+systems, provided you know how to define the coordinate system.
+We will use Spherical Coordinates for our first example:
+
+\beginmaxima
+load(vect)$
+scalefactors([[rho*cos(theta)*sin(phi),rho*sin(theta)*sin(phi),rho*cos(phi)],rho,theta,phi]);
+depends(f,[rho,theta,phi]);
+express(laplacian(f));
+ev(%,diff)$
+ratexpand(%);
+\maximatexoutput
+\p  Warning - you are redefining the MACSYMA function TRIGSIMP
+Warning - you are redefining the MACSYMA function IMPROVE
+Warning - you are redefining the MACSYMA function UPDATE \\
+$$   \mathrm{DONE} $$
+$$   \left[ f\left(\rho,\linebreak[0]\vartheta,\linebreak[0]\varphi
+ \right) \right]  $$
+$$   {{{{d}\over{d\*\rho}}\*\left({{d}\over{d\*\rho}}\*f\*\left| 
+ \sin \varphi\right| \*\rho^{2}\right)+{{d}\over{d\*\vartheta}}\*{{{{
+ d}\over{d\*\vartheta}}\*f\*\left| \sin \varphi\right| }\over{\sin ^{
+ 2}\varphi}}+{{d}\over{d\*\varphi}}\*\left({{d}\over{d\*\varphi}}\*f
+ \*\left| \sin \varphi\right| \right)}\over{\left| \sin \varphi
+ \right| \*\rho^{2}}} $$
+$$   {{2\*\left({{d}\over{d\*\rho}}\*f\right)}\over{\rho}}+{{{{d
+ }\over{d\*\varphi}}\*f\*\cos \varphi}\over{\sin \varphi\*\rho^{2}}}+
+ {{{{d^{2}}\over{d\*\vartheta^{2}}}\*f}\over{\sin ^{2}\varphi\*\rho^{
+ 2}}}+{{{{d^{2}}\over{d\*\varphi^{2}}}\*f}\over{\rho^{2}}}+{{d^{2}
+ }\over{d\*\rho^{2}}}\*f $$
+\endmaxima

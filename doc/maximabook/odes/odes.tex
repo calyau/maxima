@@ -1,0 +1,224 @@
+%-*-EMaxima-*-
+\documentclass{article}
+\input emaxima.sty
+\begin{document}
+
+\section{Ordinary Differential Equations}
+
+A differential equation can be written using Maxima's quoting abilities.
+The equation
+$$ x^2y'+3xy=\sin(x)/x$$
+for example, can be written
+
+\beginmaximasession
+x^2*'diff(y,x) + 3*x*y = sin(x)/x;
+\maximasession
+(C2) x^2*'diff(y,x) + 3*x*y = sin(x)/x;
+
+
+                             2 dy           SIN(x)
+(D2)                        x  -- + 3 x y = ------
+                               dx             x
+\endmaximasession
+
+\noindent
+(Note that if \texttt{diff(y,x)} is not quoted above, it will be
+evaluated to 0.)
+
+Maxima can solve first and second order differential equations using
+the \texttt{ode2} command.  The command
+\texttt{ode2(eqn,depvar,indvar)} will solve the differential equation
+given by \texttt{eqn}, assuming that \texttt{depvar} and
+\texttt{indvar} are the dependent and independent variables,
+respectively.  (If an expression \texttt{expr} is given instead of an
+equation, it is assumed that the expression represents
+\texttt{expr=0}.)
+
+\beginmaximasession
+ode2(x^2*'diff(y,x) + 3*x*y = sin(x)/x, y, x);
+\maximasession
+(C3) ode2(x^2*'diff(y,x) + 3*x*y = sin(x)/x, y, x);
+
+
+                                    %C - COS(x)
+(D3)                            y = -----------
+                                         3
+                                        x
+\endmaximasession
+
+\noindent
+If \texttt{ode2} cannot solve a given equation, it returns
+\texttt{FALSE}.
+
+The differential equation given to the \texttt{ode2} command can also
+use functions instead of dependent variables.
+
+\beginmaximasession
+ode2('diff(f(x),x,2) + x*'diff(f(x),x) = x, f(x), x);
+\maximasession
+(C4) ode2('diff(f(x),x,2) + x*'diff(f(x),x) = x, f(x), x);
+
+
+                                                  x
+                     SQRT(2) SQRT(%PI) %K1 ERF(-------)
+                                               SQRT(2)
+(D4)          f(x) = ---------------------------------- + x + %K2
+                                     2
+\endmaximasession
+
+After a differential equation is solved by \texttt{ode2}, initial
+values and boundary conditions can be given to the solution.  For a
+first degree differential equation, the initial condition can be given
+using \texttt{ic1}. If \texttt{ode2} returns the general solution
+\texttt{soln} to a first order differential equation, the command
+\texttt{ic1(soln, indvar=a, depvar=b)} will return the particular
+solution which equals \texttt{b} when the variable equals \texttt{a}.
+
+\beginmaximasession
+soln1:ode2(x^2*'diff(y,x) + 3*x*y = sin(x)/x, y, x);
+ic1(soln1, x=1, y=1);
+\maximasession
+(C5) soln1:ode2(x^2*'diff(y,x) + 3*x*y = sin(x)/x, y, x);
+
+
+                                    %C - COS(x)
+(D5)                            y = -----------
+                                         3
+                                        x
+(C6) ic1(soln1, x=1, y=1);
+
+
+                                 COS(x) - COS(1) - 1
+(D6)                       y = - -------------------
+                                          3
+                                         x
+\endmaximasession
+
+For a second order differential equation, conditions can be given as
+initial conditions, using \texttt{ic2}, or as boundary conditions,
+using \texttt{bc2}.  If \texttt{ode2} returns the general solution
+\texttt{soln} to a second order differential equation, the command
+\texttt{ic2(soln, indvar=a, depvar=b, 'diff(depvar,indvar)=c)} will
+return the particular solution which equals \texttt{b} and whose
+derivative equals \texttt{c} when the variable equals \texttt{a}.
+
+\beginmaximasession
+eqn2: 'diff(y,x,2) + y = 4*x;
+soln2: ode2(eqn2, y, x);
+ic2(soln2, x=0, y=1, 'diff(y,x)=3);
+\maximasession
+(C7) eqn2: 'diff(y,x,2) + y = 4*x;
+
+
+                                  2
+                                 d y
+(D7)                             --- + y = 4 x
+                                   2
+                                 dx
+(C8) soln2: ode2(eqn2, y, x);
+
+
+(D8)                   y = %K1 SIN(x) + %K2 COS(x) + 4 x
+(C9) ic2(soln2, x=0, y=1, 'diff(y,x)=3);
+
+
+(D9)                      y = - SIN(x) + COS(x) + 4 x
+\endmaximasession
+
+Similarly, if \texttt{ode2} returns the general solution \texttt{soln}
+to a second order differential equation, the command \texttt{bc2(soln,
+  indvar=a, depvar=b, indvar=c, depvar=d)} will return the particular
+solution which equals \texttt{b} when the variable equals \texttt{a}
+and equals \texttt{d} when the variable equals \texttt{c}.
+
+\beginmaximasession
+bc2(soln2, x=0, y=3, x=2, y=1);
+\maximasession
+(C10) bc2(soln2, x=0, y=3, x=2, y=1);
+
+
+                       (3 COS(2) + 7) SIN(x)
+(D10)            y = - --------------------- + 3 COS(x) + 4 x
+                              SIN(2)
+\endmaximasession
+
+An alterative to \texttt{ode2} is \texttt{desolve}.  The command
+\texttt{desolve} is not restricted to differential equations of degree
+2 or less; however, it only accepts initial conditions at 0.  It uses
+LaPlace transforms to solve systems of differential equations; a
+single equation can be considered as a system.  The differential
+equation must be given using functional notation, rather than with
+dependent variables.  The command \texttt{desolve} takes as arguments
+a list of differential equations and a list of functions.  (When
+there's only a single equation with a single function, it isn't
+necessary to enter them as lists.)
+
+%% \beginmaximasession
+%% de3:'diff(f(x),x,2)+ f(x) = 2*x;
+%% desolve(de3, f(x));
+%% \endmaximasession
+
+\beginmaximasession
+de4:'diff(f(x),x)='diff(g(x),x) + sin(x);
+de5:'diff(g(x),x,2)='diff(f(x),x)-cos(x);
+desolve([de4,de5],[f(x),g(x)]);
+\maximasession
+(C11) de4:'diff(f(x),x)='diff(g(x),x) + sin(x);
+
+
+                        d           d
+(D11)                   -- (f(x)) = -- (g(x)) + SIN(x)
+                        dx          dx
+(C12) de5:'diff(g(x),x,2)='diff(f(x),x)-cos(x);
+
+
+                         2
+                        d            d
+(D12)                   --- (g(x)) = -- (f(x)) - COS(x)
+                          2          dx
+                        dx
+(C13) desolve([de4,de5],[f(x),g(x)]);
+
+
+                            !                  !
+                x  d        !         d        !
+(D13) [f(x) = %E  (-- (g(x))!     ) - -- (g(x))!      + f(0), 
+                   dx       !         dx       !
+                            !x = 0             !x = 0
+
+                                 !                  !
+                     x  d        !         d        !
+            g(x) = %E  (-- (g(x))!     ) - -- (g(x))!      + COS(x) + g(0) - 1]
+                        dx       !         dx       !
+                                 !x = 0             !x = 0
+\endmaximasession
+
+To specify initial conditions (at 0 only), the \texttt{atvalue}
+command must be given before the equations are solved.
+
+\beginmaximasession
+atvalue(f(x),x=0,1);
+atvalue(g(x),x=0,2);
+atvalue('diff(g(x),x),x=0,3);
+desolve([de4,de5],[f(x),g(x)]);
+\maximasession
+(C14) atvalue(f(x),x=0,1);
+
+
+(D14)                                  1
+(C15) atvalue(g(x),x=0,2);
+
+
+(D15)                                  2
+(C16) atvalue('diff(g(x),x),x=0,3);
+
+
+(D16)                                  3
+(C17) desolve([de4,de5],[f(x),g(x)]);
+
+
+                             x                          x
+(D17)            [f(x) = 3 %E  - 2, g(x) = COS(x) + 3 %E  - 2]
+\endmaximasession
+
+\end{document}
