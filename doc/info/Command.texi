@@ -222,31 +222,90 @@ Solution
 
 @end defun
 
-@defvar EVFLAG
- default: [] - the list of things known to the EV function.  An
-item will be bound to TRUE during the execution of EV if it is
-mentioned in the call to EV, e.g. EV(%,numer);.  Initial evflags are
+@defvr property evflag
+Some Boolean flags have the @code{evflag} property.
+@code{ev} treats such flags specially.
+A flag with the @code{evflag} property will be bound to @code{true}
+during the execution of @code{ev} if it is
+mentioned in the call to @code{ev}.
+For example, @code{demoivre} and @code{ratfac} are bound to @code{true}
+during the call @code{ev (%, demoivre, ratfac)}.
 
+The flags which have the @code{evflag} property are:
+@c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
+@c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
+@code{algebraic},
+@code{cauchysum},
+@code{demoivre},
+@code{dotscrules},
+@code{%emode},
+@code{%enumer},
+@code{exponentialize},
+@code{exptisolate},
+@code{factorflag},
+@code{float},
+@code{halfangles},
+@code{infeval},
+@code{isolate_wrt_times},
+@code{keepfloat},
+@code{letrat},
+@code{listarith},
+@code{logabs},
+@code{logarc},
+@code{logexpand},
+@code{lognegint},
+@code{lognumer},
+@code{m1pbranch},
+@code{numer_pbranch},
+@code{programmode},
+@code{radexpand},
+@code{ratalgdenom},
+@code{ratfac},
+@code{ratmx},
+@code{ratsimpexpons},
+@code{simp},
+@code{simpsum},
+@code{sumexpand}, and
+@code{trigexpand}.
 
-@example
-FLOAT, PRED, SIMP, NUMER, DETOUT, EXPONENTIALIZE, DEMOIVRE,
-KEEPFLOAT, LISTARITH, TRIGEXPAND, SIMPSUM, ALGEBRAIC,
-RATALGDENOM, FACTORFLAG, %EMODE, LOGARC, LOGNUMER,
-RADEXPAND, RATSIMPEXPONS, RATMX, RATFAC, INFEVAL, %ENUMER,
-PROGRAMMODE, LOGNEGINT, LOGABS, LETRAT, HALFANGLES,
-EXPTISOLATE, ISOLATE_WRT_TIMES, SUMEXPAND, CAUCHYSUM,
-NUMER_PBRANCH, M1PBRANCH, DOTSCRULES, and LOGEXPAND.
-@end example
+The construct @code{:lisp (putprop '|$foo| t 'evflag)}
+gives the @code{evflag} property to the variable @code{foo},
+so @code{foo} is bound to @code{true} during the call @code{ev (%, foo)}.
+Equivalently, @code{ev (%, foo:true)} has the same effect.
 
-@end defvar
+@end defvr
 
-@defvar EVFUN
- - the list of functions known to the EV function which will get
-applied if their name is mentioned.  Initial evfuns are FACTOR,
-TRIGEXPAND, TRIGREDUCE, BFLOAT, RATSIMP, RATEXPAND, RADCAN,
-LOGCONTRACT, RECTFORM, and POLARFORM.
+@defvr property evfun
+Some functions have the @code{evfun} property.
+@code{ev} treats such functions specially.
+A function with the @code{evfun} property will be applied
+during the execution of @code{ev} if it is
+mentioned in the call to @code{ev}.
+For example, @code{ratsimp} and @code{radcan} will be applied
+during the call @code{ev (%, ratsimp, radcan)}.
 
-@end defvar
+The functions which have the @code{evfun} property are:
+@c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
+@c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
+@code{bfloat},
+@code{factor},
+@code{fullratsimp},
+@code{logcontract},
+@code{polarform},
+@code{radcan},
+@code{ratexpand},
+@code{ratsimp},
+@code{rectform},
+@code{rootscontract},
+@code{trigexpand}, and
+@code{trigreduce}.
+
+The construct @code{:lisp (putprop '|$foo| t 'evfun)}
+gives the @code{evfun} property to the function @code{foo},
+so that @code{foo} is applied during the call @code{ev (%, foo)}.
+Equivalently, @code{foo (ev (%))} has the same effect.
+
+@end defvr
 
 @defvr {special symbol} INFEVAL
  leads to an "infinite evaluation" mode.  EV repeatedly
