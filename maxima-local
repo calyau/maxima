@@ -1,0 +1,9 @@
+#!/bin/sh
+top_srcdir=`dirname $0`
+MAXIMA_VERPKGLIBEXECDIR=$top_srcdir/lisp-utils
+export MAXIMA_VERPKGLIBEXECDIR
+MAXIMA_VERPKGLIBDIR=$top_srcdir/src
+export MAXIMA_VERPKGLIBDIR
+
+
+exec /bin/sh $top_srcdir/src/maxima "$@"
