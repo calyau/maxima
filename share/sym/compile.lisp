@@ -1,5 +1,5 @@
 ;; Fichier compile.lsp
-(proclaim '(optimize (safety 0)))
+;; (proclaim '(optimize (safety 0)))
 ;       ***************************************************************
 ;       *                    MODULE SYM                               *
 ;       *       MANIPULATIONS DE FONCTIONS SYMETRIQUES                *
@@ -16,22 +16,7 @@
 ;       *              e-mail : avb@sysal.ibp.fr                      *
 ;       ***************************************************************
 
-(compile-file '|arite.lsp|)
-(compile-file '|chbase.lsp|) 
-(compile-file '|direct.lsp|)  
-(compile-file '|elem.lsp|)
-(compile-file '|kak.lsp|)
-(compile-file '|ecrivain.lsp|)
-(compile-file '|lecteur.lsp|)
-(compile-file '|macros.lsp|)
-(compile-file '|multmon.lsp|)
-(compile-file '|operations.lsp|) 
-(compile-file '|partpol.lsp|) 
-(compile-file '|permut.lsp|)
-(compile-file '|pui.lsp|)
-(compile-file '|resolvante.lsp|)  
-(compile-file '|schur.lsp|)
-(compile-file '|treillis.lsp|) 
-(compile-file '|tri.lsp|)  
-(compile-file '|util.lsp|)  
+(load (make-pathname :directory (pathname-directory *load-truename*)
+		     :name "sym" :type "system"))
 
+(mk:compile-system "sym")
