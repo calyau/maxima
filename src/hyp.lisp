@@ -12,7 +12,7 @@
 
 (declare-top (special fun #||w b l||# $true $false #|| n  c ||# #||l1 l2||#))
 
-(declare-top (special var par zerosigntest productcase 
+(declare-top (special var *par* zerosigntest productcase 
 		      fldeg flgkum checkcoefsignlist serieslist
 		      $exponentialize $bestriglim $radexpand))
 
@@ -100,7 +100,7 @@
 (defun $hgfred (arg-l1 arg-l2 arg)
   (let (($radexpand '$all)
 	(var arg)
-	(par arg))
+	(*par* arg))
     (hgfsimp-exec (cdr arg-l1) (cdr arg-l2) arg)))
 
 
@@ -427,7 +427,7 @@
      (format t "l1 = ~A~%" arg-l1)
      (format t "vfvp arg = ~A~%" (div (add (cadr arg-l1) n) 2))
      (format t "var = ~A~%" var)
-     (format t "par = ~A~%" par)
+     (format t "*par* = ~A~%" *par*)
      ||#
      (setq l (vfvp (div (add (cadr arg-l1) n) 2)))
 
@@ -453,7 +453,7 @@
 				   (inv (factf (mul 2 v) (* -1 n))))))
 		     (gegenpol (mul -1 n)
 			       v
-			       (sub 1 (mul 2 par)))))))
+			       (sub 1 (mul 2 *par*)))))))
      ;; A&S 15.4.6 says
      ;; F(-n, n + a + 1 + b; a + 1; x) = n!*jacobi_p(n,a,b,1-2*x)/pochhammer(a+1,n);
      ;;
@@ -466,7 +466,7 @@
 		  (jacobpol (mul -1 n)
 			    (add (car arg-l2) -1)
 			    (sub (mul 2 v) (car arg-l2))
-			    (sub 1 (mul 2 par)))))))
+			    (sub 1 (mul 2 *par*)))))))
 
 
 #+nil
@@ -500,7 +500,7 @@
 ;; polynomial.
 (defun $hgfpoly (arg-l1 arg-l2 arg)
   (let ((var arg)
-	(par arg)
+	(*par* arg)
 	(n (hyp-negp-in-l (cdr arg-l1))))
     (create-any-poly (cdr arg-l1) (cdr arg-l2) (- n))))
 
@@ -2098,9 +2098,9 @@
   (cond ((freevar exp) (freepar exp))
 	(t nil)))
 
-(declare-top (special serieslist var par zerosigntest productcase))
+(declare-top (special serieslist var *par* zerosigntest productcase))
 
-(setq par '$p)
+(setq *par* '$p)
 
 ;;(DEFUN FREEVAR (A) 
 ;;       (COND ((ATOM A) (NOT (EQ A VAR)))
@@ -2114,7 +2114,7 @@
 
 (defun freepar (exp)
   (cond ((atom exp)
-	 (not (eq exp par)))
+	 (not (eq exp *par*)))
 	(t (and (freepar (car exp))
 		(freepar (cdr exp))))))
 
@@ -2609,7 +2609,7 @@
 ;;       (COND ((EQ SIGN '$POSITIVE) '$NEGATIVE) (T '$POSITIVE))) 
 
 
-(setq par '$p)                           
+(setq *par* '$p)                           
 
 (defun vfvp (exp)
   (m2 exp '(v freevarpar) nil))
@@ -3222,7 +3222,7 @@
 (eval-when
     #+gcl (compile)
     #-gcl (:compile-toplevel)
-    (declare-top (unspecial serieslist var par zerosigntest productcase
+    (declare-top (unspecial serieslist var *par* zerosigntest productcase
 			    fldeg flgkum listcmdiff checkcoefsignlist ))
   
     (declare-top (unspecial fun #|w b l n c|#)))

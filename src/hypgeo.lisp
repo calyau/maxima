@@ -13,7 +13,7 @@
 
 (macsyma-module hypgeo)
 
-(declare-top (special var par zerosigntest productcase checkcoefsignlist
+(declare-top (special var *par* zerosigntest productcase checkcoefsignlist
 		      $exponentialize $radexpand))
 
 (load-macsyma-macros rzmac)
@@ -60,7 +60,7 @@
 
 (defun expor1p(exp)(or (equal exp 1)(eq exp '$%e)))
 
-(defun parp(a)(eq a par))
+(defun parp(a)(eq a *par*))
 
 
 
@@ -770,9 +770,9 @@
      (return 'other-defint-to-follow-negtest)))
 
 (defun ltscale
-    (exp var par c par0 e f)
+    (exp var *par* c par0 e f)
   (mul* (power '$%e c)
-	(substl (sub par par0) par (lt-exec exp e f))))
+	(substl (sub *par* par0) *par* (lt-exec exp e f))))
 
 (defun defltep
     (exp)
@@ -793,7 +793,7 @@
 ;;it dispatches according to the kind of transform it matches
 
 
-(defun hypgeo-exec (exp var par)
+(defun hypgeo-exec (exp var *par*)
   (prog (l u a c e f)
      (setq exp (simplifya exp nil))
      (cond ((setq l (ltep exp))
@@ -802,7 +802,7 @@
 		  c (cdras 'c l)
 		  e (cdras 'e l)
 		  f (cdras 'f l))
-	    (return (ltscale u var par c a e f))))
+	    (return (ltscale u var *par* c a e f))))
      (return 'other-trans-to-follow)))
 
 (defun substl
@@ -878,7 +878,7 @@
 
 (defun f1p137
     (pow)
-  (mul* (gm (add pow 1))(power par (sub (mul -1 pow) 1))))
+  (mul* (gm (add pow 1))(power *par* (sub (mul -1 pow) 1))))
 
 ;; Table of Integral Transforms
 ;;
@@ -893,8 +893,8 @@
 	(gm v)
 	(power 2 v)
 	(power a (div v 2))
-	(power '$%e (mul* a par par))
-	(dtford (mul* 2 par (power a (1//2)))(mul -1 v))))
+	(power '$%e (mul* a *par* *par*))
+	(dtford (mul* 2 *par* (power a (1//2)))(mul -1 v))))
 
 ;; Table of Integral Transforms
 ;;
@@ -908,9 +908,9 @@
   (mul* c
 	(gm (add v v))
 	(power 2 (sub 1 v))		; Is this supposed to be here?
-	(power par (mul -1 v))
-	(power '$%e (mul* a (1//2) (inv par)))
-	(dtford (power (mul* 2 a (inv par))
+	(power *par* (mul -1 v))
+	(power '$%e (mul* a (1//2) (inv *par*)))
+	(dtford (power (mul* 2 a (inv *par*))
 		       (1//2))
 		(mul -2 v))))
 
@@ -924,7 +924,7 @@
 ;; Re(a) > 0
 (defun f29p146 (v a)
   (mul* 2
-	(power (mul* a (inv 4) (inv par))
+	(power (mul* a (inv 4) (inv *par*))
 	       (div v 2))
 	(ktfork a v)))
 
@@ -937,7 +937,7 @@
      (cond ((maxima-integerp v)
 	    (kmodbes z v))
 	   (t (simpktf z v))))
-   (power (mul* a par)(1//2))))
+   (power (mul* a *par*)(1//2))))
 
 (defun dtford
     (z v)
@@ -1738,12 +1738,12 @@
       (neginp (sub (sub (1//2) i2) i1))
       (neginp (sub (add (1//2) i2) i1))))
 
-;; Compute r*exp(-var*par).
+;; Compute r*exp(-var**par*).
 ;;
 ;; (Probably r*exp(-p*t), where t is the variable of integration and p
 ;; is the parameter of the Laplace transform.)
 (defun init (r)
-  (mul* r (power '$%e (mul* -1 var par))))
+  (mul* r (power '$%e (mul* -1 var *par*))))
 
 ;; (-1)^n*n!*laguerre(n,a,x) = U(-n,a+1,x)
 ;;
@@ -1873,7 +1873,7 @@
 
 (defun distrexecinit (fun)
   (cond ((equal (caar fun) 'mplus) (distrexec (cdr fun)))
-	(t (hypgeo-exec fun var par))))
+	(t (hypgeo-exec fun var *par*))))
 
 (defun distrdefexecinit (fun)
   (cond ((equal (caar fun) 'mplus) (distrdefexec (cdr fun)))
@@ -1881,7 +1881,7 @@
 
 (defun distrexec (fun)
   (cond ((null fun) 0)
-	(t (add (hypgeo-exec (car fun) var par)
+	(t (add (hypgeo-exec (car fun) var *par*)
 		(distrexec (cdr fun))))))
 
 (defun distrdefexec (fun)
@@ -2211,8 +2211,8 @@
      (cond ((equal q 1)(setq a 0)(go loop)))
      (setq a (cdras 'a l))
      loop
-     (return (substl (sub par a)
-		     par
+     (return (substl (sub *par* a)
+		     *par*
 		     (execf19 l (cadr l1))))))
 
 ;; Dispatch function to convert the given function to a hypergeometric
@@ -2295,7 +2295,7 @@
   (list (mul* (gm (add n a 1))
 	      (inv (gm (add a 1)))
 	      (inv (factorial n)))
-	(ref-fp1 (list (mul -1 n) (add* n a b 1))
+	(ref-fpq (list (mul -1 n) (add* n a b 1))
 		 (list (add a 1))
 		 (sub (1//2) (div x 2)))))
 
@@ -2576,12 +2576,12 @@
 ;; The args below are s, [a's], [p's], c^k, k.
 (defun f19p220-simp (s l1 l2 cf k)
   (mul* (gm s)
-	(inv (power par s))
+	(inv (power *par* s))
 	(hgfsimp-exec (append l1 (addarglist s k))
 		      l2
 		      (mul* cf
 			    (power k k)
-			    (power (inv par) k))))) 
+			    (power (inv *par*) k))))) 
 
 ;; Bessel function expressed as a hypergeometric function.
 ;;
@@ -2650,24 +2650,24 @@
 (defun f50p188-simp (d u v a)
   (mul d
        (power a (inv -2))
-       (power par (mul -1 u))
-       (power '$%e (div a (mul -2 par)))
+       (power *par* (mul -1 u))
+       (power '$%e (div a (mul -2 *par*)))
        (sub (mul (tan% (mul '$%pi (sub u v)))
 		 (gm (add u v (inv 2)))
 		 (inv (gm (add v v 1)))
-		 (mwhit (div a par) u v))
+		 (mwhit (div a *par*) u v))
 	    (mul `((%sec) ,(mul '$%pi (sub u v)))
-		 (wwhit (div a par) u v)))))
+		 (wwhit (div a *par*) u v)))))
 
 (defun f2p105v2cond-simp (m v a) 
   (mul -2.
        (power '$%pi -1.)
        (gm (add m v))
-       (power (add (mul a a) (mul par par)) (mul -1. (inv 2.) m))
+       (power (add (mul a a) (mul *par* *par*)) (mul -1. (inv 2.) m))
        (leg2fsimp (sub m 1.)
 		  (mul -1. v)
-		  (mul par
-		       (power (add (mul a a) (mul par par))
+		  (mul *par*
+		       (power (add (mul a a) (mul *par* *par*))
 			      (inv -2.)))))) 
 
 (defun leg1fsimp (m v z) 
