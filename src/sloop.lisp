@@ -592,7 +592,7 @@ otherwise nil"
   (cond (type (list 'the type symbol ))
 	(t symbol)))
 
-(defun type-error ()
+(defun sloop-type-error ()
   (error "While checking a bound of a sloop, I found the wrong type 
 for something in sloop::*automatic-declarations*.
     Perhaps your limit is wrong? 
@@ -640,7 +640,7 @@ recompile."))
 				       'the-value *type-test-limit*)
 			      (or chk value))
 			   ',type)
-			  (type-error))
+			  (sloop-type-error))
 			 ,(or chk value)))))))
 	(t (list value))))
 
@@ -836,7 +836,7 @@ recompile."))
 					       (or inc 1))))
 				 (t `(> ,var  ,(+ most-negative-fixnum
 						  (or inc 1)))))
-			  (type-error))
+			  (sloop-type-error))
 		       *loop-increment*)
 		     )))))
     
