@@ -465,7 +465,7 @@ COMPILE, COMPFILE, and the TRANSLATE SAVE combination.
 @c @node DEFINE, DEFINE_VARIABLE, COMPILE_LISP_FILE, Function Definition
 @c @unnumberedsec phony
 @defun DEFINE (f(x1, ...), body)
-is equivalent to f(x1,...):=''body but when
+is equivalent to f(x1,...):='@w{}'body but when
 used inside functions it happens at execution time rather than at the
 time of definition of the function which contains it.
 
@@ -768,7 +768,7 @@ always UNLISP.  This file contains valuable (albeit obsure for some)
 information for tracking down bugs in translated code.  Do
 APROPOS(TR_) to get a list of TR (for TRANSLATE) switches.  In
 summary, TRANSLATE_FILE("foo.mc"), LOADFILE("foo.LISP") is "=" to
-BATCH("foo.mc") modulo certain restrictions (the use of '' and % for
+BATCH("foo.mc") modulo certain restrictions (the use of '@w{}' and % for
 example).
 
 @end defun

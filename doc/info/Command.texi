@@ -25,10 +25,10 @@ return the noun form of F applied to [X].
 @end deffn
 @c @node operator
 @c @unnumberedsec phony
-@deffn operator "''"
+@deffn operator "'@w{}'"
   - (two single quotes) causes an extra evaluation to occur.  E.g.
-''c4; will re-execute line C4.  ''(F(X)) means evaluate the
-expression F(X) an extra time.  ''F(X) means return the verb form of F
+'@w{}'c4; will re-execute line C4.  '@w{}'(F(X)) means evaluate the
+expression F(X) an extra time.  '@w{}'F(X) means return the verb form of F
 applied to [X].
 
 @end deffn

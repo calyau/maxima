@@ -154,7 +154,7 @@ If we set
 (C5) DERIVABBREV:TRUE;
 (D5)                                 TRUE
 then re-executing the command C4, we obtain
-(C6) ''C4;
+(C6) '@w{}'C4;
 (D6)                      (R  U ) . S + R . (S  U )
                             U  T              U  T
 @end example
@@ -169,7 +169,7 @@ eliminate all dependencies that may have been declared for R.
 @example
 (C7) REMOVE(R,DEPENDENCY);
 (D7)                                 DONE
-(C8) ''C4;
+(C8) '@w{}'C4;
 (D8)                             R . (S  U )
                                   U    T
 
