@@ -990,7 +990,6 @@
 		     (if testresult
 			 (setq errs (append errs (list testresult))))))
 		  (progn
-
 		    (setq error-break-file (format nil "~a" test-file))
 		    (setq errs 
 			  (append errs 
@@ -1005,4 +1004,5 @@
 				      (format 
 				       t "Error~a found in ~a, problem~a:~%~a~%"
 				       s (first x) s (sort (rest x) #'<))))
-				errs))))))))
+				errs)))))))
+  '$done)
