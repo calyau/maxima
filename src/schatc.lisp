@@ -11,6 +11,16 @@
 (in-package "MAXIMA")
 (macsyma-module schatc)
 
+;;;; I think this is described in Chapter 3 of J. Moses' thesis,
+;;;; "Symbolic Integration", MIT-LCS-TR-047.  A scanned version of the
+;;;; thesis is available at
+;;;; http://www.lcs.mit.edu/publications/pubs/pdf/MIT-LCS-TR-047.pdf.
+;;;;
+;;;; Unfortunately, some important pages in the scan are all black.
+;;;;
+;;;; Schatchen is Yiddish for "matchmaker" and Schatchen here is a
+;;;; pattern matching routine.
+
 #-nil
 (eval-when (eval compile)
   (setq old-ibase *read-base* *read-base* 10.))
@@ -113,6 +123,97 @@
 (defun dvcoe (e pat args)
   (m1 ($ratsimp (list '(mtimes) e args)) pat))
 
+
+;;; SCHATCHEN pattern matcher.
+;;;
+;;; Match the (maxima) expression in E with the pattern given by P.
+;;;
+;;; The pattern language is partially described in Moses thesis.  We
+;;; summarize here some of the main ideas.  (This is mostly taken from
+;;; his thesis.)
+;;;
+;;; A variable in the pattern is written in the form (VAR name pred
+;;; arg1 arg2 ... argn)
+;;;
+;;; where
+;;;
+;;;   name  = name of variable
+;;;   pred  = predicate associated with the variable
+;;;   argi  = arguments 2 through n+1 for pred
+;;;
+;;; The first arg of pred is assumed to the expression that the match
+;;; assigns to the variable.
+;;;
+;;; If the variable has a mode, it is written in prefix form.  Thus
+;;; A*x, where A is a number and is a coefficient of plus or times
+;;; becomes (coeffpt (var a number) x).
+;;;
+;;; Some modes:
+;;;
+;;; coefft - coefficient of TIMES (matches A in A*x) coeffp -
+;;; coefficient of PLUS (matches B in x + B) coeffpt - coefficient of
+;;; PLUS and TIMES (like coefft and coeffp and matches things like
+;;; 2*x^2+sqrt(2)*x^2 so that the coefficient of x^2 is 2+sqrt(2).
+;;;
+;;; A brief description of the algorithm:
+;;;
+;;; If E equals P, the match succeeds.
+;;;
+;;; If P is of the form (VAR name pred arg1 ... argn), then (pred e
+;;; arg1 arg2 ... argn) is evaluated.  If the value of the pred is
+;;; true, the match succeeds and ((name . e) is appended to the
+;;; answer.  Otherwise the match fails.
+;;;
+;;; If P is of the form (op p1 ... pn) and op is not PLUS, TIMES, or
+;;; EXPT, then E must be of the form (op1 e1 ... en) and each pi must
+;;; match i1 and op must match op1.  Otherwise the match fails.
+;;;
+;;; If the pattern is of the form (EXPT p1 p2) then
+;;;   1) e is (EXPT e1 e2) and p1 matches e1 and p2 matches e2 or
+;;;   2) e is 0 and p1 matches 0 or
+;;;   3) e is 1 and
+;;;      a) p2 matches 0 or
+;;;      b) p1 matches 1
+;;;   4) p2 matches 1 and p1 matches e
+;;;
+;;; Otherwise the match fails
+;;;
+;;; If the pattern is of the form (op p1 p2 ... pn) and op = PLUS or
+;;; TIMES, then if E is not of the form (op e1 ... em), E is
+;;; transformed to (op E).  In this case an attempt is made to match
+;;; each pi with some ej.  The scan starts with p1 matched with e1.
+;;; If that fails p1 is matched with e2.  If pi matches some ej, ej is
+;;; deleted (destructively) from E and the scan continues with pi=1
+;;; matched with he first subexpression remaining in E.  If for some
+;;; pi no ej can be found to match it, then pi is matched with 0 if op
+;;; = PLUS or 1 if op = TIMES.  If that also fails, the match fails.
+;;; If all the pi have been matched, but some ej have not, the match
+;;; fails.
+;;;
+;;; Exceptions to the above are due to modes.  If op = PLUS, and pi is
+;;; of the form (coeffpt (var name pred arg1 ... argn) p1 ... pk),
+;;; then the remaining expression is traversed with the pattern
+;;; (coefft (var name pred arg1 ... argn) p1 ... pk).  Each
+;;; subexpression that is thus matched is deleted from the expression.
+;;; The simplified sum of the result of the scan becomes the value of
+;;; the variable.  If no subexpression could thuse be matched, then
+;;; (pred 0 arg1 ... argn) is attempted.  If this too fails, the match
+;;; fails.
+;;;
+;;; If op = PLUS and pn is of the form (coeffp (var name pred arg1
+;;; ... argn), then if e is currently of the form (PLUS ei ... en),
+;;; then (pred e arg1 ... argn) is evaluated. If the value of pred is
+;;; true, ((name . e)) is appended.  If no subexpressions remain in e,
+;;; then pred 0 arg1 ... argn) is attempted.  If it succeeds, ((name
+;;; . )) is appended.  Otherwise, the match fails.
+;;;
+;;; If op = PLUS and pi is of the form (coefft (var name pred arg1
+;;; ... argn) p1 ... pk) then (times p1 .... pk) is matched with e.
+;;; If the match succeeds and e remains of the form (times e1 ... en),
+;;; then (pred e arg1 ... argn) is attempted.  If it fails, the match
+;;; fails.  If no subexpressions remain in e, then (pred 1 arg1
+;;; ... argn) is attempted.  If this succeeds, ((name . 1) is
+;;; appended.
 (defmfun schatchen (e p)
   (m2 e p nil))
 
