@@ -553,18 +553,10 @@ considered to be computational features of Maxima.)
 @defvar showtime
 Default value: @code{false}
 
-@c FOLLOWING DISCUSSION OF GC TIME IS ALMOST CERTAINLY OUT OF DATE !!!
-When @code{showtime} is @code{true}, the computation time will be
-printed automatically with each output expression.  By setting
-@code{showtime: all}, in addition to the cpu time Maxima now also prints out
-(when not zero) the amount of time spent in garbage collection (gc) in
-the course of a computation.  This time is of course included in the
-time printed out as "time=" .  (It should be noted that since the
-"time=" time only includes computation time and not any intermediate
-display time or time it takes to load in out-of-core files, and since
-it is difficult to ascribe "responsibility" for gc's, the gctime
-printed will include all gctime incurred in the course of the
-computation and hence may in rare cases even be larger than "time=").
+When @code{showtime} is @code{true}, the computation time and elapsed time is
+printed with each output expression.
+
+See also @code{time}, @code{timer}, and @code{playback}.
 
 @end defvar
 
