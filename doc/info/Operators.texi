@@ -159,25 +159,26 @@ works with the @code{part} commands (i.e. @code{part}, @code{inpart}, @code{subs
 @code{substinpart}, @code{dpart}, and @code{lpart}).  For example,
 
 @example
-if expr is e+d+c+b+a,
-then part(expr,[2,5]);
-==> d+a
+(%i1) expr: e+d+c+b+a$
+(%i2) part (expr, [2, 5]);
+(%o2)                         d + a
 @end example
 
 while
 
 @example
-part(expr,allbut(2,5))==>e+c+b
+(%i3) part (expr, allbut (2, 5));
+(%o3)                       e + c + b
 @end example
 
 It also works with the @code{kill} command,
 
 @example
-kill(allbut(name1,...,namek))
+kill (allbut (name_1, ..., name_k))
 @end example
 
-will do a @code{kill(all)} except it will not
-@code{kill} the names specified.  Note: namei means a name such as function
+will do a @code{kill (all)} except it will not
+@code{kill} the names specified.  Note: @code{name_i} means a name such as function
 name such as @code{u}, @code{f}, @code{foo}, or @code{g}, not an infolist such as @code{functions}.
 
 
@@ -224,12 +225,12 @@ All variables occurring in exp are presumed to be real valued.
 @code{ev(exp,pred)} is equivalent to @code{is(exp)}.
 
 @example
-(%i1) is(x**2 >= 2*x-1);
-(%o1)                               true
-(%i2) assume(a>1);
-(%o2)                               done
-(%i3) is(log(log(a+1)+1)>0 and a^2+1>2*a);
-(%o3)                               true
+(%i1) is (x^2 >= 2*x - 1);
+(%o1)                         true
+(%i2) assume (a > 1);
+(%o2)                        [a > 1]
+(%i3) is (log (log (a+1) + 1) > 0 and a^2 + 1 > 2*a);
+(%o3)                         true
 @end example
 
 @end defun
@@ -260,11 +261,11 @@ an error message concerning @code{fullmap} even though @code{fullmap} was not
 explicitly called by the user.
 
 @example
-(%i1) a+b*c$
-(%i2) fullmap(g,%);
-(%o2)              g(b) g(c) + g(a)
-(%i3)  map(g,%o1);
-(%o3)                g(b c) + g(a)
+(%i1) a + b*c$
+(%i2) fullmap (g, %);
+(%o2)                   g(b) g(c) + g(a)
+(%i3) map (g, %th(2));
+(%o3)                     g(b c) + g(a)
 @end example
 
 @end defun
@@ -274,8 +275,8 @@ is similar to @code{fullmap} but it only maps onto
 lists and matrices.
 
 @example
-(%i1) fullmapl("+",[3,[4,5]],[[a,1],[0,-1.5]]);
-(%o1)                      [[a + 3, 4], [4, 3.5]]
+(%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
+(%o1)                [[a + 3, 4], [4, 3.5]]
 @end example
 
 @end defun
@@ -394,8 +395,8 @@ allows multiple substitutions into an expression in
 parallel.  Sample syntax:
 
 @example
-        sublis([a=b,b=a],sin(a)+cos(b));
-         => sin(b) + cos(a)
+(%i1) sublis ([a=b, b=a], sin(a) + cos(b));
+(%o1)                    sin(b) + cos(a)
 @end example
 
 The variable @code{sublis_apply_lambda} controls simplification after
@@ -445,11 +446,11 @@ operator of an expression.  E.g. @code{(opsubst:false, subst(x^2,r,r+r[0]));}
 will work.
 
 @example
-(%i1) subst(a,x+y,x+(x+y)**2+y);
-                                 2
-(%o1)                    y + x + a
-(%i2) subst(-%i,%i,a+b*%i);
-(%o2)                             a - %i b
+(%i1) subst (a, x+y, x + (x+y)^2 + y);
+                                    2
+(%o1)                      y + x + a
+(%i2) subst (-%i, %i, a + b*%i);
+(%o2)                       a - %i b
 @end example
 
 @noindent
@@ -463,17 +464,17 @@ is like @code{substpart} but works on the
 internal representation of exp.
 
 @example
-(%i1) x.'diff(f(x),x,2);
-                                   2
-                                  d
-(%o1)                         x . (--- f(x))
-                                    2
-                                  dx
-(%i2) substinpart(d**2,%,2);
-                                      2
-(%o2)                             x . d
-(%i3) substinpart(f1,f[1](x+1),0);
-(%o3)                            f1(x + 1)
+(%i1) x . 'diff (f(x), x, 2);
+                              2
+                             D
+(%o1)                    x . --- (f(x))
+                               2
+                             dx
+(%i2) substinpart (d^2, %, 2);
+                                  2
+(%o2)                        x . d
+(%i3) substinpart (f1, f[1](x+1), 0);
+(%o3)                       f1(x + 1)
 @end example
 
 If the last argument to a part function is a list of indices then
@@ -481,8 +482,8 @@ several subexpressions are picked out, each one corresponding to an
 index of the list.  Thus
 
 @example
-(%i1) part(x+y+z,[1,3]);
-(%o1) z+x
+(%i1) part (x+y+z, [1, 3]);
+(%o1)                         z + x
 @end example
 
 @code{piece} holds the value of the last expression selected when using the
@@ -493,25 +494,25 @@ selected part of an expression doesn't exist, otherwise an error
 message is given.
 
 @example
-(%i1)  27*y**3+54*x*y**2+36*x**2*y+y+8*x**3+x+1;
-            3         2       2            3
-(%o1)    27 y  + 54 x y  + 36 x  y + y + 8 x  + x + 1
-(%i2)  part(%o1,2,[1,3]);
-                  2
-(%o2)          54 y
-(%i3)  sqrt(piece/54);
-(%o3)            y
-(%i4)  substpart(factor(piece),%o1,[1,2,3,5]);
-                          3
-(%o4)           (3 y + 2 x) + y + x + 1
-(%i5) 1/x+y/x-1/z;
-                                 1   y   1
-(%o5)                           - - + - + -
-                                 z   x   x
-(%i6) substpart(xthru(piece),%,[2,3]);
-                                y + 1   1
-(%o6)                            ----- - -
-                                  x     z
+(%i1) expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
+              3         2       2            3
+(%o1)     27 y  + 54 x y  + 36 x  y + y + 8 x  + x + 1
+(%i2) part (expr, 2, [1, 3]);
+                                  2
+(%o2)                         54 y
+(%i3) sqrt (piece/54);
+(%o3)                        abs(y)
+(%i4) substpart (factor (piece), expr, [1, 2, 3, 5]);
+                               3
+(%o4)               (3 y + 2 x)  + y + x + 1
+(%i5) expr: 1/x + y/x - 1/z;
+                             1   y   1
+(%o5)                      - - + - + -
+                             z   x   x
+(%i6) substpart (xthru (piece), expr, [2, 3]);
+                            y + 1   1
+(%o6)                       ----- - -
+                              x     z
 @end example
 
 Also, setting the option @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is 
@@ -527,20 +528,20 @@ operator of exp.  In some cases it needs to be enclosed in "s (e.g.
 @code{substpart("+",a*b,0)} yields B + A.
 
 @example
-(%i1) 1/(x**2+2);
-                                    1
-(%o1)                              ------
-                                   2
-                                  x  + 2
-(%i2) substpart(3/2,%,2,1,2);
-                                    1
-(%o2)                             --------
-                                  3/2
-                                 x    + 2
-(%i3) a*x+f(b,y);
-(%o3)                          a x + f(b, y)
-(%i4) substpart("+",%,1,0);
-(%o4)                         x + f(b, y) + a
+(%i1) 1/(x^2 + 2);
+                               1
+(%o1)                        ------
+                              2
+                             x  + 2
+(%i2) substpart (3/2, %, 2, 1, 2);
+                               1
+(%o2)                       --------
+                             3/2
+                            x    + 2
+(%i3) a*x + f (b, y);
+(%o3)                     a x + f(b, y)
+(%i4) substpart ("+", %, 1, 0);
+(%o4)                    x + f(b, y) + a
 @end example
 
 Also, setting the option @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is 
@@ -565,7 +566,25 @@ stops the aliasing created by the last use of the ordering
 commands @code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{orderless} may not
 be used more than one time each without calling @code{unorder}. 
 See also @code{ordergreat} and @code{orderless}.
-@code{example (unorder)} shows an example. @c JUST COPY EXAMPLE TO HERE !!!
+
+@c HMM, IN THIS EXAMPLE, WHY ISN'T %o5 EQUAL TO ZERO ???
+@example
+(%i1) unorder();
+(%o1)                          []
+(%i2) b*x + a^2;
+                                   2
+(%o2)                       b x + a
+(%i3) ordergreat (a);
+(%o3)                         done
+(%i4) b*x + a^2;
+                             2
+(%o4)                       a  + b x
+(%i5) %th(1) - %th(3);
+                              2    2
+(%o5)                        a  - a
+(%i6) unorder();
+(%o6)                          [a]
+@end example
 
 @end defun
 
@@ -589,18 +608,18 @@ numerator and denominator to be canceled thus simplifying the
 expression to be @code{ratsimp}ed.
 
 @example
-(%i1) ((x+2)**20-2*y)/(x+y)**20+(x+y)**-19-x/(x+y)**20;
-                                                20
-                     1           x       (x + 2)   - 2 y
-(%o1)             --------- - --------- + ---------------
-                        19          20             20
-                 (y + x)     (y + x)        (y + x)
-(%i2) xthru(%);
-                                     20
-                              (x + 2)   - y
-(%o2)                          -------------
-                                       20
-                                (y + x)
+(%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+                                20
+                 1       (x + 2)   - 2 y       x
+(%o1)        --------- + --------------- - ---------
+                    19             20             20
+             (y + x)        (y + x)        (y + x)
+(%i2) xthru (%);
+                                 20
+                          (x + 2)   - y
+(%o2)                     -------------
+                                   20
+                            (y + x)
 @end example
 
 @end defun
