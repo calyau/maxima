@@ -1,0 +1,76 @@
+Ole Rohne contributed the changes necessary to replace the use of
+sloop in the main maxima code with loop. The changes are summarized
+here. (The actual replacement of "sloop" with "loop" is not included
+in the diffs below.)
+
+This list of changes serves both to document what happened and to
+serve as a guide for removing sloop usage from the share packages.
+
+--JFA
+
+1) many changes of the form "by 'foo" -> "by #'foo", e.g.,
+
+ (sloop for (x y) on 
+        '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
+-       by 'cddr do (putprop x y 'recip) (putprop y x 'recip))
++       by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
+
+2) in-array becomes across
+
+3) loop-return becomes return
+
+4) delete nleft, leading to
+
+ (defun listify1 (n narg-rest-argument)
+-  (cond ((minusp n) (copy-list (nleft (f- n) narg-rest-argument)) )
++  (cond ((minusp n) (copy-list (last narg-rest-argument (f- n))) )
+ 	((zerop n) nil)
+ 	(t (firstn n narg-rest-argument))))
+
+
+5) in-table becomes something more complicated, e.g.,
+
+-			  (sloop for (u v)
+-				 in-table arra
++			  (sloop for u being the hash-keys in arra using (hash-value v)
+
+6) this one:
+
+     ,@(sloop for v in decl-specs
+-	     unless (member (car v) '(special unspecial)) do nil 
++	     unless (member (car v) '(special unspecial)) nconc nil
+
+7) delete nodeclare, e.g.,
+
+ 		  (sloop for i from lis to top
+-			 nodeclare t
+ 			 do (set var1 i)
+ 			 append
+ 			 (apply 'create-list1
+
+8) Fix package exports, shadows, etc:
+
+ (defpackage "CL-SLOOP"
+   (:use "COMMON-LISP")
+-  (:shadow "LOOP-FINISH")
+-  (:export "LOOP-RETURN" "SLOOP" "DEF-LOOP-COLLECT" "DEF-LOOP-MAP"
+-	   "DEF-LOOP-FOR" "DEF-LOOP-MACRO" "LOCAL-FINISH" "LOOP-FINISH"))
++  (:export "SLOOP"))
+ 
+ (defpackage "MAXIMA"
+   (:use "COMMON-LISP" "COMMAND-LINE")
+   (:nicknames "CL-MACSYMA" "CL-MAXIMA" "MACSYMA")
+-  (:shadowing-import-from "CL-SLOOP" "LOOP-FINISH")
+-  (:import-from "CL-SLOOP" "LOOP-RETURN" "LOCAL-FINISH" "SLOOP")
++  (:import-from "CL-SLOOP" "SLOOP")
+
+9) in-package -> being the symbols of, e.g.,
+
+-	 (sloop for vv in-package 'keyword
++	 (sloop for vv being the symbols of 'keyword
+
+10) change declarations, e.g.,
+
+-	   (sloop for i below 3 with a = 0.0
+-		  declare (double-float a)
++	   (sloop for i below 3 with a of-type double-float = 0.0
