@@ -257,19 +257,21 @@
 
 (defun good_tab0 (l lcont ltas)
   (let ((l1 nil) (rep nil) (relais nil))
-       (if (eql 1 (list-length l))
-           (mapcar 'list (good_line (car l) lcont ltas))
-           (setq l1 (good_line (car l) lcont ltas))
-               ;(print "tete des tableaux possibles " L1)
-           (do nil 
-               ((null l1))
-               (setq relais
-                     (good_tab0 (cdr l) (car l1) (new_tas0 (car  l1) ltas)))
-                ;(print " car L1 future tete "(car L1) " et relais "relais) 
-               (if (not relais) (setq l1 (cdr l1))
-                   (setq rep (nconc rep (insert_tete (car l1) relais)) 
-                         l1 (cdr l1))))
-           rep)))
+       (cond
+	 ((eql 1 (list-length l))
+	  (mapcar 'list (good_line (car l) lcont ltas)))
+	 (t
+	  (setq l1 (good_line (car l) lcont ltas))
+	  ;; (print "tete des tableaux possibles " L1)
+	  (do nil 
+	      ((null l1))
+	    (setq relais
+		  (good_tab0 (cdr l) (car l1) (new_tas0 (car  l1) ltas)))
+	    ;; (print " car L1 future tete "(car L1) " et relais "relais) 
+	    (if (not relais) (setq l1 (cdr l1))
+		(setq rep (nconc rep (insert_tete (car l1) relais)) 
+		      l1 (cdr l1))))
+	  rep))))
 
 ;L liste de listes : retourne la meme liste ou les listes ont ete modifiees
 ; par insertion de i en tete
@@ -293,27 +295,27 @@
 (defun good_line0 (taille lcontrainte ltas)
   (let ((i 0) (lotas (list-length ltas)) (avanti nil) (rep nil))
           ; (print "taille = "taille "  Ltas" Ltas "GREP "rep)
-       (if (or (null lcontrainte) (zerop taille)) nil
-           (setq i (1+ (car lcontrainte)))
-           (do nil 
-              ((< lotas i))
-              (if (zerop (nth (1- i) ltas))
-                  (setq i (1+ i))
-                  (setq rep
-                        (append rep
-                                (insert_tete 
-                                    i
-                                    (good_line0 (1- taille)
-                                                (cdr lcontrainte)
-                                                (append
-                                                     (make-list (1- i)
-                                                                :initial-element 0)
-                                                     (list (1- (nth (1- i) ltas)))
-                                                     (lastn ltas (- lotas i))
-                                                  ))))
-                            i (1+ i)
-                            avanti t)))
-        (if avanti rep nil))))
+       (unless (or (null lcontrainte) (zerop taille))
+	 (setq i (1+ (car lcontrainte)))
+	 (do nil 
+	     ((< lotas i))
+	   (if (zerop (nth (1- i) ltas))
+	       (setq i (1+ i))
+	       (setq rep
+		     (append rep
+			     (insert_tete 
+			      i
+			      (good_line0 (1- taille)
+					  (cdr lcontrainte)
+					  (append
+					   (make-list (1- i)
+						      :initial-element 0)
+					   (list (1- (nth (1- i) ltas)))
+					   (lastn ltas (- lotas i))
+					   ))))
+		     i (1+ i)
+		     avanti t)))
+	 (if avanti rep nil))))
 
 (defun good_length (taille l)
   (if (null l) nil

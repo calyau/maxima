@@ -165,23 +165,25 @@
 ; si le cardinal le permet, on va pouvoir rajouter des zeros
 
 (defun parti_som (i j ri rk)
-  (if (null j)
-      (flet ((franz.attach (newelt oldlist)
-                 "equivalent to Franz Lisp 'attach'."
-                 (progn
-                   (rplacd oldlist (cons (car oldlist) (cdr oldlist)))
-                   (rplaca oldlist newelt))))
-        (franz.attach
-            (somme_coe (nconc (reverse i) ri)
-                (append (make-list (list-length i) :initial-element 0) rk))
-            terparts))
-      (and (or (not ri)
-               (< (car i) (car ri))
-               (not (< (car rk) (car j))))
-           (parti_som (cdr i) (cdr j) (cons (car i) ri)
-               (cons (car j) rk)))
-      (and (not (< (list-length (cdr i)) (list-length j)))
-           (parti_som (cdr i) j (cons (car i) ri) (cons 0 rk)))))
+  (cond 
+    ((null j)
+     (flet ((franz.attach (newelt oldlist)
+	      "equivalent to Franz Lisp 'attach'."
+	      (progn
+		(rplacd oldlist (cons (car oldlist) (cdr oldlist)))
+		(rplaca oldlist newelt))))
+       (franz.attach
+	(somme_coe (nconc (reverse i) ri)
+		   (append (make-list (list-length i) :initial-element 0) rk))
+	terparts)))
+    (t
+     (and (or (not ri)
+	      (< (car i) (car ri))
+	      (not (< (car rk) (car j))))
+	  (parti_som (cdr i) (cdr j) (cons (car i) ri)
+		     (cons (car j) rk)))
+     (and (not (< (list-length (cdr i)) (list-length j)))
+	  (parti_som (cdr i) j (cons (car i) ri) (cons 0 rk))))))
 
 
 (defun somme_coe (i k)

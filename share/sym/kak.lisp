@@ -89,16 +89,18 @@
 (defun $p_rac (listei k)
   (setq listei (cdr listei))
   (let ((n (list-length listei)))
-    (if (< n k)
-        " impossible "
-        (meval (list '($bidon2) ))
-        (let* ((binnk (binomial n k))
-               (listpi (cdr (meval (list '($ele2pui) binnk 
-                              (cons '(mlist)(cons n listei))))))
-               (listpi (cons binnk ($som_pipj n binnk nil))))
-; je n'ai pas besoin de faire meval ici puisque le fichier est forcement
-; charge'      
-               (pui2polynome '$y listpi)))))
+    (cond
+      ((< n k)
+       " impossible ")
+      (t
+       (meval (list '($bidon2) ))
+       (let* ((binnk (binomial n k))
+	      (listpi (cdr (meval (list '($ele2pui) binnk 
+					(cons '(mlist)(cons n listei))))))
+	      (listpi (cons binnk ($som_pipj n binnk nil))))
+	 ;; je n'ai pas besoin de faire meval ici puisque le fichier
+	 ;; est forcement charge'
+	 (pui2polynome '$y listpi))))))
 ;               (listei  (cdr (pui2ele binnk listpi '$girard))))
  ;         ($fin (1- binnk)
   ;              -1 (list '(mexpt) '$y binnk) listei)))))
@@ -213,18 +215,21 @@
 
 ;recherche proprement dite (non recursive terminale)
 (defun $monlgfix (pui rvar ote slvar poule maxote)
-  (if (> 0 rvar)
-      (rplacd slvar (list (cons (car poule) (reverse (cdr poule)))))
-      ($monlgfix ote
-          (1- rvar)
-          (max (1- rvar)
-               (- (* 2 ote)
-                          pui))
-          slvar ($met pui ote poule) (maxote ote rvar))
-      (and (< ote maxote)
-           ($monlgfix pui rvar
-               (1+ ote)
-               (last slvar) poule maxote))))
+  (cond
+    ((> 0 rvar)
+     (rplacd slvar (list (cons (car poule) (reverse (cdr poule))))))
+    (t
+     ($monlgfix ote
+		(1- rvar)
+		(max (1- rvar)
+		     (- (* 2 ote)
+			pui))
+		slvar ($met pui ote poule) (maxote ote rvar))
+     (and (< ote maxote)
+	  ($monlgfix pui rvar
+		     (1+ ote)
+		     (last slvar) poule maxote)))))
+
 (defun $met (pui ote poule)
   (let ((nxcoe ($mult_sym (car poule) (binomial pui ote)))
         (nxpui (- pui ote)))
@@ -241,15 +246,17 @@
 (defun $prodkak (listei k)
   (setq listei (cdr listei))
   (let ((n (list-length listei)))
-    (if (< n k)
-        " impossible " 
-        (meval (list '($bidon2)))
-        (let* ((binnk (binomial n k))
-               (listpi 
-                    (cdr (meval (list '($ele2pui) (mult binnk k) 
+    (cond
+      ((< n k)
+       " impossible ") 
+      (t
+       (meval (list '($bidon2)))
+       (let* ((binnk (binomial n k))
+	      (listpi 
+	       (cdr (meval (list '($ele2pui) (mult binnk k) 
                                  (cons '(mlist) (cons n listei)))))))
-              (pui2polynome '$y
-                            (cons binnk ($listpui binnk nil k)))))))
+	 (pui2polynome '$y
+		       (cons binnk ($listpui binnk nil k))))))))
 
 ; liste des fonctions puissances dans l'alphabet des racines du polynome
 ; cherche. 

@@ -58,7 +58,7 @@
 (defun resolvante ($pol $var $fonction_resolvante $list_var)
      (cond  ((equal '$cayley $resolvante)
                  (print " resolvante de Cayley ")
-                 (load "resolcayley.lsp")
+                 ;; (load "resolcayley.lisp")
                  (meval (list '($SUBSTITUTE) 
                            (cons '(mlist)
                                  (mapcar #'(lambda (val $ei)

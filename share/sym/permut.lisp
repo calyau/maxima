@@ -86,16 +86,19 @@
 ;retourne la liste de toutes les permutations de L (voir ex plus bas )
 (defun permut (l)
   (let ((i 0) (reponse nil) (relais nil))
-    (if (<= (list-length l) 1)
-        (list l) (setq relais (permut (cdr l)) a (car l))
-        (do ((i i
-                (1+ i)))
-            ((eql i (list-length l)) (un_de_chaque (vire_nil reponse)))
-          (setq reponse
-                (append reponse
-                        (append (mapcar #'(lambda (z)
+    (cond
+      ((<= (list-length l) 1)
+       (list l))
+      (t
+       (setq relais (permut (cdr l)) a (car l))
+       (do ((i i
+	       (1+ i)))
+	   ((eql i (list-length l)) (un_de_chaque (vire_nil reponse)))
+	 (setq reponse
+	       (append reponse
+		       (append (mapcar #'(lambda (z)
                                            (insertion a z i))
-                                        relais))))))))
+				       relais)))))))))
 ; ex : ( permut '(1 1 2 2 3 3)) donne la liste des 90 positions concerne'es
 
 

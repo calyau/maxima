@@ -31,7 +31,7 @@
 (defun $ratmult (a b) (meval (list '($rat) (list '(mtimes) a b))))
 (defun $ratadd (a b) (meval (list '($rat) (list '(mplus) a b))))
 (defun $ratfmult (ll)
-  (meval (list '($rat) (cons '(mtimes) ll))))))
+  (meval (list '($rat) (cons '(mtimes) ll))))
 
 (defun $ratfadd (l)
   (meval (list '($rat) (cons '(mplus) l))))
@@ -47,7 +47,7 @@
 (defun $expandfmult (ll)
   (meval (list '($expand) (cons '(mtimes) ll))))
 (defun $expandfadd (l)
-   (meval (list '($expand) (cons '(mplus) l))))))
+   (meval (list '($expand) (cons '(mplus) l))))
 (defun $expanddivi (a b)
   (meval (list '($expand) (list '(mquotient) a b))))
 (defun $expandexp (x n) (meval (list '($expand) (list '(mexpt) x n))))
@@ -76,7 +76,7 @@
 (defun $mevalfmult (ll)
   (meval (cons '(mtimes) ll)))
 (defun $mevalfadd (l)
-   (meval (cons '(mplus) l)))))
+   (meval (cons '(mplus) l)))
 (defun $mevaldivi (x y) (meval (list '(mquotient) x y)))
 (defun $mevalexp (x n) (meval (list '(mexpt) x n)))
 ;------------------------------------------------------------------------
@@ -94,9 +94,9 @@
 (defun $operation ()
   (cond
     ((equal $oper prefixe))
-    (t (mapc '(lambda (corps nom_oper)
+    (t (mapc #'(lambda (corps nom_oper)
                 (setf (symbol-function nom_oper) corps))
-             (mapcar '(lambda (suffixe)
+             (mapcar #'(lambda (suffixe)
                         (symbol-function
                             (flet ((franz.concat (&rest args)
                                     "equivalent to Franz Lisp 'concat'."
@@ -111,5 +111,5 @@
 
 ;------------------------------------------------------------------------
 ; LE PREMIER APPEL
-($operation)
+;; ($operation)
 

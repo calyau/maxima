@@ -251,9 +251,12 @@
              (list (cons ($divi_sym ($mult_sym coef coe) m) partf)))))
 ; On va eventuellement modifier physiquement part
 (defun p_fact (part m)
-  (if (eql 1 m) (cddr part)
-      (rplaca (cdr part) (1- m))
-      part))
+  (cond 
+    ((eql 1 m) 
+     (cddr part))
+    (t
+     (rplaca (cdr part) (1- m))
+     part)))
 ;---------------------------------------------------------------------------
 ;             PRODUIT D'UNE FORME MONOMIALE parf PAR 
 ;              LA FONCTION PUISSANCE DE POIDS puim.

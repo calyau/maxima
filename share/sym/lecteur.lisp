@@ -72,26 +72,29 @@
 ; Si on a une constante C sur k on la represente par [C,0,0,...,0] (n ze'ros).
 ;----------------------------------------------------------------------------
 (defun expomon (mon)
-  (if (numberp mon) ; on a une cste de k uniquement
-      (and (not (zerop mon)) (cons mon (make-list (length lvar)
-                                                   :initial-element 0)))
-      (cond
-        ((and (listp mon) (equal 'mtimes (caar mon)))
-         (if (not (or (and (listp (cadr mon))
-                           (equal 'mexpt (caar (cadr mon))))
-                      (member (cadr mon) lvar :test #'equal)))
-           ; le coefficient, eventuellement rationnel, est different de 1
-             (progn 
-               (mapc 'lvarexpo (cddr mon))
-               (setf (get 'var_expo 'coe) (cadr mon)))
-           ; le coefficient est e'gal a 1
-             (mapc 'lvarexpo (cdr mon)) 
-             (setf (get 'var_expo 'coe) 1)))
-           ; on a ((mexpt) x 4) ou x:
-        (t (lvarexpo mon) (setf (get 'var_expo 'coe) 1)))
-; maintenant toutes les donnees sont dans la plist
-; reste a bien recoller les morceaux
-      (let ((ncoe (cadr (flet ((franz.remprop
+  (cond
+    ((numberp mon)		       ; on a une cste de k uniquement
+     (and (not (zerop mon)) (cons mon (make-list (length lvar)
+						 :initial-element 0))))
+    (t
+     (cond
+       ((and (listp mon) (equal 'mtimes (caar mon)))
+	(cond
+	  ((not (or (and (listp (cadr mon))
+			 (equal 'mexpt (caar (cadr mon))))
+		    (member (cadr mon) lvar :test #'equal)))
+	   ;; le coefficient, eventuellement rationnel, est different de 1
+	   (mapc 'lvarexpo (cddr mon))
+	   (setf (get 'var_expo 'coe) (cadr mon)))
+	  (t
+	   ;; le coefficient est e'gal a 1
+	   (mapc 'lvarexpo (cdr mon)) 
+	   (setf (get 'var_expo 'coe) 1))))
+       ;; on a ((mexpt) x 4) ou x:
+       (t (lvarexpo mon) (setf (get 'var_expo 'coe) 1)))
+     ;; maintenant toutes les donnees sont dans la plist
+     ;; reste a bien recoller les morceaux
+     (let ((ncoe (cadr (flet ((franz.remprop
                                   (sym indic &aux
                                        (result
                                         (third
@@ -99,14 +102,14 @@
                                           (get-properties
                                            (symbol-plist sym)
                                            (list indic))))))
-                                  "equivalent to Franz Lisp 'remprop'."
-                                  (remprop sym indic) result))
+				"equivalent to Franz Lisp 'remprop'."
+				(remprop sym indic) result))
                          (franz.remprop 'var_expo 'coe))))
-            (exposant (expomon2 lvar)))
-; on n'a retire que les exposants des xi et le coefficient
-; numerique de la plist, reste les yi et leur exposants
-; a remettre en coefficients.
-        (cons (recupcoef (symbol-plist 'var_expo) ncoe) exposant))))
+	   (exposant (expomon2 lvar)))
+       ;; on n'a retire que les exposants des xi et le coefficient
+       ;; numerique de la plist, reste les yi et leur exposants
+       ;; a remettre en coefficients.
+       (cons (recupcoef (symbol-plist 'var_expo) ncoe) exposant)))))
 
 (defun recupcoef (plist coef)
   (if (null plist) coef

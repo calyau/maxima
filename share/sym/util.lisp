@@ -67,10 +67,12 @@
          (cond
            ((equal (tmon t1) (tmon t2))
             (chcoeterm t1 ($add_sym (tcoe t1) (tcoe t2)))
-            (if (and (numberp (tcoe t1))
-                     (zerop (tcoe t1)) )
-                (somme (cdr l1) (cdr l2) pr)
-                (somme2 (cdr l2) l1 pr) l1))
+            (cond
+	      ((and (numberp (tcoe t1))
+		    (zerop (tcoe t1)))
+	       (somme (cdr l1) (cdr l2) pr))
+	      (t
+	       (somme2 (cdr l2) l1 pr) l1)))
            ((funcall pr t1 t2) (somme2 l2 l1 pr) l1)
            (t (somme2 l1 l2 pr) l2))))))
 
@@ -138,7 +140,7 @@
 (defun $degre (mon)
   (if (or (constantp mon) (null mon)) 0
       (+  (* (car mon) (cadr mon))
-          ($degre (cddr mon))))))
+          ($degre (cddr mon)))))
 
 ;---------------------------------------------------------------------------
 ; TESTE SI ON A AFFAIRE A UNE CONSTANTE APRES LE LECTEUR
@@ -291,7 +293,7 @@
                             ((> e1 e2)
                              (throw 'trouve t))
                              (t (throw 'trouve nil)))))
-                   m1 m2)))))
+                   m1 m2))))
 
 ;***************************************************************************
 ;                           INTERFACE 
@@ -598,15 +600,18 @@
 
 (defun permut (l)
   (let ((i 0) (reponse nil) (relais nil)(a nil))
-    (if (<= (list-length l) 1)
-        (list l) (setq relais (permut (cdr l)) a (car l))
-        (do ((i i (1+ i)))
-            ((eql i (list-length l)) (un_de_chaque (vire_nil reponse)))
-          (setq reponse
-                (append reponse
-                        (append (mapcar #'(lambda (z)
+    (cond 
+      ((<= (list-length l) 1)
+       (list l))
+      (t
+       (setq relais (permut (cdr l)) a (car l))
+       (do ((i i (1+ i)))
+	   ((eql i (list-length l)) (un_de_chaque (vire_nil reponse)))
+	 (setq reponse
+	       (append reponse
+		       (append (mapcar #'(lambda (z)
                                            (insertion a z i))
-                                        relais))))))))
+				       relais)))))))))
 
 ; ex : ( permut '(1 1 2 2 3 3)) donne la liste des 90 positions concerne'es
 

@@ -223,11 +223,12 @@
                                 (1- puiounb))
                             puiounb))
                      i)))
-      (if test
-          (progn
-            (setq nb1 (car (last j)))
-            (nbutlast (nbutlast j)))
-          (setq nb1 0) j))))
+      (cond 
+	(test
+	 (setq nb1 (car (last j)))
+	 (nbutlast (nbutlast j)))
+	(t
+	 (setq nb1 0) j)))))
 ;---------------------------------------------------------------------------
 ;                             REECRITURE DE I
 ;                  Developpement de ei*J ou i= lgI = nb1 + lgJ
