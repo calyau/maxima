@@ -14,30 +14,55 @@
 
 @node DOT, VECTORS, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
 @subsection DOT
- - . The dot operator, for matrix (non-commutative)
-multiplication.  When "." is used in this way, spaces should be left
-on both sides of it, e.g. A . B.  This distinguishes it plainly from a
-decimal point in a floating point number.  Do APROPOS(DOT); for a list
-of the switches which affect the dot operator.
+The operator @code{.} represents noncommutative multiplication and scalar product.
+When the operands are 1-column or 1-row matrices @code{a} and @code{b},
+the expression @code{a.b} is equivalent to @code{sum (a[i]*b[i], i, 1, length(a))}.
+If @code{a} and @code{b} are not complex, this is the scalar product,
+also called the inner product or dot product, of @code{a} and @code{b}.
+The scalar product is defined as @code{conjugate(a).b} when @code{a} and @code{b} are complex;
+@code{innerproduct} in the @code{eigen} package provides the complex scalar product.
+
+When the operands are more general matrices,
+the product is the matrix product @code{a} and @code{b}.
+The number of rows of @code{b} must equal the number of columns of @code{a},
+and the result has number of rows equal to the number of rows of @code{a}
+and number of columns equal to the number of columns of @code{b}.
+
+To distinguish @code{.} as an arithmetic operator from 
+the decimal point in a floating point number,
+it may be necessary to leave spaces on either side.
+For example, @code{5.e3} is @code{5000.0} but @code{5 . e3} is @code{5} times @code{e3}.
+
+There are several flags which govern the simplification of
+expressions involving @code{.}, namely
+@code{dot}, @code{dot0nscsimp}, @code{dot0simp}, @code{dot1simp}, @code{dotassoc}, 
+@code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp}, @code{dotident},
+and @code{dotscrules}.
 
 @node VECTORS, eigen, DOT, Introduction to Matrices and Linear Algebra
 @subsection VECTORS
- - The file SHARE;VECT > contains a vector analysis package,
-share/vect.dem contains a corresponding demonstration, and SHARE;VECT
-ORTH contains definitions of various orthogonal curvilinear coordinate
-systems.  LOAD(VECT); will load this package for you.
+@code{vect} is a package of functions for vector analysis.
+@code{load ("vect")} loads this package, and @code{demo ("vect")} displays a demonstration.
+@c find maxima -name \*orth\* YIELDS NOTHING; ARE THESE FUNCTIONS IN ANOTHER FILE NOW ??
+@c and SHARE;VECT ORTH contains definitions of various orthogonal curvilinear coordinate systems.
+
 The vector analysis package can combine and simplify symbolic 
 expressions including dot products and cross products, together with
 the gradient, divergence, curl, and Laplacian operators.  The
-distribution of these operators over sums or products is under
-user control, as are various other expansions, including expansion
+distribution of these operators over sums or products is governed
+by several flags, as are various other expansions, including expansion
 into components in any specific orthogonal coordinate systems.
-There is also a capability for deriving the scalar or vector potential
+There are also functions for deriving the scalar or vector potential
 of a field.
-The package contains the following commands: VECTORSIMP, SCALEFACTORS,
-EXPRESS, POTENTIAL, and VECTORPOTENTIAL.  Do DESCRIBE(cmd) on these
-command names, or PRINTFILE(VECT,USAGE,SHARE); for details.
-Warning:  The VECT package declares "." to be a commutative operator.
+
+The @code{vect} package contains these functions:
+@code{vectorsimp}, @code{scalefactors},
+@code{express}, @code{potential}, and @code{vectorpotential}.
+@c REVIEW vect.usg TO ENSURE THAT TEXINFO HAS WHATEVER IS THERE
+@c PRINTFILE(VECT,USAGE,SHARE); for details.
+
+Warning: the @code{vect} package declares the dot operator @code{.}
+to be a commutative operator.
 
 @node eigen, , VECTORS, Introduction to Matrices and Linear Algebra
 @subsection eigen
@@ -722,7 +747,7 @@ Returns an @var{n} by @var{n} identity matrix.
 
 @defun innerproduct (@var{x}, @var{y})
 @defunx inprod (@var{x}, @var{y})
-Returns the inner product (also called the scalar product) of @var{x} and @var{y},
+Returns the inner product (also called the scalar product or dot product) of @var{x} and @var{y},
 which are lists of equal length, or both 1-column or 1-row matrices of equal length.
 The return value is @code{conjugate (x) . y},
 where @code{.} is the noncommutative multiplication operator.
@@ -984,77 +1009,197 @@ if it exists.
 
 @end defun
 
-@defun matrixmap (fn, m)
-will map the function fn onto each element of the
-matrix M.
+@defun matrixmap (@var{f}, @var{m})
+Returns a matrix with element @code{i,j} equal to @code{@var{f}(@var{m}[i,j])}.
 
+See also @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
+
+@c NEED EXAMPLE HERE
 @end defun
 
-@defun matrixp (exp)
-is @code{true} if exp is a matrix else @code{false}.
+@defun matrixp (@var{expr})
+Returns @code{true} if @var{expr} is a matrix, otherwise @code{false}.
 
 @end defun
 
 @defvar matrix_element_add
- default: [+] - May be set to "?"; may also be the
-name of a function, or a LAMBDA expression.  In this way, a rich
-variety of algebraic structures may be simulated.  For more details,
-do DEMO("matrix.dem1"); and DEMO("matrix.dem2");.
+Default value: @code{+}
+
+@code{matrix_element_add} is the operation 
+invoked in place of addition in a matrix multiplication.
+@code{matrix_element_add} can be assigned any n-ary operator
+(that is, a function which handles any number of arguments).
+The assigned value may be the name of an operator enclosed in quote marks,
+the name of a function,
+or a lambda expression.
+
+See also @code{matrix_element_mult} and @code{matrix_element_transpose}.
+
+Example:
+
+@example
+(%i1) matrix_element_add: "*"$
+(%i2) matrix_element_mult: "^"$
+(%i3) aa: matrix ([a, b, c], [d, e, f]);
+                           [ a  b  c ]
+(%o3)                      [         ]
+                           [ d  e  f ]
+(%i4) bb: matrix ([u, v, w], [x, y, z]);
+                           [ u  v  w ]
+(%o4)                      [         ]
+                           [ x  y  z ]
+(%i5) aa . transpose (bb);
+                     [  u  v  w   x  y  z ]
+                     [ a  b  c   a  b  c  ]
+(%o5)                [                    ]
+                     [  u  v  w   x  y  z ]
+                     [ d  e  f   d  e  f  ]
+@end example
 
 @end defvar
 
 @defvar matrix_element_mult
- default: [*] - May be set to "."; may also be the
-name of a function, or a LAMBDA expression.  In this way, a rich
-variety of algebraic structures may be simulated.  For more details,
-do DEMO("matrix.dem1"); and DEMO("matrix.dem2");
+Default value: @code{*}
+
+@code{matrix_element_mult} is the operation 
+invoked in place of multiplication in a matrix multiplication.
+@code{matrix_element_mult} can be assigned any binary operator.
+The assigned value may be the name of an operator enclosed in quote marks,
+the name of a function,
+or a lambda expression.
+
+The dot operator @code{.} is a useful choice in some contexts.
+
+See also @code{matrix_element_add} and @code{matrix_element_transpose}.
+
+Example:
+
+@example
+(%i1) matrix_element_add: lambda ([[x]], sqrt (apply ("+", x)))$
+(%i2) matrix_element_mult: lambda ([x, y], (x - y)^2)$
+(%i3) [a, b, c] . [x, y, z];
+                          2          2          2
+(%o3)         sqrt((c - z)  + (b - y)  + (a - x) )
+(%i4) aa: matrix ([a, b, c], [d, e, f]);
+                           [ a  b  c ]
+(%o4)                      [         ]
+                           [ d  e  f ]
+(%i5) bb: matrix ([u, v, w], [x, y, z]);
+                           [ u  v  w ]
+(%o5)                      [         ]
+                           [ x  y  z ]
+(%i6) aa . transpose (bb);
+               [             2          2          2  ]
+               [ sqrt((c - w)  + (b - v)  + (a - u) ) ]
+(%o6)  Col 1 = [                                      ]
+               [             2          2          2  ]
+               [ sqrt((f - w)  + (e - v)  + (d - u) ) ]
+
+                         [             2          2          2  ]
+                         [ sqrt((c - z)  + (b - y)  + (a - x) ) ]
+                 Col 2 = [                                      ]
+                         [             2          2          2  ]
+                         [ sqrt((f - z)  + (e - y)  + (d - x) ) ]
+@end example
 
 @end defvar
 
 @defvar matrix_element_transpose
- default: @code{false} - Other useful settings are
-TRANSPOSE and NONSCALARS; may also be the name of a function, or a
-LAMBDA expression.  In this way, a rich variety of algebraic
-structures may be simulated.  For more details, do
-DEMO("matrix.dem1"); and DEMO("matrix.dem2");.
+Default value: @code{false}
+
+@code{matrix_element_transpose} is the operation 
+applied to each element of a matrix when it is transposed.
+@code{matrix_element_mult} can be assigned any unary operator.
+The assigned value may be the name of an operator enclosed in quote marks,
+the name of a function,
+or a lambda expression.
+
+When @code{matrix_element_transpose} equals @code{transpose},
+the @code{transpose} function is applied to every element.
+When @code{matrix_element_transpose} equals @code{nonscalars},
+the @code{transpose} function is applied to every nonscalar element.
+If some element is an atom, the @code{nonscalars} option applies
+@code{transpose} only if the atom is declared nonscalar,
+while the @code{transpose} option always applies @code{transpose}.
+
+The default value, @code{false}, means no operation is applied.
+
+See also @code{matrix_element_add} and @code{matrix_element_mult}.
+
+Examples:
+
+@example
+(%i1) declare (a, nonscalar)$
+(%i2) transpose ([a, b]);
+                        [ transpose(a) ]
+(%o2)                   [              ]
+                        [      b       ]
+(%i3) matrix_element_transpose: nonscalars$
+(%i4) transpose ([a, b]);
+                        [ transpose(a) ]
+(%o4)                   [              ]
+                        [      b       ]
+(%i5) matrix_element_transpose: transpose$
+(%i6) transpose ([a, b]);
+                        [ transpose(a) ]
+(%o6)                   [              ]
+                        [ transpose(b) ]
+(%i7) matrix_element_transpose: lambda ([x], realpart(x) - %i*imagpart(x))$
+(%i8) m: matrix ([1 + 5*%i, 3 - 2*%i], [7*%i, 11]);
+                     [ 5 %i + 1  3 - 2 %i ]
+(%o8)                [                    ]
+                     [   7 %i       11    ]
+(%i9) transpose (m);
+                      [ 1 - 5 %i  - 7 %i ]
+(%o9)                 [                  ]
+                      [ 2 %i + 3    11   ]
+@end example
 
 @end defvar
 
-@defun mattrace (m)
-computes the trace [sum of the elements on the main diagonal] of
-the square matrix M.  It is used by NCHARPOLY, an alternative to Maxima's
-CHARPOLY.  It is used by doing LOADFILE("nchrpl");
+@defun mattrace (@var{m})
+Returns the trace (that is, the sum of the elements on the main diagonal) of
+the square matrix @var{m}.  
+
+@code{mattrace} is called by @code{ncharpoly},
+an alternative to Maxima's @code{charpoly}.
+@c UMM, HOW IS THAT RELEVANT HERE ??
+
+@code{load ("nchrpl")} loads this function.
 
 @end defun
 
-@defun minor (m, i, j)
-computes the i,j minor of the matrix M.  That is, M
-with row i and column j removed.
+@defun minor (@var{m}, @var{i}, @var{j})
+Returns the @var{i}, @var{j} minor of the matrix @var{m}.  That is, @var{m}
+with row @var{i} and column @var{j} removed.
 
 @end defun
 
-@defun ncexpt (a,b)
-if an (non-commutative) exponential expression is too
-wide to be displayed as A^^B it will appear as NCEXPT(A,B).
+@defun ncexpt (@var{a}, @var{b})
+If a non-commutative exponential expression is too
+wide to be displayed as @code{@var{a}^^@var{b}} it appears as @code{ncexpt (@var{a},@var{b})}.
 
 @end defun
 
-@defun ncharpoly (m,var)
-finds the characteristic polynomial of the matrix M
-with respect to var.  This is an alternative to Maxima's CHARPOLY.
-NCHARPOLY works by computing traces of powers of the given matrix,
+@defun ncharpoly (@var{m}, @var{x})
+Returns the characteristic polynomial of the matrix @var{m}
+with respect to @var{x}.  This is an alternative to Maxima's @code{charpoly}.
+
+@code{ncharpoly} works by computing traces of powers of the given matrix,
 which are known to be equal to sums of powers of the roots of the
 characteristic polynomial.  From these quantities the symmetric
 functions of the roots can be calculated, which are nothing more than
-the coefficients of the characteristic polynomial.  CHARPOLY works by
-forming the determinant of VAR * IDENT [N] - A.  Thus NCHARPOLY wins,
+the coefficients of the characteristic polynomial.  @code{charpoly} works by
+@c SHOULD THAT BE "m" INSTEAD OF "a" IN THE NEXT LINE ??
+forming the determinant of @code{@var{x} * ident [n] - a}.  Thus @code{ncharpoly} wins,
 for example, in the case of large dense matrices filled with integers,
-since it avoids polynomial arithmetic altogether.  It may be used by
-doing LOADFILE("nchrpl");
+since it avoids polynomial arithmetic altogether.
+
+@code{load ("nchrpl")} loads this file.
 
 @end defun
 
-@defun newdet (m,n)
+@defun newdet (@var{m}, @var{n})
 also computes the determinant of M but uses the
 Johnson-Gentleman tree minor algorithm.  M may be the name of a
 matrix or array.  The argument n is the order; it is optional if M is
@@ -1068,34 +1213,38 @@ the dot operator.
 
 @end defvr
 
-@defun nonscalarp (exp)
-is @code{true} if exp is a non-scalar, i.e.  it contains
+@defun nonscalarp (@var{expr})
+is @code{true} if @var{expr} is a non-scalar, i.e.  it contains
 atoms declared as non-scalars, lists, or matrices.
 
 @end defun
 
-@defun permanent (m,n)
-computes the permanent of the matrix M.  A permanent
+@defun permanent (@var{m}, @var{n})
+computes the permanent of the matrix @var{m}.  A permanent
 is like a determinant but with no sign changes.
 
 @end defun
 
-@defun rank (m)
-computes the rank of the matrix M.  That is, the order of the
-largest non-singular subdeterminant of M.  Caveat: RANK may return the
+@defun rank (@var{m})
+computes the rank of the matrix @var{m}.  That is, the order of the
+largest non-singular subdeterminant of @var{m}.  Caveat: RANK may return the
 wrong answer if it cannot determine that a matrix element that is
 equivalent to zero is indeed so.
 
 @end defun
 
 @defvar ratmx
- default: @code{false} - if @code{false} will cause determinant and matrix
-addition, subtraction, and multiplication to be performed in the
-representation of the matrix elements and will cause the result of
-matrix inversion to be left in general representation.  If it is @code{true},
-the 4 operations mentioned above will be performed in CRE form and the
-result of matrix inverse will be in CRE form.  Note that this may
-cause the elements to be expanded (depending on the setting of RATFAC)
+Default value: @code{false}
+
+When @code{ratmx} is @code{false}, determinant and matrix
+addition, subtraction, and multiplication are performed in the
+representation of the matrix elements and cause the result of
+matrix inversion to be left in general representation.
+
+When @code{ratmx} is @code{true},
+the 4 operations mentioned above are performed in CRE form and the
+result of matrix inverse is in CRE form.  Note that this may
+cause the elements to be expanded (depending on the setting of @code{ratfac})
 which might not always be desired.
 
 @end defvar
@@ -1142,29 +1291,32 @@ used, altering M in a similar manner, but returning x as the value.
 
 @defun similaritytransform (mat)
 @defunx simtran (mat)
-a function in the EIGEN package.  Do
-LOAD(EIGEN) to use it.  SIMILARITYTRANSFORM takes a MATRIX as its
+@code{similaritytransform} takes a @code{matrix} as its
 argument and returns a list which is the output of the
-UNITEIGENVECTORS command.  In addition if the flag NONDIAGONALIZABLE
-is @code{false} two global matrices LEFTMATRIX and RIGHTMATRIX will be
+@code{uniteigenvectors} command.  In addition if the flag @code{nondiagonalizable}
+is @code{false} two global matrices @code{leftmatrix} and @code{rightmatrix} will be
 generated.  These matrices have the property that
 LEFTMATRIX.MAT.RIGHTMATRIX is a diagonal matrix with the eigenvalues
-of MAT on the diagonal.  If NONDIAGONALIZABLE is @code{true} these two
-matrices will not be generated.  If the flag HERMITIANMATRIX is @code{true}
-then LEFTMATRIX is the complex conjugate of the transpose of
-RIGHTMATRIX.  Otherwise LEFTMATRIX is the inverse of RIGHTMATRIX.
-RIGHTMATRIX is the matrix the columns of which are the unit
+of MAT on the diagonal.  If @code{nondiagonalizable} is @code{true} these two
+matrices will not be generated.  If the flag @code{hermitianmatrix} is @code{true}
+then @code{leftmatrix} is the complex conjugate of the transpose of
+@code{rightmatrix}.  Otherwise @code{leftmatrix} is the inverse of @code{rightmatrix}.
+@code{rightmatrix} is the matrix the columns of which are the unit
 eigenvectors of MAT.  The other flags (see DESCRIBE(EIGENVALUES); and
 DESCRIBE(EIGENVECTORS);) have the same effects since
-SIMILARITYTRANSFORM calls the other functions in the package in order
-to be able to form RIGHTMATRIX.
+@code{similaritytransform} calls the other functions in the package in order
+to be able to form @code{rightmatrix}.
+
+@code{load ("eigen")} loads this function.
 
 @code{simtran} is a synonym for @code{similaritytransform}.
 
 @end defun
 
 @defvar sparse
- default: @code{false} - if @code{true} and if RATMX:TRUE then DETERMINANT
+Default value: @code{false}
+
+When @code{sparse} is @code{true}, and if @code{ratmx} is @code{true}, then @code{determinant}
 will use special routines for computing sparse determinants.
 
 @end defvar
@@ -1175,37 +1327,45 @@ matrix M with rows mi deleted, and columns ni deleted.
 
 @end defun
 
-@defun transpose (m)
-produces the transpose of the matrix M.
+@defun transpose (@var{m})
+Returns the transpose of @var{m}.
+
+If @var{m} is a matrix, the return value is another matrix @var{n}
+such that @code{n[i,j] = m[j,i]}.
+
+Otherwise @var{m} is a list, and the return value is a matrix @var{n}
+of @code{length (m)} rows and 1 column, such that @code{n[i,1] = m[i]}.
 
 @end defun
 
 @defun triangularize (m)
-produces the upper triangular form of the matrix M
+Returns the upper triangular form of the matrix M
 which needn't be square.
 
 @end defun
 
 @defun uniteigenvectors (mat)
 @defunx ueivects (mat)
-a function in the EIGEN package.  Do
-LOAD(EIGEN) to use it.  UNITEIGENVECTORS takes a MATRIX as its
+@code{uniteigenvectors} takes a matrix as its
 argument and returns a list of lists the first sublist of which is the
-output of the EIGENVALUES command and the other sublists of which are
+output of the @code{eigenvalues} command and the other sublists of which are
 the unit eigenvectors of the matrix corresponding to those eigenvalues
 respectively.  The flags mentioned in the description of the
-EIGENVECTORS command have the same effects in this one as well.  In
+@code{eigenvectors} command have the same effects in this one as well.  In
 addition there is a flag which may be useful :
-KNOWNEIGVECTS - If set to @code{true} the EIGEN package will assume
+
+@code{knowneigvects} - If set to @code{true} the @code{eigen} package will assume
 that the eigenvectors of the matrix are known to the user and are
-stored under the global name LISTEIGVECTS.  LISTEIGVECTS should be set
-to a list similar to the output of the EIGENVECTORS command.  (If
-KNOWNEIGVECTS is set to @code{true} and the list of eigenvectors is given the
-setting of the flag NONDIAGONALIZABLE may not be correct.  If that is
+stored under the global name @code{listeigvects}.  @code{listeigvects} should be set
+to a list similar to the output of the @code{eigenvectors} command.  (If
+@code{knowneigvects} is set to @code{true} and the list of eigenvectors is given the
+setting of the flag @code{nondiagonalizable} may not be correct.  If that is
 the case please set it to the correct value.  The author assumes that
 the user knows what he is doing and will not try to diagonalize a
 matrix the eigenvectors of which do not span the vector space of the
 appropriate dimension...)
+
+@code{load ("eigen")} loads this function.
 
 @code{ueivects} is a synonym for @code{uniteigenvectors}.
 
@@ -1213,9 +1373,10 @@ appropriate dimension...)
 
 @defun unitvector (x)
 @defunx uvect (x)
-a function in the EIGEN package.  Do LOAD(EIGEN) to
-use it.  UNITVECTOR takes a LIST as its argument and returns a unit
+@code{unitvector} takes a list as its argument and returns a unit
 list.  (i.e. a list with unit magnitude).
+
+@code{load ("eigen")} loads this function.
 
 @code{uvect} is a synonym for @code{unitvector}.
 
@@ -1227,25 +1388,33 @@ simplifications, together with various optional
 expansions according to the settings of the following global flags:
 
 @example
-EXPANDALL, EXPANDDOT, EXPANDDOTPLUS, EXPANDCROSS, EXPANDCROSSPLUS,
-EXPANDCROSSCROSS, EXPANDGRAD, EXPANDGRADPLUS, EXPANDGRADPROD,
-EXPANDDIV, EXPANDDIVPLUS, EXPANDDIVPROD, EXPANDCURL, EXPANDCURLPLUS,
-EXPANDCURLCURL, EXPANDLAPLACIAN, EXPANDLAPLACIANPLUS,
-EXPANDLAPLACIANPROD.
+expandall, expanddot, expanddotplus, expandcross, expandcrossplus,
+expandcrosscross, expandgrad, expandgradplus, expandgradprod,
+expanddiv, expanddivplus, expanddivprod, expandcurl, expandcurlplus,
+expandcurlcurl, expandlaplacian, expandlaplacianplus,
+expandlaplacianprod.
 @end example
 
 All these flags have default value @code{false}. The PLUS suffix refers to
 employing additivity or distributivity.  The PROD suffix refers to the
 expansion for an operand that is any kind of product.
-EXPANDCROSSCROSS refers to replacing p~(q~r) with (p.r)*q-(p.q)*r, and
-EXPANDCURLCURL refers to replacing CURL CURL p with GRAD DIV p + DIV
+
+@code{expandcrosscross} refers to replacing p~(q~r) with (p.r)*q-(p.q)*r, and
+
+@code{expandcurlcurl} refers to replacing CURL CURL p with GRAD DIV p + DIV
 GRAD p.  EXPANDCROSS:TRUE has the same effect as
-EXPANDCROSSPLUS:EXPANDCROSSCROSS:TRUE, etc.  Two other flags,
-EXPANDPLUS and EXPANDPROD, have the same effect as setting all
-similarly suffixed flags true.  When @code{true}, another flag named
-EXPANDLAPLACIANTODIVGRAD, replaces the LAPLACIAN operator with the
-composition DIV GRAD.  All of these flags are initially @code{false}.  For
-convenience, all of these flags have been declared EVFLAG.
+EXPANDCROSSPLUS:EXPANDCROSSCROSS:TRUE, etc.
+
+Two other flags,
+@code{expandplus} and @code{expandprod}, have the same effect as setting all
+similarly suffixed flags true.
+
+When @code{true}, another flag named
+@code{expandlaplaciantodivgrad}, replaces the Laplacian operator with the
+composition DIV GRAD.
+
+For convenience, all of these flags have been declared @code{evflag}.
+
 For orthogonal curvilinear coordinates, the global variables
 COORDINATES[[X,Y,Z]], DIMENSION[3], SF[[1,1,1]], and SFPROD[1] are set
 by the function invocation
@@ -1253,18 +1422,51 @@ by the function invocation
 @end defun
 
 @defvar vect_cross
- default:@code{false} - If @code{true} allows DIFF(X~Y,T) to work where
+Default value: @code{false}
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+When @code{vect_cross} is @code{true}, it allows DIFF(X~Y,T) to work where
 ~ is defined in SHARE;VECT (where VECT_CROSS is set to @code{true}, anyway.)
 
 @end defvar
 
-@defun zeromatrix (m,n)
-takes integers m,n as arguments and returns an m by
-n matrix of 0's.
+@defun zeromatrix (@var{m}, @var{n})
+Returns an @var{m} by @var{n} matrix, all elements of which are zero.
 
 @end defun
 
 @defvr {special symbol} "["
-  - [ and ] are the characters which Maxima uses to delimit a
-list.
+@code{[} and @code{]} mark the beginning and end, respectively, of a list.
+
+@code{[} and @code{]} also enclose the subscripts of
+a list, array, hash array, or array function.
+
+Examples:
+
+@example
+(%i1) x: [a, b, c];
+(%o1)                       [a, b, c]
+(%i2) x[3];
+(%o2)                           c
+(%i3) array (y, fixnum, 3);
+(%o3)                           y
+(%i4) y[2]: %pi;
+(%o4)                          %pi
+(%i5) y[2];
+(%o5)                          %pi
+(%i6) z['foo]: 'bar;
+(%o6)                          bar
+(%i7) z['foo];
+(%o7)                          bar
+(%i8) g[k] := 1/(k^2+1);
+                                  1
+(%o8)                     g  := ------
+                           k     2
+                                k  + 1
+(%i9) g[10];
+                                1
+(%o9)                          ---
+                               101
+@end example
+
 @end defvr
