@@ -7,12 +7,15 @@ AC_CANONICAL_HOST
 case "$host" in
         *mingw*)
                 win32=true
+                mingw=true 
                 ;;
         *cygwin*)
                 win32=true
+                mingw=false
                 ;;
         *)
                 win32=false
+                mingw=false
 esac
 AC_SUBST(win32)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
@@ -322,7 +325,7 @@ AM_CONDITIONAL(OPENMCL, test x$openmcl = xtrue)
 
 if test x"${clisp}" = xtrue; then
     if test x"${CLISP_RUNTIME_PATH}" = x"" ; then
-        if test x"${win32}" = xtrue ; then
+        if test x"${mingw}" = xtrue ; then
             CLISP_RUNTIME_PATH=`${CLISP_NAME} -norc -q -x "(format nil \"~a${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`
         else
             CLISP_RUNTIME_PATH=`${CLISP_NAME} -norc -q -x "(format nil \"~abase/${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`
