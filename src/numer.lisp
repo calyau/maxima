@@ -155,6 +155,8 @@
 		   (OR LPROPS MPROPS)
 		   (OR MPROPS LPROPS))
 	       (GETL F '(OPERATORS)))))
+	((functionp f)
+	 (list 'expr f))
 	((consp f) ;(EQ (TYPEP F) 'LIST)
 	 (LIST (IF (MEMQ (CAR F) '(FUNCTION LAMBDA NAMED-LAMBDA))
 		   'EXPR

@@ -2,9 +2,11 @@
 ;;;     (c) Copyright 1982 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(in-package "MAXIMA")
+
 (macsyma-module qq)
 
-(load-macsyma-macros Numerm)
+;; (load-macsyma-macros Numerm)
 
 ;;; 10:55 pm Sept 25, 1981 - LPH & GJC
 ;;; added $numer and $float set to T so that quanc8(x,x,0,1/2); works. this
@@ -27,16 +29,31 @@
 (DEFMVAR $QUANC8_RELERR 1.0e-4
   "relative error condition for reasonable run-times")	
 
-(DEFUN ($QUANC8 TRANSLATED-MMACRO) (F A B &OPTIONAL (C NIL C-P))
-  (IF (NOT C-P)
-      `((CALL-QUANC8) ,F ,A ,B)
-      `((CALL-QUANC8) ((LAMBDA) ((MLIST) ,A) ,F) ,B ,C)))
+;; (DEFUN ($QUANC8 TRANSLATED-MMACRO) (F A B &OPTIONAL (C NIL C-P))
+;;   (IF (NOT C-P)
+;;       `((CALL-QUANC8) ,F ,A ,B)
+;;       `((CALL-QUANC8) ((LAMBDA) ((MLIST) ,A) ,F) ,B ,C)))
+
+(defmspec $quanc8 (form)
+  (if (cdddr (setq form (cdr form))) 
+      (apply #'call-quanc8
+	     (meval `((lambda) ((mlist) ,(cadr form)) ,(car form)))
+	     (mapcar #'meval (cddr form)))
+      (apply #'call-quanc8 (mapcar #'meval form))))
+
+(def%tr $quanc8 (form)
+  `($float
+    ,@(cdr (tr-lisp-function-call
+	    (if (cdddr (setq form (cdr form)))
+		`((call-quanc8)
+		  ((lambda) ((mlist) ,(cadr form)) ,(car form)) ,@(cddr form))
+		`((call-quanc8) ,@form)) nil))))
 
 (DEFVAR QUANC8-FREE-LIST ()
   "For efficient calls to quanc8 keep arrays we need on a free list.")
 
-(DEFVAR QUANC8-^] ())
-(DEFUN QUANC8-^] () (SETQ QUANC8-^] T))
+(DEFVAR QUANC8-|^]| ())
+(DEFUN QUANC8-|^]| () (SETQ QUANC8-|^]| T))
 
 (DEFUN CALL-QUANC8 (FUN A B)
   (BIND-TRAMP1$
@@ -48,7 +65,7 @@
 			 (*array nil 'flonum 9. 31.)
 			 (*array nil 'flonum 9. 31.)
 			 (*array nil 'flonum 32.))))
-	 (USER-TIMESOFAR (CONS #'QUANC8-^] USER-TIMESOFAR))) 
+	 (USER-TIMESOFAR (CONS #'QUANC8-|^]| USER-TIMESOFAR))) 
      (PROG1
       (QUANC8 FUN
 	      (MTO-FLOAT A)
@@ -60,50 +77,40 @@
 	      (CAR (CDDDDR VALS)))
       (PUSH VALS QUANC8-FREE-LIST)))))
 
-;; local macros for typing convenience.
-
-(eval-when (eval compile)
-  (defmacro x (j) `(arraycall flonum x-arr ,j))
-  (defmacro f (j) `(arraycall flonum f-arr ,j))
-  (defmacro xsave (j k) `(arraycall flonum xsave-arr ,j ,k))
-  (defmacro fsave (j k) `(arraycall flonum fsave-arr ,j ,k))
-  (defmacro qright (j) `(arraycall flonum qright-arr ,j))
-  )
-
-
 (DEFUN QUANC8 (FUN A B X-ARR F-ARR XSAVE-ARR FSAVE-ARR QRIGHT-ARR)
-  (PROG (LEVMIN LEVMAX LEVOUT NOMAX NOFIN W0 W1 W2 W3 W4 RESULT COR11 AREA
-		NOFUN LEV NIM QPREV STONE I STEP QLEFT QNOW QDIFF ESTERR TOLERR TEMP
-		$NUMER $FLOAT)
+  (declare (type (simple-array cl:float)
+		 x-arr f-arr xsave-arr fsave-arr qright-arr))
+  ;; local macros for typing convenience.
+  (macrolet ((x (j) `(arraycall flonum x-arr ,j))
+	     (f (j) `(arraycall flonum f-arr ,j))
+	     (xsave (j k) `(arraycall flonum xsave-arr ,j ,k))
+	     (fsave (j k) `(arraycall flonum fsave-arr ,j ,k))
+	     (qright (j) `(arraycall flonum qright-arr ,j))) 
+    ;; Rudimentary (non-ansi GCL compatible) error handling.
+    (let (errset)
+      (or (car (errset
+    (PROG ((LEVMIN 1.) (LEVMAX 30.) (LEVOUT 6.) (NOMAX 5000.) (NOFIN 0)
+	 (W0 (//$ 3956.0 14175.0)) (W1 (//$ 23552.0 14175.0))
+	 (W2 (//$ -3712.0 14175.0)) (W3 (//$ 41984.0 14175.0))
+	 (W4 (//$ -18160.0 14175.0))
+	 (RESULT 0.0) (COR11 0.0) (AREA 0.0)
+	 (NOFUN 0.) (LEV 0.) (NIM 1.) (QPREV 0.0)
+	 (STONE (//$ (-$ B A) 16.0))
+	 (I 0.)
+	 (STEP 0.0) (QLEFT 0.0) (QNOW 0.0) (QDIFF 0.0)
+	 (ESTERR 0.0) (TOLERR 0.0) (TEMP 0.0)
+	 ($NUMER t) ($FLOAT t))
 	
-	(DECLARE (FLONUM W0 W1 W2 W3 W4 RESULT COR11 AREA QPREV STONE STEP
+	(DECLARE (cl:float W0 W1 W2 W3 W4 RESULT COR11 AREA QPREV STONE STEP
 			 QLEFT QNOW QDIFF ESTERR TOLERR TEMP)
 		 (FIXNUM I LEVMIN LEVMAX LEVOUT NOMAX NOFIN NOFUN LEV NIM)
-		 (NOTYPE $NUMER $FLOAT))
+		 (boolean $NUMER $FLOAT))
 
-	(SETQ $NUMER T
-	      $FLOAT T
-	      $QUANC8_FLAG 0.0
-	      $QUANC8_ERREST 0.0
-	      LEVMIN 1.
-	      LEVMAX 30.
-	      LEVOUT 6.
-	      NOMAX 5000. 
-	      NOFIN (- NOMAX (* 8 (+ LEVMAX (* -1. LEVOUT) (EXPT 2. (1+ LEVOUT)))))
-	      W0 (//$ 3956.0 14175.0)
-	      W1 (//$ 23552.0 14175.0)
-	      W2 (//$ -3712.0 14175.0)
-	      W3 (//$ 41984.0 14175.0)
-	      W4 (//$ -18160.0 14175.0)
-	      RESULT 0.0
-	      COR11 0.0
-	      AREA 0.0
-	      NOFUN 0.
-	      LEV 0.
-	      NIM 1.
-	      QPREV 0.0
-	      STONE (//$ (-$ B A)
-			 16.0))
+	(SETQ
+	 $QUANC8_FLAG 0.0
+	 $QUANC8_ERREST 0.0
+	 NOFIN (- NOMAX (* 8 (+ LEVMAX (* -1. LEVOUT) (EXPT 2. (1+ LEVOUT))))))
+	      
 	(COND ((= A B)
 	       (RETURN 0.0)))
 
@@ -141,12 +148,11 @@
 	      (*$ 0.5 (+$ (X 12.)
 			  (X 16.))))
 
-	(SETQ I 0.)
 
   DO-25
-        (WHEN QUANC8-^]
+        (WHEN QUANC8-|^]|
 	      (MTELL "QUANC8 calculating at X= ~S" (X I))
-	      (SETQ QUANC8-^] NIL))
+	      (SETQ QUANC8-|^]| NIL))
 	      
 	(SETF (F I)
 	      (FCALL$ FUN (X I)))
@@ -168,9 +174,9 @@ DO-25-DONE
 	(SETF (X I)
 	      (*$ 0.5 (+$ (X (1- I))
 			  (X (1+ I)))))
-        (WHEN QUANC8-^]
+        (WHEN QUANC8-|^]|
 	      (MTELL "QUANC8 calculating at X= ~S" (X I))
-	      (SETQ QUANC8-^] NIL))
+	      (SETQ QUANC8-|^]| NIL))
 
 	(SETF (F I)
 	      (FCALL$ FUN (X I)))
@@ -350,4 +356,8 @@ DO-52-DONE
 
 	(SETQ $QUANC8_ERREST (*$ 2.0 $QUANC8_ERREST))
 	
-	(GO TAG-82)))
+	(GO TAG-82))))
+
+	  ;; For whatever reason and with a suitable
+	  ;; discrete meaning of convergence...
+	  (merror "QUANC8 failed to converge.")))))
