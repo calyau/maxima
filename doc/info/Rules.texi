@@ -459,7 +459,50 @@ main operator of the expression, but is simply not doing enough for
 you, you probably want to use @code{tellsimpafter}.  The pattern may not be a
 sum, product, single variable, or number.  @code{rules} is a list of names
 having simplification rules added to them by @code{defrule}, @code{defmatch},
-@code{tellsimp}, or @code{tellsimpafter}.  Do EXAMPLE(TELLSIMP); for examples.
+@code{tellsimp}, or @code{tellsimpafter}.
+
+Examples:
+
+@example
+(%i1) matchdeclare (x, freeof (%i));
+(%o1)                         done
+(%i2) %iargs: false$
+(%i3) tellsimp (sin(%i*x), %i*sinh(x));
+(%o3)                 [sinrule1, simp-%sin]
+(%i4) trigexpand (sin (%i*y + x));
+(%o4)         sin(x) cos(%i y) + %i cos(x) sinh(y)
+(%i5) %iargs:true$
+(%i6) errcatch(0^0);
+ 0
+0  has been generated
+(%o6)                          []
+(%i7) ev (tellsimp (0^0, 1), simp: false);
+(%o7)                  [^rule1, simpexpt]
+(%i8) 0^0;
+(%o8)                           1
+(%i9) remrule ("^", %th(2)[1]);
+(%o9)                           ^
+(%i10) tellsimp (sin(x)^2, 1 - cos(x)^2);
+(%o10)                 [^rule2, simpexpt]
+(%i11) (1 + sin(x))^2;
+                                      2
+(%o11)                    (sin(x) + 1)
+(%i12) expand (%);
+                                   2
+(%o12)               2 sin(x) - cos (x) + 2
+(%i13) sin(x)^2;
+                                  2
+(%o13)                     1 - cos (x)
+(%i14) kill (rules);
+(%o14)                        done
+(%i15) matchdeclare (a, true);
+(%o15)                        done
+(%i16) tellsimp (sin(a)^2, 1 - cos(a)^2);
+(%o16)                 [^rule3, simpexpt]
+(%i17) sin(y)^2;
+                                  2
+(%o17)                     1 - cos (y)
+@end example
 
 @end defun
 
