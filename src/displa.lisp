@@ -1100,7 +1100,7 @@
 	       bkptht (max maxht bkptht) bkptdp (max maxdp bkptdp) maxht 1 maxdp 0))))
 
 (defun forcebreak (result w)
-  (output result 0) (mterpri)
+  (output result 0)
   (setq lines (f+ 2 lines) bkpt nil bkptout (f+ w break) maxht 1 maxdp 0))
 
 (defun update-heights (ht* dp*)
@@ -1149,10 +1149,12 @@
 
 (defun output (result w)
   (declare (fixnum w))
-  #+nocp (if (not (or (or #.ttyoff more-^w)))(fresh-line))
-  #-nocp
-  (if (not (or #.ttyoff more-^w  (zerop (charpos t))))
-      (mterpri))
+;; The following is a hack to attempt to determine if we're on an
+;; interactive terminal, in which case the user's hitting of the ENTER
+;; key will have caused a newline to be displayed already.
+#+(or gcl clisp) (cond ((not (equal *query-io* *standard-input*)) (fresh-line)))
+#-(or gcl clisp) (cond ((not (interactive-stream-p *standard-input*)) (fresh-line)))
+
   ;;  (IF (AND (NOT (OR #.ttyoff MORE-^W))
   ;;	   SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
   ;;	   (< (f+ BKPTHT BKPTDP) (f1- TTYHEIGHT))

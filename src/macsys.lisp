@@ -97,7 +97,7 @@
 		 batch-or-demo-flag)
   (declare (special *socket-connection*))
   (if (eql batch-or-demo-flag :demo)
-      (format t "~% At the _ prompt, type ';' followed by enter to get next demo"))
+      (format t "~% At the _ prompt, type ';' followed by enter to get next demo~&"))
   (catch 'abort-demo
     (do ((r)
 	 (time-before)
@@ -151,7 +151,6 @@
 	       (let ( (#.ttyoff t) smart-tty  $linedisp)
 		 (displa `((mlable) , c-tag , $__)))))
 	(if (eq r eof) (return '$done))
-	(fresh-line *standard-output*)
 	(setq $__ (caddr r))
 	(set  c-tag $__)
 	(cond (batch-or-demo-flag
@@ -173,7 +172,7 @@
 	(set (setq d-tag (makelabel $outchar)) $%)
 	(setq $_ $__)
 	(when $showtime
-	  (format t "~&Evaluation took ~$ seconds (~$ elapsed)"
+	  (format t "Evaluation took ~$ seconds (~$ elapsed)~&"
 		  time-used etime-used )
 	  #+(or cmu sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
@@ -186,11 +185,10 @@
 		   (format t " using ~:D bytes." total-bytes)))))
 	(unless $nolabels
 	  (putprop d-tag (cons time-used  0) 'time))
-	(fresh-line *standard-output*)
 	(if (eq (caar r) 'displayinput)
 	    (displa `((mlable) ,d-tag ,$%)))
 	(when (eq batch-or-demo-flag ':demo)
-	  (mtell "~&~A_~A" *prompt-prefix* *prompt-suffix*)
+	  (mtell "~A_~A" *prompt-prefix* *prompt-suffix*)
 	  (let (quitting)	  
 	    (do ((char)) (nil)
 	      ;;those are common lisp characters you're reading here

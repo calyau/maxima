@@ -454,7 +454,7 @@
 (defun $batchload (filename &aux expr (*mread-prompt* "") )
   (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
   (with-open-file (in-stream filename)
-    (when $loadprint (format t "~&batching ~A"
+    (when $loadprint (format t "~&batching ~A~&"
 					   (cl:namestring
 			      (truename in-stream))))
     (cleanup)
@@ -726,7 +726,7 @@
 	 (test-batch filename nil :show-all t))
 	(t
 	 (with-open-file (in-stream filename)
-	   (format t "~%batching ~A"
+	   (format t "~%batching ~A~%"
 		   (truename in-stream))
 	   (continue in-stream demo)
 	   (namestring in-stream)))))

@@ -101,6 +101,7 @@
 	       (princ "^")
 	       
 	       ;(loop while (read-char-no-hang) )
+           (read-line *parse-stream* nil nil)
 	       )))
       (terpri)
       (throw-macsyma-top) 
