@@ -362,7 +362,7 @@ so as to give a better answer.
 @c @node INTSCE, LDEFINT, INTEGRATION_CONSTANT_COUNTER, Integration
 @c @unnumberedsec phony
 @defun INTSCE (expr,var)
-INTSCE LISP contains a routine, written by Richard
+intsce.lisp contains a routine, written by Richard
 Bogen, for integrating products of sines,cosines and exponentials of
 the form
 @example

@@ -41,7 +41,7 @@ END-INFO-DIR-ENTRY
 
 Maxima is a fairly complete computer algebra system.
 
-This system Maxima is a COMMON LISP implementation due to William F.
+This system Maxima is a Common Lisp implementation due to William F.
 Schelter, and is based on the original implementation of Macsyma at
 MIT, as distributed by the Department of Energy.  I now have
 permission from DOE to make derivative copies, and in particular to

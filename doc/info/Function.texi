@@ -403,14 +403,14 @@ COMPFILE are pretty-printed.
 @defun COMPILE (f)
 The COMPILE command is a convenience feature in Maxima. It
 handles the calling of the function COMPFILE, which translates Maxima
-functions into lisp, the calling of the lisp compiler on the file
+functions into Lisp, the calling of the Lisp compiler on the file
 produced by COMPFILE, and the loading of the output of the compiler
 into the Maxima. It also checks the compiler
 comment listing output file for certain common errors.  Do
 PRINTFILE(MCOMPI,DOC,MAXDOC); for more details.
 COMPILE(); causes Maxima to prompt for arguments. 
 COMPILE(function1,function2,...); compiles the functions, it uses the name
-of function1 as the first name of the file to put the lisp output.
+of function1 as the first name of the file to put the Lisp output.
 COMPILE(ALL); or COMPILE(FUNCTIONS); will compile all functions.
 COMPILE([file-name],function1,function2,...); N.B. all arguments are
 evaluated, just like a normal function (it is a normal function!).
@@ -471,7 +471,7 @@ does the following:
 See DESCRIBE(MODE_DECLARE); for a list of the possible "modes".
 The optional 4th argument is a documentation string.  When
 TRANSLATE_FILE is used on a package which includes documentation
-strings, a second file is output in addition to the LISP file which
+strings, a second file is output in addition to the Lisp file which
 will contain the documentation strings, formatted suitably for use in
 manuals, usage files, or (for instance) DESCRIBE.
 With any variable which has been DEFINE_VARIABLE'd with mode other
@@ -657,7 +657,7 @@ every time you take the first of a list of numbers.
  default: [FALSE] - if TRUE removes global declarations in
 the local context.  This applies to variables which are formal
 parameters to functions which one is TRANSLATE-ing from Maxima code
-to LISP.
+to Lisp.
 
 @end defvar
 @c @node TRANSCOMPILE, TRANSLATE, TRANSBIND, Function Definition
@@ -672,9 +672,9 @@ uses TRANSCOMPILE:TRUE;.
 @c @unnumberedsec phony
 @defun TRANSLATE (f1, f2, ...)
 translates the user defined functions
-f1,f2,... from the Maxima language to LISP (i.e. it makes them
+f1,f2,... from the Maxima language to Lisp (i.e. it makes them
 EXPRs).  This results in a gain in speed when they are called.  There
-is now a version of Maxima with the Maxima to lisp translator
+is now a version of Maxima with the Maxima to Lisp translator
 pre-loaded into it.  It is available by typing :TM (for
 TranslateMacsyma) at DDT level.  When given a file name, E.g. :TM
 GJC;TMTEST > , it gives that file to the function TRANSLATE_FILE, and
@@ -701,9 +701,9 @@ simplified; if they are not, correct but non- optimal code gets
 generated.  Thus, the user should not set the SIMP switch to FALSE
 which inhibits simplification of the expressions to be translated.
 The switch TRANSLATE, default: [FALSE], If TRUE, causes automatic
-translation of a user's function to LISP.  Note that translated
+translation of a user's function to Lisp.  Note that translated
 functions may not run identically to the way they did before
-translation as certain incompatabilities may exist between the LISP
+translation as certain incompatabilities may exist between the Lisp
 and Maxima versions.  Principally, the RAT function with more than
 one argument and the RATVARS function should not be used if any
 variables are MODE_DECLAREd CRE.  Also the PREDERROR:FALSE setting
@@ -722,9 +722,9 @@ functions, and dir is the name of a file directory.
 The result returned by TRANSLATE is a list of the names of the
 functions TRANSLATEd.  In the case of a file translation the
 corresponding element of the list is a list of the first and second
-new file names containing the LISP code resulting from the
-translation.  This will be fn1 LISP on the disk directory dir.  The
-file of LISP code may be read into Maxima by using the LOADFILE
+new file names containing the Lisp code resulting from the
+translation.  This will be fn1.LISP on the disk directory dir.  The
+file of Lisp code may be read into Maxima by using the LOADFILE
 function.
 
 @end defun
@@ -732,9 +732,9 @@ function.
 @c @unnumberedsec phony
 @defun TRANSLATE_FILE (file)
 translates a file of Maxima code into a file
-of LISP code.  It takes one or two arguments.  The first argument is
+of Lisp code.  It takes one or two arguments.  The first argument is
 the name of the Maxima file, and the optional second argument is the
-name of the LISP file to produce.  The second argument defaults to the
+name of the Lisp file to produce.  The second argument defaults to the
 first argument with second file name the value of
 TR_OUTPUT_FILE_DEFAULT which defaults to TRLISP.  For example:
 TRANSLATE_FILE("test.mc")); will translate "test.mc" to "test.LISP".
@@ -831,7 +831,7 @@ non-terminating optimization properties.
 @c @unnumberedsec phony
 @defvar TR_OUTPUT_FILE_DEFAULT
  default: [TRLISP] - This is the second file
-name to be used for translated lisp output.
+name to be used for translated Lisp output.
 
 @end defvar
 @c @node TR_PREDICATE_BRAIN_DAMAGE, TR_SEMICOMPILE, TR_OUTPUT_FILE_DEFAULT, Function Definition
@@ -847,7 +847,7 @@ package.
 @defvar TR_SEMICOMPILE
  default: [FALSE] - If TRUE TRANSLATE_FILE and COMPFILE
 output forms which will be macroexpanded but not compiled into machine
-code by the lisp compiler.
+code by the Lisp compiler.
 
 @end defvar
 @c @node TR_STATE_VARS, TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED, TR_SEMICOMPILE, Function Definition
@@ -962,7 +962,7 @@ off.
 @c @unnumberedsec phony
 @defun COMPILE_FILE (filename,&optional-outfile)
 It takes filename which
-contains Maxima code, and translates this to lisp and then compiles the
+contains Maxima code, and translates this to Lisp and then compiles the
 result.  It returns a list of four files (the original file,translation,
 notes on translation and the compiled code).
 
@@ -972,12 +972,12 @@ notes on translation and the compiled code).
 @c @unnumberedsec phony
 @defun DECLARE_TRANSLATED (FN1,FN2..)
 When translating a file of Maxima code
-to lisp, it is important for the translator to know which functions it
+to Lisp, it is important for the translator to know which functions it
 sees in the file are to be called as translated or compiled functions,
 and which ones are just Maxima functions or undefined.  Putting this
 declaration at the top of the file, lets it know that although a symbol
-does which does not yet have a lisp function value, will have one at
+does which does not yet have a Lisp function value, will have one at
 call time.  (MFUNCTION-CALL fn arg1 arg2.. ) is generated when
-the translator does not know fn is going to be a lisp function.
+the translator does not know fn is going to be a Lisp function.
 
 @end defun

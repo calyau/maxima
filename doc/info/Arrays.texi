@@ -150,8 +150,8 @@ desired to redefine the values in a hashed array.
  [TRUE on Lispm] - If TRUE then only two types
 of arrays are recognized.  
 
-1) The art-q array (t in common lisp) which may have several dimensions
-indexed by integers, and may hold any lisp or Maxima object as an
+1) The art-q array (t in Common Lisp) which may have several dimensions
+indexed by integers, and may hold any Lisp or Maxima object as an
 entry.  To construct such an array, enter A:MAKE_ARRAY(ANY,3,4); then A
 will have as value, an array with twelve slots, and the indexing is zero
 based.

@@ -230,7 +230,7 @@ with variables or functions.
 REMOVE(a1, p1, a2, p2, ...)  removes the property pi from the atom ai.
 Ai and pi may also be lists as with DECLARE.  Pi may be any property
 e.g.  FUNCTION, MODE_DECLARE, etc.  It may also be TRANSFUN implying
-that the translated LISP version of the function is to be removed.
+that the translated Lisp version of the function is to be removed.
 This is useful if one wishes to have the Maxima version of the
 function executed rather than the translated version. Pi may also be
 OP or OPERATOR to remove a syntax extension given to ai.

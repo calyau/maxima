@@ -130,7 +130,7 @@ or a collection of polynomials.
 @defun PCOEFF (poly monom [variables-to-exclude-from-cof (list-variables monom)])
 
 
-This function is called from lisp level, and uses internal poly format.
+This function is called from Lisp level, and uses internal poly format.
 @example
 
 CL-MAXIMA>>(setq me (st-rat #$x^2*u+y+1$))
@@ -151,7 +151,7 @@ like substituting them to be zero.
 @c @unnumberedsec phony
 @defun NEW-DISREP (poly)
 
-From lisp this returns the general Maxima format for an arg which is
+From Lisp this returns the general Maxima format for an arg which is
 in st-rat form:
 
 @example

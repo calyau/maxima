@@ -100,10 +100,10 @@ Error signalled by MMAPCAR.
 Broken at SIMPLIFY.  Type :H for Help.
 @end example
 Maxima code translated into Lisp handles such errors more gracefully. 
-If specfun.LISP is installed on your machine, the same computation 
+If specfun.lisp is installed on your machine, the same computation 
 results in  a clear error message.  For example
 @example
-(%i1) load("specfun.LISP")$
+(%i1) load("specfun.lisp")$
 (%i2) chebyshev_t(8);
 Error: Expected 2 args but received 1 args
 Fast links are on: do (si::use-fast-links nil) for debugging

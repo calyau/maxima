@@ -420,7 +420,7 @@ keep track of what FEATURES they have loaded in.
 @end defun
 
 @defun TO_LISP ()
-enters the LISP system under Maxima.  This is useful on
+enters the Lisp system under Maxima.  This is useful on
 those systems where control-uparrow is not available for this
 function.
 

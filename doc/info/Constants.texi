@@ -15,7 +15,7 @@ as %E.
 @c @node FALSE
 @c @unnumberedsec phony
 @defvar FALSE
- - the Boolean constant, false. (NIL in LISP)
+ - the Boolean constant, false. (NIL in Lisp)
 
 @end defvar
 @c @node MINF
@@ -33,6 +33,6 @@ as %E.
 @c @node TRUE
 @c @unnumberedsec phony
 @defvar TRUE
- - the Boolean constant, true. (T in LISP)
+ - the Boolean constant, true. (T in Lisp)
 
 @end defvar

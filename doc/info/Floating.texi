@@ -137,7 +137,7 @@ the right.  The value 1 for FPPRINTPREC is illegal.)
 @defun ?ROUND (x,&optional-divisor)
 round the floating point X to the nearest integer.   The argument
 must be a regular system float, not a bigfloat.   The ? beginning the name
-indicates this is normal common lisp function.
+indicates this is normal Common Lisp function.
 
 
 @example
@@ -149,7 +149,7 @@ indicates this is normal common lisp function.
 @defun ?TRUNCATE (x,&optional-divisor)
 truncate the floating point X towards 0, to become an integer.   The argument
 must be a regular system float, not a bigfloat.  The ? beginning the name
-indicates this is normal common lisp function.
+indicates this is normal Common Lisp function.
 @end defun 
 @example
 (%i4) ?truncate(-2.8);

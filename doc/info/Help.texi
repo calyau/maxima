@@ -42,10 +42,10 @@ see help on all the items.
 
 @node Lisp and Maxima, Garbage Collection, Introduction to Help, Help
 @section Lisp and Maxima
- All of Maxima is of course written in lisp.  There is
+ All of Maxima is of course written in Lisp.  There is
 a naming convention for functions and variables:  All symbols which
-begin with a "$" sign at lisp level, are read with the "$" sign stripped
-off at Maxima level.  For example, there are two lisp functions
+begin with a "$" sign at Lisp level, are read with the "$" sign stripped
+off at Maxima level.  For example, there are two Lisp functions
 TRANSLATE and $TRANSLATE.   If at Maxima level you enter
 TRANSLATE(FOO); the function which is called is the $translate function.
 To access the other function you must prefix with a "?".   Note you
@@ -59,26 +59,26 @@ you were looking for help!
 Of course, this may well not do what you wanted it to do since it is a
 completely different function.
 
-To enter a lisp command you may use
+To enter a Lisp command you may use
 @example
 (%i1) :lisp (foo 1 2)
 @end example
-or to get a lisp prompt use @code{to_lisp();}, or alternately type
+or to get a Lisp prompt use @code{to_lisp();}, or alternately type
 @code{Ctrl-c} to enter into a debug break.
-This will cause a lisp break loop to be entered.  You
+This will cause a Lisp break loop to be entered.  You
 could now evaluate $%o2
-and view the value of the line label %o2, in its internal lisp
+and view the value of the line label %o2, in its internal Lisp
 format.   Typing @code{:q} will quit to top level, if you are in
 a debug break.  If you had exited Maxima with @code{to_lisp();}
 then you should type
 @example
 MAXIMA>(run)
 @end example
-at the lisp prompt, to restart the Maxima session.
+at the Lisp prompt, to restart the Maxima session.
 
-If you intend to write lisp functions to be called at Maxima
+If you intend to write Lisp functions to be called at Maxima
 level you should name them by names beginning with a "$".   Note
-that all symbols typed at lisp level are automatically read in
+that all symbols typed at Lisp level are automatically read in
 upper case, unless you do something like @code{|$odeSolve|} to
 force the case to be respected.   Maxima interprets symbols
 as mixed case, if the symbol has already been read before
@@ -99,7 +99,7 @@ be in upper or lower case.   An advantage of this system is that if
 you type in lower case, you will immediately see which are the Maxima
 keywords and functions.
 
-To enter Maxima forms at lisp level, you may use the @code{#$} macro.
+To enter Maxima forms at Lisp level, you may use the @code{#$} macro.
 @example
                           (setq $foo #$[x,y]$)
 @end example
@@ -120,13 +120,13 @@ foo in Maxima printed format you may type
 
 In this documentation when we wish to refer to a Maxima symbol we
 shall generally omit the $ just as you would when typing at Maxima level.
-This will cause confusion when we also wish to refer to a lisp symbol.
-In this case we shall usually try to use lower case for the lisp symbol
+This will cause confusion when we also wish to refer to a Lisp symbol.
+In this case we shall usually try to use lower case for the Lisp symbol
 and upper case for the Maxima symbol.  For example LIST for $list and
-list for the lisp symbol whose printname is "list".
+list for the Lisp symbol whose printname is "list".
 
 Since functions defined using the Maxima language are not ordinary
-lisp functions, you must use mfuncall to call them.
+Lisp functions, you must use mfuncall to call them.
 For example:
 
 @example
@@ -134,19 +134,19 @@ For example:
 @end example
 @noindent
 
-then at lisp level
+then at Lisp level
 
 @example
 CL-MAXIMA>>(mfuncall '$foo 4 5)
 12
 @end example
 
-A number of lisp functions are shadowed in the Maxima package.  This is
+A number of Lisp functions are shadowed in the Maxima package.  This is
 because their use within Maxima is not compatible with the definition as
-a system function.  For example typep behaves differently common lisp
-than it did in Maclisp.  If you want to refer to the zeta lisp typep
+a system function.  For example typep behaves differently in Common Lisp
+than it did in Maclisp.  If you want to refer to the Zeta Lisp typep
 while in the Maxima package you should use global:typep (or cl:typep for
-common lisp).  Thus
+Common Lisp).  Thus
 
 @example
 
@@ -156,7 +156,7 @@ common lisp).  Thus
 @end example
 
 To see which symbols are shadowed look in "src/maxima-package.lisp" or
-do a describe of the package at lisp level.
+do a describe of the package at Lisp level.
 
 
 @node Garbage Collection, Documentation, Lisp and Maxima, Help
@@ -169,7 +169,7 @@ Under GCL, on UNIX systems where the mprotect system call is available
 (including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
 is available.   This limits the collection to pages which have been recently
 written to.    See the GCL documentation under ALLOCATE and GBC.   At the
-lisp level doing (setq si::*notify-gbc* t) will help you determine which
+Lisp level doing (setq si::*notify-gbc* t) will help you determine which
 areas might need more space.
 
 @node Documentation, Definitions for Help, Garbage Collection, Help

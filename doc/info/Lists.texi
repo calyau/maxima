@@ -6,8 +6,8 @@
 @node Introduction to Lists, Definitions for Lists, Lists, Lists
 @section Introduction to Lists
 Lists are the basic building block for Maxima and Lisp.   All data types
-other than arrays, hash tables, numbers are represented as lisp lists,
-These lisp lists have the form
+other than arrays, hash tables, numbers are represented as Lisp lists,
+These Lisp lists have the form
 @example
 ((mplus) $A 2)
 @end example
@@ -19,7 +19,7 @@ as
 [1, 2, 7, x+y]
 @end example
 @noindent
-for a list with 4 elements.   Internally this corresponds to a lisp list
+for a list with 4 elements.   Internally this corresponds to a Lisp list
 of the form
 @example
 ((mlist) 1  2  7  ((mplus)  $X $Y ))

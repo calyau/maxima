@@ -90,7 +90,7 @@ sets @code{s} to the sum of the last ten output labels.
 
 @deffn {special symbol} "?"
   - As prefix to a function or variable name, signifies that the
-function or variable is a LISP token, not a Maxima token.  Two
+function or variable is a Lisp token, not a Maxima token.  Two
 question marks typed together, ??, will flush the current Maxima
 command line.
 
