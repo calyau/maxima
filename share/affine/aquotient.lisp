@@ -1751,7 +1751,7 @@
 	(t poly)))
 
 (defun afp-berlekamp-factor (pol)
-  (afp-berlekamp-factor1 pol modulus :use-little (<= modulus 13)))n
+  (afp-berlekamp-factor1 pol modulus :use-little (<= modulus 13)))
 
 (defun afp-berlekamp-factor1 (pol p &key use-little use-big &aux sp (modulus p) answ)
   (setq sp  (berlekamp-set-up-and-reduce-matrix pol p) )
