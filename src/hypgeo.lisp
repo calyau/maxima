@@ -499,8 +499,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun oney
-    (exp)
+;; Recognize u*bessel_y(v,w)
+(defun oney (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -729,11 +729,22 @@
 
 
 
+#+nil
 (defun defintegrate
     (exp)
   (prog ($exponentialize)
      (setq $exponentialize t)
      (return (distrdefexecinit ($expand (ssimplifya exp))))))
+
+(defun defintegrate (exp)
+  ;; This used to have $exponentialize enabled for everything, but I
+  ;; don't think we should do that.  If various routines want
+  ;; $exponentialize, let them set it themselves.  So, for here, we
+  ;; want to expand the form with $exponentialize to convert trig and
+  ;; hyperbolic functions to exponential functions that we can handle.
+  (let ((form (let (($exponentialize t))
+		($expand (ssimplifya exp)))))
+    (distrdefexecinit form)))
 
 
 (defun defexec
@@ -745,19 +756,14 @@
 	    (return (negtest l a))))
      (return 'other-defint-to-follow-defexec)))
 
-(defun negtest
-    (l a)
-  (prog(u e f c)
+(defun negtest (l a)
+  (prog (u e f c)
      (cond ((eq (checksigntm ($realpart a)) '$negative)
-	    (setq u
-		  (cdras 'u l)
-		  e
-		  (cdras 'e l)
-		  f
-		  (cdras 'f l)
-		  c
-		  (cdras 'c l))
-	    (cond ((zerp e)(setq f 1)))
+	    (setq u (cdras 'u l)
+		  e (cdras 'e l)
+		  f (cdras 'f l)
+		  c (cdras 'c l))
+	    (cond ((zerp e) (setq f 1)))
 	    (return (maxima-substitute (mul -1 a)
 				       'psey
 				       (ltscale u
@@ -774,8 +780,9 @@
   (mul* (power '$%e c)
 	(substl (sub *par* par0) *par* (lt-exec exp e f))))
 
-(defun defltep
-    (exp)
+;; I think this is trying to match EXP to u*%e^(a*x+e*f+c)
+;; where a, c, and e are free of x, f is free of p.
+(defun defltep (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -856,9 +863,11 @@
 
 (defun t^-1(exp)(m2 exp '((mexpt)(t varp) -1) nil))
 
-(defun f24p146test
-    (c v a)
-  (cond ((not (or (neginp a)(neginp v)))(f24p146 c v a))
+;; Check if conditions for f24p146 hold
+(defun f24p146test (c v a)
+  (cond ((not (or (neginp a)
+		  (neginp v)))
+	 (f24p146 c v a))
 	(t 'fail-on-f24p146test)))
 
 (defun f35p147test
@@ -876,9 +885,16 @@
   (cond ((not (neginp (add pow 1)))(f1p137 pow))
 	(t 'fail-in-arbpow))) 
 
-(defun f1p137
-    (pow)
-  (mul* (gm (add pow 1))(power *par* (sub (mul -1 pow) 1))))
+;; Table of Integral Transforms
+;;
+;; p. 137, formula 1:
+;;
+;; t^u*exp(-p*t)
+;;   -> gamma(u+1)*p^(-u-1)
+;;
+(defun f1p137 (pow)
+  (mul* (gm (add pow 1))
+	(power *par* (sub (mul -1 pow) 1))))
 
 ;; Table of Integral Transforms
 ;;
@@ -939,8 +955,12 @@
 	   (t (simpktf z v))))
    (power (mul* a *par*)(1//2))))
 
-(defun dtford
-    (z v)
+;; Express a parabolic cylinder function as either a parabolic
+;; cylinder function or as hypergeometric function.
+;;
+;; D[v](z) = 2^(v/2+1/2)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
+;; 
+(defun dtford (z v)
   (cond (((lambda(inv4)
 	    (whittindtest (add (div v 2) inv4) inv4))
 	  (inv 4))
@@ -948,6 +968,7 @@
 	(t (simpdtf z v))))
 
 
+;; Express parabolic cylinder function as a hypergeometric function.
 (defun simpdtf
     (z v)
   ((lambda(inv2 pow)
@@ -1694,9 +1715,15 @@
 			  (slommeltjandy i1 i11 a1)))))
 	(t 'y-of-nofract-index)))
 
-(defun lt1yref
-    (rest arg1 index1)
-  (cond ((maxima-integerp index1)(lt1y rest arg1  index1))
+;; Laplace transform of a single Bessel Y function.
+;;
+;; REST is the multiplier, ARG1 is the arg, and INDEX1 is the order of
+;; the Bessel Y function.
+(defun lt1yref (rest arg1 index1)
+  ;; If the index is an integer, use LT1Y.  Otherwise, convert Bessel
+  ;; Y to Bessel J and compute the transform of that.
+  (cond ((maxima-integerp index1)
+	 (lt1y rest arg1  index1))
 	(t (fractest2 rest arg1 index1 nil 'ytj))))
 
 (defun pjactest
@@ -1732,8 +1759,7 @@
 	(t (distrexecinit ($expand (mul (init r)
 					(wtm a i1 i2)))))))
 
-(defun whittindtest
-    (i1 i2)
+(defun whittindtest (i1 i2)
   (or (maxima-integerp (add i2 i2))
       (neginp (sub (sub (1//2) i2) i1))
       (neginp (sub (add (1//2) i2) i1))))
@@ -1988,7 +2014,8 @@
 
 (defun lt1j(rest arg index)(lt-ltp 'onej rest arg index))
 
-(defun lt1y(rest arg index)(lt-ltp 'oney rest arg index))
+(defun lt1y (rest arg index)
+  (lt-ltp 'oney rest arg index))
 
 (defun lt2j
     (rest arg1 arg2 index1 index2)
