@@ -841,7 +841,7 @@ Note: The RATFAC and RATWEIGHT schemes are incompatible and may not
 both be used at the same time.
 
 @end defun
-@c @node RATWEIGHTS, RATWEYL, RATWEIGHT, Polynomials
+@c @node RATWEIGHTS, RATWEIGHT, Polynomials
 @c @unnumberedsec phony
 @defvar RATWEIGHTS
  - a list of weight assignments (set up by the RATWEIGHT
@@ -857,16 +857,7 @@ SAVE(...,RATWEIGHTS);
 both work.
 
 @end defvar
-@c @node RATWEYL, RATWTLVL, RATWEIGHTS, Polynomials
-@c @unnumberedsec phony
-@defvar RATWEYL
- default: [] - one of the switches controlling the
-simplification of components of the Weyl conformal tensor; if TRUE,
-then the components will be rationally simplified; if FACRAT is TRUE
-then the results will be factored as well.
-
-@end defvar
-@c @node RATWTLVL, REMAINDER, RATWEYL, Polynomials
+@c @node RATWTLVL, REMAINDER, Polynomials
 @c @unnumberedsec phony
 @defvar RATWTLVL
  default: [FALSE] - used in combination with the RATWEIGHT

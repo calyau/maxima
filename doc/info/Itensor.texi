@@ -436,11 +436,17 @@ properties from all indexed objects.
 @defun contract (exp)
 
 Carries out the tensorial contractions in @code{exp} which may be any
-combination of sums and products.  This function uses the information
-given to the @code{defcon} function.  When using @code{contract}, @code{exp}
-must be fully expanded. Also see the function @code{imetric} and the
-example under @code{dim}.
-
+combination of sums and products. This function uses the information
+given to the @code{defcon} function. When the @code{allsym} flag is @code{true},
+indices are sorted into alphabetical order. Also all dummy indices are
+renamed using symbols @code{%1}, @code{%2},... (the symbol that is used
+can be redefined using @code{idummyx}) to permit the expression to be
+simplified as much as possible by reducing equivalent terms to a
+canonical form. For best results, @code{exp} must be fully expanded.
+@code{ratexpand} is the fastest way to expand products and powers
+of sums if there are no variables in the denominators of the terms.
+The @code{gcd} switch should be @code{false} if gcd
+cancellations are unnecessary.
 
 @end defun
 

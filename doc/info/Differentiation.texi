@@ -364,7 +364,7 @@ gradients by use of the GRADEF command (i.e. GRADEF(f(x1, ..., xn),
 g1, ..., gn).)
 
 @end defvar
-@c @node LAPLACE, UNDIFF, GRADEFS, Differentiation
+@c @node LAPLACE, GRADEFS, Differentiation
 @c @unnumberedsec phony
 @defun LAPLACE (exp, ovar, lvar)
 takes the Laplace transform of exp with
@@ -392,16 +392,4 @@ set up with the DEPENDS command.
 
 
 @end example
-@end defun
-@c @node UNDIFF,  , LAPLACE, Differentiation
-@c @unnumberedsec phony
-@defun UNDIFF (exp)
-returns an expression equivalent to exp but with all
-derivatives of indexed objects replaced by the noun form of the DIFF
-function with arguments which would yield that indexed object if the
-differentiation were carried out.  This is useful when it is desired
-to replace a differentiated indexed object with some function
-definition and then carry out the differentiation by saying
-EV(...,DIFF).
-
 @end defun

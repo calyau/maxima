@@ -34,16 +34,6 @@ the ALIAS, ORDERGREAT, ORDERLESS functions or by DECLAREing the atom a
 NOUN).
 @end defvar
 
-
-@c @node ALLSYM
-@c @unnumberedsec phony
-@defvar ALLSYM
- default: [TRUE] - If TRUE then all indexed objects are assumed
-symmetric in all of their covariant and contravariant indices. If
-FALSE then no symmetries of any kind are assumed in these indices.
-Derivative indices are always taken to be symmetric.
-@end defvar
-
 @c @node declaration
 @c @unnumberedsec phony
 @defvr declaration ALPHABETIC
@@ -249,16 +239,6 @@ removes the values of user variables
 values of all user variables are removed.  Values are those items
 given names by the user as opposed to those which are automatically
 labeled by Maxima as Ci, Di, or Ei.
-
-@end defun
-@c @node RENAME
-@c @unnumberedsec phony
-@defun RENAME (exp)
-returns an expression equivalent to exp but with the
-dummy indices in each term chosen from the set [!1,!2,...].  Each
-dummy index in a product will be different; for a sum RENAME will try
-to make each dummy index in a sum the same.  In addition, the indices
-will be sorted alphanumerically.
 
 @end defun
 @c @node RNCOMBINE
