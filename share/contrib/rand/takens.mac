@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename takens.mac
 
    ***************************************************************
    *							         *
@@ -14,7 +14,7 @@
    *            						 *
    ***************************************************************
 */ 
-/* TAKENS' BLOW-UP CALCULATION */
+/* TAKENS' BLOW-UP CALCULATION */
 
 /* MAIN PROGRAM */
 TAKENS():=BLOCK(
@@ -155,4 +155,3 @@ PRINT(EV(U)),
 PRINT(V,"="),
 V::TAYLOR(EV(EV(QQ)),[EV(X),EV(Y)],0,POW),
 PRINT(EV(V)) )$
-
