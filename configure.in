@@ -53,7 +53,7 @@ AC_ARG_WITH(clisp-runtime,
 	CLISP_RUNTIME_PATH="$withval"
 	CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`],
 	[if test x"${win32}" = xtrue ; then 
-	    CLISP_RUNTIME_PATH=`${CLISP_NAME} -q -x "(format nil \"~a\\\\\\\\${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`
+	    CLISP_RUNTIME_PATH=`${CLISP_NAME} -q -x "(format nil \"~a${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`
 	 else
 	    CLISP_RUNTIME_PATH=`${CLISP_NAME} -q -x "(format nil \"~abase/${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`
 	 fi
