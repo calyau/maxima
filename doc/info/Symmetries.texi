@@ -6,13 +6,13 @@
 @node Definitions for Symmetries,  , Symmetries, Symmetries
 @section Definitions for Symmetries
 
-@defun comp2pui (n, l)
+@defun comp2pui (@var{n}, @var{l})
 re'alise le passage des fonctions syme'triques
-comple`tes, donnee's dans la liste l, aux fonctions 
-syme'triques e'le'mentaires de 0 a` n. Si la liste
-l contient moins de n+1 e'le'ments les valeurs formelles viennent
-la completer. Le premier e'le'ment de la liste l donne le cardinal
-de l'alphabet si il existe, sinon on le met e'gal a n.
+comple`tes, donnee's dans la liste @var{l}, aux fonctions 
+syme'triques e'le'mentaires de 0 a` @var{n}. Si la liste
+@var{l} contient moins de @code{@var{n}+1} e'le'ments les valeurs formelles viennent
+la completer. Le premier e'le'ment de la liste @var{l} donne le cardinal
+de l'alphabet si il existe, sinon on le met e'gal a @var{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c comp2pui (3, [4, g]);
@@ -24,9 +24,9 @@ de l'alphabet si il existe, sinon on le met e'gal a n.
 
 @end defun
 
-@defun cont2part (pc,lvar)
+@defun cont2part (@var{pc}, @var{lvar})
 rend le polyno^me partitionne' associe' 
-a` la forme  contracte'e pc dont les variables sont dans lvar.
+a` la forme  contracte'e @var{pc} dont les variables sont dans @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c pc: 2*a^3*b*x^4*y + x^5;
@@ -48,10 +48,10 @@ Autres fonctions de changements de repre'sentations :
 
 @end defun
 
-@defun contract (psym,lvar)
+@defun contract (@var{psym}, @var{lvar})
 rend une forme contracte'e (i.e. un mono^me
-par orbite sous l'action du groupe syme'trique) du polyno^me psym
-en les variables contenues dans la liste lvar. La fonction @code{explose}
+par orbite sous l'action du groupe syme'trique) du polyno^me @var{psym}
+en les variables contenues dans la liste @var{lvar}. La fonction @code{explose}
 re'alise l'ope'ration inverse. La fonction @code{tcontract} teste en plus
 la syme'trie du polyno^me.
 
@@ -78,12 +78,12 @@ Autres fonctions de changements de repre'sentations :
 
 @end defun
 
-@defun direct ([p1,...,pn],y,f,[lvar1,...,lvarn])
+@defun direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
 calcul l'image
-directe (voir M. GIUSTI,D. LAZARD et A. VALIBOUZE, ISSAC 1988, Rome)
-associe'e a` la fonction f, en les listes de variables lvar1,...,lvarn,
-et aux polyno^mes P1,...,Pn d'une variable y. l'arite' de la fonction
-f est importante pour le calcul. Ainsi, si l'expression de f ne depend
+directe (voir M. GIUSTI, D. LAZARD et A. VALIBOUZE, ISSAC 1988, Rome)
+associe'e a` la fonction @var{f}, en les listes de variables @var{lvar_1}, ..., @var{lvar_n},
+et aux polyno^mes @var{p_1}, ..., @var{p_n} d'une variable @var{y}. l'arite' de la fonction
+@var{f} est importante pour le calcul. Ainsi, si l'expression de @var{f} ne depend
 pas d'une variable, non seulement il est inutile de donner cette
 variable mais cela diminue conside'rablement lees calculs si on ne le
 fait pas.
@@ -173,7 +173,7 @@ Fonctions de @code{sym} utilis'ees dans cette fonction :
 
 @end defun
 
-@defun ele2comp (m , l)
+@defun ele2comp (@var{m}, @var{l})
 passe des fonctions syme'triques e'le'mentaires
 aux fonctions comple`tes. Similaire a` @code{comp2ele} et @code{comp2pui}.
 
@@ -184,10 +184,11 @@ Autres fonctions de changements de bases :
 
 @end defun
 
-@defun ele2polynome (l,z)
-donne le polyno^me en z dont les fonctions
-syme'triques e'le'mentaires des racines sont dans la liste l.
-l=[n,e1,...,en] ou` n est le degre' du polyno^me et ei la i-ie`me
+@defun ele2polynome (@var{l}, @var{z})
+donne le polyno^me en @var{z} dont les fonctions
+syme'triques e'le'mentaires des racines sont dans la liste @var{l}.
+@code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]} ou` @var{n} est le degre' du polyno^me
+et @var{e_i} la @var{i}-ie`me
 fonction syme'trique e'le'mentaire.
 
 @c GENERATED FROM THE FOLLOWING
@@ -207,7 +208,7 @@ fonction syme'trique e'le'mentaire.
 
 @noindent
    
-  la re'ciproque : POLYNOME2ELE(p,z)
+La re'ciproque: @code{polynome2ele (@var{P}, @var{z})}
 
 Autres fonctions a` voir :
 
@@ -216,7 +217,7 @@ Autres fonctions a` voir :
 
 @end defun
 
-@defun ele2pui (m, l)
+@defun ele2pui (@var{m}, @var{l})
 passe des fonctions syme'triques e'le'mentaires
 aux fonctions comple`tes. Similaire a` @code{comp2ele} et @code{comp2pui}.
 
@@ -227,13 +228,13 @@ Autres fonctions de changements de bases :
 
 @end defun
 
-@defun elem (ele,sym,lvar)
-de'compose le polyno^me syme'trique sym, en les variables
-contenues de la liste lvar, par les fonctions syme'triques e'le'mentaires
-contenues dans la liste ele. Si le premier e'le'ment de ele est donne'
+@defun elem (@var{ele}, @var{sym}, @var{lvar})
+de'compose le polyno^me syme'trique @var{sym}, en les variables
+contenues de la liste @var{lvar}, par les fonctions syme'triques e'le'mentaires
+contenues dans la liste @var{ele}. Si le premier e'le'ment de @var{ele} est donne'
 ce sera le cardinal de l'alphabet sinon on prendra le degre' du polyno^me
-sym. Si il manque des valeurs a` la liste ele des valeurs formelles
-du type "ei" sont rajoute'es. Le polyno^me sym peut etre donne'
+@var{sym}. Si il manque des valeurs a` la liste @var{ele} des valeurs formelles
+du type "ei" sont rajoute'es. Le polyno^me @var{sym} peut etre donne'
 sous 3 formes diffe'rentes : contracte'e (@code{elem} doit alors valoir 1 sa valeur
 par de'faut), partitionne'e (@code{elem} doit alors valoir 3) ou e'tendue (i.e. le
 polyno^me en entier) (@code{elem} doit alors valoir 2). L'utilsation
@@ -268,9 +269,9 @@ Autres fonctions de changements de bases :
 
 @end defun
 
-@defun explose (pc,lvar)
+@defun explose (@var{pc}, @var{lvar})
 rend le polyno^me syme'trique associe' a` la forme 
-contracte'e pc. La liste lvar contient les variables.
+contracte'e @var{pc}. La liste @var{lvar} contient les variables.
 
 @c GENERATED FROM THE FOLLOWING
 @c explose (a*x + 1, [x, y, z]);
@@ -286,9 +287,9 @@ Autres fonctions de changements de repre'sentations :
 
 @end defun
 
-@defun kostka (part1,part2)
-e'crite par P. ESPERET) calcule le nombre de
-kostka associe' aux partition part1 et part2
+@defun kostka (@var{part_1}, @var{part_2})
+e'crite par P. ESPERET, calcule le nombre de
+Kostka associe' aux partition @var{part_1} et @var{part_2}.
 
 @c GENERATED FROM THE FOLLOWING
 @c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
@@ -299,8 +300,8 @@ kostka associe' aux partition part1 et part2
 
 @end defun
 
-@defun lgtreillis (n,m)
-rend la liste des partitions de poids n et de longueur m.
+@defun lgtreillis (@var{n}, @var{m})
+rend la liste des partitions de poids @var{n} et de longueur @var{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c lgtreillis (4, 2);
@@ -314,9 +315,9 @@ Voir e'galement : @code{ltreillis}, @code{treillis} et @code{treinat}.
 
 @end defun
 
-@defun ltreillis (n,m)
-rend la liste des partitions de poids n et de longueur 
-infe'rieure ou e'gale a` m.
+@defun ltreillis (@var{n}, @var{m})
+rend la liste des partitions de poids @var{n} et de longueur 
+infe'rieure ou e'gale a` @var{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c ltreillis (4, 2);
@@ -330,17 +331,19 @@ Voir e'galement : @code{lgtreillis}, @code{treillis} et @code{treinat}.
 
 @end defun
 
+@c NOT REALLY HAPPY ABOUT MATH NOTATION HERE
 @defun mon2schur (l)
-la liste l repre'sente la fonction de Schur S_l :
- On a l=[i1,i2,...,iq]
-avec i1 <= i2 <= ... <= iq . La fonction de Schur est S_[i1,i2...,iq]
-est le mineur de la matrice infinie (h_@{i-j@}) i>=1, j>=1 compose'
-des q premie`res lignes et des colonnes i1+1,i2+2,...,iq+q.
+la liste @var{l} repre'sente la fonction de Schur S_@var{l}:
+ On a @var{l} = [@var{i_1}, @var{i_2}, ..., @var{i_q}]
+avec @var{i_1} <= @var{i_2} <= ... <= @var{i_q}.
+La fonction de Schur est S_[@var{i_1}, @var{i_2}, ..., @var{i_q}]
+est le mineur de la matrice infinie (h_@{i-j@}) @var{i} >= 1, @var{j} >= 1 compose'
+des q premie`res lignes et des colonnes @var{i_1} + 1, @var{i_2} + 2, ..., @var{i_q} + @var{q}.
 
 On e'crit cette fonction de Schur en fonction des
 formes monomiales en utilisant les fonctions @code{treinat} et @code{kostka}. La forme
 rendue est un polyno^me syme'trique dans une de ses repre'sentations
-contracte'es avec les variables x1, x2, ...
+contracte'es avec les variables @var{x_1}, @var{x_2}, ....
  
 @c GENERATED FROM THE FOLLOWING
 @c mon2schur ([1, 1, 1]);
@@ -374,11 +377,11 @@ Autres fonctions de changements de bases :
 
 @end defun
 
-@defun multi_elem (l_elem,multi_pc,l_var)
+@defun multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
 de'compose un polyno^me 
-multi-syme'trique sous la forme multi-contracte'e multi_pc en les groupes
-de variables contenue dans la liste de listes l_var sur les
-groupes de fonctions syme'triques e'le'mentaires contenues dans l_elem.
+multi-syme'trique sous la forme multi-contracte'e @var{multi_pc} en les groupes
+de variables contenue dans la liste de listes @var{l_var} sur les
+groupes de fonctions syme'triques e'le'mentaires contenues dans @var{l_elem}.
 
 @c GENERATED FROM THE FOLLOWING
 @c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
@@ -400,12 +403,12 @@ Autres fonctions de changements de bases :
 
 @end defun
 
-@defun multi_orbit (p,[lvar1, lvar2,...,lvarp])
-P est un polyno^me en l'ensemble
-des variables contenues dans les listes lvar1, lvar2 ... lvarp. 
-Cette fonction rame`ne l'orbite du polyno^me P sous l'action du produit 
+@defun multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}])
+@var{P} est un polyno^me en l'ensemble
+des variables contenues dans les listes @var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}. 
+Cette fonction rame`ne l'orbite du polyno^me @var{P} sous l'action du produit 
 des groupes syme'triques des ensembles de variables repre'sente's par 
-ces p @code{listes}.
+ces @var{p} listes.
 
 @c GENERATED FROM THE FOLLOWING
 @c multi_orbit (a*x + b*y, [[x, y], [a, b]]);
@@ -418,12 +421,13 @@ ces p @code{listes}.
 @end example
 
 @noindent
-Voir e'galement : @code{orbit} pour l'action d'un seul groupe syme'trique
+Voir e'galement : @code{orbit} pour l'action d'un seul groupe syme'trique.
 
 @end defun
 
+@c WHAT ARE THE ARGUMENTS FOR THIS FUNCTION ??
 @defun multi_pui
- est a` la fonction @code{pui} ce que la fonction @code{multi_elem} est
+est a` la fonction @code{pui} ce que la fonction @code{multi_elem} est
 a` la fonction @code{elem}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -438,23 +442,22 @@ a` la fonction @code{elem}.
 
 @end defun
 
-@defun multinomial (r,part)
-ou` r est le poids de la partition part. Cette
+@defun multinomial (@var{r}, @var{part})
+ou` @var{r} est le poids de la partition @var{part}. Cette
 fonction rame`ne le coefficient multinomial associe' : si les
-parts de la partitions part sont i1, i2, ..., ik, le re'sultat de
-@code{multinomial} est r!/(i1!i2!...ik!).
-
+parts de la partitions part sont @var{i_1}, @var{i_2}, ..., @var{i_k}, le re'sultat de
+@code{multinomial} est @code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}.
 
 @end defun
 
-@defun multsym (ppart1, ppart2,n)
+@defun multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
 re'alise le produit de deux polyno^mes
-syme'triques de N variables en ne travaillant que modulo l'action du
-groupe syme'trique d'ordre N. Les polyno^mes sont dans leur repre'sentation
+syme'triques de @var{n} variables en ne travaillant que modulo l'action du
+groupe syme'trique d'ordre @var{n}. Les polyno^mes sont dans leur repre'sentation
 partitionne'e. 
 
-Soient les 2 polyno^mes syme'triques en x, y : 3*(x+y) + 2*x*y et 5*(x^2+y^2)
-dont les formes partitionne'es sont respectivement [[3,1],[2,1,1]] et [[5,2]],
+Soient les 2 polyno^mes syme'triques en @code{x}, @code{y}: @code{3*(x + y) + 2*x*y} et @code{5*(x^2 + y^2)}
+dont les formes partitionne'es sont respectivement @code{[[3, 1], [2, 1, 1]]} et @code{[[5, 2]]},
 alors leur produit sera donne' par :
 
 @c GENERATED FROM THE FOLLOWING
@@ -465,7 +468,7 @@ alors leur produit sera donne' par :
 @end example
 
 @noindent
-soit 10*(x^3*y+y^3*x)+15*(x^2*y +y^2*x) +15(x^3+y^3)
+soit @code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}.
 
 Fonctions de changements de repre'sentations d'un polyno^me syme'trique :
 
@@ -474,10 +477,10 @@ Fonctions de changements de repre'sentations d'un polyno^me syme'trique :
 
 @end defun
 
-@defun orbit (p,lvar)
-calcul l'orbite du polyno^me P en les variables de la liste
-lvar sous l'action du groupe syme'trique de l'ensemble des variables contenues
-dans la liste lvar.
+@defun orbit (@var{P}, @var{lvar})
+calcul l'orbite du polyno^me @var{P} en les variables de la liste
+@var{lvar} sous l'action du groupe syme'trique de l'ensemble des variables contenues
+dans la liste @var{lvar}.
  
 @c GENERATED FROM THE FOLLOWING
 @c orbit (a*x + b*y, [x, y]);
@@ -497,10 +500,10 @@ syme'triques sur un polyno^me.
 
 @end defun
 
-@defun part2cont (ppart,lvar)
+@defun part2cont (@var{ppart}, @var{lvar})
 passe de la forme partitionne'e a` la forme contracte'e
 d'un polyno^me syme'trique. La forme contracte'e est rendue avec les variables
-contenues dans lvar.
+contenues dans @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
@@ -518,9 +521,9 @@ Autres fonctions de changements de repre'sentations :
 
 @end defun
 
-@defun partpol (psym, lvar)
-psym est un polyno^me syme'trique en les variables 
-de lvar. Cette fonction rame`ne sa repre'sentation partitionne'e.
+@defun partpol (@var{psym}, @var{lvar})
+@var{psym} est un polyno^me syme'trique en les variables 
+de @var{lvar}. Cette fonction rame`ne sa repre'sentation partitionne'e.
 
 @c GENERATED FROM THE FOLLOWING
 @c partpol (-a*(x + y) + 3*x*y, [x, y]);
@@ -536,16 +539,16 @@ Autres fonctions de changements de repre'sentations :
 
 @end defun
 
-@defun permut (l)
-rame`ne la liste des permutations de la liste l.
+@defun permut (@var{l})
+rame`ne la liste des permutations de la liste @var{l}.
 
 
 @end defun
 
-@defun polynome2ele (p,x)
-donne la liste l=[n,e1,...,en] ou` n est le degre'
-du polyno^me p en la variable x et ei la i-ieme fonction syme'trique 
-e'le'mentaire des racines de p.
+@defun polynome2ele (@var{P}, @var{x})
+donne la liste @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]} ou` @var{n} est le degre'
+du polyno^me @var{P} en la variable @var{x} et @var{e_i} la @var{i}-ieme fonction syme'trique 
+e'le'mentaire des racines de @var{P}.
 
 @c GENERATED FROM THE FOLLOWING
 @c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
@@ -559,25 +562,24 @@ e'le'mentaire des racines de p.
 @end example
 
 @noindent
-La re'ciproque : @code{ele2polynome (l,x)}
+La re'ciproque : @code{ele2polynome (@var{l}, @var{x})}
 
 @end defun
 
-@defun prodrac (l,k)
-L est une liste contenant les fonctions syme'triques 
-e'le'mentaires sur un ensemble A. PRODRAC rend le polyno^me dont
-les racines sont les produits K a` K des e'le'ments de A.
-
+@defun prodrac (@var{l}, @var{k})
+@var{l} est une liste contenant les fonctions syme'triques 
+e'le'mentaires sur un ensemble @var{A}. @code{prodrac} rend le polyno^me dont
+les racines sont les produits @var{k} a` @var{k} des e'le'ments de @var{A}.
 
 @end defun
 
 @c HMM, pui IS A VARIABLE AS WELL
-@defun pui (pui,sym,lvar)
-de'compose le polyno^me syme'trique sym, en les variables
-contenues de la liste lvar, par les fonctions puissances
-contenues dans la liste pui. Si le premier e'le'ment de pui est donne'
+@defun pui (@var{l}, @var{sym}, @var{lvar})
+de'compose le polyno^me syme'trique @var{sym}, en les variables
+contenues de la liste @var{lvar}, par les fonctions puissances
+contenues dans la liste @var{l}. Si le premier e'le'ment de @var{l} est donne'
 ce sera le cardinal de l'alphabet sinon on prendra le degre' du polyno^me
-sym. Si il manque des valeurs a` la liste pui, des valeurs formelles
+@var{sym}. Si il manque des valeurs a` la liste @var{l}, des valeurs formelles
 du type "pi" sont rajoute'es. Le polyno^me sym peut etre donne'
 sous 3 formes diffe'rentes : contracte'e (@code{pui} doit alors valoir 1 sa valeur
 par de'faut), partitionne'e (@code{pui} doit alors valoir 3) ou e'tendue (i.e. le
@@ -612,8 +614,8 @@ Autres fonctions de changements de bases :
 
 @end defun
 
-@defun pui2comp (n,lpui)
-rend la liste des N premie`res fonctions comple`tes
+@defun pui2comp (@var{n}, @var{lpui})
+rend la liste des @var{n} premie`res fonctions comple`tes
 (avec en te^te le cardinal) en fonction des fonctions puissance donne'es dans
 la liste @var{lpui}. Si la liste @var{lpui} est vide le cardinal est N sinon 
 c'est son premier e'le'ment similaire a` @code{comp2ele} et @code{comp2pui}.
@@ -651,12 +653,12 @@ Autres fonctions de changements de bases :
 
 @end defun
 
-@defun pui2ele (n,lpui)
+@defun pui2ele (@var{n}, @var{lpui})
 re'alise le passage des fonctions puissances aux
 fonctions syme'triques e'le'mentaires.
 Si le drapeau @code{pui2ele} est @code{girard}, on re'cupe`re la liste des fonctions 
-syme'triques e'le'mentaires de 1 a` N, et s'il est e'gal a`  @code{close}, 
-la Nie`me fonction syme'trique e'le'mentaire.
+syme'triques e'le'mentaires de 1 a` @var{n}, et s'il est e'gal a` @code{close}, 
+la @var{n}-ie`me fonction syme'trique e'le'mentaire.
 
 Autres fonctions de changements de bases :
 
@@ -666,8 +668,8 @@ Autres fonctions de changements de bases :
 
 @end defun
 
-@defun pui2polynome (x,lpui)
-calcul le polyno^me en X dont les fonctions puissances
+@defun pui2polynome (@var{x}, @var{lpui})
+calcul le polyno^me en @var{x} dont les fonctions puissances
 des racines sont donne'es dans la liste @var{lpui}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -694,23 +696,23 @@ Autres fonctions a` voir :
 
 @end defun
 
-@defun pui_direct (orbite,[lvar1,...,lvarn],[d1,d2,...,dn])
+@defun pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
 
-Soit f un polynome en n blocs de variables lvar1,...,lvarn.
-Soit ci le nombre de variables dans lvari . Et SC le produit des n
-groupes syme'triques de degre' c1,...,cn. Ce groupe agit
-naturellement sur f
-La liste @var{orbite} est l'orbite, note'e SC(f), de la fonction f sous 
-l'action de SC. (Cette liste peut e^tre obtenue avec la fonction : 
+Soit @var{f} un polynome en @var{n} blocs de variables @var{lvar_1}, ..., @var{lvar_n}.
+Soit @var{c_i} le nombre de variables dans @var{lvar_i} . Et @var{SC} le produit des @var{n}
+groupes syme'triques de degre' @var{c_1}, ..., @var{c_n}. Ce groupe agit
+naturellement sur @var{f}.
+La liste @var{orbite} est l'orbite, note'e @code{@var{SC}(@var{f})}, de la fonction @var{f} sous 
+l'action de @var{SC}. (Cette liste peut e^tre obtenue avec la fonction : 
 @code{multi_orbit}).
-Les di sont des entiers tels que c1<=d1, c2<=d2,...,cn<=dn.
-Soit SD le produit des groupes syme'triques S_d1 x S_d2 x...x S_dn.
+Les di sont des entiers tels que @var{c_1} <= @var{d_1}, @var{c_2} <= @var{d_2}, ..., @var{c_n} <= @var{d_n}.
+Soit @var{SD} le produit des groupes syme'triques @var{S_d1} x @var{S_d2} x ... x @var{S_dn}.
 
-la fonction pui_direct rame`ne les N premie`res fonctions puissances de SD(f)
-de'duites des fonctions puissances de SC(f) ou` N est le cardinal de SD(f).
+La fonction @code{pui_direct} rame`ne les @var{n} premie`res fonctions puissances de @code{@var{SD}(@var{f})}
+de'duites des fonctions puissances de @code{@var{SC}(@var{f})} ou` @var{n} est le cardinal de @code{@var{SD}(@var{f})}.
 
-Le re'sultat est rendue sous forme multi-contracte'e par rapport a SD.
-i.e. on ne conserve qu'un e'le'ment par orbite sous l'action de SD).
+Le re'sultat est rendue sous forme multi-contracte'e par rapport a @var{SD}.
+i.e. on ne conserve qu'un e'le'ment par orbite sous l'action de @var{SD}).
 
 @c GENERATED FROM THE FOLLOWING
 @c l: [[x, y], [a, b]];
@@ -748,10 +750,10 @@ i.e. on ne conserve qu'un e'le'ment par orbite sous l'action de SD).
 
 @end defun
 
-@defun puireduc (n,lpui)
+@defun puireduc (@var{n}, @var{lpui})
 @var{lpui} est une liste dont le premier e'le'ment est un entier
-M. PUIREDUC donne les N premie`res fonctions puissances en fonction 
-des M premie`res.
+@var{m}. @code{puireduc} donne les @var{n} premie`res fonctions puissances en fonction 
+des @var{m} premie`res.
 
 @c GENERATED FROM THE FOLLOWING
 @c puireduc (3, [2]);
@@ -770,19 +772,18 @@ des M premie`res.
 
 @end defun
 
-@defun resolvante (p,x,f,[x1,...,xd])
-calcule la re'solvante du polyno^me p
-de la variable x et de degre' n >= d par la fonction f exprime'e en
-les variables x1,...,xd. Il est important pour l'efficacite' des
-calculs de ne pas mettre dans la liste [x1,...,xd] les variables
-n'intervenant pas dans la fonction de transformation f.
+@defun resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1}, ..., @var{x_d}])
+calcule la re'solvante du polyno^me @var{P}
+de la variable @var{x} et de degre' @var{n} >= @var{d} par la fonction @var{f} exprime'e en
+les variables @var{x_1}, ..., @var{x_d}. Il est important pour l'efficacite' des
+calculs de ne pas mettre dans la liste @code{[@var{x_1}, ..., @var{x_d}]} les variables
+n'intervenant pas dans la fonction de transformation @var{f}.
 
 Afin de rendre plus efficaces les calculs on peut mettre des drapeaux
 a` la variable @code{resolvante} afin que des algorithmes ade'quates soient
 utilise's :
 
-Si la fonction f est 
-   unitaire :
+Si la fonction @var{f} est unitaire :
 @itemize @bullet
 @item
 un polyno^me d'une variable,
@@ -799,9 +800,10 @@ un polyno^me d'une variable,
 @item
 la fonction de la re'solvante de Cayley (utilisable qu'en degre' 5)
 
+@c WHAT IS THIS ILLUSTRATING EXACTLY ??
 @example
-(x1*x2+x2*x3+x3*x4+x4*x5+x5*x1 -
-     (x1*x3+x3*x5+x5*x2+x2*x4+x4*x1))^2
+(x1*x2 + x2*x3 + x3*x4 + x4*x5 + x5*x1 -
+     (x1*x3 + x3*x5 + x5*x2 + x2*x4 + x4*x1))^2
 @end example
 
   generale,
@@ -989,9 +991,10 @@ Voir e'galement :
 
 @end defun
 
-@defun resolvante_alternee1 (p,x)
+@defun resolvante_alternee1 (@var{P}, @var{x})
 calcule la transformation de 
-p(x) de degre n par la fonction $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
+@c UMM, I THINK THE TEX STUFF SHOULD BE REPLACED BY @code
+@code{@var{P}(@var{x})} de degre @var{n} par la fonction $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
 
 Voir e'galement :
 
@@ -1001,10 +1004,11 @@ Voir e'galement :
 
 @end defun
 
-@defun resolvante_bipartite (p,x)
+@defun resolvante_bipartite (@var{P}, @var{x})
 calcule la transformation de 
-p(x) de degre n (n pair) par la fonction 
-         $x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
+@code{@var{P}(@var{x})} de degre @var{n} (@var{n} pair) par la fonction 
+@c UMM, I THINK THE TEX STUFF SHOULD BE REPLACED BY @code
+$x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 
 Voir e'galement :
 
@@ -1029,9 +1033,9 @@ Voir e'galement :
 
 @end defun
 
-@defun resolvante_diedrale (p,x)
+@defun resolvante_diedrale (@var{P}, @var{x})
 calcule la transformation de
-p(x) par la fonction x_1x_2+x_3x_4.
+@code{@var{P}(@var{x})} par la fonction @code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
@@ -1054,9 +1058,9 @@ Voir e'galement :
 
 @end defun
 
-@defun resolvante_klein (p,x)
+@defun resolvante_klein (@var{P}, @var{x})
 calcule la transformation de
-p(x) par la fonction x_1x_2x_4+x_4.
+@code{@var{P}(@var{x})} par la fonction @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 Voir e'galement :
 
@@ -1066,9 +1070,9 @@ Voir e'galement :
 
 @end defun
 
-@defun resolvante_klein3 (p,x)
+@defun resolvante_klein3 (@var{P}, @var{x})
 calcule la transformation de
-p(x) par la fonction x_1x_2x_4+x_4.
+@code{@var{P}(@var{x})} par la fonction @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 Voir e'galement :
 
@@ -1078,9 +1082,9 @@ Voir e'galement :
 
 @end defun
 
-@defun resolvante_produit_sym (p,x)
+@defun resolvante_produit_sym (@var{P}, @var{x})
 calcule la liste toutes les 
-r\'esolvantes produit du polyn\^ome  p(x).
+r\'esolvantes produit du polyn\^ome @code{@var{P}(@var{x})}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
@@ -1115,9 +1119,9 @@ Voir e'galement :
 
 @end defun
 
-@defun resolvante_unitaire (p,q,x)
+@defun resolvante_unitaire (@var{P}, @var{Q}, @var{x})
 calcule la r\'esolvante du 
-polyn\^ome p(x) par le polyn\^ome q(x).
+polyn\^ome @code{@var{P}(@var{x})} par le polyn\^ome @code{@var{Q}(@var{x})}.
 
 Voir e'galement :
 
@@ -1127,9 +1131,9 @@ Voir e'galement :
 
 @end defun
 
-@defun resolvante_vierer (p,x)
+@defun resolvante_vierer (@var{P}, @var{x})
 calcule la transformation de
-p(x) par la fonction x_1x_2-x_3x_4.
+@code{@var{P}(@var{x})} par la fonction @code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}.
 
 Voir e'galement :
 
@@ -1139,12 +1143,12 @@ Voir e'galement :
 
 @end defun
 
-@defun schur2comp (p,l_var)
-: P est un polyno^mes en les variables contenues dans 
-la liste l_var. Chacune des variables de l_var repre'sente une fonction
-syme'trique comple`te. On repre'sente dans l_var la ie`me fonction syme'trique
-comple`te comme la concate'nation de la lettre h avec l'entier i : hi.
-Cette fonction donne l'expression de P en fonction des fonctions
+@defun schur2comp (@var{P}, @var{l_var})
+@var{P} est un polyno^mes en les variables contenues dans 
+la liste @var{l_var}. Chacune des variables de @var{l_var} repre'sente une fonction
+syme'trique comple`te. On repre'sente dans @var{l_var} la ie`me fonction syme'trique
+comple`te comme la concate'nation de la lettre @code{h} avec l'entier @var{i} : @code{h@var{i}}.
+Cette fonction donne l'expression de @var{P} en fonction des fonctions
 de Schur.
 
 @c GENERATED FROM THE FOLLOWING
@@ -1161,19 +1165,19 @@ de Schur.
 
 @end defun
 
-@defun somrac (liste,k)
-la liste contient les fonctions syme'triques e'le'mentaires
-d'un polyno^me P . On calcul le polyno^mes dont les racines sont les sommes 
-K a` K distinctes des racines de P. 
+@defun somrac (@var{l}, @var{k})
+la liste @var{l} contient les fonctions syme'triques e'le'mentaires
+d'un polyno^me @var{P} . On calcul le polyno^mes dont les racines sont les sommes 
+@var{K} a` @var{K} distinctes des racines de @var{P}. 
 
 Voir e'galement @code{prodrac}.
 
 
 @end defun
 
-@defun tcontract (pol,lvar)
+@defun tcontract (@var{pol}, @var{lvar})
 teste si le polyno^me pol est syme'trique en les
-variables contenues dans la liste lvar. Si oui il rend une forme contracte'e
+variables contenues dans la liste @var{lvar}. Si oui il rend une forme contracte'e
 comme la fonction @code{contract}.
 
 Autres fonctions de changements de repre'sentations :
@@ -1183,9 +1187,9 @@ Autres fonctions de changements de repre'sentations :
 
 @end defun
 
-@defun tpartpol (pol,lvar)
+@defun tpartpol (@var{pol}, @var{lvar})
 teste si le polyno^me pol est syme'trique en les
-variables contenues dans la liste lvar. Si oui il rend sa forme partionne'e
+variables contenues dans la liste @var{lvar}. Si oui il rend sa forme partionne'e
 comme la fonction @code{partpol}.
 
 Autres fonctions de changements de repre'sentations :
@@ -1195,8 +1199,8 @@ Autres fonctions de changements de repre'sentations :
 
 @end defun
 
-@defun treillis (n)
-rame`ne toutes les partitions de poids n.
+@defun treillis (@var{n})
+rame`ne toutes les partitions de poids @var{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c treillis (4);
@@ -1209,9 +1213,9 @@ Voir e'galement : @code{lgtreillis}, @code{ltreillis} et @code{treinat}.
 
 @end defun
 
-@defun treinat (part)
+@defun treinat (@var{part})
 rame`ne la liste des partitions infe'rieures a` la partition
-  part pour l'ordre naturel.
+@var{part} pour l'ordre naturel.
 
 @c GENERATED FROM THE FOLLOWING
 @c treinat ([5]);
