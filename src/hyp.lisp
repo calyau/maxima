@@ -2493,6 +2493,8 @@
 ;; Pochhammer symbol. fctrl(a,n) = a*(a+1)*(a+2)*...*(a+n-1).
 ;;
 ;; N must be a positive integer!
+;;
+;; FIXME:  This appears to be identical to factf below.
 (defun fctrl (a n)
   (cond ((zerop n)
 	 1)
@@ -2621,26 +2623,32 @@
        (mul (factorial count)(factorial (sub k count)))))
 
 
-;;Algor. II from thesis:minimizes differentiations
-(defun algii(a b c)
+;; Algor. II from thesis:minimizes differentiations
+;;
+;; We're looking at F(a+m,-a+n;1/2+L;z)
+(defun algii (a b c)
   (prog (m n ap con sym m+n)
+     ;; We know a+b is an integer.  In the most general form, we can
+     ;; have a = r*a+f+m and b = -(r*a-f)+n.
      (cond ((not (setq sym (cdras 'f (s+c a))))
 	    (setq sym 0)))
      (setq con (sub a sym))
      (setq ap sym)
      (setq m+n (add a b))
      (setq m ($entier con))
-     (cond ((minusp m)
-	    (add1 m)))
+     (when (minusp m)
+       (add1 m))
+     ;; At this point sym = r*a, con is f+m, and m is m.
      (setq ap (add (sub con m) ap))
+     ;; ap = r*a+f
      (setq n (add b ap))
+     ;; Return r*a+f, r*a+f+p, and m+n, where p is chosen to minimize
+     ;; the number of derivatives we need to take.  Basically
+     ;; p=min(abs(m),abs(n)).
      (cond ((and (minusp (mul n m))
 		 (greaterp (abs m) (abs n)))
 	    (return (list ap (sub ap n) m+n))))
      (return  (list ap (add ap m) m+n))))
-			    
-			   
-
 
 
 ;;Algor. 2F1-RL from thesis:step 4:dispatch on a+m,-a+n,1/2+l cases
@@ -2652,7 +2660,14 @@
 	   n (sub c (inv 2)))
      (setq $ratsimpexponens $true
 	   $ratprint $false)
-     ;; newf is basically 
+     ;; newf is basically (1/2+sqrt(1-z)/2)^(1-2*psa).
+     ;;
+     ;; But why?  We're trying to compute F(a+m,-a+n;1/2+L;z), which
+     ;; we derive via differentiation from F(a,-a;1/2;z).  Shouldn't
+     ;; newf be F(a,-a;1/2;z), which is given in A&S 15.1.11.  (A&S
+     ;; 15.1.17 also gives a solution in terms of trig functions.)
+     ;;
+     ;;
      (setq newf
 	   ($ratsimp (subst aprime
 			    'psa
@@ -2696,29 +2711,53 @@
 	   (t
 	    (return (f84 fun mm nn aprime))))))
 
-;;Factorial function:x*(x+1)*(x+2)...(x+n-1)
+;; Factorial function:x*(x+1)*(x+2)...(x+n-1)
+;;
+;; FIXME:  This appears to be identical to fctrl above
 (defun factf (x n)
   (cond ((zerop n) 1)
 	(t (mul x (factf (add x 1) (sub n 1))))))
 
 ;;Formula  #85 from Yannis thesis:finds by differentiating F[2,1](a,b,c,z)
 ;; given F[2,1](a+m,b,c+n,z) where b=-a and c=1/2, n,m integers
+
+;; Like F81, except m > n.
+;;
+;; F(a,-a+m;c+n;z), m > n, c = 1/2, m and n are non-negative integers
+;;
+;; A&S 15.2.3
+;; diff(z^(a+m-n-1)*F(-a,a;1/2;z),z,m-n) = poch(a,m-n)*z^(a-1)*F(-a+m-n,a;1/2;z)
+;;
+;; A&S 15.2.7
+;; diff((1-z)^(-a+m-1)*F(-a+m-n,a;1/2;z),z,n)
+;;     = (-1)^n*poch(-a+m-n,n)*poch(1/2-a,n)/poch(1/2,n)*(1-z)^(-a+m-n)
+;;         * F(-a+m,a;1/2+n;z)
+;;
 (defun f85 (fun m n a)
   (mul (factf (inv 2) n)
        (inv (power -1 n))
-       (inv (factf (sub (add a m) n) n))
-       (inv (factf (sub (inv 2) (mul a -1)) n))
+       (inv (factf (sub (add a m)
+			n)
+		   n))
+       (inv (factf (sub (inv 2)
+			(mul a -1))
+		   n))
        (inv (factf a (- m n)))
        (power (sub 1 'ell) (sub (sub (add 1 n) m) a))
-       ($diff (mul
-	       (power (sub 1 'ell) (sub (add a m) 1))
-	       (power 'ell (sub 1 a))
-	       ($diff (mul
-		       (power 'ell (sub (add a m -1) n))
-		       fun) 'ell (- m n))) 'ell n)))
+       ;; Hmm.  The a+m-1 doesn't look right, assuming the derivation
+       ;; above is correct.
+       ($diff (mul (power (sub 1 'ell) (sub (add a m) 1))
+		   (power 'ell (sub 1 a))
+		   ($diff (mul (power 'ell (sub (add a m -1) n))
+			       fun)
+			  'ell (- m n)))
+	      'ell n)))
 
 ;;Used to find negative things that are not integers,eg RAT's	
-(defun hyp-negp(x) (cond ((equal (asksign x) '$negative) t)(t nil)))
+(defun hyp-negp (x)
+  (cond ((equal (asksign x) '$negative)
+	 t)
+	(t nil)))
 
 ;; F(a,-a+m; c+n; z) where m,n are non-negative integers, m < n, c = 1/2.
 ;;
@@ -2736,9 +2775,9 @@
 ;; diff((1-z)^(-1/2)*F(-a,a;1/2;z),z,n-m)
 ;;     = poch(1/2+a,n-m)*poch(1/2-a,n-m)/poch(1/2,n-m)*(1-z)^(-1/2-n+m)*F(-a,a;1/2+n-m;z)
 ;;
-;; Now apply 15.2.7, differentiating m times:
+;; Multiply this result by (1-z)^(n-a-1/2) and apply 15.2.7, differentiating m times:
 ;;
-;; diff((1-z)^()*F(-a,a;1/2+n-m;z),z,m)
+;; diff((1-z)^(m-a-1)*F(-a,a;1/2+n-m;z),z,m)
 ;;     = (-1)^m*poch(-a,m)*poch(1/2+n-m-a,m)/poch(1/2+n-m)*(1-z)^(-a-1)*F(-a+m,a;1/2+n;z)
 ;;
 ;; Which gives F(-a+m,a;1/2+n;z), which is what we wanted.
@@ -2751,16 +2790,14 @@
        (inv (factf (sub (inv 2) a) (- n m)))
        (inv (factf (add (inv 2) a) (- n m)))
        (power (sub 1 'ell) (sub 1 a))
-       ($diff (mul 
-	       (power (sub 1 'ell) (add a n (inv -2)))
-	       ($diff (mul
-		       (power (sub 1 'ell) (inv -2))
-		       fun)
-		      'ell (- n m)))
+       ($diff (mul (power (sub 1 'ell) (add a n (inv -2)))
+		   ($diff (mul (power (sub 1 'ell) (inv -2))
+			       fun)
+			  'ell (- n m)))
 	      'ell m)))
 
-(defun f82
-    (fun m n a)
+;; Like f86, but |n|<=|m|
+(defun f82 (fun m n a)
   (mul (inv (factf (sub (inv 2) n) m))
        ;; Was this both inverse?
        (inv (factf (sub (add (inv 2) m) n) (- n m)))
@@ -2773,16 +2810,28 @@
 			  (- n m)))
 	      'ell
 	      m)))
-
-(defun f83
-    (fun m n a)
+;; F(a,-a+m;1/2+n;z) with m,n integers and m < 0, n >= 0
+;;
+;; Write this more clearly as F(a,-a-m;1/2+n;z), m > 0, n >= 0
+;; or equivalently F(-a-m,a;c+n;z)
+;;
+;; A&S 15.2.6
+;; diff((1-z)^(-1/2)*F(-a,a;1/2;z),z,n) 
+;;     = poch((1/2+a,n)*poch(1/2-a,n)/poch(1/2,n)*(1-z)^(-1/2-n)
+;;         * F(-a,a;1/2+n;z)
+;;
+;; A&S 15.2.5
+;; diff(z^(n+a+m-1/2)*F(-a,a;1/2+n;z),z,m)
+;;     = poch(1/2+n+a,m)*z^(1/2+n+a-1)*(1-z)^(-1/2-n-m)*F(-a-m,a;1/2+n;z)
+;;
+(defun f83 (fun m n a)
   (mul (factf (inv 2) n)
        (inv (factf (sub (inv 2) a) n))
        (inv (factf (add (sub (inv 2) a) n) m))
        (inv (factf (add (inv 2) a) n))
        (power (sub 1 'ell) (add m n (inv 2)))
        (power 'ell (sub (add (inv 2) a) n))
-       ($diff (mul (power 'ell (sub (sub (+ m n)  a)(inv 2)))
+       ($diff (mul (power 'ell (sub (sub (+ m n) a) (inv 2)))
 		   ($diff (mul (power (sub 1 'ell)
 				      (inv -2))
 			       fun)
@@ -2791,8 +2840,8 @@
 	      'ell
 	      m)))
 
-(defun f84
-    (fun m n a)
+;; The last case F(a,-a+m;c+n;z), m,n integers, m >= 0, n < 0
+(defun f84 (fun m n a)
   (mul (inv (mul (factf a m) (factf (sub (inv 2) n) n)))
        (power 'ell (sub 1 a))
        ($diff (mul (power 'ell (sub (add a m n) (inv 2)))
@@ -2802,8 +2851,8 @@
 	      'ell
 	      m)))
 
-(defun f86
-    (fun m n a)
+;; F(a,-a+m;c+n;z), m and n are negative integers, |n|>|m|, c = 1/2
+(defun f86 (fun m n a)
   (mul (inv (mul (factf (sub (inv 2) n) n)
 		 (factf (sub (inv 2) a) (- m n))))
        (power 'ell (add n (inv 2)))
