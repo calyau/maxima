@@ -1,12 +1,17 @@
 # -*- mode: rpm-spec -*-
+
+# By default, this spec file will generate RPMs for Clisp, CMUCL
+# and GCL. This can be changed by modifying the variables below.
 %define enable_clisp 1
 %define clisp_flags --enable-clisp
+%define clisp_version 2.29
 %define enable_cmucl 1
 %define cmucl_flags --enable-cmucl
 %define enable_gcl 1
 %define gcl_flags --enable-gcl
 
-# Inhibit automatic compressing of info files.
+# Inhibit automatic compressing of info files. Compressed info
+# files break maxima's internal help.
 %define __spec_install_post /bin/true
 
 Summary: Maxima Symbolic Computation Program
@@ -39,32 +44,32 @@ Provides: xmaxima
 Tcl/Tk interface to Maxima.
 
 %if %{enable_clisp}
-%package exec_clisp
+%package exec-clisp
 Summary: Maxima compiled with clisp
 Group: Development/Languages
-Requires: clisp maxima
+Requires: clisp = %{clisp_version}, maxima
 Provides: maxima_exec
-%description exec_clisp
+%description exec-clisp
 Maxima compiled with clisp.
 %endif
 
 %if %{enable_cmucl}
-%package exec_cmucl
+%package exec-cmucl
 Summary: Maxima compiled with CMUCL
 Group: Development/Languages
 Requires: cmucl maxima
 Provides: maxima_exec
-%description exec_cmucl
+%description exec-cmucl
 Maxima compiled with CMUCL.
 %endif
 
 %if %{enable_gcl}
-%package exec_gcl
+%package exec-gcl
 Summary: Maxima compiled with GCL
 Group: Development/Languages
 Requires: maxima
 Provides: maxima_exec
-%description exec_gcl
+%description exec-gcl
 Maxima compiled with Gnu Common Lisp.
 %endif
 
@@ -83,42 +88,51 @@ rm -rf $RPM_BUILD_ROOT
 /sbin/install-info %{_infodir}/maxima.info %{_infodir}/dir
 
 %postun
-/sbin/install-info --delete %{_infodir}/maxima.info %{_infodir}/dir
+if [ "$1" = 0 ]; then
+	/sbin/install-info --delete %{_infodir}/maxima.info %{_infodir}/dir
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-/usr/share/maxima/%{version}/*
-/usr/libexec/maxima/%{version}
-/usr/share/info/*
-/usr/share/man/man1/maxima.1
-/usr/bin/maxima
+%{_datadir}/maxima/%{version}/*
+%{_libexecdir}/maxima/%{version}
+%{_infodir}/*
+%{_mandir}/man1/maxima.1
+%{_bindir}/maxima
+%doc AUTHORS COPYING COPYING1 INSTALL README README.lisps README.rpms
 
 %files xmaxima
-/usr/bin/xmaxima
+%{_bindir}/xmaxima
 
 %if %{enable_clisp}
-%files exec_clisp
-/usr/lib/maxima/%{version}/binary-clisp/*
+%files exec-clisp
+%{_libdir}/maxima/%{version}/binary-clisp/*
 %endif
 
 %if %{enable_cmucl}
-%files exec_cmucl
-/usr/lib/maxima/%{version}/binary-cmucl/*
+%files exec-cmucl
+%{_libdir}/maxima/%{version}/binary-cmucl/*
 %endif
 
 %if %{enable_gcl}
-%files exec_gcl
-/usr/lib/maxima/%{version}/binary-gcl/*
+%files exec-gcl
+%{_libdir}/maxima/%{version}/binary-gcl/*
 %endif
 
 %doc
 
 
 %changelog
+* Sat Jan  4 2003 James Amundson <amundson@fnal.gov>
+- Added doc files
+- Added explicit clisp version
+- Added conditional to postun
+- Renamed exec_* packages to exec-*
+- Use rpm macros instead of hard-coded paths
+- Thanks to Rex Dieter for helpful suggestions
+
 * Sun Sep  8 2002 James Amundson <amundson@fnal.gov> 
 - Initial build.
-
-
