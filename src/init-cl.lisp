@@ -477,6 +477,7 @@
    (catch 'to-maxima-repl
      (format t "~a~%~a> ~a" *prompt-prefix* 
 	     (package-name *package*) *prompt-suffix*)
+     (finish-output)
      (let ((form (read)))
        (prin1 (eval form))))))
 
