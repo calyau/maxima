@@ -189,6 +189,28 @@
 ;;#-NIL 
 ;;(declare-top (MAPEX NIL))
 
+;;; The frame info for a function call consists of 5 consecutive
+;;; entries in *MLAMBDA-CALL-STACK*.  I call the topmost object of
+;;; such a quintuple the `function designator' belonging to this
+;;; frame.
+
+(defun pop-mlambda-call-stack (&optional fnname)
+  "Deactivate the topmost function call frame info.
+Return the function designator for this frame and check that it
+is EQ to FNNAME if the latter is non-NIL."
+  (let ((ar *mlambda-call-stack*) mlambda)
+    (symbol-macrolet ((mlambda-pointer (fill-pointer ar)))
+      (prog1
+	  (setq mlambda (aref ar (1- mlambda-pointer)))
+	(when fnname
+	  ;; Different frames can have the same function designator,
+	  ;; so this doesn't prove anything, it's just a check.
+	  (assert (eq mlambda fnname)
+		  (*mlambda-call-stack*)
+		  "Expected ~a but got ~a on mlambda call stack."
+		  fnname mlambda))
+	(decf mlambda-pointer 5)))))
+
 (defun mlambda (fn args fnname noeval form)
   (cond ((not ($listp (cadr fn)))
 	 (merror "First argument to `lambda' must be a list:~%~M" (cadr fn))))
@@ -922,30 +944,87 @@
 ;;	       `((,FN) ,@(ARGLIST FN))
 ;;	       `((MLIST) ,@ARGS))))
 
-
-
-
-(defmfun mbind (lamvars fnargs fnname)
+(defun mbind-doit (lamvars fnargs fnname)
+  "Makes a new frame where the variables in the list LAMVARS are bound
+to the corresponding elements in FNARGS.  Note that these elements are
+used tels quels, without calling MEVAL.
+If FNNAME is non-NIL, it designates a function call frame.
+This function does not handle errors properly, use the MBIND
+wrapper for this."
+  (declare (special bindlist mspeclist))
   (do ((vars lamvars (cdr vars)) (args fnargs (cdr args)))
       ((cond ((and vars args) nil)
 	     ((and (null vars) (null args)))
-	     (t (merror "Too ~M arguments supplied to ~M:~%~M"
-		        (if vars '|&FEW| '|&MANY|)
-		        (if fnname (cons (ncons fnname) lamvars)
-			    '|&A FUNCTION|)
-		        (cons '(mlist) fnargs)))))
+	     (t (assert fnname (fnname)
+			"Expected a maxima function designator but got NIL.")
+		(merror "Too ~M arguments supplied to ~M:~%~M"
+			(if vars "few" "many")
+			(cons (ncons fnname) lamvars)
+			(cons '(mlist) fnargs)))))
     (let ((var (car vars)))
       (if (not (symbolp var))
 	  (merror "Only symbolic atoms can be bound:~%~M" var))
-      #-franz (without-tty-interrupts
-	       (let ((bl (cons var bindlist))
-		     (ml (cons (if (boundp var) (symbol-value var) munbound)
-			       mspeclist)))
-		 (setq bindlist bl mspeclist ml)))
-      ;;#+Franz (SETQ BINDLIST (CONS VAR BINDLIST))
-      ;;#+Franz (SETQ MSPECLIST (CONS (IF (BOUNDP VAR) (SYMBOL-VALUE VAR) MUNBOUND)
-      ;;			  MSPECLIST))
-      (mset var (car args)))))
+      (let ((value (if (boundp var)
+		       (symbol-value var)
+		       munbound)))
+	(without-tty-interrupts
+	  (mset var (car args))
+	  (psetq bindlist (cons var bindlist)
+		 mspeclist (cons value mspeclist)))))))
+
+(defun mbind (lamvars fnargs fnname)
+  "Error-handling wrapper around MBIND-DOIT."
+  (handler-case
+      (let ((old-bindlist bindlist) win)
+	(declare (special bindlist))
+	(unwind-protect
+	     (prog1
+		 (with-$error
+		   (mbind-doit lamvars fnargs fnname))
+	       (setq win t))
+	  (unless win
+	    (unless (eq bindlist old-bindlist)
+	      (munbind (nreverse (ldiff bindlist old-bindlist))))
+	    (when fnname
+	      (pop-mlambda-call-stack fnname)))))
+    (maxima-$error (c)
+      (apply #'merror (cdr (the-$error c)))
+      ;; Make absolutely sure that this handler (and mbind) doesn't
+      ;; return in this situation since other code depends on this
+      ;; behaviour.
+      (throw 'macsyma-quit t))))
+
+;;; For testing purposes
+
+#+ignore
+(defmfun $show_mbind_data ()
+  (format t "~&~{~a = ~a~%~}"
+	  (mapcan #'(lambda (x) (list x (symbol-value x)))
+		  '(bindlist mspeclist $values *mlambda-call-stack*)))
+  (finish-output)
+  (values))
+
+;; (defmfun mbind (lamvars fnargs fnname)
+;;   (do ((vars lamvars (cdr vars)) (args fnargs (cdr args)))
+;;       ((cond ((and vars args) nil)
+;; 	     ((and (null vars) (null args)))
+;; 	     (t (merror "Too ~M arguments supplied to ~M:~%~M"
+;; 		        (if vars '|&FEW| '|&MANY|)
+;; 		        (if fnname (cons (ncons fnname) lamvars)
+;; 			    '|&A FUNCTION|)
+;; 		        (cons '(mlist) fnargs)))))
+;;     (let ((var (car vars)))
+;;       (if (not (symbolp var))
+;; 	  (merror "Only symbolic atoms can be bound:~%~M" var))
+;;       #-franz (without-tty-interrupts
+;; 	       (let ((bl (cons var bindlist))
+;; 		     (ml (cons (if (boundp var) (symbol-value var) munbound)
+;; 			       mspeclist)))
+;; 		 (setq bindlist bl mspeclist ml)))
+;;       ;;#+Franz (SETQ BINDLIST (CONS VAR BINDLIST))
+;;       ;;#+Franz (SETQ MSPECLIST (CONS (IF (BOUNDP VAR) (SYMBOL-VALUE VAR) MUNBOUND)
+;;       ;;			  MSPECLIST))
+;;       (mset var (car args)))))
 
 (defmfun munbind (vars)
   (dolist (var (reverse vars))
