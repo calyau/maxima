@@ -22,7 +22,11 @@ AC_ARG_WITH(clisp,
 	[  --with-clisp=<prog>              Use clisp executable <prog> (default clisp)],
 	[clisp=true
 	explicit_lisp=true
-	CLISP_NAME=$withval],
+	if test "$withval" = "yes"; then
+		CLISP_NAME="${clisp_default_name}"
+	else
+		CLISP_NAME="$withval"
+	fi],
 	[CLISP_NAME=${clisp_default_name}])
 
 if test x"${clisp}" = xtrue ; then
@@ -55,7 +59,11 @@ AC_ARG_WITH(cmucl,
 	[  --with-cmucl=<prog>              Use CMUCL executable <prog> (default lisp)],
 	[cmucl=true
 	explicit_lisp=true
-	CMUCL_NAME=$withval],
+	if test "$withval" = "yes"; then
+		CMUCL_NAME="${cmucl_default_name}"
+	else
+		CMUCL_NAME="$withval"
+	fi],
 	[CMUCL_NAME=${cmucl_default_name}])
 if test x"${cmucl}" = xtrue ; then
 	if test `echo "$CMUCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
@@ -87,7 +95,11 @@ AC_ARG_WITH(gcl,
 	[  --with-gcl=<prog>                Use GCL executable <prog> (default gcl)],
 	[gcl=true
 	explicit_lisp=true
-	GCL_NAME=$withval],
+	if test "$withval" = "yes"; then
+		GCL_NAME="${gcl_default_name}"
+	else
+		GCL_NAME="$withval"
+	fi],
 	[GCL_NAME=${gcl_default_name}])
 if test x"${gcl}" = xtrue ; then
 	if test `echo "$GCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
@@ -126,6 +138,17 @@ fi
 AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
 AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
+
+AC_ARG_ENABLE(gcl-alt-link,
+	[  --enable-gcl-alt-link            Use GCL's alternate linking mechanism],
+     	[case "${enableval}" in
+       		yes) gcl_alt_link=true ;;
+       		no)  gcl_alt_link=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-gcl-alt-link) ;;
+     	esac],
+	[gcl_alt_link=false])
+
+AM_CONDITIONAL(GCL_ALT_LINK, test x$gcl_alt_link = xtrue)
 	
 AC_ARG_WITH(default-lisp,
 	[  --with-default-lisp=<lisp>       Set default lisp implementation to <lisp>],
@@ -179,6 +202,13 @@ AC_ARG_WITH(posix-shell,
 	[posix_shell_list="${withval}"],
 	[posix_shell_list="/bin/sh /bin/bash /usr/bin/bash /usr/local/bin/bash"])
 
+AC_ARG_WITH(wish,
+	[  --with-wish=<prog>               Use <prog> for Tk wish shell (default wish)],
+	[WISH="${withval}"],
+	[WISH="wish"])
+AC_SUBST(WISH)
+
+
 AC_MSG_CHECKING(POSIX shell to see that it contains getopts)
 cat <<EOF > conftest-posix-shell.sh
 getopts "ab:" opt
@@ -229,9 +259,10 @@ AC_SUBST(expanded_libexecdir)
 AC_SUBST(expanded_datadir)
 AC_SUBST(expanded_infodir)
 
-AC_OUTPUT(Makefile maxima-local maxima.spec src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl interfaces/xmaxima/win32/Makefile share/Makefile demo/Makefile plotting/Makefile)
+AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl interfaces/xmaxima/win32/Makefile share/Makefile demo/Makefile plotting/Makefile)
 
 chmod +x maxima-local
+chmod +x xmaxima-local
 
 echo
 echo "Summary:"
