@@ -3,7 +3,6 @@
 ; description: Initialize Maxima                         
 ; date:        Wed Jan 13 1999 - 20:27                   
 ; author:      Liam Healy <Liam.Healy@nrl.navy.mil>      
-; modified:    Wed Jan 13 1999 - 21:32
 ;********************************************************
 
 (in-package :maxima)
@@ -16,9 +15,6 @@
     (ignore-errors (translate-logical-pathname "maxima:maxima-54;")))
 #+gcl(defvar *maxima-directory* "/home/amundson/notwork/src/maxima-clocc")
 
-(load "version.lisp") 
-(load "autol.lisp") 
-(load "max_ext.lisp")
 (defun maxima-path (dir file)
    (format nil "~a~a/~a" *maxima-directory* dir file))
 
@@ -35,23 +31,24 @@
 (defvar $chemin nil)
 
 #+gcl
-(defun getenv (envvar)
+(defun maxima-getenv (envvar)
   (si::getenv envvar))
 
 #+allegro
-(defun getenv (envvar)
+(defun maxima-getenv (envvar)
   (system:getenv envvar))
 
 #+cmu
-(defun getenv (envvar)
+(defun maxima-getenv (envvar)
   (car (assoc envvar ext:*environment-list* :test #'string=)))
 
 #+clisp
-(defun getenv (envvar)
+(defun maxima-getenv (envvar)
   (ext:getenv envvar))
 
 (defun set-pathnames ()
-  (let* ((tem (getenv "MAXIMA_DIRECTORY")))
+  (let* ((tem-env (maxima-getenv "MAXIMA_DIRECTORY"))
+	 (tem (if tem-env tem-env *autoconf-prefix*)))
     (if (and tem (> (length tem) 0))
 	(or (eql (aref tem (1- (length tem))) #\/)
 	    (setq tem (format nil "~a/" tem))))
