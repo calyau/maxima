@@ -846,6 +846,11 @@
      (go loop)))
 
 
+;; Whittaker M function.  A&S 13.1.32 defines it as
+;;
+;; %m[k,u](z) = exp(-z/2)*z^(u+1/2)*M(1/2+u-k,1+2*u,z)
+;;
+;; where M is the confluent hypergeometric function.
 (defun whitfun (k m var)
   (list '(mqapply) (list '($%m array) k m) var))
 
@@ -2295,6 +2300,25 @@
 	    (return (kummer arg-l1 arg-l2))))
 
      (cond ($prefer_whittaker
+	    ;; A&S 15.1.32:
+	    ;;
+	    ;; %m[k,u](z) = exp(-z/2)*z^(u+1/2)*M(1/2+u-k,1+2*u,z)
+	    ;;
+	    ;; So
+	    ;;
+	    ;; M(a,c,z) = exp(z/2)*z^(-c/2)*%m[c/2-a,c/2-1/2](z)
+	    ;;
+	    ;; But if we apply Kummer's transformation, we can also
+	    ;; derive the expression
+	    ;;
+	    ;; %m[k,u](z) = exp(z/2)*z^(u+1/2)*M(1/2+u+k,1+2*u,-z)
+	    ;;
+	    ;; or
+	    ;;
+	    ;; M(a,c,z) = exp(-z/2)*z^(-c/2)*%m[a-c/2,c/2-1/2](-z)
+	    ;;
+	    ;; For Laplace transforms it might be more beneficial to
+	    ;; return this second form instead.
 	    (setq m
 		  (div (sub c 1) 2)
 		  k
