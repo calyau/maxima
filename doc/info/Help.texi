@@ -9,162 +9,183 @@
 @node Introduction to Help, Lisp and Maxima, Help, Help
 @section Introduction to Help
 
-The most useful online help command is DESCRIBE which obtains help
-on all commands containing a particular string.  Here by command we
-mean a built in operator such as INTEGRATE or FACTOR etc.   As a typing
-short cut you may type @code{? fact} in lieu of @code{describe("fact")}
+@c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
+
+The primary on-line help function is @code{describe},
+which is typically invoked by the question mark @code{?} at the interactive prompt.
+@code{? foo} (with a space between @code{?} and @code{foo})
+is equivalent to @code{describe ("foo")}, where @code{foo}
+is the name or part of the name of a function or topic;
+@code{describe} then finds all documented items which contain the string
+@code{foo} in their titles.
+If there is more than one such item, Maxima asks the user to select
+an item or items to display.
+
 @example
-(%i3) ? inte;
+(%i1) ? integ
+ 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
+ 1: Definitions for Elliptic Integrals.
+ 2: Integration.
+ 3: Introduction to Integration.
+ 4: Definitions for Integration.
+ 5: askinteger :Definitions for Simplification.
+ 6: integerp :Definitions for Miscellaneous Options.
+ 7: integrate :Definitions for Integration.
+ 8: integrate_use_rootsof :Definitions for Integration.
+ 9: integration_constant_counter :Definitions for Integration.
+Enter space-separated numbers, `all' or `none': 7 8
 
-
- 0: (maxima.info)Integration.
- 1: Introduction to Integration.
- 2: Definitions for Integration.
- 3: INTERRUPTS.
- 4: ASKINTEGER :Definitions for Simplification.
- 5: DISPLAY_FORMAT_INTERNAL :Definitions for Input and Output.
- 6: INTEGERP :Definitions for Miscellaneous Options.
- 7: INTEGRATE :Definitions for Integration.
- 8: INTEGRATION_CONSTANT_COUNTER :Definitions for Integration.
- 9: INTERPOLATE :Definitions for Numerical.
-Enter n, all, none, or multiple choices eg 1 3 : 7 8;
-
-Info from file /d/linux2/local/share/info/maxima.info:
- - Function: INTEGRATE (EXP, VAR)
-     integrates exp with respect to var or returns an integral
-     expression (the noun form) if it cannot perform the integration
-     (see note 1 below).  Roughly speaking three stages are used:
-...
+Info from file /use/local/maxima/doc/info/maxima.info:
+ - Function: integrate (expr, var)
+ - Function: integrate (expr, var, a, b)
+     Attempts to symbolically compute the integral of `expr' with
+     respect to `var'.  `integrate (expr, var)' is an indefinite
+     integral, while `integrate (expr, var, a, b)' is a definite
+     integral, [...]
 @end example
-In the above the user said he wanted items 7 and 8.  Note the @code{;}
-following the two numbers.  He might have typed @code{all} to
-see help on all the items.
+
+In this example, items 7 and 8 were selected.
+All or none of the items could have been selected by entering @code{all} or @code{none},
+which can be abbreviated @code{a} or @code{n}, respectively.
 
 @node Lisp and Maxima, Garbage Collection, Introduction to Help, Help
 @section Lisp and Maxima
- All of Maxima is of course written in Lisp.  There is
-a naming convention for functions and variables:  All symbols which
-begin with a "$" sign at Lisp level, are read with the "$" sign stripped
-off at Maxima level.  For example, there are two Lisp functions
-TRANSLATE and $TRANSLATE.   If at Maxima level you enter
-TRANSLATE(FOO); the function which is called is the $translate function.
-To access the other function you must prefix with a "?".   Note you
-may @i{not} put a space after the @code{?} since that would indicate
-you were looking for help!   
+Maxima is written in Lisp, and it is easy to access Lisp functions and variables
+from Maxima and vice versa.
+Lisp and Maxima symbols are distinguished by a naming convention.
+A Lisp symbol which begins with a dollar sign @code{$} corresponds to
+a Maxima symbol without the dollar sign.
+@c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
+@c This includes special Maxima variables such as @code{%} and input and output labels,
+@c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
+A Maxima symbol which begins with a question mark @code{?} corresponds to
+a Lisp symbol without the question mark.
+For example, the Maxima symbol @code{foo} corresponds to the Lisp symbol @code{$foo}.
+while the Maxima symbol @code{?foo} corresponds to the Lisp symbol @code{foo},
+Note that @code{?foo} is written without a space between @code{?} and @code{foo};
+otherwise it might be mistaken for @code{describe ("foo")}.
+
+Lisp symbols appearing in Maxima code must follow the rules for Maxima
+identifiers (apart from beginning with a question mark).
+In particular, symbols containing hyphen @code{-} or other special characters
+cannot appear in Maxima code.
+
+Lisp code may be executed from within a Maxima session.
+A single line of Lisp (containing one or more forms) may be executed
+by the special command @code{:lisp}. For example,
 
 @example
-(%i1) ?TRANSLATE(FOO); 
+(%i1) :lisp (foo $x $y)
 @end example
 
-Of course, this may well not do what you wanted it to do since it is a
-completely different function.
-
-To enter a Lisp command you may use
-@example
-(%i1) :lisp (foo 1 2)
-@end example
-or to get a Lisp prompt use @code{to_lisp();}, or alternately type
-@code{Ctrl-c} to enter into a debug break.
-This will cause a Lisp break loop to be entered.  You
-could now evaluate $%o2
-and view the value of the line label %o2, in its internal Lisp
-format.   Typing @code{:q} will quit to top level, if you are in
-a debug break.  If you had exited Maxima with @code{to_lisp();}
-then you should type
-@example
-MAXIMA>(run)
-@end example
-at the Lisp prompt, to restart the Maxima session.
-
-If you intend to write Lisp functions to be called at Maxima
-level you should name them by names beginning with a "$".   Note
-that all symbols typed at Lisp level are automatically read in
-upper case, unless you do something like @code{|$odeSolve|} to
-force the case to be respected.   Maxima interprets symbols
-as mixed case, if the symbol has already been read before
-or at the time it was first read there
-was not an already existing symbol with the same letters but upper
-case only.   Thus if you type
-@example
-(%i1) Integrate;
-(%o1) INTEGRATE
-(%i2) Integ;
-(%o2) Integ
-@end example
-The symbol @code{Integrate} already existed in upper case since it
-is a Maxima primitive, but INTEG, does not already exist, so the Integ
-is permitted.   This may seem a little bizarre, but we wish to keep
-old Maxima code working, which assumes that Maxima primitives may
-be in upper or lower case.   An advantage of this system is that if
-you type in lower case, you will immediately see which are the Maxima
-keywords and functions.
-
-To enter Maxima forms at Lisp level, you may use the @code{#$} macro.
-@example
-                          (setq $foo #$[x,y]$)
-@end example
-
-This will have the same effect as entering
-@example
-
-(%i1)FOO:[X,Y];
-@end example
 @noindent
+calls the Lisp function @code{foo} with Maxima variables @code{x} and @code{y} as arguments.
+The @code{:lisp} construct can appear at the interactive prompt
+or in a file processed by @code{batch} or @code{demo}, but not in a file processed by
+@code{load}, @code{batchload}, @code{translate_file}, or @code{compile_file}.
 
-except that foo will not appear in the VALUES list.  In order to view
-foo in Maxima printed format you may type
+The function @code{to_lisp()} opens an interactive Lisp session.
+Entering @code{(to-maxima)} closes the Lisp session and returns to Maxima.
+@c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
+@c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
+@c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
+@c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
+
+Lisp functions and variables which are to be visible in Maxima as
+functions and variables with ordinary names (no special punctuation)
+must have Lisp names beginning with the dollar sign @code{$}.
+
+Maxima is case-sensitive, distinguishing between lowercase and uppercase letters
+in identifiers, while Lisp is not.
+There are some rules governing the translation of names between Lisp and Maxima.
+
+@enumerate
+@item
+A Lisp identifier not enclosed in vertical bars corresponds to a Maxima identifier
+in lowercase.
+Whether the Lisp identifier is uppercase, lowercase, or mixed case, is ignored.
+E.g., Lisp @code{$foo}, @code{$FOO}, and @code{$Foo} all correspond to Maxima @code{foo}.
+@item
+A Lisp identifier which is all uppercase or all lowercase
+and enclosed in vertical bars corresponds to a Maxima identifier with case reversed.
+That is, uppercase is changed to lowercase and lowercase to uppercase.
+E.g., Lisp @code{|$FOO|} and @code{|$foo|}
+correspond to Maxima @code{foo} and @code{FOO}, respectively.
+@item
+A Lisp identifier which is mixed uppercase and lowercase
+and enclosed in vertical bars corresponds to a Maxima identifier with the same case.
+E.g., Lisp @code{|$Foo|} corresponds to Maxima @code{Foo}.
+@end enumerate
+
+The @code{#$} Lisp macro allows the use of Maxima expressions in Lisp code.
+@code{#$@var{expr}$} expands to a Lisp expression equivalent to the Maxima expression @var{expr}.
 
 @example
-(displa $foo)
+(msetq $foo #$[x, y]$)
 @end example
 
-In this documentation when we wish to refer to a Maxima symbol we
-shall generally omit the $ just as you would when typing at Maxima level.
-This will cause confusion when we also wish to refer to a Lisp symbol.
-In this case we shall usually try to use lower case for the Lisp symbol
-and upper case for the Maxima symbol.  For example LIST for $list and
-list for the Lisp symbol whose printname is "list".
+@noindent
+This has the same effect as entering
 
-Since functions defined using the Maxima language are not ordinary
-Lisp functions, you must use mfuncall to call them.
+@example
+(%i1) foo: [x, y];
+@end example
+
+@noindent
+The Lisp function @code{displa} prints an expression in Maxima format.
+
+@example
+(%i1) :lisp #$[x, y, z]$ 
+((MLIST SIMP) $X $Y $Z)
+(%i1) :lisp (displa '((MLIST SIMP) $X $Y $Z))
+[x, y, z]
+NIL
+@end example
+
+Functions defined in Maxima are not ordinary Lisp functions.
+The Lisp function @code{mfuncall} calls a Maxima function.
 For example:
 
 @example
-(%o2)                        FOO(X, Y) := X + Y + 3
-@end example
-@noindent
-
-then at Lisp level
-
-@example
-CL-MAXIMA>>(mfuncall '$foo 4 5)
-12
+(%i1) foo(x,y) := x*y$
+(%i2) :lisp (mfuncall '$foo 'a 'b)
+((MTIMES SIMP) A B)
 @end example
 
-A number of Lisp functions are shadowed in the Maxima package.  This is
-because their use within Maxima is not compatible with the definition as
-a system function.  For example typep behaves differently in Common Lisp
-than it did in Maclisp.  If you want to refer to the Zeta Lisp typep
-while in the Maxima package you should use global:typep (or cl:typep for
-Common Lisp).  Thus
+Some Lisp functions are shadowed in the Maxima package, namely the following.
 
-@example
-
-  (macsyma:typep '(1 2)) ==> 'list
-  (lisp:typep '(1 2))==> error (lisp:type-of '(1 2))==> 'cons
-
-@end example
-
-To see which symbols are shadowed look in "src/maxima-package.lisp" or
-do a describe of the package at Lisp level.
+@code{complement},
+@code{continue},
+@code{//},
+@code{float},
+@code{functionp},
+@code{array},
+@code{exp},
+@code{listen},
+@code{signum},
+@code{atan},
+@code{asin},
+@code{acos},
+@code{asinh},
+@code{acosh},
+@code{atanh},
+@code{tanh},
+@code{cosh},
+@code{sinh},
+@code{tan},
+@code{break},
+and @code{gcd}.
 
 
 @node Garbage Collection, Documentation, Lisp and Maxima, Help
 @section Garbage Collection
- Symbolic computation tends to create a good deal
+Symbolic computation tends to create a good deal
 of garbage, and effective handling of this can be crucial to successful
 completion of some programs.
 
+@c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
+@c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
+@c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
 Under GCL, on UNIX systems where the mprotect system call is available
 (including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
 is available.   This limits the collection to pages which have been recently
@@ -175,79 +196,205 @@ areas might need more space.
 @node Documentation, Definitions for Help, Garbage Collection, Help
 @section Documentation
 
-The source for the documentation is in @file{.texi} texinfo format.
-From this format we can produce the info files used by the online
-commands @code{? } and @code{describe}.   Also @code{html} and @code{pdf}
-files can be produced.
+@c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
 
-Additionally there are examples so that you may do
+The Maxima on-line user's manual can be viewed in different forms.
+From the Maxima interactive prompt, the user's manual
+is viewed as plain text by the @code{?} command (i.e., the @code{describe} function).
+The user's manual is viewed as @code{info} hypertext by the @code{info} viewer program
+and as a web page by any ordinary web browser.
+
+@code{example} displays examples for many Maxima functions.
+For example,
 
 @example
-(%i1) example(integrate);
+(%i1) example (integrate);
 @end example
 
-which yields
+yields
 
 @example
 (%i2) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
-(%o2) test(f) := block([u], u : integrate(f, x), ratsimp(f - diff(u, x)))
+(%o2) test(f) := block([u], u : integrate(f, x), 
+
+                                         ratsimp(f - diff(u, x)))
 (%i3) test(sin(x))
-(%o3)                             0
+(%o3)                           0
 (%i4) test(1/(x+1))
-(%o4)                             0
+(%o4)                           0
 (%i5) test(1/(x^2+1))
-(%o5)                             0
+(%o5)                           0
 @end example
 
 and additional output.
 
 @node Definitions for Help,  , Documentation, Help
 @section Definitions for Help
-@c @node DEMO
-@c @unnumberedsec phony
-@defun DEMO (file)
-this is the same as BATCH but pauses after each command
-line and continues when a space is typed (you may need to type
-@code{;} followed by a newline, if running under xmaxima).   The demo
-files have suffix @code{.dem}
 
-@end defun
-@c @node DESCRIBE
-@c @unnumberedsec phony
-@defun DESCRIBE (cmd)
+@defun demo (@var{filename})
+Evaluates Maxima expressions in @var{filename} and displays the results.
+@code{demo} pauses after evaluating each expression
+and continues after the user enters a carriage return.
+(If running in Xmaxima, @code{demo} may need to see a semicolon @code{;}
+followed by a carriage return.)
 
-This command prints documentation on all commands which contain
-the substring "cmd".   Thus
+@code{demo} searches the list of directories
+@code{file_search_demo} to find @code{filename}.
+If the file has the suffix @code{dem},
+the suffix may be omitted.
+See also @code{file_search}.
+
+@code{demo} evaluates its argument.
+@code{demo} returns the name of the demonstration file.
+
+Example:
+
 @example
-(%i1) describe("integ");
- 0: (maxima.info)Integration.
- 1: Introduction to Integration.
- 2: Definitions for Integration.
- 3: ASKINTEGER :Definitions for Simplification.
-..
-Enter n, all, none, or multiple choices eg 1 3 : 2 3;
-Info from file /d/linux2/local/share/info/maxima.info:
-Definitions for Integration
-===========================
+(%i1) demo ("disol");
 
- - Function: CHANGEVAR (EXP,F(X,Y),Y,X)
-...
+batching /home/robert/maxima/sandbox/maxima/share/simplification/disol.dem
+ At the _ prompt, type ';' followed by enter to get next demo
+(%i2)                      load(disol)
+
+_
+(%i3)           exp1 : a (e (g + f) + b (d + c))
+(%o3)               a (e (g + f) + b (d + c))
+
+_
+(%i4)                disolate(exp1, a, b, e)
+(%t4)                         d + c
+
+(%t5)                         g + f
+
+(%o5)                   a (%t5 e + %t4 b)
+
+_
+(%i5) demo ("rncomb");
+
+batching /home/robert/maxima/sandbox/maxima/share/simplification/rncomb.dem
+ At the _ prompt, type ';' followed by enter to get next demo
+(%i6)                     load(rncomb)
+
+_
+                             z         x
+(%i7)               exp1 : ----- + ---------
+                           y + x   2 (y + x)
+                          z         x
+(%o7)                   ----- + ---------
+                        y + x   2 (y + x)
+
+_
+(%i8)                     combine(exp1)
+                          z         x
+(%o8)                   ----- + ---------
+                        y + x   2 (y + x)
+
+_
+(%i9)                     rncombine(%)
+                             2 z + x
+(%o9)                       ---------
+                            2 (y + x)
+
+_
+                             d   c   b   a
+(%i10)                exp2 : - + - + - + -
+                             3   3   2   2
+                          d   c   b   a
+(%o10)                    - + - + - + -
+                          3   3   2   2
+
+_
+(%i11)                    combine(exp2)
+                      2 d + 2 c + 3 (b + a)
+(%o11)                ---------------------
+                                6
+
+_
+(%i12)                   rncombine(exp2)
+                      2 d + 2 c + 3 b + 3 a
+(%o12)                ---------------------
+                                6
+
+_
+(%i13) 
 @end example
 
+@end defun
+
+@defun describe (@var{string})
+Finds all documented items which contain @var{string} in their titles.
+If there is more than one such item, Maxima asks the user to select
+an item or items to display.
+At the interactive prompt,
+@code{? foo} (with a space between @code{?} and @code{foo})
+is equivalent to @code{describe ("foo")}.
+
 @code{describe ("")} yields a list of all topics documented in the on-line manual.
+
+@code{describe} quotes its argument. @code{describe} always returns @code{false}.
+
+Example:
+
+@example
+(%i1) ? integ
+ 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
+ 1: Definitions for Elliptic Integrals.
+ 2: Integration.
+ 3: Introduction to Integration.
+ 4: Definitions for Integration.
+ 5: askinteger :Definitions for Simplification.
+ 6: integerp :Definitions for Miscellaneous Options.
+ 7: integrate :Definitions for Integration.
+ 8: integrate_use_rootsof :Definitions for Integration.
+ 9: integration_constant_counter :Definitions for Integration.
+Enter space-separated numbers, `all' or `none': 7 8
+
+Info from file /use/local/maxima/doc/info/maxima.info:
+ - Function: integrate (expr, var)
+ - Function: integrate (expr, var, a, b)
+     Attempts to symbolically compute the integral of `expr' with
+     respect to `var'.  `integrate (expr, var)' is an indefinite
+     integral, while `integrate (expr, var, a, b)' is a definite
+     integral, [...]
+@end example
+
+In this example, items 7 and 8 were selected.
+All or none of the items could have been selected by entering @code{all} or @code{none},
+which can be abbreviated @code{a} or @code{n}, respectively.
 
 @pxref{Introduction to Help}
 
 @end defun
-@c @node EXAMPLE
-@c @unnumberedsec phony
-@defun EXAMPLE (command)
-will start up a demonstration of how command works
-on some expressions.  After each command line it will pause and wait
-for a space to be typed, as in the DEMO command.
+
+@defun example (@var{topic})
+@defunx example ()
+@code{example (@var{topic})} displays some examples of @var{topic},
+which is a symbol (not a string).
+Most topics are function names.
+@code{example ()} returns the list of all recognized topics.
 
 The name of the file containing the examples is given by the
-variable manual_demo, which defaults to "manual.demo".
+global variable @code{manual_demo}, which defaults to @code{"manual.demo"}.
+
+@code{example} quotes its argument.
+@code{example} returns @code{done}
+unless there is an error or there is no argument, in which case @code{example}
+returns the list of all recognized topics.
+
+Examples:
+
+@example
+(%i1) example (append);
+(%i2) append([x+y,0,-3.2],[2.5E+20,x])
+(%o2)             [y + x, 0, - 3.2, 2.5E+20, x]
+(%o2)                         done
+(%i3) example (coeff);
+(%i4) coeff(b+tan(x)+2*a*tan(x) = 3+5*tan(x),tan(x))
+(%o4)                      2 a + 1 = 5
+(%i5) coeff(1+x*%e^x+y,x,0)
+(%o5)                         y + 1
+(%o5)                         done
+@end example
 
 @end defun
 
