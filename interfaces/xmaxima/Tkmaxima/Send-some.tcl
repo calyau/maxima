@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Send-some.tcl,v 1.3 2002-09-07 10:05:06 mikeclarkson Exp $
+#       $Id: Send-some.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### send-some.tcl ######
 
@@ -41,11 +41,11 @@
 #----------------------------------------------------------------
 #
 proc myVwait { var  } {
-    global _waiting ws_openMath
+    global _waiting maxima_priv
     set tem [split $var "(" ]
     set variable [lindex $tem 0]
     global $variable
-    lappend ws_openMath(myVwait) $variable
+    lappend maxima_priv(myVwait) $variable
 
 
     set index ""
@@ -61,7 +61,7 @@ proc myVwait { var  } {
         #puts "still waiting _waiting=$_waiting"
 	update
     }
-    set ws_openMath(myVwait) [ ldelete $variable $ws_openMath(myVwait)]
+    set maxima_priv(myVwait) [ ldelete $variable $maxima_priv(myVwait)]
     trace vdelete $variable w $action
 }
 
@@ -80,10 +80,10 @@ proc _myaction { ind name1 name2 op } {
 # proc myVwait { x args } {uplevel "#0"  vwait $x }
 if { "[info commands vwait]" == "vwait"  } {
     proc myVwait { x  } {
-	global ws_openMath $x
-	lappend ws_openMath(myVwait) $x
+	global maxima_priv $x
+	lappend maxima_priv(myVwait) $x
 	vwait $x
-	set ws_openMath(myVwait) [ ldelete $x $ws_openMath(myVwait)]
+	set maxima_priv(myVwait) [ ldelete $x $maxima_priv(myVwait)]
     }
 }
 
@@ -127,12 +127,12 @@ proc  msleep { n } {
     debugsend "..donewaiting Msleeping"
 }
 proc message { msg } {
-    global ws_openMath _debugSend
+    global maxima_priv _debugSend
     if { $_debugSend } { puts "setting message=<$msg>" }
-    catch { set ws_openMath(load_rate) $msg }
+    catch { set maxima_priv(load_rate) $msg }
 }
 proc sendOne { program  com }  {
-    global  pdata ws_openMath
+    global  pdata maxima_priv
     incr pdata($program,currentExpr)
     set socket $pdata($program,socket)
 
@@ -505,28 +505,28 @@ proc statServer  {server {timeout 1000}} {
 }
 
 proc isAlive1 { s } {
-    global ws_openMath
+    global maxima_priv
     if { [catch { read $s } ] } {
-	set ws_openMath(isalive) -1 
+	set maxima_priv(isalive) -1 
     } else {
-	set ws_openMath(isalive) 1
+	set maxima_priv(isalive) 1
     }
     close $s
 }
 
 proc isAlive { server {timeout 1000} } {
-    global ws_openMath
+    global maxima_priv
 
     if { [ catch { set s [eval socket -async $server] } ] } { return -1 }
-    set ws_openMath(isalive) 0
+    set maxima_priv(isalive) 0
     fconfigure $s -blocking 0
     fileevent    $s writable     "isAlive1 $s"
-    set c1 "set ws_openMath(isalive) -2"
+    set c1 "set maxima_priv(isalive) -2"
     set after_id [after $timeout $c1]
-    myVwait ws_openMath(isalive)
+    myVwait maxima_priv(isalive)
     catch { close $s}
     after cancel $after_id
-    return $ws_openMath(isalive)
+    return $maxima_priv(isalive)
 }
 
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Proxy.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Proxy.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### Proxy.tcl ######
 
@@ -22,9 +22,9 @@
 #----------------------------------------------------------------
 #
 proc openSocketAndSend { host port msg { verify 0}} {
-    global ws_openMath  pdata
+    global maxima_priv  pdata
     dtrace
-    if { [info exists ws_openMath(proxy,http)] } {
+    if { [info exists maxima_priv(proxy,http)] } {
 	global pdata
 	set magic "billy-[clock clicks]"
 	debugsend "sendViaProxy $msg $host $port $magic"
@@ -103,9 +103,9 @@ proc proxyPuts { sock  message } {
 #----------------------------------------------------------------
 #
 proc sendViaProxy { message host port magic  } {
-    global ws_openMath
+    global maxima_priv
     dtrace
-    set ss [eval socket $ws_openMath(proxy,http)]
+    set ss [eval socket $maxima_priv(proxy,http)]
     fconfigure $ss -blocking 0
     fconfigure $ss -translation {crlf binary}
     set request [getURLrequest http://$host:$port/$magic $host $port "" $message]

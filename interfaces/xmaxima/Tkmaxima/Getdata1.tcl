@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Getdata1.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Getdata1.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### getdata1.tcl ######
 ############################################################
@@ -47,7 +47,7 @@
 
 
 proc readAllData { sock args } {
-    global readAllData [oarray $sock] ws_openMath
+    global readAllData [oarray $sock] maxima_priv
 
     array set [oarray $sock] {
 	timeout 5000
@@ -78,7 +78,7 @@ proc readAllData { sock args } {
     }
     fconfigure $sock -blocking 0
 
-    catch { $ws_openMath(status_window).scale \
+    catch { $maxima_priv(status_window).scale \
 		config -variable [oloc $sock percent] }
     lappend [oloc $sock after] [after [oget $sock timeout] "oset $sock done -1"]
     if { "[oget $sock mimeheader]" != "" } {
@@ -163,7 +163,7 @@ proc readMimeHeader { sock } {
 
 proc readAllData1 { sock } {
     #puts "readAllData1 $sock" ; flush stdout
-    global ws_openMath [oarray $sock]
+    global maxima_priv [oarray $sock]
 
     makeLocal $sock timeout tovar tochannel docommand chunksize after contentlength begin
 
@@ -193,7 +193,7 @@ proc readAllData1 { sock } {
 		    return finished
 		}
 	    }
-	    set ws_openMath(load_rate) "[expr {round ($bytesread * ($ws_openMath(clicks_per_second)*1.0 / ([clock clicks] - $begin)))}] bytes/sec"
+	    set maxima_priv(load_rate) "[expr {round ($bytesread * ($maxima_priv(clicks_per_second)*1.0 / ([clock clicks] - $begin)))}] bytes/sec"
 
 	    if { $contentlength > 0 } {
 		oset $sock percent \
@@ -318,10 +318,10 @@ proc testit { addr usecommand args } {
 #----------------------------------------------------------------
 #
 proc tryGetCache { path alist } {
-    global ws_Cache ws_openMath
+    global ws_Cache maxima_priv
     set tem [ws_Cache($path)]
     if { "$tem" != "" } {
-	set filename [file join $ws_openMath(cachedir) [lindex $tem 1]]
+	set filename [file join $maxima_priv(cachedir) [lindex $tem 1]]
 	set etag [assoc etag $alist]
 	if { "$etag" != "" } {
 	    if {  "[lindex $tem 0]" == "$etag" }  {
@@ -347,8 +347,8 @@ proc tryGetCache { path alist } {
 
 
 proc saveInCache { path etag  result} {
-    global ws_Cache ws_openMath
-    set cachedir $ws_openMath(cachedir)
+    global ws_Cache maxima_priv
+    set cachedir $maxima_priv(cachedir)
     # todo add a catch
     set type [lindex [split [file tail $path] .] 1]
     set count 0
@@ -376,8 +376,8 @@ proc cleanCache { } {
     catch { unset ws_Cache }
 }
 proc cacheName { name } {
-    global ws_openMath
-    return [ file join $ws_openMath(cachedir) $name]
+    global maxima_priv
+    return [ file join $maxima_priv(cachedir) $name]
 }
 
 
@@ -396,7 +396,7 @@ proc cacheName { name } {
 #----------------------------------------------------------------
 #
 proc readAndSyncCache { } {
-    global ws_openMath ws_Cache
+    global maxima_priv ws_Cache
     if { [catch {  set fi [open [cacheName index.dat] r] } ] } {
 	return
     }

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.9 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.10 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -20,12 +20,12 @@ proc genSample { x n } {
 # font measuring is very slow so we cache the result of measuring a line
 # of x's.
 proc fontMeasure { font size } {
-    global  ws_openMath
-    set ll $ws_openMath(linelength)
-    if { ![catch {set answer [set $ws_openMath($font,$size,$ll)]} ] } { return $answer}
+    global  maxima_priv
+    set ll $maxima_priv(linelength)
+    if { ![catch {set answer [set $maxima_priv($font,$size,$ll)]} ] } { return $answer}
     set sample [genSample x $ll]
-    set  ws_openMath($font,$size,$ll)  [font measure [list $font $size] $sample]
-    return $ws_openMath($font,$size,$ll)
+    set  maxima_priv($font,$size,$ll)  [font measure [list $font $size] $sample]
+    return $maxima_priv($font,$size,$ll)
 }
 
 proc getDefaultFontSize { width } {
@@ -66,7 +66,7 @@ proc getPercentDim { dim direction win } {
 
 proc computeTextWinDimensions { win width height } {
     # leave room for scroll bar
-    global fixedFont ws_openMath
+    global fixedFont maxima_priv
     # desetq "fsize wid" [getDefaultFontSize [expr {$width -15}]]
     set wid $width
     # set fixedFont [xHMmapFont font:fixed:normal:r:3]
@@ -77,7 +77,7 @@ proc computeTextWinDimensions { win width height } {
     oset $win fixedFont $fixedFont
     oset $win fontSize $fsize
     oset $win width $width
-    oset $win width_chars $ws_openMath(linelength)
+    oset $win width_chars $maxima_priv(linelength)
     set hei [expr {round($height/$lh)}]
     oset $win height_chars $hei
     oset $win height [expr {$hei * $lh}]
@@ -87,7 +87,7 @@ proc computeTextWinDimensions { win width height } {
 
 
 proc setFontOptions { fsize }     {
-    global ws_openMath
+    global maxima_priv
 
     global _fixed_default _prop_default fontSize
     set helvetica $_prop_default
@@ -122,7 +122,7 @@ return
 
 }
 proc omPanel { w args } {
-    global buttonfont entryfont labelfont ws_openMath
+    global buttonfont entryfont labelfont maxima_priv
 
     set top [winfo toplevel $w]
     linkLocal $top omPanel
@@ -280,9 +280,9 @@ proc omPanel { w args } {
     frame $st
     oset $win status $st
 
-    set ws_openMath(status_window) $st
+    set maxima_priv(status_window) $st
     scale $st.scale -showvalue 0 -length 200 -orient horizontal
-    label $st.rate -width 35 -textvariable ws_openMath(load_rate)
+    label $st.rate -width 35 -textvariable maxima_priv(load_rate)
     pack $st.rate $st.scale -side left
     pack $st -side bottom
     return $win
@@ -308,14 +308,14 @@ proc forgetCurrent { win } {
 }
 
 proc omDoStop { win } {
-    global ws_openMath
-    set st $ws_openMath(status_window)
+    global maxima_priv
+    set st $maxima_priv(status_window)
     set var [$st.scale cget -variable]
     if { [regexp {sock[0-9]+} $var sock] } {
 	oset $sock done -1
 	if { ![catch { close $sock} ] } {
 	    
-	    append ws_openMath(load_rate) "--aborted"
+	    append maxima_priv(load_rate) "--aborted"
 	}
     }
 }
@@ -336,12 +336,12 @@ proc omDoStop { win } {
 #----------------------------------------------------------------
 #
 proc setTypeForEval { menu program } {
-    global ws_openMath
+    global maxima_priv
     #puts "$menu program"
     set slaves [pack slaves $menu.program ]
     set men $menu.program.$program
     if { [llength $slaves] > 0 } {eval pack forget $slaves}
-    if { ![catch { set options $ws_openMath(options,$program) } ] } {
+    if { ![catch { set options $maxima_priv(options,$program) } ] } {
 	if { ![winfo exists $menu.program.$program] } {
 	    #puts "options=$options"
 	    # puts "there"
@@ -363,15 +363,15 @@ proc setTypeForEval { menu program } {
 	    foreach v $options {
 		desetq "key dflt help" $v
 		
-		if { [catch { set ws_openMath(options,$program,$key)} ] } {
-		    set ws_openMath(options,$program,$key) $dflt
+		if { [catch { set maxima_priv(options,$program,$key)} ] } {
+		    set maxima_priv(options,$program,$key) $dflt
 		}
 		switch [lindex $v 3] {
 		    boolean {
-			$men add check -label $key -variable ws_openMath(options,$program,$key) -help [concat $program option -$key: $help] -onvalue 1 -offvalue 0
+			$men add check -label $key -variable maxima_priv(options,$program,$key) -help [concat $program option -$key: $help] -onvalue 1 -offvalue 0
 		    }
 		    default {
-            		$men add entry -label "$key:" -entryvariable ws_openMath(options,$program,$key) -help [concat $program option -$key: $help]
+            		$men add entry -label "$key:" -entryvariable maxima_priv(options,$program,$key) -help [concat $program option -$key: $help]
 
 		    }
 
@@ -379,7 +379,7 @@ proc setTypeForEval { menu program } {
 
 		
 		#		label $new.label -text $key:
-		#		entry $new.entry  -textvariable ws_openMath(options,$program,$key)
+		#		entry $new.entry  -textvariable maxima_priv(options,$program,$key)
 		#		pack $new.label $new.entry -side top -anchor w -fill x
 		#		pack $new -fill x
 		#		setHelp $new [concat $program option -$v: $help]
@@ -406,13 +406,13 @@ proc setTypeForEval { menu program } {
 #----------------------------------------------------------------
 #
 proc getGlobalOptions { program } {
-    global ws_openMath
+    global maxima_priv
     set ans ""
-    if { ![catch { set options $ws_openMath(options,$program) } ] } {
+    if { ![catch { set options $maxima_priv(options,$program) } ] } {
 	foreach v $options {
 	    set key [lindex $v 0]
 	    set dflt [lindex $v 1]
-	    if { ![catch { set val $ws_openMath(options,$program,$key) }] } {
+	    if { ![catch { set val $maxima_priv(options,$program,$key) }] } {
 		if { "$val" != "$dflt" } {
 		    lappend ans -$key $val
 		}
@@ -428,22 +428,22 @@ proc getGlobalOptions { program } {
 #
 # setGlobalOptions --  set the current global values of the options for PROGRAM
 # according to the values specified in OPTIONLIST.   If a value is not specified
-# use the value supplied in the defaults: $ws_openMath(options,$program)
+# use the value supplied in the defaults: $maxima_priv(options,$program)
 #
 #  Results:  none
 #
-#  Side Effects: the entries ws_openMath(options,$program,$key) are changed
+#  Side Effects: the entries maxima_priv(options,$program,$key) are changed
 #  for each $key which is an option for program.
 #
 #----------------------------------------------------------------
 #
 proc setGlobalOptions { program list } {
-    global ws_openMath
-    if { [catch { set options $ws_openMath(options,$program) } ] } {
+    global maxima_priv
+    if { [catch { set options $maxima_priv(options,$program) } ] } {
 	foreach  v $options {
 	    set key [lindex $v 0]
 	    set dflt [lindex $v 1]
-	    set $ws_openMath(options,$program,$key) \
+	    set $maxima_priv(options,$program,$key) \
 		[assoc -$key $list $dflt]
 	}
     }
@@ -506,7 +506,7 @@ if { [catch { package require Safesock } ] } {
 
 
 proc mkOpenMath { win  } {
-    global    ws_openMath
+    global    maxima_priv
 
     set w $win
     catch {destroy $w}
@@ -536,8 +536,8 @@ proc mkOpenMath { win  } {
     text $w.text -yscrollcommand "$w.scroll set" \
 	-width $width_chars  -height $height_chars -font $font -wrap word
     bind $w.text <Configure> "resizeSubPlotWindows $w.text %w %h"
-    set ws_openMath(currentwin) $w.text
-    set ws_openMath(point) end
+    set maxima_priv(currentwin) $w.text
+    set maxima_priv(point) end
     $w.text tag bind "currenteval" <Leave> "$w.text tag remove currenteval 0.0 end ; addTagSameRange %W Teval currenteval @%x,%y;"
     $w.text tag config "currenteval" -foreground red
     $w.text tag bind Teval <Double-Button-1> {doInvoke %W @%x,%y }
@@ -636,8 +636,8 @@ foreach v [info proc insertResult_*] {
 #----------------------------------------------------------------
 #
 proc defaultInsertMode { program } {
-    global ws_openMath
-    if { [catch {  set dflt [getOptionDefault doinsert $ws_openMath(options,$program)]} ] } { return 1}
+    global maxima_priv
+    if { [catch {  set dflt [getOptionDefault doinsert $maxima_priv(options,$program)]} ] } { return 1}
 
     if { "$dflt" == "" } {set dflt  1}
     return $dflt
@@ -718,11 +718,11 @@ proc doInvoke { w index } {
     } else {
 	global err
 	if { [catch { sendOneInsertTextWin $program [eval $w get $this] $w $this $nextResult} err ] && [regexp "Can't connect" $err ]} {
-	    global xHMpreferences
+	    global maxima_default
 	    set now [encodeURL [oget $w baseprogram] ]
-	    set tem [ldelete $now $xHMpreferences(defaultservers)]
+	    set tem [ldelete $now $maxima_default(defaultservers)]
 	    if { [tk_dialog .jil 0 "$err: connect to one of $tem?" "" 0 change "keep $now"] == 0 } {
-		set xHMpreferences(defaultservers)  $tem
+		set maxima_default(defaultservers)  $tem
 		oset $w baseprogram [decodeURL [getBaseprogram]]
 		doInvoke $w $index
 		return

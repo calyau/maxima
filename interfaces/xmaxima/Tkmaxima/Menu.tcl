@@ -1,10 +1,10 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.3 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 
 proc vMAXAddSystemMenu {fr text} {
-    global ws_openMath xHMpreferences
+    global maxima_priv maxima_default
 
     set win $fr.textcommands
 
@@ -23,7 +23,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [set command [cIDECreateEvent $text $label {
 	    set file [tide_openfile [M "Open a file to Batch"] "" *.mac]
 	    if {$file != ""} {
-		sendMaxima $ws_openMath(cConsoleText) "BATCH(\"$file\")\$\n"
+		sendMaxima $maxima_priv(cConsoleText) "BATCH(\"$file\")\$\n"
 	    }
 	}]]
     bind $text <Control-Key-b> $command
@@ -34,7 +34,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [set command [cIDECreateEvent $text $label {
 	    set file [tide_openfile [M "Open a file to BATCHLOAD"] "" *.mac]
 	    if {$file != ""} {
-		sendMaxima $ws_openMath(cConsoleText) "BATCHLOAD(\"$file\")\$\n"
+		sendMaxima $maxima_priv(cConsoleText) "BATCHLOAD(\"$file\")\$\n"
 	    }
 	}]]
     bind $text <Control-Key-o> $command
@@ -96,7 +96,7 @@ proc vMAXAddSystemMenu {fr text} {
     $m add cascade -label "Plot Windows" -menu $pm
     foreach elt { embedded separate multiple } {
 	$pm add radio -label [string totit $elt] \
-	    -variable xHMpreferences(plotwindow) \
+	    -variable maxima_default(plotwindow) \
 	    -value $elt
     }
 
@@ -126,7 +126,7 @@ proc vMAXAddSystemMenu {fr text} {
 	    -command [list sendMaxima $text "KILL($elt)\$\n"]
     }
     $m add separator
-    set dir $ws_openMath(pTestsDir)
+    set dir $maxima_priv(pTestsDir)
     if {[file isdir $dir]} {
 	set state normal
     } else {
@@ -142,7 +142,7 @@ proc vMAXAddSystemMenu {fr text} {
     set m [menu .menu.help -tearoff 0]
     .menu add cascade -label Help -menu $m
 
-    set file $ws_openMath(pReferenceToc)
+    set file $maxima_priv(pReferenceToc)
     if {[file isfile $file]} {
 	set state normal
     } else {

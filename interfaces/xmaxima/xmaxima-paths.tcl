@@ -1,12 +1,12 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.7 2002-09-10 06:01:57 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.8 2002-09-10 06:59:26 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
 
 proc setMaxDir {} {
-    global env ws_openMath autoconf tcl_platform
+    global env maxima_priv autoconf tcl_platform
 
     if {$tcl_platform(platform) == "windows"} {
 	# Need to find a way of bailing out if it's CYGWIN
@@ -33,22 +33,22 @@ proc setMaxDir {} {
 	    # Assume we are in the same directory as saved_maxima
 	    set exe [file join [file dir [info name]] saved_maxima.exe]
 	    if {[file isfile $exe]} {
-		set ws_openMath(maxima_verpkgdatadir) \
+		set maxima_priv(maxima_verpkgdatadir) \
 		    $env(MAXIMA_DIRECTORY)
 
-		set ws_openMath(xmaxima_maxima) $exe
+		set maxima_priv(xmaxima_maxima) $exe
 
-		set ws_openMath(maxima_xmaximadir) [file dir $exe]
+		set maxima_priv(maxima_xmaximadir) [file dir $exe]
 
 		# This should be unused
-		set ws_openMath(maxima_verpkglibdir) \
+		set maxima_priv(maxima_verpkglibdir) \
 		    $env(MAXIMA_DIRECTORY)
 
-		set ws_openMath(maxima_verpkgdatadir) \
+		set maxima_priv(maxima_verpkgdatadir) \
 		    $env(MAXIMA_DIRECTORY)
 
 		# This should be unused
-		set ws_openMath(maxima_prefix) \
+		set maxima_priv(maxima_prefix) \
 		    $env(MAXIMA_DIRECTORY)
 	    }
 	}
@@ -65,15 +65,15 @@ proc setMaxDir {} {
     # to make (MAXIMA_DIRECTORY) take precedence, and work off 
     # [info nameofexe] if necessary.
 
-    if {[info exists ws_openMath(maxima_prefix)]} {
+    if {[info exists maxima_priv(maxima_prefix)]} {
 	# drop through
     } elseif { [info exists env(MAXIMA_PREFIX)] } {
-	set ws_openMath(maxima_prefix) $env(MAXIMA_PREFIX)
+	set maxima_priv(maxima_prefix) $env(MAXIMA_PREFIX)
     } else {
-	set ws_openMath(maxima_prefix) $autoconf(prefix)
+	set maxima_priv(maxima_prefix) $autoconf(prefix)
     }
 
-    if {[info exists ws_openMath(maxima_verpkglibdir)]} {
+    if {[info exists maxima_priv(maxima_verpkglibdir)]} {
 	# drop through
     } else {
 	if { [info exists env(MAXIMA_DATADIR)] } {
@@ -91,82 +91,82 @@ proc setMaxDir {} {
 			     [file native  $maxima_datadir]]
 	}
 
-	set ws_openMath(maxima_verpkgdatadir) \
+	set maxima_priv(maxima_verpkgdatadir) \
 	    [file join $maxima_datadir $autoconf(package) \
 		 $autoconf(version)]
     }
 
 
-    if {[info exists ws_openMath(maxima_verpkglibdir)]} {
+    if {[info exists maxima_priv(maxima_verpkglibdir)]} {
 	# drop through
     } elseif { [info exists env(MAXIMA_VERPKGLIBDIR)] } {
-	set ws_openMath(maxima_verpkglibdir) $env(MAXIMA_VERPKGLIBDIR)
+	set maxima_priv(maxima_verpkglibdir) $env(MAXIMA_VERPKGLIBDIR)
     } elseif { [info exists env(MAXIMA_PREFIX)] } {
-	set ws_openMath(maxima_verpkglibdir) \
+	set maxima_priv(maxima_verpkglibdir) \
 	    [file join $env(MAXIMA_PREFIX) lib $autoconf(package) \
 		 $autoconf(version)]
     } else {
-	set ws_openMath(maxima_verpkglibdir) \
+	set maxima_priv(maxima_verpkglibdir) \
 	    [file join $autoconf(libdir) $autoconf(package) \
 		 $autoconf(version)]
     }
 
-    if {[info exists ws_openMath(maxima_xmaximadir)]} {
+    if {[info exists maxima_priv(maxima_xmaximadir)]} {
 	# drop through
     } elseif { [info exists env(MAXIMA_XMAXIMADIR)] } {
-	set ws_openMath(maxima_xmaximadir) $env(MAXIMA_XMAXIMADIR)
+	set maxima_priv(maxima_xmaximadir) $env(MAXIMA_XMAXIMADIR)
     } else {
-	set ws_openMath(maxima_xmaximadir) \
-	    [file join $ws_openMath(maxima_verpkgdatadir) xmaxima]
+	set maxima_priv(maxima_xmaximadir) \
+	    [file join $maxima_priv(maxima_verpkgdatadir) xmaxima]
     }
 
-    if {[info exists ws_openMath(xmaxima_maxima)]} {
+    if {[info exists maxima_priv(xmaxima_maxima)]} {
 	# drop through
     } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
-	set ws_openMath(xmaxima_maxima) $env(XMAXIMA_MAXIMA) 
+	set maxima_priv(xmaxima_maxima) $env(XMAXIMA_MAXIMA) 
     } else {
-	set ws_openMath(xmaxima_maxima) maxima
+	set maxima_priv(xmaxima_maxima) maxima
     }
 
     # Bring derived quantities up here too so we can see the
     # side effects of setting the above variables
 
     # used in Menu.tcl CMMenu.tcl
-    if {[file isdir [set dir [file join  $ws_openMath(maxima_verpkgdatadir) info]]]} {
+    if {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) info]]]} {
 	# 5.6 and down
-	set ws_openMath(pReferenceToc) \
+	set maxima_priv(pReferenceToc) \
 	    [file join $dir maxima_toc.html]
-    } elseif {[file isdir [set dir [file join  $ws_openMath(maxima_verpkgdatadir) doc]]]} {
+    } elseif {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) doc]]]} {
 	# 5.9 and up
-	set ws_openMath(pReferenceToc) \
+	set maxima_priv(pReferenceToc) \
 	    [file join $dir html maxima_toc.html]
     } else {
 	tide_notify [M "Documentation not found in '%s'" \
-			 [file native  $ws_openMath(maxima_verpkgdatadir)]]
+			 [file native  $maxima_priv(maxima_verpkgdatadir)]]
     }
 
     # used in Menu.tcl CMMenu.tcl
-    if {[file isdir [set dir [file join  $ws_openMath(maxima_verpkgdatadir) tests]]]} {
+    if {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) tests]]]} {
 	# 5.9 and up
-	set ws_openMath(pTestsDir) $dir
-    } elseif {[file isdir [set dir [file join  $ws_openMath(maxima_verpkgdatadir) doc]]]} {
+	set maxima_priv(pTestsDir) $dir
+    } elseif {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) doc]]]} {
 	# 5.6 and down
-	set ws_openMath(pTestsDir) $dir
+	set maxima_priv(pTestsDir) $dir
     } else {
 	# who cares
     }
 
 
-    set ws_openMath(firstUrl) file:/[file join $ws_openMath(maxima_xmaximadir) "intro.html"]
+    set maxima_priv(firstUrl) file:/[file join $maxima_priv(maxima_xmaximadir) "intro.html"]
 
 
 }
 
 
 proc vMAXSetMaximaCommand {} {
-    global ws_openMath
+    global maxima_priv
 
-    if {[set exe [auto_execok $ws_openMath(xmaxima_maxima)]] == "" } {
+    if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
 	if { [info exists env(XMAXIMA_MAXIMA)] } {
 	    tide_failure "Error. maxima executable not found.\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"
 	} else {
@@ -180,7 +180,7 @@ proc vMAXSetMaximaCommand {} {
 			 [file native $exe]]
     }
 
-    set lisp [file join $ws_openMath(maxima_xmaximadir) server.lisp]
+    set lisp [file join $maxima_priv(maxima_xmaximadir) server.lisp]
     if {![file isfile $lisp] || ![file readable $lisp]} {
 	tide_notify [M "Maxima server file not found in '%s'" \
 			 [file native $lisp]]
@@ -192,10 +192,10 @@ proc vMAXSetMaximaCommand {} {
     if {[string match *saved*maxima* [string tolow [file tail $exe]]]} {
 	# 5.6 maxima took different arguments
 
-	set ws_openMath(localMaximaServer) "$exe -load \{$lisp\} -eval \"(setup PORT)\" -f &"
+	set maxima_priv(localMaximaServer) "$exe -load \{$lisp\} -eval \"(setup PORT)\" -f &"
     } else {
 	# 5.9 maxima takes different arguments
-	set ws_openMath(localMaximaServer) "$exe $maxima_opts -p \{$lisp\} -r \":lisp (progn (user::setup PORT)(values))\" &"
+	set maxima_priv(localMaximaServer) "$exe $maxima_opts -p \{$lisp\} -r \":lisp (progn (user::setup PORT)(values))\" &"
     }
 
 }

@@ -1,27 +1,27 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.11 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.12 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 
-global xHMpreferences
-set xHMpreferences(plotwindow) embedded
+global maxima_default
+set maxima_default(plotwindow) embedded
 
-global ws_openMath
-set ws_openMath(date) 04/28/2002
+global maxima_priv
+set maxima_priv(date) 04/28/2002
 
 # from
-if { ![info exists ws_openMath(date)] } {
-    set ws_openMath(date) [clock  format [clock seconds] -format {%m/%d/%Y} ]
+if { ![info exists maxima_priv(date)] } {
+    set maxima_priv(date) [clock  format [clock seconds] -format {%m/%d/%Y} ]
 }
 
 # from Preamble.tcl
-set ws_openMath(clicks_per_second) 1000000
+set maxima_priv(clicks_per_second) 1000000
 
 # from Getdata1.tcl
-set ws_openMath(cachedir) ~/.netmath/cache
+set maxima_priv(cachedir) ~/.netmath/cache
 
 # from plot3d.tcl
-set ws_openMath(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [incr i] < 1000} {}} 1] 0]))}]
+set maxima_priv(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [incr i] < 1000} {}} 1] 0]))}]
 
 # from Send-some.tcl
 #mike I think this should be eliminated
@@ -34,7 +34,7 @@ set ftpInfo(host) genie1.ma.utexas.edu
 set ftpInfo(viahost) genie1.ma.utexas.edu
 
 # from Plot2d.tcl
-array set ws_openMath { bitmap,disc4 {#define disc4_width 4
+array set maxima_priv { bitmap,disc4 {#define disc4_width 4
 #define disc4_height 4
 static unsigned char disc4_bits[] = {
     0x06, 0x0f, 0x0f, 0x06};}
@@ -45,16 +45,16 @@ static unsigned char disc_bits[] = {
 }
 
 # from xmaxima.tcl
-set ws_openMath(options,maxima) {{doinsert 0 [M "Do an insertion"] boolean}}
+set maxima_priv(options,maxima) {{doinsert 0 [M "Do an insertion"] boolean}}
 
 # from EOctave.tcl
-set ws_openMath(options,octave) {{doinsert 1 [M "Do an insertion"] boolean}}
+set maxima_priv(options,octave) {{doinsert 1 [M "Do an insertion"] boolean}}
 
 # from EOpenplot.tcl
-set ws_openMath(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
+set maxima_priv(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
 
 # from EHref.tcl
-set ws_openMath(options,href) {
+set maxima_priv(options,href) {
     {src "" "A URL (universal resource locator) such as http://www.ma.utexas.edu/foo.om"}
     {search "" "A string to search for, to get an initial position"}
     {searchregexp "" "A regexp to search for, to get an initial position"}
@@ -66,19 +66,19 @@ global show_balloons
 set show_balloons 0
 
 # from preamle.tcl
-set ws_openMath(counter) 0
+set maxima_priv(counter) 0
 	
-global ws_openMath
+global maxima_priv
 # the linelength should be long enough to display formatted mathematical
 # output from things like maxima, without adjustment, and to allow
 # for a margin.
-set ws_openMath(linelength) 90
+set maxima_priv(linelength) 90
 
 global evalPrograms
 set evalPrograms {  gp gap gb }
-#set ws_openMath(options,maxima) {{doinsert 1 [M "Do an insertion"] boolean}}
-#set ws_openMath(options,gp) {{doinsert 1 [M "Do an insertion"] boolean}}
-# set ws_openMath(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
+#set maxima_priv(options,maxima) {{doinsert 1 [M "Do an insertion"] boolean}}
+#set maxima_priv(options,gp) {{doinsert 1 [M "Do an insertion"] boolean}}
+# set maxima_priv(options,openplot) {{doinsert 0 [M "Do an insertion"] boolean}}
 
 global NCtextHelp
 set NCtextHelp "

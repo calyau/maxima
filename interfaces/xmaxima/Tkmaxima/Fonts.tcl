@@ -1,13 +1,13 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Fonts.tcl,v 1.2 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: Fonts.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 
 # set font {Courier 8}
 global fontCourier8
 
-global ws_openMath
-set ws_openMath(fixedFont) Courier
+global maxima_priv
+set maxima_priv(fixedFont) Courier
 global fixedFont
 set fixedFont Courier
 

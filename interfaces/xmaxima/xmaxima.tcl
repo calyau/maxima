@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.27 2002-09-10 06:01:57 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.28 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -162,7 +162,7 @@ proc vMAXSetCNTextBindings {w} {
 }
 
 proc lMaxInitSetOpts {} {
-    global ws_openMath argv argv0 env
+    global maxima_priv argv argv0 env
 
     set maxima_opts {}
     if { [lsearch $argv "--help"] > -1 } {
@@ -192,7 +192,7 @@ proc lMaxInitSetOpts {} {
 	set argv [lreplace $argv $lisp_pos $version_pos]
     }
     if { [llength $argv] == 1 } {
-	set ws_openMath(firstUrl) [lindex $argv 0]
+	set maxima_priv(firstUrl) [lindex $argv 0]
     } elseif { [llength $argv] > 1 } {
 	tide_failure "Error: arguments \"$argv\" not understood."
 	exit 1
@@ -202,13 +202,13 @@ proc lMaxInitSetOpts {} {
 }
 
 proc vMAXExit {{text ""}} {
-    if {$text == ""} {set text $ws_openMath(cConsoleText)}
+    if {$text == ""} {set text $maxima_priv(cConsoleText)}
     catch \{closeMaxima $text\}
     exit
 }
 
 proc doit { fr } {
-    global ws_openMath argv argv0 env fontSize
+    global maxima_priv argv argv0 env fontSize
 
     wm withdraw .
     wm title . xmaxima
@@ -221,8 +221,8 @@ proc doit { fr } {
     if {[winfo exists $fr]} {catch { destroy $fr }}
     frame .browser
 
-    OpenMathOpenUrl $ws_openMath(firstUrl) -toplevel .browser
-    set ws_openMath(cBrowser) .browser
+    OpenMathOpenUrl $maxima_priv(firstUrl) -toplevel .browser
+    set maxima_priv(cBrowser) .browser
 
     frame $fr
     pack $fr -expand 1 -fill both -side top
@@ -240,7 +240,7 @@ proc doit { fr } {
 
     clearLocal $w
     oset $w heightDesired 80%
-    set ws_openMath(maximaWindow) $w
+    set maxima_priv(maximaWindow) $w
     
     closeMaxima $w
     clearLocal $w
@@ -254,7 +254,7 @@ proc doit { fr } {
     pack $fr.bottom -side bottom -fill x
    
     text $w -background white -yscrollcommand "$fr.scroll set"
-    set ws_openMath($w,inputTag) input
+    set maxima_priv($w,inputTag) input
     resetMaximaFont $w
     scrollbar $fr.scroll -command "$w yview"
     pack $fr.scroll -side right -fill y
@@ -268,13 +268,13 @@ proc doit { fr } {
     # -relief sunken -borderwidth 1
     bindtags $w [linsert [bindtags $w] 1 CNtext OpenMathText ]
 
-    global ws_openMath
+    global maxima_priv
 
-    if { ![regexp  input $ws_openMath(sticky)] } {
-	append ws_openMath(sticky) {|^input$}
+    if { ![regexp  input $maxima_priv(sticky)] } {
+	append maxima_priv(sticky) {|^input$}
     }
     pack $fr.text -expand 1 -fill both -side left
-    set ws_openMath(cConsoleText) $fr.text
+    set maxima_priv(cConsoleText) $fr.text
 
     $fr.text configure -height 24 -width 80
     set btext [info commands .browser.*.text]
@@ -295,7 +295,7 @@ proc doit { fr } {
 
 
     # Add a proper system menu
-    vMAXAddSystemMenu $fr $ws_openMath(cConsoleText)
+    vMAXAddSystemMenu $fr $maxima_priv(cConsoleText)
     wm deiconify .
 
     #mike Defer looking for maxima until the interface has been built

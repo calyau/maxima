@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.4 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: Plotconf.tcl,v 1.5 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -9,7 +9,7 @@
 ############################################################
 
 proc makeFrame { w type } {
-    global   writefile doExit fontSize buttonfont ws_openMath
+    global   writefile doExit fontSize buttonfont maxima_priv
     set win $w
     if { "$w" == "." } {
         set w "" 
@@ -119,9 +119,9 @@ proc makeFrame { w type } {
     pack $w
     place $w.position -in $w -x 2 -y 2 -anchor nw
     oset $w position "Menu Here"
-    if { ![info exists ws_openMath(showedplothelp)] ||
-	 [llength $ws_openMath(showedplothelp)] < 2 } {
-	lappend ws_openMath(showedplothelp) 1
+    if { ![info exists maxima_priv(showedplothelp)] ||
+	 [llength $maxima_priv(showedplothelp)] < 2 } {
+	lappend maxima_priv(showedplothelp) 1
 	
 	after 100 balloonhelp $w $w.position [list \
 						  "Initial help: Moving the mouse over the position \

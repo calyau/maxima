@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Plot3d.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -433,16 +433,16 @@ proc replot3d { win } {
     setupPlot3dColors $win
     addBbox $win
     # grab the bbox just as itself
-    global ws_openMath
+    global maxima_priv
     linkLocal $win lmesh
-    if { [llength $lmesh] >   100 * $ws_openMath(speed)  } {
+    if { [llength $lmesh] >   100 * $maxima_priv(speed)  } {
 	# if we judge that rotation would be too slow, we make a secondary list
 	# of meshes (random) including the bbox, and display those.
 	linkLocal $win  points lmeshBbox pointsBbox
 	set n [llength $lmesh]
 	set lmeshBbox [lrange $lmesh [expr {$n -13}] end]
 	set i 0 ;
-	while { [incr i ] < ( 35*$ws_openMath(speed)) } {
+	while { [incr i ] < ( 35*$maxima_priv(speed)) } {
 	    set j [expr {round(floor(rand()*($n-13))) }]
 	    if { ![info exists temm($j)] } {
 		lappend lmeshBbox [lindex $lmesh $j ]

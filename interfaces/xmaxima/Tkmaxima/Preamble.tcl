@@ -1,11 +1,11 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Preamble.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Preamble.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### preamble.tcl ######
 
 # get the number of clicks per second on this machine..
-after idle {after 1000 "set ws_openMath(clicks_per_second) \[expr 1.0 *( \[clock clicks\] - [clock clicks])\]" }
+after idle {after 1000 "set maxima_priv(clicks_per_second) \[expr 1.0 *( \[clock clicks\] - [clock clicks])\]" }
 
 catch {
     # the following will be defined only in the plugin

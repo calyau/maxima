@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.5 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.6 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### browser.tcl ######
 ############################################################
@@ -23,21 +23,21 @@ set MathServer "locahost 4443"
 ############################################################
 
 proc peekLastCommand {win} {
-    global ws_openMath
-    if { [info exists ws_openMath(lastcom,$win)] } {
-	return $ws_openMath(lastcom,$win)
+    global maxima_priv
+    if { [info exists maxima_priv(lastcom,$win)] } {
+	return $maxima_priv(lastcom,$win)
     }
 }
 
 proc pushCommand { win command arglist } {
-    global ws_openMath
-    set ws_openMath(lastcom,$win) [list $command $arglist]
+    global maxima_priv
+    set maxima_priv(lastcom,$win) [list $command $arglist]
 }
 
 
 
-global ws_openMath
-set ws_openMath(sticky) "^Teval$|^program:"
+global maxima_priv
+set maxima_priv(sticky) "^Teval$|^program:"
 
 
 #
@@ -56,7 +56,7 @@ set ws_openMath(sticky) "^Teval$|^program:"
 #
 
 proc tkTextInsert { w s } {
-    global ws_openMath
+    global maxima_priv
     set after [$w tag names insert]
     set before [$w tag names "insert-1char"]
     set both [intersect $after $before]
@@ -64,13 +64,13 @@ proc tkTextInsert { w s } {
    # puts "before=$before"
 
     foreach v [concat $after $before] {
-	if { [regexp $ws_openMath(sticky) $v] } {
+	if { [regexp $maxima_priv(sticky) $v] } {
 	    lappend both $v
 	}
     }
 
-    if { [info exists ws_openMath($w,inputTag) ] } {
-	lappend both $ws_openMath($w,inputTag)
+    if { [info exists maxima_priv($w,inputTag) ] } {
+	lappend both $maxima_priv($w,inputTag)
     }
 
     if {($s == "") || ([$w cget -state] == "disabled")} {
@@ -116,27 +116,27 @@ bind OpenMathText <Control-Key-w> {
 }
 
 
-if { [catch { set ws_openMath(bindings_added) } ] } {
+if { [catch { set maxima_priv(bindings_added) } ] } {
     bind Text <Control-Key-k> "openMathControlK %W \n [bind Text <Control-Key-k>]"
     bind Text <B3-Motion> [bind Text <B2-Motion>]
     bind Text <Button-3> [bind Text <Button-2>]
 
-  set ws_openMath(bindings_added) 1
+  set maxima_priv(bindings_added) 1
 }
 
-global ws_openMath
-set ws_openMath(doublek) 0
+global maxima_priv
+set maxima_priv(doublek) 0
 
 bind OpenMathText <Control-Key-k><Control-Key-k> {
-    set ws_openMath(doublek) 1
+    set maxima_priv(doublek) 1
 }
 
 proc openMathControlK { win } {
-    global ws_openMath
-    if { $ws_openMath(doublek) != 0 } {
+    global maxima_priv
+    if { $maxima_priv(doublek) != 0 } {
 	set now [popl killRing ""]
     } else { set now "" }
-    set ws_openMath(doublek) 0
+    set maxima_priv(doublek) 0
     if { [$win compare insert == "insert lineend" ]  } {
 	if { [$win compare insert < end] } {
 	    append now "\nTins {[ldelete sel [$win tag names insert]]} {\n}"
@@ -151,23 +151,23 @@ bind OpenMathText <Alt-Key-y> "OpenMathYank %W 1; break"
 bind OpenMathText <Meta-Key-y> "OpenMathYank %W 1; break"
 
 proc OpenMathYank {win level } {
-    global ws_openMath
+    global maxima_priv
     #puts "doing OpenMathYank $win $level"
     if { $level == 0 } {
-	set ws_openMath(currentwin) $win
+	set maxima_priv(currentwin) $win
 	pushCommand $win OpenMathYank [list $win $level]
-	set ws_openMath(point) insert
+	set maxima_priv(point) insert
 	$win mark set beforeyank insert
 	$win mark gravity beforeyank left
 	eval [peekl killRing "" ]
     } else {
 	if { [catch {
-	    set last $ws_openMath(lastcom,$win)
+	    set last $maxima_priv(lastcom,$win)
 	    set m [lindex [lindex $last 1] 1]
 	    incr m
 	    if { "[lindex $last 0]" == "OpenMathYank" &&
-	    "$ws_openMath(currentwin)" == "$win"
-	    && "$ws_openMath(point)" == "insert" } {set doit 1}} ]
+	    "$maxima_priv(currentwin)" == "$win"
+	    && "$maxima_priv(point)" == "insert" } {set doit 1}} ]
 	    || $doit==0} {
 		    pushCommand $win Error "" } else {
 			
@@ -371,18 +371,18 @@ proc thisRange { win tag index } {
  #----------------------------------------------------------------
 #
 proc insertRichText {win index list } {
-    global ws_openMath
-    set ws_openMath(currentwin) $win
-    set ws_openMath(point) $index
-    foreach v $ws_openMath(richTextCommands) {
-	set ws_openMath($v,richTextCommand) [llength [info args $v]]
+    global maxima_priv
+    set maxima_priv(currentwin) $win
+    set maxima_priv(point) $index
+    foreach v $maxima_priv(richTextCommands) {
+	set maxima_priv($v,richTextCommand) [llength [info args $v]]
     }
     set i 0
     set ll [llength $list]
     while { $i < $ll } {
 	set com [lindex $list $i]
 	incr i
-	if { [catch { set n $ws_openMath($com,richTextCommand)} ] } {
+	if { [catch { set n $maxima_priv($com,richTextCommand)} ] } {
 	    return -code error -errorinfo "illegal command in rich text:$com"
 	}
 	set form [concat $com [lrange $list $i [expr {$i +$n -1}]]]
@@ -395,21 +395,21 @@ proc insertRichText {win index list } {
 
 
 proc Tins { tags text } {
-   global ws_openMath
+   global maxima_priv
    # foreach v $args { append text $v }
-   $ws_openMath(currentwin) insert $ws_openMath(point) $text  $tags
+   $maxima_priv(currentwin) insert $maxima_priv(point) $text  $tags
 }
 
 proc TinsSlashEnd { tags text } {
-   global ws_openMath
+   global maxima_priv
    # foreach v $args { append text $v }
-   $ws_openMath(currentwin) insert $ws_openMath(point) "$text\\"  $tags
+   $maxima_priv(currentwin) insert $maxima_priv(point) "$text\\"  $tags
 }
 
 
 
-global ws_openMath
-set ws_openMath(richTextCommands) {Tins TinsSlashEnd}
+global maxima_priv
+set maxima_priv(richTextCommands) {Tins TinsSlashEnd}
 
 ## endsource keyb.tcl
 
@@ -699,8 +699,8 @@ proc resolveURL { name current {post ""} } {
     return $ans
 }
 
-global ws_openMath
-set ws_openMath(urlHandlers) {
+global maxima_priv
+set maxima_priv(urlHandlers) {
     text/html  netmath
     text/plain netmath
     image/gif  netmath
@@ -710,7 +710,7 @@ set ws_openMath(urlHandlers) {
 }
 
 proc getURLrequest { path server port types {post ""} {meth ""} } {
-    global ws_openMath
+    global maxima_priv
 
     if { "$meth" != "" } {set method $meth } else {
 	
@@ -719,7 +719,7 @@ proc getURLrequest { path server port types {post ""} {meth ""} } {
     }
 
     #puts "getURLrequest $path $server $port [list $types]"
-    foreach {v handler}  $ws_openMath(urlHandlers) {
+    foreach {v handler}  $maxima_priv(urlHandlers) {
 	lappend types $v,
     }
 
@@ -739,7 +739,7 @@ proc canonicalizeContentType { type } {
 }
 
 proc getURL { resolved type {mimeheader ""} {post ""} } {
-    global ws_openMath
+    global maxima_priv
     set res $resolved
 
     set ans ""
@@ -755,9 +755,9 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	http {
 	   # puts $res
 	   # puts "socket [assoc server $res] [assoc port $res 80]"
-	    if { [info exists ws_openMath(proxy,http) ] } {
-		set sock [eval socket $ws_openMath(proxy,http)]
-#		puts "opening proxy request socket $ws_openMath(proxy,http)"
+	    if { [info exists maxima_priv(proxy,http) ] } {
+		set sock [eval socket $maxima_priv(proxy,http)]
+#		puts "opening proxy request socket $maxima_priv(proxy,http)"
 	    } else {
 	    set sock [socket [assoc server $res] [assoc port $res 80]]
 	    }
@@ -774,20 +774,20 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		oset $sock cachename "http://$server:$port$path"
 	    } else { oset $sock cachename "" }
 	    flush $sock
-	    if { [readAllData $sock -tovar ws_openMath(url_result) \
-		    -translation binary -mimeheader ws_openMath(mimeheader)  \
+	    if { [readAllData $sock -tovar maxima_priv(url_result) \
+		    -translation binary -mimeheader maxima_priv(mimeheader)  \
 		    -timeout 120000 -chunksize 2024] > 0 } {
 		
-	    #puts "length=[string length $ws_openMath(url_result)]"
+	    #puts "length=[string length $maxima_priv(url_result)]"
 	    #	flush stdout
 		
-		set contentType [canonicalizeContentType [assoc content-type $ws_openMath(mimeheader) text/plain]]
+		set contentType [canonicalizeContentType [assoc content-type $maxima_priv(mimeheader) text/plain]]
 		uplevel 1 set $type [list $contentType]
 		if { "$mimeheader" != "" } {
-		    uplevel 1 set $mimeheader \[ uplevel "#0" set ws_openMath(mimeheader) \]
+		    uplevel 1 set $mimeheader \[ uplevel "#0" set maxima_priv(mimeheader) \]
 		}
-		set ans $ws_openMath(url_result)
-		unset ws_openMath(url_result)
+		set ans $maxima_priv(url_result)
+		unset maxima_priv(url_result)
 		return $ans
 	    } else {return "had error"
 	    }
@@ -816,38 +816,38 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 
 
 proc getImage { resolved width height} {
-    global ws_openMath
+    global maxima_priv
     set res $resolved
     #puts [list getImage [list $resolved] $width $height]
     set ans ""
     catch {
-	if { "" != "[image type $ws_openMath(image,$res,$width,$height)]" } {
-	    set ans $ws_openMath(image,$res,$width,$height)
+	if { "" != "[image type $maxima_priv(image,$res,$width,$height)]" } {
+	    set ans $maxima_priv(image,$res,$width,$height)
 	}
     }
     if { "$ans" != "" } { return $ans }
 
     set image [image create photo -width $width -height $height]
     after 10 backgroundGetImage $image [list $resolved] $width $height
-    set ws_openMath(image,$res,$width,$height) $image
+    set maxima_priv(image,$res,$width,$height) $image
     return $image
     }
 
 
-global ws_openMath
-set ws_openMath(imagecounter) 0
+global maxima_priv
+set maxima_priv(imagecounter) 0
 
-set ws_openMath(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzgCEACH5BAEAAAIALAAAAAAdACAAAAPOOLrcLjDCQaq9+CoZaf7YIIicx50nNZYV6k4tCRPuYduSR8vmef+dy2rU4vyOM8uqJzkCBYCoNEqkGZ04SGHLBSiKTewhx/AyI+LxqWIGh5Eo9pdm8D3jhDa9/nrJTQaBfS5/LYGCgxyFe4cnAY+Qj1oFegKHjRKRkpMbgJeIEJqTBTyGnxybAlwbQYygKFusOaavo5SkJ5WYErELKAO6fBy4LxS6vFzEv4snpLIpIszIMiWKeXMWvS7RGXoVsX0g11NR1Bzk6F4jCn0ODgkAOwAA
+set maxima_priv(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzgCEACH5BAEAAAIALAAAAAAdACAAAAPOOLrcLjDCQaq9+CoZaf7YIIicx50nNZYV6k4tCRPuYduSR8vmef+dy2rU4vyOM8uqJzkCBYCoNEqkGZ04SGHLBSiKTewhx/AyI+LxqWIGh5Eo9pdm8D3jhDa9/nrJTQaBfS5/LYGCgxyFe4cnAY+Qj1oFegKHjRKRkpMbgJeIEJqTBTyGnxybAlwbQYygKFusOaavo5SkJ5WYErELKAO6fBy4LxS6vFzEv4snpLIpIszIMiWKeXMWvS7RGXoVsX0g11NR1Bzk6F4jCn0ODgkAOwAA
 
 proc backgroundGetImage  { image res width height }   {
-    global ws_openMath
+    global maxima_priv
     #puts [list backgroundGetImage  $image $res $width $height ]
     if { [catch { backgroundGetImage1 $image $res $width $height } err ] } {
-	if { ![info exists ws_openMath(brokenimage)] } {
-	    set ws_openMath(brokenimage) [image create photo -data $ws_openMath(brokenimage,data)]
+	if { ![info exists maxima_priv(brokenimage)] } {
+	    set maxima_priv(brokenimage) [image create photo -data $maxima_priv(brokenimage,data)]
 	}
-	 #puts "got error $err, doing $image copy $ws_openMath(brokenimage)"
-	set im $ws_openMath(brokenimage)
+	 #puts "got error $err, doing $image copy $maxima_priv(brokenimage)"
+	set im $maxima_priv(brokenimage)
 	$image config -width [image width $im] -height [image height $im]
 	$image copy $im
     }
@@ -856,15 +856,15 @@ proc backgroundGetImage  { image res width height }   {
 
 proc backgroundGetImage1  { image res width height }   {
     #puts  "resolved=$res"
-    global ws_openMath
+    global maxima_priv
     #puts [list backgroundGetImage $image $res $width $height]
     switch [assoc type $res] {
 	http {
 	    set server [assoc server $res]
 	    set port [assoc port $res 80]
-	    if { [info exists ws_openMath(proxy,http) ] } {
-		set s [eval socket $ws_openMath(proxy,http)]
-#		puts "opening proxy request socket $ws_openMath(proxy,http)"
+	    if { [info exists maxima_priv(proxy,http) ] } {
+		set s [eval socket $maxima_priv(proxy,http)]
+#		puts "opening proxy request socket $maxima_priv(proxy,http)"
 	    } else {
 	    set s [socket [assoc server $res] [assoc port $res 80]]
 	    }
@@ -876,22 +876,22 @@ proc backgroundGetImage1  { image res width height }   {
 
 	    if { [regexp -nocase {[.]gif([^/]*)$} [assoc filename $res] ] } {
 		fconfigure $s -translation binary
-		set tmp xxtmp[incr ws_openMath(imagecounter)].gif
+		set tmp xxtmp[incr maxima_priv(imagecounter)].gif
 
-		if { [info exists ws_openMath(inbrowser)] ||  [catch {set out [open $tmp w] } ] } {
+		if { [info exists maxima_priv(inbrowser)] ||  [catch {set out [open $tmp w] } ] } {
 		    # if have binary..
 		    if { "[info command binary]" != "binary" } {
 			error "need version of tk with 'binary' command for images"}
 			#puts "hi binary" ; flush stdout
 			if {  [readAllData $s -tovar \
-				ws_openMath($s,url_result) -mimeheader \
-				ws_openMath($s,mimeheader)
-			] > 0  && [string match *gif [assoc content-type $ws_openMath($s,mimeheader)]] } {
+				maxima_priv($s,url_result) -mimeheader \
+				maxima_priv($s,mimeheader)
+			] > 0  && [string match *gif [assoc content-type $maxima_priv($s,mimeheader)]] } {
 			    set ans $image
-			    $image configure -data [tobase64 $ws_openMath($s,url_result)]
+			    $image configure -data [tobase64 $maxima_priv($s,url_result)]
 
-			    unset ws_openMath($s,mimeheader)
-			    unset ws_openMath($s,url_result)
+			    unset maxima_priv($s,mimeheader)
+			    unset maxima_priv($s,url_result)
 			
 			} else  {
 			    error "could not get image"
@@ -901,11 +901,11 @@ proc backgroundGetImage1  { image res width height }   {
 			if { [readAllData $s -tochannel $out \
 				-translation binary \
 				-mimeheader \
-				ws_openMath($s,mimeheader) -timeout 15000 -chunksize 2024 ] > 0 } {
+				maxima_priv($s,mimeheader) -timeout 15000 -chunksize 2024 ] > 0 } {
 			    set ans $image
 			    $image config  -file \
 				    $tmp
-			    unset ws_openMath($s,mimeheader)
+			    unset maxima_priv($s,mimeheader)
 			}
 
 			
@@ -943,46 +943,46 @@ proc backgroundGetImage1  { image res width height }   {
 #-----------------------------------------------------------------
 #
 # readData --  read data from S, storing the result
-# in ws_openMath($s,url_result).   It times out after TIMEOUT without any data coming.
-# it can be aborted by setting set ws_openMath($s,done)  -1
+# in maxima_priv($s,url_result).   It times out after TIMEOUT without any data coming.
+# it can be aborted by setting set maxima_priv($s,done)  -1
 #
 #
 #  Results: -1 on failure and 1 on success.
 #
-#  Side Effects: it initially  empties ws_openMath($s,url_result) and then
-#  adds data to it as read.   ws_openMath($s,done) is initialized to 0
+#  Side Effects: it initially  empties maxima_priv($s,url_result) and then
+#  adds data to it as read.   maxima_priv($s,done) is initialized to 0
 #
 #----------------------------------------------------------------
 #
 proc readData { s { timeout 10000 }} {
-    global ws_openMath
+    global maxima_priv
 
-    after $timeout "set ws_openMath($s,done) -1"
+    after $timeout "set maxima_priv($s,done) -1"
     fconfigure $s  -blocking 0
-    set ws_openMath($s,done) 0
-    set ws_openMath($s,url_result) ""
+    set maxima_priv($s,done) 0
+    set maxima_priv($s,url_result) ""
 
     #mike FIXME: this is a wrong use of after cancel
     fileevent $s readable \
-	   "after cancel {set ws_openMath($s,done) -1} ; after $timeout {set ws_openMath($s,done) -1} ; set da \[read $s 8000] ; append ws_openMath($s,url_result) \$da; if { \[string length \$da] < 8000  && \[eof $s] } {after cancel {set ws_openMath($s,done) -1} ; set ws_openMath($s,done) 1; fileevent $s readable {} ;  }"
-    myVwait ws_openMath($s,done)
+	   "after cancel {set maxima_priv($s,done) -1} ; after $timeout {set maxima_priv($s,done) -1} ; set da \[read $s 8000] ; append maxima_priv($s,url_result) \$da; if { \[string length \$da] < 8000  && \[eof $s] } {after cancel {set maxima_priv($s,done) -1} ; set maxima_priv($s,done) 1; fileevent $s readable {} ;  }"
+    myVwait maxima_priv($s,done)
     catch { close $s }
     #mike FIXME: this is a wrong use of after cancel
-    after cancel "set ws_openMath($s,done) -1"
-    return $ws_openMath($s,done)
+    after cancel "set maxima_priv($s,done) -1"
+    return $maxima_priv($s,done)
 }
 
 			
 
 proc doRead { sock } {
-    global ws_openMath
+    global maxima_priv
     #puts reading; flush stdout;
     set tem [read $sock]
-    append ws_openMath(url_result)  $tem
+    append maxima_priv(url_result)  $tem
     # puts read:<$tem>
     # flush stdout
     if { [eof $sock] } {
-	set ws_openMath(done) 1
+	set maxima_priv(done) 1
 	close $sock}
 }
 
@@ -1014,7 +1014,7 @@ set debugParse 0
 }
 
 proc OpenMathOpenUrl { name args} {
-    global ws_openMath
+    global maxima_priv
     #puts "OpenMathOpenUrl  $name $args "
     set history "" ; set historyIndex -1 ;set currentUrl ""
     set prevwindow ""
@@ -1076,7 +1076,7 @@ proc OpenMathOpenUrl { name args} {
    }
 
    #puts "contentType defined:[info exists contentType]"
-   set handler [assoc $contentType $ws_openMath(urlHandlers)]
+   set handler [assoc $contentType $maxima_priv(urlHandlers)]
    if { "$handler" != "netmath" && "$handler" != "" } {
        set tmp [ws_outputToTemp result netmath ps "[assoc content-encoding $mimeheader]"]
        # to do fix this for windows #####
@@ -1094,11 +1094,11 @@ proc OpenMathOpenUrl { name args} {
    # puts "using  $baseprogram"
    if { $reload } {   forgetCurrent $commandPanel }
 
-   #puts "ws_openMath(counter)=$ws_openMath(counter)"
+   #puts "maxima_priv(counter)=$maxima_priv(counter)"
 
-   set win [mkOpenMath [set w $toplevel.t[incr ws_openMath(counter)]] ]
+   set win [mkOpenMath [set w $toplevel.t[incr maxima_priv(counter)]] ]
 
-   #puts "ws_openMath(counter)=$ws_openMath(counter)"
+   #puts "maxima_priv(counter)=$maxima_priv(counter)"
 
 
    makeLocal $w commandPanel
@@ -1229,16 +1229,16 @@ proc addTagSameRange { win oldtag newtag index } {
     }
 }
 
-global xHMpreferences
-set xHMpreferences(defaultservers) { nmtp://genie1.ma.utexas.edu/ nmtp://linux51.ma.utexas.edu/ nmtp://linux52.ma.utexas.edu/ }
+global maxima_default
+set maxima_default(defaultservers) { nmtp://genie1.ma.utexas.edu/ nmtp://linux51.ma.utexas.edu/ nmtp://linux52.ma.utexas.edu/ }
 global embed_args
 if { "[info var embed_args]" != "" } {
-     set xHMpreferences(defaultservers) nmtp://genie1.ma.utexas.edu/
+     set maxima_default(defaultservers) nmtp://genie1.ma.utexas.edu/
  }
 
 proc getBaseprogram { } {
-    global xHMpreferences
-    lindex  $xHMpreferences(defaultservers) 0
+    global maxima_default
+    lindex  $maxima_default(defaultservers) 0
 }
 
 proc fileBaseprogram { textwin parent x y } {
@@ -1269,7 +1269,7 @@ fixed 1 {fangsong ti} 1 {clearlyu alternate glyphs} 0 lucidatypewriter 1 charter
 }
 
 proc fontDialog { top } {
-    global xHMpreferences
+    global maxima_default
     set font [xHMmapFont font:propor:normal:r:3]
     catch { destroy $top }
     toplevel $top
@@ -1285,10 +1285,10 @@ proc fontDialog { top } {
 	    incr i
 	}
 	if { "$fam" == "fixed" } { set fixed 1 } else { set fixed 0}
-	mkLabelListBoxChooser $win.size$fam "list $lis" xHMpreferences($fam,adjust)
-	mkLabelListBoxChooser $win.family$fam "getFontFamilies $fixed " xHMpreferences($fam)
+	mkLabelListBoxChooser $win.size$fam "list $lis" maxima_default($fam,adjust)
+	mkLabelListBoxChooser $win.family$fam "getFontFamilies $fixed " maxima_default($fam)
 	set fo [xHMmapFont "font:$fam:normal:r:3"]
-	catch { set xHMpreferences($fam) [assoc -family [font actual $fo]]}
+	catch { set maxima_default($fam) [assoc -family [font actual $fo]]}
     }
     $win insert insert "Font Settings\nThe proportional font is "
     $win window create insert -window $win.familypropor
@@ -1301,18 +1301,18 @@ proc fontDialog { top } {
     $win insert insert "\n"
     $win insert insert "Default nmtp servers  "
     global _servers
-    set _servers $xHMpreferences(defaultservers)
+    set _servers $maxima_default(defaultservers)
     entry $win.entry -textvariable _servers -width 40
     $win window create insert -window $win.entry
     $win insert insert "\n\n"
-    global ws_openMath
+    global maxima_priv
     $win insert insert "http Proxy host and port:"
     entry $win.entryproxy  -width 40
-    catch { $win.entryproxy insert 0 $ws_openMath(proxy,http) }
+    catch { $win.entryproxy insert 0 $maxima_priv(proxy,http) }
     $win window create insert -window $win.entryproxy
     $win insert insert "\nIf you are behind a firewall enter the name of your http proxy host and port,\n eg: `foo.ma.utexas.edu 3128', otherwise leave this blank"
-    global xHMpreferences
-    set men [tk_optionMenu $win.plottype xHMpreferences(plotwindow) embedded separate multiple ]
+
+    set men [tk_optionMenu $win.plottype maxima_default(plotwindow) embedded separate multiple ]
     $win insert insert "\nShould plot windows be "
     $win window create insert -window $win.plottype
     $win insert insert "?"
@@ -1325,11 +1325,11 @@ proc fontDialog { top } {
     $win insert insert "      "
     $win insert insert " Cancel " "cancel raised"
     proc _FontDialogApply { win } {
-	global xHMpreferences _servers ws_openMath
-	set xHMpreferences(defaultservers) $_servers
+	global maxima_default _servers maxima_priv
+	set maxima_default(defaultservers) $_servers
 	catch {xHMresetFonts .}
 	if { [llength [$win.entryproxy get]] == 2 } {
-	    set ws_openMath(proxy,http) [$win.entryproxy get]
+	    set maxima_priv(proxy,http) [$win.entryproxy get]
 	}
     }
     $win tag bind click <1> "_FontDialogApply $win"
@@ -1344,17 +1344,17 @@ proc fontDialog { top } {
 #    place $win -in [oget [omPanel .] textwin] -x 10 -y 10
 }
 proc savePreferences {} {
-    global xHMpreferences ws_openMath
+    global maxima_default maxima_priv
     set fi [open  "~/netmath.ini" w]
-    puts $fi "array set xHMpreferences {"
-    foreach {k v} [array get xHMpreferences *] {
+    puts $fi "array set maxima_default {"
+    foreach {k v} [array get maxima_default *] {
 	lappend all [list $k $v]
     }
     set all [lsort $all]
     foreach v $all { puts $fi $v }
     puts $fi "}"
-    if { [info exists ws_openMath(proxy,http)] && [llength $ws_openMath(proxy,http)] == 2   } {
-	puts $fi [list array set ws_openMath [array get ws_openMath proxy,http]
+    if { [info exists maxima_priv(proxy,http)] && [llength $maxima_priv(proxy,http)] == 2   } {
+	puts $fi [list array set maxima_priv [array get maxima_priv proxy,http]
 	]
     }
     close $fi
@@ -1398,7 +1398,7 @@ proc mkLabelListBoxChooser { win items  textvar} {
     button $win -textvariable $textvar -command "listBoxChoose $win [list $items] $textvar"
 }
 proc listBoxChoose { win  items textvar  } {
-    global xHMpreferences
+    global maxima_default
     set whei [winfo height $win]
     set items [eval $items]
     set hei [llength $items]

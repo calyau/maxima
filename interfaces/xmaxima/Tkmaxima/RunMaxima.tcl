@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.5 2002-09-07 10:31:13 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.6 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -77,12 +77,12 @@ proc acceptMaxima { win port filter } {
 }
 
 proc openMaxima { win filter } {
-    global ws_openMath env
+    global maxima_priv env
 
     set port [acceptMaxima $win 4008 $filter]
     if { $port >= 0 } {
 	set com "exec "
-	append com    $ws_openMath(localMaximaServer)
+	append com    $maxima_priv(localMaximaServer)
 	regsub PORT $com $port com
 	if { [info exists env(MAXIMA_INT_INPUT_STRING)] } {
 	    regsub PORT $env(MAXIMA_INT_INPUT_STRING) $port env(MAXIMA_INT_INPUT_STRING)
@@ -122,16 +122,20 @@ proc closeMaxima { win } {
     linkLocal $win maximaSocket pid
     foreach v [array names pdata maxima*] { unset pdata($v) }
 
-    if {[info exists pid] && $pid != "" && [string is int $pid]} {
-	catch {
-	    CMkill -TERM $pid
+    if {[info exists pid]} {
+	if {$pid != "" && [string is int $pid]} {
+	    catch {
+		CMkill -TERM $pid
+	    }
 	    unset pid
 	}
     }
 
-    if {[info exists maximaSocket] && $maximaSocket != ""} {
-	catch {
-	    close $maximaSocket
+    if {[info exists maximaSocket]} {
+	if {$maximaSocket != ""} {
+	    catch {
+		close $maximaSocket
+	    }
 	    unset maximaSocket
 	}
     }
@@ -242,13 +246,13 @@ proc littleFilter {win sock } {
     }
 }
 
-if { ![info exists ws_openMath(timeout)] } {
+if { ![info exists maxima_priv(timeout)] } {
 
-    set ws_openMath(timeout) 20000
+    set maxima_priv(timeout) 20000
 }
 
 proc runOneMaxima { win } {
-    global ws_openMath
+    global maxima_priv
     closeMaxima $win
     linkLocal $win pid
     set pid -1
@@ -256,7 +260,7 @@ proc runOneMaxima { win } {
     openMaxima $win littleFilter
 
     while { $pid == -1 } {
-	set af [after $ws_openMath(timeout) oset $win pid -1 ]
+	set af [after $maxima_priv(timeout) oset $win pid -1 ]
 	# puts "waiting pid=$pid"
 	vwait [oloc $win pid]
 	after cancel $af
@@ -306,13 +310,19 @@ proc sendMaximaWait { win form {timeout 20000 }} {
 	append form ";"
     }
     sendMaximaCall $win $form\n [list oset $win maximaWait 1]
+    #mike FIXME: This should be a counter
     set maximaWait -1
     set af [after $timeout oset $win maximaWait -1]
     vwait [oloc $win maximaWait]
     after cancel $af
+
+    set sock [oget $win maximaSocket]
+    if {$sock == ""} {
+	error "sendMaximaWait $form socket closed"
+    }
     if { $maximaWait > 0 } {
 	global pdata
-	return [trim_maxima $pdata([oget $win maximaSocket],result)]
+	return [trim_maxima $pdata(${sock},result)]
     } else {
 	error "sendMaximaWait $form timed out"
     }
@@ -377,18 +387,18 @@ proc CMresetFilter { win } {
 }
 
 proc CMkill {  signal pid } {
-    global ws_openMath
+    global maxima_priv
     if { $pid > 0 } {
 	if { [info command "winkill"] == "winkill" } {
 	    winkill -pid $pid -signal $signal
 	} else {
-	    exec $ws_openMath(kill) $signal $pid
+	    exec $maxima_priv(kill) $signal $pid
 	}
     }
 }
 
 proc CMinterrupt { win } {
-    global ws_openMath
+    global maxima_priv
     oget $win pid
     if {[info exists pid] && $pid != ""} {
 	CMkill   -INT $pid
@@ -398,7 +408,7 @@ proc CMinterrupt { win } {
 
 
 proc doShowPlot { w data } {
-    global xHMpreferences
+    global maxima_default
 
     #puts data=$data
     set name [plotWindowName $w]
@@ -492,18 +502,20 @@ proc maxima_insert { w this next val args } {
 }
 
 proc eval_maxima { prog win this nextResult } {
-    global ws_openMath
-    set w $ws_openMath(maximaWindow)
+    global maxima_priv
+    set w $maxima_priv(maximaWindow)
     linkLocal $w maximaSocket
+    if {![info exists maximaSocket] || $maximaSocket == ""} {return}
+
     set form [string trimright [eval $win get $this] " \t\n;$"]
     set form [addPreloads $form maxima $win $this]
     if { "[lindex $nextResult 0]" != "" } {
 	sendMaximaCall $w "$form;\n" [list maxima_insert $win $this  $nextResult pdata($maximaSocket,result)]
 	
-	#         set res [sendMaximaWait $ws_openMath(maximaWindow) "$form;"]
+	#         set res [sendMaximaWait $maxima_priv(maximaWindow) "$form;"]
 	#	insertResult_maxima $win $this  $nextResult $res
     } else {
-	sendMaxima $ws_openMath(maximaWindow) "$form;\n"
+	sendMaxima $maxima_priv(maximaWindow) "$form;\n"
     }
     return 0
 }

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: EOpenplot.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: EOpenplot.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### EOpenplot.tcl ######
 ############################################################
@@ -56,8 +56,8 @@ proc eval_openplot { program w thisRange resultRange } {
 #----------------------------------------------------------------
 #
 proc plotWindowName { w } {
-    upvar #0 xHMpreferences(plotwindow) plot
-    upvar #0 ws_openMath(plot,count) count
+    upvar #0 maxima_default(plotwindow) plot
+    upvar #0 maxima_priv(plot,count) count
     set name ""
 
     if { ![info exists plot] || "$plot" == "embedded" } {

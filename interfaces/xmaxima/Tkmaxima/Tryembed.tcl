@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tryembed.tcl,v 1.4 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: Tryembed.tcl,v 1.5 2002-09-10 06:59:28 mikeclarkson Exp $
 #
 ###### Tryembed.tcl ######
 ############################################################
@@ -29,10 +29,10 @@
 
 
 proc makeEmbedWin { parent width height } {
-    global ws_openMath env auto_index
-    set win $parent.embed[incr ws_openMath(counter)]
+    global maxima_priv env auto_index
+    set win $parent.embed[incr maxima_priv(counter)]
     set fr [frame $win -width $width -height $height -container 1]
-    set slave tclet$ws_openMath(counter)
+    set slave tclet$maxima_priv(counter)
     safe::interpCreate $slave
     # make it exist somehow the autoload stuff doesnt make it a command
     if { [info exists auto_index(::safe::allowTk) ]  } {
@@ -88,10 +88,10 @@ proc auto_load1 { slave name {namespace ""} } {
 }
 
 proc setupPrintVariables { slave } {
-    global printOption fontSize show_balloons getOp parse_table Parser     axisGray plot2dOptions plot3dOptions paperSizes  printOptions writefile     doExit  fontCourier8   plotdfOptions ftpInfo  ws_openMath
+    global printOption fontSize show_balloons getOp parse_table Parser     axisGray plot2dOptions plot3dOptions paperSizes  printOptions writefile     doExit  fontCourier8   plotdfOptions ftpInfo  maxima_priv
     foreach v {printOption fontSize show_balloons getOp parse_table Parser
 	axisGray plot2dOptions plot3dOptions paperSizes  printOptions writefile
-	doExit  fontCourier8   plotdfOptions ftpInfo ws_openMath} {
+	doExit  fontCourier8   plotdfOptions ftpInfo maxima_priv} {
 	if { [array exists  $v] } {
 	    interp eval $slave [list array set $v [array get $v *] ]
 	} else { 
@@ -101,9 +101,9 @@ proc setupPrintVariables { slave } {
 
 }
 # proc tryit {{win .}} {
-#  global  ws_openMath
-#     if { ![info exists ws_openMath(counter)] } {
-# 	set ws_openMath(counter) 0
+#  global  maxima_priv
+#     if { ![info exists maxima_priv(counter)] } {
+# 	set maxima_priv(counter) 0
 #     }
 #     set width [winfo width $win]
 #     set height [winfo height $win]

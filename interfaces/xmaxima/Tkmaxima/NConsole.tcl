@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NConsole.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: NConsole.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### NConsole.tcl ######
 ############################################################
@@ -16,7 +16,7 @@ proc mkConsole { fr program } {
     pack $fr -expand 1 -fill both
     set w $fr.text
     label [set msg $fr.label]  -height 1 -relief sunken \
-	    -textvariable ws_openMath(load_rate)
+	    -textvariable maxima_priv(load_rate)
 
     if { ![info exists NCtextHelp] } {
 	set NCtextHelp "
@@ -59,10 +59,10 @@ proc mkConsole { fr program } {
     # -relief sunken -borderwidth 1
     bindtags $w [linsert [bindtags $w] 1 CNtext OpenMathText ]
 
-    global ws_openMath
+    global maxima_priv
 
-    if { ![regexp $ws_openMath(sticky) input] } {
-	append ws_openMath(sticky) {|^input$}
+    if { ![regexp $maxima_priv(sticky) input] } {
+	append maxima_priv(sticky) {|^input$}
     }
 
     CNinsertPrompt $w

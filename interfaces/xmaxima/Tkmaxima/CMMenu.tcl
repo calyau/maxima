@@ -1,9 +1,9 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: CMMenu.tcl,v 1.5 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: CMMenu.tcl,v 1.6 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 proc CMmenu { win } {
-    global buttonfont ws_openMath
+    global buttonfont maxima_priv
     set menubar $win.textcommands
     set win $menubar
     if { [winfo exists $menubar] } {
@@ -22,7 +22,7 @@ proc CMmenu { win } {
     setHelp $win.help {Bring down a menu with some help options}
     set m [oget $win.help menu]
     #oset $win showHelpBar "show help bar"
-    set file $ws_openMath(pReferenceToc)
+    set file $maxima_priv(pReferenceToc)
     $m add command -underline 0 -label {Maxima Help} \
 	-command "OpenMathOpenUrl \"file:/$file\""
 
@@ -44,7 +44,7 @@ proc CMmenu { win } {
 		      {http://sourceforge.net/tracker/?group_id=4933&atid=104933}]
 
     $m add sep
-    set dir $ws_openMath(pTestsDir)
+    set dir $maxima_priv(pTestsDir)
     $m add command -underline 0 -label {Run Tests} \
 	-command "sendMaxima \[oget $win textwin\] {:lisp (progn (xchdir \"$dir\")(load \"tests.lisp\"))\n}"
 
@@ -56,7 +56,7 @@ proc CMmenu { win } {
     #oset $win showFileBar "show file bar"
     $m add command -underline 0 -label {Toggle Browser Visibility} \
 	-help {Toggle display of Browser} -command {if { [catch { pack info .browser }] } { pack .browser -side bottom } else { pack forget .browser }}
-    $m add command -underline 0 -label {Exit} -command "vMAXExit $ws_openMath(cConsoleText)" \
+    $m add command -underline 0 -label {Exit} -command "vMAXExit $maxima_priv(cConsoleText)" \
 	-help  "End this session of Maxima"
     $m add command -underline 0 -label {Interrupt   C-c C-c} -command "CMinterrupt \[oget $win textwin\]" \
 	-help  "Interrupt the Maxima process and reset the filter"

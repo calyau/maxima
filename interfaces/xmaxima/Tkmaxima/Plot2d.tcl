@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Plot2d.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -723,13 +723,13 @@ proc drawPlot {win listpts args } {
 
 
 proc drawPointsForPrint { c } {
-    global ws_openMath
+    global maxima_priv
     foreach v [$c find withtag point] {
 	set tags [ldelete point [$c gettags $v]]
 	desetq "x y" [$c coords $v]
 	
 	
-	desetq "pointsize fill" $ws_openMath(pointimage,[$c itemcget $v -image])
+	desetq "pointsize fill" $maxima_priv(pointimage,[$c itemcget $v -image])
 	catch {
 	    $c create oval [expr {$x -$pointsize}] \
 		[expr {$y -$pointsize}] [expr {$x +$pointsize}] \
@@ -744,15 +744,15 @@ proc drawPointsForPrint { c } {
 }
 
 proc getPoint { size color } {
-    global ws_openMath
+    global maxima_priv
     set im ""
-    if { ![catch { set im $ws_openMath(pointimage,$size,$color) }] } {
+    if { ![catch { set im $maxima_priv(pointimage,$size,$color) }] } {
 	return $im
     }
-    catch { set data $ws_openMath(bitmap,disc[expr {$size * 2}])
+    catch { set data $maxima_priv(bitmap,disc[expr {$size * 2}])
 	set im [image create bitmap -data $data -foreground $color]
-	set ws_openMath(pointimage,$size,$color) $im
-	set ws_openMath(pointimage,$im) "$size $color"
+	set maxima_priv(pointimage,$size,$color) $im
+	set maxima_priv(pointimage,$im) "$size $color"
     }
     return $im
 }
