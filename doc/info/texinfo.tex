@@ -4915,7 +4915,7 @@ width0pt\relax} \fi
 
 \def\deffn{\defmethparsebody\Edeffn\deffnx\deffnheader}
 
-\def\deffnheader #1#2#3{\doind {fn}{\code{#2}}%
+\def\deffnheader #1#2#3{\doind {fn}{\code{#2} (#1)}%
 \begingroup\defname {#2}{#1}\defunargs{#3}\endgroup %
 \catcode 61=\other % Turn off change made in \defparsebody
 }
@@ -5089,7 +5089,7 @@ width0pt\relax} \fi
 
 \def\defvr{\defvrparsebody\Edefvr\defvrx\defvrheader}
 
-\def\defvrheader #1#2#3{\doind {vr}{\code{#2}}%
+\def\defvrheader #1#2#3{\doind {vr}{\code{#2} (#1)}%
 \begingroup\defname {#2}{#1}\defvarargs{#3}\endgroup}
 
 % @defvar == @defvr Variable
