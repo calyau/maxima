@@ -571,8 +571,6 @@ trigonometry/spangl.mac\
 trigonometry/spangl.usg\
 trigonometry/trgsmp.mac\
 trigonometry/trigrat.lisp\
-utils/dskuse.lisp\
-utils/dskuse.usg\
 utils/fileop.lisp\
 utils/fileop.usg\
 utils/mactex-utilities.lisp\
