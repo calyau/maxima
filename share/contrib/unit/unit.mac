@@ -124,17 +124,19 @@ globalbaseunitlist : [%length,%mass,%time,%current,%temperature,
    in terms of the relevant Base Quantities, using the pivot unit of the
    Base Quantities. After that, the structure is the same as Base Quantity
    lists. globalderivedunitslist lists all derived quantities known to
-   Maxima, and uses the following structure:  [rank,quanitiy].  rank is
-   a numerical value which allows globalderivedunitslist to be sorted. This
+   Maxima.  A second global listing, called globalderivedunitlist_use, is
+   defined using the following structure:  [rank,quanitiy].  rank is
+   a numerical value which allows globalderivedunitlist to be sorted. This
    is necessary in order to ensure that the simplification rules are defined
-   in the correct order.*/
+   in the correct order.  This list is created automatically on package
+   load, and updated if a user defines a new quantity.*/
 
-globalderivedunitlist:[[r,%volume],[r,%frequency],[r,%force],[r,%pressure],
-[r,%energy],[r,%power,%electric_charge],[r,%electric_potential_difference],
-[r,%capacitance],[r,%resistance],[r,%conductance],[r,%magnetic_flux],
-[r,%magnetic_flux_%density],[r,%inductance],[r,%luminous_flux],[r,%illuminance],
-[r,%radionuclide_activity],[r,%absorbed_dose],[r,%dose_equivalent],
-[r,%catalytic_activity]];
+globalderivedunitlist:[[%volume],[%frequency],[%force],[%pressure],
+[%energy],[%powe%electric_charge],[%electric_potential_difference],
+[%capacitance],[%resistance],[%conductance],[%magnetic_flux],
+[%magnetic_flux_%density],[%inductance],[%luminous_flux],[%illuminance],
+[%radionuclide_activity],[%absorbed_dose],[%dose_equivalent],
+[%catalytic_activity]];
 
 /*Volume*/
 %volumelist : [m^3,[[L,liter,liters],1,m]];
@@ -156,7 +158,7 @@ globalderivedunitlist:[[r,%volume],[r,%frequency],[r,%force],[r,%pressure],
 %frequencylist : [1/s,[[Hz,hertz],1,m]];
 
 /*Force*/
-%forcelist : [kg*m/s^2,[[N,Newton,Newtons],1,d],[[dyn,dyne,dynes],1*10^-5,d]];
+%forcelist : [kg*m/s^2,[[N,%Newton,Newtons],1,d],[[dyn,dyne,dynes],1*10^-5,d]];
 
 /*Pressure*/
 %pressurelist : [kg/(m*s^2),[[Pa,pascal,pascals],1,d],[[torr],133.32239,d]];
@@ -230,6 +232,9 @@ globalderivedunitlist:[[r,%volume],[r,%frequency],[r,%force],[r,%pressure],
 
 unitlet(expression,ruleset) := apply('let,[expression,ruleset]);
 
+/* Something similar to unitlet is needed to kill rulesets */
+killruleset(ruleset) := apply('kill,[ruleset]);
+
 /* Tool to check for duplicates in a list - returns false if found,
    true otherwise */
    
@@ -277,9 +282,9 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 	  if not(?equal(tempentry[1][1],0)) then (    
 	  unitlistusename :: append(ev(unitlistusename),[tempentry])))))),
 	  
-   for i : 1 thru length(globalderivedunitlist) do  (
-     unitlistname : concat(globalderivedunitlist[i][2],list),
-     unitlistusename : concat(globalderivedunitlist[i][2],list_use),
+   for i : 1 thru length(globalderivedunitlist_use) do  (
+     unitlistname : concat(globalderivedunitlist_use[i][2],list),
+     unitlistusename : concat(globalderivedunitlist_use[i][2],list_use),
      unitlistusename :: ev(unitlistname),
      for j : 2 thru length(ev(unitlistname)) do  (
         if (?equal(unitlistname[j][3],m)) then (
@@ -317,11 +322,11 @@ maketoquantitiesruleset() := block([i,j,k,b,unitlistname],
     ))),
     
     /* j needs to start at the second entry for Derived Quantity Arrays */
-    for i : 1 thru length(globalderivedunitlist) do  (
-     unitlistname : concat(globalderivedunitlist[i][2],list_use),
+    for i : 1 thru length(globalderivedunitlist_use) do  (
+     unitlistname : concat(globalderivedunitlist_use[i][2],list_use),
      for j : 2 thru length(ev(unitlistname)) do  (
        for k : 1 thru length(unitlistname[j][1]) do (
-         unitlet([unitlistname[j][1][k],globalderivedunitlist[i][2]],
+         unitlet([unitlistname[j][1][k],globalderivedunitlist_use[i][2]],
 	         toquantities)
     )))
     );
@@ -355,10 +360,7 @@ isbase(unit) :=  block([letrat:true,result,quantity],
 	                       letsimp(unit,toquantities))) then (
 		result : true)
 	else (
-	if not(isunit(unit)) then (
-	 (error ("Input is not a unit.  To define your own unit, use the addunit command."),unit)
-	) else (
-	result : false)),
+	if isunit(unit) then (result : false)),
 	result);
 
 /* Returns the definition of a unit in terms of the seven base quantities.*/
@@ -374,16 +376,28 @@ base(unit):= block([letrat:true,result,i,j,listname],
 	result : unit),
 	result);
 
+/* Returns the mks base units for a quantity.*/
+quanttomks(quantity):= block([letrat:true,result,listname],
+	listname:concat(quantity,list_use),
+	if not(lfreeof(globalbaseunitlist,quantity)) then (
+            result : listname[1][1])
+	else (
+	if not(lfreeof(globalderivedunitlist,quantity)) then (
+	    result : listname[1])
+	else (
+	error ("Quantity not found")),
+	result);
+	
 /* This utility makes a list of quantities from a list of units.  It is
    used to validate input for setunits. */
-makequantlist(unitlist) := block([current_let_rule_package : toquantities, return], 
+makequantlist(unitlist) := block([current_let_rule_package : toquantities, 
+                                  return], 
          return : map('letsimp,unitlist));
 
 
 /* Handles creation of rules for base units */
 baserules(currentunitlist,unitlistname,unitrules):= 
  block([letrat:true,i,j,a,b,fakerule],
-   killruleset(ruleset) := apply('kill,[ruleset]),
    killruleset(unitrules),
    unitlet([fakerule,fakerule],unitrules),
    for i : 1 thru length(ev(unitlistname)) do (
@@ -414,27 +428,176 @@ baserules(currentunitlist,unitlistname,unitrules):=
 	))))
 );
 
-/* Creates rule sets based on user selected units  - Note, will need
-some kind of sort here to ensure proper simplification takes place.  The
-sort(list) command will work on the globalderivedunitslist as it is now
-configured (3/10/2005) - that is the reason for the rank being first.*/
-derivedsimprules(selectedunits,rulepackage) := 
- block([current_let_rule_package : rulepackage,letrat:true, a],
-  unitlet([a,a],rulepackage), /*Used to initialize ruleset*/
-  if listp(selectedunits) then (
-    remlet(a,rulepackage),                 
-    map ('derivedsimprules, selectedunits))
-  else(
-  unitlet([letsimp(base(selectedunits),rulepackage),selectedunits],rulepackage),
-	remlet(a,rulepackage)));
+/*--------------------Derived Quantity rank assignment ----------------------*/
+
+/* This set of functions assigns ranks to all derived quantities, with higher
+rankings corresponding to more complex quantities.  This is essential in order
+to ensure that the simplification rules check for quantities in the
+proper order.  For example, if the rules do not recognize J before N, J
+will never be resolved unless the rules know to look for an expression
+containing N.  This can be done, but the cleaner way (particularly in
+the case of user defined quantities) is to assign rank numbers in such
+a way that the check for each is done in the proper order.  This is
+accomplished by checking each new quantity's MKS definition to see what
+units contain it.  If a quantity of a given rank DOES contain the new quanity
+as part of its definiton, simplification of the higher rank unit using the
+simprule for the new unit will result in a changed expression.  So for each
+new quantity this check is performed until a rank is found where this does
+not happen.  In that case, the new quantity is assigned the rank at which
+no changes occurred due to substitution.  If the highest ranking quantity in the
+array is contained in the new quantity, the new quantity is assigned rank+1 and
+becomes the new highest ranking unit.*/
+
+rankquant(newquantity, listsanshighranks) := block([letrat : true,
+   i,j,highnum,nxthighnum,lower,lowerin,return1,lowerpart,higherpart,
+   highestrank],
+   killunitrules(testfornew),
+   unitlet([quantomks(newquantity),newquantity],testfornew),
+   listsanshighranks : reverse(sort(listsanshighranks)),
+   highestrank : listsanshighranks[1][1],
+   i : 1,
+   highnum : 0,
+   lower : false
+   while ?equal(listsanshighranks[i][1],highestrank) do (
+      highnum : highnum + 1,
+      i : i + 1)
+   for i : 1 thru highnum do (
+      if not(?equal(
+         letsimp(listsanshighranks[i],testfornew),listsanshighranks[i])) then (
+         lower : true)
+   ),
+   if (lower and highestrank : 1) then (
+      for i : 1 thru length(listsanshighranks) do(
+        listsanshighranks[i][1] : listsanshighranks[i][1] + 1)
+      return1 : append(listsanshighranks,[[1,newquantity]])
+   ) else (
+   if (lower) then (
+      lowerpart : rankquant(rank-1,newquantity,rest(listsanshighranks,highnum)),
+      higherpart : rest(listsanshighranks,highnum-length(listsanshighranks)),
+      if ?equal(lowerpart[1][1],last(higherpart)[1]) then (
+        for i : 1 thru length(higherpart) do (
+	  higherpart[i][1] : higherpart[i] + 1))
+      return1 : append(higherpart,lowerpart)
+   ) else (
+   if not(lower) then (
+      i : highnum+1,
+      nxthighnum : 0
+      inlower : false,
+      while ?equal(listsanshighranks[i][1],highestrank-1) do (
+         nxthighnum : nxthighnum + 1,
+         i : i + 1)
+      for i : highnum+1 thru nxthighnum do (
+         if not(?equal(letsimp(listsanshighranks[i],testfornew),
+	                       listsanshighranks[i])) then (
+           inlower : true))
+      if inlower then (
+         return1 : append([[highestrank+1,newquantity]],listsanshighranks)
+      ) else (
+         return1 : append([[highestrank,newquantity]],listsanshighranks))
+    ))),
+    return1);
+      
+rankquants(quantityarray) := block([letrat : true, ranknew, rankmax, 
+                                   currentrank,i,j,returna],
+   returna : [[1,quantityarray[1]]],
+   quantityarray : rest(quantityarray,1),
+   while ?is(length(quantityarray) > 0) do (
+      returna : rankquant(quantityarray[1],returna),
+      quantityarray : rest(quantityarray,1)),
+   returna);
+	
+
+
+/* Creates rule sets for derived units  - depends on the existance
+of a properly ranked global derived quantity list.  For the purpose
+of preserving fullname vs. abbr information, each quantity will be
+assigned two unique multiplicative factors which will be added to the mks
+simp rules to preserve this information.  They will be removed in the
+de-simplification back to end user units, and in the process allow proper
+preservation of the choice of short vs. long names.  baserules might
+be needed for this to work, but probably not.*/
+
+derivedrules(currentunitlist,unitlistname,unitrules):= 
+ block([letrat:true,i,j,a,b,fakerule],
+   killruleset(unitrules),
+   unitlet([fakerule,fakerule],unitrules),
+   for i : 1 thru length(ev(unitlistname)) do (
+     if lfreeof(unitlistname[i][1],currentunitlist[1]) then (
+       for j : 1 thru length(unitlistname[i][1]) do (
+         if ?equal(abbrevsimp,1) then (
+	     unitlet([unitlistname[i][1][j],
+	        unitlistname[i][2]/currentunitlist[2]*
+		first(currentunitlist[1])],unitrules)
+	 )else(
+	 if ?equal(abbrevsimp,1) then (
+	     unitlet([unitlistname[i][1][j],
+	        unitlistname[i][2]/currentunitlist[2]*
+		last(currentunitlist[1])],unitrules)
+	 )else(
+	     a : length(unitlistname[i][1]),
+	     b : length(currentlistname[1]),
+	     
+	     if (?equal(a,b) or ?equal(j,1)) then (
+	         unitlet([unitlistname[i][1][j],
+		    unitlistname[i][2]/currentunitlist[2]*
+		    currentunitlist[1][j]],unitrules)
+	     )else(
+		 unitlet([unitlistname[i][1][j],
+		    unitlistname[i][2]/currentunitlist[2]*
+		    last(currentunitlist[1])],unitrules)
+	     ))
+	))))
+);
+
 
 
 /*====================== User Functions ======================*/ 
 
-showabbr(fullunitname):=
+/* Returns the Maxima abbreviation used for fullunitname */
+showabbr(fullunitname):= block([letrat:true,i,j,unittype,unitlistname,
+                         currentunitlist,flag,return1],
+   if not(isunit(fullunitname)) then (
+     (error ("Input is not a unit.  To define your own unit, use the addunit command."),unit)
+   ) else (
+      unittype : letsimp(fullunitname,toquantities),
+      unitlistname : concat(unittype,list_use),
+      flag : 0, i:0,
+      if not(isbase(fullunitname)) then (i : i+1),
+      while ?equal(flag,0) do(
+        i : i+1,
+        if not(lfreeof(unitlistname[i][1],fullunitname)) then (
+           return1 : unitlistname[i][1][1],
+	   flag : 1),
+	if ?equal(i, length(ev(unitlistname))) then (flag : 1)
+      )),
+   return1);
 
+/* Returns all the full names of the unit abbr */
+showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
+                         currentunitlist,flag,return1],
+   if not(isunit(abbr)) then (
+     (error ("Input is not a unit.  To define your own unit, use the addunit command."),unit)
+   ) else (
+      unittype : letsimp(abbr,toquantities),
+      unitlistname : concat(unittype,list_use),
+      flag : 0, i:0,
+      if not(isbase(abbr)) then (i : i+1),
+      while ?equal(flag,0) do(
+        i : i+1,
+        if not(lfreeof(unitlistname[i][1],fullunitname)) then (
+           return1 : rest(unitlistname[i][1],1),
+	   flag : 1),
+	if ?equal(i, length(ev(unitlistname))) then (flag : 1)
+      )),
+   return1);
+
+/* Prints out information about a unit */
 unitinfo(unit):= block([letrat:true,result,quantity],
 
+/* Sets the units used in the global tellsimpafter evaluation.  Takes
+as its arguments either a single unit or a list of units.  Checks to
+make sure the list contains only one unit per quantity.  Will need to
+update to handle derived quantities - map won't work.*/
 setunits(units):= block([letrat:true,i,j,unittype,unitlistname,
                          unitrules,currentunitlist, flag],
   modedeclare([i,j], fixnum),
@@ -467,20 +630,26 @@ setunits(units):= block([letrat:true,i,j,unittype,unitlistname,
          derivedrules(currentunitlist,unitlistname,unitrules)
       )
    )));
-  
+
+/*  Allows the user to create their own units */
 addunits([[unitname(s)],definition,0]):=
 
+/*  Converts an expression into one using the specified units */
 convert(expression,desiredunits):=
 
 /*====================== Initilization =======================*/
 
 /* This variable controls how many of the metric prefixes are added
    on to the default lists*/
-
 %unitexpand : 2;
 
-/* Places all relevant metric definitons into the %quantitylist lists.*/
+/* Creates global list of derived quantities with rank assigned to each
+quantity to allow for proper simplification.  Remember for addunit command
+and any similar commands to add a new quantity to the globalderivedunitlist,
+then recreate the use list. */
+globalderivedunitlist_use : rankquants(globalderivedunitlist);
 
+/* Places all relevant metric definitons into the %quantitylist lists.*/
 metricexpandall(%unitexpand);
 
 /* Variable to control how simplification behaves with respect to 
@@ -489,17 +658,14 @@ metricexpandall(%unitexpand);
    possible.  There are two other possible settings:
       1 : fullname -> abbreviation (singular and plural fullnames -> abbrev.)
       2 : abbreviation -> fullname (will use plural form) */
-
 abbrevsimp : 0;
       
 /* Create default toquantities ruleset*/
-
 maketoquantitiesruleset();
 
 /* Instruct the global simplification routines to call the simplification
    function defined in this package, to allow automatic unit conversion
    without the user having to explicitly call a function.*/
-   
 freeofunitsp([x]) := lfreeof(nonfinalunitslist,x);
 notfreeofunitsp([x]) := not(freeofunitsp(x));
 matchdeclare(a,freeofunitsp(a),b,notfreeofunitsp(b));
