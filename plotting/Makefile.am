@@ -2,9 +2,7 @@ include $(top_srcdir)/common.mk
 
 verpkglibexec_SCRIPTS = omplotdata mgnuplot
 
-
-EXTRA_DIST = 
-
+EXTRA_DIST = header.tcl footer.tcl
 
 OMPLOTDATASOURCES = \
 	header.tcl \
@@ -27,11 +25,7 @@ OMPLOTDATASOURCES = \
 	../interfaces/xmaxima/Tkmaxima/NPlot3d.tcl \
 	footer.tcl 
 
-
 omplotdata: $(OMPLOTDATASOURCES)
 	rm -f omplotdata && \
 		cat $(OMPLOTDATASOURCES) > omplotdata && \
 		chmod +x omplotdata
-
-
-FORCE:
