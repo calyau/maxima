@@ -34,12 +34,29 @@
 (defvar $file_search_usage nil)
 (defvar $chemin nil)
 
+#+gcl
+(defun getenv (envvar)
+  (si::getenv envvar))
+
+#+allegro
+(defun getenv (envvar)
+  (system:getenv envvar))
+
+#+cmu
+(defun getenv (envvar)
+  (car (assoc envvar ext:*environment-list* :test #'string=)))
+
+#+clisp
+(defun getenv (envvar)
+  (ext:getenv envvar))
+
 (defun set-pathnames ()
-  (let* ((tem #+gcl (si::getenv "MAXIMA_DIRECTORY")
-	      #+allegro (system:getenv "MAXIMA_DIRECTORY")))
+  (let* ((tem (getenv "MAXIMA_DIRECTORY")))
     (if (and tem (> (length tem) 0))
 	(or (eql (aref tem (1- (length tem))) #\/)
-	    (setq tem (format nil "~a/" tem)))))
+	    (setq tem (format nil "~a/" tem))))
+    (when tem
+      (setq *maxima-directory* tem)))
   (setq $file_search_lisp
     (list '(mlist)
 	  #+gcl (maxima-path "{src,share1,sym}" "###.o")
