@@ -5,16 +5,14 @@
 
 @node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
 @section Introduction to Command Line
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "'"
   - (single quote) has the effect of preventing evaluation.  E.g.
 '(F(X)) means do not evaluate the expression F(X).  'F(X) means
 return the noun form of F applied to [X].
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "'@w{}'"
   - (two single quotes) causes an extra evaluation to occur.  E.g.
 '@w{}'%i4; will re-execute line %i4.  '@w{}'(F(X)) means evaluate the
@@ -25,16 +23,14 @@ applied to [X].
 @c end concepts Command Line
 @node Definitions for Command Line,  , Introduction to Command Line, Command Line
 @section Definitions for Command Line
-@c @node ALIAS
-@c @unnumberedsec phony
+
 @defun ALIAS (newname1, oldname1, newname2, oldname2, ...)
 provides an
 alternate name for a (user or system) function, variable, array, etc.
 Any even number of arguments may be used.
 
 @end defun
-@c @node DEBUGMODE
-@c @unnumberedsec phony
+
 @defvar DEBUGMODE
 Default value: FALSE
 
@@ -47,8 +43,7 @@ Enabling DEBUGMODE will not catch Lisp errors.
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
 @end defvar
-@c @node EV
-@c @unnumberedsec phony
+
 @defun EV (exp, arg1, ..., argn)
 is one of Maxima's most powerful and
 versatile commands. It evaluates the expression exp in the environment
@@ -191,8 +186,7 @@ SOLUTION
 @end example
 
 @end defun
-@c @node EVFLAG
-@c @unnumberedsec phony
+
 @defvar EVFLAG
  default: [] - the list of things known to the EV function.  An
 item will be bound to TRUE during the execution of EV if it is
@@ -210,8 +204,7 @@ NUMER_PBRANCH, M1PBRANCH, DOTSCRULES, and LOGEXPAND.
 @end example
 
 @end defvar
-@c @node EVFUN
-@c @unnumberedsec phony
+
 @defvar EVFUN
  - the list of functions known to the EV function which will get
 applied if their name is mentioned.  Initial evfuns are FACTOR,
@@ -219,8 +212,7 @@ TRIGEXPAND, TRIGREDUCE, BFLOAT, RATSIMP, RATEXPAND, RADCAN,
 LOGCONTRACT, RECTFORM, and POLARFORM.
 
 @end defvar
-@c @node INFEVAL
-@c @unnumberedsec phony
+
 @defvr {special symbol} INFEVAL
  leads to an "infinite evaluation" mode.  EV repeatedly
 evaluates an expression until it stops changing.  To prevent a
@@ -230,73 +222,102 @@ EV(X,X=X+1,INFEVAL); will generate an infinite loop.  CAVEAT
 EVALUATOR.
 
 @end defvr
-@c @node KILL
-@c @unnumberedsec phony
-@defun KILL (arg1, arg2, ...)
-eliminates its arguments from the Maxima
-system.  If argi is a variable (including a single array element),
-function, or array, the designated item with all of its properties is
-removed from core.  If argi=LABELS then all input, intermediate, and
-output lines to date (but not other named items) are eliminated. If
-argi=CLABELS then only input lines will be eliminated; if argi=ELABELS
-then only intermediate E-lines will be eliminated; if argi=DLABELS
-only the output lines will be eliminated.  If argi is the name of any
-of the other information lists (the elements of the Maxima variable
-INFOLISTS), then every item in that class (and its properties) is
-KILLed and if argi=ALL then every item on every information list
-previously defined as well as LABELS is KILLed.  If argi=a number (say
-n), then the last n lines (i.e. the lines with the last n line
-numbers) are deleted.  If argi is of the form [m,n] then all lines
-with numbers between m and n inclusive are killed. Note that
-KILL(VALUES) or KILL(variable) will not free the storage occupied
-unless the labels which are pointing to the same expressions are also
-KILLed.  Thus if a large expression was assigned to X on line %i7 one
-should do KILL(%o7) as well as KILL(X) to release the storage occupied.
-KILL(ALLBUT(name1,...,namek) will do a KILL(ALL) except it will not
-KILL the names specified.  (Note: namei means a name such as U, V, F,
-G, not an infolist such as FUNCTIONS.)
-    KILL removes all properties from the given argument thus
-KILL(VALUES) will kill all properties associated with every item on
-the VALUES list whereas the REMOVE set of functions
-(REMVALUE,REMFUNCTION,REMARRAY,REMRULE) remove a specific property.
-Also the latter print out a list of names or FALSE if the specific
-argument doesn't exist whereas KILL always has value "DONE" even if
-the named item doesn't exist.
+
+@defun kill (symbol_1, symbol_2, symbol_3, ...)
+@defunx kill (labels)
+@defunx kill (clabels, dlabels, elabels)
+@defunx kill (n)
+@defunx kill ([m, n])
+@defunx kill (values, functions, arrays, ...)
+@defunx kill (all)
+@defunx kill (allbut (symbol_1, symbol_2, symbol_3, ...))
+
+Removes all bindings (value, function, array, or rule) from the arguments
+@code{symbol_1}, @code{symbol_2}, @code{symbol_3}, ....
+An argument may be a single array element or subscripted function.
+
+@code{kill} always returns @code{done}, even if an argument has no binding.
+
+Several special arguments are recognized. 
+Different kinds of arguments
+may be combined, e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
+
+The special form @code{kill (labels)} unbinds
+all input, output, and intermediate expression labels created so far.
+@code{kill (clabels)} unbinds only input labels
+which begin with the current value of @code{inchar}.
+Likewise,
+@code{kill (dlabels)} unbinds only output labels
+which begin with the current value of @code{outchar},
+and @code{kill (elabels)} unbinds only intermediate expression labels
+which begin with the current value of @code{linechar}.
+
+The special form @code{kill (n)}, where @code{n} is an integer,
+unbinds the @code{n} most recent input and output labels.
+The special form @code{kill ([m, n])} unbinds input and output labels @code{m} through @code{n}.
+
+The special form @code{kill (infolist)}, where @code{infolist} is any item in @code{infolists}
+(such as @code{values}, @code{functions}, or @code{arrays})
+unbinds all items in @code{infolist}.
+See also @code{infolists}.
+
+The special form @code{kill (all)} unbinds all items on all infolists.
+
+The special form @code{kill (allbut (symbol_1, symbol_2, symbol_3, ...))}
+unbinds all items on all infolists except for @code{symbol_1}, @code{symbol_2}, @code{symbol_3}, ....
+@code{kill (allbut (infolist))} unbinds all items except for the ones on @code{infolist},
+where @code{infolist} is @code{values}, @code{functions}, @code{arrays}, etc.
+
+The memory taken up by a bound property is not released until all symbols
+are unbound from it.
+In particular, to release the memory taken up by the value of a symbol,
+one unbinds the output label which shows the bound value, as well as unbinding the symbol itself.
+
+@code{kill} quotes its arguments.
+The double-quote operator, @code{'@w{}'}, defeats the quotation.
+
+@code{kill (symbol)} unbinds all properties of @code{symbol}.
+In contrast, @code{remvalue}, @code{remfunction}, @code{remarray}, and @code{remrule}
+unbind a specific property.
+Those functions also differ in that they return a list of the symbols or @code{false}.
 
 @end defun
-@c @node LABELS
-@c @unnumberedsec phony
-@defun LABELS (char)
-takes a char C, D, or E as arg and generates a list of all
-C-labels, D-labels, or E- labels, respectively.  If you've generated
-many E- labels via SOLVE, then
-@example
-FIRST(REST(LABELS(C)))
-@end example
-reminds you
-what the last C-label was.
-LABELS will take as arg any symbolic name, so if you have reset INCHAR,
-OUTCHAR, or LINECHAR, it will return the list of labels whose first
-character matches the first character of the arg you give to LABELS.
-The variable, LABELS, default: [], is a list of C, D, and E lines
-which are bound.
+
+@defun labels (symbol)
+@defunx labels
+Returns the list of input, output, or intermediate expression labels which begin with @code{symbol}.
+Typically @code{symbol} is the value of @code{inchar}, @code{outchar}, or @code{linechar}.
+The label character may be given with or without a percent sign,
+so, for example, @code{i} and @code{%i} yield the same result.
+
+If no labels begin with @code{symbol}, @code{labels} returns an empty list.
+
+The function @code{labels} quotes its argument.
+The double-quote operator @code{'@w{}'} defeats the quotation.
+For example,
+@code{labels (''inchar)} returns the input labels which begin with the current input label character.
+
+The variable @code{labels} is the list of input, output, and intermediate expression labels,
+including all previous labels if @code{inchar}, @code{outchar}, or @code{linechar} were redefined.
+
+@c NEED TO EXPLAIN THIS SHORTCUT ???
+@code{first (rest (labels (''inchar)))} returns the most recent input label.
+
+See also @code{inchar}, @code{outchar}, @code{linechar}, and @code{infolists}.
 
 @end defun
-@c @node LINENUM
-@c @unnumberedsec phony
+
 @defvar LINENUM
  - the line number of the last expression.
 
 @end defvar
-@c @node MYOPTIONS
-@c @unnumberedsec phony
+
 @defvar MYOPTIONS
  default: [] - all options ever reset by the user (whether
 or not they get reset to their default value).
 
 @end defvar
-@c @node NOLABELS
-@c @unnumberedsec phony
+
 @defvar NOLABELS
  default: [FALSE] - if TRUE then no labels will be bound
 except for E lines generated by the solve functions.  This is most
@@ -304,8 +325,7 @@ useful in the "BATCH" mode where it eliminates the need to do
 KILL(LABELS) in order to free up storage.
 
 @end defvar
-@c @node OPTIONSET
-@c @unnumberedsec phony
+
 @defvar OPTIONSET
  default: [FALSE] - if TRUE, Maxima will print out a
 message whenever a Maxima option is reset.  This is useful if the
@@ -313,8 +333,7 @@ user is doubtful of the spelling of some option and wants to make sure
 that the variable he assigned a value to was truly an option variable.
 
 @end defvar
-@c @node PLAYBACK
-@c @unnumberedsec phony
+
 @defun PLAYBACK (arg)
 "plays back" input and output lines.  If arg=n (a
 number) the last n expressions (Ci, Di, and Ei count as 1 each) are
@@ -334,8 +353,7 @@ processing input lines) (see GRIND).  One may include any number of
 options as in PLAYBACK([5,10],20,TIME,SLOW).
 
 @end defun
-@c @node PRINTPROPS
-@c @unnumberedsec phony
+
 @defun PRINTPROPS (a, i)
 will display the property with the indicator i
 associated with the atom a. a may also be a list of atoms or the atom
@@ -345,15 +363,13 @@ properties that cannot otherwise be displayed, i.e. for
 ATVALUE, ATOMGRAD, GRADEF, and MATCHDECLARE.
 
 @end defun
-@c @node PROMPT
-@c @unnumberedsec phony
+
 @defvar PROMPT
  default: [_] is the prompt symbol of the DEMO function,
 PLAYBACK(SLOW) mode, and the Maxima break loop (as invoked by BREAK).
 
 @end defvar
-@c @node QUIT
-@c @unnumberedsec phony
+
 @defun QUIT ()
 kills the current Maxima but doesn't affect the user's other
 jobs;  equivalent to exiting to DCL and stopping the Maxima process.
@@ -364,16 +380,14 @@ quit in a computation started within a Maxima break without disrupting
 the suspended main computation.
 
 @end defun
-@c @node REMFUNCTION
-@c @unnumberedsec phony
+
 @defun REMFUNCTION (f1, f2, ...)
 removes the user defined functions
 f1,f2,... from Maxima.  If there is only one argument of ALL then all
 functions are removed.
 
 @end defun
-@c @node RESET
-@c @unnumberedsec phony
+
 @defun RESET ()
 causes all Maxima options to be set to their default values.
 (Please note that this does not include features of terminals such as
@@ -381,8 +395,7 @@ LINEL which can only be changed by assignment as they are not
 considered to be computational features of Maxima.)
 
 @end defun
-@c @node SHOWTIME
-@c @unnumberedsec phony
+
 @defvar SHOWTIME
  default: [FALSE] - if TRUE then the computation time will be
 printed automatically with each output expression.  By setting
@@ -397,8 +410,7 @@ printed will include all gctime incurred in the course of the
 computation and hence may in rare cases even be larger than "time=").
 
 @end defvar
-@c @node SSTATUS
-@c @unnumberedsec phony
+
 @defun SSTATUS (feature,package)
 - meaning SET STATUS.  It can be used to
 SSTATUS( FEATURE, HACK_PACKAGE) so that STATUS( FEATURE, HACK_PACKAGE)
@@ -406,16 +418,14 @@ will then return TRUE.  This can be useful for package writers, to
 keep track of what FEATURES they have loaded in.
 
 @end defun
-@c @node TO_LISP
-@c @unnumberedsec phony
+
 @defun TO_LISP ()
 enters the LISP system under Maxima.  This is useful on
 those systems where control-uparrow is not available for this
 function.
 
 @end defun
-@c @node VALUES
-@c @unnumberedsec phony
+
 @defvar VALUES
  default:[] - all bound atoms, i.e. user variables, not Maxima
 Options or Switches, (set up by : , :: , or functional binding).
