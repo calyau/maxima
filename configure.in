@@ -267,12 +267,17 @@ chmod +x xmaxima-local
 echo
 echo "Summary:"
 if test x"${clisp}" = xtrue ; then
-	echo "clisp enabled. Executable name ${CLISP_NAME}"
+	echo "clisp enabled. Executable name: \"${CLISP_NAME}\""
 fi
 if test x"${cmucl}" = xtrue ; then
-	echo "CMUCL enabled. Executable name ${CMUCL_NAME}"
+	echo "CMUCL enabled. Executable name: \"${CMUCL_NAME}\""
 fi
 if test x"${gcl}" = xtrue ; then
-	echo "GCL enabled. Executable name ${GCL_NAME}"
+	echo "GCL enabled. Executable name: \"${GCL_NAME}\""
+	if test x"${gcl_alt_link}" = xtrue ; then
+		echo "    GCL alternative linking method enabled."
+	fi
 fi
 echo "default lisp: $DEFAULTLISP"
+echo "wish executable name: \"${WISH}\""
+
