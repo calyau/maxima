@@ -27,7 +27,7 @@ EVAL_WHEN([BATCH,LOADFILE],
 
 eval_when([batch,loadfile],
   if get('GNAUTO,'DIAGEVAL_VERSION)=false
-  then load("simplification/genut"))$
+  then load("genut"))$
 
 /* Switches  */
 DEFINE_VARIABLE(IFORP,FALSE,BOOLEAN)$

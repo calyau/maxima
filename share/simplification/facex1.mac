@@ -27,7 +27,7 @@ PUT('FACEX1,1,'VERSION)$
 
 eval_when([batch,loadfile],
   if get('GNAUTO,'DIAGEVAL_VERSION)=false
-  then load("simplification/genut"))$
+  then load("genut"))$
 
 COLLECTTEN(EXP):=COLLECTTERMSL(EXP,LISTOFTENS(EXP))$
 

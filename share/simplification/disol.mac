@@ -28,7 +28,7 @@ THEN SETUP_AUTOLOAD([GENUT,FASL,DSK,DGVAL],
 
 eval_when([batch,loadfile],
   if get('GNAUTO,'DIAGEVAL_VERSION)=false
-  then load("simplification/genut"))$
+  then load("genut"))$
 
 DISOLATE(EXP,[ORIG_ISO_LIST]):=BLOCK(
   [PARTSWITCH:TRUE,IFORP:TRUE,PIECE,INFLAG:TRUE],

@@ -41,7 +41,7 @@ THEN (SETUP_AUTOLOAD(">udd>Mathlab>Brenner>genut",
 
 eval_when([batch,loadfile],
   if get('GNAUTO,'DIAGEVAL_VERSION)=false
-  then load("simplification/genut"))$
+  then load("genut"))$
 
 eval_when([translate,compile],
   mode_declare(function(NULLLISTP,FREEOFL),boolean))$
