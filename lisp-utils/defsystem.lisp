@@ -3375,9 +3375,9 @@ D
   (declare #-(or :cltl2 :ansi-cl) (ignore override-compilation-unit))
   (unwind-protect
       ;; Protect the undribble.
-      (#+(or :cltl2 :ansi-cl) with-compilation-unit
-	 #+(or :cltl2 :ansi-cl) (:override override-compilation-unit)
-	 #-(or :cltl2 :ansi-cl) progn
+      (#+(and (or :cltl2 :ansi-cl) (not gcl))  with-compilation-unit
+	 #+(and (or :cltl2 :ansi-cl) (not gcl)) (:override override-compilation-unit)
+	 #-(and (or :cltl2 :ansi-cl) (not gcl)) progn
 	(when *reset-full-pathname-table* (clear-full-pathname-tables))
 	(when dribble (dribble dribble))
 	(when test (setq verbose t))
