@@ -161,11 +161,23 @@ OPMAP(exp,lst) :=
     else exp)$
 
 IFLOPMAP(op,fun,exp) :=
+  if op="*"
+  then genut_prodmap(fun,exp)
+  else if atom(exp)
+       then exp
+       else if inpart(exp,0)=op
+            then map(fun,exp)
+            else apply(fun,[exp])$
+
+genut_prodmap(fun,exp):=
   if atom(exp)
   then exp
-  else if inpart(exp,0)=op
-       then map(fun,exp)
-       else apply(fun,[exp])$
+  else block([mop:inpart(exp,0)],
+         if mop="*" 
+         then map(lambda([exp],genut_prodmap(fun,exp)),exp)
+         else if mop="^" and askinteger(inpart(exp,2))='yes
+              then substinpart(genut_prodmap(fun,inpart(exp,1)),exp,1)
+              else apply(fun,[exp]))$
 
 /* Returns a list of the sub-expressions of EXP which have one of the
    operators in OPL as main operator. */
