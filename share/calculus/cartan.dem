@@ -1,49 +1,41 @@
+/* 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * Cartan algebra of exterior forms
+ */
 
-"THESE FILES CONTAIN PROGRAMS TO IMPLEMENT EXTERIOR CALCULUS.
-DIFFERENTIAL FORMS ARE HERE EXPRESSED IN TERMS OF NATURAL BASIS 
-FORMS ASSOCIATED WITH THE COORDINATES OF THE MANIFOLD.  
-THE COORDINATES TO BE USED MUST BE INPUT AS A LIST, E.G., [X,Y,Z] .
-THE DIMENSION OF THE MANIFOLD IS SPECIFIED BY 'DIM'.  THE PROGRAM 
-WILL CONSTRUCT THE CORRESPONDING LIST OF BASIS FORMS, [DX,DY,DZ].
-'DIM', 'BASIS', AND 'COORDS' ARE RESERVED NAMES.  FOR DEMONSTRATION, 
-INPUT THE COORDINATE LIST, [X,Y,Z] ."$
-/* ("INPUT THE COORDINATE LIST.",COORDS:READ()); */
-COORDS:READ("INPUT THE COORDINATE LIST.");
-DIM:EXTDIM:LENGTH(COORDS)$
-BASIS:VR:EXTSUB[1]:EXTSUBB[1]:[]$
-FOR I THRU DIM DO 
-	(CI:CONCAT(ZZZ,I),BASIS:ENDCONS(CI,BASIS),
-	EXTSUB[I+1]:CONS(CI=-CI,EXTSUB[I]),
-	EXTSUBB[I]:CONS(CI=0,EXTSUB[I]),APPLY('ALIAS,
-[CONCAT(D,COORDS[I]),CI]),CI:CONCAT(V,I),VR:ENDCONS(CI,VR))$
-("THE BASIS FORM LIST IS",BASIS);
-("A VECTOR IS REPRESENTED BY A LIST OF COMPONENTS",VR);
-DERIVABBREV:PARTSWITCH:TRUE$
-/* if status(feature,its) then LOADFILE(CARTAN,lisp,DSK,SHARE2) else
-if status(feature,multics) then LOADFILE(">lib>macsyma>share>cartan.lisp")
-	                   else error("Unknown operating system")$ */
-load("cartan")$
-("AN EXAMPLE OF A 1-FORM IS",F1:X*DY+Z*DZ);
-("THE EXTERIOR PRODUCT OPERATION IS DENOTED BY THE AMPERSAND, & , 
-WRITTEN AS AN INFIX OPERATOR BETWEEN DIFFERENTIAL FORMS.
-FOR EXAMPLE,",F2:DZ & F1);
-("NOTE THAT NO SYMBOL IS PRINTED IN THE OUTPUT FOR THE EXTERIOR PRODUCT 
-OF BASIS FORMS - IT IS IMPLICITLY UNDERSTOOD.  THE ORDER IN WHICH BASIS 
-FORMS APPEAR IN PRODUCTS IS DETERMINED BY 'BASIS'.  THUS, DIFFERENTIAL 
-FORMS CAN BE INPUT USING THE ORDINARY PRODUCT.  FOR EXAMPLE, 
-THE FOLLOWING INPUT COMMAND USING THE & OPERATOR ",F3:DX & DY+DZ & DY);
-("IS EQUIVALENT TO",F3:DX*DY-DY*DZ);
-("CONTRACTION OF A VECTOR ON A FORM IS DENOTED BY THE INFIX OPERATOR, | , 
-WITH THE VECTOR ON THE LEFT.  FOR EXAMPLE", VR | F3);
-("THE EXTERIOR DERIVATIVE IS WRITTEN AS THE FUNCTION, D(ARG) , 
-WHERE 'ARG' IS ANY DIFFERENTIAL FORM.  FOR EXAMPLE",D(F1));
-("MAKE VR A VECTOR FIELD",DEPENDENCIES(V1(X,Y,Z),V2(X,Y,Z),V3(X,Y,Z)));
-("THE LIE DERIVATIVE WITH RESPECT TO A VECTOR OF A FORM IS THE FUNCTION, 
-LF(VECTOR,FORM).  FOR EXAMPLE",LF(VR,F2));
-("CREATE ANOTHER VECTOR FIELD",DEPENDENCIES(W1(X,Y,Z),W2(X,Y,Z),W3(X,Y,Z)),
-WR:[W1,W2,W3]);
-("THE LIE DERIVATIVE WITH RESPECT TO A VECTOR(ARG1) OF ANOTHER VECTOR(ARG2) 
-IS THE FUNCTION, LV(ARG1,ARG2).  FOR EXAMPLE",LV(VR,WR));
-"THE SYSTEM IS READY TO DO EXTERIOR CALCULUS IN THREE DIMENSIONS WITH 
-THE COORDINATES [X,Y,Z] .  TO OPERATE IN A DIFFERENT MANIFOLD, EXECUTE
-THE COMMANDS, KILL(ALL) FOLLOWED BY BATCH([CARTAN,START,DSK,SHARE2],0N,2,9) "$
+("The Cartan package implements index-free exterior calculus")$
+if get('cartan,'version)=false then load(cartan);
+derivabbrev:true;
+("Initialize the package by supplying the list of coordinates")$
+init_cartan([x,y,z]);
+("The basis will be stored in cartan_basis")$
+cartan_basis;
+("Let us define a vector as a list of elements")$
+vr:[v1,v2,v3];
+("This is an example of a 1-form")$
+f1:x~dy+z~dz;
+("This one is a 2-form")$
+f2:dz~f1;
+("Contraction with a vector space is denoted by the | operator")$
+vr|f1;
+("The exterior derivative of a form is computed by ext_diff")$
+ext_diff(f1);
+ext_diff(f3(x,y,z)~dx);
+("Let use define vr now as a vector field over the coordinates")$
+depends(v1,[x,y,z],v2,[x,y,z],v3,[x,y,z]);
+("The Lie derivative of a form with respect to a scalar")$
+lie_diff(vr,f2);
+("Let us define another vector field")$
+depends(w1,[x,y,z],w2,[x,y,z],w3,[x,y,z]);
+wr:[w1,w2,w3];
+("And compute its Lie-derivative")$
+lie_diff(vr,wr);
