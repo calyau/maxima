@@ -14,3 +14,8 @@ missing
 
 mkinstalldirs
 xmaxima-local
+maxima-local
+maxima.spec
+
+maxout.*
+maxima*.tar.gz
