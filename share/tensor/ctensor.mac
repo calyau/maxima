@@ -886,13 +886,23 @@ ct_coordsys(coordinate_system, [extra_args]):=
     else
     (
       dim:dim+1,
-      ct_coords:append(ct_coords,['ct]),
+/*    ct_coords:append(ct_coords,['ct]),*/
+      ct_coords:cons('ct,ct_coords),
       if cframe_flag then
       (
-        fri:addrow(addcol(fri,zeromatrix(dim-1,1)),ident(dim)[dim]),
-        lfg:addrow(addcol(lfg,zeromatrix(dim-1,1)),-ident(dim)[dim])
+/*      fri:addrow(addcol(fri,zeromatrix(dim-1,1)),ident(dim)[dim]),
+        lfg:addrow(addcol(lfg,zeromatrix(dim-1,1)),-ident(dim)[dim])*/
+        fri:apply(matrix,cons(-ident(dim)[1],
+            makelist(transpose(apply(matrix,cons(zeromatrix(dim-1,dim-1)[1],
+            makelist(transpose(fri)[i],i,1,dim-1))))[j],j,1,dim-1))),
+        lfg:apply(matrix,cons(-ident(dim)[1],
+            makelist(transpose(apply(matrix,cons(zeromatrix(dim-1,dim-1)[1],
+            makelist(transpose(lfg)[i],i,1,dim-1))))[j],j,1,dim-1)))
       )
-      else lg:addrow(addcol(lg,zeromatrix(dim-1,1)),-ident(dim)[dim])
+/*    else lg:addrow(addcol(lg,zeromatrix(dim-1,1)),-ident(dim)[dim])*/
+      else lg:apply(matrix,cons(-ident(dim)[1],
+           makelist(transpose(apply(matrix,cons(zeromatrix(dim-1,dim-1)[1],
+           makelist(transpose(lg)[i],i,1,dim-1))))[j],j,1,dim-1)))
     )
   ),
   if member('all,extra_args) then
