@@ -694,30 +694,22 @@
      (setq $radexpand '$all)
      (return (grasp-some-trigs exp))))
 
-(declare-top (special asinx atanx))
-
-(setq asinx nil atanx nil)
-
-(defun grasp-some-trigs
-    (exp)
-  (prog(u x l )
-     (cond ((setq l (u*asinx exp))
-	    (setq u
-		  (cdras 'u l)
-		  x
-		  (cdras 'x l)
-		  asinx
-		  't)
-	    (return (defintegrate u))))
-     (cond ((setq l (u*atanx exp))
-	    (setq u
-		  (cdras 'u l)
-		  x
-		  (cdras 'x l)
-		  atanx
-		  't)
-	    (return (defintegrate u))))
-     (return (defintegrate exp))))
+(defun grasp-some-trigs (exp)
+  (let ((*asinx* nil)
+	(*atanx* nil))
+    (declare (special *asinx* *atanx*))
+    (prog (u x l)
+       (cond ((setq l (u*asinx exp))
+	      (setq u (cdras 'u l)
+		    x (cdras 'x l)
+		    *asinx* 't)
+	      (return (defintegrate u))))
+       (cond ((setq l (u*atanx exp))
+	      (setq u (cdras 'u l)
+		    x (cdras 'x l)
+		    *atanx* 't)
+	      (return (defintegrate u))))
+       (return (defintegrate exp)))))
 
 
 
@@ -801,10 +793,11 @@
     (p1 p2 p3)
   (cond ((eq p1 p2) p3)(t (maxima-substitute p1 p2 p3)))) 
 
-(defun lt-exec
-    (u e f)
-  (prog(l)
-     (cond ((or asinx atanx)(return (lt-asinatan u e))))
+(defun lt-exec (u e f)
+  (declare (special *asinx* *atanx*))
+  (prog (l)
+     (cond ((or *asinx* *atanx*)
+	    (return (lt-asinatan u e))))
      (cond ((zerp e)(return (lt-sf-log u))))
      (cond ((and (not (zerp e))(setq l (c*t^v u)))
 	    (return (lt-exp l e f))))
@@ -819,9 +812,10 @@
       nil))
 
 (defun lt-asinatan (u e)
+  (declare (special *asinx* *atanx*))
   (cond ((zerp e)
-	 (cond (asinx (lt-ltp 'asin u var nil))
-	       (atanx (lt-ltp 'atan u var nil))
+	 (cond (*asinx* (lt-ltp 'asin u var nil))
+	       (*atanx* (lt-ltp 'atan u var nil))
 	       (t 'lt-asinatan-failed-1)))
 	(t 'lt-asinatan-failed-2)))
 
@@ -2396,4 +2390,3 @@
 		     (list (add v (mul 3. (inv 2.))))
 		     (inv (mul z z))))) 
 
-(declare-top (unspecial asinx atanx))
