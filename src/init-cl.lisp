@@ -29,6 +29,22 @@
 (defvar *maxima-layout-autotools*)
 (defvar *maxima-userdir*)
 
+(defun print-directories ()
+  (format t "maxima-prefix=~a~%" *maxima-prefix*)
+  (format t "maxima-imagesdir=~a~%" *maxima-imagesdir*)
+  (format t "maxima-sharedir=~a~%" *maxima-sharedir*)
+  (format t "maxima-symdir=~a~%" *maxima-symdir*)
+  (format t "maxima-srcdir=~a~%" *maxima-srcdir*)
+  (format t "maxima-demodir=~a~%" *maxima-demodir*)
+  (format t "maxima-testsdir=~a~%" *maxima-testsdir*)
+  (format t "maxima-docdir=~a~%" *maxima-docdir*)
+  (format t "maxima-infodir=~a~%" *maxima-infodir*)
+  (format t "maxima-htmldir=~a~%" *maxima-htmldir*)
+  (format t "maxima-plotdir=~a~%" *maxima-plotdir*)
+  (format t "maxima-layout-autotools=~a~%" *maxima-layout-autotools*)
+  (format t "maxima-userdir=~a~%" *maxima-userdir*)
+  ($quit))
+
 (defvar *maxima-lispname* #+clisp "clisp"
 	#+cmu "cmucl"
 	#+sbcl "sbcl"
@@ -80,6 +96,24 @@
 (defun maxima-getenv (envvar)
   (ccl::getenv envvar))
 
+(defun maxima-parse-dirstring (str)
+  (let ((sep "/"))
+    (if (position (character "\\") str)
+	(setq sep "\\"))
+    (setf str (concatenate 'string (string-right-trim sep str) sep))
+    (concatenate 'string
+		 (let ((dev (pathname-device str)))
+		   (if (consp dev)
+		       (setf dev (first dev)))
+		   (if (and dev (not (string= dev "")))
+		       (concatenate 'string
+				    (string-right-trim 
+				     ":" dev) ":")
+		     ""))
+		 "/"
+		 (combine-path
+		  (rest (pathname-directory str))))))
+
 (defun set-pathnames-with-autoconf (maxima-prefix-env)
   (let ((libdir)
 	(libexecdir)
@@ -96,10 +130,10 @@
 	  (setq datadir (combine-path (list maxima-prefix-env "share")))
 	  (setq infodir (combine-path (list maxima-prefix-env "info"))))
 	(progn
-	  (setq libdir *autoconf-libdir*)
-	  (setq libexecdir *autoconf-libexecdir*)
-	  (setq datadir *autoconf-datadir*)
-	  (setq infodir *autoconf-infodir*)))
+	  (setq libdir (maxima-parse-dirstring *autoconf-libdir*))
+	  (setq libexecdir (maxima-parse-dirstring *autoconf-libexecdir*))
+	  (setq datadir (maxima-parse-dirstring *autoconf-datadir*))
+	  (setq infodir (maxima-parse-dirstring *autoconf-infodir*))))
     (setq *maxima-imagesdir*
 	  (combine-path (list libdir package-version binary-subdirectory)))
     (setq *maxima-sharedir*
@@ -123,7 +157,7 @@
 (defun set-pathnames-without-autoconf (maxima-prefix-env)
   (let ((maxima-prefix (if maxima-prefix-env 
 			   maxima-prefix-env
-			   *autoconf-prefix*))
+			   (maxima-parse-dirstring *autoconf-prefix*)))
 	(binary-subdirectory (concatenate 'string 
 					  "binary-" *maxima-lispname*)))
 
@@ -145,17 +179,36 @@
     (setq *maxima-htmldir* (combine-path (list maxima-prefix "doc" "html")))
     (setq *maxima-plotdir* (combine-path (list maxima-prefix "plotting")))))
 
+(defun default-userdir ()
+  (let ((home-env (maxima-getenv "HOME"))
+	(base-dir "")
+	(maxima-dir (if (string= *autoconf-win32* "true") 
+			"maxima" 
+			".maxima")))
+    (setf base-dir 
+	  (if (and home-env (string/= home-env ""))
+	      ;; use home-env...
+	      (if (string= home-env "c:\\")
+		  ;; but not if home-env = c:\, which results in slow startups
+		  ;; under windows. Ick.
+		  "c:\\user\\"
+		  home-env)
+	      ;; we have to make a guess
+	      (if (string= *autoconf-win32* "true")
+		  "c:\\user\\"
+		  "/tmp")))
+    (combine-path (list (maxima-parse-dirstring base-dir) maxima-dir))))
+
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
-	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
-	(home-env (maxima-getenv "HOME")))
+	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
     (if (not maxima-prefix-env)
 	(setq maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY")))
     (if maxima-prefix-env
 	(setq *maxima-prefix* maxima-prefix-env)
-	(setq *maxima-prefix* *autoconf-prefix*))
+	(setq *maxima-prefix* (maxima-parse-dirstring *autoconf-prefix*)))
     (if maxima-layout-autotools-env
 	(setq *maxima-layout-autotools*
 	      (string-equal maxima-layout-autotools-env "true"))
@@ -165,8 +218,8 @@
 	(set-pathnames-with-autoconf maxima-prefix-env)
 	(set-pathnames-without-autoconf maxima-prefix-env))
     (if maxima-userdir-env
-	(setq *maxima-userdir* maxima-userdir-env)
-	(setq *maxima-userdir* (combine-path (list home-env ".maxima")))))
+	(setq *maxima-userdir* (maxima-parse-dirstring maxima-userdir-env))
+	(setq *maxima-userdir* (default-userdir))))
   
   (let* ((ext #+gcl "o"
 	      #+cmu (c::backend-fasl-file-type c::*target-backend*)
@@ -180,32 +233,38 @@
 	 (lisp-patterns (concatenate 
 			 'string "###.{"
 			 (concatenate 'string ext ",lisp,lsp}")))
-	 (share-with-subdirs "{affine,algebra,calculus,combinatorics,contrib,contrib/nset,contrib/pdiff,diffequations,graphics,integequations,integration,macro,matrix,misc,numeric,physics,simplification,specfunctions,sym,tensor,trigonometry,utils,vector}"))
+	 (maxima-patterns "###.{mac.mc}")
+	 (demo-patterns "###.{dem,dm1,dm2,dm3,dmt}")
+	 (usage-patterns "##.{usg,texi}")
+	 (share-subdirs "{affine,algebra,calculus,combinatorics,contrib,contrib/nset,contrib/pdiff,diffequations,graphics,integequations,integration,macro,matrix,misc,numeric,physics,simplification,specfunctions,sym,tensor,trigonometry,utils,vector}"))
     (setq $file_search_lisp
 	  (list '(mlist)
 		;; actually, this entry is not correct.
 		;; there should be a separate directory for compiled
 		;; lisp code. jfa 04/11/02
 		(combine-path (list *maxima-userdir* lisp-patterns))
-		(combine-path (list *maxima-sharedir* share-with-subdirs 
-				lisp-patterns))
+		(combine-path (list *maxima-sharedir* lisp-patterns))
+		(combine-path (list *maxima-sharedir* share-subdirs 
+				    lisp-patterns))
 		(combine-path (list *maxima-srcdir* lisp-patterns))))
     (setq $file_search_maxima
 	  (list '(mlist)
-		(combine-path (list *maxima-userdir* "###.{mac,mc}"))
-		(combine-path (list *maxima-sharedir* share-with-subdirs
-				share-with-subdirs "###.{mac,mc}"))))
+		(combine-path (list *maxima-userdir* maxima-patterns))
+		(combine-path (list *maxima-sharedir* maxima-patterns))
+		(combine-path (list *maxima-sharedir* share-subdirs 
+				    maxima-patterns))))
     (setq $file_search_demo
 	  (list '(mlist)
-		(combine-path (list *maxima-sharedir* 
-				"###.{dem,dm1,dm2,dm3,dmt}"))
-		(combine-path (list *maxima-demodir* 
-				"###.{dem,dm1,dm2,dm3,dmt}"))))
+		(combine-path (list *maxima-sharedir* demo-patterns))
+		(combine-path (list *maxima-sharedir* share-subdirs 
+				    demo-patterns))
+		(combine-path (list *maxima-demodir* demo-patterns))))
     (setq $file_search_usage
 	  (list '(mlist) 
-		(combine-path (list *maxima-sharedir* share-with-subdirs
-				"###.{usg,texi}"))
-		(combine-path (list *maxima-docdir* "###.{mac}"))))
+		(combine-path (list *maxima-sharedir* usage-patterns))
+		(combine-path (list *maxima-sharedir* share-subdirs
+				    usage-patterns))
+		(combine-path (list *maxima-docdir* usage-patterns))))
     (setq $chemin
 	  (concatenate 'string *maxima-symdir* "/"))
     (setq cl-info::*info-paths* (list (concatenate 'string
@@ -242,7 +301,9 @@
 				       "/lib/" *autoconf-package* "/"
 				       *autoconf-version*)
 				      (concatenate 
-				       'string *autoconf-libdir* "/"
+				       'string (maxima-parse-dirstring 
+						*autoconf-libdir*) 
+				       "/"
 				       *autoconf-package* "/"
 				       *autoconf-version*))))
 	 (len (length maxima-verpkglibdir))
@@ -341,6 +402,15 @@
 				       (start-server (parse-integer 
 						      port-string)))
 			   :help-string "Start maxima server on <port>.")
+	   (make-cl-option :names '("-d" "--directories")
+			   :action 'print-directories
+			   :help-string
+			   "Display maxima internal directory information.")
+	   (make-cl-option :names '("-g" "--enable-lisp-debugger")
+			   :action #'(lambda ()
+				       (setf *debugger-hook* nil))
+			   :help-string
+			   "Enable underlying lisp debugger.")
 	   (make-cl-option :names '("-v" "--verbose")
 			   :action nil
 			   :help-string 
@@ -362,8 +432,6 @@
   (setf *debugger-hook* #'maxima-lisp-debugger)
   (let ((input-stream *standard-input*)
 	(batch-flag nil))
-    (setf (values input-stream batch-flag) 
-	  (process-maxima-args input-stream batch-flag))
     #+allegro
     (progn
       (set-readtable-for-macsyma)
@@ -371,6 +439,8 @@
     
     (catch 'to-lisp
       (set-pathnames)
+      (setf (values input-stream batch-flag) 
+	    (process-maxima-args input-stream batch-flag))
       #+(or cmu sbcl clisp allegro mcl)
       (progn
 	(loop 
