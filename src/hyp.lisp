@@ -999,6 +999,33 @@
   (cond ((greaterp c b) (geredf b a c))
 	(t (gered2 a b c))))
 
+;; Consider F(1,1;2;z).  A&S 15.1.3 says this is equal to -log(1-z)/z.
+;;
+;; Apply A&S 15.2.2:
+;;
+;; diff(F(1,1;2;z),z,ell) = poch(1,ell)*poch(1,ell)/poch(2,ell)*F(1+ell,1+ell;2+ell;z)
+;;
+;; A&S 15.2.7 says:
+;;
+;; diff((1-z)^(m+ell)*F(1+ell;1+ell;2+ell;z),z,m)
+;;    = (-1)^m*poch(1+ell,m)*poch(1,m)/poch(2+ell,m)*(1-z)^ell*F(1+ell+m,1+ell;2+ell+m;z)
+;;
+;; A&S 15.2.6 gives
+;;
+;; diff((1-z)^ell*F(1+ell+m,1+ell;2+ell+m;z)
+;;    = poch(1,n)*poch(1+m,n)/poch(2+ell+m,n)*(1-z)^(ell-n)*F(1+ell+m,1+ell;2+ell+m+n;z)
+;;
+;; The derivation above assumes that ell, m, and n are all
+;; non-negative integers.  Thus, F(a,b;c;z), where a, b, and c are
+;; integers and a <= b <= c, can be written in terms of F(1,1;2;z).
+;; The result also holds for b <= a <= c, of course.
+;;
+;; So if a = 1+ell, b = 1+ell+m, and c = 2+ell+m+n, we have ell = a-1,
+;; m = b - a, and n = c - ell - m - 2 = c - b - 1.
+;;
+;; NOTE: The code below doesn't check that n, m, l are non-negative.
+;; Should it?  The caller (simpr2f1) doesn't either.  Should it check
+;; too?
 (defun derivint (n m l)
   (subst var 'psey
 	 (mul (power -1 m)
