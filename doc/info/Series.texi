@@ -305,9 +305,9 @@ By default, terms of a sum are displayed in order of decreasing power.
 @c NEED AN EXAMPLE HERE
 @end defvar
 
-@defun powerseries (@var{expr}, @var{x}, @var{x_0})
+@defun powerseries (@var{expr}, @var{x}, @var{a})
 Returns the general form of the power series expansion for @var{expr}
-in the variable @var{x} about the point @var{x_0} (which may be @code{inf} for infinity).
+in the variable @var{x} about the point @var{a} (which may be @code{inf} for infinity).
 
 If @code{powerseries} is unable to expand @var{expr},
 @code{taylor} may give the first several terms of the series.
@@ -414,33 +414,45 @@ Examples:
 @c 
 @c @end defun
 
-@defun taylor (@var{expr}, @var{x}, @var{x_0}, @var{n})
-Expands the expression @var{expr} in a truncated
-Taylor series (or Laurent series, if required) in the variable @var{x}
-around the point @var{x_0},
-containing terms through @code{(@var{x} - @var{x_0})^@var{n}}.
+@defun taylor (@var{expr}, @var{x}, @var{a}, @var{n})
+@c THIS NEXT ARGUMENT LIST TICKLES A BUG IN CL-INFO OR SOMETHING:
+@c APPARENTLY IF SOME ARGUMENT LIST IS LONGER THAN 1 LINE, REMAINDER OF THE DESCRIPTION IS LOST
+@c @defunx taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
+@defunx taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
+@defunx taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
+@c THIS ONE IS LONG TOO, BUT APPARENTLY IT IS OK IF THE LAST @defunx IS LONG
+@defunx taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
 
-If @var{expr} is of the form f(x)/g(x) and g(var) has no terms up to
-degree pow then @code{taylor} will try to expand g(var) up to degree 2*pow.
-If there are still no non-zero terms @code{taylor} will keep doubling the
-degree of the expansion of g(var) until reaching pow*2**n where n is
-the value of the variable @code{taylordepth}.
+@code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expands the expression @var{expr}
+in a truncated Taylor or Laurent series in the variable @var{x}
+around the point @var{a},
+containing terms through @code{(@var{x} - @var{a})^@var{n}}.
 
-@code{taylor (@var{expr}, [@var{x_1}, @var{x_@{0,1@}}, @var{n_1}], [@var{x_2}, @var{x_@{0,2@}}, @var{n_2}], ...)}
+If @var{expr} is of the form @code{@var{f}(@var{x})/@var{g}(@var{x})}
+and @code{@var{g}(@var{x})} has no terms up to degree @var{n}
+then @code{taylor} attempts to expand @code{@var{g}(@var{x})} up to degree @code{2 @var{n}}.
+If there are still no nonzero terms, @code{taylor} doubles the
+degree of the expansion of @code{@var{g}(@var{x})}
+so long as the degree of the expansion is less than or equal to @code{@var{n} 2^taylordepth}.
+
+@code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})}
+returns a truncated power series 
+of degree @var{n} in all variables @var{x_1}, @var{x_2}, ...
+about the point @code{(@var{a}, @var{a}, ...)}.
+
+@code{taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)}
 returns a truncated power series in the variables @var{x_1}, @var{x_2}, ...
-about the points @var{x_@{0,1@}}, @var{x_@{0,2@}}, ...,
+about the point @code{(@var{a_1}, @var{a_2}, ...)},
 truncated at @var{n_1}, @var{n_2}, ....
 
-@code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{x_0}, @var{n})}
-where each of pt and ord
-may be replaced by a list which will correspond to the list of
-variables.  That is, the nth items on each of the lists will be
-associated together.
+@code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])}
+returns a truncated power series in the variables @var{x_1}, @var{x_2}, ...
+about the point @code{(@var{a_1}, @var{a_2}, ...)},
+truncated at @var{n_1}, @var{n_2}, ....
 
-@code{taylor (@var{expr}, [x, pt, ord, 'asymp])} will give an expansion of exp in
-negative powers of (x-pt).  The highest order term will be (x-pt)^(-ord).
-The @code{asymp} is a syntactic device and not to be assigned to.
-See also the @code{taylor_logexpand} switch for controlling expansion.
+@code{taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])}
+returns an expansion of @var{expr} in negative powers of @code{@var{x} - @var{a}}.
+The highest order term is @code{(@var{x} - @var{a})^@var{-n}}.
 
 When @code{maxtayorder} is @code{true}, then during algebraic
 manipulation of (truncated) Taylor series, @code{taylor} tries to retain
@@ -454,123 +466,301 @@ a multivariate expression is displayed just as in the rational function package.
 When @code{psexpand} is  @code{multi},
 then terms with the same total degree in the variables are grouped together.
 
-Do @code{example(taylor)} for examples.
+See also the @code{taylor_logexpand} switch for controlling expansion.
 
-@end defun
-
-@defvar taylordepth
- default: [3] - If there are still no non-zero terms
-@code{taylor} will keep doubling the degree of the expansion of g(var) until
-reaching pow*2**n where n is the value of the variable @code{taylordepth} [3].
-
-@end defvar
-
-@defun taylorinfo (exp)
-returns @code{false} if exp is not a Taylor series.
-Otherwise, a list of lists is returned describing the particulars of
-the Taylor expansion.  For example,
+Examples:
+@c EXAMPLES ADAPTED FROM example (taylor)
+@c taylor (sqrt (sin(x) + a*x + 1), x, 0, 3);
+@c %^2;
+@c taylor (sqrt (x + 1), x, 0, 5);
+@c %^2;
+@c product ((1 + x^i)^2.5, i, 1, inf)/(1 + x^2);
+@c ev (taylor(%, x,  0, 3), keepfloat);
+@c taylor (1/log (x + 1), x, 0, 3);
+@c taylor (cos(x) - sec(x), x, 0, 5);
+@c taylor ((cos(x) - sec(x))^3, x, 0, 5);
+@c taylor (1/(cos(x) - sec(x))^3, x, 0, 5);
+@c taylor (sqrt (1 - k^2*sin(x)^2), x, 0, 6);
+@c taylor ((x + 1)^n, x, 0, 4);
+@c taylor (sin (y + x), x, 0, 3, y, 0, 3);
+@c taylor (sin (y + x), [x, y], 0, 3);
+@c taylor (1/sin (y + x), x, 0, 3, y, 0, 3);
+@c taylor (1/sin (y + x), [x, y], 0, 3);
 
 @example
-(%i3) taylor((1-y^2)/(1-x),x,0,3,[y,a,inf]);
-             2                        2
-(%o3)/r/ 1 - a  - 2 a (y - a) - (y - a)
-                    2                        2
-            + (1 - a  - 2 a (y - a) - (y - a) ) x
-         2                        2   2
- + (1 - a  - 2 a (y - a) - (y - a) ) x
-                    2                        2   3
-            + (1 - a  - 2 a (y - a) - (y - a) ) x
-     + . . .
-(%i4) taylorinfo(%o3);
-(%o4)                       [[y, a, inf], [x, 0, 3]]
+(%i1) taylor (sqrt (sin(x) + a*x + 1), x, 0, 3);
+                           2             2
+             (a + 1) x   (a  + 2 a + 1) x
+(%o1)/T/ 1 + --------- - -----------------
+                 2               8
+
+                                   3      2             3
+                               (3 a  + 9 a  + 9 a - 1) x
+                             + -------------------------- + . . .
+                                           48
+(%i2) %^2;
+                                    3
+                                   x
+(%o2)/T/           1 + (a + 1) x - -- + . . .
+                                   6
+(%i3) taylor (sqrt (x + 1), x, 0, 5);
+                       2    3      4      5
+                  x   x    x    5 x    7 x
+(%o3)/T/      1 + - - -- + -- - ---- + ---- + . . .
+                  2   8    16   128    256
+(%i4) %^2;
+(%o4)/T/                  1 + x + . . .
+(%i5) product ((1 + x^i)^2.5, i, 1, inf)/(1 + x^2);
+                         inf
+                        /===\
+                         ! !    i     2.5
+                         ! !  (x  + 1)
+                         ! !
+                        i = 1
+(%o5)                   -----------------
+                              2
+                             x  + 1
+(%i6) ev (taylor(%, x,  0, 3), keepfloat);
+                               2           3
+(%o6)/T/    1 + 2.5 x + 3.375 x  + 6.5625 x  + . . .
+(%i7) taylor (1/log (x + 1), x, 0, 3);
+                               2       3
+                 1   1   x    x    19 x
+(%o7)/T/         - + - - -- + -- - ----- + . . .
+                 x   2   12   24    720
+(%i8) taylor (cos(x) - sec(x), x, 0, 5);
+                                4
+                           2   x
+(%o8)/T/                - x  - -- + . . .
+                               6
+(%i9) taylor ((cos(x) - sec(x))^3, x, 0, 5);
+(%o9)/T/                    0 + . . .
+(%i10) taylor (1/(cos(x) - sec(x))^3, x, 0, 5);
+                                               2          4
+            1     1       11      347    6767 x    15377 x
+(%o10)/T/ - -- + ---- + ------ - ----- - ------- - --------
+             6      4        2   15120   604800    7983360
+            x    2 x    120 x
+
+                                                          + . . .
+(%i11) taylor (sqrt (1 - k^2*sin(x)^2), x, 0, 6);
+               2  2       4      2   4
+              k  x    (3 k  - 4 k ) x
+(%o11)/T/ 1 - ----- - ----------------
+                2            24
+
+                                    6       4       2   6
+                               (45 k  - 60 k  + 16 k ) x
+                             - -------------------------- + . . .
+                                          720
+(%i12) taylor ((x + 1)^n, x, 0, 4);
+                      2       2     3      2         3
+                    (n  - n) x    (n  - 3 n  + 2 n) x
+(%o12)/T/ 1 + n x + ----------- + --------------------
+                         2                 6
+
+                               4      3       2         4
+                             (n  - 6 n  + 11 n  - 6 n) x
+                           + ---------------------------- + . . .
+                                          24
+(%i13) taylor (sin (y + x), x, 0, 3, y, 0, 3);
+               3                 2
+              y                 y
+(%o13)/T/ y - -- + . . . + (1 - -- + . . .) x
+              6                 2
+
+                    3                       2
+               y   y            2      1   y            3
+          + (- - + -- + . . .) x  + (- - + -- + . . .) x  + . . .
+               2   12                  6   12
+(%i14) taylor (sin (y + x), [x, y], 0, 3);
+                     3        2      2      3
+                    x  + 3 y x  + 3 y  x + y
+(%o14)/T/   y + x - ------------------------- + . . .
+                                6
+(%i15) taylor (1/sin (y + x), x, 0, 3, y, 0, 3);
+          1   y              1    1               1            2
+(%o15)/T/ - + - + . . . + (- -- + - + . . .) x + (-- + . . .) x
+          y   6               2   6                3
+                             y                    y
+
+                                           1            3
+                                      + (- -- + . . .) x  + . . .
+                                            4
+                                           y
+(%i16) taylor (1/sin (y + x), [x, y], 0, 3);
+                             3         2       2        3
+            1     x + y   7 x  + 21 y x  + 21 y  x + 7 y
+(%o16)/T/ ----- + ----- + ------------------------------- + . . .
+          x + y     6                   360
 @end example
 
 @end defun
 
-@defun taylorp (exp)
-a predicate function which returns @code{true} if and only if
-the expression 'exp' is in Taylor series representation.
+@defvar taylordepth
+Default value: 3
+
+@c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
+If there are still no nonzero terms, @code{taylor} doubles the
+degree of the expansion of @code{@var{g}(@var{x})}
+so long as the degree of the expansion is less than or equal to @code{@var{n} 2^taylordepth}.
+
+@end defvar
+
+@defun taylorinfo (@var{expr})
+Returns information about the Taylor series @var{expr}.
+The return value is a list of lists.
+Each list comprises the name of a variable,
+the point of expansion, and the degree of the expansion.
+
+@code{taylorinfo} returns @code{false} if @var{expr} is not a Taylor series.
+
+Example:
+
+@example
+(%i1) taylor ((1 - y^2)/(1 - x), x, 0, 3, [y, a, inf]);
+                  2                       2
+(%o1)/T/ - (y - a)  - 2 a (y - a) + (1 - a )
+
+         2                        2
+ + (1 - a  - 2 a (y - a) - (y - a) ) x
+
+         2                        2   2
+ + (1 - a  - 2 a (y - a) - (y - a) ) x
+
+         2                        2   3
+ + (1 - a  - 2 a (y - a) - (y - a) ) x  + . . .
+(%i2) taylorinfo(%);
+(%o2)               [[y, a, inf], [x, 0, 3]]
+@end example
 
 @end defun
 
+@defun taylorp (@var{expr})
+Returns @code{true} if @var{expr} is a Taylor series,
+and @code{false} otherwise.
+
+@end defun
+
+@c WHAT IS THIS ABOUT EXACTLY ??
 @defvar taylor_logexpand
- default: @code{true} controls expansions of logarithms in
-@code{taylor} series.  When @code{true} all log's are expanded fully so that
+Default value: @code{true}
+
+@code{taylor_logexpand} controls expansions of logarithms in
+@code{taylor} series.
+
+When @code{taylor_logexpand} is @code{true}, all logarithms are expanded fully so that
 zero-recognition problems involving logarithmic identities do not
 disturb the expansion process.  However, this scheme is not always
-mathematically correct since it ignores branch information.  If
-@code{taylor_logexpand} is set to @code{false}, then the only expansion of log's
-that will occur is that necessary to obtain a formal power series.
+mathematically correct since it ignores branch information.
 
+When @code{taylor_logexpand} is set to @code{false}, then the only expansion of logarithms
+that occur is that necessary to obtain a formal power series.
+
+@c NEED EXAMPLES HERE
 @end defvar
 
 @defvar taylor_order_coefficients
- default: @code{true} controls the ordering of
-coefficients in the expression.  The default @code{true} is that
-coefficients of taylor series will be ordered canonically.
+Default value: @code{true}
 
+@code{taylor_order_coefficients} controls the ordering of
+coefficients in a Taylor series.
+
+When @code{taylor_order_coefficients} is @code{true},
+coefficients of taylor series are ordered canonically.
+@c IS MAXIMA'S NOTION OF "CANONICALLY" DESCRIBED ELSEWHERE ??
+@c AND WHAT HAPPENS WHEN IT IS FALSE ??
+
+@c NEED EXAMPLES HERE
 @end defvar
 
-@defun taylor_simplifier
- - A function of one argument which @code{taylor} uses to
-simplify coefficients of power series.
+@defun taylor_simplifier (@var{expr})
+Simplifies coefficients of the power series @var{expr}.
+@code{taylor} calls this function.
 
 @end defun
 
 @defvar taylor_truncate_polynomials
- default: @code{true} When @code{false} polynomials
-input to @code{taylor} are considered to have infinite precison; otherwise
-(the default) they are truncated based upon the input truncation
-levels.
+Default value: @code{true}
+
+@c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
+When @code{taylor_truncate_polynomials} is @code{true},
+polynomials are truncated based upon the input truncation levels.
+
+Otherwise,
+polynomials input to @code{taylor} are considered to have infinite precison.
+@c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
 
 @end defvar
 
-@defun taytorat (exp)
-converts exp from @code{taylor} form to CRE form, i.e. it is
-like @code{rat(ratdisrep(exp))} although much faster.
+@defun taytorat (@var{expr})
+Converts @var{expr} from @code{taylor} form to canonical rational expression (CRE) form.
+The effect is the same as @code{rat (ratdisrep (@var{expr}))}, but faster.
 
 @end defun
 
-@defun trunc (exp)
-causes exp which is in general representation to be
-displayed as if its sums were truncated Taylor series.  E.g. compare
-@code{exp1:x^2+x+1} with @code{exp2:trunc(x^2+x+1)} .  Note that @code{is(exp1=exp2)}
-gives @code{true}.
+@defun trunc (@var{expr})
+Annotates the internal representation of the general expression @var{expr}
+so that it is displayed as if its sums were truncated Taylor series.
+@var{expr} is not otherwise modified.
 
-@end defun
-
-@defun unsum (fun,n)
-is the first backward difference fun(n) - fun(n-1).
-Thus @code{unsum} in a sense is the inverse of @code{sum}.
-See also @code{nusum}.
+Example:
 
 @example
-(%i1) g(p):=p*4^n/binomial(2*n,n);
-                                            n
-                                         p 4
-(%o1)                       g(p) := ----------------
-                                   binomial(2 n, n)
+(%i1) expr: x^2 + x + 1;
+                            2
+(%o1)                      x  + x + 1
+(%i2) trunc (expr);
+                                2
+(%o2)                  1 + x + x  + . . .
+(%i3) is (expr = trunc (expr));
+(%o3)                         true
+@end example
+
+@end defun
+
+@defun unsum (@var{f}, @var{n})
+Returns the first backward difference @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
+Thus @code{unsum} in a sense is the inverse of @code{sum}.
+
+See also @code{nusum}.
+
+Examples:
+@c GENERATED FROM THE FOLLOWING INPUTS
+@c g(p) := p*4^n/binomial(2*n,n);
+@c g(n^4);
+@c nusum (%, n, 0, n);
+@c unsum (%, n);
+
+@example
+(%i1) g(p) := p*4^n/binomial(2*n,n);
+                                     n
+                                  p 4
+(%o1)               g(p) := ----------------
+                            binomial(2 n, n)
 (%i2) g(n^4);
-                                     4  n
-                                    n  4
-(%o2)                           ----------------
-                               binomial(2 n, n)
-(%i3) nusum(%o2,n,0,n);
-                         4        3       2              n
-          2 (n + 1) (63 n  + 112 n  + 18 n  - 22 n + 3) 4      2
-(%o3)      ------------------------------------------------ - ------
-                        693 binomial(2 n, n)                 3 11 7
-(%i4) unsum(%,n);
-                                     4  n
-                                    n  4
-(%o4)                           ----------------
-                               binomial(2 n, n)
+                              4  n
+                             n  4
+(%o2)                   ----------------
+                        binomial(2 n, n)
+(%i3) nusum (%, n, 0, n);
+                     4        3       2              n
+      2 (n + 1) (63 n  + 112 n  + 18 n  - 22 n + 3) 4      2
+(%o3) ------------------------------------------------ - ------
+                    693 binomial(2 n, n)                 3 11 7
+(%i4) unsum (%, n);
+                              4  n
+                             n  4
+(%o4)                   ----------------
+                        binomial(2 n, n)
 @end example
 
 @end defun
 
 @defvar verbose
- default: @code{false} - if @code{true} will cause comments about the
-progress of @code{powerseries} to be printed as the execution of it proceeds.
+Default value: @code{false}
+
+When @code{verbose} is @code{true},
+@code{powerseries} prints progress messages.
 
 @end defvar
