@@ -1940,7 +1940,10 @@
 	(wwhit x (div (sub a 1) 2)(div a 2))))
 
 (defun distrexecinit (fun)
-  (cond ((equal (caar fun) 'mplus) (distrexec (cdr fun)))
+  (cond ((and (consp fun)
+	      (consp (car fun))
+	      (equal (caar fun) 'mplus))
+	 (distrexec (cdr fun)))
 	(t (hypgeo-exec fun var *par*))))
 
 (defun distrdefexecinit (fun)
@@ -2005,13 +2008,15 @@
 	(sub (bess (mul -1 i) a 'i)
 	     (bess i a 'i))))
 
-(defun 1fact
-    (flg v)
+;; If FLG is non-NIL, return exp(%pi*%i/2).  Otherwise, return
+;; exp(-%pi*%i*v/2)
+(defun 1fact (flg v)
   (power '$%e
 	 (mul* '$%pi
 	       '$%i
 	       (1//2)
-	       (cond (flg 1)(t (mul -1 v))))))
+	       (cond (flg 1)
+		     (t (mul -1 v))))))
 
 ;; Bessel Y
 (defun bessy (v z)
@@ -2023,7 +2028,8 @@
 
 
 
-(defun tan%(arg)(list  '(%tan) arg))
+(defun tan% (arg)
+  (list '(%tan) arg))
 
 ;; Bessel J or Y, depending on if FLG is 'J or not.
 (defun desjy (v z flg)
@@ -2032,35 +2038,70 @@
 	(t
 	 (bessy v z))))
 
-(defun numjory
-    (v sort z flg)
+(defun numjory (v sort z flg)
   (cond ((equal sort 1)
+	 ;; bessel(-v, z) - exp(-v*%pi*%i)*bessel(v, z)
+	 ;;
+	 ;; Where bessel is bessel_j if FLG is 'j.  Otherwise, bessel
+	 ;; is bessel_y.
+	 ;;
+	 ;; bessel_y(-v, z) - exp(-v*%pi*%i)*bessel_y(v, z)
 	 (sub (desjy (mul -1 v) z flg)
 	      (mul* (power '$%e (mul* -1 v '$%pi '$%i))
 		    (desjy v z flg))))
-	(t (sub (mul* (power '$%e (mul* v '$%pi '$%i))
-		      (desmjy v z flg))
-		(desmjy (mul -1 v) z flg)))))
+	(t
+	 ;; exp(-v*%pi*%i)*bessel(v,z) - bessel(-v,z), where bessel is
+	 ;; bessel_j or bessel_y, depending on if FLG is 'j or not.
+	 (sub (mul* (power '$%e (mul* v '$%pi '$%i))
+		    (desmjy v z flg))
+	      (desmjy (mul -1 v) z flg)))))
 
-(defun desmjy
-    (v z flg)
-  (cond ((eq flg 'j)(bess v z 'j))(t (mul -1 (bessy v z)))))
+(defun desmjy (v z flg)
+  (cond ((eq flg 'j)
+	 ;; bessel_j(v,z)
+	 (bess v z 'j))
+	(t
+	 ;; -bessel_y(v,z)
+	 (mul -1 (bessy v z)))))
 
-(defun htjory
-    (v sort z)
-  (cond ((equal (caar v) 'rat)
+;; Express Hankel function in terms of Bessel J or Y function.
+;;
+;; A&S 9.1.3
+;;
+;; H[v,1](z) = %i*csc(v*%pi)*(exp(-v*%pi*%i)*bessel_j(v,z) - bessel_j(-v,z))
+;;
+;; A&S 9.1.4:
+;; H[v,2](z) = %i*csc(v*%pi)*(bessel_j(-v,z) - exp(-v*%pi*%i)*bessel_j(v,z))
+;;
+(defun htjory (v sort z)
+  ;; V is the order, SORT is the kind of Hankel function (1 or 2), Z
+  ;; is the arg.
+  (cond ((and (consp v)
+	      (consp (car v))
+	      (equal (caar v) 'rat))
+	 ;; If the order is a rational number of some sort,
+	 ;;
+	 ;; (bessel_j(-v,z) - bessel_j(v,z)*exp(-v*%pi*%i))/(%i*sin(v*%pi*%i))
 	 (div (numjory v sort z 'j)
 	      (mul* '$%i (sin% (mul v '$%pi)))))
-	(t (div (numjory v sort z 'y)(sin% (mul v '$%pi)))))) 
+	(t
+	 ;; Otherwise, express it in terms of bessel_y.  (Why?)
+	 ;;
+	 ;; (bessel_y(-v,z) - exp(v*%pi*%i)*bessel_y(v,z))/sin(v*%pi)
+	 (div (numjory v sort z 'y)
+	      (sin% (mul v '$%pi))))))
+
+;;; LT<foo> functions are various experts on Laplace transforms of the function <foo>.
+
 ;;expert on l.t. expressions containing one bessel function of the first kind
 
-(defun lt1j(rest arg index)(lt-ltp 'onej rest arg index))
+(defun lt1j (rest arg index)
+  (lt-ltp 'onej rest arg index))
 
 (defun lt1y (rest arg index)
   (lt-ltp 'oney rest arg index))
 
-(defun lt2j
-    (rest arg1 arg2 index1 index2)
+(defun lt2j (rest arg1 arg2 index1 index2)
   (cond ((not (equal arg1 arg2))
 	 'product-of-bessel-with-different-args)
 	(t (lt-ltp 'twoj
@@ -2168,7 +2209,7 @@
 
 (defun lstf (v z)
   (let ((d32 (div 3 2)))
-    (list (mul* (power (div z 2)(add v 1))
+    (list (mul* (power (div z 2) (add v 1))
 		(inv (gm d32))
 		(inv (gm (add v d32))))
 	  (list 'fpq
@@ -2317,20 +2358,20 @@
 (defun ref (flg index arg)
   (case flg
     (onej (j1tf index arg))
-    (twoj (j2tf (car index)(cadr index) arg))
+    (twoj (j2tf (car index) (cadr index) arg))
     (hs (hstf index arg))
     (hl (lstf index arg))
-    (s (stf (car index)(cadr index) arg))
+    (s (stf (car index) (cadr index) arg))
     (onerf (erftf arg))
     (onelog (logtf arg))
     (onekelliptic (kelliptictf arg))
     (onee (etf arg))
-    (onem (mtf (car index)(cadr index) arg))
-    (hyp-onep (ptf (car index)(cadr index) arg))
-    (oneq (qtf (car index)(cadr index) arg))
+    (onem (mtf (car index) (cadr index) arg))
+    (hyp-onep (ptf (car index) (cadr index) arg))
+    (oneq (qtf (car index) (cadr index) arg))
     (gammagreek (gammagreektf index arg))
     (onepjac 
-     (pjactf (car index)(cadr index)(caddr index) arg))
+     (pjactf (car index) (cadr index) (caddr index) arg))
     (asin (asintf arg))
     (atan (atantf arg))))
 
@@ -2451,30 +2492,26 @@
 ;;
 ;; K(k) = %pi/2*F(1/2,1/2; 1; k^2)
 ;;
-(defun kelliptictf
-    (k)
-  ((lambda(inv2)
-     (list (mul inv2 '$%pi)
-	   (ref-fpq (list inv2 inv2)
-		    (list 1)
-		    (mul k k))))
-   (1//2)))
+(defun kelliptictf (k)
+  (let ((inv2 (1//2)))
+    (list (mul inv2 '$%pi)
+	  (ref-fpq (list inv2 inv2)
+		   (list 1)
+		   (mul k k)))))
 
 ;; Complete elliptic E
 ;;
 ;; A&S 17.3.10
 ;;
 ;; E(k) = %pi/2*F(-1/2,1/2;1;k^2)
-(defun etf
-    (k)
-  ((lambda(inv2)
-     (list (mul inv2 '$%pi)
-	   (list 'fpq
-		 (list  2 1)
-		 (list (mul -1 inv2) inv2)
-		 (list 1)
-		 (mul k k))))
-   (1//2)))
+(defun etf (k)
+  (let ((inv2 (1//2)))
+    (list (mul inv2 '$%pi)
+	  (list 'fpq
+		(list  2 1)
+		(list (mul -1 inv2) inv2)
+		(list 1)
+		(mul k k)))))
 
 ;; erf expressed as a hypgeometric function.
 ;;
