@@ -1834,7 +1834,7 @@ It appears in LIMIT and DEFINT.......")
 	(t ;(APPLY 'OR (MAPCAR #'(LAMBDA (J) (BRANCH1 J VAL)) (CDR EXP)))
 	 (loop for v on (cdr exp)
 		when (branch1 (car v) val)
-		do (loop-return v))
+		do (return v))
 					;(zl-SOME #'(lambda (j) (branch1 j val)) (the list (cdr exp)))
 	 ))) 
 
