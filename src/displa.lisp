@@ -1091,7 +1091,7 @@
 	 (do ((l result (cdr l))) ((eq bkpt (cdr l)) (rplacd l nil))
 	   (if (null l) (merror "`checkbreak' not found in `display'")))
 	 (output bkpt 0) 
- 	 #-franz (let ((#.ttyoff (or #.ttyoff more-^w))) (mterpri))
+ 	 #-franz (let ((#.ttyoff (or #.ttyoff more-^w))))
 
 	 (setq lines (f1+ lines) bkpt result bkptout bkptwd bkptwd w
 	       bkptht maxht bkptdp maxdp bkptlevel level maxht 1 maxdp 0))
