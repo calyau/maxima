@@ -8,7 +8,7 @@
 @section Introduction to Miscellaneous Options
 
 In this section various options are discussed which have a global effect
-on the operation of maxima.   Also various lists such as the list of all
+on the operation of Maxima.   Also various lists such as the list of all
 user defined functions, are discussed.
 
 @node SHARE, Definitions for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options

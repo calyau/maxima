@@ -6,7 +6,7 @@
 @node Introduction to Polynomials, Definitions for Polynomials, Polynomials, Polynomials
 @section Introduction to Polynomials
 
-   Polynomials are stored in maxima either in General Form or as
+   Polynomials are stored in Maxima either in General Form or as
 Cannonical Rational Expressions (CRE) form.  The latter is a standard
 form, and is used internally by operations such as factor, ratsimp, and
 so on.

@@ -151,7 +151,7 @@ like substituting them to be zero.
 @c @unnumberedsec phony
 @defun NEW-DISREP (poly)
 
-From lisp this returns the general maxima format for an arg which is
+From lisp this returns the general Maxima format for an arg which is
 in st-rat form:
 
 @example

@@ -37,7 +37,7 @@ putting parentheses around them.   This is similar to the @b{C}
 (%o32) 20
 @end example
 
-Even loops in maxima are expressions, although the value they
+Even loops in Maxima are expressions, although the value they
 return is the not too useful @code{DONE}
 
 @example

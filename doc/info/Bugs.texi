@@ -13,7 +13,7 @@ Maxima test suite as well as reporting new bugs.
 @node Definitions for Bug Detection and Reporting
 @section Definitions for Bug Detection and Reporting
 @defun run_testsuite ()
-Run the maxima test suite. Tests producing the desired answer are
+Run the Maxima test suite. Tests producing the desired answer are
 considered ``passes,'' as are tests that do not produce the desired
 answer, but are marked as known bugs.
 

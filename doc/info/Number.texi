@@ -268,7 +268,7 @@ the expansion falls out.  See EXAMPLE(PARTFRAC); for examples.
 @defun PRIME (n)
 gives the nth prime. MAXPRIME[489318] is the largest number
 accepted as argument.  Note:  The PRIME command does not work in
-maxima, since it required a large file of primes, which most users
+Maxima, since it required a large file of primes, which most users
 do not want.    PRIMEP does work however.
 
 @end defun

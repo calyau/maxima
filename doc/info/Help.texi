@@ -69,7 +69,7 @@ This will cause a lisp break loop to be entered.  You
 could now evaluate $%o2
 and view the value of the line label %o2, in its internal lisp
 format.   Typing @code{:q} will quit to top level, if you are in
-a debug break.  If you had exited maxima with @code{to_lisp();}
+a debug break.  If you had exited Maxima with @code{to_lisp();}
 then you should type
 @example
 MAXIMA>(run)
@@ -94,9 +94,9 @@ case only.   Thus if you type
 The symbol @code{Integrate} already existed in upper case since it
 is a Maxima primitive, but INTEG, does not already exist, so the Integ
 is permitted.   This may seem a little bizarre, but we wish to keep
-old maxima code working, which assumes that Maxima primitives may
+old Maxima code working, which assumes that Maxima primitives may
 be in upper or lower case.   An advantage of this system is that if
-you type in lower case, you will immediately see which are the maxima
+you type in lower case, you will immediately see which are the Maxima
 keywords and functions.
 
 To enter Maxima forms at lisp level, you may use the @code{#$} macro.
@@ -141,11 +141,11 @@ CL-MAXIMA>>(mfuncall '$foo 4 5)
 12
 @end example
 
-A number of lisp functions are shadowed in the maxima package.  This is
-because their use within maxima is not compatible with the definition as
+A number of lisp functions are shadowed in the Maxima package.  This is
+because their use within Maxima is not compatible with the definition as
 a system function.  For example typep behaves differently common lisp
 than it did in Maclisp.  If you want to refer to the zeta lisp typep
-while in the maxima package you should use global:typep (or cl:typep for
+while in the Maxima package you should use global:typep (or cl:typep for
 common lisp).  Thus
 
 @example

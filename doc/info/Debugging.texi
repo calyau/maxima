@@ -91,7 +91,7 @@ time by typing M-n (Alt-n).
 
 Under Emacs you should run in a @code{dbl} shell, which requires the
 @code{dbl.el} file in the elisp directory.
-Make sure you install the elisp files or add the maxima elisp directory to
+Make sure you install the elisp files or add the Maxima elisp directory to
 your path:
 e.g., add the following to your @file{.emacs} file or the @code{site-init.el}
 
@@ -107,7 +107,7 @@ M-x dbl
 @end example
 
 should start a shell window in which you can run programs, for example
-maxima, gcl, gdb etc.   This shell window also knows about source level
+Maxima, gcl, gdb etc.   This shell window also knows about source level
 debugging, and display of source code in the other window.  
 
 The user may set a break point at a certain line of the
@@ -118,7 +118,7 @@ insert in the other window the command, ``@code{:br foo 2}'', to
 break @code{foo} at its second line.   To have this enabled, the user must have
 maxima-mode.el turned on in the window in which the file @code{foobar.mac} is visiting.
 There are additional commands available in that file window, such as
-evaluating the function into the maxima, by typing @code{Alt-Control-x}.
+evaluating the function into the Maxima, by typing @code{Alt-Control-x}.
 
 @node Keyword Commands, Definitions for Debugging, Source Level Debugging, Debugging
 @section Keyword Commands

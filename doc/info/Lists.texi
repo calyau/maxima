@@ -5,14 +5,14 @@
 
 @node Introduction to Lists, Definitions for Lists, Lists, Lists
 @section Introduction to Lists
-Lists are the basic building block for maxima and lisp.   All data types
+Lists are the basic building block for Maxima and Lisp.   All data types
 other than arrays, hash tables, numbers are represented as lisp lists,
 These lisp lists have the form
 @example
 ((mplus) $A 2)
 @end example
 @noindent
-to indicate an expression @code{A+2}.   At maxima level one would see
+to indicate an expression @code{A+2}.   At Maxima level one would see
 the infix notation @code{A+2}.   Maxima also has lists which are printed
 as
 @example
@@ -25,7 +25,7 @@ of the form
 ((mlist) 1  2  7  ((mplus)  $X $Y ))
 @end example
 @noindent
-The flag which denotes the type field of the maxima expression is a list
+The flag which denotes the type field of the Maxima expression is a list
 itself, since after it has been through the simplifier the list would become
 @example
 ((mlist simp) 1 2 7 ((mplus simp) $X $Y))
