@@ -166,9 +166,11 @@ cos(2*n*asin(sqrt(x)))$
 hgfred([-10,10],[1/2],x);
 chebyshev_t(10,1-2*x)$
 
-/* A&S 15.4.4 */
+/* A&S 15.4.4 
+ * (And A&S 8.2.1)
+ */
 hgfred([-n,n+1],[1],x);
-legendre_p(n,1-2*x);
+legendre_p(-n-1,1-2*x);
 
 /* A&S 8.1.2
  * Is there a bug in that formula?
@@ -205,7 +207,8 @@ assoc_legendre_p(-a, 1-c, 1-2*x)$
  * Test for legf24 function.
  */
 radcan(hgfred([a,a+1/2],[c],z)*2^(1-c)*z^(c/2-1/2)*(1-z)^(1/2+a-c/2)/gamma(c));
-assoc_legendre_p(2*a-c,1-c,1/sqrt(1-z))$
+/* Use A&S 8.2.1 to get this */
+assoc_legendre_p(c-2*a-1,1-c,1/sqrt(1-z))$
 
 2^u*(z^2-1)^(-u/2)*z^(v+u)/gamma(1-u)*hgfred([-v/2-u/2,1/2-v/2-u/2],[1-u],1-1/z^2);
 assoc_legendre_p(v,u,z)$
@@ -216,7 +219,7 @@ assoc_legendre_p(v,u,z)$
  * Test for legf20 function.
  */
 hgfred([a,b],[a+b+1/2],x);
-2^(a+b-1/2)*gamma(a+b+1/2)*x^(1/2*(1/2-a-b))*assoc_legendre_p(a-b-1/2,1/2-a-b,sqrt(1-x))$
+2^(a+b-1/2)*gamma(a+b+1/2)*x^(1/2*(1/2-a-b))*assoc_legendre_p(b-a-1/2,1/2-a-b,sqrt(1-x))$
 
 2^m*(z^2-1)^(-m/2)/gamma(1-m)*hgfred([1/2+n/2-m/2, -n/2-m/2], [1-m], 1-z^2);
 assoc_legendre_p(n,m,z)$
@@ -239,7 +242,7 @@ assoc_legendre_q(v, u, z)$
  * Test for legf16 function
  */
 radcan(hgfred([a,b],[a-b+1],z));
-gamma(-b+a+1)*z^(b/2-a/2)*(1-z)^(-b)*assoc_legendre_p(-b,b-a,(1+z)/(1-z))$
+gamma(-b+a+1)*z^((b-a)/2)*(1-z)^(-b)*assoc_legendre_p(b-1,b-a,(1+z)/(1-z))$
 
 /*
  * Test for legf16 function
