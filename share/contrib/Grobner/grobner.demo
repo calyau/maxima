@@ -2,7 +2,7 @@
 
 /*
 **
-** $Id: grobner.demo,v 1.1 2003-03-07 03:20:17 starseeker Exp $
+** $Id: grobner.demo,v 1.2 2003-05-03 11:40:00 starseeker Exp $
 ** Copyright (C) 1999, 2002 Marek Rychlik <rychlik@u.arizona.edu>
 **
 ** This program is free software; you can redistribute it and/or modify
@@ -130,8 +130,22 @@ poly_grobner_equal([x+y,x-y],[x,y],[x,y]);
 
 poly_grobner_subsetp([x+y,x-y],[x,y],[x,y]);
 
+/* POLY_POLYSATURATION_EXTENSION implements the famous Rabinowitz trick. */
 poly_polysaturation_extension([x,y],[x^2,y^3],[x,y],[u,v]);
+
 poly_saturation_extension([x,y],[x^2,y^3],[x,y],[u,v]);
+
+/* POLY_IDEAL_POLYSATURATION1 for a given ideal I and polynomials f, g, ..., finds
+   the colon ideal I : f^inf : g^inf : ... */
+poly_ideal_polysaturation1([x,y],[x^2,y^3],[x,y]);
+
+/* POLY_IDEAL_SATURATION for given ideals I and J computes the ideal I : J^inf. */
+poly_ideal_saturation([x,y],[x^2,y^3],[x,y]);
+
+/* POLY_IDEAL_POLYSATURATION for a given ideal I and a sequence of ideals J1, J2, J3, ...,
+  finds the ideal I : J1^inf : J2^inf : J3^inf : ... */
+poly_ideal_polysaturation([x,y],[[x^2],[y^3]],[x,y]);
+poly_ideal_polysaturation([x^4-y^4], [[x-y],[x^2+y^2, x+y]],[x,y]);
 
 /* POLY_COLON_IDEAL finds the reduced Grobner basis of the colon ideal I:J, i.e. the set of polynomials h
    such that there is a polynomial F in J for which H*F is in I */
@@ -176,3 +190,30 @@ poly_grobner([x^5+y^4+z^3-1,x^3+y^3+z^2-1], [x,y,z]), modulus=3;
 /* We can also explicitly ask for the Grobner basis to be calculated using only
   integer coefficients. An error will result if this assertion is not satisfied. */
 poly_grobner([x^5+y^4+z^3-1,x^3+y^3+z^2-1], [x,y,z]), poly_coefficient_ring='ring_of_integers;
+
+/* The following several tests demonstrate the use of jet variables useful in processing differential equations */
+
+
+/* Clear some variables */
+kill(ode,t,x,y,u,v,r); 
+
+/* Set up dependencies */
+depends([x,y,u,v,r],t); 
+
+/* These are equations representing mathematical pendulum */
+ode:[x^2+y^2-c,'diff(x,t)-u,'diff(y,t)-v,'diff(u,t)+r*x,'diff(v,t)+r*y+1];
+
+jet_vars(k):=apply(append,reverse(makelist(['diff(x,t,j),'diff(y,t,j),'diff(u,t,j),'diff(v,t,j),'diff(r,t,j)],j,0,k+1)));
+
+/* Define k-fold prolongation */
+prolongate(k):=apply(append,makelist(diff(ode,t,j),j,0,k));
+
+/* Define Grobner basis of k-fold prolongation */
+gb(k):=poly_reduced_grobner(prolongate(k),jet_vars(k));
+
+/* Define the l-th projection of the k-th prolongation */
+projection(l, k):=poly_elimination_ideal(prolongate(k),5*l,jet_vars(k));
+
+/* Compute some projections */
+projection(0, 0);
+projection(1, 1);

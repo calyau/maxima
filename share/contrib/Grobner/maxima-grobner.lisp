@@ -1,7 +1,7 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                              
-;;;  $Id: maxima-grobner.lisp,v 1.1 2003-03-07 03:20:18 starseeker Exp $		 
+;;;  $Id: maxima-grobner.lisp,v 1.2 2003-05-03 11:40:00 starseeker Exp $		 
 ;;;  Copyright (C) 1999, 2002 Marek Rychlik <rychlik@u.arizona.edu>		 
 ;;;  		       								 
 ;;;  This program is free software; you can redistribute it and/or modify	 
@@ -22,6 +22,10 @@
 
 (in-package "MAXIMA")
 (macsyma-module cgb-maxima)
+
+(eval-when (load eval)
+  (format t "~&Loading maxima-grobner ~a ~a~%"
+	  "$Revision: 1.2 $" "$Date: 2003-05-03 11:40:00 $"))
 
 ;;FUNCTS is loaded because it contains the definition of LCM
 ($load "functs")
@@ -51,17 +55,17 @@
   (let ((l (gensym)))
     `(do ((,var ,lo (+ ,var ,step))
 	  (,l nil (cons ,expr ,l)))
-      ((> ,var ,hi) (reverse ,l))
-      (declare (fixnum ,var)))))
-      
+	 ((> ,var ,hi) (reverse ,l))
+       (declare (fixnum ,var)))))
+
 (defmacro makelist (expr (var lo hi &optional (step 1)) &rest more)
   (if (endp more)
       `(makelist-1 ,expr ,var ,lo ,hi ,step)
     (let* ((l (gensym)))
       `(do ((,var ,lo (+ ,var ,step))
 	    (,l nil (nconc ,l `,(makelist ,expr ,@more))))
-	((> ,var ,hi) ,l)
-	(declare (fixnum ,var))))))
+	   ((> ,var ,hi) ,l)
+	 (declare (fixnum ,var))))))
 
 ;;----------------------------------------------------------------
 ;; This package implements BASIC OPERATIONS ON MONOMIALS
@@ -70,6 +74,11 @@
 ;;
 ;; 	monom:	(n1 n2 ... nk) where ni are non-negative integers
 ;;
+;; However, lists may be implemented as other sequence types,
+;; so the flexibility to change the representation should be
+;; maintained in the code to use general operations on sequences
+;; whenever possible. The optimization for the actual representation
+;; should be left to declarations and the compiler.
 ;;----------------------------------------------------------------
 ;; EXAMPLES: Suppose that variables are x and y. Then
 ;;
@@ -110,7 +119,11 @@
 
 (defmacro make-monom (dim &key (initial-contents nil initial-contents-supplied-p)
 			       (initial-element 0 initial-element-supplied-p))
-  "Make a monomial with DIM variables."
+  "Make a monomial with DIM variables. Additional argument
+INITIAL-CONTENTS specifies the list of powers of the consecutive
+variables. The alternative additional argument INITIAL-ELEMENT
+specifies the common power for all variables."
+  (declare (fixnum dim))
   `(make-array ,dim
 	       :element-type 'exponent
 	       ,@(when initial-contents-supplied-p `(:initial-contents ,initial-contents))
@@ -124,66 +137,83 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmacro monom-elt (m index)
+  "Return the power in the monomial M of variable number INDEX."
   `(elt ,m ,index))
 
 (defun monom-dimension (m)
+  "Return the number of variables in the monomial M."
   (length m))
 
 (defun monom-total-degree (m &optional (start 0) (end (length m)))
-  "Return the todal degree of a monomoal M."
-  (declare (type monom m))
+  "Return the todal degree of a monomoal M. Optinally, a range
+of variables may be specified with arguments START and END."
+  (declare (type monom m) (fixnum start end))
   (reduce #'+ m :start start :end end))
 
 (defun monom-sugar (m &aux (start 0) (end (length m)))
-  (declare (type monom m))
+  "Return the sugar of a monomial M. Optinally, a range
+of variables may be specified with arguments START and END."
+  (declare (type monom m) (fixnum start end))
   (monom-total-degree m start end))
 
 (defun monom-div (m1 m2 &aux (result (copy-seq m1)))
   "Divide monomial M1 by monomial M2."
+  (declare (type monom m1 m2 result))
   (map-into result #'- m1 m2))
 
 (defun monom-mul (m1 m2  &aux (result (copy-seq m1)))
   "Multiply monomial M1 by monomial M2."
+  (declare (type monom m1 m2 result))
   (map-into result #'+ m1 m2))
 
 (defun monom-divides-p (m1 m2)
   "Returns T if monomial M1 divides monomial M2, NIL otherwise."
-   (every #'<= m1 m2))
+  (declare (type monom m1 m2))
+  (every #'<= m1 m2))
 
 (defun monom-divides-monom-lcm-p (m1 m2 m3)
   "Returns T if monomial M1 divides MONOM-LCM(M2,M3), NIL otherwise."
+  (declare (type monom m1 m2 m3))
   (every #'(lambda (x y z) (declare (type exponent x y z)) (<= x (max y z))) m1 m2 m3))
 
 (defun monom-lcm-divides-monom-lcm-p (m1 m2 m3 m4)
   "Returns T if monomial MONOM-LCM(M1,M2) divides MONOM-LCM(M3,M4), NIL otherwise."
+  (declare (type monom m1 m2 m3 m4))
   (every #'(lambda (x y z w) (declare (type exponent x y z w)) (<= (max x y) (max z w))) m1 m2 m3 m4))
 
 (defun monom-lcm-equal-monom-lcm-p (m1 m2 m3 m4)
   "Returns T if monomial MONOM-LCM(M1,M2) equals MONOM-LCM(M3,M4), NIL otherwise."
+  (declare (type monom m1 m2 m3 m4))
   (every #'(lambda (x y z w) (declare (type exponent x y z w)) (= (max x y) (max z w))) m1 m2 m3 m4))
 
 (defun monom-divisible-by-p (m1 m2)
   "Returns T if monomial M1 is divisible by monomial M2, NIL otherwise."
+  (declare (type monom m1 m2))
    (every #'>= m1 m2))
 
 (defun monom-rel-prime-p (m1 m2)
   "Returns T if two monomials M1 and M2 are relatively prime (disjoint)."
+  (declare (type monom m1 m2))
   (every #'(lambda (x y) (declare (type exponent x y)) (zerop (min x y))) m1 m2))
 
 (defun monom-equal-p (m1 m2)
   "Returns T if two monomials M1 and M2 are equal."
+  (declare (type monom m1 m2))
   (every #'= m1 m2))
 
 (defun monom-lcm (m1 m2 &aux (result (copy-seq m1)))
   "Returns least common multiple of monomials M1 and M2."
+  (declare (type monom m1 m2))
   (map-into result #'max m1 m2))
 
 (defun monom-gcd (m1 m2 &aux (result (copy-seq m1)))
   "Returns greatest common divisor of monomials M1 and M2."
+  (declare (type monom m1 m2))
   (map-into result #'min m1 m2))
 
 (defun monom-depends-p (m k)
   "Return T if the monomial M depends on variable number K."
+  (declare (type monom m) (fixnum k))
   (plusp (elt m k)))
 
 (defmacro monom-map (fun m &rest ml &aux (result `(copy-seq ,m)))
@@ -196,22 +226,8 @@
   `(subseq ,m ,k))
 
 (defun monom-exponents (m)
-  (coerce m 'list))#|
-	$Id: maxima-grobner.lisp,v 1.1 2003-03-07 03:20:18 starseeker Exp $	
-  *--------------------------------------------------------------------------*
-  |  Copyright (C) 1994, Marek Rychlik (e-mail: rychlik@math.arizona.edu)    |
-  |    Department of Mathematics, University of Arizona, Tucson, AZ 85721    |
-  |                                                                          |
-  | Everyone is permitted to copy, distribute and modify the code in this    |
-  | directory, as long as this copyright note is preserved verbatim.         |
-  *--------------------------------------------------------------------------*
-|#
-
-;;Declare the type of all order-defining functions
-(declaim (ftype (function (monom monom &optional fixnum fixnum) (values (member t nil) (member t nil)))
-		lex> grlex> grevlex> invlex> elimination-order-1)) 
-
-(declaim (optimize (speed 3) (safety 0)))
+  (declare (type monom m))
+  (coerce m 'list))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -293,13 +309,14 @@ The second returned value is T if P=Q, otherwise it is NIL."
 	 ((< (monom-elt p i) (monom-elt q i))
 	  (return-from invlex> (values nil nil))))))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Order making functions
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(declaim (type function *monomial-order *primary-elimination-order* *secondary-elimination-order*))
+(declaim (type function *monomial-order* *primary-elimination-order* *secondary-elimination-order*))
 
 (defvar *monomial-order* #'lex>
   "Default order for monomial comparisons")
@@ -307,8 +324,8 @@ The second returned value is T if P=Q, otherwise it is NIL."
 (defmacro monomial-order (x y)
   `(funcall *monomial-order* ,x ,y))
 
-(defmacro reverse-monomial-order (x y)
-  `(monomial-order ,y ,x))
+(defun reverse-monomial-order (x y)
+  (monomial-order y x))
 
 (defvar *primary-elimination-order* #'lex>)
 
@@ -342,17 +359,14 @@ and the remaining variables, respectively."
    ((< (monom-elt p start) (monom-elt q start)) (values nil nil))
    (t (funcall *secondary-elimination-order* p q (1+ start) end))))
 
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: Modular; Base: 10 -*-
-#|
-	$Id: maxima-grobner.lisp,v 1.1 2003-03-07 03:20:18 starseeker Exp $
-  *--------------------------------------------------------------------------*
-  |  Copyright (C) 1994, Marek Rychlik (e-mail: rychlik@math.arizona.edu)    |
-  |    Department of Mathematics, University of Arizona, Tucson, AZ 85721    |
-  |                                                                          |
-  | Everyone is permitted to copy, distribute and modify the code in this    |
-  | directory, as long as this copyright note is preserved verbatim.         |
-  *--------------------------------------------------------------------------*
-|#
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Priority queue stuff
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(declaim (integer *priority-queue-allocation-size*))
 
 (defparameter *priority-queue-allocation-size* 16)
 
@@ -361,15 +375,15 @@ and the remaining variables, respectively."
 	      :adjustable t))
 
 (defstruct (priority-queue (:constructor priority-queue-construct))
-  (heap (priority-queue-make-heap) :type (array t *))
+  (heap (priority-queue-make-heap))
   test)
 
 (defun make-priority-queue (&key (element-type 'fixnum)
 			    (test #'<=)
-			    (key #'identity))
+			    (element-key #'identity))
   (priority-queue-construct
    :heap (priority-queue-make-heap :element-type element-type)
-   :test #'(lambda (x y) (funcall test (funcall key y) (funcall key x)))))
+   :test #'(lambda (x y) (funcall test (funcall element-key y) (funcall element-key x)))))
   
 (defun priority-queue-insert (pq item)
   (priority-queue-heap-insert (priority-queue-heap pq) item (priority-queue-test pq)))
@@ -387,6 +401,7 @@ and the remaining variables, respectively."
 	       &optional
 	       (test #'<=)
 	       &aux  (v (aref a k)))
+  (declare (fixnum k))
   (assert (< 0 k (fill-pointer a)))
   (loop
    (let ((parent (ash k -1)))
@@ -406,7 +421,8 @@ and the remaining variables, respectively."
 (defun priority-queue-downheap (a k
 		 &optional
 		 (test #'<=)
-		 &aux  (v (aref a k)) j (n (fill-pointer a)))
+		 &aux  (v (aref a k)) (j 0) (n (fill-pointer a)))
+  (declare (fixnum k n j))
   (loop
    (unless (<= k (ash n -1))
      (return))
@@ -428,8 +444,6 @@ and the remaining variables, respectively."
 
 (defun priority-queue-heap-empty-p (a)
   (<= (fill-pointer a) 1))
-
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: Grobner; Base: 10 -*-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -477,8 +491,6 @@ list of terms in the current monomial order rather than a Maxima general express
   "If not FALSE, use top reduction only whenever possible.
 Top reduction means that division algorithm stops after the first reduction.")
 
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: Grobner; Base: 10 -*-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -522,12 +534,11 @@ Top reduction means that division algorithm stops after the first reduction.")
      :gcd #'gcd)
   "The ring of integers.")
 
-;; This is how we perform operations on coefficients
-;; using Maxima functions. 
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: Grobner; Base: 10 -*-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; This is how we perform operations on coefficients
+;; using Maxima functions. 
 ;;
 ;; Functions and macros dealing with internal representation structure
 ;;
@@ -535,22 +546,27 @@ Top reduction means that division algorithm stops after the first reduction.")
 
 (defstruct (term
 	    (:constructor make-term (monom coeff))
-	    (:constructor make-term-variable (ring nvars pos
-						   &optional
-						   (power 1)
-						   (coeff (funcall (ring-unit ring)))
-						   &aux
-						   (m (make-monom nvars :initial-element 0))
-						   (monom (progn (incf (monom-elt m pos) power) m))))
+	    (:constructor make-term-variable)
 	    ;;(:type list)
 	    )
-  (monom nil :type monom)
-  (coeff))
+  (monom (make-monom 0) :type monom)
+  (coeff nil))
+
+(defun make-term-variable (ring nvars pos
+				&optional
+				(power 1)
+				(coeff (funcall (ring-unit ring)))
+				&aux
+				(monom (make-monom nvars :initial-element 0)))
+  (declare (fixnum nvars pos power))
+  (incf (monom-elt monom pos) power)
+  (make-term monom coeff))
 
 (defun term-sugar (term)
   (monom-sugar (term-monom term)))
 
 (defun termlist-sugar (p &aux (sugar -1))
+  (declare (fixnum sugar))
   (dolist (term p sugar)
     (setf sugar (max sugar (term-sugar term)))))
 
@@ -563,9 +579,9 @@ Top reduction means that division algorithm stops after the first reduction.")
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmacro lt (p) `(car ,p))
-(defun lm (p) (term-monom (lt p)))
-(defun lc (p) (term-coeff (lt p)))
+(defmacro termlist-lt (p) `(car ,p))
+(defun termlist-lm (p) (term-monom (termlist-lt p)))
+(defun termlist-lc (p) (term-coeff (termlist-lt p)))
 
 (define-modify-macro scalar-mul (c) coeff-mul)
 
@@ -626,6 +642,7 @@ in the coefficient ring."
 (declaim (ftype (function (ring list list) list) termlist-add termlist-sub termlist-mul))
 
 (defun termlist-add (ring p q)
+  (declare (type list p q))
   (do (r)
       ((cond
 	((endp p)
@@ -635,12 +652,12 @@ in the coefficient ring."
 	(t
 	 (multiple-value-bind
 	     (lm-greater lm-equal)
-	     (monomial-order (lm p) (lm q))
+	     (monomial-order (termlist-lm p) (termlist-lm q))
 	   (cond
 	    (lm-equal
-	     (let ((s (funcall (ring-add ring) (lc p) (lc q))))
+	     (let ((s (funcall (ring-add ring) (termlist-lc p) (termlist-lc q))))
 	       (unless (funcall (ring-zerop ring) s)	;check for cancellation
-		 (setf r (cons (make-term (lm p) s) r)))
+		 (setf r (cons (make-term (termlist-lm p) s) r)))
 	       (setf p (cdr p) q (cdr q))))
 	    (lm-greater
 	     (setf r (cons (car p) r)
@@ -651,6 +668,7 @@ in the coefficient ring."
        r)))
 
 (defun termlist-sub (ring p q)
+  (declare (type list p q))
   (do (r)
       ((cond
 	((endp p)
@@ -662,17 +680,17 @@ in the coefficient ring."
 	(t
 	 (multiple-value-bind
 	     (mgreater mequal)
-	     (monomial-order (lm p) (lm q))
+	     (monomial-order (termlist-lm p) (termlist-lm q))
 	   (cond
 	    (mequal
-	     (let ((s (funcall (ring-sub ring) (lc p) (lc q))))
+	     (let ((s (funcall (ring-sub ring) (termlist-lc p) (termlist-lc q))))
 	       (unless (funcall (ring-zerop ring) s)	;check for cancellation
-		 (setf r (cons (make-term (lm p) s) r)))
+		 (setf r (cons (make-term (termlist-lm p) s) r)))
 	       (setf p (cdr p) q (cdr q))))
 	    (mgreater
 	     (setf r (cons (car p) r)
 		   p (cdr p)))
-	    (t (setf r (cons (make-term (lm q) (funcall (ring-uminus ring) (lc q))) r)
+	    (t (setf r (cons (make-term (termlist-lm q) (funcall (ring-uminus ring) (termlist-lc q))) r)
 		     q (cdr q)))))
 	 nil))
        r)))
@@ -687,7 +705,7 @@ in the coefficient ring."
 	((endp (cdr q))
 	 (termlist-times-term ring p (car q)))
 	(t
-	 (let ((head (term-mul ring (lt p) (lt q)))
+	 (let ((head (term-mul ring (termlist-lt p) (termlist-lt q)))
 	       (tail (termlist-add ring (term-times-termlist ring (car p) (cdr q))
 				   (termlist-mul ring (cdr p) q))))
 	   (cond ((null head) tail)
@@ -695,10 +713,11 @@ in the coefficient ring."
 		 (t (nconc head tail)))))))
 		    
 (defun termlist-unit (ring dimension)
+  (declare (fixnum dimension))
   (list (make-term (make-monom dimension :initial-element 0)
 		   (funcall (ring-unit ring)))))
 
-(defun termlist-expt (ring poly n &aux (dim (monom-dimension (lm poly))))
+(defun termlist-expt (ring poly n &aux (dim (monom-dimension (termlist-lm poly))))
   (declare (type fixnum n dim))
   (cond
    ((minusp n) (error "termlist-expt: Negative exponent."))
@@ -707,7 +726,8 @@ in the coefficient ring."
     (do ((k 1 (ash k 1))
 	 (q poly (termlist-mul ring q q))	;keep squaring
 	 (p (termlist-unit ring dim) (if (not (zerop (logand k n))) (termlist-mul ring p q) p)))
-	((> k n) p)))))
+	((> k n) p)
+      (declare (fixnum k))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -732,6 +752,7 @@ beginning of every monomial the list of powers M."
 (defun termlist-add-variables (p n)
   "Add N variables to a polynomial P by inserting zero powers
 at the beginning of each monomial."
+  (declare (fixnum n))
   (mapcar #'(lambda (term)
 	      (make-term (monom-append (make-monom n :initial-element 0)
 				       (term-monom term))
@@ -747,7 +768,7 @@ at the beginning of each monomial."
 
 (defstruct (poly
 	    ;;BOA constructor, by default constructs zero polynomial
-	    (:constructor make-poly (termlist &optional (sugar (termlist-sugar termlist))))
+	    (:constructor make-poly-from-termlist (termlist &optional (sugar (termlist-sugar termlist))))
 	    (:constructor make-poly-zero (&aux (termlist nil) (sugar -1)))
 	    ;;Constructor of polynomials representing a variable
 	    (:constructor make-variable (ring nvars pos &optional (power 1)
@@ -759,7 +780,7 @@ at the beginning of each monomial."
 				     &aux
 				     (termlist (termlist-unit ring dimension))
 				     (sugar 0))))
-  (termlist nil)
+  (termlist nil :type list)
   (sugar -1 :type fixnum))
 
 ;; Leading term
@@ -789,41 +810,41 @@ at the beginning of each monomial."
 (declaim (ftype (function (ring t poly) poly) scalar-times-poly))
 
 (defun scalar-times-poly (ring c p)
-  (make-poly (scalar-times-termlist ring c (poly-termlist p)) (poly-sugar p)))
+  (make-poly-from-termlist (scalar-times-termlist ring c (poly-termlist p)) (poly-sugar p)))
     
 (declaim (ftype (function (monom poly) poly) monom-times-poly))
 
 (defun monom-times-poly (m p)
-  (make-poly (monom-times-termlist m (poly-termlist p)) (+ (poly-sugar p) (monom-sugar m))))
+  (make-poly-from-termlist (monom-times-termlist m (poly-termlist p)) (+ (poly-sugar p) (monom-sugar m))))
 
 (declaim (ftype (function (ring term poly) poly) term-times-poly))
 
 (defun term-times-poly (ring term p)
-  (make-poly (term-times-termlist ring term (poly-termlist p)) (+ (poly-sugar p) (term-sugar term))))
+  (make-poly-from-termlist (term-times-termlist ring term (poly-termlist p)) (+ (poly-sugar p) (term-sugar term))))
 
 (declaim (ftype (function (ring poly poly) poly) poly-add poly-sub poly-mul))
 
 (defun poly-add (ring p q)
-  (make-poly (termlist-add ring (poly-termlist p) (poly-termlist q)) (max (poly-sugar p) (poly-sugar q))))
+  (make-poly-from-termlist (termlist-add ring (poly-termlist p) (poly-termlist q)) (max (poly-sugar p) (poly-sugar q))))
 
 (defun poly-sub (ring p q)
-  (make-poly (termlist-sub ring (poly-termlist p) (poly-termlist q)) (max (poly-sugar p) (poly-sugar q))))
+  (make-poly-from-termlist (termlist-sub ring (poly-termlist p) (poly-termlist q)) (max (poly-sugar p) (poly-sugar q))))
 
 (declaim (ftype (function (ring poly) poly) poly-uminus))
 
 (defun poly-uminus (ring p)
-  (make-poly (termlist-uminus ring (poly-termlist p)) (poly-sugar p)))
+  (make-poly-from-termlist (termlist-uminus ring (poly-termlist p)) (poly-sugar p)))
 
 (defun poly-mul (ring p q)
-  (make-poly (termlist-mul ring (poly-termlist p) (poly-termlist q)) (+ (poly-sugar p) (poly-sugar q))))
+  (make-poly-from-termlist (termlist-mul ring (poly-termlist p) (poly-termlist q)) (+ (poly-sugar p) (poly-sugar q))))
 
 (declaim (ftype (function (ring poly fixnum) poly) poly-expt))
 
 (defun poly-expt (ring p n)
-  (make-poly (termlist-expt ring (poly-termlist p) n) (* n (poly-sugar p))))
+  (make-poly-from-termlist (termlist-expt ring (poly-termlist p) n) (* n (poly-sugar p))))
 
 (defun poly-append (&rest plist)
-  (make-poly (apply #'append (mapcar #'poly-termlist plist))
+  (make-poly-from-termlist (apply #'append (mapcar #'poly-termlist plist))
 	     (apply #'max (mapcar #'poly-sugar plist))))
 
 (declaim (ftype (function (poly) poly) poly-nreverse))
@@ -835,13 +856,13 @@ at the beginning of each monomial."
 (declaim (ftype (function (poly &optional fixnum) poly) poly-contract))
 
 (defun poly-contract (p &optional (k 1))
-  (make-poly (termlist-contract (poly-termlist p) k)
+  (make-poly-from-termlist (termlist-contract (poly-termlist p) k)
 	     (poly-sugar p)))
 
 (declaim (ftype (function (poly &optional sequence)) poly-extend))
 
 (defun poly-extend (p &optional (m (list 0)))
-  (make-poly
+  (make-poly-from-termlist
    (termlist-extend (poly-termlist p) m)
    (+ (poly-sugar p) (monom-sugar m))))
 
@@ -856,6 +877,7 @@ at the beginning of each monomial."
 
 (defun poly-standard-extension (plist &aux (k (length plist)))
   "Calculate [U1*P1,U2*P2,...,UK*PK], where PLIST=[P1,P2,...,PK]."
+  (declare (list plist) (fixnum k))
   (labels ((incf-power (g i)
 	     (dolist (x (poly-termlist g))
 	       (incf (monom-elt (term-monom x) i)))
@@ -891,14 +913,14 @@ at the beginning of each monomial."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Evaluation of infix expressions
+;; Evaluation of polynomial (prefix) expressions
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun coerce-coeff (ring expr vars)
   "Coerce an element of the coefficient ring to a constant polynomial."
   ;; Modular arithmetic handler by rat
-  (make-poly (list (make-term (make-monom (length vars) :initial-element 0)
+  (make-poly-from-termlist (list (make-term (make-monom (length vars) :initial-element 0)
 			      (funcall (ring-parse ring) expr)))
 	     0))
 
@@ -956,6 +978,7 @@ at the beginning of each monomial."
 		 pair-queue-remove pair-queue-size Criterion-1
 		 Criterion-2 grobner reduced-grobner sugar-pair-key
 		 sugar-order normal-form normal-form-step grobner-op spoly
+		 equal-test-p
 		 ))
 
 ;;Optimization options
@@ -1002,7 +1025,7 @@ coefficients and return the result."
   (if (poly-zerop p)
       (values p 1)
     (let ((c (poly-content ring p)))
-      (values (make-poly (mapcar
+      (values (make-poly-from-termlist (mapcar
 			  #'(lambda (x)
 			      (make-term (term-monom x)
 					 (funcall (ring-div ring) (term-coeff x) c)))
@@ -1138,9 +1161,9 @@ with no remainder is possible. Returns the quotient."
 	   ;;(endp fl)
 	   (and top-reduction-only (not (poly-zerop r))))
        (progn
-		(debug-cgb "~&~3T~d reduction~:p" division-count)
-		(when (poly-zerop r)
-		  (debug-cgb " ---> 0")))
+	 (debug-cgb "~&~3T~d reduction~:p" division-count)
+	 (when (poly-zerop r)
+	   (debug-cgb " ---> 0")))
        (setf (poly-termlist f) (nreconc (poly-termlist r) (poly-termlist f)))
        (values f c division-count))
     (declare (fixnum division-count)
@@ -1233,7 +1256,7 @@ in the pair queue.")
   "Constructs a priority queue for critical pairs."
   (make-priority-queue
    :element-type 'pair
-   :key #'(lambda (pair) (funcall *pair-key-function* (pair-first pair) (pair-second pair)))
+   :element-key #'(lambda (pair) (funcall *pair-key-function* (pair-first pair) (pair-second pair)))
    :test *pair-order*))
 
 (defun pair-queue-initialize (pq F start
@@ -1274,7 +1297,8 @@ grobner basis, i.e. satisfy the Buchberger criterion."
 of the ideal generated by the polynomial list F.  Polynomials 0 to
 START-1 are assumed to be a Grobner basis already, so that certain
 critical pairs will not be examined. If TOP-REDUCTION-ONLY set, top
-reduction will be preformed."
+reduction will be preformed. This function assumes that all polynomials
+in F are non-zero."
   (declare (type fixnum start) (type priority-queue B) (type hash-table B-done))
   (when (endp F) (return-from buchberger F)) ;cut startup costs
   (debug-cgb "~&GROBNER BASIS - BUCHBERGER ALGORITHM")
@@ -1327,7 +1351,7 @@ reduction will be preformed."
   (declare (ignore top-reduction-only)
 	   (type fixnum start)
 	   (type priority-queue B)
-	   (type hash-type B-done))
+	   (type hash-table B-done))
   (when (endp F) (return-from parallel-buchberger F)) ;cut startup costs
   (debug-cgb "~&GROBNER BASIS - PARALLEL-BUCHBERGER ALGORITHM")
   (when (plusp start) (debug-cgb "~&INCREMENTAL:~d done" start))
@@ -1348,7 +1372,8 @@ reduction will be preformed."
        F)
     (let ((pair (pair-queue-remove B)))
       (when (null (pair-division-data pair))
-	(setf (pair-division-data pair) (list (spoly (pair-first pair)
+	(setf (pair-division-data pair) (list (spoly ring
+						     (pair-first pair)
 						     (pair-second pair))
 					      (make-poly-zero)
 					      (funcall (ring-unit ring))
@@ -1461,9 +1486,10 @@ treated, as indicated by the absence in the hash table B-done."
 
 (defun gebauer-moeller (ring F start &optional (top-reduction-only $poly_top_reduction_only)
 			&aux B G F1)
-  "Compute Grobner basis by using the algorithm of Gebauer and Moeller.
-This algorithm is described as BUCHBERGERNEW2 in the book by
-Becker-Weispfenning entitled ``Grobner Bases''"
+  "Compute Grobner basis by using the algorithm of Gebauer and
+Moeller.  This algorithm is described as BUCHBERGERNEW2 in the book by
+Becker-Weispfenning entitled ``Grobner Bases''. This function assumes
+that all polynomials in F are non-zero."
   (declare (ignore top-reduction-only)
 	   (type fixnum start)
 	   (type priority-queue B))
@@ -1630,6 +1656,9 @@ COEFFICIENT-RING package."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun find-grobner-function (algorithm)
+  "Return a function which calculates Grobner basis, based on its
+names. Names currently used are either Lisp symbols, Maxima symbols or
+keywords."
   (ecase algorithm
     ((buchberger :buchberger $buchberger) #'buchberger)
     ((parallel-buchberger :parallel-buchberger $parallel_buchberger) #'parallel-buchberger)
@@ -1646,7 +1675,7 @@ COEFFICIENT-RING package."
 
 (defun set-pair-heuristic (method)
   "Sets up variables *PAIR-KEY-FUNCTION* and *PAIR-ORDER* used
-to put critical pairs in the priority queue."
+to determine the priority of critical pairs in the priority queue."
   (ecase method
     ((sugar :sugar $sugar)
      (setf *pair-key-function* #'sugar-pair-key
@@ -1757,7 +1786,7 @@ defined in the COEFFICIENT-RING package."
     ((poly-zerop g) g)
     ((and (endp (cdr (poly-termlist f))) (endp (cdr (poly-termlist g))))
      (let ((m (monom-lcm (poly-lm f) (poly-lm g))))
-       (make-poly (list (make-term m (funcall (ring-lcm ring) (poly-lc f) (poly-lc g)))))))
+       (make-poly-from-termlist (list (make-term m (funcall (ring-lcm ring) (poly-lc f) (poly-lc g)))))))
     (t
      (multiple-value-bind (f f-cont)
 	 (poly-primitive-part ring f)
@@ -1799,7 +1828,6 @@ vanish on the variety of P."
   (mapcar
    #'poly-contract
    (ring-intersection
-    ring
     (reduced-grobner
      ring
      (saturation-extension-1 ring F p)
@@ -1826,7 +1854,7 @@ polynomial list F."
 					       (elimination-order k))))
   "Returns the reduced Grobner basis of the saturation of the ideal
 generated by a polynomial list F in the ideal generated a polynomial
-list G The saturation ideal is defined as the set of polynomials H
+list G. The saturation ideal is defined as the set of polynomials H
 such for some natural number n and some P in the ideal generated by G
 the polynomial P**N * H is in the ideal spanned by F.  Geometrically,
 over an algebraically closed field, this is the set of polynomials in
@@ -1857,22 +1885,22 @@ polynomials in the list IDEAL-LIST."
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun poly-ring (ring vars)
-  (make-ring 
-   :parse #'(lambda (expr) (poly-eval ring expr vars))
-   :unit #'(lambda () (poly-unit ring (length vars)))
-   :zerop #'poly-zerop
-   :add #'(lambda (x y) (poly-add ring x y))
-   :sub #'(lambda (x y) (poly-sub ring x y))
-   :uminus #'(lambda (x) (poly-uminus ring x))
-   :mul #'(lambda (x y) (poly-mul ring x y))
-   :div #'(lambda (x y) (poly-exact-divide ring x y))
-   :lcm #'(lambda (x y) (poly-lcm ring x y))
-   :ezgcd #'(lambda (x y &aux (gcd (poly-gcd ring x y)))
-	      (values gcd
-		      (poly-exact-divide ring x gcd)
-		      (poly-exact-divide ring y gcd)))
-   :gcd #'(lambda (x y) (poly-gcd x y))))
+;; (defun poly-ring (ring vars)
+;;   (make-ring 
+;;    :parse #'(lambda (expr) (poly-eval ring expr vars))
+;;    :unit #'(lambda () (poly-unit ring (length vars)))
+;;    :zerop #'poly-zerop
+;;    :add #'(lambda (x y) (poly-add ring x y))
+;;    :sub #'(lambda (x y) (poly-sub ring x y))
+;;    :uminus #'(lambda (x) (poly-uminus ring x))
+;;    :mul #'(lambda (x y) (poly-mul ring x y))
+;;    :div #'(lambda (x y) (poly-exact-divide ring x y))
+;;    :lcm #'(lambda (x y) (poly-lcm ring x y))
+;;    :ezgcd #'(lambda (x y &aux (gcd (poly-gcd ring x y)))
+;; 	      (values gcd
+;; 		      (poly-exact-divide ring x gcd)
+;; 		      (poly-exact-divide ring y gcd)))
+;;    :gcd #'(lambda (x y) (poly-gcd x y))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1940,6 +1968,9 @@ are assumed to be defined.")
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun equal-test-p (expr1 expr2)
+  (alike1 expr1 expr2))
+
 (defun coerce-maxima-list (expr)
   "Convert a Maxima list to Lisp list."
   (cond
@@ -1954,8 +1985,8 @@ are assumed to be defined.")
 	   (parse-list (args) (mapcar #'parse args)))
     (cond
      ((eql expr 0) (make-poly-zero))
-     ((member expr vars :test #'equalp)
-      (let ((pos (position expr vars :test #'equalp)))
+     ((member expr vars :test #'equal-test-p)
+      (let ((pos (position expr vars :test #'equal-test-p)))
 	(make-variable *MaximaRing* (length vars) pos)))
      ((free-of-vars expr vars)
       ;;This means that variable-free CRE and Poisson forms will be converted
@@ -1971,9 +2002,9 @@ are assumed to be defined.")
 	   (reduce #'(lambda (p q) (poly-mul *MaximaRing* p q)) (parse-list (cdr expr)))))
 	(mexpt
 	 (cond
-	  ((member (cadr expr) vars :test #'equalp)
+	  ((member (cadr expr) vars :test #'equal-test-p)
 	   ;;Special handling of (expt var pow)
-	   (let ((pos (position (cadr expr) vars :test #'equalp)))
+	   (let ((pos (position (cadr expr) vars :test #'equal-test-p)))
 	     (make-variable *MaximaRing* (length vars) pos (caddr expr))))
 	  ((not (and (integerp (caddr expr)) (plusp (caddr expr))))
 	   ;; Negative power means division in coefficient ring
@@ -2011,7 +2042,7 @@ are assumed to be defined.")
       ((grlex :grlex $grlex) #'grlex>)
       ((grevlex :grevlex $grevlex) #'grevlex>)
       ((invlex :invlex $invlex) #'invlex>)
-      ((elimination-order-1 :elimination-order-1 elimination_order_1) #'elimination_order_1)
+      ((elimination-order-1 :elimination-order-1 elimination_order_1) #'elimination-order-1)
       (otherwise
        (mtell "~%Warning: Order ~M not found. Using default.~%" order))))
    (t
@@ -2038,7 +2069,7 @@ are assumed to be defined.")
      . ,body))
 
 (defmacro with-coefficient-ring ((ring) &body body)
-  "Evaluate BODY with monomial order set to ORDER."
+  "Evaluate BODY with coefficient ring set to RING."
   `(let ((*MaximaRing* (or (find-ring ,ring) *MaximaRing*)))
      . ,body))
 
@@ -2141,6 +2172,9 @@ are assumed to be defined.")
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Auxillary function for removing zero polynomial
+(defun remzero (plist) (remove #'poly-zerop plist))
+
 ;;Simple operators
 
 (define-binop $poly_add poly-add
@@ -2167,7 +2201,9 @@ are assumed to be defined.")
   "This function is equivalent to EXPAND(P) if P parses correctly to a polynomial.
 If the representation is not compatible with a polynomial in variables VARS,
 the result is an error."
-  (with-parsed-polynomials ((vars) :polynomials (p) :value-type :polynomial) p))
+  (with-parsed-polynomials ((vars) :polynomials (p)
+			    :value-type :polynomial)
+			   p))
 
 (defmfun $poly_expt (p n vars)
   (with-parsed-polynomials ((vars) :polynomials (p) :value-type :polynomial)
@@ -2197,7 +2233,7 @@ the result is an error."
   (with-parsed-polynomials ((vars) :polynomials (f)
 				   :poly-lists (fl)
 				   :value-type :polynomial)
-    (normal-form *MaximaRing* f fl nil)))
+    (normal-form *MaximaRing* f (remzero fl) nil)))
 
 (defmfun $poly_buchberger_criterion (G vars)
   (with-parsed-polynomials ((vars) :poly-lists (G))
@@ -2205,7 +2241,7 @@ the result is an error."
 
 (defmfun $poly_buchberger (fl vars)
   (with-parsed-polynomials ((vars) :poly-lists (fl) :value-type :poly-list)
-    (buchberger *MaximaRing* fl 0 nil)))
+    (buchberger *MaximaRing*  (remzero fl) 0 nil)))
 
 (defmfun $poly_reduction (plist vars)
   (with-parsed-polynomials ((vars) :poly-lists (plist)
@@ -2225,12 +2261,12 @@ the result is an error."
 (defmfun $poly_grobner (F vars)
   (with-parsed-polynomials ((vars) :poly-lists (F)
 				   :value-type :poly-list)
-    (grobner *MaximaRing* F)))
+    (grobner *MaximaRing* (remzero F))))
 
 (defmfun $poly_reduced_grobner (F vars)
   (with-parsed-polynomials ((vars) :poly-lists (F)
 				   :value-type :poly-list)
-    (reduced-grobner *MaximaRing* F)))
+    (reduced-grobner *MaximaRing* (remzero F))))
 
 (defmfun $poly_depends_p (p var mvars
 			&aux (vars (coerce-maxima-list mvars))
