@@ -5,6 +5,8 @@ TEST_FILES = rtestode_murphy1.mac rtestode_murphy2.mac \
 	rtest_sym.mac rtest_sym2.mac \
 	rtest_ode1_riccati.mac rtest_ode1_abel.mac
 
+# Note the .MAC file extension.  Some fallout from the downcasing.  **FIXME**
+#
 check: $(TEST_FILES)
 	(echo 'to_lisp();';\
 	echo '(setq *maxima-testsdir* ".")';\

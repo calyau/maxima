@@ -11,6 +11,14 @@
 (pn_(n_):=print("Kamke ODE ",n_),true);
 true;
 
+/* Need these indentities to check solutions */
+besjident(n,x):=bessel_j(n,x)=2*(n-1)*bessel_j(n-1,x)/x-bessel_j(n-2,x);
+besjident(n,x):=bessel_j(n,x)=2*(n-1)*bessel_j(n-1,x)/x-bessel_j(n-2,x);
+besiident(n,x):=bessel_i(n,x)=-2*(n-1)*bessel_i(n-1,x)/x+bessel_i(n-2,x);
+besiident(n,x):=bessel_i(n,x)=-2*(n-1)*bessel_i(n-1,x)/x+bessel_i(n-2,x);
+beskident(n,x):=bessel_k(n,x)=2*(n-1)*bessel_k(n-1,x)/x+bessel_k(n-2,x);
+beskident(n,x):=bessel_k(n,x)=2*(n-1)*bessel_k(n-1,x)/x+bessel_k(n-2,x);
+
 /*   1 */
 (pn_(1),ans:contrib_ode(eqn:'diff(y,x)-(a4*x^4+a3*x^3+a2*x^2+a1*x+a0)^(-1/2),y,x));
 [y = 'integrate(1/sqrt(a4*x^4+a3*x^3+a2*x^2+a1*x+a0),x)+%c];
@@ -88,7 +96,7 @@ solve(map(exp,2*ans[1]),y);
 
 /* 13 - Riccati eqn */
 (pn_(13),ans:contrib_ode(eqn:'diff(y,x) + y^2 - a*x - b,y,x));
-false;
+[[y='diff(%u,x,1)/%u,%u*(a*x+b)-'diff(%u,x,2)=0]];
 
 /* 14 - The constraints need some work 
          want m # -2, rather than m > -2 */
@@ -140,7 +148,7 @@ solve(map(exp,2*ans[1]-2*x),y);
 
 /* 16 This is a Riccati eqn */
 (pn_(16),ans:contrib_ode(eqn:'diff(y,x) + y^2 +(x*y-1)*f(x),y,x));
-false;
+[[y='diff(%u,x,1)/%u,-'diff(%u,x,1)*x*f(x)+%u*f(x)-'diff(%u,x,2)=0]];
 
 /* 17 */
 (pn_(17),ans:contrib_ode(eqn:'diff(y,x) - y^2 -3*y + 4,y,x));
@@ -152,7 +160,7 @@ solve(map(exp,ans[1]*5),y);
 
 /* 18 */
 (pn_(18),ans:contrib_ode(eqn:'diff(y,x)-y^2-x*y-x+1,y,x));
-false;
+[[y=-'diff(%u,x,1)/%u,-'diff(%u,x,1)*x+%u*(x-1)+'diff(%u,x,2)=0]];
 
 /* 19 */
 (pn_(19),ans:contrib_ode(eqn:'diff(y,x) - (y + x)^2,y,x));
@@ -186,7 +194,7 @@ y = tan(x-%c)-x;
 
 /* 22 */
 (pn_(22),ans:contrib_ode(eqn:'diff(y,x)-y^2-y*sin(2*x)-cos(2*x),y,x));
-false;
+[[y=-'diff(%u,x,1)/%u,-'diff(%u,x,1)*sin(2*x)+%u*cos(2*x)+'diff(%u,x,2)=0]];
 
 /* 23 */
 assume(a>0,b>0);
@@ -212,7 +220,9 @@ forget(nu>-2,a>0,b>0);
 
 /* 25 - This is a Riccati equation */
 (pn_(25),ans:contrib_ode(eqn:'diff(y,x)+a*y^2-b*x^(2*nu)-c*x^(nu-1),y,x));
-false;
+[[y='diff(%u,x,1)/(%u*a),%u*a^2*(b*x^(2*nu)+c*x^(nu-1))-'diff(%u,x,2)*a=0]];
+method;
+riccati;
 
 /* 26 */
 (pn_(26),ans:contrib_ode(eqn:'diff(y,x)-(A*y- a)*(B*y-b),y,x));
@@ -230,7 +240,7 @@ solve(map(exp,ans[1]*(A*b-a*B)),y);
 
 /* 28 */
 (pn_(28),ans:contrib_ode(eqn:'diff(y,x)+x*y^2-x^3*y-2*x,y,x));
-false;
+[[y='diff(%u,x,1)/(%u*x),-'diff(%u,x,1)*(-x^4-1)+2*%u*x^3-'diff(%u,x,2)*x=0]];
 
 /* 29 */
 (pn_(29),ans:contrib_ode(eqn:'diff(y,x) - x*y^2 - 3*x*y,y,x));
@@ -242,7 +252,7 @@ solve(map(exp,3*ans[1]),y);
 
 /* 30 */
 (pn_(30),ans:contrib_ode(eqn:'diff(y,x)+x^(-a-1)*y^2-x^a,y,x));
-false;
+[[y='diff(%u,x,1)*x^(a+1)/%u,%u*x^(a+2*(-a-1))-'diff(%u,x,2)*x^(-a-1)+'diff(%u,x,1)*(-a-1)*x^(-a-2)=0]];
 
 /* 31 */
 assume(n>-1);
@@ -264,7 +274,9 @@ forget(n>-1);
 
 /* 33 */
 (pn_(33),ans:contrib_ode(eqn:'diff(y,x)-y^2*'diff(f(x),x)/g(x)+'diff(g(x),x)/f(x),y,x));
-false;
+[[y = -'diff(%u,x,1)*g(x)/(%u*'diff(f(x),x,1)),-'diff(%u,x,1)*('diff(f(x),x,2)/g(x)-'diff(f(x),x,1)*'diff(g(x),x,1)/g(x)^2)-%u*('diff(f(x),x,1))^2*'diff(g(x),x,1)/(f(x)*g(x)^2)+'diff(%u,x,2)*'diff(f(x),x,1)/g(x)=0]];
+method;
+riccati;
 
 /* 34 */
 (pn_(34),ans:contrib_ode(eqn:'diff(y,x)+f(x)*y^2+g(x)*y,y,x));
@@ -365,3 +377,7 @@ forget(a>1);
 
 
 /* 53 */
+
+
+(kill(besjident,besiident,beskident),done);
+done;

@@ -269,11 +269,11 @@ y=%c*%e^(x*sin(log(x))+a*x);
 
 /* 41  Riccati */
 
-/* 42  Riccati
-   Fails as can't solve 'diff(z,x,2) - x*'diff(z,x) + (x-1)*z = 0
-*/
+/* 42  Riccati */
 (pn_(42),ans:contrib_ode(eqn:'diff(y,x)+1-x=(x+y)*y,y,x));
-false;
+[[y = -'diff(%u,x,1)/%u,-'diff(%u,x,1)*x+%u*(x-1)+'diff(%u,x,2) = 0]];
+method;
+riccati;
 
 /* 43  Riccati */
 (pn_(43),ans:contrib_ode(eqn:'diff(y,x)=(x+y)^2,y,x));
@@ -289,9 +289,7 @@ y=tan(x-%c)-x;
 [method,trigsimp(ode_check(eqn,ans[1])),trigsimp(ode_check(eqn,ans[2]))];
 [lagrange,0,0];
 
-/* 44  Riccati
-   Fails as can't solve 'diff(z,x,2) + 2*x*'diff(z,x) + x^2*z = 0
-*/
+/* 44  Riccati */
 (pn_(44),ans:contrib_ode(eqn:'diff(y,x)=(x-y)^2,y,x));
 [[x = log(sqrt(%t)+1)/2-log(sqrt(%t)-1)/2+%c,y = x-sqrt(%t)],[x=-log(sqrt(%t)+1)/2+log(sqrt(%t)-1)/2+%c,y=x+sqrt(%t)]];
 solve(ans[1][2],sqrt(%t));
@@ -333,11 +331,7 @@ y=((x-1)*%e^(%c-x)-x+2)/(%e^(%c-x)-1);
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
-/* 47 Riccati 
-   Riccaati fails as can't solve 
-     'diff(z,x,2) + 2*x^2*'diff(z,x) + (x^4+2*x)*z = 0
-   but Lie works
-*/
+/* 47 Riccati */
 (pn_(47),ans:contrib_ode(eqn:'diff(y,x)=x*(2+x^3)-(2*x^2-y)*y,y,x));
 [(x*y-x^3+1)/(y-x^2) = %c];
 ans:first(solve(ans[1],y));
@@ -366,7 +360,7 @@ y = (x^3-%c*x^2-1)/(x-%c);
    Fails as can't solve 'diff(z,x,2) - sin(2*x)*'diff(z,x) + cos(2*x)*z = 0
 */
 (pn_(50),ans:contrib_ode(eqn:'diff(y,x)=cos(2*x)+(sin(2*x)+y)*y,y,x));
-false;
+[[y=-'diff(%u,x,1)/%u,-'diff(%u,x,1)*sin(2*x)+%u*cos(2*x)+'diff(%u,x,2) = 0]];
 
 /* 51 Riccati */
 
@@ -437,15 +431,15 @@ y=-3*%e^(3*x^2/2+3*%c)/(%e^(3*x^2/2+3*%c)-1);
 
 /* 65 Riccati - Can't solve 2nd order ode */
 (pn_(65),ans:contrib_ode(eqn:'diff(y,x)=1-x-x^3+(1+2*x^2)*y-x*y^2,y,x));
-false;
+[[y='diff(%u,x,1)/(%u*x),%u*x^2*(-x^3-x+1)-'diff(%u,x,1)*(-x*(2*x^2+1)-1)-'diff(%u,x,2)*x=0]];
 
 /* 66 Riccati - Can't solve 2nd order ode */
 (pn_(66),ans:contrib_ode(eqn:'diff(y,x)=x*(2+x^2*y-y^2),y,x));
-false;
+[[y='diff(%u,x,1)/(%u*x),-'diff(%u,x,1)*(-x^4-1)+2*%u*x^3-'diff(%u,x,2)*x=0]];
 
 /* 67 Riccati - Can't solve 2nd order ode */
 (pn_(67),ans:contrib_ode(eqn:'diff(y,x)=x+(1-2*x)*y-(1-x)*y^2,y,x));
-false;
+[[y=-'diff(%u,x,1)/(%u*(x-1)),%u*(x-1)^2*x+'diff(%u,x,2)*(x-1)-'diff(%u,x,1)*((1-2*x)*(x-1)+1)=0]];
 
 /* 68 */
 (pn_(68),ans:contrib_ode(eqn:'diff(y,x)=a*x*y^2,y,x));
@@ -457,20 +451,16 @@ y=-2/(a*x^2+2*%c*a);
 
 /* 70 Riccati */
 
-/* 72 Riccati 
-   Fails as can't solve 
-    -sin(x)'diff(z,x,2) + cos(x)*'diff(z,x) + 2*sec(x)^2*sin(x)^3*z = 0
-*/
+/* 72 Riccati */
 (pn_(72),ans:contrib_ode(eqn:'diff(y,x)=sin(x)*(2*sec(x)^2-y^2),y,x));
-false;
+[[y='diff(%u,x,1)/(%u*sin(x)),2*%u*sec(x)^2*sin(x)^3-'diff(%u,x,2)*sin(x)+'diff(%u,x,1)*cos(x)=0]];
 
 /* 73 Riccati */
 (pn_(73),ans:contrib_ode(eqn:'diff(y,x)+4*csc(x)=(3-cot(x))*y+sin(x)*y^2,y,x));
-false;
+[[y=-'diff(%u,x,1)/(%u*sin(x)),-4*%u*csc(x)*sin(x)^2-'diff(%u,x,1)*((3-cot(x))*sin(x)+cos(x))+'diff(%u,x,2)*sin(x)=0]];
 
 /* 74 */
 (pn_(74),ans:contrib_ode(eqn:'diff(y,x)=y*sec(x)+(sin(x)-1)^2,y,x));
-/*[y=-((-32*sin(x/2)-32*cos(x/2))*log(4/sqrt(sin(2*x)^2+4*sin(x)*sin(2*x)+cos(2*x)^2+(4*cos(x)+2)*cos(2*x)+4*sin(x)^2+4*cos(x)^2+4*cos(x)+1))+%i*((32*sin(x/2)+32*cos(x/2))*atan2(sin(2*x)+2*sin(x),cos(2*x)+2*cos(x)+1)+(-64*sin(x/2)-64*cos(x/2))*atan2((sin(x)^2+cos(x)^2-1)/(sin(x)^2+cos(x)^2+2*cos(x)+1),(sin(x)^2+2*sin(x)+cos(x)^2+2*cos(x)+1)/(sin(x)^2+cos(x)^2+2*cos(x)+1))-32*x*sin(x/2)-32*x*cos(x/2))+(32*sin(x/2)+32*cos(x/2))*log((2*sin(x)^2+4*sin(x)+2*cos(x)^2+2)/(sin(x)^2+cos(x)^2+2*cos(x)+1))-sin(5*x/2)-cos(5*x/2)-11*sin(3*x/2)+11*cos(3*x/2)+(8*%c-10)*sin(x/2)+(8*%c-10)*cos(x/2))/(8*sin(x/2)-8*cos(x/2))];*/
 [y = (tan(x)+sec(x))*(-8*(log(sin(x)^2/(cos(x)+1)^2+1)/4-log(sin(x)/(cos(x)+1)+1)/2+sin(x)/((cos(x)+1)*(2*sin(x)^2/(cos(x)+1)^2+2)))+8*(-log(sin(x)^2/(cos(x)+1)^2+1)/8+log(sin(x)/(cos(x)+1)+1)/4-(sin(x)^3/(cos(x)+1)^3-sin(x)^2/(cos(x)+1)^2+sin(x)/(cos(x)+1))/(4*sin(x)^4/(cos(x)+1)^4+8*sin(x)^2/(cos(x)+1)^2+4))+2*(log(sin(x)/(cos(x)+1)+1)-log(sin(x)^2/(cos(x)+1)^2+1)/2)+%c)];
 /* y = (tan(x)+sec(x))/(%c+sin(x)) ??? */
 [method,trigrat(ode_check(eqn,ans[1]))];
@@ -534,12 +524,24 @@ y=-sqrt(cos(x)/(%c*cos(x)+1))/sqrt(2);
 /* 99 */
 (pn_(99),ans:contrib_ode(eqn:'diff(y,x)=sqrt(y),y,x));
 [2*sqrt(y)=x+%c];
+[method,ode_check(eqn,ans[1])];
+[separable,0];
 
 /* 100 */
-/* (pn_(100),ans:contrib_ode(eqn:'diff(y,x)=a+by+sqrt(c+d*y),y,x)); */
+(pn_(100),ans:contrib_ode(eqn:'diff(y,x)=a+by+sqrt(c+d*y),y,x));
+[((-2*by-2*a)*log(sqrt(d*y+c)+by+a)+2*sqrt(d*y+c))/d = x+%c];
+[method,ode_check(eqn,ans[1])];
+[separable,0];
 
-/* 101 */
-/* (pn_(101),ans:contrib_ode(eqn:'diff(y,x)=a*x+b*sqrt(y),y,x)); */
+/* 101 CHECKME*/
+/* assume((b^2+8*a)>0,x>0);
+[b^2+8*a > 0,x > 0];
+(pn_(101),ans:contrib_ode(eqn:'diff(y,x)=a*x+b*sqrt(y),y,x));
+[x=%c*%e^-((b*sqrt(b^2+8*a)*log(-(-16*y^2+sqrt(b^2+8*a)*(sqrt(y)*(8*x*y+(-b^2-4*a)*x^3)+2*b*x^2*y+a*b*x^4)+2*b^2*x^2*y+(-b^3-8*a*b)*x^3*sqrt(y)+(a*b^2+4*a^2)*x^4)/(16*y^2+(-4*b^2-16*a)*x^2*y+4*a^2*x^4))+(b^2+8*a)*log(-(-2*y+b*x*sqrt(y)+a*x^2)/x^2))/(2*b^2+16*a))];
+forget((b^2+8*a)>0,x>0);
+[b^2+8*a>0,x>0];
+method;
+genhom; */
 
 /* 102 */
 (pn_(102),ans:contrib_ode(eqn:'diff(y,x)+x^3=x*sqrt(x^4+4*y),y,x));
@@ -567,20 +569,20 @@ assume(a>0,b>0);
 (pn_(104),ans:contrib_ode(eqn:'diff(y,x)=sqrt(a+b*y^2),y,x));
 [asinh(sqrt(b)*y/sqrt(a))/sqrt(b)=x+%c];
 ans:first(solve(ans[1],y));
-y =sqrt(a)*sinh(sqrt(b)*(x+%c))/sqrt(b);
+y=sqrt(a)*sinh(sqrt(b)*(x+%c))/sqrt(b);
 [method,trigsimp(ode_check(eqn,%))];
 [separable,0];
 forget(a>0,b>0);
 [a>0,b>0];
 
 /* 105 CHECKME*/
-/* assume(a>0);
+/*assume(a>0);
 [a>0];
 (pn_(105),ans:contrib_ode(eqn:'diff(y,x)=y*sqrt(a+b*y),y,x));
 [log(-(2*sqrt(a)*sqrt(b*y+a)-b*y-2*a)/(b*y))/sqrt(a) = x+%c];
 /* a+b*y = a*tanh(%c-x*sqrt(a)/2)^2 */
-method;
-separable;
+[method,ode_check(eqn,ans[1])];
+[separable,0];
 forget(a>0);
 [a>0]; */
 
@@ -817,7 +819,9 @@ linear;
 
 /* 141 Riccati */
 (pn_(141),ans:contrib_ode(eqn:2*'diff(y,x)+2*csc(x)^2=y*csc(x)*sec(x)+y^2*sec(x)^2,y,x));
-false;
+[[y=-2*'diff(%u,x,1)/(%u*sec(x)^2),-'diff(%u,x,1)*(sec(x)^2*tan(x)+csc(x)*sec(x)^3/4)-%u*csc(x)^2*sec(x)^4/4+'diff(%u,x,2)*sec(x)^2/2=0]];
+method;
+riccati;
 
 /* 142 - ode1_lie runs "forever"*/
 /* (pn_(142),ans:contrib_ode(eqn:2*'diff(y,x)=2*sin(y)^2*tan(y)-x*sin(2*y),y,x)); */
@@ -1131,17 +1135,17 @@ y = -x/(x^2+%c);
 (pn_(181),assume(a>0,b>0),ans:contrib_ode(eqn:x*'diff(y,x)+b*x+(2+a*x*y)*y=0,y,x),forget(a>0,b>0),ans);
 [-(sqrt(a)*sqrt(b)*(atan((a^2*x*y^2+a*y+a*b*x)/(sqrt(a)*sqrt(b)))-atan(sqrt(a)*y/sqrt(b)))-a*b*x)/(a*b)=%c];
 
-/* 182 Riccati 
-   Fails as can't solve -A3*'DIFF(z,x,2)-A2*A3*'DIFF(z,x,1)/x-A3^2*(A1*x+a0)*z/x = 0
-*/
+/* 182 Riccati */
 ans:contrib_ode(eqn:x*'diff(y,x)+a0+a1*x+(a2+a3*x*y)*y=0,y,x);
-false;
+[[y='diff(%u,x,1)/(%u*a3),%u*a3^2*(-a0/x-a1)-'diff(%u,x,1)*a2*a3/x-'diff(%u,x,2)*a3=0]];
+method;
+riccati;
 
-/* 183 Riccati 
-   Fails as can't solve  -a*x*'DIFF(z,x,2)-a*'DIFF(z,x,1)+a^2*b*x*z = 0
-*/
+/* 183 Riccati */
 (pn_(183),ans:contrib_ode(eqn:x*'diff(y,x)+a*x^2*y^2+2*y=b,y,x));
-false;
+[[y='diff(%u,x,1)/(%u*a*x),%u*a^2*b*x-'diff(%u,x,2)*a*x-'diff(%u,x,1)*a=0]];
+method;
+riccati;
 
 /* 184 Riccati */
 assume(not equal(m+n,0));
@@ -1161,13 +1165,17 @@ ans:map(radcan,ans);
 [method,ode_check(eqn,ans[1])];
 [bernoulli,0];
 
-/* 186 Riccati - Can't solve 2nd order linear ode*/
+/* 186 */
 (pn_(186),ans:contrib_ode(eqn:x*'diff(y,x)=a*x^m-b*y-c*x^n*y^2,y,x));
-false; 
+[[y='diff(%u,x,1)*x^(1-n)/(%u*c),-'diff(%u,x,2)*c*x^(n-1)-'diff(%u,x,1)*(b*c*x^(n-2)-c*(n-1)*x^(n-2))+%u*a*c^2*x^(2*(n-1)+m-1)=0]];
+method;
+riccati;
 
-/* 187 Riccati - Can't solve 2nd order linear ode */
+/* 187 */
 (pn_(187),ans:contrib_ode(eqn:x*'diff(y,x)=2*x-y+a*x^n*(x-y)^2,y,x));
-false;
+[[y=-'diff(%u,x,1)*x^(1-n)/(%u*a),%u*a^2*x^(2*(n-1))*(a*x^(n+1)+2)-'diff(%u,x,1)*(a*x^(n-1)*(-2*a*x^n-1/x)+a*(n-1)*x^(n-2))+'diff(%u,x,2)*a*x^(n-1)=0]];
+method;
+riccati;
 
 /* 188 */
 (pn_(188),ans:contrib_ode(eqn:x*'diff(y,x)+(1-a*y*log(x))*y=0,y,x));
@@ -1319,9 +1327,11 @@ ans:contrib_ode(eqn:3*x*'diff(y,x)=3*x^(2/3)+(1-3*y)*y,y,x);
 [method,trigsimp(ode_check(eqn,ans[1]))];
 [riccati,0];
 
-/* 266 Riccati - Can't solve 2nd order linear ode */
+/* 266 */
 (pn_(266),ans:contrib_ode(eqn:x^2*'diff(y,x)=a+b*x^n+x^2*y^2,y,x));
-false;
+[[y=-'diff(%u,x,1)/%u,%u*(b*x^(n-2)+a/x^2)+'diff(%u,x,2)=0]];
+method;
+riccati;
 
 /* 267 Riccati */
 (pn_(267),ans:contrib_ode(eqn:x^2*'diff(y,x)+2+x*y*(4+x*y)=0,y,x));
@@ -1329,13 +1339,17 @@ false;
 method;
 genhom;
 
-/* 268 Riccati - Can't solve 2nd order linear ode */
+/* 268 */
 (pn_(268),ans:contrib_ode(eqn:x^2*'diff(y,x)+2+a*x*(1-x*y)-x^2*y^2=0,y,x));
-false;
+[[y=-'diff(%u,x,1)/%u,%u*(-a/x-2/x^2)-'diff(%u,x,1)*a+'diff(%u,x,2)=0]];
+method;
+riccati;
 
-/* 270 Riccati - Can't solve 2nd order linear ode */
+/* 270 */
 (pn_(270),ans:contrib_ode(eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2,y,x));
-false;
+[[y=-'diff(%u,x,1)/(%u*c),%u*c^2*(b*x^(n-2)+a/x^2)+'diff(%u,x,2)*c=0]];
+method;
+riccati;
 
 /* 271 Riccati */
 (pn_(271),assume(4*a*c-b^2-2*b-1>0),ans:contrib_ode(eqn:x^2*'diff(y,x)=a+b*x*y+c*x^2*y^2,y,x),forget(4*a*c-b^2-2*b-1>0),ans);
@@ -1343,9 +1357,9 @@ false;
 method;
 genhom;
 
-/* 272 Riccati - fails as can't solve 2nd order linear ode */
+/* 272 */
 (pn_(272),ans:contrib_ode(eqn:x^2*'diff(y,x)=a+b*x*y+c*x^4*y^2,y,x));
-false;
+[[y=-'diff(%u,x,1)/(%u*c*x^2),%u*a*c^2*x^2+'diff(%u,x,2)*c*x^2-'diff(%u,x,1)*(b*c*x+2*c*x)=0]];
 
 /* 275 - Abel eqn of 1st kind */
 (pn_(275),ans:contrib_ode(eqn:x^2*'diff(y,x)=a*x^2*y^2-a*y^3,y,x));
@@ -1355,10 +1369,7 @@ false;
 (pn_(276),ans:contrib_ode(eqn:x^2*'diff(y,x)+a*y^2+b*x^2*y^3=0,y,x));
 false;
 
-/* 300 Riccati 
-   Fails as can't solve -'DIFF(z,x,2)/(x^2-1)-z/(x^2-1)^3 = 0
-   Lie symmetry method works 
-*/
+/* 300 Riccati - Lie symmetry method works */
 (pn_(300),ans:contrib_ode(eqn:(1-x^2)*'diff(y,x)=1-(2*x-y)*y,y,x));
 [-((log(x+1)-log(x-1))*y-x*log(x+1)+x*log(x-1)+2)/(2*y-2*x) = %c];
 ans:first(solve(ans[1],y));
@@ -1372,9 +1383,11 @@ y = (x*log(x+1)-x*log(x-1)+2*%c*x-2)/(log(x+1)-log(x-1)+2*%c);
 (pn_(304),ans:contrib_ode(eqn:(1+x^2)*'diff(y,x)=1+y^2-2*x*y*(1+y^2),y,x)); 
 false;
 
-/* 311 Riccati - Fails as can't solve 2nd order linear ode */
+/* 311 */
 (pn_(311),ans:contrib_ode(eqn:(a^2+x^2)*'diff(y,x)=a^2+3*x*y-2*y^2,y,x));
-false;
+[[y = 'diff(%u,x,1)*(x^2+a^2)/(2*%u),-2*'diff(%u,x,2)/(x^2+a^2)+2*'diff(%u,x,1)*x/(x^2+a^2)^2+4*%u*a^2/(x^2+a^2)^3=0]];
+method;
+riccati;
 
 /* 324 Riccati */
 
@@ -1402,9 +1415,11 @@ y=(2*x^2+%c)/(x+%c);
 [method,radcan(ode_check(eqn,ans[1]))];
 [linear,0];
 
-/* 338 Riccati - Fails as can't solve 2nd order linear ode */
+/* 338 */
 (pn_(338),ans:contrib_ode(eqn:2*x*(1-x)*'diff(y,x)+x+(1-2*x)*y^2=0,y,x));
-false;
+[[y='diff(%u,x,1)*(2*x^2-2*x)/(%u*(2*x-1)),-'diff(%u,x,1)*((2*x-1)*(4*x-2)/(2*x^2-2*x)^2-2/(2*x^2-2*x))-'diff(%u,x,2)*(2*x-1)/(2*x^2-2*x)+%u*(2*x-1)^2/((2*x-2)*(2*x^2-2*x)^2)=0]];
+method;
+riccati;
 
 /* 345 - Abel eqn of 1st kind */
 (pn_(345),ans:contrib_ode(eqn:(a+b*x)^2*'diff(y,x)+c*y^2+(a+b*x)*y^3=0,y,x));
@@ -1452,20 +1467,23 @@ ans:contrib_ode(eqn:x^4*'diff(y,x)+a^2+x^4*y^2=0,y,x);
 forget(a>0);
 [a>0];
 
-/* 377 Riccati - Fails as can't solve 2nd order linear ode */
+/* 377 */
 (pn_(377),ans:contrib_ode(eqn:x*(1-x^3)*'diff(y,x)=x^2+(1-2*x*y)*y,y,x));
-false;
+[[y=-'diff(%u,x,1)*(x^3-1)/(2*%u),-'diff(%u,x,1)*(-2/((x^3-1)*(x^4-x))-6*x^2/(x^3-1)^2)+2*'diff(%u,x,2)/(x^3-1)-4*%u*x/(x^3-1)^3=0]];
+method;
+riccati;
 
 /* 380 Riccati */
 
-/* 383 Abel eqn of 1st kind - ode1_lie problems */
-/*(pn_(383),ans:contrib_ode(eqn:x^7*'diff(y,x)+5*x^3*y^2+2*(1+x^2)*y^3=0,y,x));*/
-
-/* 385 Riccati 
-  Can't solve -'DIFF(z,x,2)/x^n-n*x^(-n-1)*'DIFF(z,x,1)+x^(-n-1)*z = 0
-*/
-(pn_(385),ans:contrib_ode(eqn:x^n*'diff(y,x)=x^(2*n-1)-y^2,y,x));
+/* 383 Abel eqn of 1st kind */
+(pn_(383),ans:contrib_ode(eqn:x^7*'diff(y,x)+5*x^3*y^2+2*(1+x^2)*y^3=0,y,x));
 false;
+
+/* 385 Riccati */
+(pn_(385),ans:contrib_ode(eqn:x^n*'diff(y,x)=x^(2*n-1)-y^2,y,x));
+[[y='diff(%u,x,1)*x^n/%u,-'diff(%u,x,2)/x^n-'diff(%u,x,1)*n*x^(-n-1)+%u*x^(-n-1) = 0]];
+method;
+riccati;
 
 /* 387 Riccati */
 (pn_(387),ans:contrib_ode(eqn:x^n*'diff(y,x)+x^(2*n-2)+y^2+(1-n)*x^(n-1)*y=0,y,x));

@@ -1,21 +1,27 @@
 -*- mode: Text;  -*-
 
 The files in this directory are a testsuite for and demonstartion of
-the contrib_ode routines.  The command "make check" will test an
-installed maxima
+the contrib_ode routines.  The command "make check" will test the 
+local maxima.
 
 README
 Makefile 
-tests.lisp             - Driver adapted from tests/tests.lisp
-summarize-log          - Copy of tests/summarize-log
+testsuite.lisp         - Driver adapted from tests/testsuite.lisp
 rtest_sym.mac          - unit tests for ode1_lie.mac functions
 rtest_sym2.mac         - unit tests for ode1_lie.mac functions
 rtest_ode1_riccati.mac - unit tests for ode1_riccati.mac functions
+rtest_ode1_abel.mac    - unit tests for ode1_abel.mac functions
 rtestode_murphy1.mac   - ODEs from Murphy Appendix A.1
 rtestode_murphy2.mac   - ODEs from Murphy Appendix A.2
+rtestode_kamke_1_1.mac - ODEs from Kamke  1.1   - 1.100
+rtestode_kamke_1_2.mac - ODEs from Kamke  1.101 - 1.200
+rtestode_kamke_1_3.mac - ODEs from Kamke  1.201 - 1.300
 
 
-  Reference: 
+  References:
+ 
     G M Murphy, Ordinary Differential Equations and Their 
     Solutions, Van Nostrand, 1960
 
+    E Kamke, Differentialgleichungen Losungsmethoden und Losungen, 
+    Vol 1, Geest & Portig, Leipzig, 1961
