@@ -139,16 +139,16 @@ AC_ARG_WITH(default-lisp,
 			fi
 		fi
 	fi])
-dnl AC_ARG_WITH(elispdir,
-dnl	[--with-elispdir=<dir>            Install (X)Emacs lisp files in <dir>],
-dnl	[lispdir=$withval],
-dnl	[AM_PATH_LISPDIR])
+AC_ARG_WITH(elispdir,
+	[--with-elispdir=<dir>            Install (X)Emacs lisp files in <dir>],
+	[lispdir=$withval],
+	[AM_PATH_LISPDIR])
 
 AC_SUBST(CLISP_NAME)
 AC_SUBST(CMUCL_NAME)
 AC_SUBST(GCL_NAME)
 AC_SUBST(DEFAULTLISP)
-AC_OUTPUT(Makefile src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile)
+AC_OUTPUT(Makefile src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile)
 
 echo
 echo "Summary:"
