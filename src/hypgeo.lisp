@@ -42,7 +42,11 @@
 
 (defun cos%(arg)(list '(%cos) arg))
 
-(defun neginp (a) (cond ((maxima-integerp a)(or (zerp a)(minusp a)))))
+;; Return T if a is a non-positive integer.
+;; (Do we really want maxima-integerp or hyp-integerp here?)
+(defun neginp (a)
+  (cond ((maxima-integerp a)
+	 (or (zerp a) (minusp a)))))
 
 (defun notnump(x)(not (nump x)))
 
@@ -876,8 +880,15 @@
     (pow)
   (mul* (gm (add pow 1))(power par (sub (mul -1 pow) 1))))
 
-(defun f24p146
-    (c v a)
+;; Table of Integral Transforms
+;;
+;; p. 146, formula 24:
+;;
+;; t^(v-1)*exp(-t^2/8/a)
+;;   -> gamma(v)*2^v*a^(v/2)*exp(a*p^2)*D[-v](2*p*sqrt(a))
+;;
+;; Re(a) > 0, Re(v) > 0
+(defun f24p146 (c v a)
   (mul* c
 	(gm v)
 	(power 2 v)
@@ -885,24 +896,46 @@
 	(power '$%e (mul* a par par))
 	(dtford (mul* 2 par (power a (1//2)))(mul -1 v))))
 
-(defun f35p147
-    (c v a)
+;; Table of Integral Transforms
+;;
+;; p. 147, formula 35:
+;;
+;; (2*t)^(v-1)*exp(-2*sqrt(a)*sqrt(t))
+;;    -> gamma(2*v)*p^(-v)*exp(a/p/2)*D[-2*v](sqrt(2*a/p))
+;;
+;; Re(v) > 0, Re(p) > 0
+(defun f35p147 (c v a)
   (mul* c
 	(gm (add v v))
-	(power 2 (sub 1 v))
+	(power 2 (sub 1 v))		; Is this supposed to be here?
 	(power par (mul -1 v))
-	(power '$%e (mul* a (1//2)(inv par)))
-	(dtford (power (mul* 2 a (inv par))(1//2))(mul -2 v))))
+	(power '$%e (mul* a (1//2) (inv par)))
+	(dtford (power (mul* 2 a (inv par))
+		       (1//2))
+		(mul -2 v))))
 
+;; Table of Integral Transforms
+;;
+;; p. 146, formula 29:
+;;
+;; t^(v-1)*exp(-a/t/4)
+;;    -> 2*(a/p/4)^(v/2)*bessel_k(v, sqrt(a)*sqrt(p))
+;;
+;; Re(a) > 0
 (defun f29p146 (v a)
   (mul* 2
-	(power (mul* a (inv 4)(inv par))(div v 2))
+	(power (mul* a (inv 4) (inv par))
+	       (div v 2))
 	(ktfork a v)))
 
-(defun ktfork
-    (a v)
+;; bessel_k(v, sqrt(a)*sqrt(p)) in terms of bessel_k or in terms of
+;; hypergeometric functions.
+;;
+;; Choose bessel_k if the order v is an integer.
+(defun ktfork (a v)
   ((lambda(z)
-     (cond ((maxima-integerp v)(kmodbes z v))
+     (cond ((maxima-integerp v)
+	    (kmodbes z v))
 	   (t (simpktf z v))))
    (power (mul* a par)(1//2))))
 
@@ -1705,11 +1738,28 @@
       (neginp (sub (sub (1//2) i2) i1))
       (neginp (sub (add (1//2) i2) i1))))
 
-(defun init(r)(mul* r (power '$%e (mul* -1 var par))))
+;; Compute r*exp(-var*par).
+;;
+;; (Probably r*exp(-p*t), where t is the variable of integration and p
+;; is the parameter of the Laplace transform.)
+(defun init (r)
+  (mul* r (power '$%e (mul* -1 var par))))
 
-(defun ltw
-    (x n a)
-  ((lambda(diva2)
+;; (-1)^n*n!*laguerre(n,a,x) = U(-n,a+1,x)
+;;
+;; W[k,u](z) = exp(-z/2)*z^(u+1/2)*U(1/2+u-k,1+2*u,z)
+;;
+;; So
+;;
+;; laguerre(n,a,x) = (-1)^n*U(-n,a+1,x)/n!
+;;
+;; U(-n,a+1,x) = exp(z/2)*z^(-a/2-1/2)*W[1/2+a/2+n,a/2](z)
+;;
+;; Finally,
+;;
+;; laguerre(n,a,x) = (-1)^n/n!*exp(z/2)*z^(-a/2-1/2)*W[1/2+a/2+n,a/2](z)
+(defun ltw (x n a)
+  ((lambda (diva2)
      (mul* (power -1 n)
 	   (inv (factorial n))
 	   (power x (sub (inv -2) diva2))
@@ -1746,12 +1796,39 @@
 	   (pjac x n inv2 inv2)))
    (1//2)))
 
-(defun hetd(x n)(mul* (power '$%e (mul* x x (inv 4)))(parcyl x n)))
+;; Hermite He function as a parabolic cylinder function
+;; 
+;; Tables of Integral Transforms
+;;
+;; p. 386
+;;
+;; D[n](z) = (-1)^n*exp(z^2/4)*diff(exp(-z^2/2),z,n);
+;;
+;; p. 369
+;;
+;; He[n](x) = (-1)^n*exp(x^2/2)*diff(exp(-x^2/2),x,n)
+;;
+(defun hetd (x n)
+  (mul* (power '$%e (mul* x x (inv 4)))
+	(parcyl x n)))
 
+;; erfc in terms of D, parabolic cylinder function
+;;
+;; Tables of Integral Transforms
+;;
+;; p 387:
+;; erfc(x) = (%pi*x)^(-1/2)*exp(-x^2/2)*W[-1/4,1/4](x^2)
+;;
+;; p 386:
+;; D[v](z) = 2^(v/2+1/2)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
+;;
+;; So
+;;
+;; erfc(x) = %pi^(-1/2)*2^(1/4)*exp(-x^2/2)*D[-1](x*sqrt(2))
 (defun erfctd
     (x)
   ((lambda(inv2)
-     (mul* (power 2 inv2)
+     (mul* (power 2 inv2)		; Should this be 2^(1/4)?
 	   (power '$%pi (mul* -1 inv2))
 	   (power '$%e (mul* -1 inv2 x x))
 	   (parcyl (mul* (power 2 inv2) x) -1)))
@@ -1770,8 +1847,13 @@
 		     (mul* (cos% arg)(bess n z 'y))))))
    (mul* (1//2) '$%pi (sub m n))))
 
-(defun wtm
-    (a i1 i2)
+;; Whittaker W function in terms of Whittaker M function
+;;
+;; A&S 13.1.34
+;;
+;; W[k,u](z) = gamma(-2*u)/gamma(1/2-u-k)*M[k,u](z)
+;;              + gamma(2*u)/gamma(1/2+u-k)*M[k,-u](z)
+(defun wtm (a i1 i2)
   (add (mul* (gm (mul -2 i2))
 	     (mwhit a i1 i2)
 	     (inv (gm (sub (sub (1//2) i2) i1))))
@@ -1779,8 +1861,12 @@
 	     (mwhit a i1 (mul -1 i2))
 	     (inv (gm (sub (add (1//2) i2) i1))))))
 
-(defun gammaincompletetw
-    (a x)
+;; Tail of the incomplete gamma function as a Whittaker W function
+;;
+;; Tables of Integral Transforms, p. 387
+;;
+;; gammaincomplete(a,x) = x^((a-1)/2)*exp(-x/2)*W[(a-1)/2,a/2](x)
+(defun gammaincompletetw (a x)
   (mul* (power x (div (sub a 1) 2))
 	(power '$%e (div x -2))
 	(wwhit x (div (sub a 1) 2)(div a 2))))
@@ -1813,6 +1899,12 @@
        (mul* (bess (mul -1 i) a 'j)
 	     (inv (sin% (mul i '$%pi))))))
 
+;; Express parabolic cylinder function as a Whittaker W function.
+;;
+;; See Table of Integral Transforms, p.386:
+;;
+;; D[v](z) = 2^(v/2+1/2)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
+;;
 (defun dtw (i a)
   (mul* (power 2 (add (div i 2)(inv 4)))
 	(power a (inv -2))
@@ -1820,18 +1912,30 @@
 	       (add (div i 2)(inv 4))
 	       (inv 4))))
 
+;; Bateman's function as a Whittaker W function
+;;
+;; See Table of Integral Transforms, p.386:
+;;
+;; k[2*v](z) = 1/gamma(v+1)*W[v,1/2](2*z)
+;;
+;; (But this function seems to have v = 1/2.)
 (defun kbatemantw (a)
   ((lambda(ind)
      (div (wwhit (add a a) ind (1//2))
 	  (gm (add ind 1))))
    (div 1 2)))
 
-(defun kti
-    (i a)
+;; Bessel K in terms of Bessel I.
+;;
+;; A&S 9.6.2
+;;
+;; bessel_k(v,z) = %pi/2*(bessel_i(-v,z)-bessel_i(v,z))/sin(v*%pi)
+(defun kti (i a)
   (mul* '$%pi
 	(1//2)
 	(inv (sin% (mul i '$%pi)))
-	(sub (bess (mul -1 i) a 'i)(bess i a 'i))))
+	(sub (bess (mul -1 i) a 'i)
+	     (bess i a 'i))))
 
 (defun 1fact
     (flg v)
@@ -2287,6 +2391,11 @@
 		    (mul k k))))
    (1//2)))
 
+;; Complete elliptic E
+;;
+;; A&S 17.3.10
+;;
+;; E(k) = %pi/2*F(-1/2,1/2;1;k^2)
 (defun etf
     (k)
   ((lambda(inv2)
