@@ -1,3 +1,266 @@
+2004-06-21 22:00  amundson
+
+	* README.rpms, maxima.spec.in: rpm updates
+
+2004-06-21 22:00  amundson
+
+	* interfaces/xmaxima/Makefile.am: bug fix: some files were missing
+	  from tarball.
+
+2004-06-21 21:58  amundson
+
+	* src/mactex.lisp: Bug fix from Andrej Grozin.
+
+2004-06-21 20:41  amundson
+
+	* doc/info/Makefile.am, interfaces/xmaxima/Makefile.am,
+	  Makefile.am, README.lisps, README.rpms: updates for 5.9.1
+	  release.
+
+2004-06-21 20:39  amundson
+
+	* admin/sfquery.py: small bug fix.
+
+2004-06-21 20:36  amundson
+
+	* AUTHORS: Add everyone with cvs write access.
+
+2004-06-15 03:31  starseeker
+
+	* share/contrib/lurkmathml/: README, mathml.lisp,
+	  mathml_ref_list_for_IE, mathmltest, maximadiffs.txt: Uploaded
+	  David Drysdale's mathml code for Maxima, which seems to have a
+	  little bit different functionality than Paul Wang's.
+
+2004-06-13 21:25  billingd
+
+	* interfaces/xmaxima/win32/Makefile.in: Add some fixes for windows
+	  release.  While not perfect, these document the fixes required to
+	  generate a working maxima/xmaxima.  I have chosen to hack
+	  maxima-init-lisp so that the changes are accessible to users.
+
+	  During installation  - maxima.bat must have DOS line termination
+	  on win95
+
+	  Add code to maxima-init.lisp to:  - Set path to gcc by prefixing
+	  compiler::*cc* with *maxima-prefix\bin  - Ensure path to gcc is
+	  '\' separated. Required for win95  - Set default PLOT_FORMAT to
+	  OPENMATH so xmaxima plotting works out of box
+
+2004-06-13 21:14  billingd
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Update to recognise
+	  changes to maxima prompts  - allow both C and %i as input prefix
+	  - allow both D and %o as output prefix
+
+2004-06-13 21:10  billingd
+
+	* interfaces/xmaxima/intro.html: Link to local copy of maxima
+	  manual, rather than the out of date copy at
+	  http://www.ma.utexas.edu/maxima/
+
+2004-06-03 21:22  amundson
+
+	* INSTALL, NEWS, README, README.external, README.lisps: Updates for
+	  5.9.1
+
+2004-05-28 04:50  starseeker
+
+	* share/contrib/mcclim/: listeneroutput.png, postscriptoutput.png:
+	  Second attempt to upload these correctly (used cvs add -kb this
+	  time)
+
+2004-05-28 04:49  starseeker
+
+	* share/contrib/mcclim/: listeneroutput.png, postscriptoutput.png:
+	  didn't commit these properly as binary files
+
+2004-05-27 21:54  starseeker
+
+	* share/contrib/mcclim/: README, formula.lisp, listeneroutput.png,
+	  postscriptoutput.png: Adding Andy Hefner's McCLIM code for
+	  displaying math formulas.  It doesn't have any abilities to
+	  interface with Maxima yet.
+
+2004-05-24 21:40  billingd
+
+	* src/solve.lisp, tests/rtest15.mac: Fix for bug calculating
+	  eigenvalues() with multiple roots
+
+	  For example,
+	  eigenvalues(matrix([3,1,0,0],[-4,-1,0,0],[7,1,2,1],[-17,-6,-1,0]));
+
+	  Patch by Barton Willis, reviewed by Gosei Furuya.
+
+2004-05-22 09:23  vttoth
+
+	* share/tensor/: ctensr.mac, itensor.lisp: Additional minor fixes
+	  to CTENSR/ITENSOR.
+
+2004-05-20 13:12  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: Added the function
+	  `maxima-clear-queue', which gets rid of all commands waiting to
+	  be sent to Maxima.  Had `maxima-clear-queue' called whenever the
+	  maxima process is killed.
+
+2004-05-19 22:14  wjenkner
+
+	* tests/rtest15.mac: Add test case for #956730 from Stavros
+	  Macrakis.
+
+2004-05-19 22:12  wjenkner
+
+	* src/defint.lisp: (sinrx): Check that the argument is not atomic.
+	  Observed by Stavros Macrakis (#956730).
+
+2004-05-17 20:26  billingd
+
+	* share/Makefile.am: Update list of files in
+	  share/contrib/diffequations/tests
+
+2004-05-16 07:08  billingd
+
+	* share/contrib/diffequations/tests/: rtest_ode1_abel.mac,
+	  rtest_ode1_riccati.mac, rtest_sym.mac, rtest_sym2.mac,
+	  rtestode_murphy1.mac, rtestode_murphy2.mac: Update tests in
+	  share/contrib/diffequations/tests.  Move loading of files to the
+	  Makefile.  Turn of verbose output from contrib_ode.mac.
+
+2004-05-16 07:03  billingd
+
+	* share/contrib/diffequations/tests/: Makefile, summarize-log,
+	  tests.lisp, testsuite.lisp: Convert
+	  share/contrib/diffequations/tests directory to use the new (April
+	  2004) testsuite driver routines.
+
+2004-05-16 06:41  billingd
+
+	* share/contrib/diffequations/tests/: rtestode_murphy1.mac,
+	  rtestode_murphy2.mac: Change all upper-case %T to lower-case %t
+	  in expected answers.
+
+2004-05-16 06:33  billingd
+
+	* share/contrib/diffequations/ode1_abel.mac: ode1_abel.mac
+	  (ode1_abel2):  Return correct result when not verbose.
+
+2004-05-14 17:27  amundson
+
+	* src/mactex.lisp: fix for tex(%) from Jay Belanger.
+
+2004-05-14 17:25  amundson
+
+	* src/suprv1.lisp: Set %i=%I to work around case problems after
+	  inchar change.
+
+2004-05-14 15:21  vttoth
+
+	* share/Makefile.am: Makefile update for the tensor package
+
+2004-05-14 13:25  vttoth
+
+	* share/tensor/: lckdt.mac, ten_alg.dem: Adding a missing macro
+	  file.
+
+2004-05-14 10:49  vttoth
+
+	* share/tensor/: ex_calc.mac, itensor.lisp: Yet another fix to
+	  KDELTA contraction.
+
+2004-05-13 15:38  amundson
+
+	* tests/rtest7.mac: Update to new default value of linechar. In
+	  addition, explicity set linechar so that tests are not sensitive
+	  to default values.
+
+2004-05-12 10:07  vttoth
+
+	* share/tensor/: canten.lisp, ex_calc.mac, itensor.lisp, lch.mac,
+	  symtry.lisp, ten_alg.dem: One more round of fixes, mainly to
+	  solve problems with KDELTA, LC, and contractions involving
+	  numeric indices.
+
+2004-05-11 20:41  amundson
+
+	* src/mactex.lisp: Set %i=%I to work around case problems after
+	  inchar change. Several fixes from Jay Belanger.
+
+2004-05-11 14:49  belanger
+
+	* interfaces/emacs/emaxima/: maxima.el, emaxima.el, emaxima.sty:
+	  Made changes for the new prompts.
+
+2004-05-10 21:29  amundson
+
+	* maxima.spec.in: Updates for 5.9.1. There are some very unclean
+	  hacks in this version. I hope they can be cleaned up when they
+	  are better understood.
+
+2004-05-10 21:27  amundson
+
+	* src/commac.lisp, src/mactex.lisp, src/suprv1.lisp,
+	  doc/info/Trigonometric.texi, doc/info/Affine.texi,
+	  doc/info/Command.texi, doc/info/Ctensor.texi,
+	  doc/info/Debugging.texi, doc/info/Differential.texi,
+	  doc/info/Differentiation.texi, doc/info/Elliptic.texi,
+	  doc/info/Equations.texi, doc/info/Expressions.texi,
+	  doc/info/Floating.texi, doc/info/Function.texi,
+	  doc/info/Groups.texi, doc/info/Help.texi, doc/info/Input.texi,
+	  doc/info/Integration.texi, doc/info/Introduction.texi,
+	  doc/info/Lists.texi, doc/info/Logarithms.texi,
+	  doc/info/Matrices.texi, doc/info/None.texi, doc/info/Number.texi,
+	  doc/info/Numerical.texi, doc/info/Operators.texi,
+	  doc/info/Plotting.texi, doc/info/Polynomials.texi,
+	  doc/info/Program.texi, doc/info/Rules.texi,
+	  doc/info/Runtime.texi, doc/info/Series.texi,
+	  doc/info/SpecfunII.texi, doc/info/Special.texi,
+	  doc/info/Symmetries.texi, doc/info/Tensor.texi: Change default
+	  $inchar to %i, $outchar to %o and $linechar to %t.
+
+2004-05-10 12:05  rtoy
+
+	* doc/info/Integration.texi: Add rudimentary documentation for the
+	  quadpack routines.
+
+2004-05-08 17:47  wjenkner
+
+	* src/trans4.lisp: Fix translation of rules.
+
+	  (def%tr $matchdeclare): Insert a space between $any and  `.'
+
+	  (patch-up-meval-in-fset, defun-prop (lambda tr-lisp->lisp)): Here
+	  is an example due to Barton Willis: Translating a file containing
+
+	  matchdeclare(x,true); tellsimpafter(f(x),0);
+
+	  resulted in lisp code containing
+
+	  (DEFUN |$fRULE1|	  (LAMBDA (X ANS A3) ...))
+
+2004-05-07 06:45  vttoth
+
+	* share/tensor/ex_calc.mac: Fixing the interior product and the
+	  Lie-derivative.
+
+2004-05-06 19:21  vttoth
+
+	* share/: Makefile.am, tensor/ademo-2steps.dem, tensor/ademo.dem,
+	  tensor/ex_calc.dem, tensor/ex_calc.mac, tensor/itensor.dem,
+	  tensor/itensor.lisp, tensor/kaluza.dem, tensor/kaluza.mac,
+	  tensor/ten_alg.dem: Fixed INDICES in itensor, the interior
+	  product in ex_calc, and several demos.
+
+2004-05-06 01:26  billingd
+
+	* share/contrib/diffequations/tests/: rtest_ode1_abel.mac,
+	  rtestode_murphy1.mac: Update tests for Abel equations of first
+	  and second kind.
+
+2004-05-05 21:56  amundson
+
+	* ChangeLog: updated by cvs2cl
+
 2004-05-05 21:48  billingd
 
 	* share/contrib/diffequations/ode1_abel.mac: 2004-05-06  David
@@ -2722,6 +2985,41 @@
 	* interfaces/emacs/emaxima/maxima.el: Some regular expressions were
 	  fixed.
 
+2003-03-14 21:29  starseeker
+
+	* doc/misc/lisdir/: acall.lis, algfac.lis, algsys.lis, ar.lis,
+	  askp.lis, asum.lis, bessel.lis, buildq.lis, cl-info.lis,
+	  clmacs.lis, combin.lis, comm.lis, comm2.lis, commac.lis,
+	  compar.lis, compat.lis, cpoly.lis, csimp.lis, csimp2.lis, db.lis,
+	  defcal.lis, defint.lis, defopt.lis, desoln.lis, displa.lis,
+	  displm.lis, dskfn.lis, elim.lis, ellipt.lis, evalw.lis,
+	  ezgcd.lis, factor.lis, fcall.lis, float.lis, fortra.lis,
+	  generr.lis, grind.lis, hayat.lis, homog.lis, hyp.lis, hypgeo.lis,
+	  inmis.lis, intpol.lis, invert.lis, irinte.lis, laplac.lis,
+	  ldisp.lis, lesfac.lis, letmac.lis, limit.lis, linnew.lis,
+	  lmdcls.lis, logarc.lis, macdes.lis, macsys.lis, mactex.lis,
+	  marray.lis, mat.lis, matcom.lis, matrix.lis, matrun.lis,
+	  maxmac.lis, mdebug.lis, mdefun.lis, mdot.lis, merror.lis,
+	  mforma.lis, mformt.lis, mhayat.lis, misc.lis, mlisp.lis,
+	  mload.lis, mmacro.lis, mopers.lis, mormac.lis, mrgmac.lis,
+	  mstuff.lis, mtrace.lis, mutils.lis, nalgfa.lis, newdet.lis,
+	  newinv.lis, nforma.lis, nisimp.lis, nparse.lis, nrat4.lis,
+	  nregex.lis, numer.lis, numerm.lis, numth.lis, nusum.lis,
+	  ode2.lis, opers.lis, optim.lis, option.lis, outmis.lis, pade.lis,
+	  plot.lis, pois2.lis, pois3.lis, polyrz.lis, procs.lis,
+	  psolve.lis, rat3a.lis, rat3b.lis, rat3c.lis, rat3d.lis,
+	  rat3e.lis, ratmac.lis, ratout.lis, ratpoi.lis, residu.lis,
+	  result.lis, risch.lis, rombrg.lis, rpart.lis, runtim.lis,
+	  rzmac.lis, schatc.lis, scs.lis, series.lis, simp.lis, sin.lis,
+	  sinint.lis, sloop.lis, solve.lis, specfn.lis, spgcd.lis,
+	  sprdet.lis, strmac.lis, sublis.lis, sumcon.lis, suprv1.lis,
+	  tlimit.lis, todd-coxeter.lis, trans1.lis, trans2.lis, trans3.lis,
+	  trans4.lis, trans5.lis, transf.lis, transl.lis, transm.lis,
+	  transq.lis, transs.lis, trdata.lis, trgred.lis, trgsmp.lis,
+	  trigi.lis, trigo.lis, trmode.lis, troper.lis, trpred.lis,
+	  trprop.lis, trutil.lis, ufact.lis, utils.lis, zero.lis:
+	  Removed the lis files.
+
 2003-03-12 21:49  wjenkner
 
 	* src/suprv1.lisp: KILL1: Ugly kludge to make SBCL recognise the
@@ -2965,8 +3263,61 @@
 	  maximaitemspresentinbothfunctionandvariablescans.txt,
 	  maximavariables.txt, maximavariablesundocumented.txt,
 	  processlisfiles.sh, weirdvariables.txt, workingvariables.txt,
-	  x.awk: Added what we currently have for lists of variables and
-	  functions.  Anything useful is Dan's doing.
+	  x.awk, lisdir/acall.lis, lisdir/algfac.lis, lisdir/algsys.lis,
+	  lisdir/ar.lis, lisdir/askp.lis, lisdir/asum.lis,
+	  lisdir/bessel.lis, lisdir/buildq.lis, lisdir/cl-info.lis,
+	  lisdir/clmacs.lis, lisdir/combin.lis, lisdir/comm.lis,
+	  lisdir/comm2.lis, lisdir/commac.lis, lisdir/compar.lis,
+	  lisdir/compat.lis, lisdir/cpoly.lis, lisdir/csimp.lis,
+	  lisdir/csimp2.lis, lisdir/db.lis, lisdir/defcal.lis,
+	  lisdir/defint.lis, lisdir/defopt.lis, lisdir/desoln.lis,
+	  lisdir/displa.lis, lisdir/displm.lis, lisdir/dskfn.lis,
+	  lisdir/elim.lis, lisdir/ellipt.lis, lisdir/evalw.lis,
+	  lisdir/ezgcd.lis, lisdir/factor.lis, lisdir/fcall.lis,
+	  lisdir/float.lis, lisdir/fortra.lis, lisdir/generr.lis,
+	  lisdir/grind.lis, lisdir/hayat.lis, lisdir/homog.lis,
+	  lisdir/hyp.lis, lisdir/hypgeo.lis, lisdir/inmis.lis,
+	  lisdir/intpol.lis, lisdir/invert.lis, lisdir/irinte.lis,
+	  lisdir/laplac.lis, lisdir/ldisp.lis, lisdir/lesfac.lis,
+	  lisdir/letmac.lis, lisdir/limit.lis, lisdir/linnew.lis,
+	  lisdir/lmdcls.lis, lisdir/logarc.lis, lisdir/macdes.lis,
+	  lisdir/macsys.lis, lisdir/mactex.lis, lisdir/marray.lis,
+	  lisdir/mat.lis, lisdir/matcom.lis, lisdir/matrix.lis,
+	  lisdir/matrun.lis, lisdir/maxmac.lis, lisdir/mdebug.lis,
+	  lisdir/mdefun.lis, lisdir/mdot.lis, lisdir/merror.lis,
+	  lisdir/mforma.lis, lisdir/mformt.lis, lisdir/mhayat.lis,
+	  lisdir/misc.lis, lisdir/mlisp.lis, lisdir/mload.lis,
+	  lisdir/mmacro.lis, lisdir/mopers.lis, lisdir/mormac.lis,
+	  lisdir/mrgmac.lis, lisdir/mstuff.lis, lisdir/mtrace.lis,
+	  lisdir/mutils.lis, lisdir/nalgfa.lis, lisdir/newdet.lis,
+	  lisdir/newinv.lis, lisdir/nforma.lis, lisdir/nisimp.lis,
+	  lisdir/nparse.lis, lisdir/nrat4.lis, lisdir/nregex.lis,
+	  lisdir/numer.lis, lisdir/numerm.lis, lisdir/numth.lis,
+	  lisdir/nusum.lis, lisdir/ode2.lis, lisdir/opers.lis,
+	  lisdir/optim.lis, lisdir/option.lis, lisdir/outmis.lis,
+	  lisdir/pade.lis, lisdir/plot.lis, lisdir/pois2.lis,
+	  lisdir/pois3.lis, lisdir/polyrz.lis, lisdir/procs.lis,
+	  lisdir/psolve.lis, lisdir/rat3a.lis, lisdir/rat3b.lis,
+	  lisdir/rat3c.lis, lisdir/rat3d.lis, lisdir/rat3e.lis,
+	  lisdir/ratmac.lis, lisdir/ratout.lis, lisdir/ratpoi.lis,
+	  lisdir/residu.lis, lisdir/result.lis, lisdir/risch.lis,
+	  lisdir/rombrg.lis, lisdir/rpart.lis, lisdir/runtim.lis,
+	  lisdir/rzmac.lis, lisdir/schatc.lis, lisdir/scs.lis,
+	  lisdir/series.lis, lisdir/simp.lis, lisdir/sin.lis,
+	  lisdir/sinint.lis, lisdir/sloop.lis, lisdir/solve.lis,
+	  lisdir/specfn.lis, lisdir/spgcd.lis, lisdir/sprdet.lis,
+	  lisdir/strmac.lis, lisdir/sublis.lis, lisdir/sumcon.lis,
+	  lisdir/suprv1.lis, lisdir/tlimit.lis, lisdir/todd-coxeter.lis,
+	  lisdir/trans1.lis, lisdir/trans2.lis, lisdir/trans3.lis,
+	  lisdir/trans4.lis, lisdir/trans5.lis, lisdir/transf.lis,
+	  lisdir/transl.lis, lisdir/transm.lis, lisdir/transq.lis,
+	  lisdir/transs.lis, lisdir/trdata.lis, lisdir/trgred.lis,
+	  lisdir/trgsmp.lis, lisdir/trigi.lis, lisdir/trigo.lis,
+	  lisdir/trmode.lis, lisdir/troper.lis, lisdir/trpred.lis,
+	  lisdir/trprop.lis, lisdir/trutil.lis, lisdir/ufact.lis,
+	  lisdir/utils.lis, lisdir/zero.lis: Added what we currently have
+	  for lists of variables and functions.  Anything useful is Dan's
+	  doing.
 
 2003-03-06 21:20  starseeker
 
@@ -6717,6 +7068,21 @@
 		  * tests/rtest15.mac: New file
 		  * tests/tests.lisp: Add above tests
 
+2002-04-08 11:56  starseeker
+
+	* doc/maximabook/images/.xvpics/: 2dplotwindow.eps,
+	  2dplotwindow.jpg, 2dplotwindowa.eps, 2dplotwindowa.jpg,
+	  3dplotwindow.eps, 3dplotwindow.jpg, 3dplotwindowa.eps,
+	  3dplotwindowa.jpg, emacsmaximamodeshot.eps,
+	  emacsmaximamodeshot.jpg, imaxima.eps, imaxima.png,
+	  maxima_geomview.eps, maxima_geomview.jpg, maxima_gnuplot.eps,
+	  maxima_gnuplot.jpg, maxima_openmath.eps, maxima_openmath.jpg,
+	  symaxx.eps, symaxx.jpg, symaxxgraph.ps, symaxxoutput.jpg,
+	  symaxxtex.ps, symaxxunits.ps, terminalshot.eps, terminalshot.jpg,
+	  texmacs.eps:
+
+	  removing xv files
+
 2002-04-08 11:55  starseeker
 
 	* doc/maximabook/storage/bibarchive/bibliography.tar.gz:
@@ -6756,10 +7122,29 @@
 	  images/maxima_gnuplot.png, images/maxima_openmath.png,
 	  images/maximawindowsinstall1.png, images/symaxx.png,
 	  images/symaxxoutput.png, images/terminalshot.png,
-	  images/texmacs.png, images/xmaxima.png, maxims/maxims.tex,
-	  odes/advmath.tex, odes/odes.aux, odes/odes.dvi, odes/odes.log,
-	  odes/odes.tex, basics/basics.dvi, basics/basics.tex,
-	  examples/examples.tex, install/install.tex,
+	  images/texmacs.png, images/xmaxima.png,
+	  images/.xvpics/2dplotwindow.eps, images/.xvpics/2dplotwindow.jpg,
+	  images/.xvpics/2dplotwindowa.eps,
+	  images/.xvpics/2dplotwindowa.jpg,
+	  images/.xvpics/3dplotwindow.eps, images/.xvpics/3dplotwindow.jpg,
+	  images/.xvpics/3dplotwindowa.eps,
+	  images/.xvpics/3dplotwindowa.jpg,
+	  images/.xvpics/emacsmaximamodeshot.eps,
+	  images/.xvpics/emacsmaximamodeshot.jpg,
+	  images/.xvpics/imaxima.eps, images/.xvpics/imaxima.png,
+	  images/.xvpics/maxima_geomview.eps,
+	  images/.xvpics/maxima_geomview.jpg,
+	  images/.xvpics/maxima_gnuplot.eps,
+	  images/.xvpics/maxima_gnuplot.jpg,
+	  images/.xvpics/maxima_openmath.eps,
+	  images/.xvpics/maxima_openmath.jpg, images/.xvpics/symaxx.eps,
+	  images/.xvpics/symaxx.jpg, images/.xvpics/symaxxgraph.ps,
+	  images/.xvpics/symaxxoutput.jpg, images/.xvpics/symaxxtex.ps,
+	  images/.xvpics/symaxxunits.ps, images/.xvpics/terminalshot.eps,
+	  images/.xvpics/terminalshot.jpg, images/.xvpics/texmacs.eps,
+	  maxims/maxims.tex, odes/advmath.tex, odes/odes.aux,
+	  odes/odes.dvi, odes/odes.log, odes/odes.tex, basics/basics.dvi,
+	  basics/basics.tex, examples/examples.tex, install/install.tex,
 	  interfaces/interfaces.tex, introduction/introduction.tex,
 	  output/izicinfo.txt, output/output.tex, preface/pref.tex,
 	  programming/prog.tex, storage/primer/primer.tex,
@@ -6796,10 +7181,29 @@
 	  images/maxima_gnuplot.png, images/maxima_openmath.png,
 	  images/maximawindowsinstall1.png, images/symaxx.png,
 	  images/symaxxoutput.png, images/terminalshot.png,
-	  images/texmacs.png, images/xmaxima.png, maxims/maxims.tex,
-	  odes/advmath.tex, odes/odes.aux, odes/odes.dvi, odes/odes.log,
-	  odes/odes.tex, basics/basics.dvi, basics/basics.tex,
-	  examples/examples.tex, install/install.tex,
+	  images/texmacs.png, images/xmaxima.png,
+	  images/.xvpics/2dplotwindow.eps, images/.xvpics/2dplotwindow.jpg,
+	  images/.xvpics/2dplotwindowa.eps,
+	  images/.xvpics/2dplotwindowa.jpg,
+	  images/.xvpics/3dplotwindow.eps, images/.xvpics/3dplotwindow.jpg,
+	  images/.xvpics/3dplotwindowa.eps,
+	  images/.xvpics/3dplotwindowa.jpg,
+	  images/.xvpics/emacsmaximamodeshot.eps,
+	  images/.xvpics/emacsmaximamodeshot.jpg,
+	  images/.xvpics/imaxima.eps, images/.xvpics/imaxima.png,
+	  images/.xvpics/maxima_geomview.eps,
+	  images/.xvpics/maxima_geomview.jpg,
+	  images/.xvpics/maxima_gnuplot.eps,
+	  images/.xvpics/maxima_gnuplot.jpg,
+	  images/.xvpics/maxima_openmath.eps,
+	  images/.xvpics/maxima_openmath.jpg, images/.xvpics/symaxx.eps,
+	  images/.xvpics/symaxx.jpg, images/.xvpics/symaxxgraph.ps,
+	  images/.xvpics/symaxxoutput.jpg, images/.xvpics/symaxxtex.ps,
+	  images/.xvpics/symaxxunits.ps, images/.xvpics/terminalshot.eps,
+	  images/.xvpics/terminalshot.jpg, images/.xvpics/texmacs.eps,
+	  maxims/maxims.tex, odes/advmath.tex, odes/odes.aux,
+	  odes/odes.dvi, odes/odes.log, odes/odes.tex, basics/basics.dvi,
+	  basics/basics.tex, examples/examples.tex, install/install.tex,
 	  interfaces/interfaces.tex, introduction/introduction.tex,
 	  output/izicinfo.txt, output/output.tex, preface/pref.tex,
 	  programming/prog.tex, storage/primer/primer.tex,
