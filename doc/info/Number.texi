@@ -50,6 +50,7 @@ The return value is a big float (bfloat);
 @var{n} is the number of digits in the return value.
 
 The Hurwitz zeta function is defined as
+
 @example
 sum ((k+h)^-s, k, 0, inf)
 @end example
@@ -69,10 +70,12 @@ the binomial coefficient is expressed as a polynomial.
 
 @defun burn (n)
 Returns the @var{n}'th Bernoulli number for integer @code{n}.
-@code{burn} may be more efficient than @code{bern} for large, isolated @code{n},
+@code{burn} may be more efficient than @code{bern} for large, isolated @code{n}
+(perhaps @code{n} greater than 105 or so), @c CLAIM MADE IN bffac.usg !!!
 as @code{bern} computes all the Bernoulli numbers up to index @code{n} before returning.
 
 @c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
+@c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
 @c (BERN(402) takes about 645 secs vs 13.5 secs for BURN(402).
 @c The time to compute @code{bern} is approximately exponential,
 @c while the time to compute @code{burn} is approximately cubic.

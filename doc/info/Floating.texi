@@ -18,8 +18,10 @@
 @defun bffac (expr, n)
 Bigfloat version of the factorial (shifted gamma)
 function.  The second argument is how many digits to retain and return,
-it's a good idea to request a couple of extra.  This function is
-available by doing @code{load ("bffac")}.
+it's a good idea to request a couple of extra.
+
+@code{load ("bffac")} loads this function.
+
 @end defun
 
 @defvar algepsilon
@@ -47,7 +49,9 @@ Returns @code{true} if @code{expr} is a bigfloat number else @code{false}.
 @defun bfpsi (n, z, fpprec)
 Polygamma function of real argument @code{z} and integer order @code{n}.
 For digamma, @code{bfpsi0 (z, fpprec)} is more direct.  Note @code{-bfpsi0 (1, fpprec)}
-provides @code{%gamma} (Euler's constant) as a bigfloat.  To use this do @code{load ("bffac")}.
+provides @code{%gamma} (Euler's constant) as a bigfloat.
+
+@code{load ("bffac")} loads this function.
 
 @end defun
 
@@ -77,9 +81,9 @@ displays as @code{1.000000000000000B0}. Otherwise, this is displayed as
 @end defvar
 
 @defun cbffac (z, fpprec)
-Complex bigfloat factorial.  It may be used by
-doing @code{load ("bffac")}. 
-For more details see @code{share/numeric/bffac.usg}.
+Complex bigfloat factorial.
+
+@code{load ("bffac")} loads this function.
 
 @end defun
 
