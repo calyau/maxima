@@ -287,9 +287,176 @@ Unlike differentiation, integration cannot be readily expressed in a general
 way.  Maxima is quite capable when it comes to to such problems, although
 like all computer algebra systems it has its limits.
 
-(Figure out what and how to discuss here.  Will need to discuss the assume
-options.)
+In general, {\tt integrate} is the command most users will use to perform
+various types of basic integrals.  It is therefore a logical place to begin
+the introduction.
 
+Beginning with a very basic example:
+
+\beginmaximasession
+integrate(a*x^n,x);
+\maximasession
+(C2) integrate(a*x^n,x);
+
+                                      n + 1
+                                   a x
+(D2)                               --------
+                                    n + 1
+\endmaximasession
+
+Even in this basic case, there is a lot going on.  The general form of 
+the integrate command for indefinite integrals is {\tt integrate(f(x),x)}.
+When Maxima does not have sufficient information to evaluate an integral,
+it will ask the user questions.  In the above example, for instance,
+Whether or not n+1 was zero impacted how Maxima would approach the problem.
+Above, it evaluated the integral after being told n+1 was not zero. If
+the same integral is performed again, this time informing the system that
+n+1 is zero, the results are different:
+
+\beginmaximasession
+integrate(a*x^n,x);
+\maximasession
+(C3) integrate(a*x^n,x);
+
+(D3)                               a LOG(x)
+\endmaximasession
+
+\subsection{The {\tt assume} Command}
+
+As one is working on a long problem session, having to answer the same
+questions repeatedly quickly becomes inefficient.  Fortunately, Maxima
+provides an {\tt assume} command which lets the system proceed without
+having to repeatedly inquire at to the state of a variable.  This command
+is actually useful throughout the Maxima system, not just in integration
+problems, but since integration is likely where most users will first
+encounter the need for it we will discuss it here.  Remember, this 
+is the command you will use any time you wish to instruct Maxima to
+assume some fact whatever you happen to be doing.  You will see this
+command throughout this book.
+
+We will use the previous integration example as the first illustration of
+how this process works.
+
+\beginmaximasession
+assume(n+1>0);
+integrate(a*x^n,x);
+\maximatexsession
+\C1.  assume(n+1>0); \\
+\D1.   \left[ n>-1 \right]  \\
+\C2.  integrate(a*x^n,x); \\
+\D2.   {{a\*x^{n+1}}\over{n+1}} \\
+\endmaximasession
+
+Notice Maxima did not ask any questions, because it was able to find the
+information it needed in its assume database.  Of couse, for one integral
+it is simpler to just answer the question, but now if we wish to do another
+integral that also depends on this knowledge:
+
+\beginmaximasession
+integrate((a+b)*x^(n+1),x);
+\maximatexsession
+\C4.  integrate((a+b)*x^(n+1),x); \\
+\D4.   {{\left(b+a\right)\*x^{n+2}}\over{n+2}} \\
+\endmaximasession
+
+Maxima already knew enough to handle the new integral.  Of course, we 
+might not want this asssumption later on, so we need a way to get rid
+of it.  This is done with the {\tt forget} command:
+
+\beginmaximasession
+forget(n+1>0);
+integrate((a+b)*x^(n+1),x);
+\maximasession
+(C5) forget(n+1>0);
+
+
+(D5)                               [n > - 1]
+(C6) integrate((a+b)*x^(n+1),x);
+
+(D6)                            (b + a) LOG(x)
+\endmaximasession
+
+For multiple rule situations {\tt assume} and {\tt forget} will also 
+take more than one assumption at a time, as in this example:
+
+\beginmaximasession
+assume(n+1>0, m+1>0);
+integrate(a*x^n+b*x^m,x);
+forget(n+1>0, m+1>0);
+integrate(a*x^n+b*x^m,x);
+\maximasession
+(C7) assume(n+1>0, m+1>0);
+
+
+(D7)                          [n > - 1, m > - 1]
+(C8) integrate(a*x^n+b*x^m,x);
+
+
+                                 n + 1      m + 1
+                              a x        b x
+(D8)                          -------- + --------
+                               n + 1      m + 1
+(C9) forget(n+1>0, m+1>0);
+
+
+(D9)                          [n > - 1, m > - 1]
+(C10) integrate(a*x^n+b*x^m,x);
+
+(D10)                         b LOG(x) + a LOG(x)
+\endmaximasession
+
+\subsection{Definite Integrals}
+
+The same basic {\tt integration} command is used for definite integrals.
+Let's take a basic example:
+
+\beginmaximasession
+integrate(a+x^3,x,0,5);
+\maximatexsession
+\C1.  integrate(a+x^3,x,0,5); \\
+\D1.   {{20\*a+625}\over{4}} \\
+\endmaximasession
+
+The basic syntax is apparent: {\tt integrate(f(x),x,lowerlimit,upperlimit)}
+
+\subsection{{\tt changevar}}
+
+Maxima provides a command {\tt changevar} which can make a change of
+variable in an integral. It has the form {\tt changevar(exp,f(x,y),y,x)}
+What this does is make the change of variable given by f(x,y) = 0 in all 
+integrals occurring in exp with integration with respect to x; y is the 
+new variable. For example:
+
+\beginmaximasession
+'integrate(exp(sqrt(5*x)),x,0,4)+'integrate(exp(sqrt(5*x+1)),x,0,5)+
+'integrate(exp(sqrt(z*x)),z,0,4);
+changevar(%,x-y^2/5,y,x);
+\maximatexsession
+\C10.  'integrate(exp(sqrt(5*x)),x,0,4)+'integrate(exp(sqrt(5*x+1)),x,0,5)+\\
+'integrate(exp(sqrt(z*x)),z,0,4); \\
+\D10.   \int_{0}^{4}{e^{\sqrt{x\*z}}\;dz}+\int_{0}^{5}{e^{\sqrt{5\*x+1}
+ }\;dx}+\int_{0}^{4}{e^{\sqrt{5}\*\sqrt{x}}\;dx} \\
+\C11.  changevar(%,x-y^2/5,y,x); \\
+\D11.   \int_{0}^{4}{e^{\sqrt{x\*z}}\;dz}-{{2\*\int_{-2\*\sqrt{5}}^{0}{
+ y\*e^{\left| y\right| }\;dy}}\over{5}}-{{2\*\int_{-5}^{0}{y\*e^{
+ \sqrt{y^{2}+1}}\;dy}}\over{5}} \\
+\endmaximasession
+
+If you examine the above case, you see that the two integrals being
+integrated with respect to x have undergone a variable, change, while
+the z dependant integral has not.
+
+\subsection{Behind the Black Box - Using Specific Approaches}
+
+Once a user begins serious work with integration in Maxima, they may
+find that they want to use other techniques.  Maxima has several
+functions which allow more power and flexibility.  Definite integration
+will be the first example:
+
+(Need example of where DEFINT fails but ROMBERG succeeds.)  Discuss LDEFINT 
+RISCH ILT INTSCE 
+
+\subsection{Other Examples}
 Since integration is such a major feature, we will include here a fairly
 extensive collection of examples of integrals.
 
