@@ -35,3 +35,4 @@ tclwinkill.dll: tclwinkill.c
 
 install: xmaxima.exe winkill.exe tclwinkill.dll
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
+	cp maxima.bat "@prefix@/lib/@PACKAGE@/@VERSION@/binary-gcl/maxima.bat"
