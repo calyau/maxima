@@ -34,7 +34,7 @@ matchdeclare(i,symbolp);
 defrule(p_r, p([],[],i),'diff(p,rho)*rho([],[],i));
 defrule(p_sr, p([],[],i),'diff(p,s)*s([],[],i)+'diff(p,rho)*rho([],[],i));
 ("apply the rules")$
-ishow(apply1(euler,p_r))$
+ishow(ratsimp(apply1(euler,p_r)))$
 ("this law was originally discovered by Lord Kelvin")$
 ("for the more general case there is Ertel's theorem")$
 

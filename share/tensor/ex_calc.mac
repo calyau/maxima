@@ -20,9 +20,11 @@ infix("~");
 declare("~",additive);
 declare("~",antisymmetric);
 
+igeowedge_flag:false;
+
 "~"(any,body):=block
 (
-  [i,l1,l2,l11,l22,l1s,lk1],
+  [i,l1,l2,l11,l22,l1s,lk1,div],
   if listp(cartan_basis) and not member(body,cartan_basis) and
                              member(any,cartan_basis) then -body~any
   else if not atom(any) and op(any)="+" then
@@ -76,7 +78,8 @@ declare("~",antisymmetric);
       l1s:map("=",l1,l11), l2s:map("=",l2,l22),
       lk1:append(l1,l2),lk2:append(l11,l22),
       any:sublis(l1s,any), body:sublis(l2s,body),
-      canform(contract(expand(kdelta(lk1,lk2)*any*body)))/(length(lk1)-1)!
+      div:if igeowedge_flag then length(l1)!*length(l2)! else length(lk1)!,
+      factor(canform(contract(expand(kdelta(lk1,lk2)*any*body)))/div)
     )
   )
 );
@@ -103,7 +106,7 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
  */
         else block
 (
-  [l11,l1s,lk1,lk2,indd,res,l1:first(indices(forma)),
+  [l11,l1s,lk1,lk2,indd,res,l1:first(indices(forma)),div,
    ind:if length(optind)>0 then optind[1] else idummy()],
   if l1=[] then return(idiff(forma,ind))
   else
@@ -114,17 +117,17 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
     indd:idummy(),
     lk2:append(l11,[indd]),
     res:sublis(l1s,forma),
-    res:distrib(contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd))))/
-                               (length(lk1)-1)!),
+    res:contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd)))),
     /* If a frame base is used, the contribution of ifb must be added */
     if iframe_flag=true then
       for i thru length(l1) do
-      (
-        l1s:map("=",[l1[i]],[indd]),
-        res:res+(if evenp(length(l1)) then 1 else -1)*
-                'ifb([l1[i],ind],[indd])*sublis(l1s,forma)
-      ),
-    res
+    (
+      l1s:map("=",[l1[i]],[indd]),
+      res:res+(if evenp(length(l1)) then 1 else -1)*
+              'ifb([l1[i],ind],[indd])*sublis(l1s,forma)
+    ),
+    div:if igeowedge_flag then (length(lk1)-1)! else length(lk1)!,
+    factor(res/div)
   )
 );
 
@@ -143,6 +146,7 @@ declare("|",additive);
 "|"(forma,vec):=block
 (
   [ind,perm],
+  forma:distrib(forma),
   if not(atom(forma)) and (op(forma)="+" or op(forma)="=") then
     apply(op(forma),[part(forma,1)|vec,rest(forma)|vec])
 /* When I thought that I'd implement MACSYMA's Cartan package features
@@ -161,12 +165,14 @@ declare("|",additive);
        indices of the UNDIFF'd form of forma. However, we still do the
        contraction with respect to the first free covariant index which
        may be a derivative index. Urgh. */
-    perm:permutator((?intersect)(first(indices(forma)),
+/*    perm:permutator((?intersect)(first(indices(forma)),
                                  first(indices(undiff(forma))))),
     if perm[2]=[] then perm:[1,first(indices(forma))],
     if perm[2]=[] then 0
     else perm[1]*(contract(canform(expand(forma*
-                 vec([],[first(sort(indices(forma)[1]))])))))
+                 vec([],[first(sort(indices(forma)[1]))])))))*/
+    ind:first(sort(first(indices(forma)))),
+    contract(canform(expand(forma*vec([],[ind]))))
   )
 );
 

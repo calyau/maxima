@@ -278,6 +278,12 @@ sermet():=block
 /* Computing the frame field from the inverse frame field (user-defined) */
 tmetric(disp):=block(
   [],
+  /* fr are the contravariant frame vector components. fri are covariant.
+     i.e.,
+                 i
+     fr[a,i] = e   ,   fri[a,i] = e
+                (a)                (a)i
+  */
   fr:lfg.(transpose(fri)^^(-1)),
   ufg:lfg^^(-1),
   lg:transpose(lfg.fri).fri,
@@ -317,7 +323,7 @@ ct_coordsys(coordinate_system, [extra_args]):=
     ct_coords:[x,y],
     if cframe_flag then
     (
-      fr:ident(2),
+      fri:ident(2),
       lfg:ident(2)
     )
     else lg:ident(2)
@@ -1188,6 +1194,7 @@ triemann(disp):=block
         for l from k thru dim do
   (
     if i=j or k=l then lriem[l,j,i,k]:0
+    /* Wald (1984), p51, eq. 3.4.21 */
     else lriem[l,j,i,k]:ctaylor(sum(fr[i][a]*diff(lcs[j,k,l],ct_coords[a])-
       fr[j][a]*diff(lcs[i,k,l],ct_coords[a]),a,1,dim)-sum(sum(ufg[a,b]*
       (lcs[i,b,k]*lcs[j,a,l]-lcs[j,b,k]*lcs[i,a,l]+lcs[i,b,j]*lcs[a,k,l]-
