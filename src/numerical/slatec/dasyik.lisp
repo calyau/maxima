@@ -1,8 +1,8 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/26 at 12:16:51
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
-;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
-;;;           (:array-slicing t) (:declare-common nil)
+;;;           (:coerce-assigns :as-needed) (:array-type ':array)
+;;;           (:array-slicing nil) (:declare-common nil)
 ;;;           (:float-format double-float))
 
 (in-package "SLATEC")
@@ -10,8 +10,8 @@
 
 (let ((con (make-array 2 :element-type 'double-float))
       (c (make-array 65 :element-type 'double-float)))
-  (declare (type (simple-array double-float (65)) c)
-           (type (simple-array double-float (2)) con))
+  (declare (type (array double-float (65)) c)
+           (type (array double-float (2)) con))
   (f2cl-lib:fset (f2cl-lib:fref con (1) ((1 2))) 0.3989422804014327)
   (f2cl-lib:fset (f2cl-lib:fref con (2) ((1 2))) 1.2533141373155003)
   (f2cl-lib:fset (f2cl-lib:fref c (1) ((1 65))) -0.208333333333333)
@@ -137,7 +137,7 @@
                label30))
            label40
             (setf t_ (coerce (abs t_) 'double-float))
-            (f2cl-lib:fset (f2cl-lib:fref y-%data% (jn) ((1 t)) y-%offset%)
+            (f2cl-lib:fset (f2cl-lib:fref y-%data% (jn) ((1 *)) y-%offset%)
                            (* s2
                               coef
                               (f2cl-lib:fsqrt t_)

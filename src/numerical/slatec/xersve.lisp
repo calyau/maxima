@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:19:10
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -28,142 +28,108 @@
     (defun xersve (librar subrou messg kflag nerr level icount)
       (declare (type f2cl-lib:integer4 icount level nerr kflag)
                (type (simple-array base-char (*)) messg subrou librar))
-      (f2cl-lib:with-array-data (librar-%data% librar-%offset% librar)
-        (declare (type f2cl-lib:integer4 librar-%offset%)
-                 (type (simple-array base-char (*)) librar-%data%)
-                 (ignorable librar-%offset% librar-%data%))
-        (f2cl-lib:with-array-data (subrou-%data% subrou-%offset% subrou)
-          (declare (type f2cl-lib:integer4 subrou-%offset%)
-                   (type (simple-array base-char (*)) subrou-%data%)
-                   (ignorable subrou-%offset% subrou-%data%))
-          (f2cl-lib:with-array-data (messg-%data% messg-%offset% messg)
-            (declare (type f2cl-lib:integer4 messg-%offset%)
-                     (type (simple-array base-char (*)) messg-%data%)
-                     (ignorable messg-%offset% messg-%data%))
-            (prog ((mes
-                    (make-array '(20)
-                                :element-type
-                                'base-char
-                                :initial-element
-                                #\Space))
-                   (lib
-                    (make-array '(8)
-                                :element-type
-                                'base-char
-                                :initial-element
-                                #\Space))
-                   (sub
-                    (make-array '(8)
-                                :element-type
-                                'base-char
-                                :initial-element
-                                #\Space))
-                   (lun (make-array 5 :element-type 'f2cl-lib:integer4)) (i 0)
-                   (iunit 0) (kunit 0) (nunit 0))
-              (declare (type f2cl-lib:integer4 nunit kunit iunit i)
-                       (type (simple-array base-char (20)) mes)
-                       (type (simple-array base-char (8)) lib sub)
-                       (type (simple-array f2cl-lib:integer4 (5)) lun))
+      (prog ((mes
+              (make-array '(20)
+                          :element-type
+                          'base-char
+                          :initial-element
+                          #\Space))
+             (lib
+              (make-array '(8)
+                          :element-type
+                          'base-char
+                          :initial-element
+                          #\Space))
+             (sub
+              (make-array '(8)
+                          :element-type
+                          'base-char
+                          :initial-element
+                          #\Space))
+             (lun (make-array 5 :element-type 'f2cl-lib:integer4)) (i 0)
+             (iunit 0) (kunit 0) (nunit 0))
+        (declare (type f2cl-lib:integer4 nunit kunit iunit i)
+                 (type (simple-array base-char (20)) mes)
+                 (type (simple-array base-char (8)) lib sub)
+                 (type (simple-array f2cl-lib:integer4 (5)) lun))
+        (cond
+         ((<= kflag 0) (if (= nmsg 0) (go end_label))
+          (multiple-value-bind
+              (var-0 var-1)
+              (xgetua lun nunit)
+            (declare (ignore var-0))
+            (setf nunit var-1))
+          (f2cl-lib:fdo (kunit 1 (f2cl-lib:int-add kunit 1))
+                        ((> kunit nunit) nil)
+            (tagbody
+              (setf iunit (f2cl-lib:fref lun (kunit) ((1 5))))
+              (if (= iunit 0) (setf iunit (f2cl-lib:i1mach 4)))
+              (f2cl-lib:fformat iunit
+                                ("0          ERROR MESSAGE SUMMARY" "~%"
+                                 " LIBRARY    SUBROUTINE MESSAGE START             NERR"
+                                 "     LEVEL     COUNT" "~%")
+                                nil)
+              (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                            ((> i nmsg) nil)
+                (tagbody
+                  (f2cl-lib:fformat iunit
+                                    ("~1@T" ("~A") "~3@T" ("~A") "~3@T" ("~A")
+                                     3 (("~10D")) "~%")
+                                    (f2cl-lib:fref libtab (i) ((1 lentab)))
+                                    (f2cl-lib:fref subtab (i) ((1 lentab)))
+                                    (f2cl-lib:fref mestab (i) ((1 lentab)))
+                                    (f2cl-lib:fref nertab (i) ((1 lentab)))
+                                    (f2cl-lib:fref levtab (i) ((1 lentab)))
+                                    (f2cl-lib:fref kount (i) ((1 lentab))))
+                 label10))
+              (if (/= kountx 0)
+                  (f2cl-lib:fformat iunit
+                                    ("0OTHER ERRORS NOT INDIVIDUALLY TABULATED = "
+                                     1 (("~10D")) "~%")
+                                    kountx))
+              (f2cl-lib:fformat iunit ("~1@T" "~%") nil)
+             label20))
+          (cond ((= kflag 0) (setf nmsg 0) (setf kountx 0))))
+         (t (f2cl-lib:f2cl-set-string lib librar (string 8))
+          (f2cl-lib:f2cl-set-string sub subrou (string 8))
+          (f2cl-lib:f2cl-set-string mes messg (string 20))
+          (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                        ((> i nmsg) nil)
+            (tagbody
               (cond
-               ((<= kflag 0) (if (= nmsg 0) (go end_label))
-                (multiple-value-bind
-                    (var-0 var-1)
-                    (xgetua lun nunit)
-                  (declare (ignore var-0))
-                  (when var-1 (setf nunit var-1)))
-                (f2cl-lib:fdo (kunit 1 (f2cl-lib:int-add kunit 1))
-                              ((> kunit nunit) nil)
-                  (tagbody
-                    (setf iunit (f2cl-lib:fref lun (kunit) ((1 5))))
-                    (if (= iunit 0) (setf iunit (f2cl-lib:i1mach 4)))
-                    (f2cl-lib:fformat iunit
-                                      ("0          ERROR MESSAGE SUMMARY" "~%"
-                                       " LIBRARY    SUBROUTINE MESSAGE START             NERR"
-                                       "     LEVEL     COUNT" "~%")
-                                      nil)
-                    (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                                  ((> i nmsg) nil)
-                      (tagbody
-                        (f2cl-lib:fformat iunit
-                                          ("~1@T" ("~A") "~3@T" ("~A") "~3@T"
-                                           ("~A") 3 (("~10D")) "~%")
-                                          (f2cl-lib:fref libtab
-                                                         (i)
-                                                         ((1 lentab)))
-                                          (f2cl-lib:fref subtab
-                                                         (i)
-                                                         ((1 lentab)))
-                                          (f2cl-lib:fref mestab
-                                                         (i)
-                                                         ((1 lentab)))
-                                          (f2cl-lib:fref nertab
-                                                         (i)
-                                                         ((1 lentab)))
-                                          (f2cl-lib:fref levtab
-                                                         (i)
-                                                         ((1 lentab)))
-                                          (f2cl-lib:fref kount
-                                                         (i)
-                                                         ((1 lentab))))
-                       label10))
-                    (if (/= kountx 0)
-                        (f2cl-lib:fformat iunit
-                                          ("0OTHER ERRORS NOT INDIVIDUALLY TABULATED = "
-                                           1 (("~10D")) "~%")
-                                          kountx))
-                    (f2cl-lib:fformat iunit ("~1@T" "~%") nil)
-                   label20))
-                (cond ((= kflag 0) (setf nmsg 0) (setf kountx 0))))
-               (t (f2cl-lib:f2cl-set-string lib librar (string 8))
-                (f2cl-lib:f2cl-set-string sub subrou (string 8))
-                (f2cl-lib:f2cl-set-string mes messg (string 20))
-                (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                              ((> i nmsg) nil)
-                  (tagbody
-                    (cond
-                     ((and
-                       (f2cl-lib:fstring-= lib
-                                           (f2cl-lib:fref libtab
-                                                          (i)
-                                                          ((1 lentab))))
-                       (f2cl-lib:fstring-= sub
-                                           (f2cl-lib:fref subtab
-                                                          (i)
-                                                          ((1 lentab))))
-                       (f2cl-lib:fstring-= mes
-                                           (f2cl-lib:fref mestab
-                                                          (i)
-                                                          ((1 lentab))))
-                       (= nerr (f2cl-lib:fref nertab (i) ((1 lentab))))
-                       (= level (f2cl-lib:fref levtab (i) ((1 lentab)))))
-                      (f2cl-lib:fset (f2cl-lib:fref kount (i) ((1 lentab)))
-                                     (f2cl-lib:int-add
-                                      (f2cl-lib:fref kount (i) ((1 lentab)))
-                                      1))
-                      (setf icount (f2cl-lib:fref kount (i) ((1 lentab))))
-                      (go end_label)))
-                   label30))
-                (cond
-                 ((< nmsg lentab) (setf nmsg (f2cl-lib:int-add nmsg 1))
-                  (f2cl-lib:f2cl-set-string
-                   (f2cl-lib:fref libtab (i) ((1 lentab)))
-                   lib
-                   (string 8))
-                  (f2cl-lib:f2cl-set-string
-                   (f2cl-lib:fref subtab (i) ((1 lentab)))
-                   sub
-                   (string 8))
-                  (f2cl-lib:f2cl-set-string
-                   (f2cl-lib:fref mestab (i) ((1 lentab)))
-                   mes
-                   (string 20))
-                  (f2cl-lib:fset (f2cl-lib:fref nertab (i) ((1 lentab))) nerr)
-                  (f2cl-lib:fset (f2cl-lib:fref levtab (i) ((1 lentab))) level)
-                  (f2cl-lib:fset (f2cl-lib:fref kount (i) ((1 lentab))) 1)
-                  (setf icount 1))
-                 (t (setf kountx (f2cl-lib:int-add kountx 1))
-                  (setf icount 0)))))
-              (go end_label)
-             end_label
-              (return (values nil nil nil nil nil nil icount)))))))))
+               ((and
+                 (f2cl-lib:fstring-= lib
+                                     (f2cl-lib:fref libtab (i) ((1 lentab))))
+                 (f2cl-lib:fstring-= sub
+                                     (f2cl-lib:fref subtab (i) ((1 lentab))))
+                 (f2cl-lib:fstring-= mes
+                                     (f2cl-lib:fref mestab (i) ((1 lentab))))
+                 (= nerr (f2cl-lib:fref nertab (i) ((1 lentab))))
+                 (= level (f2cl-lib:fref levtab (i) ((1 lentab)))))
+                (f2cl-lib:fset (f2cl-lib:fref kount (i) ((1 lentab)))
+                               (f2cl-lib:int-add
+                                (f2cl-lib:fref kount (i) ((1 lentab)))
+                                1))
+                (setf icount (f2cl-lib:fref kount (i) ((1 lentab))))
+                (go end_label)))
+             label30))
+          (cond
+           ((< nmsg lentab) (setf nmsg (f2cl-lib:int-add nmsg 1))
+            (f2cl-lib:f2cl-set-string (f2cl-lib:fref libtab (i) ((1 lentab)))
+                                      lib
+                                      (string 8))
+            (f2cl-lib:f2cl-set-string (f2cl-lib:fref subtab (i) ((1 lentab)))
+                                      sub
+                                      (string 8))
+            (f2cl-lib:f2cl-set-string (f2cl-lib:fref mestab (i) ((1 lentab)))
+                                      mes
+                                      (string 20))
+            (f2cl-lib:fset (f2cl-lib:fref nertab (i) ((1 lentab))) nerr)
+            (f2cl-lib:fset (f2cl-lib:fref levtab (i) ((1 lentab))) level)
+            (f2cl-lib:fset (f2cl-lib:fref kount (i) ((1 lentab))) 1)
+            (setf icount 1))
+           (t (setf kountx (f2cl-lib:int-add kountx 1)) (setf icount 0)))))
+        (go end_label)
+       end_label
+        (return (values nil nil nil nil nil nil icount))))))
 

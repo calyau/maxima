@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:58
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -161,27 +161,9 @@
       (declare (type single-float eta) (type double-float derfc y txmax))
       (cond
        (first (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
-              (setf nterf
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds erfcs 21 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nterfc
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds erfccs 59 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nterc2
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds erc2cs 49 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
+              (setf nterf (initds erfcs 21 eta))
+              (setf nterfc (initds erfccs 59 eta))
+              (setf nterc2 (initds erc2cs 49 eta))
               (setf xsml
                       (-
                        (f2cl-lib:fsqrt
@@ -205,14 +187,7 @@
       (if (>= y sqeps)
           (setf derfc
                   (- 1.0
-                     (* x
-                        (+ 1.0
-                           (multiple-value-bind
-                               (ret-val var-0 var-1 var-2)
-                               (dcsevl (- (* 2.0 x x) 1.0) erfcs nterf)
-                             (declare (ignore var-0 var-1))
-                             (when var-2 (setf nterf var-2))
-                             ret-val))))))
+                     (* x (+ 1.0 (dcsevl (- (* 2.0 x x) 1.0) erfcs nterf))))))
       (go end_label)
      label30
       (setf y (* y y))
@@ -220,22 +195,11 @@
           (setf derfc
                   (* (/ (exp (- y)) (abs x))
                      (+ 0.5
-                        (multiple-value-bind
-                            (ret-val var-0 var-1 var-2)
-                            (dcsevl (/ (- (/ 8.0 y) 5.0) 3.0) erc2cs nterc2)
-                          (declare (ignore var-0 var-1))
-                          (when var-2 (setf nterc2 var-2))
-                          ret-val)))))
+                        (dcsevl (/ (- (/ 8.0 y) 5.0) 3.0) erc2cs nterc2)))))
       (if (> y 4.0)
           (setf derfc
                   (* (/ (exp (- y)) (abs x))
-                     (+ 0.5
-                        (multiple-value-bind
-                            (ret-val var-0 var-1 var-2)
-                            (dcsevl (- (/ 8.0 y) 1.0) erfccs nterfc)
-                          (declare (ignore var-0 var-1))
-                          (when var-2 (setf nterfc var-2))
-                          ret-val)))))
+                     (+ 0.5 (dcsevl (- (/ 8.0 y) 1.0) erfccs nterfc)))))
       (if (< x 0.0) (setf derfc (- 2.0 derfc)))
       (go end_label)
      label40

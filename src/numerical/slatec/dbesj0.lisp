@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:48
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -50,23 +50,15 @@
       (setf y (coerce (abs x) 'double-float))
       (if (> y 4.0) (go label20))
       (setf dbesj0 1.0)
-      (if (> y xsml)
-          (setf dbesj0
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl (- (* 0.125 y y) 1.0) bj0cs ntj0)
-                    (declare (ignore var-0 var-1))
-                    (when var-2 (setf ntj0 var-2))
-                    ret-val)))
+      (if (> y xsml) (setf dbesj0 (dcsevl (- (* 0.125 y y) 1.0) bj0cs ntj0)))
       (go end_label)
      label20
       (multiple-value-bind
           (var-0 var-1 var-2)
           (d9b0mp y ampl theta)
-        (declare (ignore))
-        (when var-0 (setf y var-0))
-        (when var-1 (setf ampl var-1))
-        (when var-2 (setf theta var-2)))
+        (declare (ignore var-0))
+        (setf ampl var-1)
+        (setf theta var-2))
       (setf dbesj0 (* ampl (cos theta)))
       (go end_label)
      end_label

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:54
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -360,55 +360,13 @@
       (declare (type single-float eta) (type double-float de1 xmaxt))
       (cond
        (first (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
-              (setf ntae10
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ae10cs 50 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf ntae11
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ae11cs 60 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf ntae12
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ae12cs 41 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nte11
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds e11cs 29 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nte12
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds e12cs 25 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf ntae13
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ae13cs 50 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf ntae14
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ae14cs 64 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
+              (setf ntae10 (initds ae10cs 50 eta))
+              (setf ntae11 (initds ae11cs 60 eta))
+              (setf ntae12 (initds ae12cs 41 eta))
+              (setf nte11 (initds e11cs 29 eta))
+              (setf nte12 (initds e12cs 25 eta))
+              (setf ntae13 (initds ae13cs 50 eta))
+              (setf ntae14 (initds ae14cs 64 eta))
               (setf xmaxt (- (f2cl-lib:flog (f2cl-lib:d1mach 1))))
               (setf xmax (- xmaxt (f2cl-lib:flog xmaxt)))))
       (setf first f2cl-lib:%false%)
@@ -416,91 +374,47 @@
       (if (> x -32.0) (go label20))
       (setf de1
               (* (/ (exp (- x)) x)
-                 (+ 1.0
-                    (multiple-value-bind
-                        (ret-val var-0 var-1 var-2)
-                        (dcsevl (+ (/ 64.0 x) 1.0) ae10cs ntae10)
-                      (declare (ignore var-0 var-1))
-                      (when var-2 (setf ntae10 var-2))
-                      ret-val))))
+                 (+ 1.0 (dcsevl (+ (/ 64.0 x) 1.0) ae10cs ntae10))))
       (go end_label)
      label20
       (if (> x -8.0) (go label30))
       (setf de1
               (* (/ (exp (- x)) x)
-                 (+ 1.0
-                    (multiple-value-bind
-                        (ret-val var-0 var-1 var-2)
-                        (dcsevl (/ (+ (/ 64.0 x) 5.0) 3.0) ae11cs ntae11)
-                      (declare (ignore var-0 var-1))
-                      (when var-2 (setf ntae11 var-2))
-                      ret-val))))
+                 (+ 1.0 (dcsevl (/ (+ (/ 64.0 x) 5.0) 3.0) ae11cs ntae11))))
       (go end_label)
      label30
       (if (> x -4.0) (go label40))
       (setf de1
               (* (/ (exp (- x)) x)
-                 (+ 1.0
-                    (multiple-value-bind
-                        (ret-val var-0 var-1 var-2)
-                        (dcsevl (+ (/ 16.0 x) 3.0) ae12cs ntae12)
-                      (declare (ignore var-0 var-1))
-                      (when var-2 (setf ntae12 var-2))
-                      ret-val))))
+                 (+ 1.0 (dcsevl (+ (/ 16.0 x) 3.0) ae12cs ntae12))))
       (go end_label)
      label40
       (setf de1
-              (-
-               (multiple-value-bind
-                   (ret-val var-0 var-1 var-2)
-                   (dcsevl (/ (+ (* 2.0 x) 5.0) 3.0) e11cs nte11)
-                 (declare (ignore var-0 var-1))
-                 (when var-2 (setf nte11 var-2))
-                 ret-val)
-               (f2cl-lib:flog (- x))))
+              (- (dcsevl (/ (+ (* 2.0 x) 5.0) 3.0) e11cs nte11)
+                 (f2cl-lib:flog (- x))))
       (go end_label)
      label50
       (if (> x 1.0) (go label60))
       (if (= x 0.0) (xermsg "SLATEC" "DE1" "X IS 0" 2 2))
       (setf de1
-              (+ (- -0.6875 (f2cl-lib:flog (abs x)))
-                 x
-                 (multiple-value-bind
-                     (ret-val var-0 var-1 var-2)
-                     (dcsevl x e12cs nte12)
-                   (declare (ignore var-1))
-                   (when var-0 (setf x var-0))
-                   (when var-2 (setf nte12 var-2))
-                   ret-val)))
+              (+ (- -0.6875 (f2cl-lib:flog (abs x))) x (dcsevl x e12cs nte12)))
       (go end_label)
      label60
       (if (> x 4.0) (go label70))
       (setf de1
               (* (/ (exp (- x)) x)
-                 (+ 1.0
-                    (multiple-value-bind
-                        (ret-val var-0 var-1 var-2)
-                        (dcsevl (/ (- (/ 8.0 x) 5.0) 3.0) ae13cs ntae13)
-                      (declare (ignore var-0 var-1))
-                      (when var-2 (setf ntae13 var-2))
-                      ret-val))))
+                 (+ 1.0 (dcsevl (/ (- (/ 8.0 x) 5.0) 3.0) ae13cs ntae13))))
       (go end_label)
      label70
       (if (> x xmax) (go label80))
       (setf de1
               (* (/ (exp (- x)) x)
-                 (+ 1.0
-                    (multiple-value-bind
-                        (ret-val var-0 var-1 var-2)
-                        (dcsevl (- (/ 8.0 x) 1.0) ae14cs ntae14)
-                      (declare (ignore var-0 var-1))
-                      (when var-2 (setf ntae14 var-2))
-                      ret-val))))
+                 (+ 1.0 (dcsevl (- (/ 8.0 x) 1.0) ae14cs ntae14))))
       (go end_label)
      label80
       (xermsg "SLATEC" "DE1" "X SO BIG E1 UNDERFLOWS" 1 1)
       (setf de1 0.0)
       (go end_label)
      end_label
-      (return (values de1 x)))))
+      (return (values de1 nil)))))
 

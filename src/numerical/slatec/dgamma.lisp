@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:19:02
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -77,8 +77,8 @@
             (var-0 var-1)
             (dgamlm xmin xmax)
           (declare (ignore))
-          (when var-0 (setf xmin var-0))
-          (when var-1 (setf xmax var-1)))
+          (setf xmin var-0)
+          (setf xmax var-1))
         (setf dxrel (f2cl-lib:fsqrt (f2cl-lib:d1mach 4)))))
       (setf first f2cl-lib:%false%)
       (setf y (coerce (abs x) 'double-float))
@@ -87,14 +87,7 @@
       (if (< x 0.0) (setf n (f2cl-lib:int-sub n 1)))
       (setf y (- x n))
       (setf n (f2cl-lib:int-sub n 1))
-      (setf dgamma
-              (+ 0.9375
-                 (multiple-value-bind
-                     (ret-val var-0 var-1 var-2)
-                     (dcsevl (- (* 2.0 y) 1.0) gamcs ngam)
-                   (declare (ignore var-0 var-1))
-                   (when var-2 (setf ngam var-2))
-                   ret-val)))
+      (setf dgamma (+ 0.9375 (dcsevl (- (* 2.0 y) 1.0) gamcs ngam)))
       (if (= n 0) (go end_label))
       (if (> n 0) (go label30))
       (setf n (f2cl-lib:int-sub n))
@@ -122,14 +115,7 @@
       (if (< x xmin) (go end_label))
       (setf dgamma
               (exp
-               (+ (- (* (- y 0.5) (f2cl-lib:flog y)) y)
-                  sq2pil
-                  (multiple-value-bind
-                      (ret-val var-0)
-                      (d9lgmc y)
-                    (declare (ignore))
-                    (when var-0 (setf y var-0))
-                    ret-val))))
+               (+ (- (* (- y 0.5) (f2cl-lib:flog y)) y) sq2pil (d9lgmc y))))
       (if (> x 0.0) (go end_label))
       (if (< (abs (/ (- x (f2cl-lib:aint (- x 0.5))) x)) dxrel)
           (xermsg "SLATEC" "DGAMMA"

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:33
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -71,10 +71,9 @@
       (multiple-value-bind
           (var-0 var-1 var-2)
           (d9aimp x xm theta)
-        (declare (ignore))
-        (when var-0 (setf x var-0))
-        (when var-1 (setf xm var-1))
-        (when var-2 (setf theta var-2)))
+        (declare (ignore var-0))
+        (setf xm var-1)
+        (setf theta var-2))
       (setf dai (* xm (cos theta)))
       (go end_label)
      label20
@@ -83,40 +82,17 @@
       (if (> (abs x) x3sml) (setf z (expt x 3)))
       (setf dai
               (+ 0.375
-                 (-
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl z aifcs naif)
-                    (declare (ignore var-1))
-                    (when var-0 (setf z var-0))
-                    (when var-2 (setf naif var-2))
-                    ret-val)
-                  (* x
-                     (+ 0.25
-                        (multiple-value-bind
-                            (ret-val var-0 var-1 var-2)
-                            (dcsevl z aigcs naig)
-                          (declare (ignore var-1))
-                          (when var-0 (setf z var-0))
-                          (when var-2 (setf naig var-2))
-                          ret-val))))))
+                 (- (dcsevl z aifcs naif)
+                    (* x (+ 0.25 (dcsevl z aigcs naig))))))
       (go end_label)
      label30
       (if (> x xmax) (go label40))
-      (setf dai
-              (*
-               (multiple-value-bind
-                   (ret-val var-0)
-                   (daie x)
-                 (declare (ignore))
-                 (when var-0 (setf x var-0))
-                 ret-val)
-               (exp (/ (* -2.0 x (f2cl-lib:fsqrt x)) 3.0))))
+      (setf dai (* (daie x) (exp (/ (* -2.0 x (f2cl-lib:fsqrt x)) 3.0))))
       (go end_label)
      label40
       (setf dai 0.0)
       (xermsg "SLATEC" "DAI" "X SO BIG AI UNDERFLOWS" 1 1)
       (go end_label)
      end_label
-      (return (values dai x)))))
+      (return (values dai nil)))))
 

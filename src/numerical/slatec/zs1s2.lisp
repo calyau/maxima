@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:19:28
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -18,22 +18,8 @@
       (declare (type double-float s1dr s1di c1r c1i as2 as1 aln aa)
                (type f2cl-lib:integer4 idum))
       (setf nz 0)
-      (setf as1
-              (multiple-value-bind
-                  (ret-val var-0 var-1)
-                  (zabs s1r s1i)
-                (declare (ignore))
-                (when var-0 (setf s1r var-0))
-                (when var-1 (setf s1i var-1))
-                ret-val))
-      (setf as2
-              (multiple-value-bind
-                  (ret-val var-0 var-1)
-                  (zabs s2r s2i)
-                (declare (ignore))
-                (when var-0 (setf s2r var-0))
-                (when var-1 (setf s2i var-1))
-                ret-val))
+      (setf as1 (zabs s1r s1i))
+      (setf as2 (zabs s2r s2i))
       (if (and (= s1r 0.0) (= s1i 0.0)) (go label10))
       (if (= as1 0.0) (go label10))
       (setf aln (+ (- (- zrr) zrr) (f2cl-lib:flog as1)))
@@ -46,30 +32,19 @@
       (multiple-value-bind
           (var-0 var-1 var-2 var-3 var-4)
           (zlog s1dr s1di c1r c1i idum)
-        (declare (ignore))
-        (when var-0 (setf s1dr var-0))
-        (when var-1 (setf s1di var-1))
-        (when var-2 (setf c1r var-2))
-        (when var-3 (setf c1i var-3))
-        (when var-4 (setf idum var-4)))
+        (declare (ignore var-0 var-1))
+        (setf c1r var-2)
+        (setf c1i var-3)
+        (setf idum var-4))
       (setf c1r (- c1r zrr zrr))
       (setf c1i (- c1i zri zri))
       (multiple-value-bind
           (var-0 var-1 var-2 var-3)
           (zexp c1r c1i s1r s1i)
-        (declare (ignore))
-        (when var-0 (setf c1r var-0))
-        (when var-1 (setf c1i var-1))
-        (when var-2 (setf s1r var-2))
-        (when var-3 (setf s1i var-3)))
-      (setf as1
-              (multiple-value-bind
-                  (ret-val var-0 var-1)
-                  (zabs s1r s1i)
-                (declare (ignore))
-                (when var-0 (setf s1r var-0))
-                (when var-1 (setf s1i var-1))
-                ret-val))
+        (declare (ignore var-0 var-1))
+        (setf s1r var-2)
+        (setf s1i var-3))
+      (setf as1 (zabs s1r s1i))
       (setf iuf (f2cl-lib:int-add iuf 1))
      label10
       (setf aa (max as1 as2))

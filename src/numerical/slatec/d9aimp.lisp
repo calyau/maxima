@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:25
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -413,118 +413,31 @@
       (declare (type single-float eta) (type double-float z sqrtx))
       (cond
        (first (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
-              (setf nam20
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds am20cs 57 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nath0
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ath0cs 53 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nam21
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds am21cs 60 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nath1
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ath1cs 58 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nam22
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds am22cs 74 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nath2
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ath2cs 72 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
+              (setf nam20 (initds am20cs 57 eta))
+              (setf nath0 (initds ath0cs 53 eta))
+              (setf nam21 (initds am21cs 60 eta))
+              (setf nath1 (initds ath1cs 58 eta))
+              (setf nam22 (initds am22cs 74 eta))
+              (setf nath2 (initds ath2cs 72 eta))
               (setf xsml (/ -1.0 (expt (f2cl-lib:d1mach 3) 0.3333)))))
       (setf first f2cl-lib:%false%)
       (if (>= x -4.0) (go label20))
       (setf z 1.0)
       (if (> x xsml) (setf z (+ (/ 128.0 (expt x 3)) 1.0)))
-      (setf ampl
-              (+ 0.3125
-                 (multiple-value-bind
-                     (ret-val var-0 var-1 var-2)
-                     (dcsevl z am20cs nam20)
-                   (declare (ignore var-1))
-                   (when var-0 (setf z var-0))
-                   (when var-2 (setf nam20 var-2))
-                   ret-val)))
-      (setf theta
-              (-
-               (multiple-value-bind
-                   (ret-val var-0 var-1 var-2)
-                   (dcsevl z ath0cs nath0)
-                 (declare (ignore var-1))
-                 (when var-0 (setf z var-0))
-                 (when var-2 (setf nath0 var-2))
-                 ret-val)
-               0.625))
+      (setf ampl (+ 0.3125 (dcsevl z am20cs nam20)))
+      (setf theta (- (dcsevl z ath0cs nath0) 0.625))
       (go label40)
      label20
       (if (>= x -2.0) (go label30))
       (setf z (/ (+ (/ 128.0 (expt x 3)) 9.0) 7.0))
-      (setf ampl
-              (+ 0.3125
-                 (multiple-value-bind
-                     (ret-val var-0 var-1 var-2)
-                     (dcsevl z am21cs nam21)
-                   (declare (ignore var-1))
-                   (when var-0 (setf z var-0))
-                   (when var-2 (setf nam21 var-2))
-                   ret-val)))
-      (setf theta
-              (-
-               (multiple-value-bind
-                   (ret-val var-0 var-1 var-2)
-                   (dcsevl z ath1cs nath1)
-                 (declare (ignore var-1))
-                 (when var-0 (setf z var-0))
-                 (when var-2 (setf nath1 var-2))
-                 ret-val)
-               0.625))
+      (setf ampl (+ 0.3125 (dcsevl z am21cs nam21)))
+      (setf theta (- (dcsevl z ath1cs nath1) 0.625))
       (go label40)
      label30
       (if (>= x -1.0) (xermsg "SLATEC" "D9AIMP" "X MUST BE LE -1.0" 1 2))
       (setf z (/ (+ (/ 16.0 (expt x 3)) 9.0) 7.0))
-      (setf ampl
-              (+ 0.3125
-                 (multiple-value-bind
-                     (ret-val var-0 var-1 var-2)
-                     (dcsevl z am22cs nam22)
-                   (declare (ignore var-1))
-                   (when var-0 (setf z var-0))
-                   (when var-2 (setf nam22 var-2))
-                   ret-val)))
-      (setf theta
-              (-
-               (multiple-value-bind
-                   (ret-val var-0 var-1 var-2)
-                   (dcsevl z ath2cs nath2)
-                 (declare (ignore var-1))
-                 (when var-0 (setf z var-0))
-                 (when var-2 (setf nath2 var-2))
-                 ret-val)
-               0.625))
+      (setf ampl (+ 0.3125 (dcsevl z am22cs nam22)))
+      (setf theta (- (dcsevl z ath2cs nath2) 0.625))
      label40
       (setf sqrtx (f2cl-lib:fsqrt (- x)))
       (setf ampl (f2cl-lib:fsqrt (/ ampl sqrtx)))

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:52
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -162,27 +162,9 @@
       (declare (type single-float eta) (type double-float dbsi1e y))
       (cond
        (first (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
-              (setf nti1
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds bi1cs 17 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf ntai1
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ai1cs 46 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf ntai12
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds ai12cs 69 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
+              (setf nti1 (initds bi1cs 17 eta))
+              (setf ntai1 (initds ai1cs 46 eta))
+              (setf ntai12 (initds ai12cs 69 eta))
               (setf xmin (* 2.0 (f2cl-lib:d1mach 1)))
               (setf xsml (f2cl-lib:fsqrt (* 4.5 (f2cl-lib:d1mach 3))))))
       (setf first f2cl-lib:%false%)
@@ -195,39 +177,18 @@
       (if (> y xmin) (setf dbsi1e (* 0.5 x)))
       (if (> y xsml)
           (setf dbsi1e
-                  (* x
-                     (+ 0.875
-                        (multiple-value-bind
-                            (ret-val var-0 var-1 var-2)
-                            (dcsevl (- (/ (* y y) 4.5) 1.0) bi1cs nti1)
-                          (declare (ignore var-0 var-1))
-                          (when var-2 (setf nti1 var-2))
-                          ret-val)))))
+                  (* x (+ 0.875 (dcsevl (- (/ (* y y) 4.5) 1.0) bi1cs nti1)))))
       (setf dbsi1e (* (exp (- y)) dbsi1e))
       (go end_label)
      label20
       (if (<= y 8.0)
           (setf dbsi1e
-                  (/
-                   (+ 0.375
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (dcsevl (/ (- (/ 48.0 y) 11.0) 5.0) ai1cs ntai1)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf ntai1 var-2))
-                        ret-val))
-                   (f2cl-lib:fsqrt y))))
+                  (/ (+ 0.375 (dcsevl (/ (- (/ 48.0 y) 11.0) 5.0) ai1cs ntai1))
+                     (f2cl-lib:fsqrt y))))
       (if (> y 8.0)
           (setf dbsi1e
-                  (/
-                   (+ 0.375
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (dcsevl (- (/ 16.0 y) 1.0) ai12cs ntai12)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf ntai12 var-2))
-                        ret-val))
-                   (f2cl-lib:fsqrt y))))
+                  (/ (+ 0.375 (dcsevl (- (/ 16.0 y) 1.0) ai12cs ntai12))
+                     (f2cl-lib:fsqrt y))))
       (setf dbsi1e (f2cl-lib:sign dbsi1e x))
       (go end_label)
      end_label

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:57
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -58,28 +58,10 @@
       (if (> y 1.0) (go label20))
       (if (<= y sqeps) (setf derf (/ (* 2.0 x x) sqrtpi)))
       (if (> y sqeps)
-          (setf derf
-                  (* x
-                     (+ 1.0
-                        (multiple-value-bind
-                            (ret-val var-0 var-1 var-2)
-                            (dcsevl (- (* 2.0 x x) 1.0) erfcs nterf)
-                          (declare (ignore var-0 var-1))
-                          (when var-2 (setf nterf var-2))
-                          ret-val)))))
+          (setf derf (* x (+ 1.0 (dcsevl (- (* 2.0 x x) 1.0) erfcs nterf)))))
       (go end_label)
      label20
-      (if (<= y xbig)
-          (setf derf
-                  (f2cl-lib:sign
-                   (- 1.0
-                      (multiple-value-bind
-                          (ret-val var-0)
-                          (derfc y)
-                        (declare (ignore))
-                        (when var-0 (setf y var-0))
-                        ret-val))
-                   x)))
+      (if (<= y xbig) (setf derf (f2cl-lib:sign (- 1.0 (derfc y)) x)))
       (if (> y xbig) (setf derf (f2cl-lib:sign 1.0 x)))
       (go end_label)
      end_label

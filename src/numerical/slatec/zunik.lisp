@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:19:44
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -146,249 +146,179 @@
              (type double-float zrr zri fnu tol phir phii zeta1r zeta1i zeta2r
               zeta2i sumr sumi)
              (type (simple-array double-float (*)) cwrkr cwrki))
-    (f2cl-lib:with-array-data (cwrki-%data% cwrki-%offset% cwrki)
-      (declare (type f2cl-lib:integer4 cwrki-%offset%)
-               (type (simple-array double-float (*)) cwrki-%data%)
-               (ignorable cwrki-%offset% cwrki-%data%))
-      (f2cl-lib:with-array-data (cwrkr-%data% cwrkr-%offset% cwrkr)
-        (declare (type f2cl-lib:integer4 cwrkr-%offset%)
-                 (type (simple-array double-float (*)) cwrkr-%data%)
-                 (ignorable cwrkr-%offset% cwrkr-%data%))
-        (prog ((i 0) (idum 0) (j 0) (k 0) (l 0) (ac 0.0) (crfni 0.0)
-               (crfnr 0.0) (rfn 0.0) (si 0.0) (sr 0.0) (sri 0.0) (srr 0.0)
-               (sti 0.0) (str 0.0) (test 0.0) (ti 0.0) (tr 0.0) (t2i 0.0)
-               (t2r 0.0) (zni 0.0) (znr 0.0))
-          (declare
-           (type double-float znr zni t2r t2i tr ti test str sti srr sri sr si
-            rfn crfnr crfni ac)
-           (type f2cl-lib:integer4 l k j idum i))
-          (if (/= init 0) (go label40))
-          (setf rfn (/ 1.0 fnu))
-          (setf test (* (f2cl-lib:d1mach 1) 1000.0))
-          (setf ac (* fnu test))
-          (if (or (> (abs zrr) ac) (> (abs zri) ac)) (go label15))
-          (setf zeta1r (+ (* 2.0 (abs (f2cl-lib:flog test))) fnu))
-          (setf zeta1i 0.0)
-          (setf zeta2r fnu)
-          (setf zeta2i 0.0)
-          (setf phir 1.0)
-          (setf phii 0.0)
-          (go end_label)
-         label15
-          (setf tr (* zrr rfn))
-          (setf ti (* zri rfn))
-          (setf sr (+ coner (- (* tr tr) (* ti ti))))
-          (setf si (+ conei (+ (* tr ti) (* ti tr))))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3)
-              (zsqrt sr si srr sri)
-            (declare (ignore))
-            (when var-0 (setf sr var-0))
-            (when var-1 (setf si var-1))
-            (when var-2 (setf srr var-2))
-            (when var-3 (setf sri var-3)))
-          (setf str (+ coner srr))
-          (setf sti (+ conei sri))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5)
-              (zdiv str sti tr ti znr zni)
-            (declare (ignore))
-            (when var-0 (setf str var-0))
-            (when var-1 (setf sti var-1))
-            (when var-2 (setf tr var-2))
-            (when var-3 (setf ti var-3))
-            (when var-4 (setf znr var-4))
-            (when var-5 (setf zni var-5)))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4)
-              (zlog znr zni str sti idum)
-            (declare (ignore))
-            (when var-0 (setf znr var-0))
-            (when var-1 (setf zni var-1))
-            (when var-2 (setf str var-2))
-            (when var-3 (setf sti var-3))
-            (when var-4 (setf idum var-4)))
-          (setf zeta1r (* fnu str))
-          (setf zeta1i (* fnu sti))
-          (setf zeta2r (* fnu srr))
-          (setf zeta2i (* fnu sri))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5)
-              (zdiv coner conei srr sri tr ti)
-            (declare (ignore))
-            (when var-0 (setf coner var-0))
-            (when var-1 (setf conei var-1))
-            (when var-2 (setf srr var-2))
-            (when var-3 (setf sri var-3))
-            (when var-4 (setf tr var-4))
-            (when var-5 (setf ti var-5)))
-          (setf srr (* tr rfn))
-          (setf sri (* ti rfn))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3)
-              (zsqrt srr sri
-               (f2cl-lib:fref cwrkr-%data% (16) ((1 16)) cwrkr-%offset%)
-               (f2cl-lib:fref cwrki-%data% (16) ((1 16)) cwrki-%offset%))
-            (declare (ignore))
-            (when var-0 (setf srr var-0))
-            (when var-1 (setf sri var-1))
-            (when var-2
-              (f2cl-lib:fset
-               (f2cl-lib:fref cwrkr-%data% (16) ((1 16)) cwrkr-%offset%)
-               var-2))
-            (when var-3
-              (f2cl-lib:fset
-               (f2cl-lib:fref cwrki-%data% (16) ((1 16)) cwrki-%offset%)
-               var-3)))
-          (setf phir
-                  (* (f2cl-lib:fref cwrkr-%data% (16) ((1 16)) cwrkr-%offset%)
-                     (f2cl-lib:fref con (ikflg) ((1 2)))))
-          (setf phii
-                  (* (f2cl-lib:fref cwrki-%data% (16) ((1 16)) cwrki-%offset%)
-                     (f2cl-lib:fref con (ikflg) ((1 2)))))
-          (if (/= ipmtr 0) (go end_label))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5)
-              (zdiv coner conei sr si t2r t2i)
-            (declare (ignore))
-            (when var-0 (setf coner var-0))
-            (when var-1 (setf conei var-1))
-            (when var-2 (setf sr var-2))
-            (when var-3 (setf si var-3))
-            (when var-4 (setf t2r var-4))
-            (when var-5 (setf t2i var-5)))
-          (f2cl-lib:fset
-           (f2cl-lib:fref cwrkr-%data% (1) ((1 16)) cwrkr-%offset%)
-           coner)
-          (f2cl-lib:fset
-           (f2cl-lib:fref cwrki-%data% (1) ((1 16)) cwrki-%offset%)
-           conei)
-          (setf crfnr coner)
-          (setf crfni conei)
-          (setf ac 1.0)
-          (setf l 1)
-          (f2cl-lib:fdo (k 2 (f2cl-lib:int-add k 1))
-                        ((> k 15) nil)
-            (tagbody
-              (setf sr zeror)
-              (setf si zeroi)
-              (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
-                            ((> j k) nil)
-                (tagbody
-                  (setf l (f2cl-lib:int-add l 1))
-                  (setf str
-                          (+ (- (* sr t2r) (* si t2i))
-                             (f2cl-lib:fref c (l) ((1 120)))))
-                  (setf si (+ (* sr t2i) (* si t2r)))
-                  (setf sr str)
-                 label10))
-              (setf str (- (* crfnr srr) (* crfni sri)))
-              (setf crfni (+ (* crfnr sri) (* crfni srr)))
-              (setf crfnr str)
-              (f2cl-lib:fset
-               (f2cl-lib:fref cwrkr-%data% (k) ((1 16)) cwrkr-%offset%)
-               (- (* crfnr sr) (* crfni si)))
-              (f2cl-lib:fset
-               (f2cl-lib:fref cwrki-%data% (k) ((1 16)) cwrki-%offset%)
-               (+ (* crfnr si) (* crfni sr)))
-              (setf ac (* ac rfn))
-              (setf test
-                      (coerce
-                       (+
-                        (abs
-                         (f2cl-lib:fref cwrkr-%data%
-                                        (k)
-                                        ((1 16))
-                                        cwrkr-%offset%))
-                        (abs
-                         (f2cl-lib:fref cwrki-%data%
-                                        (k)
-                                        ((1 16))
-                                        cwrki-%offset%)))
-                       'double-float))
-              (if (and (< ac tol) (< test tol)) (go label30))
-             label20))
-          (setf k 15)
-         label30
-          (setf init k)
-         label40
-          (if (= ikflg 2) (go label60))
+    (prog ((i 0) (idum 0) (j 0) (k 0) (l 0) (ac 0.0) (crfni 0.0) (crfnr 0.0)
+           (rfn 0.0) (si 0.0) (sr 0.0) (sri 0.0) (srr 0.0) (sti 0.0) (str 0.0)
+           (test 0.0) (ti 0.0) (tr 0.0) (t2i 0.0) (t2r 0.0) (zni 0.0)
+           (znr 0.0))
+      (declare
+       (type double-float znr zni t2r t2i tr ti test str sti srr sri sr si rfn
+        crfnr crfni ac)
+       (type f2cl-lib:integer4 l k j idum i))
+      (if (/= init 0) (go label40))
+      (setf rfn (/ 1.0 fnu))
+      (setf test (* (f2cl-lib:d1mach 1) 1000.0))
+      (setf ac (* fnu test))
+      (if (or (> (abs zrr) ac) (> (abs zri) ac)) (go label15))
+      (setf zeta1r (+ (* 2.0 (abs (f2cl-lib:flog test))) fnu))
+      (setf zeta1i 0.0)
+      (setf zeta2r fnu)
+      (setf zeta2i 0.0)
+      (setf phir 1.0)
+      (setf phii 0.0)
+      (go end_label)
+     label15
+      (setf tr (* zrr rfn))
+      (setf ti (* zri rfn))
+      (setf sr (+ coner (- (* tr tr) (* ti ti))))
+      (setf si (+ conei (+ (* tr ti) (* ti tr))))
+      (multiple-value-bind
+          (var-0 var-1 var-2 var-3)
+          (zsqrt sr si srr sri)
+        (declare (ignore var-0 var-1))
+        (setf srr var-2)
+        (setf sri var-3))
+      (setf str (+ coner srr))
+      (setf sti (+ conei sri))
+      (multiple-value-bind
+          (var-0 var-1 var-2 var-3 var-4 var-5)
+          (zdiv str sti tr ti znr zni)
+        (declare (ignore var-0 var-1 var-2 var-3))
+        (setf znr var-4)
+        (setf zni var-5))
+      (multiple-value-bind
+          (var-0 var-1 var-2 var-3 var-4)
+          (zlog znr zni str sti idum)
+        (declare (ignore var-0 var-1))
+        (setf str var-2)
+        (setf sti var-3)
+        (setf idum var-4))
+      (setf zeta1r (* fnu str))
+      (setf zeta1i (* fnu sti))
+      (setf zeta2r (* fnu srr))
+      (setf zeta2i (* fnu sri))
+      (multiple-value-bind
+          (var-0 var-1 var-2 var-3 var-4 var-5)
+          (zdiv coner conei srr sri tr ti)
+        (declare (ignore var-0 var-1 var-2 var-3))
+        (setf tr var-4)
+        (setf ti var-5))
+      (setf srr (* tr rfn))
+      (setf sri (* ti rfn))
+      (multiple-value-bind
+          (var-0 var-1 var-2 var-3)
+          (zsqrt srr sri (f2cl-lib:fref cwrkr (16) ((1 16)))
+           (f2cl-lib:fref cwrki (16) ((1 16))))
+        (declare (ignore var-0 var-1))
+        (f2cl-lib:fset (f2cl-lib:fref cwrkr (16) ((1 16))) var-2)
+        (f2cl-lib:fset (f2cl-lib:fref cwrki (16) ((1 16))) var-3))
+      (setf phir
+              (* (f2cl-lib:fref cwrkr (16) ((1 16)))
+                 (f2cl-lib:fref con (ikflg) ((1 2)))))
+      (setf phii
+              (* (f2cl-lib:fref cwrki (16) ((1 16)))
+                 (f2cl-lib:fref con (ikflg) ((1 2)))))
+      (if (/= ipmtr 0) (go end_label))
+      (multiple-value-bind
+          (var-0 var-1 var-2 var-3 var-4 var-5)
+          (zdiv coner conei sr si t2r t2i)
+        (declare (ignore var-0 var-1 var-2 var-3))
+        (setf t2r var-4)
+        (setf t2i var-5))
+      (f2cl-lib:fset (f2cl-lib:fref cwrkr (1) ((1 16))) coner)
+      (f2cl-lib:fset (f2cl-lib:fref cwrki (1) ((1 16))) conei)
+      (setf crfnr coner)
+      (setf crfni conei)
+      (setf ac 1.0)
+      (setf l 1)
+      (f2cl-lib:fdo (k 2 (f2cl-lib:int-add k 1))
+                    ((> k 15) nil)
+        (tagbody
           (setf sr zeror)
           (setf si zeroi)
-          (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                        ((> i init) nil)
+          (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
+                        ((> j k) nil)
             (tagbody
-              (setf sr
-                      (+ sr
-                         (f2cl-lib:fref cwrkr-%data%
-                                        (i)
-                                        ((1 16))
-                                        cwrkr-%offset%)))
-              (setf si
-                      (+ si
-                         (f2cl-lib:fref cwrki-%data%
-                                        (i)
-                                        ((1 16))
-                                        cwrki-%offset%)))
-             label50))
-          (setf sumr sr)
-          (setf sumi si)
-          (setf phir
-                  (* (f2cl-lib:fref cwrkr-%data% (16) ((1 16)) cwrkr-%offset%)
-                     (f2cl-lib:fref con (1) ((1 2)))))
-          (setf phii
-                  (* (f2cl-lib:fref cwrki-%data% (16) ((1 16)) cwrki-%offset%)
-                     (f2cl-lib:fref con (1) ((1 2)))))
-          (go end_label)
-         label60
-          (setf sr zeror)
-          (setf si zeroi)
-          (setf tr coner)
-          (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                        ((> i init) nil)
-            (tagbody
-              (setf sr
-                      (+ sr
-                         (* tr
-                            (f2cl-lib:fref cwrkr-%data%
-                                           (i)
-                                           ((1 16))
-                                           cwrkr-%offset%))))
-              (setf si
-                      (+ si
-                         (* tr
-                            (f2cl-lib:fref cwrki-%data%
-                                           (i)
-                                           ((1 16))
-                                           cwrki-%offset%))))
-              (setf tr (- tr))
-             label70))
-          (setf sumr sr)
-          (setf sumi si)
-          (setf phir
-                  (* (f2cl-lib:fref cwrkr-%data% (16) ((1 16)) cwrkr-%offset%)
-                     (f2cl-lib:fref con (2) ((1 2)))))
-          (setf phii
-                  (* (f2cl-lib:fref cwrki-%data% (16) ((1 16)) cwrki-%offset%)
-                     (f2cl-lib:fref con (2) ((1 2)))))
-          (go end_label)
-         end_label
-          (return
-           (values nil
-                   nil
-                   nil
-                   nil
-                   nil
-                   nil
-                   init
-                   phir
-                   phii
-                   zeta1r
-                   zeta1i
-                   zeta2r
-                   zeta2i
-                   sumr
-                   sumi
-                   nil
-                   nil)))))))
+              (setf l (f2cl-lib:int-add l 1))
+              (setf str
+                      (+ (- (* sr t2r) (* si t2i))
+                         (f2cl-lib:fref c (l) ((1 120)))))
+              (setf si (+ (* sr t2i) (* si t2r)))
+              (setf sr str)
+             label10))
+          (setf str (- (* crfnr srr) (* crfni sri)))
+          (setf crfni (+ (* crfnr sri) (* crfni srr)))
+          (setf crfnr str)
+          (f2cl-lib:fset (f2cl-lib:fref cwrkr (k) ((1 16)))
+                         (- (* crfnr sr) (* crfni si)))
+          (f2cl-lib:fset (f2cl-lib:fref cwrki (k) ((1 16)))
+                         (+ (* crfnr si) (* crfni sr)))
+          (setf ac (* ac rfn))
+          (setf test
+                  (coerce
+                   (+ (abs (f2cl-lib:fref cwrkr (k) ((1 16))))
+                      (abs (f2cl-lib:fref cwrki (k) ((1 16)))))
+                   'double-float))
+          (if (and (< ac tol) (< test tol)) (go label30))
+         label20))
+      (setf k 15)
+     label30
+      (setf init k)
+     label40
+      (if (= ikflg 2) (go label60))
+      (setf sr zeror)
+      (setf si zeroi)
+      (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                    ((> i init) nil)
+        (tagbody
+          (setf sr (+ sr (f2cl-lib:fref cwrkr (i) ((1 16)))))
+          (setf si (+ si (f2cl-lib:fref cwrki (i) ((1 16)))))
+         label50))
+      (setf sumr sr)
+      (setf sumi si)
+      (setf phir
+              (* (f2cl-lib:fref cwrkr (16) ((1 16)))
+                 (f2cl-lib:fref con (1) ((1 2)))))
+      (setf phii
+              (* (f2cl-lib:fref cwrki (16) ((1 16)))
+                 (f2cl-lib:fref con (1) ((1 2)))))
+      (go end_label)
+     label60
+      (setf sr zeror)
+      (setf si zeroi)
+      (setf tr coner)
+      (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                    ((> i init) nil)
+        (tagbody
+          (setf sr (+ sr (* tr (f2cl-lib:fref cwrkr (i) ((1 16))))))
+          (setf si (+ si (* tr (f2cl-lib:fref cwrki (i) ((1 16))))))
+          (setf tr (- tr))
+         label70))
+      (setf sumr sr)
+      (setf sumi si)
+      (setf phir
+              (* (f2cl-lib:fref cwrkr (16) ((1 16)))
+                 (f2cl-lib:fref con (2) ((1 2)))))
+      (setf phii
+              (* (f2cl-lib:fref cwrki (16) ((1 16)))
+                 (f2cl-lib:fref con (2) ((1 2)))))
+      (go end_label)
+     end_label
+      (return
+       (values nil
+               nil
+               nil
+               nil
+               nil
+               nil
+               init
+               phir
+               phii
+               zeta1r
+               zeta1i
+               zeta2r
+               zeta2i
+               sumr
+               sumi
+               nil
+               nil)))))
 

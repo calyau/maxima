@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:29
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -193,88 +193,24 @@
       (declare (type single-float eta) (type double-float z))
       (cond
        (first (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
-              (setf nbm0
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds bm0cs 37 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nbt02
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds bt02cs 39 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nbm02
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds bm02cs 40 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf nbth0
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds bth0cs 44 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
+              (setf nbm0 (initds bm0cs 37 eta))
+              (setf nbt02 (initds bt02cs 39 eta))
+              (setf nbm02 (initds bm02cs 40 eta))
+              (setf nbth0 (initds bth0cs 44 eta))
               (setf xmax (/ 1.0 (f2cl-lib:d1mach 4)))))
       (setf first f2cl-lib:%false%)
       (if (< x 4.0) (xermsg "SLATEC" "D9B0MP" "X MUST BE GE 4" 1 2))
       (if (> x 8.0) (go label20))
       (setf z (/ (- (/ 128.0 (* x x)) 5.0) 3.0))
-      (setf ampl
-              (/
-               (+ 0.75
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl z bm0cs nbm0)
-                    (declare (ignore var-1))
-                    (when var-0 (setf z var-0))
-                    (when var-2 (setf nbm0 var-2))
-                    ret-val))
-               (f2cl-lib:fsqrt x)))
-      (setf theta
-              (+ (- x pi4)
-                 (/
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl z bt02cs nbt02)
-                    (declare (ignore var-1))
-                    (when var-0 (setf z var-0))
-                    (when var-2 (setf nbt02 var-2))
-                    ret-val)
-                  x)))
+      (setf ampl (/ (+ 0.75 (dcsevl z bm0cs nbm0)) (f2cl-lib:fsqrt x)))
+      (setf theta (+ (- x pi4) (/ (dcsevl z bt02cs nbt02) x)))
       (go end_label)
      label20
       (if (> x xmax)
           (xermsg "SLATEC" "D9B0MP" "NO PRECISION BECAUSE X IS BIG" 2 2))
       (setf z (- (/ 128.0 (* x x)) 1.0))
-      (setf ampl
-              (/
-               (+ 0.75
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl z bm02cs nbm02)
-                    (declare (ignore var-1))
-                    (when var-0 (setf z var-0))
-                    (when var-2 (setf nbm02 var-2))
-                    ret-val))
-               (f2cl-lib:fsqrt x)))
-      (setf theta
-              (+ (- x pi4)
-                 (/
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl z bth0cs nbth0)
-                    (declare (ignore var-1))
-                    (when var-0 (setf z var-0))
-                    (when var-2 (setf nbth0 var-2))
-                    ret-val)
-                  x)))
+      (setf ampl (/ (+ 0.75 (dcsevl z bm02cs nbm02)) (f2cl-lib:fsqrt x)))
+      (setf theta (+ (- x pi4) (/ (dcsevl z bth0cs nbth0) x)))
       (go end_label)
      end_label
       (return (values nil ampl theta)))))

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:19:06
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -28,17 +28,7 @@
       (setf first f2cl-lib:%false%)
       (setf y (coerce (abs x) 'double-float))
       (if (> y 10.0) (go label20))
-      (setf dlngam
-              (coerce
-               (f2cl-lib:flog
-                (abs
-                 (multiple-value-bind
-                     (ret-val var-0)
-                     (dgamma x)
-                   (declare (ignore))
-                   (when var-0 (setf x var-0))
-                   ret-val)))
-               'double-float))
+      (setf dlngam (coerce (f2cl-lib:flog (abs (dgamma x))) 'double-float))
       (go end_label)
      label20
       (if (> y xmax)
@@ -46,12 +36,7 @@
       (if (> x 0.0)
           (setf dlngam
                   (+ (- (+ sq2pil (* (- x 0.5) (f2cl-lib:flog x))) x)
-                     (multiple-value-bind
-                         (ret-val var-0)
-                         (d9lgmc y)
-                       (declare (ignore))
-                       (when var-0 (setf y var-0))
-                       ret-val))))
+                     (d9lgmc y))))
       (if (> x 0.0) (go end_label))
       (setf sinpiy (coerce (abs (sin (* pi_ y))) 'double-float))
       (if (= sinpiy 0.0)
@@ -63,13 +48,8 @@
               (- (+ sqpi2l (* (- x 0.5) (f2cl-lib:flog y)))
                  x
                  (f2cl-lib:flog sinpiy)
-                 (multiple-value-bind
-                     (ret-val var-0)
-                     (d9lgmc y)
-                   (declare (ignore))
-                   (when var-0 (setf y var-0))
-                   ret-val)))
+                 (d9lgmc y)))
       (go end_label)
      end_label
-      (return (values dlngam x)))))
+      (return (values dlngam nil)))))
 

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:49
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -53,33 +53,19 @@
       (setf y 0.0)
       (if (> x xsml) (setf y (* x x)))
       (setf dbesy0
-              (+
-               (* twodpi
-                  (f2cl-lib:flog (* 0.5 x))
-                  (multiple-value-bind
-                      (ret-val var-0)
-                      (dbesj0 x)
-                    (declare (ignore))
-                    (when var-0 (setf x var-0))
-                    ret-val))
-               0.375
-               (multiple-value-bind
-                   (ret-val var-0 var-1 var-2)
-                   (dcsevl (- (* 0.125 y) 1.0) by0cs nty0)
-                 (declare (ignore var-0 var-1))
-                 (when var-2 (setf nty0 var-2))
-                 ret-val)))
+              (+ (* twodpi (f2cl-lib:flog (* 0.5 x)) (dbesj0 x))
+                 0.375
+                 (dcsevl (- (* 0.125 y) 1.0) by0cs nty0)))
       (go end_label)
      label20
       (multiple-value-bind
           (var-0 var-1 var-2)
           (d9b0mp x ampl theta)
-        (declare (ignore))
-        (when var-0 (setf x var-0))
-        (when var-1 (setf ampl var-1))
-        (when var-2 (setf theta var-2)))
+        (declare (ignore var-0))
+        (setf ampl var-1)
+        (setf theta var-2))
       (setf dbesy0 (* ampl (sin theta)))
       (go end_label)
      end_label
-      (return (values dbesy0 x)))))
+      (return (values dbesy0 nil)))))
 

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:32
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -51,15 +51,8 @@
       (setf d9lgmc (/ 1.0 (* 12.0 x)))
       (if (< x xbig)
           (setf d9lgmc
-                  (/
-                   (multiple-value-bind
-                       (ret-val var-0 var-1 var-2)
-                       (dcsevl (- (* 2.0 (expt (/ 10.0 x) 2)) 1.0) algmcs
-                        nalgm)
-                     (declare (ignore var-0 var-1))
-                     (when var-2 (setf nalgm var-2))
-                     ret-val)
-                   x)))
+                  (/ (dcsevl (- (* 2.0 (expt (/ 10.0 x) 2)) 1.0) algmcs nalgm)
+                     x)))
       (go end_label)
      label20
       (setf d9lgmc 0.0)

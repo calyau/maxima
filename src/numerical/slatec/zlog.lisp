@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:19:24
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -39,14 +39,7 @@
      label40
       (if (< ar 0.0) (setf dtheta (+ dtheta dpi)))
      label50
-      (setf zm
-              (multiple-value-bind
-                  (ret-val var-0 var-1)
-                  (zabs ar ai)
-                (declare (ignore))
-                (when var-0 (setf ar var-0))
-                (when var-1 (setf ai var-1))
-                ret-val))
+      (setf zm (zabs ar ai))
       (setf br (f2cl-lib:flog zm))
       (setf bi dtheta)
       (go end_label)
@@ -54,5 +47,5 @@
       (setf ierr 1)
       (go end_label)
      end_label
-      (return (values ar ai br bi ierr)))))
+      (return (values nil nil br bi ierr)))))
 

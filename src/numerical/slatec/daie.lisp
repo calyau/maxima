@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:34
+;;; Compiled by f2cl version 2.0 beta 2002-05-06
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -154,34 +154,10 @@
                (type double-float daie z xm theta sqrtx))
       (cond
        (first (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
-              (setf naif
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds aifcs 13 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf naig
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds aigcs 13 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf naip1
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds aip1cs 57 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
-              (setf naip2
-                      (multiple-value-bind
-                          (ret-val var-0 var-1 var-2)
-                          (initds aip2cs 37 eta)
-                        (declare (ignore var-0 var-1))
-                        (when var-2 (setf eta var-2))
-                        ret-val))
+              (setf naif (initds aifcs 13 eta))
+              (setf naig (initds aigcs 13 eta))
+              (setf naip1 (initds aip1cs 57 eta))
+              (setf naip2 (initds aip2cs 37 eta))
               (setf x3sml (coerce (expt eta 0.3333f0) 'double-float))
               (setf x32sml (* 1.3104 (expt x3sml 2)))
               (setf xbig (expt (f2cl-lib:d1mach 2) 0.6666))))
@@ -190,10 +166,9 @@
       (multiple-value-bind
           (var-0 var-1 var-2)
           (d9aimp x xm theta)
-        (declare (ignore))
-        (when var-0 (setf x var-0))
-        (when var-1 (setf xm var-1))
-        (when var-2 (setf theta var-2)))
+        (declare (ignore var-0))
+        (setf xm var-1)
+        (setf theta var-2))
       (setf daie (* xm (cos theta)))
       (go end_label)
      label20
@@ -202,23 +177,8 @@
       (if (> (abs x) x3sml) (setf z (expt x 3)))
       (setf daie
               (+ 0.375
-                 (-
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl z aifcs naif)
-                    (declare (ignore var-1))
-                    (when var-0 (setf z var-0))
-                    (when var-2 (setf naif var-2))
-                    ret-val)
-                  (* x
-                     (+ 0.25
-                        (multiple-value-bind
-                            (ret-val var-0 var-1 var-2)
-                            (dcsevl z aigcs naig)
-                          (declare (ignore var-1))
-                          (when var-0 (setf z var-0))
-                          (when var-2 (setf naig var-2))
-                          ret-val))))))
+                 (- (dcsevl z aifcs naif)
+                    (* x (+ 0.25 (dcsevl z aigcs naig))))))
       (if (> x x32sml)
           (setf daie (* daie (exp (/ (* 2.0 x (f2cl-lib:fsqrt x)) 3.0)))))
       (go end_label)
@@ -227,33 +187,15 @@
       (setf sqrtx (f2cl-lib:fsqrt x))
       (setf z (/ (- (/ 16.0 (* x sqrtx)) 9.0) 7.0))
       (setf daie
-              (/
-               (+ 0.28125
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl z aip1cs naip1)
-                    (declare (ignore var-1))
-                    (when var-0 (setf z var-0))
-                    (when var-2 (setf naip1 var-2))
-                    ret-val))
-               (f2cl-lib:fsqrt sqrtx)))
+              (/ (+ 0.28125 (dcsevl z aip1cs naip1)) (f2cl-lib:fsqrt sqrtx)))
       (go end_label)
      label40
       (setf sqrtx (f2cl-lib:fsqrt x))
       (setf z -1.0)
       (if (< x xbig) (setf z (- (/ 16.0 (* x sqrtx)) 1.0)))
       (setf daie
-              (/
-               (+ 0.28125
-                  (multiple-value-bind
-                      (ret-val var-0 var-1 var-2)
-                      (dcsevl z aip2cs naip2)
-                    (declare (ignore var-1))
-                    (when var-0 (setf z var-0))
-                    (when var-2 (setf naip2 var-2))
-                    ret-val))
-               (f2cl-lib:fsqrt sqrtx)))
+              (/ (+ 0.28125 (dcsevl z aip2cs naip2)) (f2cl-lib:fsqrt sqrtx)))
       (go end_label)
      end_label
-      (return (values daie x)))))
+      (return (values daie nil)))))
 
