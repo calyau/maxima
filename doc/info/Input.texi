@@ -876,25 +876,41 @@ STRING'ed expression should not be used in a computation.
 @end defun
 @c @node STRINGOUT, TTYOFF, STRING, Input and Output
 @c @unnumberedsec phony
-@defun STRINGOUT (args)
-will output an expression to a file in a linear
-format.  Such files are then used by the BATCH or DEMO commands.
-STRINGOUT(file-specification, A1, A2, ...)  outputs to a file given by
-file-specification ([filename1,filename2,DSK, directory]) the values
-given by A1,A2,..  in a MACSYMA readable format.  The
-file-specification may be omitted, in which case the default values
-will be used. The Ai are usually C labels or may be INPUT meaning the
-value of all C labels.  Another option is to make ai FUNCTIONS which
-will cause all of the user's function definitions to be strungout
-(i.e. all those retrieved by DISPFUN(ALL)).  Likewise the ai may be
-VALUES, and all the variables to which the user has assigned values
-will be strungout.  ai may also be a list [m,n] which means to
-stringout all labels in the range m through n inclusive.  This
-function may be used to create a file of FORTRAN statements by doing
-some simple editing on the strungout expressions.  If the GRIND switch
-is set to TRUE, then STRINGOUT will use GRIND format instead of STRING
-format.  Note: a STRINGOUT may be done while a WRITEFILE is in
-progress.
+@defun STRINGOUT (file-specification, expr1, expr2, expr3, ...)
+@defunx STRINGOUT (file-specification, [m, n])
+@defunx STRINGOUT (file-specification, INPUT)
+@defunx STRINGOUT (file-specification, FUNCTIONS)
+@defunx STRINGOUT (file-specification, VALUES)
+
+STRINGOUT writes expressions to a file in the same form the
+expressions would be typed for input. The file can then be used
+as input for the BATCH or DEMO commands, and it may be edited for
+any purpose. STRINGOUT can be executed while WRITEFILE is in progress.
+
+The general form of STRINGOUT writes the values of one or more 
+expressions to the output file. Note that if an expression is a
+variable, only the value of the variable is written and not the name
+of the variable. As a useful special case, the expressions may be
+input labels (%i1, %i2, %i3, ...) or output labels (%o1, %o2, %o3, ...).
+
+If GRIND is TRUE, STRINGOUT will format the output using the GRIND
+format. Otherwise the STRING format is used. See GRIND and STRING.
+
+The special form STRINGOUT (file-specification, [m, n]) writes the
+values of input labels m through n, inclusive. 
+
+The special form STRINGOUT (file-specification, INPUT) writes all
+input labels to the file.
+
+The special form STRINGOUT (file-specification, FUNCTIONS) writes all
+user-defined functions to the file. The functions that are written
+are the same ones shown by DISPFUN (ALL).
+
+The special form STRINGOUT (file-specification, VALUES) writes all
+user-assigned variables to the file. Each variable is printed as an
+assignment statement, with the name of the variable, a colon, and its
+value. Note that the general form of STRINGOUT does not print 
+variables as assignment statements.
 
 @end defun
 
