@@ -1491,7 +1491,9 @@
 ;;; B<=%PI2
 
 (DEFUN PERIOD (P E VAR)
-       (ALIKE1 E (NO-ERR-SUB (m+ P VAR) E))) 
+  (and (ALIKE1 (no-err-sub var E) (setq e (NO-ERR-SUB (m+ P VAR) E)))
+       ;; means there was no error
+       (not (eq e t))))
 
 (DEFUN INFR (A)
   (let ((var '$%i)
