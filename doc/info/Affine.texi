@@ -179,15 +179,15 @@ iteration.
 
 @example
 
-(C82) create_list1(x^i,i,[1,3,7]);
-(D82) [X,X^3,X^7]
+(%i82) create_list1(x^i,i,[1,3,7]);
+(%o82) [X,X^3,X^7]
 @end example
 @noindent
 
 With a double iteration:
 @example
-(C79) create_list([i,j],i,[a,b],j,[e,f,h]);
-(D79) [[A,E],[A,F],[A,H],[B,E],[B,F],[B,H]]
+(%i79) create_list([i,j],i,[a,b],j,[e,f,h]);
+(%o79) [[A,E],[A,F],[A,H],[B,E],[B,F],[B,H]]
 @end example
 
 Instead of LISTn two args maybe supplied each of which should
@@ -195,8 +195,8 @@ evaluate to a number.   These will be the inclusive lower and
 upper bounds for the iteration.   
 
 @example
-(C81) create_list([i,j],i,[1,2,3],j,1,i);
-(D81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
+(%i81) create_list([i,j],i,[1,2,3],j,1,i);
+(%o81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
 @end example
 
 

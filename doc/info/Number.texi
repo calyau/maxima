@@ -98,11 +98,11 @@ CFLENGTH[1] times the period.  Thus the default is to give one period.
 converts the continued fraction represented by list
 into general representation.
 @example
-(C1) CF([1,2,-3]+[1,-2,1]);
-(D1)                 [1, 1, 1, 2]
-(C2) CFDISREP(%);
+(%i1) CF([1,2,-3]+[1,-2,1]);
+(%o1)                 [1, 1, 1, 2]
+(%i2) CFDISREP(%);
                             1
-(D2)                1 + ---------
+(%o2)                1 + ---------
                               1
                         1 + -----
                                 1
@@ -118,14 +118,14 @@ into general representation.
 gives a matrix of the numerators and denominators of the
 next-to-last and last convergents of the continued fraction x.
 @example
-(C1) CF(SQRT(3));
-(D1)                 [1, 1, 2, 1, 2, 1, 2, 1]
-(C2) CFEXPAND(%);
+(%i1) CF(SQRT(3));
+(%o1)                 [1, 1, 2, 1, 2, 1, 2, 1]
+(%i2) CFEXPAND(%);
                              [71  97]
-(D2)                         [      ]
+(%o2)                         [      ]
                              [41  56]
-(C3) D2[1,2]/D2[2,2],NUMER;
-(D3)                        1.7321429
+(%i3) %o2[1,2]/%o2[2,2],NUMER;
+(%o3)                        1.7321429
 
 
 @end example
@@ -239,13 +239,13 @@ which differ by an integer.  It then turns one into a polynomial times
 the other.  If exp involves binomial coefficients then they will be
 converted into ratios of factorials.
 @example
-(C1) N!/(N+1)!;
+(%i1) N!/(N+1)!;
                                     N!
-(D1)                             --------
+(%o1)                             --------
                                  (N + 1)!
-(C2) MINFACTORIAL(%);
+(%i2) MINFACTORIAL(%);
                                      1
-(D2)                               -----
+(%o2)                               -----
                                    N + 1
 
 
@@ -285,10 +285,10 @@ gives the principal unit of the real quadratic number field
 SQRT(n) where n is an integer, i.e.  the element whose norm is unity.
 This amounts to solving Pell's equation A**2- n*B**2=1.
 @example
-(C1) QUNIT(17);
-(D1)              SQRT(17)+4
-(C2)  EXPAND(%*(SQRT(17)-4));
-(D2)               1
+(%i1) QUNIT(17);
+(%o1)              SQRT(17)+4
+(%i2)  EXPAND(%*(SQRT(17)-4));
+(%o2)               1
 
 
 @end example

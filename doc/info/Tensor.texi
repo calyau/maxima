@@ -108,13 +108,13 @@ Tensor Package - will set to zero, in exp, all
 occurrences of the differentiated object tensor that have n or more
 derivative indices as the following example demonstrates.
 @example
-(C1) SHOW(A([I],[J,R],K,R)+A([I],[J,R,S],K,R,S));
+(%i1) SHOW(A([I],[J,R],K,R)+A([I],[J,R,S],K,R,S));
                                J R S      J R
-(D1)                          A        + A
+(%o1)                          A        + A
                                I,K R S    I,K R
-(C2) SHOW(FLUSHND(D1,A,3));
+(%i2) SHOW(FLUSHND(%o1,A,3));
                                      J R
-(D2)                                A
+(%o2)                                A
                                      I,K R
 
 

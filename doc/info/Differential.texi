@@ -13,35 +13,35 @@ differential equations in the dependent variables var1,...,varn.  The
 functional relationships must be explicitly indicated in both the
 equations and the variables. For example
 @example
-(C1) 'DIFF(F,X,2)=SIN(X)+'DIFF(G,X);
-(C2) 'DIFF(F,X)+X^2-F=2*'DIFF(G,X,2);
+(%i1) 'DIFF(F,X,2)=SIN(X)+'DIFF(G,X);
+(%i2) 'DIFF(F,X)+X^2-F=2*'DIFF(G,X,2);
 is NOT the proper format.  The correct way is:
-(C3) 'DIFF(F(X),X,2)=SIN(X)+'DIFF(G(X),X);
-(C4) 'DIFF(F(X),X)+X^2-F(X)=2*'DIFF(G(X),X,2);
-The call is then DESOLVE([D3,D4],[F(X),G(X)]);
+(%i3) 'DIFF(F(X),X,2)=SIN(X)+'DIFF(G(X),X);
+(%i4) 'DIFF(F(X),X)+X^2-F(X)=2*'DIFF(G(X),X,2);
+The call is then DESOLVE([%o3,%o4],[F(X),G(X)]);
 If initial conditions at 0 are known, they should be supplied before
 calling DESOLVE by using ATVALUE.
-(C11) 'DIFF(F(X),X)='DIFF(G(X),X)+SIN(X);
+(%i11) 'DIFF(F(X),X)='DIFF(G(X),X)+SIN(X);
                         d         d
-(D11)                   -- F(X) = -- G(X) + SIN(X)
+(%o11)                   -- F(X) = -- G(X) + SIN(X)
                         dX        dX
-(C12) 'DIFF(G(X),X,2)='DIFF(F(X),X)-COS(X);
+(%i12) 'DIFF(G(X),X,2)='DIFF(F(X),X)-COS(X);
                          2
                         d          d
-(D12)                   --- G(X) = -- F(X) - COS(X)
+(%o12)                   --- G(X) = -- F(X) - COS(X)
                           2        dX
                         dX
-(C13) ATVALUE('DIFF(G(X),X),X=0,A);
-(D13)                                A
-(C14) ATVALUE(F(X),X=0,1);
-(D14)                                1
-(C15) DESOLVE([D11,D12],[F(X),G(X)]);
+(%i13) ATVALUE('DIFF(G(X),X),X=0,A);
+(%o13)                                A
+(%i14) ATVALUE(F(X),X=0,1);
+(%o14)                                1
+(%i15) DESOLVE([%o11,%o12],[F(X),G(X)]);
                 X                            X
-(D16) [F(X)=A %E  - A+1, G(X) = COS(X) + A %E  - A + G(0) - 1]
+(%o16) [F(X)=A %E  - A+1, G(X) = COS(X) + A %E  - A + G(0) - 1]
 /* VERIFICATION */
-(C17) [D11,D12],D16,DIFF;
+(%i17) [%o11,%o12],%o16,DIFF;
                   X       X      X                X
-(D17)        [A %E  = A %E , A %E  - COS(X) = A %E  - COS(X)]
+(%o17)        [A %E  = A %E , A %E  - COS(X) = A %E  - COS(X)]
 
 @end example
 @noindent
@@ -57,31 +57,31 @@ ODE2 package for first order equations, and IC2 and BC2 for second
 order IVPs and BVPs, respectively.  Do LOAD(ODE2) to access these.
 They are used as in the following examples:
 @example
-(C3) IC1(D2,X=%PI,Y=0);
+(%i3) IC1(%o2,X=%PI,Y=0);
                          COS(X) + 1
-(D3)               Y = - ----------
+(%o3)               Y = - ----------
                               3
                              X
-(C4) 'DIFF(Y,X,2) + Y*'DIFF(Y,X)^3 = 0;
+(%i4) 'DIFF(Y,X,2) + Y*'DIFF(Y,X)^3 = 0;
                        2
                       d Y      dY 3
-(D4)                  --- + Y (--)  = 0
+(%o4)                  --- + Y (--)  = 0
                         2      dX
                       dX
-(C5) ODE2(%,Y,X);
+(%i5) ODE2(%,Y,X);
                  3
                 Y  - 6 %K1 Y - 6 X
-(D7)            ------------------ = %K2
+(%o7)            ------------------ = %K2
                         3
-(C8) RATSIMP(IC2(D7,X=0,Y=0,'DIFF(Y,X)=2));
+(%i8) RATSIMP(IC2(%o7,X=0,Y=0,'DIFF(Y,X)=2));
                      3
                   2 Y  - 3 Y + 6 X
-(D9)            - ---------------- = 0
+(%o9)            - ---------------- = 0
                          3
-(C10) BC2(D7,X=0,Y=1,X=1,Y=3);
+(%i10) BC2(%o7,X=0,Y=1,X=1,Y=3);
                  3
                 Y  - 10 Y - 6 X
-(D11)           --------------- = - 3
+(%o11)           --------------- = - 3
                        3
 
 @end example

@@ -33,13 +33,13 @@ power series using the SUM function.
     In order to display the information given to DEFTAYLOR one can use
 POWERSERIES(F(X),X,0). (see below).
 @example
-(C1) DEFTAYLOR(F(X),X**2+SUM(X**I/(2**I*I!**2),
+(%i1) DEFTAYLOR(F(X),X**2+SUM(X**I/(2**I*I!**2),
         I,4,INF));
-(D1)                          [F]
-(C2) TAYLOR(%E**SQRT(F(X)),X,0,4);
+(%o1)                          [F]
+(%i2) TAYLOR(%E**SQRT(F(X)),X,0,4);
                      2         3          4
                     X    3073 X    12817 X
-(D2)/R/     1 + X + -- + ------- + -------- +  . . .
+(%o2)/R/     1 + X + -- + ------- + -------- +  . . .
                     2     18432     307200
 
 
@@ -108,28 +108,28 @@ returned.  Total degree is num-degree + denom-degree.  Length of a
 power series is "truncation level" + 1 - minimum(0,"order of series").
 
 @example
-(C15) ff:taylor(1+x+x^2+x^3,x,0,3);
+(%i15) ff:taylor(1+x+x^2+x^3,x,0,3);
                                      2    3
-(D15)/T/                    1 + X + X  + X  + . . .
-(C16) pade(ff,1,1);
+(%o15)/T/                    1 + X + X  + X  + . . .
+(%i16) pade(ff,1,1);
                                         1
-(D16)                              [- -----]
+(%o16)                              [- -----]
                                       X - 1
-(c1) ff:taylor(-(83787*X^10-45552*X^9-187296*X^8
+(%i1) ff:taylor(-(83787*X^10-45552*X^9-187296*X^8
                   +387072*X^7+86016*X^6-1507328*X^5
                   +1966080*X^4+4194304*X^3-25165824*X^2
                   +67108864*X-134217728)
        /134217728,x,0,10);
-(C25) PADE(ff,4,4);
-(D25) []
+(%i25) PADE(ff,4,4);
+(%o25) []
 @end example
 There is no rational function of degree 4 numerator/denominator, with this
 power series expansion.  You must in general have degree of the numerator and
 degree of the denominator adding up to at least the degree of the power series,
 in order to have enough unknown coefficients to solve.
 @example
-(C26) PADE(ff,5,5);
-(D26) [-(520256329*X^5-96719020632*X^4-489651410240*X^3
+(%i26) PADE(ff,5,5);
+(%o26) [-(520256329*X^5-96719020632*X^4-489651410240*X^3
            -1619100813312*X^2 -2176885157888*X-2386516803584)
 	/(47041365435*X^5+381702613848*X^4+1360678489152*X^3
                 +2856700692480*X^2
@@ -156,8 +156,8 @@ TAYLOR function may give the first several terms of the series.
 VERBOSE[FALSE] - if TRUE will cause comments about the progress of
 POWERSERIES to be printed as the execution of it proceeds.
 @example
-(C1) VERBOSE:TRUE$
-(C2) POWERSERIES(LOG(SIN(X)/X),X,0);
+(%i1) VERBOSE:TRUE$
+(%i2) POWERSERIES(LOG(SIN(X)/X),X,0);
 Can't expand 
                                  LOG(SIN(X))
 So we'll try again after applying the rule:
@@ -180,7 +180,7 @@ In the first simplification we have returned:
                     /                I1 (2 I1)!
                     ====
                     I1 = 1
-(D2)                -------------------------------------
+(%o2)                -------------------------------------
                                       2
 
 
@@ -264,9 +264,9 @@ returns FALSE if exp is not a Taylor series.
 Otherwise, a list of lists is returned describing the particulars of
 the Taylor expansion.  For example,
 @example
-(C3) TAYLOR((1-Y^2)/(1-X),X,0,3,[Y,A,INF]);
+(%i3) TAYLOR((1-Y^2)/(1-X),X,0,3,[Y,A,INF]);
              2                        2
-(D3)/R/ 1 - A  - 2 A (Y - A) - (Y - A)
+(%o3)/R/ 1 - A  - 2 A (Y - A) - (Y - A)
                     2                        2
             + (1 - A  - 2 A (Y - A) - (Y - A) ) X
          2                        2   2
@@ -274,8 +274,8 @@ the Taylor expansion.  For example,
                     2                        2   3
             + (1 - A  - 2 A (Y - A) - (Y - A) ) X
      + . . .
-(C4) TAYLORINFO(D3);
-(D4)                       [[Y, A, INF], [X, 0, 3]]
+(%i4) TAYLORINFO(%o3);
+(%o4)                       [[Y, A, INF], [X, 0, 3]]
 
 
 @end example
@@ -344,25 +344,25 @@ gives TRUE.
 @defun UNSUM (fun,n)
 is the first backward difference fun(n) - fun(n-1).
 @example
-(C1) G(P):=P*4^N/BINOMIAL(2*N,N);
+(%i1) G(P):=P*4^N/BINOMIAL(2*N,N);
                                             N
                                          P 4
-(D1)                       G(P) := ----------------
+(%o1)                       G(P) := ----------------
                                    BINOMIAL(2 N, N)
-(C2) G(N^4);
+(%i2) G(N^4);
                                      4  N
                                     N  4
-(D2)                           ----------------
+(%o2)                           ----------------
                                BINOMIAL(2 N, N)
-(C3) NUSUM(D2,N,0,N);
+(%i3) NUSUM(%o2,N,0,N);
                          4        3       2              N
           2 (N + 1) (63 N  + 112 N  + 18 N  - 22 N + 3) 4      2
-(D3)      ------------------------------------------------ - ------
+(%o3)      ------------------------------------------------ - ------
                         693 BINOMIAL(2 N, N)                 3 11 7
-(C4) UNSUM(%,N);
+(%i4) UNSUM(%,N);
                                      4  N
                                     N  4
-(D4)                           ----------------
+(%o4)                           ----------------
                                BINOMIAL(2 N, N)
 
 

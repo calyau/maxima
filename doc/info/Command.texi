@@ -27,7 +27,7 @@ return the noun form of F applied to [X].
 @c @unnumberedsec phony
 @deffn operator "'@w{}'"
   - (two single quotes) causes an extra evaluation to occur.  E.g.
-'@w{}'c4; will re-execute line C4.  '@w{}'(F(X)) means evaluate the
+'@w{}'%i4; will re-execute line %i4.  '@w{}'(F(X)) means evaluate the
 expression F(X) an extra time.  '@w{}'F(X) means return the verb form of F
 applied to [X].
 
@@ -135,7 +135,7 @@ if the result is an equation or assignment then the indicated binding
 or substitution is performed.  If the result is a list then the
 members of the list are treated as if they were additional arguments
 given to EV. This permits a list of equations to be given (e.g. [X=1,
-Y=A**2] ) or a list of names of equations (e.g.  [E1,E2] where E1 and
+Y=A**2] ) or a list of names of equations (e.g.  [%t1,%t2] where %t1 and
 E2 are equations) such as that returned by SOLVE.
 The argi of EV may be given in any order with the exception of
 substitution equations which are handled in sequence, left to right,
@@ -154,7 +154,7 @@ the value of some argi if the value is an equation.  The variables
 (both subscripted variables which do not have associated array
 functions, and non-subscripted variables) in the expression exp are
 replaced by their global values, except for those appearing in this
-list.  Usually, exp is just a label or % (as in (C2) below), so this
+list.  Usually, exp is just a label or % (as in (%i2) below), so this
 step simply retrieves the expression named by the label, so that EV
 may work on it.
 
@@ -175,13 +175,13 @@ it are evaluated and that EV(F(X)) thus may behave like F(EV(X)).
 @example
                      Examples
 
-(C1) SIN(X)+COS(Y)+(W+1)**2+'DIFF(SIN(W),W);
+(%i1) SIN(X)+COS(Y)+(W+1)**2+'DIFF(SIN(W),W);
                         d                 2
-(D1)  COS(Y) + SIN(X) + -- SIN(W) + (W + 1)
+(%o1)  COS(Y) + SIN(X) + -- SIN(W) + (W + 1)
                         dW
-(C2) EV(%,SIN,EXPAND,DIFF,X=2,Y=1);
+(%i2) EV(%,SIN,EXPAND,DIFF,X=2,Y=1);
                     2
-(D2)      COS(W) + W  + 2 W + COS(1) + 1.90929742
+(%o2)      COS(W) + W  + 2 W + COS(1) + 1.90929742
 @end example
 
 An alternate top level syntax has been provided for EV, whereby one
@@ -195,30 +195,30 @@ This is not permitted as part of
 another expression, i.e. in functions, blocks, etc.
 
 @example
-(C4) X+Y,X:A+Y,Y:2;
-(D4)                Y + A + 2
+(%i4) X+Y,X:A+Y,Y:2;
+(%o4)                Y + A + 2
 (Notice the parallel binding process)
-(C5) 2*X-3*Y=3$
-(C6) -3*X+2*Y=-4$
-(C7) SOLVE([D5,D6]);
+(%i5) 2*X-3*Y=3$
+(%i6) -3*X+2*Y=-4$
+(%i7) SOLVE([%o5,%o6]);
 SOLUTION
                                 1
-(E7)                     Y =  - -
+(%t7)                     Y =  - -
                                 5
                           6
-(E8)                  X = -
+(%t8)                  X = -
                           5
-(D8)               [E7, E8]
-(C9) D6,D8;
-(D9)               - 4 =  - 4
-(C10) X+1/X > GAMMA(1/2);
+(%o8)               [%t7, %t8]
+(%i9) %o6,%o8;
+(%o9)               - 4 =  - 4
+(%i10) X+1/X > GAMMA(1/2);
                     1
-(D10)           X + - > SQRT(%PI)
+(%o10)           X + - > SQRT(%PI)
                     X
-(C11) %,NUMER,X=1/2;
-(D11)            2.5 > 1.7724539
-(C12) %,PRED;
-(D12)                  TRUE
+(%i11) %,NUMER,X=1/2;
+(%o11)            2.5 > 1.7724539
+(%i12) %,PRED;
+(%o12)                  TRUE
 
 
 @end example
@@ -283,8 +283,8 @@ numbers) are deleted.  If argi is of the form [m,n] then all lines
 with numbers between m and n inclusive are killed. Note that
 KILL(VALUES) or KILL(variable) will not free the storage occupied
 unless the labels which are pointing to the same expressions are also
-KILLed.  Thus if a large expression was assigned to X on line C7 one
-should do KILL(D7) as well as KILL(X) to release the storage occupied.
+KILLed.  Thus if a large expression was assigned to X on line %i7 one
+should do KILL(%o7) as well as KILL(X) to release the storage occupied.
 KILL(ALLBUT(name1,...,namek) will do a KILL(ALL) except it will not
 KILL the names specified.  (Note: namei means a name such as U, V, F,
 G, not an infolist such as FUNCTIONS.)

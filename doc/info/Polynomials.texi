@@ -84,11 +84,11 @@ coefficient of var in exp (as found by RATCOEF if exp is in CRE form
 otherwise by COEFF) and whose second member is the remaining part of
 exp.  That is, [A,B] where exp=A*var+B.
 @example
-(C1) ISLINEAR(EXP,VAR):=BLOCK([C],
+(%i1) ISLINEAR(EXP,VAR):=BLOCK([C],
         C:BOTHCOEF(RAT(EXP,VAR),VAR),
         IS(FREEOF(VAR,C) AND C[1]#0))$
-(C2) ISLINEAR((R**2-(X-R)**2)/X,X);
-(D2)                              TRUE
+(%i2) ISLINEAR((R**2-(X-R)**2)/X,X);
+(%o2)                              TRUE
 
 
 @end example
@@ -103,10 +103,10 @@ expression (X+Y) should occur in exp).  Sometimes it may be necessary
 to expand or factor exp in order to make v^n explicit.  This is not
 done automatically by COEFF.
 @example
-(C1) COEFF(2*A*TAN(X)+TAN(X)+B=5*TAN(X)+3,TAN(X));
-(D1)                         2 A + 1 = 5
-(C2) COEFF(Y+X*%E**X+1,X,0);
-(D2)                            Y + 1
+(%i1) COEFF(2*A*TAN(X)+TAN(X)+B=5*TAN(X)+3,TAN(X));
+(%o1)                         2 A + 1 = 5
+(%i2) COEFF(Y+X*%E**X+1,X,0);
+(%o2)                            Y + 1
 
 
 @end example
@@ -126,8 +126,8 @@ the greatest common divisor of the coefficients of the terms of the
 polynomial p1 in the variable varn (this is the content) and whose
 second element is the polynomial p1 divided by the content.
 @example
-(C1) CONTENT(2*X*Y+4*X**2*Y**2,Y);
-(D1)            [2*X, 2*X*Y**2+Y].
+(%i1) CONTENT(2*X*Y+4*X**2*Y**2,Y);
+(%o1)            [2*X, 2*X*Y**2+Y].
 
 
 @end example
@@ -147,14 +147,14 @@ polynomial variable, varn.  The other variables are as in the RATVARS
 function.  The result is a list whose first element is the quotient
 and whose second element is the remainder.
 @example
-(C1) DIVIDE(X+Y,X-Y,X);
-(D1)                        [1, 2 Y]
-(C2) DIVIDE(X+Y,X-Y);
-(D2)                      [ - 1, 2 X]
+(%i1) DIVIDE(X+Y,X-Y,X);
+(%o1)                        [1, 2 Y]
+(%i2) DIVIDE(X+Y,X-Y);
+(%o2)                      [ - 1, 2 X]
 
 @end example
 @noindent
-(Note that Y is the main variable in C2)
+(Note that Y is the main variable in %i2)
 
 @end defun
 @c @node ELIMINATE, EZGCD, DIVIDE, Polynomials
@@ -169,17 +169,17 @@ list is returned free of the variables v1,...,vk.  In this case SOLVE
 is called to solve the last resultant for the last variable.
 Example:
 @example
-(C1) EXP1:2*X^2+Y*X+Z;
+(%i1) EXP1:2*X^2+Y*X+Z;
                                     2
-(D1)                   Z + X Y + 2 X
-(C2) EXP2:3*X+5*Y-Z-1;
-(D2)                - Z + 5 Y + 3 X - 1
-(C3) EXP3:Z^2+X-Y^2+5;
+(%o1)                   Z + X Y + 2 X
+(%i2) EXP2:3*X+5*Y-Z-1;
+(%o2)                - Z + 5 Y + 3 X - 1
+(%i3) EXP3:Z^2+X-Y^2+5;
                        2    2
-(D3)                  Z  - Y  + X + 5
-(C4) ELIMINATE([EXP3,EXP2,EXP1],[Y,Z]);
+(%o3)                  Z  - Y  + X + 5
+(%i4) ELIMINATE([EXP3,EXP2,EXP1],[Y,Z]);
             8         7         6          5          4
-(D3) [7425 X  - 1170 X  + 1299 X  + 12076 X  + 22887 X
+(%o3) [7425 X  - 1170 X  + 1299 X  + 12076 X  + 22887 X
                                3         2
                        - 5154 X  - 1291 X  + 7688 X + 15376]
 
@@ -212,10 +212,10 @@ into (N+1)!.
 SUMSPLITFACT[TRUE] if set to FALSE will cause MINFACTORIAL to be
 applied after a FACTCOMB.
 @example
-(C1) (N+1)^B*N!^B;
+(%i1) (N+1)^B*N!^B;
                                       B   B
-(D1)                           (N + 1)  N!
-(C2) FACTCOMB(%);
+(%o1)                           (N + 1)  N!
+(%i2) FACTCOMB(%);
                                          
 
 
@@ -276,14 +276,14 @@ into groups of terms such that their sum is factorable.  It can
 recover the result of EXPAND((X+Y)^2+(Z+W)^2) but it can't recover
 EXPAND((X+1)^2+(X+Y)^2) because the terms have variables in common.
 @example
-(C1) (X+1)*((U+V)^2+A*(W+Z)^2),EXPAND;
+(%i1) (X+1)*((U+V)^2+A*(W+Z)^2),EXPAND;
       2      2                            2      2
-(D1) A X Z  + A Z  + 2 A W X Z + 2 A W Z + A W  X + V  X
+(%o1) A X Z  + A Z  + 2 A W X Z + 2 A W Z + A W  X + V  X
                      2        2    2            2
         + 2 U V X + U  X + A W  + V  + 2 U V + U
-(C2) FACTORSUM(%);
+(%i2) FACTORSUM(%);
                                    2          2
-(D2)                 (X + 1) (A (Z + W)  + (V + U) )
+(%o2)                 (X + 1) (A (Z + W)  + (V + U) )
 
 
 @end example
@@ -368,25 +368,25 @@ to @code{[f,g,-1]} and the next one is built as
 if @code{q = quotient(r[i]/r[i+1])} then @code{lis[i+2]:lis[i]-q*lis[i+1]}, and it
 terminates at @code{lis[i+1]} when the remainder @code{r[i+2]} is zero.
 @example
-(C1) gcdex(x^2+1,x^3+4);
+(%i1) gcdex(x^2+1,x^3+4);
 
                               2
                              x  + 4 x - 1  x + 4
-(D1)/R/                   [- ------------, -----, 1]
+(%o1)/R/                   [- ------------, -----, 1]
                                   17        17
 
-(C2) d1.[x^2+1,x^3+4,-1];
-(D2)                                   0
+(%i2) %o1.[x^2+1,x^3+4,-1];
+(%o2)                                   0
 @end example
 
 note that the gcd in the following is @code{1}
 since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[y,x] }
 
 @example
-(C4) gcdex(x*(y+1),y^2-1,x);
+(%i4) gcdex(x*(y+1),y^2-1,x);
 
                                       1
-(D4)                            [0, ------, 1]
+(%o4)                            [0, ------, 1]
                                      2
                                     y  - 1
 
@@ -411,8 +411,8 @@ factors the polynomial exp over the Gaussian integers
 (i.  e.  with SQRT(-1) = %I adjoined).  This is like
 FACTOR(exp,A**2+1) where A is %I.
 @example
-(C1)  GFACTOR(X**4-1);
-(D1)        (X - 1) (X + 1) (X + %I) (X - %I)
+(%i1)  GFACTOR(X**4-1);
+(%o1)        (X - 1) (X + 1) (X + %I) (X - %I)
 
 
 @end example
@@ -530,19 +530,19 @@ KEEPFLOAT[FALSE] if TRUE prevents floating point numbers from being
 converted to rational numbers.
 (Also see the RATEXPAND and  RATSIMP functions.)
 @example
-(C1) ((X-2*Y)**4/(X**2-4*Y**2)**2+1)*(Y+A)*(2*Y+X)
+(%i1) ((X-2*Y)**4/(X**2-4*Y**2)**2+1)*(Y+A)*(2*Y+X)
         /(4*Y**2+X**2);
                                            4
                                   (X - 2 Y)
               (Y + A) (2 Y + X) (------------ + 1)
                                    2      2 2
                                  (X  - 4 Y )
-(D1)          ------------------------------------
+(%o1)          ------------------------------------
                               2    2
                            4 Y  + X
-(C2) RAT(%,Y,A,X);
+(%i2) RAT(%,Y,A,X);
                             2 A + 2 Y
-(D2)/R/                     ---------
+(%o2)/R/                     ---------
                              X + 2 Y
 
 
@@ -572,9 +572,9 @@ negative powers, RATCOEF should not be used.  Since exp is rationally
 simplified before it is examined, coefficients may not appear quite
 the way they were envisioned.
 @example
-(C1) S:A*X+B*X+5$
-(C2) RATCOEF(S,A+B);
-(D2)               X
+(%i1) S:A*X+B*X+5$
+(%i2) RATCOEF(S,A+B);
+(%o2)               X
 
 
 @end example
@@ -605,23 +605,23 @@ than DIFF.  The result is left in CRE form.  However, RATDIFF should
 not be used on factored CRE forms; use DIFF instead for such
 expressions.
 @example
-(C1) (4*X**3+10*X-11)/(X**5+5);
+(%i1) (4*X**3+10*X-11)/(X**5+5);
                                          3
                                       4 X  + 10 X - 11
-(D1)                                  ----------------
+(%o1)                                  ----------------
                                             5
                                            X  
-(C2) MODULUS:3$
-(C3) MOD(D1);
+(%i2) MODULUS:3$
+(%i3) MOD(%o1);
                                 2
                                X  + X - 1
-(D3)                      --------------------
+(%o3)                      --------------------
                            4    3    2
                           X  + X  + X  + X + 1
-(C4) RATDIFF(D1,X);
+(%i4) RATDIFF(%o1,X);
                           5    4    3
                          X  - X  - X  + X - 1
-(D4)                ------------------------------
+(%o4)                ------------------------------
                      8    7    5    4    3
                     X  - X  + X  - X  + X  - X + 1
 
@@ -665,23 +665,23 @@ KEEPFLOAT[FALSE] if set to TRUE will prevent floating point numbers
 from being rationalized when expressions which contain them are
 converted to CRE form.
 @example
-(C1) RATEXPAND((2*X-3*Y)**3);
+(%i1) RATEXPAND((2*X-3*Y)**3);
                 3         2       2        3
-(D1)      - 27 Y  + 54 X Y  - 36 X  Y + 8 X
-(C2) (X-1)/(X+1)**2+1/(X-1);
+(%o1)      - 27 Y  + 54 X Y  - 36 X  Y + 8 X
+(%i2) (X-1)/(X+1)**2+1/(X-1);
                               X - 1       1
-(D2)                         -------- + -----
+(%o2)                         -------- + -----
                                     2   X - 1
                              (X + 1)
-(C3) EXPAND(D2);
+(%i3) EXPAND(%o2);
                          X              1           1
-(D3)                ------------ - ------------ + -----
+(%o3)                ------------ - ------------ + -----
                      2              2             X - 1
                     X  + 2 X + 1   X  + 2 X + 1
-(C4) RATEXPAND(D2);
+(%i4) RATEXPAND(%o2);
                              2
                           2 X                 2
-(D4)                 --------------- + ---------------
+(%o4)                 --------------- + ---------------
                       3    2            3    2
                      X  + X  - X - 1   X  + X  - X - 1
 
@@ -754,31 +754,31 @@ specification of variable ordering as in RATVARS.
 RATSIMPEXPONS[FALSE] - if TRUE will cause exponents of expressions to
 be RATSIMPed automatically during simplification.
 @example
-(C1) SIN(X/(X^2+X))=%E^((LOG(X)+1)**2-LOG(X)**2);
+(%i1) SIN(X/(X^2+X))=%E^((LOG(X)+1)**2-LOG(X)**2);
                                            2          2
                     X          (LOG(X) + 1)  - LOG (X)
-(D1)          SIN(------) = %E
+(%o1)          SIN(------) = %E
                    2
                   X  + X
-(C2) RATSIMP(%);
+(%i2) RATSIMP(%);
                                   1          2
-(D2)                        SIN(-----) = %E X
+(%o2)                        SIN(-----) = %E X
                                 X + 1
-(C3) ((X-1)**(3/2)-(X+1)*SQRT(X-1))/SQRT((X-1)*(X+1));
+(%i3) ((X-1)**(3/2)-(X+1)*SQRT(X-1))/SQRT((X-1)*(X+1));
                        3/2
                 (X - 1)    - SQRT(X - 1) (X + 1)
-(D3)            --------------------------------
+(%o3)            --------------------------------
                     SQRT(X - 1) SQRT(X + 1)
-(C4) RATSIMP(%);
+(%i4) RATSIMP(%);
                                  2
-(D4)                      - -----------
+(%o4)                      - -----------
                             SQRT(X + 1)
-(C5)  X**(A+1/A),RATSIMPEXPONS:TRUE;
+(%i5)  X**(A+1/A),RATSIMPEXPONS:TRUE;
                     2
                    A  + 1
                    ------
                      A
-(D5)              X
+(%o5)              X
 
 
 @end example
@@ -826,15 +826,15 @@ weight of a variable in the term times its power.  Thus the weight of
 3*v1**2*v2 is 2*w1+w2.  This truncation occurs only when multiplying
 or exponentiating CRE forms of expressions.
 @example
-(C5) RATWEIGHT(A,1,B,1);
-(D5)                         [[B, 1], [A, 1]]
-(C6) EXP1:RAT(A+B+1)$
-(C7) %**2;
+(%i5) RATWEIGHT(A,1,B,1);
+(%o5)                         [[B, 1], [A, 1]]
+(%i6) EXP1:RAT(A+B+1)$
+(%i7) %**2;
                       2                  2
-(D7)/R/              B  + (2 A + 2) B + A  + 2 A + 1
-(C8) RATWTLVL:1$
-(C9) EXP1**2;
-(D9)/R/                       2 B + 2 A + 1
+(%o7)/R/              B  + (2 A + 2) B + A  + 2 A + 1
+(%i8) RATWTLVL:1$
+(%i9) EXP1**2;
+(%o9)/R/                       2 B + 2 A + 1
 
 @end example
 Note: The RATFAC and RATWEIGHT schemes are incompatible and may not
@@ -919,9 +919,9 @@ its factors of degree > n.  Thus by taking gcds with the polynomial of
 the derivatives with respect to each variable in the polynomial, all
 factors of degree > 1 can be found.
 @example
-(C1) SQFR(4*X**4+4*X**3-3*X**2-4*X-1);
+(%i1) SQFR(4*X**4+4*X**3-3*X**2-4*X-1);
                              2               2
-(D1)                       (X  - 1) (2 X + 1)
+(%o1)                       (X  - 1) (2 X + 1)
 
 
 @end example

@@ -82,7 +82,13 @@
 	   )
 	  (t (apply 'tex1  args)))))
 
-
+(defun quote-% (sym)
+  (let ((strsym (string sym)))
+    (cond ((position (character "%") strsym)
+	   (let ((pos (position (character "%") strsym)))
+	     (concatenate 'string (subseq strsym 0 pos) "\\%" 
+			  (quote-% (subseq strsym (+ pos 1))))))
+	  (t strsym))))
 
 (defun tex1 (mexplabel &optional filename ) ;; mexplabel, and optional filename
   (prog (mexp  texport $gcprint ccol x y itsalabel)
@@ -102,7 +108,8 @@
 	;; do a normal evaluation of the expression in macsyma
 	(setq mexp (meval mexplabel))
 	(cond ((memq mexplabel $labels); leave it if it is a label
-	       (setq mexplabel (concat "(" (stripdollar mexplabel) ")"))
+	       (setq mexplabel (concat "(" (quote-% (stripdollar mexplabel))
+				       ")"))
 	       (setq itsalabel t))
 	      (t (setq mexplabel nil)));flush it otherwise
 
@@ -124,7 +131,8 @@
 
 	      ((and
 		itsalabel ;; but is it a user-command-label?
-		(eq (getchar $inchar 2) (getchar mexplabel 2)))
+		(eq (getchars $inchar 2 (length (string $inchar)))
+		    (getchars mexplabel 2 (length (string $inchar)))))
 	       ;; aha, this is a C-line: do the grinding:
 	       (format texport "~%|~a " mexplabel) ;delimit with |marks
 	       (mgrind mexp texport) ;write expression as string

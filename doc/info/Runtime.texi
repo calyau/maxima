@@ -70,7 +70,7 @@ similar to mail, sends a message to MACSYMA Mail.
 This may be used for reporting bugs or suspected bugs in MACSYMA.
 Expressions may be included by referring to them, outside double
 quotes, e.g.
-BUG("I am trying to integrate",D3,"but it asks for more list space.
+BUG("I am trying to integrate",%o3,"but it asks for more list space.
 What should I do?");
 
 @end defun
@@ -135,9 +135,9 @@ attempts to determine whether the object a has the
 feature f on the basis of the facts in the current data base.  If so,
 it returns TRUE, else FALSE.  See DESCRIBE(FEATURES); .
 @example
-(C1) DECLARE(J,EVEN)$
-(C2) FEATUREP(J,INTEGER);
-(D2)                                TRUE
+(%i1) DECLARE(J,EVEN)$
+(%i2) FEATUREP(J,INTEGER);
+(%o2)                                TRUE
 
 
 @end example

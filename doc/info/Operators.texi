@@ -218,12 +218,12 @@ returned whereas = always causes either TRUE or FALSE to be returned.
 All variables occurring in exp are presumed to be real valued.
 EV(exp,PRED) is equivalent to IS(exp).
 @example
-(C1) IS(X**2 >= 2*X-1);
-(D1)                               TRUE
-(C2) ASSUME(A>1);
-(D2)                               DONE
-(C3) IS(LOG(LOG(A+1)+1)>0 AND A^2+1>2*A);
-(D3)                               TRUE
+(%i1) IS(X**2 >= 2*X-1);
+(%o1)                               TRUE
+(%i2) ASSUME(A>1);
+(%o2)                               DONE
+(%i3) IS(LOG(LOG(A+1)+1)>0 AND A^2+1>2*A);
+(%o3)                               TRUE
 
 
 @end example
@@ -258,11 +258,11 @@ simplifier for certain matrix manipulations; thus, the user might see
 an error message concerning FULLMAP even though FULLMAP was not
 explicitly called by the user.
 @example
-(C1) A+B*C$
-(C2) FULLMAP(G,%);
-(D2)              G(B) G(C) + G(A)
-(C3)  MAP(G,D1);
-(D3)                G(B C) + G(A)
+(%i1) A+B*C$
+(%i2) FULLMAP(G,%);
+(%o2)              G(B) G(C) + G(A)
+(%i3)  MAP(G,%o1);
+(%o3)                G(B C) + G(A)
 
 
 @end example
@@ -273,8 +273,8 @@ explicitly called by the user.
 is similar to FULLMAP but it only maps onto
 lists and matrices
 @example
-(C1) FULLMAPL("+",[3,[4,5]],[[A,1],[0,-1.5]]);
-(D1)                      [[A + 3, 4], [4, 3.5]]
+(%i1) FULLMAPL("+",[3,[4,5]],[[A,1],[0,-1.5]]);
+(%o1)                      [[A + 3, 4], [4, 3.5]]
 
 
 @end example
@@ -449,15 +449,15 @@ OPSUBST[TRUE] if FALSE, SUBST will not attempt to substitute into the
 operator of an expression.  E.g. (OPSUBST:FALSE, SUBST(X^2,R,R+R[0]));
 will work.
 @example
-(C1) SUBST(A,X+Y,X+(X+Y)**2+Y);
+(%i1) SUBST(A,X+Y,X+(X+Y)**2+Y);
                                  2
-(D1)                    Y + X + A
-(C2) SUBST(-%I,%I,A+B*%I);
-(D2)                             A - %I B
+(%o1)                    Y + X + A
+(%i2) SUBST(-%I,%I,A+B*%I);
+(%o2)                             A - %I B
 
 @end example
 @noindent
-(Note that C2 is one way of obtaining the complex conjugate of an analytic
+(Note that %i2 is one way of obtaining the complex conjugate of an analytic
 expression.)  For further examples, do EXAMPLE(SUBST);
 
 @end defun
@@ -467,24 +467,24 @@ expression.)  For further examples, do EXAMPLE(SUBST);
 is like SUBSTPART but works on the
 internal representation of exp.
 @example
-(C1) X.'DIFF(F(X),X,2);
+(%i1) X.'DIFF(F(X),X,2);
                                    2
                                   d
-(D1)                         X . (--- F(X))
+(%o1)                         X . (--- F(X))
                                     2
                                   dX
-(C2) SUBSTINPART(D**2,%,2);
+(%i2) SUBSTINPART(D**2,%,2);
                                       2
-(D2)                             X . D
-(C3) SUBSTINPART(F1,F[1](X+1),0);
-(D3)                            F1(X + 1)
+(%o2)                             X . D
+(%i3) SUBSTINPART(F1,F[1](X+1),0);
+(%o3)                            F1(X + 1)
               Additional Information
 If the last argument to a part function is a list of indices then
 several subexpressions are picked out, each one corresponding to an
 index of the list.  Thus
 @example
-(C1) PART(X+Y+Z,[1,3]);
-(D1) Z+X
+(%i1) PART(X+Y+Z,[1,3]);
+(%o1) Z+X
 @end example
 PIECE holds the value of the last expression selected when using the
 part functions.  It is set during the execution of the function and
@@ -492,24 +492,24 @@ thus may be referred to in the function itself as shown below.
 If PARTSWITCH[FALSE] is set to TRUE then END is returned when a
 selected part of an expression doesn't exist, otherwise an error
 message is given.
-(C1)  27*Y**3+54*X*Y**2+36*X**2*Y+Y+8*X**3+X+1;
+(%i1)  27*Y**3+54*X*Y**2+36*X**2*Y+Y+8*X**3+X+1;
             3         2       2            3
-(D1)    27 Y  + 54 X Y  + 36 X  Y + Y + 8 X  + X + 1
-(C2)  PART(D1,2,[1,3]);
+(%o1)    27 Y  + 54 X Y  + 36 X  Y + Y + 8 X  + X + 1
+(%i2)  PART(%o1,2,[1,3]);
                   2
-(D2)          54 Y
-(C3)  SQRT(PIECE/54);
-(D3)            Y
-(C4)  SUBSTPART(FACTOR(PIECE),D1,[1,2,3,5]);
+(%o2)          54 Y
+(%i3)  SQRT(PIECE/54);
+(%o3)            Y
+(%i4)  SUBSTPART(FACTOR(PIECE),%o1,[1,2,3,5]);
                           3
-(D4)           (3 Y + 2 X) + Y + X + 1
-(C5) 1/X+Y/X-1/Z;
+(%o4)           (3 Y + 2 X) + Y + X + 1
+(%i5) 1/X+Y/X-1/Z;
                                  1   Y   1
-(D5)                           - - + - + -
+(%o5)                           - - + - + -
                                  Z   X   X
-(C6) SUBSTPART(XTHRU(PIECE),%,[2,3]);
+(%i6) SUBSTPART(XTHRU(PIECE),%,[2,3]);
                                 Y + 1   1
-(D6)                            ----- - -
+(%o6)                            ----- - -
                                   X     Z
 
 @end example
@@ -526,20 +526,20 @@ new value of exp.  x may be some operator to be substituted for an
 operator of exp.  In some cases it needs to be enclosed in "s (e.g.
 SUBSTPART("+",A*B,0); -> B + A ).
 @example
-(C1) 1/(X**2+2);
+(%i1) 1/(X**2+2);
                                     1
-(D1)                              ------
+(%o1)                              ------
                                    2
                                   X  + 2
-(C2) SUBSTPART(3/2,%,2,1,2);
+(%i2) SUBSTPART(3/2,%,2,1,2);
                                     1
-(D2)                             --------
+(%o2)                             --------
                                   3/2
                                  X    + 2
-(C3) A*X+F(B,Y);
-(D3)                          A X + F(B, Y)
-(C4) SUBSTPART("+",%,1,0);
-(D4)                         X + F(B, Y) + A
+(%i3) A*X+F(B,Y);
+(%o3)                          A X + F(B, Y)
+(%i4) SUBSTPART("+",%,1,0);
+(%o4)                         X + F(B, Y) + A
 
 @end example
 Also, setting the option INFLAG to TRUE and calling PART/SUBSTPART is 
@@ -592,16 +592,16 @@ expression in order to cause explicit factors of the gcd of the
 numerator and denominator to be canceled thus simplifying the
 expression to be RATSIMPed.
 @example
-(C1) ((X+2)**20-2*Y)/(X+Y)**20+(X+Y)**-19-X/(X+Y)**20;
+(%i1) ((X+2)**20-2*Y)/(X+Y)**20+(X+Y)**-19-X/(X+Y)**20;
                                                 20
                      1           X       (X + 2)   - 2 Y
-(D1)             --------- - --------- + ---------------
+(%o1)             --------- - --------- + ---------------
                         19          20             20
                  (Y + X)     (Y + X)        (Y + X)
-(C2) XTHRU(%);
+(%i2) XTHRU(%);
                                      20
                               (X + 2)   - Y
-(D2)                          -------------
+(%o2)                          -------------
                                        20
                                 (Y + X)
 

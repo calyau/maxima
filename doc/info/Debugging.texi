@@ -44,12 +44,12 @@ debugging, and display of source code in the other window.
 maxima
 Maxima 5.5 Wed Apr 18 19:02:00 CDT 2001 (with enhancements by W. Schelter).
 Licensed under the GNU Public License (see file COPYING)
-(C1) batchload("/tmp/joe.mac");
-(D1) 				 /tmp/joe.mac
-(C2) :br joe
+(%i1) batchload("/tmp/joe.mac");
+(%o1) 				 /tmp/joe.mac
+(%i2) :br joe
 Turning on debugging debugmode(true)
 Bkpt 0 for joe (in /tmp/joe.mac line 8) 
-(C2) foo(2,3);
+(%i2) foo(2,3);
 Bkpt 0:(joe.mac 8)
 (dbm:1) :bt                        <-- :bt typed here gives a backtrace 
 #0: joe(y=5)(joe.mac line 8)
@@ -62,7 +62,7 @@ Bkpt 0:(joe.mac 8)
 28
 (dbm:1) u:33;                      Alter it to be 33
 (dbm:1) :r                         :r Resumes the computation
-(D3) 				     1094
+(%o3) 				     1094
 @end example
 
 The actual file /tmp/joe.mac is the following:
@@ -101,7 +101,7 @@ Break commands start with ':'.   Thus to evaluate a lisp form you
 may type @code{:lisp } followed by the argument which is the form
 to be evaluated.  
 @example
-(C3) :lisp (+ 2 3) 
+(%i3) :lisp (+ 2 3) 
 5
 @end example
 The number of arguments taken depends on the particular command.  Also

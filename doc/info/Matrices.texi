@@ -282,14 +282,14 @@ non-zero element in each row in the resulting matrix is a one and the
 column elements under the first one in each row are all zero.
 @example
                         [2  1 - A  -5 B ]
-(D2)                    [               ]
+(%o2)                    [               ]
                         [A    B      C  ]
 
-(C3) ECHELON(D2);
+(%i3) ECHELON(%o2);
                  [      A - 1        5 B      ]
                  [1   - -----      - ---      ]
                  [        2           2       ]
-(D3)             [                            ]
+(%o3)             [                            ]
                  [                2 C + 5 A B ]
                  [0     1         ------------]
                  [                       2    ]
@@ -366,7 +366,7 @@ elements are zero except for the i,j element which is x.
 allows one to enter a matrix element by element
 with MACSYMA requesting values for each of the m*n entries.
 @example
-(C1) ENTERMATRIX(3,3);
+(%i1) ENTERMATRIX(3,3);
 Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric
  4. General
 
@@ -378,7 +378,7 @@ Row 3 Column 3:  C;
 Matrix entered.
                                  [ A  0  0 ]
                                  [         ]
-(D1)                             [ 0  B  0 ]
+(%o1)                             [ 0  B  0 ]
                                  [         ]
                                  [ 0  0  C ]
 
@@ -395,14 +395,14 @@ may be omitted. If j1=i1=1 then i1 and j1 may both be omitted. If a
 selected element of the array doesn't exist a symbolic one will be
 used.
 @example
-(C1) H[I,J]:=1/(I+J-1)$
-(C2) GENMATRIX(H,3,3);
+(%i1) H[I,J]:=1/(I+J-1)$
+(%i2) GENMATRIX(H,3,3);
                            [   1  1]
                            [1  -  -]
                            [   2  3]
                            [       ]
                            [1  1  1]
-(D2)                       [-  -  -]
+(%o2)                       [-  -  -]
                            [2  3  4]
                            [       ]
                            [1  1  1]

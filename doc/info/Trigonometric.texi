@@ -206,11 +206,11 @@ TRIGEXPANDTIMES[TRUE] - controls the "product" rule for TRIGEXPAND,
 expansion of products (e.g. SIN(2*X)) will take place only if
 TRIGEXPANDTIMES is TRUE.
 @example
-(C1) X+SIN(3*X)/SIN(X),TRIGEXPAND=TRUE,EXPAND;
+(%i1) X+SIN(3*X)/SIN(X),TRIGEXPAND=TRUE,EXPAND;
                               2           2
-(D1)                     - SIN (X) + 3 COS (X) + X
-(C2) TRIGEXPAND(SIN(10*X+Y));
-(D2)               COS(10 X) SIN(Y) + SIN(10 X) COS(Y)
+(%o1)                     - SIN (X) + 3 COS (X) + X
+(%i2) TRIGEXPAND(SIN(10*X+Y));
+(%o2)               COS(10 X) SIN(Y) + SIN(10 X) COS(Y)
 
 
 @end example
@@ -253,16 +253,16 @@ It also tries to eliminate these functions when they occur in
 denominators.  If var is omitted then all variables in exp are used.
 Also see the POISSIMP function (6.6).
 @example
-(C4) TRIGREDUCE(-SIN(X)^2+3*COS(X)^2+X);
-(D4)                        2 COS(2 X) + X + 1
+(%i4) TRIGREDUCE(-SIN(X)^2+3*COS(X)^2+X);
+(%o4)                        2 COS(2 X) + X + 1
 The trigonometric simplification routines will use declared
 information in some simple cases.  Declarations about variables are
 used as follows, e.g.
-(C5) DECLARE(J, INTEGER, E, EVEN, O, ODD)$
-(C6) SIN(X + (E + 1/2)*%PI)$
-(D6)                      COS(X)
-(C7) SIN(X + (O + 1/2) %PI);
-(D7)                     - COS(X)
+(%i5) DECLARE(J, INTEGER, E, EVEN, O, ODD)$
+(%i6) SIN(X + (E + 1/2)*%PI)$
+(%o6)                      COS(X)
+(%i7) SIN(X + (O + 1/2) %PI);
+(%o7)                     - COS(X)
 
 
 @end example
@@ -296,9 +296,9 @@ simplifyed fraction with numerator and denominator linear in sin and cos.
 Thus TRIGRAT linearize always when it is possible.(written by D. Lazard).
 
 @example
-(c1) trigrat(sin(3*a)/sin(a+%pi/3));
+(%i1) trigrat(sin(3*a)/sin(a+%pi/3));
 
-(d1) 		        sqrt(3) sin(2 a) + cos(2 a) - 1
+(%o1) 		        sqrt(3) sin(2 a) + cos(2 a) - 1
 @end example
 
 Here is another example (for which the function was intended); see
@@ -306,25 +306,25 @@ Here is another example (for which the function was intended); see
 Addison-Wesley), section 1.5.5, Morley theorem). Timings are on VAX 780.
 
 @example
-(c4)   c:%pi/3-a-b;
+(%i4)   c:%pi/3-a-b;
 
 					   %pi
-(d4) 				 - b - a + ---
+(%o4) 				 - b - a + ---
 					    3
 
-(c5)   bc:sin(a)*sin(3*c)/sin(a+b);
+(%i5)   bc:sin(a)*sin(3*c)/sin(a+b);
 
 			     sin(a) sin(3 b + 3 a)
-(d5) 			     ---------------------
+(%o5) 			     ---------------------
 				  sin(b + a)
 
-(c6)   ba:bc,c=a,a=c$
+(%i6)   ba:bc,c=a,a=c$
 
-(c7)   ac2:ba^2+bc^2-2*bc*ba*cos(b);
+(%i7)   ac2:ba^2+bc^2-2*bc*ba*cos(b);
 
 	2       2
      sin (a) sin (3 b + 3 a)
-(d7) -----------------------
+(%o7) -----------------------
 	      2
 	   sin (b + a)
 
@@ -344,10 +344,10 @@ Addison-Wesley), section 1.5.5, Morley theorem). Timings are on VAX 780.
 	  sin (a - ---)
 		    3
 
-(c9)   trigrat(ac2);
+(%i9)   trigrat(ac2);
 Totaltime= 65866 msec.  GCtime= 7716 msec.
 
-(d9)
+(%o9)
 - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
 
 - 2 sqrt(3) sin(4 b + 2 a)

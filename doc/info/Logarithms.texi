@@ -72,10 +72,10 @@ recursively scans an exp, transforming
 subexpressions of the form a1*LOG(b1) + a2*LOG(b2) + c into
 LOG(RATSIMP(b1^a1 * b2^a2)) + c
 @example
-(C1) 2*(A*LOG(X) + 2*A*LOG(Y))$
-(C2) LOGCONTRACT(%);
+(%i1) 2*(A*LOG(X) + 2*A*LOG(Y))$
+(%i2) LOGCONTRACT(%);
                                         2  4
-(D3)                             A LOG(X  Y )
+(%o3)                             A LOG(X  Y )
 
 @end example
 If you do DECLARE(N,INTEGER); then LOGCONTRACT(2*A*N*LOG(X)); gives

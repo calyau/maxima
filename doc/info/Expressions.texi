@@ -28,28 +28,28 @@ putting parentheses around them.   This is similar to the @b{C}
 @i{comma expression}.
 
 @example
-(C29) x:3$
-(C30) joe:(x:x+1,x:x*x);
-(D30) 16
-(C31) joe:(if (x >17) then 2 else 4);
-(D31) 4
-(C32) joe:(if (x >17) then x:2 else joe:4,joe+x);
-(D32) 20
+(%i29) x:3$
+(%i30) joe:(x:x+1,x:x*x);
+(%o30) 16
+(%i31) joe:(if (x >17) then 2 else 4);
+(%o31) 4
+(%i32) joe:(if (x >17) then x:2 else joe:4,joe+x);
+(%o32) 20
 @end example
 
 Even loops in maxima are expressions, although the value they
 return is the not too useful @code{DONE}
 
 @example
-(C33) joe:(x:1,for i from 1 thru 10 do (x:x*i));
-(D33) DONE
+(%i33) joe:(x:1,for i from 1 thru 10 do (x:x*i));
+(%o33) DONE
 @end example
 whereas what you really want is probably to include a third
 term in the @i{comma expression} which actually gives back the value.
 
 @example
-(C34) joe:(x:1,for i from 1 thru 10 do (x:x*i),x);
-(D34) 3628800
+(%i34) joe:(x:1,for i from 1 thru 10 do (x:x*i),x);
+(%o34) 3628800
 @end example
 
 
@@ -90,11 +90,11 @@ eliminate predefined ones that get in the user's way.  The extension
 mechanism is rather straightforward and should be evident from the
 examples below.
 @example
-(C1) PREFIX("DDX")$
-(C2) DDX Y$
+(%i1) PREFIX("DDX")$
+(%i2) DDX Y$
      /* means                   "DDX"(Y) */
-(C3) INFIX("<-")$
-(C4) A<-DDX Y$
+(%i3) INFIX("<-")$
+(%i4) A<-DDX Y$
     /* means               "<-"(A,"DDX"(Y)) */
 
 @end example
@@ -131,18 +131,18 @@ also be removed.
 @example
 
 
-(C20) PREFIX("DDX",180,ANY,ANY)$
+(%i20) PREFIX("DDX",180,ANY,ANY)$
 
-(C21) DDXYZ;
+(%i21) DDXYZ;
 
-(D21) 				    DDX YZ
+(%o21) 				    DDX YZ
 
-(C26) "ddx"(u):=u+4;
+(%i26) "ddx"(u):=u+4;
 
-(D26) 			        DDX u := u + 4
-(C27) ddx 8;
+(%o26) 			        DDX u := u + 4
+(%i27) ddx 8;
 
-(D27) 				      12
+(%o27) 				      12
 @end example
 
 
@@ -335,9 +335,9 @@ instead of just returning that subexpression as its value, it returns
 the whole expression with the selected subexpression displayed inside
 a box.  The box is actually part of the expression.
 @example
-(C1) DPART(X+Y/Z**2,1,2,1);
+(%i1) DPART(X+Y/Z**2,1,2,1);
                        Y
-(D1)                  ---- + X
+(%o1)                  ---- + X
                          2
                      *****
                      * Z *
@@ -447,20 +447,20 @@ from that in the displayed form) and in dealing with unary minus,
 subtraction, and division (since these operators are removed from the
 expression). PART(X+Y,0) or INPART(X+Y,0) yield +, though in order to
 refer to the operator it must be enclosed in "s.  For example
-...IF INPART(D9,0)="+" THEN ...
+...IF INPART(%o9,0)="+" THEN ...
 @example
-(C1)  X+Y+W*Z;
-(D1)                  W Z + Y + X
-(C2)  INPART(D1,3,2);
-(D2)                  Z
-(C3)  PART(D1,1,2);
-(D3)                  Z
-(C4) 'LIMIT(F(X)**G(X+1),X,0,MINUS);
+(%i1)  X+Y+W*Z;
+(%o1)                  W Z + Y + X
+(%i2)  INPART(%o1,3,2);
+(%o2)                  Z
+(%i3)  PART(%o1,1,2);
+(%o3)                  Z
+(%i4) 'LIMIT(F(X)**G(X+1),X,0,MINUS);
                                       G(X + 1)
-(D4)                      LIMIT   F(X)
+(%o4)                      LIMIT   F(X)
                           X ->0-
-(C5) INPART(%,1,2);
-(D5)                            G(X + 1)
+(%i5) INPART(%,1,2);
+(%o5)                            G(X + 1)
 
 
 @end example
@@ -470,7 +470,7 @@ refer to the operator it must be enclosed in "s.  For example
 @defun ISOLATE (exp, var)
 returns exp with subexpressions which are sums and
 which do not contain var replaced by intermediate expression labels
-(these being atomic symbols like E1, E2, ...).  This is often useful
+(these being atomic symbols like %t1, %t2, ...).  This is often useful
 to avoid unnecessary expansion of subexpressions which don't contain
 the variable of interest.  Since the intermediate labels are bound to
 the subexpressions they can all be substituted back by evaluating the
@@ -520,8 +520,8 @@ LISTCONSTVARS[FALSE] if TRUE will cause LISTOFVARS to include %E, %PI,
 %I, and any variables declared constant in the list it returns if they
 appear in exp.  The default is to omit these.
 @example
-(C1) LISTOFVARS(F(X[1]+Y)/G**(2+A));
-(D1)                            [X[1], Y, A, G]
+(%i1) LISTOFVARS(F(X[1]+Y)/G**(2+A));
+(%o1)                            [X[1], Y, A, G]
 
 
 @end example
@@ -568,32 +568,32 @@ MULTTHRU(exp1, exp2) multiplies each term in exp2 (which should be a
 sum or an equation) by exp1.  If exp1 is not itself a sum then this
 form is equivalent to MULTTHRU(exp1*exp2).
 @example
-(C1) X/(X-Y)**2-1/(X-Y)-F(X)/(X-Y)**3;
+(%i1) X/(X-Y)**2-1/(X-Y)-F(X)/(X-Y)**3;
                1        X         F(X)
-(D1)       - ----- + -------- - --------
+(%o1)       - ----- + -------- - --------
              X - Y          2          3
                      (X - Y)    (X - Y)
-(C2) MULTTHRU((X-Y)**3,%);
+(%i2) MULTTHRU((X-Y)**3,%);
                     2
-(D2)       - (X - Y)  + X (X - Y) - F(X)
-(C3) RATEXPAND(D2);
+(%o2)       - (X - Y)  + X (X - Y) - F(X)
+(%i3) RATEXPAND(%o2);
                            2
-(D3)                    - Y  + X Y - F(X)
-(C4) ((A+B)**10*S**2+2*A*B*S+(A*B)**2)/(A*B*S**2);
+(%o3)                    - Y  + X Y - F(X)
+(%i4) ((A+B)**10*S**2+2*A*B*S+(A*B)**2)/(A*B*S**2);
                          10  2              2  2
                 (B  + A )   S  + 2 A B S + A  B
-(D4)            --------------------------------
+(%o4)            --------------------------------
                                    2
                               A B S
-(C5) MULTTHRU(%);
+(%i5) MULTTHRU(%);
                                           10
                         2   A B   (B  + A)
-(D5)                    - + --- + -------
+(%o5)                    - + --- + -------
                         S    2      A B
                             S
 (notice that (B+A)**10 is not expanded)
-(C6) MULTTHRU(A.(B+C.(D+E)+F));
-(D6)                A . F + A . (C . (E + D)) + A . B
+(%i6) MULTTHRU(A.(B+C.(D+E)+F));
+(%o6)                A . F + A . (C . (E + D)) + A . B
 (compare with similar example under EXPAND)
 
 
@@ -718,12 +718,12 @@ the factors of exp (if it is a product), the terms of exp (if it is a
 sum), or the list (if it is a list) which don't contain var and, (2)
 the factors, terms, or list which do.
 @example
-(C1) PARTITION(2*A*X*F(X),X);
-(D1)                 [ 2 A , X F(X) ]
-(C2) PARTITION(A+B,X);
-(D2)                 [ A + B , 0 ]
-(C3) PARTITION([A,B,F(A),C],A); 
-(D3)                [[B,C],[A,F(A)]]
+(%i1) PARTITION(2*A*X*F(X),X);
+(%o1)                 [ 2 A , X F(X) ]
+(%i2) PARTITION(A+B,X);
+(%o2)                 [ A + B , 0 ]
+(%i3) PARTITION([A,B,F(A),C],A); 
+(%o3)                [[B,C],[A,F(A)]]
 
 
 @end example
@@ -744,21 +744,21 @@ exp down to the specified integer depth.  This is useful for dealing
 with large expressions and for automatically assigning parts of an
 expression to a variable without having to use the part functions.
 @example
-(C1) EXP:(A+B)/2+SIN(X^2)/3-LOG(1+SQRT(X+1));
+(%i1) EXP:(A+B)/2+SIN(X^2)/3-LOG(1+SQRT(X+1));
                                                  2
                                             SIN(X )   B + A
-(D1)               - LOG(SQRT(X + 1) + 1) + ------- + -----
+(%o1)               - LOG(SQRT(X + 1) + 1) + ------- + -----
                                                3        2
-(C2) PICKAPART(%,1);
-(E2)                    - LOG(SQRT(X + 1) + 1)
+(%i2) PICKAPART(%,1);
+(%t2)                    - LOG(SQRT(X + 1) + 1)
                                     2
                                SIN(X )
-(E3)                           -------
+(%t3)                           -------
                                   3
                                 B + A
-(E4)                            -----
+(%t4)                            -----
                                   2
-(D4)                         E4 + E3 + E2
+(%o4)                         %t4 + %t3 + %t2
 
 
 @end example
@@ -788,8 +788,8 @@ of SUM.  No simplification of products is available at this time.
 If hi is one less than lo, we have an "empty product" and PRODUCT 
 returns 1 rather than erring out.  Also see DESCRIBE(PRODHACK).
 @example
-(C1)  PRODUCT(X+I*(I+1)/2,I,1,4);
-(D1)             (X + 1) (X + 3) (X + 6) (X + 10)
+(%i1)  PRODUCT(X+I*(I+1)/2,I,1,4);
+(%o1)             (X + 1) (X + 3) (X + 6) (X + 10)
 
 
 @end example
@@ -850,19 +850,19 @@ BASHINDICES, and NICEINDICES.
 @defun LSUM (exp, ind, list)
 performs the sum of EXP for each element IND of the LIST.
 @example
-(C10) lsum(x^i,i,[1,2,7]);
+(%i10) lsum(x^i,i,[1,2,7]);
 
                             7    2
-(D10)                      x  + x  + x
+(%o10)                      x  + x  + x
 @end example
 If the last element LIST argument does not evaluate, or does not
 evaluate to a Maxima list then the answer is left in noun form
 @example
-(C13) lsum(i^2,i,rootsof(x^3-1));
+(%i13) lsum(i^2,i,rootsof(x^3-1));
 
                      ====
                      \      2
-(D13)                 >    i
+(%o13)                 >    i
                      /
                      ====
                                    3

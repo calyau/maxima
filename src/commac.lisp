@@ -834,6 +834,12 @@ values")
 	 (intern (string (aref strin (f- i 1)))))
 	(t nil)))
 
+(defun getchars (symb start end &aux strin)
+  (setq strin (string symb))
+  (cond ((and (<= start (length strin)) (> start 0))
+	 (intern (string (subseq strin (f- start 1) (f- end 1)))))
+	(t nil)))
+
 (defun ascii (n)
   (intern (string n)))
 

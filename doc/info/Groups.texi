@@ -21,42 +21,42 @@ the ith variable.  mulcoset(coset,i) := table[varnum][coset];
 Example:
 
 @example
-(C1) symet(n):=create_list(if (j - i) = 1 then (p(i,j))^^3 else
+(%i1) symet(n):=create_list(if (j - i) = 1 then (p(i,j))^^3 else
      if (not i = j) then (p(i,j))^^2 else p(i,i) , j,1,n-1,i,1,j);
 						      <3>
-(D1) SYMET(N) := CREATE_LIST(IF J - I = 1 THEN P(I, J)
+(%o1) SYMET(N) := CREATE_LIST(IF J - I = 1 THEN P(I, J)
 
 			       <2>
  ELSE (IF NOT I = J THEN P(I, J)
  ELSE P(I, I)), J, 1, N - 1, I, 1, J)
-(C2) p(i,j) :=concat(x,i).concat(x,j);
-(D2)                P(I, J) := CONCAT(X, I) . CONCAT(X, J)
-(C3) symet(5);
+(%i2) p(i,j) :=concat(x,i).concat(x,j);
+(%o2)                P(I, J) := CONCAT(X, I) . CONCAT(X, J)
+(%i3) symet(5);
                         <3>                    <2>           <3>
-(D3) [X1 . X1, (X1 . X2)   , X2 . X2, (X1 . X3)   , (X2 . X3)   , 
+(%o3) [X1 . X1, (X1 . X2)   , X2 . X2, (X1 . X3)   , (X2 . X3)   , 
 
                       <2>                <2>           <3>
 X3 . X3,     (X1 . X4)	 , (X2 . X4)   , (X3 . X4)   , X4 . X4]
-(C4) todd_coxeter(d3);
+(%i4) todd_coxeter(%o3);
 
 Rows tried 426
-(D4) 				      120
-(C5) todd_coxeter(d3,[x1]);
+(%o4) 				      120
+(%i5) todd_coxeter(%o3,[x1]);
 
 Rows tried 213
-(D5) 				      60
-(C6) todd_coxeter(d3,[x1,x2]);
+(%o5) 				      60
+(%i6) todd_coxeter(%o3,[x1,x2]);
 
 Rows tried 71
-(D6) 				      20
-(C7) table:todd_coxeter_state[2]$
-(C8) table:todd_coxeter_state[2]$
-(C9) table[1];
-(D9) @{Array: FIXNUM #(0 2 1 3 7 6 5 4 8 11 17 9 12 14 13 20
+(%o6) 				      20
+(%i7) table:todd_coxeter_state[2]$
+(%i8) table:todd_coxeter_state[2]$
+(%i9) table[1];
+(%o9) @{Array: FIXNUM #(0 2 1 3 7 6 5 4 8 11 17 9 12 14 13 20
            16 10 18 19 15 0 0 0 0 0 0 0 0  0 0 0 0 0 0 0)@}
 @end example
 
-Note only the elements 1 thru 20 of this array d9  are meaningful.
+Note only the elements 1 thru 20 of this array %o9  are meaningful.
 table[1][4] = 7 indicates coset4.var1 = coset7
 
 

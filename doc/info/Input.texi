@@ -262,8 +262,8 @@ evaluates its arguments and concatenates them into a string.  Unlike
 CONCAT, the arguments do NOT need to be atoms.    The result is a Common
 Lisp String.
 @example
-(C5) sconcat("xx[",3,"]:",expand((x+y)^3));
-(D5) 			 xx[3]:Y^3+3*X*Y^2+3*X^2*Y+X^3
+(%i5) sconcat("xx[",3,"]:",expand((x+y)^3));
+(%o5) 			 xx[3]:Y^3+3*X*Y^2+3*X^2*Y+X^3
 @end example
 The resulting string could be used in conjunction with print.
 @end defun
@@ -315,11 +315,11 @@ arguments to DISPLAY are usually atoms, subscripted variables, or
 function calls.  (see the DISP function)
 
 @example
-(C1) DISPLAY(B[1,2]);
+(%i1) DISPLAY(B[1,2]);
                                       2
                          B     = X - X
                           1, 2
-(D1)                            DONE
+(%o1)                            DONE
 
 
 @end example
@@ -388,7 +388,7 @@ controls the size of error messages.  For example, let
 U:(C^D^E+B+A)/(COS(X-1)+1); .  U has an error size of 24.  So if
 ERROR_SIZE has value < 24 then 
 @example
-(C1) ERROR("The function", FOO,"doesn't like", U,"as input.");
+(%i1) ERROR("The function", FOO,"doesn't like", U,"as input.");
 prints as:
 The function FOO doesn't like ERREXP1 as input.
 If ERROR_SIZE>24 then as:
@@ -625,7 +625,7 @@ If load can't find the file, check the value FILE_SEARCH to make sure
 that it contains an appropriate template.
 
 @example
-(C4) load("eigen");
+(%i4) load("eigen");
 MACSYMA BUG: Unknown file type NIL
 
 Error: macsyma error
@@ -644,16 +644,16 @@ At lisp level we would do
         "/tmp/foo.mac" "/tmp/foo.mc") $file_search))
 and at maxima level:
 
-(C5) file_search:append(["/public/maxima/share/foo.mc"],
+(%i5) file_search:append(["/public/maxima/share/foo.mc"],
         file_search)$
-(C6) load("eigen");
+(%i6) load("eigen");
 
 batching /usr/public/maxima/share/eigen.mc
-(D6) 		        #/public/maxima/share/eigen.mc
-(C7) eigenvalues(matrix([a,b],[c,d]));
+(%o6) 		        #/public/maxima/share/eigen.mc
+(%i7) eigenvalues(matrix([a,b],[c,d]));
 	       2		    2
        - SQRT(D  - 2 A D + 4 B C + A ) + D + A
-(D7) [[---------------------------------------, 
+(%o7) [[---------------------------------------, 
 			  2
 
 				      2			   2
@@ -796,12 +796,12 @@ with the length of each part indicated.  Sums will be displayed as
 Sum(n) and products as Product(n) where n is the number of subparts of
 the sum or product.  Exponentials will be displayed as Expt.
 @example
-(C1) INTEGRATE(1/(X^3+2),X)$
-(C2) REVEAL(%,2);
-(D2)                    Negterm + Quotient + Quotient
-(C3) REVEAL(D1,3);
+(%i1) INTEGRATE(1/(X^3+2),X)$
+(%i2) REVEAL(%,2);
+(%o2)                    Negterm + Quotient + Quotient
+(%i3) REVEAL(%o1,3);
                                      ATAN         LOG
-(D3)                 - Quotient + ---------- + ----------
+(%o3)                 - Quotient + ---------- + ----------
                                   Product(2)   Product(2)
 
 
@@ -827,7 +827,7 @@ FUNCTIONS, or any other items on the INFOLISTS (do
 DESCRIBE(INFOLISTS); for the list) may be SAVEd, as may functions and
 variables by name.  C and D lines may also be saved, but it is better
 to give them explicit names, which may be done in the command line,
-e.g.  SAVE(RES1=D15); Files saved with SAVE should be reloaded with
+e.g.  SAVE(RES1=%o15); Files saved with SAVE should be reloaded with
 LOADFILE.  SAVE returns the pathname where the items were saved.
 
 
@@ -908,26 +908,26 @@ in case a file-name is supplied, the output will be appended to the
 file.
 
 @example
-(C1) integrate(1/(1+x^3),x);
+(%i1) integrate(1/(1+x^3),x);
 
 					 2 x - 1
 		       2	    ATAN(-------)
 		  LOG(x  - x + 1)	 SQRT(3)    LOG(x + 1)
-(D1) 	        - --------------- + ------------- + ----------
+(%o1) 	        - --------------- + ------------- + ----------
 			 6	       SQRT(3)	        3
-(C2) tex(d1);
+(%i2) tex(%o1);
 
 $$-@{@{\log \left(x^@{2@}-x+1\right)@}\over@{6@}@}
   +@{@{\arctan @{@{2\>x-1@}\over@{\sqrt@{3@}@}@}@}\over@{\sqrt@{3@}@}@}
-  +@{@{\log \left(x+1\right)@}\over@{3@}@}\leqno@{\tt (D1)@}$$
-(D2) 				     (D1)
-(C6) tex(integrate(sin(x),x));
+  +@{@{\log \left(x+1\right)@}\over@{3@}@}\leqno@{\tt (%o1)@}$$
+(%o2) 				     (%o1)
+(%i6) tex(integrate(sin(x),x));
 
 $$-\cos x$$
-(D6) 				     FALSE
-(C7) tex(d1,"/tmp/jo.tex");
+(%o6) 				     FALSE
+(%i7) tex(%o1,"/tmp/jo.tex");
 
-(D7) 				     (D1)
+(%o7) 				     (%o1)
 @end example
 where the last expression will be appended to the file @file{/tmp/jo.tex}
 @end defun
@@ -938,7 +938,7 @@ systems, but generally exists in the unix environment.
 if hist is a list of frequencies which you wish to plot as a bar graph
 using xgraph. 
 @example
-(C1) (with_stdout("_hist.out",
+(%i1) (with_stdout("_hist.out",
            for i:1 thru length(hist) do (
              print(i,hist[i]))),
        system("xgraph -bar -brw .7 -nl < _hist.out"));
@@ -976,16 +976,16 @@ mygnuplot(f,var,range,number_ticks):=
         f,"' ;plot '/tmp/gnu'
 ;pause 10 \" | gnuplot"));
 
-(C8) with_stdout("/home/wfs/joe",
+(%i8) with_stdout("/home/wfs/joe",
       n:10,
       for i:8 thru n
         do(print("factorial(",i,") gives ",i!)));
-(D8) 				     FALSE
-(C9) system("cat /home/wfs/joe");
+(%o8) 				     FALSE
+(%i9) system("cat /home/wfs/joe");
 factorial( 8 ) gives  40320 
 factorial( 9 ) gives  362880 
 factorial( 10 ) gives  3628800 
-(D9) 				       0
+(%o9) 				       0
 @end example
 
 @end deffn

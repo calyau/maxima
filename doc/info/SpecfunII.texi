@@ -79,11 +79,11 @@ hermite function, for example, append
 @end lisp
 to your init.lsp file.  An example use of specfun is
 @example
-(c1) load("specfun.o")$
-(c2) [hermite(0,x),hermite(1,x),hermite(2,x)];
-(d2) [1,2*x,-2*(1-2*x^2)]
-(c3) diff(hermite(n,x),x);
-(d3) 2*n*hermite(n-1,x)
+(%i1) load("specfun.o")$
+(%i2) [hermite(0,x),hermite(1,x),hermite(2,x)];
+(%o2) [1,2*x,-2*(1-2*x^2)]
+(%i3) diff(hermite(n,x),x);
+(%o3) 2*n*hermite(n-1,x)
 @end example
 
 When using the compiled version of specfun, be especially
@@ -91,9 +91,9 @@ careful to  use the correct number of function arguments; calling
 them with too few arguments may generate a fatal error messages.  
 For example
 @example
-(c1) load("specfun")$
+(%i1) load("specfun")$
 /* chebyshev_t requires two arguments. */
-(c2) chebyshev_t(8);
+(%i2) chebyshev_t(8);
 Error: Caught fatal error [memory may be damaged]
 Fast links are on: do (si::use-fast-links nil) for debugging
 Error signalled by MMAPCAR.
@@ -103,8 +103,8 @@ Maxima code translated into Lisp handles such errors more gracefully.
 If specfun.LISP is installed on your machine, the same computation 
 results in  a clear error message.  For example
 @example
-(c1) load("specfun.LISP")$
-(c2) chebyshev_t(8);
+(%i1) load("specfun.LISP")$
+(%i2) chebyshev_t(8);
 Error: Expected 2 args but received 1 args
 Fast links are on: do (si::use-fast-links nil) for debugging
 Error signalled by MACSYMA-TOP-LEVEL.
@@ -120,15 +120,15 @@ used by specfun for any computations.) You may use this feature to
 find symbolic values for special values orthogonal polynomials.  
 An example:
 @example
-(c1) load("specfun")$
-(c2) legendre_p(n,1);
-(d2)        legendre_p(n, 1)
+(%i1) load("specfun")$
+(%i2) legendre_p(n,1);
+(%o2)        legendre_p(n, 1)
 /* Declare n to be an integer; now legendre_p(n,1) evaluates to 1. */
-(c3) declare(n,integer)$
-(c4) legendre_p(n,1);
-(d4)        1
-(c5) ultraspherical(n,3/2,1);
-(d4)         (n+1)*gamma (n+3) / (2*gamma (n+2))
+(%i3) declare(n,integer)$
+(%i4) legendre_p(n,1);
+(%o4)        1
+(%i5) ultraspherical(n,3/2,1);
+(%o4)         (n+1)*gamma (n+3) / (2*gamma (n+2))
 @end example
 Although the preceding example doesn't show it, two terms
 of the sum are added outside the summation.  Removing these
@@ -140,15 +140,15 @@ index will exceed the upper sum index when @math{ n = 0};
 setting sumhack to true provides a fix. For example:
 
 @example 
-(c1) load("specfun.o")$
-(c2) declare(n,integer)$
-(c3) e : legendre_p(n,x)$
-(c4) ev(e,sum,n=0);
+(%i1) load("specfun.o")$
+(%i2) declare(n,integer)$
+(%i3) e : legendre_p(n,x)$
+(%i4) ev(e,sum,n=0);
 Lower bound to SUM: 1
 is greater than the upper bound: - 1
  -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);)
-(c5) ev(e,sum,n=0),sumhack : true;
-(d5)         1
+(%i5) ev(e,sum,n=0),sumhack : true;
+(%o5)         1
 @end example
 
 Most  functions in specfun have a gradef property; 
@@ -163,8 +163,8 @@ willisb@@unk.edu.  In your  report, please include
 Maxima and specfun version information.  The specfun
 version may be found using get:
 @example
- (c2) get('specfun,'version);
- (d2)          110
+ (%i2) get('specfun,'version);
+ (%o2)          110
  @end example
 
 @c end concepts Orthogonal Polynomials

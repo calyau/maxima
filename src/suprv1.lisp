@@ -161,12 +161,12 @@
 ;;; Figure out how to do the above for Franz.
        '(Random properties))
 
-(DEFMVAR $% '$% "The last D-line computed, corresponds to lisp *" NO-RESET)
-(DEFMVAR $INCHAR '$C
+(DEFMVAR $% '$% "The last out-line computed, corresponds to lisp *" NO-RESET)
+(DEFMVAR $INCHAR '|$%i|
   "The alphabetic prefix of the names of expressions typed by the user.")
-(DEFMVAR $OUTCHAR '$D
+(DEFMVAR $OUTCHAR '|$%o|
   "The alphabetic prefix of the names of expressions returned by the system.")
-(DEFMVAR $LINECHAR '$E
+(DEFMVAR $LINECHAR '|$%t|
   "The alphabetic prefix of the names of intermediate displayed expressions.")
 (DEFMVAR $LINENUM 1 "the line number of the last expression." FIXNUM NO-RESET)
 (DEFMVAR $DIREC 'JRMU

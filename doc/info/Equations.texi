@@ -142,10 +142,10 @@ gives [g(t) = ...]  or [], depending on whether
 or not there exists a rational fcn g(t) satisfying eqn, which must be
 a first order, linear polynomial in (for this case) g(t) and g(t+1).
 @example
-(C1) FUNCSOLVE((N+1)*FOO(N)-(N+3)*FOO(N+1)/(N+1) =
+(%i1) FUNCSOLVE((N+1)*FOO(N)-(N+3)*FOO(N+1)/(N+1) =
     (N-1)/(N+2),FOO(N));
                                    N
-(D1)               FOO(N) = ---------------
+(%o1)               FOO(N) = ---------------
                             (N + 1) (N + 2)
 
 @end example
@@ -229,15 +229,15 @@ ALGSYS.  If FALSE, LINSOLVE behaves as before, i.e. when it meets up
 with an under-determined system of equations, it solves for some of
 the variables in terms of others.
 @example
-(C1) X+Z=Y$
-(C2) 2*A*X-Y=2*A**2$
-(C3) Y-2*Z=2$
-(C4) LINSOLVE([D1,D2,D3],[X,Y,Z]),GLOBALSOLVE:TRUE;
+(%i1) X+Z=Y$
+(%i2) 2*A*X-Y=2*A**2$
+(%i3) Y-2*Z=2$
+(%i4) LINSOLVE([%o1,%o2,%o3],[X,Y,Z]),GLOBALSOLVE:TRUE;
 SOLUTION
-(E4)                            X : A + 1
-(E5)                             Y : 2 A
-(E6)                            Z : A - 1
-(D6)                          [E4, E5, E6]
+(%t4)                            X : A + 1
+(%t5)                             Y : 2 A
+(%t6)                            Z : A - 1
+(%o6)                          [%t4, %t5, %t6]
 
 
 @end example
@@ -275,10 +275,10 @@ univariate polynomial poly in the half-open interval (low,high].  The
 endpoints of the interval may also be MINF,INF respectively for minus
 infinity and plus infinity.  The method of Sturm sequences is used.
 @example
-(C1) POLY1:X**10-2*X**4+1/2$
-(C2) NROOTS(POLY1,-6,9.1);
+(%i1) POLY1:X**10-2*X**4+1/2$
+(%i2) NROOTS(POLY1,-6,9.1);
 RAT REPLACED 0.5 BY 1/2 = 0.5
-(D2)                               4
+(%o2)                               4
 
 
 @end example

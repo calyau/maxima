@@ -32,15 +32,15 @@ makes the change of variable given by
 f(x,y) = 0 in all integrals occurring in exp with integration with
 respect to x; y is the new variable.
 @example
-    (C1) 'INTEGRATE(%E**SQRT(A*Y),Y,0,4);
+    (%i1) 'INTEGRATE(%E**SQRT(A*Y),Y,0,4);
                         4
                        /
                        [    SQRT(A) SQRT(Y)
-    (D1)               I (%E               ) dY
+    (%o1)               I (%E               ) dY
                        ]
                        /
                         0
-    (C2) CHANGEVAR(D1,Y-Z^2/A,Z,Y);
+    (%i2) CHANGEVAR(%o1,Y-Z^2/A,Z,Y);
                                    2 SQRT(A)
                                   /
                                   [              Z
@@ -48,7 +48,7 @@ respect to x; y is the new variable.
                                   ]
                                   /
                                    0
-    (D4)                        ---------------------
+    (%o4)                        ---------------------
                                           A
 @end example
 CHANGEVAR may also be used to changes in the indices of a sum or
@@ -56,19 +56,19 @@ product.  However, it must be realized that when a change is made in a
 sum or product, this change must be a shift, i.e. I=J+ ..., not a
 higher degree function.  E.g.
 @example
-(C3) SUM(A[I]*X^(I-2),I,0,INF);
+(%i3) SUM(A[I]*X^(I-2),I,0,INF);
                                INF
                                ====
                                \         I - 2
-(D3)                            >    A  X
+(%o3)                            >    A  X
                                /      I
                                ====
                                I = 0
-(C4) CHANGEVAR(%,I-2-N,N,I);
+(%i4) CHANGEVAR(%,I-2-N,N,I);
                               INF
                               ====
                               \               N
-(D4)                           >      A      X
+(%o4)                           >      A      X
                               /        N + 2
                               ====
                               N = - 2
@@ -169,39 +169,39 @@ By using the functions LAPLACE and ILT together with the SOLVE or
 LINSOLVE functions the user can solve a single differential or
 convolution integral equation or a set of them.
 @example
-(C1) 'INTEGRATE(SINH(A*X)*F(T-X),X,0,T)+B*F(T)=T**2;
+(%i1) 'INTEGRATE(SINH(A*X)*F(T-X),X,0,T)+B*F(T)=T**2;
               T
              /
              [                                     2
-(D1)         I (SINH(A X) F(T - X)) dX + B F(T) = T
+(%o1)         I (SINH(A X) F(T - X)) dX + B F(T) = T
              ]
              /
              0
-(C2) LAPLACE(%,T,S);
+(%i2) LAPLACE(%,T,S);
             A LAPLACE(F(T), T, S)
-(D2)        ---------------------
+(%o2)        ---------------------
                     2    2
                    S  - A
                                           2
                 + B LAPLACE(F(T), T, S) = --
                                            3
                                           S
-(C3) LINSOLVE([%],['LAPLACE(F(T),T,S)]);
+(%i3) LINSOLVE([%],['LAPLACE(F(T),T,S)]);
 SOLUTION
                                         2      2
                                      2 S  - 2 A
-(E3)       LAPLACE(F(T), T, S) = --------------------
+(%t3)       LAPLACE(F(T), T, S) = --------------------
                                     5         2     3
                                  B S  + (A - A  B) S
-(D3)                         [E3]
-(C4) ILT(E3,S,T);
+(%o3)                         [%t3]
+(%i4) ILT(%t3,S,T);
 IS  A B (A B - 1)  POSITIVE, NEGATIVE, OR ZERO?
 POS;
                                        2
                        SQRT(A) SQRT(A B  - B) T
                 2 COSH(------------------------)
                                   B
-(D4)  F(T) =  - --------------------------------
+(%o4)  F(T) =  - --------------------------------
                                A
               2
            A T             2
@@ -253,29 +253,29 @@ lower and upper limits.
 of an expression is.  Suitable responses are POS;, ZERO;, or NEG;.
 @end itemize
 @example
-(C1) INTEGRATE(SIN(X)**3,X);
+(%i1) INTEGRATE(SIN(X)**3,X);
                     3
                  COS (X)
-(D1)             ------- - COS(X)
+(%o1)             ------- - COS(X)
                     3
-(C2) INTEGRATE(X**A/(X+1)**(5/2),X,0,INF);
+(%i2) INTEGRATE(X**A/(X+1)**(5/2),X,0,INF);
 IS  A + 1  POSITIVE, NEGATIVE, OR ZERO?
 POS;
 IS  2 A - 3  POSITIVE, NEGATIVE, OR ZERO?
 NEG;
                             3
-(D2)            BETA(A + 1, - - A)
+(%o2)            BETA(A + 1, - - A)
                             2
-(C3) GRADEF(Q(X),SIN(X**2));
-(D3)                              Q(X)
-(C4) DIFF(LOG(Q(R(X))),X);
+(%i3) GRADEF(Q(X),SIN(X**2));
+(%o3)                              Q(X)
+(%i4) DIFF(LOG(Q(R(X))),X);
                            d             2
                           (-- R(X)) SIN(R (X))
                            dX
-(D4)                      --------------------
+(%o4)                      --------------------
                                 Q(R(X))
-(C5) INTEGRATE(%,X);
-(D5)                          LOG(Q(R(X)))
+(%i5) INTEGRATE(%,X);
+(%o5)                          LOG(Q(R(X)))
 @end example
 (Note 1) The fact that MACSYMA does not perform certain integrals does
 not always imply that the integral does not exist in closed form. In
@@ -289,10 +289,10 @@ where A, B and C are the roots. MACSYMA will
 integrate this equivalent form although the integral is quite
 complicated.
 @example
-(C6) INTEGRATE(1/(X^3+X+1),X);
+(%i6) INTEGRATE(1/(X^3+X+1),X);
                           /
                           [     1
-(D6)                      I ---------- dX
+(%o6)                      I ---------- dX
                           ]  3
                           / X  + X + 1
 
@@ -314,25 +314,25 @@ an rational function cannot be factored, we give the integral
 in a form which is a sum over the roots of the denominator:
 
 @example
-(C4) integrate(1/(1+x+x^5),x);
+(%i4) integrate(1/(1+x+x^5),x);
 
       /	 2
       [ x  - 4 x + 5
       I ------------ dx				   2 x + 1
       ]	 3    2		       2	    5 ATAN(-------)
       / x  - x  + 1	  LOG(x  + x + 1)	   SQRT(3)
-(D4)  ----------------- - --------------- + ---------------
+(%o4)  ----------------- - --------------- + ---------------
 	      7		        14	       7 SQRT(3)
 @end example
 but now we set the flag to be true and the first part of the
 integral will undergo further simplification.
 @example
-(C5) INTEGRATE_USE_ROOTSOF:true;
+(%i5) INTEGRATE_USE_ROOTSOF:true;
 
-(D5) 			      TRUE
+(%o5) 			      TRUE
 @end example
 @example
-(C6) integrate(1/(1+x+x^5),x);
+(%i6) integrate(1/(1+x+x^5),x);
 
      ====        2
      \       (%R1  - 4 %R1 + 5) LOG(x - %R1)
@@ -341,7 +341,7 @@ integral will undergo further simplification.
      ====            3 %R1  - 2 %R1
                      3    2
      %R1 in ROOTSOF(x  - x  + 1)
-(D6) ----------------------------------------------------------
+(%o6) ----------------------------------------------------------
               7
 
                                                          2 x + 1
@@ -446,14 +446,14 @@ the expression exp when the variable var assumes the value val.  The
 residue is the coefficient of (var-val)**(-1) in the Laurent series
 for exp.
 @example
-(C1) RESIDUE(S/(S**2+A**2),S,A*%I);
+(%i1) RESIDUE(S/(S**2+A**2),S,A*%I);
                         1
-(D1)                    -
+(%o1)                    -
                         2
-(C2) RESIDUE(SIN(A*X)/X**4,X,0);
+(%i2) RESIDUE(SIN(A*X)/X**4,X,0);
                         3
                        A
-(D2)                 - --
+(%o2)                 - --
                        6
 
 
@@ -472,15 +472,15 @@ ERFFLAG[TRUE] - if FALSE prevents RISCH from introducing the ERF
 function in the answer if there were none in the integrand to begin
 with.
 @example
-(C1) RISCH(X^2*ERF(X),X);
+(%i1) RISCH(X^2*ERF(X),X);
             2     2
          - X     X             3           2
        %E     (%E   SQRT(%PI) X  ERF(X) + X  + 1)
-(D1)   ------------------------------------------
+(%o1)   ------------------------------------------
                       3 SQRT(%PI)
-(C2) DIFF(%,X),RATSIMP;
+(%i2) DIFF(%,X),RATSIMP;
                                  2
-(D2)                            X  ERF(X)
+(%o2)                            X  ERF(X)
 
 
 @end example

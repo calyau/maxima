@@ -93,12 +93,12 @@ in the DEFMATCH are like the dummy arguments to the SUBROUTINE
 statement in FORTRAN.  When the function is "called" the actual
 arguments are substituted.  For example:
 @example
-(C1)  NONZEROANDFREEOF(X,E):=  IF E#0 AND FREEOF(X,E)
+(%i1)  NONZEROANDFREEOF(X,E):=  IF E#0 AND FREEOF(X,E)
             THEN TRUE ELSE FALSE$
 (IS(E#0 AND FREEOF(X,E)) is an  equivalent function
 definition)
-(C2)  MATCHDECLARE(A,NONZEROANDFREEOF(X),B,FREEOF(X))$
-(C3)  DEFMATCH(LINEAR,A*X+B,X)$
+(%i2)  MATCHDECLARE(A,NONZEROANDFREEOF(X),B,FREEOF(X))$
+(%i3)  DEFMATCH(LINEAR,A*X+B,X)$
     This has caused the function LINEAR(exp,var1) to be defined.  It
 
 @end example
@@ -113,7 +113,7 @@ If the match fails, the function returns FALSE.  Thus
 LINEAR(3*Z+(Y+1)*Z+Y**2,Z) would return [B=Y**2, A=Y+4, X=Z].  Any
 variables not declared as pattern variables in MATCHDECLARE or as
 parameters in DEFMATCH which occur in pattern will match only
-themselves so that if the third argument to the DEFMATCH in (C4) had
+themselves so that if the third argument to the DEFMATCH in (%i4) had
 been omitted, then LINEAR would only match expressions linear in X,
 not in any other variable.
     A pattern which contains no parameters or pattern variables
@@ -288,33 +288,33 @@ binding power is 180, and the ARGS inside may be anything.
 
 @example
 
-(C1) matchfix("|","|");
+(%i1) matchfix("|","|");
 
-(D1) 				      "|"
-(C2) |a|+b;
+(%o1) 				      "|"
+(%i2) |a|+b;
 
-(D2) 				   b + (|a|)
-(C3) |(a,b)|;
+(%o2) 				   b + (|a|)
+(%i3) |(a,b)|;
 
-(D3) 				      |b|
-(C4) |[a,b]|;
+(%o3) 				      |b|
+(%i4) |[a,b]|;
 
-(D4) 				   |[a, b]|
+(%o4) 				   |[a, b]|
 
-(C9) |x|:=IF NUMBERP(x) THEN ABS(x)
+(%i9) |x|:=IF NUMBERP(x) THEN ABS(x)
         ELSE (IF LISTP(x) AND APPLY("and",MAP(NUMBERP,x))
 		  THEN SUM(x[i]^2,i,1,LENGTH(x))^0.5 ELSE BUILDQ([u:x],|u|))$
 
-(C10) |[1,2,3]|;
+(%i10) |[1,2,3]|;
 
-(D10) 			       3.741657386773941
+(%o10) 			       3.741657386773941
 
-(C18) |-7|;
+(%i18) |-7|;
 
-(D18) 				       7
-(C19) |[a,b]|;
+(%o18) 				       7
+(%i19) |[a,b]|;
 
-(D19) 				   |[a, b]|
+(%o19) 				   |[a, b]|
 
 @end example
 

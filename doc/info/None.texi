@@ -11,7 +11,7 @@
  - See POLYLOGARITHMS.
 
 @section B
- (D1)                             (N + 1)!
+ (%o1)                             (N + 1)!
 
 @section FILE
  - A file specification is a string such as "foo".  You may
@@ -100,7 +100,7 @@ compiling macsyma code in a marked region, or else between the $ or ;
 delimiters if no region is marked.
 
 It is possible to evaluate expressions into the buffer by typing
-control-shift-I (for example a line label D3 has a value you want to
+control-shift-I (for example a line label %o3 has a value you want to
 alter).  The macsyma evaluator will be called on the current region and
 the result will be ground into the buffer.  It can then be altered and
 reevaluated by using control-shift-E to evaluate it.
@@ -192,7 +192,7 @@ described here, not as a function.)
  default: [FALSE] if TRUE, from this point in the computation
 on labelled expressions will be written out periodically onto the
 disk.  (A labelled expression is one which is referred to by a line
-label, e.g. D4, C7, E12.)  Once an expression is written onto the disk
+label, e.g. %o4, %i7, %t12.)  Once an expression is written onto the disk
 it will no longer reside in main memory and most of the main memory
 storage taken up by it will be released. When the user attempts to
 reference an expression which has been stored onto the disk, MACSYMA
@@ -345,7 +345,7 @@ problems or bugs.
 MAIL(username,"message") will send mail to a specific user.
 Expressions may be included by referring to them, outside double
 quotes, when (and only when) a username is given, e.g.
-MAIL(ELLEN,"I am trying to integrate",D3,"but it asks for more list
+MAIL(ELLEN,"I am trying to integrate",%o3,"but it asks for more list
 space.  What should I do?");
 Not supported yet in NIL Macsyma.
 

@@ -216,20 +216,20 @@ then the limit as @math{v} approaches @math{n} is taken.
  the Bessel function is expanded.
 
 @example
-(C1) bessel_j[3/2](z);
+(%i1) bessel_j[3/2](z);
 
                                          3
-(D1)                            BESSEL_J(-, z)
+(%o1)                            BESSEL_J(-, z)
                                          2
 
-(C2) besselexpand:true;
+(%i2) besselexpand:true;
 
-(D2)                                 TRUE
-(C3) bessel_j(3/2, z);
+(%o2)                                 TRUE
+(%i3) bessel_j(3/2, z);
 
 
                                2 z   SIN(z)   COS(z)
-(D3)                      SQRT(---) (------ - ------)
+(%o3)                      SQRT(---) (------ - ------)
                                %PI      2       z
                                        z
 @end example
@@ -333,13 +333,13 @@ gives the numerical factor multiplying the expression
 exp which should be a single term.  If the gcd of all the terms in a
 sum is desired the CONTENT function may be used.
 @example
-(C1) GAMMA(7/2);
-(D1)               15 SQRT(%PI)
+(%i1) GAMMA(7/2);
+(%o1)               15 SQRT(%PI)
                    ------------
                         8
-(C2) NUMFACTOR(%);
+(%i2) NUMFACTOR(%);
                     15
-(D2)                --
+(%o2)                --
                      8
 
 

@@ -261,15 +261,15 @@ form of exp is used.  HORNER sometimes improves stability if expr is
 to be numerically evaluated.  It is also useful if MACSYMA is used to
 generate programs to be run in FORTRAN (see DESCRIBE(STRINGOUT);)
 @example
-(C1) 1.0E-20*X^2-5.5*X+5.2E20;
+(%i1) 1.0E-20*X^2-5.5*X+5.2E20;
                                 2
-(D1)                   1.0E-20 X  - 5.5 X + 5.2E+20
-(C2) HORNER(%,X),KEEPFLOAT:TRUE;
-(D2)                  X (1.0E-20 X - 5.5) + 5.2E+20
-(C3) D1,X=1.0E20;
+(%o1)                   1.0E-20 X  - 5.5 X + 5.2E+20
+(%i2) HORNER(%,X),KEEPFLOAT:TRUE;
+(%o2)                  X (1.0E-20 X - 5.5) + 5.2E+20
+(%i3) %o1,X=1.0E20;
 ARITHMETIC OVERFLOW
-(C4) D2,X=1.0E20;
-(D4)                          6.9999999E+19
+(%i4) %o2,X=1.0E20;
+(%o4)                          6.9999999E+19
 
 
 @end example

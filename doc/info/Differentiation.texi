@@ -40,7 +40,7 @@ May be set by GRADEF.
 enables the user to assign the boundary
 value value to form at the points specified by list.
 @example
-(C1) ATVALUE(F(X,Y),[X=0,Y=1],A**2)$
+(%i1) ATVALUE(F(X,Y),[X=0,Y=1],A**2)$
     The form must be a function, f(v1,v2,...), or a derivative,
 
 @end example
@@ -77,16 +77,16 @@ This is the differential of the variable @math{v}.  This commonly occurs
 when DIFF is called without the dependent variable being given.  Then
 the differential of the expression is computed.  For example:
 @example
-(C1) diff(x);
+(%i1) diff(x);
 
-(D1) 				    DEL(x)
-(C2) diff(x^2);
+(%o1) 				    DEL(x)
+(%i2) diff(x^2);
 
-(D2) 				  2 x DEL(x)
-(C3) diff(sin(x^2));
+(%o2) 				  2 x DEL(x)
+(%i3) diff(sin(x^2));
 
 				       2
-(D3) 			      2 x COS(x ) DEL(x)
+(%o3) 			      2 x COS(x ) DEL(x)
 @end example
 
 @end defun
@@ -96,11 +96,11 @@ the differential of the expression is computed.  For example:
 This is the Dirac Delta function.  Currently only LAPLACE
 knows about the DELTA function:
 @example
-(C1) LAPLACE(DELTA(T-A)*SIN(B*T),T,S);
+(%i1) LAPLACE(DELTA(T-A)*SIN(B*T),T,S);
 Is A positive, negative or zero?
 POS;
                                           - A S
-(D1)                           SIN(A B) %E
+(%o1)                           SIN(A B) %E
 
 
 @end example
@@ -134,43 +134,43 @@ Initially, DIFF(F,X) is 0; executing DEPENDS(F,X) causes future
 differentiations of F with respect to X to give dF/dX or Y (if
 DERIVABBREV:TRUE).
 @example
-(C1) DEPENDS([F,G],[X,Y],[R,S],[U,V,W],U,T);
-(D1)           [F(X, Y), G(X, Y), R(U, V, W), S(U, V, W), U(T)]
-(C2) DEPENDENCIES;
-(D2)           [F(X, Y), G(X, Y), R(U, V, W), S(U, V, W), U(T)]
-(C3) DIFF(R.S,U);
+(%i1) DEPENDS([F,G],[X,Y],[R,S],[U,V,W],U,T);
+(%o1)           [F(X, Y), G(X, Y), R(U, V, W), S(U, V, W), U(T)]
+(%i2) DEPENDENCIES;
+(%o2)           [F(X, Y), G(X, Y), R(U, V, W), S(U, V, W), U(T)]
+(%i3) DIFF(R.S,U);
                                dR           dS
-(D3)                           -- . S + R . --
+(%o3)                           -- . S + R . --
                                dU           dU
 @end example
 Since MACSYMA knows the chain rule for symbolic derivatives, it takes
 advantage of the given dependencies as follows:
 @example
-(C4) DIFF(R.S,T);
+(%i4) DIFF(R.S,T);
                            dR dU             dS dU
-(D4)                      (-- --) . S + R . (-- --)
+(%o4)                      (-- --) . S + R . (-- --)
                            dU dT             dU dT
 If we set
-(C5) DERIVABBREV:TRUE;
-(D5)                                 TRUE
-then re-executing the command C4, we obtain
-(C6) '@w{}'C4;
-(D6)                      (R  U ) . S + R . (S  U )
+(%i5) DERIVABBREV:TRUE;
+(%o5)                                 TRUE
+then re-executing the command %i4, we obtain
+(%i6) '@w{}'%i4;
+(%o6)                      (R  U ) . S + R . (S  U )
                             U  T              U  T
 @end example
 To eliminate a previously declared dependency, the REMOVE command can
 be used.  For example, to say that R no longer depends on U as
-declared in C1, the user can type
+declared in %i1, the user can type
 @example
 REMOVE(R,DEPENDENCY)
 @end example
 This will
 eliminate all dependencies that may have been declared for R.
 @example
-(C7) REMOVE(R,DEPENDENCY);
-(D7)                                 DONE
-(C8) '@w{}'C4;
-(D8)                             R . (S  U )
+(%i7) REMOVE(R,DEPENDENCY);
+(%o7)                                 DONE
+(%i8) '@w{}'%i4;
+(%o8)                             R . (S  U )
                                   U    T
 
 @end example
@@ -193,9 +193,9 @@ finds the highest degree of the derivative
 of the dependent variable dv with respect to the independent variable
 iv occuring in exp.
 @example
-(C1) 'DIFF(Y,X,2)+'DIFF(Y,Z,3)*2+'DIFF(Y,X)*X**2$
-(C2) DERIVDEGREE(%,Y,X);
-(D2)                           2
+(%i1) 'DIFF(Y,X,2)+'DIFF(Y,Z,3)*2+'DIFF(Y,X)*X**2$
+(%i2) DERIVDEGREE(%,Y,X);
+(%o2)                           2
 
 
 @end example
@@ -235,26 +235,26 @@ derivatives of exp with respect to each of its variables times the
 function DEL of the variable.  No further simplification of DEL is
 offered.
 @example
-(C1) DIFF(EXP(F(X)),X,2);
+(%i1) DIFF(EXP(F(X)),X,2);
                              2
                       F(X)  d             F(X)  d         2
-(D1)                %E     (--- F(X)) + %E     (-- (F(X)))
+(%o1)                %E     (--- F(X)) + %E     (-- (F(X)))
                               2                 dX
                             dX
-(C2) DERIVABBREV:TRUE$
-(C3) 'INTEGRATE(F(X,Y),Y,G(X),H(X));
+(%i2) DERIVABBREV:TRUE$
+(%i3) 'INTEGRATE(F(X,Y),Y,G(X),H(X));
                                 H(X)
                                /
                                [
-(D3)                           I     F(X, Y) dY
+(%o3)                           I     F(X, Y) dY
                                ]
                                /
                                 G(X)
-(C4) DIFF(%,X);
+(%i4) DIFF(%,X);
             H(X)
            /
            [
-(D4)       I     F(X, Y)  dY + F(X, H(X)) H(X)  - F(X, G(X)) G(X)
+(%o4)       I     F(X, Y)  dY + F(X, H(X)) H(X)  - F(X, G(X)) G(X)
            ]            X                     X                  X
            /
             G(X)
@@ -291,10 +291,10 @@ performed.
 applies the scalar d'Alembertian to the scalar
 function.
 @example
-(C41) DEPENDENCIES(FIELD(R));
-(D41)                           [FIELD(R)]
-(C42) DSCALAR(FIELD);
-(D43)
+(%i41) DEPENDENCIES(FIELD(R));
+(%o41)                           [FIELD(R)]
+(%i42) DSCALAR(FIELD);
+(%o43)
     -M
   %E  ((FIELD  N - FIELD  M + 2 FIELD   ) R + 4 FIELD )
              R  R       R  R         R R             R
@@ -386,10 +386,10 @@ depends on X and Y it must be written as F(X,Y) wherever F occurs as
 in LAPLACE('DIFF(F(X,Y),X),X,S).  LAPLACE is not affected by DEPENDENCIES
 set up with the DEPENDS command.
 @example
-(C1) LAPLACE(%E**(2*T+A)*SIN(T)*T,T,S);
+(%i1) LAPLACE(%E**(2*T+A)*SIN(T)*T,T,S);
                      A
                  2 %E  (S - 2)
-(D1)            ---------------
+(%o1)            ---------------
                         2     2
                 ((S - 2)  + 1)
 

@@ -140,8 +140,8 @@ indicates this is normal common lisp function.
 
 
 @example
-(C3) ?round(-2.8);
-(D3) 				      - 3
+(%i3) ?round(-2.8);
+(%o3) 				      - 3
 @end example
 @end defun
 
@@ -151,12 +151,12 @@ must be a regular system float, not a bigfloat.  The ? beginning the name
 indicates this is normal common lisp function.
 @end defun 
 @example
-(C4) ?truncate(-2.8);
-(D4) 				      - 2
-(C5) ?truncate(2.4);
-(D5) 				       2
-(C6) ?truncate(2.8);
-(D6) 				       2
+(%i4) ?truncate(-2.8);
+(%o4) 				      - 2
+(%i5) ?truncate(2.4);
+(%o5) 				       2
+(%i6) ?truncate(2.8);
+(%o6) 				       2
 @end example
 
 

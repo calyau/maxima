@@ -705,13 +705,13 @@ des racines sont donne'es dans la liste LPUI.
 
 
 @example
-(C6) polynome2ele(x^3-4*x^2+5*x-1,x);
-(D6)                             [3, 4, 5, 1]
-(C7) ele2pui(3,%);
-(D7)                             [3, 4, 6, 7]
-(C8) pui2polynome(x,%);
+(%i6) polynome2ele(x^3-4*x^2+5*x-1,x);
+(%o6)                             [3, 4, 5, 1]
+(%i7) ele2pui(3,%);
+(%o7)                             [3, 4, 6, 7]
+(%i8) pui2polynome(x,%);
                                3      2
-(D8)                          X  - 4 X  + 5 X - 1
+(%o8)                          X  - 4 X  + 5 X - 1
 
 
 @end example

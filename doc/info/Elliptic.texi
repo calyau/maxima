@@ -41,16 +41,16 @@ integrals other than derivatives has not yet been written.
 
 Some examples of elliptic functions:
 @example
-(C1) jacobi_sn(u,m);
-(D1)                            JACOBI_SN(u, m)
-(C2) jacobi_sn(u,1);
-(D2)                                TANH(u)
-(C3) jacobi_sn(u,0);
-(D3)                                SIN(u)
-(C4) diff(jacobi_sn(u,m),u);
-(D4)                    JACOBI_CN(u, m) JACOBI_DN(u, m)
-(C5) diff(jacobi_sn(u,m),m);
-(D5) JACOBI_CN(u, m) JACOBI_DN(u, m)
+(%i1) jacobi_sn(u,m);
+(%o1)                            JACOBI_SN(u, m)
+(%i2) jacobi_sn(u,1);
+(%o2)                                TANH(u)
+(%i3) jacobi_sn(u,0);
+(%o3)                                SIN(u)
+(%i4) diff(jacobi_sn(u,m),u);
+(%o4)                    JACOBI_CN(u, m) JACOBI_DN(u, m)
+(%i5) diff(jacobi_sn(u,m),m);
+(%o5) JACOBI_CN(u, m) JACOBI_DN(u, m)
 
       ELLIPTIC_E(ASIN(JACOBI_SN(u, m)), m)
  (u - ------------------------------------)/(2 m)
@@ -64,36 +64,36 @@ Some examples of elliptic functions:
 
 Some examples of elliptic integrals:
 @example
-(C1) elliptic_f(phi,m);
-(D1)                          ELLIPTIC_F(PHI, m)
-(C2) elliptic_f(phi,0);
-(D2)                                  PHI
-(C3) elliptic_f(phi,1);
+(%i1) elliptic_f(phi,m);
+(%o1)                          ELLIPTIC_F(PHI, m)
+(%i2) elliptic_f(phi,0);
+(%o2)                                  PHI
+(%i3) elliptic_f(phi,1);
                                       PHI   %PI
-(D3)                          LOG(TAN(--- + ---))
+(%o3)                          LOG(TAN(--- + ---))
                                        2     4
-(C4) elliptic_e(phi,1);
-(D4)                               SIN(PHI)
-(C5) elliptic_e(phi,0);
-(D5)                                  PHI
-(C6) elliptic_kc(1/2);
+(%i4) elliptic_e(phi,1);
+(%o4)                               SIN(PHI)
+(%i5) elliptic_e(phi,0);
+(%o5)                                  PHI
+(%i6) elliptic_kc(1/2);
                                             1
-(D6)                            ELLIPTIC_KC(-)
+(%o6)                            ELLIPTIC_KC(-)
                                             2
-(C7) makegamma(%);
+(%i7) makegamma(%);
                                         2 1
                                    GAMMA (-)
                                           4
-(D7)                              -----------
+(%o7)                              -----------
                                   4 SQRT(%PI)
-(C8) diff(elliptic_f(phi,m),phi);
+(%i8) diff(elliptic_f(phi,m),phi);
                                        1
-(D8)                         ---------------------
+(%o8)                         ---------------------
                                            2
                              SQRT(1 - m SIN (PHI))
-(C9) diff(elliptic_f(phi,m),m);
+(%i9) diff(elliptic_f(phi,m),m);
       ELLIPTIC_E(PHI, m) - (1 - m) ELLIPTIC_F(PHI, m)
-(D9) (-----------------------------------------------
+(%o9) (-----------------------------------------------
                              m
 
                             COS(PHI) SIN(PHI)

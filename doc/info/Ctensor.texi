@@ -29,7 +29,7 @@ deriving Einstein's vacuum equations (which lead to the Schwarzschild
 solution) as an example. Many of the functions in CTENSR will be
 displayed for the standard metric as examples.
 @example
-(C2) TSETUP();
+(%i2) TSETUP();
 
 Enter the dimension of the coordinate system: 
 4;

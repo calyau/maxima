@@ -14,7 +14,7 @@ on all commands containing a particular string.  Here by command we
 mean a built in operator such as INTEGRATE or FACTOR etc.   As a typing
 short cut you may type @code{? fact} in lieu of @code{describe("fact")}
 @example
-(C3) ? inte;
+(%i3) ? inte;
 
 
  0: (maxima.info)Integration.
@@ -53,7 +53,7 @@ may @i{not} put a space after the @code{?} since that would indicate
 you were looking for help!   
 
 @example
-(C1) ?TRANSLATE(FOO); 
+(%i1) ?TRANSLATE(FOO); 
 @end example
 
 Of course, this may well not do what you wanted it to do since it is a
@@ -61,13 +61,13 @@ completely different function.
 
 To enter a lisp command you may use
 @example
-(C1) :lisp (foo 1 2)
+(%i1) :lisp (foo 1 2)
 @end example
 or to get a lisp prompt use @code{to_lisp();}, or alternately type
 @code{Ctrl-c} to enter into a debug break.
 This will cause a lisp break loop to be entered.  You
-could now evaluate $d2
-and view the value of the line label D2, in its internal lisp
+could now evaluate $%o2
+and view the value of the line label %o2, in its internal lisp
 format.   Typing @code{:q} will quit to top level, if you are in
 a debug break.  If you had exited maxima with @code{to_lisp();}
 then you should type
@@ -86,10 +86,10 @@ or at the time it was first read there
 was not an already existing symbol with the same letters but upper
 case only.   Thus if you type
 @example
-(C1) Integrate;
-(D1) INTEGRATE
-(C2) Integ;
-(D2) Integ
+(%i1) Integrate;
+(%o1) INTEGRATE
+(%i2) Integ;
+(%o2) Integ
 @end example
 The symbol @code{Integrate} already existed in upper case since it
 is a Maxima primitive, but INTEG, does not already exist, so the Integ
@@ -107,7 +107,7 @@ To enter Maxima forms at lisp level, you may use the @code{#$} macro.
 This will have the same effect as entering
 @example
 
-(C1)FOO:[X,Y];
+(%i1)FOO:[X,Y];
 @end example
 @noindent
 
@@ -130,7 +130,7 @@ lisp functions, you must use mfuncall to call them.
 For example:
 
 @example
-(D2)                        FOO(X, Y) := X + Y + 3
+(%o2)                        FOO(X, Y) := X + Y + 3
 @end example
 @noindent
 
@@ -183,17 +183,17 @@ files can be produced.
 Additionally there are examples so that you may do
 @example
 example(integrate);
-(C4) example(integrate);
-(C5) test(f):=BLOCK([u],u:INTEGRATE(f,x),RATSIMP(f-DIFF(u,x)));
-(D5) test(f) := BLOCK([u], u :
+(%i4) example(integrate);
+(%i5) test(f):=BLOCK([u],u:INTEGRATE(f,x),RATSIMP(f-DIFF(u,x)));
+(%o5) test(f) := BLOCK([u], u :
          INTEGRATE(f, x), RATSIMP(f - DIFF(u, x)));
-(C6) test(SIN(x));
-(D6) 						       0
-(C7) test(1/(x+1));
-(D7) 						       0
-(C8) test(1/(x^2+1));
-(D8) 						       0
-(C9) INTEGRATE(SIN(X)^3,X);
+(%i6) test(SIN(x));
+(%o6) 						       0
+(%i7) test(1/(x+1));
+(%o7) 						       0
+(%i8) test(1/(x^2+1));
+(%o8) 						       0
+(%i9) INTEGRATE(SIN(X)^3,X);
  
 @end example
 
@@ -216,7 +216,7 @@ files have suffix @code{.dem}
 This command prints documentation on all commands which contain
 the substring "cmd".   Thus
 @example
-(C1) describe("integ");
+(%i1) describe("integ");
  0: (maxima.info)Integration.
  1: Introduction to Integration.
  2: Definitions for Integration.

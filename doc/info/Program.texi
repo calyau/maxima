@@ -81,46 +81,46 @@ variable may be used without affecting the value of a variable with
 the same name outside of the DO.  The control-variable is unbound
 after the DO terminates.
 @example
-(C1)   FOR A:-3 THRU 26 STEP 7 DO LDISPLAY(A)$
-(E1)          A = -3
-(E2)          A =  4
-(E3)          A = 11
-(E4)          A = 18
-(E5)          A = 25
+(%i1)   FOR A:-3 THRU 26 STEP 7 DO LDISPLAY(A)$
+(%t1)          A = -3
+(%t2)          A =  4
+(%t3)          A = 11
+(%t4)          A = 18
+(%t5)          A = 25
 @end example
 The function LDISPLAY generates intermediate labels; DISPLAY does not.
 @example
-(C6)   S:0$
-(C7)   FOR I:1 WHILE I<=10 DO S:S+I;
-(D7)          DONE
-(C8)   S;
-(D8)          55
+(%i6)   S:0$
+(%i7)   FOR I:1 WHILE I<=10 DO S:S+I;
+(%o7)          DONE
+(%i8)   S;
+(%o8)          55
 @end example
-Note that the condition in C7 is equivalent to UNLESS I > 10 and also
+Note that the condition in %i7 is equivalent to UNLESS I > 10 and also
 THRU 10
 @example
-(C9)   SERIES:1$
-(C10)  TERM:EXP(SIN(X))$
-(C11)  FOR P:1 UNLESS P>7 DO
+(%i9)   SERIES:1$
+(%i10)  TERM:EXP(SIN(X))$
+(%i11)  FOR P:1 UNLESS P>7 DO
           (TERM:DIFF(TERM,X)/P,
           SERIES:SERIES+SUBST(X=0,TERM)*X^P)$
-(C12)   SERIES;
+(%i12)   SERIES;
                 7    6     5    4    2
-(D12)          X    X     X    X    X
+(%o12)          X    X     X    X    X
                -- - --- - -- - -- + -- + X + 1
                96   240   15   8    2
 which gives 8 terms of the Taylor series for e^sin(x).
-(C13) POLY:0$
-(C14) FOR I:1 THRU 5 DO
+(%i13) POLY:0$
+(%i14) FOR I:1 THRU 5 DO
         FOR J:I STEP -1 THRU 1 DO
            POLY:POLY+I*X^J$
-(C15) POLY;
+(%i15) POLY;
               5      4       3       2
-(D15)      5 X  + 9 X  + 12 X  + 14 X  + 15 X
-(C16) GUESS:-3.0$
-(C17) FOR I:1 THRU 10 DO (GUESS:SUBST(GUESS,X,.5*(X+10/X)),
+(%o15)      5 X  + 9 X  + 12 X  + 14 X  + 15 X
+(%i16) GUESS:-3.0$
+(%i17) FOR I:1 THRU 10 DO (GUESS:SUBST(GUESS,X,.5*(X+10/X)),
          IF ABS(GUESS^2-10)<.00005 THEN RETURN(GUESS));
-(D17)                  - 3.1622807
+(%o17)                  - 3.1622807
 @end example
 
     This example computes the negative square root of 10 using the
@@ -134,7 +134,7 @@ increment".  This will cause the control-variable to be set to the
 result of evaluating expression each time through the loop.
 @example
 
-(C1)  FOR COUNT:2 NEXT 3*COUNT THRU 20
+(%i1)  FOR COUNT:2 NEXT 3*COUNT THRU 20
          DO DISPLAY(COUNT)$
                     COUNT = 2
                     COUNT = 6
@@ -152,17 +152,17 @@ to give only the termination conditions omitting the initialization
 and updating information as in the following example to compute the
 square-root of 5 using a poor initial guess.
 @example
-(C1) X:1000;
-(C2)  THRU 10 WHILE X#0.0 DO X:.5*(X+5.0/X)$
-(C3) X;
-(D3)               2.236068
+(%i1) X:1000;
+(%i2)  THRU 10 WHILE X#0.0 DO X:.5*(X+5.0/X)$
+(%i3) X;
+(%o3)               2.236068
 @end example
     If it is desired one may even omit the termination conditions
 entirely and just give "DO body" which will continue to evaluate the
 body indefinitely.  In this case the function RETURN should be used to
 terminate execution of the DO.
 @example
-(C1) NEWTON(F,GUESS):=
+(%i1) NEWTON(F,GUESS):=
   BLOCK([NUMER,Y],
         LOCAL(DF),
         NUMER:TRUE,
@@ -171,9 +171,9 @@ terminate execution of the DO.
             IF Y=0.0 THEN ERROR("Derivative at:",GUESS," is zero."),
             GUESS:GUESS-F(GUESS)/Y,
             IF ABS(F(GUESS))<5.0E-6 THEN RETURN(GUESS)))$
-(C2) SQR(X):=X^2-5.0$
-(C3) NEWTON(SQR,1000);
-(D3)                    2.236068
+(%i2) SQR(X):=X^2-5.0$
+(%i3) NEWTON(SQR,1000);
+(%o3)                    2.236068
 @end example
     (Note that RETURN, when executed, causes the current value of
 GUESS to be returned as the value of the DO.  The BLOCK is exited and
@@ -192,14 +192,14 @@ a RETURN is executed in the body.  (In fact, list may be any
 non-atomic expression, and successive parts are taken.)
 @example
 
-(C1)  FOR F IN [LOG, RHO, ATAN] DO LDISP(F(1))$
-(E1)                                  0
-(E2)                                RHO(1)
+(%i1)  FOR F IN [LOG, RHO, ATAN] DO LDISP(F(1))$
+(%t1)                                  0
+(%t2)                                RHO(1)
                                      %PI
-(E3)                                 ---
+(%t3)                                 ---
                                       4
-(C4) EV(E3,NUMER);
-(D4)                             0.78539816
+(%i4) EV(%t3,NUMER);
+(%o4)                             0.78539816
 
 @end example
 @end deffn
@@ -348,19 +348,19 @@ onto each term of a very large expression where it ordinarily wouldn't
 be possible to use the function on the entire expression due to an
 exhaustion of list storage space in the course of the computation.
 @example
-(C1) MAP(F,X+A*Y+B*Z);
-(D1)                        F(B Z) + F(A Y) + F(X)
-(C2) MAP(LAMBDA([U],PARTFRAC(U,X)),X+1/(X^3+4*X^2+5*X+2));
+(%i1) MAP(F,X+A*Y+B*Z);
+(%o1)                        F(B Z) + F(A Y) + F(X)
+(%i2) MAP(LAMBDA([U],PARTFRAC(U,X)),X+1/(X^3+4*X^2+5*X+2));
                            1       1        1
-(D2)                     ----- - ----- + -------- + X
+(%o2)                     ----- - ----- + -------- + X
                          X + 2   X + 1          2
                                          (X + 1)
-(C3) MAP(RATSIMP, X/(X^2+X)+(Y^2+Y)/Y);
+(%i3) MAP(RATSIMP, X/(X^2+X)+(Y^2+Y)/Y);
                                       1
-(D3)                            Y + ----- + 1
+(%o3)                            Y + ----- + 1
                                     X + 1
-(C4) MAP("=",[A,B],[-0.5,3]);
-(D4)                          [A = - 0.5, B = 3]
+(%i4) MAP("=",[A,B],[-0.5,3]);
+(%o4)                          [A = - 0.5, B = 3]
 
 
 @end example
@@ -422,29 +422,29 @@ recursively applies function to exp, in a "top
 down" manner.  This is most useful when "complete" factorization is
 desired, for example:
 @example
-(C1) EXP:(A^2+2*A+1)*Y + X^2$
-(C2) SCANMAP(FACTOR,EXP);
+(%i1) EXP:(A^2+2*A+1)*Y + X^2$
+(%i2) SCANMAP(FACTOR,EXP);
                                     2      2
-(D2)                         (A + 1)  Y + X
+(%o2)                         (A + 1)  Y + X
 @end example
 
 Note the way in which SCANMAP applies the given function FACTOR to the
 constituent subexpressions of exp; if another form of exp is presented
-to SCANMAP then the result may be different.  Thus, D2 is not
+to SCANMAP then the result may be different.  Thus, %o2 is not
 recovered when SCANMAP is applied to the expanded form of exp:
 @example
-(C3) SCANMAP(FACTOR,EXPAND(EXP));
+(%i3) SCANMAP(FACTOR,EXPAND(EXP));
                            2                  2
-(D3)                      A  Y + 2 A Y + Y + X
+(%o3)                      A  Y + 2 A Y + Y + X
 @end example
 
 Here is another example of the way in which SCANMAP recursively
 applies a given function to all subexpressions, including exponents:
 @example
-(C4) EXPR : U*V^(A*X+B) + C$
-(C5) SCANMAP('F, EXPR);
+(%i4) EXPR : U*V^(A*X+B) + C$
+(%i5) SCANMAP('F, EXPR);
                     F(F(F(A) F(X)) + F(B))
-(D5) F(F(F(U) F(F(V)                      )) + F(C))
+(%o5) F(F(F(U) F(F(V)                      )) + F(C))
 @end example
 SCANMAP(function,expression,BOTTOMUP) applies function to exp in a
 "bottom-up" manner.  E.g., for undefined F,

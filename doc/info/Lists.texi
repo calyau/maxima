@@ -86,8 +86,8 @@ removes all occurrences of exp1 from exp2.  Exp1
 may be a term of exp2 (if it is a sum) or a factor of exp2 (if it is a
 product).
 @example
-(C1)  DELETE(SIN(X),X+SIN(X)+Y);
-(D1)               Y + X
+(%i1)  DELETE(SIN(X),X+SIN(X)+Y);
+(%o1)               Y + X
 
 @end example
 DELETE(exp1, exp2, integer) removes the first integer occurrences of
@@ -138,11 +138,11 @@ Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
 retrieves the user property indicated by i associated with
 atom a or returns FALSE if a doesn't have property i.
 @example
-(C1) PUT(%E,'TRANSCENDENTAL,'TYPE);
-(D1) 			        TRANSCENDENTAL
-(C2) PUT(%PI,'TRANSCENDENTAL,'TYPE)$
-(C3) PUT(%I,'ALGEBRAIC,'TYPE)$
-(C4) TYPEOF(EXP) := BLOCK([Q],
+(%i1) PUT(%E,'TRANSCENDENTAL,'TYPE);
+(%o1) 			        TRANSCENDENTAL
+(%i2) PUT(%PI,'TRANSCENDENTAL,'TYPE)$
+(%i3) PUT(%I,'ALGEBRAIC,'TYPE)$
+(%i4) TYPEOF(EXP) := BLOCK([Q],
                         IF NUMBERP(EXP)
                         THEN RETURN('ALGEBRAIC),
                         IF NOT ATOM(EXP)
@@ -150,11 +150,11 @@ atom a or returns FALSE if a doesn't have property i.
                         Q : GET(EXP, 'TYPE),
                         IF Q=FALSE
 			THEN ERRCATCH(ERROR(EXP,"is not numeric.")) ELSE Q)$
-(C5) TYPEOF(2*%E+X*%PI);
+(%i5) TYPEOF(2*%E+X*%PI);
 X is not numeric.
-(D5) 	     [[TRANSCENDENTAL, []], [ALGEBRAIC, TRANSCENDENTAL]]
-(C6) TYPEOF(2*%E+%PI);
-(D6) 	        [TRANSCENDENTAL, [ALGEBRAIC, TRANSCENDENTAL]]
+(%o5) 	     [[TRANSCENDENTAL, []], [ALGEBRAIC, TRANSCENDENTAL]]
+(%i6) TYPEOF(2*%E+%PI);
+(%o6) 	        [TRANSCENDENTAL, [ALGEBRAIC, TRANSCENDENTAL]]
 
 
 @end example

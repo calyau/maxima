@@ -38,12 +38,12 @@ by having a final argument which is assigned to a list of the extra
 arguments:
 
 @example
-(C8) f([u]):=u;
-(C9) f(1,2,3,4);
-(D9) 				 [1, 2, 3, 4]
-(C11) f(a,b,[u]):=[a,b,u];
-(C12) f(1,2,3,4,5,6);
-(D12) 			     [1, 2, [3, 4, 5, 6]]
+(%i8) f([u]):=u;
+(%i9) f(1,2,3,4);
+(%o9) 				 [1, 2, 3, 4]
+(%i11) f(a,b,[u]):=[a,b,u];
+(%i12) f(1,2,3,4,5,6);
+(%o12) 			     [1, 2, [3, 4, 5, 6]]
 @end example
 
 The right hand side of a function is an expression.  Thus
@@ -183,8 +183,8 @@ PRINT('A,"=",A,",",'B,"=",B,", and",'C,"=",C)
 so that if it occurs as a line in a program we can print values.
 
 @example
-(C101) foo(x,y,z):=mshow(x,y,z);
-(C102) foo(1,2,3);
+(%i101) foo(x,y,z):=mshow(x,y,z);
+(%i102) foo(1,2,3);
 X = 1 , Y = 2 , and Z = 3
 @end example
 
@@ -212,8 +212,8 @@ MSHOW([lis])::=BLOCK([ans:[],N:LENGTH(lis)],
 The splice also works to put arguments into algebraic operations:
 
 @example
-(C108) BUILDQ([A:'[B,C,D]],+SPLICE(A));
-(D108) D+C+B
+(%i108) BUILDQ([A:'[B,C,D]],+SPLICE(A));
+(%o108) D+C+B
 @end example
 Note how the simplification only occurs AFTER the substitution,
 The operation applying to the splice in the first cae is the @code{+}
@@ -226,14 +226,14 @@ internally similar to @code{+(A,B,C)}, and similarly for multiplication.
 Thus @code{*(2,B,C,D)} is @code{2*B*C*D}
 
 @example
-(C114) BUILDQ([A:'[B,C,D]],+SPLICE(A));
-(D114) D+C+B
+(%i114) BUILDQ([A:'[B,C,D]],+SPLICE(A));
+(%o114) D+C+B
  
-(C111) BUILDQ([A:'[B,C,D]],SPLICE(A)+SPLICE(A));
-(D111) 2*D+2*C+2*B
+(%i111) BUILDQ([A:'[B,C,D]],SPLICE(A)+SPLICE(A));
+(%o111) 2*D+2*C+2*B
   but
-(C112) BUILDQ([A:'[B,C,D]],2*SPLICE(A));
-(D112) 2*B*C*D
+(%i112) BUILDQ([A:'[B,C,D]],2*SPLICE(A));
+(%o112) 2*B*C*D
 @end example
 
 Finally the buildq can be invaluable for building recursive functions.
@@ -259,14 +259,14 @@ define(f[n],buildq([u:val],expand(u))),
 does the job.   This might be useful, since when you do
 @example
 With the Expand
-(C28) f[6];
-(D28) -AA1/8-13*AA0/180
+(%i28) f[6];
+(%o28) -AA1/8-13*AA0/180
 @end example
 where as without it is kept unsimplified, and even after 6 terms
 it becomes:
 @example
-(C25) f[6];
-(D25) (5*(-4*(-3*(-2*(AA1+AA0)+AA1+AA0)/2
+(%i25) f[6];
+(%o25) (5*(-4*(-3*(-2*(AA1+AA0)+AA1+AA0)/2
 	    -(AA1+AA0)/2+AA1)
 	/3
 	-(-2*(AA1+AA0)+AA1+AA0)/6+(-AA1-AA0)/2)
@@ -395,12 +395,12 @@ corresponding to a THROW, else an error is generated.  If the
 evaluation of the expi does not lead to the evaluation of any THROW
 then the value of the CATCH is the value of expn.
 @example
-(C1) G(L):=CATCH(MAP(LAMBDA([X],
+(%i1) G(L):=CATCH(MAP(LAMBDA([X],
        IF X<0 THEN THROW(X) ELSE F(X)),L));
-(C2) G([1,2,3,7]);
-(D2)                     [F(1), F(2), F(3), F(7)]
-(C3) G([1,2,-3,7]);
-(D3)                                - 3
+(%i2) G([1,2,3,7]);
+(%o2)                     [F(1), F(2), F(3), F(7)]
+(%i3) G([1,2,-3,7]);
+(%o3)                                - 3
 @end example
 
 The function G returns a list of F of each element of L if L
@@ -703,7 +703,7 @@ pre-loaded into it.  It is available by typing :TM (for
 TranslateMacsyma) at DDT level.  When given a file name, E.g. :TM
 GJC;TMTEST > , it gives that file to the function TRANSLATE_FILE, and
 proceeds without further user interaction.  If no file name is given,
-:TM gives a regular macsyma "(C1)" line.  P.s. A user init file with
+:TM gives a regular macsyma "(%i1)" line.  P.s. A user init file with
 second name "TM" will be loaded if it exists.  You may just want to
 link this to your macsyma init file.
 Functions to be translated should include a call to MODE_DECLARE at the

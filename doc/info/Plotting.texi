@@ -54,8 +54,8 @@ be performed, for the default y range.   It may be specified
 as an option or using SET_PLOT_OPTION.
 
 @example
-(C1) plot2d(sin(x),[x,-5,5]);
-(C2) plot2d(sec(x),[x,-2,2],[y,-20,20],[nticks,200]);
+(%i1) plot2d(sin(x),[x,-5,5]);
+(%i2) plot2d(sec(x),[x,-2,2],[y,-20,20],[nticks,200]);
 @end example
 
 Anywhere there may be an EXPR you may also use a parametric
@@ -72,10 +72,10 @@ and finally we plot this together with an ordinary function of X.
 
 
 @example
-(C1) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2]]);
-(C2) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2],
+(%i1) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2]]);
+(%i2) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2],
         [nticks,8]]);
-(C3) plot2d([x^3+2,[parametric,cos(t),sin(t),[t,-5,5]]],
+(%i3) plot2d([x^3+2,[parametric,cos(t),sin(t),[t,-5,5]]],
         [x,-3,3]);
 @end example
 
