@@ -453,7 +453,7 @@ that the variable he assigned a value to was truly an option variable.
 @defunx playback (input)
 @defunx playback (slow)
 @defunx playback (time)
-@defunx playback (string, grind)
+@defunx playback (grind)
 Displays input, output, and intermediate expressions,
 without recomputing them.
 @code{playback} only displays the expressions bound to labels;
@@ -491,9 +491,10 @@ when creating a secondary-storage file in order to pick out useful expressions.
 @c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
 @c The arguments @code{gctime} and @code{totaltime} have the same effect as @code{time}.
 
-@code{playback (string)} displays expressions in @code{string} mode.
-@code{playback (grind)} displays expressions in @code{grind} mode.
-See @code{string} and @code{grind}.
+@code{playback (grind)} displays input expressions
+in the same format as the @code{grind} function.
+Output expressions are not affected by the @code{grind} option.
+See @code{grind}.
 
 Arguments may be combined, e.g., 
 @code{playback ([5, 10], grind, time, slow)}.
