@@ -438,6 +438,12 @@ ON	(SETQ X (CONS (PGCD (CAR X) (CAR Y)) (PLCM (CDR X) (CDR Y))))
 	      (SETQ VARLIST (CDR (LISTIFY NARGS)))
 	      (NEWVAR X)
 	      (DESETQ (H X . Y) (RATREP* X))
+	      (unless (atom x)
+		;; (CAR X) => gensym corresponding to apparent main var.
+		;; MAIN-GENVAR => gensym corresponding to the genuine main var.
+		(let ((main-genvar (nth (1- (length varlist)) genvar)))
+		  (unless (eq (car x) main-genvar)
+		    (setq x `(,main-genvar 0 ,x)))))
 	      (SETQ X (RCONTENT X)
 		    Y (CONS 1 Y))
 	      (SETQ H (LIST '(MLIST)
