@@ -179,6 +179,12 @@ compiler:
 (defprop :extended-number extended-number-p ml-typep)
 (defprop array arrayp ml-typep)
 (defprop atom  atom ml-typep)
+
+#+cmu (shadow '(lisp::compiled-function-p) (find-package "MAXIMA"))
+#+cmu (defun compiled-function-p (x)
+	(and (functionp x) (not (symbolp x))
+	     (not (eval:interpreted-function-p x))))
+
 (defprop compiled-function compiled-function-p ml-typep)
 (defprop extended-number extended-number-p ml-typep)
 (defprop fixnum fixnump ml-typep)
