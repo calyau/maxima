@@ -1113,7 +1113,7 @@
 	((mtimes simp) -1
 	 ((%derivative simp) ((%bessel_i simp) n x) n 1)))))
      ((mplus simp)
-      ((mtimes) -1 ((%bessel_k) n x))
+      ((mtimes) -1 ((%bessel_k) ((mplus) -1 n) x))
       ((mtimes) -1 n ((mexpt) x -1)
        ((%bessel_k) n x))))
   grad)
