@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  17 APR 2001 03:10
+This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  20 APR 2001 03:10
 **maxima.texi
 (maxima.texi[/usr/share/texmf/pdftex/config/pdftex.cfg]
 Babel <v3.6x> and hyphenation patterns for american, french, german, ngerman, n
@@ -193,8 +193,20 @@ ebra.[] |
 .@texttt 0
 .etc.
 
-[3] [4] [5]) Chapter 2 [6] (Help.texi [7] [8]) Chapter 3 [9] [10] (Command.texi
-[11] [12] [13] [14] [15] [16]
+[3] [4] [5]) Chapter 2 [6] (Help.texi [7] [8]
+Overfull \hbox (14.94176pt too wide) in paragraph at lines 188--188
+ []@texttt (D5)  test(f) := BLOCK([u], u : INTEGRATE(f, x), RATSIMP(f - DIFF(u,
+ x)))[] |
+
+@hbox(7.60416+1.52081)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@texttt (
+.@texttt D
+.@texttt 5
+.etc.
+
+[9]) Chapter 3 [10] (Command.texi [11] [12] [13] [14] [15] [16]
 Overfull \hbox (0.10513pt too wide) in paragraph at lines 460--464
  []@textrm - mean-ing SET STA-TUS. It can be used to SSTA-TUS(FEATURE,HACK[]PAC
 KAGE)|
@@ -320,7 +332,7 @@ nec-es-
 Chapter 13 [89] [90] (Logarithms.texi [91]) Chapter 14 [92] (Trigonometric.texi
 [93] [94] [95] [96]) Chapter 15 [97] [98] (Special.texi [99] [100] [101])
 Chapter 16 [102] (SpecfunII.texi
-Underfull \hbox (badness 10000) in paragraph at lines 39--40
+Underfull \hbox (badness 10000) in paragraph at lines 41--42
  @textrm A&S 22.4.40,
 
 @hbox(7.60416+2.12917)x108.405, glue set 18.34305
@@ -332,7 +344,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 39--40
 .etc.
 
 
-Overfull \hbox (17.48125pt too wide) in paragraph at lines 41--41
+Overfull \hbox (17.48125pt too wide) in paragraph at lines 43--43
  @textrm assoc[]legendre[]p(n,m,x)| 
 
 @hbox(9.34993+3.85005)x108.405
@@ -344,7 +356,7 @@ Overfull \hbox (17.48125pt too wide) in paragraph at lines 41--41
 .etc.
 
 
-Overfull \hbox (17.17706pt too wide) in paragraph at lines 42--42
+Overfull \hbox (17.17706pt too wide) in paragraph at lines 44--44
  @textrm assoc[]legendre[]q(n,m,x)| 
 
 @hbox(9.34993+3.85005)x108.405
@@ -356,7 +368,7 @@ Overfull \hbox (17.17706pt too wide) in paragraph at lines 42--42
 .etc.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 45--45
+Underfull \hbox (badness 10000) in paragraph at lines 47--47
  @textrm spherical[]hankel1(n,
 
 @hbox(8.2125+2.73749)x108.405
@@ -368,7 +380,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 45--45
 .etc.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 46--46
+Underfull \hbox (badness 10000) in paragraph at lines 48--48
  @textrm spherical[]hankel2(n,
 
 @hbox(8.2125+2.73749)x108.405
@@ -380,7 +392,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 46--46
 .etc.
 
 
-Overfull \hbox (8.1129pt too wide) in paragraph at lines 47--47
+Overfull \hbox (8.1129pt too wide) in paragraph at lines 49--49
  @textrm spherical[]bessel[]j(n,x)| 
 
 @hbox(9.34993+3.85005)x108.405
@@ -392,7 +404,7 @@ Overfull \hbox (8.1129pt too wide) in paragraph at lines 47--47
 .etc.
 
 
-Overfull \hbox (10.54625pt too wide) in paragraph at lines 48--48
+Overfull \hbox (10.54625pt too wide) in paragraph at lines 50--50
  @textrm spherical[]bessel[]y(n,x)| 
 
 @hbox(9.34993+3.85005)x108.405
@@ -404,7 +416,7 @@ Overfull \hbox (10.54625pt too wide) in paragraph at lines 48--48
 .etc.
 
 
-Overfull \hbox (38.45056pt too wide) in paragraph at lines 49--49
+Overfull \hbox (38.45056pt too wide) in paragraph at lines 51--51
  @textrm spherical[]harmonic(n,m,x,y)| 
 
 @hbox(9.34993+3.85005)x108.405
@@ -416,7 +428,7 @@ Overfull \hbox (38.45056pt too wide) in paragraph at lines 49--49
 .etc.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 50--50
+Underfull \hbox (badness 10000) in paragraph at lines 52--52
 @textrm ultraspherical
 
 @hbox(7.60416+2.12917)x108.405
@@ -428,7 +440,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 50--50
 .etc.
 
 
-Overfull \hbox (0.746pt too wide) in paragraph at lines 50--50
+Overfull \hbox (0.746pt too wide) in paragraph at lines 52--52
  @textrm ultraspherical(n,a,x)| 
 
 @hbox(9.34993+3.85005)x108.405
@@ -440,7 +452,7 @@ Overfull \hbox (0.746pt too wide) in paragraph at lines 50--50
 .etc.
 
 [103] [104] [105] [106]
-Underfull \hbox (badness 7133) in paragraph at lines 326--328
+Underfull \hbox (badness 7133) in paragraph at lines 328--330
  []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]HANKEL2, and SPHER-I-
 
 @hbox(7.60416+2.12917)x433.62, glue set 4.14972
@@ -452,7 +464,7 @@ Underfull \hbox (badness 7133) in paragraph at lines 326--328
 .etc.
 
 
-Underfull \hbox (badness 7133) in paragraph at lines 340--342
+Underfull \hbox (badness 7133) in paragraph at lines 342--344
  []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]HANKEL2, and SPHER-I-
 
 @hbox(7.60416+2.12917)x433.62, glue set 4.14972
@@ -464,7 +476,7 @@ Underfull \hbox (badness 7133) in paragraph at lines 340--342
 .etc.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 354--356
+Underfull \hbox (badness 10000) in paragraph at lines 356--358
  []@textrm See also SPHER-I-CAL[]HANKEL2, SPHER-I-CAL[]BESSEL[]J, and SPHER-I-
 
 @hbox(7.60416+2.12917)x433.62, glue set 4.5232
@@ -476,7 +488,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 354--356
 .etc.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 368--370
+Underfull \hbox (badness 10000) in paragraph at lines 370--372
  []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]BESSEL[]J, and SPHER-I-
 
 @hbox(7.60416+2.12917)x433.62, glue set 4.5232
@@ -820,20 +832,32 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 171--171
 .@penalty 10000
 .etc.
 
-[245] [246] [247] [248]) Chapter 39 [249] [250] (Debugging.texi [251])
-Chapter 40 [252] (Indices.texi Appendix @char 65 [253] [254] (maxima.fns
-[255] [256] [257] [258] [259] [260] [261] [262] [263] [264])) [265] [266]
-(maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6] [-7] [-8] ) 
+[245] [246] [247] [248]) Chapter 39 [249] [250] (Debugging.texi
+Overfull \hbox (26.43913pt too wide) in paragraph at lines 45--45
+ []@texttt Maxima 5.5 Wed Apr 18 19:02:00 CDT 2001 (with enhancements by W. Sch
+elter).[] |
+
+@hbox(7.60416+2.43333)x433.62
+.@glue(@leftskip) 28.90755
+.@hbox(0.0+0.0)x0.0
+.@texttt M
+.@texttt a
+.@texttt x
+.etc.
+
+[251] [252] [253]) Chapter 40 [254] (Indices.texi Appendix @char 65 [255]
+[256] (maxima.fns [257] [258] [259] [260] [261] [262] [263] [264] [265]
+[266])) [267] [268] (maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6]
+[-7] [-8] ) 
 Here is how much of TeX's memory you used:
- 2359 strings out of 63189
- 29026 string characters out of 966977
- 57002 words of memory out of 263001
- 2871 multiletter control sequences out of 10000+60000
+ 2367 strings out of 63189
+ 29134 string characters out of 966977
+ 57035 words of memory out of 263001
+ 2876 multiletter control sequences out of 10000+60000
  30088 words of font info for 104 fonts, out of 400000 for 1000
  19 hyphenation exceptions out of 1000
  15i,6n,13p,247b,310s stack positions out of 300i,100n,500p,50000b,10000s
-<cmbxti10.pf
-b><cmr12.pfb><cmtt12.pfb><cmr9.pfb><cmti9.pfb><cmtt9.pfb><cmmi10.pfb><cmti10.pf
-b><cmb10.pfb><cmsy10.pfb><cmss10.pfb><cmbx10.pfb><cmsl10.pfb><cmsltt10.pfb><cmt
-t10.pfb><cmr10.pfb><cmbx12.pfb>
-Output written on maxima.pdf (275 pages, 857497 bytes).
+<cmbxti10.pfb><cmr12.pfb><cmtt12.pfb><cmr9.pfb><cmti9.pfb><cmtt9.pfb
+><cmmi10.pfb><cmb10.pfb><cmsy10.pfb><cmss10.pfb><cmbx10.pfb><cmti10.pfb><cmsl10
+.pfb><cmsltt10.pfb><cmtt10.pfb><cmr10.pfb><cmbx12.pfb>
+Output written on maxima.pdf (277 pages, 863494 bytes).

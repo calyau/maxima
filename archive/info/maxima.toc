@@ -2,9 +2,9 @@
 \chapentry{Introduction to MAXIMA}{1}{3}
 \chapentry{Help}{2}{7}
 \secentry{Introduction to Help}{2}{1}{7}
-\secentry{LISP-AND-MACSYMA}{2}{2}{7}
-\secentry{GARBAGE_COLLECTION}{2}{3}{8}
-\secentry{DOCUMENTATION}{2}{4}{8}
+\secentry{Lisp and Maxima}{2}{2}{7}
+\secentry{Garbage Collection}{2}{3}{9}
+\secentry{Documentation}{2}{4}{9}
 \secentry{Definitions for Help}{2}{5}{9}
 \chapentry{Command Line}{3}{11}
 \secentry{Introduction to Command Line}{3}{1}{11}
@@ -124,7 +124,8 @@
 \secentry{Introduction to Program Flow}{38}{1}{243}
 \secentry{Definitions for Program Flow}{38}{2}{243}
 \chapentry{Debugging}{39}{251}
-\secentry{Introduction to Debugging}{39}{1}{251}
-\secentry{Definitions for Debugging}{39}{2}{251}
-\chapentry{Indices}{40}{253}
-\chapentry{Function and Variable Index}{Appendix{} \char 65}{255}
+\secentry{Source Level Debugging}{39}{1}{251}
+\secentry{Keyword Commands}{39}{2}{252}
+\secentry{Definitions for Debugging}{39}{3}{253}
+\chapentry{Indices}{40}{255}
+\chapentry{Function and Variable Index}{Appendix{} \char 65}{257}

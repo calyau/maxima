@@ -354,10 +354,10 @@
 	      (list '(mplus) '$%pi (list '(mtimes) -1 v)))
 	     (t (list '(mplus) v (list '(mtimes) -1 '$%pi))))))
 
-(defun genfind (h var)
-;;; finds gensym coresponding to var h
+(defun genfind (h v)
+;;; finds gensym coresponding to v h
        (do ((varl (caddr h) (cdr varl))
 	    (genl (cadddr h) (cdr genl)))
 ;;;is car of rat form
-	   ((eq (car varl) var) (car genl))))
+	   ((eq (car varl) v) (car genl))))
 

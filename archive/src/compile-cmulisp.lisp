@@ -108,7 +108,7 @@
 (defun init-maxima ()
   ;; Turn off gc messages
   (unless *init-run*
-    (setq *init-run*)
+    (setq *init-run* t)
   (setf ext:*gc-verbose* nil)
   ;; Reload the documentation stuff.
   (handler-case

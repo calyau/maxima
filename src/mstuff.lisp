@@ -29,9 +29,15 @@
 ;;(DEFUN MFUNCTION1 (FUN)
 ;;  `(LAMBDA (X Y) (MEVALP `((,',FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y)))))
 
-#+cl
+;; cmulisp does not like the closure version.  Clisp insists on the
+;; closure version.  Gcl likes either...  For the moment we will
+;; leave a conditional here.
 (DEFUN MFUNCTION1 (FUN)
-  (function (LAMBDA (X Y) (MEVALP `((,FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y))))))
+  #+cmu
+   `(LAMBDA (X Y) (MEVALP `((,',FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y))))
+  #-cmu 
+  (function (LAMBDA (X Y) (MEVALP `((,FUN) ((MQUOTE) ,X) ((MQUOTE) ,Y)))))
+  )
 
 (DEFUN LESSTHAN (A B) (IF (GREAT B A) T))
 

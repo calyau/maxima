@@ -226,7 +226,7 @@
 \entry {\code {DERIVDEGREE}}{113}
 \entry {\code {DERIVLIST}}{113}
 \entry {\code {DERIVSUBST}}{113}
-\entry {\code {DESCRIBE}}{9}
+\entry {\code {DESCRIBE}}{10}
 \entry {\code {DESOLVE}}{135}
 \entry {\code {DETERMINANT}}{154}
 \entry {\code {DETOUT}}{154}
@@ -307,7 +307,7 @@
 \entry {\code {EVENP}}{22}
 \entry {\code {EVFLAG}}{14}
 \entry {\code {EVFUN}}{14}
-\entry {\code {EXAMPLE}}{9}
+\entry {\code {EXAMPLE}}{10}
 \entry {\code {EXP}}{33}
 \entry {\code {EXPAND}}{42}
 \entry {\code {EXPANDWRT}}{42}
@@ -744,7 +744,7 @@
 \entry {\code {REARRAY}}{150}
 \entry {\code {RECTFORM}}{39}
 \entry {\code {RECTTOPOLAR}}{145}
-\entry {\code {REFCHECK}}{251}
+\entry {\code {REFCHECK}}{253}
 \entry {\code {REM}}{215}
 \entry {\code {REMAINDER}}{86}
 \entry {\code {REMARRAY}}{150}
@@ -754,7 +754,7 @@
 \entry {\code {REMLET}}{223}
 \entry {\code {REMOVE}}{215}
 \entry {\code {REMRULE}}{223}
-\entry {\code {REMTRACE}}{251}
+\entry {\code {REMTRACE}}{253}
 \entry {\code {REMVALUE}}{216}
 \entry {\code {RENAME}}{216}
 \entry {\code {RESET}}{16}
@@ -808,12 +808,12 @@
 \entry {\code {SECH}}{94}
 \entry {\code {SET_PLOT_OPTION}}{52}
 \entry {\code {SET_UP_DOT_SIMPLIFICATIONS}}{165}
-\entry {\code {SETCHECK}}{251}
-\entry {\code {SETCHECKBREAK}}{251}
+\entry {\code {SETCHECK}}{253}
+\entry {\code {SETCHECKBREAK}}{253}
 \entry {\code {SETELMX}}{161}
 \entry {\code {SETUP}}{172}
 \entry {\code {SETUP_AUTOLOAD}}{217}
-\entry {\code {SETVAL}}{252}
+\entry {\code {SETVAL}}{253}
 \entry {\code {SHOW}}{64}
 \entry {\code {SHOWRATVARS}}{64}
 \entry {\code {SHOWTIME}}{17}
@@ -890,9 +890,9 @@
 \entry {\code {TEX(label,filename)}}{65}
 \entry {\code {THROW}}{249}
 \entry {\code {TIME}}{211}
-\entry {\code {TIMER}}{252}
-\entry {\code {TIMER_DEVALUE}}{252}
-\entry {\code {TIMER_INFO}}{252}
+\entry {\code {TIMER}}{253}
+\entry {\code {TIMER_DEVALUE}}{254}
+\entry {\code {TIMER_INFO}}{254}
 \entry {\code {TLDEFINT}}{126}
 \entry {\code {TLIMIT}}{109}
 \entry {\code {TLIMSWITCH}}{109}
@@ -925,8 +925,8 @@
 \entry {\code {TR_WARN_UNDEFINED_VARIABLE}}{241}
 \entry {\code {TR_WARNINGS_GET}}{240}
 \entry {\code {TR_WINDY}}{241}
-\entry {\code {TRACE}}{252}
-\entry {\code {TRACE_OPTIONS}}{252}
+\entry {\code {TRACE}}{254}
+\entry {\code {TRACE_OPTIONS}}{254}
 \entry {\code {TRANSBIND}}{237}
 \entry {\code {TRANSCOMPILE}}{237}
 \entry {\code {TRANSFORM}}{176}
@@ -962,7 +962,7 @@
 \entry {\code {UNORDER}}{26}
 \entry {\code {UNSUM}}{182}
 \entry {\code {UNTELLRAT}}{88}
-\entry {\code {UNTRACE}}{252}
+\entry {\code {UNTRACE}}{254}
 \entry {\code {USE_FAST_ARRAYS}}{150}
 \initial {V}
 \entry {\code {VALUES}}{18}

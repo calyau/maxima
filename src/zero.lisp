@@ -11,12 +11,16 @@
 (in-package "MAXIMA")
 (macsyma-module zero)
 
-(declare-top (SPECIAL S VAR #-cl EXP ;I don't think exp is necessary--wfs
-		      V1 V R1 R2 $NUMER $LISTCONSTVARS VARLIST GENVAR)
+(declare-top (SPECIAL
+	      ;S VAR  V1 V R1 R2 ;; added declares
+	      #-cl EXP ;I don't think exp is necessary--wfs
+	      $NUMER $LISTCONSTVARS VARLIST GENVAR)
 	 (*LEXPR $RAT))
 
 (DEFMFUN $ZEROEQUIV (EXP VAR)
+       (declare (special var ))
        (PROG (R S V VARLIST GENVAR)
+	     (declare (special S V))
 	     (SETQ EXP (SPECREPCHECK EXP))
 	     (SETQ R (LET ($LISTCONSTVARS) ($LISTOFVARS EXP)))
 	     (IF (AND (CDR R) (OR (CDDR R) (NOT (ALIKE1 (CADR R) VAR))))
@@ -31,7 +35,9 @@
 	     (RETURN (ZEROEQUIV1 V))))
 
 (DEFUN ZEROEQUIV1 (V)
+  (declare (special var v s))
        (PROG (V1 V2 COEFF DEG)
+	     (declare (special V1 V2))
 	     (IF (ATOM V) (RETURN (EQUAL V 0)))
    COEFFLOOP (IF (NULL (CDR V)) (RETURN T))
              (SETQ DEG (CADR V))
@@ -50,7 +56,9 @@
 	     (RETURN '$DONTKNOW)))
 
 (DEFUN ZEROEQUIV2 (V)
+       (declare (special var v s))
        (PROG (R R1 R2)
+	     (declare (special r1 r2))
 	     (SETQ R (SIN (TIMES 0.001 (RANDOM 1000.))))
 	     (SETQ V (MAXIMA-SUBSTITUTE R VAR (RATDISREP (CONS S (CONS V 1)))))
 	     (SETQ V (MEVAL '(($EV) V $NUMER)))
@@ -69,3 +77,8 @@
 			 (LESSP (ABS R2) (TIMES R 0.01)))
 		    (RETURN T))
 		   (T (RETURN NIL)))))
+
+
+
+
+

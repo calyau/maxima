@@ -33,7 +33,7 @@
 ;;at all, that caught no errors but at least
 ;;returned a list in the normal case would be 
 
-#+clisp
+#+(or cmu clisp)
 (defmacro errset (&rest l)
    `(handler-case (list ,(car l))
      (error (e) (when errset (error e)))))
