@@ -287,10 +287,11 @@
   (BATCH (FILENAME-FROM-ARG-LIST ARG-LIST) T))
 
 #-lispm
-(defun macsyma-top-level ()
+(defun macsyma-top-level (&OPTIONAL (input-stream *standard-input*)
+				    batch-flag)
   (let ((*package* (find-package "MAXIMA")))
     ;; *autconf-version* is not set under old build system.
-    ;; If old build system detect, nform the user that it is deprecated.
+    ;; If old build system detect, inform the user that it is deprecated.
     (if (boundp '*autoconf-version*)
 	(format t "Maxima ~a (with enhancements by W. Schelter).~%Licensed under the GNU Public License (see file COPYING)~%" *autoconf-version*)
       (format t "Maxima pre59 (with enhancements by W. Schelter).~%Built with old build system. The old build system is depcrecated.~%Please see the 'for59' directory to convert to the new build system.~%Licensed under the GNU Public License (see file COPYING)~%" *autoconf-version*))
@@ -301,7 +302,7 @@
 	 do
        (catch #+kcl si::*quit-tag* #+cmu 'continue #-(or kcl cmu) nil
 	      (catch 'macsyma-quit
-		(continue)(bye)))))))
+		(continue input-stream batch-flag)(bye)))))))
 
 #-lispm
 (progn 

@@ -7,13 +7,16 @@ options:
     -h, --help: Display this usage message.
     -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>. Leave <lisp>
                               empty to see the list of possible values.
-    -v <version>, --version=<version>: Launch maxima version <version>. Leave
-                                       <version> empty to see the list of
-                                       possible values.
+    -u <version>, --use-version=<version>: Launch maxima version <version>.
+                                           Leave <version> empty to see the 
+                                           list of possible values.
     -b <file>, --batch=<file>: Process <file> in maxima batch mode.
     --batch-lisp=<file>: Process lisp file <file> in batch mode.
     --batch-string=<string>: Process <string> in maxima batch mode.
-    --verbose: Print extra information from the maxima wrapper script.
+    -r <string>, --run-string=<string>: Process <string> in maxima interactive
+                                        mode.
+    -p <lisp_file>, --preload-lisp=<lisp_file>: Preload <lisp_file>
+    -v, --verbose: Print extra information from the maxima wrapper script.
 EOF
 }
 
@@ -21,16 +24,34 @@ setup_vars() {
   MAXIMA_VERSION=@VERSION@
   prefix=@prefix@
   exec_prefix=@exec_prefix@
+  PACKAGE=@PACKAGE@
+  VERSION=@VERSION@
+  MAXIMA_DEFAULT_VERPKGLIBEXECDIR=@libexecdir@/@PACKAGE@/@VERSION@
+  MAXIMA_DEFAULT_VERPKGLIBDIR=@libdir@/@PACKAGE@/@VERSION@
   if [ -z "$MAXIMA_VERPKGLIBEXECDIR" ]; then
-    MAXIMA_VERPKGLIBEXECDIR=@libexecdir@/@PACKAGE@/@VERSION@
+    if [ -n "$MAXIMA_PREFIX" ]; then
+      MAXIMA_VERPKGLIBEXECDIR="$MAXIMA_PREFIX/libexec/$PACKAGE/$VERSION"
+    else
+      MAXIMA_VERPKGLIBEXECDIR="$MAXIMA_DEFAULT_VERPKGLIBEXECDIR"
+    fi
   fi
   if [ -z "$MAXIMA_VERPKGLIBDIR" ]; then
-    MAXIMA_VERPKGLIBDIR=@libdir@/@PACKAGE@/@VERSION@
+    if [ -n "$MAXIMA_PREFIX" ]; then
+      MAXIMA_VERPKGLIBDIR="$MAXIMA_PREFIX/lib/$PACKAGE/$VERSION"
+    else
+      MAXIMA_VERPKGLIBDIR="$MAXIMA_DEFAULT_VERPKGLIBDIR"
+    fi
   fi
   MAXIMA_DEFAULT_LISP=@DEFAULTLISP@
   if [ -z "$MAXIMA_LISP" ]; then
     MAXIMA_LISP=$MAXIMA_DEFAULT_LISP
   fi
+}
+
+unsetup_vars () {
+  unset MAXIMA_VERPKGLIBEXECDIR
+  unset MAXIMA_VERPKGLIBDIR
+  unset MAXIMA_LISP
 }
 
 list_lisps () {
@@ -42,7 +63,12 @@ list_versions () {
 }
 
 process_args () {
-  while getopts "hl:v:b:-:" opt; do
+  batch_file=
+  batch_lisp_file=
+  batch_string=
+  run_string=
+  preload_lisp_file=
+  while getopts "hl:u:b:r:p:v-:" opt; do
     if [ "$opt" = "-" ]; then
       opt=$OPTARG
     fi
@@ -62,11 +88,11 @@ process_args () {
 		    exit
 		  fi
 		  ;;
-      v | version=*)
-		  if [ "$opt" = "v" ]; then
+      u | use-version=*)
+		  if [ "$opt" = "u" ]; then
 		    MAXIMA_VERSION=$OPTARG
 		  else
-		    MAXIMA_VERSION=`echo "$OPTARG" | sed 's/version=//'`
+		    MAXIMA_VERSION=`echo "$OPTARG" | sed 's/use-version=//'`
 		  fi
 		  if [ -z "$MAXIMA_VERSION" ]; then
 		    list_versions
@@ -74,22 +100,33 @@ process_args () {
 		  fi
 		  ;;
       b | batch=*)
-		  if [ "$opt" = "b" ]; then
-		    batch_file=$OPTARG
-		  else
-		    batch_file=`echo "$OPTARG" | sed 's/batch=//'`
-		  fi
-		  batch_cmd="batch(\"$batch_file\");quit();"
-		  ;;
+		   if [ "$opt" = "b" ]; then
+		     batch_file=$OPTARG
+		   else
+		     batch_file=`echo "$OPTARG" | sed 's/batch=//'`
+		   fi
+		   ;;
       batch-lisp=*)
 		    batch_lisp_file=`echo "$OPTARG" | sed 's/batch-lisp=//'`
-		    batch_cmd="quit();"
 		    ;;
       batch-string=*)
 		      batch_string=`echo "$OPTARG" | sed 's/batch-string=//'`
-		      batch_cmd="$batch_string"
 		      ;;
-      verbose)
+      r | run-string=*)
+			if [ "$opt" = "r" ]; then
+			  run_string=$OPTARG
+			else
+			  run_string=`echo "$OPTARG" | sed 's/run-string=//'`
+			fi
+			;;
+      p | preload-lisp=*)
+			if [ "$opt" = "p" ]; then
+			  preload_lisp_file=$OPTARG
+			else
+			  preload_lisp_file=`echo "$OPTARG" | sed 's/preload-lisp=//'`
+			fi
+			;;
+      v | verbose)
 	       verbose=true
 	       ;;
       *)
@@ -109,18 +146,49 @@ setup_vars
 
 LISPTYPE=$MAXIMA_LISP
 export LISPTYPE
-command="$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp -run $MAXIMA_VERPKGLIBDIR/binary-$LISPTYPE/maxima"
+
+if [ ! -x "$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp" ]; then
+# Have we been moved?
+  MAXIMA_PREFIX="`dirname \`dirname $0\``"
+  unsetup_vars
+  setup_vars
+  if [ ! -x "$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp" ]; then
+    echo "$0: unable to determine MAXIMA_PREFIX" 1>&2
+    exit 1
+  fi
+fi
+  
+unset MAXIMA_INT_LISP_PRELOAD
+unset MAXIMA_INT_INPUT_STRING
+unset MAXIMA_INT_BATCH_FLAG
 if [ -n "$batch_lisp_file" ]; then
-  command="$command -i $batch_lisp_file"
+  MAXIMA_INT_INPUT_STRING=":lisp (load \"$batch_lisp_file\")"
+  MAXIMA_INT_BATCH_FLAG=":batch"
 fi
-if [ -n "$batch_cmd" ]; then
-  if [ "$verbose" = "true" ]; then
-    echo "echo \"$batch_cmd\" | exec $command"
-  fi
-  echo "$batch_cmd" | exec $command
-else
-  if [ "$verbose" = "true" ]; then
-    echo "$command"
-  fi
-  exec $command
+if [ -n "$batch_file" ]; then
+  MAXIMA_INT_INPUT_STRING="batch(\"$batch_file\");"
+  MAXIMA_INT_BATCH_FLAG=":batch"
 fi
+if [ -n "$batch_string" ]; then
+  MAXIMA_INT_INPUT_STRING="$batch_string"
+  MAXIMA_INT_BATCH_FLAG=":batch"
+fi
+if [ -n "$run_string" ]; then
+  MAXIMA_INT_INPUT_STRING="$run_string"
+fi
+if [ -n "$preload_lisp_file" ]; then
+  MAXIMA_INT_LISP_PRELOAD="$preload_lisp_file"
+fi
+export MAXIMA_INT_LISP_PRELOAD
+export MAXIMA_INT_INPUT_STRING
+export MAXIMA_INT_BATCH_FLAG
+
+command="$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp -run $MAXIMA_VERPKGLIBDIR/binary-$LISPTYPE/maxima"
+
+if [ "$verbose" = "true" ]; then
+  echo "MAXIMA_INT_LISP_PRELOAD=$MAXIMA_INT_LISP_PRELOAD"
+  echo "MAXIMA_INT_INPUT_STRING=$MAXIMA_INT_INPUT_STRING"
+  echo "MAXIMA_INT_BATCH_FLAG=$MAXIMA_INT_BATCH_FLAG"
+  echo "command=$command"
+fi
+exec $command

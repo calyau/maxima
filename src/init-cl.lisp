@@ -50,30 +50,33 @@
   (ext:getenv envvar))
 
 (defun set-pathnames ()
-  (let* ((maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY"))
-	 (maxima-datadir-env (maxima-getenv "MAXIMA_DATADIR"))
-	 (maxima-infodir-env (maxima-getenv "MAXIMA_INFODIR")))
-	 (if maxima-prefix-env
-	     (setq *maxima-prefix* maxima-prefix-env)
-	   (setq *maxima-prefix* *autoconf-prefix*))
-	 (if maxima-datadir-env
-	     (setq *maxima-datadir* maxima-datadir-env)
-	   (if maxima-prefix-env
-	       (setq *maxima-datadir* (concatenate 'string *maxima-prefix*
-						   "share"))
-	     (setq *maxima-datadir* *autoconf-datadir*)))
-	 (setq *maxima-verpkgdatadir* (concatenate 'string
-						   *maxima-datadir*
-						   "/"
-						   *autoconf-package*
-						   "/"
-						   *autoconf-version*))
-	 (if maxima-infodir-env
-	     (setq *maxima-infodir* maxima-infodir-env)
-	   (if maxima-prefix-env
-	       (setq *maxima-infodir* (concatenate 'string *maxima-prefix*
-						   "info"))
-	     (setq *maxima-infodir* *autoconf-infodir*))))
+  (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
+	(maxima-datadir-env (maxima-getenv "MAXIMA_DATADIR"))
+	(maxima-infodir-env (maxima-getenv "MAXIMA_INFODIR")))
+    ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
+    (if (not maxima-prefix-env)
+	(setq maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY")))
+    (if maxima-prefix-env
+	(setq *maxima-prefix* maxima-prefix-env)
+      (setq *maxima-prefix* *autoconf-prefix*))
+    (if maxima-datadir-env
+	(setq *maxima-datadir* maxima-datadir-env)
+      (if maxima-prefix-env
+	  (setq *maxima-datadir* (concatenate 'string *maxima-prefix*
+					      "share"))
+	(setq *maxima-datadir* *autoconf-datadir*)))
+    (setq *maxima-verpkgdatadir* (concatenate 'string
+					      *maxima-datadir*
+					      "/"
+					      *autoconf-package*
+					      "/"
+					      *autoconf-version*))
+    (if maxima-infodir-env
+	(setq *maxima-infodir* maxima-infodir-env)
+      (if maxima-prefix-env
+	  (setq *maxima-infodir* (concatenate 'string *maxima-prefix*
+					      "info"))
+	(setq *maxima-infodir* *autoconf-infodir*))))
 	 
   (let ((ext #+gcl "o"
 	     #+cmu (c::backend-fasl-file-type c::*target-backend*)
@@ -83,11 +86,11 @@
 	     ""))
     (setq $file_search_lisp
 	  (list '(mlist)
-		; actually, this entry is not correct.
-		; there should be a separate directory for compiled
-		; lisp code. jfa 04/11/02
+		;; actually, this entry is not correct.
+		;; there should be a separate directory for compiled
+		;; lisp code. jfa 04/11/02
 		(maxima-data-path "{src,share}"
-				 (concatenate 'string "###." ext))
+				  (concatenate 'string "###." ext))
 		(maxima-data-path "{src,share}" "###.lisp")
 		(maxima-data-path "{src,share}" "###.lsp"))))
   (setq $file_search_maxima
@@ -95,14 +98,14 @@
 	      (maxima-data-path "{share}" "###.mac")
 	      (maxima-data-path "{share}" "###.mc")))
   (setq $file_search_demo
-    (list '(mlist) (maxima-data-path "{demo,share}"
-				"###.{dem,dm1,dm2,dm3,dmt}")))
+	(list '(mlist) (maxima-data-path "{demo,share}"
+					 "###.{dem,dm1,dm2,dm3,dmt}")))
   (setq $file_search_usage
-    (list '(mlist) (maxima-data-path "{share}"
-				"###.{usg,texi}")
-	  (maxima-data-path "doc" "###.{mac}")))
+	(list '(mlist) (maxima-data-path "{share}"
+					 "###.{usg,texi}")
+	      (maxima-data-path "doc" "###.{mac}")))
   (setq $chemin
-    (maxima-data-path "sym" ""))
+	(maxima-data-path "sym" ""))
   (setq si::*info-paths* (list (concatenate 'string
 					    *maxima-infodir* "/")))
   )
@@ -111,19 +114,29 @@
 (defun user::run ()
   "Run Maxima in its own package."
   (in-package "MAXIMA")
-  (catch 'to-lisp
-    (set-pathnames)
-    #+cmu
-    (progn
-      (loop 
+  ; jfa new command-line communication
+  (let ((input-string *standard-input*)
+	(maxima_int_lisp_preload (maxima-getenv "MAXIMA_INT_LISP_PRELOAD"))
+	(maxima_int_input_string (maxima-getenv "MAXIMA_INT_INPUT_STRING"))
+	(batch-flag (maxima-getenv "MAXIMA_INT_BATCH_FLAG")))
+    (if maxima_int_lisp_preload
+	(load maxima_int_lisp_preload))
+    (if maxima_int_input_string
+	(setq input-string (make-string-input-stream maxima_int_input_string)))
+      
+    (catch 'to-lisp
+      (set-pathnames)
+      #+cmu
+      (progn
+	(loop 
 	  (with-simple-restart (macsyma-quit "Macsyma top-level")
-	    (macsyma-top-level))))
-    #-cmu
-    (catch 'macsyma-quit
-      (macsyma-top-level))))
+			       (macsyma-top-level input-string batch-flag))))
+      #-cmu
+      (catch 'macsyma-quit
+	(macsyma-top-level input-string batch-flag)))))
 
 (import 'user::run)
-
+  
 ($setup_autoload "eigen.mc" '$eigenvectors '$eigenvalues)
 
 (defun $to_lisp ()
@@ -157,3 +170,7 @@ Quit to top    :q       Quit to MAXIMA top level"
           (commands1.orig)))
 
 ) ; end progn for clisp
+
+(defun $maxima_server (port)
+  (load "/home/amundson/devel/maxima/archive/src/server.lisp")
+  (user::setup port))
