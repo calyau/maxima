@@ -573,18 +573,24 @@ Error: macsyma error
 Error signalled by MEVAL1.
 Broken at $LOAD.  Type :H for Help.
 MAXIMA>>:q
+@end example
 
 By examining the file system we find the file is actually in
 /public/maxima/share/eigen.mc.   So we add that to the file_search
-path.   This can be done at start up (see init.lsp) or,
+path.   This can be done at start up (in the file @code{maxima-init.mac}) or,
 else it can be done and then the system resaved
 once it has been customized for local directories and pathnames.
 At lisp level we would do
+
+@example
 (in-package "MAXIMA")
 (setq $file_search ($append (list '(mlist)
         "/tmp/foo.mac" "/tmp/foo.mc") $file_search))
+@end example
+
 and at maxima level:
 
+@example
 (%i5) file_search:append(["/public/maxima/share/foo.mc"],
         file_search)$
 (%i6) load("eigen");
@@ -601,8 +607,8 @@ batching /usr/public/maxima/share/eigen.mc
 				SQRT(D  - 2 A D + 4 B C + A ) + D + A
 				-------------------------------------], [1, 1]]
 						  2
-
 @end example
+
 @end defun
 @c @node LOADFILE, LOADPRINT, LOAD, Input and Output
 @c @unnumberedsec phony
