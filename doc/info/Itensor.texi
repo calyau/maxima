@@ -1557,8 +1557,8 @@ tensor's covariant derivative will evaluate to the following when
 
 @example
 
-g     = g  nm  + g  nm  - g  nm
- ij;k    ki  j    kj  i    ij  k
+g     =- g  nm
+ ij;k     ij  k
 
 @end example
 
@@ -1573,7 +1573,7 @@ Covariant permutation of the nonmetricity vector components. Defined as
 
 @example
 
-           g   inm  + inm  g   - g   inm
+           g   inm  - inm  g   - g   inm
             ab    c      a  bc    ac    b
 inmc1    = ------------------------------
      abc                 2
@@ -1594,11 +1594,11 @@ as:
 
 @example
 
-                     c         c         cd
-          inm  kdelta  - kdelta  inm  + g   inm  g
-     c       a       b         a    b          d  ab
-inmc2   = ------------------------------------------
-     ab                       2
+                      c         c         cd
+          -inm  kdelta  - kdelta  inm  + g   inm  g
+     c        a       b         a    b          d  ab
+inmc2   = -------------------------------------------
+     ab                        2
 
 @end example
 

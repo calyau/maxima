@@ -769,10 +769,15 @@ of the Kerr metric:
                                       4
 (%o12)                               done
 (%i12) petrov();
-(%o12)                             Type is D
+(%o12)                                 D
 
 @end example
 
+The Petrov classification function is based on the algorithm published in
+"Classifying geometries in general relativity: III Classification in practice"
+by Pollney, Skea, and d'Inverno, Class. Quant. Grav. 17 2885-2902 (2000).
+Except for some simple test cases, the implementation is untested as of
+December 19, 2004, and is likely to contain errors.
 
 @end defun
 
@@ -810,10 +815,10 @@ nonmetricity vector @code{nm}. From this, the nonmetricity coefficients
 
 @example
 
-            k    k        km
-       nm  D  - D  nm  + g   nm  g
-   k     i  j    i   j         m  ij
-nmc  = -----------------------------
+             k    k        km
+       -nm  D  - D  nm  + g   nm  g
+   k      i  j    i   j         m  ij
+nmc  = ------------------------------
    ij                2
 
 @end example
