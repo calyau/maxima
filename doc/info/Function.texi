@@ -2,7 +2,6 @@
 * Introduction to Function Definition::  
 * FUNCTION::                    
 * MACROS::                      
-* OPTIMIZATION::                
 * Definitions for Function Definition::  
 @end menu
 
@@ -110,7 +109,7 @@ may be computed at runtime, it is useful to use @code{define} and
 possibly @code{buildq}.  
 
 
-@node MACROS, OPTIMIZATION, FUNCTION, Function Definition
+@node MACROS, Definitions for Function Definition, FUNCTION, Function Definition
 @section MACROS
 
 
@@ -282,26 +281,9 @@ Hence the @code{buildq} is useful for building the form.
 @end defun
 
 
-@node OPTIMIZATION, Definitions for Function Definition, MACROS, Function Definition
-@section OPTIMIZATION
-
-The optimu files no longer exist in Maxima.  The documentation is left 
-here for historical purposes.
-
-When using TRANSLATE and generating code with MACSYMA,
-there are a number of techniques which can save time and be helpful.
-Do DEMO("optimu.dem") for a demonstration.  In particular, the
-function FLOATDEFUNK from TRANSL;OPTIMU FASL, creates a function
-definition from a math-like expression, but it optimizes it (with
-OPTIMIZE) and puts in the MODE_DECLAREations needed to COMPILE
-correctly. (This can be done by hand, of course).  The demo will only
-run in a fresh macsyma.
-
 @c end concepts Function Definition
-@node Definitions for Function Definition,  , OPTIMIZATION, Function Definition
+@node Definitions for Function Definition,  , MACROS, Function Definition
 @section Definitions for Function Definition
-@c @node APPLY, BINDTEST, OPTIMIZATION, Function Definition
-@c @unnumberedsec phony
 @defun APPLY (function, list)
 gives the result of applying the function to
 the list of its arguments.  This is useful when it is desired to
@@ -428,8 +410,8 @@ COMPFILE are pretty-printed.
 The COMPILE command is a convenience feature in macsyma. It
 handles the calling of the function COMPFILE, which translates macsyma
 functions into lisp, the calling of the lisp compiler on the file
-produced by COMPFILE, and the loading of the output of the compiler,
-know as a FASL file, into the macsyma. It also checks the compiler
+produced by COMPFILE, and the loading of the output of the compiler
+into the macsyma. It also checks the compiler
 comment listing output file for certain common errors.  Do
 PRINTFILE(MCOMPI,DOC,MAXDOC); for more details.
 COMPILE(); causes macsyma to prompt for arguments. 
