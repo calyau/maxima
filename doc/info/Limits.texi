@@ -6,16 +6,16 @@
 @node Definitions for Limits,  , Limits, Limits
 @section Definitions for Limits
 
-@defvar lhospitallim
- default: 4 - the maximum number of times L'Hospital's
+@defvr {option variable} lhospitallim
+default: 4 - the maximum number of times L'Hospital's
 rule is used in @code{limit}.  This prevents infinite looping in cases like
 @code{limit(cot(x)/csc(x),x,0)}.
 
-@end defvar
+@end defvr
 
-@defun limit (exp, var, val, dir)
-@defunx limit (exp, var, val)
-@defunx limit (exp)
+@deffn {function} limit (exp, var, val, dir)
+@deffnx {function} limit (exp, var, val)
+@deffnx {function} limit (exp)
 finds the limit of @var{exp} as the real variable
 @var{var} approaches the value @var{val} from the direction @var{dir}.  @var{dir} may have the
 value @code{plus} for a limit from above, @code{minus} for a limit from below, or
@@ -43,27 +43,27 @@ for example, @code{limit(inf-1);} .
 
 Do @code{example(limit);} for examples.
 
-@end defun
+@end deffn
 
-@defvar limsubst
+@defvr {option variable} limsubst
 default value: @code{false} - prevents @code{limit} from attempting substitutions on
 unknown forms.  This is to avoid bugs like @code{limit(f(n)/f(n+1),n,inf);}
 giving 1.  Setting @code{limsubst} to @code{true} will allow such
 substitutions.
 
-@end defvar
+@end defvr
 
-@defun tlimit (exp, var, val, dir)
-@defunx tlimit (exp, var, val)
-@defunx tlimit (exp)
+@deffn {function} tlimit (exp, var, val, dir)
+@deffnx {function} tlimit (exp, var, val)
+@deffnx {function} tlimit (exp)
 is just the function @code{limit} with @code{tlimswitch}
 set to @code{true}.
 
-@end defun
+@end deffn
 
-@defvar tlimswitch
+@defvr {option variable} tlimswitch
 default: @code{false} - if @code{true} will cause the limit package to
 use Taylor series when possible.
 
-@end defvar
+@end defvr
 
