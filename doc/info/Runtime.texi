@@ -48,26 +48,15 @@ level maxima back again.
 Clears the screen.  The same as typing control-L.
 
 @end defun
-@c @node CONTINUE
-@c @unnumberedsec phony
-@defun CONTINUE
- - Control-^ typed while in MACSYMA causes LISP to be
-entered.  The user can now type any LISP S-expression and have it
-evaluated.  Typing (CONTINUE) or ^G (control-G) causes MACSYMA to be
-re-entered.
-
-@end defun
 @c @node declaration
 @c @unnumberedsec phony
 @defvr declaration FEATURE
- - A nice adjunct to the system.  STATUS(FEATURE) gives you a
-list of system features. At present the list for MC is: MACSYMA,
-NOLDMSG, MACLISP, PDP10, BIGNUM, FASLOAD, HUNK, FUNARG, ROMAN, NEWIO,
-SFA, PAGING, MC, and ITS.  Any of these "features" may be given as a
-second argument to STATUS(FEATURE,...); If the specified feature
-exists, TRUE will be returned, else FALSE.  Note: these are system
-features, and not really "user related".  See also DESCRIBE(features);
-for more user-oriented features.
+Maxima understands two distinct types of features,
+system features and features which apply to mathematical expressions.
+See STATUS for information about system features.
+See FEATURES and FEATUREP for information about mathematical features.
+
+FEATURE itself is not the name of a function or variable.
 
 @end defvr
 @c @node FEATUREP
@@ -87,11 +76,20 @@ it returns TRUE, else FALSE.  See DESCRIBE(FEATURES); .
 @c @node ROOM
 @c @unnumberedsec phony
 @defun ROOM ()
-types out a verbose description of the state of storage and
-stack management in the Macsyma.  This simply utilizes the Lisp
-ROOM function.
-ROOM(FALSE) - types out a very terse description, containing most of
-the same information.
+@defunx ROOM (TRUE)
+@defunx ROOM (FALSE)
+Prints out a description of the state of storage and
+stack management in Maxima. ROOM calls the Lisp function of 
+the same name.
+
+@itemize @bullet
+@item
+ROOM () prints out a moderate description.
+@item
+ROOM (TRUE) prints out a verbose description.
+@item
+ROOM (FALSE) prints out a terse description.
+@end itemize
 
 @end defun
 @c @node STATUS
