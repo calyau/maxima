@@ -23,12 +23,16 @@ done;
 true;
 
 /* 1 */
+assume(not(equal(n,-2)));
+[not(equal(n, -2))];
 (pn_(1),ans:contrib_ode(eqn:'diff(y,x)^2=a*x^n,y,x));
-[-((n+2)*y+2*sqrt(a)*x*%e^(n*log(x)/2))/(n+2)=%c];
-solve(ans[1],y);
-[y=-(2*sqrt(a)*x*%e^(n*log(x)/2)+%c*n+2*%c)/(n+2)];
-[method,ode_check(eqn,radcan(%[1]))];
+[-((n+2)*y+2*x*sqrt(a*x^n))/(n+2)=%c];
+solve(ans[1],y); 
+[y=-(2*x*sqrt(a*x^n)+%c*n+2*%c)/(n+2)];
+[method,ode_check(eqn,%[1])];
 [lie,0];
+forget(not(equal(n,-2)));
+'[not(equal(n,-2))];
 
 /* 2 */
 (pn_(2),ans:contrib_ode(eqn:'diff(y,x)^2=y,y,x));
@@ -629,12 +633,10 @@ lagrange;
 
 /* 96 */
 (pn_(96),ans:contrib_ode(eqn:x*'diff(y,x)^2=a,y,x));
-[-(sqrt(a/x)*y+2*a)/sqrt(a/x)=%c];
+[-y-2*sqrt(a/x)*x = %c];
 solve(ans[1],y);
-[y=-(%c*sqrt(a/x)+2*a)/sqrt(a/x)];
-radcan(%[1]);
-y=-2*sqrt(a)*sqrt(x)-%c;
-[method,ode_check(eqn,%)];
+[y = -2*sqrt(a/x)*x-%c];
+[method,ode_check(eqn,%[1])];
 [lie,0];
 
 /* 97 */
