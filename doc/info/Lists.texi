@@ -94,7 +94,7 @@ ENDCONS(X, F(A,B,C));  ->  F(A,B,C,X).
 @end defun
 @c @node FIRST, GET, ENDCONS, Lists
 @c @unnumberedsec 
-@defun FIRST (exp)
+@defun FIRST (exp) SECOND (exp) .. TENTH (exp)
 yields the first part of exp which may result in the first
 element of a list, the first row of a matrix, the first term of a sum,
 etc.  Note that FIRST and its related functions, REST and LAST, work
@@ -103,7 +103,8 @@ input.  If the variable INFLAG [FALSE] is set to TRUE however, these
 functions will look at the internal form of exp.  Note that the
 simplifier re-orders expressions.  Thus FIRST(X+Y) will be X if INFLAG
 is TRUE and Y if INFLAG is FALSE.  (FIRST(Y+X) gives the same
-results).
+results).  The functions SECOND .. TENTH yield the second through the
+tenth part of their input argument.
 
 @end defun
 @c @node GET, LAST, FIRST, Lists
