@@ -90,6 +90,9 @@ They are used as in the following examples:
 @c @node ODE
 @c @unnumberedsec phony
 @defun ODE (equation,y,x)
+This no longer exists in Maxima.  The documentation is left here for
+historical purposes.
+
 a pot-pourri of Ordinary Differential solvers
 combined in such a way as to attempt more and more difficult methods
 as each fails. For example, the first attempt is with ODE2, so
