@@ -2838,7 +2838,7 @@
 ;;
 ;; Perhaps we should use A&S 8.1.6 or 8.1.7 combined with 8.3.4 is
 ;; what we want.
-(defun leg2fsimp (m v z) 
+(defun leg2fsimp (v m z) 
   (mul (power '$%e (mul m '$%pi '$%i))
        (power '$%pi (inv 2.))
        (gm (add m v 1.))
