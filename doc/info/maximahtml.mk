@@ -34,6 +34,7 @@ MAXIMAHTML += maxima_3.html
 MAXIMAHTML += maxima_40.html
 MAXIMAHTML += maxima_41.html
 MAXIMAHTML += maxima_42.html
+MAXIMAHTML += maxima_43.html
 MAXIMAHTML += maxima_4.html
 MAXIMAHTML += maxima_5.html
 MAXIMAHTML += maxima_6.html
