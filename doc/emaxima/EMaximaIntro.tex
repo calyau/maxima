@@ -636,10 +636,10 @@ For moving around in the code, \mx{} mode provides the following
 motion commands: 
 
 \begin{tabular}{p{\firstcol}p{\secondcol}}
-\texttt{C-c C-a} & Move to the beginning of the form.\\
-\texttt{C-c C-e} & Move to the end of the form.\\
-\texttt{C-c (} & Move to the beginning of the sexp.\\
-\texttt{C-c )} & Move to the end of the sexp.
+\texttt{M-C-a} & Move to the beginning of the form.\\
+\texttt{M-C-e} & Move to the end of the form.\\
+\texttt{M-C-b} & Move to the beginning of the sexp.\\
+\texttt{M-C-f} & Move to the end of the sexp.
 \end{tabular}
 
 \noindent
@@ -647,18 +647,19 @@ and the following miscellaneous commands:
 
 \begin{tabular}{p{\firstcol}p{\secondcol}}
 \texttt{C-c C-f} & Mark the current form.\\
-\texttt{C-c C-p} & Check the current region for balanced parentheses.\\
-\texttt{C-c C-g} & Check the current form for balanced parentheses.
+\texttt{C-c )} & Check the current region for balanced parentheses.\\
+\texttt{C-c C-)} & Check the current form for balanced parentheses.
 \end{tabular}
 
 \noindent
-\mx{} mode has the following completions commands:
+\mx{} mode has the following completion command:
 
 \begin{tabular}{p{\firstcol}p{\secondcol}}
 \texttt{M-TAB} & Complete the Maxima symbol as much as possible, providing
      a completion buffer if there is more than one possible
-     completion.\\
-\texttt{C-TAB} & Cycle through possible completions.
+     completion.  (If the variable
+     \texttt{maxima-use-dynamic-complete} is non-nil, then
+     \texttt{M-TAB} will cycle through possible completions.
 \end{tabular}
 
 Portions of the buffer can be sent to a Maxima process.  (If a process is 
@@ -725,8 +726,10 @@ parentheses.  The following commands are also available.
 
 \begin{tabular}{p{\firstcol}p{\secondcol}}
 \texttt{M-TAB} & Complete the Maxima symbol as much as possible, providing
-     a completion buffer if there is more than one possible completion.\\
-\texttt{C-TAB} & Cycle through possible completions.\\
+     a completion buffer if there is more than one possible
+     completion.  (If the variable
+     \texttt{maxima-use-dynamic-complete} is non-nil, then
+     \texttt{M-TAB} will cycle through possible completions.\\
 \texttt{C-M-TAB} & Complete the input line, based on previous input lines.\\
 \texttt{C-c C-d} & Get help on a Maxima topic.\\
 \texttt{C-c C-m} & Bring up the Maxima info manual.\\
@@ -894,7 +897,6 @@ assemble the package that the cell defines.\\
 \textbf{Key} & \textbf{Description}\\
 \hline
 \texttt{M-TAB} & Complete the \mx{} symbol.\\
-\texttt{C-TAB} & Cycle through completions of the \mx{} symbol.\\
 \end{tabular}
 
 \smallskip
@@ -967,7 +969,7 @@ assemble the package that the cell defines.\\
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{M-C-h} & Mark the form.\\
+\texttt{M-h} & Mark the form.\\
 \texttt{C-c)} & Check the region for balanced parentheses.\\
 \texttt{C-c C-)} & Check the form for balanced parentheses.
 \end{tabular}
