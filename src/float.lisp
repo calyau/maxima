@@ -575,13 +575,22 @@ One extra decimal digit in actual representation for rounding purposes.")
 			    FPPREC))
 	  (RETURN (FPSHIFT L (MINUS *M)))))))
 
+;; Compute (* L (expt d n)) where D is 2 or 10 depending on
+;; *decfp. Throw away an fractional part by truncating to zero.
 (DEFUN FPSHIFT (L N) 
-       ;; It seems that BIGLSH is broken so we replace it by ASH
-       ;(COND ((NULL *DECFP) (BIGLSH L N))
-       (COND ((NULL *DECFP) (ASH L N))
-	     ((GREATERP N 0.) (TIMES L (EXPT 10. N)))
-	     ((LESSP N 0.) (QUOTIENT L (EXPT 10. (MINUS N))))
-	     (T L))) 
+  (COND ((NULL *DECFP)
+	 (cond ((and (minusp n) (minusp l))
+		;; Left shift of negative number requires some
+		;; care. (That is, (truncate l (expt 2 n)), but use
+		;; shifts instead.)
+		(- (ash (- l) n)))
+	       (t
+		(ash l n))))
+	((GREATERP N 0.)
+	 (TIMES L (EXPT 10. N)))
+	((LESSP N 0.)
+	 (QUOTIENT L (EXPT 10. (MINUS N))))
+	(T L)))
 
 ;; Bignum LSH -- N is assumed (and declared above) to be a fixnum.
 ;; This isn't really LSH, since the sign bit isn't propagated when
@@ -1005,11 +1014,38 @@ One extra decimal digit in actual representation for rounding purposes.")
    (COND (MINUS (ADD A (MUL '$%I ($BFLOAT '$%PI)))) (T A)))
   NIL)) 
 
+;;; Computes the log of a bigfloat number.
+;;;
+;;; Uses the series
+;;;
+;;; log(1+x) = sum((x/(x+2))^(2*n+1)/(2*n+1),n,0,inf);
+;;;
+;;;
+;;;                  INF      x   2 n + 1
+;;;                  ====  (-----)
+;;;                  \      x + 2
+;;;          =  2     >    --------------
+;;;                  /        2 n + 1
+;;;                  ====
+;;;                  n = 0
+;;;
+;;;
+;;; which converges for x > 0.
+;;;
+;;; Note that FPLOG is given 1+X, not X.
+;;;
+;;; However, to aid convergence of the series, we scale 1+x until 1/e
+;;; < 1+x <= e.
+;;;
 (DEFUN FPLOG (X) 
        (PROG (OVER TWO ANS OLDANS TERM E) 
 	     (IF (NOT (GREATERP (CAR X) 0))
 		 (MERROR "Non-positive argument to FPLOG"))
-	     (SETQ E (FPE) OVER (FPQUOTIENT (FPONE) E) ANS 0)
+	     (SETQ E (FPE)
+		   OVER (FPQUOTIENT (FPONE) E)
+		   ANS 0)
+	     ;; Scale X until 1/e < X <= E.  ANS keeps track of how
+	     ;; many factors of E were used.  Set X to NIL if X is E.
 	     (DO () (NIL)
 		 (COND ((EQUAL X E) (SETQ X NIL) (RETURN NIL))
 		       ((AND (FPLESSP X E) (FPLESSP OVER X))
@@ -1020,21 +1056,27 @@ One extra decimal digit in actual representation for rounding purposes.")
 		       (T (SETQ ANS (ADD1 ANS))
 			  (SETQ X (FPQUOTIENT X e)))))
 	     (COND ((NULL X) (RETURN (INTOFP (ADD1 ANS)))))
-	     (SETQ X (FPDIFFERENCE  X (FPONE)) ANS (INTOFP ANS))
+	     ;; Prepare X for the series.  The series is for 1 + x, so
+	     ;; get x from our X.  TERM is (x/(x+2)).  X becomes
+	     ;; (x/(x+2))^2.
+	     (SETQ X (FPDIFFERENCE  X (FPONE))
+		   ANS (INTOFP ANS))
 	     (SETQ 
 	      X
 	      (FPEXPT (SETQ TERM
 			    (FPQUOTIENT X (FPPLUS X (SETQ TWO (INTOFP 2)))))
 		      2))
-	     (DO ((N 0 (f1+ N))) ((EQUAL ANS OLDANS))
+	     ;; Sum the series until the sum (in ANS) doesn't change
+	     ;; anymore.
+	     (DO ((N 1 (+ N 2)))
+		 ((EQUAL ANS OLDANS))
 	      (SETQ OLDANS ANS)
-	      (SETQ 
-	       ANS
-	       (FPPLUS
-		ANS
-		(FPTIMES* TWO (FPQUOTIENT TERM (INTOFP (f1+ (f* 2 N)))))))
+	      (SETQ ANS
+		    (FPPLUS
+		     ANS
+		     (FPQUOTIENT TERM (INTOFP N))))
 	      (SETQ TERM (FPTIMES* TERM X)))
-	     (RETURN ANS))) 
+	     (RETURN (fptimes* two ANS))))
 
 (DEFUN MABSBIGFLOAT (L) 
        (PROG (R) 
