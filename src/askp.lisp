@@ -57,8 +57,8 @@
 	  ((and is-integer evod-ans) '$no)
 	  ((eq (setq evod-ans
 		     (ask-prop x
-			       (if (eq even-odd '$even) '|even| '|odd|)
-			       '|number|))
+			       (if (eq even-odd '$even) 'even 'odd)
+			       'number))
 	       '$yes)
 	   (ask-declare x even-odd) '$yes)
 	  ((eq evod-ans '$no) 
@@ -74,7 +74,7 @@
     (if (and (mtimesp x) (equal (cadr x) -1)) (setq x (muln (cddr x) t)))
     (cond ((or (maxima-integerp x) (memalike x integerl)) '$yes)
 	  ((or ($numberp x) (nonintegerp x) (memalike x nonintegerl)) '$no)
-	  ((eq (setq integer-ans (ask-prop x '|integer| nil)) '$yes)
+	  ((eq (setq integer-ans (ask-prop x 'integer nil)) '$yes)
 	   (ask-declare x '$integer) '$yes)
 	  ((eq integer-ans '$no)
 	   (ask-declare x '$noninteger) '$no)
@@ -102,8 +102,8 @@
 		  `((mtext) |Is  | ,object 
 		    ,(if (zl-member (getcharn property 1)
 				    '(#\a #\e #\i #\o #\u))
-			 '|  an |
-			 '|  a |)
+			 '|  AN |
+			 '|  A |)
 		    ,property ,@fun-or-number |?|)
 		  nil))
     (cond 
