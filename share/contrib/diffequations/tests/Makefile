@@ -2,6 +2,7 @@ MAXIMA=../../../../maxima-local
 
 TEST_FILES = rtestode_murphy1.mac rtestode_murphy2.mac \
 	rtestode_kamke_1_1.mac rtestode_kamke_1_2.mac rtestode_kamke_1_3.mac \
+	rtestode_kamke_1_4.mac rtestode_kamke_1_5.mac rtestode_kamke_1_6.mac \
 	rtest_sym.mac rtest_sym2.mac \
 	rtest_ode1_riccati.mac rtest_ode1_abel.mac
 
