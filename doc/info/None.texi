@@ -694,3 +694,191 @@ OPTIMIZE) and puts in the MODE_DECLAREations needed to COMPILE
 correctly. (This can be done by hand, of course).  The demo will only
 run in a fresh macsyma.
 
+@c @node ODE
+@c @unnumberedsec phony
+@defun ODE (equation,y,x)
+This no longer exists in Maxima.  The documentation is left here for
+historical purposes.
+
+a pot-pourri of Ordinary Differential solvers
+combined in such a way as to attempt more and more difficult methods
+as each fails. For example, the first attempt is with ODE2, so
+therefore, a user using ODE can assume he has all the capabilities of
+ODE2 at the very beginning and if he has been using ODE2 in programs
+they will still run if he substitutes ODE (the returned values, and
+calling sequence are identical).
+In addition, ODE has a number of user features which can assist an
+experienced ODE solver if the basic system cannot handle the equation.
+The equation is of the same form as required for ODE2 (which see) and
+the y and x are dependent and independent variables, as with ODE2.
+For more details, do PRINTFILE(ODE,USAGE,SHARE); .
+
+@end defun
+@c @node ZRPOLY
+@c @unnumberedsec phony
+@defun ZRPOLY
+ - This is no longer available in Maxima. See ALLROOTS for a function
+   to compute the roots of a polynomial.
+
+@c @node ZSOLVE
+@c @unnumberedsec phony
+@defun ZSOLVE
+ This is not available with Maxima anymore.  Documentation is left for
+ historical purposes.
+
+ - For those who can make use of approximate numerical
+solutions to problems, there is a package which calls a routine which
+has been translated from the IMSL fortran library to solve N
+simultaneous non-linear equations in N unknowns.  It uses black-box
+techniques that probably aren't desirable if an exact solution can be
+obtained from one of the smarter solvers (LINSOLVE, ALGSYS, etc).  But
+for things that the other solvers don't attempt to handle, this can
+probably give some very useful results.  For documentation, do
+PRINTFILE("zsolve.usg");.  For a demo do
+batch("zsolve.mc")$
+
+@end defun
+@section DCADRE
+The following is obsolete and does not exist in Maxima 5.9.  We leave
+the documentation here for historical purposes.
+
+To make an interface to fortran
+libraries in the current Maxima look at the examples in
+"maxima/src/fortdef.lsp"
+ - The IMSL version of Romberg integration is now available in
+Maxima.  For documentation, Do PRINTFILE(DCADRE,USAGE,IMSL1); .  For
+a demo, do batch("dcadre.mc");
+This is a numerical integration package using cautious, adaptive
+Romberg extrapolation.
+The DCADRE package is written to call the IMSL fortran library routine
+DCADRE. This is documentation for that program. Send bugs/comments to
+KMP
+To load this package, do 
+@example
+  LOADFILE("imsl")$
+@end example
+For a demo of this package, do
+@example
+  batch("dcadre.mc");
+@end example
+The worker function takes the following syntax:
+IMSL_ROMBERG(fn,low,hi)
+where fn is a function of 1 argument; low and hi should be the lower and
+upper bounds of integration. fn must return floating point values.
+IMSL_ROMBERG(exp,var,low,hi)
+  where exp should be integrated over the range var=low to hi. The result
+  of evaluating exp must always be a floating point number.
+FAST_IMSL_ROMBERG(fn,low,hi)
+  This function does no error checking but may achieve a speed gain over
+  the IMSL_ROMBERG function. It expects that fn is a Lisp function (or
+  translated Maxima function) which accepts a floating point argument 
+  and that it always returns a floating point value.
+           
+Returns either
+ [SUCCESS, answer, error] where answer is the result of the integration and
+  error is the estimated bound on the absolute error of the output, DCADRE,
+  as described in PURPOSE below.
+or
+ [WARNING, n, answer, error] where n is a warning code, answer is the answer,
+  and error is the estimated bound on the absolute error of the output, DCADRE,
+  as described in PURPOSE below. The following warnings may occur:
+     65 = One or more singularities were successfully handled.
+     66 = In some subinterval(s), the estimate of the integral was accepted
+          merely because the estimated error was small, even though no regular
+          behavior was recognized.
+or
+ [ERROR, errorcode] where error code is the IMSL-generated 
+   error code. The following error codes may occur:
+     131 = Failure due to insufficient internal working storage.
+     132 = Failure. This may be due to too much noise in function 
+           (relative to the given error requirements) or due to an
+           ill-behaved integrand.
+     133 = RERR is greater than 0.1 or less than 0.0 or is too small
+           for the precision of the machine.
+  
+The following flags have an influence upon the operation of IMSL_ROMBERG --
+
+ROMBERG_AERR [Default 1.0E-5] -- Desired absolute error in answer.
+
+ROMBERG_RERR [Default 0.0] -- Desired relative error in the answer.
+
+Note: If IMSL signals an error, a message will be printed on the user's
+        console stating the nature of the error. (This error message 
+        may be supressed by setting IMSLVERBOSE to FALSE.)
+
+Note: Because this uses a translated Fortran routine, it may not be
+        recursively invoked. It does not call itself, but the user should
+        be aware that he may not type ^A in the middle of an IMSL_ROMBERG
+        computation, begin another calculation using the same package,
+        and expect to win -- IMSL_ROMBERG will complain if it was already
+        doing one project when you invoke it. This should cause minimal
+        problems.
+
+Purpose (modified version of the IMSL documentation)
+----------------------------------------------------
+
+DCADRE attempts to solve the following problem: Given a real-valued 
+function F of one argument, two real numbers A and B, find a number
+
+DCADRE such that:
+
+@example
+|   / B               |        [                              | / B      | ]
+|   [                 |        [                              | [        | ]
+|   I F(x)dx - DCADRE | <= max [ ROMBERG_AERR, ROMBERG_RERR * | I F(x)dx | ]
+|   ]                 |        [                              | ]        | ]
+|   / A               |        [                              | / A      | ]
+@end example
+Algorithm (modified version of the IMSL documentation)
+
+This routine uses a scheme whereby DCADRE is computed as the sum of
+estimates for the integral of F(x) over suitably chosen subintervals of
+the given interval of integration. Starting with the interval of
+integration itself as the first such subinterval, cautious Romberg
+extrapolation is used to find an acceptable estimate on a given
+subinterval. If this attempt fails, the subinterval is divided into two
+subintervals of equal length, each of which is considered separately.
+Programming Notes (modified version of the IMSL documentation)
+
+@itemize @bullet
+@item
+1. DCADRE (the translated-Fortran base for IMSL_ROMBERG) can, in many cases,
+   handle jump discontinuities and certain algebraic discontinuities. See 
+   reference for full details.
+@item
+2. The relative error parameter ROMBERG_RERR must be in the interval [0.0,0.1].
+   For example, ROMBERG_RERR=0.1 indicates that the estimate of the intergral 
+   is to be correct to one digit, where as ROMBERG_RERR=1.0E-4 calls for four
+   digits of accuracy. If DCADRE determines that the relative accuracy
+   requirement cannot be satisfied, IER is set to 133 (ROMBERG_RERR should be
+   large enough that, when added to 100.0, the result is a number greater than
+   100.0 (this will not be true of very tiny floating point numbers due to
+   the nature of machine arithmetic)).
+@item
+3. The absolute error parameter, ROMBERG_AERR, should be nonnegative. In
+   order to give a reasonable value for ROMBERG_AERR, the user must know 
+   the approximate magnitude of the integral being computed. In many cases,
+   it is satisfactory to use AERR=0.0. In this case, only the relative error
+   requirement is satisfied in the compuatation.
+@item
+4. We quote from the reference, ``A very cautious man would accept DCADRE 
+   only if IER [the warning or error code] is 0 or 65. The merely reasonable
+   man would keep the faith even if IER is 66. The adventurous man is quite 
+   often right in accepting DCADRE even if the IER is 131 or 132.'' Even when
+   IER is not 0, DCADRE returns the best estimate that has been computed.
+@end itemize
+
+For references on this technique, see
+de Boor, Calr, ``CADRE: An Algorithm for Numerical Quadrature,''
+  Mathematical Software (John R. Rice, Ed.), New York, Academic Press,
+  1971, Chapter 7.
+
+@section GAMALG
+ - A Dirac gamma matrix algebra program which takes traces of
+and does manipulations on gamma matrices in n dimensions.  It may be
+loaded into Maxima by 
+LOADFILE("gam");
+A preliminary manual is contained in the file SHARE;GAM USAGE and may
+be printed using
+PRINTFILE(GAM,USAGE,SHARE);
+
