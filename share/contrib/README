@@ -39,3 +39,5 @@ pdiff/          This is Barton Willis's pdiff package from
 
 rand/           Code from books and papers by Richard H. Rand
 		(http://tam.cornell.edu/Rand.html)
+
+unit/		Beginnings of a new unit package by Cliff Yapp
