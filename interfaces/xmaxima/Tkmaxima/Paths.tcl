@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.5 2003-01-26 21:43:31 amundson Exp $
+#       $Id: Paths.tcl,v 1.6 2003-02-09 23:06:31 amundson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -216,10 +216,29 @@ proc setMaxDir {} {
 	lappend auto_path $dir
     }
 
+    # jfa: Windows 98 users were seeing long startup times because
+    # MAXIMA_USERDIR defaults to HOME, which is usually C:\.
+    # Make the default something else under Windows 98 as a workaround.
+    # This is ugly.
+    if {$tcl_platform(os) == "Windows 95"} {
+	if {![info exists env(MAXIMA_USERDIR)]} {
+	    set env(MAXIMA_USERDIR) "$maxima_priv(maxima_prefix)/user"
+	}
+    }
+
     # jfa: extend path so that gcl can see gcc in windows package
     # I don't know that this is the best place for this
     if {$tcl_platform(platform) == "windows"} {
-	set env(PATH) "$maxima_priv(maxima_prefix)\\bin\\;$env(PATH)"
+	# jfa: This is an attempt to get a working path designation
+	# on various Windows versions.
+	if {$tcl_platform(os) == "Windows 95"} {
+	    # Windows 95 or Windows 98
+	    regsub -all {/} "$maxima_priv(maxima_prefix)\\BIN" {\\} maxbinpath
+	} else {
+	    # Other versions of Windows
+	    set maxbinpath "$maxima_priv(maxima_prefix)/bin"
+	}
+	set env(PATH) "$maxbinpath;$env(PATH)"
     }
 }
 
