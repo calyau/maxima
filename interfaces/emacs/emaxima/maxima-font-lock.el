@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.8 $
-;; $Date: 2002-09-27 15:52:58 $
+;; $Revision: 1.9 $
+;; $Date: 2003-05-06 03:11:38 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -1390,6 +1390,46 @@
           nil t)))
 
 (add-hook 'maxima-mode-hook 'maxima-font-setup)
+
+;;; A function to fontify the preamble in a Maxima process buffer
+(defvar maxima-preamble-fontlock t)
+
+(defun maxima-match-preamble (limit)
+  "Used to fontify the preamble."
+  (if maxima-preamble-fontlock
+      (progn
+        (setq maxima-preamble-fontlock nil)
+        (let ((beg (point-min)) 
+              (end))
+          (if (search-forward "(C1)" limit)
+              (progn
+                (forward-line -1)
+                (setq end (maxima-line-end-position))
+                (store-match-data (list beg end))
+                t))))
+    nil))
+
+(defvar inferior-maxima-font-lock-keywords-1
+  (append maxima-font-lock-keywords-1
+    '((maxima-match-preamble (0 font-lock-string-face t t)))))
+
+(defvar inferior-maxima-font-lock-keywords-2
+  (append maxima-font-lock-keywords-2
+    '((maxima-match-preamble (0 font-lock-string-face t t)))))
+
+(defvar inferior-maxima-font-lock-keywords-3
+  (append maxima-font-lock-keywords-3
+    '((maxima-match-preamble (0 font-lock-string-face t t)))))
+
+(defvar inferior-maxima-font-lock-keywords inferior-maxima-font-lock-keywords-1
+  "Default expressions to highlight in Maxima mode.")
+
+(defun inferior-maxima-font-setup ()
+  (make-local-variable 'font-lock-defaults)
+  (setq font-lock-defaults 
+        '((inferior-maxima-font-lock-keywords inferior-maxima-font-lock-keywords-1 
+           inferior-maxima-font-lock-keywords-2 inferior-maxima-font-lock-keywords-3)
+          nil t)))
 
 ;;; now for the symbols
 
