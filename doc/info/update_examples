@@ -1,0 +1,178 @@
+#!/usr/bin/perl -w
+
+use POSIX qw(tmpnam);
+
+use Text::Tabs;
+
+$maxima_command = $ENV{"MAXIMA_EXAMPLE_COMMAND"} || "../../maxima-local" ;  
+
+$line_cnt = 0;
+$error_cnt = 0;
+$warning_cnt = 0;
+
+$example_input_beg = '^@c ===beg===';
+$example_input_end = '^@c ===end===';
+
+#$example_output_beg = '^@example[ \t]*\n';
+$example_output_end = '^@end[ \t]+example[ \t]*\n';
+
+$in_example_input  = 0;
+$in_example_output = 0;
+
+@example_input_buf  = ();
+@example_output_buf = ();
+@example_result_buf = ();
+
+sub rem_codes {
+
+    my ($res);
+    
+    $res = $_[0];
+
+    $res =~ s/\cB//g;
+    $res =~ s/\cE//g;
+    
+    $res = expand($res);
+
+    return $res;
+
+};
+
+while (<STDIN>) {
+
+    $line_cnt++;
+
+    if ($in_example_input) {
+
+	if ($_ =~ $example_input_end) {
+	
+	    print $_;
+	    $in_example_input  = 0;
+	    $in_example_output = 1;
+	
+	} elsif ($_ =~ /\@c */) {
+	
+	    print $_;
+	    push (@example_input_buf, substr($_, 3));
+	    
+	} else {
+	
+	    $warning_cnt++;
+	    print STDERR "Warning: line $line_cnt - example input lines must begin with \'\@c \'.\n";
+	    print $_;
+	
+	} ;   
+    
+    } elsif ($in_example_output) {
+    
+	if (/$example_output_end/) {
+
+	    $tempf = tmpnam();
+
+	    $com = "$maxima_command > $tempf <<EOF\n"; 
+	    foreach $l (@example_input_buf) { $com .= $l };
+	    $com .= "EOF";
+	    
+	    if (system($com)) { 
+		
+		$error_cnt++; 
+		print STDERR "Error: line $line_cnt - maxima invocation failed.\n";
+		print @example_output_buf ;
+		print "\@end example\n" ;
+		
+	    } else {
+	    
+	        if (open(RESULT, $tempf)) {
+	        
+		    @example_result_buf = <RESULT>;
+		    close RESULT;
+		    if (!unlink($tempf)) {
+		    	$error_cnt++; 
+		    	print STDERR "Error: line $line_cnt - can't delete temp file $tempf\n";
+		    };
+	    
+		    print "\@example\n";
+		    
+		    until (($#example_result_buf == -1) or ($example_result_buf[0] =~ /^\cB/)) { 
+			shift(@example_result_buf) 
+		    };
+		    
+		    until (($#example_result_buf == -1) or ($#example_input_buf == -1))  {
+		     
+		        until (($#example_result_buf == -1) or ($example_result_buf[0] =~ /\cE/)) {
+			    print rem_codes($example_result_buf[0]);
+			    shift(@example_result_buf);
+			};
+			
+			if ($#example_input_buf != -1) { 
+			    print rem_codes(substr($example_result_buf[0],0,-1) . $example_input_buf[0]);
+			    shift(@example_input_buf);
+			    shift(@example_result_buf); 
+			};
+			
+			until (($#example_input_buf == -1) or ($example_input_buf[0] =~ /^[^ \t]/)) { 
+			    print rem_codes($example_input_buf[0]);
+			    shift(@example_input_buf); 
+			};
+
+			until (($#example_result_buf == -1) or ($example_result_buf[0] =~ /^\cB/)) { 
+			    print rem_codes($example_result_buf[0]);
+			    shift(@example_result_buf); 
+			};
+		    
+		    } ;
+		    
+		    print "\n\@end example\n";
+		
+		} else {
+
+		    $error_cnt++; 
+		    print STDERR "Error: line $line_cnt - can't open temp file $tempf\n";
+		    print @example_output_buf ;
+		    print "\@end example\n" ;
+		
+		} ;
+	    
+	    } ;
+
+            close RESULT;
+
+	    @example_result_buf = ();	    
+	    @example_input_buf  = ();
+	    @example_output_buf = ();
+	    $in_example_output = 0;
+	
+	} else {
+
+	    push (@example_output_buf, $_);
+	
+	} ;
+        
+    } elsif (/$example_input_beg/) {
+    
+	print $_;
+	$in_example_input = 1;
+    
+    } else {
+    
+	print $_;
+    
+    } ;
+
+} ; 
+
+if ($in_example_input) {
+
+    $error_cnt++;
+    print STDERR "Error: line $line_cnt - EOF while end of example input is expected.\n";
+ 
+} elsif ($in_example_output) {
+
+    $error_cnt++;
+    print STDERR "Error: line $line_cnt - EOF while end of example is expected.\n";
+    print @example_output_buf ;
+
+} ;
+
+exit $error_cnt;
+

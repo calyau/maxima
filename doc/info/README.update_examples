@@ -1,0 +1,82 @@
+
+Perl script `update_examples' is intended to updated 
+examples in the Maxima texinfo documentation.
+
+ is a filter - it reads standard input 
+and direst result to standard output:
+
+./update_examples < original.texi > updated.texi
+
+The script scans input texinfo file for 
+constructions of the form:
+
+@c ===beg===
+@c expand((x+y)^2);
+@c factor(%);
+@c ===end===
+@example
+(%i1) expand((x+y)^2);
+                          2            2
+(%o1)                    y  + 2 x y + x
+(%i2) factor(%);
+                                   2
+(%o2)                       (y + x)
+
+@end example
+
+Lines between `@c ===beg===' and `@c ===end===' 
+are Maxima commands (without leftmost `@c ').
+The script extracts this commands, passes them to
+Maxima and inserts resulting output between
+`@example' and `@end example'.
+
+Maxima commands between `@c ===beg===' and `@c ===end==='
+must obey some simple rules:
+
+
+1. Each command must begin at 4th column right
+   after `@c ' without extra spaces between `@c '
+   and the command:
+
+@c expand((x+y)^2);     - is right
+
+@c  expand((x+y)^2);    - is wrong  
+
+
+2. If command spans several lines then second and
+   all subsequent lines must have alt least one
+   extra space between `@c ' and the command.
+   
+Wrong:   
+
+@c (x +
+@c y +
+@c z)^3;
+
+Right:
+
+@c (x +
+@c  y +
+@c  z)^3;
+
+
+Examples without preceding `@c ===beg==='/`@c ===end==='
+remain unchanged.
+
+By default `update_examples' calls local Maxima
+script `../../maxima-local' but this can be changed
+by setting MAXIMA_EXAMPLE_COMMAND environment
+variable.
+
+IMPORTANT: `update_examples' script works only 
+in combination with special Maxima initialization 
+file `maxima-init.lisp'.  This init file ensures
+that output is no more than 65 characters wide
+by setting `linel:65;' and helps to identify
+Maxima prompts.
+
+
+Vadim V. Zhytnikov  <vvzhy@mail.ru>
+
+Jan 12, 2005
+
