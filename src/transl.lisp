@@ -103,6 +103,7 @@
 (PUTPROP '$TRANSBIND #'OBSOLETE-VARIABLE 'ASSIGN)
 
 (defvar *untranslated-functions-called* nil)
+(declaim (special *declared-translated-functions*))
 
 (DEFMVAR $TR_SEMICOMPILE NIL
 	 "If TRUE TRANSLATE_FILE and COMPFILE output forms which will~
@@ -534,7 +535,6 @@ APPLY means like APPLY.")
 					(MACRO 'MMACRO)
 					(FUNC 'MEXPR)))
 			  OUT-FORMS)))
-	     #+lispm
 	     ;;once a function has been translated we want to make sure mfunction-call is eliminated.
 	     (progn (remprop (car desc-header) 'undefined-warnp)
 		    (setf (get (car desc-header) 'once-translated) "I was once translated"))
@@ -1005,11 +1005,13 @@ APPLY means like APPLY.")
        (TRANSLATE `((MPROGN) ,@(CDDR FORM))))
    FORM))
 
-(defmspec $declare_translated ( fns) (setq fns (cdr fns))
-    (sloop for v in fns
-	 when (symbolp v)do (setf (get v 'once-translated) t)
-	 else do (merror "Declare_translated needs symbolic args")))
-
+(defmspec $declare_translated (fns)
+  (setq fns (cdr fns))
+  (loop for v in fns
+     when (symbolp v)
+     do (setf (get v 'once-translated) t)
+     (pushnew v *declared-translated-functions*)
+     else do (merror "Declare_translated needs symbolic args")))
 
 (DEF%TR $DECLARE (FORM)
   (DO ((L (CDR FORM) (CDDR L)) (NL))
