@@ -1441,7 +1441,7 @@ which is in a comment which begins on a previous line."
                    cw
                  (completing-read (concat "Maxima help (" cw "): ") 
                                           maxima-symbols nil nil nil nil cw))))
-    (if (member subj maxima-symbols)
+    (if (member (list subj) maxima-symbols)
         (maxima-get-info-on-subject subj)
       (message (concat "No help for \"" subj "\"")))))
 
