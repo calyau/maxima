@@ -14,25 +14,25 @@
 (declare-top
  ;; evaluate for declarations
  (special
-  ^w			    ;If T, then no output goes to the console.
-  ^r				   ;If T, then output also goes to any
-					;file opened by UWRITE.  People learning
-					;Lisp: there are better ways of doing IO
-					;than this -- don't copy this scheme.
-  smart-tty			   ;LOADER sets this flag.  If T, then
-					;then this console can do cursor movement
-					;and equations can be drawn in two dimensions.
-  rubout-tty	       ;If T, then console either selectively erasable
-					;or is a glass tty.  Characters can be rubbed
-					;out in either case.
-  scrollp			 ;If T, then the console is scrolling.
-					;This should almost always be equal to
-					;(NOT SMART-TTY) except when somebody has
-					;done :TCTYP SCROLL on a display console.
-					;This is the %TSROL bit of the TTYSTS word.
+  ^w			;If T, then no output goes to the console.
+  ^r			;If T, then output also goes to any
+			;file opened by UWRITE.  People learning
+			;Lisp: there are better ways of doing IO
+			;than this -- don't copy this scheme.
+  smart-tty		;LOADER sets this flag.  If T, then
+			;then this console can do cursor movement
+			;and equations can be drawn in two dimensions.
+  rubout-tty	        ;If T, then console either selectively erasable
+			;or is a glass tty.  Characters can be rubbed
+			;out in either case.
+  scrollp		;If T, then the console is scrolling.
+			;This should almost always be equal to
+			;(NOT SMART-TTY) except when somebody has
+			;done :TCTYP SCROLL on a display console.
+			;This is the %TSROL bit of the TTYSTS word.
 
-  linel					;Width of screen.
-  ttyheight				;Height of screen.
+  linel			;Width of screen.
+  ttyheight		;Height of screen.
 
   width height depth maxht maxdp level size lop rop break right
   bkpt bkptwd bkptht bkptdp bkptlevel bkptout lines 
