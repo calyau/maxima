@@ -1,4 +1,5 @@
 binary-acl6/maxima.dxl : maxima-package.lisp
+binary-acl6/maxima.dxl : autoconf-variables.lisp
 binary-acl6/maxima.dxl : nregex.lisp
 binary-acl6/maxima.dxl : cl-info.lisp
 binary-acl6/maxima.dxl : sloop.lisp
@@ -166,6 +167,7 @@ binary-acl6/maxima.dxl : csimp2.lisp
 binary-acl6/maxima.dxl : zero.lisp
 binary-acl6/maxima.dxl : logarc.lisp
 binary-acl6/maxima.dxl : rpart.lisp
+binary-acl6/maxima.dxl : server.lisp
 binary-acl6/maxima.dxl : macsys.lisp
 binary-acl6/maxima.dxl : mload.lisp
 binary-acl6/maxima.dxl : suprv1.lisp
@@ -281,6 +283,5 @@ binary-acl6/maxima.dxl : mactex.lisp
 binary-acl6/maxima.dxl : plot.lisp
 binary-acl6/maxima.dxl : autol.lisp
 binary-acl6/maxima.dxl : max_ext.lisp
-binary-acl6/maxima.dxl : autoconf-variables.lisp
 binary-acl6/maxima.dxl : init-cl.lisp
 
