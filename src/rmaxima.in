@@ -1,0 +1,11 @@
+#!@POSIX_SHELL@
+# -*- Shell-script -*-
+
+RLWRAP=rlwrap
+type $RLWRAP > /dev/null 2>&1
+if [ "$?" -ne "0" ]; then
+    echo "$0 error: rmaxima requires rlwrap." >& 1
+    echo "rlwrap is available from <http://utopia.knoware.nl/~hlub/uck/rlwrap/>." >& 1
+    exit 1
+fi
+exec rlwrap maxima "$@"
