@@ -39,6 +39,7 @@
 \newdimen\maximasessionbaselineskip
 \maximasessionbaselineskip = \baselineskip %16pt
 
+
 %% For a TeX session
 \newdimen\maximatexsessionbaselineskip
 \maximatexsessionbaselineskip = \baselineskip %16pt
@@ -50,6 +51,13 @@
   \def\maximainputcolor{black}
   \def\maximaoutputcolor{black}
 }
+
+%% For the pre-output
+\newdimen\maximasessionpretexskip
+\maximasessionpretexskip = 8pt
+\newdimen\maximapostpretexskip
+\maximapostpretexskip = 8pt
+
 
 %% Some things are handled differently when pdflatex is used.
 
@@ -482,7 +490,7 @@
 {\obeyspaces\global\let =\ }
 {\catcode`\|=0 \catcode`\\=12 %
 |obeylines|gdef|dom@ximatexsessionverbatim#1.#2\\{|par|textcolor{|maximapromptcolor}{(C#1)}#2|par|endgroup}
-|obeylines|gdef|dom@ximasessionpreprompt#1\\{|par #1|par|endgroup}
+|obeylines|gdef|dom@ximasessionpreprompt#1\\{|par|parskip=|maximasessionpretexskip #1|par|endgroup|vspace{|maximapostpretexskip}}
 }
 
 \def\m@ximasessionoutput#1.#2\\{\textcolor{\maximapromptcolor}{(D#1)} \[ #2 \]\endgroup}
