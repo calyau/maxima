@@ -664,3 +664,100 @@ true$
 
 ratsimp(hgfred([1/2,-1/2],[3/2],zp));
 (sqrt(1-zp)*sqrt(zp)+asin(sqrt(zp)))/(2*sqrt(zp))$
+
+/*
+ * Tests for step7
+ */
+
+/*
+ * F(s,s+1/2;2*s+2;z) can be derived from F(s,s+1/2;2*s+1;z) via 
+ * A&S 15.2.6:
+ *
+ * F(a,b;c+n;z) = poch(c,n)/poch(c-a,n)/poch(c-b,n)*(1-z)^(c+n-a-b)
+ *                 *diff((1-z)^(a+b-c)*F(a,b;c;z)),z,n)
+ *
+ * F(s,s+1/2;2*s+2;z)
+ *    =  (2*s+1)/(s+1)/(s+1/2)*(1-z)^(3/2)
+ *         *diff((1-z)^(-1/2)*F(s,s+1/2;2*s+1;z),z,1)
+ *
+ * (Tests step-7-pm)
+ */
+hgfred([s,s+1/2],[2*s+2],z) 
+  - (2*s+1)/(s+1)/(s+1/2)*(1-z)^(3/2)
+     *diff((1-z)^(-1/2)*hgfred([s,s+1/2],[2*s+1],z),z,1);
+0$
+
+hgfred([s,s+1/2],[2*s+2],z) - hgfred([s+1/2,s],[2*s+2],z);
+0$
+
+/*
+ * F(s+2,s+1/2;2*s+1;z) can be derived from F(s,s+1/2;2*s+1;z) via 
+ * A&S 15.2.3:
+ *
+ * F(a+n,b;c;z) = z^(1-a)/poch(a,n)*diff(z^(a+n-1)*fun,z,n)
+ *
+ * F(s+2,s+1/2;2*s+1;z)
+ *     = z^(1-s)/(s*(s+1))*diff(z^(s+1)*F(s,s+1/2;2*s+1;z),z,2)
+ *
+ * (Tests step-7-pp)
+ */
+hgfred([s+2,s+1/2],[2*s+1],z)
+  - z^(1-s)/s/(s+1)*diff(z^(s+1)*hgfred([s,s+1/2],[2*s+1],z),z,2);
+0$
+
+hgfred([s+2,s+1/2],[2*s+1],z)-hgfred([s+1/2,s+2],[2*s+1],z);
+0$
+
+/*
+ * F(s-1,s+1/2;2*s+1;z) can be derived from F(s,s+1/2;2*s+1;z) via 
+ * A&S 15.2.5:
+ *
+ * F(a-n,b;c;z) = 1/poch(c-a,n)*z^(1+a-c)*(1-z)^(c+n-a-b)
+ *                 *diff(z^(c-a+n-1)*(1-z)^(a+b-c)*F(a,b;c;z),z,n)
+ *
+ * F(s-1,s+1/2;2*s+1;z)
+ *     = 1/(s+1)*z^(-s)*(1-z)^(3/2)
+ *        *diff(z^(s+1)*(1-z)^(-1/2)*F(s,s+1/2;2*s+1;z),z,1)
+ *
+ * (Tests step-7-mp)
+ */
+hgfred([s-1,s+1/2],[2*s+1],z)
+ - 1/(s+1)*z^(-s)*(1-z)^(3/2)
+    *diff(z^(s+1)*(1-z)^(-1/2)*hgfred([s,s+1/2],[2*s+1],z),z,1);
+0$
+
+hgfred([s-1,s+1/2],[2*s+1],z) - hgfred([s+1/2,s-1],[2*s+1],z);
+0$
+
+/*
+ * F(s-1,s+1/2;2*s+2;z) can be derived from F(s,s+1/2;2*s+1;z) via 
+ * A&S 15.2.5:
+ *
+ * F(a-n,b;c;z) = 1/poch(c-a,n)*z^(1+a-c)*(1-z)^(c+n-a-b)
+ *                 *diff(z^(c-a+n-1)*(1-z)^(a+b-c)*F(a,b;c;z),z,n)
+ *
+ * and A&S 15.2.6:
+ *
+ * F(a,b;c+n;z) = poch(c,n)/poch(c-a,n)/poch(c-b,n)*(1-z)^(c+n-a-b)
+ *                 *diff((1-z)^(a+b-c)*F(a,b;c;z)),z,n)
+ *
+ *
+ * F(s-1,s+1/2;2*s+2;z)
+ *    = 1/(s+2)*z^(-s-1)*(1-z)^(5/2)
+ *       *diff(z^(s+2)*(1-z)^(-3/2)*F(s,s+1/2;2*s+2;z)),z,1)
+ *
+ * F(s,s+1/2;2*s+2;z)
+ *    =  (2*s+1)/(s+1)/(s+1/2)*(1-z)^(3/2)
+ *       *diff((1-z)^(-1/2)*F(s,s+1/2;2*s+1;z),z,1)
+ * (Tests step-7-mm)
+ */
+hgfred([s-1,s+1/2],[2*s+2],z)
+ - 1/(s+2)*z^(-s-1)*(1-z)^(5/2)
+   *diff(z^(s+2)*(1-z)^(-3/2)
+         *(2*s+1)/(s+1)/(s+1/2)*(1-z)^(3/2)
+          *diff((1-z)^(-1/2)*hgfred([s,s+1/2],[2*s+1],z),z,1)
+         ,z,1);
+0$
+
+hgfred([s-1,s+1/2],[2*s+2],z) - hgfred([s+1/2,s-1],[2*s+2],z);
+0$
