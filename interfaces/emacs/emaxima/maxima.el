@@ -1592,41 +1592,34 @@ For use when the process asks a question."
       (goto-char (point-max)))
     (concat qn " ")))
 
-;(defun maxima-get-lisp-end (string)
-;  (with-temp-buffer
-;    (insert string)
-;    (beginning-of-buffer)
-;    (search-forward ":lisp")
-;    (forward-sexp)
-;    (- (point) 1)))
-
-(defun maxima-get-lisp-end (string)
+(defun maxima-send-block (stuff)
+  "Send a block of code to Maxima."
+  (maxima-start)
   (let* ((tmpfile (maxima-make-temp-name))
          (tmpbuf (get-buffer-create tmpfile))
-         (end))
+         (pt))
     (save-excursion
       (set-buffer tmpbuf)
       (make-local-hook 'kill-buffer-hook)
       (setq kill-buffer-hook nil)
-      (insert string)
+      (insert stuff)
       (beginning-of-buffer)
-      (search-forward ":lisp")
-      (forward-sexp)
-      (setq end (- (point) 1)))
-    (kill-buffer tmpbuf)
-    end))
-
-(defun maxima-send-block (stuff)
-  "Send a block of code to Maxima."
-  (maxima-start)
-  (while (or
-          (string-match "[$;]" stuff)
-          (eq (string-match "[ \n]*:lisp" stuff) 0))
-    (if (eq (string-match "[ \n]*:lisp" stuff) 0)
-        (setq end (maxima-get-lisp-end stuff))
-      (setq end (1+ (string-match "[$;]" stuff))))
-    (maxima-single-string (substring stuff 0 end))
-    (setq stuff (substring stuff end))))
+      (while (string-match "[$;]\\|:lisp"
+                 (buffer-substring-no-properties (point) (point-max)))
+        (maxima-forward-over-comment-whitespace)
+        (setq pt (point))
+        (if (looking-at ":lisp")
+            (progn
+              (search-forward ":lisp")
+              (forward-sexp)
+              (maxima-single-string 
+               (buffer-substring-no-properties pt (point)))
+              (setq pt (point)))
+          (maxima-end-of-form)
+          (maxima-single-string 
+           (buffer-substring-no-properties pt (point)))
+          (setq pt (point))))
+      (kill-buffer tmpbuf))))
 
 ;;; Sending information to the process should be done through these
 ;; next four commands
