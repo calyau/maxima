@@ -158,12 +158,13 @@ The next time the file is loaded, it will then be in EMaxima mode"
 (defun emaxima-tex-on ()
   (maxima-start)
   (when emaxima-tex-lisp-file
-    (maxima-single-string "block(display2d:emaxima, linenum:linenum-1)$")))
+    (maxima-single-string 
+       "block(origdisplay:display2d, display2d:emaxima, linenum:linenum-1)$")))
 
 (defun emaxima-tex-off ()
   (maxima-start)
   (when emaxima-tex-lisp-file
-    (maxima-single-string "block(display2d:true, linenum:linenum-1)$")))
+    (maxima-single-string "block(display2d:origdisplay, linenum:linenum-1)$")))
 
 ;;; Which type of cell, if any, is the point in.
 
