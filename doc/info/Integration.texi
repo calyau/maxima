@@ -525,8 +525,7 @@ ROMBERG will return a result if the relative difference in successive
 approximations is less than ROMBERGTOL.  It will try halving the
 stepsize ROMBERGIT times before it gives up.  The number of iterations
 and function evaluations which ROMBERG will do is governed by
-ROMBERGABS and ROMBERGMIN, do DESCRIBE(ROMBERGABS,ROMBERGMIN); for
-details.
+ROMBERGABS and ROMBERGMIN.
 ROMBERG may be called recursively and thus can do double and triple
 integrals.
 @example
