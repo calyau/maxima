@@ -2028,19 +2028,69 @@
 	 (erfred a c z))
 	(t (gammareds a c z))))
 
+;; M(a,c,z) when a and c are numbers and c-1/2 is an integer and a-c
+;; is an integer.  Thus, we have M(p+1/2, q+1/2,z)
 (defun erfred (a c z)
   (prog (n m)
      (setq n (sub a (inv 2))
 	   m (sub c (div 3 2)))
+     ;; a = n + 1/2
+     ;; c = m + 3/2
      (cond ((not (or (greaterp n m) (minusp n)))
+	    ;; 0 <= n <= m
 	    (return (thno33 n m z))))
      (cond ((and (minusp n) (minusp m))
+	    ;; n < 0 and m < 0
 	    (return (thno35 (mul -1 n) (mul -1 m) z))))
      (cond ((and (minusp n) (plusp m))
+	    ;; n < 0 and m > 0
 	    (return (thno34 (mul -1 n) m z))))
      (return (gammareds (add n (inv 2))
 			(add m (div 3 2))
 			z))))
+;; Compute M(n+1/2, m+3/2, z) with 0 <= n <= m.
+;;
+;; I (rtoy) think this is what this routine is doing.  (I'm guess that
+;; thno33 means theorem number 33 from Yannis Avgoustis' thesis.)
+;;
+;; I don't have his thesis, but I see there are similar ways to derive
+;; the result we want.
+;;
+;; Method 1:
+;;   Use Kummer's transformation (A&S ) to get
+;;
+;;     M(n+1/2,m+3/2,z) = exp(z)*M(m-n+1,m+3/2,-z)
+;;
+;;   From A&S, we have
+;;
+;;     diff(M(1,n+3/2,z),z,m-n) = poch(1,m-n)/poch(n+3/2,m-n)*M(m-n+1,m+3/2,z)
+;;
+;;   Apply Kummer's transformation again:
+;;
+;;     M(1,n+3/2,z) = exp(z)*M(n+1/2,n+3/2,-z)
+;;
+;;   Apply the differentiation formula again:
+;;
+;;     diff(M(1/2,3/2,z),z,n) = poch(1/2,n)/poch(3/2,n)*M(n+1/2,n+3/2,z)
+;;
+;;   And we know that M(1/2,3/2,z) can be expressed in terms of erf.
+;;
+;; Method 2:
+;;
+;;   Since n <= m, apply the differentiation formula:
+;;
+;;     diff(M(1/2,m-n+3/2,z),z,n) = poch(1/2,n)/poch(m-n+3/2,n)*M(n+1/2,m+3/2,z)
+;;
+;;   Apply Kummer's transformation:
+;;
+;;     M(1/2,m-n+3/2,z) = exp(z)*M(m-n+1,m-n+3/2,z)
+;;
+;;   Apply the differentiation formula again:
+;;
+;;     diff(M(1,3/2,z),z,m-n) = poch(1,m-n)/poch(3/2,m-n)*M(m-n+1,m-n+3/2,z)
+;;
+;; I think this routine uses Method 2.
+#+nil
 (defun thno33
     (n m x)
   ((lambda(m-n)
@@ -2053,10 +2103,14 @@
 				  n))
 		      (mul (fctrl 1 m-n)
 			   (fctrl (inv 2) n)))
+		 ;; diff(M(1/2,m-n+3/2,z),z,n)
 		 (meval (list '($diff)
+			      ;; Kummer's transformation
 			      (mul (power '$%e
 					  'yannis)
+				   ;; diff(M(1,3/2,z),z,m-n)
 				   (meval (list '($diff)
+						;; M(1,3/2,-z) = e^(-z)*M(1/2,3/2,z)
 						(mul
 						 (power
 						  '$%e
@@ -2070,6 +2124,37 @@
 			      'yannis
 			      n)))))
    (sub m n)))
+
+(defun thno33 (n m x)
+  ;; M(n+1/2,m+3/2,z) = diff(M(1/2,m-n+3/2,z),z,n)*poch(m-n+3/2,n)/poch(1/2,n)
+  ;; M(1/2,m-n+3/2,z) = exp(z)*M(m-n+1,m-n+3/2,-z)
+  ;; M(m-n+1,m-n+3/2,z) = diff(M(1,3/2,z),z,m-n)*poch(3/2,m-n)/poch(1,m-n)
+  ;; diff(M(1,3/2,z),z,m-n) = (-1)^(m-n)*diff(M(1,3/2,-z),z,m-n)
+  ;; M(1,3/2,-z) = exp(-z)*M(1/2,3/2,z)
+  (let* ((m-n (sub m n))
+	 ;; poch(m-n+3/2,n)/poch(1/2,n)
+	 (factor1 (div (fctrl (add m-n (div 3 2)) n)
+		       (fctrl (inv 2) n)))
+	 ;; poch(3/2,m-n)/poch(1,m-n)
+	 (factor2 (div (fctrl (div 3 2) m-n)
+		       (fctrl 1 m-n)))
+	 ;; M(1,3/2,-z) = exp(-z)*M(1/2,3/2,z)
+	 (hgferf (mul (power '$%e (mul -1 'yannis))
+		      (hyprederf 'yannis)))
+	 ;; diff(M(1,3/2,z),z,m-n)
+	 (diff1 (meval `(($diff) ,hgferf 'yannis ,m-n)))
+	 ;; exp(z)*M(m-n+1,m-n+3/2,-z)
+	 (kummer (mul (power '$%e 'yannis)
+		      diff1))
+	 ;; diff(M(1/2,m-n+3/2,z),z,n)
+	 (diff2 (meval `(($diff) ,kummer 'yannis ,n))))
+    ;; Multiply all the terms together.
+    (mul (power -1 m-n)
+	 factor1
+	 factor2
+	 (subst x 'yannis diff2))))
+
+;; M(n+1/2,m+3/2,z), with n < 0 and m > 0
 (defun thno34
     (n m x)
   (subst x
@@ -2093,6 +2178,8 @@
 					     m)))
 			   'yannis
 			   n)))))
+
+;; M(n+1/2,m+3/2,z), with n < 0 and m < 0 
 (defun thno35
     (n m x)
   (subst x
