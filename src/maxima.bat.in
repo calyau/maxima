@@ -17,6 +17,7 @@ set prefix=@prefix@
 set maxima_prefix=@prefix@
 set package=@PACKAGE@
 set verbose=false
+set path=%maxima_prefix%\bin;%path%
 
 :startparseargs
 if "%1" == "-l" goto foundlisp
