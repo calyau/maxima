@@ -10,8 +10,8 @@ bothcases:false$
 ("To show a tensor use SHOW()")$
 show(G([a,b],[c,i],i2,i1))$
 
-/*("define tensor components through the usual maxima function syntax")$
-T(L1,L2):=C*A(L1,L2)+B(L1,L2)$*/
+("define tensor components through the usual maxima function syntax")$
+T(L1,L2):=C*A(L1,L2)+B(L1,L2)$
 show(T([i,k],[]))$
 show(T([],[j,m]))$
 
@@ -148,12 +148,13 @@ show(factor(canform(contract(expand(lch_anti(expr2))))))$
 ("compute the dualization")$
 (dual:LCH([],[l,i,j])*B([i,j],[])/2,show(dual))$
 ("return to the original")$
-(ddual:LCH([i,j,l],[])*canform(dual)/2, show(ddual))$
+(ddual:LCH([i,j,l],[])*canform(dual), show(ddual))$
 show(canform(contract(expand(ev(lch_kdt(ddual),kdelta)))))$
 
 
 ("differentiation of tensors")$
 kill(g)$
+REMCOMPS(g)$
 METRIC:g$
 show(CHR1([i,j,k]))$
 show(CHR2([i,j],[k]))$
@@ -177,10 +178,11 @@ show(a([i])@L[v,k])$
 show((a([i])@L[v,j])@k-(a([i])@j)@L[v,k])$
 show((p([i1,i2])@L[v,i3])@i4-(p([i1,i2])@i3)@L[v,i4])$
 
-("more examples about the Cartan identity are in car_iden.demo")$
+("more examples about the Cartan identity are in car_iden.dem")$
 
 ("to simplify use rename, canform and canten")$
 kill(G)$
+REMCOMPS(G)$
 DECLARE(E,CONSTANT)$
 METRIC:G$
 COMPONENTS(G([I,J],[]),E([I,J],[])+2*L*P([I,J],[]));
@@ -197,7 +199,7 @@ exp2:ev(exp1)$
 ("look the number of terms with nterms")$
 nterms(exp2);
 SHOW(CANFORM(CONTRACT(RENAME(RATEXPAND(exp2)))))$
-("the flush function is used to simplify an expr with derivatives")$
+("the FLUSH() function is used to simplify an expr with derivatives")$
 exp:U([I],[J,R],K,R)+A([I],[J,R,S],K,R,S)+B([I,K],[J,R],R)+U([I,K,R],[J,R])$
 show(exp)$
 show(flush(exp,U))$
@@ -233,31 +235,35 @@ show(exp)$
 (exp1:ev(exp,curvature),show(expand(exp1)))$
 show(canform(exp1))$
 ("the Bianchi rules")$
-bianki_r:'covdiff('curvature([k,i1,j1],[l]),m1)*
+bianchi_r:'covdiff('curvature([k,i1,j1],[l]),m1)*
 'kdelta([i,j,m],[i1,j1,m1])=0$
-show(bianki_r)$
-exp:contract(expand(ev(lhs(bianki_r),kdelta,curvature,covdiff)))$
+show(bianchi_r)$
+exp:contract(expand(ev(lhs(bianchi_r),kdelta,curvature,covdiff)))$
 nterms(exp);
 show(canform(exp))$
 
 ("transition to the coordinates")$
 dummyx:di$
+REMCOMPS(G);
 METRIC:G$
 DIM:3$
-(" The RHS of the heat transport equation ")$
-eq1 : TD = canform(rename(expand(covdiff( -k([],[])*covdiff(T([],[]),i),j)*G([],[i,j]))))+ source$
+(" The RHS of the heat transport equation with Te as the temperature
+  and k as the heat conductivity")$
+eq1 : TD = canform(rename(expand(covdiff( -k([],[])*covdiff(Te([],[]),i),j)*G([],[i,j]))))+ source$
 heat : GENERATE(eq1 )$
 (OMEGA:[X,Y,Z],LG:MATRIX([1,0,0],[0,1,0],[0,0,1]),UG : INVERT(LG))$
-(dim:DIM,omega:OMEGA,lg:LG,ug:UG,christof(false),MCS:mcs)$
-(depends(T,omega),depends(k,X))$
+	/*(dim:DIM,omega:OMEGA,lg:LG,ug:UG,christof(false),MCS:mcs)$*/
+CHRISTOF(FALSE);
+(depends(Te,omega),depends(k,X))$
 ev(heat);
 (" get the equation in spherical coordinates ")$
 OMEGA:[r,theta,phi];
 LG:MATRIX([1,0,0],[0,r^2,0],[0,0,r^2*sin(theta)^2])$
 UG : INVERT(LG)$
-(omega:OMEGA,lg:LG,ug:UG,christof(false),MCS:mcs)$
-remove([T,k],dependency)$
-(depends(T,omega),depends(k,r))$
+	/*(omega:OMEGA,lg:LG,ug:UG,christof(false),MCS:mcs)$*/
+CHRISTOF(ALL);
+remove([Te,k],dependency)$
+(depends(Te,omega),depends(k,r))$
 ev(heat);
 kill(omega)$
 ("the conservation of the helicity in hydrodynamics")$
