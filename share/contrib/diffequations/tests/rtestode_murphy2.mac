@@ -229,9 +229,9 @@ lagrange;
 (pn_(37),ans:contrib_ode(eqn:'diff(y,x)^2+x*'diff(y,x)+x-y=0,y,x));
 [[x=%e^-%t*(%c-2*(%t-1)*%e^%t),y = (%t+1)*x+%t^2]];
 ans[1][2]:ans[1][2],ans[1][1];
-y=(%T+1)*%E^-%T*(%C-2*(%T-1)*%E^%T)+%T^2;
+y=(%t+1)*%e^-%t*(%c-2*(%t-1)*%e^%t)+%t^2;
 expand(ans);
-[[x=%C*%E^-%T-2*%T+2,y=%C*%T*%E^-%T+%C*%E^-%T-%T^2+2]]; /* correct */
+[[x=%c*%e^-%t-2*%t+2,y=%c*%t*%e^-%t+%c*%e^-%t-%t^2+2]]; /* correct */
 method;
 lagrange;
 
@@ -621,7 +621,7 @@ false;
 (pn_(93),ans:contrib_ode(eqn:5*'diff(y,x)^2+3*x*'diff(y,x)-y=0,y,x));
 [[x=%e^-(3*log(%t)/2)*(%c-2*%e^(5*log(%t)/2)),y=3*%t*x+5*%t^2]];
 map(radcan,ans);
-[[x=-(2*%T^(5/2)-%C)/%T^(3/2),y=3*%T*x+5*%T^2]]; /*CHECKME*/
+[[x=-(2*%t^(5/2)-%c)/%t^(3/2),y=3*%t*x+5*%t^2]]; /*CHECKME*/
 method;
 lagrange;
 
@@ -657,7 +657,7 @@ ans:solve(expand(%[1]),y);
 
 /* 99 */
 (pn_(99),ans:contrib_ode(eqn:x*'diff(y,x)^2+x-2*y=0,y,x));
-[[x=%C*%E^-(2*(LOG(%T-1)-1/(%T-1))),y=(%T^2+1)*x/2]]; /* CHECKME */
+[[x=%c*%e^-(2*(log(%t-1)-1/(%t-1))),y=(%t^2+1)*x/2]]; /* CHECKME */
 method;
 lagrange;
 
@@ -686,7 +686,7 @@ lagrange;
 (pn_(104),ans:contrib_ode(eqn:x*'diff(y,x)^2+x*'diff(y,x)-y=0,y,x));
 [[x=%c*%e^(1/%t)/%t^2,y=(%t^2+%t)*x]];
 map(radcan,ans);
-[[x=%C*%E^(1/%T)/%T^2,y=(%T^2+%T)*x]]; /* correct */
+[[x=%c*%e^(1/%t)/%t^2,y=(%t^2+%t)*x]]; /* correct */
 method;
 lagrange;
 
@@ -1305,9 +1305,9 @@ solve(%,y);
 
 /* 195 */
 (pn_(195),ans:contrib_ode(eqn:y*'diff(y,x)^2=a^2*x,y,x));
-[[x = %C*%E^-(2*a^2*(LOG(%T^3-a^2)/(3*a^2)-LOG(%T)/a^2)),y = a^2*x/%T^2]];
+[[x = %c*%e^-(2*a^2*(log(%t^3-a^2)/(3*a^2)-log(%t)/a^2)),y = a^2*x/%t^2]];
 radcan(%);
-[[x=%C*%T^2/(%T^3-a^2)^(2/3),y=a^2*x/%T^2]]; /* Answer seems about right */
+[[x=%c*%t^2/(%t^3-a^2)^(2/3),y=a^2*x/%t^2]]; /* Answer seems about right */
 method;
 lagrange;
 
@@ -1316,17 +1316,17 @@ lagrange;
 
 /* 197 */
 (pn_(197),ans:contrib_ode(eqn:y*'diff(y,x)^2+2*a*x*'diff(y,x)-a*y=0,y,x));
-[[x=%C*%E^(2*(LOG(%T^2-a)/(2*a)-LOG(%T)/a)*a),y=-2*%T*a*x/(%T^2-a)]];
+[[x=%c*%e^(2*(log(%t^2-a)/(2*a)-log(%t)/a)*a),y=-2*%t*a*x/(%t^2-a)]];
 radcan(%);
-[[x=-(%C*a-%C*%T^2)/%T^2,y=2*%T*a*x/(a-%T^2)]];
+[[x=-(%c*a-%c*%t^2)/%t^2,y=2*%t*a*x/(a-%t^2)]];
 method;
 lagrange;
 
 /* 198 */
 (pn_(198),ans:contrib_ode(eqn:y*'diff(y,x)^2-4*a^2*x*'diff(y,x)+a^2*y=0,y,x));
-[[x=%C*(a^2+%T^2)*%E^(-LOG(%T^2-3*a^2)/3-4*LOG(%T)/3),y=4*%T*a^2*x/(a^2+%T^2)]];
+[[x=%c*(a^2+%t^2)*%e^(-log(%t^2-3*a^2)/3-4*log(%t)/3),y=4*%t*a^2*x/(a^2+%t^2)]];
 ans:radcan(ans);
-[[x=(%C*a^2+%C*%T^2)/(%T^(4/3)*(%T^2-3*a^2)^(1/3)),y=4*%T*a^2*x/(a^2+%T^2)]];
+[[x=(%c*a^2+%c*%t^2)/(%t^(4/3)*(%t^2-3*a^2)^(1/3)),y=4*%t*a^2*x/(a^2+%t^2)]];
 method;
 lagrange;
 
@@ -1429,7 +1429,7 @@ forget(u>0,x<0);
 
 /* 389 FIXME - check second solution */
 (pn_(389),ans:contrib_ode(eqn:(y-x*'diff(y,x))*sqrt(1+'diff(y,x)^2)+a*'diff(y,x)=0,y,x));
-[y=(%C*SQRT(%C^2+1)*x-%C*a)/SQRT(%C^2+1),[SQRT(%T^2+1)*(y-%T*x)+%T*a=0,(%T*y-2*%T^2*x-x+SQRT(%T^2+1)*a)/SQRT(%T^2+1) = 0]];
+[y=(%c*sqrt(%c^2+1)*x-%c*a)/sqrt(%c^2+1),[sqrt(%t^2+1)*(y-%t*x)+%t*a=0,(%t*y-2*%t^2*x-x+sqrt(%t^2+1)*a)/sqrt(%t^2+1) = 0]];
 [method,ode_check(eqn,ans[1])];
 [clairault,0];
 
@@ -1445,7 +1445,7 @@ y=x*asin(x)+sqrt(1-x^2);
 
 /* 396  FIXME - check second solution */
 (pn_(396),ans:contrib_ode(eqn:(1+'diff(y,x)^2)*sin(y-x*'diff(y,x))^2=1,y,x));
-[y=%C*x+ASIN(1/SQRT(%C^2+1)),[(%T^2+1)*SIN(y-%T*x)^2-1=0,2*%T*SIN(y-%T*x)^2-(2*%T^2*x+2*x)*COS(y-%T*x)*SIN(y-%T*x)=0]];
+[y=%c*x+asin(1/sqrt(%c^2+1)),[(%t^2+1)*sin(y-%t*x)^2-1=0,2*%t*sin(y-%t*x)^2-(2*%t^2*x+2*x)*cos(y-%t*x)*sin(y-%t*x)=0]];
 [method,ode_check(eqn,ans[1])];
 [clairault,0];
 
@@ -1496,11 +1496,11 @@ y = x*log(x)-x;
 (pn_(410),ans:contrib_ode(eqn:'diff(y,x)*log('diff(y,x)+sqrt(1+'diff(y,x)^2))-sqrt(1+'diff(y,x)^2)-x*'diff(y,x)+y=0,y,x));
 [y=%c*x-%c*log(sqrt(%c^2+1)+%c)+sqrt(%c^2+1),[y-%t*x+%t*log(sqrt(%t^2+1)+%t)-sqrt(%t^2+1)=0,log(sqrt(%t^2+1)+%t)-x=0]];
 ans[2]:radcan(ans[2]);
-[y-%T*x+%T*LOG(SQRT(%T^2+1)+%T)-SQRT(%T^2+1)=0,LOG(SQRT(%T^2+1)+%T)-x=0];
-ans[2]:ans[2],LOG(SQRT(%T^2+1)+%T)=asinh(%t);
-[y-%T*x+%T*ASINH(%T)-SQRT(%T^2+1) = 0,ASINH(%T)-x = 0];
+[y-%t*x+%t*log(sqrt(%t^2+1)+%t)-sqrt(%t^2+1)=0,log(sqrt(%t^2+1)+%t)-x=0];
+ans[2]:ans[2],log(sqrt(%t^2+1)+%t)=asinh(%t);
+[y-%t*x+%t*asinh(%t)-sqrt(%t^2+1) = 0,asinh(%t)-x = 0];
 solve(ans[2][2],%t);
-[%T = SINH(x)];
+[%t = sinh(x)];
 trigsimp(ev(ans[2][1],%[1]));
 y-COSH(x)=0;
 ans[2]:first(solve(%,y));

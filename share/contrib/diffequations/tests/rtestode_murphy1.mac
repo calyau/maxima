@@ -303,7 +303,7 @@ map(exp,%);
 ans[1]:first(solve(%,y));
 y=((x-1)*%e^(2*x-2*%c)-x-1)/(%e^(2*x-2*%c)-1);
 solve(ans[2][2],sqrt(%t));
-[SQRT(%T) = y-x];
+[SQRT(%t) = y-x];
 ans[2][1],%[1];
 x=-LOG(y-x+1)/2+LOG(y-x-1)/2+%C;
 expand(2*(%-%c));
