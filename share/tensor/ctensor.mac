@@ -1,0 +1,644 @@
+/*-*MACSYMA-*-*/
+/* LOAD OF PACKG REMOVED */
+tensorkill:true$
+define_variable(dim,4,fixnum,"The dimension of the problem.")$
+define_variable(diagmetric,false,boolean,
+  "True if the metric entered is a diagonal matrix.")$
+
+readvalue(message,pred,[badboy]):=
+  block([value],
+    loop,
+    value:read(message),
+    if apply(pred,[value])=true then return(value),
+    if badboy#[] then apply('print,badboy),
+    go(loop))$
+
+modedeclare(function(yesp),boolean)$
+
+yesp([messages]):=
+  block([reply],
+    loop,
+    reply:apply('read,messages),
+    if member(reply,['yes,'ye,'y,'yes,'yes,'y]) then return(true),
+    if member(reply,['no,'n,'no,'no,'n]) then return(false),
+    print("Please reply YES or NO."),
+    go(loop))$
+
+swapout(file,[functions]):=apply('kill,functions)$
+/* TEMPORARY UNTIL SWAPOUT IS WRITTEN BY GJC */
+
+resimp(exp):=apply('ev,[exp,'noeval,'simp])$
+
+/* 62 LINES BETWEEN ^L'S CAN BE USED WITH GACHA10 ,68 WITH GACHA9 */
+
+/* THE CONVENTION FOR THE SIGN OF THE RIEMANN TENSOR IS THE SAME AS IN
+          LANDAU-LIFSHITZ, MISNER-THORNE-WHEELER */
+
+/* KRONECKER DELTA FUNCTION */
+
+kdelt(i,j):=(modedeclare([i,j],fixnum),if i = j then 1 else 0)$
+
+/* TTRANSFORM TRANSFORMS SECOND RANK COVARIANT TENSORS GIVEN THE COMPONENTS AND
+   THE TRANSFORMATION LAW.  THE LATTER IS IN THE FORM YI=YI(X1,...,XDIM) */
+	
+ttransform(qxyz):=block([],local(ttemp,omtemp,vartemp,newtemp),
+  for i thru dim do
+    (for j thru dim do 
+      (ttemp[i,j]:qxyz[i,j],
+       for k thru dim do
+	 ttemp[i,j]:subst(omtemp[k],omega[k],ttemp[i,j]))),
+		    for i thru dim do vartemp[i]:read("Transform #",i),
+		    for i thru dim do
+		      (for j thru dim do
+			(for k thru dim do
+			  ttemp[i,j]:subst(vartemp[k],omtemp[k],ttemp[i,j]))),
+		    for a thru dim do
+		      (for b thru dim do
+			newtemp[a,b]:txyzsum(vartemp,omega,a,b,ttemp)),
+		    genmatrix(newtemp,dim,dim))$
+
+txyzsum(vartemp,omega,a,b,ttemp):=block([temp:0],for i from 1 thru dim do
+  for j from 1 thru dim do
+    temp:temp+diff(vartemp[i],omega[a])*
+				       diff(vartemp[j],omega[b])*
+				       ttemp[i,j],temp)$
+					 
+/* SETUP FUNCTION */
+					 
+define_variable(derivabbrev,true,boolean)$
+define_variable(tetradcaleq,false,boolean)$
+define_variable(tayswitch,false,boolean)$
+define_variable(ratchristof,true,boolean)$
+define_variable(rateinstein,true,boolean)$
+define_variable(ratrieman,true,boolean)$
+define_variable(ratweyl,true,boolean)$
+
+setflags():=(derivabbrev:true,tetradcaleq:false,tayswitch:false,
+  ratchristof:true,rateinstein:true,ratrieman:true,ratweyl:true)$
+
+tsetup():=block([],if tensorkill # true then 
+  error("Type KILL(ALL)\; and then TENSORKILL:TRUE\; before you enter a new metric."),
+	     tensorkill:false, 
+		  setflags(),
+       dim:mode_identity(fixnum,
+                 readvalue("Enter the dimension of the coordinate system:",
+                                   lambda([v],
+					if integerp(v) then
+                                        block([u:v],modedeclare(u,fixnum),
+					      if u>0 then true)),
+				   "Must be a positive integer!")),
+
+       omega:if dim = 2 then [x,y]
+		 else (if dim = 3 then [x,y,z]
+			   else (if dim = 4 then [x,y,z,t] 
+  else read("Enter a list containing the names of the coordinates in order"))),
+
+    if yesp("Do you wish to change the coordinate names?")
+        then
+omega:read("Enter a list containing the names of the coordinates in order"),
+       if length(omega) # dim
+     then error("Length of the coordinate list is not equal to the dimension"),
+
+     readvalue("Do you want to
+1. Enter a new metric?
+2. Enter a metric from a file?
+3. Approximate a metric with a Taylor series?",
+               lambda([opt],
+                      if opt = 1 then(newmet(),true)
+	              else if opt = 2 then(filemet(),true)
+		      else if opt = 3 then(sermet(),true)
+		      else false),
+	       "Invalid option, please enter 1, 2, or 3."),
+       done)$
+
+/* ENTER A NEW METRIC */
+
+newmet():=block([],lg:entermatrix(dim,dim),
+read("Enter functional dependencies with the DEPENDS function or 'N' if none"),
+  if yesp("Do you wish to see the metric?")
+    then disp(lg),setmetric())$
+
+/* ENTER A METRIC FROM A FILE */
+
+filemet():=block([file,fpos],
+  file:read("Specify the file as [filename1,filename2,directory]?"),
+	     fpos:(print("What is the ordinal position of the metric in this file?"),
+		   read("(Note, the name LG must be assigned to your metric in the file)")),
+	     apply(batch,[file,off,fpos,fpos]),setmetric())$
+
+/* APPROXIMATE A METRIC WITH A TAYLOR SERIES */
+
+sermet():=block([],tayswitch:true,
+  param:read("Enter expansion parameter"),
+	    minp:read("Enter minimum power to drop"),
+	    taypt:read("Enter the point to expand the series around"),
+	    if yesp("Is the metric in a file?") then filemet()
+						else newmet())$
+
+/* CHECKS DIAGONALITY OF A MATRIX OR 2D ARRAY */
+
+diagmatrixp(mat,nlim):=(modedeclare(nlim,fixnum),
+  block([diagflag:true],
+    for i thru nlim do
+      (for j thru nlim do
+	(if i # j and mat[i,j] # 0
+	  then return(diagflag:false))),diagflag))$
+	    
+/* USED FOR TAYLOR SERIES APPROXIMATION */
+
+dlgtaylor(x):=if tayswitch then ratdisrep(taylor(x,param,taypt,minp-1)) else x$
+	
+/* ROUTINE FOR COMPUTING CONTRAVARIANT METRIC FROM THE COVARIANT BUT IF THE
+   METRIC IS DIAGONAL THEN NO OUT OF CORE FILES ARE LOADED. UG IS DEFINED SO
+THAT FOR DISPLAY PURPOSES IT APPEARS WITH DETOUT AND IS THEN EVALUATED AGAIN */
+	
+setmetric():=block([],
+  if length(lg) # dim or length(transpose(lg)) # dim then
+    error("The rank of the metric is not equal to the dimension of the space")
+						     else (if not symmetricp(lg,dim) then error(
+						       "You must be working in a new gravity theory not supported by this program")),
+	    diagmetric:diagmatrixp(lg,dim),gdet:factor(determinant(lg)),
+	    ug:ident(length(first(lg))),
+	    if diagmetric then for ii:1 thru length(first(lg)) do
+	      (ug[ii,ii]:1/lg[ii,ii]) else
+		ug:block([detout:true],lg^^(-1)),
+	    if yesp("Do you wish to see the metric inverse?")
+	      then ldisp(ug),ug:resimp(ug),done)$
+
+/* FOLLOWING RETURNS TRUE IF M IS AN NXN SYMMETRIC MATRIX OR ARRAY */
+
+symmetricp(m,n):=(modedeclare(n,fixnum),
+  block([symflag:true],
+    if n # 1
+      then for i thru n-1 do
+	(for j from i+1 thru n do
+	  (if m[j,i] # m[i,j] then symflag:false)),
+    symflag))$
+      
+/* COMPUTES GEODESIC EQUATIONS OF MOTION */
+
+motion(dis):=block([s],depends(omega,s),
+  for i thru dim do
+    em[i]:if diagmetric
+      then ratsimp(lg[i,i]*diff(omega[i],s,2)+
+        sum(diff(lg[i,i],omega[a])*diff(omega[i],s)*diff(omega[a],s),a,1,dim)-
+         1/2*sum( diff(lg[a,a],omega[i]) *diff(omega[a],s)^2,a,1,dim) )
+      else ratsimp( sum(lg[i,a]*diff(omega[a],s,2),a,1,dim)+
+           sum( sum(
+             diff(lg[i,b],omega[a])*diff(omega[b],s)*diff(omega[a],s)
+             -1/2*diff(lg[a,b],omega[i])
+                           *diff(omega[a],s)*diff(omega[b],s),a,
+                       1,dim),b,1,dim) ),
+               if dis#false then for i thru dim do ldisplay(em[i]),done)$
+
+		 
+/* COMPUTES D'ALEMBERTIAN OF A 2ND RANK COVARIANT TENSOR AND DOES NOT WORK 
+   FEB. 10, 1980 */
+/* COMPUTES COVARIANT AND CONTRAVARIANT GRADIENTS WHERE THE :: ALLOWS THE
+	USER TO DEFINE THE ARRAY NAME*/
+
+cograd(f,xyz):=block([],
+  for mm thru dim do 
+    (arraysetapply(xyz,[mm],ratsimp(diff(f,omega[mm])))))$
+      
+contragrad(f,xyz):=block([],
+  if diagmetric 
+    then 
+      for mm thru dim do 
+	(arraysetapply(xyz,[mm],
+		       ratsimp(ratsimp(ug[mm,mm]*diff(f,omega[mm])))))
+    else 
+      for mm thru dim do 
+	(arraysetapply(xyz,[mm],sum(ug[m,n]*diff(f,omega[nn]),nn,1,dim))))$
+	  
+/* dalem(p,i,j):=if diagmetric
+  then ratsimp(sum(contragrad(cograd(p[i,j],m),m),m,1,dim)
+   +1/sqrt(-gdet)*sum(cograd(sqrt(-gdet)*ug[m,m],m)*cograd(p[i,j],m),m,1,dim))
+       else sum(contragrad(cograd(p[i,j],m),m),m,1,dim)
+    +1/sqrt(-gdet)*sum(sum(cograd(sqrt(-gdet)*ug[m,n],n)*cograd(p[i,j],m),n,1,
+                  dim),m,1,dim)$    */
+
+/* ROUTINE FOR COMPUTING THE CHRISTOFFEL SYMBOLS 
+COMMENT: CHANGE ROUTINE SO GDET IS NOT EVALUATED UNTIL THE END
+*/
+
+christof(dis):=block([],
+  for i thru dim do
+    (for j from i thru dim do
+      (for k thru dim do
+	lcs[j,i,k]:lcs[i,j,k]
+	  :(diff(lg[j,k],omega[i])
+		+diff(lg[i,k],omega[j])
+		     -diff(lg[i,j],omega[k]))/2,
+       for k thru dim do
+	 (mcs[j,i,k]:mcs[i,j,k]
+	   :dlgtaylor(
+	     if diagmetric
+	       then ratsimp(ug[k,k]*lcs[i,j,k])
+	       else sum(ug[k,l]*lcs[i,j,l],l,1,dim)),
+	  if ratchristof
+	    then mcs[j,i,k]
+	      :mcs[i,j,k]:ratsimp(mcs[i,j,k])))),
+		 if dis = all or dis = lcs
+		   then for i thru dim do
+		     (for j:i thru dim do
+		       (for k thru dim do
+			 (if lcs[i,j,k] # 0
+			   then ldisplay(lcs[i,j,k])))),
+/*		 remarray(lcs),*/
+		 
+		 if dis = mcs or dis = all
+		   then for i thru dim do
+		     (for j:i thru dim do
+		       (for k thru dim do
+			 (if mcs[i,j,k] # 0
+			   then ldisplay(mcs[i,j,k])))),done)$
+			     
+ /* COVARIANT COMPONENTS OF THE RICCI TENSOR */
+			       
+lriccicom(dis):=
+  block([suma,sumb,flat:true],
+    modedeclare(flat,boolean),
+    if member('mcs,arrays) then (true) else (christof(false)),
+    for i thru dim do
+      (for j from i thru dim do
+	(suma:0,sumb:0,
+	 for k thru dim do
+	   (if k # i
+	     then suma:suma
+	   +(diff(mcs[i,j,k],omega[k])
+		 -diff(mcs[j,k,k],omega[i])),
+	    sumb:sumb+sum(
+	      mcs[k,l,k]*mcs[i,j,l]
+			    -mcs[i,k,l]*mcs[j,l,k],l,1,dim)),
+	 lr[i,j]:dlgtaylor(suma+sumb),
+	 if ratfac
+	   then lr[i,j]:factor(dlgtaylor(ratsimp(lr[i,j]))),
+	 lr[j,i]:lr[i,j])),
+    if dis#false
+      then (for i thru dim do
+	(for j from i thru dim do
+	  (if lr[i,j] # 0
+	    then (flat:false,ldisplay(lr[i,j])))),
+	    if flat
+	      then print("THIS SPACETIME IS EMPTY AND/OR FLAT")),
+    tracer:if diagmetric 
+      then dlgtaylor(ratsimp(sum(lr[i,i]*ug[i,i],i,1,dim)))
+      else dlgtaylor(sum(sum(lr[i,j]*ug[i,j],i,1,dim),j,1,dim)),done)$
+
+ 	
+ /* COMPUTES MIXED RICCI TENSOR WHERE THE FIRST INDEX IS COVARIANT */
+	
+riccicom(dis):=
+  block([flat:true],
+    modedeclare(flat,boolean),
+    if member('lr,arrays) 
+      then (true) 
+      else (lriccicom(false)),
+    for i thru dim do for j thru dim do (ricci[i,j]:0),
+    for i thru dim do
+      (for j thru dim do
+	(ricci[i,j]:if diagmetric 
+	  then ratsimp(dlgtaylor(lr[i,j]*ug[j,j]))
+	  else dlgtaylor(sum(lr[i,k]*ug[k,j],k,1,dim)),
+	 if ratfac
+	   then ricci[i,j]
+	     :factor(dlgtaylor(ratsimp(ricci[i,j]))))),
+    if dis#false
+      then (for i thru dim do
+	(for j thru dim do
+	  (if ricci[i,j] # 0
+	    then (flat:false,ldisplay(ricci[i,j])))),
+	    if flat
+	      then print("THIS SPACETIME IS EMPTY AND/OR FLAT")),
+    done)$
+      
+/* COMPUTES SCALAR CURVATURE */
+
+scurvature():=if ratfac then factor(tracer) else tracer$
+
+/* COMPUTES MIXED EINSTEIN TENSOR WHERE THE FIRST INDEX IS COVARIANT */
+  
+einstein(dis):=
+  block([flat:true],modedeclare(flat,boolean),
+    if member('ricci,arrays) then (true) else (riccicom(false)),
+    for i thru dim do
+      (for j thru dim do
+	(if i = j then g[i,j]:dlgtaylor(ricci[i,j]-tracer/2)
+		  else g[i,j]:dlgtaylor(ricci[i,j]),
+	 if ratfac
+	   then g[i,j]:factor(ratsimp(g[i,j]))
+	   else (if rateinstein
+	     then g[i,j]:ratsimp(g[i,j])),
+	 if dis#false and g[i,j] # 0
+	   then (flat:false,ldisplay(g[i,j])))),
+    if dis#false and flat 
+      then print("THIS SPACETIME IS EMPTY AND/OR FLAT"),done)$
+	
+/* COMPUTES COVARIANT RIEMANN CURVATURE TENSOR */
+	
+riemann(dis):=
+  block([flat:true],
+    modedeclare(flat,boolean),
+    if member('mcs,arrays) then (true) else (christof(false)),
+    for i thru dim do
+      (for j thru dim do
+	(for k thru dim do (for l thru dim do r[i,j,k,l]:0))),
+    for i thru dim do
+      (for j from i+1 thru dim do
+	(for k from i thru dim do
+	  (for l from k+1 thru (if k = i then j else dim) do
+	    (r[i,j,k,l]:
+	      dlgtaylor(
+		1/2
+		       * (diff(lg[i,l],omega[j],1,omega[k],1)
+			 +diff(lg[j,k],omega[i],1,omega[l],1)
+			 -diff(lg[i,k],omega[j],1,omega[l],1)
+			 -diff(lg[j,l],omega[i],1,omega[k],1))
+		       +(if diagmetric
+			 then ratsimp(
+			   sum(
+			     lg[u,u]
+			      *(mcs[j,k,u]*mcs[i,l,u]
+			       -mcs[j,l,u]*mcs[i,k,u]),u,1,
+			       dim))
+			 else sum(
+			   sum(
+			     lg[u,v]
+			      *(mcs[j,k,u]*mcs[i,l,v]
+			       -mcs[j,l,u]*mcs[i,k,v]),v,1,
+			       dim),u,1,dim))),
+	     if ratfac
+	       then r[i,j,k,l]
+		 :factor(ratsimp(r[i,j,k,l]))
+	       else (if ratrieman
+		 then r[i,j,k,l]
+		   :ratsimp(r[i,j,k,l])),
+	     r[j,i,l,k]:r[i,j,k,l],
+	     r[i,j,l,k]:r[j,i,k,l]:-r[i,j,k,l],
+	     if i # k or j > l
+	       then (r[k,l,i,j]:r[l,k,j,i]:r[i,j,k,l],
+		     r[l,k,i,j]:r[k,l,j,i]:-r[i,j,k,l]),
+	     if dis#false and r[i,j,k,l] # 0
+	       then (flat:false,ldisplay(r[i,j,k,l])))))),
+    if dis#false and flat then print("THIS SPACETIME IS FLAT"),done)$
+      
+/* COMPUTES CONTRAVARIANT RIEMANN TENSOR FROM COVARIANT FORM */
+
+raiseriemann(dis):=
+  block([],
+    if member('r,arrays) then (true) else (riemann(false)),	
+    for i thru dim do
+      (for j thru dim do
+	(for k thru dim do (for l thru dim do ur[i,j,k,l]:0))),
+    for i thru dim do
+      (for j from i+1 thru dim do
+	(for k from i thru dim do
+	  (for l from k+1 thru (if k = i then j else dim) do
+	    (ur[i,j,k,l]
+	      :if diagmetric
+		then ratsimp(
+		  r[i,j,k,l]*ug[i,i]*ug[j,j]*ug[k,k]
+			    *ug[l,l])
+		else sum(
+		  sum(
+		    sum(
+		      sum(
+			r[a,b,c,d]*ug[i,a]*ug[j,b]*ug[k,c]
+			 *ug[l,d],a,1,dim),b,1,
+			dim),
+		      c,1,dim),
+			 d,1,dim),
+	     if ratrieman
+	       then ur[i,j,k,l]:ratsimp(ur[i,j,k,l]),
+	     ur[j,i,l,k]:ur[i,j,k,l],
+	     ur[i,j,l,k]:ur[j,i,k,l]:-ur[i,j,k,l],
+	     if i # k or j > l
+	       then (
+		 ur[k,l,i,j]:ur[l,k,j,i]:ur[i,j,k,l],
+		     ur[l,k,i,j]:ur[k,l,j,i]:-ur[i,j,k,l]),
+	     if dis#false and ur[i,j,k,l] # 0
+	       then ldisplay(ur[i,j,k,l]))))))$
+		 
+/* COMPUTES THE KRETCHMANN INVARIANT R[I,J,K,L]*UR[I,J,K,L] */
+
+rinvariant():=kinvariant:sum(
+	   sum(sum(sum(r[i,j,k,l]*ur[i,j,k,l],i,1,dim),j,
+		   1,dim),k,1,dim),l,1,dim)$
+
+/* COMPUTES COVARIANT WEYL TENSOR */
+
+weyl(dis):=
+  block([flat:true],modedeclare(flat,boolean),
+    if dim = 2 then
+      (print("ALL 2 DIMENSIONAL SPACETIMES ARE CONFORMALLY FLAT"),
+       return(done)),
+    if (member('lr,arrays),member('r,arrays)) then
+      true else (lriccicom(false),riemann(false)),   
+    for i thru dim do
+      (for j thru dim do
+	(for k thru dim do (for l thru dim do w[i,j,k,l]:0))),
+    for i thru dim do
+      (for j from i+1 thru dim do
+	(for k from i thru dim do
+	  (for l from k+1 thru (if k = i then j else dim) do
+	    (w[i,j,k,l]:dlgtaylor(
+	      r[i,j,k,l]
+				 +1/(dim-2)
+				 *(lg[i,l]*lr[j,k]-lg[i,k]*lr[l,j]
+				  +lg[j,k]*lr[l,i]
+				  -lg[j,l]*lr[k,i])
+				 -tracer/((dim-1)*(dim-2))
+				 *(lg[i,l]*lg[k,j]-lg[i,k]*lg[l,j])),
+	     if ratfac
+	       then w[i,j,k,l]
+		 :factor(ratsimp(w[i,j,k,l]))
+	       else (if ratweyl
+		 then w[i,j,k,l]:ratsimp(w[i,j,k,l])),
+	     w[j,i,l,k]:w[i,j,k,l],
+	     w[i,j,l,k]:w[j,i,k,l]:-w[i,j,k,l],
+	     if i # k or j > l
+	       then (w[k,l,i,j]:w[l,k,j,i]:w[i,j,k,l],
+		     w[l,k,i,j]:w[k,l,j,i]:-w[i,j,k,l]),
+	     if dis#false and w[i,j,k,l] # 0
+	       then (flat:false,ldisplay(w[i,j,k,l])))))),
+    if dis#false and flat then print("THIS SPACETIME IS CONFORMALLY FLAT"),done)$
+      
+/* NUMBER OF TERMS PER COMPONENT OF THE ARRAY F */
+
+ntermst(f):=for i thru dim do
+	 (for j thru dim do print([[i,j],nterms(f[i,j])]))$
+
+/* COMPUTES D'ALEMBERTIAN OF THE SCALAR PHI */
+
+dscalar(phi):=if diagmetric
+	 then ratsimp(1/sqrt(-gdet)*sum(
+				   diff(
+				    ug[i,i]*sqrt(-gdet)*diff(phi,omega[i]),
+				    omega[i]),i,1,dim))
+	 else ratsimp(1/sqrt(-gdet)*sum(
+				   sum(
+				    diff(
+				     ug[i,j]*sqrt(-gdet)*diff(phi,omega[j]),
+				     omega[i]),i,1,dim),j,1,dim))$
+
+/* COMPUTES THE COVARIANT DIVERGENCE OF THE OBJECT GXYZ WHICH MUST 
+BE A MIXED 2ND RANK TENSOR WHOSE FIRST INDEX IS COVARIANT- A CHECK SHOULD
+BE PUT IN TO SEE IF GXYZ HAS THE CORRECT DIMENSIONS APR.9,80 */
+
+checkdiv(gxyz):=block(modedeclare([i,j],fixnum),
+	 if diagmatrixp(gxyz,dim) then for i thru dim do
+	     print(div[i]:ratsimp(dlgtaylor(1/sqrt(-gdet)
+		    *diff(sqrt(-gdet)*gxyz[i,i],omega[i])
+		    -sum(mcs[i,j,j]*gxyz[j,j],j,1,dim))))
+         else for i thru dim do
+	     print(div[i]:ratsimp(dlgtaylor(1/sqrt(-gdet)
+		    *sum(diff(sqrt(-gdet)*gxyz[i,j],omega[j]),j,1,dim)
+		    -sum(sum(mcs[i,j,a]*gxyz[a,j],a,1,dim),j,1,dim)))))$
+
+
+/* FINDDE RETURNS A LIST OF THE UNIQUE DIFFERENTIAL EQUATIONS IN THE LIST OR
+   2 OR 3 DIMENSIONAL ARRAY A. DEINDEX IS A GLOBAL LIST CONTAINING THE INDICES
+   OF A CORRESPONDING TO THESE UNIQUE DIFFERENTIAL EQUATIONS. */
+
+findde1(list):=block([inflag:true,deriv:nounify('derivative),l:[],l1,q],
+        deindex:[],
+	for i while list # [] do
+	    (l1:factor(num(first(list))),list:rest(list),
+	     if not freeof(deriv,l1)
+		 then (deindex:cons(i,deindex),
+		       if inpart(l1,0) # "*" then l:cons(l1,l)
+			   else (q:1,
+				 for j thru length(l1) do
+				     (if not freeof(deriv,inpart(l1,j))
+					  then q:q*inpart(l1,j)),
+				 l:cons(q,l)))),
+	cleanup(l))$
+
+findde2(a):=block([inflag:true,deriv:nounify('derivative),l:[],t,q],
+        deindex:[],
+	for i thru dim do
+	    (for j thru dim do
+		 (t:factor(num(a[i,j])),
+		  if not freeof(deriv,t)
+		      then (deindex:cons([i,j],deindex),
+			    if inpart(t,0) # "*" then l:cons(t,l)
+			        else (q:1,
+				      for n thru length(t) do
+					  (if not freeof(deriv,inpart(t,n))
+					       then q:q*inpart(t,n)),
+				      l:cons(q,l))))),
+	cleanup(l))$
+
+findde3(a):=
+  block([inflag:true,deriv:nounify('derivative),l:[],t,q],
+    deindex:[],
+    for i thru dim do
+      (for j thru dim do
+	(for k thru dim do
+	  (t:factor(num(a[i,j,k])),
+	   if not freeof(deriv,t)
+	     then (deindex:cons([i,j,k],deindex),
+		   if inpart(t,0) # "*" then l:cons(t,l)
+					else (q:1,
+					      for n thru length(t) do
+						(if 
+						  not freeof(deriv,inpart(t,n))
+						    then q:q*inpart(t,n)),
+					      l:cons(q,l)))))),
+    cleanup(l))$
+      
+cleanup(ll):=block([a,l:[],index:[]],
+  while ll # [] do
+    (a:first(ll),ll:rest(ll),
+     if not member(a,ll)
+       then (l:cons(a,l),index:cons(first(deindex),index)),
+     deindex:rest(deindex)),deindex:index,l)$
+       
+findde(a,n):=(modedeclare(n,fixnum),
+  if n = 1 then findde1(a)
+	   else (if n = 2 then findde2(a)
+			  else (if n = 3 then findde3(a)
+					 else error("Invalid dimension:",n))))$
+					   
+deleten(l,n):=(modedeclare(n,fixnum),
+  block([len],modedeclare(len,fixnum),
+    if l = [] then l
+	      else (len:length(l),
+		    if n > len or n < 1
+		      then error("Second argument out of range")
+		      else (if n = 1 then rest(l)
+				     else (if n = len 
+				       then rest(l,-1)
+				       else append(rest(l,n-len-1),
+						   rest(l,n)))))))$
+
+getrid():=
+(maplist(lambda([u],u::false),
+'[tayswitch,ratchristof,expandchristof,rateinstein,ratrieman,
+halfc,chrsub,motion,dlgtaylor,tsetup,christof,riccicom,testindex,einstein,
+ttransform,riemann,diagmatrixp,raiseriemann,rscalar,lriccicom,weyl,setmetric]),
+swapout([],
+tetradcaleq,ratweyl,niceprint,kdelt,setflags,bdvac,invariant1,invariant2,
+tsetup,newmet,filemet,sermet,symmetricp,dl,du,dalem,scurvature,rinvariant,
+ntermst,dscalar,checkdiv,setuptetrad,contract4,psi,petrov,findde1,findde2,
+findde3,cleanup,findde,deleten,getrid))$
+
+
+/* THE 4 DIMENSIONAL BRANS- DICKE VACUUM FIELD EQUATIONS ARE REPRESENTED BY 
+THE ARRAY BD AND THE SCALAR EQUATION IS GENERATED BY SETTING THE D'ALEMBERTIAN
+OF THE SCALAR FIELD TO ZERO. THAT IS ONE CALLS THE FUNCTION DSCALAR ON THE
+SCALAR FIELD. */
+
+bdvac():=block([],
+    if dim # 4 then error("This program is restricted to 4 dimensions"),
+	zz:read("Give a name to the scalar field and
+	     declare its functional dependencies"),
+		boxq:0,
+for i:1 thru 4 do for j:1 thru 4 do (addd[i,j]:
+	w/zz^2*(
+		diff(zz,omega[i])*diff(zz,omega[j])-
+lg[i,j]*sum(diff(zz,omega[kk])*diff(zz,omega[kk])*ug[kk,kk],kk,1,4)/2)+
+(diff(diff(zz,omega[i]),omega[j])-sum(mcs[i,j,kk]*diff(zz,omega[kk]),kk,1,4)-
+lg[i,j]*boxq)/zz),
+for i:1 thru 4 do for j:1 thru 4 do (bd[i,j]:ratsimp(
+		lr[i,j]-r*lg[i,j]/2-0*t[i,j]-addd[i,j])),
+remarray(addd))$
+
+/* THIS GIVES THE EULER- LAGRANGE EQUATIONS FOR THE DENSITY OF THE
+INVARIANT R^2. THE FORM IS (WHERE D IS THE KRONECKER DELTA)
+	B  2	    B	   B	    BC
+ (1/2)*D  R  - 2 R R  + 2 D []R -2 G   R
+   A	    A	   A		;AC
+THE EQUATIONS ARE SOMETIMES LESS COMPLEX IF
+TRACER IS GIVEN A PARAMETRIC NAME WITH DEPENDENCIES CORRESPONDING
+TO THOSE OF THE SCALAR CURVATURE */
+  
+invariant1():=
+  block([],
+    for aa thru dim do for bb thru dim do 
+      (inv1[aa,bb]:0),
+    if diagmetric then 
+      for aa thru dim do for bb thru dim do 
+	(inv1[aa,bb]:ratsimp(
+	  kdelt(aa,bb)*tracer^2/2-
+			    2*tracer*ricci[aa,bb]-
+			    2*kdelt(aa,bb)*dscalar(tracer)+
+			    2*ug[aa,aa]*(
+			      diff(diff(tracer,omega[bb]),omega[aa])
+				  -sum(mcs[bb,aa,kk]*diff(tracer,omega[kk]),kk,1,dim))))
+		  else 
+		    for aa thru dim do for bb thru dim do 
+		      (inv1[aa,bb]:
+			ratsimp(
+			  kdelt(aa,bb)*tracer^2/2-
+			       2*tracer*ricci[aa,bb]-
+			       2*kdelt(aa,bb)*dscalar(tracer)+
+			       2*sum(ug[bb,cc]*(
+				 diff(diff(tracer,omega[aa]),omega[cc])
+				     -sum(mcs[aa,cc,kk]
+					     *diff(tracer,omega[kk]),
+					  kk,1,dim)),cc,1,dim))))$
+				       
+invariant2():="NOT YET IMPLEMENTED";
+bimetric():="NOT YET IMPLEMENTED";

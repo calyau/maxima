@@ -1,32 +1,32 @@
 
-SHOWTIME:ALL$
+showtime:all$
 /* This file proves that the Schwarzschild line element satisfies
 the Einstein vacuum equations as well as computing other tensors
 and invariants */
 /* .mc version is presently available in DOE MACSYMA */
-LOAD("ctensr")$
+load("ctensor")$
 /* the following allows the batch program to run by presetting flags */
-SETFLAGS()$
+setflags()$
 /* this calls for the rational simplification of geometrical objects */
-RATFAC:TRUE$
+ratfac:true$
 /* the dimension of the manifold */
-DIM:4$
+dim:4$
 /* the coordinate labels */
-OMEGA:[X,Y,Z,T]$
+omega:[x,y,z,t]$
 /* THIS IS THE SCHWARZSCHILD METRIC IN STANDARD COORDINATES */
-LG:
-MATRIX([1/(1-2*M/X),0,0,0],[0,X^2,0,0],[0,0,X^2*SIN(Y)^2,0],[0,0,0,2*M/X-1]);
+lg:
+matrix([1/(1-2*m/x),0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,2*m/x-1]);
 /* computes metric inverse and determines diagonality */
-METRIC()$
+metric()$
 /* computes and displays mixed Christoffel symbols */
-CHRISTOF(MCS)$
+christof(mcs)$
 /* computes and ratsimps Ricci tensor */
-RICCICOM(TRUE)$
+riccicom(true)$
 /* computes scalar curvature */
-SCURVATURE();
+scurvature();
 /* computes Riemann tensor */
-RIEMANN(TRUE)$
+riemann(true)$
 /* computes contravariant Riemann tensor */
-RAISERIEMANN(FALSE)$
+raiseriemann(false)$
 /* computes the Kretchmann invariant Rijkl^2 */
-RINVARIANT();
+rinvariant();

@@ -1,20 +1,20 @@
 
-SHOWTIME:ALL$
+showtime:all$
 /* The transformation from Cartesian to spherical coordinates */
 /* currently the .mc version is available in DOE MACSYMA */
-LOAD("ctensr")$
+load("ctensor")$
 /*  dimension of the manifold */
-DIM:3$
+dim:3$
 /* the coordinate labels */
-OMEGA:[X,Y,Z]$
+omega:[x,y,z]$
 /* the basis metric */
-LG:IDENT(3);
+lg:ident(3);
 (" the required coordinate transformation is:
 # 1 = X*SIN(Y)*SIN(Z)
 # 2 = X*SIN(Y)*COS(Z)
 # 3 = X*COS(Y)
 PLEASE PROVIDE these right hand sides as INPUT now!!")$
 
-TTRANSFORM(LG)$
+ttransform(lg)$
 /* a substitution which reduces the transformed matrix */
-EV(%,COS(Y) = SQRT(1-SIN(Y)^2),SIN(Z) = SQRT(1-COS(Z)^2),RATSIMP);
+ev(%,cos(y) = sqrt(1-sin(y)^2),sin(z) = sqrt(1-cos(z)^2),ratsimp);
