@@ -472,10 +472,10 @@
 			      ; what else? f(x)^(1/2) is sqrt(f(x)), ??
 		  (cond (doit
 			(setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
-			(setq r (tex
-                                 (if (and (null (cdr bascdr)) (eq (get f 'tex) 'tex-prefix))
-                                     (car bascdr) (cons '(mprogn) bascdr))
-                                 nil r f rop)))
+			(if (and (null (cdr bascdr))
+				 (eq (get f 'tex) 'tex-prefix))
+			    (setq r (tex (car bascdr) nil r f 'mparen))
+			  (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen))))
 		        (t nil))))) ; won't doit. fall through
       (t (setq l (tex (cadr x) l nil lop (caar x))
 	       r (if (mmminusp (setq x (nformat (caddr x))))
@@ -592,8 +592,17 @@
 
 (defprop mbox tex-mbox tex)
 
+;; \boxed is defined in amsmath.sty,
+;; \newcommand{\boxed}[1]{\fbox{\m@th$\displaystyle#1$}}
+
 (defun tex-mbox (x l r)
-  (append l '("\\framebox{") (tex (cadr x) nil nil 'mparen 'mparen) '("}")))
+  (append l '("\\boxed{") (tex (cadr x) nil nil 'mparen 'mparen) '("}") r))
+
+(defprop mlabox tex-mlabox tex)
+
+(defun tex-mlabox (x l r)
+   (append l '("\\stackrel{") (tex (caddr x) nil nil 'mparen 'mparen)
+	   '("}{\\boxed{") (tex (cadr x) nil nil 'mparen 'mparen) '("}}") r))
 
 ;;binomial coefficients
 
@@ -601,9 +610,9 @@
 
 (defun tex-choose (x l r)
   `(,@l
-    "\\pmatrix{"
+    "{"
     ,@(tex (cadr x) nil nil 'mparen 'mparen)
-    "\\\\"
+    "\\choose "
     ,@(tex (caddr x) nil nil 'mparen 'mparen)
     "}"
     ,@r))
@@ -757,7 +766,7 @@
     (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
     (ords (odds difflist 0)) ;; e.g. (1 2)
     (vars (odds difflist 1)) ;; e.g. (x y)
-    (numer `((mexpt) dsym ((mplus) ,@ords))) ; d^n numerator
+    (numer `((mexpt) ,dsym ((mplus) ,@ords))) ; d^n numerator
     (denom (cons '(mtimes)
 		 (mapcan #'(lambda(b e)
 				  `(,dsym ,(simplifya `((mexpt) ,b ,e) nil)))
