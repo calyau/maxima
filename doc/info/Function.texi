@@ -655,6 +655,153 @@ Maxima simplifies @code{funmake}'s return value.
 
 @end defun
 
+@defun lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+Defines and returns a lambda expression (that is, an anonymous function)
+with arguments @var{x_1}, ..., @var{x_m} and return value @var{expr_n}.
+A lambda expression can be assigned to a variable and evaluated like an ordinary function.
+A lambda expression may appear in contexts in which a function evaluation
+(but not a function name) is expected.
+
+When the function is evaluated,
+unbound local variables @var{x_1}, ..., @var{x_m} are created.
+@code{lambda} may appear within @code{block} or another @code{lambda};
+local variables are established each time another @code{block} or @code{lambda} is evaluated.
+Local variables appear to be global to any enclosed @code{block} or @code{lambda}.
+If a variable is not local,
+its value is the value most recently assigned in an enclosing @code{block} or @code{lambda}, if any,
+otherwise, it is the value of the variable in the global environment.
+This policy may coincide with the usual understanding of "dynamic scope".
+
+After local variables are established,
+@var{expr_1} through @var{expr_n} are evaluated in turn.
+The special variable @code{%%}, representing the value of the preceding expression,
+is recognized.
+@code{throw} and @code{catch} may also appear in the list of expressions.
+
+@code{return} cannot appear in a lambda expression unless enclosed by @code{block},
+in which case @code{return} defines the return value of the block and not of the
+lambda expression,
+unless the block happens to be @var{expr_n}.
+Likewise, @code{go} cannot appear in a lambda expression unless enclosed by @code{block}.
+
+@code{lambda} quotes its arguments; 
+the double-single-quote operator @code{'@w{}'} defeats quotation.
+
+Examples:
+
+@c FOLLOWING EXAMPLES GENERATED FROM THIS SCRIPT:
+@c f: lambda ([x], x^2);
+@c f(a);
+@c lambda ([x], x^2) (a);
+@c apply (lambda ([x], x^2), [a]);
+@c map (lambda ([x], x^2), [a, b, c, d, e]);
+@c a: %pi$
+@c b: %e$
+@c g: lambda ([a], a*b);
+@c b: %gamma$
+@c g(1/2);
+@c g2: lambda ([a], a*''b);
+@c b: %e$
+@c g2(1/2);
+@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+@c h(%pi, %gamma);
+@c i: lambda ([a], lambda ([x], a*x));
+@c i(1/2);
+@c i2: lambda([a], block([x], funmake(lambda, [[x], a*x])));
+@c i2(1/2);
+@c i2(1/2)(%pi);
+@itemize @bullet
+@item
+A lambda expression can be assigned to a variable and evaluated like an ordinary function.
+@end itemize
+@example
+(%i1) f: lambda ([x], x^2);
+                                      2
+(%o1)                    lambda([x], x )
+(%i2) f(a);
+                                2
+(%o2)                          a
+@end example
+@itemize @bullet
+@item
+A lambda expression may appear in contexts in which a function evaluation is expected.
+@end itemize
+@example
+(%i3) lambda ([x], x^2) (a);
+                                2
+(%o3)                          a
+(%i4) apply (lambda ([x], x^2), [a]);
+                                2
+(%o4)                          a
+(%i5) map (lambda ([x], x^2), [a, b, c, d, e]);
+                        2   2   2   2   2
+(%o5)                 [a , b , c , d , e ]
+@end example
+@itemize @bullet
+@item
+Argument variables are local variables.
+Other variables appear to be global variables.
+Global variables are evaluated at the time the lambda expression is evaluated,
+unless some special evaluation is forced by some means, such as @code{'@w{}'}.
+@end itemize
+@example
+(%i6) a: %pi$
+(%i7) b: %e$
+(%i8) g: lambda ([a], a*b);
+(%o8)                   lambda([a], a b)
+(%i9) b: %gamma$
+(%i10) g(1/2);
+                             %gamma
+(%o10)                       ------
+                               2
+(%i11) g2: lambda ([a], a*''b);
+(%o11)                lambda([a], a %gamma)
+(%i12) b: %e$
+(%i13) g2(1/2);
+                             %gamma
+(%o13)                       ------
+                               2
+@end example
+@itemize @bullet
+@item
+Lambda expressions may be nested.
+Local variables within the outer lambda expression appear to be global to the inner expression
+unless masked by local variables of the same names.
+@end itemize
+@example
+(%i14) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+                                                   1
+(%o14)    lambda([a, b], h2 : lambda([a], a b), h2(-))
+                                                   2
+(%i15) h(%pi, %gamma);
+                             %gamma
+(%o15)                       ------
+                               2
+@end example
+@itemize @bullet
+@item
+Since @code{lambda} quotes its arguments, lambda expression @code{i} below 
+does not define a "multiply by @code{a}" function.
+Such a function can be defined via @code{funmake}, as in lambda expression @code{i2} below.
+@end itemize
+@example
+(%i16) i: lambda ([a], lambda ([x], a*x));
+(%o16)            lambda([a], lambda([x], a x))
+(%i17) i(1/2);
+(%o17)                  lambda([x], a x)
+(%i18) i2: lambda([a], block([x], funmake(lambda, [[x], a*x])));
+(%o18) lambda([a], block([x], funmake(lambda, [[x], a x])))
+(%i19) i2(1/2);
+                                     x
+(%o19)                   lambda([x], -)
+                                     2
+(%i20) i2(1/2)(%pi);
+                               %pi
+(%o20)                         ---
+                                2
+@end example
+@end defun
+
 @defun local (v_1, v_2, ...)
 Declares the variables @var{v_1}, @var{v_2}, ... to be local with
 respect to all the properties in the statement in which this function
