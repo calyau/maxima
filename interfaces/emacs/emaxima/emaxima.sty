@@ -69,6 +69,9 @@
 \DeclareOption{preview}{\maximausepreviewtrue}
 \ProcessOptions\relax
 
+%% The List of Examples
+\newcommand{\maximaexamplesname}{List of Maxima Examples}
+
 %% Some things are handled differently when pdflatex is used.
 
 \ifx\pdfoutput\undefined
@@ -255,6 +258,43 @@
 
 \def\maximanot@k{}
 
+%% Some stuff of the list of examples
+
+\@ifclassloaded{book}
+{\newcounter{maximaexample}[chapter]
+\newcommand\listofmaximaexamples{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \chapter*{\maximaexamplesname}%
+      \@mkboth{\MakeUppercase\maximaexamplesname}%
+              {\MakeUppercase\maximaexamplesname}%
+    \@starttoc{lom}%
+    \if@restonecol\twocolumn\fi
+    }
+\newcommand{\maxcaption}[1]{\addcontentsline{lom}{figure}
+  {\protect\numberline{\thechapter.\themaximaexample} {\protect\ignorespaces #1}}}}
+{\newcounter{maximaexample}
+\newcommand\listofmaximaexamples{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \section*{\maximaexamplesname}%
+      \@mkboth{\MakeUppercase\maximaexamplesname}%
+              {\MakeUppercase\maximaexamplesname}%
+    \@starttoc{lom}%
+    \if@restonecol\twocolumn\fi
+    }
+\newcommand{\maxcaption}[1]{\addcontentsline{lom}{figure}
+  {\protect\numberline{\themaximaexample}
+    {\protect\ignorespaces #1}}}}
+
+\newcommand{\l@example}[2]{\par\noindent#1 {\itshape #2}}
+
 %% The top delimiter depends on whether or not it is an initial cell,
 %% etc.
 
@@ -269,7 +309,7 @@
 
 \def\m@xima{
      \ifx\maximanextchar [%
-         \let\maximanext = \m@ximainit
+         \let\maximanext = \m@ximaexample
      \else
          \ifx\maximanextchar <%
               \let\maximanext = \m@ximapart
@@ -280,28 +320,20 @@
      \maximanext
 }
 
-\def\m@ximainit[#1]{
-     \futurelet\maximanextchar%
-     \m@xima@nit}
+\def\m@ximaexample[#1]{
+     \stepcounter{maximaexample}
+     \maxcaption{#1}
+     \futurelet\maximanextchar\m@ximapostexample
+}
 
-\def\m@xima@nit{
+\def\m@ximapostexample{
      \ifx\maximanextchar <%
-          \let\maximanext = \m@ximainitpart
+          \let\maximanext = \m@ximapart
      \else
-          \let\maximanext = \m@ximainitonly
+          \let\maximanext = \m@ximastart
      \fi
      \maximanext
 }
-
-\def\m@ximainitonly{
-     \par
-     \vskip 1.5ex
-     \par
-     \ifmaximalines\m@ximainittop\fi
-     \maximasm@llsk
-     \m@ximainputverbatim
-}
-
 
 \def\m@ximastart{
      \par
@@ -331,19 +363,6 @@
      \m@ximainputverbatim
 }
 
-\def\m@ximainitpart<#1:#2>{
-     \par
-     \vskip 1.5ex
-     \par
-     \def\maximatestt@k{#2}
-     \ifx\maximatestt@k\maximanot@k
-         \def\m@ximaparttext{Definition of package #1}
-     \else
-         \def\m@ximaparttext{<#1:#2>}
-     \fi
-     \ifmaximalines\m@ximainitparttop\m@ximaparttext\fi
-     \futurelet\maximanextchar\m@ximap@rt
-}
 
 %% Now to take care of the various types of output
 
@@ -472,6 +491,30 @@
 \def\beginmaximasession{
      \ifmaximausepreview\begin{preview}\fi
      \begingroup
+     \begingroup
+     \catcode`\^^M=12     
+     \futurelet\maximanextchar\m@ximasession
+}
+
+\def\m@ximasession{
+     \ifx\maximanextchar [%
+         \let\maximanext = \m@ximasessionexample
+     \else
+         \let\maximanext = \m@ximasessionstart
+     \fi
+     \maximanext
+}
+
+
+\def\m@ximasessionexample[#1]{
+     \refstepcounter{maximaexample}
+     \maxcaption{#1}
+     \m@ximasessionstart
+}
+
+
+\def\m@ximasessionstart{
+     \endgroup
      \m@ximainsessioninputtrue
      \m@ximasessionsessionfalse
 %     \m@ximatexsessionfalse
