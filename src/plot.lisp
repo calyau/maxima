@@ -3,7 +3,9 @@
 ;; see bottom of file for examples
 
 
-(eval-when (compile) (proclaim '(optimize (safety 0))))
+;; I (RLT) don't think we should compile this with safety = 0.
+
+;;(eval-when (compile) (proclaim '(optimize (safety 0))))
 
 
 (eval-when (compile eval load)
@@ -434,13 +436,15 @@ setrgbcolor} def
 		  (or mexpr (merror "Undefined function ~a" expr))
 		(coerce `(lambda ,(cdr args)
 			     (declare (special ,@(cdr args)))
-			     ($realpart(meval* ',(nth 2 mexpr)))) 'function)))))
+			     (float ($realpart(meval* ',(nth 2 mexpr))) 1d0))
+			  'function)))))
 	(t
 	 (let ((vars (or lvars ($sort ($listofvars expr))))
 	       ;(na (gensym "TMPF"))
 		)
 	   (coerce `(lambda ,(cdr vars) (declare (special ,@(cdr vars)))
-			($realpart (meval* ',expr)))'function)))))
+			(float ($realpart (meval* ',expr)) 1d0))
+		   'function)))))
 
 (defmacro zval (points verts i) `(aref ,points (f+ 2 (f* 3 (aref ,verts ,i)))))
 
@@ -609,7 +613,7 @@ setrgbcolor} def
 	 (yrange ($get_plot_option '|$y|))
 	 ($numer t)
 	 )
-				  
+
     (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
 
     (let* ((x (coerce-float (nth 2 range)))
@@ -1363,7 +1367,7 @@ setrgbcolor} def
 		      (nth 2 fun)
 		      (nth 3 fun)))
 	 (setq fun '$zero_fun))
-	(t (setq fun (coerce-float-fun fun))))
+	(t (setq fun (coerce-float-fun fun lvars))))
     (let* ((pl (draw3d fun
 		       (nth 2 xrange)
 		       (nth 3 xrange)
