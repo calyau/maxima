@@ -308,8 +308,6 @@
 (defprop expr expr shadow)
 (defprop mfexpr*s mfexpr* shadow)
 (defprop mfexpr* mfexpr* shadow)
-(defprop fsubr fexpr shadow)
-(defprop fexpr fexpr shadow)
 
 #-Multics
 (progn
@@ -357,9 +355,6 @@
       (cond ((memq shadow '(expr subr))
 	     (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
 	     (setf (symbol-function  fun)  value))
-	    ((memq shadow '(fexpr fsubr))
-	     (setf (trace-oldfun fun) (symbol-function fun))
-	     (setf (symbol-function  fun)  (cons 'nlambda (cdr value))))
 	    (t (setplist fun
 			 `(,shadow ,value ,@(symbol-plist fun)))))))
 
@@ -381,7 +376,7 @@
 #+cl
 (defun trace-unfshadow (fun type)
   ;; At this point, we know that FUN is traced.
-  (cond ((memq type '(expr subr fexpr fsubr))
+  (cond ((memq type '(expr subr))
 	 (let ((oldf (trace-oldfun fun)))
 	   (if (not (null oldf))
 	     (setf (symbol-function  fun)  oldf)
@@ -400,8 +395,7 @@
 		(if (eq (get! type-of 'shadow) type-of)
 		    (mget (cdr (mgetl fun (list type-of))) type-of)
 		    (mget fun type-of)))
-	       #+(or Franz Cl)
-	       ((memq (get! type-of 'shadow) '(expr fexpr))
+	       ((eq (get! type-of 'shadow) 'expr)
 		(trace-oldfun fun))
 	       (t (if (eq (get! type-of 'shadow) type-of)
 		      (cadr (getl (cdr (getl fun `(,type-of))) `(,type-of)))
@@ -642,7 +636,7 @@
 
        (let ((mprops (mgetl fun '(mexpr mmacro)))
 	     (lprops (getl  fun '(translated-mmacro mfexpr* mfexpr*s)))
-	     (fcell-props (getl-fun fun '(subr lsubr expr fexpr macro fsubr))))
+	     (fcell-props (getl-fun fun '(subr lsubr expr macro))))
 	    (cond ($TRANSRUN
 		   ;; the default, so its really a waste to have looked for
 		   ;; those mprops. Its better to fix the crock than to
@@ -655,8 +649,6 @@
 (DEFPROP MEXPR EXPR HOOK-TYPE)
 (Defprop SUBR EXPR HOOK-TYPE)
 (Defprop LSUBR EXPR HOOK-TYPE)
-(Defprop FEXPR FEXPR HOOK-TYPE)
-(Defprop FSUBR FEXPR HOOK-TYPE)
 (Defprop MFEXPR* MACRO HOOK-TYPE)
 (Defprop MFEXPR*S MACRO HOOK-TYPE)
 
@@ -726,11 +718,8 @@
 		   ((MFEXPR*)
 		    (FUNCALL PROP (CAR LARGS)))
 		   ((MFEXPR*S)
-		    (SUBRCALL NIL PROP (CAR LARGS)))
-		   ((FEXPR)
-		    (FUNCALL PROP LARGS))
-		   ((FSUBR)
-		    (SUBRCALL NIL PROP LARGS)))))
+		    (SUBRCALL NIL PROP (CAR LARGS))))))
+
 
 ;;; I/O cruft
 
