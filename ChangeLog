@@ -1,3 +1,237 @@
+2003-01-08 06:34  amundson
+
+	* tests/Makefile.am: Add rtestflatten.mac to tarball.
+
+2003-01-08 06:33  amundson
+
+	* interfaces/xmaxima/Tkmaxima/.cvsignore: Header.tcl is now a
+	generated file.
+
+2003-01-08 06:32  amundson
+
+	* interfaces/xmaxima/Tkmaxima/Menu.tcl: Make tests runnable under
+	all three lisps.
+
+2003-01-08 06:28  amundson
+
+	* doc/intromax/Makefile.am: Include latex file in tarball.
+
+2003-01-08 06:27  amundson
+
+	* doc/emaxima/: .cvsignore, Makefile.am: Install emaxima doc.
+
+2003-01-08 06:26  amundson
+
+	* doc/Makefile.am: Added emaxima doc directory. Added maximabook to
+	tarball.
+
+2003-01-08 06:26  amundson
+
+	* configure.in: Added emaxima doc Makefile.
+
+2003-01-08 06:25  amundson
+
+	* README.rpms: Updated for new package names. Added blurb about
+	circular dependency.
+
+2003-01-08 06:24  amundson
+
+	* README.lisps: Corrected GCL information.
+
+2003-01-06 13:43  vvzhy
+
+	* share/: Makefile.am, tensor/ademo.dem, tensor/canten.lisp,
+	tensor/itensor.dem, tensor/itensor.lisp, tensor/itensor.usg,
+	tensor/swartz.dem, tensor/symtry.lisp: Fixes and additions to
+	ctensor/itensor by Valerij Pipin
+
+2003-01-06 13:03  belanger
+
+	* interfaces/emacs/emaxima/emaxima.lisp: Jesper Harder's patch was
+	applied.
+
+2003-01-05 13:46  amundson
+
+	* src/: clisp-depends.mk, cmucl-depends.mk, gcl-depends.mk:
+	Automatically generated updates.
+
+2003-01-05 13:46  amundson
+
+	* interfaces/xmaxima/Tkmaxima/Header.tcl: Header.tcl is now
+	generated from Header.tcl.in.
+
+2003-01-05 13:44  amundson
+
+	* src/Makefile.am: Fixes to support pathnames with spaces. Not
+	necessarily complete.
+	
+	The big problem is that automake (1.4-p5, at least) is incompatible
+	with path names that contain spaces. Oi.
+
+2003-01-05 13:05  amundson
+
+	* interfaces/xmaxima/win32/Makefile.in: Switch to StarKits for
+	windows TCL/TK wrapper.  New install target.
+
+2003-01-05 13:03  amundson
+
+	* interfaces/xmaxima/Tkmaxima/Tkmaxima.tcl:  We don't need to ask
+	about saving preferences every single
+	time. Doing so was giving me a monumental headache during testing.
+
+2003-01-05 13:01  amundson
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Use maxima's own
+	winkill under windows.
+
+2003-01-05 13:00  amundson
+
+	* interfaces/xmaxima/Tkmaxima/Paths.tcl: Changes for windows:
+	Automatically set MAXIMA_PREFIX to installed location (under
+	windows only.) Automatically bypass maxima script on windows.
+	
+	There are some path-related issues to clean up in later releases.
+
+2003-01-05 12:58  amundson
+
+	* interfaces/xmaxima/maxima-icon.ico: This should now be a real
+	windows icon. There are still some issues with transparency that I
+	do not understand.
+
+2003-01-05 12:57  amundson
+
+	* interfaces/xmaxima/: Makefile.am, Tkmaxima/Header.tcl.in: Include
+	icons.	Header.tcl is now generated from Header.tcl.in by autoconf
+	in order to get wish executable name.
+
+2003-01-05 12:55  amundson
+
+	* interfaces/emacs/emaxima/Makefile.am: Include emaxima.lisp.
+
+2003-01-05 12:53  amundson
+
+	* maxima.spec.in: Added doc files Added explicit clisp version
+	Added conditional to postun Renamed exec_* packages to exec-* Use
+	rpm macros instead of hard-coded paths Thanks to Rex Dieter for
+	helpful suggestions
+
+2003-01-05 12:52  amundson
+
+	* configure.in: Updates for new generated files.  Bumped up version
+	number for next release candidate. Note subtle change in number
+	scheme (5.9.0rc3 -> 5.9.0.rc4). The new scheme is more likely to be
+	automatically recognized by, e.g., rpm.
+
+2003-01-05 12:49  amundson
+
+	* README.rpms: README file to accompany RPM packaging.
+
+2003-01-05 12:49  amundson
+
+	* Makefile.am: Added files to distribution tarball.  Added/updated
+	maintainer rules for packaging.
+
+2003-01-05 12:47  amundson
+
+	* .cvsignore, maxima.iss.in: Added Inno Setup script for Windows
+	packaging.
+
+2002-12-23 22:31  dstang
+
+	* share/algebra/charsets/README: Added Dr. Wang's homepage to
+	README.
+
+2002-12-23 14:43  dstang
+
+	* src/maxima.system: Added the file set.lisp.
+
+2002-12-22 23:30  dstang
+
+	* share/algebra/solver/: readme, linsolve.mac, misc.mac,
+	slvrmsgs.mac, slvrtbox.mac, solver.mac, test.mac: Initial checkin.
+
+2002-12-22 22:06  dstang
+
+	* src/set.lisp: Corrected problem with Disjointp which failed if
+	sets were disjoint.  Declared Intersection and Union defmfun
+	instead of defmspec.
+
+2002-12-19 22:18  dstang
+
+	* share/algebra/charsets/: charsets.mac, test1.mac: Initial checkin
+	of translated Dr. Wangs code.
+
+2002-12-19 10:38  dstang
+
+	* doc/info/Expressions.texi, src/nrat4.lisp, tests/rtest11.mac:
+	Added initial version of LFREEOF.
+
+2002-12-08 10:10  dstang
+
+	* doc/info/Expressions.texi, src/comm.lisp, tests/rtest6a.mac:
+	Added OP and OPERATORP.
+
+2002-12-06 10:37  dstang
+
+	* src/mutils.lisp: Added every function.
+
+2002-12-06 10:36  dstang
+
+	* doc/info/Lists.texi: Added documentation for every.
+
+2002-12-06 10:35  dstang
+
+	* tests/rtest15.mac: Added tests for every
+
+2002-12-05 16:45  yycamm
+
+	* src/Makefile.am: GCL alt-link syntax update
+
+2002-12-05 13:41  yycamm
+
+	* lisp-utils/defsystem.lisp: Enable build with ansi GCL image
+
+2002-12-01 08:36  dstang
+
+	* tests/rtest15.mac: Added ASSOC tests.
+
+2002-12-01 08:33  dstang
+
+	* src/mutils.lisp: Added ASSOC function.
+
+2002-11-28 21:21  dstang
+
+	* tests/rtestflatten.mac: 
+	Test for flatten.
+
+2002-11-28 19:54  dstang
+
+	* tests/tests.lisp: 
+	Added rtestflatten.
+
+2002-11-28 19:48  dstang
+
+	* doc/info/Lists.texi: 
+	Added link for flatten.
+
+2002-11-28 19:43  dstang
+
+	* src/: flatten.lisp, powers.lisp, set.lisp: 
+	Initial checkin of Dr. Willis's code.
+
+2002-11-28 19:38  dstang
+
+	* src/Makefile.am: 
+	Added flatten.lisp, powers.lisp and set.lisp
+
+2002-11-28 10:40  dstang
+
+	* share/algebra/charsets/README: [no log message]
+
+2002-10-29 14:28  amundson
+
+	* ChangeLog: Updated for 5.9.0rc3 by cvs2cl.pl.
+
 2002-10-29 12:47  amundson
 
 	* doc/info/Makefile.am: Automake can cause trouble if generated
@@ -3179,21 +3413,6 @@
 		* tests/rtest15.mac: New file
 		* tests/tests.lisp: Add above tests
 
-2002-04-08 11:56  starseeker
-
-	* doc/maximabook/images/.xvpics/: 2dplotwindow.eps,
-	2dplotwindow.jpg, 2dplotwindowa.eps, 2dplotwindowa.jpg,
-	3dplotwindow.eps, 3dplotwindow.jpg, 3dplotwindowa.eps,
-	3dplotwindowa.jpg, emacsmaximamodeshot.eps,
-	emacsmaximamodeshot.jpg, imaxima.eps, imaxima.png,
-	maxima_geomview.eps, maxima_geomview.jpg, maxima_gnuplot.eps,
-	maxima_gnuplot.jpg, maxima_openmath.eps, maxima_openmath.jpg,
-	symaxx.eps, symaxx.jpg, symaxxgraph.ps, symaxxoutput.jpg,
-	symaxxtex.ps, symaxxunits.ps, terminalshot.eps, terminalshot.jpg,
-	texmacs.eps: 
-	
-	removing xv files
-
 2002-04-08 11:55  starseeker
 
 	* doc/maximabook/storage/bibarchive/bibliography.tar.gz: 
@@ -3233,25 +3452,9 @@
 	images/maxima_gnuplot.png, images/maxima_openmath.png,
 	images/maximawindowsinstall1.png, images/symaxx.png,
 	images/symaxxoutput.png, images/terminalshot.png,
-	images/texmacs.png, images/xmaxima.png,
-	images/.xvpics/2dplotwindow.eps, images/.xvpics/2dplotwindow.jpg,
-	images/.xvpics/2dplotwindowa.eps, images/.xvpics/2dplotwindowa.jpg,
-	images/.xvpics/3dplotwindow.eps, images/.xvpics/3dplotwindow.jpg,
-	images/.xvpics/3dplotwindowa.eps, images/.xvpics/3dplotwindowa.jpg,
-	images/.xvpics/emacsmaximamodeshot.eps,
-	images/.xvpics/emacsmaximamodeshot.jpg, images/.xvpics/imaxima.eps,
-	images/.xvpics/imaxima.png, images/.xvpics/maxima_geomview.eps,
-	images/.xvpics/maxima_geomview.jpg,
-	images/.xvpics/maxima_gnuplot.eps,
-	images/.xvpics/maxima_gnuplot.jpg,
-	images/.xvpics/maxima_openmath.eps,
-	images/.xvpics/maxima_openmath.jpg, images/.xvpics/symaxx.eps,
-	images/.xvpics/symaxx.jpg, images/.xvpics/symaxxgraph.ps,
-	images/.xvpics/symaxxoutput.jpg, images/.xvpics/symaxxtex.ps,
-	images/.xvpics/symaxxunits.ps, images/.xvpics/terminalshot.eps,
-	images/.xvpics/terminalshot.jpg, images/.xvpics/texmacs.eps,
-	maxims/maxims.tex, odes/advmath.tex, odes/odes.aux, odes/odes.dvi,
-	odes/odes.log, odes/odes.tex, basics/basics.dvi, basics/basics.tex,
+	images/texmacs.png, images/xmaxima.png, maxims/maxims.tex,
+	odes/advmath.tex, odes/odes.aux, odes/odes.dvi, odes/odes.log,
+	odes/odes.tex, basics/basics.dvi, basics/basics.tex,
 	examples/examples.tex, install/install.tex,
 	interfaces/interfaces.tex, introduction/introduction.tex,
 	output/izicinfo.txt, output/output.tex, preface/pref.tex,
@@ -3287,25 +3490,9 @@
 	images/maxima_gnuplot.png, images/maxima_openmath.png,
 	images/maximawindowsinstall1.png, images/symaxx.png,
 	images/symaxxoutput.png, images/terminalshot.png,
-	images/texmacs.png, images/xmaxima.png,
-	images/.xvpics/2dplotwindow.eps, images/.xvpics/2dplotwindow.jpg,
-	images/.xvpics/2dplotwindowa.eps, images/.xvpics/2dplotwindowa.jpg,
-	images/.xvpics/3dplotwindow.eps, images/.xvpics/3dplotwindow.jpg,
-	images/.xvpics/3dplotwindowa.eps, images/.xvpics/3dplotwindowa.jpg,
-	images/.xvpics/emacsmaximamodeshot.eps,
-	images/.xvpics/emacsmaximamodeshot.jpg, images/.xvpics/imaxima.eps,
-	images/.xvpics/imaxima.png, images/.xvpics/maxima_geomview.eps,
-	images/.xvpics/maxima_geomview.jpg,
-	images/.xvpics/maxima_gnuplot.eps,
-	images/.xvpics/maxima_gnuplot.jpg,
-	images/.xvpics/maxima_openmath.eps,
-	images/.xvpics/maxima_openmath.jpg, images/.xvpics/symaxx.eps,
-	images/.xvpics/symaxx.jpg, images/.xvpics/symaxxgraph.ps,
-	images/.xvpics/symaxxoutput.jpg, images/.xvpics/symaxxtex.ps,
-	images/.xvpics/symaxxunits.ps, images/.xvpics/terminalshot.eps,
-	images/.xvpics/terminalshot.jpg, images/.xvpics/texmacs.eps,
-	maxims/maxims.tex, odes/advmath.tex, odes/odes.aux, odes/odes.dvi,
-	odes/odes.log, odes/odes.tex, basics/basics.dvi, basics/basics.tex,
+	images/texmacs.png, images/xmaxima.png, maxims/maxims.tex,
+	odes/advmath.tex, odes/odes.aux, odes/odes.dvi, odes/odes.log,
+	odes/odes.tex, basics/basics.dvi, basics/basics.tex,
 	examples/examples.tex, install/install.tex,
 	interfaces/interfaces.tex, introduction/introduction.tex,
 	output/izicinfo.txt, output/output.tex, preface/pref.tex,
