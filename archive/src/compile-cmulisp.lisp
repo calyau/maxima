@@ -19,11 +19,7 @@
 ;;;
 
 ;; this is now in maxima package
-(defpackage "SI"
-    (:use "COMMON-LISP" "ALIEN" "C-CALL"))
-(defvar si::*info-paths* nil)
-
-(defpackage "REGEX"
+(defpackage "REGEXP"
     (:use "COMMON-LISP" "ALIEN" "C-CALL")
   (:export
    ;; Constants
@@ -45,7 +41,7 @@
    "+RE-NO-BK-VBAR+"
    "+RE-NO-EMPTY-RANGES+"
    "+RE-UNMATCHED-RIGHT-PAREN-ORD+"
-   ";; COMMON REGEXP SYNTAXES"
+   ;; Common regexp syntaxes
    "+RE-SYNTAX-EMACS+"
    "+RE-SYNTAX-EGREP+"
    "+RE-SYNTAX-POSIX-COMMON+"
@@ -58,10 +54,23 @@
    ;; Functions
    "MATCH-DATA-START"
    "MATCH-DATA-END"
+   "RE-SET-SYNTAX"
+   "COMPILE-PATTERN"
+   "ALLOCATE-RE-REGS"
+   "FREE-RE-REGS"
+   "RE-NSUB"
+   "LISPIFY-MATCH-DATA"
+   "RE-SEARCH"
+   "RE-REGFREE"
    "STRING-MATCH"
    "MATCH-BEGINNING"
    "MATCH-END"
    ))
+
+(defpackage "SI"
+  (:use "COMMON-LISP" "REGEXP" "ALIEN"))
+(defvar si::*info-paths* nil)
+
 
 (push :main-files-loaded *features*)
 (load "sysdef.lisp")
@@ -137,6 +146,7 @@
 
 ;; define bye so that quit() will work in maxima
 (defun bye () (ext:quit))
+(defun quit () (ext:quit))
 
 
 

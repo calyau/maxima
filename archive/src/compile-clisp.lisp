@@ -1,4 +1,7 @@
 
+(defpackage "SI"
+    (:use "COMMON-LISP"))
+
 (if (find-package "EXT")    
     (use-package "EXT"))
 
@@ -9,10 +12,18 @@
 
 (defun compile-maxima ()
   (make::make :maxima :compile t)
+  (if (find-package "REGEXP")
+    (progn
+      (compile-file "clisp-regex")
+      (compile-file "cl-info") ))
 )
 
 (defun save-maxima ()
   (make::make :maxima )
+  (if (find-package "REGEXP")
+    (progn
+      (load "clisp-regex")
+      (load "cl-info") ))
   (gc)
   (saveinitmem "maxima-clisp.mem"
                :init-function #'user::run)

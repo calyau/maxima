@@ -1,3 +1,20 @@
+2001-12-09  Vadim V. Zhytnikov <vvzhy@mail.ru>
+        
+        * New online info browsing code for clisp and cmulisp
+	by Raymond Toy. To make describe work with clisp you have
+	to compile clisp with REGEXP module and later invoke it
+	during maxima compilation and at run time with full
+	linking kit
+	  clisp -K full
+	To make it work with cmulisp you need regex.o object
+	file. It's source regex.c/h is part of glibc and also
+	can be found in clisp sources. 	Before compiling maxima 
+	with cmulisp edit compile-cmulisp.lisp, cmulisp-regex.lisp 
+	and replace
+	  /apps/.../regex-0.12/regex.o
+	by he path where regex.o resides on your system (value of 
+	the *regex-lib* variable).
+
 2001-11-19  Vadim V. Zhytnikov <vvzhy@mail.ru>
 
 	*  patches to fix problems with new clisp releases.

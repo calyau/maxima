@@ -1,10 +1,71 @@
 ;;;
 ;;; Alien interface to GNU regex, for CMUCL
 ;;;
+;;; Copyright 2000, Raymond Toy
+;;;
+;;; This is a part of Maxima and therefore released under the GPL that
+;;; governs GPL.
+;;;
+;;; It is intended that we support everything that GNU regex does, but
+;;; we're not quite there yet.
 ;;;
 
-(in-package "REGEX")
+(eval-when (compile load eval)
+(defpackage "REGEXP"
+    (:use "COMMON-LISP" "ALIEN" "C-CALL")
+  (:export
+   ;; Constants
+   "+RE-BACKSLASH-ESCAPE-IN-LISTS+"
+   "+RE-BK-PLUS-QM+"
+   "+RE-CHAR-CLASSES+"
+   "+RE-CONTEXT-INDEP-ANCHORS+"
+   "+RE-CONTEXT-INDEP-OPS+"
+   "+RE-CONTEXT-INVALID-OPS+"
+   "+RE-DOT-NEWLINE+"
+   "+RE-DOT-NOT-NULL+"
+   "+RE-HAT-LISTS-NOT-NEWLINE+"
+   "+RE-INTERVALS+"
+   "+RE-LIMITED-OPS+"
+   "+RE-NEWLINE-ALT+"
+   "+RE-NO-BK-BRACES+"
+   "+RE-NO-BK-PARENS+"
+   "+RE-NO-BK-REFS+"
+   "+RE-NO-BK-VBAR+"
+   "+RE-NO-EMPTY-RANGES+"
+   "+RE-UNMATCHED-RIGHT-PAREN-ORD+"
+   ;; Common regexp syntaxes
+   "+RE-SYNTAX-EMACS+"
+   "+RE-SYNTAX-EGREP+"
+   "+RE-SYNTAX-POSIX-COMMON+"
+   "+RE-SYNTAX-POSIX-BASIC+"
+   "+RE-SYNTAX-POSIX-EXTENDED+"
+   "+RE-SYNTAX-SPENCER+"
+   ;; Variables
+   "*MATCH-DATA*"
+   "*CASE-FOLD-SEARCH*"
+   ;; Functions
+   "MATCH-DATA-START"
+   "MATCH-DATA-END"
+   "RE-SET-SYNTAX"
+   "COMPILE-PATTERN"
+   "ALLOCATE-RE-REGS"
+   "FREE-RE-REGS"
+   "RE-NSUB"
+   "LISPIFY-MATCH-DATA"
+   "RE-SEARCH"
+   "RE-REGFREE"
+   "STRING-MATCH"
+   "MATCH-BEGINNING"
+   "MATCH-END"
+   ))
 
+(defpackage "SI"
+  (:use "COMMON-LISP" "REGEXP" "ALIEN"))
+) ; end eval-when
+
+(in-package "REGEXP")
+
+#+nil
 (export '(
 	  ;; Constants
 	  +re-backslash-escape-in-lists+
@@ -46,9 +107,13 @@
 (use-package "ALIEN")
 (use-package "C-CALL")
 
-#+nil
 (eval-when (:load-toplevel :compile-toplevel :execute)
-  (ext:load-foreign "/apps/gnu/src/regex-0.12/regex.o")
+  (defvar *regex-lib*
+    "/apps/gnu/src/regex-0.12/regex.o"
+    "The full path to GNU regex.o")
+)
+(eval-when (:compile-toplevel :execute)
+  (ext:load-foreign *regex-lib*)
   )
 
 ;;; From regex.h
@@ -108,10 +173,17 @@
   (range int)
   (regs (* re-registers)))
 
+(declaim (inline re-set-syntax))
+(def-alien-routine ("re_set_syntax" re-set-syntax) reg-syntax-t
+  (syntax reg-syntax-t))
+
+;; Note: for some reason, I can't set this directly to get the desired
+;; syntax.  I need to use re_set_syntax instead, which works.
 (def-alien-variable ("re_syntax_options" re-syntax-options) reg-syntax-t)
 
 
 ;;; POSIX interface
+;;; Not yet supported, but we really should since it's standardized.
 #|
 (def-alien-type regex-t re-pattern-buffer)
 (def-alien-type regoff-t int)
@@ -142,6 +214,8 @@
   (errbuf-size int))
 |#
 
+;; Create all of the necessary constants defined in regex.h to define the syntax.
+
 (macrolet ((frob (&rest name-desc-list)
 	     `(progn
 		,@(let ((bit 1))
@@ -186,7 +260,21 @@ literals.")
 	(+re-no-empty-ranges+ "")
 	(+re-unmatched-right-paren-ord+ "")))
 
+;; Define some common syntaxes.
+
 (defconstant +re-syntax-emacs+ 0)
+
+(defconstant +re-syntax-awk+
+  (logior +re-backslash-escape-in-lists+ +re-dot-not-null+
+	  +re-no-bk-parens+ +re-no-bk-refs+
+	  +re-no-bk-vbar+ +re-no-empty-ranges+
+	  +re-unmatched-right-paren-ord+))
+
+(defconstant +re-syntax-grep+
+  (logior +re-bk-plus-qm+ +re-char-classes+
+	  +re-hat-lists-not-newline+ +re-intervals+
+	  +re-newline-alt+))
+
 (defconstant +re-syntax-egrep+
   (logior +re-char-classes+ +re-context-indep-anchors+
 	  +re-context-indep-ops+ +re-hat-lists-not-newline+
@@ -200,16 +288,28 @@ literals.")
 (defconstant +re-syntax-posix-basic+
   (logior +re-syntax-posix-common+ +re-bk-plus-qm+))
 
+(defconstant +re-syntax-posix-minimal-basic+
+  (logior +re-syntax-posix-common+ +re-limited-ops+))
+
 (defconstant +re-syntax-posix-extended+
   (logior +re-syntax-posix-common+ +re-context-indep-anchors+
 	  +re-context-indep-ops+   +re-no-bk-braces+        
 	  +re-no-bk-parens+        +re-no-bk-vbar+          
 	  +re-unmatched-right-paren-ord+))
 
+(defconstant +re-syntax-posix-awk+
+  (logior +re-syntax-posix-extended+ +re-backslash-escape-in-lists+))
+
+;; This isn't defined regex.h, but GCL uses this syntax in its info
+;; reader.  (Not 100% sure this is right, but is close enough for
+;; GCL's and maxima's use.)
 (defconstant +re-syntax-spencer+
   (logior +re-no-bk-parens+ +re-no-bk-vbar+))
+;;; This ends the raw GNU regex interface.
 
 
+;;; A simple slightly higher-level interface to GNU regex that might
+;;; be more appropriate for Lisp.
 #+nil
 (defun allocate-re-regs (compiled-pattern-buffer)
   (declare (type (alien (* re-pattern-buffer)) compiled-pattern-buffer))
@@ -232,6 +332,11 @@ literals.")
     (setf (slot (deref regs) 'num-regs) 0)
     regs))
 
+;; Return the number of matches and submatches found in the result
+;; pattern buffer after doing a search.  Assumes the search was
+;; successful.
+(defun re-nsub (pat-buf)
+  (1+ (slot (deref pat-buf) 're-nsub)))
 
 (defun free-re-regs (re-regs)
   (declare (type (alien (* re-registers)) re-regs))
@@ -326,29 +431,33 @@ case characters"
       (setf (aref matches k)
 	    (make-match-data :start (deref start k) :end (deref end k))))
     matches))
-    
+
+(in-package "SI")
+;;; Define the interface needed by cl-info.
 (defun string-match (pattern string
 			     &optional (start 0) end
-			     (syntax +re-syntax-spencer+))
+			     (syntax +re-syntax-posix-basic+))
   "Search the string STRING for the first pattern that matches the
 regexp PATTERN.  The syntax used for the pattern is specified by
 SYNTAX.  The search may start in the string at START and ends at END,
-which default to 0 and the end of the string.
+which default to 0 and the end of the string, respectively.
 
 If there is a match, returns the index of the start of the match and
 an array of match-data.  If there is no match, -1 is returned and
 nil."
   (declare (type string pattern string))
-  (setf re-syntax-options syntax)
-  (let* ((comp-result (compile-pattern pattern)))
+  (re-set-syntax syntax)
+  (let (comp-result)
     ;; Make sure we free up the space for the pattern buffer.
     (unwind-protect
 	 (progn
+	   (setf comp-result (compile-pattern pattern))
 	   (cond (comp-result
-		  (let* ((re-regs (allocate-re-regs)))
+		  (let (re-regs)
 		    ;; Make sure we free up the space for the registers
 		    (unwind-protect 
 			 (progn
+			   (setf re-regs (allocate-re-regs))
 			   (let ((search-result
 				  (re-search comp-result string (length string)
 					     start (or end (length string))
@@ -356,7 +465,7 @@ nil."
 			     (cond ((>= search-result 0)
 				    (let ((matches
 					   (lispify-match-data
-					    (1+ (slot (deref comp-result) 're-nsub))
+					    (re-nsub comp-result)
 					    re-regs)))
 				      ;; Save the last match in the global var
 				      (setf *match-data* matches)
@@ -371,6 +480,49 @@ nil."
       ;; Free the pattern buffer
       (re-regfree comp-result)
       (free-alien comp-result))))
+
+;; Memoized version
+#+nil
+(defvar *compiled-pattern-hashtable* (make-hash-table :test 'equal))
+
+#+nil
+(defun string-match (pattern string
+			     &optional (start 0) end)
+  (declare (type string pattern string))
+  (setf re-syntax-options +re-syntax-posix-basic+)
+  (multiple-value-bind (comp-pattern foundp)
+      (gethash pattern *compiled-pattern-hashtable*)
+    (unless comp-pattern
+      ;; Compile up the pattern and save it away
+      (setf (gethash pattern *compiled-pattern-hashtable*)
+	    (compile-pattern pattern))
+      (setf comp-pattern (gethash pattern *compiled-pattern-hashtable*)))
+    (unwind-protect
+	 (progn
+	   (cond (comp-pattern
+		  (let* ((re-regs (allocate-re-regs)))
+		    ;; Make sure we free up the space for the registers
+		    (unwind-protect 
+			 (progn
+			   (let ((search-result
+				  (re-search comp-pattern string (length string)
+					     start (or end (length string))
+					     re-regs)))
+			     (cond ((>= search-result 0)
+				    (let ((matches
+					   (lispify-match-data
+					    (1+ (slot (deref comp-pattern) 're-nsub))
+					    re-regs)))
+				      ;; Save the last match in the global var
+				      (setf *match-data* matches)
+				      (values search-result matches)))
+				   (t
+				    (values search-result nil)))))
+		      ;; Free up the re-register since we're done with it now.
+		      (free-re-regs re-regs))))
+		 (t
+		  (setf *match-data* nil)
+		  (values -1 nil)))))))
 
 (defun match-beginning (index &optional (match-data *match-data*))
   (if (and match-data (< index (length match-data)))

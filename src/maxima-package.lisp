@@ -105,6 +105,21 @@
 #+gcl
 (setf (symbol-function 'maxima::newline) (symbol-function 'si::newline))
 
+;; *info-paths* from cl-info.lisp
+#+(or clisp cmu)
+(import '( si::*info-paths* ) "MAXIMA" )
+
+;; detect which version of clisp REGEXP we have
+#+clisp
+(if (find-package "REGEXP") 
+  (push (cond ((apply (intern "REGEXP-EXEC" "REGEXP") 
+                      (list (apply (intern "REGEXP-COMPILE" "REGEXP")
+		                   '("AAA" t)) 
+		            "aaa"))
+                  ':case-fold-search     )
+              (t  ':case-fold-search-not ))
+	*features* ))
+	      
 ;;redefined in commac  lucid 2.1 does (functionp 'jiljay)-->t
 (if (lisp::functionp 'dotimes) (push :shadow-functionp *features*))
 (unless (lisp::functionp 'lisp::functionp)

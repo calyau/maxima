@@ -12,7 +12,7 @@
 
 (defvar $manual_demo "manual.demo")
 
-(DEFmspec $example (l)   (setq l (cdr l))
+(defmspec $example (l)   (setq l (cdr l))
   (block
    $example
    (let ((example (car l))
@@ -118,20 +118,19 @@
 (defun $describe(x &aux (*info-paths* *info-paths*) have)
   (setq x ($sconcat x))
   (setq  *INFO-PATHS*
-	 (cons  (concatenate 'string *maxima-directory*
-			     "info/")
-		*INFO-PATHS*))
-  #+(or gcl cmulisp)
-  (if (fboundp 'si::info)
-      (return-from $describe (si::info x '("maxima.info"))))
-  
+         (cons  (concatenate 'string *maxima-directory*
+                             "info/")
+                *INFO-PATHS*))
+  (if (and (find-package "SI")
+           (fboundp (intern "INFO" "SI")))
+      (return-from $describe (funcall (intern "INFO" "SI") x
+         '("maxima.info") #-gcl *info-paths*)))
+
   "The documentation is now in INFO format and can be printed using
 tex, or viewed using info or gnu emacs or using a web browser:
 http://www.ma.utexas.edu/maxima/
-   Versions of maxima built 
-on GCL or CMULISP have a builtin info retrieval mechanism"
+   Some versions of maxima built have a builtin info retrieval mechanism."
   )
-
 
 
 

@@ -311,7 +311,7 @@
 				  eof-error-p eof-value)))))))
 	((and (eql #\? ch) (member next '(#\space #\tab)))
 	 (let* ((line (string-trim '(#\space #\tab #\; #\$)
-				   (subseq  (read-line stream eof-error-p eof-value) 2))))
+				   (subseq  (read-line stream eof-error-p eof-value) 1))))
 	   `((displayinput) nil (($describe) ,line))))
 	(t (setq *last-dbm-command* nil)
 	     (mread stream eof-value))))
