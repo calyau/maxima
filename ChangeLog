@@ -1,7 +1,1151 @@
-2002-09-06  Mike Clarkson  <mikeclarkson@usw-pr-shell1.sourceforge.net>
+2002-10-28 12:22  amundson
 
-	* interfaces/xmaxima/xmaxima.tcl: Massive breakup of xmaxima.tcl
-	into compenent files in the Tkmaxima subdirectory.
+	* doc/info/Makefile.am: Last minute packaging problem discovered
+	and fixed: Elliptic.texi was not included in the distribution
+	tarball. Now it is.
+
+2002-10-27 20:53  amundson
+
+	* configure.in: Increment version to 5.9.0rc2.
+
+2002-10-27 20:50  amundson
+
+	* src/init-cl.lisp: Fix courtesy Sam Steingold:
+	
+		* init-cl.lisp (user::run): use `with-simple-restart' for
+		CLISP, just like for CMUCL.
+		(sys::commands) [CLISP]: do not redefine the internal
+	function
+
+2002-10-27 20:47  amundson
+
+	* src/hyp.lisp: Fix courtesy Sam Steingold:
+	
+	(step7): call `hyp-algv' with a correct number of arguments
+
+2002-10-27 20:43  amundson
+
+	* src/clmacs.lisp: Make double precision numbers default under
+	clisp. This change was suggested by Sam Steingold.
+	
+	Precision in Maxima needs revisiting.
+
+2002-10-27 20:41  amundson
+
+	* src/Makefile.am: Make sure binary-cmucl directories exist before
+	invoking cmucl. This change is necessary since maxima.system
+	started calling truename for binary-cmucl.
+
+2002-10-27 20:39  amundson
+
+	* lisp-utils/defsystem.lisp: Update package handling for gcl.
+
+2002-10-27 20:33  amundson
+
+	* interfaces/xmaxima/Makefile.am: Add contents of win32 directory
+	to distribution tarball.
+
+2002-10-27 20:31  amundson
+
+	* xmaxima-local.in, interfaces/xmaxima/Tkmaxima/Paths.tcl: Fixes to
+	restore the functionality of xmaxima-local, at least under Unix.
+
+2002-10-27 20:29  amundson
+
+	* README.lisps: Small update on GCL versions.
+
+2002-10-26 21:20  wjenkner
+
+	* src/mdebug.lisp: ITERATE-OVER-BKPTS: Deleting disabled
+	breakpoints didn't work and enabling already enabled breakpoints
+	effectively deleted them.
+
+2002-10-25 12:03  amundson
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Very important bug
+	fix. The old default version of pid was -1. This was explosively
+	dangerous -- if the maxima subprocess failed to start, xmaxima will
+	call "kill -1", which results in killing *all* user process on (at
+	least) Linux.
+	
+	The new default version for pid is "none".
+
+2002-10-23 19:03  billingd
+
+	* tests/rtestode.mac: Fix typo in disabled test, then enable it.
+
+2002-10-23 18:57  billingd
+
+	* tests/rtestode.mac: Add tests for ode2() with
+	method:xformtoconstcoeff
+
+2002-10-17 17:32  rtoy
+
+	* src/maxima.system: Recent versions of CMUCL need truename to get
+	the right location of binary-cmucl.  Don't know if this is a bug in
+	CMUCL or defsystem.
+
+2002-10-17 16:32  rtoy
+
+	* src/cl-info.lisp: Fix typo in loop expression.
+
+2002-10-17 16:08  amundson
+
+	* lisp-utils/maxima-run-lisp: Restore large clisp banner at
+	startup.
+
+2002-10-16 10:39  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: A "$" was added to a
+	skip-chars-backwards command, to deal with commands ending in "$".
+
+2002-10-15 12:34  rtoy
+
+	* src/float.lisp: Bug 623620: -log(-1.0b0) unnormalized
+	
+	Fixed as suggested by Stavros Macrakis (with minor editing).
+
+2002-10-15 12:11  rtoy
+
+	* src/trigi.lisp: Bug 623384: acoth(-2.0) was computing the wrong
+	thing because the formula was wrong.  Fix from Stavros Macrakis.
+
+2002-10-14 11:44  rtoy
+
+	* src/float.lisp: Rev 1.4 incorrectly lifted the multiplication by
+	2 outside the loop.  Make it right.
+
+2002-10-10 09:06  amundson
+
+	* src/macsys.lisp: This change fixes the "socket bug." Error
+	conditions often result in a (throw 'maxima-quit) which results in
+	macsyma-top-level being restarted. The way the batch mode worked,
+	restarting macsyma-top-level caused the input to revert to the
+	batch string (used to start the server) which had now reached its
+	end. Since there was an eof on the input stream, maxima would
+	simply exit. Now, if we are using a socket connection and if the
+	input is not standard input, we switch the input to standard input.
+	(The socket connection points standard input to the socket.)
+	
+	The very fact that this commit message is terribly confusing means
+	that the entire input-stream/socket/batch-mode scheme needs to be
+	rethought.
+
+2002-10-08 12:06  rtoy
+
+	* src/float.lisp: o Fix bug in fpshift wherein right shifts of
+	negative numbers were not   truncated properly o Add some comments
+	on the algorithm used by fplog.  o Move the multiplication by 2
+	that was inside the loop to outside the   loop.
+
+2002-10-07 09:15  amundson
+
+	* NEWS, README: Documentation updates in preparation for release.
+
+2002-10-06 21:30  amundson
+
+	* .cvsignore, interfaces/xmaxima/win32/.cvsignore: Ignore more
+	generated files.
+
+2002-10-06 21:16  amundson
+
+	* maxima.spec.in: 1) Enable all three lisps.
+	
+	2) Build maxima-xmaxima package.
+
+2002-10-06 21:07  amundson
+
+	* share/trigonometry/trgsmp.mac: This file was inadvertently left
+	out of the new version of the Maxima source tree.
+
+2002-10-06 17:00  amundson
+
+	* README.lisps: Updated information for Clisp 2.30. Pointer to
+	ledit.
+
+2002-10-06 06:29  vvzhy
+
+	* share/Makefile.am: Install diag.dem and battex.sty
+
+2002-10-06 06:26  vvzhy
+
+	* share/contrib/diag.dem: demo file to diag.mac
+
+2002-10-06 06:21  vvzhy
+
+	* share/physics/battex.sty: battex.sty is required by dimension.tex
+
+2002-10-05 20:27  wjenkner
+
+	* src/autol.lisp: $aload_mac: Substitute $load for $batchload,
+	which can't load translated/compiled files.  This makes no
+	difference unless the user changes the default $FILE_SEARCH_MAXIMA
+	accordingly, too.
+
+2002-09-29 02:27  vvzhy
+
+	* interfaces/emacs/emaxima/Makefile.am: remove maxima-symbols.el
+	from Makefile.am since it is no longer in the repository
+
+2002-09-28 02:06  billingd
+
+	* tests/rtest15.mac: Rework compile test to ensure f is killed
+
+2002-09-27 15:47  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: A problem with indentation in
+	perhaps-smart indentation was fixed.
+
+2002-09-27 15:08  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: Some problems with
+	indentation were fixed (I hope).
+
+2002-09-27 11:07  belanger
+
+	* doc/maximabook/interfaces/interfaces.tex: An update to
+	indentation information was made.
+
+2002-09-27 11:06  belanger
+
+	* doc/emaxima/: EMaximaIntro.tex, EMaximaIntro.ps: A correction to
+	indentation information was made.
+
+2002-09-27 10:54  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: A problem was fixed where the
+	maxima process in xemacs would be killed.  Newlines and indents
+	were changed to be standard emacs	 (RET is newline,	 
+	C-j is newline-and-indent)
+
+2002-09-27 10:52  belanger
+
+	* interfaces/emacs/emaxima/maxima-font-lock.el: A problem was fixed
+	where keywords within strings and comments were highlighted.
+
+2002-09-26 21:49  wjenkner
+
+	* src/rat3e.lisp: Fix CONTENT of constant polynomials: content(a,x)
+	should give [a, 1] (or [-a, -1]) and not [1, a].  Note that `a' is
+	here regarded as (constant) polynomial in x with coefficients in
+	Z[a].
+
+2002-09-26 19:33  wjenkner
+
+	* share/simplification/facexp.mac: COLLECTTERMS0: Get rid of FDUM. 
+	This permits to remove the quote from the lambda expression near
+	the end (by avoiding case II A in trans3.lisp, which the translator
+	can't handle yet).  Alternatively, FDUM could be bound inside the
+	lambda expression, but calling FIRST twice won't introduce that
+	much overhead.
+	
+	Merge facex1.mac into facexp.mac.  This implies only cosmetic
+	changes:
+	
+	Replace APPLY('COLLECTTERMS,CONS(?,??)) by COLLECTTERMSL(?,??),
+	which is equivalent and more concise.
+	
+	Do NOT replace ORPARTITION(?,??,???) by ORPARTITIONL(?,??,[???]). 
+	These two expressions are equivalent (provided that my definition
+	in genut.mac is correct).
+	
+	Do NOT replace LOPPLUSP by its definition (which is in facexp.mac,
+	anyway).
+
+2002-09-26 16:22  belanger
+
+	* interfaces/emacs/emaxima/maxima-font-lock.el: A line was added
+	for xemacs compatibility.
+
+2002-09-26 15:40  belanger
+
+	* doc/emaxima/EMaximaIntro.ps: The requirement of maxima-symbols.el
+	was removed.
+
+2002-09-26 15:40  belanger
+
+	* doc/emaxima/EMaximaIntro.tex: A mention of maxima-symbols was
+	removed.
+
+2002-09-26 15:38  belanger
+
+	* doc/maximabook/interfaces/interfaces.tex: Some of the keystrokes
+	for maxima-mode were updated.
+
+2002-09-26 15:34  belanger
+
+	* doc/emaxima/EMaximaIntro.ps: Some keystrokes for commands were
+	updated.
+
+2002-09-26 15:33  belanger
+
+	* doc/emaxima/EMaximaIntro.tex: Some keystrokes for old commands
+	were updated.
+
+2002-09-26 15:26  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: The function maxima-mark-form
+	was rebound to M-h.  Either maxima-complete or
+	maxima-dynamic-complete is now bound to M-TAB, depending on the
+	value of maxima-use-dynamic-complete.
+
+2002-09-26 15:24  belanger
+
+	* interfaces/emacs/emaxima/maxima-symbols.el: The variable
+	maxima-symbols was defined in maxima-font-lock.el, making this file
+	unnecessary.
+
+2002-09-26 15:17  belanger
+
+	* interfaces/emacs/emaxima/maxima-font-lock.el: The faces used in
+	font-locking were changed to default font-lock faces.  Different
+	levels of highlighting were introduced.  The variable
+	maxima-symbols was put into this file.
+
+2002-09-25 20:14  billingd
+
+	* tests/rtestode.mac: Update reference for Postel and Zimmermann
+
+2002-09-25 08:48  billingd
+
+	* tests/rtestode.mac: Comment out a number of tests that fail when
+	this test is run last.	There is some interaction with tests in
+	other files.
+	
+	Add some tests from Postel and Zimmerman ODE testsuite.
+
+2002-09-25 08:47  billingd
+
+	* tests/rtest15.mac: Rename function in compile test from f to
+	ffffcompile.  The name f is not killed, and breaks a test in
+	rtestode.
+
+2002-09-24 21:17  amundson
+
+	* tests/tests.lisp: Run rtestode last. Otherwise, it interferes
+	with two other tests.
+	
+	This, in itself, deserves investigation, but it will have to be
+	investigated after 5.9.0.
+
+2002-09-24 21:10  amundson
+
+	* src/Makefile.am: Fixed gcl alt link so that it actually compiles
+	before it tries to link. Duh.
+
+2002-09-24 21:07  amundson
+
+	* interfaces/xmaxima/Makefile.am: Automatically create
+	Tkmaxima/tclIndex if tclsh is available. If tclsh is not available,
+	create an empty file. In this way we avoid requiring tclsh for the
+	build.
+
+2002-09-24 21:04  amundson
+
+	* configure.in: Minor updates. If gcl alt link is enabled, say so.
+	Quote the names of lisp and wish executables so that it is more
+	obvious is they are left empty.
+
+2002-09-24 21:02  amundson
+
+	* Makefile.am: Make the "dist" dependency optional.
+
+2002-09-24 15:09  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: The help buffer was changed
+	to be read only.
+
+2002-09-24 14:53  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: maxima-help was fixed so that
+	it now works with xemacs.
+
+2002-09-24 11:56  amundson
+
+	* src/maxima.in: If the default lisp image, as defined at configure
+	time, is not present, the maxima script will now make the first
+	lisp image it finds the default lisp.
+
+2002-09-23 21:38  mikeclarkson
+
+	* interfaces/bin/xmaxima.iss: Untested improvements to Inno script
+
+2002-09-23 19:46  mikeclarkson
+
+	* interfaces/tex/EMaxima/: EMIntro.ps, EMIntro.tex, Makefile,
+	Readme.txt, emaxima.sty, pdfcolmk.sty: Added Readme.txt
+
+2002-09-23 19:32  mikeclarkson
+
+	* interfaces/tex/Xmaxima/: .cvsignore, Makefile, Xmaxima.tex,
+	maxima.perl, maxima.sty: Added shell for an Xmaxima users guide
+
+2002-09-23 14:31  belanger
+
+	* interfaces/emacs/emaxima/maxima.el: I updated `maxima-info-dir'.
+
+2002-09-21 22:20  mikeclarkson
+
+	* interfaces/lib/tcllib-1.2/modules/: dns/dns.man, dns/dns.tcl,
+	log/log.n, log/log.tcl, log/log.test, log/pkgIndex.tcl,
+	uri/pkgIndex.tcl, uri/uri.n, uri/uri.tcl, uri/uri.test,
+	uri/urn-scheme.tcl, uri/urn.test: Added tcllib files for asnyc DNS
+	in lib
+
+2002-09-21 22:16  mikeclarkson
+
+	* interfaces/: Readme.txt, tex/EMaxima/EMIntro.ps,
+	tex/EMaxima/EMIntro.tex, tex/EMaxima/Makefile,
+	tex/EMaxima/emaxima.sty, tex/EMaxima/pdfcolmk.sty: Added EMaxima
+	documentation in tex
+
+2002-09-20 22:03  wjenkner
+
+	* doc/info/Expressions.texi: Update documentation for DISOLATE.
+
+2002-09-20 22:00  wjenkner
+
+	* doc/info/Simplification.texi: Update documentation for functions
+	from facsum and stopex.
+	
+	Replace the Fortran-like notation `**' by '^'.
+
+2002-09-20 21:38  wjenkner
+
+	* src/max_ext.lisp: Enable autoloading for some functions from
+	stopex, facexp, disol, declin and genut (most of which are
+	referenced in the manual).
+	
+	Also intern here some user-level variables defined in these files
+	in order to avoid case sensitivity problems (e.g.,
+	nextlayerfactor:true$ should bind $nextlayerfactor and not
+	|$nextlayerfactor|).  Declaiming them special is more useful than
+	just interning them.
+
+2002-09-20 21:24  wjenkner
+
+	* share/simplification/genut.mac: IFLOPMAP: Treat factors of EXP
+	which are integer powers in exactly the same way as other products.
+	 This is relevant for the NEXTLAYERFACTOR switch.  For example,
+	facsum(x^2+2*x+1,'nextlayerfactor,[x]) gave the same result as
+	facsum(x^2+2*x+1,[x]).	Compare this with
+	facsum(x^2+x,'nextlayerfactor,[x]).  Added genut_prodmap in order
+	to deal with this issue.
+
+2002-09-20 07:48  billingd
+
+	* tests/rtestode.mac: Activate additional tests.  For some reason
+	they failed if this test is run after rtest3.mac
+	
+	Add desolve tests.
+
+2002-09-20 07:47  billingd
+
+	* tests/tests.lisp: Run rtestode first.  If it is run after rtest3
+	then it breaks.
+
+2002-09-19 23:40  billingd
+
+	* tests/: rtestode.mac, Makefile.am, tests.lisp: Add ODE tests in
+	rtestode.mac
+
+2002-09-19 16:42  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Browser.tcl, Myhtml.tcl,
+	OpenMath.tcl, Wmenu.tcl: Buttetproff the font code a little
+
+2002-09-19 12:28  mikeclarkson
+
+	* interfaces/bin/xmaxima.iss: Change bat to exe and andd manual
+	link
+
+2002-09-19 11:26  mikeclarkson
+
+	* interfaces/xmaxima/: maxima-icon.ico, xmaxima.tcl,
+	Tkmaxima/Getdata1.tcl, Tkmaxima/Myhtml.tcl, Tkmaxima/Plotconf.tcl,
+	Tkmaxima/Plotdf.tcl, Tkmaxima/Printops.tcl, Tkmaxima/RunMaxima.tcl,
+	Tkmaxima/Send-some.tcl: code cleanups
+
+2002-09-19 11:25  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/OpenMath.tcl: Dlate history windo for
+	demolition - replace with menu
+
+2002-09-19 11:24  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Constants.tcl, NConsole.tcl: Move
+	Constants
+
+2002-09-19 11:20  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Cygwin.tcl: Try to fix env(PATH)
+	under CYGWIN and MSYS - Im a little unsure here
+
+2002-09-19 11:19  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Fix interrupt bug
+
+2002-09-19 11:18  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Paths.tcl: Set up for auto_loading
+
+2002-09-19 11:15  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Bindings.tcl, Browser.tcl,
+	Wmenu.tcl, Menu.tcl, CMMenu.tcl: Break out bindings and make them
+	more consistent with Windows
+
+2002-09-19 11:13  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, xmaxima-trailer.tcl,
+	Tkmaxima/Gui.tcl, Tkmaxima/Makefile, Tkmaxima/Tkmaxima.tcl,
+	ObjTcl/Feedback.tcl, ObjTcl/Object.tcl: Break xmaxima.tcl up and
+	introduce OO style
+
+2002-09-19 11:09  mikeclarkson
+
+	* interfaces/xmaxima/autoconf-variables.tcl.in: Add defaultlisp
+
+2002-09-18 12:07  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Fix bug reporting
+	startup failures
+
+2002-09-17 17:35  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, xmaxima-trailer.tcl,
+	Tkmaxima/Makefile, Tkmaxima/Paths.tcl: Move xmaxima-paths.tcl to
+	Tkmaxima/Paths.tcl
+
+2002-09-16 12:55  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Bug fix - thanks Mike
+	Thomas
+
+2002-09-14 19:33  amundson
+
+	* maxima.spec.in: Improvements: dependencies improved, packages
+	renamed. Info files not compressed through an ugly hack in post
+	scripts. Which lisp(s) to use controlled by the variables at the
+	head.
+	
+	Todo: split out xmaxima.
+
+2002-09-14 12:25  mikeclarkson
+
+	* interfaces/xmaxima/: demos.html, examples.html,
+	xmaxima-paths.tcl, Tkmaxima/Base64.tcl, Tkmaxima/Browser.tcl,
+	Tkmaxima/CMMenu.tcl, Tkmaxima/Constants.tcl,
+	Tkmaxima/EOpenplot.tcl, Tkmaxima/Fonts.tcl, Tkmaxima/Getdata1.tcl,
+	Tkmaxima/Getopt.tcl, Tkmaxima/Macros.tcl, Tkmaxima/Menu.tcl,
+	Tkmaxima/Myhtml.tcl, Tkmaxima/Myhtml1.tcl, Tkmaxima/NConsole.tcl,
+	Tkmaxima/NPlot3d.tcl, Tkmaxima/OpenMath.tcl, Tkmaxima/Parse.tcl,
+	Tkmaxima/Plot2d.tcl, Tkmaxima/Plot3d.tcl, Tkmaxima/Plotconf.tcl,
+	Tkmaxima/Plotdf.tcl, Tkmaxima/Printops.tcl, Tkmaxima/Push.tcl,
+	Tkmaxima/RunMaxima.tcl, Tkmaxima/Send-some.tcl,
+	Tkmaxima/Tryembed.tcl, Tkmaxima/Wmenu.tcl: Code cleanup - remove
+	tariling spaces
+
+2002-09-14 12:25  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima.tcl: Back out height/width change - it
+	breaks plotting
+
+2002-09-13 20:07  amundson
+
+	* lisp-utils/defsystem.lisp: Ooops. Previous commit broke non-gcl
+	builds. This is the fix.
+
+2002-09-13 12:42  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Plot2d.tcl, Plot3d.tcl, Prefs.tcl:
+	Gather constants into maxima_priv and maxima_default
+
+2002-09-13 12:40  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Wmenu.tcl: Bulletproofing - ballons
+	are still being called even if show_balloons is 0
+
+2002-09-13 12:39  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: OpenMath.tcl, RunMaxima.tcl: Signal
+	socket failures to the user - maxima has died
+
+2002-09-13 12:38  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Try to get xmaxima to
+	handle spaces in directory names - only part of the problem
+
+2002-09-13 12:35  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Makefile: Added Voodo for Cygwin -
+	fix PATH
+
+2002-09-13 12:34  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima.tcl, Tkmaxima/Browser.tcl,
+	Tkmaxima/Constants.tcl: Breakup initial constants for before and
+	after netmath.ini
+
+2002-09-13 12:28  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Menu.tcl: Add Save items to Menu
+
+2002-09-13 12:26  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, Tkmaxima/Cygwin.tcl,
+	Tkmaxima/Header.tcl: Added Voodo for Cygwin - fix PATH
+
+2002-09-13 09:41  amundson
+
+	* src/Makefile.am: First attempt at gcl-alt-link from Camm. There
+	is still probably work to be done with this linking step. The $()
+	syntax should be changed to `` at the very least.
+
+2002-09-13 09:40  amundson
+
+	* lisp-utils/defsystem.lisp: Addition from Camm. Needed by
+	gcl-alt-link, but usable without it.
+
+2002-09-13 09:39  amundson
+
+	* .cvsignore, xmaxima-local, xmaxima-local.in: xmaxima-local is now
+	a generated file. It uses wish as defined by configure.
+
+2002-09-13 09:35  amundson
+
+	* configure.in: 1) misfeature fix: --with-clisp will now enable
+	clisp with the standard executable. Formerly, it would have set the
+	clisp executable to the empty string. (The intended form is
+	--with-clisp=myclisp.) Ditto for CMUCL, GCL.
+	
+	2) Add wish option.
+	
+	3) Add gcl-alt-link option.
+
+2002-09-12 02:59  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Browser.tcl, Fonts.tcl: Move font
+	constants from Browser.tcl
+
+2002-09-12 02:56  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Browser.tcl: Clean and reindent code
+
+2002-09-12 02:11  mikeclarkson
+
+	* interfaces/bin/xmaxima.iss: Checked in xmaxima.iss from CY -
+	needs work to make relocatable
+
+2002-09-12 01:58  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Look for maxima.exe on
+	windows in lib/ - need autoconf(lisp) so we dont need to use glob
+
+2002-09-11 09:38  amundson
+
+	* interfaces/xmaxima/Makefile.am: Tkmaxima directory is now
+	installed into verpkglibdir.
+
+2002-09-10 20:19  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Dont set MAXIMA_DIRECTORY
+	by default - only 5.5 layout
+
+2002-09-10 20:09  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima-trailer.tcl, xmaxima.tcl,
+	Tkmaxima/RunMaxima.tcl: Fix closeMaxima / winkill for Windows
+
+2002-09-10 20:09  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Assume maxima.exe is on the
+	PATH under windows - is this right?
+
+2002-09-10 12:00  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Fix maxima executable name
+
+2002-09-10 11:16  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Fix typo for MSYS and
+	CYGWIN
+
+2002-09-10 11:11  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Fix typo for MSYS and
+	CYGWIN
+
+2002-09-10 10:48  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Fix typo for MSYS and
+	CYGWIN
+
+2002-09-10 04:19  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima-paths.tcl, xmaxima-trailer.tcl,
+	Tkmaxima/RunMaxima.tcl: Bring in line to handle David Billinghurst
+	5.9 windows release
+
+2002-09-10 04:17  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Fonts.tcl, Myhtml.tcl: Default
+	fontadjust to 0
+
+2002-09-10 04:16  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima.tcl: Make sure closeMaxima is called
+	on exit
+
+2002-09-10 01:59  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima-paths.tcl, xmaxima-trailer.tcl,
+	xmaxima.tcl, Tkmaxima/Browser.tcl, Tkmaxima/CMMenu.tcl,
+	Tkmaxima/Constants.tcl, Tkmaxima/EOpenplot.tcl, Tkmaxima/Fonts.tcl,
+	Tkmaxima/Getdata1.tcl, Tkmaxima/Makefile, Tkmaxima/Menu.tcl,
+	Tkmaxima/Myhtml.tcl, Tkmaxima/Myhtml1.tcl, Tkmaxima/NConsole.tcl,
+	Tkmaxima/OpenMath.tcl, Tkmaxima/Plot2d.tcl, Tkmaxima/Plot3d.tcl,
+	Tkmaxima/Plotconf.tcl, Tkmaxima/Preamble.tcl, Tkmaxima/Proxy.tcl,
+	Tkmaxima/RunMaxima.tcl, Tkmaxima/Send-some.tcl,
+	Tkmaxima/Tryembed.tcl: Renamed xmPreferences and ws_openMath to
+	maxima_default and maxima_priv
+
+2002-09-10 01:09  mikeclarkson
+
+	* interfaces/xmaxima/: .cvsignore, Tkmaxima/.cvsignore: Added
+	Tkmaxima/.cvsignore
+
+2002-09-10 01:03  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Browser.tcl, CMMenu.tcl,
+	Constants.tcl, Fonts.tcl, Menu.tcl, Myhtml.tcl, OpenMath.tcl,
+	Plotconf.tcl, Prefs.tcl, Textinsert.tcl, Tryembed.tcl, Wmenu.tcl:
+	Remove useless and ugly xmaximaPreferences
+
+2002-09-10 01:01  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima-paths.tcl, xmaxima-trailer.tcl,
+	xmaxima.tcl: Overhaul startup procedures and setting of initial
+	variables
+
+2002-09-09 17:30  amundson
+
+	* Makefile.am, configure.in, maxima.spec.in: First pass at a spec
+	file (used to create RPM packages) for Maxima. There is a base
+	package and a separate package for each supported Lisp.
+	
+	The spec file could still use some polishing.
+
+2002-09-09 08:42  billingd
+
+	* src/init-cl.lisp: Fix path for maxima-infodir
+
+2002-09-09 01:46  billingd
+
+	* interfaces/xmaxima/win32/: ChangeLog, Makefile.in: Remove
+	reference to tclpip83.dll
+
+2002-09-08 17:51  amundson
+
+	* configure.in: make maxima-local executable
+
+2002-09-08 07:46  billingd
+
+	* configure.in: Generate interfaces/xmaxima/win32/Makefile
+
+2002-09-08 07:45  billingd
+
+	* interfaces/xmaxima/win32/: Makefile.in, ChangeLog: Makefile.in is
+	work in progress.  It will be replaced by a Makefile.am once a few
+	problems are sorted out.
+
+2002-09-08 07:19  billingd
+
+	* interfaces/xmaxima/win32/: ChangeLog, tclwinkill.c, winkill.c:
+	Remove references to gcl config.h
+
+2002-09-08 07:15  billingd
+
+	* interfaces/xmaxima/win32/ChangeLog: New file
+
+2002-09-08 07:10  billingd
+
+	* interfaces/xmaxima/win32/: winkill.c, tclwinkill.c: Copied file
+	from gcl tree
+
+2002-09-08 07:07  billingd
+
+	* configure.in, maxima-local, maxima-local.in: Generate
+	maxima-local with configure
+
+2002-09-07 20:48  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Browser.tcl, CMMenu.tcl,
+	Getdata1.tcl, Matrix.tcl, Menu.tcl, Myhtml.tcl, Myhtml1.tcl,
+	NPlot3d.tcl, OpenMath.tcl, Plot2d.tcl, Plot3d.tcl, Plotconf.tcl,
+	Plotdf.tcl, Tryembed.tcl: Reindent and reformat
+
+2002-09-07 20:45  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima-paths.tcl, xmaxima.tcl: Could
+	someone document all of these environment variables?
+
+2002-09-07 18:20  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: CMMenu.tcl, OpenMath.tcl,
+	Plotting.tcl: Start removing old Unix only fonts
+
+2002-09-07 18:17  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Bring constants derived
+	from enviroment variables up to setMaxDir
+
+2002-09-07 09:43  billingd
+
+	* interfaces/xmaxima/intro.html: Correct paths for examples.html
+	and plotmaxima.html
+
+2002-09-07 05:33  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Try to rationalize paths
+	for Windows and Unix
+
+2002-09-07 05:31  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, xmaxima.tcl, ObjTcl/Object.tcl,
+	Tkmaxima/Makefile: Add tclIndex target to Makefiles ready for
+	autoloading
+
+2002-09-07 05:31  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Bulletproof linkLocal
+	- the variable may not exist
+
+2002-09-07 05:05  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Browser.tcl, Myhtml.tcl,
+	Myhtml1.tcl, NPlot3d.tcl, OpenMath.tcl, RunMaxima.tcl,
+	Send-some.tcl: Reindent Tcl code
+
+2002-09-07 03:48  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, xmaxima.tcl,
+	Tkmaxima/Constants.tcl, Tkmaxima/Makefile, Tkmaxima/Menu.tcl,
+	Utils/FileDlg.tcl, Utils/Makefile, Utils/Messages.tcl,
+	Utils/Misc.tcl: Add System Menu ready for testing
+
+2002-09-07 03:47  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/OpenMath.tcl: Reindent Tcl code
+
+2002-09-07 03:01  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: openMaxima must return
+	an error to stop runOneMaxima from continuing
+
+2002-09-07 00:38  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, xmaxima.tcl,
+	Tkmaxima/Fonts.tcl, Tkmaxima/Makefile: Broke out Font code to
+	Tkmaxima/Fonts.tcl
+
+2002-09-07 00:38  mikeclarkson
+
+	* interfaces/xmaxima/ChangeLog.txt: Added ChangeLog.txt
+
+2002-09-07 00:34  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/OpenMath.tcl: Reindented Tcl code
+
+2002-09-07 00:24  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/OpenMath.tcl: Turned off ballons by
+	default
+
+2002-09-07 00:21  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Adams.tcl, Base64.tcl, Bitmaps.tcl,
+	Browser.tcl, CMMenu.tcl, Constants.tcl, EHref.tcl, EMaxima.tcl,
+	EOctave.tcl, EOpenplot.tcl, Getdata1.tcl, Getopt.tcl, Header.tcl,
+	Macros.tcl, Matrix.tcl, Myhtml.tcl, Myhtml1.tcl, NConsole.tcl,
+	NPlot3d.tcl, OpenMath.tcl, Parse.tcl, Plot2d.tcl, Plot3d.tcl,
+	Plotconf.tcl, Plotdf.tcl, Plotting.tcl, Preamble.tcl, Prefs.tcl,
+	Printops.tcl, Private.tcl, Proxy.tcl, Push.tcl, Readdata.tcl,
+	Rk.tcl, RunMaxima.tcl, Send-some.tcl, Startup.tcl, String.tcl,
+	Textinsert.tcl, Tryembed.tcl, Tryftp2.tcl, Wmenu.tcl,
+	maxima-local.tcl, patchold.tcl: Reindented Tcl code
+
+2002-09-06 14:39  mikeclarkson
+
+	* ChangeLog: ChangeLog entry for breakup of xmaxima.tcl
+
+2002-09-06 11:55  belanger
+
+	* interfaces/emacs/emaxima/emaxima.el: An ugly and hopefully
+	temporary fix was put in to get the "update-all" functions to work
+	from the Emacs menu.
+
+2002-09-06 04:08  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima-paths.tcl, xmaxima.tcl: setMaxDir is
+	used by xmaxima-trailer.tcl
+
+2002-09-06 02:35  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Makefile: Add TAGS target, to replace
+	the one in ..
+
+2002-09-06 01:53  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, getdata1.tcl, nconsole.tcl,
+	string.tcl, xmaxima.tcl, Tkmaxima/CMMenu.tcl,
+	Tkmaxima/Constants.tcl, Tkmaxima/NConsole.tcl,
+	Tkmaxima/OpenMath.tcl, Tkmaxima/Preamble.tcl, Tkmaxima/Prefs.tcl,
+	Tkmaxima/RunMaxima.tcl, Tkmaxima/String.tcl: Broke out rest of
+	xmaxima.tcl
+
+2002-09-06 01:21  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, base64.tcl, bitmaps.tcl,
+	browser.tcl, myhtml.tcl, tryembed.tcl, tryftp2.tcl, wmenu.tcl,
+	xmaxima.tcl, Tkmaxima/Base64.tcl, Tkmaxima/Bitmaps.tcl,
+	Tkmaxima/Browser.tcl, Tkmaxima/Constants.tcl, Tkmaxima/Myhtml.tcl,
+	Tkmaxima/Myhtml1.tcl, Tkmaxima/Tryembed.tcl, Tkmaxima/Tryftp2.tcl,
+	Tkmaxima/Wmenu.tcl: Broke out Browser Wmenu Tryftp2 Myhtml Myhtml1
+	Base64 Bitmaps Tryembed
+
+2002-09-05 22:27  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, emaxima.tcl, eoctave.tcl,
+	eopenplot.tcl, patchold.tcl, xmaxima.tcl, Tkmaxima/Constants.tcl,
+	Tkmaxima/EHref.tcl, Tkmaxima/EMaxima.tcl, Tkmaxima/EOctave.tcl,
+	Tkmaxima/EOpenplot.tcl, Tkmaxima/patchold.tcl: Broke out EOctave
+	EOpenplot EMaxima EHref
+
+2002-09-05 21:21  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, adams.tcl, nplot3d.tcl,
+	plot2d.tcl, plot3d.tcl, plotdf.tcl, rk.tcl, xmaxima.tcl,
+	Tkmaxima/Adams.tcl, Tkmaxima/Constants.tcl, Tkmaxima/Matrix.tcl,
+	Tkmaxima/NPlot3d.tcl, Tkmaxima/Plot2d.tcl, Tkmaxima/Plot3d.tcl,
+	Tkmaxima/Plotdf.tcl, Tkmaxima/Plotting.tcl, Tkmaxima/Rk.tcl: Broke
+	out Plotting Adams Rk Plotdf Plot2d Matrix Plot3d NPlot3d
+
+2002-09-05 20:51  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, plotconf.tcl, xmaxima.tcl,
+	Tkmaxima/Plotconf.tcl, Tkmaxima/Push.tcl: Broke out Push and
+	Plotconf
+
+2002-09-05 20:49  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/: Printops.tcl, Textinsert.tcl: Broke
+	out Textinsert and Printops
+
+2002-09-05 20:38  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, getopt.tcl, parse.tcl,
+	printopts.tcl, textinsert.tcl, xmaxima.tcl: Broke out Textinsert
+	and Printops
+
+2002-09-05 20:23  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, xmaxima.tcl,
+	Tkmaxima/Getopt.tcl, Tkmaxima/Parse.tcl, Tkmaxima/Private.tcl:
+	Broke out Getopt.tcl Private.tcl Parse.tcl
+
+2002-09-05 20:10  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, send-some.tcl, xmaxima.tcl,
+	Tkmaxima/Constants.tcl, Tkmaxima/Send-some.tcl: Broke out
+	Send-some.tcl
+
+2002-09-05 19:40  mikeclarkson
+
+	* interfaces/xmaxima/: proxy.tcl, xmaxima.tcl,
+	Tkmaxima/Constants.tcl: Identify all global variables for moving to
+	Constants.tcl or encapsulation
+
+2002-09-05 19:38  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Makefile: Developers convenience
+	targets (not part of the normal make/install
+
+2002-09-05 19:18  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima.tcl, Tkmaxima/Constants.tcl,
+	Tkmaxima/Getdata1.tcl, Tkmaxima/Macros.tcl, Tkmaxima/Proxy.tcl,
+	Tkmaxima/Readdata.tcl, Tkmaxima/Startup.tcl,
+	Tkmaxima/maxima-local.tcl, Makefile.am: Broke out readdata getdata1
+	macros and proxy.tcl
+
+2002-09-05 19:17  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-paths.tcl: Is autoconf defined for
+	Windows binary releases?
+
+2002-09-05 17:05  mikeclarkson
+
+	* interfaces/xmaxima/Makefile.am: Make TAGS a single-colon target
+
+2002-09-05 17:02  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, Readme.txt,
+	Tkmaxima/Header.tcl: Restored Unix /bin/sh header because
+	xmaxima-local depends on it (a bad idea ?)
+
+2002-09-05 15:37  mikeclarkson
+
+	* interfaces/xmaxima/Readme.txt: Added a Readme.txt mainly for
+	developers
+
+2002-09-05 15:00  mikeclarkson
+
+	* interfaces/xmaxima/Makefile.am: Restored Unix /bin/sh header
+	because xmaxima-local depends on it (a bad idea)
+
+2002-09-05 14:55  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Constants.tcl: Begin to break up
+	xmaxima.tcl and gather global constants in one place
+
+2002-09-05 04:33  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima.tcl: Fix some of the socaket timeouts,
+	but WFSs use of after cancel is still wrong in places
+
+2002-09-05 03:57  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima.tcl: Move setMaxDir into doit, and
+	defer runOneMaxima until the UI is built
+
+2002-09-05 03:28  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima-trailer.tcl: Fix type in windows code
+	and cleanup
+
+2002-09-04 21:54  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, Utils/etags.tcl: Added TAGS
+	target for the convenience of developers
+
+2002-09-04 21:34  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima.tcl: Removed obsolete Tcl unsupported0
+	code
+
+2002-09-04 21:07  mikeclarkson
+
+	* interfaces/xmaxima/: Makefile.am, xmaxima.tcl: turn off the
+	horrible show_balloons by default
+
+2002-09-04 20:48  mikeclarkson
+
+	* interfaces/xmaxima/xmaxima.tcl: Fixed bug 604832 - xmaxima can
+	kill Xwindows
+
+2002-09-04 18:00  mikeclarkson
+
+	* interfaces/xmaxima/: xmaxima.tcl, Makefile.am: Started breaking
+	up xmaxima.tcl to tkmaxima/*.tcl
+
+2002-09-03 21:07  amundson
+
+	* interfaces/xmaxima/: xmaxima-trailer.tcl, xmaxima.tcl: Updates
+	for windows from Mike Thomas.
+
+2002-09-03 20:22  amundson
+
+	* interfaces/emacs/emaxima/Makefile.am: Install emaxima.lisp and
+	include it in the tarball.
+
+2002-09-01 07:21  wjenkner
+
+	* src/hyp.lisp: Patch from Thomas Fischbacher: Rename INTERSECTION
+	since it is also in the CL package.
+
+2002-08-30 17:24  amundson
+
+	* src/Makefile.am: Include (cmucl,clisp,gcl)-depends.mk in tarball
+	distribution.
+
+2002-08-30 15:11  amundson
+
+	* Makefile.am: Put README.lisps in the tarball.
+
+2002-08-30 08:40  amundson
+
+	* doc/man/.cvsignore: maxima.1 is now a generated file.
+
+2002-08-30 08:37  amundson
+
+	* configure.in: Upgrade version to 5.9.0rc1.
+
+2002-08-30 08:36  amundson
+
+	* tests/Makefile.am: Put known-bugs in the tarball distribution.
+
+2002-08-27 17:35  wjenkner
+
+	* share/simplification/genut.mac: Changed all occurrences of the
+	keyword `IN' to `in'.  Made some small changes in the comments.
+
+2002-08-27 17:29  wjenkner
+
+	* src/mactex.lisp: Replaced $|in| in TEXMDOIN.	This fixes the
+	case-sensitivity problem for keywords (due to $|in| being interned
+	here).
+
+2002-08-25 10:45  amundson
+
+	* tests/: known-bugs, summarize-log: Test summary now lists the
+	tests that were expected to fail. The expected failures are listed
+	in the file known-bugs.
+
+2002-08-25 10:43  amundson
+
+	* configure.in: Configure no longer complains about not finding
+	<lisp> when an absolute path is specified for <lisp>.
+
+2002-08-25 10:41  amundson
+
+	* bootstrap: Make bootstrap less needlessly verbose.
+
+2002-08-25 10:40  amundson
+
+	* README.lisps: Minor updates including URL's.
+
+2002-08-25 10:39  amundson
+
+	* INSTALL: Generic INSTALL instructions plus a brief prelude.
+
+2002-08-25 10:38  amundson
+
+	* AUTHORS: My first attempt at a reasonable AUTHORS file.
+
+2002-08-23 12:26  amundson
+
+	* doc/man/Makefile.am: Update because maxima.1 is now a generated
+	file.
+
+2002-08-23 10:05  amundson
+
+	* configure.in, doc/man/maxima.1, doc/man/maxima.1.in: Use autoconf
+	to insert proper pathnames into the man page.  maxima.1 was
+	slightly modified to become maxima.1.in.
+
+2002-08-23 09:52  amundson
+
+	* doc/man/maxima.1: Remainder updated for new Maxima interface,
+	etc.
+
+2002-08-21 10:43  amundson
+
+	* src/init-cl.lisp: clean up warnings from cmucl
+
+2002-08-20 17:33  amundson
+
+	* ChangeLog: ChangeLog now generated with cvs2cl
 
 2002-08-20 14:24  amundson
 
