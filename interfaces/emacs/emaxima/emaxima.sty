@@ -540,11 +540,12 @@
      \m@ximasessionsessionverbatim
 }      
 
+\def\m@ximapercent{\%}
 \def\setupm@ximasessionverbatim{
 \obeylines \maximauncatcodespecials \obeyspaces}
 {\obeyspaces\global\let =\ }
 {\catcode`\|=0 \catcode`\\=12 %
-|obeylines|gdef|dom@ximatexsessionverbatim#1.#2\\{|par|textcolor{|maximapromptcolor}{(C#1)}#2|par|endgroup}
+|obeylines|gdef|dom@ximatexsessionverbatim#1.#2\\{|par|textcolor{|maximapromptcolor}{(|m@ximapercent{}i#1)}#2|par|endgroup}
 |obeylines|gdef|dom@ximasessionpreprompt#1\\{|par|parskip=|maximasessionpretexskip #1|par|endgroup|vspace{|maximapostpretexskip}}
 }
 
@@ -641,9 +642,9 @@
 \def\m@ximatexd#1\\{ \begin{emaxmath} #1 \end{emaxmath}\endgroup}
 \def\m@ximatexe#1.#2\\{\begin{emaxmath} E#1 = #2 \end{emaxmath}\endgroup}
 
-\def\m@ximasessionoutput#1.#2\\{\textcolor{\maximapromptcolor}{(D#1)} \begin{emaxmath} #2 \end{emaxmath}\endgroup}
+\def\m@ximasessionoutput#1.#2\\{\textcolor{\maximapromptcolor}{(\%o#1)} \begin{emaxmath} #2 \end{emaxmath}\endgroup}
 
-\def\m@ximasessioneoutput#1.#2\\{\textcolor{\maximapromptcolor}{(E#1)} \begin{emaxmath} #2 \end{emaxmath}\endgroup}
+\def\m@ximasessioneoutput#1.#2\\{\textcolor{\maximapromptcolor}{(\%t#1)} \begin{emaxmath} #2 \end{emaxmath}\endgroup}
 
 \catcode`\@=12\relax
 

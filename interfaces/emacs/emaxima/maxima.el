@@ -185,6 +185,21 @@
   :prefix "maxima-"
   :tag    "Maxima")
 
+(defcustom maxima-inchar "%i"
+  "*The character used for an input prompt."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-outchar "%o"
+  "*The character used for an output prompt."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-linechar "%t"
+  "*The character used for an intermediate output prompt."
+  :group 'maxima
+  :type 'string)
+
 (defcustom maxima-indent-amount 2
   "*The amount of each indentation level in `maxima-mode'.
 This is used after `then', etc."
@@ -1610,7 +1625,8 @@ To get apropos with the symbol under point, use:
 	(save-excursion
 	  (goto-char pos)
           (beginning-of-line)
-	  (while (re-search-forward "(C[0-9]+).*\r" pmark t)
+	  (while (re-search-forward 
+                  (concat "(" maxima-inchar "[0-9]+).*\r") pmark t)
 	    (replace-match "" t t))))))
 
 (defun inferior-maxima-wait-for-output ()
@@ -1776,7 +1792,8 @@ Remove it from the front of maxima-block."
            (end)
            (k))
     ;; Replace the output prompt with spaces
-      (setq beg (string-match "\\(^([D][0-9]*) \\)" output))
+      (setq beg (string-match 
+                 (concat "\\(^(" maxima-outchar "[0-9]*) \\)") output))
       (if (not beg)
           output
         (setq end (1+ (string-match ")" output beg)))
@@ -2114,7 +2131,8 @@ to grab the current one.
 ;;;; Inferior Maxima mode
 
 (defvar inferior-maxima-prompt
-  "\\(^([C][0-9]*) \\)\\|\\(^MAXIMA>+\\)\\|\\(^(dbm:[0-9]*) \\)" 
+  (concat "\\(^(" maxima-inchar 
+          "[0-9]*) \\)\\|\\(^MAXIMA>+\\)\\|\\(^(dbm:[0-9]*) \\)")
 					; \\(^[^#%)>]*[#%)>]+ *\\)"
   "*Regexp to recognize prompts from the inferior Maxima") ; or lisp")
 
