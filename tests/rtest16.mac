@@ -9,6 +9,14 @@ limit((10^n+9^n+8^n)^(1/n),n,inf);
 /* maxima currently (2004/10/05) gets this wrong */
 limit(4^n/2^(2*n),n,inf);
 1$
+/* Test from Bug 1052308 */
+/* Fixed in limit.lisp rev 1.11 */
+assume(equal(zz,0));
+[equal(zz,0)]$
+limit(erf(nn*zz), nn, inf);
+0$
+limit(tanh(nn*zz), nn, inf);
+0$
 
 end;
 end$
