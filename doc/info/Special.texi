@@ -6,16 +6,9 @@
 
 @node Introduction to Special Functions, SPECINT, Special Functions, Special Functions
 @section Introduction to Special Functions
-@c @node %J
-@c @unnumberedsec phony
-@deffn %J
- [index](expr) - Bessel Funct 1st Kind (in SPECINT)
-
-@end deffn
 @c @node %K
 @c @unnumberedsec phony
 @deffn %K [index](expr)
-Bessel Funct 2nd Kind (in SPECINT)
 
 Constant, in ODE2
 
@@ -32,21 +25,22 @@ where var is the variable of integration and expr may be
 any expression containing special functions (at your own risk).
 Special function notation follows:
 @example
-%J[index](expr)         Bessel Funct 1st Kind
-%K[index](expr)           "     "    2nd Kind
-%IBES[     ](    )      Modified Bessel Funct 1st Kind
-%HE[     ](  )          Hermite Poly
-%P[  ]( )               Legendre Funct
-%Q[  ]( )               Legendre of second kind
-HSTRUVE[ ]( )           Struve H Function
-LSTRUVE[ ]( )             "    L Function
-%F[ ]([],[],expr)       Hypergeometric Function
-GAMMA()
+bessel_j(index, expr)         Bessel Funct 1st Kind
+bessel_y(index, expr)           "     "    2nd Kind
+bessel_i(index, expr)         Modified Bessel Funct 1st Kind
+bessel_k(index, expr)
+%HE[     ](  )                Hermite Poly
+%P[  ]( )                     Legendre Funct
+%Q[  ]( )                     Legendre of second kind
+HSTRUVE[ ]( )                 Struve H Function
+LSTRUVE[ ]( )                   "    L Function
+%F[ ]([],[],expr)             Hypergeometric Function
+GAMMA()                       Gamma function
 GAMMAGREEK()
 GAMMAINCOMPLETE()
 SLOMMEL
-%M[]()                  Whittaker Funct 1st Kind
-%W[]()                     "       "    2nd  "
+%M[]()                        Whittaker Funct 1st Kind
+%W[]()                           "       "    2nd  "
 @end example
 @noindent
 For a better feeling for what it can do, do DEMO(HYPGEO,DEMO,SHARE1); .
