@@ -426,7 +426,8 @@ Returns the derivative or differential of @var{expr} with respect to some or all
 with respect to @var{x}.
 
 @code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}
-is equivalent to @code{diff (... (diff (@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
+returns the mixed partial derivative of @var{expr} with respect to @var{x_1}, ..., @var{x_m}.
+It is equivalent to @code{diff (... (diff (@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
 
 @code{diff (@var{expr}, @var{x})}
 returns the first derivative of @var{expr} with respect to
@@ -500,7 +501,7 @@ above.
 @c NEED EXAMPLES FOR TENSOR STUFF
 @end defun
 
-
+@c MERGE THIS INTO @defun diff
 @defvr {special symbol} diff
 
 When @code{diff} is present as an @code{evflag} in call to @code{ev},
@@ -624,91 +625,141 @@ Examples:
 
 @end defun
 
-@defun gendiff
-Sometimes @code{diff(e,x,n)} can be reduced even though N is
-symbolic.
+@c COMMENTING OUT THIS TEXT PENDING RESOLUTION OF BUG REPORT # 836704:
+@c "gendiff is all bugs: should be deprecated"
+@c @defun gendiff
+@c Sometimes @code{diff(e,x,n)} can be reduced even though N is
+@c symbolic.
+@c 
+@c @example
+@c batch("gendif")$
+@c @end example
+@c 
+@c and you can try, for example,
+@c 
+@c @example
+@c diff(%e^(a*x),x,q)
+@c @end example
+@c 
+@c by using @code{gendiff} rather than @code{diff}.  Unevaluable
+@c items come out quoted.  Some items are in terms of @code{genfact}, which
+@c see.
+@c
+@c @end defun
 
-@example
-batch("gendif")$
-@end example
+@defun gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
+@defunx gradef (@var{a}, @var{x}, @var{expr})
+Defines the partial derivatives (i.e., the components of the gradient) of the function @var{f}
+or variable @var{a}.
 
-and you can try, for example,
+@code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
+defines @code{d@var{f}/d@var{x_i}} as @var{g_i}, 
+where @var{g_i} is an expression; @var{g_i} may be a function call, but not the name of a function.
+The number of partial derivatives @var{m} may be less than the number of arguments @var{n},
+in which case derivatives are defined with respect to @var{x_1} through @var{x_m} only.
 
-@example
-diff(%e^(a*x),x,q)
-@end example
+@code{gradef (@var{a}, @var{x}, @var{expr})} defines the derivative of variable @var{a}
+with respect to @var{x} as @var{expr}.
+This also establishes the dependence of @var{a} on @var{x} (via @code{depends (@var{a}, @var{x})}).
 
-by using @code{gendiff} rather than @code{diff}.  Unevaluable
-items come out quoted.  Some items are in terms of @code{genfact}, which
-see.
+The first argument @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @var{a} is quoted,
+but the remaining arguments @var{g_1}, ..., @var{g_m} are evaluated.
+@code{gradef} returns the function or variable for which the partial derivatives are defined.
 
-@end defun
+@code{gradef} can redefine the derivatives of Maxima's built-in functions.
+For example, @code{gradef (sin(x), sqrt (1 - sin(x)^2))} redefines the derivative of @code{sin}.
 
-@defun gradef (@var{f(x1, ..., xn)}, @var{g_1}, ..., @var{g_n})
-defines the derivatives of the
-function f with respect to its n arguments.  That is, df/dxi = gi,
-etc.  If fewer than n gradients, say i, are given, then they refer to
-the first i arguments of f.  The xi are merely dummy variables as in
-function definition headers and are used to indicate the ith argument
-of f.  All arguments to @code{gradef} except the first are evaluated so that
-if g is a defined function then it is invoked and the result is used.
-It is not permissible to use @code{gradef} on subscripted functions.
+@code{gradef} cannot define partial derivatives for a subscripted function.
 
+@code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} displays the partial derivatives
+of the functions @var{f_1}, ..., @var{f_n}, as defined by @code{gradef}.
+
+@code{printprops ([@var{a_n}, ..., @var{a_n}], atomgrad)} displays the partial derivatives
+of the variables @var{a_n}, ..., @var{a_n}, as defined by @code{gradef}.
+
+@code{gradefs} is the list of the functions
+for which partial derivatives have been defined by @code{gradef}.
+@code{gradefs} does not include any variables
+for which partial derivatives have been defined by @code{gradef}.
+
+@c REPHRASE THIS NEXT BIT
 Gradients are needed when, for example, a function is not known
 explicitly but its first derivatives are and it is desired to obtain
 higher order derivatives.
 
-@code{gradef} may also be used to redefine the
-derivatives of Maxima's predefined functions (e.g.
-@code{gradef(sin(x),sqrt(1-sin(x)**2)))} .
-
-@code{gradefs} is a list of the functions which have been given gradients by
-use of the @code{gradef} command (i.e. @code{gradef(f(x1,...,xn),g1, ..., gn))} .
-
-@code{printprops([f1,f2,...],gradef)} may be used to display the gradefs of
-the functions f1,f2,..
-
-@code{gradef(a,v,exp)} may be used to state that the derivative of the atomic
-variable a with respect to v is exp.  This automatically does a
-@code{depends(a,v)}.
-
-@code{printprops([a1,a2,...],atomgrad)} may be used to display the atomic
-gradient properties of a1,a2,...
-
+@c NEED EXAMPLES HERE
 @end defun
 
 @defvar gradefs
- default: [] - a list of the functions which have been given
-gradients by use of the @code{gradef} command (i.e. @code{gradef(f(x1, ..., xn), g1, ..., gn)}.)
+Default value: []
+
+@code{gradefs} is the list of the functions
+for which partial derivatives have been defined by @code{gradef}.
+@code{gradefs} does not include any variables
+for which partial derivatives have been defined by @code{gradef}.
 
 @end defvar
 
-@defun laplace (@var{expr}, @var{ovar}, @var{lvar})
-takes the Laplace transform of exp with
-respect to the variable ovar and transform parameter lvar.
+@defun laplace (@var{expr}, @var{t}, @var{s})
+Attempts to compute the Laplace transform of @var{expr} with respect to the variable @var{t}
+and transform parameter @var{s}.
+If @code{laplace} cannot find a solution, a noun @code{'laplace} is returned.
 
-@var{expr} may
-only involve the functions @code{exp}, @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf}.
-It may also be a linear, constant coefficient differential equation in
-which case @code{atvalue} of the dependent variable will be used.  These may
-be supplied either before or after the transform is taken.  Since the
-initial conditions must be specified at zero, if one has boundary
+@code{laplace} recognizes in @var{expr} the functions
+@code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf},
+as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}.
+If some other functions are present,
+@code{laplace} may not be able to compute the transform.
+
+@c REPHRASE THIS
+@var{expr} may also be a linear, constant coefficient differential equation in
+which case @code{atvalue} of the dependent variable is used.
+@c "used" -- USED HOW ??
+The required atvalue may be supplied either before or after the transform is computed.
+Since the initial conditions must be specified at zero, if one has boundary
 conditions imposed elsewhere he can impose these on the general
 solution and eliminate the constants by solving the general solution
-for them and substituting their values back. Exp may also involve
-convolution integrals.  Functional relationships must be explicitly
-represented in order for @code{laplace} to work properly. That is, if F
-depends on X and Y it must be written as F(X,Y) wherever F occurs as
-in @code{laplace('diff(f(x,y),x),x,s)}.  @code{laplace} is not affected by @code{dependencies}
-set up with the @code{depends} command.
+for them and substituting their values back.
+
+@code{laplace} recognizes convolution integrals of the form
+@code{integrate (f(x) * g(t - x), x, 0, t)};
+other kinds of convolutions are not recognized.
+
+Functional relations must be explicitly represented in @var{expr};
+implicit relations, established by @code{depends}, are not recognized.
+That is, if @var{f} depends on @var{x} and @var{y},
+@code{f (x, y)} must appear in @var{expr}.
+
+See also @code{ilt}, the inverse Laplace transform.
+
+Examples:
+@c GENERATED FROM THE FOLLOWING:
+@c laplace (exp (2*t + a) * sin(t) * t, t, s);
+@c laplace ('diff (f (x), x), x, s);
+@c diff (diff (delta (t), t), t);
+@c laplace (%, t, s);
 
 @example
-(%i1) laplace(%e**(2*t+a)*sin(t)*t,t,s);
-                     a
-                 2 %e  (s - 2)
-(%o1)            ---------------
-                        2     2
-                ((s - 2)  + 1)
+(%i1) laplace (exp (2*t + a) * sin(t) * t, t, s);
+                            a
+                          %e  (2 s - 4)
+(%o1)                    ---------------
+                           2           2
+                         (s  - 4 s + 5)
+(%i2) laplace ('diff (f (x), x), x, s);
+(%o2)             s laplace(f(x), x, s) - f(0)
+(%i3) diff (diff (delta (t), t), t);
+                          2
+                         d
+(%o3)                    --- (delta(t))
+                           2
+                         dt
+(%i4) laplace (%, t, s);
+                            !
+               d            !         2
+(%o4)        - -- (delta(t))!      + s  - delta(0) s
+               dt           !
+                            !t = 0
 @end example
 
 @end defun
