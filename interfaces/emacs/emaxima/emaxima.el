@@ -9,8 +9,8 @@
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.2 $
-;; $Date: 2001-11-11 01:44:59 $
+;; $Revision: 1.3 $
+;; $Date: 2001-12-09 19:27:47 $
 ;; Keywords: maxima, emaxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -59,6 +59,11 @@ Possible choices are 'auctex, 'tex or nil"
                  (const tex) 
                  (const nil)))
 
+(defcustom emaxima-tex-lisp-file (locate-library "emaxima.lisp" t)
+  "The file to be loaded that allows TeX output."
+  :group 'emaxima
+  :type '(file))
+
 (defcustom emaxima-abbreviations-allowed t
   "If non-nil, then `...' abbreviations are allowed in cell labels 
 and references. Note that enabling this options will slow cell and 
@@ -81,14 +86,6 @@ Specify \"\" to use the directory of the Emaxima document buffer."
   :type '(directory))
 
 ;;; Other variables and constants
-
-(defconst emaxima-output-marker "\\output"
-  "Contents of line separating input and output portion of cell.")
-
-
-(defconst emaxima-tex-string
-  "tex(%);"
-  "A string to send to Maxima to set output to TeX form")
 
 (defvar emaxima-zap-file nil
   "Temporary file name used for text being sent as input to Maxima.")
@@ -114,12 +111,7 @@ The buffers are used in package and cell assembly.")
 (defconst emaxima-temp-suffix 0
   "Temporary filename suffix.  Incremented by 1 for each filename.")
 
-(defun emaxima-make-temp-name ()
-  "Return a unique filename."
-  (setq emaxima-temp-suffix (+ emaxima-temp-suffix 1))
-  (concat (concat (make-temp-name "#mz") "-")
-          (int-to-string emaxima-temp-suffix)
-          ".mu"))
+;;; Some utility functions
 
 (defun emaxima-mark-file-as-emaxima ()
   "Mark the file as an EMaxima buffer.
@@ -133,83 +125,285 @@ The next time the file is loaded, it will then be in EMaxima mode"
 	(open-line 1)
       (insert "%-*-EMaxima-*-"))))
 
-(defun emaxima-replace-assoc (alist key val)
-  "Replace ALIST KEY VALUE, if KEY present, else add KEY VALUE.
-Return modified alist."
-  (if (assoc key alist)
-      (setcdr (assoc key alist) val)
-    (setcdr alist (cons (cons key val) (cdr alist))))
-  alist)
+(defun emaxima-load-tex-library ()
+  (when emaxima-tex-lisp-file
+    (maxima-wait)
+    (maxima-string-nodisplay (concat "block(load(\"" 
+                                     emaxima-tex-lisp-file
+                                     "\"), linenum:linenum-1)$"))
+    (maxima-wait)))
+
+(defun emaxima-tex-on ()
+  (when emaxima-tex-lisp-file
+    (maxima-wait)
+    (maxima-string-nodisplay "block(display2d:emaxima, linenum:linenum-1)$")
+    (maxima-wait)))
+
+(defun emaxima-tex-off ()
+  (when emaxima-tex-lisp-file
+    (maxima-wait)
+    (maxima-string-nodisplay "block(display2d:true, linenum:linenum-1)$")
+    (maxima-wait)))
+
+(defun emaxima-maxima-running ()
+  (and (processp inferior-maxima-process)
+       (eq (process-status inferior-maxima-process) 'run)))
+
+;;; Which type of cell, if any, is the point in.
+
+(defun emaxima-cell-p ()
+  "Non-nil if point is in a Emaxima cell."
+  (let ((begin-re "^\\\\beginmaxima")
+        (end-re "^\\\\endmaxima")
+        (found nil))
+    (save-excursion
+      (if (re-search-backward begin-re (point-min) t) ; \beginmaxima
+            (setq found (point))))
+    (save-excursion
+      (if (and found
+               (re-search-backward end-re found t)) ; Intervening \endmaxima
+          (setq found nil)))
+    (save-excursion
+      (if (and found
+               (re-search-forward end-re (point-max) t)) ;\endmaxima
+          (setq found (point))))
+    (save-excursion
+        (if (and found 
+                 (re-search-forward begin-re found t)) ; Intervening \beginmaxima
+            (setq found nil)))
+    (if found t nil)))
+
+(defun emaxima-session-cell-p ()
+  "Non-nil if point is in a session cell."
+  (and
+   (emaxima-cell-p)
+   (save-excursion
+     (re-search-backward "^\\\\beginmaxima")
+     (looking-at "\\\\beginmaximasession"))))
+
+(defun emaxima-noshow-cell-p ()
+  "Non-nil if point is in a cell."
+  (and
+   (emaxima-cell-p)
+   (save-excursion
+     (re-search-backward "^\\\\beginmaxima")
+     (looking-at "\\\\beginmaximanoshow"))))
+
+(defun emaxima-standard-cell-p ()
+  (and
+   (emaxima-cell-p)
+   (not (emaxima-session-cell-p))
+   (not (emaxima-noshow-cell-p))))
+
+(defun emaxima-init-cell-p ()
+  (and 
+   (emaxima-standard-cell-p)
+   (save-excursion
+     (re-search-backward "^\\\\beginmaxima")
+     (goto-char (match-end 0))
+     (looking-at "\\[\\* Initialization Cell \\*\\]"))))
+
+(defun emaxima-package-cell-p ()
+  (and 
+   (emaxima-standard-cell-p)
+   (save-excursion
+     (re-search-backward "^\\\\beginmaxima")
+     (goto-char (match-end 0))
+     (if (looking-at "\\[\\* Initialization Cell \\*\\]")
+         (goto-char (match-end 0)))
+     (looking-at "<"))))
+     
+
+;;; Create the cells.
+(defun emaxima-new-standard-cell ()
+  "Insert cell in buffer."
+  (if (not (bolp))
+      (progn
+        (open-line 1)
+        (forward-line 1)))
+  (insert "\\beginmaxima\n\n\\endmaxima")
+  (unless (looking-at " *$")
+    (insert "\n")
+    (forward-line -1))
+  (beginning-of-line)
+  (previous-line 1))
+
+(defun emaxima-new-session-cell ()
+  "Insert cell in buffer."
+  (if (not (bolp))
+      (progn
+        (open-line 1)
+        (forward-line 1)))
+  (insert "\\beginmaximasession\n\n\\endmaximasession")
+  (unless (looking-at " *$")
+    (insert "\n")
+    (forward-line -1))
+  (beginning-of-line)
+  (previous-line 1))
+
+(defun emaxima-new-noshow-cell ()
+  "Insert cell in buffer."
+  (if (not (bolp))
+      (progn
+        (open-line 1)
+        (forward-line 1)))
+  (insert "\\beginmaximanoshow\n\n\\endmaximanoshow")
+  (unless (looking-at " *$")
+    (insert "\n")
+    (forward-line -1))
+  (beginning-of-line)
+  (previous-line 1))
+
+(defun emaxima-create-standard-cell ()
+  "Insert standard cell in buffer."
+  (interactive)
+  (if (not (emaxima-cell-p))
+      (emaxima-new-standard-cell)
+    (if (emaxima-standard-cell-p)
+        (error "Currently in cell.")
+      (save-excursion
+        (re-search-backward "^\\\\beginmaxima")
+        (goto-char (match-end 0))
+        (if (emaxima-session-cell-p)
+            (progn
+              (delete-char 7)
+              (re-search-forward "^\\\\endmaxima")
+              (delete-char 7))
+          (delete-char 6)
+          (re-search-forward "^\\\\endmaxima")
+          (delete-char 6))))))
+
+(defun emaxima-create-session-cell ()
+  "Insert session cell in buffer."
+  (interactive)
+  (if (not (emaxima-cell-p))
+      (emaxima-new-session-cell)
+    (if (emaxima-session-cell-p)
+        (error "Currently in cell.")
+      (if (emaxima-standard-cell-p)
+          (progn
+            (if (emaxima-init-cell-p)
+                (error "Currently in initialization cell.")
+              (if (emaxima-package-cell-p)
+                  (error "Currently in package cell.")
+                (save-excursion
+                  (re-search-backward "^\\\\beginmaxima")
+                  (goto-char (match-end 0))
+                  (insert "session")
+                  (re-search-forward "^\\\\endmaxima")
+                  (insert "session")))))
+        (save-excursion
+          (re-search-backward "^\\\\beginmaxima")
+          (goto-char (match-end 0))
+          (delete-char 6)
+          (insert "session")
+          (re-search-forward "^\\\\endmaxima")
+          (delete-char 6)
+          (insert "session"))))))
+
+(defun emaxima-create-noshow-cell ()
+  "Insert noshow cell in buffer."
+  (interactive)
+  (if (not (emaxima-cell-p))
+      (emaxima-new-noshow-cell)
+    (if (emaxima-noshow-cell-p)
+        (error "Currently in cell.")
+      (if (emaxima-standard-cell-p)
+          (progn
+            (if (emaxima-init-cell-p)
+                (error "Currently in initialization cell.")
+              (if (emaxima-package-cell-p)
+                  (error "Currently in package cell.")
+                (save-excursion
+                  (re-search-backward "^\\\\beginmaxima")
+                  (goto-char (match-end 0))
+                  (insert "noshow")
+                  (re-search-forward "^\\\\endmaxima")
+                  (insert "noshow")))))
+        (save-excursion
+          (re-search-backward "^\\\\beginmaxima")
+          (goto-char (match-end 0))
+          (delete-char 7)
+          (insert "noshow")
+          (re-search-forward "^\\\\endmaxima")
+          (delete-char 7)
+          (insert "noshow"))))))
 
 (defun emaxima-toggle-init ()
-  "Toggle initialization marker of TYPE cell containing point."
+  "Toggle initialization marker of cell containing point."
   (interactive)
-  (save-excursion
-    (re-search-backward "^\\\\maxima")
-    (goto-char (match-end 0))
-    (if (looking-at "\\[\\* Initialization Cell \\*\\]")
-        (delete-region (match-beginning 0) (match-end 0))
-      (insert "[* Initialization Cell *]"))))
+  (if (emaxima-standard-cell-p)
+      (save-excursion
+        (re-search-backward "^\\\\beginmaxima")
+        (goto-char (match-end 0))
+        (if (looking-at "\\[\\* Initialization Cell \\*\\]")
+            (delete-region (match-beginning 0) (match-end 0))
+          (insert "[* Initialization Cell *]")))
+    (error "Not in (standard) Maxima cell")))
 
 (defun emaxima-package-part ()
-  "Toggle initialization marker of TYPE cell containing point."
+  "Insert package marker for cell."
   (interactive)
+  (if (emaxima-standard-cell-p)
+      (save-excursion
+        (let ((package (read-string "Package: " "...:")))
+          (re-search-backward "^\\\\beginmaxima")
+          (goto-char (match-end 0))
+          (insert (concat "<" package ">"))))
+    (message "Not in (standard) Maxima cell")))
+  
+;;; Cell positions
+
+(defun emaxima-cell-start ()
+  "Return position of start of cell containing point."
+  (let ((begin-re "^\\\\beginmaxima"))
   (save-excursion
-    (let ((package (read-string "Package: " "...:")))
-      (re-search-backward "^\\\\maxima")
-      (goto-char (match-end 0))
-      (insert (concat "<" package ">")))))
+    (if (not (looking-at begin-re))
+        (re-search-backward begin-re))
+    (forward-line 1)
+    (point))))
 
-(defun emaxima-update-all (arg)
-  "Optionally update all cells.
-With C-u prefix, update without confirmation at each cell."
-  (interactive "P")
-  (save-excursion
-    (if arg
-        (emaxima-update nil nil nil)
-      (emaxima-update nil (y-or-n-p "Interactive update? ") nil))))
+(defun emaxima-cell-end ()
+  "Return position of end of cell containing point."
+  (let ((end-re "^\\\\endmaxima"))
+    (save-excursion
+      (re-search-forward end-re)
+      (forward-line -1)
+      (end-of-line)
+      (point))))
 
-(defun emaxima-tex-update-all (arg)
-  "Optionally update all cells and return output in TeX form.
-With C-u prefix, update without confirmation at each cell."
-  (interactive "P")
-  (if arg
-      (emaxima-update nil nil t)
-    (emaxima-update nil (y-or-n-p "Interactive update? ") t)))
+(defun emaxima-previous-cell-start ()
+  "Get start of preceding cell.  If none, return current position."
+  (let ((cur-pos (point))
+        (start nil)
+        (begin-re "^\\\\beginmaxima")
+        (end-re "^\\\\endmaxima"))
+    (save-excursion
+      (if (not (re-search-backward end-re (point-min) t))
+          cur-pos
+        (if (emaxima-cell-p)
+            (progn
+              (re-search-backward begin-re)
+              (forward-line 1)
+              (point))
+          cur-pos)))))
+              
+(defun emaxima-next-cell-start ()
+  "Get start of next cell.  If none, return current position."
+  (let ((cur-pos (point))
+        (start nil)
+        (begin-re "^\\\\beginmaxima")
+        (end-re "^\\\\endmaxima"))
+    (save-excursion
+      (if (re-search-forward begin-re (point-max) t)
+          (progn
+            (if (not (emaxima-cell-p))
+                cur-pos)
+            (forward-line 1)
+            (point))
+        cur-pos))))
 
-(defun emaxima-update-init (arg)
-  "Optionally update all initialization cells.
-With C-u prefix, update without confirmation at each cell."
-  (interactive "P")
-  (if arg
-      (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil nil)
-    (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
-		   (y-or-n-p "Interactive update? ") nil)))
-
-(defun emaxima-tex-update-init (arg)
-  "Optionally update all initialization cells and return output in TeX form.
-With C-u prefix, update without confirmation at each cell."
-  (interactive "P")
-  (if arg
-      (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil t)
-    (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
-		   (y-or-n-p "Interactive update? ") t)))
-
-(defun emaxima-create-cell ()
-  "Insert cell in buffer."
-  (interactive)
-  (if (emaxima-cell-p)
-      (error "Cell already exists")
-    (if (not (bolp))
-        (progn
-          (open-line 1)
-          (forward-line 1)))
-    (insert "\\maxima\n\n\\endmaxima")
-    (unless (looking-at " *$")
-	(insert "\n")
-	(forward-line -1))
-    (beginning-of-line)
-    (previous-line 1)))
+;;; Cell motion
 
 (defun emaxima-forward-cell ()
   "Move to next cell."
@@ -241,150 +435,7 @@ With C-u prefix, update without confirmation at each cell."
           nil ; No more cells
         (goto-char cell-pos))))
 
-(defun emaxima-update (kind ask tex)
-  "Optionally update all KIND cells.
-If ASK is non-nil, then ask whether each KIND cell is to be updated,
-else update each KIND cell.  If KIND is nil, update all cells.
-If TEX is non-nil, then insert \\outputtex instead of \\output."
-  (let (bypass display-start display-end cur-pos)
-    (save-excursion
-      (goto-char (point-min))
-      (while (emaxima-forward-cell)
-        (forward-line -1)
-        (if (not (looking-at (concat "^\\\\maxima" kind)))
-            (progn
-              (forward-line 1) ; Don't want the same cell next time
-              nil) ; Wrong kind of cell
-          ;; We have a cell of the right kind
-          (setq display-start (point))
-          (goto-char (emaxima-cell-end))
-          (forward-line 1) ; We need to include cell trailer in narrowed region
-          (end-of-line)    ; ..
-          (setq display-end (point))
-          (forward-line 0)
-          (unwind-protect
-              (progn
-                (narrow-to-region display-start display-end)
-                (goto-char (point-min))
-                (recenter 1) ; force display, just in case...
-                (forward-line 1)
-                (if (and ask (not (y-or-n-p "Update this cell? ")))
-                    t
-                  (emaxima-update-type-cell tex)))
-            (widen) ; If user aborts evaluation at prompt
-            ) ; unwind-protect
-          ) ; if in a valid cell
-        ) ; while still types to check
-      (widen)
-      (sit-for 1)) ; save-excursion
-;    (beep)
-    (message "Update of cells finished")))
-
-(defun emaxima-eval-init ()
-  "Evaluate all initialization cells, without returning the output."
-  (interactive)
-  (let (bypass display-start display-end cur-pos)
-    (save-excursion
-      (goto-char (point-min))
-      (while (emaxima-forward-cell)
-        (forward-line -1)
-        (if (not (looking-at "^\\\\maxima\\[\\* Initialization Cell \\*\\]"))
-            (progn
-              (forward-line 1) ; Don't want the same cell next time
-              nil) ; Wrong kind of cell
-          ;; We have a cell of the right kind
-          (setq display-start (point))
-          (goto-char (emaxima-cell-end))
-          (forward-line 1) ; We need to include cell trailer in narrowed region
-          (end-of-line)    ; ..
-          (setq display-end (point))
-          (forward-line 0)
-          (unwind-protect
-              (progn
-                (narrow-to-region display-start display-end)
-                (goto-char (point-min))
-                (recenter 1) ; force display, just in case...
-                (forward-line 1)
-                (emaxima-send-cell))
-            (widen) ; If user aborts evaluation at prompt
-            ) ; unwind-protect
-          ) ; if in a valid cell
-        ) ; while still types to check
-      ) ; save-excursion
-    (widen)
-;    (beep)
-    (message "Evaluation of initialization cells finished")))
-
-(defun emaxima-cell-start ()
-  "Return position of start of cell containing point."
-  (let ((begin-re "^\\\\maxima"))
-  (save-excursion
-    (if (not (looking-at begin-re))
-        (re-search-backward begin-re))
-    (forward-line 1)
-    (point))))
-
-(defun emaxima-cell-end ()
-  "Return position of end of cell containing point."
-  (let ((end-re "^\\\\endmaxima"))
-    (save-excursion
-      (re-search-forward end-re)
-      (forward-line -1)
-      (end-of-line)
-      (point))))
-
-(defun emaxima-previous-cell-start ()
-  "Get start of preceding cell.  If none, return current position."
-  (let ((cur-pos (point))
-        (start nil)
-        (begin-re "^\\\\maxima")
-        (end-re "^\\\\endmaxima"))
-    (save-excursion
-      (if (not (re-search-backward end-re (point-min) t))
-          cur-pos
-        (if (emaxima-cell-p)
-            (progn
-              (re-search-backward begin-re)
-              (forward-line 1)
-              (point))
-          cur-pos)))))
-              
-(defun emaxima-next-cell-start ()
-  "Get start of next cell.  If none, return current position."
-  (let ((cur-pos (point))
-        (start nil)
-        (begin-re "^\\\\maxima")
-        (end-re "^\\\\endmaxima"))
-    (save-excursion
-      (if (re-search-forward begin-re (point-max) t)
-          (progn
-            (if (not (emaxima-cell-p))
-                cur-pos)
-            (forward-line 1)
-            (point))
-        cur-pos))))
-
-(defun emaxima-cell-p ()
-  "Returns t if point is in a Emaxima cell, else returns nil."
-  (let ((begin-re "^\\\\maxima")
-        (end-re "^\\\\endmaxima")
-        (found nil))
-    (save-excursion
-      (if (re-search-backward begin-re (point-min) t) ; \maxima
-            (setq found (point))))
-    (save-excursion
-      (if (and found
-               (re-search-backward end-re found t)) ; Intervening \endmaxima
-          (setq found nil)))
-    (save-excursion
-      (if (and found
-               (re-search-forward end-re (point-max) t)) ;\endmaxima
-          (setq found (point))))
-    (save-excursion
-        (if (and found 
-                 (re-search-forward begin-re found t)) ; Intervening \maxima
-            (setq found nil)))
-    (if found t nil)))
+;;; Output related functions
         
 (defun emaxima-delete-output ()
   "Delete current output (if any).  Assumes point in cell.
@@ -399,10 +450,10 @@ Input *may* contain blank lines."
 (defun emaxima-output-p ()
   "Return start of output text if present, else return nil.  Assumes
 point in cell.  Output assumed to follow input, separated by a
-\output."
+\maximaoutput, \maximatexoutput, \maximasession, or \maximatexsession."
   (save-excursion
     (goto-char (emaxima-cell-start))
-    (if (re-search-forward "^\\\\output"
+    (if (re-search-forward "^\\\\maxima"
          (emaxima-cell-end) t)
         (progn
           (forward-line -1)
@@ -411,6 +462,21 @@ point in cell.  Output assumed to follow input, separated by a
       nil)))
 
 ;;; @@ EMaxima functions for package assembly
+
+(defun emaxima-make-temp-name ()
+  "Return a unique filename."
+  (setq emaxima-temp-suffix (+ emaxima-temp-suffix 1))
+  (concat (concat (make-temp-name "#mz") "-")
+          (int-to-string emaxima-temp-suffix)
+          ".max"))
+
+(defun emaxima-replace-assoc (alist key val)
+  "Replace ALIST KEY VALUE, if KEY present, else add KEY VALUE.
+Return modified alist."
+  (if (assoc key alist)
+      (setcdr (assoc key alist) val)
+    (setcdr alist (cons (cons key val) (cdr alist))))
+  alist)
 
 (defun emaxima-assemble (arg)
  "Assemble package (see emaxima-assemble-package), or, with C-u prefix,
@@ -453,7 +519,7 @@ Return the filename."
     (save-excursion
       (goto-char (emaxima-cell-start))
       (forward-line -1)
-      (if (not (looking-at "^\\\\maxima.*<.*:.*>"))
+      (if (not (looking-at "^\\\\beginmaxima.*<.*:.*>"))
           (error "Cell is not marked"))
 
       (setq emaxima-error-point (point))
@@ -558,7 +624,7 @@ without asking."
               (save-excursion
                 (goto-char (emaxima-cell-start))
                 (forward-line -1)
-                (if (looking-at "^\\\\maxima.*<.*:.*>")
+                (if (looking-at "^\\\\beginmaxima.*<.*:.*>")
                     (progn
                       (setq emaxima-error-point (point))
                       (unwind-protect ; In case filename errors
@@ -696,7 +762,7 @@ according to whether PART is nil or not."
             (while (emaxima-forward-cell)
                    ;; We have a cell of the right type
                 (forward-line -1) ; Move to \begin{...
-                (if (not (looking-at "^\\\\maxima.*<.*:.*>"))
+                (if (not (looking-at "^\\\\beginmaxima.*<.*:.*>"))
                     (forward-line 1) ; So we go to next cell next time through
 
                   ;; We have a marked cell
@@ -859,7 +925,7 @@ Return t if successful, else nil."
       (cond
        ((and ; partname
          (or
-          (re-search-forward "^\\\\maxima<.*:[^\t]*" here t)
+          (re-search-forward "^\\\\beginmaxima<.*:[^\t]*" here t)
           (re-search-forward "^[ \t]*<.*:[^\t]*" here t))
          (equal here (point)))
 
@@ -904,7 +970,7 @@ Return t if successful, else nil."
         (delete-region start here)
         (insert (concat name ">"))) ; End of partname completion
        ((and ; filename
-         (or (re-search-forward "^\\\\maxima<[^ \t]*" here t)
+         (or (re-search-forward "^\\\\beginmaxima<[^ \t]*" here t)
              (re-search-forward "^[ \t]*<[^ \t]*" here t))
          (equal here (point)))
 
@@ -949,7 +1015,7 @@ Return t if successful, else nil."
       (goto-char (point-min))
       (while (emaxima-forward-cell)
           (forward-line -1)
-          (if (not (looking-at (concat "^\\\\maxima.*<.*>")))
+          (if (not (looking-at (concat "^\\\\beginmaxima.*<.*>")))
               (forward-line 1) ; Cell not marked.  Get set for next one
             (if (setq file (emaxima-get-filename)) ; Only unabbreviated names
                 (if files
@@ -1001,7 +1067,7 @@ filename completion."
               (setq cell-end (emaxima-cell-end))
               (forward-line -1)
               (if (not (looking-at
-                       "^\\\\maxima.*<[^:].*:.*>"))
+                       "^\\\\beginmaxima.*<[^:].*:.*>"))
                   (forward-line 1) ; Not a marked cell
                 (setq cell-file (emaxima-get-filename files))
                 (if (not (equal file cell-file))
@@ -1010,7 +1076,7 @@ filename completion."
                           (<= (point) cell-end)
                           (or
                            (re-search-forward
-                            "^\\\\maxima.*<[^:].*:.*>" cell-end t)
+                            "^\\\\beginmaxima.*<[^:].*:.*>" cell-end t)
                            (re-search-forward
                             "^ *\t*<[^:].*:.*>" cell-end t)))
                     (beginning-of-line) ; We have a filename-partname reference
@@ -1116,12 +1182,13 @@ Return nil if no name or error in name."
         t
       nil)))
 
-;;; @@ EMaxima functions for "maxima" cells
+;;; Cell evaluation
+;;; Get information about the cell input and output
 
 (defun emaxima-get-cell-contents ()
   "Return the cell contents as a string."
   (if (not (emaxima-cell-p))
-      (error "Not in Maxima cell"))
+      (message "Not in Maxima cell"))
   (let ((home-buffer (current-buffer))
         assembled-file start end)
     (if (emaxima-reference-p)
@@ -1150,6 +1217,394 @@ Return nil if no name or error in name."
 	    (setq end (point)))))
       (buffer-substring-no-properties start end))))
 
+;(defun emaxima-get-lisp-end (string)
+;  (with-temp-buffer
+;    (insert string)
+;    (beginning-of-buffer)
+;    (search-forward ":lisp")
+;    (forward-sexp)
+;    (- (point) 1)))
+
+(defun emaxima-get-lisp-end (string)
+  (let* ((tmpfile (emaxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (end))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (make-local-hook 'kill-buffer-hook)
+      (setq kill-buffer-hook nil)
+      (insert string)
+      (beginning-of-buffer)
+      (search-forward ":lisp")
+      (forward-sexp)
+      (setq end (- (point) 1)))
+    (kill-buffer tmpbuf)
+    end))
+
+(defun emaxima-insert-last-output-tex ()
+  (let ((out (maxima-last-output)))
+    (if (string-match "(D[0-9]+)" out)
+        (progn
+          (if (> (match-beginning 0) 0)
+              (progn
+                (insert "\\p ")
+                (insert (substring out 0 (match-beginning 0)))
+                (insert " \\\\\n"))
+            (insert "\\D")
+            (insert (substring out (+ (match-beginning 0) 2) (- (match-end 0) 1)))
+            (insert ".  ")
+            (insert (substring out (match-end 0)))
+            (forward-char -1)
+            (if (looking-at "\n")
+                (progn
+                  (insert " \\\\")
+                  (forward-char 1))
+              (forward-char 1)
+              (insert " \\\\\n"))))
+      (when (not (string= out ""))
+        (insert "\\p  ")
+        (insert out)
+        (forward-char -1)
+        (if (looking-at "\n")
+            (progn
+              (insert " \\\\")
+              (forward-char 1))
+          (forward-char 1)
+          (insert " \\\\\n"))))))
+
+(defun emaxima-insert-last-output-tex-noprompt ()
+  (let ((out (maxima-last-output)))
+    (if (string-match "(D[0-9]+)" out)
+        (progn
+          (if (> (match-beginning 0) 0)
+              (progn
+                (insert "\\p ")
+                (insert (substring out 0 (match-beginning 0)))
+                (insert " \\\\\n"))
+            (insert "$$")
+            (insert "  ")
+            (insert (substring out (match-end 0)))
+            (forward-char -1)
+            (if (looking-at "\n")
+                (progn
+                  (insert " $$")
+                  (forward-char 1))
+              (forward-char 1)
+              (insert " $$\n"))))
+      (when (not (string= out ""))
+        (insert "\\p  ")
+        (insert out)
+        (forward-char -1)
+        (if (looking-at "\n")
+            (progn
+              (insert " \\\\")
+              (forward-char 1))
+          (forward-char 1)
+          (insert " \\\\\n"))))))
+
+(defun emaxima-last-input-prompt ()
+  "Copy the last input-prompt from Maxima."
+  (interactive)
+  (let ((old-buffer (current-buffer))
+        (maxima-buffer (get-buffer "*maxima*"))
+        (prompt))
+    (maxima-wait)
+    (if (null maxima-buffer)
+        (message "No Maxima output buffer")
+      (set-buffer maxima-buffer)
+      (save-excursion
+	(end-of-buffer)
+        (if (not (emaxima-maxima-running))
+            (re-search-backward inferior-maxima-prompt (point-min) nil 1)
+          (re-search-backward inferior-maxima-prompt (point-min) nil 2))
+        (setq prompt
+             (buffer-substring-no-properties (match-beginning 0) (- (match-end 0) 1))))
+      (set-buffer old-buffer)
+      prompt)))
+
+;;; Update the different cell types
+
+(defun emaxima-update-cell (&optional tex)
+  "Send the current cell's contents to Maxima, and return the results."
+  (setq tex (and tex emaxima-tex-lisp-file))
+  (if (emaxima-cell-p)
+      (save-excursion
+        (if (emaxima-session-cell-p)
+            (if tex
+                (emaxima-tex-update-session-cell)
+              (emaxima-update-session-cell))
+          (emaxima-delete-output)
+          (let ((end)
+                (cell (emaxima-get-cell-contents)))
+            (goto-char (emaxima-cell-end))
+            (forward-line 1)
+            (if (and tex (not (emaxima-noshow-cell-p)))
+                (insert "\\maximatexoutput\n")
+              (insert "\\maximaoutput\n"))
+            (while (or
+                    (string-match "[$;]" cell)
+                    (eq (string-match "[ \n]*:lisp" cell) 0))
+              (if (eq (string-match "[ \n]*:lisp" cell) 0)
+                  (setq end (emaxima-get-lisp-end cell))
+                (setq end (1+ (string-match "[$;]" cell))))
+              (if (and tex emaxima-tex-lisp-file (not (emaxima-maxima-running)))
+                  (emaxima-tex-on))
+              (maxima-string-nodisplay (substring cell 0 end))
+              (maxima-wait)
+              (setq cell (substring cell end))
+              (if (and tex 
+                       (not (emaxima-noshow-cell-p))
+                       inferior-maxima-running-p)
+                  (emaxima-insert-last-output-tex-noprompt)
+                (insert (maxima-last-output-noprompt)))))))
+        (error "Not in Maxima cell")))
+
+(defun emaxima-update-session-cell ()
+  "Send the current cell's contents to Maxima, and return the results."
+  (save-excursion
+    (emaxima-delete-output)
+    (let ((end)
+          (cell (emaxima-get-cell-contents)))
+      (goto-char (emaxima-cell-end))
+      (forward-line 1)
+      (insert "\\maximasession\n")
+      (while (or
+              (string-match "[$;]" cell)
+              (eq (string-match "[ \n]*:lisp" cell) 0))
+        (if (eq (string-match "[ \n]*:lisp" cell) 0)
+            (setq end (emaxima-get-lisp-end cell))
+          (setq end (1+ (string-match "[$;]" cell))))
+        (maxima-string-nodisplay (substring cell 0 end))
+        (insert (emaxima-last-input-prompt))
+        (insert " ")
+        (while (or (string= "\n" (substring cell 0 1))
+                   (string= " " (substring cell 0 1)))
+          (setq cell (substring cell 1))
+          (setq end (- end 1)))
+        (insert (substring cell 0 end))
+        (unless (string= "\n" (substring cell (- end 1) end))
+          (insert "\n"))
+        (insert "\n")
+        (insert (maxima-last-output))
+        (setq cell (substring cell end))))))
+
+(defun emaxima-tex-update-session-cell ()
+  "Send the current cell's contents to Maxima, and return the results."
+  (if (not emaxima-tex-lisp-file)
+      (emaxima-update-session-cell)
+    (save-excursion
+      (emaxima-delete-output)
+      (let ((end)
+            (out)
+            (cell (emaxima-get-cell-contents)))
+        (goto-char (emaxima-cell-end))
+        (forward-line 1)
+        (insert "\\maximatexsession\n")
+        (while (or
+                (string-match "[$;]" cell)
+                (eq (string-match "[ \n]*:lisp" cell) 0))
+          (if (eq (string-match "[ \n]*:lisp" cell) 0)
+              (setq end (emaxima-get-lisp-end cell))
+            (setq end (1+ (string-match "[$;]" cell))))
+          (if (and emaxima-tex-lisp-file (not (emaxima-maxima-running)))
+              (emaxima-tex-on))
+          (maxima-string-nodisplay (substring cell 0 end))
+          (maxima-wait)
+          (while (or (string= "\n" (substring cell 0 1))
+                     (string= " " (substring cell 0 1)))
+            (setq cell (substring cell 1))
+            (setq end (- end 1)))
+          (insert "\\C")
+          (insert (substring (emaxima-last-input-prompt) 2 -1))
+          (insert ".  ")
+          (insert (substring cell 0 end))
+          (insert " \\\\")
+          (unless (string= "\n" (substring cell (- end 1) end))
+            (insert "\n"))
+;          (insert "\n")
+          (emaxima-insert-last-output-tex)
+          (setq cell (substring cell end)))))))
+
+;;; Update the different groups
+
+(defun emaxima-update-all (arg)
+  "Optionally update all cells.
+With C-u prefix, update without confirmation at each cell."
+  (interactive "P")
+  (save-excursion
+    (if arg
+        (emaxima-update nil nil nil)
+      (emaxima-update nil (y-or-n-p "Interactive update? ") nil))))
+
+(defun emaxima-tex-update-all (arg)
+  "Optionally update all cells and return output in TeX form.
+With C-u prefix, update without confirmation at each cell."
+  (interactive "P")
+  (emaxima-tex-on)
+  (if arg
+      (emaxima-update nil nil t)
+    (emaxima-update nil (y-or-n-p "Interactive update? ") t))
+  (emaxima-tex-off))
+
+(defun emaxima-update-init (arg)
+  "Optionally update all initialization cells.
+With C-u prefix, update without confirmation at each cell."
+  (interactive "P")
+  (if arg
+      (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil nil)
+    (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
+		   (y-or-n-p "Interactive update? ") nil)))
+
+(defun emaxima-tex-update-init (arg)
+  "Optionally update all initialization cells and return output in TeX form.
+With C-u prefix, update without confirmation at each cell."
+  (interactive "P")
+  (emaxima-tex-on)
+  (if arg
+      (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil t)
+    (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
+		   (y-or-n-p "Interactive update? ") t))
+  (emaxima-tex-off))
+
+(defun emaxima-update-session (arg)
+  "Optionally update all session cells.
+With C-u prefix, update without confirmation at each cell."
+  (interactive "P")
+  (if arg
+      (emaxima-update "session" nil nil)
+    (emaxima-update "session" 
+		   (y-or-n-p "Interactive update? ") nil)))
+
+(defun emaxima-tex-update-session (arg)
+  "Optionally update all session cells.
+With C-u prefix, update without confirmation at each cell."
+  (interactive "P")
+  (emaxima-tex-on)
+  (if arg
+      (emaxima-update "session" nil t)
+    (emaxima-update "session" 
+		   (y-or-n-p "Interactive update? ") t))
+  (emaxima-tex-off))
+
+(defun emaxima-update-single-cell (&optional tex)
+  "Send the current cell's contents to Maxima, and return the results."
+  (interactive "P")
+  (setq tex (and tex emaxima-tex-lisp-file))
+  (if (emaxima-cell-p)
+      (save-excursion
+        (if tex (emaxima-tex-on))
+        (if (emaxima-session-cell-p)
+            (if tex
+                (emaxima-tex-update-session-cell)
+              (emaxima-update-session-cell))
+          (emaxima-delete-output)
+          (let ((end)
+                (cell (emaxima-get-cell-contents)))
+            (goto-char (emaxima-cell-end))
+            (forward-line 1)
+            (if (and tex (not (emaxima-noshow-cell-p)))
+                (insert "\\maximatexoutput\n")
+              (insert "\\maximaoutput\n"))
+            (while (or
+                    (string-match "[$;]" cell)
+                    (eq (string-match "[ \n]*:lisp" cell) 0))
+              (if (eq (string-match "[ \n]*:lisp" cell) 0)
+                  (setq end (emaxima-get-lisp-end cell))
+                (setq end (1+ (string-match "[$;]" cell))))
+              (maxima-string-nodisplay (substring cell 0 end))
+              (maxima-wait)
+              (setq cell (substring cell end))
+              (if (and tex 
+                       (not (emaxima-noshow-cell-p))
+                       inferior-maxima-running-p)
+                  (emaxima-insert-last-output-tex-noprompt)
+                (insert (maxima-last-output-noprompt))))))
+        (if tex (emaxima-tex-off)))
+        (error "Not in Maxima cell")))
+  
+(defun emaxima-tex-update-single-cell ()
+  "Send input to maxima and replace output with the result in TeX form.
+Point must be in cell."
+  (interactive)
+  (emaxima-update-single-cell t))
+
+;;; The workhorses
+
+(defun emaxima-update (kind ask tex)
+  "Optionally update all KIND cells.
+If ASK is non-nil, then ask whether each KIND cell is to be updated,
+else update each KIND cell.  If KIND is nil, update all cells.
+If TEX is non-nil, then insert \\maximatexoutput instead of \\maximaoutput."
+  (setq tex (and emaxima-tex-lisp-file tex))
+  (let (bypass display-start display-end cur-pos)
+    (save-excursion
+      (goto-char (point-min))
+      (while (emaxima-forward-cell)
+        (forward-line -1)
+        (if (and kind (not (looking-at (concat "^\\\\beginmaxima" kind))))
+            (progn
+              (forward-line 1) ; Don't want the same cell next time
+              nil) ; Wrong kind of cell
+          ;; We have a cell of the right kind
+          (setq display-start (point))
+          (goto-char (emaxima-cell-end))
+          (forward-line 1) ; We need to include cell trailer in narrowed region
+          (end-of-line)    ; ..
+          (setq display-end (point))
+          (forward-line 0)
+          (unwind-protect
+              (progn
+                (narrow-to-region display-start display-end)
+                (goto-char (point-min))
+                (recenter 1) ; force display, just in case...
+                (forward-line 1)
+                (if (and ask (not (y-or-n-p "Update this cell? ")))
+                    t
+                  (emaxima-update-cell tex)))
+            (widen) ; If user aborts evaluation at prompt
+            ) ; unwind-protect
+          ) ; if in a valid cell
+        ) ; while still types to check
+      (widen)
+      (sit-for 1)) ; save-excursion
+;    (beep)
+    (message "Update of cells finished")))
+
+(defun emaxima-eval-init ()
+  "Evaluate all initialization cells, without returning the output."
+  (interactive)
+  (let (bypass display-start display-end cur-pos)
+    (save-excursion
+      (goto-char (point-min))
+      (while (emaxima-forward-cell)
+        (forward-line -1)
+        (if (not (looking-at "^\\\\beginmaxima\\[\\* Initialization Cell \\*\\]"))
+            (progn
+              (forward-line 1) ; Don't want the same cell next time
+              nil) ; Wrong kind of cell
+          ;; We have a cell of the right kind
+          (setq display-start (point))
+          (goto-char (emaxima-cell-end))
+          (forward-line 1) ; We need to include cell trailer in narrowed region
+          (end-of-line)    ; ..
+          (setq display-end (point))
+          (forward-line 0)
+          (unwind-protect
+              (progn
+                (narrow-to-region display-start display-end)
+                (goto-char (point-min))
+                (recenter 1) ; force display, just in case...
+                (forward-line 1)
+                (emaxima-send-cell))
+            (widen) ; If user aborts evaluation at prompt
+            ) ; unwind-protect
+          ) ; if in a valid cell
+        ) ; while still types to check
+      ) ; save-excursion
+    (widen)
+;    (beep)
+    (message "Evaluation of initialization cells finished")))
+
 (defun emaxima-send-cell ()
   "Send the current cell's contents to Maxima."
   (interactive)
@@ -1157,54 +1612,21 @@ Return nil if no name or error in name."
       (message "Not in cell.")
     (maxima-region-nodisplay (emaxima-cell-start) (emaxima-cell-end))))
 
-(defun emaxima-update-cell (&optional tex)
-  "Send the current cell's contents to Maxima, and return the results."
-  (interactive "P")
-  (save-excursion
-    (emaxima-delete-output)
-    (let ((end)
-          (cell (emaxima-get-cell-contents)))
-      (goto-char (emaxima-cell-end))
-      (forward-line 1)
-      (if tex
-          (insert "\\outputtex\n")
-        (insert "\\output\n"))
-      (while (setq end (string-match "[$;]" cell))
-        (maxima-string-nodisplay (substring cell 0 (1+ end)))
-        (setq cell (substring cell (1+ end)))
-        (if tex
-            (progn
-              (maxima-string-nodisplay emaxima-tex-string)
-              (insert (maxima-last-output-tex-noprompt)))
-          (insert (maxima-last-output)))))))
-
-(defun emaxima-tex-update-cell ()
-  "Send input to maxima and replace output with the result in TeX form.
-Point must be in cell.  Output assumed to follow input,
-separated by a emaxima-output-marker line."
-  (interactive)
-  (emaxima-update-cell t))
-
-(defun emaxima-update-type-cell (tex)
-  "Send input to Maxima and replace output with result.
-Point must be in cell.  Output assumed to follow input,
-separated by a emaxima-output-marker line."
-  (if (not (emaxima-cell-p))
-      (error "Not in Maxima cell"))
-  (emaxima-update-cell tex))
-
 (defun emaxima-replace-line-with-tex ()
   "Sends the current line to Maxima, and then replaces it with the Maxima
 output in TeX form."
   (interactive)
-  (maxima-send-line-nodisplay)
-  (maxima-wait)
-  (maxima-string-nodisplay emaxima-tex-string)
-  (beginning-of-line)
-  (insert "% ")
-  (end-of-line)
-  (newline)
-  (insert (maxima-last-output-tex-noprompt)))
+  (if (not emaxima-tex-lisp-file)
+      (emaxima-replace-line)
+    (maxima-send-line-nodisplay)
+    (maxima-wait)
+    (maxima-string-nodisplay "tex(%);")
+    (maxima-wait)
+    (beginning-of-line)
+    (insert "% ")
+    (end-of-line)
+    (newline)
+    (maxima-last-output-tex-noprompt)))
 
 (defun emaxima-replace-line ()
   "Sends the current line to Maxima, and then replaces it with the Maxima
@@ -1218,9 +1640,10 @@ output."
   (newline)
   (insert (maxima-last-output-noprompt)))
 
-;;; @@ The mode
+;;; The mode
 
 ;; First, find out what kind of TeX mode is being used.
+
 (cond
  ((eq emaxima-use-tex 'auctex)
   (require 'tex-site)
@@ -1249,19 +1672,23 @@ output."
     (define-key map "\C-c-" 'emaxima-backward-cell)
     (define-key map "\C-c\C-ua" 'emaxima-update-all)
     (define-key map "\C-c\C-uA" 'emaxima-tex-update-all)
-    (define-key map "\C-c\C-uq" 'emaxima-eval-init)
+    (define-key map "\C-c\C-ut" 'emaxima-eval-init)
     (define-key map "\C-c\C-ui" 'emaxima-update-init)
     (define-key map "\C-c\C-uI" 'emaxima-tex-update-init)
-    (define-key map "\C-c\C-o" 'emaxima-create-cell)
+    (define-key map "\C-c\C-us" 'emaxima-update-session)
+    (define-key map "\C-c\C-uS" 'emaxima-tex-update-session)
+    (define-key map "\C-c\C-o" 'emaxima-create-standard-cell)
+    (define-key map "\C-c\C-p" 'emaxima-create-session-cell)
+    (define-key map "\C-c\C-n" 'emaxima-create-noshow-cell)
     (define-key map "\C-c\C-ul" 'emaxima-replace-line)
     (define-key map "\C-c\C-uL" 'emaxima-replace-line-with-tex)
-    (define-key map "\M-\C-k"  'maxima-stop)
+    (define-key map "\C-c\C-k"  'maxima-stop)
     ;; And some emaxima keys that make sense in cells
-    (define-key map "\C-c\C-s" 'emaxima-send-cell)
-    (define-key map "\C-c\C-uc" 'emaxima-update-cell)
-    (define-key map "\C-c\C-uC" 'emaxima-tex-update-cell)
+    (define-key map "\C-c\C-v" 'emaxima-send-cell)
+    (define-key map "\C-c\C-uc" 'emaxima-update-single-cell)
+    (define-key map "\C-c\C-uC" 'emaxima-tex-update-single-cell)
     (define-key map "\C-c\C-d" 'emaxima-delete-output)
-    (define-key map "\C-c\C-q" 'emaxima-toggle-init)
+    (define-key map "\C-c\C-t" 'emaxima-toggle-init)
     (define-key map "\C-c\C-x" 'emaxima-package-part)
     (define-key map "\C-c@" 'emaxima-assemble)
     (define-key map "\C-c\C-h" 'maxima-help)
@@ -1271,8 +1698,8 @@ output."
 
 ;;; A function for font-locking
 (defun emaxima-match-cells (limit)
-  "Used to fontify whatever's between \\maxima and \\endmaxima."
-  (when (re-search-forward "\\\\maxima" 
+  "Used to fontify whatever's between \\beginmaxima and \\endmaxima."
+  (when (re-search-forward "\\\\beginmaxima" 
                            limit t)
     (let ((beg (match-end 0)) end)
       (if (search-forward "\\endmaxima"
@@ -1288,14 +1715,14 @@ include Maxima code.  The file can be LaTeXed to produce nice
 looking output (although that isn't necessary, of course), and so the
 mode is an extension of tex-mode (AucTeX).
 The units of Maxima code that are worked with are \"cells\", which are 
-delimited by \"\\maxima\" and \"\\endmaxima\". The cells can be evaluated 
+delimited by \"\\beginmaxima\" and \"\\endmaxima\". The cells can be evaluated 
 individually, as a group, and the output can be returned as Maxima output 
 or in TeX form.  Evaluating a cell and returning the output is called 
 \"updating\" the cell.  This mode also supports some literate programming 
 constructs.  (See the file \"EMaximaIntro.tex\" for more 
 information.)
 The commands for working with cells are:
- \\[emaxima-create-cell]  create a cell         
+ \\[emaxima-create-standard-cell]  create a cell         
  \\[emaxima-update-all] update all the cells 
  \\[emaxima-tex-update-all] update all the cells in TeX form 
  \\[emaxima-forward-cell] go to the next cell 
@@ -1337,7 +1764,7 @@ already) so the file will begin in emaxima-mode next time it's opened.
     (defvar emaxima-keywords
       (append font-latex-keywords-2
               '((emaxima-match-cells (0 font-lock-function-name-face t t))
-                ("\\(\\\\\\(endmaxima\\|output\\(tex\\)?\\|maxima\\)\\)"
+                ("\\(\\\\\\(beginmaxima\\(?:noshow\\|session\\)?\\|endmaxima\\(?:noshow\\|session\\)?\\|maxima\\(?:output\\|session\\|tex\\(?:output\\|session\\)\\)\\)\\)"
                  (0 font-lock-keyword-face t t))))
       "Keywords for EMaxima font-locking.")
     (make-local-variable 'font-lock-defaults)
@@ -1346,6 +1773,11 @@ already) so the file will begin in emaxima-mode next time it's opened.
             nil nil ((?\( . ".") (?\) . ".") (?$ . "\"")) nil
             (font-lock-comment-start-regexp . "%")
             (font-lock-mark-block-function . mark-paragraph))))
+  (if (emaxima-maxima-running)
+     (emaxima-load-tex-library))
+  (add-hook 'inferior-maxima-mode-hook 'emaxima-load-tex-library)
+  (if running-xemacs 
+      (add-hook 'inferior-maxima-mode-hook (lambda () (sit-for 1))))
   (run-hooks 'emaxima-mode-hook))
 
 ;;; Now, the menu.
@@ -1353,19 +1785,26 @@ already) so the file will begin in emaxima-mode next time it's opened.
   "EMaxima mode menu"
   '("EMaxima"
     ("Cells"
-     ["Create cell"  emaxima-create-cell (not (emaxima-cell-p))]
+     ["Create cell"  emaxima-create-standard-cell 
+                (not (emaxima-standard-cell-p))]
+     ["Create session cell" emaxima-create-session-cell 
+                (not (emaxima-session-cell-p))]
+     ["Create noshow cell"  emaxima-create-noshow-cell 
+                (not (emaxima-noshow-cell-p))]
      ["Send cell"  emaxima-send-cell (emaxima-cell-p)]
-     ["Update cell"   emaxima-update-cell (emaxima-cell-p)]
-     ["TeX update cell"  emaxima-tex-update-cell (emaxima-cell-p)]
+     ["Update cell"   emaxima-update-single-cell (emaxima-cell-p)]
+     ["TeX update cell"  emaxima-tex-update-single-cell (emaxima-cell-p)]
      ["Delete output"   emaxima-delete-output (emaxima-cell-p)]
-     ["Toggle initialization"  emaxima-toggle-init (emaxima-cell-p)]
-     ["Mark as package part" emaxima-package-part (emaxima-cell-p)]
-     ["Insert complete name" emaxima-insert-complete-name (emaxima-cell-p)]
+     ["Toggle initialization"  emaxima-toggle-init (emaxima-standard-cell-p)]
+     ["Mark as package part" emaxima-package-part (emaxima-standard-cell-p)]
+     ["Insert complete name" emaxima-insert-complete-name 
+                                                  (emaxima-standard-cell-p)]
      ["Forward cell"  emaxima-forward-cell]
      ["Backwards cell"  emaxima-backward-cell])
     ("Update"
      ["Update line"   emaxima-replace-line (not (emaxima-cell-p))]
      ["Update all cells"  emaxima-update-all]
+     ["Update session cells" emaxima-update-session]
      ["Update initialization cells"  emaxima-update-init]
      "---"
      ["TeX update line"   emaxima-replace-line-with-tex (not (emaxima-cell-p))]
@@ -1376,8 +1815,6 @@ already) so the file will begin in emaxima-mode next time it's opened.
       (not (processp maxima-process))]
      ["Run Maxima on region"  maxima-region]
      ["Run Maxima on initialization cells"  emaxima-eval-init]
-     ["Send string to Maxima" maxima-eval-string t]
-     ["Reset the Maxima process" maxima-reset t]
      ["Kill Maxima process"  maxima-stop (processp maxima-process)])
     ("Misc"
      ["Indent region"   maxima-indent-region (emaxima-cell-p)]
@@ -1390,10 +1827,11 @@ already) so the file will begin in emaxima-mode next time it's opened.
      ["Assemble package"  emaxima-assemble-package 
       (and (emaxima-cell-p) (emaxima-reference-p))])
     ("Help"
-     ["Apropos"   maxima-apropos]
-     ["Help"  maxima-help])))
+     ["Manual"   maxima-info]
+     ["Describe"  maxima-help])))
 
 ;;; The next line is necessary for XEmacs
-(easy-menu-add emaxima-menu emaxima-mode-map)
+(if (featurep 'xemacs)
+    (easy-menu-add emaxima-menu emaxima-mode-map))
   
 ;;; emaxima.el ends here
