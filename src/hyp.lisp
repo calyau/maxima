@@ -1292,6 +1292,19 @@
 ;;
 ;; P(n,m,z) = 2^m*(z^2-1)^(-m/2)/gamma(1-m)*F(1/2+n/2-m/2, -n/2-m/2; 1-m; 1-z^2)
 ;;
+;; See also A&S 15.4.12 and 15.4.13.
+;;
+;; Let a = 1/2+n/2-m/2, b = -n/2-m/2, c = 1-m.  Then, m = 1-c.  And we
+;; have two equivalent expressions for n:
+;;
+;; n = c - 2*b - 1 or n = 2*a - c
+;;
+;; The code below chooses the first solution.  A&S chooses second.
+;;
+;; F(a,b;c;w) = 2^(c-1)*gamma(c)*(-w)^((1-c)/2)*P(c-2*b-1,1-c,sqrt(1-w))
+;;
+;;
+;; FIXME:  We don't correctly handle the branch cut here!
 (defun legf20 (l1 l2 var)
   (prog (m n b c)
      (setq b (cadr l1)
@@ -1315,6 +1328,22 @@
 ;;
 ;; P(n,m,z) = 2^m*(z^2-1)^(-m/2)*z^(n+m)/gamma(1-m)*F(-n/2-m/2,1/2-n/2-m/2;1-m;1-1/z^2)
 ;;
+;; See also A&S 15.4.10 and 15.4.11.
+;;
+;; Let a = -n/2-m/2, b = 1/2-n/2-m/2, c = 1-m.  Then m = 1-c.  Again,
+;; we have 2 possible (equivalent) values for n:
+;;
+;; n = -(2*a + 1 - c) or n = c-2*b
+;;
+;; The code below chooses the first solution.
+;;
+;; F(a,b;c;w) = 2^(c-1)*w^(1/2-c/2)*(1-w)^(c/2-a-1/2)*P(c-2*a-1,1-c,1/sqrt(1-w))
+;;
+;; F(a,b;c;w) = 2^(c-1)*w^(1/2-c/2)*(1-w)^(c/2-b)*P(c-2*b,1-c,sqrt(1-w))
+;;
+;; Is there a mistake in 15.4.10 and 15.4.11?
+;;
+;; FIXME:  We don't correctly handle the branch cut here!
 (defun legf24 (l1 l2 var)
   (prog (m n a c z)
      (setq a (car l1)
@@ -1333,9 +1362,24 @@
 			 z
 			 '$p)))))
 
+;; Handle 1-c = a-b
+;;
 ;; Formula 16:
 ;;
-;; P(n,m,z) = 2^(-n)*(z+1)^(m/2+n)(z-1)^(-m/2)/gamma(1-m)*F(-n,-n-m;1-m;(z-1)/(z+1))
+;; P(n,m,z) = 2^(-n)*(z+1)^(m/2+n)*(z-1)^(-m/2)/gamma(1-m)*F(-n,-n-m;1-m;(z-1)/(z+1))
+;;
+;; See also A&S 15.4.14 and 15.4.15.
+;;
+;; Let a = -n, b = -n-m, c = 1-m.  Then m = 1-c.  We have 2 solutions
+;; for n:
+;;
+;; n = -a or n = c-b-1.
+;;
+;; The code below chooses the first solution.
+;;
+;; F(a,b;c;w) = gamma(c)*w^(1/2-c/2)*(1-w)^(-a)*P(-a,1-c,(1+w)/(1-w));
+;;
+;; FIXME:  We don't correctly handle the branch cut here!
 (defun legf16 (l1 l2 var)
   (prog (m n a c z)
      (setq a (car l1)
@@ -1367,25 +1411,19 @@
 ;; might have a bug?) or
 ;; http://functions.wolfram.com/HypergeometricFunctions/LegendreP2General/26/01/02/
 ;;
-
-;; I think this version is wrong.
-#+nil
-(defun legf14 (l1 l2 var)
-  (prog (m n a c b)
-     (setq l (s+c (car l1))
-	   a (cond ((eq (cdras 'c l) 0) (cdras 'f l))
-		   (t (mul -1 (cdras 'f l))))
-	   c (car l2) m (sub 1 c)
-	   n (mul -1 a))
-     (return (mul (power (add var 1) (div m 2))
-		  (power (sub var 1) (div m -2))
-		  (inv (gm (sub 1 m)))
-		  (legen n m (sub 1 (mul 2 var)) '$p)))))
-
-;; I (rtoy) think this produces the right thing, and matches the
-;; formula given in the link above.  Basically the multipliers needed
-;; to inverted, and we forgot to account for the difference in args
-;; between F and P.
+;; Formula 14:
+;;
+;; P(n,m,z) = (z+1)^(m/2)*(z-1)^(-m/2)/gamma(1-m)*F(-n,1+n;1-m;(1-z)/2)
+;;
+;; See also A&S 8.1.2, 15.4.18, 15.4.19
+;;
+;; Let a=-n, b = 1+n, c = 1-m.  Then m = 1-c and n has 2 solutions:
+;;
+;; n = -a or n = b - 1.
+;;
+;; The code belows chooses the first solution.
+;;
+;; F(a,b;c;w) = gamma(c)*(-w)^(1/2-c/2)*(1-w)^(1-w)^(c/2-1/2)*P(-a,1-c,1-2*w)
 (defun legf14 (l1 l2 var)
   (prog (m n a c b z)
      (setq l (s+c (car l1))
@@ -1401,15 +1439,36 @@
 		  (gm (sub 1 m))
 		  (legen n m (sub 1 (mul 2 var)) '$p)))))
 
+;; I think this version is wrong.
+#+nil
+(defun legf14 (l1 l2 var)
+  (prog (m n a c b)
+     (setq l (s+c (car l1))
+	   a (cond ((eq (cdras 'c l) 0) (cdras 'f l))
+		   (t (mul -1 (cdras 'f l))))
+	   c (car l2) m (sub 1 c)
+	   n (mul -1 a))
+     (return (mul (power (add var 1) (div m 2))
+		  (power (sub var 1) (div m -2))
+		  (inv (gm (sub 1 m)))
+		  (legen n m (sub 1 (mul 2 var)) '$p)))))
+
+
+
 
 ;; Handle a-b = a+b-c
 ;;
 ;; Formula 36:
 ;;
-;; P(n,m,z) = 2^n*gamma(1+n)*gamma(1+n+m)*(z+1)^(m/2-n-1)*(z-1)^(-m/2)/gamma(2+2*n)*hgfred([1+n-m,1+n],[2+2*n],2/(1+z))
+;; P(n,m,z) = 2^n*gamma(1+n)*gamma(1+n+m)*(z+1)^(m/2-n-1)*(z-1)^(-m/2)/gamma(2+2*n)*
+;;                  hgfred([1+n-m,1+n],[2+2*n],2/(1+z))
 ;;
 ;;
-;; For example F(a,b;2*b;z)
+;; Let a = 1+n-m, b = 1+n, c = 2+2*n.  then n = b-1 and m = b - a.
+;; (There are other solutions.)
+;;
+;; F(a,b;c;z) = 2**gamma(2*b)/gamma(b)/gamma(2*b-a)*w^(-b)*(1-w)^((b-a)/2)*P(b-1,b-a,2/w-1)
+
 (defun legf36 (l1 l2 var)
   (prog (n m a b z)
      (setq a (car l1)
@@ -1528,8 +1587,11 @@
   (cond ((zerop n) 1)(t (mul a (multaug (add a 1)(sub1 n))))))
 
 
-(defun gered1
-    (l1 l2 simpflg)
+;; See A&S 15.3.3:
+;;
+;; F(a,b;c;z) = (1-z)^(c-a-b)*F(c-a,c-b;c;z)
+#+nil
+(defun gered1 (l1 l2 simpflg)
   (mul (power (sub 1 var)
 	      (add (car l2)
 		   (mul -1 (car l1))
@@ -1540,20 +1602,38 @@
 		l2
 		var)))
 
-
-
-
-
-(defun gered2
-    (a b c)
-  (mul (power (sub 1 var)(mul -1 a))
+(defun gered1 (l1 l2 simpflg)
+  (destructuring-bind (a b)
+      l1
+    (destructuring-bind (c)
+	l2
+      (mul (power (sub 1 var)
+		  (add c
+		       (mul -1 a)
+		       (mul -1 b)))
+	   (funcall simpflg
+		    (list (sub c a)
+			  (sub c a))
+		    l2
+		    var)))))
+;; See A&S 15.3.4
+;;
+;; F(a,b;c;z) = (1-z)^(-a)*F(a,c-b;c;z/(z-1))
+(defun gered2 (a b c)
+  (mul (power (sub 1 var) (mul -1 a))
        (hgfsimp (list a (sub c b))
 		(list c)
 		(div var (sub var 1)))))
 
-
-(defun geredf
-    (a b c)
+;; See A&S 15.3.9:
+;;
+;; F(a,b;c;z) = A*z^(-a)*F(a,a-c+1;a+b-c+1;1-1/z)
+;;              + B*(1-z)^(c-a-b)*z^(a-c)*F(c-a,1-a;c-a-b+1,1-1/z)
+;;
+;; where A = gamma(c)*gamma(c-a-b)/gamma(c-a)/gamma(c-b)
+;;       B = gamma(c)*gamma(a+b-c)/gamma(a)/gamma(b)
+;;
+(defun geredf (a b c)
   (add (div (mul (gm c)
 		 (gm (add c (mul -1 a)(mul -1 b)))
 		 (power var (mul -1 a))
