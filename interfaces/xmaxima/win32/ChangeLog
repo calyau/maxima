@@ -1,0 +1,5 @@
+2002-09-08  David Billinghurst <David.Billinghurst@riotinto.com
+
+	* winkill.c:  Copy file from gcl tree
+	* tclwinkill.c: Ditto
+
