@@ -55,4 +55,4 @@ show((a([i1])@i2)@L[v,i3]-(a([i1])@L[v,i2])@i3)$
 show((a([i1])@i2)@L[v,i3])$
 
 ("the verifications of this consequence of the Cartan identity
-  for the higher order forms are in car_iden.mac")$
+  for the higher order forms are in car_iden.dem")$

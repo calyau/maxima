@@ -905,93 +905,55 @@
 	)
 )
 
-(DEFMFUN $INDICES (E)          ;Returns a list of the free and dummy indices in E
-       (PROG (TOP BOTTOM BOUND LB)               ;Example F([A,B],[C,D],E,F)
-	     (COND ((OR (ATOM E) (EQ (CAAR E) 'RAT))
-		    (RETURN EMPTY))              ;[[], []]
-		   ((RPOBJ E)
-		    (SETQ TOP (NONUMBER (CDADDR E))         ;($C $D)
-			  BOTTOM (NONUMBER (APPEND (CDADR E) (CDDDR E)))))  ;($A $B $E $F)
-		   ((MEMQ (CAAR E) '(MTIMES MNCTIMES MNCEXPT))   ;If a product
-		    (DO ((E
-			   (CDR E)
-			   (CDR E)))
-			((NULL E))
-			(COND ((ATOM (CAR E)))
-			      ((RPOBJ (CAR E))
-			       (SETQ TOP
-				     (APPEND TOP (NONUMBER (CDR (CADDAR E)))))
-			       (SETQ BOTTOM (APPEND BOTTOM
-						    (NONUMBER (CDADAR E))
-						    (NONUMBER (CDDDAR E)))))
-			      ((EQ (CAAAR E) 'MPLUS)
-			       (SETQ LB (INDPLUS (CDAR E)) 
-				     TOP (APPEND TOP
-						 (NONUMBER (CDADR LB))              ;Free
-						 (NONUMBER (CDADDR LB)))            ;Bound
-				     BOTTOM (APPEND BOTTOM
-						    (NONUMBER (CDADDR LB))))))))
-		   ((MEMQ (CAAR E) '(MPLUS MEQUAL))   ;Apply to equation or sum
-		    (RETURN (INDPLUS (CDR E))))       ;of terms
-		   ((eq (caar e) '$SUM)          ;Used exclusively by $GENERATE
-		    (cond ((memq (caddr e) (cdaddr (setq lb
-							 ($indices (cadr e)))))
-			   (return (list (car lb) (cadr lb)
-					 (cons smlist (zl-delete (caddr e)
-							      (cdaddr lb))))))
-			  (t  (merror
-"Index of summation not a dummy index: ~M" e))))
-		   (T (merror "Improper arg to INDICES")))
-	     (SETQ LB (MAKLISTS TOP) BOUND (CDR LB) TOP (CAR LB))
-	                             ;BOUND <- bound(TOP) and FREE <- free(TOP)
-	     (SETQ BOTTOM (MAKLISTS BOTTOM)
-		   LB (CDR BOTTOM)
-		   BOTTOM (CAR BOTTOM))
-	     (COND ((OR (INTERSECT LB BOUND)
-			(INTERSECT LB TOP)              ;LB <- bound(BOTTOM)
-			(INTERSECT BOUND BOTTOM))       ;BOTTOM <- free(BOTTOM)
-		    (merror "~M has improper indices"
-			    (ISHOW E))))
-	     (SETQ BOUND (APPEND BOUND LB))
-	     (SETQ LB           ;Order of dummy indices determined by order of:
-		   (MAKLISTS (COND ($FLIPFLAG (APPEND TOP BOTTOM));Contravariant
-				   (T (APPEND BOTTOM TOP)))));Covariant indices
-	     (RETURN (CONS SMLIST
-			   (LIST (CONS SMLIST (CAR LB))
-				 (CONS SMLIST
-				       (APPEND BOUND (CDR LB)))))))) 
-
-(DEFUN INDPLUS (P)           ;Apply $INDICES to equation or sum of terms and do
-       (PROG (FREE BOUND MP SP)                           ;consistency checking
-	AGAIN(SETQ MP ($INDICES (CAR P)) P (CDR P))
-	     (SETQ FREE (CDADR MP) BOUND (CDADDR MP))
-	     (OR FREE BOUND (COND (P (GO AGAIN)) (T (RETURN EMPTY))))
-	LOOP (SETQ SP (CAR P) MP ($INDICES SP) P (CDR P))
-	     (OR (CDADR MP) (CDADDR MP) (GO TEST))
-	                        ;If new-FREE or new-BOUND not null then => TEST
-	     (COND ((NOT (SAMELISTS (CDADR MP) FREE))     ;If not the same list
-		    ;;new-FREE and FREE then error
-		    (merror
-"Not all of the terms have the same set of free indices:~%~M"
-(ISHOW SP)
-)))
-	     (SETQ BOUND (UNION* (CDADDR MP) BOUND))
-	                                    ;BOUND <- old-BOUND union new-BOUND
-	TEST (COND (P (GO LOOP))
-		   (T (RETURN (CONS SMLIST
-				    (LIST (CONS SMLIST FREE)
-					  (CONS SMLIST BOUND))))))))
+(DEFUN REMOVEINDEX (E L)
+ (COND ((ATOM E) 
+        (COND ((EQ E (CAR L)) (CDR L))
+              (T (CONS (CAR L) (REMOVEINDEX E (CDR L))))
+        ))
+       (T (REMOVEINDEX (CDR E) (REMOVEINDEX (CAR E) L)))
+ )
+)
 
-(DEFUN MAKLISTS (X)          ;Creates list of the form (free-list . bound-list)
-       (DO ((I X (CDR I)) (FREE) (BOUND))
-	   ((NULL I) (CONS FREE BOUND))
-	   (COND ((MEMQ (CAR I) (CDR I))
-		  (COND ((MEMQ (CAR I) BOUND)
-			 (merror "Index occurs more than twice: ~M"
-				 (ISHOW E)))
-			(T (SETQ BOUND (CONS (CAR I) BOUND)))))
-		 ((NOT (MEMQ (CAR I) BOUND))
-		  (SETQ FREE (CONS (CAR I) FREE)))))) 
+(DEFUN INDICES (E)
+ (PROG (TOP BOTTOM X Y P Q R)
+  (SETQ TOP NIL BOTTOM NIL)
+  (COND ((RPOBJ E) (SETQ TOP (NONUMBER (CDADDR E)) BOTTOM (NONUMBER (APPEND (CDADR E) (CDDDR E)))))
+        ((ATOM E))
+        ((MEMQ (CAAR E) '(MTIMES MNCTIMES MNCEXPT))
+         (DOLIST (V (CDR E))
+          (SETQ X (INDICES V) BOTTOM (APPEND BOTTOM (CADR X)) TOP (APPEND TOP (CAR X)))
+         )
+        )
+        ((MEMQ (CAAR E) '(MPLUS MEQUAL))
+         (SETQ TOP (INDICES (CADR E)) BOTTOM (CADR TOP) TOP (CAR TOP))
+         (SETQ P (INTERSECT TOP BOTTOM) Q (REMOVEINDEX P BOTTOM) P (REMOVEINDEX P TOP))
+          (DOLIST (V (CDDR E))
+           (SETQ X (INDICES V) Y (CADR X) X (CAR X))
+           (SETQ R (INTERSECT X Y) X (REMOVEINDEX R X) Y (REMOVEINDEX R Y))
+           (WHEN (NOT (AND (SAMELISTS X P) (SAMELISTS Y Q))) (MERROR "Improper indices in ~M" V))
+           (SETQ TOP (UNION TOP R) BOTTOM (UNION BOTTOM R))
+         )
+        )
+        ((MEMQ (CAAR E) '($SUM %SUM))
+         (SETQ TOP (LIST (CADDR E)) BOTTOM (LIST (CADDR E)))
+        )
+        ((MEMQ (CAAR E) '(%DERIVATIVE $DIFF))
+         (DO ((I 1 (1+ I))) ((> I (COND ((CADDDR E) (CADDDR E)) (T 1))))
+           (SETQ BOTTOM (CONS (CADDR E) BOTTOM)))
+        )
+;;        (T (MERROR "Improper argument to INDICES: ~M" E))
+  )
+  (RETURN (LIST TOP BOTTOM))
+ )
+)
+
+(DEFMFUN $INDICES (E)
+ (PROG (TOP BOTTOM X)
+	(SETQ TOP (INDICES E) BOTTOM (CADR TOP) TOP (CAR TOP) X (INTERSECT TOP BOTTOM))
+	(SETQ TOP (REMOVEINDEX X TOP) BOTTOM (REMOVEINDEX X BOTTOM))
+	(RETURN (CONS SMLIST (LIST (CONS SMLIST (APPEND TOP BOTTOM)) (CONS SMLIST X))))
+ )
+)
 
 (DEFUN SAMELISTS (A B)       ;"True" if A and B have the same distinct elements
        (AND (= (LENGTH A) (LENGTH B))

@@ -1,10 +1,8 @@
 ("Deriving the Kaluza-Klein equation of motion.")$
 ("For reference, see http://www.vttoth.com/KK/kk.htm")$
 DERIVABBREV:TRUE;
-("KALUZA.MAC contains definitions for G4 and G5")$
+("KALUZA.MAC contains definitions and contraction properties for G4 and G5")$
 load("kaluza.mac");
-("Contraction properties of both metrics:")$
-(DEFCON(G4),DEFCON(G5),DEFCON(G4,G4,KDELTA),DEFCON(G5,G5,KDELTA));
 ("Predeclaring some 4d indices")$
 ASSUME(K<=4,L<=4,M<=4)$
 
@@ -29,15 +27,15 @@ ASSUME(%1<=4)$
 %,NOUNS$
 SHOW(%)$
 
-("Symmetries in the equation allow the following substition")$
-SHOW(SUBST(L,M,PART(FIRST(%TH(2)),1))+FIRST(%TH(2))-PART(FIRST(%TH(2)),1)=LAST(%TH(2)))$
-
 ("Now we're ready to isolate the electromagnetic field tensor")$
 MAP(LAMBDA([U],FACTOROUT(U,G55)),%TH(2))$
 SHOW(APPLY1(%,EVPOT))$
 
 ("Contracting and rearranging yields the equation in the usual form")$
 CONTRACT(%TH(2))$
+%,NOUNS$
+SHOW(RENAME(%))$
+
 %-PART(FIRST(%),1)$
 SHOW(SUBST('CHR2([L,M],[K]),CHR2KLM,%))$
 

@@ -25,7 +25,7 @@ METRIC:G$
 Eu(l1,l2):=block(j1:dummy(), if l2=[] then
 D_t* V(l1,[])+V([],[j1])*V(l1,[],j1)+1/rho([])*diff(P([],[]),l1[1])+diff(PHI([],[]),l1[1])
  else D_t*V([],l2)+V([],[j1])*V([],l2,j1)+
-g([],[l2[1],j1])*(diff(P([],[]),j1)/rho([])+diff(Phi([],[]),j1)) )$
+G([],[l2[1],j1])*(diff(P([],[]),j1)/rho([])+diff(Phi([],[]),j1)) )$
 show(Eu([i],[]))$
 show(Eu([],[i]))$
 ("control the dummy indices with dummyx: something")$
@@ -42,9 +42,9 @@ show(kdelta([i,j],[n,m]))$
 show(kdelta([i,j,k],[l,n,m]))$
 
 ("Contractions, to define defcon(tensor1,tensor2,tensor3) before")$
-(delare(e, constant), defcon(e), defcon(e,e,kdelta))$
+(declare(e, constant), defcon(e), defcon(e,e,kdelta))$
 (defcon(l,l,w),w(l1,l2):=0)$
-g(l1,l2):=block(
+G(l1,l2):=block(
 if l2=[] then e(l1,[])+m*l([l1[1]],[])*l([l1[2]],[])
 else  e([],l2)-m*l([],[l2[1]])*l([],[l2[2]]))$
 show(g([i,j],[]))$

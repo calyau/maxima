@@ -47,14 +47,19 @@ declare("@",additive);
     contract(canform(ratexpand(
           evf*kdelta(LK1,LK2)*diff(forma,indd)/(length(LK1)-1)!)))));
 
-
+/* VTT: To ensure consistent application of the "first" index in |_ */
+PERMUTATOR(L):=BLOCK([RESULT:1,TEMP],
+	FOR I THRU LENGTH(L)-1 DO IF ORDERLESSP(L[I+1],L[I]) THEN
+	(TEMP:L[I+1],L[I+1]:L[I],L[I]:TEMP,I:0,RESULT:-RESULT),
+	RESULT
+);
 
 infix("|_");
 declare("|_",additive);
-"|_"(forma,vec):=block(local(ind),
-  L1:first(indices(forma)),
+"|_"(forma,vec):=block(local(ind,perm),
+  L1:SORT(first(indices(forma))),
   if L1=[] then 0
-  else (ind:first(L1),contract(canform(expand(forma*vec([],[ind]))))));
+  else PERMUTATOR(indices(forma))*(ind:first(L1),contract(canform(expand(forma*vec([],[ind]))))));
 
 infix("@L");
 
@@ -64,7 +69,10 @@ declare("@L",additive);
   vec:first(L1),ind1:second(L1),
   if ind1=0 then (ind1:dummy(),V([],[ind1])*diff(forma,ind1))
   else(
-  temp1:(forma@ind1)|_vec,
-  temp2:(forma|_vec)@ind1,
+/* VTT: some black magic needed because MAXIMA doesn't handle ADDITIVE as expected */
+  temp1:rename(forma@ind1),
+  temp1:ev(temp1|_vec,noeval),
+  temp1:ev(temp1,eval),
+  temp2:(rename(forma)|_vec)@ind1,
   temp1+temp2));
 

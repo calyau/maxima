@@ -501,6 +501,8 @@ tensor/itensor.dem\
 tensor/itensor.lisp\
 tensor/itensor.usg\
 tensor/jpff.mac\
+tensor/kaluza.dem\
+tensor/kaluza.mac\
 tensor/lch.mac\
 tensor/manual.txt\
 tensor/metrics.mac\
