@@ -190,7 +190,7 @@ tar:
 	bin/distribute maxima-`cat majvers`.`cat minvers`$(BETA).tgz
 
 
-maxima.zip: src/saved_maxima.exe
+maxima.zip: src/saved_maxima${EXE}
 	rm -f maxima.zip
 	OTHERS=`make -s -f src/makefile othernames` ; \
 	zip maxima.zip $${OTHERS} src/server.lisp doc/manual.demo */*.dem doc/*.mac src/xmaxima.exe info/*.html src/saved_maxima.exe .exe info/*info* doc/*.html src/*.ico src/winkill.exe src/tclwinkill.dll maxima.gif doc/tests.lisp
@@ -206,7 +206,9 @@ DELIVER_FILES=${DL}setup.tcl ${DL}unpack.tcl  ${DL}install1.gif  ${DL}fdlogo3.gi
 gcc.zip:
 	zip -r gcc.zip gcc
 
-${DL}setup.exe: gcc.zip maxima.zip ${DL}setup_contents.txt ${DL}zipinfo.tcl ${DELIVER_FILES}
+${DL}setup{$EXE}: gcc.zip maxima.zip ${DL}setup_contents.txt ${DL}zipinfo.tcl ${DELIVER_FILES}
+	freewrap-cross  ${DELIVER_FILES} -p ${DL}setup_contents.txt
+setup:  maxima.zip ${DL}setup_contents.txt ${DL}zipinfo.tcl ${DELIVER_FILES}
 	freewrap-cross  ${DELIVER_FILES} -p ${DL}setup_contents.txt
 
 

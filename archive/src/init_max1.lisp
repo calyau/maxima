@@ -70,7 +70,7 @@
        (list '(mlist)
            "./###.{mc,mac}"
            (maxima-path "{mac,sym}" "###.mac")
-	   (maxima-path "{share,share1,share2,tensor}" "###.mc")))
+	   (maxima-path "{share,share1,share2,tensor}" "###.{mc,mac}")))
     (setq $file_search_demo (list '(mlist)
                (maxima-path "{demo,share,share1,share2}"
          "###.{dem,dm1,dm2,dm3,dmt}")))

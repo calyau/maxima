@@ -1,4 +1,4 @@
-.TH MAXIMA 1L "21 November 1989"
+.TH MAXIMA 1L "22 February 2001"
 .ds Ps P\s-2OST\s+2S\s-2CRIPT\s+2
 .ds Ts T\s-2RAN\s+2S\s-2CRIPT\s+2
 .if t .ds Te T\\h'-0.1667m'\\v'0.20v'E\\v'-0.20v'\\h'-0.125m'X
@@ -12,6 +12,8 @@
 .ds Ky "GNU Common L\s-2ISP\s+2
 .SH NAME
 maxima \- GNU Common LISP version of MACSYMA symbolic mathematics package
+.LP
+xmaxima \- A graphical version of maxima
 .SH SYNOPSIS
 .B maxima
 .SH DESCRIPTION
@@ -37,9 +39,10 @@ commands may be read from a file and executed, allowing batch-mode use.
 Upon initialization,
 .I maxima
 starts \*(Ky, which prints a message, including the instruction:
-proper is started, which prints a command line prompt (a
-.B C
-with an appended sequence number).
+proper is started, which prints a command line prompt:
+.LP
+.B (C1)
+.LP
 All
 .I maxima
 commands must be concluded with either:
@@ -52,6 +55,16 @@ with an appended sequence number), or
 .TP
 2)
 a dollar sign (which suppresses printing of a display line).
+.LP
+.SH EXAMPLE
+.LP
+(C1) diff(sin(x),x);
+.LP
+(D1)                         cos(x)
+.LP
+(C2) integrate(d1,x);
+.LP
+(D2)	                     sin(x)
 .LP
 The user types in commands which create
 .I "maxima objects"
@@ -116,10 +129,6 @@ A description of a given command can be obtained by typing the command
 .LP
 DESCRIBE(command);
 .LP
-The command
-.LP
-APROPOS(string);
-.LP
 searches the list of functions for a pattern match and can therefore be used
 to browse for subjects for the
 .I describe
@@ -136,31 +145,17 @@ In
 .IR emacs (1L)
 execute the command:
 .IP
-.B visit-doc-file /public/maxima/doc/DOC
+.B M-x info 
 .LP
-whereupon the key c-h D will allow you to find documentation on many topics.
-This documentation will appear in the other buffer.
-The keystroke c-h / finds all documentation topics containing a given string.
+and then select the maxima item.
 .LP
 If you cannot use
 .IR emacs (1L),
-then you can visit the above DOC file in your favorite text editor.
-You will not have the advantage of the easy selection of help topics however.
+then you probably should use a web browser to look at the .html files.
 .SH GARBAGE COLLECTION
-The beginner is often startled by the appearance of messages of the form:
-.LP
-gc:[*list:1047{59%}; fixnum:101{8%}; ut:41%]
-.LP
-which are descriptions of the
+
 .I maxima
-\*(Li "garbage collection" system at work.
-This frees up memory space and
-can occur at any time, including in the middle of output.
-The entity marked
-by an asterisk is the one being affected by the garbage colection maneuver.
-The entity "ut" is the utilization time, that is, the fraction of time which
-.I maxima
-is devoting to useful work, as opposed to overhead such as garbage collection.
+uses the garbage collection of the underlying lisp
 .SH COMMAND PRIMER
 .LP
 This list includes only commands which the beginner might find
@@ -226,20 +221,17 @@ only one file at a time can be open, and the
 command must be invoked prior to leaving
 .I maxima
 to flush the buffer.
-.SH DIFFERENCES BETWEEN MACSYMA AND MAXIMA
+.SH PLOTTING COMMANDS
 .LP
-The syntax of certain commands was changed to accord with UNIX usage, and
-in other instances commands must be used slightly differently.
-For example:
 .TP
-.B Plotting commands
-.I Maxima
-knows very little about terminal types.
-On the Sun workstation, it is
-preferable to work out the problem in a normal window, and to send the plot
-to a file.
-Then the plot file may be accessed and plotted in a Tektronix
-emulation window.
+.B 
+.IP
+.B plot2d(sin(x),[x,-2,2]);
+.LP
+.IP
+.B plot3d(2^(-u^2+v^2),[u,-5,5],[v,-7,7]);
+.LP
+the plots are now done using tcl/tk.   
 .TP
 .B Commands which read/write files
 The original MACSYMA ran on a DEC-10, and the corresponding document presents
@@ -257,48 +249,35 @@ demo("myfile");
 .RE
 .IP
 Relative path names are assumed to relate to the users current directory.
-The commands
-.IR fassave ,
-.IR store ,
-.IR mail ,
-and
-.I send
-do not exist in
-.IR maxima ;
-the routine UNIX
-.I mail
-system fulfills the later two functions.
 .SH FILES
 .TP 2.2i
-.I /public/maxima
+.I /usr/local/lib/maxima-X-X
 primary directory
 .TP 2.2i
-.I /public/maxima/doc/DOC
-primary documentation file
+.I /usr/local/lib/maxima-X-X/info
+.LP
+primary documentation directory, containing emacs style info files which
+are used for the 'describe' command, and also for viewing under emacs.
+There are also .html files for web browsers, and .texi files for running through
+tex, to obtain a printed version of the manual.
 .TP 2.2i
-.I /public/maxima/doc/maxima-mode.el
+.I 
 maxima mode
 .TP 2.2i
-.I /public/gcl/elisp/*.el
-finding documentation using gnu emacs
-.TP
-.I /public/bin/maxima
-executable
-.TP
-.I \&./maxima.buf
-.IR vi (1)
-editing buffer created by
-.I maxima
-.TP
-.I HOME/.maxima
-user initialization file (\*(Li code)
-.SH "SEE ALSO"
-plot(1)
+.I /usr/local/lib/maxima-X-X/elisp/maxima-mode.el
 .LP
-Pay particular attention in the following document to Appendix II, by
-R. Fateman, which summarizes the changes made to MACSYMA in converting it for
-use under UNIX:
+finding documentation on using maxima in gnu emacs.
+There is also source level debugging,
+if you run maxima over dbl in emacs, and use commands such as
+.TP 2.2i
+.I 
+:br myfun
+to set a breakpoint
+.TP
+Executables:
+.I /usr/local/bin/maxima and /usr/local/bin/xmaxima
 .LP
+Old Reference:  
 .I "MACSYMA Reference Manual"
 (volumes 1 and 2).
 The Mathlab Group,
@@ -306,19 +285,8 @@ Laboratory for Computer Science, MIT.
 Version 10.
 January 1983.
 .LP
-The following documents, developed for an extended commercial version of
-MACSYMA, describe certain features not available in this version of
-.IR maxima ,
-particularly those concerned with an enhanced user interface:
-.LP
-.IR "An Introduction to UNIX MACSYMA (version 3.0)" .
-Symbolics, Inc.
-October 1985.
-.LP
-.I "MACSYMA Reference Manual"
-(version 12).
-Symbolics, Inc., Cambridge, Massachusetts.
-June 1986.
+Newer references: 
+.I http://www.ma.utexas.edu/maxima.html
 .SH BUGS
 .I Maxima
 is a complex system and there are undoubtedly bugs present.
@@ -337,8 +305,8 @@ workstations), by Richard Fateman and colleagues at the University of
 California at Berkeley; this version of MACSYMA is known as VAXIMA.
 The present version is a re-working of the public domain MIT MACSYMA
 for \*(Ky, prepared by William Schelter, University of Texas at Austin
-(wfs@rascal.ics.utexas.edu, wfs@carl.ma.utexas.edu).
-Manual page by R. P. C.
-Rodgers, UCSF School of Pharmacy, San Francisco, CA 94143
-(rodgers@maxwell.mmwb.ucsf.edu).
+(wfs@math.utexas.edu).   It contains numerous additions, extensions and enhancements
+of the original.    The original version of this 
+manual page was written by R. P. C. Rodgers, UCSF School of Pharmacy, San Francisco, CA 94143
+(rodgers@maxwell.mmwb.ucsf.edu) in 1989.
 .\"

@@ -86,6 +86,8 @@ There is now an alternative to the command line version,
 which is called xmaxima.   That version runs under MS windows
 as well, and has a tcl/tk interface.
 
+If you install in PREFIX_DIR=/public then /public/bin/xmaxima
+should get the tcl/tk interface version.
 
 
 W. Schelter, the University of Texas, and other parties provide this
