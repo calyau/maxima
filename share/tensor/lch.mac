@@ -1,0 +1,121 @@
+/* Copyright (C) 2003 Valerij Pipin <pip@iszf.irk.ru>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * Commentary:
+ * The package manages the Levi-Civita symbols in itensor.
+ */
+
+partswitch:TRUE$
+
+dec_lch(n):=(ALLSYM:FALSE, DECSYM(LCH,0,n,[],[ANTI(ALL)]),
+DECSYM(LCH,n,0,[ANTI(ALL)],[]))$
+
+
+/* introduce the infix operator for lch products */
+
+infix("_|")$
+declare("_|",additive)$ 
+
+"_|"(lch1,lch2):=block(local(temp1,tempk,ln11,lf,lkl1,lku1,l1,l2,lku,lkl), /* note , we use _| only in parthacking prg */
+  if (numberp(lch1) or symbolp(lch1)) then lch1*lch2
+  else (if TENPR(lch2) then(              /* so name(lch1)=lch */
+      if NAME(lch2)=LCH then (
+        if TENPR(lch1) then (          /* again test if lch1 is a single */
+          l1:COVI(lch1),l11:CONTI(lch1),
+          l2:COVI(lch2),l22:CONTI(lch2),
+          lkl:append(l1,l2),lku:append(l11,l22),
+          if (lkl=[] or lku=[]) then (
+            if lkl=[]  then  (lf:LENGTH(l11),
+              ln11 : MAKELIST(DUMMY(), I,1, lf),
+              (tempk:1,for i:1 thru lf do
+                tempk:tempk*D([],[ln11[i],l11[i]]) ),lkl1:ln11,
+              -KDELTA(lkl1,l22)*tempk)
+            else (lf:LENGTH(l1),
+              ln11 : MAKELIST(DUMMY(), I,1, lf),
+              (tempk:1,for i:1 thru lf do
+                tempk:tempk*D([l1[i],ln11[i]],[])),lku1:ln11,
+              -KDELTA(l2,lku1)*tempk)
+          )
+        else -KDELTA(lkl,lku))
+      else  lch1*lch2)   
+      else  lch1*lch2)
+    else (
+      if (numberp(lch2) or symbolp(lch2))
+      then lch2*lch1
+      else (temp1:extract_lch(lch1,lch2),
+        (lch1 _| temp1)*(lch2/temp1)))))$
+
+extract_lch(lch1,lch2):=block(local(temp,it1),
+  if covi(lch1)#[] then
+  (for it1:1 step 1 unless part(num(lch2),1,it1)=END 
+    do ( temp:part(num(lch2),1,it1), 
+      if TENPR(temp) then (
+        if NAME(temp)=lch then (if conti(temp)#[] then return(temp)
+          else  return(1.))
+        else return(1.))
+      else return(1.)))
+  else
+   (for it1:1 step 1 unless part(num(lch2),1,it1)=END 
+    do ( temp:part(num(lch2),1,it1), 
+      if TENPR(temp) then (
+        if NAME(temp)=name(lch1) then (if covi(temp)#[] then return(temp)
+          else return(1.))
+        else return(1.))
+      else return(1.)))
+)$
+
+lch_kdt0(XEXPR):=BLOCK(local(TEMP1,TEMP2,TEMP3,TEMP,RESULT,I1,I2),
+  TEMP1:1,TEMP2:1,TEMP3:1,
+  IF PART(XEXPR,0)="-" 
+  THEN 
+  (FOR I1:1 STEP 1 UNLESS PART(NUM(XEXPR),1,I1)=END 
+    DO ( TEMP:PART(NUM(XEXPR),1,I1), 
+      IF TENPR(TEMP) 
+      THEN (
+	IF NAME(TEMP)=LCH
+	THEN (TEMP1:(TEMP1 _| TEMP), TEMP3:TEMP3*TEMP)
+	ELSE (TEMP1:TEMP1,TEMP3:TEMP3) ) 
+      ELSE (TEMP1:TEMP1,TEMP3:TEMP3)))
+  ELSE
+  (FOR I1:1 STEP 1 UNLESS PART(NUM(XEXPR),I1)=END 
+    DO ( TEMP:PART(NUM(XEXPR),I1), 
+      IF TENPR(TEMP) 
+      THEN (
+	IF NAME(TEMP)=LCH
+	THEN (TEMP1:(TEMP1 _| TEMP) , TEMP3:TEMP3*TEMP)
+	ELSE (TEMP1:TEMP1,TEMP3:TEMP3) ) 
+      ELSE (TEMP1:TEMP1,TEMP3:TEMP3))),
+  TEMP2:RATSIMP(XEXPR/TEMP3),
+  /*break(),
+  (IF NTERMS(TEMP1) >1 THEN TEMP1:lch_kdt(TEMP1) ELSE TEMP1:TEMP1),*/
+  RESULT:TEMP1*TEMP2,
+  RETURN(RESULT) )$
+
+lch_kdt(XEXPR):=BLOCK(LOCAL(I1,TEM),
+  TEM:0,if nterms(xexpr)=1 then return(lch_kdt0(XEXPR))
+  else ( FOR I1:1 THRU NTERMS(XEXPR) STEP 1 DO
+  (TEM:TEM+lch_kdt0(PART(XEXPR,I1)) ),RETURN(TEM)) )$
+
+matchdeclare(L1P,listp)$
+
+defrule(lc_l,LCH(L1P,[]),
+  block(local(L11,lf),lf:LENGTH(L1P),
+    L11 : MAKELIST(DUMMY(), I,1, lf),
+    return(-LCH(L11,[])*KDELTA(L1P,L11)/lf!)))$
+
+defrule(lc_u,LCH([],L1P),
+  block(local(L11,lf),lf:LENGTH(L1P),
+    L11 : MAKELIST(DUMMY(), I,1, lf),
+    return(-LCH([],L11)*KDELTA(L11,L1P)/lf!)))$
+
+lch_anti(expr):=applyb1(expr,lc_l,lc_u)$
+

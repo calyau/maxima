@@ -1,0 +1,58 @@
+("the anticommutative algebra's operations on indexed objects")$
+("the operations are allowed only on the covariant tensors")$
+load("ex_calc.mac");
+dummyx:z;
+("The exterior product is denoted by &. Take it on two 1-forms
+  a([i])&b([j])")$
+
+show(a([i])&b([j]))$
+
+("The exterior product of the three  1-forms
+  a([i])&b([j])&c([k])")$
+
+show(a([i])&b([j])&c([k]))$
+
+("Take a sum of two 3 forms")$
+show( factor(a([i])&(bk*b([j]))&c([k]) +(ak*a([i]))&c([j])&b([k])))$
+
+("declare 2-form (don't forget to put allsym:false) and take & with 1-form")$
+allsym:false;
+decsym(p,2,0,[anti(all)],[]);
+
+show(q([i])&p([j,k]))$
+("the exterior (anticommutative) derivative
+  is denoted by @ind, where ind denotes the component")$
+
+("So actually d_k & form means in our notation form @ k, e.g.")$
+
+show(p([j,k])@i)$
+show((a([j])&b([k]))@i)$
+show((a([j])&b([k]))@k)$
+
+("the interior product is denoted by |_, say form |_ vector, where
+  form is indexed tensor and vector is vector's name")$
+show(a([i])|_a)$
+
+show((a([i])&b([j]))|_a)$
+("to avoid the mistake please use the literally sorted indices
+  when you apply the |_ ")$
+
+show(factor((a([i2])&b([i1]))|_a+ (a([i1])&b([i2]))|_a))$
+
+("the Lie derivative is denoted by @L[vector,ind], (say form @L[vector,ind])
+  where  vector is vector name and ind is the index of the component")$
+("it is currently not applicable to functions.
+  Also you have to use the literally sorted indices")$
+
+show(a([i1])@L[v,i2])$
+("tests the consequence of the
+  Cartan identity for 1-forms.  The Lie derivative
+  has to commute with the exterior one ")$
+
+show((a([i1])@i2)@L[v,i3]-(a([i1])@L[v,i2])@i3)$
+
+("where the (a([i1])@i2)@L[v,i3] is")$
+show((a([i1])@i2)@L[v,i3])$
+
+("the verifications of this consequence of the Cartan identity
+  for the higher order forms are in car_iden.mac")$

@@ -1,0 +1,70 @@
+/* Copyright (C) 2003 Valerij Pipin <pip@iszf.irk.ru>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * Commentary:
+ * Its purpose is to extend the maxima's itensor ability to manage the
+ exterior forms. We introduce the "&" operator for the exterior product,
+ the "|_" for the inner product of a form with a vector and "@L" for the
+ Lie derivative of the form. 
+*/
+load("tensor/itensor")$
+infix("&");
+declare("&",additive); 
+
+"&"(ANY,BODY):=block(local(I),
+  L1:first(indices(ANY)),
+  L2:first(indices(BODY)),
+  if L1=[] then return(ANY*BODY)
+  else if L2=[] then return(ANY*BODY)
+  else ( L11 : MAKELIST(DUMMY(), I,1, LENGTH(L1)),
+    L22 : MAKELIST(DUMMY(), I,1, LENGTH(L2)),
+    L1S:MAP("=",L1,L11), L2S:MAP("=",L2,L22),
+    LK1:append(L1,L2),LK2:append(L11,L22),
+    ANY:sublis(L1S,ANY), BODY:sublis(L2S,BODY),
+    evf:(if evenp(length(LK1)) then 1 else -1),
+    canform(contract(
+        expand(evf*KDELTA(LK1,LK2)*ANY*BODY/(length(LK1)-1)!)))));
+
+infix("@");
+declare("@",additive);
+"@"(forma,ind):=block(L1:first(indices(forma)),
+  if L1=[] then return(diff(forma,ind))
+  else ( L11 : MAKELIST(DUMMY(), I,1, LENGTH(L1)),
+    L1S:MAP("=",L1,L11),
+    LK1:append([ind],L1),
+    indd:dummy(),LK2:append(L11,[indd]),
+    forma:sublis(L1S,forma),
+    evf:(if evenp(length(LK1)) then 1 else -1),
+    contract(canform(ratexpand(
+          evf*kdelta(LK1,LK2)*diff(forma,indd)/(length(LK1)-1)!)))));
+
+
+
+infix("|_");
+declare("|_",additive);
+"|_"(forma,vec):=block(local(ind),
+  L1:first(indices(forma)),
+  if L1=[] then 0
+  else (ind:first(L1),contract(canform(expand(forma*vec([],[ind]))))));
+
+infix("@L");
+
+declare("@L",additive);
+
+"@L"(forma,L1):=block(local(temp1,temp2,ind1),
+  vec:first(L1),ind1:second(L1),
+  if ind1=0 then (ind1:dummy(),V([],[ind1])*diff(forma,ind1))
+  else(
+  temp1:(forma@ind1)|_vec,
+  temp2:(forma|_vec)@ind1,
+  temp1+temp2));
+
