@@ -349,8 +349,6 @@ integration/bypart.mac\
 integration/delta.dem\
 integration/delta.mac\
 integration/delta.usg\
-integration/intsce.mac\
-integration/intsce.usg\
 macro/autolo.mac\
 macro/basic.mac\
 macro/caseq.mac\
