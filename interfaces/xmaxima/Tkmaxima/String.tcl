@@ -1,8 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: string.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### string.tcl ######
+###### String.tcl ######
 
 
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.7 2002-09-06 06:21:36 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.8 2002-09-06 06:53:15 mikeclarkson Exp $
 #
 
 global ws_openMath
@@ -58,4 +58,45 @@ set ws_openMath(options,href) {
 global show_balloons
 #mike turn these off by default
 set show_balloons 0
+
+# from preamle.tcl
+set ws_openMath(counter) 0
+	
+global ws_openMath
+set ws_openMath(fixedFont) Courier
+# the linelength should be long enough to display formatted mathematical
+# output from things like maxima, without adjustment, and to allow
+# for a margin.
+set ws_openMath(linelength) 90
+
+global fixedFont
+set fixedFont Courier
+
+global evalPrograms
+set evalPrograms {  gp gap gb }
+#set ws_openMath(options,maxima) {{doinsert 1 "Do an insertion" boolean}}
+#set ws_openMath(options,gp) {{doinsert 1 "Do an insertion" boolean}}
+# set ws_openMath(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
+
+global NCtextHelp
+set NCtextHelp "
+	    Bindings:
+	    <Return>   This sends the current expression (ie where the insert
+	               cursor is)  for evaluation.
+	    <Linefeed> (Control-j) This inserts a newline, and is useful
+	               for entering multiline input.
+	    <Control-k> Kills the current line and puts it in kill ring.
+	                Successive control-k's append their output together.
+	    <Control-y> Yank out the last kill, Meta-y cycles thru previous
+	                kills.
+	    <Control-c><Control-c> Interrupt the current computation.
+	    <Alt-p>   Previous input, or if repeated cycle through the previous
+	               inputs.  If the current input is not empty, then
+	                match only inputs which begin with the current input.
+	    <Alt-n>   Like Previous input, but in opposite direction.
+	"
+
+global xmaximaPreferences
+array set xmaximaPreferences {fontAdjust 0 }
+
 

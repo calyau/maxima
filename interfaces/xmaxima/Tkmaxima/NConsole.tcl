@@ -1,17 +1,9 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: nconsole.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### nconsole.tcl ######
+###### NConsole.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
 
-
-
-
-#set MathServer "localhost 4443"
 
 proc mkConsole { fr program } {
     catch { destroy $fr }

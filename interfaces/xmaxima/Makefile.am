@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.21 2002-09-06 06:21:35 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.22 2002-09-06 06:53:14 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -11,6 +11,7 @@ bin_SCRIPTS = xmaxima
 TKSOURCES = \
 	Tkmaxima/Header.tcl \
 	Tkmaxima/Constants.tcl \
+	Tkmaxima/Preamble.tcl \
 	Tkmaxima/Readdata.tcl \
 	Tkmaxima/Getdata1.tcl \
 	Tkmaxima/Macros.tcl \
@@ -43,6 +44,12 @@ TKSOURCES = \
 	Tkmaxima/Base64.tcl \
 	Tkmaxima/Bitmaps.tcl \
 	Tkmaxima/Tryembed.tcl \
+	Tkmaxima/OpenMath.tcl \
+	Tkmaxima/NConsole.tcl \
+	Tkmaxima/String.tcl \
+	Tkmaxima/CMMenu.tcl \
+	Tkmaxima/Prefs.tcl \
+	Tkmaxima/RunMaxima.tcl \
 	xmaxima.tcl 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl
