@@ -29,6 +29,7 @@
           "rtest_sym" 
           "rtest_sym2"
           "rtest_ode1_riccati"
+	  "rtest_ode1_abel"
 	  )
 	do
 	(format t "~%Testing ~a.mac" testv)

@@ -1,0 +1,39 @@
+/* Test cases for symtest() function */
+
+(load("contrib_ode"),done);
+done;
+put('contrib_ode,true,'verbose);
+true;
+
+/* Print ode number*/
+(pn_(n_):=print("ODE ",n_),true);
+true;
+
+/* 78 Abel */
+(pn_(78),ans:ode1_abel(eqn:'diff(y,x)+(a*x+y)*y^2=0,y,x));
+false;
+
+/* 79 Abel */
+(pn_(79),ans:ode1_abel(eqn:'diff(y,x)+(a*exp(x)+y)*y^2=0,y,x));
+false;
+
+/* about the simplest Abel equation - Case g.i*/
+ans:ode1_abel(eqn:'diff(y,x)=(x+c)*y^3+y^2,y,x);
+-(sqrt(3)*log((x+c)^2*y^2+(x+c)*y+1)+2*atan((2*(x+c)*y+1)/sqrt(3))-2*sqrt(3)*log((x+c)*y))/(2*sqrt(3))=log(x+c)+%c;
+subst(y,y(x),diff(subst(y(x),y,ans),x));
+-(sqrt(3)*(2*(x+c)^2*y*'diff(y,x,1)+(x+c)*'diff(y,x,1)+2*(x+c)*y^2+y)/((x+c)^2*y^2+(x+c)*y+1)+2*(2*(x+c)*'diff(y,x,1)+2*y)/(sqrt(3)*((2*(x+c)*y+1)^2/3+1))-2*sqrt(3)*((x+c)*'diff(y,x,1)+y)/((x+c)*y))/(2*sqrt(3))=1/(x+c);
+solve(%,'diff(y,x));
+['diff(y,x,1) = (x+c)*y^3+y^2];
+is(ev(eqn,%));
+true;
+
+/* Tests for case g.i */
+ans:ode1_abel(eqn:'diff(y,x)=2*x^3*y^3+2*x*y^2,y,x);
+-(sqrt(3)*log(x^4*y^2+x^2*y+1)+2*atan((2*x^2*y+1)/sqrt(3))-2*sqrt(3)*log(x^2*y))/(4*sqrt(3))=log(x)+%c;
+subst(y,y(x),diff(subst(y(x),y,ans),x));
+-(sqrt(3)*(2*x^4*y*'diff(y,x,1)+x^2*'diff(y,x,1)+4*x^3*y^2+2*x*y)/(x^4*y^2+x^2*y+1)+2*(2*x^2*'diff(y,x,1)+4*x*y)/(sqrt(3)*((2*x^2*y+1)^2/3+1))-2*sqrt(3)*(x^2*'diff(y,x,1)+2*x*y)/(x^2*y))/(4*sqrt(3))=1/x;
+solve(%,'diff(y,x));
+['diff(y,x,1) = 2*x^3*y^3+2*x*y^2];
+is(ev(eqn,%));
+true;
+
