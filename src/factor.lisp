@@ -269,7 +269,6 @@
 	   (PUSH (CONS (CAR L) I) ANS)))
 
 (DEFUN KTERMS (P K) 
-       (DECLARE (FIXNUM K))
        (COND ((PACOEFP P) P)
 	     ((= K 0) (CONSTA P))
 	     (T (PROG (V ANS W) 
