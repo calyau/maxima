@@ -14,6 +14,23 @@
 
 ;;; Macsyma User array utilities originally due to CFFK.
 
+;;; Note that on the lisp level we regard as an array either
+;;;   (1) a symbol whose ARRAY property is a common lisp array
+;;;       [i.e., (symbol-array 'symbol)
+;;;               == (get 'symbol 'array) => some array] or
+;;;   (2) a common lisp array.
+;;; On the maxima level a declared array not of type HASH or FUNCTIONAL 
+;;; is either
+;;;   (1m) a symbol whose ARRAY mproperty is of type (1)
+;;;        [i.e., (symbol-array (mget 'symbol 'array)) => some array] or
+;;;   (2m) it is of type (2) (and then called a `fast' array).
+;;; Such an array is of type (1m) iff it was created with ARRAY 
+;;; with USE_FAST_ARRAYS being set to FALSE.
+;;;
+;;; Curiously enough, ARRAY(...,TYPE,...) (which currently can only be
+;;; used for USE_FAST_ARRAYS:FALSE) results in an array which is
+;;; simultaneously of type (1) and (1m).
+
 (defun $listarray (ary)
        (Cons '(mlist)
 	     (cond ((mget ary 'hashar)
@@ -39,10 +56,10 @@
 	       #+cl
 	       (and (arrayp ary1) ary1)
 	       (merror "First argument to FILLARRAY must be a declared array:~%~M" ary1))))
-	    (replace
+	    (fillarray
 	     ary
 	     (cond (($listp ary2) (cdr ary2))
-		   ((mget ary2 'array))
+		   ((get (mget ary2 'array) 'array))
 		   #+cl
 		   ((arrayp ary2) ary2)
 		   (t
