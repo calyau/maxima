@@ -79,7 +79,7 @@ tried.
 @c @node NUSUM
 @c @unnumberedsec phony
 @defun NUSUM (exp,var,low,high)
-performs indefinite summation of exp with
+performs indefinite hypergeometric summation of exp with
 respect to var using a decision procedure due to R.W. Gosper.  exp and
 the potential answer must be expressible as products of nth powers,
 factorials, binomials, and rational functions.  The terms "definite"
@@ -88,6 +88,44 @@ and "indefinite summation" are used analogously to "definite" and
 form for the sum over intervals of variable length, not just e.g. 0 to
 inf.  Thus, since there is no formula for the general partial sum of
 the binomial series, NUSUM can't do it.
+
+@code{nusum} and @code{unsum} know a little about sums and differences of finite products.
+See also @code{unsum}.
+
+Examples:
+
+@example
+(%i1) nusum (n*n!, n, 0, n);
+
+Dependent equations eliminated:  (1)
+(%o1)                     (n + 1)! - 1
+(%i2) nusum (n^4*4^n/binomial(2*n,n), n, 0, n);
+                     4        3       2              n
+      2 (n + 1) (63 n  + 112 n  + 18 n  - 22 n + 3) 4      2
+(%o2) ------------------------------------------------ - ------
+                    693 binomial(2 n, n)                 3 11 7
+(%i3) unsum (%, n);
+                              4  n
+                             n  4
+(%o3)                   ----------------
+                        binomial(2 n, n)
+(%i4) unsum (prod (i^2, i, 1, n), n);
+                    n - 1
+                    /===\
+                     ! !   2
+(%o4)              ( ! !  i ) (n - 1) (n + 1)
+                     ! !
+                    i = 1
+(%i5) nusum (%, n, 1, n);
+
+Dependent equations eliminated:  (2 3)
+                            n
+                          /===\
+                           ! !   2
+(%o5)                      ! !  i  - 1
+                           ! !
+                          i = 1
+@end example
 
 @end defun
 @c @node PADE
@@ -347,6 +385,9 @@ gives TRUE.
 @c @unnumberedsec phony
 @defun UNSUM (fun,n)
 is the first backward difference fun(n) - fun(n-1).
+Thus @code{unsum} in a sense is the inverse of @code{sum}.
+See also @code{nusum}.
+
 @example
 (%i1) G(P):=P*4^N/BINOMIAL(2*N,N);
                                             N
