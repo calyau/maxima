@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.6 2002-09-07 10:05:06 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.7 2002-09-07 23:20:49 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -17,8 +17,10 @@ proc genSample { x n } {
 }
 
 global fontSize
-#mike FIXME: maxima should not be playing with these
-option add *Button.font [font create -family Courier -size $fontSize]
+# FIXME: Need to fix the font2 problem, and this must be defined until then
+set _font [font create -family Courier -size $fontSize]
+#mike Maxima should not be playing with these
+# option add *Button.font $_font
 
 
 # font measuring is very slow so we cache the result of measuring a line
@@ -103,10 +105,10 @@ proc setFontOptions { fontSize }     {
 	set  fixedtextfont [font create -family courier -size $fsize]
 	set  entryfont [font create -family courier -size $entrysize]
 
-	#mike FIXME: maxima should not be playing with these
-	option add *Button.font $buttonfont
-	option add *Label.font $labelfont
-	option add *Entry.font $entryfont
+	#mike: maxima should not be playing with these
+	# option add *Button.font $buttonfont
+	# option add *Label.font $labelfont
+	# option add *Entry.font $entryfont
 
 	option add  *Dialog.msg.wrapLength 500
 
@@ -139,7 +141,7 @@ proc omPanel { w args } {
     pack $menubar -side top -expand 0 -fill x -anchor nw
 
     foreach v { file back forward edit help  } {
-	label $win.$v -text [string totit $v] -font $buttonfont -relief raised
+	label $win.$v -text [string totit $v] -relief raised
 	$menubar add $win.$v
     }
     bind $win.back <Button-1>  "OpenMathMoveHistory $win -1"
@@ -248,7 +250,7 @@ proc omPanel { w args } {
 
     global location
     button $win.loclabel -text " Url:" \
-	-command "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win" -font $labelfont
+	-command "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win"
     setHelp $win.loclabel {Fetch the URL or FILE indicated in the entry box. \
 			       A local file is something like file:/home/wfs/foo.om, and a URL \
 			       begins with http.}
@@ -271,7 +273,7 @@ proc omPanel { w args } {
 
     set ws_openMath(status_window) $st
     scale $st.scale -showvalue 0 -length 200 -orient horizontal
-    label $st.rate -width 35 -font $labelfont -textvariable ws_openMath(load_rate)
+    label $st.rate -width 35 -textvariable ws_openMath(load_rate)
     pack $st.rate $st.scale -side left
     pack $st -side bottom
     return $win

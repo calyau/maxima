@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: CMMenu.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: CMMenu.tcl,v 1.3 2002-09-07 23:20:49 mikeclarkson Exp $
 #
 proc CMmenu { win } {
     global buttonfont ws_openMath
@@ -12,7 +12,7 @@ proc CMmenu { win } {
     wmenubar $menubar
     pack $menubar -side top -expand 0 -fill x -anchor nw
     foreach v { file edit help  } {
-	label $win.$v -text $v -font $buttonfont -relief raised
+	label $win.$v -text [string totit $v] -relief raised
 	$menubar add $win.$v
     }
 
