@@ -1,8 +1,8 @@
-LOAD('PFAFF)$
-PFAFFIAN(1,[A]);
-PFAFFIAN(2,[A,B,C]);
-PFAFFIAN(3,[A,B,C,D,E,F]);
-PFAFFIAN(4,[A,B,C,D,E,F,G,H,J,K]);
-PFAFFIAN(5,[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O]);
-PFAFFIAN(7,[A,B,C,D,E,F,G,
-            H,I,J,K,L,M,N,AA,BA,CA,DA,EA,FA,GA,HA,IA,JA,KA,LA,MA,NA]);
+load('pfaff)$
+pfaffian(1,[a]);
+pfaffian(2,[a,b,c]);
+pfaffian(3,[a,b,c,d,e,f]);
+pfaffian(4,[a,b,c,d,e,f,g,h,j,k]);
+pfaffian(5,[a,b,c,d,e,f,g,h,i,j,k,l,m,n,o]);
+pfaffian(7,[a,b,c,d,e,f,g,
+            h,i,j,k,l,m,n,aa,ba,ca,da,ea,fa,ga,ha,ia,ja,ka,la,ma,na]);

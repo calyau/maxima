@@ -5,13 +5,13 @@ relationship between the voltage drop, current, ambient temperature,
 room-temperature resistance, convective heat transfer coefficient, and
 a constant, BETA, having the dimension of temperature.  First, to see
 if the dimension of BETA is already known: */
-GET(BETA, 'DIMENSION);
+get(beta, 'dimension);
 /* It is not.  To establish it: */
-DIMENSION(BETA=TEMPERATURE);
+dimension(beta=temperature);
 /* To automatically determine a set of dimensionless variables
 sufficient to characterize the physical relation: */
-NONDIMENSIONALIZE([VOLTAGE, CURRENT, TEMPERATURE, RESISTANCE,
-      HEATTRANSFERCOEFFICIENT, BETA]);
+nondimensionalize([voltage, current, temperature, resistance,
+      heattransfercoefficient, beta]);
 /* We learn that the relation may be expressed as a function of
 only the above 3 variables rather than a function of the six physical
 quantities.  Evidently dimensions were preestablished for all but the
@@ -25,12 +25,12 @@ viscosity, average velocity, molecular mass, and repulsion
 coefficient of a gas.  The repulsive force between two molecules is
 believed to be of the form  K/DISTANCE^N, with unknown N, so K must
 have the following dimensions: */
-DIMENSION(K=MASS*LENGTH^(N+1)/TIME^2) $
+dimension(k=mass*length^(n+1)/time^2) $
 /* To get the computation time in milliseconds to be printed
  automatically: */
-CPUTIME: TRUE $
+cputime: true $
 /* To do a dimensional analysis of the gas viscosity problem: */
-NONDIMENSIONALIZE([VISCOSITY, K, MASS, VELOCITY]);
+nondimensionalize([viscosity, k, mass, velocity]);
 /* The physical relation must be expressible as a function of
 this one dimensionless variable, or equivalently, this variable must
 equal a constant.  Consequently, physical measurements may be used
@@ -41,18 +41,18 @@ As a final example, suppose that we conjecture a relation between the
 deflection angle of a light ray, the mass of a point mass, the speed
 of light, and the distance from the mass to the point of closest
 approach: */
-NONDIMENSIONALIZE([ANGLE, MASS, LENGTH, SPEEDOFLIGHT]);
+nondimensionalize([angle, mass, length, speedoflight]);
 /* We learn that there cannot be a dimensionless relation
 connecting all of these quantities and no others.  Let us also try
 including the constant that enters the inverse-square law of
 gravitation: */
-NONDIMENSIONALIZE([ANGLE, MASS, LENGTH, SPEEDOFLIGHT,
-      GRAVITYCONSTANT]);
+nondimensionalize([angle, mass, length, speedoflight,
+      gravityconstant]);
 /* Altermatively, for astrophysics problems such as this,we may
 prefer to use a dimensional basis in which the gravity constant is
 taken as a pure number, eliminating one member from our dimensional
 basis: */
-%PURE: CONS(GRAVITYCONSTANT, %PURE);
+%pure: cons(gravityconstant, %pure);
 /* Note that the latter two of the above constants are pure
 numbers by default, respectively eliminating TEMPERATURE and CHARGE
 from the basis, but the user may include all five of TEMPERATURE,
@@ -65,4 +65,4 @@ respectively eliminate LENGTH and TIME, whereas GRAVITYCONSTANT
 eliminates MASS.
 
 To proceed with our analysis: */
-NONDIMENSIONALIZE([ANGLE, MASS, LENGTH, SPEEDOFLIGHT]);
+nondimensionalize([angle, mass, length, speedoflight]);

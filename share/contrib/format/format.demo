@@ -20,7 +20,7 @@ format((1+sin(x)-x)^3,%series(x,3),%f);
 format((1+sin(x)-x)^3,%taylor(x,3),%f);
 /***********************************************************************
  Focussing simplifications on subexpressions*/
-foo:X^2*SIN(Y)^4-2*X^2*SIN(Y)^2+X^4*COS(Y)^4-2*X^4*COS(Y)^2+X^4+X^2+1$
+foo:x^2*sin(y)^4-2*x^2*sin(y)^2+x^4*cos(y)^4-2*x^4*cos(y)^2+x^4+x^2+1$
 trigsimp(foo);
 format(foo,%p(x),trigsimp);
 

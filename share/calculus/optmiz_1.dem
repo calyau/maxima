@@ -1,4 +1,4 @@
-LOAD('OPTMIZ);
+load('optmiz);
 
 /* exponentials, hyperbolic functions, and trig functions may
 often be converted to the required form by using the multiple-argument

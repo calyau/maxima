@@ -1,4 +1,4 @@
-LOAD('OPTMIZ);
+load('optmiz);
 /* This macsyma batch file illustrates how to use the function
 STAP for determining the stationary points of a function of 1 or more
 variables, either unconstrained or subject to equality &/or inequality

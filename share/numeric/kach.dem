@@ -4,8 +4,8 @@
 load("kach")$
 load("haipart")$
 fpprec:16$
-If Status(Feature,ITS)=True
-Then Translate(hach,check,iterate,fx,fq,fh,getl,criterion,accelerate)$
+if status(feature,ITS)=true
+then translate(hach,check,iterate,fx,fq,fh,getl,criterion,accelerate)$
 
 /* dynamalloc:true$ */
 

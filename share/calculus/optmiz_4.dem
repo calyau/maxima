@@ -1,4 +1,4 @@
-LOAD('OPTMIZ);
+load('optmiz);
 /*
 We have already seen how STAP finds poles of the objective or gradient
 only by accident.  The following examples are included as reminders

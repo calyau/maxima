@@ -1,4 +1,4 @@
-LOAD('OPTMIZ);
+load('optmiz);
 /*
 Now let's try the famous post-office parcel problem:  maximize the
 volume of a rectangular parallelopiped parcel, subject to the
