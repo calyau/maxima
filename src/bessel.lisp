@@ -8,6 +8,10 @@
 
 (in-package "MAXIMA")
 
+;; When non-NIL, the Bessel functions of half-integral order are
+;; expanded in terms of elementary functions.
+(defmvar $besselexpand nil)
+
 ;; Temporarily we establish an array convention for conversion
 ;; of this file to new type arrays.
 
@@ -943,7 +947,7 @@
 		   (t
 		    (eqtest (subfunmakes '$%j (ncons order) (ncons arg))
 			    exp))))
-	    ((setq rat-order (max-numeric-ratio-p order 2))
+	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
@@ -984,7 +988,7 @@
 		   (t
 		    (eqtest (subfunmakes '$%y (ncons order) (ncons arg))
 			    exp))))
-	    ((setq rat-order (max-numeric-ratio-p order 2))
+	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
@@ -1022,7 +1026,7 @@
 		   (t
 		    (eqtest (subfunmakes '$%ibes (ncons order) (ncons arg))
 			    exp))))
-	    ((setq rat-order (max-numeric-ratio-p order 2))
+	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
@@ -1127,7 +1131,8 @@
 		   (t
 		    (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
 			    exp))))
-	    ((setq rat-order (max-numeric-ratio-p order 2))
+	    ((and $besselexpand
+		  (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
