@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Textinsert.tcl,v 1.3 2002-09-10 06:03:31 mikeclarkson Exp $
+#       $Id: Textinsert.tcl,v 1.4 2004-03-21 07:30:58 vvzhy Exp $
 #
 ###### Textinsert.tcl ######
 ############################################################
@@ -14,7 +14,7 @@ proc mkTextItem { c x y args  } {
     set helvetica $_prop_default
     set courier $_fixed_default
 
-    set font [assoc -font $args [list $elvetica $fpontSize]]
+    set font [assoc -font $args [list $helvetica $fontSize]]
     set tags [assoc -tags $args {}]
     set item [$c create text $x $y -text " " -width 440 -anchor n -font $font -justify left]
     append tags text
