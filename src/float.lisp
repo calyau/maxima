@@ -504,29 +504,50 @@ One extra decimal digit in actual representation for rounding purposes.")
 	       (fpatan2 (cdr ($bfloat a))
 			(cdr ($bfloat (car y))))))))
 
+;; Bigfloat atan
 (defun fpatan (x)
   (prog (term x2 ans oans one two tmp)
      (setq one (intofp 1) two (intofp 2))
      (cond ((fpgreaterp (fpabs x) one)
+	    ;; |x| > 1.
+	    ;;
+	    ;; Use A&S 4.4.5:
+	    ;;    atan(x) + acot(x) = +/- pi/2 (+ for x >= 0, - for x < 0)
+	    ;;
+	    ;; and A&S 4.4.8
+	    ;;    acot(z) = atan(1/z)
 	    (setq tmp (fpquotient (fppi) two))
 	    (setq ans (fpdifference tmp (fpatan (fpquotient one x))))
-	    (return (cond ((fpgreaterp ans tmp) (fpdifference ans (fppi)))
+	    (return (cond ((fpgreaterp ans tmp)
+			   (fpdifference ans (fppi)))
 			  (t ans))))
 	   ((fpgreaterp (fpabs x) (fpquotient one two))
+	    ;; |x| > 1/2
+	    ;;
+	    ;; Use A&S 4.4.42, third formula:
+	    ;;
+	    ;; atan(z) = z/(1+z^2)*[1 + 2/3*r + (2*4)/(3*5)*r^2 + ...]
+	    ;;
+	    ;; r = z^2/(1+z^2)
 	    (setq tmp (fpquotient x (fpplus (fptimes* x x) one)))
 	    (setq x2 (fptimes* x tmp) term (setq ans one))
-	    (do ((n 0 (f1+ n))) ((equal ans oans))
+	    (do ((n 0 (f1+ n)))
+		((equal ans oans))
 	      (setq term
 		    (fptimes* term (fptimes* x2 (fpquotient
 						 (intofp (f+ 2 (f* 2 n)))
 						 (intofp (f+ (f* 2 n) 3))))))
 	      (setq oans ans ans (fpplus term ans)))
 	    (setq ans (fptimes* tmp ans)))
-	   (t (setq ans x x2 (fpminus (fptimes* x x)) term x)
-	      (do ((n 3 (f+ n 2))) ((equal ans oans))
-		(setq term (fptimes* term x2))
-		(setq oans ans 
-		      ans (fpplus ans (fpquotient term (intofp n)))))))
+	   (t
+	    ;; |x| <= 1/2.  Use Taylor series (A&S 4.4.42, first
+	    ;; formula).
+	    (setq ans x x2 (fpminus (fptimes* x x)) term x)
+	    (do ((n 3 (f+ n 2)))
+		((equal ans oans))
+	      (setq term (fptimes* term x2))
+	      (setq oans ans 
+		    ans (fpplus ans (fpquotient term (intofp n)))))))
      (return ans)))
 
 (defun fpatan2 (y x)			; ATAN(Y/X) from -PI to PI
@@ -660,6 +681,12 @@ One extra decimal digit in actual representation for rounding purposes.")
     (t (times x (expt 2 n)))))
 
 
+;; exp(x)
+;;
+;; For negative x, use exp(-x) = 1/exp(x)
+;;
+;; For x > 0, exp(x) = exp(r+y) = exp(r) * exp(y), where x = r + y and
+;; r = floor(x).
 (defun fpexp (x)       
   (prog (r s)
      (if (not (signp ge (car x)))
@@ -673,6 +700,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 				       (plus fpprec (haulong r) -1)
 				       r)))))))))
 
+;; exp(x) for small x, using Taylor series.
 (defun fpexp1 (x) 
   (prog (term ans oans) 
      (setq ans (setq term (fpone)))
@@ -771,11 +799,11 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; where
 ;;
 ;;
-;;          b*N
+;;          a*N
 ;;   A(N) = sum (N^2/n!)^2*H(n)
 ;;          n=0
 ;;
-;;          b*N
+;;          a*N
 ;;   B(N) = sum (N^2/n!)^2
 ;;          n=0
 ;;
@@ -785,7 +813,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;
 ;;   with H(0) = 0
 ;;
-;; and b = 4.970625759... where b*(log(b)-1) = 3.
+;; and a = 3.591121476668622136649223 where a*(log(a)-1) = 1.
 ;;
 ;; This formula can be easily justified by looking at the value
 ;; K0(2*N)/I0(2*N), where K0 and I0 are the modified Bessel functions.
@@ -836,7 +864,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   ;; our N's are not so big that we need more.
   (let* ((big-n (floor (* 1/4 prec (log 2d0))))
 	 (big-n-sq (cdr ($bfloat (* big-n big-n))))
-	 (beta 4.9706257595442319023d0)
+	 (beta 3.591121476668622136649223d0)
 	 (limit (floor (* beta big-n)))
 	 (term (cdr bigfloatone))
 	 (harmonic (cdr bigfloatzero))
@@ -1111,12 +1139,15 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defun fpcos1 (x) (fpsincos1 x nil))
 
 ;; Compute SIN or COS in (0,PI/2).  FL is T for SIN, NIL for COS.
+;;
+;; Use Taylor series
 (defun fpsincos1 (x fl)
   (prog (ans term oans x2)
      (setq ans (if fl x (intofp 1))
 	   x2 (fpminus(fptimes* x x)))
      (setq term ans)
-     (do ((n (cond (fl 3) (t 2)) (plus n 2))) ((equal ans oans))
+     (do ((n (cond (fl 3) (t 2)) (plus n 2)))
+	 ((equal ans oans))
        (setq term (fptimes* term (fpquotient x2 (intofp (f* n (sub1 n))))))
        (setq oans ans ans (fpplus ans term)))
      (return ans)))
