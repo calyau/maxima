@@ -8,7 +8,11 @@
 
 (setf (get :maxima :source-path) "foo.lisp")
 (setf (get :maxima :object-path)
-      #+lucid "foo.lbin" #+excl "foo.fasl" #+clisp "foo.fas" #-(or :CLISP excl lucid) "foo.o")
+      #+lucid "foo.lbin"
+      #+excl "foo.fasl"
+      #+clisp "foo.fas"
+      #+cmu (namestring (make-pathname :name "foo" :type (c::backend-fasl-file-type c::*target-backend*)))
+      #-(or cmu :CLISP excl lucid) "foo.o")
 
 
 #+lispm
@@ -78,7 +82,7 @@
 					;module utilities
 	(:progn
 	 (load "SYS-PROCLAIM.lisp")
-	 (proclaim '(optimize (safety 0) (speed 3))))
+	 #-cmu (proclaim '(optimize (safety 0) (speed 3))))
 	(opers 
 	  utils 
 	  sumcon 
@@ -167,7 +171,7 @@
 					;module reader
 	(nparse )
 	(:progn ;;reset this from nparse
-	 (proclaim '(optimize (safety 0) (speed 3))))
+	 #-cmu (proclaim '(optimize (safety 0) (speed 3))))
 					;module display
 	(displa 
 	  nforma 

@@ -184,7 +184,7 @@
 ;; seems to be used very rarely, so it seems hardly worth the effort.  On the
 ;; Lisp Machine, this is probably more efficient as simply (EQUAL A 1).
 
-#+cl
+#+(and cl (not cmu))
 (defmacro onep (a) `(eql ,a 1))
 
 #+cl

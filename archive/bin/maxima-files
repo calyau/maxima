@@ -2,7 +2,7 @@
 
 DIR=$2
 
-find ./${DIR} -type f -print | sed -e "s:./${DIR}/:./$1/:g" -e "/core/d" -e "/TAGS/d" -e "/src\/count/d" -e "/~/d" -e  "/#/d" -e "/\.o/d" -e "/future\//d" -e "/saved_/d"  -e "/maxobj.a/d" -e "/\/orig\//d" -e "/raw_/d" -e '/merge$/d' -e '/-$/d' -e '/\.fn$/d' -e '/\.ERR$/d'  -e '/\.err$/d'  -e '/foo/d' -e '/maxout.ps/d' -e '/[.]data$/d' -e '/\.dll$/d' -e '/\.exe$/d'  -e '/\.zip$/d' -e '/CVS/d'
+find ./${DIR} -type f -print | sed -e "s:./${DIR}/:./$1/:g" -e "/core/d" -e "/TAGS/d" -e "/src\/count/d" -e "/~/d" -e  "/#/d" -e "/\.o/d" -e "/future\//d" -e "/saved_/d"  -e "/maxobj.a/d" -e "/\/orig\//d" -e "/raw_/d" -e '/merge$/d' -e '/-$/d' -e '/\.fn$/d' -e '/\.ERR$/d'  -e '/\.err$/d'  -e '/foo/d' -e '/maxout\./d' -e '/[.]data$/d' -e '/\.dll$/d' -e '/\.exe$/d'  -e '/\.zip$/d' -e '/CVS/d' -e '/.out$/d' -e /_gnu/d -e /optionsxx/d
 #echo ./$1/doc/DOC
 #echo ./$1/bin/fix-paths
 

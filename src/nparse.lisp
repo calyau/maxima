@@ -224,7 +224,7 @@
 	    ;; to set the current line information to be line 234 of jim.mac
 	    ((and (eql ch #\#) saw-newline)
 	     (let ((li (read-line *parse-stream* nil)))
-	       (declare (type (vector string-char) li))
+	       (declare (type (vector #.(array-element-type "a")) li))
 	       (unread-char #\newline  *parse-stream*)
 	       (setq parse-tyipeek nil)
 	       (if (not saw-other) (grab-line-number li *parse-stream*))))
@@ -410,7 +410,7 @@
       (vector-push-extend c  buf)
       )))
 
-(defvar *string-register* (make-array 100 :fill-pointer 0 :adjustable t :element-type 'string-char))
+(defvar *string-register* (make-array 100 :fill-pointer 0 :adjustable t :element-type '#.(array-element-type "a")))
 (defun readlist (lis)
   (setf (fill-pointer *string-register*) 0)
   (sloop for u in lis do (vector-push-extend u *string-register*))
@@ -1884,7 +1884,3 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 )
 ; end #-gcl
-
-
-
-	   

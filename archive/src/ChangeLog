@@ -1,3 +1,32 @@
+Raymond Toy <toy@rtp.ericsson.se>
+
+	SYS-PROCLAIM.lisp:
+	o Not sure about these, but some proclaims are definitely wrong.  (I
+	  got this from the 5.4 patches on the CMUCL web site.)
+	o Put #+gcl around the COMPILER:: symbols
+	
+	displa.lisp:
+	o linearray should be initialized to NIL.
+	
+	init_max1.lisp:
+	o Add CMUCL "version" of getenv.
+	
+	nparse.lisp:
+	o Change occurrences of string-char to #.(array-element-type "a").
+	  Wouldn't it have been better to leave string-char everywhere and
+	  just do a deftype string-char to base-char for those systems without
+	  string-char?
+	
+	simp.lisp:
+	o Don't define the onep macro. It's already a function.  Or maybe get
+	  rid of the function and leave the onep macro in?  CMUCL has inline
+	  functions so the onep function can be as fast as the macro.
+	
+	sysdef.lisp:
+	o Get the right extensions for :maxima :object-path for CMUCL.
+	o I turned off the (safety 0) for CMUCL, but perhaps that's not
+	  necessary anymore.
+
 2000-05-23  Bill Schelter  <wfs@linux34.ma.utexas.edu>
 
 	* Fix to $save

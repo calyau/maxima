@@ -131,7 +131,7 @@
 
 
 
-(DEFVAR LINEARRAY (MAKE-array 80.))
+(DEFVAR LINEARRAY (MAKE-array 80. :initial-element nil))
 
 
 (DEFMFUN MAXIMA-DISPLAY (FORM &key (stream *standard-output*) )

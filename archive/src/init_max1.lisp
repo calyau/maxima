@@ -43,7 +43,9 @@
 (defun set-pathnames ()
   ;; need to get one when were are.
   
-  (let* ((tem (system::getenv "MAXIMA_DIRECTORY"))
+  (let* ((tem #+gcl (system::getenv "MAXIMA_DIRECTORY")
+	      #+cmu (cdr (assoc :maxima_directory ext:*environment-list*))
+	      )
 	 (n (length tem)))
     (setq *maxima-directory* tem)
     (cond ((> n 0)
