@@ -224,7 +224,7 @@
 	       (:module final :source-pathname ""
 			;; These are not compiled, for whatever reason
 			:load-only t
-			:components ((:file "version")
-				     (:file "autol")
+			:components ((:file "autol")
 				     (:file "max_ext")
+				     (:file "autoconf-variables")
 				     (:file "init-cl")))))

@@ -1,0 +1,5 @@
+; -*- Lisp -*-
+(in-package :maxima)
+
+(defvar *autoconf-prefix* "@prefix@")
+(defvar *autoconf-version* "@VERSION@")
