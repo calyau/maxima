@@ -218,20 +218,28 @@ assoc_legendre_p(v,u,z)$
  * F(a,b;a+b+1/2;z) = 2^(a+b-1/2)*gamma(a+b+1/2)*(-z)^(1/2-a-b)*P(a-b-1/2,1/2-a-b,sqrt(1-z))
  * Test for legf20 function.
  */
-hgfred([a,b],[a+b+1/2],x);
-2^(a+b-1/2)*gamma(a+b+1/2)*x^(1/2*(1/2-a-b))*assoc_legendre_p(b-a-1/2,1/2-a-b,sqrt(1-x))$
+expand(ratsimp(2^(1/2-a-b)*(-x)^(1/2*(a+b-1/2))/gamma(a+b+1/2)*hgfred([a,b],[a+b+1/2],x)));
+assoc_legendre_p(-b+a-1/2,1/2-a-b,sqrt(1-x))$
 
 2^m*(z^2-1)^(-m/2)/gamma(1-m)*hgfred([1/2+n/2-m/2, -n/2-m/2], [1-m], 1-z^2);
 assoc_legendre_p(n,m,z)$
 
 /*
- * A&S 15.4.7
+ * Formula 36:
+ * exp(-%i*m*%pi)*Q(n,m,z) = 
+ *     2^n*gamma(1+n)*gamma(1+n+m)*(z+1)^(m/2-n-1)*(z-1)^(-m/2)/gamma(2+2*n)
+ *     *hgfred([1+n-m,1+n],[2+2*n],2/(1+z))
+ * 
  * Test for legf36 function.
  */
-hgfred([a,b],[2*b],z);
-2^(2*b)/sqrt(%pi)*gamma(b+1/2)/gamma(2*b-a)*z^(-b)*(1-z)^((b-a)/2)*exp(%i*%pi*(a-b))*assoc_legendre_q(b-1,b-a,2/z-1)$
+expand(radcan(hgfred([a,b],[2*b],z)*2^(-2*b)*sqrt(%pi)/gamma(b+1/2)*gamma(2*b-a)*z^b*(1-z)^((a-b)/2)*exp(%i*%pi*(b-a))));
+/*
+ * Maxima doesn't expand gamma(2*b) which would cancel the other
+ * terms, so we leave it in.  
+ */
+2*sqrt(%pi)*assoc_legendre_q(b-1,b-a,2/z-1)*gamma(2*b)/(2^(2*b)*gamma(b)*gamma(b+1/2))$
 
-2^v*gamma(1+v)*gamma(1+v+u)*(z+1)^(u/2-v-1)*(z-1)^(-u/2)/gamma(2+2*v)*hgfred([1+v-u,1+v],[2+2*v],2/(1+z));
+exp(%i*%pi*u)*2^v*gamma(1+v)*gamma(1+v+u)*(z+1)^(u/2-v-1)*(z-1)^(-u/2)/gamma(2+2*v)*hgfred([1+v-u,1+v],[2+2*v],2/(1+z));
 assoc_legendre_q(v, u, z)$
 
 /*
