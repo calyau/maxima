@@ -61,3 +61,15 @@ integrate(h(x,y),y);
 /* Trigrat example from manual - Fixed June 2002 */
 trigrat(sin(3*a)/sin(a+%pi/3));
 sqrt(3)*sin(2*a)+cos(2*a)-1;
+
+/* compile() will fail with gcl if gcc not installed */
+f(x):=x+2;
+f(x):=x+2;
+f(2);
+4;
+compile(f);
+[f];
+f(2);
+4;
+kill(f);
+done;
