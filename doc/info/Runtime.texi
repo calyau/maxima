@@ -1,11 +1,11 @@
 @menu
 * Introduction for Runtime Environment::  
-* INTERRUPTS::                  
+* Interrupts::                  
 * Definitions for Runtime Environment::  
 @end menu
 
 
-@node Introduction for Runtime Environment, INTERRUPTS, Runtime Environment, Runtime Environment
+@node Introduction for Runtime Environment, Interrupts, Runtime Environment, Runtime Environment
 @section Introduction for Runtime Environment
 @c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
 @c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
@@ -13,7 +13,7 @@
 You can use @code{maxima-init.mac} to customize your Maxima environment.
 @code{maxima-init.mac}, if it exists, is typically placed in the
 directory named by @code{:lisp (default-userdir)},
-although it can be in any directory searched by the function FILE_SEARCH.
+although it can be in any directory searched by the function @code{file_search}.
 
 Here is an example @code{maxima-init.mac} file:
 
@@ -21,18 +21,19 @@ Here is an example @code{maxima-init.mac} file:
 setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
 showtime:all;
 @end example
-In this example, SETUP_AUTOLOAD tells Maxima to load the
+
+In this example, @code{setup_autoload} tells Maxima to load the
 specified file
 (@code{specfun.mac}) if any of the functions (@code{ultraspherical},
 @code{assoc_legendre_p}) are called but not yet defined.
 Thus you needn't remember to load the file before calling the functions.
 
-The statement SHOWTIME:ALL tells Maxima to set the SHOWTIME variable.
+The statement @code{showtime: all} tells Maxima to set the @code{showtime} variable.
 The @code{maxima-init.mac} file can contain any other assignments or
 other Maxima statements.
 
-@node INTERRUPTS, Definitions for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
-@section INTERRUPTS
+@node Interrupts, Definitions for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
+@section Interrupts
 
 The user can stop a time-consuming computation with the
 ^C (control-C) character.
@@ -40,7 +41,7 @@ The default action is to stop the computation
 and print another user prompt.
 In this case, it is not possible to restart a stopped computation.
 
-If the variable @code{*debugger-hook*} is set to NIL, by executing
+If the variable @code{*debugger-hook*} is set to @code{nil}, by executing
 
 @example
 :lisp (setq *debugger-hook* nil)
@@ -61,98 +62,87 @@ The @code{fg} command causes Maxima
 to resume from the point at which it was stopped.
 
 @c end concepts Runtime Environment
-@node Definitions for Runtime Environment,  , INTERRUPTS, Runtime Environment
+@node Definitions for Runtime Environment,  , Interrupts, Runtime Environment
 @section Definitions for Runtime Environment
-@c @node CLEARSCREEN
-@c @unnumberedsec phony
-@defun CLEARSCREEN ()
-This function has no effect aside from printing a diagnostic message.
-On some systems, typing ^L (control-L) will clear the screen.
 
-@end defun
-@c @node declaration
-@c @unnumberedsec phony
-@defvr declaration FEATURE
+@defvr declaration feature
 Maxima understands two distinct types of features,
 system features and features which apply to mathematical expressions.
-See STATUS for information about system features.
-See FEATURES and FEATUREP for information about mathematical features.
+See also @code{status} for information about system features.
+See also @code{features} and @code{featurep} for information about mathematical features.
 
-FEATURE itself is not the name of a function or variable.
+@code{feature} itself is not the name of a function or variable.
 
 @end defvr
-@c @node FEATUREP
-@c @unnumberedsec phony
-@defun FEATUREP (a,f)
-attempts to determine whether the object a has the
+
+@defun featurep (a,f)
+Attempts to determine whether the object a has the
 feature f on the basis of the facts in the current data base.  If so,
-it returns TRUE, else FALSE.  See DESCRIBE(FEATURES); .
+it returns @code{true}, else @code{false}.  See also @code{features}.
+
 @example
-(%i1) DECLARE(J,EVEN)$
-(%i2) FEATUREP(J,INTEGER);
-(%o2)                                TRUE
-
-
+(%i1) declare (j, even)$
+(%i2) featurep (j, integer);
+(%o2)                           true
 @end example
+
 @end defun
-@c @node ROOM
-@c @unnumberedsec phony
-@defun ROOM ()
-@defunx ROOM (TRUE)
-@defunx ROOM (FALSE)
+
+@defun room ()
+@defunx room (true)
+@defunx room (false)
 Prints out a description of the state of storage and
-stack management in Maxima. ROOM calls the Lisp function of 
+stack management in Maxima. @code{room} calls the Lisp function of 
 the same name.
 
 @itemize @bullet
 @item
-ROOM () prints out a moderate description.
+@code{room ()} prints out a moderate description.
 @item
-ROOM (TRUE) prints out a verbose description.
+@code{room (true)} prints out a verbose description.
 @item
-ROOM (FALSE) prints out a terse description.
+@code{room (false)} prints out a terse description.
 @end itemize
 
 @end defun
-@c @node STATUS
-@c @unnumberedsec phony
-@defun STATUS (FEATURE)
-@defunx STATUS (FEATURE, putative_feature)
-@defunx STATUS (STATUS)
+
+@defun status (feature)
+@defunx status (feature, putative_feature)
+@defunx status (status)
 Returns information about the presence or absence of certain
 system-dependent features.
+
 @itemize @bullet
 @item
-STATUS (FEATURE) returns a list of system features.
+@code{status (feature)} returns a list of system features.
 These include Lisp version, operating system type, etc.
 The list may vary from one Lisp type to another.
-@item STATUS (FEATURE, putative_feature) returns TRUE if putative_feature
-is on the list of items returned by STATUS (FEATURE) and FALSE otherwise.
+@item @code{status (feature, putative_feature)} returns @code{true} if @code{putative_feature}
+is on the list of items returned by @code{status (feature)} and @code{false} otherwise.
+@code{status} quotes the argument @code{putative_feature}.
+The double single quotes operator, @code{'@w{}'}, defeats the quotation.
 A feature whose name contains a special character, such as a hyphen,
 must be given as a string argument. For example,
-@example
-STATUS (FEATURE, "ANSI-CL");
-@end example
+@code{status (feature, "ansi-cl")}.
 @item
-STATUS (STATUS) returns a two-element list [FEATURE, STATUS].
-FEATURE and STATUS are the two arguments accepted by the STATUS function;
+@code{status (status)} returns a two-element list @code{[feature, status]}.
+@code{feature} and @code{status} are the two arguments accepted by the @code{status} function;
 it is unclear if this list has additional significance.
 @end itemize
 
-The variable FEATURES contains a list of features which apply to 
-mathematical expressions. See FEATURES and FEATUREP for more information.
+The variable @code{features} contains a list of features which apply to 
+mathematical expressions. See @code{features} and @code{featurep} for more information.
 
 @end defun
-@c @node TIME
-@c @unnumberedsec phony
-@defun TIME (%o1, %o2, %o3, ...)
-Returns a list of the times, in seconds, taken to compute the output
-lines %o1, %o2, %o3, .... The time returned is Maxima's estimate of
-the internal computation time, not the elapsed time. TIME can only
-be applied to output line variables; for any other variables, TIME
-returns UNKNOWN.
 
-Set SHOWTIME:TRUE$ to make Maxima print out the computation time 
+@defun time (%o1, %o2, %o3, ...)
+Returns a list of the times, in seconds, taken to compute the output
+lines @code{%o1}, @code{%o2}, @code{%o3}, .... The time returned is Maxima's estimate of
+the internal computation time, not the elapsed time. @code{time} can only
+be applied to output line variables; for any other variables, @code{time}
+returns @code{unknown}.
+
+Set @code{showtime: true} to make Maxima print out the computation time 
 and elapsed time with each output line.
 
 @end defun
