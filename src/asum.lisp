@@ -388,7 +388,9 @@ summation when necessary."
 			     (mbinding (lind l*i) (meval exp)) 
 			     u)
 		       t))
-	  (if (equal *i hi) (return u))
+	   (if (= *hl 0) (return u))
+	   (setq *hl (1- *hl))
+
 	  (setq *i (car (rplaca l*i (m+ *i 1))))
 	  (go lo))
     (cond ((if sump (not $sumhack) (not $prodhack))
