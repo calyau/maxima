@@ -99,7 +99,7 @@ class Fielded:
             elif name == "details":
                 print
                 print "-------------------------------------------------"
-                print self.fields[name]
+                print self.fields[name].encode('iso-8859-1')
                 print "-------------------------------------------------"
             else:
                 print self.fields[name]
