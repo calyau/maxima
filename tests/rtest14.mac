@@ -645,25 +645,70 @@ a^(v+u)*p^(-v-u-lam)*gamma(v+u+lam)
  * (44)
  *
  * bessel_y(0,a*t) -> -2/%pi/sqrt(p^2+a^2)*asinh(p/a)
+ *
+ * Maxima returns 
+ *
+ * -2/%pi/sqrt(p^2+a^2)*legendre_q(0,p/sqrt(p^2+a^2))
+ *
+ * But legendre_q(0,p/r) = log((1+p/r)/(1-p/r))/2, where r = sqrt(p^2+a^2). 
+ * This simplifies to log((1+p/r)/a) = log(p/a+sqrt(1+(p/a)^2)) = asinh(p/a).
+ *
+ * So we have -2/%pi/sqrt(p^2+a^2)*asinh(p/a).
  */
 specint(bessel_y(0,a*t)*exp(-p*t),t);
--2/%pi/sqrt(p^2+a^2)*asinh(p/a) $
+-2/%pi/sqrt(p^2+a^2)*legendre_q(0,p/sqrt(p^2+a^2)) $
 
 /*
  * (46)
  *
  * t*bessel_y(0,a*t)
- *     -> 2/%pi/(p^2+a^2)*(1-p/sqrt(p^2+a^2)*log((p+sqrt(p^2+a^2))/a)
+ *     -> 2/%pi/(p^2+a^2)*(1-p/sqrt(p^2+a^2)*log((p+sqrt(p^2+a^2))/a))
+ *
+ * Maxima returns
+ *
+ *    -2/%pi/(p^2+a^2)*legendre_q(1,p/sqrt(p^2+a^2))
+ *
+ * But
+ *     legendre_q(1,p/r) = p/r/2*log((r+p)/(r-p)) - 1
+ *                       = p/r*log((p+r)/a) - 1
+ *
+ * So, the transform is
+ *
+ *     -2/%pi/(p^2+a^2)*(p/r*log((p+r)/a) - 1)
+ *
+ *       = 2/%pi/(p^2+a^2)*(1-p/sqrt(p^2+a^2)*log((p+sqrt(p^2+a^2))/a))
  */
 specint(t*bessel_y(0,a*t)*exp(-p*t),t);
-2/%pi/(p^2+a^2)*(1-p/sqrt(p^2+a^2)*log((p+sqrt(p^2+a^2))/a)) $
+-2/%pi/(p^2+a^2)*legendre_q(1,p/sqrt(p^2+a^2)) $
 
 /*
  * (47)
  *
  * t*bessel_y(1,a*t)
- *     -> -2/%pi/(p^2+a^2)*(p/a-a/sqrt(p^2+a^2)*log((p+sqrt(p^2+a^2))/a)
+ *     -> -2/%pi/(p^2+a^2)*(p/a+a/sqrt(p^2+a^2)*log((p+sqrt(p^2+a^2))/a)
+ *
+ * Maxima returns
+ *   -4/%pi/(p^2+a^2)*assoc_legendre_q(1,-1,p/r)
+ *
+ * But
+ *
+ *   assoc_legendre_q(1,-1,z) 
+ *      = sqrt(1-z^2)/2/(z^2-1)*((z^2-1)*log((1+z)/(1-z)) - 2*z)
+ *
+ * So
+ *
+ *   assoc_legendre_q(1,-1,p/r) 
+ *      = (a/r)/2*(-(r/a)^2)*(-(a/r)^2*log((R/a)^2)-2*p/r)
+ *      = 1/2*(p/a+a/r*log(R/a))
+ *
+ * where R = p + r
+ *
+ * Finally, the transform is
+ *
+ * -2/%pi/(p^2+a^2)*(p/a+a/r*log(R/a))
+ *
+ * as expected.
+ *  
  */
 specint(t*bessel_y(1,a*t)*exp(-p*t),t);
--2/%pi/(p^2+a^2)*(p/a-a/sqrt(p^2+a^2)*log((p+sqrt(p^2+a^2))/a)) $
-
+-4/%pi/(p^2+a^2)*assoc_legendre_q(1,-1,p/sqrt(p^2+a^2))$
