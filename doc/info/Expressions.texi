@@ -142,8 +142,7 @@ also be removed.
 @c end concepts Expressions
 @node Definitions for Expressions,  , SYNTAX, Expressions
 @section Definitions for Expressions
-@c @node AT, BOX, SYNTAX, Expressions
-@c @unnumberedsec phony
+
 @defun AT (exp, list)
 will evaluate exp (which may be any expression) with
 the variables assuming the values as specified for them in the list of
@@ -154,8 +153,7 @@ a noun form of the AT will be returned which will display in a
 two-dimensional form.  Do EXAMPLE(AT); for an example.
 
 @end defun
-@c @node BOX, BOXCHAR, AT, Expressions
-@c @unnumberedsec phony
+
 @defun BOX (expr)
 returns expr enclosed in a box.  The box is actually part
 of the expression.
@@ -168,21 +166,18 @@ label is a name which will be truncated in display if it is too long.
 the DPART and LPART functions.
 
 @end defun
-@c @node BOXCHAR, {special operator}, BOX, Expressions
-@c @unnumberedsec phony
+
 @defvar BOXCHAR
  default: ["] is the character used to draw the box in the BOX
 and in the DPART and LPART functions.
 
 @end defvar
-@c @node CONSTANT
-@c @unnumberedsec phony
+
 @deffn {special operator} CONSTANT
  - makes ai a constant as is %PI.
 
 @end deffn
-@c @node CONSTANTP, CONTRACT, {special operator}, Expressions
-@c @unnumberedsec phony
+
 @defun CONSTANTP (exp)
 is TRUE if exp is a constant (i.e.  composed of
 numbers and %PI, %E, %I or any variables bound to a constant or
@@ -190,8 +185,7 @@ DECLAREd constant) else FALSE.  Any function whose arguments are
 constant is also considered to be a constant.
 
 @end defun
-@c @node CONTRACT, DECLARE, CONSTANTP, Expressions
-@c @unnumberedsec phony
+
 @defun CONTRACT (exp)
 carries out all possible contractions in exp, which may
 be any well-formed combination of sums and products.  This function
@@ -206,8 +200,7 @@ denominators of the terms.  The GCD switch should be FALSE if gcd
 cancellations are unnecessary.
 
 @end defun
-@c @node DECLARE, DISOLATE, CONTRACT, Expressions
-@c @unnumberedsec phony
+
 @defun DECLARE (a1, f1, a2, f2, ...)
 gives the atom ai the flag fi.  The ai's
 and fi's may also be lists of atoms and flags respectively in which
@@ -279,8 +272,7 @@ to determine if an object has been DECLAREd to have "feature".  See
 DESCRIBE(FEATURES); .
 
 @end defun
-@c @node DISOLATE, DISPFORM, DECLARE, Expressions
-@c @unnumberedsec phony
+
 @defun DISOLATE (exp, var1, var2, ..., varN)
 is similar to ISOLATE(exp, var)
 (Do DESCRIBE(ISOLATE);) except that it enables the user to isolate
@@ -292,8 +284,7 @@ integration variables.  This function is autoloaded from
 @code{demo("disol")$}.
 
 @end defun
-@c @node DISPFORM, DISTRIB, DISOLATE, Expressions
-@c @unnumberedsec phony
+
 @defun DISPFORM (exp)
 returns the external representation of exp (wrt its
 main operator).  This should be useful in conjunction with PART which
@@ -306,8 +297,7 @@ FREEOF(SQRT,DISPFORM(EXP)) give TRUE, while
 FREEOF(SQRT,DISPFORM(EXP,ALL)) gives FALSE.
 
 @end defun
-@c @node DISTRIB, DPART, DISPFORM, Expressions
-@c @unnumberedsec phony
+
 @defun DISTRIB (exp)
 distributes sums over products.  It differs from EXPAND
 in that it works at only the top level of an expression, i.e. it doesn't
@@ -319,8 +309,7 @@ DISTRIB (1/((A+B)*(C+D))) ->  1/ ((A+B) *(C+D))
 EXPAND(1/((A+B)*(C+D)),1,0) -> 1/(A C + A D + B C + B D)
 
 @end defun
-@c @node DPART, EXP, DISTRIB, Expressions
-@c @unnumberedsec phony
+
 @defun DPART (exp, n1, ..., nk)
 selects the same subexpression as PART, but
 instead of just returning that subexpression as its value, it returns
@@ -338,8 +327,7 @@ a box.  The box is actually part of the expression.
 
 @end example
 @end defun
-@c @node EXP, EXPTISOLATE, DPART, Expressions
-@c @unnumberedsec phony
+
 @defun EXP (X)
 the exponential function.  It is represented internally as
 %E^X.
@@ -356,22 +344,19 @@ simplification of %E^(%PI*%I*X) will take place.
 will take place only if the exponent in %E^X evaluates to a number.
 
 @end defun
-@c @node EXPTISOLATE, EXPTSUBST, EXP, Expressions
-@c @unnumberedsec phony
+
 @defvar EXPTISOLATE
  default: [FALSE] if TRUE will cause ISOLATE(expr,var); to
 examine exponents of atoms (like %E) which contain var.
 
 @end defvar
-@c @node EXPTSUBST, FREEOF, EXPTISOLATE, Expressions
-@c @unnumberedsec phony
+
 @defvar EXPTSUBST
  default: [FALSE] if TRUE permits substitutions such as Y
 for %E**X in %E**(A*X) to take place.
 
 @end defvar
-@c @node FREEOF, GENFACT, EXPTSUBST, Expressions
-@c @unnumberedsec phony
+
 @defun FREEOF (x1, x2, ..., exp)
 yields TRUE if the xi do not occur in exp
 and FALSE otherwise.  The xi are atoms or they may be subscripted
@@ -383,30 +368,26 @@ variable.  Example: FREEOF(I,'SUM(F(I),I,0,N)); returns TRUE.  Do
 EXAMPLE(FREEOF); for more examples.
 
 @end defun
-@c @node GENFACT, IMAGPART, FREEOF, Expressions
-@c @unnumberedsec phony
+
 @defun GENFACT (X, Y, Z)
 is the generalized factorial of X which is:
 X*(X-Z)*(X-2*Z)*...*(X-(Y-1)*Z).  Thus, for integral X,
 GENFACT(X,X,1)=X!  and GENFACT(X,X/2,2)=X!!
 
 @end defun
-@c @node IMAGPART, INDICES, GENFACT, Expressions
-@c @unnumberedsec phony
+
 @defun IMAGPART (exp)
 returns the imaginary part of the expression exp.
 
 @end defun
-@c @node INDICES, INFIX, IMAGPART, Expressions
-@c @unnumberedsec phony
+
 @defun INDICES (exp)
 returns a list of two elements.  The first is a list of
 the free indices in exp (those that occur only once); the second is
 the list of dummy indices in exp (those that occur exactly twice).
 
 @end defun
-@c @node INFIX, INFLAG, INDICES, Expressions
-@c @unnumberedsec phony
+
 @defun INFIX (op)
  - INFIX operators are used to denote functions of two
 arguments, one given before the operator and one after, e.g. A^2 .
@@ -414,8 +395,7 @@ The INFIX("x") function is a syntax extention function to declare x to
 be an INFIX operator.  Do DESCRIBE(SYNTAX); for more details.
 
 @end defun
-@c @node INFLAG, INPART, INFIX, Expressions
-@c @unnumberedsec phony
+
 @defvar INFLAG
  default: [FALSE] if set to TRUE, the functions for part
 extraction will look at the internal form of exp.  Note that the
@@ -427,8 +407,7 @@ setting of INFLAG are: PART, SUBSTPART, FIRST, REST, LAST, LENGTH, the
 FOR ... IN construct, MAP, FULLMAP, MAPLIST, REVEAL and PICKAPART.
 
 @end defvar
-@c @node INPART, ISOLATE, INFLAG, Expressions
-@c @unnumberedsec phony
+
 @defun INPART (exp, n1, ..., nk)
 is similar to PART but works on the internal
 representation of the expression rather than the displayed form and
@@ -457,8 +436,7 @@ refer to the operator it must be enclosed in "s.  For example
 
 @end example
 @end defun
-@c @node ISOLATE, ISOLATE_WRT_TIMES, INPART, Expressions
-@c @unnumberedsec phony
+
 @defun ISOLATE (exp, var)
 returns exp with subexpressions which are sums and
 which do not contain var replaced by intermediate expression labels
@@ -475,16 +453,14 @@ ISOLATE(EXPAND((A+B+C)^2),C); .
 Do EXAMPLE(ISOLATE); for examples.
 
 @end defun
-@c @node ISOLATE_WRT_TIMES, LISTCONSTVARS, ISOLATE, Expressions
-@c @unnumberedsec phony
+
 @defvar ISOLATE_WRT_TIMES
  default: [FALSE] - if set to TRUE, then ISOLATE
 will also isolate wrt products.  E.g. compare both settings of the
 switch on ISOLATE(EXPAND((A+B+C)^2),C); .
 
 @end defvar
-@c @node LISTCONSTVARS, LISTDUMMYVARS, ISOLATE_WRT_TIMES, Expressions
-@c @unnumberedsec phony
+
 @defvar LISTCONSTVARS
  default: [FALSE] - if TRUE will cause LISTOFVARS to
 include %E, %PI, %I, and any variables declared constant in the list
@@ -492,8 +468,7 @@ it returns if they appear in the expression LISTOFVARS is called on.
 The default is to omit these.
 
 @end defvar
-@c @node LISTDUMMYVARS, LISTOFVARS, LISTCONSTVARS, Expressions
-@c @unnumberedsec phony
+
 @defvar LISTDUMMYVARS
  default: [TRUE] - if FALSE, "dummy variables" in the
 expression will not be included in the list returned by LISTOFVARS.
@@ -504,8 +479,7 @@ Example: LISTOFVARS('SUM(F(I),I,0,N)); gives [I,N] if LISTDUMMYVARS is
 TRUE, and [N] if LISTDUMMYVARS is FALSE.
 
 @end defvar
-@c @node LISTOFVARS, LOPOW, LISTDUMMYVARS, Expressions
-@c @unnumberedsec phony
+
 @defun LISTOFVARS (exp)
 yields a list of the variables in exp.
 LISTCONSTVARS[FALSE] if TRUE will cause LISTOFVARS to include %E, %PI,
@@ -519,14 +493,12 @@ appear in exp.  The default is to omit these.
 @end example
 @end defun
 
-@c @node LFREEOF, LOPOW, LISTOFVARS, Expressions
-@c @unnumberedsec phony
+
 @defun LFREEOF (list, exp)
 For each member m of list, calls FREEOF(m,exp).
 It returns false if any call to FREEOF does and true otherwise.
 @end defun
-@c @node LOPOW, LPART, LFREEOF, Expressions
-@c @unnumberedsec phony
+
 @defun LOPOW (exp, v)
 the lowest exponent of v which explicitly appears in
 exp.  Thus
@@ -537,16 +509,14 @@ LOPOW((X+Y)**2+(X+Y)**A,X+Y) ==> MIN(A,2)
 .
 
 @end defun
-@c @node LPART, MULTTHRU, LOPOW, Expressions
-@c @unnumberedsec phony
+
 @defun LPART (label, expr, n1, ..., nk)
 is similar to DPART but uses a
 labelled box. A labelled box is similar to the one produced by DPART
 but it has a name in the top line.
 
 @end defun
-@c @node MULTTHRU, NOUNIFY, LPART, Expressions
-@c @unnumberedsec phony
+
 @defun MULTTHRU (exp)
 multiplies a factor (which should be a sum) of exp by
 the other factors of exp.  That is exp is f1*f2*...*fn where at least
@@ -591,8 +561,7 @@ form is equivalent to MULTTHRU(exp1*exp2).
 
 @end example
 @end defun
-@c @node NOUNIFY, NTERMS, MULTTHRU, Expressions
-@c @unnumberedsec phony
+
 @defun NOUNIFY (f)
 returns the noun form of the function name f.  This is
 needed if one wishes to refer to the name of a verb function as if it
@@ -601,8 +570,7 @@ forms if they can't be evaluated for certain arguments.  This is also
 the form returned if a function call is preceded by a quote.
 
 @end defun
-@c @node NTERMS, OPTIMIZE, NOUNIFY, Expressions
-@c @unnumberedsec phony
+
 @defun NTERMS (exp)
 gives the number of terms that exp would have if it were
 fully expanded out and no cancellations or combination of terms
@@ -611,22 +579,19 @@ count as just one term regardless of how many terms E has (if it is a
 sum).
 
 @end defun
-@c @node OP, OPERATORP, NTERMS, Expressions
-@c @unnumberedsec phony
+
 @defun OP (exp)
 Returns the operator of the expression, and functions the same way as
 PART(exp,0).  It observes the setting of the INPART flag.
 
 @end defun
-@c @node OPERATORP, OPTIMIZE, OP, Expressions
-@c @unnumberedsec phony
+
 @defun OPERATORP (exp, ool)
 Uses OP to get the operator of the expression and either compares it to ool,
 if it is a operator, or checks if it is a member of ool if it is a list.
 
 @end defun
-@c @node OPTIMIZE, OPTIMPREFIX, NTERMS, Expressions
-@c @unnumberedsec phony
+
 @defun OPTIMIZE (exp)
 returns an expression that produces the same value and
 side effects as exp but does so more efficiently by avoiding the
@@ -636,15 +601,13 @@ are shared.
 Do EXAMPLE(OPTIMIZE); for examples.
 
 @end defun
-@c @node OPTIMPREFIX, ORDERGREAT, OPTIMIZE, Expressions
-@c @unnumberedsec phony
+
 @defvar OPTIMPREFIX
  default: [%] - The prefix used for generated symbols by
 the OPTIMIZE command.
 
 @end defvar
-@c @node ORDERGREAT, ORDERGREATP, OPTIMPREFIX, Expressions
-@c @unnumberedsec phony
+
 @defun ORDERGREAT (V1, ..., Vn)
 sets up aliases for the variables V1, ..., Vn
 such that V1 > V2 > ...  > Vn > any other variable not mentioned as an
@@ -652,15 +615,13 @@ argument.  See also ORDERLESS.  Caveat:  do EXAMPLE(ORDERGREAT); for
 some specifics.
 
 @end defun
-@c @node ORDERGREATP, ORDERLESS, ORDERGREAT, Expressions
-@c @unnumberedsec phony
+
 @defun ORDERGREATP (exp1,exp2)
 returns TRUE if exp2 precedes exp1 in the
 ordering set up with the ORDERGREAT function (see DESCRIBE(ORDERGREAT);).
 
 @end defun
-@c @node ORDERLESS, ORDERLESSP, ORDERGREATP, Expressions
-@c @unnumberedsec phony
+
 @defun ORDERLESS (V1, ..., Vn)
 sets up aliases for the variables V1, ..., Vn
 such that V1 < V2 < ...  < Vn < any other variable not mentioned as an
@@ -673,15 +634,13 @@ EXAMPLE(ORDERLESS); for some specifics.  For another ordering scheme,
 see DESCRIBE(MAINVAR);.
 
 @end defun
-@c @node ORDERLESSP, PART, ORDERLESS, Expressions
-@c @unnumberedsec phony
+
 @defun ORDERLESSP (exp1,exp2)
 returns TRUE if exp1 precedes exp2 in the
 ordering set up by the ORDERLESS command (see DESCRIBE(ORDERLESS);).
 
 @end defun
-@c @node PART, PARTITION, ORDERLESSP, Expressions
-@c @unnumberedsec phony
+
 @defun PART (exp, n1, ..., nk)
 deals with the displayed form of exp. It
 obtains the part of exp as specified by the indices n1,...,nk.  First
@@ -701,8 +660,7 @@ message is given.
 For examples, do EXAMPLE(PART);
 
 @end defun
-@c @node PARTITION, PARTSWITCH, PART, Expressions
-@c @unnumberedsec phony
+
 @defun PARTITION (exp, var)
 returns a list of two expressions.  They are (1)
 the factors of exp (if it is a product), the terms of exp (if it is a
@@ -719,16 +677,14 @@ the factors, terms, or list which do.
 
 @end example
 @end defun
-@c @node PARTSWITCH, PICKAPART, PARTITION, Expressions
-@c @unnumberedsec phony
+
 @defvar PARTSWITCH
  default: [FALSE] - if set to TRUE then END is returned
 when a selected part of an expression doesn't exist, otherwise an
 error message is given.
 
 @end defvar
-@c @node PICKAPART, PIECE, PARTSWITCH, Expressions
-@c @unnumberedsec phony
+
 @defun PICKAPART (exp,depth)
 will assign E labels to all subexpressions of
 exp down to the specified integer depth.  This is useful for dealing
@@ -754,24 +710,21 @@ expression to a variable without having to use the part functions.
 
 @end example
 @end defun
-@c @node PIECE, POWERS, PICKAPART, Expressions
-@c @unnumberedsec phony
+
 @defvar PIECE
  - holds the last expression selected when using the Part
 functions.  It is set during the execution of the function and thus
 may be referred to in the function itself.
 
 @end defvar
-@c @node POWERS, PRODUCT, PIECE, Expressions
-@c @unnumberedsec phony
+
 @defun POWERS (expr, var)
 gives the powers of var occuring in expr.  To use
 it, do LOAD(POWERS);.  For details on usage, do
 PRINTFILE("powers.usg");.
 
 @end defun
-@c @node PRODUCT, REALPART, POWERS, Expressions
-@c @unnumberedsec phony
+
 @defun PRODUCT (exp, ind, lo, hi)
 gives the product of the values of exp as
 the index ind varies from lo to hi.  The evaluation is similar to that
@@ -785,23 +738,20 @@ returns 1 rather than erring out.  Also see DESCRIBE(PRODHACK).
 
 @end example
 @end defun
-@c @node REALPART, RECTFORM, PRODUCT, Expressions
-@c @unnumberedsec phony
+
 @defun REALPART (exp)
 gives the real part of exp. REALPART and IMAGPART will
 work on expressions involving trigonometic and hyperbolic functions,
 as well as SQRT, LOG, and exponentiation.
 
 @end defun
-@c @node RECTFORM, REMBOX, REALPART, Expressions
-@c @unnumberedsec phony
+
 @defun RECTFORM (exp)
 returns an expression of the form A + B*%I, where A and
 B are purely real.
 
 @end defun
-@c @node REMBOX, SUM, RECTFORM, Expressions
-@c @unnumberedsec phony
+
 @defun REMBOX (expr, arg)
 removes boxes from expr according to arg.  If arg
 is UNLABELED then all unlabelled boxes are removed.  If arg is the
@@ -809,8 +759,7 @@ name of some label then only boxes with that label are removed.  If
 arg is omitted then all boxes labelled and unlabelled are removed.
 
 @end defun
-@c @node SUM, {special symbol}, REMBOX, Expressions
-@c @unnumberedsec phony
+
 @defun SUM (exp, ind, lo, hi)
 performs a summation of the values of exp as
 the index ind varies from lo to hi.  If the upper and lower limits
@@ -862,8 +811,7 @@ evaluate to a Maxima list then the answer is left in noun form
 
 @end defun
 
-@c @node VERB
-@c @unnumberedsec phony
+
 @defvr {special symbol} VERB
  - the opposite of "noun", i.e. a function form which "does
 something" ("action" - for most functions the usual case).  E.g.
@@ -872,8 +820,7 @@ in which case it represents the integral of the function.  See NOUN,
 NOUNIFY, and VERBIFY.
 
 @end defvr
-@c @node VERBIFY,  , {special symbol}, Expressions
-@c @unnumberedsec phony
+
 @defun VERBIFY (f)
 returns the function name f in its verb form (See also VERB,
 NOUN, and NOUNIFY).
