@@ -1706,6 +1706,174 @@ by the following example:
 
 @end defvar
 
+@subsection Exterior algebra
+
+The ITENSOR package can perform operations on totally antisymmetric
+covariant tensor fields. A totally antisymmetric tensor field of rank
+(0,l) corresponds with a differential l-form. On these objects, a
+multiplication operation known as the exterior product, or wedge product,
+is defined.
+
+Unfortunately, not all authors agree on the definition of the wedge
+product. Some authors prefer a definition that corresponds with the
+notion of antisymmetrization: in these works, the wedge product of
+two vector fields, for instance, would be defined as
+
+@example
+            a a  - a a
+             i j    j i
+ a  /\ a  = -----------
+  i     j        2
+@end example
+
+More generally, the product of a p-form and a q-form would be defined as
+
+@example
+                       1     i1..ip j1..jq
+A       /\ B       = ------ D              A       B
+ i1..ip     j1..jq   (p+q)!  1..p 1..q      i1..ip  j1..jq
+@end example
+
+where @code{D} stands for the Kronecker-delta.
+
+Other authors, however, prefer a ``geometric'' definition that corresponds
+with the notion of the volume element:
+
+@example
+a  /\ a  = a a  - a a
+ i     j    i j    j i
+@end example
+
+and, in the general case
+
+@example
+                       1    i1..ip j1..jq
+A       /\ B       = ----- D              A       B
+ i1..ip     j1..jq   p! q!  1..p 1..q      i1..ip  j1..jq
+@end example
+
+Since ITENSOR is a tensor algebra package, the first of these two
+definitions appears to be the more natural one. Many applications, however,
+utilize the second definition. To resolve this dilemma, a flag has been
+implemented that controls the behavior of the wedge product: if
+@code{igeowedge_flag} is @code{false} (the default), the first, "tensorial"
+definition is used, otherwise the second, "geometric" definition will
+be applied.
+
+@c @node ~
+@c @unnumberedsec phony
+@defvr {special symbol} "~"
+
+The wedge product operator is denoted by the tilde character. This is
+a binary operator. Its arguments should be expressions involving scalars,
+covariant tensors of rank one, or covariant tensors of rank @code{l} that
+have been declared antisymmetric in all covariant indices.
+
+The behavior of the wedge product operator is controlled by the
+@code{igeowedge_flag} flag, as in the following example:
+
+@example
+(%i1) load(itensor);
+(%o1)      /share/tensor/itensor.lisp
+(%i2) ishow(a([i])~b([j]))$
+                                 a  b  - b  a
+                                  i  j    i  j
+(%t2)                            -------------
+                                       2
+(%i3) igeowedge_flag:true;
+(%o3)                                true
+(%i4) ishow(a([i])~b([j]))$
+(%t4)                            a  b  - b  a
+                                  i  j    i  j
+@end example
+
+@end defvr
+
+@c @node |
+@c @unnumberedsec phony
+@defvr {special symbol} "|"
+
+The vertical bar character denotes the "contraction with a vector" binary
+operation. When a totally antisymmetric covariant tensor is contracted
+with a contravariant vector, the result is the same regardless which index
+was used for the contraction. Thus, it is possible to define the
+contraction operation in an index-free manner.
+
+In the ITENSOR package, contraction with a vector is always carried out
+with respect to the first index in the literal sorting order. This ensures
+better simplification of expressions involving the | operator. For instance:
+
+@example
+(%i1) load(itensor);
+(%o1)      /share/tensor/itensor.lisp
+(%i2) decsym(a,2,0,[anti(all)],[]);
+(%o2)                                done
+(%i3) ishow(a([i,j],[])|v)$
+                                    %1
+(%t3)                              v   a
+                                        %1 j
+(%i4) ishow(a([j,i],[])|v)$
+                                     %1
+(%t4)                             - v   a
+                                         %1 j
+@end example
+
+Note that it is essential that the tensors used with the | operator be
+declared totally antisymmetric in their covariant indices. Otherwise,
+the results will be incorrect.
+
+@end defvr
+
+@c @node extdiff
+@c @unnumberedsec phony
+@defun extdiff (exp,ind)
+
+Computes the exterior derivative of @code{exp} with respect to the index
+@code{ind}. The exterior derivative is formally defined as the wedge
+product of the partial derivative operator and a differential form. As
+such, this operation is also controlled by the setting of @code{igeowedge_flag}.
+For instance:
+
+@example
+(%i1) load(itensor);
+(%o1)      /share/tensor/itensor.lisp
+(%i2) ishow(extdiff(v([i]),j))$
+                                   v    - v
+                                    j,i    i,j
+(%t2)                            - -----------
+                                        2
+(%i3) decsym(a,2,0,[anti(all)],[]);
+(%o3)                                done
+(%i4) ishow(extdiff(a([i,j]),k))$
+                           a      - a      + a
+                            j k,i    i k,j    i j,k
+(%t4)                      ------------------------
+                                      3
+(%i5) igeowedge_flag:true;
+(%o5)                                true
+(%i6) ishow(extdiff(v([i]),j))$
+(%t6)                           - (v    - v   )
+                                    j,i    i,j
+(%i7) ishow(extdiff(a([i,j]),k))$
+(%t7)                      a      - a      + a
+                            j k,i    i k,j    i j,k
+@end example
+
+@end defun
+
+@c @node igeowedge_flag
+@c @unnumberedsec phony
+@defvar igeowedge_flag
+
+Controls the behavior of the wedge product and exterior derivative. When
+set to @code{false} (the default), the notion of differential forms will
+correspond with that of a totally antisymmetric covariant tensor field.
+When set to @code{true}, differential forms will agree with the notion
+of the volume element.
+
+@end defvar
+
+
 @subsection Exporting TeX expressions
 
 The ITENSOR package provides limited support for exporting tensor
