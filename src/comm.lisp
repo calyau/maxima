@@ -165,7 +165,8 @@
 (declare-top (unspecial x y oprx opry negxpty timesp))
 
 (defmfun subst0 (new old)
-  (cond ((alike (cdr new) (cdr old))
+  (cond ((atom new) new)
+	((alike (cdr new) (cdr old))
 	 (cond ((eq (caar new) (caar old)) old)
 	       (t (simplifya (cons (cons (caar new) (memq 'array (cdar old))) (cdr old))
 			     nil))))
