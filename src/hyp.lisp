@@ -204,6 +204,7 @@
    (length l2)))
 
 
+#+nil
 (defun 1f1polys (l2 n)
   (prog(c fact1 fact2)
      (setq c
@@ -229,6 +230,45 @@
 		  (gm (add c n))
 		  (lagpol n (sub c 1) var)))))
 
+(defun 1f1polys (l2 n)
+  (let* ((c (car l2))
+	 (n (mul -1 n))
+	 (fact1 (mul (factorial n)
+		     (power -1 n)))
+	 (fact2 (power var (inv 2))))
+    (cond ((equal c (div 1 2))
+	   ;; A&S 22.5.56
+	   ;; hermite(2*n,x) = (-1)^n*(2*n)!/n!*M(-n,1/2,x^2)
+	   ;;
+	   ;; So
+	   ;; M(-n,1/2,x) = n!/(2*n)!*(-1)^n*hermite(2*n,sqrt(x))
+	   (mul fact1
+		(inv (factorial (add n n)))
+		(hermpol (add n n) fact2)))
+	  ((equal c (div 3 2))
+	   ;; A&S 22.5.57
+	   ;; hermite(2*n+1,x) = (-1)^n*(2*n+1)!/n!*M(-n,3/2,x^2)*2*x
+	   ;;
+	   ;; So
+	   ;; M(-n,3/2,x) = n!/(2*n+1)!*(-1)^n*hermite(2*n+1,sqrt(x))/2/sqrt(x)
+	   (mul fact1
+		(inv (factorial (add n n 1)))
+		(hermpol (add n n 1) fact2)
+		(inv (mul 2 fact2))))
+	  (t
+	   ;; A&S 22.5.54:
+	   ;;
+	   ;; gen_laguerre(n,alpha,x) =
+	   ;; binomial(n+alpha,n)*hgfred([-n],[alpha+1],x);
+	   ;;
+	   ;; Or hgfred([-n],[alpha],x) =
+	   ;; gen_laguerre(n,alpha-1,x)/binomial(n+alpha-1,n)
+	   (mul (factorial n)
+		(inv (mul
+		      (gm c)
+		      (gm (add c n))))
+		(lagpol n (sub c 1) var))))))
+
 ;; Hermite polynomial
 (defun hermpol (n arg)
   `(($hermite) ,n ,arg))
@@ -236,7 +276,9 @@
 
 ;; Generalized Laguerre polynomial
 (defun lagpol (n a arg)
-  `(($gen_laguerre) ,n ,a, arg))
+  (if (zerop a)
+      `(($laguerre) ,n ,arg)
+      `(($gen_laguerre) ,n ,a, arg)))
 
 
 (defun 2f0polys (l1 n)
