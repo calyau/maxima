@@ -6,12 +6,12 @@
 ;;;>   a part of the U.S. Government; it is therefore not subject to copyright.
 ;;;>******************************************************************************************
 
-(in-package 'climax)
+;(in-package 'climax)
 
 ;;; To run in Schelter's Maxima comment the above and uncomment these:
-;(in-package 'maxima)
-;(defmacro mexp-lookup (item alist) `(assolike ,item ,alist))
-;(defmacro mlist* (arg1 &rest more-args) `(list* '(mlist simp) ,arg1 ,@more-args))
+(in-package 'maxima)
+(defmacro mexp-lookup (item alist) `(assolike ,item ,alist))
+(defmacro mlist* (arg1 &rest more-args) `(list* '(mlist simp) ,arg1 ,@more-args))
 
 ;;;;******************************************************************************************
 ;;;; Needed, but unrelated, stuff.  Possibly useful in its own right
