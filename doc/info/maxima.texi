@@ -232,7 +232,6 @@ Numerical
 
 * Introduction to Numerical::   
 * DCADRE::                      
-* ELLIPT::                      
 * FOURIER::                     
 * NDIFFQ::                      
 * Definitions for Numerical::   

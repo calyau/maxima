@@ -1,7 +1,6 @@
 @menu
 * Introduction to Numerical::   
 * DCADRE::                      
-* ELLIPT::                      
 * FOURIER::                     
 * NDIFFQ::                      
 * Definitions for Numerical::   
@@ -10,7 +9,7 @@
 @node Introduction to Numerical, DCADRE, Numerical, Numerical
 @section Introduction to Numerical
 
-@node DCADRE, ELLIPT, Introduction to Numerical, Numerical
+@node DCADRE, FOURIER, Introduction to Numerical, Numerical
 @section DCADRE
 The following is obsolete and does not exist in Maxima 5.9.  We leave
 the documentation here for historical purposes.
@@ -146,35 +145,7 @@ de Boor, Calr, ``CADRE: An Algorithm for Numerical Quadrature,''
   Mathematical Software (John R. Rice, Ed.), New York, Academic Press,
   1971, Chapter 7.
 
-@node ELLIPT, FOURIER, DCADRE, Numerical
-@section ELLIPT
- - A package on the SHARE directory for Numerical routines for
-Elliptic Functions and Complete Elliptic Integrals.  (Notation of
-Abramowitz and Stegun, Chs 16 and 17) Do LOAD(ELLIPT); to use this
-package.  At present all arguments MUST be floating point.  You'll get
-nonsense otherwise.  Be warned.  The functions available are:
-Jacobian elliptic functions
-
-
-@example
-AM(U,M) - amplitude with modulus M
-AM1(U,M1) - amplitude with complementary modulus M1
-AM(U,M):=AM1(U,1-M); so use AM1 if M ~ 1
-SN(U,M):=SIN(AM(U,M));
-CN(U,M):=COS(AM(U,M));
-DN(U,M):=SQRT(1-M*SN(U,M)^2);
-(These functions come defined like this.  Others CD, NS etc.  may be
-similarly defined.)
-Complete Elliptic Integrals
-ELLIPTK(M) - Complete elliptic integral of first kind
-ELLIPTK1(M1) - Same but with complementary modulus. 
-ELLIPTK(M):=ELLIPTK1(1-M); so use if M ~ 1
-ELLIPTE(M) - Complete elliptic integral of second kind
-ELLIPTE1(M1) - Same but with complementary modulus. 
-ELLIPTE(M):=ELLIPTE1(1-M); so use if M ~ 1
-@end example
-
-@node FOURIER, NDIFFQ, ELLIPT, Numerical
+@node FOURIER, NDIFFQ, DCADRE, Numerical
 @section FOURIER
  - There is a Fast Fourier Transform package, do DESCRIBE(FFT)
 for details.  There is also a Fourier Series package.  It may be
