@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#	$Id: Makefile,v 1.4 2002-09-07 08:48:34 mikeclarkson Exp $
+#	$Id: Makefile,v 1.5 2002-09-07 10:31:22 mikeclarkson Exp $
 #
 # Developer's convenience targets (not part of the normal make/install).
 #
@@ -75,5 +75,5 @@ TAGS:	 $(ALLFILES)
 	echo $(ALLFILES) | xargs $(TCLSH) ../Utils/etags.tcl
 
 tclIndex:: $(ALLFILES)
-	echo "source ../Utils/ObjTix.tcl; auto_mkindex . $(ALLFILES)" | $(TCLSH)
+	echo "source ../ObjTcl/Object.tcl; auto_mkindex . $(ALLFILES)" | $(TCLSH)
 

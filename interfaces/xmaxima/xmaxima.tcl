@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.24 2002-09-07 08:48:34 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.25 2002-09-07 10:31:22 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -286,8 +286,9 @@ proc doit { fr } {
     # vMAXAddSystemMenu $fr $text
 
     #mike Defer the starting of maxima until the interface has been built
-    runOneMaxima $w
-  
+    if {[catch {runOneMaxima $w} err]} {
+	tide_failure "Error starting Maxima:\n$err"
+    }
 
 }
 

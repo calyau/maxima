@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.24 2002-09-07 08:48:34 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.25 2002-09-07 10:31:22 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -9,10 +9,10 @@ xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png 
 bin_SCRIPTS = xmaxima
 
 TKSOURCES = \
-	Utils/FileDlg.tcl
+	Tkmaxima/Header.tcl \
+	Utils/FileDlg.tcl \
 	Utils/Messages.tcl \
 	Utils/Misc.tcl \
-	Tkmaxima/Header.tcl \
 	Tkmaxima/Constants.tcl \
 	Tkmaxima/Preamble.tcl \
 	Tkmaxima/Readdata.tcl \
@@ -75,4 +75,7 @@ TCLSH = tclsh
 
 TAGS:
 	echo x*.tcl Tkmaxima/*.tcl | xargs $(TCLSH) ./Utils/etags.tcl
+
+tclIndex:: $(TKSOURCES)
+	echo "source ../ObjTcl/Object.tcl; auto_mkindex . $(TKSOURCES)" | $(TCLSH)
 
