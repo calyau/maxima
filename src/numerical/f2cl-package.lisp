@@ -25,12 +25,10 @@
 ;;
 ;;(format t "~&The f2cl software has been loaded.~%")
 
-#-gcl(in-package :common-lisp-user)
-#+gcl(in-package "USER")
+(in-package :common-lisp-user)
 
 (defpackage "F2CL-LIB"
-  #-gcl(:use "CL")
-  #+gcl(:use "LISP")
+  (:use "CL")
   (:documentation "The package holding all symbols used by the Fortran to Lisp library")
   (:nicknames "FORTRAN-TO-LISP-LIBRARY")
   (:export
@@ -85,9 +83,39 @@
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.6 2004-10-04 02:25:54 amundson Exp $
+;;; $Id: f2cl-package.lisp,v 1.7 2004-10-19 12:05:00 wjenkner Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.6  2004-10-04 02:25:54  amundson
+;;; Revision 1.7  2004-10-19 12:05:00  wjenkner
+;;; Eliminate all references to LISP or USER in Maxima, replacing them by
+;;; CL and CL-USER, respectively (except for system-dependent stuff, like
+;;; lisp:bye, of course).  In particular, make MAXIMA inherit from CL,
+;;; not from LISP (take a look at the cleaned-up maxima-package.lisp).
+;;; Also, all lisps now use the ERRSET from src/generr.lisp, so that
+;;; src/kclmac.lisp with the SERROR stuff can be eliminated.
+;;;
+;;; Other changes needed for this:
+;;;
+;;; Avoid package locking errors by obeying to the CLHS 11.1.2.1.2
+;;; (Constraints on the COMMON-LISP Package for Conforming Programs).
+;;;
+;;; lmdcls.lisp, mdebug.lisp, merror.lisp, mlisp.lisp, suprv1.lisp: Replace
+;;; the special variable DEBUG by *MDEBUG*.
+;;;
+;;; commac.lisp, mtrace.lisp: Replace PRIN1 as special variable by *PRIN1*.
+;;;
+;;; specfn.lisp: Replace LAST as special variable by *LAST*
+;;;
+;;; maxima-package.lisp: Shadow GCD and BREAK.  For SBCL, shadow
+;;; MAKUNBOUND in order to avoid package locking errors at runtime.
+;;;
+;;; commac.lisp: Give GCD and BREAK their CL function definition.  For
+;;; SBCL, redefine MAKUNBOUND.
+;;;
+;;; db.lisp: Boldly replace the special variable * by db*
+;;;
+;;; limit.lisp ($limit): Don't declare T special.
+;;;
+;;; Revision 1.6  2004/10/04 02:25:54  amundson
 ;;; Downcasing of source complete. Code compiles and passes tests with
 ;;; clisp, cmucl, gcl and sbcl.
 ;;;

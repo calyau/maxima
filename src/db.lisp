@@ -86,7 +86,7 @@
 ;; A cell with the high bit turned on.
 (defmvar lab-high-lab #+fixcons lab-high-bit #-fixcons (list lab-high-bit))
 
-(declare-top(special +s +sm +sl -s -sm -sl labs lprs labindex lprindex world *))
+(declare-top(special +s +sm +sl -s -sm -sl labs lprs labindex lprindex world db*))
 
 ;; Macro for indirecting through the contents of a cell.
 
@@ -281,7 +281,7 @@
 
 (defun cancel (lab dat)
   (cond
-    ((setq * (ulabs dat)) (iorm * lab))
+    ((setq db* (ulabs dat)) (iorm db* lab))
     (t (setq ulabs (cons dat ulabs))
        (setq-unlab lab)
        (putprop dat (copyn lab) 'ulabs))))
@@ -330,22 +330,22 @@
 	   (setq -sl (cdr -sl))))))
 
 (defun queue+p (nd lab)
-  (cond ((null (setq * (+labs nd)))
+  (cond ((null (setq db* (+labs nd)))
 	 (setq +labs (cons nd +labs))
 	 (setq-unlab lab)
 	 (put nd (copyn (logior lab-high-bit lab)) '+labs))
-	((subp lab *) nil)
-	((subp lab-high-lab *) (iorm * lab) nil)
-	(t (iorm * (logior lab-high-bit (unlab lab))))))
+	((subp lab db*) nil)
+	((subp lab-high-lab db*) (iorm db* lab) nil)
+	(t (iorm db* (logior lab-high-bit (unlab lab))))))
 
 (defun queue-p (nd lab)
-  (cond ((null (setq * (-labs nd)))
+  (cond ((null (setq db* (-labs nd)))
 	 (setq -labs (cons nd -labs))
 	 (setq-unlab lab)
 	 (put nd (copyn (logior lab-high-bit lab)) '-labs))
-	((subp lab *) nil)
-	((subp lab-high-lab *) (iorm * lab) nil)
-	(t (iorm * (logior lab-high-bit (unlab lab))))))
+	((subp lab db*) nil)
+	((subp lab-high-lab db*) (iorm db* lab) nil)
+	(t (iorm db* (logior lab-high-bit (unlab lab))))))
 
 (defun dq+ () 
   (if +s (prog2 (xxorm (zl-get (car +s) '+labs) ;(+LABS (CAR +S))

@@ -1898,6 +1898,9 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	;;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
 	 (values)))					; end #-gcl
 
+#+gcl
+(deff newline (symbol-function 'si::newline))
+
 (defun find-stream (stream)
    (dolist (v *stream-alist*)
 	(cond ((eq stream (instream-stream v))

@@ -455,7 +455,7 @@
   (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
   (with-open-file (in-stream filename)
     (when $loadprint (format t "~&batching ~A"
-			     (lisp::namestring
+					   (cl:namestring
 			      (truename in-stream))))
     (cleanup)
     (newline in-stream #\n)
@@ -463,7 +463,7 @@
 		  (setq  expr (mread in-stream nil))
 		  (consp expr))
 	   do (meval* (third expr)))
-    (lisp::namestring (truename in-stream))))
+		  (cl:namestring (truename in-stream))))
 
 ;;returns appropriate error or existing pathname.
 ;; the second argument is a maxima list of variables

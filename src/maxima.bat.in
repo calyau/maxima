@@ -87,7 +87,7 @@ if "%lisp%" == "clisp" goto doclisp
 goto end
 
 :dogcl
-%maxima_imagesdir%\binary-gcl\maxima.exe -eval "(user::run)" -f -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+%maxima_imagesdir%\binary-gcl\maxima.exe -eval "(cl-user::run)" -f -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :doclisp

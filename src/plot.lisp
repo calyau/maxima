@@ -10,7 +10,7 @@
 
 (eval-when (compile eval load)
   (defmacro coerce-float (x)
-    `(lisp::float (meval* ,x) 1.d0))
+   `(cl:float (meval* ,x) 1.d0))
   )
 
 
@@ -449,7 +449,7 @@ setrgbcolor} def
 	     0.0
 	     (coerce pi 'double-float)))
 	(t
-	 (lisp::atan  z2 z1 ))))
+	 (cl:atan  z2 z1 ))))
 
 (defun $ps_axes ( rot )
   (let ((tem (make-array 9 :element-type 'double-float :initial-element 0d0)))
@@ -701,7 +701,7 @@ setrgbcolor} def
 	   (setq last-ok in-range)
 	   collect (if in-range-x x (if (> x xmax) xmax xmin))
 	   collect (if in-range-y y (if (> y ymax) ymax ymin))
-	   when (>= tt tmax) do (sloop::loop-finish)
+	   when (>= tt tmax) do (loop-finish)
 	   do (setq tt (+ tt eps))
 	   (if (>= tt tmax) (setq tt tmax))
 	   )))
@@ -1342,7 +1342,7 @@ MT~@d)~%"
      
 
 (defun average-slope (m1 m2)
-  (tan ($/ ($+ (lisp::atan m1) (lisp::atan m2)) 2.0)))
+  (tan ($/ ($+ (cl:atan m1) (cl:atan m2)) 2.0)))
 
 (defun slope (x1 y1 x2 y2 &aux (del ($- x2 x1)))
   (declare (double-float x1 y1 x2 y2 del))

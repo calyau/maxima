@@ -24,7 +24,7 @@
 	  $values $functions $arrays $rules $gradefs $dependencies $aliases
 	  $myoptions $props genvar $maxposex $maxnegex $expop $expon
 	  $float $numer aryp msump state-pdl evarrp $setval nounl
-	  $setcheckbreak $refcheck debug refchkl baktrcl maplp
+	  $setcheckbreak $refcheck *mdebug* refchkl baktrcl maplp
 	  $norepeat $detout $doallmxops $doscmxops opers factlist opexprp
 	  $translate $transrun $maperror outargs1 outargs2 fmaplvl mopl
 	  $powerdisp $subscrmap $dispflag $optionset dsksetp fexprerrp
@@ -308,7 +308,7 @@
 	 (let ((baktrcl baktrcl) transp) 
 	   (prog (u aryp)
 	      (declare (special aryp))
-	      ;;(COND ((EQ DEBUG '$ALL) (SETQ BAKTRCL (CONS FORM BAKTRCL))))
+	      ;;(COND ((EQ *mDEBUG* '$ALL) (SETQ BAKTRCL (CONS FORM BAKTRCL))))
 	      (setq *last-meval1-form* form)
 	      (setq aryp (memq 'array (cdar form))) 
 	      (cond ((and (not opexprp) (not aryp) 
@@ -316,7 +316,7 @@
 		     (go c))
 		    ;; dont bother pushing mplus and friends on baktrcl
 		    ;; should maybe even go below aryp.
-		    ((and debug
+		    ((and *mdebug*
 			  (progn
 					;(SETQ BAKTRCL (CONS FORM BAKTRCL))
 			    ;; if wanting to step, the *break-points*
@@ -480,7 +480,7 @@
 ;;	 (LET ((BAKTRCL BAKTRCL) TRANSP) 
 ;;	   (PROG (U ARYP)
 ;;		 (declare (special aryp))
-;;	     (COND ((EQ DEBUG '$ALL) (SETQ BAKTRCL (CONS FORM BAKTRCL))))
+;;	     (COND ((EQ *mDEBUG* '$ALL) (SETQ BAKTRCL (CONS FORM BAKTRCL))))
 ;;	     (SETQ ARYP (MEMQ 'array (CDAR FORM))) 
 ;;	     (COND ((AND (NOT OPEXPRP) (NOT ARYP) 
 ;;			 (MEMQ (CAAR FORM) '(MPLUS MTIMES MEXPT MNCTIMES)))

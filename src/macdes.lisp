@@ -131,7 +131,7 @@
   (let ((cl-info::*prompt-prefix* *prompt-prefix*)
 	(cl-info::*prompt-suffix* *prompt-suffix*))
     #-gcl
-    (cl-info:info x '("maxima.info") *info-paths*)
+    (cl-info:info x '("maxima.info") cl-info:*info-paths*)
     ;; Optimization: GCL's built-in info is much faster than our info
     ;; implementation. However, GCL's info won't respect out *prompt-
     ;; variables. Compromise by only calling our info when the prompts
@@ -139,9 +139,9 @@
     #+gcl
     (if (and (string= *prompt-prefix* "") (string= *prompt-suffix* ""))
 	(progn
-	  (setf system::*info-paths* *info-paths*)
+	  (setf system::*info-paths* cl-info:*info-paths*)
 	  (system::info x '("maxima.info")))
-	(cl-info:info x '("maxima.info")))))
+	(cl-info:info x '("maxima.info") cl-info:*info-paths*))))
 
 (defun $apropos ( s ) 
   (cons '(mlist) (apropos-list s "MAXIMA"))) 

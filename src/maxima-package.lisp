@@ -1,186 +1,61 @@
-#+mcl
-(or (find-package "LISP")
-    (rename-package "COMMON-LISP" "COMMON-LISP" '("LISP" "CL")))
+(in-package "COMMON-LISP-USER")
 
-#+:sbcl
-(progn
-  (sb-ext:unlock-package "COMMON-LISP")
-  (rename-package "COMMON-LISP" "COMMON-LISP" '("LISP" "CL"))) 
-
-;; SI is used for the regex info implementation. This line should be removed
-;; when the info regex implementation no longer requires SI in all lisps.
-;; jfa 12/12/2001
-
-;;(or (find-package "SI") (make-package "SI" :use '(COMMON-LISP)))
-
-;; Create the package CL-INFO that holds the info regex routines. For
-;; GCL, we import the necessary symbols we need from SYSTEM, since GCL
-;; comes with an info reader.
 (defpackage "CL-INFO"
-  (:use :common-lisp)
+  (:use "COMMON-LISP")
   (:export "INFO" "*INFO-PATHS*"))
 
-#+(and gcl (not ansi-cl))
-;; Traditional GCL may have empty CL package.  Delete it.
-(if (find-package :common-lisp)
-    (delete-package :common-lisp)) 
+(defpackage "COMMAND-LINE"
+  (:use "COMMON-LISP")
+  (:nicknames "CMDLINE")
+  (:export "CL-OPTION" "MAKE-CL-OPTION" "LIST-CL-OPTIONS" "PROCESS-ARGS"
+	   "GET-APPLICATION-ARGS"))
 
-#+gcl
-(unless (find-package :common-lisp)
-  ;; Make the LISP package be the CL package
-  (rename-package "LISP" "COMMON-LISP" '("LISP" "CL")))
+;; GCL has SLOOP built in but it's slightly different now...
+(defpackage "CL-SLOOP"
+  (:use "COMMON-LISP")
+  (:shadow "LOOP-FINISH")
+  (:export "LOOP-RETURN" "SLOOP" "DEF-LOOP-COLLECT" "DEF-LOOP-MAP"
+	   "DEF-LOOP-FOR" "DEF-LOOP-MACRO" "LOCAL-FINISH" "LOOP-FINISH"))
 
-(or (find-package "SLOOP") (make-package "SLOOP" :use '(lisp)))
+(defpackage "MAXIMA"
+  (:use "COMMON-LISP" "COMMAND-LINE")
+  (:nicknames "CL-MACSYMA" "CL-MAXIMA" "MACSYMA")
+  (:shadowing-import-from "CL-SLOOP" "LOOP-FINISH")
+  (:import-from "CL-SLOOP" "LOOP-RETURN" "LOCAL-FINISH" "SLOOP")
+  (:shadow complement                   ;(maxmac)
+	   continue		 ;(macsys): part of the top-level loop
+	   //                           ;(clmacs): arithmetic operator
+	   float		;(clmacs): has 1.0d0 as default format
+	   functionp                    ;(commac): accepts symbols
+	   array                        ;(commac)
+	   exp			   ;various files declare this special
+	   listen		     ;(suprv1): has trivial definition
+					; (listen any) ==> 0
+	   signum                       ;(commac): same except
+					; (cl:signum 1.3)==1.0 not 1 but I (?)
+					; think this is ok for macsyma
+	   atan			;(zl:atan y x) == (cl:atan y x) + 2 pi
+					; if latter is negative
+	   asin acos asinh acosh atanh  ;different for complex numbers
+	   tanh cosh sinh tan  ;(trigi): same, could remove from trigi
+	   break		     ; special variable in displa.lisp
+	   gcd				; special in rat module
+	   ;; (getalias '$lambda) => cl:lambda, which implies that
+	   ;; Maxima parses lambda as cl:lambda. 
+	   #+(and sbcl sb-package-locks) makunbound)
+  #+gcl
+  (:import-from "SYSTEM"
+		;; Faster modular arithmetic.
+		;; Unfortunately, as S. Macrakis observed (bug #706562),
+		;; SI::CMOD currently behaves in a strange way:
+		;; (let ((si::modulus 4)) (si::cmod 2)) => 2
+		;; (let ((si::modulus 4)) (si::cmod -2)) => -2
+		"MODULUS" "CMOD" "CTIMES" "CDIFFERENCE" "CPLUS"
 
+		"GETPID" "GET-INSTREAM"
+		"SHORT-NAME" "CLEANUP" "INSTREAM-STREAM-NAME" "INSTREAM-LINE"
+		"INSTREAM-NAME" "INSTREAM-STREAM" "STREAM-NAME" "COMPLETE-PROP"
+		"*STREAM-ALIST*" "BREAK-CALL"))
 
-(in-package "SLOOP" )
-(shadow '(loop-finish) (find-package "SLOOP"))
-
-
-(or (find-package "MAXIMA")
-    (make-package  "MAXIMA"
-		   :nicknames '("CL-MACSYMA"  "CL-MAXIMA" "MACSYMA")
-		   :use '("LISP")))
-
-(shadowing-import '(sloop::loop-return sloop::local-finish sloop::loop-finish sloop::sloop) "MAXIMA")
-
-(shadow '(complement continue   tan sinh cosh tanh #+ti file-position ) 'cl-maxima)
-
-
-;;defined in polyrz
-(shadow '(signum ) 'cl-maxima)
-
-;;lmsup
-;;#+lispm
-;;(shadow '(namestring) 'cl-maxima)
-
-;;in transs
-
-
-;;#+lispm
-;;(import '(global::array-leader
-;;	  si::arglist
-;;	  global::gc-on
-;;	  global::gc-off
-;;	  global::user-id
-;;	  global::ERROR-RESTART-LOOP
-;;	  global::condition-case 
-;;	  global::compile-flavor-methods
-;;	  global::default-cons-area
-;;	  global::errset
-;;	  global::make-condition
-;;	  si::signal-condition
-;;	  si::set-in-instance
-;;	  si::record-source-file-name
-;;	  #+ti tv::define-user-option-alist
-;;	  #+ti tv::font-char-height ;for plot win
-;;	  #+ti tv::font-char-width ;for plot win
-;;	  #-ti 	  global::define-user-option-alist
-;;	  #-symbolics global::defflavor
-;;	  #-symbolics global::defmethod
-;;	  #-symbolics global::defun-method
-;;	  global::self
-;;	  global::send
-;;	  global::print-herald
-;;	  global::without-interrupts
-;;	  global::current-process
-;;	  global::working-storage-area
-;;	  ) 'cl-maxima)
- 
-(shadow '(copy xor putprop) 'cl-maxima)
-(shadow '(
-	  array	;;"CL-MAXIMA-SOURCE: MAXIMA; COMMAC" ;not a function in common lisp but symbol in the package
-	  exp ;;various files declare this special which is bad since it is in LISP package.
-	  listen ;;"CL-MAXIMA-SOURCE: MAXIMA; SUPRV" ;;has trivial definition in suprv (listen any) ==> 0
-	  signum ;;"CL-MAXIMA-SOURCE: MAXIMA; COMMAC" ;same except (cl:signum 1.3)==1.0 not 1 but I think this is ok for macsyma
-	  atan ;; (zl:atan y x) == (cl:atan y x) + 2 pi if latter is  negative
-	  asin ;; different for complex numbers
-	  acos 
-	  asinh             
-	  acosh
-	  atanh
-	  tanh ;;"CL-MAXIMA-SOURCE: MAXIMA; TRIGI" ;same could remove from trigi
-	  cosh ;;"CL-MAXIMA-SOURCE: MAXIMA; TRIGI" ;same  ditto
-	  sinh ;;"CL-MAXIMA-SOURCE: MAXIMA; TRIGI" ;same  ditto
-	  tan ;;"CL-MAXIMA-SOURCE: MAXIMA; TRIGI" ;;same ditto
-	  ) 'cl-maxima)
-
-;;new definitions in commac to handle narg compat.
-(shadow '(arg listify setarg) 'cl-maxima)
-
-;;MANY instances are (if a b &rest c).  I changed a bunch but there were 
-;;many more
-;;(shadow 'lisp::IF 'cl-MAXIMA)
-
-#+kcl
-(import '(si::modulus si::cmod si::ctimes si::cdifference si::cplus)
-	'cl-maxima)
-
-#+gcl
-(import '(system::getenv) (find-package "MAXIMA"))
-#+gcl
-(import '(si::getpid) (find-package "MAXIMA"))
-
-;;get
-#+gcl
-(import '( si::cleanup si::*info-paths*
-	  si::get-instream  si::short-name  si::cleanup
-	  si::instream-stream-name si::instream-line si::instream-name
-	  si::instream-stream
-	  si::stream-name si::complete-prop
-	  si::*stream-alist*
-	  si::break-call
-	  ) "MAXIMA")
-#+gcl
-(setf (symbol-function 'maxima::newline) (symbol-function 'si::newline))
-
-;; *info-paths* from cl-info.lisp
-#-gcl
-(import '(cl-info::*info-paths*) "MAXIMA" )
-
-#+gcl
-(shadowing-import '( cl-info::*info-paths* ) "MAXIMA" )
-
-
-;; MAXIMA uses LISP package which is legacy CLtL1 for GCL.
-;; Thus with ANSI GCL we have to import some symbols from COMMON-LISP
-;; package explicitly.
-;; REMOVE this as soon as we can get rid of LISP and SERROR packages.
-#+(and gcl ansi-cl)
-(import '(cl::*debugger-hook* cl::handler-case)
-	"MAXIMA")
-
-;;redefined in commac  lucid 2.1 does (functionp 'jiljay)-->t
-(if (lisp::functionp 'dotimes) (push :shadow-functionp *features*))
-(unless (lisp::functionp 'lisp::functionp)
-  (pushnew :shadow-functionp *features*))
-
-#+shadow-functionp
-(shadow 'lisp::functionp 'cl-maxima)
-
-;;;REMOVE The following two forms when the kcl reader can read
-;;;the most-negative-double-float again.
-#+kcl				      ;bug fix for float not readable:
-(progn
-  (shadow '( most-positive-single-float most-negative-double-float) 'cl-maxima))
-
-#+kcl 
-(progn				      ;bug fix for float not readable:
-  (defvar maxima::most-positive-single-float
-    (* .1 lisp::most-positive-single-float))
-  (defvar maxima::most-negative-double-float
-    (* .1 lisp::most-negative-double-float)))
-
-#+(or gcl kcl)
-(in-package "SERROR"  :use '( "LISP" "SLOOP"))
-
-(shadow 'lisp::float 'maxima)
-
-;;#+lispm
-;;(shadow 'lisp::loop 'maxima)
-
-#+allegro
-(shadow '// 'maxima)
 
 (provide "MAXIMA")
-

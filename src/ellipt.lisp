@@ -64,9 +64,9 @@
 	 ;; (1-sqrt(m))/(1+sqrt(m)), and then square this to get mu1.
 	 ;; If not, we may choose the wrong branch when computing
 	 ;; sqrt(mu1).
-	 (let* ((root-m (lisp:sqrt m))
+	 (let* ((root-m (cl:sqrt m))
 		(mu (/ (* 4 root-m)
-		       (lisp:expt (1+ root-m) 2)))
+		       (cl:expt (1+ root-m) 2)))
 		(root-mu1 (/ (- 1 root-m) (+ 1 root-m)))
 		(v (/ u (1+ root-mu1))))
 	   (values v mu root-mu1)))
@@ -75,7 +75,7 @@
 	 ;; should calculate sqrt(mu) = (1-sqrt(m1)/(1+sqrt(m1)), and
 	 ;; then compute mu = sqrt(mu)^2.  If we calculate mu first,
 	 ;; sqrt(mu) loses information when m or m1 is complex.
-	 (let* ((root-m1 (lisp:sqrt (- 1 m)))
+	 (let* ((root-m1 (cl:sqrt (- 1 m)))
 		(root-mu (/ (- 1 root-m1) (+ 1 root-m1)))
 		(mu (* root-mu root-mu))
 		(v (/ u (1+ root-mu))))
@@ -88,7 +88,7 @@
   (defun elliptic-dn-ascending (u m)
     (if (< (abs (- 1 m)) (* 4 double-float-epsilon))
 	;; A&S 16.6.3
-	(/ (lisp:cosh u))
+	(/ (cl:cosh u))
 	(multiple-value-bind (v mu root-mu1)
 	    (ascending-transform u m)
 	  ;; A&S 16.14.4
@@ -102,7 +102,7 @@
   (defun elliptic-cn-ascending (u m)
     (if (< (abs (- 1 m)) (* 4 double-float-epsilon))
 	;; A&S 16.6.2
-	(/ (lisp:cosh u))
+	(/ (cl:cosh u))
 	(multiple-value-bind (v mu root-mu1)
 	    (ascending-transform u m)
 	  ;; A&S 16.14.3
@@ -117,7 +117,7 @@
   (defun elliptic-sn-descending (u m)
     ;; A&S 16.12.2
     (if (< (abs m) double-float-epsilon)
-	(lisp:sin u)
+	(cl:sin u)
 	(multiple-value-bind (v mu root-mu)
 	    (descending-transform u m)
 	  (let* ((new-sn (elliptic-sn-descending v mu)))
@@ -764,7 +764,7 @@
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; asn(x,m) = F(asin(x),m)
-	   (elliptic-f (lisp:asin u) m))
+	   (elliptic-f (cl:asin u) m))
 	  ((zerop1 u)
 	   ;; asn(0,m) = 0
 	   0)
@@ -998,7 +998,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	   phi)
 	  ((= m 1)
 	   ;; A&S 17.4.21
-	   (log (lisp:tan (+ (/ phi 2) (float (/ pi 2) 1d0)))))
+	   (log (cl:tan (+ (/ phi 2) (float (/ pi 2) 1d0)))))
 	  ((minusp phi)
 	   (- (elliptic-f (- phi) m)))
 	  ((> phi pi)
@@ -3033,7 +3033,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; ans(x,m) = asn(1/x,m) = F(asin(1/x),m)
-	   (elliptic-f (lisp:asin (/ u)) m))
+	   (elliptic-f (cl:asin (/ u)) m))
 	  ((zerop1 m)
 	   ;; ans(x,0) = F(asin(1/x),0) = asin(1/x)
 	   `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) 0))
@@ -3599,7 +3599,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
       (psetq a0 (/ (+ a0 b0) 2)
 	     b0 (sqrt (* a0 b0)))
       (setf c0 (/ (- a0 b0) 2))
-      (setf phi (+ phi (lisp:atan (* (/ b0 a0) (lisp:tan phi)))))
+      (setf phi (+ phi (cl:atan (* (/ b0 a0) (cl:tan phi)))))
       (format t "~A ~A ~A ~A~%" a0 b0 c0 phi))))
 
 (defprop %jacobi_am simp-%jacobi_am operators)

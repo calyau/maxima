@@ -35,7 +35,7 @@
   #+sbcl           (sb-ext:quit)
   #+allegro        (excl:exit)
   #+mcl            (ccl:quit)
-  #+gcl            (quit)
+  #+gcl            (lisp:quit)
   )
 
 

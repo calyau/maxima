@@ -1,10 +1,6 @@
 ; -*- Lisp -*-
-#+(or cmu sbcl openmcl)
-(or (find-package "USER")
-    (rename-package "COMMON-LISP-USER" "COMMON-LISP-USER"
-		    (cons "USER" (package-nicknames "COMMON-LISP-USER"))))
 
-(in-package :user)
+(in-package :cl-user)
 
 (pushnew :cl *features*)
 (pushnew :nocp *features*)
@@ -58,8 +54,7 @@
                (:module destructuring-let :source-pathname ""
                         :components ((:file "letmac")))
                (:module compatibility-macros1 :source-pathname ""
-                        :components (#-gcl (:file "generr") ; jfa
-				     #+gcl (:file "kclmac")
+                        :components ((:file "generr")
 				     (:file "clmacs")))
                (:module compatibility-macros :source-pathname ""
                         :components ((:file "commac"))) 

@@ -16,7 +16,7 @@
 ;;; Macsyma error signalling. 
 ;;; 2:08pm  Tuesday, 30 June 1981 George Carrette.
 
-(defvar debug t "Enter the lisp debugger on an error if this is true")
+(defvar *mdebug* t "Enter the lisp debugger on an error if this is true")
 
 (defmvar $error '((mlist simp) |&No error.|)
   "During an MAXIMA-ERROR break this is bound to a list
@@ -76,10 +76,10 @@
 
 
 (defun merror (sstring &rest l)
-  (declare (special errcatch debug))
+  (declare (special errcatch *mdebug*))
   (setq $error `((mlist) ,sstring ,@ l))
   (and $errormsg ($errormsg))
-  (cond (debug
+  (cond (*mdebug*
 	 (let ((dispflag t) ret)
 	   (declare (special $help dispflag))
 	   (format t " -- an error.  Entering the Maxima Debugger dbm")

@@ -24,7 +24,7 @@
        (cond ((not (null vars))
 					;`((lambda ,(reverse vars) . ,body) .
 					;,(reverse *let-macro-vals*))
-	      `(lisp:let ,(nreverse (sloop for v in vars for w in
+	      `(cl:let ,(nreverse (sloop for v in vars for w in
 					   *let-macro-vals* collect
 					   (list v w)))
 		,@ body)
@@ -124,7 +124,7 @@
 (defmacro destructuring-let* (pairs &body body)
   (cond ((sloop for v in pairs
 		always (or (symbolp v) (and (consp v) (symbolp (car v)))))
-	 `(lisp::let* ,pairs ,@body))
+	 `(cl:let* ,pairs ,@body))
 	(t
 	 (do ((a (reverse pairs) (cdr a))
 	      (b body `((destructuring-let (,(car a)) . ,b))))

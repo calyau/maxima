@@ -101,7 +101,7 @@ It appears in LIMIT and DEFINT.......")
 	(old-integer-info ())
 	($keepfloat t)  (limit-top t))
     (declare (special global-assumptions limit-assumptions old-integer-info
-		      $keepfloat  limit-top t))
+		      $keepfloat  limit-top))
     (if (not limitp)
 	(progn (setq old-integer-info integer-info)
 	       (setq integer-info ())))

@@ -387,11 +387,11 @@
 (defmfun $build_info ()
   (format t "~%Maxima version: ~a~%" *autoconf-version*)
   (format t "Maxima build date: ~a:~a ~a/~a/~a~%"
-	  (third user:*maxima-build-time*)
-	  (second user:*maxima-build-time*)
-	  (fifth user:*maxima-build-time*)
-	  (fourth user:*maxima-build-time*)
-	  (sixth user:*maxima-build-time*))
+	  (third cl-user:*maxima-build-time*)
+	  (second cl-user:*maxima-build-time*)
+	  (fifth cl-user:*maxima-build-time*)
+	  (fourth cl-user:*maxima-build-time*)
+	  (sixth cl-user:*maxima-build-time*))
   (format t "host type: ~a~%" *autoconf-host*)
   (format t "lisp-implementation-type: ~a~%" (lisp-implementation-type))
   (format t "lisp-implementation-version: ~a~%~%" (lisp-implementation-version))
@@ -540,7 +540,7 @@
 					;
 
 (defun $system (&rest args)
-  #+gcl   (system (apply '$sconcat args))
+  #+gcl   (lisp:system (apply '$sconcat args))
   #+clisp (ext:run-shell-command (apply '$sconcat args))
   #+cmu   (ext:run-program "/bin/sh"
 			   (list "-c" (apply '$sconcat args)) :output t)

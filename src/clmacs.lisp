@@ -97,7 +97,7 @@
     ;;(def-op \\ fixnum rem) ;no calls any more
 
     ;;exp is shadowed to save trouble for other packages--its declared special
-    (setf (symbol-function 'exp) (symbol-function 'lisp::exp))
+    (setf (symbol-function 'exp) (symbol-function 'cl:exp))
 
     ) ;;end eval-when (symbolics needed this).
 
@@ -441,7 +441,7 @@
 
 ;;range of atan should be [0,2*pi]
 (defun atan (y x)
-  (let ((tem (lisp::atan y x)))
+  (let ((tem (cl:atan y x)))
     (if (>= tem 0)
 	tem
 	(+ tem (* 2 pi)))))
@@ -449,7 +449,7 @@
 ;;range of atan2 should be (-pi,pi]
 ;;CL manual says that's what lisp::atan is supposed to have.
 
-(setf (symbol-function 'atan2) (symbol-function 'lisp::atan))
+(setf (symbol-function 'atan2) (symbol-function 'cl:atan))
 
 (setq *read-default-float-format* 'double-float)
 
@@ -457,4 +457,4 @@
 ;;don't care about float contagion for now
 #+clisp (setq custom::*warn-on-floating-point-contagion* nil)
 
-(defmacro float (x &optional (y 1.0d0)) `(lisp::float ,x ,y))
+(defmacro float (x &optional (y 1.0d0)) `(cl:float ,x ,y))

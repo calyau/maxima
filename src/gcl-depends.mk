@@ -9,7 +9,7 @@ binary-gcl/maxima : cl-info.lisp
 binary-gcl/maxima : sloop.lisp
 binary-gcl/maxima : lmdcls.lisp
 binary-gcl/maxima : letmac.lisp
-binary-gcl/maxima : kclmac.lisp
+binary-gcl/maxima : generr.lisp
 binary-gcl/maxima : clmacs.lisp
 binary-gcl/maxima : commac.lisp
 binary-gcl/maxima : mormac.lisp

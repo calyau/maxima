@@ -309,7 +309,7 @@
 ;; These routines are specially coded to be as fast as possible given the
 ;; current $TAYLOR; too bad they have to be so ugly.
 
-(declare-top(special var subl last sign last-exp))
+(declare-top(special var subl *last* sign last-exp))
 
 (defun expgam-fun (pw temp)
   (setq temp (get-datum (get-key-var (car var))))
@@ -334,7 +334,7 @@
 			 (if (> 0.0 npw) ()
 			     `(((0 . 1)
 				. ,(prep1 '((mtimes) -1 $%gamma)))))))
-		  (t (setq last (factorial subl))
+		  (t (setq *last* (factorial subl))
 		     `(((,(f- (f1+ subl)) . 1)
 			,(times (^ -1 (f1+ subl))
 				(factorial subl)) . 1))))
@@ -352,10 +352,10 @@
   (declare (fixnum k) )
   (cond ((= subl -1) (cons sign k))
 	((= subl 0) (cons sign 1))
-	(t (prog1 (cons (times sign last) 1)
+	(t (prog1 (cons (times sign *last*) 1)
 		  
-	     (setq last
-		   (*quo (times last (plus subl (add1 k)))
+	     (setq *last*
+		   (*quo (times *last* (plus subl (add1 k)))
 			 (add1 k)))))))
 
 (defun plygam-ord (subl)
@@ -426,7 +426,7 @@
 	       (tsprsum `((mexpt) ,(m+t a '%%taylor-index%%) ,(f- (f1+ sub)))
 			`(%%taylor-index%% 0 ,(f- (f1+ const))) '%sum))))))))
 
-(declare-top(unspecial var subl last sign last-exp))
+(declare-top(unspecial var subl *last* sign last-exp))
 
 ;; Not done correctly
 ;;

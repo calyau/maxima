@@ -6,7 +6,7 @@
 ;;********************************************************
 
 (in-package :maxima)
-(use-package "COMMAND-LINE")
+
 ;;; An ANSI-CL portable initializer to replace init_max1.lisp
 
 ;;; Locations of various types of files. These variables are discussed
@@ -398,7 +398,7 @@
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
 
-(defun user::run ()
+(defun cl-user::run ()
   "Run Maxima in its own package."
   (in-package "MAXIMA")
   (setf *load-verbose* nil)
@@ -414,16 +414,12 @@
       (set-pathnames)
       (setf (values input-stream batch-flag) 
 	    (process-maxima-args input-stream batch-flag))
-      #+(or cmu sbcl clisp allegro mcl)
       (progn
 	(loop 
 	 (with-simple-restart (macsyma-quit "Macsyma top-level")
-	   (macsyma-top-level input-stream batch-flag))))
-      #-(or cmu sbcl clisp allegro mcl)
-      (catch 'macsyma-quit
-	(macsyma-top-level input-stream batch-flag)))))
+	     (macsyma-top-level input-stream batch-flag)))))))
 
-(import 'user::run)
+(import 'cl-user::run)
 
 ($setup_autoload "eigen.mac" '$eigenvectors '$eigenvalues)
 
@@ -466,4 +462,4 @@
 
 (defun $maxima_server (port)
   (load "/home/amundson/devel/maxima/archive/src/server.lisp")
-  (user::setup port))
+  (cl-user::setup port))

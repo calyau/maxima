@@ -743,7 +743,7 @@
 	  (f1- j)))
       ((not (> j 0)))
     (tyo #\space))
-  (if prin1 (funcall prin1 form)
+  (if *prin1* (funcall *prin1* form)
       (prin1 form))
   (tyo #\space))
 

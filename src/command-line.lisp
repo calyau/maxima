@@ -18,11 +18,12 @@
 ;;;; write to the Free Software Foundation, Inc., 59 Temple Place -
 ;;;; Suite 330, Boston, MA 02111-1307, USA.
 
-(defpackage "COMMAND-LINE"
-  (:use "COMMON-LISP")
-  (:nicknames "CMDLINE")
-  (:export "CL-OPTION" "MAKE-CL-OPTION" "LIST-CL-OPTIONS" "PROCESS-ARGS"
-	   "GET-APPLICATION-ARGS"))
+;; Defined in maxima-package.
+;; (defpackage "COMMAND-LINE"
+;;   (:use "COMMON-LISP")
+;;   (:nicknames "CMDLINE")
+;;   (:export "CL-OPTION" "MAKE-CL-OPTION" "LIST-CL-OPTIONS" "PROCESS-ARGS"
+;; 	   "GET-APPLICATION-ARGS"))
 
 (in-package "COMMAND-LINE")
 

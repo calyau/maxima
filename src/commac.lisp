@@ -24,7 +24,7 @@
 
     )
 
-(defvar prin1 nil)		  ;a function called instead of prin1.
+(defvar *prin1* nil)		  ;a function called instead of prin1.
 
 (eval-when
     #+gcl (load compile eval)
@@ -125,7 +125,7 @@
 ;; subtypep, as appropriate.
 (defun maclisp-typep (x &optional type)
   (cond (type
-	 (lisp:let ((pred (get type 'ml-typep)))
+	 (cl:let ((pred (get type 'ml-typep)))
 	   (cond (pred
 		  (funcall pred x))
 		 (t (typep x type)))))
@@ -149,7 +149,7 @@
 (defprop array arrayp ml-typep)
 (defprop atom  atom ml-typep)
 
-#+cmu (shadow '(lisp::compiled-function-p) (find-package "MAXIMA"))
+#+cmu (shadow '(cl:compiled-function-p) (find-package "MAXIMA"))
 #+cmu (defun compiled-function-p (x)
 	(and (functionp x) (not (symbolp x))
 	     (not (eval:interpreted-function-p x))))
@@ -709,9 +709,18 @@ values")
 
 
 ;;Some systems make everything functionp including macros:
-#+shadow-functionp
 (defun functionp (x)
   (cond ((symbolp x)
 	 (and (not (macro-function x))
 	      (fboundp x) t))
-	((lisp::functionp x))))
+	 ((cl:functionp x))))
+
+;; These symbols are shadowed because we use them also as special
+;; variables.
+(deff break #'cl:break)
+(deff gcd #'cl:gcd)
+
+#+(and sbcl sb-package-locks)
+(defun makunbound (sym)
+  (sb-ext:without-package-locks
+      (cl:makunbound sym)))

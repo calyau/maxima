@@ -45,7 +45,7 @@
 	  cntly newline dskfnp dsksavep *rset cntl@
 	  ^w ^r ^q ^d lf tab ff cntlc alt batconl cr vt ^h ^s bsp
 	  $values $functions $arrays $aliases $gradefs $dependencies
-	  $rules $props $ratvars $ratvarswitch debug errbrksw errcatch
+	  $rules $props $ratvars $ratvarswitch *mdebug* errbrksw errcatch
 	  varlist genvar $device $filename $filenum lbp rbp
 	  $gensumnum checkfactors $features featurel $backtrace
 	  $weightlevels tellratlist $dontfactor $infolists loadfiles
@@ -115,7 +115,7 @@
        (setq $lasttime '((mlist) 0 0) thistime 0 gct 0 gcflag nil
 	     $parsetime nil $disptime nil mexprp nil)
        (setq batconl nil $batcount 0 $batchkill nil $strdisp t $grind nil)
-       (setq refchkl nil debug nil baktrcl nil errbrksw nil mbreak nil $errorfun nil
+       (setq refchkl nil *mdebug* nil baktrcl nil errbrksw nil mbreak nil $errorfun nil
 	     errcatch nil demonl (list nil) mcatch nil brklvl -1
 	     allbutl nil loadf nil $backtrace '$backtrace)
        (setq *in-$batchload* nil *in-translate-file* nil)
@@ -581,7 +581,7 @@
   ;; #+MACLISP (SETQ DEBUG (COND (Y (*RSET T) Y) (T (*RSET NIL))))
   ;; #+Franz   (prog2 (setq debug y) (debugging y))
   #+akcl (if (eq y '$lisp) (si::use-fast-links y))
-  #+cl  (setq debug (setq *rset y)))
+  #+cl  (setq *mdebug* (setq *rset y)))
 
 #+cl
 (defun retrieve1 (a b &aux (eof '(nil)))
@@ -604,7 +604,7 @@
 #-nil
 (defmfun errbreak (y)		       ; The ERRSET interrupt function
   (cond
-    (debug
+    (*mdebug*
      ((lambda (brklvl varlist genvar errbrkl linelable)
 	(declare (special $help))
 	(prog (x ^q #.ttyoff o^r  ;#+MACLISP ERRSET #+LISPM ERROR-CALL
@@ -1026,7 +1026,7 @@
 	      (setq truename (truename savefile))
 	      (terpri savefile))
 	    (if maxima-error (let ((errset 'errbreak1)) (merror "Error in STRINGOUT attempt")))
-	    (lisp::namestring truename)))
+	    (cl:namestring truename)))
 (defmspec $labels (char)
   (setq char (fexprcheck char))
   (nonsymchk char '$labels)
@@ -1068,7 +1068,7 @@
   (let ((char (getcharn label 2))) (if (char= char #\%) (getcharn label 3) char)))
 (defmspec $errcatch (form)
   (let ((errcatch (cons bindlist loclist)) ret)
-    (if (null (setq ret (let (debug)
+    (if (null (setq ret (let (*mdebug*)
 			  (errset (mevaln (cdr form)) lisperrprint))))
 	(errlfun1 errcatch))
     (cons '(mlist) ret)))
@@ -1120,7 +1120,7 @@
 	    (defmfun $quit () 
 	      nil 
 	      (princ *maxima-epilog*)
-	      #+kcl (bye) 
+  #+kcl (lisp::bye) 
 	      #+cmu (ext:quit) 
 	      #+sbcl (sb-ext:quit) 
 	      #+clisp (ext:quit) 

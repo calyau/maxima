@@ -37,7 +37,7 @@
   (case (ml-typep x)
     (array (array-element-type x))
     (hash-table 'hash-table)
-    (lisp::array  (princ "confusion over array and lisp::array")
+    (cl:array  (princ "confusion over ARRAY and CL:ARRAY")
 		  (array-element-type x))
     (otherwise
  

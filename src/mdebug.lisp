@@ -518,9 +518,9 @@
 (defun break-function (fun &optional (li 0)  absolute  &aux i tem info form
 		       fun-line
 		       )
-  (unless debug
+  (unless *mdebug*
     (format t "~&Turning on debugging debugmode(true)")
-    (setq debug t))
+    (setq *mdebug* t))
   (cond ((or (stringp fun)
 	     (and (mstringp fun) (setq fun ($sconcat fun))))
 	 (let ((file fun)  start)

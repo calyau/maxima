@@ -75,7 +75,7 @@
 
 #+cl
 (defun maset1 ( val ar  &rest inds &aux  )
-  (lisp:let
+  (cl:let
       ((.type. (#. *primitive-data-type-function*  ar)))
     (cond
       ((one-of-types .type. (make-array 3))

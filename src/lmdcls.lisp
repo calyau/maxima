@@ -22,8 +22,8 @@
 
 #+gcl
 (progn 
-  (clines "#define MAKE_UNSPECIAL(x) (check_type_symbol(&(x)),(x)->s.s_stype = stp_ordinary, Cnil)")
-  (defentry make-unspecial (object) (object "MAKE_UNSPECIAL")))
+  (lisp:clines "#define MAKE_UNSPECIAL(x) (check_type_symbol(&(x)),(x)->s.s_stype = stp_ordinary, Cnil)")
+  (lisp:defentry make-unspecial (lisp:object) (lisp:object "MAKE_UNSPECIAL")))
 
 
 (defmacro declare-top (&rest decl-specs)
@@ -115,7 +115,7 @@
   -sqrt2//2 -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
   aliaslist alpha alphabet arrays aryp assigns atp atvars baktrcl
   bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
-  bigprimes bindlist bvars casep debug
+  bigprimes bindlist bvars casep *mdebug*
   declares defined_variables defintdebug derivflag derivlist
   derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
   dumping envlist errorsw errrjfflag evarrp evp expandflag expandp
