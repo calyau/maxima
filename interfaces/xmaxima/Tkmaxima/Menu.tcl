@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.5 2002-09-13 17:28:35 mikeclarkson Exp $
 #
 
 proc vMAXAddSystemMenu {fr text} {
@@ -39,6 +39,19 @@ proc vMAXAddSystemMenu {fr text} {
 	}]]
     bind $text <Control-Key-o> $command
 
+    $m add separator
+    $m add command -underline 0 \
+	-label [set label {Save Expressions to File}] \
+	-accel {Ctrl+s} \
+	-command [set command [cIDECreateEvent $text $label {
+	    set file [tide_savefile [M "Save to a file"] "" *.bin]
+	    if {$file != ""} {
+		sendMaxima $maxima_priv(cConsoleText) "SAVE(\"$file,ALL\")\$\n"
+	    }
+	}]]
+    bind $text <Control-Key-s> $command
+
+
     $m add sep
     $m add command -underline 0 \
 	-label {Interrupt} \
@@ -49,7 +62,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [list runOneMaxima $text]
 
     $m add separator
-    $m add command -underline 0 \
+    $m add command -underline 1 \
 	-label {Exit} \
 	-command [list vMAXExit $text]
 
@@ -58,14 +71,17 @@ proc vMAXAddSystemMenu {fr text} {
     .menu add cascade -label Edit -menu $m
 
     $m add command -underline 0 \
+	-state disabled \
 	-label {Copy} \
 	-accel {Ctrl+c} \
 	-command [list event generate $text <<Copy>>]
     $m add command -underline 0 \
+	-state disabled \
 	-label {Cut} \
 	-accel {Ctrl+x} \
 	-command [list event generate $text <<Cut>>]
     $m add command -underline 0 \
+	-state disabled \
 	-label {Paste} \
 	-accel {Ctrl+v} \
 	-command [list event generate $text <<Paste>>]
@@ -77,6 +93,21 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 0 -label {Clear input} \
 	-accel {Ctrl+u} \
 	-command [list CNclearinput $text]
+    $m add separator
+    $m add command -underline 0 -label {Save Console to File} \
+	-command {
+	    set file [tide_savefile [M "Save to a file"] "" *.out]
+	    if {$file != ""} {
+		set text $maxima_priv(cConsoleText)
+		set contents [$text get 1.0 end]
+		set fd [open $file w]
+		if {[catch {puts $fd $contents} err]} {
+		    tide_failure [M "Error writing to file:\n%s" $err]
+		}
+		catch {close $fd}
+	    }
+	}
+
 
     # Add a Options menubutton
     set m [menu .menu.options -tearoff 0]
