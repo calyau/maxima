@@ -506,6 +506,7 @@ tensor/ctensor1.dem\
 tensor/ctensor2.dem\
 tensor/ctensor3.dem\
 tensor/ctensor4.dem\
+tensor/ctensor5.dem\
 tensor/ctensor6.dem\
 tensor/ctensor7.dem\
 tensor/ex_calc.dem\

@@ -966,17 +966,17 @@ christof(dis):=block
           if diagmetric then ratsimp(_ug()[k,k]*lcs[i,j,k])
           else sum(_ug()[k,l]*lcs[i,j,l],l,1,dim)
         ),
+        if ratchristof then mcs[j,i,k]:mcs[i,j,k]:ratsimp(mcs[i,j,k]),
         if ctorsion_flag then
         (
           mcs[i,j,k]:mcs[i,j,k]-kt[i,j,k],
-          mcs[j,i,k]:mcs[j,i,k]-kt[j,i,k]
+          if j#i then mcs[j,i,k]:mcs[j,i,k]-kt[j,i,k]
         ),
         if cnonmet_flag then
         (
           mcs[i,j,k]:mcs[i,j,k]-nmc[i,j,k],
-          mcs[j,i,k]:mcs[j,i,k]-nmc[j,i,k]
-        ),
-        if ratchristof then mcs[j,i,k]:mcs[i,j,k]:ratsimp(mcs[i,j,k])
+          if j#i then mcs[j,i,k]:mcs[j,i,k]-nmc[j,i,k]
+        )
       )
     )
   ),
