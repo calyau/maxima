@@ -205,9 +205,6 @@
 	 )
       tem)))
 
-(defun get-match (string i)
-  (subseq string (match-beginning i) (match-end i)))
-
 (defun string-concatenate (&rest strings)
   (apply #'concatenate 'string strings))
 
