@@ -464,8 +464,8 @@ setrgbcolor} def
 ;; which is closer to us (ie highest z component after rotating towards the user)
 ;; and this is then they are sorted in groups of 5.   
 (defun sort-ngons (points edges n &aux lis )
-  (declare (type (array (double-float))  points)
-	   (type (array (mod 65000)) edges)
+  (declare (type (cl:array (double-float))  points)
+	   (type (cl:array (mod 65000)) edges)
 	   (fixnum n))
   (let ((new (make-array (length edges) :element-type  (array-element-type edges)))
 	(i 0)
@@ -475,7 +475,7 @@ setrgbcolor} def
 	(at 0)
 	(leng (length edges))
 	)
-    (declare (type (array (mod 65000)) new)
+    (declare (type (cl:array (mod 65000)) new)
 	     (fixnum i leng n1 at )
 	     )
     (declare (double-float z z1))
@@ -544,7 +544,7 @@ setrgbcolor} def
 (defun $copy_pts(lis vec start)
   (declare (fixnum start))
   (let ((tem vec))
-    (declare (type (array double-float) tem))
+    (declare (type (cl:array double-float) tem))
     (cond ((numberp lis)
 	   (or (typep lis 'double-float) (setq lis (float lis 0.0)))
 	   (setf (aref tem start) lis)
@@ -1385,7 +1385,7 @@ setrgbcolor} def
 		       (nth 3 grid)))
 	   (ar (polygon-pts pl)) tem
 	   )
-      (declare (type (array double-float) ar))
+      (declare (type (cl:array double-float) ar))
 
       (if trans  (mfuncall trans ar))
       (if (setq tem  ($get_plot_option '$transform_xy 2)) (mfuncall tem ar))
