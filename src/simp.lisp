@@ -2065,6 +2065,12 @@
 		   (mul2 prods (list '(mexpt simp) expnegsums -1))) t))))))
 
 (defmfun expand1 (exp $expop $expon)
+  (when (not (and (integerp $expop)
+		  (> $expop -1)))
+    (merror "Maxposex must be a non-negative-integer: ~%~M" $expop))
+  (when (not (and (integerp $expon)
+		  (> $expon -1)))
+    (merror "Maxnegex must be a non-negative-integer: ~%~M" $expon))
   (ssimplifya (specrepcheck exp)))
 
 ;; When the arg-count checking code is implemented ...
