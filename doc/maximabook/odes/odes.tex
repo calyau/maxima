@@ -591,8 +591,8 @@ yp;
 
 \subsubsection{Using \texttt{desolve}}
 
-Maxima can solve systems of ordinary differential equation using the 
-\texttt{desolve} command. The differential
+Maxima can solve systems of linear ordinary differential equation
+using the  \texttt{desolve} command. The differential
 equations must be given using functional notation, rather than with
 dependent variables; i.e., \texttt{diff(y(x),x)} would have to be used
 rather than \texttt{diff(y,x)} to denote the derivative.  
@@ -661,7 +661,9 @@ desolve([de1,de2],[f(x),g(x)]);
 \subsubsection{\texttt{desolve} Method}
 
 The \texttt{desolve} routine uses the LaPlace transform to solve the
-systems of differential equations.
+systems of differential equations, and as such works best with linear
+systems. 
+
 If $f(t)$ is defined for all $t \ge 0$, then the LaPlace transform of
 $f$ is given by $F(s)={\cal L}\{f(t)\} = \int_0^\infty
 e^{-st}f(t)\textrm{d}t$.   The LaPlace transform has the useful
