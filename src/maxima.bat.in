@@ -13,7 +13,7 @@ set arg9=%9
 
 set lisp=@DEFAULTLISP@
 set version=@VERSION@
-set prefix=@prefix@
+set prefix="@prefix@"
 set package=@PACKAGE@
 set verbose=false
 
