@@ -1392,7 +1392,7 @@
 ;; F(a,b;c;w) = 2^(c-1)*gamma(c)*(-w)^((1-c)/2)*P(c-2*b-1,1-c,sqrt(1-w))
 ;;
 ;;
-;; FIXME:  We don't correctly handle the branch cut here!
+#+nil
 (defun legf20 (arg-l1 arg-l2 var)
   (let* ((b (cadr arg-l1))
 	 (c (car arg-l2))
@@ -1407,6 +1407,42 @@
 		m
 		(power (sub 1 var) (inv 2))
 		'$p))))
+
+(defun legf20 (arg-l1 arg-l2 var)
+  (let* (($radexpand nil)
+	 (b (cadr arg-l1))
+	 (c (car arg-l2))
+	 (a (sub (sub c b) (inv 2)))
+	 (m (sub 1 c))
+	 (n (mul -1 (add b b m))))
+    ;; m = 1 - c
+    ;; n = -(2*b+1-c) = c - 1 - 2*b
+    (cond ((and (eq (asksign var) '$positive)
+		(eq (asksign (sub 1 var)) '$positive))
+	   ;; A&S 15.4.13
+	   ;;
+	   ;; F(a,b;a+b+1/2;x) = 2^(a+b-1/2)*gamma(a+b+1/2)*x^((1/2-a-b)/2)
+	   ;;                     *assoc_legendre_p(a-b-1/2,1/2-a-b,sqrt(1-x))
+	   ;;
+	   (mul (power 2 (add a b (inv -2)))
+		(gm (add a b (inv 2)))
+		(power var
+		       (div (sub (inv 2) (add a b))
+			    2))
+		(legen n
+		       m
+		       (power (sub 1 var) (inv 2))
+		       '$p)))
+	  (t
+	   (mul (power 2 (add a b (inv -2)))
+		(gm (add a b (inv 2)))
+		(power (mul -1 var)
+		       (div (sub (inv 2) (add a b))
+			    2))
+		(legen n
+		       m
+		       (power (sub 1 var) (inv 2))
+		       '$p))))))
 
 ;; Handle the case a-b = -1/2.
 ;;
@@ -1430,6 +1466,7 @@
 ;; Is there a mistake in 15.4.10 and 15.4.11?
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
+#+nil
 (defun legf24 (arg-l1 arg-l2 var)
   (let* ((a (car arg-l1))
 	 (c (car arg-l2))
@@ -1445,6 +1482,37 @@
 		m
 		z
 		'$p))))
+
+(defun legf24 (arg-l1 arg-l2 var)
+  (let* (($radexpand nil)
+	 (a (car arg-l1))
+	 (c (car arg-l2))
+	 (m (sub 1 c))
+	 (n (mul -1 (add a a m)))
+	 (z (inv (power (sub 1 var) (inv 2)))))
+    ;; A&S 15.4.10, 15.4.11
+    (cond ((eq (asksign var) '$negative)
+	   ;; A&S 15.4.11
+	   ;;
+	   ;; F(a,a+1/2;c;x) = 2^(c-1)*gamma(c)(-x)^(1/2-c/2)*(1-x)^(c/2-a-1/2)
+	   ;;                   *assoc_legendre_p(2*a-c,1-c,1/sqrt(1-x))
+	   (mul (inv (power 2 m))
+		(gm (sub 1 m))
+		(power (mul -1 var) (div m 2))
+		(power (sub 1 var) (sub (div m -2) a))
+		(legen n
+		       m
+		       z
+		       '$p)))
+	  (t
+	   (mul (inv (power 2 m))
+		(gm (sub 1 m))
+		(power var (div m 2))
+		(power (sub 1 var) (sub (div m -2) a))
+		(legen n
+		       m
+		       z
+		       '$p))))))
 
 
 

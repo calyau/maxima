@@ -211,23 +211,27 @@ assoc_legendre_p(-a, 1-c, 1-2*z1)$
  *
  * Test for legf24 function.
  */
-radcan(hgfred([a,a+1/2],[c],z)*2^(1-c)*z^(c/2-1/2)*(1-z)^(1/2+a-c/2)/gamma(c));
+assume(zg1 > 1);
+[zg1 > 1];
+radcan(hgfred([a,a+1/2],[c],zg1)*2^(1-c)*zg1^(c/2-1/2)*(1-zg1)^(1/2+a-c/2)/gamma(c));
 /* Use A&S 8.2.1 to get this */
-assoc_legendre_p(c-2*a-1,1-c,1/sqrt(1-z))$
+assoc_legendre_p(c-2*a-1,1-c,1/sqrt(1-zg1))$
 
-2^u*(z^2-1)^(-u/2)*z^(v+u)/gamma(1-u)*hgfred([-v/2-u/2,1/2-v/2-u/2],[1-u],1-1/z^2);
-assoc_legendre_p(v,u,z)$
+radcan(2^u*(zg1^2-1)^(-u/2)*zg1^(v+u)/gamma(1-u)*hgfred([-v/2-u/2,1/2-v/2-u/2],[1-u],1-1/zg1^2));
+assoc_legendre_p(v,u,zg1)$
 
 /* A&S 15.4.12
  *
  * F(a,b;a+b+1/2;z) = 2^(a+b-1/2)*gamma(a+b+1/2)*(-z)^(1/2-a-b)*P(a-b-1/2,1/2-a-b,sqrt(1-z))
  * Test for legf20 function.
  */
-expand(ratsimp(2^(1/2-a-b)*(-x)^(1/2*(a+b-1/2))/gamma(a+b+1/2)*hgfred([a,b],[a+b+1/2],x)));
-assoc_legendre_p(-b+a-1/2,1/2-a-b,sqrt(1-x))$
+assume(x2>1);
+[x2 > 1]$
+expand(ratsimp(2^(1/2-a-b)*(-x2)^(1/2*(a+b-1/2))/gamma(a+b+1/2)*hgfred([a,b],[a+b+1/2],x2)));
+assoc_legendre_p(-b+a-1/2,1/2-a-b,sqrt(1-x2))$
 
-2^m*(z^2-1)^(-m/2)/gamma(1-m)*hgfred([1/2+n/2-m/2, -n/2-m/2], [1-m], 1-z^2);
-assoc_legendre_p(n,m,z)$
+2^m*(z1^2-1)^(-m/2)/gamma(1-m)*hgfred([1/2+n/2-m/2, -n/2-m/2], [1-m], 1-z1^2);
+assoc_legendre_p(n,m,z1)$
 
 /*
  * Formula 36:

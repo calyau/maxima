@@ -381,7 +381,7 @@ true$
 
 radcan(specint(t^u*bessel_j(v,a*t)*exp(-p*t),t));
 assoc_legendre_p(-u-1,-v,p/sqrt(p^2+a^2))*gamma(v+u+1)
-	/((p^2+a^2)^((u+1)/2)*(-1)^(v/2))$
+	/((p^2+a^2)^((u+1)/2))$
 
 /*
  * (25)
