@@ -30,17 +30,24 @@
 
 ;;(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
 
+;; Gamma function
 (defun gm (expr)
   (simplifya (list '(%gamma) expr) nil))
 
-(defun sin%(arg)(list '(%sin) arg))
+;; sin(x)
+(defun sin% (arg)
+  (list '(%sin) arg))
 
-(defun nump
-    (x)
-  (cond ((atom x)(numberp x))
-	((not (atom x))(eq (caar (simplifya x nil)) 'rat))))
+;; Test if X is a number, either Lisp number or a maxima rational.
+(defun nump (x)
+  (cond ((atom x)
+	 (numberp x))
+	((not (atom x))
+	 (eq (caar (simplifya x nil)) 'rat))))
 
-(defun cos%(arg)(list '(%cos) arg))
+;; cos(x)
+(defun cos% (arg)
+  (list '(%cos) arg))
 
 ;; Return T if a is a non-positive integer.
 ;; (Do we really want maxima-integerp or hyp-integerp here?)
@@ -48,19 +55,23 @@
   (cond ((maxima-integerp a)
 	 (or (zerp a) (minusp a)))))
 
-(defun notnump(x)(not (nump x)))
+(defun notnump (x)
+  (not (nump x)))
 
-(defun negnump
-    (x)
+#+nil
+(defun negnump (x)
   (cond ((not (maxima-integerp x))
 	 (minusp (cadr (simplifya x nil))))
 	(t (minusp x))))
 
 
+;; Test if EXP is 1 or %e.
+(defun expor1p (exp)
+  (or (equal exp 1)
+      (eq exp '$%e)))
 
-(defun expor1p(exp)(or (equal exp 1)(eq exp '$%e)))
-
-(defun parp(a)(eq a *par*))
+(defun parp (a)
+  (eq a *par*))
 
 
 
@@ -133,11 +144,9 @@
 	((coeffpp) (a zerp)))
       nil))
 
-;;...AMONG GARBAGE RECOGNIZES J[V1](W1)*J[V2](W2)
 
-
-(defun twoj
-    (exp)
+;; Recognize bessel_j(v1,w1)*bessel_j(v2,w2)
+(defun twoj (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -147,8 +156,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun twoy
-    (exp)
+;; Recognize bessel_y(v1,w1)*bessel_y(v2,w2)
+(defun twoy (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -158,8 +167,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun twok
-    (exp)
+;; Recognize bessel_k(v1,w1)*bessel_k(v2,w2)
+(defun twok (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -169,8 +178,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun onekoney
-    (exp)
+;; Recognize bessel_k(v1,w1)*bessel_y(v2,w2)
+(defun onekoney (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -180,11 +189,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;;...AMONG GARBAGE RECOGNIZES J[V](W)^2.
-
-
-(defun onej^2
-    (exp)
+;; Recognize bessel_j(v,w)^2
+(defun onej^2 (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -195,8 +201,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun oney^2
-    (exp)
+;; Recognize bessel_y(v,w)^2
+(defun oney^2 (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -207,8 +213,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun onek^2
-    (exp)
+;; Recognize bessel_k(v,w)^2
+(defun onek^2 (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -219,8 +225,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun onei
-    (exp)
+;; Recognize bessel_i(v,w)
+(defun onei (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -229,8 +235,8 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun twoi
-    (exp)
+;; Recognize bessel_i(v1,w1)*bessel_i(v2,w2)
+(defun twoi (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -240,6 +246,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize %h[v1,v11](w1)*%h[v2,v21](w2), the product of 2 Hankel
+;; functions.
 (defun twoh
     (exp)
   (m2 exp
@@ -255,8 +263,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun oneyonej
-    (exp)
+;; Recognize bessel_y(v1,w1)*bessel_j(v2,w2)
+(defun oneyonej (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -266,8 +274,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun onekonej
-    (exp)
+;; Recognize bessel_k(v1,w1)*bessel_j(v2,w2)
+(defun onekonej (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -277,8 +285,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-(defun oneyoneh
-    (exp)
+;; Recognize bessel_y(v1,w1)*%h[v2,v21](w2)
+(defun oneyoneh (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -290,6 +298,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize bessel_k(v1,w1)*%h[v2,v21](w2)
 (defun onekoneh
     (exp)
   (m2 exp
@@ -303,6 +312,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize bessel_i(v1,w1)*bessel_j(v2,w2)
 (defun oneionej
     (exp)
   (m2 exp
@@ -314,6 +324,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize bessel_i(v1,w1)*%h[v2,v21](w2)
 (defun oneioneh
     (exp)
   (m2 exp
@@ -327,6 +338,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize %h[v1,v11](w1)*bessel_j(v2,w2)
 (defun onehonej
     (exp)
   (m2 exp
@@ -910,7 +922,8 @@
 	(power 2 v)
 	(power a (div v 2))
 	(power '$%e (mul* a *par* *par*))
-	(dtford (mul* 2 *par* (power a (1//2)))(mul -1 v))))
+	(dtford (mul* 2 *par* (power a (1//2)))
+		(mul -1 v))))
 
 ;; Table of Integral Transforms
 ;;
@@ -947,19 +960,22 @@
 ;; bessel_k(v, sqrt(a)*sqrt(p)) in terms of bessel_k or in terms of
 ;; hypergeometric functions.
 ;;
-;; Choose bessel_k if the order v is an integer.
+;; Choose bessel_k if the order v is an integer.  (Why?)
 (defun ktfork (a v)
-  ((lambda(z)
-     (cond ((maxima-integerp v)
-	    (kmodbes z v))
-	   (t (simpktf z v))))
-   (power (mul* a *par*)(1//2))))
+  (let ((z (power (mul* a *par*) (1//2))))
+    (cond ((maxima-integerp v)
+	   (kmodbes z v))
+	  (t
+	   (simpktf z v)))))
 
 ;; Express a parabolic cylinder function as either a parabolic
 ;; cylinder function or as hypergeometric function.
 ;;
-;; D[v](z) = 2^(v/2+1/2)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
-;; 
+;; Tables of Integral Transforms, p. 386 gives this definition:
+;;
+;; D[v](z) = 2^(v/2+1/4)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
+;;
+#+nil
 (defun dtford (z v)
   (cond (((lambda(inv4)
 	    (whittindtest (add (div v 2) inv4) inv4))
@@ -967,61 +983,87 @@
 	 (parcyl z v))
 	(t (simpdtf z v))))
 
+(defun dtford (z v)
+  (let ((inv4 (inv 4)))
+    (cond ((whittindtest (add (div v 2) inv4) inv4)
+	   (parcyl z v))
+	  (t (simpdtf z v)))))
+
 
 ;; Express parabolic cylinder function as a hypergeometric function.
-(defun simpdtf
-    (z v)
-  ((lambda(inv2 pow)
-     (add (mul* (power 2 (div (sub v 1) 2))
-		z
-		(gm (inv -2))
-		(inv (gm (mul* v -1 inv2)))
-		pow
-		(hgfsimp-exec (list (sub inv2
-					 (div v
-					      2)))
-			      (list (div 3 2))
-			      (mul* z z inv2)))
-	  (mul* (power 2 (div v 2))
-		(gm inv2)
-		pow
-		(inv (gm (sub inv2 (mul v inv2))))
-		(hgfsimp-exec (list (mul* v
-					  -1
-					  inv2))
-			      (list inv2)
-			      (mul* z z inv2)))))
-   (1//2)
-   (power '$%e (mul* z z (inv -4)))))
+;;
+;; A&S 19.3.1 says
+;;
+;; U(a,x) = D[-a-1/2](x)
+;;
+;; and A&S 19.12.3 gives
+;;
+;; U(a,+/-x) = sqrt(%pi)*2^(-1/4-a/2)*exp(-x^2/4)/gamma(3/4+a/2)*M(a/2+1/4,1/2,x^2/2)
+;;              -/+ sqrt(%pi)*2^(1/4-a/2)*x*exp(-x^2/4)/gamma(1/4+a/2)*M(a/2+3/4,3/2,x^2/2)
+;;
+;; So
+;;
+;; D[v](z) = U(-v-1/2,z)
+;;         = sqrt(%pi)*2^(v/2+1/2)*x*exp(-x^2/4)*M(1/2-v/2,3/2,x^2/2)/gamma(-v/2)
+;;             + sqrt(%pi)*2^(v/2)*exp(-x^2/4)/gamma(1/2-v/2)*M(-v/2,1/2,x^2/2)
+;;
+(defun simpdtf (z v)
+  (let ((inv2 (1//2))
+	(pow (power '$%e (mul* z z (inv -4)))))
+    (add (mul* (power 2 (div (sub v 1) 2))
+	       z
+	       (gm (inv -2))
+	       (inv (gm (mul* v -1 inv2)))
+	       pow
+	       (hgfsimp-exec (list (sub inv2
+					(div v
+					     2)))
+			     (list (div 3 2))
+			     (mul* z z inv2)))
+	 (mul* (power 2 (div v 2))
+	       (gm inv2)
+	       pow
+	       (inv (gm (sub inv2 (mul v inv2))))
+	       (hgfsimp-exec (list (mul* v
+					 -1
+					 inv2))
+			     (list inv2)
+			     (mul* z z inv2))))))
 
-(defun simpktf
-    (z v)
-  ((lambda(dz2)
-     (mul* '$%pi
-	   (1//2)
-	   (inv (sin% (mul v '$%pi)))
-	   (sub (mul* (power  dz2 (mul -1 v))
-		      (inv (gm (sub 1 v)))
-		      (hgfsimp-exec nil
-				    (list (sub 1
-					       v))
-				    (mul* z
-					  z
-					  (inv 4))))
-		(mul* (power dz2 v)
-		      (inv (gm (add v 1)))
-		      (hgfsimp-exec nil
-				    (list (add v
-					       1))
-				    (mul* z
-					  z
-					  (inv 4)))))))
-   (div z 2))) 
-;;dispatches according to the special functions involved in the laplace transformable expression
+;; Express the Bessel K function in terms of hypergeometric functions.
+;;
+;; K[v](z) = %pi/2*(bessel_i(-v,z)-bessel(i,z))/sin(v*%pi)
+;;
+;; and
+;;
+;; bessel_i(v,z) = (z/2)^v/gamma(v+1)*0F1(;v+1;z^2/4)
+(defun simpktf (z v)
+  (let ((dz2 (div z 2)))
+    (mul* '$%pi
+	  (1//2)
+	  (inv (sin% (mul v '$%pi)))
+	  (sub (mul* (power  dz2 (mul -1 v))
+		     (inv (gm (sub 1 v)))
+		     (hgfsimp-exec nil
+				   (list (sub 1
+					      v))
+				   (mul* z
+					 z
+					 (inv 4))))
+	       (mul* (power dz2 v)
+		     (inv (gm (add v 1)))
+		     (hgfsimp-exec nil
+				   (list (add v
+					      1))
+				   (mul* z
+					 z
+					 (inv 4))))))))
 
-(defun lt-sf-log
-    (u)
-  (prog(l index1 index11 index2 index21 arg1 arg2 rest)
+;; Dispatches according to the special functions involved in the
+;; Laplace transformable expression
+
+(defun lt-sf-log (u)
+  (prog (l index1 index11 index2 index21 arg1 arg2 rest)
      (cond ((setq l (twoj u))
 	    (setq index1
 		  (cdras 'v1 l)
