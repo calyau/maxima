@@ -340,14 +340,18 @@ or FALSE) to be evaluated.
 @c @node RANDOM
 @c @unnumberedsec phony
 @defun RANDOM (X)
-returns a random integer between 0 and X-1.  If no
-argument is given then a random integer between -2^(29) and 2^(29) -1
-is returned.  If X is FALSE then the random sequence is restarted from
-the beginning.
-Note that the range of the returned result when no argument is given
-differs in NIL MACSYMA from that of PDP-10 and Multics MACSYMA, which
-is -2^(35) to 2^(35) -1.  This range is the range of the FIXNUM
-datatype of the underlying LISP.
+Returns a pseudorandom number. If X is an integer, RANDOM (X) returns an
+integer from 0 through X-1 inclusive. If X is a floating point number,
+RANDOM (X) returns a nonnegative floating point number less than X.
+RANDOM complains with an error if X is neither an integer nor a float,
+or if X is not positive.
+
+Maxima RANDOM calls the Lisp function RANDOM. Different Lisp 
+implementations may use different pseudorandom number generators.
+The state of the generator is not directly accessible from Maxima,
+although it can be accessed from the Lisp prompt using the Lisp
+functions MAKE-RANDOM-STATE and RANDOM, and the global variable
+*RANDOM-STATE*.
 
 @end defun
 @c @node SIGN
