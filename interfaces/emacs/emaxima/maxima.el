@@ -401,12 +401,6 @@ This doesn't include answers to questions.")
 	      (setq result nil))))
     result))
 
-(defun maxima-in-sharp-comment-line-p ()
-  "Non-nil means that the point is in a comment line beginning with a sharp"
-  (save-excursion
-    (beginning-of-line)
-    (looking-at "[ \t]*#")))
-
 (defun maxima-paren-opens-block-p ()
   "Non-nil means that opening parenthesis begins a \"block\" statement."
   (save-excursion
@@ -591,9 +585,6 @@ or nil."
       (cond ((looking-at "/\\*")
              (if (not (search-forward "*/" nil t ))
                  (setq ok nil)))
-	    ((looking-at "\n[\t ]*#")
-	     (forward-line 1)
-	     (end-of-line))
 	    ((looking-at "\n")
 	     (forward-char 1))
 	    (t  (setq ok nil))))))
@@ -1662,27 +1653,57 @@ To get apropos with the symbol under point, use:
   "Check to see if the Maxima process has halted"
   (not (maxima-running)))
 
-(defun maxima-strip-string-end (string)
-  "Remove any spaces, tabs or newlines at the end of the string"
-  (while (and
-          (> (length string) 0)
-          (or
-           (string= "\n" (substring string -1))
-           (string= "\t" (substring string -1))
-           (string= " " (substring string -1))))
-    (setq string (substring string 0 -1)))
-  string)
-
 (defun maxima-strip-string-beginning (string)
-  "Remove any spaces, tabs or newlines at the beginning of the string"
-  (while (and 
-          (> (length string) 0)
-          (or
-           (string= "\n" (substring string 0 1))
-           (string= "\t" (substring string 0 1))
-           (string= " " (substring string 0 1))))
-    (setq string (substring string 1)))
-  string)
+  (let* ((tmpfile (maxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (out))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (make-local-hook 'kill-buffer-hook)
+      (setq kill-buffer-hook nil)
+      (insert string)
+      (beginning-of-buffer)
+      (maxima-forward-over-comment-whitespace)
+      (setq out (buffer-substring-no-properties (point) (point-max))))
+    (kill-buffer tmpbuf)
+    out))
+
+(defun maxima-strip-string-end (string)
+  (let* ((tmpfile (maxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (out))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (make-local-hook 'kill-buffer-hook)
+      (setq kill-buffer-hook nil)
+      (insert string)
+      (end-of-buffer)
+      (maxima-back-over-comment-whitespace)
+      (setq out (buffer-substring-no-properties (point-min) (point))))
+    (kill-buffer tmpbuf)
+    out))
+
+;; (defun maxima-strip-string-end (string)
+;;   "Remove any spaces, tabs or newlines at the end of the string"
+;;   (while (and
+;;           (> (length string) 0)
+;;           (or
+;;            (string= "\n" (substring string -1))
+;;            (string= "\t" (substring string -1))
+;;            (string= " " (substring string -1))))
+;;     (setq string (substring string 0 -1)))
+;;   string)
+
+;; (defun maxima-strip-string-beginning (string)
+;;   "Remove any spaces, tabs or newlines at the beginning of the string"
+;;   (while (and 
+;;           (> (length string) 0)
+;;           (or
+;;            (string= "\n" (substring string 0 1))
+;;            (string= "\t" (substring string 0 1))
+;;            (string= " " (substring string 0 1))))
+;;     (setq string (substring string 1)))
+;;   string)
 
 (defun maxima-strip-string (string)
   "Remove any spaces, tabs or newlines at the beginning and end of the string"
