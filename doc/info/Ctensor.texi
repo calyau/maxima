@@ -664,7 +664,7 @@ user to choose the corresponding vector name as the example under
 @c @unnumberedsec phony
 @defun contragrad ()
 
-computes the CONTRAvariant GRADient of a scalar ^F2function^F* allowing
+computes the CONTRAvariant GRADient of a scalar function allowing
 the user to choose the corresponding vector^F2name^F* as the example
 below for the Schwarzschild metric illustrates:
 
@@ -758,14 +758,15 @@ the argument @code{dis} is @code{true} then these equations are displayed.
 
 @c @node bdvac
 @c @unnumberedsec phony
-@defun bdvac ()
+@defun bdvac (fun)
 
 generates the covariant components of the vacuum field equations of
-the Brans- Dicke gravitational theory. There are two field equations.
+the Brans- Dicke gravitational theory. The scalar field is specified
+by the argument @code{fun}, which should be a (quoted) function name
+with functional dependencies, e.g., @code{'p(x)}.
+
 The components of the second rank covariant field tensor are
-represented by the array @code{bd2}. The scalar field equation requires the
-user to input the name of a scalar and declare its functional
-dependencies. This field equation is represented by the scalar @code{bd0}.
+represented by the array @code{bd}.
 
 @end defun
 @c @node invariant1
@@ -1362,3 +1363,19 @@ package compatible with the commercial version of MACSYMA.
 
 @end example
 
+@section Developer's Notes
+
+I added support for moving frames to CTENSOR in November, 2004. This
+functionality was reconstructed on the basis of two things: code I
+developed earlier for computations in a tetrad base, and the documentation
+of commercial MACSYMA.
+
+This implementation differs from commercial MACSYMA in an important
+respect: when a frame base is used, the Ricci rotation coefficients are
+computed directly, without referencing the frame bracket. (Hence the
+lack of an implementation, at least for now, of @code{frame_bracket}.)
+The algorithms have been verified through several examples, some of
+which are included as demos: see @code{tetrad.dem} or @code{petrov.dem},
+for instance.
+
+Implementation of torsion and nonmetricity is a work-in-progress.

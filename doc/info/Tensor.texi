@@ -413,12 +413,71 @@ contain dummy indices one must be careful to define these indices to
 avoid the generation of multiple dummy indices. Removal of this
 assignment is given to the function @code{remcomps}.
 
+Components can be assigned to an indexed expression in three ways, two
+of which involve the use of the @code{components} command:
+
+1) As an indexed expression. For instance:
+
+@example
+
+(%i2) components(g([],[i,j]),e([],[i])*p([],[j]))$
+
+(%i3) ishow(g([],[i,j]))$
+
+                                      i  j
+(%t3)                                e  p
+
+@end example
+
+2) As a matrix:
+
+@example
+
+(%i6) components(g([i,j],[]),lg);
+
+(%o6)                                done
+(%i7) ishow(g([i,j],[]))$
+
+(%t7)                                g
+                                      i j
+(%i8) g([3,3],[]);
+
+(%o8)                                  1
+(%i9) g([4,4],[]);
+
+(%o9)                                 - 1
+
+@end example
+
+3) As a function. You can use a MAXIMA function to specify the
+components of a tensor based on its indices. For instance, the following
+code assigns @code{kdelta} to @code{h} if @code{h} has the same number
+of covariant and contravariant indices and no derivative indices, and
+@code{g} otherwise:
+
+@example
+
+(%i4) h(l1,l2,[l3]):=if length(l1)=length(l2) and length(l3)=0
+  then kdelta(l1,l2) else apply(g,append([l1,l2], l3))$
+
+(%i5) ishow(h([i],[j]))$
+
+                                          j
+(%t5)                               kdelta
+                                          i
+(%i6) ishow(h([i,j],[k],l))$
+
+                                     k
+(%t6)                               g
+                                     i j,l
+
+@end example
+
 The example under @code{defcon} demonstrates the use of the
 @code{components} function to define an algebraically special metric and
 also shows how the null property of the vector field can be given
-with the property assignment functions. The example above under @code{ichr2}
+with the property assignment functions. The example under @code{ichr2}
 gives the basic syntax used in the @code{components} statement.
-
 
 @end defun
 
@@ -1108,6 +1167,10 @@ orthonormal frames, or the Lorentz metric for orthonormal frames in Minkowski
 spacetime. The inverse frame field defines the frame base (unit vectors).
 Contraction properties are defined for the frame field and the frame metric.
 
+When @code{iframe_flag} is true, many ITENSOR expressions use the frame
+metric @code{ifg} instead of the metric defined by @code{imetric} for
+raising and lowerind indices.
+
 IMPORTANT: Setting the variable @code{iframe_flag} to @code{true} does NOT
 undefine the contraction properties of a metric defined by a call to
 @code{defcon()} or @code{imetric()}. If a frame field is used, it is best to
@@ -1126,30 +1189,31 @@ and @code{icc2}), as the following example demonstrates:
 (%i2) iframe_flag:true;
 
 (%o2)                                true
-(%i3) imetric(g);
-
-(%o3)                                done
-(%i4) ishow(covdiff(v([],[i]),j))$
+(%i3) ishow(covdiff(v([],[i]),j))$
 
                                i        i     %1
-(%t4)                         v   + icc2     v
+(%t3)                         v   + icc2     v
                                ,j       %1 j
-(%i5) ishow(ev(%,icc2))$
+(%i4) ishow(ev(%,icc2))$
 
                         %1      i           i        i
-(%t5)                  v   (ifc2     + ichr2    ) + v
+(%t4)                  v   (ifc2     + ichr2    ) + v
                                 %1 j        %1 j     ,j
-(%i6) ishow(ev(%,ifc2))$
+(%i5) ishow(ev(%,ifc2))$
 
-            i %3     %2                      %2         i
-           g     (ifb      g     - g      ifb    ) - ifb
-       %1            %1 %3  %2 j    %1 %2    %3 j       %1 j        i        i
-(%t6) v   (------------------------------------------------- + ichr2    ) + v
-                                   2                                %1 j     ,j
-(%i7) ishow(ifb([a,b],[c]))$
+              i %3     %2                          %2         i
+           ifg     (ifb      ifg     - ifg      ifb    ) - ifb
+       %1              %1 %3    %2 j      %1 %2    %3 j       %1 j
+(%t5) v   (-------------------------------------------------------
+                                      2
+
+                                                           i        i
+                                                    + ichr2    ) + v
+                                                           %1 j     ,j
+(%i6) ishow(ifb([a,b],[c]))$
 
                            c           c         %4    %5
-(%t7)                 (ifri      - ifri     ) ifr   ifr
+(%t6)                 (ifri      - ifri     ) ifr   ifr
                            %4,%5       %5,%4     a     b
 
 @end example
@@ -1187,9 +1251,9 @@ coefficients is expressed using the frame bracket:
 
 @example
 
-    c     cd        e     cd        e       c
-ifc2   = g   g   ifb   - g   g   ifb   - ifb
-    ab        be    ad        ae    db      ab
+    c       cd          e       cd          e       c
+ifc2   = ifg   ifg   ifb   - ifg   ifg   ifb   - ifb
+    ab            be    ad            ae    db      ab
 
 @end example
 
@@ -1270,9 +1334,9 @@ as:
 
 @example
 
-                  d
-ifc1    = g   ifc2
-    abc    cd     ab
+                    d
+ifc1    = ifg   ifc2
+    abc      cd     ab
 
 @end example
 
@@ -1289,11 +1353,9 @@ indices raised and lowered as necessary:
 
 @example
 
-          ce        d     ce        d       c
-         g   g   ifb   - g   g   ifb   - ifb
-    c         db    ae        ad    eb      ab
-ifc2   = -------------------------------------
-    ab                    2
+    c       cd          e       cd          e       c
+ifc2   = ifg   ifg   ifb   - ifg   ifg   ifb   - ifb
+    ab            be    ad            ae    db      ab
 
 @end example
 
@@ -1379,6 +1441,8 @@ inmc1    = ------------------------------
 
 @end example
 
+(Substitute @code{ifg} in place of @code{g} if a frame metric is used.)
+
 @end defvar
 
 @c @node inmc2
@@ -1399,6 +1463,8 @@ inmc2   = ------------------------------------------
 
 @end example
 
+(Substitute @code{ifg} in place of @code{g} if a frame metric is used.)
+
 @end defvar
 
 @c @node ikt1
@@ -1418,6 +1484,8 @@ ikt1    = ----------------------------------
 
 @end example
 
+(Substitute @code{ifg} in place of @code{g} if a frame metric is used.)
+
 @end defvar
 
 @c @node ikt2
@@ -1434,6 +1502,8 @@ ikt2   = g   ikt1
     ab           abd
 
 @end example
+
+(Substitute @code{ifg} in place of @code{g} if a frame metric is used.)
 
 @end defvar
 
@@ -1591,3 +1661,17 @@ should not be redefined:
 
 @end example
 
+@section Developer's Notes
+
+I added support for moving frames, torsion, and nonmetricity to ITENSOR
+in November, 2004. I reconstructed this functionality based on the
+description found in the reference manual of commercial MACSYMA, and
+the printed output of some MACSYMA demos.
+
+This functionality should be considered untested for now. The documentation
+of commercial MACSYMA contained several obvious errors (e.g., invalid
+index combinations) and the demos suggested that the MACSYMA implementation
+was far from complete. My goal was not to slavishly reproduce MACSYMA's
+features (and bugs!) but to create a mathematically correct implementation.
+It will be a while before I feel fully confident, though, that all
+the results produced by this package are valid.
