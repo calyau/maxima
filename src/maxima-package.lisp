@@ -147,7 +147,7 @@
 ;; package explicitly.
 ;; REMOVE this as soon as we can get rid of LISP and SERROR packages.
 #+(and gcl ansi-cl)
-(import '( cl::*debugger-hook* )
+(import '( cl::*debugger-hook* cl::handler-case )
   "MAXIMA" )
 
 ;;redefined in commac  lucid 2.1 does (functionp 'jiljay)-->t

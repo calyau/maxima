@@ -12,6 +12,6 @@
 
 #+(and gcl ansi-cl)
 (defmacro errset (&rest l)
-   `(cl:handler-case (list ,(car l))
-     (cl:error (e) (if errset (error e)))))
+   `(handler-case (list ,(car l))
+     (cl::error (e) (if errset (error e)))))
 

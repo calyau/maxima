@@ -525,10 +525,10 @@ setrgbcolor} def
 				     ($float ($realpart (meval* ',expr))))
 				 (arithmetic-error () t))
 			       #+gcl
-				(conditions::handler-case 
+				(handler-case 
 				   (catch 'errorsw
 				     ($float ($realpart (meval* ',expr))))
-				 (conditions::internal-error () t))
+				 (cl::error () t))
 				))
 			  result)))
 		   'function)))))
