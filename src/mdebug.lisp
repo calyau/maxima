@@ -1,15 +1,18 @@
 (in-package "MAXIMA")
 
-(eval-when (compile eval)
-  (proclaim '(optimize (safety 2) (space 3))
-	    )
+(declaim (optimize (safety 2) (space 3)))
 
-(defmacro f (op &rest args)
+(eval-when
+    #+gcl (compile eval)
+    #-gcl (:compile-toplevel :execute)
+
+  (defmacro f (op &rest args)
     `(the fixnum (,op ,@ (mapcar #'(lambda (x) `(the fixnum ,x)) args) )))
-(defmacro fb (op &rest args)
+
+  (defmacro fb (op &rest args)
     `(,op ,@ (mapcar #'(lambda (x) `(the fixnum ,x)) args) ))
 
-)
+  )
 
 (defun $bt()
   (sloop for v in baktrcl
@@ -26,15 +29,17 @@
 ;; to get to current values in joe need to unbind bindlist downto ($Y $BIL $X)
 
 (defvar *current-frame* 0)
+
 (defvar $mdebug_print_length 100 "Length of forms to print out in debugger")
+
 (defmacro bak-top-form (x) x)
+
 (defun frame-info (n)
   (declare (fixnum n))
   (let* ((ar  *mlambda-call-stack*)
 	 (m (length ar))
 	 fname vals params backtr lineinfo bdlist
 	 )
-    (declare (type (vector t) ar))
     (declare (fixnum m))
     ;; just in case we do not have an even multiple
     (setq m (f - m (f mod m 5) (* n 5)))
@@ -48,93 +53,92 @@
     (setq lineinfo (if ( < m (fill-pointer ar))
 	      (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
 	      (get-lineinfo (bak-top-form *last-meval1-form*))))
-    #+if-you-use-baktrcl 
-	  (if ( < m (fill-pointer ar))
-	      (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
-	    (or (get-lineinfo (bak-top-form *last-meval1-form*
-					    ;baktrcl
-					    ))
-		;(get-lineinfo (bak-top-form (cdr baktrcl)))
-		))
+;    #+if-you-use-baktrcl 
+;	  (if ( < m (fill-pointer ar))
+;	      (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
+;	    (or (get-lineinfo (bak-top-form *last-meval1-form*
+;					    ;baktrcl
+;					    ))
+;		;(get-lineinfo (bak-top-form (cdr baktrcl)))
+;		))
     (values fname vals params backtr lineinfo bdlist)
     ))
 
 (defun print-one-frame (n print-frame-number &aux val (st *debug-io*))
   (multiple-value-bind
-    (fname vals params backtr lineinfo bdlist)
-    (frame-info n)
+	(fname vals params backtr lineinfo bdlist)
+      (frame-info n)
     (cond (fname
 	   (princ (if print-frame-number
 		      ($sconcat "#" n ": "  fname "(")
-		    ($sconcat  fname "("))
-		      st)
-	   (sloop  for v on params for w in vals
+		      ($sconcat  fname "("))
+		  st)
+	   (sloop for v on params for w in vals
 		   do (setq val ($sconcat w))
 		   (if (> (length val) 100)
 		       (setq val ($sconcat (subseq val 0 100) "...")))
 		   (format st "~(~a~)=~a~a" ($sconcat (car v)) val
 			   (if (cdr v) "," "")))
 	   (princ ")" st)
-	   (and lineinfo (format st "(~a line ~a)" (short-name (cadr lineinfo))(car lineinfo)))
+	   (and lineinfo
+		(format st "(~a line ~a)"
+			(short-name (cadr lineinfo)) (car lineinfo)))
 	   (terpri st)
 	   (values fname vals params backtr lineinfo bdlist))
 	  (t nil))))
-
 
 ;; these are in the system package in gcl...
 #-gcl
 (progn 'compile
 ;; return path as a string  or nil if none.
-#+nil
-(defun stream-name (path)
-  (let ((tem (errset (namestring (pathname path)))))
-    (car tem)))
+;#+nil
+;(defun stream-name (path)
+;  (let ((tem (errset (namestring (pathname path)))))
+;    (car tem)))
 
-(defun break-call (key args prop &aux fun )
-  (setq fun (complete-prop key 'keyword prop))
-  (setq key fun)
-  (or fun (return-from break-call nil))
-  ; jfa commented out the following line. Did it ever work?
-  ;#+clisp (eval '(setq *break-env* (the-environment)))
-  (setq fun (get fun prop))
-  (unless (symbolp fun)  (let ((gen (gensym)))
-     (setf (symbol-function gen) fun) (setf (get key prop) gen)
-     (setq fun gen)))
-  (cond (fun
-	 (setq args (cons fun args))
-	 ; jfa temporary hack
-	 #+gcl(evalhook args nil nil *break-env*)
-	 #-gcl(eval args)
-	 )
-	(t (format *debug-io* "~&~S is undefined break command.~%" key)))
- )
+       (defun break-call (key args prop &aux fun )
+	 (setq fun (complete-prop key 'keyword prop))
+	 (setq key fun)
+	 (or fun (return-from break-call nil))
+	; jfa commented out the following line. Did it ever work?
+	;#+clisp (eval '(setq *break-env* (the-environment)))
+	 (setq fun (get fun prop))
+	 (unless (symbolp fun)
+	   (let ((gen (gensym)))
+	     (setf (symbol-function gen) fun) (setf (get key prop) gen)
+	     (setq fun gen)))
+	 (cond (fun
+		(setq args (cons fun args))
+		; jfa temporary hack
+		#+gcl(evalhook args nil nil *break-env*)
+		#-gcl(eval args)
+		)
+	       (t (format *debug-io* "~&~S is undefined break command.~%"
+			  key))))
 
-(defun complete-prop (sym package prop &optional return-list)
-  (cond ((and (symbolp sym)(get sym prop)(equal (symbol-package sym)
-						 (find-package package)))
-	 (return-from complete-prop sym)))
-  (sloop for v in-package package 
-	 when (and (get v prop)
-		   (eql #+gcl (string-match sym v)
-                        #-gcl (search (symbol-name sym) (symbol-name v)) 
-			0)
-			)
-	 collect v into all
-	 finally
+       (defun complete-prop (sym package prop &optional return-list)
+	 (cond ((and (symbolp sym)(get sym prop)(equal (symbol-package sym)
+						       (find-package package)))
+		(return-from complete-prop sym)))
+	 (sloop for vv in-package package 
+		when (and (get vv prop)
+			  (eql #+gcl (string-match sym vv)
+			       #-gcl (search (symbol-name sym)
+					     (symbol-name vv)) 
+			       0))
+		collect vv into all
+		finally
        
-         (cond (return-list (return-from complete-prop all))
-               ((> (length all) 1)
-	                (format t "~&Not unique with property ~(~a: ~{~s~^, ~}~)."
-			prop all))
+		(cond (return-list (return-from complete-prop all))
+		      ((> (length all) 1)
+		       (format t "~&Not unique with property ~(~a: ~{~s~^, ~}~)."
+			       prop all))
 
-		       ((null all)
-			(format t "~& ~a is not break command" sym))
-		       (t (return-from complete-prop
-				       (car all))))))
-
-
-
-)
+		      ((null all)
+		       (format t "~& ~a is not break command" sym))
+		      (t (return-from complete-prop
+			   (car all))))))
+       )
 
 
 (defun $backtrace (&optional (n 30))
@@ -150,11 +154,14 @@
 ;;
 (defvar *break-points* nil)
 (defvar *break-point-vector* (make-array 10 :fill-pointer 0 :adjustable t))
+
 (defun init-break-points ()
   (setf (fill-pointer *break-point-vector*) 0)
   (setf *break-points* *break-point-vector*))
+
 (defvar *break-step* nil)
 (defvar *step-next* nil)
+
 (defun step-into (&optional (n 1))
   ;;FORM is the next form about to be evaluated.
    n
@@ -162,7 +169,7 @@
   (setq *break-step* 'break-step-into)
   :resume)
 
-(defun step-next ( &optional (n 1))
+(defun step-next (&optional (n 1))
   n
   (let ((fun (current-step-fun)))
     (setq *step-next* (cons n fun))
@@ -172,7 +179,7 @@
 
 
 (defun maybe-break (form line-info fun env &aux pos)
-  env
+  (declare (ignore env))
   (cond ((setq pos (position form line-info))
 	 (setq *break-step* nil)
 	 (or (> (length *break-points*) 0)
@@ -249,7 +256,7 @@
 ;; split string into a list of strings, split by any of a list of characters
 ;; in bag.  Returns a list.  They will have fill pointers..
 (defun split-string (string  bag &optional (start 0) &aux all pos v l)
-  (declare (fixnum start ) (type string string) )
+  (declare (fixnum start) (type string string))
   (sloop for i from start below (length string)
 	 do  (setq pos (position (setq v (aref string i)) bag))
 	 (setq start (+ start 1))
@@ -264,11 +271,11 @@
                                            :adjustable t
 					   :initial-contents (nreverse all)
 					   :element-type
-                                         ' #. (array-element-type "ab")
+                                         ' #.(array-element-type "ab")
                                     )
 			       (split-string string bag start))))))
 
-(eval-when (compile) (proclaim '(special *mread-prompt*)))
+(declaim (special *mread-prompt*))
 
 ;; RLT: What is the repeat-if-newline option for?  A grep of the code
 ;; indicates that dbm-read is never called with more than 3 args.  Can
@@ -276,8 +283,7 @@
 
 (defun dbm-read (&optional (stream *standard-input*) (eof-error-p t)
 			   (eof-value nil) repeat-if-newline  &aux tem  ch
-			   (mprompt *mread-prompt*) (*mread-prompt* "")
-			   )
+			   (mprompt *mread-prompt*) (*mread-prompt* ""))
 
   (when (> (length mprompt) 0)
     (fresh-line *standard-output*)
@@ -467,37 +473,36 @@
 	     (dolist (v (complete-prop key 'keyword 'break-doc t))
 		     (format t "~&~%~(~s~)   ~a" v (get v 'break-doc)))))
 	(t
-	 (sloop for v in-package 'keyword
-		with doc
-		when
-		(get v 'break-command)
-		collect (cons v (or (get v 'break-doc) "Undocumented"))
+	 (sloop for vv in-package 'keyword
+		when (get vv 'break-command)
+		collect (cons vv (or (get vv 'break-doc) "Undocumented"))
 		into all
 		finally (setq all (sort all 'alphalessp))
 		(format t "Break commands start with ':' Any unique substring may be used, eg :r :re :res all work for :resume.~%Command     Description~%
 --------     --------------------------------------")   
-		(sloop for v in all
-		       do (format t "~% ~(~s~)     ~a" (car v) (cdr v)))
+		(sloop for vv in all
+		       do (format t "~% ~(~s~)     ~a" (car vv) (cdr vv)))
             ))))
+
 (def-break :help 'break-help "Print help on a break command or with no arguments on all break commands")
 (def-break :_none #'(lambda()) nil)
 (def-break :next  'step-next
   "Like :step, except that subroutine calls are stepped over")
-(def-break :step  'step-into "Step program until it reaches a new source line" )
+(def-break :step  'step-into
+  "Step program until it reaches a new source line")
 ;(def-break :location  'loc "" )
 (def-break :quit 'break-quit "Quit this level")
 (def-break :top  #'(lambda( &rest l)l (throw 'macsyma-quit 'top)) "Throw to top level")
 
 
 
-(eval-when (eval load  compile)
+(eval-when
+    #+gcl (compile load eval)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
 
-;; gcl imports from 'si package
-;;#-gcl  
-;;(defstruct instream stream (line 0 :type fixnum) stream-name)
+    (defstruct (line-info (:type list)) line file)
 
-(defstruct (bkpt (:type list)) form file file-line function)
-  )
+    (defstruct (bkpt (:type list)) form file file-line function))
 
 
 (defun *break-points* (form  ) 
@@ -505,9 +510,6 @@
     (format t "Bkpt ~a:" pos)
     (break-dbm-loop  (aref *break-points* pos) )))
 
-(eval-when (compile load eval)
-   (defstruct (line-info (:type list)) line file)
- )
 
 ;;fun = function name eg '$|odeSeriesSolve| and li = offset from beginning of function.
 ;;   or= string (filename) and li = absolute position.
@@ -522,21 +524,19 @@
   (cond ((or (stringp fun)
 	     (and (mstringp fun) (setq fun ($sconcat fun))))
 	 (let ((file fun)  start)
-	   (sloop named joe for v in-package 'maxima with tem  and linfo
-		  when (and (typep (setq tem (set-full-lineinfo v)) 'vector)
+	   (sloop named joe for vv in-package 'maxima with tem  and linfo
+		  when (and (typep (setq tem (set-full-lineinfo vv))
+				   'vector)
 			    (setq linfo (get-lineinfo (aref tem 1)))
 			    (equal file (cadr linfo))
 			    (fb >= li (setq start (aref tem 0)))
 			    (fb <= li (f + start (length (the vector tem)))))
-		  do (setq fun v li (f - li start -1 ))
+		  do (setq fun vv li (f - li start -1 ))
 		 ; (print (list 'found fun fun li  (aref tem 0)))
 		  (return-from joe nil)
 		  finally
 		  (format t "No line info for ~a " fun)
-		  (return-from break-function nil)
-		  )
-	   
-	   )))
+		  (return-from break-function nil)))))
   (setq fun ($concat fun))
   ;(print (list 'fun fun 'hi))
   (cond ((and (setq tem (second (mgetl  fun '(mexpr mmacro))))
@@ -584,10 +584,8 @@
 	 (setq n m))
 	((fb < n 0)
 	 (setq n 0)))
-  ($frame  n nil)
-  )
+  ($frame  n nil))
   
-
     
 (defun insert-break-point (bpt &aux at)
   (or *break-points* (init-break-points))
@@ -739,8 +737,7 @@ a FILE and LINE is the offset from the beginning of the file." )
 ;; restore-bindings from an original binding list.
 (defun restore-bindings ()
   (mbind *diff-bindlist* *diff-mspeclist* nil)
-  (setf *diff-bindlist* nil *diff-mspeclist* nil)
-  )
+  (setf *diff-bindlist* nil *diff-mspeclist* nil))
 
 (defun remove-bindings (the-bindlist)
   (sloop for v on bindlist with var
@@ -753,14 +750,11 @@ a FILE and LINE is the offset from the beginning of the file." )
 	 (COND ((EQ (CAR MSPECLIST) MUNBOUND)
 		(MAKUNBOUND VAR) (DELQ VAR $VALUES 1))
 	       (T (LET ((MUNBINDP T)) (MSET VAR (CAR MSPECLIST)))))
-	 (SETQ MSPECLIST (CDR MSPECLIST) BINDLIST (CDR BINDLIST))
-
-	 ))
+	 (SETQ MSPECLIST (CDR MSPECLIST) BINDLIST (CDR BINDLIST))))
 
 (defun $frame (&optional (n 0) (print-frame-number t))
   (restore-bindings)
-  (multiple-value-bind
-   (fname vals params backtr lineinfo bdlist)
+  (multiple-value-bind (fname vals params backtr lineinfo bdlist)
    (print-one-frame n print-frame-number)
    backtr params vals fname
    (remove-bindings bdlist)
@@ -768,5 +762,4 @@ a FILE and LINE is the offset from the beginning of the file." )
 	 (fresh-line *debug-io*)
 	 (format *debug-io* "~a:~a::~%" (cadr lineinfo)
 		 (+ 0 (car lineinfo))))
-   (values)
-   ))
+   (values)))

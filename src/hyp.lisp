@@ -5,72 +5,72 @@
 
 (macsyma-module hyp)
 
-(eval-when (compile eval)
+;(eval-when
+;    #+gcl (compile eval)
+;    #-gcl (:compile-toplevel :execute)
+;    (declare-top (special fun w b l alglist $true $false n  c l1 l2)))
+
 (declare-top (special fun w b l alglist $true $false n  c l1 l2))
-)
+
 (DECLARE-TOP (SPECIAL VAR PAR ZEROSIGNTEST PRODUCTCASE 
-		  FLDEG FLGKUM CHECKCOEFSIGNLIST SERIESLIST
-		  $EXPONENTIALIZE $BESTRIGLIM $RADEXPAND FAIL-SYM)
-	     )
+		      FLDEG FLGKUM CHECKCOEFSIGNLIST SERIESLIST
+		      $EXPONENTIALIZE $BESTRIGLIM $RADEXPAND))
 
 
 ;; (eval-when (compile eval) (load '((dsk ell) macros >)) )
 
 (declare-top (special fldeg flgkum listcmdiff checkcoefsignlist serieslist
 		      fl1f1))
+
 (SETQ FLGKUM T FLDEG T FL1F1 T CHECKCOEFSIGNLIST NIL)
 
-(declare-top (special $exponentialize $bestriglim $radexpand))
+(declare-top (special eps $exponentialize $bestriglim $radexpand))
 
-(setq fail-sym (gensym))
-(defvar 3//2 '((rat simp) 3 2))
-(defvar 1//2 '((rat simp) 1 2))
-(defvar -1//2 '((rat simp) -1 2))
+(eval-when
+    #+gcl (eval compile)
+    #-gcl (:execute :compile-toplevel)
+  (defmacro fixp (x) `(typep ,x 'fixnum))
 
-(eval-when (eval compile)
-(defmacro fixp (x) `(typep ,x 'fixnum))
-
-(setq FLGKUM T FLDEG T FL1F1 T CHECKCOEFSIGNLIST ()
+  (setq FLGKUM T FLDEG T FL1F1 T CHECKCOEFSIGNLIST '())
 ;;      $BESTRIGLIM 3. $RADEXPAND '$ALL
-      FAIL-SYM (GENSYM))
 
-(DEFMACRO SIMP (X) `(SIMPLIFYA ,X ()))
+  (DEFMACRO SIMP (X) `(SIMPLIFYA ,X ()))
 
-(DEFMACRO SIMP-LIST (L) `(MAPCAR #'(LAMBDA (X) (SIMP X)) ,L))
+  (DEFMACRO SIMP-LIST (L) `(MAPCAR #'(LAMBDA (X) (SIMP X)) ,L))
 
 ; The macro MABS has been renamed to HYP-MABS in order to
 ; avoid conflict with the Maxima symbol MABS. The other
 ; M* macros defined here should probably be similarly renamed
 ; for consistency. jfa 03/27/2002
 
-(DEFMACRO HYP-MABS (X) `(SIMP `((MABS) ,,X)))
+  (DEFMACRO HYP-MABS (X) `(SIMP `((MABS) ,,X)))
 
-(DEFMACRO MSQRT (X) `(M^T ,X 1//2))
+  (DEFMACRO MSQRT (X) `(M^T ,X 1//2))
 
-(DEFMACRO MEXPT (X) `(M^T '$%E ,X))
+  (DEFMACRO MEXPT (X) `(M^T '$%E ,X))
 
-(DEFMACRO MLOG (X) `(SIMP `((%LOG) ,,X)))
+  (DEFMACRO MLOG (X) `(SIMP `((%LOG) ,,X)))
 
-(DEFMACRO MSIN (X) `(SIMP `((%SIN) ,,X)))
+  (DEFMACRO MSIN (X) `(SIMP `((%SIN) ,,X)))
 
-(DEFMACRO MCOS (X) `(SIMP `((%COS) ,,X)))
+  (DEFMACRO MCOS (X) `(SIMP `((%COS) ,,X)))
 
-(DEFMACRO MASIN (X) `(SIMP `((%ASIN) ,,X)))
+  (DEFMACRO MASIN (X) `(SIMP `((%ASIN) ,,X)))
 
-(DEFMACRO MATAN (X) `(SIMP `((%ATAN) ,,X)))
+  (DEFMACRO MATAN (X) `(SIMP `((%ATAN) ,,X)))
 
-(DEFMACRO MGAMMA (X) `(SIMP `((%GAMMA) ,,X)))
+  (DEFMACRO MGAMMA (X) `(SIMP `((%GAMMA) ,,X)))
 
-(DEFMACRO MBINOM (X Y) `(SIMP `((%BINOMIAL) ,,X ,,Y)))
+  (DEFMACRO MBINOM (X Y) `(SIMP `((%BINOMIAL) ,,X ,,Y)))
 
-(DEFMACRO MERF (X) `(SIMP `((%ERF) ,,X)))
+  (DEFMACRO MERF (X) `(SIMP `((%ERF) ,,X)))
 
-(DEFMACRO =1//2 (X) `(ALIKE1 ,X 1//2))
+  (DEFMACRO =1//2 (X) `(ALIKE1 ,X 1//2))
 
-(DEFMACRO =3//2 (X) `(ALIKE1 ,X 3//2))
+  (DEFMACRO =3//2 (X) `(ALIKE1 ,X 3//2))
 
-(DEFMACRO =-1//2 (X) `(ALIKE1 ,X -1//2))
-)
+  (DEFMACRO =-1//2 (X) `(ALIKE1 ,X -1//2))
+  )
 
 
 (DEFUN $HGFRED
@@ -91,134 +91,122 @@
 	     (RETURN (FPQFORM L1 L2 ARG))))
 
 
-(DEFUN HGFSIMP
-       (L1 L2 VAR)
-       (PROG (RESIMP )
-	    (SETQ L1
-		  (MACSIMP L1)
-		  L2
-		  (MACSIMP L2)
-		  RESIMP
-		  (SIMPG L1 L2))
+(DEFUN HGFSIMP (L1 L2 VAR)
+  (PROG (RESIMP)
+     (SETQ L1 (MACSIMP L1)
+	   L2 (MACSIMP L2)
+	   RESIMP (SIMPG L1 L2))
 	    
-	    (COND ((NOT (EQ (CAR RESIMP) 'FAIL))(RETURN RESIMP)))
-	    (COND ((SETQ LISTCMDIFF
-			 (INTDIFFL1L2 (CADR RESIMP)
-				      (CADDR RESIMP)))
-		   (return (splitpfq listcmdiff
-				     (cadr resimp)
-				     (caddr resimp)))))
-	    (RETURN (DISPATCH-SPEC-SIMP (CADR RESIMP)
-					(CADDR RESIMP)))))
+     (COND ((NOT (EQ (CAR RESIMP) 'FAIL))(RETURN RESIMP)))
+     (COND ((SETQ LISTCMDIFF
+		  (INTDIFFL1L2 (CADR RESIMP)
+			       (CADDR RESIMP)))
+	    (return (splitpfq listcmdiff
+			      (cadr resimp)
+			      (caddr resimp)))))
+     (RETURN (DISPATCH-SPEC-SIMP (CADR RESIMP)
+				 (CADDR RESIMP)))))
 
 
-
-(DEFUN MACSIMP
-       (L)
-
-       (COND ((NULL L) NIL)
-	     (T (APPEND (LIST (SIMPLIFYA (CAR L) NIL)) (CDR L)))))
+(DEFUN MACSIMP (L)
+  (COND ((NULL L) NIL)
+	(T (APPEND (LIST (SIMPLIFYA (CAR L) NIL)) (CDR L)))))
 
 
-(DEFUN SIMPG
-       (L1 L2)
-       (PROG(IL)
-	    (COND ((NULL (SETQ IL (zl-INTERSECTION L1 L2)))
-		   (RETURN (SIMPG-EXEC L1 L2))))
-	    (RETURN (SIMPG-EXEC (DEL IL L1)(DEL IL L2)))))   
+(DEFUN SIMPG (L1 L2)
+  (PROG(IL)
+     (COND ((NULL (SETQ IL (zl-INTERSECTION L1 L2)))
+	    (RETURN (SIMPG-EXEC L1 L2))))
+     (RETURN (SIMPG-EXEC (DEL IL L1)(DEL IL L2)))))   
 
 
-(DEFUN DEL
-       (A B)
-       (COND ((NULL A) B)(T (DEL (CDR A) (ZL-DELETE (CAR A) B 1)))))
+(DEFUN DEL (A B)
+  (COND ((NULL A) B)(T (DEL (CDR A) (ZL-DELETE (CAR A) B 1)))))
 
 
-(DEFUN SIMPG-EXEC
-       (L1 L2)
-       (PROG(N)
-	    (COND ((ZEROP-IN-L L1)(RETURN 1)))
-	    (COND ((SETQ N (hyp-NEGP-IN-L L1))
-		   (RETURN (CREATE-POLY L1 L2 N))))
-	    (COND ((OR (ZEROP-IN-L L2)(hyp-NEGP-IN-L L2))
-		   (RETURN 'UNDEF)))
-	    (RETURN (APPEND (LIST 'FAIL)(LIST L1)(LIST L2)))))
+(DEFUN SIMPG-EXEC (L1 L2)
+  (PROG(N)
+     (COND ((ZEROP-IN-L L1)(RETURN 1)))
+     (COND ((SETQ N (hyp-NEGP-IN-L L1))
+	    (RETURN (CREATE-POLY L1 L2 N))))
+     (COND ((OR (ZEROP-IN-L L2)(hyp-NEGP-IN-L L2))
+	    (RETURN 'UNDEF)))
+     (RETURN (APPEND (LIST 'FAIL)(LIST L1)(LIST L2)))))
 			
 
-(DEFUN INTDIFFL1L2
-       (L1 L2)
-       (COND ((NULL L1)  NIL)(T (INTDIFF L1 L2))))
+(DEFUN INTDIFFL1L2 (L1 L2)
+  (COND ((NULL L1)  NIL)(T (INTDIFF L1 L2))))
 
-(DEFUN INTDIFF
-       (L1 L2)
-       (PROG(L A DIF)
-	    (SETQ L L2 A (CAR L1))
-	    JUMP
-	    (COND ((NULL L)(RETURN (INTDIFFL1L2 (CDR L1) L2))))
-	    (COND ((NNI (SETQ DIF (SUB A (CAR L))))
-		   (RETURN (LIST A DIF))))
-	    (SETQ L (CDR L))
-	    (GO JUMP)))		     
+(DEFUN INTDIFF (L1 L2)
+  (PROG(L A DIF)
+     (SETQ L L2 A (CAR L1))
+     JUMP
+     (COND ((NULL L)(RETURN (INTDIFFL1L2 (CDR L1) L2))))
+     (COND ((NNI (SETQ DIF (SUB A (CAR L))))
+	    (RETURN (LIST A DIF))))
+     (SETQ L (CDR L))
+     (GO JUMP)))		     
 
 
-(DEFUN CREATE-POLY
-       (L1 L2 N)
-       ((LAMBDA(LEN1 LEN2)
-	       (COND ((AND (EQual LEN1 2)(EQual LEN2 1))
-		      (2F1POLYS L1 L2 N))
-		     ((AND (EQual LEN1 1)(EQual LEN2 1))
-		      (1F1POLYS L2 N))
-		     ((AND (EQual LEN1 2)(ZEROP LEN2))
-		      (2F0POLYS L1 N))
-		     (T (CREATE-ANY-POLY L1 L2 (mul -1 N)))))
-	(LENGTH L1)
-	(LENGTH L2)))
+(DEFUN CREATE-POLY (L1 L2 N)
+  ((LAMBDA(LEN1 LEN2)
+     (COND ((AND (EQual LEN1 2)(EQual LEN2 1))
+	    (2F1POLYS L1 L2 N))
+	   ((AND (EQual LEN1 1)(EQual LEN2 1))
+	    (1F1POLYS L2 N))
+	   ((AND (EQual LEN1 2)(ZEROP LEN2))
+	    (2F0POLYS L1 N))
+	   (T (CREATE-ANY-POLY L1 L2 (mul -1 N)))))
+   (LENGTH L1)
+   (LENGTH L2)))
 
 
-(DEFUN 1F1POLYS
-       (L2 N)
-       (PROG(C FACT1 FACT2)
-	    (SETQ C
-		  (CAR L2)
-		  N
-		  (MUL -1 N)
-		  FACT1
-		  (MUL (POWER 2 N)
-		       (FACTORIAL N)
-		       (INV (POWER -1 N)))
-		  FACT2
-		  (MUL (POWER 2 (INV 2))(POWER VAR (INV 2))))
-	    (COND ((EQUAL C (DIV 1 2))
-		   (RETURN (MUL FACT1
-				(INV (FACTORIAL (ADD N N)))
-				(HERMPOL (ADD N N) FACT2)))))
-	    (COND ((EQUAL C (DIV 3 2))
-		   (RETURN (MUL FACT1
-				(INV (FACTORIAL (ADD N N 1)))
-				(HERMPOL (ADD N N 1) FACT2)))))
-	    (RETURN (MUL (FACTORIAL N)
-			 (GM C)
-			 (GM (ADD C N))
-			 (LAGPOL N (SUB C 1) VAR)))))
+(DEFUN 1F1POLYS (L2 N)
+  (PROG(C FACT1 FACT2)
+     (SETQ C
+	   (CAR L2)
+	   N
+	   (MUL -1 N)
+	   FACT1
+	   (MUL (POWER 2 N)
+		(FACTORIAL N)
+		(INV (POWER -1 N)))
+	   FACT2
+	   (MUL (POWER 2 (INV 2))(POWER VAR (INV 2))))
+     (COND ((EQUAL C (DIV 1 2))
+	    (RETURN (MUL FACT1
+			 (INV (FACTORIAL (ADD N N)))
+			 (HERMPOL (ADD N N) FACT2)))))
+     (COND ((EQUAL C (DIV 3 2))
+	    (RETURN (MUL FACT1
+			 (INV (FACTORIAL (ADD N N 1)))
+			 (HERMPOL (ADD N N 1) FACT2)))))
+     (RETURN (MUL (FACTORIAL N)
+		  (GM C)
+		  (GM (ADD C N))
+		  (LAGPOL N (SUB C 1) VAR)))))
 
 
-(DEFUN HERMPOL(N ARG)(LIST '(MQAPPLY)(LIST '($%HE ARRAY) N) ARG))
-(DEFUN LAGPOL(N A ARG)(LIST '(MQAPPLY)(LIST '($%L ARRAY) N A) ARG))
+(DEFUN HERMPOL(N ARG)
+  (LIST '(MQAPPLY)(LIST '($%HE ARRAY) N) ARG))
+
+(DEFUN LAGPOL(N A ARG)
+  (LIST '(MQAPPLY)(LIST '($%L ARRAY) N A) ARG))
 
 
-(DEFUN 2F0POLYS
-       (L1 N)
-       (PROG(A B TEMP X)
-	    (SETQ A (CAR L1) B (CADR L1))
-	    (COND ((EQUAL (SUB B A)(DIV -1 2))
-		   (SETQ TEMP A A B B TEMP)))
-	    (COND ((EQUAL (SUB B A)(DIV 1 2))
-		   (SETQ X (POWER (DIV 2 (MUL -1 VAR))(INV 2)))
-		   (RETURN (INTERHERMPOL N A B X))))
-	    (SETQ X (MUL -1 (INV VAR)) N (MUL -1 N))
-	    (RETURN (MUL (FACTORIAL N)
-			 (INV (POWER X N))
-			 (INV (POWER -1 N))
-			 (LAGPOL N (ADD B N) X)))))
+(DEFUN 2F0POLYS (L1 N)
+  (PROG(A B TEMP X)
+     (SETQ A (CAR L1) B (CADR L1))
+     (COND ((EQUAL (SUB B A)(DIV -1 2))
+	    (SETQ TEMP A A B B TEMP)))
+     (COND ((EQUAL (SUB B A)(DIV 1 2))
+	    (SETQ X (POWER (DIV 2 (MUL -1 VAR))(INV 2)))
+	    (RETURN (INTERHERMPOL N A B X))))
+     (SETQ X (MUL -1 (INV VAR)) N (MUL -1 N))
+     (RETURN (MUL (FACTORIAL N)
+		  (INV (POWER X N))
+		  (INV (POWER -1 N))
+		  (LAGPOL N (ADD B N) X)))))
 
 (DEFUN INTERHERMPOL
        (N A B X)
@@ -265,8 +253,13 @@
 (DEFUN GEGENPOL(N V X)
        (cond ((equal v 0) (tchebypol n x))
 	     (t (LIST '(MQAPPLY)(LIST '($%C ARRAY) N V) X)))) 
-(defun legenpol(n x)(list '(mqapply)(list '($%P array) n) x))
-(defun tchebypol (n x)(list '(mqapply)(list '($%T array) n) x))
+
+(defun legenpol(n x)
+  (list '(mqapply) (list '($%P array) n) x))
+
+(defun tchebypol (n x)
+  (list '(mqapply) (list '($%T array) n) x))
+
 (DEFUN CREATE-ANY-POLY
        (L1 L2 N)
        (PROG(RESULT EXP PRODNUM PRODEN)
@@ -294,85 +287,78 @@
 	    (GO LOOP)))
 
 
-(DEFUN MULL(L)(COND ((NULL L) 1)(T (MUL (CAR L)(MULL (CDR L))))))
+(DEFUN MULL(L)
+  (COND ((NULL L) 1)(T (MUL (CAR L)(MULL (CDR L))))))
 
 
-(DEFUN INCR1
-       (L)
-       (COND ((NULL L) NIL)
-	     (T (APPEND (LIST (ADD (CAR L) 1))(INCR1 (CDR L))))))
+(DEFUN INCR1 (L)
+  (COND ((NULL L) NIL)
+	(T (APPEND (LIST (ADD (CAR L) 1))(INCR1 (CDR L))))))
 
 
-(DEFUN DISPATCH-SPEC-SIMP
-       (L1 L2)
-       (PROG(LEN1 LEN2)
-	    (SETQ LEN1 (LENGTH L1) LEN2 (LENGTH L2))
-	    (COND ((AND (LESSP LEN1 2)(LESSP LEN2 2))
-		   (RETURN (SIMP2>F<2 L1 L2 LEN1 LEN2))))
-	    (COND ((AND (EQUAL LEN1 2)(EQUAL LEN2 1))
-		   (RETURN (SIMP2F1 L1 L2))))
-	    (RETURN (FPQFORM L1 L2 VAR))))
+(DEFUN DISPATCH-SPEC-SIMP (L1 L2)
+  (PROG(LEN1 LEN2)
+     (SETQ LEN1 (LENGTH L1) LEN2 (LENGTH L2))
+     (COND ((AND (LESSP LEN1 2)(LESSP LEN2 2))
+	    (RETURN (SIMP2>F<2 L1 L2 LEN1 LEN2))))
+     (COND ((AND (EQUAL LEN1 2)(EQUAL LEN2 1))
+	    (RETURN (SIMP2F1 L1 L2))))
+     (RETURN (FPQFORM L1 L2 VAR))))
 
 
-(DEFUN SIMP2>F<2
-       (L1 L2 LEN1 LEN2)
-       (PROG()
-	    (COND ((AND (ZEROP LEN1)(ZEROP LEN2))
-		   (RETURN (POWER '$%E VAR))))
-	    (COND ((AND (ZEROP LEN1)(EQUAL LEN2 1))
-		   (RETURN (BEStrig (CAR L2) VAR))))
-	    (COND ((ZEROP LEN2)(RETURN (BINOM (CAR L1)))))
-	    (RETURN (CONFL L1 L2 var))))
+(DEFUN SIMP2>F<2 (L1 L2 LEN1 LEN2)
+  (PROG()
+     (COND ((AND (ZEROP LEN1) (ZEROP LEN2))
+	    (RETURN (POWER '$%E VAR))))
+     (COND ((AND (ZEROP LEN1) (EQUAL LEN2 1))
+	    (RETURN (BEStrig (CAR L2) VAR))))
+     (COND ((ZEROP LEN2) (RETURN (BINOM (CAR L1)))))
+     (RETURN (CONFL L1 L2 var))))
 
 
 	    
 
-(DEFUN BEStrig
-       (A X)
-       (prog (n res)
-	     (setq res (mul (gm a) (power x (div (sub 1 a) 2))))
-	     (COND ((AND (MAXIMA-INTEGERP (ADD A A))
-			 (NUMBERP (SETQ N (SUB A (INV 2))))
-			 (LESSP N $bestriglim))
-		    (return (mul res
-				 (MEVAL (BESREDTRIG (- N 1)
-						    (mul 2
-							 '$%I
-							 (power
-							  x
-							  (inv
-							   2)))))))))
-	     (cond ((equal (checksigntm x) '$negative)
-		    (return (mul res
+(DEFUN BEStrig (A X)
+  (prog (n res)
+     (setq res (mul (gm a) (power x (div (sub 1 a) 2))))
+     (COND ((AND (MAXIMA-INTEGERP (ADD A A))
+		 (NUMBERP (SETQ N (SUB A (INV 2))))
+		 (LESSP N $bestriglim))
+	    (return (mul res
+			 (MEVAL (BESREDTRIG (- N 1)
+					    (mul 2
+						 '$%I
+						 (power
+						  x
+						  (inv
+						   2)))))))))
+     (cond ((equal (checksigntm x) '$negative)
+	    (return (mul res
 			 (BES (SUB A 1) (setq X (mul -1 x)) 'J)))))
-	     (return (mul res (BES (SUB A 1) X 'I)))))
+     (return (mul res (BES (SUB A 1) X 'I)))))
 	    
 	    
 
-(DEFUN BES
-       (A X FLG)
-       (LIST '(MQAPPLY)
-	     (LIST (COND ((EQ FLG 'J) '($%J ARRAY))
-			 (T '($%IBES ARRAY)))
-		   A)
-	     (MUL 2 (POWER X (INV 2)))))
+(DEFUN BES (A X FLG)
+  (LIST '(MQAPPLY)
+	(LIST (COND ((EQ FLG 'J) '($%J ARRAY))
+		    (T '($%IBES ARRAY)))
+	      A)
+	(MUL 2 (POWER X (INV 2)))))
 
 
+(DEFUN BESREDTRIG (N Z)
+  (COND ((MINUSP N)(TRIGREDMINUS (MUL -1 (ADD1 N)) Z))
+	(T (TRIGREDPLUS N Z))))
 
-
-(DEFUN BESREDTRIG
-       (N Z)
-       (COND ((MINUSP N)(TRIGREDMINUS (MUL -1 (ADD1 N)) Z))
-	     (T (TRIGREDPLUS N Z))))
-(DEFUN TRIGREDPLUS
-       (N Z)
-       ((LAMBDA(NPINV2)
-	       (MUL (CTR Z)
-		    (ADD (MUL (SIN% (SUB Z NPINV2))
-			      (FIRSTSUM N Z))
-			 (MUL (COS% (SUB Z NPINV2))
-			      (SECONDSUM N Z)))))
-	(MUL N '$%PI (INV 2))))
+(DEFUN TRIGREDPLUS (N Z)
+  ((LAMBDA(NPINV2)
+     (MUL (CTR Z)
+	  (ADD (MUL (SIN% (SUB Z NPINV2))
+		    (FIRSTSUM N Z))
+	       (MUL (COS% (SUB Z NPINV2))
+		    (SECONDSUM N Z)))))
+   (MUL N '$%PI (INV 2))))
 
 
 (DEFUN TRIGREDMINUS
@@ -429,92 +415,85 @@
 				 (POWER (ADD Z Z) 2R+1)))))
 	    (GO LOOP)))
 
-(DEFUN CTR(Z)(POWER (DIV 2 (MUL '$%PI Z))(INV 2)))
+(DEFUN CTR(Z)
+  (POWER (DIV 2 (MUL '$%PI Z)) (INV 2)))
 
-(DEFUN NEGCOEF
-       (X)
-       (PROG(D)
-	    (COND ((NULL (SETQ D (CDR (ZL-REMPROP 'D (D*U X)))))
-		   (RETURN T)))
-	    (COND ((EQ (ASKSIGN (INV D)) '$POSITIVE)
-		   (RETURN NIL)))
+(DEFUN NEGCOEF (X)
+  (PROG(D)
+     (COND ((NULL (SETQ D (CDR (ZL-REMPROP 'D (D*U X)))))
 	    (RETURN T)))
+     (COND ((EQ (ASKSIGN (INV D)) '$POSITIVE)
+	    (RETURN NIL)))
+     (RETURN T)))
+
+(DEFUN BINOM(A)
+  (POWER (SUB 1 VAR) (MUL -1 A)))
 
 
-(DEFUN BINOM(A)(POWER (SUB 1 VAR) (MUL -1 A)))
+(DEFUN KUMMER (L1 L2)
+  (MUL (LIST '(MEXPT) '$%E VAR)
+       (confl (LIST (SUB (CAR L2)(CAR L1))) L2 (MUL -1 VAR))))
 
 
-
-(DEFUN KUMMER
-       (L1 L2)
-       (MUL (LIST '(MEXPT) '$%E VAR)
-	    (confl (LIST (SUB (CAR L2)(CAR L1))) L2 (MUL -1 VAR))))
-
-
-(DEFUN ZEROP-IN-L
-       (L)
-       (COND ((NULL L) NIL)
-	     ((NUMBERP (CAR L))
-	      (COND ((ZEROP (CAR L)) T)(T (ZEROP-IN-L (CDR L)))))
-	     (T (ZEROP-IN-L (CDR L)))))
+(DEFUN ZEROP-IN-L (L)
+  (COND ((NULL L) NIL)
+	((NUMBERP (CAR L))
+	 (COND ((ZEROP (CAR L)) T)(T (ZEROP-IN-L (CDR L)))))
+	(T (ZEROP-IN-L (CDR L)))))
 
 
-(DEFUN hyp-NEGP-IN-L
-       (L)
-       (COND ((NULL L) NIL)
-	     ((MAXIMA-INTEGERP (CAR L))
-	      (COND ((MINUSP (CAR L)) (CAR L))
-		    (T (hyp-NEGP-IN-L (CDR L)))))
-	     (T (hyp-NEGP-IN-L (CDR L)))))
+(DEFUN hyp-NEGP-IN-L (L)
+  (COND ((NULL L) NIL)
+	((MAXIMA-INTEGERP (CAR L))
+	 (COND ((MINUSP (CAR L)) (CAR L))
+	       (T (hyp-NEGP-IN-L (CDR L)))))
+	(T (hyp-NEGP-IN-L (CDR L)))))
 
 
-(DEFUN zl-INTERSECTION
-       (L1 L2)
-       (cond ((null l1) nil)
-	     ((zl-member (car l1) l2)
-	      (cons (car l1)
-		    (zl-intersection (cdr l1)
-				  (zl-delete (car l1) l2 1))))
-	     (t (zl-intersection (cdr l1) l2))))
+(DEFUN zl-INTERSECTION (L1 L2)
+  (cond ((null l1) nil)
+	((zl-member (car l1) l2)
+	 (cons (car l1)
+	       (zl-intersection (cdr l1)
+				(zl-delete (car l1) l2 1))))
+	(t (zl-intersection (cdr l1) l2))))
 
-(DEFUN 2INP
-       (L)
-       (PROG(COUNT)
-	    (SETQ COUNT 0)
-	    LOOP
-	    (COND ((AND (NULL L)(GREATERP COUNT 1))(RETURN T)))
-	    (COND ((NULL L)(RETURN NIL)))
-	    (COND ((MAXIMA-INTEGERP (CAR L))(SETQ COUNT (ADD1 COUNT))))
-	    (SETQ L (CDR L))
-	    (GO LOOP)))
+(DEFUN 2INP (L)
+  (PROG(COUNT)
+     (SETQ COUNT 0)
+     LOOP
+     (COND ((AND (NULL L)(GREATERP COUNT 1))(RETURN T)))
+     (COND ((NULL L)(RETURN NIL)))
+     (COND ((MAXIMA-INTEGERP (CAR L))(SETQ COUNT (ADD1 COUNT))))
+     (SETQ L (CDR L))
+     (GO LOOP)))
 
 
-(DEFUN 2RATP
-       (L)
-       (PROG(COUNT)
-	    (SETQ COUNT 0)
-	    LOOP
-	    (COND ((AND (NULL L)(GREATERP COUNT 1))(RETURN T)))
-	    (COND ((NULL L)(RETURN NIL)))
-	    (COND ((EQ (CAAAR L) 'RAT)(SETQ COUNT (ADD1 COUNT))))
-	    (SETQ L (CDR L))
-	    (GO LOOP)))
+(DEFUN 2RATP (L)
+  (PROG(COUNT)
+     (SETQ COUNT 0)
+     LOOP
+     (COND ((AND (NULL L)(GREATERP COUNT 1))(RETURN T)))
+     (COND ((NULL L)(RETURN NIL)))
+     (COND ((EQ (CAAAR L) 'RAT)(SETQ COUNT (ADD1 COUNT))))
+     (SETQ L (CDR L))
+     (GO LOOP)))
 ;2NUMP SHOULD BE ELIMINATED. IT IS NOT EFFICIENT TO USE ANYTHING ELSE BUT JUST CONVERTING TO RAT REPRESENTATION ALL 0.X ,X IN N. ESPECIALLY LATER WHEN WE CONVERT TO OMONIMA FOR TESTING TO FIND THE RIGHT FORMULA
 
 
-(DEFUN 2NUMP
-       (L)
-       (PROG(COUNT)
-	    (SETQ COUNT 0)
-	    LOOP
-	    (COND ((AND (NULL L)(GREATERP COUNT 1))(RETURN T)))
-	    (COND ((NULL L)(RETURN NIL)))
-	    (COND ((NUMBERP (CAR L))(SETQ COUNT (ADD1 COUNT))))
-	    (SETQ L (CDR L))
-	    (GO LOOP)))
+(DEFUN 2NUMP (L)
+  (PROG(COUNT)
+     (SETQ COUNT 0)
+     LOOP
+     (COND ((AND (NULL L)(GREATERP COUNT 1))(RETURN T)))
+     (COND ((NULL L)(RETURN NIL)))
+     (COND ((NUMBERP (CAR L))(SETQ COUNT (ADD1 COUNT))))
+     (SETQ L (CDR L))
+     (GO LOOP)))
 
 
-(DEFUN WHITFUN(K M VAR)(LIST '(MQAPPLY)(LIST '($%M ARRAY) K M) VAR))
+(DEFUN WHITFUN(K M VAR)
+  (LIST '(MQAPPLY) (LIST '($%M ARRAY) K M) VAR))
 
 (DEFUN SIMP2F1
        (L1 L2)
@@ -645,7 +624,7 @@
 				($diff (mul (power 'ell (sub b  1 ))
 					    
 					    fun)
-				       'ell (sub b (sub a (sub (x (inv 2))))))
+				       'ell (sub b (sub a (sub x (inv 2)))))
 				'ell (- x y)))
 	       'ell y)))
 
@@ -680,10 +659,12 @@
        (COND ((AND (GREATERP (CAR L2)(CAR L1))
 		   (GREATERP (CAR L2)(CADR L1)))
 	      (GEREDF (CAR L1)(CADR L1)(CAR L2)))
-	     (T (GERED1 L1 L2 'HGFSIMP))))
-(DEFUN GEREDno2
-       (A B C)
-       (COND ((GREATERP C B)(GEREDF B A C))(T (GERED2 A B C))))
+	     (T (GERED1 L1 L2 #'HGFSIMP))))
+
+(DEFUN GEREDno2 (A B C)
+  (COND ((GREATERP C B) (GEREDF B A C))
+	(T (GERED2 A B C))))
+
 (defun derivint
        (n m l)(subst var 'psey
        (mul (power -1 m)
@@ -730,7 +711,7 @@
        (A B C)
        (COND ((EQ (QUEST (SUB C B)) '$NEGATIVE)
 	      (COND ((EQ (QUEST (SUB C A)) '$NEGATIVE)
-		     (GERED1 (LIST A B)(LIST C) 'HGFSIMP))
+		     (GERED1 (LIST A B)(LIST C) #'HGFSIMP))
 		    (T (GERED2 A B C))))
 	     ((EQ (QUEST (SUB C A)) '$NEGATIVE)(GERED2 B A C))
 	     (T (REST-DEGEN A B C))))
@@ -749,7 +730,7 @@
 			    (MUL -1 (ADD M M N L 1))))
 		   (RETURN (GERED1 (LIST A B)
 				   (LIST C)
-				   'HGFSIMP))))
+				   #'HGFSIMP))))
 	    (RETURN (hyp-DEG B A C))))
 
 
@@ -766,7 +747,7 @@
 			       (MUL -1 (ADD L M 1))))
 		   (RETURN (GERED1 (LIST A B)
 				   (LIST C)
-				   'HGFSIMP))))
+				   #'HGFSIMP))))
 	    (COND ((NNI (SETQ L (SUB (SUB B M) 1)))
 		   (RETURN (REST-DEGEN-1A A B C M L))))
 	    (RETURN (hyp-DEG B A C))))
@@ -804,7 +785,7 @@
 	    (COND ((NNI (SUB A C))
 		   (RETURN (GERED1 (LIST A B)
 				   (LIST C)
-				   'HGFSIMP))))
+				   #'HGFSIMP))))
 	    (COND ((NNI (SUB (SUB C A) 1))
 		   (RETURN (DEG2917 A B C))))
 	    (RETURN (hyp-DEG B A C))))
@@ -880,19 +861,19 @@
 		  INV2
 		  (INV 2))
 	    (COND ((EQUAL A-B INV2)   
-		   (RETURN (GERED1 (LIST A B)(LIST C) 'LEGF24))))
+		   (RETURN (GERED1 (LIST A B)(LIST C) #'LEGF24))))
 	    (COND ((EQUAL A-B (MUL -1 INV2))
 		   (RETURN (LEGF24 (LIST A B)(LIST C) VAR))))
 	    (COND ((EQUAL C-A-B INV2)
 		   (RETURN (LEGF20 (LIST A B)(LIST C) VAR))))
 	    (COND ((EQUAL C-A-B (MUL -1 INV2))
-		   (RETURN (GERED1 (LIST A B)(LIST C) 'LEGF20))))
+		   (RETURN (GERED1 (LIST A B)(LIST C) #'LEGF20))))
 	    (COND ((EQUAL 1-C A-B)
 		   (RETURN (LEGF16 (LIST A B)(LIST C) VAR))))
 	    (COND ((EQUAL 1-C (MUL -1 A-B))
-		   (RETURN (GERED1 (LIST A B)(LIST C) 'LEGF16))))
+		   (RETURN (GERED1 (LIST A B)(LIST C) #'LEGF16))))
 	    (COND ((EQUAL 1-C C-A-B)
-		   (RETURN (GERED1 (LIST A B)(LIST C) 'LEGF14))))
+		   (RETURN (GERED1 (LIST A B)(LIST C) #'LEGF14))))
 	    (COND ((EQUAL 1-C (MUL -1 C-A-B))
 		   (RETURN (LEGF14 (LIST A B)(LIST C) VAR))))
 	    (COND ((EQUAL A-B (MUL -1 C-A-B))
@@ -1158,52 +1139,52 @@
 					-1)
 				 ($atan z)))))))
 
-(defun trig-log-1
-       (l1 l2)
-       (prog (a b c z1 $exponentialize)
+;(defun trig-log-1
+;       (l1 l2)
+;       (prog (a b c z1 $exponentialize)
 	     
-	     (setq a (car l1) b (cadr l1) c (car l2))
-	     (cond ((equal (add a b) 0)
-		    (cond ((equal (checksigntm var) '$positive)
-			   (return ($cos (mul (mul 2 a)
-					      ($asin (power var
-							    (inv 2)))))))
-			  (t (return (div (add (power (add (setq
-							    z1
-							    (power
-							     (add
-							      (mul
-							       var
-							       -1)
-							      1)
-							     (inv 2)))
-							   var)
-						      (mul 2 a))
-					       (power (sub z1 var)
-						      (mul 2 a)))
-					  2)))
-			  ((equal (add a b) 1)
-			   (return (mul (inv ($cos (setq z1
-							 ($asin
-							  ($sqrt
-							   var)))))
-					($cos (mul z1 (sub a b))))))
-			  ((or (equal (sub a b) (inv 2))
-			       (equal (sub a b) (inv -2)))
-			   (return (add (div (power (add 1
-							 (setq
-							  z1
-							  (power
-							   var
-							   (inv
-							    2))))
-						    (mul -2 a))
-					     2)
-					(div (power (sub 1 z1)
-						    (mul -2 a))
-					     2)))))))
+;	     (setq a (car l1) b (cadr l1) c (car l2))
+;	     (cond ((equal (add a b) 0)
+;		    (cond ((equal (checksigntm var) '$positive)
+;			   (return ($cos (mul (mul 2 a)
+;					      ($asin (power var
+;							    (inv 2)))))))
+;			  (t (return (div (add (power (add (setq
+;							    z1
+;							    (power
+;							     (add
+;							      (mul
+;							       var
+;							       -1)
+;							      1)
+;							     (inv 2)))
+;							   var)
+;						      (mul 2 a))
+;					       (power (sub z1 var)
+;						      (mul 2 a)))
+;					  2)))
+;			  ((equal (add a b) 1)
+;			   (return (mul (inv ($cos (setq z1
+;							 ($asin
+;							  ($sqrt
+;							   var)))))
+;					($cos (mul z1 (sub a b))))))
+;			  ((or (equal (sub a b) (inv 2))
+;			       (equal (sub a b) (inv -2)))
+;			   (return (add (div (power (add 1
+;							 (setq
+;							  z1
+;							  (power
+;							   var
+;							   (inv
+;							    2))))
+;						    (mul -2 a))
+;					     2)
+;					(div (power (sub 1 z1)
+;						    (mul -2 a))
+;					     2)))))))
 	     
-	     (return nil)))
+;	     (return nil)))
 
 
 
@@ -1284,7 +1265,7 @@
 	      (YANMULT (MUL (DIV (MULTPL L1) (MULTPL L2)) VAR)
 		       (HGFSIMP (INCR1 L1) (INCR1 L2) VAR)))
 	     (T (SEARCHADDSERIESLIST POW L1 L2)))) 
-
+
 (DEFUN SEARCHADDSERIESLIST (POW L1 L2) 
        (PROG (SERIES RES) 
 	     (COND ((SETQ SERIES (SEARCHSERIESLISTP SERIESLIST POW))
@@ -1337,7 +1318,7 @@
        (COND ((NULL SERIESLIST) NIL)
 	     ((EQUAL (CAAR SERIESLIST) POW) (CADAR SERIESLIST))
 	     (T (SEARCHSERIESLISTP (CDR SERIESLIST) POW)))) 
-
+
 (DEFUN YANMULT (A B) 
        (COND ((EQ (CAAR B) 'MPLUS) (YANMUL A (CDR B)))
 	     (T (MUL A B)))) 
@@ -1347,19 +1328,23 @@
 	     (T (ADD (MUL A (CAR B)) (YANMUL A (CDR B)))))) 
 
 
-(DEFUN FREEVARPAR(EXP)(COND ((FREEVAR EXP)(FREEPAR EXP))(T NIL)))
+(DEFUN FREEVARPAR(EXP)
+  (COND ((FREEVAR EXP) (FREEPAR EXP))
+	(T NIL)))
 
 (DECLARE-top (SPECIAL serieslist VAR PAR ZEROSIGNTEST PRODUCTCASE))
+
 (setq par '$P)
-(DEFUN FREEVAR (A) 
-       (COND ((ATOM A) (NOT (EQ A VAR)))
-	     ((ALIKE1 A VAR)NIL)
-	     ((AND (NOT (ATOM (CAR A)))
-		   (MEMQ 'ARRAY (CDAR A)))
-	      (COND ((FREEVAR (CDR A)) T)
-		    (T (PRINC 'VARIABLE-OF-INTEGRATION-APPEARED-IN-SUBSCRIPT)
-		       (ERR))))
-	     (T (AND (FREEVAR (CAR A)) (FREEVAR (CDR A))))))
+
+;(DEFUN FREEVAR (A) 
+;       (COND ((ATOM A) (NOT (EQ A VAR)))
+;	     ((ALIKE1 A VAR)NIL)
+;	     ((AND (NOT (ATOM (CAR A)))
+;		   (MEMQ 'ARRAY (CDAR A)))
+;	      (if (FREEVAR (CDR A))
+;		  T
+;		  (merror "VARIABLE-OF-INTEGRATION-APPEARED-IN-SUBSCRIPT")))
+;	     (T (AND (FREEVAR (CAR A)) (FREEVAR (CDR A))))))
 
 (DEFUN FREEPAR
        (EXP)
@@ -1552,67 +1537,67 @@
 
 
 
-(DEFUN CHECKSIGNTM			
-       (EXPR)				
-       (PROG (ASLIST QUEST ZEROSIGNTEST PRODUCTCASE)	
-	     (SETQ ASLIST CHECKCOEFSIGNLIST)
-	     (COND ((ATOM EXPR) (GO LOOP)))
-	     (COND ((EQ (CAAR EXPR) 'MTIMES)
-		    (SETQ PRODUCTCASE T)))
-	     LOOP
-	     (COND ((NULL ASLIST)
-		    (SETQ CHECKCOEFSIGNLIST
-			  (APPEND CHECKCOEFSIGNLIST
-				  (LIST (CONS
-					 EXPR
-					 (LIST
-					  (SETQ
-					   QUEST
-					   (CHECKFLAGANDACT
-					    EXPR)))))))
-		    (RETURN QUEST)))
-	     (COND ((EQUAL (CAAR ASLIST) EXPR)
-		    (RETURN (CADAR ASLIST))))
-	     (SETQ ASLIST (CDR ASLIST))
-	     (GO LOOP))) 
+;(DEFUN CHECKSIGNTM			
+;       (EXPR)				
+;       (PROG (ASLIST QUEST ZEROSIGNTEST PRODUCTCASE)	
+;	     (SETQ ASLIST CHECKCOEFSIGNLIST)
+;	     (COND ((ATOM EXPR) (GO LOOP)))
+;	     (COND ((EQ (CAAR EXPR) 'MTIMES)
+;		    (SETQ PRODUCTCASE T)))
+;	     LOOP
+;	     (COND ((NULL ASLIST)
+;		    (SETQ CHECKCOEFSIGNLIST
+;			  (APPEND CHECKCOEFSIGNLIST
+;				  (LIST (CONS
+;					 EXPR
+;					 (LIST
+;					  (SETQ
+;					   QUEST
+;					   (CHECKFLAGANDACT
+;					    EXPR)))))))
+;		    (RETURN QUEST)))
+;	     (COND ((EQUAL (CAAR ASLIST) EXPR)
+;		    (RETURN (CADAR ASLIST))))
+;	     (SETQ ASLIST (CDR ASLIST))
+;	     (GO LOOP))) 
 
-(DEFUN CHECKFLAGANDACT
-       (EXPR)
-       (COND (PRODUCTCASE (SETQ PRODUCTCASE NIL)
-			  (FINDSIGNOFTHEIRPRODUCT (FINDSIGNOFACTORS
-						   (CDR EXPR))))
-	     (T (ASKSIGN ($REALPART EXPR))))) 
+;(DEFUN CHECKFLAGANDACT
+;       (EXPR)
+;       (COND (PRODUCTCASE (SETQ PRODUCTCASE NIL)
+;			  (FINDSIGNOFTHEIRPRODUCT (FINDSIGNOFACTORS
+;						   (CDR EXPR))))
+;	     (T (ASKSIGN ($REALPART EXPR))))) 
 
-(DEFUN FINDSIGNOFACTORS
-       (LISTOFACTORS)
-       (COND ((NULL LISTOFACTORS) NIL)
-	     ((EQ ZEROSIGNTEST '$ZERO) '$ZERO)
-	     (T (APPEND (LIST (SETQ ZEROSIGNTEST
-				    (CHECKSIGNTM (CAR
-						  LISTOFACTORS))))
-			(FINDSIGNOFACTORS (CDR LISTOFACTORS)))))) 
+;(DEFUN FINDSIGNOFACTORS
+;       (LISTOFACTORS)
+;       (COND ((NULL LISTOFACTORS) NIL)
+;	     ((EQ ZEROSIGNTEST '$ZERO) '$ZERO)
+;	     (T (APPEND (LIST (SETQ ZEROSIGNTEST
+;				    (CHECKSIGNTM (CAR
+;						  LISTOFACTORS))))
+;			(FINDSIGNOFACTORS (CDR LISTOFACTORS)))))) 
 
-(DEFUN FINDSIGNOFTHEIRPRODUCT
-       (LIST)
-       (PROG (SIGN)
-	     (COND ((EQ LIST '$ZERO) (RETURN '$ZERO)))
-	     (SETQ SIGN '$POSITIVE)
-	     LOOP
-	     (COND ((NULL LIST) (RETURN SIGN)))
-	     (COND ((EQ (CAR LIST) '$POSITIVE)
-		    (SETQ LIST (CDR LIST))
-		    (GO LOOP)))
-	     (COND ((EQ (CAR LIST) '$NEGATIVE)
-		    (SETQ SIGN
-			  (CHANGESIGN SIGN)
-			  LIST
-			  (CDR LIST))
-		    (GO LOOP)))
-	     (RETURN '$ZERO))) 
+;(DEFUN FINDSIGNOFTHEIRPRODUCT
+;       (LIST)
+;       (PROG (SIGN)
+;	     (COND ((EQ LIST '$ZERO) (RETURN '$ZERO)))
+;	     (SETQ SIGN '$POSITIVE)
+;	     LOOP
+;	     (COND ((NULL LIST) (RETURN SIGN)))
+;	     (COND ((EQ (CAR LIST) '$POSITIVE)
+;		    (SETQ LIST (CDR LIST))
+;		    (GO LOOP)))
+;	     (COND ((EQ (CAR LIST) '$NEGATIVE)
+;		    (SETQ SIGN
+;			  (CHANGESIGN SIGN)
+;			  LIST
+;			  (CDR LIST))
+;		    (GO LOOP)))
+;	     (RETURN '$ZERO))) 
 
-(DEFUN CHANGESIGN
-       (SIGN)
-       (COND ((EQ SIGN '$POSITIVE) '$NEGATIVE) (T '$POSITIVE))) 
+;(DEFUN CHANGESIGN
+;       (SIGN)
+;       (COND ((EQ SIGN '$POSITIVE) '$NEGATIVE) (T '$POSITIVE))) 
 
 
 (SETQ PAR '$P)                           
@@ -1855,9 +1840,10 @@
 			'ell n)))
 
 
-(eval-when (compile)
-(DECLARE-top (unSPECIAL serieslist VAR PAR ZEROSIGNTEST PRODUCTCASE
-			fldeg flgkum listcmdiff checkcoefsignlist ))
-
-(declare-top (unspecial fun w b l alglist n  c ))
-)
+(eval-when
+    #+gcl (compile)
+    #-gcl (:compile-toplevel)
+  (DECLARE-top (unSPECIAL serieslist VAR PAR ZEROSIGNTEST PRODUCTCASE
+			  fldeg flgkum listcmdiff checkcoefsignlist ))
+  
+  (declare-top (unspecial fun w b l alglist n c)))

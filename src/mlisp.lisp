@@ -11,34 +11,38 @@
 
 (macsyma-module mlisp)
 
-#-(or cl NIL)
-(EVAL-WHEN (EVAL COMPILE) (SETQ OLD-IBASE *read-base* *read-base* 10.))
-#+cl
-(EVAL-WHEN (EVAL COMPILE)
-  (defvar *old-read-base* *read-base*)
-  (setq *read-base* 10.))
+(EVAL-WHEN
+    #+gcl (compile eval)
+    #-gcl (:compile-toplevel :execute)
 
-(declare-top (SPECIAL MSPECLIST MPROPLIST BINDLIST LOCLIST BVARS NOUNSFLAG putl
-		  NOITEMS DERIVFLAG DERIVLIST MPROGP MDOP EVP AEXPRP MLOCP $LABELS
-		  $VALUES $FUNCTIONS $ARRAYS $RULES $GRADEFS $DEPENDENCIES $ALIASES
-		  $MYOPTIONS $PROPS GENVAR $MAXPOSEX $MAXNEGEX $EXPOP $EXPON
-		  $FLOAT $NUMER ARYP MSUMP STATE-PDL EVARRP $SETVAL NOUNL
-		  $SETCHECKBREAK $REFCHECK DEBUG REFCHKL BAKTRCL MAPLP
-		  $NOREPEAT $DETOUT $DOALLMXOPS $DOSCMXOPS OPERS FACTLIST OPEXPRP
-		  $TRANSLATE $TRANSRUN $MAPERROR OUTARGS1 OUTARGS2 FMAPLVL MOPL
-		  $POWERDISP $SUBSCRMAP $DISPFLAG $OPTIONSET DSKSETP FEXPRERRP
-		  $FEATURES ALPHABET $%ENUMER $INFEVAL $SAVEDEF $%% %E-VAL
-		  $MAPPRINT FEATUREL OUTFILES FUNDEFSIMP MFEXPRP TRANSP
-		  SFINDEX MSPECLIST2 ENVLIST $MACROS LINEL $RATFAC $RATWTLVL
-		  $OPERATORS NOEVALARGS $PIECE $PARTSWITCH *GCDL*
-		  SCANMAPP))
+    (defvar *old-read-base* *read-base*)
+    (setq *read-base* 10.))
+
+(declare-top
+ (SPECIAL MSPECLIST MPROPLIST BINDLIST LOCLIST BVARS NOUNSFLAG putl
+	  NOITEMS DERIVFLAG DERIVLIST MPROGP MDOP EVP AEXPRP MLOCP $LABELS
+	  $VALUES $FUNCTIONS $ARRAYS $RULES $GRADEFS $DEPENDENCIES $ALIASES
+	  $MYOPTIONS $PROPS GENVAR $MAXPOSEX $MAXNEGEX $EXPOP $EXPON
+	  $FLOAT $NUMER ARYP MSUMP STATE-PDL EVARRP $SETVAL NOUNL
+	  $SETCHECKBREAK $REFCHECK DEBUG REFCHKL BAKTRCL MAPLP
+	  $NOREPEAT $DETOUT $DOALLMXOPS $DOSCMXOPS OPERS FACTLIST OPEXPRP
+	  $TRANSLATE $TRANSRUN $MAPERROR OUTARGS1 OUTARGS2 FMAPLVL MOPL
+	  $POWERDISP $SUBSCRMAP $DISPFLAG $OPTIONSET DSKSETP FEXPRERRP
+	  $FEATURES ALPHABET $%ENUMER $INFEVAL $SAVEDEF $%% %E-VAL
+	  $MAPPRINT FEATUREL OUTFILES FUNDEFSIMP MFEXPRP TRANSP
+	  SFINDEX MSPECLIST2 ENVLIST $MACROS LINEL $RATFAC $RATWTLVL
+	  $OPERATORS NOEVALARGS $PIECE $PARTSWITCH *GCDL*
+	  SCANMAPP))
+
 (declare-top (unspecial args))
-#-cl (proclaim ' (GENPREFIX %LS))
-#-cl(proclaim '	 (*EXPR RATF $FLOAT))
-#-cl(proclaim '	 (*LEXPR MAP1 MMAPCAR FMAPL1 OUTERMAP1 $INPART LINEL $DIFF $INTEGRATE
-		 $LDISP $RATVARS $RATWEIGHT))
-(declare-top	 (FIXNUM N I J NNEED NGIVEN NCELLS NITEMS LISPSUB INDX FMAPLVL EVFLG 
-			 LINEL SFINDEX #-cl (HASHER)))
+
+;#-cl (proclaim ' (GENPREFIX %LS))
+;#-cl(proclaim '	 (*EXPR RATF $FLOAT))
+;#-cl(proclaim '	 (*LEXPR MAP1 MMAPCAR FMAPL1 OUTERMAP1 $INPART LINEL $DIFF $INTEGRATE
+;		 $LDISP $RATVARS $RATWEIGHT))
+
+;(declare-top	 (FIXNUM N I J NNEED NGIVEN NCELLS NITEMS LISPSUB INDX FMAPLVL EVFLG 
+;			 LINEL SFINDEX #-cl (HASHER)))
 ;  NNEED to be flushed
 
 (SETQ MSPECLIST NIL BINDLIST NIL LOCLIST NIL MPROPLIST NIL $%ENUMER NIL
@@ -57,7 +61,7 @@
 			  $ODDFUN $EVENFUN $POSFUN $COMMUTATIVE $LASSOCIATIVE
 			  $RASSOCIATIVE $SYMMETRIC $ANTISYMMETRIC))
       $FEATURES (CONS '(MLIST SIMP) (APPEND FEATUREL NIL)))
-
+
 ;; These three variables are what get stuck in array slots as magic
 ;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays
 ;; respectively.
@@ -66,9 +70,7 @@
 
 ;; The most negative fixnum.  Sign bit is on and all other bits are zero.
 ;; Assumes two's complement arithmetic.
-(DEFVAR FIXUNBOUND
-  #+(or cl NIL) MOST-NEGATIVE-FIXNUM
-  #-(or NIL cl) (ROT 1 -1))
+(DEFVAR FIXUNBOUND MOST-NEGATIVE-FIXNUM)
 
 ;; The PDP10 floating point representation is:
 ;; 1 bit sign, 8 bit exponent, 27 bit mantissa
@@ -80,8 +82,8 @@
 ;; I think this is supposed to be the most negative flonum.  It's close,
 ;; but not quite.  The smallest is (FSC (ROT 3 -1) 0).
 
-#+PDP10
-(DEFVAR FLOUNBOUND (FSC (f- 2 (LSH -1 -1)) 0))
+;#+PDP10
+;(DEFVAR FLOUNBOUND (FSC (f- 2 (LSH -1 -1)) 0))
 
 ;; H6180 floating point representation is:
 ;; 8 bit exponent, 1 bit sign, 27 bit mantissa
@@ -90,16 +92,15 @@
 ;; The most negative flonum is given below.  The most positive flonum
 ;; is its logical complement.
 
-#+H6180
-(DEFVAR FLOUNBOUND (FSC (LOGIOR (LSH 1 35.) (LSH 1 27.)) 0))
+;#+H6180
+;(DEFVAR FLOUNBOUND (FSC (LOGIOR (LSH 1 35.) (LSH 1 27.)) 0))
 
 ;; Too bad there's no general way of getting the most negative flonum in
 ;; a relatively machine-independent manner.
 
-#+LISPM
-(DEFVAR FLOUNBOUND '*FLOUNBOUND-DOESNT-MATTER-ANYWAY*)
+;#+LISPM
+;(DEFVAR FLOUNBOUND '*FLOUNBOUND-DOESNT-MATTER-ANYWAY*)
 
-#+(or cl NIL)
 (DEFVAR FLOUNBOUND MOST-NEGATIVE-DOUBLE-FLOAT)
 
 (DEFMVAR MUNBINDP NIL
@@ -109,25 +110,22 @@
 
 (MAPC #'(LAMBDA (X) (SET X (NCONS '(MLIST SIMP))))
       '($VALUES $FUNCTIONS $MACROS $ARRAYS $MYOPTIONS $RULES $PROPS))
- 
 
 (DEFMFUN MAPPLY1 (FN ARGS FNNAME form)
-  (declare( special aryp) (object fn))
+  (declare (special aryp) (object fn))
  (COND ;((AND $OPERATORS (MNUMP FN)) (MUL2 FN (CAR ARGS)))
        ((ATOM FN) 
 	(cond
-	 #-cl				; #+(or cl nil)
-	 ((and (symbolp fn) (fboundp fn)
-	       (not (consp symbol-function fn)))
-	  (apply  fn args))
-	 #+(or cl nil)
+	 ;#-cl				; #+(or cl nil)
+;	 ((and (symbolp fn) (fboundp fn)
+;	       (not (consp symbol-function fn)))
+;	  (apply  fn args))
 	 ((ATOM FN) 
 	  (cond
-	   #+(or cl nil)
 	   ((functionp fn)
 	    (APPLY FN ARGS))
 	  
-	   #+cl;;better be a macro or an array.
+	   ;;better be a macro or an array.
 	   ((fboundp fn)
 	    (if (macro-function fn)
 	        (progn (merror "~M is a lisp level macro and cannot be applied at maxima level" fn) (eval (cons fn  args)))
@@ -139,20 +137,18 @@
 	   (SETQ FN (GETOPR FN)) (BADFUNCHK FNNAME FN NIL)
 	   (LET ((NOEVALARGS T)) (MEVAL (CONS (NCONS FN) ARGS)))))
 	 )))
-       #+cl
        ((functionp fn)
 	(apply fn args))
-       #+cl
        ((EQ (CAR FN) 'LAMBDA) (APPLY (COERCE FN 'FUNCTION) ARGS))
-       #-cl
-       ((EQ (CAR FN) 'LAMBDA) (APPLY FN ARGS))
-       #+(and Lispm (not cl))
-       ((memq (CAR FN)
-	      '(NAMED-LAMBDA si:digested-lambda)) (APPLY FN ARGS))
-       #-cl
-       ((AND (EQ (CAAR FN) 'MFILE)
-	     (SETQ FN (EVAL (DSKGET (CADR FN) (CADDR FN) 'VALUE NIL)))
-	     NIL))
+       ;#-cl
+;       ((EQ (CAR FN) 'LAMBDA) (APPLY FN ARGS))
+;       #+(and Lispm (not cl))
+;       ((memq (CAR FN)
+;	      '(NAMED-LAMBDA si:digested-lambda)) (APPLY FN ARGS))
+;       #-cl
+;       ((AND (EQ (CAAR FN) 'MFILE)
+;	     (SETQ FN (EVAL (DSKGET (CADR FN) (CADDR FN) 'VALUE NIL)))
+;	     NIL))
        ((EQ (CAAR FN) 'LAMBDA) (MLAMBDA FN ARGS FNNAME T form))
        ((EQ (CAAR FN) 'MQUOTE) (CONS (CDR FN) ARGS))
        ((AND ARYP (MEMQ (CAAR FN) '(MLIST $MATRIX)))
@@ -169,17 +165,17 @@
        ((MEMQ 'array (CDAR FN)) (CONS '(MQAPPLY) (CONS FN ARGS)))
        (T (BADFUNCHK FNNAME FN T))))
 
-#-NIL
+;#-NIL
 ;; the last argument to mapply1 for the lineinfo is not correct here..
 (DEFMFUN MCALL N (MAPPLY1 (ARG 1) (LISTIFY (f- 1 N)) (ARG 1) nil))
 
-#+NIL
-(DEFMFUN MCALL (FN &REST ARGS)
-  (MAPPLY1 FN ARGS FN nil))
+;#+NIL
+;(DEFMFUN MCALL (FN &REST ARGS)
+;  (MAPPLY1 FN ARGS FN nil))
 
-#-NIL
-(declare-top (MAPEX T))  ; To avoid the overuse of pdls in this highly recursive 
-		     ; part of the evaluator.
+;#-NIL
+;(declare-top (MAPEX T))  ; To avoid the overuse of pdls in this highly
+;                         ; recursive part of the evaluator.
 
 (DEFUN MEVALARGS (ARGS)
  (COND (NOEVALARGS (SETQ NOEVALARGS NIL) ARGS) (T (MAPCAR #'MEVAL ARGS))))
@@ -190,9 +186,9 @@
 ; function call.
 (defvar *mlambda-call-stack* (make-array 30 :fill-pointer 0 :adjustable t ))
 
-#-NIL 
-(declare-top (MAPEX NIL))
-
+;#-NIL 
+;(declare-top (MAPEX NIL))
+
 (DEFUN MLAMBDA (FN ARGS FNNAME NOEVAL form)
   (COND ((NOT ($LISTP (CADR FN)))
 	 (MERROR "First argument to LAMBDA must be a list:~%~M" (CADR FN))))
@@ -276,7 +272,7 @@
 	     (COND (ARYP (MERROR "Improper array call"))
 		   (T (MLAMBDA FN ARGL (CADR FORM) NOEVALARGS form))))
 	    (T (MAPPLY1 FN (MEVALARGS ARGL) (CADR FORM) form)))))
-
+
 (DEFMFUN MEVAL (FORM) (SIMPLIFYA (MEVAL1 FORM) NIL))
 ;;temporary hack to see what's going on:
 (DEFMFUN safe-MGETL (ATOM INDS) (and (symbolp atom)
@@ -416,23 +412,21 @@
 		     (MEVAL (MMACRO-APPLY (CADR U) FORM)))
 		    ((EQ (CAR U) 'MFEXPR*)
 		     (SETQ NOEVALARGS NIL)  (APPLY (CADR U) (NCONS FORM)))
-		    #+cl
 		    ((eq (car u) 'macro)
 		     (setq noevalargs nil)
 		     (setq form (cons(caar form) (cdr form)))
 ;		     (setf (car form) (caar form) )
 		      (eval form)
 		     )
-		    #+Maclisp
-		    ((EQ (CAR U) 'MFEXPR*S)
-		     (SETQ NOEVALARGS NIL)
-		     ;; use macsyma Trace if you want to trace this call.
-		     (SUBRCALL T (CADR U) FORM))
+;		    #+Maclisp
+;		    ((EQ (CAR U) 'MFEXPR*S)
+;		     (SETQ NOEVALARGS NIL)
+;		     ;; use macsyma Trace if you want to trace this call.
+;		     (SUBRCALL T (CADR U) FORM))
 		    ((EQ (CAR U) 'T-MFEXPR) (APPLY (CADR U) (CDR FORM)))
 		    (T (MARGCHK (CAAR FORM) (CDR FORM))
 		       (APPLY (CADR U) (MEVALARGS (CDR FORM))))))
-	    B   #+(OR PDP10 Multics Franz NIL cl)
-	     (IF (AND (NOT ARYP) (LOAD-FUNCTION (CAAR FORM) T)) (GO A))
+	     B   (IF (AND (NOT ARYP) (LOAD-FUNCTION (CAAR FORM) T)) (GO A))
 	     (BADFUNCHK (CAAR FORM) (CAAR FORM) NIL)
 	     (IF (SYMBOLP (CAAR FORM))
 		 (SETQ U (BOUNDP (CAAR FORM)))
@@ -615,7 +609,7 @@
 ;		      (T (RETURN (MAPPLY1 U (MEVALARGS (CDR FORM))
 ;					 (CAAR FORM))))))))
 ;	(T (MAPPLY1 (CAAR FORM) (MEVALARGS (CDR FORM)) (CAAR FORM)))))
-;  
+;
 ;;; This function substitutes for the use of GETL on the
 ;;; EXPR, FEXPR, MACRO, SUBR, FSUBR, LSUBR, or ARRAY property.
 ;;; Note: This function used to be incompatible with GETL simply
@@ -773,7 +767,7 @@
      (setq typ 'subr))
     ((macro-function sym)
      (setq typ 'macro))
-    #+lispm ((arrayp fn)(values fn 'array))
+;    #+lispm ((arrayp fn)(values fn 'array))
     ((setq fn (symbol-array sym))
      (setq typ 'array))
     ((setq fn (get sym 'mfexpr*))
@@ -825,15 +819,15 @@
 ;	(IF (MEMQ PROP PROPS) (LIST PROP F)))))
 ;    (RETURN (AND RPROP (MEMQ RPROP PROPS) (LIST RPROP FN)))))
  
-#+NIL
-(defun getl-nil-fcn-prop (sym props)
-  (and (fboundp sym)
-       (let* ((f (symbol-function sym))
-	      (prop (if (atom f)
-			(if (ml-typep f (kw COMPILED-FUNCTION)) 'subr 'expr)
-			(car f))))
-	 (when (memq prop '(defmacro subst)) (setq prop 'macro))
-	 (if (memq prop props) (list prop f)))))
+;#+NIL
+;(defun getl-nil-fcn-prop (sym props)
+;  (and (fboundp sym)
+;       (let* ((f (symbol-function sym))
+;	      (prop (if (atom f)
+;			(if (ml-typep f (kw COMPILED-FUNCTION)) 'subr 'expr)
+;			(car f))))
+;	 (when (memq prop '(defmacro subst)) (setq prop 'macro))
+;	 (if (memq prop props) (list prop f)))))
 
 (DEFMFUN MEVAL2 (NEWARGS OLD)
   (declare (special aryp))
@@ -850,7 +844,7 @@
 			      ((ATOM (CADR X)) (CADR X))
 			      (T (CADADR X))))
 	  (CDR VARS)))
-
+
 (DEFMFUN MOP (FORM) (IF (EQ (CAAR FORM) 'MQAPPLY) (CADR FORM) (CAAR FORM)))
 	
 (DEFMFUN MARGS (FORM) (IF (EQ (CAAR FORM) 'MQAPPLY) (CDDR FORM) (CDR FORM)))
@@ -866,38 +860,38 @@
 	 (MERROR "Improper name or value in functional position:~%~M"
 		 VAL))))
 
-#+MacLisp
-(DEFUN MARGCHK (FN ARGS) 
- (LET (EXPR)
-      (OR (NOT (OR (SETQ EXPR (GET FN 'EXPR)) (GET FN 'SUBR)))
-	  (NOT (ARGS FN))
-	  (CAR (ARGS FN))
-	  (LET ((NNEED (CDR (ARGS FN))) (NGIVEN (LENGTH ARGS)))
-	       (WHEN (NOT (= NNEED NGIVEN))
-		     (IF (AND EXPR (NOT (MGET FN 'TRACE))
-			      (OR (NULL (CADR EXPR)) (NOT (ATOM (CADR EXPR)))))
-			 (SETQ FN (CONS (NCONS FN) (CADR EXPR))))
-		     (MERROR "Too ~M arguments supplied to ~M:~%~M"
-			     (IF (< NNEED NGIVEN) '|&many| '|&few|)
-			     FN
-			     (CONS '(MLIST) ARGS)))))))
+;#+MacLisp
+;(DEFUN MARGCHK (FN ARGS) 
+; (LET (EXPR)
+;      (OR (NOT (OR (SETQ EXPR (GET FN 'EXPR)) (GET FN 'SUBR)))
+;	  (NOT (ARGS FN))
+;	  (CAR (ARGS FN))
+;	  (LET ((NNEED (CDR (ARGS FN))) (NGIVEN (LENGTH ARGS)))
+;	       (WHEN (NOT (= NNEED NGIVEN))
+;		     (IF (AND EXPR (NOT (MGET FN 'TRACE))
+;			      (OR (NULL (CADR EXPR)) (NOT (ATOM (CADR EXPR)))))
+;			 (SETQ FN (CONS (NCONS FN) (CADR EXPR))))
+;		     (MERROR "Too ~M arguments supplied to ~M:~%~M"
+;			     (IF (< NNEED NGIVEN) '|&many| '|&few|)
+;			     FN
+;			     (CONS '(MLIST) ARGS)))))))
 
-#+Franz
-(defun margchk (fn args)
-   (let (expr argdesc)
-      (or (not (symbolp fn))
-	  (not (getd fn))
-	  (null (setq argdesc (car (get fn 'fcn-info))))
-	  (let ((minimum (car argdesc))
-		(maximum (cdr argdesc))
-		(ngiven (length args)))
-	     (cond ((or (and maximum (> ngiven maximum))
-			(and minimum (< ngiven minimum)))
-		    (merror "Too ~M arguments supplied to ~M:~%~M"
-			    (cond ((> ngiven maximum) '|&many|)
-				  (t '|&few|))
-			    fn
-			    (cons '(mlist) args))))))))
+;#+Franz
+;(defun margchk (fn args)
+;   (let (expr argdesc)
+;      (or (not (symbolp fn))
+;	  (not (getd fn))
+;	  (null (setq argdesc (car (get fn 'fcn-info))))
+;	  (let ((minimum (car argdesc))
+;		(maximum (cdr argdesc))
+;		(ngiven (length args)))
+;	     (cond ((or (and maximum (> ngiven maximum))
+;			(and minimum (< ngiven minimum)))
+;		    (merror "Too ~M arguments supplied to ~M:~%~M"
+;			    (cond ((> ngiven maximum) '|&many|)
+;				  (t '|&few|))
+;			    fn
+;			    (cons '(mlist) args))))))))
 
 
 
@@ -931,7 +925,6 @@
 
 
 
-
 (DEFMFUN MBIND (LAMVARS FNARGS FNNAME)
   (DO ((VARS LAMVARS (CDR VARS)) (ARGS FNARGS (CDR ARGS)))
       ((COND ((AND VARS ARGS) NIL)
@@ -949,9 +942,9 @@
 	       (ML (CONS (IF (BOUNDP VAR) (SYMBOL-VALUE VAR) MUNBOUND)
 			  MSPECLIST)))
 	   (SETQ BINDLIST BL MSPECLIST ML)))
-#+Franz (SETQ BINDLIST (CONS VAR BINDLIST))
-#+Franz (SETQ MSPECLIST (CONS (IF (BOUNDP VAR) (SYMBOL-VALUE VAR) MUNBOUND)
-			  MSPECLIST))
+;#+Franz (SETQ BINDLIST (CONS VAR BINDLIST))
+;#+Franz (SETQ MSPECLIST (CONS (IF (BOUNDP VAR) (SYMBOL-VALUE VAR) MUNBOUND)
+;			  MSPECLIST))
 	(MSET VAR (CAR ARGS)))))
 
 (DEFMFUN MUNBIND (VARS)
@@ -986,9 +979,8 @@
 	 (COND ((NOT (symbolp VAR))
 		(NOINTERRUPT NIL) (IMPROPER-ARG-ERR VAR '$LOCAL))
 	       ((AND (MGET VAR 'array)
-		     #+MacLisp (GET VAR 'array)
-		     #+cl (arrayp (symbol-array var))
-		     )
+		     ;#+MacLisp (GET VAR 'array)
+		     (arrayp (symbol-array var)))
 		(NOINTERRUPT NIL)
 		(MERROR "Attempt to bind a complete array ~M" VAR)))
 	 (SETQ MPROPLIST (CONS (GET VAR 'MPROPS) MPROPLIST)
@@ -1005,7 +997,6 @@
  (SETQ MLOCP NIL)
  (NOINTERRUPT NIL)
  '$DONE)
-
 
 (DEFUN MUNLOCAL NIL
  (NOINTERRUPT 'TTY)
@@ -1033,7 +1024,7 @@
  (SETQ LOCLIST (CDR LOCLIST))
  (NOINTERRUPT NIL))
 
-(declare-top (MACROS T))
+;(declare-top (MACROS T))
 ;;do we really need this??
 ;;since its incompatible with the special definition
 
@@ -1092,7 +1083,6 @@
                 (T (MERROR "Improper value assignment:~%~M" X)))))
 
 
-
 (DEFMSPEC $EV (L) (SETQ L (CDR L))
  (LET ((EVP T) (NOUNL NOUNL) ($FLOAT $FLOAT) ($NUMER $NUMER)
        ($EXPOP $EXPOP) ($EXPON $EXPON) ($DOALLMXOPS $DOALLMXOPS)
@@ -1209,7 +1199,6 @@
 		  (SETQ BNDVARS (CONS (CADAR L) BNDVARS)
 			BNDVALS (CONS (MEVAL (SPECREPCHECK (CADDAR L))) BNDVALS))))
 	     (T (SETQ L (APPEND (CAR L) (CDR L))))))))
-
 (DEFMFUN MEVALATOMS (EXP)
  (COND ((ATOM EXP) (MEVAL1 EXP))
        ((MEMQ 'array (CDAR EXP))
@@ -1281,7 +1270,7 @@
 (DEFMSPEC MQUOTE (FORM) (CADR FORM))
 
 (DEFMFUN $SUBVARP (X) (AND (NOT (ATOM X)) (MEMQ 'array (CDAR X)) T))
-
+
 (DEFMFUN MSETERR (X Y)
  (IF MUNBINDP
      'MUNBINDP
@@ -1307,12 +1296,12 @@
        ((MEMQ X '($LINEL $FORTINDENT $GENSUMNUM $FPPRINTPREC $FLOATWIDTH
 		  $PARSEWINDOW $TTYINTNUM))
 	(IF (NOT (fixnump y)) (MSETERR X Y))
-	#+MacLisp
-	(WHEN (EQ X '$LINEL)
-	  (LINEL T (LINEL NIL Y))
-	  (DOLIST (FILE OUTFILES) (LINEL FILE Y))
-	  (SETQ LINEL Y))
-	#+(or cl Franz) (if (eq x '$linel) (setq linel y))
+;	#+MacLisp
+;	(WHEN (EQ X '$LINEL)
+;	  (LINEL T (LINEL NIL Y))
+;	  (DOLIST (FILE OUTFILES) (LINEL FILE Y))
+;	  (SETQ LINEL Y))
+	(if (eq x '$linel) (setq linel y))
 	(COND ((AND (MEMQ X '($FORTINDENT $GENSUMNUM $FLOATWIDTH $TTYINTNUM)) (< Y 0))
 	       (MSETERR X Y))
 	      ((AND (EQ X '$PARSEWINDOW) (< Y -1)) (MSETERR X Y))
@@ -1343,13 +1332,13 @@
 	    (MERROR "RATFAC and RATWTLVL may not both be used at the same time.")))))
 
 (DEFMFUN NUMERSET (ASSIGN-VAR Y)
- ASSIGN-VAR  ; ignored
- (MSET '$FLOAT Y))
+  (declare (ignore ASSIGN-VAR))
+  (MSET '$FLOAT Y))
 
 (DEFMFUN NEVERSET (X ASSIGN-VAL)
- ASSIGN-VAL  ; ignored
- (IF MUNBINDP 'MUNBINDP (MERROR "Improper value assignment to ~:M" X)))
-
+  (declare (ignore ASSIGN-VAL))
+  (IF MUNBINDP 'MUNBINDP (MERROR "Improper value assignment to ~:M" X)))
+
 (DEFMFUN MMAPEV (L)
  (IF (NULL (CDDR L))
      (MERROR "~:M called with fewer than two arguments." (CAAR L)))
@@ -1377,8 +1366,7 @@
 			 (IMPROPER-ARG-ERR (ARG 2) '$MAP))
 			(T (MERROR "Arguments to MAPL not uniform - cannot map.")))
 		  (MCONS-OP-ARGS
-		    OP #+NIL (APPLY #'MMAPCAR (ARG 1) CDRL)
-		       #-NIL (APPLY #'MMAPCAR (CONS (ARG 1) CDRL)))))))
+		    OP (APPLY #'MMAPCAR (CONS (ARG 1) CDRL)))))))
 
 (DEFMSPEC $MAPLIST (L)
  (LET ((MAPLP T) RES)
@@ -1405,7 +1393,7 @@
 (DEFUN MAPATOM (X) (OR (SYMBOLP X) (MNUMP X) ($SUBVARP X)))
 
 (DEFMFUN $MAPATOM (X) (IF (MAPATOM (SPECREPCHECK X)) T))
-
+
 (DEFMSPEC $FULLMAP (L) (SETQ L (MMAPEV L)) (FMAP1 (CAR L) (CDR L) NIL))
 
 (DEFUN FMAP1 (FN ARGL FMAPCAARL)
@@ -1451,7 +1439,7 @@
 	 (COND ($MAPERROR (MERROR "Incorrect call to FULLMAP."))
 	       (T (IF $MAPPRINT (MTELL "FULLMAP is doing an APPLY.~%"))
 		  (RETURN (FUNCER FN ARGL)))))))
-
+
 (DEFMSPEC $MATRIXMAP (L) (LET ((FMAPLVL 2)) (APPLY #'FMAPL1 (MMAPEV L))))
 
 (DEFMSPEC $FULLMAPL (L) (APPLY #'FMAPL1 (MMAPEV L)))
@@ -1502,12 +1490,10 @@
 	(T (MAPPLY1 FN (MAPCAR #'SIMPLIFY ARGS) FN
 		   nil ;; try to get more info to pass
 		   ))))
-
+
 (DEFMSPEC $QPUT (L) (SETQ L (CDR L))
  (IF (NOT (= (LENGTH L) 3)) (WNA-ERR '$QPUT))
  ($PUT (CAR L) (CADR L) (CADDR L)))
-
-(DEFMFUN $GET (ATOM IND) (PROP1 '$GET ATOM NIL IND))
 
 (DEFMFUN $REM (ATOM IND) (PROP1 '$REM ATOM NIL IND))
 
@@ -1573,7 +1559,7 @@
 
 (DEFUN LINCHK (VAR)
  (IF (MEMQ VAR '($SUM $INTEGRATE $LIMIT $DIFF $TRANSPOSE)) ($NOUNIFY VAR) VAR))
-
+
 (DEFMSPEC $REMOVE (FORM) (I-$REMOVE (CDR FORM)))
 
 (DEFMFUN I-$REMOVE (L)
@@ -1630,7 +1616,7 @@
 			 (T (IMPROPER-ARG-ERR VAR FN))))
 		(CDR X)))
        (T (IMPROPER-ARG-ERR X FN))))
-
+
 (DEFMFUN REMOVE1 (VARS PROP MPROPP INFO FUNP)
  (DO ((VARS VARS (CDR VARS)) (ALLFLG)) ((NULL VARS))
      (NONSYMCHK (CAR VARS) '$REMOVE)
@@ -1673,10 +1659,10 @@
 (DEFUN REMOVE-TRANSL-FUN-PROPS (FUN)
  (IF (MGET FUN 'TRACE) (MACSYMA-UNTRACE FUN))
  (WHEN (AND (GET FUN 'TRANSLATED) (NOT (EQ $SAVEDEF '$ALL)))
-       #+Maclisp
-       (DO ((PROPS '(EXPR SUBR LSUBR FEXPR FSUBR) (CDR PROPS)))
-	   ((NULL PROPS))
-	   (ZL-REMPROP FUN (CAR PROPS)))
+;       #+Maclisp
+;       (DO ((PROPS '(EXPR SUBR LSUBR FEXPR FSUBR) (CDR PROPS)))
+;	   ((NULL PROPS))
+;	   (ZL-REMPROP FUN (CAR PROPS)))
        #-Maclisp
        (FMAKUNBOUND FUN)
        (ZL-REMPROP FUN 'TRANSLATED-MMACRO)
@@ -1691,7 +1677,7 @@
        (ZL-REMPROP FUN 'A-EXPR)
        (ZL-REMPROP FUN 'A-SUBR)
        (IF (NOT (FBOUNDP FUN)) (ZL-REMPROP FUN 'TRANSLATED))))
-
+
 (DEFMFUN REMPROPCHK (VAR)
  (IF (AND (NOT (MGETL VAR '($CONSTANT $NONSCALAR $SCALAR $MAINVAR $NUMER
 			   MATCHDECLARE $ATOMGRAD ATVALUES T-MFEXPR)))
@@ -1761,16 +1747,16 @@
   #-nil
   (LET ((Y (CAR (ARRAYDIMS (CADR ARY)))))
     (ARRSTORE FORM (COND ((EQ Y 'fixnum) 0) ((EQ Y 'flonum) 0.0) (T MUNBOUND))))
-  #+nil
- (LET ((Y (ARRAY-TYPE (CADR ARY))))
-   (ARRSTORE FORM (OR (CDR (ASSQ Y '((FIXNUM . 0)
-				     (FLONUM . 0.0)
-				#+NIL(SINGLE-FLOAT . 0.0F0)
-				#+NIL(SHORT-FLOAT . 0.0S0)
-				#+NIL(DOUBLE-FLOAT . 0.0D0)
-				#+NIL(LONG-FLOAT . 0.0L0)
-				)))
-		      MUNBOUND)))
+;  #+nil
+; (LET ((Y (ARRAY-TYPE (CADR ARY))))
+;   (ARRSTORE FORM (OR (CDR (ASSQ Y '((FIXNUM . 0)
+;				     (FLONUM . 0.0)
+;				#+NIL(SINGLE-FLOAT . 0.0F0)
+;				#+NIL(SHORT-FLOAT . 0.0S0)
+;				#+NIL(DOUBLE-FLOAT . 0.0D0)
+;				#+NIL(LONG-FLOAT . 0.0L0)
+;				)))
+;		      MUNBOUND)))
 
   )
 
@@ -1789,7 +1775,7 @@
 	  ((OR ALIASP (GET (CAR L) 'NOUN)) (REMALIAS (CAR L) T))
 	  ((SETQ U (GET (CAR L) 'VERB))
 	   (ZL-REMPROP (CAR L) 'VERB) (ZL-REMPROP U 'NOUN)))))
-
+
 ;in maxmac
 ;(DEFMFUN MGET (ATOM IND)
 ;  (LET ((PROPS (AND (SYMBOLP ATOM) (GET ATOM 'MPROPS))))
@@ -1824,7 +1810,7 @@
   (DO ((L1 (CDR L) (CDR L1)) (N (LENGTH (CAR L)))) ((NULL L1))
     (IF (NOT (= N (LENGTH (CAR L1))))
 	(MERROR "All matrix rows are not of the same length."))))
-
+
 (DEFUN HARRFIND (FORM)
        (PROG (ARY Y LISPSUB ITEML SUB NCELLS NITEMS)
 	     (SETQ ARY (symbol-array (MGET (CAAR FORM) 'HASHAR)))
@@ -1858,10 +1844,7 @@
   (let ((sub (cdr form)) u v type)
     (SETQ V (DIMCHECK (CAAR FORM) SUB NIL))
     (COND (V (SETQ TYPE (CAR (ARRAYDIMS (MGET (CAAR FORM) 'array))))))
-    (COND ((AND V (PROG2 #-cl
-			 (SETQ U (APPLY (MGET (CAAR FORM) 'array) SUB))
-			 #+cl
-			 (setq u (apply 'aref (symbol-array
+    (COND ((AND V (PROG2 (setq u (apply 'aref (symbol-array
 					       (MGET (CAAR FORM) 'array))
 					sub))
 			 (COND ((EQ TYPE 'flonum) (NOT (= U FLOUNBOUND)))
@@ -1874,15 +1857,12 @@
 		 ((EQ TYPE 'fixnum) 0)
 		 (T (MEVAL2 SUB FORM))))
 	  (T (SETQ U (ARRFUNCALL U SUB form))
-	     #-cl(STORE (APPLY (MGET (CAAR FORM) 'array) SUB) U)
-	     #+cl
 	     (setf (apply #'aref (SYMBOL-ARRAY (MGET (CAAR FORM) 'array))
 				sub) u)
 	     
 	     U))))
 
 
- 
 ;#+cl
 ;(defmacro $array (ar typ &rest dims)
 ;   (setq ar (make-array dims :initial-element init))
@@ -1890,8 +1870,7 @@
 
 
 (DEFMSPEC $ARRAY (X) (SETQ X (CDR X))
- (COND #+cl
-       ($use_fast_arrays
+ (COND ($use_fast_arrays
 	  
 	  (mset (car x) (apply '$make_array '$any
 			       (mapcar #'1+ (cdr x)))))
@@ -1907,10 +1886,7 @@
 		   (MERROR "Non-integer dimension - ARRAY")))
 	    (SETQ DIML (MAPCAR #'1+ DIML))
 	    (SETQ NEW (APPLY #'*ARRAY (CONS (IF COMPP FUN (GENSYM))
-					    (CONS #-CL (OR COMPP T)
-						  #+CL T
-						  DIML))))
-	    #+cl
+					    (CONS T DIML))))
 	    (COND ((EQ COMPP 'fixnum) (FILLARRAY NEW '(0)))
 		  ((EQ COMPP 'flonum) (FILLARRAY NEW '(0.0))))
 	    (COND ((NOT (MEMQ COMPP '(FIXNUM FLONUM))) (FILLARRAY NEW (LIST MUNBOUND)))
@@ -1931,10 +1907,7 @@
 					   (NOT (EQ (ml-typep (CDAR ITEMS)) COMPP)))
 				      (MERROR "Element and array type do not match:~%~M"
 					      (CDAR ITEMS)))
-				  #-cl(EVAL (LIST 'STORE
-						    (CONS NEW (CAAR ITEMS))
-						    (LIST 'QUOTE (CDAR ITEMS))))
-				  #+cl
+
 				  (setf (APPLY #'Aref
 					       (SYMBOL-ARRAY NEW)
 					       (CAAR ITEMS))
@@ -1960,19 +1933,13 @@
        (T (MERROR "Improper first argument to ARRAY:~%~M" (CAR X)))))
 
 
-
-
-#+cl
 (defmfun $Show_hash_array (x)
-  (send x :map-hash
-   `(lambda (u v) 
-    (format t "~%~A-->~A" u v))))
+  (maphash #'(lambda (k v) (format t "~%~A-->~A" k v)) x))
   
-#+cl
 ;; If this is T then arrays are stored in the value cell,
 ;; whereas if it is false they are stored in the function cell
 (defmvar $use_fast_arrays nil)
-#+cl
+
 (DEFMFUN ARRSTORE (L R &aux tem index)
   (cond ($use_fast_arrays
 	 (cond ((and (boundp (caar l)) (setq tem (symbol-value (caar l))))
@@ -1980,8 +1947,7 @@
 		(LET ((THE-TYPE (ml-typep TEM)))
  		  (COND ((EQ THE-TYPE 'array)
 			 (setf (APPLY #'Aref TEM INDEX)  R))
-			((EQ THE-TYPE #+cl 'hash-table
-			              #-cl'SI:EQUAL-HASH-TABLE)
+			((EQ THE-TYPE 'hash-table)
 			 (cond ((gethash 'dim1 tem)
 				(if (cdr index)
 				    (error "Array has dimension 1")))
@@ -2029,9 +1995,7 @@
 		  (IF (AND (MEMQ (SETQ FUN (CAR (ARRAYDIMS ARY))) '(FIXNUM FLONUM))
 			   (NOT (EQ (ml-typep R) FUN)))
 		      (MERROR "Improper assignment to complete array:~%~M" R))
-;		  #-cl(EVAL (LIST 'STORE (CONS ARY SUB) (LIST 'QUOTE R)))
-		  #+cl(setf (APPLY #'Aref (SYMBOL-ARRAY ARY) SUB)  R)
-		  )
+		  (setf (APPLY #'Aref (SYMBOL-ARRAY ARY) SUB)  R))
 		 ((SETQ ARY (MGET FUN 'HASHAR))
 		  (WHEN (MFILEP ARY)
 		    (I-$UNSTORE (NCONS FUN)) (SETQ ARY (MGET FUN 'HASHAR)))
@@ -2157,24 +2121,26 @@
 		(MERROR "Wrong number of indices:~%~M" (CONS '(MLIST) (CDR L))))
 	    ($SETELMX R (MEVAL (CADR L)) (MEVAL (CADDR L)) ARY)
 	    R)))) 
-
-(DEFUN ARRFUNP (X)
- (OR (AND $TRANSRUN (GETL X '(A-EXPR #+Maclisp A-SUBR))) (MGETL X '(AEXPR))))
 
-#-cl
-(defmacro system-subrcall* (p argl) p argl
-  (cond ((status feature maclisp)
-	 `(subrcall* ,p ,argl))
-	(t
-	 `(MAXIMA-ERROR '|Don't think I can A-SUBR frobulate here!|))))
-#+lispm
-(defmacro system-subrcall* (p argl) p argl
-  (cond
-    #-cl
-    ((status feature maclisp)
-	 `(subrcall* ,p ,argl))
-       (t
-	 `(error "Don't think I can A-SUBR frobulate here!"))))
+(DEFUN ARRFUNP (X)
+ (OR (AND $TRANSRUN (GETL X '(A-EXPR))) (MGETL X '(AEXPR))))
+
+;#-cl
+;(defmacro system-subrcall* (p argl) p argl
+;  (cond ((status feature maclisp)
+;	 `(subrcall* ,p ,argl))
+;	(t
+;	 `(MAXIMA-ERROR '|Don't think I can A-SUBR frobulate here!|))))
+
+;#+lispm
+;(defmacro system-subrcall* (p argl) p argl
+;  (cond
+;    #-cl
+;    ((status feature maclisp)
+;	 `(subrcall* ,p ,argl))
+;       (t
+;	 `(error "Don't think I can A-SUBR frobulate here!"))))
+
 #-(or cl NIL)
 (defmacro assemble-subrcall* ()
   (cond ((status feature maclisp)
@@ -2215,7 +2181,7 @@
 		(EVAL (NCONC (LIST 'SUBRCALL NIL
 				   (LIST 'QUOTE (CADR ARRFUN))) SUBS)))
        (SYSTEM-SUBRCALL* (CADR ARRFUN) SUBS)))))
-
+
 (DEFUN HASHER (L)  ; This is not the best way to write a hasher.  But, 
  (IF (NULL L)	   ; please don't change this code or you're liable to 
      0		   ; break SAVE files.
@@ -2271,7 +2237,7 @@
 					  (MAPCAR #'MEVAL (CDDR LAM))))
 
      LAM))
-
+
 (DEFMSPEC $DEFINE (L)
   (TWOARGCHECK L)
   (SETQ L (CDR L))
@@ -2283,7 +2249,7 @@
 		  (T (DISP2 (CAR L))))
 	   ,(MEVAL (CADR L)))))
 
-(defun set-lineinfo (fnname lineinfo body type)
+(defun set-lineinfo (fnname lineinfo body)
   (cond ((and (consp lineinfo) (eq 'src (third lineinfo)))
 	 (setf (cdddr lineinfo) (list fnname (first lineinfo)))
 	 (setf (get fnname 'lineinfo) body))
@@ -2320,12 +2286,12 @@
 			(MPUTPROP FNNAME T 'LOCAL-FUN)
 			(REMOVE-TRANSL-FUN-PROPS FNNAME))
 		    (ADD2LNC (CONS (NCONS FNNAME) ARGS) $FUNCTIONS)
-		    (set-lineinfo fnname (cadar fun) body 'mexpr)
+		    (set-lineinfo fnname (cadar fun) body)
 		    (MPUTPROP FNNAME (MDEFINE1 ARGS BODY) 'MEXPR)
-		    #+MacLisp
-		    (IF (NOT REDEF)
-			(ARGS FNNAME (IF (NOT (MGET FNNAME 'MLEXPRP))
-					 (CONS NIL (LENGTH ARGS)))))
+;		    #+MacLisp
+;		    (IF (NOT REDEF)
+;			(ARGS FNNAME (IF (NOT (MGET FNNAME 'MLEXPRP))
+;					 (CONS NIL (LENGTH ARGS)))))
 		    (IF $TRANSLATE (TRANSLATE-FUNCTION FNNAME)))
 	 ((PROG2 (ADD2LNC FNNAME $ARRAYS)
 		 (SETQ ARY (MGETL FNNAME '(HASHAR ARRAY)))
@@ -2335,8 +2301,7 @@
 		(SETQ ARY (MGETL FNNAME '(HASHAR ARRAY))))
 	  (IF (NOT (= (IF (EQ (CAR ARY) 'HASHAR)
 			  (aref (symbol-array (CADR ARY)) 2)
-			  #+NIL (ARRAY-/#-DIMS (CADR ARY))
-			  #-NIL (LENGTH (CDR (ARRAYDIMS (CADR ARY)))))
+			  (LENGTH (CDR (ARRAYDIMS (CADR ARY)))))
 		      (LENGTH SUBS)))
 	      (MERROR "Array ~:M already defined with different dimensions"
 		      FNNAME))
@@ -2347,20 +2312,13 @@
 	    (STORE (AFUNCALL ARY 1) 0)
 	    (STORE (AFUNCALL ARY 2) (LENGTH SUBS))
 	    (MDEFARRAY FNNAME SUBS ARGS BODY MQDEF)))
-   (CONS '(MDEFINE SIMP) #-CL L #+CL (COPY-LIST L)))))
-
+   (CONS '(MDEFINE SIMP) (COPY-LIST L)))))
+
 ; Checks to see if a user is clobbering the name of a system function.  
 ; Prints a warning and returns T if he is, and NIL if he isn't.
 (DEFUN MREDEF-CHECK (FNNAME)
  (COND ((AND (NOT (MGET FNNAME 'MEXPR))
-	     (OR (AND #+MacLisp
-		      (GETL FNNAME '(SUBR FSUBR MFEXPR*S LSUBR AUTOLOAD))
-		      #+Franz (getd fnname)
-		      #+NIL
-		      (OR (GET FNNAME 'MFEXPR*)
-			  (GETL-NIL-FCN-PROP FNNAME '(SUBR)))
-		      #+CL
-		      (OR (GET FNNAME 'AUTOLOAD)
+	     (OR (AND (OR (GET FNNAME 'AUTOLOAD)
 			  (GETL-LM-FCN-PROP FNNAME '(SUBR FSUBR LSUBR))
 			  (GET FNNAME 'MFEXPR*S))
 		      (NOT (GET FNNAME 'TRANSLATED)))
@@ -2370,7 +2328,6 @@
 	    (PRINC "command ") (PRINC "function "))
 	(PRINC (STRIPDOLLAR FNNAME))
 	(TERPRI)
-	#+(OR MACLISP FRANZ) (ARGS FNNAME NIL)
 	T)))
 
 (DEFUN MDEFARRAY (FUN SUBS ARGS BODY MQDEF)
@@ -2388,7 +2345,7 @@
 (DEFMFUN MSPECFUNP (FUN) (AND (OR (GETL-FUN FUN '(FSUBR FEXPR MACRO))
 (GETL FUN '(MFEXPR* MFEXPR*S)) 	 (AND $TRANSRUN (GET FUN
 'TRANSLATED-MMACRO)) 	 (MGET FUN 'MMACRO)) (NOT (GET FUN 'EVOK))))
-
+
 (DEFUN MDEFINE1 (ARGS BODY)
   (IF FUNDEFSIMP
       (LET ((SBODY (SIMPLIFY BODY)))
@@ -2455,7 +2412,7 @@
 	   (GET FUN 'AUTOLOAD)
 	   (NOT (OR (FBOUNDP FUN) (MFBOUNDP FUN))))
       (LOAD-FUNCTION FUN T)))
-
+
 (DEFMSPEC $DISPFUN (L) (SETQ L (CDR L))
  (COND ((OR (CDR L) (NOT (EQ (CAR L) '$ALL))) (DISPFUN1 L NIL NIL))
        (T (DISPFUN1 (CDR $FUNCTIONS) T NIL)
@@ -2510,7 +2467,7 @@
 
 (DEFMFUN OPTIONP (X)
  (AND (BOUNDP X) (NOT (MEMQ X (CDR $VALUES))) (NOT (MEMQ X (CDR $LABELS)))))
-
+
 (DEFMSPEC MCOND (FORM) (SETQ FORM (CDR FORM))
  (DO ((U FORM (CDDR U)) (V))
      ((NULL U) NIL)
@@ -2571,7 +2528,7 @@
 			       (MERROR "Illegal RETURN:~%~M" (CAR VAL)))
 			      (T (RETURN (CAR VAL)))))))))
   T (OR (CAR FORM) 'MDO) NIL NIL NIL))
-
+
 (DEFMSPEC MPROG (PROG) (SETQ PROG (CDR PROG))
  (LET (VARS VALS (MLOCP T))
       (IF ($LISTP (CAR PROG)) (SETQ VARS (CDAR PROG) PROG (CDR PROG)))
@@ -2627,7 +2584,7 @@
 (DEFMFUN $SQRT (X) `((%SQRT) ,X))
 
 
-(DEFMFUN ADD2LNC (ITEM LLIST &aux #+lispm  (default-cons-area working-storage-area))
+(DEFMFUN ADD2LNC (ITEM LLIST)
  (WHEN (NOT (MEMALIKE ITEM (IF ($LISTP LLIST) (CDR LLIST) LLIST)))
        (IF (NOT (ATOM ITEM)) (zl-DELETE (zl-ASSOC (CAR ITEM) LLIST) LLIST 1))
        (NCONC LLIST (NCONS ITEM))))
@@ -2638,13 +2595,13 @@
  (IF $FLOAT ($FLOAT BF) BF))
 
 (DEFMFUN $ALLBUT N (CONS '($ALLBUT) (LISTIFY N)))
-
+
 (DEFMFUN MFILEP (X)
   (AND (NOT (ATOM X)) (NOT (ATOM (CAR X))) (EQ (CAAR X) 'MFILE)))
 
-#-(or NIL cl)
-(DEFMFUN DSKSETQ FEXPR (L) (LET ((DSKSETP T)) (MSET (CAR L) (EVAL (CADR L)))))
-#+cl
+;#-(or NIL cl)
+;(DEFMFUN DSKSETQ FEXPR (L) (LET ((DSKSETP T)) (MSET (CAR L) (EVAL (CADR L)))))
+
 (defquote DSKSETQ (&rest L) (LET ((DSKSETP T)) (MSET (CAR L) (EVAL (CADR L)))))
 
 (DEFMFUN DSKRAT (X)
@@ -2711,15 +2668,14 @@
 (DEFPROP LAMBDA CONSTLAM MFEXPR*)
 (DEFPROP QUOTE CADR MFEXPR*)  ; Needed by MATCOM/MATRUN.
 
-#-(or cl NIL)
-(EVAL-WHEN (EVAL COMPILE) (SETQ *read-base* OLD-IBASE))
-#+cl
-(EVAL-WHEN (EVAL COMPILE)
-  (setq  *read-base* *old-read-base*))
+(EVAL-WHEN
+    #+gcl (compile eval)
+    #-gcl (:compile-toplevel :execute)
+
+    (setq  *read-base* *old-read-base*))
 
 ; Undeclarations for the file:
-(declare-top (NOTYPE N I J NNEED NGIVEN NCELLS NITEMS LISPSUB INDX EVFLG))
-
+;(declare-top (NOTYPE N I J NNEED NGIVEN NCELLS NITEMS LISPSUB INDX EVFLG))
 
 
 

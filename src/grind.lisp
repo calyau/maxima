@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package "MAXIMA")
+
 (macsyma-module grind)
 
 (declare-top (GENPREFIX GRI)
@@ -20,10 +21,10 @@
 
 (DEFUN CHRCT* () (f- LINEL CHRPS))
 
-#-MAXII
 (DEFVAR ALPHABET '(#\% #\_))
+
 (DEFVAR FORTRANP NIL)
-
+
 ;(DEFMSPEC $GRIND (X) (SETQ X (CDR X))
 ;  (LET (Y)
 ;    (IF (NOT (ZEROP (CHARPOS T))) (MTERPRI))
@@ -41,6 +42,7 @@
 ;	  (T (MGRIND X NIL) (TYO #/$ NIL)))
 ;    '$DONE))
 ;Update from F302 --gsb
+
 (DEFMSPEC $GRIND (X) (SETQ X (CDR X))
   (LET (Y)
     #+nocp(fresh-line)
@@ -65,6 +67,7 @@
 	when (numberp v) do (princ (ascii v))
 			    	else when (consp v)
 	    do   (show-msize v)))
+
 ;;Msize returns a list whose first member is the number of characters
 ;;in the printed representation of the rest of the list.
 ;;thus to print something given it's msize you could
@@ -101,8 +104,7 @@
   (MPRINT (MSIZE X NIL NIL 'MPAREN 'MPAREN) OUT))
 
 (DEFUN MPRINT (X OUT)
-  (COND (#-cl (INTEGERP X)
-	 #+cl (characterp x)
+  (COND ((characterp x)
 	(SETQ CHRPS (f1+ CHRPS)) (TYO X OUT))
 	((< (CAR X) (CHRCT*)) (MAPC #'(LAMBDA (L) (MPRINT L OUT)) (CDR X)))
 	(T (PROG (I) (SETQ I CHRPS)
@@ -167,7 +169,6 @@
    ((ATOM X) (CONS X L))
    (t (SETQ X  (CDR X))
       (DO () ((NULL X) L) (SETQ L (STRING1 (CAR X) L) X (CDR X))))))
-
 
 
 (DEFUN MSIZE (X L R LOP ROP)
@@ -203,7 +204,8 @@
 					   ))))
 		      (RPLACD L (CONS (CAR L) (CDR L)))
 		      (RPLACA L #. back-slash-char) (SETQ L (CDR L)))))
-	   (SETQ Y (CONS #. double-quote-char (NCONC (CDR Y) (LIST #. double-quote-char)))))
+	   (SETQ Y (CONS #.double-quote-char
+			 (NCONC (CDR Y) (LIST #.double-quote-char)))))
 	  (T (SETQ Y (CONS #\? (SLASH Y)))))
   (RETURN (MSZ Y L R))))
 
@@ -211,18 +213,20 @@
 
 (DEFUN SLASH (X)
   (DO ((L (CDR X) (CDR L))) ((NULL L))
-      (IF (or (#+cl ALPHANUMERICP #-cl ALPHANUMP (CAR L))
+      (IF (or (ALPHANUMERICP (CAR L))
 	      (eql (car l) #\_))
 	      NIL
 	 (progn (RPLACD L (CONS (CAR L) (CDR L)))
 		(RPLACA L #. back-slash-char) (SETQ L (CDR L)))))
   (IF (ALPHABETP (CAR X)) X (CONS #. back-slash-char X)))
 
-#-cl
-(DEFUN ALPHANUMP (N) (DECLARE (FIXNUM N))
-  (OR (ASCII-NUMBERP N) (ALPHABETP N)))
+;#-cl
+;(DEFUN ALPHANUMP (N) (DECLARE (FIXNUM N))
+;  (OR (ASCII-NUMBERP N) (ALPHABETP N)))
 
-(DEFUN MSIZE-PAREN (X L R) (MSIZE X (CONS #. left-parentheses-char L) (CONS #. right-parentheses-char R) 'MPAREN 'MPAREN))
+(DEFUN MSIZE-PAREN (X L R)
+  (MSIZE X (CONS #.left-parentheses-char L)
+	 (CONS #.right-parentheses-char R) 'MPAREN 'MPAREN))
 
 ;; The variables LB and RB are not uses here syntactically, but for
 ;; communication.  The FORTRAN program rebinds them to #/( and #/) since
@@ -301,7 +305,7 @@
 		    W (f+ (CAAR NL) W))))))
 
 (DEFUN STRSYM (X) (OR (GET X 'STRSYM) (GET X 'DISSYM)))
-
+
 (DEFPROP BIGFLOAT MSZ-BIGFLOAT GRIND)
 
 (DEFUN MSZ-BIGFLOAT (X L R)
@@ -474,9 +478,10 @@
 	     (LIST (f+ (CAR IF) (CAR L) (CAR X) (CAR R)) IF L X R))))
 
 (defprop text-string msize-text-string grind)
+
 (defun msize-text-string (x l r)
-  (cons (length (cdr x)) (cdr x))
-  )
+  (declare (ignore r))
+  (cons (length (cdr x)) (cdr x)))
 
 (DEFPROP MDO MSZ-MDO GRIND)
 (DEFPROP MDO 30. LBP)

@@ -26,7 +26,7 @@
 		   V)
 	     Z))
 
-(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
+;(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
 
 (DEFUN GM(EXPR)(SIMPLIFYA (LIST '(%GAMMA) EXPR) NIL))
 
@@ -57,7 +57,7 @@
 
 
 
-(DEFUN HASVAR(EXP)(COND ((FREEVAR EXP) NIL)(T T)))
+;(DEFUN HASVAR(EXP)(COND ((FREEVAR EXP) NIL)(T T)))
 
 
 
@@ -682,9 +682,9 @@
 	     ((COEFFPP) (D ZERP)))
 	   NIL)) 
 
-(DEFUN ZERP(A)(EQUAL A 0))
+;(DEFUN ZERP(A)(EQUAL A 0))
 
-(DEFUN NONZERP(A)(NOT (ZERP A)))
+;(DEFUN NONZERP(A)(NOT (ZERP A)))
 
 (DEFMFUN $SPECINT (EXP VAR)
        (PROG ($radexpand CHECKCOEFSIGNLIST)
@@ -693,7 +693,9 @@
 	    (RETURN (GRASP-SOME-TRIGS EXP))))
 
 (declare-top (special asinx atanx))
+
 (setq asinx nil atanx nil)
+
 (DEFUN GRASP-SOME-TRIGS
        (EXP)
        (PROG(U X L )
@@ -800,7 +802,7 @@
 (DEFUN LT-EXEC
        (U E F)
        (PROG(L)
-	    (COND ((OR ASINX ATANX)(RETURN (LT-ASINATAN U E F))))
+	    (COND ((OR ASINX ATANX)(RETURN (LT-ASINATAN U E))))
 	    (COND ((ZERP E)(RETURN (LT-SF-LOG U))))
 	    (COND ((AND (NOT (ZERP E))(SETQ L (C*T^V U)))
 		   (RETURN (LT-EXP L E F))))
@@ -814,8 +816,7 @@
 	     ((MEXPT)(T VARP)(V FREEVAR)))
 	   NIL))
 
-(DEFUN LT-ASINATAN
-       (U E F)
+(DEFUN LT-ASINATAN (U E)
        (COND ((ZERP E)
 	      (COND (ASINX (LT-LTP 'ASIN U var NIL))
 		    (ATANX (LT-LTP 'ATAN U var NIL))
@@ -834,7 +835,7 @@
 		   (RETURN (F35P147TEST C V E))))
 	    (COND ((T^-1 F)
 		   (SETQ E (MUL -4 E) V (ADD V 1))
-		   (RETURN (F29P146TEST C V E))))
+		   (RETURN (F29P146TEST V E))))
 	    (RETURN 'OTHER-LT-EXPONENTIAL-TO-FOLLOW)))
 
 (DEFUN T^2(EXP)(M2 EXP '((MEXPT)(T VARP) 2) NIL))
@@ -853,9 +854,9 @@
        (COND ((NOT (NEGINP V))(F35P147 C V A))
 	     (T 'FAIL-ON-F35P147TEST)))
 
-(DEFUN F29P146TEST
-       (C V A)
-       (COND ((NOT (NEGINP A))(F29P146 C V A))
+(DEFUN F29P146TEST (V A)
+       (COND ((NOT (NEGINP A))
+	      (F29P146 V A))
 	     (T 'FAIL-ON-F29P146TEST)))
 
 (DEFUN F1P137TEST
@@ -885,8 +886,7 @@
 	     (POWER '$%E (MUL* A (1//2)(INV PAR)))
 	     (DTFORD (POWER (MUL* 2 A (INV PAR))(1//2))(MUL -2 V))))
 
-(DEFUN F29P146
-       (C V A)
+(DEFUN F29P146 (V A)
        (MUL* 2
 	     (POWER (MUL* A (INV 4)(INV PAR))(DIV V 2))
 	     (KTFORK A V)))
@@ -1641,7 +1641,7 @@
 			       (HTJORY I1 I11 A1))
 			      ((EQ FLG 'D)(DTW I1 A1))
 			      ((EQ FLG 'KBATEMAN)
-			       (KBATEMANTW I1 A1))
+			       (KBATEMANTW A1))
 			      ((EQ FLG 'GAMMAINCOMPLETE)
 			       (GAMMAINCOMPLETETW A1 I1))
 			      ((EQ FLG 'KTI)(KTI I1 A1))
@@ -1805,7 +1805,7 @@
 		    (ADD (DIV I 2)(INV 4))
 		    (INV 4))))
 
-(DEFUN KBATEMANTW (I A)
+(DEFUN KBATEMANTW (A)
        ((LAMBDA(IND)
 	       (DIV (WWHIT (ADD A A) IND (1//2))
 		    (GM (ADD IND 1))))
@@ -2335,7 +2335,7 @@
 	     (SETQ M (ADD M 1.))
 	     (COND ((EQ (CHECKSIGNTM ($REALPART (SUB M INDEX)))
 			'$POSITIVE)
-		    (RETURN (F2P105V2COND-SIMP D M INDEX A))))
+		    (RETURN (F2P105V2COND-SIMP M INDEX A))))
 	     (RETURN 'FAIL-IN-F2P105V2COND))) 
 
 (DEFUN F50COND (A L V) 
@@ -2356,7 +2356,7 @@
 	       (RETURN (F50P188-SIMP D M V A))))
 	     (RETURN 'FAIL-IN-F50COND))) 
 
-(DEFUN F2P105V2COND-SIMP (D M V A) 
+(DEFUN F2P105V2COND-SIMP (M V A) 
        (MUL -2.
 	    (POWER '$%PI -1.)
 	    (GM (ADD M V))
@@ -2386,4 +2386,5 @@
 				(DIV (ADD M V 2.) 2.))
 			  (LIST (ADD V (MUL 3. (INV 2.))))
 			  (INV (MUL Z Z))))) 
+
 (declare-top (unspecial asinx atanx))

@@ -14,6 +14,10 @@
 (in-package "MAXIMA")
 ;;(macsyma-module ellipt)
 
+(defvar 3//2 '((rat simp) 3 2))
+(defvar 1//2 '((rat simp) 1 2))
+(defvar -1//2 '((rat simp) -1 2))
+
 ;;;
 ;;; Jacobian elliptic functions and elliptic integrals.
 ;;;
@@ -76,7 +80,7 @@
 		(mu (* root-mu root-mu))
 		(v (/ u (1+ root-mu))))
 	   (values v mu root-mu))))
-  (declaim (inline descending-transform ascending-transform))
+  (declare (inline descending-transform ascending-transform))
 
 
   ;; Could use the descending transform, but some of my tests show
@@ -830,7 +834,7 @@
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_dn) u m) form)))))
-
+
 ;;;; Elliptic integrals
 
 ;; Carlson's elliptic integral of the first kind.
@@ -1172,11 +1176,9 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
       (c4 (float 3/26 1d0)))
   (declare (double-float errtol c1 c2 c3 c4))
   (defun drd (x y z)
-    (declare (real x y z))
     ;; Check validity of input
 
-    (assert (and (>= x 0) (>= y 0) (>= z 0) (plusp (+ x y)))
-	    (x y z))
+    (assert (and (>= x 0) (>= y 0) (>= z 0) (plusp (+ x y))) (x y z))
 	    
     (let ((x (float x 1d0))
 	  (y (float y 1d0))
@@ -1502,8 +1504,8 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 (defprop %elliptic_kc simp-%elliptic_kc operators)
 (defprop %elliptic_ec simp-%elliptic_ec operators)
 
-(defmfun simp-%elliptic_kc (form y z)
-  (declare (ignore y))
+(defmfun simp-%elliptic_kc (form yy z)
+  (declare (ignore yy))
   (oneargcheck form)
   (let ((m (simpcheck (cadr form) z)))
     (cond ((or (and (floatp m))
@@ -1528,8 +1530,8 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
       ((mexpt) m -1)))
   grad)
 
-(defmfun simp-%elliptic_ec (form y z)
-  (declare (ignore y))
+(defmfun simp-%elliptic_ec (form yy z)
+  (declare (ignore yy))
   (oneargcheck form)
   (let ((m (simpcheck (cadr form) z)))
     (cond ((or (and (floatp m))
@@ -1574,8 +1576,8 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
   (simplify (list '($elliptic_pi)
 		  (resimplify n) (resimplify phi) (resimplify m))))
 
-(defmfun simp-$elliptic_pi (form y z)
-  (declare (ignore y))
+(defmfun simp-$elliptic_pi (form yy z)
+  (declare (ignore yy))
   ;;(threeargcheck form)
   (let ((n (simpcheck (cadr form) z))
 	(phi (simpcheck (caddr form) z))
@@ -1942,7 +1944,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
     ;; Both values should be equal.
     (values (+ drj-1 drj-2 (* (- a b) drj-3) (/ 3 (sqrt a)))
 	    drj-4)))
-
+
 ;;; Other Jacobian elliptic functions
 
 ;; jacobi_ns(u,m) = 1/jacobi_sn(u,m)
@@ -2992,7 +2994,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%jacobi_dc) u m) form)))))
-
+
 ;;; Other inverse Jacobian functions
 
 ;; inverse_jacobi_ns(x)
@@ -3130,7 +3132,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_nd) u m) form)))))
-
+
 ;; inverse_jacobi_sc(x)
 ;;
 ;; Let u = inverse_jacobi_sc(x).  Then jacobi_sc(u) = x or
@@ -3225,7 +3227,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sd) u m) form)))))
-
+
 ;; inverse_jacobi_cs(x)
 ;;
 ;; Let u = inverse_jacobi_cs(x).  Then jacobi_cs(u) = x or
@@ -3398,7 +3400,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_dc) u m) form)))))
-
+
 ;; Convert an inverse Jacobian function into the equivalent elliptic
 ;; integral F.
 ;;
@@ -3495,12 +3497,10 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
       (simplify (make-elliptic-f e))))
 
 (defun make-elliptic-e (e)
-  (cond ((atom e)
-	 e)
+  (cond ((atom e) e)
 	((eq (caar e) '$elliptic_eu)
-	 (destructuring-bind ((fn &rest ops) u m)
-	     e
-	   (declare (ignore fn ops))
+	 (destructuring-bind ((ffun &rest ops) u m) e
+	   (declare (ignore ffun ops))
 	   `(($elliptic_e) ((%asin) ((%jacobi_sn) ,u ,m)) ,m)))
 	(t
 	 (recur-apply #'make-elliptic-e e))))
@@ -3511,7 +3511,6 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
       (simplify (make-elliptic-e e))))
   
 	 
-
 ;; Eu(u,m) = integrate(jacobi_dn(v,m)^2,v,0,u)
 ;;         = integrate(sqrt((1-m*t^2)/(1-t^2)),t,0,jacobi_sn(u,m))
 ;;
@@ -3601,7 +3600,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	     b0 (sqrt (* a0 b0)))
       (setf c0 (/ (- a0 b0) 2))
       (setf phi (+ phi (lisp:atan (* (/ b0 a0) (lisp:tan phi)))))
-      (format t "~A ~A ~A~%" a0 b0 c0 phi))))
+      (format t "~A ~A ~A ~A~%" a0 b0 c0 phi))))
 
 (defprop %jacobi_am simp-%jacobi_am operators)
 

@@ -19,80 +19,80 @@
 (DEFMACRO FIX-LM (&rest BODY)
   `(PROGN . ,BODY))
 
-#+LISPM
-(DEFMACRO FIX-LM (&BODY BODY)
-  `(LET ((DEFAULT-CONS-AREA WORKING-STORAGE-AREA))
-     . ,BODY))
+;#+LISPM
+;(DEFMACRO FIX-LM (&BODY BODY)
+;  `(LET ((DEFAULT-CONS-AREA WORKING-STORAGE-AREA))
+;     . ,BODY))
 
 
 ;; The GRAM and DISPLA packages manipulate lists of fixnums, representing
 ;; lists of characters.  This syntax facilitates typing them in.
 ;; {abc} reads as (#/a #/b #/c), unquoted.
 
-(DEFUN CHAR-LIST-SYNTAX-ON ()
-  (FIX-LM
-    (SETSYNTAX '|{| 'MACRO
-	       #'(LAMBDA () (DO ((C (TYI) (TYI)) (NL))
-				((char= #\} C) (NREVERSE NL))
-			      (SETQ NL (CONS C NL)))))
-    T))
+;(DEFUN CHAR-LIST-SYNTAX-ON ()
+;  (FIX-LM
+;    (SETSYNTAX '|{| 'MACRO
+;	       #'(LAMBDA () (DO ((C (TYI) (TYI)) (NL))
+;				((char= #\} C) (NREVERSE NL))
+;			      (SETQ NL (CONS C NL)))))
+;    T))
 
-(DEFUN CHAR-LIST-SYNTAX-OFF ()
-  (FIX-LM nil
-    #+(OR MACLISP NIL) (SETSYNTAX '|{| 'MACRO NIL)
-    #+Franz   (setsyntax '|{| 2)
-    #+LISPM   (SET-SYNTAX-FROM-DESCRIPTION #\{ 'SI:ALPHABETIC)))
+;(DEFUN CHAR-LIST-SYNTAX-OFF ()
+;  (FIX-LM nil
+;    #+(OR MACLISP NIL) (SETSYNTAX '|{| 'MACRO NIL)
+;    #+Franz   (setsyntax '|{| 2)
+;    #+LISPM   (SET-SYNTAX-FROM-DESCRIPTION #\{ 'SI:ALPHABETIC)))
 
 ;; This sets up the syntax for a simple mode system defined later on
 ;; in this file.  As usual, it is poorly documented.
 
-#-cl
-(DEFUN MODE-SYNTAX-ON ()
-  ;; :A:B:C --> (SEL A B C)
-  ;; A component selection facility.  :A:B:C is like (C (B A)) in the
-  ;; DEFSATRUCT world.
-  (FIX-LM
-    (SETSYNTAX '|:| 'MACRO
-	       #'(LAMBDA () (DO ((L (LIST (READ)) (CONS (READ) L)))
-				((NOT (char= #\: (TYIPEEK))) (CONS 'SEL (NREVERSE L)))
-			      (TYI))))
+;#-cl
+;(DEFUN MODE-SYNTAX-ON ()
+;  ;; :A:B:C --> (SEL A B C)
+;  ;; A component selection facility.  :A:B:C is like (C (B A)) in the
+;  ;; DEFSATRUCT world.
+;  (FIX-LM
+;    (SETSYNTAX '|:| 'MACRO
+;	       #'(LAMBDA () (DO ((L (LIST (READ)) (CONS (READ) L)))
+;				((NOT (char= #\: (TYIPEEK))) (CONS 'SEL (NREVERSE L)))
+;			      (TYI))))
     
-    ;; <A B C> --> (SELECTOR A B C)  Used when defining a mode.
-    (SETSYNTAX '|<| 'MACRO
-	       #'(LAMBDA ()
-		   (COND ((char= #\SPACE (TYIPEEK)) '|<|)
-			 ((char= #\= (TYIPEEK)) (TYI) '|<=|)
-			 (T (DO ((S (READ) (READ)) (NL))
-				((EQ '|>| S) (CONS 'SELECTOR (NREVERSE NL)))
-			      (SETQ NL (CONS S NL)))))))
+;    ;; <A B C> --> (SELECTOR A B C)  Used when defining a mode.
+;    (SETSYNTAX '|<| 'MACRO
+;	       #'(LAMBDA ()
+;		   (COND ((char= #\SPACE (TYIPEEK)) '|<|)
+;			 ((char= #\= (TYIPEEK)) (TYI) '|<=|)
+;			 (T (DO ((S (READ) (READ)) (NL))
+;				((EQ '|>| S) (CONS 'SELECTOR (NREVERSE NL)))
+;			      (SETQ NL (CONS S NL)))))))
     
-    ;; Needed as a single character object.  Used when defining a mode.
-    (SETSYNTAX '|>| 'MACRO
-	       #'(LAMBDA ()
-		   (COND ((NOT (char= #\= (TYIPEEK))) '|>|)
-			 (T (TYI) '|>=|))))
-    T))
+;    ;; Needed as a single character object.  Used when defining a mode.
+;    (SETSYNTAX '|>| 'MACRO
+;	       #'(LAMBDA ()
+;		   (COND ((NOT (char= #\= (TYIPEEK))) '|>|)
+;			 (T (TYI) '|>=|))))
+;    T))
 
-#-cl
-(DEFUN MODE-SYNTAX-OFF ()
-  (FIX-LM
-    #+(OR MACLISP NIL) (PROGN (SETSYNTAX '|:| 'MACRO NIL)
-			      (SETSYNTAX '|<| 'MACRO NIL)
-			      (SETSYNTAX '|>| 'MACRO NIL))
-    #+LISPM (PROGN (SI:SET-SYNTAX-BITS #\: '(0 . 23))
-		   (SET-SYNTAX-FROM-DESCRIPTION #\> 'SI:ALPHABETIC)
-		   (SET-SYNTAX-FROM-DESCRIPTION #\< 'SI:ALPHABETIC))
-    #+Franz (progn (setsyntax '|:| 2)
-		   (setsyntax '|<| 2)
-		   (setsyntax '|>| 2))))
+;#-cl
+;(DEFUN MODE-SYNTAX-OFF ()
+;  (FIX-LM
+;    #+(OR MACLISP NIL) (PROGN (SETSYNTAX '|:| 'MACRO NIL)
+;			      (SETSYNTAX '|<| 'MACRO NIL)
+;			      (SETSYNTAX '|>| 'MACRO NIL))
+;    #+LISPM (PROGN (SI:SET-SYNTAX-BITS #\: '(0 . 23))
+;		   (SET-SYNTAX-FROM-DESCRIPTION #\> 'SI:ALPHABETIC)
+;		   (SET-SYNTAX-FROM-DESCRIPTION #\< 'SI:ALPHABETIC))
+;    #+Franz (progn (setsyntax '|:| 2)
+;		   (setsyntax '|<| 2)
+;		   (setsyntax '|>| 2))))
 
 ;; Loading this file used to turn on the mode syntax.  Its been turned off
 ;; now and hopefully no files left rely on it.  Files which want to 
 ;; use that syntax should call (MODE-SYNTAX-ON) during read time.
 
-#+MACLISP
-(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
-    (PUTPROP NAME LAMBDA-EXP 'MACRO))
+;#+MACLISP
+;(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
+;    (PUTPROP NAME LAMBDA-EXP 'MACRO))
 
 #+CL
 (DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
@@ -104,13 +104,13 @@
     (setf (macro-function name) lambda-exp))
     )
 
-#+Franz
-(defun define-macro (name lambda-exp)
-  (putd name `(macro (dummy-arg) (,lambda-exp dummy-arg))))
+;#+Franz
+;(defun define-macro (name lambda-exp)
+;  (putd name `(macro (dummy-arg) (,lambda-exp dummy-arg))))
 
-#+NIL
-(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
-  (ADD-MACRO-DEFINITION NAME LAMBDA-EXP))
+;#+NIL
+;(DEFUN DEFINE-MACRO (NAME LAMBDA-EXP)
+;  (ADD-MACRO-DEFINITION NAME LAMBDA-EXP))
 
 ;; LAMBIND* and PROGB* are identical, similar to LET, but contain an implicit
 ;; PROG.  On the Lisp Machine, PROG is extended to provide this capability.
@@ -157,7 +157,6 @@
 
 (DEFMACRO TELL (&REST ARGS) `(DISPLA (LIST '(MTEXT) . ,ARGS)))
 
-
 
 (declare-top (SPECIAL NAME BAS MOBJECTS SELECTOR) (*EXPR MODE))
 
@@ -397,7 +396,7 @@
 		 (RPLACD (CDDR X) NIL))
 	     (SETQ NL (CONS (LIST (CADDR (ZL-GET (CAR S) 'MODE)) X (CADR S) (CADR L)) NL)))
 	    (T (IA-ERR (CAR L))))))
-
+
 ;; (C-ATOM '(AGE WEIGHT MARRIED) '(21 130 NIL)) creates a plist-structure
 ;; with slot names as properties.  This should use SETPLIST instead
 ;; of RPLACD.
@@ -419,7 +418,7 @@
 
 
 (DEFMACRO CONS-EXP (OP . ARGS) `(SIMPLIFY (LIST (LIST ,OP) . ,ARGS)))
-
+
 ;; Local Modes:
 ;; Mode: LISP
 ;; Comment Col: 40

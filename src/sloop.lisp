@@ -1140,6 +1140,7 @@ recompile."))
 ;;; THEN construction.  
 
 (def-loop-for first (var expr1 then expr2)
+  (declare (special *loop-increment*))
   (or (l-equal then 'then) (error "First must be followed by then"))
   ;; If this is the first for, then we don't need the flag, but can
   ;; move the FIRST setting into the INITIALLY section

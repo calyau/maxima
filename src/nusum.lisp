@@ -91,7 +91,7 @@
                 ((LAMBDA (X)
                      (COND ((NULL MCATCH)
                             (DISPLA X)
-                            (*MERROR '|THROW not within CATCH|)))
+                            (MERROR "THROW not within CATCH")))
                      (THROW 'MCATCH X))
                  T))))))
            $%1))

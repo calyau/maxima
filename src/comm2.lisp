@@ -13,10 +13,7 @@
 
 ;;;; DIFF2
 
-(DECLARE-TOP (GENPREFIX CC) (SPECIAL $PROPS) (FIXNUM N I J))
-
-(DECLARE-TOP ;(SPLITFILE DIFF2)
-	 (SPECIAL $DOTDISTRIB))
+(DECLARE-TOP (SPECIAL $PROPS $DOTDISTRIB))
 
 (DEFMFUN DIFFINT (E X)
   (LET (A)
@@ -62,7 +59,7 @@
   (COND ((FREEOF X E) 0)
 	((NOT (FREEOFL X (HAND-SIDE (CADDR E) 'R))) (DIFF%DERIV (LIST E X 1)))
 	(T ($AT (SDIFF (CADR E) X) (CADDR E)))))
-
+
 (DEFMFUN DIFFNCEXPT (E X)
  ((LAMBDA (BASE* POW)
    (COND ((AND (MNUMP POW) (OR (NOT (EQ (ml-typep POW) 'fixnum)) (< POW 0)))  ; POW cannot be 0
@@ -123,15 +120,11 @@
 		  (EXTRACTVARS (CDR E))))
 	     ((MEMQ 'array (CDAAR E)) (UNION* (NCONS (CAR E)) (EXTRACTVARS (CDR E))))
 	     (T (UNION* (EXTRACTVARS (CDAR E)) (EXTRACTVARS (CDR E))))))
-
 
 ;;;; AT
 
 ;dummy-variable-operators is defined in COMM, which uses it inside of SUBST1.
-(DECLARE-TOP #-NIL (SPLITFILE AT)
-	 (SPECIAL ATVARS ATEQS ATP MUNBOUND DUMMY-VARIABLE-OPERATORS)
-	 #-cl
-	 (*LEXPR $SUBSTITUTE))
+(DECLARE-TOP (SPECIAL ATVARS ATEQS ATP MUNBOUND DUMMY-VARIABLE-OPERATORS))
 
 (DEFMFUN $ATVALUE (EXP EQS VAL) 
  (LET (DL VL FUN)
@@ -200,8 +193,8 @@
 
 (DEFUN LISTOF0S (LLIST)
   (DO ((LLIST LLIST (CDR LLIST)) (L NIL (CONS 0 L))) ((NULL LLIST) L)))
-
-(declare-top (SPLITFILE LOGCON) (SPECIAL $RATFAC GENVAR VARLIST $KEEPFLOAT *E*))
+
+(declare-top (SPECIAL $RATFAC GENVAR VARLIST $KEEPFLOAT *E*))
 
 
 (DEFMVAR $LOGCONCOEFFP NIL)
@@ -291,12 +284,10 @@
 
 (DEFUN LOGCONCOEFFP (E)
  (IF $LOGCONCOEFFP (LET ((*E* E)) (IS '(($LOGCONCOEFFP) *E*))) (MAXIMA-INTEGERP E)))
-
 
 ;;;; RTCON
 
-(DECLARE-TOP #-NIL (SPLITFILE RTCON)
-	 (SPECIAL $RADEXPAND $DOMAIN RADPE))
+(DECLARE-TOP (SPECIAL $RADEXPAND $DOMAIN RADPE))
 
 (DEFMVAR $ROOTSCONMODE T)
 
@@ -388,8 +379,6 @@
 (DEFUN RTC-DIVIDE-BY-GCD (LLIST GCD)
  (MAPCAR #'(LAMBDA (X) (RPLACA X (QUOTIENT (CAR X) GCD))) LLIST)
  LLIST)
-
-(declare-top (SPLITFILE NTERMS))
 
 (DEFMFUN $NTERMS (E)
  (COND ((ZEROP1 E) 0)
@@ -405,15 +394,13 @@
 	($BINOMIAL (PLUS (CADDR E) ($NTERMS (CADR E)) -1) (CADDR E)))
        ((SPECREPP E) ($NTERMS (SPECDISREP E)))
        (T 1)))
-
 
 ;;;; ATAN2
 
-(DECLARE-TOP #-NIL (SPLITFILE ATAN2)
-	 (SPECIAL $NUMER $%PIARGS $LOGARC $TRIGSIGN HALF%PI FOURTH%PI))
+(DECLARE-TOP (SPECIAL $NUMER $%PIARGS $LOGARC $TRIGSIGN HALF%PI FOURTH%PI))
 
 (DEFUN SIMPATAN2 (E VESTIGIAL Z)  ; atan2(y,x) ~ atan(y/x)
- VESTIGIAL ;ignored
+  (declare (ignore VESTIGIAL))
  (TWOARGCHECK E)
  (LET (Y X SIGNY SIGNX)
       (SETQ Y (SIMPCHECK (CADR E) Z) X (SIMPCHECK (CADDR E) Z))
@@ -465,12 +452,10 @@
 	    (T (EQTEST (LIST '($ATAN2) Y X) E)))))
 
 (DEFUN ATAN2NEGP (E) (EQ (ASKSIGN-P-OR-N E) '$NEG))
-
 
 ;;;; ARITHF
 
-(DECLARE-TOP #-NIL (SPLITFILE ARITHF)
-	 (SPECIAL LNORECURSE))
+(DECLARE-TOP (SPECIAL LNORECURSE))
 
 (DEFMFUN $FIBTOPHI (E)
  (COND ((ATOM E) E)
@@ -493,7 +478,7 @@
 	   (NCONC X (NCONS (CAR L)))))
 
 
-(declare-top (SPLITFILE DERIVD) (SPECIAL POWERS VAR DEPVAR))
+(declare-top (SPECIAL POWERS VAR DEPVAR))
 
 (DEFMFUN $DERIVDEGREE (E DEPVAR VAR)
  (LET (POWERS) (DERIVDEG1 E) (IF (NULL POWERS) 0 (MAXIMIN POWERS '$MAX))))
@@ -508,12 +493,8 @@
        (T (MAPC 'DERIVDEG1 (CDR E)))))
 
 (DECLARE-TOP (UNSPECIAL POWERS VAR DEPVAR))
-
 
 ;;;; BOX
-
-(DECLARE-TOP #-NIL (SPLITFILE BOX)
-	 )
 
 (DEFMFUN $DPART N (MPART (LISTIFY N) NIL T NIL '$DPART))
 
@@ -546,15 +527,14 @@
        (T (RECUR-APPLY #'REMBOX1 E))))
 
 (DECLARE-TOP (UNSPECIAL LABEL))
-
 
 ;;;; MAPF
 
 
-(declare-top #-NIL (SPLITFILE MAPF)
+(declare-top ;#-NIL (SPLITFILE MAPF)
 	 (SPECIAL SCANMAPP)
-	 #-cl
-	 (*LEXPR SCANMAP1))
+	 ;#-cl (*LEXPR SCANMAP1)
+	 )
 
 (DEFMSPEC $SCANMAP (L)
  (LET ((SCANMAPP T)) (RESIMPLIFY (APPLY #'SCANMAP1 (MMAPEV L)))))
@@ -609,12 +589,11 @@
 	       (NCONC (LIST (CAR DSO) (CADR DSO) DSN) (CDDR DSO)))
 	      (T (NCONC (LIST (CAR DSO) DSN) (CDR DSO)))))
        (T (MAPCAR #'(LAMBDA (D) (DSFUNC1 DSN D)) DSO))))
-
 
 ;;;; GENMAT
 
-(DECLARE-TOP #-NIL (SPLITFILE GENMAT)
-	 (FIXNUM DIM1 DIM2))
+;(DECLARE-TOP #-NIL (SPLITFILE GENMAT)
+;	 (FIXNUM DIM1 DIM2))
 
 (DEFMFUN $GENMATRIX N
  (LET ((ARGS (LISTIFY N)))
@@ -651,12 +630,10 @@
 (DEFMFUN $COPYLIST (X)
  (IF (NOT ($LISTP X)) (MERROR "Argument not a list - COPYLIST:~%~M" X))
  (CONS (CAR X) (copy-top-level (CDR X))))
-
 
 ;;;; ADDROW
 
-(DECLARE-TOP #-NIL (SPLITFILE ADDROW)
-	 )
+;(DECLARE-TOP #-NIL (SPLITFILE ADDROW))
 
 (DEFMFUN $ADDROW N
  (COND ((= N 0) (WNA-ERR '$ADDROW))
@@ -682,12 +659,10 @@
 			     (NOT (= (LENGTH (CADR M)) (LENGTH (CADR R))))))))
 	(MERROR "Incompatible structure - ADDROW//ADDCOL")))
  (APPEND M (IF (EQ (CAAR R) '$MATRIX) (CDR R) (NCONS R))))
-
 
 ;;;; ARRAYF
 
-(DECLARE-TOP #-NIL (SPLITFILE ARRAYF)
-	 )
+;(DECLARE-TOP #-NIL (SPLITFILE ARRAYF))
 
 (DEFMFUN $ARRAYMAKE (ARY SUBS)
  (COND ((OR (NOT ($LISTP SUBS)) (NULL (CDR SUBS)))
@@ -808,13 +783,13 @@
 ;				(T '$DECLARED))
 ;			  (LENGTH (CDR ARY1))
 ;			  (CONS '(MLIST SIMP) (MAPCAR #'1- (CDR ARY1))))))))))
-
 
 ;;;; ALIAS
 
-(DECLARE-TOP #-NIL (SPLITFILE ALIAS)
+(DECLARE-TOP ;#-NIL (SPLITFILE ALIAS)
 	 (SPECIAL ALIASLIST ALIASCNTR GREATORDER LESSORDER)
-	 (FIXNUM ALIASCNTR))
+	 ;(FIXNUM ALIASCNTR)
+	 )
 
 (DEFMSPEC $MAKEATOMIC (L) (SETQ L (CDR L))
  (DO ((L L (CDR L)) (BAS) (X)) ((NULL L) '$DONE)
@@ -856,12 +831,11 @@
 				     greatorder))))))
    (SETQ LESSORDER NIL GREATORDER NIL)
    L))
-
 
 ;;;; CONCAT
 
-(DECLARE-TOP #-NIL (SPLITFILE CONCAT)
-	 (NOTYPE (ASCII-NUMBERP FIXNUM)))
+;(DECLARE-TOP #-NIL (SPLITFILE CONCAT)
+;	 (NOTYPE (ASCII-NUMBERP FIXNUM)))
 
 (DEFMFUN $CONCAT (&REST L)
   (IF (NULL L) (MERROR "CONCAT needs at least one argument."))
@@ -876,73 +850,74 @@
 		      (STRING* X))
 		  L)))))
 
-(DEFMFUN $GETCHAR (X Y)
- (LET ((N 0))
-      (COND ((NOT (SYMBOLP X))
-	     (MERROR "1st argument to GETCHAR not a symbol: ~M" X))
-	    ((OR (NOT (FIXNUMP Y)) (NOT (> Y 0)))
-	     (MERROR "Incorrect 2nd argument to GETCHAR: ~M" Y))
-;	    ((char= (SETQ N (GETCHARN (FULLSTRIP1 X) Y)) 0) NIL)
-	    ((char= (GETCHARN X 1) '#\&) (IMPLODE (LIST #\& N)))
-	    ((ASCII-NUMBERP N) (f- (char-code N) (char-code #\0)))
-	    (T (IMPLODE (LIST #\$ N))))))
-
+;; this function is undocumented and cryptic
+;; it is obviously maldefined
+;(DEFMFUN $GETCHAR (X Y)
+; (LET ((N 0))
+;      (COND ((NOT (SYMBOLP X))
+;	     (MERROR "1st argument to GETCHAR not a symbol: ~M" X))
+;	    ((OR (NOT (FIXNUMP Y)) (NOT (> Y 0)))
+;	     (MERROR "Incorrect 2nd argument to GETCHAR: ~M" Y))
+;;	    ((char= (SETQ N (GETCHARN (FULLSTRIP1 X) Y)) 0) NIL)
+;	    ((char= (GETCHARN X 1) '#\&) (IMPLODE (LIST #\& N)))
+;	    ((ASCII-NUMBERP N) (f- (char-code N) (char-code #\0)))
+;	    (T (IMPLODE (LIST #\$ N))))))
 
 ;;;; ITS TTYINIT
 
-#+ITS
-(DECLARE-TOP (SPLITFILE TTYINI)
-	 (SPECIAL $PAGEPAUSE LINEL $LINEL SCROLLP TTYHEIGHT $PLOTHEIGHT
-		  SMART-TTY RUBOUT-TTY 12-BIT-TTY CURSORPOS PLASMA-TTY
-		  DISPLAY-FILE CHARACTER-GRAPHICS-TTY))
+;#+ITS
+;(DECLARE-TOP (SPLITFILE TTYINI)
+;	 (SPECIAL $PAGEPAUSE LINEL $LINEL SCROLLP TTYHEIGHT $PLOTHEIGHT
+;		  SMART-TTY RUBOUT-TTY 12-BIT-TTY CURSORPOS PLASMA-TTY
+;		  DISPLAY-FILE CHARACTER-GRAPHICS-TTY))
 
-#+ITS
-(DEFMFUN $TTY_INIT NIL 
-  (SETQ $PAGEPAUSE (= 0 (BOOLE  BOOLE-AND (CADDR (STATUS TTY)) #. (f* 1 (^ 2 25.)))))
-		; bit 3.8 (%TSMOR) of TTYSTS
-  (SETQ $LINEL (SETQ LINEL (LINEL T)))
-  (SETQ SCROLLP (NOT (= 0 (BOOLE  BOOLE-AND (CADDR (STATUS TTY)) #. (f* 1 (^ 2 30.))))))
-  (SETQ TTYHEIGHT (CAR (STATUS TTYSIZE))
-	$PLOTHEIGHT (IF (< TTYHEIGHT 200.) (f- TTYHEIGHT 2) 24.))
-  (LET ((TTYOPT (CAR (CDDDDR (SYSCALL 6 'CNSGET TYO)))))
-		; %TOFCI (bit 3.4) = terminal has a 12 bit keyboard.
-    (SETQ 12-BIT-TTY (NOT (= (BOOLE  BOOLE-AND #. (f* 8 (^ 2 18.)) TTYOPT) 0)))
-		; %TOMVU (bit 3.9) = terminal can do vertical cursor movement.
-		; However, we must also make sure that the screen size
-		; is within the ITS addressing limits.
-    (SETQ SMART-TTY (AND (NOT (= (BOOLE  BOOLE-AND #. (f* 256. (^ 2 18.)) TTYOPT) 0))
-			 (< TTYHEIGHT 200.)
-			 (< LINEL 128.)))
-		; %TOERS (bit 4.6) = terminal can selectively erase.
-		; %TOMVB (bit 4.4) = terminal can backspace.
-		; %TOOVR (bit 4.1) = terminal can overstrike (i.e. printing one
-		;		      character on top of another causes both 
-		;		      to appear.)
-    (SETQ RUBOUT-TTY
-	  (OR (NOT (= (BOOLE  BOOLE-AND #. (f* 32. (^ 2 27.)) TTYOPT) 0))	  ;%TOERS
-	      (AND (NOT (= (BOOLE  BOOLE-AND #. (f* 8. (^ 2 27.)) TTYOPT) 0))	  ;%TOMVB
-		   (= (BOOLE  BOOLE-AND #. (f* 1 (^ 2 27.)) TTYOPT) 0))))	  ;%TOOVR
-		; %TOCID (bit 3.1) = terminal can insert and delete characters.
-		; If the console has a 12-bit keyboard, an 85 by 50 screen, and
-		; can't ins/del characters, then it must be a Plasma console.
-    (SETQ PLASMA-TTY
-	  (AND 12-BIT-TTY (= LINEL 84.) (= TTYHEIGHT 50.)
-	       (= 0 (BOOLE  BOOLE-AND #. (f* 1 (^ 2 18.)) TTYOPT)))))
-  (SETQ CURSORPOS SMART-TTY)
-  (IF SMART-TTY (SETQ DISPLAY-FILE (OPEN '|TTY:| '(TTY OUT IMAGE BLOCK))))
-  (COND (PLASMA-TTY (LOAD '((DSK MACSYM) ARDS)))
-	((OR (= TTY 13.) (JOB-EXISTS 'H19) (JOB-EXISTS 'H19WHO))
-	 (LOAD '((DSK MACSYM) H19)))
-	((JOB-EXISTS 'VT100) (LOAD '((DSK MACSYM) VT100)))
-	(T (SETQ CHARACTER-GRAPHICS-TTY NIL)
-	   (REMPROP 'CG-D-PRODSIGN 'SUBR)
-	   (REMPROP 'CG-D-SUMSIGN 'SUBR)))
-  '$DONE)
+;#+ITS
+;(DEFMFUN $TTY_INIT NIL 
+;  (SETQ $PAGEPAUSE (= 0 (BOOLE  BOOLE-AND (CADDR (STATUS TTY)) #. (f* 1 (^ 2 25.)))))
+;		; bit 3.8 (%TSMOR) of TTYSTS
+;  (SETQ $LINEL (SETQ LINEL (LINEL T)))
+;  (SETQ SCROLLP (NOT (= 0 (BOOLE  BOOLE-AND (CADDR (STATUS TTY)) #. (f* 1 (^ 2 30.))))))
+;  (SETQ TTYHEIGHT (CAR (STATUS TTYSIZE))
+;	$PLOTHEIGHT (IF (< TTYHEIGHT 200.) (f- TTYHEIGHT 2) 24.))
+;  (LET ((TTYOPT (CAR (CDDDDR (SYSCALL 6 'CNSGET TYO)))))
+;		; %TOFCI (bit 3.4) = terminal has a 12 bit keyboard.
+;    (SETQ 12-BIT-TTY (NOT (= (BOOLE  BOOLE-AND #. (f* 8 (^ 2 18.)) TTYOPT) 0)))
+;		; %TOMVU (bit 3.9) = terminal can do vertical cursor movement.
+;		; However, we must also make sure that the screen size
+;		; is within the ITS addressing limits.
+;    (SETQ SMART-TTY (AND (NOT (= (BOOLE  BOOLE-AND #. (f* 256. (^ 2 18.)) TTYOPT) 0))
+;			 (< TTYHEIGHT 200.)
+;			 (< LINEL 128.)))
+;		; %TOERS (bit 4.6) = terminal can selectively erase.
+;		; %TOMVB (bit 4.4) = terminal can backspace.
+;		; %TOOVR (bit 4.1) = terminal can overstrike (i.e. printing one
+;		;		      character on top of another causes both 
+;		;		      to appear.)
+;    (SETQ RUBOUT-TTY
+;	  (OR (NOT (= (BOOLE  BOOLE-AND #. (f* 32. (^ 2 27.)) TTYOPT) 0))	  ;%TOERS
+;	      (AND (NOT (= (BOOLE  BOOLE-AND #. (f* 8. (^ 2 27.)) TTYOPT) 0))	  ;%TOMVB
+;		   (= (BOOLE  BOOLE-AND #. (f* 1 (^ 2 27.)) TTYOPT) 0))))	  ;%TOOVR
+;		; %TOCID (bit 3.1) = terminal can insert and delete characters.
+;		; If the console has a 12-bit keyboard, an 85 by 50 screen, and
+;		; can't ins/del characters, then it must be a Plasma console.
+;    (SETQ PLASMA-TTY
+;	  (AND 12-BIT-TTY (= LINEL 84.) (= TTYHEIGHT 50.)
+;	       (= 0 (BOOLE  BOOLE-AND #. (f* 1 (^ 2 18.)) TTYOPT)))))
+;  (SETQ CURSORPOS SMART-TTY)
+;  (IF SMART-TTY (SETQ DISPLAY-FILE (OPEN '|TTY:| '(TTY OUT IMAGE BLOCK))))
+;  (COND (PLASMA-TTY (LOAD '((DSK MACSYM) ARDS)))
+;	((OR (= TTY 13.) (JOB-EXISTS 'H19) (JOB-EXISTS 'H19WHO))
+;	 (LOAD '((DSK MACSYM) H19)))
+;	((JOB-EXISTS 'VT100) (LOAD '((DSK MACSYM) VT100)))
+;	(T (SETQ CHARACTER-GRAPHICS-TTY NIL)
+;	   (REMPROP 'CG-D-PRODSIGN 'SUBR)
+;	   (REMPROP 'CG-D-SUMSIGN 'SUBR)))
+;  '$DONE)
 
-#+ITS
-(DEFUN JOB-EXISTS (JNAME) (PROBE-FILE (LIST '(USR *) (STATUS UNAME) JNAME)))
+;#+ITS
+;(DEFUN JOB-EXISTS (JNAME) (PROBE-FILE (LIST '(USR *) (STATUS UNAME) JNAME)))
 
 
 ; Undeclarations for the file:
-#-NIL
-(DECLARE-TOP (NOTYPE N I J))
+;#-NIL
+;(DECLARE-TOP (NOTYPE N I J))

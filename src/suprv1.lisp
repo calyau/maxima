@@ -66,16 +66,17 @@
 		  NEW-C-LINE-HOOK TRANSP $CONTEXTS $SETCHECK $MACROS
 		  UNDF-FNCTN AUTOLOAD)
 #+CL  (SPECIAL ERROR-CALL)
-#+Franz  (special ptport display-to-disk)
-	 (*EXPR REPRINT)
-	 (*LEXPR CONCAT $FILEDEFAULTS $PRINT)
-	 (FIXNUM $FILESIZE DCOUNT $BATCOUNT I N N1 N2 TTYHEIGHT
-		 $FILENUM THISTIME GCT TIM GCLINENUM ALLOCLEVEL
-		 BRKLVL CMTCNT BPORG BPORG0 #-cl (COMPUTIME FIXNUM FIXNUM)
-		 #-cl (CASIFY FIXNUM) #-cl (GETLABCHARN))
-	 (FLONUM U1 STIME0)
-	 (NOTYPE (ASCII-NUMBERP FIXNUM))
-	 (ARRAY* (FIXNUM DISPLAY-FILE 1)))
+;#+Franz  (special ptport display-to-disk)
+;	 (*EXPR REPRINT)
+;	 (*LEXPR CONCAT $FILEDEFAULTS $PRINT)
+;	 (FIXNUM $FILESIZE DCOUNT $BATCOUNT I N N1 N2 TTYHEIGHT
+;		 $FILENUM THISTIME GCT TIM GCLINENUM ALLOCLEVEL
+;		 BRKLVL CMTCNT BPORG BPORG0 #-cl (COMPUTIME FIXNUM FIXNUM)
+;		 #-cl (CASIFY FIXNUM) #-cl (GETLABCHARN))
+;	 (FLONUM U1 STIME0)
+;	 (NOTYPE (ASCII-NUMBERP FIXNUM))
+;	 (ARRAY* (FIXNUM DISPLAY-FILE 1))
+	 )
 
 
 ;; This affects the runtime environment.  ALJABR;LOADER also does this, but
@@ -87,30 +88,24 @@
   nil
   no-reset)
 
-(eval-when (compile eval load)
-
-(defun control-char (ch)
-  (code-char (+ (char-code #\) (- (char-code ch) (char-code #\A)))))
-)
+;(eval-when (compile eval load)
+;  (defun control-char (ch)
+;    (code-char (+ (char-code #\) (- (char-code ch) (char-code #\A))))))
 
 (PROGN (MAPC #'(LAMBDA (X) (PUTPROP (CAR X) (CADR X) 'OPALIAS))
 	     '((+ $+) (- $-) (* $*) (// $//) (^ $^) (|.| |$.|) (< $<) (= $=)
 	       (> $>) (|(| |$(|) (|)| |$)|) (|[| |$[|) (|]| |$]|) (|,| |$,|) (|:| |$:|)
 	       (|!| |$!|) (|#| |$#|) (|'| |$'|) (|;| |$;|)))
-       #+cl
        (MAPC #'(LAMBDA (X) (SET (CAR X)
-				(cond (#-cl (< (cadr x)
-						  160)
-					    #+cl (char< (cadr x)
-							#. (code-char 160.))
-					       (ASCII (CADR X)))
-					      (t (cadr x)))))
-	     '( ;#-cl (CNTL@ #\)
-	       (CNTLC #. (control-char #\C))
+				(cond ((char< (cadr x) #.(code-char 160.))
+				       (ASCII (CADR X)))
+				      (t (cadr x)))))
+	     '((CNTL@ #.(code-char 0))
+	       (CNTLC #.(code-char 3))
 	       (BSP #\Backspace) (TAB #\TAB) (LF #\Linefeed)
-;	      #-lispm (VT #\VT) ;;would not compile in lispmachine
+	       (VT #.(code-char 11))
 	       (FF #\Page) (CR #\return)
-	       (CNTLY #.(control-char #\Y))
+	       (CNTLY #.(code-char 25))
 	       (SP #\Space)
 	       (NEWLINE #\NEWLINE) (RUBOUT #\RUBOUT)))
        (SETQ GCSYML NIL)
@@ -124,7 +119,7 @@
 	     ERRCATCH NIL DEMONL (LIST NIL) MCATCH NIL BRKLVL -1
 	     ALLBUTL NIL LOADF NIL $BACKTRACE '$BACKTRACE)
        (SETQ *IN-$BATCHLOAD* NIL *IN-TRANSLATE-FILE* NIL)
-       (SETQ BACKRUB #-Franz nil #+Franz t)
+       (SETQ BACKRUB nil)
        (SETQ $DEBUGMODE NIL $BOTHCASES T
 	     $PAGEPAUSE NIL $DSKGC NIL $POISLIM 5)
        (SETQ $LOADPRINT NIL ^S NIL LOADFILES NIL)
@@ -156,31 +151,41 @@
 	     LISPERRPRINT T PRINTMSG NIL PROMPTMSG NIL MRG-PUNT NIL READING NIL)
 ;      (SETQ $CALCOMPNUM 100.)
        (SETQ STATE-PDL (PURCOPY (NCONS 'LISP-TOPLEVEL)))
-       #+MULTICS (SETQ $PLOT3DSIZE 20 $MULTGRAPH T)
+;       #+MULTICS (SETQ $PLOT3DSIZE 20 $MULTGRAPH T)
    ; Slashify ':' on printout on other systems for the benefit of Lispm.
 ;;; Figure out how to do the above for Franz.
        '(Random properties))
 
-(DEFMVAR $% '$% "The last out-line computed, corresponds to lisp *" NO-RESET)
+(DEFMVAR $% '$% "The last out-line computed, corresponds to lisp *"
+	 NO-RESET)
+
 (DEFMVAR $INCHAR '|$%i|
   "The alphabetic prefix of the names of expressions typed by the user.")
 ;;; jfa: begin case-sensitivity hack
 ;;;      delete this when case-sensitivity is fixed!!!! 05/11/2004
+
 (defmvar |$%i| '|$%I|
   "%i = %I until maxima's case behavior is fixed.")
 ;;; jfa: end case-sensitivity hack
+
 (DEFMVAR $OUTCHAR '|$%o|
   "The alphabetic prefix of the names of expressions returned by the system.")
+
 (DEFMVAR $LINECHAR '|$%t|
   "The alphabetic prefix of the names of intermediate displayed expressions.")
-(DEFMVAR $LINENUM 1 "the line number of the last expression." FIXNUM NO-RESET)
+
+(DEFMVAR $LINENUM 1 "the line number of the last expression."
+	 FIXNUM NO-RESET)
+
 (DEFMVAR $DIREC 'JRMU
   "The default file directory for SAVE, STORE, FASSAVE, and STRINGOUT."
   NO-RESET)
+
 (DEFMVAR CASEP T
   "Causes translation of characters from lower to upper case on ITS, 
    and from upper to lower case on Multics and Franz.")
 ;(DEFMVAR $ERREXP '$ERREXP)
+
 (DEFMVAR USER-TIMESOFAR NIL)
 
 
@@ -200,21 +205,15 @@
 
 
 (DEFUN SYS-GCTIME ()
-  #-Franz (STATUS GCTIME)
-  #+Franz (cadr (ptime)))
+  (STATUS GCTIME))
 
 
 ;#.(SETQ NALT #-MULTICS #\ALT #+MULTICS #\&)
 
-#-cl
-(DEFMVAR $CHANGE_FILEDEFAULTS #+PDP10 T #-PDP10 NIL
-	 "Does DDT-style file defaulting iff T")
-
-(DEFMVAR $FILE_STRING_PRINT #+PDP10 NIL #-PDP10 T
+(DEFMVAR $FILE_STRING_PRINT T
 	 "If TRUE, filenames are output as strings; if FALSE, as lists.")
 
-(DEFMVAR $SHOWTIME #-MULTICS NIL #+MULTICS T)
-
+(DEFMVAR $SHOWTIME NIL)
 
 (DEFMFUN MEVAL* (TEST)
  (LET (REFCHKL BAKTRCL CHECKFACTORS)
@@ -238,14 +237,13 @@
   (MTELL-OPEN "(~A) " (MAKNAM (CDR (EXPLODEN LINELABLE)))))
 
 (DEFMFUN MEXPLODEN (X)
-  (let ( #-cl(*nopoint t) #+cl *print-radix*
-	#+cl (*print-base* 10)
-	#+NIL (si:standard-output-radix 10) #-(or cl NIL) (*print-base* 10))
+  (let (*print-radix*
+	(*print-base* 10))
     (EXPLODEN X)))
 
 (DEFMFUN ADDLABEL (LABEL)
  (SETQ $LABELS (CONS (CAR $LABELS) (CONS LABEL (DELQ LABEL (CDR $LABELS) 1)))))
-
+
 (DEFMFUN TYI* NIL
   (CLEAR-INPUT)
   (DO ((N (TYI) (TYI))) (NIL)
@@ -278,8 +276,8 @@
 (DEFUN BOTHCASES1 (SYMBOL VALUE)
  SYMBOL ;Always bound to $BOTHCASES.  Ignored.
  ;; This won't work with the Lisp Machine reader.
- #+MacLisp (DO ((I 97. (f1+ I))) ((> I 122.))
-	       (SETSYNTAX I (IF VALUE 1 321.) (IF VALUE I (f- I 32.))))
+; #+MacLisp (DO ((I 97. (f1+ I))) ((> I 122.))
+;	       (SETSYNTAX I (IF VALUE 1 321.) (IF VALUE I (f- I 32.))))
  (SETQ CASEP (NOT VALUE)) VALUE)
 
 ;(DEFUN BACKSPACE1 (NIL X)
@@ -291,14 +289,14 @@
 
 #+CL
 (DEFUN LISTEN () 0)  ; Doesn't exist yet.
-
+
 (DEFUN DISPLAY* (&AUX (RET NIL) (TIM 0))
  #+GC (IF (EQ GCFLAG '$ALL) (LET (^D) (GC)))
  (SETQ TIM (RUNTIME)
        RET (LET ((ERRSET 'ERRBREAK2) (THISTIME -1))
 		(ERRSET (DISPLA (LIST '(MLABLE) LINELABLE $%)))))
  (IF (NULL RET) (MTELL "~%Error during display~%"))
- (IF $DISPTIME (MTELL-OPEN "Displaytime= ~A msec.~%" (COMPUTIME (RUNTIME) TIM)))
+ (IF $DISPTIME (MTELL-OPEN "Displaytime= ~A msec.~%" (- (RUNTIME) TIM)))
  RET)
 
 
@@ -325,7 +323,7 @@
       (SETQ POS (CURSORPOS))
       (IF STG (PRINC (MAKNAM (REVERSE STG))))
       (SETQ REPRINT NIL)))
-
+
 ;; The PDP10 is one of the only systems which autoload.
 ;; The definition for non-autoloading systems is in MAXMAC. - CWH
 ;; For now we'll let a USER put autoload properties on symbols
@@ -358,21 +356,22 @@
 
 
 
-#-(or Franz cl cl)
-(DEFMSPEC $SETUP_AUTOLOAD (L)
-  (SETQ L (CDR L))
-  (show l)
-  (IF (NULL (CDR L)) (WNA-ERR '$SETUP_AUTOLOAD))
-  (LET ((FILE #-PDP10 ($FILE_SEARCH ($FILENAME_MERGE 
-				     (CAR L)
-				     (USER-WORKINGDIR-PATHNAME)))
-	      #+PDP10 (NAMELIST (MERGEF ($FILENAME_MERGE (CAR L))
-					`((DSK ,(STATUS UDIR)) NOFILE)))))					
-    (DOLIST (FUNC (CDR L))
-	    (NONSYMCHK FUNC '$SETUP_AUTOLOAD)
-	    (PUTPROP (SETQ FUNC (DOLLARIFY-NAME FUNC)) FILE 'AUTOLOAD)
-	    (ADD2LNC FUNC $PROPS)))
-  '$DONE)
+;#-(or Franz cl cl)
+;(DEFMSPEC $SETUP_AUTOLOAD (L)
+;  (SETQ L (CDR L))
+;  (show l)
+;  (IF (NULL (CDR L)) (WNA-ERR '$SETUP_AUTOLOAD))
+;  (LET ((FILE #-PDP10 ($FILE_SEARCH ($FILENAME_MERGE 
+;				     (CAR L)
+;				     (USER-WORKINGDIR-PATHNAME)))
+;	      #+PDP10 (NAMELIST (MERGEF ($FILENAME_MERGE (CAR L))
+;					`((DSK ,(STATUS UDIR)) NOFILE)))))					
+;    (DOLIST (FUNC (CDR L))
+;	    (NONSYMCHK FUNC '$SETUP_AUTOLOAD)
+;	    (PUTPROP (SETQ FUNC (DOLLARIFY-NAME FUNC)) FILE 'AUTOLOAD)
+;	    (ADD2LNC FUNC $PROPS)))
+;  '$DONE)
+
 #+cl
 (DEFun $SETUP_AUTOLOAD (filename &rest functions)
   (LET ((FILE  (string-trim "&$" filename)))
@@ -405,7 +404,6 @@
        (($LISTP FILE) (SETQ FILE (CDR FILE)))
        (T (MERROR "Not a proper filename ~M" FILE)))
  (FILESTRIP FILE))
-
 
 
 #+CL  ; This is quite different from the Maclisp version.
@@ -423,21 +421,22 @@
   )
 
 (DEFMFUN TRUEFNAME (FILE)
- (OR (PROBE-FILE FILE)
-     #-cl (CLOSE (OPEN FILE '(IN FIXNUM)))
+ (PROBE-FILE FILE))
+     ;#-cl (CLOSE (OPEN FILE '(IN FIXNUM)))
 	; The OPEN is to generate the appropriate error handling.
 	; The CLOSE is just to be nice.
-     #+Multics FILE
+     ;#+Multics FILE
 	; The Multics CLOSE function returns T always. 
 	; At least we know we can open and close the file.
 	; On Multics PROBE-FILE calls ALLFILES which demands access to
 	; the directory. 
-     ))
 
 
 #+CL
 (DEFMFUN MTRUENAME (STREAM)
-  (MFILE-OUT (UNEXPAND-PATHNAME (FUNCALL STREAM ':NAME))))
+  (declare (ignore stream))
+;  (MFILE-OUT (UNEXPAND-PATHNAME (FUNCALL STREAM ':NAME))))
+  (merror "Unimplemented!"))
 
 (DEFMFUN CARFILE (FILE)  ; FILE is in OldIO list format.
  (IF (= (LENGTH FILE) 3) (CDR FILE) FILE))
@@ -447,7 +446,6 @@
 #-Franz
 (DEFMACRO FILEPOS-CHECK () `(IF SPECP (SETQ FILEPOS (FILEPOS FILE-OBJ))))
 
-
 (DEFMSPEC $KILL (FORM) (MAPC #'KILL1 (CDR FORM)) #+GC (GCTWA) '$DONE)
 
 (defvar $dont_kill_symbols_with_lisp_source_files  t "Prevents killing functional properties 
@@ -504,8 +502,7 @@
 		 (IF (MGET X '$RULE)
 		     (LET ((Y (RULEOF X)))
 			  (COND (Y ($REMRULE Y X))
-				(T #+MACLISP (REMPROP X 'EXPR)
-				   #-MACLISP (FMAKUNBOUND X)
+				(T (FMAKUNBOUND X)
 				   (DELQ X $RULES 1)))))
 		 (IF (AND (GET X 'OPERATORS) (RULECHK X)) ($REMRULE X '$ALL))
 		 (IF (MGET X 'TRACE) (MACSYMA-UNTRACE X))
@@ -527,7 +524,7 @@
 		      (IF (AND Y (NOT (MEMQ Y MOPL)) (MEMQ Y (CDR $PROPS)))
 			  (KILL-OPERATOR X)))
 		 (REMALIAS X NIL) (DELQ X $ARRAYS 1) (REMPROPCHK X)
-		 #+MACLISP (ARGS X NIL)
+;		 #+MACLISP (ARGS X NIL)
 		 (zl-DELETE (zl-ASSOC (NCONS X) $FUNCTIONS) $FUNCTIONS 1)
 		 (zl-DELETE (zl-ASSOC (NCONS X) $MACROS) $MACROS 1)
 		 (LET ((Y (zl-ASSOC (NCONS X) $GRADEFS)))
@@ -574,15 +571,15 @@
  (OR (MGET RULE 'RULEOF)
      (LET ((OP (CAAADR (MGET RULE '$RULE))) L)
 	  (AND (SETQ L (GET OP 'RULES)) (MEMQ RULE L) OP))))
-
+
 (DEFMFUN $DEBUGMODE (X) (DEBUGMODE1 NIL X))
 
 
 #-NIL
 (DEFUN DEBUGMODE1 (ASSIGN-VAR Y)
- ASSIGN-VAR  ; ignored
- #+MACLISP (SETQ DEBUG (COND (Y (*RSET T) Y) (T (*RSET NIL))))
- #+Franz   (prog2 (setq debug y) (debugging y))
+  (declare (ignore ASSIGN-VAR))
+; #+MACLISP (SETQ DEBUG (COND (Y (*RSET T) Y) (T (*RSET NIL))))
+; #+Franz   (prog2 (setq debug y) (debugging y))
  #+akcl (if (eq y '$lisp) (si::use-fast-links y))
  #+cl  (SETQ DEBUG (SETQ *RSET Y)))
 
@@ -610,12 +607,13 @@
   (DEBUG
    ((LAMBDA (BRKLVL VARLIST GENVAR ERRBRKL LINELABLE)
 	    (declare (special $help))
-     (PROG (X ^Q #.TTYOFF O^R #+MACLISP ERRSET #+LISPM ERROR-CALL TIM $%% 
-	    #+Franz errset
+     (PROG (X ^Q #.TTYOFF O^R ;#+MACLISP ERRSET #+LISPM ERROR-CALL
+	      TIM $%% 
+;	    #+Franz errset
 	    $BACKTRACE  RETVAL OLDST ($help $help))
 	   #+ (or franz maclisp cl)
 	   (SETQ  ERRSET 'ERRBREAK1)
-	   #+LISPM (setq ERROR-CALL 'ERRBREAK1)
+;	   #+LISPM (setq ERROR-CALL 'ERRBREAK1)
 	   (SETQ TIM (RUNTIME) $%% '$%%
 		 ;; just in case baktrcl is cons'd on the stack
 		 $BACKTRACE (CONS '(MLIST SIMP) (copy-list BAKTRCL)))
@@ -645,8 +643,8 @@
 				   (TIMEORG TIM)
 				   (SETQ RETVAL 'EXIT) (GO END))
 				  ((EQ X '$LISP)
-#+MACLISP			   (LET ((STATE-PDL (CONS 'LISP-BREAK STATE-PDL)))
-					(*BREAK T 'LISP) (MTERPRI))  ; ^B also works
+;#+MACLISP			   (LET ((STATE-PDL (CONS 'LISP-BREAK STATE-PDL)))
+;					(*BREAK T 'LISP) (MTERPRI))  ; ^B also works
 				   (SETQ RETVAL 'LISP)
 				   (GO END))
 				  ((EQ X '$TOPLEVEL)
@@ -668,30 +666,33 @@
 		   (MTERPRI)
 		   )
 	   (IF O^R (SETQ #.WRITEFILEP T))
-#+(or Franz MACLISP)   (RETURN NIL) #+cl (RETURN RETVAL)))
+;#+(or Franz MACLISP)   (RETURN NIL)
+#+cl (RETURN RETVAL)))
     (f1+ BRKLVL) VARLIST GENVAR (CONS BINDLIST LOCLIST) LINELABLE))))
 
 #-NIL
-(DEFUN ERRBREAK1 (IGN) IGN NIL)  ; Used to nullify ERRSETBREAKs
+(DEFUN ERRBREAK1 (IGN)
+  (declare (ignore IGN))
+  NIL)  ; Used to nullify ERRSETBREAKs
 
 #-NIL
-(DEFUN ERRBREAK2 (IGN) ign
-	; An alternate ERRSET interr. function; used by PARSE and DISPLAY
-  #-cl IGNORE  ; ignored
- (LET ((STATE-PDL (CONS 'LISP-BREAK STATE-PDL))) (*BREAK ERRBRKSW 'ERST)))
-
+(DEFUN ERRBREAK2 (IGN)	;; An alternate ERRSET interr. function
+                        ;; used by PARSE and DISPLAY
+  (declare (ignore IGN))
+  (LET ((STATE-PDL (CONS 'LISP-BREAK STATE-PDL)))
+    (*BREAK ERRBRKSW 'ERST)))
 
 ;; The ^B interrupt function
-(DEFUN MPAUSE (X)
-  X ;Ignored       
-  (LET ((STATE-PDL (LIST* 'LISP-BREAK '^B-BREAK STATE-PDL))
-	(MOREMSG "--Pause--"))
-       #+PDP10 (ENDPAGEFN T 'MORE-FUN)
-       #+PDP10 (BUFFCLEAR NIL)
-       (TIMESOFAR T)
-       #+MACLISP (NOINTERRUPT NIL)
-       (*BREAK T ^BMSG))
-  #+PDP10 (TTYRETFUN T))
+;(DEFUN MPAUSE (X)
+;  X ;Ignored       
+;  (LET ((STATE-PDL (LIST* 'LISP-BREAK '^B-BREAK STATE-PDL))
+;	(MOREMSG "--Pause--"))
+;       #+PDP10 (ENDPAGEFN T 'MORE-FUN)
+;       #+PDP10 (BUFFCLEAR NIL)
+;       ; (TIMESOFAR T)
+;       #+MACLISP (NOINTERRUPT NIL)
+;       (*BREAK T ^BMSG))
+;  #+PDP10 (TTYRETFUN T))
 
 
 
@@ -703,9 +704,10 @@
  (WHEN (NULL
 	(ERRSET
 	 (PROGN #-LISPM (SETQ ^S NIL)
-		#+PDP10 (CLOSE SAVEFILE)
+		;#+PDP10 (CLOSE SAVEFILE)
 		#-LISPM (IF LOADF (SETQ DEFAULTF LOADF LOADF NIL))
-		#+PDP10 (ENDPAGEFN T 'MORE-FUN))))
+		;#+PDP10 (ENDPAGEFN T 'MORE-FUN)
+		)))
        #-LISPM (SETQ ^Q NIL) (MTELL-OPEN "~%ERRLFUN has been clobbered."))
  (IF $ERRORFUN (IF (NULL (ERRSET (MAPPLY1 $ERRORFUN NIL $ERRORFUN nil)))
 		   (MTELL "~%Incorrect ERRORFUN")))
@@ -722,12 +724,11 @@
        (DO ((L BINDLIST (CDR L)) (L1)) ((EQ L (CAR MPDLS)) (MUNBIND L1))
 	   (SETQ L1 (CONS (CAR L) L1)))
        (DO NIL ((EQ LOCLIST (CDR MPDLS))) (MUNLOCAL)))
-
+
 (DEFMFUN GETALIAS (X) (COND ((GET X 'ALIAS)) ((EQ X '$FALSE) NIL) (T X)))
 
 (DEFMFUN MAKEALIAS (X) (IMPLODE (CONS #\$ (EXPLODEN X))))
 
-
 ;; (DEFMSPEC $F (FORM) (SETQ FORM (FEXPRCHECK FORM)) ...)
 ;; makes sure that F was called with exactly one argument and
 ;; returns that argument.
@@ -757,7 +758,6 @@
 	(DISPLA (SETQ PRINTMSG (CONS '(MTEXT) L)))
 	(CADR (REVERSE L)))))
 
-
 (DEFMSPEC $PLAYBACK (X) (SETQ X (CDR X))
   (LET ((STATE-PDL (CONS 'PLAYBACK STATE-PDL)))
        (PROG (L L1 L2 NUMBP SLOWP NOSTRINGP INPUTP TIMEP GRINDP INCHAR LARGP)
@@ -812,7 +812,7 @@
 		   (AND (EQ (ml-typep (SETQ HIGH (CADDR X))) 'fixnum)
 			(NOT (> (CADR X) HIGH)))))
 	  (CONS (CADR X) HIGH))))
-
+
 (DEFMSPEC $ALIAS (FORM)
   (IF (ODDP (LENGTH (SETQ FORM (CDR FORM))))
       (MERROR "ALIAS takes an even number of arguments."))
@@ -856,7 +856,7 @@
 	  #+Franz (concat (substring x 2))	;Nice start/end conventions.
 	  )
        (T X)))
-
+
 (DEFMFUN FULLSTRIP (X) (MAPCAR #'FULLSTRIP1 X))
 
 (DEFMFUN FULLSTRIP1 (X)
@@ -925,7 +925,6 @@
 #-NIL
 (DEFMFUN $RANDOM N (APPLY #'RANDOM (LISTIFY N)))
 
-
 (DEFMSPEC $STRING (FORM)
  (SETQ FORM (STRMEVAL (FEXPRCHECK FORM)))
  (SETQ FORM (IF $GRIND (STRGRIND FORM) (MSTRING FORM)))
@@ -980,7 +979,7 @@
 (DEFMFUN CASIFY-EXPLODEN (X)
  (SETQ X (EXPLODEN X))
  (IF (char= (CAR X) #\&) (MAPCAR #'CASIFY (CDR X)) (CDR X)))
-
+
 (DEFMSPEC $STRINGOUT (X)  (SETQ X (CDR X))
  (LET (FILE MAXIMA-ERROR L1 TRUENAME)
     (SETQ FILE ($FILENAME_MERGE (CAR X)))
@@ -1090,7 +1089,7 @@
 (DEFMFUN $THROW (EXP)
  (IF (NULL MCATCH) (MERROR "THROW not within CATCH:~%~M" EXP))
  (THROW 'MCATCH EXP))
-
+
 (DEFMSPEC $TIME (L) (SETQ L (CDR L))
 	  #-cl
  (MTELL-OPEN "TIME or [TOTALTIME, GCTIME] in msecs.:~%")
@@ -1112,9 +1111,9 @@
  (IF (> THISTIME 0) (SETQ THISTIME (f+ THISTIME (f- (RUNTIME) TIM)))))
 
 ; Take difference of two times, return result in milliseconds.
-#+LISPM
-(DEFMFUN COMPUTIME (N1 N2) (// (f* 50. (TIME-DIFFERENCE
-					N1 N2)) 3.))
+;#+LISPM
+;(DEFMFUN COMPUTIME (N1 N2) (// (f* 50. (TIME-DIFFERENCE
+;					N1 N2)) 3.))
 
 
 #+CL (PROGN 'COMPILE
@@ -1126,9 +1125,10 @@
   #+sbcl (sb-ext:quit) 
   #+clisp (ext:quit) 
   #+mcl (ccl::quit)
-  (quit)
-   #+excl "don't know quit function")
-(DEFMFUN $LOGOUT () (LOGOUT))
+  #+gcl (quit)
+  #+excl "don't know quit function")
+
+(DEFMFUN $LOGOUT () (bye))
 )
 (DEFMFUN FILEPRINT (FNAME)  ; Takes filename in NAMELIST format.
  (COND ($FILE_STRING_PRINT (PRINC (NAMESTRING FNAME)) (PRINC "  "))
@@ -1143,7 +1143,7 @@
  (IF $FILE_STRING_PRINT
      (IMPLODE (CONS #\& (EXPLODEN (NAMESTRING FNAME))))
      (DOLLARIFY (IF (ATOM (CAR FNAME)) FNAME (APPEND (CDR FNAME) (CAR FNAME))))))
-
+
 ; File-processing stuff.  Lisp Machine version in MC:LMMAX;LMSUP.
 
 
@@ -1164,76 +1164,76 @@
      (LET ((#.TTYOFF T)) (TERPRI))
      (TERPRI)))
 
-#+lispm
-(DECLARE-top (SPECIAL TV:MORE-PROCESSING-GLOBAL-ENABLE))
+;#+lispm
+;(DECLARE-top (SPECIAL TV:MORE-PROCESSING-GLOBAL-ENABLE))
 
-#+LISPM
-(DEFMFUN MORE-FUN (FILE)
-  FILE ;ignored
- (send  *terminal-io* :send-if-handles :more-exception))
+;#+LISPM
+;(DEFMFUN MORE-FUN (FILE)
+;  FILE ;ignored
+; (send  *terminal-io* :send-if-handles :more-exception))
 
 
-#+LISPM
-(DEFUN MORE-FUN-INTERNAL (*terminal-io*
-			  &AUX (*standard-input* *terminal-io*))
-;;				 'SI:TERMINAL-IO-SYN-STREAM))
-                          ;; SI:SYN-TERMINAL-IO))
- ; This clears the rest of the screen, unless we're at the bottom
- ; or too close to the top.
- (COND ((NOT (OR (< (CAR (CURSORPOS)) 10.)
-		 (= (- TTYHEIGHT 2) (CAR (CURSORPOS)))))
-	(CURSORPOS 'E)))
- ; Now go to the bottom of the screen and cause a more, unless disabled.
- (COND (TV:MORE-PROCESSING-GLOBAL-ENABLE
-	(CURSORPOS 'Z) (CURSORPOS 'L)
-	((LAMBDA (^Q)
-	  ((LAMBDA (#.WRITEFILEP #.TTYOFF STATE-PDL)
-	    (PRINC MOREMSG) (TYIPEEK)
-	    ; Now see what the user feels like typing in.
-	    (COND ($MOREWAIT
-		   (DO ((L (COND ((EQ $MOREWAIT '$ALL) '(#\SPACE #\RETURN))
-				 (T '(#\SPACE #\RETURN #\RUBOUT)))))
-		       ((zl-MEMBER (TYIPEEK) L))
-		      (TYI T))) ; eat other characters
-		  (T (DO () ((NOT (zl-MEMBER (TYIPEEK) '(4 19. 21. 22. 29.))))
-			 (TYI T)))) ; eat ^], etc. 
-	    ; Now erase the MORE message
-	    (COND (SMART-TTY (CURSORPOS 'Z) (CURSORPOS 'L)) (T (TERPRI))))
-	   NIL NIL (CONS 'MORE-WAIT STATE-PDL))
-	  ; Now decide whether to continue or flush
-	  (COND ((char= #\Space (TYIPEEK))
-		 (IF MORECONTINUE (LET (#.WRITEFILEP #.TTYOFF) (PRINC MORECONTINUE)))
-		 (TYI T)) ; eat the space
-		((char= #\RUBOUT (TYIPEEK))
-		 (LET ((#.TTYOFF T)) (TERPRI))
-		 (IF MOREFLUSH (PRINC MOREFLUSH))
-		 (TYI T)  ; eat the rubout
-		 (SETQ MORE-^W (OR MORE-^W (AND MOREFLUSH T))
-		       #.WRITEFILEP (AND #.WRITEFILEP (NULL MOREFLUSH))))
-		(T (COND ((OR (MEMQ 'BATCH STATE-PDL)
-			      (AND (char< (TYIPEEK) #\SPACE)
-				   (NOT (zl-MEMBER (TYIPEEK)
-					  #.(cons 'list	(mapcar    'code-char '(2 7 11. 12. 25. 27. 28. 29. 30.))))
-;						   '(#\Alpha #\Pi
-;						    #\Up-Arrow
-;						    #\Plus-Minus
-;						    #\Right-Arrow
-;						    #\Lozenge
-;						    #\Less-Or-Equal
-;						    #\Greater-Or-Equal
-;						    #\Equivalence)
-						   ))
-			      (char>= (TYIPEEK) #. (code-char 128.)))
-			  (TYI T)))  ; eat cr or other control character.
-		   (IF MOREFLUSH (LET (#.WRITEFILEP #.TTYOFF) (PRINC MOREFLUSH)))
-		   (SETQ MORE-^W (OR MORE-^W (AND MOREFLUSH T))))))
-	 NIL)))
- ; Now home up, or advance to next line, and continue display.
- (IF SMART-TTY
-     (COND (RUBOUT-TTY (LET (#.TTYOFF) (CURSORPOS T T) (CURSORPOS 'L)))
-	   (T (MAXIMA-SLEEP 0.4) (FORMFEED)))
-     (LET (#.TTYOFF #.WRITEFILEP) (TERPRI))))
-
+;#+LISPM
+;(DEFUN MORE-FUN-INTERNAL (*terminal-io*
+;			  &AUX (*standard-input* *terminal-io*))
+;;;				 'SI:TERMINAL-IO-SYN-STREAM))
+;                          ;; SI:SYN-TERMINAL-IO))
+; ; This clears the rest of the screen, unless we're at the bottom
+; ; or too close to the top.
+; (COND ((NOT (OR (< (CAR (CURSORPOS)) 10.)
+;		 (= (- TTYHEIGHT 2) (CAR (CURSORPOS)))))
+;	(CURSORPOS 'E)))
+; ; Now go to the bottom of the screen and cause a more, unless disabled.
+; (COND (TV:MORE-PROCESSING-GLOBAL-ENABLE
+;	(CURSORPOS 'Z) (CURSORPOS 'L)
+;	((LAMBDA (^Q)
+;	  ((LAMBDA (#.WRITEFILEP #.TTYOFF STATE-PDL)
+;	    (PRINC MOREMSG) (TYIPEEK)
+;	    ; Now see what the user feels like typing in.
+;	    (COND ($MOREWAIT
+;		   (DO ((L (COND ((EQ $MOREWAIT '$ALL) '(#\SPACE #\RETURN))
+;				 (T '(#\SPACE #\RETURN #\RUBOUT)))))
+;		       ((zl-MEMBER (TYIPEEK) L))
+;		      (TYI T))) ; eat other characters
+;		  (T (DO () ((NOT (zl-MEMBER (TYIPEEK) '(4 19. 21. 22. 29.))))
+;			 (TYI T)))) ; eat ^], etc. 
+;	    ; Now erase the MORE message
+;	    (COND (SMART-TTY (CURSORPOS 'Z) (CURSORPOS 'L)) (T (TERPRI))))
+;	   NIL NIL (CONS 'MORE-WAIT STATE-PDL))
+;	  ; Now decide whether to continue or flush
+;	  (COND ((char= #\Space (TYIPEEK))
+;		 (IF MORECONTINUE (LET (#.WRITEFILEP #.TTYOFF) (PRINC MORECONTINUE)))
+;		 (TYI T)) ; eat the space
+;		((char= #\RUBOUT (TYIPEEK))
+;		 (LET ((#.TTYOFF T)) (TERPRI))
+;		 (IF MOREFLUSH (PRINC MOREFLUSH))
+;		 (TYI T)  ; eat the rubout
+;		 (SETQ MORE-^W (OR MORE-^W (AND MOREFLUSH T))
+;		       #.WRITEFILEP (AND #.WRITEFILEP (NULL MOREFLUSH))))
+;		(T (COND ((OR (MEMQ 'BATCH STATE-PDL)
+;			      (AND (char< (TYIPEEK) #\SPACE)
+;				   (NOT (zl-MEMBER (TYIPEEK)
+;					  #.(cons 'list	(mapcar    'code-char '(2 7 11. 12. 25. 27. 28. 29. 30.))))
+;;						   '(#\Alpha #\Pi
+;;						    #\Up-Arrow
+;;						    #\Plus-Minus
+;;						    #\Right-Arrow
+;;						    #\Lozenge
+;;						    #\Less-Or-Equal
+;;						    #\Greater-Or-Equal
+;;						    #\Equivalence)
+;						   ))
+;			      (char>= (TYIPEEK) #. (code-char 128.)))
+;			  (TYI T)))  ; eat cr or other control character.
+;		   (IF MOREFLUSH (LET (#.WRITEFILEP #.TTYOFF) (PRINC MOREFLUSH)))
+;		   (SETQ MORE-^W (OR MORE-^W (AND MOREFLUSH T))))))
+;	 NIL)))
+; ; Now home up, or advance to next line, and continue display.
+; (IF SMART-TTY
+;     (COND (RUBOUT-TTY (LET (#.TTYOFF) (CURSORPOS T T) (CURSORPOS 'L)))
+;	   (T (MAXIMA-SLEEP 0.4) (FORMFEED)))
+;     (LET (#.TTYOFF #.WRITEFILEP) (TERPRI))))
+
 (DEFMFUN $PAGEPAUSE (X) (PAGEPAUSE1 NIL X))
 
 
@@ -1271,9 +1271,9 @@
 ;; End of disk GC conditionalization.
 
 #-PDP10 (PROGN 'COMPILE
-(DEFMFUN $DSKGC (X) X NIL)
-(DEFUN DSKGC1 (X Y) X Y NIL)
-)
+	       (DEFMFUN $DSKGC (X) X NIL)
+	       (DEFUN DSKGC1 (X Y) X Y NIL)
+	       )
 
 
 
@@ -1312,6 +1312,5 @@
 #-(or cl NIL)
 (EVAL-WHEN (EVAL COMPILE) (SETQ *print-base* OLD-BASE *read-base* OLD-IBASE))
 #+cl
-(EVAL-WHEN (EVAL COMPILE) (SETQ *PRINT-BASE* OLD-BASE *READ-BASE* OLD-IBASE))
-
-nil
+(EVAL-WHEN (:EXECUTE :COMPILE-TOPLEVEL)
+  (SETQ *PRINT-BASE* OLD-BASE *READ-BASE* OLD-IBASE))

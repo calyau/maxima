@@ -51,41 +51,41 @@
 (shadow '(signum ) 'cl-maxima)
 
 ;;lmsup
-#+lispm
-(shadow '(namestring) 'cl-maxima)
+;#+lispm
+;(shadow '(namestring) 'cl-maxima)
 
 ;;in transs
 
 
-#+lispm
-(import '(global::array-leader
-	  si::arglist
-	  global::gc-on
-	  global::gc-off
-	  global::user-id
-	  global::ERROR-RESTART-LOOP
-	  global::condition-case 
-	  global::compile-flavor-methods
-	  global::default-cons-area
-	  global::errset
-	  global::make-condition
-	  si::signal-condition
-	  si::set-in-instance
-	  si::record-source-file-name
-	  #+ti tv::define-user-option-alist
-	  #+ti tv::font-char-height ;for plot win
-	  #+ti tv::font-char-width ;for plot win
-	  #-ti 	  global::define-user-option-alist
-	  #-symbolics global::defflavor
-	  #-symbolics global::defmethod
-	  #-symbolics global::defun-method
-	  global::self
-	  global::send
-	  global::print-herald
-	  global::without-interrupts
-	  global::current-process
-	  global::working-storage-area
-	  ) 'cl-maxima)
+;#+lispm
+;(import '(global::array-leader
+;	  si::arglist
+;	  global::gc-on
+;	  global::gc-off
+;	  global::user-id
+;	  global::ERROR-RESTART-LOOP
+;	  global::condition-case 
+;	  global::compile-flavor-methods
+;	  global::default-cons-area
+;	  global::errset
+;	  global::make-condition
+;	  si::signal-condition
+;	  si::set-in-instance
+;	  si::record-source-file-name
+;	  #+ti tv::define-user-option-alist
+;	  #+ti tv::font-char-height ;for plot win
+;	  #+ti tv::font-char-width ;for plot win
+;	  #-ti 	  global::define-user-option-alist
+;	  #-symbolics global::defflavor
+;	  #-symbolics global::defmethod
+;	  #-symbolics global::defun-method
+;	  global::self
+;	  global::send
+;	  global::print-herald
+;	  global::without-interrupts
+;	  global::current-process
+;	  global::working-storage-area
+;	  ) 'cl-maxima)
  
 (shadow '(copy xor putprop) 'cl-maxima)
 (shadow '(
@@ -112,7 +112,7 @@
 
 ;;MANY instances are (if a b &rest c).  I changed a bunch but there were 
 ;;many more
-(shadow 'lisp::IF 'cl-MAXIMA)
+;(shadow 'lisp::IF 'cl-MAXIMA)
 
 #+kcl
 (import '(si::modulus si::cmod si::ctimes si::cdifference si::cplus)
@@ -138,7 +138,7 @@
 
 ;; *info-paths* from cl-info.lisp
 #-gcl
-(import '( cl-info::*info-paths* ) "MAXIMA" )
+(import '(cl-info::*info-paths*) "MAXIMA" )
 
 #+gcl
 (shadowing-import '( cl-info::*info-paths* ) "MAXIMA" )
@@ -149,8 +149,8 @@
 ;; package explicitly.
 ;; REMOVE this as soon as we can get rid of LISP and SERROR packages.
 #+(and gcl ansi-cl)
-(import '( cl::*debugger-hook* cl::handler-case )
-  "MAXIMA" )
+(import '(cl::*debugger-hook* cl::handler-case)
+  "MAXIMA")
 
 ;;redefined in commac  lucid 2.1 does (functionp 'jiljay)-->t
 (if (lisp::functionp 'dotimes) (push :shadow-functionp *features*))
@@ -164,22 +164,25 @@
 ;;;the most-negative-double-float again.
 #+kcl ;bug fix for float not readable:
 (progn
-(shadow '( most-positive-single-float most-negative-double-float) 'cl-maxima))
+  (shadow '( most-positive-single-float most-negative-double-float) 'cl-maxima))
+
 #+kcl 
-(progn ;bug fix for float not readable:
- (defvar maxima::most-positive-single-float
-   (* .1 lisp::most-positive-single-float))
- (defvar maxima::most-negative-double-float
-   (* .1 lisp::most-negative-double-float)))
+(progn					;bug fix for float not readable:
+  (defvar maxima::most-positive-single-float
+    (* .1 lisp::most-positive-single-float))
+  (defvar maxima::most-negative-double-float
+    (* .1 lisp::most-negative-double-float)))
 
 #+(or gcl kcl)
 (in-package "SERROR"  :use '( "LISP" "SLOOP"))
 
 (shadow 'lisp::float 'maxima)
-#+lispm
-(shadow 'lisp::loop 'maxima)
+
+;#+lispm
+;(shadow 'lisp::loop 'maxima)
 
 #+allegro
 (shadow '// 'maxima)
+
 (provide "MAXIMA")
 

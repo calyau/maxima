@@ -13,7 +13,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (GENPREFIX C/#))
+;(declare-top (GENPREFIX C/#))
 
 (declare-top (SPLITFILE PLOG)
 	 (SPECIAL VAR %P%I VARLIST PLOGABS HALF%PI NN* DN*))
@@ -100,8 +100,8 @@
 			    (ARCHK A B (LIST '(MTIMES) '((RAT) 1 3) '$%PI)))
 			   ((ALIKE1 R '((MEXPT) 3 ((RAT) -1 2)))
 			    (ARCHK A B (LIST '(MTIMES) '((RAT) 1 6) '$%PI))))))))
-
-(declare-top (SPLITFILE BINOML))
+
+;(declare-top (SPLITFILE BINOML))
 
 (DEFMFUN SIMPBINOCOEF (X VESTIGIAL Z) 
  VESTIGIAL ;Ignored.
@@ -137,7 +137,7 @@
 	     (SETQ ANS (TIMESK (TIMESK U ANS) (SIMPLIFY (LIST '(RAT) 1 V))))
 	     (SETQ U (ADDK -1 U) V (SUB1 V))
 	     (GO LOOP)))
-
+
 (declare-top (SPLITFILE GAMMA) (SPECIAL $NUMER $GAMMALIM))
 
 (DEFMVAR $BETA_ARGS_SUM_TO_INTEGER NIL)
@@ -193,7 +193,7 @@
 	 ((OR (RATGREATERP J 1) (RATGREATERP 0 J)) (GAMMARED J))
 	 (T (EQTEST (LIST '(%GAMMA) J) X)))))
 
-(declare-top (flonum sum))
+;(declare-top (flonum sum))
 
 (defun gamma (y) ;;; numerical evaluation for 0 < y < 1
        (prog (sum coefs)
@@ -210,7 +210,7 @@
 	     (and (setq coefs (cdr coefs)) (go loop))
 	     (return (+$ (//$ 1.0 y) sum))))
 
-(declare-top (notype sum))
+;(declare-top (notype sum))
 
 (defun gammared (a)					;A is assumed to
        (prog (m q n)					;be '((RAT) M N)
@@ -241,17 +241,17 @@
 	   ((lessp q 1) ans)
 	   (setq q (sub1 q) m (*dif m n) ans (times m ans))))
  
-#+nil
-(declare-top (flonum a r))
+;#+nil
+;(declare-top (flonum a r))
 
-#+nil
-(defun gammafloat (a) 
-       (cond ((= a 1.0) 1.0)
-	     ((= a 0.0) (merror "GAMMA(0.0) has been generated."))	
-	     ((and (> a 0.0) (> 1.0 a)) (gamma a))
-	     ((or (> a 34.82) (< a -34.12))
-	      (merror "GAMMA(~A) - arithmetic overflow" a))
-	     (t (do-gammafloat a))))
+;#+nil
+;(defun gammafloat (a) 
+;       (cond ((= a 1.0) 1.0)
+;	     ((= a 0.0) (merror "GAMMA(0.0) has been generated."))	
+;	     ((and (> a 0.0) (> 1.0 a)) (gamma a))
+;	     ((or (> a 34.82) (< a -34.12))
+;	      (merror "GAMMA(~A) - arithmetic overflow" a))
+;	     (t (do-gammafloat a))))
 
 ;
 ;(defun gammafloat (a)
@@ -263,15 +263,15 @@
 ;	     (dbg:floating-exponent-overflow 
 ;	       (merror "GAMMA(~A) - arithmetic overflow" a))))))
 
-#+nil
-(defun do-gammafloat (a)
-  (do ((r 1.0 (*$ z r))
-       (s (minusp a)) (z (abs a)))
-      ((not (greaterp z 1.0))
-       (setq r (*$ r (gamma z)))
-       (cond (s (t//$ -3.141592654 (*$ a r (sin (*$ 3.141592654 a))) 'gamma))
-	     (t r))) 
-    (setq z (1-$ z))))
+;#+nil
+;(defun do-gammafloat (a)
+;  (do ((r 1.0 (*$ z r))
+;       (s (minusp a)) (z (abs a)))
+;      ((not (greaterp z 1.0))
+;       (setq r (*$ r (gamma z)))
+;       (cond (s (t//$ -3.141592654 (*$ a r (sin (*$ 3.141592654 a))) 'gamma))
+;	     (t r))) 
+;    (setq z (1-$ z))))
 
 ;; This implementation is based on Lanczos convergent formula for the
 ;; gamma function for Re(z) > 0.  We can use the reflection formula
@@ -293,8 +293,7 @@
 (defun gamma-lanczos (z)
   (declare (type (complex double-float) z)
 	   (optimize (safety 3)))
-  (let ((g 607/128)
-	(c (make-array 15 :element-type 'double-float
+  (let ((c (make-array 15 :element-type 'double-float
 		       :initial-contents
 		       '(0.99999999999999709182d0
 			 57.156235665862923517d0
@@ -311,8 +310,7 @@
 			 .84418223983852743293d-4
 			 -.26190838401581408670d-4
 			 .36899182659531622704d-5))))
-    (declare (type (rational 607/128 607/128) g)
-	     (type (simple-array double-float (15)) c))
+    (declare (type (simple-array double-float (15)) c))
     (if (minusp (realpart z))
 	;; Use the reflection formula
 	;; -z*Gamma(z)*Gamma(-z) = pi/sin(pi*z)
@@ -322,8 +320,7 @@
 	;; If z is a negative integer, Gamma(z) is infinity.  Should
 	;; we test for this?  Throw an error?  What
 	(/ (float pi 1d0)
-	   (* (- z) (sin (* (float pi 1d0)
-			    z))
+	   (* (- z) (sin (* (float pi 1d0) z))
 	      (gamma-lanczos (- z))))
 	(let* ((z (- z 1))
 	       (zh (+ z 1/2))
@@ -343,8 +340,8 @@
 (defun gammafloat (a)
   (realpart (gamma-lanczos (complex a 0d0))))
 
-(declare-top (notype a r))
-
+;(declare-top (notype a r))
+
 (declare-top (SPLITFILE ERF) (SPECIAL $NUMER $TRIGSIGN))
 
 (defmfun simperf (x vestigial z &aux y)
@@ -358,39 +355,38 @@
        ((and $trigsign (mminusp* y)) (neg (list '(%erf simp) (neg y))))
        (t (eqtest (list '(%erf) y) x))))
 
-#+nil
-(defmfun erf (y)
-       (cond ((> (abs y) 4.0) (cond ((> y 0.0) 1.0) (t -1.0)))
-	     (t ((lambda (t1 xf)
-		   (declare (flonum t1 xf))
-		   (setq t1 (//$ (1+$ (*$ xf 0.3275911))))
-		   (setq 
-		    t1
-		    (-$
-		     1.0
-		     (*$
-		      (exp (minus (*$ xf xf)))
-		      (*$ (+$ (*$ (+$ (*$ (+$ (*$ (+$ (*$ t1
-							  1.06140543)
-						      -1.45315203)
-						  t1)
-					      1.42141373)
-					  t1)
-				      -0.28449674)
-				  t1)
-			      0.25482959)
-			  t1))))
-		   (cond ((> y 0.0) t1) (t (minus t1))))
-		  0.0
-		  (abs y)))))
+;#+nil
+;(defmfun erf (y)
+;       (cond ((> (abs y) 4.0) (cond ((> y 0.0) 1.0) (t -1.0)))
+;	     (t ((lambda (t1 xf)
+;		   (declare (flonum t1 xf))
+;		   (setq t1 (//$ (1+$ (*$ xf 0.3275911))))
+;		   (setq 
+;		    t1
+;		    (-$
+;		     1.0
+;		     (*$
+;		      (exp (minus (*$ xf xf)))
+;		      (*$ (+$ (*$ (+$ (*$ (+$ (*$ (+$ (*$ t1
+;							  1.06140543)
+;						      -1.45315203)
+;						  t1)
+;					      1.42141373)
+;					  t1)
+;				      -0.28449674)
+;				  t1)
+;			      0.25482959)
+;			  t1))))
+;		   (cond ((> y 0.0) t1) (t (minus t1))))
+;		  0.0
+;		  (abs y)))))
 
 (defmfun erf (y)
   (slatec:derf (float y 1d0)))
 (defmfun erfc (y)
   (slatec:derfc (float y 1d0)))
 
-
-(declare-top (SPLITFILE EMATRIX))
+;(declare-top (SPLITFILE EMATRIX))
 
 (DEFMFUN $ZEROMATRIX (M N) ($EMATRIX M N 0 1 1))
 
@@ -413,7 +409,7 @@
 
 (DEFUN LIST-OF-MLISTS (N)
  (DO ((N N (f1- N)) (L NIL (CONS (NCONS '(MLIST SIMP)) L))) ((= N 0) L)))
-
+
 (declare-top (SPLITFILE COEFM) (SPECIAL $RATMX))
 
 (DEFMFUN $COEFMATRIX (EQL VARL) (COEFMATRIX EQL VARL NIL))
@@ -439,10 +435,10 @@
 	     (SETQ ANS (CONS ROW ANS))
 	     (GO LOOP1)))
 
-(DEFUN CONST1 (E VARL) (DOLIST (V VARL) (SETQ E (MAXIMA-SUBSTITUTE 0 V E))) E)
+(DEFUN CONST1 (E VARL)
+  (DOLIST (V VARL) (SETQ E (MAXIMA-SUBSTITUTE 0 V E))) E)
 
-
-(declare-top (SPLITFILE ENTERM))
+;(declare-top (SPLITFILE ENTERM))
 
 (DEFMFUN $ENTERMATRIX (ROWS COLUMNS)
        (PROG (ROW COLUMN VECTOR MATRIX SYM SYMVECTOR)
@@ -494,7 +490,7 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 	     (let ((prompt (format nil "Row ~a Column ~a: " row column)))
 	       (SETQ VECTOR (NCONC VECTOR (NCONS (MEVAL (RETRIEVE prompt nil))))))
 	     (GO ILOOP)))
-
+
 (declare-top (splitfile xthru) (special sn* sd* rsn*))
 
 (DEFMFUN $xthru (e)
@@ -556,7 +552,7 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 	     (return
 	      (list (add2 (m* a c1) (m* c b1))
 		    (mul2 d b1)))))
-
+
 (declare-top (SPLITFILE XRTOUT)
 	 (SPECIAL $GLOBALSOLVE $BACKSUBST $DISPFLAG $NOLABELS
 		  $LINSOLVE_PARAMS $%RNUM_LIST AX LINELABLE $LINECHAR 

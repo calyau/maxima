@@ -30,36 +30,36 @@
 ;;; The second arg to MMAPEV is purely for printing of error messages
 ;;; except for SCANMAP, which is obscure.
 
-(comment
+;(comment
 
-(DEFMFUN MMAPEV (MAPFUN L) 
-	 (IF (< (LENGTH L) 2)
-	     (MERROR "~:M called with fewer than 2 args" MAPFUN))
-	 (LET ((U (GETOPR (MEVAL (CAR L)))))
-	      (AUTOLDCHK U)
-	      (BADFUNCHK (CAR L) U NIL)
-	      (IF (ATOM U)
-		  ;; number of argument checking before mapping,
-		  ;; some efficiency gain, really, how minor.
-		  ;; he should instead do some trampolining and
-		  ;; get some real efficiency gains.
-		  (MARGCHK U (COND ((EQ MAPFUN '$SCANMAP)
-				    (NCONS (CADR L)))
-				   (T (CDR L)))))
-	      (CONS U (MAPCAR 'MEVAL (CDR L)))))
-)
+;(DEFMFUN MMAPEV (MAPFUN L) 
+;	 (IF (< (LENGTH L) 2)
+;	     (MERROR "~:M called with fewer than 2 args" MAPFUN))
+;	 (LET ((U (GETOPR (MEVAL (CAR L)))))
+;	      (AUTOLDCHK U)
+;	      (BADFUNCHK (CAR L) U NIL)
+;	      (IF (ATOM U)
+;		  ;; number of argument checking before mapping,
+;		  ;; some efficiency gain, really, how minor.
+;		  ;; he should instead do some trampolining and
+;		  ;; get some real efficiency gains.
+;		  (MARGCHK U (COND ((EQ MAPFUN '$SCANMAP)
+;				    (NCONS (CADR L)))
+;				   (T (CDR L)))))
+;	      (CONS U (MAPCAR 'MEVAL (CDR L)))))
+;)
 
-(comment
- (DEFMFUN $APPLY FEXPR (L)
- (TWO-ARG-CHECK L)
- ((LAMBDA (FUN ARG)
-   (COND ((NOT ($LISTP ARG))
-	  (DISPLA FUN) (DISPLA ARG) (MERROR "Second arg to APPLY must be a list")))
-   (AUTOLDCHK (SETQ FUN (GETOPR FUN)))
-   (COND ((EQ (GET FUN 'DIMENSION) 'DIMENSION-INFIX) (TWOARGCHK ARG FUN)))
-   (MAPPLY FUN (CDR ARG) (CAR L)))
-  (MEVAL (CAR L)) (MEVAL (CADR L))))
-)
+;(comment
+; (DEFMFUN $APPLY FEXPR (L)
+; (TWO-ARG-CHECK L)
+; ((LAMBDA (FUN ARG)
+;   (COND ((NOT ($LISTP ARG))
+;	  (DISPLA FUN) (DISPLA ARG) (MERROR "Second arg to APPLY must be a list")))
+;   (AUTOLDCHK (SETQ FUN (GETOPR FUN)))
+;   (COND ((EQ (GET FUN 'DIMENSION) 'DIMENSION-INFIX) (TWOARGCHK ARG FUN)))
+;   (MAPPLY FUN (CDR ARG) (CAR L)))
+;  (MEVAL (CAR L)) (MEVAL (CADR L))))
+;)
 
 ;;; APPLY(F,[X]) is an idiom for funcall.
 
@@ -231,17 +231,16 @@
 
 
 
-
 ;;; From JPG;SUPRV >
-(comment
-(DEFMFUN $ERRCATCH FEXPR (X)
-       ((LAMBDA (ERRCATCH RET)
-		(COND ((NULL (SETQ RET
-				   (ERRSET (APPLY 'MPROGN X)
-					   LISPERRPRINT)))
-		       (ERRLFUN1 ERRCATCH)))
-		(CONS '(MLIST) RET))
-	(CONS BINDLIST LOCLIST) NIL)))
+;(comment
+;(DEFMFUN $ERRCATCH FEXPR (X)
+;       ((LAMBDA (ERRCATCH RET)
+;		(COND ((NULL (SETQ RET
+;				   (ERRSET (APPLY 'MPROGN X)
+;					   LISPERRPRINT)))
+;		       (ERRLFUN1 ERRCATCH)))
+;		(CONS '(MLIST) RET))
+;	(CONS BINDLIST LOCLIST) NIL)))
 
 ;;; This is could be done better on the LISPM
 
@@ -256,12 +255,12 @@
 			 (CONS BINDLIST LOCLIST) NIL)))
 
 
-(COMMENT 
- (DEFMFUN $CATCH FEXPR (X)
-	((LAMBDA (MCATCH)
-		 (PROG2 NIL (CATCH 'MCATCH (APPLY 'MPROGN X))
-			(ERRLFUN1 MCATCH)))
-  (CONS BINDLIST LOCLIST))))
+;(COMMENT 
+; (DEFMFUN $CATCH FEXPR (X)
+;	((LAMBDA (MCATCH)
+;		 (PROG2 NIL (CATCH 'MCATCH (APPLY 'MPROGN X))
+;			(ERRLFUN1 MCATCH)))
+;  (CONS BINDLIST LOCLIST))))
 
 ;;; The MODE of a CATCH could either be the MODE of the last of the PROGN
 ;;; or the mode of the THROW. The THROW may be hard to find, so this goes
@@ -276,33 +275,33 @@
 						 'MCATCH ,BODY)
 						(ERRLFUN1 MCATCH)))
 				 (CONS BINDLIST LOCLIST)))))))
-(COMMENT
- (DEFMFUN $THROW (X)
- (COND ((NULL MCATCH) (DISPLA X) (ERLIST '|THROW not within CATCH|)))
- (THROW 'MCATCH X)))
+;(COMMENT
+; (DEFMFUN $THROW (X)
+; (COND ((NULL MCATCH) (DISPLA X) (ERLIST '|THROW not within CATCH|)))
+; (THROW 'MCATCH X)))
 
 (DEF%TR $THROW (FORM)
 	(LET (((MODE . EXP) (TRANSLATE (CADR FORM))))
 	     `(,MODE . ((LAMBDA (X)
 				(COND ((NULL MCATCH)
 				       (DISPLA X)
-				       (*MERROR '|THROW not within CATCH|)))
+				       (MERROR "THROW not within CATCH")))
 				(THROW 'MCATCH X))
 			,EXP))))
 
 ;;; From RZ;ASUM >. He should know better.
-(comment 
- (DEFMFUN $sum fexpr (l)
-    (cond ((not (= (length l) 4))
-	   (erlist '|Wrong no. of args to SUM|))
-	  ((dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
-	   ))))
+;(comment 
+; (DEFMFUN $sum fexpr (l)
+;    (cond ((not (= (length l) 4))
+;	   (erlist '|Wrong no. of args to SUM|))
+;	  ((dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
+;	   ))))
 
 ;;; From RZ;COMBIN >
-(comment
- (DEFMFUN $product fexpr (l)
-    (cond ((not (= (length l) 4)) (erlist '|Wrong no. of args to product|))
-	  ((dosum (car l) (cadr l)   (meval (caddr l)) (meval (cadddr l)) nil)))))
+;(comment
+; (DEFMFUN $product fexpr (l)
+;    (cond ((not (= (length l) 4)) (erlist '|Wrong no. of args to product|))
+;	  ((dosum (car l) (cadr l)   (meval (caddr l)) (meval (cadddr l)) nil)))))
 ;;; "dosum" will call MEVAL and act like a special form if it can.
 ;;; MEVAL will work on LISP expression, so we can translate those args.
 
@@ -443,9 +442,9 @@
 	       (SETQ TR-ABORT T)
 	       '($ANY . '$**ERROR**))))
 
-(comment
- |jpg;suprv >|
- (DEFMFUN $KILL FEXPR (L) (MAPC 'KILL1 L) #+GC (GCTWA) '$DONE))
+;(comment
+; |jpg;suprv >|
+; (DEFMFUN $KILL FEXPR (L) (MAPC 'KILL1 L) #+GC (GCTWA) '$DONE))
 
 (DEF%TR $KILL (FORM)
 	(COND ($TR_WINDY
@@ -480,12 +479,12 @@ a replacement form. Translating anyway though.")))
 						  ,@(TR-ARGS (CDR FORM)))))))))
 
 
-(comment
-(DEFMFUN $DEFINE FEXPR (L)
- (COND ((OR (NULL L) (NULL (CDR L)) (CDDR L))
-	(ERLIST '|Wrong number of args to DEFINE|)))
- (APPLY 'MDEFINE
-	(LIST (COND ((MQUOTEP (CAR L)) (CADAR L)) (T (DISP2 (CAR L)))) (MEVAL (CADR L))))))
+;(comment
+;(DEFMFUN $DEFINE FEXPR (L)
+; (COND ((OR (NULL L) (NULL (CDR L)) (CDDR L))
+;	(ERLIST '|Wrong number of args to DEFINE|)))
+; (APPLY 'MDEFINE
+;	(LIST (COND ((MQUOTEP (CAR L)) (CADAR L)) (T (DISP2 (CAR L)))) (MEVAL (CADR L))))))
 
 ;;; MDEFINE is an FSUBR also.
 
@@ -587,7 +586,6 @@ a replacement form. Translating anyway though.")))
 (DEF%TR $SETUP_AUTOLOAD $batcon)
 (DEF%TR $TOBREAK $batcon  )
 
-
 ;; Local Modes:
 ;; Mode: LISP
 ;; Comment Col: 40

@@ -17,8 +17,7 @@
 
 
 
-(defstruct #-cl (mgenarray conc-name array)
-	   #+cl (mgenarray (:conc-name mgenarray-) (:type vector))
+(defstruct (mgenarray (:conc-name mgenarray-) (:type vector))
   aref
   aset
   type
@@ -26,19 +25,18 @@
   GENERATOR
   CONTENT)
 
-#-cl
-(DEFUN MARRAY-TYPE (X)
+;#-cl
+;(DEFUN MARRAY-TYPE (X)
   
-  (OR (CDR (ASSQ (ARRAY-TYPE X)
-		 '((FLONUM . $FLOAT)
-		   (FIXNUM . $FIXNUM))))
-      (MGENARRAY-TYPE X)))
-#+cl
+;  (OR (CDR (ASSQ (ARRAY-TYPE X)
+;		 '((FLONUM . $FLOAT)
+;		   (FIXNUM . $FIXNUM))))
+;      (MGENARRAY-TYPE X)))
+
 (DEFUN MARRAY-TYPE (X)
   (case (ml-typep x)
     (array (array-element-type x))
     (hash-table 'hash-table)
-    #+lispm (si::equal-hash-table 'hash-table)
     (lisp::array  (princ "confusion over array and lisp::array")
 	    (array-element-type x))
     (otherwise
@@ -48,30 +46,21 @@
 		   (FIXNUM . $FIXNUM))))
       (MGENARRAY-TYPE X)))))
 
-;#+lispm
-;(defmfun $Show_hash_array (table)
-;  (send table :map-hash
-;   `(lambda (u v) 
-;    (format t "~%~A-->~A" u v)))
-;  table)
 
 (DEFMFUN $MAKE_ARRAY (TYPE &REST DIML)
   (LET ((LTYPE (ASSQ TYPE '(($FLOAT . FLONUM) ($FLONUM . FLONUM)
 					      ($FIXNUM . FIXNUM)))))
     (COND ((NOT LTYPE)
 	   (COND ((EQ TYPE '$ANY)
-		  #+cl (make-array diml :initial-element nil)
-		  #-cl
-		  (MAKE-MGENARRAY  #+cl :type #-cl type  '$ANY
-				  #+cl :CONTENT #-cl CONTENT (APPLY '*ARRAY NIL T DIML)))
+		  (make-array diml :initial-element nil))
 		 ((EQ TYPE '$HASHED)
 		  (LET ((KLUDGE (GENSYM)))
 		    (OR (INTEGERP (CAR DIML))
 			(MERROR "non-integer number of dimensions: ~M"
 				(CAR DIML)))
 		    (INSURE-ARRAY-PROPS KLUDGE () (CAR DIML))
-		    (MAKE-MGENARRAY #+cl :TYPE #-cl TYPE '$HASHED
-				    #+cl :CONTENT #-cl CONTENT KLUDGE)))
+		    (MAKE-MGENARRAY :TYPE '$HASHED
+				    :CONTENT KLUDGE)))
 		 ((EQ TYPE '$FUNCTIONAL)
 		  ;; MAKE_ARRAY('FUNCTIONAL,LAMBDA(...),'ARRAY_TYPE,...)
 		  (OR (> (LENGTH DIML) 1)
@@ -89,15 +78,15 @@
 		       ;; Nothing to do for hashed arrays. Is FUNCTIONAL here
 		       ;; an error?
 		       (SETQ THE-NULL 'NOTEXIST)))
-		    (MAKE-MGENARRAY #+cl :TYPE #-cl TYPE '$FUNCTIONAL
-				    #+cl :CONTENT #-cl CONTENT AR
-				    #+cl :GENERATOR #-cl GENERATOR (CAR DIML)
-				    #+cl :NULL #-cl NULL THE-NULL)))
+		    (MAKE-MGENARRAY :TYPE '$FUNCTIONAL
+				    :CONTENT AR
+				    :GENERATOR (CAR DIML)
+				    :NULL THE-NULL)))
 		 ('ELSE
 		  (MERROR "Array type of ~M is not recognized by MAKE_ARRAY" TYPE))))
 	  ('ELSE
 	   (APPLY '*ARRAY NIL (CDR LTYPE) DIML)))))
-#+cl
+
 (defmfun maknum (x)
   (cond ($use_fast_arrays
   (exploden (format nil "~A" x)))
@@ -141,13 +130,11 @@
 	 (MARRAY-TYPE-UNKNOWN A)))
       (MERROR "Not an array: ~M" A)))
 
-(DEFMFUN $ARRAY_NUMBER_OF_DIMENSIONS (A)
-  (ARRAY-/#-DIMS (MARRAY-CHECK A)))
+;(DEFMFUN $ARRAY_NUMBER_OF_DIMENSIONS (A)
+;  (ARRAY-/#-DIMS (MARRAY-CHECK A)))
 
 (DEFMFUN $ARRAY_DIMENSION_N (N A)
-  #-cl(ARRAY-DIMENSION-N N (MARRAY-CHECK A))
-  #+cl(array-dimension  (MARRAY-CHECK A) n)
-  )
+  (array-dimension  (MARRAY-CHECK A) n))
 
 (DEFUN MARRAY-TYPE-UNKNOWN (X)
   (MERROR "BUG: Array of unhandled type: ~S" X))
@@ -160,8 +147,8 @@
     ;; speed and simplicity we want anyway. Ah me. Also, passing the single
     ;; unconsed index IND1 around is a dubious optimization, which causes
     ;; extra consing in the case of hashed arrays.
-#+cl((t) (apply #'aref aarray ind1 inds))
-#+cl((hash-table) (gethash (if inds (cons ind1 inds) ind1) aarray))
+    ((t) (apply #'aref aarray ind1 inds))
+    ((hash-table) (gethash (if inds (cons ind1 inds) ind1) aarray))
     (($HASHED)
      (APPLY #'MARRAYREF (MGENARRAY-CONTENT AARRAY) IND1 INDS))
     (($FLOAT $FIXNUM)
@@ -193,24 +180,18 @@
 
 (DEFUN MARRAYSET-GENSUB (VAL AARRAY IND1 INDS) 
   (CASE (MARRAY-TYPE AARRAY)
-    #+cl
     ((t) (setf (apply #'aref aarray ind1 inds) val))
     (($HASHED)
      (APPLY #'MARRAYSET VAL (MGENARRAY-CONTENT AARRAY) IND1 INDS))
     (($ANY)
-     #-cl(STORE (APPLY (MGENARRAY-CONTENT AARRAY) IND1 INDS) VAL)
-     #+cl
      (setf (apply #'Aref (MGENARRAY-CONTENT AARRAY) IND1 INDS) val ))
-     
     (($FLOAT $FIXNUM)
-     #-cl(STORE (APPLY AARRAY IND1 INDS) VAL)
-     #+cl     (setf  (apply #'Aref (MGENARRAY-CONTENT AARRAY) IND1 INDS) val ))
+     (setf  (apply #'Aref (MGENARRAY-CONTENT AARRAY) IND1 INDS) val ))
     (($FUNCTIONAL)
      (MARRAYSET-GENSUB VAL (MGENARRAY-CONTENT AARRAY) IND1 INDS))
     (T
       (MARRAY-TYPE-UNKNOWN AARRAY))))
 
-
 ;; Extensions to MEVAL.
 
 (DEFMFUN MEVAL1-EXTEND (FORM)

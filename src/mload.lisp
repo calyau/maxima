@@ -119,9 +119,9 @@
 		      (RETURN T))))))
 	(RETURN (TO-MACSYMA-NAMESTRING PROBED)))))
 
-#+cl
-(defun lispm-merge-pathname (&rest l)
-   (apply 'merge-pathnames  l))
+;#+cl
+;(defun lispm-merge-pathname (&rest l)
+;   (apply 'merge-pathnames  l))
  
 ;;; following worked but much harder to search.
 ;(defun $file_search (x &optional ign paths)
@@ -168,32 +168,32 @@
 ;; If the user doesn't supply a file extension, we look for .o, .l and .v
 ;; and finally the file itself.  If the user supplies one of the standard
 ;; extensions, we just use that.
-#+Franz
-(defmfun $file_search (x &optional (consp nil) (l $file_types))
-   (let ((filelist (cond ((cdr $file_search))
-			 (t '("."))))
-	 (extlist (cond ((zl-MEMBER (substring x -2) '(".o" ".l" ".v"))
-			 '(nil))
-			(t '(".o" ".l" ".v" nil)))))
-      (do ((dir filelist (cdr dir))
-	   (ret))
-	  ((null dir)
-	   (cond (consp '((mlist)))
-		     (t (MERROR "Could not MAXIMA-FIND file ~M" X))))
-	  (cond ((setq ret
-		       (do ((try extlist (cdr try))
-			    (this))
-			   ((null try))
-			   (setq this (cond ((null (car try)) x)
-					    (t (concat x (car try)))))
-			   (cond ((not (equal "." (car dir)))
-				  (setq this (concat (car dir) "//" this))))
-			   (cond ((probe-file this)
-				  (return
-				     (cond (consp `((mlist)
-						    ,(to-macsyma-namestring x)))
-						(t (to-macsyma-namestring this))))))))
-		 (return ret))))))
+;#+Franz
+;(defmfun $file_search (x &optional (consp nil) (l $file_types))
+;   (let ((filelist (cond ((cdr $file_search))
+;			 (t '("."))))
+;	 (extlist (cond ((zl-MEMBER (substring x -2) '(".o" ".l" ".v"))
+;			 '(nil))
+;			(t '(".o" ".l" ".v" nil)))))
+;      (do ((dir filelist (cdr dir))
+;	   (ret))
+;	  ((null dir)
+;	   (cond (consp '((mlist)))
+;		     (t (MERROR "Could not MAXIMA-FIND file ~M" X))))
+;	  (cond ((setq ret
+;		       (do ((try extlist (cdr try))
+;			    (this))
+;			   ((null try))
+;			   (setq this (cond ((null (car try)) x)
+;					    (t (concat x (car try)))))
+;			   (cond ((not (equal "." (car dir)))
+;				  (setq this (concat (car dir) "//" this))))
+;			   (cond ((probe-file this)
+;				  (return
+;				     (cond (consp `((mlist)
+;						    ,(to-macsyma-namestring x)))
+;						(t (to-macsyma-namestring this))))))))
+;		 (return ret))))))
 
 			
 (declare-top (SPECIAL $LOADPRINT))
@@ -203,129 +203,126 @@
 	    T ;; means this is a lisp-level call, not user-level.
 	    $LOADPRINT))
 
-#+PDP10
-(PROGN 'COMPILE
-;; on the PDP10 cannonical filenames are represented as symbols
-;; with a DIMENSION-LIST property of DISPLAY-FILENAME.
+;#+PDP10
+;(PROGN 'COMPILE
+;;; on the PDP10 cannonical filenames are represented as symbols
+;;; with a DIMENSION-LIST property of DISPLAY-FILENAME.
 
-(DEFUN DIMENSION-FILENAME (FORM RESULT)
-  (DIMENSION-STRING (CONS #. double-quote-char (NCONC (EXPLODEN FORM) (LIST #. double-quote-char))) RESULT))
+;(DEFUN DIMENSION-FILENAME (FORM RESULT)
+;  (DIMENSION-STRING (CONS #. double-quote-char (NCONC (EXPLODEN FORM) (LIST #. double-quote-char))) RESULT))
 
-(DEFUN TO-MACSYMA-NAMESTRING (X)
-  ;; create an uninterned symbol, uninterned so that
-  ;; it will be GC'd.
-  (SETQ X (PNPUT (PNGET (NAMESTRING X) 7) NIL))
-  (PUTPROP X 'DIMENSION-FILENAME 'DIMENSION-LIST)
-  X)
+;(DEFUN TO-MACSYMA-NAMESTRING (X)
+;  ;; create an uninterned symbol, uninterned so that
+;  ;; it will be GC'd.
+;  (SETQ X (PNPUT (PNGET (NAMESTRING X) 7) NIL))
+;  (PUTPROP X 'DIMENSION-FILENAME 'DIMENSION-LIST)
+;  X)
 
-(DEFUN MACSYMA-NAMESTRINGP (X)
-  (AND (SYMBOLP X) (EQ (GET X 'DIMENSION-LIST) 'DIMENSION-FILENAME)))
+;(DEFUN MACSYMA-NAMESTRINGP (X)
+;  (AND (SYMBOLP X) (EQ (GET X 'DIMENSION-LIST) 'DIMENSION-FILENAME)))
 
-(DEFMACRO ERRSET-NAMESTRING (X)
-  `(LET ((ERRSET NIL))
-     (ERRSET (NAMESTRING ,X) NIL)))
+;(DEFMACRO ERRSET-NAMESTRING (X)
+;  `(LET ((ERRSET NIL))
+;     (ERRSET (NAMESTRING ,X) NIL)))
 
-(DEFMFUN $FILENAME_MERGE N
-  (DO ((F "" (MERGEF (MACSYMA-NAMESTRING-SUB (ARG J)) F))
-       (J N (f1- J)))
-      ((ZEROP J)
-       (TO-MACSYMA-NAMESTRING F))))
-)
+;(DEFMFUN $FILENAME_MERGE N
+;  (DO ((F "" (MERGEF (MACSYMA-NAMESTRING-SUB (ARG J)) F))
+;       (J N (f1- J)))
+;      ((ZEROP J)
+;       (TO-MACSYMA-NAMESTRING F))))
+;)
 
-#+Franz
-(progn 'compile
+;#+Franz
+;(progn 'compile
 
-;; a first crack at these functions
+;;; a first crack at these functions
 
-(defun to-macsyma-namestring (x)
-   (cond ((macsyma-namestringp x) x)
-	 ((symbolp x)
-	  (cond ((memq (getcharn x 1) '(#\& #\$))
-		 (substring (get_pname x) 2))
-		(t (get_pname x))))
-	 (t (merror "to-macsyma-namestring: non symbol arg ~M~%" x))))
+;(defun to-macsyma-namestring (x)
+;   (cond ((macsyma-namestringp x) x)
+;	 ((symbolp x)
+;	  (cond ((memq (getcharn x 1) '(#\& #\$))
+;		 (substring (get_pname x) 2))
+;		(t (get_pname x))))
+;	 (t (merror "to-macsyma-namestring: non symbol arg ~M~%" x))))
 
-(defun macsyma-namestringp (x)
-   (stringp x))
+;(defun macsyma-namestringp (x)
+;   (stringp x))
 
-;;--- $filename_merge
-; may not need this ask filename merging is not done on Unix systems.
-;
-(defmfun $filename_merge (&rest files)
-   (cond (files (filestrip (ncons (car files))))))
-)
+;;;--- $filename_merge
+;; may not need this ask filename merging is not done on Unix systems.
+;;
+;(defmfun $filename_merge (&rest files)
+;   (cond (files (filestrip (ncons (car files))))))
+;)
 
-#+MULTICS
-(PROGN 'COMPILE
-(DEFUN TO-MACSYMA-NAMESTRING (X) 
-  (cond ((macsyma-namestringp x) x)
-	((symbolp x) (substring (string x) 1))
-	((consp x) (namestring x))
-	(t x)))
+;#+MULTICS
+;(PROGN 'COMPILE
+;(DEFUN TO-MACSYMA-NAMESTRING (X) 
+;  (cond ((macsyma-namestringp x) x)
+;	((symbolp x) (substring (string x) 1))
+;	((consp x) (namestring x))
+;	(t x)))
 
-(DEFUN MACSYMA-NAMESTRINGP (X) (STRINGP X))
-(DEFUN ERRSET-NAMESTRING (X)
-  (IF (ATOM X) (NCONS (STRING X)) (ERRSET (NAMESTRING X) NIL)))
+;(DEFUN MACSYMA-NAMESTRINGP (X) (STRINGP X))
+;(DEFUN ERRSET-NAMESTRING (X)
+;  (IF (ATOM X) (NCONS (STRING X)) (ERRSET (NAMESTRING X) NIL)))
 
-(DEFMFUN $FILENAME_MERGE (&REST FILE-SPECS)
-  (SETQ FILE-SPECS (cond (file-specs 
-			  (MAPCAR #'MACSYMA-NAMESTRING-SUB FILE-SPECS))
-			 (t '("**"))))
-  (TO-MACSYMA-NAMESTRING (IF (NULL (CDR FILE-SPECS))
-			     (CAR FILE-SPECS)
-			     (APPLY #'MERGEF FILE-SPECS))))
+;(DEFMFUN $FILENAME_MERGE (&REST FILE-SPECS)
+;  (SETQ FILE-SPECS (cond (file-specs 
+;			  (MAPCAR #'MACSYMA-NAMESTRING-SUB FILE-SPECS))
+;			 (t '("**"))))
+;  (TO-MACSYMA-NAMESTRING (IF (NULL (CDR FILE-SPECS))
+;			     (CAR FILE-SPECS)
+;			     (APPLY #'MERGEF FILE-SPECS))))
 
-)
+;)
 
-#+(and (not cl) Lispm)
-(PROGN 'COMPILE
-(DEFUN TO-MACSYMA-NAMESTRING (X)
-  (PATHNAME X)
-  )
-(DEFUN MACSYMA-NAMESTRINGP (X)
-  (ml-typep X 'FS:PATHNAME))
-(DEFUN ERRSET-NAMESTRING (X)
-  (LET ((ERRSET NIL))
-    (ERRSET (PATHNAME X) NIL)))
+;#+(and (not cl) Lispm)
+;(PROGN 'COMPILE
+;(DEFUN TO-MACSYMA-NAMESTRING (X)
+;  (PATHNAME X)
+;  )
+;(DEFUN MACSYMA-NAMESTRINGP (X)
+;  (ml-typep X 'FS:PATHNAME))
+;(DEFUN ERRSET-NAMESTRING (X)
+;  (LET ((ERRSET NIL))
+;    (ERRSET (PATHNAME X) NIL)))
 
-(DEFMFUN $FILENAME_MERGE (&REST FILE-SPECS)
-  (SETQ FILE-SPECS (cond (file-specs 
-			  (MAPCAR #'MACSYMA-NAMESTRING-SUB FILE-SPECS))
-			 (t '("**"))))
-  ($file_search
-     (TO-MACSYMA-NAMESTRING (IF (NULL (CDR FILE-SPECS))
-			     (CAR FILE-SPECS)
-			     (APPLY #'MERGEF FILE-SPECS)))
+;(DEFMFUN $FILENAME_MERGE (&REST FILE-SPECS)
+;  (SETQ FILE-SPECS (cond (file-specs 
+;			  (MAPCAR #'MACSYMA-NAMESTRING-SUB FILE-SPECS))
+;			 (t '("**"))))
+;  ($file_search
+;     (TO-MACSYMA-NAMESTRING (IF (NULL (CDR FILE-SPECS))
+;			     (CAR FILE-SPECS)
+;			     (APPLY #'MERGEF FILE-SPECS)))
 
-  ))
+;  ))
 
-) 
+;) 
 
 #+cl
 (PROGN 'COMPILE
-(DEFUN TO-MACSYMA-NAMESTRING (X)
-  (PATHNAME X)
-  )
-(DEFUN MACSYMA-NAMESTRINGP (X)
-  (typep X 'PATHNAME))
-(DEFUN ERRSET-NAMESTRING (X)
-  (LET ((ERRSET NIL))
-    (ERRSET (PATHNAME X) NIL)))
+       (DEFUN TO-MACSYMA-NAMESTRING (X)
+	 (PATHNAME X))
+       
+       (DEFUN MACSYMA-NAMESTRINGP (X)
+	 (typep X 'PATHNAME))
+       
+       (DEFUN ERRSET-NAMESTRING (X)
+	 (LET ((ERRSET NIL))
+	   (ERRSET (PATHNAME X) NIL)))
 
-(DEFMFUN $FILENAME_MERGE (&REST FILE-SPECS)
-  (SETQ FILE-SPECS (cond (file-specs 
-			  (MAPCAR #'MACSYMA-NAMESTRING-SUB FILE-SPECS))
-			 (t '("**"))))
+       (DEFMFUN $FILENAME_MERGE (&REST FILE-SPECS)
+	 (SETQ FILE-SPECS
+	       (if file-specs 
+		   (MAPCAR #'MACSYMA-NAMESTRING-SUB FILE-SPECS)
+		   '("**")))
 
-  (progn            ;$file_search
-     (TO-MACSYMA-NAMESTRING (IF (NULL (CDR FILE-SPECS))
-			     (CAR FILE-SPECS)
-			     (APPLY #'MERGEF FILE-SPECS)))
-
-  )
-  
-  )
-) 
+	 (progn				;$file_search
+	   (TO-MACSYMA-NAMESTRING (IF (NULL (CDR FILE-SPECS))
+				      (CAR FILE-SPECS)
+				      (APPLY #'MERGEF FILE-SPECS))))))
 
 
 ;
@@ -371,56 +368,49 @@
 	    (MERROR "Bad file spec: ~:M" USER-OBJECT)))))
 
 (DEFMFUN open-out-dsk (x)
-  #+(or cl nil)
-  (open x :direction :output :element-type 'character)
- #-(or CL NIL)   (open x '(out dsk ascii block)))
+  (open x :direction :output :element-type 'character))
 
 (DEFMFUN open-in-dsk (x)
-	 #+(or cl nil)
-	 (open x :direction :input :element-type 'character)
-         #-(or CL NIL) (open x '(in dsk ascii block)))
+	 (open x :direction :input :element-type 'character))
 
 #-MAXII
 (PROGN 'COMPILE
 
-(declare-top (SPECIAL DSKFNP OLDST ST $NOLABELS REPHRASE))
+       (declare-top (SPECIAL DSKFNP OLDST ST $NOLABELS REPHRASE))
 
-(DEFMFUN CALL-BATCH1 (FILENAME ^W)
-  (LET ((^R (AND ^R (NOT ^W)))
-	($NOLABELS T)
-	($CHANGE_FILEDEFAULTS)
-	(DSKFNP T)
-	(OLDST)
-	(ST))
-    ;; cons #/& to avoid the double-stripdollar problem.
-    (BATCH1 (LIST (MAKNAM (CONS #\& (EXPLODEN FILENAME))))
-	    NIL
-	    NIL
-	    #-Franz T
-	    #+Franz nil)
-    (SETQ REPHRASE T)))
+       (DEFMFUN CALL-BATCH1 (FILENAME ^W)
+	 (LET ((^R (AND ^R (NOT ^W)))
+	       ($NOLABELS T)
+	       ($CHANGE_FILEDEFAULTS)
+	       (DSKFNP T)
+	       (OLDST)
+	       (ST))
+	   ;; cons #/& to avoid the double-stripdollar problem.
+	   (BATCH1 (LIST (MAKNAM (CONS #\& (EXPLODEN FILENAME))))
+		   NIL
+		   NIL
+		   #-Franz T
+		   #+Franz nil)
+	   (SETQ REPHRASE T)))
 
 
-(DEFMVAR *IN-$BATCHLOAD* NIL
-  "I should have a single state variable with a bit-vector or even a list
+       (DEFMVAR *IN-$BATCHLOAD* NIL
+	 "I should have a single state variable with a bit-vector or even a list
   of symbols for describing the state of file translation.")
-(DEFMVAR *IN-TRANSLATE-FILE* NIL "")
-(DEFMVAR *IN-MACSYMA-INDEXER* NIL)
+       (DEFMVAR *IN-TRANSLATE-FILE* NIL "")
+       (DEFMVAR *IN-MACSYMA-INDEXER* NIL)
 
-(DEFUN TRANSLATE-MACEXPR (FORM &optional FILEPOS)
-       (COND (*IN-TRANSLATE-FILE*
-	      (TRANSLATE-MACEXPR-ACTUAL FORM FILEPOS))
-	     (*in-macsyma-indexer*
-	      (outex-hook-exp form))
-	     (T
-	      (LET ((R (ERRSET (MEVAL* FORM))))
-		   (COND ((NULL R)
-			  (LET ((^W NIL))
-			       (MERROR "~%This form caused an MAXIMA-ERROR in evaluation:~
-				       ~%~:M" FORM))))))))
-)
-
-
+       (DEFUN TRANSLATE-MACEXPR (FORM &optional FILEPOS)
+	 (COND (*IN-TRANSLATE-FILE*
+		(TRANSLATE-MACEXPR-ACTUAL FORM FILEPOS))
+	       (*in-macsyma-indexer*
+		(outex-hook-exp form))
+	       (T
+		(LET ((R (ERRSET (MEVAL* FORM))))
+		  (COND ((NULL R)
+			 (LET ((^W NIL))
+			   (MERROR "~%This form caused an MAXIMA-ERROR in evaluation:~
+				       ~%~:M" FORM)))))))))
 
 
 ;(DEFMFUN $BATCHLOAD (FILENAME &aux)
@@ -577,10 +567,10 @@
 
 
 
-#+nil
-(defun $mkey (keyword)
-    "takes a macsyma symbol and makes a keyword of it"
-  (intern (string-left-trim "$" (string-upcase (string keyword))) 'keyword))
+;#+nil
+;(defun $mkey (keyword)
+;    "takes a macsyma symbol and makes a keyword of it"
+;  (intern (string-left-trim "$" (string-upcase (string keyword))) 'keyword))
 
 
 (defun quote-simple-equal (f g)
@@ -623,7 +613,7 @@
 
 #+cl
 (defun $file_type (fil &aux typ)
-  (setq fil ( pathname	      fil))
+  (setq fil (pathname fil))
   (setq typ (format nil "~(~A~)" (pathname-type fil)))
   (or 
    (and (> (length typ) 0)
@@ -634,29 +624,29 @@
    '$object))
        			
 
-#+NIL
-(DEFVAR *EDITOR-MODE-TO-MACSYMA-FILE-TYPE-TABLE*
-  '((:MACSYMA . $MACSYMA)
-    (:LISP . $LISP)
-    (:LSB . $LISP)))
+;#+NIL
+;(DEFVAR *EDITOR-MODE-TO-MACSYMA-FILE-TYPE-TABLE*
+;  '((:MACSYMA . $MACSYMA)
+;    (:LISP . $LISP)
+;    (:LSB . $LISP)))
 
-#+NIL
-(DEFVAR *PATHNAME-TYPE-TO-MACSYMA-FILE-TYPE-TABLE*
-  '(("LISP" . $LISP)
-    ("MC" . $MACSYMA)	;In case the pathname code doesn't know this inversion
-    ("MACSYMA" . $MACSYMA)
-    ("VASL" . $FASL)))
+;#+NIL
+;(DEFVAR *PATHNAME-TYPE-TO-MACSYMA-FILE-TYPE-TABLE*
+;  '(("LISP" . $LISP)
+;    ("MC" . $MACSYMA)	;In case the pathname code doesn't know this inversion
+;    ("MACSYMA" . $MACSYMA)
+;    ("VASL" . $FASL)))
 
-#+NIL
-(DEFMFUN $FILE_TYPE (FILENAME &AUX TEM DISEMBODIED)
-  (SETQ FILENAME ($FILENAME_MERGE FILENAME))
-  (COND ((NULL (SETQ DISEMBODIED (SEND (PATHNAME FILENAME) :FILE-PLIST))) NIL)
-	((GET DISEMBODIED :VASLP) '$FASL)
-	((CDR (ASSQ (GET DISEMBODIED :MODE)
-		    *EDITOR-MODE-TO-MACSYMA-FILE-TYPE-TABLE*)))
-	((CDR (SYS:ASSOC (SEND (CAR DISEMBODIED) :TYPE)
-			 *PATHNAME-TYPE-TO-MACSYMA-FILE-TYPE-TABLE*
-			 :TEST #'STRING-EQUAL)))))
+;#+NIL
+;(DEFMFUN $FILE_TYPE (FILENAME &AUX TEM DISEMBODIED)
+;  (SETQ FILENAME ($FILENAME_MERGE FILENAME))
+;  (COND ((NULL (SETQ DISEMBODIED (SEND (PATHNAME FILENAME) :FILE-PLIST))) NIL)
+;	((GET DISEMBODIED :VASLP) '$FASL)
+;	((CDR (ASSQ (GET DISEMBODIED :MODE)
+;		    *EDITOR-MODE-TO-MACSYMA-FILE-TYPE-TABLE*)))
+;	((CDR (SYS:ASSOC (SEND (CAR DISEMBODIED) :TYPE)
+;			 *PATHNAME-TYPE-TO-MACSYMA-FILE-TYPE-TABLE*
+;			 :TEST #'STRING-EQUAL)))))
 
 #-cl
 (DEFMVAR $FILE_SEARCH
@@ -698,9 +688,10 @@
 				   ">**")))))))
 
 (defvar *macsyma-startup-queue* nil)
+
 ;(push '(initialize-$file_search) *macsyma-startup-queue*)
 
-(eval-when (compile) (proclaim '(special *mread-prompt*)))
+(declaim (special *mread-prompt*))
 
 
 ;; Done for debuggings sake.
@@ -714,7 +705,6 @@
 	 (char= #\& (getcharn x 1)))
 	('else
 	 nil)))
-
 
 ;;;; batch & demo search hacks
 
@@ -777,7 +767,7 @@
 	 (setq error-log
 	       (if (streamp *collect-errors*) *collect-errors*
 		 (open (alter-pathname filename :type "ERR")
-		       :direction :output)))
+		       :direction :output :if-exists :overwrite)))
 	 (format t "~%Error log on ~a" error-log)
 	 (format error-log "~%/*    MAXIMA-ERROR log for testing of ~A" filename)
 	 (format error-log "*/~2%")))
@@ -965,52 +955,52 @@
   
 (defvar *testsuite-files* nil)
 
+(defvar *maxima-testsdir*)
+
 (defun $run_testsuite (&optional (show-known-bugs nil) (show-all nil)) 
   (let ((test-file)
 	(expected-failures))
-  (setq *collect-errors* nil)
-  (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp"))
-;  (load "testsuite")
-  (let ((error-break-file)
-	(testresult))
-    (time 
-     (sloop with errs = '() for testentry in *testsuite-files*
-	    do
-	    (if (atom testentry)
-		(progn
-		  (setf test-file testentry)
-		  (setf expected-failures nil))
-		(progn
-		  (setf test-file (first testentry))
-		  (setf expected-failures (rest testentry))))
+    (setq *collect-errors* nil)
+    (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp"))
+    (let ((error-break-file)
+	  (testresult))
+      (time 
+       (sloop with errs = '() for testentry in *testsuite-files*
+	      do
+	      (if (atom testentry)
+		  (progn
+		    (setf test-file testentry)
+		    (setf expected-failures nil))
+		  (progn
+		    (setf test-file (first testentry))
+		    (setf expected-failures (rest testentry))))
   
-	    (format t "~%Running tests in ~a: " test-file)
-	    (or (errset
-		 (progn
-		   (setq testresult 
-			 (rest (test-batch
-				(format nil "~a/~a" 
-					*maxima-testsdir* test-file)
-				expected-failures
-				:show-expected show-known-bugs
-				:show-all show-all)))
-		   (if testresult
-		       (setq errs (append errs (list testresult))))))
-		(progn
+	      (format t "~%Running tests in ~a: " test-file)
+	      (or (errset
+		   (progn
+		     (setq testresult 
+			   (rest (test-batch
+				  (format nil "~a/~a" 
+					  *maxima-testsdir* test-file)
+				  expected-failures
+				  :show-expected show-known-bugs
+				  :show-all show-all)))
+		     (if testresult
+			 (setq errs (append errs (list testresult))))))
+		  (progn
 
-		  (setq error-break-file (format nil "~a" test-file))
-		  (setq errs 
-			(append errs 
-				(list (list error-break-file "error break"))))
-		  (format t "~%Caused an error break: ~a~%" test-file)))
-	    finally (cond ((null errs) 
-			   (format t "~%~%No unexpected errors found.~%"))
-			  (t (format t "~%Error summary:~%")
-			     (mapcar
-			      #'(lambda (x)
-				  (let ((s (if (> (length (rest x)) 1) "s" "")))
-				    (format 
-				     t "Error~a found in ~a, problem~a: ~a~%"
-				     s (first x) s (sort (rest x) #'<))))
-			      errs)))))
-    )))
+		    (setq error-break-file (format nil "~a" test-file))
+		    (setq errs 
+			  (append errs 
+				  (list (list error-break-file "error break"))))
+		    (format t "~%Caused an error break: ~a~%" test-file)))
+	      finally (cond ((null errs) 
+			     (format t "~%~%No unexpected errors found.~%"))
+			    (t (format t "~%Error summary:~%")
+			       (mapcar
+				#'(lambda (x)
+				    (let ((s (if (> (length (rest x)) 1) "s" "")))
+				      (format 
+				       t "Error~a found in ~a, problem~a: ~a~%"
+				       s (first x) s (sort (rest x) #'<))))
+				errs))))))))

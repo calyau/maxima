@@ -222,7 +222,7 @@
 				0
 				0)
 	       (declare (ignore v-zr v-zi v-fnu v-kode v-n
-				v-cyr v-cyi))
+				v-cyr v-cyi v-nz))
 
 	       ;; We should check for errors here based on the
 	       ;; value of v-ierr.
@@ -275,7 +275,7 @@
 				0
 				0)
 	       (declare (ignore v-zr v-zi v-fnu v-kode v-n
-				v-cyr v-cyi))
+				v-cyr v-cyi v-nz))
 
 	       ;; We should check for errors here based on the
 	       ;; value of v-ierr.
@@ -475,8 +475,7 @@
 			     (fillarray (nsymbol-array '$besselarray) jvals)
 			     (aref jvals n))
 			    (t
-			     (let* ((j ($bessel (- arg) order))
-				    (s1 (cis (- (* order pi))))
+			     (let* ((s1 (cis (- (* order pi))))
 				    (s2 (* #c(0 2) (cos (* order pi)))))
 			       (slatec:dbesy (- (float arg)) alpha (1+ n) jvals)
 			       (narray $yarray $complete n)
@@ -515,7 +514,7 @@
 				cwrki
 				0)
 	       (declare (ignore v-zr v-zi v-fnu v-kode v-n
-				v-cyr v-cyi v-cwrkr v-cwrki))
+				v-cyr v-cyi v-cwrkr v-cwrki v-nz))
 
 	       ;; We should check for errors here based on the
 	       ;; value of v-ierr.

@@ -9,10 +9,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package "MAXIMA")
+
 (macsyma-module float)
 
 ;; EXPERIMENTAL BIGFLOAT PACKAGE VERSION 2- USING BINARY MANTISSA 
-;; AND POWER-OF-2 EXPONENT.  EXPONENTS MAY BE BIG NUMBERS NOW (AUG. 1975 --RJF)
+;; AND POWER-OF-2 EXPONENT.
+;; EXPONENTS MAY BE BIG NUMBERS NOW (AUG. 1975 --RJF)
 ;; Modified:	July 1979 by CWH to run on the Lisp Machine and to comment
 ;;              the code.
 ;;		August 1980 by CWH to run on Multics and to install
@@ -25,45 +27,46 @@
 ;; and compile time.  These variables should probably be set up in a prelude
 ;; file so they can be accessible to all Macsyma files.
 
-#+nil
-#.(SETQ MACHINE-FIXNUM-PRECISION
-	#+(OR PDP10 H6180)   36.
-	#+cl (integer-length most-positive-fixnum)
-	;#+LISPM		     24.
-	#+NIL		     30.
-	#+Franz		     32.
+;#+nil
+;#.(SETQ MACHINE-FIXNUM-PRECISION
+;	#+(OR PDP10 H6180)   36.
+;	#+cl (integer-length most-positive-fixnum)
+;	;#+LISPM		     24.
+;	#+NIL		     30.
+;	#+Franz		     32.
 
-#|
-	MACHINE-MANTISSA-PRECISION
-	#+(OR PDP10 H6180)   27.
-	#+cl(integer-length (integer-decode-float most-positive-double-float))
-	;#+LISPM		     32.
-	#+(OR NIL Franz)     56.	;double-float.  Long would be 113.
-|#
-	;; Not used anymore, but keep it around anyway in case
-	;; we need it later.
+;#|
+;	MACHINE-MANTISSA-PRECISION
+;	#+(OR PDP10 H6180)   27.
+;	#+cl(integer-length (integer-decode-float most-positive-double-float))
+;	;#+LISPM		     32.
+;	#+(OR NIL Franz)     56.	;double-float.  Long would be 113.
+;|#
+;	;; Not used anymore, but keep it around anyway in case
+;	;; we need it later.
 
-	MACHINE-EXPONENT-PRECISION
-	#+(OR PDP10 H6180)    8.
-	#+cl
-	(integer-length
-	 (multiple-value-bind (a b)
-	     (integer-decode-float most-positive-double-float)
-	   b))
-	;#+LISPM		     11.
-	#+(OR NIL Franz)      8.	;Double float.  Long would be 15.
-	)
+;	MACHINE-EXPONENT-PRECISION
+;	#+(OR PDP10 H6180)    8.
+;	#+cl
+;	(integer-length
+;	 (multiple-value-bind (a b)
+;	     (integer-decode-float most-positive-double-float)
+;	   b))
+;	;#+LISPM		     11.
+;	#+(OR NIL Franz)      8.	;Double float.  Long would be 15.
+;	)
 
-(eval-when (compile load eval)
-(defconstant +machine-fixnum-precision+
-  (integer-length most-positive-fixnum))
+(eval-when
+    #+gcl (compile load eval)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (defconstant +machine-fixnum-precision+
+      (integer-length most-positive-fixnum)))
 
 ;; Hmm, this doesn't seem to be used anywhere, but we leave here anyway. 
-(defconstant +machine-exponent-precision+
-  (integer-length (multiple-value-bind (a b)
-		      (integer-decode-float most-positive-double-float)
-		    b)))
-)
+;(defconstant +machine-exponent-precision+
+;  (integer-length (multiple-value-bind (a b)
+;		      (integer-decode-float most-positive-double-float)
+;		    b)))
 ;; External variables
 
 (DEFMVAR $FLOAT2BF NIL
@@ -106,7 +109,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; FPPREC = ($FPPREC+1)*(Log base 2 of 10)
 
 (DEFVAR FPPREC)
-(declare-top (FIXNUM FPPREC))
+
+;(declare-top (FIXNUM FPPREC))
 
 ;; FPROUND uses this to return a second value, i.e. it sets it before
 ;; returning.  This number represents the number of binary digits its input
@@ -115,7 +119,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; aligning 7 would mean shifting FPPREC-3 places left.
 
 (DEFVAR *M)
-(declare-top (FIXNUM *M))
+
+;(declare-top (FIXNUM *M))
 
 ;; *DECFP = T if the computation is being done in decimal radix.  NIL implies
 ;; base 2.  Decimal radix is used only during output.
@@ -126,12 +131,12 @@ One extra decimal digit in actual representation for rounding purposes.")
 (DEFVAR MAX-BFLOAT-%E  BIGFLOAT%E)
 
 (declare-top (SPECIAL *CANCELLED $FLOAT $BFLOAT $RATPRINT $RATEPSILON
-		  $DOMAIN $M1PBRANCH ADJUST)
+		  $DOMAIN $M1PBRANCH ADJUST))
 	 ;; *** Local fixnum declarations ***
 	 ;; *** Be careful of this brain-damage ***
-	 (FIXNUM I N EXTRADIGS)
-	 (*EXPR $BFLOAT $FLOAT)
-	 (MUZZLED T)) 
+;	 (FIXNUM I N EXTRADIGS)
+;	 (*EXPR $BFLOAT $FLOAT)
+;	 (MUZZLED T)) 
 
 ;; Representation of a Bigfloat:  ((BIGFLOAT SIMP precision) mantissa exponent)
 ;; precision -- number of bits of precision in the mantissa.  
@@ -141,7 +146,10 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; exponent -- a signed integer representing the scale of the number.
 ;; 	       The actual number represented is (f* fraction (^ 2 exponent)).
 
-(DEFUN HIPART (X NN) (COND ((BIGP NN) (ABS X)) (T (HAIPART X NN))))
+(DEFUN HIPART (X NN)
+  (if (BIGP NN)
+      (ABS X)
+      (HAIPART X NN)))
 
 (DEFUN FPPREC1 (ASSIGN-VAR Q) 
       ASSIGN-VAR ; ignored
@@ -173,7 +181,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 			     (CONS '(MTIMES) (LIST TEMP (LIST '(MEXPT) 10. EXP))))
 			    (T (MUL2 TEMP (POWER 10. EXP))))))))
 
-(DEFUN DIM-BIGFLOAT (FORM RESULT) (DIMENSION-ATOM (MAKNAM (FPFORMAT FORM)) RESULT))
+(DEFUN DIM-BIGFLOAT (FORM RESULT)
+  (DIMENSION-ATOM (MAKNAM (FPFORMAT FORM)) RESULT))
 
 (DEFUN FPFORMAT (L)
  (IF (NOT (MEMQ 'SIMP (CDAR L)))
@@ -226,7 +235,6 @@ One extra decimal digit in actual representation for rounding purposes.")
 	   (NCONS 'B)
 	   (EXPLODEC (SUB1 (CADR L))))))))
 
-
 (DEFUN BIGFLOATP (X) 
  (PROG NIL
        (COND ((NOT ($BFLOATP X)) (RETURN NIL))
@@ -308,13 +316,13 @@ One extra decimal digit in actual representation for rounding purposes.")
     (IF PRECISION
 	(CAR PRECISION)
 	(MERROR "Floating point overflow in converting ~:M to flonum" L))))
-
+
 ;; New machine-independent version of FIXFLOAT.  This may be buggy. - CWH
 ;; It is buggy!  On the PDP10 it dies on (RATIONALIZE -1.16066076E-7) 
 ;; which calls FLOAT on some rather big numbers.  ($RATEPSILON is approx. 
 ;; 7.45E-9) - JPG
 
-#-PDP10 (DEFUN FIXFLOAT (X)
+(DEFUN FIXFLOAT (X)
   (LET (($RATEPSILON #.(EXPT 2.0 (f- MACHINE-MANTISSA-PRECISION))))
        (MAXIMA-RATIONALIZE X)))
 
@@ -339,22 +347,22 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;   (fsc (lsh -1 -1) 0).
 
 ;; Old definition which explicitly hacks floating point representations.
-#+PDP10 (PROGN 'COMPILE
-  (DECLARE (CLOSED T))
-  (DEFUN FIXFLOAT (X) 
- 	(PROG (NEG NUM EXPONENT DENOM) 
- 	      (COND ((LESSP X 0.0) (SETQ NEG -1.) (SETQ X (MINUS X))))
- 	      (SETQ X (LSH X 0))
- 	      (SETQ EXPONENT (DIFFERENCE (LSH X -27.) 129.))
- 	      (SETQ NUM (LSH (LSH X 9.) -9.))
- 	      (SETQ DENOM #. (f* 1 (^ 2 26.)))		;(^ 2 26)
- 	      (COND ((LESSP EXPONENT 0)
- 		     (SETQ DENOM (TIMES DENOM (EXPT 2 (MINUS EXPONENT)))))
- 		    (T (SETQ NUM (TIMES NUM (EXPT 2 EXPONENT)))))
- 	      (IF NEG (SETQ NUM (MINUS NUM)))
- 	      (RETURN (CONS NUM DENOM)))) 
-  (DECLARE (CLOSED NIL))
- )
+;#+PDP10 (PROGN 'COMPILE
+;  (DECLARE (CLOSED T))
+;  (DEFUN FIXFLOAT (X) 
+; 	(PROG (NEG NUM EXPONENT DENOM) 
+; 	      (COND ((LESSP X 0.0) (SETQ NEG -1.) (SETQ X (MINUS X))))
+; 	      (SETQ X (LSH X 0))
+; 	      (SETQ EXPONENT (DIFFERENCE (LSH X -27.) 129.))
+; 	      (SETQ NUM (LSH (LSH X 9.) -9.))
+; 	      (SETQ DENOM #. (f* 1 (^ 2 26.)))		;(^ 2 26)
+; 	      (COND ((LESSP EXPONENT 0)
+; 		     (SETQ DENOM (TIMES DENOM (EXPT 2 (MINUS EXPONENT)))))
+; 		    (T (SETQ NUM (TIMES NUM (EXPT 2 EXPONENT)))))
+; 	      (IF NEG (SETQ NUM (MINUS NUM)))
+; 	      (RETURN (CONS NUM DENOM)))) 
+;  (DECLARE (CLOSED NIL))
+; )
 
 ;; Format of a floating point number on the Lisp Machine:
 ;; 
@@ -418,7 +426,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; 	     (IF NEG (SETQ NUM (MINUS NUM)))
 ;; 	     (RETURN (CONS NUM DENOM)))) 
 
-(DEFUN BCONS (S) `((BIGFLOAT SIMP ,FPPREC) . ,S)) 
+(DEFUN BCONS (S)
+  `((BIGFLOAT SIMP ,FPPREC) . ,S)) 
 
 (DEFMFUN $BFLOAT (X) 
   (LET (Y)
@@ -453,7 +462,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 		     (T ($BFLOAT (EXPONENTIALIZE (CAAR X) Y))))
 	       (SUBST0 (LIST (NCONS (CAAR X)) Y) X)))
 	  (T (RECUR-APPLY #'$BFLOAT X))))) 
-
+
 (DEFPROP MPLUS ADDBIGFLOAT FLOATPROG)
 (DEFPROP MTIMES TIMESBIGFLOAT FLOATPROG)
 (DEFPROP %SIN SINBIGFLOAT FLOATPROG)
@@ -475,7 +484,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 			   ((EQUAL FANS TST) NFANS)
 			   (T (SIMPLIFY (LIST '(MPLUS) FANS NFANS))))))) 
 
-(DEFMFUN RATBIGFLOAT (L) (BCONS (FPQUOTIENT (CDAR L) (CDADR L)))) 
+(DEFMFUN RATBIGFLOAT (L)
+  (BCONS (FPQUOTIENT (CDAR L) (CDADR L)))) 
 
 (DEFUN DECIMALSIN (X) 
  (DO ((I (QUOTIENT (TIMES 59. X) 196.)	;log[10](2)=.301029
@@ -545,7 +555,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	     ((EQ L '$%PI) (FPPI))
 	     ((EQ L '$%E) (FPE))
 	     (T (LIST (FPROUND L) (PLUS *M FPPREC))))) 
-
+
 ;; It seems to me that this function gets called on an integer
 ;; and returns the mantissa portion of the mantissa/exponent pair.
 
@@ -645,7 +655,7 @@ One extra decimal digit in actual representation for rounding purposes.")
    ((< N #.(f1- +machine-fixnum-precision+)) (TIMES X (LSH 1 N)))
    (T (TIMES X (EXPT 2 N)))))
 
-
+
 (DEFUN FPEXP (X)       
   (PROG (R S)
 	(IF (NOT (SIGNP GE (CAR X)))
@@ -714,7 +724,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	     ((< FPPREC (CADDAR MAX-BFLOAT-%PI))
 	      (CDR (SETQ BIGFLOAT%PI (BIGFLOATP MAX-BFLOAT-%PI))))
 	     (T (CDR (SETQ MAX-BFLOAT-%PI (SETQ BIGFLOAT%PI (FPPI1)))))))
-
+
 (DEFUN FPONE NIL 
        (COND (*DECFP (INTOFP 1)) ((= FPPREC (CADDAR BIGFLOATONE)) (CDR BIGFLOATONE))
 	     (T (INTOFP 1)))) 
@@ -807,8 +817,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 			  (SETQ P (FPTIMES* P P))
 			  (COND ((ODDP II) (SETQ U (FPTIMES* U P)))))
 		      (RETURN U))))) 
-
-(declare-top (NOTYPE N))
+
+;(declare-top (NOTYPE N))
 
 (DEFUN EXPTBIGFLOAT (P N) 
   (COND ((EQUAL N 1) P)
@@ -871,7 +881,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	  ((or (equal bk '(0 0))
 	       (greaterp (difference (cadr x) (cadr bk)) ofprec)) (setq a x))))
  (list (fpround (car a)) (plus -2 *m (cadr a))))
-
+
 (DEFUN TIMESBIGFLOAT (H) 
   (PROG (FANS TST R NFANS) 
 	(SETQ FANS (SETQ TST (BCONS (FPONE))) NFANS 1)
@@ -915,8 +925,9 @@ One extra decimal digit in actual representation for rounding purposes.")
 	   (EQ (CADDR (CADDR E)) '$%I)
 	   (< (CADDR (CADR (CADDR E))) (f+ (f- FPPREC) 2)))
       (CADR E)
-      E))
-(declare-top (FIXNUM N))
+      E))
+
+;(declare-top (FIXNUM N))
 
 (DEFUN SINBIGFLOAT (X) (*FPSIN (CAR X) T)) 
 
@@ -933,7 +944,9 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; PRECISION SEEMS TO BE 100% SATSIFACTORY FOR LARGE ARGUMENTS, E.G.
 ;; SIN(31415926.0B0), BUT LESS SO FOR SIN(3.1415926B0).  EXPLANATION
 ;; NOT KNOWN.  (9/12/75  RJF)
+
 (declare-top (SPECIAL *FPSINCHECK))
+
 (SETQ *FPSINCHECK NIL)
 
 (DEFUN FPSIN (X FL) 
@@ -1029,7 +1042,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	  (SETQ A (BCONS A))))
    (COND (MINUS (ADD A (MUL '$%I ($BFLOAT '$%PI)))) (T A)))
   NIL)) 
-
+
 ;;; Computes the log of a bigfloat number.
 ;;;
 ;;; Uses the series
@@ -1097,15 +1110,16 @@ One extra decimal digit in actual representation for rounding purposes.")
 	     (return (fpplus ANS (fptimes* two sum)))))
 
 (DEFUN MABSBIGFLOAT (L) 
-       (PROG (R) 
-	     (SETQ R (BIGFLOATP (CAR L)))
-	     (RETURN (COND ((NULL R) (LIST '(MABS) (CAR L)))
-			   (T (BCONS (FPABS (CDR R)))))))) 
+  (PROG (R) 
+     (SETQ R (BIGFLOATP (CAR L)))
+     (RETURN (COND ((NULL R) (LIST '(MABS) (CAR L)))
+		   (T (BCONS (FPABS (CDR R)))))))) 
 
-#-NIL
-(eval-when (load)
-(FPPREC1 NIL $FPPREC)  ; Set up user's precision
-)
+(eval-when
+    #+gcl (load)
+    #-gcl (:load-toplevel)
+  (FPPREC1 NIL $FPPREC))  ; Set up user's precision
 
+  
 ; Undeclarations for the file:
-(declare-top (NOTYPE I N EXTRADIGS))
+;(declare-top (NOTYPE I N EXTRADIGS))

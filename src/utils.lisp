@@ -19,7 +19,25 @@
 ;;;
 ;;; Every function in this file is known about externally.
 
-
+(defun maxima-getenv (envvar)
+  #+gcl     (si::getenv envvar)
+  #+allegro (system:getenv envvar)
+  #+cmu     (cdr (assoc envvar ext:*environment-list* :test #'string=))
+  #+sbcl    (sb-ext:posix-getenv envvar)
+  #+clisp   (ext:getenv envvar)
+  #+mcl     (ccl::getenv envvar)
+  )
+
+;; CMUCL needs because when maxima reaches EOF, it calls BYE, not $QUIT.
+
+(defun bye ()
+  #+(or cmu clisp) (ext:quit)
+  #+sbcl           (sb-ext:quit)
+  #+allegro        (excl:exit)
+  #+mcl            (ccl:quit)
+  #+gcl            (quit)
+  )
+
 
 ;;; N.B. this function is different than the lisp machine
 ;;; and maclisp standard one. (for now).
@@ -109,11 +127,11 @@
 ;;;	   differently, bad things will happen. Make SURE it gets a 
 ;;;	   non-negative arg! -kmp
 
-#+(OR PDP10 Franz)
-(DEFMFUN FIRSTN (N L)
-  (SLOOP FOR I FROM 1 TO N
-	FOR X IN L
-	COLLECT X))
+;#+(OR PDP10 Franz)
+;(DEFMFUN FIRSTN (N L)
+;  (SLOOP FOR I FROM 1 TO N
+;	FOR X IN L
+;	COLLECT X))
 
 ;;; Reverse ASSQ -- like ASSQ but tries to find an element of the alist whose
 ;;; cdr (not car) is EQ to the object.  To be renamed to RASSQ in the near
@@ -129,16 +147,16 @@
 ;;; Tries to emulate Lispm/NIL FSET.  Won't work for LSUBRS, FEXPRS, or
 ;;; FSUBRS.
 
-#+PDP10
-(DEFMFUN FSET (SYMBOL DEFINITION)
-  (COND ((SYMBOLP DEFINITION)
-	 (PUTPROP SYMBOL DEFINITION 'EXPR))
-	((EQ (ml-typep DEFINITION) 'RANDOM)
-	 (PUTPROP SYMBOL DEFINITION 'SUBR))
-	((consp DEFINITION)
-	 (PUTPROP SYMBOL DEFINITION 'EXPR))
-	(T (MAXIMA-ERROR "Invalid symbol definition - FSET"
-		  DEFINITION 'WRNG-TYPE-ARG))))
+;#+PDP10
+;(DEFMFUN FSET (SYMBOL DEFINITION)
+;  (COND ((SYMBOLP DEFINITION)
+;	 (PUTPROP SYMBOL DEFINITION 'EXPR))
+;	((EQ (ml-typep DEFINITION) 'RANDOM)
+;	 (PUTPROP SYMBOL DEFINITION 'SUBR))
+;	((consp DEFINITION)
+;	 (PUTPROP SYMBOL DEFINITION 'EXPR))
+;	(T (MAXIMA-ERROR "Invalid symbol definition - FSET"
+;		  DEFINITION 'WRNG-TYPE-ARG))))
 
 ;;; Takes a list in "alist" form and converts it to one in
 ;;; "property list" form, i.e. ((A . B) (C . D)) --> (A B C D).
@@ -148,7 +166,6 @@
   (COND ((NULL L) NIL)
 	(T (LIST* (CAAR L) (CDAR L) (DOT2L (CDR L))))))
 
-
 ;;; (A-ATOM sym selector value   )
 ;;; (C-PUT  sym value    selector)
 ;;;
@@ -169,31 +186,31 @@
 
 ;;; This is like the function SYMBOLCONC except that it binds base and *nopoint
 
-#-Franz (progn 'compile
-#-NIL
-(DEFMFUN CONCAT N
- (LET ((*print-base* 10.) #-cl (*NOPOINT T)) (IMPLODE (MAPCAN 'EXPLODEN (LISTIFY N)))))
-#+NIL
+(progn 'compile
+       (DEFMFUN CONCAT N
+	 (LET ((*print-base* 10.))
+	   (IMPLODE (MAPCAN 'EXPLODEN (LISTIFY N))))))
+
+;#+NIL
 ;In NIL, symbolconc does indeed effectively bind the base and *nopoint.
 ; This definition may not work if more generality is needed (flonums?
 ; random Lisp object?)
-(deff concat
-  #'symbolconc)
-) ;#-franz
-
-#-cl
-(progn 'compile
-(DECLARE (SPECIAL ALPHABET)) ; This should be DEFVAR'd somewhere.  Sigh. -kmp
-						;It is DEFVAR'd in Nparse-wfs
-(DEFMFUN ALPHABETP (N)
- (DECLARE (FIXNUM N))
- (OR (AND (>= N #\A) (<= N #\Z))  ; upper case
-     (AND (>= N #\a) (<= N #\z))  ; lower case
-     (zl-MEMBER N ALPHABET)))	  ; test for %, _, or other declared
-				  ;    alphabetic characters.
+;(deff concat
+;    #'symbolconc)
 
-(DEFMFUN ASCII-NUMBERP (NUM)
-  (DECLARE (FIXNUM NUM))
-  (AND (<= NUM #\9) (>= NUM #\0)))
-)
+;#-cl
+;(progn 'compile
+;       (DECLARE (SPECIAL ALPHABET))	; This should be DEFVAR'd somewhere.
+;					; Sigh. -kmp
+;					; It is DEFVAR'd in Nparse-wfs
+;       (DEFMFUN ALPHABETP (N)
+;	 (DECLARE (FIXNUM N))
+;	 (OR (AND (>= N #\A) (<= N #\Z)) ; upper case
+;	     (AND (>= N #\a) (<= N #\z)) ; lower case
+;	     (zl-MEMBER N ALPHABET)))	; test for %, _, or other declared
+;					;    alphabetic characters.
+
+;       (DEFMFUN ASCII-NUMBERP (NUM)
+;	 (DECLARE (FIXNUM NUM))
+;	 (AND (<= NUM #\9) (>= NUM #\0))))
 

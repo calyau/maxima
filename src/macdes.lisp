@@ -12,6 +12,15 @@
 
 (defvar $manual_demo "manual.demo")
 
+(defvar *maxima-demodir*)
+
+(defun combine-path (list)
+  (let ((result (first list)))
+    (mapc #'(lambda (x) 
+		(setf result 
+		      (concatenate 'string result "/" x))) (rest list))
+    result))
+
 (defmspec $example (l)   (setq l (cdr l))
   (block
    $example

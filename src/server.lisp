@@ -9,9 +9,13 @@
   (require 'sb-posix)
   (require 'sb-bsd-sockets))
 
+
+(defvar $In_Netmath nil)
+(defvar $show_openplot t)
+(defvar *socket-connection*)
+
 (defun setup-server (port &optional (host "localhost"))
   (let* ((sock (open-socket host port)))
-    (setq me sock)
     #+gcl (setq si::*sigpipe-action* 'si::bye)
     (setq *socket-connection* sock)
     (setq *standard-input* sock)

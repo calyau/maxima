@@ -13,6 +13,9 @@
    `(lisp::float (meval* ,x) 1.d0))
   )
 
+
+(defvar *maxima-plotdir* "")
+
 (defvar *z-range* nil)
 (defvar *original-points* nil)
 (defvar $axes_length 4.0)
@@ -66,6 +69,21 @@
 			((mlist) $gnuplot_ps_term_command
 			  "set size 1.5, 1.5;set term postscript eps enhanced color solid 24")
 			))
+
+(defvar $viewps_command  "(ghostview  ~a)")
+
+;(defvar $viewps_command  "(gs -I. -Q  ~a)")
+
+;(defvar  $viewps_command "echo /def /show {pop} def |  cat - ~a | x11ps")
+
+;; If your gs has custom features for understanding mouse clicks
+
+
+;;Your gs will loop for ever if you don't have showpage at the end of it!!
+;(defvar $viewps_command   "echo '/showpage { .copypage readmouseclick /ke exch def ke 1 eq { erasepage initgraphics} {ke 5 ne {quit} if} ifelse} def  {(~a) run } loop' | gs  -title 'Maxima  (click left to exit,middle to redraw)' > /dev/null 2>/dev/null &")
+
+;; allow this to be set in a system init file (sys-init.lsp)
+
 
 (defun $get_plot_option (name &optional n)
   (sloop for v in (cdr $plot_options)
@@ -692,65 +710,65 @@ setrgbcolor} def
 ;; arrange so that the list of points x0,y0,x1,y1,.. on the curve
 ;; never have abs(y1-y0 ) and (x1-x0) <= deltax
 
-#+nil
-(defun draw2d (f range )
-  (if (and ($listp f) (equal '$parametric (cadr f)))
-      (return-from draw2d (draw2d-parametric f range)))
-  (let* ((nticks (nth 2($get_plot_option '$nticks)))
-	 (yrange ($get_plot_option '|$y|))
-	 ($numer t)
-	 )
+;#+nil
+;(defun draw2d (f range )
+;  (if (and ($listp f) (equal '$parametric (cadr f)))
+;      (return-from draw2d (draw2d-parametric f range)))
+;  (let* ((nticks (nth 2($get_plot_option '$nticks)))
+;	 (yrange ($get_plot_option '|$y|))
+;	 ($numer t)
+;	 )
 
-    (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
+;    (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
 
-    (let* ((x (coerce-float (nth 2 range)))
-	   (xend (coerce-float (nth 3 range)))
-	   (ymin (coerce-float (nth 2 yrange)))
-	   (ymax (coerce-float (nth 3 yrange)))
-	   (eps ($/ (- xend x) (coerce-float nticks)))
-	   (x1 0.0)
-	   (y1 0.0)
-	   (y (funcall f x))
-	   (dy 0.0)
-	   (epsy ($/ (- ymax ymin) 1.0))
-	   (eps2 (* eps eps))
-	   in-range last-ok
-	   )
-      (declare (double-float x1 y1 x y dy eps2 eps ymin ymax ))
-					;(print (list 'ymin ymin 'ymax ymax epsy))
-      (setq x ($- x eps))  
-      (cons '(mlist)
-	    (sloop   do
-		     (setq x1 ($+ eps x))
-		     (setq y1 (funcall f x1))
-		     (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
-		     (cond (in-range
-			    (setq dy (- y1 y))
-			    (cond ((< dy 0) (setq dy (- dy))))
-			    (cond ((> dy eps)
-				   (setq x1 (+ x (/ eps2 dy)))
-				   (setq y1 (funcall f x1))
-				   (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
-				   (or in-range (setq x1 (+ eps x)))
-				   )
-				  ))
-			   )
-		     (setq x x1)
-		     (setq y y1)
-		     when (or (and (not last-ok)
-				   (not in-range))
-			      (> dy epsy))
+;    (let* ((x (coerce-float (nth 2 range)))
+;	   (xend (coerce-float (nth 3 range)))
+;	   (ymin (coerce-float (nth 2 yrange)))
+;	   (ymax (coerce-float (nth 3 yrange)))
+;	   (eps ($/ (- xend x) (coerce-float nticks)))
+;	   (x1 0.0)
+;	   (y1 0.0)
+;	   (y (funcall f x))
+;	   (dy 0.0)
+;	   (epsy ($/ (- ymax ymin) 1.0))
+;	   (eps2 (* eps eps))
+;	   in-range last-ok
+;	   )
+;      (declare (double-float x1 y1 x y dy eps2 eps ymin ymax ))
+;					;(print (list 'ymin ymin 'ymax ymax epsy))
+;      (setq x ($- x eps))  
+;      (cons '(mlist)
+;	    (sloop   do
+;		     (setq x1 ($+ eps x))
+;		     (setq y1 (funcall f x1))
+;		     (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
+;		     (cond (in-range
+;			    (setq dy (- y1 y))
+;			    (cond ((< dy 0) (setq dy (- dy))))
+;			    (cond ((> dy eps)
+;				   (setq x1 (+ x (/ eps2 dy)))
+;				   (setq y1 (funcall f x1))
+;				   (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
+;				   (or in-range (setq x1 (+ eps x)))
+;				   )
+;				  ))
+;			   )
+;		     (setq x x1)
+;		     (setq y y1)
+;		     when (or (and (not last-ok)
+;				   (not in-range))
+;			      (> dy epsy))
 
-		     collect 'moveto and collect 'moveto
-		     do
-		     (setq last-ok in-range)
-		     collect x1 
-		     collect (if in-range y1 (if (> y1 ymax) ymax ymin))
-		     when (>= x xend)
-		     collect xend and
-		     collect (let ((tem (funcall f xend)))
-			       (if (>= tem ymax) ymax (if (<= tem ymin) ymin tem)))
-		     and do (sloop::loop-finish))))))
+;		     collect 'moveto and collect 'moveto
+;		     do
+;		     (setq last-ok in-range)
+;		     collect x1 
+;		     collect (if in-range y1 (if (> y1 ymax) ymax ymin))
+;		     when (>= x xend)
+;		     collect xend and
+;		     collect (let ((tem (funcall f xend)))
+;			       (if (>= tem ymax) ymax (if (<= tem ymin) ymin tem)))
+;		     and do (sloop::loop-finish))))))
 
 ;;; Adaptive plotting, based on the adaptive plotting code from
 ;;; YACAS. See http://yacas.sourceforge.net/Algo.html#c3s1 for a
@@ -848,10 +866,10 @@ setrgbcolor} def
 	   (ymin (coerce-float (nth 2 yrange)))
 	   (ymax (coerce-float (nth 3 yrange)))
 	   ;; What is a good EPS value for adaptive plotting?
-	   (eps 1d-5)
+	   ;(eps 1d-5)
 	   x-samples y-samples result
 	   )
-      (declare (double-float eps ymin ymax))
+      (declare (double-float ymin ymax))
       ;; Divide the region into NTICKS regions.  Each region has a
       ;; start, mid and endpoint. Then adaptively plot over each of
       ;; these regions.  So it's probably a good idea not to make
@@ -961,27 +979,36 @@ setrgbcolor} def
 ;; See: http://cl-cookbook.sourceforge.net/dates_and_times.html
 
 (defun do-ps-created-date (my-stream)
-  (defconstant *day-names* '("Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun"))
-  (multiple-value-bind 
-    (second minute hour date month year day-of-week dst-p tz)
-    (get-decoded-time)
-    (format my-stream "%%CreatedDate: ~2,'0d:~2,'0d:~2,'0d ~a, ~d/~2,'0d/~d (GMT~@d)~%"
-      hour minute second (nth day-of-week *day-names*) month date year (- tz))))
+  (let ((day-names #("Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun")))
+    (multiple-value-bind 
+          (second minute hour date month year day-of-week dst-p tz)
+        (get-decoded-time)
+      (declare (ignore dst-p))
+      (format my-stream "%%CreatedDate: ~2,'0d:~2,'0d:~2,'0d ~a, ~d/~2,'0d/~d (G
+
+MT~@d)~%"
+              hour minute second (aref day-names day-of-week) month date year (-
+
+ tz)))))
+
 
 (defun do-ps-trailer ()
   (p "showpage")
   (p "%%Trailer")
   (p "%%EOF"))
 
-(if (string= *autoconf-win32* "true")
-    (progn 
-      (defvar $gnuplot_command "wgnuplot")
-      (defvar $gnuplot_view_args "~a -")
-      (defvar $viewtext_command "type ~a"))
-    (progn 
-      (defvar $gnuplot_command "gnuplot")
-      (defvar $gnuplot_view_args "-persist ~a")
-      (defvar $viewtext_command "cat ~a")))
+
+(defvar $gnuplot_command (if (string= *autoconf-win32* "true")
+                             "wgnuplot"
+                             "gnuplot"))
+
+(defvar $gnuplot_view_args (if (string= *autoconf-win32* "true")
+                               "~a -"
+                               "-persist ~a"))
+
+(defvar $viewtext_command (if (string= *autoconf-win32* "true")
+                              "type ~a"
+                              "cat ~a"))
 
 (defvar $mgnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview maxout.geomview")
@@ -1130,10 +1157,10 @@ setrgbcolor} def
     )
   "")
 
-(defun maxima-bin-search (command)
-  (or ($file_search command
-		    `((mlist) , (maxima-path "bin" "###")))
-		 command))
+;(defun maxima-bin-search (command)
+;  (or ($file_search command
+;		    `((mlist) , (maxima-path "bin" "###")))
+;		 command))
     
 
 
@@ -1181,28 +1208,27 @@ setrgbcolor} def
     (format st "~%} ~%"))))
 
 
-(defvar $In_Netmath nil)
 (eval-when (load)
   (cond ($In_Netmath
      (setf (symbol-function '$plot2d) (symbol-function '$plot2dopen))
      (setf $show_openplot nil)
     )))
 
-(defun $sprint(&rest args )
-  (sloop for v in args do
-	 (cond ((symbolp v)
-		(setq v (string-left-trim '(#\$ #\&) (symbol-name v))))
-	       ((numberp v) v)
-	       (t (setq v (implode (strgrind v)))))
-	 (princ v)
-	 (princ " ")
-  )
-  (car args)
-  )
+;(defun $sprint(&rest args )
+;  (sloop for v in args do
+;	 (cond ((symbolp v)
+;		(setq v (string-left-trim '(#\$ #\&) (symbol-name v))))
+;	       ((numberp v) v)
+;	       (t (setq v (implode (strgrind v)))))
+;	 (princ v)
+;	 (princ " ")
+;  )
+;  (car args)
+;  )
 
-(defun $show_file(file)
-  (princ (file-to-string ($file_search file)))
-  '$done)
+;(defun $show_file(file)
+;  (princ (file-to-string ($file_search file)))
+;  '$done)
 
 
 (defun $tcl_output  (lis i &optional (skip 2))
@@ -1490,19 +1516,6 @@ setrgbcolor} def
 	   (t (setq lis (cddr lis)))))
   (or (eql n 0) (p "stroke")))
 
-(defvar $viewps_command  "(ghostview  ~a)")
-
-(defvar $viewps_command  "(gs -I. -Q  ~a)")
-
-(defvar  $viewps_command "echo /def /show {pop} def |  cat - ~a | x11ps")
-
-;; If your gs has custom features for understanding mouse clicks
-
-
-;;Your gs will loop for ever if you don't have showpage at the end of it!!
-(defvar $viewps_command   "echo '/showpage { .copypage readmouseclick /ke exch def ke 1 eq { erasepage initgraphics} {ke 5 ne {quit} if} ifelse} def  {(~a) run } loop' | gs  -title 'Maxima  (click left to exit,middle to redraw)' > /dev/null 2>/dev/null &")
-
-	;; allow this to be set in a system init file (sys-init.lsp)
 
 
 (defun $viewps ( &optional file)
@@ -1704,7 +1717,6 @@ setrgbcolor} def
 		   (setq j -1)))))
      )))
 
-(defvar $show_openplot t)
 (defun show-open-plot (ans)
   (cond ($show_openplot
 	 (with-open-file (st1 "maxout.openmath" :direction :output :if-exists :supersede)

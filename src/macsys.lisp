@@ -15,8 +15,8 @@
 (in-package "MAXIMA")
 (macsyma-module system)
 
-
-(eval-when (eval compile load) (sstatus feature maxii))
+;(eval-when (:execute :compile-toplevel :load-toplevel)
+;  (sstatus feature maxii))
 
 ;;; Standard Kinds of Input Prompts
 
@@ -37,7 +37,6 @@
   (declare (special $prompt))
   (STRIPDOLLAR $PROMPT))
 
-
 
 ;; there is absoletely no need to catch errors here, because
 ;; they are caught by the macsyma-listener window process on
@@ -61,10 +60,10 @@
 ;(defun get-internal-run-time ()  (* 1000 (send current-process :cpu-time)) )
 ;(defvar internal-time-units-per-second  1000000)
 
-#+lispm
-(defun used-area ( &optional (area working-storage-area ))
-  (multiple-value-bind (nil used)(si:room-get-area-length-used area)
-    used))
+;#+lispm
+;(defun used-area ( &optional (area working-storage-area ))
+;  (multiple-value-bind (nil used)(si:room-get-area-length-used area)
+;    used))
 
 #+cmu
 (defun used-area (&optional unused)
@@ -96,6 +95,7 @@
 
 (DEFUN CONTINUE (&OPTIONAL (input-stream *standard-input*)
 			   BATCH-OR-DEMO-FLAG)
+  (declare (special *SOCKET-CONNECTION*))
  (if (eql BATCH-OR-DEMO-FLAG :demo)
      (format t "~% At the _ prompt, type ';' followed by enter to get next demo"))
  (catch 'abort-demo
@@ -157,7 +157,7 @@
 	      (displa `((mlable) , c-tag , $__)))))
     (IF (EQ R EOF) (RETURN '$DONE))
     (fresh-line *standard-output*)
-    #+lispm (SEND *standard-output* :SEND-IF-HANDLES ':FORCE-OUTPUT)
+;    #+lispm (SEND *standard-output* :SEND-IF-HANDLES ':FORCE-OUTPUT)
     (SETQ $__ (CADDR R))
     (SET  C-TAG $__)
     (cond (batch-or-demo-flag
@@ -177,21 +177,20 @@
     (SET (setq D-TAG (makelabel $outchar)) $%)
     (SETQ $_ $__)
     (when $showtime
-	  #+NIL (format t "~&Evaluation took ~$ seconds (~$ elapsed)."
-		    time-used etime-used)
-	  #-(or NIL cl) (mtell "Evaluation took ~S seconds (~S elapsed)."
-			   time-used etime-used)
+;	  #+NIL (format t "~&Evaluation took ~$ seconds (~$ elapsed)."
+;		    time-used etime-used)
+;	  #-(or NIL cl) (mtell "Evaluation took ~S seconds (~S elapsed)."
+;			   time-used etime-used)
 	  (format t "~&Evaluation took ~$ seconds (~$ elapsed)"
        		    time-used etime-used )
-	  #+lispm (format t "using ~A words." (f-  area-after area-before))
+;	  #+lispm (format t "using ~A words." (f-  area-after area-before))
 	  #+(or cmu sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
-	    (cond ((> total-bytes 1024)
-		   (format t " using ~,3F KB." (/ total-bytes 1024.0))
-		   )
-		  ((> total-bytes (* 1024 1024))
-		   (format t " using ~,3F MB." (/ total-bytes (* 1024.0 1024.0)))
-		   )
+	    (cond ((> total-bytes (* 1024 1024))
+		   (format t " using ~,3F MB."
+			   (/ total-bytes (* 1024.0 1024.0))))
+		  ((> total-bytes 1024)
+		   (format t " using ~,3F KB." (/ total-bytes 1024.0)))
 		  (t
 		   (format t " using ~:D bytes." total-bytes))))
 
@@ -201,8 +200,8 @@
 			      (cons time-used  0)
 			      'TIME))
     (fresh-line *standard-output*)
-    #+never(let ((tem (read-char-no-hang)))
-      (or (eql tem #\newline) (and tem (unread-char tem))))
+;    #+never(let ((tem (read-char-no-hang)))
+;      (or (eql tem #\newline) (and tem (unread-char tem))))
     (IF (EQ (CAAR R) 'DISPLAYINPUT)
 	(DISPLA `((MLABLE) ,D-TAG ,$%)))
     (when (eq batch-or-demo-flag ':demo)
@@ -222,10 +221,10 @@
 		)))))
     ;; This is sort of a kludge -- eat newlines and blanks so that they don't echo
     (AND BATCH-OR-DEMO-FLAG
-	 #+lispm
-	 (send input-stream :operation-handled-p :read-char-no-echo)
-	 #+lispm
-	 (send input-stream :operation-handled-p :unread-char-no-echo)
+;	 #+lispm
+;	 (send input-stream :operation-handled-p :read-char-no-echo)
+;	 #+lispm
+;	 (send input-stream :operation-handled-p :unread-char-no-echo)
 	 (do ((char)) (())
 	   (setq char (read-char input-stream nil #+cl nil)) 
 
@@ -315,15 +314,14 @@
     (setf answer (third (mread *query-io*)))))
 
 
-#-cl
-(DEFUN MREAD-TERMINAL (PROMPT)
-  (prog1 (let (#+NIL (si:*ttyscan-dispatch-table *macsyma-ttyscan-operators*))
-	    (CADDR (send *terminal-io* ':RUBOUT-HANDLER
-			 `((:PROMPT ,PROMPT) #+NIL (:reprompt ,prompt))
-			 #'MREAD-RAW *terminal-io*)))
-	 (fresh-line *terminal-io*)))
+;#-cl
+;(DEFUN MREAD-TERMINAL (PROMPT)
+;  (prog1 (let (#+NIL (si:*ttyscan-dispatch-table *macsyma-ttyscan-operators*))
+;	    (CADDR (send *terminal-io* ':RUBOUT-HANDLER
+;			 `((:PROMPT ,PROMPT) #+NIL (:reprompt ,prompt))
+;			 #'MREAD-RAW *terminal-io*)))
+;	 (fresh-line *terminal-io*)))
 
-
 
 (DEFUN MAKE-INPUT-STREAM (X Y) Y ;ignore
   X)
@@ -348,9 +346,10 @@
 
 
 (defun batch-internal (fileobj demo-p)
-  (CONTINUE (MAKE-ECHO-INPUT-STREAM
-	      (MAKE-INPUT-STREAM fileobj "Batch Input Stream"))
-	      (IF DEMO-P ':DEMO ':BATCH)))
+  (CONTINUE (MAKE-ECHO-STREAM
+	      (MAKE-INPUT-STREAM fileobj "Batch Input Stream")
+	      *standard-output*)
+	    (IF DEMO-P ':DEMO ':BATCH)))
 #-cl
 (DEFUN $BATCH (&REST ARG-LIST)
   (BATCH (FILENAME-FROM-ARG-LIST ARG-LIST) NIL))
@@ -363,6 +362,7 @@
 (defmspec $grindef (form)
   (eval `(grindef ,@(cdr form)))
   '$DONE)
+
 #+cl
 (DEFUN $DEMO (&REST ARG-LIST)
   (let ((tem ($file_search (car arg-list) $file_search_demo)))
@@ -463,7 +463,11 @@
 
 
 (defmfun $writefile (x) (dribble (subseq (string x) 1)))
+
 (defvar $appendfile nil )
+
+(defvar *appendfile-data*)
+
 (defmfun $appendfile (name)
   (if (and (symbolp name)
 	   (member (getcharn name 1) '(#\& #\$)))
@@ -504,7 +508,7 @@
 
 (defmfun $ed (x) (ed (subseq (string x) 1))) 
  
-(defmfun $cli () (process ":CLI.PR")) 
+(defmfun $cli () (merror "Not implemented!") )
  
 (defun nsubstring (x y) (subseq x y)) 
  
@@ -535,27 +539,17 @@
   ans))
 					;
 
-#+gcl
-(defun $system (&rest x) (system (apply '$sconcat x)))
-
-#+clisp
-(defun $system (&rest x) (ext:run-shell-command (apply '$sconcat x)))
-
-#+cmu
 (defun $system (&rest args)
-  (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output t))
-
-#+allegro
-(defun $system (&rest args)
-  (excl:run-shell-command (apply '$sconcat args) :wait t))
-
-#+sbcl
-(defun $system (&rest args)
-  (sb-ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output t))
-
-#+openmcl
-(defun $system (&rest args)
-  (ccl::run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output t))
+  #+gcl   (system (apply '$sconcat args))
+  #+clisp (ext:run-shell-command (apply '$sconcat args))
+  #+cmu   (ext:run-program "/bin/sh"
+			   (list "-c" (apply '$sconcat args)) :output t)
+  #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t)
+  #+sbcl  (sb-ext:run-program "/bin/sh"
+			      (list "-c" (apply '$sconcat args)) :output t)
+  #+openmcl (ccl::run-program "/bin/sh"
+			      (list "-c" (apply '$sconcat args)) :output t)
+  )
 
 (defun $room (&optional (arg nil arg-p))
   (if arg-p
@@ -563,6 +557,7 @@
       (room)))
 
 (defun maxima-lisp-debugger (condition me-or-my-encapsulation)
+  (declare (ignore me-or-my-encapsulation))
   (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
   (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
   (throw 'return-from-debugger t))

@@ -74,7 +74,6 @@
 (defun filelength (file)
   (file-length file))
 
-
 (DEFMSPEC $SAVE (FORM) (DSKSETUP (CDR FORM) NIL NIL '$SAVE))
 
 
@@ -148,7 +147,7 @@
 	   (setq *macsyma-extend-types-saved* nil)))
      #-cl(SETQ *NOPOINT T))
    (COND ((NULL (CDR LIST))
-	  (DELETEF SAVEFILE)
+	  (DELETE-FILE SAVEFILE)
 	  (IF (NOT DSKSAVEP)
 	      (MTELL "~M~%Nothing has been ~:Md.  ~:M attempt aborted."
 		     (CAR LIST) FN FN))
@@ -208,7 +207,7 @@
 	 (setq *macsyma-extend-types-saved* nil)))
    (CLOSE SAVEFILE)
    (namestring savefile)))
-
+
 (DEFUN DSKSTORE (X STOREFL FILE LIST)
   (DO ((X X (CDR X)) (VAL) (RENAME) (ITEM)
        (ALRDYSTRD) (STFL STOREFL STOREFL) (NITEMFL NIL NIL))
@@ -330,7 +329,7 @@
 	  (MPROPSCHK ITEM RENAME FILE STFL)
 	  (IF (NOT (GET ITEM 'VERB))
 	      (NCONC LIST (NCONS (OR NITEMFL (GETOP ITEM)))))))))
-
+
 (DEFUN DSKATOM (ITEM RENAME VAL)
  (COND ((EQ ITEM '$RATVARS)
 	(FASPRINT T `(SETQ VARLIST (APPEND VARLIST (QUOTE ,VARLIST))))
@@ -397,7 +396,7 @@
       (FASPRINT T `(FILLARRAY ,ARY (QUOTE ,(LISTARRAY VAL))))
       (IF (SETQ VAL1 (GET ITEM 'ARRAY-MODE))
 	  (FASPRINT T `(DEFPROP ,(CADR RENAME) ,VAL1 ARRAY-MODE)))))
-
+
 (DEFUN EXTOPCHK (ITEM VAL)
  (LET ((VAL1 (IMPLODE (CONS #\$ (CDR (EXPLODEN VAL))))))
    (WHEN (OR (GET VAL1 'NUD) (GET VAL1 'LED) (GET VAL1 'LBP))
@@ -463,7 +462,7 @@
 	       (LIST* 'DEFUN NAME
 		      (IF (EQ IND 'EXPR) (CDR VAL) (CONS IND (CDR VAL))))
 	       (LIST 'DEFPROP NAME VAL IND))))
-
+
 (DEFUN DSKGET (FILE NAME FLAG UNSTOREP)
  (LET ((DEFAULTF DEFAULTF) (EOF (LIST NIL)) ITEM #-cl(*NOPOINT T))
    (SETQ FILE (OPEN FILE #-cl '(IN ASCII)))
@@ -518,6 +517,5 @@
 		     (IF (EQ (CAR ITEM) 'ADD2LNC) (RETURN (EVAL ITEM)))))
 		(T (EVAL ITEM))))
       (CLOSE IN)
-      (IF $CHANGE_FILEDEFAULTS (DEFAULTF FILE))
       (IF (ATOM FILE) FILE (MFILE-OUT FILE))))
 

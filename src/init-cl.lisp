@@ -20,12 +20,9 @@
 (defvar *maxima-sharedir*)
 (defvar *maxima-symdir*)
 (defvar *maxima-srcdir*)
-(defvar *maxima-demodir*)
-(defvar *maxima-testsdir*)
 (defvar *maxima-docdir*)
 (defvar *maxima-infodir*)
 (defvar *maxima-htmldir*)
-(defvar *maxima-plotdir*)
 (defvar *maxima-layout-autotools*)
 (defvar *maxima-userdir*)
 
@@ -53,12 +50,7 @@
 	#+openmcl "openmcl"
 	#-(or clisp cmu sbcl gcl allegro openmcl) "unknownlisp")
 
-(defun combine-path (list)
-  (let ((result (first list)))
-    (mapc #'(lambda (x) 
-		(setf result 
-		      (concatenate 'string result "/" x))) (rest list))
-    result))
+
 
 (defvar $file_search_lisp nil
   "Directories to search for Lisp source code.")
@@ -72,29 +64,6 @@
 (defvar $file_search_usage nil)
 (defvar $chemin nil)
 
-#+gcl
-(defun maxima-getenv (envvar)
-  (si::getenv envvar))
-
-#+allegro
-(defun maxima-getenv (envvar)
-  (system:getenv envvar))
-
-#+cmu
-(defun maxima-getenv (envvar)
-  (cdr (assoc envvar ext:*environment-list* :test #'string=)))
-
-#+sbcl
-(defun maxima-getenv (envvar)
-  (sb-ext:posix-getenv envvar))
-
-#+clisp
-(defun maxima-getenv (envvar)
-  (ext:getenv envvar))
-
-#+mcl
-(defun maxima-getenv (envvar)
-  (ccl::getenv envvar))
 
 (defun maxima-parse-dirstring (str)
   (let ((sep "/"))
@@ -482,6 +451,7 @@
        (prin1 (eval form))))))
 
 (defun maxima-lisp-debugger-repl (condition me-or-my-encapsulation)
+  (declare (ignore me-or-my-encapsulation))
   (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
   (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
   (throw 'to-maxima-repl t))
@@ -493,26 +463,6 @@
 
 (defun $help () $help)			;
 
-;; CMUCL needs because when maxima reaches EOF, it calls BYE, not $QUIT.
-#+cmu
-(defun bye ()
-  (ext:quit))
-
-#+sbcl
-(defun bye ()
-  (sb-ext:quit))
-
-#+clisp
-(defun bye ()
-  (ext:quit))
-
-#+allegro
-(defun bye ()
-  (excl:exit))
-
-#+mcl
-(defun bye ()
-  (ccl::quit))
 
 (defun $maxima_server (port)
   (load "/home/amundson/devel/maxima/archive/src/server.lisp")

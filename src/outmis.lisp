@@ -17,413 +17,413 @@
 
 (macsyma-module outmis)
 
-(declare-top (FIXNUM NN))
+;(declare-top (FIXNUM NN))
 
-#+ITS (DECLARE (SPECIAL TTY-FILE))
+;#+ITS (DECLARE (SPECIAL TTY-FILE))
 
-(declare-top (SPLITFILE STATUS))
+;(declare-top (SPLITFILE STATUS))
 
-#+(or ITS Multics TOPS-20)
-(declare-top (SPECIAL LINEL MATHLAB-GROUP-MEMBERS)
-	 (*EXPR STRIPDOLLAR MEVAL)
-	 (*LEXPR CONCAT))
+;#+(or ITS Multics TOPS-20)
+;(declare-top (SPECIAL LINEL MATHLAB-GROUP-MEMBERS)
+;	 (*EXPR STRIPDOLLAR MEVAL)
+;	 (*LEXPR CONCAT))
 
 
 
-#+(or ITS Multics TOPS-20)
-(PROGN 'COMPILE
+;#+(or ITS Multics TOPS-20)
+;(PROGN 'COMPILE
 
-;;; These are used by $SEND when sending to logged in Mathlab members
-#-Multics
-(SETQ MATHLAB-GROUP-MEMBERS
-      '(JPG ELLEN GJC RZ KMP WGD MERMAN))
+;;;; These are used by $SEND when sending to logged in Mathlab members
+;#-Multics
+;(SETQ MATHLAB-GROUP-MEMBERS
+;      '(JPG ELLEN GJC RZ KMP WGD MERMAN))
 
-;;; IOTA is a macro for doing file I/O binding, guaranteeing that
-;;;  the files it loads will get closed.
-;;;  Usage: (IOTA ((<variable1> <filename1> <modes1>)
-;;;                (<variable2> <filename2> <modes2>) ...)
-;;;		  <body>)
-;;;  Opens <filenameN> with <modesN> binding it to <variableN>. Closes
-;;;   any <variableN> which still has an open file or SFA in it when
-;;;   PDL unwinding is done.
-;;; No IOTA on Multics yet,
-#-Multics
-(EVAL-WHEN (EVAL COMPILE)
-           (COND ((NOT (STATUS FEATURE IOTA))
-                  (LOAD #+ITS '((DSK LIBLSP) IOTA FASL)
-			#-ITS '((LISP) IOTA FASL)))))
+;;;; IOTA is a macro for doing file I/O binding, guaranteeing that
+;;;;  the files it loads will get closed.
+;;;;  Usage: (IOTA ((<variable1> <filename1> <modes1>)
+;;;;                (<variable2> <filename2> <modes2>) ...)
+;;;;		  <body>)
+;;;;  Opens <filenameN> with <modesN> binding it to <variableN>. Closes
+;;;;   any <variableN> which still has an open file or SFA in it when
+;;;;   PDL unwinding is done.
+;;;; No IOTA on Multics yet,
+;#-Multics
+;(EVAL-WHEN (EVAL COMPILE)
+;           (COND ((NOT (STATUS FEATURE IOTA))
+;                  (LOAD #+ITS '((DSK LIBLSP) IOTA FASL)
+;			#-ITS '((LISP) IOTA FASL)))))
 
-;;; TEXT-OUT
-;;;  Prints a list of TEXT onto STREAM.
-;;;
-;;;  TEXT must be a list of things to be printed onto STREAM.
-;;;    For each element in TEXT, A, if A is a symbol with first
-;;;    character "&", it will be fullstripped and PRINC'd into the
-;;;    stream; otherwise it will be $DISP'd onto STREAM (by binding
-;;;    OUTFILES and just calling $DISP normally).
-;;;
-;;;  STREAM must be an already-open file object.
+;;;; TEXT-OUT
+;;;;  Prints a list of TEXT onto STREAM.
+;;;;
+;;;;  TEXT must be a list of things to be printed onto STREAM.
+;;;;    For each element in TEXT, A, if A is a symbol with first
+;;;;    character "&", it will be fullstripped and PRINC'd into the
+;;;;    stream; otherwise it will be $DISP'd onto STREAM (by binding
+;;;;    OUTFILES and just calling $DISP normally).
+;;;;
+;;;;  STREAM must be an already-open file object.
 
-(DEFUN TEXT-OUT (TEXT STREAM)
-  (DO ((A TEXT (CDR A))
-       (|^R| T)
-       (|^W| T)
-       (LINEL 69.)
-       (OUTFILES (NCONS STREAM)))
-      ((NULL A))
-    (COND ((AND (SYMBOLP (CAR A))
-		(EQ (GETCHAR (CAR A) 1.) '|&|))
-	   (PRINC (STRIPDOLLAR (CAR A)) STREAM))
-	  (T (TERPRI STREAM)
-	     (MEVAL `(($DISP) ($STRING ,(CAR A))))))
-	   (TERPRI STREAM)))
+;(DEFUN TEXT-OUT (TEXT STREAM)
+;  (DO ((A TEXT (CDR A))
+;       (|^R| T)
+;       (|^W| T)
+;       (LINEL 69.)
+;       (OUTFILES (NCONS STREAM)))
+;      ((NULL A))
+;    (COND ((AND (SYMBOLP (CAR A))
+;		(EQ (GETCHAR (CAR A) 1.) '|&|))
+;	   (PRINC (STRIPDOLLAR (CAR A)) STREAM))
+;	  (T (TERPRI STREAM)
+;	     (MEVAL `(($DISP) ($STRING ,(CAR A))))))
+;	   (TERPRI STREAM)))
 
-;;; MAIL
-;;;  Sends mail to a recipient, TO, via the normal ITS mail protocol
-;;;  by writing out to DSK:.MAIL.;MAIL > and letting COMSAT pick it 
-;;;  up and deliver it. Format for what goes in the MAIL > file should
-;;;  be kept up to date with what is documented in KSC;?RQFMT >
-;;;
-;;;  TO must be a name (already STRIPDOLLAR'd) to whom the mail should
-;;;    be delivered.
-;;;
-;;;  TEXT-LIST is a list of Macsyma strings and/or general expressions
-;;;    which will compose the message.
+;;;; MAIL
+;;;;  Sends mail to a recipient, TO, via the normal ITS mail protocol
+;;;;  by writing out to DSK:.MAIL.;MAIL > and letting COMSAT pick it 
+;;;;  up and deliver it. Format for what goes in the MAIL > file should
+;;;;  be kept up to date with what is documented in KSC;?RQFMT >
+;;;;
+;;;;  TO must be a name (already STRIPDOLLAR'd) to whom the mail should
+;;;;    be delivered.
+;;;;
+;;;;  TEXT-LIST is a list of Macsyma strings and/or general expressions
+;;;;    which will compose the message.
 
-#+(OR LISPM ITS) ;Do these both at once.
-(DEFUN MAIL (TO TEXT-LIST)
-  (IOTA ((STREAM  "DSK:.MAIL.;MAIL >" 'OUT))
-    (mformat stream
-       "FROM-PROGRAM:Macsyma
-AUTHOR:~A
-FROM-UNAME:~A
-RCPT:~A
-TEXT;-1~%"
-       (STATUS USERID)
-       (STATUS UNAME)
-       (NCONS TO))
-    (TEXT-OUT TEXT-LIST STREAM)))
-
-;;; This code is new and untested. Please report bugs -kmp
-;#+TOPS-20 
+;#+(OR LISPM ITS) ;Do these both at once.
 ;(DEFUN MAIL (TO TEXT-LIST)
-;  (IOTA ((STREAM "MAIL:/[--NETWORK-MAIL--/]..-1"
-;		 '(OUT ASCII DSK BLOCK NODEFAULT)))
-;    (MFORMAT STREAM
-;      "/~A
-;~A
-;/
-;From: ~A at ~A~%"
-;      (STATUS SITE) TO (STATUS USERID) (STATUS SITE))
-;    (COND ((NOT (EQ (STATUS USERID) (STATUS UNAME)))
-;	   (MFORMAT STREAM "Sender: ~A at ~A~%" (STATUS UNAME) (STATUS SITE))))
-;    (MFORMAT STREAM "Date: ~A
-;TO:   ~A~%~%"
-;	    (TIME-AND-DATE) TO)
+;  (IOTA ((STREAM  "DSK:.MAIL.;MAIL >" 'OUT))
+;    (mformat stream
+;       "FROM-PROGRAM:Macsyma
+;AUTHOR:~A
+;FROM-UNAME:~A
+;RCPT:~A
+;TEXT;-1~%"
+;       (STATUS USERID)
+;       (STATUS UNAME)
+;       (NCONS TO))
 ;    (TEXT-OUT TEXT-LIST STREAM)))
 
-#+Multics
-(defvar macsyma-mail-count 0 "The number of messages sent so far")
-#+Multics
-(progn 'compile
-(DEFUN MAIL (TO TEXT-LIST)
-  (let* ((open-file ())
-	 (macsyma-unique-id (macsyma-unique-id 'unsent
-					       (increment macsyma-mail-count)))
-	 (file-name (catenate (pathname-util "pd")
-			      ">macsyma_mail." macsyma-unique-id)))
-    (unwind-protect
-      (progn
-       (setq open-file (open file-name '(out ascii block dsk)))
-       (text-out text-list open-file)
-       (close open-file)
-       (cline (catenate "send_mail " to " -input_file " file-name
-	                " -no_subject")))
-      (deletef open-file))))
+;;;; This code is new and untested. Please report bugs -kmp
+;;#+TOPS-20 
+;;(DEFUN MAIL (TO TEXT-LIST)
+;;  (IOTA ((STREAM "MAIL:/[--NETWORK-MAIL--/]..-1"
+;;		 '(OUT ASCII DSK BLOCK NODEFAULT)))
+;;    (MFORMAT STREAM
+;;      "/~A
+;;~A
+;;/
+;;From: ~A at ~A~%"
+;;      (STATUS SITE) TO (STATUS USERID) (STATUS SITE))
+;;    (COND ((NOT (EQ (STATUS USERID) (STATUS UNAME)))
+;;	   (MFORMAT STREAM "Sender: ~A at ~A~%" (STATUS UNAME) (STATUS SITE))))
+;;    (MFORMAT STREAM "Date: ~A
+;;TO:   ~A~%~%"
+;;	    (TIME-AND-DATE) TO)
+;;    (TEXT-OUT TEXT-LIST STREAM)))
 
-(defun macsyma-unique-id (prefix number)
-  (implode (append (explode prefix) (list number))))
-)
+;#+Multics
+;(defvar macsyma-mail-count 0 "The number of messages sent so far")
+;#+Multics
+;(progn 'compile
+;(DEFUN MAIL (TO TEXT-LIST)
+;  (let* ((open-file ())
+;	 (macsyma-unique-id (macsyma-unique-id 'unsent
+;					       (increment macsyma-mail-count)))
+;	 (file-name (catenate (pathname-util "pd")
+;			      ">macsyma_mail." macsyma-unique-id)))
+;    (unwind-protect
+;      (progn
+;       (setq open-file (open file-name '(out ascii block dsk)))
+;       (text-out text-list open-file)
+;       (close open-file)
+;       (cline (catenate "send_mail " to " -input_file " file-name
+;	                " -no_subject")))
+;      (deletef open-file))))
 
-;;; $BUG
-;;;  With no args, gives info on itself. With any positive number of
-;;;  args, mails all args to MACSYMA via the MAX-MAIL command.
-;;;  Returns $DONE
+;(defun macsyma-unique-id (prefix number)
+;  (implode (append (explode prefix) (list number))))
+;)
 
-(DEFMSPEC $BUG (X) (SETQ X (CDR X))
-       (COND ((NULL X)
-	      (MDESCRIBE '$BUG))
-	     (T 
-	      (MAX-MAIL 'BUG X)))
-       '$DONE)
+;;;; $BUG
+;;;;  With no args, gives info on itself. With any positive number of
+;;;;  args, mails all args to MACSYMA via the MAX-MAIL command.
+;;;;  Returns $DONE
 
-#+MULTICS
-(DEFMACRO CHECK-AND-STRIP-ADDRESS (ADDRESS)
-  `(COND ((EQUAL (GETCHARN ,ADDRESS 1) #\&)
-	  (STRIPDOLLAR ,ADDRESS))
-	 (T (MERROR "Mail: Address field must be a string"))))
-#-MULTICS
-(DEFMACRO CHECK-AND-STRIP-ADDRESS (ADDRESS)
-  `(STRIPDOLLAR ,ADDRESS))
+;(DEFMSPEC $BUG (X) (SETQ X (CDR X))
+;       (COND ((NULL X)
+;	      (MDESCRIBE '$BUG))
+;	     (T 
+;	      (MAX-MAIL 'BUG X)))
+;       '$DONE)
 
-;;; $MAIL
-;;;  With no args, gives info on itself.
-;;;  With 1 arg, sends the MAIL to Macsyma. Like bug, only doesn't
-;;;   tag the mail as a bug to be fixed.
-;;;  With 2 or more args, assumes that arg1 is a recipient and other
-;;;   args are the text to be MAIL'd.
-;;; Works for Multics, ITS, and TOPS-20.
+;#+MULTICS
+;(DEFMACRO CHECK-AND-STRIP-ADDRESS (ADDRESS)
+;  `(COND ((EQUAL (GETCHARN ,ADDRESS 1) #\&)
+;	  (STRIPDOLLAR ,ADDRESS))
+;	 (T (MERROR "Mail: Address field must be a string"))))
+;#-MULTICS
+;(DEFMACRO CHECK-AND-STRIP-ADDRESS (ADDRESS)
+;  `(STRIPDOLLAR ,ADDRESS))
+
+;;;; $MAIL
+;;;;  With no args, gives info on itself.
+;;;;  With 1 arg, sends the MAIL to Macsyma. Like bug, only doesn't
+;;;;   tag the mail as a bug to be fixed.
+;;;;  With 2 or more args, assumes that arg1 is a recipient and other
+;;;;   args are the text to be MAIL'd.
+;;;; Works for Multics, ITS, and TOPS-20.
  
-(DEFMSPEC $MAIL (X) (SETQ X (CDR X)) 
-  (COND ((NULL X)
-	 (MDESCRIBE '$MAIL))
-	((= (LENGTH X) 1.)
-	 (MAX-MAIL 'MAIL X))
-	(T (LET ((NAME (CHECK-AND-STRIP-ADDRESS (CAR X))))
-	     (MAIL NAME (CDR X))
-    #-Multics(MFORMAT NIL "~&;MAIL'd to ~A~%" NAME))))
-;;;On Multics Mailer will do this.
-       '$DONE)
+;(DEFMSPEC $MAIL (X) (SETQ X (CDR X)) 
+;  (COND ((NULL X)
+;	 (MDESCRIBE '$MAIL))
+;	((= (LENGTH X) 1.)
+;	 (MAX-MAIL 'MAIL X))
+;	(T (LET ((NAME (CHECK-AND-STRIP-ADDRESS (CAR X))))
+;	     (MAIL NAME (CDR X))
+;    #-Multics(MFORMAT NIL "~&;MAIL'd to ~A~%" NAME))))
+;;;;On Multics Mailer will do this.
+;       '$DONE)
 
-;;; MAX-MAIL
-;;;  Mails TEXT-LIST to MACSYMA mail. Normal ITS mail header 
-;;;  is suppressed. Header comes out as:
-;;;  From <Name> via <Source> command. <Date>
-;;;
-;;;  SOURCE is the name of the originating command (eg, BUG or 
-;;;    MAIL) to be printed in the header of the message.
-;;;
-;;;  TEXT-LIST is a list of expressions making up the message.
+;;;; MAX-MAIL
+;;;;  Mails TEXT-LIST to MACSYMA mail. Normal ITS mail header 
+;;;;  is suppressed. Header comes out as:
+;;;;  From <Name> via <Source> command. <Date>
+;;;;
+;;;;  SOURCE is the name of the originating command (eg, BUG or 
+;;;;    MAIL) to be printed in the header of the message.
+;;;;
+;;;;  TEXT-LIST is a list of expressions making up the message.
 
-#+(OR LISPM ITS)
-(DEFUN MAX-MAIL (SOURCE TEXT-LIST)
- (IOTA ((MAIL-FILE "DSK:.MAIL.;_MAXIM >" '(OUT ASCII DSK BLOCK)))
-   (LINEL MAIL-FILE 69.)
-   (MFORMAT MAIL-FILE
-      "FROM-PROGRAM:Macsyma
-HEADER-FORCE:NULL
-TO:(MACSYMA)
-SENT-BY:~A
-TEXT;-1
-From ~A via ~A command. ~A~%"
-      (STATUS UNAME) 
-      (STATUS USERID)
-      SOURCE
-      (TIME-AND-DATE))
-   (TEXT-OUT TEXT-LIST MAIL-FILE)
-   (RENAMEF MAIL-FILE "MAIL >"))
- (MFORMAT NIL "~&;Sent to MACSYMA~%")
- '$DONE)
-
-;;; This code is new and untested. Please report bugs -kmp
-;#+TOPS-20 
+;#+(OR LISPM ITS)
 ;(DEFUN MAX-MAIL (SOURCE TEXT-LIST)
-;  (IOTA ((MAIL-FILE "MAIL:/[--NETWORK-MAIL--/]..-1"
-;		    '(OUT ASCII DSK BLOCK NODEFAULT)))
-;    (MFORMAT MAIL-FILE
-;	     "/MIT-MC
-;BUG-MACSYMA
-;/From ~A at ~A via ~A command. ~A~%"
-;	  (STATUS USERID) (STATUS SITE) SOURCE (TIME-AND-DATE))
-;    (TEXT-OUT TEXT-LIST MAIL-FILE)
-;    (MFORMAT NIL "~%;Sent to MACSYMA")))
+; (IOTA ((MAIL-FILE "DSK:.MAIL.;_MAXIM >" '(OUT ASCII DSK BLOCK)))
+;   (LINEL MAIL-FILE 69.)
+;   (MFORMAT MAIL-FILE
+;      "FROM-PROGRAM:Macsyma
+;HEADER-FORCE:NULL
+;TO:(MACSYMA)
+;SENT-BY:~A
+;TEXT;-1
+;From ~A via ~A command. ~A~%"
+;      (STATUS UNAME) 
+;      (STATUS USERID)
+;      SOURCE
+;      (TIME-AND-DATE))
+;   (TEXT-OUT TEXT-LIST MAIL-FILE)
+;   (RENAMEF MAIL-FILE "MAIL >"))
+; (MFORMAT NIL "~&;Sent to MACSYMA~%")
+; '$DONE)
 
-#+Multics
-(defun max-mail (source text-list)
-  (let ((address (cond ((eq source 'mail)
-			(setq source "Multics-Macsyma-Consultant -at MIT-MC"))
-		       (t (setq source "Multics-Macsyma-Bugs -at MIT-MC")))))
-    (mail address text-list)))
+;;;; This code is new and untested. Please report bugs -kmp
+;;#+TOPS-20 
+;;(DEFUN MAX-MAIL (SOURCE TEXT-LIST)
+;;  (IOTA ((MAIL-FILE "MAIL:/[--NETWORK-MAIL--/]..-1"
+;;		    '(OUT ASCII DSK BLOCK NODEFAULT)))
+;;    (MFORMAT MAIL-FILE
+;;	     "/MIT-MC
+;;BUG-MACSYMA
+;;/From ~A at ~A via ~A command. ~A~%"
+;;	  (STATUS USERID) (STATUS SITE) SOURCE (TIME-AND-DATE))
+;;    (TEXT-OUT TEXT-LIST MAIL-FILE)
+;;    (MFORMAT NIL "~%;Sent to MACSYMA")))
 
-); END of (or ITS Multics TOPS-20) conditionalization.
+;#+Multics
+;(defun max-mail (source text-list)
+;  (let ((address (cond ((eq source 'mail)
+;			(setq source "Multics-Macsyma-Consultant -at MIT-MC"))
+;		       (t (setq source "Multics-Macsyma-Bugs -at MIT-MC")))))
+;    (mail address text-list)))
+
+;); END of (or ITS Multics TOPS-20) conditionalization.
 
 
 ;; On ITS, this returns a list of user ids for some random reason.  On other
 ;; systems, just print who's logged in.  We pray that nobody uses this list for
 ;; value.
 
-#+ITS
-(PROGN 'COMPILE
-(DEFMFUN $who nil
-  (do ((tty*)
-       (wholist nil (cond ((eq (getchar tty* 1)  ;just consoles, not device
-			       'D)
-			   wholist)
-			  (t (LET ((UNAME (READUNAME)))
-			       (COND ((MEMQ UNAME WHOLIST) WHOLIST)
-				     (T (CONS UNAME WHOLIST)))))))
-       (ur (crunit))
-       (tty-file ((lambda (tty-file)
-		    (readline tty-file)	   ;blank line
-		    tty-file)  ;get rid of cruft
-		  (open '((tty) |.file.| |(dir)|) 'single))))
-      ((progn (readline tty-file)
-	      (setq tty* (read tty-file))
-	      (eq tty* 'free))
-       (close tty-file)
-       (apply 'crunit ur)
-       (cons '(mlist simp) wholist))))
+;#+ITS
+;(PROGN 'COMPILE
+;(DEFMFUN $who nil
+;  (do ((tty*)
+;       (wholist nil (cond ((eq (getchar tty* 1)  ;just consoles, not device
+;			       'D)
+;			   wholist)
+;			  (t (LET ((UNAME (READUNAME)))
+;			       (COND ((MEMQ UNAME WHOLIST) WHOLIST)
+;				     (T (CONS UNAME WHOLIST)))))))
+;       (ur (crunit))
+;       (tty-file ((lambda (tty-file)
+;		    (readline tty-file)	   ;blank line
+;		    tty-file)  ;get rid of cruft
+;		  (open '((tty) |.file.| |(dir)|) 'single))))
+;      ((progn (readline tty-file)
+;	      (setq tty* (read tty-file))
+;	      (eq tty* 'free))
+;       (close tty-file)
+;       (apply 'crunit ur)
+;       (cons '(mlist simp) wholist))))
 
-;;; $SEND
-;;;  With no args, gives info about itself.
-;;;  With one arg, sends the info to any logged in Macsyma users.
-;;;  With 2 or more args, assumes that arg1 is a recipient and
-;;;   args 2 on are a list of expressions to make up the message.
+;;;; $SEND
+;;;;  With no args, gives info about itself.
+;;;;  With one arg, sends the info to any logged in Macsyma users.
+;;;;  With 2 or more args, assumes that arg1 is a recipient and
+;;;;   args 2 on are a list of expressions to make up the message.
 
-(DEFMSPEC $SEND (X) (SETQ X (CDR X)) 
-       (COND ((NULL X)
-	      (MDESCRIBE '$SEND))
-	     ((= (LENGTH X) 1.)
-	      (MAX-SEND X))
-	     (T
-	      (MSEND (STRIPDOLLAR (CAR X)) (CDR X) T)))
-       '$DONE)
+;(DEFMSPEC $SEND (X) (SETQ X (CDR X)) 
+;       (COND ((NULL X)
+;	      (MDESCRIBE '$SEND))
+;	     ((= (LENGTH X) 1.)
+;	      (MAX-SEND X))
+;	     (T
+;	      (MSEND (STRIPDOLLAR (CAR X)) (CDR X) T)))
+;       '$DONE)
 
-;;; MSEND
-;;;  Sends mail to a recipient, TO, by opening the CLI: device on the
-;;;  recipient's HACTRN.
-;;;
-;;;  TO must be a name (already FULLSTRIP'd) to whom the mail should
-;;;    be delivered. A header is printed of the form:
-;;;    [MESSAGE FROM MACSYMA USER <Uname>  <time/date>] (To: <Recipient>)
-;;;
-;;;  TEXT-LIST is a list of Macsyma strings and/or general expressions
-;;;    which will compose the message.
-;;;
-;;;  MAIL? is a flag that says whether the text should be forwarded
-;;;    as mail to the recipient if the send fails. Since the only current
-;;;    use for this is when sending to all of Mathlab, a value of NIL
-;;;    for this flag assumes a <Recipient> in the header should be
-;;;    "Mathlab Members" rather than the real name of the recipient.
-;;;    An additional flag might be used to separate these functions
-;;;    at some later time, but this should suffice for now.
+;;;; MSEND
+;;;;  Sends mail to a recipient, TO, by opening the CLI: device on the
+;;;;  recipient's HACTRN.
+;;;;
+;;;;  TO must be a name (already FULLSTRIP'd) to whom the mail should
+;;;;    be delivered. A header is printed of the form:
+;;;;    [MESSAGE FROM MACSYMA USER <Uname>  <time/date>] (To: <Recipient>)
+;;;;
+;;;;  TEXT-LIST is a list of Macsyma strings and/or general expressions
+;;;;    which will compose the message.
+;;;;
+;;;;  MAIL? is a flag that says whether the text should be forwarded
+;;;;    as mail to the recipient if the send fails. Since the only current
+;;;;    use for this is when sending to all of Mathlab, a value of NIL
+;;;;    for this flag assumes a <Recipient> in the header should be
+;;;;    "Mathlab Members" rather than the real name of the recipient.
+;;;;    An additional flag might be used to separate these functions
+;;;;    at some later time, but this should suffice for now.
 
-(DEFUN MSEND (TO TEXT-LIST MAIL?)
-  (COND ((EQ TO (STATUS UNAME))
-	 (MERROR "You cannot SEND to yourself.  Use MAIL.")
-	 ())
-	((ERRSET (IOTA ((STREAM (LIST '(CLI *) TO 'HACTRN) 'OUT))
-		    (MFORMAT STREAM
-		       "[Message from MACSYMA User ~A] (To: ~A) ~A~%"
-		       (STATUS UNAME)
-		       (COND (MAIL? TO)
-			     (T "Mathlab Members"))
-		       (DAYTIME))
-		    (TEXT-OUT TEXT-LIST STREAM))
-		 NIL)
-	 (MFORMAT NIL "~&;Sent to ~A~%" TO)
-	 T)
-	(MAIL? (COND ((PROBE-FILE (LIST '(USR *) TO 'HACTRN))
-		      (MFORMAT NIL "~&;~A isn't accepting message.~%" TO))
-		     (T (MFORMAT NIL "~&;~A isn't logged in.~%" TO)))
-	       (MAIL TO TEXT-LIST)
-	       (MFORMAT NIL "~&;Message MAIL'd.~%")
-	       () )
-	(T ())))
+;(DEFUN MSEND (TO TEXT-LIST MAIL?)
+;  (COND ((EQ TO (STATUS UNAME))
+;	 (MERROR "You cannot SEND to yourself.  Use MAIL.")
+;	 ())
+;	((ERRSET (IOTA ((STREAM (LIST '(CLI *) TO 'HACTRN) 'OUT))
+;		    (MFORMAT STREAM
+;		       "[Message from MACSYMA User ~A] (To: ~A) ~A~%"
+;		       (STATUS UNAME)
+;		       (COND (MAIL? TO)
+;			     (T "Mathlab Members"))
+;		       (DAYTIME))
+;		    (TEXT-OUT TEXT-LIST STREAM))
+;		 NIL)
+;	 (MFORMAT NIL "~&;Sent to ~A~%" TO)
+;	 T)
+;	(MAIL? (COND ((PROBE-FILE (LIST '(USR *) TO 'HACTRN))
+;		      (MFORMAT NIL "~&;~A isn't accepting message.~%" TO))
+;		     (T (MFORMAT NIL "~&;~A isn't logged in.~%" TO)))
+;	       (MAIL TO TEXT-LIST)
+;	       (MFORMAT NIL "~&;Message MAIL'd.~%")
+;	       () )
+;	(T ())))
 
-;;; MAX-SEND
-;;;  Send TEXT-LIST to any Mathlab members logged in.
-;;;  If no one on the list is logged in, or if the only logged in
-;;;  members are long idle, this command will forward the message
-;;;  to MACSYMA mail automatically (notifying the user).
-;;; 
-;;;  TEXT-LIST is a list of expressions or strings making up the
-;;;    message.
+;;;; MAX-SEND
+;;;;  Send TEXT-LIST to any Mathlab members logged in.
+;;;;  If no one on the list is logged in, or if the only logged in
+;;;;  members are long idle, this command will forward the message
+;;;;  to MACSYMA mail automatically (notifying the user).
+;;;; 
+;;;;  TEXT-LIST is a list of expressions or strings making up the
+;;;;    message.
 
 
-(DEFUN MAX-SEND (TEXT-LIST)				;
-  (LET ((SUCCESS NIL)
-	(PEOPLE (zl-DELETE (STATUS UNAME) (CDR ($WHO)))))
-       (DO ((PERSON))
-	   ((NULL PEOPLE))
-	 (SETQ PERSON (PROG1 (CAR PEOPLE)
-			     (SETQ PEOPLE (CDR PEOPLE))))
-	 (COND ((MEMQ PERSON MATHLAB-GROUP-MEMBERS)
-		(LET ((RESULT (MSEND PERSON TEXT-LIST NIL)))
-		     (SETQ SUCCESS
-			   (OR SUCCESS
-			       (AND (< (IDLE-TIME PERSON) 9000.)
-				    RESULT
-				    T)))
-		     (COND ((AND RESULT (> (IDLE-TIME PERSON) 9000.))
-			    (MFORMAT NIL
-				     " (but he//she is idle a long time)")))
-		     (COND (RESULT (TERPRI)))))))
-       (COND ((NOT SUCCESS)
-	      (MFORMAT NIL "There's no one around to help, so I have mailed
-your message to MACSYMA. Someone will get back
-to you about the problem.")
-	      (MAX-MAIL 'SEND TEXT-LIST)))
-	    '$DONE))
+;(DEFUN MAX-SEND (TEXT-LIST)				;
+;  (LET ((SUCCESS NIL)
+;	(PEOPLE (zl-DELETE (STATUS UNAME) (CDR ($WHO)))))
+;       (DO ((PERSON))
+;	   ((NULL PEOPLE))
+;	 (SETQ PERSON (PROG1 (CAR PEOPLE)
+;			     (SETQ PEOPLE (CDR PEOPLE))))
+;	 (COND ((MEMQ PERSON MATHLAB-GROUP-MEMBERS)
+;		(LET ((RESULT (MSEND PERSON TEXT-LIST NIL)))
+;		     (SETQ SUCCESS
+;			   (OR SUCCESS
+;			       (AND (< (IDLE-TIME PERSON) 9000.)
+;				    RESULT
+;				    T)))
+;		     (COND ((AND RESULT (> (IDLE-TIME PERSON) 9000.))
+;			    (MFORMAT NIL
+;				     " (but he//she is idle a long time)")))
+;		     (COND (RESULT (TERPRI)))))))
+;       (COND ((NOT SUCCESS)
+;	      (MFORMAT NIL "There's no one around to help, so I have mailed
+;your message to MACSYMA. Someone will get back
+;to you about the problem.")
+;	      (MAX-MAIL 'SEND TEXT-LIST)))
+;	    '$DONE))
 
-(DEFUN READUNAME NIL 
-       (TYI TTY-FILE)
-       (DO ((I 1. (f1+ I)) (L) (N))
-	   ((> I 6.) (IMPLODE (NREVERSE L)))
-	   (SETQ N (TYI TTY-FILE))
-	   (OR (= N 32.) (SETQ L (CONS N L)))))
+;(DEFUN READUNAME NIL 
+;       (TYI TTY-FILE)
+;       (DO ((I 1. (f1+ I)) (L) (N))
+;	   ((> I 6.) (IMPLODE (NREVERSE L)))
+;	   (SETQ N (TYI TTY-FILE))
+;	   (OR (= N 32.) (SETQ L (CONS N L)))))
 
-;;; IDLE-TIME
-;;;  Given an arg of UNAME (already FULLSTRIP'd) returns the idle-time
-;;;  of that user.
+;;;; IDLE-TIME
+;;;;  Given an arg of UNAME (already FULLSTRIP'd) returns the idle-time
+;;;;  of that user.
 
-(defMACRO 6BIT (&rest X) (CAR (PNGET (CAR X) 6.)))
+;(defMACRO 6BIT (&rest X) (CAR (PNGET (CAR X) 6.)))
 
-(DEFUN IDLE-TIME (UNAME)
-  (IOTA ((USR-FILE (LIST '(USR *) UNAME 'HACTRN)))
-    (LET ((TTY-NUMBER (SYSCALL 1 'USRVAR USR-FILE (6BIT CNSL))))
-      (CLOSE USR-FILE)
-      (COND ((ATOM TTY-NUMBER)
-	     (MFORMAT NIL "USRVAR BUG in SEND. Please report this.
-Mention MAXIMA-ERROR code: ~A~%Thank you." TTY-NUMBER)
-	     100000.)
-	    (T
-	     (LET ((IDLE-TIME (SYSCALL 1 'TTYVAR
-				       (f+ (CAR TTY-NUMBER) #O 400000)
-				       (6BIT IDLTIM))))
-		  (COND ((ATOM IDLE-TIME)
-			 (MFORMAT NIL
-			   "TTYVAR bug in SEND.  Please report this.
-Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
-			 100000.)
-			(T (CAR IDLE-TIME)))))))))
+;(DEFUN IDLE-TIME (UNAME)
+;  (IOTA ((USR-FILE (LIST '(USR *) UNAME 'HACTRN)))
+;    (LET ((TTY-NUMBER (SYSCALL 1 'USRVAR USR-FILE (6BIT CNSL))))
+;      (CLOSE USR-FILE)
+;      (COND ((ATOM TTY-NUMBER)
+;	     (MFORMAT NIL "USRVAR BUG in SEND. Please report this.
+;Mention MAXIMA-ERROR code: ~A~%Thank you." TTY-NUMBER)
+;	     100000.)
+;	    (T
+;	     (LET ((IDLE-TIME (SYSCALL 1 'TTYVAR
+;				       (f+ (CAR TTY-NUMBER) #O 400000)
+;				       (6BIT IDLTIM))))
+;		  (COND ((ATOM IDLE-TIME)
+;			 (MFORMAT NIL
+;			   "TTYVAR bug in SEND.  Please report this.
+;Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
+;			 100000.)
+;			(T (CAR IDLE-TIME)))))))))
 
-) ;End of PROGN 'Compile for WHO on ITS.
+;) ;End of PROGN 'Compile for WHO on ITS.
 
-#+Multics
-(DEFMFUN $WHO ()
-  (CLINE "who -long")
-  '$DONE)
+;#+Multics
+;(DEFMFUN $WHO ()
+;  (CLINE "who -long")
+;  '$DONE)
 
 ;Turn sends into MAIL on foreign hosts.
-#+(or Multics TOPS-20 LISPM)
-(progn 'compile
-#+Multics
-(defmacro check-sendee-and-strip (sendee)
-  `(cond ((eq (getcharn ,sendee 1) #\&)
-	  (stripdollar ,sendee))
-	 (t (merror "Send: 1st argument to SEND must be a string"))))
-#-Multics
-(defmacro check-sendee-and-strip (sendee)
-  `(stripdollar ,sendee))
+;#+(or Multics TOPS-20 LISPM)
+;(progn 'compile
+;#+Multics
+;(defmacro check-sendee-and-strip (sendee)
+;  `(cond ((eq (getcharn ,sendee 1) #\&)
+;	  (stripdollar ,sendee))
+;	 (t (merror "Send: 1st argument to SEND must be a string"))))
+;#-Multics
+;(defmacro check-sendee-and-strip (sendee)
+;  `(stripdollar ,sendee))
 	 
-(DEFMSPEC $SEND (X) (SETQ X (CDR X)) 
+;(DEFMSPEC $SEND (X) (SETQ X (CDR X)) 
 
-	    (COND ((NULL X)
-		   (MDESCRIBE '$SEND))
-;;;O.K. we gotta get the documentation to agree with what we're doin' here.
-		  ((= (LENGTH X) 1.)
-		   (MAX-MAIL 'SEND X))
-		  (T (LET ((NAME (check-sendee-and-strip (CAR X))))
-		       (MAIL NAME (CDR X))
-	      #-Multics(MFORMAT NIL "~&;MAIL'd to ~A~%" NAME))))
-	    '$DONE)
-)
+;	    (COND ((NULL X)
+;		   (MDESCRIBE '$SEND))
+;;;;O.K. we gotta get the documentation to agree with what we're doin' here.
+;		  ((= (LENGTH X) 1.)
+;		   (MAX-MAIL 'SEND X))
+;		  (T (LET ((NAME (check-sendee-and-strip (CAR X))))
+;		       (MAIL NAME (CDR X))
+;	      #-Multics(MFORMAT NIL "~&;MAIL'd to ~A~%" NAME))))
+;	    '$DONE)
+;)
 
-
-(declare-top (SPLITFILE ISOLAT)
+(declare-top ;(SPLITFILE ISOLAT)
 	 (SPECIAL *XVAR $EXPTISOLATE $LABELS $DISPFLAG ERRORSW)
-	 (FIXNUM (GETLABCHARN))) 
+;	 (FIXNUM (GETLABCHARN))
+	 ) 
 
 (DEFMVAR $EXPTISOLATE NIL)
 (DEFMVAR $ISOLATE_WRT_TIMES NIL)
@@ -484,7 +484,7 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
        (T (LET ((ERRORSW T) R)
 	       (SETQ R (CATCH 'ERRORSW (DIV ITEM2EV ITEM1)))
 	       (AND (MNUMP R) (NOT (ZEROP R)) (DIV ITEM2 R))))))
-
+
 (DEFMFUN $PICKAPART (X LEV)
  (SETQ X (FORMAT1 X))
  (COND ((NOT (FIXNUMP LEV))
@@ -517,8 +517,8 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
 	       (COND ((EQ (CAAR E) 'MQAPPLY) (CONS U (CONS (CADR E) V)))
 		     ((EQ (CAAR E) 'MPLUS) (CONS U (NREVERSE V)))
 		     (T (CONS U V)))))))
-
-(declare-top (SPLITFILE PROPFN)
+
+(declare-top ;(SPLITFILE PROPFN)
 	 (SPECIAL ATVARS MUNBOUND $PROPS $GRADEFS $FEATURES OPERS
 		  $CONTEXTS $ACTIVECONTEXTS $ALIASES)) 
 
@@ -557,10 +557,7 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
 	 ((AND (MEMQ (CAR Y) '(FEXPR FSUBR MFEXPR*S MFEXPR*))
 		 (NCONC L (NCONS '|&Special Evaluation Form|))
 		 NIL))
-	 ((AND #-cl(MEMQ (CAR Y) '(SUBR FSUBR LSUBR EXPR FEXPR MACRO
-					TRANSLATED-MMACRO SPECSIMP MFEXPR*S))
-	       #+cl 
-	       (or (get (car y) 'mfexpr*) (fboundp x))
+	 ((AND (or (get (car y) 'mfexpr*) (fboundp x))
 	       (NOT (MEMQ '|&System Function| L)))
 	  (NCONC L
 		 (LIST (COND ((GET X 'TRANSLATED) '$TRANSFUN)
@@ -613,7 +610,7 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
       ((NULL ITEML) PROPVARS)
     (AND (AMONG X (MEVAL (LIST '($PROPERTIES) (CAR ITEML))))
 	 (NCONC PROPVARS (NCONS (CAR ITEML))))))
-
+
 (DEFMSPEC $PRINTPROPS (R) (SETQ R (CDR R))
   (IF (NULL (CDR R)) (MERROR "PRINTPROPS takes two arguments."))
   (LET ((S (CADR R)))
@@ -648,7 +645,7 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
 	       )))
        '$DONE)
 
-(declare-top (FIXNUM N))
+;(declare-top (FIXNUM N))
 
 (DEFUN ATDECODE (FUN DL VL) 
        (SETQ VL (copy-top-level VL))
@@ -717,12 +714,11 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
 			      (NCONS (CAR I)))
 		      RET))))
 
-
-(declare-top (SPLITFILE CHANGV)
+(declare-top ;(SPLITFILE CHANGV)
 	 (SPECIAL TRANS OVAR NVAR TFUN INVFUN $PROGRAMMODE NFUN
 		  *ROOTS *FAILURES VARLIST GENVAR $RATFAC)
-	 #-cl
-	 (*LEXPR $LIMIT $SOLVE SOLVABLE)) 
+;	 (*LEXPR $LIMIT $SOLVE SOLVABLE)
+	 )
 
 (DEFMFUN $CHANGEVAR (EXPR TRANS NVAR OVAR) 
   (LET (INVFUN NFUN $RATFAC)
@@ -786,8 +782,8 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
 		     VARLIST NVARLIST)
 	       (RDIS (CDR EXPR))))))
 	  
-
-(declare-top (SPLITFILE FACSUM) (SPECIAL $LISTCONSTVARS FACFUN)) 
+(declare-top ;(SPLITFILE FACSUM)
+ (SPECIAL $LISTCONSTVARS FACFUN)) 
 
 (DEFMFUN $FACTORSUM (E) (FACTORSUM0 E '$FACTOR)) 
 
@@ -868,8 +864,10 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
 					      (FACTORSUM1 (CDR F)))
 					     (T F)))
 			      (CDR E)))))) 
-
-(declare-top (SPLITFILE COMBF) (SPECIAL $COMBINEFLAG))
+
+(declare-top ;(SPLITFILE COMBF)
+ (SPECIAL $COMBINEFLAG))
+
 (defmvar $combineflag t)
 
 (DEFMFUN $COMBINE (E) 
@@ -902,8 +900,8 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
 		        (SETQ R (CONS (MUL2 (ADDN NU NIL) (POWER* DE -1)) R)))
 	      LN LD)
 	     (RETURN (ADDN (IF XL (CONS XL R) R) NIL))))
-
-(declare-top (SPLITFILE FACOUT) (FIXNUM NUM))
+
+;(declare-top (SPLITFILE FACOUT) (FIXNUM NUM))
 
 (DEFMFUN $FACTOROUT NUM
   (PROG (E VL EL FL CL L F X)
@@ -934,8 +932,8 @@ END	(AND E (GO LOOP))
 	    (SETQ EL (CONS (SIMPTIMES (LIST '(MTIMES) (CAAR I)
 				 ($FACTORSUM (SIMPLUS (CONS '(MPLUS) (CDAR I)) 1 NIL))) 1 NIL) EL)))
 	(RETURN (ADDN EL NIL))))
-
-(declare-top (SPLITFILE SCREEN))
+
+;(declare-top (SPLITFILE SCREEN))
 ;; This splitfile contains primitives for manipulating the screen from MACSYMA
 ;; This stuff should just be stuck in STATUS.
 
@@ -950,7 +948,7 @@ END	(AND E (GO LOOP))
 (DEFMFUN $PAUSE (&OPTIONAL (MORE-MSG MOREMSG) (MORE-CONTINUE MORECONTINUE))
    (LET ((MOREMSG (STRIPDOLLAR MORE-MSG))
 	 (MORECONTINUE (STRIPDOLLAR MORE-CONTINUE)))
-     (MORE-FUN NIL)
+;     (MORE-FUN NIL)
      '$DONE))
 
 ;; $CLEARSCREEN clears the screen.  It takes no arguments.

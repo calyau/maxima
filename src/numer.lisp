@@ -16,17 +16,14 @@
 ;;; 4:34pm  Thursday, 28 May 1981 - George Carrette.
 
 (DEFUN COMPATIBLE-ARRAY-TYPE? (TYPE TYPE-LIST)
-  #+MACLISP
-  (MEMQ TYPE TYPE-LIST)
-  #+NIL
-  (memq (or (cdr (assq type '((double-float . flonum))))
-	    type)
-	type-list)
-  #+cl
-  (PROGN TYPE-LIST
-	 (EQ TYPE t)
-	 )
-  )
+  (declare (ignore type-list))
+;  #+MACLISP
+;  (MEMQ TYPE TYPE-LIST)
+;  #+NIL
+;  (memq (or (cdr (assq type '((double-float . flonum))))
+;	    type)
+;	type-list)
+  (EQ TYPE t))
 
 (DEFMFUN GET-ARRAY (X &OPTIONAL (KINDS NIL) (/#-DIMS) &REST DIMENSIONS)
 ;  "Get-Array is fairly general.
@@ -37,16 +34,15 @@
   (COND ((NULL KINDS) (get-array-pointer x))
 	((NULL /#-DIMS)
 	 (LET ((A  (get-array-pointer x)))
-	   (COND ((COMPATIBLE-ARRAY-TYPE? (ARRAY-TYPE A) KINDS) A)
-		 (T
-		  (MERROR "~:M is not an array of type: ~:M"
-			  X
-			  `((mlist) ,@kinds))))))
+	   (if (COMPATIBLE-ARRAY-TYPE? (ARRAY-TYPE A) KINDS)
+	       A
+	       (MERROR "~:M is not an array of type: ~:M"  X
+		       `((mlist) ,@kinds)))))
 	((NULL DIMENSIONS)
 	 (LET ((A (GET-ARRAY X KINDS)))
-	   (COND ((= (ARRAY-rank A) /#-DIMS) A)
-		 (T
-		  (MERROR "~:M does not have ~:M dimensions." X /#-DIMS)))))
+	   (if (= (ARRAY-rank A) /#-DIMS)
+	       A
+	       (MERROR "~:M does not have ~:M dimensions." X /#-DIMS))))
 	('ELSE
 	 (LET ((A (GET-ARRAY X KINDS /#-DIMS)))
 	   (DO ((J 1 (f1+ J))
@@ -56,9 +52,7 @@
 	     (OR (OR (EQ (CAR L) '*)
 		     (= (CAR L) (ARRAY-DIMENSION-N J A)))
 		 (MERROR "~:M does not have dimension ~:M equal to ~:M"
-			 X
-			 J
-			 (CAR L))))))))
+			 X J (CAR L))))))))
 
 (DECLARE-top (SPECIAL %E-VAL))
 
@@ -67,34 +61,35 @@
 	     X
 	     (LET (($NUMER T) ($FLOAT T))
 	       (RESIMPLIFY (SUBST %E-VAL '$%E X))))))
-
+
 ;;; Trampolines for calling with numerical efficiency.
 
 (DEFVAR TRAMP$-ALIST ())
 
 (DEFMACRO DEFTRAMP$ (NARGS)
   (LET ((TRAMP$ (SYMBOLCONC 'TRAMP NARGS '$))
-	#+MACLISP
-	(TRAMP$-S (SYMBOLCONC 'TRAMP NARGS '$-S))
+;	#+MACLISP
+;	(TRAMP$-S (SYMBOLCONC 'TRAMP NARGS '$-S))
 	(TRAMP$-F (SYMBOLCONC 'TRAMP NARGS '$-F))
 	(TRAMP$-M (SYMBOLCONC 'TRAMP NARGS '$-M))
 	(L (MAKE-LIST NARGS)))
     (LET ((ARG-LIST (MAPCAR #'(LAMBDA (IGN)IGN (GENSYM)) L))
-	  #+MACLISP
-	  (ARG-TYPE-LIST (MAPCAR #'(LAMBDA (IGNORE) 'flonum) L)))
+;	  #+MACLISP
+;	  (ARG-TYPE-LIST (MAPCAR #'(LAMBDA (IGNORE) 'flonum) L))
+	  )
     `(PROGN ;'COMPILE
 	    (PUSH '(,NARGS ,TRAMP$
-		    #+MACLISP ,TRAMP$-S
+;		    #+MACLISP ,TRAMP$-S
 		    ,TRAMP$-F ,TRAMP$-M)
 		  TRAMP$-ALIST)
 	    (DEFMVAR ,TRAMP$ "Contains the object to jump to if needed")
-	    #+MACLISP
-	    (DECLARE-top (FLONUM (,TRAMP$-S ,@ARG-TYPE-LIST)
-			     (,TRAMP$-F ,@ARG-TYPE-LIST)
-			     (,TRAMP$-M ,@ARG-TYPE-LIST)))
-	    #+MACLISP
-	    (DEFUN ,TRAMP$-S ,ARG-LIST
-	      (FLOAT (SUBRCALL NIL ,TRAMP$ ,@ARG-LIST)))
+;	    #+MACLISP
+;	    (DECLARE-top (FLONUM (,TRAMP$-S ,@ARG-TYPE-LIST)
+;			     (,TRAMP$-F ,@ARG-TYPE-LIST)
+;			     (,TRAMP$-M ,@ARG-TYPE-LIST)))
+;	    #+MACLISP
+;	    (DEFUN ,TRAMP$-S ,ARG-LIST
+;	      (FLOAT (SUBRCALL NIL ,TRAMP$ ,@ARG-LIST)))
 	    (DEFUN ,TRAMP$-F ,ARG-LIST
 	      (FLOAT (FUNCALL ,TRAMP$ ,@ARG-LIST)))
 	    (DEFUN ,TRAMP$-M ,ARG-LIST
@@ -105,14 +100,15 @@
 (DEFTRAMP$ 3)
 
 (DEFMFUN MAKE-TRAMP$ (F N)
-  (LET ((L (zl-ASSOC N TRAMP$-ALIST)))
+  (LET ((L (ASSOC N TRAMP$-ALIST :test #'equal)))
     (IF (NULL L)
 	(MERROR "BUG: No trampoline of argument length ~M" N))
     (POP L)
-    (LET (tramp$ #+maclisp tramp$-s tramp$-s tramp$-f)
-	 (declare (special tramp$ tramp$-s tramp$-f ))
+    (LET (tramp$ ;#+maclisp tramp$-s
+	  tramp$-m tramp$-f)
+	 (declare (special tramp$ tramp$-m tramp$-f ))
 	 (setq tramp$ (pop l)
-	       #+maclisp TRAMP$-S #+maclisp (POP L)
+;	       #+maclisp TRAMP$-S #+maclisp (POP L)
 	       tramp$-f (pop l)
 	       tramp$-m (pop l))
       (LET ((WHATNOT (FUNTYPEP F)))
@@ -123,16 +119,16 @@
    	  ((MEXPR)
 	   (SET TRAMP$ (CADR WHATNOT))
 	   (GETSUBR! TRAMP$-M))
-	  #+MACLISP
-	  ((SUBR)
-	   (COND ((SHIT-EQ (CADR WHATNOT) (GETSUBR! TRAMP$-S))
-		  ;; This depends on the fact that the lisp compiler
-		  ;; always outputs the same first instruction for
-		  ;; "flonum compiled" subrs.
-		  (CADR WHATNOT))
-		 ('ELSE
-		  (SET TRAMP$ (CADR WHATNOT))
-		  (GETSUBR! TRAMP$-S))))
+;	  #+MACLISP
+;	  ((SUBR)
+;	   (COND ((SHIT-EQ (CADR WHATNOT) (GETSUBR! TRAMP$-S))
+;		  ;; This depends on the fact that the lisp compiler
+;		  ;; always outputs the same first instruction for
+;		  ;; "flonum compiled" subrs.
+;		  (CADR WHATNOT))
+;		 ('ELSE
+;		  (SET TRAMP$ (CADR WHATNOT))
+;		  (GETSUBR! TRAMP$-S))))
 	  ((EXPR LSUBR)
 	   (SET TRAMP$ (CADR WHATNOT))
 	   (GETSUBR! TRAMP$-F))
@@ -141,16 +137,16 @@
 
 
 (DEFUN GETSUBR! (X)
-  (OR #+MACLISP(GET X 'SUBR)
-      #+(OR cl NIL) (AND (SYMBOLP X) (FBOUNDP X) (SYMBOL-FUNCTION X))
-      (GETSUBR! (MAXIMA-ERROR "No subr property for it!" X 'WRNG-TYPE-ARG))))
+  (OR ;#+MACLISP (GET X 'SUBR)
+   (AND (SYMBOLP X) (FBOUNDP X) (SYMBOL-FUNCTION X))
+   (GETSUBR! (MAXIMA-ERROR "No subr property for it!" X 'WRNG-TYPE-ARG))))
 
 (DEFUN FUNTYPEP (F)
   (COND ((SYMBOLP F)
 	 (LET ((MPROPS (MGETL F '(MEXPR)))
-	       (LPROPS #+MACLISP (GETL F '(SUBR LSUBR EXPR))
-		       #+(OR cl NIL) (AND (FBOUNDP F)
-					     (LIST 'EXPR (SYMBOL-FUNCTION F)))))
+	       (LPROPS ;#+MACLISP (GETL F '(SUBR LSUBR EXPR))
+		(AND (FBOUNDP F)
+		     (LIST 'EXPR (SYMBOL-FUNCTION F)))))
 	   (OR (IF $TRANSRUN
 		   (OR LPROPS MPROPS)
 		   (OR MPROPS LPROPS))
@@ -165,8 +161,8 @@
 	('ELSE
 	 NIL)))
 
-#+MACLISP
-(DEFUN SHIT-EQ (X Y) (= (EXAMINE (MAKNUM X)) (EXAMINE (MAKNUM Y))))
+;#+MACLISP
+;(DEFUN SHIT-EQ (X Y) (= (EXAMINE (MAKNUM X)) (EXAMINE (MAKNUM Y))))
 
 ;; For some purposes we need a more general trampoline mechanism,
 ;; not limited by the need to use a special variable and a
@@ -183,11 +179,11 @@
     (CASE (CAR K)
       ((OPERATORS)
        (CONS 'OPERATORS F))
-      #+MACLISP
-      ((SUBR)
-       (IF (SHIT-EQ (CADR K) (GETSUBR! 'TRAMP1$-S))
-	   (CONS 'SUBR$ (CADR K))
-	   (CONS 'SUBR (CADR K))))
+;      #+MACLISP
+;      ((SUBR)
+;       (IF (SHIT-EQ (CADR K) (GETSUBR! 'TRAMP1$-S))
+;	   (CONS 'SUBR$ (CADR K))
+;	   (CONS 'SUBR (CADR K))))
       ((MEXPR EXPR LSUBR)
        (CONS (CAR K) (CADR K)))
       (T
@@ -195,15 +191,15 @@
 
 (DEFUN GCALL1$ (F X)
   (CASE (CAR F)
-    #+MACLISP
-    ((SUBR$)
-     (SUBRCALL FLONUM (CDR F) X))
-    #+MACLISP
-    ((SUBR)
-     (FLOAT (SUBRCALL NIL (CDR F) X)))
-    #+MACLISP
-    ((LSUBR)
-     (FLOAT (LSUBRCALL NIL (CDR F) X)))
+;    #+MACLISP
+;    ((SUBR$)
+;     (SUBRCALL FLONUM (CDR F) X))
+;    #+MACLISP
+;    ((SUBR)
+;     (FLOAT (SUBRCALL NIL (CDR F) X)))
+;    #+MACLISP
+;    ((LSUBR)
+;     (FLOAT (LSUBRCALL NIL (CDR F) X)))
     ((EXPR)
      (FLOAT (FUNCALL (CDR F) X)))
     ((MEXPR OPERATORS)
@@ -213,15 +209,15 @@
 
 (DEFUN GCALL2$ (F X Y)
   (CASE (CAR F)
-    #+MACLISP
-    ((SUBR$)
-     (SUBRCALL FLONUM (CDR F) X Y))
-    #+MACLISP
-    ((SUBR)
-     (FLOAT (SUBRCALL NIL (CDR F) X Y)))
-    #+MACLISP
-    ((LSUBR)
-     (FLOAT (LSUBRCALL NIL (CDR F) X Y)))
+;    #+MACLISP
+;    ((SUBR$)
+;     (SUBRCALL FLONUM (CDR F) X Y))
+;    #+MACLISP
+;    ((SUBR)
+;     (FLOAT (SUBRCALL NIL (CDR F) X Y)))
+;    #+MACLISP
+;    ((LSUBR)
+;     (FLOAT (LSUBRCALL NIL (CDR F) X Y)))
     ((EXPR)
      (FLOAT (FUNCALL (CDR F) X Y)))
     ((MEXPR OPERATORS)
@@ -257,9 +253,9 @@
     (CASE (CAR K)
       ((OPERATORS)
        (CONS 'OPERATORS F))
-      #+MACLISP
-      ((SUBR)
-       (CONS 'SUBR (CADR K)))
+;      #+MACLISP
+;      ((SUBR)
+;       (CONS 'SUBR (CADR K)))
       ((MEXPR EXPR LSUBR)
        (CONS (CAR K) (CADR K)))
       (T
@@ -267,12 +263,12 @@
 
 (DEFUN GCALL3 (F A1 A2 A3)
   (CASE (CAR F)
-    #+MACLISP
-    ((SUBR)
-     (SUBRCALL T (CDR F) A1 A2 A3))
-    #+MACLISP
-    ((LSUBR)
-     (LSUBRCALL T (CDR F) A1 A2 A3))
+;    #+MACLISP
+;    ((SUBR)
+;     (SUBRCALL T (CDR F) A1 A2 A3))
+;    #+MACLISP
+;    ((LSUBR)
+;     (LSUBRCALL T (CDR F) A1 A2 A3))
     ((EXPR)
      (FUNCALL (CDR F)  A1 A2 A3))
     ((MEXPR OPERATORS)

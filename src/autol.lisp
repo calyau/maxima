@@ -4,9 +4,8 @@
 ;; The actual autoloading data is in src/max_ext.lisp
 ;(aload "plot.o")
 
-(defun aload (file &aux *load-verbose* tem tried)
-  (let ((in file)
-	($system  (list  '(mlist)
+(defun aload (file &aux *load-verbose* tem)
+  (let (($system  (list  '(mlist)
 			 #+kcl (concatenate 'string si::*system-directory*
 					    "../src/foo.{o,lsp,lisp}"))))
     (declare (special $system))
@@ -15,9 +14,8 @@
 				    $system)))
     (and tem (load tem))))
 
-(defun $aload_mac (file &aux *load-verbose* tem tried)
-  (let ((in file)
-	($system  (list  '(mlist)
+(defun $aload_mac (file &aux *load-verbose* tem)
+  (let (($system  (list  '(mlist)
 			 #+kcl (concatenate 'string si::*system-directory*
 					    "../{src,share,share1,sharem}/foo.{mc,mac}"))))
     (declare (special $system))
@@ -25,10 +23,6 @@
 				    $FILE_SEARCH_MAXIMA
 				    $system)))
     (and tem ($load tem))))
-
-
-
-
 
 
 ;for defun,defmfun
@@ -61,8 +55,7 @@
           (mputprop fun
               `((LAMBDA) ((MLIST) ((MLIST) |_l|))
                    ((MPROGN) ((aload) ',file ) (($APPLY) ',fun |_l|)))
-	      'mexpr)
-	      ))
+	      'mexpr)))
 
 ;foo(x,y):=..
 (defun $auto_mexpr (fun file)
@@ -70,8 +63,4 @@
           (mputprop fun
               `((LAMBDA) ((MLIST) ((MLIST) |_l|))
                    ((MPROGN) (($aload_mac) ',file ) (($APPLY) ',fun |_l|)))
-	      'mexpr)
-	      ))
-
-
-
+	      'mexpr)))

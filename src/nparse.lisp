@@ -23,35 +23,29 @@
 ;;;	   bring this up on EBCDIC machines, we may lose.
 
 (DEFMACRO IMEMBER (X L)
-  #+(OR CL NIL) `(MEMBER ,X ,L)
-  #-(OR CL NIL) `(zl-MEMBER ,X ,L))
+  `(MEMBER ,X ,L))
 
-#-cl ;;defined in commac or via common
-(cond ((not (fboundp 'char<=)))
- (defun char<= (a b) (<= a b))
- (defun char>= (a b) (>= a b)))
+;#-cl ;;defined in commac or via common
+;(cond ((not (fboundp 'char<=)))
+; (defun char<= (a b) (<= a b))
+; (defun char>= (a b) (>= a b)))
 
 
 (PROGN
 
-(DEFMVAR ALPHABET '(#\_ #\%))
+  (DEFMVAR ALPHABET '(#\_ #\%))
 
-(DEFMFUN ALPHABETP (N)
- #-cl (DECLARE (FIXNUM N))
- (and (characterp n)
- (OR (AND (CHAR>= N #\A) (CHAR<= N #\Z))  ; upper case
-     (AND (CHAR>= N #\a) (CHAR<= N #\z)) ; lower case
-     (imember n '(#\_ #\%))
-     (IMEMBER N ALPHABET))))
+  (DEFMFUN ALPHABETP (N)
+    #-cl (DECLARE (FIXNUM N))
+    (and (characterp n)
+	 (OR (AND (CHAR>= N #\A) (CHAR<= N #\Z)) ; upper case
+	     (AND (CHAR>= N #\a) (CHAR<= N #\z)) ; lower case
+	     (imember n '(#\_ #\%))
+	     (IMEMBER N ALPHABET))))
 ; test for %, _, or other declared
-				  ;    alphabetic characters.
-(DEFMFUN ASCII-NUMBERP (NUM)
-  #-cl (DECLARE (FIXNUM NUM))
-  (AND (characterp num) (CHAR<= NUM #\9) (CHAR>= NUM #\0)))
-
-(DEFUN GETALIAS (X) (COND ((GET X 'ALIAS)) ((EQ X '$FALSE) NIL) (T X)))
-
-)
+					;    alphabetic characters.
+  (DEFMFUN ASCII-NUMBERP (NUM)
+    (AND (characterp num) (CHAR<= NUM #\9) (CHAR>= NUM #\0))))
 
  ;End of #-LISPM
  
@@ -63,7 +57,7 @@
 
 (DEFUN MREAD-SYNERR (sSTRING &REST L)
 ;  #+lispm (sys:parse-ferror    (format nil sstring l)  :correct-input )
-  #+lispm (dbg:parse-ferror    (format nil sstring l)  :correct-input )
+;  #+lispm (dbg:parse-ferror    (format nil sstring l)  :correct-input )
   #+(OR  NIL) (APPLY #'ERROR #+LISPM NIL #+NIL ':READ-ERROR sSTRING L)
   #-(OR LISPM NIL)
   (progn 
@@ -132,13 +126,11 @@
 
 
 (DEFUN FIRSTCHARN (X)
-  #+NIL     (CHAR-CODE (CHAR (SYMBOL-NAME X) 0))
-  #+cl (aref (string x) 0)
-  #+MACLISP (GETCHARN X 1))
+  (aref (string x) 0))
 
-(DEFVAR *PARSE-STREAM*		()	    "input stream for Macsyma parser")
-(DEFVAR MACSYMA-OPERATORS	()	    "Macsyma operators structure")
-(DEFVAR *MREAD-PROMPT*		nil	    "prompt used by MREAD")
+(DEFVAR *PARSE-STREAM*		()	  "input stream for Macsyma parser")
+(DEFVAR MACSYMA-OPERATORS	()	  "Macsyma operators structure")
+(DEFVAR *MREAD-PROMPT*		nil	  "prompt used by MREAD")
 (DEFVAR *MREAD-EOF-OBJ* () "Bound by MREAD for use by MREAD-RAW")
 
 (defun tyi-parse-int (stream eof)
@@ -196,7 +188,6 @@
       (OR (GET OP 'ALIAS) OP)
       OP))
 
-
 
 ;;;; Tokenizing
 
@@ -416,9 +407,6 @@
 
 (DEFUN SCAN-MACSYMA-STRING () (INTERN (SCAN-STRING #\&)))
 
-(defvar *scan-string-buffer*
-  nil)
-
 (DEFUN SCAN-STRING (&optional init)
   (let ((buf (or *scan-string-buffer*
 		 (setq *scan-string-buffer*
@@ -482,9 +470,9 @@
 	      (MAKE-NUMBER (CONS (NREVERSE L) DATA)))))
     (PARSE-TYI)))
 
-#+nil
-(DEFUN SCAN-NUMBER-BEFORE-DOT (DATA)
-  (SCAN-DIGITS DATA '(#. period-char) #'SCAN-NUMBER-AFTER-DOT))
+;#+nil
+;(DEFUN SCAN-NUMBER-BEFORE-DOT (DATA)
+;  (SCAN-DIGITS DATA '(#. period-char) #'SCAN-NUMBER-AFTER-DOT))
 
 (DEFUN SCAN-NUMBER-AFTER-DOT (DATA)
   (SCAN-DIGITS DATA '(#\E #\e #\B #\b #\D #\d #\S #\s) #'SCAN-NUMBER-EXPONENT))
@@ -497,7 +485,6 @@
 	DATA)
   (SCAN-DIGITS DATA () () t))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;                                                                    ;;;;;
 ;;;;;                    The Expression Parser                           ;;;;;
@@ -563,7 +550,6 @@
 ;;; RBP -- Right Binding Power (the stickiness to the right)
 ;;;
 
-
 ;;;; Macro Support
 
 ;; "First character" and "Pop character"
@@ -665,7 +651,6 @@
 (DEFMACRO FIRST-C () '(PEEK-ONE-TOKEN))
 (DEFMACRO POP-C   () '(SCAN-ONE-TOKEN))
 
-
 
 (DEFUN MSTRINGP (X)
   (AND (SYMBOLP X) (char= (FIRSTCHARN X) #\&)))
@@ -695,46 +680,45 @@
 ;;;
 
 (eval-when (eval compile load)
-
-
-#+already-expanded-below
-(DEF-PROPL-CALL NUD (OP)
-  (IF (OPERATORP OP)
-      ;; If first element is an op, it better have a NUD
-      (MREAD-SYNERR "~A is not a prefix operator" (MOPSTRIP OP))
-      ;; else take it as is.
-      (CONS '$ANY OP)))
+  #+already-expanded-below
+  (DEF-PROPL-CALL NUD (OP)
+    (IF (OPERATORP OP)
+	;; If first element is an op, it better have a NUD
+	(MREAD-SYNERR "~A is not a prefix operator" (MOPSTRIP OP))
+	;; else take it as is.
+	(CONS '$ANY OP)))
 ;;begin expansion
-(DEFMACRO DEF-NUD-EQUIV (OP EQUIV)
-   (LIST 'PUTPROP (LIST 'QUOTE OP) (LIST 'FUNCTION EQUIV)
+  (DEFMACRO DEF-NUD-EQUIV (OP EQUIV)
+    (LIST 'PUTPROP (LIST 'QUOTE OP) (LIST 'FUNCTION EQUIV)
           (LIST 'QUOTE 'NUD)))
-(DEFMACRO NUD-PROPL () ''(NUD))
+  (DEFMACRO NUD-PROPL () ''(NUD))
   (DEFMACRO DEF-NUD-FUN (OP-NAME OP-L . BODY)
     (LIST* 'DEFUN-PROP (LIST* OP-NAME 'NUD 'NIL) OP-L BODY))
-(DEFUN NUD-CALL (OP)
+  (DEFUN NUD-CALL (OP)
     (LET ((TEM (AND (SYMBOLP OP) (GETL OP '(NUD)))) res)
-	 (setq res	 
-	       (IF (NULL TEM)
-		   (IF (OPERATORP OP)
-		       (MREAD-SYNERR "~A is not a prefix operator"
-				     (MOPSTRIP OP))
-		       (CONS '$ANY OP))
-		   (FUNCALL (CADR TEM) OP)))
-	 res
-	 ))
+      (setq res	 
+	    (IF (NULL TEM)
+		(IF (OPERATORP OP)
+		    (MREAD-SYNERR "~A is not a prefix operator"
+				  (MOPSTRIP OP))
+		    (CONS '$ANY OP))
+		(FUNCALL (CADR TEM) OP)))
+      res))
 ;;end expansion 
 
 ;;following defines def-led-equiv led-propl def-led-fun led-call
-#+already-expanded-below
-(DEF-PROPL-CALL LED (OP L)
-  (MREAD-SYNERR "~A is not an infix operator" (MOPSTRIP OP)))
-)
+  #+already-expanded-below
+  (DEF-PROPL-CALL LED (OP L)
+    (MREAD-SYNERR "~A is not an infix operator" (MOPSTRIP OP))))
+
 ;;begin expansion
 (DEFMACRO DEF-LED-EQUIV (OP EQUIV)
     (LIST 'PUTPROP (LIST 'QUOTE OP) (LIST 'FUNCTION EQUIV)
           (LIST 'QUOTE 'LED)))
+
 (eval-when (compile load eval)
   (DEFMACRO LED-PROPL () ''(LED)))
+
 (DEFMACRO DEF-LED-FUN (OP-NAME OP-L . BODY)
     (LIST* 'DEFUN-PROP (LIST* OP-NAME 'LED 'NIL) OP-L BODY))
 (DEFUN LED-CALL (OP L)
@@ -761,17 +745,16 @@
 ;;;      It will get bound to the operator being parsed.
 ;;;  lispm:Optional args not allowed in release 5 allowed, necessary afterwards..
 
-#+cl
 (DEFMACRO DEF-NUD ((OP . LBP-RBP) BVL . BODY)
   (let (( lbp (nth 0 lbp-rbp))
 	( rbp (nth 1 lbp-rbp)))
     `(PROGN 'COMPILE 	  ,(MAKE-PARSER-FUN-DEF OP 'NUD BVL BODY)
 	    (SET-LBP-AND-RBP ',OP ',LBP ',RBP))))
 
-#-cl
-(DEFMACRO DEF-NUD ((OP #+nil &OPTIONAL LBP RBP) BVL . BODY)
-  `(PROGN 'COMPILE 	  ,(MAKE-PARSER-FUN-DEF OP 'NUD BVL BODY)
-	  (SET-LBP-AND-RBP ',OP ',LBP ',RBP)))
+;#-cl
+;(DEFMACRO DEF-NUD ((OP #+nil &OPTIONAL LBP RBP) BVL . BODY)
+;  `(PROGN 'COMPILE 	  ,(MAKE-PARSER-FUN-DEF OP 'NUD BVL BODY)
+;	  (SET-LBP-AND-RBP ',OP ',LBP ',RBP)))
 
 (DEFUN SET-LBP-AND-RBP (OP LBP RBP)
   (COND ((NOT (consp OP))
@@ -807,7 +790,6 @@
 ;;;	  get bound to the parsed structure which was to the left of Arg1.
 
 
-#+cl
 (DEFMACRO DEF-LED((OP . LBP-RBP) BVL . BODY)
   (let (( lbp (nth 0 lbp-rbp))
 	( rbp (nth 1 lbp-rbp)))
@@ -815,11 +797,11 @@
 	    ,(MAKE-PARSER-FUN-DEF  OP 'LED BVL BODY)
 	    (SET-LBP-AND-RBP ',OP ',LBP ',RBP))))
 
-#-cl
-(DEFMACRO DEF-LED ((OP #+(or cl NIL) &OPTIONAL LBP RBP) BVL . BODY)
-  `(PROGN 'COMPILE
-	  ,(MAKE-PARSER-FUN-DEF  OP 'LED BVL BODY)
-	  (SET-LBP-AND-RBP ',OP ',LBP ',RBP)))
+;#-cl
+;(DEFMACRO DEF-LED ((OP #+(or cl NIL) &OPTIONAL LBP RBP) BVL . BODY)
+;  `(PROGN 'COMPILE
+;	  ,(MAKE-PARSER-FUN-DEF  OP 'LED BVL BODY)
+;	  (SET-LBP-AND-RBP ',OP ',LBP ',RBP)))
 
 (DEFMACRO DEF-COLLISIONS (OP &REST ALIST)
   (LET ((KEYS (DO ((I  1.    (#+cl ash #-cl LSH I 1.))
@@ -838,7 +820,6 @@
 			       ,OP))
 		 ALIST))))
 
-
 
 (DEFUN COLLISION-LOOKUP (OP ACTIVE-BITMASK KEY-BITMASK)
   (LET ((RESULT (LOGAND ACTIVE-BITMASK KEY-BITMASK)))
@@ -866,7 +847,6 @@
       (LOGIOR (CDR (ASSQ KEY (GET OP 'KEYS))) ACTIVE-BITMASK))))
       
 
-
 ;;;; Data abstraction
 
 ;;; LBP = Left Binding Power
@@ -918,7 +898,6 @@ option is especially useful on slow terminals.  Setting it to -1 causes the
 entire input string to be printed out when an MAXIMA-ERROR occurs."
 	 FIXNUM)
 
-
 
 ;;;; Misplaced definitions
 
@@ -937,7 +916,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 (DEF-OPERATORP1)
 
-
 ;;;; The Macsyma Parser
 
 ;;; (MREAD) with arguments compatible with losing maclisp READ style.
@@ -949,36 +927,36 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;; an atribute of the stream which somebody can hack before calling
 ;;; MREAD if he wants to.
 
-#+Lispm
-(DEFUN READ-APPLY (F READ-ARGS &AUX WHICH-OPERS)
-  (MULTIPLE-VALUE-BIND (STREAM EOF)
-		       (SI:DECODE-READ-ARGS READ-ARGS)
+;#+Lispm
+;(DEFUN READ-APPLY (F READ-ARGS &AUX WHICH-OPERS)
+;  (MULTIPLE-VALUE-BIND (STREAM EOF)
+;		       (SI:DECODE-READ-ARGS READ-ARGS)
 
-    (SETQ WHICH-OPERS (FUNCALL STREAM ':WHICH-OPERATIONS))
-    (IF (MEMQ ':RUBOUT-HANDLER WHICH-OPERS)
-	(FUNCALL STREAM ':RUBOUT-HANDLER '((:PROMPT *MREAD-PROMPT*))
-		 F STREAM EOF)
-	(FUNCALL F STREAM EOF))))
+;    (SETQ WHICH-OPERS (FUNCALL STREAM ':WHICH-OPERATIONS))
+;    (IF (MEMQ ':RUBOUT-HANDLER WHICH-OPERS)
+;	(FUNCALL STREAM ':RUBOUT-HANDLER '((:PROMPT *MREAD-PROMPT*))
+;		 F STREAM EOF)
+;	(FUNCALL F STREAM EOF))))
 
-#+Maclisp
-(DEFUN READ-APPLY (F READ-ARGS &AUX WHICH-OPERS)
-  (LET ((STREAM (CAR READ-ARGS))
-	(EOF (CADR READ-ARGS)))
-    ;; apply the correction.
-    (COND ((AND (NULL (CDR READ-ARGS))
-		(NOT (OR (EQ STREAM T)
-			 (SFAP STREAM)
-			 (FILEP STREAM))))
-	   (SETQ STREAM NIL EOF STREAM)))
-    (COND ((EQ STREAM T)
-	   (SETQ STREAM TYI))
-	  ((EQ STREAM NIL)
-	   (IF ^Q (SETQ STREAM INFILE) (SETQ STREAM TYI))))
-    (SETQ WHICH-OPERS (AND (SFAP STREAM)
-			   (SFA-CALL STREAM 'WHICH-OPERATIONS NIL)))
-    (IF (MEMQ 'RUBOUT-HANDLER WHICH-OPERS)
-	(SFA-CALL STREAM 'RUBOUT-HANDLER F)
-	(FUNCALL F STREAM EOF))))
+;#+Maclisp
+;(DEFUN READ-APPLY (F READ-ARGS &AUX WHICH-OPERS)
+;  (LET ((STREAM (CAR READ-ARGS))
+;	(EOF (CADR READ-ARGS)))
+;    ;; apply the correction.
+;    (COND ((AND (NULL (CDR READ-ARGS))
+;		(NOT (OR (EQ STREAM T)
+;			 (SFAP STREAM)
+;			 (FILEP STREAM))))
+;	   (SETQ STREAM NIL EOF STREAM)))
+;    (COND ((EQ STREAM T)
+;	   (SETQ STREAM TYI))
+;	  ((EQ STREAM NIL)
+;	   (IF ^Q (SETQ STREAM INFILE) (SETQ STREAM TYI))))
+;    (SETQ WHICH-OPERS (AND (SFAP STREAM)
+;			   (SFA-CALL STREAM 'WHICH-OPERATIONS NIL)))
+;    (IF (MEMQ 'RUBOUT-HANDLER WHICH-OPERS)
+;	(SFA-CALL STREAM 'RUBOUT-HANDLER F)
+;	(FUNCALL F STREAM EOF))))
 
 (defvar *current-line-info* nil)
 
@@ -996,7 +974,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 					 *parse-window* (cdr *parse-window*)))
 	       (princ *mread-prompt*)
 	       (force-output))
-	 (#+lispm read-apply #-lispm apply 'mread-raw read-args)
+	 (apply 'mread-raw read-args)
 		    )
   #-(or NIL cl)
   (READ-APPLY #'MREAD-RAW READ-ARGS))
@@ -1226,7 +1204,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (DEFPROP $CLAUSE "logical"   ENGLISH)
 (DEFPROP $EXPR   "algebraic" ENGLISH)
 
-
 ;;;; Parser Error Diagnostics
 
  ;; Call this for random user-generated parse errors
@@ -1254,7 +1231,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   (MREAD-SYNERR "Premature termination of input at ~A."
 		(MOPSTRIP OP)))
 
-
 ;;;; Operator Specific Data
 
 (DEF-NUD-EQUIV |$]| DELIM-ERR)
@@ -1685,15 +1661,15 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   ($UNLESS . ())
   ($WHILE  . ()))
 
-#+ti  ;;because of a bug the preceding doesn't give this..
-(defprop $do (($WHILE . 256) ($UNLESS . 128)
-                ($THRU . 64)
-                ($NEXT . 32)
-                ($STEP . 16)
-                ($IN . 8)
-                ($FROM . 4)
-                ($FOR . 2)
-                ($DO . 1)) keys)
+;#+ti  ;;because of a bug the preceding doesn't give this..
+;(defprop $do (($WHILE . 256) ($UNLESS . 128)
+;                ($THRU . 64)
+;                ($NEXT . 32)
+;                ($STEP . 16)
+;                ($IN . 8)
+;                ($FROM . 4)
+;                ($FOR . 2)
+;                ($DO . 1)) keys)
 
 
 (DEF-MHEADER   |$$| (NODISPLAYINPUT))
@@ -1721,7 +1697,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 		 X)))
 	(T (MAKNAM (MSTRING X)))))
 	
-
 (DEFINE-INITIAL-SYMBOLS
   ;; * Note: /. is looked for explicitly rather than
   ;;     existing in this chart. The reason is that
@@ -1738,7 +1713,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   ;; Three character
   |::=|
   )
-
+
 ;;; User extensibility:
 (defmacro upcase (operator)
  `(setq operator (intern (string-upcase (string ,operator)))))
@@ -1786,7 +1761,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   (DEF-OPERATOR OPERATOR POS ()  ()     ()  () () ()
     '(NUD . PARSE-NOFIX) 'MSIZE-NOFIX 'DIMENSION-NOFIX ()   ))
 
-
 ;;; (DEF-OPERATOR op pos lbp lpos rbp rpos sp1 sp2 
 ;;;	parse-data grind-fn dim-fn match)
 ;;; OP        is the operator name.
@@ -1878,51 +1852,51 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 
 #-gcl
-(eval-when (compile eval load)
+(eval-when (:compile-toplevel :execute :load-toplevel)
 
-(defvar *stream-alist* nil)
+  (defvar *stream-alist* nil)
 
-(defun stream-name (path)
-  (let ((tem (errset (namestring (pathname path)))))
-    (car tem)))
+  (defun stream-name (path)
+    (let ((tem (errset (namestring (pathname path)))))
+      (car tem)))
 
-(defun instream-name (instr)
-  (or (instream-stream-name instr)
-      (stream-name (instream-stream instr))))
+  (defun instream-name (instr)
+    (or (instream-stream-name instr)
+	(stream-name (instream-stream instr))))
 
-(defstruct instream
-  stream
-  (line 0 :type fixnum)
-  stream-name)
+  (defstruct instream
+    stream
+    (line 0 :type fixnum)
+    stream-name)
 
-;; (closedp stream) checks if a stream is closed.. how to do this in common
-;; lisp!!
+;; (closedp stream) checks if a stream is closed.
+;; how to do this in common lisp!!
 
-(defun cleanup ()
-  #+never-clean-up-dont-know-how-to-close
-  (dolist (v *stream-alist*)
-    (if (closedp (instream-stream v))
-	(setq *stream-alist* (delete v *stream-alist*)))))
+  (defun cleanup ()
+    #+never-clean-up-dont-know-how-to-close
+    (dolist (v *stream-alist*)
+      (if (closedp (instream-stream v))
+	  (setq *stream-alist* (delete v *stream-alist*)))))
 
-(defun get-instream (str)
-  (or (dolist (v *stream-alist*)
-	(cond ((eq str (instream-stream v))
-	       (return v))))
-      (let (name errset)
-	(errset (setq name (namestring str)))
-      (car (setq *stream-alist*
-		 (cons  (make-instream :stream str :stream-name name) *stream-alist*))))))
+  (defun get-instream (str)
+    (or (dolist (v *stream-alist*)
+	  (cond ((eq str (instream-stream v))
+		 (return v))))
+	(let (name errset)
+	  (errset (setq name (namestring str)))
+	  (car (setq *stream-alist*
+		     (cons  (make-instream :stream str :stream-name name)
+			    *stream-alist*))))))
 
 
 
-(defun newline (str ch) ch
-  (let ((in (get-instream str)))
-    (setf (instream-line in) (the fixnum (+ 1 (instream-line in)))))
-  ;; if the next line begins with '(', then record all cons's eg arglist )
-  ;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
-  (values))
-
-) ; end #-gcl
+  (defun newline (str ch) ch
+	 (let ((in (get-instream str)))
+	   (setf (instream-line in) (the fixnum (+ 1 (instream-line in)))))
+	;; if the next line begins with '(',
+	;; then record all cons's eg arglist )
+	;;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
+	 (values)))					; end #-gcl
 
 (defun find-stream (stream)
    (dolist (v *stream-alist*)

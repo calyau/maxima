@@ -16,23 +16,18 @@
 (load-macsyma-macros displm)
 
 (declare-top (special $LINEL))
-;; Read time parameters.  ITS only.
 
-
-#+(or ITS NIL)				;sigh (inside of #.)
-(eval-when (eval compile)
-  (SETQ %TDCRL #o207 %TDLF #o212 %TDQOT #o215 %TDMV0 #o217))
 
 ;; Global variables defined in this file.  Most of these are switches
 ;; controlling display format
 
-(DEFMVAR CHARACTER-GRAPHICS-TTY NIL
-	 "If T, then console can draw lines and math symbols using
-	 an extended character set.")
+;(DEFMVAR CHARACTER-GRAPHICS-TTY NIL
+;	 "If T, then console can draw lines and math symbols using
+;	 an extended character set.")
 
-(DEFMVAR LINE-GRAPHICS-TTY NIL
-	 "If T, then console can draw lines and math symbols using
-	 vector graphics.")
+;(DEFMVAR LINE-GRAPHICS-TTY NIL
+;	 "If T, then console can draw lines and math symbols using
+;	 vector graphics.")
 
 (DEFMVAR $CURSORDISP T
 	 "If T, causes expressions to be drawn by the displayer in logical 
@@ -73,9 +68,9 @@
 	 "Causes strings to be bracketed in double quotes when displayed.
 	 Normally this is off, but is turned on when a procedure definition is
 	 being displayed.")
-#+Franz
-(defmvar $typeset nil
- 	"Causes equations to be output in a typesetter readable form if t.")
+;#+Franz
+;(defmvar $typeset nil
+; 	"Causes equations to be output in a typesetter readable form if t.")
 
 (DEFMVAR DISPLAYP NIL "Is T when inside of DISPLA")
 
@@ -102,38 +97,36 @@
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
-#+lispm
-(SETQ SMART-TTY T RUBOUT-TTY T LINE-GRAPHICS-TTY t SCROLLP NIL)
+;#+lispm
+;(SETQ SMART-TTY T RUBOUT-TTY T LINE-GRAPHICS-TTY t SCROLLP NIL)
 
-#+(and cl (not lispm))
-(SETQ SMART-TTY nil RUBOUT-TTY nil LINE-GRAPHICS-TTY nil SCROLLP t)
+(SETQ SMART-TTY nil RUBOUT-TTY nil SCROLLP t)
 
 
-#+cl 
 (setq   LINEL 79. $LINEL 79. TTYHEIGHT 24.)
-#+lispm
-(multiple-value-bind (a b)
-  (send *terminal-io* :send-if-handles :size-in-characters)
-  (when (and a b) (setq linel a ttyheight b)
-    (setq linel 79 ttyheight 24)))
 
-#+NIL
-(multiple-value-bind (a b)
-  (send *terminal-io* :send-if-handles :size-in-characters)
-  (when (and a b) (setq linel a ttyheight b)
-    (setq linel 79 ttyheight 24))
-  (setq smart-tty nil rubout-tty nil scrollp t))
+;#+lispm
+;(multiple-value-bind (a b)
+;  (send *terminal-io* :send-if-handles :size-in-characters)
+;  (when (and a b) (setq linel a ttyheight b)
+;    (setq linel 79 ttyheight 24)))
+
+;#+NIL
+;(multiple-value-bind (a b)
+;  (send *terminal-io* :send-if-handles :size-in-characters)
+;  (when (and a b) (setq linel a ttyheight b)
+;    (setq linel 79 ttyheight 24))
+;  (setq smart-tty nil rubout-tty nil scrollp t))
 
 ;; Default settings for random systems.
-#-(OR ITS LISPM cl)
-(SETQ SMART-TTY NIL RUBOUT-TTY NIL SCROLLP T
-      LINEL 79. $LINEL 79. TTYHEIGHT 24.)
+;#-(OR ITS LISPM cl)
+;(SETQ SMART-TTY NIL RUBOUT-TTY NIL SCROLLP T
+;      LINEL 79. $LINEL 79. TTYHEIGHT 24.)
 
 
 
 
 (DEFVAR LINEARRAY (MAKE-array 80. :initial-element nil))
-
 
 (DEFMFUN MAXIMA-DISPLAY (FORM &key (stream *standard-output*) )
 	 (let ((*standard-output* stream))
@@ -190,6 +183,7 @@
 
 (defvar *alt-display2d* nil)
 (defvar *alt-display1d* nil)
+
 (DEFMFUN DISPLA (FORM &aux #+kcl(form form))
   (IF (OR (NOT #.TTYOFF) #.WRITEFILEP)
       (cond #+Franz ($typeset (apply #'$photot (list form)))
@@ -216,9 +210,10 @@
 			    (OUTPUT FORM (IF (AND (NOT $LEFTJUST) (= 2 LINES))
 					     (f- LINEL (f- WIDTH BKPTOUT))
 					     0))
-			    (IF (AND SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
-				     (> (CAR (CURSORPOS)) (f- TTYHEIGHT 3)))
-				(LET (#.writefilep) (MTERPRI))))
+;			    (IF (AND SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
+;				     (> (CAR (CURSORPOS)) (f- TTYHEIGHT 3)))
+;				(LET (#.writefilep) (MTERPRI)))
+			    )
 		     ;; make sure the linearray gets cleared out.
 		     (CLEAR-LINEARRAY))))))
 	    (T 
@@ -226,28 +221,28 @@
 	      (*alt-display1d* (apply *alt-display1d* form ()))
 	      (t (LINEAR-DISPLA FORM)))))))
 
-(defun transform-extends (x)
-  (cond (($extendp x)
-	 (let ((nom (send x ':macsyma-extend-type)))
-	   (append `((${) ,nom)
-		   (mapcar #'(lambda (u v) (list '(mequal) u (transform-extends v)))
-			   #-cl
-			   (cdr (mfunction-call $get nom '$accessors))
-			   #+cl     ;;wouldn't compile because mfunction-call not defined
-			   (cdr (funcall '$get nom '$acessors))
-			   (listarray (send x ':macsyma-extend-elements))))))
-	((atom x) x)
-	(t
-	 (do ((obj x (cdr obj))
-	      (new x)
-	      (slot 0 (f1+ slot)))
-	     ((null obj) new)
-	     (let* ((element (car obj))
-		    (result (transform-extends element)))
-	       (if (not (eq element result))
-		   (block nil
-		     (if (eq new x) (setq new (copy-seq x)))
-		     (setf (nth slot new) result))))))))
+;(defun transform-extends (x)
+;  (cond (($extendp x)
+;	 (let ((nom (send x ':macsyma-extend-type)))
+;	   (append `((${) ,nom)
+;		   (mapcar #'(lambda (u v) (list '(mequal) u (transform-extends v)))
+;			   #-cl
+;			   (cdr (mfunction-call $get nom '$accessors))
+;			   #+cl  ;;wouldn't compile because mfunction-call not defined
+;			   (cdr (funcall '$get nom '$acessors))
+;			   (listarray (send x ':macsyma-extend-elements))))))
+;	((atom x) x)
+;	(t
+;	 (do ((obj x (cdr obj))
+;	      (new x)
+;	      (slot 0 (f1+ slot)))
+;	     ((null obj) new)
+;	     (let* ((element (car obj))
+;		    (result (transform-extends element)))
+;	       (if (not (eq element result))
+;		   (block nil
+;		     (if (eq new x) (setq new (copy-seq x)))
+;		     (setf (nth slot new) result))))))))
 
 (DEFMVAR $DISPLAY_FORMAT_INTERNAL NIL
 	 "Setting this TRUE can help give the user a greater understanding
@@ -278,14 +273,13 @@
 ;; This ATOM-CONTEXT put in by GJC so that MCW could have a clean
 ;; hook by which to write his extensions for vector-underbars.
 
-(declare-top (*EXPR DIMENSION-ARRAY-OBJECT)) ; to be defined someplace else.
+;(declare-top (*EXPR DIMENSION-ARRAY-OBJECT)) ;to be defined someplace else.
 
 ;; Referenced externally by RAT;FLOAT.
 
 (DEFMFUN DIMENSION-ATOM (FORM RESULT)
 	 (COND ((AND (SYMBOLP FORM) (GET FORM ATOM-CONTEXT))
 		(FUNCALL (GET FORM ATOM-CONTEXT) FORM RESULT))
-	     #+(or CL NIL)
 	       ((STRINGP FORM) (DIMENSION-STRING (MAKESTRING FORM) RESULT))
 	       ((ml-typep FORM 'array)
 		  (DIMENSION-ARRAY-OBJECT FORM RESULT))
@@ -337,7 +331,6 @@
 		   ((OR (char= #\% (CAR DUMMY)) (char= #\& (CAR DUMMY))) (CDR DUMMY))
 		   ($LISPDISP (CONS #\? DUMMY))
 		   (T DUMMY))))))
-
 (DEFUN DIMENSION-PAREN (FORM RESULT)
   (SETQ RESULT (CONS RIGHT-PARENTHESES-CHAR (DIMENSION FORM (CONS LEFT-PARENTHESES-CHAR RESULT) 'MPAREN 'MPAREN 1 (f1+ RIGHT))))
   (SETQ WIDTH (f+ 2 WIDTH))
@@ -547,7 +540,7 @@
 			       (CAAR FORM) ROP W RIGHT)
 	      WIDTH (f+ 1 W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
 	(RETURN DUMMY)))
-
+
 (DISPLA-DEF BIGFLOAT  DIM-BIGFLOAT)
 (DISPLA-DEF MQUOTE    DIMENSION-PREFIX "'")
 (DISPLA-DEF MSETQ     DIMENSION-INFIX  " : ")
@@ -608,10 +601,11 @@
 
 ;; Hack to recycle slots on the stack.  Compiler should be doing this.
 ;; Use different names to preserve sanity.
+(defvar X1)
+(defvar X2)
 (eval-when (compile eval load)
-    (SETQ X1 'H1 X2 'D2))
+  (SETQ X1 'H1 X2 'D2))
 
-;#.(PROG2 (SETQ X1 'H1 X2 'D2) T)
 
 (DEFUN DRATIO (RESULT NUM W1 H1 D1 DEN W2 H2 D2)
   (DECLARE (FIXNUM W1 H1 D1 W2 H2 D2))
@@ -737,7 +731,7 @@
 	  WIDTH (f+ 1 W WIDTH) HEIGHT (f1+ H) DEPTH (f+ 1 D DEPTH))
     (UPDATE-HEIGHTS HEIGHT DEPTH)
     (RETURN RESULT)))
-
+
 (DISPLA-DEF MMINUS DIMENSION-PREFIX "- ")
 (DISPLA-DEF MPLUS  DIM-MPLUS)
 (DEFPROP MUNARYPLUS (#\+ #\SPACE) DISSYM)
@@ -804,7 +798,7 @@
 	(SETQ DUMMY (DIMENSION (CADR FORM) (CONS '(1 0) DUMMY) '%LIMIT ROP (f1+ W) RIGHT))
 	(SETQ WIDTH (f+ 1 W WIDTH) DEPTH (MAX D DEPTH))
 	(RETURN DUMMY)))
-
+
 ;; Some scheme needs to be worked out to allow use of mathematical character
 ;; sets on consoles which have them.
 
@@ -905,7 +899,7 @@
 	(SETQ RESULT (DIMENSION (CADDR FORM) RESULT 'MDO ROP (f+ 4 W) RIGHT)
 	      WIDTH (f+ 4 W WIDTH) HEIGHT (MAX H HEIGHT) DEPTH (MAX D DEPTH))
 	(RETURN RESULT)))
-
+
 (DISPLA-DEF MPROGN DIMENSION-MATCH "(" ")")
 (DISPLA-DEF MLIST  DIMENSION-MATCH "[" "]")
 (DISPLA-DEF MANGLE DIMENSION-MATCH "<" ">")
@@ -1001,7 +995,7 @@
       (UPDATE-HEIGHTS H D)
       (CHECKBREAK RESULT WIDTH))
   RESULT)
-
+
 (DISPLA-DEF MBOX DIM-MBOX)
 
 (DEFUN DIM-MBOX (FORM RESULT &AUX DUMMY)
@@ -1067,7 +1061,6 @@
 
 (DEFPROP MPAREN -1. LBP)
 (DEFPROP MPAREN -1. RBP)
-
 
 
 (DEFUN CHECKRAT (FORM)
@@ -1126,7 +1119,7 @@
 ;;; BREAK	width up to last call to DIMENSION
 ;;; RESULT	dimension structure to current point minus output
 ;;; W		width from last call to DIMENSION to current point
-
+
 ;; Code above this point deals with dimensioning and constructing
 ;; up dimension strings.  Code past this point deals with printing
 ;; them.
@@ -1160,13 +1153,13 @@
   #-nocp
   (IF (NOT (OR #.ttyoff MORE-^W  (ZEROP (CHARPOS T))))
       (MTERPRI))
-  (IF (AND (NOT (OR #.ttyoff MORE-^W))
-	   SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
-	   (< (f+ BKPTHT BKPTDP) (f1- TTYHEIGHT))
-	   ;;If (STATUS TTY) is NIL, then we don't have the console.
-	   #+PDP10 (STATUS TTY)
-	   (> (f+ BKPTHT BKPTDP) (f- (f1- TTYHEIGHT) (CAR (CURSORPOS)))))
-      (MORE-FUN T))
+;  (IF (AND (NOT (OR #.ttyoff MORE-^W))
+;	   SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
+;	   (< (f+ BKPTHT BKPTDP) (f1- TTYHEIGHT))
+;	   ;;If (STATUS TTY) is NIL, then we don't have the console.
+;	   ;#+PDP10 (STATUS TTY)
+;	   (> (f+ BKPTHT BKPTDP) (f- (f1- TTYHEIGHT) (CAR (CURSORPOS)))))
+;      (MORE-FUN T))
   (COND
    ;; If output is turned off to the console and no WRITEFILE is taking
    ;; place, then don't output anything.
@@ -1200,23 +1193,24 @@
 	    (MORE-^W (SAFE-PRINT (OUTPUT-LINEAR-ONE-LINE I)))
 	    (T (OUTPUT-LINEAR-ONE-LINE I)))))
 
-#+NIL
-(PROGN
- (DEFPARAMETER *OLOL-BUF*
-   (MAKE-STRING 512))
- (DEFUN OUTPUT-LINEAR-ONE-LINE (I)
-   (LET* ((LINE (NREVERSE (CDR (LINEARRAY I)))) (N (CAR LINE)))
-     (SET-LINEARRAY I NIL)
-     (TYOTBSP N)
-     (LET ((B (OR *OLOL-BUF* (SETQ *OLOL-BUF* (MAKE-STRING 512))))
-	   (*OLOL-BUF* NIL)
-	   (I 0))
-       (MAPC #'(LAMBDA (X) (SETF (SCHAR B I) (CODE-CHAR X)) (SETQ I (f1+ I)))
-	     (CDR LINE))
-       (OUSTR B NIL 0 I)
-       (MTERPRI)
-       NIL)))
- ) ;#+NIL
+;#+NIL
+;(PROGN
+; (DEFPARAMETER *OLOL-BUF*
+;   (MAKE-STRING 512))
+; (DEFUN OUTPUT-LINEAR-ONE-LINE (I)
+;   (LET* ((LINE (NREVERSE (CDR (LINEARRAY I)))) (N (CAR LINE)))
+;     (SET-LINEARRAY I NIL)
+;     (TYOTBSP N)
+;     (LET ((B (OR *OLOL-BUF* (SETQ *OLOL-BUF* (MAKE-STRING 512))))
+;	   (*OLOL-BUF* NIL)
+;	   (I 0))
+;       (MAPC #'(LAMBDA (X) (SETF (SCHAR B I) (CODE-CHAR X)) (SETQ I (f1+ I)))
+;	     (CDR LINE))
+;       (OUSTR B NIL 0 I)
+;       (MTERPRI)
+;       NIL)))
+; ) ;#+NIL
+
 #-NIL
 (DEFUN OUTPUT-LINEAR-ONE-LINE (I) (DECLARE (FIXNUM I))
   (PROG (LINE (N 0))
@@ -1279,7 +1273,6 @@
   ;; Be sure to return this.
   OLDCOL)
 
-
 ;; Output function for terminals with cursor positioning capability.  Draws
 ;; equations in the order they are dimensioned.  To be efficient, it does block
 ;; mode i/o into a stream called DISPLAY-FILE, set up in ALJABR;LOADER.
@@ -1292,40 +1285,39 @@
 ;; (PROG (H) (DECLARE (FIXNUM H)) ...) doesn't try binding it to NIL as
 ;; this does.
 
-#+ITS
-(DEFUN OUTPUT-2D (RESULT W &AUX (H 0))
- (DECLARE (FIXNUM W H CH))
- (UNWIND-PROTECT
-  (PROGN (TTYINTSOFF)
-	 (SETQ OLDROW (CAR (CURSORPOS)) OLDCOL 0 H (f+ OLDROW BKPTHT BKPTDP))
-	 ;; Move the cursor to the left edge of the screen.
-	 (CURSORPOS* OLDROW 0)
-	 ;; Then print CRLFs from the top of the expression to the bottom.
-	 ;; The purpose of this is to clear the appropriate section of the
-	 ;; screen.  If RUBOUT-TTY is NIL (i.e. we are using a storage tube
-	 ;; display), then only print LFs since the entire screen is cleared
-	 ;; anyway.  %TDCRL = carriage return, line feed.  %TDLF = line feed.
-	 (DO ((CH (IF RUBOUT-TTY #.%TDCRL #.%TDLF))) ((= H OLDROW))
-	     (TYO* CH) (INCREMENT OLDROW))
-	 (DRAW-2D RESULT (f- OLDROW BKPTDP 1) W)
-	 ;; Why is this necessary?  Presumably, we never go off the bottom
-	 ;; of the screen.
-	 (SETQ H (MIN (f- TTYHEIGHT 2) H))
-	 ;; Leave the cursor at the bottom of the expression.
-	 (CURSORPOS* H 0)
-	 ;; Output is buffered for efficiency.
-	 (FORCE-OUTPUT DISPLAY-FILE)
-	 ;; Let ITS know where the cursor is now.  This does not do
-	 ;; cursor movement.  :CALL SCPOS for information.
-	 (SETCURSORPOS H 0)
-	 ;; Gobble any characters the poor user may have typed during display.
-	 (LISTEN))
-  (TTYINTSON))
- (NOINTERRUPT NIL))
+;#+ITS
+;(DEFUN OUTPUT-2D (RESULT W &AUX (H 0))
+; (DECLARE (FIXNUM W H CH))
+; (UNWIND-PROTECT
+;  (PROGN (TTYINTSOFF)
+;	 (SETQ OLDROW (CAR (CURSORPOS)) OLDCOL 0 H (f+ OLDROW BKPTHT BKPTDP))
+;	 ;; Move the cursor to the left edge of the screen.
+;	 (CURSORPOS* OLDROW 0)
+;	 ;; Then print CRLFs from the top of the expression to the bottom.
+;	 ;; The purpose of this is to clear the appropriate section of the
+;	 ;; screen.  If RUBOUT-TTY is NIL (i.e. we are using a storage tube
+;	 ;; display), then only print LFs since the entire screen is cleared
+;	 ;; anyway.  %TDCRL = carriage return, line feed.  %TDLF = line feed.
+;	 (DO ((CH (IF RUBOUT-TTY #.%TDCRL #.%TDLF))) ((= H OLDROW))
+;	     (TYO* CH) (INCREMENT OLDROW))
+;	 (DRAW-2D RESULT (f- OLDROW BKPTDP 1) W)
+;	 ;; Why is this necessary?  Presumably, we never go off the bottom
+;	 ;; of the screen.
+;	 (SETQ H (MIN (f- TTYHEIGHT 2) H))
+;	 ;; Leave the cursor at the bottom of the expression.
+;	 (CURSORPOS* H 0)
+;	 ;; Output is buffered for efficiency.
+;	 (FORCE-OUTPUT DISPLAY-FILE)
+;	 ;; Let ITS know where the cursor is now.  This does not do
+;	 ;; cursor movement.  :CALL SCPOS for information.
+;	 (SETCURSORPOS H 0)
+;	 ;; Gobble any characters the poor user may have typed during display.
+;	 (LISTEN))
+;  (TTYINTSON))
+; (NOINTERRUPT NIL))
 
 ;; I/O is much simpler on the Lisp Machine.
 
-#+(or CL NIL)
 (DEFUN OUTPUT-2D (RESULT W &AUX (H 0))
   (DECLARE (FIXNUM W H ))
   (SETQ OLDROW (CAR (CURSORPOS)) OLDCOL 0 H (f+ OLDROW BKPTHT BKPTDP))
@@ -1339,13 +1331,12 @@
 ;; For now, cursor movement is only available on ITS and the Lisp
 ;; Machine.  But define this to catch possible errors.
 
-#-(OR CL ITS NIL)
-(DEFUN OUTPUT-2D (RESULT W)
-       RESULT W ;Ignored.
-       (MERROR "OUTPUT-2D called on system without display support."))
+;#-(OR CL ITS NIL)
+;(DEFUN OUTPUT-2D (RESULT W)
+;       RESULT W ;Ignored.
+;       (MERROR "OUTPUT-2D called on system without display support."))
 
 ;;see +lispm below for cl fix.
-#+(OR CL ITS NIL)
 (DEFUN DRAW-2D (DMSTR ROW COL)
   (DECLARE (FIXNUM ROW COL))
   (CURSORPOS* ROW COL)
@@ -1364,41 +1355,41 @@
 	     (CURSORPOS* ROW COL))
 	    (T (APPLY (CAAR L) NIL (CDAR L))
 	       (POP L)))))
+
 (defun check-dimstring (str)
   (sloop for v in str when (integerp v) do (error "bad entry ~A" v)))
 
-#+lispm
-(DEFUN DRAW-2D (DMSTR ROW COL)
-  "This bypasses draw-linear and draws the Dimension-string directly
-   using cursor positioning.  It won't work for files or the editor"
- #-cl (DECLARE (FIXNUM ROW COL))
-  (CURSORPOS* ROW COL)
-    (DO ((LL DMSTR)) ((NULL LL))
-     ;;should not have a integerp (car ll) but somewhere #\space is getting 32.
-      (COND ((or (integerp (car ll))
-		 (characterp (CAR LL)))
-	     (TYO* (CAR LL)) (POP LL))
-	    ((integerp (CAAR LL))
-	     (SETQ COL OLDCOL)
-	     (DO ()
-	       ((OR (CHARACTERP (CAR LL))  (NOT (integerp (CAAR LL)))))
-	       (cond
-		((NULL (CDDAR LL)) (SETQ COL (f+ COL (CAAR LL))))
-		(t (DRAW-2D (REVERSE (CDDAR LL))
-			    (f-  ROW (CADAR LL)) (f+ COL (CAAR LL)))
-		   (SETQ COL OLDCOL)))
-	       (POP LL))
-	     (CURSORPOS* ROW COL)
-	     )
-	    (T (APPLY (CAAR LL) NIL (CDAR LL))
-	       (POP LL)))))
+;#+lispm
+;(DEFUN DRAW-2D (DMSTR ROW COL)
+;  "This bypasses draw-linear and draws the Dimension-string directly
+;   using cursor positioning.  It won't work for files or the editor"
+; #-cl (DECLARE (FIXNUM ROW COL))
+;  (CURSORPOS* ROW COL)
+;    (DO ((LL DMSTR)) ((NULL LL))
+;     ;;should not have a integerp (car ll) but somewhere #\space is getting 32.
+;      (COND ((or (integerp (car ll))
+;		 (characterp (CAR LL)))
+;	     (TYO* (CAR LL)) (POP LL))
+;	    ((integerp (CAAR LL))
+;	     (SETQ COL OLDCOL)
+;	     (DO ()
+;	       ((OR (CHARACTERP (CAR LL))  (NOT (integerp (CAAR LL)))))
+;	       (cond
+;		((NULL (CDDAR LL)) (SETQ COL (f+ COL (CAAR LL))))
+;		(t (DRAW-2D (REVERSE (CDDAR LL))
+;			    (f-  ROW (CADAR LL)) (f+ COL (CAAR LL)))
+;		   (SETQ COL OLDCOL)))
+;	       (POP LL))
+;	     (CURSORPOS* ROW COL)
+;	     )
+;	    (T (APPLY (CAAR LL) NIL (CDAR LL))
+;	       (POP LL)))))
 
-#-(OR CL ITS NIL)
-(DEFUN DRAW-2D (DMSTR ROW COL)
-       DMSTR ROW COL ;Ignored.
-       (MERROR "DRAW-2D called on system without display support."))
+;#-(OR CL ITS NIL)
+;(DEFUN DRAW-2D (DMSTR ROW COL)
+;       DMSTR ROW COL ;Ignored.
+;       (MERROR "DRAW-2D called on system without display support."))
 
-
 ;; Crude line graphics.  The interface to a graphics device is via the
 ;; functions LG-SET-POINT, LG-DRAW-VECTOR, LG-END-VECTOR and via the
 ;; LG-CHARACTER specials.  LG-END-VECTOR is needed since many consoles
@@ -1407,56 +1398,55 @@
 ;; in pixels, and the -2 variables are simply those numbers divided by 2.  LG
 ;; stands for "Line Graphics".  See MAXSRC;ARDS for a sample ctl.
 
-(declare-top (*EXPR LG-SET-POINT LG-DRAW-VECTOR LG-END-VECTOR)
-	 #-NIL
-	 (NOTYPE (LG-SET-POINT FIXNUM FIXNUM)
-		 (LG-DRAW-VECTOR FIXNUM FIXNUM)
-		 (LG-END-VECTOR FIXNUM FIXNUM))
-	 (SPECIAL LG-CHARACTER-X LG-CHARACTER-X-2
-		  LG-CHARACTER-Y LG-CHARACTER-Y-2))
+;(declare-top ;(*EXPR LG-SET-POINT LG-DRAW-VECTOR LG-END-VECTOR)
+; (NOTYPE (LG-SET-POINT FIXNUM FIXNUM)
+;	 (LG-DRAW-VECTOR FIXNUM FIXNUM)
+;	 (LG-END-VECTOR FIXNUM FIXNUM))
+; (SPECIAL LG-CHARACTER-X LG-CHARACTER-X-2
+;	  LG-CHARACTER-Y LG-CHARACTER-Y-2))
 
 ;; Make this work in the new window system at some point.
 
-#+LISPM
-(PROGN 'COMPILE
+;#+LISPM
+;(PROGN 'COMPILE
 
-(declare-top (SPECIAL LG-OLD-X LG-OLD-Y))
+;(declare-top (SPECIAL LG-OLD-X LG-OLD-Y))
 
-(DEFUN LG-SET-POINT (X Y)
-  (SETQ LG-OLD-X (f- X 1) LG-OLD-Y (f- Y 2)))
+;(DEFUN LG-SET-POINT (X Y)
+;  (SETQ LG-OLD-X (f- X 1) LG-OLD-Y (f- Y 2)))
 
-(DEFUN LG-DRAW-VECTOR (X Y)
-  (SETQ X (f- X 1) Y (f- Y 2))
-  (FUNCALL *standard-output* ':DRAW-LINE LG-OLD-X LG-OLD-Y X Y)
-  (WHEN (> LG-CHARACTER-Y 20)
-	(LET ((DELTA-X (f- X LG-OLD-X))
-	      (DELTA-Y (f- Y LG-OLD-Y)))
-	  (IF (> (ABS DELTA-X) (ABS DELTA-Y))
-	      (FUNCALL *standard-output* ':DRAW-LINE LG-OLD-X (f1- LG-OLD-Y) X (f1- Y))
-	      (FUNCALL *standard-output* ':DRAW-LINE (f1- LG-OLD-X) LG-OLD-Y (f1- X) Y))))
-  (SETQ LG-OLD-X X LG-OLD-Y Y))
+;(DEFUN LG-DRAW-VECTOR (X Y)
+;  (SETQ X (f- X 1) Y (f- Y 2))
+;  (FUNCALL *standard-output* ':DRAW-LINE LG-OLD-X LG-OLD-Y X Y)
+;  (WHEN (> LG-CHARACTER-Y 20)
+;	(LET ((DELTA-X (f- X LG-OLD-X))
+;	      (DELTA-Y (f- Y LG-OLD-Y)))
+;	  (IF (> (ABS DELTA-X) (ABS DELTA-Y))
+;	      (FUNCALL *standard-output* ':DRAW-LINE LG-OLD-X (f1- LG-OLD-Y) X (f1- Y))
+;	      (FUNCALL *standard-output* ':DRAW-LINE (f1- LG-OLD-X) LG-OLD-Y (f1- X) Y))))
+;  (SETQ LG-OLD-X X LG-OLD-Y Y))
 
-;; Set these so that DISPLA can be called from top-level.  The size
-;; of TERMINAL-IO is wired in here.
-;; These should be bound at time of call to DISPLA.
+;;; Set these so that DISPLA can be called from top-level.  The size
+;;; of TERMINAL-IO is wired in here.
+;;; These should be bound at time of call to DISPLA.
 
-(SETQ LG-CHARACTER-X (FUNCALL tv:main-screen ':CHAR-WIDTH))
-(SETQ LG-CHARACTER-Y (FUNCALL tv:main-screen ':LINE-HEIGHT))
+;(SETQ LG-CHARACTER-X (FUNCALL tv:main-screen ':CHAR-WIDTH))
+;(SETQ LG-CHARACTER-Y (FUNCALL tv:main-screen ':LINE-HEIGHT))
 
-(SETQ LG-CHARACTER-X-2 (// LG-CHARACTER-X 2))
-(SETQ LG-CHARACTER-Y-2 (// LG-CHARACTER-Y 2))
+;(SETQ LG-CHARACTER-X-2 (// LG-CHARACTER-X 2))
+;(SETQ LG-CHARACTER-Y-2 (// LG-CHARACTER-Y 2))
 
-) ;; End of Lispm Graphics definitions.
+;) ;; End of Lispm Graphics definitions.
 
 ;; Even cruder character graphics.  Interface to the ctl is via functions
 ;; which draw lines and corners.  CG means "Character Graphics".  See
 ;; MAXSRC;VT100 for a sample ctl.  Note that these functions do not modify
 ;; the values of OLDROW and OLDCOL.
 
-(declare-top (*EXPR CG-BEGIN-GRAPHICS CG-END-GRAPHICS
-		CG-UL-CORNER CG-UR-CORNER CG-LL-CORNER CG-LR-CORNER
-		CG-VERTICAL-BAR CG-HORIZONTAL-BAR
-		CG-D-SUMSIGN CG-D-PRODSIGN))
+;(declare-top (*EXPR CG-BEGIN-GRAPHICS CG-END-GRAPHICS
+;		CG-UL-CORNER CG-UR-CORNER CG-LL-CORNER CG-LR-CORNER
+;		CG-VERTICAL-BAR CG-HORIZONTAL-BAR
+;		CG-D-SUMSIGN CG-D-PRODSIGN))
 
 ;; Special form for turning on and turning off character graphics.
 ;; Be sure to turn of character graphics if we throw out of here.
@@ -1481,17 +1471,17 @@
   (DECLARE (FIXNUM W ))
   (COND (LINEAR? (DOTIMES (I W) (PUSH CHAR NL))
 		 (DRAW-LINEAR NL OLDROW OLDCOL))
-	((AND LINE-GRAPHICS-TTY $LINEDISP)
-	 (LET ((GY (f+ (f* LG-CHARACTER-Y OLDROW) LG-CHARACTER-Y-2)))
-	      (DECLARE (FIXNUM gy))
-	      (LG-SET-POINT  (f* OLDCOL LG-CHARACTER-X) GY)
-	      (LG-END-VECTOR (f* (f+ OLDCOL W) LG-CHARACTER-X) GY))
-	 (CURSORPOS* OLDROW (f+ OLDCOL W)))
-	((AND CHARACTER-GRAPHICS-TTY $LINEDISP)
-	 (CG-BEGIN-GRAPHICS)
-	 (DOTIMES (I W) (CG-HORIZONTAL-BAR))
-	 (INCREMENT OLDCOL W)
-	 (CG-END-GRAPHICS))
+;	((AND LINE-GRAPHICS-TTY $LINEDISP)
+;	 (LET ((GY (f+ (f* LG-CHARACTER-Y OLDROW) LG-CHARACTER-Y-2)))
+;	      (DECLARE (FIXNUM gy))
+;	      (LG-SET-POINT  (f* OLDCOL LG-CHARACTER-X) GY)
+;	      (LG-END-VECTOR (f* (f+ OLDCOL W) LG-CHARACTER-X) GY))
+;	 (CURSORPOS* OLDROW (f+ OLDCOL W)))
+;       ((AND CHARACTER-GRAPHICS-TTY $LINEDISP)
+;	 (CG-BEGIN-GRAPHICS)
+;	 (DOTIMES (I W) (CG-HORIZONTAL-BAR))
+;	 (INCREMENT OLDCOL W)
+;	 (CG-END-GRAPHICS))
 	(T (DOTIMES (I W) (TYO* CHAR)))))
 
 ;; Notice that in all of the height computations, an offset of 2 is added or
@@ -1506,21 +1496,21 @@
 	      (NL `((0 ,(f1- H) ,CHAR))))
 	     ((< I D) (DRAW-LINEAR (NREVERSE NL) OLDROW OLDCOL))
 	     (PUSH `(-1 ,I ,CHAR) NL)))
-	((AND LINE-GRAPHICS-TTY $LINEDISP)
-	 (LET ((GX (f+ (f* LG-CHARACTER-X OLDCOL) LG-CHARACTER-X-2)))
-	      (DECLARE (FIXNUM GX ))
-	      (LG-SET-POINT  GX (f- (f* (f+ OLDROW D 1) LG-CHARACTER-Y) 2))
-	      (LG-END-VECTOR GX (f+ (f* (f+ OLDROW 1 (f- H)) LG-CHARACTER-Y) 2)))
-	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
-	((AND CHARACTER-GRAPHICS-TTY $LINEDISP)
-	 (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
-	 (CG-BEGIN-GRAPHICS)
-	 (CG-VERTICAL-BAR)
-	 (DOTIMES (I (f+ H D -1))
-		  (CURSORPOS* (f1+ OLDROW) OLDCOL)
-		  (CG-VERTICAL-BAR))
-	 (CG-END-GRAPHICS)
-	 (CURSORPOS* (f- OLDROW D) (f1+ OLDCOL)))
+;	((AND LINE-GRAPHICS-TTY $LINEDISP)
+;	 (LET ((GX (f+ (f* LG-CHARACTER-X OLDCOL) LG-CHARACTER-X-2)))
+;	      (DECLARE (FIXNUM GX ))
+;	      (LG-SET-POINT  GX (f- (f* (f+ OLDROW D 1) LG-CHARACTER-Y) 2))
+;	      (LG-END-VECTOR GX (f+ (f* (f+ OLDROW 1 (f- H)) LG-CHARACTER-Y) 2)))
+;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
+;	((AND CHARACTER-GRAPHICS-TTY $LINEDISP)
+;	 (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
+;	 (CG-BEGIN-GRAPHICS)
+;	 (CG-VERTICAL-BAR)
+;	 (DOTIMES (I (f+ H D -1))
+;		  (CURSORPOS* (f1+ OLDROW) OLDCOL)
+;		  (CG-VERTICAL-BAR))
+;	 (CG-END-GRAPHICS)
+;	 (CURSORPOS* (f- OLDROW D) (f1+ OLDCOL)))
 	(T (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
 	   (TYO* CHAR)
 	   (DOTIMES (I (f+ H D -1))
@@ -1529,24 +1519,24 @@
 	   (CURSORPOS* (f- OLDROW D) OLDCOL))))
 
 (DEFUN D-INTEGRALSIGN (LINEAR? &AUX DMSTR)
-  (COND ((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
-	 (LET ((X-MIN (f* LG-CHARACTER-X OLDCOL))
-	       (X-1   (f1- LG-CHARACTER-X-2))
-	       (X-2   LG-CHARACTER-X-2)
-	       (X-MAX (f* LG-CHARACTER-X (f1+ OLDCOL)))
-	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f- OLDROW 2)) LG-CHARACTER-Y-2))
-	       (Y-1   LG-CHARACTER-Y-2)
-	       (Y-2   (f+ LG-CHARACTER-Y LG-CHARACTER-Y-2))
-	       (Y-MAX (f+ (f* LG-CHARACTER-Y (f+ OLDROW 2)) LG-CHARACTER-Y-2)))
-	      (DECLARE (FIXNUM X-MIN X-1 X-2 X-MAX Y-MIN Y-1 Y-2 Y-MAX))
-	    (DOLIST (X '(0 -1))
-	       (LG-SET-POINT   (f+ X X-MAX) Y-MIN)
-	       (LG-DRAW-VECTOR (f+ X X-MAX (f- X-1)) (f+ Y-MIN Y-1))
-	       (LG-DRAW-VECTOR (f+ X X-MAX (f- X-2)) (f+ Y-MIN Y-2))
-	       (LG-DRAW-VECTOR (f+ X X-MIN X-2)	   (f- Y-MAX Y-2))
-	       (LG-DRAW-VECTOR (f+ X X-MIN X-1)	   (f- Y-MAX Y-1))
-	       (LG-END-VECTOR  (f+ X X-MIN)	   Y-MAX)))
-	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
+  (COND ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
+;	 (LET ((X-MIN (f* LG-CHARACTER-X OLDCOL))
+;	       (X-1   (f1- LG-CHARACTER-X-2))
+;	       (X-2   LG-CHARACTER-X-2)
+;	       (X-MAX (f* LG-CHARACTER-X (f1+ OLDCOL)))
+;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f- OLDROW 2)) LG-CHARACTER-Y-2))
+;	       (Y-1   LG-CHARACTER-Y-2)
+;	       (Y-2   (f+ LG-CHARACTER-Y LG-CHARACTER-Y-2))
+;	       (Y-MAX (f+ (f* LG-CHARACTER-Y (f+ OLDROW 2)) LG-CHARACTER-Y-2)))
+;	      (DECLARE (FIXNUM X-MIN X-1 X-2 X-MAX Y-MIN Y-1 Y-2 Y-MAX))
+;	    (DOLIST (X '(0 -1))
+;	       (LG-SET-POINT   (f+ X X-MAX) Y-MIN)
+;	       (LG-DRAW-VECTOR (f+ X X-MAX (f- X-1)) (f+ Y-MIN Y-1))
+;	       (LG-DRAW-VECTOR (f+ X X-MAX (f- X-2)) (f+ Y-MIN Y-2))
+;	       (LG-DRAW-VECTOR (f+ X X-MIN X-2)	   (f- Y-MAX Y-2))
+;	       (LG-DRAW-VECTOR (f+ X X-MIN X-1)	   (f- Y-MAX Y-1))
+;	       (LG-END-VECTOR  (f+ X X-MIN)	   Y-MAX)))
+;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
 	(T (SETQ DMSTR
 		 `((0 2 #.forward-slash-char) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #.FORWARD-SLASH-CHAR)))
 	   (IF LINEAR?
@@ -1554,11 +1544,11 @@
 	       (DRAW-2D	    DMSTR OLDROW OLDCOL)))))
 
 (DEFUN D-PRODSIGN (LINEAR? &AUX DMSTR)
-  (COND ((AND (NOT LINEAR?) $LINEDISP (FBOUNDP 'CG-D-PRODSIGN))
-	 (CG-BEGIN-GRAPHICS)
-	 (CG-D-PRODSIGN)
-	 (CG-END-GRAPHICS)
-	 (INCREMENT OLDCOL 5))
+  (COND ;((AND (NOT LINEAR?) $LINEDISP (FBOUNDP 'CG-D-PRODSIGN))
+;	 (CG-BEGIN-GRAPHICS)
+;	 (CG-D-PRODSIGN)
+;	 (CG-END-GRAPHICS)
+;	 (INCREMENT OLDCOL 5))
 	(T (SETQ DMSTR '((0 2 #.BACK-SLASH-CHAR (D-HBAR 3 #\=) #.forward-slash-char)
 			 (-4 0) (D-VBAR 2 1 #\!) #\space (D-VBAR 2 1 #\!) (1 0)))
 	   (IF LINEAR?
@@ -1566,44 +1556,45 @@
 	       (DRAW-2D DMSTR OLDROW OLDCOL)))))
 
 (DEFUN D-SUMSIGN (LINEAR? &AUX DMSTR)
-  (COND ((AND (NOT LINEAR?) $LINEDISP LINE-GRAPHICS-TTY)
-	 (LET ((X-MIN  (f* LG-CHARACTER-X OLDCOL))
-	       (X-HALF (f* LG-CHARACTER-X (f+ OLDCOL 2)))
-	       (X-MAX  (f* LG-CHARACTER-X (f+ OLDCOL 4)))
-	       (Y-MIN  (f+ (f* LG-CHARACTER-Y (f- OLDROW 2)) LG-CHARACTER-Y-2))
- 	       (Y-HALF (f+ (f* LG-CHARACTER-Y OLDROW) LG-CHARACTER-Y-2))
-	       (Y-MAX  (f+ (f* LG-CHARACTER-Y (f+ OLDROW 2))
-			   LG-CHARACTER-Y-2)))
-	      (DECLARE (FIXNUM X-MIN X-HALF X-MAX Y-MIN Y-HALF Y-MAX))
+  (COND ;((AND (NOT LINEAR?) $LINEDISP LINE-GRAPHICS-TTY)
+;	 (LET ((X-MIN  (f* LG-CHARACTER-X OLDCOL))
+;	       (X-HALF (f* LG-CHARACTER-X (f+ OLDCOL 2)))
+;	       (X-MAX  (f* LG-CHARACTER-X (f+ OLDCOL 4)))
+;	       (Y-MIN  (f+ (f* LG-CHARACTER-Y (f- OLDROW 2)) LG-CHARACTER-Y-2))
+; 	       (Y-HALF (f+ (f* LG-CHARACTER-Y OLDROW) LG-CHARACTER-Y-2))
+;	       (Y-MAX  (f+ (f* LG-CHARACTER-Y (f+ OLDROW 2))
+;			   LG-CHARACTER-Y-2)))
+;	      (DECLARE (FIXNUM X-MIN X-HALF X-MAX Y-MIN Y-HALF Y-MAX))
 
-	      (LG-SET-POINT (f+ X-MAX 4) (f+ Y-MIN 6))
-	      (MAPC #'(LAMBDA (X) (LG-DRAW-VECTOR (CAR X) (CDR X)))
-		    `((,X-MAX . ,Y-MIN)
-		      (,(f1+ X-MIN)  . ,Y-MIN)
-		      (,(f1+ X-HALF) . ,Y-HALF)
-		      (,(f1+ X-MIN)  . ,Y-MAX)
-		      (,X-MIN	    . ,Y-MAX)
-		      (,X-HALF	    . ,Y-HALF)
-		      (,X-MIN	    . ,Y-MIN)
-		      (,(f1- X-MIN)  . ,Y-MIN)
-		      (,(f1- X-HALF) . ,Y-HALF)))
-	      (LG-SET-POINT (f+ X-MAX 4) (f- Y-MAX 6))
-	      (LG-DRAW-VECTOR X-MAX Y-MAX)
-	      (LG-DRAW-VECTOR X-MIN Y-MAX)
-	      (LG-DRAW-VECTOR X-MIN (f1- Y-MAX))
-	      (LG-END-VECTOR X-MAX (f1- Y-MAX)))
-	 (CURSORPOS* OLDROW (f+ OLDCOL 4)))
-	((AND (NOT LINEAR?) $LINEDISP (FBOUNDP 'CG-D-SUMSIGN))
-	 (CG-BEGIN-GRAPHICS)
-	 (CG-D-SUMSIGN)
-	 (CG-END-GRAPHICS)
-	 (INCREMENT OLDCOL 4))
-	(T (SETQ DMSTR '((0 2 (D-HBAR 4 #\=))
-			 (-4 1 #.back-slash-char) #\> (-2 -1 #.forward-slash-char)
-			 (-1 -2 (D-HBAR 4 #\=))))
-	   (IF LINEAR?
-	       (DRAW-LINEAR DMSTR OLDROW OLDCOL)
-	       (DRAW-2D	    DMSTR OLDROW OLDCOL)))))
+;	      (LG-SET-POINT (f+ X-MAX 4) (f+ Y-MIN 6))
+;	      (MAPC #'(LAMBDA (X) (LG-DRAW-VECTOR (CAR X) (CDR X)))
+;		    `((,X-MAX . ,Y-MIN)
+;		      (,(f1+ X-MIN)  . ,Y-MIN)
+;		      (,(f1+ X-HALF) . ,Y-HALF)
+;		      (,(f1+ X-MIN)  . ,Y-MAX)
+;		      (,X-MIN	    . ,Y-MAX)
+;		      (,X-HALF	    . ,Y-HALF)
+;		      (,X-MIN	    . ,Y-MIN)
+;		      (,(f1- X-MIN)  . ,Y-MIN)
+;		      (,(f1- X-HALF) . ,Y-HALF)))
+;	      (LG-SET-POINT (f+ X-MAX 4) (f- Y-MAX 6))
+;	      (LG-DRAW-VECTOR X-MAX Y-MAX)
+;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
+;	      (LG-DRAW-VECTOR X-MIN (f1- Y-MAX))
+;	      (LG-END-VECTOR X-MAX (f1- Y-MAX)))
+;	 (CURSORPOS* OLDROW (f+ OLDCOL 4)))
+;	((AND (NOT LINEAR?) $LINEDISP (FBOUNDP 'CG-D-SUMSIGN))
+;	 (CG-BEGIN-GRAPHICS)
+;	 (CG-D-SUMSIGN)
+;	 (CG-END-GRAPHICS)
+;	 (INCREMENT OLDCOL 4))
+    (T
+     (SETQ DMSTR '((0 2 (D-HBAR 4 #\=))
+		   (-4 1 #.back-slash-char) #\> (-2 -1 #.forward-slash-char)
+		   (-1 -2 (D-HBAR 4 #\=))))
+     (IF LINEAR?
+	 (DRAW-LINEAR DMSTR OLDROW OLDCOL)
+	 (DRAW-2D DMSTR OLDROW OLDCOL)))))
 
 ;; Notice how this calls D-VBAR in the non-graphic case.  The entire output
 ;; side should be structured this way, with no consing of intermediate
@@ -1611,68 +1602,67 @@
 
 (DEFUN D-MATRIX (LINEAR? DIRECTION H D)
   (DECLARE (FIXNUM H D))
-  (COND ((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
-	 (LET ((X-MIN (f1+ (f* LG-CHARACTER-X OLDCOL)))
-	       (X-MAX (f1- (f* LG-CHARACTER-X (f1+ OLDCOL))))
-	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f+ OLDROW 1 (f- H))) 2))
-	       (Y-MAX (f- (f* LG-CHARACTER-Y (f+ OLDROW 1 D)) 2)))
-	      (declare (fixnum  X-MIN X-MAX Y-MIN Y-MAX))
-	      (IF (EQ DIRECTION 'RIGHT) (PSETQ X-MIN X-MAX X-MAX X-MIN))
-	      (LG-SET-POINT   X-MAX Y-MIN)
-	      (LG-DRAW-VECTOR X-MIN Y-MIN)
-	      (LG-DRAW-VECTOR X-MIN Y-MAX)
-	      (LG-END-VECTOR  X-MAX Y-MAX))
-	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
-	((AND (NOT LINEAR?) CHARACTER-GRAPHICS-TTY $LINEDISP)
-	 (COND ((= (f+ H D) 1)
-		(TYO* (GETCHARN (IF (EQ DIRECTION 'RIGHT) $RMXCHAR $LMXCHAR)
-				2)))
-	       (T (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
-		  (CG-BEGIN-GRAPHICS)
-		  (IF (EQ DIRECTION 'RIGHT) (CG-UR-CORNER) (CG-UL-CORNER))
-		  (CG-END-GRAPHICS)
-		  (CURSORPOS* (f+ OLDROW -1 H) OLDCOL)
-		  (COND ((> (f+ H D) 2)
-			 (D-VBAR NIL (f1- H) (f1- D))
-			 (CURSORPOS* (f+ OLDROW D) (f1- OLDCOL)))
-			(T (CURSORPOS* (f+ OLDROW D) OLDCOL)))
-		  (CG-BEGIN-GRAPHICS)
-		  (IF (EQ DIRECTION 'RIGHT) (CG-LR-CORNER) (CG-LL-CORNER))
-		  (CG-END-GRAPHICS)
-		  (CURSORPOS* (f- OLDROW D) (f1+ OLDCOL)))))
-	(T (D-VBAR LINEAR? H D 
-		   (GETCHARN (IF (EQ DIRECTION 'RIGHT) $RMXCHAR $LMXCHAR)
-			     2)))))
+  (COND ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
+;	 (LET ((X-MIN (f1+ (f* LG-CHARACTER-X OLDCOL)))
+;	       (X-MAX (f1- (f* LG-CHARACTER-X (f1+ OLDCOL))))
+;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f+ OLDROW 1 (f- H))) 2))
+;	       (Y-MAX (f- (f* LG-CHARACTER-Y (f+ OLDROW 1 D)) 2)))
+;	      (declare (fixnum  X-MIN X-MAX Y-MIN Y-MAX))
+;	      (IF (EQ DIRECTION 'RIGHT) (PSETQ X-MIN X-MAX X-MAX X-MIN))
+;	      (LG-SET-POINT   X-MAX Y-MIN)
+;	      (LG-DRAW-VECTOR X-MIN Y-MIN)
+;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
+;	      (LG-END-VECTOR  X-MAX Y-MAX))
+;	 (CURSORPOS* OLDROW (f1+ OLDCOL)))
+;	((AND (NOT LINEAR?) CHARACTER-GRAPHICS-TTY $LINEDISP)
+;	 (COND ((= (f+ H D) 1)
+;		(TYO* (GETCHARN (IF (EQ DIRECTION 'RIGHT) $RMXCHAR $LMXCHAR)
+;				2)))
+;	       (T (CURSORPOS* (f+ OLDROW 1 (f- H)) OLDCOL)
+;		  (CG-BEGIN-GRAPHICS)
+;		  (IF (EQ DIRECTION 'RIGHT) (CG-UR-CORNER) (CG-UL-CORNER))
+;		  (CG-END-GRAPHICS)
+;		  (CURSORPOS* (f+ OLDROW -1 H) OLDCOL)
+;		  (COND ((> (f+ H D) 2)
+;			 (D-VBAR NIL (f1- H) (f1- D))
+;			 (CURSORPOS* (f+ OLDROW D) (f1- OLDCOL)))
+;			(T (CURSORPOS* (f+ OLDROW D) OLDCOL)))
+;		  (CG-BEGIN-GRAPHICS)
+;		  (IF (EQ DIRECTION 'RIGHT) (CG-LR-CORNER) (CG-LL-CORNER))
+;		  (CG-END-GRAPHICS)
+;		  (CURSORPOS* (f- OLDROW D) (f1+ OLDCOL)))))
+    (T (D-VBAR LINEAR? H D 
+	       (GETCHARN (IF (EQ DIRECTION 'RIGHT) $RMXCHAR $LMXCHAR) 2)))))
 
 ;; There is wired knowledge of character offsets here.
 
 (DEFUN D-BOX (LINEAR? H D W BODY &AUX (CHAR 0) DMSTR)
        ;char a char?
  (DECLARE (FIXNUM H D W ))
- (COND ((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
-	 (LET ((X-MIN (f* LG-CHARACTER-X OLDCOL))
-	       (X-MAX (f* LG-CHARACTER-X (f+ OLDCOL W 2)))
-	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f- OLDROW H)) 2))
-	       (Y-MAX (f- (f* LG-CHARACTER-Y (f+ OLDROW D 2)) 2)))
-	      (declare (fixnum X-MIN X-MAX Y-MIN Y-MAX))
-	      (LG-SET-POINT X-MIN Y-MIN)
-	      (LG-DRAW-VECTOR X-MAX Y-MIN)
-	      (LG-DRAW-VECTOR X-MAX Y-MAX)
-	      (LG-DRAW-VECTOR X-MIN Y-MAX)
-	      (LG-END-VECTOR  X-MIN Y-MIN))
-	 (CURSORPOS* OLDROW (f1+ OLDCOL))
-	 (DRAW-2D BODY OLDROW OLDCOL)
-	 (CURSORPOS* OLDROW (f+ OLDCOL 1)))
-	((AND (NOT LINEAR?) CHARACTER-GRAPHICS-TTY $LINEDISP)
-	 (D-MATRIX NIL 'LEFT (f1+ H) (f1+ D))
-	 (CURSORPOS* (f- OLDROW H) OLDCOL)
-	 (D-HBAR NIL W)
-	 (CURSORPOS* (f+ OLDROW H) (f- OLDCOL W))
-	 (DRAW-2D BODY OLDROW OLDCOL)
-	 (CURSORPOS* (f+ OLDROW D 1) (f- OLDCOL W))
-	 (D-HBAR NIL W)
-	 (CURSORPOS* (f- OLDROW D 1) OLDCOL)
-	 (D-MATRIX NIL 'RIGHT (f1+ H) (f1+ D)))
+ (COND ;((AND (NOT LINEAR?) LINE-GRAPHICS-TTY $LINEDISP)
+;	 (LET ((X-MIN (f* LG-CHARACTER-X OLDCOL))
+;	       (X-MAX (f* LG-CHARACTER-X (f+ OLDCOL W 2)))
+;	       (Y-MIN (f+ (f* LG-CHARACTER-Y (f- OLDROW H)) 2))
+;	       (Y-MAX (f- (f* LG-CHARACTER-Y (f+ OLDROW D 2)) 2)))
+;	      (declare (fixnum X-MIN X-MAX Y-MIN Y-MAX))
+;	      (LG-SET-POINT X-MIN Y-MIN)
+;	      (LG-DRAW-VECTOR X-MAX Y-MIN)
+;	      (LG-DRAW-VECTOR X-MAX Y-MAX)
+;	      (LG-DRAW-VECTOR X-MIN Y-MAX)
+;	      (LG-END-VECTOR  X-MIN Y-MIN))
+;	 (CURSORPOS* OLDROW (f1+ OLDCOL))
+;	 (DRAW-2D BODY OLDROW OLDCOL)
+;	 (CURSORPOS* OLDROW (f+ OLDCOL 1)))
+;	((AND (NOT LINEAR?) CHARACTER-GRAPHICS-TTY $LINEDISP)
+;	 (D-MATRIX NIL 'LEFT (f1+ H) (f1+ D))
+;	 (CURSORPOS* (f- OLDROW H) OLDCOL)
+;	 (D-HBAR NIL W)
+;	 (CURSORPOS* (f+ OLDROW H) (f- OLDCOL W))
+;	 (DRAW-2D BODY OLDROW OLDCOL)
+;	 (CURSORPOS* (f+ OLDROW D 1) (f- OLDCOL W))
+;	 (D-HBAR NIL W)
+;	 (CURSORPOS* (f- OLDROW D 1) OLDCOL)
+;	 (D-MATRIX NIL 'RIGHT (f1+ H) (f1+ D)))
 	(T (SETQ CHAR (GETCHARN $BOXCHAR 2))
 	   (SETQ DMSTR
 		 `((0 ,H (D-HBAR ,(f+ 2 W) ,CHAR))
@@ -1686,19 +1676,18 @@
 	       (DRAW-LINEAR DMSTR OLDROW OLDCOL)
 	       (DRAW-2D DMSTR OLDROW OLDCOL)))))
 
-
 ;; Primitive functions for doing equation drawing.
 
 ;; Position the cursor at a given place on the screen.  %TDMV0 does
 ;; absolute cursor movement.
 
-#+ITS
-(DEFUN CURSORPOS* (ROW COL)
-  (DECLARE (FIXNUM ROW COL))
-  (+TYO #.%TDMV0 DISPLAY-FILE)
-  (+TYO ROW DISPLAY-FILE)
-  (+TYO COL DISPLAY-FILE)
-  (SETQ OLDROW ROW OLDCOL COL))
+;#+ITS
+;(DEFUN CURSORPOS* (ROW COL)
+;  (DECLARE (FIXNUM ROW COL))
+;  (+TYO #.%TDMV0 DISPLAY-FILE)
+;  (+TYO ROW DISPLAY-FILE)
+;  (+TYO COL DISPLAY-FILE)
+;  (SETQ OLDROW ROW OLDCOL COL))
 
 #-ITS
 (DEFUN CURSORPOS* (ROW COL)
@@ -1714,84 +1703,71 @@
 ;; but its nearly impossible to get a string with backspace in it in Macsyma.
 ;; Also, DISPLA can't dimension it correctly.
 
-#+(or cl ITS NIL)
-(DEFUN TYO* (CHAR)
-  #-cl (DECLARE (FIXNUM CHAR))
-  (COND ((char= #\Backspace CHAR) (SETQ OLDCOL (f1- OLDCOL)))	;Backspace
-	((char< CHAR #. (code-char 128.)) (SETQ OLDCOL (f1+ OLDCOL))))	;Printing graphic
-  #+ITS (+TYO CHAR DISPLAY-FILE)
-  #-ITS (tyo char))
+(DEFUN TYO* (char)
+  (COND ((char= #\Backspace char)
+	 (decf oldcol))	   ;Backspace
+	((char< char #.(code-char 128))
+	 (incf oldcol)))   ;Printing graphic
+  (tyo char))
 
-#-(or ITS NIL cl)
-(DEFUN TYO* (CHAR)
-  (DECLARE (FIXNUM CHAR))
-  (IF (< CHAR 128.) (SETQ OLDCOL (f1+ OLDCOL)))	;Printing graphic
-  (TYO CHAR))
+;#-(or ITS NIL cl)
+;(DEFUN TYO* (CHAR)
+;  (DECLARE (FIXNUM CHAR))
+;  (IF (< CHAR 128.) (SETQ OLDCOL (f1+ OLDCOL)))	;Printing graphic
+;  (TYO CHAR))
 
-
 ;; Functions used by the packages for doing character graphics.
 ;; See MAXSRC;H19 or VT100.
 
-#+ITS (PROGN 'COMPILE
+;#+ITS (PROGN 'COMPILE
 
-(DEFMFUN CG-TYO (CHAR) (+TYO CHAR DISPLAY-FILE))
+;(DEFMFUN CG-TYO (CHAR) (+TYO CHAR DISPLAY-FILE))
 
-;; ITS does not change its idea of where the cursor position is when characters
-;; are slipped by it using %TDQOT.  This is used for operations which just
-;; change the state of the terminal without moving the cursor.  For actually
-;; drawing characters, we use ordinary tyo since the cursor does indeed get
-;; moved forward a position.  Fortunately, it only takes one character to draw
-;; each of the special characters.
+;;; ITS does not change its idea of where the cursor position is when characters
+;;; are slipped by it using %TDQOT.  This is used for operations which just
+;;; change the state of the terminal without moving the cursor.  For actually
+;;; drawing characters, we use ordinary tyo since the cursor does indeed get
+;;; moved forward a position.  Fortunately, it only takes one character to draw
+;;; each of the special characters.
 
-(DEFMFUN CG-IMAGE-TYO (CHAR)
-	 (CG-TYO #.%TDQOT)
-	 (CG-TYO CHAR))
+;(DEFMFUN CG-IMAGE-TYO (CHAR)
+;	 (CG-TYO #.%TDQOT)
+;	 (CG-TYO CHAR))
 
-) ;; End of conditional
+;) ;; End of conditional
 
-#+NIL (progn
-(defmfun cg-tyo (char-code)
-  (send *terminal-io* :write-char (code-char char-code)))
+;#+NIL (progn
+;(defmfun cg-tyo (char-code)
+;  (send *terminal-io* :write-char (code-char char-code)))
 
-(defmfun cg-image-tyo (char-code)
-  (send *terminal-io* :write-raw-char (code-char char-code)))
+;(defmfun cg-image-tyo (char-code)
+;  (send *terminal-io* :write-raw-char (code-char char-code)))
 
-;Moving the stuff to a buffer to ensure that it will get output in one blast
-; is worth it on the vax...
-(defvar *cg-tyo-list-buf*
-  nil)
+;;Moving the stuff to a buffer to ensure that it will get output in one blast
+;; is worth it on the vax...
+;(defvar *cg-tyo-list-buf*
+;  nil)
 
-(defun cg-tyo-list (l imagep &aux (msg (if imagep :raw-oustr :oustr)))
-  (prog ((b (or *cg-tyo-list-buf* (setq *cg-tyo-list-buf* (make-string 20))))
-	 (*cg-tyo-list-buf* nil)
-	 (i 0))
-   a	(cond ((or (null l) (=& i 20))
-	         (send *terminal-io* msg b 0 i)
-		 (if (null l) (return nil) (setq i 0)))
-	      (t (setf (schar b i) (code-char (car l)))
-		 (setq l (cdr l) i (1+& i))
-		 (go a)))))
+;(defun cg-tyo-list (l imagep &aux (msg (if imagep :raw-oustr :oustr)))
+;  (prog ((b (or *cg-tyo-list-buf* (setq *cg-tyo-list-buf* (make-string 20))))
+;	 (*cg-tyo-list-buf* nil)
+;	 (i 0))
+;   a	(cond ((or (null l) (=& i 20))
+;	         (send *terminal-io* msg b 0 i)
+;		 (if (null l) (return nil) (setq i 0)))
+;	      (t (setf (schar b i) (code-char (car l)))
+;		 (setq l (cdr l) i (1+& i))
+;		 (go a)))))
 
-) ;; End of conditional
+;) ;; End of conditional
 
-#-(or ITS NIL) 
 (PROGN 'COMPILE
 
-(DEFMFUN CG-TYO (CHAR)
-  ;Surely you jest.
-  ;`(TYO ,CHAR)
-  (tyo char)
-  )
-(DEFMFUN CG-IMAGE-TYO (CHAR)
-  ;Ditto.
-  ;`(TYO ,CHAR)
-  (tyo char)
-  )
-
-) ;; End of conditional
-(DEFMFUN CG-TYO-N (L)
-  #+NIL (cg-tyo-list l nil)
-  #-NIL (MAPC #'CG-TYO L))
+       (DEFMFUN CG-TYO (CHAR)		;Surely you jest. `(TYO ,CHAR)
+	 (tyo char))
+       
+       (DEFMFUN CG-IMAGE-TYO (CHAR)	;Ditto. `(TYO ,CHAR)
+	 (tyo char)))
 
 
 ;; Things to do:
@@ -1809,49 +1785,11 @@
 ;;   These are situations where the size of the dimensioned
 ;;   result depends upon the form of the output.
 ;; * Fix display of MLABOX for graphic consoles.
-
+
+
+(DEFMFUN CG-TYO-N (L)
+  (MAPC #'CG-TYO L))
 
 (DEFMFUN CG-IMAGE-TYO-N (L)
-  #+NIL (cg-tyo-list l t)
-  #-NIL (MAPC #'CG-IMAGE-TYO L))
+  (MAPC #'CG-IMAGE-TYO L))
 
-(defvar *big-chunk-size*  9)
-(setq *tentochunksize* (expt 10 *big-chunk-size*))
-
-;; Defined in commac.lisp.
-#+nil
-(defun exploden (symb &aux string)
-  (cond ((symbolp symb)(setq string (symbol-name symb)))
-        ((floatp symb)
-	 (let ((a (abs symb)))
-	   (cond ((or (eql a 0.0)
-		      (and (>= a .001)
-			   (<= a 10000000.0)))
-		    (setq string (format nil "~vf" (+ 1 $fpprec) symb)))
-		 (t (setq string (format nil "~ve" (+ 4 $fpprec) symb)))))
-	 (setq string (string-left-trim " " string))
-	 )
-	#+(and gcl (not gmp))
-	((bignump symb)
-	 (let* ((big symb)
-		ans rem tem
-	       (chunks
-		(sloop 
-		 do (multiple-value-setq (big rem)
-					 (floor big *tentochunksize*))
-		 collect rem 
-		 while (not (eql 0 big))
-		 )))
-	   (setq chunks (nreverse chunks))
-	   (setq ans (list-string  (format nil "~d" (car chunks))))
-	   (sloop for v in (cdr chunks)
-		  with i
-		  do (setq tem (list-string (format nil "~d" v)))
-		  (sloop for i below (-  *big-chunk-size* (length tem))
-			 do (setq tem (cons #\0 tem)))
-		  (setq ans (nconc ans tem)))
-	   (return-from exploden ans)))
-	(t (setq string (format nil "~A" symb))))
-  (assert (stringp string))
-  (list-string string)
-  )

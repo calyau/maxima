@@ -28,7 +28,7 @@
 
 ;;; For the prettiest output the normal mode here will be to
 ;;; cons up items to pass as MTEXT forms.
-
+
 ;;; Macro definitions for defining a format string interpreter.
 ;;; N.B. All of these macros expand into forms which contain free
 ;;; variables, i.e. they assume that they will be expanded in the
@@ -87,23 +87,23 @@
 
 
 (defmacro +def-mformat-var (TYPE var val INIT-CONDITION)
-  (LET #+LISPM ((DEFAULT-CONS-AREA WORKING-STORAGE-AREA)) #-LISPM NIL
-       ;; How about that bullshit LISPM conditionalization put in
-       ;; by BEE? It is needed of course or else conses will go away. -gjc
-       (PUSH (LIST VAR VAL)
-	     (CDR (OR (zl-ASSOC INIT-CONDITION
-				(GET TYPE 'MFORMAT-STATE-VARS))
-		      (CAR (PUSH (NCONS INIT-CONDITION)
-				 (GET TYPE 'MFORMAT-STATE-VARS)))))))
+  (LET ()
+    ;; How about that bullshit LISPM conditionalization put in
+    ;; by BEE? It is needed of course or else conses will go away. -gjc
+    (PUSH (LIST VAR VAL)
+	  (CDR (OR (ASSOC INIT-CONDITION
+			  (GET TYPE 'MFORMAT-STATE-VARS) :test #'equal)
+		   (CAR (PUSH (NCONS INIT-CONDITION)
+			      (GET TYPE 'MFORMAT-STATE-VARS)))))))
   `',VAR)
 
 (defmacro +def-mformat-op (TYPE char &rest body)
   ; can also be a list of CHAR's
-  (LET #+LISPM ((DEFAULT-CONS-AREA WORKING-STORAGE-AREA)) #-LISPM NIL
-       (IF (ATOM CHAR) (SETQ CHAR (LIST CHAR)))
-	  (PUSH (CONS CHAR BODY) (GET TYPE 'MFORMAT-OPS))
-	  `',(MAKNAM (NCONC (EXPLODEN "MFORMAT-")
-			    (MAPCAR #'ASCII CHAR)))))
+  (LET ()
+    (IF (ATOM CHAR) (SETQ CHAR (LIST CHAR)))
+    (PUSH (CONS CHAR BODY) (GET TYPE 'MFORMAT-OPS))
+    `',(MAKNAM (NCONC (EXPLODEN "MFORMAT-")
+		      (MAPCAR #'ASCII CHAR)))))
 
 (DEFMACRO POP-MFORMAT-ARG ()
   `(COND ((= ARG-INDEX N)
@@ -166,7 +166,8 @@
 ;  `(zl-MEMBER ,X '(#\LINEFEED #\Return #\SPACE #\TAB #-lispm #\VT #\Page)))
 
 (DEFMACRO WHITE-SPACE-P (X)
-  `(zl-member ,x '(#\linefeed #\return #\space #\tab  #\page)))
+  `(member ,x '(#\linefeed #\return #\space #\tab #\page #-gcl #\vt)
+    :test #'char=))
 
 
 
@@ -194,9 +195,7 @@
 			  ((NOT (WHITE-SPACE-P (TOP-MFORMAT-STRING))))
 			(CDR-MFORMAT-STRING))
 		      (RETURN NIL))
-		     ((OR (#+cl char< #-cl <
-			    CHAR #\0) ( #+cl char> #-cl >
-					CHAR #\9))
+		     ((OR (char< CHAR #\0) (char> CHAR #\9))
 		      (MFORMAT-DISPATCH-ON-CHAR ,TYPE)
 		      (RETURN NIL))
 		     (T
@@ -208,7 +207,6 @@
 	    (T
 	     (PUSH CHAR TEXT-TEMP))))))
 
-
 ;;; The following definitions of MFORMAT ops are for compile-time,
 ;;; the runtime definitions are in MFORMT.
 
@@ -280,9 +278,7 @@
 
 (DEFMACRO NORMALIZE-STREAM (STREAM)
   STREAM
-  #+ITS `(IF (EQ ,STREAM '*terminal-io*)
-	     (SETQ ,STREAM 'TYO))
-  #-ITS NIL)
+  NIL)
 
 (DEFmfUN MFORMAT-TRANSLATE-OPEN N
   (LET ((STREAM (ARG 1))
@@ -331,12 +327,12 @@
 	     (IF (AND (STRINGP sSTRING) COMPILING?)
 		 (APPLY #'MFORMAT-SYNTAX-CHECK
 				STREAM sSTRING OTHER-SHIT))
-	     `(,(OR (CDR (zl-ASSOC (f+ 2			; two leading args.
-				   (LENGTH OTHER-SHIT))
+	     `(,(OR (CDR (ASSOC (f+ 2	; two leading args.
+				    (LENGTH OTHER-SHIT))
 				'((2 . *MFORMAT-2)
 				  (3 . *MFORMAT-3)
 				  (4 . *MFORMAT-4)
-				  (5 . *MFORMAT-5))))
+				  (5 . *MFORMAT-5)) :test #'equal))
 		   'MFORMAT)
 	       ,STREAM
 	       ,MESS
@@ -351,12 +347,12 @@
 	     (IF (AND (STRINGP sSTRING) COMPILING?)
 		 (APPLY #'MFORMAT-SYNTAX-CHECK
 				NIL SSTRING OTHER-SHIT))
-	     `(,(OR (CDR (zl-ASSOC (f+ 1 (LENGTH OTHER-SHIT))
+	     `(,(OR (CDR (ASSOC (1+ (LENGTH OTHER-SHIT))
 				'((1 . MTELL1)
 				  (2 . MTELL2)
 				  (3 . MTELL3)
 				  (4 . MTELL4)
-				  (5 . MTELL5))))
+				  (5 . MTELL5)) :test #'equal))
 		    'MTELL)
 	       ,MESS
 	       ,@OTHER-SHIT))))))
@@ -383,12 +379,12 @@
 		       NIL
 		       MESSAGE OTHER-SHIT))
 	     (SETQ MESS (CAR MESS))
-	     `(,(OR (CDR (zl-ASSOC (f+ 1 (LENGTH OTHER-SHIT))
+	     `(,(OR (CDR (ASSOC (1+ (LENGTH OTHER-SHIT))
 				'((1 . *MERROR-1)
 				  (2 . *MERROR-2)
 				  (3 . *MERROR-3)
 				  (4 . *MERROR-4)
-				  (5 . *MERROR-5))))
+				  (5 . *MERROR-5)) :test #'equal))
 		    'MERROR)
 	       ,MESS
 	       ,@OTHER-SHIT))))))
@@ -403,34 +399,34 @@
 		       NIL
 		       MESSAGE OTHER-SHIT))
 	     (SETQ MESS (CAR MESS))
-	     `(,(OR (CDR (zl-ASSOC (f+ 1 (LENGTH OTHER-SHIT))
-				'((1 . *ERRRJF-1))))
+	     `(,(OR (CDR (ASSOC (1+ (LENGTH OTHER-SHIT))
+				'((1 . *ERRRJF-1)) :test #'equal))
 		    'ERRRJF)
 	       ,MESS ,@OTHER-SHIT))))))
-#+PDP10
-(PROGN 'COMPILE
+;#+PDP10
+;(PROGN 'COMPILE
 
-(DEFUN GET-TRANSLATOR (OP)
-  (OR (GET OP 'TRANSLATOR)
-      (GET-TRANSLATOR (MAXIMA-ERROR "has no translator" OP 'wrng-type-arg))))
+;(DEFUN GET-TRANSLATOR (OP)
+;  (OR (GET OP 'TRANSLATOR)
+;      (GET-TRANSLATOR (MAXIMA-ERROR "has no translator" OP 'wrng-type-arg))))
 
-(DEFVAR SOURCE-TRANS-DRIVE NIL)
-(DEFUN SOURCE-TRANS-DRIVE (FORM)
-  (LET ((X (FUNCALL (GET-TRANSLATOR (CAR FORM)) (CDR FORM) T)))
-    (WHEN (AND X SOURCE-TRANS-DRIVE)
-	  (PRINT FORM TYO)
-	  (PRINC "==>" TYO)
-	  (PRINT X TYO))
-    (IF (NULL X) (VALUES FORM NIL) (VALUES X T))))
-(DEFUN PUT-SOURCE-TRANS-DRIVE (OP TR)
-  (PUTPROP OP '(SOURCE-TRANS-DRIVE) 'SOURCE-TRANS)
-  (PUTPROP OP TR 'TRANSLATOR))
+;(DEFVAR SOURCE-TRANS-DRIVE NIL)
+;(DEFUN SOURCE-TRANS-DRIVE (FORM)
+;  (LET ((X (FUNCALL (GET-TRANSLATOR (CAR FORM)) (CDR FORM) T)))
+;    (WHEN (AND X SOURCE-TRANS-DRIVE)
+;	  (PRINT FORM TYO)
+;	  (PRINC "==>" TYO)
+;	  (PRINT X TYO))
+;    (IF (NULL X) (VALUES FORM NIL) (VALUES X T))))
+;(DEFUN PUT-SOURCE-TRANS-DRIVE (OP TR)
+;  (PUTPROP OP '(SOURCE-TRANS-DRIVE) 'SOURCE-TRANS)
+;  (PUTPROP OP TR 'TRANSLATOR))
 
-(PUT-SOURCE-TRANS-DRIVE 'MFORMAT 'MFORMAT-TRANSLATE)
-(PUT-SOURCE-TRANS-DRIVE 'MTELL 'MTELL-TRANSLATE)
-(PUT-SOURCE-TRANS-DRIVE 'MERROR 'MERROR-TRANSLATE)
-(PUT-SOURCE-TRANS-DRIVE 'ERRRJF 'ERRRJF-TRANSLATE)
-)
+;(PUT-SOURCE-TRANS-DRIVE 'MFORMAT 'MFORMAT-TRANSLATE)
+;(PUT-SOURCE-TRANS-DRIVE 'MTELL 'MTELL-TRANSLATE)
+;(PUT-SOURCE-TRANS-DRIVE 'MERROR 'MERROR-TRANSLATE)
+;(PUT-SOURCE-TRANS-DRIVE 'ERRRJF 'ERRRJF-TRANSLATE)
+;)
 
 ;;; Other systems won't get the syntax-checking at compile-time
 ;;; unless we hook into their way of doing optimizers.

@@ -37,9 +37,9 @@
       (eval form)))
 
 
-(defmacro optimizing-declarations (dcls &body body) dcls
-  #+NIL `(locally (declare (optimize ,@dcls)) ,@body)
-  #-NIL `(progn ,@body))
+;(defmacro optimizing-declarations (dcls &body body) dcls
+;  #+NIL `(locally (declare (optimize ,@dcls)) ,@body)
+;  #-NIL `(progn ,@body))
 
 ;; All these updating macros should be made from the same generalized
 ;; push/pop scheme as I mentioned to LispForum. As they are defined now
@@ -50,22 +50,21 @@
 	  `(OR (MEMQ ,ITEM ,LIST) (SETQ ,LIST (CONS ,ITEM ,LIST))))
 
 #-Multics (PROGN 'COMPILE
+		 (DEFMACRO INCREMENT (COUNTER &OPTIONAL INCREMENT)
+		   (IF INCREMENT
+		       `(SETF ,COUNTER (f+ ,COUNTER ,INCREMENT))
+		       `(SETF ,COUNTER (f1+ ,COUNTER))))
 
 
-(DEFMACRO INCREMENT (COUNTER &OPTIONAL INCREMENT)
-  (IF INCREMENT
-      `(SETF ,COUNTER (f+ ,COUNTER ,INCREMENT))
-      `(SETF ,COUNTER (f1+ ,COUNTER))))
+		 (DEFMACRO DECREMENT (COUNTER &OPTIONAL DECREMENT)
+		   (IF DECREMENT
+		       `(SETF ,COUNTER (f- ,COUNTER ,DECREMENT))
+		       `(SETF ,COUNTER (f1- ,COUNTER))))
 
+		 (DEFMACRO COMPLEMENT (SWITCH)
+		   `(SETF ,SWITCH (NOT ,SWITCH)))
 
-(DEFMACRO DECREMENT (COUNTER &OPTIONAL DECREMENT)
-  (IF DECREMENT
-      `(SETF ,COUNTER (f- ,COUNTER ,DECREMENT))
-      `(SETF ,COUNTER (f1- ,COUNTER))))
-
-(DEFMACRO COMPLEMENT (SWITCH) `(SETF ,SWITCH (NOT ,SWITCH)))
-
-) ;; End of Lispm conditionalization.
+		 );; End of Lispm conditionalization.
 
 
 ;; 'writefilep' and 'ttyoff' are system independent ways of expressing
@@ -175,7 +174,6 @@
 
 (DEFMACRO COMPILE-FORMS (&REST <FORMS>) `(PROGN 'COMPILE . ,<FORMS>))
 
-
 ;; The following macros pertain only to Macsyma.
 
 ;; Widely used macro for printing error messages.  We should be able
@@ -284,7 +282,6 @@
      (prog1 ,@forms
 	    (context-unwinder))))
 
-
 ;; For creating a macsyma evaluator variable binding context.
 ;; (MBINDING (VARIABLES &OPTIONAL VALUES FUNCTION-NAME)
 ;;    ... BODY ...)
@@ -380,7 +377,7 @@
 
 (DEFMACRO HOT-COEF (P)
  `(PDIS (CADDR (CADR (RAT-NO-RATFAC ,P)))))
-
+
 ;; Special form for declaring Macsyma external variables.  It may be used for
 ;; User level variables, or those referenced by other Lisp programs.
 
@@ -426,8 +423,8 @@
   #+NIL (macsyma-defmfun-declarations function rest)
        `(DEFUN ,FUNCTION  ,REST))
 
-#+LISPM
-(DEFPROP DEFMSPEC "Macsyma special form" SI:DEFINITION-TYPE-NAME)
+;#+LISPM
+;(DEFPROP DEFMSPEC "Macsyma special form" SI:DEFINITION-TYPE-NAME)
 
 ;; Special form for declaring Macsyma external procedures.  Version for ITS
 ;; is in LIBMAX;DEFINE.
@@ -498,15 +495,15 @@
 ;;;	Note that the first arg must be of the form (FN2 DEV DIR) if a file
 ;;; mask is being used; this macro could be much more elaborate.
 
-#+ITS
-(DEFMACRO MAUTOLOAD (FN2-DEV-DIR &REST MASTER-LIST)
-  `(DOLIST (L ',MASTER-LIST)
-     (DO ((FILE (IF (ATOM (CAR L))
-		    (CONS (CAR L) ,FN2-DEV-DIR)
-		    (CAR L)))
-	  (FUNLIST (CDR L) (CDR FUNLIST)))
-	 ((NULL FUNLIST))
-       (PUTPROP (CAR FUNLIST) FILE 'AUTOLOAD))))
+;#+ITS
+;(DEFMACRO MAUTOLOAD (FN2-DEV-DIR &REST MASTER-LIST)
+;  `(DOLIST (L ',MASTER-LIST)
+;     (DO ((FILE (IF (ATOM (CAR L))
+;		    (CONS (CAR L) ,FN2-DEV-DIR)
+;		    (CAR L)))
+;	  (FUNLIST (CDR L) (CDR FUNLIST)))
+;	 ((NULL FUNLIST))
+;       (PUTPROP (CAR FUNLIST) FILE 'AUTOLOAD))))
 
 #-Multics
 (DEFMACRO SYS-DEFAULTF (X) `(DEFAULTF ,X))
@@ -532,35 +529,35 @@
 ;;		  `(,sym ,tag ,value)
 ;;		  '`((PUTPROP ,nsym ,nvalue ,ntag))))
 
-#+PDP10
-(defsetf MGET ((() sym tag) value) T 
-  (eval-ordered* '(nsym ntag nvalue)
-		 `(,sym ,tag ,value)
-		 '`((MPUTPROP ,nsym ,nvalue ,ntag))))
+;#+PDP10
+;(defsetf MGET ((() sym tag) value) T 
+;  (eval-ordered* '(nsym ntag nvalue)
+;		 `(,sym ,tag ,value)
+;		 '`((MPUTPROP ,nsym ,nvalue ,ntag))))
 
-#+PDP10
-(defsetf $GET ((() sym tag) value) T 
-  (eval-ordered* '(nsym ntag nvalue)
-		 `(,sym ,tag ,value)
-		 '`(($PUT ,nsym ,nvalue ,ntag))))
+;#+PDP10
+;(defsetf $GET ((() sym tag) value) T 
+;  (eval-ordered* '(nsym ntag nvalue)
+;		 `(,sym ,tag ,value)
+;		 '`(($PUT ,nsym ,nvalue ,ntag))))
 
-#+Franz
-(defsetf mget (expr value)
-   `(mputprop ,(cadr expr) ,value ,(caddr expr)))
+;#+Franz
+;(defsetf mget (expr value)
+;   `(mputprop ,(cadr expr) ,value ,(caddr expr)))
 
-#+Franz
-(defsetf $get (expr value)
-   `($put ,(cadr expr) ,value ,(caddr expr)))
+;#+Franz
+;(defsetf $get (expr value)
+;   `($put ,(cadr expr) ,value ,(caddr expr)))
 
-#+NIL
-(DEFPROP MGET SETF-MGET SI:SETF-SUBR)
-#+NIL
-(DEFPROP $GET SETF-$GET SI:SETF-SUBR)
+;#+NIL
+;(DEFPROP MGET SETF-MGET SI:SETF-SUBR)
+;#+NIL
+;(DEFPROP $GET SETF-$GET SI:SETF-SUBR)
 
-;;DIFFERENT version of setf on Multics and LM ...Bummer... -JIM 3/4/81
-#+MULTICS
-(defsetf MGET (sym tag) value
-  `(MPUTPROP ,sym ,value ,tag))
+;;;DIFFERENT version of setf on Multics and LM ...Bummer... -JIM 3/4/81
+;#+MULTICS
+;(defsetf MGET (sym tag) value
+;  `(MPUTPROP ,sym ,value ,tag))
 
 (DEFMFUN MGET (ATOM IND)
   (LET ((PROPS (AND (SYMBOLP ATOM) (GET ATOM 'MPROPS))))
@@ -573,9 +570,9 @@
 (defmacro old-get (plist tag)
   `(getf (cdr ,plist) ,tag))
 
-#+ MULTICS
-(defsetf $GET (sym tag) value
-  `($PUT ,sym ,value ,tag))
+;#+ MULTICS
+;(defsetf $GET (sym tag) value
+;  `($PUT ,sym ,value ,tag))
 
 (DEFMFUN $GET (ATOM IND) (PROP1 '$GET ATOM NIL IND))
 
@@ -592,7 +589,7 @@
 ;  `($PUT ,(SECOND REF) ,VAL ,(THIRD REF)))
 
 (defmacro initialize-random-seed ()
-  #+(or PDP10 NIL) '(sstatus random 0)
+;  #+(or PDP10 NIL) '(sstatus random 0)
   #+CL () ;;(si:random-initialize si:random-array) obsolete. what now?
   )
 
@@ -613,28 +610,27 @@
 (DEFMACRO REST6 (FORM) `(CDDR (CDDDDR ,FORM)))
 
 ;;; We should probably move these into the compatibility package on
-;;; mulitcs.
+;;; multics.
 
-#+Multics
 (defmacro *break (breakp mess)
   `(apply 'break `(,,mess ,',breakp)))
 
 ;;; To satisfy GJC's speed mainia I resisted changing these in the
 ;;; code. -Jim.
 
-#+Multics
-(defmacro +tyi (&rest args)
-  `(tyi ,@args))
+;#+Multics
+;(defmacro +tyi (&rest args)
+;  `(tyi ,@args))
 
-#+Multics 
-(defmacro +tyo (&rest args)
-  `(tyo ,@args))
+;#+Multics 
+;(defmacro +tyo (&rest args)
+;  `(tyo ,@args))
 
-;;; Let the compiler know that x is a fixnum. I guess it will also
-;;; then optimize the call to +.
-#+Multics
-(defmacro fixnum-identity (x)
-  `(f+ ,x))
+;;;; Let the compiler know that x is a fixnum. I guess it will also
+;;;; then optimize the call to +.
+;#+Multics
+;(defmacro fixnum-identity (x)
+;  `(f+ ,x))
 
 ;;this was not called.
 ;(defmacro get-symbol-array-pointer (x)
