@@ -1,23 +1,23 @@
-@c end concepts Limits
+
 @menu
 * Definitions for Limits::      
 @end menu
 
 @node Definitions for Limits,  , Limits, Limits
 @section Definitions for Limits
-@c @node lhospitallim
-@c @unnumberedsec phony
+
 @defvar lhospitallim
- default: @code{[4]} - the maximum number of times L'Hospital's
+ default: 4 - the maximum number of times L'Hospital's
 rule is used in @code{limit}.  This prevents infinite looping in cases like
 @code{limit(cot(x)/csc(x),x,0)}.
 
 @end defvar
-@c @node limit
-@c @unnumberedsec phony
+
 @defun limit (exp, var, val, dir)
+@defunx limit (exp, var, val)
+@defunx limit (exp)
 finds the limit of @code{exp} as the real variable
-@code{var} approaches the value @code{val} from the direction @code{dir}.  @code{Dir} may have the
+@code{var} approaches the value @code{val} from the direction @code{dir}.  @code{dir} may have the
 value @code{plus} for a limit from above, @code{minus} for a limit from below, or
 may be omitted (implying a two-sided limit is to be computed).  For
 the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
@@ -25,40 +25,44 @@ Manipulation" - Ph.D. Thesis - MAC TR-92 October 1971.  @code{limit} uses the
 following special symbols: @code{inf} (positive infinity) and @code{minf} (negative
 infinity).  On output it may also use @code{und} (undefined), @code{ind} (indefinite
 but bounded) and @code{infinity} (complex infinity).
-@code{lhospitallim[4]} is the maximum number of times L'Hospital's rule
+
+@code{lhospitallim} is the maximum number of times L'Hospital's rule
 is used in @code{limit}.  This prevents infinite looping in cases like
 @code{limit(cot(x)/csc(x),x,0)}.
-@code{tlimswitch[false]} when true will cause the limit package to use
+
+@code{tlimswitch} when true will cause the limit package to use
 Taylor series when possible.
-@code{limsubst[false]} prevents @code{limit} from attempting substitutions on
+
+@code{limsubst} prevents @code{limit} from attempting substitutions on
 unknown forms.  This is to avoid bugs like @code{limit(f(n)/f(n+1),n,inf);}
-giving 1.  Setting @code{limsubst} to @code{true} will allow such substitutions.
-Since @code{limit} is often called upon to simplify constant expressions,
-for example, @code{inf-1}, @code{limit} may be used in such cases with only one
-argument, e.g. @code{limit(inf-1);}
+giving 1.  Setting @code{limsubst} to @code{true} will allow such
+substitutions.
+
+@code{limit} with one argument is often called upon to simplify constant expressions,
+for example, @code{limit(inf-1);} .
+
 Do @code{example(limit);} for examples.
 
 @end defun
-@c @node limsubst
-@c @unnumberedsec phony
+
 @defvar limsubst
-default: @code{[false]} prevents @code{limit} from attempting substitutions on
+default value: @code{false} - prevents @code{limit} from attempting substitutions on
 unknown forms.  This is to avoid bugs like @code{limit(f(n)/f(n+1),n,inf);}
 giving 1.  Setting @code{limsubst} to @code{true} will allow such
 substitutions.
 
 @end defvar
-@c @node tlimit
-@c @unnumberedsec phony
-@defun tlimit (exp,var,val,dir)
+
+@defun tlimit (exp, var, val, dir)
+@defunx tlimit (exp, var, val)
+@defunx tlimit (exp)
 is just the function @code{limit} with @code{tlimswitch}
 set to @code{true}.
 
 @end defun
-@c @node tlimswitch
-@c @unnumberedsec phony
+
 @defvar tlimswitch
- default: @code{[false]} - if true will cause the limit package to
+default: @code{false} - if @code{true} will cause the limit package to
 use Taylor series when possible.
 
 @end defvar

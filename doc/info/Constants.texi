@@ -1,49 +1,42 @@
-@c end concepts Constants
+
 @menu
 * Definitions for Constants::   
 @end menu
 
 @node Definitions for Constants,  , Constants, Constants
 @section Definitions for Constants
-@c @node e
-@c @unnumberedsec phony
+
 @defvar %e
  - The base of natural logarithms, e, is represented in Maxima
 as @code{%e}.
 
 @end defvar
-@c @node false
-@c @unnumberedsec phony
+
 @defvar false
  - the Boolean constant, false. (NIL in Lisp)
 
 @end defvar
-@c @node inf
-@c @unnumberedsec phony
+
 @defvar %inf
  - real positive infinity.
 
 @end defvar
-@c @node infinity
-@c @unnumberedsec phony
+
 @defvar %infinity
  - complex infinity.
 
 @end defvar
-@c @node minf
-@c @unnumberedsec phony
+
 @defvar %minf
  - real minus infinity.
 
 @end defvar
-@c @node pi
-@c @unnumberedsec phony
+
 @defvar pi
  - "pi" is represented in Maxima as @code{%pi}.
 
 @end defvar
-@c @node true
-@c @unnumberedsec phony
+
 @defvar true
  - the Boolean constant, true. (T in Lisp)
 

@@ -32,25 +32,24 @@ itself, since after it has been through the simplifier the list would become
 @end example
 
 
-@c end concepts Lists
 
 @node Definitions for Lists,  , Introduction to Lists, Lists
 @section Definitions for Lists
 
-@c @node append, assoc, Lists, Lists
-@c @unnumberedsec 
 @defun append (list1, list2, ...)
-returns a single list of the elements of
-@code{list1} followed by the elements of @code{list2},...  APPEND also works on
-general expressions, e.g. @code{append(F(A,B), F(C,D,E)); -> F(A,B,C,D,E)}.
+returns a single list of the elements of @code{list1} followed 
+by the elements of @code{list2},...  @code{append} also works on
+general expressions, e.g. @code{append(f(a,b), f(c,d,e));} -> 
+@code{f(a,b,c,d,e)}.
+
 Do @code{example(append);} for an example.
 
 @end defun
-@c @node assoc, atom, append, Lists
-@c @unnumberedsec 
+
 @defun assoc (key, list, default)
+@defunx assoc (key, list)
 This function searches for the @code{key} in the left hand side of the input @code{list}
-of the form @code{[x,y,z...]} where each of the @code{list} elements is an expression of
+of the form @code{[x,y,z,...]} where each of the @code{list} elements is an expression of
 a binary operand and 2 elements.  For example @code{x=1}, @code{2^3}, @code{[a,b]} etc.
 The @code{key} is checked againts the first operand.  @code{assoc} returns the second
 operand if the @code{key} is found.  If the @code{key} is not found it
@@ -58,34 +57,31 @@ either returns the @code{default} value.  @code{default} is optional
 and defaults to @code{false}.
 
 @end defun
-@c @node atom, cons, append, Lists
-@c @unnumberedsec 
+
 @defun atom (exp)
 is @code{true} if @code{exp} is atomic (i.e. a number, name or string) else
-FALSE.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and @code{atom(sin(x))} are
+@code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and @code{atom(sin(x))} are
 @code{false} (asuming @code{a[1]} and @code{x} are unbound).
 
 @end defun
-@c @node cons, copylist, atom, Lists
-@c @unnumberedsec 
+ 
 @defun cons (exp, list)
 returns a new list constructed of the element @code{exp} as
 its first element, followed by the elements of @code{list}.  @code{cons} also works
 on other expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @end defun
-@c @node copylist, delete, cons, Lists
-@c @unnumberedsec 
+
 @defun copylist (list)
 creates a copy of the list @code{list}.
 
 @end defun
-@c @node delete, endcons, copylist, Lists
-@c @unnumberedsec 
+
 @defun delete (exp1, exp2)
+@defunx delete (exp1, exp2, n)
 removes all occurrences of @code{exp1} from @code{exp2}.  @code{exp1}
-may be a term of @code{exp2} (if it is a sum) or a factor of @code{exp2} (if it is a
-product).
+may be a term of @code{exp2} (if it is a sum) or a factor of @code{exp2} 
+(if it is a product).
 @example
 (%i1)  delete(sin(x),x+sin(x)+y);
 (%o1)               y + x
@@ -102,16 +98,14 @@ occurrences of @code{exp1} in @code{exp2} then all occurrences will be deleted.
 
 @end example
 @end defun
-@c @node endcons, every, delete, Lists
-@c @unnumberedsec 
+ 
 @defun endcons (exp, list)
 returns a new list consisting of the elements of
 @code{list} followed by @code{exp}.  @code{endcons} also works on general expressions, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @end defun
-@c @node every, first, delete, Lists
-@c @unnumberedsec 
+
 @defun every (exp)
 This function takes a list, or a positive number of arguments and returns
 @code{true} if all its arguments are not @code{false}.
@@ -128,7 +122,7 @@ on the form of @code{exp} which is displayed not the form which is typed on
 input.  If the variable @code{inflag [false]} is set to @code{true} however, these
 functions will look at the internal form of @code{exp}.  Note that the
 simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if @code{inflag}
-is @code{TRUE} and @code{Y} if @code{inflag} is @code{false} (@code{first(y+x)} gives the same
+is @code{true} and @code{y} if @code{inflag} is @code{false} (@code{first(y+x)} gives the same
 results).  The functions @code{second} .. @code{tenth} yield the second through the
 tenth part of their input argument.
 
@@ -186,7 +180,7 @@ of terms (see @code{dispform}).  The @code{length} command is affected by the
 @c @node listarith, listp, length, Lists
 @c @unnumberedsec 
 @defvar listarith
- default: @code{[true]} - if @code{false} causes any arithmetic operations
+ default value: @code{true} - if @code{false} causes any arithmetic operations
 with lists to be suppressed; when @code{true}, list-matrix operations are
 contagious causing lists to be converted to matrices yielding a result
 which is always a matrix.  However, list-list operations should return
