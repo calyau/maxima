@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.26 2002-09-11 14:38:37 amundson Exp $
+#       $Id: Makefile.am,v 1.27 2002-09-13 17:26:23 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -8,10 +8,12 @@ xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png 
 
 bin_SCRIPTS = xmaxima
 
-TKMAXIMASOURCES1 = \
-	Tkmaxima/Header.tcl
-
-TKMAXIMASOURCES2 = \
+TKSOURCES = \
+	Tkmaxima/Header.tcl \
+	Tkmaxima/Cygwin.tcl \
+	Utils/FileDlg.tcl \
+	Utils/Messages.tcl \
+	Utils/Misc.tcl \
 	Tkmaxima/Constants.tcl \
 	Tkmaxima/Preamble.tcl \
 	Tkmaxima/Readdata.tcl \
@@ -50,24 +52,13 @@ TKMAXIMASOURCES2 = \
 	Tkmaxima/OpenMath.tcl \
 	Tkmaxima/NConsole.tcl \
 	Tkmaxima/String.tcl \
-	Tkmaxima/CMMenu.tcl \
 	Tkmaxima/Prefs.tcl \
 	Tkmaxima/RunMaxima.tcl \
-	Tkmaxima/Menu.tcl
-
-TKSOURCES = \
-	$(TKMAXIMASOURCES1) \
-	Utils/FileDlg.tcl \
-	Utils/Messages.tcl \
-	Utils/Misc.tcl \
-	$(TKMAXIMASOURCES2) \
+	Tkmaxima/Menu.tcl \
 	xmaxima.tcl 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl
 XMAXIMASOURCES = $(TKSOURCES) autoconf-variables.tcl xmaxima-paths.tcl xmaxima-trailer.tcl
-
-genericdir = $(verpkglibdir)
-genericdirDATA = $(TKMAXIMASOURCES1) $(TKMAXIMASOURCES2)
 
 xmaxima: $(XMAXIMASOURCES)
 	rm -f xmaxima && \
