@@ -171,7 +171,23 @@ trigreduce(cosh(x)^4);
 trigreduce(cosh(x)^5);
 (cosh(5*x)+5*cosh(3*x)+10*cosh(x))/16;
 
-/* and using De Moivre's Theorem - Abramowitz & Stegun 4.5.53 */
+/* De Moivre's Theorem - Abramowitz & Stegun 4.3.48, 4.5.53 */
+expand(trigreduce(expand((cos(x)+%i*sin(x))^2)));
+%i*sin(2*x)+cos(2*x);
+expand(trigreduce(expand((cos(x)+%i*sin(x))^3)));
+%i*sin(3*x)+cos(3*x);
+expand(trigreduce(expand((cos(x)+%i*sin(x))^4)));
+%i*sin(4*x)+cos(4*x);
+expand(trigreduce(expand((cos(x)+%i*sin(x))^5)));
+%i*sin(5*x)+cos(5*x);
+expand(trigreduce(expand((cos(x)+%i*sin(x))^6)));
+%i*sin(6*x)+cos(6*x);
+expand(trigreduce(expand((cos(x)+%i*sin(x))^7)));
+%i*sin(7*x)+cos(7*x);
+expand(trigreduce(expand((cos(x)+%i*sin(x))^8)));
+%i*sin(8*x)+cos(8*x);
+expand(trigreduce(expand((cos(x)+%i*sin(x))^9)));
+%i*sin(9*x)+cos(9*x);
 expand(trigreduce(expand((cosh(x)+sinh(x))^2)));
 sinh(2*x)+cosh(2*x);
 expand(trigreduce(expand((cosh(x)+sinh(x))^3)));
