@@ -295,7 +295,9 @@
 	 (princ *prompt-suffix*)
 	 (MTERPRI))
 	(T 
-	 (format t "~a~a~a" *prompt-prefix* MSG *prompt-suffix*) 
+	 (princ *prompt-prefix*)
+	 (displa MSG) 
+	 (princ *prompt-prefix*)
 	 (MTERPRI)))
   (mread-noprompt *query-io* nil))
 
