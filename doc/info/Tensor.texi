@@ -58,7 +58,7 @@ equations are manipulated based on algebraic rules, specifically symmetry
 and contraction rules. In addition, the ITENSOR package understands
 covariant differentiation, curvature, and torsion. Calculations can be
 performed relative to a metric of moving frame, depending on the setting
-of the @code{itorsion_flag} variable.
+of the @code{iframe_flag} variable.
 
 A sample session below demonstrates how to load the ITENSOR package,
 specify the name of the metric, and perform some simple calculations.
@@ -584,7 +584,7 @@ illustrates.
 
 @c @node remsym
 @c @unnumberedsec phony
-@defun remsym
+@defun remsym ()
 
 Removes all symmetry properties from @code{tensor} which has @code{m}
 covariant indices and @code{n} contravariant indices.
@@ -936,11 +936,128 @@ curvature tensor using the @code{igeodesic_coords} function.
 
 @section Moving frames
 
+MAXIMA now has the ability to perform calculations using moving frames.
+These can be orthonormal frames (tetrads, vielbeins) or an arbitrary frame.
+
+To use frames, you must first set @code{iframe_flag} to @code{true}. This
+causes the Christoffel-symbols, @code{ichr1} and @code{ichr2}, to be replaced
+by the more general frame connection coefficients @code{icc1} and @code{icc2}
+in calculations. Speficially, the behavior of @code{covdiff} and
+@code{icurvature} is changed.
+
+The frame is defined by two tensors: the inverse frame field (@code{ifri}),
+and the frame metric @code{ifg}. The frame metric is the identity matrix for
+orthonormal frames, or the Lorentz metric for orthonormal frames in Minkowski
+spacetime. The inverse frame field defines the frame base (unit vectors).
+Contraction properties are defined for the frame field and the frame metric.
+
+IMPORTANT: Setting the variable @code{iframe_flag} to @code{true} does NOT
+undefine the contraction properties of a metric defined by a call to
+@code{defcon()} or @code{imetric()}. If a frame field is used, it is best to
+define the metric by assigning its name to the variable @code{imetric}
+and NOT invoke the @code{imetric()} function.
+
+MAXIMA uses these two tensors to define the frame coefficients (@code{ifc1}
+and @code{ifc2}) which form part of the connection coefficients (@code{icc1}
+and @code{icc2}), as the following example demonstrates:
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%i2) iframe_flag:true;
+
+(%o2)                                true
+(%i3) imetric(g);
+
+(%o3)                                done
+(%i4) ishow(covdiff(v([],[i]),j))$
+
+                               i        i     %1
+(%t4)                         v   + icc2     v
+                               ,j       %1 j
+(%i5) ishow(ev(%,icc2))$
+
+                        %1      i           i        i
+(%t5)                  v   (ifc2     + ichr2    ) + v
+                                %1 j        %1 j     ,j
+(%i6) ishow(ev(%,ifc2))$
+
+            i %3     %2                      %2         i
+           g     (ifb      g     - g      ifb    ) - ifb
+       %1            %1 %3  %2 j    %1 %2    %3 j       %1 j        i        i
+(%t6) v   (------------------------------------------------- + ichr2    ) + v
+                                   2                                %1 j     ,j
+(%i7) ishow(ifb([a,b],[c]))$
+
+                           c           c         %4    %5
+(%t7)                 (ifri      - ifri     ) ifr   ifr
+                           %4,%5       %5,%4     a     b
+
+@end example
+
+An alternate method is used to compute the frame bracket (@code{ifb}) if
+the @code{iframe_bracket_form} flag is set to @code{false}:
+
+@example
+
+(%i8) block([iframe_bracket_form:false],ishow(ifb([a,b],[c])))$
+
+                        c      %7    %6        %6      %7
+(%t8)               ifri   (ifr   ifr     - ifr     ifr  )
+                        %6     a     b,%7      a,%7    b
+
+@end example
+
+
+@c @node iframes
+@c @unnumberedsec phony
+@defun iframes ()
+
+Since in this version of MAXIMA, contraction identities for @code{ifr} and
+@code{ifri} are always defined, as is the frame bracket (@code{ifb}), this
+function does nothing.
+
+@end defun
+
 @c @node ifb
 @c @unnumberedsec phony
 @defvar ifb
 
-*** TO BE WRITTEN ***
+The frame bracket. The contribution of the frame metric to the connection
+coefficients is expressed using the frame bracket:
+
+@example
+
+    c     cd        e     cd        e       c
+ifc2   = g   g   ifb   - g   g   ifb   - ifb
+    ab        be    ad        ae    db      ab
+
+@end example
+
+The frame bracket itself is defined in terms of the frame field and frame
+metric. Two alternate methods of computation are used depending on the
+value of @code{frame_bracket_form}. If true (the default):
+
+@example
+
+   c          c         c        d     e
+ifb   = ( ifri    - ifri    ) ifr   ifr
+   ab         d,e       e,d      a     b
+
+@end example
+
+Or, if @code{false}:
+
+@example
+
+   c        c      e     d        d      e
+ifb   = ifri   (ifr   ifr    - ifr    ifr  )
+   ab       d      i     j,e      i,e    j
+
+@end example
+
 @end defvar
 
 
@@ -948,88 +1065,283 @@ curvature tensor using the @code{igeodesic_coords} function.
 @c @unnumberedsec phony
 @defvar icc1
 
-*** TO BE WRITTEN ***
+Connection coefficients of the first kind (also known as Ricci rotation
+coefficients.) In ITENSOR, defined as
+
+@example
+
+icc1    = ichr1    + ifc1    + ikt1    - inmc1
+    abc        abc       abc       abc        abc
+
+@end example
+
+In this expression, if @code{itorsion_flag} is @code{false}, @code{ikt1}
+will be omitted. Similarly, of @code{inonmet_flag} is @code{false},
+@code{inmc1} will not be present.
+
+
 @end defvar
 
 @c @node icc2
 @c @unnumberedsec phony
 @defvar icc2
 
-*** TO BE WRITTEN ***
+Connection coefficients of the first kind (also known as Ricci rotation
+coefficients.) In ITENSOR, defined as
+
+@example
+
+    c         c        c        c         c
+icc2   = ichr2   + ifc2   + ikt2   - inmc2
+    ab        ab       ab       ab        ab
+
+@end example
+
+In this expression, if @code{itorsion_flag} is @code{false}, @code{ikt2}
+will be omitted. Similarly, of @code{inonmet_flag} is @code{false},
+@code{inmc2} will not be present.
+
 @end defvar
 
 @c @node ifc1
 @c @unnumberedsec phony
 @defvar ifc1
 
-*** TO BE WRITTEN ***
+Frame coefficient of the first kind. This tensor represents the contribution
+of the frame metric to the connection coefficient of the first kind. Defined
+as:
+
+@example
+
+                  d
+ifc1    = g   ifc2
+    abc    cd     ab
+
+@end example
+
 @end defvar
 
 @c @node ifc2
 @c @unnumberedsec phony
 @defvar ifc2
 
-*** TO BE WRITTEN ***
+Frame coefficient of the first kind. This tensor represents the contribution
+of the frame metric to the connection coefficient of the first kind. Defined
+as a permutation of the frame bracket (@code{ifb}) with the appropriate
+indices raised and lowered as necessary:
+
+@example
+
+          ce        d     ce        d       c
+         g   g   ifb   - g   g   ifb   - ifb
+    c         db    ae        ad    eb      ab
+ifc2   = -------------------------------------
+    ab                    2
+
+@end example
+
 @end defvar
 
 @c @node ifr
 @c @unnumberedsec phony
 @defvar ifr
 
-*** TO BE WRITTEN ***
+The frame field. Contracts with the inverse frame field (@code{ifri}) to
+form the frame metric (@code{ifg}).
+
 @end defvar
 
 @c @node ifri
 @c @unnumberedsec phony
 @defvar ifri
 
-*** TO BE WRITTEN ***
+The inverse frame field. Specifies the frame base (basis vectors). Along
+with the frame metric, it forms the basis of all calculations based on
+frames.
+
+@end defvar
+
+@c @node ifg
+@c @unnumberedsec phony
+@defvar ifg
+
+The frame metric. Defaults to @code{kdelta}, but can be changed using
+@code{components}.
+
+@end defvar
+
+@c @node ifgi
+@c @unnumberedsec phony
+@defvar ifgi
+
+The inverse frame metric. Contracts with the frame metric (@code{ifg})
+to @code{kdelta}.
+
+@end defvar
+
+@c @node iframe_bracket_form
+@c @unnumberedsec phony
+@defvar iframe_bracket_form
+
+Specifies how the frame bracket (@code{ifb}) is computed. Default is
+@code{true}.
+
 @end defvar
 
 @section Torsion
 
+MAXIMA can now take into account torsion and nonmetricity. When the flag
+@code{itorsion_flag} is set to @code{true}, the contribution of torsion
+is added to the connection coefficients. Similarly, when the flag
+@code{inonmet_flag} is true, nonmetricity components are included.
+Note that in order for connection coefficients to be used, the flag
+@code{iframe_flag} must also be set to @code{true}.
+
+
+@c @node inm
+@c @unnumberedsec phony
+@defvar inm
+
+The nonmetricity vector.
+
+@end defvar
 
 
 @c @node inmc1
 @c @unnumberedsec phony
 @defvar inmc1
 
-*** TO BE WRITTEN ***
+Covariant permutation of the nonmetricity vector components. Defined as
+
+@example
+
+           g   inm  + inm  g   - g   inm
+            ab    c      a  bc    ac    b
+inmc1    = ------------------------------
+     abc                 2
+
+@end example
+
 @end defvar
 
 @c @node inmc2
 @c @unnumberedsec phony
 @defvar inmc2
 
-*** TO BE WRITTEN ***
-@end defvar
+Contravariant permutation of the nonmetricity vector components. Used
+in the connection coefficients if @code{inonmet_flag} is @code{true}. Defined
+as:
 
-@c @node inm
-@c @unnumberedsec phony
-@defvar inm
+@example
 
-*** TO BE WRITTEN ***
+                     c         c         cd
+          inm  kdelta  - kdelta  inm  + g   inm  g
+     c       a       b         a    b          d  ab
+inmc2   = ------------------------------------------
+     ab                       2
+
+@end example
+
 @end defvar
 
 @c @node ikt1
 @c @unnumberedsec phony
 @defvar ikt1
 
-*** TO BE WRITTEN ***
+Covariant permutation of the torsion tensor (also known as contorsion.)
+Defined as:
+
+@example
+
+                  d           d       d
+          -g   itr  - g    itr   - itr   g
+            ad    cb    bd    ca      ab  cd
+ikt1    = ----------------------------------
+    abc                   2
+
+@end example
+
 @end defvar
 
 @c @node ikt2
 @c @unnumberedsec phony
 @defvar ikt2
 
-*** TO BE WRITTEN ***
+Contravariant permutation of the torsion tensor (also known as contorsion.)
+Defined as:
+
+@example
+
+    c     cd
+ikt2   = g   ikt1
+    ab           abd
+
+@end example
+
 @end defvar
 
 @c @node itr
 @c @unnumberedsec phony
 @defvar itr
 
-*** TO BE WRITTEN ***
+The torsion tensor. For a metric with torsion, repeated covariant
+differentiation on a scalar function will not commute, as demonstrated
+by the following example:
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) imetric:g;
+
+(%o2)                                  g
+(%i3) covdiff(covdiff(f([],[]),i),j)-covdiff(covdiff(f([],[]),j),i)$
+
+(%i4) ishow(%)$
+
+                                   %4              %2
+(%t4)                    f    ichr2    - f    ichr2
+                          ,%4      j i    ,%2      i j
+(%i5) canform(%);
+
+(%o5)                                  0
+(%i6) itorsion_flag:true;
+
+(%o6)                                true
+(%i7) covdiff(covdiff(f([],[]),i),j)-covdiff(covdiff(f([],[]),j),i)$
+
+(%i8) ishow(%)$
+
+                           %8             %6
+(%t8)             f    icc2    - f    icc2    - f     + f
+                   ,%8     j i    ,%6     i j    ,j i    ,i j
+(%i9) ishow(canform(%))$
+
+                                   %1             %1
+(%t9)                     f    icc2    - f    icc2
+                           ,%1     j i    ,%1     i j
+(%i10) ishow(canform(ev(%,icc2)))$
+
+                                   %1             %1
+(%t10)                    f    ikt2    - f    ikt2
+                           ,%1     i j    ,%1     j i
+(%i11) ishow(canform(ev(%,ikt2)))$
+
+                      %2 %1                    %2 %1
+(%t11)          f    g      ikt1       - f    g      ikt1
+                 ,%2            i j %1    ,%2            j i %1
+(%i12) ishow(factor(canform(rename(expand(ev(%,ikt1))))))$
+
+                           %3 %2            %1       %1
+                     f    g      g      (itr    - itr   )
+                      ,%3         %2 %1     j i      i j
+(%t12)               ------------------------------------
+                                      2
+
+
+@end example
+
 @end defvar
 
 @section Interfacing with CTENSOR
