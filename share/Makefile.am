@@ -106,6 +106,7 @@ simplification/facex1.mac\
 simplification/facexp.dem\
 simplification/facexp.mac\
 simplification/facexp.usg\
+simplification/genut.mac\
 simplification/ineq.dem\
 simplification/ineq.mac\
 simplification/ineq.usg\

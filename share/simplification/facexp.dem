@@ -1,5 +1,5 @@
 /*  First load the necessary file: */
-LOAD('FACEXP);
+LOAD("facexp");
 /* Here is an expression to work with: */
 EXP1:D*E*F^2+C*E*F^2-D*E+C*E+B*C*D+A*C*D;
 /* The function FACSUM can be used to cast an expression
@@ -109,7 +109,7 @@ GET('FACSUM,'AUTOMATIC);
 PUT('FACSUM,'SQFR,'AUTOMATIC);
 /*  Now compare the behavior of FACSUM to its former 
          behavior.  Here is what it did with NONUMFACTOR AUTOMATIC: */
-PLAYBACK([4,5])$
+PLAYBACK([5,6])$
 /* And now with SQFR AUTOMATIC: */
 FACSUM(EXP2,C,D,[U,V]);
 /*  Since this particular choice for AUTOMATIC is so
@@ -122,8 +122,11 @@ FACSUM(EXP2,C,D,[U,V]);
          be introduced into the expression in the places where it
          would have been applied.  This capability is useful for
          constructing expressions that one intends to use later
-         in function definitions.  We illustrate with SQFR: */
-DECLARE(SQFR,FORMAL)$
+         in function definitions.  We illustrate with SQFR:
+         (Maxima: NOUN does the same thing, doesn't it. You can define
+         an alias for it if you want to, see genut.mac). */
+/* DECLARE(SQFR,FORMAL)$ */
+DECLARE(SQFR,NOUN)$
 FACSUM(EXP2,C,D,[U,V]);
 /*  Now restore the default AUTOMATIC property: */
 PUT('FACSUM,'NONUMFACTOR,'AUTOMATIC);

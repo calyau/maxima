@@ -43,8 +43,7 @@
 		(APPLY F L))
     #+cl
     ((and (symbolp f)(or (macro-function f)
-			 #-cmu (special-form-p f)
-			 #+cmu (special-operator-p f)))
+			 (special-operator-p f)))
      (eval (cons f (copy-rest-arg l))))
     (T
      (MAPPLY F (copy-rest-arg  L) NIL))))

@@ -841,7 +841,7 @@ Mention MAXIMA-ERROR code:  ~A~%Thank you." IDLE-TIME)
 				  LT (CONS (NCONS (DCON F)) LT))))))
 	     (SETQ 
 	      LEX
-	      (MAPCAR '(LAMBDA (S Q) 
+	      (MAPCAR #'(LAMBDA (S Q) 
 			       (SIMPTIMES (LIST '(MTIMES)
 						S
 						(COND ((CDR Q)

@@ -1,7 +1,9 @@
+load("disol")$
+
 /* ISOLATE is difficult to use when there is more than
         one variable of interest.  For example, suppose one wished
         to isolate the following expression with respect to A, B, E: */
 EXP1:A*(B*(C+D)+E*(F+G));
 /*  DISOLATE can be used in such situations: */
-LOAD(DISOL)$
+/* LOAD(DISOL)$ */
 DISOLATE(EXP1,A,B,E);

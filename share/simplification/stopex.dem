@@ -1,5 +1,5 @@
 /* First load the necessary file:*/
-LOAD('STOPEX)$
+LOAD("stopex")$
 /* The function EXPANDWRT expands its first argument
 	 with respect to its other arguments.  All products of
 	 these other arguments appear explicitly in the result.

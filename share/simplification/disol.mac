@@ -24,6 +24,12 @@ IF STATUS(FEATURE,ITS)=TRUE
 THEN SETUP_AUTOLOAD([GENUT,FASL,DSK,DGVAL],
 	            'ORPARTITIONL,'FREEOFL)$
 
+/* GNU Maxima */
+
+eval_when([batch,loadfile],
+  if get('GNAUTO,'DIAGEVAL_VERSION)=false
+  then load("simplification/genut"))$
+
 DISOLATE(EXP,[ORIG_ISO_LIST]):=BLOCK(
   [PARTSWITCH:TRUE,IFORP:TRUE,PIECE,INFLAG:TRUE],
   DISOLATE1(EXP,ORIG_ISO_LIST))$
