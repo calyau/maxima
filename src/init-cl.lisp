@@ -162,12 +162,12 @@
       
     (catch 'to-lisp
       (set-pathnames)
-      #+cmu
+      #+(or cmu clisp)
       (progn
 	(loop 
 	  (with-simple-restart (macsyma-quit "Macsyma top-level")
 			       (macsyma-top-level input-string batch-flag))))
-      #-cmu
+      #-(or cmu clisp)
       (catch 'macsyma-quit
 	(macsyma-top-level input-string batch-flag)))))
 
@@ -190,22 +190,6 @@
 #+cmu
 (defun bye ()
   (ext:quit))
-
-;;add the quit maxima for the clisp debugger.
-#+clisp
-(progn
-  
-(or (fboundp 'commands1.orig)
-  (setf (fdefinition 'commands1.orig) (fdefinition 'sys::commands1)))
-
-
-(defun sys::commands1 ()
-  (append (list "
-Quit to top    :q       Quit to MAXIMA top level"
-                (cons ":q" #'(lambda () (throw 'macsyma-quit nil))))
-          (commands1.orig)))
-
-) ; end progn for clisp
 
 (defun $maxima_server (port)
   (load "/home/amundson/devel/maxima/archive/src/server.lisp")
