@@ -33,6 +33,8 @@
   #+gcl(:use "LISP")
   (:documentation "The package holding all symbols used by the Fortran to Lisp library")
   (:nicknames "FORTRAN-TO-LISP-LIBRARY")
+  #+gcl
+  (:import-from "LISP" "DESTRUCTURING-BIND")
   (:export
    ;; Constants
    "%FALSE%" "%TRUE%"
@@ -84,9 +86,13 @@
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.2 2002-05-01 18:20:18 amundson Exp $
+;;; $Id: f2cl-package.lisp,v 1.3 2002-05-19 20:22:32 rtoy Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.2  2002-05-01 18:20:18  amundson
+;;; Revision 1.3  2002-05-19 20:22:32  rtoy
+;;; GCL doesn't export DESTRUCTURING-BIND from the LISP package.  Import
+;;; it.
+;;;
+;;; Revision 1.2  2002/05/01 18:20:18  amundson
 ;;; Package-related hacks for gcl.
 ;;;
 ;;; Revision 1.1  2002/04/26 13:04:46  rtoy
