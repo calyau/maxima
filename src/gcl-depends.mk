@@ -165,6 +165,7 @@ binary-gcl/maxima : csimp2.lisp
 binary-gcl/maxima : zero.lisp
 binary-gcl/maxima : logarc.lisp
 binary-gcl/maxima : rpart.lisp
+binary-gcl/maxima : server.lisp
 binary-gcl/maxima : macsys.lisp
 binary-gcl/maxima : mload.lisp
 binary-gcl/maxima : suprv1.lisp

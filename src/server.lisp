@@ -1,14 +1,9 @@
 
 ;; very simple server started on port
 
-(and (find-package "MAXIMA") (push :maxima *features*))
-
-#+maxima
 (in-package "MAXIMA")
 
-
-
-(defun user::setup ( port &optional (host "localhost"))
+(defun setup-server (port &optional (host "localhost"))
   (let* ((sock (open-socket host port)))
     (setq me sock)
    #+gcl (setq si::*sigpipe-action* 'si::bye)
@@ -46,10 +41,11 @@
 
 
 
-#+maxima
-(progn
-(setq $in_netmath t)
-(setq $show_openplot nil))
+(defun start-server (port &optional (host "localhost"))
+  (format t "jfa: starting server on port ~a~%" port)
+  (setq $in_netmath t)
+  (setq $show_openplot nil)
+  (setup-server port host))
 
 #+clisp
 (defun getpid ( &aux tem)

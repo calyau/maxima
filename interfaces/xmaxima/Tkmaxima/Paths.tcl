@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.7 2003-11-27 02:39:23 amundson Exp $
+#       $Id: Paths.tcl,v 1.8 2004-02-07 21:16:04 amundson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -264,45 +264,16 @@ proc vMAXSetMaximaCommand {} {
 	    return
 	}
     } else {
-	# jfa: bypass maxima script on windows
-	if {$tcl_platform(platform) == "windows"} {
-	    # maybe it's in lib - I don't like this
-	    set dir $maxima_priv(maxima_verpkglibdir)
-	    # FIXME - need autoconf(lisp) so we don't need glob
-	    set exes [glob -nocomplain $dir/binary-*/maxima.exe]
-	    if {[llength $exes] != "1" || \
-		    [set exe [lindex $exes 0]] == "" || \
-		    ![file isfile $exe]} {
-		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
-		return
-	    }
-	    
-	} else {
-	    set maxima_priv(xmaxima_maxima) maxima
-	    if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
-	    }
+	set maxima_priv(xmaxima_maxima) maxima
+	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
+	    tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 	}
-    }
-
-    set lisp [file join $maxima_priv(maxima_xmaximadir) server.lisp]
-    if {![file isfile $lisp] || ![file readable $lisp]} {
-	tide_notify [M "Maxima server file not found in '%s'" \
-			 [file native $lisp]]
     }
 
     set command {}
     lappend command $exe
-    if {[string match *saved*maxima* [string tolow [file tail $exe]]]} {
-	# 5.6 maxima took different arguments
-
-	lappend command -load $lisp -eval "(setup PORT)" -f
-    } else {
-	# 5.9 maxima takes different arguments
-	eval lappend command  $maxima_opts
-	lappend command -p $lisp -r ":lisp (progn (user::setup PORT)(values))"
-    }
-
+    eval lappend command  $maxima_opts
+    lappend command -s PORT
 
     lappend command &
     set maxima_priv(localMaximaServer) $command

@@ -360,6 +360,8 @@
                                      (:file "zero")
                                      (:file "logarc") 
                                      (:file "rpart")))
+	       (:module server :source-pathname ""
+			:components ((:file "server")))
                (:module i-o :source-pathname ""
                         :components ((:file "macsys") 
                                      (:file "mload") 
