@@ -54,8 +54,16 @@ put('ode1_abel,001,'version)$
 ode1_abel(eq,y,x) := block(
   [s],
   s:ode1_abel1(eq,y,x),
-  if s#false then return(s),
-  s:ode1_abel2(eq,y,x)
+  if s#false then (
+    method:'abel,
+    return(s)
+  ),
+  s:ode1_abel2(eq,y,x),
+  if s#false then (
+    method:'abel2,
+    return(s)
+  ),
+  false
 )$
 
 /* Determine if eq is an Abel equation of first kind  
@@ -322,15 +330,9 @@ ode1_abel_absolute_invariant_constant(_A,_B,_K,y,x) := block(
    */
   integral:integrate(1/(_u^3/_K+_u+1),_u),
   ode_disp2("  integral ",integral),
-
-  /* What if we can't do this integral?  Give up for now 
-     Perhaps return empty solution rather than trying ode1_lie
-     or return it in some other form
-     FIXME:  How do I write is(inpart(integral,0)='integrate)) ?
-   */
   ode_disp2("  part(integral,0):", part(integral,0)),
-  if ( not(inpart(integral,0)="+")) then (
-    ode_disp("Giving up for now"),
+  if operatorp(integral,nounify('integrate)) then (
+    ode_disp("Unevaluated integral: Giving up for now"),
     return(false)
   ),
   integral: subst(u,_u,integral),
@@ -370,7 +372,7 @@ ode1_abel2(eq,y,x) := block(
   g1:coeff(%a,y,1),
   ode_disp2("  g0: ",g0),
   ode_disp2("  g1: ",g1),
-  if (g1=0) or ( g1=1 and g0=0 ) then return(false),
+  if g1=0 then return(false),
   if not(freeof(y,g0)) then return(false),
   if not(freeof(y,g1)) then return(false),
   expr:expand(de-(g1*y+g0)*'diff(y,x)),
