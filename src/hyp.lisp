@@ -1282,17 +1282,28 @@
      (return nil)))
 
 
+;;; The following legf<n> functions correspond to formulas in Higher
+;;; Transcendental Functions.  See the chapter on Legendre functions,
+;;; in particular the table on page 124ff,
 
 ;; Handle the case c-a-b = 1/2
 ;;
-;; For example F(a,b;a+b+1/2;z)
+;; Formula 20:
+;;
+;; P(n,m,z) = 2^m*(z^2-1)^(-m/2)/gamma(1-m)*F(1/2+n/2-m/2, -n/2-m/2; 1-m; 1-z^2)
+;;
 (defun legf20 (l1 l2 var)
   (prog (m n b c)
      (setq b (cadr l1)
 	   c (car l2))
      (setq m (sub 1 c)
 	   n (mul -1 (add b b m)))
-     (return (mul (lf n m)
+     ;; m = 1 - c
+     ;; n = -(2*b+1-c) = c - 1 - 2*b
+     (return (mul #+(or) (lf n m)
+		  (gm (sub 1 m))
+		  (power 2 (mul -1 m))
+		  (power (mul -1 var) (div m 2))
 		  (legen n
 			 m
 			 (power (sub 1 var) (inv 2))
@@ -1300,38 +1311,51 @@
 
 ;; Handle the case a-b = -1/2.
 ;;
-;; For example F(a,a+1/2;c;z)
+;; Formula 24:
+;;
+;; P(n,m,z) = 2^m*(z^2-1)^(-m/2)*z^(n+m)/gamma(1-m)*F(-n/2-m/2,1/2-n/2-m/2;1-m;1-1/z^2)
+;;
 (defun legf24 (l1 l2 var)
-  (prog (m n a c)
+  (prog (m n a c z)
      (setq a (car l1)
 	   c (car l2)
 	   m (sub 1 c)
-	   n (mul -1 (add a a m)))
-     (return (mul (lf n m)
-		  (power var (add n m))
+	   n (mul -1 (add a a m))
+	   z (inv (power (sub 1 var) (inv 2))))
+     (return (mul #+(or) (lf n m)
+		  (inv (power 2 m))
+		  (power (sub (power z 2) 1)
+			 (div m 2))
+		  (power z (mul -1 (add n m)))
+		  (gm (sub 1 m))
 		  (legen n
 			 m
-			 (inv (power (sub 1 var)
-				     (inv 2)))
+			 z
+			 '$p)))))
+
+;; Formula 16:
+;;
+;; P(n,m,z) = 2^(-n)*(z+1)^(m/2+n)(z-1)^(-m/2)/gamma(1-m)*F(-n,-n-m;1-m;(z-1)/(z+1))
+(defun legf16 (l1 l2 var)
+  (prog (m n a c z)
+     (setq a (car l1)
+	   c (car l2)
+	   m (sub 1 c)
+	   n (mul -1 a)
+	   z (div (add 1 var)
+		  (sub 1 var)))
+     (return (mul (power 2 n)
+		  (power (sub z 1) (div m 2))
+		  (gm (sub 1 m))
+		  (inv (power (add z 1) (add (div m 2) n)))
+		  (legen n
+			 m
+			 z
 			 '$p)))))
 
 
-(defun legf16
-    (l1 l2 var)
-  (prog(m n a c)
-     (setq a (car l1) c (car l2) m (sub 1 c) n (mul -1 a))
-     (return (mul (power 2 (mul -1 n))
-		  (power (sub var 1)(div m -2))
-		  (inv (gm (sub 1 m)))
-		  (power (add var 1)(add (div m 2) n))
-		  (legen n
-			 m
-			 (div (add 1 var)(sub 1 var))
-			 '$p)))))
-
-
-(defun lf
-    (n m)
+;; Compute 2^m/(v^2-1)^(m/2)/gamma(1-m)
+(defun lf (n m)
   (mul (power 2 m)
        (inv (power (sub (power var 2) 1)(div m 2)))
        (inv (gm (sub 1 m)))))
@@ -1373,31 +1397,39 @@
 	   n (mul -1 a)
 	   z (sub 1 (mul 2 var)))
      (return (mul (power (add z 1) (div m -2))
-		  (power (sub 1 z) (div m 2))
+		  (power (sub z 1) (div m 2))
 		  (gm (sub 1 m))
 		  (legen n m (sub 1 (mul 2 var)) '$p)))))
 
 
 ;; Handle a-b = a+b-c
 ;;
+;; Formula 36:
+;;
+;; P(n,m,z) = 2^n*gamma(1+n)*gamma(1+n+m)*(z+1)^(m/2-n-1)*(z-1)^(-m/2)/gamma(2+2*n)*hgfred([1+n-m,1+n],[2+2*n],2/(1+z))
+;;
+;;
 ;; For example F(a,b;2*b;z)
 (defun legf36 (l1 l2 var)
-  (prog (n m a b)
+  (prog (n m a b z)
      (setq a (car l1)
 	   b (cadr l1)
 	   n (sub b 1)
-	   m (sub b a))
-     (return (mul (power 2 n)
-		  (gm (add 1 n))
-		  (gm (add 1 n m))
-		  (power (add var 1)
-			 (add (div m 2)
-			      (mul -1 n)
-			      -1))
-		  (power (sub var 1) (div m -2))
-		  (inv (gm (add 2 n n)))
-		  (power '$%e (mul -1 '$%i m '$%pi))
-		  (legen n m (div (sub 2 var) var) '$q)))))
+	   m (sub b a)
+	   ;;z (div (sub 2 var) var)
+	   z (sub (div 2 var) 1)
+	   )
+     (return (mul (inv (power 2 n))
+		  (inv (gm (add 1 n)))
+		  (inv (gm (add 1 n m)))
+		  (inv (power (add z 1)
+			      (add (div m 2)
+				   (mul -1 n)
+				   -1)))
+		  (inv (power (sub z 1) (div m -2)))
+		  (gm (add 2 n n))
+		  #+(or) (power '$%e (mul -1 '$%i m '$%pi))
+		  (legen n m z '$q)))))
 
 
 (defun legen (n m x pq)
