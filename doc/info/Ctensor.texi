@@ -228,7 +228,7 @@ Transformation functions can also be used when @code{cframe_flag} is @code{true}
 
 (%i1) load(ctensor);
 
-(%o1)       /home/vttoth/dev/maxima/maxima/share/tensor/ctensor.mac
+(%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
 
 (%o2)                                true
@@ -516,124 +516,80 @@ For example, the following demonstrates how to obtain the Petrov-classification
 of the Kerr metric:
 
 @example
-
 (%i1) load(ctensor);
 
 (%o1)       /share/tensor/ctensor.mac
-(%i2) init_ctensor();
+(%i2) (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
 
-(%o2)                                done
-(%i3) ct_coords:[t,r,h,p];
+(%o2)                                true
+(%i3) ct_coordsys(exteriorschwarzschild,all);
 
-(%o3)                            [t, r, h, p]
-(%i4) declare([a,m],constant);
+(%o3)                                done
+(%i4) ug:invert(lg)$
 
-(%o4)                                done
-(%i5) s(r,h):=r^2+(a*cos(h))^2;
+(%i5) weyl(false);
 
-                                      2             2
-(%o5)                     s(r, h) := r  + (a cos(h))
-(%i6) d(r):=a^2-2*m*r+r^2;
+(%o5)                                done
+(%i6) nptetrad(true);
 
-                                     2            2
-(%o6)                       d(r) := a  - 2 m r + r
-(%i7) fri:matrix(
- [sqrt(d(r)/s(r,h)), 0, 0, -sqrt(d(r)/s(r,h))*a*sin(h)^2],
- [0, sqrt(s(r,h)/d(r)), 0, 0],
- [0, 0, sqrt(s(r,h)), 0 ],
- [-a/sqrt(s(r,h))*sin(h), 0, 0, (s(r,h)+(a*sin(h))^2)*sin(h)/sqrt(s(r,h))]);
+(%t6) np = 
 
-               [        2            2   ]
-               [  sqrt(r  - 2 m r + a )  ]         [           0           ]
-               [  ---------------------  ]         [                       ]
-               [        2    2    2      ]         [       2    2    2     ]
-               [  sqrt(r  + a  cos (h))  ]         [ sqrt(r  + a  cos (h)) ]
-               [                         ]         [ --------------------- ]
-(%o7)  Col 1 = [            0            ] Col 2 = [       2            2  ]
-               [                         ]         [ sqrt(r  - 2 m r + a ) ]
-               [            0            ]         [                       ]
-               [                         ]         [           0           ]
-               [         a sin(h)        ]         [                       ]
-               [ - --------------------- ]         [           0           ]
-               [         2    2    2     ]
-               [   sqrt(r  + a  cos (h)) ]
+       [  sqrt(r - 2 m)           sqrt(r)                                     ]
+       [ ---------------   ---------------------      0             0         ]
+       [ sqrt(2) sqrt(r)   sqrt(2) sqrt(r - 2 m)                              ]
+       [                                                                      ]
+       [  sqrt(r - 2 m)            sqrt(r)                                    ]
+       [ ---------------  - ---------------------     0             0         ]
+       [ sqrt(2) sqrt(r)    sqrt(2) sqrt(r - 2 m)                             ]
+       [                                                                      ]
+       [                                              r      %i r sin(theta)  ]
+       [        0                    0             -------   ---------------  ]
+       [                                           sqrt(2)       sqrt(2)      ]
+       [                                                                      ]
+       [                                              r       %i r sin(theta) ]
+       [        0                    0             -------  - --------------- ]
+       [                                           sqrt(2)        sqrt(2)     ]
 
-         [           0           ]
-         [                       ]
-         [           0           ]
- Col 3 = [                       ]
-         [       2    2    2     ]
-         [ sqrt(r  + a  cos (h)) ]
-         [                       ]
-         [           0           ]
+                             sqrt(r)          sqrt(r - 2 m)
+(%t7) npi = matrix([- ---------------------, ---------------, 0, 0], 
+                      sqrt(2) sqrt(r - 2 m)  sqrt(2) sqrt(r)
 
-         [          2          2            2    ]
-         [     a sin (h) sqrt(r  - 2 m r + a )   ]
-         [   - -------------------------------   ]
-         [                2    2    2            ]
-         [          sqrt(r  + a  cos (h))        ]
-         [                                       ]
-         [                   0                   ]
- Col 4 = [                                       ]
-         [                   0                   ]
-         [                                       ]
-         [          2    2    2       2    2     ]
-         [ sin(h) (r  + a  sin (h) + a  cos (h)) ]
-         [ ------------------------------------- ]
-         [               2    2    2             ]
-         [         sqrt(r  + a  cos (h))         ]
-(%i8) ctrgsimp:true;                         
+          sqrt(r)            sqrt(r - 2 m)
+[- ---------------------, - ---------------, 0, 0], 
+   sqrt(2) sqrt(r - 2 m)    sqrt(2) sqrt(r)
 
-(%o8)                                true
-(%i9) ratfac:true;
+           1               %i
+[0, 0, ---------, --------------------], 
+       sqrt(2) r  sqrt(2) r sin(theta)
 
-(%o9)                                true
-(%i10) cframe_flag:true;
+           1                 %i
+[0, 0, ---------, - --------------------])
+       sqrt(2) r    sqrt(2) r sin(theta)
 
-(%o10)                               true
-(%i11) cmetric();
+(%o7)                                done
+(%i7) psi(true);
 
-(%o11)                               false
-(%i12) ug:invert(lg)$
-
-(%i13) nptetrad(false);
-
-(%o13)                               done
-(%i14) christof(false);
-
-(%o14)                               done
-(%i15) lriemann(false);
-
-(%o15)                               done
-(%i16) ricci(false);
-
-(%o16)                               done
-(%i17) weyl(false);
-
-(%o17)                               done
-(%i18) psi(true);
-
-(%t18)                             psi  = 0
+(%t8)                              psi  = 0
                                       0
 
-(%t19)                             psi  = 0
+(%t9)                              psi  = 0
                                       1
 
                                           m
-(%t20)                     psi  = ------------------
-                              2                    3
-                                  (r + %i a cos(h))
+(%t10)                             psi  = --
+                                      2    3
+                                          r
 
-(%t21)                             psi  = 0
+(%t11)                             psi  = 0
                                       3
 
-(%t22)                             psi  = 0
+(%t12)                             psi  = 0
                                       4
 
-(%o22)                               done
-(%i22) petrov();
+(%o12)                               done
+(%i12) petrov();
 
-(%o22)                             Type is D
+(%o12)                             Type is D
 
 @end example
 
