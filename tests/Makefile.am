@@ -1,43 +1,43 @@
 include $(top_srcdir)/common.mk
 MAXIMA = @POSIX_SHELL@ $(top_srcdir)/maxima-local
 if CLISP
-check: clisp-check
-clisp-check:
+check: check-clisp
+check-clisp:
 	echo "Running test suite with clisp..."; \
 	$(MAXIMA) --lisp=clisp --batch-string="run_testsuite();" < /dev/null
 endif
 
 if CMUCL
-check: cmucl-check
-cmucl-check:
+check: check-cmucl
+check-cmucl:
 	echo "Running test suite with cmucl..."; \
 	$(MAXIMA) --lisp=cmucl --batch-string="run_testsuite();" < /dev/null
 endif
 
 if SBCL
-check: sbcl-check
-sbcl-check:
+check: check-sbcl
+check-sbcl:
 	echo "Running test suite with sbcl..."; \
 	$(MAXIMA) --lisp=sbcl --batch-string="run_testsuite();" < /dev/null
 endif
 
 if GCL
-check: gcl-check
-gcl-check:
+check: check-gcl
+check-gcl:
 	echo "Running test suite with gcl..."; \
 	$(MAXIMA) --lisp=gcl --batch-string="run_testsuite();" < /dev/null
 endif
 
 if ACL6
-check: acl6-check
-acl6-check:
+check: check-acl6
+check-acl6:
 	echo "Running test suite with acl6..."; \
 	$(MAXIMA) --lisp=acl6 --batch-string="run_testsuite();" < /dev/null
 endif
 
 if OPENMCL
-check: openmcl-check
-openmcl-check:
+check: check-openmcl
+check-openmcl:
 	echo "Running test suite with openmcl..."; \
 	$(MAXIMA) --lisp=openmcl --batch-string="run_testsuite();" < /dev/null
 endif
