@@ -5,9 +5,19 @@
 @node Definitions for Floating Point,  , Floating Point, Floating Point
 @section Definitions for Floating Point
 
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
+@c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!
+@c DON'T KNOW WHICH ONES ARE INTENDED FOR GENERAL USE !!!
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED IN Number.texi: !!!
+@c burn, bzeta, bfzeta !!!
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
+@c bfpsi, bffac, cbffac !!!
+
 @defun bffac (expr, n)
 Bigfloat version of the factorial (shifted gamma)
-function.  The 2nd argument is how many digits to retain and return,
+function.  The second argument is how many digits to retain and return,
 it's a good idea to request a couple of extra.  This function is
 available by doing @code{load ("bffac")}.
 @end defun
@@ -35,7 +45,7 @@ Returns @code{true} if @code{expr} is a bigfloat number else @code{false}.
 @end defun
 
 @defun bfpsi (n, z, fpprec)
-gives polygammas of real arg and integer order.
+Polygamma function of real argument @code{z} and integer order @code{n}.
 For digamma, @code{bfpsi0 (z, fpprec)} is more direct.  Note @code{-bfpsi0 (1, fpprec)}
 provides @code{%gamma} (Euler's constant) as a bigfloat.  To use this do @code{load ("bffac")}.
 
@@ -67,14 +77,14 @@ displays as @code{1.000000000000000B0}. Otherwise, this is displayed as
 @end defvar
 
 @defun cbffac (z, fpprec)
-a factorial for complex bfloats.  It may be used by
+Complex bigfloat factorial.  It may be used by
 doing @code{load ("bffac")}. 
 For more details see @code{share/numeric/bffac.usg}.
 
 @end defun
 
 @defun float (expr)
-converts integers, rational numbers and bigfloats in @code{expr}
+Converts integers, rational numbers and bigfloats in @code{expr}
 to floating point numbers.  It is also an @code{evflag}, @code{float} causes
 non-integral rational numbers and bigfloat numbers to be converted to
 floating point.
@@ -120,9 +130,9 @@ the right.  The value 1 for @code{fpprintprec} is illegal.)
 
 @deffn {Lisp function} ?round (x)
 @deffnx {Lisp function} ?round (x, divisor)
-round the floating point X to the nearest integer.   The argument
-must be a regular system float, not a bigfloat.   The ? beginning the name
-indicates this is normal Common Lisp function.
+Round the floating point @code{x} to the nearest integer.   The argument
+must be a regular system float, not a bigfloat.   The @code{?} beginning the name
+indicates this is a Lisp function.
 
 @example
 (%i1) ?round (-2.8);
@@ -133,9 +143,9 @@ indicates this is normal Common Lisp function.
 
 @deffn {Lisp function} ?truncate (x)
 @deffnx {Lisp function} ?truncate (x, divisor)
-truncate the floating point X towards 0, to become an integer.   The argument
-must be a regular system float, not a bigfloat.  The ? beginning the name
-indicates this is normal Common Lisp function.
+Truncate the floating point @code{x} towards 0, to become an integer.   The argument
+must be a regular system float, not a bigfloat.  The @code{?} beginning the name
+indicates this is a Lisp function.
 
 @example
 (%i1) ?truncate (-2.8);
@@ -147,12 +157,3 @@ indicates this is normal Common Lisp function.
 @end example
 
 @end deffn
-
-
-@defvar zunderflow
-Default value: @code{true}
- 
-If @code{zunderflow} is @code{false}, an error will be signaled if
-floating point underflow occurs.
-
-@end defvar
