@@ -103,12 +103,11 @@
     (t (simplifya `((mtimes) ,x ,y) t))))
 
 (defmfun mul2* (x y)
-  
   (cond
-    #+cl ((and (numberp x) (numberp y)) (f* x y))
+    #+cl ((and (numberp x) (numberp y)) (* x y))
     ((=1 x) (simplifya y nil))
-	((=1 y) (simplifya x nil))
-	(t (simplifya `((mtimes) ,x ,y) nil))))
+    ((=1 y) (simplifya x nil))
+    (t (simplifya `((mtimes) ,x ,y) nil))))
 
 (defmfun mul3 (x y z)
   (cond ((=1 x) (mul2 y z))
