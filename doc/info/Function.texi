@@ -1,15 +1,15 @@
 @menu
 * Introduction to Function Definition::  
-* FUNCTION::                    
-* MACROS::                      
+* Function::                    
+* Macros::                      
 * Definitions for Function Definition::  
 @end menu
 
-@node Introduction to Function Definition, FUNCTION, Function Definition, Function Definition
+@node Introduction to Function Definition, Function, Function Definition, Function Definition
 @section Introduction to Function Definition
 
-@node FUNCTION, MACROS, Introduction to Function Definition, Function Definition
-@section FUNCTION
+@node Function, Macros, Introduction to Function Definition, Function Definition
+@section Function
  - To define a function in Maxima you use the := operator.
 E.g.
 @example
@@ -17,7 +17,7 @@ F(X):=SIN(X)
 @end example
 @noindent
 defines a function F.
-Anonmyous functions may also be created using LAMBDA.
+Anonmyous functions may also be created using @code{lambda}.
 For example
 @example
 lambda([i,j], ... )
@@ -111,31 +111,31 @@ may be computed at runtime, it is useful to use @code{define} and
 possibly @code{buildq}.  
 
 
-@node MACROS, Definitions for Function Definition, FUNCTION, Function Definition
-@section MACROS
+@node Macros, Definitions for Function Definition, Function, Function Definition
+@section Macros
 
 
-@defun BUILDQ ([varlist],expression);
+@defun buildq (variables, expr);
 
- EXPRESSION is any single Maxima expression and
- VARLIST is a list of elements of the form @code{<atom>}
+@var{expr} is any single Maxima expression and
+@var{variables} is a list of elements of the form @code{<atom>}
 or @code{<atom>:<value>}
 @end defun
 
 @subsection Semantics
 
-The <value>s in the <varlist> are evaluated left to right (the syntax
+The elements of the list @var{variables} are evaluated left to right (the syntax
 <atom> is equivalent to <atom>:<atom>).  then these values are substituted
 into <expression> in parallel.  If any <atom> appears as a single 
-argument to the special form SPLICE (i.e. SPLICE(<atom>) ) inside
+argument to the special form @code{splice} (i.e. @code{splice (<atom>)}) inside
 <expression>, then the value associated with that <atom> must be a Maxima
 list, and it is spliced into <expression> instead of substituted.
 
 
-@subsection SIMPLIFICATION
+@subsection Simplification
 
 
-The arguments to BUILDQ need to be protected from simplification until
+The arguments to @code{buildq} need to be protected from simplification until
 the substitutions have been carried out.  This code should affect that
 by using @code{'}.
 
@@ -148,9 +148,9 @@ usually uses @code{define}, which evaluates its arguments.
 A number of examples are included under @code{splice}.
 
 
-@defun SPLICE (atom)
+@defun splice (atom)
 This is used with buildq to construct a list. This is handy
-for making argument lists, in conjunction with BUILDQ 
+for making argument lists, in conjunction with @code{buildq} 
 
 @example
 MPRINT([X]) ::= BUILDQ([U : x],
@@ -170,7 +170,7 @@ IF DEBUGLEVEL > 3
 @end example
 
 A more non trivial example would try to display the variable values
-AND their names.  
+and their names.  
 @example
 MSHOW(A,B,C) 
 @end example
@@ -191,8 +191,8 @@ X = 1 , Y = 2 , and Z = 3
 
 
 The actual definition of mshow is the following.   Note how buildq
-lets you build 'QUOTED' structure, so that the  @code{'u} lets
-you get the variable name.  Note that in macros, the RESULT is
+lets you build "quoted" structure, so that the  @code{'u} lets
+you get the variable name.  Note that in macros, the result is
 a piece of code which will then be substituted for the macro and evaluated.
 
 @example
@@ -214,12 +214,12 @@ The splice also works to put arguments into algebraic operations:
 (%i108) BUILDQ([A:'[B,C,D]],+SPLICE(A));
 (%o108) D+C+B
 @end example
-Note how the simplification only occurs AFTER the substitution,
+Note how the simplification only occurs @i{after} the substitution,
 The operation applying to the splice in the first cae is the @code{+}
 while in the second it is the @code{*}, yet logically you
 might thing @code{splice(a)+splice(A)} could be replaced by
 @code{2*splice(A)}.   No simplification takes place with the buildq
-To understand what SPLICE is doing with the algebra you must understand
+To understand what @code{splice} is doing with the algebra you must understand
 that for Maxima, a formula an operation like @code{A+B+C} is really
 internally similar to @code{+(A,B,C)}, and similarly for multiplication.
 Thus @code{*(2,B,C,D)} is @code{2*B*C*D}
@@ -249,7 +249,7 @@ F[N]:=EXPAND((-((N^2-2*N+1)*F[N-1]+F[N-2]+F[N-3])
   /(N^2-N)));
 @end example
 but how do you build this code.  You want the @code{expand}
-to happen each time the function runs, NOT before it.
+to happen each time the function runs, @i{not} before it.
 @example
 kill(f),
 val:(-((N^2-2*N+1)*F[N-1]+F[N-2]+F[N-3])/(N^2-N)),
@@ -282,33 +282,33 @@ Hence the @code{buildq} is useful for building the form.
 
 
 @c end concepts Function Definition
-@node Definitions for Function Definition,  , MACROS, Function Definition
+@node Definitions for Function Definition,  , Macros, Function Definition
 @section Definitions for Function Definition
-@defun APPLY (function, list)
+@defun apply (function, list)
 gives the result of applying the function to
 the list of its arguments.  This is useful when it is desired to
 compute the arguments to a function before applying that function.
-For example, if L is the list [1, 5, -10.2, 4, 3], then APPLY(MIN,L)
-gives -10.2.  APPLY is also useful when calling functions which do not
+For example, if @code{l} is the list @code{[1, 5, -10.2, 4, 3]}, then @code{apply (min, l)}
+gives -10.2.  @code{apply} is also useful when calling functions which do not
 have their arguments evaluated if it is desired to cause evaluation of
-them.  For example, if FILESPEC is a variable bound to the list [TEST,
-CASE] then APPLY(CLOSEFILE,FILESPEC) is equivalent to
-CLOSEFILE(TEST,CASE).  In general the first argument to APPLY should
+them.  For example, if @code{filespec} is a variable bound to the list @code{[test,
+case]} then @code{apply (closefile, filespec)} is equivalent to
+@code{closefile (test, case)}.  In general the first argument to @code{apply} should
 be preceded by a ' to make it evaluate to itself.  Since some atomic
 variables have the same name as certain functions the values of the
-variable would be used rather than the function because APPLY has its
+variable would be used rather than the function because @code{apply} has its
 first argument evaluated as well as its second.
 
 @end defun
 
 
-@defun BLOCK ([v1,...,vk], statement1,...,statementj)
+@defun block ([v1,...,vk], statement1,...,statementj)
 Blocks in Maxima are
-somewhat analogous to subroutines in FORTRAN or procedures in ALGOL or
+somewhat analogous to subroutines in Fortran or procedures in Algol or
 PL/I.  Blocks are like compound statements but also enable the user to
 label statements within the block and to assign "dummy" variables to
 values which are local to the block.  The vi are variables which are
-local to the BLOCK and the stmti are any Maxima expressions.  If no
+local to the block and the stmti are any Maxima expressions.  If no
 variables are to be made local then the list may be omitted.  A block
 uses these local variables to avoid conflict with variables having the
 same names used outside of the block (i.e. global to the block).  In
@@ -322,44 +322,44 @@ a variable is used within a block and is not in the list of local
 variables for that block it will be the same as the variable used
 outside of the block.
     If it is desired to save and restore other local properties
-besides VALUE, for example ARRAY (except for complete arrays),
-FUNCTION, DEPENDENCIES, ATVALUE, MATCHDECLARE, ATOMGRAD, CONSTANT, and
-NONSCALAR then the function LOCAL should be used inside of the block
+besides @code{value}, for example @code{array} (except for complete arrays),
+@code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant}, and
+@code{nonscalar} then the function @code{local} should be used inside of the block
 with arguments being the names of the variables.
     The value of the block is the value of the last statement or the
-value of the argument to the function RETURN which may be used to exit
-explicitly from the block. The function GO may be used to transfer
+value of the argument to the function @code{return} which may be used to exit
+explicitly from the block. The function @code{go} may be used to transfer
 control to the statement of the block that is tagged with the argument
-to GO.  To tag a statement, precede it by an atomic argument as
-another statement in the BLOCK.  For example:
-BLOCK([X],X:1,LOOP,X:X+1,...,GO(LOOP),...).  The argument to GO must
-be the name of a tag appearing within the BLOCK.  One cannot use GO to
-transfer to a tag in a BLOCK other than the one containing the GO.
+to @code{go}.  To tag a statement, precede it by an atomic argument as
+another statement in the block.  For example:
+@code{block([x],x:1,loop,x:x+1,...,go(loop),...)}.  The argument to @code{go} must
+be the name of a tag appearing within the block.  One cannot use @code{go} to
+transfer to a tag in a block other than the one containing the @code{go}.
     Blocks typically appear on the right side of a function definition
 but can be used in other places as well.
 
 @end defun
 
-@defun BREAK (arg1, ...)
+@defun break (arg1, ...)
 will evaluate and print its arguments and will then
 cause a Maxima break at which point the user can examine and change
-his environment.  Upon typing EXIT; the computation resumes.
+his environment.  Upon typing @code{exit;} the computation resumes.
 Control-A (^A) will enter a Maxima break from any point
-interactively.  EXIT; will continue the computation.  Control-X may be
+interactively.  @code{exit;} will continue the computation.  Control-X may be
 used inside the Maxima break to quit locally, without quitting the
 main computation.
 
 @end defun
 
-@defun CATCH (exp1,...,expn)
+@defun catch (exp1,...,expn)
 evaluates its arguments one by one; if the
 structure of the expi leads to the evaluation of an expression of the
-form THROW(arg), then the value of the CATCH is the value of
-THROW(arg).  This "non-local return" thus goes through any depth of
-nesting to the nearest enclosing CATCH.  There must be a CATCH
-corresponding to a THROW, else an error is generated.  If the
-evaluation of the expi does not lead to the evaluation of any THROW
-then the value of the CATCH is the value of expn.
+form @code{throw (arg)}, then the value of the @code{catch} is the value of
+@code{throw (arg)}.  This "non-local return" thus goes through any depth of
+nesting to the nearest enclosing @code{catch}.  There must be a @code{catch}
+corresponding to a @code{throw}, else an error is generated.  If the
+evaluation of the expi does not lead to the evaluation of any @code{throw}
+then the value of the @code{catch} is the value of expn.
 @example
 (%i1) G(L):=CATCH(MAP(LAMBDA([X],
        IF X<0 THEN THROW(X) ELSE F(X)),L));
@@ -375,38 +375,37 @@ first negative element of L and "throws" it up.
 
 @end defun
 
-@defun COMPFILE ([filespec], f1, f2, ..., fn)
+@defun compfile ([filespec], f1, f2, ..., fn)
 Compiles functions fi into
-the file "filespec".  For convenience, see the COMPILE function.
+the file "filespec".  For convenience, see the @code{compile} function.
 
 @end defun
 
-@defvar COMPGRIND
- default: [FALSE] when TRUE function definitions output by
-COMPFILE are pretty-printed.
+@defvar compgrind
+ default: [@code{false}] when @code{true} function definitions output by
+@code{compfile} are pretty-printed.
 
 @end defvar
 
-@defun COMPILE (f)
-The COMPILE command is a convenience feature in Maxima. It
-handles the calling of the function COMPFILE, which translates Maxima
+@defun compile (f)
+The @code{compile} command is a convenience feature in Maxima. It
+handles the calling of the function @code{compfile}, which translates Maxima
 functions into Lisp, the calling of the Lisp compiler on the file
-produced by COMPFILE, and the loading of the output of the compiler
+produced by @code{compfile}, and the loading of the output of the compiler
 into the Maxima. It also checks the compiler
-comment listing output file for certain common errors.  Do
-PRINTFILE(MCOMPI,DOC,MAXDOC); for more details.
-COMPILE(); causes Maxima to prompt for arguments. 
-COMPILE(function1,function2,...); compiles the functions, it uses the name
+comment listing output file for certain common errors.
+@code{compile ()} causes Maxima to prompt for arguments. 
+@code{compile (function1, function2, ...)} compiles the functions, it uses the name
 of function1 as the first name of the file to put the Lisp output.
-COMPILE(ALL); or COMPILE(FUNCTIONS); will compile all functions.
-COMPILE([file-name],function1,function2,...); N.B. all arguments are
+@code{compile (all)} or @code{compile (functions)} will compile all functions.
+@code{compile ([file-name], function1, function2, ...)} N.B. all arguments are
 evaluated, just like a normal function (it is a normal function!).
 Therefore, if you have variables with the same name as part of the
 file you can not ignore that fact.
 
 @end defun
 
-@defun COMPILE_LISP_FILE ("input filename")
+@defun compile_lisp_file ("input filename")
 which takes an optional second
 argument of "output filename," can be used in conjunction with
 
@@ -421,18 +420,18 @@ Compile_and_load(FILENAME):=
 @end example
 
 These file-oriented commands are to be preferred over the use of
-COMPILE, COMPFILE, and the TRANSLATE SAVE combination.
+@code{compile}, @code{compfile}, and the @code{translate} @code{save} combination.
 
 @end defun
 
-@defun DEFINE (f(x1, ...), body)
+@defun define (f(x1, ...), body)
 is equivalent to f(x1,...):='@w{}'(body) but when
 used inside functions it happens at execution time rather than at the
 time of definition of the function which contains it.
 
 @end defun
 
-@defun DEFINE_VARIABLE (name,default-binding,mode,optional-documentation)
+@defun define_variable (name,default-binding,mode,optional-documentation)
 
 introduces a global variable into the Maxima environment.  This is
 for user-written packages, which are often translated or compiled.
@@ -442,24 +441,24 @@ DEFINE_VARIABLE(FOO,TRUE,BOOLEAN);
 @end example
 does the following:
 
-(1) MODE_DECLARE(FOO,BOOLEAN); sets it up for the translator.
+(1) @code{mode_declare (foo, boolean)} sets it up for the translator.
 
-(2) If the variable is unbound, it sets it:  FOO:TRUE.
+(2) If the variable is unbound, it sets it: @code{foo: true}.
 
-(3) DECLARE(FOO,SPECIAL); declares it special.
+(3) @code{declare (foo, special)} declares it special.
 
 (4) Sets up an assign property for it to make sure that it never 
     gets set to a value of the wrong mode.
-    E.g.  FOO:44 would be an error once FOO is defined BOOLEAN.
+    E.g. @code{foo: 44} would be an error once @code{foo} is defined @code{boolean}.
 
-See DESCRIBE(MODE_DECLARE); for a list of the possible "modes".
+See @code{mode_declare} for a list of the possible "modes".
 The optional 4th argument is a documentation string.  When
-TRANSLATE_FILE is used on a package which includes documentation
+@code{translate_file} is used on a package which includes documentation
 strings, a second file is output in addition to the Lisp file which
 will contain the documentation strings, formatted suitably for use in
-manuals, usage files, or (for instance) DESCRIBE.
-With any variable which has been DEFINE_VARIABLE'd with mode other
-than ANY, you can give a VALUE_CHECK property, which is a function of
+manuals, usage files, or (for instance) @code{describe}.
+With any variable which has been @code{define_variable}'d with mode other
+than @code{any}, you can give a @code{value_check} property, which is a function of
 one argument called on the value the user is trying to set the
 variable to.
 
@@ -468,105 +467,104 @@ PUT('G5,LAMBDA([U],IF U#'G5 THEN ERROR("Don't set G5")),
        'VALUE_CHECK);
 @end example
 
-Use DEFINE_VARIABLE(G5,'G5,ANY_CHECK, "this ain't supposed to be set
-by anyone but me.")
-ANY_CHECK is a mode which means the same as ANY, but which keeps
-DEFINE_VARIABLE from optimizing away the assign property.
+Use @code{define_variable (g5, 'g5, any_check, "this ain't supposed to be set by anyone but me.")}
+@code{any_check} is a mode which means the same as @code{any}, but which keeps
+@code{define_variable} from optimizing away the assign property.
 
 @end defun
 
-@defun DISPFUN (f1, f2, ...)
+@defun dispfun (f1, f2, ...)
 displays the definition of the user defined
 functions f1, f2, ... which may also be the names of array associated
 functions, subscripted functions, or functions with constant
 subscripts which are the same as those used when the functions were
-defined.  DISPFUN(ALL) will display all user defined functions as
-given on the FUNCTIONS and ARRAYS lists except subscripted functions
+defined.  @code{dispfun (all)} will display all user defined functions as
+given on the @code{functions} and @code{arrays} lists except subscripted functions
 with constant subscripts.  E.g. if the user has defined a function
-F(x), DISPFUN(F); will display the definition.
+@code{f}, @code{dispfun (f)} will display the definition.
 
 @end defun
 
-@defvar FUNCTIONS
+@defvar functions
  default: [] - all user defined functions (set up by
 f(x):=...).
 
 @end defvar
 
-@defun FUNDEF (functionname)
+@defun fundef (functionname)
 returns the function definition associated
-with "functionname".  FUNDEF(fnname); is similar to DISPFUN(fnname);
-except that FUNDEF does not invoke display.
+with "functionname".  @code{fundef (fnname)} is similar to @code{dispfun (fnname)}
+except that @code{fundef} does not invoke display.
 
 @end defun
 
-@defun FUNMAKE (name,[arg1,...,argn])
+@defun funmake (name,[arg1,...,argn])
 returns name(arg1,...,argn) without
 calling the function name.
 
 @end defun
 
-@defun LOCAL (v1, v2, ...)
+@defun local (v1, v2, ...)
 causes the variables v1,v2,... to be local with
 respect to all the properties in the statement in which this function
-is used.  LOCAL may only be used in BLOCKs, in the body of function
-definitions or LAMBDA expressions, or in the EV function and only one
-occurrence is permitted in each.  LOCAL is independent of CONTEXT.
+is used.  @code{local} may only be used in @code{block}, in the body of function
+definitions or @code{lambda} expressions, or in the @code{ev} function and only one
+occurrence is permitted in each.  @code{local} is independent of @code{context}.
 
 @end defun
 
-@defvar MACROEXPANSION
- default:[FALSE] - Controls advanced features which
+@defvar macroexpansion
+ default:[@code{false}] - Controls advanced features which
 affect the efficiency of macros. Possible settings:
- FALSE -- Macros expand normally each time they are called.
- EXPAND -- The first time a particular call is evaluated, the
+ @code{false} -- Macros expand normally each time they are called.
+ @code{expand} -- The first time a particular call is evaluated, the
 expansion is "remembered" internally, so that it doesn't have to be
 recomputed on subsequent calls making subsequent calls faster.  The
-macro call still GRINDs and DISPLAYs normally, however extra memory is
+macro call still calls @code{grind} and @code{display} normally, however extra memory is
 required to remember all of the expansions.
- DISPLACE -- The first time a particular call is evaluated, the
+ @code{displace} -- The first time a particular call is evaluated, the
 expansion is substituted for the call.  This requires slightly less
-storage than when MACROEXPANSION is set to EXPAND and is just as fast,
+storage than when @code{macroexpansion} is set to @code{expand} and is just as fast,
 but has the disadvantage that the original macro call is no longer
-remembered and hence the expansion will be seen if DISPLAY or GRIND is
-called.  See documentation for TRANSLATE and MACROS for more details.
+remembered and hence the expansion will be seen if @code{display} or @code{grind} is
+called.  See documentation for @code{translate} and @code{macros} for more details.
 
 @end defvar
 
-@defvar MODE_CHECKP
- default: [TRUE] - If TRUE, MODE_DECLARE checks the modes
+@defvar mode_checkp
+ default: [@code{true}] - If @code{true}, @code{mode_declare} checks the modes
 of bound variables.
 
 @end defvar
 
-@defvar MODE_CHECK_ERRORP
- default: [FALSE] - If TRUE, MODE_DECLARE calls
+@defvar mode_check_errorp
+ default: [@code{false}] - If @code{true}, @code{mode_declare} calls
 error.
 
 @end defvar
 
-@defvar MODE_CHECK_WARNP
- default: [TRUE] - If TRUE, mode errors are
+@defvar mode_check_warnp
+ default: [@code{true}] - If @code{true}, mode errors are
 described.
 
 @end defvar
 
-@defun MODE_DECLARE (y1, mode1, y2, mode2, ...)
-MODEDECLARE is a synonym
-for this.  MODE_DECLARE is used to declare the modes of variables and
+@defun mode_declare (y1, mode1, y2, mode2, ...)
+@code{modedeclare} is a synonym
+for this.  @code{mode_declare} is used to declare the modes of variables and
 functions for subsequent translation or compilation of functions. Its
 arguments are pairs consisting of a variable yi, and a mode which is
-one of BOOLEAN, FIXNUM, NUMBER, RATIONAL, or FLOAT.  Each yi may also
+one of @code{boolean}, @code{fixnum}, @code{number}, @code{rational}, or @code{float}.  Each yi may also
 be a list of variables all of which are declared to have modei.
 If yi is an array, and if every element of the array which is
-referenced has a value then ARRAY(yi, COMPLETE, dim1, dim2, ...)
+referenced has a value then @code{array (yi, complete, dim1, dim2, ...)}
 rather than
 @example
 ARRAY(yi, dim1, dim2, ...)
 @end example
 should be used when first
 declaring the bounds of the array.  If all the elements of the array
-are of mode FIXNUM (FLOAT), use FIXNUM (FLOAT) instead of COMPLETE.
+are of mode @code{fixnum} (@code{float}), use @code{fixnum} (@code{float}) instead of @code{complete}.
 Also if every element of the array is of the same mode, say m, then
 
 @example
@@ -582,7 +580,7 @@ MODE_DECLARE(COMPLETEARRAY(A[10,10]),FLOAT)
 
 for a floating point number array which is 10 x 10.
 Additionally one may declare the mode of the result of a function by
-using FUNCTION(F1,F2,...) as an argument; here F1,F2,... are the names
+using @code{function (f1, f2, ...)} as an argument; here @code{f1}, @code{f2}, ... are the names
 of functions.  For example the expression,
 
 @example
@@ -592,67 +590,65 @@ MODE_DECLARE([FUNCTION(F1,F2,...),X],FIXNUM,Q,
 
 declares that X and the values returned by F1,F2,... are single-word
 integers and that Q is an array of floating point numbers.
-MODE_DECLARE is used either immediately inside of a function
-definition or at top-level for global variables.  Do
-PRINTFILE(MCOMPI,DOC,MAXDOC); for some examples of the use of
-MODE_DECLARE in translation and compilation.
+@code{mode_declare} is used either immediately inside of a function
+definition or at top-level for global variables.
 
 @end defun
 
-@defun MODE_IDENTITY (arg1,arg2)
-A special form used with MODE_DECLARE and
-MACROS to delcare, e.g., a list of lists of flonums, or other compound
-data object.  The first argument to MODE_IDENTITY is a primitive value
-mode name as given to MODE_DECLARE (i.e. [FLOAT,FIXNUM,NUMBER,
-LIST,ANY]), and the second argument is an expression which is
-evaluated and returned as the value of MODE_IDENTITY.  However, if the
+@defun mode_identity (arg1,arg2)
+A special form used with @code{mode_declare} and
+@code{macros} to delcare, e.g., a list of lists of flonums, or other compound
+data object.  The first argument to @code{mode_identity} is a primitive value
+mode name as given to @code{mode_declare} (i.e. [@code{float},@code{fixnum},@code{number},
+@code{list},@code{any}]), and the second argument is an expression which is
+evaluated and returned as the value of @code{mode_identity}.  However, if the
 return value is not allowed by the mode declared in the first
 argument, an error or warning is signalled.  The important thing is
-that the MODE of the expression as determined by the Maxima to Lisp
+that the mode of the expression as determined by the Maxima to Lisp
 translator, will be that given as the first argument, independent of
 anything that goes on in the second argument.
-E.g. X:3.3; MODE_IDENTITY(FIXNUM,X); is an error.  MODE_IDENTITY(FLONUM,X) 
+E.g. @code{x: 3.3; mode_identity (fixnum, x);} is an error. @code{mode_identity (flonum, x)}
 returns 3.3 . 
-This has a number of uses, e.g., if you knew that FIRST(L) returned a
-number then you might write MODE_IDENTITY(NUMBER,FIRST(L)).  However,
+This has a number of uses, e.g., if you knew that @code{first (l)} returned a
+number then you might write @code{mode_identity (number, first (l))}.  However,
 a more efficient way to do it would be to define a new primitive,
 
 @example
 FIRSTNUMB(X)::=BUILDQ([X],MODE_IDENTITY(NUMBER,X));
 @end example
-and use FIRSTNUMB
+and use @code{firstnumb}
 every time you take the first of a list of numbers.
 
 @end defun
 
-@defvar TRANSBIND
- default: [FALSE] - if TRUE removes global declarations in
+@defvar transbind
+ default: [@code{false}] - if @code{true} removes global declarations in
 the local context.  This applies to variables which are formal
-parameters to functions which one is TRANSLATE-ing from Maxima code
+parameters to functions which one is @code{translate}-ing from Maxima code
 to Lisp.
 
 @end defvar
 
-@defvar TRANSCOMPILE
- default:[FALSE] - if true, TRANSLATE will generate the
-declarations necessary for possible compilation.  The COMPFILE command
-uses TRANSCOMPILE:TRUE;.
+@defvar transcompile
+ default:[@code{false}] - if true, @code{translate} will generate the
+declarations necessary for possible compilation.  The @code{compfile} command
+uses @code{transcompile: true}.
 
 @end defvar
 
-@defun TRANSLATE (f1, f2, ...)
+@defun translate (f1, f2, ...)
 translates the user defined functions
 f1,f2,... from the Maxima language to Lisp (i.e. it makes them
 EXPRs).  This results in a gain in speed when they are called.  There
 is now a version of Maxima with the Maxima to Lisp translator
 pre-loaded into it.  It is available by typing :TM (for
 TranslateMacsyma) at DDT level.  When given a file name, E.g. :TM
-GJC;TMTEST > , it gives that file to the function TRANSLATE_FILE, and
+GJC;TMTEST > , it gives that file to the function @code{translate_file}, and
 proceeds without further user interaction.  If no file name is given,
 :TM gives a regular Maxima "(%i1)" line.  P.s. A user init file with
 second name "TM" will be loaded if it exists.  You may just want to
 link this to your Maxima init file.
-Functions to be translated should include a call to MODE_DECLARE at the
+Functions to be translated should include a call to @code{mode_declare} at the
 beginning when possible in order to produce more efficient code.  For
 example:
 @example
@@ -664,151 +660,153 @@ F(X1,X2,...):=BLOCK([v1,v2,...],
 
 where the X1,X2,...  are the parameters to the function and the
 v1,v2,... are the local variables.  The names of translated functions
-are removed from the FUNCTIONS list if SAVEDEF is FALSE (see below)
-and are added to the PROPS lists.  Functions should not be translated
+are removed from the @code{functions} list if @code{savedef} is @code{false} (see below)
+and are added to the @code{props} lists.  Functions should not be translated
 unless they are fully debugged.  Also, expressions are assumed
 simplified; if they are not, correct but non- optimal code gets
-generated.  Thus, the user should not set the SIMP switch to FALSE
+generated.  Thus, the user should not set the @code{simp} switch to @code{false}
 which inhibits simplification of the expressions to be translated.
-The switch TRANSLATE, default: [FALSE], If TRUE, causes automatic
+The switch @code{translate}, default: [@code{false}], If @code{true}, causes automatic
 translation of a user's function to Lisp.  Note that translated
 functions may not run identically to the way they did before
 translation as certain incompatabilities may exist between the Lisp
-and Maxima versions.  Principally, the RAT function with more than
-one argument and the RATVARS function should not be used if any
-variables are MODE_DECLAREd CRE.  Also the PREDERROR:FALSE setting
+and Maxima versions.  Principally, the @code{rat} function with more than
+one argument and the @code{ratvars} function should not be used if any
+variables are @code{mode_declare}'d CRE.  Also the PREDERROR:FALSE setting
 will not translate.
-SAVEDEF[TRUE] - if TRUE will cause the Maxima version of a user
-function to remain when the function is TRANSLATEd.  This permits the
-definition to be displayed by DISPFUN and allows the function to be
+@code{savedef}[@code{true}] - if @code{true} will cause the Maxima version of a user
+function to remain when the function is @code{translate}'d.  This permits the
+definition to be displayed by @code{dispfun} and allows the function to be
 edited.
-TRANSRUN[TRUE] - if FALSE will cause the interpreted version of all
+@code{transrun}[@code{true}] - if @code{false} will cause the interpreted version of all
 functions to be run (provided they are still around) rather than the
 translated version.
-One can translate functions stored in a file by giving TRANSLATE an
+One can translate functions stored in a file by giving @code{translate} an
 argument which is a file specification.  This is a list of the form
 [fn1,fn2,DSK,dir] where fn1 fn2 is the name of the file of Maxima
 functions, and dir is the name of a file directory.
-The result returned by TRANSLATE is a list of the names of the
-functions TRANSLATEd.  In the case of a file translation the
+The result returned by @code{translate} is a list of the names of the
+functions translated.  In the case of a file translation the
 corresponding element of the list is a list of the first and second
 new file names containing the Lisp code resulting from the
 translation.  This will be fn1.LISP on the disk directory dir.  The
-file of Lisp code may be read into Maxima by using the LOADFILE
+file of Lisp code may be read into Maxima by using the @code{loadfile}
 function.
 
 @end defun
 
-@defun TRANSLATE_FILE (file)
+@defun translate_file (file)
 translates a file of Maxima code into a file
 of Lisp code.  It takes one or two arguments.  The first argument is
 the name of the Maxima file, and the optional second argument is the
 name of the Lisp file to produce.  The second argument defaults to the
 first argument with second file name the value of
-TR_OUTPUT_FILE_DEFAULT which defaults to TRLISP.  For example:
-TRANSLATE_FILE("test.mc")); will translate "test.mc" to "test.LISP".
+@code{tr_output_file_default} which defaults to @code{trlisp}.  For example:
+@code{translate_file ("test.mc"))} will translate @code{"test.mc"} to @code{"test.LISP"}.
 Also produced is a file of translator warning
 messages of various degrees of severity.  The second file name is
-always UNLISP.  This file contains valuable (albeit obsure for some)
+always @code{UNLISP}.  This file contains valuable (albeit obsure for some)
 information for tracking down bugs in translated code.  Do
-APROPOS(TR_) to get a list of TR (for TRANSLATE) switches.  In
-summary, TRANSLATE_FILE("foo.mc"), LOADFILE("foo.LISP") is "=" to
-BATCH("foo.mc") modulo certain restrictions (the use of '@w{}' and % for
+@code{apropos (tr_)} to get a list of @code{tr} (for @code{translate}) switches.  In
+summary, @code{translate_file ("foo.mc"); loadfile("foo.LISP")} is the same as
+@code{batch ("foo.mc")} modulo certain restrictions (the use of '@w{}' and % for
 example).
+@c (1) LIST RESULT OF apropos (tr_) AS SEE-ALSOS
+@c (2) FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
 @end defun
 
-@defvar TRANSRUN
- default: [TRUE] - if FALSE will cause the interpreted
+@defvar transrun
+ default: [@code{true}] - if @code{false} will cause the interpreted
 version of all functions to be run (provided they are still around)
 rather than the translated version.
 
 @end defvar
 
-@defvar TR_ARRAY_AS_REF
- default: [TRUE] - If TRUE runtime code uses the value
+@defvar tr_array_as_ref
+ default: [@code{true}] - If @code{true} runtime code uses the value
 of the variable as the array.
 
 @end defvar
 
-@defvar TR_BOUND_FUNCTION_APPLYP
- default: [TRUE] - Gives a warning if a bound
+@defvar tr_bound_function_applyp
+ default: [@code{true}] - Gives a warning if a bound
 variable is found being used as a function.
 
 @end defvar
 
-@defvar TR_FILE_TTY_MESSAGESP
- default: [FALSE] - Determines whether messages
-generated by TRANSLATE_FILE during translation of a file will be sent
-to the TTY.  If FALSE (the default), messages about translation of the
-file are only inserted into the UNLISP file.  If TRUE, the messages
+@defvar tr_file_tty_messagesp
+ default: [@code{false}] - Determines whether messages
+generated by @code{translate_file} during translation of a file will be sent
+to the TTY.  If @code{false} (the default), messages about translation of the
+file are only inserted into the UNLISP file.  If @code{true}, the messages
 are sent to the TTY and are also inserted into the UNLISP file.
 
 @end defvar
 
-@defvar TR_FLOAT_CAN_BRANCH_COMPLEX
- default: [TRUE] - States whether the arc
-functions might return complex results.  The arc functions are SQRT,
-LOG, ACOS, etc.  e.g. When it is TRUE then ACOS(X) will be of mode ANY
-even if X is of mode FLOAT. When FALSE then ACOS(X) will be of mode
-FLOAT if and only if X is of mode FLOAT.
+@defvar tr_float_can_branch_complex
+ default: [@code{true}] - States whether the arc
+functions might return complex results.  The arc functions are @code{sqrt},
+@code{log}, @code{acos}, etc.  e.g. When it is @code{true} then @code{acos(x)} will be of mode @code{any}
+even if X is of mode @code{float}. When @code{false} then @code{acos(x)} will be of mode
+@code{float} if and only if X is of mode @code{float}.
 
 @end defvar
 
-@defvar TR_FUNCTION_CALL_DEFAULT
- default: [GENERAL] - FALSE means give up and
-call MEVAL, EXPR means assume Lisp fixed arg function.  GENERAL, the
-default gives code good for MEXPRS and MLEXPRS but not MACROS.
-GENERAL assures variable bindings are correct in compiled code.  In
-GENERAL mode, when translating F(X), if F is a bound variable, then it
-assumes that APPLY(F,[X]) is meant, and translates a such, with
+@defvar tr_function_call_default
+ default: [@code{general}] - @code{false} means give up and
+call @code{meval}, @code{expr} means assume Lisp fixed arg function.  @code{general}, the
+default gives code good for @code{mexprs} and @code{mlexprs} but not @code{macros}.
+@code{general} assures variable bindings are correct in compiled code.  In
+@code{general} mode, when translating F(X), if F is a bound variable, then it
+assumes that @code{apply (f, [x])} is meant, and translates a such, with
 apropriate warning. There is no need to turn this off.  With the
 default settings, no warning messages implies full compatibility of
 translated and compiled code with the Maxima interpreter.
 
 @end defvar
 
-@defvar TR_GEN_TAGS
- default: [FALSE] - If TRUE, TRANSLATE_FILE generates a
-TAGS file for use by the text editor.
+@defvar tr_gen_tags
+ default: [@code{false}] - If @code{true}, @code{translate_file} generates a
+@code{tags} file for use by the text editor.
 
 @end defvar
 
-@defvar TR_NUMER
- default: [FALSE] - If TRUE numer properties are used for
-atoms which have them, e.g. %PI.
+@defvar tr_numer
+ default: [@code{false}] - If @code{true} numer properties are used for
+atoms which have them, e.g. @code{%pi}.
 
 @end defvar
 
-@defvar TR_OPTIMIZE_MAX_LOOP
+@defvar tr_optimize_max_loop
  default: [100] - The maximum number of times the
 macro-expansion and optimization pass of the translator will loop in
-considering a form.  This is to catch MACRO expansion errors, and
+considering a form.  This is to catch macro expansion errors, and
 non-terminating optimization properties.
 
 @end defvar
 
-@defvar TR_OUTPUT_FILE_DEFAULT
- default: [TRLISP] - This is the second file
+@defvar tr_output_file_default
+ default: [@code{trlisp}] - This is the second file
 name to be used for translated Lisp output.
 
 @end defvar
 
-@defvar TR_PREDICATE_BRAIN_DAMAGE
- default: [FALSE] - If TRUE, output possible
-multiple evaluations in an attempt to interface to the COMPARE
+@defvar tr_predicate_brain_damage
+ default: [@code{false}] - If @code{true}, output possible
+multiple evaluations in an attempt to interface to the @code{compare}
 package.
 
 @end defvar
 
-@defvar TR_SEMICOMPILE
- default: [FALSE] - If TRUE TRANSLATE_FILE and COMPFILE
+@defvar tr_semicompile
+ default: [@code{false}] - If @code{true} @code{translate_file} and @code{compfile}
 output forms which will be macroexpanded but not compiled into machine
 code by the Lisp compiler.
 
 @end defvar
 
-@defvar TR_STATE_VARS
+@defvar tr_state_vars
  default:
 @example
 [TRANSCOMPILE, TR_SEMICOMPILE,
@@ -824,72 +822,73 @@ track down bugs.
 
 @end defvar
 
-@defvar TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED
- default: [FALSE] is bound to
+@defvar tr_true_name_of_file_being_translated
+ default: [@code{false}] is bound to
 the quoted string form of the true name of the file most recently
-translated by TRANSLATE_FILE.
+translated by @code{translate_file}.
 
 @end defvar
 
-@defvar TR_VERSION
+@defvar tr_version
  - The version number of the translator.
 
 @end defvar
 
-@defun TR_WARNINGS_GET ()
+@defun tr_warnings_get ()
 Prints a list of warnings which have been given by
 the translator during the current translation.
 
 @end defun
 
-@defvar TR_WARN_BAD_FUNCTION_CALLS
- default: [TRUE] - Gives a warning when
+@defvar tr_warn_bad_function_calls
+ default: [@code{true}] - Gives a warning when
 when function calls are being made which may not be correct due to
 improper declarations that were made at translate time.
 
 @end defvar
 
-@defvar TR_WARN_FEXPR
- default: [COMPFILE] - Gives a warning if any FEXPRs are
+@defvar tr_warn_fexpr
+ default: [@code{compfile}] - Gives a warning if any FEXPRs are
 encountered.  FEXPRs should not normally be output in translated code,
 all legitimate special program forms are translated.
 
 @end defvar
 
-@defvar TR_WARN_MEVAL
- default: [COMPFILE] - Gives a warning if the function
-MEVAL gets called.  If MEVAL is called that indicates problems in the
+@defvar tr_warn_meval
+ default: [@code{compfile}] - Gives a warning if the function
+@code{meval} gets called.  If @code{meval} is called that indicates problems in the
 translation.
 
 @end defvar
 
-@defvar TR_WARN_MODE
- default: [ALL] - Gives a warning when variables are
+@defvar tr_warn_mode
+ default: [@code{all}] - Gives a warning when variables are
 assigned values inappropriate for their mode.
 
 @end defvar
 
-@defvar TR_WARN_UNDECLARED
- default: [COMPILE] - Determines when to send
+@defvar tr_warn_undeclared
+ default: [@code{compile}] - Determines when to send
 warnings about undeclared variables to the TTY.
 
 @end defvar
 
-@defvar TR_WARN_UNDEFINED_VARIABLE
- default: [ALL] - Gives a warning when
+@defvar tr_warn_undefined_variable
+ default: [@code{all}] - Gives a warning when
 undefined global variables are seen.
 
 @end defvar
 
-@defvar TR_WINDY
- default: [TRUE] - Generate "helpfull" comments and
+@defvar tr_windy
+ default: [@code{true}] - Generate "helpfull" comments and
 programming hints.
 
 @end defvar
 
-@defvar UNDECLAREDWARN
- default: [COMPFILE] - A switch in the Translator.
+@defvar undeclaredwarn
+ default: [@code{compfile}] - A switch in the Translator.
 There are four relevant settings:
+@example
 SETTING     | ACTION
 ------------------------------------------------------------
 FALSE       | never print warning messages. 
@@ -897,14 +896,15 @@ COMPFILE    | warn when in COMPFILE
 TRANSLATE   | warn when in TRANSLATE and when TRANSLATE:TRUE
 ALL         | warn in COMPFILE and TRANSLATE            
 ------------------------------------------------------------
-Do MODE_DECLARE(<variable>,ANY) to declare a variable to be a general 
-Maxima variable (i.e. not limited to being FLOAT or FIXNUM).  The extra 
+@end example
+Do @code{mode_declare (<variable>, any)} to declare a variable to be a general 
+Maxima variable (i.e. not limited to being @code{float} or @code{fixnum}).  The extra 
 work in declaring all your variables in code  to be compiled should pay 
 off.
 
 @end defvar
 
-@defun COMPILE_FILE (filename,&optional-outfile)
+@defun compile_file (filename,&optional-outfile)
 It takes filename which
 contains Maxima code, and translates this to Lisp and then compiles the
 result.  It returns a list of four files (the original file,translation,
@@ -913,7 +913,7 @@ notes on translation and the compiled code).
 
 @end defun
 
-@defun DECLARE_TRANSLATED (FN1,FN2..)
+@defun declare_translated (fn1,fn2..)
 When translating a file of Maxima code
 to Lisp, it is important for the translator to know which functions it
 sees in the file are to be called as translated or compiled functions,
