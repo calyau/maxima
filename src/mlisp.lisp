@@ -140,6 +140,8 @@
        #+cl
        ((functionp fn)
 	(apply fn args))
+       #+cl
+       ((EQ (CAR FN) 'LAMBDA) (APPLY (COERCE FN 'FUNCTION) ARGS))
        #-cl
        ((EQ (CAR FN) 'LAMBDA) (APPLY FN ARGS))
        #+(and Lispm (not cl))
