@@ -212,27 +212,30 @@ pos;
 @defun integrate (expr, var)
 @defunx integrate (expr, var, a, b)
 Attempts to symbolically compute the integral of @code{expr} with respect to @code{var}.
-@code{integrate (expr, var, a, b)} is a definite integral,
-with limits of integration @code{a} and @code{b},
-while @code{integrate (expr, var)} is an indefinite integral.
+@code{integrate (expr, var)} is an indefinite integral,
+while @code{integrate (expr, var, a, b)} is a definite integral,
+with limits of integration @code{a} and @code{b}.
 The limits should not contain @code{var}, although @code{integrate} does not enforce this restriction.
 @code{a} need not be less than @code{b}.
+If @code{b} is equal to @code{a}, @code{integrate} returns zero.
 
 See @code{quad_qag} and related functions for numerical approximation of definite integrals.
 See @code{residue} for computation of residues (complex integration).
+See @code{antid} for an alternative means of computing indefinite integrals.
 
-The integral is returned if @code{integrate} succeeds,
-otherwise the return value is
-the noun form (with a leading single-quote)
-of the integral, containing the quoted operator @code{'integrate}.
-See also Note 1, below.
+The integral (an expression free of @code{integrate}) is returned if @code{integrate} succeeds.
+Otherwise the return value is
+the noun form of the integral (the quoted operator @code{'integrate})
+or an expression containing one or more noun forms.
+The noun form of @code{integrate} is displayed with an integral sign.
 
-If an
-integral "form" is desired for manipulation (for example, an integral
-which cannot be computed until some numbers are substituted for some
-parameters), the noun form @code{'integrate} may be used and this will
-display with an integral sign.  (See Note 1 below.)
+In some circumstances it is useful to construct a noun form by hand,
+by quoting @code{integrate} with a single quote, e.g., @code{'integrate (expr, x)}.
+For example, the integral may depend on some parameters which are not yet computed.
+The noun may be applied to its arguments by @code{ev (i, nouns)}
+where @code{i} is the noun form of interest.
 
+@c BEGIN EXPOSITION ON HEURISTICS
 @code{integrate} handles definite integrals separately from indefinite,
 and employs a range of heuristics to handle each case.
 Special cases of definite integrals include limits of integration equal to
@@ -252,43 +255,67 @@ exponential and logarithmic functions,
 and rational functions.
 @code{integrate} may also make use of a short table of elementary integrals.
 
-@code{integrate} may attempt a change of variable,
-by testing whether the derivative of some subexpression divides the integrand;
-this implies the integrand has the form @code{f(g(x)) * diff(g(x),x)}.
-This test may make use of derivatives defined by the @code{gradef} function.
-See also @code{changevar}.
+@code{integrate} may carry out a change of variable
+if the integrand has the form @code{f(g(x)) * diff(g(x), x)}.
+@code{integrate} attempts to find a subexpression @code{g(x)} such that
+the derivative of @code{g(x)} divides the integrand.
+This search may make use of derivatives defined by the @code{gradef} function.
+See also @code{changevar} and @code{antid}.
 
 If none of the preceding heuristics find the indefinite integral,
-the Risch algorithm is executed. See @code{risch}.
-
-Functional relationships must be explicitly represented in order
-for @code{integrate} to work properly.  @code{integrate} is not affected by
-dependencies set up with the @code{depends} command.
-
-The function @code{ldefint} uses @code{limit} to evaluate the integral at the
-lower and upper limits.
-
-@code{integrate} is not, by default, declared to be linear.
-
-The flag @code{risch} may be set on the @code{integrate} input line.
+the Risch algorithm is executed.
+The flag @code{risch} may be set as an @code{evflag},
+in a call to @code{ev} or on the command line,
+e.g., @code{ev (integrate (expr, x), risch)} or @code{integrate (expr, x), risch}.
 If @code{risch} is present, @code{integrate} calls the @code{risch} function
-without attempting heuristics first.
+without attempting heuristics first. See also @code{risch}.
+@c END EXPOSITION ON HEURISTICS
 
-Sometimes during integration the user may be asked what the sign
-of an expression is.  Suitable responses are @code{pos;}, @code{zero;}, or @code{neg;}.
+@c I STILL DON'T LIKE THIS PARAGRAPH !!!
+Functional relationships must be explicitly represented in order
+for @code{integrate} to work properly.
+@code{integrate} does not respect dependencies established by the @code{depends} command.
+
+@code{integrate} may need to know some property of a parameter in the integrand.
+@code{integrate} will first consult the @code{assume} database,
+and, if the variable of interest is not there,
+@code{integrate} will ask the user.
+Depending on the question,
+suitable responses are @code{yes;} or @code{no;},
+or @code{pos;}, @code{zero;}, or @code{neg;}.
 
 Examples:
 
+@itemize @bullet
+@item
+Elementary indefinite and definite integrals.
+
 @example
-(%i1) integrate (sin(x)**3, x);
+(%i1) integrate (sin(x)^3, x);
                            3
                         cos (x)
 (%o1)                   ------- - cos(x)
                            3
-(%i2) integrate (x**a/(x+1)**(5/2), x, 0, inf);
-Is  a + 1  positive, negative, or zero?
+(%i2) integrate (x/ sqrt (b^2 - x^2), x);
+                                 2    2
+(%o2)                    - sqrt(b  - x )
+(%i3) integrate (cos(x)^2 * exp(x), x, 0, %pi);
+                               %pi
+                           3 %e      3
+(%o3)                      ------- - -
+                              5      5
+(%i4) integrate (x^2 * exp(-x^2), x, minf, inf);
+                            sqrt(%pi)
+(%o4)                       ---------
+                                2
+@end example
 
-pos;
+@item
+Use of @code{assume} and interactive query.
+
+@example
+(%i1) assume (a > 1)$
+(%i2) integrate (x**a/(x+1)**(5/2), x, 0, inf);
     2 a + 2
 Is  -------  an integer?
        5
@@ -300,6 +327,14 @@ neg;
                                    3
 (%o2)                  beta(a + 1, - - a)
                                    2
+@end example
+
+@item
+Change of variable. There are two changes of variable in this example:
+one using a derivative established by @code{gradef},
+and one using the derivation @code{diff(r(x))} of an unspecified function @code{r(x)}.
+
+@example
 (%i3) gradef (q(x), sin(x**2));
 (%o3)                         q(x)
 (%i4) diff (log (q (r (x))), x);
@@ -312,25 +347,57 @@ neg;
 (%o5)                     log(q(r(x)))
 @end example
 
-(Note 1) The fact that Maxima does not perform certain integrals does
-not always imply that the integral does not exist in closed form. In
-the example below the integration call returns the noun form but the
-integral can be found fairly easily. For example, one can compute the
-roots of @code{x^3 + x + 1} to rewrite the integrand in the form
-@code{1/((x-a)*(x-b)*(x-c))}
-where @code{a}, @code{b}, and @code{c} are the roots. Maxima will
-integrate this equivalent form although the integral is quite
-complicated.
-See also @code{integrate_use_rootsof}.
+@item
+Return value contains the @code{'integrate} noun form.
+In this example, Maxima can extract one factor of the denominator
+of a rational function, but cannot factor the remainder or otherwise find its integral.
+@code{grind} shows the noun form @code{'integrate} in the result.
+See also @code{integrate_use_rootsof} for more on integrals of rational functions.
 
 @example
-(%i6) integrate (1/(x^3+x+1),x);
-                         /
-                         [     1
-(%o6)                    I ---------- dx
-                         ]  3
-                         / x  + x + 1
+(%i1) expand ((x-4) * (x^3+2*x+1));
+                    4      3      2
+(%o1)              x  - 4 x  + 2 x  - 7 x - 4
+(%i2) integrate (1/%, x);
+                              /  2
+                              [ x  + 4 x + 18
+                              I ------------- dx
+                              ]  3
+                 log(x - 4)   / x  + 2 x + 1
+(%o2)            ---------- - ------------------
+                     73               73
+(%i3) grind (%);
+log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 @end example
+
+@item
+Defining a function in terms of an integral.
+The body of a function is not evaluated when the function is defined.
+Thus the body of @code{f_1} in this example contains the noun form of @code{integrate}.
+The double-single-quotes operator @code{'@w{}'} causes the integral to be evaluated,
+and the result becomes the body of @code{f_2}.
+
+@example
+(%i1) f_1 (a) := integrate (x^3, x, 1, a);
+                                     3
+(%o1)           f_1(a) := integrate(x , x, 1, a)
+(%i2) ev (f_1 (7), nouns);
+(%o2)                          600
+(%i3) /* Note parentheses around integrate(...) here */
+      f_2 (a) := '' (integrate (x^3, x, 1, a));
+                                   4
+                                  a    1
+(%o3)                   f_2(a) := -- - -
+                                  4    4
+(%i4) f_2 (7);
+(%o4)                          600
+@end example
+@end itemize
+
+The function @code{ldefint} uses @code{limit} to evaluate the integral at the
+lower and upper limits.
+
+@code{integrate} is not, by default, declared to be linear.
 
 @code{integrate} attempts integration by parts only in few special cases.
 
@@ -352,7 +419,10 @@ Default value: @code{false}
 
 When @code{integrate_use_rootsof} is @code{true} and the denominator of
 a rational function cannot be factored, @code{integrate} returns the integral
-in a form which is a sum over the roots of the denominator.
+in a form which is a sum over the roots (not yet known) of the denominator.
+
+For example, with @code{integrate_use_rootsof} set to @code{false},
+@code{integrate} returns an unsolved integral of a rational function in noun form:
 
 @example
 (%i1) integrate_use_rootsof: false$
@@ -366,8 +436,8 @@ in a form which is a sum over the roots of the denominator.
                 7                 14             7 sqrt(3)
 @end example
 
-but now we set the flag to be true and the first part of the
-integral will undergo further simplification.
+Now we set the flag to be true and the unsolved part of the
+integral will be expressed as a summation over the roots of the denominator of the rational function:
 
 @example
 (%i3) integrate_use_rootsof: true$
@@ -389,10 +459,11 @@ integral will undergo further simplification.
                                           14             7 sqrt(3)
 @end example
 
-Note that it may be that we want to approximate the roots in the
-complex plane, and then provide the function factored, since we
-will then be able to group the roots and their complex conjugates,
-so as to give a better answer.
+Alternatively the user may compute the roots of the denominator separately,
+and then express the integrand in terms of these roots,
+e.g., @code{1/((x - a)*(x - b)*(x - c))} or @code{1/((x^2 - (a+b)*x + a*b)*(x - c))}
+if the denominator is a cubic polynomial.
+Sometimes this will help Maxima obtain a more useful result.
 
 @end defvar
 
