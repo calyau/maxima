@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.13 2004-03-16 12:15:02 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.14 2004-03-28 07:56:07 vvzhy Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -148,7 +148,7 @@ proc vMAXAddSystemMenu {fr text} {
 
     $m add separator
     $m add command -underline 0 \
-	-label {Fonts} \
+	-label {Preferences} \
 	-command {fontDialog .preferences}
     if {[info commands console] == "console" } {
 	$m add sep
