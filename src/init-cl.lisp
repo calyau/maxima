@@ -497,6 +497,10 @@
 (defun bye ()
   (sb-ext:quit))
 
+#+clisp
+(defun bye ()
+  (ext:quit))
+
 #+allegro
 (defun bye ()
   (excl:exit))

@@ -512,7 +512,7 @@
 (setf (symbol-function 'atan2) (symbol-function 'lisp::atan))
 
 (setq *READ-DEFAULT-FLOAT-FORMAT* 'double-float)
-#+CLISP (setq *DEFAULT-FLOAT-FORMAT* 'double-float)
+#+clisp (setq custom:*DEFAULT-FLOAT-FORMAT* 'double-float)
 
 (defmacro float (x &optional (y 1.0d0)) `(lisp::float ,x ,y))
 

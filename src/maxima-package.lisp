@@ -41,8 +41,8 @@
 
 (or (find-package "MAXIMA")
     (make-package  "MAXIMA"
-	:nicknames '("CL-MACSYMA"  "CL-MAXIMA" "MACSYMA")
-	:use `("LISP" #+clisp ,@(if (find-package "EXT") '("EXT")))  ))
+		   :nicknames '("CL-MACSYMA"  "CL-MAXIMA" "MACSYMA")
+		   :use '("LISP")))
 
 (shadowing-import '(sloop::loop-return sloop::local-finish sloop::loop-finish sloop::sloop) "MAXIMA")
 
@@ -120,7 +120,7 @@
 (import '(si::modulus si::cmod si::ctimes si::cdifference si::cplus)
    'cl-maxima)
 
-#+(or clisp gcl)
+#+gcl
 (import '(system::getenv) (find-package "MAXIMA"))
 #+gcl
 (import '(si::getpid) (find-package "MAXIMA"))

@@ -12,7 +12,7 @@
 (defun setup-server (port &optional (host "localhost"))
   (let* ((sock (open-socket host port)))
     (setq me sock)
-   #+gcl (setq si::*sigpipe-action* 'si::bye)
+    #+gcl (setq si::*sigpipe-action* 'si::bye)
     (setq *socket-connection* sock)
     (setq *standard-input* sock)
     (setq *standard-output* sock)
@@ -33,9 +33,8 @@
                 (integer (hostent-name (resolve-host-ipaddr host))))))
     #+allegro (socket:make-socket :remote-host host :remote-port port
                                   :format (if bin :binary :text))
-    #+clisp (socket-connect port host :element-type
-                                 (if bin '(unsigned-byte 8) 'character))
-
+    #+clisp (socket:socket-connect port host :element-type
+				   (if bin '(unsigned-byte 8) 'character))
     #+cmu (sys:make-fd-stream (ext:connect-to-inet-socket host port)
                               :input t :output t :element-type
                               (if bin '(unsigned-byte 8) 'character))
@@ -82,7 +81,7 @@
 
 #+(or gcl clisp cmu sbcl)
 (defun xchdir (w)
-  #+clisp (cd w)
+  #+clisp (ext:cd w)
   #+gcl (si::chdir w)
   #+cmu (unix::unix-chdir w)
   #+sbcl (sb-posix:chdir w)
