@@ -286,8 +286,10 @@
 ;;			  OUTPUT-FILE-NAME
 ;;			  $TR_FILE_TTY_MESSAGESP ))
 
+;; Converts a Maxima "string" (which is really a symbol that starts
+;; with the character '&') to a Lisp string.
 (defun maxima-string (symb)
-  (string-left-trim "&" (string symb)))
+  (string-left-trim "&" (print-invert-case symb)))
 
 (defmfun $translate_file (input-file &optional output-file)
   (setq input-file (maxima-string input-file))
