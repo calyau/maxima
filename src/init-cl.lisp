@@ -368,7 +368,8 @@
 	   (make-cl-option :names '("--disable-readline")
 			   :action #'(lambda ()
 				       #+gcl
-				       (si::readline-off)))
+				       (si::readline-off))
+			   :help-string "Disable readline support.")
 	   (make-cl-option :names '("-s" "--server")
 			   :argument "<port>"
 			   :action #'(lambda (port-string)
