@@ -1,4 +1,17 @@
-# Support for installation of DATA files in a generic directory.
+# versioned installation directories
+
+verpkglibdir = $(pkglibdir)/@VERSION@
+verpkglibexecdir = $(libexecdir)/@PACKAGE@/@VERSION@
+verpkgdatadir = $(pkgdatadir)/@VERSION@
+docdir = $(verpkgdatadir)/doc
+dochtmldir = $(docdir)/html
+docsharedir = $(docdir)/share
+demodir = $(verpkgdatadir)/demo
+emacsdir = $(verpkgdatadir)/emacs
+sharedir = $(verpkgdatadir)/share
+
+# Support for installation of DATA files in a generic directory
+# with subdirectories.
 # To use, set genericdir to point to the installation directory.
 # Set genericdirDATA to hold the list of files to install.
 # genericdirDATA may contain subdirectories. Subdirectories will

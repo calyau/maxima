@@ -1,6 +1,6 @@
+include $(top_srcdir)/common.mk
 RUNLISP = ../lisp-utils/maxima-run-lisp
 bin_SCRIPTS = maxima
-verpkglibdir = $(pkglibdir)/@VERSION@
 
 if CLISP
 all-local: binary-clisp/maxima.mem

@@ -1,3 +1,6 @@
+include $(top_srcdir)/common.mk
+genericdir =$(sharedir)
+
 genericdirDATA = diffequations/desoln.usg\
 diffequations/ode2.usg\
 diffequations/exampl.mac\
@@ -291,5 +294,3 @@ tensor/test1.mac\
 contrib/diag.usg\
 contrib/diag.mac
 
-genericdir =$(pkgdatadir)/@VERSION@
-include $(top_srcdir)/common.mk
