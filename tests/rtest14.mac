@@ -171,8 +171,13 @@ ratsimp(specint(t^(-1/2)*%e^(-2*a^(1/2)*t^(1/2))*%e^(-p*t),t));
  * All of these can be computed using formula 24, p. 146 of Tables of
  * Integral Transforms, which handle functions of the form
  * t^(v-1)*exp(-t^2/8/a).
+ *
+ * But, we have terms of the form exp(b*t^2-p*t+%i*a*t).  I don't
+ * think this converges, so the Laplace transform doesn't exist if b >
+ * 0.
  * 
  */
+/*
 radcan(specint(sin(a*t)*cosh(b*t^2)*%e^(-p*t),t));
 -%e^-((p^2+2*%i*a*p+a^2)/(4*b))*(sqrt(%pi)*%e^((2*%i*a*p+a^2)/(2*b))*erf((%i 
  *p+a)/(2*sqrt(b)))-sqrt(%pi)*%e^(a^2/(2*b))*erf((%i*p-a)/(2*sqrt(b)))+sqrt 
@@ -180,6 +185,7 @@ radcan(specint(sin(a*t)*cosh(b*t^2)*%e^(-p*t),t));
  ^(p^2/(2*b))*erf((p-%i*a)/(2*sqrt(b)))+(sqrt(%pi)*%i-sqrt(%pi)*%i*%e^(%i*a 
  *p/b))*%e^(p^2/(2*b))-sqrt(%pi)*%e^((2*%i*a*p+a^2)/(2*b))+sqrt(%pi)*%e^(a^2/ 
  (2*b)))/(8*sqrt(b)) $
+*/
 
 /*
  * Sec 4.14, formula (27):
