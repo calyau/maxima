@@ -17,14 +17,14 @@
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or 
   (at your option) any later version. 
- 		       								 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 		       								 
-  You should have received a copy of the GNU General Public License	
-  along with this program; if not, write to the Free Software 		 
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software 
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
@@ -408,7 +408,7 @@ ode1_riccati_special_i(a,b,c,n,y,x) := block(
      y = -z'/(z*f2) = -(f'+%c*g')/((f+%c*g)*f2)
   */
 ode1_riccati_general(f0,f1,f2,y,x) := block(
-  [de,z,ans,%c,%k1,%k2],
+  [de,z,ans,%c,%k1,%k2,%u],
   ode_disp("    Transforming to 2nd order ode"),
   de: f2*'diff(z,x,2)-(diff(f2,x)+f1*f2)*'diff(z,x)+f2^2*f0*z=0,
   if get('contrib_ode,'verbose) then disp(de),
@@ -419,7 +419,9 @@ ode1_riccati_general(f0,f1,f2,y,x) := block(
 
   if is(ans=false) then (
     ode_disp("    Cannot solve 2nd order ode"),
-    false
+    /* Return the transformation and the second order ODE */
+    method:'riccati,
+    return([y=-'diff(%u,x)/(%u*f2),subst(%u,z,de)])
   )
   else if (lhs(ans[1])#z) then (
     /* give up on parametric solutions for z */

@@ -8,14 +8,18 @@ integrated into MAXIMA at some stage.
 The calling convention for contrib_ode is identical to ODE2.  It takes
 three arguments: an ODE (only the left hand side need be given if the
 right hand side is 0), the dependent variable, and the independent
-variable.  When successful, it returns a list of solutions.  Each
-solution can be: an explicit solution for the dependent variable; an
-implicit solution for the dependent variable; or a parametric solution
-in terms of variable %t.  %C is used to represent the constant in the
-case of first order equations, and %K1 and %K2 the constants for
-second order equations.  If contrib_ode cannot obtain a solution for
-whatever reason, it returns FALSE, after perhaps printing out an error
-message.  
+variable.  When successful, it returns a list of solutions.  
+
+A solution can have a number of forms:
+ o  an explicit solution for the dependent variable, 
+ o  an implicit solution for the dependent variable, 
+ o  a parametric solution in terms of variable %t, or 
+ o  a tranformation into another ODE in variable %u.
+ 
+%c is used to represent the constant in the case of first order equations, 
+and %k1 and %k2 the constants for second order equations.  If contrib_ode 
+cannot obtain a solution for whatever reason, it returns false, after 
+perhaps printing out an error message.  
 
 (C1) eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
 
@@ -26,12 +30,12 @@ message.
 (C2) contrib_ode(eqn,y,x);
 
                                                     x
-(D2)                     [y = LOG(x) + %C, y = %C %E ]
+(D2)                     [y = log(x) + %c, y = %c %e ]
 
 
 (C3) method;
 
-(D3)                                FACTOR
+(D3)                                factor
 
 Nonlinear odes can have singular solutions without constants of
 integration.
@@ -72,10 +76,35 @@ to give explicit solutions.
 
 (D9)                              lagrange
 
+The following Riccati equation is transformed into a linear
+second order ODE in the variable %u.  maxima is unable to 
+solve the new ODE.
+
+(%i7) eqn:'diff(y,x)+1-x=(x+y)*y;
+
+                            dy
+(%o7)                       -- - x + 1 = y (y + x)
+                            dx
+
+(%i8) contrib_ode(eqn,y,x);
+
+                        d%u
+                        ---                          2
+                        dx     d%u                  D %u
+(%o8)           [[y = - ---, - --- x + %u (x - 1) + ---- = 0]]
+                        %u     dx                     2
+                                                    dx
+
+(%i9) method;
+
+(%o9)                               riccati
+
 
 For first order ODEs contrib_ode calls ode2.  It then tries the
 following methods: factorization, Clairault, Lagrange, Riccati,
-Abel and Lie symmetry methods.
+Abel and Lie symmetry methods.  The Lie method is not attempted 
+on Abel equations if the Abel method fails, but it is tried 
+if the Riccati method returns an unsolved second order ODE. 
 
 For second order ODEs contrib_ode calls ode2.  No other methods are
 implemented yet.
@@ -98,9 +127,6 @@ These routines are work in progress.  I still need to:
   complex roots.
 
 * Add additional methods for Riccati equations.
-
-* Work out how to return partial solutions, such as those obtained for
-  Riccati and Abel equations.
 
 * Improve the detection of Abel equations of second kind.  The exisiting
   pattern matching is weak.

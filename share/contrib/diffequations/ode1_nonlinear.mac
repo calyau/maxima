@@ -39,7 +39,7 @@ if get('ode1_abel,'version)=false then
 
 
 ode1_nonlinear(de,y,x):=block(
-  [q],
+  [q,q2],
 
   ode_disp("       in ode1_nonlinear"),
 
@@ -55,9 +55,17 @@ ode1_nonlinear(de,y,x):=block(
   q:ode1_lagrange(de,y,x),
   if (is(q#false)) then return(q),
 
+  /* Sometimes ode1_lie() can solve Riccati equations 
+     that are only partially solved by ode1_riccati()  */
   ode_disp("       -> ode1_riccati"),
   q:ode1_riccati(de,y,x),
-  if (is(q#false)) then return([q]),
+  if (is(q#false)) then return( block(
+    if not(freeof(%u,q)) then (
+      q2:ode1_lie_wrapper(de,y,x),
+      if (is(q2#false)) then q:q2
+    ),
+    [q])
+  ),
 
   ode_disp("       -> ode1_abel"),
   q:ode1_abel(de,y,x),
@@ -66,17 +74,19 @@ ode1_nonlinear(de,y,x):=block(
   if (is(q#false)) then return(q),
 
   ode_disp("       -> ode1_lie"),
-  q:block(
-    [phi],
-    phi:solve(lhs(de)-rhs(de),'diff(y,x)),
-    if (is(phi=[])) then 
-      false
-    else (
-      phi:rhs(first(phi)),
-      q:ode1_lie(phi,y,x)
-    )
-  ),
+  q:ode1_lie_wrapper(de,y,x),
   if (is(q#false)) then return([q]),
 
   return(false)
+)$
+
+/* Wrapper for ode1_lie() */
+ode1_lie_wrapper(de,y,x) := block(
+  [phi],
+  phi:solve(lhs(de)-rhs(de),'diff(y,x)),
+  if (is(phi=[])) then 
+     false
+  else
+    phi:rhs(first(phi)),
+    ode1_lie(phi,y,x)
 )$
