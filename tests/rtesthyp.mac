@@ -1,0 +1,155 @@
+kill(allbut(props));
+done;
+/* Tests of confluent hypergeometric function */
+
+/* See A&S 13.6 */
+
+/* Bessel functions */
+
+/* A&S 13.6.1 */
+hgfred([v+1/2],[2*v+1],2*%i*z);
+gamma(1+v)*exp(%i*z)*(z/2)^(-v)*bessel_j(v,z)$
+
+/* A&S 13.6.3 */
+hgfred([v+1/2],[2*v+1],2*z);
+gamma(1+v)*exp(z)*(z/2)^(-v)*bessel_i(v,z)$
+
+/* A&S 13.6.4 */
+hgfred([n+1],[2*n+2],2*%i*z);
+gamma(n+3/2)*exp(%i*z)*(z/2)^(-n-1/2)*bessel_j(n+1/2,z)$
+
+/* A&S 13.6.5 */
+hgfred([-n],[-2*n],2*%i*z);
+gamma(1/2-n)*exp(%i*z)*(z/2)^(n+1/2)*bessel_j(-n-1/2,z)$
+
+/* A&S 13.6.6 */
+hgfred([n+1],[2*n+2],2*z);
+gamma(3/2+n)*exp(z)*(z/2)^(-n-1/2)*bessel_i(n+1/2,z)$
+
+/* A&S 13.6.10 */
+hgfred([a],[a+1],-z);
+a*z^(-a)*%gammagreek(a,z)$
+
+/* A&S 13.6.12 */
+hgfred([a],[a],z);
+exp(z)$
+
+/* A&S 13.6.13 */
+hgfred([1],[2],-2*%i*z);
+exp(-%i*z)*sin(z)/z$
+
+/* A&S 13.6.14 */
+hgfred([1],[2],2*z);
+exp(z)*sinh(z)/z$
+
+/* A&S 13.6.17 */
+hgfred([-4],[1/2],z^2/2);
+4!/(2*4)!*(-1/2)^(-4)*hermite(2*4,z)$
+
+/* A&S 13.6.18 */
+hgfred([-4],[3/2],z^2/2);
+4!/(2*4+1)!*(-1/2)^(-4)*hermite(2*4+1,z)$
+
+/* A&S 13.6.19 */
+hgfred([1/2],[3/2],-z^2);
+sqrt(%pi)/2/z*erf(z);
+
+/* A&S 15.1.3 */
+hgfred([1,1],[2],z);
+-log(1-z)/z;
+
+/* A&S 15.1.4 */
+hgfred([1/2,1], [3/2], z^2);
+log((1+z)/(1-z))/(2*z)$
+
+/* A&S 15.1.5 */
+hgfred([1/2,1], [3/2], -z^2);
+atan(z)/z$
+
+/* A&S 15.1.6 */
+hgfred([1/2,1/2], [3/2], z^2);
+asin(z)/z$
+
+hgfred([1,1], [3/2], z^2);
+asin(z)/z/sqrt(1-z^2)$
+
+/* A&S 15.1.7 */
+hgfred([1/2,1/2], [3/2], -z^2);
+log(z+sqrt(1+z^2))/z$
+
+hgfred([1,1], [3/2], -z^2);
+log(z+sqrt(1+z^2))/z/sqrt(1+z^2)$
+
+/* A&S 15.1.8 */
+hgfred([a,b],[b],z);
+(1-z)^(-a)$
+
+/* A&S 15.1.9 */
+hgfred([a,a+1/2],[1/2],z^2);
+1/2*((z+1)^(-2*a)+(1-z)^(-2*a))$
+
+/* A&S 15.1.10 */
+hgfred([a,a+1/2],[3/2],z^2);
+((z+1)^(1-2*a)-(1-z)^(1-2*a))/2/(1-2*a)/z$
+
+/* A&S 15.1.11 */
+hgfred([-a,a],[1/2],-z^2);
+((z+sqrt(1+z^2))^(2*a) + (sqrt(1+z^2)-z)^(2*a))/2$
+
+/* A&S 15.1.12 */
+hgfred([a,1-a],[1/2],-z^2);
+((sqrt(1+z^2)+z)^(2*a-1)+(sqrt(1+z^2)-z)^(2*a-1))/2/sqrt(1+z^2)$
+
+/* A&S 15.1.13 */
+hgfred([a,a+1/2],[1+2*a],z);
+2^(2*a)/(1+sqrt(1-z))^(2*a)$
+
+hgfred([a+1,a+1/2],[1+2*a],z);
+2^(2*a)/(1+sqrt(1-z))^(2*a)/sqrt(1-z)$
+
+/* A&S 15.1.14 */
+hgfred([a,a+1/2],[2*a],z);
+2^(2*a-1)/sqrt(1-z)*(1+sqrt(1-z))^(1-2*a)$
+
+/* A&S 15.1.15 */
+hgfred([a,1-a],[3/2],sin(z)^2);
+sin((2*a-1)*z)/sin(z)/(2*a-1)$
+
+/* A&S 15.1.16 */
+hgfred([a,2-a],[3/2],sin(z)^2);
+sin((2*a-2)*z)/(a-1)/(2*sin(z)*cos(z));
+
+/* A&S 15.1.17 */
+hgfred([-a,a],[1/2],sin(z)^2);
+cos(2*a*z)$
+
+/* A&S 15.1.18 */
+hgfred([a,1-a],[1/2],sin(z)^2);
+cos((2*a-1)*z)/cos(z)$
+
+/* A&S 15.1.19 */
+hgfred([a,a+1/2],[1/2],-tan(z)^2);
+cos(z)^(2*a)*cos(2*a*z)$
+
+/* A&S 15.4.3 */
+hgfred([-n,n],[1/2],x);
+cos(2*n*asin(sqrt(x)))$
+
+hgfred([-10,10],[1/2],x);
+chebyshev_t(10,1-2*x)$
+
+/* A&S 15.4.4 */
+hgfred([-n,n+1],[1],x);
+legendre_p(n,1-2*x);
+
+/* A&S 8.1.2 */
+((z+1)/(z-1))^(u/2)/gamma(1-u)*hgfred([-v,v+1],[1-u],(1-z)/2);
+assoc_legendre_p(v,u,z)$
+
+/* A&S 15.4.17 */
+hgfred([a,1-a],[c],x);
+gamma(c)*x^((1-c)/2)*(1-x)^((c-1)/2)*assoc_legendre_p(-a, 1-c, 1-2*x)$
+
+
+
+
