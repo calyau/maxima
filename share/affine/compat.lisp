@@ -14,4 +14,9 @@
   (declare (ignore colonp at-p))
   (fsh arg stream))
 
+(defun string-search (string1 string2)
+  (search string1 string2 :test #'char-equal))
+
+(shadowing-import 'cl-sloop::loop-return)
+
 ;;; compat.lisp ends here
