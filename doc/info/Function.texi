@@ -301,12 +301,6 @@ first argument evaluated as well as its second.
 
 @end defun
 
-@c @node BINDTEST, BLOCK, APPLY, Function Definition
-@c @unnumberedsec phony
-@defun BINDTEST (ai)
-causes ai to signal an error if it ever is used in a
-computation unbound.
-
 @end defun
 @c @node BLOCK, BREAK, BINDTEST, Function Definition
 @c @unnumberedsec phony
