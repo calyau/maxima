@@ -1739,7 +1739,8 @@
 	     (eq flg 'htjory)
 	     (eq flg 'erfc)
 	     (eq flg 'ei)
-	     (eq flg 'slommel))
+	     (eq flg 'slommel)
+	     (eq flg 'ytj))
 	 (sendexec r
 		   (cond ((eq flg 'ytj)(ytj i1 a1))
 			 ((eq flg 'htjory)
