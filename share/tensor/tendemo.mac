@@ -52,7 +52,7 @@ sel:read("Select an option by its number followed by a semicolon (;)"),
    else if sel=14 then demo(ctensor4)
    else if sel=15 then print("*** Demo not yet available")
    else if sel=16 then demo(ctensor6)
-   else if sel=17 then print("*** Demo not yet available")
+   else if sel=17 then demo(ctensor7)
    else if sel=18 then print("*** Demo not yet available")
    else if sel=a then demo(atensor)
    else if sel=E or sel=e then
