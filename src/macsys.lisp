@@ -513,7 +513,7 @@
 
 (defmspec $with_stdout ( arg) (setq arg (cdr arg))
  (let ((body (cdr arg)) res)
-   (with-open-file (*standard-output* (NAMESTRING (stripdollar (car arg)))
+   (with-open-file (*standard-output* (NAMESTRING (maxima-string (car arg)))
 				      :direction :output)
 		   (dolist (v body)
 			     (setq res (meval* v)))
