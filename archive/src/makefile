@@ -276,12 +276,12 @@ test-clisp: maxima-clisp.mem
 
 
 cmulisp-compile:
-	echo '(progn (load "compile-cmulisp.lisp")(compile-maxima))' | ${CMULISP}
+	echo '(progn (load "compile-cmulisp.lisp")(compile-maxima)(quit))' | ${CMULISP}
 maxima.core:  cmulisp-compile
-	echo '(progn (load "compile-cmulisp.lisp")(save-maxima))' | ${CMULISP}
+	echo '(progn (load "compile-cmulisp.lisp")(save-maxima)(quit))' | ${CMULISP}
 
 test-cmulisp: maxima.core
-	(cd ../doc ; ${CMULISP} -core ../src/maxima.core -load ../src/maxima-clisp.mem tests.lisp)
+	(cd ../doc ; ${CMULISP} -core ../src/maxima.core -load tests.lisp)
 
 
 
