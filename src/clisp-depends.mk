@@ -1,4 +1,5 @@
 binary-clisp/maxima.mem : maxima-package.lisp
+binary-clisp/maxima.mem : autoconf-variables.lisp
 binary-clisp/maxima.mem : nregex.lisp
 binary-clisp/maxima.mem : cl-info.lisp
 binary-clisp/maxima.mem : sloop.lisp
@@ -282,6 +283,5 @@ binary-clisp/maxima.mem : mactex.lisp
 binary-clisp/maxima.mem : plot.lisp
 binary-clisp/maxima.mem : autol.lisp
 binary-clisp/maxima.mem : max_ext.lisp
-binary-clisp/maxima.mem : autoconf-variables.lisp
 binary-clisp/maxima.mem : init-cl.lisp
 

@@ -1,4 +1,5 @@
 binary-sbcl/maxima.core : maxima-package.lisp
+binary-sbcl/maxima.core : autoconf-variables.lisp
 binary-sbcl/maxima.core : nregex.lisp
 binary-sbcl/maxima.core : cl-info.lisp
 binary-sbcl/maxima.core : sloop.lisp
@@ -282,6 +283,5 @@ binary-sbcl/maxima.core : mactex.lisp
 binary-sbcl/maxima.core : plot.lisp
 binary-sbcl/maxima.core : autol.lisp
 binary-sbcl/maxima.core : max_ext.lisp
-binary-sbcl/maxima.core : autoconf-variables.lisp
 binary-sbcl/maxima.core : init-cl.lisp
 

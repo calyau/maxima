@@ -1,4 +1,5 @@
 binary-gcl/maxima : maxima-package.lisp
+binary-gcl/maxima : autoconf-variables.lisp
 binary-gcl/maxima : sloop.lisp
 binary-gcl/maxima : lmdcls.lisp
 binary-gcl/maxima : letmac.lisp
@@ -281,6 +282,5 @@ binary-gcl/maxima : mactex.lisp
 binary-gcl/maxima : plot.lisp
 binary-gcl/maxima : autol.lisp
 binary-gcl/maxima : max_ext.lisp
-binary-gcl/maxima : autoconf-variables.lisp
 binary-gcl/maxima : init-cl.lisp
 
