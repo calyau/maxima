@@ -145,12 +145,11 @@ f(x) = sin(x)*(at('diff(f(x),x,1),x = 0)-2)+f(0)*cos(x)+2*x; */
 
 
 /* Tests from:
-      F Postel and P Zimmermann
-      A Review of the ODE solvers of AXIOM, DERIVE, MACSYMA
-      MATHEMATICA, MUPAD and REDUCE
-      April 22 1996
-      Submitted to the 5th Rhine Workshop on Computer Algebra
-      http://www.loria.fr/~zimmerma/ComputerAlgebra/
+    F Postel and P Zimmermann, A Review of the ODE solvers of 
+    AXIOM, DERIVE, MACSYMA, MATHEMATICA, MUPAD and REDUCE
+    Procedings of the 5th Rhine Workshop on Computer Algebra
+    April 1-3, 1996, Saint-Louis, France
+    http://www.loria.fr/~zimmerma/ComputerAlgebra/
 */
 
 /* Equation 1 - Linear polynomial */
