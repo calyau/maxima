@@ -7,7 +7,7 @@
 @section Introduction to Integration
 
 Maxima has several routines for handling integration.
-The @code{integrate} command makes use of most of them.  There is also the
+The @code{integrate} function makes use of most of them.  There is also the
 @code{antid} package, which handles an unspecified function (and its
 derivatives, of course).  For numerical uses, there is the @code{romberg}
 function; an
@@ -271,10 +271,8 @@ If @code{risch} is present, @code{integrate} calls the @code{risch} function
 without attempting heuristics first. See also @code{risch}.
 @c END EXPOSITION ON HEURISTICS
 
-@c I STILL DON'T LIKE THIS PARAGRAPH !!!
-Functional relationships must be explicitly represented in order
-for @code{integrate} to work properly.
-@code{integrate} does not respect dependencies established by the @code{depends} command.
+@code{integrate} works only with functional relations represented explicitly with the @code{f(x)} notation.
+@code{integrate} does not respect implicit dependencies established by the @code{depends} function.
 
 @code{integrate} may need to know some property of a parameter in the integrand.
 @code{integrate} will first consult the @code{assume} database,
@@ -384,7 +382,7 @@ and the result becomes the body of @code{f_2}.
 (%i2) ev (f_1 (7), nouns);
 (%o2)                          600
 (%i3) /* Note parentheses around integrate(...) here */
-      f_2 (a) := '' (integrate (x^3, x, 1, a));
+      f_2 (a) := ''(integrate (x^3, x, 1, a));
                                    4
                                   a    1
 (%o3)                   f_2(a) := -- - -
@@ -394,12 +392,9 @@ and the result becomes the body of @code{f_2}.
 @end example
 @end itemize
 
-The function @code{ldefint} uses @code{limit} to evaluate the integral at the
-lower and upper limits.
+@code{integrate} is not, by default, declared to be linear. See @code{declare} and @code{linear}.
 
-@code{integrate} is not, by default, declared to be linear.
-
-@code{integrate} attempts integration by parts only in few special cases.
+@code{integrate} attempts integration by parts only in a few special cases.
 
 @end defun
 
