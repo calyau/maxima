@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.16 2003-01-05 19:01:41 amundson Exp $
+#       $Id: RunMaxima.tcl,v 1.17 2003-01-27 08:02:24 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -279,7 +279,7 @@ proc littleFilter {win sock } {
 
 if { ![info exists maxima_priv(timeout)] } {
 
-    set maxima_priv(timeout) 20000
+    set maxima_priv(timeout) 60000
 }
 
 proc runOneMaxima { win } {
