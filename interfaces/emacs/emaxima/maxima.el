@@ -2805,6 +2805,8 @@ To scroll through previous commands,
   'inferior-maxima-input-complete)
 (define-key inferior-maxima-mode-map "\e\t" 'inferior-maxima-complete)
 (define-key inferior-maxima-mode-map "\C-c\C-d" 'maxima-help)
+(define-key inferior-maxima-mode-map "\C-c\C-h" 'maxima-help)
+(define-key inferior-maxima-mode-map "\C-c\C-a" 'maxima-apropos)
 (define-key inferior-maxima-mode-map "\C-c\C-m" 'maxima-info)
 (define-key inferior-maxima-mode-map "\177" 'backward-delete-char-untabify)
 (define-key inferior-maxima-mode-map "\C-c\C-k" 'maxima-stop)
