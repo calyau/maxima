@@ -198,7 +198,7 @@ W(L1,L2):=0$
 	E([],L2)-2*M*L([],[L2[1]])*L([],[L2[2]]))$*/
 REMCOMPS(G);
 COMPONENTS(G([I,J],[]),E([I,J],[])+2*M*L([I],[])*L([J],[]));
-COMPONENTS(G([],[I,J]),E([I,J],[])-2*M*L([],[I])*L([],[J]));
+COMPONENTS(G([],[I,J]),E([],[I,J])-2*M*L([],[I])*L([],[J]));
 
 
 SHOW(G([I,J],[]))$
