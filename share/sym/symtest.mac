@@ -93,8 +93,11 @@ multi_orbit(x+y+2*a,[[x,y],[a,b,c]]);
 [y+x+2*c,y+x+2*b,y+x+2*a]$
 
 multi_pui([[2,p1,p2],[2,t1,t2]],a*x+a^2+x^3,[[x,y],[a,b]]);
-/* ??? Is the exponent 3 simply misplaced? */
-t2+p1*t1+3*p1*p2^3/2-p1/2$
+/* The documentation had the exponent 3 at the wrong place.
+   The full form of the polynomial is
+   (a+b)*(x+y)+a^2+b^2+x^3+y^3 and
+   x^3+y^3=(3*(x+y)*(x^2+y^2)-(x+y)^3)/2=(3*p1*p2-p1^3)/2 */
+t2+p1*t1+3*p1*p2/2-p1^3/2$
 
 multsym([[3,1],[2,1,1]],[[5,2]],2);
 /* doconline has [[10, 3, 1], [15, 2, 1], [15, 3, 0]], but the

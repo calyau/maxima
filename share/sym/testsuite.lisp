@@ -5,5 +5,5 @@
 ;;; of the test problems that are expected to fail, e.g.
 ;;; ("testfile.mac" 7 9 13).
 
-;; Have still to check if these are really errors.
-(setf *testsuite-files* '(("symtest.mac" 11 28)))
+;; Have still to check if this is really an error.
+(setf *testsuite-files* '(("symtest.mac" 11)))
