@@ -1,11 +1,10 @@
 @menu
 * Introduction to Special Functions::  
-* GAMALG::                      
 * SPECINT::                     
 * Definitions for Special Functions::  
 @end menu
 
-@node Introduction to Special Functions, GAMALG, Special Functions, Special Functions
+@node Introduction to Special Functions, SPECINT, Special Functions, Special Functions
 @section Introduction to Special Functions
 @c @node %J
 @c @unnumberedsec phony
@@ -21,17 +20,7 @@ Bessel Funct 2nd Kind (in SPECINT)
 Constant, in ODE2
 
 @end deffn
-@node GAMALG, SPECINT, Introduction to Special Functions, Special Functions
-@section GAMALG
- - A Dirac gamma matrix algebra program which takes traces of
-and does manipulations on gamma matrices in n dimensions.  It may be
-loaded into Maxima by 
-LOADFILE("gam");
-A preliminary manual is contained in the file SHARE;GAM USAGE and may
-be printed using
-PRINTFILE(GAM,USAGE,SHARE);
-
-@node SPECINT, Definitions for Special Functions, GAMALG, Special Functions
+@node SPECINT, Definitions for Special Functions, Introduction to Special Functions, Special Functions
 @section SPECINT
  - The Hypergeometric Special Functions Package HYPGEO is
 still under development.  At the moment it will find the Laplace
