@@ -12,10 +12,12 @@ Filename:  share/contrib/README
 
 Notes on specific packages:
 
-maximaMathML/   Packages in this directory constitute the
-                MathML package created and used by the 
-		Internet Accessible Mathematical Computation
-		group at http://icm.mcs.kent.edu. 
+gentran/        This is the gentran package from 
+                http://www.symbolicnet.org/ftpsoftware/gentran.tgz
 
 Grobner/        This is Marek Rychlik's MaximaGrobner package
                 from http://alamos.math.arizona.edu/~rychlik/
+
+maximaMathML/   The MathML package created and used by the 
+		Internet Accessible Mathematical Computation
+		group at http://icm.mcs.kent.edu. 
