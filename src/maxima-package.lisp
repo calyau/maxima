@@ -142,6 +142,14 @@
 #-gcl
 (import '( cl-info::*info-paths* ) "MAXIMA" )
 
+;; MAXIMA uses LISP package which is legacy CLtL1 for GCL.
+;; Thus with ANSI GCL we have to import some symbols from COMMON-LISP
+;; package explicitly.
+;; REMOVE this as soon as we can get rid of LISP and SERROR packages.
+#+(and gcl ansi-cl)
+(import '( cl::*debugger-hook* )
+  "MAXIMA" )
+
 ;;redefined in commac  lucid 2.1 does (functionp 'jiljay)-->t
 (if (lisp::functionp 'dotimes) (push :shadow-functionp *features*))
 (unless (lisp::functionp 'lisp::functionp)
