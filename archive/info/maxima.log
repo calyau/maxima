@@ -1,6 +1,10 @@
-This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  20 APR 2001 14:49
+This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  20 APR 2001 17:40
 **maxima.texi
-(maxima.texi (texinfo.tex Loading texinfo [version 1999-04-25.15]: Basics,
+(maxima.texi[/usr/share/texmf/pdftex/config/pdftex.cfg]
+Babel <v3.6x> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(texinfo.tex Loading texinfo [version 1999-04-25.15]:
+(/usr/share/texmf/pdftex/plain/misc/pdfcolor.tex) Basics,
 \bindingoffset=\dimen16
 \normaloffset=\dimen17
 \pagewidth=\dimen18
@@ -19,14 +23,14 @@ This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  20 APR 2001 1
 \mil=\dimen25
 \exdentamount=\skip19
 \inmarginspacing=\skip20
-
-pdf,
+ pdf,
 \tempnum=\count26
 \lnkcount=\count27
 \filename=\toks14
 \filenamelength=\count28
 \pgn=\count29
- fonts,
+ (maxima.toc)
+(maxima.toc) fonts,
 \sffam=\fam8
 \mainmagstep=\count30
 \fontdepth=\count31
@@ -63,15 +67,15 @@ pdf,
 \chapheadingskip=\skip27
 \secheadingskip=\skip28
 \subsecheadingskip=\skip29
- toc,
+
+toc,
 \tocfile=\write0
 \contentsrightmargin=\skip30
 \savepageno=\count41
 \lastnegativepageno=\count42
 \shortappendixwidth=\dimen32
 \tocindent=\dimen33
-
-environments,
+ environments,
 \dblarrowbox=\box19
 \longdblarrowbox=\box20
 \pushcharbox=\box21
@@ -143,12 +147,29 @@ and turning on texinfo input format.) (maxima.aux)
 
 \openout8 = `maxima.pg'.
 
-] ()
+[/usr/share/texmf/dvips/config/pdftex.map]] ()
 \openout0 = `maxima.toc'.
 
- Chapter 1 [1]
-[2] (Introduction.texi [3] [4] [5]) Chapter 2 [6] (Help.texi [7] [8] [9])
-Chapter 3 [10] (Command.texi [11] [12] [13] [14] [15] [16]
+ Chapter 1
+Warning (ext1): destination with the same identifier (name{1@}) already exists!
+
+\pdfmkdest #1->\pdfdest name{#1@}
+                                  xyz
+\onepageout ...i \ifpdf \pdfmkdest {\the \pageno }
+                                                  \fi \ifcropmarks \egroup \...
+<output> {\onepageout {\pagecontents \PAGE }
+                                            }
+<to be read again> 
+                   \footnoteno 
+\supereject ->\par \penalty -20000\footnoteno 
+                                              =0 
+\pchapsepmacro ->\chappager 
+                            \ifodd \pageno \else \hbox to 0pt{} \chappager \fi 
+...
+l.327 @chapter Introduction to MAXIMA
+                                      [1] [2] (Introduction.texi [3] [4]
+[5]) Chapter 2 [6] (Help.texi [7] [8] [9]) Chapter 3 [10] (Command.texi
+[11] [12] [13] [14] [15] [16]
 Underfull \hbox (badness 10000) in paragraph at lines 460--464
  []@textrm - mean-ing SET STA-TUS. It can be used to SSTA-TUS( FEA-TURE,
 
@@ -752,12 +773,14 @@ elter).[] |
 [266])) [267] [268] (maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6]
 [-7] [-8] ) 
 Here is how much of TeX's memory you used:
- 1676 strings out of 63548
- 23122 string characters out of 972269
- 53233 words of memory out of 263001
- 2482 multiletter control sequences out of 10000+60000
+ 2367 strings out of 63189
+ 29134 string characters out of 966977
+ 57035 words of memory out of 263001
+ 2876 multiletter control sequences out of 10000+60000
  30088 words of font info for 104 fonts, out of 400000 for 1000
  19 hyphenation exceptions out of 1000
  15i,6n,13p,247b,310s stack positions out of 300i,100n,500p,50000b,10000s
-
-Output written on maxima.dvi (277 pages, 998960 bytes).
+<cmbxti10.pfb><cmr12.pfb><cmtt12.pfb><cmr9.pfb><cmti9.pfb><cmtt9.pfb
+><cmmi10.pfb><cmb10.pfb><cmsy10.pfb><cmss10.pfb><cmbx10.pfb><cmti10.pfb><cmsl10
+.pfb><cmsltt10.pfb><cmtt10.pfb><cmr10.pfb><cmbx12.pfb>
+Output written on maxima.pdf (277 pages, 863275 bytes).

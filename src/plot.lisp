@@ -1192,7 +1192,7 @@ setrgbcolor} def
 
 
 (defun $view_zic ()
-  (let ((izdir (si::getenv "IZICDIR")))
+  (let ((izdir (getenv "IZICDIR")))
     (or (probe-file
 	 (format nil "~a/tcl-files/maxima.tcl" izdir))
 	(error
