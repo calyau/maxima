@@ -1,0 +1,84 @@
+Summary: Maxima Symbolic Computation Program
+Name: maxima
+Version: @VERSION@
+Release: 1
+License: GPL
+Group: Development/Languages
+URL: http://maxima.sourceforge.net
+Source0: %{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
+
+%description
+
+Maxima is a full symbolic computation program.  It is full featured
+doing symbolic manipulation of polynomials, matrices, rational
+functions, integration, Todd-coxeter, graphing, bigfloats.  It has a
+symbolic debugger source level debugger for maxima code.  Maxima is
+based on the original Macsyma developed at MIT in the 1970's.  It is
+quite reliable, and has good garbage collection, and no memory leaks.
+It comes with hundreds of self tests.
+
+%package clisp
+Summary: Maxima compiled with clisp
+Group: Development/Languages
+Requires: clisp maxima
+%description clisp
+Maxima compiled with clisp.
+
+%package cmucl
+Summary: Maxima compiled with CMUCL
+Group: Development/Languages
+Requires: cmucl maxima
+%description cmucl
+Maxima compiled with CMUCL.
+
+%package gcl
+Summary: Maxima compiled with GCL
+Group: Development/Languages
+Requires: maxima
+%description gcl
+Maxima compiled with Gnu Common Lisp.
+
+%prep
+%setup -q
+%configure --enable-clisp --enable-cmucl --enable-gcl
+
+%build
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+%makeinstall
+
+%post
+/sbin/install-info %{_infodir}/maxima.info.gz %{_infodir}/dir
+
+%postun
+/sbin/install-info --delete %{_infodir}/maxima.info.gz %{_infodir}/dir
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root,-)
+/usr/share/maxima/%{version}/*
+/usr/libexec/maxima/%{version}
+/usr/share/info/*.gz
+/usr/share/man/man1/maxima.1.gz
+/usr/bin/maxima
+/usr/bin/xmaxima
+%files clisp
+/usr/lib/maxima/%{version}/binary-clisp/*
+%files cmucl
+/usr/lib/maxima/%{version}/binary-cmucl/*
+%files gcl
+/usr/lib/maxima/%{version}/binary-gcl/*
+
+%doc
+
+
+%changelog
+* Sun Sep  8 2002 James Amundson <amundson@fnal.gov> 
+- Initial build.
+
+
