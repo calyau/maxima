@@ -1083,47 +1083,48 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 ;;     /    SQRT(1 - m SIN (s))
 ;;     0
 
-(defun elliptic-f (phi m)
-  (declare (double-float phi m))
-  (cond ((> m 1)
-	 ;; A&S 17.4.15
-	 (/ (elliptic-f (asin (* (sqrt m) (sin phi))) (/ m))))
-	((< m 0)
-	 ;; A&S 17.4.17
-	 (let* ((m (- m))
-		(m+1 (+ 1 m))
-		(root (sqrt m+1))
-		(m/m+1 (/ m m+1)))
-	   (- (/ (elliptic-f (float (/ pi 2) 1d0) m/m+1)
-		 root)
-	      (/ (elliptic-f (- (float (/ pi 2) 1d0) phi) m/m+1)
-		 root))))
-	((= m 0)
-	 ;; A&S 17.4.19
-	 phi)
-	((= m 1)
-	 ;; A&S 17.4.21
-	 (log (lisp:tan (+ (/ phi 2) (float (/ pi 2) 1d0)))))
-	((minusp phi)
-	 (- (elliptic-f (- phi) m)))
-	((> phi pi)
-	 ;; A&S 17.4.3
-	 (multiple-value-bind (s phi-rem)
-	     (truncate phi (float pi 1d0))
-	   (+ (* 2 s (elliptic-k m))
-	      (elliptic-f phi-rem m))))
-	((<= phi (/ pi 2))
-	 (let ((sin-phi (sin phi))
-	       (cos-phi (cos phi))
-	       (k (sqrt m)))
-	   (* sin-phi
-	      (drf (* cos-phi cos-phi)
-		   (* (- 1 (* k sin-phi))
-		      (+ 1 (* k sin-phi)))
-		   1d0))))
-	((< phi pi)
-	 (+ (* 2 (elliptic-k m))
-	    (elliptic-f (- phi (float pi 1d0)) m)))))
+(defun elliptic-f (phi-arg m-arg)
+  (let ((phi (float phi-arg 1d0))
+	(m (float m-arg 1d0)))
+    (cond ((> m 1)
+	   ;; A&S 17.4.15
+	   (/ (elliptic-f (asin (* (sqrt m) (sin phi))) (/ m))))
+	  ((< m 0)
+	   ;; A&S 17.4.17
+	   (let* ((m (- m))
+		  (m+1 (+ 1 m))
+		  (root (sqrt m+1))
+		  (m/m+1 (/ m m+1)))
+	     (- (/ (elliptic-f (float (/ pi 2) 1d0) m/m+1)
+		   root)
+		(/ (elliptic-f (- (float (/ pi 2) 1d0) phi) m/m+1)
+		   root))))
+	  ((= m 0)
+	   ;; A&S 17.4.19
+	   phi)
+	  ((= m 1)
+	   ;; A&S 17.4.21
+	   (log (lisp:tan (+ (/ phi 2) (float (/ pi 2) 1d0)))))
+	  ((minusp phi)
+	   (- (elliptic-f (- phi) m)))
+	  ((> phi pi)
+	   ;; A&S 17.4.3
+	   (multiple-value-bind (s phi-rem)
+	       (truncate phi (float pi 1d0))
+	     (+ (* 2 s (elliptic-k m))
+		(elliptic-f phi-rem m))))
+	  ((<= phi (/ pi 2))
+	   (let ((sin-phi (sin phi))
+		 (cos-phi (cos phi))
+		 (k (sqrt m)))
+	     (* sin-phi
+		(drf (* cos-phi cos-phi)
+		     (* (- 1 (* k sin-phi))
+			(+ 1 (* k sin-phi)))
+		     1d0))))
+	  ((< phi pi)
+	   (+ (* 2 (elliptic-k m))
+	      (elliptic-f (- phi (float pi 1d0)) m))))))
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
@@ -3709,3 +3710,22 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
       (setf c0 (/ (- a0 b0) 2))
       (setf phi (+ phi (lisp:atan (* (/ b0 a0) (lisp:tan phi)))))
       (format t "~A ~A ~A~%" a0 b0 c0 phi))))
+
+(defprop %jacobi_am simp-%jacobi_am operators)
+
+(defmfun $jacobi_am (u m)
+  (simplify `((%jacobi_am) ,(resimplify u) ,(resimplify m))))
+
+(defmfun simp-%jacobi_am (form yy z)
+  (declare (ignore y))
+  (twoargcheck form)
+  (let ((u (simpcheck (cadr form) z))
+	(m (simpcheck (caddr form) z)))
+    (cond ((or (and (floatp u) (floatp m))
+	       (and $numer (numberp u) (numberp m)))
+	   ;; Numerically evaluate am
+	   (asin (sn (float u 1d0) (float m 1d0))))
+	  (t
+	   ;; Nothing to do
+	   (eqtest (list '(%jacobi_am) u m) form)))))
+  
