@@ -6,7 +6,12 @@
 # - winkill.exe
 # - tclwinkill.dll
 
-FREEWRAP = freewrap
+TCLKITSH = tclkitsh.exe
+TCLKITDIR = /c/star
+SDXDIR = $(TCLKITDIR)
+TCLTKDIR = /c/tcltk
+TCLTKINCFLAGS = -I $(TCLTKDIR)/include
+TCLTKLINKFLAGS = -L $(TCLTKDIR)/lib
 
 all: xmaxima.exe winkill.exe tclwinkill.dll
 
@@ -17,10 +22,16 @@ xmaxima.tcl: ../xmaxima
 	cp ../xmaxima xmaxima.tcl
 
 xmaxima.exe: xmaxima.tcl
-	$(FREEWRAP) xmaxima.tcl -e
+	rm -rf xmaxima.vfs
+	$(TCLKITSH) $(SDXDIR)/sdx.kit qwrap xmaxima.tcl && \
+	$(TCLKITSH) $(SDXDIR)/sdx.kit unwrap xmaxima.kit && \
+	$(TCLKITSH) $(SDXDIR)/sdx.kit wrap xmaxima.exe -runtime $(TCLKITDIR)/tclkit.exe xmaxima.kit
 
 winkill.exe: winkill.c
 	gcc -Wall -o winkill.exe winkill.c 
 
 tclwinkill.dll: tclwinkill.c
-	gcc -Wall -shared tclwinkill.c -ltclstub83 -o tclwinkill.dll
+	gcc -Wall $(TCLTKINCFLAGS) -shared tclwinkill.c $(TCLTKLINKFLAGS) -ltclstub83 -o tclwinkill.dll
+
+install: xmaxima.exe winkill.exe tclwinkill.dll
+	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
