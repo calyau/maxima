@@ -757,12 +757,13 @@
 ;; If the list L contains a negative integer, return the most positive
 ;; of the negative integers.  Otherwise return NIL.
 (defun hyp-negp-in-l (l)
-  (let ((max-neg (loop for x in l
-		    when (and (numberp x) (minusp x))
-		    maximize x)))
-    (if (minusp max-neg)
-	max-neg
-	nil)))
+  (let ((max-neg nil))
+    (dolist (x l)
+      (when (and (numberp x) (minusp x))
+	(if max-neg
+	    (setf max-neg (max max-neg x))
+	    (setf max-neg x))))
+    max-neg))
 
 ;; Compute the intersection of L1 and L2, possibly destructively
 ;; modifying L2.  Perserves duplications in L1.
