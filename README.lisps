@@ -11,12 +11,18 @@ clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
 advanced command-line editing facilities when built with it.
 
 clisp versions: Maxima will fail to build with 2.26 because of a bug
-in clisp. 2.28 and 2.29 are known to work.
+in clisp. 2.28 and 2.29 are known to work. There are currently
+unresolved problems with floating point numbers in Maxima with clisp
+2.30. 2.29 is recommended.
 
 CMUCL <http://cmucl.cons.org>
 -----
 	CMUCL is the fastest option for Maxima on platforms where it
-is available. Unfortunately, it does not include readline support.
+is available. Unfortunately, it does not include readline
+support. However, readline support can be added by wrapping maxima
+with the ledit executable. See
+<ftp://ftp.inria.fr/INRIA/Projects/cristal/Daniel.de_Rauglaudre/Tools/>
+for ledit.
 
 CMUCL versions: Maxima will build with CMUCL 18c, but will hang on
 some run-time operations. 18d is known to work.
