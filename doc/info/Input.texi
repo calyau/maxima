@@ -183,8 +183,8 @@ evaluates its arguments and concatenates them into a string.  Unlike
 Lisp string.
 
 @example
-(%i5) sconcat("xx[",3,"]:",expand((x+y)^3));
-(%o5) 			 xx[3]:Y^3+3*X*Y^2+3*X^2*Y+X^3
+(%i1) sconcat("xx[", 3, "]:", expand ((x+y)^3));
+(%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
 @end example
 
 The resulting string could be used in conjunction with print.
@@ -867,29 +867,23 @@ in case a file-name is supplied, the output will be appended to the
 file.
 
 @example
-(%i1) integrate(1/(1+x^3),x);
-
-					 2 x - 1
-		       2	    atan(-------)
-		  log(x  - x + 1)	 sqrt(3)    log(x + 1)
-(%o1) 	        - --------------- + ------------- + ----------
-			 6	       sqrt(3)	        3
-(%i2) tex(%o1);
-
-$$-@{@{\log \left(x^@{2@}-x+1\right)@}\over@{6@}@}
-  +@{@{\arctan @{@{2\>x-1@}\over@{\sqrt@{3@}@}@}@}\over@{\sqrt@{3@}@}@}
-  +@{@{\log \left(x+1\right)@}\over@{3@}@}\leqno@{\tt (%o1)@}$$
-(%o2) 				     (%o1)
-(%i6) tex(integrate(sin(x),x));
-
+(%i1) integrate (1/(1+x^3), x);
+                                    2 x - 1
+                  2            atan(-------)
+             log(x  - x + 1)        sqrt(3)    log(x + 1)
+(%o1)      - --------------- + ------------- + ----------
+                    6             sqrt(3)          3
+(%i2) tex (%o1);
+$$-@{@{\log \left(x^2-x+1\right)@}\over@{6@}@}+@{@{\arctan \left(@{@{2\,x-1
+ @}\over@{\sqrt@{3@}@}@}\right)@}\over@{\sqrt@{3@}@}@}+@{@{\log \left(x+1\right)
+ @}\over@{3@}@}\leqno@{\tt (\%o1)@}$$
+(%o2)                          (\%o1)
+(%i3) tex (integrate (sin(x), x));
 $$-\cos x$$
-(%o6) 				     false
-(%i7) tex(%o1,"/tmp/jo.tex");
-
-(%o7) 				     (%o1)
+(%o3)                           false
+(%i4) tex (%o1, "foo.tex");
+(%o4)                          (\%o1)
 @end example
-
-where the last expression will be appended to the file @file{/tmp/jo.tex}
 
 @end defun
 
@@ -934,6 +928,8 @@ It always returns @code{false}.   Note the binding of display2d to be
 false, otherwise the printing will have things like "- 3" instead
 of "-3".
 
+@c REWORK THIS EXAMPLE SO THAT IT CAN BE EXECUTED BY COPY/PASTE: !!!
+@c JUST NEED TO CHANGE /home/wfs/joe TO tmp.out OR SOMETHING !!!
 @example
 mygnuplot(f,var,range,number_ticks):=
  block([numer:true,display2d:false],
@@ -949,12 +945,12 @@ mygnuplot(f,var,range,number_ticks):=
       n:10,
       for i:8 thru n
         do(print("factorial(",i,") gives ",i!)));
-(%o8) 				     false
+(%o8)                           false
 (%i9) system("cat /home/wfs/joe");
 factorial( 8 ) gives  40320 
 factorial( 9 ) gives  362880 
 factorial( 10 ) gives  3628800 
-(%o9) 				       0
+(%o9)                             0
 @end example
 
 @end deffn

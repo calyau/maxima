@@ -134,32 +134,35 @@ number of digits used is 2, one to the left of the point and one to
 the right.  The value 1 for FPPRINTPREC is illegal.)
 @end defvar
 
-@defun ?ROUND (x,&optional-divisor)
+@deffn {Lisp function} ?round (x)
+@deffnx {Lisp function} ?round (x, divisor)
 round the floating point X to the nearest integer.   The argument
 must be a regular system float, not a bigfloat.   The ? beginning the name
 indicates this is normal Common Lisp function.
 
-
 @example
-(%i3) ?round(-2.8);
-(%o3) 				      - 3
+(%i1) ?round (-2.8);
+(%o1)                            - 3
 @end example
-@end defun
 
-@defun ?TRUNCATE (x,&optional-divisor)
+@end deffn
+
+@deffn {Lisp function} ?truncate (x)
+@deffnx {Lisp function} ?truncate (x, divisor)
 truncate the floating point X towards 0, to become an integer.   The argument
 must be a regular system float, not a bigfloat.  The ? beginning the name
 indicates this is normal Common Lisp function.
-@end defun 
+
 @example
-(%i4) ?truncate(-2.8);
-(%o4) 				      - 2
-(%i5) ?truncate(2.4);
-(%o5) 				       2
-(%i6) ?truncate(2.8);
-(%o6) 				       2
+(%i1) ?truncate (-2.8);
+(%o1)                            - 2
+(%i2) ?truncate (2.4);
+(%o2)                             2
+(%i3) ?truncate (2.8);
+(%o3)                             2
 @end example
 
+@end deffn
 
 @c @node ZUNDERFLOW
 @c @unnumberedsec phony

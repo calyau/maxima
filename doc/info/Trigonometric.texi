@@ -296,71 +296,59 @@ simplifyed fraction with numerator and denominator linear in sin and cos.
 Thus TRIGRAT linearize always when it is possible.(written by D. Lazard).
 
 @example
-(%i1) trigrat(sin(3*a)/sin(a+%pi/3));
-
-(%o1) 		        sqrt(3) sin(2 a) + cos(2 a) - 1
+(%i1) trigrat (sin(3*a)/sin(a+%pi/3));
+(%o1)              sqrt(3) sin(2 a) + cos(2 a) - 1
 @end example
 
 Here is another example (for which the function was intended); see
 [Davenport, Siret, Tournier, Calcul Formel, Masson (or in english,
-Addison-Wesley), section 1.5.5, Morley theorem). Timings are on VAX 780.
+Addison-Wesley), section 1.5.5, Morley theorem).
 
 @example
-(%i4)   c:%pi/3-a-b;
+(%i2) c: %pi/3 - a - b;
+                                      %pi
+(%o2)                       - b - a + ---
+                                       3
+(%i3) bc: sin(a)*sin(3*c)/sin(a+b);
+                        sin(a) sin(3 b + 3 a)
+(%o3)                   ---------------------
+                             sin(b + a)
+(%i4) ba: bc, c=a, a=c$
+(%i5) ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
+         2       2
+      sin (a) sin (3 b + 3 a)
+(%o5) -----------------------
+               2
+            sin (b + a)
 
-					   %pi
-(%o4) 				 - b - a + ---
-					    3
-
-(%i5)   bc:sin(a)*sin(3*c)/sin(a+b);
-
-			     sin(a) sin(3 b + 3 a)
-(%o5) 			     ---------------------
-				  sin(b + a)
-
-(%i6)   ba:bc,c=a,a=c$
-
-(%i7)   ac2:ba^2+bc^2-2*bc*ba*cos(b);
-
-	2       2
-     sin (a) sin (3 b + 3 a)
-(%o7) -----------------------
-	      2
-	   sin (b + a)
-
-					%pi
+                                        %pi
    2 sin(a) sin(3 a) cos(b) sin(b + a - ---) sin(3 b + 3 a)
-					 3
+                                         3
  - --------------------------------------------------------
-			   %pi
-		   sin(a - ---) sin(b + a)
-			    3
+                           %pi
+                   sin(a - ---) sin(b + a)
+                            3
 
-      2	        2	  %pi
+      2         2         %pi
    sin (3 a) sin (b + a - ---)
-			   3
+                           3
  + ---------------------------
-	     2	   %pi
-	  sin (a - ---)
-		    3
+             2     %pi
+          sin (a - ---)
+                    3
+(%i6) trigrat (ac2);
+(%o6) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
 
-(%i9)   trigrat(ac2);
-Totaltime= 65866 msec.  GCtime= 7716 msec.
+ - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
 
-(%o9)
-- (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
+ - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
 
-- 2 sqrt(3) sin(4 b + 2 a)
+ + 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
 
-+ 2 cos(4 b + 2 a) - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
+ + sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
 
-+ 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
+ + sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
 
-+ sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
-
-+ sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
-
-   - 9)/4
-
+ - 9)/4
 @end example
 @end defun

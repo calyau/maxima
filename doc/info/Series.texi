@@ -120,6 +120,8 @@ power series is "truncation level" + 1 - minimum(0,"order of series").
                   +1966080*X^4+4194304*X^3-25165824*X^2
                   +67108864*X-134217728)
        /134217728,x,0,10);
+@c EXAMPLE FAILS HERE WITH ERROR MESSAGE: !!!
+@c  CDR: 134217728 is not a LIST !!!
 (%i25) PADE(ff,4,4);
 (%o25) []
 @end example
@@ -128,6 +130,8 @@ power series expansion.  You must in general have degree of the numerator and
 degree of the denominator adding up to at least the degree of the power series,
 in order to have enough unknown coefficients to solve.
 @example
+@c EXAMPLE FAILS HERE WITH ERROR MESSAGE: !!!
+@c  CDR: 134217728 is not a LIST !!!
 (%i26) PADE(ff,5,5);
 (%o26) [-(520256329*X^5-96719020632*X^4-489651410240*X^3
            -1619100813312*X^2 -2176885157888*X-2386516803584)

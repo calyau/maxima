@@ -287,35 +287,24 @@ function which declares x to be a MATCHFIX operator.   The default
 binding power is 180, and the ARGS inside may be anything.
 
 @example
-
-(%i1) matchfix("|","|");
-
-(%o1) 				      "|"
-(%i2) |a|+b;
-
-(%o2) 				   b + (|a|)
+(%i1) matchfix ("|", "|");
+(%o1)                            "|"
+(%i2) |a|+b; 
+(%o2)                         b + (|a|)
 (%i3) |(a,b)|;
-
-(%o3) 				      |b|
+(%o3)                            |b|
 (%i4) |[a,b]|;
-
-(%o4) 				   |[a, b]|
-
-(%i9) |x|:=IF NUMBERP(x) THEN ABS(x)
-        ELSE (IF LISTP(x) AND APPLY("and",MAP(NUMBERP,x))
-		  THEN SUM(x[i]^2,i,1,LENGTH(x))^0.5 ELSE BUILDQ([u:x],|u|))$
-
-(%i10) |[1,2,3]|;
-
-(%o10) 			       3.741657386773941
-
-(%i18) |-7|;
-
-(%o18) 				       7
-(%i19) |[a,b]|;
-
-(%o19) 				   |[a, b]|
-
+(%o4)                         |[a, b]|
+(%i5) |x| := if numberp(x) then abs(x)
+        else (if listp(x) and apply ("and", map (numberp, x))
+        then sqrt (sum (x[i]^2, i, 1, length(x)))
+        else buildq ([u:x], |u|))$
+(%i6) |[1,2,3]|;
+(%o6)                         sqrt(14)
+(%i7) |-7|;
+(%o7)                             7
+(%i8) |[a,b]|;
+(%o8)                         |[a, b]|
 @end example
 
 @end defun

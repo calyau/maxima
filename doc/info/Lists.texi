@@ -138,26 +138,25 @@ Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
 retrieves the user property indicated by i associated with
 atom a or returns FALSE if a doesn't have property i.
 @example
-(%i1) PUT(%E,'TRANSCENDENTAL,'TYPE);
-(%o1) 			        TRANSCENDENTAL
-(%i2) PUT(%PI,'TRANSCENDENTAL,'TYPE)$
-(%i3) PUT(%I,'ALGEBRAIC,'TYPE)$
-(%i4) TYPEOF(EXP) := BLOCK([Q],
-                        IF NUMBERP(EXP)
-                        THEN RETURN('ALGEBRAIC),
-                        IF NOT ATOM(EXP)
-                        THEN RETURN(MAPLIST('TYPEOF, EXP)),
-                        Q : GET(EXP, 'TYPE),
-                        IF Q=FALSE
-			THEN ERRCATCH(ERROR(EXP,"is not numeric.")) ELSE Q)$
-(%i5) TYPEOF(2*%E+X*%PI);
-X is not numeric.
-(%o5) 	     [[TRANSCENDENTAL, []], [ALGEBRAIC, TRANSCENDENTAL]]
-(%i6) TYPEOF(2*%E+%PI);
-(%o6) 	        [TRANSCENDENTAL, [ALGEBRAIC, TRANSCENDENTAL]]
-
-
+(%i1) put (%e, 'transcendental, 'type);
+(%o1)                      transcendental
+(%i2) put (%pi, 'transcendental, 'type)$
+(%i3) put (%i, 'algebraic, 'type)$
+(%i4) typeof (expr) := block ([q],
+        if numberp (expr)
+        then return ('algebraic),
+        if not atom (expr)
+        then return (maplist ('typeof, expr)),
+        q: get (expr, 'type),
+        if q=false
+        then errcatch (error (expr, "is not numeric.")) else q)$
+(%i5) typeof (2*%e + x*%pi);
+x is not numeric.
+(%o5)    [[transcendental, []], [algebraic, transcendental]]
+(%i6) typeof (2*%e + %pi);
+(%o6)       [transcendental, [algebraic, transcendental]]
 @end example
+
 @end defun
 @c @node LAST, LENGTH, GET, Lists
 @c @unnumberedsec 

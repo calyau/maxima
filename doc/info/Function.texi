@@ -37,12 +37,14 @@ by having a final argument which is assigned to a list of the extra
 arguments:
 
 @example
-(%i8) f([u]):=u;
-(%i9) f(1,2,3,4);
-(%o9) 				 [1, 2, 3, 4]
-(%i11) f(a,b,[u]):=[a,b,u];
-(%i12) f(1,2,3,4,5,6);
-(%o12) 			     [1, 2, [3, 4, 5, 6]]
+(%i1) f ([u]) := u;
+(%o1)                        f([u]) := u
+(%i2) f (1, 2, 3, 4);
+(%o2)                       [1, 2, 3, 4]
+(%i3) f (a, b, [u]) := [a, b, u];
+(%o3)                 f(a, b, [u]) := [a, b, u]
+(%i4) f (1, 2, 3, 4, 5, 6);
+(%o4)                   [1, 2, [3, 4, 5, 6]]
 @end example
 
 The right hand side of a function is an expression.  Thus
@@ -193,19 +195,17 @@ lets you build 'QUOTED' structure, so that the  @code{'u} lets
 you get the variable name.  Note that in macros, the RESULT is
 a piece of code which will then be substituted for the macro and evaluated.
 
-
 @example
-MSHOW([lis])::=BLOCK([ans:[],N:LENGTH(lis)],
-	   FOR i THRU N DO
-	       (ans:APPEND(ans,
-			   BUILDQ([u:lis[i]],
-				  ['u,"=",u])),
-		IF i < N
-		    THEN ans
-		    :APPEND(ans,
-			    IF i < N-1 THEN [","]
-			        ELSE [", and"])),
-	   BUILDQ([U:ans],PRINT(SPLICE(u))))
+mshow ([l]) ::= block ([ans:[], n:length(l)],
+       for i:1 thru n do
+           (ans: append (ans,
+               buildq ([u:l[i]],
+                  ['u,"=",u])),
+        if i < n
+            then ans: append (ans,
+                if i < n-1 then [","]
+                    else [", and"])),
+       buildq ([u:ans], print (splice(u))));
 @end example
 
 The splice also works to put arguments into algebraic operations:
@@ -266,9 +266,9 @@ it becomes:
 @example
 (%i25) f[6];
 (%o25) (5*(-4*(-3*(-2*(AA1+AA0)+AA1+AA0)/2
-	    -(AA1+AA0)/2+AA1)
-	/3
-	-(-2*(AA1+AA0)+AA1+AA0)/6+(-AA1-AA0)/2)
+        -(AA1+AA0)/2+AA1)
+    /3
+    -(-2*(AA1+AA0)+AA1+AA0)/6+(-AA1-AA0)/2)
       /4
       +(-3*(-2*(AA1+AA0)+AA1+AA0)/2
        -(AA1+AA0)/2+AA1)

@@ -77,16 +77,13 @@ This is the differential of the variable @math{v}.  This commonly occurs
 when DIFF is called without the dependent variable being given.  Then
 the differential of the expression is computed.  For example:
 @example
-(%i1) diff(x);
-
-(%o1) 				    DEL(x)
-(%i2) diff(x^2);
-
-(%o2) 				  2 x DEL(x)
-(%i3) diff(sin(x^2));
-
-				       2
-(%o3) 			      2 x COS(x ) DEL(x)
+(%i1) diff (x);
+(%o1)                          del(x)
+(%i2) diff (x^2);
+(%o2)                        2 x del(x)
+(%i3) diff (sin (x^2));
+                                  2
+(%o3)                    2 x cos(x ) del(x)
 @end example
 
 @end defun

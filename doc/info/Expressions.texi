@@ -128,24 +128,16 @@ by using the functions REMOVE or KILL.  Specifically,
 "REMOVE("DDX",OP)" or "KILL("DDX")" will return "DDX" to operand
 status; but in the second case all the other properties of "DDX" will
 also be removed.
+
 @example
-
-
-(%i20) PREFIX("DDX",180,ANY,ANY)$
-
-(%i21) DDXYZ;
-
-(%o21) 				    DDX YZ
-
-(%i26) "ddx"(u):=u+4;
-
-(%o26) 			        DDX u := u + 4
-(%i27) ddx 8;
-
-(%o27) 				      12
+(%i1) prefix ("ddx", 180, any, any)$
+(%i2) ddx yz;
+(%o2)                          yz + 4
+(%i3) "ddx"(u) := u+4;
+(%o3)                      ddx u := u + 4
+(%i4) ddx 8;
+(%o4)                            12
 @end example
-
-
 
 @c end concepts Expressions
 @node Definitions for Expressions,  , SYNTAX, Expressions

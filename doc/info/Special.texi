@@ -97,13 +97,13 @@ BESSELARRAY[I] = J[I + V - INT(V)](z).
 It is defined by 
 @ifinfo
 @example
-		       INF
-		       ====	  k  - v - 2 k  v + 2 k
-		       \     (- 1)  2	       z
- 		        >    --------------------------
-		       /        k! GAMMA(v + k + 1)
-		       ====
-		       k = 0
+                inf
+                ====       k  - v - 2 k  v + 2 k
+                \     (- 1)  2          z
+                 >    --------------------------
+                /        k! gamma(v + k + 1)
+                ====
+                k = 0
 @end example
 @end ifinfo
 
@@ -123,9 +123,9 @@ BESSELARRAY[I] = Y[I + V - INT(V)](z).
 It is defined by
 @ifinfo
 @example
-                   COS(%PI v) BESSEL_J(v, z) - BESSEL_J(-v, z)
-                   -------------------------------------------
-                                  SIN(%PI v)
+              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
+              -------------------------------------------
+                             sin(%pi v)
 @end example
 @end ifinfo
 
@@ -149,14 +149,13 @@ BESSELARRAY[I] = I[I + V - INT(V)](z).
 It is defined by 
 @ifinfo
 @example
-
-	   INF
-	   ====	  - v - 2 k  v + 2 k
-	   \	 2	    z
-	    >	 -------------------
-	   /	 k! GAMMA(v + k + 1)
-	   ====
-	   k = 0
+                    inf
+                    ====   - v - 2 k  v + 2 k
+                    \     2          z
+                     >    -------------------
+                    /     k! gamma(v + k + 1)
+                    ====
+                    k = 0
 @end example
 @end ifinfo
 
@@ -177,10 +176,9 @@ BESSELARRAY[I] = K[I + V - INT(V)](z).
 It is defined by
 @ifinfo
 @example
-
-	%PI CSC(%PI v) (BESSEL_I(-v, z) - BESSEL_I(v, z))
-        ----------------------------------------------
-			      2
+           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
+           -------------------------------------------------
+                                  2
 @end example
 @end ifinfo
 @tex
@@ -199,22 +197,17 @@ then the limit as @math{v} approaches @math{n} is taken.
  the Bessel function is expanded.
 
 @example
-(%i1) bessel_j[3/2](z);
-
-                                         3
-(%o1)                            BESSEL_J(-, z)
-                                         2
-
-(%i2) besselexpand:true;
-
-(%o2)                                 TRUE
-(%i3) bessel_j(3/2, z);
-
-
-                               2 z   SIN(z)   COS(z)
-(%o3)                      SQRT(---) (------ - ------)
-                               %PI      2       z
-                                       z
+(%i1) besselexpand: false$
+(%i2) bessel_j (3/2, z);
+                                    3
+(%o2)                      bessel_j(-, z)
+                                    2
+(%i3) besselexpand: true$
+(%i4) bessel_j (3/2, z);
+                          2 z   sin(z)   cos(z)
+(%o4)                sqrt(---) (------ - ------)
+                          %pi      2       z
+                                  z
 @end example
 @end defvar
 

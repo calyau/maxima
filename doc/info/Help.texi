@@ -181,22 +181,25 @@ commands @code{? } and @code{describe}.   Also @code{html} and @code{pdf}
 files can be produced.
 
 Additionally there are examples so that you may do
+
 @example
-example(integrate);
-(%i4) example(integrate);
-(%i5) test(f):=BLOCK([u],u:INTEGRATE(f,x),RATSIMP(f-DIFF(u,x)));
-(%o5) test(f) := BLOCK([u], u :
-         INTEGRATE(f, x), RATSIMP(f - DIFF(u, x)));
-(%i6) test(SIN(x));
-(%o6) 						       0
-(%i7) test(1/(x+1));
-(%o7) 						       0
-(%i8) test(1/(x^2+1));
-(%o8) 						       0
-(%i9) INTEGRATE(SIN(X)^3,X);
- 
+(%i1) example(integrate);
 @end example
 
+which yields
+
+@example
+(%i2) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
+(%o2) test(f) := block([u], u : integrate(f, x), ratsimp(f - diff(u, x)))
+(%i3) test(sin(x))
+(%o3)                             0
+(%i4) test(1/(x+1))
+(%o4)                             0
+(%i5) test(1/(x^2+1))
+(%o5)                             0
+@end example
+
+and additional output.
 
 @node Definitions for Help,  , Documentation, Help
 @section Definitions for Help

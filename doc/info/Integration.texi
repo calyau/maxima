@@ -314,41 +314,40 @@ an rational function cannot be factored, we give the integral
 in a form which is a sum over the roots of the denominator:
 
 @example
-(%i4) integrate(1/(1+x+x^5),x);
-
-      /	 2
-      [ x  - 4 x + 5
-      I ------------ dx				   2 x + 1
-      ]	 3    2		       2	    5 ATAN(-------)
-      / x  - x  + 1	  LOG(x  + x + 1)	   SQRT(3)
-(%o4)  ----------------- - --------------- + ---------------
-	      7		        14	       7 SQRT(3)
+(%i1) integrate_use_rootsof: false;
+(%o1)                           false
+(%i2) integrate (1/(1+x+x^5), x);
+        /  2
+        [ x  - 4 x + 5
+        I ------------ dx                            2 x + 1
+        ]  3    2                2            5 atan(-------)
+        / x  - x  + 1       log(x  + x + 1)          sqrt(3)
+(%o2)   ----------------- - --------------- + ---------------
+                7                 14             7 sqrt(3)
 @end example
+
 but now we set the flag to be true and the first part of the
 integral will undergo further simplification.
+
 @example
-(%i5) INTEGRATE_USE_ROOTSOF:true;
+(%i3) integrate_use_rootsof: true;
+(%o3)                           true
+(%i4) integrate (1/(1+x+x^5), x);
+      ====        2
+      \       (%r4  - 4 %r4 + 5) log(x - %r4)
+       >      -------------------------------
+      /                    2
+      ====            3 %r4  - 2 %r4
+                      3    2
+      %r4 in rootsof(x  - x  + 1)
+(%o4) ----------------------------------------------------------
+               7
 
-(%o5) 			      TRUE
-@end example
-@example
-(%i6) integrate(1/(1+x+x^5),x);
-
-     ====        2
-     \       (%R1  - 4 %R1 + 5) LOG(x - %R1)
-      >      -------------------------------
-     /                    2
-     ====            3 %R1  - 2 %R1
-                     3    2
-     %R1 in ROOTSOF(x  - x  + 1)
-(%o6) ----------------------------------------------------------
-              7
-
-                                                         2 x + 1
-                                     2            5 ATAN(-------)
-                                LOG(x  + x + 1)          SQRT(3)
-                              - --------------- + ---------------
-                                      14             7 SQRT(3)
+                                                             2 x + 1
+                                         2            5 atan(-------)
+                                    log(x  + x + 1)          sqrt(3)
+                                  - --------------- + ---------------
+                                          14             7 sqrt(3)
 @end example
 
 Note that it may be that we want to approximate the roots in the
@@ -840,14 +839,12 @@ if the input is invalid.
 
 Examples:
 @example
-        (C1) quad_qagi(x^2*exp(-4*x),x,0,inf);
-
-        (D1) 		    [0.03125, 2.95916102995002e-11, 105, 0]
-        (C2) integrate(x^2*exp(-4*x),x,0,inf);
-
-                              1
-        (D2)                  --
-                              32
+(%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf);
+(%o1)          [0.03125, 2.95916102995002E-11, 105, 0]
+(%i2) integrate (x^2*exp(-4*x), x, 0, inf);
+                                 1
+(%o2)                            --
+                                 32
 @end example
 
 @end defun
@@ -901,39 +898,28 @@ if the input is invalid.
 
 Examples:
 @example
-    (C1) quad_qawc(2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
+(%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
+(%o1)    [- 3.130120337415925, 1.306830140249558E-8, 495, 0]
+(%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1), x, 0, 5);
+Principal Value
+                       alpha
+        alpha       9 4                 9
+       4      log(------------- + -------------)
+                      alpha           alpha
+                  64 4      + 4   64 4      + 4
+(%o2) (-----------------------------------------
+                        alpha
+                     2 4      + 2
 
-    (D2) 	      [- 3.130120337415925, 1.306830140249558e-8, 495, 0]
-
-    (C2) integrate(2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1), x, 0, 5);
-
-                           ALPHA
-            ALPHA       9 4                 9
-           4      LOG(------------- + -------------)
-                          ALPHA           ALPHA
-                      64 4      + 4   64 4      + 4
-    (D3) (-----------------------------------------
-                            ALPHA
-                         2 4      + 2
-
-              3 ALPHA
-              -------
-                 2            ALPHA/2
-           2 4        ATAN(4 4       )
-         - ---------------------------
-                     ALPHA
-                  2 4      + 2
-
-              3 ALPHA
-              -------
-                 2          ALPHA/2
-           2 4        ATAN(4       )   ALPHA
-         - -------------------------)/2
-                    ALPHA
-                 2 4      + 2
-    (C3) ev(%,alpha=5,numer);
-
-    (D3) 	       - 3.130120337415917
+         3 alpha                       3 alpha
+         -------                       -------
+            2            alpha/2          2          alpha/2
+      2 4        atan(4 4       )   2 4        atan(4       )   alpha
+    - --------------------------- - -------------------------)/2
+                alpha                        alpha
+             2 4      + 2                 2 4      + 2
+(%i3) ev (%, alpha=5, numer);
+(%o3)                    - 3.130120337415917
 @end example
 
 @end defun
@@ -1006,6 +992,10 @@ if the input is invalid.
 @end table
 
 Examples:
+@c THIS EXAMPLE IS PROBLEMATIC: quad_qawf FUNCTION CALL YIELDS AN ERROR MESSAGE: !!!
+@c The value of TRIG must be one of 1, %COS, $COS, 2, %SIN, $SIN !!!
+@c The value is: 5 !!!
+@c COPY/PASTE ERROR HERE ??? OUTPUT OF THIS EXAMPLE IS SUSPICIOUSLY SIMILAR TO quad_qawc EXAMPLE !!!
 @example
     (C1) quad_qawf(2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
 
@@ -1112,20 +1102,16 @@ if the input is invalid.
 
 Examples:
 @example
-    (C1) quad_qawo(x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
-
-    (D2) 	      [1.376043389877607, 4.72710759424899e-11, 765, 0]
-
-    (C2) rectform(integrate(x^(-1/2)*exp(-2^(-alpha)*x) * cos(x), x, 0, inf));
-
-                            ALPHA/2 - 1/2            2 ALPHA
-                 SQRT(%PI) 2              SQRT(SQRT(2        + 1) + 1)
-    (D29)        -----------------------------------------------------
-                                        2 ALPHA
-                                  SQRT(2        + 1)
-    (C3) ev(%,alpha=2,numer);
-
-    (D3) 	       1.376043390090716
+(%i1) quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
+(%o1)     [1.376043389877692, 4.72710759424899E-11, 765, 0]
+(%i2) rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x), x, 0, inf));
+                   alpha/2 - 1/2            2 alpha
+        sqrt(%pi) 2              sqrt(sqrt(2        + 1) + 1)
+(%o2)   -----------------------------------------------------
+                               2 alpha
+                         sqrt(2        + 1)
+(%i3) ev (%, alpha=2, numer);
+(%o3)                     1.376043390090716
 @end example
 
 @end defun
@@ -1196,24 +1182,20 @@ if the input is invalid.
 
 Examples:
 @example
-    (C1) quad_qaws(1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1);
+(%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1);
+(%o1)     [8.750097361672832, 1.24321522715422E-10, 170, 0]
+(%i2) integrate ((1-x*x)^(-1/2)/(x+1+2^(-alpha)), x, -1, 1);
+       alpha
+Is  4 2      - 1  positive, negative, or zero?
 
-    (D1) 	      [8.750097361672832, 1.24321522715422e-10, 170, 0]
-
-    (C2) integrate((1-x*x)^(-1/2)/(x+1+2^(-alpha)),x, -1, 1);
-
-           ALPHA
-    Is  4 2	     - 1  positive, negative, or zero?
-
-    pos;
-                                   ALPHA	     ALPHA
-                            2 %PI 2	     SQRT(2 2	   + 1)
-    (D2) 		        -------------------------------
-                                        ALPHA
-                                     4 2	  + 2
-    (C3) ev(%,alpha=4,numer);
-
-    (D3) 			       8.750097361672829
+pos;
+                          alpha         alpha
+                   2 %pi 2      sqrt(2 2      + 1)
+(%o2)              -------------------------------
+                               alpha
+                            4 2      + 2
+(%i3) ev (%, alpha=4, numer);
+(%o3)                     8.750097361672829
 @end example
 
 @end defun
