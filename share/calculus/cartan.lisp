@@ -96,6 +96,24 @@ T $FALSE)) ((MRETURN SIMP) $EXT104))) MEXPR)
          ((MCOND) (($LISTP) $X) (($LIE_DIFF_V) $V $X) T
           (($LIE_DIFF_F) $V $X))))
 
+; The following is a hand translation (more or less) of this MAXIMA code:
+; 
+; init_cartan(coords):=block
+; (
+;   [ci],
+;   cartan_coords:coords,
+;   cartan_dim:extdim:length(cartan_coords),
+;   cartan_basis:extsubb[1]:[],
+;   for i thru cartan_dim do
+;   (
+;     ci:concat(zzz,i),
+;     cartan_basis:endcons(ci,cartan_basis),
+;     extsub[i+1]:cons(ci=-ci,extsub[i]),
+;     extsubb[i]:cons(ci=0,extsub[i]),
+;     apply('alias,[concat(d,cartan_coords[i]),ci])
+;   )
+; );
+
 (defun $init_cartan (c)
   (setq $cartan_coords c)
   (setq $cartan_dim ($length $cartan_coords))
