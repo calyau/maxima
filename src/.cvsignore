@@ -9,5 +9,7 @@ rmaxima
 binary-*
 
 maxout.openmath
+maxout.gnuplot
 semantic.cache
 jproject
+
