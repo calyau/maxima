@@ -488,11 +488,80 @@ the list of dummy indices in @code{expr} (those that occur exactly twice).
 
 @end defun
 
-@defun infix (op)
-Infix operators are used to denote functions of two
-arguments, one given before the operator and one after, e.g. A^2 .
-The @code{infix ("x")} function is a syntax extention function to declare @code{x} to
-be an infix operator.  See also @code{Syntax}.
+@defun infix (@var{op})
+@defunx infix (@var{op}, @var{lbp}, @var{rbp})
+@defunx infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+Declares @var{op} to be an infix operator.
+An infix operator is a function of two arguments,
+with the name of the function written between the arguments.
+For example, the subtraction operator @code{-} is an infix operator.
+
+@code{infix (@var{op})} declares @var{op} to be an infix operator
+with default binding powers (left and right both equal to 180)
+and parts of speech (left and right both equal to @code{any}).
+@c HOW IS pos DIFFERENT FROM lpos AND rpos ??
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp})} declares @var{op} to be an infix operator
+with stated left and right binding powers
+and default parts of speech (left and right both equal to @code{any}).
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
+declares @var{op} to be an infix operator
+with stated left and right binding powers and parts of speech.
+
+The precedence of @var{op} with respect to other operators
+derives from the left and right binding powers of the operators in question.
+If the left and right binding powers of @var{op} are both greater
+the left and right binding powers of some other operator,
+then @var{op} takes precedence over the other operator.
+If the binding powers are not both greater or less,
+some more complicated relation holds.
+
+The associativity of @var{op} depends on its binding powers.
+Greater left binding power (@var{lbp}) implies an instance of
+@var{op} is evaluated before other operators to its left in an expression,
+while greater right binding power (@var{rbp}) implies  an instance of
+@var{op} is evaluated before other operators to its right in an expression.
+Thus greater @var{lbp} makes @var{op} right-associative,
+while greater @var{rbp} makes @var{op} left-associative.
+If @var{lbp} is equal to @var{rbp}, @var{op} is left-associative.
+
+See also @code{Syntax}.
+
+@itemize @bullet
+@item
+If the left and right binding powers of @var{op} are both greater
+the left and right binding powers of some other operator,
+then @var{op} takes precedence over the other operator.
+@end itemize
+@example
+(%i1) "@"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i2) :lisp (get '$+ 'lbp)
+100
+(%i2) :lisp (get '$+ 'rbp)
+100
+(%i2) infix ("@", 101, 101)$
+(%i3) 1 + a@@b + 2;
+(%o3)                       (a,b) + 3
+(%i4) infix ("@", 99, 99)$
+(%i5) 1 + a@@b + 2;
+(%o5)                       (a+1,b+2)
+@end example
+
+@itemize @bullet
+@item
+Greater @var{lbp} makes @var{op} right-associative,
+while greater @var{rbp} makes @var{op} left-associative.
+@end itemize
+@example
+(%i1) "@"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i2) infix ("@", 100, 99)$
+(%i3) foo @@ bar @@ baz;
+(%o3)                    (foo,(bar,baz))
+(%i4) infix ("@", 100, 101)$
+(%i5) foo @@ bar @@ baz;
+(%o5)                    ((foo,bar),baz)
+@end example
 
 @end defun
 
