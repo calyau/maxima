@@ -16,7 +16,8 @@
   (block
    $example
    (let ((example (car l))
-	 (file (or (cadr l)  (maxima-path "doc" $manual_demo))))
+	 (file (or (cadr l)  (combine-path 
+			      (list *maxima-demodir* $manual_demo)))))
      (or (symbolp example)
 	 (merror
 	  "First arg ~M to example must be a symbol, eg example(functions)"))

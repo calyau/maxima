@@ -109,7 +109,7 @@
     (setq *maxima-srcdir*
 	  (combine-path (list datadir package-version "src")))
     (setq *maxima-demodir*
-	  (combine-path (list datadir package-version)))
+	  (combine-path (list datadir package-version "demo")))
     (setq *maxima-testsdir*
 	  (combine-path (list datadir package-version "tests")))
     (setq *maxima-docdir*
