@@ -69,7 +69,7 @@ NIL
   ($EQ $Y $X)
   NIL
   ((LAMBDA
-    ($DE $A1 $A2 $A3 $A4 $%Q% $MSG1)
+    ($DE $A1 $A2 $A3 $A4 $%Q% $MSG)
     NIL
     (PROG
      NIL
@@ -93,7 +93,7 @@ NIL
            (TRD-MSYMEVAL $Y '$Y)
            (TRD-MSYMEVAL $X '$X)))
          2))
-       (RETURN ($FAILURE (TRD-MSYMEVAL $MSG1 '$MSG1) $EQ))))
+       (RETURN ($FAILURE (TRD-MSYMEVAL $MSG '$MSG) $EQ))))
      (SETQ $A1 (SIMPLIFY ($COEFF $DE
                                  (SIMPLIFY `((%DERIVATIVE) ,
                                              (TRD-MSYMEVAL $Y '$Y) ,
@@ -1542,7 +1542,7 @@ NIL
     ($YNEW)
     NIL
     (PROGN
-     (COND ((NOT (IS-BOOLE-CHECK ($STATUS $FEATURE &ODE)))
+     (COND ((NOT (IS-BOOLE-CHECK (STATUS $FEATURE &ODE)))
             (DISPLAY-FOR-TR T
                             NIL
                             (SIMPLIFY ($SUBSTITUTE (TRD-MSYMEVAL $YOLD
