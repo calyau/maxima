@@ -115,7 +115,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 
 (defun SUMMER (p dummy) ;Makes implicit sums explicit in the product or indexed
                         ;object P where DUMMY is the list of dummy indices of P
-       (prog (dummy2 scalars indexed s)                          ;at this level
+       (prog (dummy2 scalars indexed s dummy3)                   ;at this level
 	     (setq dummy2 (intersect (all ($indices2 p)) dummy))
 	     (do ((p (cond ((eq (caar p) 'MTIMES) (cdr p))
 			   (t (ncons p))) (cdr p))
@@ -143,13 +143,13 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 						($indices
 						 (append '((MTIMES))
 							 scalars indexed)))))))
-		    (setq dummy2 s
+		    (setq dummy3 s
 			  s scalars
 			  scalars nil)
 		    (do ((p s (cdr p)) (obj))
 			((null p))
 			(setq obj (car p))
-			(cond ((null (intersect dummy2 (all ($indices obj))))
+			(cond ((null (intersect dummy3 (all ($indices obj))))
 			       (setq scalars (cons obj scalars)))
 			      (t (setq indexed (cons obj indexed)))))))
 	     (return
@@ -169,8 +169,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 	       1 nil))))
 
 (defun ALL (l)                        ;Converts [[A, B], [C, D]] into (A B C D)
-;       (append (cdadr l) (cdaddr l)))
-        (append (covi l) (conti l)))
+       (append (cdadr l) (cdaddr l)))
 
 (defun T-CONVERT (e)        ;Applies CHANGEFORM to each individual object in an
        (cond ((atom e) e)   ;expression
