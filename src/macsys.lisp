@@ -206,7 +206,7 @@
     (IF (EQ (CAAR R) 'DISPLAYINPUT)
 	(DISPLA `((MLABLE) ,D-TAG ,$%)))
     (when (eq batch-or-demo-flag ':demo)
-      (mtell "~&_")
+      (mtell "~&~A_~A" *prompt-prefix* *prompt-suffix*)
       (let (quitting)	  
        (do ((char)) (nil)
 	     ;;those are common lisp characters you'r reading here
@@ -307,10 +307,13 @@
 
 (DEFMFUN $READONLY (&REST L)
   (let ((*mread-prompt*
-	  (if l (string-right-trim '(#\n)
-				   (with-output-to-string (*standard-output*)
-				       (apply '$print l))) "")))
-  (third (mread *query-io*))))
+	 (if l (string-right-trim '(#\n)
+				  (with-output-to-string (*standard-output*)
+				    (apply '$print l))) "")))
+    (setf *mread-prompt* (format nil "~a~a~a" *prompt-prefix* *mread-prompt* 
+				*prompt-suffix*))
+    (setf answer (third (mread *query-io*)))))
+
 
 #-cl
 (DEFUN MREAD-TERMINAL (PROMPT)
