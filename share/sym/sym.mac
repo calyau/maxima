@@ -1,4 +1,3 @@
-block([bothcases:false],
+block(/* [bothcases:false], */
   batchload("sym1.mac")
      );
-       
