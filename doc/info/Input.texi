@@ -122,26 +122,35 @@ except that the transcript file, if it exists, is always appended.
 
 @end defun
 
-@defun batch (file-specification)
-reads in and evaluates Maxima command
-lines from a file - A facility for executing command lines stored on a
-disk file rather than in the usual on-line mode. This facility has
-several uses, namely to provide a reservoir for working command lines,
-for giving error-free demonstrations, or helping in organizing one's
-thinking in complex problem-solving situations where modifications may
-be done via a text editor.
-A batch file consists of a set of Maxima command lines, each with its
-terminating ; or $, which may be further separated by spaces,
-carriage- returns, form-feeds, and the like.
-The @code{batch} function calls for reading in the command lines from the
-file one at a time, echoing them on the user console, and executing
-them in turn.  Control is returned to the user console only when
-serious errors occur or when the end of the file is met.  Of course,
-the user may quit out of the file-processing by typing control-G at
-any point.
-Batch files may be created using a text editor or by use of the
-@code{stringout} command.
-See also @code{files}.
+@defun batch (filename)
+Reads Maxima expressions from @code{filename} and evaluates them.
+
+@code{filename} comprises a sequence of Maxima expressions,
+each terminated with @code{;} or @code{$}.
+Spaces, tabs, and newlines in the file are ignored.
+A suitable input file may be created by a text editor or by the @code{stringout} function.
+
+@code{batch} reads each input expression from @code{filename},
+displays the input to the console, 
+and computes the corresponding output expression.
+Input labels are assigned to the input expressions
+and output labels are assigned to the output expressions.
+@code{batch} evaluates every input expression in the file
+unless there is an error.
+If user input is requested (by @code{asksign} or @code{askinteger}, for example)
+@code{batch} will pause to collect the requisite input and then continue.
+
+@c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") KEEPS GOING !!!
+@c DON'T KNOW ABOUT GCL !!!
+It may be possible to halt @code{batch} by typing @code{control-C} at the console.
+The effect of @code{control-C} depends on the underlying Lisp implementation.
+
+@code{batch} has several uses,
+such as to provide a reservoir for working command lines,
+to give error-free demonstrations,
+or to help organize one's thinking in solving complex problems.
+
+See also @code{load}, @code{batchload}, and @code{demo}.
 
 @end defun
 
