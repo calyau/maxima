@@ -105,10 +105,49 @@ true$
 /*
  * Reference:  Table of Integral Transforms.
  */
-specint(t^(3/4)*%e^(-t^2/2/b)*%e^(-p*t),t);
-3*gamma(3/4)*b^(7/8)*%e^(b*p^2/4)*(8*sqrt(%pi)*%m[-5/8,-1/4](b*p^2/2)/(3*2^ 
- (5/8)*gamma(3/8)*b^(1/4)*sqrt(p))-2^(3/8)*sqrt(%pi)*%m[-5/8,1/4](b*p^2/2)/ 
- (gamma(7/8)*b^(1/4)*sqrt(p)))/4 $
+
+/*
+ * f24p146:
+ *
+ * t^(v-1)*exp(-t^2/(8*a))
+ *     -> gamma(v)*2^v*a^(v/2)*exp(a*p^2)*D[-v](2*p*sqrt(a))
+ *
+ * We have v = 7/4, a = b/4 so the result should be
+ *
+ *   gamma(7/4)*2^(7/4)*(b/4)^(7/8)*exp(b*p^2/4)*D[-7/4](p*sqrt(b))
+ *     = 3/4*gamma(3/4)*b^(7/8)*exp(b*p^2/4)*D[-7/4](p*sqrt(b))
+ *
+ * But
+ *
+ *   D[v](z) = 2^(v/2+1/4)*z^(-1/2)*%w[v/2+1/4,1/4](z^2/2)
+ *
+ * and
+ *
+ *   %w[k,u](z) = gamma(-2*u)/gamma(1/2-u-k)*%m[k,u](z)
+ *                 + gamma(2*u)/gamma(1/2+u-k)*%m[k,-u](z)
+ *
+ * Thus,
+ *
+ *   D[-7/4](p*sqrt(b)) = %w[-5/8,1/4](b*p^2/2)/(2^(5/8)*b^(1/4)*sqrt(p))
+ *
+ * and
+ *
+ *   %w[-5/8,1/4](b*p^2) 
+ *     = 8/3/gamma(3/8)*%m[-5/8,-1/4](b*p^2/2)
+ *         - 2*sqrt(%pi)/gamma(7/8)*%m[-5/8,1/4](b*p^2/2)
+ *
+ * And finally the transform is
+ *
+ * 3*gamma(3/4)*b^(5/8)*exp(b*p^2/4)/(4*2^(5/8)*sqrt(p))
+ *   *(8*sqrt(%pi)/3/gamma(3/8)*%m[-5/8,-1/4](b*p^2/2)
+ *      - 2*sqrt(%pi)/gamma(7/8)*%m[-5/8,1/4](b*p^2/2))
+ */
+ratsimp(specint(t^(3/4)*%e^(-t^2/2/b)*%e^(-p*t),t));
+-sqrt(%pi)*b^(5/8)
+          *(3*gamma(3/8)*gamma(3/4)*%e^(b*p^2/4)*%m[-5/8,1/4](b*p^2/2)
+           -4*gamma(3/4)*gamma(7/8)*%e^(b*p^2/4)
+             *%m[-5/8,-1/4](b*p^2/2))
+ /(2*2^(5/8)*gamma(3/8)*gamma(7/8)*sqrt(p))$
 
 /*
  * Sec. 4.5, formula (33):
@@ -119,6 +158,8 @@ specint(t^(3/4)*%e^(-t^2/2/b)*%e^(-p*t),t);
 ratsimp(specint(t^(-1/2)*%e^(-2*a^(1/2)*t^(1/2))*%e^(-p*t),t));
 -sqrt(%pi)*(erf(sqrt(a)/sqrt(p))-1)*%e^(a/p)/sqrt(p)$
 
+/* FIXME:  Verify this!
+ */
 radcan(specint(sin(a*t)*cosh(b*t^2)*%e^(-p*t),t));
 -%e^-((p^2+2*%i*a*p+a^2)/(4*b))*(sqrt(%pi)*%e^((2*%i*a*p+a^2)/(2*b))*erf((%i 
  *p+a)/(2*sqrt(b)))-sqrt(%pi)*%e^(a^2/(2*b))*erf((%i*p-a)/(2*sqrt(b)))+sqrt 
@@ -165,8 +206,6 @@ factor(ratsimp(specint(t^2*bessel_j(1,a*t)*%e^(-p*t),t)));
 1$
 
 /*
- * I (rtoy) also have doubts about this integral, but I haven't found
- * any references for this.
  *
  * From the comments for hstf in hypgeo.lisp:
  *
@@ -203,7 +242,9 @@ ratsimp(specint(t^(3/2)*hstruve[1](t^(1/2))*%e^(-p*t),t));
 				 -%i*erf(%i/(2*sqrt(p))))
 		      -2*p*%e^(1/(4*p)))
 	/(8*sqrt(%pi)*p^(9/2)) $
- 
+
+/* Trivial result because %ibes is not bessel_i
+ */ 
 specint(t*%ibes[0](a*t/2)*%ibes[1](a*t/2)*%e^(-p*t),t);
 %ibes[0](a*t/2)*%ibes[1](a*t/2)/p^2 $
 
@@ -359,18 +400,21 @@ specint( t*%h[2/3,1](t^(1/2))*%e^(-p*t),t);
  *
  * Sec 4.14, formula (48)
  *
- * t^u*bessel_y(v,a*t) -> r^(-u-1)*(gamma(u+v+1)*cot(v*%pi)*assoc_legendre_p(u,-v,p/r)
- *                                  -gamma(u-v+1)*csc(v*%pi)*assoc_legendre_p(u,v,p/r))
+ * t^u*bessel_y(v,a*t) 
+ *    -> r^(-u-1)*(gamma(u+v+1)*cot(v*%pi)*assoc_legendre_p(u,-v,p/r)
+ *                  -gamma(u-v+1)*csc(v*%pi)*assoc_legendre_p(u,v,p/r))
  *
  * So, 
  *
- * t^(1/2)*bessej_j(3/4,t) -> gamma(9/4)*r^(-3/2)*assoc_legendre_p(1/2,-3/4,p/r)
- *                         =  5*gamma(1/4)/16*r^(-3/2)*assoc_legendre_p(1/2,-3/4,p/r)
+ * t^(1/2)*bessej_j(3/4,t) 
+ *    -> gamma(9/4)*r^(-3/2)*assoc_legendre_p(1/2,-3/4,p/r)
+ *    =  5*gamma(1/4)/16*r^(-3/2)*assoc_legendre_p(1/2,-3/4,p/r)
  *
- * t^(1/2)*bessel_y(3/4,t) -> r^(-3/2)*(gamma(9/4)*cot(3/4*%pi)*assoc_legendre_p(1/2,-3/4,p/r)
- *                                      -gamma(3/4)*csc(3/4*%pi)*assoc_legendre_p(1/2,3/4,p/r))
- *                         =  r^(-3/2)*(-gamma(9/4)*assoc_legendre_p(1/2,-3/4,p/r)
- *                                      -gamma(3/4)*sqrt(2)*assoc_legendre_p(1/2,3/4,p/r))
+ * t^(1/2)*bessel_y(3/4,t) 
+ *    -> r^(-3/2)*(gamma(9/4)*cot(3/4*%pi)*assoc_legendre_p(1/2,-3/4,p/r)
+ *                  -gamma(3/4)*csc(3/4*%pi)*assoc_legendre_p(1/2,3/4,p/r))
+ *    =  r^(-3/2)*(-gamma(9/4)*assoc_legendre_p(1/2,-3/4,p/r)
+ *                  -gamma(3/4)*sqrt(2)*assoc_legendre_p(1/2,3/4,p/r))
  */
 specint( t^(1/2)*%h[3/4,2](t)*%e^(-p*t),t);
 5*gamma(1/4)/16/(p^2+1)^(3/4)*assoc_legendre_p(1/2,-3/4,p/sqrt(p^2+1))
@@ -384,11 +428,13 @@ specint( t^(1/2)*%h[3/4,2](t)*%e^(-p*t),t);
  *
  * So,
  *
- * t^(3/2)*bessel_j(1/2,t) -> gamma(3/2+1/2+1)*r^(-5/2)*assoc_legendre_p(3/2,-1/2,p/r)
- *                         =  2*r^(-5/2)*assoc_legendre_p(3/2,-1/2,p/r)
- * t^(3/2)*bessel_y(1/2,t) -> r^(-5/2)*(gamma(3/2+1/2+1)*cot(%pi/2)*assoc_legendre_p(3/2,-1/2,p/r)
- *                                      -gamma(3/2-1/2+1)*csc(%pi/2)*assoc_legendre_p(3/2,1/2,p/r))
- *                         =  -r^(-5/2)*assoc_legendre_p(3/2,1/2,p/r))
+ * t^(3/2)*bessel_j(1/2,t)
+ *     -> gamma(3/2+1/2+1)*r^(-5/2)*assoc_legendre_p(3/2,-1/2,p/r)
+ *     =  2*r^(-5/2)*assoc_legendre_p(3/2,-1/2,p/r)
+ * t^(3/2)*bessel_y(1/2,t) 
+ *     -> r^(-5/2)*(gamma(3/2+1/2+1)*cot(%pi/2)*assoc_legendre_p(3/2,-1/2,p/r)
+ *                  -gamma(3/2-1/2+1)*csc(%pi/2)*assoc_legendre_p(3/2,1/2,p/r))
+ *     =  -r^(-5/2)*assoc_legendre_p(3/2,1/2,p/r))
  *
  * assoc_legendre_p(3/2,+/-1/2,z) can be expressed in terms of 
  * hypergeometric functions (A&S 8.1.2).
@@ -419,7 +465,8 @@ specint( t^(3/2)*%h[1/2,1](t)*%e^(-p*t),t);
  * Formula 2, p 105:
  *
  * t^(u-1)*bessel_y(v,a*t)
- *    -> -2/%pi*gamma(u+v)*(a^2+p^2)^(-u/2)*assoc_legendre_q(u-1,-v,p/sqrt(a^2+p^2))
+ *    -> -2/%pi*gamma(u+v)*(a^2+p^2)^(-u/2)
+ *         *assoc_legendre_q(u-1,-v,p/sqrt(a^2+p^2))
  *
  * for a > 0, Re u > |Re v|
  *
@@ -433,20 +480,6 @@ specint( t^(3/2)*bessel_y(1,a*t)*%e^(-t),t);
 15*%i*(1/(a^2+1)-1)^(3/4)*(1/(sqrt(a^2+1)+1)^(3/2)+1/(1-sqrt(a^2+1))^(3/2))/ 
  (16*sqrt(a^2+1)) $
 
-
-/*
- * Duplicate
- */
-/*
-specint( t^2*bessel_j(1,a*t)*%e^(-p*t),t);
-3*a/((a^2/p^2+1)^(5/2)*p^4) $
-*/
-
-/* Duplicate */
-/*
-specint(t^(1/2)*bessel_j(1,2*a^(1/2)*t^(1/2))*%e^(-p*t),t);
-sqrt(a)*%e^-(a/p)/p^2 $
-*/
 
 /*
  * A&S 13.1.32:
