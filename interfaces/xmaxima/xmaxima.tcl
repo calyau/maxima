@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.31 2002-09-13 17:34:12 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.32 2002-09-14 17:25:05 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -136,7 +136,7 @@ proc usage {} {
 	"           If given, [url] will be opened in the help browser instead" \
 	"           of the default starting page." \
 	"options:" \
-	"    --help: Display this usage message." 
+	"    --help: Display this usage message."
     if {$tcl_platform(platform) != "windows"} {
 	lappend usage \
 	    "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>."
@@ -266,25 +266,25 @@ proc doit { fr } {
     clearLocal $w
     oset $w heightDesired 80%
     set maxima_priv(maximaWindow) $w
-    
+
     closeMaxima $w
     clearLocal $w
 
     # oset $w program $program
-    oset $w prompt "% " 
+    oset $w prompt "% "
     catch { destroy $w } ;
     frame $fr.bottom -height 2
     $fr.bottom config -cursor double_arrow
     bind  $fr.bottom <B1-Motion> "changeSize $w %Y"
     pack $fr.bottom -side bottom -fill x
-   
+
     text $w -background white -yscrollcommand "$fr.scroll set"
     set maxima_priv($w,inputTag) input
     resetMaximaFont $w
     scrollbar $fr.scroll -command "$w yview"
     pack $fr.scroll -side right -fill y
     bind $w <Destroy> "closeMaxima $w"
-    
+
     $w mark set lastStart end
     $w mark gravity lastStart left
     bind $w <Configure> "resizeSubPlotWindows $w %w %h; resizeMaxima $w %w %h"
@@ -309,14 +309,28 @@ proc doit { fr } {
     vMAXSetCNTextBindings $w
     wm protocol . WM_DELETE_WINDOW [list vMAXExit $fr.text]
 
-    update
-    if {[set h [winfo reqheight .]] > \
-	    [set max [expr [winfo screenheight .] \
-			  - (2 * abs($fontSize))]]} {
-	set cur [$btext cget -height]
-	set delta [expr \
-		       int (($h - $max) / abs($fontSize))]
-	$btext config -height [expr $cur - $delta]
+    if {0} {
+	# Simple apporach won't work with plotting
+	update
+	if {[set h [winfo reqheight .]] > \
+		[set max [expr [winfo screenheight .] \
+			      - (2 * abs($fontSize))]]} {
+	    set cur [$btext cget -height]
+	    set delta [expr \
+			   int (($h - $max) / abs($fontSize))]
+	    $btext config -height [expr $cur - $delta]
+	}
+
+    } else {
+	# There's voodo that makes this work with plotting
+	# May the force be with you.
+	desetq "width height"  [getMaxDimensions]
+	wm geometry . ${width}x${height}
+	update
+	
+	if { [winfo height $fr] > .8 * [winfo height .]  } {
+	    $fr.text config -height 15
+	}
     }
 
 
