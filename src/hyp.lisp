@@ -21,7 +21,7 @@
 (SETQ FLGKUM T FLDEG T FL1F1 T CHECKCOEFSIGNLIST NIL)
 
 (declare-top (special $exponentialize $bestriglim $radexpand))
-(setq $bestriglim 3 $radexpand '$all)
+
 (setq fail-sym (gensym))
 (defvar 3//2 '((rat simp) 3 2))
 (defvar 1//2 '((rat simp) 1 2))
@@ -31,7 +31,8 @@
 (defmacro fixp (x) `(typep ,x 'fixnum))
 
 (setq FLGKUM T FLDEG T FL1F1 T CHECKCOEFSIGNLIST ()
-      $BESTRIGLIM 3. $RADEXPAND '$ALL FAIL-SYM (GENSYM))
+;;      $BESTRIGLIM 3. $RADEXPAND '$ALL
+      FAIL-SYM (GENSYM))
 
 (DEFMACRO SIMP (X) `(SIMPLIFYA ,X ()))
 
@@ -68,7 +69,7 @@
 
 
 (DEFUN $HGFRED
-       (L1 L2 ARG)
+       (L1 L2 ARG &aux ($bestriglim 3) ($radexpand '$all))
        (prog()
 	    (setq var arg par arg)
 	    (return (HGFSIMP-EXEC (CDR L1)(CDR L2) ARG))))
