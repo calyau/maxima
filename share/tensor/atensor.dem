@@ -62,4 +62,13 @@ q;
 declare([a,b],scalar);
 atensimp((a+b*v[1].v[2]).(v[1].v[2]));
 
+("Verify the Jacobi-identity for Lie algebras")$
+init_atensor(lie_envelop);
+("Let's define the Lie-bracket")$
+lbr(u,v):=u.v-v.u;
+atensimp(lbr(u,lbr(v,w)));
+atensimp(lbr(v,lbr(w,u)));
+atensimp(lbr(w,lbr(u,v)));
+%th(3)+%th(2)+%th(1);
+
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */
