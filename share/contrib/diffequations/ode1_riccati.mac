@@ -136,7 +136,7 @@ ode1_riccati_original(b,c,m,y,x) := block(
   */
   if ( is(equal(m,-2)) ) then (
     /* Case m=-2 is special.  Do it first to avoid division by zero below */
-    ode1_riccati_original_2(b,c,m,y,x)
+    ode1_riccati_original_2(b,c,y,x)
   )
   else if ( integerp(k:m/(2*m+4)) ) then (
     ode_disp("       Equation is integrable in finite terms"),
@@ -153,15 +153,52 @@ ode1_riccati_original(b,c,m,y,x) := block(
   )
 )$
 
-/* Solve the original Riccati equation y' + b*y^2 = c*x^m for m=-2
+/* Solve the original Riccati equation y' + b*y^2 = c*x^-2
     - Transform to second order linear ode, Murphy (3-2c, p20-21)
     - Solve using Murphy A3-250
 */
-ode1_riccati_original_2(b,c,m,y,x) := block(
-  ode_disp("       Special Riccati equation with m=-2"),
-  ode_disp("       Equation is not integrable in finite terms"),
-  ode_disp("       Solution not yet implemented"),
-  false
+ode1_riccati_original_2(b,c,y,x) := block(
+  [a:-b*c,r,r2,%c],
+  ode_disp("    -> In ode1_riccati_original_2"),
+  ode_disp("       Original Riccati equation with m=-2"),
+  ode_disp2("       b: ",b),
+  ode_disp2("       c: ",c),
+  ode_disp2("       a: ",a),
+
+
+  /* Let b*y*u(x)=u'(x) so that ode becomes
+
+       u''(x) - b*c*x^-2*u(x) = 0
+
+     NOTE: Murphy (p21) has sign of second term wrong.
+  */
+  r2:a-1/4,
+  ode_disp2("       r2: ",r2),
+
+  if is(r2>0) then (
+    /* Murphy A3-250-i */
+    ode_disp("       Case i:   r2>0"),
+    r:sqrt(r2),
+    ode_disp2("       r: ",r),
+    u:sqrt(x)*(cos(r*log(x))+%c*sin(r*log(x)))
+  )
+  else if (r2<0) then (
+    /* Murphy A3-250-ii   CHECKME:  Suspect typo in Murphy */
+    ode_disp("       Case ii:  r2<0"),
+    r:sqrt(-r2),
+    ode_disp2("       r: ",r),
+    u:sqrt(x)*(x^r+%c*x^-r)
+  )
+  else if is(equal(r2,0)) then (
+   /* Murphy A3-250-iii */
+    ode_disp("       Case iii: r2=0"),
+    u:sqrt(x)*(1+%c*log(x))
+  )
+  else (
+    error("ode1_riccati_original_2: Impossible case")
+  ),
+  ode_disp2("       u: ",u),
+  return(y=/*ratsimp*/(diff(u,x)/(b*u)))
 )$
 
 /* Solve the original Riccati equation y' + b*y^2 = c*x^m for m#2
@@ -169,35 +206,31 @@ ode1_riccati_original_2(b,c,m,y,x) := block(
     - Solve using Murphy A3-41
 */
 ode1_riccati_original_3(b,c,m,y,x) := block(
-  [p:m+2,n:1/(m+2),%c],
+  [p:m+2,n:1/(m+2),%c,u],
   ode_disp("    -> In ode1_riccati_original_3"),
-  ode_disp("       Special Riccati equation with m#2"),
+  ode_disp("       Original Riccati equation with m#-2"),
   ode_disp2("       b: ",b),
   ode_disp2("       c: ",c),
   ode_disp2("       m: ",m),
   ode_disp2("       p: ",p),
   ode_disp2("       n: ",n),
-  ode_disp("       Not implemented"),
-  return(false),
-  
-  /* Partial implementation: 
-      - answers not quite right
-      - what if b<0 and/or c<0 
-   */
 
   /* Let b*y*u(x)=u'(x) so that ode becomes
 
-       u''(x) + b*c*x^m*u(x) = 0
+       u''(x) - b*c*x^m*u(x) = 0
 
-     Solution expressed in terms of Bessel functions of order n
+     NOTE: Murphy (p21) has sign of second term wrong.
+
+     Solution expressed in terms of Bessel functions of order n.
+     FIXME:  Could rework case b*c>0 to remove complex numbers.
   */
 
   if integerp(n) then (
-    u: sqrt(x)*(bessel_j(n,2*sqrt(b)*sqrt(c)*x^(p/2)/p)
-           + %c*bessel_y(n,2*sqrt(b)*sqrt(c)*x^(p/2)/p) )
+    u: sqrt(x)*(bessel_j(n,2*sqrt(-b*c)*x^(p/2)/p)
+           + %c*bessel_y(n,2*sqrt(-b*c)*x^(p/2)/p) )
   ) else (
-    u: sqrt(x)*(bessel_j(n,2*sqrt(b)*sqrt(c)*x^(p/2)/p)
-           + %c*bessel_j(-n,2*sqrt(b)*sqrt(c)*x^(p/2)/p) )
+    u: sqrt(x)*(bessel_j(n,2*sqrt(-b*c)*x^(p/2)/p)
+           + %c*bessel_j(-n,2*sqrt(-b*c)*x^(p/2)/p) )
   ),
   return(y=ratsimp(diff(u,x)/(b*u)))
 )$
@@ -225,7 +258,7 @@ ode1_riccati_special(a,b,c,n,y,x) := block(
   )
 
   /* Case (a.ii) (n-2*a)/(2*n) a positive integer */
-  else if ( integerp(k:(n-2*a)/(2*n)) and k>0 ) then (
+  else if ( n#0 and integerp(k:(n-2*a)/(2*n)) and k>0 ) then (
     ode_disp2("      Case (a.ii) with k = ",k),
     if oddp(k) then
       s:ode1_riccati_special_i(n/2,c,b,n,y,x) 
@@ -244,7 +277,7 @@ ode1_riccati_special(a,b,c,n,y,x) := block(
   )
 
   /* Case (a.iii) (n+2*a)/(2*n) a positive integer */
-  else if ( integerp(k:(n+2*a)/(2*n)) and k>0 ) then (
+  else if ( n#0 and integerp(k:(n+2*a)/(2*n)) and k>0 ) then (
     ode_disp2("      Case (a.iii) with k = ",k),
     if oddp(k) then
       s:ode1_riccati_special_i(n/2,c,b,n,y,x) 
@@ -260,12 +293,21 @@ ode1_riccati_special(a,b,c,n,y,x) := block(
       ),
       return(y=x^n/s)
     )
-  ),
-  /* Default return value */  
-  ode_disp("       Equation is not integrable in finite terms"),
-  ode_disp("       Solution can be expressed using Bessel functions"),
-  ode_disp("       Not yet implemented"),
+  )
 
+  /* Not integrable in finite terms. Transform using y=z*u(z) with z=x^a
+     to give u' + (b/a)*u^2 = (c/a)*z^((n-2*a)/a)
+     which is the original Riccati equation
+
+     FIXME: This cross-calling between ode1_riccati_special and 
+     ode1_riccati_original is safe, but should modify code to eliminate it.
+  */
+  else if (a#0) then (
+    ode_disp("      Case (c)"),
+    s:ode1_riccati_original(b/a,c/a,(n-2*a)/a,u,z),
+    ode_disp2("      Solution of transformed eqn is ",s),
+    return(y=ratsimp(subst(x^a,z,z*rhs(s))))
+  ),
   false
 )$
 
