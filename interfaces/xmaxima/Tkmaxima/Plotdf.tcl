@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.4 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: Plotdf.tcl,v 1.5 2002-09-19 16:26:42 mikeclarkson Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -170,7 +170,7 @@ proc doIntegrate { win x0 y0 } {
 
     # puts h=$h
     set todo $h
-    switch $direction {
+    switch -- $direction {
 	forward { set todo "$h" }
 	backward { set todo "[expr {- $h}]" }
 	both { set todo "$h [expr {- $h}]" }
@@ -409,7 +409,7 @@ proc parseOdeArg {  s } {
     set orig $s
     set w "\[ ]*"
     set exp "\[dD]$w\\($w\(\[xyz])$w,$w\(\[xyt])$w\\)$w=(\[^;]+)"
-    while { [regexp $exp $s junk x t expr ] } {
+    while { [regexp -- $exp $s junk x t expr ] } {
 	lappend ans  -d${x}d$t
 	lappend ans $expr
 	regexp -indices $exp $s junk x t expr

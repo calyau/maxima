@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.8 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: Myhtml.tcl,v 1.9 2002-09-19 16:26:42 mikeclarkson Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -1228,7 +1228,7 @@ proc HMdoaref { action win x y } {
     set tag [lindex $tags $i]
     set reference [string range [lindex $tags $i] 2 end]
     # puts "$action $x $y"do_a
-    switch $action {
+    switch -- $action {
 	enter {
 	    if { $i >= 0  }  {
 		set ranges [$win tag ranges $tag]

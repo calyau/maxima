@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Printops.tcl,v 1.3 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: Printops.tcl,v 1.4 2002-09-19 16:26:42 mikeclarkson Exp $
 #
 ###### Printops.tcl ######
 ############################################################
@@ -263,6 +263,7 @@ proc bindBeginDrag { win x y tag title } {
 	    $beginRect \[$win canvasx %x\] \[$win canvasy %y\]; \
 	    "
     if { "$old" == "$new" } {set old ""}
+    #mike FIXME: rip this out
     bind $win <B1-Motion> $new
     bind $win <ButtonRelease-1> "bind $win <B1-Motion> [list $old];\
 	    bind $win <ButtonRelease-1> {} ; unbindAdjustWidth $win $tag [list $title];"

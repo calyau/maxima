@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.13 2002-09-19 16:19:47 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.14 2002-09-19 16:26:42 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -90,7 +90,8 @@ proc openMaxima { win filter } {
     if { $port >= 0 } {
 	set com ""
 	set command [list eval exec]
-	if {$maxima_priv(platform) == "cygwin"} {lappend command "/bin/bash"}
+	# This may be needed under CYGWIN
+	# if {$maxima_priv(platform) == "cygwin"} {lappend command "/bin/bash"}
 
 	append com    $maxima_priv(localMaximaServer)
 	regsub PORT $com $port com

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.6 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: Plotconf.tcl,v 1.7 2002-09-19 16:26:42 mikeclarkson Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -53,9 +53,11 @@ proc makeFrame { w type } {
 
     button $wb.dismiss -text Dismiss -command $dismiss -font $buttonFont
     setBalloonhelp $win $wb.dismiss {Close this plot window}
+
     button $wb.zoom -text "Zoom" -command "showZoom $w" -font $buttonFont
     setBalloonhelp $win $wb.zoom {Magnify the plot.  Causes clicking with the left mouse button on the plot, to magnify (zoom in) the plot where you click.  Also causes Shift+Click to  it to unmagnify (zoom out) at that point}
     oset $w position ""
+
     #    button $w.position -textvariable [oloc $w position] -font $buttonFont -width 10
     label $w.position  -textvariable [oloc $w position] -font $buttonFont -width 10
     setBalloonhelp $win $w.position {Position of the pointer in real x y coordinates.  For 3d it is the position of the nearest vertex of the polygon the pointer is over.}
@@ -64,6 +66,7 @@ proc makeFrame { w type } {
     setBalloonhelp $win $wb.help {Give more help about this plot window}
     button $wb.postscript -textvariable writefile -command "writePostscript $w" -font $buttonFont
     setBalloonhelp $win $wb.postscript {Prints or Saves the plot in postscript format.  The region to be printed is marked using Mark.   Other print options can be obtained by using "Print Options" in the Config menu }
+
 
     button $wb.markrect -text "Mark" -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
     setBalloonhelp $win $wb.markrect {Mark the region to be printed.  Causes the left mouse button to allow marking of a rectangle by clicking at the upper left corner, and dragging the mouse to the lower right corner.  The title can be set under "Print Options" under Config}
@@ -98,6 +101,7 @@ proc makeFrame { w type } {
     }
     # puts "$c height =[$c cget   -height],$c width =[$c cget   -width]"
     # bind $c <2> "$c scan mark %x %y"
+
     bind $c <B3-Motion> "$c scan dragto %x %y"
     bind $c <3> "$c scan mark %x %y"
     bind $c <B3-Motion> "$c scan dragto %x %y"
@@ -362,7 +366,7 @@ proc writePostscript { win } {
 
     #puts com=$com
     set output [eval $com]
-    switch $printOption(tofile) {
+    switch -- $printOption(tofile) {
 	0 { global tcl_platform
 	    set usegsview 0
 	    if { "$tcl_platform(platform)" == "windows" } {

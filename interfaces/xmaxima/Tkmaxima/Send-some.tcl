@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Send-some.tcl,v 1.5 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: Send-some.tcl,v 1.6 2002-09-19 16:26:42 mikeclarkson Exp $
 #
 ###### send-some.tcl ######
 
@@ -263,6 +263,7 @@ proc openConnection { tohost port magic program } {
 proc sendInterrupt { program } {
     global pdata interrupt_signal
     set socket $pdata($program,socket)
+    gui status "Sending scoket interrupt"
     puts $socket $interrupt_signal
     flush $socket
 }

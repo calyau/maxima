@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Getdata1.tcl,v 1.5 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: Getdata1.tcl,v 1.6 2002-09-19 16:26:42 mikeclarkson Exp $
 #
 ###### getdata1.tcl ######
 ############################################################
@@ -78,8 +78,10 @@ proc readAllData { sock args } {
     }
     fconfigure $sock -blocking 0
 
-    catch { $maxima_priv(status_window).scale \
-		config -variable [oloc $sock percent] }
+    catch { 
+	$maxima_priv(cStatusWindow).scale \
+	    config -variable [oloc $sock percent] 
+    }
     lappend [oloc $sock after] [after [oget $sock timeout] "oset $sock done -1"]
     if { "[oget $sock mimeheader]" != "" } {
 	fileevent  $sock readable "readMimeHeader $sock"
