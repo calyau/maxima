@@ -176,22 +176,37 @@ legendre_p(n,1-2*x);
  * shows the formula with (1+z) and (1-z).  I'm going to use the formula from the 
  * given link.
  *
+ * But this differs from formula 14 in Higher Transcendental Functions.
+ *
+ * Now what?
+ *
  * This tests the legf14 function.
  */
 radcan(((1+z)/(1-z))^(u/2)/gamma(1-u)*hgfred([-v,v+1],[1-u],(1-z)/2));
 assoc_legendre_p(v,u,z)$
 
 /* A&S 15.4.17 
+ *
+ * F(a,1-a;c;x) = gamma(c)*x^(1/2-c/2)*(1-x)^(c/2-1/2)*P(-a,1-c,1-2*x)
+ *
+ * This differs from formula 14!  Now what?
+ *
  * This tests the legf14 function.
  */
 hgfred([a,1-a],[c],x);
 assoc_legendre_p(-a, 1-c, 1-2*x)*gamma(c)*2^((1-c)/2)*x^((1-c)/2)/(2-2*x)^((1-c)/2)$
 
 /* A&S 15.4.10 
+ *
+ * F(a,a+1/2;c;z) = 2^(c-1)*gamma(c)*z^(1/2-c/2)*(1-z)^(c/2-a-1/2)*P(2*a-c,1-c,1/sqrt(1-z))
+ *
  * Test for legf24 function.
  */
 hgfred([a,a+1/2],[c],x);
 2^(c-1)*gamma(c)*z^(1/2-c/2)*(1-z)^(c/2-a-1/2)*assoc_legendre_p(2*a-c,1-c,1/sqrt(1-z))$
+
+2^u*(z^2-1)^(-u/2)*z^(v+u)/gamma(1-u)*hgfred([-v/2-u/2,1/2-v/2-u/2],[1-u],1-1/z^2);
+assoc_legendre_p(v,u,z)$
 
 /* A&S 15.4.12
  * Test for legf20 function.
@@ -199,12 +214,34 @@ hgfred([a,a+1/2],[c],x);
 hgfred([a,b],[a+b+1/2],x);
 2^(a+b-1/2)*gamma(a+b+1/2)*x^(1/2*(1/2-a-b))*assoc_legendre_p(a-b-1/2,1/2-a-b,sqrt(1-x))$
 
+2^m*(z^2-1)^(-m/2)/gamma(1-m)*hgfred([1/2+n/2-m/2, -n/2-m/2], [1-m], 1-z^2);
+assoc_legendre_p(n,m,z)$
+
 /*
  * A&S 15.4.7
  * Test for legf36 function.
  */
 hgfred([a,b],[2*b],z);
 2^(2*b)/sqrt(%pi)*gamma(b+1/2)/gamma(2*b-a)*z^(-b)*(1-z)^((b-a)/2)*exp(%i*%pi*(a-b))*assoc_legendre_q(b-1,b-a,2/z-1)$
+
+2^v*gamma(1+v)*gamma(1+v+u)*(z+1)^(u/2-v-1)*(z-1)^(-u/2)/gamma(2+2*v)*hgfred([1+v-u,1+v],[2+2*v],2/(1+z));
+assoc_legendre_q(v, u, z)$
+
+/*
+ * A&S 15.4.14
+ *
+ * F(a,b;a-b+1;z) = gamma(a-b+1)*z^(b/2-a/2)*(1-z)^(-b)*P(-b,b-a,(1+z)/(1-z))
+ *
+ * Test for legf16 function
+ */
+radcan(hgfred([a,b],[a-b+1],z));
+gamma(-b+a+1)*z^(b/2-a/2)*(1-z)^(-b)*assoc_legendre_p(-b,b-a,(1+z)/(1-z))$
+
+/*
+ * Test for legf16 function
+ */
+2^(-v)*(z+1)^(u/2+v)*(z-1)^(-u/2)/gamma(1-u)*ratsimp(hgfred([-v,-v-u],[1-u],(z-1)/(z+1)));
+assoc_legendre_p(v, u, z)$
 
 /* Regression tests */
 
