@@ -3,20 +3,19 @@
 
 ;; CAUTION: This file contains non-printing characters!
 ;;
-;; The regexp syntax used in this file is the syntax used by Clisp's
-;; regexp module, which claims to use Posix regexps.
+;; The regexp syntax used in this file is the syntax used by nregex.
 ;;
 ;; In summary:
 ;;
-;; .       matches any single character
+;; .       (a period) matches any single character
 ;; []      character set
 ;; ^       beginning of line
 ;; $       end of line
-;; \( \)   grouping
+;; ( )     grouping
 ;; *       zero or more
-;; \?      zero or one matches
-;; \+      one or more
-;; \|      alternative
+;; ?       zero or one matches
+;; +       one or more
+;;
 
 
 (in-package "SI")
@@ -33,6 +32,7 @@
 (defun get-match (s n)
   (subseq s (match-start n) (match-end n)))
 
+;; Compile the regex pattern in PAT for use by the string matcher.
 (defun compile-regex (pat &key (case-sensitive t))
   (let ((*compile-print* nil)
 	(*compile-verbose* nil)
@@ -42,6 +42,13 @@
     (compile nil
 	     (nregex:regex-compile pat :case-sensitive case-sensitive))))
 
+;; Search the string STRING for the pattern PAT.  Only the part of the
+;; string bounded by START and END are searched.  PAT may either be a
+;; string or a compiled regex (which is a function).
+;;
+;; If a match is not found, -1 is returned.  Otherwise, the index of
+;; the start of the match is returned.  *match-data* contains
+;; information about the matches for any groups in the pattern.
 (defun string-match (pat string &optional (start 0) (end (length string)))
   (when (stringp pat)
     (setf pat (compile-regex pat :case-sensitive (not *case-fold-search*))))
@@ -321,6 +328,10 @@ that matches the name NAME with extention EXT"
 	   ;; (b) The format statmement is missing an argument.
 	   ;; (c) Even if (b) is fixed, the show-info statement
 	   ;;     creates an infinite loop.
+	   ;;
+	   ;; rlt: I think the code is trying to find the Top entry in
+	   ;; the file "dir" and looking in there for the location of
+	   ;; the maxima file.  If you don't have a dir file, we lose.
 	   (error "Failed to find info directory")
 	   (format t "looking for dir~A~%")
 	   (let* ((tem (show-info "(dir)Top" nil))
@@ -414,162 +425,115 @@ that matches the name NAME with extention EXT"
 	  node))))
 )
     
-#+nil
-(defun show-info (name &optional position-pattern)
-  (let ((*match-data* nil)
-	(initial-offset 0)
-	(subnode -1)
-	info-subfile file)
-    (declare (fixnum subnode initial-offset))
-    (when (and (consp name) (consp (cdr name)))
-      (setq file (cadr name)
-	    name (car name)))
-    (when (consp name)
-      (setq position-pattern (car name) name (cdr name)))
-    (unless (stringp name)
-      (info-error "bad arg"))
-    (when (>= (string-match "^(([^(]+))([^)]*)" name) 0)
-      ;; (file)node
-      (setq file (get-match name 1))
-      (setq name (get-match name 2))
-      (when (equal name "")
-	(setq name "Top")))
-    (when file
-      (setup-info file))
-    (let ((indirect-index (get-node-index name
-					  (car (nth 1 *current-info-data*)))))
-      (when (null indirect-index)
-	(format t "~%Sorry, Can't find node ~a" name)
-	(return-from show-info nil))
-	
-      (setq info-subfile (info-subfile indirect-index))
-      
-      (let* ((s (info-get-file (cdr info-subfile)))
-	     (start (- indirect-index (car info-subfile))))
-	(cond ((>= (string-match
-		      (string-concatenate
-		       #u"[\n][^\n]*Node:[ \t]+"
-		       (re-quote-string name)
-		       #u"[,\t\n][^\n]*\n") 
-		      s start)
-		   0)
-	       (let* ((i (match-beginning 0))
-		      (beg (match-end 0))
-		      (end (if (>= (string-match "[]" s beg) 0)
-			       (match-beginning 0)
-			       (length s))))
-
-		 (when position-pattern
-		    (setq position-pattern (re-quote-string position-pattern))
-
-		    (let (*case-fold-search*)
-		      (when (or (>= (setq subnode
-					  (string-match
-					   (string-concatenate
-					    #u"\n - [A-Za-z ]+: "
-					    position-pattern
-					    #u"[ \n]"
-					    )
-					   s beg end))
-				    0)
-				(>= (string-match position-pattern s beg end)
-				    0))
-			(setq initial-offset
-			      (- (match-beginning 0) beg)))))
-
-		 (let ((e
-			(if (and (>= subnode 0)
-				 (>=
-				  (string-match #u"\n - [A-Z]"
-						s (+ beg 1
-						     initial-offset)
-						end)
-				  0))
-			    (match-beginning 0)
-			    end)))
-		   (subseq s (+ initial-offset beg) e )
-		   )
-		 ))
-	      (t
-	       (info-error "Can't find node  ~a?" name)))))))
+;; SHOW-INFO is the main routine to find the desired documentation.
 
 (let ((pat-file-node (compile-regex "^(\\([^(]+\\))([^)]*)"))
+      ;; This is the pattern for the beginning of a node
       (pat-markers (compile-regex "[]"))
-      (pat-subnode (compile-regex #u"\n - [A-Z]")))
-(defun show-info (name &optional position-pattern)
-  (let ((*match-data* nil)
-	(initial-offset 0)
-	(subnode -1)
-	info-subfile file)
-    (declare (fixnum subnode initial-offset))
-    (when (and (consp name) (consp (cdr name)))
-      (setq file (cadr name)
-	    name (car name)))
-    (when (consp name)
-      (setq position-pattern (car name) name (cdr name)))
-    (unless (stringp name)
-      (info-error "bad arg"))
-    (when (>= (string-match pat-file-node name) 0)
-      ;; (file)node
-      (setq file (get-match name 1))
-      (setq name (get-match name 2))
-      (when (equal name "")
-	(setq name "Top")))
-    (when file
-      (setup-info file))
-    (let ((indirect-index (get-node-index name
-					  (car (nth 1 *current-info-data*)))))
-      (when (null indirect-index)
-	(format t "~%Sorry, Can't find node ~a" name)
-	(return-from show-info nil))
+      ;; This is the pattern for a subnode.  That is the documention
+      ;; for some function or variable.
+      (pat-subnode (compile-regex #u"\n - [A-Z]"))
+      ;; This pattern is used to match where the documentation of a
+      ;; subnode starts.
+      (doc-start (compile-regex #u"\n   ")))
+  (defun show-info (name &optional position-pattern)
+    (let ((*match-data* nil)
+	  (initial-offset 0)
+	  (subnode -1)
+	  info-subfile file)
+      (declare (fixnum subnode initial-offset))
+      (when (and (consp name) (consp (cdr name)))
+	(setq file (cadr name)
+	      name (car name)))
+      (when (consp name)
+	(setq position-pattern (car name) name (cdr name)))
+      (unless (stringp name)
+	(info-error "bad arg"))
+      (when (>= (string-match pat-file-node name) 0)
+	;; (file)node
+	(setq file (get-match name 1))
+	(setq name (get-match name 2))
+	(when (equal name "")
+	  (setq name "Top")))
+      (when file
+	(setup-info file))
+      (let ((indirect-index (get-node-index name
+					    (car (nth 1 *current-info-data*)))))
+	(when (null indirect-index)
+	  (format t "~%Sorry, Can't find node ~a" name)
+	  (return-from show-info nil))
 	
-      (setq info-subfile (info-subfile indirect-index))
+	(setq info-subfile (info-subfile indirect-index))
 
-      (let* ((s (info-get-file (cdr info-subfile)))
-	     (start (- indirect-index (car info-subfile))))
-	(unless (>= (string-match
-		     (string-concatenate
-		      #u"[\n][^\n]*Node:[ \t]+"
-		      (re-quote-string name)
-		      #u"[,\t\n][^\n]*\n") 
-		     (or s "") start)
-		    0)
-	  (info-error "Can't find node  ~a?" name))
-	(let* ((i (match-beginning 0))
-	       (beg (match-end 0))
-	       (end (if (>= (string-match pat-markers s beg) 0)
-			(match-beginning 0)
-			(length s))))
+	(let* ((s (info-get-file (cdr info-subfile)))
+	       (start (- indirect-index (car info-subfile))))
+	  (unless (>= (string-match
+		       (string-concatenate
+			#u"[\n][^\n]*Node:[ \t]+"
+			(re-quote-string name)
+			#u"[,\t\n][^\n]*\n") 
+		       (or s "") start)
+		      0)
+	    (info-error "Can't find node  ~a?" name))
+	  (let* ((i (match-beginning 0))
+		 (beg (match-end 0))
+		 (end (if (>= (string-match pat-markers s beg) 0)
+			  (match-beginning 0)
+			  (length s))))
 
-	  (when position-pattern
-	    (setq position-pattern (re-quote-string position-pattern))
+	    (when position-pattern
+	      (setq position-pattern (re-quote-string position-pattern))
 
-	    (let (*case-fold-search*)
-	      (when (or (>= (setq subnode
-				  (string-match
-				   (string-concatenate
-				    #u"\n - [A-Za-z ]+: "
-				    position-pattern
-				    #u"[ \n]"
-				    )
-				   s beg end))
-			    0)
-			(>= (string-match position-pattern s beg end)
-			    0))
-		(setq initial-offset
-		      (- (match-beginning 0) beg)))))
+	      ;; This looks for the desired pattern.  A typical entry
+	      ;; looks like
+	      ;;
+	      ;; " - Function: PLOT2D <random stuff>"
+	      ;;
+	      ;; So we look for the beginning of a line, the string " -
+	      ;; ", followed by at least one letter or spaces and then a
+	      ;; colon.  After that is our desired pattern and a space
+	      ;; or new line.
+	      (let (*case-fold-search*)
+		(when (or (>= (setq subnode
+				    (string-match
+				     (string-concatenate
+				      #u"\n - [A-Za-z ]+: "
+				      position-pattern
+				      #u"[ \n]"
+				      )
+				     s beg end))
+			      0)
+			  (>= (string-match position-pattern s beg end)
+			      0))
+		  (setq initial-offset
+			(- (match-beginning 0) beg)))))
+	  
+	    ;; We now need to find the end of the documentation.
+	    ;; Usually, the end is where the next node begins. However,
+	    ;; sometimes several nodes are given in a row without
+	    ;; separate documentation for each, whereby the same
+	    ;; documentation is used to describe these nodes.
+	    ;;
+	    ;; So, what we do is look for the beginning of the
+	    ;; documentation, which starts on a new line with at least 4
+	    ;; spaces.  Then we look for the next node.  The is where
+	    ;; our documentation ends.  If there is no next node, the
+	    ;; end is where the marker is.
+	    (let ((e (if (minusp subnode)
+			 end
+			 (let* ((start-doc
+				 (string-match doc-start s
+					       (+ beg 1 initial-offset) end)))
+			   (when (>= (string-match pat-subnode s
+						   (if (>= start-doc 0)
+						       start-doc
+						       (+ beg 1 initial-offset))
+						   end)
+				     0)
+			     (match-beginning 0))))))
 
-	  (let ((e (if (and (>= subnode 0)
-			    (>=
-			     (string-match pat-subnode
-					   s (+ beg 1
-						initial-offset)
-					   end)
-			     0))
-		       (match-beginning 0)
-		       end)))
-	    (subseq s (+ initial-offset beg) e )))))))
-)
+	      (subseq s (+ initial-offset beg) e)))))))
+  )
 
 (defvar *default-info-files* '( "gcl-si.info" "gcl-tk.info" "gcl.info"))
 
@@ -622,7 +586,9 @@ the general info file.  The search goes over all files."
 		  (t (equalp (car v) name)))
 	(format t "~%From ~a:~%" v)
 	(princ (show-info v nil))))))
-  
+
+;; Main entry point.  This looks up the desired entry and prompts the
+;; user to select the desired entries when multiple matches are found.
 (defun info (x &optional (dirs *default-info-files*) (info-paths *info-paths*)
 	       &aux *current-info-data*)
   (let (wanted
