@@ -1,0 +1,93 @@
+/* Filename <name>.mac
+
+   ***************************************************************
+   *							         *
+   *                     <package name>                          *
+   *                <functionality description>                  *
+   *                                                             *
+   *          from: Perturbation Methods, Bifurcation            *
+   *                Theory and Computer Algebra.                 *
+   *           by Rand & Armbruster (Springer 1987)              *
+   *                Programmed by Richard Rand                   *
+   *      These files are released to the public domain          *
+   *            						 *
+   ***************************************************************
+*/ /* PROGRAM NUMBER 3: CM(), CENTER MANIFOLD REDUCTION FOR ORDINARY
+   DIFFERENTIAL EQUATIONS. SEE PAGE 32 IN "PERTURBATION METHODS,
+   BIFURCATION THEORY AND COMPUTER ALGEBRA". */
+
+
+
+CM():=(
+
+/* INPUT PROBLEM */
+N:READ("ENTER NO. OF EQS."),
+M:READ("ENTER DIMENSION OF CENTER MANIFOLD"),
+PRINT("THE D.E.'S MUST BE ARRANGED SO THAT THE FIRST",M,"EQS."),
+PRINT("REPRESENT THE CENTER MANIFOLD.  I.E. ALL ASSOCIATED"),
+PRINT("EIGENVALUES ARE ZERO OR HAVE ZERO REAL PARTS."),
+FOR I:1 THRU N DO
+   X[I]:READ("ENTER SYMBOL FOR VARIABLE NO.",I),
+L:READ("ENTER ORDER OF TRUNCATION"),
+FOR I:1 THRU N DO (
+   PRINT("ENTER RHS OF EQ.",I),
+   PRINT("D",X[I],"/DT ="),
+   G[I]:READ()),
+/* SET UP D.E.'S */
+FOR I:1 THRU N DO
+   DEPENDS(X[I],T),
+FOR I:1 THRU N DO
+   (EQ[I]:DIFF(X[I],T)=G[I],
+    PRINT(EQ[I])),
+
+/* FORM POWER SERIES */
+SUB:MAKELIST(K[I],I,1,M),
+VAR:PRODUCT(X[I]^K[I],I,1,M),
+UNK:[],
+FOR P:M+1 THRU N DO(
+   TEMP:A[P,SUB]*VAR,
+   FOR I:1 THRU M DO
+      TEMP:SUM(EV(TEMP,K[I]=J),J,0,L),
+   TEMP2:TAYLOR(TEMP,MAKELIST(X[I],I,1,M),0,L),
+   /* REMOVE CONSTANT AND LINEAR TERMS */
+   TEMP3:TEMP2-PART(TEMP2,1)-PART(TEMP2,2),
+   SOLN[P]:EXPAND(TEMP3),
+   /* PREPARE LIST OF UNKNOWNS */
+   SETXTO1:MAKELIST(X[I]=1,I,1,M),
+   /* TURN SUM INTO A LIST */
+   UNKN[P]:SUBST("[","+",EV(TEMP3,SETXTO1)),
+   UNK:APPEND(UNK,UNKN[P])),
+SOL:MAKELIST(X[P]=SOLN[P],P,M+1,N),
+
+/* SUBSTITUTE INTO D.E.'S */
+CMDE:MAKELIST(EQ[I],I,1,M),
+REST:MAKELIST(LHS(EQ[I])-RHS(EQ[I]),I,M+1,N),
+TEMP4:EV(REST,SOL,DIFF),
+TEMP5:EV(TEMP4,CMDE,DIFF),
+TEMP6:EV(TEMP5,SOL),
+TEMP7:TAYLOR(TEMP6,MAKELIST(X[I],I,1,M),0,L),
+
+/* COLLECT TERMS */
+COUNTER:1,
+/* MAKE LIST OF TERMS */
+TERMS:SUBST("[","+",SOLN[N]),
+TERMS:EV(TERMS,A[DUMMY,SUB]:=1),
+FOR I:1 THRU N-M DO (
+   EXP[I]:EXPAND(PART(TEMP7,I)),
+   FOR J:1 THRU LENGTH(TERMS) DO(
+      COND[COUNTER]:RATCOEF(EXP[I],PART(TERMS,J)),
+      COUNTER:COUNTER+1)),
+CONDS:MAKELIST(COND[I],I,1,COUNTER-1),
+CONDS:EV(CONDS,MAKELIST(X[I]=0,I,1,M)),
+
+/* SOLVE FOR CENTER MANIFOLD */
+ACOEFFS:SOLVE(CONDS,UNK),
+CENTERMANIFOLD:EV(SOL,ACOEFFS),
+PRINT("CENTER MANIFOLD:"),
+PRINT(CENTERMANIFOLD),
+
+/* GET FLOW ON CM */
+CMDE2:EV(CMDE,CENTERMANIFOLD),
+PRINT("FLOW ON THE C.M.:"),
+PRINT(CMDE2))$
+

@@ -1,0 +1,132 @@
+/* Filename <name>.mac
+
+   ***************************************************************
+   *							         *
+   *                     <package name>                          *
+   *                <functionality description>                  *
+   *                                                             *
+   *          from: Perturbation Methods, Bifurcation            *
+   *                Theory and Computer Algebra.                 *
+   *           by Rand & Armbruster (Springer 1987)              *
+   *                Programmed by Richard Rand                   *
+   *      These files are released to the public domain          *
+   *            						 *
+   ***************************************************************
+*/ 
+/* PROGRAM NUMBER 8: AVERM(), ALLOWS MTH ORDER AVERAGING. SEE PAGE 128 IN
+   "PERTURBATION METHODS, BIFURCATION THEORY AND COMPUTER ALGEBRA". */
+
+
+/* PROGRAM TO PERFORM MTH ORDER AVERAGING 
+   ON AN N-DIMENSIONAL SYSTEM OF NONAUTONOMOUS ODE'S */
+
+/* AVERAGING IS PERFORMED BY CONVERTING TRIG TERMS TO
+   COMPLEX EXPONENTIALS, THEN KILLING EXPONENTIALS   */
+
+AVERM():=BLOCK(
+      CHOICE1:READ("DO YOU WANT TO ENTER A NEW PROBLEM? (Y/N)"),
+      IF CHOICE1 = N THEN GO(JUMP1),
+      KILL(X),
+      PRINT("ARE YOU CONSIDERING A WEAKLY NONLINEAR OSCILLATOR OF THE FORM"),
+      CHOICE2:READ("Z'' + OMEGA0^2 Z = EPS F(Z,ZDOT,T) ? (Y/N)"),
+      IF CHOICE2 = N THEN GO(JUMP2),
+		
+/* ENTER DATA FOR SINGLE OSCILLATOR PROBLEM */
+      N:2,
+      OMEGA0:READ("ENTER OMEGA0"),
+      F:READ("ENTER F(Z,ZDOT,T)")*EPS,
+/* DOES F(Z,ZDOT,T) DEPEND EXPLICITLY ON T? */
+      TEST:DIFF(F,T),
+      IF TEST=0 THEN OMEGA1:OMEGA0 
+            ELSE(
+      	    OMEGA:READ("ENTER THE FORCING FREQUENCY"),
+            K:READ("ENTER THE ORDER OF THE SUBHARMONIC RESONANCE"),
+            OMEGA1:OMEGA/K),
+/* VAN DER POL TRANSFORMATION */
+      ZSUB:[Z=COS(OMEGA1*T)*X1-SIN(OMEGA1*T)*X2,
+               ZDOT=-OMEGA1*SIN(OMEGA1*T)*X1-OMEGA1*COS(OMEGA1*T)*X2],
+/* SUBSTITUTE ZSUB INTO TRANSFORMED EQS */
+/* SCALE TIME SO THAT AVERAGING OCCURS OVER PERIOD 2 PI */
+      VF:EV([-1/OMEGA1^2*(EPS*KAPOMEGA/K^2*Z + F)*SIN(OMEGA1*T),
+             -1/OMEGA1^2*(EPS*KAPOMEGA/K^2*Z + F)*COS(OMEGA1*T)],
+             ZSUB,T=TAU/OMEGA1,INFEVAL),
+      VF:EV(VF,TAU=T),
+      IF OMEGA1 # OMEGA0 
+      THEN PRINT("WE WRITE EPS*KAPOMEGA =",OMEGA^2-K^2*OMEGA0^2)
+            ELSE VF:EV(VF,KAPOMEGA=0),
+      VF2:EXPAND(EXPONENTIALIZE(VF)),
+      FOR I:1 THRU 2 DO VF2[I]:MAP(FACTOR,VF2[I]),
+      X:[X1,X2],
+      GO(JUMP1),
+
+
+JUMP2,
+/* ENTER DATA FOR GENERAL PROBLEM OF N ODE'S */
+      N:READ("ENTER NUMBER OF DIFFERENTIAL EQUATIONS"),
+      X:MAKELIST(CONCAT('X,I),I,1,N),	 
+      PRINT("THE ODE'S ARE OF THE FORM:"),
+      PRINT("DX/DT = EPS F(X,T)"),
+      PRINT("WHERE X =",X),
+      PRINT("SCALE TIME T SUCH THAT AVERAGING OCCURS OVER 2 PI"),
+      VF:MAKELIST(READ("ENTER RHS(",I,")=EPS*...")*EPS,I,1,N),
+      FOR I:1 THRU N DO PRINT("D",X[I],"/DT =",VF[I]),
+      VF2:EXPAND(EXPONENTIALIZE(VF)),
+      FOR I:1 THRU N DO VF2[I]:MAP(FACTOR,VF2[I]),
+
+
+JUMP1,
+/* AVERAGING */
+      M:READ("ENTER ORDER OF AVERAGING"),
+      IF M=1 
+/* FIRST ORDER AVERAGING */         
+      THEN (TEMP0:DEMOIVRE(APPLY1(F,KILLEXP)),
+           RESULT:TAYLOR(TEMP0,EPS,0,1))
+/* AVERAGING OF ORDER M > 1 */
+      ELSE
+      Y:MAKELIST(CONCAT('Y,I),I,1,N),
+      WLIST:MAKELIST(CONCAT('W,I),I,1,N),      
+      DEPENDS(WLIST,CONS(T,Y)),
+      TRAFO:Y,
+      XSUB:MAPLIST("=",Y,X),
+/* WNULL SETS WLIST TO ZERO */
+      WNULL:VFUN(WLIST,0),
+      JACOB[I,J] := DIFF(WLIST[I],Y[J]),
+      JAC:GENMATRIX(JACOB,N,N),
+/* MAIN LOOP */
+      FOR I :1 THRU M-1 DO (
+	  TEMP1:MAPLIST("=",X,Y+EPS^I*WLIST),
+/* HERE X IS THE LIST [X1,X2,...,XN], Y IS THE LIST [Y1,Y2,...,YN],
+        WLIST IS THE TRANSFORMATION VECTOR [W1,W2,...,WN] */
+	  TEMP2:TAYLOR(SUM((-EPS)^(I*J)*JAC^^J,J,0,M-1).
+		                (EV(VF2,TEMP1) - DIFF(WLIST,T)*EPS^I),EPS,0,M),
+/* JAC IS THE JACOBIAN D WLIST/DY OF THE TRANSFORMATION WLIST */
+          TEMP3:MATTOLIST(TEMP2,N),
+          TEMP4:MAP(EXPAND,TAYLOR(EV(TEMP3,WNULL,DIFF),EPS,0,I)),
+/* THE ITH ORDER MEAN */
+	  MEAN:APPLY1(TEMP4,KILLEXP),
+	  TEMP6:EXPAND(TEMP4-MEAN),
+	  TEMP7:EV(INTEGRATE(TEMP6,T),EPS=1),
+/* THE ITH ORDER TRANSFORMATION */	  
+          TEMP8:MAPLIST("=",WLIST,TEMP7),
+	  TEMP9:RATSIMP(TEMP8),
+/* THE TRANSFORMED DE */
+	  VF2:EXPAND(EV(TEMP3,TEMP9,DIFF,XSUB,INFEVAL)),
+/* THE SUM OF ALL TRANSFORMATIONS */
+	  TRAFO:EXPAND(TRAFO+EV(EPS^I*WLIST,TEMP9))),
+/* END OF MAIN LOOP */
+      PRINT("THE TRANSFORMATION: ",X,"="),
+      PRINT(RATSIMP(DEMOIVRE(TRAFO))),
+/* THE FINAL AVERAGING */
+      RESULT:APPLY1(VF2,KILLEXP),
+/* REPLACE X BY Y */
+      FOR I:1 THRU N DO RESULT:SUBST(CONCAT('Y,I),CONCAT('X,I),RESULT),
+      RESULT)$
+
+
+/* AUXILIARY FUNCTIONS */
+      VFUN(LIST,VALUE):=MAP(LAMBDA([U],U=VALUE),LIST)$
+      MATTOLIST(MAT,DIM):=IF DIM>1 THEN MAKELIST(MAT[I,1],I,1,DIM) ELSE [MAT]$
+      CONTAINS_T(EXP):= NOT FREEOF(T,EXP)$
+      MATCHDECLARE(Q,CONTAINS_T)$
+      DEFRULE(KILLEXP,EXP(Q),0)$
+

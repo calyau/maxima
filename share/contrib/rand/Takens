@@ -1,0 +1,158 @@
+/* Filename <name>.mac
+
+   ***************************************************************
+   *							         *
+   *                     <package name>                          *
+   *                <functionality description>                  *
+   *                                                             *
+   *          from: "Determinacy of Degenerate Equilibria"       *
+   *                  by Rand & Keith  Applied Mathematics       *
+   *		     and Computation 21:1-19 (1987)              *
+   *		                                                 *
+   *                Programmed by Richard Rand                   *
+   *      These files are released to the public domain          *
+   *            						 *
+   ***************************************************************
+*/ 
+/* TAKENS' BLOW-UP CALCULATION */
+
+/* MAIN PROGRAM */
+TAKENS():=BLOCK(
+/* VARIABLE I TAGS LOOP */
+FOR I:1 THRU 8 DO 
+	(SETUP1(),
+	IF I=1 THEN INPUTRHS() ,
+	IF I>1 THEN BLOWUP(),
+	SETUP2(),
+	DEFFG(),
+	PRINT(" TAKENS' TEST "),
+	PRINT(" TRUNCATE F AND G TO HOMOGENEOUS POLYNOMIALS "),
+	PRINT(TRUNCATE()),
+	GETROOTS(),
+	PRINT(TEST()),
+	IF FLAG=GREEN THEN RETURN("DONE"),
+	DEFPQ(),
+	DEFPPQQ(),
+	SROOTS()) )$
+
+/* SUBROUTINES TO CREATE VARIABLE NAMES AT ITH LOOP */
+SETUP1():=(
+U:CONCAT('U,I),
+V:CONCAT('V,I),
+X:CONCAT('X,I),
+Y:CONCAT('Y,I))$
+
+SETUP2():=(
+F:CONCAT('F,I),
+G:CONCAT('G,I),
+P:CONCAT('P,I),
+Q:CONCAT('Q,I),
+R:CONCAT('R,I),
+S:CONCAT('S,I),
+PP:CONCAT('PP,I),
+QQ:CONCAT('QQ,I))$
+
+/* SUBROUTINE TO INPUT THE RHS'S FROM KEYBOARD */
+INPUTRHS():=(
+PRINT(" ENTER THE RHS'S TO BE STUDIED "),
+PRINT(" USE VARIABLES X,Y, THEY WILL BE CONVERTED TO X1,Y1 "),
+U::READ(U,"="),
+PRINT(EV(U)),
+V::READ(V,"="),
+PRINT(EV(V)))$
+
+/* SUBROUTINE TO TRUNCATE F AND G TO TERMS OF LOWEST DEGREE */
+TRUNCATE():=BLOCK(
+FOR J FROM 2 THRU 8 DO
+	(TEMP1:RATEXPAND([EV(F),EV(G)]),
+	TEMP2:TAYLOR(TEMP1,[EV(X),EV(Y)],0,J),
+	IF TEMP2 # TAYLOR([0,0],DUMMY,0,1) THEN RETURN(TEMP2)))$
+
+/* SUBROUTINE TO SOLVE GTRUNC = 0 */
+GETROOTS():=(
+PRINT("SOLVING GTRUNC = 0"),
+FTRUNC:PART(TEMP2,1),
+GTRUNC:PART(TEMP2,2),
+GTRUNCX:DIFF(GTRUNC,EV(X)),
+GTRUNCY:DIFF(GTRUNC,EV(Y)),
+XROOTS:SOLVE(GTRUNC,EV(X)),
+YROOTS:SOLVE(GTRUNC,EV(Y)),
+ROOTNUM:0,
+FOR K:1 THRU LENGTH(XROOTS) DO
+	(ROOTNUM:ROOTNUM+1,
+	ROOT[ROOTNUM]:PART(XROOTS,K)),
+FOR K:1 THRU LENGTH(YROOTS) DO
+	(ROOTNUM:ROOTNUM+1,
+	ROOT[ROOTNUM]:PART(YROOTS,K)),
+PRINT("TOTAL NO. OF ROOTS =",ROOTNUM))$
+
+/* PERFORM TAKENS' TEST FOR EACH ROOT */
+TEST():=(BLOCK(
+FLAG:GREEN,
+FOR K:1 THRU ROOTNUM DO (PRINT(ROOT[K]),
+	FTEST:EV(FTRUNC,ROOT[K]),
+	GXTEST:EV(GTRUNCX,ROOT[K]),
+	GYTEST:EV(GTRUNCY,ROOT[K]),
+/*	PRINT("FTRUNC =",FTEST),
+	PRINT("GXTRUNC =",GXTEST),
+	PRINT("GYTRUNC =",GYTEST),             */
+	IF FTEST=0 THEN (PRINT("FTRUNC IS ZERO!"), FLAG:RED)  ELSE
+	IF GXTEST=0 AND GYTEST=0 THEN (PRINT("DG TRUNC IS ZERO!"),FLAG:RED)),
+	IF FLAG=GREEN THEN "PASSED TEST" ELSE "FAILED TEST"))$
+
+/* SUBROUTINE TO DEFINE F AND G */
+DEFFG():=(
+F::EXPAND(EV(X*U+Y*V)),
+PRINT(F,"=",EV(F)),
+G::EXPAND(EV(X*V-Y*U)),
+PRINT(G,"=",EV(G)))$
+
+/* SUBROUTINE TO DEFINE P AND Q */
+DEFPQ():=(
+TRANS:[EV(X)=R*COS(S),EV(Y)=R*SIN(S)],
+P::EV(F)/R,P::EXPAND(EV(EV(P),TRANS)),
+PRINT(P,"=",EV(P)),
+Q::EV(G)/R^2,Q::EXPAND(EV(EV(Q),TRANS)),
+PRINT(Q,"=",EV(Q)))$
+
+/* SUBROUTINE TO DEFINE PP AND QQ */
+DEFPPQQ():=(
+EXPONENT:MIN(LOPOW(EV(P),R),LOPOW(EV(Q),R)),
+PP::EXPAND(EV(P)/R^EXPONENT),
+QQ::EXPAND(EV(Q)/R^EXPONENT),
+PRINT("DIVIDE OUT",R^EXPONENT),
+/*       PRINT(PP,"=",EV(PP)),
+         PRINT(QQ,"=",EV(QQ)),           */
+PRINT("NOW SET",R,"= 0"),
+PTEMP:EV(EV(PP),R::0),
+QTEMP:EV(EV(QQ),R::0),
+PRINT(PP,"=",PTEMP),
+PRINT("NOTE: PREVIOUS SHOULD BE ZERO!"),
+PRINT(QQ,"=",QTEMP))$
+
+/* SUBROUTINE TO FIND ROOTS S OF QQ=0 WHEN R=0 */
+/*     USER SELECTS ROOT SSTAR TO BE USED      */
+SROOTS():=(
+STEMP:SOLVE(QTEMP,EV(S)),
+FOR K:1 THRU LENGTH(STEMP) DO 
+	PRINT("ROOT NO.",K,",",PART(STEMP,K)),
+	PRINT("THERE ARE",LENGTH(STEMP),"ROOTS"),
+	ROOTNO:READ("PICK A ROOT NO., OR 0 TO ENTER ONE"),
+	IF ROOTNO=0 THEN SSTAR:READ("ENTER ROOT") ELSE
+	SSTAR:RHS(PART(STEMP,ROOTNO)),
+	PRINT(S,"STAR =",SSTAR))$
+
+/* SUBROUTINE TO TAYLOR EXPAND PP AND QQ ABOUT R=0, S=STAR */
+/*        RETURNS NEW U AND V FOR NEXT ITERATION           */
+     
+BLOWUP():=(
+R::EV(X),
+S::SSTAR+EV(Y),
+POW:READ("KEEP TERMS OF WHAT POWER?"),
+PRINT(U,"="),
+U::TAYLOR(EV(EV(PP)),[EV(X),EV(Y)],0,POW),
+PRINT(EV(U)),
+PRINT(V,"="),
+V::TAYLOR(EV(EV(QQ)),[EV(X),EV(Y)],0,POW),
+PRINT(EV(V)) )$
+

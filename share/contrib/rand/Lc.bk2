@@ -1,0 +1,105 @@
+/* Filename <name>.mac
+
+   ***************************************************************
+   *							         *
+   *                     <package name>                          *
+   *                <functionality description>                  *
+   *                                                             *
+   *          from: Perturbation Methods, Bifurcation            *
+   *                Theory and Computer Algebra.                 *
+   *           by Rand & Armbruster (Springer 1987)              *
+   *                Programmed by Richard Rand                   *
+   *      These files are released to the public domain          *
+   *            						 *
+   ***************************************************************
+*/ 
+/*PROGRAM NUMBER 1: LC(), LINDSTEDT'S METHOD TO CALCULATE LIMIT CYCLES,
+  SEE PAGE 7 IN "PERTURBATION METHODS, BIFURCATION THEORY  AND COMPUTER
+  ALGEBRA".*/
+
+/* THIS PROGRAM APPLIES LINDSTEDT'S METHOD TO
+THE EQUATION:
+               X'' + X + E F(X,X') = 0,
+ASSUMING A LIMIT CYCLE EXISTS.
+CALL IT WITH:
+                   LC();
+*/
+
+LC():=(
+
+/* INPUT THE DIFFERENTIAL EQUATION */
+KILL(X,XLIST,PARAMLIST),
+PRINT("THE D.E. IS OF THE FORM:  X'' + X + E * F(X,X') = 0"),
+F:READ("ENTER F(X,Y), REPRESENTING X' AS Y"),
+PRINT("THE D.E. IS: X'' + X + E (",F,") = 0"),
+F:SUBST('DIFF(X,Z,1)*W,Y,F),
+
+/* SET UP THE SERIES EXPANSIONS */
+N:READ("ENTER TRUNCATION ORDER"),
+W:1,
+FOR I THRU N DO W:W+K[I]*E^I,
+X:B[0]*COS(Z),
+XLIST:[XX[0] = X],
+FOR I THRU N DO X:X+XX[I]*E^I,
+
+/* PLUG INTO THE D.E. AND COLLECT TERMS */
+DEPENDS(XX,Z),
+TEMP1:DIFF(X,Z,2)+X/W^2+E*EV(F,DIFF)/W^2,
+TEMP1:TAYLOR(TEMP1,E,0,N),
+FOR I THRU N DO EQ[I]:COEFF(TEMP1,E,I),
+
+/* SET UP PATTERN MATCHING RULES FOR USE IN SOLVING D.E. */
+MATCHDECLARE(N1,TRUE),
+DEFRULE(C,COS(N1*Z),COS(N1*Z)/(N1*N1-1)),
+DEFRULE(S,SIN(N1*Z),SIN(N1*Z)/(N1*N1-1)),
+
+/* LOAD POISSON SERIES PACKAGE AND SET PARAMETER */
+OUTOFPOIS(DUMMY),
+POISLIM:100,
+
+/* MAIN LOOP */
+FOR I:1 THRU N DO BLOCK(
+
+/* TRIGONOMETRIC SIMPLIFICATION */
+TEMP1:OUTOFPOIS(EV(EQ[I],XLIST,PARAMLIST,DIFF)),
+
+/* ELIMINATE SECULAR TERMS */
+IF I = 1
+     THEN (PARAMLIST:SOLVE(COEFF(TEMP1,SIN(Z)),B[0]),
+           PRINT("CHOICES FOR LIMIT CYCLE AMPLITUDE:"),
+	   FOR J:1 THRU LENGTH(PARAMLIST) DO 
+                PRINT(J,")  ",PART(PARAMLIST,J,2)),
+           R1:READ("ENTER CHOICE NUMBER"),
+	   PARAMLIST:APPEND(SOLVE(COEFF(TEMP1,COS(Z)),K[1]),
+		[PART(PARAMLIST,R1)]))
+     ELSE  PARAMLIST:APPEND(PARAMLIST,SOLVE([COEFF(TEMP1,COS(Z)),
+		COEFF(TEMP1,SIN(Z))],[K[I],B[I-1]])),
+TEMP1:EXPAND(EV(TEMP1,PARAMLIST)),
+XLIST:EXPAND(EV(XLIST,PARAMLIST)),
+
+/* OUTPUT PROGRESS */
+PRINT("DONE WITH STEP",I,"OF",N),
+
+/* EXIT HERE IF LAST ITERATION */
+IF I=N THEN GO(END),
+
+/* SOLVE THE D.E. */
+TEMP1:FACTOR(EV(TEMP1,XX[I] = 0)),
+TEMP1:APPLYB1(TEMP1,C,S),
+TEMP1:XX[I] = TEMP1+A[I]*SIN(Z)+B[I]*COS(Z),
+
+/* FIT THE INITIAL CONDITION */
+TEMP2:RHS(TEMP1),
+TEMP2:DIFF(TEMP2,Z),
+TEMP2:SOLVE(EV(TEMP2,Z:0),A[I]),
+XLIST:APPEND(XLIST,[EV(TEMP1,TEMP2)]),
+
+/* END OF MAIN LOOP */
+END),
+
+/* OUTPUT RESULTS */
+W:EV(W,PARAMLIST),
+X:TAYLOR(EV(X,XLIST,PARAMLIST),E,0,N-1),
+PRINT("X =",X),
+PRINT("W =",W))$
+

@@ -1,0 +1,159 @@
+/* Filename <name>.mac
+
+   ***************************************************************
+   *							         *
+   *                     <package name>                          *
+   *                <functionality description>                  *
+   *                                                             *
+   *          from: Perturbation Methods, Bifurcation            *
+   *                Theory and Computer Algebra.                 *
+   *           by Rand & Armbruster (Springer 1987)              *
+   *                Programmed by Richard Rand                   *
+   *      These files are released to the public domain          *
+   *            						 *
+   ***************************************************************
+*/ 
+/*PROGRAM NUMBER 5: NF(), NORMAL FORM TRANSFORMATIONS. SEE PAGE 62 IN
+  "PERTURBATION METHODS, BIFURCATION THEORY AND COMPUTER ALGEBRA". */
+
+
+/* THIS FILE CONTAINS NF(), A NORMAL FORM UTILITY FUNCTION. IT ALSO CONTAINS
+   THESE ADDITIONAL FUNCTIONS:
+   GEN(N) WILL GENERATE A HOMOGENEOUS ORDER N TRANSFORMATION.
+   DECOMPOSE() ISOLATES THE COEFFICIENTS OF THE NEW EQUATIONS.
+   VARS(N) GENERATES A LIST OF UNKNOWN COEFFICIENTS OF DEGREE N.
+   HOPFK(), FOR K=2,3,4,5,6,7 SOLVES FOR THE COEFFICIENTS OF A SYSTEM OF
+   2 DE'S SO AS TO PUT THE EQS IN HOPF NORMAL FORM */
+
+NF():= BLOCK( 
+
+/* NEW VARIABLE NAMES? */
+TEST : READ ("DO YOU WANT TO ENTER NEW VARIABLE NAMES (Y/N)?"),
+IF TEST = N THEN GO(JUMP),
+N : READ ("HOW MANY EQS"),
+FOR I THRU N DO (X[I] : READ ("SYMBOL FOR OLD X[",I,"]")),
+FOR I THRU N DO( Y[I] : READ ("SYMBOL FOR NEW X[",I,"]")),
+FOR I THRU N DO DEPENDS([X[I],Y[I]],T),
+KILL(FLAG), /* FLAG USED IN GEN */
+
+JUMP,
+
+/* NEW D.E.'S? */
+PRINT ("DO YOU WANT TO ENTER NEW D.E.'S (Y/N)?"),
+TEST:READ(),
+IF TEST = N THEN GO(LOOP),
+FOR I THRU N DO 
+          (RHS[I]:READ("ENTER RHS OF EQ. NO.",I,",D",X[I],"/DT ="),
+           PRINT("D",X[I],"/DT =",RHS[I])),
+KILL(RHS2),
+RHS2[I,J] := RHS[I],
+RHS3:GENMATRIX(RHS2,N,1),
+
+LOOP,
+
+/* NEAR-IDENTITY TRANSFORMATION */
+PRINT("INPUT NEAR-IDENTITY TRANSFORMATION 
+(USE PREV FOR PREVIOUS TRANSFORMATION)"),
+FOR I THRU N DO 
+          (ROW:I, 
+           PREV :TR[I],
+           TR[I] :READ (X[I],"=",Y[I],"+ ?"),
+           PRINT (X[I],"=",Y[I]+TR[I])),
+
+/* INPUT TRUNCATION ORDER */
+TRANS : MAKELIST (X[I]=Y[I]+TR[I],I,1,N),
+M : READ("ENTER TRUNCATION ORDER (HIGHEST ORDER TERMS TO BE KEPT)"),
+
+
+/* TRANSFORM THE D.E.'S */
+TEMP2 :EV(RHS3,TRANS),
+
+/* SOLVE FOR THE TRANSFORMED DERIVATIVES */
+KILL(JACOB),
+JACOB[I,J]:=DIFF(TR[I],Y[J]),
+JACOB2:GENMATRIX(JACOB,N,N),
+TEMP3:SUM((-1)^I*JACOB2^^I,I,0,M-1).TEMP2,
+
+/* TAYLOR EXPAND THE RESULTING EQS */
+NEWRHS : TAYLOR(TEMP3,MAKELIST(Y[I],I,1,N),0,M),
+NEWDES:MAKELIST(DIFF(Y[I],T)=NEWRHS[I,1],I,1,N),
+FOR I:1 THRU N DO 
+          PRINT(PART(NEWDES,I)),
+
+/* ENTER ANOTHER TRANSFORMATION? */
+BRANCH:READ("DO YOU WANT TO ENTER ANOTHER TRANSFORMATION (Y/N)"),
+IF BRANCH = Y THEN GO(LOOP),
+NEWDES)$ 
+
+
+GEN(NN):=(
+IF NOT NUMBERP(FLAG[NN]) THEN (
+               SUB:MAKELIST(K[I],I,1,N),
+               VAR:PRODUCT(Y[I]^K[I],I,1,N),
+               TEMPGEN:A[ROWDUMMY,SUB]*VAR,
+               FOR I:1 THRU N DO
+                       TEMPGEN:SUM(EV(TEMPGEN,K[I]=J),J,0,NN),
+               TEMPGEN2:LAST(TAYLOR(TEMPGEN,MAKELIST(Y[I],I,1,N),0,NN)),
+               TEMPGEN3[NN]:EXPAND(TEMPGEN2),
+               FLAG[NN] : 1),
+EV(TEMPGEN3[NN],ROWDUMMY=ROW)) $ 
+
+DECOMPOSE():=(
+KILL(C),
+IF NOT NUMBERP(FLAG[M]) THEN GEN(M),
+TEMP8:SUBST("[","+",TEMPGEN3[M]),
+TERMS:EV(TEMP8,A[DUMMY,SUB]:=1),
+COEFFS:EV(TEMP8,A[DUMMY,SUB]:=C[DUMMY,SUB],MAKELIST(Y[I]=1,I,1,N)),
+FOR I:1 THRU N DO(
+     FOR J:1 THRU LENGTH(TERMS) DO(
+          EV(PART(COEFFS,J),ROWDUMMY=I)::RATCOEF(EXPAND(NEWRHS[I,1]),PART(TERMS,
+J)))))$
+
+VARS(NN):=(
+TEMP5:SUM(EV(TEMPGEN3[NN]),ROWDUMMY,1,N),
+TEMP6:SUBST("[","+",TEMP5),
+TEMP7:EV(TEMP6,MAKELIST(Y[I]=1,I,1,N)))$
+
+
+ HOPF2():=(DECOMPOSE(),
+           SOLVE([C[1,[2,0]],C[1,[1,1]],C[1,[0,2]],C[2,[2,0]],
+                  C[2,[1,1]],C[2,[0,2]]],
+                 VARS(2)))$
+
+ HOPF3():=(DECOMPOSE(),
+           SOLVE([C[1,[3,0]]=C[1,[1,2]],C[1,[3,0]]=C[2,[2,1]],
+                  C[1,[3,0]]=C[2,[0,3]],C[1,[0,3]]=C[1,[2,1]],
+                  C[1,[0,3]]=-C[2,[3,0]],C[1,[0,3]]=-C[2,[1,2]]],
+                 VARS(3)))$
+
+ HOPF4():=(DECOMPOSE(),
+           SOLVE([C[1,[4,0]],C[1,[3,1]],C[1,[2,2]],C[1,[1,3]],
+                  C[1,[0,4]],C[2,[4,0]],C[2,[3,1]],C[2,[2,2]],
+                  C[2,[1,3]],C[2,[0,4]]],
+                 VARS(4)))$
+
+ HOPF5():=(DECOMPOSE(),                                
+           SOLVE([C[1,[5,0]]=C[1,[3,2]]/2,C[1,[5,0]]=C[1,[1,4]],
+                  C[1,[5,0]]=C[2,[4,1]],C[1,[5,0]]=C[2,[2,3]]/2,
+                  C[1,[5,0]]=C[2,[0,5]],C[2,[5,0]]=C[2,[3,2]]/2,
+                  C[2,[5,0]]=C[2,[1,4]],C[2,[5,0]]=-C[1,[4,1]],
+                  C[2,[5,0]]=-C[1,[2,3]]/2,C[2,[5,0]]=-C[1,[0,5]]],
+                 VARS(5)))$
+
+ HOPF6():=(DECOMPOSE(),
+           SOLVE([C[1,[6,0]],C[1,[5,1]],C[1,[4,2]],C[1,[3,3]],
+                  C[1,[2,4]],C[1,[1,5]],C[1,[0,6]],C[2,[6,0]],
+                  C[2,[5,1]],C[2,[4,2]],C[2,[3,3]],C[2,[2,4]],
+                  C[2,[1,5]],C[2,[0,6]]],
+                 VARS(6)))$
+
+ HOPF7():=(DECOMPOSE(),        
+           SOLVE([C[1,[7,0]]=C[1,[5,2]]/3,C[1,[7,0]]=C[1,[3,4]]/3,
+                  C[1,[7,0]]=C[1,[1,6]],C[1,[7,0]]=C[2,[6,1]],
+                  C[1,[7,0]]=C[2,[4,3]]/3,C[1,[7,0]]=C[2,[2,5]]/3,
+                  C[1,[7,0]]=C[2,[0,7]],C[2,[7,0]]=C[2,[5,2]]/3,
+                  C[2,[7,0]]=C[2,[3,4]]/3,C[2,[7,0]]=C[2,[1,6]],
+                  C[2,[7,0]]=-C[1,[6,1]],C[2,[7,0]]=-C[1,[4,3]]/3,
+                  C[2,[7,0]]=-C[1,[2,5]]/3,C[2,[7,0]]=-C[1,[0,7]]],
+                 VARS(7)))$
+

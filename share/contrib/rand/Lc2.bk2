@@ -1,0 +1,97 @@
+/* Filename <name>.mac
+
+   ***************************************************************
+   *							         *
+   *                     <package name>                          *
+   *                <functionality description>                  *
+   *                                                             *
+   *          from: Perturbation Methods, Bifurcation            *
+   *                Theory and Computer Algebra.                 *
+   *           by Rand & Armbruster (Springer 1987)              *
+   *                Programmed by Richard Rand                   *
+   *      These files are released to the public domain          *
+   *            						 *
+   ***************************************************************
+*/ 
+/* PROGRAM NUMBER 2: LC2(), LINDSTEDT'S METHOD FOR MORE GENERAL
+   DIFFERENTIAL EQUATIONS. SEE PAGE 14 IN "PERTURBATION METHODS,
+   BIFURCATION THEORY AND COMPUTER ALGEBRA". */
+
+
+
+
+LC2():=(
+
+/* INPUT THE DIFFERENTIAL EQUATION */
+KILL(X,Y,XYLIST,PARAMLIST),
+PRINT("THE D.E.'S ARE OF THE FORM X' = -Y + E*F, Y' = X + E*G"),
+PRINT("WHERE F,G ARE OF THE FORM: 
+          QUADRATIC + E*(LINEAR + CUBIC) + E^2*(QUARTIC) + ..."),
+F:READ("ENTER F:"),
+PRINT("F =",F),
+G:READ("ENTER G:"),
+PRINT("G =",G),
+
+/* SET UP THE SERIES EXPANSIONS */
+N:READ("ENTER TRUNCATION ORDER:"),
+K[0]:1,
+K[1]:0,
+W:SUM(K[I]*E^I,I,0,N),
+XY:[X:B[0]*COS(Z)+SUM(XX[I](Z)*E^I,I,1,N),
+    Y:B[0]*SIN(Z)+SUM(YY[I](Z)*E^I,I,1,N)],
+XYLIST:[XX[0](Z)=B[0]*COS(Z),
+        YY[0](Z)=B[0]*SIN(Z)],
+
+/* PLUG INTO D.E.'S AND COLLECT TERMS */
+TEMP1:[-DIFF(X,Z)*W-Y+E*EV(F,DIFF),-DIFF(Y,Z)*W+X+E*EV(G,DIFF)],
+TEMP2:TAYLOR(TEMP1,E,0,N),
+FOR I:1 THRU N DO EQ[I]:COEFF(TEMP2,E,I),
+
+
+/* MAIN LOOP */
+FOR I:1 THRU N DO BLOCK(
+
+/* TRIGONOMETRIC SIMPLIFICATION */
+TEMP3:EXPAND(TRIGREDUCE(EXPAND(EV(EQ[I],XYLIST,PARAMLIST,DIFF)))),
+
+/* ELIMINATE SECULAR TERMS */
+IF I=1 THEN (TEMP4:TEMP3, GO(SKIP_TO_HERE_FIRST_TIME))
+       ELSE NEWPARAMLIST:
+             SOLVE([COEFF(PART(TEMP3,1),SIN(Z))-COEFF(PART(TEMP3,2),COS(Z)),
+                    COEFF(PART(TEMP3,1),COS(Z))+COEFF(PART(TEMP3,2),SIN(Z))],
+                   [B[I-2],K[I]]),
+IF I=2 THEN (PARAMLIST:NEWPARAMLIST,
+             PRINT("CHOICES FOR LIMIT CYCLE AMPLITUDE:"),
+             FOR J:1 THRU LENGTH(PARAMLIST) DO
+                 PRINT(J,")  ",PART(PARAMLIST,J,1,2)),
+             R1:READ("ENTER CHOICE NUMBER"),
+             PARAMLIST:PART(PARAMLIST,R1))
+        ELSE PARAMLIST:APPEND(PARAMLIST,NEWPARAMLIST),
+TEMP4:EXPAND(EV(TEMP3,PARAMLIST)),
+XYLIST:EXPAND(EV(XYLIST,PARAMLIST)),
+SKIP_TO_HERE_FIRST_TIME,
+
+/* OUTPUT PROGRESS */
+PRINT("DONE WITH STEP",I,"OF",N),
+
+/* EXIT HERE IF LAST ITERATION */
+IF I=N THEN GO(END),
+
+/* SOLVE THE D.E.'S */
+TEMP4A:SUBST(DUMMY(Z),YY[I](Z),TEMP4),
+ATVALUE(DUMMY(Z),Z=0,0),
+TEMP5:DESOLVE(TEMP4A,[XX[I](Z),DUMMY(Z)]),
+TEMP5A:SUBST(YY[I](Z),DUMMY(Z),TEMP5),
+TEMP5B:SUBST(B[I],XX[I](0),TEMP5A),
+XYLIST:APPEND(XYLIST,[TEMP5B]),
+
+/* END OF MAIN LOOP */
+END),
+
+/* OUTPUT RESULTS */
+W:EV(W,PARAMLIST),
+SOLN:TAYLOR(EV([X,Y],XYLIST,PARAMLIST),E,0,N-2),
+PRINT("X =",PART(SOLN,1)),
+PRINT("Y =",PART(SOLN,2)),
+PRINT("W =",W))$
+

@@ -1,0 +1,103 @@
+/* Filename <name>.mac
+
+   ***************************************************************
+   *							         *
+   *                     <package name>                          *
+   *                <functionality description>                  *
+   *                                                             *
+   *          from: Perturbation Methods, Bifurcation            *
+   *                Theory and Computer Algebra.                 *
+   *           by Rand & Armbruster (Springer 1987)              *
+   *                Programmed by Richard Rand                   *
+   *      These files are released to the public domain          *
+   *            						 *
+   ***************************************************************
+*/ 
+/*PROGRAM NUMBER 7: AVERAGE(), ALLOWS ONE TO PERFORM FIRST AND SECOND ORDER
+  AVERAGING. SEE PAGE 114 IN "PERTURBATION METHODS, BIFURCATION THEORY 
+  AND COMPUTER ALGEBRA". */
+
+
+
+/* PROGRAM TO PERFORM 1ST OR 2ND ORDER AVERAGING 
+   ON AN N-DIMENSIONAL SYSTEM OF NONAUTONOMOUS ODE'S */
+
+/* AVERAGING IS PERFORMED BY CONVERTING TRIG TERMS TO
+   COMPLEX EXPONENTIALS, THEN KILLING EXPONENTIALS   */
+
+AVERAGE():=BLOCK(
+      CHOICE1:READ("DO YOU WANT TO ENTER A NEW PROBLEM? (Y/N)"),
+      IF CHOICE1 = N THEN GO(JUMP1),
+      KILL(X),
+      PRINT("ARE YOU CONSIDERING A WEAKLY NONLINEAR OSCILLATOR OF THE FORM"),
+      CHOICE2:READ("Z'' + OMEGA0^2 Z = EPS F(Z,ZDOT,T) ? (Y/N)"),
+      IF CHOICE2 = N THEN GO(JUMP2),
+		
+/* ENTER DATA FOR SINGLE OSCILLATOR PROBLEM */
+      N:2,
+      OMEGA0:READ("ENTER OMEGA0"),
+      F:READ("ENTER F(Z,ZDOT,T)")*EPS,
+/* DOES F(Z,ZDOT,T) DEPEND EXPLICITLY ON T? */
+      TEST:DIFF(F,T),
+      IF TEST=0 THEN OMEGA1:OMEGA0 
+            ELSE(
+      	    OMEGA:READ("ENTER THE FORCING FREQUENCY"),
+            K:READ("ENTER THE ORDER OF THE SUBHARMONIC RESONANCE"),
+            OMEGA1:OMEGA/K),
+/* VAN DER POL TRANSFORMATION */
+      ZSUB:[Z=COS(OMEGA1*T)*X1-SIN(OMEGA1*T)*X2,
+               ZDOT=-OMEGA1*SIN(OMEGA1*T)*X1-OMEGA1*COS(OMEGA1*T)*X2],
+/* SUBSTITUTE ZSUB INTO TRANSFORMED EQS */
+/* SCALE TIME SO THAT AVERAGING OCCURS OVER PERIOD 2 PI */
+      VF:EV([-1/OMEGA1^2*(EPS*KAPOMEGA/K^2*Z + F)*SIN(OMEGA1*T),
+             -1/OMEGA1^2*(EPS*KAPOMEGA/K^2*Z + F)*COS(OMEGA1*T)],
+             ZSUB,T=TAU/OMEGA1,INFEVAL),
+      VF:EV(VF,TAU=T),
+      IF OMEGA1 # OMEGA0 
+      THEN PRINT("WE WRITE EPS*KAPOMEGA =",OMEGA^2-K^2*OMEGA0^2)
+            ELSE VF:EV(VF,KAPOMEGA=0),
+      VF2:EXPAND(EXPONENTIALIZE(VF)),
+      FOR I:1 THRU 2 DO VF2[I]:MAP(FACTOR,VF2[I]),
+      X:[X1,X2],
+      GO(JUMP1),
+
+
+JUMP2,
+/* ENTER DATA FOR GENERAL PROBLEM OF N ODE'S */
+      N:READ("ENTER NUMBER OF DIFFERENTIAL EQUATIONS"),
+      X:MAKELIST(CONCAT('X,I),I,1,N),	 
+      PRINT("THE ODE'S ARE OF THE FORM:"),
+      PRINT("DX/DT = EPS F(X,T)"),
+      PRINT("WHERE X =",X),
+      PRINT("SCALE TIME T SUCH THAT AVERAGING OCCURS OVER 2 PI"),
+      VF:MAKELIST(READ("ENTER RHS(",I,")=EPS*...")*EPS,I,1,N),
+      FOR I:1 THRU N DO PRINT("D",X[I],"/DT =",VF[I]),
+      VF2:EXPAND(EXPONENTIALIZE(VF)),
+      FOR I:1 THRU N DO VF2[I]:MAP(FACTOR,VF2[I]),
+
+
+JUMP1,
+/* AVERAGING */
+      M:READ("DO YOU WANT FIRST OR SECOND ORDER AVERAGING?  (1/2)"),
+      COEFVFEPS1:COEFF(VF2,EPS),
+      COEFVFEPS2:COEFF(VF2,EPS,2),
+      G1BAR:DEMOIVRE(APPLY1(COEFVFEPS1,KILLEXP)),
+      IF M=1 THEN RESULT:EPS*G1BAR
+                ELSE(
+                G1TILDE:COEFVFEPS1-G1BAR,
+                W1:INTEGRATE(G1TILDE,T),
+      REMARRAY(JACOB),
+      JACOB[I,J] := DIFF(G1TILDE[I],X[J]),
+      JACG1TILDE:GENMATRIX(JACOB,N,N),
+      G2BAR:DEMOIVRE(APPLY1(EXPAND(JACG1TILDE.W1)+COEFVFEPS2,KILLEXP)),	
+      RESULT:EPS*G1BAR+EPS^2*G2BAR),
+/* REPLACE X BY Y */
+      FOR I:1 THRU N DO RESULT:SUBST(CONCAT('Y,I),CONCAT('X,I),RESULT),
+      RESULT)$
+
+
+/* AUXILIARY FUNCTIONS TO KILL EXPONENTIAL TERMS */
+      CONTAINS_T(EXP):= NOT FREEOF(T,EXP)$
+      MATCHDECLARE(Q,CONTAINS_T)$
+      DEFRULE(KILLEXP,EXP(Q),0)$
+
