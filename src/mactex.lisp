@@ -194,11 +194,19 @@
   (append l
 	  (list (cond ((numberp x) (texnumformat x))
 		      ((and (symbolp x) (get x 'texword)))
+                      ((stringp x) (tex-string x))
+                      ((characterp x) (tex-char x))
 		      (t (tex-stripdollar x))))
-
 	  r))
 
+(defun tex-string (x)
+  (cond ((equal x "") "")
+    ((eql (elt x 0) #\\) x)
+    (t (concatenate 'string "\\mbox{{}" x "{}}"))))
 
+(defun tex-char (x)
+  (if (eql x #\|) "\\mbox{\\verb/|/}"
+    (concatenate 'string "\\mbox{\\verb|" (string x) "|}")))
 
 (defvar *tex-translations* nil)
 ;; '(("AB" . "a")("X" . "x")) would cause  AB12 and X3 C4 to print a_{12} and x_3 C_4
@@ -377,7 +385,7 @@
 (defprop $%e "e" texword)
 (defprop $inf "\\infty " texword)
 (defprop $minf " -\\infty " texword)
-(defprop %laplace "{\\cal L}" texword)
+(defprop %laplace "\\mathcal{L}" texword)
 (defprop $alpha "\\alpha" texword)
 (defprop $beta "\\beta" texword)
 (defprop $gamma "\\gamma" texword)
@@ -868,6 +876,24 @@
 		`("\\mathbf{while}" ,(cadr (seventh x))))
 	       (t `("\\mathbf{unless}" ,(seventh x))))
 	 `("\\mathbf{do}" ,(eighth x))))
+
+(defprop mtext tex-mtext tex)
+(defprop text-string tex-mtext tex)
+(defprop mlable tex-mlable tex)
+(defprop spaceout tex-spaceout tex)
+
+(defun tex-mtext (x l r) (tex-list (cdr x) l r ""))
+
+(defun tex-mlable (x l r)
+  (tex (caddr x)
+    (append l
+      (if (cadr x)
+        (list (format nil "\\mbox{\\tt\\red(~A) \\black}" (stripdollar (cadr x))))
+        nil))
+    r 'mparen 'mparen))
+
+(defun tex-spaceout (x l r)
+  (append l (list "\\mbox{\\verb|" (make-string (cadr x) :initial-element #\space) "|}") r))
 
 ;; initialize a file so that c-lines will look ok in verbatim mode
 ;; run this first before tex(<whatever>, file);
