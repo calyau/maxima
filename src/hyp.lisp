@@ -455,6 +455,7 @@
      (return (fpqform l1 l2 var))))
 
 
+#+nil
 (defun simp2>f<2 (l1 l2 len1 len2)
   (prog()
      (cond ((and (zerop len1) (zerop len2))
@@ -463,6 +464,43 @@
 	    (return (bestrig (car l2) var))))
      (cond ((zerop len2) (return (binom (car l1)))))
      (return (confl l1 l2 var))))
+
+;; Handle the cases where the number of indices is less than 2.
+(defun simp2>f<2 (l1 l2 len1 len2)
+  (cond ((and (zerop len1) (zerop len2))
+	 ;; hgfred([],[],z) = e^z
+	 (power '$%e var))
+	((and (zerop len1) (equal len2 1))
+	 ;; hgfred([],[b],z)
+	 ;;
+	 ;; The hypergeometric series is then
+	 ;;
+	 ;; 1+sum(z^k/k!/[b*(b+1)*...(b+k-1)], k, 1, inf)
+	 ;;
+	 ;; = 1+sum(z^k/k!*gamma(b)/gamma(b+k), k, 1, inf)
+	 ;; = sum(z^k/k!*gamma(b)/gamma(b+k), k, 0, inf)
+	 ;; = gamma(b)*sum(z^k/k!/gamma(b+k), k, 0, inf)
+	 ;;
+	 ;; Note that bessel_i(b,z) has the series
+	 ;;
+	 ;; (z/2)^(b)*sum((z^2/4)^k/k!/gamma(b+k+1), k, 0, inf)
+	 ;;
+	 ;; bessel_i(b-1,2*sqrt(z))
+	 ;;    = (sqrt(z))^(b-1)*sum(z^k/k!/gamma(b+k),k,0,inf)
+	 ;;    = z^((b-1)/2)*hgfred([],[b],z)/gamma(b)
+	 ;;
+	 ;; So this hypergeometric series is a Bessel I function:
+	 ;;
+	 ;; hgfred([],[b],z) = bessel_i(b-1,2*sqrt(z))*z^((1-b)/2)*gamma(b)  
+	 (bestrig (car l2) var))
+	((zerop len2)
+	 ;; hgfred([a],[],z) = 1 + sum(binomial(a+k,k)*z^k)
+	 ;;  = 1/(1-z)^a
+	 (binom (car l1)))
+	(t
+	 ;; The general case of 1F1, the confluent hypergeomtric function.
+	 (confl l1 l2 var))))
+
 
 
 	    
@@ -509,7 +547,7 @@
 			 (power -1 (div (sub a 1) 2))
 			 (bes (sub a 1) (setq x (mul -1 x)) 'j)))))
      (return (mul res (bes (sub a 1) x 'i)))))
-	    
+
 (defun bes (a x flg)
   (let ((fun (if (eq flg 'j) '%bessel_j '%bessel_i)))
     `((,fun) ,a ,(mul 2 (power x (inv 2))))))
@@ -601,13 +639,18 @@
 	    (return nil)))
      (return t)))
 
-(defun binom(a)
+;; (1-z)^(-a)
+(defun binom (a)
   (power (sub 1 var) (mul -1 a)))
 
 
+;; Kummer's transformation.  A&S 13.1.27
+;;
+;; M(a,b,z) = e^z*M(b-a,b,-z)
 (defun kummer (l1 l2)
   (mul (list '(mexpt) '$%e var)
-       (confl (list (sub (car l2)(car l1))) l2 (mul -1 var))))
+       (confl (list (sub (car l2) (car l1)))
+	      l2 (mul -1 var))))
 
 
 (defun zerop-in-l (l)
@@ -1758,6 +1801,7 @@
 	 (inv x)
 	 (list '(%erf) x))))
 
+;; M(a,c,z), where a-c is an integer
 (defun erfgammared (a c z)
   (cond ((and (nump a)(nump c))
 	 (erfgamnumred a c z))
@@ -1810,6 +1854,7 @@
   (cond ((eq m 2) (mul a (add a 1)))
 	(t (mul (add a (sub1 m))(prod a (sub1 m))))))
 
+;; M(a,c,z), when a and c are numbers, and a-c is an integer
 (defun erfgamnumred (a c z)
   (cond ((hyp-integerp (sub c (inv 2)))
 	 (erfred a c z))
