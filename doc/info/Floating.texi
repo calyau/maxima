@@ -47,11 +47,19 @@ Returns @code{true} if @code{expr} is a bigfloat number else @code{false}.
 @end defun
 
 @defun bfpsi (n, z, fpprec)
-Polygamma function of real argument @code{z} and integer order @code{n}.
-For digamma, @code{bfpsi0 (z, fpprec)} is more direct.  Note @code{-bfpsi0 (1, fpprec)}
-provides @code{%gamma} (Euler's constant) as a bigfloat.
+@defunx bfpsi0 (z, fpprec)
+@code{bfpsi} is the polygamma function of real argument @var{z} and integer order @var{n}.
+@code{bfpsi0} is the digamma function. 
+@code{bfpsi0 (z, fpprec)} is equivalent to @code{bfpsi (0, z, fpprec)}.
 
-@code{load ("bffac")} loads this function.
+These functions return bigfloat values.
+@var{fpprec} is the bigfloat precision of the return value.
+
+@c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
+@c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
+@c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
+
+@code{load ("bffac")} loads these functions.
 
 @end defun
 
