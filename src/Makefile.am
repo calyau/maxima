@@ -73,6 +73,24 @@ uninstall: uninstall-gcl
 clean: clean-gcl
 distclean: clean-gcl
 
+if GCL_ALT_LINK
+binary-gcl/maxima:
+	test -d binary-gcl || mkdir binary-gcl
+	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
+	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
+	LISPTYPE=gcl ; export LISPTYPE ;\
+        GCL=$(GCL_NAME) ; export GCL ;\
+	j=$$($(RUNLISP) \
+                 -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :test t)' < /dev/null |\
+                 grep Loading |\
+                 grep file | \
+                 awk 'BEGIN {a="$(shell pwd)"}\
+                          {gsub("\"","",$$NF);b=b " \"" a "/" $$NF "\""}\
+                      END {printf("(%s (list %s) %s %s )",\
+                            "compiler::link",b,"\"" a "/$@\"",\
+                            "\"(provide \\\"maxima\\\")\"")}') && \
+        $(RUNLISP) -x "$$j" < /dev/null
+else
 binary-gcl/maxima:
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
@@ -84,6 +102,7 @@ binary-gcl/maxima:
         $(RUNLISP) \
         -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
          -d binary-gcl/maxima
+endif
 
 install-gcl:
 	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-gcl
