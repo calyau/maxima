@@ -2132,6 +2132,7 @@ The following commands are available:
   (setq mode-line-process '(": %s"))
   (maxima-mode-variables)
   (use-local-map inferior-maxima-mode-map)
+  (setq tab-width 8)
   (if running-xemacs
       (add-local-hook 'kill-buffer-hook
                       (function
