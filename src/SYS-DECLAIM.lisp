@@ -1,6 +1,9 @@
 ;;; The ANSI version of SYS-PROCLAIM
 
 (IN-PACKAGE "MAXIMA") 
+
+;; Let's not try declaiming any functions
+#|
 (DECLAIM (FTYPE (FUNCTION (FIXNUM) *) FRAME-INFO DBM-UP)) 
 (DECLAIM (FTYPE (FUNCTION (*) (VALUES T T)) SYMBOLCONC GEN-NAME)) 
 (DECLAIM (FTYPE (FUNCTION (FIXNUM FIXNUM T FIXNUM) T) CPTOM)) 
@@ -852,6 +855,7 @@
 	 quot merror errrjf sort typep inf-signal mread $filename_merge
 	 maclisp-typep SCAN-DIGITS dimension maset1 error cerror
 	 $file_search mtell))
+|#
 
 
 (declaim (SPECIAL
