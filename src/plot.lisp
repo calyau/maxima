@@ -357,25 +357,25 @@ setrgbcolor} def
 ;; First get v, so p.v=0 then do u= p X v to give image of y axis
 ;; ans = transpose(matrix( v,u,p))
 
-(defun $norm (pt) (sloop for v in (cdr pt) sum (* v v)))
-(defun $length_one (pt)
-  (let ((len (sqrt ($norm pt))))
-    (cons '(mlist) (sloop for v in (cdr pt) collect (/  (float v) len)))))
+(defun length-one (pt)
+  (flet (($norm (pt) (sloop for v in (cdr pt) sum (* v v))))
+    (let ((len (sqrt ($norm pt))))
+      (cons '(mlist) (sloop for v in (cdr pt) collect (/  (float v) len))))))
 
-(defun $cross_product (u v)
+(defun cross-product (u v)
   (flet ((cp (i j)
 	     (- (* (nth i u) (nth j v))
 		(* (nth i v) (nth j u)))))
 	`((mlist) ,(cp 2 3) ,(cp 3 1) ,(cp 1 2))))
 	
-(defun $GET_ROTATION (pt)
-  (setq pt ($length_one pt))
+(defun get-rotation (pt)
+  (setq pt (length-one pt))
   (let (v tem u)
     (cond((setq tem (position 0.0 pt))
 	   (setq v (cons '(mlist) (list 0.0 0.0 0.0)))
 	   (setf (nth tem v) 1.0))
-	  (t (setq v ($length_one `((mlist) ,(- (nth 2 pt))      , (nth 1 pt) 0.0)))))
-    (setq u ($cross_product pt v))
+	  (t (setq v (length-one `((mlist) ,(- (nth 2 pt))      , (nth 1 pt) 0.0)))))
+    (setq u (cross-product pt v))
     (let* (($rot   `(($matrix) ,v,u,pt))
 	   (th (get-theta-for-vertical-z
 		(nth 3 (nth 1 $rot))
@@ -1703,7 +1703,7 @@ setrgbcolor} def
 		 )
 	 (output-points pl nil))
 	($ps
-	 (let ((rot ($get_rotation ($rest ($get_plot_option '$view_direction)))))
+	 (let ((rot (get-rotation ($rest ($get_plot_option '$view_direction)))))
 	   (cond (colour-z
 		  (setq *original-points* (copy-seq (polygon-pts pl)))
 		  (setq *z-range* ($get_range ar 2))))
