@@ -483,23 +483,78 @@ is written.
 @end defvar
 @c @node FILE_SEARCH, FILE_STRING_PRINT, FILENUM, Input and Output
 @c @unnumberedsec phony
-@defvar FILE_SEARCH
- - this is a list of files naming directories to search
-by LOAD and a number of other functions.  The default value of this
-is a list of the various SHARE directories used by Macsyma.
-FILE_SEARCH("filename"); searches on those directories and devices
-specified by the FILE_SEARCH_LISP, FILE_SEARCH_MAXIMA and FILE_SEARCH_DEMO variables, and returns the name of the
-first file it finds.  This function is invoked by the LOAD function,
-which is why LOAD("FFT") finds and loads share/fft.mac.  You may
-add a path to the appropriate list.   Note that the format
-of the paths allows specifying multiple extensions and multiple paths.
+@defun FILE_SEARCH (filename)
+@defunx FILE_SEARCH (filename, pathlist)
+
+FILE_SEARCH searches for the file @code{filename} and returns the path to the file
+(as a string) if it can be found; otherwise FILE_SEARCH returns FALSE.
+
+@code{FILE_SEARCH (filename)} searches in the default search directories,
+which are specified by the FILE_SEARCH_MAXIMA, FILE_SEARCH_LISP, and FILE_SEARCH_DEMO variables.
+
+@code{FILE_SEARCH (filename, pathlist)} searches only in the directories
+specified by @code{pathlist},
+which is a list of strings.
+The argument @code{pathlist} supersedes the default search directories,
+so if the path list is given, FILE_SEARCH searches only the ones specified,
+and not any of the default search directories.
+Even if there is only one directory in @code{pathlist}, it must still be given as a one-element list.
+@c INCLUDE THE FOLLOWING EXAMPLE ??? OR NOT REALLY NEEDED ???
+@c For example,
+@c @example
+@c file_search ("neumann", ["/home/wfs/special/###.mac"]);
+@c @end example
+@c searches for a file named @code{neumann.mac} in one directory,
+@c @code{/home/wfs/special}.
+
+FILE_SEARCH is invoked by the LOAD function with FILE_SEARCH_MAXIMA and FILE_SEARCH_LISP
+as the search directories.
+FILE_SEARCH first checks if the actual name passed exists,
+before substituting it in the various patterns. See FILE_SEARCH_MAXIMA concerning file search patterns.
+
+The user may modify the default search directories. See FILE_SEARCH_MAXIMA.
+
+@end defun
+
+@defvar FILE_SEARCH_MAXIMA
+@defvarx FILE_SEARCH_LISP
+@defvarx FILE_SEARCH_DEMO
+These variables specify lists of directories to be searched
+by LOAD, DEMO, and some other Maxima functions.
+The default values of these variables
+name various directories in the Maxima installation.
+
+The user can modify these variables,
+either to replace the default values or to append additional directories.
+For example,
+
 @example
-"/home/wfs/###.@{o,lisp,mac,mc@}"
-"/home/@{wfs,joe@}/###.@{o,lisp,mac,mc@}"
+file_search_maxima: ["/usr/local/foo/###.mac",
+    "/usr/local/bar/###.mac"]$
 @end example
-The '###' is replaced by the actual filename passed.
-File_SEARCH first checks if the actual name passed exists,
-before substituting it in the various patterns.
+
+replaces the default value of FILE_SEARCH_MAXIMA,
+while
+
+@example
+file_search_maxima: append (file_search_maxima,
+    ["/usr/local/foo/###.mac", "/usr/local/bar/###.mac"])$
+@end example
+
+appends two additional directories.
+
+Multiple filename extensions and multiple paths can be specified by
+special ``wildcard'' constructions.
+The string @code{###} expands into the sought-after name,
+while a comma-separated list enclosed in curly braces @code{@{foo,bar,baz@}} expands
+into multiple strings.
+For example, supposing the sought-after name is @code{neumann},
+
+@example
+"/home/@{wfs,gcj@}/###.@{lisp,mac@}"
+@end example
+
+expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
 
 @end defvar
 @c @node FILE_STRING_PRINT, FILE_TYPE, FILE_SEARCH, Input and Output
