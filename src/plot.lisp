@@ -454,8 +454,11 @@ setrgbcolor} def
 		  (or mexpr (merror "Undefined function ~a" expr))
 		(coerce `(lambda ,(cdr args)
 			   (declare (special ,@(cdr args)))
-			   (let (($ratprint nil))
-			     ($float ($realpart (meval* ',(nth 2 mexpr))))))
+			   (let* (($ratprint nil)
+				  (result ($realpart (meval* ',(nth 2 mexpr)))))
+			     (if ($numberp result)
+				 ($float result)
+				 nil)))
 			   'function)))))
 	(t
 	 (let ((vars (or lvars ($sort ($listofvars expr))))
@@ -906,8 +909,24 @@ setrgbcolor} def
     ($getrange tem (cddr range))
     ($psdraw_curve tem)
     ($psaxes ($rest range))
-    (p "showpage")
+    (p "showpage")		;; IS THIS NEEDED ??? ($viewps WILL APPEND A showpage TOO.)
     ($viewps)))
+
+;; do-ps-created-date was cribbed from the Common Lisp Cookbook -- Dates and Times.
+;; See: http://cl-cookbook.sourceforge.net/dates_and_times.html
+
+(defun do-ps-created-date (my-stream)
+  (defconstant *day-names* '("Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun"))
+  (multiple-value-bind 
+    (second minute hour date month year day-of-week dst-p tz)
+    (get-decoded-time)
+    (format my-stream "%%CreatedDate: ~2,'0d:~2,'0d:~2,'0d ~a, ~d/~2,'0d/~d (GMT~@d)~%"
+      hour minute second (nth day-of-week *day-names*) month date year (- tz))))
+
+(defun do-ps-trailer ()
+  (p "showpage")
+  (p "%%Trailer")
+  (p "%%EOF"))
 
 
 (defvar $gnuplot_command "mgnuplot")
@@ -919,10 +938,15 @@ setrgbcolor} def
 		    (i 0) plot-format file plot-name
 		    ($plot_options $plot_options))
   (dolist (v options) ($set_plot_option v))
-  (or ($listp fun ) (setf fun `((mlist) ,fun)))
+
+  ;; IF NOT COMMENTED, plot2d(expr,range,[plot_format,ps]) GENERATES BAD POSTSCRIPT (SEE BUG REPORT #834729)
+  ;; (or ($listp fun ) (setf fun `((mlist) ,fun)))	
+
   (cond ((eq (cadr fun) '$parametric)
 	 (or range (setq range (nth 4 fun)))
 	 (setf fun `((mlist) ,fun))))
+  (cond ((eq ($get_plot_option '$PLOT_FORMAT 2) '$ps)
+         (return-from $plot2d (apply '$plot2d_ps fun range options))))
   (cond ((eq ($get_plot_option '$PLOT_FORMAT 2) '$openmath)
          (return-from $plot2d (apply '$plot2dOpen fun range options))))
   (check-range range)
@@ -1226,7 +1250,29 @@ setrgbcolor} def
 	(t (setq do-prolog t)))
   (or $pstream (setq $pstream (open "maxout.ps" :direction :output :if-exists :supersede)))
   (cond (do-prolog
-	  (p "%!")
+	  (p "%!PS-Adobe-2.0")
+	  (p "%%Title: Maxima 2d plot")		;; title could be filename and/or plot equation
+	  (p "%%Creator: Maxima version:" *autoconf-version* "on" (lisp-implementation-type))
+	  (do-ps-created-date $pstream)
+	  (p "%%DocumentFonts: Helvetica")
+
+	  ;; Put the lower left corner of the bounding box at $ps_translate,
+	  ;; and put the upper right corner at ($ps_translate + $window_size).
+	  (p "%%BoundingBox:" 
+	     (round (nth 1 $ps_translate))
+	     (round (nth 2 $ps_translate))
+	     (round (+ (nth 1 $ps_translate) (nth 1 $window_size)))
+	     (round (+ (nth 2 $ps_translate) (nth 2 $window_size))))
+
+	  (p "%%Orientation: Portrait")
+	  (p "%%Pages: 1")
+	  (p "%%EndComments")
+	  (p "%%BeginPrologue")
+	  (p "%%EndPrologue")
+	  (p "%%BeginSetup")
+	  (p "%%PaperSize: Letter")
+	  (p "%%EndSetup")
+	  (p "%%Page: 1 1")
 	  (p  (* .5 (nth 1 $window_size))
 	     (* .5 (nth 2 $window_size))
 	     "translate"
@@ -1323,7 +1369,7 @@ setrgbcolor} def
 
 (defun $viewps ( &optional file)
   (cond  ((and (streamp $pstream))
-	  ($pscom "showpage")
+	  (do-ps-trailer)
 	  (force-output $pstream)))
   (cond (file (setq file (maxima-string file)))
 	(t(setq file "maxout.ps")
