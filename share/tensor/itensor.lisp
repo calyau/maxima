@@ -840,23 +840,29 @@
 
 ;; Contract a single tensor with itself
 (defun contract5 (e)
-  (prog (cov con)
-    (setq cov (contractinside (derat (cadr e))) con (derat (caddr e)))
-    ; Calling contract2 here won't do the trick as it messes up the
-    ; order of indices. So we remove indices that appear both in cov
-    ; and in con the hard way, with a do loop.
-    (do
-      ((i cov (cdr i)))
-      ((null i))
-      (cond
-        ((not (atom (car i))))
-        (
-          (member (car i) con)
-          (setq con (delete (car i) con) cov (delete (car i) cov))
+  (cond
+    ((memq (caar e) christoffels) e)
+    (
+      t
+      (prog (cov con)
+        (setq cov (contractinside (derat (cadr e))) con (derat (caddr e)))
+        ; Calling contract2 here won't do the trick as it messes up the
+        ; order of indices. So we remove indices that appear both in cov
+        ; and in con the hard way, with a do loop.
+        (do
+          ((i cov (cdr i)))
+          ((null i))
+          (cond
+            ((not (atom (car i))))
+            (
+              (member (car i) con)
+              (setq con (delete (car i) con) cov (delete (car i) cov))
+            )
+          )
         )
+        (return (nconc (list (car e) cov con) (cdddr e)))
       )
     )
-    (return (nconc (list (car e) cov con) (cdddr e)))
   )
 )
 ;  (
