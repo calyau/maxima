@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.12 2002-09-18 17:07:44 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.13 2002-09-19 16:19:47 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -20,7 +20,7 @@ proc resizeMaxima { win width height } {
 proc packBoth {fr browser} {
     pack forget $fr $browser
     pack $fr -expand 1 -fill both -side top
-    pack $browser -side bottom -fill x
+    pack $browser -side bottom -expand 1 -fill both
 }
 
 proc CMeval { w } {
@@ -81,11 +81,17 @@ proc acceptMaxima { win port filter } {
 proc openMaxima { win filter } {
     global maxima_priv env maxima_default
 
+    if {$maxima_priv(localMaximaServer) == ""} {
+	return -code error "Could not start Maxima - empty command"
+    }
+
     set port $maxima_default(iLocalPort)
     set port [acceptMaxima $win $port $filter]
     if { $port >= 0 } {
 	set com ""
-	# if {$maxima_priv(platform) == "cygwin"} {set com "/bin/bash "}
+	set command [list eval exec]
+	if {$maxima_priv(platform) == "cygwin"} {lappend command "/bin/bash"}
+
 	append com    $maxima_priv(localMaximaServer)
 	regsub PORT $com $port com
 	if { [info exists env(MAXIMA_INT_INPUT_STRING)] } {
@@ -94,13 +100,13 @@ proc openMaxima { win filter } {
 	    #puts env(MAXIMA_INT_INPUT_STRING)=$env(MAXIMA_INT_INPUT_STRING)
 	}
 	#puts com=$com
-
-	if { [catch { eval exec $com } err ] } {
+	lappend command  $com
+	if { [catch $command err ] } {
 	    #mike Must return an error to stop runOneMaxima from continuing
 	    return -code error "Can't execute $com\n$err"
 	}
     } else {
-	return -code error "could not open a socket "
+	return -code error "Could not open a socket "
     }
 }
 
@@ -134,9 +140,13 @@ proc closeMaxima { win } {
 	    catch {
 		close $maximaSocket
 	    } err
-	    # puts stdout  "Closed socket $maximaSocket\n$err"
+	    gui status "Closed socket $maximaSocket: $err"
 	    unset maximaSocket
+	    after 500
+	    # Maxima takes time to shutdown?
 	}
+    } else {
+	# tide_failure "no socket $win"
     }
 
     if {[info exists pid]} {
@@ -145,9 +155,13 @@ proc closeMaxima { win } {
 	    catch {
 		CMkill -TERM $pid
 	    } err
-	    # puts stdout "Killed process '$pid'\n$err"
+	    gui status "Killed process '$pid': $err"	    
 	    unset pid
+	    # Maxima takes time to shutdown?
+	    after 500
 	}
+    } else {
+	# tide_failure "no pid $win"
     }
 
     if {[info exists pdata]} {
@@ -280,28 +294,33 @@ proc runOneMaxima { win } {
     while { $pid == -1 } {
 	set af [after $maxima_priv(timeout) oset $win pid -1 ]
 	# puts "waiting pid=$pid"
+	gui status "Starting Maxima"
 	vwait [oloc $win pid]
 	after cancel $af
 	if { $pid  == -1 } {
-	    if {[tide_yesno {Starting Maxima timed out.  Wait longer?}]} {
+	    if {[tide_yesno {Starting maxima timed out.  Wait longer?}]} {
 		continue
 	    } else {
-		closeMaxima $win
-		set err   "Staring Maxima timed out"
-		if {![ catch {oget $win socket} sock] && \
-			 [info exists pdata(maximaInit,$sock)] } {
+		catch {closeMaxima $win}
+		set err   "Starting Maxima timed out"
+		if {![catch {oget $win socket} sock] && \
+			[info exists pdata(maximaInit,$sock)] } {
 		    append err : $pdata(maximaInit,$sock)
 		}
 		return -code error $err
 	    }
 	}
     }
-    set res [list [oget $win pid] [oget $win socket] ]
-    set sock [oget $win socket]
 
+    if {[catch {oget $win socket} sock]} {
+	return -code error "Failed to start Maxima"
+    }
+    gui status "Started Maxima"
+
+    set res [list [oget $win pid] $sock ]
+    global pdata
     set pdata(maxima,socket) $sock
     fileevent $sock readable  [list maximaFilter $win $sock]
-
     return $res
 
 }
@@ -433,6 +452,7 @@ proc CMkill {  signal pid } {
 
     # Windows pids can be negative
     if {[string is int $pid]} {
+	gui status "Signaling $pid with $signal"
 	if {$tcl_platform(platform) == "windows" } {
 	    winkill -pid $pid -signal $signal
 	} else {
@@ -442,14 +462,13 @@ proc CMkill {  signal pid } {
 }
 
 proc CMinterrupt { win } {
-    global maxima_priv
-    oget $win pid
-    if {[info exists pid] && $pid != ""} {
+
+    set pid [oget $win pid]
+    if {$pid != ""} {
 	CMkill   -INT $pid
     }
     CMresetFilter $win
 }
-
 
 proc doShowPlot { w data } {
     global maxima_default
