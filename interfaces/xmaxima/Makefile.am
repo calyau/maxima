@@ -4,7 +4,7 @@ xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png 
 bin_SCRIPTS = xmaxima
 
 XMAXIMA_REAL_SOURCES = xmaxima.tcl xmaxima-paths.tcl xmaxima-trailer.tcl
-XMAXIMASOURCES = $(XMAXIMA_REAL_SOURCES) autoconf-variables.tcl
+XMAXIMASOURCES = xmaxima.tcl autoconf-variables.tcl xmaxima-paths.tcl xmaxima-trailer.tcl
 
 xmaxima: $(XMAXIMASOURCES)
 	rm -f xmaxima && \
