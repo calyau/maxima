@@ -69,11 +69,11 @@ Rows tried 71
 (%o6)                          20
 (%i7) table:todd_coxeter_state[2]$
 (%i8) table[1];
-(%o8) {Array: (SIGNED-BYTE 30) #(0 2 1 3 7 6 5 4 8 11 17 9 12 14 #
+(%o8) @{Array: (SIGNED-BYTE 30) #(0 2 1 3 7 6 5 4 8 11 17 9 12 14 #
 
 13 20 16 10 18 19 15 0 0 0 0 0 0 0 0 0 0 0 0
 
-  0 0 0)}
+  0 0 0)@}
 
 @end example
 
