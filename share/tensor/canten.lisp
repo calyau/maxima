@@ -1,6 +1,6 @@
 ;;; -*- Mode:LISP; Package:MACSYMA -*-
 ;	** (c) Copyright 1979 Massachusetts Institute of Technology **
-(in-package 'maxima)
+(in-package "MAXIMA")
 
 
 

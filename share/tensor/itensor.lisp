@@ -1,6 +1,6 @@
 ;;; -*- Mode:LISP; Package:MACSYMA -*-
 ;; (based on itensor.116 ,117)
-(in-package 'maxima)
+(in-package "MAXIMA")
 
 (macsyma-module itensor) ;; added 9/24/82 at UCB
 ;	** (c) Copyright 1981 Massachusetts Institute of Technology **
@@ -108,10 +108,10 @@
 	 (CONS
 	  SMLIST
 	  (MAPCAR 
-	   '(LAMBDA (E) 
+	   #'(LAMBDA (E) 
 	     (COND ((SETQ TMP (ZL-GET E 'CONTRACTIONS))
 		    (CONS SMLIST
-			  (MAPCAR '(LAMBDA (Z) 
+			  (MAPCAR #'(LAMBDA (Z) 
 					   (COND ((EQ (CAR Z)
 						      '/ )
 						  (LIST SMLIST E))
@@ -244,7 +244,7 @@
        (COND
 	((OR (ATOM E) (EQ (CAAR E) 'RAT)) (SDIFF E X))
 	((RPOBJ E)
-	 (SETQ TEMP (MAPCAR '(LAMBDA (V) (LIST '(MTIMES)
+	 (SETQ TEMP (MAPCAR #'(LAMBDA (V) (LIST '(MTIMES)
 					       (LIST '($CHR2 SIMP)
 						     (LIST SMLIST D X)
 						     (LIST SMLIST V))
@@ -262,7 +262,7 @@
 		'(MTIMES)
 		-1.
 		(CONS '(MPLUS)
-		      (NCONC (MAPCAR '(LAMBDA (V) 
+		      (NCONC (MAPCAR #'(LAMBDA (V) 
 					      (LIST '(MTIMES)
 						    (LIST '($CHR2 SIMP)
 							  (LIST SMLIST
@@ -272,7 +272,7 @@
 								D))
 						    (COVSUBST D V E)))
 				     (CDADR E))
-			     (MAPCAR '(LAMBDA (V) 
+			     (MAPCAR #'(LAMBDA (V) 
 					      (LIST '(MTIMES)
 						    (LIST '($CHR2 SIMP)
 							  (LIST SMLIST
@@ -642,7 +642,7 @@
        (progn (makelabel $OUTCHAR)
               (cond ($DISPFLAG
                      (displa (list '(MLABLE) LINELABLE (ishow (specrepcheck f))))
-                     (setq $DISPFLAG nil)))
+                     (setq $DISPFLAG T)))
               f))
 
 (DEFUN ISHOW (F) 
@@ -984,7 +984,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	(CONS
 	 '(MTIMES)
 	 (MAPCAR
-	  '(LAMBDA (X) 
+	  #'(LAMBDA (X) 
 	    (COND ((RPOBJ X)
 		   (NCONC (LIST (CAR X)                              ;($F SIMP)
 				(CONS SMLIST

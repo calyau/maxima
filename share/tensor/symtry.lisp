@@ -1,6 +1,6 @@
 ;;; -*- Mode:LISP; Package:MACSYMA -*-
 ;;; symtry 100 Feb 12, 1982
-(in-package 'maxima)
+(in-package "MAXIMA")
 
 ;	** (c) Copyright 1979 Massachusetts Institute of Technology **
 
@@ -269,7 +269,7 @@
 		   lcontr (length (cdaddr f))
 		   lderiv (length (cdddr f)))
 	     (return (list (car (least (intersect indices free-indices)))
-		           (f+ lcov lcontr lderiv)
+		           (f+ lcov (f+ lcontr lderiv) )
 			   lderiv lcov name))))
 
 (declare-top (unspecial free-indices))
