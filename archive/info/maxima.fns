@@ -384,6 +384,7 @@
 \entry {\code {GAMMALIM}}{102}
 \entry {\code {GAUSS}}{149}
 \entry {\code {GCD}}{81}
+\entry {\code {GCDEX}}{82}
 \entry {\code {GCFACTOR}}{82}
 \entry {\code {GEN_LAGUERRE}}{108}
 \entry {\code {GENDIFF}}{117}
@@ -452,7 +453,7 @@
 \entry {\code {JACOBI_P}}{108}
 \initial {K}
 \entry {\code {KDELTA}}{172}
-\entry {\code {KEEPFLOAT}}{82}
+\entry {\code {KEEPFLOAT}}{83}
 \entry {\code {KILL}}{14}
 \entry {\code {KILLCONTEXT}}{75}
 \entry {\code {KOSTKA}}{195}
@@ -513,7 +514,7 @@
 \entry {\code {LOPOW}}{36}
 \entry {\code {LORENTZ}}{173}
 \entry {\code {LPART}}{36}
-\entry {\code {LRATSUBST}}{82}
+\entry {\code {LRATSUBST}}{83}
 \entry {\code {LRICCICOM}}{177}
 \entry {\code {LSUM}}{40}
 \entry {\code {LTREILLIS}}{195}
@@ -558,7 +559,7 @@
 \entry {\code {MODE_CHECKP}}{238}
 \entry {\code {MODE_DECLARE}}{238}
 \entry {\code {MODE_IDENTITY}}{239}
-\entry {\code {MODULUS}}{82}
+\entry {\code {MODULUS}}{83}
 \entry {\code {MON2SCHUR}}{196}
 \entry {\code {MONO}}{168}
 \entry {\code {MONOMIAL_DIMENSIONS}}{168}
@@ -715,7 +716,7 @@
 \entry {\code {RATCOEF}}{84}
 \entry {\code {RATDENOM}}{84}
 \entry {\code {RATDENOMDIVIDE}}{84}
-\entry {\code {RATDIFF}}{84}
+\entry {\code {RATDIFF}}{85}
 \entry {\code {RATDISREP}}{85}
 \entry {\code {RATEINSTEIN}}{173}
 \entry {\code {RATEPSILON}}{85}
@@ -725,17 +726,17 @@
 \entry {\code {RATNUMER}}{86}
 \entry {\code {RATNUMP}}{86}
 \entry {\code {RATP}}{86}
-\entry {\code {RATPRINT}}{86}
+\entry {\code {RATPRINT}}{87}
 \entry {\code {RATRIEMAN}}{173}
 \entry {\code {RATRIEMANN}}{174}
-\entry {\code {RATSIMP}}{86}
+\entry {\code {RATSIMP}}{87}
 \entry {\code {RATSIMPEXPONS}}{87}
 \entry {\code {RATSUBST}}{87}
-\entry {\code {RATVARS}}{87}
-\entry {\code {RATWEIGHT}}{87}
+\entry {\code {RATVARS}}{88}
+\entry {\code {RATWEIGHT}}{88}
 \entry {\code {RATWEIGHTS}}{88}
 \entry {\code {RATWEYL}}{88}
-\entry {\code {RATWTLVL}}{88}
+\entry {\code {RATWTLVL}}{89}
 \entry {\code {READ}}{65}
 \entry {\code {READONLY}}{65}
 \entry {\code {REALONLY}}{133}
@@ -746,7 +747,7 @@
 \entry {\code {RECTTOPOLAR}}{147}
 \entry {\code {REFCHECK}}{255}
 \entry {\code {REM}}{217}
-\entry {\code {REMAINDER}}{88}
+\entry {\code {REMAINDER}}{89}
 \entry {\code {REMARRAY}}{152}
 \entry {\code {REMBOX}}{39}
 \entry {\code {REMCON}}{174}
@@ -770,7 +771,7 @@
 \entry {\code {RESOLVANTE_VIERER}}{207}
 \entry {\code {REST}}{229}
 \entry {\code {RESTORE}}{17}
-\entry {\code {RESULTANT}}{88}
+\entry {\code {RESULTANT}}{89}
 \entry {\code {RETURN}}{251}
 \entry {\code {REVEAL}}{65}
 \entry {\code {REVERSE}}{229}
@@ -900,7 +901,7 @@
 \entry {\code {TOBREAK}}{17}
 \entry {\code {TODD_COXETER}}{209}
 \entry {\code {TOPLEVEL}}{17}
-\entry {\code {TOTALDISREP}}{89}
+\entry {\code {TOTALDISREP}}{90}
 \entry {\code {TOTIENT}}{188}
 \entry {\code {TPARTPOL}}{208}
 \entry {\code {TR_ARRAY_AS_REF}}{241}

@@ -22,41 +22,11 @@
 					    "../{src,share,share1,sharem}/foo.{mc,mac}"))))
     (declare (special $system))
     (setq tem ($file_search1 file '((mlist)
-				    $file_search_lisp
+				    $FILE_SEARCH_MAXIMA
 				    $system)))
     (and tem ($batchload tem))))
 
-#+obsolete
-(defun aload (file &aux *load-verbose* tem tried)
-  (let ((in file)
-	(file (merge-pathnames (format nil "~(~a~)" file)
-			 #+kcl (concatenate 'string si::*system-directory*
-					    "../src/foo.o")
-			 #-kcl
-			 (get :maxima :object-path)))
-	(sp (get :maxima :source-path)))
-    (cond ((let (errset) (errset (load file))))
-	  ((let (errset) (push file tried)
-		;;let user know if loading non default
-	     ;(setq *load-verbose* t)
-	     (and sp
-		  (push (setq tem (make-pathname :defaults sp
-					       :name (pathname-name file)))
-			tried)
-		  (errset (load tem)))))
-	  ((let (errset)
-	    (setq tem
-		  (make-pathname :defaults file
-				 :type
-				 (if (setq tem (get :maxima :source-path))
-				     (pathname-type tem)
-				   "lisp")
-				 ))
-	    
-	    (push tem tried)
-	     (errset (load  tem))))
-	  (t (let ((v ($file_search1 in '((mlist) $file_search_lisp))))
-                (load v))))))
+
 
 
 
@@ -94,13 +64,14 @@
 	      'mexpr)
 	      ))
 
-;	  (setf (macro-function fun)
-;		  #'(lambda (&rest l)
-;		      (aload file)
-;		      (setq l (car l))
-;		      (list 'quote
-;			    (meval* (cons (list (car l))
-;					  (cdr l))))))))
+;foo(x,y):=..
+(defun $auto_mexpr (fun file)
+    (unless (mget fun 'mexpr)
+          (mputprop fun
+              `((LAMBDA) ((MLIST) ((MLIST) |_l|))
+                   ((MPROGN) (($aload_mac) ',file ) (($APPLY) ',fun |_l|)))
+	      'mexpr)
+	      ))
 
 
 

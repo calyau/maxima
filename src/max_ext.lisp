@@ -72,7 +72,13 @@
 (autof '$specint '|hypgeo|)
 (autof 'HGFSIMP-EXEC '|hyp|)
 (autof '$hgfred '|hyp|)
+;; autoload mexpr from a .lsp file
 (auto-mexpr '$trigrat '|trigrat|)
+;; autoload from a .mc file
+($auto_mexpr '$gcdex '|gcdex|)
+
+
+
 
 
 

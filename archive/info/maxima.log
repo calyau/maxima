@@ -1,10 +1,6 @@
-This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdftex 1999.7.19)  7 MAY 2001 03:10
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  4 JUN 2001 01:37
 **maxima.texi
-(maxima.texi[/usr/share/texmf/pdftex/config/pdftex.cfg]
-Babel <v3.6x> and hyphenation patterns for american, french, german, ngerman, n
-ohyphenation, loaded.
-(texinfo.tex Loading texinfo [version 1999-04-25.15]:
-(/usr/share/texmf/pdftex/plain/misc/pdfcolor.tex) Basics,
+(maxima.texi (texinfo.tex Loading texinfo [version 1999-04-25.15]: Basics,
 \bindingoffset=\dimen16
 \normaloffset=\dimen17
 \pagewidth=\dimen18
@@ -23,14 +19,14 @@ ohyphenation, loaded.
 \mil=\dimen25
 \exdentamount=\skip19
 \inmarginspacing=\skip20
- pdf,
+
+pdf,
 \tempnum=\count26
 \lnkcount=\count27
 \filename=\toks14
 \filenamelength=\count28
 \pgn=\count29
- (maxima.toc)
-(maxima.toc) fonts,
+ fonts,
 \sffam=\fam8
 \mainmagstep=\count30
 \fontdepth=\count31
@@ -67,15 +63,15 @@ ohyphenation, loaded.
 \chapheadingskip=\skip27
 \secheadingskip=\skip28
 \subsecheadingskip=\skip29
-
-toc,
+ toc,
 \tocfile=\write0
 \contentsrightmargin=\skip30
 \savepageno=\count41
 \lastnegativepageno=\count42
 \shortappendixwidth=\dimen32
 \tocindent=\dimen33
- environments,
+
+environments,
 \dblarrowbox=\box19
 \longdblarrowbox=\box20
 \pushcharbox=\box21
@@ -147,29 +143,12 @@ and turning on texinfo input format.) (maxima.aux)
 
 \openout8 = `maxima.pg'.
 
-[/usr/share/texmf/dvips/config/pdftex.map]] ()
+] ()
 \openout0 = `maxima.toc'.
 
- Chapter 1
-Warning (ext1): destination with the same identifier (name{1@}) already exists!
-
-\pdfmkdest #1->\pdfdest name{#1@}
-                                  xyz
-\onepageout ...i \ifpdf \pdfmkdest {\the \pageno }
-                                                  \fi \ifcropmarks \egroup \...
-<output> {\onepageout {\pagecontents \PAGE }
-                                            }
-<to be read again> 
-                   \footnoteno 
-\supereject ->\par \penalty -20000\footnoteno 
-                                              =0 
-\pchapsepmacro ->\chappager 
-                            \ifodd \pageno \else \hbox to 0pt{} \chappager \fi 
-...
-l.327 @chapter Introduction to MAXIMA
-                                      [1] [2] (Introduction.texi [3] [4]
-[5]) Chapter 2 [6] (Help.texi [7] [8] [9]) Chapter 3 [10] (Command.texi
-[11] [12] [13] [14] [15] [16]
+ Chapter 1 [1]
+[2] (Introduction.texi [3] [4] [5]) Chapter 2 [6] (Help.texi [7] [8] [9])
+Chapter 3 [10] (Command.texi [11] [12] [13] [14] [15] [16]
 Underfull \hbox (badness 10000) in paragraph at lines 460--464
  []@textrm - mean-ing SET STA-TUS. It can be used to SSTA-TUS( FEA-TURE,
 
@@ -239,7 +218,7 @@ t " @textrm may be checked with
 .etc.
 
 [74]) Chapter 11 [75] [76] (Polynomials.texi [77] [78] [79] [80] [81]
-Underfull \hbox (badness 2050) in paragraph at lines 386--389
+Underfull \hbox (badness 2050) in paragraph at lines 411--414
  []@textrm the high-est ex-plicit ex-po-nent of v in exp. Some-times it may be 
 nec-es-
 
@@ -376,8 +355,8 @@ Overfull \hbox (0.746pt too wide) in paragraph at lines 52--52
 
 [105] [106]
 Underfull \hbox (badness 3029) in paragraph at lines 175--183
- @textrm load(@texttt "@textrm specfun@texttt "@textrm ). See [][][AS-SOC[]LEGE
-NDRE[]Q], page 107[][], [][][LEG-EN-DRE[]P],
+ @textrm load(@texttt "@textrm specfun@texttt "@textrm ). See [AS-SOC[]LEGENDRE
+[]Q], page 107, [LEG-EN-DRE[]P],
 
 @hbox(8.2125+2.73749)x433.62, glue set 3.1191
 .@glue(@leftskip) 28.90755
@@ -786,14 +765,12 @@ elter).[] |
 [268])) [269] [270] (maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6]
 [-7] [-8] ) 
 Here is how much of TeX's memory you used:
- 2384 strings out of 63189
- 29640 string characters out of 966977
- 57180 words of memory out of 263001
- 2885 multiletter control sequences out of 10000+60000
+ 1685 strings out of 63548
+ 23278 string characters out of 972269
+ 53378 words of memory out of 263001
+ 2491 multiletter control sequences out of 10000+60000
  30088 words of font info for 104 fonts, out of 400000 for 1000
  19 hyphenation exceptions out of 1000
  15i,6n,13p,247b,310s stack positions out of 300i,100n,500p,50000b,10000s
-<cmbxti10.pfb><cmr12.pfb><cmtt12.pfb><cmr9.pfb><cmti9.pfb><cmtt9.pfb
-><cmmi10.pfb><cmb10.pfb><cmsy10.pfb><cmss10.pfb><cmbx10.pfb><cmti10.pfb><cmsl10
-.pfb><cmsltt10.pfb><cmtt10.pfb><cmr10.pfb><cmbx12.pfb>
-Output written on maxima.pdf (279 pages, 867062 bytes).
+
+Output written on maxima.dvi (279 pages, 1000908 bytes).

@@ -351,6 +351,31 @@ form.  This will sometimes speed the calculation if gcds are not
 required.
 
 @end defun
+
+@defun GCDEX (f,g)
+returns a list containing [a,b,u] where u is the gcd of f and g,
+and u = a*f + b*g.   The arguments f and g should b univariate polynomials,
+since we need to be in a principal ideal domain for this to work.   The
+algorithm is simply the euclidean algorithm, where we have a sequence
+of lis[i]:[a[i],b[i],r[i]] .. which are all perpendicular
+to [f,g,-1] and the next one is built as
+if q = quotient(r[i]/r[i+1]) then lis[i+2]:lis[i]-q*lis[i+1], and it
+terminates at lis[i+1] when the remainder r[i+2] is zero.
+@example
+(C34) gcdex(x^2+1,x^3+4);
+
+			   (- x - 4) x + 1  x + 4
+(D34) 			  [---------------, -----, 1]
+				 17	     17
+
+(C35) ratsimp(d34.[x^2+1,x^3+4,-1]);
+(D35) 				       0
+
+@end example
+
+
+@end defun
+
 @c @node GCFACTOR, GFACTOR, GCD, Polynomials
 @c @unnumberedsec phony
 @defun GCFACTOR (n)
