@@ -451,24 +451,25 @@ the double-single-quotes operator @code{'@w{}'} defeats quotation.
 
 @end defun
 
-@defun compile_lisp_file ("input filename")
-which takes an optional second
-argument of "output filename," can be used in conjunction with
-
-@example
-TRANSLATE_FILE("filename").
-@end example
-For convenience you might define
-
-@example
-Compile_and_load(FILENAME):=
-    LOAD(COMPILE_LISP_FILE(TRANSLATE_FILE(FILENAME)[2]))[2]);
-@end example
-
-These file-oriented commands are to be preferred over the use of
-@code{compile}, @code{compfile}, and the @code{translate} @code{save} combination.
-
-@end defun
+@c OBSOLETE, NONEXISTENT FUNCTION. CUT IT ON NEXT PASS THROUGH.
+@c @defun compile_lisp_file ("input filename")
+@c which takes an optional second
+@c argument of "output filename," can be used in conjunction with
+@c 
+@c @example
+@c TRANSLATE_FILE("filename").
+@c @end example
+@c For convenience you might define
+@c 
+@c @example
+@c Compile_and_load(FILENAME):=
+@c     LOAD(COMPILE_LISP_FILE(TRANSLATE_FILE(FILENAME)[2]))[2]);
+@c @end example
+@c 
+@c These file-oriented commands are to be preferred over the use of
+@c @code{compile}, @code{compfile}, and the @code{translate} @code{save} combination.
+@c 
+@c @end defun
 
 @defun define (f(x1, ...), body)
 is equivalent to f(x1,...):='@w{}'(body) but when
@@ -771,7 +772,7 @@ Translates a file of Maxima code into a file of Lisp code.
 @code{translate_file} returns a list of three filenames:
 the name of the Maxima file, the name of the Lisp file, and the name of file
 containing additional information about the translation.
-@code{translate_file} does not quote its arguments.
+@code{translate_file} evaluates its arguments.
 
 @code{translate_file ("foo.mac"); load("foo.LISP")} is the same as
 @code{batch ("foo.mac")} except for certain restrictions,
@@ -800,14 +801,17 @@ for tracking down bugs in translated code.
 The @code{UNLISP} file is always written
 to the same directory from which the Maxima input comes.
 
+@code{translate_file} emits Lisp code which causes
+some declarations and definitions to take effect as soon
+as the Lisp code is compiled.
+See @code{compile_file} for more on this topic.
+
 @c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
 See also @code{tr_array_as_ref}, @code{tr_bind_mode_hook}, 
 @code{tr_bound_function_applyp}, @code{tr_exponent}, @code{tr_file_tty_messagesp}, 
 @code{tr_float_can_branch_complex}, @code{tr_function_call_default}, 
-@code{tr_gen_tags}, @code{tr_numer}, @code{tr_optimize_max_loop}, 
-@code{tr_predicate_brain_damage}, 
+@code{tr_numer}, @code{tr_optimize_max_loop}, 
 @code{tr_semicompile}, @code{tr_state_vars}, 
-@code{tr_true_name_of_file_being_translated},
 @code{tr_warnings_get}, @code{tr_warn_bad_function_calls}, @code{tr_warn_fexpr}, 
 @code{tr_warn_meval}, @code{tr_warn_mode}, @code{tr_warn_undeclared}, 
 @code{tr_warn_undefined_variable}, and @code{tr_windy}.
@@ -823,19 +827,32 @@ rather than the translated version.
 
 @end defvar
 
+@c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
+@c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
 @defvar tr_array_as_ref
 Default value: @code{true}
 
-When @code{tr_array_as_ref} is @code{true} runtime code uses the value
-of the variable as the array.
+If @code{translate_fast_arrays} is false, array references in
+Lisp code emitted by @code{translate_file} are affected by @code{tr_array_as_ref}.
+When @code{tr_array_as_ref} is @code{true},
+array names are evaluated,
+otherwise array names appear as literal symbols in translated code.
+
+@code{tr_array_as_ref} has no effect if @code{translate_fast_arrays} is @code{true}.
 
 @end defvar
 
+@c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
+@c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
 @defvar tr_bound_function_applyp
 Default value: @code{true}
 
 When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning if a bound
-variable is found being used as a function.
+variable (such as a function argument) is found being used as a function.
+@code{tr_bound_function_applyp} does not affect the code generated in such cases.
+
+For example, an expression such as @code{g (f, x) := f (x+1)} will trigger
+the warning message.
 
 @end defvar
 
@@ -850,21 +867,29 @@ file are only inserted into the UNLISP file.
 
 @end defvar
 
+@c THIS FLAG APPEARS TO HAVE NO EFFECT. SHOULD CUT OUT THIS ITEM AND RELATED CODE.
+@c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
+@c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
 @defvar tr_float_can_branch_complex
 Default value: @code{true}
 
-- States whether the arc
-functions might return complex results.  The arc functions are @code{sqrt},
-@code{log}, @code{acos}, etc.  e.g. When it is @code{true} then @code{acos(x)} will be of mode @code{any}
-even if X is of mode @code{float}. When @code{false} then @code{acos(x)} will be of mode
-@code{float} if and only if X is of mode @code{float}.
+Tells the Maxima-to-Lisp translator to assume that the functions 
+@code{acos}, @code{asin}, @code{asec}, and @code{acsc} can return complex results.
+
+The ostensible effect of @code{tr_float_can_branch_complex} is the following.
+However, it appears that this flag has no effect on the translator output.
+
+When it is @code{true} then @code{acos(x)} is of mode @code{any}
+even if @code{x} is of mode @code{float} (as set by @code{mode_declare}).
+When @code{false} then @code{acos(x)} is of mode
+@code{float} if and only if @code{x} is of mode @code{float}.
 
 @end defvar
 
 @defvar tr_function_call_default
 Default value: @code{general}
 
-- @code{false} means give up and
+@code{false} means give up and
 call @code{meval}, @code{expr} means assume Lisp fixed arg function.  @code{general}, the
 default gives code good for @code{mexprs} and @code{mlexprs} but not @code{macros}.
 @code{general} assures variable bindings are correct in compiled code.  In
@@ -876,13 +901,14 @@ translated and compiled code with the Maxima interpreter.
 
 @end defvar
 
-@defvar tr_gen_tags
-Default value: @code{false}
-
-When @code{tr_gen_tags} is @code{true}, @code{translate_file} generates a
-@code{tags} file for use by the text editor.
-
-@end defvar
+@c OBSOLETE: DECLARED IN src/transs.lisp BUT NEVER USED
+@c @defvar tr_gen_tags
+@c Default value: @code{false}
+@c 
+@c When @code{tr_gen_tags} is @code{true}, @code{translate_file} generates a
+@c @code{tags} file for use by the text editor.
+@c 
+@c @end defvar
 
 @defvar tr_numer
 Default value: @code{false}
@@ -912,14 +938,15 @@ non-terminating optimization properties.
 @c 
 @c @end defvar
 
-@defvar tr_predicate_brain_damage
-Default value: @code{false}
-
-When @code{tr_predicate_brain_damage} is @code{true}, output possible
-multiple evaluations in an attempt to interface to the @code{compare}
-package.
-
-@end defvar
+@c OBSOLETE: DECLARED IN src/transl.lisp BUT NEVER USED
+@c @defvar tr_predicate_brain_damage
+@c Default value: @code{false}
+@c 
+@c When @code{tr_predicate_brain_damage} is @code{true}, output possible
+@c multiple evaluations in an attempt to interface to the @code{compare}
+@c package.
+@c 
+@c @end defvar
 
 @defvar tr_semicompile
 Default value: @code{false}
@@ -948,17 +975,18 @@ track down bugs.
 
 @end defvar
 
-@defvar tr_true_name_of_file_being_translated
-Default value: @code{false}
+@c OBSOLETE: DECLARED IN src/transl.lisp BUT NEVER USED
+@c @defvar tr_true_name_of_file_being_translated
+@c Default value: @code{false}
+@c 
+@c @code{tr_true_name_of_file_being_translated} is bound to
+@c the quoted string form of the true name of the file most recently
+@c translated by @code{translate_file}.
+@c 
+@c @end defvar
 
-@code{tr_true_name_of_file_being_translated} is bound to
-the quoted string form of the true name of the file most recently
-translated by @code{translate_file}.
-
-@end defvar
-
-@c tr_version IS OBSOLETE: $tr_version APPEARS IN src/transs.lisp BUT 
-@c IT IS NEVER ASSIGNED A VALUE. CUT THIS OUT BUT BE SURE TO NOTE IT IN CVS LOG SUMMARY.
+@c OBSOLETE: $tr_version APPEARS IN src/transs.lisp BUT 
+@c IT IS NEVER ASSIGNED A VALUE. 
 @c @defvar tr_version
 @c 
 @c @code{tr_version} is the version number of the translator.
@@ -1022,6 +1050,10 @@ undefined global variables are seen.
 
 @end defvar
 
+@c $tr_windy IS USED IN EXACTLY ONE PLACE (def%tr $kill IN src/trans1.lisp)
+@c WHERE IT CAUSES A WARNING ABOUT USING kill. 
+@c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
+@c AND CUT OUT tr_windy FROM CODE AND DOCS.
 @defvar tr_windy
 Default value: @code{true}
 
@@ -1055,14 +1087,43 @@ off.
 @end defvar
 
 @defun compile_file (filename)
-@defunx compile_file (filename, output_filename)
-It takes @var{filename} which
-contains Maxima code, and translates this to Lisp and then compiles the
-result.  It returns a list of the names of four files: the original file, translation,
-notes on translation, and the compiled code.
+@defunx compile_file (filename, compiled_filename)
+@defunx compile_file (filename, compiled_filename, lisp_filename)
+Translates @var{filename} into Lisp,
+compiles the resulting Lisp code, 
+and, if the translation and compilation succeed, loads the compiled code into Maxima.
+
+@code{compile_file} returns a list of the names of four files:
+the original Maxima file, the Lisp translation, notes on translation, and the compiled code.
+If the compilation fails,
+the fourth item is @code{false}.
+
+@c THIS COULD BE SEEN AS A BUG. STRIKE "COMPILE" FROM EVAL-WHEN ???
+Some declarations and definitions take effect as soon
+as the Lisp code is compiled (without loading the compiled code).
+These include functions defined with the @code{:=} operator,
+macros define with the @code{::=} operator, @c HEDGE -- DON'T KNOW IF THERE IS ANOTHER WAY
+@code{declare}, @code{mode_declare}, and @code{define_variable} declarations,
+and perhaps others. @c MORE RESEARCH NEEDED HERE
+
+Assignments and function calls are not evaluated until the compiled code is loaded.
+In particular, within the Maxima file,
+assignments to the translation flags (@code{tr_numer}, etc.) have no effect on the translation.
+
+@c @code{compile_file} may mistake warnings for errors and
+@c return @code{false} as the name of the compiled code when, in fact,
+@c the compilation succeeded. This is a bug. 
+@c REPORTED AS SOURCEFORGE BUG # 1103722.
+
+@code{filename} may not contain @code{:lisp} statements.
+
+@code{compile_file} evaluates its arguments.
 
 @end defun
 
+@c declare_translated IS BROKEN -- FILE BUG REPORT
+@c FAILS AT COMPILE TIME (EXECUTED BY EVAL-WHEN)
+@c WITH COMPLAINT "symbol *DECLARED-TRANSLATED-FUNCTIONS* has no value"
 @defun declare_translated (f_1, f_2, ...)
 When translating a file of Maxima code
 to Lisp, it is important for the translator to know which functions it
