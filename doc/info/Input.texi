@@ -402,9 +402,26 @@ that missing components come from the corresponding components of
 
 FILE_SEARCH searches for the file @code{filename} and returns the path to the file
 (as a string) if it can be found; otherwise FILE_SEARCH returns FALSE.
-
 @code{FILE_SEARCH (filename)} searches in the default search directories,
 which are specified by the FILE_SEARCH_MAXIMA, FILE_SEARCH_LISP, and FILE_SEARCH_DEMO variables.
+
+FILE_SEARCH first checks if the actual name passed exists,
+before attempting to match it to ``wildcard'' file search patterns.
+See FILE_SEARCH_MAXIMA concerning file search patterns.
+
+The argument @code{filename} can be a path and file name,
+or just a file name, or, if a file search directory includes a file search pattern,
+just the base of the file name (without an extension).
+For example,
+
+@example
+file_search ("/home/wfs/special/zeta.mac");
+file_search ("zeta.mac");
+file_search ("zeta");
+@end example
+
+will all find the same file, assuming the file exists and @code{/home/wfs/special/###.mac}
+is in FILE_SEARCH_MAXIMA.
 
 @code{FILE_SEARCH (filename, pathlist)} searches only in the directories
 specified by @code{pathlist},
@@ -413,20 +430,11 @@ The argument @code{pathlist} supersedes the default search directories,
 so if the path list is given, FILE_SEARCH searches only the ones specified,
 and not any of the default search directories.
 Even if there is only one directory in @code{pathlist}, it must still be given as a one-element list.
-@c INCLUDE THE FOLLOWING EXAMPLE ??? OR NOT REALLY NEEDED ???
-@c For example,
-@c @example
-@c file_search ("neumann", ["/home/wfs/special/###.mac"]);
-@c @end example
-@c searches for a file named @code{neumann.mac} in one directory,
-@c @code{/home/wfs/special}.
-
-FILE_SEARCH is invoked by the LOAD function with FILE_SEARCH_MAXIMA and FILE_SEARCH_LISP
-as the search directories.
-FILE_SEARCH first checks if the actual name passed exists,
-before substituting it in the various patterns. See FILE_SEARCH_MAXIMA concerning file search patterns.
 
 The user may modify the default search directories. See FILE_SEARCH_MAXIMA.
+
+FILE_SEARCH is invoked by LOAD with FILE_SEARCH_MAXIMA and FILE_SEARCH_LISP
+as the search directories.
 
 @end defun
 
@@ -456,6 +464,8 @@ file_search_maxima: append (file_search_maxima,
 @end example
 
 appends two additional directories.
+It may be convenient to put such an expression in the file @code{maxima-init.mac}
+so that the file search path is assigned automatically when Maxima starts.
 
 Multiple filename extensions and multiple paths can be specified by
 special ``wildcard'' constructions.
@@ -541,83 +551,36 @@ well.
 @end defvar
 @c @node LOAD, LOADFILE, LINEL, Input and Output
 @c @unnumberedsec phony
-@c IN GREAT NEED OF CLARIFICATION AND UPDATING !!!
-@defun LOAD ("filename")
-; takes one argument, a filename represented as a
-"string" (i.e. inside quotation marks), or as list (e.g. inside square
-brackets), and locates and loads in the indicated file.
-If no directory is specified,
+@defun LOAD (filename)
+Evaluates expressions in @code{filename}, thus bringing new variables and functions into Maxima.
+To find the file,
 LOAD calls FILE_SEARCH with FILE_SEARCH_MAXIMA and FILE_SEARCH_LISP
 as the search directories.
+If LOAD succeeds, it returns the path of the file.
+Otherwise LOAD prints an error message.
 
-LOAD("EIGEN") will load the eigen package without the
-need for the user to be aware of the details of whether the package
-was compiled, translated, saved, or fassaved, i.e. LOAD will work on
-both LOADFILEable and BATCHable files.  Note: LOAD will use BATCHLOAD
-if it finds the file is BATCHable (which means that it will BATCH the
-file in "silently" without terminal output or labels).
-Other MACSYMA commands to load in files are: LOADFILE, RESTORE,
-BATCH, and DEMO.  Do DESCRIBE(command); for details.  LOADFILE and
-RESTORE work for files written with SAVE; BATCH and DEMO for those
-files written with STRINGOUT or created as lists of commands with a
-text editor.
+LOAD works equally well for Lisp code and Maxima code.
+Files created by SAVE, TRANSLATE_FILE, and COMPILE_FILE, which create Lisp code,
+and STRINGOUT, which creates Maxima code,
+can all be processed by LOAD.
+See also LOADFILE, RESTORE, BATCH, and DEMO.
+LOADFILE and RESTORE process Lisp files;
+BATCH and DEMO process Maxima files.
 
-If LOAD can't find the file, check the values of FILE_SEARCH_MAXIMA
-and FILE_SEARCH_LISP to make sure that they contain appropriate templates.
-
-@example
-(%i4) load("eigen");
-MACSYMA BUG: Unknown file type NIL
-
-Error: macsyma error
-Error signalled by MEVAL1.
-Broken at $LOAD.  Type :H for Help.
-MAXIMA>>:q
-@end example
-
-By examining the file system we find the file is actually in
-/public/maxima/share/eigen.mc.   So we add that to the file_search
-path.   This can be done at start up (in the file @code{maxima-init.mac}) or,
-else it can be done and then the system resaved
-once it has been customized for local directories and pathnames.
-At lisp level we would do
-
-@example
-(in-package "MAXIMA")
-(setq $file_search ($append (list '(mlist)
-        "/tmp/foo.mac" "/tmp/foo.mc") $file_search))
-@end example
-
-and at maxima level:
-
-@example
-(%i5) file_search:append(["/public/maxima/share/foo.mc"],
-        file_search)$
-(%i6) load("eigen");
-
-batching /usr/public/maxima/share/eigen.mc
-(%o6) 		        #/public/maxima/share/eigen.mc
-(%i7) eigenvalues(matrix([a,b],[c,d]));
-	       2		    2
-       - SQRT(D  - 2 A D + 4 B C + A ) + D + A
-(%o7) [[---------------------------------------, 
-			  2
-
-				      2			   2
-				SQRT(D  - 2 A D + 4 B C + A ) + D + A
-				-------------------------------------], [1, 1]]
-						  2
-@end example
+See FILE_SEARCH for more detail about the file search mechanism.
 
 @end defun
 @c @node LOADFILE, LOADPRINT, LOAD, Input and Output
 @c @unnumberedsec phony
 @defun LOADFILE (filename)
-loads a file as designated by its
-arguments.  This function may be used to bring back quantities that
-were stored from a prior MACSYMA session by use of the SAVE or STORE
-functions.   Specify the pathname as on your operating system.  For
-unix this would be "/home/wfs/foo.mc" for example.
+Evaluates Lisp expressions in @code{filename}.
+LOADFILE quotes its argument, so @code{filename} must be a literal string,
+not a string variable.
+Also, LOADFILE does not invoke FILE_SEARCH, so @code{filename} must include
+the file extension and as much of the path as needed to find the file.
+
+LOADFILE can process files created by SAVE, TRANSLATE_FILE, and COMPILE_FILE.
+The user may find it more convenient to use LOAD instead of LOADFILE.
 
 @end defun
 @c @node LOADPRINT, NOSTRING, LOADFILE, Input and Output
