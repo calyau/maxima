@@ -1,3 +1,93 @@
 This is the windows README file.
 
-It will contain all sorts of wonderful information.
+Binary files included with this distribution
+--------------------------------------------
+
+The windows version package of maxima includes binary files 
+from other Open Source projects also hosted on Sourceforge.
+
+gcc: 
+
+gcc.exe, cc1.exe and the files in lib/gcc-lib and include/ 
+subdirectories are from the mingw version of gcc.  This is
+available from http://prdownloads.sf.net/mingw/
+     
+
+binutils:
+
+as.exe is from the mingw (http://www.mingw.org/) port of binutils
+available from http://prdownloads.sf.net/mingw/
+
+
+gnuplot:
+
+The files wgnuplot.exe, wgnuplot.hlp and wgnuplot.mnu are from the
+Windows distribution of gnuplot from http://gnuplot.sourceforge.net
+
+
+Out of Environment Space
+------------------------
+
+When you attempt to run maxima on a Windows 9x machine
+you may get the error 
+
+    Out of environment space
+
+The following advice from Microsoft Knowledge Base Article 230205
+(http://support.microsoft.com/support/kb/articles/Q230/2/05.ASP)
+may be of assistance.
+
+CAUSE
+
+This issue can occur if you do not have enough memory in the MS-DOS 
+environment to set an environment variable. 
+
+RESOLUTION
+
+To resolve this issue, increase the default environment space available 
+for MS-DOS programs. To do this, use one of the following methods. 
+
+Modify the Environment for All MS-DOS Programs
+
+To increase the default environment space for all MS-DOS programs 
+running in Windows, edit the Shell command in the Config.sys file. 
+To do this, follow these steps: 
+
+1.  Click Start, and then click Run. 
+
+2.  In the Open box, type sysedit, and then click OK. 
+
+3.  Click the Config.sys window. 
+
+4.  At the beginning of the Shell= line, type REM, and then press 
+    the SPACEBAR. 
+
+    If the Shell= line does not exist, proceed to the next step. 
+
+5.  Press the HOME key. 
+
+6.  Type the following line to create a new Shell= line, and then 
+    press ENTER: 
+
+      SHELL=C:\COMMAND.COM /E:4096 /P 
+
+7.  On the File menu, click Save. 
+
+8.  On the File menu, click Exit. 
+
+9.  Restart the computer. 
+
+10. Modify the Environment for a Specific MS-DOS Program
+
+
+To increase the default environment space for maxima.bat, follow 
+these steps: 
+
+1.  Right-click the maxima.bat  program icon, and then click Properties. 
+
+2.  Click the Memory tab. 
+
+3.  In the Initial Environment box, type the number of kilobytes (KB) 
+    that the program requires, and then click OK. 
+
+NOTE: The maximum amount of memory that you can allocate is 4096 KB.
