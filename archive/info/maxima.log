@@ -1,4 +1,4 @@
-This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  4 JUN 2001 01:37
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  5 JUN 2001 03:34
 **maxima.texi
 (maxima.texi (texinfo.tex Loading texinfo [version 1999-04-25.15]: Basics,
 \bindingoffset=\dimen16
@@ -217,23 +217,11 @@ t " @textrm may be checked with
 .@glue 3.65 plus 1.825 minus 1.21666
 .etc.
 
-[74]) Chapter 11 [75] [76] (Polynomials.texi [77] [78] [79] [80] [81]
-Underfull \hbox (badness 2050) in paragraph at lines 411--414
- []@textrm the high-est ex-plicit ex-po-nent of v in exp. Some-times it may be 
-nec-es-
-
-@hbox(7.60416+2.12917)x433.62, glue set 2.73763
-.@glue(@leftskip) 28.90755
-.@hbox(0.0+0.0)x0.0
-.@textrm t
-.@textrm h
-.@textrm e
-.etc.
-
-[82] [83] [84] [85] [86] [87] [88] [89]) Chapter 12 [90] (Constants.texi)
-Chapter 13 [91] [92] (Logarithms.texi [93]) Chapter 14 [94] (Trigonometric.texi
-[95] [96] [97] [98]) Chapter 15 [99] [100] (Special.texi [101] [102] [103])
-Chapter 16 [104] (SpecfunII.texi
+[74]) Chapter 11 [75] [76] (Polynomials.texi [77] [78] [79] [80] [81] [82]
+[83] [84] [85] [86] [87] [88] [89] [90]) Chapter 12 [91] [92] (Constants.texi)
+Chapter 13 [93] [94] (Logarithms.texi [95]) Chapter 14 [96] (Trigonometric.texi
+[97] [98] [99] [100]) Chapter 15 [101] [102] (Special.texi [103] [104] [105])
+Chapter 16 [106] (SpecfunII.texi
 Underfull \hbox (badness 10000) in paragraph at lines 41--42
  @textrm A&S 22.4.40,
 
@@ -353,10 +341,10 @@ Overfull \hbox (0.746pt too wide) in paragraph at lines 52--52
 .@textrm r
 .etc.
 
-[105] [106]
+[107] [108]
 Underfull \hbox (badness 3029) in paragraph at lines 175--183
  @textrm load(@texttt "@textrm specfun@texttt "@textrm ). See [AS-SOC[]LEGENDRE
-[]Q], page 107, [LEG-EN-DRE[]P],
+[]Q], page 109, [LEG-EN-DRE[]P],
 
 @hbox(8.2125+2.73749)x433.62, glue set 3.1191
 .@glue(@leftskip) 28.90755
@@ -366,7 +354,7 @@ Underfull \hbox (badness 3029) in paragraph at lines 175--183
 .@textrm d
 .etc.
 
-[107] [108]
+[109] [110]
 Underfull \hbox (badness 7133) in paragraph at lines 327--329
  []@textrm See also SPHER-I-CAL[]HANKEL1, SPHER-I-CAL[]HANKEL2, and SPHER-I-
 
@@ -414,9 +402,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 369--371
 .@textrm e
 .etc.
 
-[109]) Chapter 17 [110] (Limits.texi) Chapter 18 [111] [112]
-(Differentiation.texi [113] [114] [115] [116] [117]) Chapter 19 [118]
-(Integration.texi [119]
+[111]) Chapter 17 [112] (Limits.texi) Chapter 18 [113] [114]
+(Differentiation.texi [115] [116] [117] [118] [119]) Chapter 19 [120]
+(Integration.texi [121]
 Underfull \hbox (badness 3668) in paragraph at lines 126--129
  []@textrm DEFinite IN-Te-gra-tion, the same as IN-TE-GRATE(exp,var,low,high). 
 This
@@ -441,7 +429,7 @@ Underfull \hbox (badness 7685) in paragraph at lines 126--129
 .@textrm s
 .etc.
 
-[120]
+[122]
 Underfull \hbox (badness 10000) in paragraph at lines 156--158
  []@textrm then the reg-u-lar in-te-gra-tion pro-gram will be in-voked if the s
 witch
@@ -466,8 +454,8 @@ Underfull \hbox (badness 6708) in paragraph at lines 156--158
 .@textrm I
 .etc.
 
-[121] [122] [123] [124] [125] [126] [127]) Chapter 20 [128] (Equations.texi
-[129] [130] [131] [132]
+[123] [124] [125] [126] [127] [128] [129]) Chapter 20 [130] (Equations.texi
+[131] [132] [133] [134]
 Underfull \hbox (badness 6675) in paragraph at lines 355--357
  []@textrm There is an op-tion ROOTSCON-MODE (de-fault value TRUE), af-fect-ing
 
@@ -480,7 +468,7 @@ Underfull \hbox (badness 6675) in paragraph at lines 355--357
 .@textrm e
 .etc.
 
-[133] [134]
+[135] [136]
 Underfull \hbox (badness 2012) in paragraph at lines 505--513
  []@textrm - The IMSL ZR-POLY rou-tine for find-ing the ze-ros of sim-ple poly-
 no-mi-als
@@ -493,7 +481,7 @@ no-mi-als
 .@glue 3.65 plus 1.825 minus 1.21666
 .etc.
 
-[135]) Chapter 21 [136] (Differential.texi
+[137]) Chapter 21 [138] (Differential.texi
 Overfull \hbox (15.10587pt too wide) in paragraph at lines 22--22
  []@texttt If initial conditions at 0 are known, they should be supplied before
 [] |
@@ -506,7 +494,7 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 22--22
 .@penalty 10000
 .etc.
 
-[137] [138]) Chapter 22 [139] [140] (Numerical.texi
+[139] [140]) Chapter 22 [141] [142] (Numerical.texi
 Underfull \hbox (badness 2173) in paragraph at lines 15--27
 @textrm of Romberg in-te-gra-tion is now avail-able in Mac-syma. For doc-u-men-
 ta-tion, Do
@@ -519,7 +507,7 @@ ta-tion, Do
 .@textrm o
 .etc.
 
-[141]
+[143]
 Overfull \hbox (32.18782pt too wide) in paragraph at lines 96--96
  []@texttt |   / B               |        [                              | / B 
      | ][] |
@@ -584,9 +572,9 @@ Overfull \hbox (32.18782pt too wide) in paragraph at lines 100--100
 .@glue 5.74869
 .etc.
 
-[142] [143] [144] [145] [146]) Chapter 23 [147] [148] (Statistics.texi)
-Chapter 24 [149] [150] (Arrays.texi [151] [152]) Chapter 25 [153] [154]
-(Matrices.texi [155] [156] [157] [158] [159] [160]
+[144] [145] [146] [147] [148]) Chapter 23 [149] [150] (Statistics.texi)
+Chapter 24 [151] [152] (Arrays.texi [153] [154]) Chapter 25 [155] [156]
+(Matrices.texi [157] [158] [159] [160] [161] [162]
 Underfull \hbox (badness 2158) in paragraph at lines 457--474
  @textrm from scratch by EX-PAND(ADJOINT(mat))/EXPAND(DETERMINANT(mat)).
 
@@ -611,7 +599,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 457--474
 .@textrm V
 .etc.
 
-[161] [162] [163]
+[163] [164] [165]
 Overfull \hbox (15.10587pt too wide) in paragraph at lines 753--753
  []@texttt EXPANDDIV, EXPANDDIVPLUS, EXPANDDIVPROD, EXPANDCURL, EXPANDCURLPLUS,
 [] |
@@ -624,11 +612,11 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 753--753
 .@texttt P
 .etc.
 
-[164]) Chapter 26 [165] [166] (Affine.texi [167] [168]) Chapter 27 [169]
-[170] (Tensor.texi [171] [172] [173]) Chapter 28 [174] (Ctensor.texi [175]
-[176] [177]) Chapter 29 [178] (Series.texi [179] [180] [181] [182] [183])
-Chapter 30 [184] (Number.texi [185] [186] [187] [188]) Chapter 31 [189]
-[190] (Symmetries.texi [191] [192]
+[166]) Chapter 26 [167] [168] (Affine.texi [169] [170]) Chapter 27 [171]
+[172] (Tensor.texi [173] [174] [175]) Chapter 28 [176] (Ctensor.texi [177]
+[178] [179]) Chapter 29 [180] (Series.texi [181] [182] [183] [184] [185])
+Chapter 30 [186] (Number.texi [187] [188] [189] [190]) Chapter 31 [191]
+[192] (Symmetries.texi [193] [194]
 Overfull \hbox (15.10587pt too wide) in paragraph at lines 136--136
  []    @texttt 2   2   3        2   2   2                2   2     3      2   2
 [] |
@@ -641,7 +629,7 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 136--136
 .@penalty 10000
 .etc.
 
-[193] [194] [195] [196]
+[195] [196] [197] [198]
 Underfull \hbox (badness 3701) in paragraph at lines 496--497
  []@textrm CONTRACT, CONT2PART, EX-PLOSE, PART2CONT, PART-POL, TCON-
 
@@ -653,7 +641,7 @@ Underfull \hbox (badness 3701) in paragraph at lines 496--497
 .@textrm N
 .etc.
 
-[197] [198] [199] [200] [201] [202] [203]
+[199] [200] [201] [202] [203] [204] [205]
 Overfull \hbox (15.10587pt too wide) in paragraph at lines 943--943
  []           @texttt 10              9            8            7             6
 [] |
@@ -679,7 +667,7 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 955--955
 .@glue 5.74869
 .etc.
 
-[204]
+[206]
 Overfull \hbox (15.10587pt too wide) in paragraph at lines 1033--1033
  [] @texttt 15       12       11       10        9         8         7        6
 [] |
@@ -692,7 +680,7 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 1033--1033
 .@texttt 1
 .etc.
 
-[205] [206] [207]
+[207] [208] [209]
 Underfull \hbox (badness 3701) in paragraph at lines 1215--1216
  []@textrm CONTRACT, CONT2PART, EX-PLOSE, PART2CONT, PART-POL, TCON-
 
@@ -704,9 +692,9 @@ Underfull \hbox (badness 3701) in paragraph at lines 1215--1216
 .@textrm N
 .etc.
 
-) Chapter 32 [208] (Groups.texi [209]) Chapter 33 [210] (Runtime.texi [211]
-[212]) Chapter 34 [213] [214] (Miscellaneous.texi [215] [216] [217] [218])
-Chapter 35 [219] [220] (Rules.texi [221]
+) Chapter 32 [210] (Groups.texi [211]) Chapter 33 [212] (Runtime.texi [213]
+[214]) Chapter 34 [215] [216] (Miscellaneous.texi [217] [218] [219] [220])
+Chapter 35 [221] [222] (Rules.texi [223]
 Overfull \hbox (15.10587pt too wide) in paragraph at lines 102--102
  []    @texttt This has caused the function LINEAR(exp,var1) to be defined.  It
 [] |
@@ -719,7 +707,7 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 102--102
 .@penalty 10000
 .etc.
 
-[222]
+[224]
 Underfull \hbox (badness 2035) in paragraph at lines 180--203
  []@textrm LETRAT[FALSE] when FALSE, LET-SIMP will sim-plify the nu-mer-a-tor a
 nd
@@ -732,9 +720,9 @@ nd
 .@textrm T
 .etc.
 
-[223] [224] [225]) Chapter 36 [226] (Lists.texi [227] [228]) Chapter 37
-[229] [230] (Function.texi [231] [232] [233] [234] [235] [236] [237] [238]
-[239] [240] [241] [242]) Chapter 38 [243] [244] (Program.texi [245] [246]
+[225] [226] [227]) Chapter 36 [228] (Lists.texi [229] [230]) Chapter 37
+[231] [232] (Function.texi [233] [234] [235] [236] [237] [238] [239] [240]
+[241] [242] [243] [244]) Chapter 38 [245] [246] (Program.texi [247] [248]
 Overfull \hbox (15.10587pt too wide) in paragraph at lines 171--171
  []            @texttt IF Y=0.0 THEN ERROR("Derivative at:",GUESS," is zero."),
 [] |
@@ -747,7 +735,7 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 171--171
 .@penalty 10000
 .etc.
 
-[247] [248] [249] [250]) Chapter 39 [251] [252] (Debugging.texi
+[249] [250] [251] [252]) Chapter 39 [253] [254] (Debugging.texi
 Overfull \hbox (26.43913pt too wide) in paragraph at lines 45--45
  []@texttt Maxima 5.5 Wed Apr 18 19:02:00 CDT 2001 (with enhancements by W. Sch
 elter).[] |
@@ -760,17 +748,18 @@ elter).[] |
 .@texttt x
 .etc.
 
-[253] [254] [255]) Chapter 40 [256] (Indices.texi Appendix @char 65 [257]
-[258] (maxima.fns [259] [260] [261] [262] [263] [264] [265] [266] [267]
-[268])) [269] [270] (maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6]
-[-7] [-8] ) 
+[255] [256] [257]) Chapter 40 [258] (Indices.texi Appendix @char 65 [259]
+[260] (maxima.fns [261] [262] [263] [264] [265] [266] [267] [268] [269]
+[270])) [271] [272] (maxima.toc [-1]) [-2] (maxima.toc [-3] [-4] [-5]) [-6]
+[-7] [-8] )
+(@end occurred inside a group at level 1) 
 Here is how much of TeX's memory you used:
  1685 strings out of 63548
  23278 string characters out of 972269
- 53378 words of memory out of 263001
+ 53590 words of memory out of 263001
  2491 multiletter control sequences out of 10000+60000
  30088 words of font info for 104 fonts, out of 400000 for 1000
  19 hyphenation exceptions out of 1000
- 15i,6n,13p,247b,310s stack positions out of 300i,100n,500p,50000b,10000s
+ 15i,6n,13p,247b,447s stack positions out of 300i,100n,500p,50000b,10000s
 
-Output written on maxima.dvi (279 pages, 1000908 bytes).
+Output written on maxima.dvi (281 pages, 1001768 bytes).

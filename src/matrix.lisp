@@ -676,10 +676,11 @@
        (SETQ X (DELETECOL (CAR C) X) C (CDR C))
        (GO B)))
 
-(defun $LIST_MATRIX_ENTRIES (m)
-   (or ($matrixp m) (error "not a matrix"))
-   (cons '(mlist) (sloop for v in (cdr m) append (cdr v))))
 
+(defun $LIST_MATRIX_ENTRIES (m)
+  (or ($matrixp m) (error "not a matrix"))
+  (cons (if (null (cdr m)) '(mlist) (caadr m))
+	(sloop for row in (cdr m) append (cdr row))))
 
 ; Undeclarations for the file:
 #-NIL

@@ -353,26 +353,45 @@ required.
 @end defun
 
 @defun GCDEX (f,g)
+@defun GCDEX (f,g,var)
 returns a list containing [a,b,u] where u is the gcd of f and g,
 and u = a*f + b*g.   The arguments f and g should b univariate polynomials,
+or else polynomials in VAR a supplied @b{main} variable   
 since we need to be in a principal ideal domain for this to work.   The
+gcd means the gcd regarding f and g as univariate polynomials with coefficients
+being rational functions in the other variables.
+
+The
 algorithm is simply the euclidean algorithm, where we have a sequence
-of lis[i]:[a[i],b[i],r[i]] .. which are all perpendicular
-to [f,g,-1] and the next one is built as
-if q = quotient(r[i]/r[i+1]) then lis[i+2]:lis[i]-q*lis[i+1], and it
-terminates at lis[i+1] when the remainder r[i+2] is zero.
+of @code{lis[i]:[a[i],b[i],r[i]] ..} which are all perpendicular
+to @code{[f,g,-1]} and the next one is built as
+if @code{q = quotient(r[i]/r[i+1])} then @code{lis[i+2]:lis[i]-q*lis[i+1]}, and it
+terminates at @code{lis[i+1]} when the remainder @code{r[i+2]} is zero.
 @example
-(C34) gcdex(x^2+1,x^3+4);
+(C1) gcdex(x^2+1,x^3+4);
 
-			   (- x - 4) x + 1  x + 4
-(D34) 			  [---------------, -----, 1]
-				 17	     17
+                              2
+                             x  + 4 x - 1  x + 4
+(D1)/R/                   [- ------------, -----, 1]
+                                  17        17
 
-(C35) ratsimp(d34.[x^2+1,x^3+4,-1]);
-(D35) 				       0
-
+(C2) d1.[x^2+1,x^3+4,-1];
+(D2)                                   0
 @end example
 
+note that the gcd in the following is @code{1}
+since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[y,x] }
+
+@example
+(C4) gcdex(x*(y+1),y^2-1,x);
+
+                                      1
+(D4)                            [0, ------, 1]
+                                     2
+                                    y  - 1
+
+
+@end example
 
 @end defun
 
