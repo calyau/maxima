@@ -199,7 +199,7 @@ y=x^2/(3*x/(2*tan(6*x+%c))-1/4);
 trigsimp(ode_check(eq,ans));
 0;
 
-/* Tests for ode1_riccati_special - Case c: not integrable  */
+/* Tests for ode1_riccati_special - Case c: not integrable  a#0 */
 
 /* Bessel function of integer order - easy to check */
 ans:ode1_riccati_special(a:1,b:-1,c:1,n:1,y,x);
@@ -234,6 +234,28 @@ ode_check(eq,ans);
 
 ans:ode1_riccati_special(a:1,b:-1/4,c:1,n:0,y,x);
 y=-4*sqrt(x)*((%c*log(x)+1)/(2*sqrt(x))+%c/sqrt(x))/(%c*log(x)+1);
+ode_check(eq,ans);
+0;
+
+/* Cases with a=0 and b*c<0 */
+ans:ode1_riccati_special(a:0,b:-1,c:1,n:2,y,x);
+y=(bessel_y(1,x)*%c+bessel_j(1,x))*x/(bessel_y(0,x)*%c+bessel_j(0,x));
+ode_check(eq,ans);
+0;
+
+ans:ode1_riccati_special(a:0,b:-1,c:1,n:1,y,x);
+y=(bessel_y(1,2*sqrt(x))*%c+bessel_j(1,2*sqrt(x)))*sqrt(x)/(bessel_y(0,2*sqrt(x))*%c+bessel_j(0,2*sqrt(x)));
+ode_check(eq,ans);
+0;
+
+/* Cases with a=0 and b*c>0 */
+ans:ode1_riccati_special(a:0,b:1,c:1,n:2,y,x);
+y=-(bessel_k(1,x)*%c-bessel_i(1,x))*x/(bessel_k(0,x)*%c+bessel_i(0,x));
+ode_check(eq,ans);
+0;
+
+ans:ode1_riccati_special(a:0,b:1,c:1,n:1,y,x);
+y=-(bessel_k(1,2*sqrt(x))*%c-bessel_i(1,2*sqrt(x)))*sqrt(x)/(bessel_k(0,2*sqrt(x))*%c+bessel_i(0,2*sqrt(x)));
 ode_check(eq,ans);
 0;
 
@@ -306,7 +328,7 @@ ode_check(eqn,ans);
 assume(x>0);
 [x>0];
 ans:ode1_riccati_original(b:3,c:2,m:-1,y,x);
-y=(sqrt(6)*%i*bessel_y(0,2*sqrt(6)*%i*sqrt(x))*%c+sqrt(6)*%i*bessel_j(0,2*sqrt(6)*%i*sqrt(x)))/((3*bessel_y(1,2*sqrt(6)*%i*sqrt(x))*%c+3*bessel_j(1,2*sqrt(6)*%i*sqrt(x)))*sqrt(x));
+y=-(sqrt(6)*bessel_k(0,2*sqrt(6)*sqrt(x))*%c-sqrt(6)*bessel_i(0,2*sqrt(6)*sqrt(x)))/((3*bessel_k(1,2*sqrt(6)*sqrt(x))*%c+3*bessel_i(1,2*sqrt(6)*sqrt(x)))*sqrt(x));
 ode_check(eqn,ans);
 0;
 forget(x>0);
@@ -321,8 +343,8 @@ y=((bessel_j(-5/4,x^2/2)*%c+bessel_j(-3/4,x^2/2))*x^2+bessel_j(-1/4,x^2/2)*%c)/(
 assume(x>0);
 [x>0];
 ans:ode1_riccati_original(b:2,c:3,m:-5,y,x);
-y=(bessel_j(1/3,-2*sqrt(6)*%i/(3*x^(3/2)))*%c*x^2+(sqrt(6)*%i*bessel_j(-2/3,-2*sqrt(6)*%i/(3*x^(3/2)))*%c+sqrt(6)*%i*bessel_j(-4/3,-2*sqrt(6)*%i/(3*x^(3/2))))*sqrt(x))/((2*bessel_j(1/3,-2*sqrt(6)*%i/(3*x^(3/2)))*%c+2*bessel_j(-1/3,-2*sqrt(6)*%i/(3*x^(3/2))))*x^3);
-/* This is correct */
+y=-((sqrt(6)*bessel_k(-2/3,-2*sqrt(6)/(3*x^(3/2)))*%c-sqrt(6)*bessel_i(-4/3,-2*sqrt(6)/(3*x^(3/2))))*sqrt(x)-bessel_k(1/3,-2*sqrt(6)/(3*x^(3/2)))*%c*x^2)/((2*bessel_k(1/3,-2*sqrt(6)/(3*x^(3/2)))*%c+2*bessel_i(-1/3,-2*sqrt(6)/(3*x^(3/2))))*x^3);
+/* CHECKME */
 forget(x>0);
 [x>0];
 
