@@ -340,7 +340,6 @@ diffequations/pdvtr.mac\
 diffequations/phypgm.mac\
 diffequations/pivtr.mac\
 diffequations/pmain.mac\
-graphics/world.mac\
 integequations/inteqn.mac\
 integequations/inteqn.usg\
 integequations/intexs.mac\
