@@ -46,12 +46,12 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-NEWTONEPSILON:10.0^(-FPPREC/2)$
+NEWTONEPSILON:10.0^(-fpprec/2)$
 NEWTONMAXITER:50$
 
 mnewton(FuncList, VarList, GuessList):=
-  block([nfunc, NewtonMatrix, det, Solutions, Increments, numdet, solved:FALSE,
-         i, j, k, KEEPFLOAT:TRUE, RATPRINT:FALSE],
+  block([nfunc, NewtonMatrix, det, Solutions, Increments, numdet, solved:false,
+         i, j, k, keepfloat:true, ratprint:false],
 
     /* Depuration of the function arguments */
     GuessList:float(GuessList),
@@ -59,12 +59,12 @@ mnewton(FuncList, VarList, GuessList):=
     if length(VarList) # nfunc then (
       print("mnewton: incorrect number of variable names (", nfunc,
             "functions but", length(VarList), "variable names)."),
-      return(FALSE)
+      return(false)
     ),
     if length(GuessList) # nfunc then (
       print("mnewton: incorrect number of approach values (", nfunc,
             "variables but", length(GuessList), "approximation values)."),
-      return(FALSE)
+      return(false)
     ),
     apply(kill, VarList),
 
@@ -85,14 +85,14 @@ mnewton(FuncList, VarList, GuessList):=
       Increments:float(rectform(expand(sublis(Solutions, NewtonMatrix / numdet)))),
       if atom(Increments) then Increments:matrix([Increments]),
       GuessList:GuessList-makelist(Increments[i][1],i,1,nfunc),
-      solved:TRUE,
+      solved:true,
       for i:1 thru nfunc do
         solved:solved and (abs(Increments[i][1]) < NEWTONEPSILON),
       if solved then return()
     ),
 
     /* Return of solution or error */
-    if solved = FALSE then (
+    if solved = false then (
       print("mnewton: the process doesn't converge or it converges too slowly."),
       return([])
     ),

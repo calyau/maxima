@@ -5,27 +5,27 @@
    It also contains a function which computes the asymptotic expansion of
 	GAMMA(z+a)/GAMMA(z+b). */
 
-REMARRAY(%GAMA1,%GAMA)$
-%GAMA1[1]:1$
-%GAMA1[N]:=%GAMA1[N-1]/(N+1)-(1/2)*SUM(%GAMA1[R]*%GAMA1[-R+N+1],R,2,N-1)$
+remarray(%gama1,%gama)$
+%gama1[1]:1$
+%gama1[n]:=%gama1[n-1]/(n+1)-(1/2)*sum(%gama1[r]*%gama1[-r+n+1],r,2,n-1)$
 	/*The above array contains the a[n] as defined in Copson.*/
-%GAMA[0]:1$
-%GAMA[K]:=LAMBDA([FACTLIM],(2*K+1)*2^(1-K)*(2*K-1)!*%GAMA1[2*K+1]/(K-1)!)(-1)$
+%gama[0]:1$
+%gama[k]:=lambda([factlim],(2*k+1)*2^(1-k)*(2*k-1)!*%gama1[2*k+1]/(k-1)!)(-1)$
 
-ASYMPGAMMA(Z,N):=(Z/%E)^Z*SQRT(2*%PI/Z)*
-SUM(apply('EV,[%GAMA[K]])*Z^(-K),K,0,N)$
+asympgamma(z,n):=(z/%e)^z*sqrt(2*%pi/z)*
+sum(apply('ev,[%gama[k]])*z^(-k),k,0,n)$
 
 /* The following program computes the asymptotic expansion for
 	GAMMA(z-a)/GAMMA(z-b).  Just call GAMMAR(z,a,b). */
 
-GAMMAR(ZVAR,AVAR,BVAR,N):=BLOCK([A,B,W,T1,T2,T3,T4,T5,T6,T7,T8,T9,answer],
-T1:	TAYLOR((1/W+A-1/2)*LOG(W*A+1),W,0,N),
-T2:	TAYLOR(T1-subst(a=b,T1),W,0,N)+B-A,
-T3:	TAYLOR(%E^T2,W,0,N),
-T4:	SUM(%GAMA[K]*(A+1/W)^(-K),K,0,N),
-T5:	TAYLOR(LOG(T4),W,0,N),
-T7:	TAYLOR(T5-subst(a=b,T5),W,0,N),
-T8:	TAYLOR(%E^T7,W,0,N),
-T9:	T3*T8,
-ANSWER:	ZVAR^(AVAR-BVAR)*
-subst([A=AVAR,B=BVAR,W=1/ZVAR],RATDISREP(T9)))$
+gammar(zvar,avar,bvar,n):=block([a,b,w,t1,t2,t3,t4,t5,t6,t7,t8,t9,answer],
+t1:	taylor((1/w+a-1/2)*log(w*a+1),w,0,n),
+t2:	taylor(t1-subst(a=b,t1),w,0,n)+b-a,
+t3:	taylor(%e^t2,w,0,n),
+t4:	sum(%gama[k]*(a+1/w)^(-k),k,0,n),
+t5:	taylor(log(t4),w,0,n),
+t7:	taylor(t5-subst(a=b,t5),w,0,n),
+t8:	taylor(%e^t7,w,0,n),
+t9:	t3*t8,
+answer:	zvar^(avar-bvar)*
+subst([a=avar,b=bvar,w=1/zvar],ratdisrep(t9)))$

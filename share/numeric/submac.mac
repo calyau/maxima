@@ -3,7 +3,7 @@
 /* George Carrette, 2:35pm  Thursday, 21 August 1980 */
 
 /* A macro for defining substitution macros. */
-EVAL_WHEN(BATCH,TTYOFF:TRUE)$ 
+eval_when(batch,ttyoff:true)$ 
 /* e.g.  
 
 RECT_RULE('EXP,'X,A,B,DX)=>BLOCK([%_SUM:0.0],

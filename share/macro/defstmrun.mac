@@ -5,30 +5,30 @@
           U.S. Department of Energy.  The Government retains
           certain rights therein.                                     */
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO],
-	  LOAD_PACKAGE(SHAREM,"MAX$DISK:[SHAREM]AUTOLO"))$
+eval_when([translate,batch,demo],
+	  load_package(sharem,"max$disk:[sharem]autolo"))$
 
-HERALD_PACKAGE(DEFSTMRUN)$
+herald_package(defstmrun)$
 
-MATCHFIX("{","}")$
+matchfix("{","}")$
 
-REFERENCE_AN_EXTEND(X,ACCESSOR,EXPECTED_EXTEND_TYPE,SLOT_NUMBER):=
-   BLOCK([TYPE:EXTENDP(X)],
-      COND(TYPE=FALSE,NOT_AN_EXTEND(ACCESSOR,X),
+reference_an_extend(x,accessor,expected_extend_type,slot_number):=
+   block([type:extendp(x)],
+      cond(type=false,not_an_extend(accessor,x),
 
-	   TYPE=EXPECTED_EXTEND_TYPE,EXTEND_REF(X,SLOT_NUMBER),
+	   type=expected_extend_type,extend_ref(x,slot_number),
 
-	   TRUE,
-	   ERROR("Attempt to use",ACCESSOR,"to access a slot of",X,
-		 "Expected MACSYMA EXTEND type was:",EXPECTED_EXTEND_TYPE)))$
+	   true,
+	   error("Attempt to use",accessor,"to access a slot of",X,
+		 "Expected MACSYMA EXTEND type was:",expected_extend_type)))$
 
-NOT_AN_EXTEND(ALT,OBJ):=
-   ERROR(ALT,"was not given a MACSYMA EXTEND object; argument was:",OBJ)$
+not_an_extend(alt,obj):=
+   error(alt,"was not given a MACSYMA EXTEND object; argument was:",obj)$
 
-ALTER_EXTEND_CHECK(X,ALTERANT,EXPECTED_EXTEND_TYPE):=
-   BLOCK([TYPE:EXTENDP(X)],
-      COND(TYPE=FALSE,NOT_AN_EXTEND(ALTERANT,X),
+alter_extend_check(x,alterant,expected_extend_type):=
+   block([type:extendp(x)],
+      cond(type=false,not_an_extend(alterant,x),
 
-	   TYPE#EXPECTED_EXTEND_TYPE,
-	   ERROR("Attempt to apply",ALTERANT,"to alter",X,
-		 "Expected MACSYMA EXTEND type was:",EXPECTED_EXTEND_TYPE)))$
+	   type#expected_extend_type,
+	   error("Attempt to apply",alterant,"to alter",X,
+		 "Expected MACSYMA EXTEND type was:",expected_extend_type)))$

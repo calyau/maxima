@@ -18,32 +18,32 @@
   BIFURCATION THEORY AND COMPUTER ALGEBRA". */
 
 
-TRANSFORM():=(
+transform():=(
 
 /* INPUT DATA */
-N:READ("ENTER NUMBER OF EQUATIONS"),
-FOR I:1 THRU N DO
-   X[I]:READ("ENTER SYMBOL FOR ORIGINAL VARIABLE",I),
-FOR I:1 THRU N DO
-   Y[I]:READ("ENTER SYMBOL FOR TRANSFORMED VARIABLE",I),
-PRINT("THE RHS'S OF THE D.E.'S ARE FUNCTIONS OF THE ORIGINAL VARIABLES:"),
-FOR I:1 THRU N DO (
-   PRINT("ENTER RHS OF",X[I],"D.E."),
-   PRINT("D",X[I],"/DT ="),
-   F[I]:READ(),
-   PRINT("D",X[I],"/DT =",F[I])),
-PRINT("THE TRANSFORMATION IS ENTERED NEXT:"),
-FOR I:1 THRU N DO (
-   PRINT("ENTER",X[I],"AS A FUNCTION OF THE NEW VARIABLES"),
-   PRINT(X[I],"="),
-   G[I]:READ(),
-   PRINT(X[I],"=",G[I])),
+n:read("enter number of equations"),
+for i:1 thru n do
+   x[i]:read("enter symbol for original variable",i),
+for i:1 thru n do
+   y[i]:read("enter symbol for transformed variable",i),
+print("the rhs's of the d.e.'s are functions of the original variables:"),
+for i:1 thru n do (
+   print("enter rhs of",x[i],"d.e."),
+   print("d",x[i],"/dt ="),
+   f[i]:read(),
+   print("d",x[i],"/dt =",f[i])),
+print("the transformation is entered next:"),
+for i:1 thru n do (
+   print("enter",x[i],"as a function of the new variables"),
+   print(x[i],"="),
+   g[i]:read(),
+   print(x[i],"=",g[i])),
 
 /* DO IT */
-FOR I:1 THRU N DO DEPENDS([X[I],Y[I]],T),
-FOR I:1 THRU N DO EQ[I]:DIFF(X[I],T)=F[I],
-TRANS:MAKELIST(X[I]=G[I],I,1,N),
-FOR I:1 THRU N DO TREQ[I]:EV(EQ[I],TRANS,DIFF),
-TREQS:MAKELIST(TREQ[I],I,1,N),
-DERIVS:MAKELIST(DIFF(Y[I],T),I,1,N),
-NEWEQS:SOLVE(TREQS,DERIVS))$
+for i:1 thru n do depends([x[i],y[i]],t),
+for i:1 thru n do eq[i]:diff(x[i],t)=f[i],
+trans:makelist(x[i]=g[i],i,1,n),
+for i:1 thru n do treq[i]:ev(eq[i],trans,diff),
+treqs:makelist(treq[i],i,1,n),
+derivs:makelist(diff(y[i],t),i,1,n),
+neweqs:solve(treqs,derivs))$

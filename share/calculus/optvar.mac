@@ -1,4 +1,4 @@
-TTYOFF: TRUE;
+ttyoff: true;
 /* This file contains functions and option settings for
 variational optimization using the calculus of variations and
 the maximum principle.  For a description of its usage see the text
@@ -89,4 +89,4 @@ DESOLVE  from the file  DESOLN. */
    answ: apply('ev,[odes,'eval]),  /* if E-labels, replace with values */
    for yy in ylist do answ: subst(yy=funmake(yy,[t]), answ),
    return(answ)) $
-TTYOFF: FALSE $
+ttyoff: false $

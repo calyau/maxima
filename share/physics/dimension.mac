@@ -146,14 +146,14 @@ dimension (e) := block([op, dim, var, i, n],
   else if op = "-" then (
       dimension(part(e,1)))
 
-  else if op = "+" or ?equal(op, 'MAX) or ?equal(op, 'MIN) then ( /*3*/ 
+  else if op = "+" or ?equal(op, 'max) or ?equal(op, 'min) then ( /*3*/ 
      dim : map ('dimension, args (e)),
      if all_equalp (dim) then (
          first (dim))
      else (
          error ("Expression is dimensionally inconsistent.")))
 
-  else if ?equal(op, 'MATRIX) then (
+  else if ?equal(op, 'matrix) then (
      dim : map ('dimension, args (e)),
      dim : apply ('append, dim),
      if all_equalp (dim) then (
@@ -174,10 +174,10 @@ dimension (e) := block([op, dim, var, i, n],
          else (
             error ("Expression is dimensionally inconsistent."))))
 
-  else if ?equal(op, 'ABS) then (     /*  4 */
+  else if ?equal(op, 'abs) then (     /*  4 */
      dimension (part (e, 1)))
 
-  else if ?equal(op, 'SQRT) then (
+  else if ?equal(op, 'sqrt) then (
      dimension (part(e,1)) ^ (1/2))
 
   else if op = nounify('diff) then (
@@ -188,7 +188,7 @@ dimension (e) := block([op, dim, var, i, n],
        dim : dim / dimension (part(var,i)) ^ part(var,i+1)),
     dim)
 
-  else if op = nounify('INTEGRATE) then (
+  else if op = nounify('integrate) then (
     var : args(e),
     dim : dimension(part(var,1)) * dimension(part(var,2)),
 
@@ -199,7 +199,7 @@ dimension (e) := block([op, dim, var, i, n],
     else (
        dim))
 
-   else if op = nounify('SUM) or op = nounify('PRODUCT) then (
+   else if op = nounify('sum) or op = nounify('product) then (
       error("The function dimension doesn't handle sums or products."))    
 
    else if op = "DIV" or  op = "div" or op = "GRAD" or op = "grad"  or
@@ -214,7 +214,7 @@ dimension (e) := block([op, dim, var, i, n],
          dim : dimension (part(e,1))),
      dim / "length")
 
-   else if op = "LAPLACIAN" then (
+   else if op = "laplacian" then (
      dimension(part(e,1) / "length"^2))
 
    else (                                /*  5 */

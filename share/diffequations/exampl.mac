@@ -1,4 +1,4 @@
 load(pmain);
-K430:'DIFF(Y,X,2)*SIN(X)^2+'DIFF(Y,X,1)*SIN(X)*COS(X)
-     +(V*(V+1)*SIN(X)^2-N^2)*Y=0;
+k430:'diff(y,x,2)*sin(x)^2+'diff(y,x,1)*sin(x)*cos(x)
+     +(v*(v+1)*sin(x)^2-n^2)*y=0;
 lode2(k430);

@@ -125,7 +125,7 @@ Lindstedt(eq,pvar, torder, [ic]):=
                 z[0]:rhs(LindstedtProcessIC2(sol,first(ic), z[0],T))
                 else z[0]:rhs(sol),
             /* now remove z[0] from the equation and expand again */
-            eq:ev(ratsubst(z[0], 'z[0], eq),NOUNS),
+            eq:ev(ratsubst(z[0], 'z[0], eq),nouns),
             eq:expand(trigreduce(eq)),
             /* start loop for higher order terms */
             /* print("Looping for higher order terms"), */
@@ -141,7 +141,7 @@ Lindstedt(eq,pvar, torder, [ic]):=
                   param),
                z[i]:sol,
                /* eq:ev(ratsubst(z[i],'z[i],eq),NOUNS), */
-               eq:ev(eq,NOUNS),
+               eq:ev(eq,nouns),
                eq:expand(trigreduce(eq))
             ),
             solutionList:[[[sum(z[i]*pvar^i,i,0,torder)],

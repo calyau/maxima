@@ -1,4 +1,4 @@
-SETUP_AUTOLOAD("lodsav",LODESAVE)$
+setup_autoload("lodsav",lodesave)$
 
 /* try transformations for dependent variables. */
 dvtrns(a,wb,wc,wr,ro,lam1):=block([neq,alpha],

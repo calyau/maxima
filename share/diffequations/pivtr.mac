@@ -1,4 +1,4 @@
-SETUP_AUTOLOAD("lodsav",LODESAVE)$
+setup_autoload("lodsav",lodesave)$
 
 ivtrns(wb,wc,wr):=block([],tn:ratsimp(tp/10),invsw:n,
    if tp<=60 then (neq:dptarg(wb,wc,tn),

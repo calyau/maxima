@@ -82,7 +82,7 @@
 	 seems useful, the main thing is to increase the store of units.
 =====================================================================================*/ 
 
-TTYOFF: NOLABELS, TRUE$
+ttyoff: nolabels, true$
 
 /*
 Metric prefixes
@@ -287,4 +287,4 @@ quantity.
 /*Generate default metalist*/
 metalist : makemetalist();
 
-TTYOFF: NOLABELS, FALSE$
+ttyoff: nolabels, false$

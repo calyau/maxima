@@ -75,7 +75,7 @@ plsquares([ArgList]):=
     narg:length(ArgList),
     if narg < 3 or narg > 5 then (
       print("plsquares: bad number of function arguments (it's required 3, 4 or 5 arguments)."),
-      return(FALSE)
+      return(false)
     ),
     Mat:ArgList[1],
     VarList:ArgList[2],
@@ -92,10 +92,10 @@ plsquares([ArgList]):=
     if length(VarList) # nvar then (
       print("plsquares: incorrect number of variable names (", nvar,
             "matrix columns but", length(VarList), "variable names)."),
-      return(FALSE)
+      return(false)
     ),
     for ivar:ndepvar thru 1 step -1 do
-      if member(DepVarList[ivar], VarList) = FALSE then (
+      if member(DepVarList[ivar], VarList) = false then (
         print("plsquares: dependent variable", DepVarList[ivar], "isn't in",
               VarList, "."),
         DepVarList:delete(DepVarList[ivar], DepVarList),
@@ -103,16 +103,16 @@ plsquares([ArgList]):=
       ),
     if ndepvar < 1 then (
       print("plsquares: no dependent variables."),
-      return(FALSE)
+      return(false)
     ),
     if maxexpon < 1 then (
       print("plsquares: the maximum variable exponent must be greater than 0."),
-      return(FALSE)
+      return(false)
     ),
     if maxdegree # 0 and maxdegree < maxexpon then (
       print("plsquares: the maximum degree of the polynomial must not be smaller than",
             maxexpon),
-      return(FALSE)
+      return(false)
     ),
     for ivar:nvar thru 1 step -1 do
       if VarList[ivar] = "-" then (
@@ -137,7 +137,7 @@ plsquares([ArgList]):=
     if ndat < ncoef then (
       print("plsquares: insufficient number of data rows (at least", ncoef,
             "are required)."),
-      return(FALSE)
+      return(false)
     ),
     apply(kill, VarList),
 
@@ -163,10 +163,10 @@ plsquares([ArgList]):=
     /* Calculation of polynomial coefficients by solving the linear system with
        the Gauss method */
     PolyCoef:zeromatrix(ndepvar, ncoef),
-    LinearSystem:ev(triangularize(LinearSystem), KEEPFLOAT:TRUE),
+    LinearSystem:ev(triangularize(LinearSystem), keepfloat:true),
     if product(LinearSystem[icoef,icoef], icoef, 1, ncoef) = 0 then (
       print("plsquares: insufficient number of independent data rows."),
-      return(FALSE)
+      return(false)
     ),
     for ivar:1 thru ndepvar do (
       for irow:ncoef thru 1 step -1 do (

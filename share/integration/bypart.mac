@@ -1,2 +1,2 @@
 
-BYPARTS(EXP,X,U,DV):=(DV:INTEGRATE(DV,X),U*DV-INTEGRATE(DV*DIFF(U,X,1),X));
+byparts(exp,x,u,dv):=(dv:integrate(dv,x),u*dv-integrate(dv*diff(u,x,1),x));

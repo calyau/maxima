@@ -3,8 +3,8 @@
 /* the test function for CharSets */
 charsets_test : lambda ([], block(
   [ aa,ps,ps1,ord,orda,ordb,as,f,test_in,test_out,rr,i,
-    X4, X1, X2, X3, X, Y, B, C2, BASSET, WBASSET, QBASSET,
-    CHARSETN, WCHARSETN, QCHARSETN, TRISET, TRISETC],
+    x4, x1, x2, x3, x, y, b, c2, basset, wbasset, qbasset,
+    charsetn, wcharsetn, qcharsetn, triset, trisetc],
    ps : [ x4 ^ 2 + x4 ^ 2 * x1 -x4 * x2 -x1 * x2 * x4 + x1 * x2 + 3 * x2,
        x1 * x4 + x3 -x1 * x2, x4 * x3 -2 * x2 ^ 2 -x1 * x2 -1],
    ps1 : [ x ^ 2 + y, x ^ 4 * y -x ^ 3],
@@ -374,14 +374,14 @@ charsets_test : lambda ([], block(
 
 charsets_testsub( rr,ss):=block( [ i,ii,ind],
    rr:map(expand,rr),ss:map(expand,ss),
-   if member(rr, ss) then ( TRUE)
+   if member(rr, ss) then ( true)
    else (
       ind:false,
       for i in ss do (
         ii:if listp(i) then i else setify1(i),
         if charsets_equal ( setdifference ( rr, ii), setdifference ( ii, rr)) 
           then (
-           return ( ind:TRUE))) ,
+           return ( ind:true))) ,
       return(ind))
 )$
 /* subroutine for testsub */
@@ -391,31 +391,31 @@ charsets_equal ( a,b):= block(
    if listp(a) then (
       if length ( a) # length ( b)  then (
          print("charsets_equal: lists of different lengths",length ( a),a,length ( b),b),
-         return ( FALSE)),
+         return ( false)),
       ind:true,
       for i : 1 thru length ( a) do (
-        if not charsets_equal ( a[i], b[i]) then return ( ind:FALSE)),
+        if not charsets_equal ( a[i], b[i]) then return ( ind:false)),
       return( ind))
      else if /* WARNING: listp should be setp */listp(a) then (
       if length ( a) # length ( b) then (
          print("charsets_equal: sets of different lengths",length ( a),a,length ( b),b),
-         return ( FALSE)),
+         return ( false)),
       ind:true,
       for i in a do (
         for j in b do (
-          if not charsets_equal ( i, j) then return (ind : FALSE)),
-        if not ind then return ( FALSE)),
+          if not charsets_equal ( i, j) then return (ind : false)),
+        if not ind then return ( false)),
       return (ind))
-     else if operatorp(b, [ "[", setp]) then ( FALSE)
+     else if operatorp(b, [ "[", setp]) then ( false)
      else if polynomialp(a,listofvars(a)) then (
-      if second(divide ( a, b)) = 0 and second(divide ( b, a)) = 0 then ( TRUE)
+      if second(divide ( a, b)) = 0 and second(divide ( b, a)) = 0 then ( true)
         else (
          print("charsets_equal: polynomials dont divide",a,b), 
-         FALSE))
-     else if a = b then ( TRUE)
+         false))
+     else if a = b then ( true)
      else (
-        if a = -b then TRUE
+        if a = -b then true
         else (
          print("charsets_equal: a not equal b",a,b), 
-      FALSE))
+      false))
 )$ 

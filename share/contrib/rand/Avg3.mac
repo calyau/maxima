@@ -48,15 +48,15 @@
 
  neweqs:sum(neweq[i]*e^i,i,0,3);
 
- DEPENDS([XBAR,YBAR],T);
- DEPENDS([ABAR,PSIBAR],T);
- [XBAR = ABAR*COS(PSIBAR),YBAR = -ABAR*SIN(PSIBAR)];
- DIFF(%,T);
- EV(%,NEWEQS);
- TRIGEXPAND(%);
- EXPAND(%);
- TRIGSIMP(%);
- TAYLOR(%,E,0,3);
- EV(%,SIN(PSIBAR) = -YBAR/ABAR,COS(PSIBAR) = XBAR/ABAR);
- FACTOR(%);
+ depends([xbar,ybar],t);
+ depends([abar,psibar],t);
+ [xbar = abar*cos(psibar),ybar = -abar*sin(psibar)];
+ diff(%,t);
+ ev(%,neweqs);
+ trigexpand(%);
+ expand(%);
+ trigsimp(%);
+ taylor(%,e,0,3);
+ ev(%,sin(psibar) = -ybar/abar,cos(psibar) = xbar/abar);
+ factor(%);
 

@@ -1,9 +1,9 @@
 
-TRAPRULE(F,A,B,N):=
-   (B-A)/N * ((apply(F,[B])+apply(F,[A]))/2 +
-   SUM(apply(F,[A+(B-A)/N*I]),I,1,N-1))$
+traprule(f,a,b,n):=
+   (b-a)/n * ((apply(f,[b])+apply(f,[a]))/2 +
+   sum(apply(f,[a+(b-a)/n*i]),i,1,n-1))$
 
-SIMPSON(F,A,B,N):=
-   (B-A)/N/3 * (apply(F,[A])+apply(F,[B]) +
-   4*SUM(apply(F,[A+(B-A)/N*(2*I-1)]),I,1,N/2)
- + 2*SUM(apply(F,[A+(B-A)/N*(2*I)]),I,1,(N-2)/2))$
+simpson(f,a,b,n):=
+   (b-a)/n/3 * (apply(f,[a])+apply(f,[b]) +
+   4*sum(apply(f,[a+(b-a)/n*(2*i-1)]),i,1,n/2)
+ + 2*sum(apply(f,[a+(b-a)/n*(2*i)]),i,1,(n-2)/2))$

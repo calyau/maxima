@@ -12,81 +12,81 @@
    *      These files are released to the public domain          *
    *            						 *
    ***************************************************************
-*/ /* PROGRAM NUMBER 3: CM(), CENTER MANIFOLD REDUCTION FOR ORDINARY
-   DIFFERENTIAL EQUATIONS. SEE PAGE 32 IN "PERTURBATION METHODS,
-   BIFURCATION THEORY AND COMPUTER ALGEBRA". */
+*/ /* program number 3: cm(), center manifold reduction for ordinary
+   differential equations. see page 32 in "perturbation methods,
+   bifurcation theory and computer algebra". */
 
 
 
-CM():=(
+cm():=(
 
-/* INPUT PROBLEM */
-N:READ("ENTER NO. OF EQS."),
-M:READ("ENTER DIMENSION OF CENTER MANIFOLD"),
-PRINT("THE D.E.'S MUST BE ARRANGED SO THAT THE FIRST",M,"EQS."),
-PRINT("REPRESENT THE CENTER MANIFOLD.  I.E. ALL ASSOCIATED"),
-PRINT("EIGENVALUES ARE ZERO OR HAVE ZERO REAL PARTS."),
-FOR I:1 THRU N DO
-   X[I]:READ("ENTER SYMBOL FOR VARIABLE NO.",I),
-L:READ("ENTER ORDER OF TRUNCATION"),
-FOR I:1 THRU N DO (
-   PRINT("ENTER RHS OF EQ.",I),
-   PRINT("D",X[I],"/DT ="),
-   G[I]:READ()),
-/* SET UP D.E.'S */
-FOR I:1 THRU N DO
-   DEPENDS(X[I],T),
-FOR I:1 THRU N DO
-   (EQ[I]:DIFF(X[I],T)=G[I],
-    PRINT(EQ[I])),
+/* input problem */
+n:read("enter no. of eqs."),
+m:read("enter dimension of center manifold"),
+print("the d.e.'s must be arranged so that the first",m,"eqs."),
+print("represent the center manifold.  i.e. all associated"),
+print("eigenvalues are zero or have zero real parts."),
+for i:1 thru n do
+   x[i]:read("enter symbol for variable no.",i),
+l:read("enter order of truncation"),
+for i:1 thru n do (
+   print("enter rhs of eq.",i),
+   print("d",x[i],"/dt ="),
+   g[i]:read()),
+/* set up d.e.'s */
+for i:1 thru n do
+   depends(x[i],t),
+for i:1 thru n do
+   (eq[i]:diff(x[i],t)=g[i],
+    print(eq[i])),
 
-/* FORM POWER SERIES */
-SUB:MAKELIST(K[I],I,1,M),
-VAR:PRODUCT(X[I]^K[I],I,1,M),
-UNK:[],
-FOR P:M+1 THRU N DO(
-   TEMP:A[P,SUB]*VAR,
-   FOR I:1 THRU M DO
-      TEMP:SUM(EV(TEMP,K[I]=J),J,0,L),
-   TEMP2:TAYLOR(TEMP,MAKELIST(X[I],I,1,M),0,L),
-   /* REMOVE CONSTANT AND LINEAR TERMS */
-   TEMP3:TEMP2-PART(TEMP2,1)-PART(TEMP2,2),
-   SOLN[P]:EXPAND(TEMP3),
-   /* PREPARE LIST OF UNKNOWNS */
-   SETXTO1:MAKELIST(X[I]=1,I,1,M),
-   /* TURN SUM INTO A LIST */
-   UNKN[P]:SUBST("[","+",EV(TEMP3,SETXTO1)),
-   UNK:APPEND(UNK,UNKN[P])),
-SOL:MAKELIST(X[P]=SOLN[P],P,M+1,N),
+/* form power series */
+sub:makelist(k[i],i,1,m),
+var:product(x[i]^k[i],i,1,m),
+unk:[],
+for p:m+1 thru n do(
+   temp:a[p,sub]*var,
+   for i:1 thru m do
+      temp:sum(ev(temp,k[i]=j),j,0,l),
+   temp2:taylor(temp,makelist(x[i],i,1,m),0,l),
+   /* remove constant and linear terms */
+   temp3:temp2-part(temp2,1)-part(temp2,2),
+   soln[p]:expand(temp3),
+   /* prepare list of unknowns */
+   setxto1:makelist(x[i]=1,i,1,m),
+   /* turn sum into a list */
+   unkn[p]:subst("[","+",ev(temp3,setxto1)),
+   unk:append(unk,unkn[p])),
+sol:makelist(x[p]=soln[p],p,m+1,n),
 
-/* SUBSTITUTE INTO D.E.'S */
-CMDE:MAKELIST(EQ[I],I,1,M),
-REST:MAKELIST(LHS(EQ[I])-RHS(EQ[I]),I,M+1,N),
-TEMP4:EV(REST,SOL,DIFF),
-TEMP5:EV(TEMP4,CMDE,DIFF),
-TEMP6:EV(TEMP5,SOL),
-TEMP7:TAYLOR(TEMP6,MAKELIST(X[I],I,1,M),0,L),
+/* substitute into d.e.'s */
+cmde:makelist(eq[i],i,1,m),
+rest:makelist(lhs(eq[i])-rhs(eq[i]),i,m+1,n),
+temp4:ev(rest,sol,diff),
+temp5:ev(temp4,cmde,diff),
+temp6:ev(temp5,sol),
+temp7:taylor(temp6,makelist(x[i],i,1,m),0,l),
 
-/* COLLECT TERMS */
-COUNTER:1,
-/* MAKE LIST OF TERMS */
-TERMS:SUBST("[","+",SOLN[N]),
-TERMS:EV(TERMS,A[DUMMY,SUB]:=1),
-FOR I:1 THRU N-M DO (
-   EXP[I]:EXPAND(PART(TEMP7,I)),
-   FOR J:1 THRU LENGTH(TERMS) DO(
-      COND[COUNTER]:RATCOEF(EXP[I],PART(TERMS,J)),
-      COUNTER:COUNTER+1)),
-CONDS:MAKELIST(COND[I],I,1,COUNTER-1),
-CONDS:EV(CONDS,MAKELIST(X[I]=0,I,1,M)),
+/* collect terms */
+counter:1,
+/* make list of terms */
+terms:subst("[","+",soln[n]),
+terms:ev(terms,a[dummy,sub]:=1),
+for i:1 thru n-m do (
+   exp[i]:expand(part(temp7,i)),
+   for j:1 thru length(terms) do(
+      cond[counter]:ratcoef(exp[i],part(terms,j)),
+      counter:counter+1)),
+conds:makelist(cond[i],i,1,counter-1),
+conds:ev(conds,makelist(x[i]=0,i,1,m)),
 
-/* SOLVE FOR CENTER MANIFOLD */
-ACOEFFS:SOLVE(CONDS,UNK),
-CENTERMANIFOLD:EV(SOL,ACOEFFS),
-PRINT("CENTER MANIFOLD:"),
-PRINT(CENTERMANIFOLD),
+/* solve for center manifold */
+acoeffs:solve(conds,unk),
+centermanifold:ev(sol,acoeffs),
+print("center manifold:"),
+print(centermanifold),
 
-/* GET FLOW ON CM */
-CMDE2:EV(CMDE,CENTERMANIFOLD),
-PRINT("FLOW ON THE C.M.:"),
-PRINT(CMDE2))$
+/* get flow on cm */
+cmde2:ev(cmde,centermanifold),
+print("flow on the c.m.:"),
+print(cmde2))$

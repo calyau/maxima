@@ -41,9 +41,9 @@ op(expr) :=
 
 operatorp(expr,operator) := 
     if op(expr)=operator then
-       TRUE
+       true
     else
-       FALSE;
+       false;
 
 /*
 second(expr) := part(expr,2);

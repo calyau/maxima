@@ -197,16 +197,16 @@ print("sys : ", sys),
          makelist(unkPar2[i],i,0,numUnkPar2-1))),
 print("sys : ", sys),
 print("sol : ", sol),
-   dim : length(%RNUM_LIST),
+   dim : length(%rnum_list),
    base : [],
    for i:1 thru dim do
       (
       baseElem : sol,
       for j:1 thru dim do
          if j = i then
-            baseElem : subst(1,%RNUM_LIST[j],baseElem)
+            baseElem : subst(1,%rnum_list[j],baseElem)
          else
-            baseElem : subst(0,%RNUM_LIST[j],baseElem),
+            baseElem : subst(0,%rnum_list[j],baseElem),
       base : endcons(baseElem,base)
       ),
    return(base)
@@ -347,16 +347,16 @@ SolveZSys(Gpoly,unkPar1,numUnkPar1,unkPar2,numUnkPar2,indet) :=
          makelist(unkPar1[i],i,0,numUnkPar1-1), 
          makelist(unkPar2[i],i,0,numUnkPar2-1))),
 
-   dim : length(%RNUM_LIST),
+   dim : length(%rnum_list),
    base : [],
    for i:1 thru dim do
       (
       baseElem : sol,
       for j:1 thru dim do
          if j = i then
-            baseElem : subst(1,%RNUM_LIST[j],baseElem)
+            baseElem : subst(1,%rnum_list[j],baseElem)
          else
-            baseElem : subst(0,%RNUM_LIST[j],baseElem),
+            baseElem : subst(0,%rnum_list[j],baseElem),
       base : endcons(baseElem,base)
       ),
    return(base)

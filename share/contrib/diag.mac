@@ -196,9 +196,9 @@ ModeMatrix(a,F):= block([i,j,k,msize,lsize,firstflg,multiplist,mindeg,ev,xv,tmpv
 	 for k:2 thru mindeg do (
 	    solvec[k]:transpose((a-ev*ident(msize)).solvec[k-1])[1]
 	 ),
-	 IM:ident(length(%RNUM_LIST)),rank1:0,
+	 IM:ident(length(%rnum_list)),rank1:0,
 	 for k:1 while (rank1 < localrank) do ( 
-	    LIS:map("=",%RNUM_LIST,row(IM,k)[1]),
+	    LIS:map("=",%rnum_list,row(IM,k)[1]),
 	    tmpv:subst(LIS,solvec[mindeg]),
 	    if (tmpv #zerolist) then (
 	       if (firstflg = 0 ) then (
@@ -225,7 +225,7 @@ ModeMatrix(a,F):= block([i,j,k,msize,lsize,firstflg,multiplist,mindeg,ev,xv,tmpv
   v0 is start value of sequence of generarized eigenvectors */
 
   matsolve2(mat,v0):=block([equation1,unkown1,solut1,solut2,dm1,
-     index1,mat1,vectr1,vectr2,unkw,%RNUM],
+     index1,mat1,vectr1,vectr2,unkw,%rnum],
      mode_declare([equation1,unkown1,solut1,solut2],list,
       [dm1,index1],fixnum,
       [vectr1,vectr2,unkw,mat1],any),
@@ -237,12 +237,12 @@ ModeMatrix(a,F):= block([i,j,k,msize,lsize,firstflg,multiplist,mindeg,ev,xv,tmpv
       mat1:mat.vectr1-vectr2,
       equation1:[],
       for index1 thru dm1 do equation1:cons(mat1[index1,1],equation1),
-      %RNUM:0,
-      solut1:ALGSYS(equation1,unkown1),
+      %rnum:0,
+      solut1:algsys(equation1,unkown1),
       if solut1=[] then (
       	 print("endreach ,I cannot solve this"),return([])
       ) else (
-      	 solut2:map('RHS,solut1[1]),
+      	 solut2:map('rhs,solut1[1]),
       
       return(solut2)))$
 

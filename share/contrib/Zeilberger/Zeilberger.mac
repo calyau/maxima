@@ -296,7 +296,7 @@ sysSol : SolveZSysVerbose(Gpoly,"_g",GAnsatzDegree+1,"_z",ZAnsatzDegree+1,k),
 print("--- Done!"),
 print("sysSol: "),
 print(sysSol),
-print("%RNUM_LIST : ", %RNUM_LIST),
+print("%RNUM_LIST : ", %rnum_list),
 
 
 SpSysSol : sysSol,

@@ -1,56 +1,56 @@
 /* -*-Macsyma-*- */
-EVAL_WHEN(BATCH,TTYOFF:TRUE)$
+eval_when(batch,ttyoff:true)$
 /*SHARE1;ATRIG1 1
 12:01am  Friday, 14 January 1983
   Created.
 */
 
-EVAL_WHEN(TRANSLATE,
-	  TRANSCOMPILE:TRUE,
-	  DEFINE_VARIABLE:'MODE)$
+eval_when(translate,
+	  transcompile:true,
+	  define_variable:'mode)$
 
-PUT('ATRIG1,1,'VERSION)$
+put('atrig1,1,'version)$
 
 /* Variable definitions */
 
-DEFINE_VARIABLE(PIOVER4,%PI/4,ANY)$
-DEFINE_VARIABLE(PIOVER3,%PI/3,ANY)$
-DEFINE_VARIABLE(PIOVER6,%PI/6,ANY)$
-DEFINE_VARIABLE(SQRT3,SQRT(3),ANY)$
-DEFINE_VARIABLE(SQRT2,SQRT(2),ANY)$
-DEFINE_VARIABLE(ANGLES_KNOWN_FOR_ATRIG,[0,PIOVER6,PIOVER4,PIOVER3,%PI/2],
-		ANY)$
+define_variable(piover4,%pi/4,any)$
+define_variable(piover3,%pi/3,any)$
+define_variable(piover6,%pi/6,any)$
+define_variable(sqrt3,sqrt(3),any)$
+define_variable(sqrt2,sqrt(2),any)$
+define_variable(angles_known_for_atrig,[0,piover6,piover4,piover3,%pi/2],
+		any)$
 
 /* For %PI/4 */
 
-TELLSIMPAFTER(ACOS(1/SQRT2),PIOVER4)$
-TELLSIMPAFTER(ACOS(SQRT2/2),PIOVER4)$
-TELLSIMPAFTER(ASEC(SQRT2),PIOVER4)$
-TELLSIMPAFTER(ACSC(SQRT2),PIOVER4)$
-TELLSIMPAFTER(ASIN(1/SQRT2),PIOVER4)$
-TELLSIMPAFTER(ASIN(SQRT2/2),PIOVER4)$
+tellsimpafter(acos(1/sqrt2),piover4)$
+tellsimpafter(acos(sqrt2/2),piover4)$
+tellsimpafter(asec(sqrt2),piover4)$
+tellsimpafter(acsc(sqrt2),piover4)$
+tellsimpafter(asin(1/sqrt2),piover4)$
+tellsimpafter(asin(sqrt2/2),piover4)$
 
 /* For %PI/3 */
 
-TELLSIMPAFTER(ASIN(SQRT3/2),PIOVER3)$
-TELLSIMPAFTER(ATAN(SQRT3),  PIOVER3)$
-TELLSIMPAFTER(ACOT(1/SQRT3),PIOVER3)$
-TELLSIMPAFTER(ACOT(SQRT3/3),PIOVER3)$
-TELLSIMPAFTER(ACSC(2*SQRT3/3),PIOVER3)$
-TELLSIMPAFTER(ACSC(2/SQRT3),PIOVER3)$
-TELLSIMPAFTER(ASEC(2),PIOVER3)$
+tellsimpafter(asin(sqrt3/2),piover3)$
+tellsimpafter(atan(sqrt3),  piover3)$
+tellsimpafter(acot(1/sqrt3),piover3)$
+tellsimpafter(acot(sqrt3/3),piover3)$
+tellsimpafter(acsc(2*sqrt3/3),piover3)$
+tellsimpafter(acsc(2/sqrt3),piover3)$
+tellsimpafter(asec(2),piover3)$
 
 /* For %PI/6 */
 
-TELLSIMPAFTER(ACOS(SQRT3/2),PIOVER6)$
-TELLSIMPAFTER(ATAN(SQRT3/3),PIOVER6)$
-TELLSIMPAFTER(ATAN(1/SQRT3),PIOVER6)$
-TELLSIMPAFTER(ACOT(SQRT3),  PIOVER6)$
-TELLSIMPAFTER(ASEC(2/SQRT3),PIOVER6)$
-TELLSIMPAFTER(ASEC(2*SQRT3/3),PIOVER6)$
-TELLSIMPAFTER(ACSC(2),        PIOVER6)$
+tellsimpafter(acos(sqrt3/2),piover6)$
+tellsimpafter(atan(sqrt3/3),piover6)$
+tellsimpafter(atan(1/sqrt3),piover6)$
+tellsimpafter(acot(sqrt3),  piover6)$
+tellsimpafter(asec(2/sqrt3),piover6)$
+tellsimpafter(asec(2*sqrt3/3),piover6)$
+tellsimpafter(acsc(2),        piover6)$
 
 /* Could also do  [1,5,7,11]*%PI/12 if there is ever demand for it. */
 
-EVAL_WHEN(BATCH,TTYOFF:FALSE)$
+eval_when(batch,ttyoff:false)$
 

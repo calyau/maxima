@@ -76,14 +76,14 @@ lsquares([ArgList]):=
          ndat, nvar, inVarList, depvar, depncol, nparams, difsquare, eqaux,
          EqSystem:[], Solutions:[], nsol, dcoef, Se2, Sy, Sy2, bestsolution,
          i, j, k,
-         KEEPFLOAT:TRUE, RATPRINT:FALSE, REALONLY:TRUE, SOLVERADCAN:TRUE,
-         %E_TO_NUMLOG:TRUE, LOGEXPAND:ALL],
+         keepfloat:true, ratprint:false, realonly:true, solveradcan:true,
+         %e_to_numlog:true, logexpand:all],
 
     /* Elaboration and depuration of the function arguments */
     narg:length(ArgList),
     if narg < 3 or narg > 5 then (
       print("lsquares: bad number of function arguments (it's required 4 or 5 arguments)."),
-      return(FALSE)
+      return(false)
     ),
     Mat:ArgList[1],
     VarList:ArgList[2],
@@ -105,16 +105,16 @@ lsquares([ArgList]):=
     if length(VarList) # nvar then (
       print("lsquares: incorrect number of variable names (", nvar,
             "matrix columns but", length(VarList), "variable names)."),
-      return(FALSE)
+      return(false)
     ),
-    if member(depvar, VarList) = FALSE then (
+    if member(depvar, VarList) = false then (
       print("lsquares: dependent variable", depvar, "isn't in", VarList),
-      return(FALSE)
+      return(false)
     ),
     if ndat < nparam then (
       print("lsquares: insufficient number of data rows (at least", nparam,
             "are required)."),
-      return(FALSE)
+      return(false)
     ),
     apply(kill, VarList),
     apply(kill, ParamList),
@@ -126,20 +126,20 @@ lsquares([ArgList]):=
       for j:1 thru nvar do
         eqaux:subst('Mat[k, j], VarList[j], eqaux),
       eqaux:'sum(eqaux, k, 1, ndat),
-      eqaux:errcatch(ev(eqaux, NOUNS)),
+      eqaux:errcatch(ev(eqaux, nouns)),
       if eqaux = [] then return(),
       EqSystem:endcons(eqaux[1], EqSystem)
     ),
     if eqaux = [] then (
       print("lsquares: arithmetic error processing the data."),
-      return(FALSE)
+      return(false)
     ),
     if narg = 4 then Solutions:solve(EqSystem, ParamList)
                 else Solutions:mnewton(EqSystem, ParamList, GuessList),
     nsol:length(Solutions),
     if nsol = 0 then (
       print("lsquares: the generated equations system can't be solved."),
-      return(FALSE)
+      return(false)
     ),
 
     /* Calculation of the best determination coefficient */
@@ -150,12 +150,12 @@ lsquares([ArgList]):=
       for i:1 thru nvar do
         Se2:subst('Mat[k, i], VarList[i], Se2),
       Se2:'sum(Se2, k, 1, ndat),
-      Se2:ev(Se2, NOUNS),
+      Se2:ev(Se2, nouns),
       Sy:'sum(subst('Mat[k, depncol],depvar,ev(lhs(equation),Solutions[i])),
               k,1,ndat),
       Sy2:'sum(subst('Mat[k, depncol],depvar,ev(lhs(equation)^2,Solutions[i])),
                k,1,ndat),
-      dcoef:1 - Se2 / (ev(Sy2, NOUNS) - ev(Sy, NOUNS)^2 / ndat),
+      dcoef:1 - Se2 / (ev(Sy2, nouns) - ev(Sy, nouns)^2 / ndat),
       if dcoef > DETCOEF then (
         DETCOEF:dcoef,
         bestsolution:i
