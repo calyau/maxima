@@ -7,11 +7,11 @@ true;
 
 /* Murphy 78 Abel */
 (pn_(78),ans:ode1_abel(eqn:'diff(y,x)+(a*x+y)*y^2=0,y,x));
-false;
+[];
 
 /* Murphy 79 Abel */
 (pn_(79),ans:ode1_abel(eqn:'diff(y,x)+(a*exp(x)+y)*y^2=0,y,x));
-false;
+[];
 
 /* about the simplest Abel equation */
 ans:ode1_abel(eqn:'diff(y,x)=(x+c)*y^3+y^2,y,x);
@@ -49,11 +49,11 @@ ode_check(eqn,ans[1]);
 
 /* Cheb-Terrab and Roche (31) */
 ans:ode1_abel(eqn:'diff(y,x)=y^3/x+y^2,y,x);
-false;
+[];
 
 /* Cheb-Terrab and Roche (33) */
 ans:ode1_abel(eqn:'diff(y,x)=(x+1/x+1/x^3)*y^3/x+y^2,y,x);
-false;
+[];
 
 /* According to Cheb-Terrab and Roche, the following 
    equations from kamke have constant invariant */
@@ -118,22 +118,22 @@ done;
 
 /* Non-constant invariant */
 (kn_(36),ans:ode1_abel(eqn:'diff(y,x)+y^3+a*x*y^2,y,x));
-false;
+[];
 
 (kn_(37),ans:ode1_abel(eqn:'diff(y,x)-y^3-a*exp(x)*y^2,y,x));
-false;
+[];
 
 (kn_(40),ans:ode1_abel(eqn:'diff(y,x)+3*a*y^3+6*a*x*y^2,y,x));
-false;
+[];
 
 (kn_(42),ans:ode1_abel(eqn:'diff(y,x)-x*(x+2)*y^3-(x+3)*y^2,y,x));
-false;
+[];
 
 (kn_(43),ans:ode1_abel(eqn:'diff(y,x)+(3*a*x^2+4*a^2*x+b)*y^3+3*x*y^2,y,x));
-false;
+[];
 
 (kn_(45),ans:ode1_abel(eqn:'diff(y,x)+2*(a^2*x^3-b^2*x)*y^3+3*b*y^2,y,x));
-false;
+[];
 
 /* Abel equations of second kind */
 (kn_(213),ans:ode1_abel(eqn:(y+1)*'diff(y,x)=y+x,y,x));
