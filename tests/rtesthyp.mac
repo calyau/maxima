@@ -239,6 +239,9 @@ expand(radcan(hgfred([a,b],[2*b],z)*2^(-2*b)*sqrt(%pi)/gamma(b+1/2)*gamma(2*b-a)
  */
 2*sqrt(%pi)*assoc_legendre_q(b-1,b-a,2/z-1)*gamma(2*b)/(2^(2*b)*gamma(b)*gamma(b+1/2))$
 
+hgfred([a,b],[2*b],z) - hgfred([b,a],[2*b],z);
+0$
+
 exp(%i*%pi*u)*2^v*gamma(1+v)*gamma(1+v+u)*(z+1)^(u/2-v-1)*(z-1)^(-u/2)/gamma(2+2*v)*hgfred([1+v-u,1+v],[2+2*v],2/(1+z));
 assoc_legendre_q(v, u, z)$
 
@@ -315,3 +318,10 @@ hgfred([-4,-2],[],z);
 
 hgfred([-2,1],[1/2],z);
 8*jacobi_p(2,-1/2,-3/2,1-2*z)/3$
+
+/* F(a,b;c;z) = F(b,a;c;z) */
+hgfred([1,2],[3],z);
+-2*(log(1-z)/z+1/z+log(1-z)*(1-z)/z^2)$
+
+hgfred([1,2],[3],z)-hgfred([2,1],[3],z);
+0$
