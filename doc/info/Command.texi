@@ -43,20 +43,6 @@ alternate name for a (user or system) function, variable, array, etc.
 Any even number of arguments may be used.
 
 @end defun
-@c @node DEBUG
-@c @unnumberedsec phony
-@defun DEBUG ()
-
-LISPDEBUGMODE(); DEBUGPRINTMODE(); and DEBUG(); make
-available to the user debugging features used by systems programmers.
-These tools are powerful, and although some conventions are different
-from the usual macsyma level it is felt their use is very intuitive.
-[Some printout may be verbose for slow terminals, there are switches
-for controlling this.]  These commands were designed for the user who
-must debug translated macsyma code, as such they are a boon.  See
-MACDOC;TRDEBG USAGE for more information.
-
-@end defun
 @c @node DEBUGMODE
 @c @unnumberedsec phony
 @defvar DEBUGMODE
@@ -66,20 +52,6 @@ that mode if it is FALSE.  If it is set to ALL then the user may
 examine BACKTRACE for the list of functions currently entered.
 
 @end defvar
-@c @node DEBUGPRINTMODE
-@c @unnumberedsec phony
-@defun DEBUGPRINTMODE ()
-
-LISPDEBUGMODE(); DEBUGPRINTMODE(); and DEBUG();
-make available to the user debugging features used by systems
-programmers.  These tools are powerful, and although some conventions
-are different from the usual macsyma level it is felt their use is
-very intuitive.  [Some printout may be verbose for slow terminals,
-there are switches for controlling this.]  These commands were
-designed for the user who must debug translated macsyma code, as such
-they are a boon.  See MACDOC;TRDEBG USAGE for more information.
-
-@end defun
 @c @node EV
 @c @unnumberedsec phony
 @defun EV (exp, arg1, ..., argn)

@@ -317,20 +317,6 @@ not                 NOT         logical prefix
 
 @end example
 @end deffn
-@c @node LISPDEBUGMODE, MAP, {special operator}, Program Flow
-@c @unnumberedsec phony
-@defun LISPDEBUGMODE ()
-LISPDEBUGMODE(); DEBUGPRINTMODE(); and DEBUG();
-make available to the user debugging features used by systems
-programmers.  These tools are powerful, and although some conventions
-are different from the usual macsyma level it is felt their use is
-very intuitive.  [Some printout may be verbose for slow terminals,
-there are switches for controlling this.]  These commands were
-designed for the user who must debug translated macsyma code, as such
-they are a boon.  See MACDOC;TRDEBG USAGE for more information.
-
-@end defun
-@c @node MAP, MAPATOM, LISPDEBUGMODE, Program Flow
 @c @unnumberedsec phony
 @defun MAP (fn, exp1, exp2, ...)
 returns an expression whose leading operator
