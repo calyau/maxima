@@ -535,31 +535,68 @@ with constant subscripts.  E.g. if the user has defined a function
 @defvar functions
 Default value: []
 
-@code{functions} is the list of all user defined functions.
+@code{functions} is the list of user-defined Maxima functions
+in the current session.
 A user-defined function is a function constructed by
 @code{define} or @code{:=}.
+A function may be defined at the Maxima prompt
+or in a Maxima file loaded by @code{load} or @code{batch}.
+Lisp functions, however, are not added to @code{functions}.
 
 @end defvar
 
-@defun fundef (functionname)
-returns the function definition associated
-with @var{functionname}.  @code{fundef (f)} is similar to @code{dispfun (f)}
+@defun fundef (@var{functionname})
+Returns the function definition associated
+with @var{functionname}.
+@c FOLLOWING BIT IS A LITTLE CONFUSING. 
+@code{fundef (f)} is similar to @code{dispfun (f)}
 except that @code{fundef} does not invoke @code{display}.
+
+@code{fundef} quotes its argument.
+The double-single-quote operator @code{'@w{}'} defeats quotation.
 
 @end defun
 
-@defun funmake (name, [arg_1, ..., arg_n])
-returns @code{@var{name} (@var{arg_1}, ..., @var{arg_n})} without
-calling the function @var{name}.
+@defun funmake (@var{name}, [@var{arg_1}, ..., @var{arg_n}])
+Returns an expression @code{@var{name} (@var{arg_1}, ..., @var{arg_n})}.
+The return value is simplified, but not evaluated,
+so the function is not called.
+
+@code{funmake} evaluates its arguments.
+
+Examples:
+
+@itemize @bullet
+@item
+@code{funmake} evaluates its arguments, but not the return value.
+@example
+(%i1) det(a,b,c) := b^2 -4*a*c$
+(%i2) x: 8$
+(%i3) y: 10$
+(%i4) z: 12$
+(%i5) f: det$
+(%i6) funmake (f, [x, y, z]);
+(%o6)                    det(8, 10, 12)
+(%i7) ''%;
+(%o7)                         - 284
+@end example
+@item
+Maxima simplifies @code{funmake}'s return value.
+@example
+(%i1) funmake (sin, [%pi/2]);
+(%o1)                           1
+@end example
+@end itemize
 
 @end defun
 
 @defun local (v_1, v_2, ...)
-causes the variables @var{v_1}, @var{v_2}, ... to be local with
+Declares the variables @var{v_1}, @var{v_2}, ... to be local with
 respect to all the properties in the statement in which this function
 is used.  @code{local} may only be used in @code{block}, in the body of function
 definitions or @code{lambda} expressions, or in the @code{ev} function and only one
 occurrence is permitted in each.  @code{local} is independent of @code{context}.
+@c NEED SOME EXAMPLES HERE.
 
 @end defun
 
@@ -586,41 +623,51 @@ but has the disadvantage that the original macro call is no longer
 remembered and hence the expansion will be seen if @code{display} or @code{grind} is
 called.  See documentation for @code{translate} and @code{macros} for more details.
 @end itemize
+@c NEED SOME EXAMPLES HERE.
 
 @end defvar
 
 @defvar mode_checkp
 Default value: @code{true}
 
+@c WHAT DOES THIS MEAN ??
 When @code{mode_checkp} is @code{true}, @code{mode_declare} checks the modes
 of bound variables.
+@c NEED SOME EXAMPLES HERE.
 
 @end defvar
 
 @defvar mode_check_errorp
 Default value: @code{false}
 
+@c WHAT DOES THIS MEAN ??
 When @code{mode_check_errorp} is @code{true}, @code{mode_declare} calls
 error.
+@c NEED SOME EXAMPLES HERE.
 
 @end defvar
 
 @defvar mode_check_warnp
 Default value: @code{true}
 
+@c WHAT DOES THIS MEAN ??
 When @code{mode_check_warnp} is @code{true}, mode errors are
 described.
+@c NEED SOME EXAMPLES HERE.
 
 @end defvar
 
 @defun mode_declare (y_1, mode_1, y_2, mode_2, ...)
-@code{modedeclare} is a synonym
-for this.  @code{mode_declare} is used to declare the modes of variables and
-functions for subsequent translation or compilation of functions. Its
-arguments are pairs consisting of a variable and a mode which is
+@code{mode_declare} is used to declare the modes of variables and
+functions for subsequent translation or compilation of functions.
+@code{mode_declare} is typically placed at the beginning of a function
+definition, at the beginning of a Maxima script, or executed at the interactive prompt.
+
+The arguments of @code{mode_declare} are pairs consisting of a variable and a mode which is
 one of @code{boolean}, @code{fixnum}, @code{number}, @code{rational}, or @code{float}.
 Each variable may also
 be a list of variables all of which are declared to have the same mode.
+
 @c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
 If a variable is an array, and if every element of the array which is
 referenced has a value then @code{array (yi, complete, dim1, dim2, ...)}
@@ -629,8 +676,11 @@ rather than
 array(yi, dim1, dim2, ...)
 @end example
 should be used when first
-declaring the bounds of the array.  If all the elements of the array
+declaring the bounds of the array.
+@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+If all the elements of the array
 are of mode @code{fixnum} (@code{float}), use @code{fixnum} (@code{float}) instead of @code{complete}.
+@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
 Also if every element of the array is of the same mode, say @code{m}, then
 
 @example
@@ -638,7 +688,9 @@ mode_declare (completearray (yi), m))
 @end example
 
 should be used for efficient
-translation.  Also numeric code using arrays can be made to run faster
+translation.
+
+Numeric code using arrays might run faster
 by declaring the expected size of the array, as in:
 
 @example
@@ -646,23 +698,23 @@ mode_declare (completearray (a [10, 10]), float)
 @end example
 
 for a floating point number array which is 10 x 10.
-Additionally one may declare the mode of the result of a function by
+
+One may declare the mode of the result of a function by
 using @code{function (f_1, f_2, ...)} as an argument;
 here @code{f_1}, @code{f_2}, ... are the names
 of functions.  For example the expression,
 
 @example
-mode_declare ([function (f_1, f_2, ...), x],
-    fixnum, q, completearray(q), float)
+mode_declare ([function (f_1, f_2, ...)], fixnum)
 @end example
 
-declares that @code{x} and the values returned by @code{f_1}, @code{f_2}, ... are single-word
-integers and that @code{q} is an array of floating point numbers.
-@code{mode_declare} is used either immediately inside of a function
-definition or at top-level for global variables.
+declares that the values returned by @code{f_1}, @code{f_2}, ... are single-word integers.
+
+@code{modedeclare} is a synonym for @code{mode_declare}.
 
 @end defun
 
+@c WHAT IS THIS ABOUT ??
 @defun mode_identity (arg_1, arg_2)
 A special form used with @code{mode_declare} and
 @code{macros} to declare, e.g., a list of lists of flonums, or other compound
@@ -690,22 +742,27 @@ every time you take the first of a list of numbers.
 
 @end defun
 
-@defvar transbind
-Default value: @code{false}
+@c OBSOLETE AND MARKED AS SUCH IN src/transl.lisp
+@c @defvar transbind
+@c Default value: @code{false}
+@c 
+@c When @code{transbind} is @code{true} removes global declarations in
+@c the local context.  This applies to variables which are formal
+@c parameters to functions which one is @code{translate}-ing from Maxima code
+@c to Lisp.
+@c 
+@c @end defvar
 
-When @code{transbind} is @code{true} removes global declarations in
-the local context.  This applies to variables which are formal
-parameters to functions which one is @code{translate}-ing from Maxima code
-to Lisp.
-
-@end defvar
-
+@c IS THERE ANY REASON TO SET transcompile: false ??
+@c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
 @defvar transcompile
-Default value: @code{false}
+Default value: @code{true}
 
-When @code{transcompile} is @code{true}, @code{translate} will generate the
-declarations necessary for possible compilation.  The @code{compfile} command
-uses @code{transcompile: true}.
+When @code{transcompile} is @code{true}, @code{translate} and @code{translate_file} generate
+declarations to make the translated code more suitable for compilation.
+@c BUT THE DECLARATIONS DON'T SEEM TO BE NECESSARY, SO WHAT'S THE POINT AGAIN ??
+
+@code{compfile} sets @code{transcompile: true} for the duration.
 
 @end defvar
 
@@ -807,14 +864,29 @@ as the Lisp code is compiled.
 See @code{compile_file} for more on this topic.
 
 @c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
-See also @code{tr_array_as_ref}, @code{tr_bind_mode_hook}, 
-@code{tr_bound_function_applyp}, @code{tr_exponent}, @code{tr_file_tty_messagesp}, 
-@code{tr_float_can_branch_complex}, @code{tr_function_call_default}, 
-@code{tr_numer}, @code{tr_optimize_max_loop}, 
-@code{tr_semicompile}, @code{tr_state_vars}, 
-@code{tr_warnings_get}, @code{tr_warn_bad_function_calls}, @code{tr_warn_fexpr}, 
-@code{tr_warn_meval}, @code{tr_warn_mode}, @code{tr_warn_undeclared}, 
-@code{tr_warn_undefined_variable}, and @code{tr_windy}.
+See also @code{tr_array_as_ref},
+@c tr_bind_mode_hook EXISTS BUT IT APPEARS TO BE A GROTESQUE UNDOCUMENTED HACK
+@c WE DON'T WANT TO MENTION IT
+@c @code{tr_bind_mode_hook}, 
+@code{tr_bound_function_applyp},
+@c tr_exponent EXISTS AND WORKS AS ADVERTISED IN src/troper.lisp
+@c NOT OTHERWISE DOCUMENTED; ITS EFFECT SEEMS TOO WEAK TO MENTION
+@code{tr_exponent},
+@code{tr_file_tty_messagesp}, 
+@code{tr_float_can_branch_complex},
+@code{tr_function_call_default}, 
+@code{tr_numer},
+@code{tr_optimize_max_loop}, 
+@code{tr_semicompile},
+@code{tr_state_vars}, 
+@code{tr_warnings_get},
+@code{tr_warn_bad_function_calls},
+@code{tr_warn_fexpr}, 
+@code{tr_warn_meval},
+@code{tr_warn_mode},
+@code{tr_warn_undeclared}, 
+@code{tr_warn_undefined_variable},
+and @code{tr_windy}.
 
 @end defun
 
@@ -957,6 +1029,7 @@ code by the Lisp compiler.
 
 @end defvar
 
+@c ARE ANY OF THESE OBSOLETE ??
 @defvar tr_state_vars
 Default value:
 @example
@@ -993,6 +1066,9 @@ track down bugs.
 @c 
 @c @end defvar
 
+@c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- RETURNS *tr-runtime-warned*
+@c WHICH HAS ONLY A FEW KINDS OF WARNINGS PUSHED ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE
+@c DO WE REALLY NEED THIS SLIGHTLY WORKING FUNCTION ??
 @defun tr_warnings_get ()
 Prints a list of warnings which have been given by
 the translator during the current translation.
@@ -1062,29 +1138,30 @@ programming hints.
 
 @end defvar
 
-@defvar undeclaredwarn
-Default value: @code{compfile}
-
-- A switch in the translator.
-There are four relevant settings:
-
-@itemize @bullet
-@item
-@code{false} -- never print warning messages. 
-@item
-@code{compfile} --  warn when in @code{compfile}.
-@item
-@code{translate} -- warn when in @code{translate} and when @code{translate: true}.
-@item
-@code{all} -- warn in @code{compfile} and @code{translate}.
-@end itemize
-
-Do @code{mode_declare (<variable>, any)} to declare a variable to be a general 
-Maxima variable (i.e. not limited to being @code{float} or @code{fixnum}).  The extra 
-work in declaring all your variables in code  to be compiled should pay 
-off.
-
-@end defvar
+@c OBSOLETE, DOES NOT OCCUR ANYWHERE IN THE SOURCE CODE
+@c @defvar undeclaredwarn
+@c Default value: @code{compfile}
+@c 
+@c - A switch in the translator.
+@c There are four relevant settings:
+@c 
+@c @itemize @bullet
+@c @item
+@c @code{false} -- never print warning messages. 
+@c @item
+@c @code{compfile} --  warn when in @code{compfile}.
+@c @item
+@c @code{translate} -- warn when in @code{translate} and when @code{translate: true}.
+@c @item
+@c @code{all} -- warn in @code{compfile} and @code{translate}.
+@c @end itemize
+@c 
+@c Do @code{mode_declare (<variable>, any)} to declare a variable to be a general 
+@c Maxima variable (i.e. not limited to being @code{float} or @code{fixnum}).  The extra 
+@c work in declaring all your variables in code  to be compiled should pay 
+@c off.
+@c 
+@c @end defvar
 
 @defun compile_file (filename)
 @defunx compile_file (filename, compiled_filename)
@@ -1098,13 +1175,16 @@ the original Maxima file, the Lisp translation, notes on translation, and the co
 If the compilation fails,
 the fourth item is @code{false}.
 
-@c THIS COULD BE SEEN AS A BUG. STRIKE "COMPILE" FROM EVAL-WHEN ???
 Some declarations and definitions take effect as soon
 as the Lisp code is compiled (without loading the compiled code).
 These include functions defined with the @code{:=} operator,
 macros define with the @code{::=} operator, @c HEDGE -- DON'T KNOW IF THERE IS ANOTHER WAY
-@code{declare}, @code{mode_declare}, and @code{define_variable} declarations,
-and perhaps others. @c MORE RESEARCH NEEDED HERE
+@code{alias}, @code{declare},
+@code{define_variable},  @code{mode_declare},
+and 
+@code{infix}, @code{matchfix},
+@code{nofix}, @code{postfix}, @code{prefix},
+and @code{compfile}.
 
 Assignments and function calls are not evaluated until the compiled code is loaded.
 In particular, within the Maxima file,
@@ -1121,17 +1201,18 @@ assignments to the translation flags (@code{tr_numer}, etc.) have no effect on t
 
 @end defun
 
-@c declare_translated IS BROKEN -- FILE BUG REPORT
-@c FAILS AT COMPILE TIME (EXECUTED BY EVAL-WHEN)
-@c WITH COMPLAINT "symbol *DECLARED-TRANSLATED-FUNCTIONS* has no value"
-@defun declare_translated (f_1, f_2, ...)
-When translating a file of Maxima code
-to Lisp, it is important for the translator to know which functions it
-sees in the file are to be called as translated or compiled functions,
-and which ones are just Maxima functions or undefined.  Putting this
-declaration at the top of the file, lets it know that although a symbol
-does which does not yet have a Lisp function value, will have one at
-call time.  (MFUNCTION-CALL fn arg1 arg2.. ) is generated when
-the translator does not know fn is going to be a Lisp function.
-
-@end defun
+@c OBSOLETE: declare_translate EXISTS BUT THE VARIABLE IT MANAGES, *declared-translated-functions*,
+@c HAS NO EFFECT ASIDE FROM CAUSING A USELESS ADVISORY ABOUT declare_translated 
+@c (*declared-translated-functions* HAS NO EFFECT ON TRANSLATED CODE)
+@c CUT EVERYTHING RELATED TO *declared-translated-functions* IN transs.lisp, transl.lisp
+@c @defun declare_translated (f_1, f_2, ...)
+@c When translating a file of Maxima code
+@c to Lisp, it is important for the translator to know which functions it
+@c sees in the file are to be called as translated or compiled functions,
+@c and which ones are just Maxima functions or undefined.  Putting this
+@c declaration at the top of the file, lets it know that although a symbol
+@c does which does not yet have a Lisp function value, will have one at
+@c call time.  (MFUNCTION-CALL fn arg1 arg2.. ) is generated when
+@c the translator does not know fn is going to be a Lisp function.
+@c 
+@c @end defun
