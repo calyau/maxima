@@ -1600,9 +1600,10 @@
 			  (mul (kti i1 a1)(kti i2 a2))))))
 	(t 'product-of-y-with-nofract-indices)))
 
-(defun fractest1
-    (r a1 a2 i1 i2 i flg)
-  (cond ((or (equal (caar i2) 'rat)(eq flg 'besshtjory))
+(defun fractest1 (r a1 a2 i1 i2 i flg)
+  (cond ((or (and (listp i2)
+		  (equal (caar i2) 'rat))
+	     (eq flg 'besshtjory))
 	 (sendexec r
 		   (cond ((eq flg 'bessytj)
 			  (mul (bess i1 a1 'j)
@@ -1621,9 +1622,9 @@
 			       (kti i2 a2))))))
 	(t 'product-of-i-y-of-nofract-index)))
 
-(defun fractest2
-    (r a1 i1 i11 flg)
-  (cond ((or (equal (caar i1) 'rat)
+(defun fractest2 (r a1 i1 i11 flg)
+  (cond ((or (and (listp i1)
+		  (equal (caar i1) 'rat))
 	     (eq flg 'd)
 	     (eq flg 'kbateman)
 	     (eq flg 'gammaincomplete)
