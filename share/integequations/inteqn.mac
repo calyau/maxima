@@ -1,5 +1,5 @@
 eval_when([translate,batch,demo,load,loadfile],
-dv(a)::=buildq([a],define_variable(a,'a,any))
+dv(a)::=buildq([a],define_variable(a,'a,any)),
 dvl(a)::=buildq([a],define_variable(a,[],list)),TTYOFF:TRUE)$
 
 /*  (c) Copyright 1981 Massachusetts Institute of Technology  */
