@@ -1,0 +1,18 @@
+Filename:  share/contrib/README
+
+
+ Code in this directory is considered external to the
+ main Maxima distribution, and is not supported by
+ the main Maxima team.  If you need help with one of
+ the packages here, your best bet is to contact the
+ author.  If the status of a package present here 
+ changes to supported, it will be moved into the 
+ regular share directory.  
+
+
+Notes on specific packages:
+
+maximaMathML/   Packages in this directory constitute the
+                MathML package created and used by the 
+		Internet Accessible Mathematical Computation
+		group at http://icm.mcs.kent.edu. 
