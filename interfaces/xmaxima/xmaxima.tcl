@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.28 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.29 2002-09-10 09:16:12 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -201,11 +201,22 @@ proc lMaxInitSetOpts {} {
     return $maxima_opts
 }
 
-proc vMAXExit {{text ""}} {
-    if {$text == ""} {set text $maxima_priv(cConsoleText)}
+
+rename exit tkexit
+proc vMAXExit {{text ""} {val "0"}} {
+    global maxima_priv
+
+    if {$text == ""} {
+	if {[info exists maxima_priv(cConsoleText)]} {
+	    set text $maxima_priv(cConsoleText)
+	} else {
+	    set text ""
+	}
+    }
     catch \{closeMaxima $text\}
-    exit
+    tkexit $val
 }
+proc exit {{val "0"}} {vMAXExit "" $val}
 
 proc doit { fr } {
     global maxima_priv argv argv0 env fontSize
