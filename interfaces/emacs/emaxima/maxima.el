@@ -1627,7 +1627,8 @@ To get apropos with the symbol under point, use:
     (or
      (re-search-forward inferior-maxima-prompt (point-max) t)
      (re-search-forward "?" (point-max) t)
-     (re-search-forward "Inferior Maxima Finished" (point-max) t))))
+     (eq (process-status inferior-maxima-process) 'exit))))
+;     (re-search-forward "inished" (point-max) t))))
 
 (defun maxima-question-p ()
   "Check to see if there is a question"
