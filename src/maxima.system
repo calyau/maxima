@@ -75,6 +75,90 @@
                         :components ((:file "mlisp") 
                                      (:file "mmacro") 
                                      (:file "buildq")))
+	       (:module numerical
+			:components
+			(
+			 (:module packages :source-pathname ""
+				  :components
+				  ((:file "f2cl-package")
+				   (:file "slatec")))
+			 (:module f2cl-lib :source-pathname ""
+				  :components ((:file "f2cl-lib")))
+			 (:module slatec :source-pathname "slatec"
+				  :components
+				  (
+				   ;; Utilities
+				   (:file "fdump")
+				   (:file "j4save")
+				   (:file "initds")
+				   (:file "xermsg")
+				   (:file "xercnt")
+				   (:file "xerhlt")
+				   (:file "xerprn")
+				   (:file "xersve")
+				   (:file "dcsevl")
+				   ;; Gamma function
+				   (:file "d9lgmc")
+				   (:file "dgamlm")
+				   (:file "dgamma")
+				   (:file "dgamln")
+				   (:file "dlngam")
+				   ;; Bessel J functions
+				   (:file "d9b0mp")
+				   (:file "d9b1mp")
+				   (:file "dbesj0")
+				   (:file "dbesj1")
+				   (:file "djairy")
+				   (:file "dasyjy")
+				   (:file "dbesj")
+				   ;; Bessel I functions
+				   (:file "dbsi0e")
+				   (:file "dbsi1e")
+				   (:file "dbesi0")
+				   (:file "dbesi1")
+				   (:file "dasyik")
+				   (:file "dbesi")
+				   ;; Bessel Y functions
+				   (:file "dbesy0")
+				   (:file "dbesy1")
+				   ;; Bessel J function for complex
+				   ;; arg and real order.
+				   (:file "zacai")
+				   (:file "zairy")
+				   (:file "zasyi")
+				   (:file "zbesj")
+				   (:file "zbinu")
+				   (:file "zbknu")
+				   (:file "zbuni")
+				   (:file "zmlri")
+				   (:file "zmlt")
+				   (:file "zrati")
+				   (:file "zs1s2")
+				   (:file "zseri")
+				   (:file "zshch")
+				   (:file "zsqrt")
+				   (:file "zuchk")
+				   (:file "zunhj")
+				   (:file "zuni1")
+				   (:file "zuni2")
+				   (:file "zunik")
+				   (:file "zuoik")
+				   (:file "zwrsk")
+				   (:file "zabs")
+				   (:file "zdiv")
+				   (:file "zexp")
+				   (:file "zkscl")
+				   (:file "zlog")
+				   ;; Airy functions
+				   (:file "d9aimp")
+				   (:file "daie")
+				   (:file "dai")
+				   ;; Error functions
+				   (:file "derf")
+				   (:file "derfc")
+				   ;; Exponential integrals
+				   (:file "de1")
+				   (:file "dei")))))
                (:module simplification :source-pathname ""
                         :components ((:file "simp") 
                                      (:file "float") 
