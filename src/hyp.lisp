@@ -873,20 +873,24 @@
 
 (defun step7 (a b c)
   (prog (l m n k mn kl sym sym1 r)
+     ;; Write a = sym + mn, c = sym1 + kl
      (setq l (s+c a)
 	   sym (cdras 'f l)
 	   mn  (cdras 'c l)
 	   l (s+c c)
 	   sym1 (cdras 'f l))
+     ;; We only handle the case where 2*sym = sym1.
      (cond ((not (equal (mul sym 2) sym1))
 	    (return nil)))
-     (setq kl (cdras 'c l)
-	   l  (s+c b)
+     (setq kl (cdras 'c l))
+     ;; a-b+1/2 is an integer.
+     (setq l (s+c b)
 	   r (sub (add (inv 2) (cdras 'c l)) mn)
 	   m ($num mn)
 	   n ($denom mn)
 	   k ($num kl)
 	   l ($denom kl))
+     ;; We have a = m*s+m/n, c = 2*m*s+k/l.
      (cond ((equal (* 2 l) n)
 	    (cond ((hyp-integerp (/ (- k m) n))
 		   (return (hyp-algv k l m n a b c))))))
@@ -905,11 +909,10 @@
   (prog (x y)
      (setq y 0)
      loop
-     (cond ((hyp-integerp (setq x
-				   (// (+ y
-					  (// k l)
-					  (* -2 (// m n)))
-				       2)))
+     (cond ((hyp-integerp (setq x (// (+ y
+					 (// k l)
+					 (* -2 (// m n)))
+				      2)))
 	    (return (list x y))))
      (setq y (+ 2 y))
      (go loop)))
@@ -921,10 +924,12 @@
 	   x (car xy)
 	   y (cadr xy))
      (cond ((< x 0)(go out)))
-     (cond ((< x y)(cond ((< (add a-b x (inv 2)) 0)
-			  (return (f88 x y a c fun)))
-			 (t (return (f87 x y a c fun)))))
-	   (t (cond ((< (add a-b x (inv 2)) 0)
+     (cond ((< x y)
+	    (cond ((< (add a-b x (inv 2)) 0)
+		   (return (f88 x y a c fun)))
+		  (t (return (f87 x y a c fun)))))
+	   (t
+	    (cond ((< (add a-b x (inv 2)) 0)
 		     (return (f90 x y a c fun)))
 		    (t (return (f89 x y a c fun))))))
      out
@@ -2665,12 +2670,45 @@
 ;; Algor. II from thesis:minimizes differentiations
 ;;
 ;; We're looking at F(a+m,-a+n;1/2+L;z)
+#+nil
 (defun algii (a b c)
   (prog (m n ap con sym m+n)
      ;; We know a+b is an integer.  In the most general form, we can
      ;; have a = r*a+f+m and b = -(r*a-f)+n.
      (cond ((not (setq sym (cdras 'f (s+c a))))
 	    (setq sym 0)))
+     (setq con (sub a sym))
+     (setq ap sym)
+     (setq m+n (add a b))
+     (setq m ($entier con))
+     (when (minusp m)
+       (add1 m))
+     ;; At this point sym = r*a, con is f+m, and m is m.
+     (setq ap (add (sub con m) ap))
+     ;; ap = r*a+f
+     (setq n (add b ap))
+     ;; Return r*a+f, r*a+f+p, and m+n, where p is chosen to minimize
+     ;; the number of derivatives we need to take.  Basically
+     ;; p=min(abs(m),abs(n)).
+     (cond ((and (minusp (mul n m))
+		 (greaterp (abs m) (abs n)))
+	    (return (list ap (sub ap n) m+n))))
+     (return  (list ap (add ap m) m+n))))
+
+(defun algii (a b c)
+  (prog (m n ap con sym m+n)
+     ;; We know a+b is an integer.  In the most general form, we can
+     ;; have a = r*a+f+m and b = -(r*a-f)+n.
+     (cond ((not (setq sym (cdras 'f (s+c a))))
+	    (setq sym 0))
+	   (t
+	    ;; a is of the form s+c.  Look at the coefficient of s.
+	    ;; If it's negative, swap a and b.
+	    (let ((res (m2 sym '((mtimes) ((coefft) (m $numberp)) ((coefft) (s nonnump)))
+			   nil)))
+	      (when (and res (minusp (cdras 'm res)))
+		(rotatef a b)
+		(setf sym (cdras 'f (s+c a)))))))
      (setq con (sub a sym))
      (setq ap sym)
      (setq m+n (add a b))
@@ -2973,17 +3011,17 @@
 ;;         * F(-a,a;1/2+n;z)
 ;;
 ;; A&S 15.2.5
-;; diff(z^(n+a+m-1/2)*F(-a,a;1/2+n;z),z,m)
+;; diff(z^(n+a+m-1/2)*(1-z)^(-1/2-n)*F(-a,a;1/2+n;z),z,m)
 ;;     = poch(1/2+n+a,m)*z^(1/2+n+a-1)*(1-z)^(-1/2-n-m)*F(-a-m,a;1/2+n;z)
-;;
+;;     = poch(1/2+n+a,m)*z^(a+n-1/2)*(1-z)^(-1/2-n-m)*F(-a-m,a;1/2+n;z)
 (defun f83 (fun m n a)
   (mul (factf (inv 2) n)
        (inv (factf (sub (inv 2) a) n))
-       (inv (factf (add (sub (inv 2) a) n) m))
+       (inv (factf (add a n (inv 2)) m))
        (inv (factf (add (inv 2) a) n))
        (power (sub 1 'ell) (add m n (inv 2)))
-       (power 'ell (sub (add (inv 2) a) n))
-       ($diff (mul (power 'ell (sub (sub (+ m n) a) (inv 2)))
+       (power 'ell (sub (inv 2) (add a n)))
+       ($diff (mul (power 'ell (sub (add (+ m n) a) (inv 2)))
 		   ($diff (mul (power (sub 1 'ell)
 				      (inv -2))
 			       fun)
