@@ -930,9 +930,9 @@
       ((cond ((and vars args) nil)
 	     ((and (null vars) (null args)))
 	     (t (merror "Too ~M arguments supplied to ~M:~%~M"
-		        (if vars '|&few| '|&many|)
+		        (if vars '|&FEW| '|&MANY|)
 		        (if fnname (cons (ncons fnname) lamvars)
-			    '|&a function|)
+			    '|&A FUNCTION|)
 		        (cons '(mlist) fnargs)))))
     (let ((var (car vars)))
       (if (not (symbolp var))
