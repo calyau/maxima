@@ -106,7 +106,7 @@ AC_ARG_WITH(cmucl-runtime,
 	[cmucl=true
 	CMUCL_RUNTIME_PATH="$withval"
 	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`],
-	[CMUCL_RUNTIME_PATH=`${CMUCL_NAME} -quiet -batch -eval '(format t "~a/../bin/lisp~%" common-lisp::*cmucl-lib*)(quit)'`
+	[CMUCL_RUNTIME_PATH=`${CMUCL_NAME} -noinit -nositeinit -quiet -batch -eval '(format t "~a/../bin/lisp~%" common-lisp::*cmucl-lib*)(quit)'`
 	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`])
 if test x"${cmucl}" = xtrue ; then
 	if test `echo "$CMUCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
