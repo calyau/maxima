@@ -61,6 +61,9 @@
   \color{black}
 \fi
 
+%% preview-latex might not be loaded, in which case:
+\let\ifPreview\iffalse
+
 %% A macro for writing Maxima in the ``proper'' font
 
 \def\Maxima{{\sffamily\slshape Maxima\/}}
@@ -215,7 +218,7 @@
         \baselineskip = \maximaoutputbaselineskip
         \setupm@ximaverbatim\dom@ximaverbatim}      
 {\catcode`\|=0 \catcode`\\=12 %
- |obeylines|gdef|dom@ximaverbatim^^M#1\endmaxima{#1|endgroup|ifmaximalines|m@ximabottom|fi|par|vskip 1.5ex|par|endgroup}}
+ |obeylines|gdef|dom@ximaverbatim^^M#1\endmaxima{#1|endgroup|ifmaximalines|m@ximabottom|fi|par|vskip 1.5ex|par|endgroup|ifPreview|end{preview}|fi}}
 
 %% Now we need to set up the actual environments.
 %% We will need some "if"s to tell us where we are
@@ -230,6 +233,7 @@
 %% etc.
 
 \def\beginmaxima{
+     \ifPreview\begin{preview}\fi
      \begingroup
      \par  \vskip \premaximaspace \par
      \baselineskip = \maximainputbaselineskip
@@ -366,6 +370,7 @@
       \vskip \postmaximaspace
       \par
       \endgroup
+      \ifPreview\end{preview}\fi
 }
 
 %% Now the Maxima sessions
@@ -426,7 +431,7 @@
         \baselineskip = \maximasessionbaselineskip
         \setupm@ximasessionverbatim\dom@ximasessionverbatim}      
 {\catcode`\|=0 \catcode`\\=12 %
- |obeylines|gdef|dom@ximasessionverbatim^^M#1\endmaximasession{#1|ifmaximasessionlines|m@ximasessionbottom|fi|par|vskip 1.5ex|par|endgroup}}
+ |obeylines|gdef|dom@ximasessionverbatim^^M#1\endmaximasession{#1|ifmaximasessionlines|m@ximasessionbottom|fi|par|vskip 1.5ex|par|endgroup|ifPreview|end{preview}|fi}}
 
 %% Now we need to set up the actual environments.
 %% We will need some "if"s to tell us where we are
@@ -438,6 +443,7 @@
 %% etc.
 
 \def\beginmaximasession{
+     \ifPreview\begin{preview}\fi
      \begingroup
      \m@ximainsessioninputtrue
      \m@ximasessionsessionfalse
@@ -511,6 +517,7 @@
     \fi
     \color{black}
     \endgroup
+    \ifPreview\end{preview}\fi
 }
 
 %% Finally, the Maxima noshows.
