@@ -682,7 +682,7 @@ are more easily simplified with @code{rename()} or @code{contract()}.
 
 (%i1) load(itensor);
 
-(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%o1)      /share/tensor/itensor.lisp
 (%i2) exp:ishow('levi_civita([],[i,j])*'levi_civita([k,l],[])*a([j],[k]))$
 
                                   i j  k
@@ -994,6 +994,68 @@ in @code{exp} and then carry out the differentiation by saying
 
 Equivalent to the execution of @code{undiff}, followed by @code{ev} and
 @code{rediff}.
+
+The point of this operation is to easily evalute expressions that cannot
+be directly evaluated in derivative form. For instance, the following
+causes an error:
+
+@example
+(%i1) load(itensor);
+
+(%o1)      /share/tensor/itensor.lisp
+(%i2) icurvature([i,j,k],[l],m);
+
+Maxima encountered a Lisp error:
+
+ Error in $ICURVATURE [or a callee]: $ICURVATURE [or a callee] requires less than three arguments.
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+@end example
+
+However, if @code{icurvature()} is entered in noun form, it can be evaluated
+using @code{evundiff()}:
+
+@example
+(%i3) ishow('icurvature([i,j,k],[l],m))$
+
+                                         l
+(%t3)                          icurvature
+                                         i j k,m
+(%i4) ishow(evundiff(%))$
+
+             l              l         %1           l           %1
+(%t4) - ichr2        - ichr2     ichr2      - ichr2       ichr2
+             i k,j m        %1 j      i k,m        %1 j,m      i k
+
+                l              l         %1           l           %1
+         + ichr2        + ichr2     ichr2      + ichr2       ichr2
+                i j,k m        %1 k      i j,m        %1 k,m      i j
+@end example
+
+NOTE: In earlier versions of MAXIMA, derivative forms of the
+Christoffel-symbols also could not be evaluated. This has been fixed now,
+so @code{evundiff()} is no longer necessary for expressions like this:
+
+@example
+(%i5) imetric(g);
+
+(%o5)                                done
+(%i6) ishow(ichr2([i,j],[k],l))$
+
+       k %3
+      g     (g         - g         + g        )
+              j %3,i l    i j,%3 l    i %3,j l
+(%t6) -----------------------------------------
+                          2
+
+                         k %3
+                        g     (g       - g       + g      )
+                         ,l     j %3,i    i j,%3    i %3,j
+                      + -----------------------------------
+                                         2
+@end example
+
 
 @end defun
 
