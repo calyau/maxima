@@ -150,27 +150,37 @@
 ;; M-s will bring the next input matching
 ;;   a regular expression to the prompt.
 
-;; Debugging:
-;; Maxima's source level debugging capabilities can be accessed through
-;; Emacs.  A user can set a breakpoint at a line in a file (which has 
-;; been loaded using, say, batchload), and then step line by line
-;; from there.  The call stack may be examined, together with the 
-;; variables bound at that level.  The current position in the source 
-;; file will be displayed in the other half of the window.
-;; The following keys are available to assist.
-;; C-x C-a C-s Step one source line with display. ("Step")
-;; C-x C-a C-n Step one source line (skip functions). ("Next")
-;; C-x C-a TAB Step one instruction with display. ("Stepi")
-;; C-x C-a C-r Continue with display.  ("Resume")
-;; C-x C-a C-f Finish executing current function. ("Finish")
-;; C-x C-a < Go up stack frames. ("Up")
-;; C-x C-a > Go down stack frames. ("Down")
-;; M-x maxima-debug-refresh Redraw the source file buffer.
-
-;; A breakpoint can be set to the current line in the source file
-;; with the command C-x SPC.  (The command can be 
-;; entered either in the source file buffer or the Maxima process
-;; buffer.)
+;; ** Running Maxima from the minibuffer **
+;; The command M-x maxima-minibuffer
+;; will allow you to interact with Maxima from the minibuffer.  
+;; The arrows will allow you to scroll through previous inputs.
+;; The line
+;;  (autoload 'maxima-minibuffer "maxima" "Maxima in a minibuffer" t)
+;; in your .emacs will make sure the function is available.
+;; In GNU Emacs, the output will be 2D form, since the minibuffer can
+;; resize itself.  If the variable maxima-minibuffer-2d is nil, then
+;; the output will not be in 2D.
+;; The related command M-x maxima-minibuffer-kill-ring will also
+;; put the output in the kill ring, so it can be yanked.  Given an
+;; argument, the kill ring will contain the output in TeX form.
+;;
+;; ** Getting Maxima results in an arbitrary buffer
+;; The command M-x maxima-replace-expression will take the expression
+;; under the current point (delimited by whitespace), send it to a Maxima
+;; process, and put the result in the buffer before the original expression.
+;; (The original expression will be preceded by a %.)
+;; The delimiters, their replacements, and delimiters of the result can be
+;; customized by changing the values of
+;;   maxima-replace-expression-beginning
+;;   maxima-replace-expression-end
+;;   maxima-replace-expression-old-beginning
+;;   maxima-replace-expression-old-end
+;;   maxima-replace-expression-new-beginning
+;;   maxima-replace-expression-new-end
+;; With an argument, the result will be in TeX form.
+;; The line
+;;  (autoload 'maxima-replace-expression "maxima" "Maxima in any buffer" t)
+;; in your .emacs will make sure the function is available.
 
 ;;; Code:
 
@@ -192,9 +202,36 @@
   :tag    "Maxima")
 
 (defcustom maxima-indent-amount 2
-  "*The amount of each indentation level in `maxima-mode'."
+  "*The amount of each indentation level in `maxima-mode'.
+This is used after `then', etc."
   :group 'maxima
   :type '(integer))
+
+(defcustom maxima-paren-indent-amount 1
+  "*The amount of indentation after a parenthesis."
+  :group 'maxima
+  :type '(integer))
+
+(defcustom maxima-blockparen-indent-amount -3
+  "*The amount of indentation after a `block('.
+By default, it is negative, so the next line starts under the `block'."
+  :group 'maxima
+  :type '(integer))
+
+(defcustom maxima-continuation-indent-amount 2
+  "*The amount of extra indentation given when a line is continued."
+  :group 'maxima
+  :type '(integer))
+
+(defcustom maxima-multiline-comment-indent-amount 2
+  "*The amount of extra indentation inside a multiline comment."
+  :group 'maxima
+  :type '(integer))
+
+(defcustom maxima-if-extra-indent-amount 0
+  "*The amount of extra indentation to give a \"then\" following an \"if\"."
+  :group 'maxima
+  :type 'integer)
 
 (defcustom maxima-use-dynamic-complete nil
   "*If non-nil, then M-TAB will complete words dynamically."
@@ -209,6 +246,16 @@ Choices are 'standard, 'perhaps-smart"
                  :tag      "Indent style"
                  (const standard) 
                  (const perhaps-smart)))
+
+(defcustom maxima-return-style 'newline-and-indent
+  "*Determines how `maxima-mode' will handle RET.
+Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent"
+  :group 'maxima
+  :type '(choice :menu-tag "Return style"
+                 :tag      "Return style"
+                 (const newline) 
+                 (const newline-and-indent)
+                 (const reindent-then-newline-and-indent)))
 
 (defvar maxima-newline-style nil
   "For compatability.")
@@ -226,12 +273,54 @@ Choices are 'standard, 'perhaps-smart"
 (defcustom maxima-command "maxima"
   "*The command used to start Maxima."
   :group 'maxima
-  :type 'file)
+  :type 'string)
 
-(defcustom maxima-use-tabs t
+(defcustom maxima-args nil
+  "*Extra arguments to pass to the maxima-command."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-use-tabs nil
   "*If non-nil, indentation will use tabs."
   :group 'maxima
   :type 'boolean)
+
+(defcustom maxima-minibuffer-2d t
+  "*If non-nil, use 2D output for maxima-minibuffer."
+  :group 'maxima
+  :type 'boolean)
+
+(defcustom maxima-replace-expression-beginning "\\( \\|^\\)"
+  "The delimiter for the beginning of the expression to be replaced
+in an arbitrary buffer."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-replace-expression-end "\\( \\|$\\)"
+  "The delimiter for the beginning of the expression to be replaced
+in an arbitrary buffer."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-replace-expression-old-beginning "\n%"
+  "The string to place at the beginning of the old expression."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-replace-expression-old-end "\n"
+  "The string to place at the end of the old expression."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-replace-expression-new-beginning " "
+  "The string to place at the beginning of the new expression."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-replace-expression-new-end " "
+  "The string to place at the end of the new expression."
+  :group 'maxima
+  :type 'string)
 
 ;;;; The other variables
 
@@ -245,46 +334,6 @@ Choices are 'standard, 'perhaps-smart"
 (defvar inferior-maxima-process nil
   "The Maxima process.")
 
-(defvar inferior-maxima-computing-p nil
-  "Non-nil if Maxima process is computing.")
-
-(defvar inferior-maxima-question-p nil)
-
-(defvar inferior-maxima-result nil
-  "The last output of the Maxima process.")
-
-(defvar inferior-maxima-lisp-level-flag nil
-  "Non-nil means that the inferior Maxima process is in Lisp mode.")
-
-(defvar inferior-maxima-debug-level-flag nil
-  "Non-nil means that the inferior Maxima process is in debug mode.")
-
-(defvar inferior-maxima-top-level-flag t
-  "Non-nil means that the inferior Maxima process is at the top level.")
-
-(defvar inferior-maxima-use-debug nil
-  "Non-nil means have the debugger available.")
-
-(defvar maxima-debug-last-frame nil)
-
-(defvar maxima-debug-last-frame-displayed-flag t)
-
-(defvar maxima-debug-delete-prompt-marker nil)
-
-(defvar maxima-debug-filter-accumulator nil)
-
-(defvar maxima-debug-overlay nil)
-
-(defvar maxima-debug-highlight-face 'highlight)
-
-(defvar maxima-debug-downcase-filenames
-  (string-match "nt[45]" system-configuration)
-  "Force the case to be lower when sending a break command." )
-
-(defvar maxima-debug-dirs  nil)
-
-(defvar maxima-name-letters "?%_a-zA-Z0-9")
-
 (defvar maxima-special-symbol-letters "!:='")
 
 (defvar maxima-input-end 0
@@ -294,48 +343,15 @@ Choices are 'standard, 'perhaps-smart"
   "The end of the latest input that was sent to Maxima.
 This doesn't include answers to questions.")
 
-(defvar inferior-maxima-exit-hook '())
+(defvar inferior-maxima-exit-hook nil)
+
+(defvar maxima-minibuffer-history nil)
 
 ;;;; Utility functions
-
-(defun maxima-line-beginning-position ()
-  (if (not (fboundp 'line-beginning-position))
-      (save-excursion
-	(beginning-of-line)
-	(point))
-    (line-beginning-position)))
-
-(defun maxima-line-end-position ()
-  (if (not (fboundp 'line-end-position))
-      (save-excursion
-	(end-of-line)
-	(point))
-    (line-end-position)))
-
-(defun maxima-form-beginning-position ()
-  (save-excursion
-    (maxima-beginning-of-form)
-    (point)))
-
-(defun maxima-name-beginning ()
-  (save-excursion
-    (skip-chars-backward maxima-name-letters)
-    (point)))
-
-(defun maxima-name-end ()
-  (save-excursion
-    (skip-chars-forward maxima-name-letters)
-    (point)))
-
-(defun maxima-special-symbol-beginning ()
-  (save-excursion
-    (skip-chars-backward maxima-special-symbol-letters)
-    (point)))
-
-(defun maxima-special-symbol-end ()
-  (save-excursion
-    (skip-chars-forward maxima-special-symbol-letters)
-    (point)))
+(defun maxima-replace-in-string (from to string)
+  (if running-xemacs
+      (replace-in-string string from to)
+    (replace-regexp-in-string from to string)))
 
 (defun maxima-make-temp-name ()
   "Return a unique filename."
@@ -343,10 +359,6 @@ This doesn't include answers to questions.")
   (concat (concat (make-temp-name "#mz") "-")
           (int-to-string maxima-temp-suffix)
           ".max"))
-
-;;;; Maxima mode functions
-
-;;; Position functions
 
 (defun maxima-in-comment-p ()
   "Non-nil means that the point is in a comment."
@@ -389,74 +401,196 @@ This doesn't include answers to questions.")
 	      (setq result nil))))
     result))
 
-(defun maxima-paren-opens-block-p ()
-  "Non-nil means that opening parenthesis begins a \"block\" statement."
-  (save-excursion
-    (skip-chars-backward " \t")
-    (forward-char -5)			;"block"
-    (if (looking-at "block")
-	t
-      nil)))
-
-(defvar maxima-paren-nest (make-vector 20 nil))
-
-(defun maxima-begin-paren ()
-  "Find the point of the opening parenthesis for the point."
-  (interactive)
-  (let ((ok t)(level 0)(here (point)) last (max 0))
-  (save-excursion
-    (cond ((re-search-backward "[;$]" nil t)
-	   (skip-chars-forward ";$ \t\n")
-	   (if (> (point) here)
-	       (goto-char here)))
-	  (t (goto-char (point-min))
-	      (maxima-forward-over-comment-whitespace)
-	      (if (> (point) here)
-		  (goto-char here))))
-    (while ok
-      (setq last (point))
-      (cond ((re-search-forward "[][()]" here t)
-	     (setq max (max level max))
-	     (let ((ch (char-after (- (point) 1))))
-	     (cond ((memq ch '( ?( ?[))  
-		    (setq level (+ level 1))
-		    (aset maxima-paren-nest level  (1- (point))))
-		   (t
-		    (setq level (- level 1))))))
-	    (t (setq ok nil))))
-      (aref maxima-paren-nest level))))
-
-(defun maxima-within-loop-p (pt in-paren then-loop)
-  "Non-nil means that the pt is within a loop that begins at the point.
-This means either within parenthesis, a \"do\" loop, in a \"then\"
-statement, or an \"else\" statement.
-The arguments are pt, in-paren (non-nil means that the current loop
-is a parentheses loop), then-loop (non-nil means that the current loop
-is a \"then\" statement.
-Okay, \"loop\" is being used loosely here."
-  (save-excursion
-    (if (maxima-end-of-loop in-paren then-loop)
-	(if (< pt (point))
-	    t
-	  nil)
-      t)))
-
 (defun maxima-in-sharp-comment-line-p ()
   "Non-nil means that the point is in a comment line beginning with a sharp"
   (save-excursion
     (beginning-of-line)
     (looking-at "[ \t]*#")))
 
+(defun maxima-paren-opens-block-p ()
+  "Non-nil means that opening parenthesis begins a \"block\" statement."
+  (save-excursion
+    (skip-chars-backward " \t")
+    (if (< (point) (+ (point-min) 5))
+        nil
+      (forward-char -5)			;"block"
+      (if (looking-at "block")
+          t
+        nil))))
 
-;;;; Motion functions
+(defun maxima-re-search-forward (regexp &optional pmax)
+  "Search forward for REGEXP, bounded by PMAX.
+Ignore matches found in comments."
+  (let ((keep-looking t)
+        (match nil)
+        (pt (point)))
+    (while (and keep-looking (re-search-forward regexp pmax t))
+      (setq match (match-string 0))
+      (if (maxima-in-comment-p)
+          (maxima-forward-over-comment-whitespace)
+        (setq keep-looking nil)))
+    (if keep-looking
+        (progn
+          (goto-char pt)
+          nil)
+      match)))
 
+(defun maxima-find-next-nonnested-close-char ()
+  "Search forward for next , ; $ or closing ), skipping over balanced parens."
+  (let ((keep-looking t)
+        (level 0)
+        (pt (point))
+        (match))
+    (while (and keep-looking 
+                (setq match (maxima-re-search-forward "[,;$()]")))
+      (cond ((string= match "(")
+             (setq level (1+ level)))
+            ((string= match ")")
+             (setq level (1- level))
+             (when (< level 0)
+               (setq keep-looking nil)))
+            (t
+             (if (= level 0)
+                 (setq keep-looking nil)))))
+    (if (and match
+             (or
+              (and
+               (string-match match ",;$")
+               (= level 0))
+              (and
+               (string-match match ")")
+               (= level -1))))
+        (point)
+      (goto-char pt)
+      nil)))
+
+(defun maxima-re-search-backward (regexp &optional pmin)
+  "Search forward for REGEXP, bounded by PMIN.
+Ignore matches found in comments."
+  (let ((keep-looking t)
+        (match nil)
+        (pt (point)))
+    (while (and keep-looking (re-search-backward regexp pmin t))
+      (setq match (match-string 0))
+      (if (maxima-in-comment-p)
+          (maxima-back-over-comment-whitespace)
+        (setq keep-looking nil)))
+    (if keep-looking
+        (progn
+          (goto-char pt)
+          nil)
+      match)))
+
+;;; Position functions
+(defun maxima-line-beginning-position ()
+  (if (not (fboundp 'line-beginning-position))
+      (save-excursion
+	(beginning-of-line)
+	(point))
+    (line-beginning-position)))
+
+(defun maxima-line-end-position ()
+  (if (not (fboundp 'line-end-position))
+      (save-excursion
+	(end-of-line)
+	(point))
+    (line-end-position)))
+
+(defun maxima-name-beginning ()
+  (save-excursion
+    (backward-word 1)
+    (point)))
+
+(defun maxima-special-symbol-beginning ()
+  (save-excursion
+    (skip-chars-backward maxima-special-symbol-letters)
+    (point)))
+
+(defun maxima-special-symbol-end ()
+  (save-excursion
+    (skip-chars-forward maxima-special-symbol-letters)
+    (point)))
+
+(defun maxima-form-beginning-position ()
+  (save-excursion
+    (maxima-goto-beginning-of-form)
+    (point)))
+
+(defun maxima-form-end-position ()
+  (save-excursion
+    (if (maxima-goto-end-of-form)
+        (point)
+      nil)))
+
+(defun maxima-form-end-position-or-point-max ()
+  (let ((mfep (maxima-form-end-position)))
+    (if mfep
+        mfep
+      (point-max))))
+
+(defun maxima-expression-end-position ()
+  "Return the point where the current expression ends,
+or nil."
+  (save-excursion
+    (if (maxima-goto-end-of-expression)
+        (point)
+      nil)))
+
+(defun maxima-construct-beginning-position ()
+  "Return the point which begins the current construct."
+  (save-excursion
+    (maxima-goto-beginning-of-construct)
+    (point)))
+
+(defun maxima-paren-begin-position ()
+  "Find the point of the opening parenthesis for the point."
+  (save-excursion
+    (if (maxima-goto-beginning-of-sexp)
+        (point)
+      nil)))
+
+(defun maxima-begin-if-position ()
+  "Find the point of the opening \"if\" for the point."
+  (let ((nest 0)
+        (match)
+        (keep-looking t)
+        (pt (point)))
+    (save-excursion
+      (while (and keep-looking 
+                  (setq match (maxima-re-search-backward "\\<if\\>\\|\\<then\\>" nil)))
+        (setq match (downcase match))
+        (cond ((string= match "if") (setq nest (1+ nest)))
+              (t (setq nest (1- nest))))
+        (when (= nest 1)
+          (setq pt (point))
+          (setq keep-looking nil))))
+    (if keep-looking
+        nil
+      pt)))
+
+(defun maxima-begin-then-position ()
+  "Find the point of the opening \"then\" for the current \"else\"."
+  (let ((keep-looking t)
+        (pt (point))
+        (begin-then nil))
+    (save-excursion
+      (while (and keep-looking 
+                  (maxima-re-search-backward "\\<then\\>" nil))
+        (let ((meep (maxima-expression-end-position)))
+          (when (or (not meep) (<= pt (maxima-expression-end-position)))
+            (setq begin-then (point))
+            (setq keep-looking nil)))))
+    begin-then))
+
+;;; Motion functions
 (defun maxima-forward-over-comment-whitespace ()
   "Move forward over comments and whitespace."
   (let ((ok t))
     (while  ok
       (skip-chars-forward " \t\n")
       (cond ((looking-at "/\\*")
-	     (search-forward "*/" nil t ))
+             (if (not (search-forward "*/" nil t ))
+                 (setq ok nil)))
 	    ((looking-at "\n[\t ]*#")
 	     (forward-line 1)
 	     (end-of-line))
@@ -468,145 +602,206 @@ Okay, \"loop\" is being used loosely here."
   "Move backward over comments and whitespace."
   (let ((ok t))
     (while  ok
+      (if (or (maxima-in-comment-p) 
+              (maxima-in-multiline-comment-p))
+          (search-backward "/*"))
       (skip-chars-backward " \t\n")
-      (cond ((> (point) 2)
-	     (forward-char -2)))
-      (cond ((looking-at "\\*/")
-	     (search-backward "/*" ))
-	    (t (forward-char 2) (setq ok nil))))))
+      (if (> (point) 2)
+          (progn
+            (forward-char -2)
+            (unless (looking-at "\\*/")
+              (setq ok nil)
+              (forward-char 2)))
+        (setq ok nil)))))
 
-(defun maxima-end-of-loop (in-paren then-loop)
-  "Go to the end of the current loop.
-The arguments are in-paren (non-nil means the loop is a parenthesis
-loop), and then-loop (non-nil means the loop is a then statement."
-  (let ((search-for "\\<do\\>\\|\\<then\\>\\|")
-	(keep-looking t)
-	end
-	end-mark)
-    (if in-paren
-	(setq end-mark ",")
-      (setq end-mark "[;$]"))
-    (if then-loop
-	(setq end-mark (concat "\\<else\\>\\|" end-mark)))
-    (setq search-for (concat search-for end-mark))
-    (skip-chars-forward " \t\n")
-    (if (looking-at "(")
-	(if (maxima-forward-sexp)
-	    (setq end nil)
-	  (setq end (point)))
-      (while keep-looking
-	(if (re-search-forward search-for nil t)
-	    (if (string-match end-mark (match-string 0))
-		(progn
-		  (setq end (point))
-		  (setq keep-looking nil))
-	      (if (not (maxima-end-of-loop in-paren 
-					   (string= (match-string 0) "then")))
-		  (progn
-		    (setq end nil)
-		    (setq keep-looking nil))))
-	  (setq end nil)
-	  (setq keep-looking nil))))
-    end))
-	
-;;; This next one is stolen from gud.el
-(defun maxima-forward-sexp ()
-  "Version of `forward-sexp' that catches errors."
-  (condition-case nil
-      (forward-sexp)
-    (error t)))
+(defun maxima-goto-beginning-of-form ()
+  "Move to the beginning of the form."
+  (let ((pt (point)))
+    (if (maxima-re-search-backward "[;\\$]" nil)
+        (forward-char 1)
+      (goto-char (point-min)))
+    (maxima-forward-over-comment-whitespace)
+    (if (< pt (point)) (goto-char pt))
+    (point)))
 
-(defun maxima-beginning-of-form ()
+(defun maxima-goto-beginning-of-form-interactive ()
   "Move to the beginning of the form."
   (interactive)
-  (let ((tem (re-search-backward "[;$]" (point-min) t)))
-    (cond (tem
-	   (cond ((maxima-in-comment-p)
-		  (search-backward "/\\*" nil t)
-		  (maxima-beginning-of-form))
-		 ((maxima-in-sharp-comment-line-p)
-		  (beginning-of-line)
-		  (or (equal (point) (point-min)) (forward-char -1))
-		  (maxima-beginning-of-form))
-		 (t  (forward-char 1))))
-	  (t (goto-char  (point-min))))
-    (maxima-forward-over-comment-whitespace)))
+  (maxima-goto-beginning-of-form))
 
-(defun maxima-end-of-form ()
+(defun maxima-goto-end-of-form ()
+  "Move to the end of the form."
+  (if (maxima-re-search-forward "[;\\$]" nil)
+      (point)
+    nil))
+
+(defun maxima-goto-end-of-form-interactive ()
   "Move to the end of the form."
   (interactive)
-  (let ((tem (re-search-forward "[;$]" (point-max) t)))
-    (cond (tem
-	   (cond ((maxima-in-comment-p)
-		  (search-forward "*/" nil t)
-		  (maxima-end-of-form))
-		 ((maxima-in-sharp-comment-line-p)
-		  (end-of-line) (forward-char 1)
-		  (maxima-end-of-form))))
-	  (t (error "No ; or $ at end.")))))
+  (unless (maxima-goto-end-of-form)
+    (error "No end of form")))
 
-(defun maxima-beginning-of-sexp ()
+(defun maxima-forward-sexp ()
+  "Skip over the next complete sexp.
+Ignores parens inside comments. Return nil if there is no following sexp."
+  (let ((nest 0)
+        (match)
+        (keep-looking t)
+        (pt (point)))
+    (while (and keep-looking 
+                (setq match (maxima-re-search-forward "[()]" nil)))
+      (cond ((string= match "(") (setq nest (1+ nest)))
+            (t (setq nest (1- nest))))
+      (when (<= nest 0)
+        (setq pt (point))
+        (setq keep-looking nil)))
+    (if keep-looking
+        (progn
+          (goto-char pt)
+          nil)
+      pt)))
+
+(defun maxima-backward-sexp ()
+  "Skip over the previous sexp.
+Ignores parens inside comments. Return nil if there is no previous sexp."
+  (let ((nest 0)
+        (match)
+        (keep-looking t)
+        (pt (point)))
+    (while (and keep-looking 
+                (setq match (maxima-re-search-backward "[()]" nil)))
+      (cond ((string= match ")") (setq nest (1+ nest)))
+            ((string= match "(") (setq nest (1- nest))))
+      (when (= nest 0)
+          (setq pt (point))
+          (setq keep-looking nil)))
+    (if keep-looking
+        (progn
+          (goto-char pt)
+          nil)
+      pt)))
+
+(defun maxima-goto-end-of-expression ()
+  "Find the point that ends the expression that begins at point.
+The expression is assumed to begin with \"if\", \"then\", \"do\"
+\"else\" or \"(\".  Return nil if the end is not found."
+;  (interactive)
+  ;; To find the end of the expression:
+  ;;  if looking at ( or block(, look for )
+  ;;  otherwise look for a , ; or $ at the same nesting level of
+  ;;  parentheses or a closing ).
+  (cond ((or (looking-at "(") (looking-at "block("))
+         (maxima-forward-sexp))
+        (t
+         (maxima-find-next-nonnested-close-char))))
+
+;; (defun maxima-goto-end-of-expression ()
+;;   "Find the point that ends the expression that begins at point.
+;; The expression is assumed to begin with \"if\", \"then\", \"do\"
+;; \"else\" or \"(\".  Return nil if the end is not found."
+;; ;  (interactive)
+;;   ;; To find the end of the expression:
+;;   ;;  if looking at ( or block(, look for )
+;;   ;;  if not inside parentheses, look for ; or $
+;;   ;;  otherwise (inside parentheses, not at the beginning of parentheses)
+;;   ;;     look for a comma at the same nesting level of parentheses
+;;   (cond ((or (looking-at "(") (looking-at "block("))
+;;          (maxima-forward-sexp))
+;;         ((not (maxima-paren-begin-position))
+;;          (maxima-re-search-forward "[;\\$]" nil))
+;;         (t
+;;          (let ((keep-looking t)
+;;                (nest 0)
+;;                (pt nil)
+;;                (match))
+;;            (while (and keep-looking 
+;;                        (setq match (maxima-re-search-forward "[(),]" nil)))
+;;              (cond ((string= match "(") 
+;;                     (setq nest (1+ nest)))
+;;                    ((string= match ")") 
+;;                     (setq nest (1- nest))
+;;                     (when (= nest -1)
+;;                       (setq keep-looking nil)
+;;                       (forward-char -1)
+;;                       (setq pt (point))))
+;;                    (t
+;;                     (when (= nest 0)
+;;                       (setq keep-looking nil)
+;;                       (setq pt (point))))))
+;;            pt))))
+
+(defun maxima-goto-beginning-of-construct ()
+  "Go to the point the begins the current construct."
+  (interactive)
+ (let ((keep-looking t)
+        (pmin (maxima-form-beginning-position))
+        (pt (point)))
+    (while (and keep-looking 
+                (maxima-re-search-backward 
+                 "\\<if\\>\\|\\<then\\>\\|\\<do\\>\\|\\<else\\>\\|(" pmin))
+      (save-excursion
+        (when (or (not (maxima-goto-end-of-expression)) (<= pt (point)))
+          (setq keep-looking nil))))
+    (if keep-looking 
+        (goto-char pmin)
+      (point))))
+
+(defun maxima-goto-beginning-of-sexp ()
+  "Move to the beginning of the current sexp.
+Ignores parens inside comments.  Returns nil if not in sexp."
+  (let ((nest 0)
+        (match)
+        (keep-looking t)
+        (pt (point)))
+    (while (and keep-looking 
+                (setq match (maxima-re-search-backward "[()]" nil)))
+      (cond ((string= match "(") (setq nest (1+ nest)))
+            ((string= match ")") (setq nest (1- nest))))
+      (when (= nest 1)
+          (setq pt (point))
+          (setq keep-looking nil)))
+    (if keep-looking
+        (progn
+          (goto-char pt)
+          nil)
+      pt)))
+
+(defun maxima-goto-beginning-of-sexp-interactive ()
   "Move to the beginning of the current sexp."
   (interactive)
-  (let ((pt (maxima-begin-paren)))
-    (if pt
-	(goto-char (maxima-begin-paren))
-      (message "No opening parenthesis."))))
+  (unless (maxima-goto-beginning-of-sexp)
+    (error "No beginning of sexp")))
 
-(defun maxima-end-of-sexp ()
+(defun maxima-goto-end-of-sexp ()
   "Move to the end of the current sexp."
-  (interactive)
   (let ((keep-looking t)
 	(found nil)
 	pt)
     (save-excursion
-      (while (and keep-looking (search-backward "(" nil t))
-	(if (not (maxima-in-comment-p))
-	    (setq keep-looking nil)))
-      (if keep-looking
-	  (message "Not in parentheses.")
-	(setq pt (point))
-	(maxima-forward-sexp)
-	(if (= pt (point))
-	    (message "No end parentheses.")
-	  (setq pt (- (point) 1))
-	  (setq found t))))
-    (if found
-	(goto-char pt))))
+      (setq match (maxima-re-search-backward "(" nil))
+      (when (and match (maxima-forward-sexp))
+        (setq found t)
+        (setq pt (point))))
+    (if (not found)
+        nil
+      (goto-char pt)
+      pt)))
 
+(defun maxima-goto-end-of-sexp-interactive ()
+  "Move to the end of the current sexp."
+  (interactive)
+  (unless (maxima-goto-end-of-sexp)
+    (error "No end of sexp")))
 
 ;;;; Newlines and indents
-
 (defun maxima-indent-form ()
   "Indent the entire form."
   (interactive)
-  (save-excursion
-    (let ((beg (progn (maxima-beginning-of-form)
-		      (point)))
-	  (end (progn (maxima-end-of-form) (point))))
-      (goto-char beg)
-      (while (< (point) end)
-	(maxima-indent-line)
-	(forward-line 1)))))
+  (indent-region
+   (maxima-form-beginning-position)
+   (maxima-form-end-position-or-point-max)))
 
 ;;; 'standard
-(defun maxima-standard-newline ()
-  "Insert a newline and indent following line like previous line.
-Unless the previous line opened a parenthesis, in which case 1 is
-added to the indentation, or if the previous line closed a parenthesis, 
-then 1 is subtracted."
-  (interactive)
-  (let ((indent (current-indentation)))
-    (let ((pt (maxima-line-beginning-position)))
-      (save-excursion
-	(while (re-search-backward "[()]" pt t)
-	  (cond ((string= (match-string 0) ")")
-		 (setq indent (- indent 1)))
-		((string= (match-string 0) "(")
-		 (setq indent (+ indent 1)))))))
-    (newline)
-    (indent-line-to (max indent 0))))
-
 (defun maxima-standard-indent ()
   "Indent the line based on the previous line.
 If the previous line opened a parenthesis, `maxima-indent-amount' is
@@ -615,16 +810,17 @@ added to the indentation, if the previous line closed a parenthesis,
 is the same as the previous line."
   (interactive)
   (let ((indent 0)
+        (match)
         (pt))
     (save-excursion
       (when (= (forward-line -1) 0)
         (progn
           (setq indent (current-indentation))
           (setq pt (maxima-line-end-position))
-          (while (re-search-forward "[()]" pt t)
-            (cond ((string= (match-string 0) ")")
+          (while (setq match (maxima-re-search-forward "[()]" pt))
+            (cond ((string= match ")")
                    (setq indent (- indent maxima-indent-amount)))
-                  ((string= (match-string 0) "(")
+                  ((string= match "(")
                    (setq indent (+ indent maxima-indent-amount))))))))
     (save-excursion
       (beginning-of-line)
@@ -655,126 +851,89 @@ is the same as the previous line."
 (defun maxima-perhaps-smart-calculate-indent ()
   "Return appropriate indentation for current line as Maxima code.
 Returns an integer: the column to indent to."
-  (save-excursion
-    ;; Start off with an indentation of 0, then work from there.
-    (let ((indent 0)
-	  (begin-construct nil)
-	  (close-char "[;\\$()]")
-	  (keep-looking t)
-	  current-point
-	  pt
-	  mstring)
-      (save-excursion
-	(beginning-of-line)
-	(setq pt (maxima-begin-paren))
-	(setq current-point (point))
-	(if pt (setq close-char "[,()]"))
-	;; Now, start looking backwards, find the first loop that the
-	;; current point is in.
-	(while (and keep-looking 
-		    (re-search-backward 
-		     "\\<then\\>\\|\\<do\\>\\|\\<else\\>" pt t))
-	  (setq mstring (match-string 0))
-	  (forward-char (length mstring))
-	  (if (maxima-within-loop-p current-point pt 
-				    (string= (match-string 0) "then"))
-	      (progn 
-		(setq begin-construct (point))
-		(setq keep-looking nil)))
-	  (backward-char (length mstring)))
-	;; If begin-construct in non-nil, it tells us where the line
-	;; that begins the current-construct it
-	(if begin-construct
-	    (progn
-	      (goto-char begin-construct)
-	      (setq indent (+ maxima-indent-amount 
-			      (current-indentation))))
-	  (if pt
-	      (progn 
-		(goto-char pt)
-		(setq indent (+ 1 (current-column)))
-		(if (maxima-paren-opens-block-p)
-		    (setq indent (- indent 4)))))))
-      ;;current-indentation?
-      ;; Now, we need to possibly do some adjustments.
-      ;; If the previous column doesn't end with close-char or a 
-      ;; parenthesis, assume that the current line in a continuation 
-      ;; of that line, and add 2 to the indentation, unless the 
-      ;; previous line was the beginning of the construct containing 
-      ;; the point or only an open parenthesis.
-      (save-excursion
-	(if (not (and begin-construct 
-		      (< (count-lines begin-construct current-point) 2)))
-	    (progn
-	      (forward-line -1)
-	      (end-of-line)
-              (maxima-back-over-comment-whitespace)
-	      ;;(skip-chars-backward " \t\n")
-	      (if (not (looking-at "^"))
-		  (progn 
-		    (forward-char -1)
-		    (if (not (looking-at close-char))
-			(setq indent (+ maxima-indent-amount indent))))))))
-      ;; Adjust for comments
-      ;; In a multiline comment, add two spaces on indentation
-      (if (maxima-in-multiline-comment-p)
-	  (setq indent (+ indent maxima-indent-amount)))
-      ;;Next, if the current line begins with an "else", then indent
-      ;; just like the beginning "then"
-      (save-excursion
-	(beginning-of-line)
-	(if (looking-at "[ \t]*else")
-	    (progn
-	      (maxima-back-over-comment-whitespace)
-	      (forward-char -1)
-	      (setq current-point (point))
-	      (setq keep-looking t)
-	      (while keep-looking
-		(if (re-search-backward "then" pt t)
-		    (progn
-		      (forward-char 4)
-		      (if (maxima-within-loop-p current-point pt t)
-			  (progn
-			    (setq indent (current-indentation))
-			    (setq keep-looking nil))))
-		  (setq keep-looking nil))))))
-      ;; Finally, if the line is the first line, don't indent at all
-      (save-excursion
-	(beginning-of-line)
-	(if (= (point) 1)
-	    (setq indent 0)))
-      indent)))
+  (let ((indent 0)
+        (pmin)
+        (bc))
+    (save-excursion
+      (beginning-of-line)
+      (cond
+       ;; First, take care of the cases where the indentation is clear
+       ;; No indentation at the beginning of the buffer
+       ((= (point) (point-min)) 
+        (setq indent 0))
+       ;; A line beginning with a close comment is indented like the open comment
+       ((looking-at "[ \t]*\\*/")
+        (re-search-backward "/\\*")
+        (setq indent (current-column)))
+       ;; deal with comments separately
+       ((maxima-in-comment-p)
+        (setq indent (maxima-perhaps-smart-comment-calculate-indent)))
+       ;; A line beginning "then" is indented like the opening "if"
+       ((looking-at "[ \t]*\\<then\\>")
+        (goto-char (maxima-begin-if-position))
+        (setq indent (+ maxima-if-extra-indent-amount (current-column))))
+       ;; A line beginning "else" is indented like the corresponding "then"
+       ((looking-at "[ \t]*\\<else\\>")
+        (goto-char (maxima-begin-then-position))
+        (setq indent (current-column)))
+       ;; A line beginning with a closing paren is indented like the open paren
+       ((looking-at "[ \t]*)")
+        (goto-char (maxima-paren-begin-position))
+        (setq indent (current-column)))
+       ;; Otherwise, the correct indentation needs to be computed.
+       (t 
+        ;; Find where to begin computing the indentation.
+        ;; That should be the end of the previous statement (; or $)
+        ;; or the beginning of the current sexp
+        (setq pmin (maxima-form-beginning-position))
+        ;; Find out if the point is within a paren group
+        (setq pt (maxima-paren-begin-position))
+        (if (and pt (< pt pmin))   ;; This shouldn't happen
+              (setq pt nil)
+            (if pt (setq pmin pt)))
+        (setq current-point (point))
+;        (if pt 
+;            (setq close-char "[,]") 
+;          (setq close-char "[;\\$]"))
+        (setq close-char "[,;\\$]")
+        ;; Now, find the indentation of beginning of the current construct
+        (setq begin-construct (maxima-construct-beginning-position))
+        ;; If begin-construct is nil, indent according to the opening paren
+        (save-excursion
+          (cond
+           ;; The construct begins with a paren
+           ((and pt (= begin-construct pt))
+            (goto-char pt)
+            (if (maxima-paren-opens-block-p)
+                (setq indent (+ maxima-blockparen-indent-amount (current-column)))
+              (setq indent (+ maxima-paren-indent-amount (current-column)))))
+           ;; The construct does not begin with a paren
+           (t
+            (goto-char begin-construct)
+            (setq indent (current-column)))))
+        ;; Now, we need to possibly do some adjustments.
+        ;; If the previous column doesn't end with close-char or a 
+        ;; parenthesis, assume that the current line in a continuation 
+        ;; of that line, and add to the indentation, unless the 
+        ;; previous line was the beginning of the construct containing 
+        ;; the point or only an open parenthesis.
+        (maxima-back-over-comment-whitespace)
+        (when (not (looking-at "^"))
+          (forward-char -1)
+          (if (not (or (looking-at "(") (looking-at close-char)))
+              (setq indent (+ maxima-continuation-indent-amount indent)))))))
+    indent))
 
-(defun maxima-perhaps-smart-indent (&optional whole-exp)
-  "Indent current line as Maxima code.
-With argument, indent any additional lines of the same expression
-rigidly along with this one."
-  (interactive)
-  (let ((indent (maxima-perhaps-smart-calculate-indent)) shift-amt beg end
-	(pos (- (point-max) (point))))
-    (beginning-of-line)
-    (setq beg (point))
-    (skip-chars-forward " \t")
-    (setq shift-amt (- indent (current-column)))
-    (if (zerop shift-amt)
-	nil
-      (delete-region beg (point))
-      (indent-to indent))
-    ;; If initial point was within line's indentation,
-    ;; position after the indentation.  Else stay at same point in text.
-    (if (> (- (point-max) pos) (point))
-	(goto-char (- (point-max) pos)))
-    ;; If desired, shift remaining lines of expression the same amount.
-    (and whole-exp (not (zerop shift-amt))
-	 (save-excursion
-	   (goto-char beg)
-	   (forward-sexp 1)
-	   (setq end (point))
-	   (goto-char beg)
-	   (forward-line 1)
-	   (setq beg (point))
-	   (> end beg))
-	 (indent-code-rigidly beg end shift-amt))))
+(defun maxima-perhaps-smart-comment-calculate-indent ()
+  (let ((indent)
+        (ml 0))
+    (if (maxima-in-multiline-comment-p) 
+        (setq ml maxima-multiline-comment-indent-amount))
+    (save-excursion
+      (maxima-back-over-comment-whitespace)
+      (if (looking-at "$") (forward-char 1))
+      (setq indent (+ ml (maxima-perhaps-smart-calculate-indent))))
+    indent))
 
 (defun maxima-perhaps-smart-indent-line ()
   "Reindent the current line."
@@ -782,92 +941,65 @@ rigidly along with this one."
   (save-excursion
     (beginning-of-line)
     (delete-horizontal-space)
-    (maxima-perhaps-smart-indent))
+    (indent-to (maxima-perhaps-smart-calculate-indent)))
   (skip-chars-forward " \t"))
 
-(defun maxima-perhaps-smart-newline ()
-  "Indent current line, insert newline and go to the appropriate column."
+;;; Cover them all
+(defun maxima-indent-line ()
   (interactive)
-  (maxima-perhaps-smart-indent)
-  (newline)
-  (maxima-perhaps-smart-indent))
-
-(cond
-; ((eq maxima-newline-style 'basic)
-;  (defun maxima-indent-line ()
-;    (interactive)
-;    (maxima-standard-indent))
-;  (defun maxima-newline ()
-;    (interactive)
-;    (newline)))
- ((eq maxima-indent-style 'standard)
-  (defun maxima-indent-line ()
-    (interactive)
+  (cond
+   ((eq maxima-newline-style 'basic)
     (maxima-standard-indent))
-  (defun maxima-newline ()
-    (interactive)
-    (maxima-standard-newline)))
- ((eq maxima-indent-style 'perhaps-smart)
-  (defun maxima-indent-line ()
-    (interactive)
-    (maxima-perhaps-smart-indent-line))
-  (defun maxima-newline ()
-    (interactive)
-    (maxima-perhaps-smart-newline))))
+   ((eq maxima-indent-style 'standard)
+    (maxima-standard-indent))
+   ((eq maxima-indent-style 'perhaps-smart)
+    (maxima-perhaps-smart-indent-line))))
 
 (defun maxima-change-indent-style (new-style)
   "Change the newline style."
-  (interactive "sNewline style (insert \"s\" for standard, or \"p\" for perhaps-smart): ")
+  (interactive "sNewline style (insert \"b\" for basic, \"s\" for standard, or \"p\" for perhaps-smart): ")
   (cond
-;   ((string= new-style "b")
-;    (setq maxima-indent-style 'basic)
-;    (defun maxima-indent-line ()
-;      (interactive)
-;      (maxima-standard-indent))
-;    (defun maxima-newline ()
-;      (interactive)
-;      (newline)))
+   ((string= new-style "b")
+    (setq maxima-indent-style 'basic))
    ((string= new-style "s")
-    (setq maxima-indent-style 'standard)
-    (defun maxima-indent-line ()
-      (interactive)
-      (maxima-standard-indent))
-    (defun maxima-newline ()
-      (interactive)
-      (maxima-standard-newline)))
+    (setq maxima-indent-style 'standard))
    ((string= new-style "p")
-    (setq maxima-indent-style 'perhaps-smart)
-    (defun maxima-indent-line ()
-      (interactive)
-      (maxima-perhaps-smart-indent))
-    (defun maxima-newline ()
-      (interactive)
-      (maxima-perhaps-smart-newline)))))
+    (setq maxima-indent-style 'perhaps-smart))))
+
+(defun maxima-return ()
+  (interactive)
+  (cond
+   ((eq maxima-return-style 'newline)
+    (newline))
+   ((eq maxima-return-style 'newline-and-indent)
+    (newline-and-indent))
+   ((eq maxima-return-style 'reindent-then-newline-and-indent)
+    (reindent-then-newline-and-indent))))
 
 ;;;; Commenting
-
 (defun maxima-insert-short-comment ()
   "Prompt for a comment."
   (interactive)
   (let ((comment (read-string "Comment: ")))
     (insert "/* " comment " */")
-    (maxima-newline)))
+    (newline-and-indent)))
 
 (defun maxima-insert-long-comment ()
   "Insert a comment enviroment"
   (interactive)
+  (indent-for-tab-command)
   (insert "/*")
-  (maxima-newline)
-  (maxima-newline)
+  (newline)
+  (newline)
   (insert "*/")
+  (indent-for-tab-command)
   (forward-line -1)
-  (insert "  "))
+  (indent-for-tab-command))
 
 (defun maxima-uncomment-region (beg end)
   "`uncomment-region' to use with the menu."
   (interactive "r")
   (comment-region beg end (universal-argument)))
-
 
 ;;;; Help functions
 
@@ -988,8 +1120,7 @@ rigidly along with this one."
 	(looking-at "%[a-zA-Z]"))
     (if arg2 
 	(maxima-context-help)
-      (maxima-help (buffer-substring-no-properties
-		 (maxima-name-beginning) (maxima-name-end)))))
+      (maxima-help (current-word))))
    ((looking-at "?")
     (maxima-get-fast-help "\"\\?\""))
    ((looking-at "#")
@@ -1019,8 +1150,7 @@ rigidly along with this one."
 
 (defun maxima-context-help ()
   (interactive)
-  (let* ((stub  (buffer-substring-no-properties 
-		 (maxima-name-beginning) (maxima-name-end)))
+  (let* ((stub  (current-word))
 	 (completions (all-completions (downcase stub) maxima-symbols)))
     (setq completions 
 	  (mapcar 
@@ -1131,82 +1261,66 @@ if completion is ambiguous."
       (he-reset-string)
       nil)))
 
-(fset 'maxima-dynamic-complete 
+(fset 'maxima-dynamic-complete
       (make-hippie-expand-function '(maxima-he-try)))
 
 ;;;; Miscellaneous
 
 (defun maxima-mark-form ()
-  "Make the current form the region."
+  "Make the current form as the region."
   (interactive)
-  (maxima-beginning-of-form)
-  (let ((tem (point)))
-    (maxima-end-of-form)
-    (set-mark (point))
-    (goto-char tem)))
+  (maxima-goto-beginning-of-form)
+  (set-mark (maxima-form-end-position-or-point-max)))
 
 (defun maxima-check-parens (beg end)
   "Check to make sure that the parentheses are balanced in the region."
   (interactive "r")
   (let ((keep-going t)
 	(level 0)
-	pt
-        paren)
+	(pt)
+        (match))
     (save-excursion
       (goto-char beg)
-      (while (and keep-going (re-search-forward "[()]" end t))
-        (setq paren (char-to-string (char-before (point))))
-	(if (not (maxima-in-comment-p))
-	    (progn
-	      (cond
-	       ((string= paren "(")
-		(setq level (+ level 1)))
-	       ((string= paren ")")
-		(setq level (- level 1))
-		(setq pt (- (point) 1))
-		(if (< level 0)
-		    (setq keep-going nil))))))))
+      (while (and keep-going (setq match (maxima-re-search-forward "[()]" end)))
+        (cond
+         ((string= match "(")
+          (setq level (1+ level)))
+          (t
+           (setq level (1- level))))
+        (when (< level 0)
+            (setq keep-going nil)
+            (setq pt (1- (point))))))
     (cond
      ((= level 0)			; All's fine
+      (message "Parentheses match")
       t)
-     ((< level 0)			; Too many close parens
+     ((< level 0)                       ; Too many close parens
+      (message "Unmatched close parenthesis")
       (goto-char pt)
-      (message "Mismatched parentheses")
       nil)
-     ((> level 0)			; Too many open parens
-      ;; First of all, go to the last paren that isn't in a comment.
-      (setq keep-going t)
+     (t                                 ; Too many open parens
+      ;; Go to the end, and repeat the above
+      ;; close-parens of the open-parens have matches.  Go to the next 
+      ;; open paren.
       (goto-char end)
-      (while keep-going
-	(re-search-backward "[()]")
-	(if (not (maxima-in-comment-p))
-	    (setq keep-going nil)))
-      ;; If it is an open paren, then there's an error.
-      (if (string= (match-string 0) "(")
-	  (progn
-	    (message "Mismatched parentheses")
-	    nil)
-	;; If it is a close paren, find the matching open paren
-	(goto-char (maxima-begin-paren))
-	;; Next, find the previous open paren that isn't in a comment
-	(setq keep-going t)
-	(while keep-going
-	  (search-backward "(")
-	  (if (not (maxima-in-comment-p))
-	      (setq keep-going nil)))
-	(message "Mismatched parentheses")
-	nil)))))
+      (setq keep-going t)
+      (setq level 0)
+      (while (and keep-going (setq match (maxima-re-search-backward "[()]" beg)))
+        (cond
+         ((string= match "(")
+          (setq level (1+ level)))
+         (t
+          (setq level (1- level))))
+        (when (> level 0)
+          (setq keep-going nil)))
+      (message "Unmatched open parenthesis")
+      nil))))
 
 (defun maxima-check-form-parens ()
   "Check to see if the parentheses in the current form are balanced."
   (interactive)
-  (let (beg end)
-    (save-excursion
-      (maxima-beginning-of-form)
-      (setq beg (point))
-      (maxima-end-of-form)
-      (setq end (point)))
-    (maxima-check-parens beg end)))
+  (maxima-check-parens (maxima-form-beginning-position)
+                       (maxima-form-end-position-or-point-max)))
 
 (defun maxima-load-file (file)
   "Prompt for a Maxima file to load."
@@ -1272,10 +1386,10 @@ if completion is ambiguous."
     nil
   (let ((map (make-sparse-keymap)))
     ;; Motion
-    (define-key map "\M-\C-a" 'maxima-beginning-of-form)
-    (define-key map "\M-\C-e" 'maxima-end-of-form)
-    (define-key map "\M-\C-b" 'maxima-beginning-of-sexp)
-    (define-key map "\M-\C-f" 'maxima-end-of-sexp)
+    (define-key map "\M-\C-a" 'maxima-goto-beginning-of-form-interactive)
+    (define-key map "\M-\C-e" 'maxima-goto-end-of-form-interactive)
+    (define-key map "\M-\C-b" 'maxima-goto-beginning-of-sexp-interactive)
+    (define-key map "\M-\C-f" 'maxima-goto-end-of-sexp-interactive)
     ;; Process
     (define-key map "\C-c\C-p" 'maxima-display-buffer)
     (define-key map "\C-c\C-r" 'maxima-send-region)
@@ -1300,7 +1414,7 @@ if completion is ambiguous."
     (define-key map "\C-c*" 'maxima-insert-long-comment)
     ;; Indentation
 ;    (define-key map "\t" 'maxima-reindent-line)
-;    (define-key map "\C-m" 'maxima-newline)
+    (define-key map "\C-m" 'maxima-return)
     (define-key map "\M-\C-q" 'maxima-indent-form)
 ;    (define-key map [(control tab)] 'maxima-untab)
     ;; Help
@@ -1313,9 +1427,9 @@ if completion is ambiguous."
     ;; Misc
     (define-key map "\M-h" 'maxima-mark-form)
     (define-key map "\C-c\)" 'maxima-check-parens)
-    (define-key map "\C-cC-\)" 'maxima-check-form-parens)
+    (define-key map [(control c) (control \))] 'maxima-check-form-parens)
+;    (define-key map "\C-cC-\)" 'maxima-check-form-parens)
     (define-key map "\177" 'backward-delete-char-untabify)
-    (define-key map "\C-x " 'maxima-debug-set-break)
     (setq maxima-mode-map map)))
 
 ;;;; Menu
@@ -1323,10 +1437,10 @@ if completion is ambiguous."
 (easy-menu-define maxima-mode-menu maxima-mode-map "Maxima mode menu"
   '("Maxima"
     ("Motion"
-     ["Beginning of form" maxima-beginning-of-form t]
-     ["End of form" maxima-end-of-form t]
-     ["Beginning of sexp" maxima-beginning-of-sexp t]
-     ["End of sexp" maxima-end-of-sexp t])
+     ["Beginning of form" maxima-goto-beginning-of-form-interactive t]
+     ["End of form" maxima-goto-end-of-form-interactive t]
+     ["Beginning of sexp" maxima-goto-beginning-of-sexp-interactive t]
+     ["End of sexp" maxima-goto-end-of-sexp-interactive t])
     ("Process"
      ["Start process" maxima-start t]
      ["Send region" maxima-send-region t]
@@ -1392,10 +1506,10 @@ if completion is ambiguous."
   "Major mode for editing Maxima code.
 
 Maxima mode provides the following motion commands:
-\\[maxima-beginning-of-form]: Move to the beginning of the form.
-\\[maxima-end-of-form]: Move to the end of the form.
-\\[maxima-beginning-of-sexp]: Move to the beginning of the sexp.
-\\[maxima-end-of-sexp]: Move to the end of the sexp.
+\\[maxima-goto-beginning-of-form-interactive]: Move to the beginning of the form.
+\\[maxima-goto-end-of-form-interactive]: Move to the end of the form.
+\\[maxima-goto-beginning-of-sexp-interactive]: Move to the beginning of the sexp.
+\\[maxima-goto-end-of-sexp-interactive]: Move to the end of the sexp.
 
 and the following miscellaneous commands.
 \\[maxima-mark-form]: Mark the current form
@@ -1475,8 +1589,6 @@ To get apropos with the symbol under point, use:
 (defun maxima-start ()
   "Start the Maxima process."
   (interactive)
-  (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-question-p nil)
   (if (processp inferior-maxima-process)
       (unless (eq (process-status inferior-maxima-process) 'run)
         (delete-process inferior-maxima-process)
@@ -1486,7 +1598,14 @@ To get apropos with the symbol under point, use:
         (setq inferior-maxima-process nil)))
   (unless (processp inferior-maxima-process)
     (setq maxima-input-end 0)
-    (let ((mbuf (make-comint "maxima" maxima-command)))
+    (let ((mbuf)
+          (cmd))
+      (if maxima-args
+          (setq cmd 
+                (append (list 'make-comint "maxima" maxima-command
+                              nil) (split-string maxima-args))) 
+        (setq cmd (list 'make-comint "maxima" maxima-command)))
+      (setq mbuf (eval cmd))
       (save-excursion
         (set-buffer mbuf)
         (setq inferior-maxima-process (get-buffer-process mbuf))
@@ -1544,13 +1663,15 @@ To get apropos with the symbol under point, use:
   (not (maxima-running)))
 
 (defun maxima-strip-string (string)
-  "Remove any spaces or newlines at the beginning and end of the string"
+  "Remove any spaces, tabs or newlines at the beginning and end of the string"
   (while (or
           (string= "\n" (substring string -1))
+          (string= "\t" (substring string -1))
           (string= " " (substring string -1)))
     (setq string (substring string 0 -1)))
   (while (or
           (string= "\n" (substring string 0 1))
+          (string= "\t" (substring string 0 1))
           (string= " " (substring string 0 1)))
     (setq string (substring string 1)))
   string)
@@ -1560,7 +1681,7 @@ To get apropos with the symbol under point, use:
   (setq string (maxima-strip-string string))
   (let ((prompt))
     (maxima-start)
-    (save-excursion
+    (save-current-buffer
       (set-buffer (process-buffer inferior-maxima-process))
       (goto-char (point-max))
       (insert string)
@@ -1615,27 +1736,73 @@ For use when the process asks a question."
               (maxima-single-string 
                (buffer-substring-no-properties pt (point)))
               (setq pt (point)))
-          (maxima-end-of-form)
+          (maxima-goto-end-of-form)
           (maxima-single-string 
            (buffer-substring-no-properties pt (point)))
           (setq pt (point))))
       (kill-buffer tmpbuf))))
+
+;;; Getting information back from Maxima.
+
+(defun maxima-last-output ()
+  "Get the most recent output from Maxima."
+  (interactive)
+  (save-excursion
+    (set-buffer (process-buffer inferior-maxima-process))
+    (let* ((pt (point))
+           (pmark (progn (goto-char (process-mark inferior-maxima-process))
+                         (forward-line 0)
+                         (point-marker)))
+           (output (buffer-substring-no-properties comint-last-input-end pmark)))
+      (goto-char pt)
+      output)))
+
+(defun maxima-last-output-noprompt ()
+  "Return the last Maxima output, without the prompts"
+  (interactive)
+  (if (maxima-finished-p)
+      (maxima-last-output)
+    (let* ((output (maxima-last-output))
+           (newstring)
+           (i 0)
+           (beg)
+           (end)
+           (k))
+    ;; Replace the output prompt with spaces
+      (setq beg (string-match "\\(^([D][0-9]*) \\)" output))
+      (if (not beg)
+          output
+        (setq end (1+ (string-match ")" output beg)))
+        (setq newstring (substring output 0 beg))
+        (setq k (- end beg))
+        (while (< i k)
+          (setq newstring (concat newstring " "))
+          (setq i (1+ i)))
+        (concat newstring 
+                (substring output 
+                           end))))))
+
+(defun maxima-last-output-tex-noprompt ()
+  "Return the last Maxima output, between the dollar signs."
+  (interactive)
+  (let* ((output (maxima-last-output))
+         (begtex (string-match "\\$\\$" output))
+         (endtex (string-match "\\$\\$" output (1+ begtex))))
+    (concat
+     (substring output begtex (+ endtex 2))
+     "\n")))
+
 
 ;;; Sending information to the process should be done through these
 ;; next four commands
 
 (defun maxima-string (string)
   "Send a string to the Maxima process."
-  (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-question-p nil)
   (maxima-send-block string)
   (maxima-display-buffer))
 
 (defun maxima-string-nodisplay (string)
   "Send a string to the Maxima process."
-  "Send a string to the Maxima process."
-  (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-question-p nil)
   (maxima-send-block string))
     
 (defun maxima-region (beg end)
@@ -1683,13 +1850,8 @@ With an argument, don't check parentheses."
   "Send the current form to the Maxima process, checking parentheses.
 With an argument, don't check parentheses."
   (interactive "P")
-  (let (beg end)
-    (save-excursion
-      (maxima-beginning-of-form)
-      (setq beg (point))
-      (maxima-end-of-form)
-      (setq end (point)))
-    (maxima-send-region beg end arg)))
+  (maxima-send-region (maxima-form-beginning-position)
+                      (maxima-form-end-position-or-point-max) arg))
 
 (defun maxima-send-full-line ()
   "Send the minimum number of lines such that the current is one of them,
@@ -1700,12 +1862,12 @@ and such that no line contains an incomplete form."
       (goto-char beg)
       (beginning-of-line)
       (setq beg (point))
-      (maxima-beginning-of-form)
+      (maxima-goto-beginning-of-form)
       (while (< (point) beg) 
 	(progn 
 	  (beginning-of-line)
 	  (setq beg (point))
-	  (maxima-beginning-of-form)))
+	  (maxima-goto-beginning-of-form)))
       (goto-char end)
       (end-of-line)
       (setq end (point))
@@ -1724,27 +1886,24 @@ and such that no line contains an incomplete form."
   "Do a maxima-send-full-line and go to the beginning of the next form."
   (interactive)
   (goto-char (maxima-send-full-line))
-  (maxima-beginning-of-form))
+  (maxima-goto-beginning-of-form))
 
 (defun maxima-send-completed-region (beg end)
   "Send the marked region, but complete possibly non-complete forms at the bounderies."
   (interactive "r\nP")
-  (let (beg1 end1)
-    (save-excursion
-      (goto-char beg)
-      (maxima-beginning-of-form)
-      (setq beg1 (point))
-      (goto-char end)
-      (maxima-end-of-form)
-      (setq end1 (point))
-      (maxima-send-region beg1 end1)
-      end1)))
+  (save-excursion
+    (goto-char beg)
+    (setq beg1 (maxima-form-beginning-position))
+    (goto-char end)
+    (setq end1 (maxima-form-end-position-or-point-max))
+    (maxima-send-region beg1 end1)
+    end1))
 
 (defun maxima-send-completed-region-and-goto-next-form (beg end)
   "Do a maxima-send-completed-region and go to the beginning of the next form."
   (interactive "r\nP")
   (goto-char (maxima-send-completed-region beg end))
-  (maxima-beginning-of-form))
+  (maxima-goto-beginning-of-form))
 
 (defun maxima-display-buffer ()
   "Display the inferior-maxima-process buffer so the recent output is visible."
@@ -1862,489 +2021,9 @@ to grab the current one.
 	(setq tem (cdr tem)))
       ans)))
 
-;;;; Filter and sentinel
-;;;; (Much of this was taken from dbl.el, by W. Schelter.
-
-;; You may easily create additional commands and bindings to interact
-;; with the display.  For example to put the dbl command next on \M-n
-;; (maxima-define-debug :next "\M-n")
-
-;; This causes the emacs command maxima-debug-:next to be defined, and runs
-;; maxima-debug-display-frame after the command.
-
-;; maxima-debug-display-frame is the basic display function.  
-;; It tries to display
-;; in the other window, the file and line corresponding to the current
-;; position in the dbl window.  For example after a dbl-step, it would
-;; display the line corresponding to the position for the last step.  Or
-;; if you have done a backtrace in the dbl buffer, and move the cursor
-;; into one of the frames, it would display the position corresponding to
-;; that frame.
-
-;; maxima-debug-display-frame is invoked automatically when a 
-;; filename-and-line-number appears in the output.
-
 (defun maxima-running ()
   (and (processp inferior-maxima-process)
        (eq (process-status inferior-maxima-process) 'run)))
-
-(defun maxima-check-level (string)
-  "Tell when the process is done computing (by looking for the prompt)."
-  (setq inferior-maxima-result string)
-  (if (string-match inferior-maxima-prompt string) ;"^(C[0-9]+).*" string)
-      (progn
-        (setq inferior-maxima-computing-p nil)
-        (setq inferior-maxima-question-p nil)
-        (cond ((string-match "MAXIMA>>" string)
-               (setq inferior-maxima-lisp-level-flag t)
-               (setq inferior-maxima-top-level-flag nil)
-               (setq inferior-maxima-debug-level-flag nil)) 
-              ((string-match "\(dbm.*" string)
-               (setq inferior-maxima-lisp-level-flag nil)
-               (setq inferior-maxima-top-level-flag nil)
-               (setq inferior-maxima-debug-level-flag t)) 
-              (t
-               (setq inferior-maxima-lisp-level-flag nil)
-               (setq inferior-maxima-top-level-flag t)
-               (setq inferior-maxima-debug-level-flag nil))))
-    (if (string-match "?" string)
-        (setq inferior-maxima-question-p t))))
-
-(defun inferior-maxima-filter (string)
-  (maxima-check-level string)
-  (if (not inferior-maxima-debug-level-flag)
-      (progn
-	(if (overlayp maxima-debug-overlay)
-	    (delete-overlay maxima-debug-overlay))
-	(setq overlay-arrow-position nil)))
-  (let ((inhibit-quit t))
-    (if maxima-debug-filter-accumulator
-	(inferior-maxima-filter-accumulate-marker 
-	 (concat maxima-debug-filter-accumulator string))
-      (inferior-maxima-filter-scan-input string)))
-  "")
-
-(defun inferior-maxima-filter-accumulate-marker (string)
-  (setq maxima-debug-filter-accumulator nil)
-  (if (> (length string) 1)
-      (if (= (aref string 1) ?\032)
-	  (let ((end (string-match "\n" string)))
-	    (if end
-		(progn
-		  (setq me string)
-		  (cond ((string-match
-         		 "\032\032\\([A-Za-z]?:?[^:]*\\):\\([0-9]*\\):[^\n]+\n"
-			  string)
-			 (setq maxima-debug-last-frame
-			       (cons
-				(match-string 1 string)
-				(string-to-int  (match-string 2 string))))
-			 (cond 
-			  ((equal (cdr maxima-debug-last-frame)  0)
-					;(message "got 0")
-					;(sit-for 1)
-			   (delete-overlay maxima-debug-overlay)
-			   (setq overlay-arrow-position nil)
-			   (setq maxima-debug-last-frame nil))
-			  (t (setq maxima-debug-last-frame-displayed-flag nil)))))
-		  (inferior-maxima-filter-scan-input 
-		   (substring string (1+ end))))
-	      (setq maxima-debug-filter-accumulator string)))
-	(inferior-maxima-filter-insert "\032")
-	(inferior-maxima-filter-scan-input (substring string 1)))
-    (setq maxima-debug-filter-accumulator string)))
-
-(defun inferior-maxima-filter-scan-input (string)
-  (if (equal string "")
-      (setq maxima-debug-filter-accumulator nil)
-    (let ((start (string-match "\032" string)))
-      (if start
-	  (progn
-	    ;; to do fix this so that if maxima-debug-last-frame
-	    ;; changed, then set the current  text property..
-	    ;;
-	    (inferior-maxima-filter-insert (substring string 0 start))
-	    (inferior-maxima-filter-accumulate-marker 
-	     (substring string start)))
-	(inferior-maxima-filter-insert string)))))
-
-(defun inferior-maxima-filter-insert (string)
-  (let (moving
-	output-after-point 
-	(old-buffer (current-buffer))
-	start)
-    (set-buffer (process-buffer inferior-maxima-process))
-    ;; test to see if we will move the point.   We want that the
-    ;; window-point of the buffer, should be equal to process-mark. 
-    (setq moving (>= (window-point 
-		      (get-buffer-window (process-buffer inferior-maxima-process)))
-		     (- (process-mark inferior-maxima-process) 0)))
-    (setq output-after-point (< (point) (process-mark inferior-maxima-process)))
-    (unwind-protect
-	(save-excursion
-	  ;; Insert the text, moving the process-marker.
-	  (goto-char (process-mark inferior-maxima-process))
-	  (setq start (point))
-	  (insert string)
-	  (set-marker (process-mark inferior-maxima-process) (point))
-	  (maxima-debug-maybe-delete-prompt)
-	  ;; Check for a filename-and-line number.
-	  (maxima-debug-display-frame
-	   ;; Don't display the specified file
-	   ;; unless (1) point is at or after the position where output appears
-	   ;; and (2) this buffer is on the screen.
-	   (or output-after-point
-	       (not (get-buffer-window (current-buffer))))
-	   ;; Display a file only when a new filename-and-line-number appears.
-	   t))
-      (if moving
-	  (set-window-point
-	   (get-buffer-window (process-buffer inferior-maxima-process))
-	   (process-mark inferior-maxima-process)))
-      (set-buffer old-buffer))))
-
-(defun inferior-maxima-sentinel (proc msg)
-  (cond ((null (buffer-name (process-buffer proc)))
-	 ;; buffer killed
-	 ;; Stop displaying an arrow in a source file.
-	 (if (overlayp maxima-debug-overlay)
-	     (delete-overlay maxima-debug-overlay))
-	 (setq overlay-arrow-position nil)
-	 (set-process-buffer proc nil))
-	((memq (process-status proc) '(signal exit))
-	 ;; Stop displaying an arrow in a source file.
-	 (if (overlayp maxima-debug-overlay)
-	     (delete-overlay maxima-debug-overlay))
-	 (setq overlay-arrow-position nil)
-	 ;; Fix the mode line.
-	 (setq mode-line-process
-	       (concat ": "
-		       (symbol-name (process-status proc))))
-	 (let* ((obuf (current-buffer)))
-	   ;; save-excursion isn't the right thing if
-	   ;;  process-buffer is current-buffer
-	   (unwind-protect
-	       (progn
-		 ;; Write something in *compilation* and hack its mode line,
-		 (set-buffer (process-buffer proc))
-		 ;; Force mode line redisplay soon
-		 (set-buffer-modified-p (buffer-modified-p))
-		 (if (eobp)
-		     (insert ?\n mode-name " " msg)
-		   (save-excursion
-		     (goto-char (point-max))
-		     (insert ?\n mode-name " " msg)))
-		 ;; If buffer and mode line will show that the process
-		 ;; is dead, we can delete it now.  Otherwise it
-		 ;; will stay around until M-x list-processes.
-		 (delete-process proc))
-	     ;; Restore old buffer, but don't restore old point
-	     ;; if obuf is the dbl buffer.
-	     (set-buffer obuf))))))
-
-(defun maxima-debug-refresh ()
-  "Fix a possibly garbled display, and redraw the arrow."
-  (interactive)
-  (redraw-display)
-  (maxima-debug-display-frame))
-
-(defun maxima-debug-display-frame (&optional nodisplay noauto)
-  "Find, obey and delete the last filename-and-line marker from DBL.
-The marker looks like \\032\\032FILENAME:LINE:CHARPOS\\n.
-Obeying it means displaying in another window the specified file and line."
-  (interactive)
-  (and maxima-debug-last-frame (not nodisplay)
-       (or (not maxima-debug-last-frame-displayed-flag) (not noauto))
-       (progn (maxima-debug-display-line (car maxima-debug-last-frame) 
-					 (cdr maxima-debug-last-frame))
-	      (setq maxima-debug-last-frame-displayed-flag t))))
-
-	     
-;;; Make sure the file named TRUE-FILE is in a buffer that appears on
-;; the screen and that its line LINE is visible.  Put the
-;; overlay-arrow on the line LINE in that buffer.
-
-(defun maxima-debug-find-file (file)
-  (cond ((file-exists-p file)
-	 (find-file-noselect file))
-	((get-buffer file))
-	(t (find-file-noselect file))))
-
-(defun maxima-debug-search-path (file dirs)
-  (let ((paths (symbol-value dirs))
-	true-file)
-    (cond ((file-exists-p file) (setq true-file file))
-	  (t
-	   (while paths
-	     (let ((tem (expand-file-name file 
-					  (or (car paths) default-directory))))
-	       (if  (file-exists-p tem) (setq true-file tem))
-	       (setq paths (cdr paths))))))
-    (cond (true-file)
-	  (t (setq paths (symbol-value dirs))
-	     (set dirs
-		  (append paths
-			  (list 
-			   (file-name-directory
-			    (read-file-name
-			     (format "%s = %s, add path :" dirs paths))))))
-	     (maxima-debug-search-path file dirs)))))
-
-(defun maxima-debug-find-line ()
-  "Look for a file-line property.
-If none is found, search for a regexp.
-If the buffer is a non process buffer, just return current file 
-and line number."
-  (interactive)
-  (save-excursion
-    (end-of-line)
-    (cond ((get-buffer-process (current-buffer))
-	   (cond
-	    ((save-excursion
-	       (beginning-of-line)
-	       (get-text-property (point) 'file-line)))
-	    ((progn (end-of-line) 
-		    (re-search-backward " \\([^: ]+\\):\\([0-9]+\\)" 300 nil))
-	     (setq file (buffer-substring (match-beginning 1) (match-end 1)))
-	     (setq line (buffer-substring (match-beginning 2) (match-end 2)))
-	     (setq line (read line))
-	     (and (integerp line)
-		  (setq file 
-			(maxima-debug-search-path file 'maxima-debug-dirs))
-		  (list file line)))))
-	  (t (list (buffer-file-name) (+ 1 (count-lines (point))))))))
-
-(defun maxima-debug-find-and-display-line ()
-  (interactive)
-  (let ((res (maxima-debug-find-line)))
-    (and res (apply 'maxima-debug-display-line res))))
-
-(defun maxima-debug-display-line (true-file line)
-  (let* ((buffer (maxima-debug-find-file true-file))
-	 (window (display-buffer buffer t))
-	 (pos)
-	 (end))
-    (save-excursion
-      (set-buffer buffer)
-      (save-restriction
-	(widen)
-	(goto-line line)
-	(setq pos (point))
-	(setq end (maxima-line-end-position))
-	(if (overlayp maxima-debug-overlay)
-	    (delete-overlay maxima-debug-overlay))
-	(setq maxima-debug-overlay (make-overlay pos end))
-	(overlay-put maxima-debug-overlay 'face 
-		     maxima-debug-highlight-face)
-	(setq overlay-arrow-string "=>")
-	(or overlay-arrow-position
-	    (setq overlay-arrow-position (make-marker)))
-	(set-marker overlay-arrow-position (point) (current-buffer)))
-      (cond ((or (< pos (point-min)) (> pos (point-max)))
-	     (widen)
-	     (goto-char pos))))
-    (set-window-point window overlay-arrow-position)))
-
-
-(defun maxima-debug-maybe-delete-prompt ()
-  (if (and maxima-debug-delete-prompt-marker
-	   (> (point-max) (marker-position maxima-debug-delete-prompt-marker)))
-      (let (start)
-	(goto-char maxima-debug-delete-prompt-marker)
-	(setq start (point))
-	(beginning-of-line)
-	(delete-region (point) start)
-	(setq maxima-debug-delete-prompt-marker nil))))
-
-;;;; Help functions
-
-(defun maxima-debug-level-help ()
-  "Get help on the debug level"
-  (interactive)
-  (let ((maxima-debug-help-buffer (get-buffer-create "Help on lisp level")))
-    (set-buffer maxima-debug-help-buffer)
-    (erase-buffer)
-    (insert "Help on the Maxima debug level\n\n")
-    (insert
-"Maxima's source level debugging capabilities can be accessed through
-Emacs.  A user can set a breakpoint at a line in a file (which has 
-been loaded using, say, batchload), and then step line by line
-from there.  The call stack may be examined, together with the 
-variables bound at that level.  The current position in the source 
-file will be displayed in the other half of the window.
-The following keys are available to assist.
-C-x C-a C-s Step one source line with display. (\"Step\")
-C-x C-a C-n Step one source line (skip functions). (\"Next\")
-C-x C-a TAB Step one instruction with display. (\"Stepi\")
-C-x C-a C-r Continue with display.  (\"Resume\")
-C-x C-a C-f Finish executing current function. (\"Finish\")
-C-x C-a < Go up stack frames. (\"Up\")
-C-x C-a > Go down stack frames. (\"Down\")
-M-x maxima-debug-refresh Redraw the source file buffer.
-
-A breakpoint can be set to the current line in the source file
-with the command C-x SPC. (The command can be entered either in the 
-source file buffer or the Maxima process buffer.)
-
-The following is an example session with a file /tmp/joe.mac.
-
-     (C1) batchload(\"/tmp/joe.mac\");
-     (D1) 				 /tmp/joe.mac
-     (C2) :br joe
-     Turning on debugging debugmode(true)
-     Bkpt 0 for joe (in /tmp/joe.mac line 8)
-     (C2) foo(2,3);
-     Bkpt 0:(joe.mac 8)
-     (dbm:1) :bt                       <-- :bt typed here gives a backtrace
-     #0: joe(y=5)(joe.mac line 8)
-     #1: foo(x=2,y=3)(joe.mac line 5)
-     (joe.mac 9)                       <-- Here type C-xC-aC-n to advance line
-     (joe.mac 10)                      <-- Here type C-xC-aC-n to advance line
-                                       In the other buffer the source code
-                                       appears with an arrow.
-     (dbm:1) u;                        Investigate value of 'u
-     28
-     (dbm:1) u:33;                     Alter it to be 33
-     (dbm:1) :r                        C-xC-aC-r Resumes the computation
-     (D3) 				     1094
-
-The actual file /tmp/joe.mac is the following:
-
-     foo(x,y):=(
-       x:x+2,
-       y:y+2,
-       x:joe(y),
-       x+y);
-     
-     joe(y):=block([u:y^2],
-       u:u+3,
-       u:u^2,
-        u);
-
-If you are looking at the file joe.mac, you may set a break point at a
-certain line of that file by typing C-x SPC.  This figures out which
-function your cursor is in, and then it sees which line of that
-function you are on.  If you are on say line 2 of joe, then it will
-insert in the other window `:br joe 2' the command to break joe at its
-second line.
-
-The above keystrokes are shortcuts for some keyword commands.  A
-complete list of keyword commands follows; the number of arguments
-taken depends on the particular command.  Also you need not type the
-whole command, just enough to be unique among the keyword commands.
-Thus `:br' would suffice for `:break'.  The current commands are:
-
-`:break'
-     Set a breakpoint in the specified FUNCTION at the specified LINE
-     offset from the beginning of the function.  If FUNCTION is given
-     as a string, then it is presumed to be a FILE and LINE is the
-     offset from the beginning of the file.
-
-`:bt'
-     Backtrace.
-
-`:continue'
-     Continue the computation.
-
-`:delete'
-     Delete all breakpoints, or if arguments are supplied delete the
-     specified breakpoints
-
-`:disable'
-     Disable the specified breakpoints, or all if none are specified
-
-`:enable'
-     Enable the specified breakpoints, or all if none are specified
-
-`:frame'
-     With an argument print the selected stack frame.  Otherwise the
-     current frame.
-
-`:help'
-     Print help on a break command or with no arguments on all break
-     commands
-
-`:info'
-     Undocumented
-
-`:lisp'
-     Evaluate the lisp form following on the line
-
-`:lisp-quiet'
-     Evaluate its arg as a lisp form without printing a prompt.
-
-`:next'     
-     Like `:step', except that subroutine calls are stepped over
-
-`:quit'
-     Quit this level
-
-`:resume'
-     Continue the computation.
-
-`:step'
-     Step program until it reaches a new source line
-
-`:top'
-     Throw to top level
-")
-    (goto-char 1)
-    (use-local-map (append (make-sparse-keymap) (current-local-map)))
-    (define-key (current-local-map) (kbd "SPC") 'scroll-up)
-    (define-key (current-local-map) "b" 'scroll-down)
-    (defun maxima-kill-debug-help ()
-      (interactive)
-      (let ((buf (current-buffer)))
-	(delete-window)
-	(kill-buffer buf)))
-    (define-key (current-local-map) "q" 'maxima-kill-debug-help)
-    (pop-to-buffer maxima-debug-help-buffer)))
-
-
-;;;; Miscellaneous
-
-(defun maxima-debug-call (command numeric)
-  "Invoke COMMAND displaying source in other window."
-  (interactive)
-  (save-excursion
-    (goto-char (point-max))
-    (beginning-of-line)
-    ;; to do put in hook here to recognize whether at
-    ;; maxima or lisp level.
-    (setq command (maxima-debug-subtitute-% command numeric))
-    (goto-char (point-max))
-    (setq maxima-debug-delete-prompt-marker (point-marker))
-    (maxima-string command)))
-
-(defun maxima-debug-subtitute-% (command n)
-  (let* (result
-	 (in-dbl (get-buffer-process (current-buffer)))
-	 file-line)
-    (cond ((string-match "%[fl]" command)
-	   (cond (in-dbl (setq file-line (maxima-debug-find-line)))
-		 (t (setq file-line
-			  (list (buffer-file-name)
-				(+ 1 (count-lines
-				      (point)))))))))
-    (while (and command (string-match "\\([^%]*\\)%\\([adeflp]\\)" command))
-      (let ((letter (string-to-char (substring command (match-beginning 2))))
-	    subst)
-	(cond ((eq letter ?p)
-	       (setq subst (if n (int-to-string n) "")))
-	      ((eq letter ?f)
-	       (setq subst (or (car file-line) "unknown-file")))
-	      ((eq letter ?l)
-	       (setq subst (if (cadr file-line)
-			       (int-to-string (cadr file-line))
-			     "unknown-line")))
-	      ((eq letter ?a)
-	       (setq subst (maxima-debug-read-address))))
-	(setq result (concat 
-		      result
-		      (substring command (match-beginning 1) (match-end 1))
-			     subst)))
-      (setq command (substring command (match-end 2))))
-    (concat result command)))
 
 (defun inferior-maxima-check-and-send-line ()
   "Check the lines for mis-matched parentheses, then send the line."
@@ -2365,19 +2044,12 @@ Thus `:br' would suffice for `:break'.  The current commands are:
 	    (re-search-backward inferior-maxima-prompt)
 	    (setq pt1 (point)))
 	  (if (maxima-check-parens pt1 pt)
-              (progn
-                (setq inferior-maxima-computing-p t)
-                (setq inferior-maxima-question-p nil)
-                (comint-send-input))))
-      (setq inferior-maxima-computing-p t)
-      (setq inferior-maxima-question-p nil)
+              (comint-send-input)))
       (comint-send-input))))
 
 (defun inferior-maxima-send-line ()
   "Send the line to the Maxima process."
   (interactive)
-  (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-question-p nil)
   (comint-send-input))
 
 (defun inferior-maxima-bol ()
@@ -2388,65 +2060,6 @@ Thus `:br' would suffice for `:break'.  The current commands are:
     (if (and (looking-at inferior-maxima-prompt)
 	     (<= (match-end 0) eol))
 	(goto-char (match-end 0)))))
-
-
-(defun maxima-debug-set-break ()
-  "Set breakpoint at this source line."
-  (interactive)
-  (let ((file-name (file-name-nondirectory buffer-file-name))
-	(line (save-restriction
-		(widen)
-		(count-lines 1 (point)))))
-    (and maxima-debug-downcase-filenames
-	 (setq file-name (downcase file-name)))
-    (maxima-string (concat ":break \"" file-name "\" " line))))
-
-	
-(defun maxima-debug-read-address()
-  "Return a string containing the core-address found in the buffer at point."
-  (save-excursion
-    (let ((pt (dot)) found begin)
-      (setq found (if (search-backward "0x" (- pt 7) t)(dot)))
-      (cond (found 
-	     (forward-char 2)
-	     (setq result
-		   (buffer-substring found
-				     (progn (re-search-forward "[^0-9a-f]")
-					    (forward-char -1)
-					    (dot)))))
-	    (t (setq begin (progn 
-			     (re-search-backward "[^0-9]") (forward-char 1)
-				  (dot)))
-	       (forward-char 1)
-	       (re-search-forward "[^0-9]")
-	       (forward-char -1)
-	       (buffer-substring begin (dot)))))))
-
-
-(defvar maxima-debug-commands nil
-  "List of strings or functions used by maxima-send-maxima-debug-command.
-It is for customization by you.")
-
-(defun maxima-send-maxima-debug-command (arg)
-  "This command reads the number where the cursor is positioned.  It
- then inserts this ADDR at the end of the buffer.  A numeric arg
- selects the ARG'th member COMMAND of the list dbl-print-command.  If
- COMMAND is a string, (format COMMAND ADDR) is inserted, otherwise
- (funcall COMMAND ADDR) is inserted.  eg. \"p (rtx)%s->fld[0].rtint\"
- is a possible string to be a member of maxima-debug-commands.  "
-  (interactive "P")
-  (let (comm addr)
-    (if arg (setq comm (nth arg maxima-debug-commands)))
-    (setq addr (maxima-debug-read-address))
-    (if (eq (current-buffer) (process-buffer inferior-maxima-process))
-	(set-mark (point)))
-    (cond (comm
-	   (setq comm
-		 (if (stringp comm) (format comm addr) (funcall comm addr))))
-	  (t (setq comm addr)))
-    (switch-to-buffer (process-buffer inferior-maxima-process))
-    (goto-char (dot-max))
-    (insert-string comm)))
 
 
 ;;;; Keymap
@@ -2465,56 +2078,18 @@ It is for customization by you.")
     (define-key map [(meta control tab)] 'maxima-smart-complete)
     (define-key map "\C-c\C-d" 'maxima-help)
     (define-key map "\C-c\C-m" 'maxima-info)
-;    (define-key map "\C-c\C-d" 'maxima-debug-level-help)
     (define-key map "\177" 'backward-delete-char-untabify)
     (define-key map "\C-c\C-k" 'maxima-stop)
-    (define-key map "\C-c\C-l" 'maxima-debug-find-and-display-line)
-    (define-key map "\C-x " 'maxima-debug-set-break)
     (setq inferior-maxima-mode-map map)))
-
-(defmacro maxima-define-debug (name key &optional doc)
-  (let* ((fun (intern (format "maxima-debug-%s" (read name)))))
-    (list 'progn
- 	  (list 'defun fun '(arg)
-		(or doc "")
-		'(interactive "p")
-		(list 'maxima-debug-call name 'arg))
-	  (list 'define-key 'inferior-maxima-mode-map key  
-		(list 'quote fun)))))
-
-(maxima-define-debug ":step %p"   "\C-x\C-a\C-s" 
-  "Step one source line with display")
-(maxima-define-debug ":stepi %p"  "\C-x\C-a\C-i" 
-  "Step one instruction with display")
-(maxima-define-debug ":next %p"   "\C-x\C-a\C-n" 
-  "Step one source line (skip functions)")
-(maxima-define-debug ":r"   "\C-x\C-a\C-r" 
-  "Continue with display")
-(maxima-define-debug ":finish" "\C-x\C-a\C-f" 
-  "Finish executing current function")
-(maxima-define-debug ":up %p"     "\C-x\C-a<"   
-  "Go up N stack frames (numeric arg) with display")
-(maxima-define-debug ":down %p"   "\C-x\C-a>"   
-  "Go down N stack frames (numeric arg) with display")
-
 
 ;;;; Menu
 
 (easy-menu-define inferior-maxima-mode-menu inferior-maxima-mode-map 
 		  "Maxima mode menu"
   '("Maxima"
-    ("Debugging"
-     ["Step one line" maxima-debug-:step inferior-maxima-debug-level-flag]
-     ["Step one instruction" maxima-debug-:stepi inferior-maxima-debug-level-flag]
-     ["Step one source line" maxima-debug-:next inferior-maxima-debug-level-flag]
-     ["Continue" maxima-debug-:r inferior-maxima-debug-level-flag]
-     ["Finish" maxima-debug-:finish inferior-maxima-debug-level-flag]
-     ["Up frames" maxima-debug-:up inferior-maxima-debug-level-flag]
-     ["Down frames" maxima-debug-:down inferior-maxima-debug-level-flag])
     ("Help"
      ["Maxima info" maxima-info t]
-     ["Help" maxima-help t]
-     ["Debug level help" maxima-debug-level-help t])
+     ["Help" maxima-help t])
     ("Quit"
      ["Kill process" maxima-stop t])))
 
@@ -2552,32 +2127,6 @@ To scroll through previous commands,
 \\[comint-next-matching-input] will bring the next input matching
   a regular expression to the prompt.
 
-Debugging:
-Maxima's source level debugging capabilities can be accessed through
-Emacs.  A user can set a breakpoint at a line in a file (which has 
-been loaded using, say, batchload), and then step line by line
-from there.  The call stack may be examined, together with the 
-variables bound at that level.  The current position in the source 
-file will be displayed in the other half of the window.
-The following keys are available to assist.
-\\[maxima-debug-:step] Step one source line with display. (\"Step\")
-\\[maxima-debug-:next] Step one source line (skip functions). (\"Next\")
-\\[maxima-debug-:stepi] Step one instruction with display. (\"Stepi\")
-\\[maxima-debug-:r] Continue with display.  (\"Resume\")
-\\[maxima-debug-:finish] Finish executing current function. (\"Finish\")
-\\[maxima-debug-:up] Go up stack frames. (\"Up\")
-\\[maxima-debug-:down] Go down stack frames. (\"Down\")
-\\[maxima-debug-refresh] Redraw the source file buffer.
-
-A breakpoint can be set to the current line in the source file
-with the command \\[maxima-debug-set-break].  (The command can be 
-entered either in the source file buffer or the Maxima process
-buffer.)
-
-A short help page on debugging can be accessed through
-\\[maxima-debug-level-help]
-
-
 The following commands are available:
 \\{inferior-maxima-mode-map}
 "
@@ -2589,18 +2138,6 @@ The following commands are available:
   (setq mode-line-process '(": %s"))
   (maxima-mode-variables)
   (use-local-map inferior-maxima-mode-map)
-  ;; Debugging stuff
-  (setq maxima-debug-last-frame nil)
-  (setq maxima-debug-last-frame-displayed-flag t)
-  (setq maxima-debug-delete-prompt-marker nil)
-  (setq maxima-debug-filter-accumulator nil)
-  (if running-xemacs
-      (add-to-list 'comint-output-filter-functions 'maxima-check-level)
-    (if inferior-maxima-use-debug
-       (add-to-list 'comint-preoutput-filter-functions 'inferior-maxima-filter)
-      (add-to-list 'comint-output-filter-functions 'maxima-check-level)))
-  (unless running-xemacs
-    (set-process-sentinel inferior-maxima-process 'inferior-maxima-sentinel))
   (if running-xemacs
       (add-local-hook 'kill-buffer-hook
                       (function
@@ -2627,5 +2164,107 @@ The following commands are available:
   (switch-to-buffer (process-buffer inferior-maxima-process)))
 
 (provide 'maxima)
+
+;;; Interacting with Maxima outside of a maxima buffer
+
+(defun maxima-minibuffer ()
+  "Communicate with Maxima through the minibuffer"
+  (interactive)
+  (maxima-start)
+  (let ((input (read-string "Maxima: " nil maxima-minibuffer-history))
+        (output nil)
+        (no-2d (or (not maxima-minibuffer-2d) running-xemacs)))
+    (setq input (maxima-strip-string input))
+    (unless (string= (substring input -1) ";")
+        (setq input (concat input ";")))
+    (when no-2d (maxima-string-nodisplay "emacsdisplay2d:display2d;")
+      (maxima-string-nodisplay "display2d:false;"))
+    (maxima-single-string input)
+    (setq output (maxima-last-output-noprompt))
+    (if no-2d (maxima-string-nodisplay "display2d:emacsdisplay2d;"))
+    ;; Strip the beginning and trailing newline
+    (if (string-match "\\` *\n" output)
+        (setq output (substring output (match-end 0))))
+    (if (string-match "\n *\\'" output)
+        (setq output (substring output 0 (match-beginning 0))))
+    (setq output (maxima-replace-in-string "%" "%%" output))
+    (message output)))
+
+(defun maxima-minibuffer-kill-ring (arg)
+  "Communicate with Maxima through the minibuffer"
+  (interactive "P")
+  (maxima-start)
+  (let ((input (read-string "Maxima: " nil maxima-minibuffer-history))
+        (texoutput)
+        (output nil))
+    (setq input (maxima-strip-string input))
+    (unless (string= (substring input -1) ";")
+        (setq input (concat input ";")))
+    (maxima-string-nodisplay "emacsdisplay2d:display2d;")
+    (maxima-single-string input)
+    (setq output (maxima-last-output-noprompt))
+    (when arg
+      (maxima-single-string "tex(%);")
+      (setq texoutput (maxima-last-output-tex-noprompt))
+      (setq texoutput (substring texoutput 2 -3)))
+    (maxima-string-nodisplay "display2d:emacsdisplay2d;")
+    ;; Strip the beginning and trailing newline
+    (if (string-match "\\` *\n" output)
+        (setq output (substring output (match-end 0))))
+    (if (string-match "\n *\\'" output)
+        (setq output (substring output 0 (match-beginning 0))))
+    (if arg
+        (kill-new texoutput)
+      (kill-new (maxima-strip-string output)))
+    (setq output (maxima-replace-in-string "%" "%%" output))
+    (message output)))
+
+(defun maxima-replace-expression (arg)
+  "Calculate the current formula in the buffer, replace by result.
+With an argument, replace by result in TeX form"
+  (interactive "P")
+  (let ((beg1)
+        (beg)
+        (end)
+        (form)
+        (result))
+    (re-search-backward maxima-replace-expression-beginning)
+    (delete-region (point) (match-end 0))
+    (setq beg1 (point))
+    (insert maxima-replace-expression-old-beginning)
+    (setq beg (point))
+    (re-search-forward maxima-replace-expression-end)
+    (setq end (match-beginning 0))
+    (goto-char end)
+    (delete-region end (match-end 0))
+    (insert maxima-replace-expression-old-end)
+    (setq form (buffer-substring-no-properties beg end))
+    (setq form (maxima-strip-string form))
+    (unless (string= (substring form -1) ";")
+      (setq form (concat form ";")))
+    (goto-char beg)
+    (unless arg
+      (maxima-string-nodisplay "emacsdisplay2d:display2d;")
+      (maxima-string-nodisplay "display2d:FALSE;"))
+    (maxima-string-nodisplay form)
+    (if arg
+        (progn
+          (maxima-string-nodisplay "tex(%);")
+          (setq result (maxima-last-output-tex-noprompt))
+          (setq result (substring result 2 -3))  )
+      (setq result (maxima-last-output-noprompt))
+      (maxima-string-nodisplay "display2d:emacsdisplay2d;"))
+    (setq result (maxima-strip-string result))
+    (goto-char beg1)
+    (insert maxima-replace-expression-new-beginning)
+    (setq beg1 (point))
+    (insert result)
+    (insert maxima-replace-expression-new-end)
+    (goto-char beg1)))
+
+(defun maxima-replace-expression-tex ()
+  "Calculate the current formula in the buffer, replace by result in TeX form."
+  (interactive)
+  (maxima-replace-expression 1))
 
 ;;; maxima.el ends here
