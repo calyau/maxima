@@ -2990,47 +2990,39 @@
       (step4-a a b c)))
 
 (defun step4-a (a b c)
-  (prog (aprime m n $ratsimpexponens $ratprint newf alglist)
-     (setq alglist (algii a b)
-	   aprime (cadr alglist)
-	   m (caddr alglist)
-	   n (sub c (inv 2)))
-     (setq $ratsimpexponens $true
-	   $ratprint $false)
-     ;; newf is basically (1/2+sqrt(1-z)/2)^(1-2*psa).
-     ;;
-     ;; But why?  We're trying to compute F(a+m,-a+n;1/2+L;z), which
-     ;; we derive via differentiation from F(a,-a;1/2;z).  Shouldn't
-     ;; newf be F(a,-a;1/2;z), which is given in A&S 15.1.11.  (A&S
-     ;; 15.1.17 also gives a solution in terms of trig functions.)
-     ;;
-     ;;
-     #+nil
-     (setq newf
-	   ($ratsimp (subst aprime
-			    'psa
-			    (power (add (inv 2)
-					(mul (power (sub 1 var)
-						    (inv 2))
-					     (inv 2)))
-				   (sub 1
-					(mul 2 'psa))))))
-     ;; Ok, this uses F(a,-a;1/2;z).  Since there are 2 possible
-     ;; representations (A&S 15.1.11 and 15.1.17), we check the sign
-     ;; of the var (as done in trig-log-1) to select which form we
-     ;; want to use.  The original didn't and seemed to want to use
-     ;; the negative form.
-     ;;
-     ;; With this change, F(a,-a;3/2;z) matches what A&S 15.2.6 would
-     ;; produce starting from F(a,-a;1/2;z), assuming z < 0.
-     (setq newf 
-	   (cond ((equal (checksigntm var) '$positive)
-		  (trig-log-1-pos aprime 'ell))
-		 ((equal (checksigntm var) '$negative)
-		  (trig-log-1-neg (mul -1 aprime) aprime 'ell))))
-     (return (subst var 'ell
+  (let* ((alglist (algii a b))
+	 (aprime (cadr alglist))
+	 (m (caddr alglist))
+	 (n (sub c (inv 2)))
+	 ($ratsimpexpons $true)
+	 ($ratprint $false)
+	 newf)
+    (cond ((or (=1//2 aprime)
+	       (=-1//2 aprime))
+	   ;; Ok.  We have a problem if aprime = 1/2.  We can't use
+	   ;; the algorithm below because we have F(1/2,-1/2;1/2;z)
+	   ;; which is 1F0(-1/2;;z) so the derivation is all wrong.
+	   ;; We need to do something else.  For now, we punt and just
+	   ;; return the function unchanged.
+	   (fpqform (list a b) (list c) var))
+	  (t
+	   (let ((newf 
+		  (cond ((equal (checksigntm var) '$positive)
+			 (trig-log-1-pos aprime 'ell))
+			((equal (checksigntm var) '$negative)
+			 (trig-log-1-neg (mul -1 aprime) aprime 'ell)))))
+	     ;; Ok, this uses F(a,-a;1/2;z).  Since there are 2 possible
+	     ;; representations (A&S 15.1.11 and 15.1.17), we check the sign
+	     ;; of the var (as done in trig-log-1) to select which form we
+	     ;; want to use.  The original didn't and seemed to want to use
+	     ;; the negative form.
+	     ;;
+	     ;; With this change, F(a,-a;3/2;z) matches what A&S 15.2.6 would
+	     ;; produce starting from F(a,-a;1/2;z), assuming z < 0.
+    
+	     (subst var 'ell
 		    (algiii newf
-			    m n aprime)))))
+			    m n aprime)))))))
 
 ;; F(a,b;c;z), where a and b are (positive) integers and c = 1/2+l.
 ;; This can be computed from F(1,1;3/2;z).
@@ -3134,22 +3126,22 @@
 
 ;;Algor. III from thesis:determines which Differ. Formula to use
 (defun algiii (fun m n aprime)
-  (prog (mm nn)
-     (setq mm (abs m) nn (abs n))
-     (cond ((and (nni m) (nni n))
-	    (cond ((lessp m n)
-		   (return (f81 fun m n aprime)))
-		  (t
-		   (return (f85 fun mm nn aprime)))))
-	   ((and (hyp-negp n) (hyp-negp m))
-	    (cond ((greaterp (abs m) (abs n))
-		   (return (f86 fun mm nn aprime)))
-		  (t
-		   (return (f82 fun mm nn aprime)))))
-	   ((and (hyp-negp m) (nni n))
-	    (return (f83 fun mm nn aprime)))
-	   (t
-	    (return (f84 fun mm nn aprime))))))
+  (let ((mm (abs m))
+	(nn (abs n)))
+    (cond ((and (nni m) (nni n))
+	   (cond ((lessp m n)
+		  (f81 fun m n aprime))
+		 (t
+		  (f85 fun mm nn aprime))))
+	  ((and (hyp-negp n) (hyp-negp m))
+	   (cond ((greaterp (abs m) (abs n))
+		  (f86 fun mm nn aprime))
+		 (t
+		  (f82 fun mm nn aprime))))
+	  ((and (hyp-negp m) (nni n))
+	   (f83 fun mm nn aprime))
+	  (t
+	   (f84 fun mm nn aprime)))))
 
 ;; Factorial function:x*(x+1)*(x+2)...(x+n-1)
 ;;
