@@ -111,22 +111,20 @@
 				     form l)
 			      ))
 		      (T (merror "BAD ARG")))))))
-(defvar *info-paths* nil)
 
-
-
-(defun $describe(x &aux (*info-paths* *info-paths*) have)
+(defun $describe (x)
   (setq x ($sconcat x))
-  (if (and (find-package "SI")
-           (fboundp (intern "INFO" "SI")))
-      (return-from $describe (funcall (intern "INFO" "SI") x
-         '("maxima.info") #-gcl *info-paths*)))
+  (if (and (find-package "CL-INFO")
+           (fboundp (intern "INFO" "CL-INFO")))
+      (return-from $describe (funcall (intern "INFO" "CL-INFO") x
+				      '("maxima.info") #-gcl *info-paths*)))
+  
 
-  "The documentation is now in INFO format and can be printed using
+      "The documentation is now in INFO format and can be printed using
 tex, or viewed using info or gnu emacs or using a web browser:
 http://www.ma.utexas.edu/maxima/
    Some versions of maxima built have a builtin info retrieval mechanism."
-  )
+      )
 
 (defun $apropos ( s ) 
   (cons '(mlist) (apropos-list s "MAXIMA"))) 

@@ -18,7 +18,7 @@
 ;;
 
 
-(in-package "SI")
+(in-package "CL-INFO")
 
 (defvar *match-data*)
 (defvar *case-fold-search* nil)

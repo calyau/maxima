@@ -142,9 +142,8 @@
 	      (maxima-data-path "doc" "###.{mac}")))
   (setq $chemin
 	(maxima-data-path "sym" ""))
-  (setq si::*info-paths* (list (concatenate 'string
-					    *maxima-infodir* "/"))))
-  )
+  (setq cl-info::*info-paths* (list (concatenate 'string
+					    *maxima-infodir* "/")))))
 
 ;#+gcl (setq si::*top-level-hook* 'user::run)
 (defun user::run ()
@@ -162,12 +161,12 @@
       
     (catch 'to-lisp
       (set-pathnames)
-      #+(or cmu clisp)
+      #+(or cmu clisp allegro)
       (progn
 	(loop 
 	  (with-simple-restart (macsyma-quit "Macsyma top-level")
 			       (macsyma-top-level input-string batch-flag))))
-      #-(or cmu clisp)
+      #-(or cmu clisp allegro)
       (catch 'macsyma-quit
 	(macsyma-top-level input-string batch-flag)))))
 
@@ -190,6 +189,10 @@
 #+cmu
 (defun bye ()
   (ext:quit))
+
+#+allegro
+(defun bye ()
+  (excl:exit))
 
 (defun $maxima_server (port)
   (load "/home/amundson/devel/maxima/archive/src/server.lisp")

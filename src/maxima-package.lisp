@@ -1,7 +1,23 @@
 ;; SI is used for the regex info implementation. This line should be removed
 ;; when the info regex implementation no longer requires SI in all lisps.
 ;; jfa 12/12/2001
-(or (find-package "SI") (make-package "SI" :use '(COMMON-LISP)))
+;;(or (find-package "SI") (make-package "SI" :use '(COMMON-LISP)))
+
+
+;; Create the package CL-INFO that holds the info regex routines. For
+;; GCL, we import the necessary symbols we need from SYSTEM, since GCL
+;; comes with an info reader.
+#-gcl
+(defpackage "CL-INFO"
+  (:use :common-lisp)
+  (:export "INFO" "*INFO-PATHS*"))
+
+#+gcl
+(defpackage "CL-INFO"
+  (:use "LISP" "SYSTEM")
+  (:import-from "SYSTEM" "INFO" "*INFO-PATHS*")
+  (:export "INFO" "*INFO-PATHS"))
+
 (or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
 
 
@@ -109,8 +125,8 @@
 (setf (symbol-function 'maxima::newline) (symbol-function 'si::newline))
 
 ;; *info-paths* from cl-info.lisp
-#+(or clisp cmu)
-(import '( si::*info-paths* ) "MAXIMA" )
+#-gcl
+(import '( cl-info::*info-paths* ) "MAXIMA" )
 
 ;; detect which version of clisp REGEXP we have
 #+clisp
@@ -149,5 +165,8 @@
 (shadow 'lisp::float 'maxima)
 #+lispm
 (shadow 'lisp::loop 'maxima)
+
+#+allegro
+(shadow '// 'maxima)
 (provide "MAXIMA")
 
