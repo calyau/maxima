@@ -157,30 +157,15 @@
 ;; The line
 ;;  (autoload 'maxima-minibuffer "maxima" "Maxima in a minibuffer" t)
 ;; in your .emacs will make sure the function is available.
-;; In GNU Emacs, the output will be 2D form, since the minibuffer can
-;; resize itself.  If the variable maxima-minibuffer-2d is nil, then
-;; the output will not be in 2D.
-;; The related command M-x maxima-minibuffer-kill-ring will also
-;; put the output in the kill ring, so it can be yanked.  Given an
-;; argument, the kill ring will contain the output in TeX form.
-;;
-;; ** Getting Maxima results in an arbitrary buffer
-;; The command M-x maxima-replace-expression will take the expression
-;; under the current point (delimited by whitespace), send it to a Maxima
-;; process, and put the result in the buffer before the original expression.
-;; (The original expression will be preceded by a %.)
-;; The delimiters, their replacements, and delimiters of the result can be
-;; customized by changing the values of
-;;   maxima-replace-expression-beginning
-;;   maxima-replace-expression-end
-;;   maxima-replace-expression-old-beginning
-;;   maxima-replace-expression-old-end
-;;   maxima-replace-expression-new-beginning
-;;   maxima-replace-expression-new-end
-;; With an argument, the result will be in TeX form.
-;; The line
-;;  (autoload 'maxima-replace-expression "maxima" "Maxima in any buffer" t)
-;; in your .emacs will make sure the function is available.
+;; If the variable maxima-minibuffer-2d is non-nil, then the output
+;; will be in Maxima's 2d output form, otherwise it will be in 
+;; Maxima's 1d output form.  (For XEmacs, only the 1d form is available,
+;; since the minibuffer isn't resizable.)
+;; The command maxima-insert-last-minibuffer-output will insert
+;; the last minibuffer output; if the output is in 2d, this will look
+;; unpleasant.  With an argument, maxima-insert-last-minibuffer-output 
+;; will insert the TeX form of the output.  (The variable 
+;; maxima-minibuffer-get-tex need to be non-nil for this to work.)
 
 ;;; Code:
 
@@ -192,7 +177,6 @@
 (require 'comint)
 (require 'easymenu)
 (require 'maxima-font-lock)
-(provide 'maxima)
 
 ;;;; The variables that the user may wish to change
 
@@ -285,42 +269,15 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
   :group 'maxima
   :type 'boolean)
 
-(defcustom maxima-minibuffer-2d t
+(defcustom maxima-minibuffer-2d nil
   "*If non-nil, use 2D output for maxima-minibuffer."
   :group 'maxima
   :type 'boolean)
 
-(defcustom maxima-replace-expression-beginning "\\( \\|^\\)"
-  "The delimiter for the beginning of the expression to be replaced
-in an arbitrary buffer."
+(defcustom maxima-minibuffer-get-tex t
+  "*If non-nil, keep track of the last TeXed minibuffer output."
   :group 'maxima
-  :type 'string)
-
-(defcustom maxima-replace-expression-end "\\( \\|$\\)"
-  "The delimiter for the beginning of the expression to be replaced
-in an arbitrary buffer."
-  :group 'maxima
-  :type 'string)
-
-(defcustom maxima-replace-expression-old-beginning "\n%"
-  "The string to place at the beginning of the old expression."
-  :group 'maxima
-  :type 'string)
-
-(defcustom maxima-replace-expression-old-end "\n"
-  "The string to place at the end of the old expression."
-  :group 'maxima
-  :type 'string)
-
-(defcustom maxima-replace-expression-new-beginning " "
-  "The string to place at the beginning of the new expression."
-  :group 'maxima
-  :type 'string)
-
-(defcustom maxima-replace-expression-new-end " "
-  "The string to place at the end of the new expression."
-  :group 'maxima
-  :type 'string)
+  :type 'boolean)
 
 ;;;; The other variables
 
@@ -346,6 +303,10 @@ This doesn't include answers to questions.")
 (defvar inferior-maxima-exit-hook nil)
 
 (defvar maxima-minibuffer-history nil)
+
+(defvar maxima-minibuffer-output "")
+
+(defvar maxima-minibuffer-tex-output "")
 
 ;;;; Utility functions
 (defun maxima-replace-in-string (from to string)
@@ -2196,8 +2157,6 @@ The following commands are available:
   (maxima-start)
   (switch-to-buffer (process-buffer inferior-maxima-process)))
 
-(provide 'maxima)
-
 ;;; Interacting with Maxima outside of a maxima buffer
 
 (defun maxima-minibuffer ()
@@ -2206,98 +2165,40 @@ The following commands are available:
   (maxima-start)
   (let ((input (read-string "Maxima: " nil maxima-minibuffer-history))
         (output nil)
-        (no-2d (or (not maxima-minibuffer-2d) running-xemacs)))
+        (twod (and maxima-minibuffer-2d (not running-xemacs))))
     (setq input (maxima-strip-string input))
     (unless (string= (substring input -1) ";")
         (setq input (concat input ";")))
-    (when no-2d (maxima-string-nodisplay "emacsdisplay2d:display2d;")
-      (maxima-string-nodisplay "display2d:false;"))
+    (if twod
+        (maxima-single-string "block(emacsdisplay:display2d,display2d:true);")
+      (maxima-single-string "block(emacsdisplay:display2d,display2d:false);"))
     (maxima-single-string input)
-    (setq output (maxima-last-output-noprompt))
-    (if no-2d (maxima-string-nodisplay "display2d:emacsdisplay2d;"))
-    ;; Strip the beginning and trailing newline
-    (if (string-match "\\` *\n" output)
-        (setq output (substring output (match-end 0))))
-    (if (string-match "\n *\\'" output)
-        (setq output (substring output 0 (match-beginning 0))))
-    (setq output (maxima-replace-in-string "%" "%%" output))
-    (message output)))
-
-(defun maxima-minibuffer-kill-ring (arg)
-  "Communicate with Maxima through the minibuffer"
-  (interactive "P")
-  (maxima-start)
-  (let ((input (read-string "Maxima: " nil maxima-minibuffer-history))
-        (texoutput)
-        (output nil))
-    (setq input (maxima-strip-string input))
-    (unless (string= (substring input -1) ";")
-        (setq input (concat input ";")))
-    (maxima-string-nodisplay "emacsdisplay2d:display2d;")
-    (maxima-single-string input)
-    (setq output (maxima-last-output-noprompt))
-    (when arg
+    (setq maxima-minibuffer-output (maxima-last-output-noprompt))
+    (when maxima-minibuffer-get-tex
       (maxima-single-string "tex(%);")
-      (setq texoutput (maxima-last-output-tex-noprompt))
-      (setq texoutput (substring texoutput 2 -3)))
-    (maxima-string-nodisplay "display2d:emacsdisplay2d;")
+      (setq maxima-minibuffer-tex-output 
+            (substring (maxima-last-output-tex-noprompt) 2 -3)))
+    (maxima-string-nodisplay "display2d:emacsdisplay;")
     ;; Strip the beginning and trailing newline
-    (if (string-match "\\` *\n" output)
-        (setq output (substring output (match-end 0))))
-    (if (string-match "\n *\\'" output)
-        (setq output (substring output 0 (match-beginning 0))))
-    (if arg
-        (kill-new texoutput)
-      (kill-new (maxima-strip-string output)))
-    (setq output (maxima-replace-in-string "%" "%%" output))
+    (while (string-match "\\` *\n" maxima-minibuffer-output)
+        (setq maxima-minibuffer-output 
+              (substring maxima-minibuffer-output (match-end 0))))
+    (while (string-match "\n *\\'" maxima-minibuffer-output)
+        (setq maxima-minibuffer-output 
+              (substring maxima-minibuffer-output 0 (match-beginning 0))))
+    (setq output (maxima-replace-in-string "%" "%%" maxima-minibuffer-output))
+    (if (not twod)
+        (if (string-match "\\` *" output)
+            (setq output (substring output (match-end 0)))))
+    (setq maxima-minibuffer-output 
+          (maxima-replace-in-string " " "" maxima-minibuffer-output))
     (message output)))
 
-(defun maxima-replace-expression (arg)
-  "Calculate the current formula in the buffer, replace by result.
-With an argument, replace by result in TeX form"
+(defun maxima-insert-last-minibuffer-output (arg)
   (interactive "P")
-  (let ((beg1)
-        (beg)
-        (end)
-        (form)
-        (result))
-    (re-search-backward maxima-replace-expression-beginning)
-    (delete-region (point) (match-end 0))
-    (setq beg1 (point))
-    (insert maxima-replace-expression-old-beginning)
-    (setq beg (point))
-    (re-search-forward maxima-replace-expression-end)
-    (setq end (match-beginning 0))
-    (goto-char end)
-    (delete-region end (match-end 0))
-    (insert maxima-replace-expression-old-end)
-    (setq form (buffer-substring-no-properties beg end))
-    (setq form (maxima-strip-string form))
-    (unless (string= (substring form -1) ";")
-      (setq form (concat form ";")))
-    (goto-char beg)
-    (unless arg
-      (maxima-string-nodisplay "emacsdisplay2d:display2d;")
-      (maxima-string-nodisplay "display2d:FALSE;"))
-    (maxima-string-nodisplay form)
-    (if arg
-        (progn
-          (maxima-string-nodisplay "tex(%);")
-          (setq result (maxima-last-output-tex-noprompt))
-          (setq result (substring result 2 -3))  )
-      (setq result (maxima-last-output-noprompt))
-      (maxima-string-nodisplay "display2d:emacsdisplay2d;"))
-    (setq result (maxima-strip-string result))
-    (goto-char beg1)
-    (insert maxima-replace-expression-new-beginning)
-    (setq beg1 (point))
-    (insert result)
-    (insert maxima-replace-expression-new-end)
-    (goto-char beg1)))
+  (if arg
+      (insert maxima-minibuffer-tex-output)
+    (insert maxima-minibuffer-output)))
 
-(defun maxima-replace-expression-tex ()
-  "Calculate the current formula in the buffer, replace by result in TeX form."
-  (interactive)
-  (maxima-replace-expression 1))
-
+(provide 'maxima)
 ;;; maxima.el ends here
