@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.23 2002-09-07 05:38:46 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.24 2002-09-07 08:48:34 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -9,6 +9,9 @@ xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png 
 bin_SCRIPTS = xmaxima
 
 TKSOURCES = \
+	Utils/FileDlg.tcl
+	Utils/Messages.tcl \
+	Utils/Misc.tcl \
 	Tkmaxima/Header.tcl \
 	Tkmaxima/Constants.tcl \
 	Tkmaxima/Preamble.tcl \
@@ -51,6 +54,7 @@ TKSOURCES = \
 	Tkmaxima/CMMenu.tcl \
 	Tkmaxima/Prefs.tcl \
 	Tkmaxima/RunMaxima.tcl \
+	Tkmaxima/Menu.tcl \
 	xmaxima.tcl 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl

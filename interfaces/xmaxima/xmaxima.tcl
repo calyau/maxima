@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.23 2002-09-07 05:38:46 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.24 2002-09-07 08:48:34 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -150,7 +150,6 @@ proc doit { fr } {
 
     if {[winfo exists $fr]} {catch { destroy $fr }}
 
-    set ws_openMath(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
     frame .browser
     set firstUrl file:/[file join $ws_openMath(maxima_xmaximadir) "intro.html"]
 
@@ -208,22 +207,24 @@ proc doit { fr } {
     }
 
     OpenMathOpenUrl $firstUrl -toplevel .browser
+    set ws_openMath(cBrowser) .browser
+
     frame $fr
     pack $fr -expand 1 -fill both -side top
     pack .browser -side bottom
     set m [oget .browser.textcommands.file menu]
     $m add command -underline 0 -label "Toggle Visibility of $fr" -command "if { \[catch {pack info $fr} \] } {packBoth $fr .browser} else { pack forget $fr}"
     packBoth $fr .browser
-    
-    set men [CMmenu $fr]
+
     set w $fr.text
-    clearLocal $fr.text
-    oset $w heightDesired 80%
+
+    #mike An abomination:
+    set men [CMmenu $fr]
     oset $men textwin $w
+
+    clearLocal $w
+    oset $w heightDesired 80%
     set ws_openMath(maximaWindow) $w
-    #text $fr.text 
-    #label [set msg $fr.label]  -height 1 -relief sunken \
-#	    -textvariable ws_openMath(load_rate)
     
     closeMaxima $w
     clearLocal $w
@@ -281,6 +282,8 @@ proc doit { fr } {
     
 
     wm title . xmaxima
+    # Add a proper system menu
+    # vMAXAddSystemMenu $fr $text
 
     #mike Defer the starting of maxima until the interface has been built
     runOneMaxima $w

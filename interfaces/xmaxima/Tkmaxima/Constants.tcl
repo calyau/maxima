@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.9 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.10 2002-09-07 08:48:34 mikeclarkson Exp $
 #
 
 global ws_openMath
@@ -40,6 +40,9 @@ static unsigned char disc4_bits[] = {
 static unsigned char disc_bits[] = {
     0xde, 0xff, 0xff, 0xff, 0xff, 0xde};}
 }
+
+# from xmaxima.tcl
+set ws_openMath(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
 
 # from EOctave.tcl
 set ws_openMath(options,octave) {{doinsert 1 "Do an insertion" boolean}}
