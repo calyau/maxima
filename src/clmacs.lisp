@@ -244,7 +244,7 @@
 (defun delq (x lis &optional (count most-positive-fixnum))
   (declare (fixnum count))
   #+lucid (setq count 16777214) ;;yukkk.
-  #+cmu (setq count (min count (1- most-positive-fixnum)))
+  #+(or cmu sbcl) (setq count (min count (1- most-positive-fixnum)))
   (delete x lis :test 'eq :count count))
 
 (setf (symbol-function 'lsh) #'ash)
@@ -362,10 +362,11 @@
 	 
 (defun zl-remove (item list &optional (n most-positive-fixnum))
   #+lucid (setq n 16777214) ;;yukkk.
-  #+cmu (setq n (min n (1- most-positive-fixnum))) ; yukkk
+  #+(or cmu sbcl) (setq n (min n (1- most-positive-fixnum))) ; yukkk
   (remove item list :count n :test 'equal))
 
-(defvar *acursor* nil)
+(defvar *acursor* (make-array 11 :element-type 'fixnum
+			      :initial-element 0))
 
 ;; Format of *acursor*.
 ;; 0                 1  2  3  4  5    6  7  8  9  10
@@ -373,8 +374,6 @@
 ;; array dimension   current index    maximal index
 
 (defun set-up-cursor (ar)
-  (or *acursor* (setf *acursor* (make-array 11 :element-type 'fixnum
-					    :initial-element 0)))
   (let ((lis (array-dimensions ar)))
     (setf (aref *acursor* 0) (length lis))
     (sloop for v in lis for i from 6 do (setf (aref *acursor* i) (f- v 1)))
@@ -382,7 +381,7 @@
 
 (defun aset-by-cursor (ar  val)
   (let ((curs  *acursor*))
-    (declare (type (lisp::array fixnum)  curs))
+    (declare (type (simple-array fixnum (11)) curs))
     (ecase (aref curs 0)
       (1 (setf (aref ar (aref curs 1)) val))
       (2 (setf (aref ar (aref curs 1) (aref curs 2)) val))
