@@ -6,7 +6,7 @@
 
 (defun save-maxima ()
   (make::make :maxima )
-  (savemem "maxima.clisp"))
+  (savemem "maxima-clisp.mem" :init-function  ))
 
 ;; compile maxima
 ;(make::make :maxima :compile t)

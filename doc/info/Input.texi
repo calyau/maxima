@@ -964,11 +964,13 @@ console.
 @deffn {macro} WITH_STDOUT(file,stmt1,stmt2,...)
 Opens file and then evaluates stmt1, stmt2, ....  Any printing
 to standard output goes to the file instead of the terminal.
-It always returns FALSE.
+It always returns FALSE.   Note the binding of display2d to be
+false, otherwise the printing will have things like "- 3" instead
+of "-3".
 @example
 
 mygnuplot(f,var,range,number_ticks):=
- block([numer:true],
+ block([numer:true,display2d:false],
  with_stdout("/tmp/gnu",
    for x:range[1] thru range[2] step
                 (range[2]-range[1])/number_ticks

@@ -370,12 +370,12 @@
 
 (DEFMFUN open-out-dsk (x)
   #+(or cl nil)
-  (open x :direction :output :characters t)
+  (open x :direction :output :element-type 'character)
  #-(or CL NIL)   (open x '(out dsk ascii block)))
 
 (DEFMFUN open-in-dsk (x)
 	 #+(or cl nil)
-	 (open x :characters t)
+	 (open x :direction :input :element-type 'character)
          #-(or CL NIL) (open x '(in dsk ascii block)))
 
 #-MAXII
