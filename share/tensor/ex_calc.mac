@@ -51,15 +51,15 @@ declare("@",additive);
 PERMUTATOR(L):=BLOCK([RESULT:1,TEMP],
 	FOR I THRU LENGTH(L)-1 DO IF ORDERLESSP(L[I+1],L[I]) THEN
 	(TEMP:L[I+1],L[I+1]:L[I],L[I]:TEMP,I:0,RESULT:-RESULT),
-	RESULT
+	[RESULT,L]
 );
 
 infix("|_");
 declare("|_",additive);
 "|_"(forma,vec):=block(local(ind,perm),
-  L1:SORT(first(indices(forma))),
-  if L1=[] then 0
-  else PERMUTATOR(indices(forma))*(ind:first(L1),contract(canform(expand(forma*vec([],[ind]))))));
+  L1:PERMUTATOR(first(indices(forma))),
+  if L1[2]=[] then 0
+  else L1[1]*(contract(canform(expand(forma*vec([],[first(L1[2])]))))));
 
 infix("@L");
 
@@ -73,6 +73,8 @@ declare("@L",additive);
   temp1:rename(forma@ind1),
   temp1:ev(temp1|_vec,noeval),
   temp1:ev(temp1,eval),
-  temp2:(rename(forma)|_vec)@ind1,
+  temp2:rename(forma),
+  temp2:ev(forma|_vec,noeval),
+  temp2:ev(temp2,eval)@ind1,
   temp1+temp2));
 
