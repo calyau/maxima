@@ -6,203 +6,396 @@
 @node Definitions for Differentiation,  , Differentiation, Differentiation
 @section Definitions for Differentiation
 
+@defun antid (@var{expr}, @var{x}, @var{u(x)}) 
+Returns a two-element list,
+such that an antiderivative of @var{expr} with respect to @var{x}
+can be constructed from the list.
+The expression @var{expr} may contain an unknown function @var{u} and its derivatives.
 
-@defun antid (@var{g}, @var{x}, @var{u(x)}) 
-A routine for evaluating integrals of expressions involving
-an arbitrary unspecified function and its derivatives.  It may be used
-by @code{load(antid)} , after which, the function @code{antidiff} may be used.
-E.g.  @code{antidiff(g,x,u(x))} where G is the expression involving U(X)
-(U(X) arbitrary) and its derivatives, whose integral with respect to X
-is desired.
+Let @var{L}, a list of two elements, be the return value of @code{antid}.
+Then @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
+is an antiderivative of @var{expr} with respect to @var{x}.
 
-The functions @code{nonzeroandfreeof} and @code{linear} are also defined, as well as
-@code{antid}.  @code{antid} is the same as @code{antidiff} except that it returns a list of
-two parts, the first part is the integrated part of the expression and
-the second part of the list is the non-integrable remainder.
+When @code{antid} succeeds entirely,
+the second element of the return value is zero.
+Otherwise, the second element is nonzero,
+and the first element is nonzero or zero.
+If @code{antid} cannot make any progress,
+the first element is zero and the second nonzero.
 
-@end defun
+@code{load ("antid")} loads this function.
+The @code{antid} package also defines the functions @code{nonzeroandfreeof} and @code{linear}.
 
-@defun antidiff  -
-See @code{antid}.
+@code{antid} is related to @code{antidiff} as follows.
+Let @var{L}, a list of two elements, be the return value of @code{antid}.
+Then the return value of @code{antidiff} is equal to @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
+where @var{x} is the variable of integration.
 
-@end defun
-
-@defvr property atomgrad
- - the atomic gradient property of an expression.
-May be set by @code{gradef}.
-
-@end defvr
-
-@defun atvalue (@var{form}, @var{list}, @var{value})
-enables the user to assign the boundary
-value value to form at the points specified by list.
+Examples:
+@c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
+@c load ("antid")$
+@c expr: exp (z(x)) * diff (z(x), x) * y(x);
+@c a1: antid (expr, x, z(x));
+@c a2: antidiff (expr, x, z(x));
+@c a2 - (first (a1) + 'integrate (second (a1), x));
+@c antid (expr, x, y(x));
+@c antidiff (expr, x, y(x));
+@c THERE IS A DEMO FILE share/integration/antid.dem, EXECUTED BY demo('antid)
+@c BUT I THINK THE FOLLOWING ILLUSTRATES THE BASIC FUNCTIONALITY MORE CLEARLY
+@c MAYBE MERGE IN THE DEMO PROBLEMS LATER
 
 @example
-(%i1) atvalue(f(x,y),[x=0,y=1],a**2)$
+(%i1) load ("antid")$
+(%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
+                            z(x)  d
+(%o2)                y(x) %e     (-- (z(x)))
+                                  dx
+(%i3) a1: antid (expr, x, z(x));
+                       z(x)      z(x)  d
+(%o3)          [y(x) %e    , - %e     (-- (y(x)))]
+                                       dx
+(%i4) a2: antidiff (expr, x, z(x));
+                            /
+                     z(x)   [   z(x)  d
+(%o4)         y(x) %e     - I %e     (-- (y(x))) dx
+                            ]         dx
+                            /
+(%i5) a2 - (first (a1) + 'integrate (second (a1), x));
+(%o5)                           0
+(%i6) antid (expr, x, y(x));
+                             z(x)  d
+(%o6)             [0, y(x) %e     (-- (z(x)))]
+                                   dx
+(%i7) antidiff (expr, x, y(x));
+                  /
+                  [        z(x)  d
+(%o7)             I y(x) %e     (-- (z(x))) dx
+                  ]              dx
+                  /
 @end example
-
-The form must be a function, f(v1,v2,...), or a derivative,
-@code{diff(f(v1,v2,...),vi,ni,vj,nj,...)} in which the functional arguments
-explicitly appear (ni is the order of differentiation with respect
-vi).
-
-The list of equations determine the "boundary" at which the value
-is given; list may be a list of equations, as above, or a single
-equation, vi = expr.
-
-The symbols @@1, @@2,... will be used to represent the functional
-variables v1,v2,... when atvalues are displayed.
-
-@code{printprops([f1, f2,...], atvalue)} will display the atvalues of
-the functions f1,f2,... as specified in previously given uses of the
-@code{atvalue} function. If the list contains just one element then the
-element can be given without being in a list.  If a first argument of
-@code{all} is given then atvalues for all functions which have them will be
-displayed.  Do @code{example(atvalue)} for an example.
 
 @end defun
 
+@defun antidiff (@var{expr}, @var{x}, @var{u}(@var{x})})
+Returns an antiderivative of @var{expr} with respect to @var{x}.
+The expression @var{expr} may contain an unknown function @var{u} and its derivatives.
+
+When @code{antidiff} succeeds entirely,
+the resulting expression is free of integral signs (that is, free of the @code{integrate} noun).
+Otherwise, @code{antidiff} returns an expression
+which is partly or entirely within an integral sign.
+If @code{antidiff} cannot make any progress,
+the return value is entirely within an integral sign.
+
+@code{load ("antid")} loads this function.
+The @code{antid} package also defines the functions @code{nonzeroandfreeof} and @code{linear}.
+
+@code{antidiff} is related to @code{antid} as follows.
+Let @var{L}, a list of two elements, be the return value of @code{antid}.
+Then the return value of @code{antidiff} is equal to @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
+where @var{x} is the variable of integration.
+
+Examples:
+@c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
+@c load ("antid")$
+@c expr: exp (z(x)) * diff (z(x), x) * y(x);
+@c a1: antid (expr, x, z(x));
+@c a2: antidiff (expr, x, z(x));
+@c a2 - (first (a1) + 'integrate (second (a1), x));
+@c antid (expr, x, y(x));
+@c antidiff (expr, x, y(x));
+@c THERE IS A DEMO FILE share/integration/antid.dem, EXECUTED BY demo('antid)
+@c BUT I THINK THE FOLLOWING ILLUSTRATES THE BASIC FUNCTIONALITY MORE CLEARLY
+@c MAYBE MERGE IN THE DEMO PROBLEMS LATER
+
+@example
+(%i1) load ("antid")$
+(%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
+                            z(x)  d
+(%o2)                y(x) %e     (-- (z(x)))
+                                  dx
+(%i3) a1: antid (expr, x, z(x));
+                       z(x)      z(x)  d
+(%o3)          [y(x) %e    , - %e     (-- (y(x)))]
+                                       dx
+(%i4) a2: antidiff (expr, x, z(x));
+                            /
+                     z(x)   [   z(x)  d
+(%o4)         y(x) %e     - I %e     (-- (y(x))) dx
+                            ]         dx
+                            /
+(%i5) a2 - (first (a1) + 'integrate (second (a1), x));
+(%o5)                           0
+(%i6) antid (expr, x, y(x));
+                             z(x)  d
+(%o6)             [0, y(x) %e     (-- (z(x)))]
+                                   dx
+(%i7) antidiff (expr, x, y(x));
+                  /
+                  [        z(x)  d
+(%o7)             I y(x) %e     (-- (z(x))) dx
+                  ]              dx
+                  /
+@end example
+
+@end defun
+
+@c I SUSPECT THERE IS MORE TO BE SAID HERE
+@defvr property atomgrad
+
+@code{atomgrad} is the atomic gradient property of an expression.
+This property is assigned by @code{gradef}.
+
+@c NEED EXAMPLE HERE
+@end defvr
+
+@defun atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
+@defunx atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+Assigns the value @var{c} to @var{expr} at the point @code{@var{x} = @var{a}}.
+Typically boundary values are established by this mechanism.
+
+@var{expr} is a function evaluation,
+@code{@var{f}(@var{x_1}, ..., @var{x_m})},
+or a derivative,
+@code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}
+@c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
+@c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
+in which the function arguments explicitly appear.
+@var{n_i} is the order of differentiation with respect to @var{x_i}.
+
+The point at which the atvalue is established is given by the list of equations
+@code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}.
+If there is a single variable @var{x_1},
+the sole equation may be given without enclosing it in a list.
+
+@code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} displays the atvalues of
+the functions @code{@var{f_1}, @var{f_2}, ...}
+as specified by calls to @code{atvalue}.
+@code{printprops (@var{f}, atvalue)} displays the atvalues of one function @var{f}.
+@code{printprops (all, atvalue)} displays the atvalues of all functions for which atvalues are defined.
+
+The symbols @code{@@1}, @code{@@2}, ... represent the 
+variables @var{x_1}, @var{x_2}, ... when atvalues are displayed.
+
+@code{atvalue} evaluates its arguments.
+@code{atvalue} returns @var{c}, the atvalue.
+
+Examples:
+@c FOLLOWING ADAPTED FROM example (atvalue)
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x,y)^2 - u(x,y)^2, x);
+@c at (%, [x = 0, y = 1]);
+
+@example
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x,y)^2 - u(x,y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
+@end example
+
+@end defun
+
+@c LOOKS LIKE cartan IS THE NAME OF A PACKAGE AND NOT A FUNCTION OR VARIABLE
+@c PROBABLY SHOULD SPLIT OUT cartan AND ITS CONTENTS INTO ITS OWN TEXINFO FILE
+@c ext_diff AND lie_diff NOT DOCUMENTED (OTHER THAN HERE)
 @defun cartan  -
 The exterior calculus of differential forms is a basic tool
 of differential geometry developed by Elie Cartan and has important
-applications in the theory of partial differential equations.  The
-present implementation is due to F.B. Estabrook and H.D. Wahlquist.
-It implements the functions @code{ext_diff} and @code{lie_diff},
+applications in the theory of partial differential equations.
+The @code{cartan} package
+implements the functions @code{ext_diff} and @code{lie_diff},
 along with the operators @code{~} (wedge product) and @code{|} (contraction
-of a form with a vector.) Type @code{demo(tensor)} to see a brief
+of a form with a vector.)
+Type @code{demo (tensor)} to see a brief
 description of these commands along with examples.
+
+@code{cartan} was implemented by F.B. Estabrook and H.D. Wahlquist.
 
 @end defun
 
-@defun del (@var{v})
-This is the differential of the variable @math{v}.  This commonly occurs
-when @code{diff} is called without the dependent variable being given.  Then
-the differential of the expression is computed.  For example:
+@defun del (@var{x})
+@code{del (@var{x})} represents the differential of the variable @math{x}.
+
+@code{diff} returns an expression containing @code{del}
+if an independent variable is not specified.
+In this case, the return value is the so-called "total differential".
+
+Examples:
+@c GENERATED FROM THE FOLLOWING
+@c diff (log (x));
+@c diff (exp (x*y));
+@c diff (x*y*z);
 
 @example
-(%i1) diff (x);
-(%o1)                          del(x)
-(%i2) diff (x^2);
-(%o2)                        2 x del(x)
-(%i3) diff (sin (x^2));
-                                  2
-(%o3)                    2 x cos(x ) del(x)
+(%i1) diff (log (x));
+                             del(x)
+(%o1)                        ------
+                               x
+(%i2) diff (exp (x*y));
+                     x y              x y
+(%o2)            x %e    del(y) + y %e    del(x)
+(%i3) diff (x*y*z);
+(%o3)         x y del(z) + x z del(y) + y z del(x)
 @end example
 
 @end defun
 
 @defun delta (@var{t})
-This is the Dirac Delta function.  Currently only @code{laplace}
-knows about the @code{delta} function:
+The Dirac Delta function.
+
+Currently only @code{laplace} knows about the @code{delta} function.
+
+Example:
 
 @example
-(%i1) laplace(delta(t-a)*sin(b*t),t,s);
-is a positive, negative or zero?
-pos;
-                                          - a s
-(%o1)                           sin(a b) %e
+(%i1) laplace (delta (t - a) * sin(b*t), t, s);
+Is  a  positive, negative, or zero?
+
+p;
+                                   - a s
+(%o1)                   sin(a b) %e
 @end example
 
 @end defun
 
 @defvar dependencies
- default: [] - the list of atoms which have functional
-dependencies (set up by the @code{depends} or @code{gradef} functions).  The command
-@code{dependencies} has been replaced by the @code{depends} command.  Do
-@code{describe(depends)}
+Default value: []
+
+@code{dependencies} is the list of atoms which have functional
+dependencies, assigned by @code{depends} or @code{gradef}.
+The @code{dependencies} list is cumulative:
+each call to @code{depends} or @code{gradef} appends additional items.
+
+See @code{depends} and @code{gradef}.
 
 @end defvar
 
-@defun depends (@var{funlist1}, @var{varlist1}, @var{funlist2}, @var{varlist2}, ...)
-declares functional
-dependencies for variables to be used by @code{diff}.
+@defun depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+Declares functional dependencies among variables for the purpose of computing derivatives.
+In the absence of declared dependence,
+@code{diff (f, x)} yields zero.
+If @code{depends (f, x)} is declared,
+@code{diff (f, x)} yields a symbolic derivative (that is, a @code{diff} noun).
 
+Each argument @var{f_1}, @var{x_1}, etc., can be the name of a variable or array,
+or a list of names.
+Every element of @var{f_i} (perhaps just a single element)
+is declared to depend
+on every element of @var{x_i} (perhaps just a single element).
+If some @var{f_i} is the name of an array or contains the name of an array,
+all elements of the array depend on @var{x_i}.
+
+@code{diff} recognizes indirect dependencies established by @code{depends}
+and applies the chain rule in these cases.
+
+@code{remove (@var{f}, dependency)} removes all dependencies declared for @var{f}.
+
+@code{depends} returns a list of the dependencies established.
+The dependencies are appended to the global variable @code{dependencies}.
+@code{depends} evaluates its arguments.
+
+@code{diff} is the only Maxima command which recognizes dependencies established by @code{depends}.
+Other functions (@code{integrate}, @code{laplace}, etc.)
+only recognize dependencies explicitly represented by their arguments.
+For example, @code{integrate} does not recognize the dependence of @code{f} on @code{x}
+unless explicitly represented as @code{integrate (f(x), x)}.
+
+@c GENERATED BY THE FOLLOWING
+@c depends ([f, g], x);
+@c depends ([r, s], [u, v, w]);
+@c depends (u, t);
+@c dependencies;
+@c diff (r.s, u);
 @example
-depends([f,g],[x,y],[r,s],[u,v,w],u,t)
+(%i1) depends ([f, g], x);
+(%o1)                     [f(x), g(x)]
+(%i2) depends ([r, s], [u, v, w]);
+(%o2)               [r(u, v, w), s(u, v, w)]
+(%i3) depends (u, t);
+(%o3)                        [u(t)]
+(%i4) dependencies;
+(%o4)      [f(x), g(x), r(u, v, w), s(u, v, w), u(t)]
+(%i5) diff (r.s, u);
+                         dr           ds
+(%o5)                    -- . s + r . --
+                         du           du
 @end example
 
-informs @code{diff} that F and G
-depend on X and Y, that R and S depend on U,V, and W, and that U
-depends on T.  The arguments to @code{depends} are evaluated.  The variables
-in each funlist are declared to depend on all the variables in the
-next varlist.  A funlist can contain the name of an atomic variable or
-array.  In the latter case, it is assumed that all the elements of the
-array depend on all the variables in the succeeding varlist.
-Initially, @code{diff(f,x)} is 0; executing @code{depends(f,x)} causes future
-differentiations of F with respect to X to give dF/dX or Y (if
-@code{derivabbrev:true)}.
-
+@c GENERATED BY THE FOLLOWING
+@c diff (r.s, t);
 @example
-(%i1) depends([f,g],[x,y],[r,s],[u,v,w],u,t);
-(%o1)           [f(x, y), g(x, y), r(u, v, w), s(u, v, w), u(t)]
-(%i2) dependencies;
-(%o2)           [f(x, y), g(x, y), r(u, v, w), s(u, v, w), u(t)]
-(%i3) diff(r.s,u);
-                               dr           ds
-(%o3)                           -- . s + r . --
-                               du           du
+(%i6) diff (r.s, t);
+                      dr du           ds du
+(%o6)                 -- -- . s + r . -- --
+                      du dt           du dt
 @end example
 
-Since Maxima knows the chain rule for symbolic derivatives, it takes
-advantage of the given dependencies as follows:
-
+@c GENERATED BY THE FOLLOWING
+@c remove (r, dependency);
+@c diff (r.s, t);
 @example
-(%i4) diff(r.s,t);
-                           dr du             ds du
-(%o4)                      (-- --) . s + r . (-- --)
-                           du dt             du dt
-if we set
-(%i5) derivabbrev:true;
-(%o5)                                 true
+(%i7) remove (r, dependency);
+(%o7)                         done
+(%i8) diff (r.s, t);
+                                ds du
+(%o8)                       r . -- --
+                                du dt
 @end example
-
-then re-executing the command %i4, we obtain
-
-@example
-(%i6) '@w{}'%i4;
-(%o6)                      (r  u ) . s + r . (s  u )
-                            u  t              u  t
-@end example
-
-To eliminate a previously declared dependency, the @code{remove} command can
-be used.  For example, to say that R no longer depends on U as
-declared in %i1, the user can type
-
-@example
-remove(r,dependency)
-@end example
-
-This will
-eliminate all dependencies that may have been declared for R.
-
-@example
-(%i7) remove(r,dependency);
-(%o7)                                 done
-(%i8) '@w{}'%i4;
-(%o8)                             r . (s  u )
-                                  u    t
-@end example
-
-CAVEAT: @code{diff} is the only Maxima command which uses @code{dependencies}
-information.  The arguments to @code{integrate}, @code{laplace}, etc. must be given
-their dependencies explicitly in the command, e.g., @code{integrate(f(x),x)}.
 
 @end defun
 
 @defvar derivabbrev
- default: @code{false} if @code{true} will cause derivatives to
-display as subscripts.
+Default value: @code{false}
 
+When @code{derivabbrev} is @code{true},
+symbolic derivatives (that is, @code{diff} nouns) are displayed as subscripts.
+Otherwise, derivatives are displayed in the Leibniz notation @code{dy/dx}.
+
+@c NEED EXAMPLES HERE
 @end defvar
 
-@defun derivdegree (@var{expr}, @var{dv}, @var{iv})
-finds the highest degree of the derivative
-of the dependent variable dv with respect to the independent variable
-iv occuring in exp.
+@c SEEMS LIKE THIS STATEMENT COULD BE LESS CLUMSY
+@defun derivdegree (@var{expr}, @var{y}, @var{x})
+Returns the highest degree of the derivative
+of the dependent variable @var{y} with respect to the independent variable
+@var{x} occuring in @var{expr}.
 
+Example:
+@c GENERATED FROM THE FOLLOWING
+@c 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
+@c derivdegree (%, y, x);
 @example
-(%i1) 'diff(y,x,2)+'diff(y,z,3)*2+'diff(y,x)*x**2$
-(%i2) derivdegree(%,y,x);
+(%i1) 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
+                         3     2
+                        d y   d y    2 dy
+(%o1)                   --- + --- + x  --
+                          3     2      dx
+                        dz    dx
+(%i2) derivdegree (%, y, x);
 (%o2)                           2
 @end example
 
