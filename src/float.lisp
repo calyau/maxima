@@ -1038,7 +1038,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;; < 1+x <= e.
 ;;;
 (DEFUN FPLOG (X) 
-       (PROG (OVER TWO ANS OLDANS TERM E) 
+       (PROG (OVER TWO ANS OLDANS TERM E sum) 
 	     (IF (NOT (GREATERP (CAR X) 0))
 		 (MERROR "Non-positive argument to FPLOG"))
 	     (SETQ E (FPE)
@@ -1068,15 +1068,17 @@ One extra decimal digit in actual representation for rounding purposes.")
 		      2))
 	     ;; Sum the series until the sum (in ANS) doesn't change
 	     ;; anymore.
+	     (setq sum (intofp 0))
 	     (DO ((N 1 (+ N 2)))
-		 ((EQUAL ANS OLDANS))
-	      (SETQ OLDANS ANS)
-	      (SETQ ANS
+		 ((EQUAL sum OLDANS))
+	      (SETQ OLDANS sum)
+	      (SETQ sum
 		    (FPPLUS
-		     ANS
+		     sum
 		     (FPQUOTIENT TERM (INTOFP N))))
 	      (SETQ TERM (FPTIMES* TERM X)))
-	     (RETURN (fptimes* two ANS))))
+	     
+	     (return (fpplus ANS (fptimes* two sum)))))
 
 (DEFUN MABSBIGFLOAT (L) 
        (PROG (R) 
