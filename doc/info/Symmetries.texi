@@ -14,10 +14,12 @@ l contient moins de n+1 e'le'ments les valeurs formelles viennent
 la completer. Le premier e'le'ment de la liste l donne le cardinal
 de l'alphabet si il existe, sinon on le met e'gal a n.
 
+@c GENERATED FROM THE FOLLOWING
+@c comp2pui (3, [4, g]);
 @example
-comp2pui(3,[4,g]);
-                     2          3
-           [4, g, - g  + 2 h2, g  - 3 h2 g + 3 h3]
+(%i1) comp2pui (3, [4, g]);
+                        2                    2
+(%o1)    [4, g, 2 h2 - g , 3 h3 - g h2 + g (g  - 2 h2)]
 @end example
 
 @end defun
@@ -26,11 +28,16 @@ comp2pui(3,[4,g]);
 rend le polyno^me partitionne' associe' 
 a` la forme  contracte'e pc dont les variables sont dans lvar.
 
+@c GENERATED FROM THE FOLLOWING
+@c pc: 2*a^3*b*x^4*y + x^5;
+@c cont2part (pc, [x, y]);
 @example
-pc : 2*a^3*b*x^4*y + x^5$
-cont2part(pc,[x,y]);
-                         3
-                    [[2 a  b, 4, 1], [1, 5]]
+(%i1) pc: 2*a^3*b*x^4*y + x^5;
+                           3    4      5
+(%o1)                   2 a  b x  y + x
+(%i2) cont2part (pc, [x, y]);
+                                   3
+(%o2)              [[1, 5, 0], [2 a  b, 4, 1]]
 @end example
 
 @noindent
@@ -48,18 +55,19 @@ en les variables contenues dans la liste lvar. La fonction @code{explose}
 re'alise l'ope'ration inverse. La fonction @code{tcontract} teste en plus
 la syme'trie du polyno^me.
 
+@c GENERATED FROM THE FOLLOWING
+@c psym: explose (2*a^3*b*x^4*y, [x, y, z]);
+@c contract (psym, [x, y, z]);
 @example
-psym : explose(2*a^3*b*x^4*y,[x,y,z]);
+(%i1) psym: explose (2*a^3*b*x^4*y, [x, y, z]);
+         3      4      3      4      3    4        3    4
+(%o1) 2 a  b y z  + 2 a  b x z  + 2 a  b y  z + 2 a  b x  z
 
-        3      4      3      4      3    4   
-     2 a  b y z  + 2 a  b x z  + 2 a  b y  z 
-                3    4        3      4      3    4
-           + 2 a  b x  z + 2 a  b x y  + 2 a  b x  y
-
-contract(psym,[x,y,z]);
-
-                        3    4
-                     2 a  b x  y
+                                           3      4      3    4
+                                      + 2 a  b x y  + 2 a  b x  y
+(%i2) contract (psym, [x, y, z]);
+                              3    4
+(%o2)                      2 a  b x  y
 @end example
 
 @noindent
@@ -80,78 +88,75 @@ pas d'une variable, non seulement il est inutile de donner cette
 variable mais cela diminue conside'rablement lees calculs si on ne le
 fait pas.
 
+@c GENERATED FROM THE FOLLOWING
+@c direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
+@c               z, b*v + a*u, [[u, v], [a, b]]);
+@c ratsimp (%);
+@c ratsimp (direct ([z^3-e1*z^2+e2*z-e3,z^2  - f1* z + f2],
+@c               z, b*v + a*u, [[u, v], [a, b]]));
 @example
-direct([z^2  - e1* z + e2, z^2  - f1* z + f2], z, b*v + a*u, 
-              [[u, v], [a, b]]);
+(%i1) direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
+              z, b*v + a*u, [[u, v], [a, b]]);
+       2
+(%o1) y  - e1 f1 y
 
-                    2                         2           2
-                   z  - e1 f1 z - 4 e2 f2 + e1  f2 + e2 f1
- 
-direct([z^3-e1*z^2+e2*z-e3,z^2  - f1* z + f2], z, b*v + a*u,
-              [[u, v], [a, b]]);
+                                 2            2             2   2
+                  - 4 e2 f2 - (e1  - 2 e2) (f1  - 2 f2) + e1  f1
+                + -----------------------------------------------
+                                         2
+(%i2) ratsimp (%);
+              2                2                   2
+(%o2)        y  - e1 f1 y + (e1  - 4 e2) f2 + e2 f1
+(%i3) ratsimp (direct ([z^3-e1*z^2+e2*z-e3,z^2  - f1* z + f2],
+              z, b*v + a*u, [[u, v], [a, b]]));
+       6            5         2                        2    2   4
+(%o3) y  - 2 e1 f1 y  + ((2 e1  - 6 e2) f2 + (2 e2 + e1 ) f1 ) y
 
- 6            5            4       2     4          2  4 
-y  - 2 e1 f1 y  - 6 e2 f2 y  + 2 e1  f2 y  + 2 e2 f1  y
+                          3                               3   3
+ + ((9 e3 + 5 e1 e2 - 2 e1 ) f1 f2 + (- 2 e3 - 2 e1 e2) f1 ) y
 
-    2   2  4 
-+ e1  f1  y  
+         2       2        4    2
+ + ((9 e2  - 6 e1  e2 + e1 ) f2
 
-              3                  3       3        3          3  3
-+ 9 e3 f1 f2 y  + 5 e1 e2 f1 f2 y  - 2 e1  f1 f2 y  - 2 e3 f1  y
+                    2       2       2                   2    4
+ + (- 9 e1 e3 - 6 e2  + 3 e1  e2) f1  f2 + (2 e1 e3 + e2 ) f1 )
 
-	    3  3       2   2  2       2      2  2     4   2  2
-- 2 e1 e2 f1  y  + 9 e2  f2  y  - 6 e1  e2 f2  y  + e1  f2  y
+  2          2                      2     3          2
+ y  + (((9 e1  - 27 e2) e3 + 3 e1 e2  - e1  e2) f1 f2
 
-	    2     2       2   2     2       2      2     2 
-- 9 e1 e3 f1  f2 y  - 6 e2  f1  f2 y  + 3 e1  e2 f1  f2 y
+                 2            2    3                5
+ + ((15 e2 - 2 e1 ) e3 - e1 e2 ) f1  f2 - 2 e2 e3 f1 ) y
 
-            4  2 
-+ 2 e1 e3 f1  y  
+           2                   3           3     2   2    3
+ + (- 27 e3  + (18 e1 e2 - 4 e1 ) e3 - 4 e2  + e1  e2 ) f2
 
-    2   4  2                 2         2         2   
-+ e2  f1  y  - 27 e2 e3 f1 f2  y + 9 e1  e3 f1 f2  y
+         2      3                   3    2   2
+ + (27 e3  + (e1  - 9 e1 e2) e3 + e2 ) f1  f2
 
-         2      2  
-+ 3 e1 e2  f1 f2  y
-
-    3         2                3            2      3      
-- e1  e2 f1 f2  y + 15 e2 e3 f1  f2 y - 2 e1  e3 f1  f2 y
-
-       2   3     
-- e1 e2  f1  f2 y
-
-	    5          2   3                 3       3      3
-- 2 e2 e3 f1  y - 27 e3  f2  + 18 e1 e2 e3 f2  - 4 e1  e3 f2
-
-       3   3 
- - 4 e2  f2
-
-    2   2   3        2   2   2                2   2     3      2   2
-+ e1  e2  f2  + 27 e3  f1  f2  - 9 e1 e2 e3 f1  f2  + e1  e3 f1  f2
-
-    3   2   2       2   4                 4        2   6
-+ e2  f1  f2  - 9 e3  f1  f2 + e1 e2 e3 f1  f2 + e3  f1
+                   2    4        2   6
+ + (e1 e2 e3 - 9 e3 ) f1  f2 + e3  f1
 @end example
 
 Recherche du polyno^me dont les racines sont les somme a+u ou a est
 racine de z^2  - e1* z + e2 et u est racine de z^2  - f1* z + f2
 
+@c GENERATED FROM THE FOLLOWING
+@c ratsimp (direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
+@c                           z, a + u, [[u], [a]]));
 @example
-direct([z^2  - e1* z + e2,z^2  - f1* z + f2], z,a+u,[[u],[a]]);
+(%i1) ratsimp (direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
+                          z, a + u, [[u], [a]]));
+       4                    3             2
+(%o1) y  + (- 2 f1 - 2 e1) y  + (2 f2 + f1  + 3 e1 f1 + 2 e2
 
- 4         3         3         2     2  2            2         2 
-y  - 2 f1 y  - 2 e1 y  + 2 f2 y  + f1  y  + 3 e1 f1 y  + 2 e2 y
+     2   2                              2               2
+ + e1 ) y  + ((- 2 f1 - 2 e1) f2 - e1 f1  + (- 2 e2 - e1 ) f1
 
-    2  2 
-+ e1  y  
-                               2                   2                 
-- 2 f1 f2 y - 2 e1 f2 y - e1 f1  y - 2 e2 f1 y - e1  f1 y
+                  2                     2            2
+ - 2 e1 e2) y + f2  + (e1 f1 - 2 e2 + e1 ) f2 + e2 f1  + e1 e2 f1
 
-                2 
-- 2 e1 e2 y + f2  
-
-                         2           2                2
-+ e1 f1 f2 - 2 e2 f2 + e1  f2 + e2 f1  + e1 e2 f1 + e2
+     2
+ + e2
 @end example
 
 @code{direct} peut prendre deux drapeaux possibles : @code{elementaires} et
@@ -185,19 +190,19 @@ syme'triques e'le'mentaires des racines sont dans la liste l.
 l=[n,e1,...,en] ou` n est le degre' du polyno^me et ei la i-ie`me
 fonction syme'trique e'le'mentaire.
 
+@c GENERATED FROM THE FOLLOWING
+@c ele2polynome ([2, e1, e2], z);
+@c polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
+@c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
 @example
- ele2polynome([2,e1,e2],z);
-
-                                  2
-                                 z  - e1 z + e2
-
- polynome2ele(x^7-14*x^5  + 56*x^3  - 56*x + 22,x);
- 
-              [7, 0, - 14, 0, 56, 0, - 56, - 22] 
- ele2polynome( [7, 0, - 14, 0, 56, 0, - 56, - 22],x);
-
-                          7       5       3
-                         x  - 14 x  + 56 x  - 56 x + 22
+(%i1) ele2polynome ([2, e1, e2], z);
+                          2
+(%o1)                    z  - e1 z + e2
+(%i2) polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
+(%o2)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+(%i3) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+                  7       5       3
+(%o3)            x  - 14 x  + 56 x  - 56 x + 22
 @end example
 
 @noindent
@@ -240,11 +245,17 @@ la forme contracte'e (ne de'pendant ici que de deux de ses variables)
 est x^4-2*x*y se de'compose ainsi en les fonctions syme'triques 
 e'le'mentaires :
 
+@c GENERATED FROM THE FOLLOWING
+@c elem ([3, 7], x^4 - 2*x*y, [x, y]);
+@c ratsimp (%);
 @example
-elem([3,7],x^4-2*x*y,[x,y]);
+(%i1) elem ([3, 7], x^4 - 2*x*y, [x, y]);
+(%o1) 7 (e3 - 7 e2 + 7 (49 - e2)) + 21 e3
 
-                               2
-                   28 e3 + 2 e2  - 198 e2 + 2401
+                                         + (- 2 (49 - e2) - 2) e2
+(%i2) ratsimp (%);
+                              2
+(%o2)             28 e3 + 2 e2  - 198 e2 + 2401
 @end example
 
 @noindent
@@ -261,10 +272,11 @@ Autres fonctions de changements de bases :
 rend le polyno^me syme'trique associe' a` la forme 
 contracte'e pc. La liste lvar contient les variables.
 
+@c GENERATED FROM THE FOLLOWING
+@c explose (a*x + 1, [x, y, z]);
 @example
-explose(a*x +1,[x,y,z]);
-
-                     (x + y + z) a + 1
+(%i1) explose (a*x + 1, [x, y, z]);
+(%o1)                  a z + a y + a x + 1
 @end example
 
 @noindent
@@ -278,9 +290,11 @@ Autres fonctions de changements de repre'sentations :
 e'crite par P. ESPERET) calcule le nombre de
 kostka associe' aux partition part1 et part2
 
+@c GENERATED FROM THE FOLLOWING
+@c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
 @example
-kostka([3,3,3],[2,2,2,1,1,1]);
-                                  6
+(%i1) kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
+(%o1)                           6
 @end example
 
 @end defun
@@ -288,10 +302,11 @@ kostka([3,3,3],[2,2,2,1,1,1]);
 @defun lgtreillis (n,m)
 rend la liste des partitions de poids n et de longueur m.
 
+@c GENERATED FROM THE FOLLOWING
+@c lgtreillis (4, 2);
 @example
- lgtreillis(4,2);
-
-			       [[3, 1], [2, 2]]
+(%i1) lgtreillis (4, 2);
+(%o1)                   [[3, 1], [2, 2]]
 @end example
 
 Voir e'galement : @code{ltreillis}, @code{treillis} et @code{treinat}.
@@ -303,10 +318,11 @@ Voir e'galement : @code{ltreillis}, @code{treillis} et @code{treinat}.
 rend la liste des partitions de poids n et de longueur 
 infe'rieure ou e'gale a` m.
 
+@c GENERATED FROM THE FOLLOWING
+@c ltreillis (4, 2);
 @example
- ltreillis(4,2);
-
-                         [[4, 0], [3, 1], [2, 2]]
+(%i1) ltreillis (4, 2);
+(%o1)               [[4, 0], [3, 1], [2, 2]]
 @end example
 
 @noindent
@@ -326,23 +342,25 @@ formes monomiales en utilisant les fonctions @code{treinat} et @code{kostka}. La
 rendue est un polyno^me syme'trique dans une de ses repre'sentations
 contracte'es avec les variables x1, x2, ...
  
+@c GENERATED FROM THE FOLLOWING
+@c mon2schur ([1, 1, 1]);
+@c mon2schur ([3]);
+@c mon2schur ([1, 2]);
 @example
- mon2schur([1,1,1]);
-
-                               x1 x2 x3
-
- mon2schur([3]);
-
-                                         2        3
-                            x1 x2 x3 + x1  x2 + x1
- mon2schur([1,2]);
-					     2
- 			      2 x1 x2 x3 + x1  x2
+(%i1) mon2schur ([1, 1, 1]);
+(%o1)                       x1 x2 x3
+(%i2) mon2schur ([3]);
+                                  2        3
+(%o2)                x1 x2 x3 + x1  x2 + x1
+(%i3) mon2schur ([1, 2]);
+                                      2
+(%o3)                  2 x1 x2 x3 + x1  x2
 @end example
 
 @noindent
 ce qui veut dire que pour 3 variables cela donne :
 
+@c UM, FROM WHAT ARGUMENTS WAS THE FOLLOWING GENERATED ??
 @example
    2 x1 x2 x3 + x1^2 x2 + x2^2 x1 + x1^2 x3 + x3^2 x1
     + x2^2 x3 + x3^2 x2
@@ -362,11 +380,16 @@ multi-syme'trique sous la forme multi-contracte'e multi_pc en les groupes
 de variables contenue dans la liste de listes l_var sur les
 groupes de fonctions syme'triques e'le'mentaires contenues dans l_elem.
 
+@c GENERATED FROM THE FOLLOWING
+@c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+@c ratsimp (%);
 @example
-multi_elem([[2,e1,e2],[2,f1,f2]],a*x+a^2+x^3,[[x,y],[a,b]]);
-
-				2		        3
- 		     - 2 f2 + f1  + e1 f1 - 3 e1 e2 + e1
+(%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+                                                  3
+(%o1)         - 2 f2 + f1 (f1 + e1) - 3 e1 e2 + e1
+(%i2) ratsimp (%);
+                         2                       3
+(%o2)         - 2 f2 + f1  + e1 f1 - 3 e1 e2 + e1
 @end example
 
 Autres fonctions de changements de bases :
@@ -384,14 +407,14 @@ Cette fonction rame`ne l'orbite du polyno^me P sous l'action du produit
 des groupes syme'triques des ensembles de variables repre'sente's par 
 ces p @code{listes}.
 
+@c GENERATED FROM THE FOLLOWING
+@c multi_orbit (a*x + b*y, [[x, y], [a, b]]);
+@c multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
 @example
- multi_orbit(a*x+b*y,[[x,y],[a,b]]);
-
-          [b y + a x, a y + b x]
-
- multi_orbit(x+y+2*a,[[x,y],[a,b,c]]);
-
-              [y + x + 2 c, y + x + 2 b, y + x + 2 a]
+(%i1) multi_orbit (a*x + b*y, [[x, y], [a, b]]);
+(%o1)                [b y + a x, a y + b x]
+(%i2) multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
+(%o2)        [y + x + 2 c, y + x + 2 b, y + x + 2 a]
 @end example
 
 @noindent
@@ -403,13 +426,14 @@ Voir e'galement : @code{orbit} pour l'action d'un seul groupe syme'trique
  est a` la fonction @code{pui} ce que la fonction @code{multi_elem} est
 a` la fonction @code{elem}.
 
+@c GENERATED FROM THE FOLLOWING
+@c multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
 @example
-multi_pui([[2,p1,p2],[2,t1,t2]],a*x+a^2+x^3,[[x,y],[a,b]]);
-    
-                                              3
-                                       3 p1 p2   p1
-                          t2 + p1 t1 + ------- - ---
-                                          2       2
+(%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+                                            3
+                                3 p1 p2   p1
+(%o1)              t2 + p1 t1 + ------- - ---
+                                   2       2
 @end example
 
 @end defun
@@ -433,10 +457,11 @@ Soient les 2 polyno^mes syme'triques en x, y : 3*(x+y) + 2*x*y et 5*(x^2+y^2)
 dont les formes partitionne'es sont respectivement [[3,1],[2,1,1]] et [[5,2]],
 alors leur produit sera donne' par :
 
+@c GENERATED FROM THE FOLLOWING
+@c multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
 @example
- multsym([[3,1],[2,1,1]],[[5,2]],2);
-
-            [[10, 3, 1], [15, 2, 1], [15, 3, 0]]
+(%i1) multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
+(%o1)         [[10, 3, 1], [15, 3, 0], [15, 2, 1]]
 @end example
 
 @noindent
@@ -454,13 +479,15 @@ calcul l'orbite du polyno^me P en les variables de la liste
 lvar sous l'action du groupe syme'trique de l'ensemble des variables contenues
 dans la liste lvar.
  
+@c GENERATED FROM THE FOLLOWING
+@c orbit (a*x + b*y, [x, y]);
+@c orbit (2*x + x^2, [x, y]);
 @example
- orbit(a*x+b*y,[x,y]);
-
-                        [a y + b x, b y + a x]
- orbit(2*x+x^2,[x,y]);
-                                2         2
-                              [y  + 2 y, x  + 2 x]
+(%i1) orbit (a*x + b*y, [x, y]);
+(%o1)                [a y + b x, b y + a x]
+(%i2) orbit (2*x + x^2, [x, y]);
+                        2         2
+(%o2)                 [y  + 2 y, x  + 2 x]
 @end example
 
 @noindent
@@ -475,11 +502,12 @@ passe de la forme partitionne'e a` la forme contracte'e
 d'un polyno^me syme'trique. La forme contracte'e est rendue avec les variables
 contenues dans lvar.
 
+@c GENERATED FROM THE FOLLOWING
+@c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
 @example
-part2cont([[2*a^3*b,4,1]],[x,y]);
-
-                        3    4
-                     2 a  b x  y
+(%i1) part2cont ([[2*a^3*b, 4, 1]], [x, y]);
+                              3    4
+(%o1)                      2 a  b x  y
 @end example
 
 @noindent
@@ -494,10 +522,11 @@ Autres fonctions de changements de repre'sentations :
 psym est un polyno^me syme'trique en les variables 
 de lvar. Cette fonction rame`ne sa repre'sentation partitionne'e.
 
+@c GENERATED FROM THE FOLLOWING
+@c partpol (-a*(x + y) + 3*x*y, [x, y]);
 @example
-partpol(-a*(x+y)+3*x*y,[x,y]);
-
-                   [[3, 1, 1], [- a, 1, 0]]
+(%i1) partpol (-a*(x + y) + 3*x*y, [x, y]);
+(%o1)               [[3, 1, 1], [- a, 1, 0]]
 @end example
 
 @noindent
@@ -518,15 +547,15 @@ donne la liste l=[n,e1,...,en] ou` n est le degre'
 du polyno^me p en la variable x et ei la i-ieme fonction syme'trique 
 e'le'mentaire des racines de p.
 
+@c GENERATED FROM THE FOLLOWING
+@c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
+@c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
 @example
- polynome2ele(x^7-14*x^5  + 56*x^3  - 56*x + 22,x);
- 
-              [7, 0, - 14, 0, 56, 0, - 56, - 22] 
- 
- ele2polynome( [7, 0, - 14, 0, 56, 0, - 56, - 22],x);
-
-                          7       5       3
-                         x  - 14 x  + 56 x  - 56 x + 22
+(%i1) polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
+(%o1)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+(%i2) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+                  7       5       3
+(%o2)            x  - 14 x  + 56 x  - 56 x + 22
 @end example
 
 @noindent
@@ -542,6 +571,7 @@ les racines sont les produits K a` K des e'le'ments de A.
 
 @end defun
 
+@c HMM, pui IS A VARIABLE AS WELL
 @defun pui (pui,sym,lvar)
 de'compose le polyno^me syme'trique sym, en les variables
 contenues de la liste lvar, par les fonctions puissances
@@ -554,16 +584,23 @@ par de'faut), partitionne'e (@code{pui} doit alors valoir 3) ou e'tendue (i.e. l
 polyno^me en entier) (@code{pui} doit alors valoir 2). La fonction @code{elem}
 s'utilise de la me^me manie`re.
 
+@c GENERATED FROM THE FOLLOWING
+@c pui;
+@c pui ([3, a, b], u*x*y*z, [x, y, z]);
+@c ratsimp (%);
 @example
-pui;
-
-		       1
-pui([3,a,b],u*x*y*z,[x,y,z]);
-
-			       3
-			     (a  - 3 b a + 2 p3) u
-         		     ---------------------
-				      6
+(%i1) pui;
+(%o1)                           1
+(%i2) pui ([3, a, b], u*x*y*z, [x, y, z]);
+                       2
+                   a (a  - b) u   (a b - p3) u
+(%o2)              ------------ - ------------
+                        6              3
+(%i3) ratsimp (%);
+                                       3
+                      (2 p3 - 3 a b + a ) u
+(%o3)                 ---------------------
+                                6
 @end example
 
 @noindent
@@ -581,20 +618,28 @@ rend la liste des N premie`res fonctions comple`tes
 la liste @var{lpui}. Si la liste @var{lpui} est vide le cardinal est N sinon 
 c'est son premier e'le'ment similaire a` @code{comp2ele} et @code{comp2pui}.
 
+@c GENERATED FROM THE FOLLOWING
+@c pui2comp (2, []);
+@c pui2comp (3, [2, a1]);
+@c ratsimp (%);
 @example
- pui2comp(2,[]);
-
-					 2
-				       p1  + p2
-        		       [2, p1, --------]
-					  2
-
- pui2comp(3,[2,a1]);
-
-			      2	        3
-			    a1  + p2  a1  + 3 p2 a1 + 2 p3
-          	    [2, a1, --------, --------------------]
-			       2	       6
+(%i1) pui2comp (2, []);
+                                       2
+                                p2 + p1
+(%o1)                   [2, p1, --------]
+                                   2
+(%i2) pui2comp (3, [2, a1]);
+                                            2
+                                 a1 (p2 + a1 )
+                         2  p3 + ------------- + a1 p2
+                  p2 + a1              2
+(%o2)     [2, a1, --------, --------------------------]
+                     2                  3
+(%i3) ratsimp (%);
+                            2                     3
+                     p2 + a1   2 p3 + 3 a1 p2 + a1
+(%o3)        [2, a1, --------, --------------------]
+                        2               6
 @end example
 
 @noindent
@@ -625,14 +670,22 @@ Autres fonctions de changements de bases :
 calcul le polyno^me en X dont les fonctions puissances
 des racines sont donne'es dans la liste @var{lpui}.
 
+@c GENERATED FROM THE FOLLOWING
+@c polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
+@c ele2pui (3, %);
+@c pui2polynome (x, %);
 @example
-(%i6) polynome2ele(x^3-4*x^2+5*x-1,x);
-(%o6)                             [3, 4, 5, 1]
-(%i7) ele2pui(3,%);
-(%o7)                             [3, 4, 6, 7]
-(%i8) pui2polynome(x,%);
-                               3      2
-(%o8)                          x  - 4 x  + 5 x - 1
+(%i1) pui;
+(%o1)                           1
+(%i2) kill(labels);
+(%o0)                         done
+(%i1) polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
+(%o1)                     [3, 4, 5, 1]
+(%i2) ele2pui (3, %);
+(%o2)                     [3, 4, 6, 7]
+(%i3) pui2polynome (x, %);
+                        3      2
+(%o3)                  x  - 4 x  + 5 x - 1
 @end example
 
 @noindent
@@ -659,39 +712,39 @@ de'duites des fonctions puissances de SC(f) ou` N est le cardinal de SD(f).
 Le re'sultat est rendue sous forme multi-contracte'e par rapport a SD.
 i.e. on ne conserve qu'un e'le'ment par orbite sous l'action de SD).
 
+@c GENERATED FROM THE FOLLOWING
+@c l: [[x, y], [a, b]];
+@c pui_direct (multi_orbit (a*x + b*y, l), l, [2, 2]);
+@c pui_direct (multi_orbit (a*x + b*y, l), l, [3, 2]);
+@c pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [2, 3]);
 @example
-l:[[x,y],[a,b]]$
-
-pui_direct(multi_orbit(a*x+b*y, l), l,[2,2]);
-
-                                    2  2
-                 [a x, 4 a b x y + a  x ]
-
-pui_direct(multi_orbit(a*x+b*y, l), l,[3,2]);
-
-                         2  2     2    2        3  3
-  [2 a x, 4 a b x y + 2 a  x , 3 a  b x  y + 2 a  x ,
+(%i1) l: [[x, y], [a, b]];
+(%o1)                   [[x, y], [a, b]]
+(%i2) pui_direct (multi_orbit (a*x + b*y, l), l, [2, 2]);
+                                       2  2
+(%o2)               [a x, 4 a b x y + a  x ]
+(%i3) pui_direct (multi_orbit (a*x + b*y, l), l, [3, 2]);
+                             2  2     2    2        3  3
+(%o3) [2 a x, 4 a b x y + 2 a  x , 3 a  b x  y + 2 a  x , 
 
     2  2  2  2      3    3        4  4
-12 a  b  x  y  + 4 a  b x  y + 2 a  x ,
+12 a  b  x  y  + 4 a  b x  y + 2 a  x , 
 
     3  2  3  2      4    4        5  5
-10 a  b  x  y  + 5 a  b x  y + 2 a  x ,
+10 a  b  x  y  + 5 a  b x  y + 2 a  x , 
 
     3  3  3  3       4  2  4  2      5    5        6  6
 40 a  b  x  y  + 15 a  b  x  y  + 6 a  b x  y + 2 a  x ]
-
- pui_direct([y+x+2*c, y+x+2*b, y+x+2*a],[[x,y],[a,b,c]],[2,3]);
-
+(%i4) pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [2, 3]);
                              2              2
-      [3 x + 2 a, 6 x y + 3 x  + 4 a x + 4 a , 
+(%o4) [3 x + 2 a, 6 x y + 3 x  + 4 a x + 4 a , 
 
-              2                   3        2       2        3
-           9 x  y + 12 a x y + 3 x  + 6 a x  + 12 a  x + 8 a ]
-
-
-pui_direct([y+x+2*c, y+x+2*b, y+x+2*a],[[x,y],[a,b,c]],[3,4]);
+                 2                   3        2       2        3
+              9 x  y + 12 a x y + 3 x  + 6 a x  + 12 a  x + 8 a ]
 @end example
+@c THIS NEXT FUNCTION CALL TAKES A VERY LONG TIME (SEVERAL MINUTES)
+@c SO LEAVE IT OUT TIL PROCESSORS GET A LITTLE FASTER ...
+@c pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [3, 4]);
 
 @end defun
 
@@ -700,14 +753,19 @@ pui_direct([y+x+2*c, y+x+2*b, y+x+2*a],[[x,y],[a,b,c]],[3,4]);
 M. PUIREDUC donne les N premie`res fonctions puissances en fonction 
 des M premie`res.
 
+@c GENERATED FROM THE FOLLOWING
+@c puireduc (3, [2]);
 @example
-puireduc(3,[2]);
-
-						  3
-				      3 p1 p2 - p1
-         		  [2, p1, p2, -------------]
-
-					    2
+(%i1) puireduc (3, [2]);
+                                         2
+                                   p1 (p1  - p2)
+(%o1)          [2, p1, p2, p1 p2 - -------------]
+                                         2
+(%i2) ratsimp (%);
+                                           3
+                               3 p1 p2 - p1
+(%o2)              [2, p1, p2, -------------]
+                                     2
 @end example
 
 @end defun
@@ -766,105 +824,158 @@ le drapeau de @code{resolvante} pourra e^tre respectivement :
   generale.
 @end itemize
 
+@c GENERATED FROM THE FOLLOWING
+@c resolvante: unitaire$
+@c resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1, [x]);
+@c resolvante: lineaire$
+@c resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
+@c resolvante: general$
+@c resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
+@c resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3, x4]);
+@c direct ([x^4 - 1], x, x1 + 2*x2 + 3*x3, [[x1, x2, x3]]);
+@c resolvante :lineaire$
+@c resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
+@c resolvante: symetrique$
+@c resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
+@c resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
+@c resolvante: alternee$
+@c resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
+@c resolvante: produit$
+@c resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
+@c resolvante: symetrique$
+@c resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
+@c resolvante: cayley$
+@c resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
 @example
- resolvante:unitaire;
-resolvante(x^7-14*x^5  + 56*x^3  - 56*x + 22,x,x^3-1,[x]);
+(%i1) resolvante: unitaire$
+(%i2) resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1, [x]);
 
-  7      6        5         4          3           2
-y  + 7 y  - 539 y  - 1841 y  + 51443 y  + 315133 y  + 376999 y
+" resolvante unitaire " [7, 0, 28, 0, 168, 0, 1120, - 154, 7840, - 2772, 56448, - 33880, 
 
- + 125253
+413952, - 352352, 3076668, - 3363360, 23114112, - 30494464, 
 
-resolvante : lineaire;
-resolvante(x^4-1,x,x1+2*x2+3*x3,[x1,x2,x3]);
+175230832, - 267412992, 1338886528, - 2292126760] 
+  3       6      3       9      6      3
+[x  - 1, x  - 2 x  + 1, x  - 3 x  + 3 x  - 1, 
 
- 24       20         16            12             8              4
-y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y  + 344489984 y
-							 + 655360000
-	       meme solution pour : 
-resolvante : general;
-resolvante(x^4-1,x,x1+2*x2+3*x3,[x1,x2,x3]);
-resolvante(x^4-1,x,x1+2*x2+3*x3,[x1,x2,x3,x4])
-direct([x^4-1],x,x1+2*x2+3*x3,[[x1,x2,x3]]);
+ 12      9      6      3       15      12       9       6      3
+x   - 4 x  + 6 x  - 4 x  + 1, x   - 5 x   + 10 x  - 10 x  + 5 x
 
-resolvante:lineaire$
-resolvante(x^4-1,x,x1+x2+x3,[x1,x2,x3);
+       18      15       12       9       6      3
+ - 1, x   - 6 x   + 15 x   - 20 x  + 15 x  - 6 x  + 1, 
 
-			       4
-			      y  - 1
+ 21      18       15       12       9       6      3
+x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1] 
+[- 7, 1127, - 6139, 431767, - 5472047, 201692519, - 3603982011] 
+       7      6        5         4          3           2
+(%o2) y  + 7 y  - 539 y  - 1841 y  + 51443 y  + 315133 y
 
-resolvante:symetrique$
+                                              + 376999 y + 125253
+(%i3) resolvante: lineaire$
+(%i4) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
 
-resolvante(x^4-1,x,x1+x2+x3,[x1,x2,x3]);
+" resolvante lineaire " 
+       24       20         16            12             8
+(%o4) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
 
-			       4
-			      y  - 1
-resolvante(x^4+x+1,x,x1-x2,[x1,x2]);
-	  12      8       6        4        2
-	 y   + 8 y  + 26 y  - 112 y  + 216 y  + 229
+                                                    4
+                                       + 344489984 y  + 655360000
+(%i5) resolvante: general$
+(%i6) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
 
-resolvante:alternee$
-resolvante(x^4+x+1,x,x1-x2,[x1,x2]);
+" resolvante generale " 
+       24       20         16            12             8
+(%o6) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
 
-	  12      8       6        4        2
-	 y   + 8 y  + 26 y  - 112 y  + 216 y  + 229
+                                                    4
+                                       + 344489984 y  + 655360000
+(%i7) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3, x4]);
 
+" resolvante generale " 
+       24       20         16            12             8
+(%o7) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
 
-resolvante:produit;
-resolvante(x^7-7*x+3,x,x1*x2*x3,[x1,x2,x3]);
+                                                    4
+                                       + 344489984 y  + 655360000
+(%i8) direct ([x^4 - 1], x, x1 + 2*x2 + 3*x3, [[x1, x2, x3]]);
+       24       20         16            12             8
+(%o8) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
 
-   35      33         29        28         27        26         24
-  y   - 7 y   - 1029 y   + 135 y   + 7203 y   - 756 y   + 1323 y
+                                                    4
+                                       + 344489984 y  + 655360000
+(%i9) resolvante :lineaire$
+(%i10) resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
 
-          23          22            21           20          19
-+ 352947 y   - 46305 y   - 2463339 y   + 324135 y   - 30618 y
+" resolvante lineaire " 
+                              4
+(%o10)                       y  - 1
+(%i11) resolvante: symetrique$
+(%i12) resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
 
-	  18 
-- 453789 y   
+" resolvante symetrique " 
+                              4
+(%o12)                       y  - 1
+(%i13) resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
 
-	    17              15             14              12 
-- 40246444 y   + 282225202 y   - 44274492 y   + 155098503 y
+" resolvante symetrique " 
+                           6      2
+(%o13)                    y  - 4 y  - 1
+(%i14) resolvante: alternee$
+(%i15) resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
 
-            11 
-+ 12252303 y
+" resolvante alternee " 
+            12      8       6        4        2
+(%o15)     y   + 8 y  + 26 y  - 112 y  + 216 y  + 229
+(%i16) resolvante: produit$
+(%i17) resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
 
-	   10              9            8            7             6
-+ 2893401 y   - 171532242 y  + 6751269 y  + 2657205 y  - 94517766 y
+" resolvante produit "
+        35      33         29        28         27        26
+(%o17) y   - 7 y   - 1029 y   + 135 y   + 7203 y   - 756 y
 
-	   5             3
-- 3720087 y  + 26040609 y  + 14348907
+         24           23          22            21           20
+ + 1323 y   + 352947 y   - 46305 y   - 2463339 y   + 324135 y
 
-   resolvante:symetrique$
-  resolvante(x^7-7*x+3,x,x1*x2*x3,[x1,x2,x3]);
+          19           18             17              15
+ - 30618 y   - 453789 y   - 40246444 y   + 282225202 y
 
-  35      33         29        28         27        26         24
- y   - 7 y   - 1029 y   + 135 y   + 7203 y   - 756 y   + 1323 y
+             14              12             11            10
+ - 44274492 y   + 155098503 y   + 12252303 y   + 2893401 y
 
-          23          22            21           20          19
-+ 352947 y   - 46305 y   - 2463339 y   + 324135 y   - 30618 y
+              9            8            7             6
+ - 171532242 y  + 6751269 y  + 2657205 y  - 94517766 y
 
-           18 
- - 453789 y
+            5             3
+ - 3720087 y  + 26040609 y  + 14348907
+(%i18) resolvante: symetrique$
+(%i19) resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
 
-            17              15             14              12
-- 40246444 y   + 282225202 y   - 44274492 y   + 155098503 y
+" resolvante symetrique " 
+        35      33         29        28         27        26
+(%o19) y   - 7 y   - 1029 y   + 135 y   + 7203 y   - 756 y
 
-             11 
- + 12252303 y   
+         24           23          22            21           20
+ + 1323 y   + 352947 y   - 46305 y   - 2463339 y   + 324135 y
 
-           10              9            8            7             6
-+ 2893401 y   - 171532242 y  + 6751269 y  + 2657205 y  - 94517766 y
+          19           18             17              15
+ - 30618 y   - 453789 y   - 40246444 y   + 282225202 y
 
-           5             3
-- 3720087 y  + 26040609 y  + 14348907
+             14              12             11            10
+ - 44274492 y   + 155098503 y   + 12252303 y   + 2893401 y
 
-resolvante:cayley$
-resolvante(x^5-4*x^2+x+1,x,a,[]);
+              9            8            7             6
+ - 171532242 y  + 6751269 y  + 2657205 y  - 94517766 y
 
-" resolvante de cayley " 
+            5             3
+ - 3720087 y  + 26040609 y  + 14348907
+(%i20) resolvante: cayley$
+(%i21) resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
 
- 6       5         4          3            2
-x  - 40 x  + 4080 x  - 92928 x  + 3772160 x  + 37880832 x + 93392896
+" resolvante de Cayley "
+        6       5         4          3            2
+(%o21) x  - 40 x  + 4080 x  - 92928 x  + 3772160 x  + 37880832 x
+
+                                                       + 93392896
 @end example
 
 Pour la re'solvante de Cayley, les 2 derniers arguments sont neutres
@@ -896,15 +1007,17 @@ p(x) de degre n (n pair) par la fonction
          $x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 
 Voir e'galement :
+
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
 @code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_alternee1}.
 
+@c GENERATED FROM THE FOLLOWING
+@c resolvante_bipartite (x^6 + 108, x);
 @example
- resolvante_bipartite(x^6+108,x);
-
-                 10        8           6             4
-                y   - 972 y  + 314928 y  - 34012224 y
+(%i1) resolvante_bipartite (x^6 + 108, x);
+              10        8           6             4
+(%o1)        y   - 972 y  + 314928 y  - 34012224 y
 @end example
 
 Voir e'galement :
@@ -920,14 +1033,17 @@ Voir e'galement :
 calcule la transformation de
 p(x) par la fonction x_1x_2+x_3x_4.
 
+@c GENERATED FROM THE FOLLOWING
+@c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
 @example
-resolvante_diedrale(x^5-3*x^4+1,x);
+(%i1) resolvante_diedrale (x^5 - 3*x^4 + 1, x);
+       15       12       11       10        9         8         7
+(%o1) x   - 21 x   - 81 x   - 21 x   + 207 x  + 1134 x  + 2331 x
 
- 15       12       11       10        9         8         7        6
-x   - 21 x   - 81 x   - 21 x   + 207 x  + 1134 x  + 2331 x  - 945 x
+        6         5          4          3          2
+ - 945 x  - 4970 x  - 18333 x  - 29079 x  - 20745 x  - 25326 x
 
-           5          4          3          2
-   - 4970 x  - 18333 x  - 29079 x  - 20745 x  - 25326 x - 697
+ - 697
 @end example
 
 Voir e'galement :
@@ -966,28 +1082,30 @@ Voir e'galement :
 calcule la liste toutes les 
 r\'esolvantes produit du polyn\^ome  p(x).
 
+@c GENERATED FROM THE FOLLOWING
+@c resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
+@c resolvante: produit$
+@c resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
 @example
-  resolvante_produit_sym(x^5+3*x^4+2*x-1,x);
+(%i1) resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
+        5      4             10      8       7       6       5
+(%o1) [y  + 3 y  + 2 y - 1, y   - 2 y  - 21 y  - 31 y  - 14 y
 
-  5      4             10      8       7       6       5    4 
-[y  + 3 y  + 2 y - 1, y   - 2 y  - 21 y  - 31 y  - 14 y  - y
+    4       3      2       10      8       7    6       5       4
+ - y  + 14 y  + 3 y  + 1, y   + 3 y  + 14 y  - y  - 14 y  - 31 y
 
-      3 
-+ 14 y
+       3      2       5      4
+ - 21 y  - 2 y  + 1, y  - 2 y  - 3 y - 1, y - 1]
+(%i2) resolvante: produit$
+(%i3) resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
 
-      2       10      8       7    6       5       4       3      2
-+ 3 y  + 1, y   + 3 y  + 14 y  - y  - 14 y  - 31 y  - 21 y  - 2 y  
-
-      5      4
-+ 1, y  - 2 y  - 3 y - 1, y - 1]
-
-
-resolvante:produit$
-esolvante(x^5+3*x^4+2*x-1,x,a*b*c,[a,b,c]);
-
- 10      8       7    6       5       4       3      2
-y   + 3 y  + 14 y  - y  - 14 y  - 31 y  - 21 y  - 2 y  + 1
+" resolvante produit "
+       10      8       7    6        5       4       3     2
+(%o3) y   + 3 y  + 14 y  - y  - 14 y  - 31 y  - 21 y  - 2 y  + 1
 @end example
+@c INPUT %i3 TICKLES A MINOR BUG IN resolvante: 
+@c " resolvante produit " IS PRINTED FROM SOMEWHERE IN THE BOWELS OF resolvante
+@c AND IT GOOFS UP THE DISPLAY OF THE EXPONENTS OF %o3 -- I THREW IN A LINE BREAK TO ADJUST
 
 Voir e'galement :
 
@@ -1029,17 +1147,16 @@ comple`te comme la concate'nation de la lettre h avec l'entier i : hi.
 Cette fonction donne l'expression de P en fonction des fonctions
 de Schur.
 
+@c GENERATED FROM THE FOLLOWING
+@c schur2comp (h1*h2 - h3, [h1, h2, h3]);
+@c schur2comp (a*h3, [h3]);
 @example
-  schur2comp(h1*h2-h3,[h1,h2,h3]);
-
-
- 				    s	  
-				     1, 2
-
- schur2comp(a*h3,[h3]);
-
- 				      s  a
-				       3
+(%i1) schur2comp (h1*h2 - h3, [h1, h2, h3]);
+(%o1)                         s
+                               1, 2
+(%i2) schur2comp (a*h3, [h3]);
+(%o2)                         s  a
+                               3
 @end example
 
 @end defun
@@ -1081,10 +1198,11 @@ Autres fonctions de changements de repre'sentations :
 @defun treillis (n)
 rame`ne toutes les partitions de poids n.
 
+@c GENERATED FROM THE FOLLOWING
+@c treillis (4);
 @example
- treillis(4);
-
-            [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
+(%i1) treillis (4);
+(%o1)    [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
 @end example
 
 Voir e'galement : @code{lgtreillis}, @code{ltreillis} et @code{treinat}.
@@ -1095,19 +1213,19 @@ Voir e'galement : @code{lgtreillis}, @code{ltreillis} et @code{treinat}.
 rame`ne la liste des partitions infe'rieures a` la partition
   part pour l'ordre naturel.
 
+@c GENERATED FROM THE FOLLOWING
+@c treinat ([5]);
+@c treinat ([1, 1, 1, 1, 1]);
+@c treinat ([3, 2]);
 @example
-   treinat([5]);
+(%i1) treinat ([5]);
+(%o1)                         [[5]]
+(%i2) treinat ([1, 1, 1, 1, 1]);
+(%o2) [[5], [4, 1], [3, 2], [3, 1, 1], [2, 2, 1], [2, 1, 1, 1], 
 
-                               [[5]]
-   treinat([1,1,1,1,1]);
-  
-    [[5], [4, 1], [3, 2], [3, 1, 1], [2, 2, 1], [2, 1, 1, 1],
-
-     [1, 1, 1, 1, 1]]
-
-   treinat([3,2]);
-
-                        [[5], [4, 1], [3, 2]]
+                                                 [1, 1, 1, 1, 1]]
+(%i3) treinat ([3, 2]);
+(%o3)                 [[5], [4, 1], [3, 2]]
 @end example
 
 Voir e'galement : @code{lgtreillis}, @code{ltreillis} et @code{treillis}.
