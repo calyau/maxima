@@ -1,4 +1,4 @@
-;;; -*- Mode:Common-Lisp; Package:CL-MAXIMA; Syntax:COMMON-LISP; Base:10 -*-
+;;; -*- Mode:Lisp; Package:CL-MAXIMA; Syntax:COMMON-LISP; Base:10 -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                    ;;;;;
 ;;;     Copyright (c) 1984 by William Schelter,University of Texas     ;;;;;
