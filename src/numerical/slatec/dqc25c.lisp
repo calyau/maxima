@@ -8,14 +8,9 @@
 (in-package "SLATEC")
 
 
-(let ((x
-       (make-array 11
-                   :element-type
-                   'double-float
-                   :initial-contents
-                   '(0.9914448613738104 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-                     0.0))))
+(let ((x (make-array 11 :element-type 'double-float)))
   (declare (type (simple-array double-float (11)) x))
+  (f2cl-lib:fset (f2cl-lib:fref x (1) ((1 11))) 0.9914448613738104)
   (f2cl-lib:fset (f2cl-lib:fref x (2) ((1 11))) 0.9659258262890683)
   (f2cl-lib:fset (f2cl-lib:fref x (3) ((1 11))) 0.9238795325112867)
   (f2cl-lib:fset (f2cl-lib:fref x (4) ((1 11))) 0.8660254037844386)
