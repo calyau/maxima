@@ -9,21 +9,40 @@
 (use-package "COMMAND-LINE")
 ;;; An ANSI-CL portable initializer to replace init_max1.lisp
 
+;;; Locations of various types of files. These variables are discussed
+;;; in more detail in the file doc/implementation/dir_vars.txt. Since
+;;; these are already in the maxima package, the maxima- prefix is
+;;; redundant. It is kept for consistency with the same variables in
+;;; shell scripts, batch scripts and environment variables.
+;;; jfa 02/07/04
 (defvar *maxima-prefix*)
-(defvar *maxima-datadir*)
+(defvar *maxima-imagesdir*)
+(defvar *maxima-sharedir*)
+(defvar *maxima-symdir*)
+(defvar *maxima-srcdir*)
+(defvar *maxima-demodir*)
+(defvar *maxima-testsdir*)
+(defvar *maxima-docdir*)
 (defvar *maxima-infodir*)
+(defvar *maxima-htmldir*)
 (defvar *maxima-plotdir*)
-(defvar *maxima-verpkglibexecdir*)
-(defvar *maxima-verpkgdatadir*)
-(defvar *maxima-libexecdir*)
+(defvar *maxima-layout-autotools*)
 (defvar *maxima-userdir*)
 
-(defun maxima-path (dir file)
-   (format nil "~a/~a/~a" *maxima-prefix* dir file))
+(defvar *maxima-lispname* #+clisp "clisp"
+	#+cmu "cmucl"
+	#+sbcl "sbcl"
+	#+gcl "gcl"
+	#+allegro "acl6"
+	#+openmcl "openmcl"
+	#-(or clisp cmu sbcl gcl allegro openmcl) "unknownlisp")
 
-(defun maxima-data-path (dir file)
-   (format nil "~a/~a/~a"
-	   *maxima-verpkgdatadir* dir file))
+(defun combine-path (list)
+  (let ((result (first list)))
+    (mapc #'(lambda (x) 
+		(setf result 
+		      (concatenate 'string result "/" x))) (rest list))
+    result))
 
 (defvar $file_search_lisp nil
   "Directories to search for Lisp source code.")
@@ -61,13 +80,75 @@
 (defun maxima-getenv (envvar)
   (ccl::getenv envvar))
 
+(defun set-pathnames-with-autoconf (maxima-prefix-env)
+  (let ((libdir)
+	(libexecdir)
+	(datadir)
+	(infodir)
+	(package-version (combine-path (list *autoconf-package*
+					 *autoconf-version*)))
+	(binary-subdirectory (concatenate 'string 
+					  "binary-" *maxima-lispname*)))
+    (if maxima-prefix-env
+	(progn
+	  (setq libdir (combine-path (list maxima-prefix-env "lib")))
+	  (setq libexecdir (combine-path (list maxima-prefix-env "libexec")))
+	  (setq datadir (combine-path (list maxima-prefix-env "share")))
+	  (setq infodir (combine-path (list maxima-prefix-env "info"))))
+	(progn
+	  (setq libdir *autoconf-libdir*)
+	  (setq libexecdir *autoconf-libexecdir*)
+	  (setq datadir *autoconf-datadir*)
+	  (setq infodir *autoconf-infodir*)))
+    (setq *maxima-imagesdir*
+	  (combine-path (list libdir package-version binary-subdirectory)))
+    (setq *maxima-sharedir*
+	  (combine-path (list datadir package-version "share")))
+    (setq *maxima-symdir*
+	  (combine-path (list datadir package-version "share" "sym")))
+    (setq *maxima-srcdir*
+	  (combine-path (list datadir package-version "src")))
+    (setq *maxima-demodir*
+	  (combine-path (list datadir package-version)))
+    (setq *maxima-testsdir*
+	  (combine-path (list datadir package-version "tests")))
+    (setq *maxima-docdir*
+	  (combine-path (list datadir package-version "doc")))
+    (setq *maxima-infodir* infodir)
+    (setq *maxima-htmldir*
+	  (combine-path (list datadir package-version "doc" "html")))
+    (setq *maxima-plotdir*
+	  (combine-path (list libexecdir package-version)))))
+
+(defun set-pathnames-without-autoconf (maxima-prefix-env)
+  (let ((maxima-prefix (if maxima-prefix-env 
+			   maxima-prefix-env
+			   *autoconf-prefix*))
+	(binary-subdirectory (concatenate 'string 
+					  "binary-" *maxima-lispname*)))
+
+    (setq *maxima-imagesdir*
+	  (combine-path (list maxima-prefix "src" binary-subdirectory)))
+    (setq *maxima-sharedir*
+	  (combine-path (list maxima-prefix "share")))
+    (setq *maxima-symdir*
+	  (combine-path (list maxima-prefix "share" "sym")))
+    (setq *maxima-srcdir*
+	  (combine-path (list maxima-prefix "src")))
+    (setq *maxima-demodir*
+	  (combine-path (list maxima-prefix "demo")))
+    (setq *maxima-testsdir*
+	  (combine-path (list maxima-prefix "tests")))
+    (setq *maxima-docdir*
+	  (combine-path (list maxima-prefix "doc")))
+    (setq *maxima-infodir* (combine-path (list maxima-prefix "doc" "info")))
+    (setq *maxima-htmldir* (combine-path (list maxima-prefix "doc" "html")))
+    (setq *maxima-plotdir* (combine-path (list maxima-prefix "plotting")))))
+
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
-	(maxima-datadir-env (maxima-getenv "MAXIMA_DATADIR"))
-	(maxima-infodir-env (maxima-getenv "MAXIMA_INFODIR"))
-	(maxima-plotdir-env (maxima-getenv "MAXIMA_PLOTDIR"))
+	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
 	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
-	(maxima-verpkgdatadir-env (maxima-getenv "MAXIMA_VERPKGDATADIR"))
 	(home-env (maxima-getenv "HOME")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
     (if (not maxima-prefix-env)
@@ -75,36 +156,17 @@
     (if maxima-prefix-env
 	(setq *maxima-prefix* maxima-prefix-env)
 	(setq *maxima-prefix* *autoconf-prefix*))
-    (if maxima-datadir-env
-	(setq *maxima-datadir* maxima-datadir-env)
-	(if maxima-prefix-env
-	    (setq *maxima-datadir* (concatenate 'string *maxima-prefix*
-						"/share"))
-	    (setq *maxima-datadir* *autoconf-datadir*)))
-    (if maxima-verpkgdatadir-env
-	(setq *maxima-verpkgdatadir* maxima-verpkgdatadir-env)
-	(setq *maxima-verpkgdatadir* (concatenate 'string *maxima-datadir*
-						  "/" *autoconf-package*
-						  "/" *autoconf-version*)))
-    (if maxima-prefix-env
-	(setq *maxima-libexecdir* (concatenate 'string *maxima-prefix*
-					       "/libexec"))
-	(setq *maxima-libexecdir* *autoconf-libexecdir*))
-    (setq *maxima-verpkglibexecdir* (concatenate 'string *maxima-libexecdir*
-						 "/" *autoconf-package*
-						 "/" *autoconf-version*))
-    (if maxima-plotdir-env
-	(setq *maxima-plotdir* (maxima-getenv "MAXIMA_PLOTDIR"))
-	(setq *maxima-plotdir* *maxima-verpkglibexecdir*))
-    (if maxima-infodir-env
-	(setq *maxima-infodir* maxima-infodir-env)
-	(if maxima-prefix-env
-	    (setq *maxima-infodir* (concatenate 'string *maxima-prefix*
-						"/info"))
-	    (setq *maxima-infodir* *autoconf-infodir*)))
+    (if maxima-layout-autotools-env
+	(setq *maxima-layout-autotools*
+	      (string-equal maxima-layout-autotools-env "true"))
+	(setq *maxima-layout-autotools*
+	      (string-equal *maxima-default-layout-autotools* "true")))
+    (if *maxima-layout-autotools*
+	(set-pathnames-with-autoconf maxima-prefix-env)
+	(set-pathnames-without-autoconf maxima-prefix-env))
     (if maxima-userdir-env
 	(setq *maxima-userdir* maxima-userdir-env)
-	(setq *maxima-userdir* (concatenate 'string home-env "/.maxima"))))
+	(setq *maxima-userdir* (combine-path (list home-env ".maxima")))))
   
   (let* ((ext #+gcl "o"
 	      #+cmu (c::backend-fasl-file-type c::*target-backend*)
@@ -115,34 +177,37 @@
 	      #+(and openmcl linuxppc-target) "pfsl"
 	      #-(or gcl cmu sbcl clisp allegro openmcl)
 	      "")
-	 (lisp-patterns (concatenate 'string
-				     "###.{"
-				     (concatenate 'string ext ",lisp,lsp}")))
-	 (share-with-subdirs "{share,share/affine,share/algebra,share/calculus,share/combinatorics,share/contrib,share/contrib/nset,share/contrib/pdiff,share/diffequations,share/graphics,share/integequations,share/integration,share/macro,share/matrix,share/misc,share/numeric,share/physics,share/simplification,share/specfunctions,share/sym,share/tensor,share/trigonometry,share/utils,share/vector}"))
+	 (lisp-patterns (concatenate 
+			 'string "###.{"
+			 (concatenate 'string ext ",lisp,lsp}")))
+	 (share-with-subdirs "{affine,algebra,calculus,combinatorics,contrib,contrib/nset,contrib/pdiff,diffequations,graphics,integequations,integration,macro,matrix,misc,numeric,physics,simplification,specfunctions,sym,tensor,trigonometry,utils,vector}"))
     (setq $file_search_lisp
 	  (list '(mlist)
 		;; actually, this entry is not correct.
 		;; there should be a separate directory for compiled
 		;; lisp code. jfa 04/11/02
-		(concatenate 'string *maxima-userdir* "/" lisp-patterns)
-		(maxima-data-path share-with-subdirs lisp-patterns)
-		(maxima-data-path "src" lisp-patterns)))
+		(combine-path (list *maxima-userdir* lisp-patterns))
+		(combine-path (list *maxima-sharedir* share-with-subdirs 
+				lisp-patterns))
+		(combine-path (list *maxima-srcdir* lisp-patterns))))
     (setq $file_search_maxima
 	  (list '(mlist)
-		(concatenate 'string *maxima-userdir* "/" "###.{mac,mc}")
-		(maxima-data-path share-with-subdirs "###.{mac,mc}")))
+		(combine-path (list *maxima-userdir* "###.{mac,mc}"))
+		(combine-path (list *maxima-sharedir* share-with-subdirs
+				share-with-subdirs "###.{mac,mc}"))))
     (setq $file_search_demo
 	  (list '(mlist)
-		(maxima-data-path share-with-subdirs
-				  "###.{dem,dm1,dm2,dm3,dmt}")
-		(maxima-data-path "{demo}"
-				  "###.{dem,dm1,dm2,dm3,dmt}")))
+		(combine-path (list *maxima-sharedir* 
+				"###.{dem,dm1,dm2,dm3,dmt}"))
+		(combine-path (list *maxima-demodir* 
+				"###.{dem,dm1,dm2,dm3,dmt}"))))
     (setq $file_search_usage
-	  (list '(mlist) (maxima-data-path share-with-subdirs
-					   "###.{usg,texi}")
-		(maxima-data-path "doc" "###.{mac}")))
+	  (list '(mlist) 
+		(combine-path (list *maxima-sharedir* share-with-subdirs
+				"###.{usg,texi}"))
+		(combine-path (list *maxima-docdir* "###.{mac}"))))
     (setq $chemin
-	  (maxima-data-path "sym" ""))
+	  (concatenate 'string *maxima-symdir* "/"))
     (setq cl-info::*info-paths* (list (concatenate 'string
 						   *maxima-infodir* "/")))))
 
@@ -204,9 +269,9 @@
     (bye)))
 
 (defun process-maxima-args (input-stream batch-flag)
-  ;;   (format t "processing maxima args = ")
-  ;;   (mapc #'(lambda (x) (format t "\"~a\"~%" x)) (get-application-args))
-  ;;   (terpri)
+;    (format t "processing maxima args = ")
+;    (mapc #'(lambda (x) (format t "\"~a\"~%" x)) (get-application-args))
+;    (terpri)
   (let ((maxima-options nil))
     (setf maxima-options
 	  (list 
@@ -270,6 +335,12 @@
 			   :action #'(lambda (file)
 				       (load file))
 			   :help-string "Preload <lisp-file>.")
+	   (make-cl-option :names '("-s" "--server")
+			   :argument "<port>"
+			   :action #'(lambda (port-string)
+				       (start-server (parse-integer 
+						      port-string)))
+			   :help-string "Start maxima server on <port>.")
 	   (make-cl-option :names '("-v" "--verbose")
 			   :action nil
 			   :help-string 

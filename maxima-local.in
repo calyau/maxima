@@ -1,17 +1,9 @@
 #!/bin/sh
 top_srcdir=`(cd \`dirname $0\` > /dev/null 2>&1 ; pwd)`
-MAXIMA_VERPKGDATADIR=$top_srcdir
-export MAXIMA_VERPKGDATADIR
-MAXIMA_VERPKGLIBEXECDIR=$top_srcdir/lisp-utils
-export MAXIMA_VERPKGLIBEXECDIR
-MAXIMA_VERPKGLIBDIR=$top_srcdir/src
-export MAXIMA_VERPKGLIBDIR
-MAXIMA_INFODIR=$top_srcdir/doc/info
-export MAXIMA_INFODIR
-MAXIMA_PLOTDIR=$top_srcdir/plotting
-export MAXIMA_PLOTDIR
-in_maxima_local=true
-export in_maxima_local
+MAXIMA_PREFIX=$top_srcdir
+export MAXIMA_PREFIX
+MAXIMA_LAYOUT_AUTOTOOLS=false
+export MAXIMA_LAYOUT_AUTOTOOLS
 
 POSIX_SHELL=@POSIX_SHELL@
 exec $POSIX_SHELL $top_srcdir/src/maxima "$@"

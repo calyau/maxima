@@ -1,6 +1,7 @@
 ; -*- Lisp -*-
 (in-package :maxima)
 
+(defparameter *autoconf-variables-set* "@variables_set@")
 (defparameter *autoconf-prefix* "@prefix@")
 (defparameter *autoconf-exec_prefix* "@expanded_exec_prefix@")
 (defparameter *autoconf-package* "@PACKAGE@")
@@ -12,3 +13,5 @@
 (defparameter *autoconf-host* "@host@")
 (defparameter *autoconf-win32* "@win32@")
  
+(defparameter *maxima-source-root* "@expanded_top_srcdir@")
+(defparameter *maxima-default-layout-autotools* "@default_layout_autotools@")

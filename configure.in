@@ -480,17 +480,21 @@ if test x"${exec_prefix}" = xNONE ; then
 else
 	tmp_exec_prefix="${exec_prefix}"
 fi
+expanded_top_srcdir="`(cd \"$top_srcdir\" 1>/dev/null 2>/dev/null; pwd)`"
 expanded_exec_prefix="${tmp_exec_prefix}"
 expanded_libdir="`eval \"exec_prefix=${tmp_exec_prefix};echo ${libdir}\"`"
 expanded_libexecdir="`eval \"exec_prefix=${tmp_exec_prefix};echo ${libexecdir}\"`"
 expanded_datadir="`eval \"prefix=${tmp_prefix};echo ${datadir}\"`"
 expanded_infodir="`eval \"prefix=${tmp_prefix};echo ${infodir}\"`"
 
+AC_SUBST(expanded_top_srcdir)
 AC_SUBST(expanded_exec_prefix)
 AC_SUBST(expanded_libdir)
 AC_SUBST(expanded_libexecdir)
 AC_SUBST(expanded_datadir)
 AC_SUBST(expanded_infodir)
+default_layout_autotools="true"
+AC_SUBST(default_layout_autotools)
 
 AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss src/Makefile src/maxima src/maxima.bat src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/emaxima/Makefile doc/info/Makefile doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile interfaces/emacs/emaxima/Makefile interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile interfaces/xmaxima/autoconf-variables.tcl interfaces/xmaxima/Tkmaxima/Header.tcl interfaces/xmaxima/win32/Makefile share/Makefile demo/Makefile plotting/Makefile)
 

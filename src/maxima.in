@@ -7,27 +7,32 @@ setup_vars() {
   exec_prefix=@exec_prefix@
   PACKAGE=@PACKAGE@
   VERSION=@VERSION@
-  MAXIMA_DEFAULT_VERPKGLIBEXECDIR=@libexecdir@/@PACKAGE@/@VERSION@
-  MAXIMA_DEFAULT_VERPKGLIBDIR=@libdir@/@PACKAGE@/@VERSION@
-  if [ -z "$MAXIMA_VERPKGLIBEXECDIR" ]; then
-    if [ -n "$MAXIMA_PREFIX" ]; then
-      MAXIMA_VERPKGLIBEXECDIR="$MAXIMA_PREFIX/libexec/$PACKAGE/$VERSION"
-    else
-      MAXIMA_VERPKGLIBEXECDIR="$MAXIMA_DEFAULT_VERPKGLIBEXECDIR"
-    fi
+  top_srcdir=@expanded_top_srcdir@
+  libdir=@libdir@
+  if [ -n "$MAXIMA_LAYOUT_AUTOTOOLS" ]; then
+      layout_autotools="$MAXIMA_LAYOUT_AUTOTOOLS"
+  else
+      layout_autotools=@default_layout_autotools@
   fi
-  if [ -z "$MAXIMA_VERPKGLIBDIR" ]; then
-    if [ -n "$MAXIMA_PREFIX" ]; then
-      MAXIMA_VERPKGLIBDIR="$MAXIMA_PREFIX/lib/$PACKAGE/$VERSION"
-    else
-      MAXIMA_VERPKGLIBDIR="$MAXIMA_DEFAULT_VERPKGLIBDIR"
-    fi
+  if [ "$layout_autotools" = "true" ]; then
+      MAXIMA_DEFAULT_IMAGESDIR=$libdir/$PACKAGE/$VERSION
+  else
+      MAXIMA_DEFAULT_IMAGESDIR=$top_srcdir/src
+  fi  
+  if [ -n "$MAXIMA_PREFIX" ]; then
+      if [ "$layout_autotools" = "true" ]; then
+	  MAXIMA_IMAGESDIR=$MAXIMA_PREFIX/lib/$PACKAGE/$VERSION
+      else
+	  MAXIMA_IMAGESDIR=$MAXIMA_PREFIX/src
+      fi  
+  else
+      MAXIMA_IMAGESDIR="$MAXIMA_DEFAULT_IMAGESDIR"
   fi
   MAXIMA_DEFAULT_LISP=@DEFAULTLISP@
   # If the the binary directory for the default lisp is not present,
   # choose the first one we find.
-  if [ ! -d "$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_DEFAULT_LISP" ]; then
-    MAXIMA_DEFAULT_LISP=`ls -1 $MAXIMA_VERPKGLIBDIR | head -n 1 | sed 's/binary-//'`
+  if [ ! -d "$MAXIMA_IMAGESDIR/binary-$MAXIMA_DEFAULT_LISP" ]; then
+    MAXIMA_DEFAULT_LISP=`ls -1 $MAXIMA_IMAGESDIR 2>/dev/null | head -n 1 | sed 's/binary-//'`
   fi
   if [ -z "$MAXIMA_LISP" ]; then
     MAXIMA_LISP=$MAXIMA_DEFAULT_LISP
@@ -35,8 +40,7 @@ setup_vars() {
 }
 
 unsetup_vars () {
-  unset MAXIMA_VERPKGLIBEXECDIR
-  unset MAXIMA_VERPKGLIBDIR
+  unset MAXIMA_IMAGESDIR
   unset MAXIMA_LISP
 }
 
@@ -83,33 +87,34 @@ done
 
 setup_vars
 
-if [ ! -d "$MAXIMA_VERPKGLIBEXECDIR" ]; then
+if [ ! -d "$MAXIMA_IMAGESDIR" ]; then
 # Have we been moved?
-  MAXIMA_PREFIX="`dirname \`dirname $0\``"
+  MAXIMA_PREFIX=`(cd \`dirname $0\` 1>/dev/null 2>/dev/null; dirname \`pwd\`)`
+  export MAXIMA_PREFIX
   unsetup_vars
   setup_vars
-  if [ ! -d "$MAXIMA_VERPKGLIBEXECDIR" ]; then
+  if [ ! -d "$MAXIMA_IMAGESDIR" ]; then
     echo "$0: unable to determine MAXIMA_PREFIX" 1>&2
     exit 1
   fi
 fi
 
-maxima_image_base="$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_LISP/maxima"
+maxima_image_base="$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima"
 
 if [ "$verbose" = "true" ]; then
     set -x
 fi
 if [ "$MAXIMA_LISP" = "clisp" ]; then
-    if [ "$in_maxima_local" = "true" ]; then
-	exec "@CLISP_NAME@" -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    if [ "$layout_autotools" = "true" ]; then
+	exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@CLISP_RUNTIME@" -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
     else
-	exec "$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_LISP/@CLISP_RUNTIME@" -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	exec "@CLISP_NAME@" -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
     fi
 elif [ "$MAXIMA_LISP" = "cmucl" ]; then
-    if [ "$in_maxima_local" = "true" ]; then
-	exec "@CMUCL_NAME@" -quiet -core "$maxima_image_base.core" -eval '(user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    if [ "$layout_autotools" = "true" ]; then
+	exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@CMUCL_RUNTIME@" -quiet -core "$maxima_image_base.core" -eval '(user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
     else
-	exec "$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_LISP/@CMUCL_RUNTIME@" -quiet -core "$maxima_image_base.core" -eval '(user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	exec "@CMUCL_NAME@" -quiet -core "$maxima_image_base.core" -eval '(user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
     fi
 elif [ "$MAXIMA_LISP" = "gcl" ]; then
     exec "$maxima_image_base" -eval '(user::run)' -f -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
