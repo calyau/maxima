@@ -46,27 +46,27 @@
 
      ( (NULL X) (CONS  Y (LIST Z)))  ))
      
-(DEFUN NAME (RP) (COND ((RPOBJ RP) (CAAR RP) )
-                        (T (MERROR "NOT RPOBJECT"))))
+;(DEFUN NAME (RP) (COND ((RPOBJ RP) (CAAR RP) )
+;                        (T (MERROR "NOT RPOBJECT"))))
 ;(DEFUN CONTI (RP) (COND ((RPOBJ RP) (CDADDR RP))
 ;                       (T (MERROR "NOT RPOBJECT"))))
 ;
 ;(DEFUN COVI (RP) (COND ((RPOBJ RP) (CDADR RP))
 ;                       (T (MERROR "NOT RPOBJECT"))))
-
-(DEFUN DERI (RP) (COND ((RPOBJ RP) (CDDDR RP))
-                       (T (MERROR "NOT RPOBJECT"))))
-
-(DEFMFUN $NAME (RP) (COND (($TENPR RP) (CAAR RP) ) ;test the name of tensor
-                        (T (MERROR "NOT TENPRECT"))))
+;
+;(DEFUN DERI (RP) (COND ((RPOBJ RP) (CDDDR RP))
+;                       (T (MERROR "NOT RPOBJECT"))))
+;
+;(DEFMFUN $NAME (RP) (COND (($TENPR RP) (CAAR RP) ) ;test the name of tensor
+;                        (T (MERROR "NOT TENPRECT"))))
 ;(DEFMFUN $CONTI (RP) (COND (($TENPR RP) (cons SMLIST (CDADDR RP)))
 ;                       (T (MERROR "NOT RPOBJECT")))) ;test the contravariant indices
 ;
 ;(DEFMFUN $COVI (RP) (COND (($TENPR RP) (cons SMLIST (CDADR RP)))
 ;                       (T (MERROR "NOT RPOBJECT")))) ;test the contravariant indices
-
-(DEFUN $DERI (RP) (COND (($TENPR RP) (cons SMLIST (CDDDR RP)))
-                       (T (MERROR "NOT RPOBJECT"))))
+;
+;(DEFUN $DERI (RP) (COND (($TENPR RP) (cons SMLIST (CDDDR RP)))
+;                       (T (MERROR "NOT RPOBJECT"))))
 
 (DEFUN FRE (L) (INTERSECT L FREI))
 

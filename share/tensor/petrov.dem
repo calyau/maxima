@@ -36,6 +36,8 @@ cframe_flag:true;
 cmetric(false);
 ug:invert(lg)$
 nptetrad(false);
+("Verify the tetrad")$
+trigsimp(np.transpose(npi));
 christof(false);
 lriemann(false);
 ricci(false);

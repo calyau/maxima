@@ -68,7 +68,6 @@
 (autof '$igeodesic_coords '|gener|)
 (autof '$conmetderiv '|gener|)
 (autof '$name '|canten|)
-(autof '$deri '|canten|)
 )
 
 #+cl
@@ -149,8 +148,21 @@
 
 (defun covi (rp) (plusi (cdadr rp)))
 (defun conti (rp) (append (minusi (cdadr rp)) (cdaddr rp)))
-(defmfun $covi (rp) (cons '(mlist simp) (covi rp)))
-(defmfun $conti (rp) (cons '(mlist simp) (conti rp)))
+(defun deri (rp) (cdddr rp))
+(defun name (rp) (caar rp))
+(defmfun $covi (rp) (cond ((rpobj rp) (cons smlist (covi rp)))
+                          (t (merror "Not an RPOBJ"))
+                    )
+)
+(defmfun $conti (rp) (cond ((rpobj rp) (cons smlist (conti rp)))
+                                       (t (merror "Not an RPOBJ"))
+                     )
+)
+(defmfun $deri (rp) (cond ((rpobj rp) (cons smlist (deri rp)))
+                                      (t (merror "Not an RPOBJ"))
+                    )
+)
+(defmfun $name (rp) (cond ((rpobj rp) (caar rp)) (t (merror "Not an RPOBJ"))))
 
 ;KDELTA has special contraction property because it contracts with any indexed
 ;object.
