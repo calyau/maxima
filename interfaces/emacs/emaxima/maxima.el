@@ -1681,13 +1681,20 @@ To get apropos with the symbol under point, use:
   "Send a string to the Maxima process."
   (setq string (maxima-strip-string string))
   (maxima-start)
-  (inferior-maxima-wait-for-output)
+;  (inferior-maxima-wait-for-output)
   (save-current-buffer
     (set-buffer (process-buffer inferior-maxima-process))
     (goto-char (point-max))
     (insert string)
     (inferior-maxima-comint-send-input)
     (goto-char (point-max))))
+
+(defun maxima-single-string-wait (string)
+  "Send a single string to the maxima process,
+waiting for output after."
+  (inferior-maxima-wait-for-output)
+  (maxima-single-string string)
+  (inferior-maxima-wait-for-output))
 
 (defun maxima-ask-question (string)
   "Ask the question maxima wants answered."
@@ -2174,13 +2181,13 @@ The following commands are available:
     (unless (string= (substring input -1) ";")
       (setq input (concat input ";")))
     (if twod
-        (maxima-single-string 
+        (maxima-single-string-wait 
          "block(emacsdisplay:display2d,display2d:true,linenum:linenum-1,%);")
-      (maxima-single-string 
+      (maxima-single-string-wait
        "block(emacsdisplay:display2d,display2d:false,linenum:linenum-1,%);"))
-    (maxima-single-string input)
+    (maxima-single-string-wait input)
     (setq output (maxima-last-output-noprompt))
-    (maxima-string-nodisplay "block(display2d:emacsdisplay,linenum:linenum-1,%);")
+    (maxima-single-string-wait "block(display2d:emacsdisplay,linenum:linenum-1,%);")
     (if (not twod)
         (setq output (maxima-strip-string output))
       ;; Strip the beginning and trailing newline
@@ -2193,7 +2200,7 @@ The following commands are available:
 
 (defun maxima-insert-last-output ()
   (interactive)
-  (maxima-single-string 
+  (maxima-single-string-wait
             "block(emacsdisplay:display2d,display2d:false,linenum:linenum-1,%);")
   (let ((output (maxima-last-output-noprompt)))
     (maxima-single-string "block(display2d:emacsdisplay,linenum:linenum-1,%);")
@@ -2201,7 +2208,7 @@ The following commands are available:
 
 (defun maxima-insert-last-output-tex ()
   (interactive)
-  (maxima-single-string "tex(%);")
+  (maxima-single-string-wait "tex(%);")
   (let ((output (substring (maxima-last-output-tex-noprompt) 2 -3)))
     (maxima-single-string "block(linenum:linenum-2,%th(2));")
     (insert output)))
