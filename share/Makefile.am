@@ -570,8 +570,6 @@ trigonometry/spangl.mac\
 trigonometry/spangl.usg\
 trigonometry/trgsmp.mac\
 trigonometry/trigrat.lisp\
-utils/fileop.lisp\
-utils/fileop.usg\
 utils/mactex-utilities.lisp\
 vector/vect.dem\
 vector/vect.mac\
