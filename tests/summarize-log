@@ -12,5 +12,8 @@ err_count=`grep -c "Error summary:" $log_file`
 if [ "$no_err_count" = "0" ] && [ "$err_count" = "0" ]; then
   echo "Unknown error in log file"
 fi
+echo
+echo "Timing:"
+grep time $log_file
 echo "*** end of summary for $log_file"
 echo
