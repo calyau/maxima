@@ -364,12 +364,42 @@
     (setq tem (if $bothcases (bothcase-implode tem) (implode1 tem nil)))
   (GETALIAS tem)))
 
-(DEFUN SCAN-LISP-TOKEN ()
-  (let ((scan (SCAN-TOKEN ())))
-  (IMPLODE1 scan (not (member #\| scan)))
-  ))
-(DEFUN SCAN-keyword-TOKEN ()
-  (let ((*package* 'keyword)) (IMPLODE (SCAN-TOKEN ()))))
+(defun scan-lisp-token ()
+  (let ((charlist (scan-token nil)))
+    (if (setq charlist (lisp-token-fixup-case charlist))
+	(implode charlist)
+	(mread-synerr "Lisp symbol expected."))))
+
+;; Example: ?mismatch(x+y,x*z,?:from\-end,true); => 3
+(defun scan-keyword-token ()
+  (let ((charlist (cdr (scan-token nil))))
+    (if (and charlist
+	     (setq charlist (lisp-token-fixup-case charlist)))
+	(let ((*package* (find-package "KEYWORD")))
+	  (implode charlist))
+	(mread-synerr "Lisp keyword expected."))))
+
+;; The vertical bar | switches between preserving or folding case,
+;; except that || is a literal |.
+
+;; Note that this function modifies LIST destructively.
+(defun lisp-token-fixup-case (list)
+  (let* ((list (cons nil list))
+	 (todo list)
+	 preserve)
+    (loop
+       (unless (cdr todo)
+	 (return (cdr list)))
+       (cond
+	 ((char/= (cadr todo) #\|)
+	  (pop todo)
+	  (unless preserve
+	    (setf (car todo)
+		  (char-upcase (car todo)))))
+	 ((setf (cdr todo) (cddr todo))
+	  (if (char= (cadr todo) #\|)
+	      (pop todo)
+	      (setq preserve (not preserve))))))))
 
 (defvar $bothcases t)
 (DEFUN SCAN-TOKEN (FLAG)
