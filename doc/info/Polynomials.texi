@@ -6,15 +6,15 @@
 @node Introduction to Polynomials, Definitions for Polynomials, Polynomials, Polynomials
 @section Introduction to Polynomials
 
-   Polynomials are stored in Maxima either in General Form or as
+Polynomials are stored in Maxima either in General Form or as
 Cannonical Rational Expressions (CRE) form.  The latter is a standard
 form, and is used internally by operations such as factor, ratsimp, and
 so on.
 
-   Canonical Rational Expressions constitute a kind of representation
+Canonical Rational Expressions constitute a kind of representation
 which is especially suitable for expanded polynomials and rational
 functions (as well as for partially factored polynomials and rational
-functions when RATFAC[FALSE] is set to TRUE).  In this CRE form an
+functions when RATFAC is set to @code{true}).  In this CRE form an
 ordering of variables (from most to least main) is assumed for each
 expression.  Polynomials are represented recursively by a list
 consisting of the main variable followed by a series of pairs of
@@ -53,113 +53,108 @@ symbol /T/ follows the line label of such expressions.
 @c end concepts Polynomials
 @node Definitions for Polynomials,  , Introduction to Polynomials, Polynomials
 @section Definitions for Polynomials
-@c @node ALGEBRAIC, BERLEFACT, CRE, Polynomials
-@c @unnumberedsec phony
-@defvar ALGEBRAIC
- default: [FALSE] must be set to TRUE in order for the
+
+@defvar algebraic
+Default value: @code{false}
+
+@code{algebraic} must be set to @code{true} in order for the
 simplification of algebraic integers to take effect.
+
 @end defvar
 
+@defvar berlefact
+Default value: @code{true}
 
-@c @node BERLEFACT, BEZOUT, ALGEBRAIC, Polynomials
-@c @unnumberedsec phony
-@defvar BERLEFACT
- default: [TRUE] if FALSE then the Kronecker factoring
+When @code{berlefact} is @code{false} then the Kronecker factoring
 algorithm will be used otherwise the Berlekamp algorithm, which is the
 default, will be used.
 
 @end defvar
-@c @node BEZOUT, BOTHCOEF, BERLEFACT, Polynomials
-@c @unnumberedsec phony
-@defun BEZOUT (p1, p2, var)
+
+@c WHAT IS THIS ABOUT EXACTLY ??
+@defun bezout (p1, p2, var)
 an alternative to the RESULTANT command.  It
 returns a matrix. DETERMINANT of this matrix is the desired resultant.
 
 @end defun
-@c @node BOTHCOEF, COEFF, BEZOUT, Polynomials
-@c @unnumberedsec phony
-@defun BOTHCOEF (exp, var)
+
+@defun bothcoef (exp, var)
 returns a list whose first member is the
 coefficient of var in exp (as found by RATCOEF if exp is in CRE form
 otherwise by COEFF) and whose second member is the remaining part of
 exp.  That is, [A,B] where exp=A*var+B.
+
 @example
-(%i1) ISLINEAR(EXP,VAR):=BLOCK([C],
-        C:BOTHCOEF(RAT(EXP,VAR),VAR),
-        IS(FREEOF(VAR,C) AND C[1]#0))$
-(%i2) ISLINEAR((R**2-(X-R)**2)/X,X);
-(%o2)                              TRUE
-
-
+(%i1) islinear(exp,var):=block([c],
+        c:bothcoef(rat(exp,var),var),
+        is(freeof(var,c) and c[1]#0))$
+(%i2) islinear((r**2-(x-r)**2)/x,x);
+(%o2)                              true
 @end example
+
 @end defun
-@c @node COEFF, COMBINE, BOTHCOEF, Polynomials
-@c @unnumberedsec phony
-@defun COEFF (exp, v, n)
+
+@defun coeff (exp, v, n)
 obtains the coefficient of v**n in exp.  n may be
 omitted if it is 1.  v may be an atom, or complete subexpression of
 exp e.g., X, SIN(X), A[I+1], X+Y, etc. (In the last case the
 expression (X+Y) should occur in exp).  Sometimes it may be necessary
 to expand or factor exp in order to make v^n explicit.  This is not
 done automatically by COEFF.
+
 @example
-(%i1) COEFF(2*A*TAN(X)+TAN(X)+B=5*TAN(X)+3,TAN(X));
-(%o1)                         2 A + 1 = 5
-(%i2) COEFF(Y+X*%E**X+1,X,0);
-(%o2)                            Y + 1
-
-
+(%i1) coeff(2*a*tan(x)+tan(x)+b=5*tan(x)+3,tan(x));
+(%o1)                         2 a + 1 = 5
+(%i2) coeff(y+x*%e**x+1,x,0);
+(%o2)                            y + 1
 @end example
+
 @end defun
-@c @node COMBINE, CONTENT, COEFF, Polynomials
-@c @unnumberedsec phony
-@defun COMBINE (exp)
+
+@defun combine (exp)
 simplifies the sum exp by combining terms with the same
 denominator into a single term.
 
 @end defun
-@c @node CONTENT, DENOM, COMBINE, Polynomials
-@c @unnumberedsec phony
-@defun CONTENT (p1, var1, ..., varn)
+
+@defun content (p1, var1, ..., varn)
 returns a list whose first element is
 the greatest common divisor of the coefficients of the terms of the
 polynomial p1 in the variable varn (this is the content) and whose
 second element is the polynomial p1 divided by the content.
+
 @example
-(%i1) CONTENT(2*X*Y+4*X**2*Y**2,Y);
-(%o1)            [2*X, 2*X*Y**2+Y].
-
-
+(%i1) content(2*x*y+4*x**2*y**2,y);
+(%o1)            [2*x, 2*x*y**2+y].
 @end example
+
 @end defun
-@c @node DENOM, DIVIDE, CONTENT, Polynomials
-@c @unnumberedsec phony
-@defun DENOM (exp)
+
+@defun denom (exp)
 returns the denominator of the rational expression exp.
 
 @end defun
-@c @node DIVIDE, ELIMINATE, DENOM, Polynomials
-@c @unnumberedsec phony
-@defun DIVIDE (p1, p2, var1, ..., varn)
+
+@defun divide (p1, p2, var1, ..., varn)
 computes the quotient and remainder
 of the polynomial p1 divided by the polynomial p2, in a main
 polynomial variable, varn.  The other variables are as in the RATVARS
 function.  The result is a list whose first element is the quotient
 and whose second element is the remainder.
-@example
-(%i1) DIVIDE(X+Y,X-Y,X);
-(%o1)                        [1, 2 Y]
-(%i2) DIVIDE(X+Y,X-Y);
-(%o2)                      [ - 1, 2 X]
 
+@example
+(%i1) divide(x+y,x-y,x);
+(%o1)                        [1, 2 y]
+(%i2) divide(x+y,x-y);
+(%o2)                      [ - 1, 2 x]
 @end example
+
 @noindent
 (Note that Y is the main variable in %i2)
 
 @end defun
-@c @node ELIMINATE, EZGCD, DIVIDE, Polynomials
-@c @unnumberedsec phony
-@defun ELIMINATE ([eq1,eq2,...,eqn],[v1,v2,...,vk])
+
+@defun eliminate ([eq1,eq2,...,eqn],[v1,v2,...,vk])
 eliminates variables from
 equations (or expressions assumed equal to zero) by taking successive
 resultants. This returns a list of n-k expressions with the k
@@ -167,130 +162,132 @@ variables v1,...,vk eliminated.  First v1 is eliminated yielding n-1
 expressions, then v2 is, etc.  If k=n then a single expression in a
 list is returned free of the variables v1,...,vk.  In this case SOLVE
 is called to solve the last resultant for the last variable.
+
 Example:
+
 @example
-(%i1) EXP1:2*X^2+Y*X+Z;
+(%i1) exp1:2*x^2+y*x+z;
                                     2
-(%o1)                   Z + X Y + 2 X
-(%i2) EXP2:3*X+5*Y-Z-1;
-(%o2)                - Z + 5 Y + 3 X - 1
-(%i3) EXP3:Z^2+X-Y^2+5;
+(%o1)                   z + x y + 2 x
+(%i2) exp2:3*x+5*y-z-1;
+(%o2)                - z + 5 y + 3 x - 1
+(%i3) exp3:z^2+x-y^2+5;
                        2    2
-(%o3)                  Z  - Y  + X + 5
-(%i4) ELIMINATE([EXP3,EXP2,EXP1],[Y,Z]);
+(%o3)                  z  - y  + x + 5
+(%i4) eliminate([exp3,exp2,exp1],[y,z]);
             8         7         6          5          4
-(%o3) [7425 X  - 1170 X  + 1299 X  + 12076 X  + 22887 X
+(%o3) [7425 x  - 1170 x  + 1299 x  + 12076 x  + 22887 x
                                3         2
-                       - 5154 X  - 1291 X  + 7688 X + 15376]
-
-
+                       - 5154 x  - 1291 x  + 7688 x + 15376]
 @end example
+
 @end defun
-@c @node EZGCD, FACEXPAND, ELIMINATE, Polynomials
-@c @unnumberedsec phony
-@defun EZGCD (p1, p2, ...)
+
+@defun ezgcd (p1, p2, ...)
 gives a list whose first element is the g.c.d of
 the polynomials p1,p2,...  and whose remaining elements are the
 polynomials divided by the g.c.d.  This always uses the EZGCD
 algorithm.
 
 @end defun
-@c @node FACEXPAND, FACTCOMB, EZGCD, Polynomials
-@c @unnumberedsec phony
-@defvar FACEXPAND
- default: [TRUE] controls whether the irreducible factors
+
+@defvar facexpand
+Default value: @code{true}
+
+@code{facexpand} controls whether the irreducible factors
 returned by FACTOR are in expanded (the default) or recursive (normal
 CRE) form.
 
 @end defvar
-@c @node FACTCOMB, FACTOR, FACEXPAND, Polynomials
-@c @unnumberedsec phony
-@defun FACTCOMB (exp)
+
+@defun factcomb (exp)
 tries to combine the coefficients of factorials in exp
 with the factorials themselves by converting, for example, (N+1)*N!
 into (N+1)!.
-SUMSPLITFACT[TRUE] if set to FALSE will cause MINFACTORIAL to be
+SUMSPLITFACT if set to @code{false} will cause MINFACTORIAL to be
 applied after a FACTCOMB.
+
 @example
-(%i1) (N+1)^B*N!^B;
-                                      B   B
-(%o1)                           (N + 1)  N!
-(%i2) FACTCOMB(%);
-                                         
-
-
+(%i1) (n+1)^b*n!^b;
+                                      b   b
+(%o1)                           (n + 1)  n!
+(%i2) factcomb(%);
 @end example
+
 @end defun
-@c @node FACTOR, FACTORFLAG, FACTCOMB, Polynomials
-@c @unnumberedsec phony
-@defun FACTOR (exp)
+
+@defun factor (exp)
 factors the expression exp, containing any number of
 variables or functions, into factors irreducible over the integers.
 FACTOR(exp, p) factors exp over the field of integers with an element
 adjoined whose minimum polynomial is p.
-FACTORFLAG[FALSE] if FALSE suppresses the factoring of integer factors
+
+FACTORFLAG if @code{false} suppresses the factoring of integer factors
 of rational expressions.
+
 DONTFACTOR may be set to a list of variables with respect to which
 factoring is not to occur.  (It is initially empty).  Factoring also
 will not take place with respect to any variables which are less
 important (using the variable ordering assumed for CRE form) than
 those on the DONTFACTOR list.
-SAVEFACTORS[FALSE] if TRUE causes the factors of an expression which
+
+SAVEFACTORS if @code{true} causes the factors of an expression which
 is a product of factors to be saved by certain functions in order to
 speed up later factorizations of expressions containing some of the
 same factors.
-BERLEFACT[TRUE] if FALSE then the Kronecker factoring algorithm will
+
+BERLEFACT if @code{false} then the Kronecker factoring algorithm will
 be used otherwise the Berlekamp algorithm, which is the default, will
 be used.
-INTFACLIM[1000] is the largest divisor which will be tried when
-factoring a bignum integer.  If set to FALSE (this is the case when
+
+INTFACLIM is the largest divisor which will be tried when
+factoring a bignum integer.  If set to @code{false} (this is the case when
 the user calls FACTOR explicitly), or if the integer is a fixnum (i.e.
 fits in one machine word), complete factorization of the integer will
 be attempted.  The user's setting of INTFACLIM is used for internal
 calls to FACTOR. Thus, INTFACLIM may be reset to prevent Maxima from
 taking an inordinately long time factoring large integers.
-NEWFAC[FALSE] may be set to true to use the new factoring routines.
+NEWFAC may be set to true to use the new factoring routines.
+
 Do EXAMPLE(FACTOR); for examples.
 
 @end defun
-@c @node FACTORFLAG, FACTOROUT, FACTOR, Polynomials
-@c @unnumberedsec phony
-@defvar FACTORFLAG
- default: [FALSE] if FALSE suppresses the factoring of
+
+@defvar factorflag
+Default value: @code{false}
+
+@code{factorflag} if @code{false} suppresses the factoring of
 integer factors of rational expressions.
 
 @end defvar
-@c @node FACTOROUT, FACTORSUM, FACTORFLAG, Polynomials
-@c @unnumberedsec phony
-@defun FACTOROUT (exp,var1,var2,...)
+
+@defun factorout (exp,var1,var2,...)
 rearranges the sum exp into a sum of
 terms of the form f(var1,var2,...)*g where g is a product of
 expressions not containing the vari's and f is factored.
 
 @end defun
-@c @node FACTORSUM, FASTTIMES, FACTOROUT, Polynomials
-@c @unnumberedsec phony
-@defun FACTORSUM (exp)
+
+@defun factorsum (exp)
 tries to group terms in factors of exp which are sums
 into groups of terms such that their sum is factorable.  It can
 recover the result of EXPAND((X+Y)^2+(Z+W)^2) but it can't recover
 EXPAND((X+1)^2+(X+Y)^2) because the terms have variables in common.
+
 @example
-(%i1) (X+1)*((U+V)^2+A*(W+Z)^2),EXPAND;
+(%i1) (x+1)*((u+v)^2+a*(w+z)^2),expand;
       2      2                            2      2
-(%o1) A X Z  + A Z  + 2 A W X Z + 2 A W Z + A W  X + V  X
+(%o1) a x z  + a z  + 2 a w x z + 2 a w z + a w  x + v  x
                      2        2    2            2
-        + 2 U V X + U  X + A W  + V  + 2 U V + U
-(%i2) FACTORSUM(%);
+        + 2 u v x + u  x + a w  + v  + 2 u v + u
+(%i2) factorsum(%);
                                    2          2
-(%o2)                 (X + 1) (A (Z + W)  + (V + U) )
-
-
+(%o2)                 (x + 1) (a (z + w)  + (v + u) )
 @end example
+
 @end defun
-@c @node FASTTIMES, FULLRATSIMP, FACTORSUM, Polynomials
-@c @unnumberedsec phony
-@defun FASTTIMES (p1, p2)
+
+@defun fasttimes (p1, p2)
 multiplies the polynomials p1 and p2 by using a
 special algorithm for multiplication of polynomials.  They should be
 multivariate, dense, and nearly the same size.  Classical
@@ -298,16 +295,16 @@ multiplication is of order N*M where N and M are the degrees.
 FASTTIMES is of order MAX(N,M)**1.585.
 
 @end defun
-@c @node FULLRATSIMP, FULLRATSUBST, FASTTIMES, Polynomials
-@c @unnumberedsec phony
-@defun FULLRATSIMP (exp)
+
+@defun fullratsimp (exp)
 When non-rational expressions are involved, one call
 to RATSIMP followed as is usual by non-rational ("general")
 simplification may not be sufficient to return a simplified result.
 Sometimes, more than one such call may be necessary.  The command
 FULLRATSIMP makes this process convenient.  FULLRATSIMP repeatedly
 applies RATSIMP followed by non-rational simplification to an
-expression until no further change occurs.  For example, consider
+expression until no further change occurs.
+
 For the expression  EXP:   (X^(A/2)+1)^2*(X^(A/2)-1)^2/(X^A-1) .
 RATSIMP(EXP); gives (X^(2*A)-2*X^A+1)/(X^A-1) .
 FULLRATSIMP(EXP); gives   X^A-1 .  The problem may be seen by looking at 
@@ -316,44 +313,47 @@ FULLRATSIMP(exp,var1,...,varn) takes one or more arguments similar
 to RATSIMP and RAT.
 
 @end defun
-@c @node FULLRATSUBST, GCD, FULLRATSIMP, Polynomials
-@c @unnumberedsec phony
-@defun FULLRATSUBST (a,b,c)
+
+@defun fullratsubst (a,b,c)
 is the same as RATSUBST except that it calls
 itself recursively on its result until that result stops changing.
 This function is useful when the replacement expression and the
 replaced expression have one or more variables in common.
+
 FULLRATSUBST will also accept its arguments in the format of
 LRATSUBST.  That is, the first argument may be a single substitution
 equation or a list of such equations, while the second argument is the
-expression being processed.  There is a demo available by
+expression being processed.
+
+There is a demo available by
 DEMO("lrats.dem"); .
 
 @end defun
-@c @node GCD, GCFACTOR, FULLRATSUBST, Polynomials
-@c @unnumberedsec phony
-@defun GCD (p1, p2, var1, ...)
+
+@c GCD IS A VARIABLE AND A FUNCTION
+@defun gcd (p1, p2, var1, ...)
 computes the greatest common divisor of p1 and
-p2.  The flag GCD[SPMOD] determines which algorithm is employed.
+p2.  The flag GCD determines which algorithm is employed.
 Setting GCD to EZ, EEZ, SUBRES, RED, or SPMOD selects the EZGCD, New
 EEZ GCD, subresultant PRS, reduced, or modular algorithm,
-respectively.  If GCD:FALSE then GCD(p1,p2,var) will always return 1
+respectively.  If GCD @code{false} then GCD(p1,p2,var) will always return 1
 for all var.  Many functions (e.g.  RATSIMP, FACTOR, etc.) cause gcd's
 to be taken implicitly.  For homogeneous polynomials it is recommended
 that GCD:SUBRES be used.  To take the gcd when an algebraic is
 present, e.g. GCD(X^2-2*SQRT(2)*X+2,X-SQRT(2)); , ALGEBRAIC must be
-TRUE and GCD must not be EZ.  SUBRES is a new algorithm, and people
+@code{true} and GCD must not be EZ.  SUBRES is a new algorithm, and people
 who have been using the RED setting should probably change it to
 SUBRES.
-The GCD flag, default: [SPMOD], if FALSE will also prevent the greatest
+
+The GCD flag, default: @code{subres}, if @code{false} will also prevent the greatest
 common divisor from being taken when expressions are converted to CRE
 form.  This will sometimes speed the calculation if gcds are not
 required.
 
 @end defun
 
-@defun GCDEX (f,g)
-@defunx GCDEX (f,g,var)
+@defun gcdex (f,g)
+@defunx gcdex (f,g,var)
 returns a list containing [a,b,u] where u is the gcd of f and g,
 and u = a*f + b*g.   The arguments f and g should b univariate polynomials,
 or else polynomials in VAR a supplied @b{main} variable   
@@ -367,6 +367,7 @@ of @code{lis[i]:[a[i],b[i],r[i]] ..} which are all perpendicular
 to @code{[f,g,-1]} and the next one is built as
 if @code{q = quotient(r[i]/r[i+1])} then @code{lis[i+2]:lis[i]-q*lis[i+1]}, and it
 terminates at @code{lis[i+1]} when the remainder @code{r[i+2]} is zero.
+
 @example
 (%i1) gcdex(x^2+1,x^3+4);
 
@@ -379,7 +380,7 @@ terminates at @code{lis[i+1]} when the remainder @code{r[i+2]} is zero.
 (%o2)                                   0
 @end example
 
-note that the gcd in the following is @code{1}
+Note that the gcd in the following is @code{1}
 since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[y,x] }
 
 @example
@@ -389,54 +390,49 @@ since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[
 (%o4)                            [0, ------, 1]
                                      2
                                     y  - 1
-
-
 @end example
 
 @end defun
 
-@c @node GCFACTOR, GFACTOR, GCD, Polynomials
-@c @unnumberedsec phony
-@defun GCFACTOR (n)
+
+@defun gcfactor (n)
 factors the gaussian integer n over the gaussians, i.e.
 numbers of the form a + b i where a and b are rational integers (i.e.
 ordinary integers).  Factors are normalized by making a and b
 non-negative.
 
 @end defun
-@c @node GFACTOR, GFACTORSUM, GCFACTOR, Polynomials
-@c @unnumberedsec phony
-@defun GFACTOR (exp)
+
+@defun gfactor (exp)
 factors the polynomial exp over the Gaussian integers
 (i.  e.  with SQRT(-1) = %I adjoined).  This is like
 FACTOR(exp,A**2+1) where A is %I.
+
 @example
-(%i1)  GFACTOR(X**4-1);
-(%o1)        (X - 1) (X + 1) (X + %I) (X - %I)
-
-
+(%i1)  gfactor(x**4-1);
+(%o1)        (x - 1) (x + 1) (x + %i) (x - %i)
 @end example
+
 @end defun
-@c @node GFACTORSUM, HIPOW, GFACTOR, Polynomials
-@c @unnumberedsec phony
-@defun GFACTORSUM (exp)
+
+@defun gfactorsum (exp)
 is similar to FACTORSUM but applies GFACTOR instead
 of FACTOR.
 
 @end defun
-@c @node HIPOW, INTFACLIM, GFACTORSUM, Polynomials
-@c @unnumberedsec phony
-@defun HIPOW (exp, v)
+
+@defun hipow (exp, v)
 the highest explicit exponent of v in exp.  Sometimes
 it may be necessary to expand exp since this is not done automatically
 by HIPOW.  Thus HIPOW(Y**3*X**2+X*Y**4,X) is 2.
 
 @end defun
-@c @node INTFACLIM, KEEPFLOAT, HIPOW, Polynomials
-@c @unnumberedsec phony
-@defvar INTFACLIM
- default: [1000] is the largest divisor which will be tried
-when factoring a bignum integer.  If set to FALSE (this is the case
+
+@defvar intfaclim
+Default value: 1000
+
+@code{intfaclim} is the largest divisor which will be tried
+when factoring a bignum integer.  If set to @code{false} (this is the case
 when the user calls FACTOR explicitly), or if the integer is a fixnum
 (i.e. fits in one machine word), complete factorization of the integer
 will be attempted.  The user's setting of INTFACLIM is used for
@@ -445,30 +441,33 @@ Maxima from taking an inordinately long time factoring large
 integers.
 
 @end defvar
-@c @node KEEPFLOAT, LRATSUBST, INTFACLIM, Polynomials
-@c @unnumberedsec phony
-@defvar KEEPFLOAT
- default: [FALSE] - if set to TRUE will prevent floating
+
+@defvar keepfloat
+Default value: @code{false}
+
+When @code{keepfloat} is @code{true}, prevents floating
 point numbers from being rationalized when expressions which contain
 them are converted to CRE form.
 
 @end defvar
-@c @node LRATSUBST, MODULUS, KEEPFLOAT, Polynomials
-@c @unnumberedsec phony
-@defun LRATSUBST (list,exp)
+
+@defun lratsubst (list,exp)
 is analogous to SUBST(list_of_equations,exp)
 except that it uses RATSUBST instead of SUBST.  The first argument of
 LRATSUBST must be an equation or a list of equations identical in
 format to that accepted by SUBST (see DESCRIBE(SUBST);).  The
 substitutions are made in the order given by the list of equations,
-that is, from left to right.  A demo is available by doing
+that is, from left to right.
+
+A demo is available by doing
 DEMO("lrats.dem"); .
 
 @end defun
-@c @node MODULUS, NEWFAC, LRATSUBST, Polynomials
-@c @unnumberedsec phony
-@defvar MODULUS
- default: [FALSE] - if set to a positive prime p, then all
+
+@defvar modulus
+Default value: @code{false}
+
+When @code{modulus} is a positive prime p, then all
 arithmetic in the rational function routines will be done modulo p.
 That is all integers will be reduced to less than p/2 in absolute
 value (if p=2 then all integers are reduced to 1 or 0).  This is the
@@ -480,42 +479,42 @@ non-prime integer, this setting will be accepted, but a warning will
 be given.)
 
 @end defvar
-@c @node NEWFAC, NUM, MODULUS, Polynomials
-@c @unnumberedsec phony
-@defvar NEWFAC
- default: [FALSE], if TRUE then FACTOR will use the new factoring
+
+@c STILL APPLICABLE ??
+@defvar newfac
+Default value: @code{false}
+
+When @code{newfac} is @code{true}, FACTOR will use the new factoring
 routines.
 
 @end defvar
-@c @node NUM, QUOTIENT, NEWFAC, Polynomials
-@c @unnumberedsec phony
-@defun NUM (exp)
+
+@defun num (exp)
 obtains the numerator, exp1, of the rational expression
 exp = exp1/exp2.
 
 @end defun
-@c @node QUOTIENT, RAT, NUM, Polynomials
-@c @unnumberedsec phony
-@defun QUOTIENT (p1, p2, var1, ...)
+
+@defun quotient (p1, p2, var1, ...)
 computes the quotient of the polynomial
 p1 divided by the polynomial p2.
 
 @end defun
-@c @node RAT, RATALGDENOM, QUOTIENT, Polynomials
-@c @unnumberedsec phony
-@defun RAT (exp, v1, ..., vn)
+
+@defun rat (exp, v1, ..., vn)
 converts exp to CRE form by expanding and
 combining all terms over a common denominator and cancelling out the
 greatest common divisor of the numerator and denominator as well as
 converting floating point numbers to rational numbers within a
-tolerance of RATEPSILON[2.0E-8].  The variables are ordered according
+tolerance of RATEPSILON.  The variables are ordered according
 to the v1,...,vn as in RATVARS, if these are specified.  RAT does not
 generally simplify functions other than + , - , * , / , and
 exponentiation to an integer power whereas RATSIMP does handle these
 cases.  Note that atoms (numbers and names) in CRE form are not the
 same as they are in the general form.  Thus RAT(X)- X results in
 RAT(0) which has a different internal representation than 0.
-RATFAC[FALSE] when TRUE invokes a partially factored form for CRE
+
+RATFAC when @code{true} invokes a partially factored form for CRE
 rational expressions.  During rational operations the expression is
 maintained as fully factored as possible without an actual call to the
 factor package.  This should always save space and may save some time
@@ -523,42 +522,45 @@ in some computations.  The numerator and denominator are still made
 relatively prime (e.g.  RAT((X^2 -1)^4/(X+1)^2); yields
 (X-1)^4*(X+1)^2), but the factors within each part may not be
 relatively prime.
-RATPRINT[TRUE] if FALSE suppresses the printout of the message
+
+RATPRINT if @code{false} suppresses the printout of the message
 informing the user of the conversion of floating point numbers to
 rational numbers.
-KEEPFLOAT[FALSE] if TRUE prevents floating point numbers from being
+
+KEEPFLOAT if @code{true} prevents floating point numbers from being
 converted to rational numbers.
+
 (Also see the RATEXPAND and  RATSIMP functions.)
+
 @example
-(%i1) ((X-2*Y)**4/(X**2-4*Y**2)**2+1)*(Y+A)*(2*Y+X)
-        /(4*Y**2+X**2);
+(%i1) ((x-2*y)**4/(x**2-4*y**2)**2+1)*(y+a)*(2*y+x)
+        /(4*y**2+x**2);
                                            4
-                                  (X - 2 Y)
-              (Y + A) (2 Y + X) (------------ + 1)
+                                  (x - 2 y)
+              (y + a) (2 y + x) (------------ + 1)
                                    2      2 2
-                                 (X  - 4 Y )
+                                 (x  - 4 y )
 (%o1)          ------------------------------------
                               2    2
-                           4 Y  + X
-(%i2) RAT(%,Y,A,X);
-                            2 A + 2 Y
-(%o2)/R/                     ---------
-                             X + 2 Y
-
-
+                           4 y  + x
+(%i2) rat(%,y,a,x);
+                            2 a + 2 y
+(%o2)/r/                     ---------
+                             x + 2 y
 @end example
+
 @end defun
-@c @node RATALGDENOM, RATCOEF, RAT, Polynomials
-@c @unnumberedsec phony
-@defvar RATALGDENOM
- default: [TRUE] - if TRUE allows rationalization of
+
+@defvar ratalgdenom
+Default value: @code{true}
+
+When @code{ratalgdenom} is @code{true}, allows rationalization of
 denominators wrt.  radicals to take effect.  To do this one must use
 CRE form in algebraic mode.
 
 @end defvar
-@c @node RATCOEF, RATDENOM, RATALGDENOM, Polynomials
-@c @unnumberedsec phony
-@defun RATCOEF (exp, v, n)
+
+@defun ratcoef (exp, v, n)
 returns the coefficient, C, of the expression v**n
 in the expression exp.  n may be omitted if it is 1.  C will be free
 (except possibly in a non-rational sense) of the variables in v.  If
@@ -571,66 +573,64 @@ those terms which do not contain v.  Therefore if v occurs to any
 negative powers, RATCOEF should not be used.  Since exp is rationally
 simplified before it is examined, coefficients may not appear quite
 the way they were envisioned.
+
 @example
-(%i1) S:A*X+B*X+5$
-(%i2) RATCOEF(S,A+B);
-(%o2)               X
-
-
+(%i1) s:a*x+b*x+5$
+(%i2) ratcoef(s,a+b);
+(%o2)               x
 @end example
+
 @end defun
-@c @node RATDENOM, RATDENOMDIVIDE, RATCOEF, Polynomials
-@c @unnumberedsec phony
-@defun RATDENOM (exp)
+
+@defun ratdenom (exp)
 obtains the denominator of the rational expression exp.
 If exp is in general form then the DENOM function should be used
 instead, unless one wishes to get a CRE result.
 
 @end defun
-@c @node RATDENOMDIVIDE, RATDIFF, RATDENOM, Polynomials
-@c @unnumberedsec phony
-@defvar RATDENOMDIVIDE
- default: [TRUE] - if FALSE will stop the splitting up
+
+@defvar ratdenomdivide
+Default value: @code{true}
+
+When @code{ratdenomdivide} is @code{false}, stops the splitting up
 of the terms of the numerator of RATEXPANDed expressions from
 occurring.
 
 @end defvar
-@c @node RATDIFF, RATDISREP, RATDENOMDIVIDE, Polynomials
-@c @unnumberedsec phony
-@defun RATDIFF (exp, var)
+
+@defun ratdiff (exp, var)
 differentiates the rational expression exp (which
 must be a ratio of polynomials or a polynomial in the variable var)
 with respect to var.  For rational expressions this is much faster
 than DIFF.  The result is left in CRE form.  However, RATDIFF should
 not be used on factored CRE forms; use DIFF instead for such
 expressions.
+
 @example
-(%i1) (4*X**3+10*X-11)/(X**5+5);
+(%i1) (4*x**3+10*x-11)/(x**5+5);
                                          3
-                                      4 X  + 10 X - 11
+                                      4 x  + 10 x - 11
 (%o1)                                  ----------------
                                             5
-                                           X  
-(%i2) MODULUS:3$
-(%i3) MOD(%o1);
+                                           x  
+(%i2) modulus:3$
+(%i3) mod(%o1);
                                 2
-                               X  + X - 1
+                               x  + x - 1
 (%o3)                      --------------------
                            4    3    2
-                          X  + X  + X  + X + 1
-(%i4) RATDIFF(%o1,X);
+                          x  + x  + x  + x + 1
+(%i4) ratdiff(%o1,x);
                           5    4    3
-                         X  - X  - X  + X - 1
+                         x  - x  - x  + x - 1
 (%o4)                ------------------------------
                      8    7    5    4    3
-                    X  - X  + X  - X  + X  - X + 1
-
-
+                    x  - x  + x  - x  + x  - x + 1
 @end example
+
 @end defun
-@c @node RATDISREP, RATEPSILON, RATDIFF, Polynomials
-@c @unnumberedsec phony
-@defun RATDISREP (exp)
+
+@defun ratdisrep (exp)
 changes its argument from CRE form to general form.
 This is sometimes convenient if one wishes to stop the "contagion", or
 use rational functions in non-rational contexts.  Most CRE functions
@@ -639,59 +639,64 @@ take different forms.  If RATDISREP is given a non-CRE for an
 argument, it returns its argument unchanged.  See also TOTALDISREP.
 
 @end defun
-@c @node RATEPSILON, RATEXPAND, RATDISREP, Polynomials
-@c @unnumberedsec phony
-@defvar RATEPSILON
- default: [2.0E-8] - the tolerance used in the conversion
+
+@defvar ratepsilon
+Default value: 2.0e-8
+
+@code{ratepsilon} is the tolerance used in the conversion
 of floating point numbers to rational numbers.
 
 @end defvar
-@c @node RATEXPAND, RATFAC, RATEPSILON, Polynomials
-@c @unnumberedsec phony
-@defun RATEXPAND (exp)
+
+@c ratexpand IS ALSO A VARIABLE -- MAKE SURE THAT IS CLEAR
+@defun ratexpand (exp)
 expands exp by multiplying out products of sums and
 exponentiated sums, combining fractions over a common denominator,
 cancelling the greatest common divisor of the numerator and
 denominator, then splitting the numerator (if a sum) into its
 respective terms divided by the denominator.  This is accomplished by
 converting exp to CRE form and then back to general form.
-The switch RATEXPAND, default: [FALSE], if TRUE will cause CRE
+
+The switch RATEXPAND if @code{true} will cause CRE
 expressions to be fully expanded when they are converted back to
-general form or displayed, while if it is FALSE then they will be put
+general form or displayed, while if it is @code{false} then they will be put
 into a recursive form. (see RATSIMP)
-RATDENOMDIVIDE[TRUE] - if FALSE will stop the splitting up of the
+
+RATDENOMDIVIDE - if @code{false} will stop the splitting up of the
 terms of the numerator of RATEXPANDed expressions from occurring.
-KEEPFLOAT[FALSE] if set to TRUE will prevent floating point numbers
+
+KEEPFLOAT if set to @code{true} will prevent floating point numbers
 from being rationalized when expressions which contain them are
 converted to CRE form.
+
 @example
-(%i1) RATEXPAND((2*X-3*Y)**3);
+(%i1) ratexpand((2*x-3*y)**3);
                 3         2       2        3
-(%o1)      - 27 Y  + 54 X Y  - 36 X  Y + 8 X
-(%i2) (X-1)/(X+1)**2+1/(X-1);
-                              X - 1       1
+(%o1)      - 27 y  + 54 x y  - 36 x  y + 8 x
+(%i2) (x-1)/(x+1)**2+1/(x-1);
+                              x - 1       1
 (%o2)                         -------- + -----
-                                    2   X - 1
-                             (X + 1)
-(%i3) EXPAND(%o2);
-                         X              1           1
+                                    2   x - 1
+                             (x + 1)
+(%i3) expand(%o2);
+                         x              1           1
 (%o3)                ------------ - ------------ + -----
-                     2              2             X - 1
-                    X  + 2 X + 1   X  + 2 X + 1
-(%i4) RATEXPAND(%o2);
+                     2              2             x - 1
+                    x  + 2 x + 1   x  + 2 x + 1
+(%i4) ratexpand(%o2);
                              2
-                          2 X                 2
+                          2 x                 2
 (%o4)                 --------------- + ---------------
                       3    2            3    2
-                     X  + X  - X - 1   X  + X  - X - 1
-
-
+                     x  + x  - x - 1   x  + x  - x - 1
 @end example
+
 @end defun
-@c @node RATFAC, RATNUMER, RATEXPAND, Polynomials
-@c @unnumberedsec phony
-@defvar RATFAC
- default: [FALSE] - when TRUE invokes a partially factored form
+
+@defvar ratfac
+Default value: @code{false}
+
+When @code{ratfac} is @code{true} invokes a partially factored form
 for CRE rational expressions.  During rational operations the
 expression is maintained as fully factored as possible without an
 actual call to the factor package.  This should always save space and
@@ -700,47 +705,45 @@ denominator are still made relatively prime, for example
 RAT((X^2 -1)^4/(X+1)^2);  yields (X-1)^4*(X+1)^2),
 but the factors within each part may not be relatively prime.
 In the CTENSR (Component Tensor Manipulation) Package, if RATFAC is
-TRUE, it causes the Ricci, Einstein, Riemann, and Weyl tensors and the
-Scalar Curvature to be factored automatically.  ** This should only be
+@code{true}, it causes the Ricci, Einstein, Riemann, and Weyl tensors and the
+Scalar Curvature to be factored automatically.  @i{This should only be
 set for cases where the tensorial components are known to consist of
-few terms **.
+few terms.}
+
 Note: The RATFAC and RATWEIGHT schemes are incompatible and may not
 both be used at the same time.
 
 @end defvar
-@c @node RATNUMER, RATNUMP, RATFAC, Polynomials
-@c @unnumberedsec phony
-@defun RATNUMER (exp)
+
+@defun ratnumer (exp)
 obtains the numerator of the rational expression exp.
 If exp is in general form then the NUM function should be used
 instead, unless one wishes to get a CRE result.
 
 @end defun
-@c @node RATNUMP, RATP, RATNUMER, Polynomials
-@c @unnumberedsec phony
-@defun RATNUMP (exp)
-is TRUE if exp is a rational number (includes integers)
-else FALSE.
+
+@defun ratnump (exp)
+is @code{true} if exp is a rational number (includes integers)
+else @code{false}.
 
 @end defun
-@c @node RATP, RATPRINT, RATNUMP, Polynomials
-@c @unnumberedsec phony
-@defun RATP (exp)
-is TRUE if exp is in CRE or extended CRE form else FALSE.
+
+@defun ratp (exp)
+is @code{true} if exp is in CRE or extended CRE form else @code{false}.
 
 @end defun
-@c @node RATPRINT, RATSIMP, RATP, Polynomials
-@c @unnumberedsec phony
-@defvar RATPRINT
- default: [TRUE] - if FALSE suppresses the printout of the
+
+@defvar ratprint
+Default value: @code{true}
+
+When @code{ratprint} is @code{false}, suppresses the printout of the
 message informing the user of the conversion of floating point numbers
 to rational numbers.
 
 @end defvar
-@c @node RATSIMP, RATSIMPEXPONS, RATPRINT, Polynomials
-@c @unnumberedsec phony
-@defun RATSIMP (exp)
-rationally" simplifies (similar to RATEXPAND) the
+
+@defun ratsimp (exp)
+rationally simplifies (similar to RATEXPAND) the
 expression exp and all of its subexpressions including the arguments
 to non- rational functions.  The result is returned as the quotient of
 two polynomials in a recursive form, i.e.  the coefficients of the
@@ -749,62 +752,64 @@ as in RATEXPAND, include non-rational functions (e.g. SIN(X**2+1) )
 but with RATSIMP, the arguments to non-rational functions are
 rationally simplified.  Note that RATSIMP is affected by some of the
 variables which affect RATEXPAND.
+
 RATSIMP(exp,v1,v2,...,vn) - enables rational simplification with the
 specification of variable ordering as in RATVARS.
-RATSIMPEXPONS[FALSE] - if TRUE will cause exponents of expressions to
+
+RATSIMPEXPONS - if @code{true} will cause exponents of expressions to
 be RATSIMPed automatically during simplification.
+
 @example
-(%i1) SIN(X/(X^2+X))=%E^((LOG(X)+1)**2-LOG(X)**2);
+(%i1) sin(x/(x^2+x))=%e^((log(x)+1)**2-log(x)**2);
                                            2          2
-                    X          (LOG(X) + 1)  - LOG (X)
-(%o1)          SIN(------) = %E
+                    x          (log(x) + 1)  - log (x)
+(%o1)          sin(------) = %e
                    2
-                  X  + X
-(%i2) RATSIMP(%);
+                  x  + x
+(%i2) ratsimp(%);
                                   1          2
-(%o2)                        SIN(-----) = %E X
-                                X + 1
-(%i3) ((X-1)**(3/2)-(X+1)*SQRT(X-1))/SQRT((X-1)*(X+1));
+(%o2)                        sin(-----) = %e x
+                                x + 1
+(%i3) ((x-1)**(3/2)-(x+1)*sqrt(x-1))/sqrt((x-1)*(x+1));
                        3/2
-                (X - 1)    - SQRT(X - 1) (X + 1)
+                (x - 1)    - sqrt(x - 1) (x + 1)
 (%o3)            --------------------------------
-                    SQRT(X - 1) SQRT(X + 1)
-(%i4) RATSIMP(%);
+                    sqrt(x - 1) sqrt(x + 1)
+(%i4) ratsimp(%);
                                  2
 (%o4)                      - -----------
-                            SQRT(X + 1)
-(%i5)  X**(A+1/A),RATSIMPEXPONS:TRUE;
+                            sqrt(x + 1)
+(%i5)  x**(a+1/a),ratsimpexpons:true;
                     2
-                   A  + 1
+                   a  + 1
                    ------
-                     A
-(%o5)              X
-
-
+                     a
+(%o5)              x
 @end example
+
 @end defun
-@c @node RATSIMPEXPONS, RATSUBST, RATSIMP, Polynomials
-@c @unnumberedsec phony
-@defvar RATSIMPEXPONS
- default: [FALSE] - if TRUE will cause exponents of
+
+@defvar ratsimpexpons
+Default value: @code{false}
+
+When @code{ratsimpexpons} is @code{true}, causes exponents of
 expressions to be RATSIMPed automatically during simplification.
 
 @end defvar
-@c @node RATSUBST, RATVARS, RATSIMPEXPONS, Polynomials
-@c @unnumberedsec phony
-@defun RATSUBST (a, b, c)
+
+@defun ratsubst (a, b, c)
 substitutes a for b in c.  b may be a sum, product,
 power, etc.  RATSUBST knows something of the meaning of expressions
 whereas SUBST does a purely syntactic substitution.  Thus
 SUBST(A,X+Y,X+Y+Z) returns X+Y+Z whereas RATSUBST would return Z+A.
-RADSUBSTFLAG[FALSE] if TRUE permits RATSUBST to make substitutions
+RADSUBSTFLAG if @code{true} permits RATSUBST to make substitutions
 like U for SQRT(X) in X.
+
 Do EXAMPLE(RATSUBST); for examples.
 
 @end defun
-@c @node RATVARS, RATWEIGHT, RATSUBST, Polynomials
-@c @unnumberedsec phony
-@defun RATVARS (var1, var2, ..., varn)
+
+@defun ratvars (var1, var2, ..., varn)
 forms its n arguments into a list in
 which the rightmost variable varn will be the main variable of future
 rational expressions in which it occurs, and the other variables will
@@ -815,73 +820,75 @@ arguments to RATVARS can be either variables or non-rational functions
 have been given to this function.
 
 @end defun
-@c @node RATWEIGHT, RATWEIGHTS, RATVARS, Polynomials
-@c @unnumberedsec phony
-@defun RATWEIGHT (v1, w1, ..., vn, wn)
+
+@defun ratweight (v1, w1, ..., vn, wn)
 assigns a weight of wi to the variable
 vi.  This causes a term to be replaced by 0 if its weight exceeds the
-value of the variable RATWTLVL [default is FALSE which means no
-truncation].  The weight of a term is the sum of the products of the
+value of the variable RATWTLVL (default is no truncation).
+The weight of a term is the sum of the products of the
 weight of a variable in the term times its power.  Thus the weight of
 3*v1**2*v2 is 2*w1+w2.  This truncation occurs only when multiplying
 or exponentiating CRE forms of expressions.
+
 @example
-(%i5) RATWEIGHT(A,1,B,1);
-(%o5)                         [[B, 1], [A, 1]]
-(%i6) EXP1:RAT(A+B+1)$
+(%i5) ratweight(a,1,b,1);
+(%o5)                         [[b, 1], [a, 1]]
+(%i6) exp1:rat(a+b+1)$
 (%i7) %**2;
                       2                  2
-(%o7)/R/              B  + (2 A + 2) B + A  + 2 A + 1
-(%i8) RATWTLVL:1$
-(%i9) EXP1**2;
-(%o9)/R/                       2 B + 2 A + 1
-
+(%o7)/r/              b  + (2 a + 2) b + a  + 2 a + 1
+(%i8) ratwtlvl:1$
+(%i9) exp1**2;
+(%o9)/r/                       2 b + 2 a + 1
 @end example
+
 Note: The RATFAC and RATWEIGHT schemes are incompatible and may not
 both be used at the same time.
 
 @end defun
-@c @node RATWEIGHTS, RATWEIGHT, Polynomials
-@c @unnumberedsec phony
-@defvar RATWEIGHTS
- - a list of weight assignments (set up by the RATWEIGHT
+
+@defvar ratweights
+@c DEFAULT VALUE ??
+
+@code{ratweights} is a list of weight assignments (set up by the RATWEIGHT
 function), RATWEIGHTS; or RATWEIGHT(); will show you the list.
 
 @example
-KILL(...,RATWEIGHTS)
+kill(...,ratweights)
 @end example
 and
 @example
-SAVE(...,RATWEIGHTS);
+save(...,ratweights);
 @end example
 both work.
 
 @end defvar
-@c @node RATWTLVL, REMAINDER, Polynomials
-@c @unnumberedsec phony
-@defvar RATWTLVL
- default: [FALSE] - used in combination with the RATWEIGHT
+
+@defvar ratwtlvl
+Default value: @code{false}
+
+@code{ratwtlvl} is used in combination with the RATWEIGHT
 function to control the truncation of rational (CRE form) expressions
-(for the default value of FALSE, no truncation occurs).
+(for the default value of @code{false}, no truncation occurs).
 
 @end defvar
-@c @node REMAINDER, RESULTANT, RATWTLVL, Polynomials
-@c @unnumberedsec phony
-@defun REMAINDER (p1, p2, var1, ...)
+
+@defun remainder (p1, p2, var1, ...)
 computes the remainder of the polynomial
 p1 divided by the polynomial p2.
 
 @end defun
-@c @node RESULTANT, SAVEFACTORS, REMAINDER, Polynomials
-@c @unnumberedsec phony
-@defun RESULTANT (p1, p2, var)
+
+@c BOTH A VARIABLE AND A FUNCTION
+@defun resultant (p1, p2, var)
 computes the resultant of the two polynomials
 p1 and p2, eliminating the variable var.  The resultant is a
 determinant of the coefficients of var in p1 and p2 which equals zero
 if and only if p1 and p2 have a non-constant factor in common.  If p1
 or p2 can be factored, it may be desirable to call FACTOR before
 calling RESULTANT.
-RESULTANT[SUBRES] - controls which algorithm will be used to compute
+
+RESULTANT - controls which algorithm will be used to compute
 the resultant.  SUBRES for subresultant prs [the default], MOD for
 modular resultant algorithm, and RED for reduced prs.  On most
 problems SUBRES should be best.  On some large degree univariate or
@@ -890,18 +897,18 @@ BEZOUT command which takes the same arguments as RESULTANT and returns
 a matrix.  DETERMINANT of this matrix is the desired resultant.
 
 @end defun
-@c @node SAVEFACTORS, SQFR, RESULTANT, Polynomials
-@c @unnumberedsec phony
-@defvar SAVEFACTORS
- default: [FALSE] - if TRUE causes the factors of an
+
+@defvar savefactors
+Default value: @code{false}
+
+When @code{savefactors} is @code{true}, causes the factors of an
 expression which is a product of factors to be saved by certain
 functions in order to speed up later factorizations of expressions
 containing some of the same factors.
 
 @end defvar
-@c @node SQFR, TELLRAT, SAVEFACTORS, Polynomials
-@c @unnumberedsec phony
-@defun SQFR (exp)
+
+@defun sqfr (exp)
 is similar to FACTOR except that the polynomial factors are
 "square-free." That is, they have factors only of degree one.  This
 algorithm, which is also used by the first stage of FACTOR, utilizes
@@ -909,17 +916,16 @@ the fact that a polynomial has in common with its nth derivative all
 its factors of degree > n.  Thus by taking gcds with the polynomial of
 the derivatives with respect to each variable in the polynomial, all
 factors of degree > 1 can be found.
+
 @example
-(%i1) SQFR(4*X**4+4*X**3-3*X**2-4*X-1);
+(%i1) sqfr(4*x**4+4*x**3-3*x**2-4*x-1);
                              2               2
-(%o1)                       (X  - 1) (2 X + 1)
-
-
+(%o1)                       (x  - 1) (2 x + 1)
 @end example
+
 @end defun
-@c @node TELLRAT, TOTALDISREP, SQFR, Polynomials
-@c @unnumberedsec phony
-@defun TELLRAT (poly)
+
+@defun tellrat (poly)
 adds to the ring of algebraic integers known to
 Maxima, the element which is the solution of the polynomial with
 integer coefficients.  Maxima initially knows about %I and all roots
@@ -935,15 +941,15 @@ TELLRAT(); returns a list of the current substitutions.  Note: When
 you TELLRAT reducible polynomials, you want to be careful not to
 attempt to rationalize a denominator with a zero divisor.  E.g.
 TELLRAT(W^3-1)$ ALGEBRAIC:TRUE$ RAT(1/(W^2-W)); will give "quotient by
-zero".  This error can be avoided by setting RATALGDENOM:FALSE$.
-ALGEBRAIC[FALSE] must be set to TRUE in order for the simplification of
+zero".  This error can be avoided by setting RATALGDENOM to @code{false}.
+ALGEBRAIC must be set to @code{true} in order for the simplification of
 algebraic integers to take effect.
+
 Do EXAMPLE(TELLRAT); for examples.
 
 @end defun
-@c @node TOTALDISREP, UNTELLRAT, TELLRAT, Polynomials
-@c @unnumberedsec phony
-@defun TOTALDISREP (exp)
+
+@defun totaldisrep (exp)
 converts every subexpression of exp from CRE to
 general form.  If exp is itself in CRE form then this is identical to
 RATDISREP but if not then RATDISREP would return exp unchanged while
@@ -952,9 +958,8 @@ ratdisrepping expressions e.g., equations, lists, matrices, etc. which
 have some subexpressions in CRE form.
 
 @end defun
-@c @node UNTELLRAT,  , TOTALDISREP, Polynomials
-@c @unnumberedsec phony
-@defun UNTELLRAT (x)
+
+@defun untellrat (x)
 takes kernels and removes TELLRAT properties.
 
 @end defun
