@@ -55,7 +55,10 @@
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-datadir-env (maxima-getenv "MAXIMA_DATADIR"))
 	(maxima-infodir-env (maxima-getenv "MAXIMA_INFODIR"))
-	(maxima-plotdir-env (maxima-getenv "MAXIMA_PLOTDIR")))
+	(maxima-plotdir-env (maxima-getenv "MAXIMA_PLOTDIR"))
+	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
+	(maxima-verpkgdatadir-env (maxima-getenv "MAXIMA_VERPKGDATADIR"))
+	(home-env (maxima-getenv "HOME")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
     (if (not maxima-prefix-env)
 	(setq maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY")))
@@ -69,12 +72,14 @@
 					      "/"
 					      "share"))
 	(setq *maxima-datadir* *autoconf-datadir*)))
-    (setq *maxima-verpkgdatadir* (concatenate 'string
-					      *maxima-datadir*
-					      "/"
-					      *autoconf-package*
-					      "/"
-					      *autoconf-version*))
+    (if maxima-verpkgdatadir-env
+	(setq *maxima-verpkgdatadir* maxima-verpkgdatadir-env)
+      (setq *maxima-verpkgdatadir* (concatenate 'string
+						*maxima-datadir*
+						"/"
+						*autoconf-package*
+						"/"
+						*autoconf-version*)))
     (if maxima-prefix-env
 	(setq *maxima-libexecdir* (concatenate 'string *maxima-prefix*
 					       "/"
@@ -94,33 +99,33 @@
       (if maxima-prefix-env
 	  (setq *maxima-infodir* (concatenate 'string *maxima-prefix*
 					      "info"))
-	(setq *maxima-infodir* *autoconf-infodir*))))
+	(setq *maxima-infodir* *autoconf-infodir*)))
+    (if maxima-userdir-env
+	(setq *maxima-userdir* maxima-userdir-env)
+      (setq *maxima-userdir* (concatenate 'string home-env "/.maxima"))))
 	 
   (setq share-with-subdirs "{share,share/algebra,share/calculus,share/combinatorics,share/contrib,share/diffequations,share/graphics,share/integequations,share/integration,share/macro,share/matrix,share/misc,share/numeric,share/physics,share/simplification,share/specfunctions,share/sym,share/tensor,share/trigonometry,share/utils,share/vector}")
-  (let ((ext #+gcl "o"
-	     #+cmu (c::backend-fasl-file-type c::*target-backend*)
-	     #+clisp "fas"
-	     #+allegro "fasl"
-	     #-(or gcl cmu clisp allegro)
-	     ""))
+  (let* ((ext #+gcl "o"
+	      #+cmu (c::backend-fasl-file-type c::*target-backend*)
+	      #+clisp "fas"
+	      #+allegro "fasl"
+	      #-(or gcl cmu clisp allegro)
+	      "")
+	 (lisp-patterns (concatenate 'string
+				     "###.{"
+				     (concatenate 'string ext ",lisp,lsp}"))))
     (setq $file_search_lisp
 	  (list '(mlist)
 		;; actually, this entry is not correct.
 		;; there should be a separate directory for compiled
 		;; lisp code. jfa 04/11/02
-		(maxima-data-path share-with-subdirs
-				  (concatenate 'string "###." ext))
-		(maxima-data-path share-with-subdirs "###.lisp")
-		(maxima-data-path share-with-subdirs "###.lsp")
-		(maxima-data-path "{src}"
-				  (concatenate 'string "###." ext))
-		(maxima-data-path "{src}" "###.lisp")
-		(maxima-data-path "{src}" "###.lsp")
-		)))
+		(concatenate 'string *maxima-userdir* "/" lisp-patterns)
+		(maxima-data-path share-with-subdirs lisp-patterns)
+		(maxima-data-path "src" lisp-patterns))))
   (setq $file_search_maxima
 	(list '(mlist)
-	      (maxima-data-path share-with-subdirs "###.mac")
-	      (maxima-data-path share-with-subdirs "###.mc")))
+	      (concatenate 'string *maxima-userdir* "/" "###.{mac,mc}")
+	      (maxima-data-path share-with-subdirs "###.{mac,mc}")))
   (setq $file_search_demo
 	(list '(mlist)
 	      (maxima-data-path share-with-subdirs
