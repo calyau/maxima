@@ -25,6 +25,9 @@ PUT('FACEX1,1,'VERSION)$
    TODO: This file contains seemingly newer versions of some functions
    in facexp.  So merge these files. -wj */
 
+/* This was done on 2002-09-26.  This file is now obsolete,
+  so don't use it.  Use facexp instead. */
+
 eval_when([batch,loadfile],
   if get('GNAUTO,'DIAGEVAL_VERSION)=false
   then load("genut"))$

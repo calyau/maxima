@@ -53,8 +53,11 @@
    which are to be used by old code (because FOO is translated to $FOO
    and foo to |$foo|). */
 
-eval_when([translate,compile],
-  mode_declare(function(NULLLISTP,FREEOFL,ZEROLISTP,LCPRED),boolean))$
+eval_when(translate,
+          declare_translated(ORPARTITION,ORPARTITIONL,NONUMFACTOR,
+                             genut_prodmap,listofops_nonratl,SETLIST,
+                             PREDPARTITION),
+          mode_declare(function(NULLLISTP,FREEOFL,ZEROLISTP,LCPRED),boolean))$
 
 NULLLISTP(exp) :=
   is(exp=[])$

@@ -29,6 +29,11 @@ eval_when([batch,loadfile],
   if get('GNAUTO,'DIAGEVAL_VERSION)=false
   then load("genut"))$
 
+eval_when(translate,
+	  declare_translated(EXWRT_POWER1,VARMULT,DISTRIBUTE,EXWRT_POWER,
+			     FREEOFL,STOPEXPANDL1,ORPARTITIONL,LDELETE,
+			     STOPEXPANDL))$
+
 /* Switches  */
 DEFINE_VARIABLE(IFORP,FALSE,BOOLEAN)$
 DEFINE_VARIABLE(EXPANDWRT_DENOM,FALSE,BOOLEAN)$
