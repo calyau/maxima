@@ -309,33 +309,119 @@ MATCHDECLARE(var,TRUE) will permit var to match any expression.
 
 @end defun
 
-@defun matchfix
- - @code{matchfix} operators are used to denote functions of any
-number of arguments which are passed to the function as a list.  The
-arguments occur between the main operator and its "matching"
-delimiter.  The MATCHFIX("x",...) function is a syntax extension
-function which declares x to be a @code{matchfix} operator.   The default
-binding power is 180, and the args inside may be anything.
+@defun matchfix (@var{ldelimiter}, @var{rdelimiter})
+@defunx matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
+Declares a matchfix operator with left and right delimiters @var{ldelimiter} and @var{rdelimiter}.
+The delimiters are specified as strings.
 
+A "matchfix" operator is a function of any number of arguments,
+such that the arguments occur between matching left and right delimiters.
+The delimiters may be any strings, so long as the parser can
+distinguish the delimiters from the operands 
+and other expressions and operators.
+In practice this rules out unparseable delimiters such as
+@code{%}, @code{,}, @code{$} and @code{;}, 
+and may require isolating the delimiters with white space.
+The right delimiter can be the same or different from the left delimiter.
+
+A left delimiter can be associated with only one right delimiter;
+two different matchfix operators cannot have the same left delimiter.
+
+An existing operator may be redeclared as a matchfix operator
+without changing its other properties.
+In particular, built-in operators such as addition @code{+} can
+be declared matchfix,
+but operator functions cannot be defined for built-in operators.
+
+@code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})} 
+declares the argument part-of-speech @var{arg_pos} 
+and result part-of-speech @var{pos}, 
+and the delimiters @var{ldelimiter} and @var{rdelimiter}.
+
+@c DUNNO IF WE REALLY NEED TO MENTION BINDING POWER HERE -- AS NOTED IT'S IRRELEVANT
+@c An operator declared by @code{matchfix} is assigned a low binding power.
+@c Since a matchfix operator must be evaluated before any expression
+@c which contains it,
+@c binding power is effectively irrelevant
+@c to the declaration of a matchfix operator.
+
+The function to carry out a matchfix operation is an ordinary
+user-defined function.
+The operator function is defined
+in the usual way
+with the function definition operator @code{:=} or @code{define}.
+The arguments may be written between the delimiters,
+or with the left delimiter as a quoted string and the arguments
+following in parentheses.
+@code{dispfun (@var{ldelimiter})} displays the function definition.
+
+The only built-in matchfix operator is the list constructor @code{[ ]}.
+Parentheses @code{( )} and double-quotes @code{" "} 
+act like matchfix operators,
+but are not treated as such by the Maxima parser.
+
+@code{matchfix} evaluates its arguments.
+@code{matchfix} returns its first argument, @var{ldelimiter}.
+@c HOW TO TAKE AWAY THE MATCHFIX PROPERTY ??
+
+Examples:
+
+@itemize @bullet
+@item
+Delimiters may be almost any strings.
+@end itemize
 @example
-(%i1) matchfix ("|", "|");
-(%o1)                            "|"
-(%i2) |a|+b; 
-(%o2)                         b + (|a|)
-(%i3) |(a,b)|;
-(%o3)                            |b|
-(%i4) |[a,b]|;
-(%o4)                         |[a, b]|
-(%i5) |x| := if numberp(x) then abs(x)
-        else (if listp(x) and apply ("and", map (numberp, x))
-        then sqrt (sum (x[i]^2, i, 1, length(x)))
-        else buildq ([u:x], |u|))$
-(%i6) |[1,2,3]|;
-(%o6)                         sqrt(14)
-(%i7) |-7|;
-(%o7)                             7
-(%i8) |[a,b]|;
-(%o8)                         |[a, b]|
+(%i1) matchfix ("@@", "~");
+(%o1)                          "@@"
+(%i2) @@ a, b, c ~;
+(%o2)                       @@a, b, c~
+(%i3) matchfix (">>", "<<");
+(%o3)                         ">>"
+(%i4) >> a, b, c <<;
+(%o4)                      >>a, b, c<<
+(%i5) matchfix ("foo", "oof");
+(%o5)                         "foo"
+(%i6) foo a, b, c oof;
+(%o6)                     fooa, b, coof
+(%i7) >> w + foo x, y oof + z << / @@ p, q ~;
+                     >>z + foox, yoof + w<<
+(%o7)                ----------------------
+                             @@p, q~
+@end example
+
+@itemize @bullet
+@item
+Matchfix operators are ordinary user-defined functions.
+@end itemize
+@example
+(%i1) matchfix ("!-", "-!");
+(%o1)                         "!-"
+(%i2) !- x, y -! := x/y - y/x;
+                                    x   y
+(%o2)                   !-x, y-! := - - -
+                                    y   x
+(%i3) define (!-x, y-!, x/y - y/x);
+                                    x   y
+(%o3)                   !-x, y-! := - - -
+                                    y   x
+(%i4) define ("!-" (x, y), x/y - y/x);
+                                    x   y
+(%o4)                   !-x, y-! := - - -
+                                    y   x
+(%i5) dispfun ("!-");
+                                    x   y
+(%t5)                   !-x, y-! := - - -
+                                    y   x
+
+(%o5)                         done
+(%i6) !-3, 5-!;
+                                16
+(%o6)                         - --
+                                15
+(%i7) "!-" (3, 5);
+                                16
+(%o7)                         - --
+                                15
 @end example
 
 @end defun
