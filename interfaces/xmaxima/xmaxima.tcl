@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.25 2002-09-07 10:31:22 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.26 2002-09-08 01:45:23 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -188,22 +188,33 @@ proc doit { fr } {
     }
 
     if { [auto_execok $ws_openMath(xmaxima_maxima)] != "" } {
-	set ws_openMath(localMaximaServer) "$ws_openMath(xmaxima_maxima) $maxima_opts -p [file join $ws_openMath(maxima_xmaximadir) server.lisp] -r \":lisp (progn (user::setup PORT)(values))\" &"
+	#mike FIXME: This should break on windows if there is a space in the pathname
+	set exe $ws_openMath(xmaxima_maxima)
+	set ws_openMath(localMaximaServer) "$exe $maxima_opts -p [file join $ws_openMath(maxima_xmaximadir) server.lisp] -r \":lisp (progn (user::setup PORT)(values))\" &"
+    } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
+	tide_failure "Error. maxima executable XMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA) not found."
+	exit 1
     } else {
-	if { [info exists env(XMAXIMA_MAXIMA)] } {
-	    puts "xmaxima: Error. maxima executable XMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA) not found."
-	    exit 1
-	} else {
-	    # A gruesome hack. Normally, we communicate to the maxima image
-	    # through the maxima script, as above. If the maxima script is not
-	    # available, as may happen on windows, directly talk to the GCL 
-	    # saved image. jfa 04/28/2002
-	    set env(MAXIMA_INT_LISP_PRELOAD) \
-		"[file join $ws_openMath(maxima_xmaximadir) server.lisp]"
-	    set env(MAXIMA_INT_INPUT_STRING) \
-		":lisp (progn (user::setup PORT)(values));"
-	    set ws_openMath(localMaximaServer) "[file join $ws_openMath(maxima_verpkglibdir) binary-gcl maxima] -eval \"(run)\" -f &"
-	}
+	# A gruesome hack. Normally, we communicate to the maxima image
+	# through the maxima script, as above. If the maxima script is not
+	# available, as may happen on windows, directly talk to the GCL 
+	# saved image. jfa 04/28/2002
+	#mike FIXME: But if this is windows, the exe won't be in
+	# $ws_openMath(maxima_verpkglibdir)/binary-gcl
+	# except for CYGWIN where it is windows but with Unix paths.
+
+	set env(MAXIMA_INT_LISP_PRELOAD) \
+	    "[file join $ws_openMath(maxima_xmaximadir) server.lisp]"
+	set env(MAXIMA_INT_INPUT_STRING) \
+	    ":lisp (progn (user::setup PORT)(values));"
+	#mike FIXME: This should break on windows if there is a space in the pathname
+	set exe [file join $ws_openMath(maxima_verpkglibdir) binary-gcl maxima]
+	set ws_openMath(localMaximaServer) "$exe -eval \"(run)\" -f &"
+    }
+    if {[set exe [auto_execok $exe]] == "" || ![file isfile $exe]} {
+	# || ![file exec $exe]	
+	tide_notify [M "Maxima executable not found in '%s'" \
+			 [file native $exe]]
     }
 
     OpenMathOpenUrl $firstUrl -toplevel .browser
@@ -221,6 +232,7 @@ proc doit { fr } {
     #mike An abomination:
     set men [CMmenu $fr]
     oset $men textwin $w
+    # Replace with a proper system menu below
 
     clearLocal $w
     oset $w heightDesired 80%
@@ -272,6 +284,8 @@ proc doit { fr } {
 	append ws_openMath(sticky) {|^input$}
     }
     pack $fr.text -expand 1 -fill both -side left
+    set ws_openMath(cConsoleText) $fr.text
+
     desetq "width height"  [getMaxDimensions]
     wm geometry . ${width}x${height}
     update
@@ -283,7 +297,7 @@ proc doit { fr } {
 
     wm title . xmaxima
     # Add a proper system menu
-    # vMAXAddSystemMenu $fr $text
+    # vMAXAddSystemMenu $fr $ws_openMath(cConsoleText)
 
     #mike Defer the starting of maxima until the interface has been built
     if {[catch {runOneMaxima $w} err]} {

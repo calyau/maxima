@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.5 2002-09-07 23:17:58 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.6 2002-09-08 01:45:23 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -8,12 +8,15 @@
 proc setMaxDir {} {
     global env ws_openMath autoconf
 
+    #mike Could someone document all of these environment variables?
+    # autoconf(prefix) does not seem to me to be the equivalent of
+    # $env(MAXIMA_DIRECTORY) so I don't understand the next statement
     if { [info exists env(MAXIMA_DIRECTORY)] } {
 	set env(MAXIMA_PREFIX) $env(MAXIMA_DIRECTORY)
     }
 
     #mike Is it correct to assume that autoconf exists and is valid
-    # for binary windows disributions? I think it would be better
+    # for binary windows distributions? I think it would be better
     # to make (MAXIMA_DIRECTORY) take precedence, and work off 
     # [info nameofexe] if necessary.
 
@@ -22,13 +25,20 @@ proc setMaxDir {} {
     } else {
 	set ws_openMath(maxima_prefix) $autoconf(prefix)
     }
+
     if { [info exists env(MAXIMA_DATADIR)] } {
-	set ws_openMath(maxima_datadir) $env(MAXIMA_DATADIR)
+	set maxima_datadir $env(MAXIMA_DATADIR)
     } elseif { [info exists env(MAXIMA_PREFIX)] } {
-	set ws_openMath(maxima_datadir) \
+	set maxima_datadir \
 	    [file join $env(MAXIMA_PREFIX) share]
     } else {
-	set ws_openMath(maxima_datadir) $autoconf(datadir)
+	set maxima_datadir $autoconf(datadir)
+    }
+    # maxima_datadir is unused outside of this proc
+
+    if {![file isdir $maxima_datadir]} {
+	tide_notify [M "Maxima data directory not found in '%s'" \
+			 [file native  $maxima_datadir]]
     }
 
     if { [info exists env(MAXIMA_VERPKGLIBDIR)] } {
@@ -44,7 +54,7 @@ proc setMaxDir {} {
     }
 
     set ws_openMath(maxima_verpkgdatadir) \
-	[file join $ws_openMath(maxima_datadir) $autoconf(package) \
+	[file join $maxima_datadir $autoconf(package) \
 	     $autoconf(version)]
 
     # backwards compatability - to be eliminated
@@ -66,28 +76,32 @@ proc setMaxDir {} {
     # Bring derived quantities up here too so we can see the
     # side effects of setting the above variables
 
-    # used in Menu.tcl
-    set ws_openMath(pReferenceToc) \
-	[file join $ws_openMath(maximaPath) info maxima_toc.html]
-
-    # used in RunMaxima.tcl, was deined in xmaxima.tcl
-    if { [auto_execok $ws_openMath(xmaxima_maxima)] != "" } {
-	#mike FIXME: This should break on windows if there is a space in the pathname
-	set ws_openMath(localMaximaServer) "$ws_openMath(xmaxima_maxima) $maxima_opts -p [file join $ws_openMath(maxima_xmaximadir) server.lisp] -r \":lisp (progn (user::setup PORT)(values))\" &"
-    } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
-	tide_faulure "Error. maxima executable XMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA) not found."
-	exit 1
+    # used in Menu.tcl CMMenu.tcl
+    if {[file isdir [set dir [file join  $ws_openMath(maxima_verpkgdatadir) doc]]]} {
+	# 5.9 and up
+	set ws_openMath(pReferenceToc) \
+	    [file join $dir html maxima_toc.html]
+    } elseif {[file isdir [set dir [file join  $ws_openMath(maxima_verpkgdatadir) info]]]} {
+	# 5.6 and down
+	set ws_openMath(pReferenceToc) \
+	    [file join $dir html maxima_toc.html]
     } else {
-	# A gruesome hack. Normally, we communicate to the maxima image
-	# through the maxima script, as above. If the maxima script is not
-	# available, as may happen on windows, directly talk to the GCL 
-	# saved image. jfa 04/28/2002
-	set env(MAXIMA_INT_LISP_PRELOAD) \
-	    "[file join $ws_openMath(maxima_xmaximadir) server.lisp]"
-	set env(MAXIMA_INT_INPUT_STRING) \
-	    ":lisp (progn (user::setup PORT)(values));"
-	set ws_openMath(localMaximaServer) "[file join $ws_openMath(maxima_verpkglibdir) binary-gcl maxima] -eval \"(run)\" -f &"
+	tide_notify [M "Documentation not found in '%s'" \
+			 [file native  $ws_openMath(maxima_verpkgdatadir)]]
     }
+
+    # used in Menu.tcl CMMenu.tcl
+    if {[file isdir [set dir [file join  $ws_openMath(maxima_verpkgdatadir) tests]]]} {
+	# 5.9 and up
+	set ws_openMath(pTestsDir) $dir
+    } elseif {[file isdir [set dir [file join  $ws_openMath(maxima_verpkgdatadir) doc]]]} {
+	# 5.6 and down
+	set ws_openMath(pTestsDir) $dir
+    } else {
+	# who cares
+    }
+
+
 }
 
 # setMaxDir must be called here as it is used by xmaxima-trailer.tcl
