@@ -32,6 +32,8 @@ define_variable(ctrgsimp,false,boolean,
   "Apply trigonometric simplifications (TRIGSIMP).")$
 define_variable(cframe_flag,false,boolean,
   "Perform computations in a moving frame.")$
+define_variable(ctorsion_flag,false,boolean,"Apply torsion")$
+define_variable(cnonmet_flag,false,boolean,"Apply nonmetricity")$
 define_variable(derivabbrev,true,boolean)$
 define_variable(ctayswitch,false,boolean)$
 define_variable(ratchristof,true,boolean)$
@@ -46,7 +48,7 @@ init_ctensor():=
   diagmetric:false,
   setflags(),
   kill(ct_coords,lg,ug,lcs,mcs,geod,ric,uric,tracer,ein,lein,
-        riem,lriem,uriem,kinvariant,lfg,ufg,fr,fri,fb),
+        riem,lriem,uriem,kinvariant,lfg,ufg,fr,fri,fb,tr,kt,nm,nmc),
   lfg:diagmatrix(dim,1),
   lfg[1,1]:-1,
   done
@@ -947,6 +949,8 @@ christof(dis):=block
 (
   [],
   if cframe_flag then trrc(dis),
+  if ctorsion_flag and not member('kt,arrays) then contortion(tr),
+  if cnonmet_flag and not member('nmc,arrays) then nonmetricity(nm),
   for i thru dim do
   (
     for j from i thru dim do
@@ -960,6 +964,16 @@ christof(dis):=block
         (
           if diagmetric then ratsimp(_ug()[k,k]*lcs[i,j,k])
           else sum(_ug()[k,l]*lcs[i,j,l],l,1,dim)
+        ),
+        if ctorsion_flag then
+        (
+          mcs[i,j,k]:mcs[i,j,k]-kt[i,j,k],
+          mcs[j,i,k]:mcs[j,i,k]-kt[j,i,k]
+        ),
+        if cnonmet_flag then
+        (
+          mcs[i,j,k]:mcs[i,j,k]-nmc[i,j,k],
+          mcs[j,i,k]:mcs[j,i,k]-nmc[j,i,k]
         ),
         if ratchristof then mcs[j,i,k]:mcs[i,j,k]:ratsimp(mcs[i,j,k])
       )
@@ -1656,6 +1670,21 @@ checkdiv(gxyz):=block
       ct_coords[j]),j,1,dim)-sum(sum(mcs[i,j,a]*gxyz[a,j],a,1,dim),j,1,dim))))
 )$
 
+/* Contortion. Mostly generated with ic_convert(). */
+contortion(tr):=
+  for i thru dim do
+    for j thru dim do
+      for k thru dim do kt[i,j,k]:sum(ug[k,l]*
+         (-sum(tr[l,i,m]*lg[j,m],m,1,dim)-sum(lg[l,m]*tr[i,j,m],m,1,dim)-
+          sum(tr[l,j,m]*lg[i,m],m,1,dim)), l,1,dim)/2;
+
+/* Nonmetricity. Also generated mainly with ic_convert(). */
+nonmetricity(nm):=
+  for i thru dim do
+    for j thru dim do
+      for k thru dim do nmc[i,j,k]:nm[i]*kdelt(j,k)-kdelt(i,k)*nm[j]+
+                                   sum(ug[k,l]*nm[l],l,1,dim)*lg[i,j];
+
 
 /********************************************************************
  * Untested code from miscellaneous files...
@@ -1706,4 +1735,4 @@ ratsimp(sum(sum(
 
 
 
-put('ctensor,'v20041126,'version)$
+put('ctensor,'v20041204,'version)$
