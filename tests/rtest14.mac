@@ -99,6 +99,9 @@ false$
 specint(t^(1/2)*%e^(-a*t/4)*%e^(-p*t),t);
 sqrt(%pi)/(2*(p+a/4)^(3/2));
 
+prefer_whittaker:true;
+true$
+
 specint(t^(3/4)*%e^(-t^2/2/b)*%e^(-p*t),t);
 3*gamma(3/4)*b^(7/8)*%e^(b*p^2/4)*(8*sqrt(%pi)*%m[-5/8,-1/4](b*p^2/2)/(3*2^ 
  (5/8)*gamma(3/8)*b^(1/4)*sqrt(p))-2^(3/8)*sqrt(%pi)*%m[-5/8,1/4](b*p^2/2)/ 
