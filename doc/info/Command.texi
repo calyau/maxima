@@ -47,7 +47,7 @@ Enabling DEBUGMODE will not catch Lisp errors.
 @defun ev (expr, arg_1, arg_2, arg_3, ...)
 Evaluates the expression @code{expr} in the environment
 specified by the arguments @code{arg_1}, @code{arg_2}, @code{arg_3}, ....
-The arguments are Boolean flags, assignments, equations, and functions.
+The arguments are switches (Boolean flags), assignments, equations, and functions.
 @code{ev} returns the result (another expression) of the evaluation.
 
 The evaluation is carried out in steps, as follows.
@@ -94,8 +94,8 @@ to be evaluated.
 @code{eval} causes an extra post-evaluation of @code{expr} to occur. (See step (5)
 below.)
 @item
-@code{E} where @code{E} is an atom declared to be an evaluation flag (see @code{evflag})
-causes @code{E} to be bound to
+@code{A} where @code{A} is an atom declared to be an evaluation flag (see @code{evflag})
+causes @code{A} to be bound to
 @code{true} during the evaluation of @code{expr}.
 @item
 @code{V: expression} (or alternately @code{V=expression}) causes @code{V} to be bound to the
@@ -105,8 +105,8 @@ evaluation of @code{expr}.  If more than one argument to @code{ev} is of this ty
 then the binding is done in parallel.  If @code{V} is a non-atomic expression
 then a substitution rather than a binding is performed.
 @item
-@code{E} where @code{E}, a function name, has been declared to be an evaluation function (see @code{evfun})
-causes @code{E}
+@code{F} where @code{F}, a function name, has been declared to be an evaluation function (see @code{evfun})
+causes @code{F}
 to be applied to @code{expr}.
 @item
 Any other function names (e.g., @code{sum}) cause evaluation of occurrences
@@ -114,7 +114,7 @@ of those names in @code{expr} as though they were verbs.
 @item
 In addition a function occurring in @code{expr} (say @code{F(x)}) may be defined
 locally for the purpose of this evaluation of @code{expr} by giving
-@code{F(x) := body} as an argument to @code{ev}.
+@code{F(x) := expression} as an argument to @code{ev}.
 @item
 If an atom not mentioned above or a subscripted variable or
 subscripted expression was given as an argument, it is evaluated and
@@ -132,18 +132,19 @@ and evaluation functions which are composed, e.g., @code{ev (expr, ratsimp, real
 handled as @code{realpart (ratsimp (expr))}.
 
 The @code{simp}, @code{numer}, @code{float}, and @code{pred} switches may also be set locally in a
-block, or globally at the "top level" in Maxima so that they will
+block, or globally in Maxima so that they will
 remain in effect until being reset.
 
-If @code{expr} is in CRE form then @code{ev} will return a result in CRE form
+If @code{expr} is a canonical rational expression (CRE),
+then the expression returned by @code{ev} is also a CRE,
 provided the @code{numer} and @code{float} switches are not both @code{true}.
 
 @item
 During step (1), a list is made of the non-subscripted
 variables appearing on the left side of equations in the arguments or in
 the value of some arguments if the value is an equation.  The variables
-(both subscripted variables which do not have associated array
-functions, and non-subscripted variables) in the expression @code{expr} are
+(subscripted variables which do not have associated array
+functions as well as non-subscripted variables) in the expression @code{expr} are
 replaced by their global values, except for those appearing in this
 list.  Usually, @code{expr} is just a label or @code{%}
 (as in @code{%i2} in the example below), so this
