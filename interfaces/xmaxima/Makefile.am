@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.29 2002-09-19 16:13:47 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.30 2002-09-25 02:07:53 amundson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -66,7 +66,7 @@ TKSOURCES = \
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-trailer.tcl
 XMAXIMASOURCES = $(TKSOURCES) autoconf-variables.tcl xmaxima-trailer.tcl
 
-xmaxima: $(XMAXIMASOURCES)
+xmaxima: $(XMAXIMASOURCES) Tkmaxima/tclIndex
 	rm -f xmaxima && \
 		cat $(XMAXIMASOURCES) > xmaxima && \
 		chmod +x xmaxima
@@ -85,3 +85,13 @@ TAGS:
 tclIndex:: $(TKSOURCES)
 	echo "source ../ObjTcl/Object.tcl; auto_mkindex . $(TKSOURCES)" | $(TCLSH)
 
+# Create Tkmaxima/tclIndex if tclsh is available. Otherwise, create empty file
+# to satisfy make.
+Tkmaxima/tclIndex: $(TKSOURCES)
+	$(TCLSH) < /dev/null > /dev/null 2>&1 && \
+          (cd Tkmaxima ; \
+           echo "source ../ObjTcl/Object.tcl; auto_mkindex . $(ALLFILES)" | \
+           $(TCLSH)) || \
+         touch Tkmaxima/tclIndex
+
+FORCE:
