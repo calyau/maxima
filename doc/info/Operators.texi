@@ -408,7 +408,7 @@ parallel.  Sample syntax:
          => SIN(B) + COS(A)
 @end example
 The variable SUBLIS_APPLY_LAMBDA[TRUE] controls simplification after
-SUBLIS.  For full documentation, see the file SHARE2;SUBLIS INFO.
+SUBLIS.
 
 @end defun
 @c @node SUBLIST
