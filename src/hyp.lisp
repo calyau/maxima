@@ -1451,15 +1451,16 @@
 ;;
 ;; Formula 36:
 ;;
-;; P(n,m,z) = 2^n*gamma(1+n)*gamma(1+n+m)*(z+1)^(m/2-n-1)*(z-1)^(-m/2)/gamma(2+2*n)*
-;;                  hgfred([1+n-m,1+n],[2+2*n],2/(1+z))
-;;
+;; exp(-%i*m*%pi)*Q(n,m,z) =
+;;     2^n*gamma(1+n)*gamma(1+n+m)*(z+1)^(m/2-n-1)*(z-1)^(-m/2)/gamma(2+2*n)
+;;     * hgfred([1+n-m,1+n],[2+2*n],2/(1+z))
 ;;
 ;; Let a = 1+n-m, b = 1+n, c = 2+2*n.  then n = b-1 and m = b - a.
 ;; (There are other solutions.)
 ;;
-;; F(a,b;c;z) = 2**gamma(2*b)/gamma(b)/gamma(2*b-a)*w^(-b)*(1-w)^((b-a)/2)*P(b-1,b-a,2/w-1)
-
+;; F(a,b;c;z) = 2*gamma(2*b)/gamma(b)/gamma(2*b-a)*w^(-b)*(1-w)^((b-a)/2)
+;;              *Q(b-1,b-a,2/w-1)*exp(-%i*%pi*(b-a))
+;;
 (defun legf36 (l1 l2 var)
   (prog (n m a b z)
      (setq a (car l1)
@@ -1478,17 +1479,25 @@
 				   -1)))
 		  (inv (power (sub z 1) (div m -2)))
 		  (gm (add 2 n n))
-		  #+(or) (power '$%e (mul -1 '$%i m '$%pi))
+		  (power '$%e (mul -1 '$%i m '$%pi))
 		  (legen n m z '$q)))))
 
 
 (defun legen (n m x pq)
-  (cond ((and (equal m 0)
-	      #+nil (eq ($askinteger n) '$yes))
-	 `((,(if (eq pq '$q) '$legendre_q '$legendre_p)) ,n ,x))
-	(t
-	 `((,(if (eq pq '$q) '$assoc_legendre_q '$assoc_legendre_p))
-	    ,n ,m ,x))))
+  ;; A&S 8.2.1: P(-n-1,m,z) = P(n,m,z)
+  ;;
+  ;; Currently only applied if n is a number.  (Should this be
+  ;; extended to any expression?  We'll have to ask the user for the
+  ;; sign if we can' figure it out ourselves.  Should we?)
+  (let ((n (if (and (mnump n)
+		    (lessp n 0))
+	       (mul -1 (add 1 n))
+	       n)))
+    (cond ((equal m 0)
+	   `((,(if (eq pq '$q) '$legendre_q '$legendre_p)) ,n ,x))
+	  (t
+	   `((,(if (eq pq '$q) '$assoc_legendre_q '$assoc_legendre_p))
+	     ,n ,m ,x)))))
 
 
 (defun legpol (a b c)
