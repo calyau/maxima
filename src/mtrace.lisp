@@ -108,6 +108,53 @@
 ;; functions are stored in the function cell (expr,fexpr,lexpr), whereas
 ;; the macsyma functions (mfexpr*,...) are stored on the property list.
 ;;
+
+;; Wolfgang Jenker says (in the maxima mailing list):
+;; 1) The variety of maxima functions is much more restricted than what
+;;    the table at the beginning of mtrace.lisp shows.  I think the
+;;    following table gives the correct picture (like its counterpart in
+;;    mtrace.lisp, it ignores maxima macros or functional arrays).
+;;
+;;
+;; Maxima function	shadow type	hook type	mget
+;; ____________________________________________________________
+;;	expr		 expr		  expr
+;;	mexpr		 expr		  expr		t
+;;	mfexpr*		 mfexpr*	  expr
+;;
+;; These types have the following meaning: Suppose MFUN evaluates to some
+;; symbol in the MAXIMA package.  That this symbol is of type
+;;
+;;  - EXPR (or SUBR) implies that it has a lisp function definition ==
+;;    (SYMBOL-FUNCTION MFUN)
+;;
+;;  - MEXPR implies that it has a (parsed) maxima language definition ==
+;;    (MGET MFUN 'MEXPR) and all arguments are evaluated by MEVAL.
+;;
+;;  - MFEXPR* implies that it has a lisp function definition == (GET MFUN
+;;    'MFEXPR*) and its arguments are not automatically evaluated by
+;;    MEVAL.
+;;
+;; Note that the shadow type has to agree with the original function's
+;; type in the way arguments are evaluated.  On the other hand, I think
+;; we are left with EXPR as the only hook type; as a matter of fact, this
+;; is equivalent to the next point:
+;;
+;; 2) There is no need for MAKE-TRACE-HOOK to dispatch with respect to
+;; HOOK-TYPE since, roughly speaking, proper handling of the traced
+;; function's arguments is done by the trace handler in concert with
+;; MEVAL*.
+;;
+;; Note that I also removed the COPY-LIST used to pass the traced
+;; function's argument list to the trace handler.
+;;
+;; There remains an annoying problem with translated functions: tracing
+;; some function of type MEXPR and then loading its translated version
+;; (which is of type EXPR) will not cleanly untrace it (i.e., it is
+;; effectively no longer traced but it remains on the list of traced
+;; functions).  I think that this has to be fixed somewhere in the
+;; translation package.
+
 
 ;;; Structures.
 
@@ -331,11 +378,8 @@
 	    (putd fun nil))))
 
 #+cl
-(defun trace-unfshadow (fun type &aux new-fun)
-  (cond ((and (fboundp fun)
-	      (consp (setq new-fun (symbol-function fun)))
-	      (consp (second new-fun))
-	      (among 'trace-args (second new-fun)))
+(defun trace-unfshadow (fun type)
+  ;; At this point, we know that FUN is traced.
   (cond ((memq type '(expr subr fexpr fsubr))
 	 (let ((oldf (trace-oldfun fun)))
 	   (if (not (null oldf))
@@ -343,7 +387,6 @@
 	     (fmakunbound fun))))
 	 (t (remprop fun (get! type 'shadow))
 	    (fmakunbound fun))))
-	(t  (format t "~%This function was no longer defined as an interpreted-trace"))))
 
 ;--- trace-fsymeval :: find original function
 ;  fun : a function which is being traced.  The original defintion may
@@ -360,7 +403,7 @@
 	       ((memq (get! type-of 'shadow) '(expr fexpr))
 		(trace-oldfun fun))
 	       (t (if (eq (get! type-of 'shadow) type-of)
-		      (get (cdr (getl fun (list type-of))) type-of)
+		      (cadr (getl (cdr (getl fun `(,type-of))) `(,type-of)))
 		      (get fun type-of)))))
       (trace-fsymeval
 	 (merror "Macsyma BUG: Trace property for ~:@M went away without hook."
@@ -644,20 +687,11 @@
 
 #+cl
 (defun make-trace-hook (fun type handler)
-  (CASE (GET! TYPE 'HOOK-TYPE)
-    ((EXPR)
-     (coerce `(lambda (&rest trace-args)
-	       (,handler ',fun (copy-list trace-args)))
-	     'function))
-    ((FEXPR)
-     (coerce `(LAMBDA (&quote &rest TRACE-ARGL)
-	       (,HANDLER ',FUN (copy-list TRACE-ARGL)))
-	     'function))
-;;;???
-    ((MACRO)
-     (coerce `(lambda (&quote &rest TRACE-FORM)
-	       (,HANDLER (CAAR TRACE-FORM) (copy-list TRACE-FORM)))
-	     'function))))
+  ;; Argument handling according to FUN's TYPE is already done
+  ;; elsewhere: HANDLER, meval...
+  (declare (ignore type))
+  #'(lambda (&rest trace-args)
+      (funcall handler fun trace-args)))
        
 #+Maclisp
 (defmacro trace-setup-call (prop fun type)  
