@@ -237,7 +237,7 @@ Differential Equations
 Numerical
 
 * Introduction to Numerical::   
-* Fourier::                     
+* Fourier packages::                     
 * Definitions for Numerical::   
 * Definitions for Fourier Series::
 

@@ -1,26 +1,30 @@
 @menu
 * Introduction to Numerical::   
-* Fourier::                     
+* Fourier packages::                     
 * Definitions for Numerical::   
 * Definitions for Fourier Series::
 @end menu
 
-@node Introduction to Numerical, Fourier, Numerical, Numerical
+@node Introduction to Numerical, Fourier packages, Numerical, Numerical
 @section Introduction to Numerical
 
-@node Fourier, Definitions for Numerical, Introduction to Numerical, Numerical
-@section Fourier
- - There is a Fast Fourier Transform package, do DESCRIBE(FFT)
-for details.  There is also a Fourier Series package.  It may be
-loaded with LOAD(FOURIE).  It will also calculate Fourier integral
-coefficients and has various other functions to do such things as
-replace all occurrences of F(ARG) by ARG in expression (like changing
-ABS(a*x+b) to a*x+b).  Do PRINTFILE(FOURIE,USAGE,DSK,SHARE1); for
-a list of the functions included.
+@node Fourier packages, Definitions for Numerical, Introduction to Numerical, Numerical
+@section Fourier packages
+The @code{fft} package comprises functions for the numerical (not symbolic) computation
+of the fast Fourier transform.
+@code{load ("fft")} loads this package.
+See @code{fft}.
+
+The @code{fourie} package comprises functions for the symbolic computation
+of Fourier series.
+@code{load ("fourie")} loads this package.
+There are functions in the @code{fourie} package to calculate Fourier integral
+coefficients and some functions for manipulation of expressions.
+See @code{Definitions for Fourier Series}.
 
 @c end concepts Numerical
 
-@node Definitions for Numerical, Definitions for Fourier Series, Fourier, Numerical
+@node Definitions for Numerical, Definitions for Fourier Series, Fourier packages, Numerical
 @section Definitions for Numerical
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
