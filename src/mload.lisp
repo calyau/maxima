@@ -791,8 +791,6 @@
 	      (setq next-result  (third next))
 	      (cond ((batch-equal-check next-result result)
 		     (format t "~%..Which was correct"))
-		    ((eq t next-result)
-		     (format t "~%..Which made the predicate true"))
 		    (t (format t "~%This differed from the expected result:")
 		       (push i all-differences)
 		       (displa next-result)
