@@ -1,0 +1,164 @@
+/*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
+/***************************************************************************
+***                                                                    *****
+***     Copyright (c) 1984 by William Schelter,University of Texas     *****
+***     All rights reserved                                            *****
+***************************************************************************/
+
+
+/* -*- Package: CL-MAXIMA; Mode: MACSYMA -*-*/
+(KILL(ALL),clear_rules(),MATCHDECLARE(A,TRUE));
+DONE$
+TELLSIMP(SIN(A)^2,1-COS(A)^2);
+["^RULE1",?SIMPEXPT]$
+SIN(Y)^2;
+1-COS(Y)^2$
+KILL(RULES);
+DONE$
+NONZEROANDFREEOF(X,E):=IS(E # 0 AND FREEOF(X,E));
+NONZEROANDFREEOF(X,E):=IS(E # 0 AND FREEOF(X,E))$
+MATCHDECLARE(A,NONZEROANDFREEOF(X),B,FREEOF(X));
+DONE$
+DEFMATCH(LINEAR,A*X+B,X);
+LINEAR$
+LINEAR(3*Z+(Y+1)*Z+Y^2,Z);
+[B = Y^2,A = Y+4,X = Z]$
+MATCHDECLARE([A,F],TRUE);
+DONE$
+CONSTINTERVAL(L,H):=CONSTANTP(H-L);
+CONSTINTERVAL(L,H):=CONSTANTP(H-L)$
+MATCHDECLARE(B,CONSTINTERVAL(A));
+DONE$
+MATCHDECLARE(X,ATOM);
+DONE$
+BLOCK(REMOVE(INTEGRATE,OUTATIVE),DEFMATCH(CHECKLIMITS,'INTEGRATE(F,X,A,B)),
+      DECLARE(INTEGRATE,OUTATIVE));
+DONE$
+'INTEGRATE(SIN(T),T,X+%PI,X+2*%PI);
+'INTEGRATE(SIN(T),T,X+%PI,X+2*%PI)$
+CHECKLIMITS(%);
+[B = X+2*%PI,A = X+%PI,X = T,F = SIN(T)]$
+'INTEGRATE(SIN(T),T,0,X);
+'INTEGRATE(SIN(T),T,0,T)$
+CHECKLIMITS(%);
+FALSE$
+(KILL(ALL),MATCHDECLARE(X,FREEOF(%I)));
+DONE$
+%IARGS:FALSE;
+FALSE$
+TELLSIMP(SIN(%I*X),%I*SINH(X));
+[SINRULE1,?SIMP\-%SIN]$
+TRIGEXPAND(SIN(X+%I*Y));
+SIN(X)*COS(%I*Y)+%I*COS(X)*SINH(Y)$
+%IARGS:TRUE;
+TRUE$
+ERRCATCH(0^0);
+[]$
+EV(TELLSIMP(0^0,1),SIMP:FALSE);
+["^RULE2",?SIMPEXPT]$
+0^0;
+1$
+REMRULE("^","^RULE2");
+"^"$
+TELLSIMP(SIN(X)^2,1-COS(X)^2);
+["^RULE3",?SIMPEXPT]$
+(SIN(X)+1)^2;
+(SIN(X)+1)^2$
+EXPAND(%);
+2*SIN(X)-COS(X)^2+2$
+SIN(X)^2;
+1-COS(X)^2$
+KILL(RULES);
+DONE$
+MATCHDECLARE(A,TRUE);
+DONE$
+TELLSIMP(SIN(A)^2,1-COS(A)^2);
+["^RULE4",?SIMPEXPT]$
+SIN(Y)^2;
+1-COS(Y)^2$
+KILL(RULES);
+DONE$
+(KILL(ALL),NONZEROANDFREEOF(X,E):=IS(E # 0 AND FREEOF(X,E)));
+NONZEROANDFREEOF(X,E):=IS(E # 0 AND FREEOF(X,E))$
+MATCHDECLARE(A,NONZEROANDFREEOF(X),B,FREEOF(X));
+DONE$
+DEFMATCH(LINEAR,A*X+B,X);
+LINEAR$
+LINEAR(3*Z+(Y+1)*Z+Y^2,Z);
+[B = Y^2,A = Y+4,X = Z]$
+MATCHDECLARE([A,F],TRUE);
+DONE$
+CONSTINTERVAL(L,H):=CONSTANTP(H-L);
+CONSTINTERVAL(L,H):=CONSTANTP(H-L)$
+MATCHDECLARE(B,CONSTINTERVAL(A));
+DONE$
+MATCHDECLARE(X,ATOM);
+DONE$
+BLOCK(REMOVE(INTEGRATE,OUTATIVE),DEFMATCH(CHECKLIMITS,'INTEGRATE(F,X,A,B)),
+      DECLARE(INTEGRATE,OUTATIVE));
+DONE$
+'INTEGRATE(SIN(T),T,X+%PI,X+2*%PI);
+'INTEGRATE(SIN(T),T,X+%PI,X+2*%PI)$
+CHECKLIMITS(%);
+[B = X+2*%PI,A = X+%PI,X = T,F = SIN(T)]$
+'INTEGRATE(SIN(T),T,0,X);
+'INTEGRATE(SIN(T),T,0,T)$
+CHECKLIMITS(%);
+FALSE$
+REMVALUE(A,B,F,X);
+[A,B,F,X]$
+(KILL(ALL),MATCHDECLARE([A,A1,A2],TRUE));
+DONE$
+ONELESS(X,Y):=IS(X = Y-1);
+ONELESS(X,Y):=IS(X = Y-1)$
+LET(A1*A2!,A1!,ONELESS,A2,A1);
+?MTEXT(A1*A2!,?\ \-\-\>\ ,A1!,?\ WHERE\ ,ONELESS(A2,A1))$
+EV(LET(A1!/A1,(A1-1)!),LETRAT);
+?MTEXT(A1!/A1,?\ \-\-\>\ ,(A1-1)!)$
+EV(LETSIMP(N*M!*(N-1)!/M),LETRAT);
+(M-1)!*N!$
+LET(SIN(A)^2,1-COS(A)^2);
+?MTEXT(SIN(A)^2,?\ \-\-\>\ ,1-COS(A)^2)$
+SIN(X)^4;
+SIN(X)^4$
+LETSIMP(%);
+COS(X)^4-2*COS(X)^2+1$
+MATCHDECLARE([A,A1,A2],TRUE);
+DONE$
+ONELESS(X,Y):=IS(X = Y-1);
+ONELESS(X,Y):=IS(X = Y-1)$
+LET(A1*A2!,A1!,ONELESS,A2,A1);
+?MTEXT(A1*A2!,?\ \-\-\>\ ,A1!,?\ WHERE\ ,ONELESS(A2,A1))$
+EV(LET(A1!/A1,(A1-1)!),LETRAT);
+?MTEXT(A1!/A1,?\ \-\-\>\ ,(A1-1)!)$
+EV(LETSIMP(N*M!*(N-1)!/M),LETRAT);
+(M-1)!*N!$
+LET(SIN(A)^2,1-COS(A)^2);
+?MTEXT(SIN(A)^2,?\ \-\-\>\ ,1-COS(A)^2)$
+SIN(X)^4;
+SIN(X)^4$
+LETSIMP(%);
+COS(X)^4-2*COS(X)^2+1$
+PFEFORMAT:TRUE;
+TRUE$
+POISSIMP(SIN(X)^2);
+1/2-1/2*COS(2*X)$
+(2*A^2-B)*COS(X+2*Y)-(A*B+5)*SIN(U-4*X);
+(2*A^2-B)*COS(2*Y+X)+(A*B+5)*SIN(4*X-U)$
+EXP1:outofpois(POISEXPT(%,2));
+1/2*(2*A^2-B)^2*COS(4*Y+2*X)-(2*A^2-B)*(-A*B-5)*SIN(2*Y+5*X-U)
+			    +(2*A^2-B)*(-A*B-5)*SIN(2*Y-3*X+U)
+			    -1/2*(-A*B-5)^2*COS(8*X-2*U)+1/2*(-A*B-5)^2
+			    +1/2*(2*A^2-B)^2$
+PRINTPOIS(%);
+DONE$
+outofpois(POISINT(EXP1,Y));
+1/8*(2*A^2-B)^2*SIN(4*Y+2*X)+1/2*(2*A^2-B)*(-A*B-5)*COS(2*Y+5*X-U)
+			    -1/2*(2*A^2-B)*(-A*B-5)*COS(2*Y-3*X+U)$
+outofpois(POISSIMP(%));
+1/8*(2*A^2-B)^2*SIN(4*Y+2*X)+1/2*(2*A^2-B)*(-A*B-5)*COS(2*Y+5*X-U)
+			    -1/2*(2*A^2-B)*(-A*B-5)*COS(2*Y-3*X+U)$
+POISSIMP(SIN(X)^5+COS(X)^5);
+1/16*SIN(5*X)+1/16*COS(5*X)-5/16*SIN(3*X)+5/16*COS(3*X)+5/8*SIN(X)+5/8*COS(X)$
+PFEFORMAT:FALSE;
+FALSE$

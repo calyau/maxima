@@ -1,0 +1,38 @@
+Time= 23 msec.
+(D3) 			        [DSK, SHARE2]
+
+(C4) /* next, calling the function DISOWN will set TTYOFF to TRUE and
+   DYNAMALLOC to TRUE and then disown the running macsyma.
+   The BATCH will continue though with results still going to the
+   WRITEFILE. */
+
+DISOWN();
+Time= 3 msec.
+(D4) 				    FALSE
+
+(C5) /* You might one to have your job start running later.
+here I'll just sleep for 3 minutes. */
+
+SLEEP(0,3);
+Time= 6 msec.
+(D5) 				    AWAKE
+
+(C6) /* Next do a computation */
+
+f(x):=x^x;
+Time= 8 msec.
+					   X
+(D6) 				  F(X) := X
+
+(C7) for j:1 thru 5 do print (j,f(j));
+1 1 
+2 4 
+3 27 
+4 256 
+5 3125 
+Totaltime= 185 msec.  GCtime= 5 msec.
+(D7) 				     DONE
+
+(C8) /* Next close the writefile, naming it something useful. */
+
+CLOSEFILE(BATCH,DEMCRF);

@@ -1,0 +1,46 @@
+/*	Demo for Purtilo's implementation of
+	Hacijan's algorithm....			*/
+
+load("kach")$
+load("haipart")$
+fpprec:16$
+If Status(Feature,ITS)=True
+Then Translate(hach,check,iterate,fx,fq,fh,getl,criterion,accelerate)$
+
+/* dynamalloc:true$ */
+
+/*	now get a matrix a and a matrix b for the problem
+	of solving  a.x < b   ...    		*/
+
+a:bfloat(matrix([1,0],[0,1],[-1,-1]))$
+
+b:bfloat(matrix([-1],[-1],[4.00000001]))$
+
+n:2$
+
+m:3$
+
+/*	the user can find the L as in Hacijan's abstract by
+	doing ... */
+
+getl(a,b,n,m);
+
+/*	and can find a solution vector x for
+
+		x[1]		<	-1
+			x[2]	<	-1
+		x[1] +  x[2]	>=	-4
+
+	by doing		*/
+
+show%all:true$
+
+hach(a,b,n,m,1);
+
+/*	Note that this last example does not pay attention
+	to the L of the theory.   Doing so, taking a bit longer,
+	is 			*/
+
+show%all:false$
+
+hach(a,b,n,m,9.58);

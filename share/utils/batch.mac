@@ -1,0 +1,107 @@
+;;;-*-LISP-*-
+
+;;; functions to aid in running a macsyma background job.
+(eval-when (eval compile)
+	   (or (status feature iota) (load '|liblsp;iota fasl|)))	   
+	   
+
+(DEFUN $SLEEP (&OPTIONAL (SEC '|no arg/||) (MINUTES 0) (HOURS 0))
+       (COND ((EQ SEC '|no arg/||)
+	      (ERLIST1 '|
+SLEEP(SECONDS,MINUTES,HOURS), where MINUTES and HOURS
+are optional arguments. SLEEP for that much wall clock time.|))
+	     (T
+              (SLEEP (PLUS SEC (TIMES 60. (PLUS MINUTES (TIMES 60. HOURS)))))
+	      '$AWAKE)))
+
+(SSTATUS CLI T)
+
+(DEFUN CLI-SEND-FORMS (UNAME JNAME request &REST FORMS)
+       (IOTA ((F `((CLI *) ,UNAME ,JNAME) '(OUT)))
+	     (TERPRI F)
+	     (PRINT (LIST REQUEST (STATUS UNAME) (STATUS JNAME)) F)
+	     (COND (FORMS
+		    (MAPCAR '(LAMBDA (U) (PRINT U F)) FORMS)))))
+
+
+
+(DEFUN CLI-interrupt-HANDLER (&REST ARGS &AUX uname jname request FORMS)
+       (NOINTERRUPT NIL)
+       (IOTA ((CLA '((CLA)) '(CLA)))
+	     (READLINE CLA) ;;; Sixbit cruft.
+	     (SETQ request (READ CLA)
+		   uname (cadr request)
+		   jname (caddr request)
+		   request (car request)
+		   FORMS NIL)
+	     (DO ((FORM (READ CLA '*EOF*)
+			(READ CLA '*EOF*)))
+		 ((EQ FORM '*EOF*)
+		  (setq forms (reverse forms)))
+		 (SETQ FORMS (CONS FORM FORMS))))
+       (COND ((EQ REQUEST 'EVAL)
+	      (MAPCAR 'EVAL FORMS))
+	     ((EQ REQUEST 'EVAL-RETURN)
+	      (APPLY 'CLI-SEND-FORMS `(,UNAME ,JNAME RETURN
+					      ,@(MAPCAR 'EVAL FORMS))))
+	     ((EQ REQUEST 'EVAL-PRINT)
+	      (APPLY 'CLI-SEND-FORMS
+		     `(,UNAME ,JNAME PRINT ,@(MAPCAR 'EVAL FORMS))))
+	     ((EQ REQUEST 'RETURN)
+	      (*throw 'cli-return-throw forms)   ;;; can have sync problems.
+	     ((EQ REQUEST 'PRINT)
+	      (MAPCAR 'PRINT FORMS)))))
+       
+
+
+(SETQ CLI-MESSAGE 'CLI-INTERRUPT-HANDLER)
+
+(defun cli-eval-form (jname uname form &aux ret)
+       (cli-send-forms jname uname 'eval-return form)
+       (setq ret (*catch 'cli-return-throw (sleep (* 60. 60. 10.)) ; 10. hours?
+			 '*no*return*))
+       (cond ((eq ret '*no*return*) ret)
+	     (t (car ret))))
+
+(defun cli-print-form (jname uname form)
+       (cli-send-forms jname uname 'print form))
+
+(defun $REMOTE%DEBUG (&aux uname jname)
+       (terpri tyo)
+       (setq uname
+	     (stripdollar (retrieve '|What user name does the macsyma have?|
+				    nil))
+	     jname
+	     (stripdollar (retrieve '|What is its job name?| nil)))
+       (terpri tyo)
+       (princ '|Enter expessions and wait for reply from remote job.| tyo)
+       (terpri tyo)
+       (do ((form (retrieve '|Expression to send or EXIT| nil)
+		  (retrieve '|Expression to send or EXIT| nil)))
+	   ((eq form '$exit) '$done)
+	   (setq $REMOTE (cli-eval-form uname jname
+					`((lambda (u)
+						  (cond ((null u)
+							 '$SOME-ERROR)
+							(t (car u))))
+					  (errset (meval ',form) nil))))
+	   (displa `((mlable) $REMOTE ,$REMOTE))))
+
+(DEFUN $DISOWN ()
+       (setq $dynamalloc t
+	     ^W t) ;;; ^W , what a crock oldio.
+       (valret '|:PROCEED
+:DISOWN
+|))
+
+(defun $alarm_off () (alarmclock 'time -1))
+(defun $alarm_exp fexpr (L)
+       (let (((expr time) l))
+	    (setq time (meval time))
+	    (cond ((not (numberp time)) (erlist '|non-numeric time|))
+		  ((lessp time 0.01) (erlist '|Time is in minutes, I don't like it less than 0.01|)))
+	    (setq alarmclock
+		  `(lambda (u)
+			   (meval1 ',expr)
+			   (alarmclock 'time ,time)))
+	    '$|O.K.|))

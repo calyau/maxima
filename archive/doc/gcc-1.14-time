@@ -1,0 +1,23 @@
+***** FACTOR TEST *****
+Sat Dec 26 17:41:27 CST 1987
+Running on rascal
+cat doc/time.test | maxima
+AKCL (Austin Kyoto Common Lisp)  Sun Dec 20 13:58:29 CST 1987
+Maxima 4.52 (with enhancements by W. Schelter).
+Type (run) to start Maxima.
+
+>
+Allocate 1000 cons pages and  150 fixnum pages
+
+CL-MAXIMA>
+*cc* is gcc -msoft-float -DVOL=volatile -g 
+For 10 times factor p10:
+real time : 70.467 secs
+run time  : 68.017 secs
+
+For 10 times factor p20:
+real time : 351.700 secs
+run time  : 338.533 secs
+NIL
+
+CL-MAXIMA>Bye.

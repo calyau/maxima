@@ -1,0 +1,21 @@
+(progn
+  (let ((nc 1500) (nf 150))
+    (allocate 'cons nc t)
+
+    (allocate 'fixnum nf t)
+    (format t "~%Allocate ~a cons pages and  ~a fixnum pages" nc nf)
+
+    (in-package 'maxima)
+    (maxima::set-readtable-for-macsyma)
+    (values)
+    ))
+(progn (setq p10 #$Expand((x+y+z)^10)$)
+       (setq p20 #$expand((x+y+z)^20)$)
+           (setq nt 10)
+	  (and (boundp 'compiler::*cc*)
+	       (format t "~%*cc* is ~a " compiler::*cc*))
+       (format t "~%For ~a times factor p10:" nt)
+       (time (sloop for i below nt do ($factor p10)))
+       (format t "~%For ~a times factor p20:" nt)
+       (time (sloop for i below nt do ($factor p20)))
+       )

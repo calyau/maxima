@@ -1,0 +1,352 @@
+;;; -*- Mode: Lisp; Package: Macsyma -*-
+;;; Translated code for LMIVAX::MAX$DISK:[SHARE2]OPTVAR.MC;2
+;;; Written on 9/20/1984 05:11:16, from MACSYMA 302
+;;; Translated for LPH
+
+;;; TRANSL-AUTOLOAD version NIL
+;;; TRANSS version 87 TRANSL version 1157 TRUTIL version 27
+;;; TRANS1 version 108 TRANS2 version 39 TRANS3 version 50
+;;; TRANS4 version 29 TRANS5 version 26 TRANSF version NIL
+;;; TROPER version 15 TRPRED version 6 MTAGS version NIL
+;;; MDEFUN version 58 TRANSQ version 88 FCALL version 40
+;;; ACALL version 70 TRDATA version 68 MCOMPI version 146
+;;; TRMODE version 73 TRHOOK version NIL
+(eval-when (compile eval)
+      (setq *infile-name-key*
+	          (namestring (truename '#.standard-input))))
+
+(eval-when (compile)
+   (setq $tr_semicompile 'NIL)
+   (setq forms-to-compile-queue ()))
+
+(comment "OPTVAR.MC;2")
+
+;;; General declarations required for translated MACSYMA code.
+
+(DECLARE
+  (SPECIAL
+    $K $DYDT $DD $C $AUX $TIME $GRINDSWITCH $SOLVERADCAN $SINGSOLVE ^W))
+
+(DEFMTRFUN-EXTERNAL ($IC $ANY MDEFINE NIL NIL))
+
+(DECLARE (SPECIAL $AUX))
+
+(DECLARE (SPECIAL $C))
+
+(DECLARE (SPECIAL $DD))
+
+(DECLARE (SPECIAL $DYDT))
+
+(DECLARE (SPECIAL $K))
+
+(DEFMTRFUN-EXTERNAL ($HAM $ANY MDEFINE NIL NIL))
+
+(DEFMTRFUN-EXTERNAL ($EL $ANY MDEFINE NIL NIL))
+
+(DEFMTRFUN-EXTERNAL ($CONVERT $ANY MDEFINE NIL NIL))
+
+
+(SETQ ^W T)
+
+(SETQ $TIME (SETQ $GRINDSWITCH (SETQ $SOLVERADCAN (SETQ $SINGSOLVE T))))
+
+(MEVAL* '(($ALIAS) $DIFF $DIFF))
+
+(DEFPROP $IC T TRANSLATED)
+
+(ADD2LNC '$IC $PROPS)
+
+(DEFMTRFUN ($IC $ANY MDEFINE NIL NIL) ($SOLN $XA $YA $DYA) NIL
+	   (SIMPLIFY (MFUNCTION-CALL $IC2 $SOLN $XA $YA $DYA)))
+
+(DEFPROP $DV T TRANSLATED)
+
+(ADD2LNC '$DV $PROPS)
+
+(DEFMTRFUN
+  ($DV $ANY MDEFMACRO NIL NIL) ($A) NIL
+  (MBUILDQ-SUBST
+    (LIST (CONS '$A $A)) '(($DEFINE_VARIABLE) $A ((MQUOTE) $A) $ANY)))
+
+(MEVAL* '(($MODEDECLARE) $AUX $ANY))
+
+(MEVAL* '(($DECLARE) $AUX $SPECIAL))
+
+(DEF-MTRVAR $AUX '$AUX)
+
+(MEVAL* '(($MODEDECLARE) $C $ANY))
+
+(MEVAL* '(($DECLARE) $C $SPECIAL))
+
+(DEF-MTRVAR $C '$C)
+
+(MEVAL* '(($MODEDECLARE) $DD $ANY))
+
+(MEVAL* '(($DECLARE) $DD $SPECIAL))
+
+(DEF-MTRVAR $DD '$DD)
+
+(MEVAL* '(($MODEDECLARE) $DYDT $ANY))
+
+(MEVAL* '(($DECLARE) $DYDT $SPECIAL))
+
+(DEF-MTRVAR $DYDT '$DYDT)
+
+(MEVAL* '(($MODEDECLARE) $K $ANY))
+
+(MEVAL* '(($DECLARE) $K $SPECIAL))
+
+(DEF-MTRVAR $K '$K)
+
+(DEFPROP $HAM T TRANSLATED)
+
+(ADD2LNC '$HAM $PROPS)
+
+(DEFMTRFUN
+ ($HAM $ANY MDEFINE NIL NIL) ($ODES) NIL
+ ((LAMBDA ($T $NSV $STATEVARS $AUXVARS $ANSW $ELIST $AUXDE)
+    NIL
+    (COND ((NOT (MFUNCTION-CALL $LISTP $ODES))
+	     (SETQ $ODES (LIST '(MLIST) $ODES))))
+    (SETQ $T (SIMPLIFY (MFUNCTION-CALL $PART $ODES 1 1 2)))
+    (SETQ $NSV (MFUNCTION-CALL $LENGTH $ODES))
+    (SETQ $STATEVARS (SETQ $AUXVARS (SETQ $ELIST '((MLIST)))))
+    (DO (($I 1 (+ 1 $I))) ((IS-BOOLE-CHECK (MGRP $I $NSV)) '$DONE)
+      (SETQ
+	$STATEVARS
+	(SIMPLIFY (MFUNCTION-CALL
+		    $ENDCONS (SIMPLIFY (MFUNCTION-CALL $PART $ODES $I 1 1))
+		    $STATEVARS)))
+      (SETQ
+	$AUXVARS
+	(SIMPLIFY
+	  (MFUNCTION-CALL
+	    $ENDCONS (MARRAYREF (TRD-MSYMEVAL $AUX '$AUX) $I) $AUXVARS))))
+    (SETQ
+      $ANSW
+      (LIST '(MLIST)
+	    (DOSUM
+	      (FUNGEN&ENV-FOR-MEVALSUMARG
+		($ODES) ($I)
+		(MUL* (SIMPLIFY (MFUNCTION-CALL $RHS (MARRAYREF $ODES $I)))
+		      (MARRAYREF (TRD-MSYMEVAL $AUX '$AUX) $I))
+		((MTIMES) (($RHS) (($ODES ARRAY) $I)) (($AUX ARRAY) $I)))
+	      '$I 1 $NSV T)))
+    (DO (($I 1 (+ 1 $I))) ((IS-BOOLE-CHECK (MGRP $I $NSV)) '$DONE)
+      (SETQ
+	$AUXDE
+	(SIMPLIFY
+	  (LIST
+	    '(MEQUAL)
+	    (SIMPLIFY (LIST '(%DERIVATIVE)
+			    (MARRAYREF (TRD-MSYMEVAL $AUX '$AUX) $I) $T))
+	    (*MMINUS
+	      (SIMPLIFY (MFUNCTION-CALL $DIFF (MARRAYREF $ANSW 1)
+					(MARRAYREF $STATEVARS $I)))))))
+      (SETQ $ANSW (SIMPLIFY (MFUNCTION-CALL $ENDCONS $AUXDE $ANSW)))
+      (COND
+	((LIKE (SIMPLIFY (MFUNCTION-CALL $RHS $AUXDE)) 0)
+	   (SETQ
+	     $ANSW
+	     (SIMPLIFY
+	       (MFUNCTION-CALL
+		 $ENDCONS
+		 (SIMPLIFY
+		   (LIST '(MEQUAL) (MARRAYREF (TRD-MSYMEVAL $AUX '$AUX) $I)
+			 (MARRAYREF (TRD-MSYMEVAL $C '$C) $I)))
+		 $ANSW))))))
+    (DO (($ITEM) (MDO (CDR $ANSW) (CDR MDO))) ((NULL MDO) '$DONE)
+      (SETQ $ITEM (CAR MDO))
+      (SETQ
+	$ELIST
+	(SIMPLIFY (MFUNCTION-CALL
+		    $ENDCONS
+		    (SIMPLIFY ($FIRST (SIMPLIFY (MFUNCALL '$LDISP $ITEM))))
+		    $ELIST))))
+    $ELIST)
+  '$T '$NSV '$STATEVARS '$AUXVARS '$ANSW '$ELIST '$AUXDE))
+
+(DEFPROP $EL T TRANSLATED)
+
+(ADD2LNC '$EL $PROPS)
+
+(DEFMTRFUN
+ ($EL $ANY MDEFINE NIL NIL) ($F $YLIST $TLIST) NIL
+ ((LAMBDA ($LY $LT $FSUB $ENERGYCON $FY $ANSW $ELIST)
+   NIL
+   (COND ((NOT (MFUNCTION-CALL $LISTP $TLIST))
+	    (SETQ $TLIST (LIST '(MLIST) $TLIST))))
+   (COND ((NOT (MFUNCTION-CALL $LISTP $YLIST))
+	    (SETQ $YLIST (LIST '(MLIST) $YLIST))))
+   (SETQ $LY (MFUNCTION-CALL $LENGTH $YLIST))
+   (SETQ $LT (MFUNCTION-CALL $LENGTH $TLIST))
+   (SETQ $FSUB $F)
+   (SETQ $ENERGYCON (LIKE $LT 1))
+   (DO (($I 1 (+ 1 $I))) ((IS-BOOLE-CHECK (MGRP $I $LY)) '$DONE)
+     (DO (($J 1 (+ 1 $J))) ((IS-BOOLE-CHECK (MGRP $J $LT)) '$DONE)
+       (MARRAYSET
+	 (SIMPLIFY
+	   (MFUNCTION-CALL $DERIVDEGREE $FSUB (MARRAYREF $YLIST $I)
+			   (MARRAYREF $TLIST $J)))
+	 (TRD-MSYMEVAL $DD '$DD) $I $J)
+       (COND ((IS-BOOLE-CHECK
+		(MGRP (MARRAYREF (TRD-MSYMEVAL $DD '$DD) $I $J) 1))
+		(SETQ $ENERGYCON NIL)))
+       (DO (($KK 1 (+ 1 $KK)))
+	   ((IS-BOOLE-CHECK
+	      (MGRP $KK (MARRAYREF (TRD-MSYMEVAL $DD '$DD) $I $J)))
+	      '$DONE)
+	 (SETQ
+	   $FSUB
+	   (SIMPLIFY
+	     (MFUNCTION-CALL
+	       $SUBSTITUTE
+	       (SIMPLIFY
+		 (LIST '(MEQUAL)
+		       (SIMPLIFY (LIST '(%DERIVATIVE) (MARRAYREF $YLIST $I)
+				       (MARRAYREF $TLIST $J) $KK))
+		       (MARRAYREF (TRD-MSYMEVAL $DYDT '$DYDT) $I $J $KK)))
+	       $FSUB))))))
+   (COND ((NOT (MFUNCTION-CALL $FREEOF (MARRAYREF $TLIST 1) $FSUB))
+	    (SETQ $ENERGYCON NIL)))
+   (SETQ $ANSW (COND ((IS-BOOLE-CHECK $ENERGYCON) (LIST '(MLIST) $FSUB))
+		     (T '((MLIST)))))
+   (DO (($I 1 (+ 1 $I))) ((IS-BOOLE-CHECK (MGRP $I $LY)) '$DONE)
+     (SETQ
+       $FY (SIMPLIFY (MFUNCTION-CALL $DIFF $FSUB (MARRAYREF $YLIST $I))))
+     (SETQ
+       $ANSW
+       (SIMPLIFY
+	 (MFUNCTION-CALL
+	   $ENDCONS
+	   (SIMPLIFY
+	     (LIST
+	       '(MEQUAL)
+	       (DOSUM
+		 (FUNGEN&ENV-FOR-MEVALSUMARG
+		   ($I) ($J)
+		   (DOSUM
+		     (FUNGEN&ENV-FOR-MEVALSUMARG
+		       ($FSUB $J $I $TLIST) ($KK)
+		       (MUL*
+			 (POWER -1 (ADD* $KK -1))
+			 (SIMPLIFY
+			   (LIST '(%DERIVATIVE)
+				 (SIMPLIFY
+				   (MFUNCTION-CALL
+				     $DIFF $FSUB
+				     (MARRAYREF (TRD-MSYMEVAL $DYDT '$DYDT)
+						$I $J $KK)))
+				 (MARRAYREF $TLIST $J) $KK)))
+		       ((MTIMES)
+			((MEXPT) ((MMINUS) 1) ((MPLUS) $KK ((MMINUS) 1)))
+			((%DERIVATIVE)
+			 (($DIFF) $FSUB (($DYDT ARRAY) $I $J $KK))
+			 (($TLIST ARRAY) $J) $KK)))
+		     '$KK 1 (MARRAYREF (TRD-MSYMEVAL $DD '$DD) $I $J) T)
+		   (($SUM)
+		    ((MTIMES)
+		     ((MEXPT) ((MMINUS) 1) ((MPLUS) $KK ((MMINUS) 1)))
+		     ((%DERIVATIVE)
+		      (($DIFF) $FSUB (($DYDT ARRAY) $I $J $KK))
+		      (($TLIST ARRAY) $J) $KK))
+		    $KK 1 (($DD ARRAY) $I $J)))
+		 '$J 1 $LT T)
+	       $FY))
+	   $ANSW)))
+     (COND
+       ((IS-BOOLE-CHECK $ENERGYCON)
+	  (MARRAYSET
+	    (ADD*
+	      (MARRAYREF $ANSW 1)
+	      (*MMINUS
+		(MUL* (SIMPLIFY
+			(MFUNCTION-CALL
+			  $DIFF $FSUB
+			  (MARRAYREF (TRD-MSYMEVAL $DYDT '$DYDT) $I 1 1)))
+		      (SIMPLIFY (LIST '(%DERIVATIVE) (MARRAYREF $YLIST $I)
+				      (MARRAYREF $TLIST 1))))))
+	    $ANSW 1)))
+     (COND
+       ((AND (LIKE $FY 0) (LIKE $LT 1)
+	     (LIKE (MARRAYREF (TRD-MSYMEVAL $DD '$DD) $I 1) 1))
+	  (SETQ
+	    $ANSW
+	    (SIMPLIFY
+	      (MFUNCTION-CALL
+		$ENDCONS
+		(SIMPLIFY
+		  (LIST
+		    '(MEQUAL)
+		    (SIMPLIFY
+		      (MFUNCTION-CALL
+			$DIFF $FSUB
+			(MARRAYREF (TRD-MSYMEVAL $DYDT '$DYDT) $I 1 1)))
+		    (MARRAYREF (TRD-MSYMEVAL $K '$K) $I)))
+		$ANSW))))))
+   (COND
+     ((IS-BOOLE-CHECK $ENERGYCON)
+	(MARRAYSET (SIMPLIFY (LIST '(MEQUAL) (MARRAYREF $ANSW 1)
+				   (MARRAYREF (TRD-MSYMEVAL $K '$K) 0)))
+		   $ANSW 1)))
+   (DO (($I 1 (+ 1 $I))) ((IS-BOOLE-CHECK (MGRP $I $LY)) '$DONE)
+     (DO (($J 1 (+ 1 $J))) ((IS-BOOLE-CHECK (MGRP $J $LT)) '$DONE)
+       (DO (($KK 1 (+ 1 $KK)))
+	   ((IS-BOOLE-CHECK
+	      (MGRP $KK (MARRAYREF (TRD-MSYMEVAL $DD '$DD) $I $J)))
+	      '$DONE)
+	 (SETQ
+	   $ANSW
+	   (SIMPLIFY
+	     (MFUNCTION-CALL
+	       $SUBSTITUTE
+	       (SIMPLIFY
+		 (LIST '(MEQUAL)
+		       (MARRAYREF (TRD-MSYMEVAL $DYDT '$DYDT) $I $J $KK)
+		       (SIMPLIFY (LIST '(%DERIVATIVE) (MARRAYREF $YLIST $I)
+				       (MARRAYREF $TLIST $J) $KK))))
+	       $ANSW))))))
+   (SETQ $ELIST '((MLIST)))
+   (DO (($EQN) (MDO (CDR $ANSW) (CDR MDO))) ((NULL MDO) '$DONE)
+     (SETQ $EQN (CAR MDO))
+     (SETQ
+       $ELIST
+       (SIMPLIFY (MFUNCTION-CALL
+		   $ENDCONS
+		   (SIMPLIFY ($FIRST (SIMPLIFY (MFUNCALL '$LDISP $EQN))))
+		   $ELIST))))
+   $ELIST)
+  '$LY '$LT '$FSUB '$ENERGYCON '$FY '$ANSW '$ELIST))
+
+(DEFPROP $CONVERT T TRANSLATED)
+
+(ADD2LNC '$CONVERT $PROPS)
+
+(DEFMTRFUN
+  ($CONVERT $ANY MDEFINE NIL NIL) ($ODES $YLIST $T) NIL
+  ((LAMBDA ($ANSW)
+     NIL
+     (PROG ()
+	  (COND ((NOT (MFUNCTION-CALL $LISTP $YLIST))
+		   (SETQ $YLIST (LIST '(MLIST) $YLIST))))
+	  (SETQ $ANSW (SIMPLIFY (MFUNCALL '$EV $ODES '$EVAL)))
+	  (DO (($YY) (MDO (CDR $YLIST) (CDR MDO))) ((NULL MDO) '$DONE)
+	    (SETQ $YY (CAR MDO))
+	    (SETQ
+	      $ANSW
+	      (SIMPLIFY
+		(MFUNCTION-CALL
+		  $SUBSTITUTE
+		  (SIMPLIFY
+		    (LIST
+		      '(MEQUAL) $YY
+		      (SIMPLIFY
+			(MFUNCTION-CALL $FUNMAKE $YY (LIST '(MLIST) $T)))))
+		  $ANSW))))
+	  (RETURN $ANSW)))
+   '$ANSW))
+
+(SETQ ^W NIL)
+
+(compile-forms-to-compile-queue)
+

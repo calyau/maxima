@@ -1,0 +1,40 @@
+Date: 16 DEC 1980 2010-EST
+From: LSH at MIT-MC (Lars S. Hornfeldt)
+Subject: Human-like new TRIG-SIMPLIFIER and SUMSUBSTITUTOR
+To: INFO-MACSYM at MIT-MC, INFO-TENSOR at MIT-MC, HEP at MIT-MC
+
+
+TRIGSUM(exp);  is a new function (autoloading) that exploits the
+TRIG-onometric SUM-relation:     2         2
+                              sin (x) + cos (x) - 1  ==> 0
+
+in an optimal fashion; ie it uses DIFFERENT formulations:
+   2      2                   2        2             2        2
+sin  + cos  ==> 1,     1 - sin  ==> cos ,     1 - cos  ==> sin
+
+selectively only where they are BENEFICIAL, and the program returns
+THAT mixture of sin and cos that constitutes the least number of terms.
+For instance, TRIGSUM on the 6-term-expression:
+
+  (ONE - C     )*SIN(X)^2 \  Returns 3 terms: /    (      S)*SIN(X)^2
++ (ONE      - S)*COS(X)^2  >      ===>       <   + (    C  )*COS(X)^2
++ (    + C  + S)          /                   \  + (ONE    )
+
+This works equally well and fast if multiplied with any sin-cos power.
+
+TRIGSUM uses the sum-substitutor (=1yr work) in STENSR. For references
+and pointers see SHARE;STENSR USAGE.  Any arb.-length-sum of arb.-length-
+products of tensors can be substituted, and in PRINCIPLE also of scalars.
+Send bugs, and such sum-relations that you want to exploit, to me.
+
+Being a complicated program, it's not small, but you can ALWAYS type
+TRIGSUM(..);  since it tests space to fit the program before it autoloads.
+Also the workspace consumption =0, in contrast to explicit subst. sin=>cos.
+
+Do   :PRINT LSH;TRGSUM DEMOUT    to see a demo writefile, or run the demo
+itself by  DEMO(TRGSUM,DEMO,DSK,LSH)$   which takes 5 cpu-min to end
+[but (a curiosum): substituting sin=>cos would give results requiring
+an Earthsized machine to store, and would take 10^7 Universe-lifetimes].
+
+-lsh
+

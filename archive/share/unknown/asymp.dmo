@@ -1,0 +1,18 @@
+/* This file demonstrates the facilities of the ASYMP package. */
+/* Some of this DEMO can take quite a long time, so you may prefer
+	to look at the DEMOUT file which contains the output from
+	an extended version of this DEMO. */
+showtime:true$
+load('asymp);
+
+graph1:diagram(line(a,b,1,m),line(b,c,2,m),line(c,a,3,mm),extline(a,4,p),
+	extline(b,5,q),extline(c,6,-p-q))$
+bound(graph1,[[m,p,q],mm,inf]);
+graph2:diagram(line(a,b,2,m),line(b,c,3,m),line(c,d,5,m),line(d,a,4,m),
+	line(b,d,6,m),extline(a,1,p),extline(c,7,-p))$
+bound(graph2,[m,p,inf]);
+graph3:diagram(line(a,b,1,m),line(b,c,2,m),line(c,d,3,m),line(d,e,4,m),
+	line(e,f,5,m),line(f,a,6,m),line(b,e,7,m),line(f,c,8,m),
+	extline(a,9,p),extline(d,10,-p))$
+bound(graph3,[m,p,inf]);
+

@@ -1,0 +1,44 @@
+The file SHARE1;INEQ FASL contains a number of automatic simplifications
+for manipulating inequalities. Be careful about using parentheses
+around the inequalities: when the user types in (A>B)+(C=5) the
+result is A+C>B+5; but A>B+C=5 is a syntax error; and (A>B+C)=5 is
+something else entirely. Do DISPRULE(ALL); to see a complete listing
+of the rule definitions. The user will be queried if MACSYMA is
+unable to decide the sign of a quantity multiplying an inequality.
+
+The most common mis-feature is illustrated by:
+eq:a>b;
+2*eq;
+%-eq;
+Another problem is 0 times an inequality; the default to have this
+turn into 0 has been left alone. However, if you type 
+X*(some inequality); and MACSYMA asks about the sign of X and you
+respond ZERO; (or Z;), the program will return X*(some inequality)
+and not use the info that X is 0. You should do EV(%,X:0) in such
+a case, as the database will only be used for comparison purposes
+in decisions, and not for the purpose of evaluating X.
+[Thus, INTEGRATE((I+1)*X^I,X); will ask about I+1 being zero or non
+zero, and if you say Z;, the answer is (I+1)*LOG(X), so the decision
+in INTEGRATE made use of the information, while (I+1) was not
+evaluated.]
+
+The user may note a slower response when this package is loaded, as
+the simplifier is forced to examine more rules than without the
+package, so you might wish to remove the rules after making use of
+them. Do KILL(RULES); to eliminate all of the RULES (including any
+that you might have defined); or you may be more selective by
+KILL'ing only some of them; or use REMRULE on a specific rule.
+
+*** Note that if you load this package after defining your own  ***
+    rules you will clobber your rules that have the same name. The
+    rules in this package are:
+    *RULE1 ... *RULE8   +RULE1 ... +RULE18
+    and you must enclose the rulename in quotes to refer to it, as
+    in  REMRULE("+","+RULE1"); to specifically remove the first rule
+    on "+" (capital letters in the name are essential, also), or
+    DISPRULE("*RULE2"); to display the definition of the second
+    multiplicative rule.
+
+Suggestions, comments, and bugs to LPH@MIT-MC.
+
+Leo P. Harten  May 12, 1983

@@ -1,0 +1,32 @@
+
+SHOWTIME:ALL$
+/* This file proves that the Schwarzschild line element satisfies
+the Einstein vacuum equations as well as computing other tensors
+and invariants */
+/* .mc version is presently available in DOE MACSYMA */
+IF GET('CTENSR,'VERSION) = FALSE THEN LOAD("max$disk:[tensor]CTENSR.mc")$
+/* the following allows the batch program to run by presetting flags */
+SETFLAGS()$
+/* this calls for the rational simplification of geometrical objects */
+RATFAC:TRUE$
+/* the dimension of the manifold */
+DIM:4$
+/* the coordinate labels */
+OMEGA:[X,Y,Z,T]$
+/* THIS IS THE SCHWARZSCHILD METRIC IN STANDARD COORDINATES */
+LG:
+MATRIX([1/(1-2*M/X),0,0,0],[0,X^2,0,0],[0,0,X^2*SIN(Y)^2,0],[0,0,0,2*M/X-1]);
+/* computes metric inverse and determines diagonality */
+METRIC()$
+/* computes and displays mixed Christoffel symbols */
+CHRISTOF(MCS)$
+/* computes and ratsimps Ricci tensor */
+RICCICOM(TRUE)$
+/* computes scalar curvature */
+SCURVATURE();
+/* computes Riemann tensor */
+RIEMANN(TRUE)$
+/* computes contravariant Riemann tensor */
+RAISERIEMANN(FALSE)$
+/* computes the Kretchmann invariant Rijkl^2 */
+RINVARIANT();

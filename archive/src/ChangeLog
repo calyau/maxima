@@ -1,0 +1,144 @@
+Wed Dec 13 22:38:05 1989  Bill Schelter  (wfs at nicolas.ma.utexas.edu)
+
+	* in psmonsubst check that the arg p is not the constant series.
+	eg. taylor(x*(1-%e^(2*x)),x,0,0); yields a call where the
+	arg is a rational (0 . 1), and so no substitution is necessary.
+
+Sat Nov 11 07:24:45 1989  Bill Schelter  (wfs at nicolas.ma.utexas.edu)
+
+	* There seem to be other problems with resultant:mod;
+	We have removed its setting, so that an error will be
+	signalled in this mode.
+	* misc changes to help file_search
+	* describe fixed [it was missing a number of doc items]
+	* nutplot added (see nutplot.lisp) for 2d plots with nutmeg
+
+
+Tue Jul  4 08:11:59 1989  Bill Schelter  (wfs at rascal)
+
+	* fix resultant:mod; option in ufact.lisp.
+	Boole was given more than the 3 args mandated by
+	common lisp.
+
+Fri Mar 17 18:27:40 1989  Bill Schelter  (wfs at rascal)
+
+	* Remove a #'ncons in trans3.lisp, change defmtrfun
+	to refer to defmfun, so that the nargs construct
+	will be ok.
+	* Fix bug in File_search so that lisp pathname objects
+	permitted in the file_search path.
+	
+
+Tue Oct 25 02:51:50 1988  Bill Schelter  (wfs at rascal)
+
+	* Added Lazard's trigrat package.
+	Added autoloading capability for maxima functions.
+	(see max_ext.lisp and autol.lisp)
+        Fixed the #$ reader array in commac.lisp to be adjustable.
+	Changed primcyclo because cyclotomic can return a fixnum
+	(and I think this can happen there). (file factor.lisp).
+	
+
+Tue Oct  4 15:54:59 1988  Bill Schelter  (wfs at rascal)
+
+	* nparse.lisp:
+	make the parse error swallow further input, and
+	print a short message of what was wrong, then
+	return to the prompt.   This is for non lispms,
+	there we interface with the rubout handler.
+	add the tensor/* files to the distribution.
+	ctensor.mac has been tested a bit, itensr has not.
+	src/maxima-mode.el the gnu emacs maxima mode has been
+	improved.
+
+Mon Oct  3 10:07:14 1988  Bill Schelter  (wfs at rascal)
+
+	* spgcd.lisp: determine-lifting-factor had an illegal let*
+
+Sun Oct  2 22:40:19 1988  Bill Schelter  (wfs at rascal)
+
+	* Altered the maxima hash table referencing and setting
+	under use_fast_arrays, to use all indicies not just the
+	first.   In the end it is probably worth the check
+	for more indicies, and to do the consing. files mlisp, acall,ar,array
+	* copy-rest-arg a macro (does nothing except on lispm)file:clmacs
+	* fixed up the maxima-mode.el somewhat
+	* altered let in letmac to be closer to the common lisp let,
+	and to allow declares.  Note the order of evaluation
+	in a let had been wrong.   It would appear (amazingly) that
+	not too much code depends on the order of evaluation there.
+	* added special declarations in make-tramp$ (numer.lisp)
+	This bug showed up in trying to do romberg(sin(x),x,0,2);
+	* changed the mread-synerr syntax error message to not go into the
+	debugger.
+
+Thu Sep 29 11:17:35 1988  Bill Schelter  (wfs at rascal)
+
+        Some changes done fairly recently:
+	* Numerous changes to bessel to make it work.
+	* changes to hyp and hpgeo.lisp to make specint work
+	* addition of specint to tests.
+	* DOC file changed to allow use of find-doc.el
+	a gnu emacs utility (source  for find-doc.el is inside the akcl
+	distribution).   Allows completion on doc strings.
+	* maxima-mode.el file included for gnu emacs,
+	which supports a maxima mode for buffers with
+	maxima code, and an inferior-maxima-mode, for
+	running maxima inside emacs in a shell or shell
+	like window.   Appropriate syntax matching is supplied.
+	* makefiles changed to allow them to work on
+	systems like HP which don't support the include syntax.
+	
+
+Thu Sep 15 16:46:49 1988  Bill Schelter  (wfs at rascal)
+
+	* Fix bug in matcom.lisp (to do with specials and
+	rule definitions).
+	Misc fixes to mload.
+	Fix bug involving complaint about format args
+	when trying to print version.  (the file
+	src/version.lisp was not always getting loaded)
+	
+	
+
+Thu Jun 16 12:07:08 1988  Bill Schelter  (wfs at rascal)
+	* Fix defn of $status
+
+	* Added autoloading capabilities.  If you load
+	autol.lisp and max_ext.lisp, just before dumping
+	AND set (get :maxima :object-path) to a full
+	pathname then autoloading of things like nusum,..
+	should take place.  It may be possible to delete
+	a number of sources from the default load.
+	
+
+Wed Jun 15 19:46:40 1988  Bill Schelter  (wfs at rascal)
+
+        * Fix example to work.  Add manual.demo to the doc directory.
+	
+	* Extend alphalessp to make
+	numbers<strings<symbols<lists< any other,
+	and if x and y aren't in the above types we compare
+	the printed representations.
+
+	* ../src/version.lisp was not being loaded in akcl makefile,
+	version, causing error in macsyma-top-level, when
+	trying to print the version.
+	
+
+Tue May 24 09:42:41 1988  Bill Schelter  (wfs at rascal)
+
+	* Changed the $*, $+,.. to use double-float.
+	shadow float to be such that (float x) --> double.
+	Reader reads doubles by default.  
+
+	* Change the max,min  constants in cpoly.  They needed
+	to be doubles.  I left them approximately the same size
+	as before (namely used the short-float max min), to avoid
+	overflow problems.
+
+	* Verified the test suite. All ok.
+	
+	
+	
+

@@ -1,0 +1,16 @@
+#!/bin/sh
+cp $1 foo.bak
+NEW=$2
+if [ -f ${NEW}/src/make.lisp ] ; then true;
+else echo "${NEW}" is not a suitable path ;
+exit 1; fi
+
+echo using ${NEW}
+
+cat foo.bak | sed -e "s:\([ \"]\)[a-z/]*/public/maxima:\\1${NEW}:g" > $1
+
+
+
+
+
+

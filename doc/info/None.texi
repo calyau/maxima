@@ -1,0 +1,425 @@
+@node None, Function and Variable Index, Ctensor, Top
+@chapter None
+@menu
+* Introduction to None::        
+* Definitions for None::        
+@end menu
+
+@node Introduction to None, Definitions for None, None, None
+@section Introduction to None
+@section DILOGARITHMS
+ - See POLYLOGARITHMS.
+
+@section B
+ (D1)                             (N + 1)!
+
+@section FILE
+ - A file specification is a string such as "foo".  You may
+also specify just the symbol foo.  So load("foo") and
+load(foo) should do the same thing (unless foo has a value).
+Symbols will be mapped to lower cases, and strings left alone.
+There are various FILE_SEARCH lists.   see FILE_SEARCH.
+
+@section HACIJAN
+ - An implementation of Hacijan's linear programming algorithm
+is available by doing BATCH("kach.mc")$.  Details of use are
+available by doing BATCH("kach.dem");
+
+@section IMSL
+ - For information on MACSYMA-IMSL packages available do:
+PRINTFILE(IMSL,USAGE,SHARE2); IMSL-based routines currently return
+[SUCCESS, ...] or [ERROR, ...].  They will soon be changed to return
+[SUCCESS, ...], [WARNING, ...] and [ERROR, ...].
+
+@section INDEX_FILE_DIM
+ ,symbol-returned-by-OPEN_INDEX_FILE) - returns an
+integer indicating the number of expressions in the indexed file.
+See DESCRIBE(OPEN_INDEX_FILE);.
+
+@section IRREDUCIBLE
+ - This command has been removed.
+
+@section ITS
+ - The operating system under which MACSYMA runs on the MIT-MC
+machine.  It stands for "Incompatible Timesharing System".
+
+@section MAP_OVER_INDEX_FILE
+ ,|function, fileobject|) is convenient for
+generating an index list of properties of the objects in a file vs.
+their positions in the file.  See DESCRIBE(MAKE_INDEX_FILE);.
+
+@section MODRESULT
+ - This switch is obsolete.  The new RESULTANT switch should
+be used.  Do DESCRIBE(RESULTANT); for details.
+
+@section MORE
+ Processing - The term used to describe the action of a CRT
+console when it stops at the bottom of the screen to allow the user
+to finish reading.  See PAGEPAUSE and MOREWAIT for details.
+
+@section NTRIG
+ - SHARE1;NTRIG FASL allows MACSYMA to compute trig functions
+with arguments of the form N*%PI/10 for integer N.  Do LOAD(NTRIG) to
+access this. The main functions are USIN(N) and UCOS(N).
+
+@section NUMERICAL
+ - There are a number of packages for numerical methods in
+MACSYMA.  See IMSL and the SHARE directories.
+
+@section SET
+ - See Sets.
+
+@section STORENUM
+ - The value of this variable, an integer, is the second name
+of the last file written by the automatic storage scheme.  (See
+DESCRIBE(DSKGC)).  Each time a file is written, STORENUM is first
+increased by 1, so it must always be an integer.  It is initially set
+to 1000.
+
+@section UPDATE
+ - The Update file has been moved to the MACDOC directory, so
+you should do PRINTFILE(UPDATE,>,MACDOC); to read it.  Also, you may
+find information of a useful nature on this directory, so you may want 
+to list it (LISTFILES(MACDOC); in MACSYMA) and print some other files
+also.
+Here follows a list of changes to MACSYMA since the Version 10
+manual.  Do DESCRIBE(cmd); to see their documentation:
+New Functions or variables: LCM, RNCOMBINE.
+New SHARE packages of interest:  ATRIG1, NTRIG.
+The following functions have been removed from MACSYMA:  TRIGSUM.
+
+@section ---Begin
+ new doc by wfs
+@section EDITOR-ZMACS
+ The lisp machine version of macsyma contains many helpful
+editor commands.  The best way to find out about them is to do Meta-X
+Apropos the string "macsyma" since most of the commands involve this
+name.  Macsyma Mode is obtained by doing the extended command Macsyma
+mode.  When in macsyma mode the keysrokes such as ctrl-shift-C refer to
+compiling macsyma code in a marked region, or else between the $ or ;
+delimiters if no region is marked.
+
+It is possible to evaluate expressions into the buffer by typing
+control-shift-I (for example a line label D3 has a value you want to
+alter).  The macsyma evaluator will be called on the current region and
+the result will be ground into the buffer.  It can then be altered and
+reevaluated by using control-shift-E to evaluate it.
+
+
+@section FILENAMES--lispm
+   Since source files for Macsyma on the lisp machines
+will often be on many different machines, it is difficult to have a good
+file search mechanism.  The best thing for a user to do is to specify a
+file name as a string, as fully as he finds necessary.  The syntax
+should be that of the machine on which the file resides.  For example
+BATCH("/home/wfs/test.mac") or
+DEMO("/home/wfs/defint.dmo") are valid specifications, for a
+Using the input editor long pathnames are typed rather easily,
+and of course there is always the option of defining a logical pathname
+to stand for them.
+
+The current logical pathnames for the sources should be
+"Maxima-source:maxima;foo.lisp".
+
+@section FUNCTION-ARGUMENTS
+ To find the function argument of a function when in
+the input editor of a macsyma listener you may type Control-meta-A when
+the cursor is placed just after the name of the function.  Unfortunately
+some macsyma functions use variable names which are not very suggestive.
+If a function takes keyword arguments, these can be entered at macsyma
+level by typing ?:..  . For example if you want to call the common lisp
+function member which takes a keyword test you would enter
+
+ AA:MAKE_HASH_TABLE(?:TEST,?EQL); 
+
+This will use the lisp function eql for comparison of entries in AA.
+AA[1]:2;
+AA[1]; ==> 2.
+
+@section MACSYMA-LISTENER
+ Select A (or System A) selects the most current 
+macsyma listener.  You may also click on the system menu, and create
+new different shaped listeners.   The line labels are shared among 
+the listeners, so that you may refer to line labels defined in one
+window, in another window.  
+
+Enabling or disabling more-processing (the pause at the end of a page of
+display) is done as with lisp listeners (eg. use the function key).
+
+@section HELP--see
+:documentation  
+
+@section  XXX
+
+
+
+@c end concepts None
+@node Definitions for None,  , Introduction to None, None
+@section Definitions for None
+@defun COMPRESS
+ - This command has been withdrawn, see COLLAPSE.
+
+@end defun
+@defun COMPRESS_FILE
+ - This command has been withdrawn, see COLLAPSE.
+
+@end defun
+@defvar CURSOR
+ default: [$] is the prompt symbol of the MACSYMA editor.
+
+@end defvar
+@defun DISKUSE 
+(username) returns the total number of disk blocks in use by a
+user.  The result is of the form <n>*BLOCKS
+
+@end defun
+@defvar DOVARD_VIEWPORT
+ default: [1,7,1,7] determines the perspective for
+Dover output plots, similar to VIEWPT.  It accepts 4 arguments,
+[XMIN,XMAX,YMIN,YMAX] in inches on the page.
+
+@end defvar
+@defvar DSKGC
+ default: [FALSE] if TRUE will cause user defined values,
+functions, arrays, and line labelled expressions to be automatically
+stored on disk whenever the system determines that the available
+in-core space is getting low.  (For historical reasons this is also
+a function, but it should be used as a switch.  Please use it as
+described here, not as a function.)
+
+@end defvar
+@defvar DSKUSE
+ default: [FALSE] if TRUE, from this point in the computation
+on labelled expressions will be written out periodically onto the
+disk.  (A labelled expression is one which is referred to by a line
+label, e.g. D4, C7, E12.)  Once an expression is written onto the disk
+it will no longer reside in main memory and most of the main memory
+storage taken up by it will be released. When the user attempts to
+reference an expression which has been stored onto the disk, MACSYMA
+will retrieve the correct value from the disk file.
+
+@end defvar
+@defvar DYNAMALLOC
+ default: [FALSE] if TRUE will allocate additional space
+whenever necessary.
+
+@end defvar
+@defun ED 
+() - calls the NIL editor, which is called STEVE.  STEVE is an editor
+for CRT consoles, which is best at speeds of 1200 baud or greater.
+The interface it presents is close to that of the EMACS editor used
+on the TOPS-20 and ITS operating systems.  Doing
+	TEACH_STEVE();
+will run a tutorial on the editor.   At this time it is unfortunately
+not possible to either "zap" an expression from a command line into
+the editor, nor to "zap" an edited expression back to MACSYMA for
+evaluation;  however, the editor can be used for file editing.
+DESCRIBE(EDITOR) for information about the MACSYMA line editor.
+
+@end defun
+@defun EDITOR
+ - There is a line editor in MACSYMA, which you may enter by typing
+an altmode (the "esc" key on most consoles) for PDP-10 and NIL versions
+of MACSYMA, and & (ampersand) for Multics.  Your current command line
+will be automatically brought into the editor for you to edit.  Commands
+are terminated by two altmodes (two &'s on Multics).  An additional
+two altmodes will return you to MACSYMA with the edited string on your
+command line.
+Some useful commands:
+Command         Action
+-------         ______
+nC              moves the cursor past n characters.
+nR              moves the cursor past n characters in the
+                 reverse direction (nR = -nC).
+nSstring<$>     moves the cursor to the right (left if n is
+                 negative) of the nth occurrence of "string" in
+                 the input string.
+) or ]          moves the cursor right from the current position
+                 over the next balanced pair of parentheses (or
+                 brackets).
+( or [          similar to ) or ] but moves left.
+nD              deletes n characters, and saves them in the
+                 "save-register" (see the GR command below).
+nK              deletes all the characters through the nth carriage return
+                 (0K kills left), and saves them in the "save-register";
+                 e.g., K deletes the remainder of this line.
+Istring<$>      inserts the characters "string" at the current cursor
+                 position.  The cursor is positioned at the right of
+                 the inserted text.  If no argument is given then the
+                 string of the last I command which had one is used.
+GR              inserts at the current cursor position the characters
+                 deleted by the last use of D or K.  Thus GR may be used
+                 in combination with D or K to move characters from one
+                 place to another in the input string; or to recover
+                 from an accidental use of D or K.  There is only one
+                 "save-register".
+
+@end defun
+@defun EMACS 
+() - calls the NIL editor.  DESCRIBE(ED) for more information.
+The name EMACS derives from the editor of that name used on the ITS
+and TOPS-20 operating systems.
+
+@end defun
+@defun FILEOP
+ - SHARE;FILEOP -- some file primitives for MC Macsyma users.
+Macsyma now provides some useful simple file primitives which were
+formerly only available in other system programs.
+To print the contents of a file on your terminal, say
+PRINTFILE(file,name,dsk,me);
+To list your directory, say LISTFILES(dsk,me).  If you use a shared
+directory such as USERS or PLASMA, only your files--the ones
+with your login name as first file name--will be shown.
+The length and date of creation of each file is also shown.
+The function FILELENGTH returns the length of the file argument
+in blocks and fractional blocks.
+In order to list just the names of your files without the
+length and date information, use QLISTFILES (Quick LIST Files)
+with the same arguments as LISTFILES.
+The function RENAMEFILE(oldname,newname) renames a file from oldname
+to newname.
+Details.
+The PRINTFILE command takes the same argument syntax as LOADFILE;
+the other two take the syntax of WRITEFILE.  LISTFILES indicates
+whether each file is stored on secondary disk and whether it
+has been backed up to tape (an exclamation point appears if
+it has not).
+The FILELENGTH command returns the length in blocks and fractional
+blocks: there are five characters in a word and 1024 words in a disk block.
+(So if it returns 5.6, the file is 6 blocks long, but the last block
+is only 60% full.  This file would be 5.6*1024*5 (= 28672) characters
+long.)  If the file named does not exist, an error message is printed,
+and False is returned to permit easier recovery in a program.
+Files may not be renamed across directories or devices. Both oldname
+and newname must be on the same directory. Renaming a file to a filename
+that already exists gives an error. You must explicitly DELFILE the
+existing file first if that's what you want.  Both oldname and newname
+must be list-type filespecs. example: 
+RENAMEFILE([myold,file,dsk,foo],[mynew,file]);
+
+@end defun
+@defvar FILESIZE
+ default: [] - The value of this variable is the number of
+expressions written into each file by the automatic disk storage
+scheme.  The default value is 16.
+
+@end defvar
+@defun FULLDISKUSE 
+(username) If no name is supplied, it defaults to the
+current user's.  Returns long list of info about user's disk usage of
+the form:
+  [["TOTAL FREE BLOCKS", [<pack-type>, <pack-number>, <n> BLOCKS],
+                         [<pack-type>, <pack-number>, <n> BLOCKS], ...]
+   ["DIRECTORY BLOCK USAGE", <directory-name>
+                             ["PRIMARY", <n> BLOCKS],
+                             ["SECONDARY", <n> BLOCKS]]
+   ["USER BLOCK USAGE", <user-name>,
+                        [PRIMARY, <n> BLOCKS],
+                        [SECONDARY, <n> BLOCKS]]]
+If the user has his own directory, the last element of the list ("USER
+BLOCK USAGE") is omitted since it would be the same as "DIRECTORY
+BLOCK USAGE".
+        <pack-type> ::= "PRIMARY PACK" or "SECONDARY PACK"
+        <pack-number> ::= a fixed point number
+        <n> ::= a fixed point number
+Occurrences of `<n> BLOCKS' are in the form of a Macsyma multiplication
+between a fixnum <n> and the Macsyma symbol BLOCKS.
+
+@end defun
+@defun DIRECTORY(path)
+List files in path.   Path may be something like "/home/wfs/*.mac"
+
+
+@end defun
+@defun LOGOUT 
+() - causes the user to be logged out and all jobs deleted.
+This is useful when it is desired to BATCH in a file and have the
+terminal logged out automatically when the computations are finished.
+This causes the process which invoked MACSYMA to execute a LOGOUT
+command.
+
+@end defun
+@defun MAIL 
+("message") will send mail to MACSYMA.  This may be used to report
+problems or bugs.
+MAIL(username,"message") will send mail to a specific user.
+Expressions may be included by referring to them, outside double
+quotes, when (and only when) a username is given, e.g.
+MAIL(ELLEN,"I am trying to integrate",D3,"but it asks for more list
+space.  What should I do?");
+Not supported yet in NIL Macsyma.
+
+@end defun
+@defun MAKE_INDEX_FILE 
+("filename"); will parse a batch file without
+evaluating it.  This is useful for debugging init files.  See
+DESCRIBE(init); and DESCRIBE(OPEN_INDEX_FILE);.
+
+@end defun
+@defvar MOREWAIT
+ default: [FALSE] - Controls the action of more processing.
+Currently in NIL Macsyma, the setting of this has no effect.
+When output is suspended and a --Pause-- or --More Display?-- prompt
+is issued, one may type a space to continue the output.  Typing any
+character other than space or rubout (delete) will continue the output,
+and leave the character around to be read as part of the next c-line
+and possibly intervening --Pause-- prompts.
+
+@end defvar
+
+
+@end defun
+
+@end defun
+@defvar PAGEPAUSE
+ default: [] - This is set by MACSYMA according to what the
+system knows about your terminal type.  If it is set to TRUE, then
+"more" processing, which involves the printing of --More display?-- or
+--Pause-- at the bottom of your screen or after so many lines on a
+printing terminal, and pausing, will be enabled.  It may be set to
+FALSE to turn off the "more" processing on a display terminal.
+PAGEPAUSE is sometimes useful in batch files on slow lines where you
+just wish to watch the output run past, and can keep up with the line
+speed well enough.
+
+@end defvar
+@defun PAUSE 
+() - Causes the display to "pause", printing "--Pause--" and
+waiting for the usual "space" for "yes" to resume printing.  Then it
+clears the screen and continues.  PAUSE("--Something else--"); will
+use "--Something else--" as the string printed instead of "--Pause--".
+PAUSE("--Something else--","--And some more--"); will use "--Something
+else--" instead of "--Pause--" and "--And some more--" instead of
+"--Continued--".
+
+@end defun
+
+@defun RENAMEFILE 
+(oldfilename, newfilename) - Gives a new name to a file.
+Oldfilename may name any file. It should use the list filename format
+- eg, [MYOLD,FILE,DSK,USERS5].  Newfilename must be a filename on the
+same device and directory.  Hence only filename1 and filename2 should
+be specified.  For example, [MYNEW,FILE].  Attempting to change the
+name of a file that does not exist, or to rename a file to the name of
+a file that exists already will generate an error; hence, it is not
+possible to inadvertently destroy a file using this command.
+
+@end defun
+
+@defun TAG_FILE_INSERT 
+(file-to-insert-into, file-to-insert) - Inserts a file
+created by the translator into a multiple entry tags file.
+
+@end defun
+@defun TIMEDATE 
+() prints out the current date and time.
+
+@end defun
+
+@defvar VERSION
+ default: [5,4,"Wed Oct ..."] - are the major and minor versions of MAXIMA.
+This could be useful if the user wants to label his output, or to associate
+bugs with a particular version.
+
+@end defvar
+

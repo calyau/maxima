@@ -1,0 +1,18 @@
+LOAD(ANTID)$
+DERIVABBREV : TRUE$
+/*
+   The demonstration functions chosen are the Nth derivatives of the
+product of the first M derivatives of U(x).  This function, G, is then
+integrated once using ANTID >.
+*/
+ FOR N : 1 THRU 2 DO 
+  FOR M : 0 THRU 3 DO (
+    G : DIFF(PRODUCT(DIFF(U(X), X, I), I, 0, M), X, N),
+      DISPLAY(ANTIDIFF(G, X, U(X)))  )$
+/*
+      The function need not be a polynomial, for example:
+*/
+G : DIFF(%E^U(X)*SIN(U(X)), X, 2);
+ANTIDIFF(G, X, U(X));
+ANTIDIFF(%, X, U(X));
+RATSIMP(%);

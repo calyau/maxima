@@ -1,0 +1,33 @@
+#!/bin/sh
+# provide some links back to the akcl directory.   If symbolic
+# links exist then just make one link, otherwise link them all..
+
+MAXDIR=$1
+KCLDIR=$2
+SYMB=$3
+if [ ! -f ${MAXDIR}/src/rat3a.lisp ] ;
+    then echo bad maxdir = ${MAXDIR} ;exit 1 ;
+fi
+if [ ! -f ${KCLDIR}/c/array.c ] ;
+    then echo bad KCLDIR = ${KCLDIR} ;exit 1 ;
+fi
+
+
+rm -f ${MAXDIR}/unixport/rsym
+ln ${SYMB} ${KCLDIR}/unixport/rsym  ${MAXDIR}/unixport/rsym
+
+if [ "" != "${SYMB}" ] ; then rm -r -f kcl
+  ln -s ${KCLDIR} ${MAXDIR}/kcl
+  exit 0
+fi
+
+
+if [ ! -f ${MAXDIR}/kcl/o/array.o ]  ;
+  then  rm -f -r ${MAXDIR}/kcl ;
+   mkdir ${MAXDIR}/kcl;
+   for v in o lsp cmpnew  ; do  mkdir ${MAXDIR}/kcl/$v ;
+    (cd ${KCLDIR} ; ln ${SYMB} $v/*.o $v/*.a $v/*.lsp ${MAXDIR}/kcl/$v);
+     done
+   mkdir ${MAXDIR}/kcl/unixport ;
+   ln ${SYMB} ${KCLDIR}/unixport/init_kcl.lsp  ${MAXDIR}/kcl/unixport
+fi

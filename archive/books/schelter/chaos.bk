@@ -1,0 +1,121 @@
+
+((face (maxima-eval-insert 3440 3441) (maxima-eval 372 860 1007 1166 1215 1508 1510 1598 1664 1804 2139 2305 2339 2564 2824 3440)) (book-command-arg))
+                 Chaos
+
+We look at the logistics growth equation
+
+          U[n+1] =  ro U[n] (1 - U[n])
+
+An initial value of u[0] and a value for ro, determine the behavior.
+However as we shall see in some ranges of ro the growth goes to
+one level for large n, and in some 2 or more levels.  Finally for
+some values of ro the value of u[n] is really chaotic for large
+
+              "Click Here First";
+
+       iterate_eqn(un,form,initial,beg,m):= (
+       kill(f,h),
+       define(h(n),sublis([un=f[n]],form)),
+       f[n]:=h(n-1),
+       f[0]:initial, for i:0 thru beg do f[i],
+       create_list([i,f[i]],i,beg,m));
+	label(x,y):=cons(concat("\"",x),y);
+       plot_points(un,form,initial,beg,m):=
+          append(["NoLines: True","LargePixels: true","XUnitText: N",
+                 "YUnitText: Un"],
+             iterate_eqn(un,form,initial,beg,m));
+
+
+
+
+for ro=2.8 we have only one stable value, while for ro=3.3 there
+are 2 values for large N.  The population oscillates between these
+two values.
+
+   xgraph_curves([
+       label("ro=2.8", plot_points(Un, 2.8*Un*(1-Un), .4,0,400)),
+       label("ro=3.3", plot_points(Un, 3.3*Un*(1-Un), .4,0,400))
+     ]);
+
+Notice how the 3.65 equation becomes chaotic!!
+
+   xgraph_curves([
+       label("ro=3.65", plot_points(Un, 3.65*Un*(1-Un), .5,0,400)),
+       label("ro=2.8", plot_points(Un, 2.8*Un*(1-Un), .5,0,400)),
+       label("ro=3.1", plot_points(Un, 3.1*Un*(1-Un), .5,0,400)),
+       label("ro=3.3", plot_points(Un, 3.3*Un*(1-Un), .5,0,400))
+     ]);
+
+
+   xgraph_curves([
+       label("ro=3.65", plot_points(Un, 3.58*Un*(1-Un), .5,0,400))]);
+
+
+
+Let us graph several close to ro = 3.60 and see what happens
+
+    One_ro(ro):=label(concat("ro=",ro),plot_points(un,ro*un*(1-un),.5,0,400));
+    for i:-4 thru 4  do xgraph_curves([one_ro(3.60+i*.02)]);
+
+Below we plot including the lines joining the points, the equation
+with two different starting positions.  Notice how the following
+equations agree through about n = 15 and then disagree radically!  The
+first has initial value
+                u0 =.300
+and the second  u0 =.305
+Below we plot the initial values to see the instability
+
+   xgraph_curves([
+        label("U0=.30",iterate_eqn(Un, 3.65*Un*(1-Un), .3, 0,20)),
+        label("U0=.305",iterate_eqn(Un, 3.65*Un*(1-Un), .305, 0,20))
+       ]);
+
+
+Here we vary the 'ro' factor. 
+
+   xgraph_curves([
+        label("ro=.8",iterate_eqn(Un, .8*Un*(1-Un), .3, 0,20)),
+        label("ro=1.5",iterate_eqn(Un, 1.5*Un*(1-Un), .3,0, 20)),
+        label("ro=2.5",iterate_eqn(Un, 2.5*Un*(1-Un), .3, 0,20))
+       ]);
+
+
+Below we see at what values of 'ro' the the chaos begins by plotting
+'ro' on the x axis and plotting only the values between 30 and 80 on
+the y axis.   When you get the plot, you may zoom in on a particular
+portion to see a better separation of the dots.
+
+
+
+       iterate_eqn1(un,rovalue,form,initial,beg,m):=
+        block([y:initial],
+        kill(f,h),
+        define(h(w),sublis([ro=rovalue,un=w],form)),
+        for i:1 thru beg do y:h(y),
+        create_list([rovalue,y:h(y)],i,beg,m)); ans:[];
+       /* do the plot from ro = romin to romax using 100 steps. */
+       (romin:2.4,romax:3.9)$
+       for rovalue:romin thru romax step (romax-romin)/100 do
+        (ans:append(iterate_eqn1(un,rovalue,ro*Un*(1-Un), .4,40,90),ans));
+       xgraph_curves([append(["XUnitText: ro","YUnitText: Un",
+                              "NoLines: True","LargePixels: true"],ans)]);
+
+
+
+Exercises:
+
+1) In the logistics equation where `Un' is plotted against `Ro', you see
+a large bifurcation and then two smaller ones.  Try zooming in on
+one of the smaller ones, using a rectangle to make it look like the
+large ones.   Can you see smaller ones coming out?   Replot with
+more points using a smaller range on the ro axis [change 2.4 and 3.9].
+Turn in the large plot and the smaller one.
+
+2) Do you think the initial value alters the eventual picture, or
+whether there are bifurcations at a particular 'ro'?   If you find
+one plot it.   Where would be a likely place to look?
+
+
+
+
+

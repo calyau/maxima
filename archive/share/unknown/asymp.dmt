@@ -1,0 +1,91 @@
+(C1) loadfile(asymp,fasl,dsk,adk)$
+ASYMP: version of 11:54pm  Saturday, 4 July 1981 
+
+(C2) demo(asymp,demo,dsk,adk)$
+
+(C3) /* This file demonstrates the facilities of the ASYMP package. */
+showtime:true$
+Time= 2 msec.
+
+(C4) graph1:diagram(line(a,b,1,m),line(b,c,2,m),line(c,a,3,mm),extline(a,4,p),
+	extline(b,5,q),extline(c,6,-p-q))$
+1 Loop Diagram 
+Time= 400 msec.
+
+(C5) bound(graph1,[[m,p,q],mm,inf]);
+Time= 978 msec.
+				       MM
+				   LOG(--)
+				       M
+(D5) 				   -------
+				       2
+				     MM
+
+(C6) graph2:diagram(line(a,b,2,m),line(b,c,3,m),line(c,d,5,m),line(d,a,4,m),
+	line(b,d,6,m),extline(a,1,p),extline(c,7,-p))$
+2 Loop Diagram 
+Time= 902 msec.
+
+(C7) bound(graph2,[m,p,inf]);
+Time= 15881 msec.
+				     1
+(D7) 				     --
+				      2
+				     P
+
+(C8)  graph3:diagram(line(a,b,1,m),line(b,c,2,m),line(c,d,3,m),line(d,e,4,m),
+	line(e,f,5,m),line(f,a,6,m),line(b,e,7,m),line(f,c,8,m),
+	extline(a,9,p),extline(d,10,-p))$
+3 loop diagram 
+Time= 1245 msec.
+
+(C9) bound(graph3,[m,p,inf]);
+Time= 394113 msec.
+				     1
+(D9) 				     --
+				      4
+				     P
+
+(C10) graph4:diagram(line(a,b,1,m),line(b,c,2,m),line(c,d,3,m),line(d,f,4,m),
+	line(f,e,5,m),line(e,a,6,m),line(b,e,7,m),line(f,c,8,m),
+	extline(a,9,p),extline(d,10,-p))$
+Time= 1224 msec.
+
+(C11) bound(graph4,[m,p,inf]);
+Time= 271851 msec.
+
+				     1
+(D11) 				     --
+				      4
+				     P
+
+(C12) graph5:diagram(line(a,b,1,m),line(b,c,2,m),line(c,d,3,m),line(d,f,4,m),
+	line(f,e,5,m),line(e,a,6,m),line(b,e,7,mm),line(f,c,8,mm),
+	extline(a,9,p),extline(d,10,-p))$
+Time= 728 msec.
+
+(C13) bound(graph5,[[m,p],mm,inf]);
+Time= 263364 msec.
+
+				     3 MM
+				  LOG (--)
+				       M
+(D13) 				  --------
+				      4
+				    MM
+
+(C14) graph6:diagram(line(a,b,1,m),line(b,c,2,m),line(c,d,3,m),line(d,e,4,m),
+	line(e,f,5,m),line(f,a,6,m),line(b,e,7,mm),line(f,c,8,mm),
+	extline(a,9,p),extline(d,10,-p))$
+Time= 1357 msec.
+
+(C15) bound(graph6,[[p,m],mm,inf]);
+Time= 401423 msec.
+
+				     3 MM
+				  LOG (--)
+				       P
+(D15) 				  --------
+				      4
+				    MM
+

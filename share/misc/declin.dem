@@ -1,0 +1,59 @@
+/* First load the necessary file: */
+/* LOAD('DECLIN); */
+/* for DOE-MACSYMA */
+load("declin.mc");
+/* For example, define the linearity properties of F.
+	F is to be linear in its first, third and fifth arguments.
+	The predicate to be used for distinguishing the coefficients
+	of these arguments will be called FVARP.  */
+DECLARE_LINEAR_OPERATOR(F,[1,3,5],FVARP);
+FVARP(EXP):=MEMBER(EXP,[A,B,C]);
+/* An example of an expression with the necessary property is:  */
+FF(X,E,Y,F,Z,G,X):=(K1*X+K2*Y+K3*Z)/(E+F)^G;
+/* In this expression, FF is linear in [X, Y, Z], taken
+	as the components of a vector.  Note that this is distinguished
+	from being linear in X, Y, or Z taken one at a time.
+
+Here is an expression that is equivalent to 0. */
+EXP1:(F(A,X,B,Y,C,Z)*2-F(2*A,X,2*B,Y,2*C,Z))*H(Q)/(A+B)*(F+H);
+/* The function LINSIMP looks at sums contained in its
+	first argument and combines the F expressions whenever possible. */
+LINSIMP(EXP1,F);
+/* The function LINSIMP extracts coefficients from the arguments
+	of F whenever it can. */
+EXP2:F(6*A,X,2*B,Y,4*C,Z);
+LINSIMP(EXP2,F);
+/* To remove the LINEAR_OPERATOR property from F, use REM. */
+REM(F,LINEAR_OPERATOR);
+/* Now verify that it is gone: */
+ERRCATCH(LINSIMP(EXP,F));
+/* LINSIMP can simplify with respect to several operators.
+	 To illustrate this, we first make the
+	 necessary declarations. */
+DECLARE_LINEAR_OPERATOR(F,[1,2,3],FVARP);
+DECLARE_LINEAR_OPERATOR(H,[1,2],HVARP);
+HVARP(EXP):=MEMBER(EXP,[D,E,F])$
+EXP3:(F(2*A,-A*X,B/3,W)-F(A,B*X,C,W)
+	+H(W*E,F*(A+B),3)+2*H(-W*E,F*A,3))/A;
+LINSIMP(EXP3,F,H);
+/* Notice that in the above example, LINSIMP was NOT confused
+	 by the presence of F as both a variable and an undefined
+	 operator.
+		LINSIMP will not combine forms that differ in the
+	 arguments that are not specified in the linearity
+	 declaration: */
+EXP4:F(A,B,C,D,E)-F(A,B,C,D,H);
+LINSIMP(EXP4,F);
+/* But it will make combinations whenever possible, even
+	 when the operator appears with varying numbers of 
+	 arguments: */
+EXP5:F(A,B,C,D,E)-F(A,B,2*C,D,E)+2*F(B,A,C)-H*F(C,2*B,A);
+LINSIMP(EXP5,F);
+/* LINSIMP also recognizes the zero case: */
+EXP6:F(0,0,0,A,B,C);
+LINSIMP(EXP6,F);
+/* Here is an example with SUM: */
+DECLARE_LINEAR_OPERATOR(NOUNIFY(SUM),[1],'SUMVARP);
+SUMVARP(EXP):=FREEOF('N,EXP);
+A*'SUM(F(N)*X^N,N,0,INF)+B*X*'SUM(G(N)*X^(N-1),N,0,INF);
+FACTOR(LINSIMP(%,NOUNIFY('SUM)));

@@ -1,0 +1,211 @@
+
+@node Lists, Differentiation, Top, Top
+@chapter Lists
+@menu
+* Introduction to Lists::       
+* Definitions for Lists::       
+@end menu
+
+@node Introduction to Lists, Definitions for Lists, Lists, Lists
+@section Introduction to Lists
+Lists are the basic building block for maxima and lisp.   All data types
+other than arrays, hash tables, numbers are represented as lisp lists,
+These lisp lists have the form
+@example
+((mplus) $A 2)
+@end example
+@noindent
+to indicate an expression @code{A+2}.   At maxima level one would see
+the infix notation @code{A+2}.   Maxima also has lists which are printed
+as
+@example
+[1, 2, 7, x+y]
+@end example
+@noindent
+for a list with 4 elements.   Internally this corresponds to a lisp list
+of the form
+@example
+((mlist) 1  2  7  ((mplus)  $X $Y ))
+@end example
+@noindent
+The flag which denotes the type field of the maxima expression is a list
+itself, since after it has been through the simplifier the list would become
+@example
+((mlist simp) 1 2 7 ((mplus simp) $X $Y))
+@end example
+
+
+@c end concepts Lists
+
+@node Definitions for Lists,  , Introduction to Lists, Lists
+@section Definitions for Lists
+
+@c @node APPEND, ATOM, Lists, Lists
+@c @unnumberedsec 
+@defun APPEND (list1, list2, ...)
+returns a single list of the elements of
+list1 followed by the elements of list2,...  APPEND also works on
+general expressions, e.g. APPEND(F(A,B), F(C,D,E)); -> F(A,B,C,D,E).
+Do EXAMPLE(APPEND); for an example.
+
+@end defun
+@c @node ATOM, CONS, APPEND, Lists
+@c @unnumberedsec 
+@defun ATOM (exp)
+is TRUE if exp is atomic (i.e. a number or name) else
+FALSE.  Thus ATOM(5) is TRUE while ATOM(A[1]) and ATOM(SIN(X)) are
+FALSE.  (Assuming A[1] and X are unbound.)
+
+@end defun
+@c @node CONS, COPYLIST, ATOM, Lists
+@c @unnumberedsec 
+@defun CONS (exp, list)
+returns a new list constructed of the element exp as
+its first element, followed by the elements of list.  CONS also works
+on other expressions, e.g. CONS(X, F(A,B,C));  ->  F(X,A,B,C).
+
+@end defun
+@c @node COPYLIST, DELETE, CONS, Lists
+@c @unnumberedsec 
+@defun COPYLIST (L)
+creates a copy of the list L.
+
+@end defun
+@c @node DELETE, ENDCONS, COPYLIST, Lists
+@c @unnumberedsec 
+@defun DELETE (exp1, exp2)
+removes all occurrences of exp1 from exp2.  Exp1
+may be a term of exp2 (if it is a sum) or a factor of exp2 (if it is a
+product).
+@example
+(C1)  DELETE(SIN(X),X+SIN(X)+Y);
+(D1)               Y + X
+
+@end example
+DELETE(exp1, exp2, integer) removes the first integer occurrences of
+exp1 from exp2.  Of course, if there are fewer than integer
+occurrences of exp1 in exp2 then all occurrences will be deleted.
+
+@end defun
+@c @node ENDCONS, FIRST, DELETE, Lists
+@c @unnumberedsec 
+@defun ENDCONS (exp, list)
+returns a new list consisting of the elements of
+list followed by exp.  ENDCONS also works on general expressions, e.g.
+ENDCONS(X, F(A,B,C));  ->  F(A,B,C,X).
+
+@end defun
+@c @node FIRST, GET, ENDCONS, Lists
+@c @unnumberedsec 
+@defun FIRST (exp)
+yields the first part of exp which may result in the first
+element of a list, the first row of a matrix, the first term of a sum,
+etc.  Note that FIRST and its related functions, REST and LAST, work
+on the form of exp which is displayed not the form which is typed on
+input.  If the variable INFLAG [FALSE] is set to TRUE however, these
+functions will look at the internal form of exp.  Note that the
+simplifier re-orders expressions.  Thus FIRST(X+Y) will be X if INFLAG
+is TRUE and Y if INFLAG is FALSE.  (FIRST(Y+X) gives the same
+results).
+
+@end defun
+@c @node GET, LAST, FIRST, Lists
+@c @unnumberedsec 
+@defun GET (a, i)
+retrieves the user property indicated by i associated with
+atom a or returns FALSE if a doesn't have property i.
+@example
+(C1) PUT(%E,'TRANSCENDENTAL,'TYPE);
+(D1) 			        TRANSCENDENTAL
+(C2) PUT(%PI,'TRANSCENDENTAL,'TYPE)$
+(C3) PUT(%I,'ALGEBRAIC,'TYPE)$
+(C4) TYPEOF(EXP) := BLOCK([Q],
+                        IF NUMBERP(EXP)
+                        THEN RETURN('ALGEBRAIC),
+                        IF NOT ATOM(EXP)
+                        THEN RETURN(MAPLIST('TYPEOF, EXP)),
+                        Q : GET(EXP, 'TYPE),
+                        IF Q=FALSE
+			THEN ERRCATCH(ERROR(EXP,"is not numeric.")) ELSE Q)$
+(C5) TYPEOF(2*%E+X*%PI);
+X is not numeric.
+(D5) 	     [[TRANSCENDENTAL, []], [ALGEBRAIC, TRANSCENDENTAL]]
+(C6) TYPEOF(2*%E+%PI);
+(D6) 	        [TRANSCENDENTAL, [ALGEBRAIC, TRANSCENDENTAL]]
+
+
+@end example
+@end defun
+@c @node LAST, LENGTH, GET, Lists
+@c @unnumberedsec 
+@defun LAST (exp)
+yields the last part (term, row, element, etc.) of the exp.
+
+@end defun
+@c @node LENGTH, LISTARITH, LAST, Lists
+@c @unnumberedsec 
+@defun LENGTH (exp)
+gives (by default) the number of parts in the external
+(displayed) form of exp.  For lists this is the number of elements,
+for matrices it is the number of rows, and for sums it is the number
+of terms. (See DISPFORM).  The LENGTH command is affected by the
+INFLAG switch [default FALSE].  So, e.g. LENGTH(A/(B*C)); gives 2 if
+INFLAG is FALSE (Assuming EXPTDISPFLAG is TRUE), but 3 if INFLAG is
+TRUE (the internal representation is essentially A*B^-1*C^-1).
+
+@end defun
+@c @node LISTARITH, LISTP, LENGTH, Lists
+@c @unnumberedsec 
+@defvar LISTARITH
+ default: [TRUE] - if FALSE causes any arithmetic operations
+with lists to be suppressed; when TRUE, list-matrix operations are
+contagious causing lists to be converted to matrices yielding a result
+which is always a matrix.  However, list-list operations should return
+lists.
+
+@end defvar
+@c @node LISTP, MAKELIST, LISTARITH, Lists
+@c @unnumberedsec 
+@defun LISTP (exp)
+is TRUE if exp is a list else FALSE.
+
+@end defun
+@c @node MAKELIST, MEMBER, LISTP, Lists
+@c @unnumberedsec 
+@defun MAKELIST (exp,var,lo,hi)
+returns a list as value.  MAKELIST may be called as
+MAKELIST(exp,var,lo,hi) ["lo" and "hi" must be integers], or as
+MAKELIST(exp,var,list).  In the first case MAKELIST is analogous to
+SUM, whereas in the second case MAKELIST is similar to MAP.  Examples:
+@example
+   MAKELIST(CONCAT(X,I),I,1,6) yields [X1,X2,X3,X4,X5,X6]
+   MAKELIST(X=Y,Y,[A,B,C]) yields [X=A,X=B,X=C]
+@end example
+
+@end defun
+@c @node MEMBER, REST, MAKELIST, Lists
+@c @unnumberedsec 
+@defun MEMBER (exp, list)
+returns TRUE if exp occurs as a member of list (not
+within a member).  Otherwise FALSE is returned.  Member also works on
+non-list expressions, e.g. MEMBER(B, F(A,B,C));  ->  TRUE.
+
+@end defun
+@c @node REST, REVERSE, MEMBER, Lists
+@c @unnumberedsec 
+@defun REST (exp, n)
+yields exp with its first n elements removed if n is
+positive and its last -n elements removed if n is negative.  If n is 1
+it may be omitted.  Exp may be a list, matrix, or other expression.
+
+@end defun
+@c @node REVERSE,  , REST, Lists
+@c @unnumberedsec  
+@defun REVERSE (list)
+reverses the order of the members of the list (not
+the members themselves).  REVERSE also works on general expressions,
+e.g.  REVERSE(A=B); gives B=A.
+REVERSE default: [FALSE] - in the Plotting functions, if TRUE cause a
+left-handed coordinate system to be assumed.
+
+@end defun

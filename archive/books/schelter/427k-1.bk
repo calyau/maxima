@@ -1,0 +1,92 @@
+
+((face (book-shell-eval 934 963 1409 1428) (dfplot-eval 414 436 1074 1133 1139 1173 1562 1584 1952 1986 2111 2141 2153 2198) (bold 30 39)) (book-command-arg ("ghostview ${HOME}/dfplot.ps" 1409 1428) ("cat ${HOME}/dfplot.ps |lpr -Plw8" 934 963)))
+                        427k Tutorial
+
+Plotting direction fields and trajectories.
+
+The highlighted regions of this tutorial are sensitive to double
+clicking with the left mouse button.  Use the arrow keys to move up or
+down in the tutorial.
+
+The first thing we wish to do is plot direction fields and
+then trajectories which represent solutions.   If you have trouble
+look for the section on trouble below.
+
+   ode{d[y,x]=2*y-sin(x)}
+
+
+To plot an orbit click with mouse-2 on the plot window, and a
+trajectory through the point where you click will be computed.  Typing
+any character does a quit, and records the plot in your home directory
+as dfplot.ps.  The above command corresponds to the first order linear
+differential equation
+
+    dy/dx  = 2 y - sin(x)
+
+After you have calculated some trajectories, you may quit (type any
+character in the plot window), and then print out on the printer in
+the small lab by clicking on
+
+    <Print last dfplot.ps in lab> 
+
+
+A differential equation involving x,y,and t may also be entered, and
+things like the xrange specified
+
+    ode{ D[x,t]= y, D[y,t]= -sin(x) + 0.1* y};set xrange [-4,4]
+
+    ode{d[y,x]=sgn(y)*abs(y)**(1/3.0)}
+
+You may alter the text in these expressions and then reclick.   For example
+you might change sin to cos.   For the above example notice how the
+trajectories in the top part of the plane.
+
+If you wish to preview the plot file you can  <preview dfplot.ps>
+    
+To understand what unix command is being run for a highlighted region,
+type control-c ? when the cursor is over the region.
+
+   ode{d[y,x]=2*y-sin(x)}
+
+
+To see an ode with a non unique solution, we could look at
+
+              dy/dx =y**(1/3).
+
+However dfplot will interpret the third root as the real
+part of the first of the 3 complex roots, which will always be
+positive.  If we want the real root which is negative when y is
+negative, then we have to be a little fancier and use
+
+    sgn(y)*abs(y)**(1/3.0)
+
+
+
+    ode{d[y,x]=sgn(y)*abs(y)**(1/3.0)}
+
+ Sometimes a more accurate method needs to be used (see 427k-2)
+Look at the difference between the trajectories using
+
+    ode{d[y,x]=(x**2+y**2)**(1.5)}
+
+and 
+
+    ode{d[y,x]=(x**2+y**2)**(1.5), [method=RKQC]}
+
+In the latter we use an adaptive runge kutta method.
+
+TROUBLE:
+
+  If you click on a yellow region and nothing happens,
+   did you double click with left button?
+  If you go out of book, and back in and dont change
+    and come back in and click on the first example does
+    it work?   If so maybe there is a syntax error in
+    what you typed yourself:
+        eg using x^2 for x squared rather than x**2?
+        eg not having matching parens.
+  Printing should happen on lw8 the printer in the small lab.
+
+
+
+   

@@ -1,0 +1,87 @@
+/*-*-macsyma-*-*/
+
+SETUP_AUTOLOAD(SETS,MAKE_UNIVERSE)$
+
+KILL(LABELS)$
+
+/* Get a fresh UNIVERSE */
+
+UNIVERSE:MAKE_UNIVERSE();
+
+X:{1,2,3,4,5,6,7};
+Y:{2,3,4,10,20};
+
+UNION(X,Y);
+
+INTERSECTION(X,Y);
+
+SETDIFF(Y,X);
+
+/* to get the elements of the universe */
+SETDIFF();
+
+/* to get the complement */
+
+SETDIFF(X);
+
+IZ:{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}$
+
+/* A standard set thing to do, the set of all elements of
+   a set such that a predicate is true. */
+
+PREDSET(LAMBDA([ELEM],IS(ABS(ELEM-12)<4)),IZ);
+
+ELEMENTP(3,IZ);
+
+Z:{2,3,4};
+
+SUBSETP(X,Y);
+
+SUBSETP(Z,X);
+
+/* representation conversion */
+
+ELEMENTS(X);
+
+MAPSET(LAMBDA([ELEM],ELEM^2),{1,2,3});
+
+CARDINAL({A,B,C,D});
+
+/* To each expression ever interned in a set there is a associated
+   Goedel number. (On a per-universe basis) */
+
+ORDINAL('A);
+
+ORDINAL('FOOBAR);
+
+/*
+  Sets are represented as BOOLEAN arrays, (bit-vectors to the machine),
+  with element indices given by the Goedel number. Pure-set operations
+  only work on the bit-vectors, and are very fast.
+*/
+
+/* An example, implementing POWERSET. This is not a useful example,
+   how many elements does the powerset of 
+  {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0,1,2,3,4,5,6,7,8,9}
+  contain? More than can fit on any system around. */
+
+
+ADJOIN(X,S) ::= BUILDQ([X,S], UNION({X},S) )$
+
+POWERSET(S):=
+ IF EMPTYP(S) THEN {{}}
+ ELSE BLOCK([AN_ELEMENT:ELEMENTOF(S), POWER_REST],
+	    POWER_REST:POWERSET(SETDIFF(S,{AN_ELEMENT})),
+	    UNION(POWER_REST,
+                  MAPSET(LAMBDA([X],ADJOIN(AN_ELEMENT,X)),
+	                 POWER_REST)))$
+
+
+POWERSET({});
+POWERSET({A,B,C});
+
+/* TRANSLATE before we try this on a big set. */
+(TRANSLATE(POWERSET), /* twice for good recursion */ TRANSLATE(POWERSET))$
+X8:{1,2,3,4,5,6,7,8};
+
+POWERSET(X8);

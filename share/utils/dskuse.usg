@@ -1,0 +1,49 @@
+DSKUSE Package. User information.
+This file contains a description of the the functions available in the
+Macsyma DSKUSE package.
+
+DISKFREE
+ With no args or an arg of TRUE, will return the total number of
+   free blocks of disk space in the system.
+ With an arg of 0, 1, or 13, it will return the number of free blocks
+   of diskspace on the respective disk pack.
+ With an arg of SECONDARY or PRIMARY, it will return the total
+   number of free blocks of disk space on the secondary or primary
+   disk pack respectively.
+
+FULLDISKUSE(<optional-name>);
+  If no name is supplied, it defaults to the current user's.
+  Returns long list of info about user's disk usage of the form:
+
+  [["TOTAL FREE BLOCKS", [<pack-type>, <pack-number>, <n> BLOCKS],
+			 [<pack-type>, <pack-number>, <n> BLOCKS], ...]
+   ["DIRECTORY BLOCK USAGE", <directory-name>
+			     ["PRIMARY", <n> BLOCKS],
+			     ["SECONDARY", <n> BLOCKS]]
+   ["USER BLOCK USAGE", <user-name>,
+			[PRIMARY, <n> BLOCKS],
+			[SECONDARY, <n> BLOCKS]]]
+
+  If the user has his own directory, the last element of the list 
+  ("USER BLOCK USAGE") is omitted since it would be the same as 
+  "DIRECTORY BLOCK USAGE".
+
+	<pack-type> ::= "PRIMARY PACK" or "SECONDARY PACK"
+	<pack-number> ::= a fixed point number
+	<n> ::= a fixed point number
+
+  Occurances of `<n> BLOCKS' are in the form of a Macsyma 
+  multiplication between a fixnum <n> and the Macsyma symbol BLOCKS.
+
+DISKUSE(<optional-name>);
+  returns the total number of disk blocks in use by a user.
+  The result is of the form <n>*BLOCKS
+
+PRINTDISKUSE(<optional-name>);
+  displays in English information about a user's disk usage.
+
+For examples of use see the file SHARE2;DSKUSE OUTPUT
+
+Send bugs to KMP@MC.
+This usage file was last updated: Monday, 12 March 1979.
+

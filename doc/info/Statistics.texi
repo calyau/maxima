@@ -1,0 +1,17 @@
+@node Statistics, Limits, Differential Equations, Top
+@chapter Statistics
+@c end concepts Statistics
+@menu
+* Definitions for Statistics::  
+@end menu
+
+@node Definitions for Statistics,  , Statistics, Statistics
+@section Definitions for Statistics
+@c @node GAUSS
+@c @unnumberedsec phony
+@defun GAUSS (mean,sd)
+returns a random floating point number from a normal
+distribution with mean MEAN and standard deviation SD.  This is part
+of the BESSEL function package, do LOAD(BESSEL); to use it.
+
+@end defun

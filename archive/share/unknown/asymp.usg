@@ -1,0 +1,308 @@
+Preliminary Version    The ASYMP package            June 1, 1982
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             ASYMP
+
+  A package for the evaluation of bounds on Feynman Diagrams.
+
+
+
+                               by
+
+                William E. Caswell (WEC@MIT-MC)
+                Anthony D. Kennedy (ADK@MIT-MC)
+Preliminary Version    The ASYMP package            June 1, 1982
+
+
+
+
+
+
+
+
+
+
+                        I. Introduction.
+
+
+
+
+      ASYMP is a package for determining the asymptotic behavior
+of  Feynman integrals.   Given  a topological  description  of a
+Feynman diagram as  a set of  lines and vertices,  together with
+information about the mass of the virtual particle corresponding
+to each line and the momentum entering at each external  leg, it
+will tell one the  leading asymptotic behavior of that  graph as
+some sets of masses get much larger than others.
+
+      As this package  is very unlikely to  be of use  to people
+who  are  not familiar  with  Feynman diagrams  and  other basic
+aspects of  perturbative quantum field  theory, we  will refrain
+from describing the basics here and refer the  interested reader
+to any of the standard textbooks on the subject instead.
+
+      Perhaps this is also the appropriate place to  mention the
+limitations of the package.  These are of two kinds, those which
+are fundamental limitations of the formalism and methods used in
+the  package itself,  and those  which are  just  features which
+could be  added easily if  they are ever  needed.  In  the first
+category we stress that  the bounds are obtained  for individual
+Feynman graphs,  and not for  sums of them;  in other  words the
+asymptotic  behavior  of  a  green's  function  might  be  quite
+different  from  that  of the  graphs  which  contribute  to it,
+because   there   may  be   "miraculous"   cancellations.   Such
+cancellations occur in many interesting theories,  in particular
+gauge theories, but  they are best dealt  with by means  of Ward
+identities   rather   than   explicit    calculation.    Another
+mathematical limitation is that  the actual behavior of  a graph
+is only  bounded by  the result  given --  in reality  the graph
+might have a smaller asymptotic growth: the bounds  obtained are
+usually  fairly   good,  however.   In   the  second   class  of
+limitations  we should  mention that  (1) the  package currently
+deals  only  with  boson  fields,  (2)  allows  only  a  trivial
+dependence of the vertices upon momenta and masses, (3) tries to
+compute 1/0 for IR divergent graphs [which is honest, in a way],
+
+
+
+                               1
+Preliminary Version    The ASYMP package            June 1, 1982
+
+
+
+
+and (4) returns INF for a UV divergent graph [which is correct].
+All of these are simple to generalize in the program, and if one
+need  to  get  around  these  limitations,  please  contact  the
+authors.  A slightly harder problem to circumvent is  related to
+point (4) above, namely (5) one cannot currently specify  that a
+UV divergent graph is to be subtracted in a certain way: part of
+the problem is that there are many different subtraction schemes
+(minimal, zero momentum Taylor series, etc.) and how  to specify
+which method one wants is not clear, but it would also require a
+fair  amount  of   thought  to  make  the   program  renormalize
+automatically.   Any suggestions  or  comments on  this,  or any
+other aspect of ASYMP, would be appreciated.
+
+
+
+
+
+
+                      II. Simple Example.
+
+
+
+
+      The easiest way to see  how ASYMP works is to look  at the
+simplest example, the  one-loop three-point function  in (phi)^3
+theory.  First  of all  we must  load the  ASYMP package  into a
+MACSYMA:
+
+(C1) loadfile(asymp,fasl,dsk,share1)$
+ASYMP: version of 11:54pm  Saturday, 4 July 1981 
+
+(C2) graph1:diagram(line(a,b,1,m),line(b,c,2,m),line(c,a,3,mm),
+        extline(a,4,p),extline(b,5,q),extline(c,6,-p-q))$
+1 Loop Diagram 
+
+
+(C3) bound(graph1,[[m,p,q],mm,inf]);
+
+                                       MM
+                                   LOG(--)
+                                       M
+(D3)                               -------
+                                       2
+                                     MM
+
+
+
+
+
+                               2
+Preliminary Version    The ASYMP package            June 1, 1982
+
+
+
+
+      First of  all, in  line (C1)  we have  loaded up  the FASL
+(compiled) version of  the ASYMP package.  It  identifies itself
+by telling us the date on which it was born.  We then define the
+desired Feynman  diagram as GRAPH1  using the  DIAGRAM function.
+DIAGRAM takes an arbitrary number of arguments, each of which is
+a pseudo-function  describing a part  of the  graph.  Currently,
+there  are   two  such   pseudo-functions,  LINE   and  EXTLINE.
+Logically enough  LINE describes  an internal  line; if  we type
+LINE(LONDON,PARIS,RHUBARB,5*M[PLANCK])  we are  defining  a line
+from  a   vertex  called  LONDON   to  a  vertex   called  PARIS
+corresponding to  a particle of  mass 5*M[PLANCK].  A  couple of
+points are to be noted, (1) the vertices can be  names, numbers,
+or anything  one want as  long as  it is a  valid argument  to a
+hashed array, (2) the factor  of 5 in the mass is  pointless, as
+numerical factors are  ignored in asymptotic bounds.   The third
+argument, RHUBARB, is a name for the line, which is solely there
+for  debugging purposes:  internally ASYMP  will invent  its own
+name for the line.  This argument is, like rhubarb, best left by
+the  side  of  the  plate  and  ignored.   EXTLINE  describes an
+external  leg to  our Feynman  diagram.   EXTLINE(ROME, CELERY,-
+P+2*Q) says that there is an external leg attached to  our graph
+at vertex ROME  carrying momentum 2*Q-P  into the graph.   It is
+one's   own   responsibility  to   ensure   over   all  momentum
+conservation.    The   second   argument,   CELERY,   has  great
+similarities to RHUBARB and is also best forgotten (well, it has
+to  be there,  but it  seems to  serve no  other useful  role in
+life).
+
+      OK, so  we have  now defined our  graph.  DIAGRAM  sets up
+tables of lines  containing their masses etc.,  assigns internal
+loop-momenta, routes  all momenta through  the graph,  and tells
+one the number  of loops in the  diagram.  If we had  been nosey
+and typed a ; rather than a $ at DIAGRAM, it would have returned
+a  list  of  the  form  [G000002653,G000005532,G000007771].  The
+Goo's are internal line-names of no interest to one,  other than
+that they are used by later programs to index the tables  set up
+by DIAGRAM and its cohorts.  The only point of interest  is that
+GRAPH1  is now  a  list of  variable  names, in  other  words it
+behaves just like any  other MACSYMA variable, which is  not too
+surprising because it IS just like any other MACSYMA variable.
+
+      In line (C2) we get down to the real business of  the day.
+We use  the function  BOUND to find  the asymptotic  behavior of
+GRAPH1 when  the Euclidean momenta  p and q  and the mass  m are
+much smaller than  the mass mm, and  both are much  smaller than
+INF (of course: the need to put in INF by hand is just  a foible
+
+
+
+                               3
+Preliminary Version    The ASYMP package            June 1, 1982
+
+
+
+
+of the program, so don't forget it!).  To put it another way, we
+set up three  mass scales, which we  shall call m, mm,  and INF,
+such that any mass of order m is asymptotically bounded  by (or,
+in everyday terms, much less than) any mass of order mm,  and in
+turn mm << INF.  The  second argument to BOUND, therefore,  is a
+list of mass-scales, each of which is either a  mass/momentum or
+a list of masses and/or  momenta of the same scale.   The result
+of BOUND  is that  GRAPH1 is bounded  by (an  implicit constant)
+times log(mm/m)/mm^2, at least for mm/m large enough.
+
+      For  further  examples  look  at  the  files  SHARE1;ASYMP
+DEMOUT, SHARE1;ASYMP DEMOU1, etc., which are the output from the
+demo files SHARE1;ASYMP DEMO, SHARE1;ASYMP DEMO1, etc.
+
+
+
+
+
+
+                          III. Method.
+
+
+
+
+      For  a  long  write  up,  see  the  paper  "The Asymptotic
+Behavior  of  Feynman Integrals,"  Maryland  Physics publication
+#PP-81-188.
+
+
+
+
+
+
+                          IV. Syntax.
+
+
+
+
+      As the syntax  has been described  in section II,  we just
+summarize it below:
+
+      DIAGRAM(<pseudo-function>,<pseudo-function>,...);
+
+      LINE(<from-vertex>,<to-vertex>,<name>,<mass>);
+
+      EXTLINE(<to-vertex>,<name>,<momentum>);
+
+
+
+                               4
+Preliminary Version    The ASYMP package            June 1, 1982
+
+
+
+
+      BOUND(<diagram>,[<mass-scale>,<mass-scale>,...,INF]);
+
+      <mass-scale>  ::  mass |  momentum  | [<mass-scale>,<mass-
+scale>,...]
+
+
+
+
+
+
+                           V. Notes.
+
+
+
+
+      For further information please send mail to  ADK@MIT-MC or
+WEC@MIT-MC.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               5

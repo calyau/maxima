@@ -1,0 +1,7 @@
+
+Reversion of Taylor Series:
+
+Do  LOADFILE(REVERT,LISP,SHARE2); .
+Try REVERT(expression,variable); or REVERT2(expression,variable,hipower);
+to see what they do.  "variable" is the variable the original Taylor 
+expansion is in.  REVERT only works on expansions around 0.

@@ -1,0 +1,87 @@
+README file for maxima
+
+MAXIMA is a fairly complete computer algebra system.
+
+This system MAXIMA is a COMMON LISP implementation due to William F.
+Schelter, and is based on the original implementation of Macsyma at
+MIT, as distributed by the Department of Energy.  I now have
+permission from DOE to make derivative copies, and in particular to
+distribute it under the GNU public license.  See the file COPYING
+included in the distribution.   Thus these files may now be redistributed
+under the terms of GNU public license.
+
+The known shortfalls of being completely within the common lisp
+standard, are several calls to errset.  This can be circumvented but
+not completely eliminated.  Also there are some special variables
+which need to be proclaimed and then unproclaimed special later.
+
+On most common lisp systems, all necessary files are in the src directory.
+Basically one loads the file sysdef.lisp, after having set the directory
+paths in that file, and then does a (make :maxima :compile t).  Before
+dumping it one does (make :maxima ).    
+
+BUILDING:
+========
+
+For GCL (GNU Common Lisp) version 2.0 and later, edit the file ./configure
+putting the correct
+directories in these.  It presupposes your having the .o files from
+the GCL available, since a large link will be done to produce a new
+image containing maxima.
+
+Then in the main maxima directory,
+
+% ./configure
+% make
+
+This should produce eventually a file maxima/src/saved_maxima
+
+TESTING
+=======
+To test the system, in the main maxima directory do
+
+% make test
+
+If this completes successfully, then you may wish to eliminate those .o
+files no longer needed:
+
+% (cd src ; make clean)
+
+If you wish to eliminate the source to save space and just keep the
+necessary .o files, and autoloading .lisp and .mac files, as well as
+the documentation, you may
+
+% (cd src ; make eliminate-source)
+
+The maxima/info directory contains a first draft of a manual for maxima.
+The make in that directory can produce a .dvi file for printing and
+maxima.info for examination in the info system of emacs.   We would MOST
+welcome some tutorial and beginner information for this manual.
+
+INSTALLING
+==========
+
+After building and possibly removing source and .o files as above,
+do
+
+% cd maxima
+% make install
+to put things in /usr/local (recommended default).
+
+To put things under /public/bin and /public/lib/maxima-5.x.x use
+
+% make install PREFIX_DIR=/public
+
+The MAXIMA_DIRECTORY environment variable will be set to the
+maxima library directory, by the executable shell script 'maxima'
+which invokes maxima.
+
+Additional information is available at
+http://www.ma.utexas.edu/users/wfs/maxima.html
+
+
+W. Schelter, the University of Texas, and other parties provide this
+program on an "as is" basis without warranty of any kind, either
+expressed or implied, including, but not limited to, the implied
+warranties of merchantability and fitness for a particular purpose.
+

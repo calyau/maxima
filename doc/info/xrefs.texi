@@ -1,0 +1,93 @@
+@node xrefs
+@chapter xrefs
+@node Introduction to xrefs
+@section Introduction to xrefs
+@section DILOGARITHM
+ - See POLYLOGARITHMS.
+
+@section DILOGS
+ - See POLYLOGARITHMS.
+
+@section EIGEN
+ - See EIGENVALUES.
+
+@section ETENSR
+ - This package has been renamed CTENSR.
+
+@section HYPERGEOMETRIC
+ - Do DESCRIBE(SPECINT); .HYPERGEOMETRIC_FUNCTIONS                                        HYPERGEOMETRIC_FUNCTIONS - Do DESCRIBE(SPECINT); .
+
+@section HYPGEO
+ - See DESCRIBE(SPECINT); .
+
+@section IC2
+ - do DESCRIBE(IC1);.
+
+@section INEQUALITIES
+ - See INEQUALITY.
+
+@section INTEGRATION
+ - Do DESCRIBE(INTEGRALS);
+
+@section LI
+ - This is the notation MACSYMA uses for Polylogarithms and
+Dilogarithms.  See POLYLOGARITHMS.
+
+@section LOGCGAMMA2
+ - See CGAMMA.
+
+@section MACRO
+ - Do DESCRIBE(MACROS);
+
+@section MATRICES
+ - See DESCRIBE(MATRIX); .
+
+@section OPERATORS
+ - MACSYMA uses the standard Mathematical operators:
+  !  for Factorial,
+  !! for Double factorial,
+  ^ or ** for Exponentiation,
+  *  for Multiplication,
+  .  for non-commutative multiplication
+  /  for Division, 
+  +  for Addition, and
+  -  for Subtraction.
+In addition, it uses some other operators:
+  :  for variable assignment (e.g. A:3 sets A to 3).
+  := for function definition (e.g. F(X):=SIN(X) defines a function F).
+Note: the term operator is used in either of two senses: syntactic
+(meaning that it has special syntax properties in the MACSYMA
+language) or semantic (referring to its functionality).  In the
+syntactic sense it is something which usually consists of
+non-alphanumeric characters, e.g. "+" or "*" (exceptions include
+"AND", "OR", and "NOT").  Semantically we sometimes refer to the
+"operator of an expression", meaning that thing which is in the
+operator part of the expression, such as the "+" in "A+B" or SIN in
+"SIN(x)".  Note: "+" in this latter example is also an operator in the
+syntactic sense, whereas SIN is a mathematical function.
+
+@section PLOTTING
+ - see plot3d,plot2d,plot2d_xgraph,psdraw_curve ..
+
+@section RICCI
+ - The Ricci tensor, do DESCRIBE(RICCICOM);
+
+@section SIZE
+ - See DESCRIBE(NTERMS); and DESCRIBE(LENGTH); for two ways to
+get an idea of the size of an expression.
+
+@section TENSOR
+ - Do DESCRIBE(TENSORS);
+
+@section VECT
+ - See VECTORS
+
+@section VECTOR
+ - See VECTORS
+
+@section STORAGE--see
+:gargbage_collection   
+
+@c end concepts xrefs
+@node Definitions for xrefs
+@section Definitions for xrefs

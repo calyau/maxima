@@ -1,0 +1,31 @@
+
+ELIMINATE is a program for eliminating variables from equations
+(or expressions assumed equal to 0) by taking successive resultants.
+The call is:  ELIMINATE([EQ1,EQ2,...,EQn],[V1,V2,...,Vk]); .
+This returns a list of n-k expressions with the k variables V1,...,Vk
+eliminated.  First V1 is eliminated yielding n-1 expressions, then V2 is, 
+etc.  If k=n then a single expression in a list is returned free of
+the variables V1,...,Vk.  In this case SOLVE is called to solve
+the last resultant for the last variable.
+
+		Example
+
+(C1) EXP1:2*X^2+Y*X+Z;
+				    2
+(D1) 		       Z + X Y + 2 X
+
+(C2) EXP2:3*X+5*Y-Z-1;
+(D2) 		    - Z + 5 Y + 3 X - 1
+
+(C3) EXP3:Z^2+X-Y^2+5;
+		       2    2
+(D3) 		      Z  - Y  + X + 5
+
+(C4) ELIMINATE([EXP3,EXP2,EXP1],[Y,Z]);
+
+	    8	      7	        6	   5	      4
+(D3) [7425 X  - 1170 X  + 1299 X  + 12076 X  + 22887 X
+
+			       3	 2
+		       - 5154 X  - 1291 X  + 7688 X + 15376]
+

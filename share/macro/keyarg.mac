@@ -1,0 +1,58 @@
+/*-*-macsyma-*-*/
+
+/* macros to define functions which take their arguments
+   via keywords. */
+
+EVAL_WHEN([TRANSLATE,BATCH,DEMO],
+	  LOAD_PACKAGE(SHAREM,"MAX$DISK:[SHAREM]AUTOLO"))$
+
+HERALD_PACKAGE(KEYARG)$
+
+/* The idea is to be able to say:
+
+  FOO(X_ZONE=3.3, LOGLIN, FOOSWITCH, BAR=0)
+
+  Specify the arguments/options to a function in terms of
+  keywords.
+
+And have unspecified arguments default. */
+
+
+DEF_KEYARG(HEADER,BODY)::=
+ BUILDQ([MNAME:PART(HEADER,0), BODY,
+         SNAME:CONCAT(PART(HEADER,0),"-internal"),
+         SARGS:MAPLIST(LAMBDA([U],IF ATOM(U) THEN U ELSE PART(U,1)),
+	               ARGS(HEADER)),
+         DISPATCH:MAPLIST(LAMBDA([U],IF ATOM(U) THEN ['KEY_ATOM,[U]]
+	                                ELSE ['KEY_PAIR,[PART(U,1),PART(U,2)]]),
+			  ARGS(HEADER))],
+	(EVAL_WHEN(LOADFILE,
+	           SETUP_AUTOLOAD("MAX$DISK:[SHAREM]KEYARG",TRANSLATE_KEYARG)),
+         PUT('MNAME,'DISPATCH,'TRANSLATE_KEYARG),
+         MNAME([MACRO_ARGL])::=TRANSLATE_KEYARG(MACRO_ARGL,'MNAME,'SNAME),
+	 SNAME(SPLICE(SARGS)):=BODY))$
+
+/* This routine must be around during the macro-expansion */
+
+TRANSLATE_KEYARG(MACRO_ARGL,MNAME,SNAME):=
+ /* for now I am not going to do the order-of-evaluation guarantee */
+ BLOCK([SARGL:[],TEMP,DISPATCH:GET(MNAME,'TRANSLATE_KEYARG)],
+       FOR D IN DISPATCH
+       DO(TEMP:APPLY(D[1],CONS(MACRO_ARGL,D[2])),
+          PUSH(TEMP[1],SARGL),
+	  MACRO_ARGL:TEMP[2]),
+       IF NOT MACRO_ARGL=[] THEN ERROR("Unknown arguments to",MNAME,":",MACRO_ARGL),
+       FUNMAKE(SNAME,REVERSE(SARGL)))$
+
+KEY_INDICATOR(ARGL,ATOM,VALUE):=
+ (FOR A IN ARGL
+  DO(IF ATOM(A) THEN(IF A=ATOM THEN(VALUE:TRUE,ARGL:DELETE(A,ARGL),RETURN(DONE)))
+     ELSE IF PART(A,1)=ATOM THEN(VALUE:PART(A,2),ARGL:DELETE(A,ARGL),RETURN(DONE))),
+  [VALUE,ARGL])$     
+
+/* I am thinking of having KEY_ATOM and KEY_PAIR do different things. */
+
+KEY_ATOM(ARGL,ATOM):=KEY_INDICATOR(ARGL,ATOM,FALSE)$
+
+KEY_PAIR(ARGL,ATOM,VALUE):=KEY_INDICATOR(ARGL,ATOM,VALUE)$
+

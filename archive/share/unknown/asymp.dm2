@@ -1,0 +1,8 @@
+load_package(asymp,"adk\;asymp fasl")$
+
+showtime:true$
+graph10:diagram(line(a,b,1,mu),line(b,c,2,mu),line(c,d,3,mu),line(d,e,4,mu),
+    line(e,f,5,mu),line(f,a,6,mu),line(b,g,7,mu),line(c,g,8,mm),line(e,h,9,mu),
+    line(h,f,10,mm),line(g,h,11,mm),extline(a,12,-p),extline(d,13,p))$
+ttyoff:true$
+bound_finite_region_only(graph10,[[mu,p],mm,inf]);

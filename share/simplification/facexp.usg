@@ -1,0 +1,101 @@
+File: SHARE1;FACEXP USAGE
+
+    The file SHARE1;FACEXP FASL contains several related  functions that
+provide the user with the ability to structure expressions by controlled
+expansion.   This capability  is especially  useful when  the expression
+contains variables that have physical meaning, because it is  often true
+that the most economical form  of such an expression can be  obtained by
+fully expanding the expression with respect to those variables, and then
+factoring their coefficients.  While it is  true that this  procedure is
+not difficult to carry out using standard Macsyma  functions, additional
+fine-tuning may also  be desirable, and  these finishing touches  can be
+more  difficult to  apply.  The  function FACSUM  and its  related forms
+provide a convenient means for controlling the structure  of expressions
+in this way.  Another function, COLLECTTERMS, can be used to add  two or
+more expressions that have already been simplified to this form, without
+resimplifying the whole expression again.  This function is particularly
+useful when the expressions are  large and address space or cpu  time is
+in short supply.
+
+    For  a  complete  demonstration  of  the  use  of  these  functions,
+BATCH(FACEXP,DEMO,DSK,SHARE1)$ Brief descriptions of these functions and
+their switches follow.
+
+
+FACSUM(exp,arg1,arg2,...) returns  a form  of exp  which depends  on the
+    argi.  The argi can be any form suitable for RATVARS, or they can be
+    lists  of such  forms.  If  the argi  are not  lists, then  the form
+    returned will be  fully expanded with respect  to the argi,  and the
+    coefficients of the argi will be factored.  These  coefficients will
+    be free of the argi, except perhaps in a non-rational sense.
+    If any of the argi are  lists, then all such lists will  be combined
+    into  a  single  list,   and  instead  of  calling  FACTOR   on  the
+    coefficients  of  the  argi,  FACSUM  will  call  itself   on  these
+    coefficients, using  this newly constructed  single list as  the new
+    argi  for this  recursive  call.  This  process can  be  repeated to
+    arbitrary depth by nesting the desired elements in lists.
+
+        It is possible that one may wish to FACSUM with respect  to more
+    complicated subexpressions,  such as  LOG(X+Y).  Such  arguments are
+    also  permissible.   With  no  variable  specification,  for example
+    FACSUM(exp), the  result returned  is the same  as that  returned by
+    RATSIMP(exp).
+
+        Occasionally the user may wish to obtain any of the  above forms
+    for expressions which are specified only by their leading operators.
+    For example, one may wish  to FACSUM with respect to all  LOG's.  In
+    this situation, one may  include among the argi either  the specific
+    LOG's which are to be treated in this way, or  alternatively, either
+    the expression  OPERATOR(LOG) or 'OPERATOR(LOG).   If one  wished to
+    FACSUM the expression EXP with respect to the operators OP1, OP2, ..
+    ...,  OPn,  one   would  evaluate  FACSUM(EXP,   OPERATOR(OP1,  OP2,
+    ...OPn)).  The OPERATOR form may also appear inside list arguments.
+
+    In  addition,  the  setting  of  the  switches   FACSUM_COMBINE  and
+    NEXTLAYERFACTOR may affect the result of FACSUM as follows:
+
+
+
+NEXTLAYERFACTOR[FALSE] if TRUE will force the recursive calls  of FACSUM
+    to  be  applied  to  the  factors  of  the  factored  form   of  the
+    coefficients of the argi.  If  FALSE then FACSUM will be  applied to
+    each coefficient as a whole whenever recusive calls to  FACSUM occur
+    as   described  above.    In   addition,  inclusion   of   the  atom
+    NEXTLAYERFACTOR in  the argument  list of FACSUM  has the  effect of
+    NEXTLAYERFACTOR:TRUE, but for the next level of the expression ONLY.
+    Since NEXTLAYERFACTOR is  always bound to  either TRUE or  FALSE, it
+    must be presented single-quoted whenever it is used in this way.
+
+
+FACSUM_COMBINE[TRUE] controls the form  of the final result  returned by
+    FACSUM  when  its  argument  is  a  quotient  of   polynomials.   If
+    FACSUM_COMBINE is FALSE  then the form will  be returned as  a fully
+    expanded  sum  as described  above,  but if  TRUE,  then  the formed
+    returned is a ratio of polynomials, with each polynomial in the form
+    described above.  The TRUE setting of this switch is useful when one
+    wants to  FACSUM both  the numerator and  denominator of  a rational
+    expression,  but  does not  want  the denominator  to  be multiplied
+    through the terms of the numerator.
+
+
+FACTORFACSUM(exp, arg1, arg2,  ...argN) returns a  form of exp  which is
+    obtained by calling  FACSUM on the factors  of exp with the  argI as
+    arguments.  If any of the factors of exp is raised to a  power, both
+    the factor and the exponent will be processed in this way.
+
+
+COLLECTTERMS(arg1,  arg2, ...  argn)  If several  expressions  have been
+    simplified  with  FACSUM, FACTORFACSUM,  FACTENEXPAND,  FACEXPTEN or
+    FACTORFACEXPTEN,  and  they are  to  be added  together,  it  may be
+    desirable   to  combine   them  using   the   function  COLLECTERMS.
+    COLLECTERMS can take as arguments  all of the arguments that  can be
+    given  to these  other associated  functions with  the  exception of
+    NEXTLAYERFACTOR, which has no effect on COLLECTTERMS.  The advantage
+    of COLLECTTERMS  is that it  returns a form  similar to  FACSUM, but
+    since it is adding forms that have already been processed by FACSUM,
+    it  does  not  need  to  repeat  that  effort.   This  capability is
+    especially useful when the expressions to be summed are very large.
+
+Note:  FACTENEXPAND, FACEXPTEN, and FACTORFACEXPTEN  are available  only
+    after loading DIAGEVAL.  They are special functions used for  tensor
+    manipulation.  See the file ASB;MANUAL DOC.

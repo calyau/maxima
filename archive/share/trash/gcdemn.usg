@@ -1,0 +1,15 @@
+To activate a "daemon" for optimal storage allocation in maclisp,
+(a classic as described in AI Working Paper number 14.), do
+LOAD("GCDEMN");
+
+Purpose: To run out of all spaces at the same time, i.e. to not be
+ limited by the size of any one space, but to not garbage collect too
+ much due to over-cautious allocation.
+Idea: From storage usage patterns it predicts what future usage will be.
+Bugs: Can't predict loading of compiled code, may make bad predictions under
+ some conditions. Takes up a little space itself.
+Recommendations: Try it when you run out of FLONUM space while making
+ PLOTS, or BIGNUM space when hacking large expressions.
+ Use multics or Lispm if available.
+
+-George Carrette.

@@ -1,0 +1,17 @@
+
+for windows we will have the user interface in tcl running under
+regular wish8.0
+
+It will start up and then fork off a maxima, and will listen
+for a connection from it.
+
+It will send back its 'cygnus' pid.   This can be used to invoke
+the 'cygnus kill.exe' on the maxima process...
+
+If the kill -INT from the shell is too slow, we can have a third
+little process waiting to do this job, with a socket open from wish
+
+
+
+
+

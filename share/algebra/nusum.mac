@@ -1,0 +1,166 @@
+/*-*- Mode: macsyma; Package: MAXIMA-*-*/
+eval_when([translate,batch,demo,load,loadfile],
+dva(var)::=buildq([var],define_variable(var,'var,any)));
+dva(%n); dva(%pw); dva(%f); dva(%f1); dva(l%); dva(solvep);
+dva(%r); dva(p); dva(%cf);
+
+ALGEBRAICP(%1):=CATCH(
+	   SUBST("^" = LAMBDA([%1,%2],IF NOT INTEGERP(%2) THEN THROW(TRUE)),%1),
+	   FALSE);
+HICOEF(X,N):=(X:RATSIMP(X,N),COEFF(X,N,HIPOW(X,N)));
+GENPOL(N):=IF N < 0 THEN 0 ELSE CONCAT('%,N)+%N*GENPOL(N-1);
+CLIST(P):=IF 0 = P THEN []
+       ELSE CONS(RATDISREP(%PW:RATCOEF(P,%N,0)),CLIST(RAT((P-%PW)/%N)));
+UNSUM(%G,%N):=IF ATOM(%G) OR PART(%G,0) # "+"
+       THEN FACTOR((NUM(%G)/SUBST(%N-1,%N,PRODGUNCH(NUM(%G),%N,1))
+		    -DENOM(%G)/SUBST(%N-1,%N,PRODGUNCH(DENOM(%G),%N,1)))
+		    *(SUBST(%N-1,%N,NUM(%G))/DENOM(%G)))
+       ELSE MAP(LAMBDA([X],UNSUM(X,%N)),%G);
+PRODFLIP(%0):=SUBST(
+	 [NOUNIFY('PRODUCT) = 'PRODUCT,
+	  'PRODUCT = LAMBDA([%0,%1,%,%%],1/PRODU(1/%0,%1,%,%%))],%0);
+PRODGUNCH(%0,%N,%2):=
+  SUBST([NOUNIFY('SIN) = 
+    LAMBDA([%0],
+	   SIN(SUBST(%N+%2,%N,%0))
+	  *LAMBDA([TRIGEXPAND],
+		  EXPAND(SIN(%0)/SIN(SUBST(%N+%2,%N,%0))))
+	  (TRUE)),
+	 NOUNIFY('PRODUCT) = LAMBDA([%0,%1,%,%3],
+				    FUNMAKE(NOUNIFY('PRODUCT),
+					    [%0,%1,SUBST(%N+%2,%N,%),
+					     SUBST(%N+%2,%N,%3)])
+				   *PRODU(%0,%1,%,SUBST(%N+%2,%N,%)-1)
+				   /PRODU(%0,%1,%3+1,SUBST(%N+%2,%N,%3))),
+	 'BINOMIAL = LAMBDA([%0,%1],
+			    SUBST(%N+%2,%N,BINOMIAL(%0,%1))
+			   *PRODU((%1+'%)/(%0+'%),'%,1,SUBST(%N+%2,%N,%1)-%1)
+			   *PRODU((-%1+%0+'%)/(SUBST(%N+%2,%N,%1)-%1+%0+'%),'%,
+				  1,SUBST(%N+%2,%N,%0-%1)+%1-%0)),
+	 'BETA = LAMBDA([%0,%1],
+			SUBST(%N+%2,%N,BETA(%0,%1))
+		       *PRODU((%0+%1+'%)/(%0+'%),'%,0,RATCOEF(%0,%N)*%2-1)
+		       *PRODU((%0+%1+%2*RATCOEF(%0,%N)+'%)/(%1+'%),'%,0,
+			      RATCOEF(%1,%N)*%2-1)),
+	 "!" = LAMBDA([%0],
+		      SUBST(%N+%2,%N,%0)!
+			/PRODU(%0+'%,'%,1,SUBST(%N+%2,%N,%0)-%0)),
+	 'GAMMA = LAMBDA([%0],
+			 GAMMA(SUBST(%N+%2,%N,%0))
+			/PRODU(%0+'%-1,'%,1,SUBST(%N+%2,%N,%0)-%0))],%0);
+PRODU(%0,%1,%,%3):=
+  LAMBDA([X,Y],
+	 IF NOT INTEGERP(Y) THEN FUNMAKE(NOUNIFY('PRODUCT),[%0,%1,%,%3])
+		 ELSE (IF Y < -1 THEN 1/PRODU(%0,%1,%3+1,%-1)
+			   ELSE (FOR I FROM 0 THRU Y DO X:X*SUBST(I+%,%1,%0),X)))(
+      1,RATSIMP(%3-%));
+NUSUM(%A,%N,%L,%H):=BLOCK([MAPPRINT:FALSE,PROGRAMMODE:TRUE,SOLVENULLWARN:FALSE],
+      NUSUML(%A,%N,%L,%H,[])[1]);
+NUSUM(%A,%N,%L,%H):=BLOCK([MAPPRINT:FALSE,PROGRAMMODE:TRUE,SOLVENULLWARN:FALSE],
+      first(NUSUML(%A,%N,%L,%H,[])));
+FUNCSOLVE(%A,%F):=BLOCK([MAPPRINT:FALSE,PROGRAMMODE:TRUE,SOLVENULLWARN:FALSE],
+	  FUNCSOL(%A,%F,[])[1]);
+DIMSUM(%CL):=BLOCK([RATFAC:FALSE,%CD,%PT,%PW],
+       %CD:MAP(LAMBDA([X],HIPOW(RATSIMP(X)+1/%N,%N)),
+	       [%CL[1]+%CL[2],%CL[1]-%CL[2],%CL[3]]),%CD[1]:MAX(%CD[1],%CD[2]-1),
+       INPART(SUBST(SOLVEP:SOLVE(CLIST(SUBST(
+					%PT
+					 :FUNMAKE('LAMBDA,
+						  [[%N],
+						   GENPOL(
+						    IF 
+						     %CD[1] < %CD[2]
+						       AND INTEGERP(
+						       %PW
+							:SUBST(
+							 SOLVE(
+							  RATCOEF(
+							   %CL[1]*(%N+'%)
+							    +%CL[2]*%N,%N,%CD[2]),
+							  '%),'%))
+						      THEN MAX(%PW,%CD[3]-%CD[1])
+						      ELSE %CD[3]-%CD[1])]),
+					INPART(%F,0),%CL . [%F1,%F,1])),
+				 APPEND(IF LISTP(L%) THEN L% ELSE L%:[L%],
+					CLIST(INPART(%PT,2)))),
+		    (L%:MAP("=",L%,SUBST(SOLVEP,L%)),%PT)),2));
+		    
+RATSOLVE(P,X):=APPLY('APPEND,
+	 MAPLIST(LAMBDA([P],
+			IF HIPOW(P,X) = 1 OR SUBST(0,X,P) = 0
+			    THEN SOLVE(SUBST(LAMBDA([X,Y],X),"^",P),X) ELSE []),
+		 2*FACTOR(P)^2));
+PRODSHIFT(%0,%2):=SUBST(
+	  [NOUNIFY('PRODUCT) = 'PRODUCT,
+	   'PRODUCT = LAMBDA([%0,%1,%,%3],PRODU(SUBST(%1-%2,%1,%0),%1,%+%2,%3+%2))],
+	  %0);
+
+RFORN(%3):=BLOCK([Y:GCD(%R[2],SUBST(%N-%3,%N,%R[1])),RATFAC:TRUE],
+      P:P*PRODU(Y,%N,%N,%N+%3-1),%R:ratsimp(%R/[SUBST(%N+%3,%N,Y),Y]))$
+
+/*  Note that this business of w/[a,b] is very sensitive to evaluation.  It 
+  is assumed that w is evaluated first but sometimes this doesn't happen 
+  resulting in wrong answer eg w/[a,b]==> [w/a,w/b] and then eval w:[1,2] bad!!*/
+/*RFORN(%3):=BLOCK([Y:GCD(%R[2],SUBST(%N-%3,%N,%R[1])),RATFAC:TRUE,vv],
+      P:P*PRODU(Y,%N,%N,%N+%3-1),%r[1]:ratsimp(%r[1]/SUBST(%N+%3,%N,Y)),%r[2]:ratsimp(%r[2]/Y));*/
+
+RFORM(%R):=IF ?RATP(%R[1]/%R[2],%N)
+       THEN (IF ALGEBRAICP(%R) THEN (GCD:'RED,ALGEBRAIC:TRUE),
+	     BLOCK([P:1],RFORN(1),
+		   FOR %3 IN RATSOLVE(RESULTANT(%R[1],SUBST(%N+'%,%N,%R[2]),%N),'%)
+		       DO
+		       (IF INTEGERP(%3:SUBST([%3],'%)) AND %3 > 0 THEN RFORN(%3)),
+		   [P,%R[1]/%R[2]]))
+       ELSE ERROR(%R[1]/%R[2],"NON-RATIONAL TERM RATIO TO NUSUM");
+NUSUML(%A,%N,%L,%H,L%):=
+  IF %A = 0 
+    THEN [0]
+    ELSE 
+      BLOCK([SOLVEP:FALSE,MODULUS:FALSE,RV:RATVARS,PRODHACK:TRUE,
+	     RATFAC:TRUE,GCD:'SPMOD,ALGEBRAIC:FALSE,RATALGDENOM:TRUE,
+	     matrix_element_mult:"*",
+	     DISPFLAG:FALSE,MAPERROR:FALSE,%F:FUNMAKE('%F,[%N]),
+	     %F1:FUNMAKE('%F,[%N+1])],
+	RATVARS(%N),
+	IF [] # ERRCATCH
+	  (%CF:DIMSUM
+	    ([-NUM(
+		  (%R
+		    :RFORM(
+			  LAMBDA([%A],[NUM(%A),DENOM(%A)])
+			  (FACTOR(
+				 SUBST(%N+1,%N,%A)
+				 /PRODGUNCH(%A,%N,1)))))[
+				   2]),SUBST(%N-1,%N,DENOM(%R[2])),%R[1]]))
+	   AND [] # SOLVEP
+	     THEN CONS((%F:PRODGUNCH(NUM(%A),%N,1)/DENOM(%A),
+			%F1:RATSIMP(RADCAN(%CF)),APPLY('RATVARS,RV),
+			%F1:SUBST(LAMBDA([%0,%1,%,%3],PRODU(%0,%1,%,%3)),
+				  NOUNIFY('PRODUCT),
+				  FACTOR(
+					SUBST(%H,%N,
+					      FACTOR(
+						    NUM(%R[2])*%F
+						    *SUBST(%N+1,%N,%F1)
+						    /%R[1])))
+				 -FACTOR(
+					SUBST(%L,%N,
+					      FACTOR(
+						    %A*%F1
+						    *SUBST(%N-1,%N,DENOM(%R[2]))
+						    /%R[1])))),
+			IF ?RATP(%A,%N) THEN FACTOR(%F1) ELSE %F1),L%)
+					ELSE (APPLY('RATVARS,RV),[APPLY('SUM,[%A,%N,%L,%H])]));
+					  
+FUNCSOL(%A,%F,L%):=BLOCK(
+  [RATFAC:TRUE,maperror:false,LINENUM:LINENUM,DISPFLAG:FALSE,%F1,%CL,%CM,%N:INPART(%F,1)],
+	%F1:SUBST(%N = %N+1,%F),
+	%CL:FACTOR(AUGCOEFMATRIX([%A:NUM(XTHRU(LHS(%A)-RHS(%A)))],[%F1,%F])[1]),
+	%CM:RFORM(REST(%CL,-1)),%CM[2]:RATSIMP(SUBST(%N+1,%N,%CM[1])/%CM[1]),
+	APPEND(ERRCATCH(%F = FACTOR(DIMSUM(
+				     RATSIMP(
+				      [%CL[1]/NUM(%CM[2]),%CL[2]/DENOM(%CM[2]),
+				       %CM[1]*%CL[3]/DENOM(%CM[2])]))
+				     /%CM[1])),L%));
+
+

@@ -1,0 +1,159 @@
+This is Info file maxima.info, produced by Makeinfo version 1.67 from
+the input file maxima.texi.
+
+   This is a Texinfo Maxima Manual
+
+   Copyright 1994 William F. Schelter
+
+
+File: maxima.info,  Node: Definitions for Ctensor,  Prev: Introduction to Ctensor,  Up: Ctensor
+
+Definitions for Ctensor
+=======================
+
+           - Function: CHR1 ([I,J,K])
+               yields the Christoffel symbol of the first kind via the
+               definition
+                           (g      + g      - g     )/2 .
+                             ik,j     jk,i     ij,k
+
+               To evaluate the Christoffel symbols for a particular
+               metric, the variable METRIC must be assigned a name as
+               in the example under CHR2.
+
+
+           - Function: CHR2 ([I,J],[K])
+               yields the Christoffel symbol of the second kind defined
+               by the relation
+                                           ks
+                        CHR2([i,j],[k]) = g    (g      + g      - g     )/2
+                                                 is,j     js,i     ij,s
+
+           - Function: CHRISTOF (ARG)
+               A function in the CTENSR (Component Tensor Manipulation)
+               package.  It computes the Christoffel symbols of both
+               kinds.  The arg determines which results are to be
+               immediately displayed.  The Christoffel symbols of the
+               first and second kinds are stored in the arrays
+               LCS[i,j,k] and MCS[i,j,k] respectively and defined to be
+               symmetric in the first two indices. If the argument to
+               CHRISTOF is LCS or MCS then the unique non-zero values
+               of LCS[i,j,k] or MCS[i,j,k], respectively, will be
+               displayed. If the argument is ALL then the unique
+               non-zero values of LCS[i,j,k] and MCS[i,j,k] will be
+               displayed.  If the argument is FALSE then the display of
+               the elements will not occur. The array elements
+               MCS[i,j,k] are defined in such a manner that the final
+               index is contravariant.
+
+
+           - Function: COVDIFF (EXP,V1,V2,...)
+               yields the covariant derivative of exp with respect to
+               the variables vi in terms of the Christoffel symbols of
+               the second kind (CHR2).  In order to evaluate these, one
+               should use EV(exp,CHR2).
+
+
+           - Function: CURVATURE ([I,J,K],[H])
+               Indicial Tensor Package) yields the Riemann curvature
+               tensor in terms of the Christoffel symbols of the second
+               kind (CHR2).  The following notation is used:
+                                   h            h           h        %1        h
+                          CURVATURE     = - CHR2      - CHR2     CHR2    + CHR2
+                                   i j k        i k,j       %1 j     i k       i j,k
+                                                  h         %1
+                                            + CHR2      CHR2
+                                                  %1 k      i j
+
+           - Variable: DIAGMETRIC
+               default:[] - An option in the CTENSR (Component Tensor
+               Manipulation) package.  If DIAGMETRIC is TRUE special
+               routines compute all geometrical objects (which contain
+               the metric tensor explicitly) by taking into
+               consideration the diagonality of the metric. Reduced run
+               times will, of course, result. Note: this option is set
+               automatically by TSETUP if a diagonal metric is
+               specified.
+
+
+           - Variable: DIM
+               default:[4] - An option in the CTENSR (Component Tensor
+               Manipulation) package.  DIM is the dimension of the
+               manifold with the default 4. The command DIM:N; will
+               reset the dimension to any other integral value.
+
+
+           - Function: EINSTEIN (DIS)
+               A function in the CTENSR (Component Tensor Manipulation)
+               package.  EINSTEIN computes the mixed Einstein tensor
+               after the Christoffel symbols and Ricci tensor have been
+               obtained (with the functions CHRISTOF and RICCICOM).  If
+               the argument dis is TRUE, then the non-zero values of
+               the mixed Einstein tensor G[i,j] will be displayed where
+               j is the contravariant index.  RATEINSTEIN[TRUE] if TRUE
+               will cause the rational simplification on these
+               components. If RATFAC[FALSE] is TRUE then the components
+               will also be factored.
+
+
+           - Function: LRICCICOM (DIS)
+               A function in the CTENSR (Component Tensor Manipulation)
+               package.  LRICCICOM computes the covariant (symmetric)
+               components LR[i,j] of the Ricci tensor.  If the argument
+               dis is TRUE, then the non-zero components are displayed.
+
+
+           - Function: MOTION (DIS)
+               A function in the CTENSR (Component Tensor Manipulation)
+               package.  MOTION computes the geodesic equations of
+               motion for a given metric.  They are stored in the array
+               EM[i].  If the argument dis is TRUE then these equations
+               are displayed.
+
+
+           - Variable: OMEGA
+               default:[] - An option in the CTENSR (Component Tensor
+               Manipulation) package.  OMEGA assigns a list of
+               coordinates to the variable. While normally defined when
+               the function TSETUP is called, one may redefine the
+               coordinates with the assignment OMEGA:[j1,j2,...jn]
+               where the j's are the new coordinate names. A call to
+               OMEGA will return the coordinate name list.  Also see
+               DESCRIBE(TSETUP); .
+
+
+           - Function: RIEMANN (DIS)
+               A function in the CTENSR (Component Tensor Manipulation)
+               Package.  RIEMANN computes the Riemann curvature tensor
+               from the given metric and the corresponding Christoffel
+               symbols.  If dis is TRUE, the non-zero components
+               R[i,j,k,l] will be displayed. All the indicated indices
+               are covariant.  As with the Einstein tensor, various
+               switches set by the user control the simplification of
+               the components of the Riemann tensor.  If
+               RATRIEMAN[TRUE] is TRUE then rational simplification
+               will be done. If RATFAC[FALSE] is TRUE then each of the
+               components will also be factored.
+
+
+           - Function: TRANSFORM
+               - The TRANSFORM command in the CTENSR package has been
+               renamed to TTRANSFORM.
+
+
+           - Function: TSETUP ()
+               A function in the CTENSR (Component Tensor Manipulation)
+               package which automatically loads the CTENSR package
+               from within MACSYMA (if it is not already loaded) and
+               then prompts the user to make use of it.  Do
+               DESCRIBE(CTENSR); for more details.
+
+
+           - Function: TTRANSFORM (MATRIX)
+               A function in the CTENSR (Component Tensor Manipulation)
+               package which will perform a coordinate transformation
+               upon an arbitrary square symmetric matrix. The user must
+               input the functions which define the transformation.
+               (Formerly called TRANSFORM.)
+
+

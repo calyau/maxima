@@ -1,0 +1,233 @@
+
+((face (maxima-eval 2416 2436 3485 3523 3902 4053 4258 4408 4509 4510 4964 5068 5090 5318 5332 5460 5504 5564 6064 6167 6735 7191 7604 7760 8363 8414) (book-shell-eval 2107 2126 2170 2185) (dfplot-eval 1761 1789 1959 2005) (book-result 1274 1275 1447 1626 3013 3177 6534 6561 7393 7411 8057 8118 8541 8600) (maxima-eval-insert 1257 1260 1415 1437 2987 2999 6474 6522 7340 7384 7972 8047 8475 8530) (book-elisp-eval 536 563) (bold 26 39 5567 5579)) (book-command-arg ("xv /d19/staff/wfs/izic-maxima/moebius.gif" 2170 2185) ("xv /d19/staff/wfs/izic-maxima/klein.gif" 2107 2126) ((write-file "~/408c-1.bk") 536 563)))
+                        408c Tutorial
+
+The highlighted regions of this tutorial are sensitive to clicking
+with the mouse with the right button.   Use the arrow keys to move
+up or down in the tutorial.
+
+For this assignment you should find the following:
+
+1) integral of sec(x)^5
+2) upper sum for x^3+2*x on the interval [2,4] using
+partition [2,2.3,2.5,2.8,3.2,4].
+
+[Notation: x^2 means "x to the power 2" and a*b means "a times b"]
+
+Please type your name on the next line:
+
+NAME:
+DISCUSSION HOURS: 
+
+Once you are finished click here: <write file to ~/408c-1.bk>
+to record what you have done.
+
+You should modify the integrate command below, and the upper_sum
+command to do what you are asked to do.   Note for the upper_sum
+you must click on the definitions preceding it, so the system
+will have them available.  Otherwise you will not get an answer.
+
+This mode allows expressions in the editor to be evaluated in a
+symbolic algebra system such as Maxima, or to otherwise cause an
+action.  You may cause the action by moving to a highlighted region
+and either clicking with the right button, or if you prefer
+you may type the two character sequence `Ctrl-c e'.   All special
+key sequences in this mode begin with Control C.
+
+For example if you do this for 2+3 then the box 5 will have
+its value set to 5.   If you edit the 3 to become a 4, and reclick,
+then the value will change to 6.
+
+
+A more complex example is integrate(1/(1+x^3),x) yields 
+
+					 2 X - 1
+		       2	    ATAN(-------)
+		  LOG(X  - X + 1)	 SQRT(3)    LOG(X + 1)
+      	        - --------------- + ------------- + ----------
+			 6	       SQRT(3)	        3
+
+Try changing the input from 1/(1+..) to be x/(1+..) and click again!
+
+An example of plotting trajectories and direction fields is
+
+   ode{d[x,t]=y,d[y,t]=-sin(x)}
+
+where mouse-2 on the plot window computes an orbit.   Typing any character
+does a quit, and records the plot in ~/dfplot.ps.
+
+An xrange or yrange may be specified:
+
+   ode{d[x,t]=y,d[y,t]=-sin(x)};set xrange [-4,4]
+
+
+It is also possible to view pictures.  To see a bottle with no
+interior or exterior by clicking on <view klein bottle> or to see a
+surface with only one side see <moebeius band>.
+
+These are images produced by MAXIMA, and then saved to a gif file.
+The mathematical formula for this image is a few paragraphs down.
+
+An example of a simple 3d plot using the system defaults
+is found by doing
+
+                   plot3d(2^(x^2-y^2))
+
+This uses the default plotter izic.  When the graph comes up you may
+use the mouse to scale the image, and also to rotate it.
+
+ Scale objects:  mouse left,  move up to grow image, down to shrink.
+ Move object:    mouse middle, move up to grow image, down to shrink.
+ Rotate objects: mouse right and move to rotate.
+
+Most things can be done with menus in izic.  Look at the help, but if
+you have a colour display, then do ctrl-z after you have found a nice
+orientation of your object.  This will bring up a nicely shaded image.
+
+For Maxima the value plot_options evaluates to 
+       [[X, - 3, 3], [Y, - 3, 3], [GRID, 30, 30], [VIEW_DIRECTION, 1, 1, 1], 
+
+[COLOUR_Z, FALSE], [TRANSFORM_XY, FALSE], [RUN_VIEWER, TRUE], 
+
+[PLOT_FORMAT, ZIC]]
+  
+affects the default behaviour.  One can also use GEOMVIEW and PS as
+output formats instead of zic.  In every case a file
+maxout.{plot_format} is created in your current directory.
+
+To view the plot with other options, these are supplied after the
+expression to be plotted.  For example
+
+                   plot3d(2^(x^2-y^2),[x,-1,1],[y,-2,2])
+
+will plot the expression 2^(x^2-y^2) for x in the interval [-1,1] and
+for y in [-2,2].  The second and third arguments to plot3d must always be
+the first variable range and the second variable range.  These ranges
+determine the names of the variables which are used for the first and
+second coordinates respectively.  
+The other options may occur in any order.  For example:
+
+ plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['plot_format,zic],
+  ['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true])
+  
+This transforms to polar coordinates the first 2 variables.  It uses
+a grid of 12 x 80.   The other options dont affect the ZIC plot, but
+would be significant if we changed the format to postscript.
+
+ plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['plot_format,ps],
+  ['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true])
+
+To get ghostscript to go away you need to do M-x book-maxima-interrupt
+or click on the control-c:  .  If you are viewing with ghostview just
+use the menu provided.
+
+While we are doing the plots, we can still use the editor.  It is not
+waiting for the plot to complete.  This is because we are not wanting
+to insert a result.  The face for the above command is 'maxima-eval'
+which does not wait, or try to insert a result.  'maxima-eval-insert'
+evaluates the expression and inserts the result in the next result
+box.
+
+Another example is a moebius band:
+
+plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],
+   [x,-%pi,%pi],[y,-1,1],['grid,50,15])
+
+or a klein bottle:
+
+plot3d([5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0) - 10.0,
+          -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0),
+           5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))],[x,-%pi,%pi],[y,-%pi,%pi],
+          ['grid,40,40])
+
+or a torus
+
+plot3d([cos(y)*(10.0+6*cos(x)),
+           sin(y)*(10.0+6*cos(x)),
+           -6*sin(x)], [x,0,2*%pi],[y,0,2*%pi],['grid,40,40])
+
+We can output to gnplot too:
+
+             plot3d(2^(x^2-y^2),[x,-1,1],[y,-2,2],[plot_format,gnuplot])
+
+
+Riemann sums
+
+Let f(x) be a continous function of one variable, then we wish to
+study the upper and lower riemann sums for a partition.  A partition
+is a subdivision of an interval into a number of subintervals, and can
+be specified by the list of end points of the subintervals.
+
+To calculate an upper sum we must find the maximum of a function
+on a closed interval.  We know how to do this if the function is
+differentiable.  [Click on the following definitions so that they
+will take effect].
+
+critical_points(expr,var):= block([numer:true,f:diff(expr,var)],
+    realroots(num(f)*denom(f),10^-7));
+
+
+where realroots finds the real roots of a single variable polynomial
+to a given precision, and diff takes the derivative.   The above will work
+for rational functions, since in general we need to include as critical points
+roots of the numerator and denominator.
+
+An example of the realroots function is
+block([numer:true],realroots(x^5+3*x^1+1,10^-7)) returns
+   [X = - 0.33198902010917664]  
+
+The numer flag says give a numerical (floating point) answer.  Now the
+maximum must occur either at a critical point or at an end point of
+the interval, so we can write
+
+function_max(expr,var,a,b,critical_points):=
+   block([y:max(at(expr,var=a),at(expr,var=b)) ],
+          for v in critical_points
+             do (v:at(x,v),
+             if a<v and v<b and at(expr,var=v) > y then y:at(expr,var=v)),
+          y);
+upper_sum(expr,var,partition):=
+  block([crit:critical_points(expr,var)],
+     sum(function_max(expr,var,partition[i],partition[i+1],crit)*
+             (partition[i+1]-partition[i]),i,1,length(partition)-1));
+
+In the above at(x^2+3,x=5) gives 28 .  
+
+We can now compute the upper riemann sum for the expression x^2
+for a partition of the interval [0,2]
+
+   upper_sum(x^2,x,[0,.3,.5,.8,.9,1.8,1.9,2.0]) returns 4.0270000000000001 
+
+
+We wish to form the lower riemann sum as well and to compare it to
+the upper riemman_sum.   The next function returns a list containing
+the upper sum, the lower sum, and their difference.
+
+upper_and_lower_sums(expr,var,partition):=
+   block([up:upper_sum(expr,var,partition),
+          low:-upper_sum(-expr,var,partition)],
+    [up,low,up-low]);
+
+You can try refining the partition by adding more items to it.  Each
+time you add an item the two sums get closer, with the upper one
+getting smaller and the lower one getting bigger.   Can you explain
+this?
+ 
+upper_and_lower_sums(x^2,x,[0,.3,.35,.4,.7,.8,1.0,1.2,1.3,1.5,1.7,1.9,2.0]) 
+
+yields [3.0591249999999999, 2.3066249999999999, 0.75249999999999995] 
+
+They are still quite far apart.  It is tedious to add the partition
+elements by hand, and it also will give an incorrect answer if we
+accidentally misorder them!.  The following function makes a partition
+into n evenly spaced sub intervals.
+
+make_partition(a,b,n):=makelist(a+(b-a)*i/n,i,0,n);
+
+Trying with a partition with a larger number of elements,
+
+upper_and_lower_sums(x^2,x,make_partition(0.0,2.0,60)); 
+
+returns [2.733703703703704, 2.6003703703703707, 0.1333333333333333] 
+
+

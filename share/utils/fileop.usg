@@ -1,0 +1,41 @@
+Share;Fileop -- some file primitives for Macsyma users.
+
+Macsyma now provides some useful simple file primitives which
+were formerly only available in other system programs.
+
+To print the contents of a file on your terminal, say
+Printfile(file,name,dsk,me);
+
+To list your directory, say Listfiles(dsk,me).  If you use a shared
+directory such as Users or Plasma, only your files--the ones
+with your login name as first file name--will be shown.
+The length and date of creation of each file is also shown.
+
+The function Filelength returns the length of the file argument
+in blocks.
+
+In order to list just the names of your files without the
+length and date information, use Qlistfiles (Quick LIST Files)
+with the same arguments as Listfiles.
+
+The function Renamefile(oldname,newname) renames a file from oldname
+to newname. - (kmp, 6/7/79)
+
+
+Details.
+
+The Printfile command takes the same argument syntax as Loadfile;
+the other two take the syntax of Writefile.  Listfiles indicates
+whether each file is stored on secondary disk and whether it
+has been backed up to tape (an exclamation point appears if
+it has not).
+
+The Filelength command returns the length in blocks: there are five 
+characters in a word and 1024 words in a disk block.
+
+Files may not be renamed across directories or devices.  Both oldname
+and newname must be on the same directory.  Renaming a file to a filename
+that already exists gives an error.  You must explicitly Delfile the
+existing file first if that's what you want.  Both oldname and newname
+must be list-type filespecs. example: 
+Renamefile([myold,file,dsk,foo],[mynew,file]);        - (kmp, 6/7/79)

@@ -1,0 +1,528 @@
+@node Command Line, Contexts, Special Functions, Top
+@chapter Command Line
+@menu
+* Introduction to Command Line::  
+* Definitions for Command Line::  
+@end menu
+
+@node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
+@section Introduction to Command Line
+@c @node %TH
+@c @unnumberedsec phony
+@defun %TH (i)
+is the ith previous computation.  That is, if the next
+expression to be computed is D(j) this is D(j-i).  This is useful in
+BATCH files or for referring to a group of D expressions.  For
+example, if SUM is initialized to 0 then FOR I:1 THRU 10 DO
+SUM:SUM+%TH(I) will set SUM to the sum of the last ten D expressions.
+
+@end defun
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "'"
+  - (single quote) has the effect of preventing evaluation.  E.g.
+'(F(X)) means do not evaluate the expression F(X).  'F(X) means
+return the noun form of F applied to [X].
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "''"
+  - (two single quotes) causes an extra evaluation to occur.  E.g.
+''c4; will re-execute line C4.  ''(F(X)) means evaluate the
+expression F(X) an extra time.  ''F(X) means return the verb form of F
+applied to [X].
+
+@end deffn
+@c end concepts Command Line
+@node Definitions for Command Line,  , Introduction to Command Line, Command Line
+@section Definitions for Command Line
+@c @node ALIAS
+@c @unnumberedsec phony
+@defun ALIAS (newname1, oldname1, newname2, oldname2, ...)
+provides an
+alternate name for a (user or system) function, variable, array, etc.
+Any even number of arguments may be used.
+
+@end defun
+@c @node DEBUG
+@c @unnumberedsec phony
+@defun DEBUG ()
+
+LISPDEBUGMODE(); DEBUGPRINTMODE(); and DEBUG(); make
+available to the user debugging features used by systems programmers.
+These tools are powerful, and although some conventions are different
+from the usual macsyma level it is felt their use is very intuitive.
+[Some printout may be verbose for slow terminals, there are switches
+for controlling this.]  These commands were designed for the user who
+must debug translated macsyma code, as such they are a boon.  See
+MACDOC;TRDEBG USAGE for more information.  For more help, consult GJC.
+
+@end defun
+@c @node DEBUGMODE
+@c @unnumberedsec phony
+@defvar DEBUGMODE
+ default: [FALSE] - causes MACSYMA to enter a MACSYMA break
+loop whenever a MACSYMA error occurs if it is TRUE and to terminate
+that mode if it is FALSE.  If it is set to ALL then the user may
+examine BACKTRACE for the list of functions currently entered.
+
+@end defvar
+@c @node DEBUGPRINTMODE
+@c @unnumberedsec phony
+@defun DEBUGPRINTMODE ()
+
+LISPDEBUGMODE(); DEBUGPRINTMODE(); and DEBUG();
+make available to the user debugging features used by systems
+programmers.  These tools are powerful, and although some conventions
+are different from the usual macsyma level it is felt their use is
+very intuitive.  [Some printout may be verbose for slow terminals,
+there are switches for controlling this.]  These commands were
+designed for the user who must debug translated macsyma code, as such
+they are a boon.  See MACDOC;TRDEBG USAGE for more information.  For
+more help, consult GJC.
+
+@end defun
+@c @node EV
+@c @unnumberedsec phony
+@defun EV (exp, arg1, ..., argn)
+is one of MACSYMA's most powerful and
+versatile commands. It evaluates the expression exp in the environment
+specified by the argi.  This is done in steps, as follows:
+@itemize @bullet
+@item
+    (1) First the environment is set up by scanning the argi which may
+be as follows:
+SIMP causes exp to be simplified regardless of the setting of the
+switch SIMP which inhibits simplification if FALSE.
+NOEVAL supresses the evaluation phase of EV (see step (4) below).
+This is useful in conjunction with the other switches and in causing
+exp to be resimplified without being reevaluated.
+EXPAND causes expansion.
+EXPAND(m,n) causes expansion, setting the values of MAXPOSEX and
+MAXNEGEX to m and n respectively.
+DETOUT causes any matrix inverses computed in exp to have their
+determinant kept outside of the inverse rather than dividing through
+each element.
+DIFF causes all differentiations indicated in exp to be performed.
+DERIVLIST(var1,...,vark) causes only differentiations with respect to
+the indicated variables.
+FLOAT causes non-integral rational numbers to be converted to floating
+point.
+NUMER causes some mathematical functions (including exponentiation)
+with numerical arguments to be evaluated in floating point.  It causes
+variables in exp which have been given numervals to be replaced by
+their values.  It also sets the FLOAT switch on.
+PRED causes predicates (expressions which evaluate to TRUE or FALSE)
+to be evaluated.
+EVAL causes an extra post-evaluation of exp to occur. (See step (5)
+below.)
+E where E is an atom declared to be an EVFLAG causes E to be bound to
+TRUE during the evaluation of exp.
+V:expression (or alternately V=expression) causes V to be bound to the
+value of expression during the evaluation of exp.  Note that if V is a
+MACSYMA option, then expression is used for its value during the
+evaluation of exp.  If more than one argument to EV is of this type
+then the binding is done in parallel.  If V is a non-atomic expression
+then a substitution rather than a binding is performed.
+E where E, a function name, has been declared to be an EVFUN causes E
+to be applied to exp.
+Any other function names (e.g.  SUM) cause evaluation of occurrences
+of those names in exp as though they were verbs.
+In addition a function occurring in exp (say F(args)) may be defined
+locally for the purpose of this evaluation of exp by giving
+F(args):=body as an argument to EV.
+If an atom not mentioned above or a subscripted variable or
+subscripted expression was given as an argument, it is evaluated and
+if the result is an equation or assignment then the indicated binding
+or substitution is performed.  If the result is a list then the
+members of the list are treated as if they were additional arguments
+given to EV. This permits a list of equations to be given (e.g. [X=1,
+Y=A**2] ) or a list of names of equations (e.g.  [E1,E2] where E1 and
+E2 are equations) such as that returned by SOLVE.
+The argi of EV may be given in any order with the exception of
+substitution equations which are handled in sequence, left to right,
+and EVFUNS which are composed, e.g. EV(exp,RATSIMP,REALPART) is
+handled as REALPART(RATSIMP(exp)).
+The SIMP, NUMER, FLOAT, and PRED switches may also be set locally in a
+block, or globally at the "top level" in MACSYMA so that they will
+remain in effect until being reset.
+If exp is in CRE form then EV will return a result in CRE form
+provided the NUMER and FLOAT switches are not both TRUE.
+
+@item
+    (2) During step (1), a list is made of the non-subscripted
+variables appearing on the left side of equations in the argi or in
+the value of some argi if the value is an equation.  The variables
+(both subscripted variables which do not have associated array
+functions, and non-subscripted variables) in the expression exp are
+replaced by their global values, except for those appearing in this
+list.  Usually, exp is just a label or % (as in (C2) below), so this
+step simply retrieves the expression named by the label, so that EV
+may work on it.
+
+@item
+    (3) If any substitutions are indicated by the argi, they are
+carried out now.
+
+@item
+    (4) The resulting expression is then re-evaluated (unless one of
+the argi was NOEVAL) and simplified according the the argi.  Note that
+any function calls in exp will be carried out after the variables in
+it are evaluated and that EV(F(X)) thus may behave like F(EV(X)).
+
+@item
+    (5) If one of the argi was EVAL, steps (3) and (4) are repeated.
+@end itemize
+
+@example
+                     Examples
+
+(C1) SIN(X)+COS(Y)+(W+1)**2+'DIFF(SIN(W),W);
+                        d                 2
+(D1)  COS(Y) + SIN(X) + -- SIN(W) + (W + 1)
+                        dW
+(C2) EV(%,SIN,EXPAND,DIFF,X=2,Y=1);
+                    2
+(D2)      COS(W) + W  + 2 W + COS(1) + 1.90929742
+@end example
+
+An alternate top level syntax has been provided for EV, whereby one
+may just type in its arguments, without the EV().  That is, one may
+write simply
+@example
+exp, arg1, ...,argn.
+@end example
+
+This is not permitted as part of
+another expression, i.e. in functions, blocks, etc.
+
+@example
+(C4) X+Y,X:A+Y,Y:2;
+(D4)                Y + A + 2
+(Notice the parallel binding process)
+(C5) 2*X-3*Y=3$
+(C6) -3*X+2*Y=-4$
+(C7) SOLVE([D5,D6]);
+SOLUTION
+                                1
+(E7)                     Y =  - -
+                                5
+                          6
+(E8)                  X = -
+                          5
+(D8)               [E7, E8]
+(C9) D6,D8;
+(D9)               - 4 =  - 4
+(C10) X+1/X > GAMMA(1/2);
+                    1
+(D10)           X + - > SQRT(%PI)
+                    X
+(C11) %,NUMER,X=1/2;
+(D11)            2.5 > 1.7724539
+(C12) %,PRED;
+(D12)                  TRUE
+
+
+@end example
+
+@end defun
+@c @node EVFLAG
+@c @unnumberedsec phony
+@defvar EVFLAG
+ default: [] - the list of things known to the EV function.  An
+item will be bound to TRUE during the execution of EV if it is
+mentioned in the call to EV, e.g. EV(%,numer);.  Initial evflags are
+
+
+@example
+FLOAT, PRED, SIMP, NUMER, DETOUT, EXPONENTIALIZE, DEMOIVRE,
+KEEPFLOAT, LISTARITH, TRIGEXPAND, SIMPSUM, ALGEBRAIC,
+RATALGDENOM, FACTORFLAG, %EMODE, LOGARC, LOGNUMER,
+RADEXPAND, RATSIMPEXPONS, RATMX, RATFAC, INFEVAL, %ENUMER,
+PROGRAMMODE, LOGNEGINT, LOGABS, LETRAT, HALFANGLES,
+EXPTISOLATE, ISOLATE_WRT_TIMES, SUMEXPAND, CAUCHYSUM,
+NUMER_PBRANCH, M1PBRANCH, DOTSCRULES, and LOGEXPAND.
+@end example
+
+@end defvar
+@c @node EVFUN
+@c @unnumberedsec phony
+@defvar EVFUN
+ - the list of functions known to the EV function which will get
+applied if their name is mentioned.  Initial evfuns are FACTOR,
+TRIGEXPAND, TRIGREDUCE, BFLOAT, RATSIMP, RATEXPAND, RADCAN,
+LOGCONTRACT, RECTFORM, and POLARFORM.
+
+@end defvar
+@c @node INFEVAL
+@c @unnumberedsec phony
+@defvr {special symbol} INFEVAL
+ leads to an "infinite evaluation" mode.  EV repeatedly
+evaluates an expression until it stops changing.  To prevent a
+variable, say X, from being evaluated away in this mode, simply
+include X='X as an argument to EV.  Of course expressions such as
+EV(X,X=X+1,INFEVAL); will generate an infinite loop.  CAVEAT
+EVALUATOR.
+
+@end defvr
+@c @node KILL
+@c @unnumberedsec phony
+@defun KILL (arg1, arg2, ...)
+eliminates its arguments from the MACSYMA
+system.  If argi is a variable (including a single array element),
+function, or array, the designated item with all of its properties is
+removed from core.  If argi=LABELS then all input, intermediate, and
+output lines to date (but not other named items) are eliminated. If
+argi=CLABELS then only input lines will be eliminated; if argi=ELABELS
+then only intermediate E-lines will be eliminated; if argi=DLABELS
+only the output lines will be eliminated.  If argi is the name of any
+of the other information lists (the elements of the MACSYMA variable
+INFOLISTS), then every item in that class (and its properties) is
+KILLed and if argi=ALL then every item on every information list
+previously defined as well as LABELS is KILLed.  If argi=a number (say
+n), then the last n lines (i.e. the lines with the last n line
+numbers) are deleted.  If argi is of the form [m,n] then all lines
+with numbers between m and n inclusive are killed. Note that
+KILL(VALUES) or KILL(variable) will not free the storage occupied
+unless the labels which are pointing to the same expressions are also
+KILLed.  Thus if a large expression was assigned to X on line C7 one
+should do KILL(D7) as well as KILL(X) to release the storage occupied.
+KILL(ALLBUT(name1,...,namek) will do a KILL(ALL) except it will not
+KILL the names specified.  (Note: namei means a name such as U, V, F,
+G, not an infolist such as FUNCTIONS.)
+    KILL removes all properties from the given argument thus
+KILL(VALUES) will kill all properties associated with every item on
+the VALUES list whereas the REMOVE set of functions
+(REMVALUE,REMFUNCTION,REMARRAY,REMRULE) remove a specific property.
+Also the latter print out a list of names or FALSE if the specific
+argument doesn't exist whereas KILL always has value "DONE" even if
+the named item doesn't exist.
+    Note that killing expressions will not help the problem which
+occurs on MC indicated by "NO CORE - FASLOAD" which results when
+either too many FASL files have been loaded in or when allocation
+level has gotten too high.  In either of these cases, no amount of
+killing will cause the size of these spaces to decrease.  Killing
+expressions only causes some spaces to get emptied out but not made
+smaller.
+
+@end defun
+@c @node LABELS
+@c @unnumberedsec phony
+@defun LABELS (char)
+takes a char C, D, or E as arg and generates a list of all
+C-labels, D-labels, or E- labels, respectively.  If you've generated
+many E- labels via SOLVE, then
+@example
+FIRST(REST(LABELS(C)))
+@end example
+reminds you
+what the last C-label was.
+LABELS will take as arg any symbolic name, so if you have reset INCHAR,
+OUTCHAR, or LINECHAR, it will return the list of labels whose first
+character matches the first character of the arg you give to LABELS.
+The variable, LABELS, default: [], is a list of C, D, and E lines
+which are bound.
+
+@end defun
+@c @node LASTTIME
+@c @unnumberedsec phony
+@defvar LASTTIME
+ - the time to compute the last expression in milliseconds
+presented as a list of "time" and "gctime".
+
+@end defvar
+@c @node LINENUM
+@c @unnumberedsec phony
+@defvar LINENUM
+ - the line number of the last expression.
+
+@end defvar
+@c @node MYOPTIONS
+@c @unnumberedsec phony
+@defvar MYOPTIONS
+ default: [] - all options ever reset by the user (whether
+or not they get reset to their default value).
+
+@end defvar
+@c @node NOLABELS
+@c @unnumberedsec phony
+@defvar NOLABELS
+ default: [FALSE] - if TRUE then no labels will be bound
+except for E lines generated by the solve functions.  This is most
+useful in the "BATCH" mode where it eliminates the need to do
+KILL(LABELS) in order to free up storage.
+
+@end defvar
+@c @node OPTIONSET
+@c @unnumberedsec phony
+@defvar OPTIONSET
+ default: [FALSE] - if TRUE, MACSYMA will print out a
+message whenever a MACSYMA option is reset.  This is useful if the
+user is doubtful of the spelling of some option and wants to make sure
+that the variable he assigned a value to was truly an option variable.
+
+@end defvar
+@c @node PLAYBACK
+@c @unnumberedsec phony
+@defun PLAYBACK (arg)
+"plays back" input and output lines.  If arg=n (a
+number) the last n expressions (Ci, Di, and Ei count as 1 each) are
+"played-back", while if arg is omitted, all lines are.  If arg=INPUT
+then only input lines are played back. If arg=[m,n] then all lines
+with numbers from m to n inclusive are played-back.  If m=n then [m]
+is sufficient for arg.  Arg=SLOW places PLAYBACK in a slow-mode
+similar to DEMO's (as opposed to the "fast" BATCH).  This is useful in
+conjunction with SAVE or STRINGOUT when creating a secondary-storage
+file in order to pick out useful expressions.  If arg=TIME then the
+computation times are displayed as well as the expressions.  If
+arg=GCTIME or TOTALTIME, then a complete breakdown of computation
+times are displayed, as with SHOWTIME:ALL;.  Arg=STRING strings-out
+(see STRING function) all input lines when playing back rather than
+displaying them.  If ARG=GRIND "grind" mode can also be turned on (for
+processing input lines) (see GRIND).  One may include any number of
+options as in PLAYBACK([5,10],20,TIME,SLOW).
+
+@end defun
+@c @node PRINTPROPS
+@c @unnumberedsec phony
+@defun PRINTPROPS (a, i)
+will display the property with the indicator i
+associated with the atom a. a may also be a list of atoms or the atom
+ALL in which case all of the atoms with the given property will be
+used.  For example, PRINTPROPS([F,G],ATVALUE).  PRINTPROPS is for
+properties that cannot otherwise be displayed, i.e. for
+ATVALUE, ATOMGRAD, GRADEF, and MATCHDECLARE.
+
+@end defun
+@c @node PROMPT
+@c @unnumberedsec phony
+@defvar PROMPT
+ default: [_] is the prompt symbol of the DEMO function,
+PLAYBACK(SLOW) mode, and (MACSYMA-BREAK).
+
+@end defvar
+@c @node QUIT
+@c @unnumberedsec phony
+@defun QUIT ()
+kills the current MACSYMA but doesn't affect the user's other
+jobs;  equivalent to exiting to DCL and stopping the MACSYMA process.
+One may "quit" to MACSYMA top-level by typing Control-C Control-G;
+Control-C gets NIL's interrupt prompt, at which one types either
+Control-G or just G.  Typing X at the Interrupt prompt will cause a
+quit in a computation started within a MACSYMA-BREAK without disrupting
+the suspended main computation.
+
+@end defun
+@c @node REMFUNCTION
+@c @unnumberedsec phony
+@defun REMFUNCTION (f1, f2, ...)
+removes the user defined functions
+f1,f2,... from MACSYMA.  If there is only one argument of ALL then all
+functions are removed.
+
+@end defun
+@c @node RESET
+@c @unnumberedsec phony
+@defun RESET ()
+causes all MACSYMA options to be set to their default values.
+(Please note that this does not include features of terminals such as
+LINEL which can only be changed by assignment as they are not
+considered to be computational features of MACSYMA.)
+
+@end defun
+@c @node RESTORE
+@c @unnumberedsec phony
+@defun RESTORE (file-specification)
+reinitializes all quantities filed away
+by a use of the SAVE or STORE functions, in a prior MACSYMA session,
+from the file given by file-specification without bringing them into
+core.
+
+@end defun
+@c @node SHOWTIME
+@c @unnumberedsec phony
+@defvar SHOWTIME
+ default: [FALSE] - if TRUE then the computation time will be
+printed automatically with each output expression.  By setting
+SHOWTIME:ALL, in addition to the cpu time MACSYMA now also prints out
+(when not zero) the amount of time spent in garbage collection (gc) in
+the course of a computation.  This time is of course included in the
+time printed out as "time=" .  (It should be noted that since the
+"time=" time only includes computation time and not any intermediate
+display time or time it takes to load in out-of-core files, and since
+it is difficult to ascribe "responsibility" for gc's, the gctime
+printed will include all gctime incurred in the course of the
+computation and hence may in rare cases even be larger than "time=").
+
+@end defvar
+@c @node SSTATUS
+@c @unnumberedsec phony
+@defun SSTATUS (feature,package)
+- meaning SET STATUS.  It can be used to
+SSTATUS(FEATURE,HACK_PACKAGE) so that STATUS(FEATURE,HACK_PACKAGE)
+will then return TRUE.  This can be useful for package writers, to
+keep track of what FEATURES they have loaded in.
+
+@end defun
+@c @node TOBREAK
+@c @unnumberedsec phony
+@defun TOBREAK ()
+causes the MACSYMA break which was left by typing
+TOPLEVEL; to be re-entered.  If TOBREAK is given any argument
+whatsoever, then the break will be exited, which is equivalent to
+typing TOBREAK() immediately followed by EXIT;.
+
+@end defun
+@c @node TOPLEVEL
+@c @unnumberedsec phony
+@defun TOPLEVEL ()
+During a break one may type TOPLEVEL;.  This will cause
+top-level MACSYMA to be entered recursively.  Labels will now be bound
+as usual.  Everything will be identical to the previous top-level
+state except that the computation which was interrupted is saved.  The
+function TOBREAK() will cause the break which was left by typing
+TOPLEVEL; to be re-entered.  If TOBREAK is given any argument
+whatsoever, then the break will be exited, which is equivalent to
+typing TOBREAK() immediately followed by EXIT;.
+
+@end defun
+@c @node TO_LISP
+@c @unnumberedsec phony
+@defun TO_LISP ()
+enters the LISP system under MACSYMA.  This is useful on
+those systems where control-uparrow is not available for this
+function.
+
+@end defun
+@c @node TTYINTFUN
+@c @unnumberedsec phony
+@defvar TTYINTFUN
+ default: [FALSE] - Governs the function which will be run
+whenever the User-interrupt-character is typed.  To use this feature,
+one sets TTYINTFUN (default FALSE meaning feature not in use) to a
+function of no arguments.  Then whenever (e.g.) ^U (control-U) is
+typed, this function is run.  E.g. suppose you have a FOR statement
+loop which increments I, and you want an easy way of checking on the
+value of I while the FOR statement is running.  You can do:
+TTYINTFUN:PRINTI$ PRINTI():=PRINT(I)$ , then whenever you type (e.g.)
+^U you get the check you want.
+
+@end defvar
+@c @node TTYINTNUM
+@c @unnumberedsec phony
+@defvar TTYINTNUM
+ default: [21] (the ascii value of Control-U (^U), U being
+the 21st letter of the alphabet).  This controls what character
+becomes the User-interrupt-character.  ^U was chosen for it mnemonic
+value.  Most users should not reset TTYINTNUM unless they are already
+using ^U for something else.
+
+@end defvar
+@c @node VALUES
+@c @unnumberedsec phony
+@defvar VALUES
+ default:[] - all bound atoms, i.e. user variables, not MACSYMA
+Options or Switches, (set up by : , :: , or functional binding).
+
+@end defvar

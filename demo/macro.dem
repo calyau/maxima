@@ -1,0 +1,46 @@
+/* ==================================================================== */
+/* file: macro.dem     /*
+/* At some point, we get the message: DISPLACE undefined /*
+
+/* First, we'll play with some macros that do stack manipulation.
+   A stack behaves like a pile of physical objects. You can pile
+   more things on top of it or you can examine/remove the top object.
+   Classically, the operators PUSH and POP apply to stacks. Let's
+   try some examples... */
+
+/* PUSH -- Adds a value to top of a stack */
+
+PUSH(VALUE,STACKNAME)::=BUILDQ([VALUE,STACKNAME],
+		STACKNAME:CONS(VALUE,STACKNAME))$
+
+/* POP -- Removes a value from top of a stack */
+
+POP(STACKNAME)::=BUILDQ([STACKNAME],
+			BLOCK([TEMP:FIRST(STACKNAME)],
+			      STACKNAME:REST(STACKNAME),TEMP))$
+
+A:[];
+PUSH('FOO,A);
+PUSH('BAR,A);
+A;
+POP(A);
+A;
+POP(A);
+A;
+
+/* Now let's write a function-defining function. Suppose we have some
+   function that we feel like we are always recycling by making just a few
+   minor changes and leaving most of it intact ... eg, 
+
+	POLY1(X):=X^3+45*X^2+432*X+1
+	POLY2(X):=X^3+45*X^2+432*X+2
+	... etc.
+
+   We might consider writing a macro for ourselves to save us the typing
+   done by defining this new each time. eg, ...  */
+
+POLYDEF(N)::=BUILDQ([NAME:CONCAT('POLY,N),N],
+		    NAME(X):=X^3+45*X^2+432*X+N);
+MEMBER('POLY83,FUNCTIONS);
+POLYDEF(83);
+DISPFUN(POLY83);

@@ -1,0 +1,29 @@
+Do LOADFILE(ARRAY,FASL,DSK,SHARE);
+
+This file provides various utility functions for handling arrays.
+
+LISTARRAY(<array>);
+	Returns a list of the elements of a array.  The order
+is row-major for declared arrays.  For hashed arrays the order of
+elements is the same as given by ARRAYINFO(<array>).  You will
+get garbage if any of the elements have not been defined yet.
+
+FILLARRAY(<array>,<list-or-array>);
+	Fills <array> from <list-or-array>.  If <array> is a
+floating-point (integer) array then <list-or-array> should be either a
+list of floating-point (integer) numbers or another floating-point
+(integer) array.  If the dimensions of the arrays are different <array>
+is filled in row-major order.  If there are not enough elements in
+<list-or-array> the last element is used to fill out the rest of
+<array>.  If there are too many the remaining ones are thrown away.
+FILLARRAY returns its first argument.
+
+REARRAY(<array>,<dim1>, ... ,<dimk>);
+	Can be used to change the size or dimensions of an array.  The
+new array will be filled with the elements of the old one in row-major
+order.  If the old array was too small, FALSE, 0.0 or 0 will be used to
+fill the remaining elements, depending on the type of the array.  The
+type of the array cannot be changed.
+
+
+						CFFK@MC

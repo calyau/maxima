@@ -1,0 +1,17 @@
+
+INTSCE LISP contains a routine INTSCE(EXPR,VAR) which
+integrates EXPR w.r.t. VAR where EXPR is of the form:
+
+  EXP(A*X+B)*COS(C*X)^N*SIN(C*X)^M
+
+EXPR may be any expression, but if it is not in the above
+form then the regular integration program will be invoked
+if the switch ERRINTSCE [FALSE] is FALSE.  If it is TRUE
+then INTSCE will err out.
+
+The LISP file contains a main program $INTSCE which does
+the pattern matching and error checking and a subroutine
+$SCEINT which does the actual integration.  The MACSYMA
+form of this routine can be found in SHARE;INTSCE > .
+
+		Richard Bogen  7/22/74

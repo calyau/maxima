@@ -1,0 +1,139 @@
+/*-*-macsyma-*-*/
+
+/* George Carrette, 2:35pm  Thursday, 21 August 1980 */
+
+/* A macro for defining substitution macros. */
+EVAL_WHEN(BATCH,TTYOFF:TRUE)$ 
+/* e.g.  
+
+RECT_RULE('EXP,'X,A,B,DX)=>BLOCK([%_SUM:0.0],
+                                 FOR X:A THRU B STEP DX 
+                                  DO %_SUM:%_SUM+EXP, %_SUM)$
+
+defines a rectangle-rule numerical integration macro.
+The "=>" macro simply provides a more convient syntax for expressing
+common cases of macro definitions. As such, it is not as general or
+flexible as the "::=" into which it expands.
+
+The left-hand-side of the "=>" definition gives the name of the
+macro and the formal parameters. The right-hand-side gives a body
+into which the substitutions are made. The substitutions are made
+with the built-in macro BUILDQ.
+[1] If a formal parameter appears as 'FOO then the actual parameter
+    is directly substituted for FOO.
+[2] If the first two characters in the name of a symbol on the right is
+    "%_" then when the macro defined expands that symbol will be
+    a unique generated symbol (GENSYM). This is used to avoid name
+    conflicts with symbols in substituted expressions.
+[3] If a formal parameter appears as FOO then the macro defined will
+    have assure that FOO will be the value of the actual parameter.
+    e.g.
+        EXAMPLE(FOO)=>BAR(FOO,FOO) is like
+        EXAMPLE(FOO)=>BLOCK([%_FOO:FOO],BAR(%_FOO,%_FOO))
+    note: that EXAMPLE(FOO):=BAR(FOO,FOO) a function call, has exactly the
+        same evaluation semantics as EXAMPLE(FOO)=>BAR(FOO,FOO),
+        however, in the macro case the code for EXAMPLE would be duplicated
+        wherever there was a call to it, which may be bad if the code is
+        large.
+
+*/
+
+EVAL_WHEN([translate,batch,demo],
+          IF GET('MACRO1,'VERSION) = FALSE
+        THEN LOADFILE(MACRO1,FASL,DSK,SHARE))$
+
+HERALD_PACKAGE(SUBMAC)$
+
+EVAL_WHEN([TRANSLATE],TRANSCOMPILE:TRUE,
+	  /* PACKAGEFILE:TRUE, bug in MEVAL makes this lose now. */
+          MODEDECLARE(FUNCTION(GETCHARN),FIXNUM,
+	  FUNCTION(SYMBOLP,GENSYM_CONVENTIONP),BOOLEAN))$
+
+EVAL_WHEN([TRANSLATE,BATCH,DEMO],          
+          PARAMETER(X)::=EV(X))$
+
+GENSYM_CONVENTIONP(X):=
+ IF SYMBOLP(X) AND GETCHARN(X,1)=PARAMETER(GETCHARN('%,1)) AND
+    GETCHARN(X,2)=PARAMETER(GETCHARN('_,1)) THEN TRUE
+    ELSE FALSE$
+
+EVAL_WHEN(TRANSLATE,DECLARE(%_GENSYMS,SPECIAL))$
+
+%_CHECK(EXP):=IF ATOM(EXP)
+                 THEN( IF GENSYM_CONVENTIONP(EXP) AND NOT(MEMBER(EXP,%_GENSYMS))
+			  THEN PUSH(EXP,%_GENSYMS))
+                 ELSE (%_CHECK(PART(EXP,0)),
+                       FOR EXP IN ARGS(EXP) DO(%_CHECK(EXP)))$
+
+%_GENSYMS(EXP):=BLOCK([%_GENSYMS:[]],%_CHECK(EXP),%_GENSYMS)$
+
+/*    :=        180       ANY       20        ANY       ANY
+    INFIX(operator, lbp[180], rbp[180], lpos[ANY], rpos[ANY],pos[ANY])
+*/
+
+EVAL_WHEN([TRANSLATE],
+          /* This  hack diverts the syntax defining forms for
+             "=>" to another file. */
+	  INFIX("=>",180,20),
+	  /* get rid of any function or macro properties that "=>"
+             might have so that only the syntax gets saved. */
+          REMFUNCTION("=>"),
+          SAVE([SUBMAC,SYNTAX,DSK,SHARE2],"=>"))$
+
+EVAL_WHEN([LOADFILE],
+          /* This is evaluated once we are translated and then loaded. */
+          LOADFILE(SUBMAC,SYNTAX,DSK,SHARE2))$
+
+EVAL_WHEN([BATCH,DEMO],
+          /* Otherwise just evaluate the usual form. */
+          /* The reason I don't do EVAL_WHEN([BATCH,DEMO,TRANSLATE,LOADFILE],
+	  				     INFIX("=>"))
+             is to save the core of loading the INFIX function. */
+          INFIX("=>"))$
+
+/* The right hand side of the "=>" definition is the template of
+   the BUILDQ, the formal arguments and the gensym convention
+   symbols are the substitution parameters. */
+
+"=>"(HEADER,BODY)::=
+    BLOCK([BUILD_SUBST:[], /* the subsitutions the buildq will make */
+           EVAL_ONCE:[], /* From unquoted arguments. */
+	   FORMAL_ARGS:[] ], /* Of the constructed macro. */
+
+	   FOR U IN %_GENSYMS(BODY)
+	    DO PUSH(BUILDQ([U],U:?GENSYM()),BUILD_SUBST),
+
+	   FOR ARG IN ARGS(HEADER)
+            DO(IF ATOM(ARG)
+	          /* F(X)=>BAR(X) is
+	             F(G001)::=BUILDQ([G001,X:?GENSYM()],BLOCK([X:G001],BODY)) */
+                  THEN BLOCK([G:?GENSYM()],
+		             PUSH(G,FORMAL_ARGS),
+			     PUSH(G,BUILD_SUBST),
+			     PUSH(BUILDQ([ARG],ARG:?GENSYM()),BUILD_SUBST),
+			     PUSH(BUILDQ([ARG,G],ARG:G),EVAL_ONCE))
+               ELSE IF PART(ARG,0)="'"
+	          THEN (ARG:PART(ARG,1),
+		        PUSH(ARG,BUILD_SUBST),
+			PUSH(ARG,FORMAL_ARGS))
+               ELSE ERROR("Bad formal arg to \"=>\"",ARG)),
+
+	   FORMAL_ARGS:REVERSE(FORMAL_ARGS),
+	   EVAL_ONCE:REVERSE(EVAL_ONCE), /* preserve order of evaluation. */
+
+           BUILDQ([FORMAL_ARGS,EVAL_ONCE,BUILD_SUBST,NAME:PART(HEADER,0),BODY],
+		  NAME(SPLICE(FORMAL_ARGS))::=
+                       BUILDQ(BUILD_SUBST,
+                              BLOCK(EVAL_ONCE,BODY))))$
+
+EVAL_WHEN(DEMO,
+RECT_RULE('EXP,'X,A,B,DX)=>BLOCK([%_SUM:0.0],
+                                 FOR X:A THRU B STEP DX
+                                  DO %_SUM:%_SUM+EXP, %_SUM));
+EVAL_WHEN(DEMO,MACROEXPAND(RECT_RULE(X^3*A,X,A^2,A*B^2,0.5)));
+
+EVAL_WHEN(BATCH,TTYOFF:FALSE)$
+
+
+
+

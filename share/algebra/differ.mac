@@ -1,0 +1,121 @@
+			/* -*-Macsyma-*- */
+eval_when([batch],ttyoff:true)$	
+define_variable(normalize,false,boolean)$
+define_variable(differverbose,false,boolean)$
+define_variable(index,'index,any)$
+define_variable(u,'u,any)$
+define_variable(array,'array,any)$
+/*  Linear difference equation package	*/ 
+
+magnitude(vector):=
+block([scalarmatrix:true],
+      if listp(vector) or length(vector)=1
+       then return (sqrt(vector.transpose(vector))),
+      if length(transpose(vector))=1
+       then return (sqrt(transpose(vector).vector)),
+      print ("magnitude:  not a vector --",vector), false)$
+
+/*  Returns a list of the eigenvalues of a matrix.
+    Does not handle repeated eigenvalues.  */
+
+eigenvalues(mx):=
+block([loadprint:false,programmode:true,charpoly,lambda,result],
+      if length(mx) # length(transpose(mx))
+      then (print ("eigenvalues:  not a square matrix --",mx), return(false)),
+      charpoly:apply('charpoly,[mx,lambda]),
+      result:solve(charpoly,lambda),
+      makelist(rhs(x),x,result))$
+
+
+/*  Returns a list which is a transpose of the eigenvector  */
+
+eigenvector(mx,eigenvalue):=
+block([loadprint:false,programmode:true,ttyoff:true,
+       degree,xlist,xvector,eqnlist,result],
+      degree:length(mx),
+      if degree # length(transpose(mx))
+      then (print("eigenvector:  not a square matrix --",mx), return(false)),
+      xlist:makelist(concat('x,i),i,1,degree),
+      xvector:transpose(matrix(xlist)),
+      mx:mx.xvector-eigenvalue*xvector,
+      eqnlist:makelist(mx[i,1]=0,i,1,degree),
+      if member(0=0,eqnlist)
+         then eqnlist:delete(0=0,eqnlist)
+	 else eqnlist:rest(eqnlist),
+      result:first(solve(cons('x1=1,eqnlist),xlist)),
+      result:makelist(part(x,2),x,result),
+      if normalize=true then result/magnitude(result) else result)$
+
+/* Puts equations in the form x[n+1] = a x[n] + b y[n] + c z[n] + ...	     */
+/* Be careful for the case where eqn is x[n+1] = x[n+1] and var is x[n]	     */
+/* SOLVE returns ALL for SOLVE(X=X, X), i.e. arbitrarily many solutions.     */
+
+standardize(eqn,var):=
+block([x,y],
+      x:part(var,0)[part(var,1)+1],
+      y:solve(eqn,x),
+      if y = [] then (print("difference:  no",x,"term --",eqn),
+                      throw('missing_term)),
+      if y = 'all then eqn else first(y)
+      )$
+
+/*  Solves single first order equations of the form f[n+1] = a f[n] + b  */
+
+first_order_difference(eqn,var):=
+block([a,b,simpsum:true],
+      a:coeff(rhs(eqn),var),
+      b:rhs(eqn)-a*var,
+      var=a^index*array[0]+b*sum(a^k,k,0,index-1))$
+
+/*  Solves a single higher order equation by converting to a first order system  */
+
+second_order_difference(eqn,var):= block([],
+      part(system([eqn,array[index+1]=array[index+1]],[array[index+1],var]),2,1))$
+
+/*  Solves a system of first order equations  */
+
+system(eqnlist,varlist):=
+block([listarith:true,normalize:false,a,u,lambdas,s,sinverse,d],
+      eqnlist:map(lambda([x,y],rhs(standardize(x,y))),eqnlist,varlist),
+      a:makelist(makelist(coeff(eqn,var),var,varlist),eqn,eqnlist),
+      a:apply('matrix,a),
+      u[0]:transpose(makelist(apply('ev,[var,solve(index=0)]),var,varlist)),
+      u[index]:transpose(varlist),
+      if differverbose=true then (apply('ldisplay,['u[index],'u[0],'a]),
+                                  apply('ldisp,['u[index+1]='a*'u[index],
+				                'u[index]=
+                                                '(s.lambda^n.s^^(-1).u[0])])),
+      lambdas:eigenvalues(a),
+      s:makelist(eigenvector(a,lambda),lambda,lambdas),
+      s:transpose(apply('matrix,s)),
+      sinverse:s^^-1,
+      d:lambdas*ident(length(lambdas)),
+      u[index]:s.d^index.sinverse.u[0],
+      transpose(map("=",varlist,part(transpose(u[index]),1))))$
+
+/*  General toplevel function  */
+
+difference(eqn,var):=
+block([loadprint:false,programmode:true,array,index,higherorder],
+      if listp(eqn) then (array:makelist(part(x,0),x,var),
+                          index:part(first(var),1),
+                          return (system(eqn,var))),
+      array:part(var,0),
+      index:part(var,1),
+      higherorder:makelist(array[index+n],n,2,5),
+      eqn:catch(standardize(eqn,var)),
+      if eqn = 'missing_term then return(done),
+/*      if apply("AND",map(lambda([x],freeof(x,eqn)),higherorder)) 
+This code does not work in DOE MACSYMA due to operand error, so
+replaced by equivalent test. Leo Harten, Aug 22, 1984 */
+      if not member('false,map(lambda([x],freeof(x,eqn)),higherorder))
+         then first_order_difference(eqn,var)
+	 else second_order_difference(eqn,var))$
+
+/* Bugs, comments to CWH@MC
+   Things to do:
+   Rewrite this in Lisp
+   Put a catch around the call to standardize from difference.
+   Become more intelligent about cases like f[n]=f[n-1]+f[n-2]. */
+
+eval_when([batch],ttyoff:false)$

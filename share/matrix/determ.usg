@@ -1,0 +1,35 @@
+		The Bareiss Two-Step Determinant
+
+    This is a proposal for a new determinant routine.  This method
+is a non-fraction-producing method designed to minimize the complex-
+ity of the coefficients in the subexpressions generated.  The space
+requirements in list storage space are minimized by overwriting and
+avoiding unnecessary storage.  This is an absolutely stable elimina-
+tion method.  This method in the general case returns the absolute
+smallest possible coefficients.  This algorithm has been developed to
+provide for the expansion of a determinant of general commutative ele-
+ments (such as elements of an Abelian group).  Note:  for maximum
+efficiency the elements of all the rows and columns respectively
+should be made relatively prime to each other.
+
+    This is a two-step method.  I have chosen a fraction-free rather
+than a division-free algorithm to avoid the large expressions gener-
+ated by the division-free method.  To preserve fraction-free arith-
+metic, the divisions must usually be carried out as the last arithme-
+tic operation in determining the lower-order determinants.  However I
+have decided to carry out the divisions after calculating the cofact-
+ors.  The advantage of this method is that smaller expressions are
+generated.  The penalty in efficiency caused by the divisions is rel-
+atively small for large systems.
+
+    Divisions are performed after calling EZGCD.  If greatest common
+divisor calculations are unneccessary, then TAKEGCD should be set to
+FALSE.  No other simplifications are performed.
+
+    This method has been taken from the paper "Sylvester's Identity
+and Multistep Integer-Preserving Gaussian Elimination"  by
+Erwin H. Bareiss.
+
+    This algorithm has been programmed by Martin Cole.  The function
+is called as  det(m)  where m is a matrix or array.  Any comments
+or suggestions should be mailed to MSC@MIT-MC.

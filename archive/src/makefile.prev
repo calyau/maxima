@@ -1,0 +1,211 @@
+
+.SUFFIXES: .o .c .lisp
+
+SHELL	= sh
+SRC	= .
+PORTDIR	=$(GCLDIR)/unixport
+MAXIMA	= ./saved_maxima
+LISP	= $(PORTDIR)/saved_gcl $(PORTDIR)/
+#       sloop.o is already in our kcl. otherwise it goes here.
+
+
+# begin makedefs
+GCLDIR=/usr/local/kcl/gcl-2.2
+SHELL=/bin/sh
+MACHINE=alpha-osf1
+#could not find tk.tcl so using:
+TK_LIBRARY=unknown
+X11_INCLUDE_DIR=-I/usr/include
+#could not find tk.h so using:
+TK_INCLUDE_DIR=-Iunknown
+#could not find libtk.* so using:
+TK_LIBS=-Lunknown -ltk
+#could not find libtcl.* so using:
+TCL_LIBS=-Lunknown -ltcl
+X11_LIBS=-L/usr/lib -lX11
+EMACS_SITE_LISP=/usr/local/lib/emacs/site-lisp
+INFO_DIR=/usr/local/info
+# /* copyright W. Schelter 1990 */
+# Machine dependent makefile definitions for dec 3100
+# gcl 505 worked under Ultrix V3.1C-0 (Rev. 42) with speed=0. -ie no -O
+# for the lisp files.
+
+LBINDIR=/usr/local/bin
+
+OFLAG   = -O
+LIBS    = -lm -lbsd
+ODIR_DEBUG= -g3
+NULLFILE = ../h/twelve_null
+SHELL=/bin/sh
+
+# .IGNORE:
+
+# This CC string will be used for compilation of the system,
+# and also in the compiler::*cc* variable for later compilation of
+# lisp files.
+
+# also defined in `machine'.h file
+# The one here must be >= the one in the .h file.
+# It must be a multiple of 0x400000 greater that 0x400000 the
+# default text start.
+TBEGIN= 10000000
+DBEGIN= 12000000
+
+# If you don't plan on linking in a lot of other stuff
+# like maxima, you can increase the -G 8 to -G 800 or so.
+# That should be a bit faster..
+# We have replaced -DVOL=volatile with -DVOL= since in ultrix 4.2
+# the volatile declaration is not correctly implemented.   Hopefully
+# it is not required there.
+
+CC = cc -DVOL= -I${GCLDIR}/o  
+LDCC = cc -Wl,-D -Wl,${DBEGIN} -Wl,-T -Wl,${TBEGIN}
+
+
+# Enable the fastloading mechanism which does not use ld -A
+# requires c/rel_.. machine dependent code.
+
+# RSYM  = rsym
+# SFASL = $(ODIR)/sfasl.o
+
+# When using SFASL it is good to have (si::build-symbol-table)
+# INITFORM=(si::build-symbol-table)
+# incremental loading with -A requires -G 0
+# INITFORM=(setq compiler::*cc* "cc -DVOL=volatile -G 0 ")
+# until volatile works on this machine leave it out.
+# INITFORM=(setq compiler::*cc* "cc -DVOL= -G 0 ")
+
+# Use symbolic links
+SYMB=-s
+
+
+#MPFILES= ${MPDIR}/mp.o ${MPDIR}/gen2.o ${MPDIR}/alpha.o
+MPFILES=  ${MPDIR}/alpha.o /usr/local/lib/libpari.a
+MPFILES= ${MPDIR}/mpi.o ${MPDIR}/libmport.a
+
+RANLIB= ar lts
+
+# end makedefs
+GCLDIR=/usr/local/kcl/gcl-2.2
+MAXDIR=/usr/local/kcl/maxima-5.1
+# end maxmakedefs
+
+
+MACROS = lmdcls.o letmac.o kclmac.o clmacs.o commac.o mormac.o \
+	compat.o defopt.o defcal.o maxmac.o mopers.o \
+	mforma.o mrgmac.o procs.o rzmac.o strmac.o \
+	displm.o ratmac.o mhayat.o \
+	numerm.o transm.o optimize.o 
+
+OBJS   = opers.o utils.o sumcon.o sublis.o runtim.o \
+	serror.o merror.o mformt.o mutils.o \
+	outmis.o ar.o misc.o comm.o comm2.o mlisp.o \
+	mmacro.o buildq.o simp.o float.o csimp.o \
+	csimp2.o zero.o logarc.o rpart.o macsys.o mload.o \
+	suprv1.o dskfn.o lesfac.o \
+	factor.o algfac.o nalgfa.o ufact.o result.o \
+	rat3a.o rat3b.o rat3d.o rat3c.o rat3e.o \
+	nrat4.o ratout.o  transl.o transs.o \
+	trans1.o trans2.o trans3.o trans4.o \
+	trans5.o transf.o troper.o trutil.o trmode.o trdata.o \
+	trpred.o transq.o acall.o \
+	fcall.o evalw.o trprop.o mdefun.o bessel.o ellipt.o \
+	numer.o intpol.o rombrg.o \
+	nparse.o displa.o nforma.o ldisp.o \
+	grind.o spgcd.o ezgcd.o option.o macdes.o \
+	inmis.o db.o compar.o askp.o sinint.o \
+	sin.o risch.o hayat.o defint.o residu.o trigi.o \
+	trigo.o trgred.o specfn.o mat.o matrix.o \
+	sprdet.o newinv.o linnew.o newdet.o \
+	schatc.o matcom.o matrun.o nisimp.o tlimit.o \
+	limit.o solve.o psolve.o algsys.o \
+	polyrz.o cpoly.o mtrace.o scs.o asum.o fortra.o \
+	optim.o marray.o mdot.o irinte.o \
+	series.o numth.o laplac.o pade.o homog.o combin.o \
+	mstuff.o ratpoi.o pois2.o pois3.o 
+
+
+TRANSLATED = nusum.o desoln.o elim.o trgsmp.o ode2.o invert.o plot.o
+
+OTHERS 	= hypgeo.o hyp.o
+
+all:   $(MACROS) $(OBJS)  saved_maxima $(OTHERS)
+	make translated
+
+install:
+	cp ${TRANSLATED} ${INSTALL_LIB_DIR}/src
+
+sysinit.o maxobjs: sysinit.lsp makefile ../makefile
+	echo '(load "sysdef.lisp")(compile-file "sysinit.lsp" )' | $(LISP)
+
+# make an init_maxima.lsp in the PORTDIR
+init: $(PORTDIR)/init_gcl.lsp
+	cat $(PORTDIR)/init_gcl.lsp | sed -e \
+	"s;system-init(si::chdir \"`pwd`\")(load \"maxima-package.lisp\")(load \"init_max0.lisp\")(load \"sysinit.o\")(user::user-init)(load \"init_max1.lisp\")(si::save-system \"saved_maxima\")g" \
+	> init_maxima.lsp
+	- if cmp init_maxima.lsp $(PORTDIR)/init_maxima.lsp > /dev/null ;\
+	then true; else  cp init_maxima.lsp $(PORTDIR)/init_maxima.lsp ;fi
+	
+saved_maxima: maxobjs sysinit.o $(OBJS) $(MACROS) version.lisp
+	make init
+	(cd $(PORTDIR) ; make saved_maxima "SYSTEM=maxima" "SYSTEM_OBJS=`cat $(MAXDIR)/src/maxobjs`" "PORTDIR=$(PORTDIR)")
+
+version.lisp: ../majvers  ../minvers
+	echo "(setf (get :maxima :version) (quote (" `cat ../majvers` `cat ../minvers` \"`date`\" ")))" > version.lisp
+
+PREAMBLE='(load "sysdef.lisp")' \
+	'(load "SYS-PROCLAIM.lisp")' \
+	'(proclaim (quote (optimize (safety 0) (speed 0) (space 0))))' \
+	'(setq compiler::*ifuncall* t)'
+
+
+$(MACROS):  
+	echo $(PREAMBLE)\
+	'(proclaim (quote (optimize (safety 2) (speed 2) (space 2))))' \
+	'(make::make :maxima-macros :compile t)' | $(LISP)
+
+$(TRANSLATED) $(OTHERS):
+	./saved_maxima -compile  $*.lisp  -o-file t
+
+translated:	$(TRANSLATED) $(OTHERS)
+
+sloop.o make.o:
+	 $(SAVEDKCLDIR)/saved_kcl $(SAVEDKCLDIR) $*.lisp $* S1000
+
+# This would cause recompiling of all objects if one macro file changed.
+# $(OBJS):: saved_max_compile
+#	rm $@
+
+.lisp.o:
+	echo $(PREAMBLE)'(make::make :maxima-macros)(compile-file '\"$*.lisp\"' :system-p  t)' | ${LISP}
+	
+# c files should not get left but they're sometimes there.
+
+.c.o:
+	echo $(PREAMBLE)'(make::make :maxima-macros)(compile-file '\"$*.lisp\"' :system-p t)' | ${LISP}
+
+all-clean:
+	rm -f $(TRANSLATED) $(OBJS) $(MACROS) core saved_maxima
+	rm -f *.o
+
+clean:
+	rm -f  $(OBJS) $(MACROS) core saved_max_compile make.o $(PORTDIR)/raw_maxima
+
+eliminate-source:
+	rm -f `echo  $(OBJS) | sed -e "s:[.]o:.lisp"`
+	rm -f $(OBJS) sysdef.lisp make.lisp
+	rm -f info/*.texi
+	rm -f $(PORTDIR)/raw_maxima
+
+tags:
+	@echo etags $(OTHERS) $(TRANSLATED) $(OBJS) $(MACROS) | sed -e "s:\.o:.lisp:g" |sh
+
+proclaims:
+	echo "(setq user::lisp-dir \"$(KCLDIR)\")" \
+	'(load "makepro.lisp")' | $(KCLDIR)/xbin/kcl
+	cat var-proclaims.lisp >> SYS-PROCLAIM.lisp
+
+
+
+
+

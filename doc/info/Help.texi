@@ -1,0 +1,201 @@
+@node Help, Differential Equations, Number Theory, Top
+@chapter Help
+@menu
+* Introduction to Help::        
+* LISP-AND-MACSYMA::            
+* GARBAGE_COLLECTION::          
+* DOCUMENTATION::               
+* Definitions for Help::        
+@end menu
+
+@node Introduction to Help, LISP-AND-MACSYMA, Help, Help
+@section Introduction to Help
+
+The most useful online help command is DESCRIBE which obtains help
+on all commands containing a particular string.  Here by command we
+mean a built in operator such as INTEGRATE or FACTOR etc.
+
+Online documentation is also available using INFO and printed documentation
+is available by using tex on the file info/maxima.texi in the maxima
+distribution.
+
+
+@node LISP-AND-MACSYMA, GARBAGE_COLLECTION, Introduction to Help, Help
+@section LISP-AND-MACSYMA
+ All of Maxima is of course written in lisp.  There is
+a naming convention for functions and variables:  All symbols which
+begin with a "$" sign at lisp level, are read with the "$" sign stripped
+off at Macsyma level.  For example, there are two lisp functions
+TRANSLATE and $TRANSLATE.   If at macsyma level you enter
+TRANSLATE(FOO); the function which is called is the $translate function.
+To access the other function you must prefix with a "?":
+
+@example
+(C1) ?TRANSLATE(FOO); 
+@end example
+
+Of course, this may well not do what you wanted it to do since it is a
+completely different function.
+
+To enter lisp level on the lisp machine, you should type Suspend or
+Control-Suspend.  This will cause a lisp break loop to be entered.  You
+could now evaluate $d2 (or macsyma:$d2 if you have not done (pkg-goto
+'macsyma)) and view the value of the line label D2, in its internal lisp
+format.  Resume or abort will return to Macsyma top level.
+
+Thus if you intend to write lisp functions to be called at macsyma
+level you should name them by names beginning with a "$".
+
+If you are at lisp level and wish to read a macsyma expression you
+may enter
+@example
+
+			  (setq $foo #$[x,y]$)
+@end example
+
+This will have the same effect as entering
+@example
+
+(C1)FOO:[X,Y];
+@end example
+@noindent
+
+except that foo will not appear in the VALUES list.  In order to view
+foo in macsyma printed format you may type
+
+@example
+(displa $foo)
+@end example
+
+In this documentation when we wish to refer to a macsyma symbol we
+shall generally omit the $ just as you would when typing at macsyma level.
+This will cause confusion when we also wish to refer to a lisp symbol.
+In this case we shall usually try to use lower case for the lisp symbol
+and upper case for the macsyma symbol.  For example LIST for $list and
+list for the lisp symbol whose printname is "list".
+
+To enter more complicated lisp expressions at macsyma level you may need
+the quoting character \ eg. for the lisp function make-array
+
+@example
+AA:?MAKE\-ARRAY(3,?:FILL\-POINTER,0);
+@end example
+@noindent
+
+would be have the same result as the lisp form
+
+@example
+(setq $aa (make-array 3  :fill-pointer 0)).
+@end example
+
+Since functions defined using the MAXIMA language are not ordinary
+lisp functions, you must use mfuncall to call them.
+For example:
+
+@example
+(D2) 			    FOO(X, Y) := X + Y + 3
+@end example
+@noindent
+
+then at lisp level
+
+@example
+CL-MAXIMA>>(mfuncall '$foo 4 5)
+12
+@end example
+
+A number of lisp functions are shadowed in the maxima package.  This is
+because their use within maxima is not compatible with the definition as
+a system function.  For example typep behaves differently common lisp
+than it did in Maclisp.  If you want to refer to the zeta lisp typep
+while in the maxima package you should use global:typep (or cl:typep for
+common lisp).  Thus
+
+@example
+
+  (macsyma:typep '(1 2)) ==> 'list
+  (lisp:typep '(1 2))==> error (lisp:type-of '(1 2))==> 'cons
+
+@end example
+
+To see which symbols are shadowed look in "Maxima-source:maxima;sysdef.lisp" or
+do a describe of the package.
+
+
+@node GARBAGE_COLLECTION, DOCUMENTATION, LISP-AND-MACSYMA, Help
+@section GARBAGE_COLLECTION
+ Symbolic computation tends to create a good deal
+of garbage, and effective handling of this can be crucial to successful
+completion of some programs.
+
+Under GCL, on UNIX systems where the mprotect system call is available
+(including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
+is available.   This limits the collection to pages which have been recently
+written to.    See the GCL documentation under ALLOCATE and GBC.   At the
+lisp level doing (setq si::*notify-gbc* t) will help you determine which
+areas might need more space.
+
+@node DOCUMENTATION, Definitions for Help, GARBAGE_COLLECTION, Help
+@section DOCUMENTATION
+  The function DESCRIBE(item) will offer a list of topics
+which include the substring item.  The documentation will then be printed
+on the screen.  It may also be put into a buffer by using the 
+command MACSYMA DESCRIBE in the zmacs editor.
+
+The variable ALL_MACSYMA_DOCUMENTATION is a list of file names which
+contain documentation in a format suitable to be read by DESCRIBE.  You
+may of course add to any of these files, or add another file to the
+list.  Each separate item should begin with "&" on a new line separated
+by a blank line.  The key which will be used for searching, is the
+string up to the first blank space.
+
+
+The function set-up-index will then be called to make an index and
+add it to *DESCRIBE-INDICES*, so that future calls to DESCRIBE will also
+see the additional documentation.
+@example
+
+(set-up-index "MAXIMA-source:maxima;foo.bar" :make-new-one t)
+@end example
+@noindent
+
+would cause a new index to be made even if foo-index.bin already
+existed containing the appropriate index.
+
+
+@node Definitions for Help,  , DOCUMENTATION, Help
+@section Definitions for Help
+@c @node DEMO
+@c @unnumberedsec phony
+@defun DEMO (file)
+this is the same as BATCH but pauses after each command
+line and continues when a space is typed.
+In NIL macsyma, DEMO does file searching like BATCH does, and in addition
+searches for files on the [DEMO] directory in the Macsyma directory
+hierarchy, and also for files with extensions of .DEM, .DM1, and .DM2
+in addition to .MAC.  This is to make it easier to run demo files which
+come supplied with NIL macsyma, which are named things like
+MAX$DISK:[DEMO]MAT.DEM.
+
+@end defun
+@c @node DESCRIBE
+@c @unnumberedsec phony
+@defun DESCRIBE (cmd)
+prints out information about "cmd", which may be any
+MACSYMA command, switch or variable.  Certain key words have also been
+included, where they seem appropriate, thus DESCRIBE(TRIG); will print
+out a list of the trig functions implemented in MACSYMA.  Some
+function names or operators may require quotation marks around them,
+e.g.  DESCRIBE("DO"); or DESCRIBE(".");.  See also APROPOS(string)
+which allows you to locate command names even if you aren't sure of
+the full name.  Do DESCRIBE(APROPOS); for details.
+
+@end defun
+@c @node EXAMPLE
+@c @unnumberedsec phony
+@defun EXAMPLE (command)
+will start up a demonstration of how command works
+on some expressions.  After each command line it will pause and wait
+for a space to be typed, as in the DEMO command.
+
+@end defun

@@ -1,0 +1,31 @@
+LISP=lucid
+MAXIMA=/usr/rascal/tmp/maxima_lucid
+SAVE=(disksave "${MAXIMA}")
+#On sun this gives up to 32MB.
+ALLOC=(change-memory-management :growth-limit 500)
+
+compile:
+	echo '$(ALLOC)(load "sysdef.lisp")(make:make :maxima :compile t)' | ${LISP}
+
+
+save:
+	echo '$(ALLOC)(load "sysdef.lisp")(make:make :maxima)$(SAVE)' | ${LISP}
+
+translated:
+	echo '(push :main-files-loaded *features*)(load "sysdef.lisp")' \
+	'(make :maxima :compile t)' | ${MAXIMA}
+
+test:
+	date
+	(cd ../doc ; cat tests.lisp | ${MAXIMA})
+	date
+test1:
+	date
+	(cd ../doc ; cat ltests.lisp | ${MAXIMA})
+	date
+
+test2:
+	date
+	(cd ../doc ; cat ltest2.lisp | ${MAXIMA})
+	date
+

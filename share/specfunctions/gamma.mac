@@ -1,0 +1,31 @@
+
+/* This batch contains a function which returns an asymptotic expansion of
+	the GAMMA function truncated to N terms, in the variable Z.
+	Just say ASYMPGAMMA(Z,N); 
+   It also contains a function which computes the asymptotic expansion of
+	GAMMA(z+a)/GAMMA(z+b). */
+
+REMARRAY(%GAMA1,%GAMA)$
+%GAMA1[1]:1$
+%GAMA1[N]:=%GAMA1[N-1]/(N+1)-(1/2)*SUM(%GAMA1[R]*%GAMA1[-R+N+1],R,2,N-1)$
+	/*The above array contains the a[n] as defined in Copson.*/
+%GAMA[0]:1$
+%GAMA[K]:=LAMBDA([FACTLIM],(2*K+1)*2^(1-K)*(2*K-1)!*%GAMA1[2*K+1]/(K-1)!)(-1)$
+
+ASYMPGAMMA(Z,N):=(Z/%E)^Z*SQRT(2*%PI/Z)*
+SUM(apply('EV,[%GAMA[K]])*Z^(-K),K,0,N)$
+
+/* The following program computes the asymptotic expansion for
+	GAMMA(z-a)/GAMMA(z-b).  Just call GAMMAR(z,a,b). */
+
+GAMMAR(ZVAR,AVAR,BVAR,N):=BLOCK([A,B,W,T1,T2,T3,T4,T5,T6,T7,T8,T9,answer],
+T1:	TAYLOR((1/W+A-1/2)*LOG(W*A+1),W,0,N),
+T2:	TAYLOR(T1-subst(a=b,T1),W,0,N)+B-A,
+T3:	TAYLOR(%E^T2,W,0,N),
+T4:	SUM(%GAMA[K]*(A+1/W)^(-K),K,0,N),
+T5:	TAYLOR(LOG(T4),W,0,N),
+T7:	TAYLOR(T5-subst(a=b,T5),W,0,N),
+T8:	TAYLOR(%E^T7,W,0,N),
+T9:	T3*T8,
+ANSWER:	ZVAR^(AVAR-BVAR)*
+subst([A=AVAR,B=BVAR,W=1/ZVAR],RATDISREP(T9)))$

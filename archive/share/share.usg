@@ -1,0 +1,59 @@
+
+     The SHARE, SHARE1, and SHARE2 directories contain programs, 
+information files, etc. which are considered to be of interest to the 
+MACSYMA community.  (The SHARE1; and SHARE2; directories are overflow 
+directories for the SHARE; directory which in general hold less frequently 
+used files.  From now on, references to the SHARE; directory should be 
+taken to mean all of the SHARE;, SHARE1;, and SHARE2; directories.)
+Some files on SHARE; are not part of the MACSYMA system per se and must 
+be loaded individually by the user, e.g. LOADFILE(CGAMMA,FASL,SHARE);.
+Many files on SHARE; were contributed by MACSYMA users, and all MACSYMA 
+users are encouraged to contribute.
+
+     Names for files on SHARE; should be chosen as appropriate.  
+However, the contributor will probably want to follow the conventions 
+discussed here.  A contributor will probably create some but not all 
+of the following files.  Examples may be seen on the SHARE directory.
+  
+   1)  NAME > is the file name of the MACSYMA BATCHable programs.  
+The > sign indicates a numeric second filename which is increased 
+whenever a new version is created.  
+
+   2)  NAME LISP is the file name of the LISP code for the programs 
+contained in the file NAME >.  This file is loaded into MACSYMA using 
+LOADFILE.  It was obtained by using the TRANSLATE command or was 
+written directly in LISP by the contributor.  (LISP files may also be 
+created by the SAVE command.)
+
+   3)  NAME FASL is the file name of the FASL (fast-loadable) version 
+of NAME LISP, and was produced from NAME LISP by using the LISP 
+compiler.  (FASL files may also be created by the FASSAVE command.)
+It is loaded into MACSYMA using the LOADFILE command.
+
+   4)  NAME USAGE is the name of the documentation file for the 
+programs in NAME >.  It describes how the programs are used, inputs, 
+outputs, options, warnings, error messages, etc.  It may mention the 
+algorithms behind the programs, references, and whatever else the 
+user should know.  It should certainly indicate who programmed the 
+routines, especially his login name.  If the NAME USAGE file does 
+not exist, this information should be given in NAME > or elsewhere.
+
+   5)  NAME DEMO is the name of the demonstration file which may be 
+used in DEMOing NAME > or NAME LISP.
+
+   6)  NAME OUTPUT may be used to store sample output obtained from 
+running NAME > on some examples or from DEMOing the NAME DEMO file.
+
+   7)  Other file names may be used for information files providing 
+some information on some aspect of the MACSYMA system or for 
+describing some MACSYMA utility or for notes on some MACSYMA issues, 
+etc.
+
+     The SHARE > file is an index to the SHARE directory and is 
+intended to contain a short note on each of the programs on the SHARE 
+directory.  It should be updated by the SHARE; contributor as 
+appropriate.
+
+     Any comments or questions as to the use of the SHARE directory 
+should be sent to JPG.
+

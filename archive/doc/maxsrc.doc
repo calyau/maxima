@@ -1,0 +1,68 @@
+*******************************************************************************
+**                                                                           **
+**   This directory is used by members of the Mathlab Group for development  **
+**   of the Macsyma system.  For documentation on all of the directories     **
+**   used by Macsyma, see the file MAXDOC;-READ- -THIS-.  For documentation  **
+**   on a specific Macsyma directory, see the file -READ- -TOO- on the dir   **
+**   in question.                                                            **
+**                                                                           **
+*******************************************************************************
+
+The MAXSRC directory is a miscellaneous catch-all for source files which aren't
+kept in private directories.
+
+OPERS     Run-time interface to the general-rep simplifier.  See
+          MAXDOC;OPERS > for more information.
+
+UTILS     Runtime utilities which are independent of the Macsyma data
+          representations and conventions.  Generalizations of functions in
+          this file are candidates for addition to a general purpose Lisp
+          system.
+
+RUNTIM    Function definitions corresponding to macro definitions in various
+          Macsyma macro files.  For the benefit of the fix file.
+
+MDOT      Non-commutative product simplification.  SIMPNCT, SIMPNCEXPT.
+
+SUMCON    $SUMCONTRACT, $INTOSUM, $BASHINDICES, $NICEINDICES.
+
+ARDS      Graphics interface for Plasma terminals.
+H19	  Graphics interface for Heath 19.
+VT100	  Graphics interface for VT-100, VT-132.
+
+TRANSS   User interface & file-hacking part of translator.
+TRANSL   Driver. Basic translation properties.
+TRANS1   Translation of JPG;MLISP and other FSUBRS.
+         which take call-by-name parameters.
+TRANS2   LISTS, ARRAYs, other random operators.
+TRANS3   LAMBDA. CLOSURES. also used by fsubr call-by-name
+         compatibility package.              
+TRANS4   operators, ".", "^^" some functions such as GAMMA.
+TRANS5   FSUBRS from COMM, and others, these are mere MACRO
+         FSUBRS.
+TRANSF   floating point intensive properties. BIGFLOAT stuff.
+TRUTIL   transl utilities.
+TRMODE   definition of MODEDECLARE. run time error checking code.
+TRDATA   this is the MODE data for the "built-in" functions.
+TRDEBG   User interface to lisp-level debugging aids. 
+NTRACE   New macsyma trace package. Also traces lisp functions.
+ACALL is some run time support for translated code, array calls.
+FCALL  run-time translated function call support for uncompiled
+       code. Many FSUBRS which are macros in TRANSQ.
+EVALW  EVAL-WHEN definition for interpreter.
+[ Macro support. for transl]
+LIBMAX;TRANSM   This defines the macro DEF%TR. When compiled on MC
+                DEF%TR produces autoload definitions for TRANS1 thru L.
+LIBMAX;TPRELU   this file is INCLUDEF'ed by translated macsyma code.
+LIBMAX;TRANSQ   these are macros for translated code. Loaded by TPRELU
+                this is compile-time only.
+LIBMAX;MDEFUN   contains the macro which defines macsyma functions.
+                runtime and compile-time.
+LIBMAX;PROCS    SUBR-CALL off the property list, first used in TRANSL.
+
+
+
+Local Modes:
+Mode:Text
+Auto Fill Mode:1
+End:

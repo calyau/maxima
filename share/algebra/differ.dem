@@ -1,0 +1,53 @@
+/*  Sample usage of difference equation package  -*-Macsyma-*- */
+IF GET('DIFFER,'VERSION)=FALSE THEN LOAD(DIFFER)$
+
+a:matrix([1,-1],[-5,5]);
+eigenvalues(a);
+eigenvector(a,0);
+eigenvector(a,6);
+normalize:true$
+eigenvector(a,0);
+
+/*  First order equations  */
+
+f[n+1]=f[n];
+difference(%,f[n]);
+
+g[0]:1$
+g[n+1]=2*g[n];
+difference(%,g[n]);
+
+h[n+1]=3*h[n]+2;
+difference(%,h[n]);
+
+/*  Systems of homogeneous first order equations  */
+
+differverbose:true$
+eqn1:y[k+1]+z[k]-3*y[k]=0;
+eqn2:3*y[k]+z[k+1]-5*z[k]=0;
+difference([eqn1,eqn2],[y[k],z[k]]);
+
+/*  Second order equations */
+
+y[k+2]-6*y[k+1]+8*y[k]=0;
+difference(%,y[k]);
+
+differverbose:false$
+
+y[0]:3$
+y[1]:2$
+y[k+2]-6*y[k+1]+8*y[k]=0;
+difference(%,y[k]);
+part(%,2),k=5;
+
+/*  Fibonacci Numbers:   1, 1, 2, 3, 5, 8, 13, 21, ...  */
+
+f[0]:1$
+f[1]:1$
+f[n+2]=f[n+1]+f[n];
+difference(%,f[n]);
+ratsimp(ev(part(%,2),n=7));
+
+/* Cleanup */
+
+remvalue(a);

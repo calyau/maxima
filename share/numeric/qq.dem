@@ -1,0 +1,79 @@
+
+/* Numerical Integration Demo for QUANC8*/
+
+/* SETUP_AUTOLOAD(QQ,QUANC8); */
+
+/* show the time and the garbage collection time, and use the 
+   GC-demon to make better use of flonum space */
+
+SHOWTIME:'ALL;
+IF STATUS(FEATURE,ITS)=TRUE THEN LOAD("GCDEMN");
+
+/* Sample highly oscillatory problem */
+
+G(X):=(MODE_DECLARE(X,FLOAT),SIN(1.0/X));
+
+/* Inefficient way to use QUANC8 */
+
+QUANC8(G(x),x,0.01,0.1);
+
+/* give G as the thing to compile, then a semi-colon to read it in */
+compile();
+
+/* see how much faster now, using fast version of QUANC8 */
+
+QUANC8('G,0.01,0.1);
+
+/* note that romberg doesn't easily manage oscillatory behaviors */
+
+ERRCATCH(ROMBERG('G,0.01,0.1));
+
+/* a function with two large and narrow peaks,
+   so hard to integrate with a fixed step-size */
+
+H(X):=(MODE_DECLARE(X,FLOAT),1.0/(.0001+(X-.3)^2)+1.0/(.0025+(X-.9)^2));
+/* give H and a semi-colon in response */
+compile();
+
+/* the exact answer for integrate(h(x),x) is
+   100.0*atan(100.0*x-30.0)+20.0*atan(20.0*x-18.0) */
+/* the exact answer for integrate(h(x),x,0.0,1.0) is 361.847622.
+   note that the romberg result is more accurate in this case */
+ROMBERG('H,0.0,1.0);
+/* but at a large time cost compared to adaptive */
+QUANC8('H,0.0,1.0);
+/* reduce QUANC8's relative error tolerance by a factor of 10 */
+QUANC8_RELERR:1.0E-5;
+/* does not take much longer, and gives much better result now */
+QUANC8('H,0.0,1.0);
+/* put QUANC8_RELERR back to 1.0e-4 */
+QUANC8_RELERR:1.0E-4$
+/* the exact answer for integrate(h(x),x,0.0,10.0) is 372.33606.
+   while too tough for fixed step size method */
+ERRCATCH(ROMBERG('H,0.0,10.0));
+/*QUANC8 is still super speedy even now */
+QUANC8('H,0.0,10.0);
+
+/* double integral of sample function exp(x)*sin(y) 
+   from x=0.0 to 2.0, y=0.0 to 1.0 */
+/* you must be sure that the quanc8 source is loaded
+   (load("qq");) before you  translate a call to quanc8 in a function, 
+   else an error in macro expansion will occur when it can't figure 
+   out if the 3 or 4 arg version is used */
+
+/* the exact answer for 
+   integrate(integrate(exp(x)*sin(y),x,0.0,2.0),y,0.0,1.0) is 2.93703434.
+   integrate over y to get the final answer */
+QUANC8(quanc8(exp(x)*sin(y),x,0.0,2.0),y,0.0,1.0);
+
+p():=QUANC8(lambda([y],mode_declare(y,float),
+                   quanc8(lambda([x],mode_declare(x,float),
+                                 exp(x)*sin(y)),
+                          0.0,2.0)),0.0,1.0);
+
+p();
+translate(p);
+p();
+/* give p and a semi-colon */
+compile();
+p();

@@ -1,0 +1,162 @@
+/*	Hacijan Linear Programming Algorithm		*/
+
+/*	Implementation by Jim Purtilo ( JIMP@MIT-MC )
+	                  Kent State University
+		   	  November 1979
+
+	First added to share directory January 5, 1980
+							*/
+
+
+/*	This version has more hooks for adding users definable
+	criterion for stopping and restarting in mid alg;
+	trying to solve the difficulty in loosing positive
+	definitness in time.				*/
+
+/*							*/
+
+/*	Primitives defined are:
+
+	HACH( a , b , n , m , l )
+
+		where a is the matrix and b is the
+		column vector such that a.x<b is the
+		problem to be solved; n is number variables;
+		l is as described in the theory, roughly
+		a length, and also what, for instance, might
+		be output from GETL.  This is the main alg-
+		orithm, and return either a vector x such
+		that the above inequality is satisfied, or,
+		hopefully, returns why not. m is the number
+		of inequalities.
+
+	CHECK( a , b , x , m )
+
+		is a primitive which CHECKs the inequality
+		a.x<b, returning either 0 ( when no rows
+		in a.x violate the equality ) or j ( where
+		j is in fact a row which does violate the 
+		inequality ).  This is the new check, which
+		will always check first that the last row iterated
+		on is satisfied in the new inequality, before
+		giving the rest of the rows a chance to be
+		iterated on.  New strategies for row choice
+		will be implemented as the theory developes
+		at Kent CSR Group.   m is the number rows
+		( inequalities ).
+
+ 
+
+	GETL( a , b , n , m )
+
+		returns a value l ( for length ) as required
+		by and defined in the theory. a and b are as
+		above, also n is number variables, and m is
+		the number inequalities in a.
+
+Several utilities are here-in defined:
+
+		FX		FQ		FH
+		ITERATE		Z		LOG2
+		ACCELERATE	CRITERION
+
+							*/
+/*	Note that the desired precision in bigfloat desired
+	for the calculations of the elipsoids should be set
+	prior to any calculations by fpprec:<num digits>	*/
+/*	Note that there is a global variable show%all[false]
+	which when true will print the vector x at each
+	iteration.			*/
+
+declare(z,special)$
+
+define_variable(show%all,false,boolean)$
+
+define_variable(last%row,0,any)$
+
+hach(a,b,n,m,l):=
+	block([x,i,k,h,q,last%row],
+
+		last%row:0,
+		h:bfloat(2^(2*l)*ident(n)),
+		x:genmatrix(z,n,1),
+
+		/*  Note this is a "do forever...", not
+		automatically checking the counter k against
+		in the stopping criterion of the theory.
+		The reason for this is that oft' times we
+		like to play with whacky L's, and don't want
+		to mess with the resulting random stoppage.
+		Next update will have a settable switch...
+		and possibly also an improved polynomial
+		stopping time...		*/
+
+		for k:0 next k+1
+		do  if (i:check(a,b,x,m))=0
+		    then return(["win",k,"iterations",x])
+		    else (
+			if show%all then ( print(k,x),print(" ")),
+			if not criterion(a,b,x,n,m,l,k)
+				 then  iterate(x,a,h,q,i,n)
+			    	else      
+
+		/*	In here would be code for
+			resetting, say, h, x , lastrow, etc.
+			Then we start the iteration process
+		again, hopefully accellerated.
+		Note that for debugging purposes, code here 
+		could be a break...
+		*/
+			(	accelerate(a,b,x,n,m,l,k),
+				iterate(x,a,h,q,i,n) ) )
+
+
+	)$
+accelerate(a,b,x,n,m,l,k):=false$
+
+criterion(a,b,x,n,m,l,k):=true$
+/* for now the above will keep things runningtill the users defined
+	what he wants... */
+
+check(a,b,x,m):=
+	block([y,j,j1],
+		j1:0,
+		y:a.x,
+		if numberp( last%row ) then
+			if last%row#0 then
+				if ">="(y[last%row,1],b[last%row,1])
+					then j1:last%row,
+		if j1#0 then return( j1 ),
+		for j:1 thru m
+			do if ">="(y[j,1],b[j,1]) then j1:j,
+		j1
+/*	Note that this strategy is that if last%row is ok, or
+	is undefined due to a user CHECKing a system, the
+	the first row violating a.x<b is used		*/
+	)$
+
+getl(a,b,n,m):=
+	block([i,j,l],
+		l:product(
+			(abs(b[i,1])+1)*product((abs(a[j,i])+1),j,1,m),
+			  i,1,n ),
+		l:1+log2(n*m*l)
+	)$
+
+log2(x):=bfloat(log(x)/log(2))$
+
+z[i,j]:=0$
+
+iterate(x,a,h,q,i,n):=(	q:fq(a,h,i,n),
+		x:fx(x,a,h,q,i,n),
+		h:fh(a,h,q,i,n)
+
+	   )$
+
+fx(x,a,h,q,i,n):=x-(n+1)^(-1)*q^(-1/2)*h.transpose(row(a,i))$
+
+fh(a,h,q,i,n):=n^2/(n^2-1)*(h-2/(n+1)*q^-1*
+		h.transpose(row(a,i)).row(a,i).transpose(h))$
+
+fq(a,h,i,n):=row(a,i).h.transpose(row(a,i))$
+

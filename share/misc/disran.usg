@@ -1,0 +1,7 @@
+This file enables the display package to display MACSYMA expressions by
+putting out characters in a random order (similar to the :TTY program).
+To get the random display hack, do LOADFILE(DISRAN,FASL,DSK,SHARE).
+This should be done as the first command in MACSYMA.  RANDISP is defined
+as a NOFIX operator which just toggles the random mode of display on and
+off, so to get things started just do RANDISP;  Then to turn this display
+off, just do RANDISP; again.

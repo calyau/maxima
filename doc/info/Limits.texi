@@ -1,0 +1,57 @@
+@node Limits, Logarithms, Statistics, Top
+@chapter Limits
+@c end concepts Limits
+@menu
+* Definitions for Limits::      
+@end menu
+
+@node Definitions for Limits,  , Limits, Limits
+@section Definitions for Limits
+@c @node LHOSPITALLIM
+@c @unnumberedsec phony
+@defvar LHOSPITALLIM
+ default: [4] - the maximum number of times L'Hospital's
+rule is used in LIMIT.  This prevents infinite looping in cases like
+LIMIT(COT(X)/CSC(X),X,0).
+
+@end defvar
+@c @node LIMIT
+@c @unnumberedsec phony
+@defun LIMIT (exp, var, val, dir)
+finds the limit of exp as the real variable
+var approaches the value val from the direction dir.  Dir may have the
+value PLUS for a limit from above, MINUS for a limit from below, or
+may be omitted (implying a two-sided limit is to be computed).  For
+the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
+Manipulation" - Ph.D. Thesis - MAC TR-92 October 1971.  LIMIT uses the
+following special symbols: INF (positive infinity) and MINF (negative
+infinity).  On output it may also use UND (undefined), IND (indefinite
+but bounded) and INFINITY (complex infinity).
+LHOSPITALLIM[4] is the maximum number of times L'Hospital's rule
+is used in LIMIT.  This prevents infinite looping in cases like
+LIMIT(COT(X)/CSC(X),X,0).
+TLIMSWITCH[FALSE] when true will cause the limit package to use
+Taylor series when possible.
+LIMSUBST[FALSE] prevents LIMIT from attempting substitutions on
+unknown forms.  This is to avoid bugs like LIMIT(F(N)/F(N+1),N,INF);
+giving 1.  Setting LIMSUBST to TRUE will allow such substitutions.
+Since LIMIT is often called upon to simplify constant expressions,
+for example, INF-1, LIMIT may be used in such cases with only one
+argument, e.g. LIMIT(INF-1);
+Do EXAMPLE(LIMIT); for examples.
+
+@end defun
+@c @node TLIMIT
+@c @unnumberedsec phony
+@defun TLIMIT (exp,var,val,dir)
+is just the function LIMIT with TLIMSWITCH
+set to TRUE.
+
+@end defun
+@c @node TLIMSWITCH
+@c @unnumberedsec phony
+@defvar TLIMSWITCH
+ default: [FALSE] - if true will cause the limit package to
+use Taylor series when possible.
+
+@end defvar

@@ -1,0 +1,74 @@
+/*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
+/***************************************************************************
+***                                                                    *****
+***     Copyright (c) 1984 by William Schelter,University of Texas     *****
+***     All rights reserved                                            *****
+***************************************************************************/
+
+/* PRODUCED USING TOPS 20 AS GUIDE AND CHECKED ON 3600 
+This and the rtest*.mac files can be run using the command
+Batch("cl-maxima-source:maxima;rtest1.mac",test);   and a
+log file will be written recording the items which the testing
+function does not find the same as those answers listed in this file.
+The test is based on manual.demo, with the answers obtained from
+tops 20 macsyma, and checked on the 3600 with cl-maxima.  
+Although we have tried to put sufficient kills in, to eliminate
+errors caused by previous definitions, you may get some additional
+errors if you rerun the tests, or run some out of order. */
+
+(?fmakunbound(f),kill(functions,values,arrays));
+done;
+F(X):=X^2+Y;
+F(X):=X^2+Y$
+F(2);
+Y+4$
+EV(F(2),Y:7);
+11$
+F(X):=SIN(X)^2+1;
+F(X):=SIN(X)^2+1$
+F(X+1);
+SIN(X+1)^2+1$
+G(Y,Z):=F(Z)+3*Y;
+G(Y,Z):=F(Z)+3*Y$
+EV(G(2*Y+Z,-0.5),Y:7);
+3*(Z+14)+1.22984886$
+H(N):=SUM(I*X^I,I,0,N);
+H(N):=SUM(I*X^I,I,0,N)$
+FUNCTIONS;
+[F(X),G(Y,Z),H(N)]$
+T[N](X):=RATEXPAND(2*X*T[N-1](X)-T[N-2](X));
+T[N](X):=RATEXPAND(2*X*T[N-1](X)-T[N-2](X))$
+T[0](X):=1;
+T[0](X):=1$
+T[1](X):=X;
+T[1](X):=X$
+T[4](Y);
+8*Y^4-8*Y^2+1$
+G[N](X):=SUM(EV(X),I,N,N+2);
+G[N](X):=SUM(EV(X),I,N,N+2)$
+H(N,X):=SUM(EV(X),I,N,N+2);
+H(N,X):=SUM(EV(X),I,N,N+2)$
+G[2](I^2);
+3*I^2$
+H(2,I^2);
+29$
+P[N](X):=RATSIMP(1/(2^N*N!)*DIFF((X^2-1)^N,X,N));
+P[N](X):=RATSIMP(1/(2^N*N!)*DIFF((X^2-1)^N,X,N))$
+Q(N,X):=RATSIMP(1/(2^N*N!)*DIFF((X^2-1)^N,X,N));
+Q(N,X):=RATSIMP(1/(2^N*N!)*DIFF((X^2-1)^N,X,N))$
+P[2];
+LAMBDA([X],(3*X^2-1)/2)$
+P[2](Y+1);
+(3*(Y+1)^2-1)/2$
+Q(2,Y);
+(3*Y^2-1)/2$
+P[2](5);
+37$
+F[I,J](X,Y):=X^I+Y^J;
+F[I,J](X,Y):=X^I+Y^J$
+G(FUN,A,B):=PRINT(FUN," applied to ",A," and ",B," is ",FUN(A,B));
+G(FUN,A,B):=PRINT(FUN," applied to ",A," and ",B," is ",FUN(A,B))$
+G(F[2,1],SIN(%PI),2*C);
+2*C$
+romberg(sin(y),y,1,%pi);
+1.540302306426815$

@@ -1,0 +1,18 @@
+   GCFAC(exp) is a new factoring function that does approximately what
+scientists do in trying to make expressions more compact.  It is limited
+to monomial-type factoring.  For a sum, it does the following:
+
+	1) Factors over the integers.
+	2) Factors out the largest powers of terms occurring as
+	   coefficients, regardless of the complexity of the terms.
+	3) Uses (1) and (2) in factoring adjacent pairs of terms.
+	4) Repeatedly and recursively applies these techniques until
+	   the expression no longer changes.
+
+   Feature (3) does not necessarily do an optimal job of pairwise
+factoring because of the combinatorially-difficult nature of finding
+which of all possible rearrangements of the pairs yields the most
+compact pair-factored result.
+
+   To access this function, do LOAD(SCIFAC)$ .  A demonstration is
+available in SHARE1;SCIFAC DEMO .  Bugs to GCOOK@MIT-MC .

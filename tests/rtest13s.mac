@@ -1,0 +1,43 @@
+/*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
+/***************************************************************************
+***                                                                    *****
+***     Copyright (c) 1984 by William Schelter,University of Texas     *****
+***     All rights reserved                                            *****
+***************************************************************************/
+
+
+MATCHFIX("{","}");
+verbify("{")$
+INFIX("|");
+verbify("|")$
+EXP1:{X | X > 0};
+{X | X > 0}$
+EXP2:{X | X < 2};
+{X | X < 2}$
+INFIX("OU");
+verbify("OU")$
+INFIX("OI");
+verbify("OI")$
+EXP1 OU EXP2;
+{X | X > 0} OU {X | X < 2}$
+EXP1 OU EXP2;
+{X | X > 0} OU {X | X < 2}$
+EXP1:{1,2,3};
+{1,2,3}$
+{3,4,5};
+{3,4,5}$
+EXP1 OU EXP1 OU %;
+{1,2,3} OU {1,2,3} OU {3,4,5}$
+INFIX("ou",100,100);
+verbify("OU")$
+EXP2:INFIX("OI",120,120);
+verbify("OI")$
+EXP1 OU EXP1 OU {7};
+{1,2,3} OU {1,2,3} OU {7}$
+kill("OU");
+/* REMOVE("OU",OPERATOR); */
+DONE$
+foo(ou);
+foo(ou);
+
+

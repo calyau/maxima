@@ -1,0 +1,38 @@
+
+((face (xplot-eval 412 749) (maxima-eval 24 47 49 83 124 185 188 344)) (book-command-arg))
+
+
+
+maxima based plot
+
+plot2d(sin(x),[x,-4,3])
+
+plot2d(tan(x),[x,-2,3],[y,-20,20])
+
+maxima based 3d plots using geomview:
+
+ plot3d(2^(x^2-y^2),[x,-1,1],[y,-2,2],[plot_format,geomview])
+
+ plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['plot_format,geomview],
+  ['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true])
+
+
+Using xplot on color terminal  [see xplot.bk for many examples]
+
+set title " A Torus Knot"
+
+rusX(x) = cos(3*x) * (10.0 + 6.0 * cos(2*x))
+rusY(x) = sin(3*x) * (10.0 + 6.0 * cos(2*x))  
+rusZ(x) = -6.0*sin(2*x)
+
+a = tube{[rusX(x),rusY(x),rusZ(x)]
+      [x= -pi:pi][samp=200:20][radius=1.4 + 0.1*sin(16*x)]};
+
+a = tube{[rusX(x),rusY(x),rusZ(x)]
+      [x= -pi:pi][samp=200:20][radius=1.4][sample=100:16]};
+
+
+
+
+
+

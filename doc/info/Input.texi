@@ -1,0 +1,974 @@
+@node Input and Output, Program Flow, Function Definition, Top
+@chapter Input and Output
+@menu
+* Introduction to Input and Output::  
+* FILES::                       
+* PLAYBACK::                    
+* Definitions for Input and Output::  
+@end menu
+
+@node Introduction to Input and Output, FILES, Input and Output, Input and Output
+@section Introduction to Input and Output
+
+@node FILES, PLAYBACK, Introduction to Input and Output, Input and Output
+@section FILES
+ - A file is simply an area on a particular storage device which
+contains data or text.  The only storage devices which are used on the
+MC machine are disks and tapes.  Files on the disks are figuratively
+grouped into "directories".  A directory is just a list of all the
+files stored under a given user name.  Do DESCRIBE(FILEOP); for
+details of how you may inspect your files using MACSYMA.  Other
+commands which deal with files are: SAVE, FASSAVE, STORE, LOAD,
+LOADFILE, RESTORE, UNSTORE, STRINGOUT, BATCH, BATCON, DEMO, WRITEFILE,
+CLOSEFILE, DELFILE, REMFILE, and APPENDFILE.
+
+@node PLAYBACK, Definitions for Input and Output, FILES, Input and Output
+@section PLAYBACK
+ It is possible to play back the input lines in a temporary
+scroll down window, and so not lose ones current work.  This can
+be done by typing Function  E.  A numeric argument tells it the line
+number to start at, otherwise it will go back about 40 lines.
+
+@c end concepts Input and Output
+@node Definitions for Input and Output,  , PLAYBACK, Input and Output
+@section Definitions for Input and Output
+@c @node %, %%, PLAYBACK, Input and Output
+@c @unnumberedsec phony
+@defvar %
+ The last D-line computed by MACSYMA (whether or not it was printed
+out).  (See also %%.)
+
+@end defvar
+@c @node %%, %EDISPFLAG, %, Input and Output
+@c @unnumberedsec phony
+@defvar %%
+ The value of the last computation performed while in a
+(MACSYMA-BREAK).  Also may be used in compound statements in the nth
+statement to refer to the value of the (n-1)th statement.  E.g.
+F(N):=(INTEGRATE(X^N,X),SUBST(3,X,%%)-SUBST(2,X,%%)); is in essence
+equivalent to F(N):=BLOCK([%%], %%:INTEGRATE(X^N,X),
+SUBST(3,X,%%)-SUBST(2,X,%%)); This will also work for communicating
+between the (n-1)th and nth (non-atomic) BLOCK statements.
+
+@end defvar
+@c @node %EDISPFLAG, %TH, %%, Input and Output
+@c @unnumberedsec phony
+@defvar %EDISPFLAG
+ default: [FALSE] - if TRUE, MACSYMA displays %E to a
+negative exponent as a quotient, i.e. %E^-X as 1/%E^X.
+
+@end defvar
+@c @node %TH, {special symbol}, %EDISPFLAG, Input and Output
+@c @unnumberedsec phony
+@defun %TH (i)
+is the ith previous computation.  That is, if the next
+expression to be computed is D(j) this is D(j-i).  This is useful in
+BATCH files or for referring to a group of D expressions.  For
+example, if SUM is initialized to 0 then FOR I:1 THRU 10 DO
+SUM:SUM+%TH(I) will set SUM to the sum of the last ten D expressions.
+
+@end defun
+@c @node "?"
+@c @unnumberedsec phony
+@deffn {special symbol} "?"
+  - As prefix to a function or variable name, signifies that the
+function or variable is a LISP token, not a MACSYMA token.  Two
+question marks typed together, ??, will flush the current MACSYMA
+command line.
+
+@end deffn
+@c @node ABSBOXCHAR, APPENDFILE, {special symbol}, Input and Output
+@c @unnumberedsec phony
+@defvar ABSBOXCHAR
+ default: [!] is the character used to draw absolute value
+signs around expressions which are more than a single line high.
+@end defvar
+
+
+@c end concepts Input and Output
+@c @node APPENDFILE, BACKUP, ABSBOXCHAR, Input and Output
+@c @unnumberedsec phony
+@defun APPENDFILE (filename1, filename2, DSK, directory)
+is like
+WRITEFILE(DSK,directory) but appends to the file whose name is
+specified by the first two arguments.  A subsequent CLOSEFILE will
+delete the original file and rename the appended file.
+
+@end defun
+@c @node BACKUP, BATCH, APPENDFILE, Input and Output
+@c @unnumberedsec phony
+@defun BACKUP ()
+To "back up" and see what you did, see PLAYBACK.
+
+@end defun
+@c @node BATCH, BATCHKILL, BACKUP, Input and Output
+@c @unnumberedsec phony
+@defun BATCH (file-specification)
+reads in and evaluates MACSYMA command
+lines from a file - A facility for executing command lines stored on a
+disk file rather than in the usual on-line mode. This facility has
+several uses, namely to provide a reservoir for working command lines,
+for giving error-free demonstrations, or helping in organizing one's
+thinking in complex problem-solving situations where modifications may
+be done via a text editor.
+A batch file consists of a set of MACSYMA command lines, each with its
+terminating ; or $, which may be further separated by spaces,
+carriage- returns, form-feeds, and the like.
+The BATCH function calls for reading in the command lines from the
+file one at a time, echoing them on the user console, and executing
+them in turn.  Control is returned to the user console only when
+serious errors occur or when the end of the file is met.  Of course,
+the user may quit out of the file-processing by typing control-G at
+any point.
+BATCH files may be created using a text editor or by use of the
+STRINGOUT command.  Do DESCRIBE(STRINGOUT) for details
+DESCRIBE(FILE); and DESCRIBE(FILES); have additional information on
+how the file argument is interpreted, and files in general.
+
+@end defun
+@c @node BATCHKILL, BATCHLOAD, BATCH, Input and Output
+@c @unnumberedsec phony
+@defvar BATCHKILL
+ default: [FALSE] if TRUE then the effect of all previous
+BATCH files is nullified because a KILL(ALL) and a RESET() will be
+done automatically when the next one is read in.  If BATCHKILL is
+bound to any other atom then a KILL of the value of BATCHKILL will be
+done.
+
+@end defvar
+@c @node BATCHLOAD, BATCON, BATCHKILL, Input and Output
+@c @unnumberedsec phony
+@defun BATCHLOAD (file-specification)
+Batches in the file silently without
+terminal output or labels.
+
+@end defun
+@c @node BATCON, BATCOUNT, BATCHLOAD, Input and Output
+@c @unnumberedsec phony
+@defun BATCON (argument)
+continues BATCHing in a file which was interrupted.
+
+@end defun
+@c @node BATCOUNT, BOTHCASES, BATCON, Input and Output
+@c @unnumberedsec phony
+@defvar BATCOUNT
+ default: [0] may be set to the number of the last expression
+BATCHed in from a file.  Thus BATCON(BATCOUNT-1) will resume BATCHing
+from the expression before the last BATCHed in from before.
+
+@end defvar
+@c @node BOTHCASES, CHANGE_FILEDEFAULTS, BATCOUNT, Input and Output
+@c @unnumberedsec phony
+@defvar BOTHCASES
+ default: [TRUE] if TRUE will cause MAXIMA to retain lower
+case text as well as upper case. Note, however, that the names of any
+MAXIMA special variables or functions are in upper case.   The default
+is now TRUE since it makes code more readable, allowing users to
+have names like SeriesSolve.  
+
+Because of this we make the system variables and functions all upper
+case, and users may enter them however they like (in upper or lower).
+But all other variables and functions are case sensitive.
+When you print out your program using for example grind(fundef(f))
+then you will see that the symbols like 'IF', 'SIN',... all appear
+in upper case whereas non system symbols appear in the case which
+you used.
+
+This is implemented as follows: If the symbol is being encountered for
+the first time, if the upper case version is in the package and has a
+nontrivial function or property list, then the upper case symbol is
+used, and it is recorded on the mixed case one, that the upper case
+should be used in future.  If a symbol is already in the package then it
+is just used.
+
+In effect this means that most old programs should continue to work,
+and that new ones may write sIn, Sin, SIN, sin etc and they will
+all be interpreted as SIN.   However if they write MySin this will
+be different from MYSIN, because MYSIN is not a system function or
+variable.  
+
+
+
+@example
+SeriesSolve(f,x):=
+   if (f = sin) ...
+
+and this is read as
+
+SeriesSolve(f,x):=
+   IF (f = SIN) ...
+@end example
+
+
+
+
+
+@end defvar
+@c @node CHANGE_FILEDEFAULTS, CLOSEFILE, BOTHCASES, Input and Output
+@c @unnumberedsec phony
+@defvar CHANGE_FILEDEFAULTS
+ default: [TRUE] on PDP10 systems, and FALSE
+elsewhere.  Controls whether the user doing a LOADFILE or BATCH has
+his file defaults changed to the file LOADFILEd or BATCHed.  The TRUE
+setting is for people who like DDT-style file defaulting.  The FALSE
+setting is for people who like the conventions of other operating
+systems, who like LISP-style file defaulting, or who write packages
+which do LOADFILEs or BATCHes which should not interfere with their
+user's file defaults.
+
+@end defvar
+@c @node CLOSEFILE, COLLAPSE, CHANGE_FILEDEFAULTS, Input and Output
+@c @unnumberedsec phony
+@defun CLOSEFILE (filename1, filename2)
+closes a file opened by WRITEFILE and
+gives it the name filename1 filename2.  (On a Lisp Machine one need
+only say CLOSEFILE();.)  Thus to save a file consisting of the display
+of all input and output during some part of a session with MACSYMA the
+user issues a WRITEFILE, transacts with MACSYMA, then issues a
+CLOSEFILE.  The user can also issue the PLAYBACK function after a
+WRITEFILE to save the display of previous transactions.  (Note that
+what is saved this way is a copy of the display of expressions not the
+expressions themselves).  To save the actual expression in internal
+form the SAVE function may be used.  The expression can then be
+brought back into MACSYMA via the LOADFILE function.  To save the
+expression in a linear form which may then be BATCHed in later, the
+STRINGOUT function is used.
+
+@end defun
+@c @node COLLAPSE, CONCAT, CLOSEFILE, Input and Output
+@c @unnumberedsec phony
+@defun COLLAPSE (expression)
+collapses" its argument by causing all of its
+common (i.e. equal) subexpressions to share (i.e. use the same cells),
+thereby saving space.  (COLLAPSE is a subroutine used by the OPTIMIZE
+command.)  Thus, calling COLLAPSE may be useful before using FASSAVE
+or after loading in a SAVE file.  You can collapse several expressions
+together by using COLLAPSE([expr1,...,exprN])$.  Similarly, you can
+collapse the elements of the array A by doing
+COLLAPSE(LISTARRAY('A))$.
+
+@end defun
+@c @node CONCAT, CURSORDISP, COLLAPSE, Input and Output
+@c @unnumberedsec phony
+@defun CONCAT (arg1, arg2, ...)
+evaluates its arguments and returns the
+concatenation of their values resulting in a name or a quoted string
+the type being given by that of the first argument.  Thus if X is
+bound to 1 and D is unbound then CONCAT(X,2)="12" and
+CONCAT(D,X+1)=D2.
+
+@end defun
+@defun SCONCAT (arg1, arg2, ...)
+
+evaluates its arguments and concatenates them into a string.  Unlike
+CONCAT, the arguments do NOT need to be atoms.    The result is a Common
+Lisp String.
+@example
+(C5) sconcat("xx[",3,"]:",expand((x+y)^3));
+(D5) 			 xx[3]:Y^3+3*X*Y^2+3*X^2*Y+X^3
+@end example
+The resulting string could be used in conjunction with print.
+@end defun
+@c @node CURSORDISP, DIREC, CONCAT, Input and Output
+@c @unnumberedsec phony
+@defvar CURSORDISP
+ default: [TRUE] If TRUE, causes expressions to be drawn by
+the displayer in logical sequence.  This only works with a console
+which can do cursor movement.  If FALSE, expressions are simply
+printed line by line.  CURSORDISP is FALSE when a WRITEFILE is in
+effect.
+
+@end defvar
+@c @node DIREC, DISP, CURSORDISP, Input and Output
+@c @unnumberedsec phony
+@defvar DIREC
+ - The value of this variable is the default file directory for
+SAVE, STORE, FASSAVE, and STRINGOUT.  It is initialized to the user's
+login name, if he has a disk directory, and to one of the USERSi
+directories otherwise.  DIREC determines to what directory disk files
+will be written.
+
+@end defvar
+@c @node DISP, DISPCON, DIREC, Input and Output
+@c @unnumberedsec phony
+@defun DISP (expr1,expr2, ...)
+is like DISPLAY but only the value of the
+arguments are displayed rather than equations.  This is useful for
+complicated arguments which don't have names or where only the value
+of the argument is of interest and not the name.
+
+@end defun
+@c @node DISPCON, DISPLAY, DISP, Input and Output
+@c @unnumberedsec phony
+@defun DISPCON (tensor1,tensor2,...)
+displays the contraction properties of
+the tensori as were given to DEFCON.  DISPCON(ALL) displays all the
+contraction properties which were defined.
+
+@end defun
+@c @node DISPLAY, DISPLAY2D, DISPCON, Input and Output
+@c @unnumberedsec phony
+@defun DISPLAY (expr1, expr2, ...)
+displays equations whose left side is
+expri unevaluated, and whose right side is the value of the expression
+centered on the line.  This function is useful in blocks and FOR
+statements in order to have intermediate results displayed.  The
+arguments to DISPLAY are usually atoms, subscripted variables, or
+function calls.  (see the DISP function)
+
+@example
+(C1) DISPLAY(B[1,2]);
+                                      2
+                         B     = X - X
+                          1, 2
+(D1)                            DONE
+
+
+@end example
+@end defun
+@c @node DISPLAY2D, DISPLAY_FORMAT_INTERNAL, DISPLAY, Input and Output
+@c @unnumberedsec phony
+@defvar DISPLAY2D
+ default: [TRUE] - if set to FALSE will cause the standard
+display to be a string (1-dimensional) form rather than a display
+(2-dimensional) form.  This may be of benefit for users on printing
+consoles who would like to conserve paper.
+
+@end defvar
+@c @node DISPLAY_FORMAT_INTERNAL, DISPTERMS, DISPLAY2D, Input and Output
+@c @unnumberedsec phony
+@defvar DISPLAY_FORMAT_INTERNAL
+ default: [FALSE] - if set to TRUE will cause
+expressions to be displayed without being transformed in ways that
+hide the internal mathematical representation.  The display then
+corresponds to what the INPART command returns rather than the PART
+command.  Examples:
+@example
+User     PART       INPART
+a-b;      A - B     A + (- 1) B
+           A            - 1
+a/b;       -         A B
+           B
+                       1/2
+sqrt(x);   SQRT(X)    X
+          4 X        4
+X*4/3;    ---        - X
+           3         3
+
+@end example
+@end defvar
+@c @node DISPTERMS, DSKALL, DISPLAY_FORMAT_INTERNAL, Input and Output
+@c @unnumberedsec phony
+@defun DISPTERMS (expr)
+displays its argument in parts one below the other.
+That is, first the operator of 'expr' is displayed, then each term in
+a sum, or factor in a product, or part of a more general expression is
+displayed separately.  This is useful if expr is too large to be
+otherwise displayed.  For example if P1, P2, ...  are very large
+expressions then the display program may run out of storage space in
+trying to display P1+P2+...  all at once.  However,
+DISPTERMS(P1+P2+...) will display P1, then below it P2, etc.  When not
+using DISPTERMS, if an exponential expression is too wide to be
+displayed as A**B it will appear as EXPT(A,B) (or as NCEXPT(A,B) in
+the case of A^^B).
+
+@end defun
+@c @node DSKALL, ERROR_SIZE, DISPTERMS, Input and Output
+@c @unnumberedsec phony
+@defvar DSKALL
+ default: [] If TRUE will cause values, functions, arrays, and
+rules to be written periodically onto the disk in addition to labelled
+expressions.  TRUE is the default value whereas if DSKALL is FALSE
+then only labelled expresions will be written.
+
+@end defvar
+@c @node ERROR_SIZE, ERROR_SYMS, DSKALL, Input and Output
+@c @unnumberedsec phony
+@defvar ERROR_SIZE
+ default: [20 for a display terminal, 10 for others].
+controls the size of error messages.  For example, let
+U:(C^D^E+B+A)/(COS(X-1)+1); .  U has an error size of 24.  So if
+ERROR_SIZE has value < 24 then 
+@example
+(C1) ERROR("The function", FOO,"doesn't like", U,"as input.");
+prints as:
+The function FOO doesn't like ERREXP1 as input.
+If ERROR_SIZE>24 then as:
+                                 E
+                                D
+                               C   + B + A
+The function FOO doesn't like -------------- as input.
+                              COS(X - 1) + 1
+
+@end example
+
+Expressions larger than ERROR_SIZE are replaced by symbols, and the
+symbols are set to the expressions.  The symbols are taken from the
+user-settable list
+@example
+ERROR_SYMS:[ERREXP1,ERREXP2,ERREXP3]
+@end example
+.
+The default value of this switch might change depending on user
+experience.  If you find the defaults either too big or two small
+for your tastes, send mail to MACSYMA.
+
+@end defvar
+@c @node ERROR_SYMS, EXPT, ERROR_SIZE, Input and Output
+@c @unnumberedsec phony
+@defvar ERROR_SYMS
+ default: [ERREXP1,ERREXP2,ERREXP3] - In error messages,
+expressions larger than ERROR_SIZE are replaced by symbols, and the
+symbols are set to the expressions.  The symbols are taken from the
+list ERROR_SYMS, and are initially ERREXP1, ERREXP2, ERREXP3, etc.
+After an error message is printed, e.g. "The function FOO doesn't
+like ERREXP1 as input.", the user can type ERREXP1; to see the
+expression.  ERROR_SYMS may be set by the user to a different set
+of symbols, if desired.
+
+@end defvar
+@c @node EXPT, EXPTDISPFLAG, ERROR_SYMS, Input and Output
+@c @unnumberedsec phony
+@defun EXPT (A,B)
+if an exponential expression is too wide to be displayed
+as A^B it will appear as EXPT(A,B) (or as NCEXPT(A,B) in the case of
+A^^B).
+
+@end defun
+@c @node EXPTDISPFLAG, FASSAVE, EXPT, Input and Output
+@c @unnumberedsec phony
+@defvar EXPTDISPFLAG
+ default: [TRUE] - if TRUE, MACSYMA displays expressions
+with negative exponents using quotients e.g., X**(-1) as 1/X.
+
+@end defvar
+@c @node FASSAVE, FILEDEFAULTS, EXPTDISPFLAG, Input and Output
+@c @unnumberedsec phony
+@defun FASSAVE (args)
+is similar to SAVE but produces a FASL file in which
+the sharing of subexpressions which are shared in core is preserved in
+the file created.  Hence, expressions which have common subexpressions
+will consume less space when loaded back from a file created by
+FASSAVE rather than by SAVE.  Files created with FASSAVE are reloaded
+using LOADFILE, just as files created with SAVE.  FASSAVE returns a
+list of the form [<name of file>,<size of file in blocks>,...] where
+...  are the things saved.  Warnings are printed out in the case of
+large files.  FASSAVE may be used while a WRITEFILE is in progress.
+
+@end defun
+@c @node FILEDEFAULTS, FILENAME, FASSAVE, Input and Output
+@c @unnumberedsec phony
+@defun FILEDEFAULTS ()
+returns the current default filename, in whatever
+format is used by the specific Macsyma implementation.  (See
+DESCRIBE(FILE) for what that format is.)  This is the file specification
+used by LOADFILE, BATCH, and a number of other file-accessing commands.
+FILEDEFAULTS('file) - sets the current filedefaults to "file".  The
+argument to FILEDEFAULTS is evaulated as it is anticipated that the
+command will be used mainly in programs.  The "file" need not be a
+real file, so one can use this function e.g. if one's real purpose is
+to set only the "device" field to something, where one does not care
+about the settings of the other fields.
+
+@end defun
+@c @node FILENAME, FILENAME_MERGE, FILEDEFAULTS, Input and Output
+@c @unnumberedsec phony
+@defvar FILENAME
+ default: [] - The value of this variable is the first name
+of the files which are generated by the automatic disk storage scheme.
+The default value is the first three characters of the user's login
+name concatenated with the lowest unused integer, e.g. ECR1.
+
+@end defvar
+@c @node FILENAME_MERGE, FILENUM, FILENAME, Input and Output
+@c @unnumberedsec phony
+@defun FILENAME_MERGE ("filename1","filename2",...)
+; merges together
+filenames.  What this means is that it returns "filename1" except
+that missing components come from the corresponding components of
+"filename2", and if they are missing there, then from "filename3".
+
+@end defun
+@c @node FILENUM, FILE_SEARCH, FILENAME_MERGE, Input and Output
+@c @unnumberedsec phony
+@defvar FILENUM
+ default: [0] - The default second file name for files generated
+by SAVE, STRINGOUT, or FASSAVE if no file names are specified by the
+user.  It is an integer, and is incremented by one each time a new file
+is written.
+
+@end defvar
+@c @node FILE_SEARCH, FILE_STRING_PRINT, FILENUM, Input and Output
+@c @unnumberedsec phony
+@defvar FILE_SEARCH
+ - this is a list of files naming directories to search
+by LOAD and a number of other functions.  The default value of this
+is a list of the various SHARE directories used by Macsyma.
+FILE_SEARCH("filename"); searches on those directories and devices
+specified by the FILE_SEARCH_LISP, FILE_SEARCH_MAXIMA and FILE_SEARCH_DEMO variables, and returns the name of the
+first file it finds.  This function is invoked by the LOAD function,
+which is why LOAD("FFT") finds and loads share/fft.mac.  You may
+add a path to the appropriate list.   Note that the format
+of the paths allows specifying multiple extensions and multiple paths.
+@example
+"/home/wfs/###.{o,lisp,mac,mc}"
+"/home/{wfs,joe}/###.{o,lisp,mac,mc}"
+@end example
+The '###' is replaced by the actual filename passed.
+File_SEARCH first checks if the actual name passed exists,
+before substituting it in the various patterns.
+
+@end defvar
+@c @node FILE_STRING_PRINT, FILE_TYPE, FILE_SEARCH, Input and Output
+@c @unnumberedsec phony
+@defvar FILE_STRING_PRINT
+ default: [FALSE] on MC, [TRUE] elsewhere.  If
+TRUE, filenames are output as strings; if FALSE, as lists.  For
+example, the message when an out of core file is loaded into
+MACSYMA (e.g. the LIMIT package), appears on MC in list format as
+  LIMIT FASL DSK MACSYM being loaded
+and in string format as:
+  DSK:MACSYM;LIMIT FASL being loaded
+The string format is like the top level (DDT) file specifications.
+
+@end defvar
+@c @node FILE_TYPE, GRIND, FILE_STRING_PRINT, Input and Output
+@c @unnumberedsec phony
+@defun FILE_TYPE ("filename")
+; returns FASL, LISP, or MACSYMA, depending on
+what kind of file it is.  FASL means a compiled Lisp file, which
+normally has an extension of .VAS in NIL.
+
+@end defun
+@c @node GRIND, IBASE, FILE_TYPE, Input and Output
+@c @unnumberedsec phony
+@defun GRIND (arg)
+prints out arg in a more readable format than the STRING
+command.  It returns a D-line as value.
+The GRIND switch, default: [FALSE], if TRUE will cause the STRING,
+STRINGOUT, and PLAYBACK commands to use "grind" mode instead of
+"string" mode.  For PLAYBACK, "grind" mode can also be turned on (for
+processing input lines) by specifying GRIND as an option.
+
+@end defun
+@c @node IBASE, INCHAR, GRIND, Input and Output
+@c @unnumberedsec phony
+@defvar IBASE
+ default: [10] - the base for inputting numbers.
+
+@end defvar
+@c @node INCHAR, LDISP, IBASE, Input and Output
+@c @unnumberedsec phony
+@defvar INCHAR
+ default: [C] - the alphabetic prefix of the names of
+expressions typed by the user.
+
+@end defvar
+@c @node LDISP, LDISPLAY, INCHAR, Input and Output
+@c @unnumberedsec phony
+@defun LDISP (expr1,expr2,...)
+is like DISP but also generates intermediate
+labels.
+
+@end defun
+@c @node LDISPLAY, LINECHAR, LDISP, Input and Output
+@c @unnumberedsec phony
+@defun LDISPLAY (expr1,expr2,...)
+is like DISPLAY but also generates
+intermediate labels.
+
+@end defun
+@c @node LINECHAR, LINEDISP, LDISPLAY, Input and Output
+@c @unnumberedsec phony
+@defvar LINECHAR
+ default: [E] - the alphabetic prefix of the names of
+intermediate displayed expressions.
+
+@end defvar
+@c @node LINEDISP, LINEL, LINECHAR, Input and Output
+@c @unnumberedsec phony
+@defvar LINEDISP
+ default: [TRUE] - Allows the use of line graphics in the
+drawing of equations on those systems which support them (e.g. the
+Lisp Machine).  This can be disabled by setting LINEDISP to FALSE.  It
+is automatically disabled during WRITEFILE.
+
+@end defvar
+@c @node LINEL, LOAD, LINEDISP, Input and Output
+@c @unnumberedsec phony
+@defvar LINEL
+ default: [] - the number of characters which are printed on a
+line. It is initially set by MACSYMA to the line length of the type of
+terminal being used (as far as is known) but may be reset at any time
+by the user.  The user may have to reset it in DDT with :TCTYP as
+well.
+
+@end defvar
+@c @node LOAD, LOADFILE, LINEL, Input and Output
+@c @unnumberedsec phony
+@defun LOAD ("filename")
+; takes one argument, a filename represented as a
+"string" (i.e. inside quotation marks), or as list (e.g. inside square
+brackets), and locates and loads in the indicated file.  If no
+directory is specified, it then searches the SHAREi directories and
+any other directories listed in the FILE_SEARCH variable and loads the
+indicated file. LOAD("EIGEN") will load the eigen package without the
+need for the user to be aware of the details of whether the package
+was compiled, translated, saved, or fassaved, i.e. LOAD will work on
+both LOADILEable and BATCHable files.  Note: LOAD will use BATCHLOAD
+if it finds the file is BATCHable (which means that it will BATCH the
+file in "silently" without terminal output or labels).
+Other MACSYMA commands to load in files are: LOADFILE, RESTORE,
+BATCH, and DEMO.  Do DESCRIBE(command); for details.  LOADFILE and
+RESTORE work for files written with SAVE; BATCH and DEMO for those
+files written with STRINGOUT or created as lists of commands with a
+text editor.
+If load can't find the file, check the value FILE_SEARCH to make sure
+that it contains an appropriate template.
+
+@example
+(C4) load("eigen");
+MACSYMA BUG: Unknown file type NIL
+
+Error: macsyma error
+Error signalled by MEVAL1.
+Broken at $LOAD.  Type :H for Help.
+MAXIMA>>:q
+
+By examining the file system we find the file is actually in
+/public/maxima/share/eigen.mc.   So we add that to the file_search
+path.   This can be done at start up (see sys-init.lsp in the
+system directory or, else it can be done and then the system resaved
+once it has been customized for local directories and pathnames.
+At lisp level we would do
+(in-package "MAXIMA")
+(setq $file_search ($append (list '(mlist)
+        "/tmp/foo.mac" "/tmp/foo.mc") $file_search))
+and at maxima level:
+
+(C5) file_search:append(["/public/maxima/share/foo.mc"],
+        file_search)$
+(C6) load("eigen");
+
+batching /usr/public/maxima/share/eigen.mc
+(D6) 		        #/public/maxima/share/eigen.mc
+(C7) eigenvalues(matrix([a,b],[c,d]));
+	       2		    2
+       - SQRT(D  - 2 A D + 4 B C + A ) + D + A
+(D7) [[---------------------------------------, 
+			  2
+
+				      2			   2
+				SQRT(D  - 2 A D + 4 B C + A ) + D + A
+				-------------------------------------], [1, 1]]
+						  2
+(C8) 
+
+
+
+
+@end example
+@end defun
+@c @node LOADFILE, LOADPRINT, LOAD, Input and Output
+@c @unnumberedsec phony
+@defun LOADFILE (filename)
+loads a file as designated by its
+arguments.  This function may be used to bring back quantities that
+were stored from a prior MACSYMA session by use of the SAVE or STORE
+functions.   Specify the pathname as on your operating system.  For
+unix this would be "/home/wfs/foo.mc" for example.
+
+@end defun
+@c @node LOADPRINT, NOSTRING, LOADFILE, Input and Output
+@c @unnumberedsec phony
+@defvar LOADPRINT
+ default: [TRUE] - governs the printing of messages
+accompanying loading of files.  The following options are available:
+TRUE means always print the message; 'LOADFILE means print only when
+the LOADFILE command is used; 'AUTOLOAD means print only when a file
+is automatically loaded in (e.g. the integration file SIN FASL); FALSE
+means never print the loading message.
+
+@end defvar
+@c @node NOSTRING, OBASE, LOADPRINT, Input and Output
+@c @unnumberedsec phony
+@defun NOSTRING (arg)
+displays all input lines when playing back rather than
+STRINGing them.  If arg is GRIND then the display will be in a more
+readable format.  One may include any number of options as in
+PLAYBACK([5,10],20,TIME,SLOW).
+
+@end defun
+@c @node OBASE, OUTCHAR, NOSTRING, Input and Output
+@c @unnumberedsec phony
+@defvar OBASE
+ default: [10] the base for display of numbers.
+
+@end defvar
+@c @node OUTCHAR, PACKAGEFILE, OBASE, Input and Output
+@c @unnumberedsec phony
+@defvar OUTCHAR
+ default: [D] - the alphabetic prefix of the names of
+outputted expressions.
+
+@end defvar
+@c @node PACKAGEFILE, PARSEWINDOW, OUTCHAR, Input and Output
+@c @unnumberedsec phony
+@defvar PACKAGEFILE
+ default:[FALSE] - Package designers who use SAVE,
+FASSAVE, or TRANSLATE to create packages (files) for others
+to use may want to set PACKAGEFILE:TRUE$ to prevent information
+from being added to MACSYMA's information-lists (e.g. VALUES,
+FUNCTIONS) except where necessary when the file is loaded in.
+In this way, the contents of the package will not get in the
+user's way when he adds his own data.  Note that this will not
+solve the problem of possible name conflicts.  Also note that
+the flag simply affects what is output to the package file.
+Setting the flag to TRUE is also useful for creating MACSYMA
+init files.
+
+@end defvar
+@c @node PARSEWINDOW, PFEFORMAT, PACKAGEFILE, Input and Output
+@c @unnumberedsec phony
+@defvar PARSEWINDOW
+ default:[10] - the maximum number of "lexical tokens"
+that are printed out on each side of the error-point when a syntax
+(parsing) error occurs.  This option is especially useful on slow
+terminals.  Setting it to -1 causes the entire input string to be
+printed out when an error occurs.
+
+@end defvar
+@c @node PFEFORMAT, PRINT, PARSEWINDOW, Input and Output
+@c @unnumberedsec phony
+@defvar PFEFORMAT
+ default: [FALSE] - if TRUE will cause rational numbers to
+display in a linear form and denominators which are integers to
+display as rational number multipliers.
+
+@end defvar
+@c @node PRINT, READ, PFEFORMAT, Input and Output
+@c @unnumberedsec phony
+@defun PRINT (exp1, exp2, ...)
+evaluates and displays its arguments one
+after the other "on a line" starting at the leftmost position.  If
+expi is unbound or is preceded by a single quote or is enclosed in "s
+then it is printed literally.  For example, PRINT("THE VALUE OF X IS
+",X).  The value returned by PRINT is the value of its last argument.
+No intermediate lines are generated.  (For "printing" files, see
+the PRINTFILE function.)
+
+@end defun
+
+@defun SPRINT (exp1, exp2, ...)
+evaluates and displays its arguments one
+after the other "on a line" starting at the leftmost position.  The
+numbers are printed with the '-' right next to the number, and
+it disregards line length.   
+@end defun
+
+@defun TCL_OUTPUT (LIST INDEX &optional-skip)
+prints a TCL list based on LIST extracting the INDEX slot.
+Here skip defaults to 2, meaning that every other element
+will be printed if the argument is of the form a list of numbers,
+rathter than a list of lists.
+For example:
+@example
+TCL_OUTPUT([x1,y1,x2,y2,x3,y3],1) --> {x1 x2 x3 }
+TCL_OUTPUT([x1,y1,x2,y2,x3,y3],2) --> {y1 y2 y3 }
+TCL_OUTPUT([1,2,3,4,5,6],1,3) --> {1 4}
+TCL_OUTPUT([1,2,3,4,5,6],2,3) --> {2 5}
+@end example
+@end defun
+
+@c @node READ, READONLY, PRINT, Input and Output
+@c @unnumberedsec phony
+@defun READ (string1, ...)
+prints its arguments, then reads in and evaluates
+one expression.  For example: A:READ("ENTER THE NUMBER OF VALUES").
+
+@end defun
+@c @node READONLY, REVEAL, READ, Input and Output
+@c @unnumberedsec phony
+@defun READONLY (string1,...)
+prints its arguments, then reads in an
+expression (which in contrast to READ is not evaluated).
+
+@end defun
+@c @node REVEAL, RMXCHAR, READONLY, Input and Output
+@c @unnumberedsec phony
+@defun REVEAL (exp,depth)
+will display exp to the specified integer depth
+with the length of each part indicated.  Sums will be displayed as
+Sum(n) and products as Product(n) where n is the number of subparts of
+the sum or product.  Exponentials will be displayed as Expt.
+@example
+(C1) INTEGRATE(1/(X^3+2),X)$
+(C2) REVEAL(%,2);
+(D2)                    Negterm + Quotient + Quotient
+(C3) REVEAL(D1,3);
+                                     ATAN         LOG
+(D3)                 - Quotient + ---------- + ----------
+                                  Product(2)   Product(2)
+
+
+@end example
+@end defun
+@c @node RMXCHAR, SAVE, REVEAL, Input and Output
+@c @unnumberedsec phony
+@defvar RMXCHAR
+ default: []] - The character used to display the (right)
+delimiter of a matrix (see also LMXCHAR).
+
+@end defvar
+@c @node SAVE, SAVEDEF, RMXCHAR, Input and Output
+@c @unnumberedsec phony
+@defun SAVE (filename,arg1, arg2,...,argi)
+saves quantities
+described by its arguments on disk and keeps them in core also.  The
+The arg's are the expressions to be SAVEd.
+ALL is the simplest, but note that saving ALL will save the entire
+contents of your MACSYMA, which in the case of a large computation may
+result in a large file.  VALUES,
+FUNCTIONS, or any other items on the INFOLISTS (do
+DESCRIBE(INFOLISTS); for the list) may be SAVEd, as may functions and
+variables by name.  C and D lines may also be saved, but it is better
+to give them explicit names, which may be done in the command line,
+e.g.  SAVE(RES1=D15); Files saved with SAVE should be reloaded with
+LOADFILE.  SAVE returns the pathname where the items were saved.
+
+
+@end defun
+@c @node SAVEDEF, SHOW, SAVE, Input and Output
+@c @unnumberedsec phony
+@defvar SAVEDEF
+ default: [TRUE] - if TRUE will cause the MACSYMA version of a
+user function to remain when the function is TRANSLATEd.  This permits
+the definition to be displayed by DISPFUN and allows the function to
+be edited.  If SAVEDEF is FALSE, the names of translated functions are
+removed from the FUNCTIONS list.
+
+@end defvar
+@c @node SHOW, SHOWRATVARS, SAVEDEF, Input and Output
+@c @unnumberedsec phony
+@defun SHOW (exp)
+will display exp with the indexed objects in it shown
+having covariant indices as subscripts,contravariant indices as
+superscripts.  The derivative indices will be displayed as subscripts,
+separated from the covariant indices by a comma.
+
+@end defun
+@c @node SHOWRATVARS, STARDISP, SHOW, Input and Output
+@c @unnumberedsec phony
+@defun SHOWRATVARS (exp)
+returns a list of the RATVARS (CRE variables) of
+exp.
+
+@end defun
+@c @node STARDISP, STRING, SHOWRATVARS, Input and Output
+@c @unnumberedsec phony
+@defvar STARDISP
+ default: [FALSE] - if TRUE will cause multiplication to be
+displayed explicitly with an * between operands.
+
+@end defvar
+@c @node STRING, STRINGOUT, STARDISP, Input and Output
+@c @unnumberedsec phony
+@defun STRING (expr)
+converts expr to MACSYMA's linear notation (similar to
+FORTRAN's) just as if it had been typed in and puts expr into the
+buffer for possible editing (in which case expr is usually Ci) The
+STRING'ed expression should not be used in a computation.
+
+@end defun
+@c @node STRINGOUT, TTYOFF, STRING, Input and Output
+@c @unnumberedsec phony
+@defun STRINGOUT (args)
+will output an expression to a file in a linear
+format.  Such files are then used by the BATCH or DEMO commands.
+STRINGOUT(file-specification, A1, A2, ...)  outputs to a file given by
+file-specification ([filename1,filename2,DSK, directory]) the values
+given by A1,A2,..  in a MACSYMA readable format.  The
+file-specification may be omitted, in which case the default values
+will be used. The Ai are usually C labels or may be INPUT meaning the
+value of all C labels.  Another option is to make ai FUNCTIONS which
+will cause all of the user's function definitions to be strungout
+(i.e. all those retrieved by DISPFUN(ALL)).  Likewise the ai may be
+VALUES, and all the variables to which the user has assigned values
+will be strungout.  ai may also be a list [m,n] which means to
+stringout all labels in the range m through n inclusive.  This
+function may be used to create a file of FORTRAN statements by doing
+some simple editing on the strungout expressions.  If the GRIND switch
+is set to TRUE, then STRINGOUT will use GRIND format instead of STRING
+format.  Note: a STRINGOUT may be done while a WRITEFILE is in
+progress.
+
+@end defun
+@defun SYSTEM(command)
+Execute COMMAND as a subprocess.  The command will be passed to the
+default shell for execution.   System is not supported by all operating
+systems, but generally exists in the unix environment.
+if hist is a list of frequencies which you wish to plot as a bar graph
+using xgraph. 
+@example
+      with_stdout("_hist.out",
+           for i:1 thru length(hist) do (
+             print(i,hist[i]))),
+      system("xgraph -bar -brw .7 -nl < _hist.out")
+@end example
+In order to make the plot be done in the background (returning control to maxima)
+and remove the temporary file after it is done do:
+@example
+system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
+@end example
+@end defun
+
+@c @node TTYOFF, WRITEFILE, STRINGOUT, Input and Output
+@c @unnumberedsec phony
+@defvar TTYOFF
+ default: [FALSE] - if TRUE stops printing output to the
+console.
+
+@end defvar
+
+@deffn {macro} WITH_STDOUT(file,stmt1,stmt2,...)
+Opens file and then evaluates stmt1, stmt2, ....  Any printing
+to standard output goes to the file instead of the terminal.
+It always returns FALSE.
+@example
+
+mygnuplot(f,var,range,number_ticks):=
+ block([numer:true],
+ with_stdout("/tmp/gnu",
+   for x:range[1] thru range[2] step
+                (range[2]-range[1])/number_ticks
+      do (print(x,at(f,var=x)))),
+ system("echo \"set data style lines; set title '",
+        f,"' ;plot '/tmp/gnu'
+;pause 10 \" | gnuplot"));
+
+(C8) with_stdout("/home/wfs/joe",
+      n:10,
+      for i:8 thru n
+        do(print("factorial(",i,") gives ",i!)));
+(D8) 				     FALSE
+(C9) system("cat /home/wfs/joe");
+factorial( 8 ) gives  40320 
+factorial( 9 ) gives  362880 
+factorial( 10 ) gives  3628800 
+(D9) 				       0
+@end example
+
+@end deffn
+
+
+
+@c @node WRITEFILE,  , TTYOFF, Input and Output
+@c @unnumberedsec phony
+@defun WRITEFILE (DSK, directory)
+opens up a file for writing.  On a Lisp
+Machine one uses WRITEFILE("filename").  All interaction between the
+user and MACSYMA is then recorded in this file, just as it is on the
+console.  Such a file is a transcript of the session, and is not
+reloadable or batchable into MACSYMA again.  (See also CLOSEFILE.)
+
+@end defun

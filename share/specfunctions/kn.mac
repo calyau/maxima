@@ -1,0 +1,42 @@
+eval_when([translate,batch,demo,load,loadfile],
+load("bessel"))$
+declare(karray,special)$
+/*  recursion relation for modified bessel function k  */
+kn(x,n):= block(if n=0 then return(block(karray[0]:k0(x),karray[0])),
+                if n=1 then return(block(karray[1]:k1(x),karray[1])),
+                karray[n]:2.0*(n-1)/x*kn(x,n-1)+kn(x,n-2),
+                karray[n])$
+
+
+/*  modified bessel function k (orders 0 and 1)
+      approximated by polynomials      */
+/*  zeroth order  (error<=2e-7)  */
+k0(x):=block([xhalf,twobyx],
+    if x<=2.0 then (xhalf:0.5*x,
+                  -log(xhalf)*i0(x)-.57721566
+                  +.4227842*xhalf^2+.23069756*xhalf^4
+                  +.0348859*xhalf^6+.00262698*xhalf^8
+                  +.0001075*xhalf^10+.0000074*xhalf^12)
+             else(twobyx:2.0/x,
+                  1.0/(sqrt(x)*exp(x)) *
+                  (1.25331414-.07832358*twobyx
+                   +.02189568*twobyx^2-.01062446*twobyx^3
+                   +.00587872*twobyx^4-.00251540*twobyx^5
+                   +.00053208*twobyx^6)))$
+
+/*  first order  (error<=2.2e-7)  */
+k1(x):=block([xhalf,twobyx],
+     if x<=2.0 then (xhalf:0.5*x,
+                  (1.0/x) * (x*log(xhalf)*i1(x)+1+.15443144*xhalf^2
+                             -.67278579*xhalf^4-.18156897*xhalf^6
+                             -.01919402*xhalf^8-.00110404*xhalf^10
+                             -.00004686*xhalf^12))
+              else (twobyx:2.0/x,
+                    1.0/(sqrt(x)*exp(x)) *
+                     (1.25331414+.23498619*twobyx
+                      -.0365562*twobyx^2+.01504268*twobyx^3
+                      -.00780353*twobyx^4+.00325614*twobyx^5
+                      -.00068245*twobyx^6)))$
+
+/*  derivative of kn  */
+kndot(x,n):=kn(x,n-1)-n/x*kn(x,n)$

@@ -1,0 +1,48 @@
+EQUALP(X, Y)   returns TRUE if X EQUALs Y otherwise FALSE (doesn't give an
+               error message like EQUAL(X, Y) would do in this case)
+
+REMFUN(FUN, EXP)   replaces all occurrences of FUN(ARG) by ARG in EXP
+
+REMFUN(FUN, EXP, VAR)   replaces all occurrences of FUN(ARG) by ARG in EXP
+                        only if ARG contains the variable VAR
+
+FUNP(FUN, EXP)   true if EXP contains the function FUN
+
+FUNP(FUN, EXP, VAR)   true if EXP contains the function FUN and the variable
+                      VAR is somewhere in the argument of one of the
+                      occurences of FUN
+
+ABSINT(FUN, VAR, HALFPLANE)   indefinite integral of FUN with respect to
+                              VAR in the given halfplane (POS, NEG, or BOTH).
+                              If HALFPLANE is omitted, POS is assumed as a
+                              default. FUN may contain expressions of the form
+                              ABS(X), ABS(SIN(X)), ABS(A)*EXP(-ABS(B)*ABS(X))
+
+ABSINT(FUN, VAR, A, B)   definite integral of FUN with respect to VAR from A to
+                         B. FUN may include absolute values
+
+FOURIER(F, X, P)   produces a list of the Fourier coefficients of F(X) defined
+                   on the interval [-P, P]
+
+FOURSIMP(L)   simplifies SIN(N %PI) to 0 if SINNPIFLAG [TRUE] is TRUE and
+              COS(N %PI) to (-1)^N if COSNPIFLAG [TRUE] is TRUE
+
+FOUREXPAND(L, X, P, LIMIT)   generates the Fourier series from the list of
+                             Fourier coefficients L up thru LIMIT terms (LIMIT
+                             may be INF). X and P have same meaning as in
+                             FOURIER
+
+FOURCOS(F, X, P)   Fourier cosine coefficients for F(X) defined on [0, P]
+
+FOURSIN(F, X, P)   Fourier sine coefficients for F(X) defined on [0, P]
+
+TOTALFOURIER(F, X, P) := FOUREXPAND(FOURSIMP(FOURIER(F, X, P)), X, P, 'INF)
+
+FOURINT(F, X)   creates a list of the Fourier integral coefficients of F(X)
+                defined on [MINF, INF]
+
+FOURINTCOS(F, X)   Fourier cosine integral coefficients for F(X) on [0, INF]
+
+FOURINTSIN(F, X)   Fourier sine integral coefficients for F(X) on [0, INF]
+
+                   ---MIKE@MIT-MC

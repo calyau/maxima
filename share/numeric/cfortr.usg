@@ -1,0 +1,76 @@
+   CRAY_FORTRAN(exp or eqn) generates FORTRAN suitable for the CRAY FORTRAN
+compilers, e.g., CFT and CIVIC.  It is an extension of the MACSYMA FORTRAN
+function, with the following added capabilities:
+
+      1) It knows how to break up an expression which would be more than
+         19 continuation lines long into a series of legal FORTRAN statements
+         with generated temporary names assigned to the pieces that have
+         been broken out.  See below about how to adjust this size.
+
+      2) It converts LOG into ALOG.
+
+      3) It allows an arbitrary character pattern to be substituted for a
+         pattern in the FORTRAN output(without regard to line breaks).  This
+         is useful for changing subscripts carried formally in variable names
+         to values needed in specific DO-LOOPs.
+         
+      4) It removes the MACSYMA quote character, "\", from the output.
+
+      5) It has the option of returning a character string and generating
+         no formatted FORTRAN output.  This is a achieved by setting
+         FORT_STRING[FALSE] to TRUE.  This is useful for generating character
+         strings for the algebraic operands in FORTRAN logical expressions
+         needed by the CRAY "CVMGT" vector merge instruction.
+
+      6) It permits formatted FORTRAN output to be directed to a separate
+         file by doing OPEN_FORTRAN_FILE(filespec)$ before and
+         CLOSE_FORTRAN_FILE()$ after the appropriate calls to CRAY_FORTRAN.
+         The output still goes to the TTY as well.  It is possible to
+	 annotate the output to the separate file by use of the command
+	 COMMENT_FORTRAN(EXP)$, where EXP is any MACSYMA expression.  The
+	 output from COMMENT_FORTRAN does NOT go to the TTY.
+
+      7) It replaces rational constants by constructed names and saves
+         the required information in an internal database.  By doing
+         GENERATE_DATA_SECTION()$ after the appropriate calls to CRAY_FORTRAN,
+         DATA statements are generated which will properly define the
+         constructed names.
+
+   The global variables affecting FORTRAN also affect CRAY_FORTRAN in the
+same manner.  Additional global variables not mentioned above are:
+
+      FORT_FLOAT[TRUE] should be set to FALSE if the expressions passed
+to CRAY_FORTRAN contain only integers and integer variables.
+
+      FORT_POWER_FLOAT[FALSE] - if TRUE, integer exponents are converted
+into floating-point numbers in the formatted FORTRAN output.
+
+      ALLOWED_LENGTH[1250] is the number of characters which can be output
+in a single FORTRAN statement.  The number 1250 corresponds to a FORTRAN
+statement with 19 continuation lines and no indentation.  To add an extra
+line with no indentation, increase ALLOWED_LENGTH by 63.  There is a
+minimum value for ALLOWED_LENGTH, and CRAY_FORTRAN will reset ALLOWED_LENGTH
+to that value if the user has set it to a smaller number.
+
+      BREAK_PREFIX['aa] is the character string used to prefix all symbols
+generated to represent subexpressions which had to be broken out of an
+expression so that each would result in FORTRAN statements within the
+ALLOWED_LENGTH limit.
+
+      SEQUENCE_OPTIM_SUFFIX[?'s] is the string used to suffix symbols
+generated to represent subexpressions broken out of an expression by
+CRAY_FORTRAN because that expression was too large to be handled by the
+CFT(or other appropriate) compiler(The "?" in the default value removes
+the internal "$").
+
+      FORTRAN_SUBST_LIST[[]] is the MAXSYMA list of equations used to
+perform substring substitutions in the formatted FORTRAN output.  The RHS
+of each equation is interpreted as a LISP list of characters(generated for
+example by EXPLODEN(?<string>)) to be substituted for a given character
+pattern in the output.  This pattern is represented by another LISP list
+(similarly generated) in the LHS of the equation.  The CRAY_FORTRAN output
+is one long LISP list of characters at the point of comparison.  Note that
+the function EXPLODEN is included in the CRAY_FORTRAN FASL file.
+
+   To access CRAY_FORTRAN, do LOAD(CFORTR)$ .  A demonstration can be
+found in SHARE1;CFORTR DEMO .  Bugs to GCOOK@MIT-MC .

@@ -1,0 +1,137 @@
+@node Differential Equations, Statistics, Help, Top
+@chapter Differential Equations
+@c end concepts Differential Equations
+@menu
+* Definitions for Differential Equations::  
+@end menu
+
+@node Definitions for Differential Equations,  , Differential Equations, Differential Equations
+@section Definitions for Differential Equations
+@c @node DESOLVE
+@c @unnumberedsec phony
+@defun DESOLVE ([eq1,...,eqn],[var1,...,varn])
+where the eq's are
+differential equations in the dependent variables var1,...,varn.  The
+functional relationships must be explicitly indicated in both the
+equations and the variables. For example
+@example
+(C1) 'DIFF(F,X,2)=SIN(X)+'DIFF(G,X);
+(C2) 'DIFF(F,X)+X^2-F=2*'DIFF(G,X,2);
+is NOT the proper format.  The correct way is:
+(C3) 'DIFF(F(X),X,2)=SIN(X)+'DIFF(G(X),X);
+(C4) 'DIFF(F(X),X)+X^2-F(X)=2*'DIFF(G(X),X,2);
+The call is then DESOLVE([D3,D4],[F(X),G(X)]);
+If initial conditions at 0 are known, they should be supplied before
+calling DESOLVE by using ATVALUE.
+(C11) 'DIFF(F(X),X)='DIFF(G(X),X)+SIN(X);
+                        d         d
+(D11)                   -- F(X) = -- G(X) + SIN(X)
+                        dX        dX
+(C12) 'DIFF(G(X),X,2)='DIFF(F(X),X)-COS(X);
+                         2
+                        d          d
+(D12)                   --- G(X) = -- F(X) - COS(X)
+                          2        dX
+                        dX
+(C13) ATVALUE('DIFF(G(X),X),X=0,A);
+(D13)                                A
+(C14) ATVALUE(F(X),X=0,1);
+(D14)                                1
+(C15) DESOLVE([D11,D12],[F(X),G(X)]);
+                X                            X
+(D16) [F(X)=A %E  - A+1, G(X) = COS(X) + A %E  - A + G(0) - 1]
+/* VERIFICATION */
+(C17) [D11,D12],D16,DIFF;
+                  X       X      X                X
+(D17)        [A %E  = A %E , A %E  - COS(X) = A %E  - COS(X)]
+
+@end example
+@noindent
+If DESOLVE cannot obtain a solution, it returns "FALSE".
+
+@end defun
+@c @node IC1
+@c @unnumberedsec phony
+@defun IC1 (exp,var,var)
+In order to solve initial value problems (IVPs) and
+boundary value problems (BVPs), the routine IC1 is available in the
+ODE2 package for first order equations, and IC2 and BC2 for second
+order IVPs and BVPs, respectively.  Do LOAD(ODE2) to access these.
+They are used as in the following examples:
+@example
+(C3) IC1(D2,X=%PI,Y=0);
+                         COS(X) + 1
+(D3)               Y = - ----------
+                              3
+                             X
+(C4) 'DIFF(Y,X,2) + Y*'DIFF(Y,X)^3 = 0;
+                       2
+                      d Y      dY 3
+(D4)                  --- + Y (--)  = 0
+                        2      dX
+                      dX
+(C5) ODE2(%,Y,X);
+                 3
+                Y  - 6 %K1 Y - 6 X
+(D7)            ------------------ = %K2
+                        3
+(C8) RATSIMP(IC2(D7,X=0,Y=0,'DIFF(Y,X)=2));
+                     3
+                  2 Y  - 3 Y + 6 X
+(D9)            - ---------------- = 0
+                         3
+(C10) BC2(D7,X=0,Y=1,X=1,Y=3);
+                 3
+                Y  - 10 Y - 6 X
+(D11)           --------------- = - 3
+                       3
+
+@end example
+
+@end defun
+@c @node ODE
+@c @unnumberedsec phony
+@defun ODE (equation,y,x)
+a pot-pourri of Ordinary Differential solvers
+combined in such a way as to attempt more and more difficult methods
+as each fails. For example, the first attempt is with ODE2, so
+therefore, a user using ODE can assume he has all the capabilities of
+ODE2 at the very beginning and if he has been using ODE2 in programs
+they will still run if he substitutes ODE (the returned values, and
+calling sequence are identical).
+In addition, ODE has a number of user features which can assist an
+experienced ODE solver if the basic system cannot handle the equation.
+The equation is of the same form as required for ODE2 (which see) and
+the y and x are dependent and independent variables, as with ODE2.
+For more details, do PRINTFILE(ODE,USAGE,SHARE); .
+
+@end defun
+@c @node ODE2
+@c @unnumberedsec phony
+@defun ODE2 (exp,dvar,ivar)
+takes three arguments: an ODE of first or second
+order (only the left hand side need be given if the right hand side is
+0), the dependent variable, and the independent variable.  When
+successful, it returns either an explicit or implicit solution for the
+dependent variable.  %C is used to represent the constant in the case
+of first order equations, and %K1 and %K2 the constants for second
+order equations.  If ODE2 cannot obtain a solution for whatever
+reason, it returns FALSE, after perhaps printing out an error message.
+The methods implemented for first order equations in the order in
+which they are tested are: linear, separable, exact - perhaps
+requiring an integrating factor, homogeneous, Bernoulli's equation,
+and a generalized homogeneous method.
+For second order: constant coefficient, exact, linear homogeneous with
+non-constant coefficients which can be transformed to constant
+coefficient, the Euler or equidimensional equation, the method of
+variation of parameters, and equations which are free of either the
+independent or of the dependent variable so that they can be reduced
+to two first order linear equations to be solved sequentially.
+In the course of solving ODEs, several variables are set purely for
+informational purposes: METHOD denotes the method of solution used
+e.g. LINEAR, INTFACTOR denotes any integrating factor used, ODEINDEX
+denotes the index for Bernoulli's method or for the generalized
+homogeneous method, and YP denotes the particular solution for the
+variation of parameters technique.
+
+@end defun

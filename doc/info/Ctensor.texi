@@ -1,0 +1,243 @@
+@node Ctensor, Function and Variable Index, Tensor, Top
+@chapter Ctensor
+@menu
+* Introduction to Ctensor::     
+* Definitions for Ctensor::     
+@end menu
+
+@node Introduction to Ctensor, Definitions for Ctensor, Ctensor, Ctensor
+@section Introduction to Ctensor
+
+ - Component Tensor Manipulation Package.  To use the CTENSR
+package, type TSETUP(); which automatically loads it from within
+MACSYMA (if it is not already loaded) and then prompts the user to
+input his coordinate system.  The user is first asked to specify the
+dimension of the manifold. If the dimension is 2, 3 or 4 then the list
+of coordinates defaults to [X,Y], [X,Y,Z] or [X,Y,Z,T] respectively.
+These names may be changed by assigning a new list of coordinates to
+the variable OMEGA (described below) and the user is queried about
+this.
+** Care must be taken to avoid the coordinate names conflicting
+with other object definitions **.
+Next, the user enters the metric either directly or from a file by
+specifying its ordinal position. As an example of a file of common
+metrics, see TENSOR;METRIC FILE. The metric is stored in the matrix
+LG. Finally, the metric inverse is computed and stored in the matrix
+UG. One has the option of carrying out all calculations in a power
+series.
+A sample protocol is begun below for the static, spherically symmetric
+metric (standard coordinates) which will be applied to the problem of
+deriving Einstein's vacuum equations (which lead to the Schwarzschild
+solution) as an example. Many of the functions in CTENSR will be
+displayed for the standard metric as examples.
+@example
+(C2) TSETUP();
+
+Enter the dimension of the coordinate system: 
+4;
+Do you wish to change the coordinate names?
+N;
+Do you want to
+1. Enter a new metric?
+2. Enter a metric from a file?
+3. Approximate a metric with a Taylor series?
+Enter 1, 2 or 3 
+1;
+Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
+Answer 1, 2, 3 or 4
+1;
+Row 1 Column 1:  A;
+Row 2 Column 2:  X^2;
+Row 3 Column 3:  X^2*SIN(Y)^2;
+Row 4 Column 4:  -D;
+Matrix entered.
+Enter functional dependencies with the DEPENDS function or 'N' if none 
+DEPENDS([A,D],X);
+Do you wish to see the metric? 
+Y;
+                          [ A  0       0        0  ]
+                          [                        ]
+                          [     2                  ]
+                          [ 0  X       0        0  ]
+                          [                        ]
+                          [         2    2         ]
+                          [ 0  0   X  SIN (Y)   0  ]
+                          [                        ]
+                          [ 0  0       0       - D ]
+Do you wish to see the metric inverse? 
+N;
+
+
+@end example
+@c end concepts Ctensor
+@node Definitions for Ctensor,  , Introduction to Ctensor, Ctensor
+@section Definitions for Ctensor
+@c @node CHR1
+@c @unnumberedsec phony
+@defun CHR1 ([i,j,k])
+yields the Christoffel symbol of the first kind via the
+definition
+@example
+       (g      + g      - g     )/2 .
+         ik,j     jk,i     ij,k
+@end example
+@noindent
+To evaluate the Christoffel symbols for a particular metric, the
+variable METRIC must be assigned a name as in the example under CHR2.
+
+@end defun
+@c @node CHR2
+@c @unnumberedsec phony
+@defun CHR2 ([i,j],[k])
+yields the Christoffel symbol of the second kind
+defined by the relation
+@example
+                       ks
+    CHR2([i,j],[k]) = g    (g      + g      - g     )/2
+                             is,j     js,i     ij,s
+@end example
+@end defun
+@c @node CHRISTOF
+@c @unnumberedsec phony
+@defun CHRISTOF (arg)
+A function in the CTENSR (Component Tensor
+Manipulation) package.  It computes the Christoffel symbols of both
+kinds.  The arg determines which results are to be immediately
+displayed.  The Christoffel symbols of the first and second kinds are
+stored in the arrays LCS[i,j,k] and MCS[i,j,k] respectively and
+defined to be symmetric in the first two indices. If the argument to
+CHRISTOF is LCS or MCS then the unique non-zero values of LCS[i,j,k]
+or MCS[i,j,k], respectively, will be displayed. If the argument is ALL
+then the unique non-zero values of LCS[i,j,k] and MCS[i,j,k] will be
+displayed.  If the argument is FALSE then the display of the elements
+will not occur. The array elements MCS[i,j,k] are defined in such a
+manner that the final index is contravariant.
+
+@end defun
+@c @node COVDIFF
+@c @unnumberedsec phony
+@defun COVDIFF (exp,v1,v2,...)
+yields the covariant derivative of exp with
+respect to the variables vi in terms of the Christoffel symbols of the
+second kind (CHR2).  In order to evaluate these, one should use
+EV(exp,CHR2).
+
+@end defun
+@c @node CURVATURE
+@c @unnumberedsec phony
+@defun CURVATURE ([i,j,k],[h])
+Indicial Tensor Package) yields the Riemann
+curvature tensor in terms of the Christoffel symbols of the second
+kind (CHR2).  The following notation is used:
+@example
+               h            h           h        %1        h
+      CURVATURE     = - CHR2      - CHR2     CHR2    + CHR2
+               i j k        i k,j       %1 j     i k       i j,k
+                              h         %1
+                        + CHR2      CHR2
+                              %1 k      i j
+@end example
+@end defun
+@c @node DIAGMETRIC
+@c @unnumberedsec phony
+@defvar DIAGMETRIC
+ default:[] - An option in the CTENSR (Component Tensor
+Manipulation) package.  If DIAGMETRIC is TRUE special routines compute
+all geometrical objects (which contain the metric tensor explicitly)
+by taking into consideration the diagonality of the metric. Reduced
+run times will, of course, result. Note: this option is set
+automatically by TSETUP if a diagonal metric is specified.
+
+@end defvar
+@c @node DIM
+@c @unnumberedsec phony
+@defvar DIM
+ default:[4] - An option in the CTENSR (Component Tensor
+Manipulation) package.  DIM is the dimension of the manifold with the
+default 4. The command DIM:N; will reset the dimension to any other
+integral value.
+
+@end defvar
+@c @node EINSTEIN
+@c @unnumberedsec phony
+@defun EINSTEIN (dis)
+A function in the CTENSR (Component Tensor
+Manipulation) package.  EINSTEIN computes the mixed Einstein tensor
+after the Christoffel symbols and Ricci tensor have been obtained
+(with the functions CHRISTOF and RICCICOM).  If the argument dis is
+TRUE, then the non-zero values of the mixed Einstein tensor G[i,j]
+will be displayed where j is the contravariant index.
+RATEINSTEIN[TRUE] if TRUE will cause the rational simplification on
+these components. If RATFAC[FALSE] is TRUE then the components will
+also be factored.
+
+@end defun
+@c @node LRICCICOM
+@c @unnumberedsec phony
+@defun LRICCICOM (dis)
+A function in the CTENSR (Component Tensor
+Manipulation) package.  LRICCICOM computes the covariant (symmetric)
+components LR[i,j] of the Ricci tensor.  If the argument dis is TRUE,
+then the non-zero components are displayed.
+
+@end defun
+@c @node MOTION
+@c @unnumberedsec phony
+@defun MOTION (dis)
+A function in the CTENSR (Component Tensor
+Manipulation) package.  MOTION computes the geodesic equations of
+motion for a given metric.  They are stored in the array EM[i].  If
+the argument dis is TRUE then these equations are displayed.
+
+@end defun
+@c @node OMEGA
+@c @unnumberedsec phony
+@defvar OMEGA
+ default:[] - An option in the CTENSR (Component Tensor
+Manipulation) package.  OMEGA assigns a list of coordinates to the
+variable. While normally defined when the function TSETUP is called,
+one may redefine the coordinates with the assignment
+OMEGA:[j1,j2,...jn] where the j's are the new coordinate names. A call
+to OMEGA will return the coordinate name list.  Also see
+DESCRIBE(TSETUP); .
+
+@end defvar
+@c @node RIEMANN
+@c @unnumberedsec phony
+@defun RIEMANN (dis)
+A function in the CTENSR (Component Tensor
+Manipulation) Package.  RIEMANN computes the Riemann curvature tensor
+from the given metric and the corresponding Christoffel symbols.  If
+dis is TRUE, the non-zero components R[i,j,k,l] will be displayed. All
+the indicated indices are covariant.  As with the Einstein tensor,
+various switches set by the user control the simplification of the
+components of the Riemann tensor.  If RATRIEMAN[TRUE] is TRUE then
+rational simplification will be done. If RATFAC[FALSE] is TRUE then
+each of the components will also be factored.
+
+@end defun
+@c @node TRANSFORM
+@c @unnumberedsec phony
+@defun TRANSFORM
+ - The TRANSFORM command in the CTENSR package has been
+renamed to TTRANSFORM.
+
+@end defun
+@c @node TSETUP
+@c @unnumberedsec phony
+@defun TSETUP ()
+A function in the CTENSR (Component Tensor Manipulation)
+package which automatically loads the CTENSR package from within
+MACSYMA (if it is not already loaded) and then prompts the user to
+make use of it.  Do DESCRIBE(CTENSR); for more details.
+
+@end defun
+@c @node TTRANSFORM
+@c @unnumberedsec phony
+@defun TTRANSFORM (matrix)
+A function in the CTENSR (Component Tensor
+Manipulation) package which will perform a coordinate transformation
+upon an arbitrary square symmetric matrix. The user must input the
+functions which define the transformation.  (Formerly called TRANSFORM.)
+
+@end defun

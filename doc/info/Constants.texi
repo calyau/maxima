@@ -1,0 +1,40 @@
+@node Constants, Special Functions, Operators, Top
+@chapter Constants
+@c end concepts Constants
+@menu
+* Definitions for Constants::   
+@end menu
+
+@node Definitions for Constants,  , Constants, Constants
+@section Definitions for Constants
+@c @node E
+@c @unnumberedsec phony
+@defvar E
+ - The base of natural logarithms, e, is represented in MACSYMA
+as %E.
+
+@end defvar
+@c @node FALSE
+@c @unnumberedsec phony
+@defvar FALSE
+ - the Boolean constant, false. (NIL in LISP)
+
+@end defvar
+@c @node MINF
+@c @unnumberedsec phony
+@defvar MINF
+ - real minus infinity.
+
+@end defvar
+@c @node PI
+@c @unnumberedsec phony
+@defvar PI
+ - "pi" is represented in MACSYMA as %PI.
+
+@end defvar
+@c @node TRUE
+@c @unnumberedsec phony
+@defvar TRUE
+ - the Boolean constant, true. (T in LISP)
+
+@end defvar

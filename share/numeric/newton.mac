@@ -1,0 +1,10 @@
+
+NEWTON(expr,GUESS):=BLOCK([Y,prec:10^(fpprec/-2.0B0),var,dif],
+       var:listofvars(expr)[1],
+       dif:diff(expr,var),
+       guess:bfloat(guess),
+       DO (Y:sublis([var=GUESS],dif),y:expand(y),IF ABS(Y) < prec THEN ERROR("derivative at",GUESS,"is zero"),
+	   GUESS:GUESS-sublis([var=(GUESS)],expr)/Y,guess:rectform(expand(guess)), 
+	   IF ABS(sublis([var=(GUESS)],expr)) < prec THEN RETURN(GUESS)));
+
+

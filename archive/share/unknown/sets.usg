@@ -1,0 +1,48 @@
+
+A Fast Sets Package due to GJC
+------------------------------
+
+There is a fast sets package available by doing LOAD(SETS); .
+
+The set constructor is the "{".  So X:{A,B,C,D,E}; creates a set.
+
+The usual primitives UNION, INTERSECTION, SETDIFF, SYMDIFF 
+are defined.  (SYMDIFF(A,B)=UNION(SETDIFF(A,B),SETDIFF(B,A))
+ = SETDIFF(UNION(A,B),INTERSECTION(A,B)) ).
+
+Predicates are: ELEMENTP(X,SET), EMPTYP(SET),
+and SUBSETP(SET1,SET2) 
+
+CARDINAL(SET) returns the cardinality.
+
+There are two mapping-like functions which are provided
+for sets.
+
+PREDSET(PREDICATE,SET) returns the set of all elements of SET
+such that the PREDICATE returns TRUE. e.g.
+
+X:{1,2,3,4,5,6,7,8,9,10,11}
+
+PREDSET(LAMBDA([U],IS(ABS(U-6)<3)),X) returns {5,6,7}
+
+MAPSET(FUNCTION,SET) creates a set from the results of applying
+the FUNCTION to the elements of the SET.
+
+ELEMENTS(SET) returns a list of the elements.
+
+The sets are not represented as lists.  The set-algebraic
+functions (UNION, INTERSECTION, SETDIFF, SYMDIFF, PREDSET,
+CARDINAL), all operate on the internal representation of sets
+and as such are fast.  Things which have to be converted from
+the set representation to non-set are a bit slower,
+the things which make sets from raw elements are slower
+still, however, they are somewhat faster than CONS on
+the average.
+
+If there is interest, "INFINITE" sets could be implemented.
+There, of course, one has to be careful in converting between
+representations, obviously one can't print a list of the elements 
+of an infinite set.
+
+-gjc
+

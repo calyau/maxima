@@ -1,0 +1,97 @@
+/*	A Macsyma ``FEXPR'' Definer		KMP	May, 1980	*/
+/*									*/
+/*	DEF(fname(spec1,spec2,...),definition);				*/
+/*	 where some specs may be quoted with ' and the last may have	*/
+/*	 an optional [...] around it will define a normal macsyma	*/
+/*	 function called fname_AUX and a macro named fname where the	*/
+/*	 macro will have the calling conventions given by the specs.	*/
+/*									*/
+/*	 eg:								*/
+/*									*/
+/*		DEF(F(X,'Y),X+Y);					*/
+/*									*/
+/*		=>	F     is a macro which behaves like a function	*/
+/*			      that gets only its first arg evaluated	*/
+/*			F_AUX is a function of two args and adds them	*/
+/*			      so should be used with APPLY, MAP, etc	*/
+/*									*/
+
+DEF(FNINFO,BODY)::=
+ BLOCK([BVL,		  /* Arglist of the main function		*/
+        NAME,		  /* Main Function Name				*/
+        AUXNAME,	  /* Aux Function Name				*/
+        VARS:[],	  /* List of var names used by main fun		*/
+        VARSETS,	  /* List of vars for buildq setup in macro def	*/
+	QINFO:[],	  /* List of which args need quoting		*/
+        LEXPR:FALSE,	  /* Flag saying if this was a LEXPR		*/
+	PIECE],		  /* Make PIECE local to this function		*/
+
+  BVL:ARGS(FNINFO),			     /* BVL is original arglist */
+					     /*				*/
+  IF ATOM(PART(FNINFO,0))		     /* Allow two syntaxes	*/
+     THEN ( NAME:PIECE,			     /*  Only one name means	*/
+            AUXNAME:CONCAT(PIECE,"_AUX"))    /*   to gensym other name	*/
+     ELSE ( NAME:PART(PIECE,1),		     /*  If two names were given*/
+	    AUXNAME:PART(PIECE,2) ),	     /*   then use 2nd as aux	*/
+					     /*				*/
+  MAP( LAMBDA([X],			     /* ** Check each var in BVL*/
+	 IF ATOM(X)			     /* If atomic,		*/
+	    THEN ( QINFO:CONS(FALSE,QINFO),  /*   then remember no quote*/
+		   VARS:CONS(X,VARS) )	     /*   and add to VARS	*/
+    ELSE IF PART(X,0) = "'"		     /* If quoted,		*/
+	    THEN ( QINFO:CONS(TRUE,QINFO),   /*   then remember to quote*/
+		   VARS:CONS(PART(X,1),VARS))/*   and add to VARS	*/
+    ELSE IF PART(X,0) = "["		     /* Else if a list,		*/
+            THEN ( LEXPR:TRUE,		     /*   Then this is a LEXPR	*/
+		   X:PART(X,1),		     /*   Look at first element	*/
+	 IF ATOM(X)			     /*   If an atom,		*/
+	    THEN ( QINFO:CONS(FALSE,QINFO),  /*     say not to quote it */
+		   VARS:CONS(X,VARS) )	     /*     and add to VARS	*/
+	    ELSE (			     /*   Else,			*/
+	     IF PART(X,0) = "'"		     /*    If quoted,		*/
+	      THEN			     /*     Then,		*/
+	        (QINFO:CONS(TRUE,QINFO),     /*	     Save quote info	*/
+		  VARS:CONS(PART(X,1),VARS)) /*	     and add to VARS	*/
+	      ELSE			     /*    Else loser blew it	*/
+	        (ERROR("ILLEGAL FORM IN BVL -DEF"))))
+	    ELSE ( ERROR ("ILLEGAL FORM IN BVL -DEF"))),
+	BVL),				     /* (Map across BVL)	*/
+					     /* What a long function	*/
+					     /*  this is getting to be	*/
+
+  BVL     : VARS,			     /* Make BVL same as vars	*/
+  GENLIST : VARS,
+  VARSETS : VARS,
+
+  /* Hack things to add brackets, etc if a LEXPR */
+
+  IF LEXPR THEN
+     (BVL:CONS([PART(BVL,1)],REST(BVL)),
+      IF QINFO[1]=TRUE THEN 
+         (QINFO:CONS(FALSE,REST(QINFO)),
+	  VARSETS:CONS(BUILDQ([V:GENLIST[1]],
+			      V:MAP(LAMBDA([X],FUNMAKE("'",[X])),V)),
+		       REST(VARSETS))),
+      GENLIST:CONS(FUNMAKE('SPLICE,[PART(GENLIST,1)]),REST(GENLIST))),
+
+  /* Make genlist have vars quoted as appropriate */
+
+  GENLIST:MAP(LAMBDA([X,Y], IF X THEN FUNMAKE("'",[Y]) ELSE Y),
+	      QINFO,
+	      GENLIST), 
+
+  /* The whole world is backward at this point	*/
+
+  QINFO  : REVERSE(QINFO),		     /* Reverse quote info	*/
+  BVL    : REVERSE(BVL),		     /* Reverse bvl		*/
+  VARS   : REVERSE(VARS),		     /* Reverse main vars	*/
+  GENLIST: REVERSE(GENLIST),		     /* Reverse genlist		*/
+
+  /* Now cons up the solution and we're all set */
+
+  BUILDQ([NAME,AUXNAME,VARS,GENLIST,BODY,BVL,VARSETS],
+         (NAME(SPLICE(BVL))::=		     /* Main def recalls aux	*/
+              BUILDQ([SPLICE(VARSETS)],AUXNAME(SPLICE(GENLIST))),
+          AUXNAME(SPLICE(BVL)):= BODY,	     /* Aux definition		*/
+          ['NAME, 'AUXNAME])))$		     /* Return names of funs	*/
+

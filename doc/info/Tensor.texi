@@ -1,0 +1,296 @@
+@node Tensor, Ctensor, Affine, Top
+@chapter Tensor
+@menu
+* Introduction to Tensor::      
+* Definitions for Tensor::      
+@end menu
+
+@node Introduction to Tensor, Definitions for Tensor, Tensor, Tensor
+@section Introduction to Tensor
+
+ - Indicial Tensor Manipulation package.  It may be loaded by
+LOADFILE("itensr"); A manual for the Tensor packages is
+available in share/tensor.descr.  A demo is available by
+DEMO("itenso.dem1"); (and additional demos are in
+("itenso.dem2"), ("itenso.dem3") and following).
+
+ - There are two tensor packages in MACSYMA, CTENSR and
+ITENSR.  CTENSR is Component Tensor Manipulation, and may be accessed
+with LOAD(CTENSR); .  ITENSR is Indicial Tensor Manipulation, and is
+loaded by doing LOAD(ITENSR); A manual for CTENSR AND ITENSR is
+available from the LCS Publications Office.  Request MIT/LCS/TM-167.
+In addition, demos exist on the TENSOR; directory under the filenames
+CTENSO DEMO1, DEMO2, etc. and ITENSO DEMO1, DEMO2, etc.  Do
+DEMO("ctenso.dem1"); or DEMO("itenso.dem2"); Send bugs or
+comments to RP or TENSOR.
+
+@c end concepts Tensor
+@node Definitions for Tensor,  , Introduction to Tensor, Tensor
+@section Definitions for Tensor
+@c @node CANFORM
+@c @unnumberedsec phony
+@defun CANFORM (exp)
+[Tensor Package] Simplifies exp by renaming dummy
+indices and reordering all indices as dictated by symmetry conditions
+imposed on them. If ALLSYM is TRUE then all indices are assumed
+symmetric, otherwise symmetry information provided by DECSYM
+declarations will be used. The dummy indices are renamed in the same
+manner as in the RENAME function. When CANFORM is applied to a large
+expression the calculation may take a considerable amount of time.
+This time can be shortened by calling RENAME on the expression first.
+Also see the example under DECSYM. Note: CANFORM may not be able to
+reduce an expression completely to its simplest form although it will
+always return a mathematically correct result.
+
+@end defun
+@c @node CANTEN
+@c @unnumberedsec phony
+@defun CANTEN (exp)
+[Tensor Package] Simplifies exp by renaming (see RENAME)
+and permuting dummy indices. CANTEN is restricted to sums of tensor
+products in which no derivatives are present. As such it is limited
+and should only be used if CANFORM is not capable of carrying out the
+required simplification.
+
+@end defun
+@c @node CARG
+@c @unnumberedsec phony
+@defun CARG (exp)
+returns the argument (phase angle) of exp.  Due to the
+conventions and restrictions, principal value cannot be guaranteed
+unless exp is numeric.
+
+@end defun
+@c @node COUNTER
+@c @unnumberedsec phony
+@defvar COUNTER
+ default: [1] determines the numerical suffix to be used in
+generating the next dummy index in the tensor package.  The prefix is
+determined by the option DUMMYX[#].
+
+@end defvar
+@c @node DEFCON
+@c @unnumberedsec phony
+@defun DEFCON (tensor1,<tensor2,tensor3>)
+gives tensor1 the property that the
+contraction of a product of tensor1 and tensor2 results in tensor3
+with the appropriate indices.  If only one argument, tensor1, is
+given, then the contraction of the product of tensor1 with any indexed
+object having the appropriate indices (say tensor) will yield an
+indexed object with that name, i.e.tensor, and with a new set of
+indices reflecting the contractions performed.
+    For example, if METRIC: G, then DEFCON(G) will implement the
+raising and lowering of indices through contraction with the metric
+tensor.
+    More than one DEFCON can be given for the same indexed object; the
+latest one given which applies in a particular contraction will be
+used.
+CONTRACTIONS is a list of those indexed objects which have been given
+contraction properties with DEFCON.
+
+@end defun
+@c @node FLUSH
+@c @unnumberedsec phony
+@defun FLUSH (exp,tensor1,tensor2,...)
+Tensor Package - will set to zero, in
+exp, all occurrences of the tensori that have no derivative indices.
+
+@end defun
+@c @node FLUSHD
+@c @unnumberedsec phony
+@defun FLUSHD (exp,tensor1,tensor2,...)
+Tensor Package - will set to zero, in
+exp, all occurrences of the tensori that have derivative indices.
+
+@end defun
+@c @node FLUSHND
+@c @unnumberedsec phony
+@defun FLUSHND (exp,tensor,n)
+Tensor Package - will set to zero, in exp, all
+occurrences of the differentiated object tensor that have n or more
+derivative indices as the following example demonstrates.
+@example
+(C1) SHOW(A([I],[J,R],K,R)+A([I],[J,R,S],K,R,S));
+                               J R S      J R
+(D1)                          A        + A
+                               I,K R S    I,K R
+(C2) SHOW(FLUSHND(D1,A,3));
+                                     J R
+(D2)                                A
+                                     I,K R
+
+
+@end example
+@end defun
+@c @node KDELTA
+@c @unnumberedsec phony
+@defun KDELTA (L1,L2)
+is the generalized Kronecker delta function defined in
+the Tensor package with L1 the list of covariant indices and L2 the
+list of contravariant indices.  KDELTA([i],[j]) returns the ordinary
+Kronecker delta.  The command EV(EXP,KDELTA) causes the evaluation of
+an expression containing KDELTA([],[]) to the dimension of the
+manifold.
+
+@end defun
+@c @node LC
+@c @unnumberedsec phony
+@defun LC (L)
+is the permutation (or Levi-Civita) tensor which yields 1 if
+the list L consists of an even permutation of integers, -1 if it
+consists of an odd permutation, and 0 if some indices in L are
+repeated.
+
+@end defun
+@c @node LORENTZ
+@c @unnumberedsec phony
+@defun LORENTZ (exp)
+imposes the Lorentz condition by substituting 0 for all
+indexed objects in exp that have a derivative index identical to a
+contravariant index.
+
+@end defun
+@c @node MAKEBOX
+@c @unnumberedsec phony
+@defun MAKEBOX (exp)
+will display exp in the same manner as SHOW; however,
+any tensor d'Alembertian occurring in exp will be indicated using the
+symbol [].  For example, []P([M],[N]) represents
+G([],[I,J])*P([M],[N],I,J).
+
+@end defun
+@c @node METRIC
+@c @unnumberedsec phony
+@defun METRIC (G)
+specifies the metric by assigning the variable METRIC:G; in
+addition, the contraction properties of the metric G are set up by
+executing the commands DEFCON(G), DEFCON(G,G,KDELTA).
+The variable METRIC, default: [], is bound to the metric, assigned by
+the METRIC(g) command.
+
+@end defun
+@c @node NTERMSG
+@c @unnumberedsec phony
+@defun NTERMSG ()
+gives the user a quick picture of the "size" of the
+Einstein tensor.  It returns a list of pairs whose second elements
+give the number of terms in the components specified by the first
+elements.
+
+@end defun
+@c @node NTERMSRCI
+@c @unnumberedsec phony
+@defun NTERMSRCI ()
+returns a list of pairs, whose second elements give the
+number of terms in the RICCI component specified by the first
+elements.  In this way, it is possible to quickly find the non-zero
+expressions and attempt simplification.
+
+@end defun
+@c @node NZETA
+@c @unnumberedsec phony
+@defun NZETA (Z)
+returns the complex value of the Plasma Dispersion Function
+for complex Z.
+@example
+NZETAR(Z) ==> REALPART(NZETA(Z))
+@end example
+NZETAI(Z)
+returns IMAGPART(NZETA(Z)).  This function is related to the complex
+error function by
+@example
+NZETA(Z) = %I*SQRT(%PI)*EXP(-Z^2)*(1-ERF(-%I*Z)).
+@end example
+
+@end defun
+@c @node RAISERIEMANN
+@c @unnumberedsec phony
+@defun RAISERIEMANN (dis)
+returns the contravariant components of the Riemann
+curvature tensor as array elements UR[I,J,K,L].  These are displayed
+if dis is TRUE.
+
+@end defun
+@c @node RATEINSTEIN
+@c @unnumberedsec phony
+@defvar RATEINSTEIN
+ default: [] - if TRUE rational simplification will be
+performed on the non-zero components of Einstein tensors; if
+FACRAT:TRUE then the components will also be factored.
+
+@end defvar
+@c @node RATRIEMAN
+@c @unnumberedsec phony
+@defvar RATRIEMAN
+ - This switch has been renamed RATRIEMANN.
+
+@end defvar
+@c @node RATRIEMANN
+@c @unnumberedsec phony
+@defvar RATRIEMANN
+ default: [] - one of the switches which controls
+simplification of Riemann tensors; if TRUE, then rational
+simplification will be done; if FACRAT:TRUE then each of the
+components will also be factored.
+
+@end defvar
+@c @node REMCON
+@c @unnumberedsec phony
+@defun REMCON (tensor1,tensor2,...)
+removes all the contraction properties
+from the tensori.  REMCON(ALL) removes all contraction properties from
+all indexed objects.
+
+@end defun
+@c @node RICCICOM
+@c @unnumberedsec phony
+@defun RICCICOM (dis)
+Tensor package) This function first computes the
+covariant components LR[i,j] of the Ricci tensor (LR is a mnemonic for
+"lower Ricci").  Then the mixed Ricci tensor is computed using the
+contravariant metric tensor.  If the value of the argument to RICCICOM
+is TRUE, then these mixed components, RICCI[i,j] (the index i is
+covariant and the index j is contravariant), will be displayed
+directly.  Otherwise, RICCICOM(FALSE) will simply compute the entries
+of the array RICCI[i,j] without displaying the results.
+
+@end defun
+@c @node RINVARIANT
+@c @unnumberedsec phony
+@defun RINVARIANT ()
+Tensor package) forms the invariant obtained by
+contracting the tensors
+@example
+R[i,j,k,l]*UR[i,j,k,l].
+@end example
+
+This object is not
+
+automatically simplified since it can be very large.
+
+@end defun
+@c @node SCURVATURE
+@c @unnumberedsec phony
+@defun SCURVATURE ()
+returns the scalar curvature (obtained by contracting
+the Ricci tensor) of the Riemannian manifold with the given metric.
+
+@end defun
+@c @node SETUP
+@c @unnumberedsec phony
+@defun SETUP ()
+this has been renamed to TSETUP();  Sets up a metric for
+Tensor calculations.
+
+@end defun
+@c @node WEYL
+@c @unnumberedsec phony
+@defun WEYL (dis)
+computes the Weyl conformal tensor.  If the argument dis is
+TRUE, the non-zero components W[I,J,K,L] will be displayed to the
+user.  Otherwise, these components will simply be computed and stored.
+If the switch RATWEYL is set to TRUE, then the components will be
+rationally simplified; if FACRAT is TRUE then the results will be
+factored as well.
+
+@end defun

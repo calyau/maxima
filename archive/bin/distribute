@@ -1,0 +1,17 @@
+#!/bin/sh
+NAME="maxima-`cat majvers`.`cat minvers`"
+DIR=`basename ${PWD}`
+(cd .. ; rm -f ${NAME} ; ln -s ${DIR} ${NAME})
+FTPDIR="/usr2/ftp/pub/"
+if [ $# -eq 1 ] ; then FILE=$1 ;else FILE="${FTPDIR}/${NAME}.tgz" ;fi
+cd ..
+tar cvf - `./${DIR}/bin/maxima-files ${NAME} ${DIR}`  | gzip -9 -c > ${FILE}
+if [ $# -eq 1 ] ; then true
+else
+cp /usr2/maxima/src/ChangeLog /usr2/ftp/pub/maxima-ChangeLog
+cd /usr2/ftp/pub 
+rm -rf ${FILE}-split
+/usr/local/bin/split ${NAME}
+(cd ${FILE}-split ; sum *split* > CHECKSUMS.BSD )
+fi
+

@@ -1,0 +1,19 @@
+
+
+POLYSOLVE - a program for finding the roots of polynomials.
+
+For information on how to use this program run the batch file
+SHARE2;POLSOL DEMO (i.e. in a MACSYMA enter the C-line
+
+BATCH(POLSOL,DEMO,DSK,SHARE2)$
+
+or use DEMO instead).
+
+To access the package use
+
+LOADFILE(POLSOL,>,DSK,SHARE2)$
+
+FASL, LISP and COMPILEd versions will (should?) be
+available soon(er or later).
+
+

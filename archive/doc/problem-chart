@@ -1,0 +1,60 @@
+
+
+			 MAXIMA Problem Suite
+			   by Bill Schelter
+
+We have collected a number of test problems for MAXIMA, and include
+below some information on timings in various lisps.  The files we used
+are in the maxima/doc directory of my standard distribution of MAXIMA.
+These problems are in the files rtest*.mac.  Files rtest1.mac through
+rtest13s.mac contain a total of 808 problems.
+
+In the following reference to tests [n,m] mean tests rtest`n'.mac
+through rtest`m'.mac inclusive.  The following times were obtained on
+a Sun 280 (rascal.ics.utexas.edu).
+
+I used MAXIMA version 4.71, AKCL 1.34, and LUCID 2.1.
+
+TESTS         AKCL   LUCID    EXPLORER I      
+[1,8]	     157.55  199.66        
+[9,13s]      103.00  138.01        
+[1,13s]      278.63  388.14    511.1
+
+4 Users(cpu) 324.86  500.60
+4 Users(tot)1478.64  2318.49  
+There were no errors.
+
+Tests were run with the output directed to a file.  The tests
+represent a wide spectrum of problems for MAXIMA, and are the standard
+verification suite, which I use after making changes to the underlying
+lisp or to the MAXIMA files, to help determine correctness.  The files
+consist of alternating problem, and answer, with the result of the
+problem being compared against the answer.
+
+In neither lisp did I use the floating point chip.  This is because the
+saved image is often used on machines without such a chip.  Generally
+the LUCID floating point calculations were single float and the AKCL
+ones double float.   I don't believe however that the tests are
+very floating point intensive.
+
+The 4 Users line is the Cpu time for the same program but running in 4
+processes simultaneously.  The AKCL probably degraded less from the
+single user time (16% as opposed to 29% for Lucid), because a large
+amount of the maxima image is shared between processes.
+
+
+The complete list of files is 
+ '("rtest1" "rtest1a" "rtest2" "rtest3" "rtest4" "rtest5"
+   "rtest6" "rtest6a" "rtest6b" "rtest7" "rtest8" "rtest9"
+   "rtest9a" "rtest10" "rtest11" "rtest12" "rtest13" "rtest13s")
+
+It is still the experience of the author, that lisp machines do show
+important gains on very large problems, much larger than those done
+here.
+
+
+They are included in /usr2/ftp/pub/maxima-xx.tar.Z on rascal.
+
+
+
+

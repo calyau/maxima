@@ -1,0 +1,19 @@
+/*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
+/***************************************************************************
+***                                                                    *****
+***     Copyright (c) 1984 by William Schelter,University of Texas     *****
+***     All rights reserved                                            *****
+***************************************************************************/
+
+
+
+
+INTEGRATE(X^(5/4)/(X+1)^(5/2),X,0,INF);
+BETA(9/4,1/4);
+GRADEF(Q(X),SIN(X^2));
+Q(X);
+DIFF(LOG(Q(R(X))),X);
+'DIFF(R(X),X,1)*SIN(R(X)^2)/Q(R(X));
+INTEGRATE(%,X);
+LOG(Q(R(X)));
+

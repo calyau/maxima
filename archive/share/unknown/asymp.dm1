@@ -1,0 +1,24 @@
+/*-*-Macsyma-*-*/
+
+load_package(asymp,"adk\;asymp fasl")$
+
+showtime:true$
+
+graph7:diagram(line(a,b,l1,m),line(b,c,l2,m),line(c,d,l3,m),
+	line(d,a,l4,m),line(b,e,l5,m),line(e,d,l6,m),extline(a,el1,p),
+	extline(c,el2,-p+q),extline(e,el3,-q))$
+
+bound(graph7,[[m,q],p,inf]);
+
+graph8:diagram(line(a,b,l1,m),line(b,c,l2,m),line(c,d,l3,m),
+	line(d,a,l4,m),line(b,e,l5,m),line (e,f,l6,m),line(f,d,l7,m),
+	extline(a,el1,p),extline(c,el2,-p+q+r),extline(e,el3,-q),
+	extline(f,el4,-r))$
+
+bound(graph8,[[m,q],p,inf]);
+
+graph9:diagram(line(a,b,l1,mm),line(b,c,l2,mu),line(c,d,l3,m),
+	line(d,a,l4,m),line(b,e,l5,m),line(e,d,l6,m),extline(a,el1,p),
+	extline(c,el2,-p+q),extline(e,el3,-q))$
+
+bound(graph9,[[m,q,p],mu,mm,inf]);

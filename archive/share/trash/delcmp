@@ -1,0 +1,39 @@
+The following is a list of the .vas and .unv files deleted
+rascal% ls *.vas
+  32 bessel.vas	  21 eigen.vas	  23 functs.vas	  51 ode2.vas	  64 vect.vas
+   7 desoln.vas	  10 fileop.vas	   5 invert.vas	  20 plot.vas
+rascal% rm *.vas
+rascal% ls *.unv
+   2 bessel.unv	   2 eigen.unv	   2 functs.unv
+   1 desoln.unv	   2 fileop.unv	   4 vect.unv
+rascal% rm *.unv
+rascal% cd ../share1
+rascal% ls *.unv *.vas
+   2 cfortr.unv		   3 fourie.unv		   1 rducon.unv
+  23 cfortr.vas		  36 fourie.vas		  11 rducon.vas
+   1 dblint.unv		   1 invert.unv		   1 rncomb.unv
+   5 dblint.vas		   5 invert.vas		   9 rncomb.vas
+   1 determ.unv		   2 kach.unv		   1 scifac.unv
+   9 determ.vas		  15 kach.vas		  14 scifac.vas
+   1 elim.unv		   1 nchrpl.unv		   2 seqopt.unv
+   6 elim.vas		   5 nchrpl.vas		  30 seqopt.vas
+   1 expense.unv	   2 qq.unv
+   8 expense.vas	  11 qq.vas
+rascal% rm *.unv *.vas
+rascal% cd ../share2
+rascal% ls *.unv *.vas
+rascal% ls *.unv *.vas
+   1 diffeq.unv	   8 gendif.vas	   1 lrats.unv	   7 pfaff.vas	   1 sqdnst.unv
+  13 diffeq.vas	   1 kn.unv	   8 lrats.vas	   1 revert.unv	   5 sqdnst.vas
+   2 differ.unv	   9 kn.vas	   2 optvar.unv	   9 revert.vas
+  20 differ.vas	   1 linde1.unv	  17 optvar.vas	   1 simpsn.unv
+   1 gendif.unv	  11 linde1.vas	   1 pfaff.unv	   9 simpsn.vas
+rascal% cd ../sharem
+rascal% ls
+   1 autolo.unv		   2 defstm.unv		   1 keyarg.unv
+   4 autolo.vas		  25 defstm.vas		   9 keyarg.vas
+   1 basic.unv		   1 defstmrun.unv	   1 packg.unv
+   7 basic.vas		   6 defstmrun.vas	   7 packg.vas
+   1 contrl.unv		   1 fexpr.unv
+   7 contrl.vas		   9 fexpr.vas
+rascal% 

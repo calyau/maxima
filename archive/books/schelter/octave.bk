@@ -1,0 +1,75 @@
+
+((face (octave-eval 950 1106 1109 1343 1350 1506 1512 1675 1678 1956)) (book-command-arg))
+            Sample Calls to Octave
+
+   If y is a function of t and satisfies the following differential
+equation
+     y'' + .1* y' + sin(y) = 0;
+
+If we use x(1) to denote a variable 'x' with subscript 1,
+then this may be coded in octave as a first order matrix equation:
+
+     y  = x(1),
+     y' = x(2)
+
+so eliminating y altogether:
+
+    x(1)' = x(2)
+    x(2)' = -sin(x(1) - .1 * x(2)
+
+In Octave we define a vector function 'pend' which encodes this, and
+then call the 'lsode' linear solver.  The t is ranging from values 0
+to 40, with 200 steps.  Then we plot the solution vector [x(1),x(2)]
+as two plots against t.  The [0.1,0.2] correspond to an initial value
+of X.  The initial value is at the first value of t (in this case 0)
+of the range requested.
+
+The plot will have 2 curves in this case, and the 'line 1' corresponds
+to x(1), the 'line 2' corresponds to x(2).   Remember x = [y,y'] so
+that 'line 1' correpsonds to y and line 2 to y'.
+
+  function xdot = pend(x,t)
+  xdot(1) = x(2); xdot(2) = -sin( x(1)) - 0.1*x(2); end
+  sol=lsode( "pend",[0.1, 0.2], t = linspace(0,40, 200));
+  plot( t, sol);
+
+
+function xdot = bruss(x,t)
+xdot(1) = 0;
+xdot(2) = 0;
+xdot(3) = x(1) - (x(2) + 1) * x(3) + x(3)*x(3)*x(4);
+xdot(4) = x(2) - x(3)*x(3)*x(4);
+endfunction
+  sol=lsode( "bruss",[0.5, 1.5,0.5,1.5], t = linspace(0,40, 200));
+  plot( t, sol);
+
+
+
+
+  function xdot = pend(x,t)
+  xdot(1) = x(2); xdot(2) = -sin( x(1)) - 0.1*x(2); end
+  sol=lsode( "pend",[0.1, 0.2], t = linspace(0,20, 200));
+  plot( t, sol);
+
+
+
+  function xdot = pend(x,t)
+  xdot(1) = x(2);
+  xdot(2) = -sin( x(1)) - 0.4*x(2)**2;
+  end
+  sol=lsode( "pend",[0.1, 0.2], t = linspace(0,20, 200));
+  plot( t, sol);
+
+
+function xdot = pend(x,t)
+  xdot(1) = .1*x(1) +.2* x(2)+.2*x(3);
+  xdot(2) = .1*x(1) + 2*x(2) + .3*x(3);
+  xdot(3) = .22*x(1)+x(2) + x(3);
+  end
+  sol=lsode( "pend",[1.0, 2.0,3.0], t = linspace(0.0,3.0, 200));
+/*  plot( t, sol(:,1))  plot just solution 1 */
+  plot( t, sol);
+
+
+;
+

@@ -1,0 +1,162 @@
+
+/* *****  This package may be broken.  Please use the VECT 
+package on the SHARE directory. - JPG 6/5/78  ***** */
+
+vector:list$
+FOR f IN ["grad","div","curl","laplacian","curlgrad","graddiv",
+    "divcurl","curlcurl"] DO PREFIX(f,112,EXPR,EXPR)$
+INFIX("cross",112,112,EXPR,EXPR,EXPR)$
+INFIX("dotdel",108,108,EXPR,EXPR,EXPR)$
+NOFIX("christoffel",EXPR)$
+
+dimension():=IF dimension=3 THEN [1,2,3] ELSE [1,2]$
+
+type(arg):=IF list=  /* check required form of answer */
+    (IF LISTP(arg) THEN  /* operation performed on a vector */
+	(FOR element IN arg DO  /* check each argument */
+	    IF LISTP(element)  /* an argument is a list */
+		THEN RETURN(list))  /* return a list */
+	ELSE vector)  /* operation performed on a scalar */
+    THEN result  /* return a list */
+    ELSE APPLY('MATRIX,[result])  /* return a matrix */$
+
+coordsystem&&  coordsystem(sys):=
+    (IF sys=rectangular THEN
+	(coodvar:[x,y],
+	scalefactor:[1,1])
+    ELSE IF sys=polar THEN
+	(coordvar:[r,th],
+	scalefactor:[1,r])
+    ELSE IF sys=cartesian THEN
+	(coordvar:[x,y,z],
+	scalefactor:[1,1,1])
+    ELSE IF sys=cylindrical THEN
+	(coordvar:[r,ph,z],
+	scalefactor:[1,r,1])
+    ELSE IF sys=spherical THEN
+	(coordvar:[r,th,ph],
+	scalefactor:[1,r,r*SIN(th)])
+    ELSE (coordvar:READ("coordinate variables"),
+	scalefactor:READ("scale factors")),
+    dimension:LENGTH(coordvar),
+    coordsystem:sys)$
+
+coordsystem(cartesian)$
+
+cross&&  (a cross b) := IF dimension=3 THEN BLOCK([result],
+	result:[a[2]*b[3]-a[3]*b[2],
+	    a[3]*b[1]-a[1]*b[3],
+	    a[1]*b[2]-a[2]*b[1]],
+	type([a,b]))
+    ELSE  /* 2 dimensional case */
+	IF NONSCALARP(a) THEN
+	(IF NONSCALARP(b) THEN  /* vector x vector */
+	    a[1]*b[2]-a[2]*b[1]
+	ELSE BLOCK([result],  /* vector x scalar */
+	    result:[a[2]*b,
+		-a[1]*b],
+	    type([a])))
+    ELSE BLOCK([result],  /* scalar x vector */
+	result:[-a*b[2],
+	    a*b[1]],
+	type([b]))$
+
+grad&&  (grad s) := BLOCK([result],
+    result:MAP(LAMBDA([i],
+	DIFF(s,coordvar[i])/scalefactor[i]),
+	dimension()),
+    type(vector))$
+
+div&&  (div v) := IF dimension=3 THEN
+	(DIFF(scalefactor[2]*scalefactor[3]*v[1],coordvar[1])+
+	DIFF(scalefactor[3]*scalefactor[1]*v[2],coordvar[2])+
+	DIFF(scalefactor[1]*scalefactor[2]*v[3],coordvar[3]))
+	/scalefactor[1]/scalefactor[2]/scalefactor[3]
+    ELSE  /* 2 dimensional case */
+	(DIFF(scalefactor[2]*v[1],coordvar[1])
+	+DIFF(scalefactor[1]*v[2],coordvar[2]))
+	/scalefactor[1]/scalefactor[2]$
+
+curl&&  (curl a) := IF dimension=3 THEN BLOCK([RESULT],
+	result:[(DIFF(scalefactor[3]*a[3],coordvar[2])
+		-DIFF(scalefactor[2]*a[2],coordvar[3]))
+		/scalefactor[2]/scalefactor[3],
+	    (DIFF(scalefactor[1]*a[1],coordvar[3])
+		-DIFF(scalefactor[3]*a[3],coordvar[1]))
+		/scalefactor[3]/scalefactor[1],
+	    (DIFF(scalefactor[2]*a[2],coordvar[1])
+		-DIFF(scalefactor[1]*a[1],coordvar[2]))
+		/scalefactor[1]/scalefactor[2]],
+	type([a]))
+    ELSE  /* 2 dimensional case */
+	IF NONSCALARP(a) THEN BLOCK([result],
+	    result:(DIFF(scalefactor[2]*a[2],coordvar[1])
+		-DIFF(scalefactor[1]*a[1],coordvar[2]))
+		/scalefactor[1]/scalefactor[2],
+	    type([a]))
+	ELSE BLOCK([result],  /* scalar argument */
+	    result:[DIFF(a,coordvar[2])/scalefactor[2],
+		-DIFF(a,coordvar[1])/scalefactor[1]],
+	    type(vector))$
+
+laplacian&&  (laplacian a) := IF NONSCALARP(a) THEN grad div a -curl curl a
+    ELSE IF dimension=3 THEN
+	(DIFF(DIFF(a,coordvar[1])*scalefactor[2]
+	*scalefactor[3]/scalefactor[1],coordvar[1])
+	+DIFF(DIFF(a,coordvar[2])*scalefactor[3]
+	*scalefactor[1]/scalefactor[2],coordvar[2])
+	+DIFF(DIFF(a,coordvar[3])*scalefactor[1]
+	*scalefactor[2]/scalefactor[3],coordvar[3]))
+	/scalefactor[1]/scalefactor[2]/scalefactor[3]
+    ELSE  /* 2 dimensional case */
+	(DIFF(DIFF(a,coordvar[1])*scalefactor[2]
+	/scalefactor[1],coordvar[1])
+	+DIFF(DIFF(a,coordvar[2])*scalefactor[1]
+	/scalefactor[2],coordvar[2]))/scalefactor[1]/scalefactor[2]$
+
+dotdel&&  (v dotdel b) := IF  NONSCALARP(b) THEN BLOCK([result],
+	result:IF LAST(PROPERTIES(christsym))=DECLARED\ ARRAY
+	    THEN  /* use Christoffel symbols */
+	    MAP(LAMBDA([j],
+		SUM((DIFF(b[i]*scalefactor[j],
+		    coordvar[i])-SUM(b[k]*scalefactor[k]
+		    *christsym[k,j,i],k,1,dimension))
+		    *v[i]/scalefactor[i],i,1,dimension)
+		    /scalefactor[j]),dimension())
+	ELSE  /* vector b, no Christoffel symbols */
+	    MAP(LAMBDA[j],
+		SUM(DIFF(b[i]*scalefactor[j],coordvar[i])
+		    *v[i]/scalefactor[i],i,1,dimension)
+		    /scalefactor[j],dimension()),
+	type([v,b]))
+    ELSE BLOCK([result],  /* scalar b case */
+	result:IF LAST(PROPERTIES(christsym))=DECLARED\ ARRAY
+	    THEN /* use Christoffel symbols */
+	    SUM((DIFF(b,coordvar[i])-b*christsym[1,1,i])
+		*v[i]/scalefactor[i],i,1,dimension)
+	ELSE /* no Christoffel symbols */
+	    SUM(DIFF(b,coordvar[i])*v[i]
+		/scalefactor[i],i,1,dimension),
+	type([v]))$
+
+christoffel&&  christoffel := (ARRAY(christsym,3,3,3),
+    christsym[i,j,k]:=0,
+    FOR i THRU 3 DO
+	(christsym[i,i,i]:DIFF(scalefactor[i],coordvar[i])
+	    /scalefactor[i],
+	FOR j THRU 3 DO IF j#i THEN
+	    (christsym[i,j,i]:christsym[i,i,j]:DIFF(scalefactor[i],
+		coordvar[j])/scalefactor[i],
+	    christsym[j,i,i]:-DIFF(scalefactor[i],
+		coordvar[j])*scalefactor[i]/scalefactor[j]^2)))$
+
+(curlgrad s) := 0$
+
+(graddiv v) := BLOCK([result],
+    result:div v,
+    result:MAP(LAMBDA([i],
+	DIFF(result,coordvar[i])/scalefactor[i]),
+	dimension()),
+    type(vector))$
+
+(divcurl v) := 0$

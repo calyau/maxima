@@ -1,0 +1,39 @@
+Description of "PRRID"
+
+      The file share;prrid fasl contains the code, written by Richard
+Fateman, which implements the Collins-Loos "Polynomial Real Root
+Isolation by Differentiation" algorithm, as described in the
+Collins-Loos paper, Proc. of the 1976 ACM Symp.  on Symbolic and
+Algebraic Computation.  The subsequent improvements, due to Fateman,
+and described in his paper in the Proc. of the 1977 MACSYMA Users'
+Conference, are also included.  Three versions, PRRID1, PRRID2, and
+PRRID3 are included.  The first of these is the original algorithm,
+transcribed from "ALDES", and the second two use combinations of exact
+and floating point arithmetic to achieve the same results.  PRRID3
+appears to be the fastest for most cases.
+
+
+Input: a univariate polynomial  (preferably in rational canonical form).
+
+Output: a list of the form [ I1, M1, I2, m2, ... In, Mn] in
+which each Ij is itself a list of two items, each a rational number, [Aj, Bj].
+There are exactly Mj real zeros of the input polynomial in the half-open
+interval (Aj, Bj].
+      These programs are potentially much faster than
+the Sturm sequence calculation used by realroots (the system command),
+for polynomials with fewer real zeros than the maximum possible.  They are slower
+for some polynomials e.g.  (x-1)*(x-2)* ...*(x-20).
+    Realroots goes a bit further in that it will refine the isolating intervals
+to some desired narrowness.  This is not done by the PRRID programs,
+but could be easily done.  A Newton iteration guaranteed to converge, can
+be used to refine the zeros, starting from points based on the zeros of the second
+derivative of the input.
+
+
+    A faster program has been implemented by Bruce Char, which, however, does not
+have the same precise characteristics.  Using the "allroots" command,
+approximate zeros are located, and then disks in the complex plane are computed
+which include the actual positions of the zeros.  This is much faster in
+finding isolating disks, and works in the complex plane.  Unfortunately, the disks
+may intersect (in which case the program says so). 
+

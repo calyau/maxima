@@ -1,0 +1,368 @@
+@node Trigonometric, Equations, Numerical, Top
+@chapter Trigonometric
+@menu
+* Introduction to Trigonometric::  
+* Definitions for Trigonometric::  
+@end menu
+
+@node Introduction to Trigonometric, Definitions for Trigonometric, Trigonometric, Trigonometric
+@section Introduction to Trigonometric
+ - MACSYMA has many Trig functions defined.  Not all Trig
+identities are programmed, but it is possible for the user to add many
+of them using the pattern matching capabilities of the system.  The
+Trig functions defined in MACSYMA are: ACOS, ACOSH, ACOT, ACOTH, ACSC,
+ACSCH, ASEC, ASECH, ASIN, ASINH, ATAN, ATANH, COS, COSH, COT, COTH,
+CSC, CSCH, SEC, SECH, SIN, SINH, TAN, and TANH.  There are a number of
+commands especially for handling Trig functions, see TRIGEXPAND,
+TRIGREDUCE, and the switch TRIGSIGN.  Two SHARE packages extend the
+simplification rules built into MACSYMA, NTRIG and ATRIG1.  Do
+DESCRIBE(cmd) for details.
+
+@c end concepts Trigonometric
+@node Definitions for Trigonometric,  , Introduction to Trigonometric, Trigonometric
+@section Definitions for Trigonometric
+@c end concepts Trigonometric
+
+@defun ACOS
+ - Arc Cosine
+
+@end defun
+@c @node ACOSH
+@c @unnumberedsec phony
+@defun ACOSH
+ - Hyperbolic Arc Cosine
+
+@end defun
+@c @node ACOT
+@c @unnumberedsec phony
+@defun ACOT
+ - Arc Cotangent
+
+@end defun
+@c @node ACOTH
+@c @unnumberedsec phony
+@defun ACOTH
+ - Hyperbolic Arc Cotangent
+
+@end defun
+@c @node ACSC
+@c @unnumberedsec phony
+@defun ACSC
+ - Arc Cosecant
+
+@end defun
+@c @node ACSCH
+@c @unnumberedsec phony
+@defun ACSCH
+ - Hyperbolic Arc Cosecant
+
+@end defun
+@c @node ASEC
+@c @unnumberedsec phony
+@defun ASEC
+ - Arc Secant
+
+@end defun
+@c @node ASECH
+@c @unnumberedsec phony
+@defun ASECH
+ - Hyperbolic Arc Secant
+
+@end defun
+@c @node ASIN
+@c @unnumberedsec phony
+@defun ASIN
+ - Arc Sine
+
+@end defun
+@c @node ASINH
+@c @unnumberedsec phony
+@defun ASINH
+ - Hyperbolic Arc Sine
+
+@end defun
+@c @node ATAN
+@c @unnumberedsec phony
+@defun ATAN
+ - Arc Tangent
+
+@end defun
+@c @node ATAN2
+@c @unnumberedsec phony
+@defun ATAN2 (Y,X)
+yields the value of ATAN(Y/X) in the interval -%PI to
+%PI.
+
+@end defun
+@c @node ATANH
+@c @unnumberedsec phony
+@defun ATANH
+ - Hyperbolic Arc Tangent
+
+@end defun
+@c @node ATRIG1
+@c @unnumberedsec phony
+@defun ATRIG1
+ - SHARE1;ATRIG1 FASL contains several additional
+simplification rules for inverse trig functions.  Together with rules
+already known to Macsyma, the following angles are fully implemented:
+0, %PI/6, %PI/4, %PI/3, and %PI/2.  Corresponding angles in the other
+three quadrants are also available.  Do LOAD(ATRIG1); to use them.
+
+@end defun
+@c @node COS
+@c @unnumberedsec phony
+@defun COS
+ - Cosine
+
+@end defun
+@c @node COSH
+@c @unnumberedsec phony
+@defun COSH
+ - Hyperbolic Cosine
+
+@end defun
+@c @node COT
+@c @unnumberedsec phony
+@defun COT
+ - Cotangent
+
+@end defun
+@c @node COTH
+@c @unnumberedsec phony
+@defun COTH
+ - Hyperbolic Cotangent
+
+@end defun
+@c @node CSC
+@c @unnumberedsec phony
+@defun CSC
+ - Cosecant
+
+@end defun
+@c @node CSCH
+@c @unnumberedsec phony
+@defun CSCH
+ - Hyperbolic Cosecant
+
+@end defun
+@c @node HALFANGLES
+@c @unnumberedsec phony
+@defvar HALFANGLES
+ default: [FALSE] - if TRUE causes half-angles to be
+simplified away.
+
+@end defvar
+@c @node SEC
+@c @unnumberedsec phony
+@defun SEC
+ - Secant
+
+@end defun
+@c @node SECH
+@c @unnumberedsec phony
+@defun SECH
+ - Hyperbolic Secant
+
+@end defun
+@c @node SIN
+@c @unnumberedsec phony
+@defun SIN
+ - Sine
+
+@end defun
+@c @node SINH
+@c @unnumberedsec phony
+@defun SINH
+ - Hyperbolic Sine
+
+@end defun
+@c @node TAN
+@c @unnumberedsec phony
+@defun TAN
+ - Tangent
+
+@end defun
+@c @node TANH
+@c @unnumberedsec phony
+@defun TANH
+ - Hyperbolic Tangent
+
+@end defun
+@c @node TRIGEXPAND
+@c @unnumberedsec phony
+@defun TRIGEXPAND (exp)
+expands trigonometric and hyperbolic functions of
+sums of angles and of multiple angles occurring in exp.  For best
+results, exp should be expanded.  To enhance user control of
+simplification, this function expands only one level at a time,
+expanding sums of angles or multiple angles.  To obtain full expansion
+into sines and cosines immediately, set the switch TRIGEXPAND:TRUE.
+TRIGEXPAND default: [FALSE] - if TRUE causes expansion of all
+expressions containing SINs and COSs occurring subsequently.
+HALFANGLES[FALSE] - if TRUE causes half-angles to be simplified away.
+TRIGEXPANDPLUS[TRUE] - controls the "sum" rule for TRIGEXPAND,
+expansion of sums (e.g. SIN(X+Y)) will take place only if
+TRIGEXPANDPLUS is TRUE.
+TRIGEXPANDTIMES[TRUE] - controls the "product" rule for TRIGEXPAND,
+expansion of products (e.g. SIN(2*X)) will take place only if
+TRIGEXPANDTIMES is TRUE.
+@example
+(C1) X+SIN(3*X)/SIN(X),TRIGEXPAND=TRUE,EXPAND;
+                              2           2
+(D1)                     - SIN (X) + 3 COS (X) + X
+(C2) TRIGEXPAND(SIN(10*X+Y));
+(D2)               COS(10 X) SIN(Y) + SIN(10 X) COS(Y)
+
+
+@end example
+@end defun
+@c @node TRIGEXPANDPLUS
+@c @unnumberedsec phony
+@defvar TRIGEXPANDPLUS
+ default: [TRUE] - controls the "sum" rule for
+TRIGEXPAND.  Thus, when the TRIGEXPAND command is used or the
+TRIGEXPAND switch set to TRUE, expansion of sums (e.g. SIN(X+Y)) will
+take place only if TRIGEXPANDPLUS is TRUE.
+
+@end defvar
+@c @node TRIGEXPANDTIMES
+@c @unnumberedsec phony
+@defvar TRIGEXPANDTIMES
+ default: [TRUE] - controls the "product" rule for
+TRIGEXPAND.  Thus, when the TRIGEXPAND command is used or the
+TRIGEXPAND switch set to TRUE, expansion of products (e.g. SIN(2*X))
+will take place only if TRIGEXPANDTIMES is TRUE.
+
+@end defvar
+@c @node TRIGINVERSES
+@c @unnumberedsec phony
+@defvar TRIGINVERSES
+ default: [ALL] - controls the simplification of the
+composition of trig and hyperbolic functions with their inverse
+functions: If ALL, both e.g. ATAN(TAN(X)) and TAN(ATAN(X)) simplify to
+X.  If TRUE, the arcfunction(function(x)) simplification is turned
+off.  If FALSE, both the arcfun(fun(x)) and fun(arcfun(x))
+simplifications are turned off.
+
+@end defvar
+@c @node TRIGREDUCE
+@c @unnumberedsec phony
+@defun TRIGREDUCE (exp, var)
+combines products and powers of trigonometric
+and hyperbolic SINs and COSs of var into those of multiples of var.
+It also tries to eliminate these functions when they occur in
+denominators.  If var is omitted then all variables in exp are used.
+Also see the POISSIMP function (6.6).
+@example
+(C4) TRIGREDUCE(-SIN(X)^2+3*COS(X)^2+X);
+(D4)                        2 COS(2 X) + X + 1
+The trigonometric simplification routines will use declared
+information in some simple cases.  Declarations about variables are
+used as follows, e.g.
+(C5) DECLARE(J, INTEGER, E, EVEN, O, ODD)$
+(C6) SIN(X + (E + 1/2)*%PI)$
+(D6)                      COS(X)
+(C7) SIN(X + (O + 1/2) %PI);
+(D7)                     - COS(X)
+
+
+@end example
+@end defun
+@c @node TRIGSIGN
+@c @unnumberedsec phony
+@defvar TRIGSIGN
+ default: [TRUE] - if TRUE permits simplification of negative
+arguments to trigonometric functions. E.g., SIN(-X) will become
+-SIN(X) only if TRIGSIGN is TRUE.
+
+@end defvar
+@c @node TRIGSIMP
+@c @unnumberedsec phony
+@defun TRIGSIMP (expr)
+employs the identities sin(x)^2 + cos(x)^2 = 1 and
+cosh(x)^2 - sinh(x)^2 = 1 to simplify expressions containing tan, sec,
+etc. to sin, cos, sinh, cosh so that further simplification may be
+obtained by using TRIGREDUCE on the result.  Some examples may be seen
+by doing DEMO("trgsmp.dem"); .  See also the TRIGSUM function.
+
+@end defun
+@c @node TRIGRAT
+@c @unnumberedsec phony
+@defun TRIGRAT (trigexp)
+gives a canonical simplifyed quasilinear form of a
+trigonometrical expression; trigexp is a rational fraction of several sin,
+cos or tan, the arguments of them are linear forms in some variables (or
+kernels) and %pi/n (n integer) with integer coefficients. The result is a
+simplifyed fraction with numerator and denominator linear in sin and cos.
+Thus TRIGRAT linearize always when it is possible.(written by D. Lazard).
+
+@example
+(c1) trigrat(sin(3*a)/sin(a+%pi/3));
+
+(d1) 		        sqrt(3) sin(2 a) + cos(2 a) - 1
+@end example
+
+Here is another example (for which the function was intended); see
+[Davenport, Siret, Tournier, Calcul Formel, Masson (or in english,
+Addison-Wesley), section 1.5.5, Morley theorem). Timings are on VAX 780.
+
+@example
+(c4)   c:%pi/3-a-b;
+
+					   %pi
+(d4) 				 - b - a + ---
+					    3
+
+(c5)   bc:sin(a)*sin(3*c)/sin(a+b);
+
+			     sin(a) sin(3 b + 3 a)
+(d5) 			     ---------------------
+				  sin(b + a)
+
+(c6)   ba:bc,c=a,a=c$
+
+(c7)   ac2:ba^2+bc^2-2*bc*ba*cos(b);
+
+	2       2
+     sin (a) sin (3 b + 3 a)
+(d7) -----------------------
+	      2
+	   sin (b + a)
+
+					%pi
+   2 sin(a) sin(3 a) cos(b) sin(b + a - ---) sin(3 b + 3 a)
+					 3
+ - --------------------------------------------------------
+			   %pi
+		   sin(a - ---) sin(b + a)
+			    3
+
+      2	        2	  %pi
+   sin (3 a) sin (b + a - ---)
+			   3
+ + ---------------------------
+	     2	   %pi
+	  sin (a - ---)
+		    3
+
+(c9)   trigrat(ac2);
+Totaltime= 65866 msec.  GCtime= 7716 msec.
+
+(d9)
+- (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
+
+- 2 sqrt(3) sin(4 b + 2 a)
+
++ 2 cos(4 b + 2 a) - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
+
++ 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
+
++ sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
+
++ sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
+
+   - 9)/4
+
+@end example
+@end defun

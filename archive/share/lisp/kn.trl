@@ -1,0 +1,64 @@
+;;; -*- Mode: Lisp; Package: Macsyma -*-
+;;; Translated code for DSK:JFJ;KN 1
+;;; Written on "Wednesday, Sep 1, 1982  7:03pm", from MACSYMA 301
+;;; Translated for JFJ
+
+;;; TRANSL-AUTOLOAD version by GJC on TUESDAY, June 8, 1982, at 14:23:32
+;;; TRHOOK version 5 TRMODE version 73 DCL version 5/29/82 8:19:42
+;;; MCOMPI version 145 TRDATA version 68 ACALL version 68
+;;; FCALL version 40 TRANSQ version NIL MDEFUN version 52
+;;; MTAGS version 18 TRPRED version 6 TROPER version 15
+;;; TRANSF version 11 TRANS5 version 25 TRANS4 version 27
+;;; TRANS3 version 46 TRANS2 version 39 TRANS1 version 107
+;;; TRUTIL version 26 TRANSL version 1157 TRANSS version 80
+(includef (cond ((status feature ITS) '|DSK:LIBMAX;TPRELU >|)
+                ((status feature Multics) '|translate|)
+                ((status feature Unix) '|libmax/tprelu.l|)
+                (t (error '|Unknown system, see GJC@MIT-MC|))))
+
+(eval-when (compile eval)
+  (or (status feature lispm)
+      (setq *infile-name-key*
+               ((lambda (file-name)
+                           ;; temp crock for multics.
+                          (cond ((eq (typep file-name) 'list)
+                                 (namestring file-name))
+                                (t file-name)))
+                  (truename infile)))))
+
+(eval-when (compile)
+   (setq $tr_semicompile 'NIL)
+   (setq forms-to-compile-queue ()))
+
+(comment |DSK:JFJ;KN 1|)
+
+(DEFMTRFUN-EXTERNAL ($KN $FLOAT MDEFINE NIL NIL))
+(DEFMTRFUN-EXTERNAL ($KNN $FLOAT MDEFINE NIL NIL))
+(DEFMTRFUN-EXTERNAL ($K0 $ANY MDEFINE NIL NIL))
+(DEFMTRFUN-EXTERNAL ($K1 $ANY MDEFINE NIL NIL))
+(DEFMTRFUN-EXTERNAL ($KNDOT $FLOAT MDEFINE NIL NIL))
+
+
+(DEFPROP $KN T TRANSLATED)
+(ADD2LNC (QUOTE $KN) $PROPS)
+(DEFMTRFUN ($KN $FLOAT MDEFINE NIL NIL) ($X $N) NIL (PROGN NIL ((LAMBDA NIL NIL (APPLY (QUOTE $ARRAY) (LIST (QUOTE $KARRAY) (QUOTE $FLOAT) $N)) (MFUNCTION-CALL $KNN $X $N)))))
+
+(DEFPROP $KNN T TRANSLATED)
+(ADD2LNC (QUOTE $KNN) $PROPS)
+(DEFMTRFUN ($KNN $FLOAT MDEFINE NIL NIL) ($X $N) NIL (PROGN NIL ((LAMBDA NIL NIL (PROG NIL (COND ((= $N 0.) (RETURN ((LAMBDA NIL NIL (STORE ($KARRAY 0.) (MFUNCTION-CALL $K0 $X)) ($KARRAY 0.)))))) (COND ((= $N 1.) (RETURN ((LAMBDA NIL NIL (STORE ($KARRAY 1.) (MFUNCTION-CALL $K1 $X)) ($KARRAY 1.)))))) (STORE ($KARRAY $N) (+$ (*$ (//$ (*$ 2.0 (FLOAT (+ $N -1.))) $X) (MFUNCTION-CALL $KNN $X (+ $N -1.))) (MFUNCTION-CALL $KNN $X (+ $N -2.)))) (RETURN ($KARRAY $N)))))))
+
+(DEFPROP $K0 T TRANSLATED)
+(ADD2LNC (QUOTE $K0) $PROPS)
+(DEFMTRFUN ($K0 $ANY MDEFINE NIL NIL) ($X) NIL (PROGN NIL ((LAMBDA ($XHALF $TWOBYX) NIL NIL (COND ((NOT (> $X 2.0)) (SETQ $XHALF (*$ 0.5 $X)) (ADD* (*MMINUS (MUL* (LOG $XHALF) (SIMPLIFY ($I0 $X)))) -0.57721566 (*$ 0.4227842 (EXPT$ $XHALF 2.)) (*$ 0.23069756 (EXPT $XHALF 4.0)) (*$ 0.0348859 (EXPT $XHALF 6.0)) (*$ 2.62697998E-3 (EXPT $XHALF 8.0)) (*$ 1.075E-4 (EXPT $XHALF 10.0)) (*$ 7.40000004E-6 (EXPT $XHALF 12.0)))) (T (SETQ $TWOBYX (//$ 2.0 $X)) (*$ (//$ (*$ (SQRT $X) (EXP $X))) (+$ 1.25331414 (-$ (*$ 0.07832358 $TWOBYX)) (*$ 0.02189568 (EXPT$ $TWOBYX 2.)) (-$ (*$ 0.01062446 (EXPT $TWOBYX 3.0))) (*$ 5.87872005E-3 (EXPT $TWOBYX 4.0)) (-$ (*$ 2.5154E-3 (EXPT $TWOBYX 5.0))) (*$ 5.32079995E-4 (EXPT $TWOBYX 6.0))))))) 0.0 0.0)))
+
+(DEFPROP $K1 T TRANSLATED)
+(ADD2LNC (QUOTE $K1) $PROPS)
+(DEFMTRFUN ($K1 $ANY MDEFINE NIL NIL) ($X) NIL (PROGN NIL ((LAMBDA ($XHALF $TWOBYX) NIL NIL (COND ((NOT (> $X 2.0)) (SETQ $XHALF (*$ 0.5 $X)) (MUL* (//$ $X) (ADD* (MUL* $X (LOG $XHALF) (SIMPLIFY ($I1 $X))) 1. (*$ 0.15443144 (EXPT$ $XHALF 2.)) (-$ (*$ 0.67278579 (EXPT $XHALF 4.0))) (-$ (*$ 0.18156897 (EXPT $XHALF 6.0))) (-$ (*$ 0.01919402 (EXPT $XHALF 8.0))) (-$ (*$ 1.10404E-3 (EXPT $XHALF 10.0))) (-$ (*$ 4.686E-5 (EXPT $XHALF 12.0)))))) (T (SETQ $TWOBYX (//$ 2.0 $X)) (*$ (//$ (*$ (SQRT $X) (EXP $X))) (+$ 1.25331414 (*$ 0.23498619 $TWOBYX) (-$ (*$ 0.0365562 (EXPT$ $TWOBYX 2.))) (*$ 0.01504268 (EXPT $TWOBYX 3.0)) (-$ (*$ 7.80353004E-3 (EXPT $TWOBYX 4.0))) (*$ 3.25614E-3 (EXPT $TWOBYX 5.0)) (-$ (*$ 6.8245E-4 (EXPT $TWOBYX 6.0)))))))) 0.0 0.0)))
+
+(DEFPROP $KNDOT T TRANSLATED)
+(ADD2LNC (QUOTE $KNDOT) $PROPS)
+(DEFMTRFUN ($KNDOT $FLOAT MDEFINE NIL NIL) ($X $N) NIL (PROGN NIL (+$ (-$ (MFUNCTION-CALL $KN $X (+ $N -1.))) (-$ (*$ (//$ (FLOAT $N) $X) (MFUNCTION-CALL $KN $X $N))))))
+
+
+(compile-forms-to-compile-queue)
+

@@ -1,0 +1,196 @@
+;;;symbols and which should not appear in an eq form
+;(EVAL-WHEN (LOAD COMPILE EVAL)
+;  (DEFVAR USER:*SYMBOLS*	    
+;	  '(GLOBAL:flonum GLOBAL:'flonum GLOBAL:'list
+;			  GLOBAL:list GLOBAL:'string GLOBAL:string
+;			  GLOBAL:'atom GLOBAL:atom GLOBAL:'array
+;			  GLOBAL:array  GLOBAL:'fixnum GLOBAL:fixnum ))
+;  )
+;
+;;;symbols and which should not appear in an eq form
+;
+;compiler:
+;(defun check-non-keywords (form)
+;  (loop for v in user:*symbols* when (MACSYMA:appears-in form v)
+;	do (RETURN (warn () "~S appears in ~S  argument to ~S ; should you use the keyword form?"
+;	     v form (car form)))))
+;  
+;COMPILER:
+;(DEFUN check-arg-for-kw (arg)
+;  (cond ((atom arg)(COND ((memq arg user:*symbols*) arg)))
+;	(t
+;	 (selectq (car arg)
+;	   (MACSYMA:kw nil)
+;	   (quote (loop for v in ARG when (member v user:*symbols*)
+;			do (return v)))
+;	   (t (loop for v in  arg when (member v user:*symbols*)
+;		    do (return v)))))))
+;
+;compiler:
+;(defmacro make-obsolete (function reason)
+;  `(progn 'compile
+;	  (defprop ,function obsolete style-checker)
+;	  (defprop ,function ,(string-append "is an obsolete function; " reason) obsolete)))
+;
+
+
+
+;(eval-when (load)
+;(putprop 'global:EQUAL 'compiler:check-non-keywords 'compiler:style-checker)
+;(putprop 'global:eq 'compiler:check-non-keywords 'compiler:style-checker)
+;(putprop 'global:memq 'compiler:check-non-keywords 'compiler:style-checker)
+;(putprop 'global:member 'compiler:check-non-keywords 'compiler:style-checker)
+;(putprop 'global:typep 'compiler:check-non-keywords 'compiler:style-checker)
+;)
+
+(defun clear-keyword-check ()
+  (loop for v in '(eq equal memq zl-MEMBER ml-typep)	do (remprop v 'compiler:style-checker)))
+
+
+
+;;;replace '("#/a" . "#\a")...
+;'(("#/"" . "double-quote-char")
+;  ("#/;" . "semi-colon-char")
+;  ("#//" . "forward-slash-char")
+;  ("#/\" . "back-slash-char"))
+
+;replacements for multiple query replace from buffer
+;"#\;"  "semi-colon-char"
+;"#\\"  "back-slash-char"
+;"#\//"  "forward-slash-char"
+;"#\/""  "double-quote-char"
+;"#\)" "right-parentheses-char"
+;"#\(" "left-parentheses-char"
+;"#\." "period-char"
+;"#\|"  "vertical-stroke-char"
+;try to eliminate "how /"are/" you constructs"
+
+;;(shadow '(=) 'maxima)
+
+;;First pass with string-delimited-search = string-search
+;;and also to fix the package and syntax header. Do any 
+;;copyright changes.
+;;
+; ("package: macsyma" . "mode: lisp; package: cl-maxima; syntax: common-lisp")
+; ("package:macsyma" . "mode: lisp; package: cl-maxima; syntax: common-lisp")
+; ("#//"  . "#\")
+
+;;Second pass 
+;;evaluate the following in zetalisp syntax!!.
+;(setq second-pass '(
+;("#\;" .  "#. semi-colon-char")
+;("#\\" .  "#. back-slash-char")
+;("#\//" .  "#. forward-slash-char")
+;("#\/"" .  "#. double-quote-char")
+;("#\)" . "#. right-parentheses-char")
+;("#\(" . "#. left-parentheses-char")
+;("#\." . "#. period-char")
+;("#\|" .  "#. vertical-stroke-char")
+;
+; ;Third pass 
+; ;("MEMQ" . "zl-MEMQ")
+; ;("ASSQ" . "ZL-ASSQ")
+; ("DELETE" . "zl-DELETE")
+; ("EVERY"  . "ZL-EVERY") ;;actually all occurrences are now cl:every, there were no zl-every.
+; ("MAKE-ARRAY" . "ZL-MAKE-ARRAY")
+; ("MEMBER" . "zl-MEMBER")
+; ("ASSOC" . "zl-ASSOC")
+; ("LISTP" . "consp")
+; ("MAP" . "MAPL")
+; ("MEMBER" . "zl-MEMBER")
+; ("NLISTP" . "atom")
+; ("NINTERSECTION" . "zl-NINTERSECTION")
+; ("NUNION" . "zl-NUNION")
+; ("RASSOC" . "zl-RASSOC")
+; ("REM" . "zl-REM")
+; ("REMOVE" . "zl-REMOVE")
+; ("SOME" . "zl-SOME")  ;;check were any  cl:some?
+; ("UNION" . "zl-UNION")
+; ("\" . "fixnum-remainder")
+; ("\\" . "fixnum-gcd")
+; ("//\" . "fixnum-remainder")
+; ("typep" . "ml-typep")
+; ( "terminal-io" .  "*terminal-io*")
+; ( "standard-input" . "*standard-input*")
+; ( "standard-output" . "*standard-output*")
+; ( "query-io" . "*query-io*")
+; ( "base" . "*print-base*")
+; ( "ibase" . "*read-base*")
+; ( "(*nopoint t)" . "print-radix*") ;;catch a few..
+;)
+
+;;Now replace any how/:are/:you type expressions.
+
+;These still need shadow.
+; LET         ;;"CL-MAXIMA-SOURCE: MAXIMA; LET" ;;like let
+; LET*        ;;"CL-MAXIMA-SOURCE: MAXIMA; LET" ;;maxima:let* does destructuring.  very little used, and should remove
+; LISTEN      ;;"CL-MAXIMA-SOURCE: MAXIMA; SUPRV" ;;has trivial definition in suprv (listen any) ==> 0
+; SIGNUM      ;;"CL-MAXIMA-SOURCE: MAXIMA; COMMAC" ;same except (cl:signum 1.3)==1.0 not 1 but I think this is ok for macsyma
+; MAKE-ARRAY  ;;"CL-MAXIMA-SOURCE: MAXIMA; COMMAC" ;maxima has zetalisp and common lisp make-array type syntax occurring uggh.
+
+;;MAY 2, 1985.  HAVE REPLACED THESE
+;("CONSTANTP" . "MAXIMA-CONSTANTP")    ;;"CL-MAXIMA-SOURCE: MAXIMA; SIMP" ;different
+;("ERROR" . "MAXIMA-ERROR")            ;;"CL-MAXIMA-SOURCE: MAXIMA; COMMAC"
+;("FIND" . "MAXIMA-FIND")              ;;"CL-MAXIMA-SOURCE: MAXIMA; LMSUP" ;different
+;("float-precision" . "MAXIMA-float-precision") ;;"CL-MAXIMA-SOURCE: MAXIMA; cpoly" ;?
+;("INTEGERP" . "MAXIMA-INTEGERP")      ;;"CL-MAXIMA-SOURCE: MAXIMA; compar" ;different
+;("RATIONALIZE" . "MAXIMA-RATIONALIZE");;"CL-MAXIMA-SOURCE: MAXIMA; RAT3E" ;different
+;("RATIONALP" . "MAXIMA-RATIONALP")    ;;"CL-MAXIMA-SOURCE: MAXIMA; LAPLAC" ;different
+;("REDUCE" . "MAXIMA-REDUCE")          ;;"CL-MAXIMA-SOURCE: MAXIMA; trigi" ;different
+;("REM" . "MAXIMA-REM")                ;;"CL-MAXIMA-SOURCE: MAXIMA; MRGMAC" ;different
+;("REMF" . "MAXIMA-REMF")              ;;"CL-MAXIMA-SOURCE: MAXIMA; DB"  ;different
+;("SLEEP" . "MAXIMA-SLEEP")            ;;"CL-MAXIMA-SOURCE: MAXIMA; COMPAT" 
+;("SUBSTITUTE" . "MAXIMA-SUBSTITUTE")  ;;"CL-MAXIMA-SOURCE: MAXIMA; COMM" ;different
+;;*nopoint and *print-radix* want *nopoint =t <==> *print-radix* = nil uggh.
+
+;("vector" . "maxima-vector")    ;; for the plotll and friends.
+;;and define zl-delete appropriately, perhaps as a macro or as the
+;;zetalisp definition if still available.  at this stage new code could
+;;start to use the common lisp delete.  The header on each file (so
+;;converted) should now indicate common lisp syntax.
+
+;;III. Then eventually,eventually replace expressions like (zl-member a b)
+;;by (member a b :test 'equal)
+;;when that becomes efficient.  It could be left as a macro.
+
+
+;;The following are in the maxima package and have definitions in common lisp which may
+;;conflict with the maxima definitions
+
+
+
+;((RATIONALP .  "MAXIMA-SOURCE: MAXIMA; LAPLAC") ;different
+; (SIGNUM .  "MAXIMA-SOURCE: MAXIMA; COMMAC") ;same except (cl:signum 1.3)==1.0 not 1 but I think this is ok for macsyma
+; (FIND .  "MAXIMA-SOURCE: MAXIMA; LMSUP") ;different
+; ( ATAN . "zetalisp sources")        ;; (global:atan y x) == (cl:atan y x) + 2 pi if latter is  negative
+; (ERROR .  "MAXIMA-SOURCE: MAXIMA; COMMAC")
+; (ARRAY .  "MAXIMA-SOURCE: MAXIMA; COMMAC") ;not a function in common lisp but symbol in the package
+; ;;array may be a good candidate for function replace since we want to replace function like occurences 
+
+
+; (TYPECASE .  "MAXIMA-SOURCE: MAXIMA; COMMAC") ;remove old occurrences
+; (MAKE-ARRAY .  "MAXIMA-SOURCE: MAXIMA; COMMAC") ;treat as delete etc.
+; (TYPEP .  "MAXIMA-SOURCE: MAXIMA; COMMAC") ;maxima wants something different. Needs own typep.
+; (LET* .  "MAXIMA-SOURCE: MAXIMA; LET") ;;maxima:let* does destructuring.  very little used, and should remove
+; (LET .  "MAXIMA-SOURCE: MAXIMA; LET") ;;like let
+; (LISTEN .  "MAXIMA-SOURCE: MAXIMA; SUPRV") ;;has trivial definition in suprv (listen any) ==> 0
+; (REM .  "MAXIMA-SOURCE: MAXIMA; MRGMAC") ;different
+; (REMF .  "MAXIMA-SOURCE: MAXIMA; DB")  ;different
+; (CONSTANTP .  "MAXIMA-SOURCE: MAXIMA; SIMP") ;different
+; (RATIONALIZE .  "MAXIMA-SOURCE: MAXIMA; RAT3E") ;different
+; (SLEEP .  "MAXIMA-SOURCE: MAXIMA; COMPAT") 
+; (SUBSTITUTE .  "MAXIMA-SOURCE: MAXIMA; COMM") ;different
+; )
+
+;;different but current defs useless
+; (NAMESTRING .  "MAXIMA-SOURCE: MAXIMA; LMSUP") ;different ;;probably remove the macsyma defs
+; (TRUENAME .  "MAXIMA-SOURCE: MAXIMA; TRANSS") ;;probably remove the macsyma defs
+
+;;same functionally
+; (TANH .  "MAXIMA-SOURCE: MAXIMA; TRIGI") ;same
+; (COSH .  "MAXIMA-SOURCE: MAXIMA; TRIGI") ;same
+; (SINH .  "MAXIMA-SOURCE: MAXIMA; TRIGI") ;same
+; (TAN .  "MAXIMA-SOURCE: MAXIMA; TRIGI") ;;same
+; (INT-CHAR (DEFUN-IF-NEW  "MAXIMA-SOURCE: MAXIMA; COMMAC") ;can remove when have cl chars.
+; (DEFUN  "MAXIMA-SOURCE: MAXIMA; COMMAC"))
+; (COERCE .  "MAXIMA-SOURCE: MAXIMA; COMMAC") ;can remove

@@ -1,0 +1,69 @@
+/* a macro for floatdefunk, needed until optimu is used */
+load("fltdfnk.mc")$
+
+/* Example of use of double integrator (DBLINT), part 2, plus
+FLOATDEFUNK and QUANC8 */
+
+/* Get the fasl file for DBLINT */ 
+LOAD('DBLINT); 
+/* Get the fasl file for QUANC8 */
+LOAD('QQ);
+
+/* Use DBLINT to get the double integral of exp(x-y^2) over the region
+bounded by y=1 and y=2+x^(3/2) and x=0 to x=1 */
+
+/* Define the integrand as a function of two variables */
+
+F(X,Y):=(MODE_DECLARE([X,Y],FLOAT),EXP(X-Y^2)); 
+
+/* Define the lower and upper limits on the inner (y in this case)
+integral as a function of the outer variable (x in this case) */
+
+R(X):=(MODE_DECLARE(X,FLOAT),1.0); 
+S1(X):=(MODE_DECLARE(X,FLOAT),2.0+X^(3/2));
+
+/* Now translate these functions for the sake of efficiency */
+
+TRANSLATE(F,R,S1); 
+
+/* Call the DBLINT function with quoted arguments for function names, and
+floating point values for the endpoints of the outer (x) integration
+*/ 
+
+DBLINT_ANSWER:DBLINT('F,'R,'S1,0.0,1.0); 
+
+/* Now generate the exact integral over y using RISCH */
+
+INTY:RISCH(EXP(X-Y^2),Y); 
+
+/* Now get the integrand of the x integral */
+
+XINT:EV(INTY,Y:2+X^(3/2))-EV(INTY,Y:1);
+
+/* Try to do the x integral exactly */
+
+RISCH(XINT,X);
+RADCAN(%);
+%,NOUNS;
+/* Still no luck with closed-form */
+/* The integral over x can't be done in closed-form, so let's use a
+one-dimensional integrator to do it numerically. First, we must
+define the integrand as a floating point function. FLOATDEFUNK
+does this very conveniently on the expression */
+
+FLOATDEFUNK(fUN,[X],XINT);
+
+/* Now translate the function fun */
+TRANSLATE(FUN);
+
+/* Now call QUANC8 on the translated function (see SHARE1;QQ USAGE for
+details) */
+
+QUANC8_ANSWER:QUANC8(FUN,0.0,1.0);
+
+/* Compare the answers from DBLINT and QUANC8 */
+
+(DBLINT_ANSWER-QUANC8_ANSWER)/DBLINT_ANSWER;
+
+/* It appears to be small enough relative error for most uses */
+"end of dblint.dm1"$

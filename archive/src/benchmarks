@@ -1,0 +1,143 @@
+Some comparisons of Algebraic Manipulation on different hardware.
+
+As of June 25, 1987.
+
+Times are elapsed (with cpu times in parenthes for machines where
+this was substantially different eg suns).
+Note by elapsed time I wall clock
+Main culprit was page faults).
+All times were average of several cycles to get gc information.
+The large problem gc'd a number of times on the small sun, and 
+so only one computation was performed.  All machines were with
+only one user running at normal priority.
+
+Machine.         Factor((x+y+z)^10)       Factor((x+y+z)^20)
+
+sun3/50             27.3 (cpu 9.7)         243.0 (cpu 63.7)       
+too many users to judge: sun3/180          ?16.0(cpu 10.9)         ?
+sun3/260             3.08(cpu 3.08)         19.33(cpu 19.5)
+TI Explorer          3.4                    14.2           
+Symbolics 3640       5.6                    21.3
+withIFU  
+
+
+
+
+For comparsion the old version using maclisp on dec-20:
+Quite fast on small problems.  
+Dec20(maclisp)      (cpu 5.5)               Problem Too Big
+
+
+
+Notes: The times all are elapsed, and include time for gc.  On the
+lisp machine only ephemeral gc was included.  The SUN suffered greatly
+from page faults: for example the actual run time was 8.05 for the
+first one, and with a gc every two or three times costing 5 seconds.
+The rest of the time was spent in page faults, particularly costly
+during the gc.
+
+Executing on a sun-3/50 with 4meg memory and shoe box.  sun operating
+system 3.2 c compiling of system with debugging on.  The common lisp
+version is by Bill Schelter running in KCL, and running inside gnuemacs.
+Page faulting was extremely expensive.  We have included an appendix for
+the 3/50 to show the vagaries of the timings due to poor paging.
+
+The Maxima in all cases was a full version including lisp compiler
+and the Maxima to lisp translation facility.  Approximately 120 files
+were loaded.  On the very small machine reducing the size of the 
+system, would probably prove beneficial.
+
+In all cases the code was the Common Lisp version by Bill Schelter at
+University of Texas, and distributed by National Energy Software
+Foundation at Argonne Illinois.  KCL is available free of charge by
+anonymous ftp from University of Texas on rascal.ics.utexas.edu
+[128.83.144.1] Login as ftp, with no password.  See the message
+kcl.broadcast in the ftp directory for instructions.  You must mail in
+a copy of the form in that message to validate your free license.
+Both Maxima and KCL include ALL sources.
+
+The GCD switch used was SPMOD.  
+
+Note this is not meant to be a comparison of factoring algorithms, but
+rather just a simple easily quantified test of complex polynomial
+manipulation, which has been found to be a good point of comparison
+when considering different hardware for large algebraic manipulation
+problems.
+
+The Explorer was running release 3.0, and the Symbolics release 7.
+Note there has been a dramatic improvement in the TI timing with 
+the advent of an efficient ephemeral GC in release 3.0, and new
+function calling.  The time for TI is one half what it was in release 2.0
+on the same machine.
+
+
+Appendix Sun3/50
+Here is the actual transcript.  You can see how the times varied:
+(C3) expand((x+y+z)^10)$
+(C9) factor(d3);
+
+Evaluation took 8.20 seconds (17.93 elapsed)
+					    10
+(D9) 				 (Z + Y + X)
+(C10) ''c3;
+
+Evaluation took 7.98 seconds (16.98 elapsed)
+					    10
+(D10) 				 (Z + Y + X)
+(C11) ''c3;
+
+
+GBC invoked
+GBC finished
+Evaluation took 13.98 seconds (50.25 elapsed)
+					    10
+(D11) 				 (Z + Y + X)
+(C12) ''c3;
+
+Evaluation took 8.02 seconds (16.57 elapsed)
+					    10
+(D12) 				 (Z + Y + X)
+(C13) ''c3;
+
+
+GBC invoked
+GBC finished
+Evaluation took 13.90 seconds (52.20 elapsed)
+					    10
+(D13) 				 (Z + Y + X)
+(C14) ''c3;
+
+Evaluation took 8.05 seconds (16.65 elapsed)
+					    10
+(D14) 				 (Z + Y + X)
+(C15) ''c3;
+
+
+GBC invoked
+GBC finished
+Evaluation took 13.90 seconds (56.88 elapsed)
+					    10
+(D15) 				 (Z + Y + X)
+(C16) 
+(C16) expand((x+y+z)^20)$
+
+Evaluation took 10.10 seconds (13.20 elapsed)
+(C17) 1;
+(D17) 				       1          
+(C18) factor(d16);
+
+
+GBC invoked
+GBC finished
+
+GBC invoked
+GBC finished
+
+GBC invoked
+GBC finished
+
+GBC invoked
+GBC finished
+Evaluation took 63.77 seconds (243.45 elapsed)
+					    20
+(D18) 				 (Z + Y + X)

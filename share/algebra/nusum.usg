@@ -1,0 +1,25 @@
+The small set of functions from
+		loadfile(nusum,?>,dsk,share)
+is, I believe, a decision procedure for indefinite (i.e. FINITE)
+hypergeometric summation.  Restrictions:
+	1) Both the summand and the answer must be expressible as products
+of nth pwrs, factorials, binomials, and rational fcns.
+
+	Examples:
+nusum(n*n!,n,0,n);			==>  (n+1)! - 1
+nusum(n^4*4^n/binomial(2*n,n),n,0,n);	==>  <moby mess>
+unsum(%,n);				==>  n^4*4^n/binomial(2*n,n)
+	etc.
+(UNSUM was formerly called DELTA, and is just the first backward
+difference w.r.t. its 2nd arg, i.e. the inverse of sum.)
+
+Enjoy,  rwg
+
+
+RWG@MIT-MC 04/21/77 12:06:54
+
+The fcns NUSUM and UNSUM in
+		SHARE;NUSUM >
+now know a little about sums and differences of finite products, e.g.
+unsum(prod(i^2,i,1,n),n)	==>  (n-1)*(n+1)*prod(i^2, i,1,n-1) and
+nusum(%,n,1,n)			==>  prod(i^2,i,1,n) - 1 .

@@ -1,0 +1,193 @@
+
+/* This file is a demonstration of some of the simpler
+  features of GAMALG. Details of GAMALG may be found in the
+  file SHARE;GAM USAGE */
+/* First load the program */
+/* NOTE:  This demo will load nearly all the subsiduary files of
+GAMALG. Together these take up nearly all the available core
+space. For a good demonstration, this file should therefore be 
+loaded into a fresh Macsyma */
+/*
+loadfile (gamalg,>,share);
+*/
+
+load("gamalg.lsp");
+
+/* First, some elementary traces */
+
+tr(p,q);
+
+/* This was trace (p(slash).q(slash})). The D(p,q) in the 
+answer represents the dot product of p and q */
+
+tr(p,q,r,s);
+
+tr(p1,p2,p3,p4,p5,p6);
+
+/* Now declare some indices to be contracted */
+
+cind (mu,nu,al,be);
+
+tr (p,mu,q,mu);
+
+tr(mu,nu,al,be,al,nu,mu,be);
+
+/* The n in these results is the dimensionality of spacetime */
+/* Later, we will set n to 4 and demonstrate gamma[5] etc, but
+since this step is irreversible, we postpone it until later */
+
+
+tr(p,mu,q,nu,p,al,q,nu,al,mu);
+
+tr(p,mu,q,nu);
+ 
+/* The mu and nu here could not be contracted, so were treated just
+like slashed vectors */
+
+/*Some convenient shortenings are  Zn(p,m)=p(slash)+m and 
+zd(p,m)=1/(p(slash)+m)  */
+
+tr(zd(p,m),zd(q,m));
+
+tr(zn(p,m),mu,zn(q,m),mu);
+
+tr(zd(p),zd(q));
+
+/* Note that the mass was assumed zero when not given */
+
+/* In all the above examples, only single vectors were used. One
+can also for example do */
+
+tr(p-q,k-q);
+
+/* Note that in the result, the dot products were expanded out 
+(and alphabetized) for simplification. The expansion can be
+inhibited by setting the flag DEF:FALSE */
+
+def:false;
+
+tr(p-q,k-q);
+
+/* The dot products generated may be expanded by doing 
+*/
+
+dfix(%);
+
+/* The combinations of vectors may include scalars, which must be 
+declared */
+
+scals(s1,s2);
+
+/* Reset def now */
+
+def:true;
+
+tr(p-q*s1,r*s2);
+
+/* An untraced product of gamma matrices is represented
+by  g(a1,a2,a3,...) . These can be simplified using crunch: */
+
+g(mu,p,mu,q);
+
+crunch(%);
+
+try:g(mu,nu,p,q,nu,p,mu);
+
+crunch(%);
+
+/*  Cof controls some simplification of these results */
+
+cof:true;
+
+crunch(try);
+
+
+/* To expand G's use GFIX: */
+
+g(p+k/2,q-s1*p,r);
+
+gfix(%);
+
+/* Now to contract some indices  */
+
+tr(p,mu,nu,q);
+
+con(%^2);
+
+d(mu,nu)*g(mu,p,q,nu);
+
+
+con(%);
+/* Now go into four dimensions (n=4) */
+
+nset(4);
+
+/* In four dimensions, gamma[5] (called g5) is available */
+
+tr(p1,p2,p3,p4,g5);
+
+tr(mu,g5,p1,mu,p2,p3,p4,p5,p6);
+
+tr(g5,g5);
+
+tr(lhp,p1,p2,p3,p4);
+
+/* Epsilon symbols may also be contracted */
+
+eps(mu,p1,nu,p2)*eps(nu,p3,mu,p4);
+
+con(%);
+
+/* In four dimensions, there are many new identities 
+involving gamma matrices. For example, two traces (represented
+here by GT(...)) may be combined by */
+
+gt(mu,p)*gt(mu,nu,p,q);
+
+cotr(%);
+
+
+/* In 4-d, COMPDEF assigns components to vectors etc :*/
+
+compdef(pa=[ea,0,0,0],pb=[eb,pbv,0,0],mu=0,nu=0);
+
+tr(pa,pb,mu,nu);
+
+/*The component assignments are implemented by */
+
+noncov(%);
+uncompdef(mu,nu);
+
+/* GAMALG can also square amplitudes. In obvious notation: */
+
+ntr:true;
+
+/*This flag will not immediately perform traces of 
+amplitudes squared by sq etc. */
+
+sq(uv(p,m),g(q1,q2)+2*g(q3,q4),uv(pp,mp));
+
+
+/*The traces may be done by doing */
+
+cgt(%);
+/*Indices are treated in many ways by sq, dependingon 
+various flag settings. One way is */
+
+sq(uv(p),g(mu,pp),uv(q));
+
+/*note zero masses were assumed here for the spinors */
+
+/*For Feynman gauage polarization sums, set */
+
+nop:true;
+
+sq(uv(p),g(mu,pp),uv(q));
+M
+
+/* That is the end of this demonstration. GAMALG can do many other 
+things not represnted in the demo. Most of them
+appear in the manual. I hope you have been sufficiently interested
+to try playing (and perhaps even doing something useful)
+with GAMALG now. Any comments should be adressed to swolf and trex. */
+

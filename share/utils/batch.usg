@@ -1,0 +1,15 @@
+
+Read the file BATCH DEMO on SHARE2; and then BATCH it to get the basic 
+idea of what to do.  The file SHARE2;BATCH OUTPUT is an example of the
+sort of file which BATCH DEMO writes.
+
+Suggested usage examples:
+
+You have a calculation that you have done before, but now you may want 
+to repeat it with many sets of data or with larger expressions, more 
+terms in the taylor's series, etc.  For the sake of users that are 
+running interactively it is nice to not run this type of calculation 
+during the day by just walking away from your terminal for hours. 
+But, it's easy to have the macsyma put into the background until late 
+at night and then have it run, output data into a file, and kill
+itself.

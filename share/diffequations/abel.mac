@@ -1,0 +1,79 @@
+/* -*- Macsyma -*- */
+ABEL(DE,A,X):=block([v,coefs,f0,f1,f2,f3,a,%a,%fff,y,u,z,%ff,%dff,
+                     %v,%uu,newde],
+    DEPENDS(V,X),
+    DE:LHS(DE)-RHS(DE),
+    COEFS:MAKECOEFLIST3(DE),
+    F0:COEFS[1],F1:COEFS[2],F2:COEFS[3],F3:COEFS[4],a:coefs[5],
+    if a#1 then return(abel2(coefs,y,x)),
+    if f0=0 and f1=0 and freeof(x,%a:diff(%fff:f3/f2,x)/f2) then
+      return(transform(de,y,x,u,z,[x=z,u=%fff*y])),
+    %ff:-f2/(3*f3),%dff:diff(%ff,x),
+    %v:exp(integrate((f1+%ff*f2),x)),
+    %uu:(f0-%dff+f1*%ff+2*f2*%ff^2/3)/%v^3/f3,
+    newde:transform(de,y,x,u,z,[y=u*%v+%ff,z=ratsimp(integrate(f3*%v^2,x))]),
+     RETURN(ratsimp(newDE)))$
+
+
+MAKECOEFLIST3(DE):=BLOCK([a,F0,F1,F2,F3,y,x],
+	DE:EXPAND(DE),       
+        A: COEFF(DE,'DIFF(Y,X),1),
+
+	F0:-COEFF(DE,Y,0),
+	F1:-COEFF(DE,Y,1),
+	F2:-COEFF(DE,Y,2),
+	F3:-COEFF(DE,Y,3),
+RETURN([F0,F1,F2,F3,a]))$
+
+/*METHOD FOR NON-LINEAR Y'*/
+NONLIN(DE,Y,X):=BLOCK([temp,temp1,newy,dd,newde,dispflag,%p],
+	de:expand(de),depends(newy,x),dispflag:false,
+	DD:DERIVDEGREE(DE,Y,X),
+	IF(DD>1) THEN RETURN(FALSE) ELSE
+	 IF(HIPOW(DE,DIFF(Y,X))<2) THEN RETURN(FALSE),
+       	NEWDE:SUBST(%P,DIFF(Y,X),DE),
+	DEPENDS(%P,X),
+	NEWDE:LHS(NEWDE)-RHS(NEWDE),
+	TEMP:SOLVE(NEWDE=0,%P),
+	TEMP:SUBST('DIFF(Y,X),%P,apply('ev,[TEMP])),
+	temp:map(LAMBDA([V],ODE2(V,Y,X)),apply('ev,[TEMP,'diff])),
+	temp:map(lambda([v],solve(v,y)),temp),
+	return(apply('ev,[temp,'infeval])))$
+
+
+
+BERNO(DE,Y,X):=BLOCK([nn,mm,nni,mmi,%q,ans],ANS:[],
+	  IF(DERIVDEGREE(DE,Y,X)>1) THEN RETURN(FALSE),
+	  DE:LHS(DE)-RHS(DE),
+	  NN:EXPAND(COEFF(DE,DIFF(Y,X))),
+	  MM:EXPAND(RADCAN(DE-NN*DIFF(Y,X))),
+	  NNI:APPLY('APPEND,MAPLIST('ELEMENTS,NN)),
+	  MMI:APPLY('APPEND,MAPLIST('ELEMENTS,MM)),
+	  IF(ATOM(MM) OR PART(MM,0)="^") THEN MM:[MM],
+/* commented out of DOE MACSYMA because it can't be translated
+	  MAP(LAMBDA([V],IF NOT FREEOF(%Q,RATSUBST(%Q,
+	     DELETE(NUMFACTOR(DIFF(V,X)),DELETE(DIFF(Y,X),DIFF(V,X))),NN))
+	     THEN ANS:CONS(V,ANS)),MM), */
+/* and replaced by the equivalent do loop */
+	  for v in mm do (IF NOT FREEOF(%Q,RATSUBST(%Q,
+	     DELETE(NUMFACTOR(DIFF(V,X)),DELETE(DIFF(Y,X),DIFF(V,X))),NN))
+	     THEN ANS:CONS(V,ANS)),
+	  RETURN(ANS))$
+	  
+ELEMENTS(A):=BLOCK([],IF ATOM(A) THEN RETURN([A]),
+	  IF(PART(A,0) ="*") THEN RETURN(MAPLPROD(LAMBDA([V],V),A)),
+	  IF(PART(A,0)="+") THEN RETURN(MAPLSUM(LAMBDA([V],V),A)),
+	  RETURN([A]))$
+
+/*Method for nonlinear coeffs*/
+NONLIN1(de,y,x):=block([%v,a1,a2,newde],
+	  de:expand(rhs(de)-lhs(de)),depends(%v,x),
+	  a1:coeff(de,diff(y,x)),
+	  a2:expand(de-a1*diff(y,x)),
+	  if(hipow(a1,x)=hipow(a2,y) and hipow(a2,x)=hipow(a1,y))
+	    then (newde:apply('ev,[a1,y=%v,x=1])*x*diff(%v,x)+
+	               (apply('ev,[a2,y=%v,x=1])+apply('ev,[a1,y=%v,x=1])*%v),
+		       a1:ode2(newde=0,%v,x),
+		       if freeof(nounify('integrate),a1) then
+                       return(subst([%v=y/x],a1))  else return(false))
+	    else(return(false)))$

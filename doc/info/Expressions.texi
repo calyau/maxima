@@ -1,0 +1,844 @@
+@node Expressions, Function Definition, Simplification, Top
+@chapter Expressions
+
+@menu
+* Introduction to Expressions::  
+* ASSIGNMENT::                  
+* COMPLEX::                     
+* INEQUALITY::                  
+* SYNTAX::                      
+* Definitions for Expressions::  
+@end menu
+
+@node Introduction to Expressions, ASSIGNMENT, Expressions, Expressions
+@section Introduction to Expressions
+
+There are a number of reserved words which cannot be used as
+variable names.   Their use would cause a possibly cryptic syntax error.
+
+@example
+INTEGRATE            NEXT           FROM                 DIFF            
+IN                   AT             LIMIT                SUM             
+FOR                  AND            ELSEIF               THEN            
+ELSE                 DO             OR                   IF              
+UNLESS               PRODUCT        WHILE                THRU            
+STEP                                                                     
+@end example
+
+Most things in MAXIMA are expressions.   A sequence of expressions
+can be made into an expression by separating them by commas and
+putting parentheses around them.   This is similar to the @b{C}
+@i{comma expression}.
+
+@example
+(C29) x:3$
+(C30) joe:(x:x+1,x:x*x);
+(D30) 16
+(C31) joe:(if (x >17) then 2 else 4);
+(D31) 4
+(C32) joe:(if (x >17) then x:2 else joe:4,joe+x);
+(D32) 20
+@end example
+
+Even loops in maxima are expressions, although the value they
+return is the not to useful @code{DONE}
+
+@example
+(C33) joe:(x:1,for i from 1 thru 10 do (x:x*i));
+(D33) DONE
+@end example
+whereas what you really want is probably is to include a third
+term in the @i{comma expression} which actually gives back the value.
+
+@example
+(C34) joe:(x:1,for i from 1 thru 10 do (x:x*i),x);
+(D34) 3628800
+@end example
+
+
+
+@node ASSIGNMENT, COMPLEX, Introduction to Expressions, Expressions
+@section ASSIGNMENT
+ - There are two assignment operators in MACSYMA, : and :: .
+E.g. A:3 sets the variable A to 3.  :: assigns the value of the
+expression on its right to the value of the quantity on its left,
+which must evaluate to an atomic variable or subscripted variable.
+
+@node COMPLEX, INEQUALITY, ASSIGNMENT, Expressions
+@section COMPLEX
+ - A complex expression is specified in MACSYMA by adding the
+real part of the expression to %I times the imaginary part.  Thus the
+roots of the equation X^2-4*X+13=0 are 2+3*%I and 2-3*%I.  Note that
+simplification of products of complex expressions can be effected by
+expanding the product.  Simplification of quotients, roots, and other
+functions of complex expressions can usually be accomplished by using
+the REALPART, IMAGPART, RECTFORM, POLARFORM, ABS, CARG functions.
+
+@node INEQUALITY, SYNTAX, COMPLEX, Expressions
+@section INEQUALITY
+ - MACSYMA has the usual inequality operators:
+less than:  <
+greater than:  >
+greater than or equal to:  >=
+less than or equal to:  <=
+
+@node SYNTAX, Definitions for Expressions, INEQUALITY, Expressions
+@section SYNTAX
+ - It is possible to add new operators to MACSYMA (infix,
+prefix, postfix, unary, or matchfix with given precedences), to remove
+existing operators, or to redefine the precedence of existing
+operators.  While MACSYMA's syntax should be adequate for most
+ordinary applications, it is possible to define new operators or
+eliminate predefined ones that get in the user's way.  The extension
+mechanism is rather straightforward and should be evident from the
+examples below.
+@example
+(C1) PREFIX("DDX")$
+(C2) DDX Y$             means                   "DDX"(Y)
+(C3) INFIX("<-")$
+(C4) A<-DDX Y$          means               "<-"(A,"DDX"(Y))
+
+@end example
+For each of the types of operator except SPECIAL, there is a
+corresponding creation function that will give the lexeme specified
+the corresponding parsing properties.  Thus "PREFIX("DDX")" will make
+"DDX" a prefix operator just like "-" or "NOT".  Of course, certain
+extension functions require additional information such as the
+matching keyword for a matchfix operator.  In addition, binding powers
+and parts of speech must be specified for all keywords defined.  This
+is done by passing additional arguments to the extension functions.
+If a user does not specify these additional parameters, MACSYMA will
+assign default values.  The six extension functions with binding
+powers and parts of speech defaults (enclosed in brackets) are
+summarized below.
+PREFIX(operator, rbp[180], rpos[ANY], pos[ANY])
+POSTFIX(operator, lbp[180], lpos[ANY], pos[ANY])
+INFIX(operator, lbp[180], rbp[180], lpos[ANY], rpos[ANY],pos[ANY])
+NARY(operator, bp[180], argpos[ANY], pos[ANY])
+NOFIX(operator, pos[ANY])
+MATCHFIX(operator, match, argpos[ANY], pos[ANY])
+    The defaults have been provided so that a user who does not wish
+to concern himself with parts of speech or binding powers may simply
+omit those arguments to the extension functions.  Thus the following
+are all equivalent.
+PREFIX("DDX",180,ANY,ANY)$
+PREFIX("DDX",180)$
+PREFIX("DDX")$
+    It is also possible to remove the syntax properties of an operator
+by using the functions REMOVE or KILL.  Specifically,
+"REMOVE("DDX",OP)" or "KILL("DDX")" will return "DDX" to operand
+status; but in the second case all the other properties of "DDX" will
+also be removed.
+@example
+
+
+(C20) PREFIX("DDX",180,ANY,ANY)$
+
+(C21) DDXYZ;
+
+(D21) 				    DDX YZ
+
+(C26) "ddx"(u):=u+4;
+
+(D26) 			        DDX u := u + 4
+(C27) ddx 8;
+
+(D27) 				      12
+@end example
+
+
+
+@c end concepts Expressions
+@node Definitions for Expressions,  , SYNTAX, Expressions
+@section Definitions for Expressions
+@c @node AT, BOX, SYNTAX, Expressions
+@c @unnumberedsec phony
+@defun AT (exp, list)
+will evaluate exp (which may be any expression) with
+the variables assuming the values as specified for them in the list of
+equations or the single equation similar to that given to the ATVALUE
+function.  If a subexpression depends on any of the variables in list
+but it hasn't had an atvalue specified and it can't be evaluated then
+a noun form of the AT will be returned which will display in a
+two-dimensional form.  Do EXAMPLE(AT); for an example.
+
+@end defun
+@c @node BOX, BOXCHAR, AT, Expressions
+@c @unnumberedsec phony
+@defun BOX (expr)
+returns expr enclosed in a box.  The box is actually part
+of the expression.
+@example
+BOX(expr,label)
+@end example
+encloses expr in a labelled box.
+label is a name which will be truncated in display if it is too long.
+    BOXCHAR["] - is the character used to draw the box in this and in
+the DPART and LPART functions.
+
+@end defun
+@c @node BOXCHAR, {special operator}, BOX, Expressions
+@c @unnumberedsec phony
+@defvar BOXCHAR
+ default: ["] is the character used to draw the box in the BOX
+and in the DPART and LPART functions.
+
+@end defvar
+@c @node CONSTANT
+@c @unnumberedsec phony
+@deffn {special operator} CONSTANT
+ - makes ai a constant as is %PI.
+
+@end deffn
+@c @node CONSTANTP, CONTRACT, {special operator}, Expressions
+@c @unnumberedsec phony
+@defun CONSTANTP (exp)
+is TRUE if exp is a constant (i.e.  composed of
+numbers and %PI, %E, %I or any variables bound to a constant or
+DECLAREd constant) else FALSE.  Any function whose arguments are
+constant is also considered to be a constant.
+
+@end defun
+@c @node CONTRACT, DECLARE, CONSTANTP, Expressions
+@c @unnumberedsec phony
+@defun CONTRACT (exp)
+carries out all possible contractions in exp, which may
+be any well-formed combination of sums and products.  This function
+uses the information given to the DEFCON function.  Since all tensors
+are considered to be symmetric in all indices, the indices are sorted
+into alphabetical order.  Also all dummy indices are renamed using the
+symbols !1,!2,... to permit the expression to be simplified as much as
+possible by reducing equivalent terms to a canonical form.  For best
+results exp should be fully expanded.  RATEXPAND is the fastest way to
+expand products and powers of sums if there are no variables in the
+denominators of the terms.  The GCD switch should be FALSE if gcd
+cancellations are unnecessary.
+
+@end defun
+@c @node DECLARE, DISOLATE, CONTRACT, Expressions
+@c @unnumberedsec phony
+@defun DECLARE (a1, f1, a2, f2, ...)
+gives the atom ai the flag fi.  The ai's
+and fi's may also be lists of atoms and flags respectively in which
+case each of the atoms gets all of the properties.  The possible flags
+and their meanings are:
+
+CONSTANT - makes ai a constant as is %PI.
+
+MAINVAR - makes ai a MAINVAR.  The ordering scale for atoms: numbers <
+constants (e.g. %E,%PI) < scalars < other variables < mainvars.
+
+SCALAR - makes ai a scalar.
+
+NONSCALAR - makes ai behave as does a list or matrix with respect to
+the dot operator.
+
+NOUN - makes the function ai a noun so that it won't be evaluated
+automatically.
+
+EVFUN - makes ai known to the EV function so that it will get applied
+if its name is mentioned.  Initial evfuns are
+@example
+FACTOR, TRIGEXPAND,
+TRIGREDUCE, BFLOAT, RATSIMP, RATEXPAND, and RADCAN
+@end example
+
+EVFLAG - makes ai known to the EV function so that it will be bound to
+TRUE during the execution of EV if it is mentioned.  Initial evflags
+are
+@example
+FLOAT, PRED, SIMP, NUMER, DETOUT, EXPONENTIALIZE, DEMOIVRE,
+KEEPFLOAT, LISTARITH, TRIGEXPAND, SIMPSUM, ALGEBRAIC,
+RATALGDENOM, FACTORFLAG, %EMODE, LOGARC, LOGNUMER,
+RADEXPAND, RATSIMPEXPONS, RATMX, RATFAC, INFEVAL, %ENUMER,
+PROGRAMMODE, LOGNEGINT, LOGABS, LETRAT, HALFANGLES,
+EXPTISOLATE, ISOLATE_WRT_TIMES, SUMEXPAND, CAUCHYSUM,
+NUMER_PBRANCH, M1PBRANCH, DOTSCRULES, and LOGEXPAND
+@end example
+
+BINDTEST - causes ai to signal an error if it ever is used in a
+computation unbound.  DECLARE([var1, var2, ...], BINDTEST) causes
+MACSYMA to give an error message whenever any of the vari occur
+unbound in a computation.
+MACSYMA currently recognizes and uses the following features of
+objects:
+@example
+EVEN, ODD, INTEGER, RATIONAL, IRRATIONAL, REAL, IMAGINARY,
+and COMPLEX
+@end example
+he useful features of functions include:
+@example
+ INCREASING,
+DECREASING, ODDFUN (odd function), EVENFUN (even function),
+COMMUTATIVE (or SYMMETRIC), ANTISYMMETRIC, LASSOCIATIVE and
+RASSOCIATIVE
+@end example
+DECLARE(F,INCREASING) is in all respects equivalent to
+
+@example
+ASSUME(KIND(F,INCREASING))
+@end example
+The ai and fi may also be lists of
+objects or features.  The command
+@example
+FEATUREP(object,feature)
+@end example
+may be used
+to determine if an object has been DECLAREd to have "feature".  See
+DESCRIBE(FEATURES); .
+
+@end defun
+@c @node DISOLATE, DISPFORM, DECLARE, Expressions
+@c @unnumberedsec phony
+@defun DISOLATE (exp, var1, var2, ..., varN)
+is similar to ISOLATE(exp, var)
+(Do DESCRIBE(ISOLATE);) except that it enables the user to isolate
+more than one variable simultaneously.  This might be useful, for
+example, if one were attempting to change variables in a multiple
+integration, and that variable change involved two or more of the
+integration variables.  To access this function, do
+LOAD(DISOL)$ .  A demo is available by DEMO("disol"); .
+
+@end defun
+@c @node DISPFORM, DISTRIB, DISOLATE, Expressions
+@c @unnumberedsec phony
+@defun DISPFORM (exp)
+returns the external representation of exp (wrt its
+main operator).  This should be useful in conjunction with PART which
+also deals with the external representation.  Suppose EXP is -A .
+Then the internal representation of EXP is "*"(-1,A), while the
+external representation is "-"(A). DISPFORM(exp,ALL) converts the
+entire expression (not just the top-level) to external format.  For
+example, if EXP:SIN(SQRT(X)), then FREEOF(SQRT,EXP) and
+FREEOF(SQRT,DISPFORM(EXP)) give TRUE, while
+FREEOF(SQRT,DISPFORM(EXP,ALL)) gives FALSE.
+
+@end defun
+@c @node DISTRIB, DPART, DISPFORM, Expressions
+@c @unnumberedsec phony
+@defun DISTRIB (exp)
+distributes sums over products.  It differs from EXPAND
+in that it works at only the top level of an expression, i.e. it doesn't
+recurse and it is faster than EXPAND.  It differs from MULTTHRU in
+that it expands all sums at that level. For example, 
+DISTRIB((A+B)*(C+D)) -> A C + A D + B C + B D 
+MULTTHRU ((A+B)*(C+D)) -> (A + B) C + (A + B) D
+DISTRIB (1/((A+B)*(C+D))) ->  1/ ((A+B) *(C+D))
+EXPAND(1/((A+B)*(C+D)),1,0) -> 1/(A C + A D + B C + B D)
+
+@end defun
+@c @node DPART, EXP, DISTRIB, Expressions
+@c @unnumberedsec phony
+@defun DPART (exp, n1, ..., nk)
+selects the same subexpression as PART, but
+instead of just returning that subexpression as its value, it returns
+the whole expression with the selected subexpression displayed inside
+a box.  The box is actually part of the expression.
+@example
+(C1) DPART(X+Y/Z**2,1,2,1);
+                       Y
+(D1)                  ---- + X
+                         2
+                     *****
+                     * Z *
+                     *****
+
+
+@end example
+@end defun
+@c @node EXP, EXPTISOLATE, DPART, Expressions
+@c @unnumberedsec phony
+@defun EXP (X)
+the exponential function.  It is represented internally as
+%E^X.
+  DEMOIVRE[FALSE] - if TRUE will cause %E^(A+B*%I) to become
+%E^A*(COS(B)+%I*SIN(B)) if B is free of %I.  A and B are not expanded.
+  %EMODE[TRUE] - when TRUE %E^(%PI*%I*X) will be simplified as
+follows: it will become COS(%PI*X)+%I*SIN(%PI*X) if X is an integer or
+a multiple of 1/2, 1/3, 1/4, or 1/6 and thus will simplify further.
+For other numerical X it will become %E^(%PI*%I*Y) where Y is X-2*k
+for some integer k such that ABS(Y)<1.  If %EMODE is FALSE no
+simplification of %E^(%PI*%I*X) will take place.
+  %ENUMER[FALSE] - when TRUE will cause %E to be converted into
+2.718...  whenever NUMER is TRUE.  The default is that this conversion
+will take place only if the exponent in %E^X evaluates to a number.
+
+@end defun
+@c @node EXPTISOLATE, EXPTSUBST, EXP, Expressions
+@c @unnumberedsec phony
+@defvar EXPTISOLATE
+ default: [FALSE] if TRUE will cause ISOLATE(expr,var); to
+examine exponents of atoms (like %E) which contain var.
+
+@end defvar
+@c @node EXPTSUBST, FREEOF, EXPTISOLATE, Expressions
+@c @unnumberedsec phony
+@defvar EXPTSUBST
+ default: [FALSE] if TRUE permits substitutions such as Y
+for %E**X in %E**(A*X) to take place.
+
+@end defvar
+@c @node FREEOF, GENFACT, EXPTSUBST, Expressions
+@c @unnumberedsec phony
+@defun FREEOF (x1, x2, ..., exp)
+yields TRUE if the xi do not occur in exp
+and FALSE otherwise.  The xi are atoms or they may be subscripted
+names, functions (e.g.  SIN(X) ), or operators enclosed in "s.  If
+'var' is a "dummy variable" of 'exp', then FREEOF(var,exp); will
+return TRUE.  "Dummy variables" are mathematical things like the index
+of a sum or product, the limit variable, and the definite integration
+variable.  Example: FREEOF(I,'SUM(F(I),I,0,N)); returns TRUE.  Do
+EXAMPLE(FREEOF); for more examples.
+
+@end defun
+@c @node GENFACT, IMAGPART, FREEOF, Expressions
+@c @unnumberedsec phony
+@defun GENFACT (X, Y, Z)
+is the generalized factorial of X which is:
+X*(X-Z)*(X-2*Z)*...*(X-(Y-1)*Z).  Thus, for integral X,
+GENFACT(X,X,1)=X!  and GENFACT(X,X/2,2)=X!!
+
+@end defun
+@c @node IMAGPART, INDICES, GENFACT, Expressions
+@c @unnumberedsec phony
+@defun IMAGPART (exp)
+returns the imaginary part of the expression exp.
+
+@end defun
+@c @node INDICES, INFIX, IMAGPART, Expressions
+@c @unnumberedsec phony
+@defun INDICES (exp)
+returns a list of two elements.  The first is a list of
+the free indices in exp (those that occur only once); the second is
+the list of dummy indices in exp (those that occur exactly twice).
+
+@end defun
+@c @node INFIX, INFLAG, INDICES, Expressions
+@c @unnumberedsec phony
+@defun INFIX (op)
+ - INFIX operators are used to denote functions of two
+arguments, one given before the operator and one after, e.g. A^2 .
+The INFIX("x") function is a syntax extention function to declare x to
+be an INFIX operator.  Do DESCRIBE(SYNTAX); for more details.
+
+@end defun
+@c @node INFLAG, INPART, INFIX, Expressions
+@c @unnumberedsec phony
+@defvar INFLAG
+ default: [FALSE] if set to TRUE, the functions for part
+extraction will look at the internal form of exp.  Note that the
+simplifier re-orders expressions.  Thus FIRST(X+Y) will be X if INFLAG
+is TRUE and Y if INFLAG is FALSE.  (FIRST(Y+X) gives the same
+results).  Also, setting INFLAG to TRUE and calling PART/SUBSTPART is
+the same as calling INPART/SUBSTINPART.  Functions affected by the
+setting of INFLAG are: PART, SUBSTPART, FIRST, REST, LAST, LENGTH, the
+FOR ... IN construct, MAP, FULLMAP, MAPLIST, REVEAL and PICKAPART.
+
+@end defvar
+@c @node INPART, ISOLATE, INFLAG, Expressions
+@c @unnumberedsec phony
+@defun INPART (exp, n1, ..., nk)
+is similar to PART but works on the internal
+representation of the expression rather than the displayed form and
+thus may be faster since no formatting is done.  Care should be taken
+with respect to the order of subexpressions in sums and products
+(since the order of variables in the internal form is often different
+from that in the displayed form) and in dealing with unary minus,
+subtraction, and division (since these operators are removed from the
+expression). PART(X+Y,0) or INPART(X+Y,0) yield +, though in order to
+refer to the operator it must be enclosed in "s.  For example
+...IF INPART(D9,0)="+" THEN ...
+@example
+(C1)  X+Y+W*Z;
+(D1)                  W Z + Y + X
+(C2)  INPART(D1,3,2);
+(D2)                  Z
+(C3)  PART(D1,1,2);
+(D3)                  Z
+(C4) 'LIMIT(F(X)**G(X+1),X,0,MINUS);
+                                      G(X + 1)
+(D4)                      LIMIT   F(X)
+                          X ->0-
+(C5) INPART(%,1,2);
+(D5)                            G(X + 1)
+
+
+@end example
+@end defun
+@c @node ISOLATE, ISOLATE_WRT_TIMES, INPART, Expressions
+@c @unnumberedsec phony
+@defun ISOLATE (exp, var)
+returns exp with subexpressions which are sums and
+which do not contain var replaced by intermediate expression labels
+(these being atomic symbols like E1, E2, ...).  This is often useful
+to avoid unnecessary expansion of subexpressions which don't contain
+the variable of interest.  Since the intermediate labels are bound to
+the subexpressions they can all be substituted back by evaluating the
+expression in which they occur.
+EXPTISOLATE[FALSE] if TRUE will cause ISOLATE to examine exponents of
+atoms (like %E) which contain var.
+ISOLATE_WRT_TIMES[FALSE] if TRUE, then ISOLATE will also isolate wrt
+products.  E.g. compare both settings of the switch on
+ISOLATE(EXPAND((A+B+C)^2),C); .
+Do EXAMPLE(ISOLATE); for examples.
+
+@end defun
+@c @node ISOLATE_WRT_TIMES, LISTCONSTVARS, ISOLATE, Expressions
+@c @unnumberedsec phony
+@defvar ISOLATE_WRT_TIMES
+ default: [FALSE] - if set to TRUE, then ISOLATE
+will also isolate wrt products.  E.g. compare both settings of the
+switch on ISOLATE(EXPAND((A+B+C)^2),C); .
+
+@end defvar
+@c @node LISTCONSTVARS, LISTDUMMYVARS, ISOLATE_WRT_TIMES, Expressions
+@c @unnumberedsec phony
+@defvar LISTCONSTVARS
+ default: [FALSE] - if TRUE will cause LISTOFVARS to
+include %E, %PI, %I, and any variables declared constant in the list
+it returns if they appear in the expression LISTOFVARS is called on.
+The default is to omit these.
+
+@end defvar
+@c @node LISTDUMMYVARS, LISTOFVARS, LISTCONSTVARS, Expressions
+@c @unnumberedsec phony
+@defvar LISTDUMMYVARS
+ default: [TRUE] - if FALSE, "dummy variables" in the
+expression will not be included in the list returned by LISTOFVARS.
+(The meaning of "dummy variables" is as given in DESCRIBE(FREEOF):
+"Dummy variables" are mathematical things like the index of a sum or
+product, the limit variable, and the definite integration variable.)
+Example: LISTOFVARS('SUM(F(I),I,0,N)); gives [I,N] if LISTDUMMYVARS is
+TRUE, and [N] if LISTDUMMYVARS is FALSE.
+
+@end defvar
+@c @node LISTOFVARS, LOPOW, LISTDUMMYVARS, Expressions
+@c @unnumberedsec phony
+@defun LISTOFVARS (exp)
+yields a list of the variables in exp.
+LISTCONSTVARS[FALSE] if TRUE will cause LISTOFVARS to include %E, %PI,
+%I, and any variables declared constant in the list it returns if they
+appear in exp.  The default is to omit these.
+@example
+(C1) LISTOFVARS(F(X[1]+Y)/G**(2+A));
+(D1)                            [X[1], Y, A, G]
+
+
+@end example
+@end defun
+@c @node LOPOW, LPART, LISTOFVARS, Expressions
+@c @unnumberedsec phony
+@defun LOPOW (exp, v)
+the lowest exponent of v which explicitly appears in
+exp.  Thus
+
+@example
+LOPOW((X+Y)**2+(X+Y)**A,X+Y) ==> MIN(A,2)
+@end example
+.
+
+@end defun
+@c @node LPART, MULTTHRU, LOPOW, Expressions
+@c @unnumberedsec phony
+@defun LPART (label, expr, n1, ..., nk)
+is similar to DPART but uses a
+labelled box. A labelled box is similar to the one produced by DPART
+but it has a name in the top line.
+
+@end defun
+@c @node MULTTHRU, NOUNIFY, LPART, Expressions
+@c @unnumberedsec phony
+@defun MULTTHRU (exp)
+multiplies a factor (which should be a sum) of exp by
+the other factors of exp.  That is exp is f1*f2*...*fn where at least
+one factor, say fi, is a sum of terms.  Each term in that sum is
+multiplied by the other factors in the product.  (Namely all the
+factors except fi).  MULTTHRU does not expand exponentiated sums.
+This function is the fastest way to distribute products (commutative
+or noncommutative) over sums.  Since quotients are represented as
+products MULTTHRU can be used to divide sums by products as well.
+MULTTHRU(exp1, exp2) multiplies each term in exp2 (which should be a
+sum or an equation) by exp1.  If exp1 is not itself a sum then this
+form is equivalent to MULTTHRU(exp1*exp2).
+@example
+(C1) X/(X-Y)**2-1/(X-Y)-F(X)/(X-Y)**3;
+               1        X         F(X)
+(D1)       - ----- + -------- - --------
+             X - Y          2          3
+                     (X - Y)    (X - Y)
+(C2) MULTTHRU((X-Y)**3,%);
+                    2
+(D2)       - (X - Y)  + X (X - Y) - F(X)
+(C3) RATEXPAND(D2);
+                           2
+(D3)                    - Y  + X Y - F(X)
+(C4) ((A+B)**10*S**2+2*A*B*S+(A*B)**2)/(A*B*S**2);
+                         10  2              2  2
+                (B  + A )   S  + 2 A B S + A  B
+(D4)            --------------------------------
+                                   2
+                              A B S
+(C5) MULTTHRU(%);
+                                          10
+                        2   A B   (B  + A)
+(D5)                    - + --- + -------
+                        S    2      A B
+                            S
+(notice that (B+A)**10 is not expanded)
+(C6) MULTTHRU(A.(B+C.(D+E)+F));
+(D6)                A . F + A . (C . (E + D)) + A . B
+(compare with similar example under EXPAND)
+
+
+@end example
+@end defun
+@c @node NOUNIFY, NTERMS, MULTTHRU, Expressions
+@c @unnumberedsec phony
+@defun NOUNIFY (f)
+returns the noun form of the function name f.  This is
+needed if one wishes to refer to the name of a verb function as if it
+were a noun.  Note that some verb functions will return their noun
+forms if they can't be evaluated for certain arguments.  This is also
+the form returned if a function call is preceded by a quote.
+
+@end defun
+@c @node NTERMS, OPTIMIZE, NOUNIFY, Expressions
+@c @unnumberedsec phony
+@defun NTERMS (exp)
+gives the number of terms that exp would have if it were
+fully expanded out and no cancellations or combination of terms
+occurred. Note that expressions like SIN(E), SQRT(E), EXP(E), etc.
+count as just one term regardless of how many terms E has (if it is a
+sum).
+
+@end defun
+@c @node OPTIMIZE, OPTIMPREFIX, NTERMS, Expressions
+@c @unnumberedsec phony
+@defun OPTIMIZE (exp)
+returns an expression that produces the same value and
+side effects as exp but does so more efficiently by avoiding the
+recomputation of common subexpressions.  OPTIMIZE also has the side
+effect of "collapsing" its argument so that all common subexpressions
+are shared.
+Do EXAMPLE(OPTIMIZE); for examples.
+
+@end defun
+@c @node OPTIMPREFIX, ORDERGREAT, OPTIMIZE, Expressions
+@c @unnumberedsec phony
+@defvar OPTIMPREFIX
+ default: [%] - The prefix used for generated symbols by
+the OPTIMIZE command.
+
+@end defvar
+@c @node ORDERGREAT, ORDERGREATP, OPTIMPREFIX, Expressions
+@c @unnumberedsec phony
+@defun ORDERGREAT (V1, ..., Vn)
+sets up aliases for the variables V1, ..., Vn
+such that V1 > V2 > ...  > Vn > any other variable not mentioned as an
+argument.  See also ORDERLESS.  Caveat:  do EXAMPLE(ORDERGREAT); for
+some specifics.
+
+@end defun
+@c @node ORDERGREATP, ORDERLESS, ORDERGREAT, Expressions
+@c @unnumberedsec phony
+@defun ORDERGREATP (exp1,exp2)
+returns TRUE if exp2 precedes exp1 in the
+ordering set up with the ORDERGREAT function (see DESCRIBE(ORDERGREAT);).
+
+@end defun
+@c @node ORDERLESS, ORDERLESSP, ORDERGREATP, Expressions
+@c @unnumberedsec phony
+@defun ORDERLESS (V1, ..., Vn)
+sets up aliases for the variables V1, ..., Vn
+such that V1 < V2 < ...  < Vn < any other variable not mentioned as an
+argument.  Thus the complete ordering scale is: numerical constants <
+declared constants < declared scalars < first argument to ORDERLESS <
+...  < last argument to ORDERLESS < variables which begin with A < ...
+< variables which begin with Z < last argument to ORDERGREAT <
+ ... < first argument to ORDERGREAT < declared MAINVARs.  Caveat: do
+EXAMPLE(ORDERLESS); for some specifics.  For another ordering scheme,
+see DESCRIBE(MAINVAR);.
+
+@end defun
+@c @node ORDERLESSP, PART, ORDERLESS, Expressions
+@c @unnumberedsec phony
+@defun ORDERLESSP (exp1,exp2)
+returns TRUE if exp1 precedes exp2 in the
+ordering set up by the ORDERLESS command (see DESCRIBE(ORDERLESS);).
+
+@end defun
+@c @node PART, PARTITION, ORDERLESSP, Expressions
+@c @unnumberedsec phony
+@defun PART (exp, n1, ..., nk)
+deals with the displayed form of exp. It
+obtains the part of exp as specified by the indices n1,...,nk.  First
+part n1 of exp is obtained, then part n2 of that, etc.  The result is
+part nk of ... part n2 of part n1 of exp.  Thus PART(Z+2*Y,2,1) yields
+2.  PART can be used to obtain an element of a list, a row of a
+matrix, etc.
+If the last argument to a Part function is a list of indices then
+several subexpressions are picked out, each one corresponding to an
+index of the list.  Thus PART(X+Y+Z,[1,3]) is Z+X.
+PIECE holds the last expression selected when using the Part
+functions.  It is set during the execution of the function and thus
+may be referred to in the function itself as shown below.
+If PARTSWITCH[FALSE] is set to TRUE then END is returned when a
+selected part of an expression doesn't exist, otherwise an error
+message is given.
+For examples, do EXAMPLE(PART);
+
+@end defun
+@c @node PARTITION, PARTSWITCH, PART, Expressions
+@c @unnumberedsec phony
+@defun PARTITION (exp, var)
+returns a list of two expressions.  They are (1)
+the factors of exp (if it is a product), the terms of exp (if it is a
+sum), or the list (if it is a list) which don't contain var and, (2)
+the factors, terms, or list which do.
+@example
+(C1) PARTITION(2*A*X*F(X),X);
+(D1)                 [ 2 A , X F(X) ]
+(C2) PARTITION(A+B,X);
+(D2)                 [ A + B , 0 ]
+(C3) PARTITION([A,B,F(A),C],A); 
+(D3)                [[B,C],[A,F(A)]]
+
+
+@end example
+@end defun
+@c @node PARTSWITCH, PICKAPART, PARTITION, Expressions
+@c @unnumberedsec phony
+@defvar PARTSWITCH
+ default: [FALSE] - if set to TRUE then END is returned
+when a selected part of an expression doesn't exist, otherwise an
+error message is given.
+
+@end defvar
+@c @node PICKAPART, PIECE, PARTSWITCH, Expressions
+@c @unnumberedsec phony
+@defun PICKAPART (exp,depth)
+will assign E labels to all subexpressions of
+exp down to the specified integer depth.  This is useful for dealing
+with large expressions and for automatically assigning parts of an
+expression to a variable without having to use the part functions.
+@example
+(C1) EXP:(A+B)/2+SIN(X^2)/3-LOG(1+SQRT(X+1));
+                                                 2
+                                            SIN(X )   B + A
+(D1)               - LOG(SQRT(X + 1) + 1) + ------- + -----
+                                               3        2
+(C2) PICKAPART(%,1);
+(E2)                    - LOG(SQRT(X + 1) + 1)
+                                    2
+                               SIN(X )
+(E3)                           -------
+                                  3
+                                B + A
+(E4)                            -----
+                                  2
+(D4)                         E4 + E3 + E2
+
+
+@end example
+@end defun
+@c @node PIECE, POWERS, PICKAPART, Expressions
+@c @unnumberedsec phony
+@defvar PIECE
+ - holds the last expression selected when using the Part
+functions.  It is set during the execution of the function and thus
+may be referred to in the function itself.
+
+@end defvar
+@c @node POWERS, PRODUCT, PIECE, Expressions
+@c @unnumberedsec phony
+@defun POWERS (expr, var)
+gives the powers of var occuring in expr.  To use
+it, do LOAD(POWERS);.  For details on usage, do
+PRINTFILE("powers.usg");.
+
+@end defun
+@c @node PRODUCT, REALPART, POWERS, Expressions
+@c @unnumberedsec phony
+@defun PRODUCT (exp, ind, lo, hi)
+gives the product of the values of exp as
+the index ind varies from lo to hi.  The evaluation is similar to that
+of SUM.  No simplification of products is available at this time.
+If hi is one less than lo, we have an "empty product" and PRODUCT 
+returns 1 rather than erring out.  Also see DESCRIBE(PRODHACK).
+@example
+(C1)  PRODUCT(X+I*(I+1)/2,I,1,4);
+(D1)             (X + 1) (X + 3) (X + 6) (X + 10)
+
+
+@end example
+@end defun
+@c @node REALPART, RECTFORM, PRODUCT, Expressions
+@c @unnumberedsec phony
+@defun REALPART (exp)
+gives the real part of exp. REALPART and IMAGPART will
+work on expressions involving trigonometic and hyperbolic functions,
+as well as SQRT, LOG, and exponentiation.
+
+@end defun
+@c @node RECTFORM, REMBOX, REALPART, Expressions
+@c @unnumberedsec phony
+@defun RECTFORM (exp)
+returns an expression of the form A + B*%I, where A and
+B are purely real.
+
+@end defun
+@c @node REMBOX, SUM, RECTFORM, Expressions
+@c @unnumberedsec phony
+@defun REMBOX (expr, arg)
+removes boxes from expr according to arg.  If arg
+is UNLABELED then all unlabelled boxes are removed.  If arg is the
+name of some label then only boxes with that label are removed.  If
+arg is omitted then all boxes labelled and unlabelled are removed.
+
+@end defun
+@c @node SUM, {special symbol}, REMBOX, Expressions
+@c @unnumberedsec phony
+@defun SUM (exp, ind, lo, hi)
+performs a summation of the values of exp as
+the index ind varies from lo to hi.  If the upper and lower limits
+differ by an integer then each term in the sum is evaluated and added
+together.  Otherwise, if the SIMPSUM [FALSE] is TRUE the result is
+simplified.  This simplification may sometimes be able to produce a
+closed form.  If SIMPSUM is FALSE or if 'SUM is used, the value is a
+sum noun form which is a representation of the sigma notation used in
+mathematics.
+If hi is one less than lo, we have an "empty sum" and SUM returns 0 
+rather than erring out.
+Sums may be differentiated, added, subtracted, or multiplied with some
+automatic simplification being performed.
+Also see DESCRIBE(SUMHACK).
+CAUCHYSUM[FALSE] when TRUE causes the Cauchy product to be used when
+multiplying sums together rather than the usual product.  In the
+Cauchy product the index of the inner summation is a function of the
+index of the outer one rather than varying independently.
+GENINDEX[I] is the alphabetic prefix used to generate the next
+variable of summation.
+GENSUMNUM[0] is the numeric suffix used to generate the next variable
+of summation.  If it is set to FALSE then the index will consist only
+of GENINDEX with no numeric suffix.
+Do EXAMPLE(SUM); for examples.  See also SUMCONTRACT, INTOSUM,
+BASHINDICES, and NICEINDICES.
+
+@end defun
+@c @node VERB
+@c @unnumberedsec phony
+@defvr {special symbol} VERB
+ - the opposite of "noun", i.e. a function form which "does
+something" ("action" - for most functions the usual case).  E.g.
+INTEGRATE integrates a function, unless it is DECLAREd to be a "noun",
+in which case it represents the INTEGRAL of the function.  See NOUN,
+NOUNIFY, and VERBIFY.
+
+@end defvr
+@c @node VERBIFY,  , {special symbol}, Expressions
+@c @unnumberedsec phony
+@defun VERBIFY (f)
+returns the function name f in its verb form (See also VERB,
+NOUN, and NOUNIFY).
+
+@end defun

@@ -1,0 +1,86 @@
+/*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
+/***************************************************************************
+***                                                                    *****
+***     Copyright (c) 1984 by William Schelter,University of Texas     *****
+***     All rights reserved                                            *****
+***************************************************************************/
+KILL(ALL);
+DONE$
+N!/(N+1)!;
+N!/(N+1)!$
+MINFACTORIAL(%);
+1/(N+1)$
+(N+1)^2*N!^2;
+(N+1)^2*N!^2$
+FACTCOMB(%);
+(N+1)!^2$
+QUNIT(17);
+SQRT(17)+4$
+EXPAND(%*(SQRT(17)-4));
+1$
+CF([1,2,-3]+[1,-2,1]);
+[1,1,1,2]$
+CFDISREP(%);
+1+1/(1+1/(1+1/2))$
+CFLENGTH:4;
+4$
+CF(SQRT(3));
+[1,1,2,1,2,1,2,1,2]$
+CFEXPAND(%);
+MATRIX([265,97],[153,56])$
+EV(%[1,2]/%[2,2],NUMER);
+1.73214285$
+CF([1,2,-3]+[1,-2,1]);
+[1,1,1,2]$
+CFDISREP(%);
+1+1/(1+1/(1+1/2))$
+CFLENGTH:4;
+4$
+CF(SQRT(3));
+[1,1,2,1,2,1,2,1,2]$
+CFEXPAND(%);
+MATRIX([265,97],[153,56])$
+EV(%[1,2]/%[2,2],NUMER);
+1.73214285$
+DECLARE(J,EVEN);
+DONE$
+FEATUREP(J,INTEGER);
+TRUE$
+MAP(F,X+A*Y+B*Z);
+F(B*Z)+F(A*Y)+F(X)$
+MAP(LAMBDA([U],PARTFRAC(U,X)),X+1/(X^3+4*X^2+5*X+2));
+1/(X+2)-1/(X+1)+1/(X+1)^2+X$
+MAP(RATSIMP,X/(X^2+X)+(Y^2+Y)/Y);
+Y+1/(X+1)+1$
+MAP("=",[A,B],[-0.5,3]);
+[A = -0.5,B = 3]$
+FULLMAP(G,A+B*C);
+G(B)*G(C)+G(A)$
+MAP(G,A+B*C);
+G(B*C)+G(A)$
+FULLMAPL("+",[3,[4,5]],[[A,1],[0,-1.5]]);
+[[A+3,4],[4,3.5]]$
+EXP1:(A^2+2*A+1)*Y+X^2;
+(A^2+2*A+1)*Y+X^2$
+SCANMAP(FACTOR,%);
+(A+1)^2*Y+X^2$
+U*V^(A*X+B)+C;
+U*V^(A*X+B)+C$
+SCANMAP('F,%);
+F(F(F(U)*F(F(V)^F(F(F(A)*F(X))+F(B))))+F(C))$
+APPEND([Y+X,0,-3.2],[2.5E+20,X]);
+[Y+X,0,-3.2,2.5E+20,X]$
+UNION(X,Y):=IF X = [] THEN Y
+       ELSE (IF MEMBER(T:FIRST(X),Y) THEN UNION(REST(X),Y)
+		 ELSE CONS(T,UNION(REST(X),Y)));
+UNION(X,Y):=IF X = [] THEN Y
+       ELSE (IF MEMBER(T:FIRST(X),Y) THEN UNION(REST(X),Y)
+		 ELSE CONS(T,UNION(REST(X),Y)))$
+UNION([A,B,1,1/2,X^2],[-X^2,A,Y,1/2]);
+[B,1,X^2,-X^2,A,Y,1/2]$
+BERNPOLY(X,5);
+X^5-5*X^4/2+5*X^3/3-X/6$
+MAPLIST(NUMFACTOR,%);
+[1,-5/2,5/3,-1/6]$
+APPLY(MIN,%);
+-5/2$

@@ -1,0 +1,15 @@
+writefile(dsk,adk)$
+delay:read("Please enter delay time in form [hours,minutes]");
+delay_secs:first(delay)*3600+second(delay)*60;
+loadfile(asymp,fasl,dsk,adk)$
+showtime:true$
+graph11:diagram(line(a,b,1,mu),line(b,c,2,mu),line(c,d,3,mu),line(d,e,4,mu),
+    line(e,f,5,mu),line(f,i,14,mu),line(i,a,6,mu),line(b,g,7,mu),line(c,g,8,mm),
+    line(e,h,9,mu),line(h,f,10,mm),line(g,h,11,mm),extline(a,12,-p),extline(d,13,p-q),
+    extline(i,15,q))$
+ttyoff:true$
+?sleep(delay_secs);
+bound_finite_region_only(graph11,[[mu,p],mm,inf]);
+closefile(asymp,demou3);
+mail(adk,"Demo3 completed execution.")$
+logout();

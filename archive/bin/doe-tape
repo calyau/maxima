@@ -1,0 +1,3 @@
+#!/bin/sh
+cd /mount/rascal/usr2
+maxima/bin/maxima-tape /dev/rst0  -C ftp/pub skcl-3.tar.Z compress.tar kcl.broadcast kcl.tar.Z 

@@ -1,0 +1,450 @@
+
+          Gamma Matrix Algebra Program (GAMALG).
+          ======================================
+
+             written by 
+                 Anthony E Terrano (TREX)
+             and  Stephen Wolfram (SWOLF)
+
+             mostly on [Feb 25, Mar 3], 1979
+               revised  July 10, 1979.
+
+
+Capabilities:
+-------------
+
+1.      Takes traces of products of Dirac gamma matrices in n dimensions.
+        In 4 dimensions, it also takes traces of products involving 
+        gamma[5] (G5).  The results may have free indices.
+
+2.      Squares sums of amplitudes, involving polarized or unpolarized spinors.
+
+3.      Contracts free indices.
+
+4.      Simplifies products of gamma matrices in n dimensions.
+
+For all manipulations, GAMALG uses the conventions of Bjorken and Drell
+and takes Tr(1)=4 (generalization of the spinor dimensionality is 
+unnecessary).
+
+Further information, especially on the algorithms used by GAMALG, may
+be found in 'MACSYMA Tools for Feynman Diagram Calculations', by Stephen 
+Wolfram, in Proceeding of the 1979 Users' Conf. and Caltech preprint 
+CALT-68-720 (June 1979). These references give some discussion of other
+programs available for high energy physics calculations (including
+Feynman parametrization etc.).
+
+
+Summary of Functions [sections under which functions discussed 
+                       given in brackets]
+
+(Note:  in all functions taking a string of arguments (e.g. TR),
+list brackets ([,]) may be included or omitted as desired.)
+
+BTR(list)   takes the trace of the gamma matrices represented by its argument
+in a way that is more efficient than TR for long traces invloving many sums 
+of momenta [1].
+
+CIND(mu1,...,muk)   adds mu1 through muk to the list of contracted indices [1].
+
+CGT(exp)   converts G's to TR's and does them [3].
+
+COMPDEF(vec1=list1,vec2=list2,ind1=val1,ind2=val2,vec3=...)  defines lists as
+the components of vectors and values for indices, for use by NONCOV
+
+CON(exp)   contracts all free indices in exp (including epsilon symbols) [3].
+
+CONJ(amp)   returns the conjugate of the amplitude amp [2].
+
+COTR(exp)   reduces (in n=4) products of traces with contracted indices to 
+single traces [3].
+
+CRUNCH(exp)   simplifies untraced products of gamma matrices in exp [3].
+
+DFIX(exp)   expands all dot products in exp [3].
+
+EPSFIX(exp)  expands all epsilon symbols in exp [3].
+
+FLAGS()   displays the values of flags and information lists.
+
+GFIX(exp)   expands sums of vectors appearing in untraced products of
+gamma matrices in exp [3].
+
+GLUE3(l1,l2,l3)   gives the tensor corresponding to the three-gluon vertex
+represented by its arguments [3].
+
+KINDEF(dotp1=rep1, dotp2=rep2, ...)   defines kinematics substitutions 
+dotp1=rep1,... [3].
+
+NONCOV(exp)  substitues the non-covariant components specified by COMPDEF
+for vectors and indices in dot products in exp [3]
+
+NSET(dim)   sets the dimensionality of spacetime to dim [1].
+
+SCALS(x1,..,xk) adds x1 through xk to the list of scalars [1].
+
+SQ(spn1,amp,spn2)   squares the amplitude amp sandwiched between the spinors
+spn1 and spn2 [2].
+
+SQAM(spn1,amp1,spn2,amp2)   sums over spins the amplitude squared 
+amp1*conj(amp2) sandwiched between the spinors spn1 and spn2 [2].
+
+TR(a1,a2,...)   takes the trace of gamma matrices represented by its 
+argument [1].
+
+UNCIND(mu1,...,muk)   removes mu1 through muk from the list of
+contracted indices [1].
+
+UNCOMPDEF(vec1,ind1,vec2,vec3,...)  removes the components defined for
+its arguments [3].
+
+UNKINDEF(dotp1,...,dotpk) removes simplifications defined for dot
+products dotp1 through dotpk [3].
+
+UNSCALS(x1,...,xk) removes x1 through xk from the list of scalars [2].
+
+
+Pseudofunctions
+---------------
+
+D(p,q)   dot product of p and q
+
+D(p,mu)   mu component of the vector p
+
+D(mu,nu)   mu, nu component of metric tensor
+
+EPS(p,q,r,s)   totally antisymmetric product of p,q,r and s
+
+G(a1,...,ak)   product of gamma matrices represented by a1,...,ak
+                (list brackets around sets of arguments optional)
+
+UV(p,m)   a fermion spinor with momentum p and mass m
+
+UVS(p,m,s)   a polarized fermion spinor with spin s
+
+ZN(p,m)   the numerator of a massive fermion propagator (p(slash)+m)
+
+ZD(p,m) or ZA(p,m)   the full propagator for a massive fermion 
+((p(slash)+m)/(d(p,p)-m*m)). [If ZERM:TRUE then m=0 will be assumed, and 
+ZD(p) or ZA(p) may be used.]
+
+ZDEN(p,m)  the denominator of a massive propagator (d(p,p)-m^2) suitable
+for VIPER generated when VIRED:TRUE.
+
+Flags (Default values in brackets)
+-----
+
+BORED[FALSE]   if TRUE generates interest (TR0 entries and exits).
+
+COF[FALSE]   if TRUE alphabetizes CRUNCH outputs by anticommutation.   
+
+DEF[TRUE]   if FALSE will prevent the expansion of dot products as they are 
+generated
+
+DOF[TRUE]    if FALSE will prevent alphabetization of dot products as they
+are generated
+
+DSIM[TRUE]  if FALSE prevents dot product simplifications defined by KINDEF
+from being applied.
+
+EPSOF[TRUE]   if FALSE will prevent alphabetization of epsilon symbols
+(antisymmetric products) as they are generated.
+
+EPSEF[TRUE]   if FALSE will prevent expansion of epsilon symbols as 
+they are generated.
+
+KAHAF[FALSE]   if TRUE will cause the Kahane algorithm to be used on
+traces with many contracted indices in n=4.
+ 
+MTRICK[TRUE]   if TRUE invokes a more efficient algorithm for treating 
+traces with large numbers of massive spinor propagators in 4 dimensions.
+
+NOP[FALSE]   if TRUE causes SQ to generate no primed indices 
+(does Feynman gauge polarization sums).
+
+
+NTR[FALSE]   if TRUE causes SQ to generate G's rather than TR's
+
+PLATU[FALSE]    if TRUE uses the inefficient methods of templates for large 
+traces
+
+VIRED[FALSE]  if TRUE generates VIPER-compatible output.
+
+ZERM[FALSE]   if TRUE assumes all particle masses to be zero.
+
+
+BORELEN   determines the amount of interest generated when BORED:TRUE
+
+METSIG  is the signature of the metric used by NONCOV  (default [+,-,-,-])
+
+
+Information lists (initially empty)
+-----------------
+
+COMPS  is the list of components defined by COMPDEF
+
+IND   is the list of contracted indices (which will be uncontracted if 
+unpaired)
+
+KINS   is the list of kinematic substitutions defined by KINDEF
+
+NPIND   is the list of indices automatically summed over by SQ (or SQAM)
+
+SCALARS    is the list of scalars
+
+
+0.  Loading GAMALG
+------------------
+
+      To load GAMALG into a MACSYMA, do 
+LOADFILE (GAMALG,>,SHARE);
+
+      Some examples of the use of GAMALG may be executed by doing
+BATCH (GAM,DEMO,SHARE); .
+
+
+
+1.  Doing Traces
+----------------
+
+TR(a1,a2,....,ak)  is the basic trace function in GAMALG.
+The ai can be:
+1.    Slashed Lorentz vectors.  For example, p(slash)=gamma.p is 
+      represented by p, and p(slash)+k(slash)/2 by p+k/2. If a combination
+      of vectors, such as x*p+q (where x is a scalar) is required
+then x must be declared as a scalar using SCALS (see below).
+
+2.    Uncontracted gamma matrices, represented by their indices. These
+      are treated just as slashed vectors.
+
+3.    Contracted pairs of gamma matrices, also represented by their
+      indices.  These indices are specified by doing CIND(mu1,mu2,...muj);
+      where the mui are the indices to be contracted.
+
+4.    Gamma[5], denoted by G5 (only for n=4).
+
+5.    LHP or RHP, the left and right-handed projection operators
+      (also only for n=4).  (LHP=(1-G5)/2, RHP=(1+G5)/2)
+
+6.    The numerator of a massive spinor propagator, denoted by
+      ZN(p,m).  This will be expanded as p(slash)+m.
+
+7.    The complete fermion propagator, including denominator, 
+      denoted by ZD(p,m).  This will be expanded as (p(slash)+m)/(d(p,p)-m*m).
+      If all particles required are massless, ZERM may be set to true, and the 
+      m in ZN and ZD omitted.
+
+Note that any list brackets ([,]) in the argument list of TR will be ignored.
+Any lists to be used in the argument of TR may of course be given names 
+and manipulated outside of TR (e.g REVERSEd, APPENDed to, etc.).
+
+      The output from TR is in the form of products of D(p,q) (representing
+the dot product of the vectors p and q), D(p,mu) (representing the mu comp-
+onent of the vector p, where mu is an unpaired index), D(mu,nu)
+(representing the metric tensor), EPS(p,q,r,s) (representing the totally 
+antisymmetric product of p,q,r and s), and scalars.  Note that n is the 
+dimensionality of spacetime.  NSET(4); declares that all traces are to be
+done in 4 dimensions (n=4) (see below).  All D(p,q) and EPS(p,q,r,s) are 
+generated with their arguments in alphabetical order, to aid simplification 
+of expressions. (This may be prevented by setting the flags DOF:FALSE and
+EPSOF:FALSE, respectively.)   Also, unless DEF:FALSE and EPSEF:FALSE,
+all dot products and epsilon symbols of combinations
+of vectors will be expanded out as they are generated (e.g. D(p+k/2,q) -->
+D(p,q)+D(k,q)/2 ).
+
+BTR(a1,a2,...,ak)  takes the trace of the gamma matrices represented by its
+argument in a way that is more efficient than TR if many of the ai
+involve sums of vectors. (Essentially BTR computes the trace without
+expanding dot products, and only after simplifying the answer does it expand 
+the dot products.)
+
+CIND(mu1,mu2,....muj)  declares the indices mu1 through muj (which may be 
+any atoms) to be contracted indices.  They will be contracted by TR, CRUNCH 
+and CON.  The list of contracted indices is IND.  Even if an index has been
+declared to be contracted by CIND, it cannot of course be contracted unless it
+appears twice. If a contracted index appears more 
+than twice, an error will be printed.
+
+UNCIND(mu1,mu2,....muj)  removes the contraction property from the indices 
+mu1 through muj.
+
+NSET(dim)  declares that all the operations should be performed
+in spacetime of dimension dim.  (Note that dim must be close to 4
+- GAMALG cannot deal with gamma matrices in 3 or 5 dimensions.)  If NSET is 
+not performed, the dimensionality will be taken as n.  NSET(4) will slightly
+restructure GAMALG so as to be more efficient at doing traces in 4 dimensions,
+and to treat gamma[5] correctly.  It can only be repealed by reloading GAMALG.
+If n=4, then the Kahane algorithm may be invoked by setting
+KAHAF:TRUE.  This will only be more efficient than the algorithm usually
+used by GAMALG for traces with very large numbers of contracted indices.
+
+SCALS(x1,..,xk)  declares x1 through xk to be scalars (rather than vectors).
+SCALARS is the list of declared scalars.  A variable need only be declared
+a scalar if it will appear in dot products, where it might be mistaken
+for a vector. 
+
+UNSCALS(x1,...,xk)  removes x1 through xk from the list of scalars.
+
+2.  Squaring Amplitudes
+-----------------------
+
+SQ(uv(pi,mi),wt1*g(a1,a2,a3,..,ak)+wt2*g(b1,b2,...,bj)+...,uv(pf,mf))
+squares the amplitude
+  {ubar(pi,mi)*a1*a2*...*ak*u(pf,mf)}*wt1
++ {ubar(pi,mi)*b1*b2*...*bj*u(pf,mf)}*wt2
++ ...... ,
+where wt1, wt2, ... are the scalar weights of the various pieces
+of the amplitude (e.g. denominators of propagators etc.).  The ai, bi, ...
+can be slashed vectors, indices, numerators of propagators (ZN(q,m)) as for TR
+If the m are omitted from UV,then they will be assumed to be zero.
+Note that setting the flag ZERM:TRUE will take all masses in uv,
+zn and zd as zero, and improve the efficiency of the program.
+ 
+     Any of the ai, bi, ... which were declared as contracted indices
+by CIND, but which appear only once (i.e. uncontracted) in the amplitude
+(e.g. from external photons) will be replaced by the concatenation
+of their name with 'prime' in the conjugate of the amplitude, unless 
+they appear in the list NPIND, in which case the indices in the 
+conjugate amplitude will be the same as those in the amplitude, and will
+be contracted with them (for an external photon this corresponds
+to a Feynman gauge polarization sum).  By setting the flag NOP:TRUE
+no primes will be generated, and all indices will be contracted.
+      In squaring amplitudes, SQ takes UV(p,m)*conjugate(UV(p,m)) = ZN(p,m) 
+= p(slash)+m.  If UV(p,m) represents an antifermion spinor, then the second
+argument to UV should be minus the mass of the antifermion, instead of simply
+the mass as for a fermion.  With some conventions, extra overall minus signs 
+must be associated with antifermion propagators.  
+     For polarized fermions, the spinors UV(p,m) are replaced by UVS(p,m,s),
+where s is the spin vector of the fermion.  The spin projection operator used
+is (1+G5*s(slash))/2.
+      If the flag NTR:TRUE then SQ will generate G's (untraced products
+of gamma matrices) instead of TR's.  The G's may be evaluated as TR's by
+using CGT, or may be manipulated using CRUNCH or COTR.  When indices are to be
+contracted between different traces (as from a Feynman gauge photon
+propagator between two fermion lines), it is much more efficient
+to COTR G's and then use CGT than to perform the traces and then apply CON.
+
+
+SQAM(uv(pi,mi),wt1*g(a1,...,ak),uv(pf,mf),wt2*g(b1,b2,...,bj)
+sums over spins the product of amplitudes:
+  {ubar(pi,mi)*a1*...*ak*u(pf,mf)}*
+conjugate{ubar(pi,mi)*b1*...*bj*u(pf,mf)} *wt1*wt2.
+
+
+3.  Contracting Indices etc.
+----------------------------
+
+CON(exp)  contracts all pairs of indices in exp which have been 
+declared by CIND.  All contractions are performed in n dimensions so that
+D(mu,mu)=n.  In GAMALG, the metric tensor with indices mu and nu is 
+represented by D(mu,nu) while the mu component of the four-vector p is
+represented by D(p,mu) or D(mu,p).  The dot product of two vectors p and q is
+represnted by D(p,q).  CON also performs contractions involving
+epsilon symbols (totally antisymmetric products of four vectors in n=4)
+represented by eps(a1,a2,a3,a4).
+CON may be used on expressions containing untraced gamma 
+matrix strings G(p1,...,pk).  If SQRED:TRUE then these will be output from
+CON in a form suitable for input to SQ or SQAM.
+
+COTR(exp)   takes products of G's in exp, assumes them to be traces, and
+then combines them into a single trace by contracting indices between 
+them, if this is possible.  COTR will only work in n=4.  It returns GT's
+rather than G's, representing undone traces.  These can be done using CGT.
+
+DFIX(exp)  expands out all dot products in exp.  For example, it replaces
+D(p+k/2,q) by D(p,q)+D(k,q)/2, D(mu,p+q) by D(mu,p)+D(mu,q), and
+D(x*p+q,k) by x*D(k,p)+D(k,q), where x is a scalar declared with SCALS.  In all
+cases GAMALG alphabetizes the arguments to any D(a,b), mimicing the commutat-
+ivity of the dot product.  This alphabetization will be prevented if DOF:FALSE.
+Dot products will be expanded out automatically
+(rendering DFIX unnecessary) unless DEF:FALSE.  Setting DEF:FALSE  may well
+speed up some calculations, and prevent explosion of the number
+of terms in intermediate expressions. In evaluating traces, this will
+be done automatically if BTR, rather than TR, is used.
+The simplification of dot products is controlled by the flag DSIM[TRUE].
+Unless DSIM:FALSE, the substitutions defined by KINDEFs will be applied
+to all dot products as they are generated.
+
+EPSFIX(exp)  expands out all epsilon symbols in exp.  Any epsilon symbol
+with two equal arguments will automatically be set to zero.  Unless EPSOF:FALSE,
+the arguments to all epsilon symbols will be alphabetized (with suitable
+signs inserted for the signature of the permutation required) as they
+are generated.  When EPSEF:TRUE, epsilon symbols will be expanded as they 
+are generated.
+
+GLUE3([p1,mu1],[p2,mu2],[p3,mu3])  returns a tensor corresponding to the
+momentum space part of a three-boson vertex in Yang-Mills theories.  All 
+momenta are taken to be ingoing.  The complete amplitude for the vertex is
+-g*f[a,b,c] times the tensor returned, where the order of the group 
+indices is the same as that of the mui.  The sign convention is such
+that a fermion-fermion-boson vertex is -i*g*T[a,[i,j]]*gamma[mu].
+
+
+4.  Simplifying Products of Gamma Matrices (G's)
+------------------------------------------
+
+CRUNCH(exp)  simplifies all untraced products of slashed vectors
+and gamma matrices (represented by G's) in exp. It performs any
+contractions etc. possible in the product, and returns an expression
+in terms of D(p,q)... and G(a1,...,aj)... where the latter represnts a 
+product of slashed vectors and gamma matrices.  If the flag COF is set
+to TRUE (then CRUNCH anticommutes gamma matrices
+until all the arguments of the G(a1,...,aj) that it returns are in alphabet-
+ical order.  If COF is FALSE, then the arguments of the G(a1,...,aj) will
+be in an order that should give the shortest result if no cancellations 
+occurred.  In n=4, the Kahane algorithm will be used. List brackets in the 
+arguments of any G's will be ignored.
+
+
+CGT(exp)   will replace any G in exp with TR and evaluate the resulting
+traces.
+
+GFIX(exp)  expands sums of vectors appearing in G's in exp.
+
+
+5.  Kinematic Substitutions
+---------------------------
+
+KINDEF(dotp1=rep1,...,dotpj=repj)   sets up substitutions for the 
+dot products dotp1,..dotpj (e.g. D(p,q)=s, d(p1,p1)=m^2, ...).
+These will be performed when the dot products
+are genrated unless DSIM:FALSE.  The list of substitutions is contained in
+KINS.  New substitutions for a particular dot product will overwrite old
+ones.
+
+UNKINDEF(dotp1,..,dotpj)  removes the substituions for the dot 
+products dotp1,...dotpj.
+
+COMPDEF, UNCOMPDEF and NONCOV perform non-covariant kinematics:
+descriptions not yet written -----------
+
+6.  Technical Information
+-------------------------
+
+GAMALG sets the MACSYMA flags DSKGC:TRUE, PARTSWITCH:TRUE, LISTARITH:FALSE.
+It will not work if the last two flags are altered.  The following atoms must
+not be bound: LHP, RHP, G5.  D, G, TR must not be used at all (if they are,
+FREEOF will be got wrong.)  Several of the functions above use alphabetiz-
+ation.  The 'alphabetized' order may be changed by giving aliases.  The arrays
+CONTAB and CONTAB4 must not be altered - they contain tables used by TR
+and CRUNCH. Scalars declared by SCALS have the 'constant' property.
+GAMALG autoloads the disk files SHARE;GAM5 >, GAMKAH >, GAMMTR >,   
+GAMCON > and GAMSQ >.
+
+
+A Request
+---------
+
+      GAMALG was originally written very quickly (in a few days) for a specific
+calculation.  Since then it has been revised considerably.
+  While we have tried to test it completely, it may still have 
+bugs.  If you discover any bugs, please tell us about them by doing (outside 
+MACSYMA)
+:MAIL SWOLF,TREX  
+(message)
+  controlC.
+In addition, we would be very grateful for any suggestions about 
+aditional features, simpler input formats, and so on.
+      We hope that you find our program useful.
+
+

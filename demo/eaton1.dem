@@ -1,0 +1,12 @@
+/* Solution of Simultaneous Differential Equations */
+
+EQ1:3*'DIFF(F(X),X,2)-2*'DIFF(G(X),X)=SIN(X);
+EQ2:A*'DIFF(G(X),X,2)+'DIFF(F(X),X)=A*COS(X);
+ATVALUE(G(X),X=0,1)$
+ATVALUE('DIFF(F(X),X),X=0,0)$
+ATVALUE('DIFF(G(X),X),X=0,1)$
+LAPLACE_EQ1:LAPLACE(EQ1,X,S);
+LAPLACE_EQ2:LAPLACE(EQ2,X,S);
+SOLVE([LAPLACE_EQ1,LAPLACE_EQ2],
+         ['LAPLACE(F(X),X,S),'LAPLACE(G(X),X,S)]);
+ILT(%,S,X);

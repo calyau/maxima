@@ -1,0 +1,19 @@
+By loading the file SHARE2;LRATS FASL one gains access to the two functions
+described below:
+
+LRATSUBST(list_of_equations,exp) is analogous to SUBST(list_of_equations,exp)
+except that it uses RATSUBST instead of SUBST.  The first argument of LRATSUBST
+must be an equation or a list of equations identical in format to the form
+accepted by SUBST (see the MACSYMA manual, p. 81).  The substitutions are
+made in the order given by the list of equations, that is, from left to right.
+
+FULLRATSUBST(a,b,c) is the same as RATSUBST except that it calls itself
+recursively on its result until that result stops changing.  This function
+is useful when the replacement expression and the replaced expression have
+one or more variables in common.  FULLRATSUBST will also accept its arguments
+in the format of LRATSUBST.  That is,  the first argument may be a single
+substitution equation or a list of such equations, while the second argument
+is the expression being processed.
+
+A demo is available in SHARE2;LRATS DEMO.
+Author: ASB

@@ -1,0 +1,62 @@
+		Solution of Differential Equations
+		    by use of Laplace Transforms
+
+
+    DIFSOLVE finds the solution of differential equations or systems of
+them by use of Laplace transforms.  Currently it is limited to constant-
+coefficient linear differential equations.  If initial conditions on the
+independent variable are given, they are applied at zero and are imposed
+on the given equation.  The functional dependencies of
+the variables in the given equations must be declared before DIFSOLVE is
+called.  Only one independent variable may appear in the supplied equa-
+tions.  The dependent variables are not specified as arguments because
+these variables are obtained from the LISTOFVARS function.  Note that
+any undetermined coefficients must be declared to be constant, e.g.
+DECLARE(a,CONSTANT).
+
+    The input parameters are not checked for correctness.  However, the
+given equations should be checked to insure that they are linear.  Also
+the coefficients should be checked to insure that they are constant.
+Additional checks that should be done are that the independent variable
+and all its derivatives (1) are raised only to the first power and (2)
+never appear as cross-products.
+
+    For an nth-order differential equation, there must be n initial con-
+ditions if a unique solution is to be obtained.  When non-zero initial
+values are given, the final function determining the solution contains
+additional terms in the numerator.
+
+
+			Algorithm
+			=========
+
+    First the routine declares the functional relationships of the de-
+pendent variables explicitly.  Then the initial conditions are applied.
+The Laplace transform is taken, and any boundary conditions are imposed
+on the resulting set of simultaneous linear equations.  Then the inde-
+pendent variable is solved for.  Taking the inverse transform gives the
+final solution.  Note that Macsyma will be able to find the Laplace
+transform of most of the differential equations of interest.  However
+the inverse transform is less likely to be known.  Also the solution is
+dependent on the success of the linear equation solver in Macsyma.
+
+    The DIFSOLVE function takes one arguments:
+	1)  a differential equation, or if a system of equations
+	    is to be solved, then a list of equations
+
+		Future planned enhancements:
+
+1.  If the inverse Laplace transform fails, use the technique of partial
+fractions to break the fraction into several fractions with denominators
+of quadratic degree or less.
+
+2.  Entend to include boundary conditions that would be imposed on the
+transformed equations, which are a set of simultaneous linear equations.
+
+3.  Extend to include initial conditions not given at x=0.  The equation
+would be solved without the initial conditions.  The given initial con-
+ditions would then be used to solve for the undetermined coefficients.
+
+    I haven't written the Macsyma program yet, but I would like
+to receive comments and suggestions.  Mail should be sent to
+MSC@MIT-MC.

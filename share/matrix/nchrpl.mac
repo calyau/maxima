@@ -1,0 +1,29 @@
+
+/* MATTRACE computes the trace [sum of the elements on the main diagonal] of
+a square matrix.  It is used by NCHARPOLY, an alternative to MACSYMA's
+CHARPOLY.  NCHARPOLY works by computing traces of powers the given matrix,
+which are known to be equal to sums of powers of the roots of the
+characteristic polynomial.  From these quantities the symmetric functions of
+the roots can be calculated, which are nothing more than the coefficients of
+the characteristic polynomial.  CHARPOLY works by forming the determinant of
+VAR * IDENT [N] - A.  Thus NCHARPOLY wins, for example, in the case of large
+dense matrices filled with integers, since it avoids polynomial arithmetic
+altogether.
+
+Programmed by DRB@MC. */
+
+MATTRACE(A):=BLOCK([ANS:0],FOR I THRU LENGTH(A) DO ANS:ANS+A[I,I],ANS);
+
+NCHARPOLY(A,VAR):=BLOCK([AK:A,TRLIST:[MATTRACE(A)],SYMLIST:[1],K:0,P:0,
+MAPERROR:FALSE,MAPPRINT:FALSE],
+THRU LENGTH(A)-1 DO BLOCK([],AK:A.AK,TRLIST:CONS(MATTRACE(AK),TRLIST)),
+TRLIST:REVERSE(TRLIST), 
+/*
+MAP(LAMBDA([X],K:K+1,SYMLIST:
+CONS(APPLY("+",MAPLIST("*",SYMLIST,TRLIST))/-K,SYMLIST)),TRLIST),
+*/
+for i in trlist do (k:k+1,SYMLIST:
+CONS(APPLY("+",MAPLIST("*",SYMLIST,TRLIST))/-K,SYMLIST)),
+FOR I:0 UNLESS SYMLIST=[] DO
+ BLOCK([],P:P+FIRST(SYMLIST)*VAR^I,SYMLIST:REST(SYMLIST)),
+RATSIMP(P,VAR));

@@ -1,0 +1,17 @@
+
+
+For example on a sun:
+
+cd /
+gzip -dc maxima-sun4-5.2-bin.tgz | tar xvf -
+
+will unpack the binary in /usr/local
+
+the Info files in usr/local/lib/maxima-5.2/info/maxima.info*
+should be installed wherever you keep info files for emacs.
+
+It is also possible to make an html version of the info, using
+texi2html.
+
+
+

@@ -1,0 +1,16 @@
+DISOLATE(exp, var1, var2, ..., varN) is similar to ISOLATE(exp, var)  (see
+    the MACSYMA  manual p. 89) except that it enables  the user to isolate 
+    more than one variable simultaneously.  This  might be useful, for ex-
+    ample, if one were attempting to change  variables in a multiple inte-
+    gration, and that variable change involved two or more of the integra-
+    tion variables.  For example,
+
+                  DISOLATE(A*(B*(C+D) + E*(F+G)), A, B, E);
+
+    returns a form similar to
+
+                               A (B E1 + E E2)         ,
+
+    where E1 is bound to C + D and E2 is bound to F + G.
+
+Author: ASB

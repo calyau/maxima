@@ -1,0 +1,28 @@
+/*-*-Macsyma-*-*/
+
+
+/*
+CASEQ(<var>,'[<keys1>],<stmt1>,
+            '[<keys2>],<stmt2>,
+            ....,
+            '[<keysn>],<stmtn>
+            {,'otherwise,<code for no match>})
+
+where the first <stmt> that has <var> as a member of the associated
+<keys> is the one chosen to execute.  */
+
+
+SSTATUS(FEATURE,"gcook caseq")$
+
+CASEQ(VAR,[PAIRS])::=
+   IF LENGTH(PAIRS)<=2 THEN
+      BLOCK([KEYS:FIRST(PAIRS),STATEMENT:LAST(PAIRS)],
+         IF KEYS=OTHERWISE THEN BUILDQ([VAR,STATEMENT],STATEMENT)
+         ELSE BUILDQ([VAR,KEYS,STATEMENT],IF MEMBER(VAR,'KEYS) THEN STATEMENT))
+   ELSE BUILDQ([VAR,KEYS:FIRST(PAIRS),STATEMENT:FIRST(REST(PAIRS)),
+                PAIRS:REST(REST(PAIRS))],
+          IF MEMBER(VAR,'KEYS) THEN STATEMENT ELSE CASEQ(VAR,SPLICE(PAIRS)))$
+
+PUSH(C,L)::=(IF SYMBOLP(X) THEN X ELSE ERROR("Arg must be a symbol",X),
+             BUILDQ([C,L],L:CONS(C,L)))$
+

@@ -1,0 +1,27 @@
+
+/* a demo of defining floating point functions,
+   and floating point complex functions,
+   macsyma macros, and the macsyma compiler
+   for more details, see the numer directory.*/
+/* 5:43pm  thursday, 20 march 1980
+   if this demo screws up it is because something has changed and
+   it is out of date. please tell gjc. */
+
+/* showtime all should be done to keep track of the efficiency of
+   the code. */
+
+(showtime:'all,loadfile(numer,autoload,dsk,numer))$
+
+/* make an expression */
+
+exp1:taylor(exp(-x^2),x,0,5);
+
+/* make a numerical function. floatdefunk takes a math expression. */
+
+floatdefunk('f,['x],exp1);
+
+/* lets see what translation and compilation can do for us
+   in this case. use a function testfn which will call romberg
+   of f, n times. */
+
+testfn(n):=(modedeclare(n,fixnum),for j:2 thru n do romberg(f,

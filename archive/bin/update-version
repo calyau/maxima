@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ ! "${HOME}" = "/usr/u9/wfs" ]; then echo not updating version number ;
+ exit 0 
+fi
+echo incrementing minor version
+# if you are wfs increment the minor version number.
+# if this is an HP comment out the next if down to fi 
+echo '(@ VER = `cat ../minvers` + 1 ; echo ${VER} > ../minvers)' | /bin/csh
+echo '(setf (get :maxima :version)`('`cat ../majvers` `cat ../minvers` \"`date`\" \)\) > ../src/version.lisp
+
+

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# this is where the merge and the rest of AKCL is
+KCLDIR=/public/akcl
+MAXDIR=`pwd`
+
+bin/fix-path doc/macsym-index.LISP ${MAXDIR}
+bin/fix-path src/macdes.lisp ${MAXDIR}
+bin/fix-path doc/maxima.l ${MAXDIR}
+
+
+if [ -f ${KCLDIR}/merge ] 
+then
+ echo "MAXDIR = ${MAXDIR}" > Makedefs
+ echo "KCLDO = ${KCLDIR}/o/" >> Makedefs
+ echo "KCLDLSP = ${KCLDIR}/lsp/" >> Makedefs
+ echo "KCLDCMP = ${KCLDIR}/cmpnew/" >> Makedefs
+ echo "MAXSRC = ../src/" >> Makedefs
+ cat ${KCLDIR}/makedefs >> Makedefs
+ echo "" >> Makedefs
+ echo "KCLDIR = ${KCLDIR}" >> Makedefs
+# if you need to add additional items FOO to each makefile
+# on the next line put "echo FOO >> Makedefs "
+ for v in makefile src/makefile c/makefile unixport/makefile doc/makefile;
+ do
+ echo bin/add-defs ${KCLDIR} Makedefs $v
+ bin/add-defs ${KCLDIR} Makedefs $v
+  done
+else
+echo cant find kcl/merge
+echo edit bin/add-all-defs To give KCLDIR where it resides
+exit 1
+fi
+
+exit 0
+

@@ -1,0 +1,457 @@
+
+((face (xplot-eval 129 577 580 1139 1163 1612 1650 1830 1837 1968 1978 2166 2271 2496 2544 3036 3198 4078 4091 4505 4517 4647 4660 4740 4753 4993 5006 5441 5454 5757 5767 5899 5909 6041 6050 6709 6724 7209 7225 7695 7705 7901 7915 8402 8417 8864 8878 9222 9231 9568 9578 10379)) (book-command-arg))
+      This file contains a number of 2 and 3 dimensional Plots
+
+Some are from differential equations, others are just shapes.
+
+
+# Solve the differential equation system
+# 
+#  x' = y
+#  y' = -sin(x) - y
+# and then plot  [x[t],y[t]] as a function of t.
+# in this case there is no z coordinate.   
+
+function definitions {
+          xdot1(x,y)=           y;
+          xdot2(x,y)=-sin(x) - .1*y;};
+   sol = object{
+        ode { [xdot1(x,y),xdot2(x,y)]
+              [initials = .1:.2]
+              [time= 0.0:40.0] [step = 40.0/200.0]
+           };
+          }; plot sol;
+
+     
+
+
+# plot solution of
+#         [.1  .1  .2]
+#   X' =  [.1  2  .3] X  with initial condition t = 1, X = [1,2,3]
+#         [.22  1  1]
+function definitions {
+          xdot1(x,y,z)= .1*x  +  .1*y  + .2*z;
+          xdot2(x,y,z)= .1*x  + 2*y  +   .3*z;
+          xdot3(x,y,z)= .22*x+   y  +   z;
+         };
+   sol = object{
+        ode { [xdot1(x,y,z),xdot2(x,y,z),xdot3(x,y,z)]
+              [initials = 1.0:2.0,3.0]
+              [time= 1.0:5.0] [step = 4.0/200.0]
+           };
+# plot (x,y,z) parametrically as t varies from 1.0 to 5.0
+          }; plot sol;
+
+
+
+     A 2D Cantor set
+
+set title "Triangular Cantor Set"
+
+	quatroot3=sqrt(3)*0.25;
+	g11(x,y) = 0.5*x;     g12(x,y)=0.5*y;
+	g21(x,y)=0.5*x+0.5;   g22(x,y)=0.5*y;
+	g31(x,y)=0.5*x+0.25;  g32(x,y)=0.5*y+quatroot3;
+
+Gx(x,y,z)=(z<=0.33? g31(x,y):(z<=0.67? g11(x,y):g21(x,y)));
+Gy(x,y,z)=(z<=0.33? g32(x,y):(z<=0.67? g12(x,y):g22(x,y)));
+Gz(x,y,z)=0.01*(rand()%100);
+
+triangle = map{[Gx(x,y,z),Gy(x,y,z),Gz(x,y,z)]
+		[initial=0.:0.:1][itera=10000][color=green]}; plot2d triangle
+
+
+    Solution to Burgers equation: 
+
+set dummy x,t;
+c1 = 0.5; c2 = 1.0;
+
+f(x,t) = (c1*exp(c1*(x+c1*t)) +c2*exp(c2*(x+c2*t)))/ \
+	(1. + exp(c1*(x+c1*t)) + exp(c2*(x+c2*t)));
+
+a = sur{[8.0*f(x,t)][x=-10:20][t=-20:10]};
+
+cup:
+
+
+r(x) = (x <= 0.0? -4*x + 0.1 : (x<= 2.0? 0.1: sqrt(  (1.3*(x-2)))))
+
+glass = tube{[0,0,x][x=-0.3:4.5][radius=r(x)][sample=30:30]}
+
+
+torus:
+
+
+orusX(x) = cos(4*x) * (10.0 + 7.0 * cos(3*x))
+orusY(x) = sin(4*x) * (10.0 + 7.0 * cos(3*x))	
+orusZ(x) = 7.0*sin(3*x)
+
+tbe = tube{[orusX(x),orusY(x),orusZ(x)]
+	[x= -pi:pi][samp=500:12]};
+
+
+
+kdv:
+#-----------------------------------------------------
+# Simple Soliton soln to the KdV eq.  
+#
+
+
+set title "Soliton Solution of the KdV Equation";
+set dummy u,v;
+c= 3.0/5.0;
+f1(u,v) = exp(c*u - c^3 * v);
+f2(u,v) = 1.0 + f1(u,v);
+kdv(u,v) = 3*c^2 * f1(u,v) / (f2(u,v))^2;
+
+soliton = sur{[15*kdv(u,v)][u=-10:10][v=-10:10]};
+
+
+kdv2:
+#
+# Two Soliton soln to the KdV eq.
+#
+
+
+set dummy x,t;
+c1 = 0.5; c2 = 4./5.;
+e1(x,t)=exp(c1*x - c1^3 *t);
+e2(x,t)=exp(c2*x - c2^3 *t);
+a12(x,t) = ( (e1(x,t) - e2(x,t))/(e1(x,t)+e2(x,t)))^2;
+e12(x,t) = a12(x,t)*e1(x,t)*e2(x,t);
+f(x,t) = 1. + e1(x,t) + e2(x,t) + e12(x,t);
+fx(x,t) = c1 *e1(x,t) + c2 *e2(x,t) + (c1+c2)*e12(x,t);
+fc(x,t) = c1*e1(x,t) + c1 * e12(x,t);
+fxc(x,t) = c1^2*e1(x,t) + c1*(c1+c2)*e12(x,t);
+func(x,t) = (fxc(x,t)*f(x,t) - fx(x,t) *fc(x,t))/(f(x,t)^2);
+
+a=sur{[30.*func(x,t)][x=-15:15][t=-15:15][sample=60:60]};
+
+
+map-hami:
+#
+# Plot 10 orbits of the hamiltonian map defined be
+#     [x,y]-->[hamX(x,y),hamY(x,y)]
+#---------------------------------------------------------
+
+
+function list {
+	alpha = 0.211434654
+	phi = 2.0*pi*alpha
+	hamX(x,y) = x*cos(phi)-(y - x* x)*sin(phi)
+	hamY(x,y) = x*sin(phi)+(y - x* x)*cos(phi)
+	};
+
+aa = object {
+	map{[hamX(x,y),hamY(x,y)] [initial=0.16:0.578][itera=1000][color=4]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.26:0.578][itera=1000][color=5]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.268:0.578][itera=1000][color=10]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.38:0.578][itera=1000][color=9]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.36:0.478][itera=1000][color=6]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.46:0.378][itera=1000][color=3]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.06:0.578][itera=1000][color=2]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.46:0.300][itera=1000][color=1]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.20:0.278][itera=1000][color=7]}
+	map{[hamX(x,y),hamY(x,y)] [initial=0.10:0.178][itera=1000][color=8]}
+	}; plot2d aa
+
+
+map-quad:
+
+
+lambda = 3.5;
+f(x) = lambda * x*(1-x);
+
+a = cur{[x,f(x),0][x=0:1][samples=300][color=red]};  # y = f(x)
+b = cur{[x,x,0] [x=0,1][sample=10][color=green]};    # y = x
+
+# the map
+#      (x, y) -> (y, f(x))
+# The z-component is not relevent (in plot2d) but it is
+# helpful to get a depthcue shading.
+#
+
+c = map{[y,f(x),0.002+z][initial=0.1,f(0.1),-1]      
+	[iterates=400][color=blue][style=solid]}
+
+plot2d  a, b, c;
+
+
+minimal:
+
+set dummy u,v,alpha, beta;
+#
+#  Enneper's surface
+#
+Enneper = sur{[u-u**3/3+u*v**2,v-v**3/3+v*u**2,u**2-v**2]
+		[u=-1:1][v=-1:1]}
+
+
+minimal1:
+
+Catanoid = sur{[cosh(u)*cos(v), 3*u, -cosh(u)*sin(v)]
+		[u=-pi:pi][v=-pi:pi]};
+
+
+
+minimal2:
+
+set dummy u, v;
+
+X(u,v) = cosh(2*u)*cos(2*v) -1.0;
+Y(u,v) = -sinh(u)*sin(v) - 1./3. *sinh(3*u)*sin(3*v);
+Z(u,v) = -sinh(u)*cos(v) - 1./3. *sinh(3*u)*cos(3*v);
+
+e1 =sur{[1.5*X(u,v),Y(u,v),Z(u,v)]
+	[u = -1: 1][ v= -1: 1]
+	[sample = 40, 40]};
+
+
+minimal1:
+
+# Higher order Enneper's surfaces
+#
+set dummy u,v;
+set title "Enneper's minimal surface";
+n = 2;
+
+if(n > 1) {set title "Higher order Enneper's minimal surface";}
+
+
+X(z) = real( 0.5*(z - z^(2*n+1)/(2*n+1)) );
+Y(z) = imag( 0.5*(z + z^(2*n+1)/(2*n+1)) );
+Z(z) = real( z^(n+1)/(n+1));
+e1 =sur{[X( (v)*(sin(u) + i* cos(u))),
+	 Y( (v)*(sin(u) + i *cos(u))),
+	 Z( (v)*(sin(u) + i* cos(u)))]
+	[u = 0: pi][ v= -1.2: 1.2]
+	[sample = 40*n, 40]};
+
+
+minimal3:
+
+#
+set dummy u,v;
+n = 1;
+
+X(z) = real( 0.5*(1./z - z^(2*n+1)/(2*n+1)) );
+Y(z) = imag( 0.5*(-1./z + z^(2*n+1)/(2*n+1)) );
+Z(z) = real( z^n/n);
+
+e1 =sur{[X( v*sin(u) + i* v *cos(u)),
+	 Y( v*sin(u) + i* v *cos(u)),
+	 Z( v*sin(u) + i* v *cos(u))]
+	[u = -pi: pi][ v= 1.0/3.0: 6.0/5.0]
+	[sample = 80*n, 80]};
+
+
+
+misc1:
+
+set dummy u,v;
+set title "Yet Another Parametric Surface"
+
+a=sur{[sin(u)*cos(v), sin(u)*sin(v),-0.25*cosh(u)]
+	[u=0:pi][v=0:2*pi]};
+
+
+misc3:
+
+set dummy u,v;
+set title "Yet Another Parametric Surface"
+a=sur{[u*cos(v)*sin(u), u*cos(u)*cos(v), -u*sin(v)]
+	[u=0:3*pi][v=0:pi]};
+
+
+objs:
+
+#   another example of multiple objects
+#
+
+f(x) = sgn(sin(x))* ( (abs(sin(x)))^0.4);
+g(x) =  sgn(cos(x))* ( (abs(cos(x)))^0.4);
+
+a=tube{[ f(x), g(x), -1.3]
+	[x=0:2*pi][radius=0.1]
+	[sample=40:6]}
+b=tube{[ f(x), g(x), 1.3]
+	[x=0:2*pi][radius=0.1]
+	[sample=40:6]}
+
+c=tube{[ f(x), 1.3, g(x)]
+	[x=0:2*pi][radius=0.1]
+	[sample=40:6]}
+d=tube{[ f(x), -1.3, g(x)]
+	[x=0:2*pi][radius=0.1]
+	[sample=40:6]}
+
+e=tube{[ -1.3 f(x), g(x)]
+	[x=0:2*pi][radius=0.1]
+	[sample=40:6]}
+f=tube{[ 1.3 f(x), g(x)]
+	[x=0:2*pi][radius=0.1]
+	[sample=40:6]}
+
+o1 = sur{[cos(x)*cos(y),cos(x)*sin(y),sin(x)][x=-0.5*pi:0.5*pi]
+	 [y=0:2*pi][samples= 16:20]};
+o2=obj{a,b,c,d,e,f};
+	
+plot o1,o2;
+
+
+ode-lorenz:
+
+# 
+# Note: Need about 3 minutes to solve this equation
+#
+#---------------------------------------------------------
+
+function definitions {
+	RR = 28.0
+	LORdy1dt (x,y,z) = 10.0* (y - x)
+	LORdy2dt (x,y,z) = RR* x - x*z - y
+	LORdy3dt (x,y,z) = x* y - 8.0* z /3.0
+	};
+
+lorenz = object{
+             eqn{
+	         [LORdy1dt(x,y,z),LORdy2dt(x,y,z),LORdy3dt(x,y,z)] 
+	         [initials = 0.03: 0.12: 0.1]
+                 [time = 0.0:80.0 ][step = 0.3] 
+	        };
+	      }; plot lorenz;
+
+
+
+ode-rossler:
+
+# Note: Need about 10 minutes to solve this equation 
+#
+#---------------------------------------------------------
+
+ROS = 5.6
+ROSdy1dt (x,y,z) = -(y + z)
+ROSdy2dt (x,y,z) = x + 0.2 * y
+ROSdy3dt (x,y,z) = 0.2 + z * (x - ROS)
+
+rossler = eqn{
+      [ROSdy1dt(x,y,z),ROSdy2dt(x,y,z),ROSdy3dt(x,y,z)]
+      [initials = 0.46:0.20:0.69] 
+      [time = 0.0:500.0]  [step = 0.002] [skip 5]
+      [method = RKQC][small = 0.00000001] 
+      [axes: automatic]
+    }; plot rossler;
+
+
+
+star2:
+
+a=9; b=6; c=6;
+f(x,y) = (2+sin(a*x)*0.5)*cos(x+sin(b*x)/c)*y;
+g(x,y) = (2+sin(a*x)*0.5)*sin(x+sin(b*x)/c)*y;
+
+p2 = sur{[f(x,y),g(x,y),2*sin(x)*y]
+	 [x=0, 2*pi][y=0:1][sample= 300:10]};
+
+plot2d p2
+
+
+sur-sqrtz:
+
+# The Riemann surface for w = sqrt(z) is realized by picing the
+# 2 branches together
+
+zz(x,y) = x *exp(i * y)
+sqtzX(x,y) = real(zz(x,y))
+sqtzY(x,y) = imag(zz(x,y))
+sqtzZ(x,y) = real( sqrt(zz(x,y)))
+
+# we need to define 2 branches, one with sqrt(1) = 1; the other with
+# sqrt(1) = -1
+
+sqrt = object{
+	mat default;
+        sur{[sqtzX(x,y),sqtzY(x,y),sqtzZ(x,y)] [x=0:1][y=0:2*pi] [samp=32:32]}
+        sur{[sqtzX(x,y),sqtzY(x,y),-sqtzZ(x,y)] [x=0:1][y=0:2*pi] [samp=32:32]}
+	}; plot sqrt
+
+
+sur-mobius:
+
+#                ----------- The mobuis band. 
+# 
+#---------------------------------------------------------------
+
+MobuisX(x,y) = cos(x) * (2.0 + y * cos(0.5 * x))
+MobuisY(x,y) = sin(x) * (2.0 + y * cos(0.5 * x))	
+MobuisZ(x,y) = y * sin(0.5 * x)
+
+mobius = surf{
+              [MobuisX(x,y),MobuisY(x,y),MobuisZ(x,y)]
+              [x=-pi:pi][y=-0.5:0.5][samp=60:10]
+            };
+#---------------------------------------------------------------
+
+
+sur-klein:
+
+set dummy u,v;
+set title "The Klein Bottle";
+
+
+KleinX(u,v) = (2*sin(u)*cos(v/2)-sin(2*u)*sin(v/2)+8)*cos(v);
+KleinY(u,v) = (2*sin(u)*cos(v/2)-sin(2*u)*sin(v/2)+8)*sin(v);
+KleinZ(u,v) = 2*sin(u)*sin(v/2)+sin(2*u)*cos(v/2);
+
+klein = surf{
+           [KleinX(u,v),KleinY(u,v),KleinZ(u,v)]
+           [u=-pi:pi][v=-pi:pi][samp=50:30]
+          };
+
+
+
+tube:
+
+set title " A Torus Knot"
+
+rusX(x) = cos(3*x) * (10.0 + 6.0 * cos(2*x))
+rusY(x) = sin(3*x) * (10.0 + 6.0 * cos(2*x))  
+rusZ(x) = -6.0*sin(2*x)
+
+a = tube{[rusX(x),rusY(x),rusZ(x)]
+      [x= -pi:pi][samp=200:20][radius=1.4 + 0.1*sin(16*x)]};
+
+a = tube{[rusX(x),rusY(x),rusZ(x)]
+      [x= -pi:pi][samp=200:20][radius=1.4][sample=100:16]};
+
+
+
+xplot:
+
+graph list{
+	x1 = tube{[15+x,1.7*x,-5][x=-7:7][sample=30:10]
+		[radius=0.6*cos(3*x)+1.2]};
+	x2 = tube{[15+x, -1.7*x,-5][x=-7:7][sample=30:10]
+		[radius=0.6*cos(3*x)+1.2]};
+	p1 = tube{[5.8, x,0][x=-4:4][sample=3:10][radius=0.7]};
+	p2 = tube{[6.4+2.8*cos(x),1.5-2*sin(x),0][x=-0.5*pi,0.5*pi]\
+		[sample=10:10][radius=0.7]};
+	l1 = tube{[11,x,0][x=-4:4][sample=2:10][radius=0.7]};
+	l2 = tube{[11+x,-3.5,0][x=0,3.5][sample=2:10][radius=0.7]};
+	o =  tube{[17.5+1.8*sgn(cos(x))* ( abs(cos(x)))^0.4,
+		        3*sgn(sin(x))* ( abs(sin(x)))^0.4,0]
+		[x=0:2*pi][sample=20:10] [radius=0.7]};
+	t1 = tube{[20.8+x,3.0,0][x=0:5][sample=2:10][radius=0.7]};
+	t2 = tube{[23.3,x,0][x=-4:2.5][sample=2:10][radius=0.7]};
+
+};
+X = obj{x1,x2};
+P = obj{p1,p2};
+L = obj{l1,l2};
+O = obj{o};
+T = obj{t1,t2};
+
+plot2d  X P L O T;
+
+
+

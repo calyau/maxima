@@ -1,0 +1,599 @@
+@node Integration, Polynomials, Differentiation, Top
+@chapter Integration
+@menu
+* Introduction to Integration::  
+* Definitions for Integration::  
+@end menu
+
+@node Introduction to Integration, Definitions for Integration, Integration, Integration
+@section Introduction to Integration
+
+MACSYMA has several routines for handling integration.
+The INTEGRATE command makes use of most of them.  There is also the
+ANTID package, which handles an unspecified function (and its
+derivatives, of course).  For numerical uses, there is the ROMBERG
+function, and the IMSL version of Romberg, DCADRE.  There is also an
+adaptave integrator which uses the Newton-Cotes 8 panel quadrature
+rule, called QUANC8.  Hypergeometric Functions are being worked on,
+do DESCRIBE(SPECINT); for details.
+Generally speaking, MACSYMA only handles integrals which are
+integrable in terms of the "elementary functions" (rational functions,
+trigonometrics, logs, exponentials, radicals, etc.) and a few
+extensions (error function, dilogarithm).  It does not handle
+integrals in terms of unknown functions such as g(x) and h(x).
+
+@c end concepts Integration
+@node Definitions for Integration,  , Introduction to Integration, Integration
+@section Definitions for Integration
+@c @node CHANGEVAR, DBLINT, INTEGRALS, Integration
+@c @unnumberedsec phony
+@defun CHANGEVAR (exp,f(x,y),y,x)
+makes the change of variable given by
+f(x,y) = 0 in all integrals occurring in exp with integration with
+respect to x; y is the new variable.
+@example
+    (C1) 'INTEGRATE(%E**SQRT(A*Y),Y,0,4);
+                        4
+                       /
+                       [    SQRT(A) SQRT(Y)
+    (D1)               I (%E               ) dY
+                       ]
+                       /
+                        0
+    (C2) CHANGEVAR(D1,Y-Z^2/A,Z,Y);
+                                   2 SQRT(A)
+                                  /
+                                  [              Z
+                                2 I          Z %E  dZ
+                                  ]
+                                  /
+                                   0
+    (D4)                        ---------------------
+                                          A
+@end example
+CHANGEVAR may also be used to changes in the indices of a sum or
+product.  However, it must be realized that when a change is made in a
+sum or product, this change must be a shift, i.e. I=J+ ..., not a
+higher degree function.  E.g.
+@example
+(C3) SUM(A[I]*X^(I-2),I,0,INF);
+                               INF
+                               ====
+                               \         I - 2
+(D3)                            >    A  X
+                               /      I
+                               ====
+                               I = 0
+(C4) CHANGEVAR(%,I-2-N,N,I);
+                              INF
+                              ====
+                              \               N
+(D4)                           >      A      X
+                              /        N + 2
+                              ====
+                              N = - 2
+
+
+@end example
+@end defun
+@c @node DBLINT, DEFINT, CHANGEVAR, Integration
+@c @unnumberedsec phony
+@defun DBLINT ('F,'R,'S,a,b)
+a double-integral routine which was written in
+top-level macsyma and then translated and compiled to machine code.
+Use LOAD(DBLINT); to access this package.  It uses the Simpson's Rule
+method in both the x and y directions to calculate
+/B /S(X)
+|  |
+|  |    F(X,Y) DY DX .
+|  |
+/A /R(X)
+The function F(X,Y) must be a translated or compiled function of two
+variables, and R(X) and S(X) must each be a translated or compiled
+function of one variable, while a and b must be floating point
+numbers. The routine has two global variables which determine the
+number of divisions of the x and y intervals: DBLINT_X and DBLINT_Y,
+both of which are initially 10, and can be changed independently to
+other integer values (there are 2*DBLINT_X+1 points computed in the x
+direction, and 2*DBLINT_Y+1 in the y direction).
+The routine subdivides the X axis and then for each value of X it
+first computes R(X) and S(X); then the Y axis between R(X) and S(X) is
+subdivided and the integral along the Y axis is performed using
+Simpson's Rule; then the integral along the X axis is done using
+Simpson's Rule with the function values being the Y-integrals. This
+procedure may be numerically unstable for a great variety of reasons,
+but is reasonably fast: avoid using it on highly oscillatory functions
+and functions with singularities (poles or branch points in the
+region).  The Y integrals depend on how far apart R(X) and S(X) are,
+so if the distance S(X)-R(X) varies rapidly with X, there may be
+substantial errors arising from truncation with different step-sizes
+in the various Y integrals. One can increase DBLINT_X and DBLINT_Y in
+an effort to improve the coverage of the region, at the expense of
+computation time. The function values are not saved, so if the
+function is very time-consuming, you will have to wait for
+re-computation if you change anything (sorry).
+It is required that the functions F, R, and S be either translated or
+compiled prior to calling DBLINT. This will result in orders of
+magnitude speed improvement over interpreted code in many cases! Ask
+LPH (or GJC) about using these numerical aids.  The file SHARE1;DBLINT
+DEMO can be run in batch or demo mode to illustrate the usage on a
+sample problem; the file SHARE1;DBLNT DEMO1 is an extension of the DEMO
+which also makes use of other numerical aids, FLOATDEFUNK and QUANC8.
+Please send all bug notes and questions to LPH
+
+@end defun
+@c @node DEFINT, ERF, DBLINT, Integration
+@c @unnumberedsec phony
+@defun DEFINT (exp, var, low, high)
+DEFinite INTegration, the same as
+INTEGRATE(exp,var,low,high).   This uses symbolic methods, if
+you wish to use a numerical method try ROMBERG(exp,var,low,high).
+
+@end defun
+@c @node ERF, ERFFLAG, DEFINT, Integration
+@c @unnumberedsec phony
+@defun ERF (X)
+the error function, whose derivative is:
+2*EXP(-X^2)/SQRT(%PI).
+
+@end defun
+@c @node ERFFLAG, ERRINTSCE, ERF, Integration
+@c @unnumberedsec phony
+@defvar ERFFLAG
+ default: [TRUE] if FALSE prevents RISCH from introducing the
+ERF function in the answer if there were none in the integrand to
+begin with.
+
+@end defvar
+@c @node ERRINTSCE, ILT, ERFFLAG, Integration
+@c @unnumberedsec phony
+@defvar ERRINTSCE
+ default: [TRUE] - If a call to the INTSCE routine is not of
+the form
+
+@example
+EXP(A*X+B)*COS(C*X)^N*SIN(C*X)
+@end example
+
+then the regular integration program will be invoked if the switch
+ERRINTSCE[TRUE] is TRUE.  If it is FALSE then INTSCE will err out.
+
+@end defvar
+@c @node ILT, INTEGRATE, ERRINTSCE, Integration
+@c @unnumberedsec phony
+@defun ILT (exp, lvar, ovar)
+takes the inverse Laplace transform of exp with
+respect to lvar and parameter ovar.  exp must be a ratio of
+polynomials whose denominator has only linear and quadratic factors.
+By using the functions LAPLACE and ILT together with the SOLVE or
+LINSOLVE functions the user can solve a single differential or
+convolution integral equation or a set of them.
+@example
+(C1) 'INTEGRATE(SINH(A*X)*F(T-X),X,0,T)+B*F(T)=T**2;
+              T
+             /
+             [                                     2
+(D1)         I (SINH(A X) F(T - X)) dX + B F(T) = T
+             ]
+             /
+             0
+(C2) LAPLACE(%,T,S);
+            A LAPLACE(F(T), T, S)
+(D2)        ---------------------
+                    2    2
+                   S  - A
+                                          2
+                + B LAPLACE(F(T), T, S) = --
+                                           3
+                                          S
+(C3) LINSOLVE([%],['LAPLACE(F(T),T,S)]);
+SOLUTION
+                                        2      2
+                                     2 S  - 2 A
+(E3)       LAPLACE(F(T), T, S) = --------------------
+                                    5         2     3
+                                 B S  + (A - A  B) S
+(D3)                         [E3]
+(C4) ILT(E3,S,T);
+IS  A B (A B - 1)  POSITIVE, NEGATIVE, OR ZERO?
+POS;
+                                       2
+                       SQRT(A) SQRT(A B  - B) T
+                2 COSH(------------------------)
+                                  B
+(D4)  F(T) =  - --------------------------------
+                               A
+              2
+           A T             2
+        + ------- + ------------------
+          A B - 1    3  2      2
+                    A  B  - 2 A  B + A
+
+
+@end example
+@end defun
+@c @node INTEGRATE, INTEGRATION_CONSTANT_COUNTER, ILT, Integration
+@c @unnumberedsec phony
+@defun INTEGRATE (exp, var)
+integrates exp with respect to var or returns an
+integral expression (the noun form) if it cannot perform the
+integration (see note 1 below).  Roughly speaking three stages are
+used:
+@itemize @bullet
+@item
+    (1) INTEGRATE sees if the integrand is of the form
+F(G(X))*DIFF(G(X),X) by testing whether the derivative of some
+subexpression (i.e. G(X) in the above case) divides the integrand.  If
+so it looks up F in a table of integrals and substitutes G(X) for X in
+the integral of F.  This may make use of gradients in taking the
+derivative.  (If an unknown function appears in the integrand it must
+be eliminated in this stage or else INTEGRATE will return the noun
+form of the integrand.)
+@item
+    (2) INTEGRATE tries to match the integrand to a form for which a
+specific method can be used, e.g.  trigonometric substitutions.
+@item
+    (3) If the first two stages fail it uses the Risch algorithm.
+    Functional relationships must be explicitly represented in order
+for INTEGRATE to work properly.  INTEGRATE is not affected by
+DEPENDENCIES set up with the DEPENDS command.
+INTEGRATE(exp, var, low, high) finds the definite integral of exp with
+respect to var from low to high or returns the noun form if it cannot
+perform the integration.  The limits should not contain var.  Several
+methods are used, including direct substitution in the indefinite
+integral and contour integration.  Improper integrals may use the
+names INF for positive infinity and MINF for negative infinity.  If an
+integral "form" is desired for manipulation (for example, an integral
+which cannot be computed until some numbers are substituted for some
+parameters), the noun form 'INTEGRATE may be used and this will
+display with an integral sign.  (See Note 1 below.)
+    The function LDEFINT uses LIMIT to evaluate the integral at the
+lower and upper limits.
+    Sometimes during integration the user may be asked what the sign
+of an expression is.  Suitable responses are POS;, ZERO;, or NEG;.
+@end itemize
+@example
+(C1) INTEGRATE(SIN(X)**3,X);
+                    3
+                 COS (X)
+(D1)             ------- - COS(X)
+                    3
+(C2) INTEGRATE(X**A/(X+1)**(5/2),X,0,INF);
+IS  A + 1  POSITIVE, NEGATIVE, OR ZERO?
+POS;
+IS  2 A - 3  POSITIVE, NEGATIVE, OR ZERO?
+NEG;
+                            3
+(D2)            BETA(A + 1, - - A)
+                            2
+(C3) GRADEF(Q(X),SIN(X**2));
+(D3)                              Q(X)
+(C4) DIFF(LOG(Q(R(X))),X);
+                           d             2
+                          (-- R(X)) SIN(R (X))
+                           dX
+(D4)                      --------------------
+                                Q(R(X))
+(C5) INTEGRATE(%,X);
+(D5)                          LOG(Q(R(X)))
+@end example
+(Note 1) The fact that MACSYMA does not perform certain integrals does
+not always imply that the integral does not exist in closed form. In
+the example below the integration call returns the noun form but the
+integral can be found fairly easily. For example, one can compute the
+roots of @code{X^3+X+1 = 0} to rewrite the integrand in the form
+@example
+1/((X-A)*(X-B)*(X-C))
+@end example
+where A, B and C are the roots. MACSYMA will
+integrate this equivalent form although the integral is quite
+complicated.
+@example
+(C6) INTEGRATE(1/(X^3+X+1),X);
+                          /
+                          [     1
+(D6)                      I ---------- dX
+                          ]  3
+                          / X  + X + 1
+
+
+@end example
+@end defun
+@c @node INTEGRATION_CONSTANT_COUNTER, INTSCE, INTEGRATE, Integration
+@c @unnumberedsec phony
+@defvar INTEGRATION_CONSTANT_COUNTER
+ - a counter which is updated each time a
+constant of integration (called by MACSYMA, e.g., "INTEGRATIONCONSTANT1")
+is introduced into an expression by indefinite integration of an equation.
+
+@end defvar
+@c @node INTSCE, LDEFINT, INTEGRATION_CONSTANT_COUNTER, Integration
+@c @unnumberedsec phony
+@defun INTSCE (expr,var)
+INTSCE LISP contains a routine, written by Richard
+Bogen, for integrating products of sines,cosines and exponentials of
+the form
+@example
+  EXP(A*X+B)*COS(C*X)^N*SIN(C*X)^M
+@end example
+The call is INTSCE(expr,var) expr may be any expression, but if it
+is not in the above form then the regular integration program will be
+invoked if the switch ERRINTSCE[TRUE] is TRUE.  If it is FALSE then
+INTSCE will err out.
+
+@end defun
+@c @node LDEFINT, POTENTIAL, INTSCE, Integration
+@c @unnumberedsec phony
+@defun LDEFINT (exp,var,ll,ul)
+yields the definite integral of exp by using
+LIMIT to evaluate the indefinite integral of exp with respect to var
+at the upper limit ul and at the lower limit ll.
+
+@end defun
+@c @node POTENTIAL, QQ, LDEFINT, Integration
+@c @unnumberedsec phony
+@defun POTENTIAL (givengradient)
+The calculation makes use of the global
+variable
+@example
+POTENTIALZEROLOC[0]
+@end example
+ which must be NONLIST or of the form
+
+@example
+[indeterminatej=expressionj, indeterminatek=expressionk, ...]
+@end example
+the
+former being equivalent to the nonlist expression for all right-hand
+sides in the latter.  The indicated right-hand sides are used as the
+lower limit of integration.  The success of the integrations may
+depend upon their values and order.  POTENTIALZEROLOC is initially set
+to 0.
+
+@end defun
+@c @node QQ, QUANC8, POTENTIAL, Integration
+@c @unnumberedsec phony
+@defun QQ
+ - The file SHARE1;QQ FASL (which may be loaded with LOAD("QQ");)
+contains a function QUANC8 which can take either 3 or 4 arguments. The
+3 arg version computes the integral of the function specified as the
+first argument over the interval from lo to hi as in
+QUANC8('function name,lo,hi); .
+The function name should be quoted.  The 4 arg version will compute
+the integral of the function or expression (first arg) with respect to
+the variable (second arg) over the interval from lo to hi as in
+QUANC8(<f(x) or expression in x>,x,lo,hi).
+The method used is the Newton-Cotes 8th order polynomial quadrature,
+and the routine is adaptive. It will thus spend time dividing the
+interval only when necessary to achieve the error conditions specified
+by the global variables QUANC8_RELERR (default value=1.0e-4) and
+QUANC8_ABSERR (default value=1.0e-8) which give the relative error
+test:
+|integral(function)-computed value|< quanc8_relerr*|integral(function)|
+and the absolute error test:
+|integral(function)-computed value|<quanc8_abserr. 
+Do PRINTFILE(QQ,USAGE,SHARE1) for details.
+
+@end defun
+@c @node QUANC8, RESIDUE, QQ, Integration
+@c @unnumberedsec phony
+@defun QUANC8 ('function name,lo,hi)
+An adaptive integrator, available in
+SHARE1;QQ FASL.  DEMO and USAGE files are provided.  The method is to
+use Newton-Cotes 8-panel quadrature rule, hence the function name
+QUANC8, available in 3 or 4 arg versions.  Absolute and relative error
+checks are used.  To use it do LOAD("QQ");  For more details do
+DESCRIBE(QQ); .
+
+@end defun
+@c @node RESIDUE, RISCH, QUANC8, Integration
+@c @unnumberedsec phony
+@defun RESIDUE (exp, var, val)
+computes the residue in the complex plane of
+the expression exp when the variable var assumes the value val.  The
+residue is the coefficient of (var-val)**(-1) in the Laurent series
+for exp.
+@example
+(C1) RESIDUE(S/(S**2+A**2),S,A*%I);
+                        1
+(D1)                    -
+                        2
+(C2) RESIDUE(SIN(A*X)/X**4,X,0);
+                        3
+                       A
+(D2)                 - --
+                       6
+
+
+@end example
+@end defun
+@c @node RISCH, ROMBERG, RESIDUE, Integration
+@c @unnumberedsec phony
+@defun RISCH (exp, var)
+integrates exp with respect to var using the
+transcendental case of the Risch algorithm.  (The algebraic case of
+the Risch algorithm has not been implemented.)  This currently
+handles the cases of nested exponentials and logarithms which the main
+part of INTEGRATE can't do.  INTEGRATE will automatically apply RISCH
+if given these cases.
+ERFFLAG[TRUE] - if FALSE prevents RISCH from introducing the ERF
+function in the answer if there were none in the integrand to begin
+with.
+@example
+(C1) RISCH(X^2*ERF(X),X);
+            2     2
+         - X     X             3           2
+       %E     (%E   SQRT(%PI) X  ERF(X) + X  + 1)
+(D1)   ------------------------------------------
+                      3 SQRT(%PI)
+(C2) DIFF(%,X),RATSIMP;
+                                 2
+(D2)                            X  ERF(X)
+
+
+@end example
+@end defun
+@c @node ROMBERG, ROMBERGABS, RISCH, Integration
+@c @unnumberedsec phony
+@defun ROMBERG (exp,var,ll,ul)
+or ROMBERG(exp,ll,ul) - Romberg Integration.
+You need not load in any file to use ROMBERG, it is autoloading.
+There are two ways to use this function.  The first is an inefficient
+way like the definite integral version of INTEGRATE:
+ROMBERG(<integrand>,<variable of integration>,<lower limit>,
+                <upper limit>);
+@example
+Examples:
+        ROMBERG(SIN(Y),Y,1,%PI);
+                TIME= 39 MSEC.          1.5403023
+        F(X):=1/(X^5+X+1);
+        ROMBERG(F(X),X,1.5,0);
+                TIME= 162 MSEC.         - 0.75293843
+@end example
+The second is an efficient way that is used as follows:
+
+@example
+ROMBERG(<function name>,<lower limit>,<upper limit>);
+@end example
+
+@example
+Example:
+F(X):=(MODE_DECLARE([FUNCTION(F),X],FLOAT),1/(X^5+X+1));
+TRANSLATE(F);
+ROMBERG(F,1.5,0);
+        TIME= 13 MSEC.          - 0.75293843
+@end example
+The first argument must be a TRANSLATEd or compiled function.  (If it
+is compiled it must be declared to return a FLONUM.)  If the first
+argument is not already TRANSLATEd, ROMBERG will not attempt to
+TRANSLATE it but will give an error.
+The accuracy of the integration is governed by the global variables
+ROMBERGTOL (default value 1.E-4) and ROMBERGIT (default value 11).
+ROMBERG will return a result if the relative difference in successive
+approximations is less than ROMBERGTOL.  It will try halving the
+stepsize ROMBERGIT times before it gives up.  The number of iterations
+and function evaluations which ROMBERG will do is governed by
+ROMBERGABS and ROMBERGMIN, do DESCRIBE(ROMBERGABS,ROMBERGMIN); for
+details.
+ROMBERG may be called recursively and thus can do double and triple
+integrals.
+@example
+Example:
+INTEGRATE(INTEGRATE(X*Y/(X+Y),Y,0,X/2),X,1,3);
+                        13/3 (2 LOG(2/3) + 1)
+%,NUMER;
+                        0.81930233
+DEFINE_VARIABLE(X,0.0,FLOAT,"Global variable in function F")$
+F(Y):=(MODE_DECLARE(Y,FLOAT), X*Y/(X+Y) )$
+G(X):=ROMBERG('F,0,X/2)$  
+ROMBERG(G,1,3);
+                         0.8193023
+@end example
+The advantage with this way is that the function F can be used for other 
+purposes, like plotting. The disadvantage is that you have to think up 
+a name for both the function F and its free variable X.
+Or, without the global:
+@example
+        G1(X):=(MODE_DECLARE(X,FLOAT), ROMBERG(X*Y/(X+Y),Y,0,X/2))$
+        ROMBERG(G1,1,3);
+                                0.8193023
+@end example
+The advantage here is shortness.
+@example
+        Q(A,B):=ROMBERG(ROMBERG(X*Y/(X+Y),Y,0,X/2),X,A,B)$
+        Q(1,3);
+                                0.8193023
+@end example
+It is even shorter this way, and the variables do not need to be declared 
+because they are in the context of ROMBERG.
+Use of ROMBERG for multiple integrals can have great disadvantages,
+though.  The amount of extra calculation needed because of the
+geometric information thrown away by expressing multiple integrals
+this way can be incredible.  The user should be sure to understand and
+use the ROMBERGTOL and ROMBERGIT switches.
+(The IMSL version of Romberg integration is now available in Macsyma.
+Do DESCRIBE(DCADRE); for more information.)
+
+@end defun
+@c @node ROMBERGABS, ROMBERGIT, ROMBERG, Integration
+@c @unnumberedsec phony
+@defvar ROMBERGABS
+ default: [0.0] (0.0B0) Assuming that successive estimates
+produced by ROMBERG are Y[0], Y[1], Y[2] etc., then ROMBERG will
+return after N iterations if (roughly speaking)
+ (ABS(Y[N]-Y[N-1]) <= ROMBERGABS OR
+ ABS(Y[N]-Y[N-1])/(IF Y[N]=0.0 THEN 1.0 ELSE Y[N]) <= ROMBERGTOL)
+is TRUE.  (The condition on the number of iterations given by
+ROMBERGMIN must also be satisfied.)
+Thus if ROMBERGABS is 0.0 (the default) you just get the relative
+error test.  The usefulness of the additional variable comes when you
+want to perform an integral, where the dominant contribution comes
+from a small region.  Then you can do the integral over the small
+dominant region first, using the relative accuracy check, followed by
+the integral over the rest of the region using the absolute accuracy
+check.
+Example:  Suppose you want to compute
+@example
+   Integral(exp(-x),x,0,50)
+@end example
+(numerically) with a relative accuracy of  1 part in 10000000.
+Define the function.  N is a counter, so we can see how many
+function evaluations were needed.
+@example
+F(X):=(MODE_DECLARE(N,INTEGER,X,FLOAT),N:N+1,EXP(-X))$
+TRANSLATE(F)$
+  /* First of all try doing the whole integral at once */
+BLOCK([ROMBERGTOL:1.E-6,ROMBERABS:0.],N:0,ROMBERG(F,0,50));
+              ==> 1.00000003
+N; ==> 257  /* Number of function evaluations*/
+@end example
+
+ Now do the integral intelligently, by first doing
+     Integral(exp(-x),x,0,10) and then setting ROMBERGABS to 1.E-6*(this
+     partial integral).
+@example
+BLOCK([ROMBERGTOL:1.E-6,ROMBERGABS:0.,SUM:0.],
+  N:0,SUM:ROMBERG(F,0,10),ROMBERGABS:SUM*ROMBERGTOL,ROMBERGTOL:0.,
+      SUM+ROMBERG(F,10,50));  ==> 1.00000001  /* Same as before */
+N;  ==> 130
+@end example
+So if F(X) were a function that took a long time to compute, the
+second method would be about 2 times quicker.
+
+@end defvar
+@c @node ROMBERGIT, ROMBERGMIN, ROMBERGABS, Integration
+@c @unnumberedsec phony
+@defvar ROMBERGIT
+ default: [11] - The accuracy of the ROMBERG integration
+command is governed by the global variables ROMBERGTOL[1.E-4] and
+ROMBERGIT[11].  ROMBERG will return a result if the relative
+difference in successive approximations is less than ROMBERGTOL.  It
+will try halving the stepsize ROMBERGIT times before it gives up.
+
+@end defvar
+@c @node ROMBERGMIN, ROMBERGTOL, ROMBERGIT, Integration
+@c @unnumberedsec phony
+@defvar ROMBERGMIN
+ default: [0] - governs the minimum number of function
+evaluations that ROMBERG will make.  ROMBERG will evaluate its first
+arg. at least 2^(ROMBERGMIN+2)+1 times.  This is useful for
+integrating oscillatory functions, when the normal converge test might
+sometimes wrongly pass.
+
+@end defvar
+@c @node ROMBERGTOL, TLDEFINT, ROMBERGMIN, Integration
+@c @unnumberedsec phony
+@defvar ROMBERGTOL
+ default: [1.E-4] - The accuracy of the ROMBERG integration
+command is governed by the global variables ROMBERGTOL[1.E-4] and
+ROMBERGIT[11].  ROMBERG will return a result if the relative
+difference in successive approximations is less than ROMBERGTOL.  It
+will try halving the stepsize ROMBERGIT times before it gives up.
+
+@end defvar
+@c @node TLDEFINT,  , ROMBERGTOL, Integration
+@c @unnumberedsec phony
+@defun TLDEFINT (exp,var,ll,ul)
+is just LDEFINT with TLIMSWITCH set to TRUE.
+
+@end defun

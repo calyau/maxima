@@ -1,0 +1,4 @@
+IF GET ('ABSIMP,'VERSION)=FALSE THEN LOAD("absimp.mc");
+ABS(X)^2;
+DIFF(ABS(X),X);
+COSH(ABS(X));

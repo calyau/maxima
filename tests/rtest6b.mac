@@ -1,0 +1,40 @@
+/*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
+/***************************************************************************
+***                                                                    *****
+***     Copyright (c) 1984 by William Schelter,University of Texas     *****
+***     All rights reserved                                            *****
+***************************************************************************/
+
+
+1/(X^2+2);
+1/(X^2+2)$
+SUBSTPART(3/2,%,2,1,2);
+1/(X^(3/2)+2)$
+27*Y^3+54*X*Y^2+36*X^2*Y+Y+8*X^3+X+1;
+27*Y^3+54*X*Y^2+36*X^2*Y+Y+8*X^3+X+1$
+SUBSTPART(FACTOR(PIECE),%,[1,2,3,5]);
+(3*Y+2*X)^3+Y+X+1$
+1/X+Y/X-1/Z;
+-1/Z+Y/X+1/X$
+SUBSTPART(XTHRU(PIECE),%,[2,3]);
+(Y+1)/X-1/Z$
+SUBSTPART("+",%,1,0);
+-1/Z+Y+X+1$
+RATSIMP((K^2*X^2-1)*(COS(X)+EPS)/(3*K+N[1])/(5*K-N[2]));
+((K^2*X^2-1)*COS(X)+EPS*K^2*X^2-EPS)/(15*K^2+(5*N[1]-3*N[2])*K-N[1]*N[2])$
+FACTOR(%);
+(K*X-1)*(K*X+1)*(COS(X)+EPS)/((3*K+N[1])*(5*K-N[2]))$
+SUBSTPART(RATSIMP(PIECE),%,1,[1,2]);
+(K^2*X^2-1)*(COS(X)+EPS)/((3*K+N[1])*(5*K-N[2]))$
+-SUBSTPART(-PIECE,%,1,1);
+-(1-K^2*X^2)*(COS(X)+EPS)/((3*K+N[1])*(5*K-N[2]))$
+A+B/(X*(Y+(A+B)*X)+1);
+B/(X*(Y+(B+A)*X)+1)+A$
+SUBSTPART(MULTTHRU(PIECE),%,1,2,1);
+B/(X*Y+(B+A)*X^2+1)+A$
+X . 'DIFF(F(X),X,2);
+X . 'DIFF(F(X),X,2)$
+SUBSTINPART(D^2,%,2);
+X . D^2$
+SUBSTINPART(F1,F[1](X+1),0);
+F1(X+1)$

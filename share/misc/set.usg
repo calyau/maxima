@@ -1,0 +1,141 @@
+
+
+a SET THEORY package for MACSYMA
+================================
+
+
+The file  SET FASL DSK SHARE2 provides
+Macsyma with the basic primitives  of set theory.
+
+
+For our purposes, we define a set to be a sorted irredundant list.
+
+Thus [2,3,x,1] is not a set since it isn't sorted
+and [2,3,x,x,y] is not a set since it has a redundancy,
+however [1,2,3,x] and [2,3,x,y] are sets.
+
+Here is a list of the functions provided:
+
+INTERSECT UNION 
+COMPLEMENT SETDIFFERENCE SYMMDIFFERENCE
+POWERSET
+SETIFY SUBSET 
+SETP SUBSETP DISJOINTP
+
+The functions above are mostly self-explanatory,
+so the following brief descriptions should be sufficient:
+
+
+INTERSECT(A,B) returns the intersection of A and B.
+
+UNION(A,B) returns the union of A and B.
+
+COMPLEMENT(A,B) returns the relative complement of A in B,
+  That is, the set of elements of B which are not in A.
+
+SETDIFFERENCE(A,B) returns the set of elements of A which are not in B.
+  Note that SETDIFFERENCE(A,B) is just COMPLEMENT(B,A).
+
+SYMMDIFFERENCE(A,B) returns the symmetric differrence of A and B, 
+  which is equal to UNION(SETDIFFERENCE(A,B),SETDIFFERENCE(B,A)).
+
+POWERSET(S) returns the set of all subsets of S.
+
+SETIFY(L) converts the list L to a set.
+  For example  SETIFY([2,x,2,3,8,x]) yields [2,3,8,x].
+
+SUBSET(A,F) returns the set of elements of A which satisfy the condition F.
+  For example  SUBSET([1,2,x,x+y,z,x+y+z],atom) yields [1,2,z].
+  The argument F should be a function of one argument
+  which returns TRUE or FALSE. Another  example:
+  SUBSET([1,2,7,8,9,14],evenp) yields [2,8,14].
+  
+
+SETP(L) returns TRUE if L is a set, FALSE otherwise.
+
+
+SUBSETP(A,B) decides whether or not A is a subset of B
+  and returns TRUE or FALSE accordingly.
+
+DISJOINTP(A,B) decides whether A and B are disjoint
+  (have no common elements) and returns TRUE or FALSE accordingly.
+
+
+============
+
+Remarks:
+
+
+1. We reemphasize that a set is a list.
+   Thus the notation for both input and output 
+   is  [ ... ]  rather than  { ... } .
+   We feel that this ambiguity is desirable.  It allows
+   list processing on sets and set processing on lists
+   without conversion. 
+
+2. However, not every list is a set.
+   A set must satisfy two additional conditions. It must be
+             (1) sorted
+             (2) irredundant.
+   Implied is a notion of order and a notion of equivalence.
+   We choose order as the fundamental notion.
+   The user can specify an order by resetting the value of CANONLT.
+   Initially, CANONLT has the value ORDERLESSP which is Macsyma's
+   canonical order. The value of CANONLT must be a strict total 
+   preorder (a function of 2 arguments which returns true or false
+   and such that the associated relation is transitive an irreflexive).
+   It need not be universally well-defined so long as it is
+   well-defined for the arguments it receives. The notion of 
+   equivalence is derived from the order notion by the 
+   familiar law of trichotomy:
+   Given objects a,b we require that exactly one of the following holds:
+             (1) a is less than b
+             (2) b is less than a
+             (3) a and b are equivalent
+   Note that equivalence is, in general, weaker than equality.
+
+
+3. Consider the following example:
+     In a Macsyma suppose we define a function h by:
+          h(n):=for i do if n=(2^i)*ENTIER(n/(2^i)) then return(i-1);
+     Thus h returns the largest positive integer e such that
+     n is divisible by 2^e (n is assumed to be a positive integer).
+
+     Next define an order function f by:
+          f(a,b):=is( h(a) < h(b) );
+     For example, with this order, 9 is less than 2
+     and 6 is equivalent to 10.
+     
+     Next we set CANONLT by:
+           CANONLT:f;
+
+     Then all functions in the SET package will
+     return sort and eliminate redundancies (equivalences)
+     using the function f.
+     
+     For example, SETIFY([6,20,2,9,8,12]) returns [9,2,12,8].
+
+
+4. As mentioned above the default value of CANONLT
+   is ORDERLESSP. It follows that the default notion of
+   equivalence is equality.
+
+
+5. The functions UNION and INTERSECT can take any
+   number of arguments.
+
+
+6. The arguments to functions in the SET package
+   need not be sets - arbitrary lists are OK
+   (i.e. possibly unsorted and/or redundant).
+   
+   Thus, functions such as INTERSECT 
+   accept arbitrary lists  but always return a set.
+   For example,
+       INTERSECT([2,3,2,y,x],[2,z,y,y]) yields [2,y].
+
+
+=============
+
+
+         -- David A. Spear    (DAS),    (1-21-78)

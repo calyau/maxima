@@ -1,0 +1,532 @@
+@node Simplification, Expressions, Polynomials, Top
+@chapter Simplification
+@c end concepts Simplification
+@menu
+* Definitions for Simplification::  
+@end menu
+
+@node Definitions for Simplification,  , Simplification, Simplification
+@section Definitions for Simplification
+@menu
+@end menu
+
+@c @node APPLY_NOUNS, ASKEXP, Simplification, Simplification
+@c @unnumberedsec phony
+@defun APPLY_NOUNS (exp)
+causes the application of noun forms in an
+expression.  E.g. EXP:'DIFF(X^2/2,X); APPLY_NOUNS(EXP); gives X.  This
+gives the same result as EV(EXP,NOUNS); except that it can be faster
+and use less storage.  It also can be used in translated code, where
+EV may cause problems.  Note that it is called APPLY_NOUNS, not
+EV_NOUNS, because what it does is to APPLY the rules corresponding to
+the noun-form operators, which is not evaluation.
+
+@end defun
+@c @node ASKEXP, ASKINTEGER, APPLY_NOUNS, Simplification
+@c @unnumberedsec phony
+@defvar ASKEXP
+ default: [] contains the expression upon which ASKSIGN is
+called.  A user may enter a MACSYMA break with ^A and inspect this
+expression in order to answer questions asked by ASKSIGN.
+@end defvar
+
+@c @node ASKINTEGER, ASKSIGN, ASKEXP, Simplification
+@c @unnumberedsec phony
+@defun ASKINTEGER (exp,<optional-arg>)
+exp is any valid macsyma expression
+and optional-arg is EVEN,ODD,INTEGER and defaults to INTEGER if not
+given.  This function attempts to determine from the data-base whether
+exp is EVEN, ODD or just an INTEGER.  It will ask the user if it
+cannot tell otherwise and attempt to install the information in the
+data-base if possible.
+
+@end defun
+@c @node ASKSIGN, DEMOIVRE, ASKINTEGER, Simplification
+@c @unnumberedsec phony
+@defun ASKSIGN (exp)
+first attempts to determine whether the specified
+expression is positive, negative, or zero.  If it cannot, it asks the
+user the necessary questions to complete its deduction.  The user's
+answer is recorded in the data base for the duration of the current
+computation (one "C-line"). The value of ASKSIGN is one of POS, NEG,
+or ZERO.
+
+@end defun
+@c @node DEMOIVRE, DOMAIN, ASKSIGN, Simplification
+@c @unnumberedsec phony
+@defvar DEMOIVRE
+ default: [FALSE] if TRUE will cause
+@example
+%E^(A+B*%I) ==> %E^A*(COS(B)+%I*SIN(B))
+@end example
+if B is free of %I.  A and B are not expanded.
+DEMOIVRE:TRUE; is the way to reverse the effect of
+EXPONENTIALIZE:TRUE;
+
+DEMOIVRE(exp) will cause the conversion without setting the switch or
+having to re-evaluate the expression with EV.
+
+@end defvar
+@c @node DOMAIN, EXPAND, DEMOIVRE, Simplification
+@c @unnumberedsec phony
+@defvar DOMAIN
+default: [REAL] - if set to COMPLEX, SQRT(X^2) will remain
+SQRT(X^2) instead of returning ABS(X).  The notion of a "domain" of
+simplification is still in its infancy, and controls little more than
+this at the moment.
+
+@end defvar
+@c @node EXPAND, EXPANDWRT, DOMAIN, Simplification
+@c @unnumberedsec phony
+@defun EXPAND (exp)
+will cause products of sums and exponentiated sums to be
+multiplied out, numerators of rational expressions which are sums to
+be split into their respective terms, and multiplication (commutative
+and non-commutative) to be distributed over addition at all levels of
+exp.  For polynomials one should usually use RATEXPAND which uses a
+more efficient algorithm (see DESCRIBE(RATEXPAND);).
+MAXNEGEX[1000] and MAXPOSEX[1000] control the maximum negative and
+positive exponents, respectively, which will expand.
+EXPAND(exp,p,n) expands exp, using p for MAXPOSEX and n for MAXNEGEX.
+This is useful in order to expand part but not all of an expression.
+EXPON[0] - the exponent of the largest negative power which is
+automatically expanded (independent of calls to EXPAND).  For example
+if EXPON is 4 then (X+1)**(-5) will not be automatically expanded.
+EXPOP[0] - the highest positive exponent which is automatically
+expanded.  Thus (X+1)**3, when typed, will be automatically expanded
+only if EXPOP is greater than or equal to 3.  If it is desired to have
+(X+1)**N expanded where N is greater than EXPOP then executing
+EXPAND((X+1)**N) will work only if MAXPOSEX is not less than N.
+The EXPAND flag used with EV (see EV) causes expansion.
+The file SHARE1;FACEXP FASL contains several related functions 
+(FACSUM and COLLECTTERMS are two) that provide the user with the 
+ability to structure expressions by controlled expansion.
+Brief function descriptions are available in SHARE1;FACEXP USAGE.
+A demo is available by doing BATCH("facexp.mc")$ .
+
+@end defun
+@c @node EXPANDWRT, EXPANDWRT_DENOM, EXPAND, Simplification
+@c @unnumberedsec phony
+@defun EXPANDWRT (exp,var1,var2,...)
+expands exp with respect to the vari.
+All products involving the vari appear explicitly.  The form returned
+will be free of products of sums of expressions that are not free of
+the vari.  The vari may be variables, operators, or expressions.  By
+default, denominators are not expanded, but this can be controlled by
+means of the switch EXPANDWRT_DENOM.  Do LOAD(STOPEX); to use this
+function.
+
+@end defun
+@c @node EXPANDWRT_DENOM, EXPANDWRT_FACTORED, EXPANDWRT, Simplification
+@c @unnumberedsec phony
+@defvar EXPANDWRT_DENOM
+ default:[FALSE] controls the treatment of rational
+expressions by EXPANDWRT.  If TRUE, then both the numerator and
+denominator of the expression will be expanded according to the
+arguments of EXPANDWRT, but if EXPANDWRT_DENOM is FALSE, then only the
+numerator will be expanded in that way.  Do LOAD(STOPEX) to use.
+
+@end defvar
+@c @node EXPANDWRT_FACTORED, EXPON, EXPANDWRT_DENOM, Simplification
+@c @unnumberedsec phony
+@defun EXPANDWRT_FACTORED (exp, var1, var2, ..., varN)
+is similar to
+EXPANDWRT, but treats expressions that are products somewhat
+differently.  EXPANDWRT_FACTORED will perform the required expansion
+only on those factors of exp that contain the variables in its argument list
+argument list.  Do LOAD(STOPEX) to use this
+function.
+
+@end defun
+@c @node EXPON, EXPONENTIALIZE, EXPANDWRT_FACTORED, Simplification
+@c @unnumberedsec phony
+@defvar EXPON
+ default: [0] - the exponent of the largest negative power which
+is automatically expanded (independent of calls to EXPAND).  For
+example if EXPON is 4 then (X+1)**(-5) will not be automatically
+expanded.
+
+@end defvar
+@c @node EXPONENTIALIZE, EXPOP, EXPON, Simplification
+@c @unnumberedsec phony
+@defvar EXPONENTIALIZE
+ default: [FALSE] if TRUE will cause all circular and
+hyperbolic functions to be converted to exponential form.  (Setting
+DEMOIVRE:TRUE; will reverse the effect.)
+EXPONENTIALIZE(exp) will cause the conversion to exponential form of an
+expression without setting the switch or having to re-evaluate the
+expression with EV.
+
+@end defvar
+@c @node EXPOP, FACTLIM, EXPONENTIALIZE, Simplification
+@c @unnumberedsec phony
+@defvar EXPOP
+ default: [0] - the highest positive exponent which is
+automatically expanded.  Thus (X+1)**3, when typed, will be
+automatically expanded only if EXPOP is greater than or equal to 3.
+If it is desired to have (X+1)**n expanded where n is greater than
+EXPOP then executing EXPAND((X+1)**n) will work only if MAXPOSEX is
+not less than n.
+
+@end defvar
+@c @node FACTLIM, INTOSUM, EXPOP, Simplification
+@c @unnumberedsec phony
+@defvar FACTLIM
+ default: [-1] gives the highest factorial which is
+automatically expanded.  If it is -1 then all integers are expanded.
+
+@end defvar
+@c @node INTOSUM, declaration, FACTLIM, Simplification
+@c @unnumberedsec phony
+@defun INTOSUM (expr)
+will take all things that a summation is multiplied
+by, and put them inside the summation. If the index is used in the
+outside expression, then the function tries to find a reasonable
+index, the same as it does for SUMCONTRACT.  This is essentially the
+reverse idea of the OUTATIVE property of summations, but note that it
+does not remove this property, it only bypasses it.  In some cases, a
+SCANMAP(MULTTHRU,expr) may be necessary before the INTOSUM.
+
+@end defun
+@c @node declaration, declaration, INTOSUM, Simplification
+@c @unnumberedsec phony
+@defvr declaration LASSOCIATIVE
+ - If DECLARE(G,LASSOCIATIVE); is done, this tells the
+simplifier that G is left-associative.  E.g.  G(G(A,B),G(C,D)) will
+simplify to G(G(G(A,B),C),D).
+
+@end defvr
+@c @node declaration, declaration, declaration, Simplification
+@c @unnumberedsec phony
+@defvr declaration LINEAR
+ - One of MACSYMA's OPPROPERTIES.  For univariate f so
+declared, "expansion" F(X+Y) -> F(X)+F(Y), F(A*X) -> A*F(X) takes
+place where A is a "constant".  For functions F of >=2 args,
+"linearity" is defined to be as in the case of 'SUM or 'INTEGRATE,
+i.e. F(A*X+B,X) -> A*F(X,X)+B*F(1,X) for A,B FREEOF X.  (LINEAR is
+just ADDITIVE + OUTATIVE.)
+
+@end defvr
+@c @node declaration, MAXAPPLYDEPTH, declaration, Simplification
+@c @unnumberedsec phony
+@defvr declaration MAINVAR
+ - You may DECLARE variables to be MAINVAR.  The ordering
+scale for atoms is essentially: numbers < constants (e.g. %E,%PI) <
+scalars < other variables < mainvars.  E.g. compare EXPAND((X+Y)^4);
+with (DECLARE(X,MAINVAR), EXPAND((X+Y)^4)); .  (Note: Care should be
+taken if you elect to use the above feature.  E.g. if you subtract an
+expression in which X is a MAINVAR from one in which X isn't a
+MAINVAR, resimplification e.g. with EV(expression,SIMP) may be
+necessary if cancellation is to occur.  Also, if you SAVE an
+expression in which X is a MAINVAR, you probably should also SAVE X.)
+
+@end defvr
+@c @node MAXAPPLYDEPTH, MAXAPPLYHEIGHT, declaration, Simplification
+@c @unnumberedsec phony
+@defvar MAXAPPLYDEPTH
+ default: [10000] - the maximum depth to which APPLY1
+and APPLY2 will delve.
+
+@end defvar
+@c @node MAXAPPLYHEIGHT, MAXNEGEX, MAXAPPLYDEPTH, Simplification
+@c @unnumberedsec phony
+@defvar MAXAPPLYHEIGHT
+ default: [10000] - the maximum height to which APPLYB1
+will reach before giving up.
+
+@end defvar
+@c @node MAXNEGEX, MAXPOSEX, MAXAPPLYHEIGHT, Simplification
+@c @unnumberedsec phony
+@defvar MAXNEGEX
+ default: [1000] - the largest negative exponent which will
+be expanded by the EXPAND command (see also MAXPOSEX).
+
+@end defvar
+@c @node MAXPOSEX, declaration, MAXNEGEX, Simplification
+@c @unnumberedsec phony
+@defvar MAXPOSEX
+ default: [1000] - the largest exponent which will be
+expanded with the EXPAND command (see also MAXNEGEX).
+
+@end defvar
+@c @node declaration, NEGDISTRIB, MAXPOSEX, Simplification
+@c @unnumberedsec phony
+@defvr declaration MULTIPLICATIVE
+ - If DECLARE(F,MULTIPLICATIVE) has been executed,
+then:
+(1) If F is univariate, whenever the simplifier encounters F applied
+to a product, F will be distributed over that product.  I.e. F(X*Y);
+will simplify to F(X)*F(Y).
+(2) If F is a function of 2 or more arguments, multiplicativity is
+defined as multiplicativity in the first argument to F, i.e.
+F(G(X)*H(X),X); will simplify to F(G(X),X)*F(H(X),X).
+This simplification does not occur when F is applied to expressions of
+the form PRODUCT(X[I],I,lower-limit,upper-limit).
+
+@end defvr
+@c @node NEGDISTRIB, NEGSUMDISPFLAG, declaration, Simplification
+@c @unnumberedsec phony
+@defvar NEGDISTRIB
+ default: [TRUE] - when TRUE allows -1 to be distributed
+over an expression.  E.g. -(X+Y) becomes -Y-X.  Setting it to FALSE
+will allow -(X+Y) to be displayed like that.  This is sometimes useful
+but be very careful: like the SIMP flag, this is one flag you do not
+want to set to FALSE as a matter of course or necessarily for other
+than local use in your MACSYMA.
+
+@end defvar
+@c @node NEGSUMDISPFLAG, {special symbol}, NEGDISTRIB, Simplification
+@c @unnumberedsec phony
+@defvar NEGSUMDISPFLAG
+ default: [TRUE] - when TRUE, X-Y displays as X-Y
+instead of as -Y+X.  Setting it to FALSE causes the special check in
+display for the difference of two expressions to not be done.  One
+application is that thus A+%I*B and A-%I*B may both be displayed the
+same way.
+
+@end defvar
+@c @node NOEVAL
+@c @unnumberedsec phony
+@defvr {special symbol} NOEVAL
+ - suppresses the evaluation phase of EV.  This is useful in
+conjunction with other switches and in causing expressions      
+to be resimplified without being reevaluated.
+
+@end defvr
+@c @node declaration, NOUNDISP, {special symbol}, Simplification
+@c @unnumberedsec phony
+@defvr declaration NOUN
+ - One of the options of the DECLARE command.  It makes a
+function so DECLAREd a "noun", meaning that it won't be evaluated
+automatically.
+
+@end defvr
+@c @node NOUNDISP, {special symbol}, declaration, Simplification
+@c @unnumberedsec phony
+@defvar NOUNDISP
+ default: [FALSE] - if TRUE will cause NOUNs to display with
+a single quote.  This switch is always TRUE when displaying function
+definitions.
+
+@end defvar
+@c @node NOUNS
+@c @unnumberedsec phony
+@defvr {special symbol} NOUNS
+ (EVFLAG) when used as an option to the EV command, converts all
+"noun" forms occurring in the expression being EV'd to "verbs", i.e.
+evaluates them.  See also NOUN, NOUNIFY, VERB, and VERBIFY.
+
+@end defvr
+@c @node NUMER
+@c @unnumberedsec phony
+@defvr {special symbol} NUMER
+ causes some mathematical functions (including exponentiation)
+with numerical arguments to be evaluated in floating point. It causes
+variables in exp which have been given numervals to be replaced by
+their values.  It also sets the FLOAT switch on.
+
+@end defvr
+@c @node NUMERVAL, OPPROPERTIES, {special symbol}, Simplification
+@c @unnumberedsec phony
+@defun NUMERVAL (var1, exp1, var2, exp2, ...)
+declares vari to have a
+numerval of expi which is evaluated and substituted for the variable
+in any expressions in which the variable occurs if the NUMER flag is
+TRUE. (see the EV function).
+
+@end defun
+@c @node OPPROPERTIES, OPSUBST, NUMERVAL, Simplification
+@c @unnumberedsec phony
+@defvar OPPROPERTIES
+ - the list of the special operator-properties handled by
+the MACSYMA simplifier: LINEAR, ADDITIVE, MULTIPLICATIVE, OUTATIVE,
+EVENFUN, ODDFUN, COMMUTATIVE, SYMMETRIC, ANTISYMMETRIC, NARY,
+LASSOCIATIVE, and RASSOCIATIVE.
+
+@end defvar
+@c @node OPSUBST, declaration, OPPROPERTIES, Simplification
+@c @unnumberedsec phony
+@defvar OPSUBST
+ default:[TRUE] - if FALSE, SUBST will not attempt to
+substitute into the operator of an expression.  E.g. (OPSUBST:FALSE,
+SUBST(X^2,R,R+R[0])); will work.
+
+@end defvar
+@c @node declaration, declaration, OPSUBST, Simplification
+@c @unnumberedsec phony
+@defvr declaration OUTATIVE
+ - If DECLARE(F,OUTATIVE) has been executed, then:
+(1) If F is univariate, whenever the simplifier encounters F applied
+to a product, that product will be partitioned into factors that are
+constant and factors that are not and the constant factors will be
+pulled out.  I.e. F(A*X); will simplify to A*F(X) where A is a
+constant.  Non-atomic constant factors will not be pulled out.
+(2) If F is a function of 2 or more arguments, outativity is defined
+as in the case of 'SUM or 'INTEGRATE, i.e. F(A*G(X),X); will simplify
+to A*F(G(X),X) for A free-of X.
+Initially, 'SUM, 'INTEGRATE, and 'LIMIT are declared to be OUTATIVE.
+
+@end defvr
+@c @node declaration, PRODHACK, declaration, Simplification
+@c @unnumberedsec phony
+@defvr declaration POSFUN
+ - POSitive FUNction, e.g. DECLARE(F,POSFUN); IS(F(X)>0); ->
+TRUE.
+
+@end defvr
+@c @node PRODHACK, RADCAN, declaration, Simplification
+@c @unnumberedsec phony
+@defvar PRODHACK
+ default: [FALSE] - if set to TRUE then PRODUCT(F(I),I,3,1); 
+will yield 1/F(2), by the identity 
+PRODUCT(F(I),I,A,B) = 1/PRODUCT(F(I),I,B+1,A-1) when A>B.
+
+@end defvar
+@c @node RADCAN, RADEXPAND, PRODHACK, Simplification
+@c @unnumberedsec phony
+@defun RADCAN (exp)
+simplifies exp, which can contain logs, exponentials, and
+radicals, by converting it into a form which is canonical over a large
+class of expressions and a given ordering of variables; that is, all
+functionally equivalent forms are mapped into a unique form.  For a
+somewhat larger class of expressions, RADCAN produces a regular form.
+Two equivalent expressions in this class will not necessarily have the
+same appearance, but their difference will be simplified by RADCAN to
+zero.  For some expressions RADCAN can be quite time consuming.  This
+is the cost of exploring certain relationships among the components of
+the expression for simplifications based on factoring and
+partial-fraction expansions of exponents.  %E_TO_NUMLOG (default:
+[FALSE]) - when set to TRUE, for "r" some rational number, and "x" some
+expression, %E^(r*LOG(x)) will be simplified into x^r .
+RADEXPAND[TRUE] when set to FALSE will inhibit certain
+transformations: RADCAN(SQRT(1-X)) will remain SQRT(1-X) and will not
+become %I SQRT(X-1).  RADCAN(SQRT(X^2-2*X+1)) will remain SQRT(X^2-2*X
++ 1) and will not be transformed to X- 1.
+Do EXAMPLE(RADCAN); for examples.
+
+@end defun
+@c @node RADEXPAND, RADPRODEXPAND, RADCAN, Simplification
+@c @unnumberedsec phony
+@defvar RADEXPAND
+ default: [TRUE] - if set to ALL will cause nth roots of
+factors of a product which are powers of n to be pulled outside of the
+radical.  E.g. if RADEXPAND is ALL, SQRT(16*X^2) will become 4*X .
+More particularly, consider SQRT(X^2).
+(a) If RADEXPAND is ALL or ASSUME(X>0) has been done, SQRT(X^2) will 
+become X.
+(b) If RADEXPAND is TRUE and DOMAIN is REAL (its default), SQRT(X^2) 
+will become ABS(X).
+(c) If RADEXPAND is FALSE, or RADEXPAND is TRUE and DOMAIN is COMPLEX, 
+SQRT(X^2) will be returned.
+(The notion of DOMAIN with settings of REAL or COMPLEX is still in 
+its infancy.  Note that its setting here only matters when RADEXPAND is 
+TRUE.)
+
+@end defvar
+@c @node RADPRODEXPAND, RADSUBSTFLAG, RADEXPAND, Simplification
+@c @unnumberedsec phony
+@defvar RADPRODEXPAND
+ - this switch has been renamed RADEXPAND.
+
+@end defvar
+@c @node RADSUBSTFLAG, declaration, RADPRODEXPAND, Simplification
+@c @unnumberedsec phony
+@defvar RADSUBSTFLAG
+ default: [FALSE] - if TRUE permits RATSUBST to make
+substitutions such as U for SQRT(X) in X.
+
+@end defvar
+@c @node declaration, SCSIMP, RADSUBSTFLAG, Simplification
+@c @unnumberedsec phony
+@defvr declaration RASSOCIATIVE
+ - If DECLARE(G,RASSOCIATIVE); is done, this tells the
+simplifier that G is right-associative.  E.g. 
+G(G(A,B),G(C,D)) will simplify to G(A,G(B,G(C,D))).
+
+@end defvr
+@c @node SCSIMP, SIMP, declaration, Simplification
+@c @unnumberedsec phony
+@defun SCSIMP (exp,rule1, rule2,...,rulen)
+Sequential Comparative
+Simplification [Stoute]) takes an expression (its first argument) and
+a set of identities, or rules (its other arguments) and tries
+simplifying.  If a smaller expression is obtained, the process
+repeats.  Otherwise after all simplifications are tried, it returns
+the original answer.  For examples, try EXAMPLE(SCSIMP); .
+
+@end defun
+@c @node SIMP, SIMPSUM, SCSIMP, Simplification
+@c @unnumberedsec phony
+@defun SIMP
+ causes exp to be simplified regardless of the setting of the
+switch SIMP which inhibits simplification if FALSE.
+
+@end defun
+@c @node SIMPSUM, SUMCONTRACT, SIMP, Simplification
+@c @unnumberedsec phony
+@defvar SIMPSUM
+ default: [FALSE] - if TRUE, the result of a SUM is
+simplified.  This simplification may sometimes be able to produce a
+closed form.  If SIMPSUM is FALSE or if 'SUM is used, the value is a
+sum noun form which is a representation of the sigma notation used in
+mathematics.
+
+@end defvar
+@c @node SUMCONTRACT, SUMEXPAND, SIMPSUM, Simplification
+@c @unnumberedsec phony
+@defun SUMCONTRACT (expr)
+will combine all sums of an addition that have
+upper and lower bounds that differ by constants. The result will be an
+expression containing one summation for each set of such summations
+added to all appropriate extra terms that had to be extracted to form
+this sum.  SUMCONTRACT will combine all compatible sums and use one of
+the indices from one of the sums if it can, and then try to form a
+reasonable index if it cannot use any supplied.  It may be necessary
+to do an INTOSUM(expr) before the SUMCONTRACT.
+
+@end defun
+@c @node SUMEXPAND, SUMHACK, SUMCONTRACT, Simplification
+@c @unnumberedsec phony
+@defvar SUMEXPAND
+ default: [FALSE] if TRUE, products of sums and
+exponentiated sums are converted into nested sums. For example:
+@example
+        SUMEXPAND:TRUE$
+        SUM(F(I),I,0,M)*SUM(G(J),J,0,N); ->
+                        'SUM('SUM(F(I1)*G(I2),I2,0,N),I1,0,M)
+        SUM(F(I),I,0,M)^2; -> 'SUM('SUM(F(I3)*F(I4),I4,0,M),I3,0,M)
+@end example
+@noindent
+If FALSE, they are left alone.  See also CAUCHYSUM.
+
+@end defvar
+@c @node SUMHACK, SUMSPLITFACT, SUMEXPAND, Simplification
+@c @unnumberedsec phony
+@defvar SUMHACK
+ default: [FALSE] - if set to TRUE then SUM(F(I),I,3,1); will
+yield -F(2), by the identity SUM(F(I),I,A,B) = - SUM(F(I),I,B+1,A-1) 
+when A>B.
+
+@end defvar
+@c @node SUMSPLITFACT, declaration, SUMHACK, Simplification
+@c @unnumberedsec phony
+@defvar SUMSPLITFACT
+ default: [TRUE] - if set to FALSE will cause
+MINFACTORIAL to be applied after a FACTCOMB.
+
+@end defvar
+@c @node declaration, UNKNOWN, SUMSPLITFACT, Simplification
+@c @unnumberedsec phony
+@defvr declaration SYMMETRIC
+ - If DECLARE(H,SYMMETRIC); is done, this tells the
+simplifier that H is a symmetric function.  E.g. H(X,Z,Y) will
+simplify to H(X, Y, Z).  This is the same as COMMUTATIVE.
+
+@end defvr
+@c @node UNKNOWN,  , declaration, Simplification
+@c @unnumberedsec phony
+@defun UNKNOWN (exp)
+returns TRUE iff exp contains an operator or function
+not known to the built-in simplifier.
+
+@end defun

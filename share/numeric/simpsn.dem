@@ -1,0 +1,78 @@
+/*-*-macsyma-*-*/
+
+/* 1:53pm  Monday, 12 January 1981
+  - George Carrette */
+/*
+(LOAD_PACKAGE(SHAREM,"DSK:SHAREM\;AUTOLOAD FASL"),
+ IF SHOWTIME=FALSE THEN SHOWTIME:'ALL)$ */
+
+load("[sharem]autolo")$
+
+/* Macro's to do numerical integration. */
+
+/* Macro's allow the user to extend the compiler's ability
+   to open-compile constructs which takes arguments which
+   are functional in nature. Of course, some languages don't
+   even allow contructs to take functional arguments. */
+
+/* Rectangle rule. */
+
+DEFM(RECTRULE('EXPRESSION,'VAR,'A,'B,'DVAR),
+     BLOCK([%_SUM:0.0,%_A:FLOATCHECK(A),
+            %_B:FLOATCHECK(B),%_DVAR:FLOATCHECK(DVAR)],
+           MODE_DECLARE([%_SUM,%_A,%_B,%_DVAR],FLOAT),
+	   FOR VAR:%_A THRU %_B STEP %_DVAR
+            DO %_SUM:%_SUM+EXPRESSION,
+           %_SUM*%_DVAR));
+	   
+/* DEFM is a macro which is use to define macro's,
+   you can see by looking at the definition of RECTRULE
+   which it produces that it saves some typing
+   Adding to the expressive power of "defining forms"
+   is a common use of macros. */
+
+/* First need a floatcheck function, because the macsyma
+   function FLOAT does not always return a floating-point
+   number. */
+
+MODE_DECLARE(FUNCTION(FLOAT_CHECK),FLOAT)$
+FLOATCHECK(X):=
+ (X:FLOAT(X),
+  IF FLOATNUMP(X) THEN X ELSE ERROR("Not FLOATCHECK",X))$
+   
+RECTRULE(X,X,0,1,1/8);
+
+/* Now for the hat trick. */
+
+F(P,N):=(MODE_DECLARE(P,FIXNUM),
+         RECTRULE(X^P,X,0,1,1/N))$
+
+MACROEXPANSION:'DISPLACE$
+
+F(2,5);
+
+/* Now, look at the function definition. */
+
+GRIND(F);
+
+/* If you did some timing's you would see that when macros
+   are displacing the function runs faster the second time
+   than it does the first. This is user-extendable
+   compilation on-the-fly! */
+
+TRANSLATE(F,FLOATCHECK)$
+
+F(2,5);
+
+/* Re-enter the untranslated definition. */
+F(P,N):=(MODE_DECLARE(P,FIXNUM),
+         RECTRULE(X^P,X,0,1,1/N))$
+
+/* If you want to experiment a little, use the untranslated F,
+   and try F(5,1000); It should take about 13 cpu seconds.
+   Then COMPILE(F); and try it. It should then take 0.053 cpu
+   seconds, a speed up by a factor of 245. i.e. the computation
+   takes only 0.4% as much time as it did before. 
+   [I'm not sure I know of any other compilers which give
+    such a speed-up.]
+*/

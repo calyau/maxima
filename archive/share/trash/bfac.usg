@@ -1,0 +1,12 @@
+This data is obsolete.  See SHARE;BFFAC USAGE.
+
+SHARE2;BFAC BZETA contains cheap and dirty BFLOAT versions of the
+Factorial (shifted Gamma) and Riemann Zeta functions.  Both BFAC
+and BZETA take a 2nd argument which is how many digits to retain and
+return, but it's a good idea to request a couple of extra.
+
+There is also CBFAC(z,fpprec) for factorial of complex z, which is
+even slower!
+
+There is also the Hurwitz zeta fcn BHZETA(s,h,fpprec), which gives
+fpprec digits of sum((k+h)^-s,k,0,inf). --RWG

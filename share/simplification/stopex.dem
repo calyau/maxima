@@ -1,0 +1,49 @@
+/* First load the necessary file:*/
+LOAD('STOPEX)$
+/* The function EXPANDWRT expands its first argument
+	 with respect to its other arguments.  All products of
+	 these other arguments appear explicitly in the result.
+	 First we create an expression to work on:  */
+EXP1:(A*B+C+D)*(A+B);
+EXPANDWRT(EXP1,A,B);
+/* Positive integer powers of similar factors are also
+	 expanded: */
+EXP2:(A*B+C+D)^2*(A+B);
+EXPANDWRT(EXP2,A,B);
+/* By default, EXPANDWRT expands the arguments  of operators,
+         in analogy to EXPAND:*/
+EXPANDWRT((A+SIN((LOG(A)+B)*(A+B)))*(A+B),A);
+/* But by setting EXPANDWRT_NONRAT:FALSE, the expansion of
+	 such arguments is inhibited. */
+EXPANDWRT_NONRAT:FALSE$
+EXPANDWRT((A+SIN((LOG(A)+B)*(A+B)))*(A+B),A);
+/* By default, denominators are not processed at all: */
+EXP3:(A*B+C+D)*(A+B)/(C+A)^2;
+EXPANDWRT(EXP3,A,B);
+/* But by setting the switch EXPANDWRT_DENOM to TRUE,
+	the denominator will also be processed: */
+EXPANDWRT_DENOM:TRUE$
+EXPANDWRT(EXP3,A,B);
+EXPANDWRT_DENOM:FALSE$
+/* Operator names appearing in the argument list have the
+	 desired effect: */
+EXP4:(A.B+C)*(A+C.D+E.F+G);
+EXPANDWRT(EXP4,".");
+/* Notice that the expansion returned is not necessarily
+	 "minimal" with respect to the variables specified in the
+	 argument list. That is, there may be more than one term
+	 in the result proportional to the same product of powers
+	 of the variables specified in the argument list: */
+EXP5:(GAMMA(X)*A+B)*(GAMMA(X)*C+D+2*E^2);
+EXPANDWRT(EXP5,GAMMA(X));
+/*  The function EXPANDWRT_FACTORED works on factored
+	 or partially factored expressions.  The expansion occurs
+	 only among those factors that contain occurrences of the
+	 variables in the argument list of EXPANDWRT_FACTORED. Note
+	 the difference:*/
+EXP6:%PI*EXP1;
+EXPANDWRT(EXP6,A,B);
+EXPANDWRT_FACTORED(EXP6,A,B);
+/* Another example: */
+EXP7:EXP6/A;
+EXPANDWRT(EXP7,A);

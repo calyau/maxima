@@ -1,0 +1,9 @@
+
+TRAPRULE(F,A,B,N):=
+   (B-A)/N * ((apply(F,[B])+apply(F,[A]))/2 +
+   SUM(apply(F,[A+(B-A)/N*I]),I,1,N-1))$
+
+SIMPSON(F,A,B,N):=
+   (B-A)/N/3 * (apply(F,[A])+apply(F,[B]) +
+   4*SUM(apply(F,[A+(B-A)/N*(2*I-1)]),I,1,N/2)
+ + 2*SUM(apply(F,[A+(B-A)/N*(2*I)]),I,1,(N-2)/2))$

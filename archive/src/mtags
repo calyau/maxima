@@ -1,0 +1,34 @@
+#!/bin/sh
+etags [m-z]*.lisp
+mv TAGS TAGSmz
+etags [a-l]*.lisp
+cat TAGSmz >> TAGS
+rm TAGSmz
+
+(setq auto-save-default nil)
+(tags-query-replace "fsymeval" "symbol-function" "yes")
+(tags-query-replace "sub1" "1-" "yes")
+(tags-query-replace "add1" "1+" "yes")
+(tags-query-replace "lexpr-funcall" "apply" "yes")
+(tags-query-replace "standard-output" "*standard-output*" "yes")
+(tags-query-replace "standard-input" "*standard-input*" "yes")
+(tags-query-replace "(minus" "(-" "yes")
+(tags-query-replace "multiple-value" "multiple-value-setq" "yes")
+(tags-query-replace "\*catch" "catch" "yes")
+(tags-query-replace "\*throw" "throw" "yes")
+(tags-query-replace "defconst" "defparameter" "yes")
+(tags-query-replace "function-cell-location" "symbol-function" "yes")
+(tags-query-replace "flonump" "floatp" "yes")
+(tags-query-replace "plist" "symbol-plist" "yes")
+
+
+(tags-query-replace "probef" "probe-file" "yes")
+(tags-query-replace "get-pname" "symbol-name" "yes")
+(tags-query-replace "copytree" "copy-tree" "yes")
+(tags-query-replace "copylist" "copy-list" "yes") 
+
+;(tags-query-replace "greaterp" ">" "yes") ;are these for fixnum only?
+;(tags-query-replace "lessp" "<" "yes")  
+
+
+;fixnum ? (tags-query-replace "(plus" "(+" "yes")

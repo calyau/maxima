@@ -1,0 +1,322 @@
+
+(DECLARE (SPECIAL RET $DISPFLAG X A B C D CO SI EX $ERRINTSCE)) 
+
+(SETQ $ERRINTSCE NIL) 
+
+(ARGS '$INTSCE '(NIL . 2))
+
+(DEFUN $INTSCE (E X) 
+       (PROG (F A B C D P M N EX CO SI RET) 
+	     (AND (MPLUSP E)
+		  (RETURN (CONS '(MPLUS)
+				(MAPCAR '(LAMBDA (Z) ($INTSCE Z X))
+					(CDR E)))))
+	     (SETQ F (COND ((NOT (MTIMESP E)) (NCONS E)) (T (CDR E))))
+	LOOP (SETQ P (CAR F))
+	     (COND ((FREE P X) (SETQ A (CONS P A)))
+		   ((ATOM P) (GO ERROR))
+		   ((EQ (CAAR P) '%SIN)
+		    (SETQ B (CONS (CONS (CADR P) 1.) B)))
+		   ((EQ (CAAR P) '%COS)
+		    (SETQ C (CONS (CONS (CADR P) 1.) C)))
+		   ((EQ (CAAR P) 'MEXPT)
+		    (COND ((EQ (CADR P) '$%E)
+			   (SETQ D (CONS (CADDR P) D)))
+			  ((ATOM (CADR P)) (GO ERROR))
+			  ((EQ (CAAADR P) '%SIN)
+			   (SETQ B (CONS (CONS (CADADR P) (CADDR P))
+					 B)))
+			  ((EQ (CAAADR P) '%COS)
+			   (SETQ C (CONS (CONS (CADADR P) (CADDR P))
+					 C)))
+			  (T (GO ERROR))))
+		   (T (GO ERROR)))
+	     (AND (SETQ F (CDR F)) (GO LOOP))
+	     (AND (> (LENGTH B) 1.) (GO ERROR))
+	     (COND ((NULL B) (SETQ M 0.))
+		   ((AND (MNUMP (CDAR B))
+			 (GREAT (SETQ M (CDAR B)) 0)
+			 (SETQ P (ISLINEAR (CAAR B) X))
+			 (ZEROP1 (CDR P)))
+		    (SETQ B (CAR P)))
+		   (T (GO ERROR)))
+	     (AND (> (LENGTH C) 1.) (GO ERROR))
+	     (COND ((NULL C) (SETQ N 0. C B))
+		   ((AND (MNUMP (CDAR C))
+			 (GREAT (SETQ N (CDAR C)) 0)
+			 (SETQ P (ISLINEAR (CAAR C) X))
+			 (ZEROP1 (CDR P)))
+		    (SETQ C (CAR P)))
+		   (T (GO ERROR)))
+	     (AND (> (LENGTH D) 1.) (GO ERROR))
+	     (COND ((NULL D) (SETQ D 0.))
+		   ((SETQ P (ISLINEAR (CAR D) X))
+		    (SETQ D (CAR P) A (CONS ($EXP (CDR P)) A)))
+		   (T (GO ERROR)))
+	     (COND ((NULL B) (COND ((NULL C) (SETQ C 0.))) (SETQ B C))
+		   ((NOT (ALIKE1 B C)) (GO ERROR)))
+	     (SETQ CO (LIST '(%COS)
+			    (LIST '(MTIMES) B X)) 
+		   SI (LIST '(%SIN)
+			    (LIST '(MTIMES) B X)))
+	     (COND ((EQUAL D 0.) (SETQ EX 1. RET X))
+		   (T (SETQ EX ($EXP (LIST '(MTIMES) D X)) 
+			    RET (DIV* EX D))))
+	     (SETQ P ($SCEINT M N))
+	     (RETURN (COND (A (CONS '(MTIMES) (CONS P A)))
+			   (T P)))
+	ERROR(COND ($ERRINTSCE (PRINC '|Improper argument to INTSCE|) (ERR)))
+	     (COND ($DISPFLAG (PRINC '|Calling INTEGRATE on|)
+			      (TERPRI)
+			      (DISPLA E)))
+	     (RETURN ($INTEGRATE E X)))) 
+
+(DEFUN $SCEINT (M N) 
+  (PROG ($DEN $NUM) 
+	(SETQ 
+	 $DEN
+	 (SIMPLIFY (LIST '(MPLUS)
+			 (SIMPLIFY (LIST '(MEXPT)
+					 (MEVAL1 'D)
+					 2.))
+			 (SIMPLIFY (LIST '(MTIMES)
+					 (SIMPLIFY (LIST '(MEXPT)
+							 (MEVAL1 'B)
+							 2.))
+					 (SIMPLIFY (LIST '(MEXPT)
+							 (+ N M)
+							 2.)))))))
+	(SETQ 
+	 $NUM
+	 (COND
+	  ((= M 0.)
+	   (COND
+	    ((= N 0.) (RETURN (MEVAL1 'RET)))
+	    ((= N 1.)
+	     (SIMPLIFY
+	      (LIST
+	       '(MTIMES)
+	       (MEVAL1 'EX)
+	       (SIMPLIFY (LIST '(MPLUS)
+			       (SIMPLIFY (LIST '(MTIMES)
+					       (MEVAL1 'CO)
+					       (MEVAL1 'D)))
+			       (SIMPLIFY (LIST '(MTIMES)
+					       (MEVAL1 'B)
+					       (MEVAL1 'SI))))))))
+	    (T
+	     (SIMPLIFY
+	      (LIST
+	       '(MPLUS)
+	       (SIMPLIFY (LIST '(MTIMES)
+			       (SIMPLIFY ($SCEINT 0. (+ N -2.)))
+			       (SIMPLIFY (LIST '(MEXPT)
+					       (MEVAL1 'B)
+					       2.))
+			       N
+			       (+ N -1.)))
+	       (SIMPLIFY
+		(LIST
+		 '(MTIMES)
+		 (SIMPLIFY (LIST '(MEXPT)
+				 (MEVAL1 'CO)
+				 (+ N -1.)))
+		 (MEVAL1 'EX)
+		 (SIMPLIFY
+		  (LIST '(MPLUS)
+			(SIMPLIFY (LIST '(MTIMES)
+					(MEVAL1 'CO)
+					(MEVAL1 'D)))
+			(SIMPLIFY (LIST '(MTIMES)
+					(MEVAL1 'B)
+					N
+					(MEVAL1 'SI))))))))))))
+	  ((= M 1.)
+	   (COND
+	    ((= N 0.)
+	     (SIMPLIFY
+	      (LIST
+	       '(MTIMES)
+	       (MEVAL1 'EX)
+	       (SIMPLIFY (LIST '(MPLUS)
+			       (SIMPLIFY (LIST '(MTIMES)
+					       -1.
+					       (MEVAL1 'B)
+					       (MEVAL1 'CO)))
+			       (SIMPLIFY (LIST '(MTIMES)
+					       (MEVAL1 'D)
+					       (MEVAL1 'SI))))))))
+	    ((= N 1.)
+	     (SIMPLIFY
+	      (LIST
+	       '(MTIMES)
+	       (MEVAL1 'EX)
+	       (SIMPLIFY
+		(LIST '(MPLUS)
+		      (SIMPLIFY (LIST '(MTIMES)
+				      -1.
+				      (MEVAL1 'B)
+				      (SIMPLIFY (LIST '(MEXPT)
+						      (MEVAL1 'CO)
+						      2.))))
+		      (SIMPLIFY (LIST '(MTIMES)
+				      (MEVAL1 'CO)
+				      (MEVAL1 'D)
+				      (MEVAL1 'SI)))
+		      (SIMPLIFY (LIST '(MTIMES)
+				      (MEVAL1 'B)
+				      (SIMPLIFY (LIST '(MEXPT)
+						      (MEVAL1 'SI)
+						      2.)))))))))
+	    (T
+	     (SIMPLIFY
+	      (LIST
+	       '(MPLUS)
+	       (SIMPLIFY (LIST '(MTIMES)
+			       (SIMPLIFY ($SCEINT 1. (+ N -2.)))
+			       (SIMPLIFY (LIST '(MEXPT)
+					       (MEVAL1 'B)
+					       2.))
+			       N
+			       (+ N -1.)))
+	       (SIMPLIFY
+		(LIST
+		 '(MTIMES)
+		 (SIMPLIFY (LIST '(MEXPT)
+				 (MEVAL1 'CO)
+				 (+ N -1.)))
+		 (MEVAL1 'EX)
+		 (SIMPLIFY
+		  (LIST
+		   '(MPLUS)
+		   (SIMPLIFY (LIST '(MTIMES)
+				   -1.
+				   (MEVAL1 'B)
+				   (SIMPLIFY (LIST '(MEXPT)
+						   (MEVAL1 'CO)
+						   2.))))
+		   (SIMPLIFY (LIST '(MTIMES)
+				   (MEVAL1 'CO)
+				   (MEVAL1 'D)
+				   (MEVAL1 'SI)))
+		   (SIMPLIFY (LIST '(MTIMES)
+				   (MEVAL1 'B)
+				   N
+				   (SIMPLIFY (LIST '(MEXPT)
+						   (MEVAL1 'SI)
+						   2.)))))))))))))
+	  ((= N 0.)
+	   (SIMPLIFY
+	    (LIST
+	     '(MPLUS)
+	     (SIMPLIFY (LIST '(MTIMES)
+			     (SIMPLIFY (LIST '(MEXPT)
+					     (MEVAL1 'B)
+					     2.))
+			     M
+			     (+ M -1.)
+			     (SIMPLIFY ($SCEINT (+ M -2.) 0.))))
+	     (SIMPLIFY
+	      (LIST
+	       '(MTIMES)
+	       (MEVAL1 'EX)
+	       (SIMPLIFY (LIST '(MEXPT)
+			       (MEVAL1 'SI)
+			       (+ M -1.)))
+	       (SIMPLIFY (LIST '(MPLUS)
+			       (SIMPLIFY (LIST '(MTIMES)
+					       -1.
+					       (MEVAL1 'B)
+					       (MEVAL1 'CO)
+					       M))
+			       (SIMPLIFY (LIST '(MTIMES)
+					       (MEVAL1 'D)
+					       (MEVAL1 'SI))))))))))
+	  ((= N 1.)
+	   (SIMPLIFY
+	    (LIST
+	     '(MPLUS)
+	     (SIMPLIFY (LIST '(MTIMES)
+			     (SIMPLIFY (LIST '(MEXPT)
+					     (MEVAL1 'B)
+					     2.))
+			     M
+			     (+ M -1.)
+			     (SIMPLIFY ($SCEINT (+ M -2.) 1.))))
+	     (SIMPLIFY
+	      (LIST
+	       '(MTIMES)
+	       (MEVAL1 'EX)
+	       (SIMPLIFY (LIST '(MEXPT)
+			       (MEVAL1 'SI)
+			       (+ M -1.)))
+	       (SIMPLIFY
+		(LIST '(MPLUS)
+		      (SIMPLIFY (LIST '(MTIMES)
+				      -1.
+				      (MEVAL1 'B)
+				      (SIMPLIFY (LIST '(MEXPT)
+						      (MEVAL1 'CO)
+						      2.))
+				      M))
+		      (SIMPLIFY (LIST '(MTIMES)
+				      (MEVAL1 'CO)
+				      (MEVAL1 'D)
+				      (MEVAL1 'SI)))
+		      (SIMPLIFY (LIST '(MTIMES)
+				      (MEVAL1 'B)
+				      (SIMPLIFY (LIST '(MEXPT)
+						      (MEVAL1 'SI)
+						      2.)))))))))))
+	  (T
+	   (SIMPLIFY
+	    (LIST
+	     '(MPLUS)
+	     (SIMPLIFY (LIST '(MTIMES)
+			     (SIMPLIFY (LIST '(MEXPT)
+					     (MEVAL1 'B)
+					     2.))
+			     M
+			     (+ M -1.)
+			     (SIMPLIFY ($SCEINT (+ M -2.) N))))
+	     (SIMPLIFY (LIST '(MTIMES)
+			     (SIMPLIFY (LIST '(MEXPT)
+					     (MEVAL1 'B)
+					     2.))
+			     (SIMPLIFY ($SCEINT M (+ N -2.)))
+			     N
+			     (+ N -1.)))
+	     (SIMPLIFY
+	      (LIST
+	       '(MTIMES)
+	       (SIMPLIFY (LIST '(MEXPT)
+			       (MEVAL1 'CO)
+			       (+ N -1.)))
+	       (MEVAL1 'EX)
+	       (SIMPLIFY (LIST '(MEXPT)
+			       (MEVAL1 'SI)
+			       (+ M -1.)))
+	       (SIMPLIFY
+		(LIST '(MPLUS)
+		      (SIMPLIFY (LIST '(MTIMES)
+				      -1.
+				      (MEVAL1 'B)
+				      (SIMPLIFY (LIST '(MEXPT)
+						      (MEVAL1 'CO)
+						      2.))
+				      M))
+		      (SIMPLIFY (LIST '(MTIMES)
+				      (MEVAL1 'CO)
+				      (MEVAL1 'D)
+				      (MEVAL1 'SI)))
+		      (SIMPLIFY (LIST '(MTIMES)
+				      (MEVAL1 'B)
+				      N
+				      (SIMPLIFY (LIST '(MEXPT)
+						      (MEVAL1 'SI)
+						      2.)))))))))))))
+	(RETURN (SIMPLIFY (LIST '(MTIMES)
+				(SIMPLIFY (LIST '(MEXPT)
+						$DEN
+						-1.))
+				$NUM)))))

@@ -1,0 +1,117 @@
+;;; -*- Mode: Lisp; Package: Macsyma -*-
+;;; Translated code for LMIVAX::MAX$DISK:[SHARE2]GENDIF.MC;2
+;;; Written on 9/15/1984 20:24:20, from MACSYMA 302
+;;; Translated for LPH
+
+;;; TRANSL-AUTOLOAD version NIL
+;;; TRANSS version 87 TRANSL version 1157 TRUTIL version 27
+;;; TRANS1 version 108 TRANS2 version 39 TRANS3 version 50
+;;; TRANS4 version 29 TRANS5 version 26 TRANSF version NIL
+;;; TROPER version 15 TRPRED version 6 MTAGS version NIL
+;;; MDEFUN version 58 TRANSQ version 88 FCALL version 40
+;;; ACALL version 70 TRDATA version 68 MCOMPI version 146
+;;; TRMODE version 73 TRHOOK version NIL
+(eval-when (compile eval)
+      (setq *infile-name-key*
+	          (namestring (truename '#.standard-input))))
+
+(eval-when (compile)
+   (setq $tr_semicompile 'NIL)
+   (setq forms-to-compile-queue ()))
+
+(comment "MAX$DISK:[SHARE2]GENDIF.MC;2")
+
+;;; General declarations required for translated MACSYMA code.
+
+(DECLARE)
+
+(DEFMTRFUN-EXTERNAL ($GENDIFF $ANY MDEFINE NIL NIL))
+
+(DEFMTRFUN-EXTERNAL ($GENDIFFPOW $ANY MDEFINE NIL NIL))
+
+(DEFMTRFUN-EXTERNAL ($GENDIFFPROD $ANY MDEFINE NIL NIL))
+
+
+(DEFPROP $GENDIFF T TRANSLATED)
+
+(ADD2LNC '$GENDIFF $PROPS)
+
+(DEFMTRFUN
+  ($GENDIFF $ANY MDEFINE NIL NIL) ($E $X $N) NIL
+  (COND
+    ((MFUNCTION-CALL $NUMBERP $N)
+       (COND
+	 ((MFUNCTION-CALL $INTEGERP $N)
+	    (SIMPLIFY (MFUNCTION-CALL $DIFF $E $X $N)))
+	 (T (SIMPLIFY (MFUNCTION-CALL
+			$PRINT '|&FRACTIONAL DERIVATIVES NOT SUPPORTED|))
+	    (SIMPLIFY (LIST '(%DERIVATIVE) $E $X $N)))))
+    ((MFUNCTION-CALL $FREEOF $X $E) 0)
+    ((MFUNCTION-CALL $ATOM $E) (SIMPLIFY (LIST '(%DERIVATIVE) $E $X $N)))
+    ((LIKE (SIMPLIFY (MFUNCTION-CALL $INPART $E 0)) '&+)
+       (SIMPLIFY
+	 (MAP1
+	   (GETOPR
+	     (M-TLAMBDA&ENV (($U) ($X $N)) NIL
+			    (SIMPLIFY (MFUNCTION-CALL $GENDIFF $U $X $N))))
+	   $E)))
+    ((LIKE (SIMPLIFY (MFUNCTION-CALL $INPART $E 0)) '&*)
+       (SIMPLIFY
+	 (MFUNCTION-CALL
+	   $GENDIFFPROD (SIMPLIFY (MFUNCTION-CALL $INPART $E 1))
+	   (DIV $E (SIMPLIFY (MFUNCTION-CALL $INPART $E 1))) $X $N)))
+    ((LIKE (SIMPLIFY (MFUNCTION-CALL $INPART $E 0)) '&^)
+       (SIMPLIFY (MFUNCTION-CALL
+		   $GENDIFFPOW (SIMPLIFY (MFUNCTION-CALL $INPART $E 1))
+		   (SIMPLIFY (MFUNCTION-CALL $INPART $E 2)) $X $N)))
+    (T (SIMPLIFY (LIST '(%DERIVATIVE) $E $X $N)))))
+
+(DEFPROP $GENDIFFPOW T TRANSLATED)
+
+(ADD2LNC '$GENDIFFPOW $PROPS)
+
+(DEFMTRFUN
+ ($GENDIFFPOW $ANY MDEFINE NIL NIL) ($X1 $X2 $X $N) NIL
+ (COND
+   ((LIKE $X1 $X) (MUL* (SIMPLIFY (LIST '(%GENFACT) $X2 $N 1))
+			(POWER $X (ADD* $X2 (*MMINUS $N)))))
+   ((AND
+      (LIKE $X1 '$%E)
+      (MFUNCTION-CALL $FREEOF $X (SIMPLIFY (MFUNCTION-CALL $DIFF $X2 $X))))
+      (MUL* (POWER (SIMPLIFY (MFUNCTION-CALL $DIFF $X2 $X)) $N)
+	    (SIMPLIFY ($EXP $X2))))
+   ((AND (MFUNCTION-CALL $INTEGERP $X2) (IS-BOOLE-CHECK (MGRP $X2 1)))
+      (SIMPLIFY
+	(MFUNCTION-CALL
+	  $GENDIFF (SIMPLIFY (MFUNCTION-CALL $RATEXPAND $X2)) $X $N)))
+   (T (SIMPLIFY (LIST '(%DERIVATIVE) (POWER $X1 $X2) $X $N)))))
+
+(DEFPROP $GENDIFFPROD T TRANSLATED)
+
+(ADD2LNC '$GENDIFFPROD $PROPS)
+
+(DEFMTRFUN
+  ($GENDIFFPROD $ANY MDEFINE NIL NIL) ($A $B $X $N) NIL
+  (COND
+    ((MFUNCTION-CALL $FREEOF $X $A)
+       (MUL* $A (SIMPLIFY (MFUNCTION-CALL $GENDIFF $B $X $N))))
+    ((MFUNCTION-CALL $FREEOF $X $B)
+       (MUL* $B (SIMPLIFY (MFUNCTION-CALL $GENDIFF $A $X $N))))
+    (T ((LAMBDA ($Q $R $I)
+	  NIL
+	  (PROG ()
+	       (SETQ $Q (SIMPLIFY (MFUNCTION-CALL $GENDIFF $A $X $I)))
+	       (SETQ
+		 $R
+		 (SIMPLIFY
+		   (MFUNCTION-CALL $GENDIFF $B $X (ADD* $N (*MMINUS $I)))))
+	       (RETURN
+		 (DOSUM (FUNGEN&ENV-FOR-MEVALSUMARG
+			  ($N $Q $R) ($I)
+			  (MUL* (SIMPLIFY (LIST '(%BINOMIAL) $N $I)) $Q $R)
+			  ((MTIMES) ((%BINOMIAL) $N $I) $Q $R))
+			'$I 0 $N T))))
+	'$Q '$R '$I))))
+
+(compile-forms-to-compile-queue)
+

@@ -1,0 +1,209 @@
+@node Runtime Environment, Miscellaneous Options, Matrices and Linear Algebra, Top
+@chapter Runtime Environment
+@menu
+* Introduction for Runtime Environment::  
+* INTERRUPTS::                  
+* Definitions for Runtime Environment::  
+@end menu
+
+
+@node Introduction for Runtime Environment, INTERRUPTS, Runtime Environment, Runtime Environment
+@section Introduction for Runtime Environment
+ - A file which is loaded automatically for you when you start up
+a MACSYMA, to customize MACSYMA for you.  It is possible to have an
+init file written as a BATCH file of macsyma commands.  We hope this
+makes it easier for users to customize their macsyma environment.
+Here is an example init file
+@example
+        /*-*-macsyma-*-*/ 
+        setup_autoload("share\;bessel",j0,j1,jn);
+        showtime:all; comgrind:true;
+@end example
+The strange looking comment at the top of the file "/*-*-macsyma-*-*/"
+tells that it is a macsyma-language file. 
+Also: "SETUP_AUTOLOAD" can be used to make functions in BATCH files
+autoloading, meaning that you can then use (for instance, here) the
+functions J0, J1 and Jn from the BESSEL package directly because when
+you use the function the BESSEL package will be loaded in for you
+automatically.  If the second file name in the argument to
+SETUP_AUTOLOAD is not specified (the preferred usage) then the
+standard search for second file names of "FASL", "TRLISP", and ">" is
+done.
+
+@node INTERRUPTS, Definitions for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
+@section INTERRUPTS
+
+ - There are several ways the user can interrupt a MACSYMA computation,
+usually with a control character.  Do DESCRIBE(CHARACTERS); for details.
+MACSYMA will also be interrupted if ^Z (control-Z) is typed, as this
+will exit back to Unix shell level Usually Control-C interrupts the
+computation putting you in a break loop.  Typing :t should give you top
+level maxima back again.
+
+
+@c end concepts Runtime Environment
+@node Definitions for Runtime Environment,  , INTERRUPTS, Runtime Environment
+@section Definitions for Runtime Environment
+@c @node ALARMCLOCK
+@c @unnumberedsec phony
+@defun ALARMCLOCK (arg1, arg2, arg3)
+will execute the function of no
+arguments whose name is arg3 when the time specified by arg1 and arg2
+elapses.  If arg1 is the atom "TIME" then arg3 will be executed after
+arg2 seconds of real-time has elapsed while if arg1 is the atom
+"RUNTIME" then arg3 will be executed after arg2 milliseconds of cpu
+time. If arg2 is negative then the arg1 timer is shut off.
+
+@end defun
+@c @node ALLOC
+@c @unnumberedsec phony
+@defun ALLOC
+ takes any number of arguments which are the same as the replies
+to the "run out of space" question.  It increases allocations
+accordingly.  E.g. If the user knows initially that his problem will
+require much space, he can say ALLOC(4); to allocate the maximum
+amount initially.  See also the DYNAMALLOC switch.
+
+@end defun
+@c @node BUG
+@c @unnumberedsec phony
+@defun BUG ("message")
+similar to mail, sends a message to MACSYMA Mail.
+This may be used for reporting bugs or suspected bugs in MACSYMA.
+Expressions may be included by referring to them, outside double
+quotes, e.g.
+BUG("I am trying to integrate",D3,"but it asks for more list space.
+What should I do?");
+
+@end defun
+@c @node CLEARSCREEN
+@c @unnumberedsec phony
+@defun CLEARSCREEN ()
+Clears the screen.  The same as typing control-L.
+
+@end defun
+@c @node CONTINUE
+@c @unnumberedsec phony
+@defun CONTINUE
+ - Control-^ typed while in MACSYMA causes LISP to be
+entered.  The user can now type any LISP S-expression and have it
+evaluated.  Typing (CONTINUE) or ^G (control-G) causes MACSYMA to be
+re-entered.
+
+@end defun
+@c @node DDT
+@c @unnumberedsec phony
+@defun DDT ()
+Exits from MACSYMA to the operating system level.  (The same
+as control-Z on ITS, or control-C on Tops-20.)
+
+@end defun
+@c @node DELFILE
+@c @unnumberedsec phony
+@defun DELFILE (file-specification)
+will delete the file given by the
+file-specification (i.e. firstname, secondname, device, user) from the
+given device.
+
+@end defun
+@c @node DISKFREE
+@c @unnumberedsec phony
+@defun DISKFREE ()
+With no args or an arg of TRUE, will return the total
+number of free blocks of disk space in the system.  With an arg of 0,
+1, or 13, it will return the number of free blocks of diskspace on the
+respective disk pack.  With an arg of SECONDARY or PRIMARY, it will
+return the total number of free blocks of disk space on the secondary
+or primary disk pack respectively.
+
+@end defun
+@c @node declaration
+@c @unnumberedsec phony
+@defvr declaration FEATURE
+ - A nice adjunct to the system.  STATUS(FEATURE) gives you a
+list of system features. At present the list for MC is: MACSYMA,
+NOLDMSG, MACLISP, PDP10, BIGNUM, FASLOAD, HUNK, FUNARG, ROMAN, NEWIO,
+SFA, PAGING, MC, and ITS.  Any of these "features" may be given as a
+second argument to STATUS(FEATURE,...); If the specified feature
+exists, TRUE will be returned, else FALSE.  Note: these are system
+features, and not really "user related".  See also DESCRIBE(features);
+for more user-oriented features.
+
+@end defvr
+@c @node FEATUREP
+@c @unnumberedsec phony
+@defun FEATUREP (a,f)
+attempts to determine whether the object a has the
+feature f on the basis of the facts in the current data base.  If so,
+it returns TRUE, else FALSE.  See DESCRIBE(FEATURES); .
+@example
+(C1) DECLARE(J,EVEN)$
+(C2) FEATUREP(J,INTEGER);
+(D2)                                TRUE
+
+
+@end example
+@end defun
+@c @node ROOM
+@c @unnumberedsec phony
+@defun ROOM ()
+types out a verbose description of the state of storage and
+stack management in the Macsyma.  This simply utilizes the Lisp
+ROOM function.
+ROOM(FALSE) - types out a very terse description, containing most of
+the same information.
+
+@end defun
+@c @node STATUS
+@c @unnumberedsec phony
+@defun STATUS (arg)
+will return miscellaneous status information about the
+user's MACSYMA depending upon the arg given.  Permissible arguments
+and results are as follows:
+@itemize @bullet
+@item
+TIME - the time used so far in the computation.
+@item
+DAY - the day of the week.
+@item
+DATE - a list of the year, month, and day.
+@item
+DAYTIME - a list of the hour, minute, and second.
+@item
+RUNTIME - accumulated cpu time times the atom "MILLISECONDS" in the current
+   MACSYMA.  
+@item
+REALTIME - the real time (in sec) elapsed since the user started up
+   his MACSYMA.
+@item
+GCTIME - the garbage collection time used so far in the current
+   computation.
+@item
+TOTALGCTIME - gives the total garbage collection time used in MACSYMA
+   so far.
+@item
+FREECORE - the number of blocks of core your MACSYMA can expand
+   before it runs out of address space.  (A block is 1024 words.)
+   Subtracting that value from 250*BLOCKS (the maximum you can get on MC)
+   tells you how many blocks of core your MACSYMA is using up.  (A
+   MACSYMA with no "fix" file starts at approx. 191 blocks.)
+@item
+FEATURE - gives you a list of system features. At present the list for
+   MC is: MACSYMA, NOLDMSG, MACLISP, PDP10, BIGNUM, FASLOAD, HUNK,
+   FUNARG, ROMAN, NEWIO, SFA, PAGING, MC, and ITS.  Any of these
+   "features" may be given as a second argument to STATUS(FEATURE,...);
+   If the specified feature exists, TRUE will be returned, else FALSE.
+   Note: these are system features, and not really "user related".
+@end itemize
+For information about your files, see the FILEDEFAULTS(); command.
+
+@end defun
+@c @node TIME
+@c @unnumberedsec phony
+@defun TIME (Di1, Di2, ...)
+gives a list of the times in milliseconds taken
+to compute the Di.  (Note: the Variable SHOWTIME, default: [FALSE],
+may be set to TRUE to have computation times printed out with each
+D-line.)
+
+@end defun

@@ -1,0 +1,97 @@
+/*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
+/***************************************************************************
+***                                                                    *****
+***     Copyright (c) 1984 by William Schelter,University of Texas     *****
+***     All rights reserved                                            *****
+***************************************************************************/
+
+
+kill(all);
+DONE$
+ATVALUE(F(X,Y),[X = 0,Y = 1],A^2);
+A^2$
+ATVALUE('DIFF(F(X,Y),X),X = 0,Y+1);
+"@2"+1$
+PRINTPROPS(ALL,ATVALUE);
+DONE$
+DIFF(4*F(X,Y)^2-U(X,Y)^2,X);
+8*F(X,Y)*'DIFF(F(X,Y),X,1)-2*U(X,Y)*'DIFF(U(X,Y),X,1)$
+AT(%,[X = 0,Y = 1]);
+16*A^2-2*U(0,1)*(AT('DIFF(U(X,Y),X,1),[X = 0,Y = 1]))$
+ATVALUE(F(X,Y),[X = 0,Y = 1],A^2);
+A^2$
+ATVALUE('DIFF(F(X,Y),X),X = 0,Y+1);
+"@2"+1$
+PRINTPROPS(ALL,ATVALUE);
+DONE$
+DIFF(4*F(X,Y)^2-U(X,Y)^2,X);
+8*F(X,Y)*'DIFF(F(X,Y),X,1)-2*U(X,Y)*'DIFF(U(X,Y),X,1)$
+AT(%,[X = 0,Y = 1]);
+16*A^2-2*U(0,1)*(AT('DIFF(U(X,Y),X,1),[X = 0,Y = 1]))$
+LISTOFVARS(F(X[1]+Y)/G^(2+A));
+[G,A,X[1],Y]$
+COEFF(2*A*TAN(X)+TAN(X)+B = 5*TAN(X)+3,TAN(X));
+2*A+1 = 5$
+COEFF(Y+X*%E^X+1,X,0);
+Y+1$
+A*X+B*X+5;
+B*X+A*X+5$
+RATCOEF(%,A+B);
+X$
+ISLINEAR(EXP,VAR):=BLOCK([C],C:BOTHCOEF(RAT(EXP,VAR),VAR),
+	 IS(FREEOF(VAR,C) AND C[1] # 0));
+ISLINEAR(EXP,VAR):=BLOCK([C],C:BOTHCOEF(RAT(EXP,VAR),VAR),
+	 IS(FREEOF(VAR,C) AND C[1] # 0))$
+ISLINEAR((R^2-(X-R)^2)/X,X);
+TRUE$
+(A+B)^4*(1+X*(2*X+(C+D)^2));
+(B+A)^4*(X*(2*X+(D+C)^2)+1)$
+(linenum:0,ISOLATE(%,X));
+E2*(X*(2*X+E1)+1)$
+RATEXPAND(%);
+2*E2*X^2+E1*E2*X+E2$
+EV(%);
+2*(B+A)^4*X^2+(B+A)^4*(D+C)^2*X+(B+A)^4$
+(A+B)*(X+A+B)^2*%E^(X^2+A*X+B);
+(B+A)*(X+B+A)^2*%E^(X^2+A*X+B)$
+block([linenum:2],EV(ISOLATE(%,X),EXPTISOLATE:TRUE));
+E3*E4*(X+E3)^2*%E^(X^2+A*X)$
+exp1:INTEGRATE(1/(X^3+2),X);
+  -LOG(X^2-2^(1/3)*X+2^(2/3))/(6*2^(2/3))+ATAN((2*X-2^(1/3))/(2^(1/3)*SQRT(3)))
+					/(2^(2/3)*SQRT(3))
+				       +LOG(X+2^(1/3))/(3*2^(2/3))$
+/* Got this at one point but it differentiates ok
+  -2^(1/3)*LOG(2^(2/3)*X^2-2*X+2*2^(1/3))/12+2^(1/3)*ATAN((2*2^(2/3)*X-2)/(2*SQRT(3)))/(2*SQRT(3))+2^(1/3)*LOG(X+2^(1/3))/6; */
+radcan(diff(%,X));
+1/(X^3+2);
+block([linenum:4],PICKAPART(exp1,1));
+E7+E6+E5$
+GAMMA(7/2);
+15*SQRT(%PI)/8$
+NUMFACTOR(%);
+15/8$
+'DIFF(Y,X,2)+'DIFF(Y,Z,3)*2+'DIFF(Y,X,1)*X^2;
+2*'DIFF(Y,Z,3)+'DIFF(Y,X,2)+X^2*'DIFF(Y,X,1)$
+DERIVDEGREE(%,Y,X);
+2$
+(%I*V+U)/(F+%I*E)+%E^(%I*ALPHA);
+(%I*V+U)/(F+%I*E)+%E^(%I*ALPHA)$
+REALPART(%);
+(E*V+F*U)/(F^2+E^2)+COS(ALPHA)$
+RECTFORM(SIN(2*%I+X));
+COSH(2)*SIN(X)+%I*SINH(2)*COS(X)$
+POLARFORM(%);
+SQRT(COSH(2)^2*SIN(X)^2+SINH(2)^2*COS(X)^2)
+ *%E^(%I*ATAN2(SINH(2)*COS(X),COSH(2)*SIN(X)))$
+RECTFORM(LOG(3+4*%I));
+LOG(5)+%I*ATAN(4/3)$
+POLARFORM(%);
+SQRT(LOG(5)^2+ATAN(4/3)^2)*%E^(%I*ATAN(ATAN(4/3)/LOG(5)))$
+EV(RECTFORM((2+3.5*%I)^0.25),NUMER);
+0.3682587918166914*%I+1.368266274774369;
+/* tops 20 : 0.368258808*%I+1.36826627 */
+POLARFORM(%);
+1.416956998795383*%\E^(0.2629125531370934*%\I);
+/* tops 20 :  1.416957*%E^(0.262912527*%I)$ */
+DELETE(SIN(X),X+SIN(X)+Y);
+Y+X$

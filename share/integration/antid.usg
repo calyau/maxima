@@ -1,0 +1,19 @@
+	The file ANTID > contains a routine for evaluating integrals of
+expressions involving an arbitrary unspecified function and its derivatives.
+After BATCH'ing the file, it may be used by:
+
+	ANTIDIFF(G,X,U(X));
+
+where G is the expression involving U(X) (U(X) arbitrary) and its
+derivatives, whose integral with respect to X is desired.
+
+	The batch file also defines the functions NONZEROANDFREEOF
+and LINEAR as well as ANTID.  ANTID is the same as ANTIDIFF except 
+that it returns a list of two parts, the first part is the integrated
+part of the expression and the second part of the list is the non-
+integrable remainder.
+
+	A translated version of this file is available as SHARE2;ANTID LISP.
+It may be used by LOADFILE(ANTID,LISP,SHARE2).
+
+	Send complaints to BNLGHC.

@@ -1,0 +1,30 @@
+define_variable(pi,apply('ev,[%pi,numer:true]),float)$
+
+DEFINE_VARIABLE(FREQ,3.3,FLOAT,"The frequency in radian/second")$
+
+V(X):=(MODEDECLARE(X,FLOAT),X*ABS(SIN(FREQ*X)))$
+
+H1(FREQ):=ROMBERG('V,0,PI)$
+
+
+/* An alternative syntax is */
+
+H2(FREQ):=ROMBERG(X*ABS(SIN(FREQ*X)),X,0,PI)$
+
+
+H1(5.5);
+
+H2(5.5);
+
+TRANSLATE(H1,V,H2)$
+
+H1(5.5);
+
+H2(5.5);
+
+COMPILE(functions);
+
+H1(5.5);
+
+H2(5.5);
+

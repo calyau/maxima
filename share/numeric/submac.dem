@@ -1,0 +1,20 @@
+/* Demo of macsyma substitution macros. */
+
+IF GET('SUBMAC,'VERSION)=FALSE
+THEN LOAD('SUBMAC)$
+
+/* define a macro to compute a numerical integration. 
+   We want it to take an expression, a variable, and upper and
+   lower limits. The expression will be evaluated for values
+   of the variable between the upper and lower limits. */
+
+RECT_RULE('EXP,'X,A,B,DX)=>
+ (MODEDECLARE([A,B,DX],FLOAT),
+  BLOCK([%_SUM:0.0],MODEDECLARE(%_SUM,FLOAT),
+        FOR X:A THRU B STEP DX DO %_SUM:%_SUM+EXP,
+	DX*%_SUM))$
+
+GRIND(RECT_RULE);
+
+DEFINE(G(A),MACROEXPAND(RECT_RULE(X^2,X,0.0,A,0.1)))$
+GRIND(G);

@@ -1,0 +1,8 @@
+RJF@MIT-MC 01/05/76 19:04:36 
+There is a function in rjf;timer fasl called TIMER which given any 
+macsyma expression or command E, will tell how long it takes to evaluate 
+E by returning a value of the form xxx msec + yyy gc.  The result of 
+evaluating E is available as the value of RESULT.  Example of use: 
+TIMER(factor(x^99-y^99)); .  (Rationale is you can now do arithmetic 
+on times.  xxx is runtime excluding gc time.)
+

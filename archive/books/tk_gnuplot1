@@ -1,0 +1,15 @@
+#!/bin/bash
+#export TCL_LIBRARY=/public/lib/tclX/7.3a
+#export TK_LIBRARY=/public/lib/tk
+export TCL_LIBRARY=/usr/local/lib/tcl
+export TK_LIBRARY=/usr/local/lib/tk
+
+#export TCL_LIBRARY=/usr/local/lib/tclX/7.3a
+#export TK_LIBRARY=/usr/local/lib/tk
+
+cat -   | tk_gnuplot $@ 
+
+
+
+
+

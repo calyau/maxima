@@ -1,0 +1,137 @@
+
+((face (dfplot-eval 3029 3093 3544 3634) (maxima-eval 1513 1528 2348 2398 2854 2921) (book-result 554 560 589 590 630 675 757 824 870 922 976 1068 1619 1645 1732 1759 2191 2281 2459 2549) (maxima-eval-insert 531 545 566 575 597 607 703 746 831 860 926 965 1690 1723 2105 2181 2405 2449) (bold 7 93 1763 1778)) (book-command-arg))
+
+    Tutorial on solving some 1st and 2nd order ODES using Symbolic
+	          Computation.	
+                          
+
+In this section we use maxima to obtain symbolic solutions to certain
+differential equations.  Then at the end we plot these, and
+also compare with the dfplot trajectories.
+
+We use the ode2 routine:
+
+-- Function ode2( differential_equation, dependent_var, independent_var )
+
+To enter a differential, you must put a quote "'" before the diff.
+This quote stops the derivative from actually being evaluated.
+
+  diff(sin(x),x) returns COS(X) and  diff(y,x) evaluates to 0 
+
+but 'diff(y,x) yields what we want:
+
+				      dY
+      				      --
+				      dX
+
+[see notation below].
+
+    ode2(x^2*'diff(y,x)+3*x*y = sin(x)/x,  y,x) returns
+
+
+				    %C - COS(X)
+     			        Y = -----------
+					 3
+					X
+ 
+
+
+   ode2('diff(y,x)+y^3 = 0 ,y,x) yields
+
+ 
+				  1
+     				 ---- = X + %C
+				    2
+				 2 Y
+
+
+  ode2('diff(y,x) = 2*(1+x)*(1+y^2) ,y,x) returns
+
+ 
+				       2
+			    ATAN(Y)   X  + 2 X
+      			    ------- = -------- + %C
+			       2	 2
+ 
+
+Where is the above solution valid?
+
+Notation: In maxima variables may have multiple letters, so that 'ab'
+is one variable, and you must write 'a*b' to mean the product of two
+symbols named 'a' and 'b'.  Similarly 'dy' is just a two letter
+symbol.  The printing of dy/dx is a pretty printing for 'diff(y,x) ,
+but you must use this latter representation to enter the form.  To get
+a display which uses the same notation for input and output do
+display2d:false .  If you do that the last form evals to the more
+compact but perhaps less human readable ATAN(Y)/2 = (X^2+2*X)/2+%C .
+
+A second order differential equation:
+
+  ode2('diff(y,x,2) = 2*(1+x) ,y,x) returns Y = (X^3+3*X^2)/3+%K2*X+%K1 
+
+
+Initial Values:
+
+It is possible to have the solver substitute in initial values, to determine
+the constant(s), in the above solutions.   The functions for doing that
+are
+
+IC1(sol,x=x0,y=y0)
+
+IC2 is used for specifying an initial tangent and a point to pass through:
+For example the following forces the slope to be 3 at the point (1,2).
+
+    (soln:ode2('diff(y,x,2) = 2*(1+x) ,y,x), tmp:IC2(soln,x=1,y=2,'diff(y,x)=3)) returns
+
+				    3	   2
+				   X  + 3 X    2
+     			       Y = --------- + -
+				       3       3
+ 
+
+  To plot this, we had set tmp to be the solution equation,
+
+   plot2d(sublis(solve(tmp,y),y),[x,-4,4],[y,-10,10]) 
+
+
+
+  sol:ode2('diff(y,x) = 2*(1+x)*(1+y**2) ,y,x) returns
+
+				       2
+			    ATAN(Y)   X  + 2 X
+     			    ------- = -------- + %C
+			       2	 2
+
+   Lets plot this solution for x in [2,4] and y in [-3,6], and verify
+that the point (3,4) does lie on the particular solution computed by
+IC1.  After you have clicked on the above, to set sol correctly we can
+plot the particular solution (in order to keep plot2d happy, we have
+to solve for y) :
+
+      plot2d(  sublis(solve( IC1(sol,x=3,y=4) ,y),y),   [x,2,4],[y,-3,6]) 
+
+ We could look at the following, and click at the position (3,4) to
+find the solution numerically.
+
+     ode{d[y,x]=2*(1+x)*(1+y**2)};set xrange [2,4];set yrange[-10,10]
+
+This uses the default 4th order Runge Kutte with a fixed step in the
+independent variable x.  Note that this gives an answer which is
+sloped a bit too much to the right at the top, whereas our theoretical
+plot was practically vertical when going through (3,4).  We can retry
+using an 'adaptive 5th order Runge Kutta method (RKQC)'.  This alters
+the x step according to an error estimate, and gives a more accurate
+picture.  It is also slower.
+
+     ode{d[y,x]=2*(1+x)*(1+y**2), [method=RKQC]};
+          set xrange [2,4];set yrange[-10,10]
+
+
+
+
+
+
+
+
+
+

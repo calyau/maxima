@@ -1,0 +1,17 @@
+SHARE2;BFFAC BFZETA contains cheap and dirty BFLOAT versions of the
+Factorial (shifted Gamma) and Riemann Zeta functions.  Both BFFAC
+and BFZETA take a 2nd argument which is how many digits to retain and
+return, but it's a good idea to request a couple of extra.
+
+BFPSI(n,z,fpprec) gives polygammas of real arg and integer order.
+For digamma, BFPSI0(z,fpprec) is more direct.  Note -BFPSI0(1,fpprec)
+provides BFLOATed %GAMMA.
+
+There is also CBFAC(z,fpprec) for factorial of complex z, which is
+even slower!
+
+BURN(n) is a way to get isolated bernoulli numbers faster than BERN(n)
+when n > 105 or so.
+
+There is also the Hurwitz zeta fcn BHZETA(s,h,fpprec), which gives
+fpprec digits of sum((k+h)^-s,k,0,inf). --RWG

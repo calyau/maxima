@@ -1,0 +1,46 @@
+/*-*-Macsyma-*-*/
+/* 9:58pm  Thursday, 25 February 1982 -George Carrette. GJC@MIT-MC */
+
+/* The RUNGE_KUTTA function solves:
+ * A single first-order equation.
+ * Simultaneous first-order equations.
+ * A single secord-order equation.
+ */
+
+/* SETUP_AUTOLOAD(NDIFFQ,RUNGE_KUTTA,INIT_FLOAT_ARRAY)$ */
+load("ndiffq")$
+
+/* The equations */
+
+DEFINE_VARIABLE(K,1.0,FLOAT,"Spring constant")$
+DEFINE_VARIABLE(M,1.0,FLOAT,"mass")$
+
+FX(TIME,STATE):=(MODE_DECLARE([TIME,ARRAY(STATE)],FLOAT), STATE[1])$
+FV(TIME,STATE):=(MODE_DECLARE([TIME,ARRAY(STATE)],FLOAT), 
+                 -K/M*STATE[0])$
+
+ARRAY([T,X,V],FLOAT,10)$
+
+/* Time step */
+
+INIT_FLOAT_ARRAY(T,0.0,3.14159)$
+
+/* Initial Condition */
+
+(X[0]:0.0,V[0]:1.0)$
+
+RUNGE_KUTTA([FX,FV],T,[X,V])$
+
+GRAPH(T,[X,V],["*","+"])$
+
+/* Another argument convention is to have a DEL-state vector passed in. */
+
+FXV(DEL_STATE,TIME,STATE):=
+ (MODE_DECLARE([TIME,ARRAY(DEL_STATE),ARRAY(STATE)],FLOAT),
+  DEL_STATE[0]:STATE[1],
+  DEL_STATE[1]:-K/M*STATE[0],
+  'DONE)$
+
+RUNGE_KUTTA(FXV,T,[X,V])$
+
+GRAPH(T,[X,V],["*","+"])$

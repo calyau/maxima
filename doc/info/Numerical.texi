@@ -1,0 +1,453 @@
+@node Numerical, Trigonometric, Floating Point, Top
+@chapter Numerical
+@menu
+* Introduction to Numerical::   
+* DCADRE::                      
+* ELLIPT::                      
+* FOURIER::                     
+* NDIFFQ::                      
+* Definitions for Numerical::   
+@end menu
+
+@node Introduction to Numerical, DCADRE, Numerical, Numerical
+@section Introduction to Numerical
+
+@node DCADRE, ELLIPT, Introduction to Numerical, Numerical
+@section DCADRE
+The following is obsolete.   To make an interface to fortran
+libraries in the current MAXIMA look at the examples in
+"maxima/src/fortdef.lsp"
+ - The IMSL version of Romberg integration is now available in
+Macsyma.  For documentation, Do PRINTFILE(DCADRE,USAGE,IMSL1); .  For
+a demo, do batch("dcadre.mc");
+This is a numerical integration package using cautious, adaptive
+Romberg extrapolation.
+The DCADRE package is written to call the IMSL fortran library routine
+DCADRE. This is documentation for that program. Send bugs/comments to
+KMP
+To load this package, do 
+@example
+  LOADFILE("imsl")$
+@end example
+For a demo of this package, do
+@example
+  batch("dcadre.mc");
+@end example
+The worker function takes the following syntax:
+IMSL_ROMBERG(fn,low,hi)
+where fn is a function of 1 argument; low and hi should be the lower and
+upper bounds of integration. fn must return floating point values.
+IMSL_ROMBERG(exp,var,low,hi)
+  where exp should be integrated over the range var=low to hi. The result
+  of evaluating exp must always be a floating point number.
+FAST_IMSL_ROMBERG(fn,low,hi)
+  This function does no error checking but may achieve a speed gain over
+  the IMSL_ROMBERG function. It expects that fn is a Lisp function (or
+  translated Macsyma function) which accepts a floating point argument 
+  and that it always returns a floating point value.
+           
+Returns either
+ [SUCCESS, answer, error] where answer is the result of the integration and
+  error is the estimated bound on the absolute error of the output, DCADRE,
+  as described in PURPOSE below.
+or
+ [WARNING, n, answer, error] where n is a warning code, answer is the answer,
+  and error is the estimated bound on the absolute error of the output, DCADRE,
+  as described in PURPOSE below. The following warnings may occur:
+     65 = One or more singularities were successfully handled.
+     66 = In some subinterval(s), the estimate of the integral was accepted
+          merely because the estimated error was small, even though no regular
+          behavior was recognized.
+or
+ [ERROR, errorcode] where error code is the IMSL-generated 
+   error code. The following error codes may occur:
+     131 = Failure due to insufficient internal working storage.
+     132 = Failure. This may be due to too much noise in function 
+           (relative to the given error requirements) or due to an
+           ill-behaved integrand.
+     133 = RERR is greater than 0.1 or less than 0.0 or is too small
+           for the precision of the machine.
+  
+The following flags have an influence upon the operation of IMSL_ROMBERG --
+
+ROMBERG_AERR [Default 1.0E-5] -- Desired absolute error in answer.
+
+ROMBERG_RERR [Default 0.0] -- Desired relative error in the answer.
+
+Note: If IMSL signals an error, a message will be printed on the user's
+        console stating the nature of the error. (This error message 
+        may be supressed by setting IMSLVERBOSE to FALSE.)
+
+Note: Because this uses a translated Fortran routine, it may not be
+        recursively invoked. It does not call itself, but the user should
+        be aware that he may not type ^A in the middle of an IMSL_ROMBERG
+        computation, begin another calculation using the same package,
+        and expect to win -- IMSL_ROMBERG will complain if it was already
+        doing one project when you invoke it. This should cause minimal
+        problems.
+
+Purpose (modified version of the IMSL documentation)
+----------------------------------------------------
+
+DCADRE attempts to solve the following problem: Given a real-valued 
+function F of one argument, two real numbers A and B, find a number
+
+DCADRE such that:
+
+@example
+|   / B               |        [                              | / B      | ]
+|   [                 |        [                              | [        | ]
+|   I F(x)dx - DCADRE | <= max [ ROMBERG_AERR, ROMBERG_RERR * | I F(x)dx | ]
+|   ]                 |        [                              | ]        | ]
+|   / A               |        [                              | / A      | ]
+@end example
+Algorithm (modified version of the IMSL documentation)
+
+This routine uses a scheme whereby DCADRE is computed as the sum of
+estimates for the integral of F(x) over suitably chosen subintervals of
+the given interval of integration. Starting with the interval of
+integration itself as the first such subinterval, cautious Romberg
+extrapolation is used to find an acceptable estimate on a given
+subinterval. If this attempt fails, the subinterval is divided into two
+subintervals of equal length, each of which is considered separately.
+Programming Notes (modified version of the IMSL documentation)
+
+@itemize @bullet
+@item
+1. DCADRE (the translated-Fortran base for IMSL_ROMBERG) can, in many cases,
+   handle jump discontinuities and certain algebraic discontinuities. See 
+   reference for full details.
+@item
+2. The relative error parameter ROMBERG_RERR must be in the interval [0.0,0.1].
+   For example, ROMBERG_RERR=0.1 indicates that the estimate of the intergral 
+   is to be correct to one digit, where as ROMBERG_RERR=1.0E-4 calls for four
+   digits of accuracy. If DCADRE determines that the relative accuracy
+   requirement cannot be satisfied, IER is set to 133 (ROMBERG_RERR should be
+   large enough that, when added to 100.0, the result is a number greater than
+   100.0 (this will not be true of very tiny floating point numbers due to
+   the nature of machine arithmetic)).
+@item
+3. The absolute error parameter, ROMBERG_AERR, should be nonnegative. In
+   order to give a reasonable value for ROMBERG_AERR, the user must know 
+   the approximate magnitude of the integral being computed. In many cases,
+   it is satisfactory to use AERR=0.0. In this case, only the relative error
+   requirement is satisfied in the compuatation.
+@item
+4. We quote from the reference, ``A very cautious man would accept DCADRE 
+   only if IER [the warning or error code] is 0 or 65. The merely reasonable
+   man would keep the faith even if IER is 66. The adventurous man is quite 
+   often right in accepting DCADRE even if the IER is 131 or 132.'' Even when
+   IER is not 0, DCADRE returns the best estimate that has been computed.
+@end itemize
+
+For references on this technique, see
+de Boor, Calr, ``CADRE: An Algorithm for Numerical Quadrature,''
+  Mathematical Software (John R. Rice, Ed.), New York, Academic Press,
+  1971, Chapter 7.
+
+@node ELLIPT, FOURIER, DCADRE, Numerical
+@section ELLIPT
+ - A package on the SHARE directory for Numerical routines for
+Elliptic Functions and Complete Elliptic Integrals.  (Notation of
+Abramowitz and Stegun, Chs 16 and 17) Do LOAD(ELLIPT); to use this
+package.  At present all arguments MUST be floating point.  You'll get
+nonsense otherwise.  Be warned.  The functions available are:
+Jacobian elliptic functions
+
+
+@example
+AM(U,M) - amplitude with modulus M
+AM1(U,M1) - ampiltude with complementary modulus M1
+AM(U,M):=AM1(U,1-M); so use AM1 if M ~ 1
+SN(U,M):=SIN(AM(U,M));
+CN(U,M):=COS(AM(U,M));
+DN(U,M):=SQRT(1-M*SN(U,M)^2);
+(These functions come defined like this.  Others CD, NS etc.  may be
+similarly defined.)
+Complete Elliptic Integrals
+ELLIPTK(M) - Complete elliptic integral of first kind
+ELLIPTK1(M1) - Same but with complementary modulus. 
+ELLIPTK(M):=ELLIPTK1(1-M); so use if M ~ 1
+ELLIPTE(M) - Complete elliptic integral of second kind
+ELLIPTE1(M1) - Same but with complementary modulus. 
+ELLIPTE(M):=ELLIPTE1(1-M); so use if M ~ 1
+@end example
+
+@node FOURIER, NDIFFQ, ELLIPT, Numerical
+@section FOURIER
+ - There is a Fast Fourier Transform package, do DESCRIBE(FFT)
+for details.  There is also a Fourier Series package.  It may be
+loaded with LOAD(FOURIE).  It will also calculate Fourier integral
+coefficients and has various other functions to do such things as
+replace all occurrences of F(ARG) by ARG in expression (like changing
+ABS(a*x+b) to a*x+b).  Do PRINTFILE(FOURIE,USAGE,DSK,SHARE1); for
+a list of the functions included.
+
+@node NDIFFQ, Definitions for Numerical, FOURIER, Numerical
+@section NDIFFQ
+a package residing on the SHARE directory for numerical
+solutions of differential equations.  LOAD("NDIFFQ"); will load it
+in for use.  An example of its use would be:
+
+@example
+Define_Variable(N,0.3,FLOAT);
+Define_Variable(H,0.175,FLOAT);
+F(X,E):=(Mode_Declare([X,E],FLOAT),N*EXP(X)/(E+X^(2*H)*EXP(H*X)));
+Compile(F);
+Array([X,E],FLOAT,35);
+Init_Float_Array(X,1.0E-3,6.85); /* Fills X with the interval */
+E[0]:5.0;                        /* Initial condition */
+Runge_Kutta(F,X,E);              /* Solve it */
+Graph2(X,E);                     /* Graph the solution */
+@end example
+p.s. Runge_Kutta(F,X,E,E_Prime) would be the call for a second-order 
+equation.
+
+@c end concepts Numerical
+
+@node Definitions for Numerical,  , NDIFFQ, Numerical
+@section Definitions for Numerical
+@c @node FFT
+@c @unnumberedsec phony
+@defun FFT (real-array, imag-array)
+Fast Fourier Transform.  This
+package may be loaded by doing LOAD(FFT); There is also an IFT
+command, for Inverse Fourier Transform.  These functions perform a
+(complex) fast fourier transform on either 1 or 2 dimensional
+FLOATING-POINT arrays, obtained by:
+@example
+ARRAY(<ary>,FLOAT,<dim1>); or
+ARRAY(<ary>,FLOAT,<dim1>,<dim2>);
+@end example
+For 1D arrays
+@example
+<dim1> = 2^n-1
+@end example
+and for 2D arrays
+@example
+<dim1>=<dim2>=2^n-1
+@end example
+(i.e. the array is
+square).  (Recall that MACSYMA arrays are indexed from a 0 origin so
+that there will be 2^n and (2^n)^2 arrays elements in the above two
+cases.)  This package also contains two other functions, POLARTORECT
+and RECTTOPOLAR.  Do DESCRIBE(cmd) for details. For details on the
+implementation, do PRINTFILE(FFT,USAGE,SHARE); .
+
+@end defun
+@c @node FORTINDENT
+@c @unnumberedsec phony
+@defvar FORTINDENT
+ default: [0] - controls the left margin indentation of
+expressions printed out by the FORTRAN command.  0 gives normal
+printout (i.e. 6 spaces), and positive values will causes the
+expressions to be printed farther to the right.
+
+@end defvar
+@c @node FORTMX
+@c @unnumberedsec phony
+@defun FORTMX (name,matrix)
+converts a MACSYMA matrix into a sequence of
+FORTRAN assignment statements of the form name(i,j)=<corresponding
+matrix element>.  This command is now obsolete.  FORTMX(name,matrix);
+may now be done as FORTRAN(name=matrix);.  (If "name" is bound,
+FORTRAN('name=matrix); may be necessary.)  Please convert code that
+uses the FORTMX command as it may be flushed some day.
+
+@end defun
+@c @node FORTRAN
+@c @unnumberedsec phony
+@defun FORTRAN (exp)
+converts exp into a FORTRAN linear expression in legal
+FORTRAN with 6 spaces inserted at the beginning of each line,
+continuation lines, and ** rather than ^ for exponentiation.  When the
+option FORTSPACES[FALSE] is TRUE, the FORTRAN command fills out to 80
+columns using spaces.  If FORTRAN is called on a bound symbolic atom,
+e.g. FORTRAN(X); where X:A*B$ has been done, then X=@{value of X@}, e.g.
+X=A*B will be generated.  In particular, if e.g. M:MATRIX(...); has
+been done, then FORTRAN(M); will generate the appropriate assignment
+statements of the form name(i,j)=<corresponding matrix element>.
+FORTINDENT[0] controls the left margin of expressions printed out, 0
+is the normal margin (i.e. indented 6 spaces), increasing it will
+cause the expression to be printed further to the right.
+
+@end defun
+@c @node FORTSPACES
+@c @unnumberedsec phony
+@defvar FORTSPACES
+ default: [FALSE] - if TRUE, the FORTRAN command fills out
+to 80 columns using spaces.
+
+@end defvar
+@c @node HORNER
+@c @unnumberedsec phony
+@defun HORNER (exp, var)
+will convert exp into a rearranged representation as
+in Horner's rule, using var as the main variable if it is specified.
+Var may also be omitted in which case the main variable of the CRE
+form of exp is used.  HORNER sometimes improves stability if expr is
+to be numerically evaluated.  It is also useful if MACSYMA is used to
+generate programs to be run in FORTRAN (see DESCRIBE(STRINGOUT);)
+@example
+(C1) 1.0E-20*X^2-5.5*X+5.2E20;
+                                2
+(D1)                   1.0E-20 X  - 5.5 X + 5.2E+20
+(C2) HORNER(%,X),KEEPFLOAT:TRUE;
+(D2)                  X (1.0E-20 X - 5.5) + 5.2E+20
+(C3) D1,X=1.0E20;
+ARITHMETIC OVERFLOW
+(C4) D2,X=1.0E20;
+(D4)                          6.9999999E+19
+
+
+@end example
+@end defun
+@c @node IFT
+@c @unnumberedsec phony
+@defun IFT (real-array, imag-array)
+Inverse Fourier Transform.  Do
+LOAD(FFT); to load in this package.  These functions (FFT and IFT)
+perform a (complex) fast fourier transform on either 1 or 2
+dimensional FLOATING-POINT arrays, obtained by:
+ARRAY(<ary>,FLOAT,<dim1>); or ARRAY(<ary>,FLOAT,<dim1>,<dim2>); For 1D
+arrays <dim1> must equal 2^n-1, and for 2D arrays <dim1>=<dim2>=2^n-1
+(i.e. the array is square).  (Recall that MACSYMA arrays are indexed
+from a 0 origin so that there will be 2^n and (2^n)^2 arrays elements
+in the above two cases.)  For details on the implementation, do
+PRINTFILE(FFT,USAGE,SHARE); .
+
+@end defun
+@c @node INTERPOLATE
+@c @unnumberedsec phony
+@defun INTERPOLATE (func,x,a,b)
+finds the zero of func as x varies.  The last
+two args give the range to look in.  The function must have a
+different sign at each endpoint.  If this condition is not met, the
+action of the of the function is governed by INTPOLERROR[TRUE]).  If
+INTPOLERROR is TRUE then an error occurs, otherwise the value of
+INTPOLERROR is returned (thus for plotting INTPOLERROR might be set to
+0.0).  Otherwise (given that MACSYMA can evaluate the first argument
+in the specified range, and that it is continuous) INTERPOLATE is
+guaranteed to come up with the zero (or one of them if there is more
+than one zero).  The accuracy of INTERPOLATE is governed by
+INTPOLABS[0.0] and INTPOLREL[0.0] which must be non-negative floating
+point numbers.  INTERPOLATE will stop when the first arg evaluates to
+something less than or equal to INTPOLABS or if successive
+approximants to the root differ by no more than INTPOLREL * <one of
+the approximants>.  The default values of INTPOLABS and INTPOLREL are
+0.0 so INTERPOLATE gets as good an answer as is possible with the
+single precision arithmetic we have.  The first arg may be an
+equation.  The order of the last two args is irrelevant.  Thus
+
+@example
+INTERPOLATE(SIN(X)=X/2,X,%PI,.1);
+   is equivalent to
+INTERPOLATE(SIN(X)=X/2,X,.1,%PI);
+@end example
+The method used is a binary search in the range specified by the last
+two args.  When it thinks the function is close enough to being
+linear, it starts using linear interpolation.
+An alternative syntax has been added to interpolate, this replaces the
+first two arguments by a function name.  The function MUST be
+TRANSLATEd or compiled function of one argument.  No checking of the
+result is done, so make sure the function returns a floating point
+number.
+
+
+@example
+F(X):=(MODE_DECLARE(X,FLOAT),SIN(X)-X/2.0);
+INTERPOLATE(SIN(X)-X/2,X,0.1,%PI)       time= 60 msec
+INTERPOLATE(F(X),X,0.1,%PI);            time= 68 msec
+TRANSLATE(F);
+INTERPOLATE(F(X),X,0.1,%PI);            time= 26 msec
+INTERPOLATE(F,0.1,%PI);                 time=  5 msec
+@end example
+
+There is also a Newton method interpolation routine, do DESCRIBE(NEWTON); .
+
+@end defun
+@c @node INTPOLABS
+@c @unnumberedsec phony
+@defvar INTPOLABS
+ default: [0.0] - The accuracy of the INTERPOLATE command is
+governed by INTPOLABS[0.0] and INTPOLREL[0.0] which must be
+non-negative floating point numbers.  INTERPOLATE will stop when the
+first arg evaluates to something less than or equal to INTPOLABS or if
+successive approximants to the root differ by no more than INTPOLREL *
+<one of the approximants>.  The default values of INTPOLABS and
+INTPOLREL are 0.0 so INTERPOLATE gets as good an answer as is possible
+with the single precision arithmetic we have.
+
+@end defvar
+@c @node INTPOLERROR
+@c @unnumberedsec phony
+@defvar INTPOLERROR
+ default: [TRUE] - Governs the behavior of INTERPOLATE.
+When INTERPOLATE is called, it determines whether or not the function
+to be interpolated satisfies the condition that the values of the
+function at the endpoints of the interpolation interval are opposite
+in sign.  If they are of opposite sign, the interpolation proceeds.
+If they are of like sign, and INTPOLERROR is TRUE, then an error is
+signaled.  If they are of like sign and INTPOLERROR is not TRUE, the
+value of INTPOLERROR is returned.  Thus for plotting, INTPOLERROR
+might be set to 0.0.
+
+@end defvar
+@c @node INTPOLREL
+@c @unnumberedsec phony
+@defvar INTPOLREL
+ default: [0.0] - The accuracy of the INTERPOLATE command is
+governed by INTPOLABS[0.0] and INTPOLREL[0.0] which must be
+non-negative floating point numbers.  INTERPOLATE will stop when the
+first arg evaluates to something less than or equal to INTPOLABS or if
+successive approximants to the root differ by no more than INTPOLREL *
+<one of the approximants>.  The default values of INTPOLABS and
+INTPOLREL are 0.0 so INTERPOLATE gets as good an answer as is possible
+with the single precision arithmetic we have.
+
+@end defvar
+@c @node NEWTON
+@c @unnumberedsec phony
+@defun NEWTON (exp,var,X0,eps)
+The file NEWTON 1 on the SHARE directory
+contains a function which will do interpolation using Newton's method.
+It may be accessed by LOAD(NEWTON); .  The Newton method can do things
+that INTERPOLATE will refuse to handle, since INTERPOLATE requires
+that everything evaluate to a flonum. Thus
+NEWTON(x^2-a^2,x,a/2,a^2/100);
+will say that it can't tell if flonum*a^2<a^2/100. Doing ASSUME(a>0);
+and then doing NEWTON again works. You get x=a+<small flonum>*a which
+is symbolic all the way.  INTERPOLATE(x^2-a^2,x,a/2,2*a); complains
+that .5*a is not flonum...
+An adaptive integrator which uses the Newton-Cotes 8 panel quadrature
+rule is available in SHARE1;QQ FASL.  Do DESCRIBE(QQ) for details.
+
+@end defun
+@c @node POLARTORECT
+@c @unnumberedsec phony
+@defun POLARTORECT (magnitude-array, phase-array)
+converts from
+magnitude and phase form into real and imaginary form putting the real part in
+the magnitude array and the imaginary part into the phase array
+
+@example
+<real>=<magnitude>*COS(<phase>) ==>
+  <imaginary>=<magnitude>*SIN(<phase>
+@end example
+
+This function is part of the
+FFT package.  Do LOAD(FFT); to use it.  Like FFT and IFT this function
+accepts 1 or 2 dimensional arrays.  However, the array dimensions need
+not be a power of 2, nor need the 2D arrays be square.
+
+@end defun
+@c @node RECTTOPOLAR
+@c @unnumberedsec phony
+@defun RECTTOPOLAR (real-array, imag-array)
+undoes POLARTORECT.  The
+phase is given in the range from -%PI to %PI.  This function is part
+of the FFT package.  Do LOAD(FFT); to use it.  Like FFT and IFT this
+function accepts 1 or 2 dimensional arrays.  However, the array
+dimensions need not be a power of 2, nor need the 2D arrays be square.
+
+@end defun

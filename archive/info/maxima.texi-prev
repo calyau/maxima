@@ -1,0 +1,776 @@
+\input texinfo
+@c -*-texinfo-*-
+@c %**start of header
+@setfilename  maxima.info
+@synindex vr fn
+@settitle Maxima Manual
+@c %**end of header
+@setchapternewpage odd
+@ifinfo
+This is a Texinfo Maxima Manual
+
+Copyright 1994 William F. Schelter
+@end ifinfo
+
+@titlepage
+@sp 10
+@comment The title is printed in a large font.
+@center @titlefont{Maxima Manual}
+@end titlepage
+
+
+@node Top, Lists, (dir), (dir)
+
+@menu
+* Lists::			
+* Differentiation::		
+* Integration::			
+* Polynomials::			
+* Simplification::		
+* Expressions::			
+* Function Definition::		
+* Input and Output::		
+* Program Flow::		
+* Plotting::			
+* Floating Point::		
+* Numerical::			
+* Trigonometric::		
+* Equations::			
+* Arrays and Tables::		
+* Series::			
+* Symmetries::			
+* Groups::			
+* Operators::			
+* Constants::			
+* Special Functions::		
+* Command Line::		
+* Contexts::			
+* Matrices and Linear Algebra::	 
+* Runtime Environment::		
+* Miscellaneous Options::	
+* Rules and Patterns::		
+* Number Theory::		
+* Help::			
+* Differential Equations::	
+* Statistics::			
+* Limits::			
+* Logarithms::			
+* Debugging::			
+* Affine::			
+* Tensor::			
+* Ctensor::			
+* None::			
+
+ --- The Detailed Node Listing ---
+
+Lists
+
+* Definitions for Lists::	
+
+Definitions for Lists
+
+* APPEND::			
+* ATOM::			
+* CONS::			
+* COPYLIST::			
+* DELETE::			
+* ENDCONS::			
+* FIRST::			
+* GET::				
+* LAST::			
+* LENGTH::			
+* LISTARITH::			
+* LISTP::			
+* MAKELIST::			
+* MEMBER::			
+* REST::			
+* REVERSE::			
+
+Differentiation
+
+* Definitions for Differentiation::  
+
+Definitions for Differentiation
+
+* ANTID::			
+* ANTIDIFF::			
+* property::			
+* ATVALUE::			
+* CARTAN::			
+* DELTA::			
+* DEPENDENCIES::		
+* DEPENDS::			
+* DERIVABBREV::			
+* DERIVDEGREE::			
+* DERIVLIST::			
+* DERIVSUBST::			
+* {special symbol}::		
+* DIFF::			
+* DSCALAR::			
+* EXPRESS::			
+* GENDIFF::			
+* GRADEF::			
+* GRADEFS::			
+* LAPLACE::			
+* UNDIFF::			
+
+Integration
+
+* Introduction to Integration::	 
+* INTEGRALS::			
+* Definitions for Integration::	 
+
+Introduction to Integration
+
+* INTEGRALS::			
+* CHANGEVAR::			
+* DBLINT::			
+* DEFINT::			
+* ERF::				
+* ERFFLAG::			
+* ERRINTSCE::			
+* ILT::				
+* INTEGRATE::			
+* INTEGRATION_CONSTANT_COUNTER::  
+* INTSCE::			
+* LDEFINT::			
+* POTENTIAL::			
+* QQ::				
+* QUANC8::			
+* RESIDUE::			
+* RISCH::			
+* ROMBERG::			
+* ROMBERGABS::			
+* ROMBERGIT::			
+* ROMBERGMIN::			
+* ROMBERGTOL::			
+* TLDEFINT::			
+
+Polynomials
+
+* Introduction to Polynomials::	 
+* CRE::				
+* Definitions for Polynomials::	 
+
+Introduction to Polynomials
+
+* CRE::				
+* ALGEBRAIC::			
+* BERLEFACT::			
+* BEZOUT::			
+* BOTHCOEF::			
+* COEFF::			
+* COMBINE::			
+* CONTENT::			
+* DENOM::			
+* DIVIDE::			
+* ELIMINATE::			
+* EZGCD::			
+* FACEXPAND::			
+* FACTCOMB::			
+* FACTOR::			
+* FACTORFLAG::			
+* FACTOROUT::			
+* FACTORSUM::			
+* FASTTIMES::			
+* FULLRATSIMP::			
+* FULLRATSUBST::		
+* GCD::				
+* GCFACTOR::			
+* GFACTOR::			
+* GFACTORSUM::			
+* HIPOW::			
+* INTFACLIM::			
+* KEEPFLOAT::			
+* LRATSUBST::			
+* MODULUS::			
+* NEWFAC::			
+* NUM::				
+* QUOTIENT::			
+* RAT::				
+* RATALGDENOM::			
+* RATCOEF::			
+* RATDENOM::			
+* RATDENOMDIVIDE::		
+* RATDIFF::			
+* RATDISREP::			
+* RATEPSILON::			
+* RATEXPAND::			
+* RATFAC::			
+* RATNUMER::			
+* RATNUMP::			
+* RATP::			
+* RATPRINT::			
+* RATSIMP::			
+* RATSIMPEXPONS::		
+* RATSUBST::			
+* RATVARS::			
+* RATWEIGHT::			
+* RATWEIGHTS::			
+* RATWEYL::			
+* RATWTLVL::			
+* REMAINDER::			
+* RESULTANT::			
+* SAVEFACTORS::			
+* SQFR::			
+* TELLRAT::			
+* TOTALDISREP::			
+* UNTELLRAT::			
+
+Simplification
+
+* Definitions for Simplification::  
+
+Definitions for Simplification
+
+* APPLY_NOUNS::			
+* ASKEXP::			
+* ASKINTEGER::			
+* ASKSIGN::			
+* DEMOIVRE::			
+* DOMAIN::			
+* EXPAND::			
+* EXPANDWRT::			
+* EXPANDWRT_DENOM::		
+* EXPANDWRT_FACTORED::		
+* EXPON::			
+* EXPONENTIALIZE::		
+* EXPOP::			
+* FACTLIM::			
+* INTOSUM::			
+* declaration::			
+* declaration::			
+* declaration::			
+* MAXAPPLYDEPTH::		
+* MAXAPPLYHEIGHT::		
+* MAXNEGEX::			
+* MAXPOSEX::			
+* declaration::			
+* NEGDISTRIB::			
+* NEGSUMDISPFLAG::		
+* {special symbol}::		
+* declaration::			
+* NOUNDISP::			
+* {special symbol}::		
+* {special symbol}::		
+* NUMERVAL::			
+* OPPROPERTIES::		
+* OPSUBST::			
+* declaration::			
+* declaration::			
+* PRODHACK::			
+* RADCAN::			
+* RADEXPAND::			
+* RADPRODEXPAND::		
+* RADSUBSTFLAG::		
+* declaration::			
+* SCSIMP::			
+* SIMP::			
+* SIMPSUM::			
+* SUMCONTRACT::			
+* SUMEXPAND::			
+* SUMHACK::			
+* SUMSPLITFACT::		
+* declaration::			
+* UNKNOWN::			
+
+Expressions
+
+* Introduction to Expressions::	 
+* ASSIGNMENT::			
+* COMPLEX::			
+* INEQUALITY::			
+* SYNTAX::			
+* Definitions for Expressions::	 
+
+Introduction to Expressions
+
+* ASSIGNMENT::			
+* COMPLEX::			
+* INEQUALITY::			
+* SYNTAX::			
+* AT::				
+* BOX::				
+* BOXCHAR::			
+* {special operator}::		
+* CONSTANTP::			
+* CONTRACT::			
+* DECLARE::			
+* DISOLATE::			
+* DISPFORM::			
+* DISTRIB::			
+* DPART::			
+* EXP::				
+* EXPTISOLATE::			
+* EXPTSUBST::			
+* FREEOF::			
+* GENFACT::			
+* IMAGPART::			
+* INDICES::			
+* INFIX::			
+* INFLAG::			
+* INPART::			
+* ISOLATE::			
+* ISOLATE_WRT_TIMES::		
+* LISTCONSTVARS::		
+* LISTDUMMYVARS::		
+* LISTOFVARS::			
+* LOPOW::			
+* LPART::			
+* MULTTHRU::			
+* NOUNIFY::			
+* NTERMS::			
+* OPTIMIZE::			
+* OPTIMPREFIX::			
+* ORDERGREAT::			
+* ORDERGREATP::			
+* ORDERLESS::			
+* ORDERLESSP::			
+* PART::			
+* PARTITION::			
+* PARTSWITCH::			
+* PICKAPART::			
+* PIECE::			
+* POWERS::			
+* PRODUCT::			
+* REALPART::			
+* RECTFORM::			
+* REMBOX::			
+* SUM::				
+* {special symbol}::		
+* VERBIFY::			
+
+Function Definition
+
+* Introduction to Function Definition::	 
+* FUNCTION::			
+* MACROS::			
+* OPTIMIZATION::		
+* Definitions for Function Definition::	 
+
+Introduction to Function Definition
+
+* FUNCTION::			
+* MACROS::			
+* OPTIMIZATION::		
+* APPLY::			
+* BINDTEST::			
+* BLOCK::			
+* BREAK::			
+* BUILDQ::			
+* CATCH::			
+* COMPFILE::			
+* COMPGRIND::			
+* COMPILE::			
+* COMPILE_LISP_FILE::		
+* DEFINE::			
+* DEFINE_VARIABLE::		
+* DISPFUN::			
+* FUNCTIONS::			
+* FUNDEF::			
+* FUNMAKE::			
+* LOCAL::			
+* MACROEXPANSION::		
+* MODE_CHECKP::			
+* MODE_CHECK_ERRORP::		
+* MODE_CHECK_WARNP::		
+* MODE_DECLARE::		
+* MODE_IDENTITY::		
+* TRANSBIND::			
+* TRANSCOMPILE::		
+* TRANSLATE::			
+* TRANSLATE_FILE::		
+* TRANSRUN::			
+* TR_ARRAY_AS_REF::		
+* TR_BOUND_FUNCTION_APPLYP::	
+* TR_FILE_TTY_MESSAGESP::	
+* TR_FLOAT_CAN_BRANCH_COMPLEX::	 
+* TR_FUNCTION_CALL_DEFAULT::	
+* TR_GEN_TAGS::			
+* TR_NUMER::			
+* TR_OPTIMIZE_MAX_LOOP::	
+* TR_OUTPUT_FILE_DEFAULT::	
+* TR_PREDICATE_BRAIN_DAMAGE::	
+* TR_SEMICOMPILE::		
+* TR_STATE_VARS::		
+* TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED::  
+* TR_VERSION::			
+* TR_WARNINGS_GET::		
+* TR_WARN_BAD_FUNCTION_CALLS::	
+* TR_WARN_FEXPR::		
+* TR_WARN_MEVAL::		
+* TR_WARN_MODE::		
+* TR_WARN_UNDECLARED::		
+* TR_WARN_UNDEFINED_VARIABLE::	
+* TR_WINDY::			
+* UNDECLAREDWARN::		
+* COMPILE_FILE::		
+* DECLARE_TRANSLATED::		
+
+Input and Output
+
+* Introduction to Input and Output::  
+* FILES::			
+* PLAYBACK::			
+* Definitions for Input and Output::  
+
+Introduction to Input and Output
+
+* FILES::			
+* PLAYBACK::			
+* %::				
+* %%::				
+* %EDISPFLAG::			
+* %TH::				
+* {special symbol}::		
+* ABSBOXCHAR::			
+* APPENDFILE::			
+* BACKUP::			
+* BATCH::			
+* BATCHKILL::			
+* BATCHLOAD::			
+* BATCON::			
+* BATCOUNT::			
+* BOTHCASES::			
+* CHANGE_FILEDEFAULTS::		
+* CLOSEFILE::			
+* COLLAPSE::			
+* CONCAT::			
+* CURSORDISP::			
+* DIREC::			
+* DISP::			
+* DISPCON::			
+* DISPLAY::			
+* DISPLAY2D::			
+* DISPLAY_FORMAT_INTERNAL::	
+* DISPTERMS::			
+* DSKALL::			
+* ERROR_SIZE::			
+* ERROR_SYMS::			
+* EXPT::			
+* EXPTDISPFLAG::		
+* FASSAVE::			
+* FILEDEFAULTS::		
+* FILENAME::			
+* FILENAME_MERGE::		
+* FILENUM::			
+* FILE_SEARCH::			
+* FILE_STRING_PRINT::		
+* FILE_TYPE::			
+* GRIND::			
+* IBASE::			
+* INCHAR::			
+* LDISP::			
+* LDISPLAY::			
+* LINECHAR::			
+* LINEDISP::			
+* LINEL::			
+* LOAD::			
+* LOADFILE::			
+* LOADPRINT::			
+* NOSTRING::			
+* OBASE::			
+* OUTCHAR::			
+* PACKAGEFILE::			
+* PARSEWINDOW::			
+* PFEFORMAT::			
+* PRINT::			
+* READ::			
+* READONLY::			
+* REVEAL::			
+* RMXCHAR::			
+* SAVE::			
+* SAVEDEF::			
+* SHOW::			
+* SHOWRATVARS::			
+* STARDISP::			
+* STRING::			
+* STRINGOUT::			
+* TTYOFF::			
+* WRITEFILE::			
+
+Program Flow
+
+* Introduction to Program Flow::  
+* ITERATION::			
+* Definitions for Program Flow::  
+
+Introduction to Program Flow
+
+* ITERATION::			
+* BACKTRACE::			
+* {special operator}::		
+* ERRCATCH::			
+* ERREXP::			
+* ERROR::			
+* ERRORFUN::			
+* ERRORMSG::			
+* {special operator}::		
+* GO::				
+* {special operator}::		
+* LISPDEBUGMODE::		
+* MAP::				
+* MAPATOM::			
+* MAPERROR::			
+* MAPLIST::			
+* PREDERROR::			
+* RETURN::			
+* SCANMAP::			
+* THROW::			
+
+Plotting
+
+* Introduction to Plotting::	
+* PLOTTING-LISPM::		
+* Definitions for Plotting::	
+
+Floating Point
+
+* Definitions for Floating Point::  
+
+Numerical
+
+* Introduction to Numerical::	
+* DCADRE::			
+* ELLIPT::			
+* FOURIER::			
+* NDIFFQ::			
+* Definitions for Numerical::	
+
+Trigonometric
+
+* Introduction to Trigonometric::  
+* TRIG::			
+* TRIGONOMETRY::		
+* Definitions for Trigonometric::  
+
+Equations
+
+* Definitions for Equations::	
+
+Arrays and Tables
+
+* Definitions for Arrays and Tables::  
+
+Series
+
+* Introduction to Series::	
+* Definitions for Series::	
+
+Symmetries
+
+* Definitions for Symmetries::	
+
+Groups
+
+* Definitions for Groups::	
+
+Operators
+
+* Introduction to Operators::	
+* NARY::			
+* NOFIX::			
+* OPERATOR::			
+* POSTFIX::			
+* PREFIX::			
+* Definitions for Operators::	
+
+Constants
+
+* Definitions for Constants::	
+
+Special Functions
+
+* Introduction to Special Functions::  
+* GAMALG::			
+* SPECINT::			
+* Definitions for Special Functions::  
+
+Command Line
+
+* Introduction to Command Line::  
+* Definitions for Command Line::  
+
+Contexts
+
+* Definitions for Contexts::	
+
+Matrices and Linear Algebra
+
+* Introduction to Matrices and Linear Algebra::	 
+* DOT::				
+* VECTORS::			
+* Definitions for Matrices and Linear Algebra::	 
+
+Runtime Environment
+
+* Introduction to Runtime Environment::	 
+* CONTROL::			
+* INIT::			
+* INTERRUPTS::			
+* Definitions for Runtime Environment::	 
+
+Miscellaneous Options
+
+* Introduction to Miscellaneous Options::  
+* SETS::			
+* SHARE::			
+* Definitions for Miscellaneous Options::  
+
+Rules and Patterns
+
+* Introduction to Rules and Patterns::	
+* RULES::			
+* Definitions for Rules and Patterns::	
+
+Number Theory
+
+* Definitions for Number Theory::  
+
+Help
+
+* Introduction to Help::	
+* CMD::				
+* COMMAND::			
+* CPU::				
+* HELP::			
+* LISP-AND-MACSYMA::		
+* GARBAGE_COLLECTION::		
+* DOCUMENTATION::		
+* MAXIMA::			
+* Definitions for Help::	
+
+Differential Equations
+
+* Definitions for Differential Equations::  
+
+Statistics
+
+* Definitions for Statistics::	
+
+Limits
+
+* Definitions for Limits::	
+
+Logarithms
+
+* Definitions for Logarithms::	
+
+Debugging
+
+* Definitions for Debugging::	
+
+Affine
+
+* Definitions for Affine::	
+
+Tensor
+
+* Introduction to Tensor::	
+* ITENSR::			
+* TENSORS::			
+* Definitions for Tensor::	
+
+Ctensor
+
+* Introduction to Ctensor::	
+* CTENSR::			
+* Definitions for Ctensor::	
+
+None
+
+* Introduction to None::	
+* Definitions for None::	
+@end menu
+
+@c includes
+
+@include Lists.texi
+
+@include Differentiation.texi
+
+@include Integration.texi
+
+@include Polynomials.texi
+
+@include Simplification.texi
+
+@include Expressions.texi
+
+@include Function.texi
+
+@include Input.texi
+
+@include Program.texi
+
+@include Plotting.texi
+
+@c @include NonCommutative.texi
+
+@include Floating.texi
+
+@include Numerical.texi
+
+@include Trigonometric.texi
+
+@include Equations.texi
+
+@include Arrays.texi
+
+@include Series.texi
+
+@include Symmetries.texi
+
+@include Groups.texi
+
+@include Operators.texi
+
+@include Constants.texi
+
+@include Special.texi
+
+@include Command.texi
+
+@include Contexts.texi
+
+@include Matrices.texi
+
+@include Runtime.texi
+
+@include Miscellaneous.texi
+
+@include Rules.texi
+
+@include Number.texi
+
+@include Help.texi
+
+@include Differential.texi
+
+@c @include xrefs.texi
+
+@include Statistics.texi
+
+@include Limits.texi
+
+@include Logarithms.texi
+
+@include Debugging.texi
+
+@include Affine.texi
+
+@include Tensor.texi
+
+@include Ctensor.texi
+
+@include None.texi
+
+@c end includes
+
+@node Function and Variable Index
+@unnumbered Function Index
+@printindex fn
+
+
+@bye
+

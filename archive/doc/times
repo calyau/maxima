@@ -1,0 +1,65 @@
+echo "***** FACTOR TEST *****"
+***** FACTOR TEST *****
+Tue Dec  1 13:36:06 CST 1987
+Running on rascal
+cat doc/time.test | maxima
+KCl (Kyoto Common Lisp)  Tue Dec  1 11:32:03 CST 1987
+Maxima 4.23 (with enhancements by W. Schelter).
+Type (run) to start Maxima.
+
+>
+Allocate 1000 cons pages and  150 fixnum pages
+
+CL-MAXIMA>
+For 10 times factor p10:
+real time : 74.950 secs
+run time  : 69.817 secs
+
+For 10 times factor p20:
+real time : 353.600 secs
+run time  : 340.450 secs
+NIL
+
+CL-MAXIMA>Bye.
+***** FACTOR TEST *****
+Sun Dec 27 13:42:25 CST 1987
+Running on rascal
+cat doc/time.test | maxima
+AKCL (Austin Kyoto Common Lisp)  Sat Dec 26 22:28:15 CST 1987
+Maxima 4.53 (with enhancements by W. Schelter).
+Type (run) to start Maxima.
+
+>
+Allocate 1000 cons pages and  150 fixnum pages
+
+CL-MAXIMA>
+*cc* is gcc -msoft-float -DVOL=volatile -g 
+For 10 times factor p10:
+real time : 69.433 secs
+run time  : 68.033 secs
+
+For 10 times factor p20:
+real time : 339.150 secs
+run time  : 337.183 secs
+NIL
+
+CL-MAXIMA>Bye.
+
+On host nicolas [hp 68030]
+AKCL (Austin Kyoto Common Lisp)  Fri Aug 25 14:46:53 CDT 1989
+Maxima 4.113 (with enhancements by W. Schelter).
+Type (run) to start Maxima.
+
+>
+Allocate 1000 cons pages and  150 fixnum pages
+
+MAXIMA>
+*cc* is gcc -msoft-float -DVOL=volatile -fwritable-strings -I/public/akcl/o 
+For 10 times factor p10:
+real time : 30.500 secs
+run time  : 29.500 secs
+
+For 10 times factor p20:
+real time : 147.483 secs
+run time  : 144.767 secs
+NIL

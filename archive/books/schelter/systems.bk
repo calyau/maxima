@@ -1,0 +1,88 @@
+
+((face (octave-eval 2398 2554) (default 1906 1942) (book-result 608 624 1302 1355 1542 1626) (maxima-eval-insert 532 584 1239 1293 1488 1533) (dfplot-eval 178 254 2104 2192)) (book-command-arg))
+
+
+           Systems of differential equations
+
+The system
+                    [ 1  1 ]
+              U' =  [      ]  .  U
+                    [ 4  1 ]
+
+can be entered as 
+
+   ode{ D[x,t] = x  + y,
+        D[y,t] = 4*x+  y
+       };
+  set xrange [-4,4]
+
+When you click at a point say  [x,y] = [1,2] then you are finding
+the trajectory through that point.
+Note in the above plot the special directions corresponding to the
+eigenvectors of the matrix.
+
+
+We can calculate the eigenvalues by solving the characteristic equation:
+
+    solve(determinant(matrix([1,1],[4,1]) - r*ident(2))) returns
+               [R = 3, R = - 1] 
+
+
+Two useful functions in maxima are:
+
+EIGENVALUES(mat) takes a MATRIX
+     as its argument and returns a list of lists the first sublist of
+     which is the list of eigenvalues of the matrix and the other
+     sublist of which is the list of the multiplicities of the
+     eigenvalues in the corresponding order.
+
+
+ - Function: EIGENVECTORS (MAT)
+     takes a MATRIX as its argument and returns a list of lists the
+     first sublist of which is the output of the EIGENVALUES command
+     and the other sublists of which are the eigenvectors of the matrix
+     corresponding to those eigenvalues respectively.
+
+ (load("eigen.mc"),eigenvectors(matrix([1,1],[4,1]))) 
+
+yields 
+
+      		    [[[3, - 1], [1, 1]], [1, 2], [1, - 2]]
+ 
+
+so the eigenvalues are [3,-1] with multiplicities 1 and 1 respectively, and the
+corresponding eigenvectors are [1,2] and [1,-2].
+
+eigenvectors(matrix([2,1,2],[0,2,3],[0,0,4])) returns 
+						     6  4
+     		   [[[2, 4], [2, 1]], [1, 0, 0], [1, -, -]]
+						     7  7
+ 
+
+Note in the plot that the direction [1,2] has longer direction arrows than
+the direction [1,-2] (since 3 is bigger than -1).   The arrows in the
+[1,2] direction go away from the origin since '3' is positive.
+
+
+
+      Comparing two methods of looking at the system
+
+            D[x,t]= y, D[y,t]= -sin(x) - 0.1* y
+
+First we look at the trajectory through the point  (x,y) = (0,3).
+If you follow the trajectory it eventually seems to circle around 
+the point (0,13).    
+
+     ode{ D[x,t]= y, D[y,t]= -sin(x) - 0.1* y};set xrange [0,16];
+        set yrange [-4,12]  
+
+If we look at the same equation with the same inital conditions
+(0,3) (in fortran notation!), then we see the 'line 1' (representing 'x')
+tending to 13 and the 'line 2' representing 'y' tending to 0.
+
+  function xdot = pend(x,t)
+  xdot(1) = x(2); xdot(2) = -sin( x(1)) - 0.1*x(2); end
+  sol=lsode( "pend",[0.0, 3.0], t = linspace(0,40, 200));
+  plot( t, sol);
+
+

@@ -1,0 +1,170 @@
+@node Floating Point, Numerical, Plotting, Top
+@chapter Floating Point
+@c end concepts Floating Point
+@menu
+* Definitions for Floating Point::  
+@end menu
+
+@node Definitions for Floating Point,  , Floating Point, Floating Point
+@section Definitions for Floating Point
+
+@defun BFFAC (exp,n)
+BFLOAT version of the Factorial (shifted Gamma)
+function.  The 2nd argument is how many digits to retain and return,
+it's a good idea to request a couple of extra.  This function is
+available by doing LOAD(BFFAC); .
+@end defun
+
+@defvar ALGEPSILON
+The default value is 10^-8.  The value of ALGEPSILON is used by ALGSYS.
+@end defvar
+
+@defun BFLOAT (X)
+converts all numbers and functions of numbers to bigfloat
+numbers.  Setting FPPREC[16] to N, sets the bigfloat precision to N
+digits.  If FLOAT2BF[FALSE] is FALSE a warning message is printed when
+a floating point number is converted into a bigfloat number (since
+this may lead to loss of precision).
+
+@end defun
+@c @node BFLOATP
+@c @unnumberedsec phony
+@defun BFLOATP (exp)
+is TRUE if exp is a bigfloat number else FALSE.
+
+@end defun
+@c @node BFPSI
+@c @unnumberedsec phony
+@defun BFPSI (n,z,fpprec)
+gives polygammas of real arg and integer order.
+For digamma, BFPSI0(z,fpprec) is more direct.  Note -BFPSI0(1,fpprec)
+provides BFLOATed %GAMMA.  To use this do LOAD(BFFAC);
+
+@end defun
+@c @node BFTORAT
+@c @unnumberedsec phony
+@defvar BFTORAT
+ default: [FALSE] controls the conversion of bfloats to
+rational numbers.  If
+@example
+BFTORAT:FALSE
+@end example
+RATEPSILON will be used to
+control the conversion (this results in relatively small rational
+numbers).  If
+@example
+BFTORAT:TRUE
+@end example
+, the rational number generated will
+accurately represent the bfloat.
+
+@end defvar
+@c @node BFTRUNC
+@c @unnumberedsec phony
+@defvar BFTRUNC
+ default: [TRUE] causes trailing zeroes in non-zero bigfloat
+numbers not to be displayed.  Thus, if BFTRUNC:FALSE, BFLOAT(1);
+displays as 1.000000000000000B0. Otherwise, this is displayed as
+1.0B0.
+
+@end defvar
+@c @node CBFAC
+@c @unnumberedsec phony
+@defun CBFAC (z,fpprec)
+a factorial for complex bfloats.  It may be used by
+doing LOAD(BFAC); For more details see share2/bfac.usg.
+
+@end defun
+@c @node FLOAT
+@c @unnumberedsec phony
+@defun FLOAT (exp)
+converts integers, rational numbers and bigfloats in exp
+to floating point numbers.  It is also an EVFLAG, FLOAT causes
+non-integral rational numbers and bigfloat numbers to be converted to
+floating point.
+
+@end defun
+@c @node FLOAT2BF
+@c @unnumberedsec phony
+@defvar FLOAT2BF
+ default: [FALSE] if FALSE, a warning message is printed when
+a floating point number is converted into a bigfloat number (since
+this may lead to loss of precision).
+
+@end defvar
+@c @node FLOATDEFUNK
+@c @unnumberedsec phony
+@defun FLOATDEFUNK
+ - is a utility for making floating point functions from
+mathematical expression. It will take the input expression and FLOAT it,
+then OPTIMIZE it, and then insert MODE_DECLAREations for all the variables.
+This is THE way to use ROMBERG, PLOT2, INTERPOLATE, etc. e.g.
+EXP:some-hairy-macsyma-expression;
+
+@example
+FLOATDEFUNK('F,['X],EXP);
+@end example
+will define the function F(X) for you.
+(Do PRINTFILE(MCOMPI,DOC,MAXDOC); for more details.)
+
+@end defun
+@c @node FLOATNUMP
+@c @unnumberedsec phony
+@defun FLOATNUMP (exp)
+is TRUE if exp is a floating point number else FALSE.
+
+@end defun
+@c @node FPPREC
+@c @unnumberedsec phony
+@defvar FPPREC
+ default: [16] - Floating Point PRECision.  Can be set to an
+integer representing the desired precision.
+
+@end defvar
+@c @node FPPRINTPREC
+@c @unnumberedsec phony
+@defvar FPPRINTPREC
+ default: [0] - The number of digits to print when
+printing a bigfloat number, making it possible to compute with a large
+number of digits of precision, but have the answer printed out with a
+smaller number of digits.  If FPPRINTPREC is 0 (the default), or >=
+FPPREC, then the value of FPPREC controls the number of digits used
+for printing.  However, if FPPRINTPREC has a value between 2 and
+FPPREC-1, then it controls the number of digits used.  (The minimal
+number of digits used is 2, one to the left of the point and one to
+the right.  The value 1 for FPPRINTPREC is illegal.)
+
+@defun ?ROUND (x,&optional-divisor)
+round the floating point X to the nearest integer.   The argument
+must be a regular system float, not a bigfloat.   The ? beginning the name
+indicates this is normal common lisp function.
+@example
+(C3) ?round(-2.8);
+(D3) 				      - 3
+@end example
+@end defun
+@defun ?TRUNCATE (x,&optional-divisor)
+truncate the floating point X towards 0, to become an integer.   The argument
+must be a regular system float, not a bigfloat.  The ? beginning the name
+indicates this is normal common lisp function.
+@example
+(C4) ?truncate(-2.8);
+(D4) 				      - 2
+(C5) ?truncate(2.4);
+(D5) 				       2
+(C6) ?truncate(2.8);
+(D6) 				       2
+@end example
+@end defun
+
+@end defvar
+@c @node ZUNDERFLOW
+@c @unnumberedsec phony
+@defvar ZUNDERFLOW
+ default: [TRUE] - if FALSE, an error will be signaled if
+floating point underflow occurs.
+Currently in NIL Macsyma, all floating-point underflow, floating-point
+overflow, and division-by-zero errors signal errors, and this switch
+is ignored.
+
+@end defvar

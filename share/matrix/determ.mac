@@ -1,0 +1,82 @@
+/*
+?PUTPROP(?QUOTE(gcdivide),?FILESTRIP(?CDR([functs,lisp,dsk,share])),
+	?QUOTE(?AUTOLOAD)); */
+eval_when([translate,batch,demo,load,loadfile],
+load("functs"))$
+
+det&&  det(m):=BLOCK([n,a],/* LOCAL(a), */
+    n:LENGTH(m),
+    IF n < 2 THEN ERROR ("Improper argument:",m),
+/*    ARRAY(a,n,n), */
+a:?gensym(),
+apply('array,[a,n,n]),
+    FOR i THRU n DO FOR j THRU n DO arrayapply(a,[i,j])::m[i,j],
+    arrayapply(a,[0,0])::1,
+    CATCH(FOR k FROM 2 STEP 2 THRU n DO  /* Iterate for each pair of rows */
+	(IF k#n THEN BLOCK([c0,l1,L2,u],  /* Omit calculation on last
+					iteration for n even */
+	    L1:(IF a[k-1,k-1]#0 THEN  /* check for possible pivoting */
+		FALSE
+	    ELSE	/* Zero element means pivoting is necessary */
+		FOR s FROM k THRU n DO  /* Search for nonzero element */
+		    IF a[s,k-1]#0 THEN  /* Found pivot */
+			(FOR j THRU n DO /* Interchange rows s and k-1 */
+			    BLOCK([t],
+			    t:a[k-1,j],
+			    a[k-1,j]:a[s,j],
+			    a[s,j]:t),
+			RETURN(FALSE))  /* Indicate pivot was found */
+		    ELSE  /* No pivot found means */
+			IF s=n THEN THROW(0)),  /* Singular matrix */
+	    L2:(IF L1 THEN
+		TRUE
+	    ELSE
+		/* Search through rows for nonzero multiplier */
+		FOR t FROM k THRU n DO
+		    (c0:DETERMINANT(MATRIX(
+[a[k-1,k-1],a[k-1,k]],
+[a[t,k-1],a[t,k]])),
+		    IF c0#0 THEN
+			(u:t,
+			RETURN(FALSE))  /* Indicate multiplier was found */
+		    ELSE  /* No multiplier means singular matrix */
+		 	IF t=n THEN THROW(0))),
+	    IF L2 THEN
+		RETURN(TRUE)
+	    ELSE  /* Calculate coefficient from multiplier */
+		(c0:gcdivide(c0,a[k-2,k-2]),
+		IF u#k THEN  /* If multiplier was found in a different row */
+		    FOR j THRU n DO BLOCK([t],  /* interchange rows t and k */
+			t:a[k,j],
+			a[k,j]:a[t,j],
+			a[t,j]:t),
+		/* Iterate through remaining rows */
+		FOR i FROM k+1 THRU n DO BLOCK([c1,c2],
+		    c1:gcdivide(-DETERMINANT(MATRIX(
+[a[k-1,k-1],a[k-1,k]],
+[a[i,k-1],a[i,k]])),a[k-2,k-2]),
+		    c2:gcdivide(DETERMINANT(MATRIX(
+[a[k,k-1],a[k,k]],
+[a[i,k-1],a[i,k]])),a[k-2,k-2]),
+		    a[i,k-1]:0,
+		    a[i,k]:0,
+		    /* Iterate through remaining columns */
+		    FOR j FROM k+1 THRU n DO
+			a[i,j]:gcdivide(c0*a[i,j]+c1*a[k,j]+c2*a[k-1,j],
+			    a[k-2,k-2])),
+		c0:0,
+		FOR j FROM k+1 THRU n DO
+		    (a[k,j]:0,
+		    a[k-1,j]:0))),
+	/* Omit calculation on last iteration for n odd */
+	a[k,k]:IF k=n-1 THEN 0 ELSE
+		gcdivide(DETERMINANT(GENMATRIX(a,k,k,k-1)),a[k-2,k-2]),
+	a[k-2,k-2]:0,
+	a[k-1,k-1]:0,
+	a[k,k-1]:0,
+	a[k-1,k]:0,
+	/* On last iteration indicate nonsingular matrix */
+	IF k=n OR k=n-1 THEN RETURN(FALSE)),
+    a[n,n]))  /* If a singular matrix has not been thrown,
+		then catch the determinant */$
+"end of determ.mc"$

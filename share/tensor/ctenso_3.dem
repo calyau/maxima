@@ -1,0 +1,17 @@
+
+SHOWTIME:ALL$
+/* This file proves a simple metric is conformally flat */
+/* .mc version currently available in DOE MACSYMA */
+IF GET('CTENSR,'VERSION) = FALSE THEN LOAD("max$disk:[tensor]CTENSR.mc")$
+SETFLAGS()$
+RATFAC:TRUE$
+DIM:4$
+OMEGA:[X,Y,Z,T]$
+/* THIS IS A COMFORMALLY FLAT METRIC */
+LG:A*IDENT(4)$
+DEPENDENCIES(A(T))$
+METRIC()$
+CHRISTOF(MCS)$
+RICCICOM(FALSE)$
+RIEMANN(FALSE)$
+WEYL(TRUE)$

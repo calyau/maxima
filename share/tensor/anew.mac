@@ -1,0 +1,45 @@
+LOADFILE(ITENSR,FASL,MIKE)$DECLARE(E,CONSTANT)$DEFCON(E)$DEFCON(E,E,DELTA)$
+METRIC:G$
+G(L1,L2):=BLOCK([A,B,AL,BL,CL,DL],DUMMY(AL,BL,CL,DL),
+IF L2=[] THEN [A:L1[1],B:L1[2],
+RETURN(E(L1,[])+	L*P(L1,[])+	L^2*M(L1,[])+	L^3*N(L1,[])+
+L^4*W(L1,[])+	L^5*Z(L1,[])
+)],
+A:L2[1],B:L2[2],
+E([],L2)-	L*P([],L2)+
+L^2*(-M([],L2)+P([AL],[A])*P([],[AL,B]))+
+L^3*(-N([],L2)+P([AL],[A])*M([],[AL,B])+M([AL],[A])*P([],[AL,B])
+-P([AL],[A])*P([BL],[AL])*P([],[BL,B]))+
+L^4*(
+-W([],L2)+
+M([AL],[A])*M([],[AL,B])+
+P([AL],[A])*N([],[AL,B])+
+N([AL],[A])*P([],[AL,B])+
+P([AL],[A])*P([BL],[AL])*P([CL],[BL])*P([],[B,CL])-
+P([AL],[BL])*P([],[A,AL])*M([BL],[B])-
+P([AL],[BL])*M([],[A,AL])*P([BL],[B])-
+M([AL],[BL])*P([],[A,AL])*P([BL],[B])
+)
++L^5*(-P([],[DL,A])*P([AL],[CL])*P([BL],[B])*P([CL],[BL])*P([DL],[AL])+
+M([],[BL,CL])*P([AL],[A])*P([BL],[AL])*P([CL],[B])+
+P([],[AL,BL])*M([AL],[CL])*P([BL],[B])*P([CL],[A])+
+P([],[BL,CL])*M([AL],[A])*P([BL],[B])*P([CL],[AL])+
+P([],[CL,A])*P([AL],[BL])*M([BL],[B])*P([CL],[AL])-
+N([],[BL,A])*P([AL],[B])*P([BL],[AL])-
+P([],[BL,A])*N([AL],[B])*P([BL],[AL])-
+M([],[BL,A])*M([AL],[B])*P([BL],[AL])-
+P([],[BL,A])*P([AL],[B])*N([BL],[AL])-
+M([],[BL,A])*P([AL],[B])*M([BL],[AL])-
+P([],[BL,A])*M([AL],[B])*M([BL],[AL])+
+P([],[AL,A])*W([AL],[B])+
+W([],[AL,A])*P([AL],[B])+
+M([],[AL,A])*N([AL],[B])+
+N([],[AL,A])*M([AL],[B])-
+Z([],[B,A])
+))$
+SHOW(G([I,J],[]))$
+SHOW(G([],[I,J]))$
+BATCH(EXPAND,10000,TENSOR)$
+RATWTLVL:5$
+SHOW(CONTRACT(RENAME(RATEXPAND(G([I,J],[])*G([],[J,K])))))$
+S(X):=CONTRACT(RENAME(CONTRACT(RENAME(CONTRACT(RENAME(X))))))$

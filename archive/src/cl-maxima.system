@@ -1,0 +1,77 @@
+;;; -*-  Mode: Lisp; Package: USER; Syntax: Common-Lisp; Base: 10 -*- ;;;;
+
+;;This file contains logical directory information for the LISPM.
+
+;;        TO MAKE MAXIMA FOR LISPM
+
+;;1) Adjust the pathnames in this file
+;;2) Load this file.
+;;3) (make::make :maxima :recompile t :batch t)
+
+;;3a) Copy the documentation and test files (see command in bin/copy-doc.lisp)
+
+;; Try some of the test files.  You can try a number of them using the
+;; macsyma form at the end of copy-doc.lisp
+
+;;4) After rebooting  load this file, (make:make :maxima), gc, 
+;;   and save the band.
+
+(defvar *logical-source*  "cl-maxima-source:maxima;foo.lisp")
+(defvar *logical-object*
+    (format nil "cl-maxima-object:maxima;foo.~a"
+	    #+ti "xld" #+symbolics "bin"))
+
+;;;******Start Editing here For Other Sites ********* You want to
+;;;replace the :physical-host keyword args, and the second part of each
+;;;translation pair (ie. the physical pathname).  We have used different
+;;;logical host names, to allow keeping logically different sections of
+;;;the code on different hosts.  Also since we wanted "logically
+;;;different" directories sometimes to be kept on the same physical
+;;;machine in the same physical directory, we required separate logical 
+;;;hosts since distinct logical directories on the same logical host
+;;;can't map to the same physical directory (wrecks back translating). 
+
+
+#+ti
+(progn
+  (fs:set-logical-pathname-host
+    "maxima-documentation" ':physical-host "MAX"
+    ':translations '(("maxima" "MAXIMA.DOCUMENTATION;" )   ;;ABOUT 500 blocks
+		     ("test" "MAXIMA.TEST;")
+		     ))
+  
+  (cond ((eql (si:get-system-version) 3)
+	 (fs:set-logical-pathname-host
+	   "Cl-maxima-source" ':physical-host "rascal"	 ':translations '(("maxima" "/usr2/maxima/src/")))
+	 (fs:set-logical-pathname-host
+	   "Cl-maxima-object" ':physical-host "clug"
+	   ':translations '(("maxima" "MAXIMA.OBJECT;"))))
+	(t
+	 (fs:set-logical-pathname-host
+	   "Cl-maxima-source" ':physical-host "MAX"
+	   ':translations '(("maxima" "MAXIMA.source;"))) 
+	 (fs:set-logical-pathname-host
+	   "Cl-maxima-object" ':physical-host "MAX"     ;;about 2500 blocks
+	   ':translations '(("maxima" "MAXIMA.OBJECT;"))))))
+
+#+symbolics
+(progn
+  (fs:set-logical-pathname-host
+    "Cl-maxima-source" ':physical-host "rascal"  ':translations '(("maxima" "/usr2/maxima/src/")))
+  
+  (fs:set-logical-pathname-host
+    "Cl-maxima-object" ':physical-host "haskell"
+    ':translations '(("maxima" "MAXIMA>rel7-object>"))) ;;about 2500 blocks
+  
+  (fs:set-logical-pathname-host
+    "maxima-documentation" ':physical-host "haskell"
+    ':translations '(("maxima" "MAXIMA>DOCUMENTATION>" )   ;;ABOUT 500 blocks
+		     ("test" "MAXIMA>TEST>")
+		     ))
+  )
+
+(load "cl-maxima-source:maxima;sysdef.lisp")
+
+
+
+

@@ -1,0 +1,63 @@
+/*-*-MACSYMA-*-*/
+if properties(cray_fortran) = [] then load(cfortr)$
+/* CRAY_FORTRAN behaves much as does FORTRAN.  One small difference is
+   that FORTRAN does not generate ALOG when it encounters LOG :        */
+eqn1:x[i]=t[i]*log(ti[i]^2/te[i])-co;
+cray_fortran(eqn1)$
+exp1:3/2*sqrt(r-s)-5/3;
+cray_fortran(rnew=exp1)$
+/* We can generate the appropriate DATA statements so as to make sense
+   out of the last formatted output by doing:                          */
+generate_data_section()$
+/* Generally, we would wait until all calls to CRAY_FORTRAN had been made
+   before calling GENERATE_DATA_SECTION.  However, there are probably
+   specific cases where it would make sense to call it for each SUBROUTINE
+   being generated.
+
+   If the equations to be output are strictly of integer type, the flag
+   FORT_FLOAT should be turned off.                                     */
+eqns2:[k=28*n/m-356+3*i^3,l=45*(n-m)*(i+j)^11];
+block([fort_float:false],map('cray_fortran,eqns2))$
+/* If we wish to obtain string output, the flag FORT_STRING should be
+   turned on.  This is then used to construct FORTRAN logicals.        */
+a:t\(k\)*u\(k\)/v\(k\);
+b:g\(k\)^5*h\(k\)^2;
+fort_string:true$
+cray_fortran(b);
+exp1:q\(k\)*cvmgt(r\(k\)*t\(k\),s\(k\)*t\(k\),
+		  concat(cray_fortran(a),".ge.",cray_fortran(b)));
+fort_string:false$
+cray_fortran(exp1)$
+/* To cause integer exponents to be turned into floating-point numbers,
+   turn on the flag FORT_POWER_FLOAT .                                  */
+exp2:g-h^3*t^13/s^7+b^2;
+block([fort_power_float:true],cray_fortran(exp2))$
+/* Consider now a problem where the body of a DO-LOOP is being generated.
+   If formal subscripts are attached to the variable names and they
+   happen to be different from the DO-LOOP index, it is necessary to
+   change them.  This we do by setting up FORTRAN_SUBST_LIST appropriately. */
+eqns3:[t\(k\)=a\(k\)*(b1\(i\,j\)+exb1\(i\,j\))-exp(-hnu/ti\(i\,j\)),
+       u\(k\)=b\(k\)*(b2\(i\,j\)+exb2\(i\,j\))*(b3\(i\,j\)+exb3\(i\,j\)),
+       v\(k\)=(b1\(i\,j\)+exb1\(i\,j\))*(b3\(i\,j\)+exb3\(i\,j\))^2,
+       w\(k\)=(b2\(i\,j\)+exb2\(i\,j\))/sqrt((b1\(i\,j\)+exb1\(i\,j\))^2+
+               (b2\(i\,j\)+exb2\(i\,j\))^2+(b3\(i\,j\)+exb3\(i\,j\))^2),
+       x\(k\)=sqrt((b1\(i\,j\)+exb1\(i\,j\))^2+
+               (b2\(i\,j\)+exb2\(i\,j\))^2+(b3\(i\,j\)+exb3\(i\,j\))^2)
+              *sqrt(b1\(i\,j\)+exb1\(i\,j\))-exp(-hnu/ti\(i\,j\))];
+fortran_subst_list:[exploden(?"(K)")=exploden(?"(J)")]$
+/* In order to illustrate the capability to send the FORTRAN output to a
+   separate file as well, we set up the file GCOOK;SCRAT OUT for this
+   output.  Additionally, we use COMMENT_FORTRAN to annotate the file.    */
+open_fortran_file("sys$scratch:scrat.out")$
+comment_fortran("The following list corresponds to the FORTRAN which follows")$
+comment_fortran(eqns3)$
+map('cray_fortran,eqns3)$
+close_fortran_file()$
+/* printfile("gcook\;scrat out")$ 
+delfile("gcook\;scrat out")$ */
+?type\-file(?"sys$scratch:scrat.out")$
+/* Finally, we illustrated the capability of the package for dealing with
+   very large equations.                                                  */
+allowed_length:400$
+exp3:expand((r-s)^40-t*u+v)$
+cray_fortran(q\(k\)=exp3)$

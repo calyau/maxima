@@ -1,0 +1,95 @@
+/* eval_when([translate,load,loadfile,batch,demo],
+ MATCHDECLARE(a,nonzeroandfreeof(x),[b,c],FREEOF(x)))$ */
+
+define_variable(takegcd,true,boolean,"used in gcdivide to decide the
+gcd choice");
+
+conjugate&&  conjugate(m):=IF MATRIXP(m) THEN FULLMAPL('conjugate,m)
+    ELSE IF FREEOF(%I,SUBST('\&I,%I,m)) THEN
+    SUBST(-%I,%I,m) ELSE RATSUBST(-%I,%I,m)$
+
+rempart&&  rempart(exp,n):=
+    ?APPEND(REST(exp,  /* combine two parts of exp
+	   first part is beginning to part to be removed
+	   Specify that the first l-1 parts are retained */
+	(IF LISTP(n) THEN n[1] ELSE n)-1-LENGTH(exp)),
+	BLOCK([t],  /* last part is from removed part to end */
+	IF ATOM(t:REST(exp,  /* last m-1 parts are retained */
+	    IF LISTP(n) THEN n[2] ELSE n))
+	THEN ?LIST(t) ELSE ?CDR(t)))$
+
+wronskian&&  wronskian(functlist,var):=BLOCK([end],
+    end:LENGTH(functlist)-1,
+    functlist:[functlist],
+    THRU end DO functlist:ENDCONS(MAP(LAMBDA([x],DIFF(x,var)),
+	LAST(functlist)),functlist),
+    APPLY('MATRIX,functlist))$
+
+adjoint&&  adjoint(m):=BLOCK([adjoint,len],
+    adjoint:DIAGMATRIX(len:LENGTH(m),0),
+    FOR i THRU len DO
+	FOR j THRU len DO
+	    adjoint[i,j]:(-1)^(i+j)*DETERMINANT(MINOR(m,i,j)),
+    TRANSPOSE(adjoint))$
+
+tracematrix&&  tracematrix(m):=block([sum,len],sum:0,len:length(m),
+for i:1 thru len do sum:sum+part(m,i,i),sum)$
+
+rational&&  rational(z):=BLOCK([n,d,cd,RATFAC],
+    RATFAC:FALSE,
+    n:RATDISREP(RATNUMER(z)*(cd:conjugate(d:RATDENOM(z)))),
+    d:RAT(n/RATDISREP(d*cd)),
+    IF RATP(z) THEN d ELSE RATDISREP(d))$
+
+oddp&&  oddp(x):=IS(logand(x,1)#0)$
+	evenp(x):=IS(logand(x,1)=0)$
+
+logical&&  logand(x,y):=?BOOLE(1,x,y)$
+	logxor(x,y):=?BOOLE(6,x,y)$
+	logor(x,y):=?BOOLE(7,x,y)$
+
+uprobe&&  uprobe(file):=?APPLY('?UPROBE,?FULLSTRIP(?CDR(file)))$
+
+kronecker&&  kronecker(m,n):=IF m=n THEN 1 ELSE 0$
+
+nonzeroandfreeof&&  nonzeroandfreeof(x,e):=IS(e#0 AND FREEOF(x,e))$
+
+/* linear&& MATCHDECLARE(a,nonzeroandfreeof(x),[b,c],FREEOF(x))$
+    DEFMATCH(linearize,a*x+b,x)$
+    DEFMATCH(quadraticize,a*x^2+b*x+c,x)$
+    linear(exp,x):=BLOCK([a,b],IF linearize(exp,x)=FALSE THEN exp ELSE
+	a*x+b)$
+    quadratic(exp,x):=BLOCK([a,b,c],IF quadraticize(exp,x)=FALSE THEN
+	exp ELSE a*x^2+b*x+c)$ */
+
+lcm&& lcm([list]):=block([listconstvars:false],if listofvars(list)=[] then
+lcm1(list) else factor(lcm1(list)))$
+
+lcm1(list):=if list=[] then 1 else block([rlist:rest(list),flist:first(list),
+frlist,partswitch:true,inflag:true,piece], if rlist=[] then flist else
+lcm1(cons(flist*(frlist:first(rlist))/gcd(flist,frlist),rest(rlist))))$
+
+gcdivide&&  gcdivide(poly1,poly2):=BLOCK([gcdlist],
+		gcdlist:IF takegcd THEN EZGCD(poly1,poly2)
+			ELSE [1,poly1,poly2],
+		gcdlist[2]/gcdlist[3])$
+
+series&&  arithmetic(a,d,n):=a+(n-1)*d$
+	geometric(a,r,n):=a*r^(n-1)$
+	harmonic(a,b,c,n):=a/(b+(n-1)*c)$
+	arithsum(a,d,n):=n*(a+(n-1)*d/2)$
+	geosum(a,r,n):=IF n='INF THEN a/(1-r)
+		ELSE a*(1-r^n)/(1-r)$
+
+gauss&&  gaussprob(x):=1/SQRT(2*%PI)*%E^(-x^2/2)$
+
+gd&&  gd(x):=2*ATAN(%E^x-%PI/2)$
+	agd(x):=LOG(TAN(%PI/4+x/2))$
+
+trig&&  vers(x):=1-COS(x)$
+	covers(x):=1-SIN(x)$
+	exsec(x):=SEC(x)-1$
+	hav(x):=(1-COS(x))/2$
+
+combination&&  combination(n,r):=BINOMIAL(n,r)$
+	permutation(n,r):=BINOMIAL(n,r)*r!$

@@ -1,0 +1,30 @@
+#!/bin/sh
+# edit next 2 lines to say where GCL was built, and where the current directory is.
+GCLDIR=/home/wfs/gcl-2.3
+MAXDIR=/home/wfs/maxima-5.4
+EMACS_SITE_LISP=/usr/local/lib/emacs/19.34/site-lisp
+
+# determines where to install: eg /usr/local/maxima-5.0/ /usr/local/bin ...etc.
+PREFIX_DIR=/usr/local
+
+
+if [ -f ${GCLDIR}/makedefs ] ;then 
+cat ${GCLDIR}/makedefs > makedefs
+else echo > makedefs
+echo '${GCLDIR}/makedefs' "(${GCLDIR}/makedefs)" not found.. so leaving blank..
+
+fi
+
+echo GCLDIR=${GCLDIR} >>makedefs
+echo MAXDIR=${MAXDIR} >>makedefs
+echo '# end maxmakedefs' >> makedefs
+
+echo inserting makedefs  in ..
+for v in makefile src/makefile info/makefile elisp/makefile 
+ do
+ echo " $v,"
+ ${GCLDIR}/xbin/file-sub makedefs $v "# begin makedefs" '# end maxmakedefs'
+ mv tmpx $v
+ done
+
+

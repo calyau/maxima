@@ -1,0 +1,28 @@
+
+Numerical routines for Elliptic Functions and Complete Elliptic Integrals
+
+(Notation of Abramowitz and Stegun, Chs 16 & 17)
+Do: LOAD(ELLIPT);
+
+At present all arguments MUST be floating point.
+You'll get nonsense otherwise.  Be warned.
+
+Jacobian elliptic functions
+AM(U,M)		amplitude with modulus M
+AM1(U,M1)	ampiltude with complementary modulus M1
+		AM(U,M):=AM1(U,1-M); so use AM1 if M ~ 1
+
+SN(U,M):=SIN(AM(U,M));
+CN(U,M):=COS(AM(U,M));
+DN(U,M):=SQRT(1-M*SN(U,M)^2);
+		These functions come defined like this.  Others CD, NS etc.
+		may be similarly defined.
+
+Complete Elliptic Integrals
+ELLIPTK(M)	Complete elliptic integral of first kind
+ELLIPTK1(M1)	Same but with complementary modulus. 
+		ELLIPTK(M):=ELLIPTK1(1-M); so use if M ~ 1
+
+ELLIPTE(M)	Complete elliptic integral of second kind
+ELLIPTE1(M1)	Same but with complementary modulus. 
+		ELLIPTE(M):=ELLIPTE1(1-M); so use if M ~ 1

@@ -1,0 +1,209 @@
+	      Some Comparisons of Algebraic Manipulation
+			On Different Hardware
+				   
+				   
+			    Bill Schelter
+			 University of Texas
+			    Austin, Texas.
+
+			    June 25, 1987
+
+
+In the following we use Maxima to refer to the Common Lisp port of
+Macsyma by Bill Schelter, based on the original version of Macsyma at
+MIT, and distributed by the National Energy Software Center.  Other
+versions are referred to by the name Macsyma.
+
+Times are elapsed (with cpu times in parentheses for machines where
+this was substantially different, e.g. Suns).  By elapsed time I mean
+wall clock time.  (Where this differs from cpu time the main culprit
+was page faults).  All times were the average of several cycles to
+ensure garbage collection information was included.  The large problem
+garbage collected a number of times on the small Sun, and so only one
+computation was performed.  All machines were run with only one user
+running at normal priority.  (Except for the 3/160, the 11/780, and
+DEC-20 where there were several other rather idle users).  All
+machines except the 3/50 had adequate memory to prevent page faults
+from being a major problem.  The TI explorer is NOT the processor on a
+chip, but a machine several years old.
+
+
+Machine              Time in Seconds
+            
+  Problem:        Factor((x+y+z)^10)       Factor((x+y+z)^20)
+
+Maxima (Common Lisp version by Bill Schelter)
+
+
+TI Explorer(I)       5.3                    28.2
+Sun3/260             3.08(cpu 3.08)         19.33(cpu 19.5)
+Symbolics 3640       5.6                    21.3
+(with IFU unit) 
+Sun3/160             7.0 (cpu 7.0)          33.3 (cpu 33.0)
+Sun3/50             27.3 (cpu 9.7)         243.0 (cpu 63.7)
+PC Limited386(6meg)  9.0 (cpu 9.0)          42.5 
+
+Some other versions of Macsyma.  Version details below.
+
+Dec20(maclisp)              (cpu 6.5)          problem too big
+Vax/11/780(franz)      27.0 (cpu 17.1)         did not try
+Sun(3/160)(franz)      14.1 (cpu 14.1)         forgotten result
+
+Notes: The times all are elapsed, and INCLUDE time for garbage
+collection.  On the lisp machines ONLY ephemeral garbage collection
+was included.  But generally speaking their ephemeral garbage
+collectors are fairly effective at picking up such consing.
+
+The small Sun suffered greatly from page faults: for example the
+actual run time was 8.05 for the first one, and with a garbage
+collection every two or three times costing 5 seconds.  The rest of
+the time was spent in page faults, particularly costly during the
+garbage collection.
+
+The Sun-3/50 had 4meg of memory and shoe box disk.  We have included
+an appendix for the 3/50 to show the vagaries of the timings due to
+poor paging.
+
+THE CODE:
+
+The Maxima in all cases was a full version including Lisp compiler and
+the Maxima to Lisp translation facility.  Approximately 120 files were
+loaded.  On the very small machine reducing the size of the system,
+would probably prove beneficial.  The Franz and Maclisp versions
+include fewer files.  For small machines this is probably beneficial.
+
+DETAILS CONCERNING SOFTWARE:
+
+The Maxima code was the Common Lisp version by Bill Schelter at
+University of Texas, and is distributed by National Energy Software
+Foundation at Argonne Illinois.  It is based on the release from MIT
+to the DOE of the original MACSYMA.  It has been modified by the
+author to run in Common Lisp.  A number of other enhancements are
+included, including some for performance.  It is in use at a large
+number of institutions.
+
+KCL (Kyoto Common Lisp the Common Lisp we used on the Suns) is
+available free of charge by anonymous ftp from University of Texas on
+rascal.ics.utexas.edu [128.83.144.1] Login as ftp, with no password.
+See the message kcl.broadcast in the ftp directory for instructions.
+You must mail in a copy of the form in that message to validate your
+no-fee license.  Both Maxima and KCL distributions include ALL
+sources.  A number of optimizations to KCL have been made by Schelter
+to help with performance in function calling, and also for the type of
+arithmetic found in the Macsyma Code.  The author has found KCL to be
+an excellent and reliable lisp.  Its authors are Hagiya and Yuasa of
+Kyoto University.
+
+The Vax(11/780) time was with the Symbolics Distribution running in
+Franz.  The Sun(3/160) time in Franz was using our own build of
+Macsyma based on the `free Franz'.  The Dec-20 time was a distribution
+by Symbolics, running in Dec-20 Maclisp (very small address space).
+
+The GCD switch used was SPMOD.  
+
+This is not meant to be a comparison of factoring algorithms, but
+rather just a simple, easily quantified test of complex polynomial
+manipulation, which has been found to be a good point of comparison
+when considering different hardware and software for large algebraic
+manipulation problems.
+
+SYSTEM SOFTWARE:
+
+
+The Explorer was running release 3.0, and the Symbolics release 7.
+On earlier tests on the TI there was a dramatic improvement.
+(almost half the times shown).    Although I did the tests
+carefully at the time, I have not been able to reproduce them
+with the current world.   The new times for TI are closer to the
+old times.
+
+The Sun's were running versions 3.2
+to 3.4.  The 11/780 was running 4.3 BSD.
+
+
+COST: 
+
+For this type of work the explorer is probably a Good Buy, in that it
+is the second cheapest of the machines yet is also very fast.  The
+Sun 3/50 just does not seem to have the memory or memory management
+capabilities for large problems, so barring possible improvements to
+the software you would probably not be happy with one for such
+problems.  The large Suns would be recommended if time sharing is a
+must.  There are a number of other Unix machines which we just did not
+have available to run tests on.
+
+
+			   Appendix Sun3/50
+
+Here is the actual transcript.  You can see how the times varied:
+For the other machines, the times were rather consistent.  We 
+have used averages in all cases.
+
+(C3) expand((x+y+z)^10)$
+(C9) factor(d3);
+
+Evaluation took 8.20 seconds (17.93 elapsed)
+					    10
+(D9) 				 (Z + Y + X)
+(C10) ''c3;
+
+Evaluation took 7.98 seconds (16.98 elapsed)
+					    10
+(D10) 				 (Z + Y + X)
+(C11) ''c3;
+
+
+GBC invoked
+GBC finished
+Evaluation took 13.98 seconds (50.25 elapsed)
+					    10
+(D11) 				 (Z + Y + X)
+(C12) ''c3;
+
+Evaluation took 8.02 seconds (16.57 elapsed)
+					    10
+(D12) 				 (Z + Y + X)
+(C13) ''c3;
+
+
+GBC invoked
+GBC finished
+Evaluation took 13.90 seconds (52.20 elapsed)
+					    10
+(D13) 				 (Z + Y + X)
+(C14) ''c3;
+
+Evaluation took 8.05 seconds (16.65 elapsed)
+					    10
+(D14) 				 (Z + Y + X)
+(C15) ''c3;
+
+
+GBC invoked
+GBC finished
+Evaluation took 13.90 seconds (56.88 elapsed)
+					    10
+(D15) 				 (Z + Y + X)
+(C16) 
+(C16) expand((x+y+z)^20)$
+
+Evaluation took 10.10 seconds (13.20 elapsed)
+(C17) 1;
+(D17) 				       1          
+(C18) factor(d16);
+
+
+GBC invoked
+GBC finished
+
+GBC invoked
+GBC finished
+
+GBC invoked
+GBC finished
+
+GBC invoked
+GBC finished
+Evaluation took 63.77 seconds (243.45 elapsed)
+					    20
+(D18) 				 (Z + Y + X)

@@ -1,0 +1,76 @@
+	This program computes the solution of second order linear
+ordinary differential equations by the method of Frobenius (substitution
+of infinite series.) The program is called by:
+		LOADFILE(SERIES,FASL,DSK,SHARE);
+		SERIES(eqn,y,x);
+
+where "eqn" is a differential equation of the form:
+
+		f(x)*diff(y,x,2)+f'(x)*diff(y,x)+f''(x)*y=0
+
+and "y" and "x" are the dependent and independent variables.
+
+	The dependencies must be established ahead of time by:
+
+                     DEPENDS(Y,X);
+
+	The program will determine the recurrence relation and if that
+is a  function of only one subscripted variable, will go on to determine
+a complete solution in terms of an infinite series or a sum of them. If
+the recurrence relation is more complex;e.g.,
+
+                         A[N]=A[N-1]+A[N-2]
+
+then the relation will be printed and the program will produce a
+truncated series solution using the global variable NUMTERMS[5].
+These truncated solutions courtesy of JF...OLVER >.
+	The program produces answers containing some compact functions, 
+namely,FFF(  ) and  HARM(  ). These are defined in Rainville:Intermediate
+Differential Equations (pp 109-112) as follows:
+                  FFF(exp,n)=exp(exp+1)(exp+2)...(exp+n-1)    n ge 1       
+
+              and       FFF(exp,0)=1, exp#0                                
+
+and HARM(exp,n) is the partial sum of the harmonic series:
+
+                                  n
+                                 ====
+                                 \        1
+                HARM(exp,n) =     >    -------                             
+                                 /     exp + k
+                                 ====
+                                 k = 1
+
+
+
+
+and the special case:
+
+                       HARM(1,n) =  SUM(1/k,k,1,n)                        
+
+	Several variables and flags are available to the user:
+
+VERBOSE1[TRUE] if FALSE will print diagnostic information about the equation,
+	i.e. the point at which the solution is being found (0), is an ord-
+	inary point, singular point or the roots of the indicial equation
+ 	are equal or differ by an integer and therefore there will be a 
+	logarithmic term in the solution.
+
+POINTEXPAND[0] if set to any value other than zero will cause the diagnostics
+	to try that point but will not solve the equation there (yet)!!
+
+NUMTERMS[5] if set to another value will cause the diagnostic routine to
+	compute a different number of terms for the Taylor coefficients
+	when determining the nature of the singularities and will
+	truncate an approximate solution(if necessary) at that value.
+
+	The program will not work for expressions containing transcendentals
+or other functions in the coefficients of the Y'',Y', and Y terms at this
+time nor will it work for non-homogeneous equations. In the latter case,
+the user can, of course, get a partial solution by making the equation
+homogeneous and solving with this program.
+
+	The program is still in some state of modification and any comments,
+bugs, complaints etc. should be sent to ELL@MC. In addition, the author 
+would appreciate any info on successful or unsuccessful application of this
+program.

@@ -1,0 +1,486 @@
+
+Date: 14 January 1983 06:05-EST
+From: Richard Pavelle <RP @ MIT-MC>
+Subject:  GR10
+To: INFO-TENSOR @ MIT-MC
+
+Many of you on this list do not work in relativity but if
+some of your colleagues have used MACSYMA for relativity
+applications please forward the following to them:
+
+Lars Hornfeldt and his colleagues at Stockholm would like
+to get together a list of papers for the 10th International
+Conference on General Relativity and Gravitation this July
+in Padova. The papers are to be those which have used MACSYMA
+for General Relativity and I am trying to collect them for
+Hornfeldt. If you have published any, or if you have any in 
+preprint form, send them or the references to me. 
+
+Thanks.
+
+
+Date: 20 November 1982 16:44-EST
+From: Richard Pavelle <RP at MIT-MC>
+Subject: RATRIEMAN
+To: INFO-TENSOR at MIT-MC
+
+At ASB's suggestion, for consistency, I have changed RATRIEMAN to RATRIEMANN 
+in CTENSR. 
+
+Date: 2 July 1982 13:58-EDT
+From: Richard Pavelle <RP at MIT-MC>
+To: INFO-TENSOR at MIT-MC
+cc: RP at MIT-MC
+
+I have revised the tensor manual, TM-167 (June 1980), to reflect
+some changes and additions to the CTENSR and ITENSR packages. If
+you wish to receive a copy let me know.
+
+Date: 5 April 1982 01:02-EST
+From: Jeffrey P. Golden <JPG at MIT-MC>
+To: LAParker.Gravity at MIT-MULTICS
+cc: MULTICS-MACSYMA-BUGS at MIT-MC
+
+   Date: 4 April 1982 18:45 est
+   From: LAParker.Gravity at MIT-MULTICS
+   To: Multics-Macsyma-Bugs at MIT-MC
+   [1] why did  loadfile(etensr,fasl,dsk,share)
+   not load as macsyma manual says it should? What do I do?
+The manual was written before the current Multics Macsyma even existed.
+On Multics you can get the package which is now called "ctensr" by doing:
+	loadfile(">udd>Mathlab>macsyma>share>ctensr.lisp");
+
+   [2] Following macsyma reference manual, p.191-192, I typed tsetup(),
+   but only got the reply	tsetup()
+   rather than what the manual shows.
+On Multics you have to do the loadfile listed in [1] above before typing 
+tsetup();.
+
+Date: 24 March 1982 17:55-EST
+From: V. Ellen Golden <ELLEN at MIT-MC>
+Subject: More ITENSR stuff
+To: CWH at MIT-MC, GJC at MIT-MC, RP at MIT-MC
+cc: ELLEN at MIT-MC, JPG at MIT-MC
+
+It appears to get ITENSR working on Multics we need also to compile
+TENSOR; CANTEN 6
+	GENER 50
+	SYMTRY 100
+on Multics.  Since there are called from itensr.
+
+>udd>Mathlab>macsyma>share>itensr.demo1
+
+gets an error:
+
+lisp:function allfiles rejected argument ((dsk tensor) symtry fasl)
+
+Date: 24 March 1982 17:33-EST
+From: V. Ellen Golden <ELLEN at MIT-MC>
+To: RP at MIT-MC
+cc: ELLEN at MIT-MC, JPG at MIT-MC
+
+    Date: 24 March 1982 11:38-EST
+    From: Richard Pavelle <RP at MIT-MC>
+
+        Date: 24 March 1982 11:13-EST
+        From: Carl W. Hoffman <CWH at MIT-MC>
+        No, it is just called itensr.  
+        If you do "cwd >udd>Mathlab>Macsyma>share"
+        (or just "cwd >udd>mal>a>share"), then you can type "list" to list the
+        contents of the directory.  (Of course this is less obvious than typing
+        control-F, but what can you do with a loser like Multics.)
+    I tried LOADFILE(">udd>Mathlab>macsyma>share>itensr") and this is ok. Then
+    BATCH(">udd>Mathlab>macsyma>share>itensr.demo1") etc bombs out because
+    each ITENSR demo has a command to LOADFILE(ITENSR,FASL). Can you edit this
+    line out of each demo or tell me how to do it?
+---------------------------------
+I edited a copy of each demo file here on MC and retransferred them to Multics.
+Now, when I attempt to demo these files, they appear to work until (for
+demo1, e.g.) up to the line 
+
+CANFORM(EXP);
+
+at which point it gets an error:
+
+lisp:function allfiles rejected argument ((dsk tensor) symtry fasl)
+
+which I gather means we need to transfer (and compile) some more files.
+
+Date: 24 March 1982 11:38-EST
+From: Richard Pavelle <RP at MIT-MC>
+To: ELLEN at MIT-MC
+cc: RP at MIT-MC, JPG at MIT-MC
+
+    Date: 24 March 1982 11:13-EST
+    From: Carl W. Hoffman <CWH at MIT-MC>
+        Date: 23 March 1982 23:47-EST
+        From: V. Ellen Golden <ELLEN>
+        To:   CWH
+        cc:   RP, JPG, ELLEN, GJC
+        RE ITENSR... what is the proper file spec for the compiled version of
+        ITENSR?  My guess would be ">udd>Mathlab>macsyma>share>itensr.fasl"
+        but Multics is not always that obvious... is this correct?
+    No, it is just called itensr.  If you do "cwd >udd>Mathlab>Macsyma>share"
+    (or just "cwd >udd>mal>a>share"), then you can type "list" to list the
+    contents of the directory.  (Of course this is less obvious than typing
+    control-F, but what can you do with a loser like Multics.)
+I tried LOADFILE(">udd>Mathlab>macsyma>share>itensr") and this is ok. Then
+BATCH(">udd>Mathlab>macsyma>share>itensr.demo1") etc bombs out because
+each ITENSR demo has a command to LOADFILE(ITENSR,FASL). Can you edit this
+line out of each demo or tell me how to do it?
+
+Date: 23 March 1982 20:40-EST
+From: Richard Pavelle <RP at MIT-MC>
+To: JPG at MIT-MC
+cc: RP at MIT-MC, ELLEN at MIT-MC, CWH at MIT-MC
+
+       Date: 23 March 1982 03:39-EST
+       From: Jeffrey P. Golden <JPG at MIT-MC>
+       CWH tells me that ITENSR has been compiled on Multics.  Load it up and 
+       see if it works.
+   Date: 10 March 1982 10:56-EST
+   From: V. Ellen Golden <ELLEN at MIT-MC>
+   To: GJC at MIT-MC
+   cc: BUG-MULMAX at MIT-MC
+   I moved TENSOR;ITENSR > over to Multics as
+   >udd>Mathlab>macsyma>share>itensr.lisp and when I attempt to loadfile
+   it it gets
+   "Call to an undefined function '?macsyma\-module' at Lisp level."
+   Any ideas what that is about?
+This bug is still there so I cannot test ITENSR.
+
+Date: 24 March 1982 11:13-EST
+From: Carl W. Hoffman <CWH at MIT-MC>
+To: ELLEN at MIT-MC
+cc: GJC at MIT-MC, JPG at MIT-MC, RP at MIT-MC
+
+    Date: 23 March 1982 23:47-EST
+    From: V. Ellen Golden <ELLEN>
+    To:   CWH
+    cc:   RP, JPG, ELLEN, GJC
+
+    RE ITENSR... what is the proper file spec for the compiled version of
+    ITENSR?  My guess would be ">udd>Mathlab>macsyma>share>itensr.fasl"
+    but Multics is not always that obvious... is this correct?
+
+No, it is just called itensr.  If you do "cwd >udd>Mathlab>Macsyma>share"
+(or just "cwd >udd>mal>a>share"), then you can type "list" to list the
+contents of the directory.  (Of course this is less obvious than typing
+control-F, but what can you do with a loser like Multics.)
+
+Date: 24 March 1982 00:26-EST
+From: V. Ellen Golden <ELLEN at MIT-MC>
+To: CWH at MIT-MC
+cc: ELLEN at MIT-MC, RP at MIT-MC, JPG at MIT-MC, GJC at MIT-MC
+
+    Date: 23 March 1982 23:47-EST
+    From: V. Ellen Golden <ELLEN at MIT-MC>
+
+    RE ITENSR... what is the proper file spec for the compiled version of
+    ITENSR?  My guess would be ">udd>Mathlab>macsyma>share>itensr.fasl"
+    but Multics is not always that obvious... is this correct?
+-------------------------------
+I just tried it and it is not correct.  NU?
+
+Date: 23 March 1982 23:47-EST
+From: V. Ellen Golden <ELLEN at MIT-MC>
+To: CWH at MIT-MC
+cc: RP at MIT-MC, JPG at MIT-MC, ELLEN at MIT-MC, GJC at MIT-MC
+
+RE ITENSR... what is the proper file spec for the compiled version of
+ITENSR?  My guess would be ">udd>Mathlab>macsyma>share>itensr.fasl"
+but Multics is not always that obvious... is this correct?
+
+Date: 23 March 1982 21:15-EST
+From: Carl W. Hoffman <CWH at MIT-MC>
+To: RP at MIT-MC, JPG at MIT-MC, ELLEN at MIT-MC, GJC at MIT-MC
+
+    Date: 23 March 1982 20:40-EST
+    From: Richard Pavelle <RP at MIT-MC>
+
+       Date: 10 March 1982 10:56-EST
+       From: V. Ellen Golden <ELLEN at MIT-MC>
+
+       I moved TENSOR;ITENSR > over to Multics as
+       >udd>Mathlab>macsyma>share>itensr.lisp and when I attempt to loadfile
+       it it gets
+       "Call to an undefined function '?macsyma\-module' at Lisp level."
+       Any ideas what that is about?
+
+    This bug is still there so I cannot test ITENSR.
+
+No, that's a different bug.  The installed Macsyma doesn't know about
+macsyma-module, so running interpreted system code won't work.  Try loading
+the compiled file.
+
+Date: 28 March 1982 13:36-EST
+From: Jeffrey P. Golden <JPG at MIT-MC>
+To: RP at MIT-MC, Unruh.QuantGR at MIT-MULTICS
+cc: BUG-MULMAX at MIT-MC
+
+    Date: 12 March 1982 10:15-EST
+    From: Richard Pavelle <RP at MIT-MC>
+        Date:  11 March 1982 18:55 est
+        From:  Unruh.QuantGR at MIT-MULTICS
+        In the CTENSR package on MULTICS MACSYMA , one cannot seem to
+        enter a new metric . If I try tsetup() I get a message saying
+        I must do a KILL(ALL). I KEEP GETTING THIS EVEN AFTER I DO A KILL(ALL)
+    For the moment you will have to start up a fresh MACSYMA to enter a new
+    metric.
+has been fixed so starting up a new macsyma is no longer necessary.
+(You have to do a KILL(ALL); and a TENSORKILL:TRUE$ as RP's comments 
+dictate.)
+
+Date: 28 March 1982 13:26-EST
+From: Jeffrey P. Golden <JPG at MIT-MC>
+To: RP at MIT-MC, Unruh.QuantGR at MIT-MULTICS
+cc: BUG-MULMAX at MIT-MC, CWH at MIT-MC
+
+   RP@MIT-MC 03/25/82 19:25:27 Re: Bug in ctensr on Multics
+   To: JPG at MIT-MC
+   CC: RP at MIT-MC, CWH at MIT-MC
+       Date:  25 March 1982 17:21 est
+       From:  Unruh.QuantGR at MIT-MULTICS
+       coordinates [u,v,x,y], symmetric metric, with 1,2=a , 3,3=b , 4,4=b
+       and depends(a,[x,y],b,[x,y]). I had the metric listed. After the metric
+       was displayed,I got the message
+        "Call to an undefined function 'true' at Lisp level."
+                     Unruh under QuantGR on Multics.
+   I ran this on MC without difficulty but it does bomb out on MULTICS:
+   See RP;AA BUG.  Any suggestions? 
+has been fixed.
+
+Date: 27 March 1982 13:27-EST
+From: V. Ellen Golden <ELLEN at MIT-MC>
+Subject: Using MC
+To: Unruh.QuantGR at MIT-MULTICS
+cc: JPG at MIT-MC, ELLEN at MIT-MC, RP at MIT-MC
+
+One possibility is to request ARPAnet access (or Chaos net access...
+that is our local MIT net and I believe Multics is now connected to
+it) to MC to go along with your Multics account and use MC from a
+"supdup" connection from Multics.  The connection (being through
+Telenet to Multics then through ARPA or Chaos net to MC) will probably
+be somewhat "slow" and perhaps frustrating from the "user
+input/output" point of view, but of course the Tensor package would
+then work for you, and you could probably do any preparation of batch
+files or whatever on Multics and only make use of an interactive port
+to MC to do the actual calculation.  You would have to contact the
+Information Processing Services to arrange this.  If they have any
+questions about it, you can refer them to me.
+
+Date: 27 March 1982 09:39-EST
+From: Jeffrey P. Golden <JPG at MIT-MC>
+To: ELLEN at MIT-MC, RP at MIT-MC
+
+You people have any ideas for UNRUH:
+   Date:  26 March 1982 17:08 est
+   From:  Unruh.QuantGR at MIT-MULTICS
+   To:  JPG at MIT-MC
+   Yes, I am the William G Unruh who used to use MIT-MC, and I would love to
+   use MC to do my calculations. My problem is that here I do not have access
+   to ARPA NET and have been unable to find out how to get on to it from
+   British Columbia. We are now on Datapac and I can therefore get onto
+   Multics via TELENET. Its too expensive to phone MC (about $100/hr). If you
+   have any sugestion as to how I could use MC I would love to hear it.
+
+Date: 25 March 1982 19:42-EST
+From: Richard Pavelle <RP at MIT-MC>
+Subject: Bug in ctensr on Multics
+To: Unruh.QuantGR at MIT-MULTICS
+cc: RP at MIT-MC
+
+    Date:  25 March 1982 17:21 est
+    From:  Unruh.QuantGR at MIT-MULTICS
+
+    I've run into another bug in CTENSR on Multics.I ran tsetup(), dimension 4,
+    coordinates [u,v,x,y], symmetric metric, with 1,2=a , 3,3=b , 4,4=b
+    and depends(a,[x,y],b,[x,y]). I had the metric listed. After the metric
+    was displayed,I got the message
+     "Call to an undefined function 'true' at Lisp level."
+                  Unruh under QuantGR on Multics.
+It seems to happen with any metric. MC is working fine if that helps.
+We will try to do something but there is little support for MULTICS macsyma
+as you may know.
+
+RP@MIT-MC 03/25/82 19:39:35 Re: Bug in ctensr on Multics
+To: JPG at MIT-MC
+CC: RP at MIT-MC, CWH at MIT-MC
+I ran some more tests and the CTENSR demos run on MULTICS though
+this example of Unruh's bombs. The problem occurs when ANY metric 
+is direct input (as opposed to the demos where the user does not
+type them). I have no idea where the problem lies.
+
+RP@MIT-MC 03/25/82 19:25:27 Re: Bug in ctensr on Multics
+To: JPG at MIT-MC
+CC: RP at MIT-MC, CWH at MIT-MC
+    Date:  25 March 1982 17:21 est
+    From:  Unruh.QuantGR at MIT-MULTICS
+
+    coordinates [u,v,x,y], symmetric metric, with 1,2=a , 3,3=b , 4,4=b
+    and depends(a,[x,y],b,[x,y]). I had the metric listed. After the metric
+    was displayed,I got the message
+     "Call to an undefined function 'true' at Lisp level."
+                  Unruh under QuantGR on Multics.
+I ran this on MC without difficulty but it does bomb out on MULTICS-
+see RP;AA BUG.
+Any suggestions? 
+
+Date:  25 March 1982 17:21 est
+From:  Unruh.QuantGR at MIT-MULTICS
+Subject:  Bug in ctensr on Multics
+To:  RP at MIT-MC
+
+I've run into another bug in CTENSR on Multics.I ran tsetup(), dimension 4,
+coordinates [u,v,x,y], symmetric metric, with 1,2=a , 3,3=b , 4,4=b
+and depends(a,[x,y],b,[x,y]). I had the metric listed. After the metric
+was displayed,I got the message
+ "Call to an undefined function 'true' at Lisp level."
+              Unruh under QuantGR on Multics.
+
+Date: 10 March 1982 10:56-EST
+From: V. Ellen Golden <ELLEN at MIT-MC>
+To: GJC at MIT-MC
+cc: BUG-MULMAX at MIT-MC
+
+I moved TENSOR;ITENSR > over to Multics as
+>udd>Mathlab>macsyma>share>itensr.lisp and when I attempt to loadfile
+it it gets
+
+"Call to an undefined function '?macsyma\-module' at Lisp level."
+
+Any ideas what that is about?
+
+ELLEN@MIT-MC 03/10/82 02:42:59 Re: TRANSFORM in CTENSR
+I have changed TRANSFORM in TENSOR;MANUAL > to be TTRANSFORM, and
+made the proper change in DESCRIBE.
+
+Date: 11 March 1982 16:37-EST
+From: Richard Pavelle <RP at MIT-MC>
+Subject: change to ITENSR
+To: INFO-TENSOR at MIT-MC
+
+The RIEMANN function in ITENSR, which represents the standard Riemann 
+4 index curvature tensor, has been renamed to CURVATURE to stop the 
+conflict with the RIEMANN function in CTENSR. 
+
+Date: 11 March 1982 08:25-EST
+From: Richard Pavelle <RP at MIT-MC>
+Subject: conflicting functions in ITENSR and CTENSR
+To: JPG at MIT-MC
+cc: RP at MIT-MC, ELLEN at MIT-MC
+
+    Date: 22 September 1981 04:10-EDT
+    From: Jeffrey P. Golden <JPG at MIT-MC>
+
+       ELLEN@MIT-MC 09/22/81 03:57:36 Re: BUG - ITENSR
+       I tried the ITENSO DEMO1 and it got a "too many arguments supplied
+       to RIEMANN(DIS) at the first line.  You better check this, since POURNE
+       may want to use these demos (and the error could be indicative of more
+       serious trouble in MACSYMA).
+
+    It appears that RIEMANN is two different functions, the one in CTENSR takes
+    one arg and the one in ITENSR takes two args!  So you get into trouble 
+    if you try CTENSR and ITENSR in the same MACSYMA.  What lossage!  This 
+    should be fixed.
+I have changed the RIEMANN function in ITENSR to CURVATURE. If this name
+causes no conflicts please recompile TENSOR;ITENSR > and I will send a 
+note out.
+
+Date: 12 March 1982 09:46-EST
+From: Richard Pavelle <RP at MIT-MC>
+Subject: TENSOR;MANUAL >
+To: ELLEN at MIT-MC
+cc: RP at MIT-MC
+
+    ELLEN@MIT-MC 03/11/82 18:19:42 Re: TENSOR;MANUAL >
+    I have put CURVATURE alphabetically, which places it between COVDIFF
+    and DIFF.  I myself wonder if (since there is an index) you might want
+    to consider reordering the functions more by "use", if there is any
+    sort of progression there... it is a very minor point, so if you don't
+    care we will leave things as they are, but to me for instance it would
+    seem natural to have DIFF and COVDIFF together, and have CURVATURE
+    (even if it were named RIEMANN and thus came later in the alphabet) just
+    before GEODESIC, since they appear (to my casual glance) to be related.
+    Anyone needing the page of a precise function probably isn't going to
+    be making use of the fact they are alphabetical, but rather using the
+    index.
+I do not think this would be useful here. Clearly, for a users manual it
+is a winning idea.
+
+ELLEN@MIT-MC 03/15/82 16:31:30
+    Date: 14 March 1982 17:11-EST
+    From: Richard Pavelle <RP at MIT-MC>
+
+    I made a few more changes to the TENSOR manual. I assume you will be using
+    this as the source for the new manual, right? Also, I want to remind you
+    about checking that acknowledgements to not occur in the new manual.
+-----------------------------------
+I have removed the acknowledgement from TENSOR;MANUAL > and placed it in
+DRAFT > so that if the TENSOR manual is run off again as a TM, it will appear
+in that copy, but the text itself as gets slurped into the "real manual"
+will not contain it.
+
+ELLEN@MIT-MC 03/14/82 17:11:55
+Yes, the PUB for the manual pulls TENSOR;MANUAL > in as source file.
+I will check on the acknowledgements, thanks for reminding me.
+
+Date: 14 March 1982 17:11-EST
+From: Richard Pavelle <RP at MIT-MC>
+To: ELLEN at MIT-MC
+cc: RP at MIT-MC
+
+I made a few more changes to the TENSOR manual. I assume you will be using
+this as the source for the new manual, right? Also, I want to remind you
+about checking that acknowledgements to not occur in the new manual.
+
+Date: 9 March 1982 15:25-EST
+From: Richard Pavelle <TENSOR at MIT-MC>
+To: Kim.fateman at UCB-C70
+cc: RP at MIT-MC
+
+    Date: 4 Mar 1982 12:37:41-PST
+    From: Kim.fateman at Berkeley
+
+    I mentioned to you that "transform" as a name of a command was
+    used elsewhere (than in ctensor).  It is used in "ode".  We noticed
+    it on the vax because we have installed auto-load properties on
+    entries into ode in our default system.
+Thanks. It has been changed to TTRANSFORM in CTENSR.
+
+Date: 9 March 1982 14:38-EST
+From: Richard Pavelle <TENSOR at MIT-MC>
+Subject: TRANSFORM in CTENSR
+To: INFO-TENSOR at MIT-MC
+cc: JPG at MIT-MC, ELLEN at MIT-MC, RJF at MIT-MC, RP at MIT-MC,
+    ELL at MIT-MC
+
+The TRANSFORM function in CTENSR has been renamed to TTRANSFORM.
+
+RP@MIT-MC 10/04/80 16:49:41
+To: JPG at MIT-MC, GJC at MIT-MC, JM at MIT-MC, RZ at MIT-MC
+To: LSH at MIT-MC, TENSOR at MIT-MC
+I ran some tests on GJC'c newly translated and compiled version of CTENSR 
+comparing it to the FASLOAD which has been the standard. Both are about 
+the same size. GJC's looks very good for the 4 tests below. LHS's version
+bombed out for the 4th demo but was equivalent to GJC's wrt time
+and size for the other three. In view of these results I think
+this version should replace the FASSAVE. I will wait a few days
+and run some more tests. Any comments?
+
+CTENSR DEMO1 	TOTALTIME	GCTIME		FREECORE AT FINISH
+FASLOAD		12402 msec.     4151 msec.      40 BLOCKS
+GJC		10209 msec.	3770 msec.	41 BLOCKS
+
+CTENSR DEMO2	TOTALTIME	GCTIME		FREECORE AT FINISH
+FASLOAD		79252 msec.     23022 msec. 	32 BLOCKS
+GJC		26251 msec.	9326 msec.	37 BLOCKS
+
+CTENSR DEMO3	TOTALTIME	GCTIME		FREECORE AT FINISH
+FASLOAD		54072 msec.     15815 msec.	34 BLOCKS
+GJC		24662 msec.	9378 msec.	37 BLOCKS
+
+CTENSR DEMO4	TOTALTIME	GCTIME		FREECORE AT FINISH
+FASLOAD		54010 msec.     19832 msec. 	6 BLOCKS
+GJC		38671 msec.	15216 msec.	9 BLOCKS
+

@@ -1,0 +1,109 @@
+#!/usr/local/bin/wish -f
+# the following is used to run gnuplot under book mode.  It should
+# be put in the path.
+
+set gnuPlotstream [open {|  gnuplot  } r+]
+
+proc sendgnu com {
+    global gnuPlotstream
+    puts stdout $com ; flush stdout
+    puts $gnuPlotstream $com ; flush $gnuPlotstream
+}
+
+while {[gets stdin line] >= 0} {
+  sendgnu $line
+}
+
+set xrot 60
+set zrot 30
+
+text .text
+.text configure -height 4 -width 40
+
+proc getoptions {} {
+#    unlink gnu-optionsxx
+    set tmp gnu-optionsxx
+    exec rm -f $tmp
+    sendgnu "save '$tmp'\n"
+    while {[file exists $tmp] <= 0} {exec sleep 0}
+    set at [.fra.options nearest 0]
+    set f [ open gnu-optionsxx ]
+    .fra.options delete 0 end
+    while { [gets $f line] > 0 } {
+	.fra.options insert end "$line" 
+    }
+    .fra.options yview $at	
+    }
+
+frame .fra -bd 2
+label .fra.label -text "Current Set Options"
+scrollbar .fra.scroll -command ".fra.options yview"    
+listbox .fra.options -yscrollcommand ".fra.scroll set" -relief sunken -bd 2
+pack .fra.label
+pack .fra.options -side left
+pack .fra.scroll -side right -fill y
+bind .fra.options <Double-1> "set selected_option  \[lindex \[selection get\] 0\]"
+frame .option_edit
+
+proc msg a {global $a
+ sendgnu [format "%s\n\nreplot\n" [expr $$a]] ;
+ set $a ""
+ getoptions}
+ 
+proc mkOption_edit {a b} {
+    global $b
+   label $a.label -text "Edit: "
+   entry $a.entry -width 20 -relief sunken -bd 2 -textvariable $b
+    bind $a.entry  <Return> "msg  $b"
+   pack $a.label $a.entry -side left -padx 1m -pady 2m
+}
+
+mkOption_edit .option_edit selected_option
+
+
+getoptions
+
+button .exit -text "Exit" -command {
+    global done
+    sendgnu  "exit\n"
+    set done 1
+    destroy .
+}
+
+button .saveps -text "Save gnuplot.ps" -command {
+    sendgnu  "set output 'gnuplot.ps';set terminal postscript ; replot\n"
+    sendgnu "set terminal x11 ; replot; \n"
+}
+
+button .printps -text "Print -Plw8" -command {
+    sendgnu  {set output '|lpr -Plw8';set terminal postscript ; replot}
+    sendgnu "set terminal x11 ; replot; \n"
+}
+
+button .replot -text "Replot" -command {
+    sendgnu {set terminal x11; replot \n}
+}
+
+
+
+button .save -text "save gnuplot.out" -command {
+    sendgnu "save 'gnuplot.out'\n"
+ }
+
+scale .rotxscale -label "xrotation"  \
+   -orient horizontal -length 200 -from 0 -to 180 \
+    -command gnuPlotsetview -tickinterval 60
+scale .rotzscale -label "zrotation" \
+    -orient horizontal -length 200 -from 0 -to 360 \
+    -command gnuPlotsetview -tickinterval 120
+
+#.rotxscale set $xrot
+#.rotzscale set $zrot
+
+proc gnuPlotsetview value  {
+    sendgnu [format "set view %d,%d\nreplot\n" [.rotxscale get] [.rotzscale get]]}
+
+pack .exit .saveps .printps  .rotxscale .rotzscale .fra .option_edit .save
+set done 0
+tkwait variable done
+

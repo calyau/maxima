@@ -1,0 +1,288 @@
+@node Special Functions, Command Line, Constants, Top
+@chapter Special Functions
+@menu
+* Introduction to Special Functions::  
+* GAMALG::                      
+* SPECINT::                     
+* Definitions for Special Functions::  
+@end menu
+
+@node Introduction to Special Functions, GAMALG, Special Functions, Special Functions
+@section Introduction to Special Functions
+@c @node %J
+@c @unnumberedsec phony
+@deffn %J
+ [index](expr) - Bessel Funct 1st Kind (in SPECINT)
+
+@end deffn
+@c @node %K
+@c @unnumberedsec phony
+@deffn %K [index](expr)
+Bessel Funct 2nd Kind (in SPECINT)
+
+Constant, in ODE2
+
+@end deffn
+@node GAMALG, SPECINT, Introduction to Special Functions, Special Functions
+@section GAMALG
+ - A Dirac gamma matrix algebra program which takes traces of
+and does manipulations on gamma matrices in n dimensions.  It may be
+loaded into MACSYMA by 
+LOADFILE("gam");
+A preliminary manual is contained in the file SHARE;GAM USAGE and may
+be printed using
+PRINTFILE(GAM,USAGE,SHARE);
+
+@node SPECINT, Definitions for Special Functions, GAMALG, Special Functions
+@section SPECINT
+ - The Hypergeometric Special Functions Package HYPGEO is
+still under development.  At the moment it will find the Laplace
+Transform or rather, the integral from 0 to INF of some special
+functions or combinations of them.  The factor, EXP(-P*var) must be
+explicitly stated.  The syntax is as follows:
+SPECINT(EXP(-P*var)*expr,var);
+where var is the variable of integration and expr may be
+any expression containing special functions (at your own risk).
+Special function notation follows:
+@example
+%J[index](expr)         Bessel Funct 1st Kind
+%K[index](expr)           "     "    2nd Kind
+%I[     ](    )         Modified Bessel
+%HE[     ](  )          Hermite Poly
+%P[  ]( )               Legendre Funct
+%Q[  ]( )               Legendre of second kind
+HSTRUVE[ ]( )           Struve H Function
+LSTRUVE[ ]( )             "    L Function
+%F[ ]([],[],expr)       Hypergeometric Function
+GAMMA()
+GAMMAGREEK()
+GAMMAINCOMPLETE()
+SLOMMEL
+%M[]()                  Whittaker Funct 1st Kind
+%W[]()                     "       "    2nd  "
+@end example
+@noindent
+For a better feeling for what it can do, do DEMO(HYPGEO,DEMO,SHARE1); .
+
+@c end concepts Special Functions
+@node Definitions for Special Functions,  , SPECINT, Special Functions
+@section Definitions for Special Functions
+@c @node AIRY
+@c @unnumberedsec phony
+@defun AIRY (X)
+returns the Airy function Ai of real argument X.
+The file SHARE1;AIRY FASL contains routines to evaluate the Airy functions
+Ai(X), Bi(X), and their derivatives dAi(X), dBi(X).  Ai and Bi satisfy the
+AIRY eqn diff(y(x),x,2)-x*y(x)=0.  Read SHARE1;AIRY USAGE for details.
+
+@end defun
+@c @node ASYMP
+@c @unnumberedsec phony
+@defun ASYMP
+ - A preliminary version of a program to find the asymptotic behavior
+of Feynman diagrams has been installed on the SHARE1; directory.
+For further information, see the file SHARE1;ASYMP USAGE.
+(For Asymptotic Analysis functions, see ASYMPA.)
+
+@end defun
+@c @node ASYMPA
+@c @unnumberedsec phony
+@defun ASYMPA
+ - Asymptotic Analysis - The file SHARE1;ASYMPA > contains
+simplification functions for asymptotic analysis, including the big-O
+and little-o functions that are widely used in complexity analysis and
+numerical analysis.  Do BATCH("asympa.mc"); .
+(For asymptotic behavior of Feynman diagrams, see ASYMP.)
+
+@end defun
+@c @node BESSEL
+@c @unnumberedsec phony
+@defun BESSEL (Z,A)
+returns the Bessel function J for complex Z and real A >
+0.0 .  Also an array BESSELARRAY is set up such that BESSELARRAY[I] =
+J[I+A- ENTIER(A)](Z).
+
+@end defun
+@c @node BETA
+@c @unnumberedsec phony
+@defun BETA (X, Y)
+same as GAMMA(X)*GAMMA(Y)/GAMMA(X+Y).
+
+@end defun
+@c @node GAMMA
+@c @unnumberedsec phony
+@defun GAMMA (X)
+the gamma function. GAMMA(I)=(I-1)!  for I a positive
+integer.  For the Euler-Mascheroni constant, see %GAMMA.  See also the
+MAKEGAMMA function.  The variable GAMMALIM[1000000] (which see)
+controls simplification of the gamma function.
+
+@end defun
+@c @node GAMMALIM
+@c @unnumberedsec phony
+@defvar GAMMALIM
+ default: [1000000] controls simplification of the gamma
+function for integral and rational number arguments.  If the absolute
+value of the argument is not greater than GAMMALIM, then
+simplification will occur.  Note that the FACTLIM switch controls
+simplification of the result of GAMMA of an integer argument as well.
+
+@end defvar
+@c @node INTOPOIS
+@c @unnumberedsec phony
+@defun INTOPOIS (A)
+converts A into a Poisson encoding.
+
+@end defun
+@c @node MAKEFACT
+@c @unnumberedsec phony
+@defun MAKEFACT (exp)
+transforms occurrences of binomial,gamma, and beta
+functions in exp to factorials.
+
+@end defun
+@c @node MAKEGAMMA
+@c @unnumberedsec phony
+@defun MAKEGAMMA (exp)
+transforms occurrences of binomial,factorial, and beta
+functions in exp to gamma functions.
+
+@end defun
+@c @node NUMFACTOR
+@c @unnumberedsec phony
+@defun NUMFACTOR (exp)
+gives the numerical factor multiplying the expression
+exp which should be a single term.  If the gcd of all the terms in a
+sum is desired the CONTENT function may be used.
+@example
+(C1) GAMMA(7/2);
+(D1)               15 SQRT(%PI)
+                   ------------
+                        8
+(C2) NUMFACTOR(%)
+                    15
+(D2)                --
+                     8
+
+
+@end example
+@end defun
+@c @node OUTOFPOIS
+@c @unnumberedsec phony
+@defun OUTOFPOIS (A)
+converts A from Poisson encoding to general
+representation.  If A is not in Poisson form, it will make the
+conversion, i.e.  it will look like the result of
+OUTOFPOIS(INTOPOIS(A)).  This function is thus a canonical simplifier
+for sums of powers of SIN's and COS's of a particular type.
+
+@end defun
+@c @node POISDIFF
+@c @unnumberedsec phony
+@defun POISDIFF (A, B)
+differentiates A with respect to B.  B must occur only
+in the trig arguments or only in the coefficients.
+
+@end defun
+@c @node POISEXPT
+@c @unnumberedsec phony
+@defun POISEXPT (A, B)
+B a positive integer) is functionally identical to
+INTOPOIS(A**B).
+
+@end defun
+@c @node POISINT
+@c @unnumberedsec phony
+@defun POISINT (A, B)
+integrates in a similarly restricted sense (to
+POISDIFF).  Non-periodic terms in B are dropped if B is in the trig
+arguments.
+
+@end defun
+@c @node POISLIM
+@c @unnumberedsec phony
+@defvar POISLIM
+ default: [5] - determines the domain of the coefficients in
+the arguments of the trig functions.  The initial value of 5
+corresponds to the interval [-2^(5-1)+1,2^(5-1)], or [-15,16], but it
+can be set to [-2^(n-1)+1, 2^(n-1)].
+
+@end defvar
+@c @node POISMAP
+@c @unnumberedsec phony
+@defun POISMAP (series, sinfn, cosfn)
+will map the functions sinfn on the
+sine terms and cosfn on the cosine terms of the poisson series given.
+sinfn and cosfn are functions of two arguments which are a coefficient
+and a trigonometric part of a term in series respectively.
+
+@end defun
+@c @node POISPLUS
+@c @unnumberedsec phony
+@defun POISPLUS (A, B)
+is functionally identical to INTOPOIS(A+B).
+
+@end defun
+@c @node POISSIMP
+@c @unnumberedsec phony
+@defun POISSIMP (A)
+converts A into a Poisson series for A in general
+representation.
+
+@end defun
+@c @node POISSON
+@c @unnumberedsec phony
+@defvr {special symbol} POISSON
+ - The Symbol /P/ follows the line label of Poisson series
+expressions.
+
+@end defvr
+@c @node POISSUBST
+@c @unnumberedsec phony
+@defun POISSUBST (A, B, C)
+substitutes A for B in C.  C is a Poisson series.
+(1) Where B is a variable U, V, W, X, Y, or Z then A must be an
+expression linear in those variables (e.g. 6*U+4*V).
+(2) Where B is other than those variables, then A must also be
+free of those variables, and furthermore, free of sines or cosines.
+POISSUBST(A, B, C, D, N) is a special type of substitution which
+operates on A and B as in type (1) above, but where D is a Poisson
+series, expands COS(D) and SIN(D) to order N so as to provide the
+result of substituting A+D for B in C.  The idea is that D is an
+expansion in terms of a small parameter.  For example,
+POISSUBST(U,V,COS(V),E,3) results in COS(U)*(1-E^2/2) -
+SIN(U)*(E-E^3/6).
+
+@end defun
+@c @node POISTIMES
+@c @unnumberedsec phony
+@defun POISTIMES (A, B)
+is functionally identical to INTOPOIS(A*B).
+
+@end defun
+@c @node POISTRIM
+@c @unnumberedsec phony
+@defun POISTRIM ()
+is a reserved function name which (if the user has defined
+it) gets applied during Poisson multiplication.  It is a predicate
+function of 6 arguments which are the coefficients of the U, V,..., Z
+in a term.  Terms for which POISTRIM is TRUE (for the coefficients of
+that term) are eliminated during multiplication.
+
+@end defun
+@c @node PRINTPOIS
+@c @unnumberedsec phony
+@defun PRINTPOIS (A)
+prints a Poisson series in a readable format.  In common
+with OUTOFPOIS, it will convert A into a Poisson encoding first, if
+necessary.
+
+@end defun
+@c @node PSI
+@c @unnumberedsec phony
+@defun PSI (X)
+derivative of LOG(GAMMA(X)).  At this time, MACSYMA does not
+have numerical evaluation capabilities for PSI.  For information on
+the PSI[N](X) notation, see POLYGAMMA.
+
+@end defun

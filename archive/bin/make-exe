@@ -1,0 +1,30 @@
+#!/bin/sh
+# comment \
+exec tclsh8.0 "$0" "$@"
+
+proc getFile { file } {
+ set f [open $file r]
+ fconfigure $f -translation binary
+ while { ![eof $f]  } {
+  append data [read $f]
+  }
+ close $f
+ return $data
+}
+
+
+
+if { $argc < 1 } {
+  error "make-exe foo.exe"
+}
+
+set fi [open [lindex $argv 0] w]
+fconfigure $fi -translation binary
+
+
+
+
+
+
+
+

@@ -1,0 +1,623 @@
+@node Operators, Constants, Groups, Top
+@chapter Operators
+@menu
+* NARY::                        
+* NOFIX::                       
+* OPERATOR::                    
+* POSTFIX::                     
+* PREFIX::                      
+* Definitions for Operators::   
+@end menu
+
+
+@node NARY, NOFIX, Operators, Operators
+@section NARY
+ - An NARY operator is used to denote a function of any number of
+arguments, each of which is separated by an occurrence of the
+operator, e.g. A+B or A+B+C.  The NARY("x") function is a syntax
+extension function to declare x to be an NARY operator.  Do
+DESCRIBE(SYNTAX); for more details.  Functions may be DECLAREd to be
+NARY.  If DECLARE(J,NARY); is done, this tells the simplifier to
+simplify, e.g. J(J(A,B),J(C,D)) to J(A, B, C, D).
+
+@node NOFIX, OPERATOR, NARY, Operators
+@section NOFIX
+ - NOFIX operators are used to denote functions of no arguments.
+The mere presence of such an operator in a command will cause the
+corresponding function to be evaluated.  For example, when one types
+"exit;" to exit from a MACSYMA break, "exit" is behaving similar to a
+NOFIX operator.  The function NOFIX("x") is a syntax extension
+function which declares x to be a NOFIX operator.  Do
+DESCRIBE(SYNTAX); for more details.
+
+@node OPERATOR, POSTFIX, NOFIX, Operators
+@section OPERATOR
+ - See OPERATORS
+
+@node POSTFIX, PREFIX, OPERATOR, Operators
+@section POSTFIX
+ - POSTFIX operators like the PREFIX variety denote functions
+of a single argument, but in this case the argument immediately
+precedes an occurrence of the operator in the input string, e.g. 3! .
+The POSTFIX("x") function is a syntax extension function to declare x
+to be a POSTFIX operator.  Do DESCRIBE(SYNTAX); for details.
+
+@node PREFIX, Definitions for Operators, POSTFIX, Operators
+@section PREFIX
+ - A PREFIX operator is one which signifies a function of one
+argument, which argument immediately follows an occurrence of the
+operator.  PREFIX("x") is a syntax extension function to declare x to
+be a PREFIX operator.  Do DESCRIBE(SYNTAX); for more details.
+
+@c end concepts Operators
+@node Definitions for Operators,  , PREFIX, Operators
+@section Definitions for Operators
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "!"
+The factorial operator, which is the product of all the integers
+from 1 up to its argument.  Thus 5! = 1*2*3*4*5 = 120.  The value of
+/the option FACTLIM (default: [-1]) gives the highest factorial which is
+automatically expanded.  If it is -1 then all integers are expanded.
+See also the FACTORIAL, MINFACTORIAL, and FACTCOMB commands.
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "!!"
+Stands for double factorial which is defined as the product of
+all the consecutive odd (or even) integers from 1 (or 2) to the odd
+(or even) argument.  Thus 8!! is 2*4*6*8 = 384.
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "#"
+The logical operator "Not equals".
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "."
+The dot operator, for matrix (non-commutative) multiplication.
+When "." is used in this way, spaces should be left on both sides of
+it, e.g. A . B.  This distinguishes it plainly from a decimal point in
+a floating point number.  Do APROPOS(DOT); for a list of the switches
+which affect the dot operator.  DESCRIBE(switch-name); will explain
+them.
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator ":"
+The assignment operator.  E.g. A:3 sets the variable A to 3.
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "::"
+Assignment operator.  :: assigns the value of the expression
+on its right to the value of the quantity on its left, which must
+evaluate to an atomic variable or subscripted variable.
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "::="
+The "::=" is used instead of ":=" to indicate that what
+follows is a macro definition, rather than an ordinary functional
+definition.  See DESCRIBE(MACROS).
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator ":="
+The function definition operator.  E.g. F(X):=SIN(X) defines
+a function F.
+
+@end deffn
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator "="
+denotes an equation to MACSYMA.  To the pattern matcher in
+MACSYMA it denotes a total relation that holds between two expressions
+if and only if the expressions are syntactically identical.
+
+@end deffn
+@c end concepts Operators
+@c @node ADDITIVE
+@c @unnumberedsec phony
+@defvr {special symbol} ADDITIVE
+ - If DECLARE(F,ADDITIVE) has been executed, then:
+(1) If F is univariate, whenever the simplifier encounters F applied
+to a sum, F will be distributed over that sum.  I.e. F(Y+X); will
+simplify to F(Y)+F(X).
+(2) If F is a function of 2 or more arguments, additivity is defined as 
+additivity in the first argument to F, as in the case of 'SUM or 
+'INTEGRATE, i.e. F(H(X)+G(X),X); will simplify to F(H(X),X)+F(G(X),X).
+This simplification does not occur when F is applied to expressions of
+the form SUM(X[I],I,lower-limit,upper-limit).
+
+@end defvr
+@c @node keyword
+@c @unnumberedsec phony
+@defvr keyword ALLBUT
+ works with the PART commands (i.e. PART, INPART, SUBSTPART,
+SUBSTINPART, DPART, and LPART).  For example,
+
+@example
+if EXPR is E+D+C+B+A,
+then PART(EXPR,[2,5]);
+==> D+A
+@end example
+
+while
+@example
+PART(EXPR,ALLBUT(2,5))==>E+C+B
+@end example
+
+It also works with the KILL command,
+@example
+KILL(ALLBUT(name1,...,namek))
+@end example
+
+will do a KILL(ALL) except it will not
+KILL the names specified.  Note: namei means a name such as function
+name such as U, F, FOO, or G, not an infolist such as FUNCTIONS.
+
+
+@end defvr
+@c @node declaration
+@c @unnumberedsec phony
+@defvr declaration ANTISYMMETRIC
+ - If DECLARE(H,ANTISYMMETRIC); is done, this tells the
+simplifier that H is antisymmetric.  E.g. H(X,Z,Y) will simplify to -
+H(X, Y, Z).  That is, it will give (-1)^n times the result given by
+SYMMETRIC or COMMUTATIVE, where n is the number of interchanges of two
+arguments necessary to convert it to that form.
+
+@end defvr
+@c @node CABS
+@c @unnumberedsec phony
+@defun CABS (exp)
+returns the complex absolute value (the complex modulus) of
+exp.
+
+@end defun
+@c @node declaration
+@c @unnumberedsec phony
+@defvr declaration COMMUTATIVE
+ - If DECLARE(H,COMMUTATIVE); is done, this tells the
+simplifier that H is a commutative function.  E.g. H(X,Z,Y) will
+simplify to H(X, Y, Z).  This is the same as SYMMETRIC.
+
+@end defvr
+@c @node ENTIER
+@c @unnumberedsec phony
+@defun ENTIER (X)
+largest integer <= X where X is numeric.  FIX (as in
+FIXnum) is a synonym for this, so FIX(X); is precisely the same.
+
+@end defun
+@c @node EQUAL
+@c @unnumberedsec phony
+@defun EQUAL (expr1,expr2)
+used with an "IS", returns TRUE (or FALSE) if
+and only if expr1 and expr2 are equal (or not equal) for all possible
+values of their variables (as determined by RATSIMP).  Thus
+IS(EQUAL((X+1)**2,X**2+2*X+1)) returns TRUE whereas if X is unbound
+IS((X+1)**2=X**2+2*X+1) returns FALSE.  Note also that IS(RAT(0)=0)
+gives FALSE but IS(EQUAL(RAT(0),0)) gives TRUE.  If a determination
+can't be made with EQUAL then a simplified but equivalent form is
+returned whereas = always causes either TRUE or FALSE to be returned.
+All variables occurring in exp are presumed to be real valued.
+EV(exp,PRED) is equivalent to IS(exp).
+@example
+(C1) IS(X**2 >= 2*X-1);
+(D1)                               TRUE
+(C2) ASSUME(A>1);
+(D2)                               DONE
+(C3) IS(LOG(LOG(A+1)+1)>0 AND A^2+1>2*A);
+(D3)                               TRUE
+
+
+@end example
+@end defun
+@c @node EVAL
+@c @unnumberedsec phony
+@defun EVAL
+ causes an extra post-evaluation of exp to occur.
+
+@end defun
+@c @node EVENP
+@c @unnumberedsec phony
+@defun EVENP (exp)
+is TRUE if exp is an even integer.  FALSE is returned in
+all other cases.
+
+@end defun
+@c @node FIX
+@c @unnumberedsec phony
+@defun FIX (x)
+a synonym for ENTIER(X) - largest integer <= X where X is
+numeric.
+
+@end defun
+@c @node FULLMAP
+@c @unnumberedsec phony
+@defun FULLMAP (fn, exp1, ...)
+is similar to MAP but it will keep mapping
+down all subexpressions until the main operators are no longer the
+same.  The user should be aware that FULLMAP is used by the MACSYMA
+simplifier for certain matrix manipulations; thus, the user might see
+an error message concerning FULLMAP even though FULLMAP was not
+explicitly called by the user.
+@example
+(C1) A+B*C$
+(C2) FULLMAP(G,%);
+(D2)              G(B) G(C) + G(A)
+(C3)  MAP(G,D1);
+(D3)                G(B C) + G(A)
+
+
+@end example
+@end defun
+@c @node FULLMAPL
+@c @unnumberedsec phony
+@defun FULLMAPL (fn, list1, ...)
+is similar to FULLMAP but it only maps onto
+lists and matrices
+@example
+(C1) FULLMAPL("+",[3,[4,5]],[[A,1],[0,-1.5]]);
+(D1)                      [[A + 3, 4], [4, 3.5]]
+
+
+@end example
+@end defun
+@c @node IS
+@c @unnumberedsec phony
+@defun IS (exp)
+attempts to determine whether exp (which must evaluate to a
+predicate) is provable from the facts in the current data base.  IS
+returns TRUE if the predicate is true for all values of its variables
+consistent with the data base and returns FALSE if it is false for all
+such values.  Otherwise, its action depends on the setting of the
+switch PREDERROR (default: TRUE). IS errs out if the value of
+PREDERROR is TRUE and returns UNKNOWN if PREDERROR is FALSE.
+
+@end defun
+@c @node ISQRT
+@c @unnumberedsec phony
+@defun ISQRT (X)
+takes one integer argument and returns the "integer SQRT"
+of its absolute value.
+
+@end defun
+@c @node MAX
+@c @unnumberedsec phony
+@defun MAX (X1, X2, ...)
+yields the maximum of its arguments (or returns a
+simplified form if some of its arguments are non-numeric).
+
+@end defun
+@c @node MIN
+@c @unnumberedsec phony
+@defun MIN (X1, X2, ...)
+yields the minimum of its arguments (or returns a
+simplified form if some of its arguments are non-numeric).
+
+@end defun
+@c @node MOD
+@c @unnumberedsec phony
+@defun MOD (poly)
+converts the polynomial poly to a modular representation
+with respect to the current modulus which is the value of the variable
+MODULUS.  
+MOD(poly,m) specifies a MODULUS m to be used for converting poly, if
+it is desired to override the current global value of MODULUS.
+See DESCRIBE(MODULUS); .
+
+@end defun
+@c @node ODDP
+@c @unnumberedsec phony
+@defun ODDP (exp)
+is TRUE if exp is an odd integer.  FALSE is returned in all
+other cases.
+
+@end defun
+@c @node operator
+@c @unnumberedsec phony
+@deffn operator PRED
+ (EVFLAG) causes predicates (expressions which evaluate to TRUE
+or FALSE) to be evaluated.
+
+@end deffn
+@c @node RANDOM
+@c @unnumberedsec phony
+@defun RANDOM (X)
+returns a random integer between 0 and X-1.  If no
+argument is given then a random integer between -2^(29) and 2^(29) -1
+is returned.  If X is FALSE then the random sequence is restarted from
+the beginning.
+Note that the range of the returned result when no argument is given
+differs in NIL MACSYMA from that of PDP-10 and Multics MACSYMA, which
+is -2^(35) to 2^(35) -1.  This range is the range of the FIXNUM
+datatype of the underlying LISP.
+
+@end defun
+@c @node SIGN
+@c @unnumberedsec phony
+@defun SIGN (exp)
+attempts to determine the sign of its specified expression
+on the basis of the facts in the current data base.  It returns one of
+the following answers: POS (positive), NEG (negative), ZERO, PZ
+(positive or zero), NZ (negative or zero), PN (positive or negative),
+or PNZ (positive, negative, or zero, i.e. nothing known).
+
+@end defun
+@c @node SIGNUM
+@c @unnumberedsec phony
+@defun SIGNUM (X)
+if X<0 then -1 else if X>0 then 1 else 0.  If X is not
+numeric then a simplified but equivalent form is returned. For
+example, SIGNUM(-X) gives -SIGNUM(X).
+
+@end defun
+@c @node SORT
+@c @unnumberedsec phony
+@defun SORT (list,optional-predicate)
+sorts the list using a suitable
+optional-predicate of two arguments (such as "<" or ORDERLESSP).  If
+the optional-predicate is not given, then MACSYMA's built-in ordering
+predicate is used.
+
+@end defun
+@c @node SQRT
+@c @unnumberedsec phony
+@defun SQRT (X)
+the square root of X. It is represented internally by
+X^(1/2).  Also see ROOTSCONTRACT.
+RADEXPAND[TRUE] - if TRUE will cause nth roots of factors of a product
+which are powers of n to be pulled outside of the radical, e.g.
+SQRT(16*X^2) will become 4*X only if RADEXPAND is TRUE.
+
+@end defun
+@c @node SQRTDISPFLAG
+@c @unnumberedsec phony
+@defvar SQRTDISPFLAG
+ default: [TRUE] - if FALSE causes SQRT to display with
+exponent 1/2.
+
+@end defvar
+@c @node SUBLIS
+@c @unnumberedsec phony
+@defun SUBLIS (list,expr)
+allows multiple substitutions into an expression in
+parallel.  Sample syntax:
+@example
+        SUBLIS([A=B,B=A],SIN(A)+COS(B));
+         => SIN(B) + COS(A)
+@end example
+The variable SUBLIS_APPLY_LAMBDA[TRUE] controls simplification after
+SUBLIS.  For full documentation, see the file SHARE2;SUBLIS INFO.
+
+@end defun
+@c @node SUBLIST
+@c @unnumberedsec phony
+@defun SUBLIST (L,F)
+returns the list of elements of the list L for which the
+function F returns TRUE.  E.g., SUBLIST([1,2,3,4],EVENP); returns
+[2,4].
+
+@end defun
+@c @node SUBLIS_APPLY_LAMBDA
+@c @unnumberedsec phony
+@defvar SUBLIS_APPLY_LAMBDA
+ default:[TRUE] - controls whether LAMBDA's
+substituted are applied in simplification after SUBLIS is used or
+whether you have to do an EV to get things to apply. TRUE means do the
+application.
+
+@end defvar
+@c @node SUBST
+@c @unnumberedsec phony
+@defun SUBST (a, b, c)
+substitutes a for b in c.  b must be an atom, or a
+complete subexpression of c.  For example, X+Y+Z is a complete
+subexpression of 2*(X+Y+Z)/W while X+Y is not. When b does not have
+these characteristics, one may sometimes use SUBSTPART or RATSUBST
+(see below).  Alternatively, if b is of the form e/f then one could
+use SUBST(a*f,e,c) while if b is of the form e**(1/f) then one could
+use SUBST(a**f,e,c).  The SUBST command also discerns the X^Y in X^-Y
+so that SUBST(A,SQRT(X),1/SQRT(X)) yields 1/A.  a and b may also be
+operators of an expression enclosed in "s or they may be function
+names.  If one wishes to substitute for the independent variable in
+derivative forms then the AT function (see below) should be used.
+Note:  SUBST is an alias for SUBSTITUTE.
+SUBST(eq1,exp) or SUBST([eq1,...,eqk],exp) are other permissible
+forms.  The eqi are equations indicating substitutions to be made.
+For each equation, the right side will be substituted for the left in
+the expression exp.
+EXPTSUBST[FALSE] if TRUE permits substitutions like Y for %E**X in
+%E**(A*X) to take place.
+OPSUBST[TRUE] if FALSE, SUBST will not attempt to substitute into the
+operator of an expression.  E.g. (OPSUBST:FALSE, SUBST(X^2,R,R+R[0]));
+will work.
+@example
+(C1) SUBST(A,X+Y,X+(X+Y)**2+Y);
+                                 2
+(D1)                    Y + X + A
+(C2) SUBST(-%I,%I,A+B*%I);
+(D2)                             A - %I B
+
+@end example
+@noindent
+(Note that C2 is one way of obtaining the complex conjugate of an analytic
+expression.)  For further examples, do EXAMPLE(SUBST);
+
+@end defun
+@c @node SUBSTINPART
+@c @unnumberedsec phony
+@defun SUBSTINPART (x, exp, n1, ...)
+is like SUBSTPART but works on the
+internal representation of exp.
+@example
+(C1) X.'DIFF(F(X),X,2);
+                                   2
+                                  d
+(D1)                         X . (--- F(X))
+                                    2
+                                  dX
+(C2) SUBSTINPART(D**2,%,2);
+                                      2
+(D2)                             X . D
+(C3) SUBSTINPART(F1,F[1](X+1),0);
+(D3)                            F1(X + 1)
+              Additional Information
+If the last argument to a part function is a list of indices then
+several subexpressions are picked out, each one corresponding to an
+index of the list.  Thus PART(X+Y+Z,[1,3]) is Z+X.
+PIECE holds the value of the last expression selected when using the
+part functions.  It is set during the execution of the function and
+thus may be referred to in the function itself as shown below.
+If PARTSWITCH[FALSE] is set to TRUE then END is returned when a
+selected part of an expression doesn't exist, otherwise an error
+message is given.
+(C1)  27*Y**3+54*X*Y**2+36*X**2*Y+Y+8*X**3+X+1;
+            3         2       2            3
+(D1)    27 Y  + 54 X Y  + 36 X  Y + Y + 8 X  + X + 1
+(C2)  PART(D1,2,[1,3]);
+                  2
+(D2)          54 Y
+(C3)  SQRT(PIECE/54);
+(D3)            Y
+(C4)  SUBSTPART(FACTOR(PIECE),D1,[1,2,3,5]);
+                          3
+(D4)           (3 Y + 2 X) + Y + X + 1
+(C5) 1/X+Y/X-1/Z;
+                                 1   Y   1
+(D5)                           - - + - + -
+                                 Z   X   X
+(C6) SUBSTPART(XTHRU(PIECE),%,[2,3]);
+                                Y + 1   1
+(D6)                            ----- - -
+                                  X     Z
+
+@end example
+Also, setting the option INFLAG to TRUE and calling PART/SUBSTPART is 
+the same as calling INPART/SUBSTINPART.
+
+@end defun
+@c @node SUBSTPART
+@c @unnumberedsec phony
+@defun SUBSTPART (x, exp, n1, ..., nk)
+substitutes x for the subexpression
+picked out by the rest of the arguments as in PART.  It returns the
+new value of exp.  x may be some operator to be substituted for an
+operator of exp.  In some cases it needs to be enclosed in "s (e.g.
+SUBSTPART("+",A*B,0); -> B + A ).
+@example
+(C1) 1/(X**2+2);
+                                    1
+(D1)                              ------
+                                   2
+                                  X  + 2
+(C2) SUBSTPART(3/2,%,2,1,2);
+                                    1
+(D2)                             --------
+                                  3/2
+                                 X    + 2
+(C3) A*X+F(B,Y);
+(D3)                          A X + F(B, Y)
+(C4) SUBSTPART("+",%,1,0);
+(D4)                         X + F(B, Y) + A
+
+@end example
+Also, setting the option INFLAG to TRUE and calling PART/SUBSTPART is 
+the same as calling INPART/SUBSTINPART.
+
+@end defun
+@c @node SUBVARP
+@c @unnumberedsec phony
+@defun SUBVARP (exp)
+is TRUE if exp is a subscripted variable, for example
+A[I].
+
+@end defun
+@c @node SYMBOLP
+@c @unnumberedsec phony
+@defun SYMBOLP (exp)
+returns TRUE if "exp" is a "symbol" or "name", else
+FALSE.  I.e., in effect, SYMBOLP(X):=ATOM(X) AND NOT NUMBERP(X)$ .
+
+@end defun
+@c @node UNORDER
+@c @unnumberedsec phony
+@defun UNORDER ()
+stops the aliasing created by the last use of the ordering
+commands ORDERGREAT and ORDERLESS.  ORDERGREAT and ORDERLESS may not
+be used more than one time each without calling UNORDER.  Do
+DESCRIBE(ORDERGREAT); and DESCRIBE(ORDERLESS);, and also do
+EXAMPLE(UNORDER); for specifics.
+
+@end defun
+@c @node VECTORPOTENTIAL
+@c @unnumberedsec phony
+@defun VECTORPOTENTIAL (givencurl)
+Returns the vector potential of a given
+curl vector, in the current coordinate system.
+POTENTIALZEROLOC has a similar role as for POTENTIAL, but the order of
+the left-hand sides of the equations must be a cyclic permutation of
+the coordinate variables.
+
+@end defun
+@c @node XTHRU
+@c @unnumberedsec phony
+@defun XTHRU (exp)
+combines all terms of exp (which should be a sum) over a
+common denominator without expanding products and exponentiated sums
+as RATSIMP does.  XTHRU cancels common factors in the numerator and
+denominator of rational expressions but only if the factors are
+explicit.  Sometimes it is better to use XTHRU before RATSIMPing an
+expression in order to cause explicit factors of the gcd of the
+numerator and denominator to be canceled thus simplifying the
+expression to be RATSIMPed.
+@example
+(C1) ((X+2)**20-2*Y)/(X+Y)**20+(X+Y)**-19-X/(X+Y)**20;
+                                                20
+                     1           X       (X + 2)   - 2 Y
+(D1)             --------- - --------- + ---------------
+                        19          20             20
+                 (Y + X)     (Y + X)        (Y + X)
+(C2) XTHRU(%);
+                                     20
+                              (X + 2)   - Y
+(D2)                          -------------
+                                       20
+                                (Y + X)
+
+
+@end example
+@end defun
+@c @node ZEROEQUIV
+@c @unnumberedsec phony
+@defun ZEROEQUIV (exp,var)
+tests whether the expression exp in the variable
+var is equivalent to zero.  It returns either TRUE, FALSE, or
+DONTKNOW.  For example ZEROEQUIV(SIN(2*X) - 2*SIN(X)*COS(X),X) returns
+TRUE and ZEROEQUIV(%E^X+X,X) returns FALSE.  On the other hand
+ZEROEQUIV(LOG(A*B) - LOG(A) - LOG(B),A) will return DONTKNOW because
+of the presence of an extra parameter.  The restrictions are:
+(1) Do not use functions that MACSYMA does not know how to
+differentiate and evaluate.
+(2) If the expression has poles on the real line, there may be errors
+in the result (but this is unlikely to occur).
+(3) If the expression contains functions which are not solutions to
+first order differential equations (e.g.  Bessel functions) there may
+be incorrect results.
+(4) The algorithm uses evaluation at randomly chosen points for
+carefully selected subexpressions.  This is always a somewhat
+hazardous business, although the algorithm tries to minimize the
+potential for error.
+
+@end defun

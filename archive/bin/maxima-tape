@@ -1,0 +1,10 @@
+#!/bin/sh
+DEVICE=$1
+shift 1
+cd maxima
+cd ..
+"ls" maxima/src/*- maxima/core maxima/bin/kcl maxima/*/core maxima/src/*.o maxima/src/saved_max* maxima/*/TAGS maxima/src/count maxima/#* maxima/*~ maxima/*/#* maxima/*/*~   maxima/unixport/*raw* maxima/c/*.o  maxima/unixport/*.o maxima/merge bin/kcl maxima/future/* maxima/unixport/save* maxima/unixport/maxobj* maxima/*/orig  maxima/*/orig/* maxima/shar*/*.o maxima/tensor/*.o > /usr/tmp/exclude
+echo maxima/unixport/saved_maxima >> /usr/tmp/exclude
+tar cvfbX ${DEVICE} 500 /usr/tmp/exclude  maxima $@
+
+

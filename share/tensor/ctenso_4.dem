@@ -1,0 +1,45 @@
+
+SHOWTIME:ALL$
+/* This file finds the Schwarzschild solution of the
+Einstein vacuum equations */
+/* .mc version currently available in DOE MACSYMA */
+IF GET('CTENSR,'VERSION) = FALSE THEN LOAD("max$disk:[tensor]CTENSR.mc")$
+/* the following allows the batch program to run by presetting flags */
+SETFLAGS()$
+/* this calls for the rational simplification of geometrical objects */
+RATFAC:TRUE$
+/* the dimension of the manifold */
+DIM:4$
+/* the coordinate labels */
+OMEGA:[X,Y,Z,T]$
+/* This is the standard spherically symmetric metric */
+LG:MATRIX([A,0,0,0],[0,X^2,0,0],[0,0,X^2*SIN(Y)^2,0],[0,0,0,-D]);
+/* functional dependencies */
+DEPENDS([A,D],X);
+/* computes inverse metric and specifies diagonality */
+METRIC()$
+/* computes the mixed Christoffel symbols */
+CHRISTOF(FALSE)$
+/* computes and ratsimps Ricci tensor */
+RICCICOM(FALSE)$
+/* computes and displays the Einstein tensor */
+EINSTEIN(TRUE);
+/* makes a list of the non-zero components of the Einstein tensor (G)
+where the 2 indicates the order of the array G */
+EXP:FINDDE(G,2);
+/* now begins to solve the field equations */
+ODE2(LAST(EXP),A,X);
+/* a kludge to get the solution (the 1,1 component) explicitly */
+SOLVE(%,X);
+RESULTLIST:SOLVE(%,A)$
+H:EV(PART(RESULTLIST,1),EVAL);
+/* to cast the solution into standard form */
+H1:H,EXP(%C) = 1/(2*M),FACTOR;
+/* now to find the 4,4 component */
+EV(FIRST(EXP),H1,DIFF,FACTOR);
+ODE2(NUM(%),D,X);
+EXPAND(RADCAN(%));
+H2:EV(%,%C = 1);
+/* H1 and H2 should be the solution and to check */
+SOL:[H1,H2];
+EXP,SOL,DIFF,RATSIMP;

@@ -1,0 +1,19 @@
+####### Usage of the Macsyma FIDO Package		KMP 4/5/79
+
+To load the package, do:
+
+LOADFILE(FIDO,FASL,DSK,SHARE2)$
+
+Commands to FIDO:
+
+  FIDO(Name1,Name2,...)$     starts FIDO looking for the people listed.
+
+  FIDO();		     returns a list of people FIDO is looking for.
+
+  FIDO(FALSE);		     stops FIDO from looking for anyone. (Sorry,
+				you just can't look for usernames of FALSE
+				all by themselves...)
+
+Fido can't be made to look for someone if the alarmclock is already
+in use, including if it is already being used by a different fido.
+

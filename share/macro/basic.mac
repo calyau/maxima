@@ -1,0 +1,33 @@
+/*-*-MACSYMA-*-*/
+
+EVAL_WHEN([TRANSLATE,BATCH,DEMO],
+          IF GET('SHAREM,'VERSION) = FALSE
+             THEN LOAD(AUTOLO))$
+
+HERALD_PACKAGE(BASIC)$
+
+
+/* These are basic macros, nothing in here should call anything
+   complicated. PUSH and POP here are the simple version
+   which do not hack once-only evaluation. 
+   I might say that these macros are around mostly so
+   that the code for implementing the more complicated
+   macros, including the once-only stuff, can be simpler.
+*/
+
+PROG1(STATEMENT1,[STATEMENTS])::=
+ BUILDQ([STATEMENT1,STATEMENTS,LOCAL:?GENTEMP()],
+        LAMBDA([LOCAL],SPLICE(STATEMENTS),LOCAL)(STATEMENT1))$
+
+SYMBOLCHECK(X):=
+ IF SYMBOLP(X) THEN X ELSE ERROR("Arg must be a symbol",X)$
+
+PUSH(C,L)::=(SYMBOLCHECK(L),BUILDQ([C,L],L:CONS(C,L)))$
+
+POP(L)::=(SYMBOLCHECK(L),BUILDQ([L],PROG1(FIRST(L),L:REST(L))))$
+
+/* TR_EV is a pretty sorry way to get optimization
+   by Translation-time evaluation. User directed constant-folding
+   you might call it. TR_EV has other uses. */
+
+TR_EV(X)::=BUILDQ([X],?MEVAL(X))$

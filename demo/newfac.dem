@@ -1,0 +1,65 @@
+/* ========================================================== */
+/*  file: newfac.dem  */
+/* If newfac:true (original MIT), we have the message: NMULTFACT undefined */
+/* if newfac:false, FACTOR seems to loop at the instruction commentified */
+/*  <----------  loop! loop!  */
+
+SHOWTIME:true;
+NEWFAC:false;
+R:RAT((X^3*(Y+Z)+Z-11)*(X^2*(Z^2+Y^2)+Y+90));
+FACTOR(R);
+KILL(LABELS)$
+R:RAT((Z+X*Y+10)*(Y+X*Z+30)*(X+Y*Z+20));
+FACTOR(R);
+KILL(LABELS)$
+R:RAT((Y*Z^3+X*Y*Z+Y^2+X^3)*(X*(Z^4+1)+Z+X^3*Y^2));
+FACTOR(R);
+KILL(LABELS)$
+R:RAT((z^2+y^4*x^3)*(y^4*z^2+x^2*z+5)
+*(Z^2+X*Y^3)*(Z^2-X^3*Y+3));
+FACTOR(R);
+KILL(LABELS)$
+R:RAT((Z^2*(X+Y^2)+3*U*X*Y*Z+19)*(z^2+y^4*x^3+U^2)*(U^2*y^4*z^2+x^2*z+5));
+FACTOR(R);
+KILL(LABELS)$
+(x^2*y^3-x^5*z^3+y*z)*(z^3*w^4-x*y^2*z^2-x^3*y*w^2-x^5*Y^6*w^4)*(z^6*w^4-x^4*y^2+y^2*z^3-x^3*y*w^3-x^2*y^2*z^2*w^2+x^5*z);
+RAT(%,W)$FACTOR(%);
+KILL(LABELS)$
+(Z+Y+X-3)**3*(Z+Y+X-2)**2;RAT(%);
+FACTOR(%);
+KILL(LABELS)$
+(29*X^12*Y^12*Z^3*W^4+3*Y^20*W^15+21*X^3*Z^2-15*Y^2*Z^16)*(X^21-Y^14-Z^31+W^2+Y^18+X^2*Y^2-W^12*Z^20);RAT(%,Y)$
+FACTOR(%);
+KILL(LABELS)$
+(X*Z^2*U^4)*(15*Z^2*U+10*X*Y^3*W*U^2+18*X*Z^2*W^3*U^2+6*Y^3*Z^2*W^2)
+*(-12*Y^3*Z^2+48*X^2*Y^3*Z^3*U^2+2*X^2*Y^2*W*U^2-25*Y*Z^4*W^3*U^2-32*Y^4*Z^3*W^4*U^2-4*X*W^2+8*X^3*Z^4*W*U-11*X^3*Y*W^2*U-44*X*Y^4*Z^4*W*U);
+
+
+RAT(%,Z)$FACTOR(%); /* <---------- loop! loop! */
+
+
+(6*X*Y+40*X^2*W+31*X*Z*U^2+35*Y^2*W^2)*(24*X*Y+9*X^2*W*U^2+44*Z^2*W^2*U+37*X*Z*W^2+X*Y^2*Z^2*W^2*U^2+29*Y^2*W^2+31*Y*Z^2*W^2+24*X^2*Y*Z^2*U^2+37*Y^2*Z*U^2+23*Z*Y*X+13*X^2*Y^2*W^2*U+21*X*Y*Z*W*U^2+12*X^2*Y*Z*W+8*Z^2*W^2*U^2+22*X*Y^2+22*W^2*U^2+12*X*Y^2*Z^2*U^2+43*X*Y*Z^2*W+43*X^2*Y*U+39*X*Z*W*U+47*Z*W^2*U^2+24*X*Y^2*Z^2*W*U^2+27*X^2*Y*W^2*U+41*Y^2*Z+42*Y^2*W^2*U^2);
+RAT(%,W)$FACTOR(%);
+KILL(LABELS)$
+
+X*Y*(47*X*Y+4*X*Y^2*U+Z^3*W^3-13*X*Y*Z^3*W^2*U^3)*(45*X^3+43*X^3*Y^3*Z^3*U-23*X^3*Y^2*W*U-20*X^2*Y^2*Z^2*W^2*U^2-46*X*W*U^2-48*X^3*Y^2*Z*W*U-9*Y^3*W*U+36*X*Y^3*Z*W*U^2+5*X^2*Y^3*W*U+36*X*Y*Z^3*W^3*U^2+36*Y^3*W^2*U-29*X*Y^3*Z^2*W^3+14*X^3*Y^3*Z^2*W^3+46*X^3*Y^2*U+8*X*Y^2+31*Y^2*W^3*U^2-9*Y^2*U^2)$
+RAT(%)$FACTOR(%);
+KILL(LABELS)$
+
+(Z+Y+X-3)^3;
+RAT(%)$FACTOR(%);
+KILL(LABELS)$
+
+(47*X*Y+Z^3*W^2-W^2)*(45*X^3+3*Z^3-Y^2-9*Y^3+2*W*Z);
+RAT(%)$FACTOR(%);
+KILL(LABELS)$
+
+(35*X^3*Y+33*X^5*Y^6+11*Y^2-22*X^4)*(22*Y^5+37*X^4-18*X^4*Y^5-38*X^2*Y^4+29*X^2*Y^3-41*X^4*Y^2-26*X^3*Y^4);
+RAT(%)$FACTOR(%);
+KILL(LABELS)$
+
+
+
+X^6*Y^3*Z^2*(29*X+3*X*Y^2+Z^3*W^2-12*X*Y*Z^3*W^2-W^2)*(18*X^3*Y+3*Z^3-Y^2+14*Y^2*W^2-8*X*Y^2+2*W*Z);
+RAT(%)$FACTOR(%);
+

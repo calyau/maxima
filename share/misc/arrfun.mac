@@ -1,0 +1,39 @@
+/*-*-Macsyma-*-*/
+
+/* DEFAR(FOO,[X,Y],X+Y) Defines a function FOO and an array FOO.
+   This allows you more flexibility than you get with straight
+   macsym array functions. It is possible to reset the array
+   without killing the function.  
+    
+   -GJC 8:54am  Friday, 5 September 1980 
+
+*/
+
+/* commented out of DOE MACSYMA
+EVAL_WHEN([translate,batch,demo],
+          IF GET('MACRO1,'VERSION) = FALSE
+             THEN LOADFILE(MACRO1,FASL,DSK,SHARE),
+          IF GET('SUBMAC,'VERSION) = FALSE
+             THEN LOADFILE(SUBMAC,FASL,DSK,SHARE2))$ */
+load("[sharem]defm.mc")$
+
+/* commented out of DOE MACSYMA
+EVAL_WHEN(TRANSLATE,PACKAGEFILE:TRUE,SAVEDEF:FALSE,TRANSCOMPILE:TRUE)$ */
+
+DEFAR('NAME,'ARGL,'BODY)=>
+ (NAME(SPLICE(ARGL)):=
+  BLOCK([%_VAL:BLOCK([?EVARRP:TRUE],DECLARE(?EVARRP,SPECIAL),NAME[SPLICE(ARGL)])],
+	IF %_VAL='?NOTEXIST THEN 
+           (%_VAL:BODY,NAME[SPLICE(ARGL)]:%_VAL,%_VAL)
+         ELSE %_VAL),
+ /* kludge to init the array, (as a hashed array). */
+   NAME[SPLICE(ARGL)]:'?NOTEXIST,
+   NAME:'NAME);
+
+EVAL_WHEN(DEMO,
+
+DEFAR(LEGEND,[N],((2*N-1)*'X*LEGEND(N-1)-(N-1)*LEGEND(N-2))/N),
+
+(LEGEND[0]:RAT(1), LEGEND[1]:RAT('X)));
+
+EVAL_WHEN(DEMO,LEGEND(5));

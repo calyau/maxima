@@ -1,0 +1,28 @@
+/* Demo of an easy way to run a background job. */
+
+loadfile(batch,fasl,dsk,share2);
+
+/* functions are DISOWN(), SLEEP(SEC,MIN,HOURS),
+  and REMOTE%DEBUG(), which can be used to check the state of
+  a running macsyma from a different macsyma. It is hard to demo
+  this function in a Batch file though. */
+
+/* First set up a WRITEFILE to store results */
+WRITEFILE(SHARE2);
+/* next, calling the function DISOWN will set TTYOFF to TRUE and
+   DYNAMALLOC to TRUE and then disown the running macsyma.
+   The BATCH will continue though with results still going to the
+   WRITEFILE. */
+DISOWN();  /* You might one to have your job start running later.
+here I'll just sleep for 3 minutes. */ SLEEP(0,3);
+/* Next do a computation */
+f(x):=x^x;
+for j:1 thru 5 do print (j,f(j));
+
+/* Next close the writefile, naming it something useful. */
+
+CLOSEFILE(BATCH,DEMCRF);
+
+/* NEXT kill the job */
+
+QUIT();

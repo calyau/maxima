@@ -1,0 +1,22 @@
+#!/bin/sh  
+# $1 = akcldir
+# $2 = Makedefs
+# $3 = makefile to sub into
+AKCLDIR=$1
+MAKEDEFS=$2
+MAKEFILE=$3
+
+
+
+  echo "@s[# begin makedefs" > tmpxx
+  echo "@s,# end makedefs" >> tmpxx
+  echo "@s|# begin makedefs" >> tmpxx
+#  echo "AKCLDIR=$1" >> tmpxx
+  cat $2 >> tmpxx
+  echo "# end makedefs" >> tmpxx
+  echo "@s]" >> tmpxx
+
+$1/merge $3  tmpxx tmp1
+mv tmp1 $3
+
+

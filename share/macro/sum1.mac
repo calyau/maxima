@@ -1,0 +1,9 @@
+/*-*-macsyma-*-*/
+
+EVAL_WHEN([TRANSLATE,BATCH,DEMO],
+	  LOAD_PACKAGE(SHAREM,"MAX$DISK:[SHAREM]AUTOLO"))$
+
+/* a sum convenient for the expression of certain formuli by CMA */
+
+DEFM(SUM1('EXP,'VAR,A,B),
+     IF A > B THEN 0 ELSE SUM(EXP,VAR,A,B))$

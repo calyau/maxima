@@ -1,0 +1,89 @@
+GJC@MIT-MC 09/21/81 13:04:55
+To: BROM at MIT-MC
+CC: (FILE [SHARE2;NDIFFQ USAGE]) at MIT-MC
+I changed the argument conventions for RUNGE_KUTTA systems
+so that you can do things more efficiently.
+
+If you call RUNGE_KUTTA(F,T,[X0,X1,X2]) THEN F WILL GET ARGUMENTS,
+
+F(X_PRIME_VECTOR,T,X_VECTOR):= ....;
+
+And F should do X_PRIME_VECTOR[0]: ...X_VECTOR[0] ...,
+                X_PRIME_VECTOR[1]: ...................
+                etc.
+
+If you call RUNGE_KUTTA([F0,F1,F2],T,[X0,X1,X2]) then F will get arguments:
+
+F0(T,X_VECTOR),
+F1(T,X_VECTOR),
+F2(T,X_VECTOR).
+
+This kind of argument convention also generalizes properly to
+second_order systems.
+
+
+GJC@MIT-MC 06/27/81 12:49:21
+To: BROM at MIT-MC
+CC: BDB at MIT-MC, (FILE [SHARE2;NDIFFQ USAGE]) at MIT-MC
+See the file SHARE2;NDIFFQ USAGE.
+
+you can define 
+
+FX(T,P):=(MODE_DECLARE(ARRAY(P),FLOAT),T+P[0]+P[1]...);
+FY(t,P):=.....;
+FZ(t,P):=....;
+
+create arrays:
+
+array([t,x,y,z],float,25);
+
+time step:
+
+init_float_array(t,0,1);
+
+initial conditions:
+
+x[0]:1.0;
+y[0]:2.0;
+z[0]:3.0;
+
+run the problem:
+
+runge_kutta([fx,fy,fz],t,[x,y,z]);
+
+plot the result:
+
+graph2(t,[x,y,z]);
+
+You could also define
+F(V,T,P):=(MODE_DECLARE(ARRAY(V,P),FLOAT),
+           V[0]: ....,
+           V[1]: ....,
+           V[2]: ....);
+
+And use the call Runge_Kutta(F,t,[X,Y,Z]);
+
+
+
+GJC@MIT-MC 06/07/81 15:44-EDT  To: INFO-MACSYM
+I moved the numerical solution to differential equation routines to 
+SHARE so that you can get them by doing LOAD("NDIFFQ"); and then e.g.
+Define_Variable(N,0.3,FLOAT);
+Define_Variable(H,0.175,FLOAT);
+F(X,E):=(Mode_Declare([X,E],FLOAT),N*EXP(X)/(E+X^(2*H)*EXP(H*X)));
+Compile(F);
+Array([X,E],FLOAT,35);
+Init_Float_Array(X,1.0E-3,6.85); /* Fills X with the interval */
+E[0]:5.0;                        /* Initial condition */
+Runge_Kutta(F,X,E);              /* Solve it */
+Graph2(X,E);                     /* Graph the solution */
+
+p.s. Runge_Kutta(F,X,E,E_Prime) would be the call for a second-order 
+equation.
+
+p.p.s Runge_Kutta([f1,f2,...fn],x,[y1,y2,..yn]) would be the call for
+n simultaneous first-order equations. The functions are called
+2 arguments, the first being X, and the second being a vector of
+values [y1,y2,...Yn], index from 0 to N-1.
+
+

@@ -1,0 +1,13 @@
+
+/*  A neat example of how to exponentiate a series. 
+    Although, TAYLOR now has what follows built in. 
+    So this is now for reference only. */
+
+C[0]:1$
+C[N]:=RATSIMP(SUM((-1)^(J+1)*S[J+1]*C[N-1-J],J,0,N-1)/N)$
+S[1]:%GAMMA$
+S[N]:=ZETA(N)$
+DEFTAYLOR(Z!,SUM(C[N]*Z^N,N,0,INF))$
+DEFTAYLOR(GAMMA(Z),SUM(C[N]*Z^(N-1),N,0,INF))$
+NUMERVAL(%GAMMA,.577215665)$
+DECLARE(%GAMMA,CONSTANT)$

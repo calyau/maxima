@@ -1,0 +1,8 @@
+
+allocate 1500 cons 150 fixnum pages.
+
+         1000 pages cons      1500 page cons
+sun4         9.3               10.6
+hp370       14.3               12.56
+sun3/280                       
+sun3/160                       33.7  	

@@ -1,0 +1,39 @@
+The Gamma function in the complex plane.
+
+Functions CGAMMA, CGAMMA2, and LOGCGAMMA2.
+
+These functions evaluate the Gamma function over the complex plane
+using the algorithm of Kuki, CACM algorithm 421.  Calculations are
+performed in single precision and the relative error is typically
+around 1.0E-7; evaluation at one point costs less than 1 msec.
+The algorithm provides for an error estimate, but the Macsyma
+implementation currently does not use it.
+
+Load the functions with:
+
+LOAD(CGAMMA);
+
+CGAMMA is the general function and may be called with a symbolic
+or numeric argument.  With symbolic arguments, it returns as is;
+with real floating or rational arguments, it uses the Macsyma GAMMA
+function; and for complex numeric arguments, it uses the Kuki
+algorithm.
+
+CGAMMA2 of two arguments, real and imaginary, is for numeric arguments
+only; LOGCGAMMA2 is the same, but the log-gamma function is calculated.
+These two functions are somewhat more efficient.
+
+Examples:
+
+Cgamma(1) -> 1
+
+Cgamma(4) -> 6
+
+Cgamma(3/2) -> sqrt(%pi)/2
+
+Cgamma(x) -> Cgamma(x)
+
+Cgamma(1+%i) -> 0.49801569-%i*.154949838  (error 2.5E-8)
+
+Maintainer of this program is Stavros Macrakis (login: MACRAK);
+the source is on MC in AR2:MACRAK;CGAMMA > .

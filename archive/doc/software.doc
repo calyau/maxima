@@ -1,0 +1,36 @@
+  
+For the Macsyma code:   
+  
+National Energy Software Center   
+Argonne National Laboratory   
+9700 South Cass Avenue   
+Argonne, IL  60439   
+312-972-7250   
+  
+is the place to contact.  You want the version for symbolics machines.
+You get a site license including sources.  The price varies according to
+the class of institution (from $550 for educational use thru $1500 or so).
+Its in use by quite a few sites.  I have not yet (Oct 15) sent DOE updates for
+release 7 of symbolics software (genera).
+  
+The editor InFoR is available from here.  It gives the same quality
+display as TEX for mathematics and text.  Also what you see in the
+editor is exactly what you get when you send to the laser printer.
+InFoR can write out a dvi file (the same output format as TEX).  It is
+written in lisp, and runs in a "regular" zmacs window, like any other mode.
+It runs on explorers or symbolics (>= release 7).  The
+license price for a machine including full sources is $600, with 
+discounts for a number of machines. 
+  
+There is a dvi file r20.utexas.edu:ps:<atp.schelter>cminfo-wide.dvi   
+(Remember that's an 8bit binary file!).
+which was produced with InFoR, and which describes it somewhat.  
+Note you need the cm tex fonts to be able to print that in case your  
+site is still using only the old fonts.  New ones are in r20:ps:<tex.pxl>  
+I believe.   Anyway you print it just as you would tex output.  
+
+Let me know if I can be of further help, by mailing more information.
+
+Bill Schelter.
+
+

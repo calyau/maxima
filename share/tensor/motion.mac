@@ -1,0 +1,19 @@
+/* Computes geodesic equations of motion */
+
+MOTION(DIS):=BLOCK([S],DEPENDS(OMEGA,S),
+       FOR I THRU DIM DO
+	   EM[I]:IF DIAGMETRIC
+		     THEN RATSIMP(DIFF(OMEGA[I],S,2) + 1/2*SUM(
+				      DIFF(LG[A,A],OMEGA[I])
+				       *DIFF(OMEGA[A],S)^2,A,1,DIM))
+		     ELSE RATSIMP(DIFF(OMEGA[I],S,2) 
+				+ 1/2*SUM(SUM(DIFF(LG[A,B],OMEGA[I])
+				       *DIFF(OMEGA[A],S)*DIFF(OMEGA[B],S),A,
+				      1,DIM),B,1,DIM)),
+       IF DIS#FALSE THEN FOR I THRU DIM DO LDISPLAY(EM[I]),DONE)$
+MOTION2(DIS):=BLOCK([S],DEPENDS(OMEGA,S),
+       FOR I THRU DIM DO
+	   EMM[I]:DIFF(OMEGA[I],S,2) +			 SUM(SUM(MCS[A,B,I]
+				       *DIFF(OMEGA[A],S)*DIFF(OMEGA[B],S),A,
+				      1,DIM),B,1,DIM),
+       IF DIS#FALSE THEN FOR I THRU DIM DO LDISPLAY(EMM[I]),DONE)$

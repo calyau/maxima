@@ -1,0 +1,23 @@
+/* A demonstration of the qualitative analysis functions
+described in file SHARE;QUAL USAGE.
+
+Consider the following expression: */
+TEMP: TANH(COS(X/3)**2-COS(X/3-%PI/2)**2) + SIN(X/5)*ERF(TAN(X)) + ATAN(Y);
+/* To do a qualitative analysis of this expression, we write: */
+QUAL(TEMP);
+/* We may use the ASSUME function to establish non-default bounds
+on indeterminates.  For example: */
+ASSUME(P>0, Q>=-1/4, Q<=1/4, B<=BMAX)$
+/* We may also individually invoke the various property analysis
+functions invoked by QUAL.  For example: */
+TEMP: -ASIN(Q+1/2) - Q**2 + P*Q - 4*Q
+      + LOG(P) - P**2 + 3*P + SQRT(P) - B**2 + B - 18;
+CURVATURE(TEMP);
+TEMP: EXPAND((X-1)**4 + (X-1)**2 + (Y-2)**2 + 5);
+STATIONARYPOINTS(TEMP);
+TEMP: EXPAND((LOG(X-3)-5)*(X-Y+8)/TAN(X-Y+2));
+ZEROSANDSINGULARITIES(TEMP);
+/* QUAL also automatically reveals successive levels of the
+struecture of lengthier expressions.  For example, the second
+derivative of TEMP with respect to X is about 2 pages long, but: */
+QUAL(DIFF(TEMP,X,2))$

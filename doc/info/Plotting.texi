@@ -1,0 +1,333 @@
+@node Plotting, Floating Point, Program Flow, Top
+@chapter Plotting
+@menu
+* Definitions for Plotting::    
+@end menu
+
+@node Definitions for Plotting,  , Plotting, Plotting
+@section Definitions for Plotting
+
+
+@defvar IN_NETMATH [FALSE]
+If not nil, then plot2d will output a representation of the plot
+which is suitable for openplot functions.  
+@end defvar
+
+@defun OPENPLOT_CURVES(list &rest-options)
+Takes a list of curves such as
+@example
+[[x1,y1,x2,y2,...],[u1,v1,u2,v2,...],..]
+or 
+ [[[x1,y1],[x2,y2],...],.. ]
+@end example
+and plots them.  This is similar to xgraph_curves, but uses the
+open plot routines.
+Addtional symbol arguments may be given such as
+@code{ "{xrange -3 4}" }
+The following plots two curves, using big points, labeling the first one
+@code{jim} and the second one @code{jane}.   
+@example
+openplot_curves([["{plotpoints 1} {pointsize 6} {label jim}
+      {text {xaxislabel {joe is nice}}"] ,
+      [1,2,3,4,5,6,7,8],
+      ["{label jane} {color pink } "], [3,1,4,2,5,7]]);
+@end example
+
+Some other special keywords are xfun, color, plotpoints, linecolors,
+pointsize, nolines, bargraph, labelposition, xaxislabel, and
+yaxislabel.
+
+@end defun
+
+
+
+@defun PLOT2D (expr,range,...,options,..)
+@defunx PLOT2D ([expr1,expr2,..,exprn],xrange,...,options,..)
+EXPR is an expression to be plotted on y axis as
+a function of 1 variable.
+RANGE is of the form [var,min,max] and expr is assumed to
+be an expression to be plotted against VAR.
+In the second form of the function a list of expressions may
+be given to plot against.   Truncation in the y direction will
+be performed, for the default y range.   It may be specified
+as an option or using SET_PLOT_OPTION.
+
+@example
+plot2d(sin(x),[x,-5,5]);
+plot2d(sec(x),[x,-2,2],[y,-20,20],[nticks,200]);
+@end example
+
+@end defun
+
+@defun xgraph_curves(list)
+graphs the list of `point sets' given in list by using xgraph.
+
+A point set may be of the form
+
+@example
+[x0,y0,x1,y1,x2,y2,...] or
+[[x0,y0],[x1,y1],....]
+@end example
+A point set may also contain symbols which give labels or other
+information.
+
+@example
+ xgraph_curves([pt_set1,pt_set2,pt_set3]);
+@end example
+would graph the three point sets as three curves.
+
+@example
+pt_set:append(["NoLines: True","LargePixels: true"],
+        [x0,y0,x1,y1,...])
+@end example
+
+@noindent
+would make the point set [and subsequent ones], have  
+no lines between points, and to use large pixels.
+See the man page on xgraph for more options to specify.
+
+@example
+pt_set:append([concat("\"","x^2+y")],[x0,y0,x1,y1,...])
+@end example
+@noindent
+would make there be a "label" of "x^2+y" for this particular
+point set.    The @code{"} at the beginning is what tells
+xgraph this is a label.
+
+@example
+pt_set:append([concat("TitleText: Sample Data")],[x0,...])
+@end example
+@noindent
+would make the main title of the plot be "Sample Data" instead
+of "Maxima PLot".
+
+To make a bar graph with bars which are .2 units wide, and
+to plot two possibly different such bar graphs:
+@example
+xgraph_curves(
+       [append(["BarGraph: true","NoLines: true","BarWidth: .2"],
+               create_list([i-.2,i^2],i,1,3)),
+        append(["BarGraph: true","NoLines: true","BarWidth: .2"],
+           create_list([i+.2,.7*i^2],i,1,3))
+]);
+@end example
+@noindent
+
+
+A temporary file @file{xgraph-out} is used.
+
+
+
+
+@end defun
+
+
+
+@defvar PLOT_OPTIONS
+Members of this list indicate defaults for plotting.  They may
+be altered using SET_PLOT_OPTION
+
+@example
+[X, - 3, 3]
+[Y, - 3, 3]
+@end example
+
+are the x range and y range respectively.
+
+[TRANSFORM_XY, FALSE]
+if not false, should be the output of
+
+@example
+make_transform([x,y,z], [f1(x,y,z),f2(x,y,z),f3(x,y,z)])
+@end example
+which produces a transformation from 3 space to 3 space, which
+will be applied to the graph.   A built in one is polar_xy which
+gives the same as
+
+@example
+make_transform([r,th,z],[r*cos(th),r*sin(th),z])
+
+@end example
+
+[RUN_VIEWER,TRUE] if not false, means run the viewer software dont just
+output a data file.
+
+[GRID,30,30] means plot3d should divide the x range into 30 intervals
+and similarly the y range.
+
+[COLOUR_Z,false] aplies to colouring done with plot_format ps.
+
+[PLOT_FORMAT,ZIC] is for plot3d and currently  ZIC, GNUPLOT, PS, and
+GEOMVIEW are supported.
+
+There are good quality public domain viewers for these formats.
+They are izic, gnuplot, ghostview, and geomview.
+
+izic is available by ftp from zenon.inria.fr.  Contact one of
+
+@{fournier,kajler,mourrain@}@@sophia.inria.fr.
+
+It has beautiful
+colour gouraud shading, and very fast wireframe.   It runs on X
+windows.   
+
+geomview is from the geometry institute in minnesota, and is
+available by anonymous ftp from there.   It is currently not quite
+as pretty as izic, but provides excellent support for multiple
+objects and multiple lights.
+
+gnuplot is everywhere as is ghostview.   We also provide mgnuplot
+a tcl interface for gnuplot, which lets you rotate the plots using
+the mouse and a scale.
+
+
+
+
+
+@end defvar
+@c @node PLOT3D
+@c @unnumberedsec phony
+@defun PLOT3D (expr,xrange,yrange,...,options,..)
+@defunx PLOT3D ([expr1,expr2,expr3],xrange,yrange,...,options,..)
+
+@example
+plot3d(2^(-u^2+v^2),[u,-5,5],[v,-7,7]);
+@end example
+would plot z = 2^(-u^2+v^2) with u and v varying in [-5,5] and
+[-7,7] respectively, and with u on the x axis, and v on the y axis.
+
+An example of the second pattern of arguments is
+@example
+plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],
+   [x,-%pi,%pi],[y,-1,1],['grid,50,15])
+@end example
+
+which will plot a moebius band, parametrized by the 3 expressions given
+as the first argument to plot3d.  An additional optional argument
+[grid,50,15] gives the grid number of rectangles in the x direction and
+y direction.
+
+@example
+/* REal part of z ^ 1/3 */
+ plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],
+     ['grid,12,80],['plot_format,ps],
+     ['transform_xy,polar_to_xy],['view_direction,1,1,1.4],
+     ['colour_z,true])
+@end example
+@noindent
+Here the View_direction indicates the direction from which we
+take a projection.  We actually do this from infinitely far away,
+but parallel to the line from view_direction to the origin.  This
+is currently only used in 'ps' plot_format, since the other viewers
+allow interactive rotating of the object.
+
+Another example is a moebius band:
+@example
+plot3d([cos(x)*(3+y*cos(x/2)),
+          sin(x)*(3+y*cos(x/2)),y*sin(x/2)],
+           [x,-%pi,%pi],[y,-1,1],['grid,50,15]);
+@end example
+
+or a klein bottle:
+
+@example
+plot3d([5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0) - 10.0,
+          -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0),
+           5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))],
+           [x,-%pi,%pi],[y,-%pi,%pi],['grid,40,40])
+@end example
+
+or a torus
+@example
+plot3d([cos(y)*(10.0+6*cos(x)),
+           sin(y)*(10.0+6*cos(x)),
+           -6*sin(x)], [x,0,2*%pi],[y,0,2*%pi],
+            ['grid,40,40])
+@end example
+We can output to gnplot too:
+
+@example
+ plot3d(2^(x^2-y^2),[x,-1,1],[y,-2,2],[plot_format,gnuplot])
+@end example
+
+
+@end defun
+@c @node PLOT2D
+@c @unnumberedsec phony
+@defun PLOT2D_PS (expr,range)
+ writes to pstream a sequence of postscript commands which
+plot EXPR for RANGE.
+EXPR should be an expression of 1 variable.
+RANGE should be of the form [variable,min,max]
+over which to plot expr.
+see CLOSEPS.
+
+@end defun
+
+
+@defun CLOSEPS ()
+This should usually becalled at the end of a sequence of plotting
+commands.   It closes the current output stream PSTREAM, and sets
+it to nil.   It also may be called at the start of a plot, to ensure
+pstream is closed if it was open.    All commands which write to
+pstream, open it if necessary.   CLOSEPS is separate from the other
+plotting commands, since we may want to plot 2 ranges or superimpose
+several plots, and so must keep the stream open.
+@end defun
+
+@defun SET_PLOT_OPTION (option)
+option is of the format of one of the elements of the PLOT_OPTIONS
+list.
+Thus
+@example
+SET_PLOT_OPTION([grid,30,40])
+@end example
+would change the default grid used by plot3d.   Note that if the symbol
+grid has a value, then you should quote it here:
+@example
+SET_PLOT_OPTION(['grid,30,40])
+@end example
+so that the value will not be substituted.
+@end defun
+
+@c @node PSDRAW_CURVE
+@c @unnumberedsec phony
+@defun PSDRAW_CURVE (ptlist)
+
+Draws a curve connecting the points in PTLIST.   The latter
+may be of the form [x0,y0,x1,y1,...] or [[x0,y0],[x1,y1],...]
+The function JOIN is handy for taking a list of x's and a
+list of y's and splicing them together.
+PSDRAW_CURVE simply invokes the more primitive function
+PSCURVE.   Here is the definition:
+
+@example
+(defun $psdraw_curve (lis)
+  (p "newpath")
+  ($pscurve lis)
+  (p "stroke"))
+
+@end example
+
+ ?DRAW2D  may also be used to produce a list
+@example
+ points1:?draw2d(1/x,[.05,10],.03) 
+@end example
+
+
+@end defun
+@c @node PSCOM
+@c @unnumberedsec phony
+@defun PSCOM (com)
+
+COM will be inserted in the poscript file
+eg
+@example
+  pscom("4.5 72 mul 5.5 72 mul translate  14 14 scale");
+@end example
+
+
+@end defun
+
+
+

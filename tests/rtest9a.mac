@@ -1,0 +1,55 @@
+/*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
+/***************************************************************************
+***                                                                    *****
+***     Copyright (c) 1984 by William Schelter,University of Texas     *****
+***     All rights reserved                                            *****
+***************************************************************************/
+
+
+kill(all);
+done;
+DEFTAYLOR(F(X),X^2+SUM(X^I/(2^I*I!^2),I,4,INF));
+[F]$
+TAYLOR(%E^SQRT(F(X)),X,0,4);
+1+X+X^2/2+3073*X^3/18432+12817*X^4/307200$
+POWERSERIES(LOG(SIN(X)/X),X,0);
+('SUM((-1)^I1*2^(2*I1)*BERN(2*I1)*X^(2*I1)/(I1*(2*I1)!),I1,1,INF))/2$
+EV(X+SIN(3*X)/SIN(X),TRIGEXPAND,EXPAND);
+-SIN(X)^2+3*COS(X)^2+X$
+TRIGEXPAND(SIN(10*X+Y));
+COS(10*X)*SIN(Y)+SIN(10*X)*COS(Y)$
+-SIN(X)^2+3*COS(X)^2+X;
+-SIN(X)^2+3*COS(X)^2+X$
+EXPAND(TRIGREDUCE(%));
+2*COS(2*X)+X+1$
+DECLARE(J,INTEGER,E,EVEN,O,ODD);
+DONE$
+SIN(X+(E+1/2)*%PI);
+COS(X)$
+SIN(X+(O+1/2)*%PI);
+-COS(X)$
+(linel:500,DIFF(EXP(X^2+Y)/(X+Y),X,2));
+4*X^2*%E^(Y+X^2)/(Y+X)+2*%E^(Y+X^2)/(Y+X)-4*X*%E^(Y+X^2)/(Y+X)^2
+		      +2*%E^(Y+X^2)/(Y+X)^3$
+/* we use sconcat here, because it is not possible to compare the
+  output from optimize which involves gensyms whith something we read.
+*/
+sconcat(OPTIMIZE(%));
+sconcat("BLOCK([%1,%2,%3,%4],%1:Y+X,%2:X^2,%3:%E^(Y+%2),%4:1/%1,4*%2*%4*%3+2*%4*%3-4*X*%3/%1^2+2*%3/%1^3)")$
+linel:79;
+79$
+LAPLACE(%E^(2*T+A)*SIN(T)*T,T,S);
+%E^A*(2*S-4)/(S^2-4*S+5)^2$
+'INTEGRATE(SINH(A*X)*F(T-X),X,0,T)+B*F(T) = T^2;
+'INTEGRATE(F(T-X)*SINH(A*X),X,0,T)+B*F(T) = T^2$
+LAPLACE(%,T,S);
+B*LAPLACE(F(T),T,S)+A*LAPLACE(F(T),T,S)/(S^2-A^2) = 2/S^3$
+LINSOLVE([%],['LAPLACE(F(T),T,S)]);
+exp:['LAPLACE(F(T),T,S) = (2*S^2-2*A^2)/(B*S^5+(A-A^2*B)*S^3)]$
+
+/* This is ok but needs a response */
+/*
+("respond POSITIVE to a*b(a*b-1) positive,negative,or zero", ILT(EV(exp[1]),S,T));
+F(T) = -2*COSH(SQRT(A*B*(A*B-1))*T/B)/(A^3*B^2-2*A^2*B+A)
+     +A*T^2/(A*B-1)+2/(A^3*B^2-2*A^2*B+A)$
+*/

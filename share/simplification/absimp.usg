@@ -1,0 +1,8 @@
+LOAD(ABSIMP); to obtain access to  MACSYMA pattern-matching rules that
+extend the built-in simplification rules for the ABS and SIGNUM
+functions.  Among other things, use is made of global relations
+established with the built-in ASSUME function or by declarations such
+as  MODEDECLARE(M,EVEN, N,ODD)  for even or odd integers.  UNITRAMP
+and UNITSTEP functions are also defined in terms of ABS and SIGNUM.
+
+Author: David Stoutemyer

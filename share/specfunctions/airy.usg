@@ -1,0 +1,33 @@
+		May 2, 1981 4:52 pm by Leo P. Harten (LPH)
+
+The Airy equation diff(y(x),x,2)-x*y(x)=0 has two linearly independent
+solutions, taken to be Ai(x) and Bi(x). This equation is very popular
+as an approximation to more complicated problems in many mathematical
+physics settings.
+
+Do LOAD("AIRY");  to get the functions AI(x), BI(x), DAI(x), DBI(x) .
+
+The file SHARE1;AIRY FASL (by LPH@MIT-MC) contains routines to compute the 
+Ai(x), Bi(x), d(Ai(x))/dx, and d(Bi(x))/dx functions. The result will be
+a floating point number if the argument is a number, and will return a
+simplified form otherwise. An error will occur if the argument is large
+enough to cause an overflow in the exponentials, or a loss of 
+accuracy in sin or cos. This makes the range of validity
+about -2800 to 1.e38 for AI and DAI, and -2800 to 25 for BI and DBI.
+The GRADEF rules are now known to MACSYMA: diff(AI(x),x)=DAI(x),
+diff(DAI(x),x)=x*AI(x), diff(BI(x),x)=DBI(x), diff(DBI(x),x)=x*BI(x).
+
+The method is to use the convergent Taylor series for abs(x)<3.,
+and to use the asymptotic expansions for x<-3. or x>3. as needed.
+This results in only very minor numerical discrepancies at x=3. or x=-3.
+More accuracy can be had if you request from LPH. For details,
+please see Abramowitz and Stegun's
+Handbook of Mathematical Functions, section 10.4 (hardcover ed.) and Table 10.11 .
+
+To get the floating point Taylor expansions of the functions here, do 
+ev(TAYLOR(AI(x),x,0,9),infeval); for example.
+
+Please also try SHARE;BESSEL FASL (by CFFK) for the AIRY function there.
+
+
+			Leo P. Harten (LPH)
