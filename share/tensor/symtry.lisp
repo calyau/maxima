@@ -124,7 +124,7 @@
 (defun CANTEN (e nfprpobjs)                                   ;CANonical TENsor
        (prog (cov contr deriv tensor)
 	     ((lambda (dummy) (and nfprpobjs dummy (setq e (rename1 e dummy))))
-	      (cdaddr ($indices2 e)))            ;NFPRPOBJS is Not From Product
+	      (NONUMBER (cdaddr ($indices2 e)))) ;NFPRPOBJS is Not From Product
 	     (setq cov (copy (cdadr e))          ;of RP (indexed) OBJects
 		   contr (copy (cdaddr e))
 		   deriv (copy (cdddr e))
@@ -134,7 +134,9 @@
 		   csign nil)       ;Set when reordering antisymmetric indices.
                                     ;Indicates whether overall sign of
                                     ;expression needs changing.
-	     (cond ($allsym (setq cov (itensor-sort cov) contr (itensor-sort contr)))
+	     (cond
+		   ((OR (OR (eq (caar e) '$LC) (eq (caar e) '%LC)) (OR (eq (caar e) '$KDELTA) (eq (caar e) '%KDELTA))) (setq cov (ANTISORT cov) contr (ANTISORT contr)))
+		   ((OR $allsym (eq (caar e) '$KDELS)) (setq cov (itensor-sort cov) contr (itensor-sort contr)))
 		   ((zl-member tensor (cdr $symmetries))
 		    (do ((q symtypes (cdr q)) (type))
 			((null q))
@@ -238,14 +240,14 @@
 			      (mapcar (function (lambda (z) (canten z nil)))
 				      ((lambda (q)
 					       (rename1 q
-						       (cdaddr
+						       (NONUMBER (cdaddr
 						        ($indices2
-						         (cons '(MTIMES) q)))))
+						         (cons '(MTIMES) q))))))
 				       (mapcar 'cdr
 					       (sortcar
 						(progn
 						 (setq free-indices
-						       (cdadr ($indices2 e)))
+						       (NONUMBER (cdadr ($indices2 e))))
 						 (mapcar 'describe-tensor
 							 indexed))
 						'tensorpred))))))))))

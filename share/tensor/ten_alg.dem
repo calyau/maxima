@@ -1,8 +1,8 @@
 load(ctensr)$
 load("tensor/ex_calc.mac")$
-load("tensor/lch.mac")$
 load(itensor)$
 load(canten)$
+load("tensor/lc2kdt.mac")$
 /*
 bothcases:false$
 */
@@ -119,43 +119,43 @@ show(a([i])&b([j]))$
 show(a([i])&p([j,k])+a([i])&b([j])&a([k]))$
 
 ("dualization")$
-("the itensor's Levi-Civita symbol operates only on integers")$
+("the itensor's old-style Levi-Civita symbol operates only on integers")$
+DIM:3;
 lc([1,2,3]);
 lc([i,j,j]);
-("we define own symbols - lch")
-("declare the Levi-Civita of the 3-d rank")$
-dec_lch(3)$
-("now we want to retrieve some of the known
-  identities of vector algebra")$
-ax_bxc:LCH([i,j,k],[])*A([],[j])*LCH([],[k,l,n])*B([l],[])*C([n],[])$
+("but we now have a better implementation")$
+ax_bxc:'LC([i,j,k],[])*A([],[j])*'LC([],[k,l,n])*B([l],[])*C([n],[])$
 show(ax_bxc)$
-("the function lch_kdt transforms the lch product to kdelta")$
-show(contract(expand(ev(lch_kdt(ax_bxc),kdelta))))$
-axb_cxu:LCH([i,j,k],[])*A([],[j])*B([],[k])*
-LCH([],[i,l,n])*C([l],[])*U([n],[])$
+LC2KDT(ax_bxc)$
+show(contract(expand(%)))$
+
+axb_cxu:'LC([i,j,k],[])*A([],[j])*B([],[k])*'LC([],[i,l,n])*C([l],[])*U([n],[])$
 show(axb_cxu)$
-show(contract(expand(ev(lch_kdt(axb_cxu),kdelta))))$
-("the function lch_anti forces the use of the antisymmetric prop of
-  lch, so the tensor product of the lch with several tensors having
-  the same name will vanish")$
-expr2:LCH([i,j,k],[])*A([],[j])*A([],[k])+LCH([],[i,j,k])*A([j])*B([k])$
+LC2KDT(axb_cxu)$
+show(contract(expand(%)))$
+
+("The indexing properties of the Levi-Civita symbol are encoded in two")$
+("simplification rules, LC_L and LC_U. These rules can be used to simplify")$
+("expressions containing the unevaluated Levi-Civita symbol.")$
+expr2:'LC([i,j,k],[])*A([],[j])*A([],[k])+'LC([],[i,j,k])*A([j])*B([k])$
 show(expr2)$
-show(factor(canform(contract(expand(lch_anti(expr2))))))$
+applyb1(expr2,LC_L,LC_U)$
+show(factor(CANFORM(contract(expand(%)))))$
 
 ("finally look for the dualization of some tensor B")$
 ("declare symmetry prop of B")$
 (allsym:false, decsym(B,2,0,[anti(all)],[]),show(B([i,j],[])))$
 ("compute the dualization")$
-(dual:LCH([],[l,i,j])*B([i,j],[])/2,show(dual))$
+(rank:length(covi(B([i,j],[]))),dual:'LC([],[l,i,j])*B([i,j],[])/rank!,show(dual))$
 ("return to the original")$
-(ddual:LCH([i,j,l],[])*canform(dual), show(ddual))$
-show(canform(contract(expand(ev(lch_kdt(ddual),kdelta)))))$
-
+(ddual:'LC([i2,j2,l],[])*dual,show(ddual))$
+show(canform(contract(expand(LC2KDT(ddual)))))$
 
 ("differentiation of tensors")$
 kill(g)$
 REMCOMPS(g)$
 METRIC:g$
+DIM:4$
 show(CHR1([i,j,k]))$
 show(CHR2([i,j],[k]))$
 show(covdiff(A([j,k],[i]),i))$

@@ -82,7 +82,7 @@
        (progn (setq $COUNTER (1+ $COUNTER))
               (concat $DUMMYX $COUNTER)))
 
-(DEFPROP $KDELTA (/  . / ) CONTRACTIONS)
+(DEFPROP $KDELTA ((/  . / )) CONTRACTIONS)
 
 ;KDELTA has special contraction property because it contracts with any indexed
 ;object.
@@ -460,7 +460,7 @@
 (DEFUN SETDIFF (S1 S2)                             ;Set difference of S1 and S2
        (DO ((J S1 (CDR J)) (A))
 	   ((NULL J) A)
-	   (OR (MEMQ (CAR J) S2) (SETQ A (CONS (CAR J) A)))))
+	   (OR (AND (NOT (NUMBERP (CAR J))) (MEMQ (CAR J) S2)) (SETQ A (CONS (CAR J) A)))))
 
 (DEFUN CONTRACT3 (IT LST)      ;Tries to contract it with some element of LST.
        (PROG (FRST R REST)     ;If none occurs then return NIL otherwise return
@@ -562,16 +562,17 @@
                                  ;which of the covariant, contravariant, or
                                  ;derivative indices matches those in G.
 	     (AND (CDDDR F) (RETURN NIL))
-	     (SETQ A (CDADR F)     
+	     (SETQ A (CDADR F)
 		   B (CDADDR F)
 		   C (CADR G)
 		   D (CADDR G)
 		   E (CDDDR G))
 	     (COND
-	      ((EQ (CAAR F) '%KDELTA)
+	      ((WHEN (EQ (CAAR F) '%KDELTA) (EQ (CAAR F) '$KDELTA))
+	       (WHEN (EQ (LENGTH A) 1) (RETURN NIL))
 	       (SETQ A (CAR A) B (CAR B))
 	       (RETURN
-		(SIMPLIFYA (COND ((AND (CDR C) (MEMQ B (CDR C)))
+		(SIMPLIFYA (COND ((AND (CDR C) (AND (NOT (NUMBERP B)) (MEMQ B (CDR C))))
 				  (SETQ C (SUBST A B (CDR C)))
 				  (AND (NOT (MEMQ (CAAR G) CHRISTOFFELS))
 				       (CDR D)
@@ -582,10 +583,10 @@
 					       (CONS SMLIST C)
 					       D)
 					 E))
-				 ((AND E (MEMQ B E))
+				 ((AND E (AND (NOT (NUMBERP B)) (MEMQ B E)))
 				  (NCONC (LIST (CAR G) C D)
 					 (itensor-SORT (SUBST A B E))))
-				 ((AND (CDR D) (MEMQ A (CDR D)))
+				 ((AND (CDR D) (AND (NOT (NUMBERP A)) (MEMQ A (CDR D))))
 				  (SETQ D (SUBST B A (CDR D)))
 				  (AND (CDR C)
 				       (SETQ A (CONTRACT2 (CDR C) D))
@@ -597,6 +598,7 @@
 					 E))
 				 (T NIL))
 			   NIL))))
+
 				    ;If G has derivative indices then F must be
 	     (and e                 ;constant in order to contract it.
 		  (NOT (MGET (CAAR F) '$CONSTANT))
@@ -673,40 +675,58 @@
 		      (LIST '(%KDELS) L1 L2)
 		      ))
 	     (T (DELTA (CDR L1) (CDR L2) 1)))) 
-
-(DECLARE-TOP (FIXNUM I)) 
-
+;;
+;;(DECLARE-TOP (FIXNUM I)) 
+;;
+;;(DEFUN DELTA (LOWER UPPER &optional (eps -1))
+;;       (COND ((NULL LOWER) $DIM)
+;;	     ((NULL (CDR LOWER))
+;;	      (COND ((EQUAL (CAR UPPER) (CAR LOWER))
+;;		     (COND ((NUMBERP (CAR UPPER)) 1.) (T $DIM)))
+;;		    ((AND (NUMBERP (CAR UPPER)) (NUMBERP (CAR LOWER))) 0.)
+;;		    (T (LIST '(%KDELTA)
+;;			     (CONS SMLIST LOWER)
+;;			     (CONS SMLIST UPPER)))))
+;;	     (T (DO ((I (LENGTH LOWER) (1- I))
+;;		     (SL LOWER)
+;;		     (TERM)
+;;		     (RESULT)
+;;		     (F (NCONS (CAR UPPER)))
+;;		     (R (CDR UPPER))
+;;		     (SIGN (ODDP (LENGTH LOWER))))
+;;		    ((= I 0.)
+;;		     (SIMPLUS (CONS '(MPLUS) RESULT) 1. T))
+;;		    (SETQ TERM (LIST (DELTA (NCONS (CAR SL)) F eps)
+;;				     (DELTA (CDR SL) R eps)))
+;;		    (SETQ SL (CDR (APPEND SL (NCONS (CAR SL)))))
+;;		    (SETQ RESULT
+;;			  (CONS (SIMPTIMES (CONS '(MTIMES)
+;;						 (COND ((OR SIGN
+;;							    (ODDP I))
+;;							(CONS eps
+;;							      TERM))
+;;						       (T TERM)))
+;;					   1.
+;;					   NIL)
+;;				RESULT)))))) 
 (DEFUN DELTA (LOWER UPPER &optional (eps -1))
-       (COND ((NULL LOWER) $DIM)
-	     ((NULL (CDR LOWER))
-	      (COND ((EQUAL (CAR UPPER) (CAR LOWER))
-		     (COND ((NUMBERP (CAR UPPER)) 1.) (T $DIM)))
-		    ((AND (NUMBERP (CAR UPPER)) (NUMBERP (CAR LOWER))) 0.)
-		    (T (LIST '(%KDELTA)
-			     (CONS SMLIST LOWER)
-			     (CONS SMLIST UPPER)))))
-	     (T (DO ((I (LENGTH LOWER) (1- I))
-		     (SL LOWER)
-		     (TERM)
-		     (RESULT)
-		     (F (NCONS (CAR UPPER)))
-		     (R (CDR UPPER))
-		     (SIGN (ODDP (LENGTH LOWER))))
-		    ((= I 0.)
-		     (SIMPLUS (CONS '(MPLUS) RESULT) 1. T))
-		    (SETQ TERM (LIST (DELTA (NCONS (CAR SL)) F eps)
-				     (DELTA (CDR SL) R eps)))
-		    (SETQ SL (CDR (APPEND SL (NCONS (CAR SL)))))
-		    (SETQ RESULT
-			  (CONS (SIMPTIMES (CONS '(MTIMES)
-						 (COND ((OR SIGN
-							    (ODDP I))
-							(CONS eps
-							      TERM))
-						       (T TERM)))
-					   1.
-					   NIL)
-				RESULT)))))) 
+  (COND ((NULL LOWER) $DIM)
+        ((NULL (CDR LOWER))
+         (COND ((EQUAL (CAR UPPER) (CAR LOWER))
+                (COND ((NUMBERP (CAR UPPER)) 1.) (T $DIM)))
+               ((AND (NUMBERP (CAR UPPER)) (NUMBERP (CAR LOWER))) 0.)
+               (T (LIST '(%KDELTA) (CONS SMLIST LOWER) (CONS SMLIST UPPER)))))
+        (T (DO ((LEFT NIL (APPEND LEFT (NCONS (CAR RIGHT))))
+		(RIGHT LOWER (CDR RIGHT))
+                (RESULT))
+               ((NULL RIGHT) (SIMPLUS (CONS '(MPLUS) RESULT) 1. T))
+               (SETQ RESULT (CONS (SIMPTIMES
+                                   (LIST '(MTIMES) (DELTA (NCONS (CAR RIGHT)) (NCONS (CAR UPPER)) eps)
+                                         (DELTA (APPEND LEFT (CDR RIGHT)) (CDR UPPER) eps)
+                                         (COND ((ODDP (LENGTH LEFT)) eps) (T 1))
+                                   ) 1. T
+                                  ) RESULT)
+              )))))
 
 (DECLARE-TOP (NOTYPE I))
 
@@ -879,7 +899,7 @@
 
 
 
-(DEFMFUN $LC (L1) 
+(DEFMFUN $LC0 (L1) 
        (PROG (A B C SIGN) 
 	     (SETQ A (CDR L1))
 	     (IFNOT (AND A (CDR A)) (RETURN (LIST '(%LC) L1)))
@@ -892,6 +912,66 @@
 	     (AND (SETQ C (CDR C)) (GO LOOP2))
 	     (AND (CDR B) (GO LOOP3))
 	     (RETURN (COND (SIGN -1.) (T 1.))))) 
+(DEFMFUN $LC (L1 &optional (L2 nil))
+	(COND
+		((EQ L2 nil) ($LC0 L1))
+		((LIKE L1 '((MLIST)))
+		(PROG (l) (SETQ l nil)
+		  (DO ((I ($LENGTH L2) (1- I))) ((< I 1)) (SETQ l (CONS I l)))
+		  (RETURN (LIST '($KDELTA SIMP) (CONS SMLIST l) L2))
+		 ))
+		((LIKE L2 '((MLIST)))
+		(PROG (l) (SETQ l nil)
+		  (DO ((I ($LENGTH L1) (1- I))) ((< I 1)) (SETQ l (CONS I l)))
+		  (RETURN (LIST '($KDELTA SIMP) L1 (CONS SMLIST l)))
+		))
+		(T (MERROR "Mixed-index Levi-Civita symbols not supported"))
+	)
+)
+
+;; simplification rules for the totally antisymmetric LC symbol
+(DEFUN $LC_L (E)
+    (PROG (L1 L2 L N)
+	(CATCH 'MATCH
+	  (COND ((ATOM E) (MATCHERR)))
+	  (COND ((ATOM (CAR E)) (MATCHERR)))
+	  (COND ((NOT (OR (EQ (CAAR E) '$LC) (EQ (CAAR E) '%LC))) (MATCHERR)))
+	  (COND ((NOT ($LISTP (SETQ L1 (CADR E)))) (MATCHERR)))
+	  (COND ((NOT (ALIKE1 '((MLIST SIMP)) (SETQ L2 (CADDR E)))) (MATCHERR)))
+	  (COND ((CDDDR E) (MATCHERR)))
+	  (SETQ N ($LENGTH L1))
+	  (SETQ L NIL)
+	  (DO ((I N (1- I))) ((< I 1)) (SETQ l (CONS ($DUMMY) L)))
+	  (RETURN (LIST '(MTIMES SIMP) -1 ($KDELTA L1 (CONS SMLIST L))
+	        (LIST (CONS (CAAR E) '(SIMP)) (CONS SMLIST L) (NCONS SMLIST))
+	        (LIST '(MEXPT SIMP) (MEVAL (LIST 'MFACTORIAL N)) -1))
+	  )
+	)
+    )
+)
+
+(DEFUN $LC_U (E)
+    (PROG (L1 L2 L N)
+	(CATCH 'MATCH
+	  (COND ((ATOM E) (MATCHERR)))
+	  (COND ((ATOM (CAR E)) (MATCHERR)))
+	  (COND ((NOT (OR (EQ (CAAR E) '$LC) (EQ (CAAR E) '%LC))) (MATCHERR)))
+	  (COND ((NOT (ALIKE1 '((MLIST SIMP)) (SETQ L1 (CADR E)))) (MATCHERR)))
+	  (COND ((NOT ($LISTP (SETQ L2 (CADDR E)))) (MATCHERR)))
+	  (COND ((CDDDR E) (MATCHERR)))
+	  (SETQ N ($LENGTH L2))
+	  (SETQ L NIL)
+	  (DO ((I N (1- I))) ((< I 1)) (SETQ l (CONS ($DUMMY) L)))
+	  (RETURN (LIST '(MTIMES SIMP) -1 ($KDELTA (CONS SMLIST L) L2)
+	        (LIST (CONS (CAAR E) '(SIMP)) (NCONS SMLIST) (CONS SMLIST L))
+	        (LIST '(MEXPT SIMP) (MEVAL (LIST 'MFACTORIAL N)) -1))
+	  )
+	)
+    )
+)
+
+(ADD2LNC '$LC_L $RULES)
+(ADD2LNC '$LC_U $RULES)
 
 (DECLARE-TOP (SPECIAL E EMPTY $FLIPFLAG))
 
@@ -906,11 +986,12 @@
 )
 
 (DEFUN REMOVEINDEX (E L)
- (COND ((ATOM E) 
-        (COND ((EQ E (CAR L)) (CDR L))
+ (COND	((NULL L) NIL)
+	((ATOM E)
+         (COND ((EQ E (CAR L)) (CDR L))
               (T (CONS (CAR L) (REMOVEINDEX E (CDR L))))
         ))
-       (T (REMOVEINDEX (CDR E) (REMOVEINDEX (CAR E) L)))
+	(T (REMOVEINDEX (CDR E) (REMOVEINDEX (CAR E) L)))
  )
 )
 

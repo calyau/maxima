@@ -53,9 +53,9 @@
 (DEFUN $DERI (RP) (COND (($TENPR RP) (cons SMLIST (CDDDR RP)))
                        (T (MERROR "NOT RPOBJECT"))))
 
-(DEFUN FRE (L) (INT L FREI))
+(DEFUN FRE (L) (INTERSECT L FREI))
 
-(DEFUN BOUN (L) (INT L BOUNI))
+(DEFUN BOUN (L) (INTERSECT L BOUNI))
 
 
 (DEFUN GRADE (RP) (f+ (LENGTH (COVI RP))
@@ -285,22 +285,23 @@ A  (COND ((EQUAL J (f+ -1 K))
                    (T (ENDCONS (CAR L) A))  )))
      ((NULL L)  A) ))
 
-(DEFUN INT (A B) (PROG (A1 B1 C)
-		       (SETQ A1 A B1 B C NIL)
-		  A    (COND ((NULL A1) (RETURN C))
-			     ((ZL-MEMBER (CAR A1) B1)
-			      (SETQ C (CONS (CAR A1) C))
-			      (SETQ B1 (COMP B1 (CAR A1)))
-			      (SETQ A1 (CDR A1))
-			      (GO B))
-			     (T (SETQ A1 (CDR A1)) (GO B)))
-		  B    (COND ((NULL B1) (RETURN C))
-			     ((ZL-MEMBER (CAR B1) A1)
-			      (SETQ C (CONS (CAR B1) C))
-			      (SETQ A1 (COMP A1 (CAR B1)))
-			      (SETQ B1 (CDR B1))
-			      (GO A))
-			     (T (SETQ B1 (CDR B1)) (GO A)))))
+;; Removed - duplicates INTERSECT function -- vtt
+;;(DEFUN INT (A B) (PROG (A1 B1 C)
+;;		       (SETQ A1 A B1 B C NIL)
+;;		  A    (COND ((NULL A1) (RETURN C))
+;;			     ((ZL-MEMBER (CAR A1) B1)
+;;			      (SETQ C (CONS (CAR A1) C))
+;;			      (SETQ B1 (COMP B1 (CAR A1)))
+;;			      (SETQ A1 (CDR A1))
+;;			      (GO B))
+;;			     (T (SETQ A1 (CDR A1)) (GO B)))
+;;		  B    (COND ((NULL B1) (RETURN C))
+;;			     ((ZL-MEMBER (CAR B1) A1)
+;;			      (SETQ C (CONS (CAR B1) C))
+;;			      (SETQ A1 (COMP A1 (CAR B1)))
+;;			      (SETQ B1 (CDR B1))
+;;			      (GO A))
+;;			     (T (SETQ B1 (CDR B1)) (GO A)))))
 
 ;LIST IS A LIST OF CANFORMED MONOMIALS OF THE SAME ARANK
 ;CANARANK FINDS THE EQUIVALENT ONES

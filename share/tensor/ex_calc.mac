@@ -56,10 +56,13 @@ PERMUTATOR(L):=BLOCK([RESULT:1,TEMP],
 
 infix("|_");
 declare("|_",additive);
-"|_"(forma,vec):=block(local(ind,perm),
-  L1:PERMUTATOR(first(indices(forma))),
-  if L1[2]=[] then 0
-  else L1[1]*(contract(canform(expand(forma*vec([],[first(L1[2])]))))));
+/* VTT: ADDITIVE doesn't always do the trick so we break up sums manually */
+"|_"(forma,vec):=BLOCK(LOCAL(ind,perm),
+  IF NOT(ATOM(forma)) AND (OP(forma)="+" OR OP(forma)="=") THEN
+    APPLY(OP(forma),[PART(forma,1)|_vec,REST(forma)|_vec])
+  ELSE (perm:PERMUTATOR(first(indices(forma))),
+    IF perm[2]=[] THEN 0
+    ELSE perm[1]*(CONTRACT(CANFORM(EXPAND(forma*vec([],[FIRST(perm[2])])))))));
 
 infix("@L");
 
