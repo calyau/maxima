@@ -637,7 +637,7 @@
 		   ((SPECREPP EXP) (SETQ EXP (SPECDISREP EXP))))
 	     (IF (AND (ATOM EXP) (NULL $PARTSWITCH))
 		 (MERROR "~:M called on atom: ~:M" FN EXP))
-	     (IF (AND INFLAG SPECP) (SETQ EXP (copy-all-levels EXP)))
+	     (IF (AND INFLAG SPECP) (SETQ EXP (copy-tree EXP)))
 	     (SETQ EXP* EXP)
 	START(COND ((OR (ATOM EXP) (EQ (CAAR EXP) 'BIGFLOAT)) (GO ERR))
 		   ((EQUAL (SETQ ARG (COND (SUBSTFLAG (MEVAL (CAR ARGLIST)))
@@ -673,7 +673,7 @@
 							   '(ARRAY))))
 				     (RESIMPLIFY EXP*))
 				    (DISPFLAG
-				     (RPLACD EXP (CDR (BOX (copy-all-levels EXP) DISPFLAG)))
+				     (RPLACD EXP (CDR (BOX (copy-tree EXP) DISPFLAG)))
 				     (RPLACA EXP (IF (EQ DISPFLAG T)
 						     '(MBOX)
 						     '(MLABOX)))

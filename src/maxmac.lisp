@@ -108,9 +108,9 @@
   #+(or cl NIL) `(COPY-LIST ,LIST)
   #-(or cl NIL) `(APPEND ,LIST NIL))
 
-(DEFMACRO COPY-ALL-LEVELS (LIST)
-  #+(or cl NIL) `(COPY-TREE ,LIST)
-  #-(or lispm NIL) `(SUBST NIL NIL ,LIST))
+;; (DEFMACRO COPY-ALL-LEVELS (LIST)
+;;   #+(or cl NIL) `(COPY-TREE ,LIST)
+;;   #-(or lispm NIL) `(SUBST NIL NIL ,LIST))
 
 ;; Old names kept around for compatibility.
 
