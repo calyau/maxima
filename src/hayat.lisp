@@ -180,31 +180,31 @@
 ;	     (muzzled t)
  )				;Don't want to see closed compilation notes.
 
-(defmvar $PSEXPAND ()
+(defmvar $psexpand ()
  "When TRUE extended rational function expressions will be displayed fully
   expanded. (RATEXPAND will also cause this.) If FALSE, multivariate
   expressions will be displayed just as in the rational function package.
   If PSEXPAND:MULTI, then terms with the same total degree in the variables
   are grouped together.")
 
-(defmvar $MAXTAYORDER T
+(defmvar $maxtayorder T
  "When true TAYLOR retains as many terms as are certain to be correct
   during power series arithmetic. Otherwise, truncation is controlled
   by the arguments specified to TAYLOR.")
  
-(defmvar $TAYLOR_TRUNCATE_POLYNOMIALS T
+(defmvar $taylor_truncate_polynomials T
  "When FALSE polynomials input to TAYLOR are considered to have infinite
   precison; otherwise (the default) they are truncated based upon the input
   truncation levels.")
 
-(defmvar $TAYLOR_LOGEXPAND ()
+(defmvar $taylor_logexpand ()
  "Unless FALSE log's of products will be expanded fully in TAYLOR (the default)
   to avoid identically-zero constant terms which involve log's. When FALSE,
   only expansions necessary to produce a formal series will be executed.")
 
 ;Note!  The value of this must be a symbol, because it is checked with
 ; FBOUNDP.
-(defmvar $TAYLOR_SIMPLIFIER 'SIMPLIFY
+(defmvar $taylor_simplifier 'SIMPLIFY
  "A function of one argument which TAYLOR uses to simplify coefficients
   of power series.")
 
@@ -2013,7 +2013,7 @@
 			       of expansion"))
 		  ('T (setq sw 'T) (return 'T)))))))
 
-(defmvar $TAYLOR_ORDER_COEFFICIENTS T
+(defmvar $taylor_order_coefficients T
  "When `true', coefficients of taylor series will be ordered canonically.")
 
 (defun taylor1 (e tlist)
