@@ -87,8 +87,8 @@ inmc2(l1,l2,[ld]):=if not inonmet_flag then 0
 ikt1(l,[ld]):=if not itorsion_flag then 0
   else if length(ld)>0 and rest(ld)#[] then
   apply('idiff,cons(ikt1(l),rest((?putinones)(rest(ld)))))
-  else block([d:idummy()],-(_g([l[3],d])*_itr([l[1],l[2]],[d])+_g([l[2],d])*
-                _itr([l[3],l[1]],[d])+_g([l[1],d])*_itr([l[3],l[2]],[d]))/2);
+  else block([d:idummy()],(-_g([l[3],d])*_itr([l[1],l[2]],[d])-_g([l[2],d])*
+                _itr([l[3],l[1]],[d])-_g([l[1],d])*_itr([l[3],l[2]],[d]))/2);
 ikt2(l1,l2,[ld]):=if not itorsion_flag then 0
   else if ld#[] then apply('idiff,cons(ikt2(l1,l2),rest((?putinones)(ld))))
   else block([e:idummy()],_g([],[l2[1],e])*'ikt1([l1[1],l1[2],e]));
