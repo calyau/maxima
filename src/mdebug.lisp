@@ -281,16 +281,19 @@
 ;; indicates that dbm-read is never called with more than 3 args.  Can
 ;; we just flush it?  Can probably get rid of the &aux stuff too.
 
+(defvar *need-prompt* t)
 (defun dbm-read (&optional (stream *standard-input*) (eof-error-p t)
 		 (eof-value nil) repeat-if-newline  &aux tem  ch
 		 (mprompt *mread-prompt*) (*mread-prompt* ""))
-
-  (when (> (length mprompt) 0)
-    (fresh-line *standard-output*)
-    (princ mprompt *standard-output*)
-    (force-output *standard-output*)
-    ;;(format t "~&~a" mprompt)
-    )
+  (if (and *need-prompt* (> (length mprompt) 0))
+    (progn
+      (fresh-line *standard-output*)
+      (princ mprompt *standard-output*)
+      (force-output *standard-output*)
+      (setf *prompt-on-read-hang* nil))
+    (progn
+      (setf *prompt-on-read-hang* t)
+      (setf *read-hang-prompt* mprompt)))
 
   ;; Read a character to see what we should do.
   (tagbody
@@ -335,8 +338,10 @@
 	 (let ((next (peek-char nil stream nil)))
 	   (cond ((member next '(#\space #\tab))
 		  ;; Got "? <stuff>".  This means describe.
-		  (let* ((line (string-trim '(#\space #\tab #\; #\$)
-					    (subseq (read-line stream eof-error-p eof-value) 1))))
+		  (let* ((line (string-trim 
+				'(#\space #\tab #\; #\$)
+				(subseq 
+				 (read-line stream eof-error-p eof-value) 1))))
 		    `((displayinput) nil (($describe) ,line))))
 		 (t
 		  ;; Got "?<stuff>" This means a call to a Lisp
@@ -346,11 +351,22 @@
 		  ;; Note: There appears to be a bug in Allegro 6.2
 		  ;; where concatenated streams don't wait for input
 		  ;; on *standard-input*.
-		  (mread (make-concatenated-stream (make-string-input-stream "?") stream)
+		  (mread (make-concatenated-stream 
+			  (make-string-input-stream "?") stream)
 			 eof-value)))))
 	(t
 	 (setq *last-dbm-command* nil)
-	 (mread stream eof-value))))
+	 (let ((result (mread stream eof-value))
+	       (next-char (read-char-no-hang stream eof-error-p eof-value)))
+	   (cond
+	     ((or (eql next-char nil) (equal next-char '(nil)))
+	      (setf *need-prompt* t))
+	     ((member next-char '(#\newline #\return))
+	      (setf *need-prompt* t))
+	     (t
+	      (setf *need-prompt* nil)
+	      (unread-char next-char stream)))
+	   result))))
 
 (defun grab-line-number (li stream)
   (declare (type (vector #.(array-element-type "ab")) li))

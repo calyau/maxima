@@ -665,11 +665,17 @@ values")
 (defun tyo (char &optional(stream *standard-output*))
   (write-char char stream))
 
+(defvar *prompt-on-read-hang* nil)
+(defvar *read-hang-prompt* "")
 (defun tyi (&optional (stream *standard-input*) eof-option)
-  (if eof-option				
-      (read-char stream nil eof-option)
-      (read-char stream nil nil)))
-
+  (let ((ch (read-char-no-hang stream nil eof-option)))
+    (if ch
+	ch
+	(progn
+	  (when (and *prompt-on-read-hang* *read-hang-prompt*)
+	    (princ *read-hang-prompt*)
+	    (force-output *standard-output*))
+	  (read-char stream nil eof-option)))))
 
 (defun tyipeek (&optional peek-type &rest read-args)
   (if read-args
