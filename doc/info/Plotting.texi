@@ -21,38 +21,42 @@ otherwise @code{in_netmath} (even if @code{true}) has no effect.
 
 @end defvar
 
-@defun openplot_curves list rest-options
+@c THIS DESCRIPTION IS IN NEED OF HEAVY REVISION (BUT ONLY IF OPENPLOT IS STILL SUPPORTED)
+@c EXAMPLE DOESN'T WORK -- YIELDS ERROR MESSAGE, NOTHING HAPPENS
+@defun openplot_curves (@var{list}, @var{rest_options})
 Takes a list of curves such as
 @example
-[[x1,y1,x2,y2,...],[u1,v1,u2,v2,...],..]
+[[x1, y1, x2, y2, ...], [u1, v1, u2, v2, ...], ..]
+@end example
 or 
- [[[x1,y1],[x2,y2],...],.. ]
+@example
+[[[x1, y1], [x2, y2], ...], ...]
 @end example
 and plots them.  This is similar to xgraph_curves, but uses the
 open plot routines.
 Addtional symbol arguments may be given such as
-@code{ "@{xrange -3 4@}" }
+@code{"@{xrange -3 4@}"}
 The following plots two curves, using big points, labeling the first one
 @code{jim} and the second one @code{jane}.   
 @example
-openplot_curves([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
-      @{text @{xaxislabel @{joe is nice@}@}@}"] ,
-      [1,2,3,4,5,6,7,8],
-      ["@{label jane@} @{color pink @} "], [3,1,4,2,5,7]]);
+openplot_curves ([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
+      @{text @{xaxislabel @{joe is nice@}@}@}"],
+      [1, 2, 3, 4, 5, 6, 7, 8],
+      ["@{label jane@} @{color pink @}"], [3, 1, 4, 2, 5, 7]]);
 @end example
 
-Some other special keywords are xfun, color, plotpoints, linecolors,
-pointsize, nolines, bargraph, labelposition, xaxislabel, and
-yaxislabel.
+Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @code{linecolors},
+@code{pointsize}, @code{nolines}, @code{bargraph}, @code{labelposition}, @code{xaxislabel}, and
+@code{yaxislabel}.
 
 @end defun
 
 
 
 @defun plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
-@c TOO LONG !!! @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
+@c TOO LONG !!! (TICKLES CL-INFO BUG) @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
 @defunx plot2d (@var{parametric_expr})
-@c TOO LONG !!! @defunx plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
+@c TOO LONG !!! (TICKLES CL-INFO BUG) @defunx plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
 @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
 @defunx plot2d (@var{expr}, @var{x_range}, @var{y_range})
@@ -100,17 +104,17 @@ All options are assumed to have default values unless otherwise specified by @co
 Examples:
 
 @example
-(%i1) plot2d (sin(x), [x, -5, 5]);
-(%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200]);
+(%i1) plot2d (sin(x), [x, -5, 5])$
+(%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
 @end example
 
-Anywhere there may be an EXPR you may also use a parametric expression: 
+Anywhere there may be an ordinary expression, there may be a parametric expression: 
 @var{parametric_expr} is a list of the form
 @code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{options}]}.
-Here @var{x_expr} and @var{y_expr} are expressions of 1 variable VAR which is
-the first element of the range TRANGE.  
+Here @var{x_expr} and @var{y_expr} are expressions of 1 variable @var{var} which is
+the first element of the range @var{trange}.  
 The plot is of the path traced out by the pair
-@code{[XEXPR, YEXPR]} as VAR varies in TRANGE.
+@code{[@var{x_expr}, @var{y_expr}]} as @var{var} varies in @var{trange}.
 
 In the following example, we plot a circle, then we do
 the plot with only a few points used, so that we get a star,
@@ -121,7 +125,7 @@ Examples:
 
 @itemize @bullet
 @item
-Plot a circle with SOME OPTIONS.
+Plot a circle with a parametric plot.
 @example
 (%i1) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
         [nticks, 80]])$
@@ -130,13 +134,13 @@ Plot a circle with SOME OPTIONS.
 Plot a star: join eight points on the circumference of a circle.
 @example
 (%i2) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
-        [nticks, 8]]);
+        [nticks, 8]])$
 @end example
 @item
-Plot SOMETHING and SOMETHING ELSE.
+Plot a cubic polynomial with an ordinary plot and a circle with a parametric plot.
 @example
 (%i3) plot2d ([x^3 + 2, [parametric, cos(t), sin(t), [t, -5, 5],
-        [nticks, 80]]], [x, -3, 3]);
+        [nticks, 80]]], [x, -3, 3])$
 @end example
 @end itemize
 
@@ -166,7 +170,7 @@ xgraph_curves ([pt_set1, pt_set2, pt_set3]);
 graph the three point sets as three curves.
 
 @example
-pt_set: append (["NoLines: True", "LargePixels: true"], [x0, y0, x1, y1, ...])
+pt_set: append (["NoLines: True", "LargePixels: true"], [x0, y0, x1, y1, ...]);
 @end example
 
 @noindent
@@ -175,7 +179,7 @@ no lines between points, and to use large pixels.
 See the man page on xgraph for more options to specify.
 
 @example
-pt_set: append ([concat ("\"", "x^2+y")], [x0, y0, x1, y1, ...])
+pt_set: append ([concat ("\"", "x^2+y")], [x0, y0, x1, y1, ...]);
 @end example
 
 @noindent
@@ -184,22 +188,20 @@ point set.    The @code{"} at the beginning is what tells
 xgraph this is a label.
 
 @example
-pt_set: append ([concat ("TitleText: Sample Data")], [x0, ...])
+pt_set: append ([concat ("TitleText: Sample Data")], [x0, ...])$
 @end example
 
 @noindent
 would make the main title of the plot be "Sample Data" instead
-of "Maxima PLot".
+of "Maxima Plot".
 
-To make a bar graph with bars which are .2 units wide, and
+To make a bar graph with bars which are 0.2 units wide, and
 to plot two possibly different such bar graphs:
 @example
-xgraph_curves (
-       [append(["BarGraph: true","NoLines: true","BarWidth: .2"],
-               create_list([i-.2,i^2],i,1,3)),
-        append(["BarGraph: true","NoLines: true","BarWidth: .2"],
-           create_list([i+.2,.7*i^2],i,1,3))
-]);
+xgraph_curves ([append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
+    create_list ([i - .2, i^2], i, 1, 3)),
+    append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
+    create_list ([i + .2, .7*i^2], i, 1, 3))]);
 @end example
 @noindent
 
@@ -226,6 +228,7 @@ The plot options which are recognized by @code{plot2d} and @code{plot3d} are the
 @itemize @bullet
 @item
 Option: @code{plot_format} determines which plotting package is used by @code{plot2d} and @code{plot3d}.
+
 @itemize @bullet
 @item
 Default value: @code{gnuplot}
@@ -253,6 +256,7 @@ and setting the option @code{gnuplot_term} to @code{ps}.
 @item
 Option: @code{run_viewer} controls whether or not the appropriate viewer for the plot
 format should be run.
+
 @itemize @bullet
 @item
 @c DOES FALSE IMPLY THE OUTPUT FILE IS GENERATED AND NOT SHOWN ?? OR IS NOTHING GENERATED ??
@@ -282,13 +286,14 @@ Otherwise, the commands are printed to the Maxima console.
 
 @item
 Option: @code{gnuplot_out_file} Write gnuplot output to a file.
+
 @itemize @bullet
 @item
 Default value: @code{false} No output file specified.
-@c NEED TO PUT THIS EXAMPLE SOMEWHERE: [GNUPLOT_OUT_FILE, "myplot.ps"]
 @item
 Value: @var{filename}
-This example sends PostScript output to the file ``myplot.ps'' when
+Example: @code{[gnuplot_out_file, "myplot.ps"]}
+This example sends PostScript output to the file @code{myplot.ps} when
 used in conjunction with the PostScript gnuplot terminal.
 @c DOES OUTPUT FILE != FALSE IMPLY DON'T RUN THE VIEWER ??
 @c WHAT HAPPENS IF OUTPUT FILE IS SPEFICIED BUT TERMINAL IS NOT PS ??
@@ -300,7 +305,7 @@ The default horizontal range.
 @example
 [x, - 3, 3]
 @end example
-Sets the horizontal range to [-3,3].
+Sets the horizontal range to [-3, 3].
 
 @item
 Option: @code{y}
@@ -308,7 +313,7 @@ The default vertical range.
 @example
 [y, - 3, 3]
 @end example
-Sets the vertical range to [-3,3].
+Sets the vertical range to [-3, 3].
 
 @item
 Option: @code{t}
@@ -323,7 +328,7 @@ Option: @code{nticks}
 Initial number of points 
 used by the adaptive plotting routine.
 @example
-[NTICKS 20]
+[nticks, 20]
 @end example
 The default for @code{nticks} is 10.
 
@@ -331,7 +336,7 @@ The default for @code{nticks} is 10.
 Option: @code{adapt_depth}
 The maximum number of splittings used by the adaptive plotting routine.
 @example
-[ADAPT_DEPTH 5]
+[adapt_depth, 5]
 @end example
 The default for @code{adapt_depth} is 10.
 
@@ -340,7 +345,7 @@ Option: @code{grid}
 Sets the number of grid points to use in the x- and y-directions
 for three-dimensional plotting.
 @example
-[GRID, 50, 50]
+[grid, 50, 50]
 @end example
 sets the grid to 50 by 50 points. The default grid is 30 by 30.
 
@@ -348,23 +353,23 @@ sets the grid to 50 by 50 points. The default grid is 30 by 30.
 Option: @code{transform_xy}
 Allows transformations to be applied to three-dimensional plots.
 @example
-[TRANSFORM_XY, FALSE]
+[transform_xy, false]
 @end example
 The default @code{transform_xy} is @code{false}. If it is not @code{false}, it should be
 the output of
 @example
-make_transform([x,y,z], f1(x,y,z),f2(x,y,z),f3(x,y,z))
+make_transform ([x, y, z], f1(x, y, z), f2(x, y, z), f3(x, y, z))$
 @end example
 The @code{polar_xy} transformation is built in. It gives the same
 transformation as
 @example
-make_transform([r,th,z],r*cos(th),r*sin(th),z)
+make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
 
 @item
 Option: @code{colour_z} is specific to the @code{ps} plot format.
 @example
-[COLOUR_Z, TRUE]
+[colour_z, true]
 @end example
 The default value for @code{colour_z} is @code{false}.
 
@@ -373,69 +378,102 @@ Option: @code{view_direction}
 @c REPHRASE
 Specific to the @code{ps} plot format.
 @example
-[VIEW_DIRECTION, 1, 1, 1]
+[view_direction, 1, 1, 1]
 @end example
-The default @code{view_direction} is [1,1,1].
+The default @code{view_direction} is [1, 1, 1].
 @end itemize
 
-@code{gnuplot_pm3d}, @code{gnuplot_preamble}, @code{gnuplot_curve_titles},
-@code{gnuplot_curve_styles}, @code{gnuplot_default_term_command},
-@code{gnuplot_dumb_term_command} and @code{gnuplot_ps_term_command} are
-gnuplot options. All of these options (except @code{gnuplot_pm3d}) are raw
+There are several plot options specific to gnuplot.
+All of these options (except @code{gnuplot_pm3d}) are raw
 gnuplot commands, specified as strings. Refer to the gnuplot documentation for more details.
 
 @itemize @bullet
 @item
-@c [GNUPLOT_PM3D, TRUE]
 Option: @code{gnuplot_pm3d} Controls the usage PM3D mode, which has advanced 3D
 features. PM3D is only available in gnuplot versions after 3.7. The
 default value for @code{gnuplot_pm3d} is @code{false}.
 
+Example:
+
+@example
+[gnuplot_pm3d, true]
+@end example
+
 @item
-@c [GNUPLOT_PREAMBLE, "set log y"]
 Option: @code{gnuplot_preamble} Inserts gnuplot commands before the plot is
 drawn. Any valid gnuplot commands may be used. Multiple commands
 should be separated with a semi-colon. The example shown produces a
-log scale plot. The default value for @code{gnuplot_preamble} is ``''.
+log scale plot. The default value for @code{gnuplot_preamble} is the empty string @code{""}.
+
+Example:
+
+@example
+[gnuplot_preamble, "set log y"]
+@end example
 
 @item
-@c [GNUPLOT_CURVE_TITLES, ["my first function","my second function"]]
 Option: @code{gnuplot_curve_titles} Controls the titles given in the plot key. The
 default value is @code{default}, which automatically sets the title of each
 curve to the function plotted. If not @code{default}, @code{gnuplot_curve_titles}
 should contain a list of strings. (To disable the plot key entirely,
-add ``set nokey'' to @code{gnuplot_preamble}.)
+add @code{"set nokey"} to @code{gnuplot_preamble}.)
+
+Example:
+
+@example
+[gnuplot_curve_titles, ["my first function", "my second function"]]
+@end example
 
 @item
-@c [GNUPLOT_CURVE_STYLES, ["with lines 7", "with lines 2"]]
 Option: @code{gnuplot_curve_styles} A list of strings controlling the appearance
 of curves, i.e., color, width, dashing, etc., to be sent to the
-gnuplot plot command. The default value is ["with lines 3", "with
-lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines
-6", "with lines 7"], which cycles through different colors. See the
-gnuplot documentation for ``plot'' for more information.
+gnuplot plot command. The default value is
+@code{["with lines 3", "with lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines 6", "with lines 7"]}, which cycles through different colors. See the
+gnuplot documentation for @code{plot} for more information.
+
+Example:
+
+@example
+[gnuplot_curve_styles, ["with lines 7", "with lines 2"]]
+@end example
 
 @item
-@c [GNUPLOT_DEFAULT_TERM_COMMAND, "set term x11"]
 Option: @code{gnuplot_default_term_command} The gnuplot command to set the
-terminal type for the default terminal. The default value is ``'',
+terminal type for the default terminal. The default value is the empty string @code{""},
 i.e., use gnuplot's default.
 
-@item
-@c [GNUPLOT_DUMB_TERM_COMMAND, "set term dumb 132 50"]
-Option: @code{gnuplot_dumb_term_command} The gnuplot command to set the
-terminal type for the dumb terminal. The default value is ``set term
-dumb 79 22'', which makes the text output 79 characters by 22
-characters.
+Example:
+
+@example
+[gnuplot_default_term_command, "set term x11"]
+@end example
 
 @item
-@c [GNUPLOT_PS_TERM_COMMAND, "set term postscript eps enhanced color solid 18"]
+Option: @code{gnuplot_dumb_term_command} The gnuplot command to set the
+terminal type for the dumb terminal. The default value is @code{"set term dumb 79 22"},
+which makes the text output 79 characters by 22
+characters.
+
+Example:
+
+@example
+[gnuplot_dumb_term_command, "set term dumb 132 50"]
+@end example
+
+@item
 Option: @code{gnuplot_ps_term_command} The gnuplot command to set the terminal
-type for the PostScript terminal. The default value is ``set size 1.5,
-1.5;set term postscript eps enhanced color solid 24'', which sets the
+type for the PostScript terminal. The default value is
+@code{"set size 1.5, 1.5;set term postscript eps enhanced color solid 24"},
+which sets the
 size to 1.5 times gnuplot's default, and the font size to 24, among
-other things. See the gnuplot documentation for ``set term
-postscript'' for more information.
+other things. See the gnuplot documentation for @code{set term postscript} for more information.
+
+Example:
+
+@example
+[gnuplot_ps_term_command, "set term postscript eps enhanced color solid 18"]
+@end example
+
 @end itemize
 
 Examples:
@@ -445,7 +483,7 @@ Examples:
 Saves a plot of @code{sin(x)} to the file @code{sin.eps}.
 @end itemize
 @example
-plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps], [gnuplot_out_file, "sin.eps"])
+plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps], [gnuplot_out_file, "sin.eps"])$
 @end example
 
 @itemize @bullet
@@ -454,7 +492,7 @@ Uses the y option to chop off singularities and the gnuplot_preamble
 option to put the key at the bottom of the plot instead of the top.
 @end itemize
 @example
-plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10], [gnuplot_preamble, "set key bottom"])
+plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10], [gnuplot_preamble, "set key bottom"])$
 @end example
 
 @itemize @bullet
@@ -463,8 +501,9 @@ Uses a very complicated @code{gnuplot_preamble} to produce fancy x-axis labels.
 (Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
 @end itemize
 @example
-plot2d ([cos(x), sin(x), tan(x), cot(x)], [x, -2*%pi, 2*%pi], [y, -2, 2],
-[gnuplot_preamble, "set xzeroaxis; set xtics ('-2pi' -6.283, '-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0,'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"]);
+my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, '-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0,'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
+plot2d ([cos(x), sin(x), tan(x), cot(x)], [x, -2*%pi, 2*%pi],
+    [y, -2, 2], [gnuplot_preamble, my_preamble]);
 @end example
 
 @itemize @bullet
@@ -476,10 +515,9 @@ in gnuplot.
 (Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
 @end itemize
 @example
-plot2d([cos(x),sin(x),tan(x)],[x,-2*%pi,2*%pi],[y,-2,2],
-[gnuplot_preamble,
-"set xzeroaxis; set xtics ('-2@{/Symbol p@}' -6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, '-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, '@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' 6.283)"],
-[gnuplot_term,ps],[gnuplot_out_file,"trig.eps"])
+my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' -6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, '-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, '@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' 6.283)"$
+plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi], [y, -2, 2],
+    [gnuplot_preamble, my_preamble], [gnuplot_term, ps], [gnuplot_out_file, "trig.eps"]);
 @end example
 
 @itemize @bullet
@@ -487,8 +525,7 @@ plot2d([cos(x),sin(x),tan(x)],[x,-2*%pi,2*%pi],[y,-2,2],
 A three-dimensional plot using the gnuplot pm3d terminal.
 @end itemize
 @example
-plot3d(atan(-x^2+y^3/4),[x,-4,4],[y,-4,4], [grid,50,50],
-[gnuplot_pm3d,true])
+plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [grid, 50, 50], [gnuplot_pm3d, true])$
 @end example
 
 @itemize @bullet
@@ -497,9 +534,9 @@ A three-dimensional plot without a mesh and with contours
 projected on the bottom plane.
 @end itemize
 @example
-plot3d(atan(-x^2+y^3/4),[x,-4,4], [y,-4,4], [grid,50,50],
-[gnuplot_pm3d,true], [gnuplot_preamble,
-"set pm3d at s;unset surface;set contour;set cntrparam levels 20;unset key"])
+my_preamble: "set pm3d at s;unset surface;set contour;set cntrparam levels 20;unset key"$
+plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [grid, 50, 50],
+    [gnuplot_pm3d, true], [gnuplot_preamble, my_preamble])$
 @end example
 
 @itemize @bullet
@@ -508,14 +545,14 @@ A plot where the z-axis is represented by color only.
 (Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
 @end itemize
 @example
-plot3d(cos(-x^2+y^3/4),[x,-4,4], [y,-4,4], [gnuplot_preamble, 
-"set view map; unset surface"], [gnuplot_pm3d,true], [grid,150,150]);
+plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+    [gnuplot_preamble, "set view map; unset surface"], [gnuplot_pm3d, true], [grid, 150, 150])$
 @end example
 
 @end defvar
 
-@defun plot3d (expr, x_range, y_range, ..., options, ...)
-@defunx plot3d ([expr_1, expr_2, expr_3], x_range, y_range, ..., options, ...)
+@defun plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@defunx plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 
 @example
 plot3d (2^(-u^2 + v^2), [u, -5, 5], [v, -7, 7]);
@@ -580,9 +617,9 @@ so trying to make an expression which does just what you want may be
 difficult, and it is just easier to make a function.   
 
 @example
-M:matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4], [1, 2, 3, 3])$
-f(x, y):=float(M[?round(x), ?round(y)]);
-plot3d(f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4]);
+M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4], [1, 2, 3, 3])$
+f(x, y) := float (M [?round(x), ?round(y)])$
+plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
 @end example
 
 See @code{plot_options} for more examples.
@@ -590,59 +627,58 @@ See @code{plot_options} for more examples.
 @end defun
 
 
-@defun make_transform (vars, fx, fy, fz)
-returns a function suitable for the transform function in plot3d. Use
-with the PLOT_OPTION TRANSFORM_XY.
+@defun make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
+Returns a function suitable for the transform function in plot3d. Use
+with the plot option @code{transform_xy}.
 @example
-make_transform([r,th,z],r*cos(th),r*sin(th),z)
+make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
 is a transformation to polar coordinates.
 @end defun
 
-@defun plot2d_ps (expr,range)
- writes to pstream a sequence of PostScript commands which
-plot EXPR for RANGE.
-EXPR should be an expression of 1 variable.
-RANGE should be of the form [variable,min,max]
-over which to plot expr.
-see CLOSEPS.
+@defun plot2d_ps (@var{expr}, @var{range})
+Writes to pstream a sequence of PostScript commands which
+plot @var{expr} over @var{range}.
+
+@var{expr} is an expression.
+@var{range} is a list of the form @code{[@var{x}, @var{min}, @var{max}]}
+in which @var{x} is a variable which appears in @var{expr}.
+
+See also @code{closeps}.
 
 @end defun
 
 
 @defun closeps ()
 This should usually becalled at the end of a sequence of plotting
-commands.   It closes the current output stream PSTREAM, and sets
+commands.   It closes the current output stream @var{pstream}, and sets
 it to nil.   It also may be called at the start of a plot, to ensure
 pstream is closed if it was open.    All commands which write to
-pstream, open it if necessary.   CLOSEPS is separate from the other
+pstream, open it if necessary.   @code{closeps} is separate from the other
 plotting commands, since we may want to plot 2 ranges or superimpose
 several plots, and so must keep the stream open.
 @end defun
 
-@defun set_plot_option (option)
-option is of the format of one of the elements of the PLOT_OPTIONS
+@defun set_plot_option (@var{option})
+option is of the format of one of the elements of the @code{plot_options}
 list.
-Thus
-@example
-SET_PLOT_OPTION([grid,30,40])
-@end example
-would change the default grid used by plot3d.   Note that if the symbol
-grid has a value, then you should quote it here:
-@example
-SET_PLOT_OPTION(['grid,30,40])
-@end example
+Thus @code{set_plot_option ([grid, 30, 40])}
+would change the default grid used by @code{plot3d}.   Note that if the symbol
+@code{grid} has a value, then you should quote it here:
+@code{set_plot_option (['grid, 30, 40])}
 so that the value will not be substituted.
 @end defun
 
-@defun psdraw_curve (ptlist)
+@defun psdraw_curve (@var{ptlist})
 
-Draws a curve connecting the points in PTLIST.   The latter
-may be of the form [x0,y0,x1,y1,...] or [[x0,y0],[x1,y1],...]
-The function JOIN is handy for taking a list of x's and a
+Draws a curve connecting the points in @var{ptlist}.   The latter
+may be of the form @code{[x0, y0, x1, y1, ...]} or @code{[[x0, y0], [x1, y1], ...]}
+
+The function @code{join} is handy for taking a list of x's and a
 list of y's and splicing them together.
-PSDRAW_CURVE simply invokes the more primitive function
-PSCURVE.   Here is the definition:
+
+@var{psdraw_curve} simply invokes the more primitive function
+@var{pscurve}.   Here is the definition:
 
 @example
 (defun $psdraw_curve (lis)
@@ -660,14 +696,13 @@ PSCURVE.   Here is the definition:
 
 @end defun
 
-@defun pscom (com)
+@defun pscom (@var{cmd})
 
-COM will be inserted in the poscript file
-eg
+@var{cmd} is inserted in the PostScript file.
+Example:
 @example
-  pscom("4.5 72 mul 5.5 72 mul translate  14 14 scale");
+pscom ("4.5 72 mul 5.5 72 mul translate 14 14 scale");
 @end example
-
 
 @end defun
 
