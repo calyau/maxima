@@ -73,6 +73,8 @@ is itelf an expression, and so could take the place of the
 right hand side of a function definition.  Here it may happen
 that the return happens earlier than the last expression.
 
+@c COPY THIS STUFF TO @defun block AS NEEDED
+@c ESPECIALLY STUFF ABOUT LOCAL VARIABLES
 The first @code{[]} in the block, may contain a list of variables and
 variable assignments, such as @code{[a: 3, b, c: []]}, which would cause the
 three variables @code{a},@code{b},and @code{c} to not refer to their
@@ -330,33 +332,41 @@ first argument evaluated as well as its second.
 @end defun
 
 
-@defun block ([v_1, ..., v_m], stmt_1, ..., stmt_n)
-Blocks in Maxima are
-somewhat analogous to subroutines in Fortran or procedures in Algol or
-PL/I.  Blocks are like compound statements but also enable the user to
-label statements within the block and to assign "dummy" variables to
-values which are local to the block.  @var{v_1}, ..., @var{v_m} are variables which are
-local to the block and the @var{stmt_1}, ..., @var{stmt_n} are any Maxima expressions.  If no
-variables are to be made local then the list may be omitted.  A block
-uses these local variables to avoid conflict with variables having the
-same names used outside of the block (i.e. global to the block).  In
-this case, upon entry to the block, the global values are saved onto a
-stack and are inaccessible while the block is being executed.  The
-local variables then are unbound so that they evaluate to themselves.
-They may be bound to arbitrary values within the block but when the
-block is exited the saved values are restored to these variables.  The
-values created in the block for these local variables are lost.  Where
-a variable is used within a block and is not in the list of local
-variables for that block it will be the same as the variable used
-outside of the block.
+@defun block ([v_1, ..., v_m], expr_1, ..., expr_n)
+@defunx block (expr_1, ..., expr_n)
+@code{block} evaluates @var{expr_1}, ..., @var{expr_n} in sequence
+and returns the value of the last expression evaluated.
+The sequence can be modified by the @code{go}, @code{throw}, and @code{return} functions.
+The last expression is @var{expr_n} unless @code{return} or an expression containing @code{throw}
+is evaluated.
+Some variables @var{v_1}, ..., @var{v_m} can be declared local to the block;
+these are distinguished from global variables of the same names.
+If no variables are declared local then the list may be omitted.
+Within the block,
+any variable other than @var{v_1}, ..., @var{v_m} is a global variable.
 
-    If it is desired to save and restore other local properties
+@code{block} saves the current values of the variables @var{v_1}, ..., @var{v_m} (if any)
+upon entry to the block,
+then unbinds the variables so that they evaluate to themselves.
+The local variables may be bound to arbitrary values within the block but when the
+block is exited the saved values are restored,
+and the values assigned within the block are lost.
+
+@code{block} may appear within another @code{block}.
+Local variables are established each time a new @code{block} is evaluated.
+Local variables appear to be global to any enclosed blocks.
+If a variable is non-local in a block,
+its value is the value most recently assigned by an enclosing block, if any,
+otherwise, it is the value of the variable in the global environment.
+This policy may coincide with the usual understanding of "dynamic scope".
+
+If it is desired to save and restore other local properties
 besides @code{value}, for example @code{array} (except for complete arrays),
 @code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant}, and
 @code{nonscalar} then the function @code{local} should be used inside of the block
 with arguments being the names of the variables.
 
-    The value of the block is the value of the last statement or the
+The value of the block is the value of the last statement or the
 value of the argument to the function @code{return} which may be used to exit
 explicitly from the block. The function @code{go} may be used to transfer
 control to the statement of the block that is tagged with the argument
@@ -366,7 +376,7 @@ another statement in the block.  For example:
 be the name of a tag appearing within the block.  One cannot use @code{go} to
 transfer to a tag in a block other than the one containing the @code{go}.
 
-    Blocks typically appear on the right side of a function definition
+Blocks typically appear on the right side of a function definition
 but can be used in other places as well.
 
 @end defun
@@ -375,11 +385,6 @@ but can be used in other places as well.
 will evaluate and print its arguments and will then
 cause a Maxima break at which point the user can examine and change
 his environment.  Upon typing @code{exit;} the computation resumes.
-@c STUFF ABOUT CONTROL CHARACTERS IS OBSOLETE. CUT IT OUT ON THE NEXT PASS.
-Control-A (^A) will enter a Maxima break from any point
-interactively.  @code{exit;} will continue the computation.  Control-X may be
-used inside the Maxima break to quit locally, without quitting the
-main computation.
 
 @end defun
 
@@ -389,10 +394,10 @@ evaluates its arguments one by one; if the
 structure of the arguments leads to the evaluation of an expression of the
 form @code{throw (arg)}, then the value of the @code{catch} is the value of
 @code{throw (arg)}.  This "non-local return" thus goes through any depth of
-nesting to the nearest enclosing @code{catch}.  There must be a @code{catch}
-corresponding to a @code{throw}, else an error is generated.  If the
-evaluation of the arguments does not lead to the evaluation of any @code{throw}
-then the value of the @code{catch} is the value of @var{expr_n}.
+nesting to the nearest enclosing @code{catch}.
+If there is no @code{catch} enclosing a @code{throw}, an error message is printed.
+If the evaluation of the arguments does not lead to the evaluation of any @code{throw}
+then the value of @code{catch} is the value of @var{expr_n}.
 
 @example
 (%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
@@ -403,6 +408,7 @@ then the value of the @code{catch} is the value of @var{expr_n}.
 (%o4)                          - 3
 @end example
 
+@c REWORD THIS PART.
 The function @code{g} returns a list of @code{f} of each element of @code{l} if @code{l}
 consists only of non-negative numbers; otherwise, @code{g} "catches" the
 first negative element of @code{l} and "throws" it up.
@@ -416,29 +422,32 @@ the file @var{filename}.  For convenience, see the @code{compile} function.
 
 @end defun
 
-@defvar compgrind
-Default value: @code{false}
+@c THIS VARIABLE IS OBSOLETE: ASSIGNING compgrind: true CAUSES compfile
+@c TO EVENTUALLY CALL AN OBSOLETE FUNCTION SPRIN1.
+@c RECOMMENDATION IS TO CUT THIS ITEM, AND CUT $compgrind FROM src/transs.lisp
+@c @defvar compgrind
+@c Default value: @code{false}
+@c 
+@c When @code{compgrind} is @code{true}, function definitions printed by
+@c @code{compfile} are pretty-printed.
+@c 
+@c @end defvar
 
-When @code{compgrind} is @code{true}, function definitions output by
-@code{compfile} are pretty-printed.
+@defun compile (@var{f_1}, ..., @var{f_n})
+@defunx compile (functions)
+@defunx compile (all)
+Translates Maxima functions into Lisp, executes the Lisp compiler,
+and loads the compiler output into Maxima.
+@code{compile} returns a list of the names of the compiled functions.
 
-@end defvar
+@code{compile (@var{f_1}, ..., @var{f_n})} compiles the functions @var{f_1}, ..., @var{f_n}.
+@c REALLY ???
+It uses the name of function1 as the first name of the file to put the Lisp output.
 
-@defun compile (f)
-The @code{compile} command is a convenience feature in Maxima. It
-handles the calling of the function @code{compfile}, which translates Maxima
-functions into Lisp, the calling of the Lisp compiler on the file
-produced by @code{compfile}, and the loading of the output of the compiler
-into the Maxima. It also checks the compiler
-comment listing output file for certain common errors.
-@code{compile ()} causes Maxima to prompt for arguments. 
-@code{compile (function1, function2, ...)} compiles the functions, it uses the name
-of function1 as the first name of the file to put the Lisp output.
-@code{compile (all)} or @code{compile (functions)} will compile all functions.
-@code{compile ([file-name], function1, function2, ...)} N.B. all arguments are
-evaluated, just like a normal function (it is a normal function!).
-Therefore, if you have variables with the same name as part of the
-file you can not ignore that fact.
+@code{compile (all)} or @code{compile (functions)} compiles all user-defined functions.
+
+@code{compile} quotes its arguments; 
+the double-single-quotes operator @code{'@w{}'} defeats quotation.
 
 @end defun
 
@@ -655,7 +664,7 @@ definition or at top-level for global variables.
 
 @defun mode_identity (arg_1, arg_2)
 A special form used with @code{mode_declare} and
-@code{macros} to delcare, e.g., a list of lists of flonums, or other compound
+@code{macros} to declare, e.g., a list of lists of flonums, or other compound
 data object.  The first argument to @code{mode_identity} is a primitive value
 mode name as given to @code{mode_declare} (i.e., one of @code{float}, @code{fixnum}, @code{number},
 @code{list}, or @code{any}), and the second argument is an expression which is
@@ -699,89 +708,109 @@ uses @code{transcompile: true}.
 
 @end defvar
 
-@defun translate (f1, f2, ...)
+@defun translate (@var{f_1}, ..., @var{f_n})
 Translates the user defined functions
-f1,f2,... from the Maxima language to Lisp (i.e. it makes them
-EXPRs).  This results in a gain in speed when they are called.
-There is now a version of Maxima with the Maxima to Lisp translator pre-loaded into it.
-@c STUFF ABOUT :TM IS OBSOLETE. CUT IT OUT ON NEXT PASS.
-It is available by typing :TM (for
-TranslateMacsyma) at DDT level.  When given a file name, E.g. :TM
-GJC;TMTEST > , it gives that file to the function @code{translate_file}, and
-proceeds without further user interaction.  If no file name is given,
-:TM gives a regular Maxima "(%i1)" line.  P.s. A user init file with
-second name "TM" will be loaded if it exists.  You may just want to
-link this to your Maxima init file.
+@var{f_1}, ..., @var{f_n} from the Maxima language into Lisp.
+Typically the translated functions run faster than the originals.
+
 Functions to be translated should include a call to @code{mode_declare} at the
 beginning when possible in order to produce more efficient code.  For
 example:
 
 @example
-f (x1, x2, ...) := block ([v1, v2, ...],
-    mode_declare (v1, mode1, v2, mode2, ...), ...)
+f (x_1, x_2, ...) := block ([v_1, v_2, ...],
+    mode_declare (v_1, mode_1, v_2, mode_2, ...), ...)
 @end example
 
 @noindent
 
-where the X1,X2,...  are the parameters to the function and the
-v1,v2,... are the local variables.  The names of translated functions
+where the @var{x_1}, @var{x_2}, ...  are the parameters to the function and the
+@var{v_1}, @var{v_2}, ... are the local variables.
+
+The names of translated functions
 are removed from the @code{functions} list if @code{savedef} is @code{false} (see below)
-and are added to the @code{props} lists.  Functions should not be translated
-unless they are fully debugged.  Also, expressions are assumed
-simplified; if they are not, correct but non- optimal code gets
+and are added to the @code{props} lists.
+
+Functions should not be translated
+unless they are fully debugged.
+
+Expressions are assumed simplified; if they are not, correct but non- optimal code gets
 generated.  Thus, the user should not set the @code{simp} switch to @code{false}
 which inhibits simplification of the expressions to be translated.
+
 The switch @code{translate}, if @code{true}, causes automatic
-translation of a user's function to Lisp.  Note that translated
+translation of a user's function to Lisp.
+
+Note that translated
 functions may not run identically to the way they did before
 translation as certain incompatabilities may exist between the Lisp
 and Maxima versions.  Principally, the @code{rat} function with more than
 one argument and the @code{ratvars} function should not be used if any
-variables are @code{mode_declare}'d CRE.  Also the @code{prederror: false} setting
+variables are @code{mode_declare}'d canonical rational expressions (CRE).
+Also the @code{prederror: false} setting
 will not translate.
+@c WHAT ABOUT % AND %% ???
 
-@code{savedef}[@code{true}] - if @code{true} will cause the Maxima version of a user
+@code{savedef} - if @code{true} will cause the Maxima version of a user
 function to remain when the function is @code{translate}'d.  This permits the
 definition to be displayed by @code{dispfun} and allows the function to be
 edited.
 
-@code{transrun}[@code{true}] - if @code{false} will cause the interpreted version of all
+@code{transrun} - if @code{false} will cause the interpreted version of all
 functions to be run (provided they are still around) rather than the
 translated version.
 
-@c OBSOLETE STUFF ABOUT FILE SPECS HERE
-One can translate functions stored in a file by giving @code{translate} an
-argument which is a file specification.  This is a list of the form
-[fn1,fn2,DSK,dir] where fn1 fn2 is the name of the file of Maxima
-functions, and dir is the name of a file directory.
 The result returned by @code{translate} is a list of the names of the
-functions translated.  In the case of a file translation the
-corresponding element of the list is a list of the first and second
-new file names containing the Lisp code resulting from the
-translation.  This will be fn1.LISP on the disk directory dir.  The
-file of Lisp code may be read into Maxima by using the @code{loadfile}
-function.
+functions translated.
 
 @end defun
 
-@defun translate_file (file)
-translates a file of Maxima code into a file
-of Lisp code.  It takes one or two arguments.  The first argument is
-the name of the Maxima file, and the optional second argument is the
-name of the Lisp file to produce.  The second argument defaults to the
-first argument with second file name the value of
-@code{tr_output_file_default} which defaults to @code{trlisp}.  For example:
-@code{translate_file ("test.mc"))} will translate @code{"test.mc"} to @code{"test.LISP"}.
-Also produced is a file of translator warning
-messages of various degrees of severity.  The second file name is
-always @code{UNLISP}.  This file contains valuable (albeit obsure for some)
-information for tracking down bugs in translated code.  Do
-@code{apropos (tr_)} to get a list of @code{tr} (for @code{translate}) switches.  In
-summary, @code{translate_file ("foo.mc"); loadfile("foo.LISP")} is the same as
-@code{batch ("foo.mc")} modulo certain restrictions (the use of '@w{}' and % for
-example).
-@c (1) LIST RESULT OF apropos (tr_) AS SEE-ALSOS
-@c (2) FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
+@defun translate_file (@var{maxima_filename})
+@defunx translate_file (@var{maxima_filename}, @var{lisp_filename})
+Translates a file of Maxima code into a file of Lisp code.
+@code{translate_file} returns a list of three filenames:
+the name of the Maxima file, the name of the Lisp file, and the name of file
+containing additional information about the translation.
+@code{translate_file} does not quote its arguments.
+
+@code{translate_file ("foo.mac"); load("foo.LISP")} is the same as
+@code{batch ("foo.mac")} except for certain restrictions,
+the use of @code{'@w{}'} and @code{%}, for example.
+@c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
+
+@code{translate_file (@var{maxima_filename})} translates a Maxima file @var{maxima_filename}
+into a similarly-named Lisp file.
+For example, @code{foo.mac} is translated into @code{foo.LISP}.
+The Maxima filename may include a directory name or names,
+in which case the Lisp output file is written
+to the same directory from which the Maxima input comes.
+
+@code{translate_file (@var{maxima_filename}, @var{lisp_filename})} translates
+a Maxima file @var{maxima_filename} into a Lisp file @var{lisp_filename}.
+@code{translate_file} ignores the filename extension, if any, of @code{lisp_filename};
+the filename extension of the Lisp output file is always @code{LISP}.
+The Lisp filename may include a directory name or names,
+in which case the Lisp output file is written to the specified directory.
+
+@code{translate_file} also writes a file of translator warning
+messages of various degrees of severity.
+The filename extension of this file is @code{UNLISP}.
+This file may contain valuable information, though possibly obscure,
+for tracking down bugs in translated code.
+The @code{UNLISP} file is always written
+to the same directory from which the Maxima input comes.
+
+@c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
+See also @code{tr_array_as_ref}, @code{tr_bind_mode_hook}, 
+@code{tr_bound_function_applyp}, @code{tr_exponent}, @code{tr_file_tty_messagesp}, 
+@code{tr_float_can_branch_complex}, @code{tr_function_call_default}, 
+@code{tr_gen_tags}, @code{tr_numer}, @code{tr_optimize_max_loop}, 
+@code{tr_predicate_brain_damage}, 
+@code{tr_semicompile}, @code{tr_state_vars}, 
+@code{tr_true_name_of_file_being_translated},
+@code{tr_warnings_get}, @code{tr_warn_bad_function_calls}, @code{tr_warn_fexpr}, 
+@code{tr_warn_meval}, @code{tr_warn_mode}, @code{tr_warn_undeclared}, 
+@code{tr_warn_undefined_variable}, and @code{tr_windy}.
 
 @end defun
 
@@ -873,13 +902,15 @@ non-terminating optimization properties.
 
 @end defvar
 
-@defvar tr_output_file_default
-Default value: @code{trlisp}
-
-@code{tr_output_file_default} is the second file
-name to be used for translated Lisp output.
-
-@end defvar
+@c OBSOLETE: USED ONLY IN A MACRO trlisp-outputname-d1 IN src/transs.lisp
+@c WHICH IS NEVER USED
+@c @defvar tr_output_file_default
+@c Default value: @code{trlisp}
+@c 
+@c @code{tr_output_file_default} is the second file
+@c name to be used for translated Lisp output.
+@c 
+@c @end defvar
 
 @defvar tr_predicate_brain_damage
 Default value: @code{false}
@@ -926,11 +957,13 @@ translated by @code{translate_file}.
 
 @end defvar
 
-@defvar tr_version
-
-@code{tr_version} is the version number of the translator.
-
-@end defvar
+@c tr_version IS OBSOLETE: $tr_version APPEARS IN src/transs.lisp BUT 
+@c IT IS NEVER ASSIGNED A VALUE. CUT THIS OUT BUT BE SURE TO NOTE IT IN CVS LOG SUMMARY.
+@c @defvar tr_version
+@c 
+@c @code{tr_version} is the version number of the translator.
+@c 
+@c @end defvar
 
 @defun tr_warnings_get ()
 Prints a list of warnings which have been given by
