@@ -509,6 +509,9 @@ calling ALGSYS.)
 @c @node ZSOLVE
 @c @unnumberedsec phony
 @defun ZSOLVE
+ This is not available with Maxima anymore.  Documentation is left for
+ historical purposes.
+
  - For those who can make use of approximate numerical
 solutions to problems, there is a package which calls a routine which
 has been translated from the IMSL fortran library to solve N
