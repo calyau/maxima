@@ -452,7 +452,6 @@ Debugging
 @chapter Series
 @include Series.texi
 
-@c @include None.texi
 
 @node Number Theory, Symmetries, Series, Top
 @chapter Number Theory
@@ -478,7 +477,6 @@ Debugging
 @chapter Rules and Patterns
 @include Rules.texi
 
-@c @include xrefs.texi
 
 @node Lists, Function Definition, Rules and Patterns, Top
 @chapter Lists
