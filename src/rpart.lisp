@@ -207,7 +207,10 @@
 	(risplit ((lambda ($numer) (exptrl ris pow)) t)))
        (t ((lambda (sp aa)
 	     ;;If all else fails, we use the trigonometric form.
-	     (cond ((and (=0 (cdr sp)) (=0 (cdr aa))) (cons l 0))
+	     (cond ((and (=0 (cdr sp))
+			 (=0 (cdr aa))
+			 (freeof '$%i l))
+		    (cons l 0))
 		   (t ((lambda (pre post)
 			 (cons (mul pre (take '(%cos) post))
 			       (mul pre (take '(%sin) post))))
