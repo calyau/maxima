@@ -926,7 +926,7 @@ rigidly along with this one."
 	  (define-key (current-local-map) "q" 'maxima-kill-help)
 	  (goto-char 1)
 	  (pop-to-buffer maxima-help-buffer)
-          (setq buffer-read-only nil))
+          (setq buffer-read-only t))
       (kill-buffer maxima-help-buffer)
       (message (concat "No help for *" expr "*")))))
 
