@@ -97,11 +97,6 @@ only if EXPOP is greater than or equal to 3.  If it is desired to have
 EXPAND((X+1)^N) will work only if MAXPOSEX is not less than N.
 The EXPAND flag used with EV (see EV) causes expansion.
 
-@findex FACSUM
-@findex COLLECTTERMS
-@findex FACTORFACSUM
-@vindex NEXTLAYERFACTOR
-@vindex FACSUM_COMBINE 
 The file @file{simplification/facexp.mac}
 @c I should really use a macro which expands to something like
 @c @uref{file://...,,simplification/facexp.mac}.  But texi2html
