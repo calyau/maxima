@@ -15,7 +15,7 @@
 LOAD_PACKAGE(DIFFEQ,"SHARE2\;DIFFEQ")$
 */
 load("diffeq")$
-IF SHOWTIME=FALSE THEN SHOWTIME:'ALL$
+if showtime=false then showtime:'all$
 
 /* The van der Pol equation. */
 
@@ -23,9 +23,9 @@ IF SHOWTIME=FALSE THEN SHOWTIME:'ALL$
 
 /* RUNGE2(F,X0,X1,H,Y0,YP0) is the call for a second order equation. */
 
-DEFINE_VARIABLE(MICRO,1.0,FLOAT)$
+define_variable(micro,1.0,float)$
 
-VANDER(T,Y,YP):=(MODE_DECLARE([T,Y,YP],FLOAT),MICRO*(1-Y^2)*YP-Y);
+vander(t,y,yp):=(mode_declare([t,y,yp],float),micro*(1-y^2)*yp-y);
 /*
 COMPILE("DSK:NUMER\;.TEMP. DEMO",VANDER)$
 */
@@ -33,18 +33,18 @@ COMPILE("DSK:NUMER\;.TEMP. DEMO",VANDER)$
 compile();
 /* It is interesting to plot a few paths with different values of
    micro. */
-VANDERPOL&&
+vanderpol&&
 
 /* You can type control-U during the calculation to see how it
    is progressing. */
 
-(X0:0.0,X1:10.0,NPOINTS:100,DX:(X1-X0)/NPOINTS)$
+(x0:0.0,x1:10.0,npoints:100,dx:(x1-x0)/npoints)$
 
-VPM1:(MICRO:0.1,RUNGE2('VANDER,X0,X1,DX,0.1,0.1))$
-(VPX:VPM1[1],VPM1:REST(VPM1))$
-VPM2:REST((MICRO:0.5,RUNGE2('VANDER,X0,X1,DX,0.1,0.1)))$
-VPM3:REST((MICRO:1.5,RUNGE2('VANDER,X0,X1,DX,0.1,0.1)))$	
-VPM4:REST((MICRO:3.5,RUNGE2('VANDER,X0,X1,DX,0.1,0.1)))$	
+vpm1:(micro:0.1,runge2('vander,x0,x1,dx,0.1,0.1))$
+(vpx:vpm1[1],vpm1:rest(vpm1))$
+vpm2:rest((micro:0.5,runge2('vander,x0,x1,dx,0.1,0.1)))$
+vpm3:rest((micro:1.5,runge2('vander,x0,x1,dx,0.1,0.1)))$	
+vpm4:rest((micro:3.5,runge2('vander,x0,x1,dx,0.1,0.1)))$	
 
 /* the plot will be phase space, Y vs. Y' */
 /* not in DOE MACSYMA at the present time
@@ -55,17 +55,17 @@ apply('graph,[x[2],y[2],["+"]]),
 apply('graph,[x[3],y[3],["^"]]),
 apply('graph,[x[4],y[4],["-"]]))$
 
-ap([VPM1[1],VPM2[1],VPM3[1],VPM4[1]],
-   [VPM1[2],VPM2[2],VPM3[2],VPM4[2]]);
+ap([vpm1[1],vpm2[1],vpm3[1],vpm4[1]],
+   [vpm1[2],vpm2[2],vpm3[2],vpm4[2]]);
 
 
         /* A time X vs. Y graph. */
 
-ap([VPX,VPX,VPX,VPX],[VPM1[1],VPM2[1],VPM3[1],VPM4[1]]);
+ap([vpx,vpx,vpx,vpx],[vpm1[1],vpm2[1],vpm3[1],vpm4[1]]);
 
 
         /* coupled equations. */
-KILL(ARRAYS,VALUES,FUNCTIONS,LABELS)$
+kill(arrays,values,functions,labels)$
 spring&&
 
 'diff('x,'t,2)=-'k/'m*'x;
@@ -74,11 +74,11 @@ spring&&
    (somebody should write a macsyma program to do this
     automatically!) */
 
-DEFINE_VARIABLE(K,1.0,FLOAT)$
-DEFINE_VARIABLE(M,1.0,FLOAT)$
+define_variable(k,1.0,float)$
+define_variable(m,1.0,float)$
 
-DVEL(T,X,VEL):=(MODEDECLARE([T,X,VEL],FLOAT),-K/M*X)$
-DX(T,X,VEL):=(MODEDECLARE([T,X,VEL],FLOAT),VEL)$
+dvel(t,x,vel):=(modedeclare([t,x,vel],float),-k/m*x)$
+dx(t,x,vel):=(modedeclare([t,x,vel],float),vel)$
 /*
 COMPILE("DSK:NUMER\;.TEMP. DEMO",DVEL,DX)$
 */
@@ -90,7 +90,7 @@ compile();
    Type control-U during the calculation to see how
    far it has gotten. */
 
-SOL:RUNGEN('[DX,dvel],0,10,.15,'[1,0])$
+sol:rungen('[dx,dvel],0,10,.15,'[1,0])$
 
 /* The solution is of the form
    [ <list-of-t> , <list of [X,VEL] pairs>, <list of [X',VEL']> ]
@@ -98,15 +98,15 @@ SOL:RUNGEN('[DX,dvel],0,10,.15,'[1,0])$
    generality leads to a little waste in this case. RUNGE2 is
    better for solving second order equations. */
 
-T:SOL[1]$
-X:MAPLIST(LAMBDA([U],U[1]),SOL[2])$
-VEL:MAPLIST(LAMBDA([U],U[2]),SOL[2])$
+t:sol[1]$
+x:maplist(lambda([u],u[1]),sol[2])$
+vel:maplist(lambda([u],u[2]),sol[2])$
 
 /* with K=1 and M=1 we should see a sine and cosine wave of
    period 2*%PI, since I picked the initial conditions X=1 and VEL=0
 */
 
-GRAPH(T,[X,VEL],["*","+"])$
+graph(t,[x,vel],["*","+"])$
 
 /* end of demo */
 "end of demo"$

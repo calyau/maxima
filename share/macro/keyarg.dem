@@ -5,10 +5,10 @@
    property of the function.
 */
 
-IF GET('SHAREM,'VERSION)=FALSE THEN LOADFILE(AUTOLO,FASL,DSK,SHAREM)$
+if get('sharem,'version)=false then loadfile(autolo,fasl,dsk,sharem)$
 
-DEF_KEYARG(BAR(FOOP,MAXI=33,TIME=4.4),
-	   ['FOOP=FOOP,'MAXI=MAXI,'TIME=TIME])$
+def_keyarg(bar(foop,maxi=33,time=4.4),
+	   ['foop=foop,'maxi=maxi,'time=time])$
 
 /* In the argument specification VARIABLE = DEFAULT_VALUE
    indicates a variable which can be specified in a call to the
@@ -20,11 +20,11 @@ DEF_KEYARG(BAR(FOOP,MAXI=33,TIME=4.4),
 
 */
 
-BAR(MAXI=100000,FOOP);
+bar(maxi=100000,foop);
 
-BAR();
+bar();
 
 /* mispell an argument on purpose: */
 
-ERRCATCH(BAR(MAXI=10,TIMEM=33));
+errcatch(bar(maxi=10,timem=33));
 

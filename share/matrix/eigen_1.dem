@@ -1,139 +1,139 @@
 load("eigen")$
 
-MATRIX1:MATRIX([M1,0,0,0,M5],[0,M2,0,0,M5],[0,0,M3,0,M5],[0,0,0,M4,M5],[0,0,0,0,0]);
+matrix1:matrix([m1,0,0,0,m5],[0,m2,0,0,m5],[0,0,m3,0,m5],[0,0,0,m4,m5],[0,0,0,0,0]);
 
-MATRIX2:MATRIX([1,2,3,4],[0,3,4,5],[0,0,5,6],[0,0,0,9]);
+matrix2:matrix([1,2,3,4],[0,3,4,5],[0,0,5,6],[0,0,0,9]);
 
-/* THE NEXT FUNCTION TAKES A MATRIX AS ITS ARGUMENT AND RETURNS THE
-	EIGENVALUES AND THE UNIT EIGEN VECTORS OF THAT MATRIX... */
+/* the next function takes a matrix as its argument and returns the
+	eigenvalues and the unit eigen vectors of that matrix... */
 
-UNITEIGENVECTORS(MATRIX2);
+uniteigenvectors(matrix2);
 
-/* IF YOU ALREADY KNOW THE EIGENVECTORS YOU CAN SET THE FLAG 
-	KNOWNEIGVECTS TO TRUE AND THE GLOBAL VARIABLE LISTEIGVECTS TO THE
-	LIST OF THE EIGEN VECTORS... 
-	THE NEXT FUNCTION TAKES A MATRIX AS ITS ARGUMENT AND RETURNS THE EIGEN
-	VALUES AND THE UNIT EIGEN VECTORS OF THAT MATRIX.  IN ADDITION IF
-	THE FLAG NONDIAGONALIZABLE IS FALSE,TWO GLOBAL MATRICES LEFTMATRIX AND
-	RIGHTMATRIX WILL BE GENERATED.  THESE MATRICES HAVE THE PROPERTY THAT
-	LEFTMATRIX.(MATRIX).RIGHTMATRIX IS A DIAGONAL MATRIX WITH THE EIGEN 
-	VALUES OF THE (MATRIX) ON THE DIAGONAL...  */
+/* if you already know the eigenvectors you can set the flag 
+	knowneigvects to true and the global variable listeigvects to the
+	list of the eigen vectors... 
+	the next function takes a matrix as its argument and returns the eigen
+	values and the unit eigen vectors of that matrix.  in addition if
+	the flag nondiagonalizable is false,two global matrices leftmatrix and
+	rightmatrix will be generated.  these matrices have the property that
+	leftmatrix.(matrix).rightmatrix is a diagonal matrix with the eigen 
+	values of the (matrix) on the diagonal...  */
 
-SIMILARITYTRANSFORM(MATRIX1)$
-NONDIAGONALIZABLE;
-RATSIMP(LEFTMATRIX.MATRIX1.RIGHTMATRIX);
+similaritytransform(matrix1)$
+nondiagonalizable;
+ratsimp(leftmatrix.matrix1.rightmatrix);
 
-/* NOW THAT YOU KNOW HOW TO USE THE EIGEN PACKAGE, HERE ARE SOME
-	EXAMPLES ABOUT HOW NOT TO USE IT.
-	CONSIDER THE FOLLOWING MATRIX :   */
+/* now that you know how to use the eigen package, here are some
+	examples about how not to use it.
+	consider the following matrix :   */
 
-MATRIX3:MATRIX([1,0],[0,1]);
+matrix3:matrix([1,0],[0,1]);
 
-/* AS YOU'VE UNDOUBTEDLY NOTICED, THIS IS THE 2*2 IDENTITY MATRIX.
-	LET'S FIND THE EIGEN VALUES AND THE EIGEN VECTORS OF THIS MATRIX...
+/* as you've undoubtedly noticed, this is the 2*2 identity matrix.
+	let's find the eigen values and the eigen vectors of this matrix...
 */
 
-EIGENVECTORS(MATRIX3);
+eigenvectors(matrix3);
 
-/* "NOTHING SPECIAL HAPPENED", YOU SAY.  EVERYONE KNOWS WHAT THE EIGEN
-	VALUES AND THE EIGEN VECTORS OF THE IDENTITY MATRIX ARE, RIGHT?
-	RIGHT.  NOW CONSIDER THE FOLLOWING MATRIX :  */
+/* "nothing special happened", you say.  everyone knows what the eigen
+	values and the eigen vectors of the identity matrix are, right?
+	right.  now consider the following matrix :  */
 
-MATRIX4:MATRIX([1,E],[E,1]);
+matrix4:matrix([1,e],[e,1]);
 
-/* LET E>0, BUT AS SMALL AS YOU CAN IMAGINE.  SAY 10^(-100).
-	LET'S FIND THE EIGEN VALUES AND THE EIGEN VECTORS OF THIS MATRIX :
+/* let e>0, but as small as you can imagine.  say 10^(-100).
+	let's find the eigen values and the eigen vectors of this matrix :
 */
 
-EIGENVECTORS(MATRIX4);
+eigenvectors(matrix4);
 
-/* SINCE E~10^(-100), THE EIGEN VALUES OF MATRIX4 ARE EQUAL TO THE
-	EIGEN VALUES OF MATRIX3 TO A VERY GOOD ACCURACY.  BUT, LOOK
-	AT THE EIGEN VECTORS!!!  EIGEN VECTORS OF MATRIX4 ARE NOWHERE
-	NEAR THE EIGEN VECTORS OF MATRIX3.  THERE IS ANGLE OF %PI/4
-	BETWEEN THE CORRESPONDING EIGEN VECTORS.  SO, ONE LEARNS
-	ANOTHER FACT OF LIFE :
+/* since e~10^(-100), the eigen values of matrix4 are equal to the
+	eigen values of matrix3 to a very good accuracy.  but, look
+	at the eigen vectors!!!  eigen vectors of matrix4 are nowhere
+	near the eigen vectors of matrix3.  there is angle of %pi/4
+	between the corresponding eigen vectors.  so, one learns
+	another fact of life :
 
-	MATRICES WHICH HAVE APPROXIMATELY THE SAME EIGEN VALUES DO NOT
-	HAVE APPROXIMATELY THE SAME EIGEN VECTORS IN GENERAL.
+	matrices which have approximately the same eigen values do not
+	have approximately the same eigen vectors in general.
 
-	THIS EXAMPLE MAY SEEM ARTIFICIAL TO YOU, BUT IT IS NOT IF YOU THINK
-	A LITTLE BIT MORE ABOUT IT.  SO, PLEASE BE CAREFUL WHEN YOU
-	APPROXIMATE THE ENTRIES OF WHATEVER MATRIX YOU HAVE.  YOU MAY
-	GET GOOD APPROXIMATIONS TO ITS EIGEN VALUES, HOWEVER THE EIGEN
-	VECTORS YOU GET MAY BE ENTIRELY SPURIOUS( OR SOME MAY BE CORRECT,
-	BUT SOME OTHERS MAY BE TOTALLY WRONG ).
+	this example may seem artificial to you, but it is not if you think
+	a little bit more about it.  so, please be careful when you
+	approximate the entries of whatever matrix you have.  you may
+	get good approximations to its eigen values, however the eigen
+	vectors you get may be entirely spurious( or some may be correct,
+	but some others may be totally wrong ).
 
-	NOW, HERE IS ANOTHER SAD STORY :
-	LET'S TAKE A LOOK AT THE FOLLOWING MATRIX :  */
+	now, here is another sad story :
+	let's take a look at the following matrix :  */
 
-MATRIX5:MATRIX([5/2,50-25*%I],[50+25*%I,2505/2]);
+matrix5:matrix([5/2,50-25*%i],[50+25*%i,2505/2]);
 
-/* NICE LOOKING MATRIX, ISN'T IT?  AS USUAL, WE WILL FIND THE EIGEN
-	VALUES AND THE EIGEN VECTORS OF IT :  */
+/* nice looking matrix, isn't it?  as usual, we will find the eigen
+	values and the eigen vectors of it :  */
 
-EIGENVECTORS(MATRIX5);
+eigenvectors(matrix5);
 
-/* WELL, HERE THEY ARE.  SUPPOSE THAT THIS WAS NOT WHAT YOU WANTED.
-	INSTEAD OF THOSE SQRT(70)'S, YOU WANT THE NUMERICAL VALUES OF
-	EVERYTHING.  ONE WAY OF DOING THIS IS TO SET THE FLAG "NUMER"
-	TO TRUE AND USE THE EIGENVECTORS COMMAND AGAIN :  */
+/* well, here they are.  suppose that this was not what you wanted.
+	instead of those sqrt(70)'s, you want the numerical values of
+	everything.  one way of doing this is to set the flag "numer"
+	to true and use the eigenvectors command again :  */
 
-NUMER:TRUE;
-EIGENVECTORS(MATRIX5);
+numer:true;
+eigenvectors(matrix5);
 
-/* OOOPS!!!  WHAT HAPPENED??  WE GOT THE EIGEN VALUES, BUT THERE ARE
-	NO EIGENVECTORS.  NONSENSE, THERE MUST BE A BUG IN EIGEN, RIGHT?
-	WRONG.  THERE IS NO BUG IN EIGEN.  WE HAVE DONE SOMETHING WHICH
-	WE SHOULD NOT HAVE DONE.  LET ME EXPLAIN : 
-	WHEN ONE IS SOLVING FOR THE EIGEN VECTORS, ONE HAS TO FIND THE
-	SOLUTION TO HOMOGENEOUS EQUATIONS LIKE :  */
+/* ooops!!!  what happened??  we got the eigen values, but there are
+	no eigenvectors.  nonsense, there must be a bug in eigen, right?
+	wrong.  there is no bug in eigen.  we have done something which
+	we should not have done.  let me explain : 
+	when one is solving for the eigen vectors, one has to find the
+	solution to homogeneous equations like :  */
 
-EQUATION1:A*X+B*Y=0;
-EQUATION2:C*X+D*Y=0;
+equation1:a*x+b*y=0;
+equation2:c*x+d*y=0;
 
-/* IN ORDER FOR THIS SET OF EQUATIONS TO HAVE A SOLUTION OTHER THAN
-	THE TRIVIAL SOLUTION ( THE ONE IN WHICH X=0 AND Y=0 ), THE 
-	DETERMINANT OF THE COEFFICIENTS ( IN THIS CASE A*D-B*C ) SHOULD
-	VANISH.  EXACTLY.   IF THE DETERMINANT DOES NOT VANISH THE ONLY
-	SOLUTION WILL BE THE TRIVIAL SOLUTION AND WE WILL GET NO EIGEN
-	VECTORS.  DURING THIS DEMO, I DID NOT SET A,B,C,D TO ANY
-	PARTICULAR VALUES.  LET'S SEE WHAT HAPPENS WHEN WE TRY TO SOLVE
-	THE SET ABOVE :  */
+/* in order for this set of equations to have a solution other than
+	the trivial solution ( the one in which x=0 and y=0 ), the 
+	determinant of the coefficients ( in this case a*d-b*c ) should
+	vanish.  exactly.   if the determinant does not vanish the only
+	solution will be the trivial solution and we will get no eigen
+	vectors.  during this demo, i did not set a,b,c,d to any
+	particular values.  let's see what happens when we try to solve
+	the set above :  */
 
-ALGSYS([EQUATION1,EQUATION2],[X,Y]);
+algsys([equation1,equation2],[x,y]);
 
-/* YOU SEE?  THE INFAMOUS TRIVIAL SOLUTION.  NOW LET ME SET A,B,C,D
-	TO SOME NUMERICAL VALUES :  */
+/* you see?  the infamous trivial solution.  now let me set a,b,c,d
+	to some numerical values :  */
 
-A:4;
-B:6;
-C:2;
-D:3;
-A*D-B*C;
-EQUATION1:EV(EQUATION1);
-EQUATION2:EV(EQUATION2);
-ALGSYS([EQUATION1,EQUATION2],[X,Y]);
+a:4;
+b:6;
+c:2;
+d:3;
+a*d-b*c;
+equation1:ev(equation1);
+equation2:ev(equation2);
+algsys([equation1,equation2],[x,y]);
 
-/* NOW WE HAVE A NONTRIVIAL SOLUTION WITH ONE ARBITRARY CONSTANT.
-	( %R(SOMETHING) ).  WHAT HAPPENED IN THE PREVIOUS CASE IS THAT
-	THE NUMERICAL ERRORS CAUSED THE DETERMINANT NOT TO VANISH, HENCE
-	ALGSYS GAVE THE TRIVIAL SOLUTION AND WE GOT NO EIGEN VECTORS.
-	IF YOU WANT A NUMERICAL ANSWER, FIRST CALCULATE IT EXACTLY,
-	THEN SET "NUMER" TO TRUE AND EVALUATE THE ANSWER.  */
+/* now we have a nontrivial solution with one arbitrary constant.
+	( %r(something) ).  what happened in the previous case is that
+	the numerical errors caused the determinant not to vanish, hence
+	algsys gave the trivial solution and we got no eigen vectors.
+	if you want a numerical answer, first calculate it exactly,
+	then set "numer" to true and evaluate the answer.  */
 
-NUMER:FALSE;
-NOTNUMERICAL:EIGENVECTORS(MATRIX5);
-NUMER:TRUE;
-EV(NOTNUMERICAL);
+numer:false;
+notnumerical:eigenvectors(matrix5);
+numer:true;
+ev(notnumerical);
 
-/* YOU SEE, IT WORKS NOW.  ACTUALLY, IF YOU HAVE A MATRIX WITH
-	NUMERICAL ENTRIES AND YOU CAN LIVE WITH REASONABLY ACCURATE
-	ANSWERS, THERE ARE MUCH BETTER (FASTER) PROGRAMS.  ASK SOMEBODY
-	ABOUT THE IMSL ROUTINES ON THE SHARE DIRECTORY... 
-	THIS IS ALL...  IF YOU THINK THAT THE NAMES OF THE FUNCTIONS ARE TOO 
-	LONG, THERE ARE SHORTER NAMES FOR THEM AND THEY ARE GIVEN IN THE FILE
-	EIGEN USAGE DSK:SHARE;.  GOOD LUCK!!!!!!!!!!!!!...... YEKTA  */
+/* you see, it works now.  actually, if you have a matrix with
+	numerical entries and you can live with reasonably accurate
+	answers, there are much better (faster) programs.  ask somebody
+	about the imsl routines on the share directory... 
+	this is all...  if you think that the names of the functions are too 
+	long, there are shorter names for them and they are given in the file
+	eigen usage dsk:share;.  good luck!!!!!!!!!!!!!...... yekta  */
 
 
 "end of demo"$

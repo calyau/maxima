@@ -1,45 +1,45 @@
-IF ?PLIST(FFT)=FALSE THEN LOADFILE(FFT,FASL,DSK,SHARE)$
-IF ?PLIST(FILLARRAY)=FALSE THEN LOADFILE(ARRAY,FASL,DSK,SHARE)$
-/* set up arrays */	ARRAY([G,H,XA],FLOAT,31)$
-			(FILLARRAY(G,[0.0]),FILLARRAY(H,[0.0]),
-			FOR I FROM 0 THRU 15 DO G[I]:1.,
-			FOR I FROM 0 THRU 31 DO XA[I]:FLOAT(I))$
+if ?plist(fft)=false then loadfile(fft,fasl,dsk,share)$
+if ?plist(fillarray)=false then loadfile(array,fasl,dsk,share)$
+/* set up arrays */	array([g,h,xa],float,31)$
+			(fillarray(g,[0.0]),fillarray(h,[0.0]),
+			for i from 0 thru 15 do g[i]:1.,
+			for i from 0 thru 31 do xa[i]:float(i))$
 /* define function to display them */
-			P():=GRAPH2(XA,[G,H],[0,1])$
-			P()$
-/* perform fft */	FFT(G,H)$ 
-			P()$
-/* put in polar form */	RECTTOPOLAR(G,H)$ 
-			P()$
+			p():=graph2(xa,[g,h],[0,1])$
+			p()$
+/* perform fft */	fft(g,h)$ 
+			p()$
+/* put in polar form */	recttopolar(g,h)$ 
+			p()$
 /* undo these operations */
-			POLARTORECT(G,H)$ 
-			P()$
-			IFT(G,H)$
-			P()$
+			polartorect(g,h)$ 
+			p()$
+			ift(g,h)$
+			p()$
 /* if you want avoid having the transform done in place,
    copy the arrays first */
-			(FILLARRAY(G,[0.0]),FILLARRAY(H,[0.0]),
-			FOR I FROM 0 THRU 15 DO G[I]:1.)$
-			ARRAY([GT,HT],FLOAT,31)$
-			(FILLARRAY(GT,G),FILLARRAY(HT,H))$
-			FFT(GT,HT)$
-			GRAPH2(XA,[GT,HT],[0,1])$
+			(fillarray(g,[0.0]),fillarray(h,[0.0]),
+			for i from 0 thru 15 do g[i]:1.)$
+			array([gt,ht],float,31)$
+			(fillarray(gt,g),fillarray(ht,h))$
+			fft(gt,ht)$
+			graph2(xa,[gt,ht],[0,1])$
 /* The last part of this demo plots pretty patterns created by FFT.
    They will only look good if your terminal supports high resolution
    plotting.  If it doesn't I suggest you quit out here by typing
    ^G.  This function was pinched out of some magazine put
    out by Tektronix a year or two ago.  */
 pl&&
-PLINIT(NN):=(BLOCK([I:?RUNTIME()],?SSTATUS(?RANDOM,I)),
-	     ARRAY([FR,FI],FLOAT,2**NN-1),N:NN)$
-PLINIT(8)$
-PL():=BLOCK([XAXIS:FALSE,YAXIS:FALSE,NOPRINT:TRUE,
-	     DATEPLOT:FALSE,EQUALSCALE:TRUE],
-	    REARRAY(FR,2**N-1),REARRAY(FI,2**N-1),
-	    FILLARRAY(FR,[0.0]),FILLARRAY(FI,[0.0]),
-	    THRU 2 DO IF RANDOM(2)=0 
-			 THEN FR[RANDOM(2**N)]:(-1.0)^RANDOM(2)
-			 ELSE FI[RANDOM(2**N)]:(-1.0)^RANDOM(2),
-	    FFT(FR,FI),
-	    GRAPH2([FR,[FR[0],FR[2**N-1]]],[FI,[FI[0],FI[2**N-1]]]))$
-THRU 10 DO PL()$
+plinit(nn):=(block([i:?runtime()],?sstatus(?random,i)),
+	     array([fr,fi],float,2**nn-1),n:nn)$
+plinit(8)$
+pl():=block([xaxis:false,yaxis:false,noprint:true,
+	     dateplot:false,equalscale:true],
+	    rearray(fr,2**n-1),rearray(fi,2**n-1),
+	    fillarray(fr,[0.0]),fillarray(fi,[0.0]),
+	    thru 2 do if random(2)=0 
+			 then fr[random(2**n)]:(-1.0)^random(2)
+			 else fi[random(2**n)]:(-1.0)^random(2),
+	    fft(fr,fi),
+	    graph2([fr,[fr[0],fr[2**n-1]]],[fi,[fi[0],fi[2**n-1]]]))$
+thru 10 do pl()$

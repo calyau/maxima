@@ -17,13 +17,13 @@ load("[sharem]autolo")$
 
 /* Rectangle rule. */
 
-DEFM(RECTRULE('EXPRESSION,'VAR,'A,'B,'DVAR),
-     BLOCK([%_SUM:0.0,%_A:FLOATCHECK(A),
-            %_B:FLOATCHECK(B),%_DVAR:FLOATCHECK(DVAR)],
-           MODE_DECLARE([%_SUM,%_A,%_B,%_DVAR],FLOAT),
-	   FOR VAR:%_A THRU %_B STEP %_DVAR
-            DO %_SUM:%_SUM+EXPRESSION,
-           %_SUM*%_DVAR));
+defm(rectrule('expression,'var,'a,'b,'dvar),
+     block([%_sum:0.0,%_a:floatcheck(a),
+            %_b:floatcheck(b),%_dvar:floatcheck(dvar)],
+           mode_declare([%_sum,%_a,%_b,%_dvar],float),
+	   for var:%_a thru %_b step %_dvar
+            do %_sum:%_sum+expression,
+           %_sum*%_dvar));
 	   
 /* DEFM is a macro which is use to define macro's,
    you can see by looking at the definition of RECTRULE
@@ -35,38 +35,38 @@ DEFM(RECTRULE('EXPRESSION,'VAR,'A,'B,'DVAR),
    function FLOAT does not always return a floating-point
    number. */
 
-MODE_DECLARE(FUNCTION(FLOAT_CHECK),FLOAT)$
-FLOATCHECK(X):=
- (X:FLOAT(X),
-  IF FLOATNUMP(X) THEN X ELSE ERROR("Not FLOATCHECK",X))$
+mode_declare(function(float_check),float)$
+floatcheck(x):=
+ (x:float(x),
+  if floatnump(x) then x else error("not floatcheck",x))$
    
-RECTRULE(X,X,0,1,1/8);
+rectrule(x,x,0,1,1/8);
 
 /* Now for the hat trick. */
 
-F(P,N):=(MODE_DECLARE(P,FIXNUM),
-         RECTRULE(X^P,X,0,1,1/N))$
+f(p,n):=(mode_declare(p,fixnum),
+         rectrule(x^p,x,0,1,1/n))$
 
-MACROEXPANSION:'DISPLACE$
+macroexpansion:'displace$
 
-F(2,5);
+f(2,5);
 
 /* Now, look at the function definition. */
 
-GRIND(F);
+grind(f);
 
 /* If you did some timing's you would see that when macros
    are displacing the function runs faster the second time
    than it does the first. This is user-extendable
    compilation on-the-fly! */
 
-TRANSLATE(F,FLOATCHECK)$
+translate(f,floatcheck)$
 
-F(2,5);
+f(2,5);
 
 /* Re-enter the untranslated definition. */
-F(P,N):=(MODE_DECLARE(P,FIXNUM),
-         RECTRULE(X^P,X,0,1,1/N))$
+f(p,n):=(mode_declare(p,fixnum),
+         rectrule(x^p,x,0,1,1/n))$
 
 /* If you want to experiment a little, use the untranslated F,
    and try F(5,1000); It should take about 13 cpu seconds.
