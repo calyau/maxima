@@ -79,6 +79,7 @@ and finally we plot this together with an ordinary function of X.
         [x,-3,3]);
 @end example
 
+See PLOT_OPTIONS for more examples.
 
 @end defun
 
@@ -251,12 +252,12 @@ plots.
 The default TRANSFORM_XY is FALSE. If it is not FALSE, it should be
 the output of
 @example
-make_transform([x,y,z], [f1(x,y,z),f2(x,y,z),f3(x,y,z)])
+make_transform([x,y,z], f1(x,y,z),f2(x,y,z),f3(x,y,z))
 @end example
 The POLAR_XY transformation is built in. It gives the same
 transformation as
 @example
-make_transform([r,th,z],[r*cos(th),r*sin(th),z])
+make_transform([r,th,z],r*cos(th),r*sin(th),z)
 @end example
 
 COLOUR_Z is specific to the PS plot format.
@@ -336,7 +337,65 @@ size to 1.5 times gnuplot's default, and the font size to 24, among
 other things. See the gnuplot documentation for ``set term
 postscript'' for more information.
 
+Here are some examples using various plot options.
 
+@example
+plot2d(sin(x),[x,0,2*%pi],[gnuplot_term,ps], [gnuplot_out_file,
+"sin.eps"])
+@end example
+saves a plot of sin(x) to the file ``sin.eps''.
+
+@example
+plot2d([gamma(x),1/gamma(x)],[x,-4.5,5],[y,-10,10],
+[gnuplot_preamble,"set key bottom"])
+@end example
+uses the y option to chop off singularities and the gnuplot_preamble
+option to put the key at the bottom of the plot instead of the top.
+
+@example
+plot2d([cos(x),sin(x),tan(x),cot(x)],[x,-2*%pi,2*%pi],[y,-2,2],
+[gnuplot_preamble,"set xzeroaxis; set xtics ('-2pi' -6.283, '-3pi/2'
+-4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0,'pi/2' 1.5708, 'pi'
+3.1415,'3pi/2' 4.712, '2pi' 6.283)"])
+@end example
+uses a very complicated gnuplot_preamble to produce fancy x-axis
+labels. (Note that the above expression must be entered without any
+line breaks in the gnuplot_preamble string.)
+
+@example
+plot2d([cos(x),sin(x),tan(x)],[x,-2*%pi,2*%pi],[y,-2,2],
+[gnuplot_preamble,"set xzeroaxis; set xtics ('-2@{/Symbol p@}' -6.283,
+'-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, '-@{/Symbol
+p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, '@{/Symbol p@}'
+3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}'
+6.283)"],[gnuplot_term,ps],[gnuplot_out_file,"trig.eps"])
+@end example
+is similar to the previous example, except that it produces postscript
+output that takes advantage of the advanced text formatting available
+in gnuplot. (Note that the above expression must be entered without any
+line breaks in the gnuplot_preamble string.)
+
+@example
+plot3d(atan(-x^2+y^3/4),[x,-4,4],[y,-4,4], [grid,50,50],
+[gnuplot_pm3d,true])
+@end example
+produces a three-dimensional plot using the gnuplot pm3d terminal.
+
+@example
+plot3d(atan(-x^2+y^3/4),[x,-4,4], [y,-4,4], [grid,50,50],
+[gnuplot_pm3d,true], [gnuplot_preamble,"set pm3d at s;unset
+surface;set contour;set cntrparam levels 20;unset key"])
+@end example
+produces a three-dimensional plot without a mesh and with contours
+projected on the bottom plane.
+
+@example
+plot3d(cos(-x^2+y^3/4),[x,-4,4], [y,-4,4], [gnuplot_preamble, "set
+view map; unset surface"], [gnuplot_pm3d,true], [grid,150,150]);
+@end example
+produces a plot where the z-axis is represented by color only. (Note
+that the above expression must be entered without any line breaks in
+the gnuplot_preamble string.)
 
 @end defvar
 @c @node PLOT3D
@@ -414,8 +473,20 @@ f(x,y):=float(M[?round(x),?round(y)]);
 plot3d(f,[x,1,4],[y,1,4],['grid,4,4]);
 @end example
 
+See PLOT_OPTIONS for more examples.
 
 @end defun
+
+
+@defun MAKE_TRANSFORM (vars, fx, fy, fz)
+returns a function suitable for the transform function in plot3d. Use
+with the PLOT_OPTION TRANSFORM_XY.
+@example
+make_transform([r,th,z],r*cos(th),r*sin(th),z)
+@end example
+is a transformation to polar coordinates.
+@end defun
+
 @c @node PLOT2D
 @c @unnumberedsec phony
 @defun PLOT2D_PS (expr,range)
