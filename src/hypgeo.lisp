@@ -1929,7 +1929,6 @@
   (let ((d32 (div 3 2)))
     (list (mul* (power (div z 2)(add v 1))
 		(inv (gm d32))
-		(inv (gm (add v d32)))	; What is this doing here?
 		(inv (gm (add v d32))))
 	  (list 'fpq
 		(list 1 2)
@@ -2329,13 +2328,12 @@
 ;; with Re(p) > 0 if m + k <= n, Re(p+k*c*exp(2*%pi*%i*r/k)) > 0 for r
 ;; = 0, 1,...,k-1, if m + k = n + 1.
 ;;
-;; The args below are s, [a's], [p's], c, k.
+;; The args below are s, [a's], [p's], c^k, k.
 (defun f19p220-simp (s l1 l2 cf k)
   (mul* (gm s)
 	(inv (power par s))
 	(hgfsimp-exec (append l1 (addarglist s k))
 		      l2
-		      ;; Shouldn't we also have cf^k?
 		      (mul* cf
 			    (power k k)
 			    (power (inv par) k))))) 
