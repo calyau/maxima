@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.7 2002-09-19 16:17:21 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.8 2003-01-08 12:32:45 amundson Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -180,7 +180,7 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 0 \
 	-state $state \
 	-label {Run Tests} \
-	-command "sendMaxima $text {:lisp (progn (si::chdir \"$dir\")(load \"tests.lisp\"))\n}"
+	-command "sendMaxima $text {:lisp (progn (\#+gcl si::chdir \#+clisp ext:cd \#+cmu unix:unix-chdir \"$dir\")(load \"tests.lisp\"))\n}"
 
 
     # Add a Help menubutton
