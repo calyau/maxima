@@ -870,9 +870,9 @@
       :cormanlisp
       :scl
       (and allegro-version>= (version>= 4 1)))
-(eval-when #-(or :lucid :cmu17 :cmu18)
+(eval-when #-(or :lucid :cmu17 :cmu18 gcl)
            (:compile-toplevel :load-toplevel :execute)
-	   #+(or :lucid :cmu17 :cmu18)
+	   #+(or :lucid :cmu17 :cmu18 gcl)
            (compile load eval)
 
   (unless (or (fboundp 'lisp::require)
@@ -997,6 +997,9 @@
 
 #+cormanlisp
 (defpackage "MAKE" (:use "COMMON-LISP") (:nicknames "MK"))
+
+#+gcl
+(defpackage "MAKE" (:use "LISP" "SYSTEM") (:nicknames "MK"))
 
 #-(or :sbcl :cltl2 :lispworks :ecl :scl)
 (in-package "MAKE" :nicknames '("MK"))
@@ -1433,7 +1436,10 @@
 ;;; ********************************
 ;;; Component Operation Definition *
 ;;; ********************************
-(eval-when (:compile-toplevel :load-toplevel :execute)
+(eval-when #-(or :lucid :cmu17 :cmu18 :gcl)
+	   (:compile-toplevel :load-toplevel :execute)
+	   #+(or :lucid :cmu17 :cmu18 :gcl)
+	   (compile load eval)
 (defvar *version-dir* nil
   "The version subdir. bound in operate-on-system.")
 (defvar *version-replace* nil
@@ -1817,7 +1823,8 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
 			(pop abs-directory)))
 	 ;; Stig (July 2001):
 	 ;; Somehow CLISP dies on the next line, but NIL is ok.
-	 (abs-name (ignore-errors (file-namestring abs-dir))) ; was pathname-name
+	 #-gcl(abs-name (ignore-errors (file-namestring abs-dir))) ; was pathname-name
+	 #+:gcl(abs-name (file-namestring abs-dir))
 	 (rel-directory (directory-to-list (pathname-directory rel-dir)))
 	 (rel-keyword (when (keywordp (car rel-directory))
 			(pop rel-directory)))
@@ -3796,8 +3803,8 @@ D
 ;;; if anybody does a funcall on #'require.
 
 ;;; Redefine old require to call the new require.
-(eval-when #-(or :lucid :cmu17 :cmu18) (:load-toplevel :execute)
-	   #+(or :lucid :cmu17 :cmu18) (load eval)
+(eval-when #-(or :lucid :cmu17 :cmu18 gcl) (:load-toplevel :execute)
+	   #+(or :lucid :cmu17 :cmu18 gcl) (load eval)
 (unless *old-require*
   (setf *old-require*
 	(symbol-function
@@ -4217,6 +4224,7 @@ D
 	 ;; Ugly, but seems to fix the problem.
 	 (concatenate 'string "./" namestring))))
 
+#+:gcl(defun ensure-directories-exist (arg0 &key verbose) ())
 (defun compile-file-operation (component force)
   ;; Returns T if the file had to be compiled.
   (let ((must-compile
