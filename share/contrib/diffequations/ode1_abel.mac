@@ -1,0 +1,144 @@
+/* ode1_abel.mac 
+
+  Attempt to solve Abel ode y' = f3(x)*y^3+f2(x)*y^2+f1(x)*y+f0(x)
+
+   References: 
+ 
+   G M Murphy, Ordinary Differential Equations and Their 
+   Solutions, Van Nostrand, 1960, pp 23-25
+
+
+  Copyright (C) 2004  David Billinghurst
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or 
+  (at your option) any later version. 
+ 		       								 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 		       								 
+  You should have received a copy of the GNU General Public License	
+  along with this program; if not, write to the Free Software 		 
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+*/
+
+declare(method,special);
+put('ode1_abel,001,'version)$
+
+ode1_abel(eq,y,x) := block(
+  [de,%a,i,f,ans],
+  ode_disp("-> ode1_abel"),
+
+  de:expand(lhs(eq)-rhs(eq)),
+  %a:coeff(de,'diff(y,x),1),
+  de:expand(de/%a),
+  for i:0 thru 3 do (
+    f[i]:-ratsimp(coeff(de,y,i)),
+    if not(freeof(y,f[i])) then return(false)
+  ),
+  if f[3]=0 then return(false),
+  
+  if is(expand(de-'diff(y,x)+sum(f[i]*y^i,i,0,3))#0) then 
+    return(false),
+
+  ode_disp("  Equation is an Abel equation with"),
+  ode_disp2("     f[3]: ",f[3]),
+  ode_disp2("     f[2]: ",f[2]),
+  ode_disp2("     f[1]: ",f[1]),
+  ode_disp2("     f[0]: ",f[0]),
+
+  if ( f[0]=0 and f[1]=0 and f[2]#0 ) then (
+    ans:ode1_abel_gi(f,y,x),
+    if ans#false then return(ans)
+  ),
+
+  return(ode1_abel_gii(f,y,x))
+)$
+
+
+/* Attempt to solve Abel ode 
+
+     y' = f[3](x)*y^3+f[2](x)*y^2+f[1](x)*y+f[0](x)
+
+   when f[0]=0 and f[1]=0.  This is Murphy Case 4-1.g.i
+
+   If F(x)=f[3]/f[2] and A=F'(x)/f[2] is constant 
+   then let y*F(x)=u(x) and equation becomes F(x)*u'(x)=f[2]*u*(A+u+u^2)
+*/ 
+ode1_abel_gi(f,y,x) := block(
+  [_F:f[3]/f[2],A,newde,u,ans],
+  ode_disp("-> ode1_abel_gi"),
+
+  _F:f[3]/f[2],
+  ode_disp2("   _F: ",_F),
+  A:ratsimp(diff(_F,x)/f[2]),
+  ode_disp2("   A: ",A),
+
+  if not(freeof(x,A)) then return(false),
+
+  ode_disp("   A is constant, so can attempt solution"),
+  newde:_F*'diff(u,x)=f[2]*u*(A+u+u^2),
+  ode_disp2("Try to solve ",newde),
+  ans:ode2(newde,u,x),
+  ode_disp2("Answer is ",ans),
+
+  if ( ans#false ) then return(subst(y*_F,u,ans)),
+  false
+)$
+
+/* Attempt to solve Abel ode 
+     y' = f[3](x)*y^3+f[2](x)*y^2+f[1](x)*y+f[0](x)
+   Murphy p24, case g.ii
+
+   Let y = u(x) v(x) + F(x).  To get an equation of form 
+     u'(x) = X(x) G(u)
+   require
+     f3*v(x) = U(x)^(1/3)
+     3 f3 F(x) + f2 = 0
+     U(x) = f0 f3^2 + (f2` f3 - f2 f3' -f1 f2 f3)/3 + 2 f2^3/27
+     f3 X(x) = U(x)^2/3
+     G(u) = 1 - A u + u^3    (A constant)
+
+   When new DE is solved for u(x), determine A from
+    f3 U'(x) + ( f2^2 - 3 f1 f3 -3 f3') U = 3 A U^(5/3)
+
+   U=0 is a special case  
+   
+*/ 
+ode1_abel_gii(f,y,x) := block(
+  [_U,_X,_G,_F,A,u,v,newde],
+
+  ode_disp("   In ode1_abel_gii"),
+
+  _U:f[0]*f[3]^2
+    + (diff(f[2],x)*f[3]-f[2]*'diff(f[3],x)-f[1]*f[2]*f[3])/3 
+    + 2*f[2]^3/27,
+  ode_disp2("   _U: ",_U),
+
+  v:_U^3/f[3],
+  ode_disp2("   v: ",v),
+
+  _F:-f[2]/(3*f[3]),
+   ode_disp2("   _F: ",_F),
+
+  _X: _U^(2/3)/f[3],
+  ode_disp2("   _X: ",_X),
+
+  A: (f[3]*diff(_U,x)+(f[2]^2-3*f[1]*f[3]-3*diff(f[3],x))*_U)/(3*_U^(5/3)),
+  A:ratsimp(A),
+  ode_disp2("   A: ",A),
+
+  _G: 1 - A*u + u^2,
+
+  newde:'diff(u,x)=_X*_G,
+  ode_disp2("Try to solve ",newde),
+  ans:ode2(newde,u,x),
+  ode_disp2("Answer is ",ans),
+
+
+  false
+)$
+
