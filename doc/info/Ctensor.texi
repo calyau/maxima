@@ -202,7 +202,7 @@ The optional arguments can be any one of the following:
 
 @code{all} tells @code{ct_coordsys} to call @code{cmetric} and @code{christof(false)} after setting up the metric.
 
-if the option variable @code{verbose} is set to @code{true}, @code{ct_coordsys} displays the values of @{dim}, @{ct_coords}, and either @code{lg} or @code{lfg} and @code{fri}, depending on the value of @code{cframe_flag}.
+if the option variable @code{verbose} is set to @code{true}, @code{ct_coordsys} displays the values of @code{dim}, @code{ct_coords}, and either @code{lg} or @code{lfg} and @code{fri}, depending on the value of @code{cframe_flag}.
 
 @end defun
 

@@ -1099,6 +1099,8 @@ do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
 
 @end example
 
+@end defun
+
 @section Reserved Words
 
 The following MAXIMA words are used by the ITENSOR package internally and
