@@ -577,7 +577,13 @@
 						 (cddr x)
 						 xwt))))))))))
 
-(defun wtpexpt (x n) (cond ((= n 0) 1) ((= n 1) x) (t (wtptimes x (wtpexpt x (f1- n)) 0))))
+(defun wtpexpt (x n)
+  (cond ((= n 0) 1)
+	((= n 1) x)
+	((evenp n)
+	 (let ((xn2 (wtpexpt x (/ n 2))))
+	   (wtptimes xn2 xn2 0)))
+	(t (wtptimes x (wtpexpt x (f1- n)) 0))))
 
 ;;(declare-top (SPLITFILE HORNER))
 
