@@ -238,20 +238,20 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
      unitlistname : concat(globalbaseunitlist[i],list),
      unitlistusename : concat(globalbaseunitlist[i],list_use),
      unitlistusename :: ev(unitlistname),
-     for j : 2 thru length(ev(unitlistname)) do  (
+     for j : 1 thru length(ev(unitlistname)) do  (
         if (?equal(unitlistname[j][3],m)) then (
 	  for k : 1 thru length(metricpre) do (
 	  tempentry : [[0],0,expanded],
 	  if is(metricpre[k][3] <= %limit) then (
-	    if (not(?equal(metricpre[k][1],'k)) and 
-	        ?equal(unitlistname[j][1][1],g)) then (
+	    if (not(?equal(metricpre[k][1],'k) and 
+	        ?equal(unitlistname[j][1][1],g))) then (
 	      tempentry[1][1] : concat(metricpre[k][1],unitlistname[j][1][1]),
 	      tempentry[2] : metricpre[k][2]*unitlistname[j][2])),
 	    if is(metricprefull[k][3] <= %limit) then (
 	      for l : 2 thru length(unitlistname[j][1]) do(
-	      if (not(?equal(metricprefull[k][1],kilo)) and 
+	      if (not(?equal(metricprefull[k][1],kilo) and 
 	             (?equal(unitlistname[j][1][l],gram) or
-		      ?equal(unitlistname[j][1][l],grams))) then (
+		      ?equal(unitlistname[j][1][l],grams)))) then (
 	      tempentry[1] : append(tempentry[1],[concat(metricprefull[k][1],
 		                      unitlistname[j][1][l])]),
 	      unitlistusename :: append(ev(unitlistusename),[tempentry])))))))),
@@ -277,7 +277,7 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 /* Create unitsimplify ruleset
 
    This ruleset is used to simplify unit processing.  When a unit is processed
-   a simplification of that unit using unitsimplifyrules will return the 
+   a simplification of that unit using toquantities will return the 
    quantity it represents.  This enables subsequent operations on the unit to 
    know what list to look at for conversions and at the same time simplifies 
    the programming of dimensional analysis functionality.  The addunit command
@@ -285,22 +285,23 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
    validity of the operation.  The metricexpandall function must be called 
    before this command is run.*/
    
-makeunitsimplifyruleset() := block([i,j,k,b,unitlistname],
+maketoquantitiesruleset() := block([i,j,k,b,unitlistname],
     modedeclare([i,j,k], fixnum),
     for i : 1 thru length(globalbaseunitlist) do  (
      unitlistname : concat(globalbaseunitlist[i],list_use),
      for j : 1 thru length(ev(unitlistname)) do  (
-       for k : 1 thru length(unitlist[j][1]) do (
-         unitlet([unitlist[j][1][k],globalbaseunitlist[i]],unitsimplifyrules)
+       for k : 1 thru length(unitlistname[j][1]) do (
+         unitlet([unitlistname[j][1][k],globalbaseunitlist[i]],
+	         toquantities)
     ))),
     
     /* j needs to start at the second entry for Derived Quantity Arrays */
     for i : 1 thru length(globalderivedunitlist) do  (
-     unitlistname : concat(globalderivedunitlist[i][1],list_use),
+     unitlistname : concat(globalderivedunitlist[i][2],list_use),
      for j : 2 thru length(ev(unitlistname)) do  (
-       for k : 1 thru length(unitlist[j][1]) do (
-         unitlet([unitlist[j][1][k],globalderivedunitlist[i][1]],
-	 unitsimplifyrules)
+       for k : 1 thru length(unitlistname[j][1]) do (
+         unitlet([unitlistname[j][1][k],globalderivedunitlist[i][2]],
+	         toquantities)
     )))
     );
 
@@ -308,44 +309,46 @@ makeunitsimplifyruleset() := block([i,j,k,b,unitlistname],
    atoms for this test to work, so this package will adopt a
    policy of unit names being atoms only. */
 
-isunit(canditate) := block([letrat:true,result],
+isunit(candidate) := block([letrat:true,result],
 	if not(?atom(candidate)) then (
            /*Error message if argument to isunit isn't an atom*/
-	   (error ("Argument to isunit was not an atom.  Maxima requires units to be atoms.  Erroneous input: ",candidate), 
-	   candidate))
-	else (
+	   (error ("Argument to isunit was not an atom.  Maxima requires units to be atoms.  Erroneous input: ",candidate))
+	) else (
 	/* This test simply checks if the candidate will return
 	   a quantity under the previously defined rules.  If it
 	   does, then it is a unit.  If it does not, then it will
 	   not be impacted by those simplification rules and the
 	   condition of equality will be satisfied.  In such a
 	   case the result is that candidate is not a unit. */
-	if ?equal(candidate,letsimp(candidate,unitsimplifyrules)) then (
+	if ?equal(candidate,letsimp(candidate,toquantities)) then (
 	     /*Error if input isn't a unit - mentions the addunit command.*/
-	   (error ("~ is not a unit.  To define your own unit, use the addunit command."),candidate)) 
-	else
-	true));
+	   (error ("Input is not a unit.  To define your own unit, use the addunit command."),candidate)) 
+	else (
+	true)));
 
 /* Determines if a unit is a Base Quantity */
 isbase(unit) :=  block([letrat:true,result,quantity],
 	/*Uses the simplify to quantity ruleset and checks if the quantity
 	  is present in the base list.*/
 	if not(lfreeof(globalbaseunitlist,
-	                       letsimp(unit,unitsimplifyrules))) then (
-		result : true),
+	                       letsimp(unit,toquantities))) then (
+		result : true)
 	else (
-	result : false),
+	if not(isunit(unit)) then (
+	 (error ("Input is not a unit.  To define your own unit, use the addunit command."),unit)
+	) else (
+	result : false)),
 	result);
 
 /* Returns the definition of a unit in terms of the seven base quantities.*/
 base(unit):= block([letrat:true,result,i,j,listname],
-  	modedeclare([i, j], fixnum),
+  	modedeclare([i,j], fixnum),
 	if not(isbase(unit)) then (
-	   listname : concat(letsimp(unit,unitsimplifyrules),list_use)
-	   for i : 1 to length(ev(listname)) do (
-	     for j : 1 to length(listname[i][1]) do (
-	        if (?equal(unit,listname[i][1][j]) then (
-	            result : listname[1]*listname[i][2]))))),
+	   listname:concat(letsimp(unit,toquantities),list_use),
+	   for i:1 thru length(ev(listname)) do (
+	     for j:1 thru length(listname[i][1]) do (
+	        if (?equal(unit,listname[i][1][j])) then (
+	            result : listname[1]*listname[i][2] ))))
 	else (
 	result : unit),
 	result);
@@ -422,7 +425,7 @@ setunits(units):= block([letrat:true,i,j,unittype,unitlistname,
      map ('setunits, units))
   else (
   if (isunit(units)) then (
-      unittype : letsimp(unit,unitsimplifyrules),
+      unittype : letsimp(unit,toquantities),
       unitlistname : concat(unittype,list_use),
       unitrules : concat(unittype,rules),
       flag = 0, i=0,
@@ -464,9 +467,9 @@ metricexpandall(%unitexpand);
 
 abbrevsimp : 0;
       
-/* Create default pivotsimplify ruleset*/
+/* Create default toquantities ruleset*/
 
-makepivotsimplifyruleset();
+maketoquantitiesruleset();
 
 /* Instruct the global simplification routines to call the simplification
    function defined in this package, to allow automatic unit conversion
