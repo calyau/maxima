@@ -318,8 +318,8 @@ Lists
 Function Definition
 
 * Introduction to Function Definition::  
-* FUNCTION::                    
-* MACROS::                      
+* Function::                    
+* Macros::                      
 * Definitions for Function Definition::  
 
 Program Flow
