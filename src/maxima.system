@@ -262,7 +262,96 @@
 				   (:file "de1"
 					  :depends-on ("dcsevl" "initds" "xermsg"))
 				   (:file "dei"
-					  :depends-on ("de1"))))))
+					  :depends-on ("de1"))))
+			 (:module quadpack
+				  :source-pathname "slatec"
+				  :components
+				  (
+				   ;; Support
+				   (:file "dqwgtf")
+				   (:file "dqcheb")
+				   (:file "dqk15w")
+				   (:file "dqwgts")
+				   (:file "dqwgtc")
+				   (:file "dgtsl")
+				   ;; Core integration routines
+				   (:file "dqk15")
+				   (:file "dqk31")
+				   (:file "dqk41")
+				   (:file "dqk51")
+				   (:file "dqk61")
+				   (:file "dqk21")
+				   (:file "dqk15i")
+				   (:file "dqelg")
+				   (:file "dqpsrt")
+				   (:file "dqc25s"
+					  :depends-on ("dqcheb" "dqk15w"))
+				   (:file "dqmomo")
+				   (:file "dqc25c"
+					  :depends-on ("dqcheb"
+						       "dqk15w"))
+				   (:file "dqc25f"
+					  :depends-on ("dgtsl"
+						       "dqcheb"
+						       "dqk15w"
+						       "dqwgtf"))
+				   ;; Basic integrators
+				   (:file "dqage"
+					  :depends-on ("dqk15"
+						       "dqk31"
+						       "dqk41"
+						       "dqk51"
+						       "dqk61"
+						       "dqk21"
+						       "dqpsrt"))
+				   (:file "dqagie"
+					  :depends-on ("dqelg"
+						       "dqk15i"
+						       "dqpsrt"))
+				   (:file "dqagpe"
+					  :depends-on ("dqelg"
+						       "dqpsrt"
+						       "dqk21"
+						       ))
+				   (:file "dqagse"
+					  :depends-on ("dqk21"
+						       "dqelg"
+						       "dqpsrt"))
+				   (:file "dqawfe"
+					  :depends-on ("dqagie"
+						       "dqawoe"
+						       "dqelg"))
+				   (:file "dqawoe"
+					  :depends-on ("dqc25f"
+						       "dqpsrt"
+						       "dqelg"))
+				   (:file "dqawse"
+					  :depends-on ("dqc25s"
+						       "dqmomo"
+						       "dqpsrt"))
+				   (:file "dqawce"
+					  :depends-on ("dqc25c"
+						       "dqpsrt"))
+				   ;; Simplified interface routines
+				   (:file "dqng")
+				   (:file "dqag"
+					  :depends-on ("dqage"))
+				   (:file "dqags"
+					  :depends-on ("dqagse"))
+				   (:file "dqagi"
+					  :depends-on ("dqagie"))
+				   (:file "dqawf"
+					  :depends-on ("dqawfe"))
+				   (:file "dqawo"
+					  :depends-on ("dqawoe"))
+				   (:file "dqaws"
+					  :depends-on ("dqawse"))
+				   (:file "dqawc"
+					  :depends-on ("dqawce"))
+				   ;; Maxima interface
+				   (:file "quadpack")
+				   )
+			 )))
                (:module simplification :source-pathname ""
                         :components ((:file "simp") 
                                      (:file "float") 
