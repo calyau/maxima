@@ -773,7 +773,9 @@
 (defprop mcond 25. tex-rbp)
 (defprop %derivative tex-derivative tex)
 (defun tex-derivative (x l r)
-  (tex (tex-d x '$|d|) l r lop rop ))
+  (tex (if $derivabbrev
+	   (tex-dabbrev x)
+	   (tex-d x '$|d|)) l r lop rop ))
 
 (defun tex-d(x dsym) ;dsym should be $d or "$\\partial"
   ;; format the macsyma derivative form so it looks
@@ -791,6 +793,26 @@
    `((mtimes)
      ((mquotient) ,(simplifya numer nil) ,denom)
      ,arg)))
+
+(defun tex-dabbrev (x)
+  ;; Format diff(f,x,1,y,1) so that it looks like
+  ;; f
+  ;;  x y
+  (let*
+      ((arg (cadr x)) ;; the function being differentiated
+       (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
+       (ords (odds difflist 0))	;; e.g. (1 2)
+       (vars (odds difflist 1))) ;; e.g. (x y)
+    (append
+     (if (symbolp arg)
+	 `((,arg array))
+	 `((mqapply array) ,arg))
+     (if (and (= (length vars) 1)
+	      (= (car ords) 1))
+	 vars
+	 `(((mtimes) ,@(mapcan #'(lambda (var ord)
+				   (make-list ord :initial-element var))
+			       vars ords)))))))
 
 (defun odds(n c)
   ;; if c=1, get the odd terms  (first, third...)
