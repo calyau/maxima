@@ -27,10 +27,15 @@ well as failures.
 run_testsuite(true,true) displays all tests.
 @end defun
 
-@defun bug_report ()
-Provides bug reporting information.
+@defun BUG_REPORT ()
+Prints out Maxima and Lisp version numbers, and gives a link
+to the Maxima project bug report web page.
+When a bug is reported, it is helpful to copy the Maxima
+and Lisp version information into the bug report.
+
+The version information is the same as reported by BUILD_INFO.
 @end defun
 
-@defun build_info ()
-Summarizes the parameters of the Maxima build.
+@defun BUILD_INFO ()
+Prints out a summary of the parameters of the Maxima build.
 @end defun
