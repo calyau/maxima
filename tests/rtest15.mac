@@ -47,6 +47,29 @@ ASSOC(x,[x=2]);
 ASSOC(1,[x=2],foobar);
 foobar$
 
+/* EVERY tests */
+EVERY([]);
+FALSE$
+EVERY([FALSE]);
+FALSE$
+EVERY([FALSE,FALSE]);
+FALSE$
+EVERY(FALSE);
+FALSE$
+EVERY(FALSE,FALSE);
+FALSE$
+EVERY(TRUE);
+TRUE$
+EVERY([TRUE]);
+TRUE$
+EVERY([TRUE,TRUE]);
+TRUE$
+EVERY(TRUE,TRUE);
+TRUE$
+EVERY([TRUE,FALSE]);
+FALSE$
+EVERY(TRUE,FALSE);
+FALSE$
 /* Some older versions of GCL had a bug that resulted in a failure of the */
 /* following. */
 primep(80630964769);
