@@ -61,9 +61,9 @@
 ;)
 
 
-#-lispm
-(defmacro defopt (name &rest other) name other nil)
-
+#+(and cl (not lispm))
+(defmacro defopt (&rest other)
+  `(#-gcl define-compiler-macro #+gcl si::define-compiler-macro ,.other)) 
 
 #+(and lispm CL)
 (progn 'compile
