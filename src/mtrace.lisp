@@ -646,15 +646,18 @@
 (defun make-trace-hook (fun type handler)
   (CASE (GET! TYPE 'HOOK-TYPE)
     ((EXPR)
-     `(lambda (&rest trace-args)
-	(,handler ',fun (copy-list trace-args))))
+     (coerce `(lambda (&rest trace-args)
+	       (,handler ',fun (copy-list trace-args)))
+	     'function))
     ((FEXPR)
-     `(LAMBDA (&quote &rest TRACE-ARGL)
-	(,HANDLER ',FUN (copy-list TRACE-ARGL))))
+     (coerce `(LAMBDA (&quote &rest TRACE-ARGL)
+	       (,HANDLER ',FUN (copy-list TRACE-ARGL)))
+	     'function))
 ;;;???
     ((MACRO)
-     `(lambda (&quote &rest TRACE-FORM)
-	(,HANDLER (CAAR TRACE-FORM) (copy-list TRACE-FORM))))))
+     (coerce `(lambda (&quote &rest TRACE-FORM)
+	       (,HANDLER (CAAR TRACE-FORM) (copy-list TRACE-FORM)))
+	     'function))))
        
 #+Maclisp
 (defmacro trace-setup-call (prop fun type)  
@@ -737,7 +740,7 @@
 					    (CDR $TIMER)))))
 
 (DEFUN MICRO-TO-SEC (RUNTIME)
-  (MUL RUNTIME 1.0E-6 '$SEC))
+  (MUL RUNTIME (float (/ internal-time-units-per-second)) '$SEC))
 (DEFUN MICRO-PER-CALL-TO-SEC (RUNTIME CALLS)
   (DIV (MICRO-TO-SEC RUNTIME)
        (IF (ZEROP CALLS) 1 CALLS)))
