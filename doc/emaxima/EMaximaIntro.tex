@@ -41,7 +41,12 @@ notebook mode called \emx{}.
 
 To run \mx{} interactively in a buffer, type \texttt{M-x maxima}.  A
 buffer named \texttt{*Maxima*} should start up, in which a \mx{}
-process is running.  In the \texttt{*Maxima*} buffer, \texttt{RET}
+process is running.%
+\footnote{In XEmacs, a double input prompt will sometimes appear in
+  the \texttt{*Maxima*} buffer.  If this occurs, the customizable
+  variable \texttt{maxima-fix-double-prompt} can be set to \texttt{t}
+  to take care of this.}
+In the \texttt{*Maxima*} buffer, \texttt{RET}
 will check the line for balanced parentheses, and send line as input.
 \texttt{C-RET} will send the line as input without checking for
 balanced parentheses.  A list of available commands are listed in
@@ -1230,8 +1235,5 @@ amount of space that appears before a session cell can be changed by
 changing the value of \verb+\premaximasessionspace+ (by default, 0pt),
 and that after a cell can be changed by changing the value of
 \verb+\postmaximasessionspace+ (by default, 1.5 ex).
-
-\newpage
-
 
 \end{document}
