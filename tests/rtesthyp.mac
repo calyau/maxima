@@ -173,28 +173,30 @@ legendre_p(n,1-2*x);
 /* A&S 8.1.2
  * Is there a bug in that formula?
  * http://functions.wolfram.com/HypergeometricFunctions/LegendreP2General/26/01/02/ 
- * shows the formula with (1+z) and (1-z).  I'm going to use the formula from the 
- * given link.
+ * shows the formula with (1+z) and (1-z).
  *
- * But this differs from formula 14 in Higher Transcendental Functions.
+ * But this differs from formula 14 in Higher Transcendental
+ * Functions, which agrees with A&S.
+ *
+ * Formula 14 says:
+ *
+ * P(v,u,z) = (z+1)^(u/2)*(z-1)^(-u/2)/gamma(1-u)*F(-v, 1+v; 1-u,(1-z)/2)
  *
  * Now what?
  *
  * This tests the legf14 function.
  */
-radcan(((1+z)/(1-z))^(u/2)/gamma(1-u)*hgfred([-v,v+1],[1-u],(1-z)/2));
+radcan(((z+1)/(z-1))^(u/2)/gamma(1-u)*hgfred([-v,v+1],[1-u],(1-z)/2));
 assoc_legendre_p(v,u,z)$
 
-/* A&S 15.4.17 
+/* A&S 15.4.16 
  *
- * F(a,1-a;c;x) = gamma(c)*x^(1/2-c/2)*(1-x)^(c/2-1/2)*P(-a,1-c,1-2*x)
- *
- * This differs from formula 14!  Now what?
+ * F(a,1-a;c;x) = gamma(c)*(-x)^(1/2-c/2)*(1-x)^(c/2-1/2)*P(-a,1-c,1-2*x)
  *
  * This tests the legf14 function.
  */
-hgfred([a,1-a],[c],x);
-assoc_legendre_p(-a, 1-c, 1-2*x)*gamma(c)*2^((1-c)/2)*x^((1-c)/2)/(2-2*x)^((1-c)/2)$
+radcan(hgfred([a,1-a],[c],x)*(-x)^(c/2-1/2)*(1-x)^(1/2-c/2)/gamma(c));
+assoc_legendre_p(-a, 1-c, 1-2*x)$
 
 /* A&S 15.4.10 
  *
@@ -202,13 +204,15 @@ assoc_legendre_p(-a, 1-c, 1-2*x)*gamma(c)*2^((1-c)/2)*x^((1-c)/2)/(2-2*x)^((1-c)
  *
  * Test for legf24 function.
  */
-hgfred([a,a+1/2],[c],x);
-2^(c-1)*gamma(c)*z^(1/2-c/2)*(1-z)^(c/2-a-1/2)*assoc_legendre_p(2*a-c,1-c,1/sqrt(1-z))$
+radcan(hgfred([a,a+1/2],[c],z)*2^(1-c)*z^(c/2-1/2)*(1-z)^(1/2+a-c/2)/gamma(c));
+assoc_legendre_p(2*a-c,1-c,1/sqrt(1-z))$
 
 2^u*(z^2-1)^(-u/2)*z^(v+u)/gamma(1-u)*hgfred([-v/2-u/2,1/2-v/2-u/2],[1-u],1-1/z^2);
 assoc_legendre_p(v,u,z)$
 
 /* A&S 15.4.12
+ *
+ * F(a,b;a+b+1/2;z) = 2^(a+b-1/2)*gamma(a+b+1/2)*(-z)^(1/2-a-b)*P(a-b-1/2,1/2-a-b,sqrt(1-z))
  * Test for legf20 function.
  */
 hgfred([a,b],[a+b+1/2],x);
