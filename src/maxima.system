@@ -498,8 +498,7 @@
 				     (:file "pade") 
 				     (:file "homog") 
 				     (:file "combin") 
-				     (:file "mstuff")
-				     (:file "set")))
+				     (:file "mstuff")))
 	       (:module poisson-series :source-pathname ""
 			:components ((:file "ratpoi")
 				     (:file "pois2") 
