@@ -5,200 +5,318 @@
 
 @node Definitions for Contexts,  , Contexts, Contexts
 @section Definitions for Contexts
-@c @node ACTIVATE
-@c @unnumberedsec phony
-@defun ACTIVATE (cont1, cont2, ...)
-causes the specified contexts conti to be
-activated.  The facts in these contexts are used in making deductions
-and retrieving information.  The facts in these contexts are not
-listed when FACTS(); is done.  The variable ACTIVECONTEXTS is the list
-of contexts which are active by way of the ACTIVATE function.
+
+@defun activate (@var{context_1}, ..., @var{context_n})
+Activates the contexts @var{context_1}, ..., @var{context_n}.
+The facts in these contexts are then available to
+make deductions and retrieve information.
+The facts in these contexts are not listed by @code{facts ()}.
+
+The variable @code{activecontexts} is the list
+of contexts which are active by way of the @code{activate} function.
 
 @end defun
-@c @node ACTIVECONTEXTS
-@c @unnumberedsec phony
-@defvar ACTIVECONTEXTS
- default: [] is a list of the contexts which are active
-by way of the ACTIVATE function, as opposed to being active because
+
+@defvar activecontexts
+Default value: @code{[]}
+
+@code{activecontexts} is a list of the contexts which are active
+by way of the @code{activate} function, as opposed to being active because
 they are subcontexts of the current context.
 
 @end defvar
 
 
+@defun assume (@var{pred_1}, ..., @var{pred_n})
+Adds predicates @var{pred_1}, ..., @var{pred_n} to the current database,
+after checking for redundancy and inconsistency.
+If the predicates are consistent and non-redundant, they are added to the
+data base; if inconsistent or redundant, no action is taken.
 
-@c @node ASSUME
-@c @unnumberedsec phony
-@defun ASSUME (pred1, pred2, ...)
-First checks the specified predicates for
-redundancy and consistency with the current data base.  If the
-predicates are consistent and non-redundant, they are added to the
-data base; if inconsistent or redundant, no action is taken.  ASSUME
-returns a list whose entries are the predicates added to the data base
-and the atoms REDUNDANT or INCONSISTENT where applicable.
+@code{assume} returns a list whose elements are the predicates added to the database
+and the atoms @code{redundant} or @code{inconsistent} where applicable.
 
 @end defun
-@c @node ASSUMESCALAR
-@c @unnumberedsec phony
-@defvar ASSUMESCALAR
- default: [TRUE] - helps govern whether expressions @code{exp}
-for which
 
-@example
-NONSCALARP(exp) is FALSE
-@end example
+@defvar assumescalar
+Default value: @code{true}
 
+@code{assumescalar} helps govern whether expressions @code{expr}
+for which @code{nonscalarp (expr)} is @code{false}
 are assumed to behave like scalars
-for certain transformations as follows: Let @code{exp} represent any
-non-list/non-matrix, and @code{[1,2,3]} any list or matrix.
-@example
-exp.[1,2,3]; ==>
- [exp,2*exp,3*exp]
-@end example
-if ASSUMESCALAR is TRUE or SCALARP(exp) is
-TRUE or CONSTANTP(exp) is TRUE.  If ASSUMESCALAR is TRUE, such
-expressions will behave like scalars only for the commutative
-operators, but not for ".".  If ASSUMESCALAR is FALSE, such
-expressions will behave like non-scalars.  If ASSUMESCALAR is ALL,
+for certain transformations.
+
+Let @code{expr} represent any expression other than a list or a matrix,
+and let @code{[1, 2, 3]} represent any list or matrix.
+Then @code{expr . [1, 2, 3]} yields @code{[expr, 2 expr, 3 expr]}
+if @code{assumescalar} is @code{true}, or @code{scalarp (expr)} is
+@code{true}, or @code{constantp (expr)} is @code{true}.
+
+If @code{assumescalar} is @code{true}, such
+expressions will behave like scalars only for commutative
+operators, but not for noncommutative multiplication @code{.}.
+
+When @code{assumescalar} is @code{false}, such
+expressions will behave like non-scalars.
+
+When @code{assumescalar} is @code{all},
 such expressions will behave like scalars for all the operators listed
 above.
-@end defvar
-
-@c @node ASSUME_POS
-@c @unnumberedsec phony
-@defvar ASSUME_POS
- default:[FALSE] - When using INTEGRATE, etc. one often
-introduces parameters which are real and positive or one's
-calculations can often be constructed so that this is true.  There is
-a switch ASSUME_POS (default FALSE) such that if set to TRUE, Maxima
-will assume one's parameters are positive.  The intention here is to
-cut down on the number of questions Maxima needs to ask.  Obviously,
-ASSUME information or any contextual information present will take
-precedence.  The user can control what is considered to be a parameter
-for this purpose.  Parameters by default are those which satisfy
-SYMBOLP(x) OR SUBVARP(x).  The user can change this by setting the
-option ASSUME_POS_PRED [default FALSE] to the name of a predicate
-function of one argument.  E.g. if you want only symbols to be
-parameters, you can do ASSUME_POS:TRUE$ ASSUME_POS_PRED:'SYMBOLP$
-SIGN(A); -> POS, SIGN(A[1]); -> PNZ.
-@end defvar
-
-@c @node ASSUME_POS_PRED
-@c @unnumberedsec phony
-@defvar ASSUME_POS_PRED
- default:[FALSE] - may be set to one argument to control
-what will be considered a parameter for the "assumptions" that INTEGRATE
-will make... see ASSUME and ASSUME_POS .
-@end defvar
-
-@c @node CONTEXT
-@c @unnumberedsec phony
-@defvar CONTEXT
- default: INITIAL. Whenever a user assumes a new fact, it is
-placed in the context named as the current value of the variable
-CONTEXT.  Similarly, FORGET references the current value of CONTEXT.
-To change contexts, simply bind CONTEXT to the desired context.  If
-the specified context does not exist it will be created by an
-invisible call to NEWCONTEXT.  The context specified by the value of
-CONTEXT is automatically activated.  (Do DESCRIBE(CONTEXTS); for a
-general description of the CONTEXT mechanism.)
 
 @end defvar
-@c @node CONTEXTS
-@c @unnumberedsec phony
-@defvar CONTEXTS
- default: [INITIAL,GLOBAL] is a list of the contexts which
+
+
+@defvar assume_pos
+Default value: @code{false}
+
+When @code{assume_pos} is @code{true}
+and the sign of a parameter @var{x} cannot be determined from the @code{assume} database
+or other considerations,
+@code{sign} and @code{asksign (@var{x})} return @code{true}.
+This may forestall some automatically-generated @code{asksign} queries,
+such as may arise from @code{integrate} or other computations.
+
+By default, a parameter is @var{x} such that @code{symbolp (x)} or @code{subvarp (x)}.
+The class of expressions considered parameters can be modified to some extent
+via the variable @code{assume_pos_pred}.
+
+@code{sign} and @code{asksign} attempt to deduce the sign of expressions
+from the sign of operands within the expression.
+For example, if @code{a} and @code{b} are both positive,
+then @code{a + b} is also positive.
+
+However, there is no way to bypass all @code{asksign} queries.
+In particular, when the @code{asksign} argument is a
+difference @code{@var{x} - @var{y}} or a logarithm @code{log(@var{x})},
+@code{asksign} always requests an input from the user,
+even when @code{assume_pos} is @code{true} and @code{assume_pos_pred} is
+a function which returns @code{true} for all arguments.
+
+@c NEED EXAMPLES HERE
+@end defvar
+
+
+@defvar assume_pos_pred
+Default value: @code{false}
+
+When @code{assume_pos_pred} is assigned the name of a function
+or a lambda expression of one argument @var{x},
+that function is called to determine
+whether @var{x} is considered a parameter for the purpose of @code{assume_pos}.
+@code{assume_pos_pred} is ignored when @code{assume_pos} is @code{false}.
+
+The @code{assume_pos_pred} function is called by @code{sign} and @code{asksign}
+with an argument @var{x}
+which is either an atom, a subscripted variable, or a function call expression.
+If the @code{assume_pos_pred} function returns @code{true},
+@var{x} is considered a parameter for the purpose of @code{assume_pos}.
+
+By default, a parameter is @var{x} such that @code{symbolp (x)} or @code{subvarp (x)}.
+
+See also @code{assume} and @code{assume_pos}.
+
+Examples:
+@c EXAMPLE OUTPUT GENERATED FROM:
+@c assume_pos: true$
+@c assume_pos_pred: symbolp$
+@c sign (a);
+@c sign (a[1]);
+@c assume_pos_pred: lambda ([x], display (x), true)$
+@c asksign (a);
+@c asksign (a[1]);
+@c asksign (foo (a));
+@c asksign (foo (a) + bar (b));
+@c asksign (log (a));
+@c asksign (a - b);
+
+@example
+(%i1) assume_pos: true$
+(%i2) assume_pos_pred: symbolp$
+(%i3) sign (a);
+(%o3)                          pos
+(%i4) sign (a[1]);
+(%o4)                          pnz
+(%i5) assume_pos_pred: lambda ([x], display (x), true)$
+(%i6) asksign (a);
+                              x = a
+
+(%o6)                          pos
+(%i7) asksign (a[1]);
+                             x = a
+                                  1
+
+(%o7)                          pos
+(%i8) asksign (foo (a));
+                           x = foo(a)
+
+(%o8)                          pos
+(%i9) asksign (foo (a) + bar (b));
+                           x = foo(a)
+
+                           x = bar(b)
+
+(%o9)                          pos
+(%i10) asksign (log (a));
+                              x = a
+
+Is  a - 1  positive, negative, or zero?
+
+p;
+(%o10)                         pos
+(%i11) asksign (a - b);
+                              x = a
+
+                              x = b
+
+                              x = a
+
+                              x = b
+
+Is  b - a  positive, negative, or zero?
+
+p;
+(%o11)                         neg
+@end example
+
+@end defvar
+
+
+@defvar context
+Default value: @code{initial}
+
+@code{context} names the collection of facts maintained by @code{assume} and @code{forget}.
+@code{assume} adds facts to the collection named by @code{context},
+while @code{forget} removes facts.
+
+Binding @code{context} to a name @var{foo} changes the current context to @var{foo}.
+If the specified context @var{foo} does not yet exist,
+it is created automatically by a call to @code{newcontext}.
+@c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
+The specified context is activated automatically.
+
+See @code{context} for a general description of the context mechanism.
+
+@end defvar
+
+@c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
+@c SOME EXAMPLES WILL HELP A LOT HERE
+@defvar contexts
+Default value: @code{[initial, global]}
+
+@code{contexts} is a list of the contexts which
 currently exist, including the currently active context.
+
 The context mechanism makes it possible for a user to bind together
-and name a selected portion of his data base, called a context.  Once
-this is done, the user can have Maxima assume or forget large numbers
-of facts merely by activating or deactivating their context.  Any
-symbolic atom can be a context, and the facts contained in that
-context will be retained in storage until the user destroys them
-individually by using FORGET or destroys them as a whole by using KILL
+and name a selected portion of his database, called a context.
+Once this is done, the user can have Maxima assume or forget large numbers
+of facts merely by activating or deactivating their context.
+
+Any symbolic atom can be a context, and the facts contained in that
+context will be retained in storage until destroyed one by one
+by calling @code{forget} or destroyed as a whole by calling @code{kill}
 to destroy the context to which they belong.
-    Contexts exist in a formal hierarchy, with the root always being
-the context GLOBAL, which contains information about Maxima that some
+
+Contexts exist in a hierarchy, with the root always being
+the context @code{global}, which contains information about Maxima that some
 functions need.  When in a given context, all the facts in that
 context are "active" (meaning that they are used in deductions and
-retrievals) as are all the facts in any context which is an inferior
-of that context.  When a fresh Maxima is started up, the user is in a
-context called INITIAL, which has GLOBAL as a subcontext.
-The functions which deal with contexts are: FACTS, NEWCONTEXT,
-SUPCONTEXT, KILLCONTEXT, ACTIVATE, DEACTIVATE, ASSUME, and FORGET.
+retrievals) as are all the facts in any context which is a subcontext
+of the active context.
+
+When a fresh Maxima is started up, the user is in a
+context called @code{initial}, which has @code{global} as a subcontext.
+
+See also @code{facts}, @code{newcontext},
+@code{supcontext}, @code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, and @code{forget}.
 
 @end defvar
-@c @node DEACTIVATE
-@c @unnumberedsec phony
-@defun DEACTIVATE (cont1, cont2, ...)
-causes the specified contexts conti to
-be deactivated.
+
+@defun deactivate (@var{context_1}, ..., @var{context_n})
+Deactivates the specified contexts @var{context_1}, ..., @var{context_n}.
 
 @end defun
-@c @node FACTS
-@c @unnumberedsec phony
-@defun FACTS (item)
-If 'item' is the name of a context then FACTS returns a list
-of the facts in the specified context.  If no argument is given, it
-lists the current context.  If 'item' is not the name of a context
-then it returns a list of the facts known about 'item' in the current
-context.  Facts that are active, but in a different context, are not
-listed.
+
+@defun facts (@var{item})
+@defunx facts ()
+If @var{item} is the name of a context,
+@code{facts (@var{item})} returns a list
+of the facts in the specified context.
+
+If @var{item} is not the name of a context,
+@code{facts (@var{item})} returns a list of the facts known about @var{item} in the current
+context.  Facts that are active, but in a different context, are not listed.
+
+@code{facts ()} (i.e., without an argument) lists the current context.
 
 @end defun
-@c @node declaration
-@c @unnumberedsec phony
-@defvr declaration FEATURES
- - Maxima has built-in properties which are handled by the
-data base.  These are called FEATURES.  One can do DECLARE(N,INTEGER),
-etc.  One can also DECLARE one's own FEATURES by e.g.
-DECLARE( INCREASING, FEATURE); which will then allow one to say
-DECLARE(F, INCREASING);.  One can then check if F is INCREASING by
-using the predicate FEATUREP via FEATUREP(F, INCREASING).  There is
-an infolist FEATURES which is a list of known FEATURES.  At present
-known FEATURES are: INTEGER, NONINTEGER, EVEN, ODD, RATIONAL,
-IRRATIONAL, REAL, IMAGINARY, COMPLEX, ANALYTIC, INCREASING,
-DECREASING, ODDFUN, EVENFUN, POSFUN, COMMUTATIVE, LASSOCIATIVE,
-RASSOCIATIVE, SYMMETRIC, and ANTISYMMETRIC.  [Note: system "features"
-may be checked with STATUS(FEATURE, ...); See DESCRIBE(STATUS); or
-DESCRIBE(FEATURE); for details.]
+
+@defvr declaration features
+Maxima recognizes certain mathematical properties of functions and variables.
+These are called "features".
+
+@code{declare (@var{x}, @var{foo})} gives the property @var{foo} to the function or variable @code{x}.
+
+@code{declare (@var{foo}, feature)} declares a new feature @var{foo}.
+For example,
+@code{declare ([red, green, blue], feature)}
+declares three new features, @code{red}, @code{green}, and @code{blue}.
+
+The predicate @code{featurep (@var{x}, @var{foo})}
+returns @code{true} if @var{x} has the @var{foo} property,
+and @code{false} otherwise.
+
+The infolist @code{features} is a list of known features.
+These are
+@code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
+@code{irrational}, @code{real}, @code{imaginary}, @code{complex}, @code{analytic}, @code{increasing},
+@code{decreasing}, @code{oddfun}, @code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
+@code{rassociative}, @code{symmetric}, and @code{antisymmetric},
+plus any user-defined features.
+
+@code{features} is a list of mathematical features.
+There is also a list of non-mathematical, system-dependent features. See @code{status}.
 
 @end defvr
-@c @node FORGET
-@c @unnumberedsec phony
-@defun FORGET (pred1, pred2, ...)
-removes relations established by ASSUME.
-The predicates may be expressions equivalent to (but not necessarily
-identical to) those previously ASSUMEd.  FORGET(list) is also a legal
-form.
+
+@defun forget (@var{pred_1}, ..., @var{pred_n})
+@defunx forget (@var{L})
+Removes predicates established by @code{assume}.
+The predicates may be expressions equivalent to (but not necessarily identical to)
+those previously assumed.
+
+@code{forget (@var{L})}, where @var{L} is a list of predicates,
+forgets each item on the list.
 
 @end defun
-@c @node KILLCONTEXT
-@c @unnumberedsec phony
-@defun KILLCONTEXT (context1,context2,...,contextn)
-kills the specified
-contexts.  If one of them is the current context, the new current
+
+@defun killcontext (@var{context_1}, ..., @var{context_n})
+Kills the contexts @var{context_1}, ..., @var{context_n}.
+
+If one of the contexts is the current context, the new current
 context will become the first available subcontext of the current
 context which has not been killed.  If the first available unkilled
-context is GLOBAL then INITIAL is used instead.  If the INITIAL
-context is killed, a new INITIAL is created, which is empty of facts.
-KILLCONTEXT doesn't allow the user to kill a context which is
+context is @code{global} then @code{initial} is used instead.  If the @code{initial}
+context is killed, a new, empty @code{initial} context is created.
+
+@code{killcontext} refuses to kill a context which is
 currently active, either because it is a subcontext of the current
-context, or by use of the function ACTIVATE.
+context, or by use of the function @code{activate}.
 
 @end defun
-@c @node NEWCONTEXT
-@c @unnumberedsec phony
-@defun NEWCONTEXT (name)
-creates a new (empty) context, called name, which
-has GLOBAL as its only subcontext.  The new context created will
-become the currently active context.
+
+@defun newcontext (@var{name})
+Creates a new, empty context, called @var{name}, which
+has @code{global} as its only subcontext.  The newly-created context
+becomes the currently active context.
 
 @end defun
-@c @node SUPCONTEXT
-@c @unnumberedsec phony
-@defun SUPCONTEXT (name,context)
-will create a new context (called name)
-whose subcontext is context.  If context is not specified, the current
-context will be assumed.  If it is specified, context must exist.
+
+@defun supcontext (@var{name}, @var{context})
+@defunx supcontext (@var{name})
+Creates a new context, called @var{name},
+which has @var{context} as a subcontext.
+@var{context} must exist.
+
+If @var{context} is not specified, the current context is assumed.
 
 @end defun
