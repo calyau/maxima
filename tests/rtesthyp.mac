@@ -179,3 +179,43 @@ gamma(c)*x^((1-c)/2)*(1-x)^((c-1)/2)*assoc_legendre_p(-a, 1-c, 1-2*x)$
 
 
 
+/* Regression tests */
+
+/* simpg tests */
+
+/* F([...,0,...],[non-zero], z) is 1 */
+hgfred([a,0],[c], z);
+1$
+
+/* F([non-zero],[...,zero or neg integer,...],z) is undefined */
+hgfred([a,b],[0],z);
+%f[2,1]([a,b],[0],z)$
+
+hgfred([a,b],[c,4,-3],z);
+%f[2,3]([a,b],[c,4,-3],z)$
+
+/* F([...,neg integer,...],[...],z) is a polynomial */
+
+/* Test 1F1 polynomials */
+hgfred([-7],[c],z);
+7!*'gen_laguerre(7,c-1,z)*gamma(c)/gamma(c+7)$
+
+hgfred([-2],[1],z);
+'laguerre(2,z);
+
+hgfred([-7],[1],z);
+'laguerre(7,z);
+
+hgfred([-2],[1/2],z);
+'hermite(4,sqrt(z))/12$
+
+hgfred([-2],[3/2],z);
+'hermite(5,sqrt(z))/120/sqrt(z)$
+
+
+/* Test 2F0 polynomials */
+
+/* Test 2F1 polynomials */
+
+hgfred([-2,1],[1/2],z);
+8*'jacobi_p(2,-1/2,-3/2,1-2*z)/3$
