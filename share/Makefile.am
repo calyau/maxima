@@ -1,7 +1,8 @@
 include $(top_srcdir)/common.mk
 genericdir =$(sharedir)
 
-genericdirDATA = diffequations/desoln.usg\
+genericdirDATA = maxima-init.lisp\
+diffequations/desoln.usg\
 diffequations/ode2.usg\
 diffequations/exampl.mac\
 diffequations/pdvtr.mac\
@@ -52,6 +53,10 @@ specfunctions/airy.lisp\
 specfunctions/airy.usg\
 specfunctions/gamma.mac\
 specfunctions/kn.mac\
+specfunctions/h-atom.dem\
+specfunctions/specfun.usg\
+specfunctions/test_specfun.mac\
+specfunctions/variational_method.dem\
 numeric/fft.dem\
 numeric/fft.lisp\
 numeric/fft.usg\
@@ -139,6 +144,10 @@ physics/units.usg\
 physics/dimen.dem\
 physics/dimen.mac\
 physics/dimen.usg\
+physics/dimension.html\
+physics/dimension.mac\
+physics/dimension.pdf\
+physics/dimension.tex\
 physics/elec.lisp\
 physics/gam5.lisp\
 physics/gamchi.lisp\
@@ -288,6 +297,8 @@ tensor/ctensr.mac\
 tensor/gener.lisp\
 tensor/info-tensor.txt\
 tensor/itensor.lisp\
+tensor/itensor.dem\
+tensor/itensor.usg\
 tensor/jpff.mac\
 tensor/manual.txt\
 tensor/metrics.mac\
@@ -301,6 +312,7 @@ tensor/info-tensor-2.txt\
 tensor/test1.mac\
 contrib/diag.usg\
 contrib/diag.mac\
-contrib/lindstedt.mac
-
+contrib/impdiff.mac\
+contrib/lindstedt.mac\
+contrib/makeOrders.mac
 
