@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename lc2.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/* PROGRAM NUMBER 2: LC2(), LINDSTEDT'S METHOD FOR MORE GENERAL
+/* PROGRAM NUMBER 2: LC2(), LINDSTEDT'S METHOD FOR MORE GENERAL
    DIFFERENTIAL EQUATIONS. SEE PAGE 14 IN "PERTURBATION METHODS,
    BIFURCATION THEORY AND COMPUTER ALGEBRA". */
 
@@ -94,4 +94,3 @@ SOLN:TAYLOR(EV([X,Y],XYLIST,PARAMLIST),E,0,N-2),
 PRINT("X =",PART(SOLN,1)),
 PRINT("Y =",PART(SOLN,2)),
 PRINT("W =",W))$
-

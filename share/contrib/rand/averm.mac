@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename averm.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/* PROGRAM NUMBER 8: AVERM(), ALLOWS MTH ORDER AVERAGING. SEE PAGE 128 IN
+/* PROGRAM NUMBER 8: AVERM(), ALLOWS MTH ORDER AVERAGING. SEE PAGE 128 IN
    "PERTURBATION METHODS, BIFURCATION THEORY AND COMPUTER ALGEBRA". */
 
 
@@ -129,4 +129,3 @@ JUMP1,
       CONTAINS_T(EXP):= NOT FREEOF(T,EXP)$
       MATCHDECLARE(Q,CONTAINS_T)$
       DEFRULE(KILLEXP,EXP(Q),0)$
-

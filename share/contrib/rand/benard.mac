@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename benard.mac
 
    ***************************************************************
    *							         *
@@ -12,7 +12,7 @@
    *      These files are released to the public domain          *
    *            						 *
    ***************************************************************
-*/ /*PROGRAM NUMBER 13: CONTAINS THE BUILDING BLOCKS TO PERFORM STEADY
+*/ /*PROGRAM NUMBER 13: CONTAINS THE BUILDING BLOCKS TO PERFORM STEADY
   STATE BIFURCATIONS FOR MORE PARTIAL DIFFERENTIAL EQUATIONS. SEE PAGES
   198-202 IN "PERTURBATION METHODS, BIFURCATION THEORY AND COMPUTER
   ALGEBRA" */
@@ -121,4 +121,3 @@ INT(EXP):=(%INT:EXP,FOR I THRU SPACE DO %INT:INTEGRATE(TRIGREDUCE(%INT,
 			RATSIMP(EV(%INT,UBOUND)-EV(%INT,LBOUND)))$
 
 VFUN(LIST,VALUE):=MAP(LAMBDA([U],U=VALUE),LIST)$
-

@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename transfor.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/*PROGRAM NUMBER 4: TRANSFORM(), THIS PROGRAM ALLOWS TO PERFORM ARBITRARY
+/*PROGRAM NUMBER 4: TRANSFORM(), THIS PROGRAM ALLOWS TO PERFORM ARBITRARY
   COORDINATE TRANSFORMATIONS. SEE PAGE 44 IN "PERTURBATION METHODS,
   BIFURCATION THEORY AND COMPUTER ALGEBRA". */
 
@@ -47,4 +47,3 @@ FOR I:1 THRU N DO TREQ[I]:EV(EQ[I],TRANS,DIFF),
 TREQS:MAKELIST(TREQ[I],I,1,N),
 DERIVS:MAKELIST(DIFF(Y[I],T),I,1,N),
 NEWEQS:SOLVE(TREQS,DERIVS))$
-

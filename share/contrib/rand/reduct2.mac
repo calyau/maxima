@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename reduct2.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-   /* PROGRAM NUMBER 11: REDUCTION2(), A LIAPUNOV-SCHMIDT REDUCTION FOR
+   /* PROGRAM NUMBER 11: REDUCTION2(), A LIAPUNOV-SCHMIDT REDUCTION FOR
    STEADY STATE BIFURCATIONS IN SYSTEMS OF ORDINARY DIFFERENTIAL
    EQUATIONS. SEE PAGE 176 AND PAGE 211 IN "PERTURBATION METHODS, 
    BIFURCATION  THEORY AND COMPUTER ALGEBRA".*/
@@ -121,4 +121,3 @@ W_POLY(I,J):=BLOCK(/*THE FUNCTION W_POLY ALLOWS TO CALCULATE ITERATIVELY,
 VFUN(LIST,VALUE):=MAP(LAMBDA([U],U=VALUE),LIST)$
  
 G_EQ():=  SUM(EV(AMP^K*LAM^L/K!*BIFEQ[K,L],LS_LIST[N]),N,1,LENGTH(LS_LIST))$
-

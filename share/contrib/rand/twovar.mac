@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename twovar.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/* PROGRAM NUMBER 6: TWOVAR(), A FUNCTION TO PERFORM A TWO VARIABLE
+/* PROGRAM NUMBER 6: TWOVAR(), A FUNCTION TO PERFORM A TWO VARIABLE
    EXPANSION TO ORDER EPSILON FOR N WEAKLY COUPLED PERTURBED NONLINEAR
    OSCILLATORS. SEE PAGE 94 IN "PERTURBATION METHODS, BIFURCATION
    THEORY AND COMPUTER ALGEBRA". */
@@ -170,4 +170,3 @@ SETIFY(LIST):=(
     FOR I:2 THRU LENGTH(LIST) DO(
         IF NOT MEMBER(LIST[I],SET) THEN SET:CONS(LIST[I],SET)),
     SET)$
-

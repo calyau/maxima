@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename reduct3.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/* PROGRAM NUMBER 12: A LIAPUNOV-SCHMIDT REDUCTION FOR STEADY STATE
+/* PROGRAM NUMBER 12: A LIAPUNOV-SCHMIDT REDUCTION FOR STEADY STATE
    BIFURCATIONS IN SYSTEMS OF PARTIAL DIFFERENTIAL EQUATIONS 
    DEPENDING ON ONE INDEPENDENT SPACE VARIABLE. SEE PAGE 189 IN
    "PERTURBATION METHODS, BIFURCATION THEORY AND COMPUTER ALGEBRA".
@@ -224,4 +224,3 @@ DEFRULE(SINNULL,SIN(DUMMY1),0)$
 
 VFUN(LIST,VALUE):=MAP(LAMBDA([U],U=VALUE),LIST)$
 DIFNULL(I,J):=MAP(LAMBDA([U],'DIFF(U,AMP,I,LAM,J)=0),W) $
-

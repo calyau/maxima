@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename nf.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/*PROGRAM NUMBER 5: NF(), NORMAL FORM TRANSFORMATIONS. SEE PAGE 62 IN
+/*PROGRAM NUMBER 5: NF(), NORMAL FORM TRANSFORMATIONS. SEE PAGE 62 IN
   "PERTURBATION METHODS, BIFURCATION THEORY AND COMPUTER ALGEBRA". */
 
 
@@ -107,7 +107,7 @@ COEFFS:EV(TEMP8,A[DUMMY,SUB]:=C[DUMMY,SUB],MAKELIST(Y[I]=1,I,1,N)),
 FOR I:1 THRU N DO(
      FOR J:1 THRU LENGTH(TERMS) DO(
           EV(PART(COEFFS,J),ROWDUMMY=I)::RATCOEF(EXPAND(NEWRHS[I,1]),PART(TERMS,
-J)))))$
+J)))))$
 
 VARS(NN):=(
 TEMP5:SUM(EV(TEMPGEN3[NN]),ROWDUMMY,1,N),
@@ -156,4 +156,3 @@ TEMP7:EV(TEMP6,MAKELIST(Y[I]=1,I,1,N)))$
                   C[2,[7,0]]=-C[1,[6,1]],C[2,[7,0]]=-C[1,[4,3]]/3,
                   C[2,[7,0]]=-C[1,[2,5]]/3,C[2,[7,0]]=-C[1,[0,7]]],
                  VARS(7)))$
-

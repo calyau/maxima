@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename reduct1.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/*PROGRAM NUMBER 10: REDUCTION1(), A LIAPUNOV-SCHMIDT REDUCTION FOR
+/*PROGRAM NUMBER 10: REDUCTION1(), A LIAPUNOV-SCHMIDT REDUCTION FOR
   STEADY STATE BIFURCATIONS IN ONE DIFFERENTIAL EQUATION DEPENDING
   ON ONE INDEPENDENT VARIABLE. SEE PAGE 170 IN "PERTURBATION METHODS,
   BIFURCATION THEORY AND COMPUTER ALGEBRA". */
@@ -157,4 +157,3 @@ NEUMANNBC(EXP):=(
 		[%K1,%K2]),
 	  EV(EXP,NBC2))$
 G_EQ():=  SUM(EV(AMP^K*LAM^L/K!*BIFEQ[K,L],LS_LIST[N]),N,1,LENGTH(LS_LIST))$
-

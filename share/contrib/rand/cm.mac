@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename cm.mac
 
    ***************************************************************
    *							         *
@@ -12,7 +12,7 @@
    *      These files are released to the public domain          *
    *            						 *
    ***************************************************************
-*/ /* PROGRAM NUMBER 3: CM(), CENTER MANIFOLD REDUCTION FOR ORDINARY
+*/ /* PROGRAM NUMBER 3: CM(), CENTER MANIFOLD REDUCTION FOR ORDINARY
    DIFFERENTIAL EQUATIONS. SEE PAGE 32 IN "PERTURBATION METHODS,
    BIFURCATION THEORY AND COMPUTER ALGEBRA". */
 
@@ -90,4 +90,3 @@ PRINT(CENTERMANIFOLD),
 CMDE2:EV(CMDE,CENTERMANIFOLD),
 PRINT("FLOW ON THE C.M.:"),
 PRINT(CMDE2))$
-

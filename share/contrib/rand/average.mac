@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename average.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/*PROGRAM NUMBER 7: AVERAGE(), ALLOWS ONE TO PERFORM FIRST AND SECOND ORDER
+/*PROGRAM NUMBER 7: AVERAGE(), ALLOWS ONE TO PERFORM FIRST AND SECOND ORDER
   AVERAGING. SEE PAGE 114 IN "PERTURBATION METHODS, BIFURCATION THEORY 
   AND COMPUTER ALGEBRA". */
 
@@ -100,4 +100,3 @@ JUMP1,
       CONTAINS_T(EXP):= NOT FREEOF(T,EXP)$
       MATCHDECLARE(Q,CONTAINS_T)$
       DEFRULE(KILLEXP,EXP(Q),0)$
-

@@ -1,4 +1,4 @@
-/* Filename <name>.mac
+/* Filename lc.mac
 
    ***************************************************************
    *							         *
@@ -13,7 +13,7 @@
    *            						 *
    ***************************************************************
 */ 
-/*PROGRAM NUMBER 1: LC(), LINDSTEDT'S METHOD TO CALCULATE LIMIT CYCLES,
+/*PROGRAM NUMBER 1: LC(), LINDSTEDT'S METHOD TO CALCULATE LIMIT CYCLES,
   SEE PAGE 7 IN "PERTURBATION METHODS, BIFURCATION THEORY  AND COMPUTER
   ALGEBRA".*/
 
@@ -102,4 +102,3 @@ W:EV(W,PARAMLIST),
 X:TAYLOR(EV(X,XLIST,PARAMLIST),E,0,N-1),
 PRINT("X =",X),
 PRINT("W =",W))$
-
