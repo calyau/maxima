@@ -176,6 +176,8 @@ specify the name of the metric, and perform some simple calculations.
 (%i9) ishow(extdiff(v([i],[]),j))$
 (%t9)                             v    - v
                                    j,i    i,j
+                                  -----------
+                                       2
 (%i10) ishow(liediff(v,w([i],[])))$
                                %3          %3
 (%t10)                        v   w     + v   w
@@ -198,17 +200,17 @@ specify the name of the metric, and perform some simple calculations.
 (%t14)                        v    - v   icc2
                                i,j    %6     i j
 (%i15) ishow(ev(%,icc2))$
-                                        %6         %6
-(%t15)                  v    - v   (ifc2    + ichr2   )
-                         i,j    %6      i j        i j
-(%i16) ishow(radcan(ev(%,ifc2)))$
-               %1               %1     %3 %2    %1
-(%t16) (v   ifb    - 2 v   ichr2    + g      ifb     v   g     + 2 v
-         %1    i j      %1      i j             %2 j  %3  i %1      i,j
+                                             %6
+(%t15)                        v    - v   ifc2
+                               i,j    %6     i j
+(%i16) ishow(radcan(ev(%,ifc2,ifc1)))$
+             %6 %8                    %6 %8
+(%t16) - (ifg      v   ifb       + ifg      v   ifb       - 2 v
+                    %6    j %8 i             %6    i j %8      i,j
 
-                                                %3 %1    %2
-                                             - g      ifb     g     v  )/2
-                                                         %1 i  %2 j  %3
+                                                    %6 %8
+                                               - ifg      v   ifb      )/2
+                                                           %6    %8 i j
 (%i17) ishow(canform(s([i,j],[])-s([j,i])))$
 (%t17)                            s    - s
                                    i j    j i
@@ -1335,19 +1337,15 @@ and @code{icc2}), as the following example demonstrates:
 (%t4)                  v   (ifc2     + ichr2    ) + v
                                 %1 j        %1 j     ,j
 (%i5) ishow(ev(%,ifc2))$
-              i %3     %2                          %2         i
-           ifg     (ifb      ifg     - ifg      ifb    ) - ifb
-       %1              %1 %3    %2 j      %1 %2    %3 j       %1 j
-(%t5) v   (-------------------------------------------------------
-                                      2
-
-                                                           i        i
-                                                    + ichr2    ) + v
-                                                           %1 j     ,j
-(%i6) ishow(ifb([a,b],[c]))$
-                           c           c         %4    %5
-(%t6)                 (ifri      - ifri     ) ifr   ifr
-                           %4,%5       %5,%4     a     b
+            %1    i %2
+           v   ifg     (ifb        - ifb        + ifb       )
+                           j %2 %1      %2 %1 j      %1 j %2     i
+(%t5)      -------------------------------------------------- + v
+                                   2                             ,j
+(%i6) ishow(ifb([a,b,c]))$
+                       %5    %4
+(%t6)               ifr   ifr   (ifri        - ifri       )
+                       a     b       c %4,%5       c %5,%4
 
 @end example
 
@@ -1356,10 +1354,10 @@ the @code{iframe_bracket_form} flag is set to @code{false}:
 
 @example
 
-(%i8) block([iframe_bracket_form:false],ishow(ifb([a,b],[c])))$
-                        c      %7    %6        %6      %7
-(%t8)               ifri   (ifr   ifr     - ifr     ifr  )
-                        %6     a     b,%7      a,%7    b
+(%i8) block([iframe_bracket_form:false],ishow(ifb([a,b,c])))$
+                       %7    %6        %6      %7
+(%t8)              (ifr   ifr     - ifr     ifr  ) ifri
+                       a     b,%7      a,%7    b       c %6
 
 @end example
 
@@ -1383,9 +1381,10 @@ coefficients is expressed using the frame bracket:
 
 @example
 
-    c       cd          e       cd          e       c
-ifc2   = ifg   ifg   ifb   - ifg   ifg   ifb   - ifb
-    ab            be    ad            ae    db      ab
+          - ifb      + ifb      + ifb
+               c a b      b c a      a b c
+ifc1    = --------------------------------
+    abc                  2
 
 @end example
 
@@ -1395,9 +1394,10 @@ value of @code{frame_bracket_form}. If true (the default):
 
 @example
 
-   c          c         c        d     e
-ifb   = ( ifri    - ifri    ) ifr   ifr
-   ab         d,e       e,d      a     b
+          e      d
+ifb =  ifr    ifr   (ifri      - ifri     )
+   abc    a      b       c d,e       c e,d
+
 
 @end example
 
@@ -1405,9 +1405,9 @@ Or, if @code{false}:
 
 @example
 
-   c        c      e     d        d      e
-ifb   = ifri   (ifr   ifr    - ifr    ifr  )
-   ab       d      i     j,e      i,e    j
+             e      d        d      e
+ifb    = (ifr    ifr    - ifr    ifr   ) ifri
+   abc       a      b,e      a,e    b        c d
 
 @end example
 
@@ -1418,17 +1418,18 @@ ifb   = ifri   (ifr   ifr    - ifr    ifr  )
 @c @unnumberedsec phony
 @defvar icc1
 
-Connection coefficients of the first kind (also known as Ricci rotation
-coefficients.) In ITENSOR, defined as
+Connection coefficients of the first kind. In ITENSOR, defined as
 
 @example
 
-icc1    = ichr1    + ifc1    + ikt1    - inmc1
-    abc        abc       abc       abc        abc
+icc1    = ichr1    - ikt1    - inmc1
+    abc        abc       abc        abc
 
 @end example
 
-In this expression, if @code{itorsion_flag} is @code{false}, @code{ikt1}
+In this expression, if @code{iframe_flag} is true, the Christoffel-symbol
+@code{ichr1} is replaced with the frame connection coefficient @code{ifc1}.
+If @code{itorsion_flag} is @code{false}, @code{ikt1}
 will be omitted. Similarly, of @code{inonmet_flag} is @code{false},
 @code{inmc1} will not be present.
 
@@ -1439,18 +1440,19 @@ will be omitted. Similarly, of @code{inonmet_flag} is @code{false},
 @c @unnumberedsec phony
 @defvar icc2
 
-Connection coefficients of the first kind (also known as Ricci rotation
-coefficients.) In ITENSOR, defined as
+Connection coefficients of the second kind. In ITENSOR, defined as
 
 @example
 
-    c         c        c        c         c
-icc2   = ichr2   + ifc2   - ikt2   - inmc2
-    ab        ab       ab       ab        ab
+    c         c        c         c
+icc2   = ichr2   - ikt2   - inmc2
+    ab        ab       ab        ab
 
 @end example
 
-In this expression, if @code{itorsion_flag} is @code{false}, @code{ikt2}
+In this expression, if @code{iframe_flag} is true, the Christoffel-symbol
+@code{ichr2} is replaced with the frame connection coefficient @code{ifc2}.
+If @code{itorsion_flag} is @code{false}, @code{ikt2}
 will be omitted. Similarly, of @code{inonmet_flag} is @code{false},
 @code{inmc2} will not be present.
 
@@ -1460,15 +1462,18 @@ will be omitted. Similarly, of @code{inonmet_flag} is @code{false},
 @c @unnumberedsec phony
 @defvar ifc1
 
-Frame coefficient of the first kind. This tensor represents the contribution
+Frame coefficient of the first kind (also known as Ricci-rotation
+coefficients.) This tensor represents the contribution
 of the frame metric to the connection coefficient of the first kind. Defined
 as:
 
 @example
 
-                    d
-ifc1    = ifg   ifc2
-    abc      cd     ab
+          - ifb      + ifb      + ifb
+               c a b      b c a      a b c
+ifc1    = --------------------------------
+    abc                   2
+
 
 @end example
 
@@ -1485,9 +1490,9 @@ indices raised and lowered as necessary:
 
 @example
 
-    c       cd          e       cd          e       c
-ifc2   = ifg   ifg   ifb   - ifg   ifg   ifb   - ifb
-    ab            be    ad            ae    db      ab
+    c       cd
+ifc2   = ifg   ifc1
+    ab             abd
 
 @end example
 
@@ -1848,10 +1853,10 @@ For instance:
 (%i1) load(itensor);
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(extdiff(v([i]),j))$
-                                   v    - v
-                                    j,i    i,j
-(%t2)                            - -----------
-                                        2
+                                  v    - v
+                                   j,i    i,j
+(%t2)                             -----------
+                                       2
 (%i3) decsym(a,2,0,[anti(all)],[]);
 (%o3)                                done
 (%i4) ishow(extdiff(a([i,j]),k))$
@@ -1862,8 +1867,8 @@ For instance:
 (%i5) igeowedge_flag:true;
 (%o5)                                true
 (%i6) ishow(extdiff(v([i]),j))$
-(%t6)                           - (v    - v   )
-                                    j,i    i,j
+(%t6)                             v    - v
+                                   j,i    i,j
 (%i7) ishow(extdiff(a([i,j]),k))$
 (%t7)                      a      - a      + a
                             j k,i    i k,j    i j,k
