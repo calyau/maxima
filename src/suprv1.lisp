@@ -242,15 +242,22 @@
  (SETQ $LABELS (CONS (CAR $LABELS) (CONS LABEL (DELQ LABEL (CDR $LABELS) 1)))))
 
 (DEFMFUN TYI* NIL
- #+Multics (CLEAR-INPUT NIL)
- (DO ((N (TYI) (TYI))) (NIL)
-     (COND ((OR (char= N #\NewLine) (AND (> N 31) (NOT (char= N #\RUBOUT))))
-	    (RETURN N))
-	   ((char= N #\Page) (FORMFEED) (PRINC (STRIPDOLLAR $PROMPT))))))
+  (CLEAR-INPUT)
+  (DO ((N (TYI) (TYI))) (NIL)
+    (COND ((OR (char= N #\NewLine) (AND (> (char-code N) 31) (NOT (char= N #\RUBOUT))))
+	   (RETURN N))
+	  ((char= N #\Page) (format t "~|") (throw 'retry nil)))))
 
 (DEFUN CONTINUEP NIL
- (PRINC (STRIPDOLLAR $PROMPT))
- (char= (TYI*) #-Multics #\Space #+Multics #\NewLine))
+  (loop
+     (catch 'retry
+       (unwind-protect
+	    (progn
+	      (fresh-line)
+	      (PRINC (STRIPDOLLAR $PROMPT))
+	      (finish-output)
+	      (return (char= (TYI*) #\Newline)))
+	 (clear-input)))))
 
 (DEFUN CHECKLABEL (X)  ; CHECKLABEL returns T iff label is not in use
  (NOT (OR $NOLABELS (= $LINENUM 0) (BOUNDP (CONCAT X $LINENUM)))))
