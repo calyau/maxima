@@ -418,14 +418,14 @@ specint( t^(3/2)*%h[1/2,1](t)*%e^(-p*t),t);
 /*
  * Formula 2, p 105:
  *
- * t^(u-1/2)*bessel_y(v,a*t)
+ * t^(u-1)*bessel_y(v,a*t)
  *    -> -2/%pi*gamma(u+v)*(a^2+p^2)^(-u/2)*assoc_legendre_q(u-1,-v,p/sqrt(a^2+p^2))
  *
  * for a > 0, Re u > |Re v|
  *
- * We have u = 2, v = 1, so the result is
+ * We have u = 5/2, v = 1, so the result is
  *
- *    -4/%pi/(p^2+a^2)*assoc_legendre_q(1,-1,p/sqrt(p^2+a^2))
+ *    -4/%pi/(p^2+a^2)*assoc_legendre_q(3/2,-1,p/sqrt(p^2+a^2))
  *
  *
  */

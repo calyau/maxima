@@ -2784,7 +2784,7 @@
 ;;
 ;; In particular, with a slight change of notation, we have
 ;;
-;;    integrate(x^(u-1/2)*exp(-p*x)*bessel_y(v,a*x)*sqrt(a), x, 0, inf)
+;;    integrate(x^(u-1)*exp(-p*x)*bessel_y(v,a*x)*sqrt(a), x, 0, inf)
 ;;
 ;; which is the Laplace transform of x^(u-1/2)*bessel_y(v,x).
 ;;
