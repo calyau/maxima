@@ -369,7 +369,7 @@ In particular, to release the memory taken up by the value of a symbol,
 one unbinds the output label which shows the bound value, as well as unbinding the symbol itself.
 
 @code{kill} quotes its arguments.
-The double-quote operator, @code{'@w{}'}, defeats the quotation.
+The double single quotes operator, @code{'@w{}'}, defeats the quotation.
 
 @code{kill (symbol)} unbinds all properties of @code{symbol}.
 In contrast, @code{remvalue}, @code{remfunction}, @code{remarray}, and @code{remrule}
@@ -388,7 +388,7 @@ so, for example, @code{i} and @code{%i} yield the same result.
 If no labels begin with @code{symbol}, @code{labels} returns an empty list.
 
 The function @code{labels} quotes its argument.
-The double-quote operator @code{'@w{}'} defeats the quotation.
+The double single quotes operator @code{'@w{}'} defeats the quotation.
 For example,
 @code{labels (''inchar)} returns the input labels which begin with the current input label character.
 
@@ -452,7 +452,7 @@ that the variable he assigned a value to was truly an option variable.
 @defunx playback ([m], [m, n])
 @defunx playback (input)
 @defunx playback (slow)
-@defunx playback (time, gctime, totaltime)
+@defunx playback (time)
 @defunx playback (string, grind)
 Displays input, output, and intermediate expressions,
 without recomputing them.
@@ -462,7 +462,7 @@ is not displayed.
 See also @code{labels}.
 
 @code{playback} quotes its arguments.
-The double-quote operator, @code{'@w{}'}, defeats the quotation.
+The double single quotes operator, @code{'@w{}'}, defeats the quotation.
 @code{playback} always returns @code{done}.
 
 @code{playback ()} (with no arguments) displays all input, output, and intermediate expressions
@@ -486,8 +486,8 @@ This behavior is similar to @code{demo}.
 when creating a secondary-storage file in order to pick out useful expressions.
 
 @code{playback (time)} displays the computation time for each expression.
-@c SHOULD WE REALLY MENTION THE FOLLOWING ??? MAYBE WE SHOULD MENTION ONLY time !!!
-The arguments @code{gctime} and @code{totaltime} have the same effect as @code{time}.
+@c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
+@c The arguments @code{gctime} and @code{totaltime} have the same effect as @code{time}.
 
 @code{playback (string)} displays expressions in @code{string} mode.
 @code{playback (grind)} displays expressions in @code{grind} mode.
