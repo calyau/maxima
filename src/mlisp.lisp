@@ -2508,7 +2508,7 @@
 
 (defmspec mdoin (form) (setq form (cdr form))
 	  (funcall #'(lambda  (mdop var set test action)
-		       (setq set (if (atom (setq set (format1 (meval (cadr form)))))
+		       (setq set (if ($atom (setq set (format1 (meval (cadr form)))))
 				     (merror "Atomic 'IN' argument to DO statement:~%~M" set)
 				     (margs set))
 			     test (list '(mor)
