@@ -6,28 +6,36 @@
 
 @node Introduction to Lists, Definitions for Lists, Lists, Lists
 @section Introduction to Lists
+
 Lists are the basic building block for Maxima and Lisp.   All data types
 other than arrays, hash tables, numbers are represented as Lisp lists,
 These Lisp lists have the form
+
 @example
 ((MPLUS) $A 2)
 @end example
+
 @noindent
 to indicate an expression @code{a+2}.   At Maxima level one would see
 the infix notation @code{a+2}.   Maxima also has lists which are printed
 as
+
 @example
 [1, 2, 7, x+y]
 @end example
+
 @noindent
 for a list with 4 elements.   Internally this corresponds to a Lisp list
 of the form
+
 @example
 ((MLIST) 1  2  7  ((MPLUS)  $X $Y ))
 @end example
+
 @noindent
 The flag which denotes the type field of the Maxima expression is a list
 itself, since after it has been through the simplifier the list would become
+
 @example
 ((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
 @end example
@@ -81,14 +89,17 @@ creates a copy of the list @code{list}.
 removes all occurrences of @code{exp1} from @code{exp2}.  @code{exp1}
 may be a term of @code{exp2} (if it is a sum) or a factor of @code{exp2}
 (if it is a product).
+
 @example
 (%i1)  delete(sin(x),x+sin(x)+y);
 (%o1)               y + x
 
 @end example
+
 @code{delete(exp1, exp2, n)} removes the first @code{n} occurrences of
 @code{exp1} from @code{exp2}.  If there are fewer than @code{n}
 occurrences of @code{exp1} in @code{exp2} then all occurrences will be deleted.
+
 @example
 (%i1)  delete(a,f(a,b,c,d,a));
 (%o1)             f(b, d)
@@ -96,6 +107,12 @@ occurrences of @code{exp1} in @code{exp2} then all occurrences will be deleted.
 (%o2)           f(b, d, a)
 
 @end example
+
+@end defun
+
+@defun eigth (exp)
+returns the 8'th item of expression or list @code{exp}.
+See @code{first} for more details.
 
 @end defun
 
@@ -112,12 +129,18 @@ This function takes a list, or a positive number of arguments and returns
 
 @end defun
 
-@defun first (exp) second (exp) .. tenth (exp)
-yields the first part of exp which may result in the first
+@defun fifth (exp)
+returns the 5'th item of expression or list @code{exp}.
+See @code{first} for more details.
+
+@end defun
+
+@defun first (exp)
+yields the first part of @code{exp} which may result in the first
 element of a list, the first row of a matrix, the first term of a sum,
 etc.  Note that @code{first} and its related functions, @code{rest} and @code{last}, work
 on the form of @code{exp} which is displayed not the form which is typed on
-input.  If the variable @code{inflag [false]} is set to @code{true} however, these
+input.  If the variable @code{inflag} is set to @code{true} however, these
 functions will look at the internal form of @code{exp}.  Note that the
 simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if @code{inflag}
 is @code{true} and @code{y} if @code{inflag} is @code{false} (@code{first(y+x)} gives the same
@@ -128,6 +151,12 @@ tenth part of their input argument.
 
 @defun flatten (exp)
 Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
+
+@end defun
+
+@defun fourth (exp)
+returns the 4'th item of expression or list @code{exp}.
+See @code{first} for more details.
 
 @end defun
 
@@ -167,7 +196,7 @@ gives (by default) the number of parts in the external
 (displayed) form of @code{exp}.  For lists this is the number of elements,
 for matrices it is the number of rows, and for sums it is the number
 of terms (see @code{dispform}).  The @code{length} command is affected by the
-@code{inflag [false]} switch.  So, e.g. @code{length(a/(b*c));} gives 2 if
+@code{inflag} switch.  So, e.g. @code{length(a/(b*c));} gives 2 if
 @code{inflag} is @code{false} (Assuming @code{exptdispflag} is @code{true}), but 3 if @code{inflag} is
 @code{true} (the internal representation is essentially @code{a*b^-1*c^-1}).
 
@@ -188,10 +217,12 @@ is @code{true} if @code{exp} is a list else @code{false}.
 @end defun
 
 @defun makelist (exp,var,lo,hi)
+@defunx makelist (exp,var,list)
 returns a list as value.  @code{makelist} may be called as
 @code{makelist(exp,var,lo,hi)} [@code{lo} and @code{hi} must be integers], or as
 @code{makelist(exp,var,list)}.  In the first case @code{makelist} is analogous to
-@code{sum}, whereas in the second case @code{makelist} is similar to @code{map}.  Examples:
+@code{sum}, whereas in the second case @code{makelist} is similar to @code{map}.
+Examples:
 
 @example
 (%i1) makelist(concat(x,i),i,1,6);
@@ -209,7 +240,14 @@ non-list expressions, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
 
 @end defun
 
+@defun ninth (exp)
+returns the 9'th item of expression or list @code{exp}.
+See @code{first} for more details.
+
+@end defun
+
 @defun rest (exp, n)
+@defunx rest (exp)
 yields @code{exp} with its first @code{n} elements removed if @code{n} is
 positive and its last @code{-n} elements removed if @code{n} is negative.  If @code{n} is 1
 it may be omitted.  @code{exp} may be a list, matrix, or other expression.
@@ -220,8 +258,36 @@ it may be omitted.  @code{exp} may be a list, matrix, or other expression.
 reverses the order of the members of the @code{list} (not
 the members themselves).  @code{reverse} also works on general expressions,
 e.g.  @code{reverse(a=b);} gives @code{b=a}.
-@code{reverse} default: @code{[false]} - in the Plotting functions, if @code{true} cause a
-left-handed coordinate system to be assumed.
+
+@end defun
+
+@defun second (exp)
+returns the 2'nd item of expression or list @code{exp}.
+See @code{first} for more details.
+
+@end defun
+
+@defun seventh (exp)
+returns the 7'th item of expression or list @code{exp}.
+See @code{first} for more details.
+
+@end defun
+
+@defun sixth (exp)
+returns the 6'th item of expression or list @code{exp}.
+See @code{first} for more details.
+
+@end defun
+
+@defun tenth (exp)
+returns the 10'th item of expression or list @code{exp}.
+See @code{first} for more details.
+
+@end defun
+
+@defun third (exp)
+returns the 3'rd item of expression or list @code{exp}.
+See @code{first} for more details.
 
 @end defun
 
