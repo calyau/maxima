@@ -9,4 +9,5 @@ export MAXIMA_INFODIR
 MAXIMA_PLOTDIR=$top_srcdir/plotting
 export MAXIMA_PLOTDIR
 
-exec /bin/sh $top_srcdir/src/maxima "$@"
+POSIX_SHELL=`head -n 1 $top_srcdir/src/maxima | sed 's/#!//'`
+exec $POSIX_SHELL $top_srcdir/src/maxima "$@"
