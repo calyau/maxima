@@ -166,7 +166,7 @@ binary-gcl/maxima:
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
-	j=$$($(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMTESTLOAD))'\
+	j=$$($(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMTESTLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)))'\
 	 < /dev/null | \
 		awk 'BEGIN {p="$(shell pwd)" "/"} /oading  *source  *file$$/ {a=$$0;next} {$$0=a $$0;sub(p,"");print;a=""}' |\
                  grep Loading |\
@@ -183,7 +183,7 @@ binary-gcl/maxima:
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
-	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (si:save-system "binary-gcl/maxima"))'
+	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima"))'
 endif
 
 install-gcl:
