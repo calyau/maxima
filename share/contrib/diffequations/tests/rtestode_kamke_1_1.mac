@@ -4,6 +4,10 @@
     E Kamke, Differentialgleichungen Losungsmethoden und Losungen, 
     Vol 1, Geest & Portig, Leipzig, 1961
 
+    E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs, 
+    Symmetries and Linear Transformations, European Journal of 
+    Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003). 
+    (http://lie.uwaterloo.ca/papers/ode_iv.pdf)
 */
 /* Don't kill(all); It messes up trigsimp */
 
