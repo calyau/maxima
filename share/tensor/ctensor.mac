@@ -20,8 +20,6 @@
 */
 
 if get('ctensor,'version)#false then error("CTENSOR already loaded!")$
-put('ctensor,'v20041126,'version)$
-
 
 /***********************************
   PACKAGE INITIALIZATION
@@ -314,18 +312,24 @@ ct_coordsys(coordinate_system, [extra_args]):=
   (
     dim:2,
     ct_coords:[x,y],
-    if cframe_flag then fr:ident(2)
-    else lg:ident(2),
-    if cframe_flag then lfg:ident(2)
+    if cframe_flag then
+    (
+      fr:ident(2),
+      lfg:ident(2)
+    )
+    else lg:ident(2)
   )
   else if coordinate_system='polar then
   (
     dim:2,
     ct_coords:[r,phi],
     assume(r>=0),
-    if cframe_flag then fr:matrix([1,0],[0,r^2])
-    else lg:matrix([1,0],[0,r^2]),
-    if cframe_flag then lfg:ident(2)
+    if cframe_flag then
+    (
+      fri:matrix([1,0],[0,r]),
+      lfg:ident(2)
+    )
+    else lg:matrix([1,0],[0,r^2])
   )
   else if coordinate_system='elliptic then
   (
@@ -347,7 +351,7 @@ ct_coordsys(coordinate_system, [extra_args]):=
   (
     dim:3,
     ct_coords:[x,y,z],
-    if cframe_flag then fr:ident(3)
+    if cframe_flag then fri:ident(3)
     else lg:ident(3),
     if cframe_flag then lfg:ident(3)
   )
@@ -385,7 +389,15 @@ ct_coordsys(coordinate_system, [extra_args]):=
   )
   else if coordinate_system='spherical then
   (
-    error("Not implemented yet!")
+    dim:3,
+    ct_coords:[r,theta,phi],
+    assume(r>=0),
+    if cframe_flag then
+    (
+      fri:matrix([1,0,0],[0,r,0],[0,0,r*sin(theta)]),
+      lfg:ident(3)
+    )
+    else lg:matrix([1,0,0],[0,r^2,0],[0,0,r^2*sin(theta)^2])
   )
   else if coordinate_system='oblatespheroidal then
   (
@@ -411,7 +423,7 @@ ct_coordsys(coordinate_system, [extra_args]):=
   (
     dim:4,
     ct_coords:[x,y,z,t],
-    if cframe_flag then fr:ident(4)
+    if cframe_flag then fri:ident(4)
     else lg:ident(4),
     if cframe_flag then lfg:ident(4)
   )
@@ -421,8 +433,24 @@ ct_coordsys(coordinate_system, [extra_args]):=
   )
   else if coordinate_system='exteriorschwarzschild then
   (
-    error("Not implemented yet!"),
-    assume(r>=2*m)
+    assume(r>=2*m),
+    dim:4,
+    ct_coords:[r,theta,phi,t],
+    if cframe_flag then
+    (
+      fri:matrix(
+        [sqrt(r/(r-2*m)),0,           0,              0],
+        [              0,r,           0,              0],
+        [              0,0,sin(theta)*r,              0],
+        [              0,0,           0,sqrt((r-2*m)/r)]),
+        lfg:ident(4),
+        lfg[4,4]:-1
+    )
+    else lg:matrix(
+      [r/(r-2*m),  0,               0,         0],
+      [        0,r^2,               0,         0],
+      [        0,  0,sin(theta)^2*r^2,         0],
+      [        0,  0,               0,-(r-2*m)/r])
   )
   else if coordinate_system='interiorschwarzschild then
   (
@@ -450,8 +478,16 @@ ct_coordsys(coordinate_system, [extra_args]):=
     cmetric(),
     christof(false)
   ),
-  if member('verbose,extra_args) then
-  (true
+  if verbose then
+  (
+    ldisplay(dim),
+    ldisplay(ct_coords),
+    if cframe_flag then
+    (
+      ldisplay(lfg),
+      ldisplay(fri)
+    )
+    else ldisplay(lg)
   )
   else done
 )$
@@ -1205,3 +1241,6 @@ checkdiv(gxyz):=block
     print(div[i]:ratsimp(ctaylor(1/sqrt(-gdet)*sum(diff(sqrt(-gdet)*gxyz[i,j],
       ct_coords[j]),j,1,dim)-sum(sum(mcs[i,j,a]*gxyz[a,j],a,1,dim),j,1,dim))))
 )$
+
+
+put('ctensor,'v20041126,'version)$

@@ -48,32 +48,36 @@ ifb(l1,l2,[ld]):=
                          'ifr([i],[e],f)*'ifr([j],[f]))
 );
 
-/* The rotation coefficients */
+/* The connection coefficients */
 icc1(l,[ld]):=if length(ld)>0 and rest(ld)#[] then
   apply('idiff,cons(icc1(l),rest((?putinones)(rest(ld)))))
 /*else block([d:idummy()],_g([l[3],d],[])*'icc2([l[1],l[2]],[d]));*/
   else 'ichr1(l,if length(ld)>0 then ld[1] else [])+
     (if iframe_flag then 'ifc1(l,[]) else 0)+
-    (if itorsion_flag then 'ikt1(l,[]) else 0);
+    (if itorsion_flag then -'ikt1(l,[]) else 0);
 icc2(l1,l2,[ld]):=
   if ld#[] then apply('idiff,cons(icc2(l1,l2),rest((?putinones)(ld))))
 /*else block([d:idummy()],_g([],[l2[1],d])*(_c([l1[1],d,l1[2]])-
                            _c([d,l1[2],l1[1]])+_c([l1[2],l1[1],d]))/2);*/
   else 'ichr2(l1,l2)+
     (if iframe_flag then 'ifc2(l1,l2) else 0)+
-    (if itorsion_flag then 'ikt2(l1,l2) else 0);
+    (if itorsion_flag then -'ikt2(l1,l2) else 0);
 
 /* The frame coefficients */
 ifc1(l,[ld]):=if length(ld)>0 and rest(ld)#[] then
   apply('idiff,cons(ifc1(l),rest((?putinones)(rest(ld)))))
-  else block([i:idummy(),k:idummy()],('ifri([i,l[1]],[],k)-
+/*else block([i:idummy(),k:idummy()],('ifri([i,l[1]],[],k)-
        'ifri([k,l[1]],[],i))*'ifr([l[2]],[i])*'ifr([l[3]],[k])+
        ('ifri([i,l[2]],[],k)-'ifri([k,l[2]],[],i))*'ifr([l[3]],[i])*
        'ifr([l[1]],[k])-('ifri([i,l[3]],[],k)-'ifri([k,l[3]],[],i))*
-       'ifr([l[1]],[i])*'ifr([l[2]],[k]));
+       'ifr([l[1]],[i])*'ifr([l[2]],[k]));*/
+  else block([i:idummy()],_g([l[3],i],[])*'ifc2([l[1],l[2]],[l[3]]));
 ifc2(l1,l2,[ld]):=
   if ld#[] then apply('idiff,cons(ifc2(l1,l2),rest((?putinones)(ld))))
-  else block([d:idummy()],_g([],[l2[1],d])*'ifc1([l1[1],l1[2],d]));
+/*else block([d:idummy()],_g([],[l2[1],d])*'ifc1([l1[1],l1[2],d]));*/
+  else block([d:idummy(),e:idummy()],(
+       _g([],[l2[1],e])*(_g([d,l1[2]],[])*'ifb([l1[1],e],[d])-
+                         _g([l1[1],d],[])*'ifb([e,l1[2]],[d]))-'ifb(l1,l2))/2);
 
 /* The nonmetricity coefficients */
 inmc1(l,[ld]):=if not inonmet_flag then 0
@@ -102,9 +106,9 @@ decsym(ichr1,3,0,[sym(1,2)],[]);
 decsym(ichr2,2,1,[sym(all)],[]);
 decsym(icurvature,3,1,[anti(2,3)],[]);
 decsym(ifb,2,1,[sym(all)],[]);
-decsym(icc1,3,0,[sym(1,2)],[]);
+/*decsym(icc1,3,0,[sym(1,2)],[]);
 decsym(icc2,2,1,[sym(all)],[]);
 decsym(ifc1,3,0,[sym(1,2)],[]);
 decsym(ifc2,2,1,[sym(all)],[]);
 decsym(ifkt1,3,0,[sym(1,2)],[]);
-decsym(ifkt2,2,1,[sym(all)],[]);
+decsym(ifkt2,2,1,[sym(all)],[]);*/
