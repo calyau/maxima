@@ -674,6 +674,17 @@ setrgbcolor} def
 			       (if (>= tem ymax) ymax (if (<= tem ymin) ymin tem)))
 		     and do (sloop::loop-finish))))))
 
+;;; Adaptive plotting, based on the adaptive plotting code from
+;;; YACAS. See http://yacas.sourceforge.net/Algo.html#c3s1 for a
+;;; description of the algorithm.  More precise details can be found
+;;; in the file yacas/scripts/plots.rep/plot2d.ys.
+
+
+;; Determine if we have a slow oscillation of the function.
+;; Basically, for each 3 consecutive function values, we check to see
+;; if the function is monotonic or not.  There are 3 such sets, and
+;; the function is considered slowly oscillating if at most 2 of them
+;; are not monotonic.
 (defun slow-oscillation-p (f0 f1 f2 f3 f4)
   (flet ((sign-change (x y z)
 	   (if (or (and (> y x) (> y z))
@@ -685,6 +696,11 @@ setrgbcolor} def
 	   (sign-change f2 f3 f4))
 	2)))
 
+;; Determine if the function values are smooth enough.  This means
+;; that integrals of the functions on the left part and the right part
+;; of the range are approximately the same.
+;;
+;; 
 (defun smooth-enough-p (f-a f-a1 f-b f-b1 f-c eps)
   (let ((quad (/ (+ f-a
 		    (* -5 f-a1)
@@ -696,6 +712,12 @@ setrgbcolor} def
 		      (* 8 f-b1)
 		      (- f-c))
 		   12)))
+    ;; According to the Yacas source code, quad is the Simpson
+    ;; quadrature for the (fb,fb1) subinterval (using points b,b1,c),
+    ;; subtracted from the 4-point Newton-Cotes quadrature for the
+    ;; (fb,fb1) subinterval (using points a, a1, b, b1.
+    ;;
+    ;; quad-b is the Simpson quadrature for the (fb,f1) subinterval.
     (<= (abs quad)
 	(* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c))))))
 		    
@@ -710,14 +732,15 @@ setrgbcolor} def
     (cond ((or (minusp depth)
 	       (and (slow-oscillation-p f-a f-a1 f-b f-b1 f-c)
 		    (smooth-enough-p f-a f-a1 f-b f-b1 f-c eps)))
-	   ;; Done.  Don't refine anymore
+	   ;; Everything is nice and smooth so we're done.  Don't
+	   ;; refine anymore.
 	   (list a f-a
 		 a1 f-a1
 		 b f-b
 		 b1 f-b1
 		 c f-c))
 	  (t
-	   ;; Need to refine
+	   ;; Need to refine.  Split the interval in half, and try to plot each half.  
 	   (let ((left (adaptive-plot f a a1 b f-a f-a1 f-b (1- depth) (* 2 eps)))
 		 (right (adaptive-plot f b b1 c f-b f-b1 f-c (1- depth) (* 2 eps))))
 	     (append left (cddr right)))))))
@@ -744,7 +767,6 @@ setrgbcolor} def
 	   (eps 1d-5)
 	   )
       (declare (double-float x1 y1 x y dy eps2 eps ymin ymax ))
-					;(print (list 'ymin ymin 'ymax ymax epsy))
       (let ((result (adaptive-plot f x (* 0.5d0 (+ x xend)) xend
 				   y ymid yend 10 1d-5)))
 	(format t "Points = ~D~%" (length result))
