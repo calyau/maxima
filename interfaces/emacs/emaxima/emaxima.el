@@ -9,8 +9,8 @@
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.9 $
-;; $Date: 2003-03-11 21:18:34 $
+;; $Revision: 1.10 $
+;; $Date: 2003-03-12 04:50:07 $
 ;; Keywords: maxima, emaxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -1229,18 +1229,6 @@ Return nil if no name or error in name."
 	    (setq end (point)))))
       (buffer-substring-no-properties start end))))
 
-(defun emaxima-remove-end-spaces (string)
-  "Remove the spaces and newlines at the ends of a string"
-  (while (and (> (length string) 0) (string= (substring string 0 1) " "))
-    (setq string (substring string 1)))
-  (while (and (> (length string) 0) (string= (substring string -1) " "))
-    (setq string (substring string 0 -1)))
-  (while (and (> (length string) 0) (string= (substring string 0 1) "\n"))
-    (setq string (substring string 1)))
-  (while (and (> (length string) 0) (string= (substring string -1) "\n"))
-    (setq string (substring string 0 -1)))
-  string)
-
 (defun emaxima-insert-last-output-tex ()
   (let ((mb)
         (me)
@@ -1259,7 +1247,7 @@ Return nil if no name or error in name."
       (insert "\\E")
       (insert (substring out (+ mb 2) (- me 1)))
       (insert ". ")
-      (setq out (emaxima-remove-end-spaces (substring out me)))
+      (setq out (maxima-strip-string-beginning (substring out me)))
       (string-match "([DE][0-9]+)" out)
       (setq ie (match-beginning 0))
       (insert (substring out 0 ie))
@@ -1269,7 +1257,7 @@ Return nil if no name or error in name."
         (forward-char -1))
       (forward-char 1)
       (insert " \\\\\n")
-      (setq out (substring out ie)))
+      (setq out (maxima-strip-string-beginning (substring out ie))))
     (if (string-match "(D[0-9]+)" out)
         (progn
           (setq mb (match-beginning 0))
@@ -1279,12 +1267,12 @@ Return nil if no name or error in name."
                (string-match "[^ \n]" (substring out 0 mb)))
               (progn
                 (insert "\\p ")
-                (insert (substring out 0 mb))
+                (insert (maxima-strip-string-beginning (substring out 0 mb)))
                 (insert " \\\\\n")))
           (insert "\\D")
           (insert (substring out (+ mb 2) (- me 1)))
           (insert ".  ")
-          (insert (substring out me))
+          (insert (maxima-strip-string-beginning (substring out me)))
           (forward-char -1)
           (if (looking-at "\n")
               (progn
@@ -1327,7 +1315,7 @@ Return nil if no name or error in name."
       (insert "\\E")
       (insert (substring out (+ mb 2) (- me 1)))
       (insert ". ")
-      (setq out (emaxima-remove-end-spaces (substring out me)))
+      (setq out (maxima-strip-string-end (substring out me)))
       (string-match "([DE][0-9]+)" out)
       (setq ie (match-beginning 0))
       (insert (substring out 0 ie))
