@@ -10,4 +10,5 @@
 (defparameter *autoconf-datadir* "@expanded_datadir@")
 (defparameter *autoconf-infodir* "@expanded_infodir@")
 (defparameter *autoconf-host* "@host@")
+(defparameter *autoconf-win32* "@win32@")
  

@@ -47,16 +47,15 @@ goto continueparseargs
 :endparseargs
 
 if "%MAXIMA_PREFIX%" == "" goto defaultvars
-set maxima_verpkglibexecdir="%MAXIMA_PREFIX%\libexec\%package%\%version%"
+set maxima_verpkglibdir="%MAXIMA_PREFIX%\lib\%package%\%version%"
 goto endsetupvars
 
-defaultvars:
-set maxima_verpkglibexecdir="%prefix%\libexec\%package%\%version%"
-set clisp=d:\msys\1.0\home\amundson\bin\clisp-2.31\bin\clisp
+:defaultvars
+set maxima_verpkglibdir="%prefix%\lib\%package%\%version%"
 
 :endsetupvars
 
-set maxima_image_base="%maxima_verpkglibexecdir%\binary-%lisp%"
+set maxima_image_base="%maxima_verpkglibdir%\binary-%lisp%"
 
 if "%verbose%" == "true" @echo on
 if "%lisp%" == "gcl" goto dogcl

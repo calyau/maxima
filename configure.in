@@ -46,13 +46,18 @@ else
 	CLISP_RUNTIME="lisp.run"
 fi
 AC_ARG_WITH(clisp-runtime,
-	[  --with-clisp-runtime=<path>	Use clisp runtime <path> (default
-	   *lib-directory*/base/lisp.run on unix)
-	   *lib-directory*/base/lisp.exe on windows) ],
+	[  --with-clisp-runtime=<path>	   Use clisp runtime <path> (default
+	                             *lib-directory*/base/lisp.run on unix,
+	   		             *lib-directory*\\lisp.exe on windows) ],
 	[clisp=true
 	CLISP_RUNTIME_PATH="$withval"
 	CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`],
-	[CLISP_RUNTIME_PATH=`${CLISP_NAME} -q -x "(format nil \"~abase/${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`])
+	[if test x"${win32}" = xtrue ; then 
+	    CLISP_RUNTIME_PATH=`${CLISP_NAME} -q -x "(format nil \"~a\\\\\\\\${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`
+	 else
+	    CLISP_RUNTIME_PATH=`${CLISP_NAME} -q -x "(format nil \"~abase/${CLISP_RUNTIME}\" (namestring *lib-directory*))"|sed 's/\"\\(.*\\)\"/\\1/'`
+	 fi
+])
 if test x"${clisp}" = xtrue ; then
 	if test `echo "$CLISP_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CLISP_NAME" ; then
@@ -96,8 +101,8 @@ AC_ARG_WITH(cmucl,
 	fi],
 	[CMUCL_NAME=${cmucl_default_name}])
 AC_ARG_WITH(cmucl-runtime,
-	[  --with-cmucl-runtime=<path>	Use cmucl runtime <path> (default
-	   *cmucl-lib*/../bin/lisp)],
+	[  --with-cmucl-runtime=<path>	   Use CMUCL runtime <path> (default
+	                             *cmucl-lib*/../bin/lisp)],
 	[cmucl=true
 	CMUCL_RUNTIME_PATH="$withval"
 	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`],
