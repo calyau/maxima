@@ -594,7 +594,7 @@ is not included")
   #-gcl(declare (single-float x y))
   (int (apply #'max x y z)))
 (defun amax0 (x y &rest z)
-  #-gcl(declare (integer4 x y))
+  #-gcl(declare (type integer4 x y))
   (float (apply #'max x y z) 1f0))
 
 (defun min0 (x y &rest z)
@@ -1214,9 +1214,12 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.3 2002-05-19 20:24:22 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.4 2003-07-24 18:46:30 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.3  2002-05-19 20:24:22  rtoy
+;;; Revision 1.4  2003-07-24 18:46:30  rtoy
+;;; Correct a declaration in amax0.
+;;;
+;;; Revision 1.3  2002/05/19 20:24:22  rtoy
 ;;; o GCL doesn't like the declarations in our max functions, so don't
 ;;;   declare the variables.
 ;;; o GCL doesn't like our defparameter for *lun-hash*.  Make it defvar.
