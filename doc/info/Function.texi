@@ -114,7 +114,7 @@ possibly @code{buildq}.
 @section MACROS
 
 
-@defun BUILDQ([varlist],expression);
+@defun BUILDQ ([varlist],expression);
 
  EXPRESSION is any single MAXIMA expression and
  VARLIST is a list of elements of the form @code{<atom>}
