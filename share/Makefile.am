@@ -146,6 +146,8 @@ physics/gamkah.lisp\
 physics/gammtr.lisp\
 physics/gamnoc.lisp\
 physics/gamsq.lisp\
+physics/physconst.mac\
+physics/physconst.usg\
 algebra/gcdex.mac\
 algebra/grob1.lisp\
 algebra/nusum.usg\
