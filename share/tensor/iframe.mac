@@ -44,12 +44,12 @@ ifb(l,[ld]):=if length(ld)>0 and rest(ld)#[] then
     )
   else block([e:idummy(),f:idummy()],
      if iframe_bracket_form or itorsion_flag then
-       'ifr([l[2]],[e])*'ifr([l[1]],[f])*
-       ('ifri([l[3],e],[],f)-'ifri([l[3],f],[],e)-
-        _itr([e,f],[m])*ifri([m,l[3]],[])
+       'ifr([l[2]],[e])*'ifr([l[3]],[f])*
+       ('ifri([l[1],e],[],f)-'ifri([l[1],f],[],e)-
+        _itr([e,f],[m])*ifri([m,l[1]],[])
        )
-     else 'ifri([l[3],e],[])*('ifr([l[1]],[f])*'ifr([l[2]],[e],f)-
-                         'ifr([l[1]],[e],f)*'ifr([l[2]],[f]))
+     else 'ifri([l[1],e],[])*('ifr([l[2]],[f])*'ifr([l[3]],[e],f)-
+                         'ifr([l[2]],[e],f)*'ifr([l[3]],[f]))
 );
 
 /* The connection coefficients */
@@ -58,7 +58,7 @@ icc1(l,[ld]):=if length(ld)>0 and rest(ld)#[] then
   else
     (if iframe_flag then 'ifc1(l,[])
      else 'ichr1(l,if length(ld)>0 then ld[1] else []))+
-    (if itorsion_flag then -'ikt1(l,[]) else 0)+
+    (if itorsion_flag and not iframe_flag then -'ikt1(l,[]) else 0)+
     (if inonmet_flag then -'inmc1(l,[]) else 0);
 icc2(l1,l2,[ld]):=
   if ld#[] then apply('idiff,cons(icc2(l1,l2),rest((?putinones)(ld))))
@@ -66,7 +66,7 @@ icc2(l1,l2,[ld]):=
                            %icc1([d,l1[2],l1[1]])+%icc1([l1[2],l1[1],d]))/2);*/
   else
     (if iframe_flag then 'ifc2(l1,l2) else 'ichr2(l1,l2))+
-    (if itorsion_flag then -'ikt2(l1,l2) else 0)+
+    (if itorsion_flag and not iframe_flag then -'ikt2(l1,l2) else 0)+
     (if inonmet_flag then -'inmc2(l1,l2) else 0);
 
 /* The frame coefficients */
@@ -104,7 +104,7 @@ ikt2(l1,l2,[ld]):=if not itorsion_flag then 0
 decsym(ichr1,3,0,[sym(1,2)],[]);
 decsym(ichr2,2,1,[sym(all)],[]);
 decsym(icurvature,3,1,[anti(2,3)],[]);
-decsym(ifb,3,0,[sym(2,3)],[]);
+decsym(ifb,3,0,[anti(2,3)],[]);
 /* decsym(icc1,3,0,[sym(1,2)],[]);
  * decsym(icc2,2,1,[sym(all)],[]);
  * decsym(ifc1,3,0,[sym(1,2)],[]);
