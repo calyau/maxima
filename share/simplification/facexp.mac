@@ -1,5 +1,5 @@
 /* -*- MACSYMA -*- */
-EVAL_WHEN(BATCH,TTYOFF:TRUE)$
+eval_when(batch,ttyoff:true)$
 /*ASB;FACEXP 10
 2:37pm  Wednesday, 4 November 1981
 */
@@ -46,32 +46,32 @@ EVAL_WHEN([TRANSLATE,BATCH,LOADFILE],
 /* Commented out all local SPECIAL declarations. -wj */
 
 eval_when([batch,loadfile],
-  if get('GNAUTO,'DIAGEVAL_VERSION)=false
+  if get('gnauto,'diageval_version)=false
   then load("genut"))$
 
 eval_when(translate,
-	  declare_translated(OPERATOR0P,MULTTHRUSPLIT,LOPPLUSP,ORPARTITION,
-			     COLLECTTERMS0,COLLECTTERMSL,LDELETE,LISTTOSUM,
-			     IFMULTTHRU,INTERSECTION,ZEROSUBST,FACEXPFORM1,
-			     OPMAP,ORPARTITIONL,FACEXPFORM,FREEOFL,NEXTLAYER,
-			     IFLOPMAP,FACEXPL,ARGSPLIT,SETLIST,FACSUML,
-			     NULLLISTP,AUTOFORM),
-          mode_declare(function(NULLLISTP,FREEOFL),boolean))$
+	  declare_translated(operator0p,multthrusplit,lopplusp,orpartition,
+			     collectterms0,collecttermsl,ldelete,listtosum,
+			     ifmultthru,intersection,zerosubst,facexpform1,
+			     opmap,orpartitionl,facexpform,freeofl,nextlayer,
+			     iflopmap,facexpl,argsplit,setlist,facsuml,
+			     nulllistp,autoform),
+          mode_declare(function(nulllistp,freeofl),boolean))$
 
 /* Variable definitions */
 
-define_variable(NEXTLAYERFACTOR,false,boolean)$
-define_variable(FACSUM_COMBINE,true,boolean)$
+define_variable(nextlayerfactor,false,boolean)$
+define_variable(facsum_combine,true,boolean)$
 
 /* Predicates */
 
-LOPPLUSP(EXP):=IS(INPART(EXP,0)="+")$
+lopplusp(exp):=is(inpart(exp,0)="+")$
 
-OPERATOR0P(EXP):=BLOCK(
-  [IP0DUM],
-  IS((IP0DUM:INPART(EXP,0))='OPERATOR OR IP0DUM=NOUNIFY('OPERATOR)))$
+operator0p(exp):=block(
+  [ip0dum],
+  is((ip0dum:inpart(exp,0))='operator or ip0dum=nounify('operator)))$
 
-ORDERLASTP(EXP1,EXP2):=ORDERLESSP(LAST(EXP1),LAST(EXP2))$
+orderlastp(exp1,exp2):=orderlessp(last(exp1),last(exp2))$
 
 /* User accessible functions */
 /*
@@ -79,83 +79,83 @@ FACTENEXPAND(EXP,[ARGDUMLIST]):=BLOCK(
   [INDEXEXPAND_CANONICAL:FALSE,PARTSWITCH:TRUE,INFLAG:TRUE,PIECE],
   FACEXPTENL(CONS(INDEXEXPAND(EXP),ARGDUMLIST)))$
 */
-FACTORFACSUM(EXP,[ARGDUM]):=BLOCK(
-  [EXPDUM,IP0DUM,PARTSWITCH:TRUE,INFLAG:TRUE,PIECE],
-  IF ATOM(EXP) THEN RETURN(EXP),
-  IF NULLLISTP(ARGDUM) THEN RETURN(AUTOFORM(EXP)),
-  IF MATRIXP(EXP) OR LISTP(EXP) OR INPART(EXP,0)="="
-  THEN RETURN(MAP(LAMBDA([ELEMDUM],APPLY('FACTORFACSUM,CONS(ELEMDUM,ARGDUM))),
-		  EXP)),
-  EXPDUM:AUTOFORM(EXP),
-  IF (IP0DUM:INPART(EXPDUM,0))="^" OR IP0DUM="*"
-  THEN MAP(LAMBDA([FACTDUM],APPLY('FACTORFACSUM,CONS(FACTDUM,ARGDUM))),
-	   EXPDUM)
-  ELSE FACSUML(CONS(EXPDUM,ARGDUM)))$
+factorfacsum(exp,[argdum]):=block(
+  [expdum,ip0dum,partswitch:true,inflag:true,piece],
+  if atom(exp) then return(exp),
+  if nulllistp(argdum) then return(autoform(exp)),
+  if matrixp(exp) or listp(exp) or inpart(exp,0)="="
+  then return(map(lambda([elemdum],apply('factorfacsum,cons(elemdum,argdum))),
+		  exp)),
+  expdum:autoform(exp),
+  if (ip0dum:inpart(expdum,0))="^" or ip0dum="*"
+  then map(lambda([factdum],apply('factorfacsum,cons(factdum,argdum))),
+	   expdum)
+  else facsuml(cons(expdum,argdum)))$
 
 
-FACSUM([ARGLIST]):=FACSUML(ARGLIST)$
+facsum([arglist]):=facsuml(arglist)$
 
-FACSUML(ARGLIST):=BLOCK(
-  [FACTORFLAG:FALSE,PARTSWITCH:TRUE,INFLAG:TRUE,PIECE,
-   FARGLIST:FIRST(ARGLIST)],
-  IF MATRIXP(FARGLIST)
-  THEN MATRIXMAP(LAMBDA([DUM],FACSUML(CONS(DUM,REST(ARGLIST)))),FARGLIST)
-  ELSE IF LISTP(FARGLIST) OR INPART(FARGLIST,0)="="
-       THEN MAP(LAMBDA([DUM],FACSUML(CONS(DUM,REST(ARGLIST)))),FARGLIST)
-       ELSE BLOCK(
-  [ARGDUM:REST(ARGLIST),ARGDUM2:[],RATFAC:FALSE],
+facsuml(arglist):=block(
+  [factorflag:false,partswitch:true,inflag:true,piece,
+   farglist:first(arglist)],
+  if matrixp(farglist)
+  then matrixmap(lambda([dum],facsuml(cons(dum,rest(arglist)))),farglist)
+  else if listp(farglist) or inpart(farglist,0)="="
+       then map(lambda([dum],facsuml(cons(dum,rest(arglist)))),farglist)
+       else block(
+  [argdum:rest(arglist),argdum2:[],ratfac:false],
   /* DECLARE([ARGDUM,ARGDUM2],SPECIAL), */
-  SETLIST(ARGSPLIT(FARGLIST,ARGDUM),'ARGDUM,'ARGDUM2),
-  FACEXPL(CONS(APPLY('RATSIMP,CONS(FARGLIST,ARGDUM:RATSIMP(ARGDUM))),
-	       ARGDUM))))$
+  setlist(argsplit(farglist,argdum),'argdum,'argdum2),
+  facexpl(cons(apply('ratsimp,cons(farglist,argdum:ratsimp(argdum))),
+	       argdum))))$
 
 /* Functions mainly for internal use */
 
-FACEXP([ARGLIST]):=FACEXPL(ARGLIST)$
+facexp([arglist]):=facexpl(arglist)$
 
-NEXTLAYER(EXP):=BLOCK(
-  IF NOT NULLLISTP(ARGDUM2)
-  THEN IFLOPMAP("*",
-		LAMBDA([DUM],FACSUML(CONS(DUM,ARGDUM2))),
-		IF NEXTLAYERFACTOR
-		THEN AUTOFORM(EXP)
-		ELSE EXP)
-  ELSE AUTOFORM(EXP))$
+nextlayer(exp):=block(
+  if not nulllistp(argdum2)
+  then iflopmap("*",
+		lambda([dum],facsuml(cons(dum,argdum2))),
+		if nextlayerfactor
+		then autoform(exp)
+		else exp)
+  else autoform(exp))$
 
-FACEXPL(ARGLIST):=BLOCK(
-  [EXPDUM:FIRST(ARGLIST),PARTITIONDUM,
-   ARGDUM:REST(ARGLIST),NEXTLAYERFACTORSAVE:NEXTLAYERFACTOR,
-   NEXTLAYERFACTOR:FALSE,NUMEXPDUM,DENEXPDUM],
-  MODEDECLARE(NEXTLAYERFACTORSAVE,BOOLEAN),
+facexpl(arglist):=block(
+  [expdum:first(arglist),partitiondum,
+   argdum:rest(arglist),nextlayerfactorsave:nextlayerfactor,
+   nextlayerfactor:false,numexpdum,denexpdum],
+  modedeclare(nextlayerfactorsave,boolean),
   /* DECLARE([NUMEXPDUM,DENEXPDUM],SPECIAL), */
-  IF MEMBER('NEXTLAYERFACTOR,ARGLIST)
-  THEN (ARGLIST:DELETE('NEXTLAYERFACTOR,ARGLIST),
-	NEXTLAYERFACTOR:TRUE)
-  ELSE NEXTLAYERFACTOR:NEXTLAYERFACTORSAVE,
-  IF NULLLISTP(ARGDUM) OR LENGTH(ARGLIST)<2 OR FREEOFL(REST(ARGLIST),EXPDUM)
-  THEN RETURN(NEXTLAYER(EXPDUM)),
-  NUMEXPDUM:FACEXPFORM(NUM(EXPDUM)),
-  IF (DENEXPDUM:DENOM(EXPDUM))#1 THEN DENEXPDUM:FACEXPFORM(DENOM(EXPDUM)),
-  IF INPART(NUMEXPDUM,0)="+"
-     AND NOT FREEOFL(ARGDUM,NUMEXPDUM)
-     AND NOT FACSUM_COMBINE
-  THEN IF DENEXPDUM#1
-       THEN (PARTITIONDUM:ORPARTITIONL(NUMEXPDUM,"+",ARGDUM),
-	     MULTTHRU(DENEXPDUM^-1,LAST(PARTITIONDUM))+
-		DENEXPDUM^-1*FIRST(PARTITIONDUM))
-       ELSE NUMEXPDUM
-  ELSE NUMEXPDUM*DENEXPDUM^-1)$
+  if member('nextlayerfactor,arglist)
+  then (arglist:delete('nextlayerfactor,arglist),
+	nextlayerfactor:true)
+  else nextlayerfactor:nextlayerfactorsave,
+  if nulllistp(argdum) or length(arglist)<2 or freeofl(rest(arglist),expdum)
+  then return(nextlayer(expdum)),
+  numexpdum:facexpform(num(expdum)),
+  if (denexpdum:denom(expdum))#1 then denexpdum:facexpform(denom(expdum)),
+  if inpart(numexpdum,0)="+"
+     and not freeofl(argdum,numexpdum)
+     and not facsum_combine
+  then if denexpdum#1
+       then (partitiondum:orpartitionl(numexpdum,"+",argdum),
+	     multthru(denexpdum^-1,last(partitiondum))+
+		denexpdum^-1*first(partitiondum))
+       else numexpdum
+  else numexpdum*denexpdum^-1)$
 
-FACEXPFORM(EXP):=(
-  EXP:OPMAP(EXP,["+",'VPLUS,"*",'VSTAR]),
-  IF INPART(EXP,0)="+"
-  THEN FACEXPFORM1(EXP)
-  ELSE EXP)$
+facexpform(exp):=(
+  exp:opmap(exp,["+",'vplus,"*",'vstar]),
+  if inpart(exp,0)="+"
+  then facexpform1(exp)
+  else exp)$
 
-FACEXPFORM1(EXPDUM):=BLOCK(
-  [SUBDUM:ZEROSUBST(ARGDUM,EXPDUM)],
+facexpform1(expdum):=block(
+  [subdum:zerosubst(argdum,expdum)],
   /* DECLARE(SUBDUM,SPECIAL), */
-  EXPDUM-SUBDUM+NEXTLAYER(SUBDUM))$
+  expdum-subdum+nextlayer(subdum))$
 /*
 FACEXPTEN([ARGLIST]):=FACEXPTENL(ARGLIST)$
 
@@ -167,154 +167,154 @@ FACTORFACEXPTEN(EXP,[ARGLIST]):=
 FACEXPTENL(ARGLIST):=BLOCK(
   [FACEXPTENFLAG:TRUE],
   /* DECLARE(FACEXPTENFLAG,SPECIAL), */
-  MODEDECLARE(FACEXPTENFLAG,BOOLEAN),
-  FACSUML(APPEND(ARGLIST,LISTOFTENS(FIRST(ARGLIST)))))$
+  modedeclare(facexptenflag,boolean),
+  facsuml(append(arglist,listoftens(first(arglist)))))$
 */
 
-VPLUS(EXP):=BLOCK(
-  [VPSDUM:MAP(LAMBDA([TERM],
-		     IF NULLLISTP(INTERSECTION(SHOWRATVARS(TERM),ARGDUM))
-		     THEN NEXTLAYER(TERM)
-		     ELSE OPMAP(TERM,OP_FCN_LIST)),
-	      EXP)],
+vplus(exp):=block(
+  [vpsdum:map(lambda([term],
+		     if nulllistp(intersection(showratvars(term),argdum))
+		     then nextlayer(term)
+		     else opmap(term,op_fcn_list)),
+	      exp)],
   /* DECLARE([OP_FCN_LIST,VPSDUM],SPECIAL), */
-  IF INPART(VPSDUM,0)="+"
-  THEN FACEXPFORM1(VPSDUM)
-  ELSE VPSDUM)$
+  if inpart(vpsdum,0)="+"
+  then facexpform1(vpsdum)
+  else vpsdum)$
 
-VSTAR(EXP):=BLOCK(
-  [ARGSEXPDUM:ARGS(EXP),PARTITIONDUM,EXPIARGDUM],
-  FOR IARGDUM IN ARGSEXPDUM DO
-    IF INPART(IARGDUM,0)="+"
-    THEN IF NOT NULLLISTP(INTERSECTION(ARGDUM,SHOWRATVARS(IARGDUM)))
-	 THEN (PARTITIONDUM:ORPARTITIONL(FACEXPFORM(IARGDUM),"+",ARGDUM),
-	       EXPIARGDUM:IFMULTTHRU(1/IARGDUM,EXP),
-	       EXP:IFMULTTHRU(EXPIARGDUM,LAST(PARTITIONDUM))+
-			EXPIARGDUM*NEXTLAYER(FIRST(PARTITIONDUM)))
-	 ELSE EXP:EXP/IARGDUM*NEXTLAYER(IARGDUM),
-  IF INPART(EXP,0)="+"
-  THEN FACEXPFORM1(EXP)
-  ELSE EXP)$
+vstar(exp):=block(
+  [argsexpdum:args(exp),partitiondum,expiargdum],
+  for iargdum in argsexpdum do
+    if inpart(iargdum,0)="+"
+    then if not nulllistp(intersection(argdum,showratvars(iargdum)))
+	 then (partitiondum:orpartitionl(facexpform(iargdum),"+",argdum),
+	       expiargdum:ifmultthru(1/iargdum,exp),
+	       exp:ifmultthru(expiargdum,last(partitiondum))+
+			expiargdum*nextlayer(first(partitiondum)))
+	 else exp:exp/iargdum*nextlayer(iargdum),
+  if inpart(exp,0)="+"
+  then facexpform1(exp)
+  else exp)$
 
-FPLUS(EXP):=BLOCK(
+fplus(exp):=block(
   /* DECLARE([LIST,OP_FCN_LIST],SPECIAL), */
-  IFLOPMAP("+",
-	   LAMBDA([DUM],OPMAP(DUM,OP_FCN_LIST)),
-	   LISTTOSUM(LDELETE(LIST,ARGS(EXP)))))$
+  iflopmap("+",
+	   lambda([dum],opmap(dum,op_fcn_list)),
+	   listtosum(ldelete(list,args(exp)))))$
 
-FEXPT(EXP):=BLOCK(
-  [IP1EXP:ZEROSUBST(LIST,INPART(EXP,1))],
+fexpt(exp):=block(
+  [ip1exp:zerosubst(list,inpart(exp,1))],
   /* DECLARE([LIST,IP1EXP],SPECIAL), */
-  IF IP1EXP=0
-  THEN 0
-  ELSE IP1EXP^ZEROSUBST(LIST,INPART(EXP,2)))$
+  if ip1exp=0
+  then 0
+  else ip1exp^zerosubst(list,inpart(exp,2)))$
 
-FSTAR(EXP):=BLOCK(
+fstar(exp):=block(
   /* DECLARE(LIST,SPECIAL), */
-  IF LDELETE(LIST,ARGS(EXP))=ARGS(EXP)
-  THEN MAP(LAMBDA([DUM],OPMAP(DUM,OP_FCN_LIST)),EXP)
-  ELSE 0)$
+  if ldelete(list,args(exp))=args(exp)
+  then map(lambda([dum],opmap(dum,op_fcn_list)),exp)
+  else 0)$
 
-ZEROSUBST(LIST,EXP):=
-  IF MEMBER(EXP,LIST)
-  THEN 0
-  ELSE OPMAP(EXP,["*",'FSTAR,"+",'FPLUS,"^",'FEXPT])$
+zerosubst(list,exp):=
+  if member(exp,list)
+  then 0
+  else opmap(exp,["*",'fstar,"+",'fplus,"^",'fexpt])$
 
-IFMULTTHRU(EXP1,EXP2):=
-  IF INPART(EXP2,0)="+"
-  THEN MULTTHRU(EXP1,EXP2)
-  ELSE EXP1*EXP2$
+ifmultthru(exp1,exp2):=
+  if inpart(exp2,0)="+"
+  then multthru(exp1,exp2)
+  else exp1*exp2$
 
-Collect&&
+collect&&
 
 /* COLLECTTEN(EXP):=COLLECTTERMSL(EXP,LISTOFTENS(EXP))$ */
 
-COLLECTTERMS(EXP,[VARLIST]):=COLLECTTERMSL(EXP,VARLIST)$
+collectterms(exp,[varlist]):=collecttermsl(exp,varlist)$
 
-COLLECTTERMSL(EXP,VARLIST):=BLOCK(
-  [PARTSWITCH:TRUE,INFLAG:TRUE,PIECE],
-  APPLY('COLLECTTERMS0,CONS(EXP,ARGSPLIT(EXP,VARLIST))))$
+collecttermsl(exp,varlist):=block(
+  [partswitch:true,inflag:true,piece],
+  apply('collectterms0,cons(exp,argsplit(exp,varlist))))$
 
-COLLECTTERMS0(EXP,THISLEVELDUM,NEXTLEVELDUM):=BLOCK(
-  [IFORP:TRUE,SPLITDUM1,SPLITDUM2,SPLITDUM3,ANSLIST:[],
-   PREVDUM,LSPLIT3,ANSDUM,LASTDUMSAVE,PREVLASTDUM,
-   RTHISLEVELDUM,FTHISLEVELDUM],
-  MODEDECLARE(LSPLIT3,FIXNUM),
+collectterms0(exp,thisleveldum,nextleveldum):=block(
+  [iforp:true,splitdum1,splitdum2,splitdum3,anslist:[],
+   prevdum,lsplit3,ansdum,lastdumsave,prevlastdum,
+   rthisleveldum,fthisleveldum],
+  modedeclare(lsplit3,fixnum),
   /* DECLARE([SPLITDUM3,ANSDUM],SPECIAL), */
-  IF EXP=0 THEN RETURN(0),
-  IF NULLLISTP(THISLEVELDUM) OR FREEOFL(THISLEVELDUM,EXP)
-  THEN IF NULLLISTP(NEXTLEVELDUM)
-       THEN RETURN(EXP)
-       ELSE (SPLITDUM1:ORPARTITIONL(EXP,"+",NEXTLEVELDUM),
-	     RETURN(COLLECTTERMSL(FIRST(SPLITDUM1),NEXTLEVELDUM)
-		    +IFLOPMAP("+",
-			      LAMBDA([TERMDUM],
-				     COLLECTTERMSL(TERMDUM,NEXTLEVELDUM)),
-			      LAST(SPLITDUM1)))),
-  RTHISLEVELDUM:REST(THISLEVELDUM),
-  IF FREEOF(FTHISLEVELDUM:FIRST(THISLEVELDUM),EXP)
-  THEN RETURN(COLLECTTERMS0(EXP,RTHISLEVELDUM,NEXTLEVELDUM)),
-  SPLITDUM1:ORPARTITIONL(EXP,"+",THISLEVELDUM),
-  SPLITDUM2:ORPARTITION(LAST(SPLITDUM1),"+",FTHISLEVELDUM),
-  ANSDUM:COLLECTTERMSL(FIRST(SPLITDUM1),NEXTLEVELDUM)
-	 +COLLECTTERMS0(FIRST(SPLITDUM2),RTHISLEVELDUM,NEXTLEVELDUM),
-  IF NOT LOPPLUSP(SPLITDUM3:LAST(SPLITDUM2))
-  THEN RETURN(ANSDUM+COLLECTTERMSL(SPLITDUM3,NEXTLEVELDUM)),
-  SPLITDUM3:SORT(MAPLIST(LAMBDA([TERM],ORPARTITION(TERM,"*",FTHISLEVELDUM)),
-		 SPLITDUM3),
-		 'ORDERLASTP),
-  LSPLIT3:LENGTH(SPLITDUM3)-1,
-  PREVLASTDUM:INPART(SPLITDUM3,1,2),
-  PREVDUM:INPART(SPLITDUM3,1,1),
-  SPLITDUM3:REST(SPLITDUM3),
-  FOR IDUM THRU LSPLIT3 DO
-       (IF (LASTDUMSAVE:INPART(SPLITDUM3,IDUM,2))=PREVLASTDUM
-	THEN PREVDUM:PREVDUM+INPART(SPLITDUM3,IDUM,1)
-	ELSE (ANSLIST:ENDCONS([PREVDUM,PREVLASTDUM],ANSLIST),
-	      PREVDUM:INPART(SPLITDUM3,IDUM,1),
-	      PREVLASTDUM:LASTDUMSAVE),
-	IF IDUM=LSPLIT3
-	THEN ANSLIST:ENDCONS([PREVDUM,PREVLASTDUM],ANSLIST)),
-  LISTTOSUM(MAPLIST(LAMBDA([DUM],
-			   IF FREEOFL(RTHISLEVELDUM,FIRST(DUM))
-			   THEN COLLECTTERMSL(first(DUM),NEXTLEVELDUM)
-				    *LAST(DUM)
-			   ELSE MULTTHRUSPLIT(LAST(DUM),
-					      COLLECTTERMS0(first(DUM),RTHISLEVELDUM,
-							    NEXTLEVELDUM),
-					      RTHISLEVELDUM)),
-		    ANSLIST))+ANSDUM)$
+  if exp=0 then return(0),
+  if nulllistp(thisleveldum) or freeofl(thisleveldum,exp)
+  then if nulllistp(nextleveldum)
+       then return(exp)
+       else (splitdum1:orpartitionl(exp,"+",nextleveldum),
+	     return(collecttermsl(first(splitdum1),nextleveldum)
+		    +iflopmap("+",
+			      lambda([termdum],
+				     collecttermsl(termdum,nextleveldum)),
+			      last(splitdum1)))),
+  rthisleveldum:rest(thisleveldum),
+  if freeof(fthisleveldum:first(thisleveldum),exp)
+  then return(collectterms0(exp,rthisleveldum,nextleveldum)),
+  splitdum1:orpartitionl(exp,"+",thisleveldum),
+  splitdum2:orpartition(last(splitdum1),"+",fthisleveldum),
+  ansdum:collecttermsl(first(splitdum1),nextleveldum)
+	 +collectterms0(first(splitdum2),rthisleveldum,nextleveldum),
+  if not lopplusp(splitdum3:last(splitdum2))
+  then return(ansdum+collecttermsl(splitdum3,nextleveldum)),
+  splitdum3:sort(maplist(lambda([term],orpartition(term,"*",fthisleveldum)),
+		 splitdum3),
+		 'orderlastp),
+  lsplit3:length(splitdum3)-1,
+  prevlastdum:inpart(splitdum3,1,2),
+  prevdum:inpart(splitdum3,1,1),
+  splitdum3:rest(splitdum3),
+  for idum thru lsplit3 do
+       (if (lastdumsave:inpart(splitdum3,idum,2))=prevlastdum
+	then prevdum:prevdum+inpart(splitdum3,idum,1)
+	else (anslist:endcons([prevdum,prevlastdum],anslist),
+	      prevdum:inpart(splitdum3,idum,1),
+	      prevlastdum:lastdumsave),
+	if idum=lsplit3
+	then anslist:endcons([prevdum,prevlastdum],anslist)),
+  listtosum(maplist(lambda([dum],
+			   if freeofl(rthisleveldum,first(dum))
+			   then collecttermsl(first(dum),nextleveldum)
+				    *last(dum)
+			   else multthrusplit(last(dum),
+					      collectterms0(first(dum),rthisleveldum,
+							    nextleveldum),
+					      rthisleveldum)),
+		    anslist))+ansdum)$
 
-ARGSPLIT(EXP,LIST):=BLOCK(
-  [LISTARGSDUM:[],NEWLIST:[]],
-  FOR ARG IN LIST DO
-      IF LISTP(ARG)
-      THEN LISTARGSDUM:APPEND(LISTARGSDUM,ARG)
-      ELSE IF OPERATOR0P(ARG)
-	   THEN NEWLIST:
-		APPEND(NEWLIST,APPLY('LISTOFOPS_NONRAT,CONS(EXP,ARGS(ARG))))
-	   ELSE NEWLIST:CONS(ARG,NEWLIST),
-  [NEWLIST,LISTARGSDUM])$
+argsplit(exp,list):=block(
+  [listargsdum:[],newlist:[]],
+  for arg in list do
+      if listp(arg)
+      then listargsdum:append(listargsdum,arg)
+      else if operator0p(arg)
+	   then newlist:
+		append(newlist,apply('listofops_nonrat,cons(exp,args(arg))))
+	   else newlist:cons(arg,newlist),
+  [newlist,listargsdum])$
 
-MULTTHRUSPLIT(FACTORDUM,SUMDUM,RTHISLEVELDUM):=BLOCK(
-  [SPLITDUM1:ORPARTITIONL(SUMDUM,"+",RTHISLEVELDUM)],
-  MULTTHRU(FACTORDUM,LAST(SPLITDUM1))+FACTORDUM*FIRST(SPLITDUM1))$
+multthrusplit(factordum,sumdum,rthisleveldum):=block(
+  [splitdum1:orpartitionl(sumdum,"+",rthisleveldum)],
+  multthru(factordum,last(splitdum1))+factordum*first(splitdum1))$
 
-AUTOFORM(exp) := 
-  block([fun:get('FACSUM,'AUTOMATIC)],
+autoform(exp) := 
+  block([fun:get('facsum,'automatic)],
     if not member('noun,apply('properties,[fun]))
     then apply(fun,[exp])
     else apply(nounify(fun),[exp]))$
 
-IF GET('FACSUM,'AUTOMATIC)=FALSE
-THEN PUT('FACSUM,'NONUMFACTOR,'AUTOMATIC)$
+if get('facsum,'automatic)=false
+then put('facsum,'nonumfactor,'automatic)$
 
-SQFRFACSUM([ARGLIST]):=BLOCK(
-  [DUM,AUTODUM:GET('FACSUM,'AUTOMATIC)],
+sqfrfacsum([arglist]):=block(
+  [dum,autodum:get('facsum,'automatic)],
   /* DECLARE([AUTODUM,DUM],SPECIAL), */
-  PUT('FACSUM,'SQFR,'AUTOMATIC),
-  DUM:FACSUML(ARGLIST),
-  PUT('FACSUM,AUTODUM,'AUTOMATIC),
-  DUM)$
+  put('facsum,'sqfr,'automatic),
+  dum:facsuml(arglist),
+  put('facsum,autodum,'automatic),
+  dum)$
 
-EVAL_WHEN(BATCH,TTYOFF:FALSE)$
+eval_when(batch,ttyoff:false)$

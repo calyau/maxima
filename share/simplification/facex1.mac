@@ -1,5 +1,5 @@
 /* -*- MACSYMA -*- */
-EVAL_WHEN(BATCH,TTYOFF:TRUE)$
+eval_when(batch,ttyoff:true)$
 /*ASB;FACEX1 1
 4:19pm  Monday, 7 February 1983
   Split off from FACEXP 15
@@ -10,12 +10,12 @@ EVAL_WHEN([TRANSLATE,BATCH,LOADFILE],
 	  THEN (LOAD('[FACEXP,FASL]),
 		LOAD('[GNDECL,FASL])))$
 */
-EVAL_WHEN(TRANSLATE,
-	  TRANSCOMPILE:TRUE,
-	  DEFINE_VARIABLE:'MODE,
-	  MODEDECLARE(FUNCTION(NULLLISTP,FREEOFL),BOOLEAN))$
+eval_when(translate,
+	  transcompile:true,
+	  define_variable:'mode,
+	  modedeclare(function(nulllistp,freeofl),boolean))$
 
-PUT('FACEX1,1,'VERSION)$
+put('facex1,1,'version)$
 
 /* GNU Maxima */
 
@@ -29,72 +29,72 @@ PUT('FACEX1,1,'VERSION)$
   so don't use it.  Use facexp instead. */
 
 eval_when([batch,loadfile],
-  if get('GNAUTO,'DIAGEVAL_VERSION)=false
+  if get('gnauto,'diageval_version)=false
   then load("genut"))$
 
-COLLECTTEN(EXP):=COLLECTTERMSL(EXP,LISTOFTENS(EXP))$
+collectten(exp):=collecttermsl(exp,listoftens(exp))$
 
-COLLECTTERMS(EXP,[VARLIST]):=COLLECTTERMSL(EXP,VARLIST)$
+collectterms(exp,[varlist]):=collecttermsl(exp,varlist)$
 
-COLLECTTERMSL(EXP,VARLIST):=BLOCK(
-  [PARTSWITCH:TRUE,INFLAG:TRUE,PIECE],
-  APPLY('COLLECTTERMS0,CONS(EXP,ARGSPLIT(EXP,VARLIST))))$
+collecttermsl(exp,varlist):=block(
+  [partswitch:true,inflag:true,piece],
+  apply('collectterms0,cons(exp,argsplit(exp,varlist))))$
 
-COLLECTTERMS0(EXP,THISLEVELDUM,NEXTLEVELDUM):=BLOCK(
-  [IFORP:TRUE,SPLITDUM1,SPLITDUM2,SPLITDUM3,ANSLIST:[],FDUM,
-   PREVDUM,LSPLIT3,ANSDUM,LASTDUMSAVE,PREVLASTDUM,
-   RTHISLEVELDUM,FTHISLEVELDUM],
-  MODEDECLARE(LSPLIT3,FIXNUM),
+collectterms0(exp,thisleveldum,nextleveldum):=block(
+  [iforp:true,splitdum1,splitdum2,splitdum3,anslist:[],fdum,
+   prevdum,lsplit3,ansdum,lastdumsave,prevlastdum,
+   rthisleveldum,fthisleveldum],
+  modedeclare(lsplit3,fixnum),
   /* DECLARE([FDUM,SPLITDUM3,ANSDUM],SPECIAL), */
-  IF EXP=0 THEN RETURN(0),
-  IF NULLLISTP(THISLEVELDUM) OR FREEOFL(THISLEVELDUM,EXP)
-  THEN IF NULLLISTP(NEXTLEVELDUM)
-       THEN RETURN(EXP)
-       ELSE (SPLITDUM1:ORPARTITIONL(EXP,"+",NEXTLEVELDUM),
-	     RETURN(COLLECTTERMSL(FIRST(SPLITDUM1),NEXTLEVELDUM)
-		    +IFLOPMAP("+",
-			      LAMBDA([TERMDUM],
-				     COLLECTTERMSL(TERMDUM,NEXTLEVELDUM)),
-			      LAST(SPLITDUM1)))),
-  RTHISLEVELDUM:REST(THISLEVELDUM),
-  IF FREEOF(FTHISLEVELDUM:FIRST(THISLEVELDUM),EXP)
-  THEN RETURN(COLLECTTERMS0(EXP,RTHISLEVELDUM,NEXTLEVELDUM)),
-  SPLITDUM1:ORPARTITIONL(EXP,"+",THISLEVELDUM),
-  SPLITDUM2:ORPARTITIONL(LAST(SPLITDUM1),"+",[FTHISLEVELDUM]),
-  ANSDUM:COLLECTTERMSL(FIRST(SPLITDUM1),NEXTLEVELDUM)
-	 +COLLECTTERMS0(FIRST(SPLITDUM2),RTHISLEVELDUM,NEXTLEVELDUM),
-  IF INPART(SPLITDUM3:LAST(SPLITDUM2),0)#"+"
-  THEN RETURN(ANSDUM+COLLECTTERMSL(SPLITDUM3,NEXTLEVELDUM)),
-  SPLITDUM3:SORT(MAPLIST(LAMBDA([TERM],ORPARTITIONL(TERM,"*",[FTHISLEVELDUM])),
-		 SPLITDUM3),
-		 'ORDERLASTP),
-  LSPLIT3:LENGTH(SPLITDUM3)-1,
-  PREVLASTDUM:INPART(SPLITDUM3,1,2),
-  PREVDUM:INPART(SPLITDUM3,1,1),
-  SPLITDUM3:REST(SPLITDUM3),
-  FOR IDUM THRU LSPLIT3 DO
-       (IF (LASTDUMSAVE:INPART(SPLITDUM3,IDUM,2))=PREVLASTDUM
-	THEN PREVDUM:PREVDUM+INPART(SPLITDUM3,IDUM,1)
-	ELSE (ANSLIST:ENDCONS([PREVDUM,PREVLASTDUM],ANSLIST),
-	      PREVDUM:INPART(SPLITDUM3,IDUM,1),
-	      PREVLASTDUM:LASTDUMSAVE),
-	IF IDUM=LSPLIT3
-	THEN ANSLIST:ENDCONS([PREVDUM,PREVLASTDUM],ANSLIST)),
-  LISTTOSUM(MAPLIST('LAMBDA([DUM], /* Maxima: quoted the lambda expression */
-			   IF FREEOFL(RTHISLEVELDUM,FDUM:FIRST(DUM))
-			   THEN COLLECTTERMSL(FDUM,NEXTLEVELDUM)
-				    *LAST(DUM)
-			   ELSE MULTTHRUSPLIT(LAST(DUM),
-					      COLLECTTERMS0(FDUM,RTHISLEVELDUM,
-							    NEXTLEVELDUM),
-					      RTHISLEVELDUM)),
-		    ANSLIST))+ANSDUM)$
+  if exp=0 then return(0),
+  if nulllistp(thisleveldum) or freeofl(thisleveldum,exp)
+  then if nulllistp(nextleveldum)
+       then return(exp)
+       else (splitdum1:orpartitionl(exp,"+",nextleveldum),
+	     return(collecttermsl(first(splitdum1),nextleveldum)
+		    +iflopmap("+",
+			      lambda([termdum],
+				     collecttermsl(termdum,nextleveldum)),
+			      last(splitdum1)))),
+  rthisleveldum:rest(thisleveldum),
+  if freeof(fthisleveldum:first(thisleveldum),exp)
+  then return(collectterms0(exp,rthisleveldum,nextleveldum)),
+  splitdum1:orpartitionl(exp,"+",thisleveldum),
+  splitdum2:orpartitionl(last(splitdum1),"+",[fthisleveldum]),
+  ansdum:collecttermsl(first(splitdum1),nextleveldum)
+	 +collectterms0(first(splitdum2),rthisleveldum,nextleveldum),
+  if inpart(splitdum3:last(splitdum2),0)#"+"
+  then return(ansdum+collecttermsl(splitdum3,nextleveldum)),
+  splitdum3:sort(maplist(lambda([term],orpartitionl(term,"*",[fthisleveldum])),
+		 splitdum3),
+		 'orderlastp),
+  lsplit3:length(splitdum3)-1,
+  prevlastdum:inpart(splitdum3,1,2),
+  prevdum:inpart(splitdum3,1,1),
+  splitdum3:rest(splitdum3),
+  for idum thru lsplit3 do
+       (if (lastdumsave:inpart(splitdum3,idum,2))=prevlastdum
+	then prevdum:prevdum+inpart(splitdum3,idum,1)
+	else (anslist:endcons([prevdum,prevlastdum],anslist),
+	      prevdum:inpart(splitdum3,idum,1),
+	      prevlastdum:lastdumsave),
+	if idum=lsplit3
+	then anslist:endcons([prevdum,prevlastdum],anslist)),
+  listtosum(maplist('lambda([dum], /* Maxima: quoted the lambda expression */
+			   if freeofl(rthisleveldum,fdum:first(dum))
+			   then collecttermsl(fdum,nextleveldum)
+				    *last(dum)
+			   else multthrusplit(last(dum),
+					      collectterms0(fdum,rthisleveldum,
+							    nextleveldum),
+					      rthisleveldum)),
+		    anslist))+ansdum)$
 
-ORDERLASTP(EXP1,EXP2):=ORDERLESSP(LAST(EXP1),LAST(EXP2))$
+orderlastp(exp1,exp2):=orderlessp(last(exp1),last(exp2))$
 
 
-MULTTHRUSPLIT(FACTORDUM,SUMDUM,RTHISLEVELDUM):=BLOCK(
-  [SPLITDUM1:ORPARTITIONL(SUMDUM,"+",RTHISLEVELDUM)],
-  MULTTHRU(FACTORDUM,LAST(SPLITDUM1))+FACTORDUM*FIRST(SPLITDUM1))$
+multthrusplit(factordum,sumdum,rthisleveldum):=block(
+  [splitdum1:orpartitionl(sumdum,"+",rthisleveldum)],
+  multthru(factordum,last(splitdum1))+factordum*first(splitdum1))$
 
-EVAL_WHEN(BATCH,TTYOFF:FALSE)$
+eval_when(batch,ttyoff:false)$

@@ -54,18 +54,18 @@
    and foo to |$foo|). */
 
 eval_when(translate,
-          declare_translated(ORPARTITION,ORPARTITIONL,NONUMFACTOR,
-                             genut_prodmap,listofops_nonratl,SETLIST,
-                             PREDPARTITION),
-          mode_declare(function(NULLLISTP,FREEOFL,ZEROLISTP,LCPRED),boolean))$
+          declare_translated(orpartition,orpartitionl,nonumfactor,
+                             genut_prodmap,listofops_nonratl,setlist,
+                             predpartition),
+          mode_declare(function(nulllistp,freeofl,zerolistp,lcpred),boolean))$
 
-NULLLISTP(exp) :=
+nulllistp(exp) :=
   is(exp=[])$
 
-ZEROLISTP(list) :=
+zerolistp(list) :=
   catch(for exp in list do if exp#0 then throw(false),true)$
 
-FREEOFL(varl,exp) :=
+freeofl(varl,exp) :=
   catch(for var in varl do if not freeof(var,exp) then throw(false),true)$
 
 /* Note that PARTITION(EXP,VAR) gives an error when EXP is atomic.
@@ -76,7 +76,7 @@ FREEOFL(varl,exp) :=
    coerced to have OP as main operator.  Otherwise this function behaves
    just like PARTITION. */
 
-ORPARTITION(exp,op,var) :=
+orpartition(exp,op,var) :=
   if not(atom(exp)) and inpart(exp,0)=op
   then partition(exp,var)
   else if freeof(var,exp)
@@ -85,35 +85,35 @@ ORPARTITION(exp,op,var) :=
 
 /* Same thing for a list of variables. */
 
-ORPARTITIONL(exp,op,varl) :=
+orpartitionl(exp,op,varl) :=
   block([free,notfree,partit],
     free:exp,
     notfree:apply(op,[]),
     for var in varl do
-      (partit:ORPARTITION(free,op,var),
+      (partit:orpartition(free,op,var),
       free:first(partit),
       notfree:if op="["
               then append(notfree,last(partit))
               else apply(op,[notfree,last(partit)])),
       [free,notfree])$
 
-ORPARTITIONLIST(list,op,[vars]) :=
-  block([partitl:map(lambda([exp],ORPARTITIONL(exp,op,vars)),list)],
+orpartitionlist(list,op,[vars]) :=
+  block([partitl:map(lambda([exp],orpartitionl(exp,op,vars)),list)],
     [map('first,partitl),map('last,partitl)])$
 
-LDELETE(varl,exp) :=
+ldelete(varl,exp) :=
   (for var in varl do exp:delete(var,exp),exp)$
 
-LISTTOSUM(list) :=
+listtosum(list) :=
   apply("+",list)$
 
-LISTTOPROD(list) :=
+listtoprod(list) :=
   apply("*",list)$
 
 /* The following mimics the behaviour of APPEND.  Note, however, that
    INTERSECTION takes exactly two arguments */
 
-INTERSECTION(exp1,exp2) :=
+intersection(exp1,exp2) :=
   (if atom(exp1)
   then error(concat("argument value `", exp1, "' to INTERSECTION was atomic")),
   if atom(exp2)
@@ -127,10 +127,10 @@ INTERSECTION(exp1,exp2) :=
       then cap:endcons(term,cap),
     apply(op,cap))))$
 
-SETLIST(lst,l1,l2) :=
+setlist(lst,l1,l2) :=
   (l1::first(lst),l2::last(lst))$
 
-NONUMFACTOR(exp) :=
+nonumfactor(exp) :=
   if numberp(exp)
   then exp
   else factor(exp)$
@@ -140,8 +140,8 @@ NONUMFACTOR(exp) :=
    this function to be called instead of NONUMFACTOR by setting FACSUM's
    AUTOMATIC property: put('facsum,'nonumfactor_alt,'automatic) */
 
-NONUMFACTOR_ALT(exp) :=
-  block([dum:NONUMFACTOR(exp)],
+nonumfactor_alt(exp) :=
+  block([dum:nonumfactor(exp)],
   if atom(dum) or inpart(dum,0)="+"
   then exp
   else dum)$
@@ -154,16 +154,16 @@ alias(FORMAL,NOUN);
 /* LST is an alternating list of operators and associated functions.
    OP_FCN_LIST is used to pass LST to recursive calls to OPMAP. */
 
-OPMAP(exp,lst) :=
+opmap(exp,lst) :=
   if atom(exp)
   then exp
   else block([fun:?getf(?cdr(lst),inpart(exp,0))],
     if fun#false
-    then block([OP_FCN_LIST:lst],
+    then block([op_fcn_list:lst],
       apply(fun,[exp]))
     else exp)$
 
-IFLOPMAP(op,fun,exp) :=
+iflopmap(op,fun,exp) :=
   if op="*"
   then genut_prodmap(fun,exp)
   else if atom(exp)
@@ -185,7 +185,7 @@ genut_prodmap(fun,exp):=
 /* Returns a list of the sub-expressions of EXP which have one of the
    operators in OPL as main operator. */
 
-LISTOFOPS_NONRAT(exp,[opl]) :=
+listofops_nonrat(exp,[opl]) :=
   listofops_nonratl(exp,opl,[])$
 
 listofops_nonratl(exp,opl,lst) :=
@@ -200,41 +200,41 @@ listofops_nonratl(exp,opl,lst) :=
    returns it as first element COMMON of a list.  The second element
    is a list OTHER such that EXPL = COMMON * OTHER. */ 
 
-EXPLICITFACTOR(expl) :=
+explicitfactor(expl) :=
   block([vars:map(lambda([dum],?gensym()),expl),common,other],
-    SETLIST(ORPARTITIONL(factor(expl . vars),"*",vars),'common,'other),
+    setlist(orpartitionl(factor(expl . vars),"*",vars),'common,'other),
     [common,map(lambda([var],coeff(other,var)),vars)])$
 
 /* Don't ask.  It's only used once, in declin.mac. */
 
-LCPRED(linp,is_op,exp) :=
+lcpred(linp,is_op,exp) :=
   if atom(exp)
   then false
   else if apply(is_op,[exp])
        then true
        else if inpart(exp,0)="*"
-            then is(length(last(PREDPARTITION(exp,is_op)))=1)
+            then is(length(last(predpartition(exp,is_op)))=1)
             else if inpart(exp,0)="+"
-                 then is(first(PREDPARTITION(exp,linp))=[])
+                 then is(first(predpartition(exp,linp))=[])
                  else false$
 
 /* The following two functions are copied from rncomb.mac */
 
-RLOIEWL(OP,EXP):=BLOCK(
-  [PARTSWITCH:TRUE,INFLAG:TRUE,PIECE],
-  IF INPART(EXP,0)=OP
-  THEN ARGS(EXP)
-  ELSE [EXP])$
+rloiewl(op,exp):=block(
+  [partswitch:true,inflag:true,piece],
+  if inpart(exp,0)=op
+  then args(exp)
+  else [exp])$
 
-PREDPARTITION(LIST,PREDICATE):=BLOCK(
-  [NOLIST:[],YESLIST:[]],
-  FOR IDUM IN REVERSE(LIST) DO
-      IF MODE_IDENTITY(BOOLEAN,APPLY(PREDICATE,[IDUM]))
-      THEN YESLIST:CONS(IDUM,YESLIST)
-      ELSE NOLIST:CONS(IDUM,NOLIST),
-  [NOLIST,YESLIST])$
+predpartition(list,predicate):=block(
+  [nolist:[],yeslist:[]],
+  for idum in reverse(list) do
+      if mode_identity(boolean,apply(predicate,[idum]))
+      then yeslist:cons(idum,yeslist)
+      else nolist:cons(idum,nolist),
+  [nolist,yeslist])$
 
 /* a sort of `provide' */
-put('GNAUTO,true,'DIAGEVAL_VERSION)$
+put('gnauto,true,'diageval_version)$
 
 /* genut.mac ends here */

@@ -1,5 +1,5 @@
 /* -*-Macsyma-*- */
-EVAL_WHEN(BATCH,TTYOFF:TRUE)$
+eval_when(batch,ttyoff:true)$
 /*ASB;STOPEX 15
 2:48pm  Wednesday, 4 November 1981
 7:55pm  Saturday, 29 May 1982
@@ -8,12 +8,12 @@ EVAL_WHEN(BATCH,TTYOFF:TRUE)$
   Changed loadflags to getversions, DEFINE_VARIABLE:'MODE.
 */
 
-EVAL_WHEN(TRANSLATE,
-	  TRANSCOMPILE:TRUE,
-	  DEFINE_VARIABLE:'MODE,
-	  MODEDECLARE(FUNCTION(FREEOFL),BOOLEAN))$
+eval_when(translate,
+	  transcompile:true,
+	  define_variable:'mode,
+	  modedeclare(function(freeofl),boolean))$
 
-PUT('STOPEX,15,'DIAGEVAL_VERSION)$
+put('stopex,15,'diageval_version)$
 /*
 EVAL_WHEN([BATCH,LOADFILE],
 	  IF GET('GNAUTO,'DIAGEVAL_VERSION)=FALSE
@@ -26,152 +26,152 @@ EVAL_WHEN([BATCH,LOADFILE],
    search for `Maxima:' below. -wj */
 
 eval_when([batch,loadfile],
-  if get('GNAUTO,'DIAGEVAL_VERSION)=false
+  if get('gnauto,'diageval_version)=false
   then load("genut"))$
 
 eval_when(translate,
-	  declare_translated(EXWRT_POWER1,VARMULT,DISTRIBUTE,EXWRT_POWER,
-			     FREEOFL,STOPEXPANDL1,ORPARTITIONL,LDELETE,
-			     STOPEXPANDL))$
+	  declare_translated(exwrt_power1,varmult,distribute,exwrt_power,
+			     freeofl,stopexpandl1,orpartitionl,ldelete,
+			     stopexpandl))$
 
 /* Switches  */
-DEFINE_VARIABLE(IFORP,FALSE,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDWRT_DENOM,FALSE,BOOLEAN)$
-DEFINE_VARIABLE(EXPANDWRT_NONRAT,TRUE,BOOLEAN)$
+define_variable(iforp,false,boolean)$
+define_variable(expandwrt_denom,false,boolean)$
+define_variable(expandwrt_nonrat,true,boolean)$
 
-STOPEXPAND(EXP,[VARLIST]):=
-  IF ATOM(EXP) OR MAPATOM(EXP)
-  THEN EXP
-  ELSE BLOCK([PARTSWITCH:TRUE,INFLAG:TRUE,PIECE],
-	     STOPEXPANDL(EXP,VARLIST))$
+stopexpand(exp,[varlist]):=
+  if atom(exp) or mapatom(exp)
+  then exp
+  else block([partswitch:true,inflag:true,piece],
+	     stopexpandl(exp,varlist))$
 
-EXPANDWRT(EXP,[VARLIST]):=
-  IF ATOM(EXP) OR MAPATOM(EXP)
-  THEN EXP
-  ELSE BLOCK([PARTSWITCH:TRUE,INFLAG:TRUE,PIECE],
-	     STOPEXPANDL(EXP,VARLIST))$
+expandwrt(exp,[varlist]):=
+  if atom(exp) or mapatom(exp)
+  then exp
+  else block([partswitch:true,inflag:true,piece],
+	     stopexpandl(exp,varlist))$
 
-EXPANDWRTL(EXP,VARLIST):=STOPEXPANDL(EXP,VARLIST)$
+expandwrtl(exp,varlist):=stopexpandl(exp,varlist)$
 
-STOPEXPANDL(EXP,VARLIST):=  
-  IF ATOM(EXP) OR MAPATOM(EXP)
-  THEN EXP
-  ELSE BLOCK([INFLAG:TRUE,PARTSWITCH:TRUE,PIECE,IP0DUM],
-	     IF (IP0DUM:INPART(EXP,0))="+"
-	     THEN MAP(LAMBDA([TERMDUM],STOPEXPANDL(TERMDUM,VARLIST)),EXP)
-	     ELSE BLOCK(
-  [NONRATDUM,IFORP:TRUE,DENDUM],
-  IF EXPANDWRT_NONRAT
-  THEN (NONRATDUM:
-	LDELETE(VARLIST,LAST(ORPARTITIONL(SHOWRATVARS(EXP),"[",VARLIST))),
-	FOR IDUM IN NONRATDUM DO
-	    IF NOT ATOM(IDUM)
-	    THEN EXP:SUBST(MAP(LAMBDA([DUM],STOPEXPANDL(DUM,VARLIST)),IDUM),
-			   IDUM,EXP)),
-  IF EXPANDWRT_DENOM AND (DENDUM:DENOM(EXP))#1
-  THEN EXP:NUM(EXP)/STOPEXPANDL(DENDUM,VARLIST),
-  STOPEXPANDL1(EXP,VARLIST)))$
+stopexpandl(exp,varlist):=  
+  if atom(exp) or mapatom(exp)
+  then exp
+  else block([inflag:true,partswitch:true,piece,ip0dum],
+	     if (ip0dum:inpart(exp,0))="+"
+	     then map(lambda([termdum],stopexpandl(termdum,varlist)),exp)
+	     else block(
+  [nonratdum,iforp:true,dendum],
+  if expandwrt_nonrat
+  then (nonratdum:
+	ldelete(varlist,last(orpartitionl(showratvars(exp),"[",varlist))),
+	for idum in nonratdum do
+	    if not atom(idum)
+	    then exp:subst(map(lambda([dum],stopexpandl(dum,varlist)),idum),
+			   idum,exp)),
+  if expandwrt_denom and (dendum:denom(exp))#1
+  then exp:num(exp)/stopexpandl(dendum,varlist),
+  stopexpandl1(exp,varlist)))$
 
-STOPEXPANDL1(EXP,VARLIST):=
-  IF ATOM(EXP) OR MAPATOM(EXP)
-  THEN EXP
-  ELSE BLOCK([IP0DUM:INPART(EXP,0),DUM:1,VARFOUND:FALSE],
-  MODEDECLARE(VARFOUND,BOOLEAN),
-	     IF FREEOFL(VARLIST,EXP)
-	     THEN EXP
-	     ELSE IF FREEOF("+",EXP) THEN RETURN(EXP),
-	     IF IP0DUM="+"
-	     THEN RETURN(MAP(LAMBDA([TERMDUM],
-				    STOPEXPANDL1(TERMDUM,VARLIST)),EXP))
-	     ELSE IF IP0DUM="^"
-		  THEN IF INPART(EXP,1,0)="+"
-	               THEN EXWRT_POWER(EXP,VARLIST)
-		       ELSE EXP
-		  ELSE IF IP0DUM="*"
-		       THEN (FOR IDUM IN EXP DO
-			         IF NOT FREEOFL(VARLIST,IDUM)
-			         THEN (IDUM:STOPEXPANDL1(IDUM,VARLIST),
-				       IF VARFOUND
-				       THEN DUM:DISTRIBUTE(DUM,IDUM,VARLIST)
-				       ELSE (VARFOUND:TRUE,
-					     DUM:VARMULT(DUM,IDUM,VARLIST)))
-			         ELSE IF VARFOUND
-				      THEN DUM:VARMULT(IDUM,DUM,VARLIST)
-				      ELSE DUM:DUM*IDUM,
-		             DUM)
-		       ELSE IF MATRIXP(EXP) OR LISTP(EXP)
-		            THEN MATRIXMAP(LAMBDA([DUMM],
-						  STOPEXPANDL1(DUMM,VARLIST)),
-				           EXP)
-		            ELSE IF IP0DUM="." AND EXPANDWRT_NONRAT
-		                 THEN REMOVE_NESTED_DOTS0L(MAP(LAMBDA([DUM],
-							      STOPEXPANDL1(DUM,
-								     VARLIST)),
-							       EXP),
-							   VARLIST)
-			         ELSE EXP)$
+stopexpandl1(exp,varlist):=
+  if atom(exp) or mapatom(exp)
+  then exp
+  else block([ip0dum:inpart(exp,0),dum:1,varfound:false],
+  modedeclare(varfound,boolean),
+	     if freeofl(varlist,exp)
+	     then exp
+	     else if freeof("+",exp) then return(exp),
+	     if ip0dum="+"
+	     then return(map(lambda([termdum],
+				    stopexpandl1(termdum,varlist)),exp))
+	     else if ip0dum="^"
+		  then if inpart(exp,1,0)="+"
+	               then exwrt_power(exp,varlist)
+		       else exp
+		  else if ip0dum="*"
+		       then (for idum in exp do
+			         if not freeofl(varlist,idum)
+			         then (idum:stopexpandl1(idum,varlist),
+				       if varfound
+				       then dum:distribute(dum,idum,varlist)
+				       else (varfound:true,
+					     dum:varmult(dum,idum,varlist)))
+			         else if varfound
+				      then dum:varmult(idum,dum,varlist)
+				      else dum:dum*idum,
+		             dum)
+		       else if matrixp(exp) or listp(exp)
+		            then matrixmap(lambda([dumm],
+						  stopexpandl1(dumm,varlist)),
+				           exp)
+		            else if ip0dum="." and expandwrt_nonrat
+		                 then remove_nested_dots0l(map(lambda([dum],
+							      stopexpandl1(dum,
+								     varlist)),
+							       exp),
+							   varlist)
+			         else exp)$
 
-EXWRT_POWER(EXP,VARLIST):=BLOCK(
-  [IP1DUM,IP2DUM1,EXWRTLIST,SPLITDUM,FSPLITDUM],
+exwrt_power(exp,varlist):=block(
+  [ip1dum,ip2dum1,exwrtlist,splitdum,fsplitdum],
   /* DECLARE(EXWRTLIST,SPECIAL), */
-  IF INPART(EXP,0)#"^" THEN RETURN(EXP),
-  IF NOT FREEOFL(VARLIST,IP1DUM:INPART(EXP,1))
-     AND INTEGERP(IP2DUM1:INPART(EXP,2))
-     AND (MODE_IDENTITY(FIXNUM,IP2DUM1))>1
-     AND INPART(IP1DUM,0)="+"
-  THEN (SPLITDUM:ORPARTITIONL(IP1DUM,"+",VARLIST),
-	IF (FSPLITDUM:FIRST(SPLITDUM))#0
-	THEN (EXWRTLIST:CONS(1,EXWRT_POWER1(LAST(SPLITDUM),IP2DUM1,VARLIST)),
-	      SUM(VARMULT(FSPLITDUM^KDUM*IP2DUM1!/(KDUM!*(IP2DUM1-KDUM)!),
-			  FIRST(EXWRTLIST:REST(EXWRTLIST)),
-			  VARLIST),
+  if inpart(exp,0)#"^" then return(exp),
+  if not freeofl(varlist,ip1dum:inpart(exp,1))
+     and integerp(ip2dum1:inpart(exp,2))
+     and (mode_identity(fixnum,ip2dum1))>1
+     and inpart(ip1dum,0)="+"
+  then (splitdum:orpartitionl(ip1dum,"+",varlist),
+	if (fsplitdum:first(splitdum))#0
+	then (exwrtlist:cons(1,exwrt_power1(last(splitdum),ip2dum1,varlist)),
+	      sum(varmult(fsplitdum^kdum*ip2dum1!/(kdum!*(ip2dum1-kdum)!),
+			  first(exwrtlist:rest(exwrtlist)),
+			  varlist),
                          /* Maxima: added MODE_IDENTITY for translator */
-		  KDUM,0,MODE_IDENTITY(FIXNUM,IP2DUM1)))
-	ELSE FIRST(EXWRT_POWER1(LAST(SPLITDUM),IP2DUM1,VARLIST)))
-  ELSE EXP)$
+		  kdum,0,mode_identity(fixnum,ip2dum1)))
+	else first(exwrt_power1(last(splitdum),ip2dum1,varlist)))
+  else exp)$
 
-EXWRT_POWER1(EXP,POWERDUM,VARLIST):=(
-  MODEDECLARE(POWERDUM,FIXNUM),
- BLOCK(
-  [DUM:[EXP,1],FIRSTDUM:STOPEXPANDL1(EXP,VARLIST)],
-  IF POWERDUM=1 THEN RETURN(DUM),
-  IF INPART(EXP,0)#"+"
-  THEN FOR IDUM:2 THRU POWERDUM DO
-	   DUM:CONS(EXP^IDUM,DUM)
-  ELSE FOR IDUM:2 THRU POWERDUM DO
-	   DUM:CONS(FIRSTDUM:
-		    MAP(LAMBDA([DUM],MULTTHRU(DUM,FIRSTDUM)),EXP),DUM),
-  DUM))$
+exwrt_power1(exp,powerdum,varlist):=(
+  modedeclare(powerdum,fixnum),
+ block(
+  [dum:[exp,1],firstdum:stopexpandl1(exp,varlist)],
+  if powerdum=1 then return(dum),
+  if inpart(exp,0)#"+"
+  then for idum:2 thru powerdum do
+	   dum:cons(exp^idum,dum)
+  else for idum:2 thru powerdum do
+	   dum:cons(firstdum:
+		    map(lambda([dum],multthru(dum,firstdum)),exp),dum),
+  dum))$
 
-VARMULT(FACT,EXP,VARLIST):=BLOCK(
-  [SPLITDUM:ORPARTITIONL(EXP,"+",VARLIST)],
-  FACT*FIRST(SPLITDUM)+MULTTHRU(FACT,LAST(SPLITDUM)))$
+varmult(fact,exp,varlist):=block(
+  [splitdum:orpartitionl(exp,"+",varlist)],
+  fact*first(splitdum)+multthru(fact,last(splitdum)))$
 
-DISTRIBUTE(EXP1,EXP2,VARLIST):=BLOCK(
-  [SPLITEXP1:ORPARTITIONL(EXP1,"+",VARLIST),
-   SPLITEXP2:ORPARTITIONL(EXP2,"+",VARLIST),
-   FSPLEXP1,FSPLEXP2,LSPLEXP1,LSPLEXP2],
-  LSPLEXP1:LAST(SPLITEXP1),
-  LSPLEXP2:LAST(SPLITEXP2),
-  (FSPLEXP1:FIRST(SPLITEXP1))*(FSPLEXP2:FIRST(SPLITEXP2))
-  +(IF FSPLEXP1#0
-    THEN VARMULT(FSPLEXP1,STOPEXPANDL1(LSPLEXP2,VARLIST),VARLIST)
-    ELSE 0)
-  +(IF FSPLEXP2#0
-    THEN VARMULT(FSPLEXP2,STOPEXPANDL1(LSPLEXP1,VARLIST),VARLIST)
-    ELSE 0)
-  +(IF INPART(LSPLEXP1,0)="+"
-    THEN MAP(LAMBDA([TERM],STOPEXPANDL1(TERM*LSPLEXP2,VARLIST)),LSPLEXP1)
-    ELSE IF INPART(LSPLEXP2,0)="+"
-	 THEN MAP(LAMBDA([TERM],STOPEXPANDL1(TERM*LSPLEXP1,VARLIST)),LSPLEXP2)
-	 ELSE LSPLEXP1*LSPLEXP2))$
+distribute(exp1,exp2,varlist):=block(
+  [splitexp1:orpartitionl(exp1,"+",varlist),
+   splitexp2:orpartitionl(exp2,"+",varlist),
+   fsplexp1,fsplexp2,lsplexp1,lsplexp2],
+  lsplexp1:last(splitexp1),
+  lsplexp2:last(splitexp2),
+  (fsplexp1:first(splitexp1))*(fsplexp2:first(splitexp2))
+  +(if fsplexp1#0
+    then varmult(fsplexp1,stopexpandl1(lsplexp2,varlist),varlist)
+    else 0)
+  +(if fsplexp2#0
+    then varmult(fsplexp2,stopexpandl1(lsplexp1,varlist),varlist)
+    else 0)
+  +(if inpart(lsplexp1,0)="+"
+    then map(lambda([term],stopexpandl1(term*lsplexp2,varlist)),lsplexp1)
+    else if inpart(lsplexp2,0)="+"
+	 then map(lambda([term],stopexpandl1(term*lsplexp1,varlist)),lsplexp2)
+	 else lsplexp1*lsplexp2))$
 
-EXPANDWRT_FACTORED(EXP,[VARLIST]):=
-  IF LISTP(EXP) OR MATRIXP(EXP)
-  THEN MATRIXMAP(LAMBDA([DUM],APPLY('EXPANDWRT_FACTORED,CONS(DUM,VARLIST))),
-		 EXP)
-  ELSE BLOCK([IFORP:TRUE,PIECE,PARTSWITCH:TRUE,INFLAG:TRUE,DUM],
-	     DUM:ORPARTITIONL(EXP,"*",VARLIST),
-	     FIRST(DUM)*STOPEXPANDL(LAST(DUM),VARLIST))$
+expandwrt_factored(exp,[varlist]):=
+  if listp(exp) or matrixp(exp)
+  then matrixmap(lambda([dum],apply('expandwrt_factored,cons(dum,varlist))),
+		 exp)
+  else block([iforp:true,piece,partswitch:true,inflag:true,dum],
+	     dum:orpartitionl(exp,"*",varlist),
+	     first(dum)*stopexpandl(last(dum),varlist))$
 
-EVAL_WHEN(BATCH,TTYOFF:FALSE)$
+eval_when(batch,ttyoff:false)$

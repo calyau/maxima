@@ -12,24 +12,24 @@ altogether.
 
 Programmed by DRB@MC. */
 
-MATTRACE(A):=BLOCK([ANS:0],FOR I THRU LENGTH(A) DO ANS:ANS+A[I,I],ANS);
+mattrace(a):=block([ans:0],for i thru length(a) do ans:ans+a[i,i],ans);
 
-NCHARPOLY(A,VAR):=
-  BLOCK
-    ([AK:A,TRLIST:[MATTRACE(A)],
-      SYMLIST:[1],
-      K:0,P:0,
-      MAPERROR:FALSE,MAPPRINT:FALSE],
-     THRU LENGTH(A)-1 DO BLOCK([],AK:A.AK,TRLIST:CONS(MATTRACE(AK),TRLIST)),
-     TRLIST:REVERSE(TRLIST), 
+ncharpoly(a,var):=
+  block
+    ([ak:a,trlist:[mattrace(a)],
+      symlist:[1],
+      k:0,p:0,
+      maperror:false,mapprint:false],
+     thru length(a)-1 do block([],ak:a.ak,trlist:cons(mattrace(ak),trlist)),
+     trlist:reverse(trlist), 
       /*
      MAP(LAMBDA([X],K:K+1,SYMLIST:
      CONS(APPLY("+",MAPLIST("*",SYMLIST,TRLIST))/-K,SYMLIST)),TRLIST),
     */
-     FOR I IN TRLIST DO (K:K+1,SYMLIST:
-       CONS(APPLY("+",MAPLIST("*",SYMLIST,TRLIST))/-K,SYMLIST)),
-     FOR I:0 UNLESS SYMLIST=[] DO
-       BLOCK([],P:P+FIRST(SYMLIST)*VAR^I,SYMLIST:REST(SYMLIST)),
-     RATSIMP(P,VAR));
+     for i in trlist do (k:k+1,symlist:
+       cons(apply("+",maplist("*",symlist,trlist))/-k,symlist)),
+     for i:0 unless symlist=[] do
+       block([],p:p+first(symlist)*var^i,symlist:rest(symlist)),
+     ratsimp(p,var));
 
 
