@@ -77,15 +77,17 @@
 ;; -------------------- read functions --------------------
 
 (defun $read_matrix (file-name &optional sep-ch-flag)
-  (mapply-tr '$matrix ($read_nested_list file-name sep-ch-flag)))
+  `(($matrix) ,@(cdr ($read_nested_list file-name sep-ch-flag))))
 
 
 (defun $read_lisp_array (file-name A &optional sep-ch-flag)
-  ($fillarray A ($read_list file-name sep-ch-flag)))
+  ($fillarray A ($read_list file-name sep-ch-flag))
+  '$done)
 
 
 (defun $read_maxima_array (file-name A &optional sep-ch-flag)
-  ($fillarray A ($read_list file-name sep-ch-flag)))
+  ($fillarray A ($read_list file-name sep-ch-flag))
+  '$done)
 
 
 (defun $read_hashed_array (file-name A &optional sep-ch-flag)
@@ -100,7 +102,8 @@
               (setq L (read-line in nil 'eof))
               (setq L (make-mlist-from-string L sep-ch))
               (arrstore (list (list A 'simp 'array) key) L)))))
-      (t (merror "read_hashed_array: ~S: no such file" file-name)))))
+      (t (merror "read_hashed_array: ~S: no such file" file-name))))
+  '$done)
 
 
 (defun $read_nested_list (file-name &optional sep-ch-flag)
@@ -190,7 +193,8 @@
       (write-hashed-array X file-name sep-ch-flag))
     (($listp X)
       (write-list X file-name sep-ch-flag))
-    (t (merror "write_data: don't know what to do with a ~M" (type-of X)))))
+    (t (merror "write_data: don't know what to do with a ~M" (type-of X))))
+  '$done)
 
 
 (defun write-matrix (M file-name &optional sep-ch-flag)
