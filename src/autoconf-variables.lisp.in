@@ -1,5 +1,11 @@
 ; -*- Lisp -*-
 (in-package :maxima)
 
-(defvar *autoconf-prefix* "@prefix@")
-(defvar *autoconf-version* "@VERSION@")
+(defparameter *autoconf-prefix* "@prefix@")
+(defparameter *autoconf-package* "@PACKAGE@")
+(defparameter *autoconf-version* "@VERSION@")
+(defparameter *autoconf-libdir* "@libdir@")
+(defparameter *autoconf-libexecdir* "@libexecdir@")
+(defparameter *autoconf-datadir* "@datadir@")
+(defparameter *autoconf-infodir* "@infodir@")
+
