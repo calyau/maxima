@@ -89,6 +89,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize u*asin(x)
 (defun u*asinx
     (exp)
   (m2 exp
@@ -97,6 +98,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize u*atan(x)
 (defun u*atanx
     (exp)
   (m2 exp
@@ -352,6 +354,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize bessel_i(v1,w1)*bessel_y(v2,w2)
 (defun oneioney
     (exp)
   (m2 exp
@@ -363,6 +366,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize bessel_i(v1,w1)*bessel_k(v2,w2)
 (defun oneionek
     (exp)
   (m2 exp
@@ -374,6 +378,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize bessel_i(v,w)^2
 (defun onei^2
     (exp)
   (m2 exp
@@ -386,6 +391,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize %h[v1,v2](w)^2
 (defun oneh^2
     (exp)
   (m2 exp
@@ -400,6 +406,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize erf(w)
 (defun onerf
     (exp)
   (m2 exp
@@ -408,6 +415,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize log(w)
 (defun onelog
     (exp)
   (m2 exp
@@ -416,6 +424,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize erfc(w)
 (defun onerfc
     (exp)
   (m2 exp
@@ -448,6 +457,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize gammaincomplete(w1, w2), the tail of the incomplete gamma
+;; function.
 (defun onegammaincomplete
     (exp)
   (m2 exp
@@ -458,7 +469,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Incomplete gamma function, integrate(t^(v-1)*exp(-t),t,0,x)
+;; Recognize gammagreek(w1,w2), th incomplete gamma function,
+;; integrate(t^(v-1)*exp(-t),t,0,x)
 (defun onegammagreek
     (exp)
   (m2 exp
@@ -469,6 +481,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize hstruve[v](w), Struve's H function.
 (defun onehstruve
     (exp)
   (m2 exp
@@ -479,6 +492,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize lstruve[v](w), Struve's L function.
 (defun onelstruve
     (exp)
   (m2 exp
@@ -521,6 +535,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize u*bessel_k(v,w)
 (defun onek
     (exp)
   (m2 exp
@@ -531,6 +546,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize %d[v](w), parabolic cylinder function
 (defun oned
     (exp)
   (m2 exp
@@ -551,6 +567,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize %h[v1,v2](w)
 (defun oneh
     (exp)
   (m2 exp
@@ -563,6 +580,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize %m[v1,v2](w), Whittaker M function
 (defun onem
     (exp)
   (m2 exp
@@ -675,6 +693,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize %w[v1,v2](w), Whittaker W function.
 (defun onew
     (exp)
   (m2 exp
@@ -759,8 +778,9 @@
     (distrdefexecinit form)))
 
 
-(defun defexec
-    (exp var)
+;; Compute transform of EXP wrt the variable of integration VAR.
+#+nil
+(defun defexec (exp var)
   (prog(l a)
      (setq exp (simplifya exp nil))
      (cond ((setq l (defltep exp))
@@ -768,14 +788,37 @@
 	    (return (negtest l a))))
      (return 'other-defint-to-follow-defexec)))
 
+(defun defexec (exp var)
+  (let* ((exp (simplifya exp nil))
+	 (l (defltep exp)))
+    (cond (l
+	   ;; EXP is an expression of the form u*%e^(a*x=e*f+c).  So a
+	   ;; is basically the parameter of the Laplace transform.
+	   (let ((a (cdras 'a l)))
+	     (negtest l a)))
+	  (t
+	   'other-defint-to-follow-defexec))))
+
+;; L is the integrand of the transform, after pattern matching.  A is
+;; the parameter (p) of the transform.
 (defun negtest (l a)
   (prog (u e f c)
      (cond ((eq (checksigntm ($realpart a)) '$negative)
+	    ;; The parameter of transform must have a negative
+	    ;; realpart.  Break out the integrand into its various
+	    ;; components.
 	    (setq u (cdras 'u l)
 		  e (cdras 'e l)
 		  f (cdras 'f l)
 		  c (cdras 'c l))
 	    (cond ((zerp e) (setq f 1)))
+	    ;; To compute the transform, we replace A with PSEY for
+	    ;; simplicity.  After the transform is computed, replace
+	    ;; PSEY with A.
+	    ;;
+	    ;; FIXME: Sometimes maxima will ask for the sign of PSEY.
+	    ;; But that doesn't occur in the original expression, so
+	    ;; it's very confusing.  What should we do?
 	    (return (maxima-substitute (mul -1 a)
 				       'psey
 				       (ltscale u
@@ -787,13 +830,15 @@
 						f)))))
      (return 'other-defint-to-follow-negtest)))
 
-(defun ltscale
-    (exp var *par* c par0 e f)
+;; Compute the transform of
+;;
+;;  EXP * %E^(-VAR * (*PAR* - PAR0) + E*F + C)
+(defun ltscale (exp var *par* c par0 e f)
   (mul* (power '$%e c)
 	(substl (sub *par* par0) *par* (lt-exec exp e f))))
 
-;; I think this is trying to match EXP to u*%e^(a*x+e*f+c)
-;; where a, c, and e are free of x, f is free of p.
+;; I think this is trying to match EXP to u*%e^(a*x+e*f+c)+d
+;; where a, c, and e are free of x, f is free of p, and d is 0.
 (defun defltep (exp)
   (m2 exp
       '((mplus)
@@ -828,6 +873,8 @@
     (p1 p2 p3)
   (cond ((eq p1 p2) p3)(t (maxima-substitute p1 p2 p3)))) 
 
+;; Compute the transform of u*%e^(-p*t+e*f)
+#+nil
 (defun lt-exec (u e f)
   (declare (special *asinx* *atanx*))
   (prog (l)
@@ -838,6 +885,27 @@
 	    (return (lt-exp l e f))))
      (return (lt-sf-log (mul* u (power '$%e (mul e f)))))))
 
+(defun lt-exec (u e f)
+  (declare (special *asinx* *atanx*))
+  (let (l)
+    (cond ((or *asinx* *atanx*)
+	   ;; We've already determined that we have an asin or atan
+	   ;; expression, so use lt-asinatan to find the transform.
+	   (lt-asinatan u e))
+	  ((zerp e)
+	   ;; The simple case of u*%e^(-p*t)
+	   (lt-sf-log u))
+	  ((and (not (zerp e))
+		(setq l (c*t^v u)))
+	   ;; We have u*%e^(-p*t+e*f).  Try to see if U is of the form
+	   ;; c*t^v.  If so, we can handle it here.
+	   (lt-exp l e f))
+	  (t
+	   ;; The complicated case.  Remove the e*f term and move it
+	   ;; to u.
+	   (lt-sf-log (mul* u (power '$%e (mul e f))))))))
+
+;; Match c*t^v
 (defun c*t^v
     (exp)
   (m2 exp
@@ -846,6 +914,8 @@
 	((mexpt)(t varp)(v freevar)))
       nil))
 
+;; Laplace transform of u*%e^(-p*t + e*f).  But we can't handle the
+;; case where e isn't zero.
 (defun lt-asinatan (u e)
   (declare (special *asinx* *atanx*))
   (cond ((zerp e)
@@ -854,7 +924,8 @@
 	       (t 'lt-asinatan-failed-1)))
 	(t 'lt-asinatan-failed-2)))
 
-;; Laplace transform of exponential terms
+;; Laplace transform of c*t^v*exp(-p*t+e*f).  L contains the pattern
+;; for c*t^v.
 (defun lt-exp (l e f)
   (prog(c v)
      (setq c (cdras 'c l) v (cdras 'v l))
@@ -1072,32 +1143,20 @@
 (defun lt-sf-log (u)
   (prog (l index1 index11 index2 index21 arg1 arg2 rest)
      (cond ((setq l (twoj u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
      (cond ((setq l (twoh u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v11 l)
-		  index2
-		  (cdras 'v2 l)
-		  index21
-		  (cdras 'v21 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v11 l)
+		  index2 (cdras 'v2 l)
+		  index21 (cdras 'v21 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest rest
 			      arg1
 			      arg2
@@ -1107,16 +1166,11 @@
 			      index21
 			      '2htjory))))
      (cond ((setq l (twoy u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest rest
 			      arg1
 			      arg2
@@ -1126,16 +1180,11 @@
 			      nil
 			      '2ytj))))
      (cond ((setq l (twok u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest rest
 			      arg1
 			      arg2
@@ -1145,16 +1194,11 @@
 			      nil
 			      '2kti))))
      (cond ((setq l (onekoney u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest rest
 			      arg1
 			      arg2
@@ -1164,32 +1208,20 @@
 			      nil
 			      'ktiytj))))
      (cond ((setq l (oneionej u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  index21
-		  (cdras 'v21 l)
-		  arg1
-		  (mul* (1fact t t)(cdras 'w1 l))
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  index21 (cdras 'v21 l)
+		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg2 (cdras 'w2 l)
+		  rest (mul* (1fact nil index1)(cdras 'u l)))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
      (cond ((setq l (oneioneh u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  index21
-		  (cdras 'v21 l)
-		  arg1
-		  (mul* (1fact t t)(cdras 'w1 l))
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  index21 (cdras 'v21 l)
+		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg2 (cdras 'w2 l)
+		  rest (mul* (1fact nil index1)(cdras 'u l)))
 	    (return (fractest1 rest
 			       arg1
 			       arg2
@@ -1198,16 +1230,11 @@
 			       index21
 			       'besshtjory))))
      (cond ((setq l (oneyonej u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest1 rest
 			       arg2
 			       arg1
@@ -1216,16 +1243,11 @@
 			       nil
 			       'bessytj))))
      (cond ((setq l (onekonej u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest1 rest
 			       arg2
 			       arg1
@@ -1234,18 +1256,12 @@
 			       nil
 			       'besskti))))
      (cond ((setq l (onehonej u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v11 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v11 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest1 rest
 			       arg2
 			       arg1
@@ -1254,18 +1270,12 @@
 			       index11
 			       'besshtjory))))
      (cond ((setq l (oneyoneh u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  index11
-		  (cdras 'v21 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  index11 (cdras 'v21 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest1 rest
 			       arg2
 			       arg1
@@ -1274,18 +1284,12 @@
 			       index11
 			       'htjoryytj))))
      (cond ((setq l (onekoneh u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  index11
-		  (cdras 'v21 l)
-		  arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  index11 (cdras 'v21 l)
+		  arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest1 rest
 			       arg2
 			       arg1
@@ -1294,16 +1298,11 @@
 			       index11
 			       'htjorykti))))
      (cond ((setq l (oneioney u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (mul* (1fact t t)(cdras 'w1 l))
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg2 (cdras 'w2 l)
+		  rest (mul* (1fact nil index1)(cdras 'u l)))
 	    (return (fractest1 rest
 			       arg1
 			       arg2
@@ -1312,16 +1311,11 @@
 			       nil
 			       'bessytj))))
      (cond ((setq l (oneionek u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (mul* (1fact t t)(cdras 'w1 l))
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg2 (cdras 'w2 l)
+		  rest (mul* (1fact nil index1)(cdras 'u l)))
 	    (return (fractest1 rest
 			       arg1
 			       arg2
@@ -1330,274 +1324,185 @@
 			       nil
 			       'besskti))))
      (cond ((setq l (onehstruve u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1hstruve rest arg1 index1))))
      (cond ((setq l (onelstruve u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1lstruve rest arg1 index1))))
      (cond ((setq l (ones u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1s rest arg1 index1 index2))))
      (cond ((setq l (oneslommel u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest2 rest
 			       arg1
 			       index1
 			       index2
 			       'slommel))))
      (cond ((setq l (oney u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1yref rest arg1 index1))))
      (cond ((setq l (onek u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest2 rest
 			       arg1
 			       index1
 			       nil
 			       'kti))))
      (cond ((setq l (oned u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 index1 nil 'd))))
      (cond ((setq l (onegammaincomplete u))
-	    (setq arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (fractest2 rest
 			       arg1
 			       arg2
 			       nil
 			       'gammaincomplete))))
      (cond ((setq l (onekbateman u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest2 rest
 			       arg1
 			       index1
 			       nil
 			       'kbateman))))
      (cond ((setq l (onej u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1j rest arg1 index1))))
      (cond ((setq l (onegammagreek u))
-	    (setq arg1
-		  (cdras 'w1 l)
-		  arg2
-		  (cdras 'w2 l)
-		  rest
-		  (cdras 'u l))
+	    (setq arg1 (cdras 'w1 l)
+		  arg2 (cdras 'w2 l)
+		  rest (cdras 'u l))
 	    (return (lt1gammagreek rest arg1 arg2))))
      (cond ((setq l (oneh u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest2 rest
 			       arg1
 			       index1
 			       index11
 			       'htjory))))
      (cond ((setq l (onem u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1m rest arg1 index1 index11))))
      (cond ((setq l (onel u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (integertest rest
 				 arg1
 				 index1
 				 index11
 				 'l))))
      (cond ((setq l (onec u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (integertest rest
 				 arg1
 				 index1
 				 index11
 				 'c))))
      (cond ((setq l (onet u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (integertest rest
 				 arg1
 				 index1
 				 nil
 				 't))))
      (cond ((setq l (oneu u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (integertest rest
 				 arg1
 				 index1
 				 nil
 				 'u))))
      (cond ((setq l (onehe u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (integertest rest
 				 arg1
 				 index1
 				 nil
 				 'he))))
      (cond ((setq l (hyp-onep u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1p rest arg1 index1 index11))))
      (cond ((setq l (onepjac u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  index21
-		  (cdras 'v3 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  index21 (cdras 'v3 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (pjactest rest
 			      arg1
 			      index1
 			      index2
 			      index21))))
      (cond ((setq l (oneq u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1q rest arg1 index1 index11))))
      (cond ((setq l (onep0 u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  0
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 0
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1p rest arg1 index1 index11))))
      (cond ((setq l (onew u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (whittest rest arg1 index1 index11))))
      (cond ((setq l (onej^2 u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
-	    (return (lt1j^2 rest arg1 index1))))
-     (cond ((setq l (oneh^2 u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index11
-		  (cdras 'v2 l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
+	    (return (lt1j^2 rest arg1 index1)))) (cond ((setq l (oneh^2 u))
+	    (setq index1 (cdras 'v1 l)
+		  index11 (cdras 'v2 l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest rest
 			      arg1
 			      arg1
@@ -1607,12 +1512,9 @@
 			      index11
 			      '2htjory))))
      (cond ((setq l (oney^2 u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest rest
 			      arg1
 			      arg1
@@ -1622,12 +1524,9 @@
 			      nil
 			      '2ytj))))
      (cond ((setq l (onek^2 u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (cdras 'w l)
-		  rest
-		  (cdras 'u l))
+	    (setq index1 (cdras 'v l)
+		  arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest rest
 			      arg1
 			      arg1
@@ -1637,88 +1536,105 @@
 			      nil
 			      '2kti))))
      (cond ((setq l (twoi u))
-	    (setq index1
-		  (cdras 'v1 l)
-		  index2
-		  (cdras 'v2 l)
-		  arg1
-		  (mul* (1fact t t)(cdras 'w1 l))
-		  arg2
-		  (mul* (1fact t t) (cdras 'w2 l))
-		  rest
-		  (mul* (1fact nil index1)
-			(1fact nil index2)
-			(cdras 'u l)))
+	    (setq index1 (cdras 'v1 l)
+		  index2 (cdras 'v2 l)
+		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg2 (mul* (1fact t t) (cdras 'w2 l))
+		  rest (mul* (1fact nil index1)
+			     (1fact nil index2)
+			     (cdras 'u l)))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
      (cond ((setq l (onei u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (mul* (1fact t t)(cdras 'w l))
-		  rest
-		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (setq index1 (cdras 'v l)
+		  arg1 (mul* (1fact t t)(cdras 'w l))
+		  rest (mul* (1fact nil index1)(cdras 'u l)))
 	    (return (lt1j rest arg1 index1))))
      (cond ((setq l (onei^2 u))
-	    (setq index1
-		  (cdras 'v l)
-		  arg1
-		  (mul* (1fact t t)(cdras 'w l))
-		  rest
-		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (setq index1 (cdras 'v l)
+		  arg1 (mul* (1fact t t)(cdras 'w l))
+		  rest (mul* (1fact nil index1)(cdras 'u l)))
 	    (return (lt1j^2 rest arg1 index1))))
      (cond ((setq l (onerf u))
-	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (setq arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1erf rest arg1))))
      (cond ((setq l (onelog u))
-	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (setq arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1log rest arg1))))
      (cond ((setq l (onerfc u))
-	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (setq arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 nil nil 'erfc))))
      (cond ((setq l (oneei u))
-	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (setq arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 nil nil 'ei))))
      (cond ((setq l (onekelliptic u))
-	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (setq arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1kelliptic rest arg1))))
      (cond ((setq l (onee u))
-	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (setq arg1 (cdras 'w l)
+		  rest (cdras 'u l))
 	    (return (lt1e rest arg1))))
      (cond ((setq l (arbpow1 u))
-	    (setq arg1
-		  (cdras 'u l)
-		  arg2
-		  (cdras 'c l)
-		  index1
-		  (cdras 'v l))
+	    (setq arg1 (cdras 'u l)
+		  arg2 (cdras 'c l)
+		  index1 (cdras 'v l))
 	    (return (mul arg2 (lt-arbpow arg1 index1)))))
      (return 'other-j-cases-next)))
 
-(defun lt-arbpow
-    (exp pow)
-  (cond ((or (eq exp var)(zerp pow))(f1p137test pow))))
+;; Laplace transform of c*t^v*%e(-p*t)
+;;
+;; EXP = t, POW = v.
+(defun lt-arbpow (exp pow)
+  (cond ((or (eq exp var) (zerp pow))
+	 (f1p137test pow))))
 
-(defun fractest
-    (r a1 a2 i1 i11 i2 i21 flg)
+;; Laplace transform of a product of Bessel functions.  A1, A2 are
+;; the args of the two functions. I1, I2 are the indices of each
+;; function.  I11, I21 are secondary indices of each function, if any.
+;; FLG is a symbol indicating how we should handle the special
+;; functions (and also indicates what the special functions are.)
+;;
+;; I11 and I21 are for the Hankel functions.
+(defun fractest (r a1 a2 i1 i11 i2 i21 flg)
   (cond ((or (and (equal (caar i1) 'rat)
 		  (equal (caar i2) 'rat))
 	     (eq flg '2htjory))
+	 ;; Why do we only execute this for 2htjory, but the code
+	 ;; below checks for 2ytj, ktiytj and 2kti?  Shouldn't we
+	 ;; allow that as well?
 	 (sendexec r
 		   (cond ((eq flg '2ytj)
-			  (mul (ytj i1 a1)(ytj i2 a2)))
+			  (mul (ytj i1 a1)
+			       (ytj i2 a2)))
 			 ((eq flg '2htjory)
 			  (mul (htjory i1 i11 a1)
 			       (htjory i2 i21 a2)))
 			 ((eq flg 'ktiytj)
-			  (mul (kti i1 a1)(ytj i2 a2)))
+			  (mul (kti i1 a1)
+			       (ytj i2 a2)))
 			 ((eq flg '2kti)
-			  (mul (kti i1 a1)(kti i2 a2))))))
+			  (mul (kti i1 a1)
+			       (kti i2 a2))))))
 	(t 'product-of-y-with-nofract-indices)))
 
+;; Laplace transform of a product of Bessel functions.  A1, A2 are
+;; the args of the two functions. I1, I2 are the indices of each
+;; function.  I is a secondary index to one function, if any.
+;; FLG is a symbol indicating how we should handle the special
+;; functions (and also indicates what the special functions are.)
+;;
+;; I is for the kind of Hankel function.
 (defun fractest1 (r a1 a2 i1 i2 i flg)
   (cond ((or (and (listp i2)
 		  (equal (caar i2) 'rat))
 	     (eq flg 'besshtjory))
+	 ;; Why do we only execute this for besshtjory when the code
+	 ;; has transformations for bessytj, htjoryytj, besskti, and
+	 ;; htjorykti?
 	 (sendexec r
 		   (cond ((eq flg 'bessytj)
 			  (mul (bess i1 a1 'j)
@@ -1737,6 +1653,12 @@
 			       (kti i2 a2))))))
 	(t 'product-of-i-y-of-nofract-index)))
 
+;; Laplace transform of a single special function.  A is the arg of
+;; the special function. I1, I11 are the indices of the function.  FLG
+;; is a symbol indicating how we should handle the special functions
+;; (and also indicates what the special functions are.)
+;;
+;; I11 is the kind of Hankel function
 (defun fractest2 (r a1 i1 i11 flg)
   (cond ((or (and (listp i1)
 		  (equal (caar i1) 'rat))
@@ -1749,16 +1671,20 @@
 	     (eq flg 'slommel)
 	     (eq flg 'ytj))
 	 (sendexec r
-		   (cond ((eq flg 'ytj)(ytj i1 a1))
+		   (cond ((eq flg 'ytj)
+			  (ytj i1 a1))
 			 ((eq flg 'htjory)
 			  (htjory i1 i11 a1))
-			 ((eq flg 'd)(dtw i1 a1))
+			 ((eq flg 'd)
+			  (dtw i1 a1))
 			 ((eq flg 'kbateman)
 			  (kbatemantw a1))
 			 ((eq flg 'gammaincomplete)
 			  (gammaincompletetw a1 i1))
-			 ((eq flg 'kti)(kti i1 a1))
-			 ((eq flg 'erfc)(erfctd a1))
+			 ((eq flg 'kti)
+			  (kti i1 a1))
+			 ((eq flg 'erfc)
+			  (erfctd a1))
 			 ((eq flg 'ei)
 			  (eitgammaincomplete a1))
 			 ((eq flg 'slommel)
@@ -1956,8 +1882,10 @@
 	 (distrexec (cdr fun)))
 	(t (hypgeo-exec fun var *par*))))
 
+;; Evaluate the transform of a sum as sum of transforms.
 (defun distrdefexecinit (fun)
-  (cond ((equal (caar fun) 'mplus) (distrdefexec (cdr fun)))
+  (cond ((equal (caar fun) 'mplus)
+	 (distrdefexec (cdr fun)))
 	(t (defexec fun var))))
 
 (defun distrexec (fun)
@@ -1965,6 +1893,8 @@
 	(t (add (hypgeo-exec (car fun) var *par*)
 		(distrexec (cdr fun))))))
 
+;; FUN is a list of addends.  Compute the transform of each addend and
+;; add them up.
 (defun distrdefexec (fun)
   (cond ((null fun) 0)
 	(t (add (defexec (car fun) var)
@@ -2174,11 +2104,9 @@
     (list (mul* (power (div z 2)(add v 1))
 		(inv (gm d32))
 		(inv (gm (add v d32))))
-	  (list 'fpq
-		(list 1 2)
-		(list 1)
-		(list d32 (add v d32))
-		(mul* (inv -4) z z)))))
+	  (ref-fpq (list 1)
+		   (list d32 (add v d32))
+		   (mul* (inv -4) z z)))))
 
 ;; Struve L function
 ;;
@@ -2222,11 +2150,9 @@
     (list (mul* (power (div z 2) (add v 1))
 		(inv (gm d32))
 		(inv (gm (add v d32))))
-	  (list 'fpq
-		(list 1 2)
-		(list 1)
-		(list d32 (add v d32))
-		(mul* (inv 4) z z)))))
+	  (ref-fpq (list 1)
+		   (list d32 (add v d32))
+		   (mul* (inv 4) z z)))))
 
 ;; Lommel s function
 ;;
@@ -2395,8 +2321,7 @@
 ;;
 ;; M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)
 ;;
-(defun mtf
-    (i1 i2 arg)
+(defun mtf (i1 i2 arg)
   (list (mul (power arg (add i2 (1//2)))
 	     (power '$%e (div arg -2)))
 	(ref-fpq (list (add* (1//2) i2 (mul -1 i1)))
@@ -2452,6 +2377,9 @@
 ;; A&S 8.1.2
 ;;
 ;; assoc_legendre_p(v,u,z) = ((z+1)/(z-2))^(u/2)/gamma(1-u)*F(-v,v+1;1-u,(1-z)/2)
+;;
+;; FIXME: What about the branch cut?  8.1.2 is for z not on the real
+;; line with -1 < z < 1.
 (defun ptf (n m z)
   (list (mul (inv (gm (sub 1 m)))
 	     (power (div (add z 1)
@@ -2469,6 +2397,8 @@
 ;;    = exp(%i*u*%pi)*2^(-v-1)*sqrt(%pi) *
 ;;       gamma(v+u+1)/gamma(v+3/2)*z^(-v-u-1)*(z^2-1)^(u/2) * 
 ;;        F(1+v/2+u/2, 1/2+v/2+u/2; v+3/2; 1/z^2)
+;;
+;; FIXME:  What about the branch cut?
 (defun qtf (n m z)
   (list (mul* (power '$%e (mul* m '$%pi '$%i))
 	      (power '$%pi (1//2))
@@ -2565,6 +2495,7 @@
 		 (list (add 1 n) (add 1 m) (add* 1 n m))
 		 (mul -1 (power arg 2)))))
 
+;; Match d*x^m*%e^(a*x)
 (defun d*x^m*%e^a*x
     (exp)
   (m2 exp
@@ -2660,18 +2591,12 @@
 (defun f19cond
     (a m l1 l2)
   (prog(p q s d)
-     (setq p
-	   (caadr l2)
-	   q
-	   (cadadr l2)
-	   s
-	   (cdras 'm l1)
-	   d
-	   (cdras 'd l1)
-	   l1
-	   (caddr l2)
-	   l2
-	   (cadddr l2))
+     (setq p (caadr l2)
+	   q (cadadr l2)
+	   s (cdras 'm l1)
+	   d (cdras 'd l1)
+	   l1 (caddr l2)
+	   l2 (cadddr l2))
      (cond ((and (not (eq (checksigntm (sub (add* p
 						  m
 						  -1)
