@@ -280,7 +280,6 @@
 	*match-data*)
     (declare (fixnum start))
     (loop while (>= (setq start (string-match pat st start)) 0)
-      do
       collect (list start (setq start (match-end 0))))))
 
 
