@@ -100,8 +100,9 @@
 		      ((memq answer '($unknown $uk)) '$unknown)))
     (setq answer (retrieve
 		  `((mtext) |Is  | ,object 
-		    ,(if (zl-member (getcharn property 1)
-				    '(#\a #\e #\i #\o #\u))
+		    ,(if (member (getcharn property 1)
+				 '(#\a #\e #\i #\o #\u)
+				 :test #'char-equal)
 			 '|  AN |
 			 '|  A |)
 		    ,property ,@fun-or-number |?|)
