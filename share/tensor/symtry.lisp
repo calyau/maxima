@@ -142,12 +142,12 @@
 			(do ((props (car (zl-get tensor type)) (cdr props)) (p))
 			    ((null props))
 			    (setq p (car props)
-				  cov (inserts (symsort (extract p cov) type)
+				  cov (inserts (symsort (extract-elements p cov) type)
 					       cov p)))
 			(do ((props (cdr (zl-get tensor type)) (cdr props)) (p))
 			    ((null props))
 			    (setq p (car props)
-				    contr (inserts (symsort (extract p contr)
+				    contr (inserts (symsort (extract-elements p contr)
 							    type)
 						   contr p))))))
 	     (setq tensor (mysubst0 (append (list (car e)
@@ -167,8 +167,8 @@
 	   (cond ((not (eq dumx (car b)))
 		  (setq l (cons (cons (car b) dumx) l))))))
 
-(defun EXTRACT (a b)  ;Extracts the elements from B specified by the indices in
-                      ;i.e. (EXTRACT '(2 5) '(A B C D E F)) yields (B E)
+(defun EXTRACT-elements (a b)  ;Extracts the elements from B specified by the indices in
+                      ;i.e. (EXTRACT-elements '(2 5) '(A B C D E F)) yields (B E)
        (do ((a a) (b b (cdr b)) (n 1 (1+ n)) (l))
 	   ((null a) (nreverse l))
 	   (cond ((equal (car a) n)
