@@ -108,7 +108,9 @@
 	   l2 (macsimp l2)
 	   resimp (simpg l1 l2))
 	    
-     (cond ((not (eq (car resimp) 'fail))(return resimp)))
+     (cond ((not (eq (and (consp resimp) (car resimp))
+		     'fail))
+	    (return resimp)))
      (cond ((setq listcmdiff
 		  (intdiffl1l2 (cadr resimp)
 			       (caddr resimp)))
@@ -128,7 +130,7 @@
   (prog(il)
      (cond ((null (setq il (zl-intersection l1 l2)))
 	    (return (simpg-exec l1 l2))))
-     (return (simpg-exec (del il l1)(del il l2)))))   
+     (return (simpg-exec (del il l1) (del il l2)))))
 
 
 (defun del (a b)
@@ -1498,14 +1500,13 @@
 		  (power '$%e (div var 2))
 		  (whitfun k m var)))))
 
-(defun hyprederf
-    (x)
-  (prog()
-     (setq x (mul '$%i (power x (inv 2))))
-     (return (mul (power '$%pi (inv 2))
-		  (inv 2)
-		  (inv x)
-		  (list '(%erf) x)))))
+;; Return sqrt(%pi)*erf(%i*sqrt(x))/2/(%i*sqrt(x))
+(defun hyprederf (x)
+  (let ((x (mul '$%i (power x (inv 2)))))
+    (mul (power '$%pi (inv 2))
+	 (inv 2)
+	 (inv x)
+	 (list '(%erf) x))))
 
 (defun erfgammared (a c z)
   (cond ((and (nump a)(nump c))
