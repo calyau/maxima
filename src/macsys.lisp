@@ -389,5 +389,5 @@
 #+gcl
 (defun $system (&rest x) (system (apply '$sconcat x)))
 
-
-
+#+clisp
+(defun $system (&rest x) (ext:run-shell-command (apply '$sconcat x)))
