@@ -2,10 +2,6 @@
 
 (set-pathnames)
 
-;(load (pathname "../src/nusum"))
-;(load (pathname "../src/ode2"))
-;(load (pathname "../src/elim"))
-;(load (pathname "../src/trgsmp"))
 
 #+gmp (si::set-gmp-allocate-relocatable t)
 
