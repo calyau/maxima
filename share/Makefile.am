@@ -503,7 +503,7 @@ tensor/itensor.usg\
 tensor/jpff.mac\
 tensor/kaluza.dem\
 tensor/kaluza.mac\
-tensor/lch.mac\
+tensor/lckdt.mac\
 tensor/manual.txt\
 tensor/metrics.mac\
 tensor/motion.mac\
