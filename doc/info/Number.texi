@@ -6,20 +6,20 @@
 @node Definitions for Number Theory,  , Number Theory, Number Theory
 @section Definitions for Number Theory
 
-@defun BERN (x)
+@defun bern (x)
 gives the Xth Bernoulli number for integer X.
 ZEROBERN[TRUE] if set to FALSE excludes the zero BERNOULLI numbers.
 (See also BURN).
 
 @end defun
 
-@defun BERNPOLY (v, n)
+@defun bernpoly (v, n)
 generates the nth Bernoulli polynomial in the
 variable v.
 
 @end defun
 
-@defun BFZETA (exp,n)
+@defun bfzeta (expr, n)
 BFLOAT version of the Riemann Zeta function.  The 2nd
 argument is how many digits to retain and return, it's a good idea to
 request a couple of extra.  This function is available by doing
@@ -27,7 +27,7 @@ LOAD(BFFAC); .
 
 @end defun
 
-@defun BGZETA (S, FPPREC)
+@defun bgzeta (s, fpprec)
 BGZETA is like BZETA, but avoids arithmetic
 overflow errors on large arguments, is faster on medium size arguments
 (say S=55, FPPREC=69), and is slightly slower on small arguments.  It
@@ -36,7 +36,7 @@ LOAD(BFAC);.
 
 @end defun
 
-@defun BHZETA (S,H,FPPREC)
+@defun bhzeta (s, h, fpprec)
 gives FPPREC digits of
 @example
 SUM((K+H)^-S,K,0,INF)
@@ -45,7 +45,7 @@ This is available by doing LOAD(BFFAC);.
 
 @end defun
 
-@defun BINOMIAL (X, Y)
+@defun binomial (x, y)
 the binomial coefficient X*(X-1)*...*(X-Y+1)/Y!. If X
 and Y are integers, then the numerical value of the binomial
 coefficient is computed.  If Y, or the value X-Y, is an integer, the
@@ -53,7 +53,7 @@ binomial coefficient is expressed as a polynomial.
 
 @end defun
 
-@defun BURN (N)
+@defun burn (n)
 is like BERN(N), but without computing all of the uncomputed
 Bernoullis of smaller index.  So BURN works efficiently for large,
 isolated N.  (BERN(402) takes about 645 secs vs 13.5 secs for
@@ -67,12 +67,12 @@ approximated by (transcendental) zetas with tolerable efficiency.
 
 @end defun
 
-@defun BZETA
+@defun bzeta
  - This function is obsolete, see BFZETA.
 
 @end defun
 
-@defun CF (exp)
+@defun cf (expr)
 converts exp into a continued fraction.  exp is an expression
 composed of arithmetic operators and lists which represent continued
 fractions.  A continued fraction a+1/(b+1/(c+...)) is represented by
@@ -84,7 +84,7 @@ CFLENGTH[1] times the period.  Thus the default is to give one period.
 
 @end defun
 
-@defun CFDISREP (list)
+@defun cfdisrep (list)
 converts the continued fraction represented by list
 into general representation.
 @example
@@ -103,7 +103,7 @@ into general representation.
 @end example
 @end defun
 
-@defun CFEXPAND (x)
+@defun cfexpand (x)
 gives a matrix of the numerators and denominators of the
 next-to-last and last convergents of the continued fraction x.
 @example
@@ -120,39 +120,39 @@ next-to-last and last convergents of the continued fraction x.
 @end example
 @end defun
 
-@defvar CFLENGTH
+@defvar cflength
  default: [1] controls the number of terms of the continued
 fraction the function CF will give, as the value CFLENGTH[1] times the
 period.  Thus the default is to give one period.
 
 @end defvar
 
-@defun DIVSUM (n,k)
+@defun divsum (n, k)
 adds up all the factors of n raised to the kth power.  If
 only one argument is given then k is assumed to be 1.
 
 @end defun
 
-@defun EULER (X)
+@defun euler (x)
 gives the Xth Euler number for integer X.  For the
 Euler-Mascheroni constant, see %GAMMA.
 
 @end defun
 
-@defun factorial (X)
+@defun factorial (x)
 The factorial function. Maxima treats @code{factorial (x)} the same as @code{x!}.
 See @code{!}.
 
 @end defun
 
-@defun FIB (X)
+@defun fib (x)
 the Xth Fibonacci number with FIB(0)=0, FIB(1)=1, and
 FIB(-N)=(-1)^(N+1) *FIB(N).  PREVFIB is FIB(X-1), the Fibonacci number
 preceding the last one computed.
 
 @end defun
 
-@defun FIBTOPHI (exp)
+@defun fibtophi (expr)
 converts FIB(n) to its closed form definition.
 This involves the constant %PHI (= (SQRT(5)+1)/2 = 1.618033989).
 If you want the Rational Function Package to know 
@@ -160,30 +160,30 @@ About %PHI do TELLRAT(%PHI^2-%PHI-1)$  ALGEBRAIC:TRUE$ .
 
 @end defun
 
-@defun INRT (X,n)
+@defun inrt (x, n)
 takes two integer arguments, X and n, and returns the
 integer nth root of the absolute value of X.
 
 @end defun
 
-@defun JACOBI (p,q)
+@defun jacobi (p, q)
 is the Jacobi symbol of p and q.
 
 @end defun
 
-@defun LCM (exp1,exp2,...)
+@defun lcm (expr_1, expr_2, expr_3, ...)
 returns the Least Common Multiple of its arguments.
 Do LOAD(FUNCTS); to access this function.
 
 @end defun
 
-@defvar MAXPRIME
+@defvar maxprime
  default: [489318] - the largest number which may be given to
 the PRIME(n) command, which returns the nth prime.
 
 @end defvar
 
-@defun MINFACTORIAL (exp)
+@defun minfactorial (expr)
 examines exp for occurrences of two factorials
 which differ by an integer.  It then turns one into a polynomial times
 the other.  If exp involves binomial coefficients then they will be
@@ -202,7 +202,7 @@ converted into ratios of factorials.
 @end example
 @end defun
 
-@defun PARTFRAC (exp, var)
+@defun partfrac (expr, var)
 expands the expression exp in partial fractions
 with respect to the main variable, var.  PARTFRAC does a complete
 partial fraction decomposition.  The algorithm employed is based on
@@ -213,7 +213,7 @@ the expansion falls out.  See EXAMPLE(PARTFRAC); for examples.
 
 @end defun
 
-@defun PRIME (n)
+@defun prime (n)
 gives the nth prime. MAXPRIME[489318] is the largest number
 accepted as argument.  Note:  The PRIME command does not work in
 Maxima, since it required a large file of primes, which most users
@@ -221,12 +221,12 @@ do not want.    PRIMEP does work however.
 
 @end defun
 
-@defun PRIMEP (n)
+@defun primep (n)
 returns TRUE if n is a prime, FALSE if not.
 
 @end defun
 
-@defun QUNIT (n)
+@defun qunit (n)
 gives the principal unit of the real quadratic number field
 SQRT(n) where n is an integer, i.e.  the element whose norm is unity.
 This amounts to solving Pell's equation A**2- n*B**2=1.
@@ -240,25 +240,25 @@ This amounts to solving Pell's equation A**2- n*B**2=1.
 @end example
 @end defun
 
-@defun TOTIENT (n)
+@defun totient (n)
 is the number of integers less than or equal to n which
 are relatively prime to n.
 
 @end defun
 
-@defvar ZEROBERN
+@defvar zerobern
  default: [TRUE] - if set to FALSE excludes the zero
 BERNOULLI numbers.  (See the BERN function.)
 
 @end defvar
 
-@defun ZETA (X)
+@defun zeta (x)
 gives the Riemann zeta function for certain integer values
 of X.
 
 @end defun
 
-@defvar ZETA%PI
+@defvar zeta%pi
  default: [TRUE] - if FALSE, suppresses ZETA(n) giving
 coeff*%PI^n for n even.
 
