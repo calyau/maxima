@@ -57,12 +57,18 @@
 	    (setq tem (format nil "~a/" tem))))
     (when tem
       (setq *maxima-directory* tem)))
-  (setq $file_search_lisp
-    (list '(mlist)
-	  #+gcl (maxima-path "{src,share1,sym}" "###.o")
-	  #+allegro (maxima-path "{src,share1,sym}" "###.fasl")
-	  (maxima-path "{src,share1}" "###.lisp")
-	  (maxima-path "{sym}" "###.lsp")))
+  (let ((ext #+gcl "o"
+	     #+cmu (c::backend-fasl-file-type c::*target-backend*)
+	     #+clisp "fas"
+	     #+allegro "fasl"
+	     #-(or gcl cmu clisp allegro)
+	     ""))
+    (setq $file_search_lisp
+	  (list '(mlist)
+		(maxima-path "{src,share1,sym}"
+			     (concatenate 'string "###." ext))
+		(maxima-path "{src,share1}" "###.lisp")
+		(maxima-path "{sym}" "###.lsp"))))
   (setq $file_search_maxima
     (list '(mlist)
 	  (maxima-path "{mac,sym}" "###.mac")
