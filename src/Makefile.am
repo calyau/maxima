@@ -155,6 +155,13 @@ uninstall: uninstall-gcl
 clean: clean-gcl
 distclean: clean-gcl
 
+sys-proclaim:
+	rm -r binary-gcl
+	test -d binary-gcl || mkdir binary-gcl
+	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
+	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
+	$(EXECUTEGCL) '(load "generate-sys-proclaim.lisp")'
+
 gcl:binary-gcl/maxima
 
 binary-gcl/maxima:
@@ -231,9 +238,7 @@ echo_%:
 	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"
 
 genericdir = $(instsrcdir)
-real_lisp_sources = SYS-DECLAIM.lisp \
-SYS-PROCLAIM.lisp \
-acall.lisp \
+real_lisp_sources = acall.lisp \
 algfac.lisp \
 algsys.lisp \
 ar.lisp \
@@ -271,6 +276,7 @@ fcall.lisp \
 flatten.lisp \
 float.lisp \
 fortra.lisp \
+generate-sys-proclaim.lisp \
 generr.lisp \
 grind.lisp \
 hayat.lisp \
@@ -378,6 +384,7 @@ strmac.lisp \
 sublis.lisp \
 sumcon.lisp \
 suprv1.lisp \
+sys-proclaim.lisp \
 tlimit.lisp \
 todd-coxeter.lisp \
 trans1.lisp \
