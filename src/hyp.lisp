@@ -842,10 +842,14 @@
 	     (alike1 (sub b a) (div 1 2)))
 	    ;; F(a,b;c;z) where |a-b|=1/2 
 	    (cond ((setq lgf (hyp-cos a b c))(return lgf)))))
-     (cond ((and (hyp-integerp a)
-		 (hyp-integerp b) (hyp-integerp c))
-	    ;; F(a,b;c;z) when a, b, c are integers.
-	    (return (simpr2f1 (list a b) (list c)))))
+     (cond ((and (maxima-integerp a)
+		 (maxima-integerp b)
+		 (hyp-integerp c))
+	    ;; F(a,b;c;z) when a, and b are integers (or are declared
+	    ;; to be integers) and c is a integral number.
+	    (setf lgf (simpr2f1 (list a b) (list c)))
+	    (unless (atom lgf)
+	      (return lgf))))
      (cond ((and (hyp-integerp (add c (inv 2)))
 		 (hyp-integerp (add a b)))
 	    ;; F(a,b;c;z) where a+b is an integer and c+1/2 is an
@@ -856,7 +860,14 @@
 	    (cond ((setq lgf (step7 a b c))
 		   (return lgf)))))
      (cond ((setq lgf (legfun a b c))
-	    (return lgf)))
+	    (unless (atom lgf)
+	      ;; LEGFUN returned something interesting, so we're done.
+	      (return lgf))
+	    ;; LEGFUN didn't return anything, so try it with the args
+	    ;; reversed, since F(a,b;c;z) is F(b,a;c;z).
+	    (setf lgf (legfun b a c))
+	    (when lgf
+	      (return lgf))))
      (print 'simp2f1-will-continue-in)
      (return  (fpqform l1 l2 var))))
 
@@ -964,30 +975,43 @@
 	  'ell y)))
 
 
-
+;; F(a,b;c;z) when a and b are integers (or declared to be integers)
+;; and c is an integral number.
 (defun simpr2f1 (l1 l2)
-  ((lambda (inl1p inl1bp inl2p)
-     (cond (inl2p (cond ((and inl1p inl1bp)
-			 (derivint (- (car l1) 1)
-				   (- (cadr l1)
-				      (car l1))
-				   (- (- (car l2)
-					 (cadr l1))
-				      1)))
-			(inl1p (geredno2 (cadr l1)
-					 (car l1)
-					 (car l2)))
-			(inl1bp (geredno2 (car l1)
-					  (cadr l1)
-					  (car l2)))
-			(t 'fail1)))
-	   (inl1p (cond (inl1bp 'd) (t 'c)))
-	   ((eq (caaar l1) 'rat)
-	    (cond (inl1bp 'c) (t 'd)))
-	   (t 'failg)))
-   (hyp-integerp (car l1))
-   (hyp-integerp (cadr l1))
-   (hyp-integerp (car l2))))
+  (destructuring-bind (a b)
+      l1
+    (destructuring-bind (c)
+	l2
+      (let ((inl1p (hyp-integerp a))
+	    (inl1bp (hyp-integerp b))
+	    (inl2p (hyp-integerp c)))
+	(cond (inl2p
+	       ;; c is an integer
+	       (cond ((and inl1p inl1bp)
+		      ;; a, b, c are (numerical) integers
+		      (derivint a b c))
+		     (inl1p
+		      ;; a and c are integers
+		      (geredno2 b a c))
+		     (inl1bp
+		      ;; b and c are integers.
+		      (geredno2 a b c))
+		     (t 'fail1)))
+	      ;; Can't really do anything else if c is not an integer.
+	      (inl1p
+	       (cond (inl1bp
+		      'd)
+		     (t
+		      'c)))
+	      ((eq (caaar l1) 'rat)
+	       ;; How do we ever get here?
+	       (cond (inl1bp
+		      'c)
+		     (t
+		      'd)))
+	      (t
+	       'failg))))))
+
 (defun geredno1
     (l1 l2)
   (cond ((and (greaterp (car l2)(car l1))
@@ -1012,7 +1036,7 @@
 ;;
 ;; A&S 15.2.6 gives
 ;;
-;; diff((1-z)^ell*F(1+ell+m,1+ell;2+ell+m;z)
+;; diff((1-z)^ell*F(1+ell+m,1+ell;2+ell+m;z),z,n)
 ;;    = poch(1,n)*poch(1+m,n)/poch(2+ell+m,n)*(1-z)^(ell-n)*F(1+ell+m,1+ell;2+ell+m+n;z)
 ;;
 ;; The derivation above assumes that ell, m, and n are all
@@ -1020,29 +1044,35 @@
 ;; integers and a <= b <= c, can be written in terms of F(1,1;2;z).
 ;; The result also holds for b <= a <= c, of course.
 ;;
+;; Also note that the last two differentiations can be combined into
+;; one differention since the result of the first is in exactly the
+;; form required for the second.  The code below does one
+;; differentiation.
+;;
 ;; So if a = 1+ell, b = 1+ell+m, and c = 2+ell+m+n, we have ell = a-1,
 ;; m = b - a, and n = c - ell - m - 2 = c - b - 1.
 ;;
-;; NOTE: The code below doesn't check that n, m, l are non-negative.
-;; Should it?  The caller (simpr2f1) doesn't either.  Should it check
-;; too?
-(defun derivint (n m l)
-  (subst var 'psey
-	 (mul (power -1 m)
-	      (factorial (+ n m l 1))
-	      (inv (factorial n))
-	      (inv (factorial l))
-	      (inv (factorial (+ n m)))
-	      (inv (factorial (+ m l)))
-	      ($diff (mul (power (sub 1 'psey) (+ m l))
-			  ($diff (mul (power  'psey  -1)
-				      -1
-				      (mlog (sub 1 'psey)))
-				 'psey
-				 l))
-		     'psey
-		     (+ n m)))))
-
+(defun derivint (a b c)
+  (if (> a b)
+      (derivint b a c)
+      (let ((l (- a 1))
+	    (m (- b a))
+	    (n (- c b 1)))
+	(subst var 'psey
+	       (mul (power -1 m)
+		    (factorial (+ n m l 1))
+		    (inv (factorial n))
+		    (inv (factorial l))
+		    (inv (factorial (+ n m)))
+		    (inv (factorial (+ m l)))
+		    ($diff (mul (power (sub 1 'psey) (+ m l))
+				($diff (mul (power  'psey  -1)
+					    -1
+					    (mlog (sub 1 'psey)))
+				       'psey
+				       l))
+			   'psey
+			   (+ n m)))))))
 
 
 #+nil
