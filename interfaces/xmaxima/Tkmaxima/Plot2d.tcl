@@ -1,16 +1,14 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: plot2d.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### plot2d.tcl ######
+###### Plot2d.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
 
+global p
 set p .plot
-catch { destroy $p }
+if {[winfo exists $p]} {catch { destroy $p }}
 
+global plot2dOptions
 set plot2dOptions { 
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
@@ -148,7 +146,7 @@ between printing and saving see the Print Options under Config.
 } $Parser(help)]]
 }
 
-
+global plot
 set   plot(numberPlots) 4
 proc mkExtraInfo { name args } {
     # global plot 	
@@ -744,17 +742,6 @@ proc drawPointsForPrint { c } {
 
 }
 
-array set ws_openMath { bitmap,disc4 {#define disc4_width 4
-#define disc4_height 4
-static unsigned char disc4_bits[] = {
-    0x06, 0x0f, 0x0f, 0x06};}
-    bitmap,disc6 {#define disc_width 6
-#define disc_height 6
-static unsigned char disc_bits[] = {
-    0xde, 0xff, 0xff, 0xff, 0xff, 0xde};}
-}
- 
-
 proc getPoint { size color } {
     global ws_openMath
     set im ""
@@ -774,9 +761,11 @@ proc getPoint { size color } {
 
 proc sliderCommandPlot2d { win var val } {
     linkLocal $win recompute
+
     updateParameters $win $var $val
     set com "recomputePlot2d $win"
-# allow for fast move of slider...    
+    # allow for fast move of slider...    
+    #mike FIXME: this is a wrong use of after cancel
     after cancel $com
     after 10 $com
 }

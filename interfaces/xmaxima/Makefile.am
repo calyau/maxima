@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.18 2002-09-06 01:51:18 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.19 2002-09-06 02:21:10 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -16,6 +16,7 @@ TKSOURCES = \
 	Tkmaxima/Macros.tcl \
 	Tkmaxima/Proxy.tcl \
 	Tkmaxima/Send-some.tcl \
+	Tkmaxima/Plotting.tcl \
 	Tkmaxima/Private.tcl \
 	Tkmaxima/Getopt.tcl \
 	Tkmaxima/Parse.tcl \
@@ -23,6 +24,13 @@ TKSOURCES = \
 	Tkmaxima/Printops.tcl \
 	Tkmaxima/Push.tcl \
 	Tkmaxima/Plotconf.tcl \
+	Tkmaxima/Adams.tcl \
+	Tkmaxima/Rk.tcl \
+	Tkmaxima/Plotdf.tcl \
+	Tkmaxima/Plot2d.tcl \
+	Tkmaxima/Matrix.tcl \
+	Tkmaxima/Plot3d.tcl \
+	Tkmaxima/NPlot3d.tcl \
 	xmaxima.tcl 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl

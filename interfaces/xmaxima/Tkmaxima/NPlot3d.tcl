@@ -1,8 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: nplot3d.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### nplot3d.tcl ######
+###### NPlot3d.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
@@ -353,3 +349,4 @@ proc vangle { x1 x2 } {
 }
 
 ## endsource nplot3d.tcl
+

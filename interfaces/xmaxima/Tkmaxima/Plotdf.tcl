@@ -1,12 +1,9 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: plotdf.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### plotdf.tcl ######
+###### Plotdf.tcl ######
 #######################################################################
 #######  Copyright William F. Schelter.  All rights reserved.  ########
 #######################################################################
 
+global plotdfOptions
 set plotdfOptions {
     {dxdt "x-y^2+sin(x)*.3" {specifies dx/dt = dxdt.  eg -dxdt "x+y+sin(x)^2"} }
     {dydt "x+y" {specifies dy/dt = dydt.  eg -dydt "x-y^2+exp(x)"} }
@@ -140,9 +137,6 @@ proc setForIntegrate { win} {
     $c delete printrectangle
     bind $c  <1> "doIntegrateScreen $win %x %y "
 }
-
-source rk.tcl
-source adams.tcl
 
 # sample procedures
 # proc xff { t x y } { return [expr {$x + $y }] }
@@ -519,7 +513,8 @@ proc sliderCommandDf { win var val } {
     linkLocal $win recompute
     updateParameters $win $var $val
     set com "recomputeDF $win"
-# allow for fast move of slider...    
+    # allow for fast move of slider...
+    #mike FIXME: this is a wrong use of after cancel
     after cancel $com
     after 50 $com
 }

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.4 2002-09-06 01:10:13 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.5 2002-09-06 02:21:11 mikeclarkson Exp $
 #
 
 global ws_openMath
@@ -19,3 +19,20 @@ set ws_openMath(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [i
 #mike I think this should be eliminated
 global MathServer
 set MathServer { genie1.ma.utexas.edu 4443 }
+
+# from Plotconf.tcl
+global ftpInfo
+set ftpInfo(host) genie1.ma.utexas.edu
+set ftpInfo(viahost) genie1.ma.utexas.edu
+
+# from Plot2d.tcl
+array set ws_openMath { bitmap,disc4 {#define disc4_width 4
+#define disc4_height 4
+static unsigned char disc4_bits[] = {
+    0x06, 0x0f, 0x0f, 0x06};}
+    bitmap,disc6 {#define disc_width 6
+#define disc_height 6
+static unsigned char disc_bits[] = {
+    0xde, 0xff, 0xff, 0xff, 0xff, 0xde};}
+}
+
