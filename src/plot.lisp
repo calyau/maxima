@@ -449,9 +449,19 @@ setrgbcolor} def
 	       ;(na (gensym "TMPF"))
 		)
 	   (coerce `(lambda ,(cdr vars)
-		      (declare (special ,@(cdr vars)))
-		      (let (($ratprint nil))
-			($float ($realpart (meval* ',expr)))))
+		      (declare (special ,@(cdr vars) errorsw))
+		      (let (($ratprint nil)
+			    (errorsw t))
+			;; Catch any errors from evaluating the
+			;; function.  We're assuming that if an error
+			;; is caught, the result is not a number.  We
+			;; also assume that for such errors, it's
+			;; because the function is not defined there,
+			;; not because of some other maxima error.
+			(let ((result
+			       (catch 'errorsw
+				 ($float ($realpart (meval* ',expr))))))
+			  result)))
 		   'function)))))
 
 (defmacro zval (points verts i) `(aref ,points (f+ 2 (f* 3 (aref ,verts ,i)))))
@@ -687,10 +697,15 @@ setrgbcolor} def
 ;; are not monotonic.
 (defun slow-oscillation-p (f0 f1 f2 f3 f4)
   (flet ((sign-change (x y z)
-	   (if (or (and (> y x) (> y z))
-		   (and (< y x) (< y z)))
-	       1
-	       0)))
+	   (cond ((not (and (numberp x) (numberp y) (numberp z)))
+		  ;; Something is not a number.  Assume the
+		  ;; oscillation is not slow.
+		  2)
+		 ((or (and (> y x) (> y z))
+		      (and (< y x) (< y z)))
+		  1)
+		 (t
+		  0))))
     (<= (+ (sign-change f0 f1 f2)
 	   (sign-change f1 f2 f3)
 	   (sign-change f2 f3 f4))
@@ -702,24 +717,28 @@ setrgbcolor} def
 ;;
 ;; 
 (defun smooth-enough-p (f-a f-a1 f-b f-b1 f-c eps)
-  (let ((quad (/ (+ f-a
-		    (* -5 f-a1)
-		    (* 9 f-b)
-		    (* -7 f-b1)
-		    (* 2 f-c))
-		 24))
-	(quad-b (/ (+ (* 5 f-b)
-		      (* 8 f-b1)
-		      (- f-c))
-		   12)))
-    ;; According to the Yacas source code, quad is the Simpson
-    ;; quadrature for the (fb,fb1) subinterval (using points b,b1,c),
-    ;; subtracted from the 4-point Newton-Cotes quadrature for the
-    ;; (fb,fb1) subinterval (using points a, a1, b, b1.
-    ;;
-    ;; quad-b is the Simpson quadrature for the (fb,f1) subinterval.
-    (<= (abs quad)
-	(* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c))))))
+  (cond ((every #'numberp (list f-a f-a1 f-b f-b1 f-c))
+	 (let ((quad (/ (+ f-a
+			   (* -5 f-a1)
+			   (* 9 f-b)
+			   (* -7 f-b1)
+			   (* 2 f-c))
+			24))
+	       (quad-b (/ (+ (* 5 f-b)
+			     (* 8 f-b1)
+			     (- f-c))
+			  12)))
+	   ;; According to the Yacas source code, quad is the Simpson
+	   ;; quadrature for the (fb,fb1) subinterval (using points b,b1,c),
+	   ;; subtracted from the 4-point Newton-Cotes quadrature for the
+	   ;; (fb,fb1) subinterval (using points a, a1, b, b1.
+	   ;;
+	   ;; quad-b is the Simpson quadrature for the (fb,f1) subinterval.
+	   (<= (abs quad)
+	       (* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c))))))
+	(t
+	 ;; Something is not a number, so assume it's not smooth enough.
+	 nil)))
 		    
     
 (defun adaptive-plot (f a b c f-a f-b f-c depth eps)
@@ -748,36 +767,66 @@ setrgbcolor} def
 (defun draw2d (f range)
   (if (and ($listp f) (equal '$parametric (cadr f)))
       (return-from draw2d (draw2d-parametric f range)))
-  (let* ((nticks (nth 2($get_plot_option '$nticks)))
+  (let* ((nticks (nth 2 ($get_plot_option '$nticks)))
 	 (yrange ($get_plot_option '|$y|))
-	 ($numer t)
-	 )
+	 ($numer t))
 
     (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
 
     (let* ((x (coerce-float (nth 2 range)))
 	   (xend (coerce-float (nth 3 range)))
-	   (xmid (* 0.5d0 (+ x xend)))
+	   (x-step (/ (- xend x) (coerce-float nticks) 2))
 	   (y (funcall f x))
 	   (yend (funcall f xend))
-	   (ymid (funcall f xmid))
 	   (ymin (coerce-float (nth 2 yrange)))
 	   (ymax (coerce-float (nth 3 yrange)))
 	   ;; What is a good EPS value for adaptive plotting?
 	   (eps 1d-5)
+	   x-samples y-samples result
 	   )
       (declare (double-float x1 y1 x y dy eps2 eps ymin ymax ))
-      (let ((result (adaptive-plot f x (* 0.5d0 (+ x xend)) xend
-				   y ymid yend 10 1d-5)))
-	(format t "Points = ~D~%" (length result))
-	;; Fix up out-of-range values
-	(do ((x result (cddr x))
-	     (y (cdr result) (cddr y)))
-	    ((null y))
-	  (unless (<= ymin (car y) ymax)
-	    (setf (car x) 'moveto)
-	    (setf (car y) 'moveto)))
-	(cons '(mlist) result)))))
+      ;; Divide the region into NTICKS regions.  Each region has a
+      ;; start, mid and endpoint. Then adaptively plot over each of
+      ;; these regions.  So it's probably a good idea not to make
+      ;; NTICKS too big.  Since adaptive plotting splits the sections
+      ;; in half, it's also probably not a good idea to have NTICKS be
+      ;; a power of two.
+      (dotimes (k (1+ (* 2 nticks)))
+	(push x x-samples)
+	(push (funcall f x) y-samples)
+	(incf x x-step))
+      (setf x-samples (nreverse x-samples))
+      (setf y-samples (nreverse y-samples))
+
+      ;; For each region, adaptively plot it.
+      (do ((x-start x-samples (cddr x-start))
+	   (x-mid (cdr x-samples) (cddr x-mid))
+	   (x-end (cddr x-samples) (cddr x-end))
+	   (y-start y-samples (cddr y-start))
+	   (y-mid (cdr y-samples) (cddr y-mid))
+	   (y-end (cddr y-samples) (cddr y-end)))
+	  ((null x-end))
+	;; The region is x-start to x-end, with mid-point x-mid.  The
+	;; cddr is to remove the one extra sample (x and y value) that
+	;; adaptive plot returns.
+	(setf result
+	      (append result
+		      (cddr
+		       (adaptive-plot f (car x-start) (car x-mid) (car x-end)
+				      (car y-start) (car y-mid) (car y-end)
+				      10 1d-5)))))
+	  
+
+      (format t "Points = ~D~%" (length result))
+      ;; Fix up out-of-range values
+      (do ((x result (cddr x))
+	   (y (cdr result) (cddr y)))
+	  ((null y))
+	(unless (and (numberp (car y))
+		     (<= ymin (car y) ymax))
+	  (setf (car x) 'moveto)
+	  (setf (car y) 'moveto)))
+      (cons '(mlist) result))))
 
 (defun get-range (lis)
   (let ((ymin most-positive-double-float)
@@ -795,13 +844,12 @@ setrgbcolor} def
 (defvar $window_size '((mlist)
 		       #.(* 8.5 72) #. (* 11 72) ))
 
-(defun $getrange(x &optional xrange &aux yrange)
+(defun $getrange (x &optional xrange &aux yrange)
   (setq yrange  (cdr (get-range (cddr x))))
   (or xrange (setq xrange (cdr (get-range (cdr x)))))
   (setup-for-ps-range xrange yrange nil))
  
-(defun $paramplot (f g range &optional (delta .1 supplied) &aux pts ($numer t)
-		     )
+(defun $paramplot (f g range &optional (delta .1 supplied) &aux pts ($numer t))
   (setq f (coerce-float-fun f))
   (setq g (coerce-float-fun g))
   (setq range (meval* range))
@@ -837,9 +885,9 @@ setrgbcolor} def
 
 (defvar $openmath_plot_command "omplotdata")
 
-(defun $plot2d(fun &optional range &rest options &aux ($numer t) $display2d
-                          (i 0) plot-format file plot-name
-			  ($plot_options $plot_options))
+(defun $plot2d (fun &optional range &rest options &aux ($numer t) $display2d
+		    (i 0) plot-format file plot-name
+		    ($plot_options $plot_options))
   (dolist (v options) ($set_plot_option v))
   (or ($listp fun ) (setf fun `((mlist) ,fun)))
   (cond ((eq (cadr fun) '$parametric)
@@ -854,9 +902,10 @@ setrgbcolor} def
   (with-open-file (st  file :direction :output)  
     (dolist (v (cdr fun))
 	    (incf i)
-	    (setq plot-name 		       (let ((string (coerce (mstring v) 'string)))
-			 (cond ((< (length string) 9) string)
-			       (t (format nil "Fun~a" i)))))
+	    (setq plot-name
+		  (let ((string (coerce (mstring v) 'string)))
+		    (cond ((< (length string) 9) string)
+			  (t (format nil "Fun~a" i)))))
 	(case plot-format
 	      ($xgraph
 	       (format st "~%~% \"~a\"~%" plot-name))
@@ -866,9 +915,12 @@ setrgbcolor} def
       (sloop for (v w) on (cdr (draw2d v range )) by 'cddr
 	 do
 	 (cond ((eq v 'moveto)
-		(unless (equal plot-format '$gnuplot)
-		    (format st "move ")))
-	       (t  (format st "~,3f ~,3f ~%" v w))))))
+		(cond ((equal plot-format '$gnuplot)
+		       ;; A blank line means a discontinuity
+		       (format st "~%"))
+		      (t
+		       (format st "move "))))
+	       (t  (format st "~g ~g ~%" v w))))))
   (case plot-format
 	($gnuplot 
 	 ($system (concatenate 'string *maxima-plotdir* "/" $gnuplot_command) " -plot2d maxout.gnuplot -title '" plot-name "'"))
@@ -883,10 +935,9 @@ setrgbcolor} def
     
 
 
-(defun $plot2dOpen(fun range &rest options &aux ($numer t)  $display2d
+(defun $plot2dOpen (fun range &rest options &aux ($numer t)  $display2d
                           (i 0)
-			  ($plot_options $plot_options)
-	)
+			  ($plot_options $plot_options))
   (declare (special linel))
   (dolist (v options) ($set_plot_option v))
   (setq range (check-range range))
@@ -959,13 +1010,13 @@ setrgbcolor} def
     (cond (($listp (nth 1 lis))
 	   (sloop for v in lis
 		  do
-		  (format *standard-output* "~,10f " (nth i v)))
+		  (format *standard-output* "~,10g " (nth i v)))
 	   )
 	  (t
 	   (setq lis (nthcdr i lis))
 	   (sloop  with v = lis  while v
 		  do
-		  (format *standard-output* "~,10f " (car v))
+		  (format *standard-output* "~,10g " (car v))
 		  (setq v (nthcdr skip v))
 		  )
 	   ))
@@ -992,7 +1043,7 @@ setrgbcolor} def
 		when (eql 0 (mod n 5))
 		do (terpri st)
 		do
-		(format st "~,10f " v))
+		(format st "~,10g " v))
 	 (format st  " }~%"))
 	(t (tcl-output-list st (car lis))
 	   (tcl-output-list st (cdr lis)))))
@@ -1066,7 +1117,7 @@ setrgbcolor} def
 	   (($listp (car v))
 	    (setq w (cdar v))
 	    (setq v (cdr v))))
-	  (format st "~,3f ~,3f ~%" (car w) (second w)))))))
+	  (format st "~g ~g ~%" (car w) (second w)))))))
   ($system "xgraph -t 'Maxima Plot' < xgraph-out &"))
 
 
@@ -1104,7 +1155,7 @@ setrgbcolor} def
 	; (if (numberp v) (setq v (* 70 v)))
 	 (cond ((consp v)
 		(sloop for w in (cdr v) do (p w)))
-	       ((floatp v) (format $pstream "~,4f" v))
+	       ((floatp v) (format $pstream "~,4g" v))
 	       (t(princ v $pstream)))
 	  (princ " " $pstream))
   (terpri $pstream))
