@@ -63,7 +63,7 @@
 ;; (c) copyright 1987, Richard J. Fateman
 ;; Small changes for interfacing with TeXmacs: Andrey Grozin, 2001
 ;; Yet more small changes for interfacing with imaxima: Jesper Harder 2001
-
+;; Even more small changes for emaxima: Jay Belanger 2003
 
 
 (defun tex (x l r lop rop)
