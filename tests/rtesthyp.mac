@@ -428,6 +428,12 @@ hgfred([2,ib],[3],z);
  * Test of step4, which handles F(a,b;c;z) when a+b is an integer and
  * c + 1/2 is an integer.
  *
+ */
+assume(zn < 0);
+[zn < 0]$
+
+/*
+ * Tests f81
  * First test.  F(a,-a;3/2;z)
  * A&S 15.2.6 tells us how to compute this:
  *
@@ -446,10 +452,6 @@ hgfred([2,ib],[3],z);
  * A&S 15.1.11 and 15.1.17 tells us what F(a,-a;1/2;z) is.
  *
  */
-assume(zn < 0);
-[zn < 0]$
-
-/* Tests f81 */
 hgfred([-a,a],[3/2],zn)-(1-zn)^(3/2)*(1/2)/(1/2-a)/(1/2+a)*diff((1-zn)^(-1/2)*hgfred([-a,a],[1/2],zn),zn,1);
 0$
 
@@ -532,6 +534,46 @@ hgfred([a,-a],[-1/2],zn) - zn^(3/2)/(-1/2)*diff(zn^(-1/2)*hgfred([a,-a],[1/2],zn
  * 
  */
 hgfred([a-1,-a],[-1/2],zn) - zn^(3/2)*(1-zn)^(a+1/2)/(-1/2)*diff(zn^(-1/2)*(1-zn)^(-a+1/2)*hgfred([a,-a],[1/2],zn),zn,1);
+0$
+
+/*
+ * Tests f86
+ * F(a-2,-a;-1/2;z)
+ *
+ * A&S 15.2.5
+ * diff(z^(c-a+n-1)*(1-z)^(a+b-c)*F(a,b;c;z),z,n)
+ *     = poch(c-a,n)*z^(c-a-1)*(1-z)^(a+b-c-n)*F(a-n,b;c;z)
+ *
+ * A&S 15.2.8:
+ * diff(z^(c-1)*(1-z)^(b-c+n)*F(a,b;c;z),z,n)
+ *     = poch(c-n,n)*z^(c-n-1)*(1-z)^(b-c)*F(a-n,b;c-n;z)
+ *
+ * For our problem:
+ *
+ * diff(z^(-a+1-1/2)*(1-z)^(-1/2)*F(a,-a;1/2;z),z,1)
+ *     = poch(1/2-a,1)*z^(-a-1/2)*(1-z)^(-1/2-1)*F(a-1,-a;1/2;z)
+ *     = (1/2-a)*z^(-a-1/2)*(1-z)^(-3/2)*F(a-1,-a;-1/2;z)
+ *
+ * diff(z^(-1/2)*(1-z)^(-a-1/2+1)*F(a-1,-a;1/2;z),z,1)
+ *     = poch(1/2-1,1)*z^(-1-1/2)*(1-z)^(-a-1/2)*F(a-2,-a;-1/2;z)
+ *     = -1/2*z^(-3/2)*(1-z)^(-a-1/2)*F(a-2,-a;-1/2;z)
+ *
+ * Let
+ * G(z) = z^(-a-1/2)*(1-z)^(-3/2)*F(a-1,-a;1/2;z)
+ *      = (1/2-a)^(-1)*diff(z^(-a+1/2)*(1-z)^(-1/2)*F(a,-a;1/2;z),z,1)
+ *
+ * F(a-2,-a;-1/2;z)
+ *      = z^(3/2)*(1-z)^(a+1/2)/(-1/2)
+ *         *diff(z^(-1/2)*(1-z)^(-a+1/2)*F(a-1,-a;1/2;z),z,1)
+ *      = z^(3/2)*(1-z)^(a+1/2)/(-1/2)
+ *         *diff(z^a*(1-z)^(2-a)*G(z),z,n)
+ * 
+ */
+hgfred([a-2,-a],[-1/2],zn) - 
+   zn^(3/2)*(1-zn)^(a+1/2)/(-1/2)*(1/2-a)^(-1)*
+   diff(zn^a*(1-zn)^(2-a)
+        *diff(zn^(-a+1/2)*(1-zn)^(-1/2)*hgfred([a,-a],[1/2],zn),zn,1)
+        ,zn,1);
 0$
 
 /*
