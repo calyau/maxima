@@ -40,10 +40,10 @@
 				 '((RAT) -1. 2.)
 				 (LIST '(MTIMES) -1. S1)))
 	     (SETQ PDIV3
-		   (RDIS (RATPLUS (RATTIMES A1 '(1. . 3.) T)
-				  (RATTIMES (RATEXPT A2 2.)
-					    '(-1. . 9.)
-					    T))))
+		   (MEVAL* (RDIS (RATPLUS (RATTIMES A1 '(1. . 3.) T)
+					  (RATTIMES (RATEXPT A2 2.)
+						    '(-1. . 9.)
+						    T)))))
 	     (AND (NOT (EQUAL PDIV3 0.)) (GO HARDER))
 	     (SETQ 
 	      Y1
