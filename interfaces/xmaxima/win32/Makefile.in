@@ -1,0 +1,27 @@
+# Work in progress - xmaxima support files for windows  
+#
+# Following files are to be installed in $(prefix)/bin
+#
+# - xmaxima.exe
+# - winkill.exe
+# - tclwinkill.dll
+# - tclpip83.dll (from freewrap)
+
+FREEWRAP = freewrap
+
+all: xmaxima.exe winkill.exe tclwinkill.dll
+
+../xmaxima: 
+	(cd ..; $(MAKE) xmaxima)
+
+xmaxima.tcl: ../xmaxima
+	cp ../xmaxima xmaxima.tcl
+
+xmaxima.exe: xmaxima.tcl
+	$(FREEWRAP) xmaxima.tcl -e
+
+winkill.exe: winkill.c
+	gcc -Wall -o winkill.exe winkill.c 
+
+tclwinkill.dll: tclwinkill.c
+	gcc -Wall -shared tclwinkill.c -ltclstub83 -o tclwinkill.dll
