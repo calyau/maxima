@@ -105,6 +105,7 @@
 	(abs x) 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0))
 
 
+#+nil
 (eval-when (compile eval load)
   ;; These are some macros and functions stolen from f2cl that we
   ;; need.
@@ -171,6 +172,7 @@
 
 ;; This is the Bessel function from TOMS 715 translated from Fortran
 ;; to Lisp via f2cl.
+#+nil
 (let ((zero 0.0d0)
       (one 1.0d0)
       (three 3.0d0)
@@ -471,6 +473,7 @@
      end_label
       (return (values arg result jint)))))
 
+#+nil
 (defun besj0 (x)
   (declare (type double-float x))
   (prog ((jint 0) (besj0 0.0d0) (result 0.0d0))
@@ -507,7 +510,7 @@
 ;; We only support computing this for real z.
 ;;
 (defun j[0]-bessel (x) 
-   (besj0 (float x 1d0)))
+   (slatec:dbesj0 (float x 1d0)))
 
 (defun $j0 ($x)
   (cond ((numberp $x) (j[0]-bessel (float $x)))
@@ -559,6 +562,7 @@
 	(abs x) 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0))
 
 ;; TOMS 715 routine translated from Fortran via f2cl.
+#+nil
 (let ((eight 8.0d0)
       (four 4.0d0)
       (half 0.5d0)
@@ -839,6 +843,7 @@
      end_label
       (return (values arg result jint)))))
 
+#+nil
 (defun besj1 (x)
   (declare (type double-float x))
   (prog ((jint 0) (besj1 0.0d0) (result 0.0d0))
@@ -872,12 +877,13 @@
 ;;      k = 0
 
 (defun j[1]-bessel (x) 
-   (besj1 (float x 1d0)))
+   (slatec:dbesj1 (float x 1d0)))
 
 (defun $j1 ($x)
   (cond ((numberp $x) (j[1]-bessel (float $x)))
 	(t (list '($j1 simp) $x))))
 
+#+nil
 (defun j[n]-bessel (x n) 
        (declare (fixnum n) (flonum x)) 
        (prog (a0 a1 ak b0 b1 bk ck den fm fi gn ns qk rj0 rjn m) 
@@ -941,6 +947,7 @@
 		      (setf (arraycall 'flonum (nsymbol-array 'j-bessel-array) i) (-$ (arraycall 'flonum (nsymbol-array 'j-bessel-array) i)))))
 	     (return (arraycall 'flonum (nsymbol-array 'j-bessel-array) n)))) 
 
+#+nil
 (defun $jn ($x $n)
   (cond ((and (numberp $x) (integerp $n))
 	 (j[n]-bessel (float $x) $n)
@@ -950,6 +957,27 @@
 	 (arraycall 'flonum (nsymbol-array '$jarray) (abs $n)))
 	(t (list '($jn simp) $x $n))))
 
+(defun $jn ($x $n)
+  (cond ((and (numberp $x) (numberp $n) (>= $n 0))
+	 (multiple-value-bind (n alpha)
+	     (floor (float $n))
+	   (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+	     (slatec:dbesj (float $x) alpha (1+ n) jvals 0)
+	     (narray $jarray $float n)
+	     (fillarray (nsymbol-array '$jarray) jvals)
+	     (aref jvals n))))
+	(t (list '($jn simp) $x $n))))
+
+(defun $bessel_j ($x $n)
+  (cond ((and (numberp $x) (numberp $n) (>= $n 0))
+	 (multiple-value-bind (n alpha)
+	     (floor (float $n))
+	   (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+	     (slatec:dbesj (float $x) alpha (1+ n) jvals 0)
+	     (narray $jarray $float n)
+	     (fillarray (nsymbol-array '$jarray) jvals)
+	     (aref jvals n))))
+	(t (list '($bessel_j simp) $x $n))))
 
 
 #+nil
@@ -979,6 +1007,7 @@
 	(abs x) 0.0 0.0))
 
 ;; TOMS 715 routine translated from Fortran via f2cl.
+#+nil
 (let ((one 1.0d0)
       (one5 15.0d0)
       (exp40 2.3538526683702d+17)
@@ -1138,6 +1167,7 @@
      end_label
       (return (values arg result jint)))))
 
+#+nil
 (defun besi0 (x)
   (declare (type double-float x))
   (prog ((jint 0) (besi0 0.0d0) (result 0.0d0))
@@ -1174,7 +1204,7 @@
 ;;        k = 0
 
 (defun i[0]-bessel (x)
-   (besi0 (float x 1d0)))
+   (slatec:dbesi0 (float x 1d0)))
 
 (defun $i0 ($x)
   (cond ((numberp $x) (i[0]-bessel (float $x)))
@@ -1220,6 +1250,7 @@
 	(abs x) 0.0 0.0 0.0))
 
 ;; TOMS 715 routine translated from Fortran via f2cl
+#+nil
 (let ((one 1.0d0)
       (one5 15.0d0)
       (exp40 2.3538526683702d+17)
@@ -1373,6 +1404,7 @@
      end_label
       (return (values arg result jint)))))
 
+#+nil
 (defun besi1 (x)
   (declare (type double-float x))
   (prog ((jint 0) (besi1 0.0d0) (result 0.0d0))
@@ -1409,13 +1441,14 @@
 ;;       k = 0
 
 (defun i[1]-bessel (x)
-  (besi1 (float x 1d0)))
+  (slatec:dbesi1 (float x 1d0)))
 
 (defun $i1 ($x)
   (cond ((numberp $x) (i[1]-bessel (float $x)))
 	(t (list '($i1 simp) $x))))
 
 
+#+nil
 (defun i[n]-bessel (x n) 
        (declare (fixnum n) (flonum x)) 
        (prog (a a0 a1 an b b0 b1 fi fn q0 q1) 
@@ -1456,6 +1489,7 @@
 		 (setf (arraycall 'flonum (nsymbol-array 'i-bessel-array) i) fi))
 	     (return (arraycall 'flonum (nsymbol-array 'i-bessel-array) n)))) 
 
+#+nil
 (defun $in ($x $n)
   (cond ((and (numberp $x) (integerp $n))
 	 (i[n]-bessel (float $x) $n)
@@ -1464,9 +1498,21 @@
 	 (fillarray (nsymbol-array '$iarray) (nsymbol-array 'i-bessel-array))
 	 (arraycall 'flonum (nsymbol-array '$iarray) (abs $n)))
 	(t (list '($in simp) $x $n))))
+
+(defun $in ($x $n)
+  (cond ((and (numberp $x) (numberp $n) (>= $n 0))
+	 (multiple-value-bind (n alpha)
+	     (floor (float $n))
+	   (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+	     (slatec:dbesi (float $x) alpha 1 (1+ n) jvals 0)
+	     (narray $iarray $float n)
+	     (fillarray (nsymbol-array '$iarray) jvals)
+	     (aref jvals n))))
+	(t (list '($in simp) $x $n))))
 
 ;; I think this is exp(-x)*I[0](x), based on some simple numerical
 ;; evaluations.
+#+nil
 (defun g[0]-bessel (x) 
        (declare (flonum x))
        ((lambda (xa y z) 
@@ -1493,11 +1539,13 @@
 	(abs x) 0.0 0.0)) 
 
 (defun $g0 ($x)
-  (cond ((numberp $x) (g[0]-bessel (float $x)))
+  (cond ((numberp $x)
+	 (slatec:dbsi0e (float $x)))
 	(t (list '($g0 simp) $x))))
 
 ;; I think this is exp(-x)*I[1](x), based on some numerical
 ;; calculations.
+#+nil
 (defun g[1]-bessel (x) 
        (declare (flonum x))
        ((lambda (xa y z ri1) 
@@ -1535,12 +1583,14 @@
 	(abs x) 0.0 0.0 0.0)) 
 
 (defun $g1 ($x)
-  (cond ((numberp $x) (g[1]-bessel (float $x)))
+  (cond ((numberp $x)
+	 (slatec:dbsi1e (float $x)))
 	(t (list '($g1 simp) $x))))
 
 
 (declare-top (fixnum i n) (flonum x q1 q0 fn fi b1 b0 b an a1 a0 a)) 
 
+#+nil
 (defun g[n]-bessel (x n) 
        (prog (a a0 a1 an b b0 b1 fi fn q0 q1) 
 	     (setq n (abs n))
@@ -1577,6 +1627,7 @@
 		 (setf (arraycall 'flonum (nsymbol-array 'g-bessel-array) i) fi))
 	     (return (arraycall 'flonum (nsymbol-array 'g-bessel-array) n)))) 
 
+#+nil
 (defun $gn ($x $n)
   (cond ((and (numberp $x) (integerp $n))
 	 (g[n]-bessel (float $x) $n)
@@ -1586,6 +1637,19 @@
 	 (arraycall 'flonum (nsymbol-array '$garray) (abs $n)))
 	(t (list '(gn simp) $x $n))))
 
+(defun $gn ($x $n)
+  (cond ((and (numberp $x) (integerp $n))
+	 (multiple-value-bind (n alpha)
+	     (floor (float $n))
+	   (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+	     (slatec:dbesi (float $x) alpha 2 (1+ n) jvals 0)
+	     (narray $iarray $float n)
+	     (fillarray (nsymbol-array '$iarray) jvals)
+	     (aref jvals n))))
+	(t (list '(gn simp) $x $n))))
+
+
+
 (declare-top(flonum rz cz a y $t t0 t1 d r1 rp sqrp rnpa r2 ta rn rl rnp rr cr rs cs rlam
 		 clam qlam s phi rsum csum)
 	 (fixnum n k1 k m mpo ln l ind)
@@ -1594,6 +1658,7 @@
 		 (notype $besselarray 1.))
 	 (*fexpr $array))
 
+#+nil
 (defun bessel (rz cz a) 
   (prog (n y $t t0 t1 k1 d r1 rp sqrp rnpa r2 m ta rn rl mpo ln rnp rr cr rs cs
 	 rlam clam qlam ind s phi rsum csum l) 
@@ -1716,6 +1781,7 @@ l25	(cond ((> r2 r1) (setq r1 r2)))
 		   (setf (arraycall 'flonum (nsymbol-array 'cj-bessel-array) k) (-$ (arraycall 'flonum (nsymbol-array 'cj-bessel-array) k))))))
 	(return (list '(mlist simp) (arraycall 'flonum (nsymbol-array 'rj-bessel-array) n) (arraycall 'flonum (nsymbol-array 'cj-bessel-array) n)))))
 
+#+nil
 (defun $bessel ($arg $order)
   ((lambda (a)
 	   (cond ((not (and (numberp $order)
@@ -1736,7 +1802,51 @@ l25	(cond ((> r2 r1) (setq r1 r2)))
 							       '$%i
 							       (arraycall 'flonum (nsymbol-array 'cj-bessel-array) k)))
 					       (arraycall 'flonum (nsymbol-array 'rj-bessel-array) k))))))))
-   0.0)) 
+   0.0))
+
+(defun $bessel ($arg $order)
+  (let ((a (float $order)))
+    (cond ((not (and (numberp $order)
+		     (not (< a 0.0))
+		     (numberp ($realpart $arg))
+		     (numberp ($imagpart $arg))))
+	   ;; Args aren't numeric.  Return unevaluated.
+	   (list '($bessel simp) $arg $order))
+	  ((zerop ($imagpart $arg))
+	   ;; We have numeric args and the first arg is purely real.
+	   ;; Call the real-valued Bessel function
+	   (multiple-value-bind (n alpha)
+	     (floor (float $order))
+	   (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+	     (slatec:dbesj (float $arg) alpha (1+ n) jvals 0)
+	     (narray $besselarray $float n)
+	     (fillarray (nsymbol-array '$besselarray) jvals)
+	     (aref jvals n))))
+	  (t
+	   ;; The first arg is complex.  Use the complex-valued Bessel
+	   ;; function
+	   (multiple-value-bind (n alpha)
+	       (floor (float $order))
+	     (let ((cyr (make-array (1+ n) :element-type 'double-float))
+		   (cyi (make-array (1+ n) :element-type 'double-float)))
+	       (zbesj (float ($realpart $arg))
+		      (float ($imagpart $arg))
+		      alpha
+		      1
+		      (1+ n)
+		      cyr
+		      cyi
+		      0
+		      0)
+	       (narray $besselarray $complete (1+ n))
+	       (dotimes (k (1+ n)
+			 (arraycall 'flonum (nsymbol-array '$besselarray) n))
+		 (setf (arraycall 'flonum (nsymbol-array '$besselarray) k)
+		       (simplify (list '(mplus)
+				       (simplify (list '(mtimes)
+						       '$%i
+						       (aref cyi k)))
+				       (aref cyr k)))))))))))
 
 (declare-top(flonum rz y rs cs third sin60 term sum fi cossum sinsum sign (airy flonum)))
 
@@ -1746,6 +1856,7 @@ l25	(cond ((> r2 r1) (setq r1 r2)))
 ;j:realpart(2/(3.*zz)*besselarray[0]-besselarray[1]),
 ;-1/3.*z*(j-realpart(bessel(zz,2./3.))));
 
+#+nil
 (defun airy (rz)
        ((lambda (y rs cs third sin60)
 		(setq y (sqrt (abs rz)) rz (*$ 2.0 third y rz))
@@ -1805,8 +1916,10 @@ l25	(cond ((> r2 r1) (setq r1 r2)))
 	0.0 0.0 0.0 (//$ 3.0) (sqrt 0.75)))
 
 (defun $airy ($arg)
-       (cond ((numberp $arg) (airy (float $arg)))
-	     (t (list '($airy simp) $arg))))
+  (cond ((numberp $arg)
+	 (slatec:dai (float $arg)))
+	(t
+	 (list '($airy simp) $arg))))
 
 (declare-top (flonum im re ys xs y x c t2 t1 s2 s1 s r2 r1 lamb h2 h)
 	 (fixnum np1 n nu capn)
@@ -1901,6 +2014,7 @@ l25	(cond ((> r2 r1) (setq r1 r2)))
 ;; tests show that this expint matches the function eone from TOMS
 ;; 715.  Unfortunately, the source for TOMS 715 doesn't actually
 ;; define what eone is.
+#+nil
 (defun expint (x)
        (cond ((< x 1.0)
 	      (-$ (*$ (+$ (*$ (+$ (*$ (+$ (*$ (+$ (*$ 1.07857e-3 x)
@@ -1914,6 +2028,13 @@ l25	(cond ((> r2 r1) (setq r1 r2)))
 			 (*$ (//$ (exp (-$ x)) x) (//$ y w)))
 		 0.0  0.0))))
 
+#+nil
 (defun $expint ($x)
        (cond ((numberp $x) (expint (float $x)))
 	     (t (list '($expint simp) $x))))
+
+(defun $expint (x)
+  (cond ((numberp x)
+	 (values (slatec:de1 (float x))))
+	(t
+	 (list '($expint simp) x))))
