@@ -1,3 +1,41 @@
+	
+2001-03-30  Raymond Toy <toy@rtp.ericsson.se>
+	
+	compile-cmulisp.lisp:
+	o Add some text to explain how to build it.
+	o Add support for maxima's describe.
+	o Changed the name of the core file to maxima.core.
+	
+	macdes.lisp:
+	o Add $describe for CMUCL.
+	
+	init_max1.lisp:
+	o Changed SYSTEM:: to SI::
+	o Set up file extensions appropriately for searching.
+	o Update user::run to load up the foreign code so describe works.
+	
+	mload.lisp:
+	o In $file_search, symbols are passed to probe-file and friends.
+	  Convert to strings.
+	o In new-file-search, pass a string instead of NIL to
+	    new-file-search1.
+	    
+	mactex.lisp:
+	o Make tex(1.2e20) work on CMUCL, and change the output to 1.2 \times
+	      10^{20} instead of \cdot.
+	      
+       clmacs.lisp:
+        o most-positive-fixnum is too large a count for CMUCL in delq and
+	 zl-remove.
+
+	
+2001-03-30  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* fix to nparse.lisp for parsing infix and prefix user
+	defined operators
+	* fix in sin.lisp to fix a bug involving definite integrals
+	eg: integrate((sec(t))^2,t,-%pi/4,0);  was incorrect.
+
 Raymond Toy <toy@rtp.ericsson.se>
 
 	SYS-PROCLAIM.lisp:

@@ -244,6 +244,7 @@
 (defun delq (x lis &optional (count most-positive-fixnum))
   (declare (fixnum count))
   #+lucid (setq count 16777214) ;;yukkk.
+  #+cmu (setq count (min count (1- most-positive-fixnum)))
   (delete x lis :test 'eq :count count))
 
 (setf (symbol-function 'lsh) #'ash)
@@ -360,6 +361,7 @@
 	 
 (defun zl-remove (item list &optional (n most-positive-fixnum))
   #+lucid (setq n 16777214) ;;yukkk.
+  #+cmu (setq n (min n (1- most-positive-fixnum))) ; yukkk
   (remove item list :count n :test 'equal))
 
 (defvar *acursor* nil)

@@ -852,11 +852,11 @@
 ;; the path.   A template may use multiple {a,b,c} constructions to indicate
 ;; multiple possiblities.  eg foo.l{i,}sp or foo.{dem,dm1,dm2}
 (defun $file_search (name &optional paths)
-  (if (probe-file name) (return-from $file_search name))
+  (if (probe-file (string name)) (return-from $file_search name))
   (or paths (setq paths ($append $file_search_lisp  $file_search_maxima
 				 $file_search_demo)))
   (atomchk paths '$file_search t)
-  (new-file-search name (cdr paths)))
+  (new-file-search (string name) (cdr paths)))
 
 (defun new-file-search (name template &aux lis temp)
   (cond ((probe-file name))
@@ -869,7 +869,7 @@
 				     collect w
 				     else
 				     collect (split-string w ",")))
-	 (new-file-search1 nil lis))
+	 (new-file-search1 "" lis))
 	(t (sloop for v in template
 		  when (setq temp (new-file-search name v))
 		  do (return temp)))))

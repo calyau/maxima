@@ -130,3 +130,19 @@ tex, or viewed using info or gnu emacs.   Versions of maxima built
 on GCL have a builtin info retrieval mechanism" ))
 )
 
+#+cmu
+(progn
+
+(defun $describe(x &aux (si::*info-paths* si::*info-paths*))
+  (setq x ($sconcat x))
+  (setq  SYSTEM::*INFO-PATHS*
+	 (cons  (concatenate 'string *maxima-directory*
+				     "info/")
+		SYSTEM::*INFO-PATHS*))
+  (if (fboundp 'si::info)
+      (si::info x '("maxima.info"))
+    "The documentation is now in INFO format and can be printed using
+tex, or viewed using info or gnu emacs.   Versions of maxima built
+on GCL or CMUCL have a builtin info retrieval mechanism" ))
+)
+

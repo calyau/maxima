@@ -62,15 +62,21 @@
                                    (si::argv 0)))
 			     "../"))))))
 
-    (or (boundp 'SYSTEM::*INFO-PATHS*) (setq SYSTEM::*INFO-PATHS* nil) )
-    (push  (maxima-path "info" "") SYSTEM::*INFO-PATHS*)
-    (setq $file_search_lisp
-        (list '(mlist)
-              "./###.{o,lsp,lisp}"
-             (maxima-path "{src,share1,sym}" "###.o")
-	     (maxima-path "{src,share1,sym}" "###.o")
-	     (maxima-path "{src,share1}" "###.lisp")
-	     (maxima-path "{sym}" "###.lsp")))
+    (or (boundp 'SI::*INFO-PATHS*) (setq SI::*INFO-PATHS* nil) )
+    (push  (maxima-path "info" "") SI::*INFO-PATHS*)
+    (let ((ext #+gcl "o"
+	       #+cmu (c::backend-fasl-file-type c::*target-backend*)
+	       #-(or gcl cmu)
+	       ""))
+      (setq $file_search_lisp
+	    (list '(mlist)
+		  (format nil "./###.{~A,lsp,lisp}" ext)
+		  (maxima-path "{src,share1,sym}"
+			       (concatenate 'string "###." ext))
+		  (maxima-path "{src,share1,sym}"
+			       (concatenate 'string "###." ext))
+		  (maxima-path "{src,share1}" "###.lisp")
+		  (maxima-path "{sym}" "###.lsp"))))
     (setq $file_search_maxima
        (list '(mlist)
            "./###.{mc,mac}"
@@ -89,12 +95,28 @@
 	  (maxima-path "sym" ""))
 
     ))
+
+#+gcl
 (defun user::run ()
   (in-package "MAXIMA")
   (catch 'to-lisp
     (set-pathnames)
     (macsyma-top-level)
   ))
+
+#+cmu
+(defun user::run ()
+  ;; Turn off gc messages
+  (setf ext:*gc-verbose* nil)
+  ;; Reload the documentation stuff
+  (ext:load-foreign "/apps/gnu/src/regex-0.12/regex.o")
+  (load "cmulisp-regex" :if-source-newer :compile)
+  (load "cl-info" :if-source-newer :compile)
+  (in-package "MAXIMA")
+  (catch 'to-lisp
+    (set-pathnames)
+    (macsyma-top-level)))
+
 (import 'user::run)
 ($setup_autoload "eigen.mc" '$eigenvectors '$eigenvalues)
 #+gcl

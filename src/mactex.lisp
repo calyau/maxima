@@ -237,19 +237,29 @@
     (intern tem)))
 
     
-    
+#+cmu
+(defun strcat (&rest args)
+  (apply #'concatenate 'string (mapcar #'string args)))
 
-(defun texnumformat(atom)  ;; 10/14/87 RJF  convert 1.2e20 to 1.2 \cdot 10^{20}
-  (let(r firstpart exponent)
-       (cond ((integerp atom)atom)
-	     (t (setq r (explode atom))
-		(setq exponent (memq 'e r)) ;; is it ddd.ddde+EE
-		(cond ((null exponent) atom); it is not. go with it as given
-		      (t (setq firstpart (nreverse (cdr (memq 'e (reverse r)))))
-			 (strcat (apply #'strcat firstpart )
-					 "\\cdot 10^{"
-					 (apply #'strcat (cdr exponent))
-					 "}")))))))
+;; 10/14/87 RJF  convert 1.2e20 to 1.2 \cdot 10^{20}
+;; 03/30/01 RLT  make that 1.2 \times 10^{20}
+(defun texnumformat(atom)
+  (let (r firstpart exponent)
+    (cond ((integerp atom)
+	   atom)
+	  (t
+	   (setq r (explode atom))
+	   (setq exponent (member 'e r :test #'string-equal));; is it ddd.ddde+EE
+	   (cond ((null exponent)
+		   ;; it is not. go with it as given
+		  atom)
+		 (t
+		  (setq firstpart
+			(nreverse (cdr (member 'e (reverse r) :test #'string-equal))))
+		  (strcat (apply #'strcat firstpart )
+			  " \\times 10^{"
+			  (apply #'strcat (cdr exponent))
+			  "}")))))))
 
 (defun tex-paren (x l r) 
   (tex x (append l '("\\left(")) (cons "\\right)" r) 'mparen 'mparen))
