@@ -678,7 +678,7 @@
 
 (DEFUN SPLICE2 (X)
   (COND ((FIXP X)(EXPLODE X))
-	(T (CDR (EXPLODE X)))))
+	(T (CDR (EXPLODEc X)))))
 
 (DEFUN DERIV (E) 
        (PROG (EXP Z COUNT V) 
