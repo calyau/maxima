@@ -1,8 +1,9 @@
 (in-package "MAXIMA")
 
-(load (merge-pathnames #p"affine.system" 
-		       (make-pathname
-			:directory (pathname-directory *load-truename*))))
+(defvar *maxima-affinedir*
+  (combine-path (list *maxima-sharedir* "affine")))
+(load (combine-path
+       (list *maxima-affinedir* "affine.system")))
 (mk:load-system "affine")
 
 ;;; affine.lisp ends here

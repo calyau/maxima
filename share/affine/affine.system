@@ -1,16 +1,16 @@
 ;;; -*- Mode:Lisp; Package:CL-MAXIMA; Syntax:COMMON-LISP; Base:10 -*-;;;
 
+(in-package "MAXIMA")
+
+(defvar *maxima-affinedir*
+  (combine-path (list *maxima-sharedir* "affine")))
+
 (mk:defsystem "affine"
     :source-extension "lisp"
-    :binary-pathname (make-pathname
-		      :name #+clisp "binary-clisp"
-		      #+cmu "binary-cmucl"
-		      #+sbcl "binary-sbcl"
-		      #+gcl "binary-gcl"
-		      #+allegro "binary-acl6"
-		      #+openmcl "binary-openmcl"
-		      #-(or clisp cmu sbcl gcl allegro openmcl) "binary-unknownlisp"
-		      :directory (pathname-directory *load-truename*))
+    :binary-pathname (combine-path
+		      (list *maxima-affinedir*
+			    (concatenate 'string
+					 "binary-" *maxima-lispname*)))
     :components ((:file "sys-declaim" :load-only t)
 		 (:file "sloop")
 		 (:file "compat")       ;new
