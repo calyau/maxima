@@ -285,6 +285,9 @@ Hence the @code{buildq} is useful for building the form.
 @node OPTIMIZATION, Definitions for Function Definition, MACROS, Function Definition
 @section OPTIMIZATION
 
+The optimu files no longer exist in Maxima.  The documentation is left 
+here for historical purposes.
+
 When using TRANSLATE and generating code with MACSYMA,
 there are a number of techniques which can save time and be helpful.
 Do DEMO("optimu.dem") for a demonstration.  In particular, the
