@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.14 2002-09-11 01:09:15 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.15 2002-09-11 01:19:38 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -12,7 +12,6 @@ proc setMaxDir {} {
 	# Assume the executable is one level down from the top
 	# for 5.6 this was src/ and for 5.9 its bin/
 	set up [file dir [file dir [info name]]]
-	set env(MAXIMA_DIRECTORY) $up
 
 	if {[info exists autoconf] && \
 		[info exists autoconf(prefix)] && \
@@ -47,6 +46,9 @@ proc setMaxDir {} {
 	    # Old windows 5.5 layout
 	    # Assume we are in the same directory as saved_maxima
 	    if {[file isfile [set exe $up/src/saved_maxima.exe]]} {
+
+		set env(MAXIMA_DIRECTORY) $up
+
 		set maxima_priv(maxima_verpkgdatadir) \
 		    $env(MAXIMA_DIRECTORY)
 
