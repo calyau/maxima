@@ -28,6 +28,7 @@
 -configure options
 	-fix default lisp
 	-optional paths to specific lisps
+	-automatically pick lisp implementation if none specified
 
 -write PORTING documentation
 	-do while adding acl support
