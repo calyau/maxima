@@ -340,7 +340,7 @@ Taken from `replace-regexp-in-string' from subr.el in GNU emacs."
 
 (defun maxima-remove-kill-buffer-hooks ()
   "Remove the kill-buffer-hooks locally"
-  (if (and (not running-xemacs) (< emacs-major-version 21))
+  (if (or running-xemacs (< emacs-major-version 21))
       (progn
         (make-local-hook 'kill-buffer-hook)
         (setq kill-buffer-hook nil))
@@ -2138,13 +2138,13 @@ The following commands are available:
   (if (and (not running-xemacs) (< emacs-major-version 21))
       (make-local-hook 'kill-buffer-hook))
   (if running-xemacs
-      (add-hook 'kill-buffer-hook
+      (add-local-hook 'kill-buffer-hook
                       (function
                        (lambda ()
                          (if (processp inferior-maxima-process)
                              (delete-process inferior-maxima-process))
                          (setq inferior-maxima-process nil)
-                         (run-hooks 'inferior-maxima-exit-hook))) nil t)
+                         (run-hooks 'inferior-maxima-exit-hook))))
     (add-hook 'kill-buffer-hook
               (function
                (lambda ()
