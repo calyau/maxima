@@ -59,7 +59,7 @@
 		(symbolp (setq name (nth 1 value))))
 	  (merror "~M is not a plot option.  Must be [symbol,..data]" value))
   (setq value
-	(ecase name
+	(case name
 	  ((|$x| |$y|) (check-list-items name (cddr value) 'number 2)
 	   (check-range value)
 	   )
@@ -75,7 +75,8 @@
 							 ))
 			    (merror "Only [zic,geomview,ps,openmath,gnuplot] are available"))
 			value)
-	  ))
+	  (t
+	   (merror "Unknown plot option specified:  ~M" name))))
   (sloop for v on (cdr $plot_options)
      when (eq (nth 1 (car v)) name)
      do (setf (car v) value))
