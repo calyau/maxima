@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.12 2002-09-10 16:16:30 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.13 2002-09-10 17:00:10 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -174,16 +174,14 @@ proc vMAXSetMaximaCommand {} {
 
     set maxima_opts [lMaxInitSetOpts]
 
-    if {[info exists maxima_priv(xmaxima_maxima)]} {
+    if {[info exists maxima_priv(xmaxima_maxima)] && \
+	$maxima_priv(xmaxima_maxima) != ""} {
 	# drop through
     } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
 	set maxima_priv(xmaxima_maxima) $env(XMAXIMA_MAXIMA) 
     } else {
-	# FIXME: use the lisp from options
-	set maxima_priv(xmaxima_maxima) \
-	    [file join $maxima_priv(maxima_verpkglibdir) binary-gcl maxima]
+	set maxima_priv(xmaxima_maxima) maxima
     }
-
 
     if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
 	if {[info exists env(XMAXIMA_MAXIMA)] } {
@@ -191,14 +189,14 @@ proc vMAXSetMaximaCommand {} {
 			 [file native $maxima_priv(xmaxima_maxima)]]
 	} else {
 	    tide_failure [M "Error: Maxima executable not found\n%s\n\n Try setting the environment variable  XMAXIMA_MAXIMA." \
-			      [file native $exe]]
+			      [file native $maxima_priv(xmaxima_maxima)]]
 	}
 	return
     }
 
-    if {![file isfile $exe] || ![file exec $exe]} {
+    if {![file isfile $exe]} {
 	tide_notify [M "Maxima executable not found in '%s'" \
-			 [file native $maxima_priv(xmaxima_maxima)]]
+			 [file native $exe]]
     }
 
     set lisp [file join $maxima_priv(maxima_xmaximadir) server.lisp]
