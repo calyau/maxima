@@ -622,7 +622,8 @@ manifold.
 In what amounts to an abuse of this notation, Itensor also allows
 @code{kdelta()} to have 2 covariant and no contravariant, or 2 contravariant
 and no covariant indices, in effect providing a co(ntra)variant "unit matrix"
-capability. This capability is used by @code{lc2kdt}.
+capability. This is strictly considered a programming aid and not meant to
+imply that @code{kdelta([i,j],[])} is a valid tensorial object.
 
 @end defun
 
@@ -682,7 +683,7 @@ are more easily simplified with @code{rename()} or @code{contract()}.
 
 (%i1) load(itensor);
 
-(%o1)      /share/tensor/itensor.lisp
+(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
 (%i2) exp:ishow('levi_civita([],[i,j])*'levi_civita([k,l],[])*a([j],[k]))$
 
                                   i j  k
@@ -693,38 +694,59 @@ are more easily simplified with @code{rename()} or @code{contract()}.
                                   i j  k       1 2
 (%t3)                       kdelta    a  kdelta
                                   1 2  j       k l
-(%i4) ishow(lc2kdt(exp))$
+(%i4) ishow(ev(%,kdelta))$
 
-                     k        i       j         j       i
-(%t4)               a  (kdelta  kdelta  - kdelta  kdelta )
-                     j        k       l         k       l
-(%i5) ishow(ev(%,kdelta))$
+             i       j         j       i   k
+(%t4) (kdelta  kdelta  - kdelta  kdelta ) a
+             1       2         1       2   j
 
-             i       j         j       i
-(%t5) (kdelta  kdelta  - kdelta  kdelta )
-             1       2         1       2
+                               1       2         2       1
+                        (kdelta  kdelta  - kdelta  kdelta )
+                               k       l         k       l
+(%i5) ishow(lc2kdt(exp))$
 
-                           k       l         l       k
-                    (kdelta  kdelta  - kdelta  kdelta ) a
-                           1       2         1       2   j k
+                     k       i       j    k       j       i
+(%t5)               a  kdelta  kdelta  - a  kdelta  kdelta
+                     j       k       l    j       k       l
+(%i6) ishow(contract(expand(%)))$
+
+                                 i           i
+(%t6)                           a  - a kdelta
+                                 l           l
 
 @end example
 
-The @code{lc2kdt()} function sometimes makes use of a special form of the
-Kronecker delta @code{kdelta}, using two upper or two lower indices.
+The @code{lc2kdt()} function sometimes makes use of the metric tensor.
+If the metric tensor was not defined previously with @code{imetric},
+this results in an error.
 
 @example
 
-(%i6) exp:ishow('levi_civita([],[i,j])*'levi_civita([],[k,l])*a([j,k],[]))$
+(%i7) exp:ishow('levi_civita([],[i,j])*'levi_civita([],[k,l])*a([j,k],[]))$
 
                                  i j            k l
-(%t6)                 levi_civita    levi_civita    a
+(%t7)                 levi_civita    levi_civita    a
                                                      j k
-(%i7) ishow(lc2kdt(exp))$
+(%i8) ishow(lc2kdt(exp))$
 
-            %1 i       %2 j        k        l          l        k
-(%t7) kdelta     kdelta     (kdelta   kdelta   - kdelta   kdelta  ) a
-                                   %1       %2         %1       %2   j k
+Maxima encountered a Lisp error:
+
+ Error in $IMETRIC [or a callee]: $IMETRIC [or a callee] requires less than two arguments.
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+(%i9) imetric(g);
+
+(%o9)                                done
+(%i10) ishow(lc2kdt(exp))$
+
+         %3 i  %4 j       k        l     %3 i  %4 j       l        k
+(%t10) (g     g     kdelta   kdelta   - g     g     kdelta   kdelta  ) a
+                          %3       %4                     %3       %4   j k
+(%i11) ishow(contract(expand(%)))$
+
+                                  i l      l i
+(%t11)                           a    - a g
 
 @end example
 
