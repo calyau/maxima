@@ -514,6 +514,7 @@
 (AUTOF '$LISTP_CHECK '|mload|)
 (autof '$plot3d '|plot|)
 (autof '$plot2d '|plot|)
+(autof '$polar_to_xy '|plot|)
 (autof '$tcl_output '|plot|)
 (autof '$openplot_curves '|plot|)
 (autof '$xgraph_curves '|plot|)

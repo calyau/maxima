@@ -590,6 +590,7 @@
  (COND
   (DEBUG
    ((LAMBDA (BRKLVL VARLIST GENVAR ERRBRKL LINELABLE)
+	    (declare (special $help))
      (PROG (X ^Q #.TTYOFF O^R #+MACLISP ERRSET #+LISPM ERROR-CALL TIM $%% 
 	    #+Franz errset
 	    $BACKTRACE  RETVAL OLDST ($help $help))

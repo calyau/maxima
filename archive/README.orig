@@ -15,8 +15,6 @@ standard, are several calls to errset.  This can be circumvented but
 not completely eliminated.  Also there are some special variables
 which need to be proclaimed and then unproclaimed special later.
 
-
-
 On most common lisp systems, all necessary files are in the src directory.
 Basically one loads the file sysdef.lisp, after having set the directory
 paths in that file, and then does a (make :maxima :compile t).  Before
@@ -70,7 +68,10 @@ do
 % make install
 to put things in /usr/local (recommended default).
 
-To put things under /public/bin and /public/lib/maxima-5.x.x use
+To put things under /public/bin and /public/lib/maxima-5.x.x
+you should edit the file 'configure' in the main directory of
+the distribution to set up the directories.   Then after doing
+configure you can do:
 
 % make install PREFIX_DIR=/public
 
@@ -79,7 +80,12 @@ maxima library directory, by the executable shell script 'maxima'
 which invokes maxima.
 
 Additional information is available at
-http://www.ma.utexas.edu/users/wfs/maxima.html
+http://www.ma.utexas.edu/maxima.html
+
+There is now an alternative to the command line version,
+which is called xmaxima.   That version runs under MS windows
+as well, and has a tcl/tk interface.
+
 
 
 W. Schelter, the University of Texas, and other parties provide this

@@ -117,7 +117,8 @@
 
 (defun hexpand (p &optional (hl *hmat) (vl *hvar))
   (if (andmapc #'onep hl) p
-      (do ((hl hl (cdr hl))
+    (progn
+       (do ((hl hl (cdr hl))
 	   (i 1 (f1+ i))
 	   (pl (ltermvec p vl t)))
 	  ((null hl) (setq p pl))
@@ -141,7 +142,7 @@
 		  (do ((term (car pl) (cdr term))
 		       (j (f1- i) (f1- j)))
 		      ((= j 0) (rplaca term (// (f- maxwt (car wtlist))
-						newwt)))))))))
+						newwt))))))))))
 
 (defun hdot (ht pt)
        (do ((ht (cdr ht) (cdr ht))

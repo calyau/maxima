@@ -9,9 +9,9 @@
 .ds Ml "M\s-2ACLISP\s+2
 .ds Cl "Common L\s-2ISP\s+2
 .ds Li "L\s-2ISP\s+2
-.ds Ky "Austin Kyoto Common L\s-2ISP\s+2
+.ds Ky "GNU Common L\s-2ISP\s+2
 .SH NAME
-maxima \- Austin Kyoto Common LISP version of MACSYMA symbolic mathematics package
+maxima \- GNU Common LISP version of MACSYMA symbolic mathematics package
 .SH SYNOPSIS
 .B maxima
 .SH DESCRIPTION
@@ -37,12 +37,6 @@ commands may be read from a file and executed, allowing batch-mode use.
 Upon initialization,
 .I maxima
 starts \*(Ky, which prints a message, including the instruction:
-.IP
-Type (run) to start Maxima.
-.LP
-Upon typing
-.IR (run) ,
-.I maxima
 proper is started, which prints a command line prompt (a
 .B C
 with an appended sequence number).
@@ -75,9 +69,9 @@ You can do this by invoking shell mode in
 and then invoking
 .IR maxima .
 Alternately you can load
-.I akcl.el
+.I dbl.el
 from the
-.IR akcl (1L)
+.IR gcl (1L)
 distribution and use the command:
 .IP
 .B M-x run
@@ -114,7 +108,7 @@ the commmand
 \*(Li is built into
 .I maxima
 and may be accessed by typing Ctrl-C.   This puts is the interrupt
-character, and puts you into a break loop.   In the AKCL version
+character, and puts you into a break loop.   In the GCL version
 typing :t, returns to the MAXIMA (Cn) prompt.
 .SH BUILT-IN HELP
 Extensive on-line documentation is built in to the system.
@@ -285,7 +279,7 @@ primary documentation file
 .I /public/maxima/doc/maxima-mode.el
 maxima mode
 .TP 2.2i
-.I /public/akcl/doc/*.el
+.I /public/gcl/elisp/*.el
 finding documentation using gnu emacs
 .TP
 .I /public/bin/maxima
