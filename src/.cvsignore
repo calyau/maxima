@@ -4,6 +4,7 @@ Makefile.in
 autoconf-variables.lisp
 maxima
 maxima.bat
+rmaxima
 
 binary-*
 

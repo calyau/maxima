@@ -3,7 +3,7 @@ include $(top_srcdir)/common.mk
 if WIN32
 bin_SCRIPTS = maxima maxima.bat
 else
-bin_SCRIPTS = maxima
+bin_SCRIPTS = maxima rmaxima
 endif
 
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
