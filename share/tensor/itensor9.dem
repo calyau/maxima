@@ -30,8 +30,8 @@ ishow(icc2([i,j],[k]))$
 ishow(ifc2([i,j],[k]))$
 
 ("The frame bracket has two definitions which are equivalent")$
-block([iframe_bracket_form:false],ishow(ifb([i,j],[k])))$
-block([iframe_bracket_form:true],ishow(ifb([i,j],[k])))$
+block([iframe_bracket_form:false],ishow(ifb([i,j,k])))$
+block([iframe_bracket_form:true],ishow(ifb([i,j,k])))$
 
 ("To explore torsion, we set up a metric but no contraction properties")$
 remcomps(g);
@@ -67,7 +67,13 @@ exp:ishow(canform(exp))$
 ("And we're quite done")$
 ishow(contract(exp))$
 
+("We can verify torsion in a frame base, too")$
+iframe_flag:true;
+covdiff(v([i]),j)-covdiff(v([j]),i)$
+ishow(contract(canform(ev(%,icc2,ifc2,ifc1,ikt2,ikt1,ifg))))$
+
 ("Next, we verify the nonmetricity tensor")$
+iframe_flag:false;
 inonmet_flag:true;
 itorsion_flag:false;
 ("We need all the metric tensor's contraction properties")$

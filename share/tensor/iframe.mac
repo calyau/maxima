@@ -36,13 +36,20 @@ _itr([l]):=if itorsion_flag then apply('itr,l) else 0;
  *            'ifb([l[1],l[2]],[i])*_g([i,l[3]],[]))/2; */
 
 /* The frame bracket */
-ifb(l1,l2,[ld]):=
-   if ld#[] then apply('idiff,cons(ifb(l1,l2),rest((?putinones)(ld))))
-   else block([e:idummy(),f:idummy()],
-     if iframe_bracket_form=true then 'ifr([l1[1]],[e])*('ifri([e],l2,f)-
-                                      'ifri([f],l2,e))*'ifr([l1[2]],[f])
-     else 'ifri([e],l2)*('ifr([a],[f])*'ifr([b],[e],f)-
-                         'ifr([a],[e],f)*'ifr([b],[f]))
+ifb(l,[ld]):=if length(ld)>0 and rest(ld)#[] then
+    apply('idiff,cons(ifb(l),rest((?putinones)(rest(ld)))))
+  else if length(ld)>0 and length(ld[1])>0 then
+    block([e:idummy()],
+      _g([],[e,ld[1][1]])*funmake(ifb,[append(l,[e]),rest(ld[1])])
+    )
+  else block([e:idummy(),f:idummy()],
+     if iframe_bracket_form or itorsion_flag then
+       'ifr([l[2]],[e])*'ifr([l[1]],[f])*
+       ('ifri([l[3],e],[],f)-'ifri([l[3],f],[],e)-
+        _itr([e,f],[m])*ifri([m,l[3]],[])
+       )
+     else 'ifri([l[3],e],[])*('ifr([l[1]],[f])*'ifr([l[2]],[e],f)-
+                         'ifr([l[1]],[e],f)*'ifr([l[2]],[f]))
 );
 
 /* The connection coefficients */
@@ -65,12 +72,11 @@ icc2(l1,l2,[ld]):=
 /* The frame coefficients */
 ifc1(l,[ld]):=if length(ld)>0 and rest(ld)#[] then
   apply('idiff,cons(ifc1(l),rest((?putinones)(rest(ld)))))
-  else block([i:idummy()],_g([l[3],i],[])*'ifc2([l[1],l[2]],[l[3]]));
-ifc2(l1,l2,[ld]):=
-  if ld#[] then apply('idiff,cons(ifc2(l1,l2),rest((?putinones)(ld))))
-  else block([d:idummy(),e:idummy()],(
-       _g([],[l2[1],e])*(_g([d,l1[2]],[])*'ifb([l1[1],e],[d])-
-                         _g([l1[1],d],[])*'ifb([e,l1[2]],[d]))-'ifb(l1,l2))/2);
+  else ('ifb(l)+'ifb([l[2],l[3],l[1]])-'ifb([l[3],l[1],l[2]]))/2;
+ifc2(l1,l2,[ld]):=if length(ld)>0 then
+    apply('idiff,cons(ifc2(l1,l2),rest((?putinones)(ld))))
+  else block([d:idummy()],_g([],[l2[1],d])*'ifc1([l1[1],l1[2],d]));
+
 
 /* The nonmetricity coefficients */
 inmc1(l,[ld]):=if not inonmet_flag then 0
@@ -98,7 +104,7 @@ ikt2(l1,l2,[ld]):=if not itorsion_flag then 0
 decsym(ichr1,3,0,[sym(1,2)],[]);
 decsym(ichr2,2,1,[sym(all)],[]);
 decsym(icurvature,3,1,[anti(2,3)],[]);
-decsym(ifb,2,1,[sym(all)],[]);
+decsym(ifb,3,0,[sym(2,3)],[]);
 /* decsym(icc1,3,0,[sym(1,2)],[]);
  * decsym(icc2,2,1,[sym(all)],[]);
  * decsym(ifc1,3,0,[sym(1,2)],[]);
