@@ -9,8 +9,8 @@
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.7 $
-;; $Date: 2002-09-06 16:55:10 $
+;; $Revision: 1.8 $
+;; $Date: 2003-03-07 17:17:04 $
 ;; Keywords: maxima, emaxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -71,6 +71,11 @@ package assembly."
   :group 'emaxima
   :type '(boolean))
 
+(defcustom emaxima-preview-after-update-all t
+  "If non-nil and preview-latex is available, preview after update-all"
+  :group 'emaxima
+  :type 'boolean)
+
 (defcustom emaxima-max-references 5
   "Number of references in a cell below which cell references are fetched
 as needed, scanning the entire document for each reference.  At or above this
@@ -107,85 +112,6 @@ The buffers are used in package and cell assembly.")
 
 (defvar emaxima-source-buffer nil
   "Buffer from which emaxima-collate-cells works.")
-
-;;; Sending information to Maxima, and getting it back
-
-(defun emaxima-last-maxima-output ()
-  "Copy the last output from Maxima."
-  (interactive)
-;  (emaxima-wait)
-  (let ((out-start)
-	(out-end)
-        (nonewline nil)
-        (pr)
-        (i 0)
-	(old-buffer (current-buffer))
-        (maxima-buffer (get-buffer "*maxima*"))
-        (output))
-    (if (null maxima-buffer)
-        (message "No Maxima output buffer")
-      (save-excursion
-        (set-buffer maxima-buffer)
-	(goto-char (point-max))
-        (unless (maxima-finished-p)
-          (re-search-backward inferior-maxima-prompt))
-	(setq out-end (point))
-        (goto-char maxima-real-input-end)
-        (forward-line 1)
-;	(re-search-backward inferior-maxima-prompt)
-;        (goto-char (match-end 0))
-;        (if (looking-at " *$")
-;        (forward-line 1)
-        ;; Now, gcl inserts an extra blank line
-;        (if (looking-at "^ *$")
-;            (forward-line 1))
-;          (forward-line 0)
-;          (setq nonewline t))
-	(setq out-start (point))
-	(setq output 
-              (buffer-substring-no-properties out-start out-end))
-        (goto-char (point-max))))
-;    (set-buffer old-buffer)
-;    (when nonewline
-;      (setq pr (1+ (string-match ")" output)))
-;      (setq output (concat (make-string pr ? ) (substring output pr))))
-    output))
-
-(defun emaxima-last-maxima-output-noprompt ()
-  "Return the last Maxima output, without the prompts"
-  (interactive)
-  (if (maxima-finished-p)
-      (emaxima-last-maxima-output)
-    (let* ((output (emaxima-last-maxima-output))
-           (newstring)
-           (i 0)
-           (beg)
-           (end)
-           (k))
-    ;; Replace the output prompt with spaces
-      (setq beg (string-match "\\(^([D][0-9]*) \\)" output))
-      (if (not beg)
-          output
-        (setq end (1+ (string-match ")" output beg)))
-        (setq newstring (substring output 0 beg))
-        (setq k (- end beg))
-        (while (< i k)
-          (setq newstring (concat newstring " "))
-          (setq i (1+ i)))
-        (concat newstring 
-                (substring output 
-                           end))))))
-
-(defun emaxima-last-maxima-output-tex-noprompt ()
-  "Return the last Maxima output, between the dollar signs."
-  (interactive)
-  (let* ((output (emaxima-last-maxima-output))
-         (begtex (string-match "\\$\\$" output))
-         (endtex (string-match "\\$\\$" output (1+ begtex))))
-    (concat
-     (substring output begtex (+ endtex 2))
-     "\n")))
-
 
 ;;; Some utility functions
 
@@ -1319,7 +1245,7 @@ Return nil if no name or error in name."
   (let ((mb)
         (me)
         (ie)
-        (out (emaxima-last-maxima-output)))
+        (out (maxima-last-output)))
     (while (string-match "(E[0-9]+)" out)
       (setq mb (match-beginning 0))
       (setq me (match-end 0))
@@ -1378,7 +1304,7 @@ Return nil if no name or error in name."
           (insert " \\\\\n"))))))
 
 (defun emaxima-insert-last-output-tex-noprompt ()
-  (let ((out (emaxima-last-maxima-output))
+  (let ((out (maxima-last-output))
         (me)
         (mb)
         (ie))
@@ -1408,21 +1334,24 @@ Return nil if no name or error in name."
       (setq out (substring out ie)))
     (if (string-match "(D[0-9]+)" out)
         (progn
-          (if (> (match-beginning 0) 0)
+          (setq mb (match-beginning 0))
+          (if (and (> mb 0)
+                   (string-match "[^ \n]" (substring out 0 mb)))
               (progn
                 (insert "\\p ")
-                (insert (substring out 0 (match-beginning 0)))
+                (insert (substring out 0 mb))
                 (insert " \\\\\n")))
-          (insert "$$")
+;          (setq out (substring out mb))
+          (insert "\\[")
           (insert "  ")
           (insert (substring out (match-end 0)))
           (forward-char -1)
           (if (looking-at "\n")
               (progn
-                (insert " $$")
+                (insert " \\]")
                 (forward-char 1))
             (forward-char 1)
-            (insert " $$\n")))
+            (insert " \\]\n")))
       (when (not (string= out ""))
         (insert "\\p  ")
         (insert out)
@@ -1488,7 +1417,7 @@ Return nil if no name or error in name."
                        (not (emaxima-noshow-cell-p))
                        (not (maxima-finished-p)))
                   (emaxima-insert-last-output-tex-noprompt)
-                (insert (emaxima-last-maxima-output-noprompt)))))))
+                (insert (maxima-last-output-noprompt)))))))
     (error "Not in Maxima cell")))
 
 (defun emaxima-update-session-cell ()
@@ -1518,7 +1447,7 @@ Return nil if no name or error in name."
         (unless (string= "\n" (substring cell (- end 1) end))
           (insert "\n"))
         (insert "\n")
-        (insert (emaxima-last-maxima-output))
+        (insert (maxima-last-output))
         (setq cell (substring cell end))))))
 
 (defun emaxima-tex-update-session-cell ()
@@ -1567,12 +1496,20 @@ With C-u prefix, update without confirmation at each cell."
   (save-excursion
     (if arg
         (emaxima-update nil nil nil)
-      (emaxima-update nil (y-or-n-p "Interactive update? ") nil))))
+      (emaxima-update nil (y-or-n-p "Interactive update? ") nil)))
+  (if (and emaxima-preview-after-update-all
+           (fboundp 'preview-buffer))
+      (preview-buffer)))
+
 
 (defun emaxima-menu-update-all ()
   (interactive)
   "Update all cells"
-  (emaxima-update nil nil nil))
+  (emaxima-update nil nil nil)
+  (if (and emaxima-preview-after-update-all
+           (fboundp 'preview-buffer))
+      (preview-buffer)))
+
 
 (defun emaxima-tex-update-all (arg)
   "Optionally update all cells and return output in TeX form.
@@ -1582,14 +1519,20 @@ With C-u prefix, update without confirmation at each cell."
   (if arg
       (emaxima-update nil nil t)
     (emaxima-update nil (y-or-n-p "Interactive update? ") t))
-  (emaxima-tex-off))
+  (emaxima-tex-off)
+  (if (and emaxima-preview-after-update-all
+           (fboundp 'preview-buffer))
+      (preview-buffer)))
+
 
 (defun emaxima-menu-tex-update-all ()
   (interactive)
   (emaxima-tex-on)
   (emaxima-update nil nil t)
-  (emaxima-tex-off))
-  
+  (emaxima-tex-off)
+  (if (and emaxima-preview-after-update-all
+           (fboundp 'preview-buffer))
+      (preview-buffer)))
 
 (defun emaxima-update-init (arg)
   "Optionally update all initialization cells.
@@ -1663,7 +1606,7 @@ With C-u prefix, update without confirmation at each cell."
                        (not (emaxima-noshow-cell-p))
                        (not (maxima-finished-p)))
                   (emaxima-insert-last-output-tex-noprompt)
-                (insert (emaxima-last-maxima-output-noprompt))))))
+                (insert (maxima-last-output-noprompt))))))
         (if tex (emaxima-tex-off)))
         (error "Not in Maxima cell")))
   
@@ -1681,10 +1624,16 @@ If ASK is non-nil, then ask whether each KIND cell is to be updated,
 else update each KIND cell.  If KIND is nil, update all cells.
 If TEX is non-nil, then insert \\maximatexoutput instead of \\maximaoutput."
   (setq tex (and emaxima-tex-lisp-file tex))
-  (let (bypass display-start display-end cur-pos)
+  (let ((emaxima-cell-previewed nil) 
+        (bypass)
+        (display-start)
+        (display-end)
+        (cur-pos))
     (save-excursion
       (goto-char (point-min))
       (while (emaxima-forward-cell)
+        (if (get-char-property (point) 'preview-state)
+            (preview-clearout-at-point))
         (forward-line -1)
         (if (and kind (not (looking-at (concat "^\\\\beginmaxima" kind))))
             (progn
@@ -1697,6 +1646,7 @@ If TEX is non-nil, then insert \\maximatexoutput instead of \\maximaoutput."
           (end-of-line)    ; ..
           (setq display-end (point))
           (forward-line 0)
+;          (if emaxima-cell-previewed (preview-clearout display-start display-end))
           (unwind-protect
               (progn
                 (narrow-to-region display-start display-end)
@@ -1777,7 +1727,7 @@ output in TeX form."
     (end-of-line)
     (newline)
     (emaxima-insert-last-output-tex-noprompt)
-;    (emaxima-last-maxima-output-tex-noprompt)
+;    (maxima-last-output-tex-noprompt)
     (emaxima-tex-off)))
 
 (defun emaxima-replace-line ()
@@ -1792,9 +1742,31 @@ output."
   (insert "% ")
   (end-of-line)
   (newline)
-  (insert (emaxima-last-maxima-output-noprompt)))
+  (insert (maxima-last-output-noprompt)))
 
-;;; The mode
+;;; Some preview abilities
+(defun emaxima-preview-cell ()
+  "Previews the current cell in the emacs buffer."
+  (interactive)
+  (if (not (emaxima-cell-p))
+      (error "Not in an Emaxima cell")
+    (if (emaxima-noshow-cell-p)
+        (message "No show cell")
+      (let ((beg))
+        (goto-char (emaxima-cell-start))
+        (forward-line -1)
+        (setq beg (point))
+        (search-forward "\\endmaxima")
+        (forward-line 1)
+        (preview-region beg (point))))))
+
+;; The following doesn't work yet...
+
+(defun emaxima-preview-cells ()
+  "Previews all cells in the emacs buffer."
+  (interactive)
+  (while (emaxima-forward-cell)
+    (emaxima-preview-cell)))
 
 ;; First, find out what kind of TeX mode is being used.
 
