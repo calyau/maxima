@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.9 2003-01-20 16:22:26 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.10 2003-01-22 02:55:44 mikeclarkson Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -60,7 +60,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [set command [cIDECreateEvent $text $label {
 	    set file [tide_savefile [M "Save to a file"] "" *.bin]
 	    if {$file != ""} {
-		sendMaxima $maxima_priv(cConsoleText) "SAVE(\"$file,ALL\")\$\n"
+		sendMaxima $maxima_priv(cConsoleText) "SAVE(\"$file\",ALL)\$\n"
 	    }
 	}]]
     bind $text <Control-Key-s> $command
