@@ -99,7 +99,6 @@
 	 (arg-index 2))
 	;(or (eql (car sstring) #\&) (push #\& sstring))
 	
-    #+(or NIL sbcl openmcl)
     (AND (OR (NULL STREAM)
 	     (EQ T STREAM))
 	 (SETQ STREAM *standard-output*))
@@ -108,8 +107,7 @@
     ;; If the lack of flexibilty becomes an issue then
     ;; it can be changed easily.
     (MFORMAT-LOOP (OUTPUT-TEXT))
-    ;; On Multics keep from getting bitten by line buffering.
-    #+(or Multics sbcl openmcl)
+    ;; Keep from getting bitten by buffering.
     (FORCE-OUTPUT STREAM)
     ))
 
