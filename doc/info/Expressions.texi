@@ -829,21 +829,21 @@ performs the sum of EXP for each element IND of the LIST.
 @example
 (C10) lsum(x^i,i,[1,2,7]);
 
-			    7	 2
-(D10) 			   x  + x  + x
+                            7    2
+(D10)                      x  + x  + x
 @end example
 If the last element LIST argument does not evaluate, or does not
 evaluate to a Maxima list then the answer is left in noun form
 @example
 (C13) lsum(i^2,i,rootsof(x^3-1));
 
-		     ====
-		     \	    2
-(D13) 		      >	   i
-		     /
-		     ====
-				   3
-		     i in ROOTSOF(x  - 1)
+                     ====
+                     \      2
+(D13)                 >    i
+                     /
+                     ====
+                                   3
+                     i in ROOTSOF(x  - 1)
 @end example
 
 @end defun
