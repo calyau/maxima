@@ -66,6 +66,11 @@
   (declare (ignore unused))
   (ext:get-bytes-consed))
 
+#+sbcl
+(defun used-area (&optional unused)
+  (declare (ignore unused))
+  (sb-ext:get-bytes-consed))
+
 #+clisp
 (defun used-area (&optional unused)
   (declare (ignore unused))
@@ -74,7 +79,7 @@
     (declare (ignore real1 real2 run1 run2 gc1 gc2 gccount))
     (dpb space1 (byte 24 24) space2)))
 
-#-(or lispm cmu clisp)
+#-(or lispm cmu sbcl clisp)
 (defun used-area (&optional unused)
   (declare (ignore unused))
   0)
@@ -168,7 +173,7 @@
 	  (format t "~&Evaluation took ~$ seconds (~$ elapsed)"
        		    time-used etime-used )
 	  #+lispm (format t "using ~A words." (f-  area-after area-before))
-	  #+(or cmu clisp)
+	  #+(or cmu sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
 	    (cond ((> total-bytes 1024)
 		   (format t " using ~,3F KB." (/ total-bytes 1024.0))
@@ -386,7 +391,7 @@
      (in-package "MAXIMA")
      (sloop 
 	 do
-       (catch #+kcl si::*quit-tag* #+cmu 'continue #-(or kcl cmu) nil
+       (catch #+kcl si::*quit-tag* #+(or cmu sbcl) 'continue #-(or kcl cmu sbcl) nil
 	      (catch 'macsyma-quit
 		(continue input-stream batch-flag)(bye)))))))
 
@@ -482,6 +487,10 @@
 #+cmu
 (defun $system (&rest args)
   (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args))))
+
+#+sbcl
+(defun $system (&rest args)
+  (sb-ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output t))
 
 (defun $room (&optional (arg nil arg-p))
   (if arg-p

@@ -49,6 +49,10 @@
 (defun maxima-getenv (envvar)
   (cdr (assoc envvar ext:*environment-list* :test #'string=)))
 
+#+sbcl
+(defun maxima-getenv (envvar)
+  (sb-ext:posix-getenv envvar))
+
 #+clisp
 (defun maxima-getenv (envvar)
   (ext:getenv envvar))
@@ -110,9 +114,10 @@
   
   (let* ((ext #+gcl "o"
 	      #+cmu (c::backend-fasl-file-type c::*target-backend*)
+	      #+sbcl "fasl"
 	      #+clisp "fas"
 	      #+allegro "fasl"
-	      #-(or gcl cmu clisp allegro)
+	      #-(or gcl cmu sbcl clisp allegro)
 	      "")
 	 (lisp-patterns (concatenate 'string
 				     "###.{"
@@ -161,12 +166,12 @@
       
     (catch 'to-lisp
       (set-pathnames)
-      #+(or cmu clisp allegro)
+      #+(or cmu sbcl clisp allegro)
       (progn
 	(loop 
 	  (with-simple-restart (macsyma-quit "Macsyma top-level")
 			       (macsyma-top-level input-string batch-flag))))
-      #-(or cmu clisp allegro)
+      #-(or cmu sbcl clisp allegro)
       (catch 'macsyma-quit
 	(macsyma-top-level input-string batch-flag)))))
 
@@ -189,6 +194,10 @@
 #+cmu
 (defun bye ()
   (ext:quit))
+
+#+sbcl
+(defun bye ()
+  (sb-ext:quit))
 
 #+allegro
 (defun bye ()

@@ -1,4 +1,7 @@
 ; -*- Lisp -*-
+#+sbcl
+(or (find-package "USER")
+    (rename-package "COMMON-LISP-USER" "COMMON-LISP-USER" '("USER")))
 (in-package :user)
 
 (pushnew :cl *features*)
@@ -13,8 +16,9 @@
   :source-extension "lisp"  
   :binary-pathname #+clisp "binary-clisp"
                    #+cmu (truename "binary-cmucl")
+		   #+sbcl "binary-sbcl"
 		   #+gcl "binary-gcl"
-		   #-(or clisp cmu gcl) "binary-unknownlisp"
+		   #-(or clisp cmu sbcl gcl) "binary-unknownlisp"
   :components ((:module package :source-pathname ""
 			:load-only t
 			:components ((:file "maxima-package")))

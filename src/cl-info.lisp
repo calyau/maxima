@@ -38,6 +38,8 @@
 	(*compile-verbose* nil)
 	#+cmu
 	(*compile-progress* nil)
+	#+sbcl
+	(sb-ext:*compile-progress* nil)
 	)
     (compile nil
 	     (nregex:regex-compile pat :case-sensitive case-sensitive))))
