@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# prepare
+cd /tmp
+if [ -d snapshots ]; then
+    echo "snapshots direcotry already exists. Exiting." >& 2
+    exit 1
+fi
+set +x
+mkdir snapshots
+
+# checkout
+cd snapshots
+cvs -z6 -d :pserver:anonymous@cvs.Maxima.sourceforge.net:/cvsroot/maxima co maxima
+
+# bootstrap
+cd maxima
+thisdate="`date +'%F'`"
+sed "s/AM_INIT_AUTOMAKE(maxima,.*/AM_INIT_AUTOMAKE(maxima,cvs-$thisdate)/" configure.in > tmp
+mv tmp configure.in
+./bootstrap
+
+# build docs
+cd ..
+cp -r maxima maxima-doc
+cd maxima-doc
+./configure
+cd doc/info
+make
+cp *.info *.html ../../../maxima/doc/info
+cd ../../..
+
+# make archives
+maximadate="maxima-$thisdate"
+mv maxima "$maximadate"
+zip -r "$maximadate".zip "$maximadate"
+tar zcf "$maximadate".tar.gz "$maximadate"
+
