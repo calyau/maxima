@@ -3,6 +3,9 @@
 ;; Copyright: (C) 2001 Jay Belanger
 
 ;; Author: Jay Belanger <belanger@truman.edu>
+;; $Name:  $
+;; $Revision: 1.4 $
+;; $Date: 2002-05-14 18:26:28 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -30,7 +33,6 @@
 ;;
 ;; The keywords are divided into the following groups, following the 
 ;; Maxima info files:
-;; Prompts (inferior-maxima-prompt-face)
 ;; Functions (maxima-function-face)
 ;; Variables (maxima-variable-face)
 ;; Constants (maxima-constant-face)
@@ -42,8 +44,6 @@
 ;; Special operators (maxima-specop-face)
 ;; Special symbols (maxima-specsymb-face)
 ;;
-;; There is also inferior-maxima-warning-face for errors in 
-;; Maxima buffer.
 
 ;;; Code
 
@@ -81,12 +81,6 @@
 
 (defvar maxima-specsymb-face 'maxima-specsymb-face
   "The face to use for the special symbols.")
-
-(defvar inferior-maxima-prompt-face 'inferior-maxima-prompt-face
-  "The face to use for the prompts.")
-
-(defvar inferior-maxima-warning-face 'inferior-maxima-warning-face
-  "The face to use for the warnings.")
 
 ;;; The regexps
 (defvar maxima-match-variables-1
@@ -1184,14 +1178,6 @@
   "\\(\\<\\?\\sw+\\>\\)"
   "Regexp to match Maxima special symbols.")
 
-(defvar inferior-maxima-match-warnings
-  "^[a-zA-Z].*$"
-  "Regexp to match Maxima warning messages.")
-
-(defvar inferior-maxima-match-prompts
-  "^\\((c[0-9]+)\\|(d[0-9]+)\\|(dbm:[0-9]*)\\|MAXIMA>>\\)"
-  "Regexp to match the Maxima prompts.")
-
 ;;; Now, create the faces.
 
 (defface maxima-function-face
@@ -1279,24 +1265,6 @@
   "Font Lock mode face used to highlight warnings."
   :group 'maxima)
 
-(defface inferior-maxima-prompt-face
-  '((((type tty) (class color)) (:foreground "cyan" :weight bold))
-    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
-    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
-    (((class color) (background light)) (:foreground "Purple" :weight bold))
-    (((class color) (background dark)) (:foreground "Cyan" :weight bold))
-    (t (:bold t)))
-  "Font Lock mode face used to highlight keywords."
-  :group 'maxima)
-
-(defface inferior-maxima-warning-face
-  '((((type tty) (class color)) (:foreground "red"))
-    (((class color) (background light)) (:foreground "Red" :bold t))
-    (((class color) (background dark)) (:foreground "Pink" :bold t))
-    (t (:inverse-video t :bold t)))
-  "Font Lock mode face used to highlight warnings."
-  :group 'maxima)
-
 (defface maxima-variable-face
   '((((type tty) (class color)) (:foreground "yellow" :weight light))
     (((class grayscale) (background light))
@@ -1343,20 +1311,5 @@
           nil t nil maxima-beginning-of-form)))
 
 (add-hook 'maxima-mode-hook 'maxima-font-setup)
-
-(defvar inferior-maxima-keywords
-  (append maxima-keywords
-          `( 
-            (,inferior-maxima-match-prompts (0 inferior-maxima-prompt-face t))
-            (,inferior-maxima-match-warnings (0 inferior-maxima-warning-face t))))
-  "Keywords for Inferior Maxima font-locking.")
-
-(defun inferior-maxima-font-setup ()
-  (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults 
-        '(inferior-maxima-keywords 
-          nil t nil maxima-beginning-of-form)))
-
-(add-hook 'inferior-maxima-mode-hook 'inferior-maxima-font-setup)
 
 ;;; End of maxima-font-lock.el
