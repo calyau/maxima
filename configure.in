@@ -344,7 +344,7 @@ if test x"${cmucl}" = xtrue; then
     if test x"${CMUCL_RUNTIME_PATH}" = x"" ; then
         CMUCL_RUNTIME_PATH=`${CMUCL_NAME} -noinit -nositeinit -quiet -batch -eval '#+cmu19 (progn (setf (search-list "cmuclbin:") (lisp::parse-unix-search-path lisp::*cmucl-lib*)) (enumerate-search-list (s "cmuclbin:lisp") (when (probe-file s) (format t "~A~%" s) (quit)))) #+cmu18 (format t "~a/../bin/lisp~%" common-lisp::*cmucl-lib*)(quit)'`
     fi
-    if test -x ${CMUCL_RUNTIME_PATH} ; then
+    if test -f ${CMUCL_RUNTIME_PATH} ; then
         echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
     else
 dnl last chance: find CMUCL_NAME in path. Use it if it doesn't appear to
