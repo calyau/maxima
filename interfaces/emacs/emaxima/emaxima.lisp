@@ -301,7 +301,7 @@
 (defprop mset 20. tex-rbp)
 
 (defprop mdefine tex-infix tex)
-(defprop mdefine (":=") texsym)
+(defprop mdefine ("\\mathbin{:=}") texsym)
 (defprop mdefine 180. tex-lbp)
 (defprop mdefine 20. tex-rbp)
 
