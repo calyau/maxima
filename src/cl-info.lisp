@@ -432,7 +432,7 @@ that matches the name NAME with extention EXT"
       (pat-markers (compile-regex "[]"))
       ;; This is the pattern for a subnode.  That is the documention
       ;; for some function or variable.
-      (pat-subnode (compile-regex #u"\n - [a-z]" :case-sensitive nil))
+      (pat-subnode (compile-regex #u"\n - [a-zA-Z]"))
       ;; This pattern is used to match where the documentation of a
       ;; subnode starts.
       (doc-start (compile-regex #u"\n   ")))
