@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.16 2002-09-12 06:58:01 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.17 2002-09-13 17:38:00 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -165,7 +165,22 @@ proc setMaxDir {} {
     }
 
 
-    set maxima_priv(firstUrl) file:/[file join $maxima_priv(maxima_xmaximadir) "intro.html"]
+    set file [file join $maxima_priv(maxima_xmaximadir) "intro.html"]
+
+    if {![file isfile $file]} {
+	tide_notify [M "Starting documentation not found in '%s'" \
+			 [file native	$file]]
+
+	set maxima_priv(firstUrl) ""
+    } else {
+	if {$tcl_platform(platform) == "windows"} {
+	    set file [file attrib $file -shortname]
+	    # convert to unix
+	    set file [file dir $file]/[file tail $file]
+	}
+	# FIXME: This is bogus - need a FileToUrl
+	set maxima_priv(firstUrl) file:/$file
+    }
 
 
 }
@@ -218,28 +233,38 @@ proc vMAXSetMaximaCommand {} {
 			 [file native $lisp]]
     }
 
-    #mike FIXME: This should break on windows if there is a space in the pathname
+    set command {}
+    lappend command $exe
     if {[string match *saved*maxima* [string tolow [file tail $exe]]]} {
 	# 5.6 maxima took different arguments
 
-	set maxima_priv(localMaximaServer) "$exe -load $lisp -eval \"(setup PORT)\" -f &"
+	lappend command -load $lisp -eval "(setup PORT)" -f
     } else {
 	# 5.9 maxima takes different arguments
-	set maxima_priv(localMaximaServer) "$exe $maxima_opts -p $lisp -r \":lisp (progn (user::setup PORT)(values))\" &"
+	eval lappend command  $maxima_opts 
+	lappend command -p $lisp -r ":lisp (progn (user::setup PORT)(values))"
+
+	# FIXME: This is gcl specific so -lisp option is bogus
+	if {$maxima_priv(platform) == "windows"} {
+	    # A gruesome hack. Normally, we communicate to the 
+	    # maxima image through the maxima shell script, as 
+	    # above. If the maxima script is not available, 
+	    # as may happen on windows, directly talk to the GCL 
+	    # saved image. jfa 04/28/2002
+	    #mike FIXME: this means xmaxima on windows is GCL only
+	    
+	    set env(MAXIMA_INT_LISP_PRELOAD)  "$lisp"
+	    set env(MAXIMA_INT_INPUT_STRING)  ":lisp (progn (user::setup PORT)(values));"
+	    lappend command -eval "(run)" -f
+	    
+	}
+
     }
 
-    #mike - why is this being used rather that the above?
-    if {$tcl_platform(platform) == "windows"} {
-	# A gruesome hack. Normally, we communicate to the maxima image
-	# through the maxima script, as above. If the maxima script is not
-	# available, as may happen on windows, directly talk to the GCL 
-	# saved image. jfa 04/28/2002
-	set env(MAXIMA_INT_LISP_PRELOAD)  "$lisp"
-	set env(MAXIMA_INT_INPUT_STRING)  ":lisp (progn (user::setup PORT)(values));"
-	set maxima_priv(localMaximaServer) "$exe -eval \"(run)\" -f &"
+
+    lappend command &
+    set maxima_priv(localMaximaServer) $command
 	
-    }
-
 
 }
 
