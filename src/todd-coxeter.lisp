@@ -38,8 +38,15 @@
   `(progn (vector-push-extend ,m *todo*)
 	  (vector-push-extend ,n *todo*)))
 
+#-:ansi-cl
 (defmacro f+ (a b) `(the fixnum (+ (the fixnum ,a) (the fixnum ,b))))
+#+:ansi-cl
+(define-compiler-macro f+ (a b) `(the fixnum (+ (the fixnum ,a) (the fixnum ,b))))
+#-:ansi-cl
 (defmacro f- (a &optional b) `(the fixnum (- (the fixnum ,a)
+					     ,@ (if b `((the fixnum ,b))))))
+#+:ansi-cl
+(define-compiler-macro f- (a &optional b) `(the fixnum (- (the fixnum ,a)
 					     ,@ (if b `((the fixnum ,b))))))
   
 ;; The multiplication table for variable I 

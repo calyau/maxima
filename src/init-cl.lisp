@@ -57,6 +57,10 @@
 (defun maxima-getenv (envvar)
   (ext:getenv envvar))
 
+#+mcl
+(defun maxima-getenv (envvar)
+  (ccl::getenv envvar))
+
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-datadir-env (maxima-getenv "MAXIMA_DATADIR"))
@@ -117,7 +121,9 @@
 	      #+sbcl "fasl"
 	      #+clisp "fas"
 	      #+allegro "fasl"
-	      #-(or gcl cmu sbcl clisp allegro)
+	      #+(and openmcl darwinppc-target) "dfsl"
+	      #+(and openmcl linuxppc-target) "pfsl"
+	      #-(or gcl cmu sbcl clisp allegro openmcl)
 	      "")
 	 (lisp-patterns (concatenate 'string
 				     "###.{"
@@ -171,12 +177,12 @@
       
     (catch 'to-lisp
       (set-pathnames)
-      #+(or cmu sbcl clisp allegro)
+      #+(or cmu sbcl clisp allegro mcl)
       (progn
 	(loop 
 	  (with-simple-restart (macsyma-quit "Macsyma top-level")
 			       (macsyma-top-level input-string batch-flag))))
-      #-(or cmu sbcl clisp allegro)
+      #-(or cmu sbcl clisp allegro mcl)
       (catch 'macsyma-quit
 	(macsyma-top-level input-string batch-flag)))))
 
@@ -207,6 +213,10 @@
 #+allegro
 (defun bye ()
   (excl:exit))
+
+#+mcl
+(defun bye ()
+  (ccl::quit))
 
 (defun $maxima_server (port)
   (load "/home/amundson/devel/maxima/archive/src/server.lisp")

@@ -375,6 +375,7 @@
 
 (defmacro eone () ''(1 . 1))
 
+#-mcl
 (defmacro ezerop (e) `(zerop (car ,e)))
 
 (defmacro rcinv (r) `(ratinvert ,r))

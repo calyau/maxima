@@ -40,6 +40,14 @@ acl6-check:
 	./summarize-log tests-acl6.log
 endif
 
+if OPENMCL
+check: openmcl-check
+openmcl-check:
+	echo "Running test suite with openmcl..."; \
+	$(MAXIMA) --lisp=openmcl --batch-lisp=tests.lisp > tests-openmcl.log < /dev/null 2>&1; \
+	./summarize-log tests-openmcl.log
+endif
+
 install-exec-local:
 	$(mkinstalldirs) $(DESTDIR)$(insttestsdir)
 	$(INSTALL_PROGRAM) summarize-log $(DESTDIR)$(insttestsdir)/summarize-log

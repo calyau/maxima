@@ -85,6 +85,7 @@
 (def-op f= fixnum = t)
 (def-op lessp t < t)
 (def-op remainder t rem)
+#-mcl
 (def-op lsh fixnum ash)
 (def-op fixnum-remainder fixnum rem)
 (def-op minus t -)

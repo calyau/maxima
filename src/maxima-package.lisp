@@ -1,4 +1,4 @@
-#+sbcl
+#+(or sbcl mcl)
 (or (find-package "LISP")
     (rename-package "COMMON-LISP" "COMMON-LISP" '("LISP" "CL")))
 

@@ -6,7 +6,7 @@
 #   License: LGPL (See file GNU-LGPL for details)
 # -----------------------------------------------------------------------------
 #  (c) copyright 1999 by Gilbert Baumann, Sam Steingold, Bruno Haible
-# $Id: maxima-run-lisp,v 1.6 2003-02-23 18:04:45 rtoy Exp $
+# $Id: maxima-run-lisp,v 1.7 2003-03-05 01:36:25 rtoy Exp $
 # $Source: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/lisp-utils/maxima-run-lisp,v $
 
 # Prior to invocation the LISPTYPE environment variable must been set to
@@ -19,6 +19,7 @@
 #    acl6       uses $(ACL6) if set, else "alisp    
 #    gcl        uses ${GCL} if set, else "gcl"
 #    sbcl       uses ${SBCL} if set, else "sbcl"
+#    openmcl    uses ${OPENMCL} if set, else "openmcl"
 
 usage(){
     cat <<\EOF
@@ -132,6 +133,16 @@ case "$1" in
         sbcl )
             echo 'fasl' # How about other platforms?
             ;;
+	openmcl )
+	      case `uname -s` in
+		  Darwin )        # Darwin
+		      echo 'dfsl'
+		      ;;
+		  * )             # Linux PPC
+		      echo 'pfsl'
+		      ;;
+	      esac
+	      ;;
         * )
             # Since make does not stop when the exit status is 1, we simply
             # echo LISPTYPE_NOT_SET here.
@@ -158,6 +169,9 @@ case "$1" in
           sbcl)
               echo .core # This is just a guess
           ;;
+	  openmcl)
+	      echo .image
+	  ;;
           *)
               # Since make does not stop when the exit status is 1, we simply
               # echo LISPTYPE_NOT_SET here.
@@ -225,6 +239,12 @@ case "$1" in
 	    fi
             "$1" $extra_args $load_arg -eval '(run)'
             ;;
+	openmcl )
+	    if [ -n "$load_file" ]; then
+		load_arg="-l $load_file"
+	    fi
+	    ${OPENMCL-openmcl} -I "$1.image" $load_arg
+	    ;;
         *)
             fail "Sorry, option -run not supported for LISPTYPE=${LISPTYPE}."
         ;;
@@ -294,6 +314,9 @@ case "$1" in
               gcl )
                   todo=$todo" (setq si::*top-level-hook* #'$initfun)"
                   ;;
+	      openmcl )
+		  initfun_arg=":toplevel-function #'$initfun"
+		  ;;
               * )
                   fail "Sorry, option -d not supported for LISPTYPE=${LISPTYPE}."
                   ;;
@@ -326,6 +349,9 @@ case "$1" in
               gcl )
                   todo=$todo" (si:save-system \"${arg}\")"
                   ;;
+	      openmcl )
+		  todo=$todo" (ccl:save-application \"${arg}.image\" $initfun_arg)"
+		  ;;
               * )
                   fail "Sorry, option -d not supported for LISPTYPE=${LISPTYPE}."
                   ;;
@@ -361,6 +387,8 @@ case "$1" in
 
     if [ x"$LISPTYPE" = x"sbcl" ]; then
       todo="(progn${todo}(sb-ext:quit))"
+    elif [ x"$LISPTYPE" = x"openmcl" ]; then
+      todo="(progn ${todo} (ccl::quit))"
     else
       todo="(progn${todo})"
     fi
@@ -403,6 +431,11 @@ case "$1" in
       sbcl )
           ${image-${SBCL-sbcl}} $extra_args --noinform --noprint --eval "$todo"
           ;;
+      openmcl )
+	  test -z "$image" || image="-I ${image}.image";
+	  echo ${OPENMCL-openmcl} ${image} -e "${todo}" $extra_args
+	  ${OPENMCL-openmcl} ${image} -e "${todo}" $extra_args
+	  ;;
       * )
           if [ -n "$LISPTYPE" ] ; then
             fail "Sorry, LISPTYPE=${LISPTYPE} is not supported"

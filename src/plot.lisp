@@ -94,12 +94,12 @@
   `(progn
      (defun ,name (x y) (the ,type (,op  (the ,type x) (the ,type y))))
      (eval-when (compile eval)     
-     (#+kcl si::DEFINE-COMPILER-MACRO #-kcl
+     (#+kcl si::DEFINE-COMPILER-MACRO
+      #+(and :ansi-cl (not kcl))
+      define-compiler-macro
+      #-(or kcl :ansi-cl)
 	    defmacro ,name (x y)
          `(the ,',type (,',op  (the ,',type ,x) (the ,',type ,y)))))))
-
-(defbinop f+ + fixnum)
-(defbinop f- - fixnum)
 
 (defbinop $+ + long-float)
 (defbinop $- - long-float)
@@ -1494,11 +1494,11 @@ setrgbcolor} def
       )))
   
 
-
-(setf (symbol-function '*$) (symbol-function '*))
-(setf (symbol-function '+$) (symbol-function '+))
-(setf (symbol-function '-$) (symbol-function '-))
-(setf (symbol-function '/$) (symbol-function '/))
+#| these are already defined in clmacs.lisp |#
+(or (fboundp '*$) (setf (symbol-function '*$) (symbol-function '*)))
+(or (fboundp '+$) (setf (symbol-function '+$) (symbol-function '+)))
+(or (fboundp '-$) (setf (symbol-function '-$) (symbol-function '-)))
+(or (fboundp '/$) (setf (symbol-function '/$) (symbol-function '/)))
 
 #|
 Here is what the user inputs to draw the lattice picture.

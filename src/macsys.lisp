@@ -71,6 +71,11 @@
   (declare (ignore unused))
   (sb-ext:get-bytes-consed))
 
+#+openmcl
+(defun used-area (&optional unused)
+  (declare (ignore unused))
+  (ccl::total-bytes-allocated))
+
 #+clisp
 (defun used-area (&optional unused)
   (declare (ignore unused))
@@ -495,6 +500,10 @@
 #+sbcl
 (defun $system (&rest args)
   (sb-ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output t))
+
+#+openmcl
+(defun $system (&rest args)
+  (ccl::run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output t))
 
 (defun $room (&optional (arg nil arg-p))
   (if arg-p

@@ -378,6 +378,7 @@
 	 (and (eql ch #\?) (setq next (peek-char nil  stream  nil)))
 	 (setf unread-ch ch)
 	 )
+      (format t "ch = ~A~%" ch)
       (cond ((eql #\: ch)
 	     (let* ((line (prepend-read-line stream eof-error-p eof-value))
 		    fun)
@@ -410,6 +411,7 @@
 	     ;; Read the char that we unread back to the stream.
 	     ;; Make a new stream consisting of the next char and the
 	     ;; rest of the actual input.
+	     (format t "cond T branch, ch = ~A~%" ch)
 	     (if (eql #\? ch)
 		 (let* ((first-char (read-char stream))
 			(new-stream (make-concatenated-stream
@@ -422,6 +424,7 @@
 				     (make-string-input-stream
 				      (string unread-ch))
 				     stream)))
+		   (format t "made new-stream = ~A~%" new-stream)
 		   (mread new-stream eof-value))))))))
 
 

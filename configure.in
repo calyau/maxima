@@ -190,6 +190,41 @@ if test x"${gcl}" = xtrue ; then
 	fi
 fi
 
+dnl n.b. openmcl_default_name is hardcoded in "with" message
+openmcl_default_name=openmcl
+AC_ARG_ENABLE(openmcl,[  --enable-openmcl                 Use OpenMCL],
+     	[case "${enableval}" in
+       		yes) openmcl=true 
+		     explicit_lisp=true;;
+       		no)  openmcl=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-openmcl) ;;
+     	esac],
+	[openmcl=false])
+AC_ARG_WITH(openmcl,
+	[  --with-openmcl=<prog>            Use OpenMCL executable <prog> (default openmcl)],
+	[openmcl=true
+	explicit_lisp=true
+	if test "$withval" = "yes"; then
+		OPENMCL_NAME="${openmcl_default_name}"
+	else
+		OPENMCL_NAME="$withval"
+	fi],
+	[OPENMCL_NAME=${openmcl_default_name}])
+if test x"${openmcl}" = xtrue ; then
+	if test `echo "$OPENMCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
+		if test -x "$OPENMCL_NAME" ; then
+			openmcl_found=true
+		else
+			openmcl_found=false
+		fi
+	else
+		AC_CHECK_PROG(openmcl_found,$OPENMCL_NAME,true,false)
+	fi
+	if test x"${openmcl_found}" = xfalse ; then
+		AC_MSG_WARN(openmcl executable ${OPENMCL_NAME} not found in PATH)
+	fi
+fi
+
 if test x"${explicit_lisp}" = xfalse ; then
 	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
 	if test x"${clisp_found}" = xtrue ; then
@@ -211,7 +246,12 @@ if test x"${explicit_lisp}" = xfalse ; then
 					if test x"${acl6_found}" = xtrue ; then
 						acl6=true
 					else
-						AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl6_default_name}(ACL6)] were found in PATH)
+						AC_CHECK_PROG(openmcl_found,$OPENMCL_NAME,true,false)
+						if test x"${openmcl_found}" = xtrue ; then
+							openmcl=true
+						else
+							AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl6_default_name}(ACL6),${openmcl_default_name}(OpenMCL)] were found in PATH)
+						fi
 					fi
 				fi
 			fi
@@ -224,6 +264,7 @@ AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
 AM_CONDITIONAL(SBCL, test x$sbcl = xtrue)
 AM_CONDITIONAL(ACL6, test x$acl6 = xtrue)
+AM_CONDITIONAL(OPENMCL, test x$openmcl = xtrue)
 
 AC_ARG_ENABLE(gcl-alt-link,
 	[  --enable-gcl-alt-link            Use GCL's alternate linking mechanism],
@@ -274,6 +315,13 @@ AC_ARG_WITH(default-lisp,
 				AC_MSG_ERROR(acl6 not enabled)
 			fi
 			;;	
+		openmcl)
+			if test x"${openmcl}" = xtrue ; then
+				DEFAULTLISP=openmcl
+			else
+				AC_MSG_ERROR(openmcl not enabled)
+			fi
+			;;		
 		*) 
 			AC_MSG_ERROR(Unknown argument ${DEFAULTLISP} to --with-default-lisp) 
 			;;
@@ -293,7 +341,11 @@ AC_ARG_WITH(default-lisp,
 					if test x"${acl6}" = xtrue ; then
 						DEFAULTLISP=acl6
 					else
-						AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
+						if test x"${openmcl}" = xtrue ; then
+							DEFAULTLISP=openmcl
+						else
+							AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
+						fi
 					fi
 				fi
 			fi
@@ -305,6 +357,7 @@ AC_SUBST(CMUCL_NAME)
 AC_SUBST(SBCL_NAME)
 AC_SUBST(GCL_NAME)
 AC_SUBST(ACL6_NAME)
+AC_SUBST(OPENMCL_NAME)
 AC_SUBST(DEFAULTLISP)
 
 AC_ARG_WITH(posix-shell,
@@ -393,6 +446,9 @@ if test x"${gcl}" = xtrue ; then
 fi
 if test x"${acl6}" = xtrue ; then
 	echo "ACL6 enabled. Executable name: \"${ACL6_NAME}\""
+fi
+if test x"${openmcl}" = xtrue ; then
+	echo "OpenMCL enabled. Executable name: \"${OPENMCL_NAME}\""
 fi
 echo "default lisp: $DEFAULTLISP"
 echo "wish executable name: \"${WISH}\""

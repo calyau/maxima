@@ -199,6 +199,38 @@ gcl-depends.mk: maxima.system
 include gcl-depends.mk
 endif
 
+if OPENMCL
+all-local: binary-openmcl/maxima.image
+install-exec-local: install-openmcl
+uninstall: uninstall-openmcl
+clean: clean-openmcl
+distclean: clean-openmcl
+
+binary-openmcl/maxima.image:
+	LISPTYPE=openmcl ; export LISPTYPE ;\
+	OPENMCL=$(OPENMCL_NAME) ; export OPENMCL ;\
+	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
+        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
+        $(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
+        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
+        -f cl-user::run -d binary-openmcl/maxima
+
+install-openmcl:
+	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
+	$(INSTALL_DATA) binary-openmcl/maxima.image "$(DESTDIR)$(verpkglibdir)/binary-openmcl/maxima.image"
+
+uninstall-openmcl:
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-openmcl/maxima.image"
+
+clean-openmcl:
+	rm -rf binary-openmcl
+openmcl-depends.mk: maxima.system
+	LISPTYPE=openmcl ; export LISPTYPE ;\
+	OPENMCL=$(OPENMCL_NAME) ; export OPENMCL;\
+	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-openmcl/maxima.image" "openmcl-depends.mk")'
+include openmcl-depends.mk
+endif
+
 echo_%:
 	@echo "$(subst echo_,,$@)=$($(subst echo_,,$@))"
 	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"

@@ -932,10 +932,13 @@
 	  (if (zerop order)
 	      1
 	      0)))
-      (cond ((and $numer (numberp order)
-		  (complex-number-p arg))
-	     ;; We have numeric order and arg, so let's try to
-	     ;; evaluate it numerically.
+      (cond ((or (and (numberp order) (complex-number-p arg)
+		      (or (floatp order) (floatp ($realpart arg)) (floatp ($imagpart arg))))
+		 (and $numer (numberp order)
+		      (complex-number-p arg)))
+	     ;; We have numeric order and arg and $numer is true, or
+	     ;; we have either the order or arg being floating-point,
+	     ;; so let's evaluate it numerically.
 	     (let ((real-arg ($realpart arg))
 		   (imag-arg ($imagpart arg)))
 	       (cond ((or (and (floatp real-arg) (numberp imag-arg))

@@ -1048,10 +1048,7 @@
 #+(and :excl :allegro-v4.0 :cltl2)
 (provide 'make)
 
-#+:mcl
-(ccl:provide 'make)
-
-#+(and :cltl2 (not (or (and :excl (or :allegro-v4.0 :allegro-v4.1)) :mcl)))
+#+(and :cltl2 (not (and :excl (or :allegro-v4.0 :allegro-v4.1))))
 (provide 'make)
 
 #+:lispworks
@@ -1366,12 +1363,10 @@
          #+TI ("lisp" . #.(string (si::local-binary-file-type)))
          #+:gclisp                            ("LSP"  . "F2S")
          #+pyramid                            ("clisp" . "o")
-         #+:coral                             ("lisp" . "pfsl")
 	 ;; Harlequin LispWorks
 	 #+:lispworks 	      ("lisp" . ,COMPILER:*FASL-EXTENSION-STRING*)
 ;        #+(and :sun4 :lispworks)             ("lisp" . "wfasl")
 ;        #+(and :mips :lispworks)             ("lisp" . "mfasl")
-         #+:mcl                               ("lisp" . "pfsl")
 	 #+:gcl                                ("lsp" . "o")
 
          ;; Otherwise,
@@ -3743,7 +3738,7 @@ D
 	 #+:sbcl 'cl:require
 	 #+:lispworks3.1 'common-lisp::require
 	 #+(and :lispworks (not :lispworks3.1)) 'system::require
-	 #+:mcl 'ccl:require))
+	 #+:mcl 'ccl::require))
 
   (unless *dont-redefine-require*
     (let (#+(or :mcl (and :CCL (not :lispworks)))
@@ -3755,7 +3750,7 @@ D
 	     #+:lispworks3.1 'common-lisp::require
 	     #+:sbcl 'cl:require
 	     #+(and :lispworks (not :lispworks3.1)) 'system::require
-	     #+:mcl 'ccl:require)
+	     #+:mcl 'ccl::require)
 	    (symbol-function 'new-require))
       #+:lispworks
       (let ((warn-packs system::*packages-for-warn-on-redefinition*))
