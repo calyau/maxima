@@ -1,7 +1,5 @@
 /* Test cases for ode1_abel.mac functions */
 
-(load("contrib_ode"),use_pdiff:false,put('contrib_ode,true,'verbose));
-true;
 
 /* Print ode number*/
 (pn_(n_):=print("ODE ",n_),kn_(n_):=print("Kamke ODE ",n_),true);

@@ -1,10 +1,5 @@
 /* Test cases for ode1_lie functions */
 
-(load(pdiff),load("contrib_ode.mac"),done);
-done;
-put('contrib_ode,true,'verbose);
-true;
-
 /* Some exact equations from rtestode */
  
 /* ode2(x^2*cos(x*y)*'diff(y,x) + (sin(x*y)+x*y*(cos(x*y)))=0, y, x); */

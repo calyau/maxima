@@ -1,10 +1,6 @@
-/* Test cases for ode1_riccati.mac functions */
+/* Test cases for ode1_riccati.mac functions
 
-
-/* Do not kill(all); It messes up trigsimp */
-
-(load("contrib_ode"),put('contrib_ode,true,'verbose));
-true;
+   Do not kill(all); It messes up trigsimp */
 
 /* Need these indentities to check solutions */
 besjident(n,x):=bessel_j(n,x)=2*(n-1)*bessel_j(n-1,x)/x-bessel_j(n-2,x);

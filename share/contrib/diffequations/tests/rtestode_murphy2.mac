@@ -9,11 +9,6 @@
 
 /* Don't kill(all); It messes up trigsimp */
 
-(load('contrib_ode),put('contrib_ode,true,'verbose),done);
-done;
-(load('pdiff),use_pdiff:false);
-false;
-
 /* Eliminate parameter t from singular solution */
 (elim_(ans,x,y,t):=block([s],s:first(solve(ans[2],t)),s:solve(ev(ans[1],s),y),s[1]),done);
 done;

@@ -1,10 +1,6 @@
 /* Test cases for symtest() function */
 
-(load(pdiff),load("contrib_ode"),done);
-done;
 use_pdiff:true;
-true;
-put('contrib_ode,true,'verbose);
 true;
 
 /*  E. S. Cheb-Terrab, A. D. Roche,  Symmetries and First Order ODE Patterns
@@ -181,3 +177,6 @@ solve(ans,y);
 [y = -(SIN(x)+COS(x)-%E^(x-%C)-2*%C*%E^x+2*x+2)/2];
 ode_check('diff(y,x)=phi,%[1]);
 0;
+
+use_pdiff:false;
+false;

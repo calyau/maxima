@@ -9,9 +9,6 @@
 */
 /* Don't kill(all); It messes up trigsimp */
 
-(load('contrib_ode),load('pdiff),put('contrib_ode,true,'verbose),done);
-done;
-
 /* Print ode number*/
 (pn_(n_):=print("ODE ",n_),true);
 true;
