@@ -70,7 +70,8 @@
 ;;; his init file.  Note use of the string to avoid interning 'sloop in
 ;;; some other package.
 (in-package "CL-SLOOP")
-(shadow 'loop-finish)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (shadow 'loop-finish))
 
 ;;(or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
 ;;(eval-when (compile eval load)
