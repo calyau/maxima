@@ -114,6 +114,24 @@ y^2/(2*%K1)=x+%K2;
 method;
 freeofx; */
 
+eq: 'diff(y,x,2)+x*'diff(y,x)+exp(-x^2)*y=0;
+'diff(y,x,2)+x*'diff(y,x,1)+%e^-x^2*y = 0;
+ans:ode2(eq,y,x);
+y = %k1*sin(sqrt(2)*sqrt(%pi)*erf(x/sqrt(2))/2)+%k2*cos(sqrt(2)*sqrt(%pi)*erf(x/sqrt(2))/2);
+is(ratsimp(ev(eq,ans,diff)));
+true;
+method;
+xformtoconstcoeff;
+
+eq:x*'diff(y,x,2)+(x^2-1)*'diff(y,x,1)+x^3*y=0;
+x*'diff(y,x,2)+(x^2-1)*'diff(y,x,1)+x^3*y=0;
+ans:ode2(eq,y,x);
+y=%e^-(x^2/4)*(%k1*sin(sqrt(3)*x^2/4)+%k2*cos(sqrt(3)*x^2/4));
+is(ratsimp(ev(eq,ans,diff)));
+true;
+method;
+xformtoconstcoeff;
+
 /* Tests of desolve */
 
 eqn1:'diff(f(x),x) = sin(x)+'diff(g(x),x);
