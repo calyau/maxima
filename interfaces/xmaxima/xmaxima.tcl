@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.26 2002-09-08 01:45:23 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.27 2002-09-10 06:01:57 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -131,27 +131,38 @@
 ## source RunMaxima.tcl
 
 proc usage {} {
-    puts {usage: xmaxima [options] [url]}
-    puts {           If given, [url] will be opened in the help browser instead}
-    puts "           of the default starting page."
-    puts "options:"
-    puts "    --help: Display this usage message."
-    puts "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>."
-    puts "    --use-version=<version>: Launch maxima version <version>."
+    set usage {}
+    lappend usage "usage: xmaxima [options] [url]" \
+	"           If given, [url] will be opened in the help browser instead" \
+	"           of the default starting page." \
+	"options:" \
+	"    --help: Display this usage message." \
+	"    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>." \
+	"    --use-version=<version>: Launch maxima version <version>."
+
+    tide_notify [join $usage "\n"]
 }
 
-proc doit { fr } {
-    global NCtextHelp ws_openMath xmaximaPreferences argv argv0 env
-
-    #mike Move this in from being at the global level
-    if {[file isfile ~/xmaxima.ini]} {
-	catch { source ~/xmaxima.ini }
+proc vMAXSetCNTextBindings {w} {
+     if { 1 || "[bind CNtext <Return>]" == "" } {
+ 	bind CNtext <Return> "CMeval %W  ; break"
+ 	bind CNtext <Control-c><Control-c> "CMinterrupt %W "
+ 	bind CNtext <Control-u> "CNclearinput %W "
+ 	bind CNtext "\)"  "CNblinkMatchingParen %W %A"
+ 	bind CNtext "\]"  "CNblinkMatchingParen %W %A"
+ 	bind CNtext "\}"  "CNblinkMatchingParen %W %A"
+ 	bind CNtext <Control-j> "tkTextInsert %W %A ; openMathAnyKey %W %K  %A"
+ 	bind CNtext <Alt-p>  "CNpreviousInput $w -1"
+        bind CNtext <Alt-n>  {sendMaxima %W ":n\n"}
+        bind CNtext <Alt-s>  {sendMaxima %W ":s\n" }
+	bind CNtext <Control-Key-c>  {tk_textCut %W ;break}
+	bind CNtext <Control-Key-v>  {tk_textPaste %W ;break}
     }
 
-    if {[winfo exists $fr]} {catch { destroy $fr }}
+}
 
-    frame .browser
-    set firstUrl file:/[file join $ws_openMath(maxima_xmaximadir) "intro.html"]
+proc lMaxInitSetOpts {} {
+    global ws_openMath argv argv0 env
 
     set maxima_opts {}
     if { [lsearch $argv "--help"] > -1 } {
@@ -181,43 +192,36 @@ proc doit { fr } {
 	set argv [lreplace $argv $lisp_pos $version_pos]
     }
     if { [llength $argv] == 1 } {
-	set firstURL [lindex $argv 0]
+	set ws_openMath(firstUrl) [lindex $argv 0]
     } elseif { [llength $argv] > 1 } {
-	puts "xmaxima: Error: arguments \"$argv\" not understood."
+	tide_failure "Error: arguments \"$argv\" not understood."
 	exit 1
     }
 
-    if { [auto_execok $ws_openMath(xmaxima_maxima)] != "" } {
-	#mike FIXME: This should break on windows if there is a space in the pathname
-	set exe $ws_openMath(xmaxima_maxima)
-	set ws_openMath(localMaximaServer) "$exe $maxima_opts -p [file join $ws_openMath(maxima_xmaximadir) server.lisp] -r \":lisp (progn (user::setup PORT)(values))\" &"
-    } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
-	tide_failure "Error. maxima executable XMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA) not found."
-	exit 1
-    } else {
-	# A gruesome hack. Normally, we communicate to the maxima image
-	# through the maxima script, as above. If the maxima script is not
-	# available, as may happen on windows, directly talk to the GCL 
-	# saved image. jfa 04/28/2002
-	#mike FIXME: But if this is windows, the exe won't be in
-	# $ws_openMath(maxima_verpkglibdir)/binary-gcl
-	# except for CYGWIN where it is windows but with Unix paths.
+    return $maxima_opts
+}
 
-	set env(MAXIMA_INT_LISP_PRELOAD) \
-	    "[file join $ws_openMath(maxima_xmaximadir) server.lisp]"
-	set env(MAXIMA_INT_INPUT_STRING) \
-	    ":lisp (progn (user::setup PORT)(values));"
-	#mike FIXME: This should break on windows if there is a space in the pathname
-	set exe [file join $ws_openMath(maxima_verpkglibdir) binary-gcl maxima]
-	set ws_openMath(localMaximaServer) "$exe -eval \"(run)\" -f &"
-    }
-    if {[set exe [auto_execok $exe]] == "" || ![file isfile $exe]} {
-	# || ![file exec $exe]	
-	tide_notify [M "Maxima executable not found in '%s'" \
-			 [file native $exe]]
+proc vMAXExit {{text ""}} {
+    if {$text == ""} {set text $ws_openMath(cConsoleText)}
+    catch \{closeMaxima $text\}
+    exit
+}
+
+proc doit { fr } {
+    global ws_openMath argv argv0 env fontSize
+
+    wm withdraw .
+    wm title . xmaxima
+
+    #mike Move this in from being at the global level
+    if {[file isfile ~/xmaxima.ini]} {
+	catch { source ~/xmaxima.ini }
     }
 
-    OpenMathOpenUrl $firstUrl -toplevel .browser
+    if {[winfo exists $fr]} {catch { destroy $fr }}
+    frame .browser
+
+    OpenMathOpenUrl $ws_openMath(firstUrl) -toplevel .browser
     set ws_openMath(cBrowser) .browser
 
     frame $fr
@@ -230,8 +234,8 @@ proc doit { fr } {
     set w $fr.text
 
     #mike An abomination:
-    set men [CMmenu $fr]
-    oset $men textwin $w
+    # set men [CMmenu $fr]
+    # oset $men textwin $w
     # Replace with a proper system menu below
 
     clearLocal $w
@@ -240,20 +244,6 @@ proc doit { fr } {
     
     closeMaxima $w
     clearLocal $w
-     if { 1 || "[bind CNtext <Return>]" == "" } {
- 	bind CNtext <Return> "CMeval %W  ; break"
- 	bind CNtext <Control-c><Control-c> "CMinterrupt %W "
- 	bind CNtext <Control-u> "CNclearinput %W "
- 	bind CNtext "\)"  "CNblinkMatchingParen %W %A"
- 	bind CNtext "\]"  "CNblinkMatchingParen %W %A"
- 	bind CNtext "\}"  "CNblinkMatchingParen %W %A"
- 	bind CNtext <Control-j> "tkTextInsert %W %A ; openMathAnyKey %W %K  %A"
- 	bind CNtext <Alt-p>  "CNpreviousInput $w -1"
-        bind CNtext <Alt-n>  {sendMaxima %W ":n\n"}
-        bind CNtext <Alt-s>  {sendMaxima %W ":s\n" }
-	bind CNtext <Control-Key-c>  {tk_textCut %W ;break}
-	bind CNtext <Control-Key-v>  {tk_textPaste %W ;break}
-    }
 
     # oset $w program $program
     oset $w prompt "% " 
@@ -286,18 +276,30 @@ proc doit { fr } {
     pack $fr.text -expand 1 -fill both -side left
     set ws_openMath(cConsoleText) $fr.text
 
-    desetq "width height"  [getMaxDimensions]
-    wm geometry . ${width}x${height}
-    update
-    
-    if { [winfo height $fr] > .8 * [winfo height .]  } {
-	$fr.text config -height 15
-    }
-    
+    $fr.text configure -height 24 -width 80
+    set btext [info commands .browser.*.text]
+    $btext configure -height 24 -width 80
 
-    wm title . xmaxima
+    vMAXSetCNTextBindings $w
+    wm protocol . WM_DELETE_WINDOW [list vMAXExit $fr.text]
+
+    update
+    if {[set h [winfo reqheight .]] > \
+	    [set max [expr [winfo screenheight .] \
+			  - (2 * abs($fontSize))]]} {
+	set cur [$btext cget -height]
+	set delta [expr \
+		       int (($h - $max) / abs($fontSize))]
+	$btext config -height [expr $cur - $delta]
+    }
+
+
     # Add a proper system menu
-    # vMAXAddSystemMenu $fr $ws_openMath(cConsoleText)
+    vMAXAddSystemMenu $fr $ws_openMath(cConsoleText)
+    wm deiconify .
+
+    #mike Defer looking for maxima until the interface has been built
+    vMAXSetMaximaCommand
 
     #mike Defer the starting of maxima until the interface has been built
     if {[catch {runOneMaxima $w} err]} {
@@ -305,4 +307,5 @@ proc doit { fr } {
     }
 
 }
+
 
