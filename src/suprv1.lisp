@@ -1099,7 +1099,8 @@
 
 
 #+CL (PROGN 'COMPILE
-(DEFMFUN $QUIT () nil #+kcl (bye) 
+(DEFMFUN $QUIT () nil #+kcl (bye) #+cmu (ext:quit) #+sbcl (sb-ext:quit) #+clisp (ext:quit)
+
    (quit)
    #+excl "don't know quit function")
 (DEFMFUN $LOGOUT () (LOGOUT))
