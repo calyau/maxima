@@ -1,0 +1,7 @@
+Makefile
+Makefile.in
+
+autoconf-variables.lisp
+maxima
+
+binary-*
