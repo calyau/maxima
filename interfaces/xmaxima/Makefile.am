@@ -1,10 +1,13 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.35 2004-04-28 16:36:28 amundson Exp $
+#       $Id: Makefile.am,v 1.36 2004-06-22 01:41:52 amundson Exp $
 #
 
 include $(top_srcdir)/common.mk
-xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png maxima-new.gif maxima-icon.ico maxima-icon.png
+
+genericdir = $(xmaximadir)
+
+genericdirDATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png maxima-new.gif maxima-icon.ico maxima-icon.png
 
 bin_SCRIPTS = xmaxima
 

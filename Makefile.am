@@ -1,5 +1,5 @@
 SUBDIRS = src lisp-utils tests doc interfaces share demo plotting
-EXTRA_DIST = common.mk README.lisps maxima.iss.in README.rpms INSTALL.win32 configure.lisp INSTALL.lisp maxima-local.in xmaxima-local.in
+EXTRA_DIST = common.mk README.lisps maxima.iss.in README.rpms INSTALL.win32 configure.lisp INSTALL.lisp maxima-local.in xmaxima-local.in README.external
 
 include common.mk
 
@@ -22,5 +22,5 @@ iss: extradocinstall
 # for rpm and cp.
 rpm: $(distdir).tar.gz
 	$(SUDO) cp $(distdir).tar.gz /usr/src/redhat/SOURCES && \
-	$(SUDO) rpm -ba maxima.spec
+	$(SUDO) rpmbuild -ba maxima.spec
 

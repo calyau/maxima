@@ -23,7 +23,8 @@ $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
 	./texi2html -split_chapter maxima.texi 
 
 include $(top_srcdir)/common.mk
-dochtml_DATA = $(MAXIMAHTML)
+genericdir = $(dochtmldir)
+genericdirDATA = $(MAXIMAHTML)
 
 clean: clean-info
 clean: clean-html

@@ -11,7 +11,7 @@ clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
 	clisp includes GNU readline support, so Maxima will have
 advanced command-line editing facilities when built with it.
 
-clisp versions: Clisp version 2.33.1 or later is recommended. Clisp
+clisp versions: Clisp version 2.33.2 or later is recommended. Clisp
 2.30 is not compatible with Maxima and should be avoided.
 
 CMUCL <http://cmucl.cons.org>
