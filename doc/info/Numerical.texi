@@ -200,9 +200,8 @@ equal to
   b: r SIN (t)
 @end example
 
-The input arrays must be the same size, and can be 1- or 2-dimensional.
-The array dimensions need not be a power of 2, nor do 2-dimensional
-arrays need to be square.
+The input arrays must be the same size and 1-dimensional.
+The array size need not be a power of 2.
 
 POLARTORECT is the inverse function of RECTTOPOLAR.
 
@@ -226,9 +225,8 @@ equal to
 
 The computed angle is in the range -%pi to %pi. 
 
-The input arrays must be the same size, and can be 1- or 2-dimensional.
-The array dimensions need not be a power of 2, nor do 2-dimensional
-arrays need to be square.
+The input arrays must be the same size and 1-dimensional.
+The array size need not be a power of 2.
 
 RECTTOPOLAR is the inverse function of POLARTORECT.
 
@@ -240,20 +238,14 @@ RECTTOPOLAR is the inverse function of POLARTORECT.
 Fast inverse discrete Fourier transform. LOAD ("FFT")$ will load this function
 into Maxima.
 
-IFT carries out the inverse complex fast Fourier transform on 1- or
-2-dimensional floating point arrays. The inverse transform is defined as
+IFT carries out the inverse complex fast Fourier transform on
+1-dimensional floating point arrays. The inverse transform is defined as
 
 @example
   X[j]: SUM (Y[j] EXP (+2 %i %pi j k / n), k, 0, n-1)
 @end example
 
-in the 1-dimensional case, and
-
-@example
-  X[i,j]: SUM (SUM (Y[k,l] EXP (+2 %i %pi (i k + j l) / n), l, 0, n-1), k, 0, n-1)
-@end example
-
-in the 2-dimensional case. See FFT for more details.
+See FFT for more details.
 
 @end defun
 @c @node FFT
@@ -267,10 +259,8 @@ Fast Fourier transform and related functions. LOAD ("FFT")$ will
 load these functions into Maxima.
 
 FFT and IFT carry out the complex fast Fourier transform and
-inverse transform, respectively, on 1- or 2-dimensional floating
-point arrays. If 2-dimensional, the arrays must be square (that is,
-number of rows equal to number of columns). The size of imaginary_array
-must equal the size of real_array.
+inverse transform, respectively, on 1-dimensional floating
+point arrays. The size of imaginary_array must equal the size of real_array.
 
 FFT and IFT operate in-place. That is, on return from FFT or IFT,
 the original content of the input arrays is replaced by the output.
@@ -284,27 +274,12 @@ as follows. Let X be the original data, with
   X[i]: real_array[i] + %i imaginary_array[i]
 @end example
   
-and likewise, in the 2-dimensional case,
-
-@example
-  X[i, j]: real_array[i, j] + %i imaginary_array[i, j]
-@end example
-
-Let Y be the transformed data. In the 1-dimensional case,
-the forward and inverse transforms are
+Let Y be the transformed data. The forward and inverse transforms are
 
 @example
   Y[k]: (1/n) SUM (X[j] EXP (-2 %i %pi j k / n), j, 0, n-1)
 
   X[j]:       SUM (Y[j] EXP (+2 %i %pi j k / n), k, 0, n-1)
-@end example
-
-In the 2-dimensional case, the forward and inverse transforms are
-
-@example
-  Y[k,l]: (1/n^2) SUM (SUM (X[i,j] EXP (-2 %i %pi (i k + j l) / n), j, 0, n-1), i, 0, n-1)
-
-  X[i,j]:         SUM (SUM (Y[k,l] EXP (+2 %i %pi (i k + j l) / n), l, 0, n-1), k, 0, n-1)
 @end example
 
 Suitable arrays can be allocated by the ARRAY function. For example:
@@ -313,14 +288,8 @@ Suitable arrays can be allocated by the ARRAY function. For example:
   ARRAY (my_array, FLOAT, n-1)$
 @end example
 
-declares a 1-dimensional array, and
-
-@example
-  ARRAY (my_array, FLOAT, n-1, n-1)$
-@end example
-
-declares a square 2-dimensional array. In either case, n must
-be equal to 2^m for some m. See ARRAY.
+declares a 1-dimensional array with n elements, indexed from 0 through
+n-1 inclusive. The number of elements n must be equal to 2^m for some m.
 
 FFT can be applied to real data (imaginary array all zeros) to obtain
 sine and cosine coefficients. After calling FFT, the sine and cosine
