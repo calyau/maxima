@@ -20,15 +20,7 @@ where $a<x<b$.
 RQ:(-p*('ev('ev(u(x)*'diff(u(x),x)),x=a)-'ev('ev(u(x)*diff(u(x),x)),x=b))+
 'integrate(p*'diff(u(x),x)^2-q*u(x)^2,x,a,b))/'integrate(u(x)^2*sigma,x,a,b);
 \maximatexoutput
-{\small$$  {{\int_{a}^{b}{p\*\mathrm{\%DERIVATIVE}^{2}\left(\left(u\left(x
- \right),\linebreak[0]x,\linebreak[0]1\right)\right)-q\*u^{2}\left(
- \left(x\right)\right)\;dx}-p\*\left(\mathrm{EV}\left(\mathrm{EV}
- \left(u\left(x\right)\*\left({{d}\over{d\*x}}\*u\left(x\right)
- \right)\right),\linebreak[0]x=a\right)-\mathrm{EV}\left(\mathrm{EV}
- \left(u\left(x\right)\*\left({{d}\over{d\*x}}\*u\left(x\right)
- \right)\right),\linebreak[0]x=b\right)\right)}\over{\sigma\*\int_{a
- }^{b}{u^{2}\left(\left(x\right)\right)\;dx}}} $$
-}
+\[  \frac{\int_{a}^{b}{p\*\left(\frac{d}{d\*x}\*u\left(x\right)\right)^{2}-q\*u^{2 }\left(x\right)\;dx}-p\*\left(\mathrm{EV}\left(\mathrm{EV}\left(u\left(x\right)\*\left(\frac{d}{d\*x}\*u\left(x\right)\right)\right),\linebreak[0]x=a\right)-\mathrm{EV}\left(\mathrm{EV}\left(u\left(x\right)\*\left(\frac{d}{d\*x}\*u\left(x\right)\right)\right),\linebreak[0]x=b\right)\right)}{\sigma\*\int_{a}^{b}{u^{2 }\left(x\right)\;dx}} \]
 \endmaxima
 
 Now we evaluate it.  This must be done in stages, otherwise the ev command
@@ -39,19 +31,9 @@ ev(RQ,p=1,q=0,sigma=1,u(x)=x-x^2,a=0,b=1);
 ev(%,diff,integrate);
 ev(%,ev);
 \maximatexoutput
-{\small$$   {{\mathrm{EV}\left(\mathrm{EV}\left(\left(x-x^{2}\right)\*\left(
- {{d}\over{d\*x}}\*\left(x-x^{2}\right)\right)\right),\linebreak[0]x=
- 1\right)-\mathrm{EV}\left(\mathrm{EV}\left(\left(x-x^{2}\right)\*
- \left({{d}\over{d\*x}}\*\left(x-x^{2}\right)\right)\right)
- ,\linebreak[0]x=0\right)+\int_{0}^{1}{\mathrm{\%DERIVATIVE}^{2}
- \left(\left(x-x^{2},\linebreak[0]x,\linebreak[0]1\right)\right)\;dx}
- }\over{\int_{0}^{1}{\left(x-x^{2}\right)^{2}\;dx}}} $$
-}
-$$   30\*\left(\mathrm{EV}\left(\mathrm{EV}\left(\left(1-2\*x\right)
- \*\left(x-x^{2}\right)\right),\linebreak[0]x=1\right)-\mathrm{EV}
- \left(\mathrm{EV}\left(\left(1-2\*x\right)\*\left(x-x^{2}\right)
- \right),\linebreak[0]x=0\right)+{{1}\over{3}}\right) $$
-$$   10 $$
+\[  \frac{\mathrm{EV}\left(\mathrm{EV}\left(\left(x-x^{2}\right)\*\left(\frac{d}{d\*x}\*\left(x-x^{2}\right)\right)\right),\linebreak[0]x=1\right)-\mathrm{EV}\left(\mathrm{EV}\left(\left(x-x^{2}\right)\*\left(\frac{d}{d\*x}\*\left(x-x^{2}\right)\right)\right),\linebreak[0]x=0\right)+\int_{0}^{1}{\left(\frac{d}{d\*x}\*\left(x-x^{2}\right)\right)^{2}\;dx}}{\int_{0}^{1}{\left(x-x^{2}\right)^{2}\;dx}} \]
+\[  30\*\left(\mathrm{EV}\left(\mathrm{EV}\left(\left(1-2\*x\right)\*\left(x-x^{2}\right)\right),\linebreak[0]x=1\right)-\mathrm{EV}\left(\mathrm{EV}\left(\left(1-2\*x\right)\*\left(x-x^{2}\right)\right),\linebreak[0]x=0\right)+\frac{1}{3}\right) \]
+\[  10 \]
 \endmaxima
 
 This can be checked by hand.  Seeing that it is correct, we now can use it to 
@@ -62,7 +44,7 @@ ev(RQ,p=1,q:-(x^2),sigma=1,u(x)=x-1,a=0,b=1)$
 ev(%,diff,integrate)$
 EV(%,EV,NUMER);
 \maximatexoutput
-$$   6.1 $$
+\[  6.1 \]
 \endmaxima
 
 \beginmaxima
@@ -70,7 +52,7 @@ ev(RQ,p=1,q:-(x^2),sigma=1,u(x)=-2*x^2+2,a=0,b=1)$
 ev(%,diff,integrate)$
 ev(%,ev,NUMER);
 \maximatexoutput
-$$   2.642857142857143 $$
+\[  2.6428571428571432 \]
 \endmaxima
 
 \beginmaxima
@@ -78,7 +60,7 @@ ev(RQ,p=1,q:-(x^2),sigma=1,u(x)=x^3+x^2-2,a=0,b=1)$
 ev(%,diff,integrate)$
 ev(%,ev,NUMER);
 \maximatexoutput
-$$   2.776084010840108 $$
+\[  2.7760840108401084 \]
 \endmaxima
 
 The smallest eigenvalue must therefore be less than or equal to 2.642857...
@@ -100,21 +82,19 @@ express(laplacian(f));
 ev(%,diff)$
 ratexpand(%);
 \maximatexoutput
-\p  Warning - you are redefining the MACSYMA function TRIGSIMP
-Warning - you are redefining the MACSYMA function IMPROVE
-Warning - you are redefining the MACSYMA function UPDATE \\
-$$   \mathrm{DONE} $$
-$$   \left[ f\left(\rho,\linebreak[0]\vartheta,\linebreak[0]\varphi
- \right) \right]  $$
-$$   {{{{d}\over{d\*\rho}}\*\left({{d}\over{d\*\rho}}\*f\*\left| 
- \sin \varphi\right| \*\rho^{2}\right)+{{d}\over{d\*\vartheta}}\*{{{{
- d}\over{d\*\vartheta}}\*f\*\left| \sin \varphi\right| }\over{\sin ^{
- 2}\varphi}}+{{d}\over{d\*\varphi}}\*\left({{d}\over{d\*\varphi}}\*f
- \*\left| \sin \varphi\right| \right)}\over{\left| \sin \varphi
- \right| \*\rho^{2}}} $$
-$$   {{2\*\left({{d}\over{d\*\rho}}\*f\right)}\over{\rho}}+{{{{d
- }\over{d\*\varphi}}\*f\*\cos \varphi}\over{\sin \varphi\*\rho^{2}}}+
- {{{{d^{2}}\over{d\*\vartheta^{2}}}\*f}\over{\sin ^{2}\varphi\*\rho^{
- 2}}}+{{{{d^{2}}\over{d\*\varphi^{2}}}\*f}\over{\rho^{2}}}+{{d^{2}
- }\over{d\*\rho^{2}}}\*f $$
+\p
+; In: LAMBDA (X ANS A3)
+
+;   #'(LAMBDA (X ANS A3) NIL (COND # #))
+; Note: Variable A3 defined but never used.
+; 
+; Note: Variable A3 defined but never used.
+; 
+; Note: Variable A3 defined but never used.
+; 
+; Note: Variable A3 defined but never used. \\
+\[  \mathrm{DONE} \]
+\[  \left[ f\left(\rho,\linebreak[0]\vartheta,\linebreak[0]\varphi\right) \right] \]
+\[  \frac{\frac{d}{d\*\rho}\*\left(\frac{d}{d\*\rho}\*f\*\left| \sin \varphi\right| \*\rho^{2}\right)+\frac{d}{d\*\vartheta}\*\frac{\frac{d}{d\*\vartheta}\*f\*\left| \sin \varphi\right| }{\sin ^{2 }\varphi}+\frac{d}{d\*\varphi}\*\left(\frac{d}{d\*\varphi}\*f\*\left| \sin \varphi\right| \right)}{\left| \sin \varphi\right| \*\rho^{2}} \]
+\[  \frac{2\*\left(\frac{d}{d\*\rho}\*f\right)}{\rho}+\frac{\frac{d}{d\*\varphi}\*f\*\cos \varphi}{\sin \varphi\*\rho^{2}}+\frac{\frac{d^{2}}{d\*\vartheta^{2}}\*f}{\sin ^{2 }\varphi\*\rho^{2}}+\frac{\frac{d^{2}}{d\*\varphi^{2}}\*f}{\rho^{2}}+\frac{d^{2}}{d\*\rho^{2}}\*f \]
 \endmaxima
