@@ -475,7 +475,7 @@
 			     (fillarray (nsymbol-array '$besselarray) jvals)
 			     (aref jvals n))
 			    (t
-			     (let* ((j ($bessel order (- arg)))
+			     (let* ((j ($bessel (- arg) order))
 				    (s1 (cis (- (* order pi))))
 				    (s2 (* #c(0 2) (cos (* order pi)))))
 			       (slatec:dbesy (- (float arg)) alpha (1+ n) jvals)
@@ -947,7 +947,7 @@
 	     ;; We have numeric order and arg and $numer is true, or
 	     ;; we have either the order or arg being floating-point,
 	     ;; so let's evaluate it numerically.
-	     ($bessel order arg))
+	     ($bessel arg order))
 	    ((and (integerp order) (minusp order))
 	     ;; Some special cases when the order is an integer
 	     ;;
