@@ -293,23 +293,31 @@ in order to have enough unknown coefficients to solve.
 @end defun
 
 @defvar powerdisp
- default: @code{false} - if @code{true} will cause sums to be displayed
-with their terms in the reverse order.  Thus polynomials would display
-as truncated power series, i.e., with the lowest power first.
+Default value: @code{false}
 
+When @code{powerdisp} is @code{true},
+a sum is displayed with its terms in order of increasing power.
+Thus a polynomial is displayed as a truncated power series,
+with the constant term first and the highest power last.
+
+By default, terms of a sum are displayed in order of decreasing power.
+
+@c NEED AN EXAMPLE HERE
 @end defvar
 
-@defun powerseries (exp, var, pt)
-generates the general form of the power
-series expansion for exp in the variable var about the point pt (which
-may be @code{inf} for infinity).  If @code{powerseries} is unable to expand exp, the
-@code{taylor} function may give the first several terms of the series.
-@code{verbose} - if @code{true} will cause comments about the progress of
-@code{powerseries} to be printed as the execution of it proceeds.
+@defun powerseries (@var{expr}, @var{x}, @var{x_0})
+Returns the general form of the power series expansion for @var{expr}
+in the variable @var{x} about the point @var{x_0} (which may be @code{inf} for infinity).
+
+If @code{powerseries} is unable to expand @var{expr},
+@code{taylor} may give the first several terms of the series.
+
+When @code{verbose} is @code{true},
+@code{powerseries} prints progress messages. 
 
 @example
-(%i1) verbose:true$
-(%i2) powerseries(log(sin(x)/x),x,0);
+(%i1) verbose: true$
+(%i2) powerseries (log(sin(x)/x), x, 0);
 can't expand 
                                  log(sin(x))
 so we'll try again after applying the rule:
@@ -339,66 +347,114 @@ in the first simplification we have returned:
 @end defun
 
 @defvar psexpand
- default: @code{false} - if @code{true} will cause extended rational
-function expressions to display fully expanded.  (@code{ratexpand} will also
-cause this.)  If @code{false}, multivariate expressions will be displayed
-just as in the rational function package.  If @code{psexpand:multi}, then
-terms with the same total degree in the variables are grouped
-together.
+Default value: @code{false}
+
+When @code{psexpand} is @code{true},
+an extended rational function expression is displayed fully expanded.
+The switch @code{ratexpand} has the same effect.
+
+@c WE NEED TO BE EXPLICIT HERE
+When @code{psexpand} is @code{false},
+a multivariate expression is displayed just as in the rational function package.
+
+@c TERMS OF WHAT ??
+When @code{psexpand} is  @code{multi},
+then terms with the same total degree in the variables are grouped together.
 
 @end defvar
 
-@defun revert (expression,variable)
-Does reversion of Taylor Series.
-"Variable" is the variable the original Taylor expansion is in.  Do
-@code{load(revert)} to access this function.  Try
+@defun revert (@var{expr}, @var{x})
+@defunx revert2 (@var{expr}, @var{x}, @var{n})
+These functions return the reversion of @var{expr}, a Taylor series about zero in the variable @var{x}.
+@code{revert} returns a polynomial of degree equal to the highest power in @var{expr}.
+@code{revert2} returns a polynomial of degree @var{n},
+which may be greater than, equal to, or less than the degree of @var{expr}.
+
+@code{load ("revert")} loads these functions.
+
+Examples:
 
 @example
-revert2(expression,variable,hipower)
+(%i1) load ("revert")$
+(%i2) t: taylor (exp(x) - 1, x, 0, 6);
+                   2    3    4    5     6
+                  x    x    x    x     x
+(%o2)/T/      x + -- + -- + -- + --- + --- + . . .
+                  2    6    24   120   720
+(%i3) revert (t, x);
+               6       5       4       3       2
+           10 x  - 12 x  + 15 x  - 20 x  + 30 x  - 60 x
+(%o3)/R/ - --------------------------------------------
+                                60
+(%i4) ratexpand (%);
+                     6    5    4    3    2
+                    x    x    x    x    x
+(%o4)             - -- + -- - -- + -- - -- + x
+                    6    5    4    3    2
+(%i5) taylor (log(x+1), x, 0, 6);
+                    2    3    4    5    6
+                   x    x    x    x    x
+(%o5)/T/       x - -- + -- - -- + -- - -- + . . .
+                   2    3    4    5    6
+(%i6) ratsimp (revert (t, x) - taylor (log(x+1), x, 0, 6));
+(%o6)                           0
+(%i7) revert2 (t, x, 4);
+                          4    3    2
+                         x    x    x
+(%o7)                  - -- + -- - -- + x
+                         4    3    2
 @end example
 
-also.  @code{revert} only works on
-expansions around 0.
-
 @end defun
 
-@defun srrat (exp)
-this command has been renamed to @code{taytorat}.
+@c OBSOLETE AS ADVERTISED; NOT CALLED FROM ANY USER-LEVEL FILE (.mac OR .dem)
+@c CUT THIS OUT ON NEXT PASS
+@c @defun srrat (exp)
+@c this command has been renamed to @code{taytorat}.
+@c 
+@c @end defun
 
-@end defun
+@defun taylor (@var{expr}, @var{x}, @var{x_0}, @var{n})
+Expands the expression @var{expr} in a truncated
+Taylor series (or Laurent series, if required) in the variable @var{x}
+around the point @var{x_0},
+containing terms through @code{(@var{x} - @var{x_0})^@var{n}}.
 
-@defun taylor (exp, var, pt, pow)
-expands the expression exp in a truncated
-Taylor series (or Laurent series, if required) in the variable var
-around the point pt.  The terms through (var-pt)**pow are generated.
-If exp is of the form f(var)/g(var) and g(var) has no terms up to
+If @var{expr} is of the form f(x)/g(x) and g(var) has no terms up to
 degree pow then @code{taylor} will try to expand g(var) up to degree 2*pow.
 If there are still no non-zero terms @code{taylor} will keep doubling the
 degree of the expansion of g(var) until reaching pow*2**n where n is
-the value of the variable @code{taylordepth} [3].  If @code{maxtayorder} [FALSE] is
-set to @code{true}, then during algebraic manipulation of (truncated) Taylor
-series, @code{taylor} will try to retain as many terms as are certain to be
-correct.  Do @code{example(taylor)} for examples.
+the value of the variable @code{taylordepth}.
 
-@code{taylor(exp,[var1,pt1,ord1],[var2,pt2,ord2],...)}  returns a truncated
-power series in the variables vari about the points pti, truncated at
-ordi.
+@code{taylor (@var{expr}, [@var{x_1}, @var{x_@{0,1@}}, @var{n_1}], [@var{x_2}, @var{x_@{0,2@}}, @var{n_2}], ...)}
+returns a truncated power series in the variables @var{x_1}, @var{x_2}, ...
+about the points @var{x_@{0,1@}}, @var{x_@{0,2@}}, ...,
+truncated at @var{n_1}, @var{n_2}, ....
 
-@code{psexpand} [FALSE] if @code{true} will cause extended rational function
-expressions to display fully expanded.  (@code{ratexpand} will also cause
-this.) If @code{false}, multivariate expressions will be displayed just as in
-the rational function package.  If @code{psexpand:multi}, then terms with the
-same total degree in the variables are grouped together.
-
-@code{taylor(exp, [var1, var2, .  . .], pt, ord)} where each of pt and ord
+@code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{x_0}, @var{n})}
+where each of pt and ord
 may be replaced by a list which will correspond to the list of
-variables.  that is, the nth items on each of the lists will be
+variables.  That is, the nth items on each of the lists will be
 associated together.
 
-@code{taylor(exp, [x,pt,ord,ASYMP])} will give an expansion of exp in
+@code{taylor (@var{expr}, [x, pt, ord, 'asymp])} will give an expansion of exp in
 negative powers of (x-pt).  The highest order term will be (x-pt)^(-ord).
 The @code{asymp} is a syntactic device and not to be assigned to.
 See also the @code{taylor_logexpand} switch for controlling expansion.
+
+When @code{maxtayorder} is @code{true}, then during algebraic
+manipulation of (truncated) Taylor series, @code{taylor} tries to retain
+as many terms as are known to be correct.
+
+When @code{psexpand} is @code{true},
+an extended rational function expression is displayed fully expanded.
+The switch @code{ratexpand} has the same effect.
+When @code{psexpand} is @code{false},
+a multivariate expression is displayed just as in the rational function package.
+When @code{psexpand} is  @code{multi},
+then terms with the same total degree in the variables are grouped together.
+
+Do @code{example(taylor)} for examples.
 
 @end defun
 
