@@ -526,7 +526,14 @@ appear in exp.  The default is to omit these.
 
 @end example
 @end defun
-@c @node LOPOW, LPART, LISTOFVARS, Expressions
+
+@c @node LFREEOF, LOPOW, LISTOFVARS, Expressions
+@c @unnumberedsec phony
+@defun LFREEOF (list, exp)
+For each member m of list, calls FREEOF(m,exp).
+It returns false if any call to FREEOF does and true otherwise.
+@end defun
+@c @node LOPOW, LPART, LFREEOF, Expressions
 @c @unnumberedsec phony
 @defun LOPOW (exp, v)
 the lowest exponent of v which explicitly appears in

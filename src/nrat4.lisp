@@ -342,6 +342,13 @@ LOOP	(IF (OR (PCOEFP (CDR EXP)) (POINTERGP MINVAR (CADR EXP)))
 (DEFMFUN ARGSFREEOF (VAR E)
   (LET ((ARGSFREEOFP T)) (FREEOF VAR E)))
  
+;;; This is a version of freeof for a list first argument
+(defmfun $LFREEOF (l e) "FREEOF for a list first argument"
+   (unless ($listp l) (merror "First argument must be a list"))
+   (let ((exp ($TOTALDISREP e)))
+      (dolist (var (margs l) T)
+         (unless (freeof ($TOTALDISREP var) exp) (return nil)))))
+
 (DEFMFUN $FREEOF NARGS
   (PROG (L E) 
 	(SETQ L (MAPCAR #'$TOTALDISREP (NREVERSE (LISTIFY NARGS)))
