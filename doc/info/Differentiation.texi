@@ -219,13 +219,6 @@ If DERIVSUBST is set to
 true, this gives 'DIFF(X,T).
 
 @end defvar
-@c @node DIFF
-@c @unnumberedsec phony
-@defvr {special symbol} DIFF
-[flag] for ev causes all differentiations indicated in exp to be
-performed.
-@end defvr
-
 @c @node DIFF, DSCALAR, {special symbol}, Differentiation
 @c @unnumberedsec phony
 @defun DIFF (exp, v1, n1, v2, n2, ...)
@@ -284,6 +277,14 @@ not been assigned a value, then the variables will be treated as in 1)
 above.
 
 @end defun
+
+@c @node DIFF
+@c @unnumberedsec phony
+@defvr {special symbol} DIFF
+[flag] for ev causes all differentiations indicated in exp to be
+performed.
+@end defvr
+
 @c @node DSCALAR, EXPRESS, DIFF, Differentiation
 @c @unnumberedsec phony
 @defun DSCALAR (function)
