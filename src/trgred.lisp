@@ -489,11 +489,12 @@
 	        (SC^N %N V (COND ((ODDP %N) '(%SIN))('(%COS))) (NOT (ODDP %N))
 				(M^ -1 (M+ (// %N 2) 'K))))
 
-(DEFUN SINH^N (%N V)
-       (M- (SC^N %N V (COND ((ODDP %N) '(%SINH))
-			      ('(%COSH)))
-		 (NOT (ODDP %N))
-		 (M^ -1 (M+ (// %N 2) 'K)))))
+(defun sinh^n (%n v)
+  (if (oddp %n)
+      (sc^n %n v '(%sinh) nil (m^ -1 'k))
+      (if (zerop (mod %n 4))
+	  (sc^n %n v '(%cosh) t (m^ -1 'k))
+	  (m- (sc^n %n v '(%cosh) t (m- (m^ -1 'k)))))))
 
 (DEFUN COS^N (%N V) (SC^N %N V '(%COS) (NOT (ODDP %N)) 1))
 
