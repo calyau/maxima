@@ -193,7 +193,7 @@ C
       RES24 = 0.0D+00
       DO 50 I=1,13
         RES12 = RES12+CHEB12(I)*RG(I)
-        RES24 = RES12+CHEB24(I)*RG(I)
+        RES24 = RES24+CHEB24(I)*RG(I)
    50 CONTINUE
       DO 60 I=14,25
         RES24 = RES24+CHEB24(I)*RG(I)
