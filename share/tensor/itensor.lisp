@@ -671,7 +671,8 @@
 
 (defmfun $rediff (x) (meval '(($ev) x $idiff)))
 
-(defmfun $evundiff (x) ($rediff ($undiff x)))
+;;(defmfun $evundiff (x) ($rediff ($undiff x)))
+(defmfun $evundiff (x) (meval (list '($ev) ($undiff x) '$nouns)))
 
 (defmfun $undiff (x) 
   (cond
