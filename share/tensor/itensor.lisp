@@ -617,6 +617,7 @@
             #'(lambda (s)              ; e([..%1..],[...])*v([],[%1],k)
               (list
                 '(mtimes)
+                (cond ((atom (car s)) 1) (t -1))
                 (append
                   (list
                     (car e)
@@ -624,15 +625,24 @@
                       '(mlist)
                       (append
                         (subseq (cdadr e) 0 (- (length (cdadr e)) (length s)))
-                        (cons dummy (cdr s))
+                        (cons
+                          (cond ((atom (car s)) dummy)
+                                (t (list '(mtimes simp) -1 dummy))
+                          )
+                          (cdr s)
+                        )
                       )
                     )
                     (caddr e)
                   )
                   (cdddr e)
                 )
-;                (list (list v) '((mlist)) (list '(mlist) dummy) (car s))
-                (vecdiff v dummy (car s) dummy2)
+                (vecdiff
+                  v
+                  (cond ((atom (car s))  dummy) (t (caddr (car s))))
+                  (cond ((atom (car s)) (car s)) (t dummy))
+                  dummy2
+                )
               )
             )
             (cdadr e)
@@ -646,7 +656,6 @@
                   (subseq (cdddr e) 0 (- (length (cdddr e)) (length s)))
                   (cons dummy (cdr s))
                 )
-;                (list (list v) '((mlist)) (list '(mlist) dummy) (car s))
                 (vecdiff v dummy (car s) dummy2)
               )
             )
@@ -668,7 +677,6 @@
                   )
                   (cdddr e)
                 )
-;                (list (list v) '((mlist)) (list '(mlist) (car s)) dummy)
                 (vecdiff v (car s) dummy dummy2)
               )
             )
@@ -933,7 +941,30 @@
 	     (GO LOOP2))) 
 
 ;; Create a 'normalized' (i.e., old-style) rpobj
-(defun renorm (e) (append (list (car e) ($covi e) ($conti e)) (cdddr e)))
+(defmfun $renorm (e &optional (force nil))
+  (prog (c v)
+    (and (not (rpobj e)) (merror "Not an RPOBJ: ~M" e))
+    (and $allsym (setq force t))
+    (setq c (cdaddr e) v nil)
+    (do
+      ((i (reverse (cdadr e)) (cdr i)))
+      (
+        (or (null i) (and (atom (car i)) (not force))) ; Terminating condition
+        (setq v (append (reverse i) v))          ; Remaining covariant indices
+      )
+      (cond
+        ((atom (car i)) (setq v (cons (car i) v)))
+        (t (setq c (cons (caddar i) c)))
+      )
+    )
+    (return
+      (cons (car e) (append (list (cons smlist v) (cons smlist c)) (cdddr e)))
+    )
+  )
+)
+
+;; As above, but unconditionally. Not needed.
+;(defun renorm (e) (append (list (car e) ($covi e) ($conti e)) (cdddr e)))
 
 ;; Add a minus sign to all elements in a list
 (defun neglist (l)
@@ -1950,6 +1981,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	 (MAPCAR
 	  #'(LAMBDA (X) 
 	    (COND ((RPOBJ X)
+           (setq x ($renorm x))
 		   (NCONC (LIST (CAR X)                              ;($F SIMP)
 				(CONS SMLIST
 				      (COND ($ALLSYM (itensor-SORT (COPY (CDADR X))))
@@ -1958,7 +1990,8 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 				      (COND ($ALLSYM
 					     (itensor-SORT (COPY (CDADDR X))))
 					    (T (CDADDR X)))))        ;($C $D)
-			  (itensor-SORT (COPY (CDDDR X)))))                ;($E $F)
+              (cond ($iframe_flag (cdddr x))
+			   (t (itensor-SORT (COPY (CDDDR X)))))))                ;($E $F)
 		  (T X)))
 	  (COND ((EQ (CAAR E) 'MTIMES) (CDR E))
 		(T (NCONS E)))))

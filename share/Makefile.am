@@ -494,6 +494,8 @@ sym/treillis.lisp\
 sym/tri.lisp\
 sym/util.lisp\
 tensor/ademo.dem\
+tensor/adsitter.dem\
+tensor/allnutt.dem\
 tensor/atensor.dem\
 tensor/atensor.mac\
 tensor/bianchi.dem\
@@ -509,6 +511,7 @@ tensor/ctensor7.dem\
 tensor/ex_calc.dem\
 tensor/ex_calc.mac\
 tensor/gener.lisp\
+tensor/godel.dem\
 tensor/helicity.dem\
 tensor/iframe.mac\
 tensor/itensor.lisp\
@@ -528,6 +531,7 @@ tensor/plasma.dem\
 tensor/reissner.dem\
 tensor/schwarz.dem\
 tensor/symtry.lisp\
+tensor/taubnut.dem\
 tensor/tendemo.mac\
 tensor/tensor.dem\
 tensor/tentex.lisp\

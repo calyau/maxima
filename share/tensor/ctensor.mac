@@ -281,6 +281,7 @@ tmetric(disp):=block(
   fr:lfg.(transpose(fri)^^(-1)),
   ufg:lfg^^(-1),
   lg:transpose(lfg.fri).fri,
+
   if ctrgsimp then lg:trigsimp(lg)
   else lg:ratsimp(lg),
   if ratfac then lg:factor(lg),
@@ -1472,15 +1473,15 @@ psi(disp):=block
     )
   )
   else w:'weyl,
-  psi[0]:-contract4(w,1,3,1,3),
+  psi[0]:ratsimp(-contract4(w,1,3,1,3)),
   if disp then ldisplay(psi[0]),
-  psi[1]:-contract4(w,1,2,1,3),
+  psi[1]:ratsimp(-contract4(w,1,2,1,3)),
   if disp then ldisplay(psi[1]),
-  psi[2]:gfactor(-1/2*(contract4(w,1,2,1,2)+contract4(w,1,2,3,4))),
+  psi[2]:ratsimp(gfactor(-1/2*(contract4(w,1,2,1,2)+contract4(w,1,2,3,4)))),
   if disp then ldisplay(psi[2]),
-  psi[3]:contract4(w,1,2,2,4),
+  psi[3]:ratsimp(contract4(w,1,2,2,4)),
   if disp then ldisplay(psi[3]),
-  psi[4]:-contract4(w,2,4,2,4),
+  psi[4]:ratsimp(-contract4(w,2,4,2,4)),
   if disp then ldisplay(psi[4]),
   done
 );
@@ -1515,7 +1516,8 @@ petrov():=block
     else
     (
       hh:ratsimp(psi[0]*psi[2]-psi[1]^2),
-      if ratsimp(gg-psi[0]^2*ii-12*hh^2)#0 then "Type is II"
+/*      if ratsimp(gg-psi[0]^2*ii-12*hh^2)#0 then "Type is II"*/
+      if ratsimp(gg-(psi[0]^2*ii-12*hh^2))#0 then "Type is II"
       else "Type is D"
     )
   )
