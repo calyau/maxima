@@ -34,7 +34,7 @@ winkill.exe: winkill.c
 	gcc -Wall -o winkill.exe winkill.c 
 
 tclwinkill.dll: tclwinkill.c
-	gcc -Wall $(TCLTKINCFLAGS) -shared tclwinkill.c $(TCLTKLINKFLAGS) -ltclstub83 -o tclwinkill.dll
+	gcc -Wall $(TCLTKINCFLAGS) -shared tclwinkill.c $(TCLTKLINKFLAGS) -ltclstub84 -o tclwinkill.dll
 
 gcccopy:
 	test -d "$(prefix)/bin" || mkdir -p "$(prefix)/bin"
@@ -47,6 +47,7 @@ gcccopy:
 	cp $(GCCPREFIX)/bin/gcc.exe $(prefix)/bin
 	cp $(GCCPREFIX)/bin/as.exe $(prefix)/bin
 	cp $(GCCPREFIX)/bin/mingwm10.dll $(prefix)/bin
+	cp $(GCCPREFIX)/bin/tclpip84.dll $(prefix)/bin
 	cp $(GCCPREFIX)/include/stdio.h $(prefix)/include
 	cp $(GCCPREFIX)/include/varargs.h $(prefix)/include
 	cp $(GCCPREFIX)/include/setjmp.h $(prefix)/include
@@ -56,11 +57,14 @@ gcccopy:
 	cp $(GCCPREFIX)/include/unistd.h $(prefix)/include
 	cp $(GCCPREFIX)/include/io.h $(prefix)/include
 	cp $(GCCPREFIX)/include/process.h $(prefix)/include
+	cp $(GCCPREFIX)/include/getopts.h $(prefix)/include
 	cp $(GCCPREFIX)/include/sys/*.h $(prefix)/include/sys
-	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cc1.exe $(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
-	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cpp0.exe $(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
-	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/specs  $(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
-	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/include/*.h  $(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cc1.exe \
+		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/specs  \
+		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
+	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/include/*.h  \
+		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include
 
 install: xmaxima.exe winkill.exe tclwinkill.dll
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
