@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.34 2004-02-07 21:16:04 amundson Exp $
+#       $Id: Makefile.am,v 1.35 2004-04-28 16:36:28 amundson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -72,7 +72,7 @@ xmaxima: $(XMAXIMASOURCES) Tkmaxima/tclIndex
 		chmod +x xmaxima
 
 WIN32_FILES = win32/ChangeLog win32/Makefile.in  win32/tclwinkill.c  win32/winkill.c
-EXTRA_DIST = $(xmaxima_DATA) $(XMAXIMA_REAL_SOURCES) $(WIN32_FILES) Tkmaxima/Header.tcl.in win32/maxima.bat maxima-icon.png
+EXTRA_DIST = $(xmaxima_DATA) $(XMAXIMA_REAL_SOURCES) $(WIN32_FILES) Tkmaxima/Header.tcl.in maxima-icon.png
 
 
 # Developer convenience target
