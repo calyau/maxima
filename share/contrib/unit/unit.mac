@@ -524,7 +524,7 @@ derivedrules(currentunitlist):= block([letrat:true,i,j,a,b,fakerule],
    killruleset(derivedexpandunitrules),
    unitlet([fakerule,fakerule],derivedsimpunitrules),
    unitlet([fakerule,fakerule],derivedexpandunitrules),
-   quantlist1 : makequantlist(unitlist),
+   quantlist1 : makequantlist(currentunitlist),
    for a : 1 thru length(globalderivedunitlisting_use) do (
     unitlistname : concat(globalderivedunitlisting_use[a][2],listing_use),
     for i : 2 thru length(ev(unitlistname)) do (
@@ -536,20 +536,36 @@ derivedrules(currentunitlist):= block([letrat:true,i,j,a,b,fakerule],
       unitlistname : concat(globalderivedunitlisting_use[a][2],listing_use),
       found : 0,
       i : 1,
-      while not(?equal(found,0)) and ?is( i <= length(quantlist1)) do (
-	  if ?equal(globalderivedunitlisting_use[a][2],quantlist1[i]) then (found : i)),
+      while (?equal(found,0)) and ?is( i <= length(quantlist1)) do (
+	  if ?equal(globalderivedunitlisting_use[a][2],quantlist1[i]) then (found : i),
+	  i : i + 1),
       if not(?equal(found,0)) then (
         for i : 2 thru length(ev(unitlistname)) do (
-         if not(lfreeof(unitlist[found],unitlistname[i][1])) then (
-         unitlet([unitlistname[1][1],unitlistname[i][1][1]/unitlistname[i][2]],derivedexpandunitrules)))
+         if not(lfreeof(unitlistname[i][1],currentunitlist[found])) then (
+         unitlet([unitlistname[1],unitlistname[i][1][1]/unitlistname[i][2]],derivedexpandunitrules)))
       ) else (
-      error("Could not find unit definition."))
-   ) else (
-   unitlet([unitlistname[1][1],unitlistname[2][1][1]],derivedexpandunitrules))
-   )
+      unitlet([unitlistname[1],unitlistname[2][1][1]],derivedexpandunitrules))
+    ))
 );
+makenonfinalunitlist() := block([letrat:true,result1],
+   for a : 1 thru length(globalderivedunitlisting_use) do (
+      unitlistname : concat(globalderivedunitlisting_use[a][2],listing_use),
+      for i : 2 thru length(ev(unitlistname)) do (
+       for j : 1 thru length(unitlistname[i][1]) do (
+        if not(?equal(unitlistname[i][1][1]/unitlistname[i][2]]
 
 
+processunits(expression) := block([letrat:true,result1],
+   result1 : letsimp(expression,derivedsimpunitrules),
+   result1 : letsimp(result1,derivedexpandunitrules),
+   result1 : letsimp(result1,%lengthrules),
+   result1 : letsimp(result1,%massrules),
+   result1 : letsimp(result1,%timerules),
+   result1 : letsimp(result1,%currentrules),
+   result1 : letsimp(result1,%temperaturerules),
+   result1 : letsimp(result1,%amount_of_substancerules),
+   result1 : letsimp(result1,%luminous_intensityrules),
+ result1);
 
 /*====================== User Functions ======================*/ 
 
@@ -598,38 +614,38 @@ unitinfo(unit):= block([letrat:true,result,quantity],
 as its arguments either a single unit or a list of units.  Checks to
 make sure the list contains only one unit per quantity.  Will need to
 update to handle derived quantities - map won't work.*/
-setunits(units):= block([letrat:true,i,j,unittype,unitlistname,
-                         unitrules,currentunitlist, flag],
-  modedeclare([i,j], fixnum),
-  if listp(units) then (
-     if (is(length(units) > 1) and not(?equal(length(units),0))) then (
-        if (checkforuniqueness(makequantlist(units))) then (             
-              map ('setunits, units))
-        else (
-          (error ("Error - two or more of these units describe the same quantity."))
-     ))
-     else (
-     	if ?equal(length(units),1) then (map ('setunits, units))
-     ))
-  else (
-  if (isunit(units)) then (
-      unittype : letsimp(units,toquantities),
-      unitlistname : concat(unittype,listing_use),
-      unitrules : concat(unittype,'rules),
-      flag : 0, i:0,
-      while ?equal(flag,0) do(
-        i : i+1,
-        if not(lfreeof(unitlistname[i][1],units)) then (
-           currentunitlist : unitlistname[i],
-	   flag : 1),
-	if ?equal(i, length(ev(unitlistname))) then (flag : 1)
-      ),
-      if isbase(units) then (
-         baserules(currentunitlist,unitlistname,unitrules)
+setunits(units):= block([letrat:true,unittype,unitlistname,
+                         unitrules,currentunitlist, flag, derivedunits],
+derivedunits : [],
+if listp(units) then (
+  if (checkforuniqueness(makequantlist(units))) then (
+    for i : 1 thru length(units) do (
+      if (not(isbase(units[i])) and (isunit(units[i]))) then ( 
+	 derivedunits : append([units[i]],derivedunits)
       ) else (
-         derivedrules(currentunitlist)
-      )
-   )));
+	setunits(units[i])
+      )),
+    if (not(?equal(length(derivedunits),0))) then (
+	derivedrules(derivedunits))
+  ) else (
+  error ("Error - two or more of these units describe the same quantity."))
+ ) else (
+  isunit(units),
+  unittype : letsimp(units,toquantities),
+  unitlistname : concat(unittype,listing_use),
+  unitrules : concat(unittype,'rules),
+  flag : 0, i:0,
+  while ?equal(flag,0) do (
+     i : i+1,
+     if not(lfreeof(unitlistname[i][1],units)) then (
+        currentunitlist : unitlistname[i],
+        flag : 1),
+     if ?equal(i, length(ev(unitlistname))) then (flag : 1)
+  ),
+  baserules(currentunitlist,unitlistname,unitrules)
+  ),
+  makenonfinalunitlist()
+);
 
 /*  Allows the user to create their own units */
 addunits([[unitname(s)],definition,0]):=
@@ -643,6 +659,10 @@ convert(expression,desiredunits):=
    on to the default lists*/
 %unitexpand : 2;
 
+/* This is a list which contains quantities the user doesn't want
+simplified by the derived units simplifier.  Default is empty. */
+dontuselist : [];
+
 /* Places all relevant metric definitons into the %quantitylist lists.*/
 metricexpandall(%unitexpand);
 
@@ -651,7 +671,6 @@ quantity to allow for proper simplification.  Remember for addunit command
 and any similar commands to add a new quantity to the globalderivedunitlist,
 then recreate the use list. */
 globalderivedunitlisting_use : rankquants(globalderivedunitlisting);
-
 
 /* Variable to control how simplification behaves with respect to 
    fullnames and abbreviations.  The default, 0, simplifies abbrev. to
