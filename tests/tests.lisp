@@ -26,53 +26,35 @@
 
 (setq *collect-errors* nil)
 (time 
-  (sloop with errs = '((mlist)) for v in 
-	 '(
-	   "rtest1" "rtest1a" "rtest2" "rtest3" "rtest4" "rtest5"
-	   "rtest6" "rtest6a" "rtest6b" "rtest7"
-	   "rtest8"
-	   "rtest9"
-	   "rtest9a" "rtest10" "rtest11" "rtest12" "rtest13" "rtest13s"
-	   "rtest14"
-	   )
-	 do
-	 (format t "~%Testing ~a.mac" v)
-	 (or (errset
-               (setq errs ($append errs
-                            (test-batch (format nil
-			     "~a~a.mac" (if (boundp 'doc-path) doc-path "")
-			     v)))))
+ (sloop with errs = '() for testv in 
+	'(
+	  "rtest1" "rtest1a" "rtest2" "rtest3" "rtest4" "rtest5"
+	  "rtest6" "rtest6a" "rtest6b" "rtest7"
+	  "rtest8"
+	  "rtest9"
+	  "rtest9a" "rtest10" "rtest11" "rtest12" "rtest13" "rtest13s"
+	  "rtest14"
+	  )
+	do
+	(format t "~%Testing ~a.mac" testv)
+	(or (errset
+	     (progn
+	       (setq testresult (rest (test-batch
+				       (format nil
+					       "~a~a.mac"
+					       (if (boundp 'doc-path)
+						   doc-path "")
+					       testv))))
+	     (if testresult
+		 (setq errs (append errs (list testresult))))))
 	    (progn
-              (setq errs ($append errs `((mlist), '$Broke ',v)))
-     
-	     (format t "~%Caused a error break: ~a.mac" v)))
-         finally (cond ((null (cdr errs)) (format t "~%No Errors Found"))
-		       (t ($print "Error Summary:" errs)))
-	 ))
-;;check the run command
-;(macsyma-top-level)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	      (setq error-break-file (format nil "~a.mac" testv))
+	      (setq errs (append errs (list (list error-break-file "error break"))))
+	      (format t "~%Caused an error break: ~a.mac~%" testv)))
+	finally (cond ((null errs) (format t "~%No Errors Found"))
+		      (t (format t "~%Error summary:~%")
+			 (mapcar
+			  #'(lambda (x)
+			      (format t "Error(s) found in ~a: ~a~%"
+				      (first x) (rest x)))
+			  errs)))))
