@@ -1662,19 +1662,31 @@ To get apropos with the symbol under point, use:
   "Check to see if the Maxima process has halted"
   (not (maxima-running)))
 
-(defun maxima-strip-string (string)
-  "Remove any spaces, tabs or newlines at the beginning and end of the string"
-  (while (or
-          (string= "\n" (substring string -1))
-          (string= "\t" (substring string -1))
-          (string= " " (substring string -1)))
+(defun maxima-strip-string-end (string)
+  "Remove any spaces, tabs or newlines at the end of the string"
+  (while (and
+          (> (length string) 0)
+          (or
+           (string= "\n" (substring string -1))
+           (string= "\t" (substring string -1))
+           (string= " " (substring string -1))))
     (setq string (substring string 0 -1)))
-  (while (or
-          (string= "\n" (substring string 0 1))
-          (string= "\t" (substring string 0 1))
-          (string= " " (substring string 0 1)))
+  string)
+
+(defun maxima-strip-string-beginning (string)
+  "Remove any spaces, tabs or newlines at the beginning of the string"
+  (while (and 
+          (> (length string) 0)
+          (or
+           (string= "\n" (substring string 0 1))
+           (string= "\t" (substring string 0 1))
+           (string= " " (substring string 0 1))))
     (setq string (substring string 1)))
   string)
+
+(defun maxima-strip-string (string)
+  "Remove any spaces, tabs or newlines at the beginning and end of the string"
+  (maxima-strip-string-beginning (maxima-strip-string-end string)))
 
 (defun maxima-single-string (string &optional nonewinput)
   "Send a string to the Maxima process."
