@@ -329,13 +329,22 @@ is not included")
 	  `(the integer4 (+ ,arg (int-add ,@more-args)))
 	  `(the integer4 (+ ,arg ,@more-args)))))
 
-(defmacro int-sub (arg &rest more-args)
-  (if (null more-args)
-      `(the integer4 (- ,arg))
-      (if (> (length more-args) 1)
-	  `(the integer4 (- ,arg (int-sub ,@more-args)))
-	  `(the integer4 (- ,arg ,@more-args)))))
+(defun convert-int-sub (args)
+  (let ((nargs (length args)))
+    (case nargs
+      (1
+       `(the integer4 (- ,(first args))))
+      (2
+       `(the integer4 (- ,(first args) ,(second args))))
+      (t
+       (let ((result `(the integer4 (- ,(first args) ,(second args)))))
+	 (dolist (arg (rest (rest args)))
+	   (setf result `(the integer4 (- ,result ,arg))))
+	 result)))))
 
+(defmacro int-sub (&rest args)
+  (convert-int-sub args))
+  
 (defmacro int-mul (arg &rest more-args)
   (if (null more-args)
       arg
@@ -1006,7 +1015,7 @@ causing all pending operations to be flushed"
 			      :element-type `(simple-array base-char (,',@len))
 			      :initial-element (make-string ,@len))))
        (dotimes (k (array-total-size ,init))
-	 (setf (row-major-aref ,init k)
+	 (setf (aref ,init k)
 	       (make-string ,@len :initial-element #\Space)))
        ,init)))
 
@@ -1058,19 +1067,23 @@ causing all pending operations to be flushed"
 ;;
 (defun d1mach (i)
   (ecase i
-    (1 least-positive-normalized-double-float)
+    (1
+     #-gcl least-positive-normalized-double-float
+     #+gcl least-positive-double-float)
     (2 most-positive-double-float)
     (3 double-float-epsilon)
     (4 (scale-float double-float-epsilon 1))
-    (5 (log (float-radix 1d0) 10d0))))
+    (5 (log (float (float-radix 1d0) 1d0) 10d0))))
 
 (defun r1mach (i)
   (ecase i
-    (1 least-positive-normalized-single-float)
+    (1
+     #-gcl least-positive-normalized-single-float
+     #+gcl least-positive-single-float)
     (2 most-positive-single-float)
     (3 single-float-epsilon)
     (4 (scale-float single-float-epsilon 1))
-    (5 (log (float-radix 1d0) 10d0))))
+    (5 (log (float (float-radix 1f0)) 10f0))))
 
 ;;
 ;;     This is the CMLIB version of I1MACH, the integer machine
@@ -1184,9 +1197,16 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.1 2002-04-26 13:03:40 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.2 2002-05-05 23:44:35 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.1  2002-04-26 13:03:40  rtoy
+;;; Revision 1.2  2002-05-05 23:44:35  rtoy
+;;; Update to latest version of macros.l:
+;;; o Fixes bug in int-sub.
+;;; o GCL doesn't have least-positive-normalized float constants
+;;; o d1mach(5)/r1mach(5) wasn't being computed as accurately as it should
+;;;   have.
+;;;
+;;; Revision 1.1  2002/04/26 13:03:40  rtoy
 ;;; Initial revision.
 ;;;
 ;;; Revision 1.46  2002/03/19 02:23:09  rtoy
