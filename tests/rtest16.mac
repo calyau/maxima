@@ -18,5 +18,13 @@ limit(erf(nn*zz), nn, inf);
 limit(tanh(nn*zz), nn, inf);
 0$
 
+/* From A. Reiner.  Fixed in buildq.lisp rev. 1.4.
+   Exposed a bug caused by the dynamical scope of VARLIST. */
+buildq([foo:sin(baz+bar)],1);
+1$
+
+buildq([foo:[sin(baz+bar),sin(baz-bar)]],+splice(foo));
+sin(baz+bar)+sin(baz-bar)$
+
 end;
 end$
