@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.3 2002-09-07 08:01:57 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -90,23 +90,30 @@ proc openMaxima { win filter } {
 	}
 	#puts com=$com
 	if { [catch { eval $com } err ] } {
-	    tk_messageBox -title "Error" -message "Can't execute $ws_openMath(localMaximaServer) : $err" }
-    } else {error "could not open a socket " }
+	    #mike Must return an error to stop runOneMaxima from continuing
+	    return -code error "Can't execute $com\n$err" 
+	}
+    } else {
+	return -code error "could not open a socket " 
+    }
 }
 
 proc runMaxima { win  filter sock args } {
     linkLocal $win server
     oset $win maximaSocket $sock
+
     fconfigure $sock -blocking 0 -translation lf
     fileevent $sock readable "$filter $win $sock"
+
     if { [info exists server] } {
 	# puts "closing server $server"
-    catch {
-    close $server
-    unset server
+	catch {
+	    close $server
+	    unset server
+	}
+    } else { 
+	# puts "server unset ??"
     }
-} else { # puts "server unset ??"
-}
 }
 
 proc closeMaxima { win } {
@@ -245,7 +252,9 @@ proc runOneMaxima { win } {
     closeMaxima $win
     linkLocal $win pid
     set pid -1
+
     openMaxima $win littleFilter
+
     while { $pid == -1 } {
 	set af [after $ws_openMath(timeout) oset $win pid -1 ]
 	# puts "waiting pid=$pid"
