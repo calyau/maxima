@@ -8,7 +8,10 @@
 
 (mk:defsystem "maxima"
   :source-extension "lisp"  
-  :binary-pathname #+clisp "binary-clisp"  #+cmu "binary-cmucl" #+gcl "binary-gcl"
+  :binary-pathname #+clisp "binary-clisp"
+                   #+cmu "binary-cmucl"
+		   #+gcl "binary-gcl"
+		   #-(or clisp cmu gcl) "binary-unknownlisp"
   :components ((:module package :source-pathname ""
 			:load-only t
 			:components ((:file "maxima-package")))
@@ -17,8 +20,6 @@
 				     #-gcl(:file "cl-info")))
 	       (:module sloop :source-pathname ""
 			:components ((:file "sloop")))
-	       (:module declarations :source-pathname ""
-                         :components ((:file "lmdcls")))
                (:module declarations :source-pathname ""
                         :components ((:file "lmdcls"))) 
                (:module destructuring-let :source-pathname ""
