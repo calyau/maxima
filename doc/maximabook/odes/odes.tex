@@ -592,6 +592,7 @@ yp;
 \subsubsection{Using \texttt{desolve}}
 
 Maxima can solve systems of linear ordinary differential equation
+with constant coefficients
 using the  \texttt{desolve} command. The differential
 equations must be given using functional notation, rather than with
 dependent variables; i.e., \texttt{diff(y(x),x)} would have to be used
@@ -661,17 +662,21 @@ desolve([de1,de2],[f(x),g(x)]);
 \subsubsection{\texttt{desolve} Method}
 
 The \texttt{desolve} routine uses the LaPlace transform to solve the
-systems of differential equations, and as such works best with linear
-systems. 
-
+systems of differential equations.
 If $f(t)$ is defined for all $t \ge 0$, then the LaPlace transform of
 $f$ is given by $F(s)={\cal L}\{f(t)\} = \int_0^\infty
 e^{-st}f(t)\textrm{d}t$.   The LaPlace transform has the useful
 property that a derivative is transformed into multiplication by the
 variable; if ${\cal L}\{f(t)\} = F(s)$, then 
 ${\cal L}\{f'(t)\} = sF(s)-f(0)$.  The LaPlace transform can thus
-transform a system of differential equations into a system of ordinary
-equations.  If this new system can be solved, the LaPlace
+transform a system of linear differential equations into a system of
+ordinary equations.  
+(Note, however, that the LaPlace transform will transform
+multiplication by a variable into differentiation; 
+if ${\cal L}\{f(t)\} = F(s)$, then ${\cal L}\{tf(t)\} = -F'(s)$. 
+The original differential equations need to have constant
+coefficients to prevent this.)
+If this new system can be solved, the LaPlace
 tranform can be inverted to give solutions of the original system of
 differential equations.
 
