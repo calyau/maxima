@@ -382,7 +382,7 @@
     (if *maxima-started*
 	(format t "Maxima restarted.~%")
       (progn
-	(format t "Maxima ~a http://maxima.sourceforge.net~%"
+	(format t "~&Maxima ~a http://maxima.sourceforge.net~%"
 		*autoconf-version*)
 	(format t "Distributed under the GNU Public License. See the file COPYING.~%")
 	(format t "Dedicated to the memory of William Schelter.~%")
