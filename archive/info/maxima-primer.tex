@@ -1,0 +1,865 @@
+%%document begins here!!!!!!!!
+\documentclass[titlepage]{article}
+\usepackage{moreverb}%to get pretty listings with verbatimtab
+\usepackage{varioref}
+\usepackage{makeidx}% load up the indexing package
+\makeindex%tell it to make an index.
+
+\newcommand{\idea}[1]{#1}%use for putting things in concept index
+\newcommand{\noun}[1]{\index{#1}{\large \bf #1 }}%put all nouns in the
+						 %index
+\newcommand{\e}{\mathrm{e}}%%the exponential
+\newcommand{\dd}{\mathrm{d}}%%the differential
+
+\newcommand{\fixme}[1]{{\bf[FIXME: #1 ]}}% this should be handy...
+
+%%take care page numbering for coverpage
+\setcounter{page}{0}
+
+\begin{document}
+
+%puts page number on title with doc-class{article}
+\title{A Brief Introduction to Maxima}
+%Version 0.1
+\author{\copyright Nels Tomlinson}
+
+\date{\today}
+
+\vspace{-1.0cm}
+\maketitle
+
+%\clearpage
+
+\tableofcontents
+\clearpage
+
+\section{Introduction}
+
+Matlab, Maple, Mathematica, and any other trademarks mentioned herein
+are the property of whoever owns them\dots  This document is \copyright{
+Nels Tomlinson, 2001}.  This is a work in progress, and is NOT complete.
+
+\subsection{What is a Symbolic Math System?}
+
+A symbolic  math system is  a computer program intended to manipulate
+symbols rather than numbers. So, this lets one add $a+b$ without
+worrying about what values they have. One modern example of this is the
+TI-92 calculator, which has some symbolic math capabilities.
+Mathematica and Maple are two more examples.
+
+\subparagraph{What is \emph{not} a symbolic math system?}  Matlab and
+GNU Octave are a fine pair of programs, very popular with engineers for
+numerical computation.  They can both compute $\int_{1}^{2}\e^x \dd x$
+to any reasonable number of decimal places, but by
+themselves\footnote{Matlab can be induced to give a symbolic answer,
+because it incorporates Maple, a commercial symbolic math system.},
+cannot tell you that the answer is $\e^2-\e^1$.  That is the answer that
+a symbolic math package should give by default, and this is what
+distinguishes a symbolic from a numeric system: it will (hopefully\dots)
+give the same answer that you would get by hand if you had the patience
+to do it right.
+
+\subsection{What is Maxima?}
+
+Maxima is a symbolic math system, written in Koyoto Common Lisp (now GNU
+lisp).  It has been released, recently, under the GNU Public License.
+This means that it is libr\'e software, so one may download it and put
+it to work, legally.  It is free, so one needn't pay anything to do
+this.   It has been around for about 30+ years, and after this length of
+time, should be a fairly well--tested, mature product, with few unknown
+bugs.  It is rather older than the two commercial symbolic math systems,
+Mathematica and Maple (M\&M) which have achieved commercial success .
+
+Since M\&M are made to sell, they have a number of features which can be
+listed on reviewer's checklists.  They also have beautiful graphical
+user interfaces which make wonderful screen shots for reviewer's
+articles and for packaging.  They are generally useful and have no bugs
+which the manufacturers publicize\footnote{Let me over--stress a point:
+I didn't say that they have \emph{no} bugs.}.
+
+Maxima, on the other hand, was made by academic researchers to test
+their theories, and developed for their own use.  It has been used in
+hundreds of graduate--level classes in physics, computer science, and so
+on. It has been used in a great many large projects; the large
+bibliography available at {\verb*
+http://www.math.utah.edu:8080/pub/tex/bib/macsyma.html }  should give
+some indication of how much research interest has involved Maxima.   It
+is intended for use by experts, who are willing to invest some effort in
+learning how to use it.  Thus, it is made to be powerful and easy for an
+expert to use, rather than superficially attractive and easy to learn.
+It seems to me that the authors have succeeded in three quarters of
+this: it is indeed fast and powerful, and is not superficially
+attractive\footnote{But see Section \vref{sec:gui-version}; there is now
+a graphical user interface which is superficially attractive! }.  They
+have failed in one respect , though, since (to me at least) it seems no
+harder to learn than M\&M.
+
+The authors have generously given the public a powerful and useful tool
+for doing math homework on a PC and for doing large--scale work on super
+computers.  They have provided a reasonably good reference manual, which
+is probably all the documentation an expert needs.  Unfortunately, the
+reference manual assumes that you are familiar with the syntax, and
+doesn't give examples.
+
+I'm not an expert, and since it would be ungrateful of me to whine that
+they didn't give me enough, I've done  the only reasonable thing: as I
+learned how to use Maxima, I've taken  notes, which I've tried to put
+into a readable form, which I hope will help you.
+
+\section{Obtaining and Running Maxima}
+
+Maxima may be found at \ {\verb http://www.ma.utexas.edu/maxima.html }.
+Both Windows and Unix versions are available. Get the most recent
+versions of GCL and Maxima; as I write this, that is version 5.5 beta
+for the Unix version.  Put them into the directories  \emph{from} which
+you wish to install them.
+
+\subsection{MSWindows Installation}
+
+Since I don't use MSWindows, I don't feel qualified to give any details,
+however, I understand that the windows installation is the  standard
+windows procedure, and should not cause any problems.
+
+\subsection{Unix Installation}
+
+The Unix installation is the standard unix procedure: ./configure, make,
+make install.  Unlike the windows version, this will custom configure
+and compile a version just for your machine.  You will need to have
+write permissions for the directories in which you intend to install the
+packages.  Thus, you may need to use the su command to become root
+before you type make install.  If you can't do that, merely install the
+packages in some directory for which you have permissions.  Your home
+directory should be fine.
+
+Use the cd command to change to the directory in which you have
+downloaded the tarballs and untar and unzip the files using the command:
+
+\begin{verbatim}
+tar -xzvf filename
+\end{verbatim}
+
+
+Cd to the GCL directory, read the readme file, and follow the directions
+to install.  This took about 10 minutes on my little
+machine\footnote{233MHz Pentium II laptop, 144M ram}.  Now cd to the
+Maxima directory, read the readme file, and again follow the
+directions.  Maxima will take a bit longer to compile.  Note that before
+you type ./configure, you will have to edit the configure file for
+Maxima.  Don't panic, this is trivial.  The configure file is well
+commented: just open it in your favorite text editor and follow the
+instructions.  You will need to cut--and--paste in the pathname of the
+directory where you just built GCL. Again, that's the directory, not the
+pathname of any file in the directory.  There is an example pathname in
+the configure file.  If you have cd'd to the directory in which you are
+building Maxima, you will be able to leave the MAXDIR=`pwd' line, and
+comment out the other MAXDIR line.  Make sure that the directories in
+which the Maxima and elisp files will be installed are the ones that you
+want, and that you have write permissions on those directories.  Now you
+are ready.  Type ./configure, make, make install.
+
+\subsection{Running Maxima}\label{sec:running-maxima}
+
+There are now two versions of Maxima: xmaxima, a GUI version based on
+the TCL/TK toolkit, and maxima, the traditional command--line version.
+Both live in the same directory, so if typing /path/maxima starts the
+command line version, typing /path/xmaxima will start the pretty one.
+
+In both versions of Maxima, the input and output are both ascii.  This
+will seem rather plain to someone accustomed to seeing the beautiful
+on--screen output of M\&M.  One types in commands, and what comes back
+is ascii--art: symbols are drawn, over multiple lines, using the
+characters available on the keyboard.  An expression with sub-- and
+super--scripts will be written over three lines.  If you are accustomed
+to MSWindows, this will probably seem odd. If you ever need to run
+Maxima on  a machine which you cannot physically access (e.g., by
+telnetting into your work machine from home), you will realize that this
+is a \emph{wonderful} feature. If you simply cannot stand ascii output,
+try the program \idea{Symaxx}, which may be found at {\verb
+http://symaxx.sourceforge.net/ }.  It provides a graphical front end to
+Maxima, and seems to work reasonably well, though it is still in its
+infancy. At this stage of its evolution, Symaxx is probably best suited
+for use as a super--calculator rather than a programming environment.
+
+\subsubsection{The GUI Version}\label{sec:gui-version}
+
+The X--windows version is probably the best starting point for new users
+who are not familiar with emacs.  For MSWindows users, the GUI will be
+the only option. The MSWindows and Unix GUI's seem to be identical, so
+the information in this section should be useful for MSWindows users
+too.  Starting xmaxima will open a window with two panes\footnote{It
+should go without saying that you must be running X--windows to run the
+GUI version on a Unix machine.  Thus, you won't be able to use it via
+telnet. }.  The upper pane contains a command--line interface to Maxima,
+while the lower pane contains a Maxima Primer.  I  recommend the Maxima
+Primer to your attention, since it has a number of examples.  As with
+all GUI's, there are buttons with labels and menus, so if you want more
+information about using this interface, your best bet is to start
+Xmaxima now and explore.  The actual process of getting work done in the
+GUI will be exactly as detailed for the command line, below.
+
+\subsubsection{Using the Command--Line Version with Emacs}
+
+The default installation of Maxima  should have installed several  emacs
+lisp files into the site--lisp subdirectory.  You will need to make sure
+that the appropriate path is in your .emacs file, e.g., on my machine,
+the following command in my .emacs file does the trick:
+
+\begin{verbatim}
+(setq load-path (cons "/usr/lib/emacs/site-lisp" load-path))
+\end{verbatim}
+
+You'll need to put the correct pathname for your machine, of course.
+You will also need to copy the add-defaults.el file, which came with the
+Maxima package,  into your .emacs file.  Here is what is in it:
+
+\begin{verbatim}
+;;;BEGIN maxima addition
+(autoload 'dbl "dbl" "Make a debugger to run
+ lisp, maxima and or gdb in" t)
+(autoload 'maxima-mode "maxima-mode" "Major mode
+  for editing maxima code and interacting with debugger" t)
+(autoload 'gcl-mode "gcl" "Major mode for editing
+  maxima code and interacting with debugger" t)
+(setq auto-mode-alist (cons '("\\.ma?[cx]\\'" . maxima-mode)
+ auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.li?sp\\'" . gcl-mode)
+ auto-mode-alist))
+;;;END maxima addition
+\end{verbatim}
+
+
+Once these preliminaries are out of the way, you are ready to begin.  To
+run Maxima as an inferior process, use
+
+\begin{verbatim}
+M-x dbl
+\end{verbatim}
+which produces the following output in the new buffer:
+\begin{verbatim}
+Welcome to DBL a Debugger for Lisp, Maxima, Gdb and others.
+
+You start your program as usually would in a shell.  For Lisp and
+Maxima the debugger commands begin with a ':', and there is
+completion.  Typing ':' should list all the commands.  In GCL these
+are typed when in the debugger, and in Maxima they may be typed at any
+time.  To see the wonderful benefits of this mode, type C-h m.
+
+Note you may also use this mode to run gdb.  In fact I often debug
+MAXIMA over GCL using gdb, thus having three debuggers at once.
+To run gdb and enable the automatic line display, you must supply
+the `--fullname' keyword as in:
+
+ gdb your-file  --fullname
+Current directory is /home/tomlinso/jerrys/
+[tomlinso@localhost jerrys]%
+\end{verbatim}
+
+Now, at the prompt in that buffer, type maxima, and begin:
+
+\begin{verbatim}
+[tomlinso@localhost jerrys]% maxima
+GCL (GNU Common Lisp)  Version(2.3.8) Fri Feb 23 18:10:05 EST 2001
+Licensed under GNU Library General Public License
+Contains Enhancements by W. Schelter
+Maxima 5.5 Fri Feb 23 18:09:58 EST 2001 (with enhancements by W.
+Schelter).
+Licensed under the GNU Public License (see file COPYING)
+(C1)
+\end{verbatim}
+This does not seem to provide syntactic highlighting, but does seem to
+work well.  It is a bit of a disappointment to me after using ESS,
+though.
+
+
+\subsubsection{Using the Emacs Info with
+Maxima}\label{sec:using-emacs-info}
+
+\fixme{Needs to be written!}
+
+
+
+
+\section{Quick Start}
+
+In order to run Maxima, type maxima or xmaxima at the shell prompt.  See
+Section \vref{sec:running-maxima} for some details about which to
+choose.  If you are running xmaxima, or if you  have an MSWindows
+machine, you  will start a GUI in which you can type commands, which
+should work  as described here.  I don't use MSWindows, so if you have
+an MSWindows machine, I really can't help you with details about the
+user interface which are specific to MSWindows.
+
+In order to exit Maxima, one can type \noun{quit()};
+
+\begin{verbatimtab}
+(C18) quit();
+
+[tomlinso@localhost tomlinso]%
+\end{verbatimtab}
+ to end the Maxima session and return to the shell.
+
+You will sooner or later make a syntax error, and fall into a debugging
+level.  It can happen like this:
+\begin{verbatimtab}
+(C2) describe(set-up-index);
+
+Error: Takes a symbol ((MPLUS SIMP) ((MTIMES SIMP) -1 $index) $set ...)
+Fast links are on: do (si::use-fast-links nil) for debugging
+Error signalled by CATCH.
+Broken at MACSYMA-TOP-LEVEL.  Type :H for Help.
+MAXIMA>>:q
+
+(C3)
+\end{verbatimtab}
+ To get back out of the debugging mode, type :q as above.  Notice that
+the colon comes \emph{before} the q!
+
+
+\subsection{Getting ``Help!''}
+
+There is a manual which you  should have found included with the Maxima
+package.  I will assume that you have it available to refer to.  It is a
+reasonably good reference, and has some introductory material in it.
+Some  sections of it are particularly useful to beginners.  In
+particular, the
+\begin{itemize}
+\item Introduction to Command Line
+\item Help
+\item Input and Output
+\item Runtime Environment
+\item Constants
+\end{itemize}
+sections have some value for beginners.  Unfortunately, the manual has
+little else which is oriented towards beginners. Some sections refer to
+Macsyma, which was a non--libr\'e, sometimes non--free predecessor.
+Some sections, particularly Miscellaneous Options, are specific to
+DEC-10 machines.  One section (Symmetries) is  in French, which will
+limit its usefulness to Americans (we only speak English\dots).
+
+\subsubsection{Using the Manual}
+
+The manual is intended as a reference work, and so \emph{if} you know
+where to look, it has much of what you need.  It has a  complete index
+of functions and variables.  Most sections have at least a brief
+introduction, and then a list of functions and variable definitions
+which logically fall under that heading, in alphabetic order.  The
+functions are usually what you should look for first, as they will be
+what you need to actually do a job.  You will also need to look at the
+variables, since they often control the behavior of the functions.
+Usually the functions will refer you to the appropriate variables,
+another good reason to look first at the functions.
+
+\subsubsection{Electronic Help}  There is also online and electronic
+help available.  The manual is available in html format, which is
+convenient (and cheaper than printing out the 230+ page manual). It is
+possible to read the Maxima info files using emacs.  See section
+\vref{sec:using-emacs-info} for details.  If you are using the Xwindows
+version (or MSWindows) there is help available in the bottom pane of the
+GUI.
+
+  There is also some help available from the  Maxima command line. The
+manual mentions three help functions, which seem to have similar
+syntax.  The first is \noun{describe(command)}, e.g.:\footnote0{The stuff
+after this sentence,  {\verb in this font}, is copied verbatim from a
+Maxima session, to illustrate commands and their results.}1
+
+\begin{verbatimtab}
+(C63) describe(save);
+
+
+ 0: FASSAVE :(maxima.info)Definitions for Input and Output.
+ 1: SAVE :Definitions for Input and Output.
+ 2: SAVEDEF :Definitions for Input and Output.
+ 3: SAVEFACTORS :Definitions for Polynomials.
+Enter n, all, none, or multiple choices eg 1 3 : 0
+
+Info from file /usr/lib/maxima-5.4/info/maxima.info:
+ - Function: FASSAVE (ARGS)
+     is similar to SAVE but produces a FASL file in which the sharing
+     of subexpressions which are shared in core is preserved in the
+     file created.  Hence, expressions which have common subexpressions
+     will consume less space when loaded back from a file created by
+     FASSAVE rather than by SAVE.  Files created with FASSAVE are
+     reloaded using LOADFILE, just as files created with SAVE.  FASSAVE
+     returns a list of the form [<name of file>,<size of file in
+     blocks>,...] where ...  are the things saved.  Warnings are
+     printed out in the case of large files.  FASSAVE may be used while
+     a WRITEFILE is in progress.
+
+(D63)          FALSE
+\end{verbatimtab}
+
+Describe seems to amplify a bit on some of the commands in the manual.
+If you give it all as a reply, you will need a semicolon after the all.
+Strangely, you don't seem to need the semicolon if your choice is
+numeric.
+
+Next is \noun{apropos(stuff)}. This doesn't seem to work, though it is
+mentioned in the Reference Manual in Chapter 26, Miscellaneous Options,
+and the function can be described with describe(apropos);.
+
+The command \noun{demo(stuff)}  demonstrates certain commands.  It will
+run a file, so use a filename as the argument.  You will need to hit a
+semicolon followed by a carriage return to step through the examples.
+The command \noun{example(stuff)} will  run an example file in batch
+mode for some commands.  To find out which commands and topics you can
+get examples for, type examples(manual);. Actually, example(anything not
+in the list of things which example can provide an example of) will
+display the list.  I recommend that you experiment with these.  The
+examples tend to be cryptic, but do at least give a starting point for
+learning.
+
+
+\subsection{Syntax}
+
+Maxima's syntax is more--or--less standard for a programming language.
+That is, there is nothing {\`o}utr\'e such as is found in APL or
+intercal (well, not much).  On the other hand, because it is
+``normal'',  it doesn't have the consistancy of Lisp\footnote{Yes, Lisp
+is rather strange if you are used to Fortran, but it \emph{is}
+consistent: everything is prefix notation.}.
+
+\paragraph{A quick list of some important syntactic points:}
+\begin{itemize}
+\item Everything must end with either a \noun{semicolon} (\noun{;}) or a
+\noun{dollar sign} (\noun{\$})!  If the interpreter seems to ``hang'',
+you probably forgot the semicolon.  Normally you will want to use a
+semicolon to end a line.  If you don't want to see the output of your
+command (e.g., it might be too big), use the \$ instead.  It will
+\idea{suppress the output}.
+
+\item The assignment operator is the colon.  To assign 4 to the variable
+a, proceed as follows:
+
+\begin{verbatimtab}
+(C3) a:4;
+
+(D3)            4
+(C4)
+\end{verbatimtab}
+
+\item To declare a function, use colon equals, like so:
+\begin{verbatimtab}
+(C4) f(x,y):=x^2+y^2;
+
+       2    2
+(D4)          f(x, y) := x  + y
+(C5)
+\end{verbatimtab}
+
+\item To differentiate a function, use diff(f(x,y),x);
+\begin{verbatimtab}
+(C5) diff(f,x);
+
+(D5)            0
+(C6) diff(f(x,y),x);
+
+(D6)           2 x
+(C7)
+\end{verbatimtab}
+Notice that {\verb  diff(f,x);} didn't work.  It seems to have tried to
+ differentiate the variable f with respect to the variable x, rather
+ than differentiating the function f(x,y). { \verb  diff(f(x,y),x);} did
+what we wanted.  We didn't \emph{need} to make f a function; it is also
+possible to differentiate expressions.
+
+\item Matrices are not arrays!  An array is a data structure, while a
+matrix is an object on which one may commit linear algebra.  One way to
+construct matrices is with the matrix command.
+
+\begin{verbatimtab}
+(C29) matrix([w,x],[y,z]);
+
+       [ w  x ]
+(D29)        [    ]
+       [ y  z ]
+(C30)
+\end{verbatimtab}
+
+\end{itemize}
+
+Maxima of course has a number of built--in functions with which one can
+save and load data, differentiate and integrate, plot, generate Fortran
+or \TeX code, and so on.  As mentioned above, it  also has a number of
+global variables which one can use to affect the behavior of these
+functions.
+
+\subsubsection{Some Other Elements of Syntax}
+
+The \noun{square bracket}, (\noun{[]}) is used to delimit a list.  The
+\noun{parentheses } (\ \noun{()} \ ) are used to enclose the arguments
+of functions. The asterisk, (\noun{*}) is used for multiplication.  The
+\noun{caret}, (\noun{\^{}}) is used for exponentiation.   The
+\noun{double colon}, \noun{::} is used to assign the contents of one
+variable to a variable which is referenced by another variable.  See
+Section \vref{sec:expressions} for some details on this.
+
+
+\subsubsection{Using Earlier Results} The \idea{prompt} in Maxima is
+(\idea{Cnumber}), where number is a counter, telling you how many
+commands you have issued.  When Maxima returns a result to you, it will
+preface it with (\idea{Dnumber}), as shown below:
+
+\begin{verbatimtab}
+(C2) 1+1;
+
+(D2)            2
+(C3) %+3;
+
+(D3)            5
+(C4) %th(2)+4;
+
+(D4)            6
+(C5) D2;
+
+(D5)            2
+(C6)
+\end{verbatimtab}
+There are several points to notice here.  First, the (Dnumber)'s have
+the same number as the (Cnumber)'s which produced them. Second, you can
+refer to the previous result as \noun{percent}, \noun{\%}, as shown in
+(C3) in the example above. The command  \%+3; says to take the previous
+result and add three to it.  Third, you can refer to an earlier result
+by saying \noun{\%th(i)} for the i${}^\mathrm{th}$ previous result.  On
+command (C4) above, I added 4 to the second previous result, which was
+(D2).  Fourth, you can refer to the results by name.  The result of the
+1+1; command was (D2).  In command (C5), I re--displayed it by typing
+its name D2.
+
+
+\subsection{Writing and reading files}
+
+Maxima gives several ways to save a workspace to a file.
+\noun{save(filename,arg1,arg2,\dots)} allows you to save the variables
+arg1, arg2 \dots to the file filename.  \emph{filename} should be a
+proper Unix filename, with path.  If a relative path is given (i.e., a
+path which does \emph{not} begin with a / ), it is taken to be relative
+to the present working directory.  \fixme{How do we find the pwd?
+Relative pathnames \emph{don't} work?} Here is an example:
+
+\begin{verbatimtab}
+
+(C6) f(x,y):=x^2+y^2+2*x*y;
+
+          2    2
+(D6)      f(x, y) := x  + y  + 2 x y
+(C7) a:4;
+
+(C12) save("/home/tomlinso/slime.stuff",f,a);
+
+(D12)      /home/tomlinso/slime.stuff
+
+\end{verbatimtab}
+This saves the function f and the variable a to a file in my home
+directory.  If you do this and then take a look at the file, you will
+find that it is a text file, but does not look at all like the function
+you saw on your screen.  You will get some idea about why it looks so
+strange in section  \vref{sec:internal-details}, which details some of
+the internal workings of Maxima.
+
+The command \noun{loadfile(filename)} should reload a file saved by
+save() or \noun{fassave()}.  The filename uses the same syntax here as
+in save.
+
+There is also the command \noun{writefile(filename)}, which will keep a
+log of your maxima session.  If you run Maxima under emacs, this may
+seem redundant.  The file which this command makes is \emph{not}
+readable by loadfile().
+
+\fixme{Is there a way to load some ascii data, maybe a csv file?}
+
+\section{Expressions}\label{sec:expressions}
+
+\idea{Expressions} are still a bit fuzzy to me in this version of the
+notes,  \fixme{get defuzzed!}  as are functions.  I won't try to define
+them yet.
+
+\subsection{Assignment Operators}
+
+Maxima has two assignment operators: the \noun{colon} (\noun{:})  and
+the \noun{double colon}, (\noun{::}).  The single colon is simple to
+understand.  A:3; sets the variable A to the value 3.
+\begin{verbatimtab}
+(C11)  A:3$
+
+(C12) A;
+
+(D12)            3
+(C13)
+\end{verbatimtab}
+
+The double colon is a bit harder to grasp at first.  Consider the
+following example:
+
+\begin{verbatimtab}
+(C24) A:3$
+
+(C25) B:5$
+
+(C26) C:'A;
+
+(D26)            A
+(C27) C::B;
+
+(D27)            5
+(C28)
+\end{verbatimtab}
+ I assigned the value 3 to the symbol A, the value 5 to the symbol B,
+and then I assigned the symbol A to the symbol B.  That's why (C26)
+says  C:'A;, the apostrophe prevents Maxima from evaluating the symbol A
+and assigning 3 to C.  Then, in (C27), I used the double colon to assign
+the value of B (remember, that's 5) to the value of C (remember, that's
+A).  Here's the final result:
+
+\begin{verbatimtab}
+
+(C28) A;
+
+(D28)            5
+(C29)
+\end{verbatimtab}
+ A is five!  The manual says ``:: assigns the value of the expression on
+its right to the value of the quantity on its left \dots''.  Hopefully
+that makes more sense with an example staring at you than it did the
+first time I read it.  This seems to be analogous to the idea of a
+pointer: we didn't assign the value of B to C, we assigned the value of
+B to what C \emph{held}, or pointed to.
+
+\section{Defining Functions}
+
+To define a \idea{function}, use function name:=function value, as
+follows
+
+\begin{verbatimtab}
+
+(C9) lv:=x^2+2*x*y+y^2;
+
+Improper function definition:
+lv
+ -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);)
+(C10) lv(x,y):=a*x^2+2*a*b*x*y+b*y^2;
+
+         2          2
+(D10)         lv(x, y) := a x  + 2 a b x y + b y
+(C11)
+
+\end{verbatimtab}
+
+Notice that we must specify what lv is a function of.  The first
+attempt, (C9), didn't work, while (C10) specifies that lv depends on x
+and y, but that a and b are parameters.  It appears that Maxima's
+function is not a function in the sense that mathematicians use the
+word, but rather in the computer science sense.  That is, a function is
+a subroutine which may be called.  Thus, you may find what you are
+looking for in Section \vref{sec:expressions}, which covers expressions.
+
+\section{Doing Calculus}
+
+\subsection{Differentiation}
+
+\subsubsection{Differential Equations}
+
+\subsection{Integration}
+
+
+
+\section{Working with Matrix Algebra}
+
+\subsection{Building and Manipulating Matrices}
+
+Matrices are not arrays!  An array is a data structure, while a matrix
+is an objecton on which one may commit linear algebra.
+
+One way to construct matrices is with the \noun{entermatrix(m,n)}
+command, which allows one to enter a matrix with m rows and n columns,
+with prompting.  The manual gives a good example of this, which I won't
+repeat.
+
+Another  way to construct matrices is with the \noun{matrix} command.
+
+
+\begin{verbatimtab}
+(C29) matrix([w,x],[y,z]);
+
+       [ w  x ]
+(D29)        [    ]
+       [ y  z ]
+(C30) row(matrix([w,x],[y,z]),1);
+
+(D30)        [ w  x ]
+(C31) row(matrix([w,x],[y,z]),2);
+
+(D31)        [ y  z ]
+\end{verbatimtab}
+
+The matrix command takes as its arguments a series of lists.  Each list
+makes up one row of the matrix.  The \noun{row} command takes a matrix
+and a number as arguments, and returns the row specified by the number.
+There is also a \noun{submatrix} command, which takes a number, a
+matrix, and a number as arguments. The first number specifies the row to
+cast out, the second number specifies the column to cast out, and the
+function returns the submatrix which is lect after casting out these
+rows and columns.
+
+\begin{verbatimtab}
+
+(C7) m:matrix([a,b,c],[d,e,f],[g,h,i]);
+
+      [ A  b  c ]
+      [     ]
+(D7)       [ d  e  f ]
+      [     ]
+      [ g  h  i ]
+(C8) submatrix(2,m,2);
+
+       [ A  c ]
+(D8)        [    ]
+       [ g  i ]
+(C9) submatrix(1,m,3);
+
+       [ d  e ]
+(D9)        [    ]
+       [ g  h ]
+(C10)
+\end{verbatimtab}
+In this example, we first defined the matrix m, then cast out the second
+row and column on line (C8).  Finally in line (C9), we cast out the
+first row and the last column.
+
+The \noun{diagmatrix(n,x)} command produces a diagonal matrix of size n,
+with all the diagonal elements x.  Plainly, x=1 will produce an n by n
+identity matrix.  So will \noun{ident(n)}.
+
+\begin{verbatimtab}
+(C11) diagmatrix(4,3);
+
+    [ 3  0  0  0 ]
+    [      ]
+    [ 0  3  0  0 ]
+(D11)            [       ]
+    [ 0  0  3  0 ]
+    [      ]
+    [ 0  0  0  3 ]
+(C12)
+\end{verbatimtab}
+
+A third way to build a matrix is with the
+\noun{genmatrix(array,i2,j2,i1,j1)} command.  This fills a matrix from
+an array.  The manual provides examples.
+
+\subsection{Doing Linear Algebra}
+
+\paragraph{Matrix Multiplication} To multiply two matrices together, the
+\noun{dot operator}, or \noun{.} is used.  To make certain that the
+interpreter does not mistake it for a decimal point, it is important
+that at least one space should be left on each side of it.
+
+\begin{verbatimtab}
+(C26) A:matrix([b,c],[d,e]);
+
+       [ b  c ]
+(D26)        [    ]
+       [ d  e ]
+(C27) f:matrix([g,h],[i,j]);
+
+       [ g  h ]
+(D27)        [    ]
+       [ i  j ]
+(C28) A . f;
+
+      [ c i + b g  c j + b h ]
+(D28)       [      ]
+      [ e i + d g  e j + d h ]
+(C29)
+\end{verbatimtab}
+
+And a quadratic form:
+
+\begin{verbatimtab}
+(C29) matrix([1,2]) . A . transpose(matrix([1,2]));
+
+(D29)         2 (2 e + d) + 2 c + b
+(C30)
+\end{verbatimtab}
+The \noun{transpose()} function, of course, gives the transpose of its
+matrix argument.
+
+To square a matrix, use the dot operator, as in A . A, or use the
+exponential version:
+
+\begin{verbatimtab}
+(C7) a^^2;
+
+      [     2    ]
+      [ c d + b    c e + b c ]
+(D7)       [      ]
+      [   2   ]
+      [ d e + b d  e  + c d  ]
+(C8) a . a;
+
+      [     2    ]
+      [ c d + b    c e + b c ]
+(D8)       [      ]
+      [   2   ]
+      [ d e + b d  e  + c d  ]
+(C9)
+\end{verbatimtab}
+
+
+ The \noun{invert()} function also has a self--explanatory name. Notice
+that the \noun{doallmxops} variable, if true, causes the determinant to
+be moved inside the inverse.  When false, it causes the determinant to
+be left outside the matrix.  The Reference Manual also mentions the
+variable \noun{detout} in this regard, but it seems to have no effect.
+
+\begin{verbatimtab}
+(C42) doallmxops:true;
+
+(D42)          TRUE
+(C43) invert(a);
+
+    [      e       c     ]
+    [  ---------   - --------- ]
+    [  b e - c d   b e - c d ]
+(D43)     [        ]
+    [  d      b     ]
+    [ - ---------  ---------  ]
+    [   b e - c d  b e - c d  ]
+(C44) doallmxops:false;
+
+(D44)          FALSE
+(C45) invert(A);
+
+     [  e   - c ]
+     [      ]
+     [ - d  b  ]
+(D45)      ------------
+      b e - c d
+(C46)
+\end{verbatimtab}
+
+
+\paragraph{Row Reduction}  The \noun{echelon(matrix)} command returns
+the echelon form of the matrix argument.
+
+\section{Getting Numbers}
+
+\subsection{Evaluating: the ev() function}
+
+\section{Plotting}
+
+\section{Internal Details} \label{sec:internal-details}
+
+\subsection{Lists}
+
+\subsection{Maxima and Lisp}
+
+\section{\emph{Making} it Work: What to do When Maxima is Stubborn}
+
+\subsection{Pickapart}
+\clearpage
+\printindex
+
+\end{document}
+
+
