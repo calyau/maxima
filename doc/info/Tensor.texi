@@ -536,7 +536,7 @@ Symmetricized Kronecker delta, used in some calculations. For instance:
 @example
 
 (%i1) load(itensor);
-(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%o1)      /share/tensor/itensor.lisp
 (%i2) kdelta([1,2],[2,1]);
 
 (%o2)                                 - 1
@@ -581,7 +581,7 @@ For example:
 
 (%i1) load(itensor);
 
-(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%o1)      /share/tensor/itensor.lisp
 (%i2)  el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
 
                              i  j
@@ -665,7 +665,7 @@ illustrates.
 
 (%i1) load(itensor);
 
-(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%o1)      /share/tensor/itensor.lisp
 (%i2) exp:contract(expand(a([i1,j1,k1],[])*kdels([i,j,k],[i1,j1,k1])))$
 
 (%i3) ishow(exp)$
@@ -786,7 +786,7 @@ field. For example:
 
 (%i1) load(itensor);
 
-(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(liediff(v,a([i,j],[])*b([],[k],l)))$
 
        k    %2            %2          %2
@@ -1122,7 +1122,7 @@ and @code{icc2}), as the following example demonstrates:
 
 (%i1) load(itensor);
 
-(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%o1)      /share/tensor/itensor.lisp
 (%i2) iframe_flag:true;
 
 (%o2)                                true
