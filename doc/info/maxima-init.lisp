@@ -4,7 +4,9 @@
 (progn (msetchk '$linel 65) (setq $linel 65))
 
 (setf *prompt-prefix* "")
-(setf *prompt-suffix* "")
+#-gcl (setf *prompt-suffix* "")
+#+gcl (setf *prompt-suffix* "
+")
 (setf *general-display-prefix* "")
 (setf *maxima-prolog* "")
 (setf *maxima-epilog* "")
