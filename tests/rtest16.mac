@@ -1,0 +1,13 @@
+/* Tests from Bug 1036900 */
+limit(7^n/8^n,n,inf);
+0$
+limit(7^(n^2)/8^n,n,inf);
+inf$
+limit((10^n+9^n+8^n)^(1/n),n,inf);
+10$
+/* Maxima currently (2004/10/05) gets this wrong */
+limit(4^n/2^(2*n),n,inf);
+1$
+
+END;
+END$
