@@ -2,7 +2,7 @@
 ;;;     (c) Copyright 1982 Massachusetts Institute of Technology         
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "maxima")
+(in-package "MAXIMA")
 
 (defgrad $ai (x)
   (($dai) x))
