@@ -493,7 +493,7 @@ setrgbcolor} def
 	       (t
 		(let* ((mexpr (mget expr 'mexpr))
 		       (args (nth 1 mexpr)))
-		  (or mexpr (merror "Undefined function ~a" expr))
+		  (or mexpr (merror "Undefined function ~M" expr))
 		(coerce `(lambda ,(cdr args)
 			   (declare (special ,@(cdr args)))
 			   (let* (($ratprint nil)
