@@ -76,7 +76,7 @@ Examples:
 
 @end defun
 
-@defun antidiff (@var{expr}, @var{x}, @var{u}(@var{x})})
+@defun antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
 Returns an antiderivative of @var{expr} with respect to @var{x}.
 The expression @var{expr} may contain an unknown function @var{u} and its derivatives.
 
