@@ -4,16 +4,28 @@ exec wish8.0 "$0" "$@"
 #############################################
 ##### Copyright William Schelter 1997 #######
 #############################################
-set ws_openMath(date) 11/08/1998
+set ws_openMath(date) 10/06/2000
 
 ###### plotting.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 ## source plotconf.tcl
 
 ###### plotconf.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 ## source private.tcl
 
 ###### private.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 # a private way of storing variables on a window by window
 # basis
@@ -66,13 +78,25 @@ proc oget { win var } {
 ## source parse.tcl
 
 ###### parse.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 ## source getopt.tcl
 
 ###### getopt.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 ## source macros.tcl
 
 ###### macros.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 proc desetq {lis lis2} {
     set i 0
     foreach v $lis {
@@ -297,7 +321,39 @@ proc optionHelpMessage { optlist } {
 	    }
     return $msg
 	}
-	    
+
+
+#
+ #-----------------------------------------------------------------
+ #
+ # setSplittingOptionsRest --  takes ARGLIST and splits it into
+ # two lists, the first part it stores in KEYPAIRS and the second in REST
+ # 
+ #
+ #  Results: none
+ #  
+ #
+ #  Side Effects: sets the variables in the local frame passed to KEYPAIRS 
+ #
+ #----------------------------------------------------------------
+#	
+proc setSplittingOptionsRest {  keypairs rest arglist } {
+    upvar 1 $keypairs keys
+    upvar 1 $rest res
+    set i 0
+    while { 1 } {
+	if { $i >= [llength $arglist] } { break } 
+	if { "[string range [lindex $arglist $i] 0 0]" == "-" } {
+	    incr i 2
+	} else { break }
+    }
+    set keys [lrange $arglist 0 [expr $i -1]]
+    set res [lrange $arglist  $i end]
+}
+    
+	
+    
+    
 
 
 ## endsource getopt.tcl
@@ -345,7 +401,7 @@ proc parseTokenize { str } {
   if { "$s" == "" } {
       return $ans
   }
-  if { [regexp -indices {^[0-9.]+[eE]*[0-9]*} $str all] } {
+  if { [regexp -indices {^[0-9.]+([eE][+---]?[0-9]+)?} $str all] } {
       append ans " { number [getOneMatch $str $all] }"
      # append ans " [getOneMatch $str $all]"
       set str [string range $str [expr {1+ [lindex $all 1]}] end]
@@ -400,6 +456,7 @@ proc parseToSuffixLists { a }  {
     set Parser(tokenlist) [parseTokenize $a]
     set Parser(tokenind) -1
     set Parser(lookahead)  [nexttok]
+    #puts tokenlist=$Parser(tokenlist)
     set ans ""
     while { "$Parser(lookahead)" != ""  } {
       getExpr  ; parseMatch ";"
@@ -432,6 +489,7 @@ proc getExpr { } { getExprn 0 }
 
 proc getExprn { n } {
     global Parser
+    #puts "getExpr $n, $Parser(tokenind),$Parser(tokenlist)"
     if { $n == 110 } {
       getExpr120
       return
@@ -476,6 +534,7 @@ proc getExprn { n } {
 
 proc getExpr120 { } {
     global Parser
+    #puts "getExpr120, $Parser(tokenind),[lrange $Parser(tokenlist) $Parser(tokenind) end]"
     while { 1 } {
 	if { "$Parser(lookahead)" == "(" } {
 	    parseMatch $Parser(lookahead)
@@ -629,7 +688,10 @@ proc test { s } {
     puts $me
     return "[eval expr $s] [eval expr $me]"
 }
-     
+
+
+
+
 # 
 # Local Variables:
 # mode: tcl
@@ -641,6 +703,10 @@ proc test { s } {
 ## source textinsert.tcl
 
 ###### textinsert.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 proc mkTextItem { c x y args  } {
     set font [assoc -font $args {Helvetica 14}]
@@ -665,6 +731,10 @@ proc mkTextItem { c x y args  } {
 ## source printops.tcl
 
 ###### printops.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 ### fix a4 size !
 set paperSizes {{letter 8.5 11} { A4 8.5 11} {legal 8.5 13}} 
@@ -1017,6 +1087,8 @@ proc makeFrame { w type } {
    #positionWindow $w
     set c $w.c
     oset $win c $c
+    bboxToRadius $win
+    
     if { [catch { set buttonfont} ] } {
 	set buttonfont [font create -family Helvetica -size $fontSize]
     }
@@ -1118,6 +1190,8 @@ proc makeFrame { w type } {
 #	    oset $win width $wid
 #    }
 
+   addSliders $w 
+
    bind $w <Configure> "resizePlotWindow $w %w %h"
     return $w    
 }
@@ -1165,6 +1239,10 @@ proc doHelp { win msg } {
 ## source push.tcl
 
 ###### push.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 
 
@@ -1571,6 +1649,7 @@ proc vectorlength { a b } {
 
 proc setupCanvas { win } {
   makeLocal $win   xcenter xradius ycenter yradius
+
   oset $win xmin [expr {$xcenter - $xradius}]
   oset $win xmax [expr { $xcenter + $xradius}]
   oset $win ymin [expr { $ycenter - $yradius}]
@@ -1597,23 +1676,112 @@ proc compose { a b } {
       +[lindex $a 0]}] [expr {[lindex $a 1]*[lindex $b 1]}]"
 }
 
-proc sparseList { s } {
-    if  { [catch {
-	set val [parseConvert "$s" -variables "x y t"] } err ] } {
-	    tkerror "Syntax error with `$s'\n $err"
+# the following two have been replaced 
+# proc sparseList { s } {
+#     if  { [catch {
+# 	set val [parseConvert "$s" -variables "x y t"] } err ] } {
+# 	    error "Syntax error with `$s'\n $err"
+# 	}
+# 	return [lindex $val 0]
+#     }
+# 
+# proc sparse { s } {
+#     set val [sparseList $s]
+#     set first $val
+#     if { [llength $first] != 1 } {
+# 	error "only one function wanted" }
+# 	
+# 	return [lindex $first 0]
+#    }
+
+proc sparseListWithParams { form variables paramlist } {
+    set tem [parseConvert $form -doall 1]
+    #puts tem=$tem
+    set params [splitParams $paramlist]
+    if { [catch {set res [substParams [lindex $tem 0] $variables $params] }\
+	    err ] } {
+	set vars [lindex $tem 1]
+	set all $variables
+	foreach { v val }  $params { lappend all $v}
+	foreach v $vars { if { [lsearch $all [string range $v 1 end]] < 0 } {
+	    error "The variable `[string range $v 1 end]' appeared in $form but was not in allowed variables:{$variables} or in parameters: {$paramlist}"
 	}
-	return [lindex $val 0]
     }
+	error "The form $form may involve variables other than {$variables} or the parameters {$paramlist}, or the latter may have invalid expressions:\n $err"
+    }
+    return $res
+}
 
-proc sparse { s } {
-    set val [sparseList $s]
-    set first $val
-    if { [llength $first] != 1 } {
-	tkerror "only one function wanted" }
+proc sparseWithParams { form variables params } {
+    set tem [sparseListWithParams $form $variables $params]
+    if { [llength $tem ] > 1 } { error "only wanted one function: $form"}
+    lindex $tem 0
+}
+
+
+
+#
+ #-----------------------------------------------------------------
+ #
+ # myVarSubst --  into FORM substitute where
+ # listVarsVals where each element of this list may mention
+ # the previous values eg "k 7 ll sin(k+8)"
+ # eg:
+ #myVarSubst [lindex [parseConvert "k*x+l" -doall 1] 0] {x $x k 27+4 l 93+k^3}
+ # ==> {((31 * $x) + 29884.0)}  
+ #
+ #  Results: FORM with the substitutions done
+ #
+ #  Side Effects: 
+ #
+ #----------------------------------------------------------------
+#
+proc myVarSubst { form listVarsVals } {
+    foreach {_u _v} $listVarsVals {
+	if { "\$$_u" == "$_v" } {
+	    set $_u $_v
+	} else {
+	    set _f1 [lindex [parseConvert  $_v -doall 1] 0]
+	    set $_u [expr [lindex $_f1 0]]
+	    # puts "$_u = [set $_u]"
+    }
+   }
+   subst -nobackslashes -nocommands $form
+
+}
+
+proc splitParams { paramlist } {
+    set params ""
+    foreach v [split $paramlist ,] {
+	set tem [split $v =]
+	if { [llength $tem] == 2 } {
+	    lappend params [lindex $tem 0] [lindex $tem 1]
+	}
+    }
+    return $params
+}
+
+    
+
+#
+ #-----------------------------------------------------------------
+ #
+ # substParams --  substitute into FORM keeping VARIABLES as they are
+ # and the PARAMLIST (of the form k=23, l=k+7,...) into FORM
+ #
+ #  Results: substituted FORM
+ #
+ #  Side Effects: none
+ #
+ #----------------------------------------------------------------
+#
+proc substParams { form variables params } {
+   foreach v $variables { lappend params $v \$$v}
+   set res [myVarSubst $form $params]
+    return $res
+}
 	
-	return [lindex $first 0]
-    }
-
+    
 	
 
 
@@ -2129,6 +2297,91 @@ proc resizePlotWindow  { w width height } {
 
 
 
+proc bboxToRadius { win  } {
+    makeLocal $win bbox
+    if { "$bbox" != "" } {
+	linkLocal $win       xradius yradius xcenter ycenter
+	set i 0
+	foreach v { x y z } {
+
+	    set min [lindex $bbox $i]
+	    set max [lindex $bbox [expr $i +2]]
+	    if { "$min" != "" } {
+		if { $min >= $max } {error "bad bbox $bbox since $min >= $max"}
+	    set ${v}radius [expr { ($max - $min) /2.0}]
+	    set ${v}center [expr { ($max + $min) /2.0}]
+	    }
+	}
+    }
+}
+
+proc updateParameters { win var value} {
+    linkLocal $win parameters
+#    puts "$win $var $value"
+    set ans ""
+    set comma ""
+    
+    foreach {v val} [splitParams $parameters] {
+        if { "$v" == "$var" } {
+	    set val $value
+	}
+	append ans $comma $v=$val
+	set comma ","
+    }
+#    puts "parameters=$ans"
+    set parameters $ans
+}
+
+proc addSliders { win } {
+    linkLocal $win sliders c width parameters
+    set i 0
+    if { "$sliders" == "" } { return }
+    catch { destroy $c.sliders }
+    set bg "#22aaee"
+    set trough "#22ccff"
+    frame $c.sliders -relief raised -highlightthickness 2 -highlightbackground $trough
+    foreach v [split $sliders ,] {
+	if { [regexp {([a-zA-Z0-9]+)[ ]*=?(([---0-9.]+):([---0-9.]+))?} $v  junk var junk x0 x1] } {
+	    incr i
+	    if { "$x0" == "" } { set x0 -5  ; set x1 5}
+
+	    set fr $c.sliders.fr$i
+	    frame $fr -background $bg 
+	    label $fr.lab -text $var: -background $bg 
+	    label $fr.labvalue -textvariable [oloc $win slidevalue$i]  -background $bg -relief sunken -justify left
+	    scale $fr.scale -command "sliderUpdate $win $var" \
+		    -from "$x0" -to $x1 -orient horizontal \
+	    -resolution [expr ($x1 - $x0) < 1 ? ($x1-$x0)/100.0 : .01] \
+	    -length [expr {$width/2}] -showvalue 0 -variable [oloc $win slidevalue$i] -background $bg -troughcolor "#22ccff" -highlightthickness 0
+	    pack $fr.lab -side left -expand 1 -fill x
+	    pack $fr.labvalue $fr.scale -side left
+	    pack  $fr -side top -expand 1 -fill x
+	    set found 0
+	    set val  [assoc $var [splitParams $parameters] no]
+	    if { "$val" == "no" } {
+		set val  [expr ($x1 + $x0)/2.0]
+		if { "$parameters" != "" }  { append parameters , } 
+		append parameters $var=$val
+	    }
+	    $fr.scale set $val
+	}
+    }
+
+    place  $c.sliders -in $c -x 4 -rely 1.0 -y -4 -anchor sw
+
+    }
+	
+
+proc sliderUpdate { win var val } {
+    linkLocal $win sliderCommand parameters
+    set params $parameters
+    updateParameters $win $var $val
+    if { "$params" != "$parameters" &&
+    [info exists sliderCommand] } {
+
+    $sliderCommand $win $var $val
+}   }
+    
 
 
 
@@ -2144,6 +2397,9 @@ set plotdfOptions {
     {dxdt "x-y^2+sin(x)*.3" {specifies dx/dt = dxdt.  eg -dxdt "x+y+sin(x)^2"} }
     {dydt "x+y" {specifies dy/dt = dydt.  eg -dydt "x-y^2+exp(x)"} }
     {dydx "" { may specify dy/dx = x^2+y,instead of dy/dt = x^2+y and dx/dt=1 }}
+    {adamsMoulton red "Color to do adams moulton integration in. None means dont do" }
+    {rungeKuttaA "" "Color to do Runge Kutta adaptive integration in. None means dont do" }
+    
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
     {width 500 "Width of canvas in pixels"}
@@ -2151,27 +2407,34 @@ set plotdfOptions {
     {scrollregion {} "Area to show if canvas is larger" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {ycenter 0.0 "see xcenter"}
+    {bbox "" "xmin ymin xmax ymax .. overrides the -xcenter etc"}
     {tinitial 0.0 "The initial value of variable t"}
     {nsteps 100 "Number of steps to do in one pass"}
     {xfun "" "A semi colon separated list of functions to plot as well"}
     {tstep "" "t step size"}
     {direction "both" "May be both, forward or backward" }
+    {versus_t 0 "Plot in a separate window x and y versus t, after each trajectory" }
     {windowname ".dfplot" "window name"}
-    {linecolors {blue green red brown gray black} "colors to use for lines in data plots"}
-    {doTrajectoryAt "1.0 1.0" "Place to calculate trajectory"}
-    {linewidth "0.6" "Width of integral lines" }
+    {parameters "" "List of parameters and values eg k=3,l=7+k"}
+    {sliders "" "List of parameters ranges k=3:5,u"}
+    {linecolors { green black  brown gray black} "colors to use for lines in data plots"}
+    {doTrajectoryAt "" "Place to calculate trajectory"}
+    {linewidth "1.0" "Width of integral lines" }
     {nolines 0 "If not 0, plot points and nolines"}
     {bargraph 0 "If not 0 this is the width of the bars on a bar graph" }
     {plotpoints 0 "if not 0 plot the points at pointsize" }
     {pointsize 2 "radius in pixels of points" }
     {autoscale "x y" "Set {x,y}center and {x,y}range depending on data and function. "}
     {zoomfactor "1.6 1.6" "Factor to zoom the x and y axis when zooming.  Zoom out will be reciprocal" }
+    {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"}
+     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
     {labelposition "10 35" "Position for the curve labels nw corner"}
 }
 
 if { "[info proc makeFrame]" == "" } { source "plotconf.tcl" }
 
-    
+
+
 
  proc makeFrameDf { win } {
    set w [makeFrame $win df]
@@ -2192,9 +2455,14 @@ if { "[info proc makeFrame]" == "" } { source "plotconf.tcl" }
    
   button $wb.integrate -text "Integrate" -command "setForIntegrate $w" -font $buttonFont
    setBalloonhelp $win $wb.integrate {Causes clicking on the  plot with the left mouse button at a point, to draw a trajectory passing through that point.   Under Config there is an entry box which allows entering exact x,y coordinates, and which also records the place of the last trajectory computed.}
+
+  button $wb.plotversust -text "Plot Versus t" -command "plotVersusT $w" -font $buttonFont
+   setBalloonhelp $win $wb.plotversust {Plot the x and y values for the  last trajectory versus t.}   
+   
    
   setForIntegrate $w
-  pack $wb.integrate -side right -expand 1 -fill x
+  pack $wb.integrate -side top -expand 1 -fill x
+  pack $wb.plotversust -side top -expand 1 -fill x
  # pack $w.msg -side top
   pack $w
   return $win
@@ -2282,7 +2550,7 @@ proc rungeKutta { f g t0 x0 y0  h nsteps } {
   set xn $x0
   set yn $y0
   set tn $t0
-    set h2 [expr {$h / 2 }]
+    set h2 [expr {$h / 2.0 }]
     set h6 [expr {$h / 6.0 }]
  catch {
   while { [incr nsteps -1] >= 0 } {
@@ -2291,15 +2559,15 @@ proc rungeKutta { f g t0 x0 y0  h nsteps } {
   set kn1 [$f $tn $xn $yn]
   set ln1 [$g $tn $xn $yn]
 
-      set arg "[expr {$tn + $h2}] [expr {$xn + $h2 * $kn1}] [expr {$yn + $h2*$ln1}]"
+      set arg [list [expr {$tn + $h2}] [expr {$xn + $h2 * $kn1}] [expr {$yn + $h2*$ln1}]]
   set kn2 [eval $f $arg]
   set ln2 [eval $g $arg]
 
-      set arg "[expr {$tn + $h2}] [expr {$xn + $h2 * $kn2}] [expr {$yn +$h2*$ln2}]"
+      set arg [list [expr {$tn + $h2}] [expr {$xn + $h2 * $kn2}] [expr {$yn +$h2*$ln2}]]
   set kn3 [eval $f $arg]
   set ln3 [eval $g $arg]
 
-      set arg "[expr {$tn + $h}] [expr {$xn + $h * $kn3}] [expr {$yn + $h*$ln3}]"
+      set arg [list [expr {$tn + $h}] [expr {$xn + $h * $kn3}] [expr {$yn + $h*$ln3}]]
   set kn4 [eval $f $arg]
   set ln4 [eval $g $arg]
 
@@ -2307,11 +2575,10 @@ proc rungeKutta { f g t0 x0 y0  h nsteps } {
       set yn [expr {$yn + $h6 * ($ln1+2*$ln2+2*$ln3+$ln4)}]
       set tn [expr {$tn+ $h}]
 
-  append ans " $xn $yn"
+  lappend ans  $xn $yn
   }
  }
 
- # puts "ans=$ans"
  return $ans 
 }
 
@@ -2342,6 +2609,62 @@ proc rungeKuttaA { f g t0 x0 y0  h nsteps } {
   
 
 ## endsource rk.tcl
+## source adams.tcl
+
+###### adams.tcl ######
+
+
+proc adamsMoulton { f g t0 x0 y0  h nsteps } {
+    set ans [rungeKutta $f $g $t0 $x0 $y0 $h 3]
+    catch { 
+    set i 0
+    set h24 [expr {$h /24.0}]
+    foreach { x y } $ans {
+	lappend listXff [xff  [expr {$t0 + $i * $h} ] $x $y]
+	lappend listYff [yff  [expr {$t0 + $i * $h} ] $x $y]
+	incr i
+	set xn $x
+	set yn $y
+    }
+
+    set n [expr $nsteps -3]
+
+    while { [incr n -1] >= 0 } {
+
+    #puts "listXff = $listXff"
+    #puts "listYff = $listYff"		
+    # adams - bashford formula:
+    set xp [expr {$xn + ($h24)*(55 *[lindex $listXff 3]-59*[lindex $listXff 2]+37*[lindex $listXff 1]-9*[lindex $listXff 0]) }]
+    set yp [expr {$yn + ($h24)*(55 *[lindex $listYff 3]-59*[lindex $listYff 2]+37*[lindex $listYff 1]-9*[lindex $listYff 0]) }]
+    #puts "i=$i,xp=$xp,yp=$yp"
+    # adams-moulton corrector-predictor:
+    # compute the yp = yn+1 value..
+    set t [expr {$t0 + $i * $h}]
+    incr i
+    if { 1 } {
+    set xap [expr { $xn+($h24)*(9*[xff $t $xp $yp]+19*[lindex $listXff 3]-5*[lindex $listXff 2]+[lindex $listXff 1]) }]
+    set yap [expr { $yn+($h24)*(9*[yff $t $xp $yp]+19*[lindex $listYff 3]-5*[lindex $listYff 2]+[lindex $listYff 1]) }]
+
+    set xn $xap
+    set yn $yap
+   # puts "after correct:i=[expr $i -1],xn=$xn,yn=$yn"	
+    # could repeat it, or check against previous to see if changes too much.
+	}
+    set listXff [lrange $listXff 1 end]
+    set listYff [lrange $listYff 1 end]
+
+    lappend listXff [xff $t $xn $yn]
+    lappend listYff [yff $t $xn $yn]
+
+    lappend ans $xn $yn
+   # puts "ans=$ans"	
+    }
+    #puts "adams:t=$t"
+  }
+    return $ans
+}
+
+## endsource adams.tcl
 
 # sample procedures
 # proc xff { t x y } { return [expr {$x + $y }] }
@@ -2352,11 +2675,16 @@ proc doIntegrateScreen { win sx sy  } {
     doIntegrate $win [storx$win [$c canvasx $sx]] [story$win [$c canvasy $sy]]
 }
 
-proc doIntegrate { win x y } {
+proc doIntegrate { win x0 y0 } {
     # global xradius yradius c tstep  nsteps
-    makeLocal $win xradius yradius c tstep  nsteps direction linewidth
+#    puts "dointegrate $win $x0 $y0"
+    makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t linecolors
+    linkLocal $win didLast trajectoryStarts
     set rtosx rtosx$win ; set rtosy rtosy$win      
-    oset $win doTrajectoryAt [format "%.10g  %.10g" $x $y]
+    oset $win doTrajectoryAt [format "%.10g  %.10g" $x0 $y0]
+    lappend trajectoryStarts [list $x0 $y0]
+    
+    set didLast {}
     # puts "doing at $doTrajectoryAt"
     set steps $nsteps
     if { "$tstep" == "" } {  
@@ -2371,15 +2699,34 @@ proc doIntegrate { win x y } {
 	backward { set todo "[expr {- $h}]" }
 	both { set todo "$h [expr {- $h}]" }
     }
-
+    foreach method { adamsMoulton rungeKuttaA  } {
+	set color [oget $win $method]
+	if { "$color" != "" } {
+	    lappend methods $method
+	    lappend useColors $method $color
+	}
+    }
+    set methodNo -1
+    foreach method $methods {
+	incr methodNo
+#    puts method=$method
     foreach h $todo {
-	
-	set ans [rungeKuttaA xff yff 0 $x $y $h $steps]
+	set form [list $method xff yff $tinitial $x0 $y0 $h $steps]
+	set ans [eval $form]
+	lappend didLast $form
+
+	#puts "doing: $form"
 	set i -1
 	set xn1 [$rtosx [lindex $ans [incr i]]]
 	set yn1 [$rtosy [lindex $ans [incr i]]]
 	set lim [expr {$steps * 2}]
 	set mee [expr {pow(10.0,9)}]
+	set ptColor [assoc $method $useColors ]
+	set linecolor [lindex $linecolors $methodNo]
+	#set im [getPoint 2 green]
+	#set im1 [getPoint 2 purple]
+	set im [getPoint 2 $ptColor]
+	#set im1 [getPoint 2 purple]		
 	catch  { 
 	    while { $i <= $lim } {
 		set xn2  [$rtosx [lindex $ans [incr i]]]
@@ -2387,13 +2734,86 @@ proc doIntegrate { win x y } {
 		# puts "$xn1 $yn1"
 		# xxxxxxxx following is for a bug in win95 version
 		if { abs($xn1) + abs($yn1) +abs($xn2)+abs($yn2) < $mee    } {
-		    $c create line $xn1 $yn1 $xn2 $yn2 -tags path -width $linewidth
+		    $c create line $xn1 $yn1 $xn2 $yn2 -tags path -width $linewidth -fill $linecolor
+		    
 		}
+		
+                if { "$im" != "" } {
+			#puts hi
+			$c create image $xn1 $yn1 -image $im -anchor center \
+				-tags "point"
+			
+		    } else {
+		    $c create oval [expr $xn1 -2] [expr $yn1 -2] [expr $xn1 +2] [expr $yn1 +2] -fill $color
+
+		}
+	    
+			
+		    
+
 		# puts "$xn1 $yn1"
 		set xn1 $xn2
 		set yn1 $yn2
 	    }
     }   }
+  }
+  if { $versus_t } { plotVersusT $win}
+}
+
+
+proc plotVersusT {win } {
+    linkLocal $win didLast dydt dxdt parameters xcenter xradius
+    set nwin .versust.plot2d
+    if { "$parameters" != ""  } { set pars ", $parameters"} else { set pars ""}
+    oset $nwin themaintitle "dy/dt=$dydt, dx/dt=$dxdt $pars"
+    lappend plotdata [list maintitle [list oget $nwin themaintitle]]
+
+
+    foreach v $didLast {
+	set ans [eval $v]
+	desetq "tinitial x0 y0 h" [lrange $v 3 end]
+	set this [lrange $v 0 5]
+	if { [info exists doing($this) ] } { set tem $doing($this) } else {
+	    set tem ""
+	}
+	set doing($this) ""
+	set allx "" ; set ally "" ; set allt ""
+	set ii 0 
+	foreach {x y } $ans {
+	    lappend allx $x
+	    lappend ally $y
+	    lappend allt [expr $tinitial + $h*$ii]
+	    incr ii
+	}
+	
+	foreach u $tem v [list $allx $ally $allt] {
+		if { $h > 0 } { lappend doing($this) [concat $u $v]} else {
+		    lappend doing($this) [concat [lreverse $v] $u]
+	    }   }
+	}
+
+    foreach {na val } [array get doing] {
+	lappend plotdata [list label "x versus t"] [list plotpoints 2]
+	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 0] ]
+	lappend plotdata [list label "y versus t"]	
+	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 1] ]
+    }
+    if { ![winfo exists .versust] } {
+	toplevel .versust
+    }
+    
+
+    plot2d -data $plotdata -windowname $nwin -ycenter $xcenter -yradius $xradius
+    wm title .versust "X and Y versus t"
+}
+
+proc lreverse { lis } {
+    set ans ""
+    set i [llength $lis]
+    while { [incr i -1]>=0 } {
+	lappend ans [lindex $lis $i]
+    }
+    return $ans
 }
 
 
@@ -2503,6 +2923,7 @@ proc drawDF { win tinitial } {
 }
 
 proc parseOdeArg {  s } {
+    set orig $s
     set w "\[ ]*"
     set exp "\[dD]$w\\($w\(\[xyz])$w,$w\(\[xyt])$w\\)$w=(\[^;]+)"
     while { [regexp $exp $s junk x t expr ] } {
@@ -2511,11 +2932,13 @@ proc parseOdeArg {  s } {
 	regexp -indices $exp $s junk x t expr
 	set s [string range $s [lindex $junk 1] end]
     }
-    if { ![info exists ans] } {
-	error "bad -ode argument: $s\nwant d(y,x)=f(x,y) \n   OR d(x,t)=f(x,y,t) d(y,t)=g(x,y,t) "
+    if { ![info exists ans] || ([llength $ans] == 2 && "[lindex $ans 0]" != "-dydx") } {
+	error "bad -ode argument: $orig\nwant d(y,x)=f(x,y) \n   OR d(x,t)=f(x,y) d(y,t)=g(x,y) "
     }
     return $ans
 }
+
+
 
 proc plotdf { args } {
     global plotdfOptions   printOption printOptions plot2dOptions
@@ -2529,12 +2952,21 @@ proc plotdf { args } {
 	set args [concat $tem  $args]
     }
     global [oarray $win]
-    getOptions $plotdfOptions $args -usearray [oarray $win] 
+    getOptions $plotdfOptions $args -usearray [oarray $win]
+
     makeLocal $win dydx
+
     if { "$dydx" !="" } { oset $win dxdt 1 ; oset $win dydt $dydx }
     setPrintOptions $args
+    foreach v {trajectoryStarts recompute} {
+	    catch { unset [oloc $win $v]  }
+	}
     
     makeFrameDf $win
+    oset $win sliderCommand sliderCommandDf
+    oset $win trajectoryStarts ""
+	
+
     oset $win maintitle [concat "makeLocal $win  dxdt dydt dydx ;"  \
 	    {if { "$dydx" == "" } { concat "dx/dt = $dxdt , dy/dt = $dydt"}  else {
 	concat "dy/dx = $dydt" } } ]
@@ -2542,27 +2974,39 @@ proc plotdf { args } {
     }
 
 proc replotdf { win } {
-    global plotdfOptions 
-    makeLocal $win c dxdt dydt tinitial nsteps xfun
-    
+    global plotdfOptions
+    linkLocal $win xfundata data
+    if { ![info exists data] } {
+	set data ""
+	
+    }
+    makeLocal $win c dxdt dydt tinitial nsteps xfun     doTrajectoryAt parameters 
+
     setUpTransforms $win 1.0
-    setXffYff $dxdt $dydt
+    setXffYff $dxdt $dydt $parameters
     $c delete all
     setForIntegrate $win
     oset $win curveNumber -1
     drawDF $win $tinitial
-    foreach v [sparseList $xfun] {
-	proc _xf {  x  } "return \[expr { $v } \]"
-	set listPts [calculatePlot $win _xf $nsteps]
-	drawPlot $win [RealtoScreen $win $listPts]  -fill  [nextColor $win] \
-		-tags line[oget $win curveNumber]
+    if { "$doTrajectoryAt" != "" } {
+         eval doIntegrate $win  $doTrajectoryAt
     }
+    set xfundata ""
+    foreach v [sparseListWithParams $xfun {x y t} $parameters ] {
+	proc _xf {  x  } "return \[expr { $v } \]"
+	regsub "\\$" $v "" label
+	lappend xfundata [list label $label] \
+	  [linsert [calculatePlot $win _xf $nsteps]  \
+		0 xversusy]
+    }
+    redraw2dData $win -tags path
     
 }    
 
-proc setXffYff { dxdt dydt } {
-   proc xff { t x y } "return \[expr { [sparse $dxdt] } \]"
-   proc yff { t x y } "return \[expr { [sparse $dydt] } \]"
+proc setXffYff { dxdt dydt parameters } {
+    
+    proc xff { t x y } "return \[expr { [sparseWithParams $dxdt { x y} $parameters] } \]"
+    proc yff { t x y } "return \[expr { [sparseWithParams $dydt { x y} $parameters] } \]"
 }
 
 proc doConfigdf { win } {
@@ -2579,7 +3023,7 @@ proc doConfigdf { win } {
     pack $frdydx.dxdt  $frdydx.dydt -side bottom  -fill x -expand 1
     pack $frdydx.dydxbut $frdydx.dydtbut -side left -fill x -expand 1
     
-    foreach w {linewidth xradius yradius xcenter ycenter tinitial nsteps tstep direction xfun linecolors } {
+    foreach w {versus_t parameters linewidth xradius yradius xcenter ycenter tinitial nsteps tstep direction xfun linecolors rungeKuttaA adamsMoulton } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w -side bottom -expand 1 -fill x
     }
@@ -2590,15 +3034,71 @@ proc doConfigdf { win } {
     pack  $wb1.doTrajectoryAt   $frdydx    -side bottom -expand 1 -fill x
     if { "[oget $win dydx]" != "" } { swapChoose $win dydx $frdydx }
     setForIntegrate $win
-    
+ }
+
+
+
+proc sliderCommandDf { win var val } {
+    linkLocal $win recompute
+    updateParameters $win $var $val
+    set com "recomputeDF $win"
+# allow for fast move of slider...    
+    after cancel $com
+    after 50 $com
 }
 
+proc recomputeDF { win } {
+    linkLocal $win  recompute 
+    if { [info exists recompute]  } {
+	incr recompute
+	return
+    } else {
+#	puts "set recompute 1"
+	set recompute 1
+    }
+    linkLocal $win trajectoryStarts  c tinitial dxdt dydt parameters
+    set redo 0
+    set trajs ""
+
+    catch {     set trajs $trajectoryStarts} 
+
+
+    while { $redo != $recompute } {
+#	puts "	setXffYff $dxdt $dydt $parameters"
+	setXffYff $dxdt $dydt $parameters
+#	$c delete path point arrow
+	$c delete all
+	catch { unset  trajectoryStarts }
+	set redo $recompute
+	foreach pt $trajs {
+	    desetq "x0 y0" $pt
+	    catch { doIntegrate $win $x0 $y0 }
+	    update
+	    if { $redo != $recompute } { break }
+	}
+	if  { $redo == $recompute } {
+	    catch { drawDF $win $tinitial }
+	}
+    }
+#    puts "    unset recompute"
+    unset recompute
+}
+    
+
+	
+		
+	
+	
+    
 
 ## endsource plotdf.tcl
 ## source plot2d.tcl
 
 ###### plot2d.tcl ######
-
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 set p .plot
 catch { destroy $p }
@@ -2610,22 +3110,32 @@ set plot2dOptions {
     {height 500 "Height of canvas in pixels" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {xfun "" {function of x to plot eg: sin(x) or "sin(x);x^2+3" }}
+    {parameters "" "List of parameters and values eg k=3,l=7+k"}
+    {sliders "" "List of parameters ranges k=3:5,u"}
     {nsteps "100" "mininmum number of steps in x direction"}
     {ycenter 0.0 "see xcenter"}
+    {bbox "" "xmin ymin xmax ymax .. overrides the -xcenter etc"}
     {screenwindow "20 20 700 700" "Part of canvas on screen"}
+
     {windowname ".plot2d" "window name"}
     {nolines 0 "If not 0, plot points and nolines"}
     {bargraph 0 "If not 0 this is the width of the bars on a bar graph" }
+    {linewidth "0.6" "Width of plot lines" }
     {plotpoints 0 "if not 0 plot the points at pointsize" }
     {pointsize 2 "radius in pixels of points" }
     {linecolors {blue green red brown gray black} "colors to use for lines in data plots"}
     {labelposition "10 35" "Position for the curve labels nw corner"}
     {xaxislabel "" "Label for the x axis"}
     {yaxislabel "" "Label for the y axis"}
-    {autoscale "x y" "Set {x,y}center and {x,y}range depending on data and function. "}
+    {autoscale "y" "Set {x,y}center and {x,y}range depending on data and function. Value of y means autoscale in y direction, value of {x y} means scale in both.  Supplying data will automatically turn this on."}
     {zoomfactor "1.6 1.6" "Factor to zoom the x and y axis when zooming.  Zoom out will be reciprocal" }
     {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"} 
     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
+}
+
+proc argSuppliedp { x } {
+  upvar 1 args a
+  return [expr [set i [lsearch $a $x]] >= 0 && $i%2 == 0] 
 }
     
 proc mkPlot2d { args } {
@@ -2639,12 +3149,17 @@ proc mkPlot2d { args } {
     global  [oarray $win]
     set data [assoc -data $args ]
     # puts ranges=[plot2dGetDataRange $data]
-   if {( "[assoc -yradius $args nothere]" != "nothere" ||
-	"[assoc -ycenter $args nothere]" != "nothere" ) &&
-	"[assoc -autoscale $args nothere]" == "nothere" } {
-	    lappend args -autoscale "x"
-	}
+
     getOptions $plot2dOptions $args -usearray [oarray $win]
+    linkLocal $win autoscale 
+    if { [argSuppliedp -data] && ![argSuppliedp -autoscale] &&
+	![argSuppliedp -xradius] } {
+	lappend autoscale x
+	}
+    if { ![argSuppliedp -autoscale] & [argSuppliedp -yradius] } {
+	set autoscale [ldelete y $autoscale]
+	}	
+    
     oset $win curveNumber -1
     setPrintOptions $args
     oset $win maintitle ""	
@@ -2652,6 +3167,7 @@ proc mkPlot2d { args } {
     catch { destroy $windowname }
     
     makeFrame2d $win
+    oset $win sliderCommand sliderCommandPlot2d
     makeLocal $win c
     return $win
     
@@ -2676,10 +3192,11 @@ proc doConfig2d { win } {
     makeLocal $win buttonFont 
     mkentry $wb1.nsteps [oloc $win nsteps]  "Number of mesh grids"  $buttonFont
     mkentry $wb1.xfun [oloc $win xfun]  "y=f(x)"  $buttonFont
+    bind $wb1.xfun.e <Return> "replot2d $win"
     # button .jim.buttons.rot "rotate" -command "bindForRotation"
     # pack .jim.buttons.rot
     pack $wb1.xfun  $wb1.nsteps -expand 1 -fill x
-    foreach w {xradius yradius xcenter ycenter linecolors autoscale } {
+    foreach w {xradius yradius xcenter ycenter linecolors autoscale linewidth parameters} {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w -side bottom -expand 1 -fill x
     }
@@ -2693,7 +3210,7 @@ doHelp $win [join [list \
 
 William Schelter's plotter for two dimensional graphics.
 
-To QUIT this HELP click here.
+to QUIT this HELP click here.
 
 By clicking on Zoom, the mouse now allows you to zoom \
 in on a region of the plot.  Each click near a point \
@@ -2769,7 +3286,9 @@ proc calculatePlot { win fun  nsteps } {
     set limit [expr {100 * (abs($ymax)> abs($ymin) ? abs($ymax) : abs($ymin))}]
     while { $x0 < $xmax } {
 	set lastx0 $x0
+	#puts xmax=$xmax
 	append res " " [calculatePlot1 $win $x0 $h0 $fun $limit]
+	#puts res:[lrange $res [expr [llength $res] -10] end]
 	if { $x0 <= $lastx0 }	{
 	    # puts "x0=$x0,($lastx0)"
 	    set x0 [expr {$x0 + $h0/4}]
@@ -2794,7 +3313,7 @@ proc calculatePlot { win fun  nsteps } {
 #
 proc  calculatePlot1 { win x0 h0 fun  limit } {
      #puts "calc:$win $x0 $h0 $limit $fun"
-    makeLocal $win xmax 
+    makeLocal $win xmax
     set ansx ""
     set ansy ""
    while { [catch { set y0 [$fun $x0] } ] && $x0 <= $xmax }  {
@@ -2884,10 +3403,10 @@ proc  calculatePlot1 { win x0 h0 fun  limit } {
 
 	
 
-proc setup_xf { vars form } {
-    set s [sparse $form ] 
-    proc _xf [list $vars ]  "return \[ expr { $s } \]"
-}
+#proc setup_xf { vars form } {
+#    set s [sparse $form ] 
+#    proc _xf  $vars  "return \[ expr { $s } \]"
+#}
 
 
 #
@@ -2925,9 +3444,15 @@ proc replot2d {win } {
 	    oset $win [lindex $v 0] [lindex $v 1]
 	}
     }
-    makeLocal $win xfun nsteps c linecolors xaxislabel yaxislabel  autoscale
+    linkLocal $win parameters 
+    makeLocal $win xfun nsteps c linecolors xaxislabel yaxislabel  autoscale sliders
+    if { "$sliders" != "" && ![winfo exists $c.sliders] } {
+	addSliders $win
+    }
     set xfundata ""
-    foreach v [sparseList $xfun] {
+#   puts xfun=$xfun,parameters=$parameters,[oget $win xradius],[oget $win xmax]
+    foreach v [sparseListWithParams $xfun x $parameters] {
+#	puts v=$v
 	proc _xf {  x  } "return \[expr { $v } \]"
 	regsub "\\$" $v "" label
 	lappend xfundata [list label $label] \
@@ -2937,7 +3462,8 @@ proc replot2d {win } {
 
     # in case only functions and no y autoscale dont bother.
     if { "$data" != "" || [lsearch $autoscale y]>=0  } {
-	set ranges [plot2dGetDataRange [concat $data $xfundata]]	
+	set ranges [plot2dGetDataRange [concat $data $xfundata]]
+#	puts ranges=$ranges
 	foreach {v k} [eval plot2dRangesToRadius $ranges] {
 	    if { [lsearch $autoscale [string index $v 1] ] >= 0 } {
 		oset $win [string range $v 1 end] $k
@@ -3048,6 +3574,7 @@ proc plot2dGetDataRange { data } {
        after 1 $com
    }
  }
+
    list $rangex $rangey $extra
 }
 
@@ -3078,12 +3605,13 @@ proc plot2dRangesToRadius  { rangex rangey extra } {
    
 
 proc redraw2dData { win  args } {
-   makeLocal $win c linecolors data xfundata errorbar
+   makeLocal $win c linecolors data xfundata errorbar linewidth
    set tags [assoc -tags $args {} ]
    set rtosx rtosx$win ; set rtosy rtosy$win  
    set i -1
    set label _default
    append data " " $xfundata
+#    set linewidth 2.4
     
    #puts "data=$data"
    foreach d $data {
@@ -3153,7 +3681,7 @@ proc redraw2dData { win  args } {
 	       
 	       drawPlot $win [list $ans] -tags \
 		       [list [concat $tags line[oget $win curveNumber]]] \
-		       -fill $color -width .2 -label $label
+		       -fill $color -width $linewidth -label $label
 	       set label _default
 
 #	       eval $c create line $ans -tags \
@@ -3166,7 +3694,7 @@ proc redraw2dData { win  args } {
 	   default {
 
 	       # puts "$type,[lindex $d 1]"
-	       if { [lsearch { xfun color plotpoints linecolors pointsize nolines bargraph errorbar maintitle
+	       if { [lsearch { xfun color plotpoints linecolors pointsize nolines bargraph errorbar maintitle linewidth
 	       labelposition
 	       xaxislabel yaxislabel } $type] >= 0 } {
 		   # puts "setting oset $win $type [lindex $d 1]"
@@ -3218,8 +3746,8 @@ proc RealtoScreen { win listPts } {
 }
 
 proc drawPlot {win listpts args } {
-    makeLocal $win  c nolines plotpoints  pointsize bargraph
-    
+    makeLocal $win  c nolines plotpoints  pointsize bargraph linewidth
+#    set linewidth 2.4
     # puts ll:[llength $listpts]
     set tags [assoc -tags $args ""]
     if { [lsearch $tags path] < 0 } {lappend tags path}
@@ -3274,7 +3802,7 @@ proc drawPlot {win listpts args } {
 		    set res "$win create line "
 		    #puts npts:[llength $pts]
 		    if { $n >= 6 } {
-			eval $c create line $pts  	-tags [list $tags] -width .2 -fill $fill
+			eval $c create line $pts  	-tags [list $tags] -width $linewidth -fill $fill
 		    }
 		}
 	    }
@@ -3335,10 +3863,28 @@ proc getPoint { size color } {
 
 
 
+proc sliderCommandPlot2d { win var val } {
+    linkLocal $win recompute
+    updateParameters $win $var $val
+    set com "recomputePlot2d $win"
+# allow for fast move of slider...    
+    after cancel $com
+    after 10 $com
+}
+
+proc recomputePlot2d { win } {
+       replot2d $win
+}
+
+
 ## endsource plot2d.tcl
 ## source plot3d.tcl
 
 ###### plot3d.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 
 set ws_openMath(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [incr i] < 1000} {}} 1] 0]))}]
@@ -3353,6 +3899,7 @@ set plot3dOptions {
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {ycenter 0.0 "see xcenter"}
     {zcenter 0.0 "see xcenter"}
+    {bbox "" "xmin ymin xmax ymax zmin zmax overrides the -xcenter etc"}
     {zradius auto " Height in z direction of the z values"}
     {az 60 "azimuth angle" }
     {el 30 "elevantion angle" }
@@ -3360,8 +3907,11 @@ set plot3dOptions {
     {thetax 10.0 "ignored is obsolete: use az and el"}
     {thetay 20.0 "ignored is obsolete: use az and el"}
     {thetaz 30.0 "ignored is obsolete: use az and el"}
+
     {flatten 0 "Flatten surface when zradius exceeded" }
     {zfun "" "a function of z to plot eg: x^2-y^2"}
+    {parameters "" "List of parameters and values eg k=3,l=7"}
+    {sliders "" "List of parameters ranges k=3:5,u"}
     {data  "" "a data set of type { variable_grid xvec yvec zmatrix}
     or {matrix_mesh xmat ymat zmat} or {grid {xmin xmax} {ymin ymax} zmatrix}"}
     {nsteps "10 10" "steps in x and y direction"}
@@ -3375,6 +3925,10 @@ set plot3dOptions {
 ## source matrix.tcl
 
 ###### matrix.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
 
 # In this file a matrix is represented by a list of M*N entries together
 # with an integer N giving the number of columns: {1 0 0 1} 2  would give
@@ -3894,20 +4448,33 @@ proc plot3d { args } {
 
 proc replot3d { win } {
     global   printOption
-    makeLocal $win nsteps zfun data
+    makeLocal $win nsteps zfun data c
+    linkLocal $win parameters sliders
+    
     oset $win maintitle    "concat \"Plot of z = [oget $win zfun]\""
     if { [llength $nsteps] == 1 }    {
 	oset $win nsteps \
 		[set nsteps  [list [lindex $nsteps 0] [lindex $nsteps 0]]]
     }
+    foreach v $data {
+	if { "[assq [lindex $v 0] $plot2dOptions notthere]" != "notthere" } {
+	    oset $win [lindex $v 0] [lindex $v 1]
+	}
+    }
+    if { "$sliders" != "" && ![winfo exists $c.sliders] } {
+	addSliders $win
+    }
+
     if { "$zfun" != "" } {
-	    proc _xf {  x  y } "return \[expr { [sparse $zfun] } \]"
+	proc _xf {  x  y } "return \[expr { [sparseWithParams $zfun {x y} $parameters ] } \]"
 	addOnePlot3d $win [calculatePlot3data $win _xf  [lindex $nsteps 0] [lindex $nsteps 1]]
 	# calculatePlot3d $win _xf [lindex $nsteps 0] [lindex $nsteps 1]
     }
     if { "$data" != "" } {
 	addOnePlot3d $win $data
     }
+
+
     setUpTransforms3d $win
     oset $win colorfun plot3dcolorFun
 #    addAxes $win
@@ -4145,6 +4712,7 @@ proc mkPlot3d { win  args } {
     setupCanvas $win
    # catch { destroy $win }
     makeFrame3d $win
+    oset $win sliderCommand sliderCommandPlot3d
    oset $win noaxisticks 1
    
    makeLocal $win buttonFont c
@@ -4172,7 +4740,7 @@ proc doConfig3d { win } {
     # pack .jim.buttons.rot
     pack $wb1.zfun  $wb1.nsteps
     pack	    $wb1.zfun  $wb1.nsteps 
-   foreach w {xradius yradius xcenter ycenter zcenter zradius  } {
+   foreach w {xradius yradius xcenter ycenter zcenter zradius parameters } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w 
     }
@@ -4289,12 +4857,43 @@ proc doRotateScreenMotion {win x y } {
 }
 
     
-    
-    
+proc sliderCommandPlot3d { win var val } {
+    linkLocal $win recompute
+    updateParameters $win $var $val
+    set com "recomputePlot3d $win"
+# allow for fast move of slider...    
+    after cancel $com
+    after 10 $com
+}
+
+proc recomputePlot3d { win } {
+    linkLocal $win  recompute
+    if { [info exists recompute]  } {
+	incr recompute
+	return
+    } else {
+		set recompute 1
+    }
+    set redo 0
+    while { $redo != $recompute } {
+	set redo $recompute
+#	puts "replot3d $win,[oget $win parameters]"
+	catch {replot3d $win }
+	update
+    }
+    unset recompute
+}
+ 
+
 ## endsource plot3d.tcl
 ## source nplot3d.tcl
 
 ###### nplot3d.tcl ######
+############################################################
+# Netmath       Copyright (C) 1998 William F. Schelter     #
+# For distribution under GNU public License.  See COPYING. # 
+############################################################
+
 # source plotting.tcl ; source nplot3d.tcl ; catch { destroy .plot3d} ;  plot3d -zfun "" -data $sample -xradius 10 -yradius 10
 # newidea:
 # { plot3d
