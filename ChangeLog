@@ -1,3 +1,17 @@
+2003-01-27 02:02  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Increased timeout for
+	starting maxima
+
+2003-01-27 01:55  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Menu.tcl: Fix for Win98 -
+	env(COMSPEC)
+
+2003-01-26 15:54  amundson
+
+	* ChangeLog: ChangeLog updated by cvs2cl.pl.
+
 2003-01-26 15:48  amundson
 
 	* src/powers.lisp: Updates and translation to unix line endings.
