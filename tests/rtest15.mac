@@ -41,7 +41,7 @@ TENTH(l);
 
 /* Some older versions of GCL had a bug that resulted in a failure of the */
 /* following. */
-primep(80630964768);
+primep(80630964769);
 TRUE$
 
 
