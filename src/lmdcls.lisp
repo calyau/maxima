@@ -139,7 +139,7 @@
   ^dmsg-on
   $wtlevel $cflength $weightlevels *trunclist $taylordepth
   $maxtaydiff $verbose $psexpand ps-bmt-disrep
-  silent-taylor-flag $define_variable))
+  silent-taylor-flag $define_variable $infolists))
 
 (declaim (declaration splitfile unspecial muzzled no-type genprefix flonum
 		      *lexpr *fexpr *expr mapex macros array* object))
