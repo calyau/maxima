@@ -401,17 +401,6 @@ physics/dimension.pdf\
 physics/dimension.tex\
 physics/dimen.usg\
 physics/elec.lisp\
-physics/gam5.lisp\
-physics/gamalg.dem\
-physics/gamalg.lisp\
-physics/gamalg.usg\
-physics/gamchi.lisp\
-physics/gamcon.lisp\
-physics/gamgfi.lisp\
-physics/gamkah.lisp\
-physics/gammtr.lisp\
-physics/gamnoc.lisp\
-physics/gamsq.lisp\
 physics/physconst.mac\
 physics/physconst.usg\
 physics/units.mac\
