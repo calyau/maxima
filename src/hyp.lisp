@@ -251,7 +251,7 @@
 		     (inv (power -1 n))))
 	 (fact2 (mul (power 2 (inv 2))
 		     (power var (inv 2)))))
-    (cond ((equal c (div 1 2))
+    (cond ((alike1 c (div 1 2))
 	   ;; A&S 22.5.56
 	   ;; hermite(2*n,x) = (-1)^n*(2*n)!/n!*M(-n,1/2,x^2)
 	   ;;
@@ -264,7 +264,7 @@
 	   (mul fact1
 		(inv (factorial (add n n)))
 		(hermpol (add n n) fact2)))
-	  ((equal c (div 3 2))
+	  ((alike1 c (div 3 2))
 	   ;; A&S 22.5.57
 	   ;; hermite(2*n+1,x) = (-1)^n*(2*n+1)!/n!*M(-n,3/2,x^2)*2*x
 	   ;;
@@ -335,9 +335,9 @@
 (defun 2f0polys (l1 n)
   (let ((a (car l1))
 	(b (cadr l1)))
-    (when (equal (sub b a) (div -1 2))
+    (when (alike1 (sub b a) (div -1 2))
       (rotatef a b))
-    (cond ((equal (sub b a) (div 1 2))
+    (cond ((alike1 (sub b a) (div 1 2))
 	   ;; 2F0(-n,-n+1/2,z) or 2F0(-n-1/2,-n,z)
 	   (interhermpol n a b var))
 	  (t
@@ -389,9 +389,9 @@
 ;; with y as above.
 (defun interhermpol (n a b x)
   (let ((arg (power (div 2 (mul -1 x)) (inv 2)))
-	(order (cond ((equal a n)
+	(order (cond ((alike1 a n)
 		      (mul -2 n))
-		     ((equal b n)
+		     ((alike1 b n)
 		      (sub 1 (add n n))))))
     ;; 2F0(-n,-n+1/2;z) = y^(-2*n)*He(2*n,y)
     ;; 2F0(-n-1/2,-n;z) = y^(-(2*n+1))*He(2*n+1,y)
@@ -426,7 +426,7 @@
      (cond ((setq lgf (legpol (car l1) (cadr l1) (car l2)))
 	    (return lgf)))
 
-     (cond ((equal (sub (car l2) v) '((rat simp) 1 2))
+     (cond ((alike1 (sub (car l2) v) '((rat simp) 1 2))
 	    ;; A&S 15.4.5:
 	    ;; F(-n, n + 2*a; a + 1/2; x) = n!*gegen(n, a, 1-2*x)/pochhammer(2*a,n)
 	    ;;
@@ -530,9 +530,11 @@
 (defun dispatch-spec-simp (l1 l2)
   (prog(len1 len2)
      (setq len1 (length l1) len2 (length l2))
-     (cond ((and (lessp len1 2)(lessp len2 2))
+     (cond ((and (lessp len1 2)
+		 (lessp len2 2))
 	    (return (simp2>f<2 l1 l2 len1 len2))))
-     (cond ((and (equal len1 2)(equal len2 1))
+     (cond ((and (equal len1 2)
+		 (equal len2 1))
 	    (return (simp2f1 l1 l2))))
      (return (fpqform l1 l2 var))))
 
@@ -825,21 +827,20 @@
     (l1 l2)
   (prog(a b c lgf)
      (setq a (car l1) b (cadr l1) c (car l2))
-     (cond ((and (equal a 1)
-		 (equal b 1)
-		 (equal c 2))
+     (cond ((and (alike1 a 1)
+		 (alike1 b 1)
+		 (alike1 c 2))
 	    ;; F(1,1;2;z), A&S 15.1.3
 	    (return (mul (inv (mul -1 var))
 			 (mlog (add 1 (mul -1 var)))))))
-     (cond ((or (equal c  (div 3 2))
-		(equal c  (div 1 2)))
+     (cond ((or (alike1 c  (div 3 2))
+		(alike1 c  (div 1 2)))
 	    ;; F(a,b; 3/2; z) or F(a,b;1/2;z)
 	    (cond ((setq lgf (trig-log (list a b) (list c)))
 		   (return lgf)))))
-	    
      (cond ((or
-	     (equal (sub a b) (div 1 2))
-	     (equal (sub b a) (div 1 2)))
+	     (alike1 (sub a b) (div 1 2))
+	     (alike1 (sub b a) (div 1 2)))
 	    ;; F(a,b;c;z) where |a-b|=1/2 
 	    (cond ((setq lgf (hyp-cos a b c))(return lgf)))))
      (cond ((and (hyp-integerp a)
@@ -867,7 +868,8 @@
 	   mn  (cdras 'c l)
 	   l (s+c c)
 	   sym1 (cdras 'f l))
-     (cond ((not (equal (mul sym 2) sym1))(return nil)))
+     (cond ((not (equal (mul sym 2) sym1))
+	    (return nil)))
      (setq kl (cdras 'c l)
 	   l  (s+c b)
 	   r (sub (add (inv 2) (cdras 'c l)) mn)
@@ -1057,7 +1059,7 @@
     ;; a1 = (a+b-1/2)/2
     ;; z1 = 1-var
     ;; a2 = c/2
-    (cond ((equal (sub (add a b)
+    (cond ((alike1 (sub (add a b)
 		       (div 1 2))
 		  c)
 	   ;; a+b-1/2 = c
@@ -1070,7 +1072,7 @@
 				   (div 1
 					2)))
 		       (sub 1 (mul 2 a1)))))
-	  ((equal (add 1 (mul 2 a1)) c)
+	  ((alike1 (add 1 (mul 2 a1)) c)
 	   ;; c = 1+2*a1 = a+b+1/2
 	   ;;
 	   ;; 2^(c-1)*(1+sqrt(z1))^(-(c-1))
@@ -1234,28 +1236,28 @@
 	   (sub (sub c a) b)
 	   inv2
 	   (inv 2))
-     (cond ((equal a-b inv2)   
-	    (return (gered1 (list a b)(list c) #'legf24))))
-     (cond ((equal a-b (mul -1 inv2))
-	    (return (legf24 (list a b)(list c) var))))
-     (cond ((equal c-a-b inv2)
-	    (return (legf20 (list a b)(list c) var))))
-     (cond ((equal c-a-b (mul -1 inv2))
-	    (return (gered1 (list a b)(list c) #'legf20))))
-     (cond ((equal 1-c a-b)
-	    (return (legf16 (list a b)(list c) var))))
-     (cond ((equal 1-c (mul -1 a-b))
-	    (return (gered1 (list a b)(list c) #'legf16))))
-     (cond ((equal 1-c c-a-b)
-	    (return (gered1 (list a b)(list c) #'legf14))))
-     (cond ((equal 1-c (mul -1 c-a-b))
-	    (return (legf14 (list a b)(list c) var))))
-     (cond ((equal a-b (mul -1 c-a-b))
-	    (return (legf36 (list a b)(list c) var))))
-     (cond ((or (equal 1-c inv2)
-		(equal 1-c (mul -1 inv2)))
+     (cond ((alike1 a-b inv2)   
+	    (return (gered1 (list a b) (list c) #'legf24))))
+     (cond ((alike1 a-b (mul -1 inv2))
+	    (return (legf24 (list a b) (list c) var))))
+     (cond ((alike1 c-a-b inv2)
+	    (return (legf20 (list a b) (list c) var))))
+     (cond ((alike1 c-a-b (mul -1 inv2))
+	    (return (gered1 (list a b) (list c) #'legf20))))
+     (cond ((alike1 1-c a-b)
+	    (return (legf16 (list a b) (list c) var))))
+     (cond ((alike1 1-c (mul -1 a-b))
+	    (return (gered1 (list a b) (list c) #'legf16))))
+     (cond ((alike1 1-c c-a-b)
+	    (return (gered1 (list a b) (list c) #'legf14))))
+     (cond ((alike1 1-c (mul -1 c-a-b))
+	    (return (legf14 (list a b) (list c) var))))
+     (cond ((alike1 a-b (mul -1 c-a-b))
+	    (return (legf36 (list a b) (list c) var))))
+     (cond ((or (alike1 1-c inv2)
+		(alike1 1-c (mul -1 inv2)))
 	    (return (legpol a b c))))
-     (cond ((equal a-b c-a-b)
+     (cond ((alike1 a-b c-a-b)
 	    (return 'legendre-funct-to-be-discovered)))
      (return nil)))
 
@@ -1345,7 +1347,7 @@
 
 (defun legen (n m x pq)
   (cond ((and (equal m 0)
-	      (eq ($askinteger n) '$yes))
+	      #+nil (eq ($askinteger n) '$yes))
 	 `((,(if (eq pq '$q) '$legendre_q '$legendre_p)) ,n ,x))
 	(t
 	 `((,(if (eq pq '$q) '$assoc_legendre_q '$assoc_legendre_p))
@@ -1359,15 +1361,15 @@
      (setq l (vfvp (div (add b a) 2)))
      (setq v (cdr (zl-assoc 'v l)))
      ;; v is (a+b)/2
-     (cond ((and (equal v '((rat simp) 1 2))
-		 (equal c 1))
+     (cond ((and (alike1 v '((rat simp) 1 2))
+		 (alike1 c 1))
 	    ;; A&S 22.5.49:
 	    ;; P(n,x) = F(-n,n+1;1;(1-x)/2)
 	    (return (legenpol (mul -1 a)
 			      (sub 1 (mul 2 var))))))
 
-     (cond ((and (equal c '((rat simp) 1 2))
-		 (equal (add b a) '((rat simp) 1 2)))
+     (cond ((and (alike1 c '((rat simp) 1 2))
+		 (alike1 (add b a) '((rat simp) 1 2)))
 	    ;; A&S 22.5.52
 	    ;; P(2*n,x) = (-1)^n*(2*n)!/2^(2*n)/(n!)^2*F(-n,n+1/2;1/2;x^2)
 	    ;;
@@ -1381,8 +1383,8 @@
 			   (legenpol (mul 2 n)
 				     (power var (div 1 2))))))))
 
-     (cond ((and (equal c '((rat simp) 3 2))
-		 (equal (add b a) '((rat simp) 3 2)))
+     (cond ((and (alike1 c '((rat simp) 3 2))
+		 (alike1 (add b a) '((rat simp) 3 2)))
 	    ;; A&S 22.5.53
 	    ;; P(2*n+1,x) = (-1)^n*(2*n+1)!/2^(2*n)/(n!)^2*F(-n,n+3/2;3/2;x^2)*x
 	    ;;
@@ -1408,8 +1410,8 @@
 			 (power (mul -1 var) (mul -1 a))
 			 (legenpol (mul -1 a)
 				   (add 1 (div -2 var)))))))
-     (cond ((and (equal (sub a b) '((rat simp) 1 2))
-		 (equal (sub c (mul 2 b)) '((rat simp) 1 2)))
+     (cond ((and (alike1 (sub a b) '((rat simp) 1 2))
+		 (alike1 (sub c (mul 2 b)) '((rat simp) 1 2)))
 	    ;; A&S 22.5.51
 	    ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
 	    ;;
@@ -1419,8 +1421,8 @@
 			 (power (mul 2 (power var (div 1 2))) (mul -2 b))
 			 (legenpol (mul -2 b)
 				   (power var (div -1 2)))))))
-     (cond ((and (equal (sub b a) '((rat simp) 1 2))
-		 (equal (sub c (mul 2 a)) '((rat simp) 1 2)))
+     (cond ((and (alike1 (sub b a) '((rat simp) 1 2))
+		 (alike1 (sub c (mul 2 a)) '((rat simp) 1 2)))
 	    ;; A&S 22.5.51
 	    ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
 	    ;;
@@ -1859,7 +1861,7 @@
   (prog (a c a-c k m z)
      (setq a (car l1)
 	   c (car l2))
-     (cond ((equal c (add a a))
+     (cond ((alike1 c (add a a))
 	    ;; F(a;2a;z)
 	    ;; A&S 13.6.6
 	    ;;
