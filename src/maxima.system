@@ -12,8 +12,9 @@
   :components ((:module package :source-pathname ""
 			:load-only t
 			:components ((:file "maxima-package")))
-	       #+later(:module info :source-pathname ""
-			:components ((:file "cl-info")))
+	       (:module info :source-pathname ""
+			:components (#-gcl(:file "nregex")
+				     #-gcl(:file "cl-info")))
 	       (:module sloop :source-pathname ""
 			:components ((:file "sloop")))
 	       (:module declarations :source-pathname ""
