@@ -169,7 +169,8 @@
 	     (setq tensor (mysubst0 (append (list (car e)
 						  (consmlist cov)
 						  (consmlist contr))
-					    (itensor-sort deriv)) e))
+(cond ($iframe_flag deriv) (t   (itensor-sort deriv) ))
+) e))
 	     (cond (csign (setq tensor (neg tensor))))
 	     (return tensor)))
 

@@ -132,7 +132,7 @@ _lcprod(lc1,lc2):=block([temp1,ln11,lf,l1,l2,l11,l22,lku,lkl],
 			(
 				lf:length(l11),
 				ln11:makelist(idummy(),i,1,lf),
-				kdelta(ln11,l22)*prod(ev(imetric)([],[ln11[i],l11[i]]),i,1,lf)
+				kdelta(ln11,l22)*prod(ev(imetric)([-ln11[i],-l11[i]],[]),i,1,lf)
 			)
 			else if lku=[] then
 			(

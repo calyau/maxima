@@ -26,6 +26,7 @@
 (cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
       (t ($put '$itensor '$v20041126 '$version))
 )
+
 ;	** (c) Copyright 1981 Massachusetts Institute of Technology **
 
 ;    Various functions in Itensor have been parceled out to separate files. A
@@ -68,8 +69,8 @@
 (autof '$IGEODESIC_COORDS '|gener|)
 (autof '$CONMETDERIV '|gener|)
 (autof '$NAME '|canten|)
-(autof '$CONTI '|canten|)
-(autof '$COVI '|canten|)
+;(autof '$CONTI '|canten|)
+;(autof '$COVI '|canten|)
 (autof '$DERI '|canten|)
 )
 #+cl
@@ -109,6 +110,48 @@
               (concat $IDUMMYX $ICOUNTER)))
 
 (DEFPROP $KDELTA ((/  . / )) CONTRACTIONS)
+
+
+(defun isprod (x) (or (equal x '(mtimes)) (equal x '(mtimes simp))
+                      (equal x '(mtimes simp ratsimp)))
+)
+
+;; Remove occurrences of RATSIMP from elements of x
+(defun derat (x)
+  (cond
+    ((null x) nil)
+    ((atom x) x)
+    ((eq (car x) 'ratsimp) (derat (cdr x)))
+    (t (cons (derat (car x)) (derat (cdr x))))
+  )
+)
+
+(defun plusi(l)
+  (cond
+    ((null l) l)
+    ((atom (car l))  (cons (car l) (plusi (cdr l))))
+    ((and (isprod (caar l)) (eq (cadar l) -1)) (plusi (cdr l)))
+    (t (cons (car l) (plusi (cdr l))))
+  )
+)
+
+(defun minusi(l)
+  (cond
+    ((null l) l)
+    ((atom (car l))  (minusi (cdr l)))
+    (
+      (and (isprod (caar l)) (eq (cadar l) -1)) 
+      (cons (caddar l) (minusi (cdr l)))
+    )
+    (t (minusi (cdr l)))
+  )
+)
+
+
+(defun covi (rp) (plusi (cdadr rp)))
+(defun conti (rp) (append (minusi (cdadr rp)) (cdaddr rp)))
+(defmfun $covi (rp) (cons '(mlist simp) (covi rp)))
+(defmfun $conti (rp) (cons '(mlist simp) (conti rp)))
 
 ;KDELTA has special contraction property because it contracts with any indexed
 ;object.
@@ -888,116 +931,270 @@
 	     (COND ((SETQ SF (CONTRACT3 F L3)) (SETQ L3 SF))
 		   (T (SETQ L3 (CONS F L3))))
 	     (GO LOOP2))) 
-
-(DEFUN CONTRACT1 (F G)           ;This does the actual contraction of F with G.
-       (PROG (A B C D E CF) 	 ;If f has any derivative indices then it can't
-				 ;contract G. If F is Kronecker delta then see
-                                 ;which of the covariant, contravariant, or
-                                 ;derivative indices matches those in G.
-	     (WHEN (CDDDR F) (RETURN NIL))
-	     (SETQ A (CDADR F)
-		   B (CDADDR F)
-		   C (CADR G)
-		   D (CADDR G)
-		   E (CDDDR G))
-	     (COND
-	      ((OR (EQ (CAAR F) '%KDELTA) (EQ (CAAR F) '$KDELTA))
-          ;; VTT1 Special exception for kdelta([],[a,b])
-           (AND (not (= (LENGTH (cadr f)) (LENGTH (caddr f)))) (return nil))
-	       (AND (> (LENGTH A) 1) (RETURN NIL))
-	       (SETQ A (CAR A) B (CAR B))
-	       (RETURN
-		(SIMPLIFYA (COND ((AND (CDR C) (AND (NOT (NUMBERP B)) (MEMQ B (CDR C))))
-				  (SETQ C (SUBST A B (CDR C)))
-				  (AND (NOT (MEMQ (CAAR G) CHRISTOFFELS))
-				       (CDR D)
-				       (SETQ A (CONTRACT2 C (CDR D)))
-				       (SETQ C (CAR A) 
-					     D (CONS SMLIST (CDR A))))
-				  (NCONC (LIST (CAR G)
-					       (CONS SMLIST C)
-					       D)
-					 E))
-				 ((AND E (AND (NOT (NUMBERP B)) (MEMQ B E)))
-				  (NCONC (LIST (CAR G) C D)
-					 (itensor-SORT (SUBST A B E))))
-				 ((AND (CDR D) (AND (NOT (NUMBERP A)) (MEMQ A (CDR D))))
-				  (SETQ D (SUBST B A (CDR D)))
-				  (AND (CDR C)
-				       (SETQ A (CONTRACT2 (CDR C) D))
-				       (SETQ D (CDR A) 
-					     C (CONS SMLIST (CAR A))))
-				  (NCONC (LIST (CAR G)
-					       C
-					       (CONS SMLIST D))
-					 E))
-				 (T NIL))
-			   NIL))))
-;; VTT: No tensor should be able to contract LC or KDELTA.
-	     (AND (OR (EQ (CAAR G) '$KDELTA) (EQ (CAAR G) '%KDELTA) (EQ (CAAR G) '$Levi_Civita) (EQ (CAAR G) '%Levi_Civita)) (RETURN NIL))
 
-				    ;If G has derivative indices then F must be
-	     (and e                 ;constant in order to contract it.
-		  (NOT (MGET (CAAR F) '$CONSTANT))
-		  (RETURN NIL))
-				;Contraction property of F is a list of (A.B)'S
-;;	     (COND ((SETQ CF (ZL-GET (CAAR F) 'CONTRACTIONS)))
-	     (COND ((SETQ CF (GETCON (CAAR F))))
-		   (T (RETURN NIL)))
-                          ;If G matches an A then use the B for name of result.
-			  ;If an A is a space use name of G for result.
-	MORE (COND ((EQ (CAAR CF) '/ ) (SETQ CF (CAR G)))
-		   ((EQ (CAAR CF) (CAAR G))
-		    (SETQ CF (NCONS (CDAR CF))))
-		   (T (OR (SETQ CF (CDR CF)) (RETURN NIL)) (GO MORE)))
-	     (SETQ C (CDR C) D (CDR D))
-			        ;If CONTRACT2 of F's contravariant and G's
-			        ;covariant or F's covariant and G's
-                                ;contravariant indicies is NIL then return NIL.
-	     (COND ((AND B C (SETQ F (CONTRACT2 B C)))
-		    (SETQ B (CAR F) C (CDR F)))
-		   ((AND A D (SETQ F (CONTRACT2 A D)))
-		    (SETQ A (CAR F) D (CDR F)))
-		   (T (RETURN NIL)))
-					       ;Form combined indices of result
-	     (AND D (SETQ B (APPEND B D)))
-	     (AND C (SETQ A (APPEND C A)))
-						       ;Zl-remove repeated indices
-	     (AND (SETQ F (CONTRACT2 A B)) (SETQ A (CAR F) B (CDR F)))
-;; VTT: Special handling of Christoffel symbols. We can only contract them
-;; when we turn ICHR1 into ICHR2 or vice versa; other index combinations are
-;; illegal. This code checks if the index pattern is a valid one and replaces
-;; ICHR1 with ICHR2 or vice versa as appropriate.
-;;	     (COND ((OR (EQ (CAR CF) '$ICHR1) (EQ (CAR CF) '%ICHR1))
-	     (COND ((member (car CF) christoffels1)
-		      (COND	 ((AND (EQ (LENGTH A) 2) (EQ (LENGTH B) 1))
-;;				  (SETQ CF (CONS (COND ((EQ (CAR CF) '$ICHR1) '$ICHR2) (T '%ICHR2)) (CDR CF))))
-				  (SETQ CF (CONS (elt christoffels2 (position (car CF) christoffels1)) (CDR CF))))
-				 ((NOT (AND (EQ (LENGTH A) 3) (EQ (LENGTH B) 0))) (RETURN NIL)))
-		   )
-;;		   ((OR (EQ (CAR CF) '$ICHR2) (EQ (CAR CF) '%ICHR2))
-		   ((member (car CF) christoffels2)
-		      (COND	 ((AND (EQ (LENGTH A) 3) (EQ (LENGTH B) 0))
-;;				  (SETQ CF (CONS (COND ((EQ (CAR CF) '$ICHR2) '$ICHR1) (T '%ICHR1)) (CDR CF)))
-				  (SETQ CF (CONS (elt christoffels1 (position (car CF) christoffels2))  (CDR CF)))
-				 )
-				 ((NOT (AND (EQ (LENGTH A) 2) (EQ (LENGTH B) 1))) (RETURN NIL)))
-		   )
-           ((member (car CF) christoffels) (return nil))
-	     )
+;; Create a 'normalized' (i.e., old-style) rpobj
+(defun renorm (e) (append (list (car e) ($covi e) ($conti e)) (cdddr e)))
 
-	     (SETQ F (MEVAL (LIST CF (CONS SMLIST A) (CONS SMLIST B))))
-	     (AND E
-;		  (DO E E (CDR E)
-;		      (NULL E)
-;		      (SETQ F (IDIFF F (CAR E))))
-		  (DO ((E E (CDR E)))
-		      ((NULL E) )
-		      (SETQ F (IDIFF F (CAR E))))
+;; Add a minus sign to all elements in a list
+(defun neglist (l)
+  (cond ((null l) nil)
+        (t (cons (list '(mtimes simp) -1 (car l)) (neglist (cdr l))))
+  )
+)
 
-		  )
-	     (RETURN F)))
-
+;; Create an 'abnormal' (i.e., new-style) rpobj
+(defun abnorm (e)
+  (append (list (car e)
+                (append ($covi e) (neglist (conti e)))
+                '((mlist simp)))
+                (cdddr e)
+  )
+)
+
+;; Test for membership using EQUAL, to catch member lists
+(defun memlist (e l)
+  (cond ((null l) nil)
+        ((equal e (car l)) l)
+        (t (memlist e (cdr l)))
+  )
+)
+
+;; Substitute using EQUAL, to catch member lists
+(defun substlist (b a l)
+  (cond ((null l) l)
+        ((equal a (car l)) (cons b (cdr l)))
+        (t (cons (car l) (substlist b a (cdr l))))
+  )
+)
+
+;; And delete an element from a list, again using EQUAL
+(defun dellist (e l)
+  (cond ((null l) l)
+        ((equal e (car l)) (dellist e (cdr l)))
+        (t (cons (car l) (dellist e (cdr l))))
+  )
+)
+
+;; Removes items not in i from l. But the ones in l have a minus sign!
+(defun removenotin (i l)
+  (cond ((null l) l)
+        ((atom (car l)) (cons (car l) (removenotin i (cdr l))))
+        ((and (isprod (caar l)) (eq (cadar l) -1)
+             (not (memq (caddar l) i))) (removenotin i (cdr l)))
+        (t (cons (car l) (removenotin i (cdr l))))
+  )
+)
+
+;; Removes indices duplicated once with and once without a minus sign
+(defun contractinside (c)
+  (do
+    ((i (minusi c) (cdr i)))
+    ((null i))
+    (and (memlist (car i) c) (memlist (list '(mtimes simp) -1 (car i)) c)
+         (setq c (delete (car i) (dellist (list '(mtimes simp) -1 (car i)) c)))
+    )
+  )
+  c
+)
+
+;; This does the actual contraction of f with g. If f has any derivative
+;; indices then it can't contract g. If f is Kronecker delta then see which of
+;; the covariant, contravariant, or derivative indices matches those in g.
+(defun contract1 (f g)
+  (prog (a b c d e cf)
+    (when (cdddr f) (return nil))
+    (setq a (derat (cdadr f)) b (cdaddr f)
+          c (derat (cadr g)) d (caddr g) e (cdddr g)
+    )
+    (cond                        ; This section is all Kronecker-delta code
+      (
+        (or (eq (caar f) '%kdelta) (eq (caar f) '$kdelta))
+
+        ; We normalize the indices first
+        (setq b (append (minusi a) b) a (plusi a))
+
+        ;We cannot contract with higher-order Kronecker deltas
+        (and (> (length b) 1) (return nil))
+
+        (setq a (car a) b (car b))
+        (return
+          (simplifya
+            (cond
+              (
+                (and (cdr c) (not (numberp b)) (memq b (cdr c)))
+                (setq c (subst a b (cdr c)))
+                (and
+                  (not (memq (caar g) christoffels))
+                  (cdr d)
+                  (setq a (contract2 c (cdr d)))
+                  (setq c (car a) d (cons smlist (cdr a)))
+                )
+                (setq c (contractinside c))
+                (nconc (list (car g) (cons smlist c) d) e)
+              )
+              (
+                (and e (not (numberp b)) (memq b e))
+                (nconc (list (car g) c d) 
+                  (cond
+                    ($iframe_flag (subst a b e))
+                    (t (itensor-sort (subst a b e)))
+                  )
+                )
+              )
+              (
+                (and (cdr d) (not (numberp a)) (memq a (cdr d)))
+                (setq d (subst b a (cdr d)))
+                (and
+                  (cdr c)
+                  (setq a (contract2 (cdr c) d))
+                  (setq d (cdr a) c (cons smlist (car a)))
+                )
+                (nconc (list (car g) c (cons smlist d)) e)
+              )
+              (
+                (and (cdr c) (not (numberp a))
+                     (memlist (list '(mtimes simp) -1 a) (cdr c))
+                )
+                (setq c (substlist (list '(mtimes simp) -1 b)
+                                   (list '(mtimes simp) -1 a)
+                                   (cdr c)
+                        )
+                )
+                (setq c (contractinside c))
+                (nconc (list (car g) (cons smlist c) d) e)
+              )
+              (t nil)
+            )
+            nil
+          )
+        )
+      )
+    )
+
+    ;No tensor can contract Kronecker-deltas or Levi-Civita symbols.
+    (and
+      (or (eq (caar g) '$kdelta) (eq (caar g) '%kdelta)
+          (eq (caar g) '$levi_civita) (eq (caar g) '%levi_civita)
+      )
+      (return nil)
+    )
+
+    ;If g has derivative indices then F must be constant in order to contract it
+    (and e (not (mget (caar f) '$constant)) (return nil))
+
+    ;Contraction property of f is a list of (a.b)'s
+    (cond
+      ((setq cf (getcon (caar f))))
+      (t (return nil))
+    )
+
+    ;If g matches an a then use the b for name of result. If an a is a space
+    ;use name of G for result.
+    MORE
+    (cond
+      (
+        (eq (caar cf) '/ )
+        (setq cf (car g))
+      )
+      (
+        (eq (caar cf) (caar g))
+        (setq cf (ncons (cdar cf)))
+      )
+      (t
+        (or (setq cf (cdr cf)) (return nil))
+        (go MORE)
+      )
+    )
+    (setq c (cdr c) d (cdr d))
+
+    ;If CONTRACT2 of f's contravariant and g's covariant or f's covariant and
+    ;g's contravariant indices is nil then return nil
+    (cond
+      (
+        (and b c (setq f (contract2 b c)))
+        (setq b (car f) c (cdr f))
+      )
+      (
+        (and a d (setq f (contract2 a d)))
+        (setq a (car f) d (cdr f))
+      )
+      (
+        (and a (minusi c) (setq f (contract2 a (minusi c))))
+        ; (cdr f) now contains the free indices in (minusi c).
+        ; what we need to do is find the corresponding items in c, and remove
+        ; all other negative indices (i.e., those that were dropped by
+        ; contract2).
+        (setq c (removenotin (cdr f) c))
+        (setq a (car f))
+      )
+      (
+        (and (minusi a) c (setq f (contract2 (minusi a) c)))
+        (setq a (removenotin (car f) a))
+        (setq c (cdr f))
+      )
+      (t (return nil))
+    )
+    ;Form combined indices of result
+    (and d (setq b (append b d)))
+    (and c (setq a (append c a)))
+    ;Zl-remove repeated indices
+    (and (setq f (contract2 a b)) (setq a (car f) b (cdr f)))
+
+    ;VTT: Special handling of Christoffel symbols. We can only contract them
+    ;when we turn ICHR1 into ICHR2 or vice versa; other index combinations are
+    ;illegal. This code checks if the index pattern is a valid one and replaces
+    ;ICHR1 with ICHR2 or vice versa as appropriate.
+    (cond
+      (
+        (member (car cf) christoffels1)
+        (cond
+          (
+            (and (eq (length a) 2) (eq (length b) 1))
+            (setq cf
+              (cons
+                (elt christoffels2 (position (car cf) christoffels1))
+                (cdr cf)
+              )
+            )
+          )
+          (
+            (not (and (eq (length a) 3) (eq (length b) 0)))
+            (return nil)
+          )
+        )
+      )
+      (
+        (member (car cf) christoffels2)
+        (cond
+          (
+            (and (eq (length a) 3) (eq (length b) 0))
+            (setq cf
+              (cons
+                (elt christoffels1 (position (car cf) christoffels2))
+                (cdr cf)
+              )
+            )
+          )
+          (
+            (not (and (eq (length a) 2) (eq (length b) 1)))
+            (return nil)
+          )
+        )
+      )
+      ((member (car cf) christoffels) (return nil))
+    )
+
+    (setq f (meval (list cf (cons smlist a) (cons smlist b))))
+    (and e
+      (do
+        ((e e (cdr e)))
+        ((null e))
+        (setq f (idiff f (car e)))
+      )
+    )
+    (return f)
+  )
+)
 
 ;; In what amounts to quite an abuse of the Kronecker delta concept, we
 ;; permit an exceptional index combination of two contravariant indices.
@@ -1005,6 +1202,7 @@
 ;; not require resorting to numeric indices, causing all sorts of problems
 ;; with RENAME and CONTRACT.
 (defmfun $kdelta (l1 l2)
+  (setq l2 (append l2 (minusi l1)) l1 (plusi l1))
   (cond
     (
       (and ($listp l1) ($listp l2) (= ($length l1) 0) (= ($length l2) 2))
@@ -1109,6 +1307,7 @@
 
 (DECLARE-TOP (SPECIAL $OUTCHAR $DISPFLAG LINELABLE FOOBAR DERIVLIST))
 
+
 ;Displays P([L1],[L2],I1,I2,...) by making the elements of L2 into a single
 ;atom which serves as the exponent and the elements of L1 and I1,I2,... into a
 ;single atom with a comma in between which serves as the subscript.
@@ -1116,7 +1315,7 @@
 (DEFMFUN $ISHOW (f)
        (progn (makelabel $LINECHAR)
               (cond ($DISPFLAG
-                     (displa (list '(MLABLE) LINELABLE (ishow (specrepcheck f))))
+                     (displa (list '(MLABLE) LINELABLE (ishow (specrepcheck (derat f)))))
 ;                     (setq $DISPFLAG nil)
 ))
               (SET LINELABLE f)))
@@ -1126,17 +1325,17 @@
 		(COND ((ATOM F) F)
 		      ((RPOBJ F)                      ;If an indexed object ...
 		       (SETQ FOOBAR
-			     (COND ((OR (CDADR F) (CDDDR F))   ;If covariant or
+			     (COND ((OR (COVI F) (CDDDR F))   ;If covariant or
 				    (CONS (LIST (CAAR F)    ;derivative indices
 						'ARRAY)
-					  (NCONS (MAKNAM (CONS '$ (SPLICE (CDADR F)
+					  (NCONS (MAKNAM (CONS '$ (SPLICE (COVI F)
 							 (CDDDR F)))))))
 				   (T (CAAR F))))
-		       (COND ((CDADDR F)              ;If contravariant indices
+		       (COND ((CONTI F)              ;If contravariant indices
 			      (LIST '(MEXPT SIMP)
 				    FOOBAR
 				     (CONS '(MTIMES SIMP)  ;Make indices appear
-					  (CDADDR F))))    ;as exponents for
+					  (CONTI F))))    ;as exponents for
 			     (T FOOBAR)))                  ;proper display
 		      (T
 		       (CONS (CAR F) (MAPCAR 'ISHOW (CDR F))))))
@@ -1596,8 +1795,8 @@
     (cond
       (
         (rpobj e)
-        (setq top (nonumber (cdaddr e))
-              bottom (nonumber (append (cdadr e) (cdddr e))))
+        (setq top (nonumber (conti e))
+              bottom (nonumber (append (covi e) (cdddr e))))
       )
       ((atom e))
       (
