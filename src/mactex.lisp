@@ -746,7 +746,7 @@
      (%inf "\\inf ") ; many will prefer "\\infty". Hmmm.
      ; Latex's "ker" is ... ?
      ; Latex's "lg" is ... ?
-     (%limit "\\lim ")
+     ; lim is handled by tex-limit.
      ; Latex's "liminf" ... ?
      ; Latex's "limsup" ... ?
      (%ln "\\ln ")
