@@ -21,6 +21,7 @@
 	-done! -info
 	-man pages
 	-manual
+	-generate html from texi
 
 -install xmaxima
 	-option to not install
