@@ -1,0 +1,96 @@
+LC2KDT(EXP):=BLOCK([I1,TEM],
+	TEM:0,
+	IF NTERMS(EXP)=1 THEN _LC2KDT0(EXP)
+	ELSE
+	(
+		FOR I1 THRU NTERMS(EXP) DO
+			TEM:TEM+_LC2KDT0(PART(EXP,I1)),
+		TEM
+	)
+);
+
+_LC2KDT0(EXP):=BLOCK([TEMP1:1,TEMP2:1,TEMP,I1],
+	IF PART(EXP,0)="-" THEN FOR I1 THRU LENGTH(PART(NUM(EXP),1)) DO
+	(
+		TEMP:PART(NUM(EXP),1,I1),
+		IF TENPR(TEMP) AND VERBIFY(NAME(TEMP))=LC THEN
+		(
+			TEMP1:_LCPROD(TEMP1,TEMP),
+			TEMP2:TEMP2*TEMP
+		)
+	)
+	ELSE FOR I1 THRU LENGTH(NUM(EXP)) DO
+	(
+		TEMP:PART(NUM(EXP),I1),
+		IF TENPR(TEMP) AND VERBIFY(NAME(TEMP))=LC THEN
+		(
+			TEMP1:_LCPROD(TEMP1,TEMP),
+			TEMP2:TEMP2*TEMP
+		)
+	),
+	TEMP1*RATSIMP(EXP/TEMP2)
+);
+
+_LCPROD(LC1,LC2):=BLOCK([temp1,tempk,ln11,lf,l1,l2,l11,l22,lku,lkl],
+	IF NUMBERP(LC1) OR SYMBOLP(LC1) THEN LC1*LC2
+	ELSE IF TENPR(LC2) THEN	/* so name(LC1)=LC */
+	(
+		IF VERBIFY(NAME(LC2))=LC AND TENPR(LC1) THEN
+		(		/* again test if LC1 is a single */
+			l1:COVI(LC1),
+			l11:CONTI(LC1),
+			l2:COVI(LC2),
+			l22:CONTI(LC2),
+			lkl:APPEND(l1,l2),
+			lku:APPEND(l11,l22),
+			IF lkl=[] THEN
+			(
+				lf:LENGTH(l11),
+				ln11:MAKELIST(DUMMY(),I,1,lf),
+				(
+					tempk:1,
+					FOR i THRU lf DO
+						tempk:tempk*D([],[ln11[i],l11[i]])
+				),
+				KDELTA(ln11,l22)*tempk
+			)
+			ELSE IF lku=[] THEN
+			(
+				lf:LENGTH(l1),
+				ln11:MAKELIST(DUMMY(),I,1,lf),
+				(
+					tempk:1,
+					FOR i THRU lf DO
+						tempk:tempk*D([l1[i],ln11[i]],[])
+				),
+				KDELTA(l2,ln11)*tempk
+			)
+			ELSE KDELTA(lkl,lku)
+		)
+		ELSE LC1*LC2
+	)
+	ELSE
+	(
+		IF NUMBERP(LC2) OR SYMBOLP(LC2) THEN LC2*LC1
+		ELSE
+		(
+			temp1:_EXTLC(LC1,LC2),
+			_LCPROD(LC1,temp1)*(LC2/temp1)
+		)
+	)
+);
+
+_EXTLC(LC1,LC2):=BLOCK([temp],
+	IF COVI(LC1)#[] THEN
+	(
+		temp:PART(NUM(LC2),1,1),
+		IF TENPR(temp) AND VERBIFY(NAME(temp))=LC AND CONTI(temp)#[] THEN temp
+		ELSE 1.
+	)
+	ELSE
+	(
+		temp:PART(NUM(LC2),1,1),
+		IF TENPR(temp) AND VERBIFY(NAME(temp))=VERBIFY(NAME(LC1)) AND COVI(temp)#[] THEN temp
+		ELSE 1.
+	)
+);

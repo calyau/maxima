@@ -2,7 +2,7 @@ load(ctensr)$
 load("tensor/ex_calc.mac")$
 load(itensor)$
 load(canten)$
-load("tensor/lc2kdt.mac")$
+load("tensor/lckdt.mac")$
 /*
 bothcases:false$
 */
