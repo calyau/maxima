@@ -12616,7 +12616,7 @@ proc CMmenu { win } {
     #oset $win showHelpBar "show help bar"
     $m add command -underline 0 -label {Maxima Help} -help {Visit local maxima help file in html} -command {OpenMathOpenUrl file:/[file join $ws_openMath(maxima_verpkgdatadir) doc html maxima_toc.html]}
      $m add command -underline 0 -label {Netmath} -help {Visit netmath page} -command {OpenMathOpenUrl http://www.ma.utexas.edu/users/wfs/netmath/netmath.html}
-     $m add command -underline 0 -label {Run Tests} -help {Run the test files in the doc/*.mac} -command "sendMaxima \[oget $win textwin\] {:lisp (progn (si::chdir \"[file join $ws_openMath(maxima_prefix) doc]\")(load \"tests.lisp\"))\n}"
+     $m add command -underline 0 -label {Run Tests} -help {Run the test files in the doc/*.mac} -command "sendMaxima \[oget $win textwin\] {:lisp (progn (xchdir \"[file join $ws_openMath(maxima_verpkgdatadir) tests]\")(load \"tests.lisp\"))\n}"
 
  
  

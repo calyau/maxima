@@ -63,3 +63,12 @@
   )
 #+cmu
 (defun getpid () (unix:unix-getpid))
+
+#+(or gcl clisp cmu)
+(defun xchdir (w)
+  #+clisp (cd w)
+  #+gcl (si::chdir w)
+  #+cmu (unix::unix-chdir w)
+  )
+ 
+  
