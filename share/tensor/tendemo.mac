@@ -32,6 +32,7 @@ print("7. Exterior algebra                 17. Differential equations"),
 print("8. Generating CTENSOR programs      18. Using Taylor series"),
 print("9. Frames, torsion, nonmetricity"),
 print(""),
+print("A. Algebraic tensor manipulation"),
 print("E. Complete examples"),
 print("X. Exit this demo"),
 print(""),
@@ -53,6 +54,7 @@ sel:read("Select an option by its number followed by a semicolon (;)"),
    else if sel=16 then demo(ctensor6)
    else if sel=17 then print("*** Demo not yet available")
    else if sel=18 then print("*** Demo not yet available")
+   else if sel=a then demo(atensor)
    else if sel=E or sel=e then
 (
 print("The following specific examples demonstrate practical applications:"),

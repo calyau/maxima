@@ -110,7 +110,8 @@ contract(%th(2))$
 %,nouns$
 ishow(rename(%))$
 %-part(first(%),1)$
-EQ:ishow(subst('ichr2([l,m],[k]),chr2klm,%))$
+EQ:subst('ichr2([l,m],[k]),chr2klm,%)$
+ishow(box(EQ))$
 
 ("But what about the 5D Christoffel-symbol?")$
 /*ishow(ichr2([k,l],[m]))$*/
