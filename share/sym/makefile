@@ -1,13 +1,11 @@
-
-
-all:
-	echo '(proclaim (quote(optimize (safety 0))))(in-package "MAXIMA")(load "compile.lsp")' \
-	| maxima
-
+MAXIMA=maxima
 
 all:
-	echo 'load("compile.lsp");' |  ../src/saved_maxima
+	echo 'load("sym/compile.lisp");' | $(MAXIMA)
 
+check:
+	echo ':lisp(let ((*maxima-testsdir* ".")) ($$run_testsuite))' \
+	| $(MAXIMA)
 
 doc:
 	latex docsym.tex
