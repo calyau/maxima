@@ -1488,24 +1488,28 @@ With C-u prefix, update without confirmation at each cell."
   "Optionally update all cells and return output in TeX form.
 With C-u prefix, update without confirmation at each cell."
   (interactive "P")
-  (emaxima-tex-on)
-  (if arg
-      (emaxima-update nil nil t)
-    (emaxima-update nil (y-or-n-p "Interactive update? ") t))
-  (emaxima-tex-off)
-  (if (and emaxima-preview-after-update-all
-           (fboundp 'preview-buffer))
-      (preview-buffer)))
+  (if (not emaxima-tex-lisp-file)
+      (error "File `emaxima.lisp' not found in Emacs load path.")
+    (emaxima-tex-on)
+    (if arg
+        (emaxima-update nil nil t)
+      (emaxima-update nil (y-or-n-p "Interactive update? ") t))
+    (emaxima-tex-off)
+    (if (and emaxima-preview-after-update-all
+             (fboundp 'preview-buffer))
+        (preview-buffer))))
 
 
 (defun emaxima-menu-tex-update-all ()
   (interactive)
-  (emaxima-tex-on)
-  (emaxima-update nil nil t)
-  (emaxima-tex-off)
-  (if (and emaxima-preview-after-update-all
-           (fboundp 'preview-buffer))
-      (preview-buffer)))
+  (if (not emaxima-tex-lisp-file)
+      (error "File `emaxima.lisp' not found in Emacs load path.")
+    (emaxima-tex-on)
+    (emaxima-update nil nil t)
+    (emaxima-tex-off)
+    (if (and emaxima-preview-after-update-all
+             (fboundp 'preview-buffer))
+        (preview-buffer))))
 
 (defun emaxima-update-init (arg)
   "Optionally update all initialization cells.
@@ -1520,12 +1524,14 @@ With C-u prefix, update without confirmation at each cell."
   "Optionally update all initialization cells and return output in TeX form.
 With C-u prefix, update without confirmation at each cell."
   (interactive "P")
-  (emaxima-tex-on)
-  (if arg
-      (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil t)
-    (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
-		   (y-or-n-p "Interactive update? ") t))
-  (emaxima-tex-off))
+  (if (not emaxima-tex-lisp-file)
+      (error "File `emaxima.lisp' not found in Emacs load path.")
+    (emaxima-tex-on)
+    (if arg
+        (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil t)
+      (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
+                      (y-or-n-p "Interactive update? ") t))
+    (emaxima-tex-off)))
 
 (defun emaxima-update-session (arg)
   "Optionally update all session cells.
@@ -1540,12 +1546,14 @@ With C-u prefix, update without confirmation at each cell."
   "Optionally update all session cells.
 With C-u prefix, update without confirmation at each cell."
   (interactive "P")
-  (emaxima-tex-on)
-  (if arg
-      (emaxima-update "session" nil t)
-    (emaxima-update "session" 
-		   (y-or-n-p "Interactive update? ") t))
-  (emaxima-tex-off))
+  (if (not emaxima-tex-lisp-file)
+      (error "File `emaxima.lisp' not found in Emacs load path.")
+    (emaxima-tex-on)
+    (if arg
+        (emaxima-update "session" nil t)
+      (emaxima-update "session" 
+                      (y-or-n-p "Interactive update? ") t))
+    (emaxima-tex-off)))
 
 (defun emaxima-update-single-cell (&optional tex)
   "Send the current cell's contents to Maxima, and return the results."
@@ -1587,7 +1595,9 @@ With C-u prefix, update without confirmation at each cell."
   "Send input to maxima and replace output with the result in TeX form.
 Point must be in cell."
   (interactive)
-  (emaxima-update-single-cell t))
+  (if (not emaxima-tex-lisp-file)
+      (error "File `emaxima.lisp' not found in Emacs load path.")
+    (emaxima-update-single-cell t)))
 
 ;;; The workhorses
 
