@@ -135,7 +135,12 @@
     ;; implementation. However, GCL's info won't respect out *prompt-
     ;; variables. Compromise by only calling our info when the prompts
     ;; are not empty. --jfa 07/25/04
+    ;; We have to use Maxima info for GCL, at least temorarily, since 
+    ;; GCL's info is not quite compatible (GCL 2.6.6) with recent
+    ;; texinfo releases. -- ZW 01-Apr-05
     #+gcl
+    (cl-info:info x '("maxima.info") cl-info:*info-paths*)
+    #+nil
     (if (and (string= *prompt-prefix* "") (string= *prompt-suffix* ""))
 	(progn
 	  (setf system::*info-paths* cl-info:*info-paths*)
