@@ -577,16 +577,12 @@ type cannot be changed.
 
 For users of \texttt{preview-latex}, the \emx{} cells can be
 previewed.\footnote{Currently, this only works in GNU Emacs.}
-This requires putting
+This requires using the \texttt{preview} option to the
+\texttt{emaxima} package; i.e., putting
 \begin{verbatim}
-\usepackage{preview}
+\usepackage[preview]{emaxima}
 \end{verbatim}
-in the preamble after the
-\begin{verbatim}
-\usepackage{emaxima}
-\end{verbatim}
-(If \verb+\usepackage{preview}+ is inserted before
-\verb+\usepackage{emaxima}+, then the cells will not be previewed.)
+in the preamble.  
 The cells will be un-previewed whenever they are updated.
 If the customizable variable \texttt{emaxima-preview-after-update-all}
 is non-nil, then the buffer will be re-previewed whenever an
@@ -644,8 +640,8 @@ For the \emx{} package, in addition to the above files, the files
 \texttt{emaxima.el} and \texttt{emaxima.lisp} need to be somewhere in
 the Emacs load path\footnote{If Emacs cannot find
   \texttt{emaxima.lisp}, then the \TeX{} output functions will not
-  work, any attempts to get \TeX{} output will only result in standard
-  output.}, and if you want to run \LaTeX{} on the resulting document,
+  work, any attempts to get \TeX{} output will result in an error.},
+  and if you want to run \LaTeX{} on the resulting document,
 \texttt{emaxima.sty} needs to be in the \TeX{} inputs path.  If you
 use pdflatex, you'll also need \texttt{pdfcolmk.sty}.
 
