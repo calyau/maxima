@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.22 2002-09-06 06:53:14 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.23 2002-09-07 05:38:46 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -18,6 +18,7 @@ TKSOURCES = \
 	Tkmaxima/Proxy.tcl \
 	Tkmaxima/Send-some.tcl \
 	Tkmaxima/Plotting.tcl \
+	Tkmaxima/Fonts.tcl \
 	Tkmaxima/Private.tcl \
 	Tkmaxima/Getopt.tcl \
 	Tkmaxima/Parse.tcl \

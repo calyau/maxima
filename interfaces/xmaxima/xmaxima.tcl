@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.22 2002-09-06 09:08:07 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.23 2002-09-07 05:38:46 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -16,6 +16,7 @@
 # Source Tkmaxima/Proxy.tcl 		;# can be autoloaded
 # Source Tkmaxima/Send-some.tcl 	;# sets global variables
 # Source Tkmaxima/Plotting.tcl 		;# sets global variables
+# Source Tkmaxima/Fonts.tcl 		;# sets global variables
 # Source Tkmaxima/Private.tcl 		;# can be autoloaded
 # Source Tkmaxima/Getopt.tcl 		;# can be autoloaded
 # Source Tkmaxima/Parse.tcl 		;# sets global variables
@@ -62,6 +63,8 @@
 ## source Send-some.tcl
 
 ## source Plotting.tcl
+
+## source Fonts.tcl
 
 ## source Private.tcl
 

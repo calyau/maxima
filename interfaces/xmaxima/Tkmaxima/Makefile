@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#	$Id: Makefile,v 1.2 2002-09-06 07:35:36 mikeclarkson Exp $
+#	$Id: Makefile,v 1.3 2002-09-07 05:38:46 mikeclarkson Exp $
 #
 # Developer's convenience targets (not part of the normal make/install).
 #
@@ -17,6 +17,7 @@ ALLFILES = \
 	Proxy.tcl \
 	Send-some.tcl \
 	Plotting.tcl \
+	Fonts.tcl \
 	Private.tcl \
 	Getopt.tcl \
 	Parse.tcl \
