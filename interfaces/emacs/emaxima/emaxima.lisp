@@ -57,9 +57,7 @@
 	 (restore-bindings)
 	)))))
 
-(setq $display2d 'true)
-(defun qndispla (form)
-  (funcall displa form))
+;(setq $display2d 'true)
 
 ;; TeX-printing
 ;; (c) copyright 1987, Richard J. Fateman
