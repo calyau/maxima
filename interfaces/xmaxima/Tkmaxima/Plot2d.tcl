@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Plot2d.tcl,v 1.5 2002-09-13 17:42:18 mikeclarkson Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -104,8 +104,7 @@ proc doConfig2d { win } {
     mkentry $wb1.nsteps [oloc $win nsteps]  "Number of mesh grids"  $buttonFont
     mkentry $wb1.xfun [oloc $win xfun]  "y=f(x)"  $buttonFont
     bind $wb1.xfun.e <Return> "replot2d $win"
-    # button .jim.buttons.rot "rotate" -command "bindForRotation"
-    # pack .jim.buttons.rot
+
     pack $wb1.xfun  $wb1.nsteps -expand 1 -fill x
     foreach w {xradius yradius xcenter ycenter linecolors autoscale linewidth parameters} {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Plot3d.tcl,v 1.5 2002-09-13 17:42:21 mikeclarkson Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -691,8 +691,7 @@ proc doConfig3d { win } {
 
     mkentry $wb1.zfun [oloc $win zfun]  "z=f(x,y)" $buttonFont
     mkentry $wb1.nsteps [oloc $win nsteps]  "Number of mesh grids"  $buttonFont
-    # button .jim.buttons.rot "rotate" -command "bindForRotation"
-    # pack .jim.buttons.rot
+
     pack $wb1.zfun  $wb1.nsteps
     pack	    $wb1.zfun  $wb1.nsteps
     foreach w {xradius yradius xcenter ycenter zcenter zradius parameters } {
