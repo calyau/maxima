@@ -76,6 +76,7 @@ Support for specific areas of mathematics
                                 inverse trig functions.
 * Special Functions::           Special functions
 * Orthogonal Polynomials::      Orthogonal Polynomials and Special functions
+* Elliptic Functions::          Elliptic Functions and Integrals
 * Limits::                      Limits of expressions.
 * Differentiation::             Differential calculus.
 * Integration::                 Integral calculus.
@@ -383,12 +384,15 @@ Debugging
 @chapter Special Functions
 @include Special.texi
 
-@node Orthogonal Polynomials, Limits, Special Functions, Top
+@node Orthogonal Polynomials, Elliptic Functions, Special Functions, Top
 @chapter Orthogonal Polynomials
 @include SpecfunII.texi
 
+@node Elliptic Functions, Limits, Orthogonal Polynomials, Top
+@chapter Elliptic Functions
+@include Elliptic.texi
 
-@node Limits, Differentiation, Orthogonal Polynomials, Top
+@node Limits, Differentiation, Elliptic Functions, Top
 @chapter Limits
 @include Limits.texi
 
