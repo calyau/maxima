@@ -2626,14 +2626,16 @@
   (prog (m n ap con sym m+n)
      (cond ((not (setq sym (cdras 'f (s+c a))))
 	    (setq sym 0)))
-     (setq  con (sub a sym))
+     (setq con (sub a sym))
      (setq ap sym)
      (setq m+n (add a b))
      (setq m ($entier con))
-     (cond ((minusp m)(add1 m)))
+     (cond ((minusp m)
+	    (add1 m)))
      (setq ap (add (sub con m) ap))
      (setq n (add b ap))
-     (cond ((and (minusp (mul n m))(greaterp (abs m) (abs n)))
+     (cond ((and (minusp (mul n m))
+		 (greaterp (abs m) (abs n)))
 	    (return (list ap (sub ap n) m+n))))
      (return  (list ap (add ap m) m+n))))
 			    
@@ -2642,27 +2644,21 @@
 
 
 ;;Algor. 2F1-RL from thesis:step 4:dispatch on a+m,-a+n,1/2+l cases
-(defun step4
-    (a b c)
+(defun step4 (a b c)
   (prog (aprime m n $ratsimpexponens $ratprint newf)
-     (setq alglist
-	   (algii a b c)
-	   aprime
-	   (cadr alglist)
-	   m
-	   (caddr alglist)
-	   n
-	   (sub c (inv 2)))
-     (setq $ratsimpexponens $true $ratprint $false)
+     (setq alglist (algii a b c)
+	   aprime (cadr alglist)
+	   m (caddr alglist)
+	   n (sub c (inv 2)))
+     (setq $ratsimpexponens $true
+	   $ratprint $false)
+     ;; newf is basically 
      (setq newf
 	   ($ratsimp (subst aprime
 			    'psa
 			    (power (add (inv 2)
-					(mul (power (sub
-						     1
-						     var)
-						    (inv
-						     2))
+					(mul (power (sub 1 var)
+						    (inv 2))
 					     (inv 2)))
 				   (sub 1
 					(mul 2 'psa))))))
@@ -2686,14 +2682,19 @@
   (prog (mm nn)
      (setq mm (abs m) nn (abs n))
      (cond ((and (nni m) (nni n))
-	    (cond ((lessp m n) (return (f81 fun m n aprime)))
-		  (t (return (f85 fun mm nn aprime)))))
+	    (cond ((lessp m n)
+		   (return (f81 fun m n aprime)))
+		  (t
+		   (return (f85 fun mm nn aprime)))))
 	   ((and (hyp-negp n) (hyp-negp m))
 	    (cond ((greaterp (abs n) (abs m))
 		   (return (f86 fun mm nn aprime)))
-		  (t (return (f82 fun mm nn aprime)))))
-	   ((and (hyp-negp m) (nni n))(return (f83 fun mm nn aprime)))
-	   (t (return (f84 fun mm nn aprime))))))
+		  (t
+		   (return (f82 fun mm nn aprime)))))
+	   ((and (hyp-negp m) (nni n))
+	    (return (f83 fun mm nn aprime)))
+	   (t
+	    (return (f84 fun mm nn aprime))))))
 
 ;;Factorial function:x*(x+1)*(x+2)...(x+n-1)
 (defun factf (x n)
@@ -2719,6 +2720,28 @@
 ;;Used to find negative things that are not integers,eg RAT's	
 (defun hyp-negp(x) (cond ((equal (asksign x) '$negative) t)(t nil)))
 
+;; F(a,-a+m; c+n; z) where m,n are non-negative integers, m < n, c = 1/2.
+;;
+;; A&S 15.2.6
+;; diff((1-z)^(a+b-c)*F(a,b;c;z),z,n)
+;;    = poch(c-a,n)*poch(c-b,n)/poch(c,n)*(1-z)^(a+b-c-n)*F(a,b;c+n;z)
+;;
+;; A&S 15.2.7:
+;; diff((1-z)^(a+m-1))*F(a,b;c;z),z,m)
+;;    = (-1)^m*poch(a,m)*poch(c-b,m)/poch(c,m)*(1-z)^(a-1)*F(a+m,b;c+m;z)
+;;
+;; Rewrite F(a,-a+m; c+n;z) as F(-a+m, a; c+n; z).  Then apply 15.2.6
+;; to F(-a,a;1/2;z), differentiating n-m times:
+;;
+;; diff((1-z)^(-1/2)*F(-a,a;1/2;z),z,n-m)
+;;     = poch(1/2+a,n-m)*poch(1/2-a,n-m)/poch(1/2,n-m)*(1-z)^(-1/2-n+m)*F(-a,a;1/2+n-m;z)
+;;
+;; Now apply 15.2.7, differentiating m times:
+;;
+;; diff((1-z)^()*F(-a,a;1/2+n-m;z),z,m)
+;;     = (-1)^m*poch(-a,m)*poch(1/2+n-m-a,m)/poch(1/2+n-m)*(1-z)^(-a-1)*F(-a+m,a;1/2+n;z)
+;;
+;; Which gives F(-a+m,a;1/2+n;z), which is what we wanted.
 (defun f81 (fun m n a)
   (mul (factf (add (inv 2) (- n m)) m)
        (factf (inv 2) (- n m))
@@ -2732,7 +2755,9 @@
 	       (power (sub 1 'ell) (add a n (inv -2)))
 	       ($diff (mul
 		       (power (sub 1 'ell) (inv -2))
-		       fun) 'ell (- n m))) 'ell m)))
+		       fun)
+		      'ell (- n m)))
+	      'ell m)))
 
 (defun f82
     (fun m n a)
