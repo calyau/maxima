@@ -1,17 +1,16 @@
-#!/bin/sh
+#!/bin/sh -x
 
 # prepare
 cd /tmp
 if [ -d snapshots ]; then
-    echo "snapshots direcotry already exists. Exiting." >& 2
+    echo "snapshots directory already exists. Exiting." >& 2
     exit 1
 fi
-set +x
 mkdir snapshots
 
 # checkout
 cd snapshots
-cvs -z6 -d :pserver:anonymous@cvs.Maxima.sourceforge.net:/cvsroot/maxima co maxima
+cvs -z6 -d :pserver:anonymous@cvs.Maxima.sourceforge.net:/cvsroot/maxima co maxima || (echo "cvs checkout failed. Aborting" ; exit 1)
 
 # bootstrap
 cd maxima
@@ -27,7 +26,7 @@ cd maxima-doc
 ./configure
 cd doc/info
 make
-cp *.info *.html ../../../maxima/doc/info
+cp *.info* *.html ../../../maxima/doc/info
 cd ../../..
 
 # make archives
