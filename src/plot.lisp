@@ -615,27 +615,38 @@ setrgbcolor} def
     ($viewps)))
 
 (defun $plot2d(fun range &rest options &aux ($numer t) $display2d
-                          (i 0)
+                          (i 0) plot-format file plot-name
 			  ($plot_options $plot_options))
   (dolist (v options) ($set_plot_option v))
   (cond ((eq ($get_plot_option '$PLOT_FORMAT 2) '$openmath)
          (return-from $plot2d (apply '$plot2dOpen fun range options))))
   (setq range (check-range range))
   (or ($listp fun ) (setf fun `((mlist) ,fun)))
+  (setq plot-format  ($get_plot_option '$plot_format 2))
+  (setq file (format nil "maxout.~(~a~)" (stripdollar plot-format)))
   
-  (with-open-file (st  "xgraph-out" :direction :output)  
+  (with-open-file (st  file :direction :output)  
     (dolist (v (cdr fun))
 	    (incf i)
-      (format st "~%~% \"~a\"~%" 
-	      (let ((string (coerce (mstring v) 'string)))
-		(cond ((< (length string) 9) string)
-		      (t (format nil "Fun~a" i))))
-	      )
+	    (setq plot-name 		       (let ((string (coerce (mstring v) 'string)))
+			 (cond ((< (length string) 9) string)
+			       (t (format nil "Fun~a" i)))))
+	(case plot-format
+	      ($xgraph
+	       (format st "~%~% \"~a\"~%" plot-name))
+	      ($gnuplot
+	       (format st "~%~%# \"~a\"~%" plot-name))
+	       )
       (sloop for (v w) on (cdr (draw2d v range )) by 'cddr
 	 do
 	 (cond ((eq v 'moveto) (format st "move "))
 	       (t  (format st "~,3f ~,3f ~%" v w))))))
-  (system "xgraph -t 'Maxima Plot' < xgraph-out &"))
+  (case plot-format
+	($gnuplot
+	 ($system ($sconcat $gnuplot_command " -plot2d maxout.gnuplot -title '" plot-name "'")))
+	($xgraph
+	 (system "xgraph -t 'Maxima Plot' < maxout.xgraph &"))
+	))
 
 
 
@@ -1197,7 +1208,7 @@ setrgbcolor} def
 
 
 
-(defvar $gnuplot_command (maxima-path "bin" "mgnuplot -parametric3d maxout.gnuplot"))
+(defvar $gnuplot_command (maxima-path "bin" "mgnuplot"))
 (defvar $geomview_command "geomview maxout.geomview")
 
 (defvar $openmath_plot_command
@@ -1221,6 +1232,7 @@ setrgbcolor} def
 		     &rest options 
 		     &aux lvars trans *original-points*
 		     ($plot_options $plot_options)
+		     ($in_netmath $in_netmath)
 		     colour-z grid
 		     plot-format
 		     )
@@ -1229,6 +1241,7 @@ setrgbcolor} def
 	 (dolist (v options)
 	   ($set_plot_option v))))
   (setq plot-format  ($get_plot_option '$plot_format 2))
+  (and $in_netmath (setq $in_netmath (eq plot-format '$openmath)))
   (setq xrange (check-range xrange))
   (setq yrange (check-range yrange))
   (cond ((not y-supplied)
@@ -1365,7 +1378,7 @@ setrgbcolor} def
 		($system $openmath_plot_command)
 		)
 	       ($geomview ($system $geomview_command))
-	       ($gnuplot ($system $gnuplot_command))
+	       ($gnuplot ($system ($sconcat $gnuplot_command " -parametric3d maxout.gnuplot" )))
 	       )))
       )))
   

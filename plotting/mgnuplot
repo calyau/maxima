@@ -17,14 +17,24 @@ set ii 0
 while {$ii < $argc} {
  switch -exact "X[lindex $argv $ii]"  {
     X-parametric3d {
-sendgnu "set parametric\n" 
-sendgnu "set data style lines\n"
-sendgnu "set hidden\n"
-set ii [expr {$ii + 1}]
-sendgnu "splot '[lindex $argv $ii]'\n" }
-}
-set ii [expr {$ii +1}]
-}  
+    sendgnu "set parametric\n" 
+    sendgnu "set data style lines\n"
+    sendgnu "set hidden\n"
+    set ii [expr {$ii + 1}]
+    sendgnu "splot '[lindex $argv $ii]'\n" }
+    X-plot2d {
+    set ii [expr {$ii + 1}]
+    sendgnu "set data style lines"
+    sendgnu "plot '[lindex $argv $ii]'\n" 
+    }
+    X-title {
+    set ii [expr {$ii + 1}]
+    sendgnu "set title '[lindex $argv $ii]'\n" }
+    
+    }
+    set ii [expr {$ii +1}]
+    }
+      
 set xrot 60
 set zrot 30
 

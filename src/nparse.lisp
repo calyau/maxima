@@ -319,44 +319,44 @@
 ;;I know that the tradition says there should be no comments
 ;;in tricky code in maxima.  However the operator parsing
 ;;gave me a bit of trouble.   It was incorrect because
-;;it could not handle things produced by the extensions 
+;;it could not handle things produced by the extensions
+;;the following was broken for prefixes 
+
+
 (defun read-command-token-aux (obj)
-  (let* ((ch (parse-tyipeek))
+  (let* (result
+	 (ch (parse-tyipeek))
 	 (lis (if (eql ch -1) nil  (parser-assoc (char-upcase ch) obj))))
-    (cond ((null lis)
+    (cond ((null lis) 
 	   nil)
-	  ((atom (cadr lis))
+	  (t
+	   (parse-tyi)
+	   (cond ((atom (cadr lis))
 	   ;; INFIX("ABC"); puts into macsyma-operators
 	   ;;something like: (#\A #\B #\C (ANS |$ABC|))
 	   ;; ordinary things are like:
 	   ;; (#\< (ANS $<) (#\= (ANS $<=)))
 	   ;; where if you fail at the #\< #\X
 	   ;; stage, then the previous step was permitted.
-	   (parse-tyi)
-	   (or (read-command-token-aux (cdr lis) )
-	       ;; if we fail out, we have to unread, since
-	       ;; there was no answer for the shorter string.
-	       ;;something like: (#\A #\B #\C (ANS |$ABC|))
-	       ;; and we read #\A #\D, so the #\D will have to go back
-	       ;; on.
-	       (progn (unparse-tyi ch)
-		      nil)))
-	  (t
-	   (parse-tyi)
-	   (cond ((null (cddr lis))
+		  (setq result (read-command-token-aux (list (cdr lis) ))))
+		 ((null (cddr lis))
 		  ;; lis something like (#\= (ANS $<=))
 		  ;; and this says there are no longer operators
 		  ;; starting with this.
-		  (cadr (cadr lis)))
+		  (setq result
+			(and (eql (car (cadr lis)) 'ans)
+			      (cadr (cadr lis)))))
 		 (t
-		  (let ((res (cadr (cadr lis)))
+		  (let ((res   (and (eql (car (cadr lis)) 'ans)
+				    (cadr (cadr lis))))
 			(com-token (read-command-token-aux (cddr lis) )))
-		    (cond ((null com-token)
-			   ;; if the previous stage was NOT valid,
-			   ;; then we have to unread a character.
-			   (or res (unparse-tyi ch))
-			   res)
-			  (t com-token)))))))))
+		    (setq result (or com-token res 
+				     (read-command-token-aux
+				      (list (cadr lis))))))
+		    ))
+	     (or result (unparse-tyi ch))
+	     result))))
+
 
 (DEFUN SCAN-MACSYMA-TOKEN ()
   ;; note that only $-ed tokens are GETALIASed.
