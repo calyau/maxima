@@ -54,7 +54,7 @@ from the usual macsyma level it is felt their use is very intuitive.
 [Some printout may be verbose for slow terminals, there are switches
 for controlling this.]  These commands were designed for the user who
 must debug translated macsyma code, as such they are a boon.  See
-MACDOC;TRDEBG USAGE for more information.  For more help, consult GJC.
+MACDOC;TRDEBG USAGE for more information.
 
 @end defun
 @c @node DEBUGMODE
@@ -77,8 +77,7 @@ are different from the usual macsyma level it is felt their use is
 very intuitive.  [Some printout may be verbose for slow terminals,
 there are switches for controlling this.]  These commands were
 designed for the user who must debug translated macsyma code, as such
-they are a boon.  See MACDOC;TRDEBG USAGE for more information.  For
-more help, consult GJC.
+they are a boon.  See MACDOC;TRDEBG USAGE for more information.
 
 @end defun
 @c @node EV
