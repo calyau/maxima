@@ -39,6 +39,14 @@ NINTH(l);
 TENTH(l);
 10$
 
+/* ASSOC tests */
+ASSOC(1,[x=2]);
+FALSE$
+ASSOC(x,[x=2]);
+2$
+ASSOC(1,[x=2],foobar);
+foobar$
+
 /* Some older versions of GCL had a bug that resulted in a failure of the */
 /* following. */
 primep(80630964769);
