@@ -261,14 +261,16 @@ assoc_legendre_q(v, u, z)$
  *
  * Test for legf16 function
  */
-radcan(hgfred([a,b],[a-b+1],z));
-gamma(-b+a+1)*z^((b-a)/2)*(1-z)^(-b)*assoc_legendre_p(b-1,b-a,(1+z)/(1-z))$
+assume(zp1 > 1);
+[zp1 > 1]$
+hgfred([a,b],[a-b+1],zp1);
+gamma(-b+a+1)*assoc_legendre_p(-b,b-a,(1+zp1)/(1-zp1))*zp1^((b-a)/2)*(1-zp1)^(-b)$
 
 /*
  * Test for legf16 function
  */
-2^(-v)*(z+1)^(u/2+v)*(z-1)^(-u/2)/gamma(1-u)*ratsimp(hgfred([-v,-v-u],[1-u],(z-1)/(z+1)));
-assoc_legendre_p(v, u, z)$
+2^(-v)*(zp1+1)^(u/2+v)*(zp1-1)^(-u/2)/gamma(1-u)*ratsimp(hgfred([-v,-v-u],[1-u],(zp1-1)/(zp1+1)));
+assoc_legendre_p(-v-1, u, zp1)$
 
 /* Regression tests */
 

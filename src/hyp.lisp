@@ -1340,10 +1340,10 @@
 	   (gered1 (list a b) (list c) #'legf20))
 	  ((alike1 1-c a-b)
 	   ;; 1-c = a-b
-	   (legf16 (list a b) (list c) var))
+	   (gered1 (list a b) (list c) #'legf16))
 	  ((alike1 1-c (mul -1 a-b))
 	   ;; 1-c = b-a
-	   (gered1 (list a b) (list c) #'legf16))
+	   (legf16 (list a b) (list c) var))
 	  ((alike1 1-c c-a-b)
 	   ;; 1-c = c-a-b
 	   (gered1 (list a b) (list c) #'legf14))
@@ -1465,7 +1465,6 @@
 ;;
 ;; Is there a mistake in 15.4.10 and 15.4.11?
 ;;
-;; FIXME:  We don't correctly handle the branch cut here!
 #+nil
 (defun legf24 (arg-l1 arg-l2 var)
   (let* ((a (car arg-l1))
@@ -1534,6 +1533,7 @@
 ;; F(a,b;c;w) = gamma(c)*w^(1/2-c/2)*(1-w)^(-a)*P(-a,1-c,(1+w)/(1-w));
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
+#+nil
 (defun legf16 (arg-l1 arg-l2 var)
   (let* ((a (car arg-l1))
 	 (c (car arg-l2))
@@ -1549,6 +1549,44 @@
 		m
 		z
 		'$p))))
+
+(defun legf16 (arg-l1 arg-l2 var)
+  (let* (($radexpand nil)
+	 (a (car arg-l1))
+	 (c (car arg-l2))
+	 ;; m = 1-c = b-a
+	 (m (sub 1 c))
+	 ;; n = -b
+	 ;; m = b - a, so b = a + m
+	 (b (add a m))
+	 (n (mul -1 b))
+	 (z (div (add 1 var)
+		 (sub 1 var))))
+    (format t "a, c = ~A ~A~%" a c)
+    (format t "b = ~A~%" b)
+    ;; A&S 15.4.14, 15.4.15
+    (cond ((eq (asksign var) '$negative)
+	   ;; A&S 15.4.15
+	   ;;
+	   ;; F(a,b;a-b+1,x) = gamma(a-b+1)*(1-x)^(-b)*(-x)^(b/2-a/2)
+	   ;;                   * assoc_legendre_p(-b,b-a,(1+x)/(1-x))
+	   ;;
+	   ;; for x < 0
+	   (mul (gm c)
+		(power (sub 1 var) (mul -1 b))
+		(power (mul -1 var) (div m 2))
+		(legen n
+		       m
+		       z
+		       '$p)))
+	  (t
+	   (mul (gm c)
+		(power (sub 1 var) (mul -1 b))
+		(power var (div m 2))
+		(legen n
+		       m
+		       z
+		       '$p))))))
 
 
 ;; Handle the case 1-c = a+b-c.
@@ -1647,7 +1685,6 @@
 	 (gm (add 2 n n))
 	 (power '$%e (mul -1 '$%i m '$%pi))
 	 (legen n m z '$q))))
-
 
 (defun legen (n m x pq)
   ;; A&S 8.2.1: P(-n-1,m,z) = P(n,m,z)
