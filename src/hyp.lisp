@@ -1240,9 +1240,13 @@
 	    (return (gered1 (list a b) (list c) #'legf24))))
      (cond ((alike1 a-b (mul -1 inv2))
 	    ;; a-b = -1/2
+	    ;;
+	    ;; For example F(a,a+1/2;c;x)
 	    (return (legf24 (list a b) (list c) var))))
      (cond ((alike1 c-a-b inv2)
 	    ;; c-a-b = 1/2
+	    ;;
+	    ;; For example F(a,b;a+b+1/2;z)
 	    (return (legf20 (list a b) (list c) var))))
      (cond ((alike1 c-a-b (mul -1 inv2))
 	    ;; c-a-b = -1/2
@@ -1263,10 +1267,14 @@
 	    (return (legf14 (list a b) (list c) var))))
      (cond ((alike1 a-b (mul -1 c-a-b))
 	    ;; a-b = a+b-c
+	    ;;
+	    ;; For example F(a,b;2*b;z)
 	    (return (legf36 (list a b) (list c) var))))
      (cond ((or (alike1 1-c inv2)
 		(alike1 1-c (mul -1 inv2)))
 	    ;; 1-c = 1/2 or 1-c = -1/2
+	    ;;
+	    ;; For example F(a,b;1/2;z) or F(a,b;3/2;z)
 	    (return (legpol a b c))))
      (cond ((alike1 a-b c-a-b)
 	    ;; a-b = c-a-b
@@ -1275,29 +1283,30 @@
 
 
 
-(defun legf20
-    (l1 l2 var)
-  (prog(m n b c)
-     (setq b (cadr l1) c (car l2))
-     (setq m (sub 1 c) n (mul -1 (add b b m)))
+;; Handle the case c-a-b = 1/2
+;;
+;; For example F(a,b;a+b+1/2;z)
+(defun legf20 (l1 l2 var)
+  (prog (m n b c)
+     (setq b (cadr l1)
+	   c (car l2))
+     (setq m (sub 1 c)
+	   n (mul -1 (add b b m)))
      (return (mul (lf n m)
 		  (legen n
 			 m
 			 (power (sub 1 var) (inv 2))
 			 '$p)))))
 
-
-(defun legf24
-    (l1 l2 var)
-  (prog(m n a c)
-     (setq a
-	   (car l1)
-	   c
-	   (car l2)
-	   m
-	   (sub 1 c)
-	   n
-	   (mul -1 (add a a m)))
+;; Handle the case a-b = -1/2.
+;;
+;; For example F(a,a+1/2;c;z)
+(defun legf24 (l1 l2 var)
+  (prog (m n a c)
+     (setq a (car l1)
+	   c (car l2)
+	   m (sub 1 c)
+	   n (mul -1 (add a a m)))
      (return (mul (lf n m)
 		  (power var (add n m))
 		  (legen n
@@ -1369,16 +1378,23 @@
 		  (legen n m (sub 1 (mul 2 var)) '$p)))))
 
 
-(defun legf36
-    (l1 l2 var)
-  (prog(n m a b)
-     (setq a (car l1) b (cadr l1) n (sub b 1) m (sub b a))
+;; Handle a-b = a+b-c
+;;
+;; For example F(a,b;2*b;z)
+(defun legf36 (l1 l2 var)
+  (prog (n m a b)
+     (setq a (car l1)
+	   b (cadr l1)
+	   n (sub b 1)
+	   m (sub b a))
      (return (mul (power 2 n)
 		  (gm (add 1 n))
 		  (gm (add 1 n m))
 		  (power (add var 1)
-			 (add (div m 2)(mul -1 n) -1))
-		  (power (sub var 1)(div m -2))
+			 (add (div m 2)
+			      (mul -1 n)
+			      -1))
+		  (power (sub var 1) (div m -2))
 		  (inv (gm (add 2 n n)))
 		  (power '$%e (mul -1 '$%i m '$%pi))
 		  (legen n m (div (sub 2 var) var) '$q)))))
