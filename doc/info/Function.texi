@@ -415,10 +415,16 @@ first negative element of @code{l} and "throws" it up.
 
 @end defun
 
-@c COME BACK TO THIS POINT. SKIPPING FORWARD.
 @defun compfile (filename, f_1, ..., f_n)
-Compiles functions @var{f_1}, ..., @var{f_n} into
-the file @var{filename}.  For convenience, see the @code{compile} function.
+Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp 
+and writes the translated code into the file @var{filename}.
+
+The Lisp translations are not evaluated, nor is the output file processed by the Lisp compiler.
+@c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
+@code{translate} creates and evaluates Lisp translations.
+@code{compile_file} translates Maxima into Lisp, and then executes the Lisp compiler. 
+
+See also @code{translate}, @code{translate_file}, and @code{compile_file}.
 
 @end defun
 
@@ -436,13 +442,9 @@ the file @var{filename}.  For convenience, see the @code{compile} function.
 @defun compile (@var{f_1}, ..., @var{f_n})
 @defunx compile (functions)
 @defunx compile (all)
-Translates Maxima functions into Lisp, executes the Lisp compiler,
-and loads the compiler output into Maxima.
+Translates Maxima functions into Lisp, evaluates the Lisp translations,
+and calls the Lisp function @code{COMPILE} on each translated function.
 @code{compile} returns a list of the names of the compiled functions.
-
-@code{compile (@var{f_1}, ..., @var{f_n})} compiles the functions @var{f_1}, ..., @var{f_n}.
-@c REALLY ???
-It uses the name of function1 as the first name of the file to put the Lisp output.
 
 @code{compile (all)} or @code{compile (functions)} compiles all user-defined functions.
 
@@ -767,9 +769,14 @@ declarations to make the translated code more suitable for compilation.
 @end defvar
 
 @defun translate (@var{f_1}, ..., @var{f_n})
+@defunx translate (functions)
+@defunx translate (all)
 Translates the user defined functions
-@var{f_1}, ..., @var{f_n} from the Maxima language into Lisp.
+@var{f_1}, ..., @var{f_n} from the Maxima language into Lisp
+and evaluates the Lisp translations.
 Typically the translated functions run faster than the originals.
+
+@code{translate (all)} or @code{translate (functions)} translates all user-defined functions.
 
 Functions to be translated should include a call to @code{mode_declare} at the
 beginning when possible in order to produce more efficient code.  For
@@ -1166,8 +1173,8 @@ programming hints.
 @defun compile_file (filename)
 @defunx compile_file (filename, compiled_filename)
 @defunx compile_file (filename, compiled_filename, lisp_filename)
-Translates @var{filename} into Lisp,
-compiles the resulting Lisp code, 
+Translates the Maxima file @var{filename} into Lisp,
+executes the Lisp compiler,
 and, if the translation and compilation succeed, loads the compiled code into Maxima.
 
 @code{compile_file} returns a list of the names of four files:

@@ -133,6 +133,9 @@ Reads Maxima expressions from @code{filename} and evaluates them.
 
 @code{filename} comprises a sequence of Maxima expressions,
 each terminated with @code{;} or @code{$}.
+The special variable @code{%} and the function @code{%th}
+refer to previous results within the file.
+The file may include @code{:lisp} constructs.
 Spaces, tabs, and newlines in the file are ignored.
 A suitable input file may be created by a text editor or by the @code{stringout} function.
 
@@ -157,6 +160,8 @@ such as to provide a reservoir for working command lines,
 to give error-free demonstrations,
 or to help organize one's thinking in solving complex problems.
 
+@code{batch} evaluates its argument.
+
 See also @code{load}, @code{batchload}, and @code{demo}.
 
 @end defun
@@ -168,7 +173,13 @@ and without assigning labels to output expressions.
 Printed output (such as produced by @code{print} or @code{describe})
 is displayed, however.
 
+The special variable @code{%} and the function @code{%th}
+refer to previous results from the interactive interpreter,
+not results within the file.
+The file cannot include @code{:lisp} constructs.
+
 @code{batchload} returns the path of @code{filename}, as a string.
+@code{batchload} evaluates its argument.
 
 See also @code{batch} and @code{load}.
 @c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF batchload ???
@@ -676,30 +687,36 @@ The binding of any existing object is clobbered by the binding recovered from @c
 To find the file,
 @code{load} calls @code{file_search} with @code{file_search_maxima} and @code{file_search_lisp}
 as the search directories.
-If @code{load} succeeds, it returns the path of the file.
+If @code{load} succeeds, it returns the name of the file.
 Otherwise @code{load} prints an error message.
 
 @code{load} works equally well for Lisp code and Maxima code.
 Files created by @code{save}, @code{translate_file}, and @code{compile_file}, which create Lisp code,
 and @code{stringout}, which creates Maxima code,
 can all be processed by @code{load}.
-See also @code{loadfile}, @code{batch}, and @code{demo}.
+@code{load} calls @code{loadfile} to load Lisp files and @code{batchload} to load Maxima files.
+
+See also @code{loadfile}, @code{batch}, @code{batchload}, and @code{demo}.
 @code{loadfile} processes Lisp files;
-@code{batch} and @code{demo} process Maxima files.
+@code{batch}, @code{batchload}, and @code{demo} process Maxima files.
 
 See @code{file_search} for more detail about the file search mechanism.
+
+@code{load} evaluates its argument.
 
 @end defun
 
 @defun loadfile (filename)
 Evaluates Lisp expressions in @code{filename}.
-@code{loadfile} quotes its argument, so @code{filename} must be a literal string,
-not a string variable.
-Also, @code{loadfile} does not invoke @code{file_search}, so @code{filename} must include
+@code{loadfile} does not invoke @code{file_search}, so @code{filename} must include
 the file extension and as much of the path as needed to find the file.
 
 @code{loadfile} can process files created by @code{save}, @code{translate_file}, and @code{compile_file}.
 The user may find it more convenient to use @code{load} instead of @code{loadfile}.
+
+@code{loadfile} quotes its argument, so @code{filename} must be a literal string,
+not a string variable.
+The double-single-quote operator defeats quotation.
 
 @end defun
 
