@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.6 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.7 2002-09-12 07:56:58 mikeclarkson Exp $
 #
 ###### browser.tcl ######
 ############################################################
@@ -41,18 +41,18 @@ set maxima_priv(sticky) "^Teval$|^program:"
 
 
 #
- #-----------------------------------------------------------------
- #
- # tkTextInsert --  we add some things to the default tkTextInsert
- #  so that tags present before or after the insert, which are sticky
- #  are added to the inserted string.   As usual, ones on both sides
- #  are added.
- #
- #  Results:
- #
- #  Side Effects:
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# tkTextInsert --  we add some things to the default tkTextInsert
+#  so that tags present before or after the insert, which are sticky
+#  are added to the inserted string.   As usual, ones on both sides
+#  are added.
+#
+#  Results:
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 
 proc tkTextInsert { w s } {
@@ -60,8 +60,8 @@ proc tkTextInsert { w s } {
     set after [$w tag names insert]
     set before [$w tag names "insert-1char"]
     set both [intersect $after $before]
-   # puts "after=$after"
-   # puts "before=$before"
+    # puts "after=$after"
+    # puts "before=$before"
 
     foreach v [concat $after $before] {
 	if { [regexp $maxima_priv(sticky) $v] } {
@@ -78,7 +78,7 @@ proc tkTextInsert { w s } {
     }
     catch {
 	if {[$w compare sel.first <= insert]
-		&& [$w compare sel.last >= insert]} {
+	    && [$w compare sel.last >= insert]} {
 	    $w delete sel.first sel.last
 	}
     }
@@ -92,16 +92,16 @@ proc getRange { win a b }  {
 
 
 #
- #-----------------------------------------------------------------
- #
- # binding --   push the current selection on the killRing, and
- # if there is no selection, push the region between the anchor and
- # the point.
- #  Results:
- #
- #  Side Effects:
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# binding --   push the current selection on the killRing, and
+# if there is no selection, push the region between the anchor and
+# the point.
+#  Results:
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 bind OpenMathText <Control-Key-w> {
     pushCommand %W OpenMathTextCut ""
@@ -121,7 +121,7 @@ if { [catch { set maxima_priv(bindings_added) } ] } {
     bind Text <B3-Motion> [bind Text <B2-Motion>]
     bind Text <Button-3> [bind Text <Button-2>]
 
-  set maxima_priv(bindings_added) 1
+    set maxima_priv(bindings_added) 1
 }
 
 global maxima_priv
@@ -140,9 +140,9 @@ proc openMathControlK { win } {
     if { [$win compare insert == "insert lineend" ]  } {
 	if { [$win compare insert < end] } {
 	    append now "\nTins {[ldelete sel [$win tag names insert]]} {\n}"
-    } } else {
-	append now "\n[saveText $win insert {insert lineend}]"
-    }
+	} } else {
+	    append now "\n[saveText $win insert {insert lineend}]"
+	}
     pushl $now killRing
 }
 
@@ -166,12 +166,12 @@ proc OpenMathYank {win level } {
 	    set m [lindex [lindex $last 1] 1]
 	    incr m
 	    if { "[lindex $last 0]" == "OpenMathYank" &&
-	    "$maxima_priv(currentwin)" == "$win"
-	    && "$maxima_priv(point)" == "insert" } {set doit 1}} ]
-	    || $doit==0} {
-		    pushCommand $win Error "" } else {
-			
-			set res [peekl killRing _none_ [expr {$m + 1}]]
+		 "$maxima_priv(currentwin)" == "$win"
+		 && "$maxima_priv(point)" == "insert" } {set doit 1}} ]
+	     || $doit==0} {
+	    pushCommand $win Error "" } else {
+		
+		set res [peekl killRing _none_ [expr {$m + 1}]]
 		if { "$res" == "_none_" } {
 		    # this will cause to cycle
 		    set m 0
@@ -191,10 +191,10 @@ event add <<Paste>> <Control-Shift-y>
 bind OpenMathText <Alt-Key-w> {
     pushCommand %W SaveSelection ""
     if { "[selection own -displayof %W]" == "%W"} {
-    pushl [saveText %W sel.first sel.last] killRing
-    selection clear -displayof %W
+	pushl [saveText %W sel.first sel.last] killRing
+	selection clear -displayof %W
+    }
 }
-		}
 
 bind OpenMathText <Key> {openMathAnyKey %W %K %A}
 bind OpenMathText <Alt-Key> {openMathAnyKey %W %K ALT_%A}
@@ -209,13 +209,13 @@ bind OpenMathText <Control-Key-space> {
 
 
 proc openMathAnyKey { win keysym s  } {
-   # puts "$win `$keysym' `$s'"
+    # puts "$win `$keysym' `$s'"
     if { "$s" != "" } {
 	pushCommand $win openMathAnyKey [list $win  $keysym $s]
     }
 
     if { "$s" != "" && [doInsertp [$win tag names insert]]
-      && ("$s" == "$keysym"  || [regexp  "\[\n\t \]" "$s" junk] )} {
+	 && ("$s" == "$keysym"  || [regexp  "\[\n\t \]" "$s" junk] )} {
 	setModifiedFlag $win insert
     }
 }
@@ -235,55 +235,55 @@ proc saveText { win args } {
 	    lappend stop($end) $v
 	    set allar($begin) 1
 	    set allar($end) 1
-	
+	    
 	}
     }
-   proc __comp { a b} " return  \[$win compare \$a > \$b \] "
-   set all [lsort -command __comp [array names allar]]
-   set result ""
-   foreach v $all {
-       append result "Tins [list [array names currentTags]] [quoteBraces [$win get $prev $v]]\n"
-       set prev $v
+    proc __comp { a b} " return  \[$win compare \$a > \$b \] "
+    set all [lsort -command __comp [array names allar]]
+    set result ""
+    foreach v $all {
+	append result "Tins [list [array names currentTags]] [quoteBraces [$win get $prev $v]]\n"
+	set prev $v
 
 
-       if { [info exists start($v)] } {
+	if { [info exists start($v)] } {
 
-	   foreach u $start($v) { set currentTags($u) 1}
-       }
+	    foreach u $start($v) { set currentTags($u) 1}
+	}
 
-       if { [info exists stop($v)] } {
+	if { [info exists stop($v)] } {
 
-	   foreach u $stop($v) { unset currentTags($u) }
-       }
+	    foreach u $stop($v) { unset currentTags($u) }
+	}
 
 
 
-       #puts -nonewline "..deleting{$stop($v)} giving {$currentTags}"
+	#puts -nonewline "..deleting{$stop($v)} giving {$currentTags}"
 
-    # puts ">>"
+	# puts ">>"
 
-      }
-      return $result
+    }
+    return $result
 }
 
 
 
 #
- #-----------------------------------------------------------------
- #
- # tagRanges --  find ranges on WINDOW for TAG from FROMINDEX below TOINDEX
- #
- #  Results: a list of ranges start1 stop1 start2 stop2 ..
- # which are contained in [fromindex,toindex] such that TAG is on from
- # start1 to stop1 etc.
- #
- #  Side Effects:
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# tagRanges --  find ranges on WINDOW for TAG from FROMINDEX below TOINDEX
+#
+#  Results: a list of ranges start1 stop1 start2 stop2 ..
+# which are contained in [fromindex,toindex] such that TAG is on from
+# start1 to stop1 etc.
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc tagRanges { win tag begin end } {
     if {  [$win  compare $begin <= 1.0 ]  &&
-    [$win  compare $end >= end ] } {
+	  [$win  compare $end >= end ] } {
 	return [$win tag ranges $tag ] } else {
 	    set answer ""
 	    set begin [$win index $begin]
@@ -313,25 +313,25 @@ proc tagRanges { win tag begin end } {
 		}
 	    }
 	    return $answer
-	
+	    
 	}
 }
-	
+
 
 
 
 #
- #-----------------------------------------------------------------
- #
- # quoteBraces --  given a STRING such that
- # puts $file "set new [quoteBraces $string]"
- # when re read by eval would make value of NEW identical to STRING
- #
- #  Results: a string
- #
- #  Side Effects:
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# quoteBraces --  given a STRING such that
+# puts $file "set new [quoteBraces $string]"
+# when re read by eval would make value of NEW identical to STRING
+#
+#  Results: a string
+#
+#  Side Effects:
+#
+#----------------------------------------------------------------
 #
 proc quoteBraces {string } {
     regsub -all {[{}]} $string {\\&} val
@@ -354,21 +354,21 @@ proc thisRange { win tag index } {
 
 
 #
- #-----------------------------------------------------------------
- #
- # insertRichText --  insert rich text in TEXTWINDOW at INDEX according
- # to commands and data in LIST.   The latter must be of the form
- #  command1 arg1 ..argn command2 arg1 ..argn2 ..
- # for example if `Tins' takes two args
- #  and the commands must be in
- # since the rich text might come from a selection or some or an untrusted
- # file we want to be careful not to do any bad evals.
- #  Results: none
- #
- #  Side Effects:  the rich text commands are invoked to do insertions
- # on the window.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# insertRichText --  insert rich text in TEXTWINDOW at INDEX according
+# to commands and data in LIST.   The latter must be of the form
+#  command1 arg1 ..argn command2 arg1 ..argn2 ..
+# for example if `Tins' takes two args
+#  and the commands must be in
+# since the rich text might come from a selection or some or an untrusted
+# file we want to be careful not to do any bad evals.
+#  Results: none
+#
+#  Side Effects:  the rich text commands are invoked to do insertions
+# on the window.
+#
+#----------------------------------------------------------------
 #
 proc insertRichText {win index list } {
     global maxima_priv
@@ -395,15 +395,15 @@ proc insertRichText {win index list } {
 
 
 proc Tins { tags text } {
-   global maxima_priv
-   # foreach v $args { append text $v }
-   $maxima_priv(currentwin) insert $maxima_priv(point) $text  $tags
+    global maxima_priv
+    # foreach v $args { append text $v }
+    $maxima_priv(currentwin) insert $maxima_priv(point) $text  $tags
 }
 
 proc TinsSlashEnd { tags text } {
-   global maxima_priv
-   # foreach v $args { append text $v }
-   $maxima_priv(currentwin) insert $maxima_priv(point) "$text\\"  $tags
+    global maxima_priv
+    # foreach v $args { append text $v }
+    $maxima_priv(currentwin) insert $maxima_priv(point) "$text\\"  $tags
 }
 
 
@@ -534,25 +534,25 @@ proc toLocalFilename { url } {
 
 proc OpenMathGetWindow { commandPanel win } {
     if { "[winfo parent [oget $commandPanel textwin]]" != "$win" } {
-    catch { pack forget [winfo parent [oget $commandPanel textwin]] }
-    pack $win -expand 1 -fill both
-   # pack $win
-    oset $commandPanel textwin $win.text
-    oset $commandPanel location [oget $win location]
-    set tem [toLocalFilename [decodeURL [oget $win location]]]
-    oset $commandPanel savefilename  [file root $tem].txt
+	catch { pack forget [winfo parent [oget $commandPanel textwin]] }
+	pack $win -expand 1 -fill both
+	# pack $win
+	oset $commandPanel textwin $win.text
+	oset $commandPanel location [oget $win location]
+	set tem [toLocalFilename [decodeURL [oget $win location]]]
+	oset $commandPanel savefilename  [file root $tem].txt
+    }
 }
-		}
 
 
 proc getw { s  } { eval pack forget [winfo children . ] ; pack $s}
 
 proc try1 { file } {
-   global ccc
-   eval pack forget [winfo children . ]
-   mkOpenMath [set w .t[incr ccc]]
-   uplevel "#0" source $file
-  }
+    global ccc
+    eval pack forget [winfo children . ]
+    mkOpenMath [set w .t[incr ccc]]
+    uplevel "#0" source $file
+}
 
 proc filesplit { x } {
     set l [split $x /]
@@ -568,13 +568,14 @@ proc decodeURL { name } {
     set server ""
     if { [regexp  {([^#]*)#(.*)$} $name junk name anchor] } {
 	lappend answer anchor $anchor
-	   # puts "answer=$answer"
+	# puts "answer=$answer"
     }
 
 
     if { [regexp {^([a-z]+)[(]?([0-9]*)[)]?:/([^ ]+)$} $name all type port path ] } {
 	lappend answer type $type
-    } else { set path $name ; set type ""
+    } else { 
+	set path $name ; set type ""
     }
 
     set path [removeDotDot $path]
@@ -586,8 +587,8 @@ proc decodeURL { name } {
 	if { "$port" == "" } {set port $po }
 
 	if { [regexp {^/([^/:]*)(:([0-9]+))?(.*)$} $dirname all server \
-		jun po dirname] } {
-	   # puts "hi ther,server=$server"
+		  jun po dirname] } {
+	    # puts "hi ther,server=$server"
 	    if { "$po" != ""} {set port $po}
 	    if { "$dirname" == "" } {set dirname / }
 	} elseif { "$server" == "" } {
@@ -609,43 +610,43 @@ proc removeDotDot { path } {
 proc appendSeparate { var before item separator } {
     if { "$item" != "" } {
 	uplevel 1 append $var $before $item $separator
+    }
 }
-		}
 
 proc dirnamePlusFilename { lis } {
-  return  [string trimright [assoc dirname $lis ""] /]/[assoc filename $lis ""]
+    return  [string trimright [assoc dirname $lis ""] /]/[assoc filename $lis ""]
 }
 proc encodeURL { lis } {
     set type [assoc type $lis ""]
     switch $type {
 	nmtp {
-	      if { [ set port [assoc port $lis 4443]] != 4443 } {
-	       append type "($port)"
-	   }
-   	   appendSeparate ans "" $type ://[assoc server $lis ""]
-	   append ans [dirnamePlusFilename $lis]
-	   appendSeparate ans "#" [assoc anchor $lis ""] ""
+	    if { [ set port [assoc port $lis 4443]] != 4443 } {
+		append type "($port)"
+	    }
+	    appendSeparate ans "" $type ://[assoc server $lis ""]
+	    append ans [dirnamePlusFilename $lis]
+	    appendSeparate ans "#" [assoc anchor $lis ""] ""
 	}
 	http  {
-	   if { [ set port [assoc port $lis 80]] != 80 } {
-	       append type "($port)"
-	   }
-	   appendSeparate ans "" $type ://[assoc server $lis ""]
-	   append ans [dirnamePlusFilename $lis]
-	   #appendSeparate ans "" [assoc dirname $lis ""]
-	   #appendSeparate ans "/" [assoc filename $lis ""] ""
-	   appendSeparate ans "#" [assoc anchor $lis ""] ""
-       }
-       file {
-	   appendSeparate ans "" $type :/
-	   append ans  [dirnamePlusFilename $lis]
-#	   appendSeparate ans "" [assoc dirname $lis ""] "/"
-#	   appendSeparate ans "" [assoc filename $lis ""] ""
-	   appendSeparate ans "#" [assoc anchor $lis ""] ""
-       }
-       default "error unsupported url type : $type"
-   }
-   return $ans
+	    if { [ set port [assoc port $lis 80]] != 80 } {
+		append type "($port)"
+	    }
+	    appendSeparate ans "" $type ://[assoc server $lis ""]
+	    append ans [dirnamePlusFilename $lis]
+	    #appendSeparate ans "" [assoc dirname $lis ""]
+	    #appendSeparate ans "/" [assoc filename $lis ""] ""
+	    appendSeparate ans "#" [assoc anchor $lis ""] ""
+	}
+	file {
+	    appendSeparate ans "" $type :/
+	    append ans  [dirnamePlusFilename $lis]
+	    #	   appendSeparate ans "" [assoc dirname $lis ""] "/"
+	    #	   appendSeparate ans "" [assoc filename $lis ""] ""
+	    appendSeparate ans "#" [assoc anchor $lis ""] ""
+	}
+	default "error unsupported url type : $type"
+    }
+    return $ans
 }
 
 proc resolveURL { name current {post ""} } {
@@ -667,19 +668,22 @@ proc resolveURL { name current {post ""} } {
 		    } elseif { "$ndir" != "" } {
 			if { "$cdir" != ""  } {
 			    set new [string trimright $cdir /]/$ndir
-			} else { set new $ndir }
+			} else { 
+			    set new $ndir 
+			}
 		    } else {
 			set new $cdir
 		    }
 		    lappend ans dirname [removeDotDot $new]
 		}
 		filename {
-		
 		    if { "[assoc filename $decode]" == "" && "[assoc anchor $decode]" != "" } {
 			lappend ans $x $y
 		    }
 		}
-		post { list }
+		post { 
+		    list 
+		}
 		default {
 		    lappend ans $x  [assoc $x $decode $y]
 		}
@@ -729,7 +733,7 @@ proc getURLrequest { path server port types {post ""} {meth ""} } {
 	append ans "Content-type: application/x-www-form-urlencoded\nContent-length: [string length $post]\n\n$post"
     }
 
-	return $ans
+    return $ans
 
 }
 
@@ -753,19 +757,19 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
     #puts "getting $resolved,post=<$post>"
     switch [assoc type $res] {
 	http {
-	   # puts $res
-	   # puts "socket [assoc server $res] [assoc port $res 80]"
+	    # puts $res
+	    # puts "socket [assoc server $res] [assoc port $res 80]"
 	    if { [info exists maxima_priv(proxy,http) ] } {
 		set sock [eval socket $maxima_priv(proxy,http)]
-#		puts "opening proxy request socket $maxima_priv(proxy,http)"
+		#		puts "opening proxy request socket $maxima_priv(proxy,http)"
 	    } else {
-	    set sock [socket [assoc server $res] [assoc port $res 80]]
+		set sock [socket [assoc server $res] [assoc port $res 80]]
 	    }
-	
+	    
 	    fconfigure $sock -blocking 0
 	    ##DO NOT DELETE THE FOLLOWING !!!!!puts!!!!!!!!
 	    #puts request=[getURLrequest [dirnamePlusFilename $res] [assoc server $res] [assoc port $res] image/gif $post]
-#	    set path [dirnamePlusFilename $res]
+	    #	    set path [dirnamePlusFilename $res]
 	    set path [encodeURL $res]
 	    set server [assoc server $res]
 	    set port  [assoc port $res]
@@ -775,11 +779,11 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	    } else { oset $sock cachename "" }
 	    flush $sock
 	    if { [readAllData $sock -tovar maxima_priv(url_result) \
-		    -translation binary -mimeheader maxima_priv(mimeheader)  \
-		    -timeout 120000 -chunksize 2024] > 0 } {
+		      -translation binary -mimeheader maxima_priv(mimeheader)  \
+		      -timeout 120000 -chunksize 2024] > 0 } {
 		
-	    #puts "length=[string length $maxima_priv(url_result)]"
-	    #	flush stdout
+		#puts "length=[string length $maxima_priv(url_result)]"
+		#	flush stdout
 		
 		set contentType [canonicalizeContentType [assoc content-type $maxima_priv(mimeheader) text/plain]]
 		uplevel 1 set $type [list $contentType]
@@ -831,7 +835,7 @@ proc getImage { resolved width height} {
     after 10 backgroundGetImage $image [list $resolved] $width $height
     set maxima_priv(image,$res,$width,$height) $image
     return $image
-    }
+}
 
 
 global maxima_priv
@@ -846,7 +850,7 @@ proc backgroundGetImage  { image res width height }   {
 	if { ![info exists maxima_priv(brokenimage)] } {
 	    set maxima_priv(brokenimage) [image create photo -data $maxima_priv(brokenimage,data)]
 	}
-	 #puts "got error $err, doing $image copy $maxima_priv(brokenimage)"
+	#puts "got error $err, doing $image copy $maxima_priv(brokenimage)"
 	set im $maxima_priv(brokenimage)
 	$image config -width [image width $im] -height [image height $im]
 	$image copy $im
@@ -864,14 +868,14 @@ proc backgroundGetImage1  { image res width height }   {
 	    set port [assoc port $res 80]
 	    if { [info exists maxima_priv(proxy,http) ] } {
 		set s [eval socket $maxima_priv(proxy,http)]
-#		puts "opening proxy request socket $maxima_priv(proxy,http)"
+		#		puts "opening proxy request socket $maxima_priv(proxy,http)"
 	    } else {
-	    set s [socket [assoc server $res] [assoc port $res 80]]
+		set s [socket [assoc server $res] [assoc port $res 80]]
 	    }
 	    fconfigure $s -blocking 0
 	    ##DO NOT DELETE THE FOLLOWING !!!!!puts!!!!!!!!
 	    puts $s [getURLrequest [encodeURL $res] \
-		    $server $port {image/gif image/x-bitmap}]
+			 $server $port {image/gif image/x-bitmap}]
 	    flush $s
 
 	    if { [regexp -nocase {[.]gif([^/]*)$} [assoc filename $res] ] } {
@@ -882,61 +886,61 @@ proc backgroundGetImage1  { image res width height }   {
 		    # if have binary..
 		    if { "[info command binary]" != "binary" } {
 			error "need version of tk with 'binary' command for images"}
-			#puts "hi binary" ; flush stdout
-			if {  [readAllData $s -tovar \
-				maxima_priv($s,url_result) -mimeheader \
-				maxima_priv($s,mimeheader)
-			] > 0  && [string match *gif [assoc content-type $maxima_priv($s,mimeheader)]] } {
-			    set ans $image
-			    $image configure -data [tobase64 $maxima_priv($s,url_result)]
+		    #puts "hi binary" ; flush stdout
+		    if {  [readAllData $s -tovar \
+			       maxima_priv($s,url_result) -mimeheader \
+			       maxima_priv($s,mimeheader)
+			  ] > 0  && [string match *gif [assoc content-type $maxima_priv($s,mimeheader)]] } {
+			set ans $image
+			$image configure -data [tobase64 $maxima_priv($s,url_result)]
 
-			    unset maxima_priv($s,mimeheader)
-			    unset maxima_priv($s,url_result)
+			unset maxima_priv($s,mimeheader)
+			unset maxima_priv($s,url_result)
 			
-			} else  {
-			    error "could not get image"
-			}
-		    } else {
-			fconfigure $out -translation binary -blocking 0
-			if { [readAllData $s -tochannel $out \
-				-translation binary \
-				-mimeheader \
-				maxima_priv($s,mimeheader) -timeout 15000 -chunksize 2024 ] > 0 } {
-			    set ans $image
-			    $image config  -file \
-				    $tmp
-			    unset maxima_priv($s,mimeheader)
-			}
+		    } else  {
+			error "could not get image"
+		    }
+		} else {
+		    fconfigure $out -translation binary -blocking 0
+		    if { [readAllData $s -tochannel $out \
+			      -translation binary \
+			      -mimeheader \
+			      maxima_priv($s,mimeheader) -timeout 15000 -chunksize 2024 ] > 0 } {
+			set ans $image
+			$image config  -file \
+			    $tmp
+			unset maxima_priv($s,mimeheader)
+		    }
 
-			
-			
-			# all the below just to try to remove the file..
-			#  depending on versions and in environments..
-			
-		}
+		    
+		    
+		    # all the below just to try to remove the file..
+		    #  depending on versions and in environments..
+		    
 		}
 	    }
-	    file {
-		$image config -file [toLocalFilename $res]
-		set ans $image
-		# puts "$image config -file [toLocalFilename $res]"
-		#set ans [image create photo -file [toLocalFilename $res]]
-		
-	
 	}
-	    default { error "unknown type of image" }
+	file {
+	    $image config -file [toLocalFilename $res]
+	    set ans $image
+	    # puts "$image config -file [toLocalFilename $res]"
+	    #set ans [image create photo -file [toLocalFilename $res]]
+	    
+	    
 	}
-	## if we opened an out channel try hard to remove the tmp file.
-	if { [info exists out] &&
-	     [catch { file delete $tmp } ] && [catch { rm $tmp }]
-	 && [catch { exec rm $tmp }] } {
-			    puts "cant remove tmp file $tmp"
-	 }
-	 if { "$ans" == "" } {
-	     error "Unable to open an image for [encodeURL $res]"
-	 }
-
+	default { error "unknown type of image" }
     }
+    ## if we opened an out channel try hard to remove the tmp file.
+    if { [info exists out] &&
+	 [catch { file delete $tmp } ] && [catch { rm $tmp }]
+	 && [catch { exec rm $tmp }] } {
+	puts "cant remove tmp file $tmp"
+    }
+    if { "$ans" == "" } {
+	error "Unable to open an image for [encodeURL $res]"
+    }
+
+}
 
 
 #
@@ -964,7 +968,7 @@ proc readData { s { timeout 10000 }} {
 
     #mike FIXME: this is a wrong use of after cancel
     fileevent $s readable \
-	   "after cancel {set maxima_priv($s,done) -1} ; after $timeout {set maxima_priv($s,done) -1} ; set da \[read $s 8000] ; append maxima_priv($s,url_result) \$da; if { \[string length \$da] < 8000  && \[eof $s] } {after cancel {set maxima_priv($s,done) -1} ; set maxima_priv($s,done) 1; fileevent $s readable {} ;  }"
+	"after cancel {set maxima_priv($s,done) -1} ; after $timeout {set maxima_priv($s,done) -1} ; set da \[read $s 8000] ; append maxima_priv($s,url_result) \$da; if { \[string length \$da] < 8000  && \[eof $s] } {after cancel {set maxima_priv($s,done) -1} ; set maxima_priv($s,done) 1; fileevent $s readable {} ;  }"
     myVwait maxima_priv($s,done)
     catch { close $s }
     #mike FIXME: this is a wrong use of after cancel
@@ -972,7 +976,7 @@ proc readData { s { timeout 10000 }} {
     return $maxima_priv($s,done)
 }
 
-			
+
 
 proc doRead { sock } {
     global maxima_priv
@@ -1010,21 +1014,22 @@ proc ws_outputToTemp { string file ext encoding } {
 
 global debugParse
 if { ![info exists debugParse ] } {
-set debugParse 0
+    set debugParse 0
 }
 
 proc OpenMathOpenUrl { name args} {
     global maxima_priv
+
     #puts "OpenMathOpenUrl  $name $args "
-    set history "" ; set historyIndex -1 ;set currentUrl ""
+    set history "" ; set historyIndex -1 ; set currentUrl ""
     set prevwindow ""
     set commandPanel [assoc -commandpanel $args ]
     if { "$commandPanel" == "" } {
 	linkLocal . omPanel
 	if { [info exists omPanel] } {
 	    set commandPanel $omPanel
+	}
     }
-		}
     set toplevel [assoc -toplevel $args ""]
     set reload [assoc -reload $args 0]
     set post [assoc -post $args ""]
@@ -1039,123 +1044,125 @@ proc OpenMathOpenUrl { name args} {
 	catch { set currentUrl [decodeURL [oget $textwin baseurl]] }
 
 	if { $reload == 0} {
-	
+	    
 	    set new [resolveURL $name $currentUrl $post]
 	    if { [set anchor [assoc anchor $new]] != "" } {
 		set new [delassoc anchor $new]
 	    }
 	    set ii -1
-	    foreach v $history { incr ii
-	    if { "[delassoc post $new]" == "[delassoc post [oget $v.text currentUrl]]" } {
-		# puts "new=$new\nold=[oget $v.text currentUrl]"
-	    }
-	    if   { "$new" == "[delassoc anchor [oget $v.text currentUrl]]" } {
-		OpenMathMoveHistory $commandPanel [expr {$ii - $historyIndex }]
-		if { "$anchor" != "" } {
-		    update
-		    catch {  $v.text yview anchor:$anchor }
+	    foreach v $history { 
+		incr ii
+		if { "[delassoc post $new]" == "[delassoc post [oget $v.text currentUrl]]" } {
+		    # puts "new=$new\nold=[oget $v.text currentUrl]"
+		}
+		if   { "$new" == "[delassoc anchor [oget $v.text currentUrl]]" } {
+		    OpenMathMoveHistory $commandPanel [expr {$ii - $historyIndex }]
+		    if { "$anchor" != "" } {
+			update
+			catch {  $v.text yview anchor:$anchor }
+		    }
+		    
+		    #    OpenMathGetWindow $commandPanel $v
+		    #    pushHistory $commandPanel $v
+		    return
 		}
 		
-		#    OpenMathGetWindow $commandPanel $v
-		#    pushHistory $commandPanel $v
-		return
 	    }
-	
+	} else {
+	    # reload=1
+	    list
 	}
-    } else {
-	# reload=1
-	list
     }
-   }
-   set count 5
-   while { [incr count -1] > 0 } {
-       set new  [resolveURL $name $currentUrl $post]
-       set result [getURL $new contentType mimeheader $post]
-       if { [set tem [assoc location $mimeheader]] == "" } { break }
-       set name $tem
-   }
+    set count 5
+    while { [incr count -1] > 0 } {
+	set new [resolveURL $name $currentUrl $post]
+	set result [getURL $new contentType mimeheader $post]
+	if { [set tem [assoc location $mimeheader]] == "" } { 
+	    break 
+	}
+	set name $tem
+    }
 
-   #puts "contentType defined:[info exists contentType]"
-   set handler [assoc $contentType $maxima_priv(urlHandlers)]
-   if { "$handler" != "netmath" && "$handler" != "" } {
-       set tmp [ws_outputToTemp result netmath ps "[assoc content-encoding $mimeheader]"]
-       # to do fix this for windows #####
-       exec sh -c "[format $handler $tmp] ; rm -f $tmp" &
-       return
-   }
-  #puts contentType=$contentType
+    #puts "contentType defined:[info exists contentType]"
+    set handler [assoc $contentType $maxima_priv(urlHandlers)]
+    if { "$handler" != "netmath" && "$handler" != "" } {
+	set tmp [ws_outputToTemp result netmath ps "[assoc content-encoding $mimeheader]"]
+	# to do fix this for windows #####
+	exec sh -c "[format $handler $tmp] ; rm -f $tmp" &
+	return
+    }
+    #puts contentType=$contentType
 
-  #puts "got [string length $result] bytes"
-  #puts ", result= [string range $result 0 70] .."
+    #puts "got [string length $result] bytes"
+    #puts ", result= [string range $result 0 70] .."
 
-   if { [catch { set baseprogram [oget $textwin baseprogram] }] } {
-       set baseprogram [decodeURL [getBaseprogram]]
-   }
-   # puts "using  $baseprogram"
-   if { $reload } {   forgetCurrent $commandPanel }
+    if { [catch { set baseprogram [oget $textwin baseprogram] }] } {
+	set baseprogram [decodeURL [getBaseprogram]]
+    }
+    # puts "using  $baseprogram"
+    if { $reload } {   forgetCurrent $commandPanel }
 
-   #puts "maxima_priv(counter)=$maxima_priv(counter)"
+    #puts "maxima_priv(counter)=$maxima_priv(counter)"
 
-   set win [mkOpenMath [set w $toplevel.t[incr maxima_priv(counter)]] ]
+    set win [mkOpenMath [set w $toplevel.t[incr maxima_priv(counter)]] ]
 
-   #puts "maxima_priv(counter)=$maxima_priv(counter)"
+    #puts "maxima_priv(counter)=$maxima_priv(counter)"
 
+    makeLocal $w commandPanel
+    #puts "resolveURL $name $currentUrl"
 
-   makeLocal $w commandPanel
-   #puts "resolveURL $name $currentUrl"
+    if { [set anchor [assoc anchor $new]] != "" } {
+	set new [delassoc anchor $new]
+    }
+    if { "[assoc filename $new]" == "" } {
+	set new [putassoc  filename $new index.html]
+    }
+    # puts "...> $new"
+    oset $w.text currentUrl $new
+    oset $commandPanel location [encodeURL $new]
+    oset $commandPanel textwin $win
+    oset $w location  [encodeURL $new]
+    # puts "new=$new"
+    oset $commandPanel savefilename [file root [toLocalFilename $new]].txt
 
-
-   if { [set anchor [assoc anchor $new]] != "" } {
-       set new [delassoc anchor $new]
-   }
-   if { "[assoc filename $new]" == "" } {
-       set new [putassoc  filename $new index.html]
-   }
-   # puts "...> $new"
-   oset $w.text currentUrl $new
-   oset $commandPanel location [encodeURL $new]
-   oset $commandPanel textwin $win
-   oset $w location  [encodeURL $new]
-   # puts "new=$new"
-   oset $commandPanel savefilename [file root [toLocalFilename $new]].txt
-   set tem [assoc filename $new ""]
-   #puts $contentType
-   if { "$contentType" != "text/html" } {
-       if { [string match "image/*" $contentType] } {
-	   set im [image  create photo -data $result]
-	   $win image create 0.0 -image $im
-	   set err 0
-       } else {
-       set err [catch {   $win insert 0.0 $result } ]
-       }
-   } elseif { 1 }  {
-    xHMinit_win $win
-    xHMset_state $win url [encodeURL $new]
-    oset $win baseprogram $baseprogram
-    # puts win=$win,lengres=[string length $result]
-    set errmsg1 ""
-       set err 0
-       global debugParse
-       if { $debugParse } {
-	   xHMparse_html $result "xHMrender $win"
-	   set err 0
-       } else {
-	   set err [catch {
-	       xHMparse_html $result "xHMrender $win"
-	   } errmsg1 ]
-	   }
+    set tem [assoc filename $new ""]
+    #puts $contentType
+    if { "$contentType" != "text/html" } {
+	if { [string match "image/*" $contentType] } {
+	    set im [image  create photo -data $result]
+	    $win image create 0.0 -image $im
+	    set err 0
+	} else {
+	    set err [catch {   $win insert 0.0 $result } ]
+	}
+    } elseif { 1 }  {
+	xHMinit_win $win
+	xHMset_state $win url [encodeURL $new]
+	oset $win baseprogram $baseprogram
+	# puts win=$win,lengres=[string length $result]
+	set errmsg1 ""
+	set err 0
+	global debugParse
+	if { $debugParse } {
+	    xHMparse_html $result "xHMrender $win"
+	    set err 0
+	} else {
+	    set err [catch {
+		xHMparse_html $result "xHMrender $win"
+	    } errmsg1 ]
+	}
 	catch {
 	    if { "$anchor" != "" } {
 		update
 		$win yview anchor:$anchor
+	    }
 	}
-		}
 	
 	#   foreach v {Tresult Teval} {  $win tag raise $v}	
 
 
-    }    else {
-###Never get here.. must change to make be the rich text case..	
+    } else {
+	###Never get here.. must change to make be the rich text case..	
 	# drop comment lines
 	regsub -all "(^|\n)#\[^\n\]*\n" $result \n result ;
 	#puts input=$result
@@ -1176,13 +1183,14 @@ proc OpenMathOpenUrl { name args} {
 	#puts "======end========"
 	puts "$errmsg1"
 	error "unable to evaluate [encodeURL $new]:$errmsg1"}
-	
-    }
+    
+}
 
 
 proc pushHistory { commandPanel win } {
     global [oarray $commandPanel]
     makeLocal $commandPanel history historyIndex
+
     if { [llength $history] == 0 } {
 	oset $commandPanel historyIndex -1
     }
@@ -1193,16 +1201,16 @@ proc pushHistory { commandPanel win } {
 
 
 #
- #-----------------------------------------------------------------
- #
- # omScrollPage --  scroll the page by N pages, keeping the insert
- # cursor visible.
- #
- #  Results: none
- #
- #  Side Effects: page scrolls
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# omScrollPage --  scroll the page by N pages, keeping the insert
+# cursor visible.
+#
+#  Results: none
+#
+#  Side Effects: page scrolls
+#
+#----------------------------------------------------------------
 #
 proc omScrollPage { win n } {
     tkTextScrollPages $win $n
@@ -1213,7 +1221,7 @@ proc omScrollPage { win n } {
 	} else {$win mark set insert @0,[$win cget -height]}
     }
 }
-	
+
 #bind Text <Control-v> "omScrollPage %W 1"
 #bind Text <Meta-v> "omScrollPage %W -1"
 #bind Text <Alt-v> "omScrollPage %W -1"
@@ -1222,9 +1230,9 @@ proc addTagSameRange { win oldtag newtag index } {
     if { [lsearch [$win tag names $index] $oldtag ] >= 0 } {
 	set this [$win tag prevrange $oldtag $index+1char]
 	if { "$this" != "" && [$win compare $index < [lindex $this 1]] } {
-	     $win tag remove $newtag 0.0 end
-	     $win tag add $newtag [lindex $this 0] [lindex $this 1]
-	     $win tag raise $newtag
+	    $win tag remove $newtag 0.0 end
+	    $win tag add $newtag [lindex $this 0] [lindex $this 1]
+	    $win tag raise $newtag
 	}
     }
 }
@@ -1233,8 +1241,8 @@ global maxima_default
 set maxima_default(defaultservers) { nmtp://genie1.ma.utexas.edu/ nmtp://linux51.ma.utexas.edu/ nmtp://linux52.ma.utexas.edu/ }
 global embed_args
 if { "[info var embed_args]" != "" } {
-     set maxima_default(defaultservers) nmtp://genie1.ma.utexas.edu/
- }
+    set maxima_default(defaultservers) nmtp://genie1.ma.utexas.edu/
+}
 
 proc getBaseprogram { } {
     global maxima_default
@@ -1264,8 +1272,8 @@ global isFixedp
 
 if { "$tcl_platform(platform)" == "unix" } {
     array set isFixedp {
-fixed 1 {fangsong ti} 1 {clearlyu alternate glyphs} 0 lucidatypewriter 1 charter 0 lucidabright 0 times 0 ming 1 {lucidux sans} 0 {open look glyph} 0 {song ti} 1 newspaper 0 helvetica 0 {open look cursor} 1 li 1 mincho 1 {clearlyu ligature} 0 {clearlyu pua} 0 {lucidux mono} 1 courier 1 clearlyu 0 utopia 0 lucida 0 nil 1 clean 1 terminal 1 kai 1 gothic 1 cursor 0 symbol 0 {clearlyu arabic extra} 0 {lucidux serif} 0 {new century schoolbook} 0 song 1
-}
+	fixed 1 {fangsong ti} 1 {clearlyu alternate glyphs} 0 lucidatypewriter 1 charter 0 lucidabright 0 times 0 ming 1 {lucidux sans} 0 {open look glyph} 0 {song ti} 1 newspaper 0 helvetica 0 {open look cursor} 1 li 1 mincho 1 {clearlyu ligature} 0 {clearlyu pua} 0 {lucidux mono} 1 courier 1 clearlyu 0 utopia 0 lucida 0 nil 1 clean 1 terminal 1 kai 1 gothic 1 cursor 0 symbol 0 {clearlyu arabic extra} 0 {lucidux serif} 0 {new century schoolbook} 0 song 1
+    }
 }
 
 proc fontDialog { top } {
@@ -1341,7 +1349,7 @@ proc fontDialog { top } {
     $win tag bind save <1> "_FontDialogApply $win ; savePreferences"
 
     pack $win
-#    place $win -in [oget [omPanel .] textwin] -x 10 -y 10
+    #    place $win -in [oget [omPanel .] textwin] -x 10 -y 10
 }
 proc savePreferences {} {
     global maxima_default maxima_priv
@@ -1355,7 +1363,7 @@ proc savePreferences {} {
     puts $fi "}"
     if { [info exists maxima_priv(proxy,http)] && [llength $maxima_priv(proxy,http)] == 2   } {
 	puts $fi [list array set maxima_priv [array get maxima_priv proxy,http]
-	]
+		 ]
     }
     close $fi
 }
@@ -1377,22 +1385,22 @@ proc getFontFamilies { fixed } {
     }
     return [lsort $answer]
 }
-	
+
 
 
 #
- #-----------------------------------------------------------------
- #
- # mkLabelListBoxChooser --  creates a button called WIN with textvariable
- #  $TEXTVAR.  When clicked on the WIN, brings down
- #  a list of items, and clicking on one of them selects that item. and
- #  resets $TEXTVAR
- #
- #  Results: none
- #
- #  Side Effects: the TEXTVAR value is changed, and so consequently the label.
- #
- #----------------------------------------------------------------
+#-----------------------------------------------------------------
+#
+# mkLabelListBoxChooser --  creates a button called WIN with textvariable
+#  $TEXTVAR.  When clicked on the WIN, brings down
+#  a list of items, and clicking on one of them selects that item. and
+#  resets $TEXTVAR
+#
+#  Results: none
+#
+#  Side Effects: the TEXTVAR value is changed, and so consequently the label.
+#
+#----------------------------------------------------------------
 #
 proc mkLabelListBoxChooser { win items  textvar} {
     button $win -textvariable $textvar -command "listBoxChoose $win [list $items] $textvar"
