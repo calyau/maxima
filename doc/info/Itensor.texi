@@ -1390,26 +1390,28 @@ ifc1    = --------------------------------
 
 The frame bracket itself is defined in terms of the frame field and frame
 metric. Two alternate methods of computation are used depending on the
-value of @code{frame_bracket_form}. If true (the default):
+value of @code{frame_bracket_form}. If true (the default) or if the
+@code{itorsion_flag} is @code{true}:
 
 @example
 
-          e      d
-ifb =  ifr    ifr   (ifri      - ifri     )
-   abc    a      b       c d,e       c e,d
+          d      e                                      f
+ifb =  ifr    ifr   (ifri      - ifri      - ifri    itr   )
+   abc    b      c       a d,e       a e,d       a f    d e
 
 
 @end example
 
-Or, if @code{false}:
+Otherwise:
 
 @example
 
              e      d        d      e
 ifb    = (ifr    ifr    - ifr    ifr   ) ifri
-   abc       a      b,e      a,e    b        c d
+   abc       b      c,e      b,e    c        a d
 
 @end example
+
 
 @end defvar
 
@@ -1430,7 +1432,9 @@ icc1    = ichr1    - ikt1    - inmc1
 In this expression, if @code{iframe_flag} is true, the Christoffel-symbol
 @code{ichr1} is replaced with the frame connection coefficient @code{ifc1}.
 If @code{itorsion_flag} is @code{false}, @code{ikt1}
-will be omitted. Similarly, of @code{inonmet_flag} is @code{false},
+will be omitted. It is also omitted if a frame base is used, as the
+torsion is already calculated as part of the frame bracket.
+Lastly, of @code{inonmet_flag} is @code{false},
 @code{inmc1} will not be present.
 
 
@@ -1453,7 +1457,9 @@ icc2   = ichr2   - ikt2   - inmc2
 In this expression, if @code{iframe_flag} is true, the Christoffel-symbol
 @code{ichr2} is replaced with the frame connection coefficient @code{ifc2}.
 If @code{itorsion_flag} is @code{false}, @code{ikt2}
-will be omitted. Similarly, of @code{inonmet_flag} is @code{false},
+will be omitted. It is also omitted if a frame base is used, as the
+torsion is already calculated as part of the frame bracket.
+Lastly, of @code{inonmet_flag} is @code{false},
 @code{inmc2} will not be present.
 
 @end defvar
