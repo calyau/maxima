@@ -9,282 +9,421 @@
        *         given property (mass, for example) in terms of	     *
        *	 a base unit, and various other abilities. 	     *
        *         						     *
-       *         		Version .03			     *
-       *                       Nov. 20, 2003			     *
+       *         	       Version 0.10			     *
+       *                       March 9, 2005			     *
        *		       License:  GPL			     *
        *							     *
-       *                 --------------------------                  *
-       *                  Programmed by Cliff Yapp                   *
-       *            Inspired by and some code based off of	     *
-       *		Barton Willis's dimension.mac		     *
+       *          ------------------------------------------         *
+       *          Programmed by Cliff Yapp and Barton Willis         *
+       *            	     					     *
        ***************************************************************
 
-     Properties with units listed:
-	 Length, Mass, Time,  Electric Current, Thermodynamic Temperature,
-	 Amount of Substance, Luminous Intensity, Area, 
-
      Changes:
-        .03  -  fixed unitfactor so it would work on standard unit
+
+       0.10  -  total rewrite using more advanced rule based
+                techniques for handling units has begun.
+       0.03  -  fixed unitfactor so it would work on standard unit
 		names even if setunits had already defined them. Added
 		command findnonpivotunit which will return if defined
 		the non pivot unit corresponding to a given conversion 
 		factor times a given pivot unit.
-	.02  -  added ability to control how many metric prefixes are
+       0.02  -  added ability to control how many metric prefixes are
 		used to generate the meta list, and a killunits function
 		to undo what setunits does.
-	.01  -  first development version - metalist generateable,
+       0.01  -  first development version - metalist generateable,
         	unitfactor and setunits operational.  Only basic Mass
 		and Time arrays present.  Metric prefixes entered.
-
-
-      Implimentation notes: 
-	 Each property, like mass or length, has three basic unit 
-	 lists - %<propertyname>full, %<propertyname>fullplural, and 
-	 %<propertyname>abr.  The first list contains the full 
-	 singular name of the unit, the second the plural of the full
-	 name, and the third the standard abbreviations.  There is of
-	 necessity a three fold redundancy in these definitions, but
-	 for now it is the simplest and most flexible way to organize
-	 the information for easy access and editing.  The first unit
-	 in each list is called the pivot unit (usually the standard
-	 SI unit is used) and all other units for that property are
-	 defined in terms of the pivot unit.  This when one wants to
-	 convert between, say, mg and ounces the software will convert
-	 mg -> g and ounces -> g, and use those factors to find mg -> 
-	 ounces.  This minimizes the amount of information that needs
-	 to be stored.
-
-	 Each entry in the lists is itself a list, with three pieces
-	 of information - the text of the unit name, the multiplicative
-	 factor required to convert it to the pivot node, and a third
-	 slot which tells the program whether or not the unit is metric.
-	 If it is, when build the metalist metric prefixes will be 
-	 handles automatically.  An "m" in the third entry signifies
-	 a metric unit.
-         
-	 A way to control the generation of metric prefix based values
-	 uses the third number in the metric prefix lists. The control
-	 variable is called %unitexpand.  A value of zero means no metric 
-	 suffix units will be generated and only the basic arrays will be 
-	 used, and a value of five means generate the entire unit tree.  
-	 The default value is two.
-
-   TODO:
-   	 It could also be possible to define only abbreviations or only 
-	 full names - perhaps another global variable could control that.
-
-         Immediately useful would be a convert command that could take an
-	 expression with some units and render it into an expression using
-	 user supplied units - Barton Willis's dimension package might have 
-	 the code to allow disection of a complicated expression.  
-
-	 Aside from those, and the implimentation of whatever functionality
-	 seems useful, the main thing is to increase the store of units.
-=====================================================================================*/ 
+============================================================================*/ 
 
 ttyoff: nolabels, true$
 
 /*
 Metric prefixes
 */
-metricprefull : [[yotta,10^24,4],[zetta,10^21,4],[exa,10^18,4],[peta,10^15,3],[tera,10^12,3],
-[giga,10^9,2],[mega,10^6,2],[kilo,10^3,1],[hecto,10^2,2],[deka,10^1,2],[deci,10^-1,2],
-[centi,10^-2,1],[milli,10^-3,1],[micro,10^-6,2],[nano,10^-9,2],[pico,10^-12,3],[femto,10^-15,3],
-[atto,10^-18,4],[zepto,10^-21,4],[yocto,10^-24,4]];
-metricpre : [[Y,10^24,4],[Z,10^21,4],[E,10^18,4],[P,10^15,3],[T,10^12,3],
-[G,10^9,2],[M,10^6,2],[k,10^3,1],[h,10^2,2],[da,10^1,2],[d,10^-1,2],
-[c,10^-2,1],[%%m,10^-3,1],[%mu,10^-6,2],[n,10^-9,2],[p,10^-12,3],[f,10^-15,3],
-[a,10^-18,4],[z,10^-21,4],[y,10^-24,4]];
+metricprefull : [[yotta,10^24,4],[zetta,10^21,4],[exa,10^18,4],[peta,10^15,3],
+		[tera,10^12,3],[giga,10^9,2],[mega,10^6,2],[kilo,10^3,1],
+		[hecto,10^2,2],[deka,10^1,2],[deci,10^-1,2],[centi,10^-2,1],
+		[milli,10^-3,1],[micro,10^-6,2],[nano,10^-9,2],[pico,10^-12,3],
+		[femto,10^-15,3],[atto,10^-18,4],[zepto,10^-21,4],
+		[yocto,10^-24,4]];
+metricpre : 	[[Y,10^24,4],[Z,10^21,4],[E,10^18,4],[P,10^15,3],[T,10^12,3],
+		[G,10^9,2],[M,10^6,2],[k,10^3,1],[h,10^2,2],[da,10^1,2],
+		[d,10^-1,2],[c,10^-2,1],[%%m,10^-3,1],[%mu,10^-6,2],[n,10^-9,2],
+		[p,10^-12,3],[f,10^-15,3],[a,10^-18,4],[z,10^-21,4],
+		[y,10^-24,4]];
 
-/*
-Mass Units
+/*============================ Unit Information ============================*/ 
+
+/* Seven Mutually Independent Base Quantities 
+
+  The globalbaseunitlist maintains a list of all quantities considered to be
+  Base Quantities.  This means all other units result from combinations of 
+  these units.  The list associated with each quantity is named %quantitylist
+  and is structured as follows:
+   
+   -  The first unit in each list is called the pivot unit. All other units
+      for this quantity, and all derived units using this quantity, will be 
+      defined in terms of this unit.  The pivot unit is also the standard SI
+      unit in the case of Base Quantities
+      
+   -  Each entry in the top level list is itself a list, containing as its 
+      first entry a list of the names to be associated with this unit.  The 
+      second position contains the conversion factor between the unit in 
+      question and the pivot unit.  In the case of a pivot unit, this value
+      is 1.  The third position is a flag which tells Maxima whether this 
+      unit is metric or not.  Metric units can be automatically generated
+      using the base name and the metric prefix lists, which contain both the
+      prefix and the power of ten associated with it.  These definitions will
+      make the following assumptions:
+      	- The first unit name is the abbreviation of the unit's full name, 
+	  and will append the metric abbreviation prefix.  In the case of a 
+	  % at the beginning of the name, this is moved to the beginning of 
+	  the new metric quantity's name.	
+	- All other unit names in the list are assumed to be full names, and 
+	  will have the full metric prefix appended to them.
+
 */
-%massunitsfull : [[gram,1,m],[grain,0.0648,0]];
-%massunitsfullplural : [[grams,1,m],[grains,0.0648,0]];
-%massunitsabr : [[g,1,m],[gr,0.0648,0]];
 
-/*
-Time Units
-*/
-%timeunitsfull : [[second,1,m],[minute,60,0]];
-%timeunitsfullplural : [[seconds,1,m],[minutes,60,0]];
-%timeunitsabr : [[s,1,m],[%min,60,0]];
+globalbaseunitlist : [%length,%mass,%time,%current,%temperature,
+%amount_of_substance,%luminous_intensity];
 
-/*
-Quantities List
-*/
-quantitieslist : [[%mass],[%time]];
+/*Length */
+%lengthlist : [[[m,meter,meters],1,m],[[%in,inch,inches],0.0254,e]];
+
+/*Mass*/
+%masslist : [[[kg,kilogram,kilograms],1,0],[[g,gram,grams],1/1000,e],
+[[gr,grain,grains],0.06479891,e]];
+
+/*Time*/
+%timelist : [[[s,second,seconds],1,m],[[%min,minute,minutes],1/60,e]];
+
+/*Electric Current*/
+%current : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Thermodynamic Temperature*/
+%temperature : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Amount of Substance*/
+%amount_of_substance : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Luminous Intensity*/
+%luminous_intensity : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 
-makemetalist() := block ([i,j,k,metalist,finallist], 
-  metalist : [],
-  metriclistfull : [],
-  metriclistabr : [],
-  for i : 1 thru length(metricprefull) do (
-     if (metricprefull[i][3] <= %unitexpand) then (
-       metriclistfull : append(metriclistfull,[[metricprefull[i][1],metricprefull[i][2]]])
-  )),
-  for i : 1 thru length(metricpre) do (
-     if (metricpre[i][3] <= %unitexpand) then (
-       metriclistabr : append(metriclistabr,[[metricpre[i][1],metricpre[i][2]]])
-  )),
-  for i : 1 thru length(quantitieslist) do (
-      metalist : append(metalist,[quantitieslist[i]]),
-      listtempname : concat(quantitieslist[i][1],unitsfull),
-      listtemplength : length(ev(listtempname)),
-      for j : 1 thru listtemplength do (
-        metalist[i] : append(metalist[i],[listtempname[j]])
-      ),
-      for j : 2 thru listtemplength do (
-	if ?equal(metalist[i][j][3],m) then (
-	for k : 1 thru length(metriclistfull) do (
-             metalist[i] : append(metalist[i],[[concat(metriclistfull[k][1],metalist[i][j][1]),metriclistfull[k][2],0]])
-        ))
-      ),
-      listtempname : concat(quantitieslist[i][1],unitsfullplural),
-      listtemplength : length(ev(listtempname)),
-      for j : 1 thru listtemplength do (
-        metalist[i] : append(metalist[i],[listtempname[j]])
-      ),
-      for j : length(metalist[i])-listtemplength thru length(metalist[i]) do (
-	if ?equal(metalist[i][j][3],m) then (
-	for k : 1 thru length(metriclistfull) do (
-             metalist[i] : append(metalist[i],[[concat(metriclistfull[k][1],metalist[i][j][1]),metriclistfull[k][2],0]])
-        ))
-      ),
-      listtempname : concat(quantitieslist[i][1],unitsabr),
-      listtemplength : length(ev(listtempname)),
-      for j : 1 thru listtemplength do (
-        metalist[i] : append(metalist[i],[listtempname[j]])
-      ),
-      for j : length(metalist[i])-listtemplength thru length(metalist[i]) do (
-	if ?equal(metalist[i][j][3],m) then (
-	for k : 1 thru length(metriclistabr) do (
-             metalist[i] : append(metalist[i],[[concat(metriclistabr[k][1],metalist[i][j][1]),metriclistabr[k][2],0]])
-        ))
-      )      
-   ), 
-   metalist
+/* Derived Units
+ 
+   The structure of these lists is slightly different from the Base
+   Quantities.  The first entry in eacy list describes the Derived Quantity 
+   in terms of the relevant Base Quantities, using the pivot unit of the
+   Base Quantities. After that, the structure is the same as Base Quantity
+   lists. globalderivedunitslist lists all derived quantities known to
+   Maxima, and also a ranking used to tell Maxima in what order simplifications
+   need to be performed.*/
+
+globalderivedunitslist:[[%volume,r],[%frequency,r],[%force,r],[%pressure,r],
+[%energy,r],[%power,%electric_charge,r],[%electric_potential_difference,r],
+[%capacitance,r],[%resistance,r],[%conductance,r],[%magnetic_flux,r],
+[%magnetic_flux_%density,r],[%inductance,r],[%luminous_flux,r],[%illuminance,r],
+[%radionuclide_activity,r],[%absorbed_dose,r],[%dose_equivalent,r],
+[%catalytic_activity,r]];
+
+/*Volume*/
+%volumelist : [m^3,[[L,liter,liters],1,m]];
+
+
+/* Derived Units with Special SI Names and Symbols 
+
+   These are similar in structure to the Derived Unit lists above, but
+   because they have a unique name associated with them in SI the policy
+   is to have the first entry after the base quantity definition be the
+   SI unit.  Overall structure is the same.  These are listed in the same
+   globalderivedunitslist as the previous Derived Units.
+   
+   Note - depending on circumstances, it is sometimes of interest to
+          have energy reported as work or heat in dimensional analysis.
+	  Need to work on this.*/
+
+/*Frequency*/
+%frequencylist : [1/s,[[Hz,hertz],1,m]];
+
+/*Force*/
+%forcelist : [kg*m/s^2,[[N,Newton,Newtons],1,d]];
+
+/*Pressure*/
+%pressurelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Energy, Work, Quantity of Heat */
+%energylist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Power, Radiant */
+%powerlist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Electric Charge, Quantity of Electricity*/
+%electric_chargelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Electric Potential Difference, Electromotive Force */	
+%electric_potential_differencelist : [baseunitexpr,[[a,aa,aaa],0,eee],
+[[b,bb,bbb],0,eee]];
+
+/*Capacitance*/
+%capacitancelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Electric Resistance*/
+%resistancelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Electric Conductance*/
+%conductancelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Magnetic Flux*/
+%magnetic_fluxlist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Magnetic Flux Density*/
+%magnetic_flux_densitylist : [baseunitexpr,[[a,aa,aaa],0,eee],
+[[b,bb,bbb],0,eee]];
+
+/*Inductance*/
+%inductancelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Luminous Flux*/
+%luminous_fluxlist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Illuminance */
+%illuminance : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Activity (of a radionuclide)*/
+%radionuclide_activity : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Absorbed Dose, Specific Energy (imparted), Kerma */
+%absorbed_doselist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Dose Equivalent*/
+%dose_equivalent : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+/*Catalytic Activity */
+%catalytic_activity : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+
+
+/*===================== Package Functions ====================*/ 
+
+/*The default behavior of let doesn't work for the purposes of this
+  package, so we define unitlet here using Jeff Golden's trick of
+  having apply evaluate the inputs.  (Thanks to Barton Willis
+  for an elegant solution.) A source level fix to let is also
+  possible but does cause a default behavior change in let:
+  
+  nisimp.lisp, line 66
+  <              (setq replacement (cdr l))
+  >              (setq replacement (list (meval(cadr l))))
+  
+  if it is ever applied we can convert back to the default let, but
+  it shouldn't matter one way or the other*/
+
+unitlet(expression,ruleset) := apply('let,[expression,ruleset]);
+
+/* Add all desired metric quantities into %quantitylist_use lists.  
+   %quantitylist_use lists are the one actually used in functions.  This allows
+   the program to regenerate a new metric list from "original" package lists
+   in order to avoid multiple definitons of metric prefix quantities.  An
+   exception is made for kg, kilogram, and kilograms becasue they are defined
+   already as the pivot unit for mass.  This is a consequence of the nature of
+   the SI system.*/
+
+metricexpandall(%limit) := block([i,j,k,l,unitlistname,
+				  unitlistusename,tempentry],
+   modedeclare([i,j,k,l], fixnum),
+   for i : 1 thru length(globalbaseunitlist) do  (
+     unitlistname : concat(globalbaseunitlist[i],list),
+     unitlistusename : concat(globalbaseunitlist[i],list_use),
+     unitlistusename :: ev(unitlistname),
+     for j : 2 thru length(ev(unitlistname)) do  (
+        if (?equal(unitlistname[j][3],m)) then (
+	  tempentry : [[0],0,expanded,0],
+	  for k : 1 thru length(metricpre) do (
+	    if (metricpre[k][3] <= %limit) then (
+	    if (not(?equal(metricpre[k][1],k)) and 
+	        not(?equal(unitlistname[j][1][1],g))) then (
+	      tempentry[1][1] : concat(metricpre[k][1],unitlistname[j][1][1]),
+	      tempentry[2] : metricpre[k][2]*unitlistname[j][2])),
+	  for k : 1 thru length(metricprefull) do (
+	    if (metricprefull[k][3] <= %limit) then (
+	      for l : 2 through length(unitlistname[j][1]) do(
+	      if (not(?equal(metricprefull[k][1],kilo)) and 
+	         (not(?equal(unitlistname[j][1][l],gram)) or
+		      ?equal(unitlistname[j][1][l],grams))) then (
+	        tempentry[1] : append(tempentry[1],[concat(metricprefull[k][1],
+		                      unitlistname[j][1][l])]))))),
+	unitlistusename :: append(ev(unitlistusename),[tempentry])))),
+	  
+   for i : 1 thru length(globalderivedunitlist) do  (
+     unitlistname : concat(globalderivedunitlist[i][1],list),
+     unitlistusename : concat(globalderivedunitlist[i][1],list_use),
+     unitlistusename :: ev(unitlistname),
+     for j : 2 thru length(ev(unitlistname)) do  (
+        if (?equal(unitlistname[j][3],m)) then (
+	  tempentry : [[0],0,expanded,0],
+	  for k : 1 thru length(metricpre) do (
+	    if (metricpre[k][3] <= %limit) then (
+	      tempentry[1][1] : concat(metricpre[k][1],unitlistname[j][1][1]),
+	      tempentry[2] : metricpre[k][2]*unitlistname[j][2]),
+	  for k : 1 thru length(metricpre) do (
+	    if (metricprefull[k][3] <= %limit) then (
+	      for l : 2 through length(unitlistname[j][1]) do(
+	        tempentry[1] : append(tempentry[1],[concat(metricprefull[k][1],
+		                      unitlistname[j][1][l])]))))),
+	unitlistusename :: append(ev(unitlistusename),[tempentry])))),
    );
+	  
+/* Create unitsimplify ruleset
 
-propertynumber(property) := block([i,j,b],
-   b:0,
-   for i : 1 thru length(metalist) do  (
-       if ?equal(metalist[i][1],property) then (
-          b : i
-    )),
-   if ?equal(b,0) then (error ("Property not found")) else b);
-
-
-unitinfo(unit) := block([i,j,b],
-   b:0,
-   for i : 1 thru length(metalist) do  (
-     for j : 2 thru length(metalist[i]) do  (
-       if ?equal(metalist[i][j][1],unit) then (
-          b : [metalist[i][2][1],metalist[i][j][2],metalist[i][j][1],i,metalist[i][1]]
+   This ruleset is used to simplify unit processing.  When a unit is processed
+   a simplification of that unit using unitsimplifyrules will return the 
+   quantity it represents.  This enables subsequent operations on the unit to 
+   know what list to look at for conversions and at the same time simplifies 
+   the programming of dimensional analysis functionality.  The addunit command
+   will automatically add on information to this list in order to maintain the 
+   validity of the operation.  The metricexpandall function must be called 
+   before this command is run.*/
+   
+makeunitsimplifyruleset() := block([i,j,k,b,unitlistname],
+    modedeclare([i,j,k], fixnum),
+    for i : 1 thru length(globalbaseunitlist) do  (
+     unitlistname : concat(globalbaseunitlist[i],list_use),
+     for j : 1 thru length(ev(unitlistname)) do  (
+       for k : 1 thru length(unitlist[j][1]) do (
+         unitlet([unitlist[j][1][k],globalbaseunitlist[i]],unitsimplifyrules)
     ))),
-   if ?equal(b,0) then (error ("Unit not found")) else b);
+    
+    /* j needs to start at the second entry for Derived Quantity Arrays */
+    for i : 1 thru length(globalderivedunitlist) do  (
+     unitlistname : concat(globalderivedunitlist[i][1],list_use),
+     for j : 2 thru length(ev(unitlistname)) do  (
+       for k : 1 thru length(unitlist[j][1]) do (
+         unitlet([unitlist[j][1][k],globalderivedunitlist[i][1]],
+	 unitsimplifyrules)
+    )))
+    );
 
-findnonpivotunit(conversion) := block([i,j,b],
-   b:0,
-   for i : 1 thru length(metalist) do  (
-     for j : 2 thru length(metalist[i]) do  (
-       if ?equal(float(metalist[i][j][2]),part(conversion,1)) and ?equal(metalist[i][1],unitinfo(part(conversion,2))[5]) then (
-          b : [metalist[i][j][1]]
-       ),
-       if ?equal(float(metalist[i][j][2]),float(1/part(conversion,2))) and ?equal(metalist[i][1],unitinfo(part(conversion,1))[5]) then (
-          b : [metalist[i][j][1]]
-       )
-    )),
-   if ?equal(b,0) then (error ("Unit not found")) else b);
+/* Determines if an input is a Unit.  Note that units must be
+   atoms for this test to work, so this package will adopt a
+   policy of unit names being atoms only. */
+
+isunit(canditate) := block([letrat:true,result],
+	if not(?atom(candidate)) then (
+           /*Error message if argument to isunit isn't an atom*/
+	   (error ("Argument to isunit was not an atom.  Maxima requires units to be atoms.  Erroneous input: ",candidate), 
+	   candidate))
+	else (
+	/* This test simply checks if the candidate will return
+	   a quantity under the previously defined rules.  If it
+	   does, then it is a unit.  If it does not, then it will
+	   not be impacted by those simplification rules and the
+	   condition of equality will be satisfied.  In such a
+	   case the result is that candidate is not a unit. */
+	if ?equal(candidate,letsimp(candidate,unitsimplifyrules)) then (
+	     /*Error if input isn't a unit - mentions the addunit command.*/
+	   (error ("~ is not a unit.  To define your own unit, use the addunit command."),candidate)) 
+	else
+	true));
+
+/* Determines if a unit is a Base Quantity */
+isbase(unit) :=  block([letrat:true,result,quantity],
+	/*Uses the simplify to quantity ruleset and checks if the quantity
+	  is present in the base list.*/
+	if not(lfreeof(globalbaseunitlist,
+	                       letsimp(unit,unitsimplifyrules))) then (
+		result : true),
+	else (
+	result : false),
+	result);
+
+/* Returns the definition of a unit in terms of the seven base quantities.*/
+base(unit):= block([letrat:true,result,i,j,listname],
+  	modedeclare([i, j], fixnum),
+	if not(isbase(unit)) then (
+	   listname : concat(letsimp(unit,unitsimplifyrules),list_use)
+	   for i : 1 to length(ev(listname)) do (
+	     for j : 1 to length(listname[i][1]) do (
+	        if (?equal(unit,listname[i][1][j]) then (
+	            result : listname[1]*listname[i][2]))))),
+	else (
+	result : unit),
+	result);
+
+/* Creates rule sets based on user selected units  - Note, will need
+some kind of sort here to ensure proper simplification takes place.
+Map won't be usable in such a case - need to sort only once.  Will
+need to use for do loops.  Will also need to use per-quantity rulesets.*/
+derivedsimprules(selectedunits,rulepackage) := 
+ block([current_let_rule_package : rulepackage,letrat:true, a],
+  unitlet([a,a],rulepackage), /*Used to initialize ruleset*/
+  if listp(selectedunits) then (
+    remlet(a,rulepackage),                 
+    map ('derivedsimprules, selectedunits))
+  else(
+  unitlet([letsimp(base(selectedunits),rulepackage),selectedunits],rulepackage),
+	remlet(a,rulepackage)));
 
 
-unitfactor (unitin,unitout) := block([n, input, output, tmp1, tmp2, b],
-   killunit(a) := apply('kill,a),
-   if not ?atom(unitin) then(
-      tmp1 : findnonpivotunit(unitin)
-   ) else (tmp1 : [unitin]),
-   if not ?atom(unitout) then(
-      tmp2 : findnonpivotunit(unitout)
-   ) else (tmp2 : [unitout]),
-/*
-   Implimentation note - the reason these kills are
-   not in the above loops is that if unitout should
-   be an invalid unit, findnonpivotunit might fail
-   and unitin's definition could be killed when the
-   user returns from the error?  At any rate, safer
-   this way. 
-*/     
-   if not ?atom(unitin) then(
-      killunit(tmp1) 
-   ),
-   if not ?atom(unitout) then(
-      killunit(tmp2)
-   ),
-   modedeclare(n, fixnum),
-   input : unitinfo(tmp1[1]),
-   output : unitinfo(tmp2[1]),
-    if ?equal(input[1],output[1]) then (
-      b : input[2]/output[2]
-    )
-    else (
-      tmp1[1] :: unitin,
-      tmp2[1] :: unitout,
-     (error ("Units are not of the same type."))),
-   tmp1[1] :: unitin,
-   tmp2[1] :: unitout,
-   b);
+/*====================== User Functions ======================*/ 
 
-/*
-Defines all the units of the property of the argument(s)
-in terms of the unit given.  Argument of the form:
-setunits(g) or setunits([g,s])
-*/
-setunits(units) := block([info, i, n],
-  modedeclare([i, n], fixnum),
+showabbr(fullunitname):=
+
+unitinfo(unit):= block([letrat:true,result,quantity],
+
+setunits(units):= block([letrat:true,i,j,unittype, unitlistname,
+                         unitrules,ruleset],
+  modedeclare([i,j], fixnum),
+  killruleset(ruleset) := apply('kill,ruleset),
   if listp(units) then (                 
      map ('setunits, units))
   else (
-  info : unitinfo(units),
-  for i:2 thru length(metalist[info[4]]) do (
-    if not ?equal(metalist[info[4]][i][1],units) then (
-       n :: metalist[info[4]][i][1],
-       n :: unitfactor(metalist[info[4]][i][1],units)*info[3],
-       kill(n)
-    )
-  )));
+  if (isunit(units)) then (
+      unittype : letsimp(unit,unitsimplifyrules),
+      unitlistname : concat(unittype,list_use),
+      unitrules : concat(unittype,rules),
+      killruleset(unitrules),
+      unitlet([a,a],unitrules),
+      if isbase(units) then (
+        for i = 1 to length(ev(unitlistname)) do (
+      
   
-/*
-Kills all units of the listed property or properties.  Argument
-of the form killunits(%mass) or killunits([%mass,%time])
-*/  
-killunits(properties) := block([op, dim, var, i, n],
-  modedeclare([i, n], fixnum),
-  if listp(properties) then (                 
-     map ('killunits, properties))
-  else (
-  info : propertynumber(properties),
-  killunit(a) := apply('kill,a),
-  for i:2 thru length(metalist[info]) do (
-       n :: metalist[info][i][1],
-       killunit([n]),
-       kill(n)
-  )));
+addunits([[unitname(s)],definition,0]):=
 
-/*******
+convert(expression,desiredunits):=
 
-Initilization
+/*====================== Initilization =======================*/
 
-********/
+/* This variable controls how many of the metric prefixes are added
+   on to the default lists*/
 
-/*
-Unit Expand Variable - Set this to determine how much of
-the full metric prefix set is defined for each metric
-quantity.
-*/
 %unitexpand : 2;
 
-/*Generate default metalist*/
-metalist : makemetalist();
+/* Places all relevant metric definitons into the %quantitylist lists.*/
+
+metricexpandall(%unitexpand);
+
+/* Variable to control how simplification behaves with respect to 
+   fullnames and abbreviations.  The default, 0, simplifies abbrev. to
+   abbrev. and fullnames to fullnames, also preserving plurals when
+   possible.  There are two other possible settings:
+      1 : fullname -> abbreviation (singular and plural fullnames -> abbrev.)
+      2 : abbreviation -> fullname (will use plural form) */
+
+abbrevsimp : 0;
+      
+/* Create default pivotsimplify ruleset*/
+
+makepivotsimplifyruleset();
+
+/* Instruct the global simplification routines to call the simplification
+   function defined in this package, to allow automatic unit conversion
+   without the user having to explicitly call a function.*/
+   
+freeofunitsp([x]) := lfreeof(nonfinalunitslist,x);
+notfreeofunitsp([x]) := not(freeofunitsp(x));
+matchdeclare(a,freeofunitsp(a),b,notfreeofunitsp(b));
+processunits(x) := letsimp(x,currentunitsimprules);
+tellsimpafter(a*b,a*processunits(b));
+
 
 ttyoff: nolabels, false$
