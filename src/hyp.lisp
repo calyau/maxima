@@ -98,7 +98,7 @@
   ;; bad idea in general, but we'll leave this in for now until we can
   ;; verify find all of the code that does or does not need this and
   ;; until we can verify all of the test cases are correct.
-  (let (($radexpand '$all)
+  (let (;;($radexpand '$all)
 	(var arg)
 	(*par* arg))
     (hgfsimp-exec (cdr arg-l1) (cdr arg-l2) arg)))
@@ -241,8 +241,13 @@
 	 (fact1 (mul (power 2 n)
 		     (factorial n)
 		     (inv (power -1 n))))
-	 (fact2 (mul (power 2 (inv 2))
-		     (power var (inv 2)))))
+	 ;; For all of the polynomials here, I think it's ok to
+	 ;; replace sqrt(z^2) with z because when everything is
+	 ;; expanded out they evaluate to exactly the same thing.  So
+	 ;; $radexpand $all is ok here.
+	 (fact2 (let (($radexpand '$all))
+		  (mul (power 2 (inv 2))
+		       (power var (inv 2))))))
     (cond ((alike1 c (div 1 2))
 	   ;; A&S 22.5.56
 	   ;; hermite(2*n,x) = (-1)^n*(2*n)!/n!*M(-n,1/2,x^2)
@@ -270,7 +275,9 @@
 		(inv (power 2 (inv 2)))
 		(inv (factorial (add n n 1)))
 		(hermpol (add n n 1) fact2)
-		(inv (power var (inv 2)))))
+		;; Similarly, $radexpand here is ok to convert sqrt(z^2) to z.
+		(let (($radexpand '$all))
+		  (inv (power var (inv 2))))))
 	  (t
 	   ;; A&S 22.5.54:
 	   ;;
@@ -626,7 +633,9 @@
      (return (mul res (bes (sub a 1) x 'i)))))
 
 (defun bestrig (a x)
-  (let ((res (mul (gm a) (power x (div (sub 1 a) 2)))))
+  ;; I think it's ok to have $radexpand $all here so that sqrt(z^2) is converted to z.
+  (let* (($radexpand '$all)
+	 (res (mul (gm a) (power x (div (sub 1 a) 2)))))
     ;; res = gamma(a)*x^((1-a)/2)
     (if (equal (checksigntm x) '$negative)
 	;; Not sure this is right, but the call to bes has an
@@ -1995,12 +2004,12 @@
   ;;
   ;; F(a,a+1/2,3/2,z^2) =
   ;; ((1+z)^(1-2*a) - (1-z)^(1-2*a))/2/z/(1-2*a)
-  
-  (let ((a (sub 1
-		(sub (add (car arg-l1)
-			  (cadr arg-l1))
-		     (div 1 2))))
-	(z (power var (div 1 2))))
+  (let* (($radexpand '$all)
+	 (a (sub 1
+		 (sub (add (car arg-l1)
+			   (cadr arg-l1))
+		      (div 1 2))))
+	 (z (power var (div 1 2))))
     (mul (inv z)
 	 (inv 2)
 	 (inv a)
@@ -2008,37 +2017,44 @@
 	      (power (sub 1 z) a)))))
 
 (defun trig-sin (arg-l1 arg-l2)
+  (declare (ignore arg-l2))
   ;; A&S 15.1.15, 15.1.16
-  (prog (a1 z1 a b c)
-     (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
-     (cond ((equal (add a b) 1)
-	    ;; A&S 15.1.15
-	    ;;
-	    ;; F(a,1-a;3/2;sin(z)^2) =
-	    ;;
-	    ;; sin((2*a-1)*z)/(2*a-1)/sin(z)
-	    (return (mul (inv (mul (mul -1 (sub a b))
-				   (msin (masin (msqrt var)))))
-			 (msin (mul (mul -1
-					 (sub a b))
-				    (masin (msqrt var)))))))
-	   ((equal (add a b) 2)
-	    ;; A&S 15.1.16
-	    ;;
-	    ;; F(a, 2-a; 3/2; sin(z)^2) =
-	    ;;
-	    ;; sin((2*a-2)*z)/(a-1)/sin(2*z)
-	    (return (mul (msin (mul (setq z1
-					  (masin (msqrt
-						  var)))
-				    (setq a1
-					  (mul -1
-					       (sub a
-						    b)))))
-			 (inv (mul a1
-				   (msin z1)
-				   (mcos z1)))))))
-     (return nil)))
+  (destructuring-bind (a b)
+      arg-l1
+    ;; I think it's ok to convert sqrt(z^2) to z here, so $radexpand
+    ;; is $all.
+    (let (($radexpand '$all)
+	  a1 z1)
+      (cond ((equal (add a b) 1)
+	     ;; A&S 15.1.15
+	     ;;
+	     ;; F(a,1-a;3/2;sin(z)^2) =
+	     ;;
+	     ;; sin((2*a-1)*z)/(2*a-1)/sin(z)
+	     (mul (inv (mul (mul -1 (sub a b))
+			    (msin (masin (msqrt var)))))
+		  (msin (mul (mul -1
+				  (sub a b))
+			     (masin (msqrt var))))))
+	    ((equal (add a b) 2)
+	     ;; A&S 15.1.16
+	     ;;
+	     ;; F(a, 2-a; 3/2; sin(z)^2) =
+	     ;;
+	     ;; sin((2*a-2)*z)/(a-1)/sin(2*z)
+	     (mul (msin (mul (setq z1
+				   (masin (msqrt
+					   var)))
+			     (setq a1
+				   (mul -1
+					(sub a
+					     b)))))
+		  (inv (mul a1
+			    (msin z1)
+			    (mcos z1)))))
+	    (t
+	     nil)))))
+
 
 ;;Generates atan if arg positive else log
 (defun trig-log-3-exec (arg-l1 arg-l2)
@@ -2046,32 +2062,40 @@
   ;; See A&S 15.1.4 and 15.1.5
   ;;
   ;; F(a,b;3/2;z) where a = 1/2 and b = 1 (or vice versa).
-  (cond ((equal (checksigntm var) '$positive)
-	 ;; A&S 15.1.4
-	 ;;
-	 ;; F(1/2,1;3/2,z^2) =
-	 ;;
-	 ;; log((1+z)/(1-z))/z/2
-	 (let ((z (power var (div 1 2))))
-	   (mul (power z -1)
-		(inv 2)
-		(mlog (div (add 1 z)
-			   (sub 1 z))))))
-	((equal (checksigntm var) '$negative)
-	 ;; A&S 15.1.5
-	 ;;
-	 ;; F(1/2,1;3/2,z^2) =
-	 ;; atan(z)/z
-	 (let ((z (power (mul -1 var)
-			 (div 1 2))))
-	   (mul (power z -1)
-		(matan z))))))
+
+  ;; I think it's ok to convert sqrt(z^2) to z here, so $radexpand is
+  ;; $all.
+  (let (($radexpand '$all))
+    (cond ((equal (checksigntm var) '$positive)
+	   ;; A&S 15.1.4
+	   ;;
+	   ;; F(1/2,1;3/2,z^2) =
+	   ;;
+	   ;; log((1+z)/(1-z))/z/2
+	   (let ((z (power var (div 1 2))))
+	     (mul (power z -1)
+		  (inv 2)
+		  (mlog (div (add 1 z)
+			     (sub 1 z))))))
+	  ((equal (checksigntm var) '$negative)
+	   ;; A&S 15.1.5
+	   ;;
+	   ;; F(1/2,1;3/2,z^2) =
+	   ;; atan(z)/z
+	   (let ((z (power (mul -1 var)
+			   (div 1 2))))
+	     (mul (power z -1)
+		  (matan z)))))))
 
 (defun trig-log-3a-exec (arg-l1 arg-l2)
   ;; See A&S 15.1.6 and 15.1.7
   ;;
   ;; F(a,b;3/2,z) where a = b and a = 1/2 or a = 1.
-  (let ((a (first arg-l1)))
+
+  ;; I think it's ok to convert sqrt(z^2) to z here, so $radexpand is
+  ;; $all.
+  (let ((a (first arg-l1))
+	($radexpand '$all))
     (cond ((equal (checksigntm var) '$positive)
 	   ;; A&S 15.1.6
 	   ;;
@@ -2102,7 +2126,12 @@
 
 (defun trig-log-1 (arg-l1 arg-l2)	;; 2F1's with C = 1/2
   (declare (ignore arg-l2))
-  (let (x z $exponentialize a b) ;; 15.1.17, 11, 18, 12, 9, and 19
+  ;; 15.1.17, 11, 18, 12, 9, and 19
+
+  ;; I think it's ok to convert sqrt(z^2) to z here, so $radexpand is
+  ;; $all.
+  (let (($radexpand '$all)
+	x z $exponentialize a b)
     (setq a (car arg-l1) b (cadr arg-l1))
     (cond ((=0 (m+t a b))
 	   ;; F(-a,a;1/2,z)
@@ -2154,14 +2183,18 @@
 	  (t ()))))
 
 (defun trig-log-1-pos (a z)
-  (mcos (m*t 2. a (masin (msqrt z)))))
+  ;; I think it's ok to convert sqrt(z^2) to z here, so $radexpand is
+  ;; $all.
+  (let (($radexpand '$all))
+    (mcos (m*t 2. a (masin (msqrt z))))))
 
 (defun trig-log-1-neg (a b v)
   ;; Look to see a is of the form m*s+c where m and c
   ;; are numbers.  If m is positive, swap a and b.
   ;; Basically we want F(-a,a;1/2;-z^2) =
   ;; F(a,-a;1/2;-z^2), as they should be.
-  (let* ((match (m*s+c a))
+  (let* (($radexpand '$all)
+	 (match (m*s+c a))
 	 (m (cdras 'm match))
 	 (s (cdras 's match))
 	 (b (if s
@@ -2337,7 +2370,7 @@
 	   ;; F(n,2*n,z) =
 	   ;; gamma(n+1/2)*exp(z/2)*(z/4)^(-n-3/2)*bessel_i(n-1/2,z/2);
 	   (let ((z (div var 2)))
-	     (mul (power '$%e (setq z (div var 2)))
+	     (mul (power '$%e z)
 		  (bestrig (add a (inv 2))
 			   (div (mul z z) 4)))))
 	  ((not (hyp-integerp a-c))

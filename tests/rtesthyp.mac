@@ -312,10 +312,10 @@ hgfred([a],[a+2],-z);
 a*(a+1)*%gammagreek(a,z)/z^a-a*(a+1)*%gammagreek(a+1,z)*z^(-a-1)$
 
 /* Test 2F0 polynomials */
-hgfred([-3,-3+1/2],[],z);
+ratsimp(hgfred([-3,-3+1/2],[],z)),radexpand:all;
 -hermite(6,%i/sqrt(z))*z^3/64$
 
-hgfred([-3-1/2,-3],[],z);
+ratsimp(hgfred([-3-1/2,-3],[],z)),radexpand:all;
 %i*hermite(7,%i/sqrt(z))*z^(7/2)/128$
 
 hgfred([-2,-4],[],z);
