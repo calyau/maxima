@@ -459,7 +459,7 @@ compiler:
   (declare (special *mread-prompt*))
   arg					;ignore
   (setf (fill-pointer *sharp-read-buffer* ) 0)
-  (cond ((eql #\$ (peektyipeek t stream))(tyi stream)
+  (cond ((eql #\$ (tyipeek t stream))(tyi stream)
 	 (setq meval-flag nil)))
   (with-output-to-string
    (st *sharp-read-buffer*) 
