@@ -407,6 +407,7 @@
 		(format *debug-io*
 		    "~&~@[(~a:~a) ~]"  (unless (stringp at) "dbm")
 		    (length *quit-tags*))
+	        (finish-output *debug-io*)
 		(setq val
 		      (catch 'macsyma-quit
 			(let ((res (dbm-read *debug-io*  nil *top-eof* t)))
@@ -667,7 +668,7 @@
 	 (case type
 	   (:bkpt  (iterate-over-bkpts nil :show)(values))
 	   (otherwise
-	    (format t "usage: :info :bkpt -- show breakpoints")
+	    (format *debug-io* "usage: :info :bkpt -- show breakpoints")
 	    ))) "Print information about item")
 
 
