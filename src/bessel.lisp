@@ -368,6 +368,36 @@
 	       (declare (ignore dzr dzi df dk dm dn nz))
 	       (complex (aref cyr n)
 			(aref cyi n)))))))))
+
+;; Numerically compute H2(v, z).
+;;
+;; A&S 9.1.4 says H2(v,z) = J(v,z) - i * Y(v,z)
+;;
+(defun hankel-2 (v z)
+  (let ((v (float v))
+	(z (coerce z '(complex double-float))))
+    (cond ((minusp v)
+	   ;; A&S 9.1.6:
+	   ;;
+	   ;; H2(-v,z) = exp(-v*pi*i)*H1(v,z)
+	   ;;
+	   ;; or
+	   ;;
+	   ;; H2(v,z) = exp(v*pi*i)*H1(-v,z)
+	   
+	   (* (cis (* pi v)) (hankel-2 (- v) z)))
+	  (t
+	   (multiple-value-bind (n fnu)
+	       (floor v)
+	   (let ((zr (realpart z))
+		 (zi (imagpart z))
+		 (cyr (make-array (1+ n) :element-type 'double-float))
+		 (cyi (make-array (1+ n) :element-type 'double-float)))
+	     (multiple-value-bind (dzr dzi df dk dm dn dcyr dcyi nz ierr)
+		 (slatec::zbesh zr zi fnu 1 2 (1+ n) cyr cyi 0 0)
+	       (declare (ignore dzr dzi df dk dm dn nz))
+	       (complex (aref cyr n)
+			(aref cyi n)))))))))
 
 ;; Bessel function of the first kind for real or complex arg and real
 ;; non-negative order.
@@ -384,11 +414,11 @@
 		(slatec:dbesj0 (float $arg)))
 	       ((= $order 1)
 		(slatec:dbesj1 (float $arg)))
-	       #+nil
 	       ((minusp $order)
 		;; Bessel function of negative order.  We use the
 		;; Hankel function to compute this, because A&S 9.1.3
-		;; says H1(v,z) = J(v,z) + i * Y(v,z).
+		;; says H1(v,z) = J(v,z) + i * Y(v,z), and we know
+		;; J(v,z) is real.
 		(realpart (hankel-1 $order $arg)))
 	       (t
 		(multiple-value-bind (n alpha)
@@ -422,13 +452,18 @@
 	(t
 	 ;; The first arg is complex.  Use the complex-valued Bessel
 	 ;; function.
-	 (cond #+nil
-	       ((mminusp $order)
+	 (cond ((mminusp $order)
 		;; Bessel function of negative order.  We use the
 		;; Hankel function to compute this, because A&S 9.1.3
-		;; says H1(v,z) = J(v,z) + i * Y(v,z).
-		(realpart (hankel-1 $order (complex ($realpart $arg)
-						    ($imagpart $arg)))))
+		;; says H1(v,z) = J(v,z) + i * Y(v,z), and H2(v,z) =
+		;; J(v,z) - i * Y(v,z).  Thus, J(v,z) = (H1(v,z) +
+		;; H2(v,z))/2.  Not the most efficient way, but
+		;; perhaps good enough for maxima.
+		(let* ((arg (complex ($realpart $arg)
+				     ($imagpart $arg)))
+		       (result (* 0.5d0 (+ (hankel-1 $order arg)
+					   (hankel-2 $order arg)))))
+		  (complexify result)))
 	       (t
 		(multiple-value-bind (n alpha)
 		    (floor (float $order))
