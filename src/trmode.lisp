@@ -268,27 +268,6 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 ;;; 1/2 is not $RATIONAL. bad name. it means CRE form.
 
 (DEFUN IR (X)
-       (CASE X
-	      (($FLOAT $REAL $FLOATP $FLONUM $FLOATNUM) '$FLOAT)
-	      (($FIXP $FIXNUM) '$FIXNUM)
-	      (($RATIONAL $RAT) '$RATIONAL)
-	      (($NUMBER $BIGNUM $BIG) '$NUMBER)
-	      (($BOOLEAN $BOOL) '$BOOLEAN)
-	      (($LIST $LISTP) '$LIST)
-	      (($ANY $NONE $ANY_CHECK) '$ANY)
-	      (T (UDM-ERR X) X)))
-
-(DEFUN UDM-ERR (MODE)
-       (MTELL "Warning:  ~:M is not a known mode declaration ~
-	      maybe you want ~:M mode.~%"
-	      MODE
-	      (CASE MODE
-		     (($INTEGER $INTEGERP) '$FIXNUM)
-		     (($COMPLEX) "&to ask about this")
-		     (($FUCKED $SHITTY) "&to watch your language")
-		     (T "&to see the documentation on"))))
-
-(DEFUN IR (X)
   (CASE X
 	 (($FLOAT $REAL $FLOATP $FLONUM $FLOATNUM) '$FLOAT)
 	 (($FIXP $FIXNUM) '$FIXNUM)

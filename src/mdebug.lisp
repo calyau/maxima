@@ -568,14 +568,6 @@
   ;; note  need to make the redefine function, fixup the break point
   ;; list.. 
 
-(defun first-form-line (form line &aux tem)
-  (cond ((atom form) nil)
-	((and (setq tem (get-lineinfo form)) (eql (car tem) line))
-	 form)
-	(t (sloop for v in (cdr form)
-		  when (setq tem (first-form-line v line))
-		  do (return-from first-form-line tem)))))
-
 (defun make-break-point (fun ar i)
   (declare (fixnum i) (type (vector t) ar))
   (let* ((tem (aref ar i))
