@@ -401,119 +401,226 @@ Example:
 
 @end defun
 
+@c I HAVE NO IDEA WHAT THIS DOES
 @defun derivlist (@var{var_1}, ..., @var{var_k})
-causes only differentiations with respect to
+Causes only differentiations with respect to
 the indicated variables, within the @code{ev} command.
 
 @end defun
 
 @defvar derivsubst
- default: @code{false} - controls non-syntactic substitutions
-such as
+Default value: @code{false}
 
-@example
-subst(x,'diff(y,t),'diff(y,t,2));
-@end example
-
-If @code{derivsubst} is set to
-true, this gives @code{'diff(x,t)}.
+When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
+@code{subst (x, 'diff (y, t), 'diff (y, t, 2))} yields @code{'diff (x, t)}.
 
 @end defvar
 
-@defun diff (@var{expr}, @var{v1}, @var{n1}, @var{v2}, @var{n2}, ...)
-@code{diff} differentiates exp with respect to
-each vi, ni times.  If just the first derivative with respect to one
-variable is desired then the form @code{diff(exp,v)} may be used.  If the
-noun form of the function is required (as, for example, when writing a
-differential equation), @code{'diff} should be used and this will display in
-a two dimensional format.
+@defun diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
+@defunx diff (@var{expr}, @var{x}, @var{n})
+@defunx diff (@var{expr}, @var{x})
+@defunx diff (@var{expr})
+Returns the derivative or differential of @var{expr} with respect to some or all variables in @var{expr}.
 
-@code{derivabbrev} if @code{true} will cause derivatives to display as
-subscripts.
+@code{diff (@var{expr}, @var{x}, @var{n})} returns the @var{n}'th derivative of @var{expr}
+with respect to @var{x}.
 
-@code{diff(exp)} gives the "total differential", that is, the sum of the
-derivatives of exp with respect to each of its variables times the
-function @code{del} of the variable.  No further simplification of @code{del} is
-offered.
+@code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}
+is equivalent to @code{diff (... (diff (@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
+
+@code{diff (@var{expr}, @var{x})}
+returns the first derivative of @var{expr} with respect to
+the variable @var{x}.
+
+@code{diff (@var{expr})} returns the total differential of @var{expr},
+that is, the sum of the derivatives of @var{expr} with respect to each its variables
+times the differential @code{del} of each variable.
+@c WHAT DOES THIS NEXT STATEMENT MEAN, EXACTLY ??
+No further simplification of @code{del} is offered.
+
+The noun form of @code{diff} is required in some contexts,
+such as stating a differential equation.
+In these cases, @code{diff} may be quoted (as @code{'diff}) to yield the noun form
+instead of carrying out the differentiation.
+
+When @code{derivabbrev} is @code{true}, derivatives are displayed as subscripts.
+Otherwise, derivatives are displayed in the Leibniz notation, @code{dy/dx}.
+
+Examples:
+@c GENERATED FROM THE FOLLOWING
+@c diff (exp (f(x)), x, 2);
+@c derivabbrev: true$
+@c 'integrate (f(x, y), y, g(x), h(x));
+@c diff (%, x);
 
 @example
-(%i1) diff(exp(f(x)),x,2);
-                             2
-                      f(x)  d             f(x)  d         2
-(%o1)                %e     (--- f(x)) + %e     (-- (f(x)))
-                              2                 dx
-                            dx
-(%i2) derivabbrev:true$
-(%i3) 'integrate(f(x,y),y,g(x),h(x));
-                                h(x)
-                               /
-                               [
-(%o3)                           i     f(x, y) dy
-                               ]
-                               /
-                                g(x)
-(%i4) diff(%,x);
-            h(x)
-           /
-           [
-(%o4)       i     f(x, y)  dy + f(x, h(x)) h(x)  - f(x, g(x)) g(x)
-           ]            x                     x                  x
-           /
-            g(x)
+(%i1) diff (exp (f(x)), x, 2);
+                     2
+              f(x)  d               f(x)  d         2
+(%o1)       %e     (--- (f(x))) + %e     (-- (f(x)))
+                      2                   dx
+                    dx
+(%i2) derivabbrev: true$
+(%i3) 'integrate (f(x, y), y, g(x), h(x));
+                         h(x)
+                        /
+                        [
+(%o3)                   I     f(x, y) dy
+                        ]
+                        /
+                         g(x)
+(%i4) diff (%, x);
+       h(x)
+      /
+      [
+(%o4) I     f(x, y)  dy + f(x, h(x)) h(x)  - f(x, g(x)) g(x)
+      ]            x                     x                  x
+      /
+       g(x)
 @end example
 
 For the tensor package, the following modifications have been
 incorporated:
 
-1) the derivatives of any indexed objects in exp will have the
-variables vi appended as additional arguments.  Then all the
+(1) The derivatives of any indexed objects in @var{expr} will have the
+variables @var{x_i} appended as additional arguments.  Then all the
 derivative indices will be sorted.
 
-2) the vi may be integers from 1 up to the value of the variable
+(2) The @var{x_i} may be integers from 1 up to the value of the variable
 @code{dimension} [default value: 4].  This will cause the differentiation to
-be carried out wrt the vith member of the list @code{coordinates} which
+be carried out with respect to the @var{x_i}'th member of the list @code{coordinates} which
 should be set to a list of the names of the coordinates, e.g.,
-[x,y,z,t]. If @code{coordinates} is bound to an atomic variable, then that
-variable subscripted by vi will be used for the variable of
+@code{[x, y, z, t]}. If @code{coordinates} is bound to an atomic variable, then that
+variable subscripted by @var{x_i} will be used for the variable of
 differentiation.  This permits an array of coordinate names or
-subscripted names like X[1], X[2],... to be used.  If @code{coordinates} has
-not been assigned a value, then the variables will be treated as in 1)
+subscripted names like @code{X[1]}, @code{X[2]}, ... to be used.  If @code{coordinates} has
+not been assigned a value, then the variables will be treated as in (1)
 above.
 
+@c NEED EXAMPLES FOR TENSOR STUFF
 @end defun
 
 
 @defvr {special symbol} diff
-[flag] for ev causes all differentiations indicated in exp to be
-performed.
+
+When @code{diff} is present as an @code{evflag} in call to @code{ev},
+all differentiations indicated in @code{expr} are carried out.
+
+@c NEED EXAMPLE HERE
 @end defvr
 
+@c NOT SURE HOW THIS IS SUPPOSED TO WORK
+@defun dscalar (@var{f})
+Applies the scalar d'Alembertian to the scalar function @var{f}.
 
-@defun dscalar (@var{function})
-applies the scalar d'Alembertian to the scalar
-function.
+@c APPARENTLY dscalar DOESN'T EXIST IN THE CORE FILES ANYMORE
+@c ctensor HAS THE ONLY DEFN I FOUND (OUTSIDE OF archive/)
+@code{load ("ctensor")} loads this function.
 
-@example
-(%i41) dependencies(field(r));
-(%o41)                           [field(r)]
-(%i42) dscalar(field);
-(%o43)
-    -m
-  %e  ((field  n - field  m + 2 field   ) r + 4 field )
-             r  r       r  r         r r             r
+@c FOLLOWING EXAMPLE DOESN'T WORK; I GET dscalar (field) ==> 0
+@c (I GET 0 FOR THE ctensor VERSION OF dscalar, AND SAME FOR
+@c THE DEFN OF dscalar GIVEN IN archive/share/lisp/ctensr.trl)
+@c INCIDENTALLY dependencies IS DOCUMENTED ONLY AS A VARIABLE
 
-- -----------------------------------------------------
-                             2 r
-@end example
+@c @example
+@c (%i41) dependencies(field(r));
+@c (%o41)                           [field(r)]
+@c (%i42) dscalar(field);
+@c (%o43)
+@c     -m
+@c   %e  ((field  n - field  m + 2 field   ) r + 4 field )
+@c              r  r       r  r         r r             r
+@c 
+@c - -----------------------------------------------------
+@c                              2 r
+@c @end example
 
 @end defun
 
 @defun express (@var{expr})
-The result uses the noun form of any
-derivatives arising from expansion of the vector differential
-operators.  To force evaluation of these derivatives, the built-in @code{ev}
-function can be used together with the @code{diff} evflag, after using the
-built-in @code{depends} function to establish any new implicit dependencies.
+@c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? I'M NOT GETTING IT
+@c The result uses the noun form of any
+@c derivatives arising from expansion of the vector differential
+@c operators.  To force evaluation of these derivatives, the built-in @code{ev}
+@c function can be used together with the @code{diff} evflag, after using the
+@c built-in @code{depends} function to establish any new implicit dependencies.
+
+Expands differential operator nouns into expressions in terms of partial derivatives.
+@code{express} recognizes the operators @code{grad}, @code{div}, @code{curl}, @code{laplacian}.
+@code{express} also expands the cross product @code{~}.
+
+Symbolic derivatives (that is, @code{diff} nouns)
+in the return value of express may be evaluated by including @code{diff}
+in the @code{ev} function call or command line.
+In this context, @code{diff} acts as an @code{evfun}.
+
+@code{load ("vect")} loads this function.
+@c IN POINT OF FACT, express IS A SIMPLIFICATION RULE, AND express1 IS THE FCN WHICH DOES ALL THE WORK
+
+Examples:
+@c GENERATED FROM THE FOLLOWING
+@c load ("vect")$
+@c grad (x^2 + y^2 + z^2);
+@c express (%);
+@c ev (%, diff);
+@c div ([x^2, y^2, z^2]);
+@c express (%);
+@c ev (%, diff);
+@c curl ([x^2, y^2, z^2]);
+@c express (%);
+@c ev (%, diff);
+@c laplacian (x^2 * y^2 * z^2);
+@c express (%);
+@c ev (%, diff);
+@c [a, b, c] ~ [x, y, z];
+@c express (%);
+
+@example
+(%i1) load ("vect")$
+(%i2) grad (x^2 + y^2 + z^2);
+                              2    2    2
+(%o2)                  grad (z  + y  + x )
+(%i3) express (%);
+       d    2    2    2   d    2    2    2   d    2    2    2
+(%o3) [-- (z  + y  + x ), -- (z  + y  + x ), -- (z  + y  + x )]
+       dx                 dy                 dz
+(%i4) ev (%, diff);
+(%o4)                    [2 x, 2 y, 2 z]
+(%i5) div ([x^2, y^2, z^2]);
+                              2   2   2
+(%o5)                   div [x , y , z ]
+(%i6) express (%);
+                   d    2    d    2    d    2
+(%o6)              -- (z ) + -- (y ) + -- (x )
+                   dz        dy        dx
+(%i7) ev (%, diff);
+(%o7)                    2 z + 2 y + 2 x
+(%i8) curl ([x^2, y^2, z^2]);
+                               2   2   2
+(%o8)                   curl [x , y , z ]
+(%i9) express (%);
+       d    2    d    2   d    2    d    2   d    2    d    2
+(%o9) [-- (z ) - -- (y ), -- (x ) - -- (z ), -- (y ) - -- (x )]
+       dy        dz       dz        dx       dx        dy
+(%i10) ev (%, diff);
+(%o10)                      [0, 0, 0]
+(%i11) laplacian (x^2 * y^2 * z^2);
+                                  2  2  2
+(%o11)                laplacian (x  y  z )
+(%i12) express (%);
+         2                2                2
+        d     2  2  2    d     2  2  2    d     2  2  2
+(%o12)  --- (x  y  z ) + --- (x  y  z ) + --- (x  y  z )
+          2                2                2
+        dz               dy               dx
+(%i13) ev (%, diff);
+                      2  2      2  2      2  2
+(%o13)             2 y  z  + 2 x  z  + 2 x  y
+(%i14) [a, b, c] ~ [x, y, z];
+(%o14)                [a, b, c] ~ [x, y, z]
+(%i15) express (%);
+(%o15)          [b z - c y, c x - a z, a y - b x]
+@end example
 
 @end defun
 
