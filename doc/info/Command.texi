@@ -272,13 +272,6 @@ the VALUES list whereas the REMOVE set of functions
 Also the latter print out a list of names or FALSE if the specific
 argument doesn't exist whereas KILL always has value "DONE" even if
 the named item doesn't exist.
-    Note that killing expressions will not help the problem which
-occurs on MC indicated by "NO CORE - FASLOAD" which results when
-either too many FASL files have been loaded in or when allocation
-level has gotten too high.  In either of these cases, no amount of
-killing will cause the size of these spaces to decrease.  Killing
-expressions only causes some spaces to get emptied out but not made
-smaller.
 
 @end defun
 @c @node LABELS

@@ -493,6 +493,6 @@ and then doing NEWTON again works. You get x=a+<small flonum>*a which
 is symbolic all the way.  INTERPOLATE(x^2-a^2,x,a/2,2*a); complains
 that .5*a is not flonum...
 An adaptive integrator which uses the Newton-Cotes 8 panel quadrature
-rule is available in SHARE1;QQ FASL.  Do DESCRIBE(QQ) for details.
+rule is available.  Do DESCRIBE(QQ) for details.
 
 @end defun

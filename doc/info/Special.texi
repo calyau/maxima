@@ -69,7 +69,7 @@ For a better feeling for what it can do, do DEMO(HYPGEO,DEMO,SHARE1); .
 @c @unnumberedsec phony
 @defun AIRY (X)
 returns the Airy function Ai of real argument X.
-The file SHARE1;AIRY FASL contains routines to evaluate the Airy functions
+The Airy package contains routines to evaluate the Airy functions
 Ai(X), Bi(X), and their derivatives dAi(X), dBi(X).  Ai and Bi satisfy the
 AIRY eqn diff(y(x),x,2)-x*y(x)=0.  Read SHARE1;AIRY USAGE for details.
 

@@ -310,7 +310,6 @@ Function Definition
 * Introduction to Function Definition::  
 * FUNCTION::                    
 * MACROS::                      
-* OPTIMIZATION::                
 * Definitions for Function Definition::  
 
 Program Flow

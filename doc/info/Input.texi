@@ -16,7 +16,7 @@ MC machine are disks and tapes.  Files on the disks are figuratively
 grouped into "directories".  A directory is just a list of all the
 files stored under a given user name.  Do DESCRIBE(FILEOP); for
 details of how you may inspect your files using MACSYMA.  Other
-commands which deal with files are: SAVE, FASSAVE, STORE, LOAD,
+commands which deal with files are: SAVE, STORE, LOAD,
 LOADFILE, RESTORE, UNSTORE, STRINGOUT, BATCH, BATCON, DEMO, WRITEFILE,
 CLOSEFILE, DELFILE, REMFILE, and APPENDFILE.
 
@@ -185,8 +185,8 @@ Closes the transcript file opened by WRITEFILE or APPENDFILE.
 collapses" its argument by causing all of its
 common (i.e. equal) subexpressions to share (i.e. use the same cells),
 thereby saving space.  (COLLAPSE is a subroutine used by the OPTIMIZE
-command.)  Thus, calling COLLAPSE may be useful before using FASSAVE
-or after loading in a SAVE file.  You can collapse several expressions
+command.)  Thus, calling COLLAPSE may be useful
+after loading in a SAVE file.  You can collapse several expressions
 together by using COLLAPSE([expr1,...,exprN])$.  Similarly, you can
 collapse the elements of the array A by doing
 COLLAPSE(LISTARRAY('A))$.
@@ -362,28 +362,12 @@ as A^B it will appear as EXPT(A,B) (or as NCEXPT(A,B) in the case of
 A^^B).
 
 @end defun
-@c @node EXPTDISPFLAG, FASSAVE, EXPT, Input and Output
 @c @unnumberedsec phony
 @defvar EXPTDISPFLAG
  default: [TRUE] - if TRUE, MACSYMA displays expressions
 with negative exponents using quotients e.g., X**(-1) as 1/X.
 
 @end defvar
-@c @node FASSAVE, FILEDEFAULTS, EXPTDISPFLAG, Input and Output
-@c @unnumberedsec phony
-@c IS THIS FUNCTION EXPECTED TO WORK ANYMORE ??? IF NOT I'LL CUT IT.
-@defun FASSAVE (args)
-is similar to SAVE but produces a FASL file in which
-the sharing of subexpressions which are shared in core is preserved in
-the file created.  Hence, expressions which have common subexpressions
-will consume less space when loaded back from a file created by
-FASSAVE rather than by SAVE.  Files created with FASSAVE are reloaded
-using LOADFILE, just as files created with SAVE.  FASSAVE returns a
-list of the form [<name of file>,<size of file in blocks>,...] where
-...  are the things saved.  Warnings are printed out in the case of
-large files.  FASSAVE may be used while a WRITEFILE is in progress.
-
-@end defun
 @c @node FILENAME_MERGE, FILENUM, FILENAME, Input and Output
 @c @unnumberedsec phony
 @c THIS FUNCTION DOES EXIST BUT IT TAKES NO MORE THAN 2 ARGUMENTS !!!
@@ -485,9 +469,8 @@ expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code
 @c @unnumberedsec phony
 @c THIS FUNCTION DOES EXIST BUT DESCRIPTION SHOULD BE UPDATED !!!
 @defun FILE_TYPE ("filename")
-; returns FASL, LISP, or MACSYMA, depending on
-what kind of file it is.  FASL means a compiled Lisp file, which
-normally has an extension of .VAS in NIL.
+; returns OBJECT, LISP, or MACSYMA, depending on
+what kind of file it is. 
 
 @end defun
 @c @node GRIND, IBASE, FILE_TYPE, Input and Output
@@ -591,7 +574,7 @@ The user may find it more convenient to use LOAD instead of LOADFILE.
 accompanying loading of files.  The following options are available:
 TRUE means always print the message; 'LOADFILE means print only when
 the LOADFILE command is used; 'AUTOLOAD means print only when a file
-is automatically loaded in (e.g. the integration file SIN FASL); FALSE
+is automatically loaded in; FALSE
 means never print the loading message.
 
 @end defvar
@@ -614,8 +597,8 @@ outputted expressions.
 @c @unnumberedsec phony
 @c STILL EXISTS, NEEDS CLARIFICATION !!!
 @defvar PACKAGEFILE
- default:[FALSE] - Package designers who use SAVE,
-FASSAVE, or TRANSLATE to create packages (files) for others
+ default:[FALSE] - Package designers who use SAVE
+or TRANSLATE to create packages (files) for others
 to use may want to set PACKAGEFILE:TRUE$ to prevent information
 from being added to MACSYMA's information-lists (e.g. VALUES,
 FUNCTIONS) except where necessary when the file is loaded in.

@@ -406,7 +406,7 @@ to 0.
 @c @node QQ, QUANC8, POTENTIAL, Integration
 @c @unnumberedsec phony
 @defun QQ
- - The file SHARE1;QQ FASL (which may be loaded with LOAD("QQ");)
+ - The package QQ (which may be loaded with LOAD("QQ");)
 contains a function QUANC8 which can take either 3 or 4 arguments. The
 3 arg version computes the integral of the function specified as the
 first argument over the interval from lo to hi as in
@@ -430,8 +430,8 @@ Do PRINTFILE(QQ,USAGE,SHARE1) for details.
 @c @node QUANC8, RESIDUE, QQ, Integration
 @c @unnumberedsec phony
 @defun QUANC8 ('function name,lo,hi)
-An adaptive integrator, available in
-SHARE1;QQ FASL.  DEMO and USAGE files are provided.  The method is to
+An adaptive integrator.
+DEMO and USAGE files are provided.  The method is to
 use Newton-Cotes 8-panel quadrature rule, hence the function name
 QUANC8, available in 3 or 4 arg versions.  Absolute and relative error
 checks are used.  To use it do LOAD("QQ");  For more details do
