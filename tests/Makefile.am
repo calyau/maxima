@@ -69,6 +69,7 @@ rtestode.mac \
 rtestode_zp.mac \
 rtestnset.mac \
 rtesthyp.mac \
+rtestmt19937.mac \
 testsuite.lisp
 
 EXTRA_DIST = $(genericdirDATA)
