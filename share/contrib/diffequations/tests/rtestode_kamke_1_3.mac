@@ -1,0 +1,53 @@
+/* ODE tests - Equations 201-300
+
+  Reference:
+    E Kamke, Differentialgleichungen Losungsmethoden und Losungen, 
+    Vol 1, Geest & Portig, Leipzig, 1961
+
+*/
+/* Don't kill(all); It messes up trigsimp */
+
+/* Print ode number*/
+(pn_(n_):=print("Kamke ODE ",n_),true);
+true;
+
+/* Abel equations of second kind */
+(pn_(213),ans:contrib_ode(eqn:(y+1)*'diff(y,x)=y+x,y,x));
+[-(log((2*(x-1)/(y+1)-sqrt(5)+1)/(2*(x-1)/(y+1)+sqrt(5)+1))+sqrt(5)*log((x-1)/(y+1)+(x-1)^2/(y+1)^2-1)-2*sqrt(5)*log((x-1)/(y+1)))/(2*sqrt(5))=log(x-1)+%c];
+[method,ode_check(eqn,ans[1])];
+[abel2,0];
+
+(pn_(214),ans:contrib_ode(eqn:(y+x-1)*'diff(y,x)-y+2*x+3=0,y,x));
+[-(2*atan((1-(3*x+2)/(y+x-1))/sqrt(2))+sqrt(2)*log(-2*(3*x+2)/(y+x-1)+(3*x+2)^2/(y+x-1)^2+3)-2*sqrt(2)*log(-(3*x+2)/(2*(y+x-1))))/(6*sqrt(2))=log(3*x+2)/3+%c];
+[method,ode_check(eqn,ans[1])];
+[abel2,0];
+
+(pn_(215),ans:contrib_ode(eqn:(y+2*x-2)*'diff(y,x)-y+x+1=0,y,x));
+[-(6*atan((3-2*(3*x-1)/(y+2*x-2))/sqrt(3))+sqrt(3)*log(-(3*x-1)/(y+2*x-2)+(3*x-1)^2/(3*(y+2*x-2)^2)+1)-2*sqrt(3)*log(-(3*x-1)/(3*(y+2*x-2))))/(6*sqrt(3))=log(3*x-1)/3+%c];
+[method,ode_check(eqn,ans[1])];
+[abel2,0];
+
+(pn_(216),ans:contrib_ode(eqn:(y-2*x+1)*'diff(y,x)+y+x=0,y,x));
+[-(6*atan((2*(3*x-1)/(y-2*x+1)+3)/sqrt(3))+sqrt(3)*log((3*x-1)/(y-2*x+1)+(3*x-1)^2/(3*(y-2*x+1)^2)+1)-2*sqrt(3)*log((3*x-1)/(3*(y-2*x+1))))/(6*sqrt(3))=log(3*x-1)/3+%c];
+[method,ode_check(eqn,ans[1])];
+[abel2,0];
+
+(pn_(217),ans:contrib_ode(eqn:(y-x^2)*'diff(y,x)=x,y,x));
+[(2*y-2*x^2-1)*%e^(2*y)/4 = %c];
+[method,ode_check(eqn,ans[1])];
+[exact,0];
+
+(pn_(218),ans:contrib_ode(eqn:(y-x^2)*'diff(y,x)+4*x*y=0,y,x));
+[(2*y+2*x^2)/sqrt(y) = %c];
+[method,ode_check(eqn,ans[1])];
+[exact,0];
+
+(pn_(220),ans:contrib_ode(eqn:2*y*'diff(y,x)-x*y^2-x^3=0,y,x));
+[%e^-(x^2/2)*(y^2+x^2+2) = %c];
+[method,ode_check(eqn,ans[1])];
+[exact,0];
+
+(pn_(221),ans:contrib_ode(eqn:(2*y+x+1)*'diff(y,x)-(2*y+x-1)=0,y,x));
+[-(2*y+x+1)*(-4*(2*(x+1)+2*(1-x))*log(1-(2*(x+1)+2*(1-x))/(3*(2*y+x+1)))/(3*(2*y+x+1))+4*(2*(x+1)+2*(1-x))*log(-(2*(x+1)+2*(1-x))/(3*(2*y+x+1)))/(3*(2*y+x+1))-4)/(3*(2*(x+1)+2*(1-x)))=x+%c];
+[method,ode_check(eqn,ans[1])];
+[abel2,0];

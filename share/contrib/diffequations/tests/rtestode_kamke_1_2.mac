@@ -1,0 +1,24 @@
+/* ODE tests - Equations 101-200
+
+  Reference:
+    E Kamke, Differentialgleichungen Losungsmethoden und Losungen, 
+    Vol 1, Geest & Portig, Leipzig, 1961
+
+*/
+/* Don't kill(all); It messes up trigsimp */
+
+/* Print ode number*/
+(pn_(n_):=print("Kamke ODE ",n_),true);
+true;
+
+/* 188  Abel eqn
+  Some choices that are integrable include
+    (n:3, b:1, a:n+b);   => K = -27/4
+    (n:7, b:2, a:n+b);   => K = -343/36
+*/
+(pn_(188),n:3,b:1,a:n+b,ans:contrib_ode(eqn:x^(2*n+1)*'diff(y,x)-a*y^3-b*x^(3*n),y,x));
+[x=%c*%e^-(((2*y-x^3)*log((2*y-x^3)/x^3)+(x^3-2*y)*log((y+x^3)/x^3)+3*x^3)/(18*y-9*x^3))];
+method;
+genhom;
+kill(a,b,n);
+done;

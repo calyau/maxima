@@ -8,6 +8,9 @@
 (setf *testsuite-files*
       '( "rtestode_murphy1.mac"
 	 "rtestode_murphy2.mac"
+         "rtestode_kamke_1_1.mac"
+         "rtestode_kamke_1_2.mac"
+         "rtestode_kamke_1_3.mac"
 	 "rtest_sym.mac" 
 	 "rtest_sym2.mac"
 	 "rtest_ode1_riccati.mac"

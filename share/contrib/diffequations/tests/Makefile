@@ -1,19 +1,26 @@
-MAXIMA=maxima
+MAXIMA=../../../../maxima-local
 
-check:
+TEST_FILES = rtestode_murphy1.mac rtestode_murphy2.mac \
+	rtestode_kamke_1_1.mac rtestode_kamke_1_2.mac rtestode_kamke_1_3.mac \
+	rtest_sym.mac rtest_sym2.mac \
+	rtest_ode1_riccati.mac rtest_ode1_abel.mac
+
+check: $(TEST_FILES)
 	(echo 'to_lisp();';\
 	echo '(setq *maxima-testsdir* ".")';\
 	echo '(to-maxima)';\
+	echo 'file_search_maxima:append(["../###.{mac}"],file_search_maxima);';\
 	echo "load('pdiff);";\
 	echo "use_pdiff:false;";\
 	echo "load('contrib_ode);";\
 	echo 'run_testsuite();') | $(MAXIMA) 
 
 # Verbose output
-check.log:
+check.log: $(TEST_FILES)
 	(echo 'to_lisp();';\
 	echo '(setq *maxima-testsdir* ".")';\
 	echo '(to-maxima)';\
+	echo 'file_search_maxima:append(["../###.{mac}"],file_search_maxima);';\
 	echo "load('pdiff);";\
 	echo "use_pdiff:false;";\
 	echo "load('contrib_ode);";\
