@@ -8,4 +8,4 @@ if [ "$?" -ne "0" ]; then
     echo "rlwrap is available from <http://utopia.knoware.nl/~hlub/uck/rlwrap/>." >& 1
     exit 1
 fi
-exec rlwrap maxima "$@"
+exec rlwrap maxima --disable-readline "$@"

@@ -396,6 +396,10 @@
 			   :action #'(lambda (file)
 				       (load file))
 			   :help-string "Preload <lisp-file>.")
+	   (make-cl-option :names '("--disable-readline")
+			   :action #'(lambda ()
+				       #+gcl
+				       (si::readline-off)))
 	   (make-cl-option :names '("-s" "--server")
 			   :argument "<port>"
 			   :action #'(lambda (port-string)
