@@ -30,15 +30,13 @@ number to start at, otherwise it will go back about 40 lines.
 @c end concepts Input and Output
 @node Definitions for Input and Output,  , PLAYBACK, Input and Output
 @section Definitions for Input and Output
-@c @node %, %%, PLAYBACK, Input and Output
-@c @unnumberedsec phony
+
 @defvar %
  The last D-line computed by Maxima (whether or not it was printed
 out).  (See also %%.)
 
 @end defvar
-@c @node %%, %EDISPFLAG, %, Input and Output
-@c @unnumberedsec phony
+
 @defvar %%
  The value of the last computation performed while in a
 Maxima break.  Also may be used in compound statements in the nth
@@ -49,15 +47,13 @@ SUBST(3,X,%%)-SUBST(2,X,%%)); This will also work for communicating
 between the (n-1)th and nth (non-atomic) BLOCK statements.
 
 @end defvar
-@c @node %EDISPFLAG, %TH, %%, Input and Output
-@c @unnumberedsec phony
+
 @defvar %EDISPFLAG
  default: [FALSE] - if TRUE, Maxima displays %E to a
 negative exponent as a quotient, i.e. %E^-X as 1/%E^X.
 
 @end defvar
-@c @node %TH, {special symbol}, %EDISPFLAG, Input and Output
-@c @unnumberedsec phony
+
 @defun %TH (i)
 is the ith previous computation.  That is, if the next
 expression to be computed is D(j) this is D(j-i).  This is useful in
@@ -66,8 +62,7 @@ example, if SUM is initialized to 0 then FOR I:1 THRU 10 DO
 SUM:SUM+%TH(I) will set SUM to the sum of the last ten D expressions.
 
 @end defun
-@c @node "?"
-@c @unnumberedsec phony
+
 @deffn {special symbol} "?"
   - As prefix to a function or variable name, signifies that the
 function or variable is a LISP token, not a Maxima token.  Two
@@ -75,8 +70,7 @@ question marks typed together, ??, will flush the current Maxima
 command line.
 
 @end deffn
-@c @node ABSBOXCHAR, APPENDFILE, {special symbol}, Input and Output
-@c @unnumberedsec phony
+
 @defvar ABSBOXCHAR
  default: [!] is the character used to draw absolute value
 signs around expressions which are more than a single line high.
@@ -84,8 +78,7 @@ signs around expressions which are more than a single line high.
 
 
 @c end concepts Input and Output
-@c @node APPENDFILE, BACKUP, ABSBOXCHAR, Input and Output
-@c @unnumberedsec phony
+
 @defun APPENDFILE (filename)
 Appends a console transcript to @code{filename}.
 APPENDFILE is the same as WRITEFILE, 
@@ -94,8 +87,7 @@ except that the transcript file, if it exists, is always appended.
 CLOSEFILE closes the transcript file opened by APPENDFILE or WRITEFILE.
 
 @end defun
-@c @node BATCH, BATCHKILL, BACKUP, Input and Output
-@c @unnumberedsec phony
+
 @defun BATCH (file-specification)
 reads in and evaluates Maxima command
 lines from a file - A facility for executing command lines stored on a
@@ -119,15 +111,13 @@ DESCRIBE(FILE); and DESCRIBE(FILES); have additional information on
 how the file argument is interpreted, and files in general.
 
 @end defun
-@c @node BATCHLOAD, BATCON, BATCHKILL, Input and Output
-@c @unnumberedsec phony
+
 @defun BATCHLOAD (file-specification)
 Batches in the file silently without
 terminal output or labels.
 
 @end defun
-@c @node BOTHCASES, CHANGE_FILEDEFAULTS, BATCOUNT, Input and Output
-@c @unnumberedsec phony
+
 @defvar BOTHCASES
  default: [TRUE] if TRUE will cause Maxima to retain lower
 case text as well as upper case. Note, however, that the names of any
@@ -156,8 +146,6 @@ all be interpreted as SIN.   However if they write MySin this will
 be different from MYSIN, because MYSIN is not a system function or
 variable.  
 
-
-
 @example
 SeriesSolve(f,x):=
    if (f = sin) ...
@@ -168,19 +156,13 @@ SeriesSolve(f,x):=
    IF (f = SIN) ...
 @end example
 
-
-
-
-
 @end defvar
-@c @node CLOSEFILE, COLLAPSE, CHANGE_FILEDEFAULTS, Input and Output
-@c @unnumberedsec phony
+
 @defun CLOSEFILE ()
 Closes the transcript file opened by WRITEFILE or APPENDFILE.
 
 @end defun
-@c @node COLLAPSE, CONCAT, CLOSEFILE, Input and Output
-@c @unnumberedsec phony
+
 @defun COLLAPSE (expression)
 collapses" its argument by causing all of its
 common (i.e. equal) subexpressions to share (i.e. use the same cells),
@@ -192,8 +174,7 @@ collapse the elements of the array A by doing
 COLLAPSE(LISTARRAY('A))$.
 
 @end defun
-@c @node CONCAT, CURSORDISP, COLLAPSE, Input and Output
-@c @unnumberedsec phony
+
 @defun CONCAT (arg1, arg2, ...)
 evaluates its arguments and returns the
 concatenation of their values resulting in a name or a quoted string
@@ -207,14 +188,16 @@ CONCAT(D,X+1)=D2.
 evaluates its arguments and concatenates them into a string.  Unlike
 CONCAT, the arguments do NOT need to be atoms.    The result is a Common
 Lisp String.
+
 @example
 (%i5) sconcat("xx[",3,"]:",expand((x+y)^3));
 (%o5) 			 xx[3]:Y^3+3*X*Y^2+3*X^2*Y+X^3
 @end example
+
 The resulting string could be used in conjunction with print.
+
 @end defun
-@c @node CURSORDISP, DIREC, CONCAT, Input and Output
-@c @unnumberedsec phony
+
 @defvar CURSORDISP
  default: [TRUE] If TRUE, causes expressions to be drawn by
 the displayer in logical sequence.  This only works with a console
@@ -223,8 +206,7 @@ printed line by line.  CURSORDISP is FALSE when a WRITEFILE is in
 effect.
 
 @end defvar
-@c @node DISP, DISPCON, DIREC, Input and Output
-@c @unnumberedsec phony
+
 @defun DISP (expr1,expr2, ...)
 is like DISPLAY but only the value of the
 arguments are displayed rather than equations.  This is useful for
@@ -232,8 +214,7 @@ complicated arguments which don't have names or where only the value
 of the argument is of interest and not the name.
 
 @end defun
-@c @node DISPCON, DISPLAY, DISP, Input and Output
-@c @unnumberedsec phony
+
 @c HMM, THIS NEXT ITEM IS DEFINED IN A SHARE FILE (itensor.lisp); 
 @c DOES ITS DESCRIPTION WANT TO BE ELSEWHERE ???
 @defun DISPCON (tensor1,tensor2,...)
@@ -242,8 +223,7 @@ the tensori as were given to DEFCON.  DISPCON(ALL) displays all the
 contraction properties which were defined.
 
 @end defun
-@c @node DISPLAY, DISPLAY2D, DISPCON, Input and Output
-@c @unnumberedsec phony
+
 @defun DISPLAY (expr1, expr2, ...)
 displays equations whose left side is
 expri unevaluated, and whose right side is the value of the expression
@@ -258,12 +238,10 @@ function calls.  (see the DISP function)
                          B     = X - X
                           1, 2
 (%o1)                            DONE
-
-
 @end example
+
 @end defun
-@c @node DISPLAY2D, DISPLAY_FORMAT_INTERNAL, DISPLAY, Input and Output
-@c @unnumberedsec phony
+
 @defvar DISPLAY2D
  default: [TRUE] - if set to FALSE will cause the standard
 display to be a string (1-dimensional) form rather than a display
@@ -271,14 +249,14 @@ display to be a string (1-dimensional) form rather than a display
 consoles who would like to conserve paper.
 
 @end defvar
-@c @node DISPLAY_FORMAT_INTERNAL, DISPTERMS, DISPLAY2D, Input and Output
-@c @unnumberedsec phony
+
 @defvar DISPLAY_FORMAT_INTERNAL
  default: [FALSE] - if set to TRUE will cause
 expressions to be displayed without being transformed in ways that
 hide the internal mathematical representation.  The display then
 corresponds to what the INPART command returns rather than the PART
 command.  Examples:
+
 @example
 User     PART       INPART
 a-b;      A - B     A + (- 1) B
@@ -290,11 +268,10 @@ sqrt(x);   SQRT(X)    X
           4 X        4
 X*4/3;    ---        - X
            3         3
-
 @end example
+
 @end defvar
-@c @node DISPTERMS, DSKALL, DISPLAY_FORMAT_INTERNAL, Input and Output
-@c @unnumberedsec phony
+
 @defun DISPTERMS (expr)
 displays its argument in parts one below the other.
 That is, first the operator of 'expr' is displayed, then each term in
@@ -309,13 +286,13 @@ displayed as A**B it will appear as EXPT(A,B) (or as NCEXPT(A,B) in
 the case of A^^B).
 
 @end defun
-@c @node ERROR_SIZE, ERROR_SYMS, DSKALL, Input and Output
-@c @unnumberedsec phony
+
 @defvar ERROR_SIZE
  default: [20 for a display terminal, 10 for others].
 controls the size of error messages.  For example, let
 U:(C^D^E+B+A)/(COS(X-1)+1); .  U has an error size of 24.  So if
 ERROR_SIZE has value < 24 then 
+
 @example
 (%i1) ERROR("The function", FOO,"doesn't like", U,"as input.");
 prints as:
@@ -326,12 +303,12 @@ If ERROR_SIZE>24 then as:
                                C   + B + A
 The function FOO doesn't like -------------- as input.
                               COS(X - 1) + 1
-
 @end example
 
 Expressions larger than ERROR_SIZE are replaced by symbols, and the
 symbols are set to the expressions.  The symbols are taken from the
 user-settable list
+
 @example
 ERROR_SYMS:[ERREXP1,ERREXP2,ERREXP3]
 @end example
@@ -340,8 +317,7 @@ The default value of this switch might change depending on user
 experience.
 
 @end defvar
-@c @node ERROR_SYMS, EXPT, ERROR_SIZE, Input and Output
-@c @unnumberedsec phony
+
 @defvar ERROR_SYMS
  default: [ERREXP1,ERREXP2,ERREXP3] - In error messages,
 expressions larger than ERROR_SIZE are replaced by symbols, and the
@@ -353,22 +329,20 @@ expression.  ERROR_SYMS may be set by the user to a different set
 of symbols, if desired.
 
 @end defvar
-@c @node EXPT, EXPTDISPFLAG, ERROR_SYMS, Input and Output
-@c @unnumberedsec phony
+
 @defun EXPT (A,B)
 if an exponential expression is too wide to be displayed
 as A^B it will appear as EXPT(A,B) (or as NCEXPT(A,B) in the case of
 A^^B).
 
 @end defun
-@c @unnumberedsec phony
+
 @defvar EXPTDISPFLAG
  default: [TRUE] - if TRUE, Maxima displays expressions
 with negative exponents using quotients e.g., X**(-1) as 1/X.
 
 @end defvar
-@c @node FILENAME_MERGE, FILENUM, FILENAME, Input and Output
-@c @unnumberedsec phony
+
 @c THIS FUNCTION DOES EXIST BUT IT TAKES NO MORE THAN 2 ARGUMENTS !!!
 @c ALSO THE DESCRIPTION SHOULD BE CLARIFIED, PERHAPS WITH EXAMPLES !!!
 @defun FILENAME_MERGE ("filename1","filename2",...)
@@ -378,8 +352,7 @@ that missing components come from the corresponding components of
 "filename2", and if they are missing there, then from "filename3".
 
 @end defun
-@c @node FILE_SEARCH, FILE_STRING_PRINT, FILENUM, Input and Output
-@c @unnumberedsec phony
+
 @defun FILE_SEARCH (filename)
 @defunx FILE_SEARCH (filename, pathlist)
 
@@ -464,16 +437,14 @@ For example, supposing the sought-after name is @code{neumann},
 expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
 
 @end defvar
-@c @node FILE_TYPE, GRIND, FILE_STRING_PRINT, Input and Output
-@c @unnumberedsec phony
+
 @c THIS FUNCTION DOES EXIST BUT DESCRIPTION SHOULD BE UPDATED !!!
 @defun FILE_TYPE ("filename")
 ; returns OBJECT, LISP, or MAXIMA, depending on
 what kind of file it is. 
 
 @end defun
-@c @node GRIND, IBASE, FILE_TYPE, Input and Output
-@c @unnumberedsec phony
+
 @defun GRIND (arg)
 prints out arg in a more readable format than the STRING
 command.  It returns a D-line as value.
@@ -483,45 +454,39 @@ STRINGOUT, and PLAYBACK commands to use "grind" mode instead of
 processing input lines) by specifying GRIND as an option.
 
 @end defun
-@c @node IBASE, INCHAR, GRIND, Input and Output
-@c @unnumberedsec phony
+
 @c ALSO MENTION OBASE HERE !!!
 @defvar IBASE
  default: [10] - the base for inputting numbers.
 
 @end defvar
-@c @node INCHAR, LDISP, IBASE, Input and Output
-@c @unnumberedsec phony
+
 @c UPDATE -- DEFAULT IS NOW %i !!!
 @defvar INCHAR
  default: [C] - the alphabetic prefix of the names of
 expressions typed by the user.
 
 @end defvar
-@c @node LDISP, LDISPLAY, INCHAR, Input and Output
-@c @unnumberedsec phony
+
 @defun LDISP (expr1,expr2,...)
 is like DISP but also generates intermediate
 labels.
 
 @end defun
-@c @node LDISPLAY, LINECHAR, LDISP, Input and Output
-@c @unnumberedsec phony
+
 @defun LDISPLAY (expr1,expr2,...)
 is like DISPLAY but also generates
 intermediate labels.
 
 @end defun
-@c @node LINECHAR, LINEDISP, LDISPLAY, Input and Output
-@c @unnumberedsec phony
+
 @c UPDATE -- DEFAULT IS NOW %t !!!
 @defvar LINECHAR
  default: [E] - the alphabetic prefix of the names of
 intermediate displayed expressions.
 
 @end defvar
-@c @node LINEL, LOAD, LINEDISP, Input and Output
-@c @unnumberedsec phony
+
 @c STILL EXISTS, NEEDS UPDATING !!!
 @defvar LINEL
  default: [] - the number of characters which are printed on a
@@ -531,8 +496,7 @@ by the user.  The user may have to reset it in DDT with :TCTYP as
 well.
 
 @end defvar
-@c @node LOAD, LOADFILE, LINEL, Input and Output
-@c @unnumberedsec phony
+
 @defun LOAD (filename)
 Evaluates expressions in @code{filename}, thus bringing new variables and functions into Maxima.
 To find the file,
@@ -552,8 +516,7 @@ BATCH and DEMO process Maxima files.
 See FILE_SEARCH for more detail about the file search mechanism.
 
 @end defun
-@c @node LOADFILE, LOADPRINT, LOAD, Input and Output
-@c @unnumberedsec phony
+
 @defun LOADFILE (filename)
 Evaluates Lisp expressions in @code{filename}.
 LOADFILE quotes its argument, so @code{filename} must be a literal string,
@@ -565,8 +528,7 @@ LOADFILE can process files created by SAVE, TRANSLATE_FILE, and COMPILE_FILE.
 The user may find it more convenient to use LOAD instead of LOADFILE.
 
 @end defun
-@c @node LOADPRINT, NOSTRING, LOADFILE, Input and Output
-@c @unnumberedsec phony
+
 @c SEEMS TO STILL EXIST; NEEDS UPDATING !!!
 @defvar LOADPRINT
  default: [TRUE] - governs the printing of messages
@@ -577,23 +539,20 @@ is automatically loaded in; FALSE
 means never print the loading message.
 
 @end defvar
-@c @node OBASE, OUTCHAR, NOSTRING, Input and Output
-@c @unnumberedsec phony
+
 @c ALSO MENTION IBASE HERE !!!
 @defvar OBASE
  default: [10] the base for display of numbers.
 
 @end defvar
-@c @node OUTCHAR, PACKAGEFILE, OBASE, Input and Output
-@c @unnumberedsec phony
+
 @c UPDATE -- DEFAULT IS NOW %o !!!
 @defvar OUTCHAR
  default: [D] - the alphabetic prefix of the names of
 outputted expressions.
 
 @end defvar
-@c @node PACKAGEFILE, PARSEWINDOW, OUTCHAR, Input and Output
-@c @unnumberedsec phony
+
 @c STILL EXISTS, NEEDS CLARIFICATION !!!
 @defvar PACKAGEFILE
  default:[FALSE] - Package designers who use SAVE
@@ -609,16 +568,14 @@ Setting the flag to TRUE is also useful for creating Maxima
 init files.
 
 @end defvar
-@c @node PFEFORMAT, PRINT, PARSEWINDOW, Input and Output
-@c @unnumberedsec phony
+
 @defvar PFEFORMAT
  default: [FALSE] - if TRUE will cause rational numbers to
 display in a linear form and denominators which are integers to
 display as rational number multipliers.
 
 @end defvar
-@c @node PRINT, READ, PFEFORMAT, Input and Output
-@c @unnumberedsec phony
+
 @defun PRINT (exp1, exp2, ...)
 evaluates and displays its arguments one
 after the other "on a line" starting at the leftmost position.  If
@@ -636,36 +593,35 @@ Here skip defaults to 2, meaning that every other element
 will be printed if the argument is of the form a list of numbers,
 rathter than a list of lists.
 For example:
+
 @example
 TCL_OUTPUT([x1,y1,x2,y2,x3,y3],1) --> @{x1 x2 x3 @}
 TCL_OUTPUT([x1,y1,x2,y2,x3,y3],2) --> @{y1 y2 y3 @}
 TCL_OUTPUT([1,2,3,4,5,6],1,3) --> @{1 4@}
 TCL_OUTPUT([1,2,3,4,5,6],2,3) --> @{2 5@}
 @end example
+
 @end defun
 
-@c @node READ, READONLY, PRINT, Input and Output
-@c @unnumberedsec phony
 @c COULD NOTE THAT EXPRESSION IS COMMA OR DOLLAR SIGN TERMINATED !!!
 @defun READ (string1, ...)
 prints its arguments, then reads in and evaluates
 one expression.  For example: A:READ("ENTER THE NUMBER OF VALUES").
 
 @end defun
-@c @node READONLY, REVEAL, READ, Input and Output
-@c @unnumberedsec phony
+
 @defun READONLY (string1,...)
 prints its arguments, then reads in an
 expression (which in contrast to READ is not evaluated).
 
 @end defun
-@c @node REVEAL, RMXCHAR, READONLY, Input and Output
-@c @unnumberedsec phony
+
 @defun REVEAL (exp,depth)
 will display exp to the specified integer depth
 with the length of each part indicated.  Sums will be displayed as
 Sum(n) and products as Product(n) where n is the number of subparts of
 the sum or product.  Exponentials will be displayed as Expt.
+
 @example
 (%i1) INTEGRATE(1/(X^3+2),X)$
 (%i2) REVEAL(%,2);
@@ -674,19 +630,16 @@ the sum or product.  Exponentials will be displayed as Expt.
                                      ATAN         LOG
 (%o3)                 - Quotient + ---------- + ----------
                                   Product(2)   Product(2)
-
-
 @end example
+
 @end defun
-@c @node RMXCHAR, SAVE, REVEAL, Input and Output
-@c @unnumberedsec phony
+
 @defvar RMXCHAR
  default: []] - The character used to display the (right)
 delimiter of a matrix (see also LMXCHAR).
 
 @end defvar
-@c @node SAVE, SAVEDEF, RMXCHAR, Input and Output
-@c @unnumberedsec phony
+
 @c IN GREAT NEED OF UPDATING AND CLARIFICATION !!!
 @defun SAVE (filename,arg1, arg2,...,argi)
 saves quantities
@@ -702,10 +655,8 @@ to give them explicit names, which may be done in the command line,
 e.g.  SAVE(RES1=%o15); Files saved with SAVE should be reloaded with
 LOADFILE.  SAVE returns the pathname where the items were saved.
 
-
 @end defun
-@c @node SAVEDEF, SHOW, SAVE, Input and Output
-@c @unnumberedsec phony
+
 @defvar SAVEDEF
  default: [TRUE] - if TRUE will cause the Maxima version of a
 user function to remain when the function is TRANSLATEd.  This permits
@@ -714,8 +665,7 @@ be edited.  If SAVEDEF is FALSE, the names of translated functions are
 removed from the FUNCTIONS list.
 
 @end defvar
-@c @node SHOW, SHOWRATVARS, SAVEDEF, Input and Output
-@c @unnumberedsec phony
+
 @c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp -- DOES THIS DESCRIPTION WANT TO BE ELSEWHERE ???
 @defun SHOW (exp)
 will display exp with the indexed objects in it shown
@@ -724,22 +674,19 @@ superscripts.  The derivative indices will be displayed as subscripts,
 separated from the covariant indices by a comma.
 
 @end defun
-@c @node SHOWRATVARS, STARDISP, SHOW, Input and Output
-@c @unnumberedsec phony
+
 @defun SHOWRATVARS (exp)
 returns a list of the RATVARS (CRE variables) of
 exp.
 
 @end defun
-@c @node STARDISP, STRING, SHOWRATVARS, Input and Output
-@c @unnumberedsec phony
+
 @defvar STARDISP
  default: [FALSE] - if TRUE will cause multiplication to be
 displayed explicitly with an * between operands.
 
 @end defvar
-@c @node STRING, STRINGOUT, STARDISP, Input and Output
-@c @unnumberedsec phony
+
 @defun STRING (expr)
 converts expr to Maxima's linear notation (similar to
 FORTRAN's) just as if it had been typed in and puts expr into the
@@ -747,8 +694,7 @@ buffer for possible editing (in which case expr is usually Ci) The
 STRING'ed expression should not be used in a computation.
 
 @end defun
-@c @node STRINGOUT, TTYOFF, STRING, Input and Output
-@c @unnumberedsec phony
+
 @defun STRINGOUT (file-specification, expr1, expr2, expr3, ...)
 @defunx STRINGOUT (file-specification, [m, n])
 @defunx STRINGOUT (file-specification, INPUT)
@@ -818,29 +764,34 @@ $$-\cos x$$
 
 (%o7) 				     (%o1)
 @end example
+
 where the last expression will be appended to the file @file{/tmp/jo.tex}
+
 @end defun
+
 @defun SYSTEM (command)
 Execute COMMAND as a subprocess.  The command will be passed to the
 default shell for execution.   System is not supported by all operating
 systems, but generally exists in the unix environment.
 if hist is a list of frequencies which you wish to plot as a bar graph
 using xgraph. 
+
 @example
 (%i1) (with_stdout("_hist.out",
            for i:1 thru length(hist) do (
              print(i,hist[i]))),
        system("xgraph -bar -brw .7 -nl < _hist.out"));
 @end example
+
 In order to make the plot be done in the background (returning control to maxima)
 and remove the temporary file after it is done do:
+
 @example
 system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 @end example
+
 @end defun
 
-@c @node TTYOFF, WRITEFILE, STRINGOUT, Input and Output
-@c @unnumberedsec phony
 @c SHOULD NOTE THAT TTYOFF:TRUE DOESN'T STOP OUTPUT PRINTED BY LISP FCNS !!! (E.G. DESCRIBE)
 @defvar TTYOFF
  default: [FALSE] - if TRUE stops printing output to the
@@ -854,8 +805,8 @@ to standard output goes to the file instead of the terminal.
 It always returns FALSE.   Note the binding of display2d to be
 false, otherwise the printing will have things like "- 3" instead
 of "-3".
-@example
 
+@example
 mygnuplot(f,var,range,number_ticks):=
  block([numer:true,display2d:false],
  with_stdout("/tmp/gnu",
@@ -880,10 +831,6 @@ factorial( 10 ) gives  3628800
 
 @end deffn
 
-
-
-@c @node WRITEFILE,  , TTYOFF, Input and Output
-@c @unnumberedsec phony
 @defun WRITEFILE (filename)
 Begins writing a transcript of the Maxima session to @code{filename}.
 All interaction between the user and Maxima is then recorded in this file,
