@@ -19,7 +19,8 @@ clisp: binary-clisp/maxima.mem
 
 binary-clisp/maxima.mem:
 	test -d binary-clisp || mkdir binary-clisp
-	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (ext:saveinitmem "binary-clisp/maxima.mem" :init-function (function user::run)))'
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "binary-clisp/maxima.mem" :init-function (function user::run)))'
 
 install-clisp:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-clisp"
@@ -51,7 +52,8 @@ binary-cmucl/maxima.core:
 	test -d binary-cmucl || mkdir binary-cmucl
 	test -d binary-cmucl/numerical || mkdir binary-cmucl/numerical
 	test -d binary-cmucl/numerical/slatec || mkdir binary-cmucl/numerical/slatec
-	echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima.core"))' | $(EXECUTECMUCL)
+	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTECMUCL)) && \
+	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima.core"))' | $(EXECUTECMUCL))
 
 install-cmucl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-cmucl"
@@ -84,7 +86,8 @@ binary-acl6/maxima.dxl:
 	test -d binary-acl6 || mkdir binary-acl6
 	test -d binary-acl6/numerical || mkdir binary-acl6/numerical
 	test -d binary-acl6/numerical/slatec || mkdir binary-acl6/numerical/slatec
-	echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl6/maxima.dxl"))' | $(EXECUTEACL6)
+	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTEACL6)) && \
+	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl6/maxima.dxl"))' | $(EXECUTEACL6))
 
 install-acl6:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-acl6"
@@ -119,7 +122,8 @@ binary-sbcl/maxima.core:
 	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
 	test -h numerical/binary-sbcl || ln -s ../binary-sbcl numerical
 	test -h  numerical/slatec/binary-sbcl || ln -s ../../binary-sbcl numerical/slatec
-	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core") (sb-ext:quit))'
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core") (sb-ext:quit))'
 
 install-sbcl:
 	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-sbcl
@@ -169,7 +173,8 @@ binary-gcl/maxima:
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
-	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (si:save-system "binary-gcl/maxima"))'
+	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
+	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (si:save-system "binary-gcl/maxima"))'
 endif
 
 install-gcl:
@@ -198,7 +203,8 @@ distclean: clean-openmcl
 openmcl:binary-openmcl/maxima.image
 
 binary-openmcl/maxima.image:
-	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (ccl:save-application "binary-openmcl/maxima.image" :toplevel-function (function cl-user::run)) (ccl::quit))'
+	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
+	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ccl:save-application "binary-openmcl/maxima.image" :toplevel-function (function cl-user::run)) (ccl::quit))'
 
 install-openmcl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
