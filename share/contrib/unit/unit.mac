@@ -1,0 +1,290 @@
+/* Filename unit.mac
+
+       ***************************************************************
+       *            Unit Conversion and Definition Package           *
+       *							     *
+       *                                                             *
+       *         This package gives one the ability to convert 	     *
+       *         between units, define globally all units of a       *
+       *         given property (mass, for example) in terms of	     *
+       *	 a base unit, and various other abilities. 	     *
+       *         						     *
+       *         		Version .03			     *
+       *                       Nov. 20, 2003			     *
+       *		       License:  GPL			     *
+       *							     *
+       *                 --------------------------                  *
+       *                  Programmed by Cliff Yapp                   *
+       *            Inspired by and some code based off of	     *
+       *		Barton Willis's dimension.mac		     *
+       ***************************************************************
+
+     Properties with units listed:
+	 Length, Mass, Time,  Electric Current, Thermodynamic Temperature,
+	 Amount of Substance, Luminous Intensity, Area, 
+
+     Changes:
+        .03  -  fixed unitfactor so it would work on standard unit
+		names even if setunits had already defined them. Added
+		command findnonpivotunit which will return if defined
+		the non pivot unit corresponding to a given conversion 
+		factor times a given pivot unit.
+	.02  -  added ability to control how many metric prefixes are
+		used to generate the meta list, and a killunits function
+		to undo what setunits does.
+	.01  -  first development version - metalist generateable,
+        	unitfactor and setunits operational.  Only basic Mass
+		and Time arrays present.  Metric prefixes entered.
+
+
+      Implimentation notes: 
+	 Each property, like mass or length, has three basic unit 
+	 lists - %<propertyname>full, %<propertyname>fullplural, and 
+	 %<propertyname>abr.  The first list contains the full 
+	 singular name of the unit, the second the plural of the full
+	 name, and the third the standard abbreviations.  There is of
+	 necessity a three fold redundancy in these definitions, but
+	 for now it is the simplest and most flexible way to organize
+	 the information for easy access and editing.  The first unit
+	 in each list is called the pivot unit (usually the standard
+	 SI unit is used) and all other units for that property are
+	 defined in terms of the pivot unit.  This when one wants to
+	 convert between, say, mg and ounces the software will convert
+	 mg -> g and ounces -> g, and use those factors to find mg -> 
+	 ounces.  This minimizes the amount of information that needs
+	 to be stored.
+
+	 Each entry in the lists is itself a list, with three pieces
+	 of information - the text of the unit name, the multiplicative
+	 factor required to convert it to the pivot node, and a third
+	 slot which tells the program whether or not the unit is metric.
+	 If it is, when build the metalist metric prefixes will be 
+	 handles automatically.  An "m" in the third entry signifies
+	 a metric unit.
+         
+	 A way to control the generation of metric prefix based values
+	 uses the third number in the metric prefix lists. The control
+	 variable is called %unitexpand.  A value of zero means no metric 
+	 suffix units will be generated and only the basic arrays will be 
+	 used, and a value of five means generate the entire unit tree.  
+	 The default value is two.
+
+   TODO:
+   	 It could also be possible to define only abbreviations or only 
+	 full names - perhaps another global variable could control that.
+
+         Immediately useful would be a convert command that could take an
+	 expression with some units and render it into an expression using
+	 user supplied units - Barton Willis's dimension package might have 
+	 the code to allow disection of a complicated expression.  
+
+	 Aside from those, and the implimentation of whatever functionality
+	 seems useful, the main thing is to increase the store of units.
+=====================================================================================*/ 
+
+TTYOFF: NOLABELS, TRUE$
+
+/*
+Metric prefixes
+*/
+metricprefull : [[yotta,10^24,4],[zetta,10^21,4],[exa,10^18,4],[peta,10^15,3],[tera,10^12,3],
+[giga,10^9,2],[mega,10^6,2],[kilo,10^3,1],[hecto,10^2,2],[deka,10^1,2],[deci,10^-1,2],
+[centi,10^-2,1],[milli,10^-3,1],[micro,10^-6,2],[nano,10^-9,2],[pico,10^-12,3],[femto,10^-15,3],
+[atto,10^-18,4],[zepto,10^-21,4],[yocto,10^-24,4]];
+metricpre : [[Y,10^24,4],[Z,10^21,4],[E,10^18,4],[P,10^15,3],[T,10^12,3],
+[G,10^9,2],[M,10^6,2],[k,10^3,1],[h,10^2,2],[da,10^1,2],[d,10^-1,2],
+[c,10^-2,1],[%%m,10^-3,1],[%mu,10^-6,2],[n,10^-9,2],[p,10^-12,3],[f,10^-15,3],
+[a,10^-18,4],[z,10^-21,4],[y,10^-24,4]];
+
+/*
+Mass Units
+*/
+%massunitsfull : [[gram,1,m],[grain,0.0648,0]];
+%massunitsfullplural : [[grams,1,m],[grains,0.0648,0]];
+%massunitsabr : [[g,1,m],[gr,0.0648,0]];
+
+/*
+Time Units
+*/
+%timeunitsfull : [[second,1,m],[minute,60,0]];
+%timeunitsfullplural : [[seconds,1,m],[minutes,60,0]];
+%timeunitsabr : [[s,1,m],[%min,60,0]];
+
+/*
+Quantities List
+*/
+quantitieslist : [[%mass],[%time]];
+
+
+makemetalist() := block ([i,j,k,metalist,finallist], 
+  metalist : [],
+  metriclistfull : [],
+  metriclistabr : [],
+  for i : 1 thru length(metricprefull) do (
+     if (metricprefull[i][3] <= %unitexpand) then (
+       metriclistfull : append(metriclistfull,[[metricprefull[i][1],metricprefull[i][2]]])
+  )),
+  for i : 1 thru length(metricpre) do (
+     if (metricpre[i][3] <= %unitexpand) then (
+       metriclistabr : append(metriclistabr,[[metricpre[i][1],metricpre[i][2]]])
+  )),
+  for i : 1 thru length(quantitieslist) do (
+      metalist : append(metalist,[quantitieslist[i]]),
+      listtempname : concat(quantitieslist[i][1],unitsfull),
+      listtemplength : length(ev(listtempname)),
+      for j : 1 thru listtemplength do (
+        metalist[i] : append(metalist[i],[listtempname[j]])
+      ),
+      for j : 2 thru listtemplength do (
+	if ?equal(metalist[i][j][3],m) then (
+	for k : 1 thru length(metriclistfull) do (
+             metalist[i] : append(metalist[i],[[concat(metriclistfull[k][1],metalist[i][j][1]),metriclistfull[k][2],0]])
+        ))
+      ),
+      listtempname : concat(quantitieslist[i][1],unitsfullplural),
+      listtemplength : length(ev(listtempname)),
+      for j : 1 thru listtemplength do (
+        metalist[i] : append(metalist[i],[listtempname[j]])
+      ),
+      for j : length(metalist[i])-listtemplength thru length(metalist[i]) do (
+	if ?equal(metalist[i][j][3],m) then (
+	for k : 1 thru length(metriclistfull) do (
+             metalist[i] : append(metalist[i],[[concat(metriclistfull[k][1],metalist[i][j][1]),metriclistfull[k][2],0]])
+        ))
+      ),
+      listtempname : concat(quantitieslist[i][1],unitsabr),
+      listtemplength : length(ev(listtempname)),
+      for j : 1 thru listtemplength do (
+        metalist[i] : append(metalist[i],[listtempname[j]])
+      ),
+      for j : length(metalist[i])-listtemplength thru length(metalist[i]) do (
+	if ?equal(metalist[i][j][3],m) then (
+	for k : 1 thru length(metriclistabr) do (
+             metalist[i] : append(metalist[i],[[concat(metriclistabr[k][1],metalist[i][j][1]),metriclistabr[k][2],0]])
+        ))
+      )      
+   ), 
+   metalist
+   );
+
+propertynumber(property) := block([i,j,b],
+   b:0,
+   for i : 1 thru length(metalist) do  (
+       if ?equal(metalist[i][1],property) then (
+          b : i
+    )),
+   if ?equal(b,0) then (error ("Property not found")) else b);
+
+
+unitinfo(unit) := block([i,j,b],
+   b:0,
+   for i : 1 thru length(metalist) do  (
+     for j : 2 thru length(metalist[i]) do  (
+       if ?equal(metalist[i][j][1],unit) then (
+          b : [metalist[i][2][1],metalist[i][j][2],metalist[i][j][1],i,metalist[i][1]]
+    ))),
+   if ?equal(b,0) then (error ("Unit not found")) else b);
+
+findnonpivotunit(conversion) := block([i,j,b],
+   b:0,
+   for i : 1 thru length(metalist) do  (
+     for j : 2 thru length(metalist[i]) do  (
+       if ?equal(float(metalist[i][j][2]),part(conversion,1)) and ?equal(metalist[i][1],unitinfo(part(conversion,2))[5]) then (
+          b : [metalist[i][j][1]]
+       ),
+       if ?equal(float(metalist[i][j][2]),float(1/part(conversion,2))) and ?equal(metalist[i][1],unitinfo(part(conversion,1))[5]) then (
+          b : [metalist[i][j][1]]
+       )
+    )),
+   if ?equal(b,0) then (error ("Unit not found")) else b);
+
+
+unitfactor (unitin,unitout) := block([n, input, output, tmp1, tmp2, b],
+   killunit(a) := apply('kill,a),
+   if not ?atom(unitin) then(
+      tmp1 : findnonpivotunit(unitin)
+   ) else (tmp1 : [unitin]),
+   if not ?atom(unitout) then(
+      tmp2 : findnonpivotunit(unitout)
+   ) else (tmp2 : [unitout]),
+/*
+   Implimentation note - the reason these kills are
+   not in the above loops is that if unitout should
+   be an invalid unit, findnonpivotunit might fail
+   and unitin's definition could be killed when the
+   user returns from the error?  At any rate, safer
+   this way. 
+*/     
+   if not ?atom(unitin) then(
+      killunit(tmp1) 
+   ),
+   if not ?atom(unitout) then(
+      killunit(tmp2)
+   ),
+   modedeclare(n, fixnum),
+   input : unitinfo(tmp1[1]),
+   output : unitinfo(tmp2[1]),
+    if ?equal(input[1],output[1]) then (
+      b : input[2]/output[2]
+    )
+    else (
+      tmp1[1] :: unitin,
+      tmp2[1] :: unitout,
+     (error ("Units are not of the same type."))),
+   tmp1[1] :: unitin,
+   tmp2[1] :: unitout,
+   b);
+
+/*
+Defines all the units of the property of the argument(s)
+in terms of the unit given.  Argument of the form:
+setunits(g) or setunits([g,s])
+*/
+setunits(units) := block([info, i, n],
+  modedeclare([i, n], fixnum),
+  if listp(units) then (                 
+     map ('setunits, units))
+  else (
+  info : unitinfo(units),
+  for i:2 thru length(metalist[info[4]]) do (
+    if not ?equal(metalist[info[4]][i][1],units) then (
+       n :: metalist[info[4]][i][1],
+       n :: unitfactor(metalist[info[4]][i][1],units)*info[3],
+       kill(n)
+    )
+  )));
+  
+/*
+Kills all units of the listed property or properties.  Argument
+of the form killunits(%mass) or killunits([%mass,%time])
+*/  
+killunits(properties) := block([op, dim, var, i, n],
+  modedeclare([i, n], fixnum),
+  if listp(properties) then (                 
+     map ('killunits, properties))
+  else (
+  info : propertynumber(properties),
+  killunit(a) := apply('kill,a),
+  for i:2 thru length(metalist[info]) do (
+       n :: metalist[info][i][1],
+       killunit([n]),
+       kill(n)
+  )));
+
+/*******
+
+Initilization
+
+********/
+
+/*
+Unit Expand Variable - Set this to determine how much of
+the full metric prefix set is defined for each metric
+quantity.
+*/
+%unitexpand : 2;
+
+/*Generate default metalist*/
+metalist : makemetalist();
+
+TTYOFF: NOLABELS, FALSE$
