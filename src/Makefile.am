@@ -43,6 +43,9 @@ clean: clean-cmucl
 distclean: clean-cmucl
 
 binary-cmucl/maxima.core:
+	test -d binary-cmucl || mkdir binary-cmucl
+	test -d binary-cmucl/numerical || mkdir binary-cmucl/numerical
+	test -d binary-cmucl/numerical/slatec || mkdir binary-cmucl/numerical/slatec
 	LISPTYPE=cmucl ; export LISPTYPE ;\
 	CMUCL=$(CMUCL_NAME) ; export CMUCL ;\
 	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
