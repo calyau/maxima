@@ -61,4 +61,4 @@ AC_ARG_WITH(default-lisp,
 	[default_lisp=clisp])
 
 
-AC_OUTPUT(Makefile src/Makefile src/maxima lisp-utils/Makefile)
+AC_OUTPUT(Makefile src/Makefile src/maxima lisp-utils/Makefile tests/Makefile)

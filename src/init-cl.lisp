@@ -60,6 +60,7 @@
   (setq $chemin
     (maxima-path "sym" "")))
 
+;#+gcl (setq si::*top-level-hook* 'user::run)
 (defun user::run ()
   "Run Maxima in its own package."
   (in-package "MAXIMA")
@@ -74,6 +75,9 @@
 (defun $to_lisp ()
   (format t "~%Type (run) to restart~%")
   (throw 'to-lisp t))
+
+(defun $jfa_lisp ()
+  (format t "jfa was here"))
 
 (defvar $help "type describe(topic) or example(topic);")
 

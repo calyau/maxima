@@ -1,1 +1,1 @@
-SUBDIRS = src lisp-utils
+SUBDIRS = src lisp-utils tests

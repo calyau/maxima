@@ -6,7 +6,7 @@
 #   License: LGPL (See file GNU-LGPL for details)
 # -----------------------------------------------------------------------------
 #  (c) copyright 1999 by Gilbert Baumann, Sam Steingold, Bruno Haible
-# $Id: maxima-run-lisp,v 1.1 2001-12-12 14:50:56 amundson Exp $
+# $Id: maxima-run-lisp,v 1.2 2002-01-07 18:33:18 amundson Exp $
 # $Source: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/lisp-utils/maxima-run-lisp,v $
 
 # Prior to invocation the LISPTYPE environment variable must been set to
@@ -29,6 +29,7 @@ Usage:
               | -I image   ; use image file `image'
               | -d image   ; dump to image `image'
 	      | -f initfun ; set init function of dumped image to `initfun'
+	      | --extra-args=args ; add 'args' to lisp command line
               | --safety n ; set safety level for compilation
               | --speed n  ; set speed level for compilation
 
@@ -39,8 +40,8 @@ Usage:
      available in the lexical environment forms given to -x are
      evaluated in.
 
- run-lisp -run image
-   interactively run `image'
+ run-lisp [--extra-args=args] -run image [-i file]
+   interactively run 'image'
    (user:run) will be called upon start up.
 
 Makefile support
@@ -71,6 +72,15 @@ fail(){
     echo "$0: $*" 1>&2
     exit 1
 }
+
+case "$1" in
+  --extra-args=*)
+		    extra_args=`echo $1 | sed 's/--extra-args=//'`
+		    shift 1
+		    ;;
+  *)
+   ;;
+esac
 
 case "$1" in
   "--help" | "-h" | "-?" )
@@ -158,22 +168,40 @@ case "$1" in
   "-run" )
     # we special case on '-run' for now
     shift 1
+    if [ x"$2" = x"-i" ]; then
+      load_file=$3
+    fi
     case "$LISPTYPE" in
         clisp)
-            ${CLISP-clisp} -M "$1".mem #-x "(user::run)"
-        ;;
+	    if [ -n "$load_file" ]; then
+	      load_arg="-i $load_file"
+	    fi
+            ${CLISP-clisp} $extra_args $load_arg -q -M "$1".mem 
+	    ;;
         cmucl )
-            ${CMUCL-lisp} -core "$1".core
+	    if [ -n "$load_file" ]; then
+	      load_arg="-load $load_file"
+	    fi
+            ${CMUCL-lisp} $extra_args $load_arg -core "$1".core
             ;;
         acl43 )
+	    if [ -n "$load_file" ]; then
+	      load_arg="-i $load_file"
+	    fi
             # Why "$1"? ACL4.3 dumps executables
-            "$1" -e '(unwind-protect (run) (excl:exit))'
+            "$1" $extra_args $load_arg -e '(unwind-protect (run) (excl:exit))'
             ;;
         acl5 )
-            ${ACL5-cl} -I "$1".dxl -e '(unwind-protect (run) (excl:exit))'
+	    if [ -n "$load_file" ]; then
+	      load_arg="-i $load_file"
+	    fi
+            ${ACL5-cl} $extra_args $load_arg -I "$1".dxl -e '(unwind-protect (run) (excl:exit))'
             ;;
         gcl )
-            "$1" -eval '(run)'
+	    if [ -n "$load_file" ]; then
+	      load_arg="-load $load_file"
+	    fi
+            "$1" $extra_args $load_arg -eval '(run)'
             ;;
         *)
             fail "Sorry, option -run not supported for LISPTYPE=${LISPTYPE}."
@@ -321,7 +349,8 @@ case "$1" in
       clisp )
           todo="(progn (setq #+lisp=cl ext:*load-paths* #-lisp=cl lisp:*load-paths* '(#P\"\")) ${todo})"
           test -z "$image" || image="-M ${image}.mem";
-          exec ${CLISP-clisp} -norc -q ${image} -x "$todo"
+          echo ${CLISP-clisp} -norc -q ${image} -x "$todo"
+          exec ${CLISP-clisp} $extra_args -norc -q ${image} -x "$todo"
           ;;
       cmucl )
           # we have to convince CMUCL to return a proper exit status.
@@ -332,20 +361,21 @@ case "$1" in
                                         (fresh-line) (finish-output))))
                     (unix:unix-exit (if .cond 1 0))))"
           test -z "$image" || image="-core ${image}.core";
-          exec ${CMUCL-lisp} -noinit ${image} -eval "$todo"
+          exec ${CMUCL-lisp} $extra_args -noinit ${image} -eval "$todo"
           ;;
       acl43 )
-          exec echo "$todo" | ${image-${ACL43-cl}} -batch
+          exec echo "$todo" | ${image-${ACL43-cl}} $extra_args -batch
           ;;
       acl5 )
           test -z "$image" || image="-I ${image}.dxl";
-          exec echo "$todo" | ${ACL5-cl} ${image+"-I ${image}.dxl"} -batch
+          exec echo "$todo" | ${ACL5-cl} ${image+"-I ${image}.dxl"} $extra_args -batch
           ;;
       gcl )
-          ${image-${GCL-gcl}} -batch -eval "$todo"
+	    echo ${image-${GCL-gcl}} $extra_args -batch -eval "$todo"
+          ${image-${GCL-gcl}} $extra_args -batch -eval "$todo"
 	  ;;
       sbcl )
-          ${image-${SBCL-sbcl}} --noinform --noprint --eval "$todo"
+          ${image-${SBCL-sbcl}} $extra_args --noinform --noprint --eval "$todo"
           ;;
       * )
           if [ -n "$LISPTYPE" ] ; then

@@ -1,13 +1,16 @@
 -real maxima script
-	-batch mode
-	-user preferences
+	-done! -batch mode
+	-done! -user preferences (par
 	-interface to external programs
 	-docs
 		-man page
-		-dynamic (--help)
+		-done! -dynamic (--help)
 	-interface for invoking tests
+	-mute the clisp banner, etc. (partially done)
 
--make dependencies for defsystem
+-done! -create test directory
+
+-done! -make dependencies for defsystem
 
 -install emacs files
 	-options for emacs, xemacs
@@ -25,3 +28,6 @@
 -configure options
 	-fix default lisp
 	-optional paths to specific lisps
+
+-write PORTING documentation
+	-do while adding acl support

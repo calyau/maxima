@@ -3,34 +3,127 @@
 # jfa:
 # This script is not complete. (Not even close!) 
 # More funtionality will be added.
+usage () {
+	cat << EOF
+usage: maxima [options]
+options:
+    -h, --help: Display this usage message.
+    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>. Leave <lisp>
+                              empty to see the list of possible values.
+    -v <version>, --version=<version>: Launch maxima version <version>. Leave
+                                       <version> empty to see the list of
+                                       possible values.
+    -b <file>, --batch=<file>: Process <file> in maxima batch mode.
+    --batch-lisp=<file>: Process lisp file <file> in batch mode.
+    --batch-string=<string>: Process <string> in maxima batch mode.
+    --verbose: Print extra information from the maxima wrapper script.
+EOF
+}
 
-MAXIMA_VERSION=@VERSION@
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-MAXIMA_VERPKGLIBEXECDIR=@libexecdir@/@PACKAGE@/@VERSION@
-MAXIMA_VERPKGLIBDIR=@libdir@/@PACKAGE@/@VERSION@
+setup_vars() {
+  MAXIMA_VERSION=@VERSION@
+  prefix=@prefix@
+  exec_prefix=@exec_prefix@
+  if [ -z "$MAXIMA_VERPKGLIBEXECDIR" ]; then
+    MAXIMA_VERPKGLIBEXECDIR=@libexecdir@/@PACKAGE@/@VERSION@
+  fi
+  if [ -z "$MAXIMA_VERPKGLIBDIR" ]; then
+    MAXIMA_VERPKGLIBDIR=@libdir@/@PACKAGE@/@VERSION@
+  fi
+  MAXIMA_DEFAULT_LISP=clisp
+  if [ -z "$MAXIMA_LISP" ]; then
+    MAXIMA_LISP=$MAXIMA_DEFAULT_LISP
+  fi
+}
 
-MAXIMA_LISP=clisp
+list_lisps () {
+  echo "The code to list lisp implementations needs to be written"
+}
 
-if [ -n "$1" ]; then
-  case $1 in
-    --clisp)
-	     MAXIMA_LISP=clisp
-	     ;;
-    --cmucl)
-	     MAXIMA_LISP=cmucl
-	     ;;
-    --gcl)
-	   MAXIMA_LISP=gcl
-	   ;;
-    *)
-       echo "Option $1 not recognized" 1>&2
-       echo "Valid options are --clisp, --cmucl and --gcl" 1>&2
-       exit 1
-       ;;
-  esac
+list_versions () {
+  echo "The code to list versions needs to be written"
+}
+
+process_args () {
+  while getopts "hl:v:b:-:" opt; do
+    if [ "$opt" = "-" ]; then
+      opt=$OPTARG
+    fi
+    case $opt in
+      h | help)
+		usage
+		exit
+		;;
+      l | lisp=*)
+		  if [ "$opt" = "l" ]; then
+		    MAXIMA_LISP=$OPTARG
+		  else
+		    MAXIMA_LISP=`echo "$OPTARG" | sed 's/lisp=//'`
+		  fi
+		  if [ -z "$MAXIMA_LISP" ]; then
+		    list_lisps
+		    exit
+		  fi
+		  ;;
+      v | version=*)
+		  if [ "$opt" = "v" ]; then
+		    MAXIMA_VERSION=$OPTARG
+		  else
+		    MAXIMA_VERSION=`echo "$OPTARG" | sed 's/version=//'`
+		  fi
+		  if [ -z "$MAXIMA_VERSION" ]; then
+		    list_versions
+		    exit
+		  fi
+		  ;;
+      b | batch=*)
+		  if [ "$opt" = "b" ]; then
+		    batch_file=$OPTARG
+		  else
+		    batch_file=`echo "$OPTARG" | sed 's/batch=//'`
+		  fi
+		  batch_cmd="batch(\"$batch_file\");quit();"
+		  ;;
+      batch-lisp=*)
+		    batch_lisp_file=`echo "$OPTARG" | sed 's/batch-lisp=//'`
+		    batch_cmd="quit();"
+		    ;;
+      batch-string=*)
+		      batch_string=`echo "$OPTARG" | sed 's/batch-string=//'`
+		      batch_cmd="$batch_string"
+		      ;;
+      verbose)
+	       verbose=true
+	       ;;
+      *)
+	 echo "Option $1 not recognized" 1>&2
+	 usage
+	 exit 1
+	 ;;
+    esac
+  done
+}
+
+if [ -f "$HOME/.maxima/maximarc" ]; then
+  . "$HOME/.maxima/maximarc"
 fi
+process_args "$@"
+setup_vars
 
 LISPTYPE=$MAXIMA_LISP
 export LISPTYPE
-exec $MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp -run $MAXIMA_VERPKGLIBDIR/binary-$LISPTYPE/maxima
+command="$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp -run $MAXIMA_VERPKGLIBDIR/binary-$LISPTYPE/maxima"
+if [ -n "$batch_lisp_file" ]; then
+  command="$command -i $batch_lisp_file"
+fi
+if [ -n "$batch_cmd" ]; then
+  if [ "$verbose" = "true" ]; then
+    echo "echo \"$batch_cmd\" | exec $command"
+  fi
+  echo "$batch_cmd" | exec $command
+else
+  if [ "$verbose" = "true" ]; then
+    echo "$command"
+  fi
+  exec $command
+fi

@@ -26,6 +26,10 @@ clean-clisp:
                 rm -f `ls -1 | grep -v maxima.mem`
 distclean-clisp:
 	rm -rf binary-clisp
+clisp-depends.mk: maxima.system
+	LISPTYPE=clisp ; export LISPTYPE ;\
+	$(RUNLISP) -i ../lisp-utils/defsystem -x '(load "../lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-clisp/maxima.mem" "clisp-depends.mk")'
+include clisp-depends.mk
 endif
 
 if CMUCL
@@ -52,6 +56,10 @@ clean-cmucl:
                 rm -f `ls -1 | grep -v maxima.core`
 distclean-cmucl:
 	rm -rf binary-cmucl
+cmucl-depends.mk: maxima.system
+	LISPTYPE=cmucl ; export LISPTYPE ;\
+	$(RUNLISP) -i ../lisp-utils/defsystem -x '(load "../lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-cmucl/maxima.core" "cmucl-depends.mk")'
+include cmucl-depends.mk
 endif
 
 if GCL
@@ -79,6 +87,10 @@ clean-gcl:
                 rm -f `ls -1 | grep -v maxima`
 distclean-gcl:
 	rm -rf binary-gcl
+gcl-depends.mk: maxima.system
+	LISPTYPE=gcl ; export LISPTYPE ;\
+	$(RUNLISP) -x '(load "../lisp-utils/defsystem.lisp")(load "../lisp-utils/make-depends.lisp")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-gcl/maxima" "gcl-depends.mk")'
+include gcl-depends.mk
 endif
 
 echo_%:
