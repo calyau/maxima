@@ -63,9 +63,9 @@ metricpre : 	[[Y,10^24,4],[Z,10^21,4],[E,10^18,4],[P,10^15,3],[T,10^12,3],
 
 /* Seven Mutually Independent Base Quantities 
 
-  The globalbaseunitlist maintains a list of all quantities considered to be
+  The globalbaseunitlisting maintains a list of all quantities considered to be
   Base Quantities.  This means all other units result from combinations of 
-  these units.  The list associated with each quantity is named %quantitylist
+  these units.  The list associated with each quantity is named %quantitylisting
   and is structured as follows:
    
    -  The first unit in each list is called the pivot unit. All other units
@@ -91,18 +91,18 @@ metricpre : 	[[Y,10^24,4],[Z,10^21,4],[E,10^18,4],[P,10^15,3],[T,10^12,3],
 
 */
 
-globalbaseunitlist : [%length,%mass,%time,%current,%temperature,
+globalbaseunitlisting : [%length,%mass,%time,%current,%temperature,
 %amount_of_substance,%luminous_intensity];
 
 /*Length */
-%lengthlist : [[[m,meter,meters],1,m],[[%in,inch,inches],0.0254,e]];
+%lengthlisting : [[[m,meter,meters],1,m],[[%in,inch,inches],0.0254,e]];
 
 /*Mass*/
-%masslist : [[[kg,kilogram,kilograms],1,0],[[g,gram,grams],1/1000,m],
+%masslisting : [[[kg,kilogram,kilograms],1,0],[[g,gram,grams],1/1000,m],
 [[gr,grain,grains],0.06479891,e]];
 
 /*Time*/
-%timelist : [[[s,second,seconds],1,m],[[%min,minute,minutes],1/60,e]];
+%timelisting : [[[s,second,seconds],1,m],[[%min,minute,minutes],1/60,e]];
 
 /*Electric Current*/
 %current : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
@@ -122,24 +122,25 @@ globalbaseunitlist : [%length,%mass,%time,%current,%temperature,
    The structure of these lists is slightly different from the Base
    Quantities.  The first entry in eacy list describes the Derived Quantity 
    in terms of the relevant Base Quantities, using the pivot unit of the
-   Base Quantities. After that, the structure is the same as Base Quantity
-   lists. globalderivedunitslist lists all derived quantities known to
-   Maxima.  A second global listing, called globalderivedunitlist_use, is
+   Base Quantities. It is a list of two entries, the definition in abbreviated
+   units and fullnames. After that, the structure is the same as Base Quantity
+   lists. globalderivedunitslisting lists all derived quantities known to
+   Maxima.  A second global listing, called globalderivedunitlisting_use, is
    defined using the following structure:  [rank,quanitiy].  rank is
-   a numerical value which allows globalderivedunitlist to be sorted. This
+   a numerical value which allows globalderivedunitlisting to be sorted. This
    is necessary in order to ensure that the simplification rules are defined
    in the correct order.  This list is created automatically on package
    load, and updated if a user defines a new quantity.*/
 
-globalderivedunitlist:[[%volume],[%frequency],[%force],[%pressure],
-[%energy],[%powe%electric_charge],[%electric_potential_difference],
-[%capacitance],[%resistance],[%conductance],[%magnetic_flux],
-[%magnetic_flux_%density],[%inductance],[%luminous_flux],[%illuminance],
-[%radionuclide_activity],[%absorbed_dose],[%dose_equivalent],
-[%catalytic_activity]];
+globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
+%energy,%power,%electric_charge,%electric_potential_difference,
+%capacitance,%resistance,%conductance,%magnetic_flux,
+%magnetic_flux_%density,%inductance,%luminous_flux,%illuminance,
+%radionuclide_activity,%absorbed_dose,%dose_equivalent,
+%catalytic_activity];
 
 /*Volume*/
-%volumelist : [m^3,[[L,liter,liters],1,m]];
+%volumelisting : [m^3,[[L,liter,liters],1,m]];
 
 
 /* Derived Units with Special SI Names and Symbols 
@@ -148,71 +149,72 @@ globalderivedunitlist:[[%volume],[%frequency],[%force],[%pressure],
    because they have a unique name associated with them in SI the policy
    is to have the first entry after the base quantity definition be the
    SI unit.  Overall structure is the same.  These are listed in the same
-   globalderivedunitslist as the previous Derived Units.
+   globalderivedunitslisting as the previous Derived Units.
    
    Note - depending on circumstances, it is sometimes of interest to
           have energy reported as work or heat in dimensional analysis.
 	  Need to work on this.*/
 
 /*Frequency*/
-%frequencylist : [1/s,[[Hz,hertz],1,m]];
+%frequencylisting : [1/s,[[Hz,hertz],1,m]];
 
 /*Force*/
-%forcelist : [kg*m/s^2,[[N,%Newton,Newtons],1,d],[[dyn,dyne,dynes],1*10^-5,d]];
+%forcelisting : [kg*m/s^2,[[N,%Newton,Newtons],1,d],
+[[dyn,dyne,dynes],1*10^-5,d]];
 
 /*Pressure*/
-%pressurelist : [kg/(m*s^2),[[Pa,pascal,pascals],1,d],[[torr],133.32239,d]];
+%pressurelisting : [kg/(m*s^2),[[Pa,pascal,pascals],1,d],[[torr],133.32239,d]];
 
 /*Energy, Work, Quantity of Heat */
-%energylist : [kg*m^2/s^2,[[J,joule,joules],1,m],
+%energylisting : [kg*m^2/s^2,[[J,joule,joules],1,m],
 [[eV,electron_volt,electron_volts],1.6021765*10^-19,m]];
 
 /*Power, Radiant */
-%powerlist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%powerlisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Electric Charge, Quantity of Electricity*/
-%electric_chargelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%electric_chargelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Electric Potential Difference, Electromotive Force */	
-%electric_potential_differencelist : [baseunitexpr,[[a,aa,aaa],0,eee],
+%electric_potential_differencelisting : [baseunitexpr,[[a,aa,aaa],0,eee],
 [[b,bb,bbb],0,eee]];
 
 /*Capacitance*/
-%capacitancelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%capacitancelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Electric Resistance*/
-%resistancelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%resistancelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Electric Conductance*/
-%conductancelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%conductancelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Magnetic Flux*/
-%magnetic_fluxlist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%magnetic_fluxlisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Magnetic Flux Density*/
-%magnetic_flux_densitylist : [baseunitexpr,[[a,aa,aaa],0,eee],
+%magnetic_flux_densitylisting : [baseunitexpr,[[a,aa,aaa],0,eee],
 [[b,bb,bbb],0,eee]];
 
 /*Inductance*/
-%inductancelist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%inductancelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Luminous Flux*/
-%luminous_fluxlist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%luminous_fluxlisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Illuminance */
-%illuminance : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%illuminance_listing : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Activity (of a radionuclide)*/
-%radionuclide_activity : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%radionuclide_activitylisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Absorbed Dose, Specific Energy (imparted), Kerma */
-%absorbed_doselist : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%absorbed_doselisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Dose Equivalent*/
-%dose_equivalent : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%dose_equivalentlisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 /*Catalytic Activity */
-%catalytic_activity : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%catalytic_activitylisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
 
 
 /*===================== Package Functions ====================*/ 
@@ -247,8 +249,8 @@ checkforuniqueness(list1) := block([i,j,return],
 	 )),
    return);
 
-/* Add all desired metric quantities into %quantitylist_use lists.  
-   %quantitylist_use lists are the one actually used in functions.  This allows
+/* Add all desired metric quantities into %quantitylisting_use lists.  
+   %quantitylisting_use lists are the one actually used in functions.  This allows
    the program to regenerate a new metric list from "original" package lists
    in order to avoid multiple definitons of metric prefix quantities.  An
    exception is made for kg, kilogram, and kilograms becasue they are defined
@@ -258,9 +260,9 @@ checkforuniqueness(list1) := block([i,j,return],
 metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 				  unitlistusename,tempentry],
    modedeclare([i,j,k,l], fixnum),
-   for i : 1 thru length(globalbaseunitlist) do  (
-     unitlistname : concat(globalbaseunitlist[i],list),
-     unitlistusename : concat(globalbaseunitlist[i],list_use),
+   for i : 1 thru length(globalbaseunitlisting) do  (
+     unitlistname : concat(globalbaseunitlisting[i],listing),
+     unitlistusename : concat(globalbaseunitlisting[i],listing_use),
      unitlistusename :: ev(unitlistname),
      for j : 1 thru length(ev(unitlistname)) do  (
         if (?equal(unitlistname[j][3],m)) then (
@@ -282,9 +284,9 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 	  if not(?equal(tempentry[1][1],0)) then (    
 	  unitlistusename :: append(ev(unitlistusename),[tempentry])))))),
 	  
-   for i : 1 thru length(globalderivedunitlist_use) do  (
-     unitlistname : concat(globalderivedunitlist_use[i][2],list),
-     unitlistusename : concat(globalderivedunitlist_use[i][2],list_use),
+   for i : 1 thru length(globalderivedunitlisting) do  (
+     unitlistname : concat(globalderivedunitlisting[i],listing),
+     unitlistusename : concat(globalderivedunitlisting[i],listing_use),
      unitlistusename :: ev(unitlistname),
      for j : 2 thru length(ev(unitlistname)) do  (
         if (?equal(unitlistname[j][3],m)) then (
@@ -313,20 +315,20 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
    
 maketoquantitiesruleset() := block([i,j,k,b,unitlistname],
     modedeclare([i,j,k], fixnum),
-    for i : 1 thru length(globalbaseunitlist) do  (
-     unitlistname : concat(globalbaseunitlist[i],list_use),
+    for i : 1 thru length(globalbaseunitlisting) do  (
+     unitlistname : concat(globalbaseunitlisting[i],listing_use),
      for j : 1 thru length(ev(unitlistname)) do  (
        for k : 1 thru length(unitlistname[j][1]) do (
-         unitlet([unitlistname[j][1][k],globalbaseunitlist[i]],
+         unitlet([unitlistname[j][1][k],globalbaseunitlisting[i]],
 	         toquantities)
     ))),
     
     /* j needs to start at the second entry for Derived Quantity Arrays */
-    for i : 1 thru length(globalderivedunitlist_use) do  (
-     unitlistname : concat(globalderivedunitlist_use[i][2],list_use),
+    for i : 1 thru length(globalderivedunitlisting_use) do  (
+     unitlistname : concat(globalderivedunitlisting_use[i][2],listing_use),
      for j : 2 thru length(ev(unitlistname)) do  (
        for k : 1 thru length(unitlistname[j][1]) do (
-         unitlet([unitlistname[j][1][k],globalderivedunitlist_use[i][2]],
+         unitlet([unitlistname[j][1][k],globalderivedunitlisting_use[i][2]],
 	         toquantities)
     )))
     );
@@ -356,7 +358,7 @@ isunit(candidate) := block([letrat:true,result],
 isbase(unit) :=  block([letrat:true,result,quantity],
 	/*Uses the simplify to quantity ruleset and checks if the quantity
 	  is present in the base list.*/
-	if not(lfreeof(globalbaseunitlist,
+	if not(lfreeof(globalbaseunitlisting,
 	                       letsimp(unit,toquantities))) then (
 		result : true)
 	else (
@@ -367,51 +369,53 @@ isbase(unit) :=  block([letrat:true,result,quantity],
 base(unit):= block([letrat:true,result,i,j,listname],
   	modedeclare([i,j], fixnum),
 	if not(isbase(unit)) then (
-	   listname:concat(letsimp(unit,toquantities),list_use),
+	   listname:concat(letsimp(unit,toquantities),listing_use),
 	   for i:1 thru length(ev(listname)) do (
 	     for j:1 thru length(listname[i][1]) do (
 	        if (?equal(unit,listname[i][1][j])) then (
-	            result : listname[1]*listname[i][2] ))))
+	            result : listname[1]*listname[i][2] )		    
+		    )))
 	else (
 	result : unit),
 	result);
 
 /* Returns the mks base units for a quantity.*/
 quanttomks(quantity):= block([letrat:true,result,listname],
-	listname:concat(quantity,list_use),
-	if not(lfreeof(globalbaseunitlist,quantity)) then (
+	listname:concat(quantity,listing_use),
+	if not(lfreeof(globalbaseunitlisting,quantity)) then (
             result : listname[1][1])
 	else (
-	if not(lfreeof(globalderivedunitlist,quantity)) then (
+	if not(lfreeof(globalderivedunitlisting,quantity)) then (
 	    result : listname[1])
 	else (
-	error ("Quantity not found")),
+	error ("Quantity not found"))),
 	result);
-	
+
 /* This utility makes a list of quantities from a list of units.  It is
-   used to validate input for setunits. */
+   used to validate input for setunits, and also in the derived quantity
+   ruleset process. */
 makequantlist(unitlist) := block([current_let_rule_package : toquantities, 
-                                  return], 
-         return : map('letsimp,unitlist));
+                                  return1], 
+         return1 : map('letsimp,unitlist));
 
 
 /* Handles creation of rules for base units */
-baserules(currentunitlist,unitlistname,unitrules):= 
+baserules(currentunitlist,unitlistname,baseunitrules):= 
  block([letrat:true,i,j,a,b,fakerule],
-   killruleset(unitrules),
-   unitlet([fakerule,fakerule],unitrules),
+   killruleset(baseunitrules),
+   unitlet([fakerule,fakerule],baseunitrules),
    for i : 1 thru length(ev(unitlistname)) do (
      if lfreeof(unitlistname[i][1],currentunitlist[1]) then (
        for j : 1 thru length(unitlistname[i][1]) do (
          if ?equal(abbrevsimp,1) then (
 	     unitlet([unitlistname[i][1][j],
 	        unitlistname[i][2]/currentunitlist[2]*
-		first(currentunitlist[1])],unitrules)
+		first(currentunitlist[1])],baseunitrules)
 	 )else(
 	 if ?equal(abbrevsimp,1) then (
 	     unitlet([unitlistname[i][1][j],
 	        unitlistname[i][2]/currentunitlist[2]*
-		last(currentunitlist[1])],unitrules)
+		last(currentunitlist[1])],baseunitrules)
 	 )else(
 	     a : length(unitlistname[i][1]),
 	     b : length(currentlistname[1]),
@@ -419,11 +423,11 @@ baserules(currentunitlist,unitlistname,unitrules):=
 	     if (?equal(a,b) or ?equal(j,1)) then (
 	         unitlet([unitlistname[i][1][j],
 		    unitlistname[i][2]/currentunitlist[2]*
-		    currentunitlist[1][j]],unitrules)
+		    currentunitlist[1][j]],baseunitrules)
 	     )else(
 		 unitlet([unitlistname[i][1][j],
 		    unitlistname[i][2]/currentunitlist[2]*
-		    last(currentunitlist[1])],unitrules)
+		    last(currentunitlist[1])],baseunitrules)
 	     ))
 	))))
 );
@@ -446,56 +450,54 @@ new quantity this check is performed until a rank is found where this does
 not happen.  In that case, the new quantity is assigned the rank at which
 no changes occurred due to substitution.  If the highest ranking quantity in the
 array is contained in the new quantity, the new quantity is assigned rank+1 and
-becomes the new highest ranking unit.*/
+becomes the new highest ranking unit.  Call metricexpandall first.*/
 
 rankquant(newquantity, listsanshighranks) := block([letrat : true,
-   i,j,highnum,nxthighnum,lower,lowerin,return1,lowerpart,higherpart,
+   i,j,highnum,lower,lowerin,return1,lowerpart,higherpart,
    highestrank],
-   killunitrules(testfornew),
-   unitlet([quantomks(newquantity),newquantity],testfornew),
+   kill(testfornew),
+   unitlet([quanttomks(newquantity),newquantity],testfornew),
    listsanshighranks : reverse(sort(listsanshighranks)),
    highestrank : listsanshighranks[1][1],
    i : 1,
    highnum : 0,
-   lower : false
-   while ?equal(listsanshighranks[i][1],highestrank) do (
+   lower : true,
+   while (?is(i<=length(listsanshighranks)) and 
+          ?equal(listsanshighranks[i][1],highestrank)) do (
       highnum : highnum + 1,
-      i : i + 1)
+      i : i + 1),
    for i : 1 thru highnum do (
-      if not(?equal(
-         letsimp(listsanshighranks[i],testfornew),listsanshighranks[i])) then (
-         lower : true)
+     if (?equal(ratsimp(letsimp(quanttomks(listsanshighranks[i][2]),testfornew)/
+                        quanttomks(listsanshighranks[i][2])),1)) then (
+         lower : false)
    ),
-   if (lower and highestrank : 1) then (
-      for i : 1 thru length(listsanshighranks) do(
-        listsanshighranks[i][1] : listsanshighranks[i][1] + 1)
+   if (lower and ?equal(highestrank,1)) then (
+     for i : 1 thru length(listsanshighranks) do(
+        listsanshighranks[i][1] : listsanshighranks[i][1] + 1),
       return1 : append(listsanshighranks,[[1,newquantity]])
    ) else (
-   if (lower) then (
-      lowerpart : rankquant(rank-1,newquantity,rest(listsanshighranks,highnum)),
+   if lower then (
+      lowerpart : rankquant(newquantity,rest(listsanshighranks,highnum)),
       higherpart : rest(listsanshighranks,highnum-length(listsanshighranks)),
       if ?equal(lowerpart[1][1],last(higherpart)[1]) then (
         for i : 1 thru length(higherpart) do (
-	  higherpart[i][1] : higherpart[i] + 1))
+	  higherpart[i][1] : higherpart[i][1] + 1)),
       return1 : append(higherpart,lowerpart)
    ) else (
    if not(lower) then (
-      i : highnum+1,
-      nxthighnum : 0
-      inlower : false,
-      while ?equal(listsanshighranks[i][1],highestrank-1) do (
-         nxthighnum : nxthighnum + 1,
-         i : i + 1)
-      for i : highnum+1 thru nxthighnum do (
-         if not(?equal(letsimp(listsanshighranks[i],testfornew),
-	                       listsanshighranks[i])) then (
-           inlower : true))
-      if inlower then (
+      i : 1,
+      lowerin : true,
+      for i : 1 thru highnum do (
+          if (?equal(ratsimp(ratsubst('test,quanttomks(listsanshighranks[i][2]),quanttomks(newquantity))/
+	           quanttomks(newquantity)),1)) then (
+           lowerin : false)),
+      if lowerin then (
          return1 : append([[highestrank+1,newquantity]],listsanshighranks)
       ) else (
          return1 : append([[highestrank,newquantity]],listsanshighranks))
     ))),
     return1);
+    
       
 rankquants(quantityarray) := block([letrat : true, ranknew, rankmax, 
                                    currentrank,i,j,returna],
@@ -517,36 +519,34 @@ de-simplification back to end user units, and in the process allow proper
 preservation of the choice of short vs. long names.  baserules might
 be needed for this to work, but probably not.*/
 
-derivedrules(currentunitlist,unitlistname,unitrules):= 
- block([letrat:true,i,j,a,b,fakerule],
-   killruleset(unitrules),
-   unitlet([fakerule,fakerule],unitrules),
-   for i : 1 thru length(ev(unitlistname)) do (
-     if lfreeof(unitlistname[i][1],currentunitlist[1]) then (
-       for j : 1 thru length(unitlistname[i][1]) do (
-         if ?equal(abbrevsimp,1) then (
-	     unitlet([unitlistname[i][1][j],
-	        unitlistname[i][2]/currentunitlist[2]*
-		first(currentunitlist[1])],unitrules)
-	 )else(
-	 if ?equal(abbrevsimp,1) then (
-	     unitlet([unitlistname[i][1][j],
-	        unitlistname[i][2]/currentunitlist[2]*
-		last(currentunitlist[1])],unitrules)
-	 )else(
-	     a : length(unitlistname[i][1]),
-	     b : length(currentlistname[1]),
-	     
-	     if (?equal(a,b) or ?equal(j,1)) then (
-	         unitlet([unitlistname[i][1][j],
-		    unitlistname[i][2]/currentunitlist[2]*
-		    currentunitlist[1][j]],unitrules)
-	     )else(
-		 unitlet([unitlistname[i][1][j],
-		    unitlistname[i][2]/currentunitlist[2]*
-		    last(currentunitlist[1])],unitrules)
-	     ))
-	))))
+derivedrules(currentunitlist):= block([letrat:true,i,j,a,b,fakerule],
+   killruleset(derivedsimpunitrules),
+   killruleset(derivedexpandunitrules),
+   unitlet([fakerule,fakerule],derivedsimpunitrules),
+   unitlet([fakerule,fakerule],derivedexpandunitrules),
+   quantlist1 : makequantlist(unitlist),
+   for a : 1 thru length(globalderivedunitlisting_use) do (
+    unitlistname : concat(globalderivedunitlisting_use[a][2],listing_use),
+    for i : 2 thru length(ev(unitlistname)) do (
+      for j : 1 thru length(unitlistname[i][1]) do (
+      unitlet([unitlistname[i][1][j], base(unitlistname[i][1][j])],derivedsimpunitrules)
+	   ))),
+   for a : 1 thru length(globalderivedunitlisting_use) do (
+    if lfreeof(dontuselist,globalderivedunitlisting_use[a][2]) then (
+      unitlistname : concat(globalderivedunitlisting_use[a][2],listing_use),
+      found : 0,
+      i : 1,
+      while not(?equal(found,0)) and ?is( i <= length(quantlist1)) do (
+	  if ?equal(globalderivedunitlisting_use[a][2],quantlist1[i]) then (found : i)),
+      if not(?equal(found,0)) then (
+        for i : 2 thru length(ev(unitlistname)) do (
+         if not(lfreeof(unitlist[found],unitlistname[i][1])) then (
+         unitlet([unitlistname[1][1],unitlistname[i][1][1]/unitlistname[i][2]],derivedexpandunitrules)))
+      ) else (
+      error("Could not find unit definition."))
+   ) else (
+   unitlet([unitlistname[1][1],unitlistname[2][1][1]],derivedexpandunitrules))
+   )
 );
 
 
@@ -560,7 +560,7 @@ showabbr(fullunitname):= block([letrat:true,i,j,unittype,unitlistname,
      (error ("Input is not a unit.  To define your own unit, use the addunit command."),unit)
    ) else (
       unittype : letsimp(fullunitname,toquantities),
-      unitlistname : concat(unittype,list_use),
+      unitlistname : concat(unittype,listing_use),
       flag : 0, i:0,
       if not(isbase(fullunitname)) then (i : i+1),
       while ?equal(flag,0) do(
@@ -579,7 +579,7 @@ showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
      (error ("Input is not a unit.  To define your own unit, use the addunit command."),unit)
    ) else (
       unittype : letsimp(abbr,toquantities),
-      unitlistname : concat(unittype,list_use),
+      unitlistname : concat(unittype,listing_use),
       flag : 0, i:0,
       if not(isbase(abbr)) then (i : i+1),
       while ?equal(flag,0) do(
@@ -614,7 +614,7 @@ setunits(units):= block([letrat:true,i,j,unittype,unitlistname,
   else (
   if (isunit(units)) then (
       unittype : letsimp(units,toquantities),
-      unitlistname : concat(unittype,list_use),
+      unitlistname : concat(unittype,listing_use),
       unitrules : concat(unittype,'rules),
       flag : 0, i:0,
       while ?equal(flag,0) do(
@@ -627,7 +627,7 @@ setunits(units):= block([letrat:true,i,j,unittype,unitlistname,
       if isbase(units) then (
          baserules(currentunitlist,unitlistname,unitrules)
       ) else (
-         derivedrules(currentunitlist,unitlistname,unitrules)
+         derivedrules(currentunitlist)
       )
    )));
 
@@ -643,14 +643,15 @@ convert(expression,desiredunits):=
    on to the default lists*/
 %unitexpand : 2;
 
+/* Places all relevant metric definitons into the %quantitylist lists.*/
+metricexpandall(%unitexpand);
+
 /* Creates global list of derived quantities with rank assigned to each
 quantity to allow for proper simplification.  Remember for addunit command
 and any similar commands to add a new quantity to the globalderivedunitlist,
 then recreate the use list. */
-globalderivedunitlist_use : rankquants(globalderivedunitlist);
+globalderivedunitlisting_use : rankquants(globalderivedunitlisting);
 
-/* Places all relevant metric definitons into the %quantitylist lists.*/
-metricexpandall(%unitexpand);
 
 /* Variable to control how simplification behaves with respect to 
    fullnames and abbreviations.  The default, 0, simplifies abbrev. to
