@@ -117,10 +117,6 @@
 
 (defun $describe(x &aux (*info-paths* *info-paths*) have)
   (setq x ($sconcat x))
-  (setq  *INFO-PATHS*
-         (cons  (concatenate 'string *maxima-directory*
-                             "info/")
-                *INFO-PATHS*))
   (if (and (find-package "SI")
            (fboundp (intern "INFO" "SI")))
       (return-from $describe (funcall (intern "INFO" "SI") x
