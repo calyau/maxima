@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(src/macsys.lisp)
 
-AM_INIT_AUTOMAKE(maxima,5.9.0)
+AM_INIT_AUTOMAKE(maxima,5.9.0pre-cvs)
 
 explicit_lisp=false
 
@@ -30,8 +30,6 @@ if test x"${clisp}" = xtrue ; then
 	fi
 fi
 
-AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
-
 dnl n.b. cmucl_default_name is hardcoded in "with" message
 cmucl_default_name=lisp
 AC_ARG_ENABLE(cmucl,[--enable-cmucl                   Use CMUCL],
@@ -55,8 +53,6 @@ if test x"${cmucl}" = xtrue ; then
 	fi
 fi
 	
-AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
-
 dnl n.b. gcl_default_name is hardcoded in "with" message
 gcl_default_name=gcl
 AC_ARG_ENABLE(gcl,[--enable-gcl                     Use GCL],
@@ -78,7 +74,6 @@ if test x"${gcl}" = xtrue ; then
 		AC_MSG_ERROR(gcl executable ${GCL_NAME} not found in PATH)
 	fi
 fi
-AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 
 if test x"${explicit_lisp}" = xfalse ; then
 	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
@@ -98,6 +93,10 @@ if test x"${explicit_lisp}" = xfalse ; then
 		fi
 	fi
 fi
+
+AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
+AM_CONDITIONAL(GCL, test x$gcl = xtrue)
+AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
 	
 AC_ARG_WITH(default-lisp,
 	[--with-default-lisp=<lisp>       Set default lisp implementation to <lisp>],
@@ -149,7 +148,7 @@ AC_SUBST(CLISP_NAME)
 AC_SUBST(CMUCL_NAME)
 AC_SUBST(GCL_NAME)
 AC_SUBST(DEFAULTLISP)
-AC_OUTPUT(Makefile src/Makefile src/maxima lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile)
+AC_OUTPUT(Makefile src/Makefile src/maxima src/autoconf-variables.lisp lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile)
 
 echo
 echo "Summary:"
