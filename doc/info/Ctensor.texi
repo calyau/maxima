@@ -6,12 +6,12 @@
 @node Introduction to Ctensor, Definitions for Ctensor, Ctensor, Ctensor
 @section Introduction to Ctensor
 
- - Component Tensor Manipulation Package.  To use the CTENSR
-package, type TSETUP(); which automatically loads it from within
-Maxima (if it is not already loaded) and then prompts the user to
-input his coordinate system.  The user is first asked to specify the
-dimension of the manifold. If the dimension is 2, 3 or 4 then the list
-of coordinates defaults to [X,Y], [X,Y,Z] or [X,Y,Z,T] respectively.
+ - Component Tensor Manipulation Package.  To use the CTENSOR
+package, type load(ctensor).
+To begin an interactive session with CTENSOR, type csetup().  You are
+first asked to specify the dimension of the manifold. If the dimension
+is 2, 3 or 4 then the list of coordinates defaults to [x,y], [x,y,z]
+or [x,y,z,t] respectively.
 These names may be changed by assigning a new list of coordinates to
 the variable OMEGA (described below) and the user is queried about
 this.
@@ -29,213 +29,687 @@ deriving Einstein's vacuum equations (which lead to the Schwarzschild
 solution) as an example. Many of the functions in CTENSR will be
 displayed for the standard metric as examples.
 @example
-(%i2) TSETUP();
+(%i1) load(ctensor);
+
+(%o1)      /usr/local/lib/maxima/share/tensor/ctensor.mac
+(%i2) csetup();
 
 Enter the dimension of the coordinate system: 
 4;
 Do you wish to change the coordinate names?
-N;
+n;
 Do you want to
 1. Enter a new metric?
+
 2. Enter a metric from a file?
+
 3. Approximate a metric with a Taylor series?
-Enter 1, 2 or 3 
 1;
+
 Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 Answer 1, 2, 3 or 4
 1;
-Row 1 Column 1:  A;
-Row 2 Column 2:  X^2;
-Row 3 Column 3:  X^2*SIN(Y)^2;
-Row 4 Column 4:  -D;
+Row 1 Column 1:
+a;
+Row 2 Column 2:
+x^2;
+Row 3 Column 3:
+x^2*sin(y)^2;
+Row 4 Column 4:
+-d;
+
 Matrix entered.
 Enter functional dependencies with the DEPENDS function or 'N' if none 
-DEPENDS([A,D],X);
+depends([a,d],x);
 Do you wish to see the metric? 
-Y;
-                          [ A  0       0        0  ]
+y;
+                          [ a  0       0        0  ]
                           [                        ]
                           [     2                  ]
-                          [ 0  X       0        0  ]
+                          [ 0  x       0        0  ]
                           [                        ]
                           [         2    2         ]
-                          [ 0  0   X  SIN (Y)   0  ]
+                          [ 0  0   x  sin (y)   0  ]
                           [                        ]
-                          [ 0  0       0       - D ]
-Do you wish to see the metric inverse? 
-N;
+                          [ 0  0       0       - d ]
 
+(%o2)                                done
+(%i3) christof(mcs);
+
+                                            a
+                                             x
+(%t3)                          mcs        = ---
+                                  1, 1, 1   2 a
+
+                                             1
+(%t4)                           mcs        = -
+                                   1, 2, 2   x
+
+                                             1
+(%t5)                           mcs        = -
+                                   1, 3, 3   x
+
+                                            d
+                                             x
+(%t6)                          mcs        = ---
+                                  1, 4, 4   2 d
+
+                                              x
+(%t7)                          mcs        = - -
+                                  2, 2, 1     a
+
+                                           cos(y)
+(%t8)                         mcs        = ------
+                                 2, 3, 3   sin(y)
+
+                                               2
+                                          x sin (y)
+(%t9)                      mcs        = - ---------
+                              3, 3, 1         a
+
+(%t10)                   mcs        = - cos(y) sin(y)
+                            3, 3, 2
+
+                                            d
+                                             x
+(%t11)                         mcs        = ---
+                                  4, 4, 1   2 a
+
+(%o11)                               done
 
 @end example
+
 @c end concepts Ctensor
 @node Definitions for Ctensor,  , Introduction to Ctensor, Ctensor
-@section Definitions for Ctensor
-@c @node CHR1
+
+@section Initialization and setup
+
+csetup
+@c @node csetup
 @c @unnumberedsec phony
-@defun CHR1 ([i,j,k])
-yields the Christoffel symbol of the first kind via the
-definition
-@example
-       (g      + g      - g     )/2 .
-         ik,j     jk,i     ij,k
-@end example
-@noindent
-To evaluate the Christoffel symbols for a particular metric, the
-variable METRIC must be assigned a name as in the example under CHR2.
+@defun csetup ()
+A function in the CTENSOR (Component Tensor Manipulation) package
+which initializes the package and allows the user to enter a metric
+interactively. See CTENSOR for more details.
+@end defun
+
+@c @node cmetric
+@c @unnumberedsec phony
+@defun cmetric ([dis])
+A function in the CTENSOR (Component Tensor Manipulation) package
+that computes the metric inverse and sets up the package for
+further calculations.
+If @code{cframe_flag} is false, the function computes the inverse metric
+ug from the (user-defined) matrix @code{lg}. The metric determinant is
+also computed and stored in the variable @code{gdet}. Furthermore, the
+package determines if the metric is diagonal and sets the value
+of @code{diagmetric} accordingly. If the optional argument @code{dis}
+is present and not equal to false, the user is prompted to see
+the metric inverse.
+If @code{cframe_flag} is true, the function expects that the values of
+@code{fri} (the inverse frame matrix) and @code{lfg} (the frame metric) are
+defined. From these, the frame matrix @code{fr} and the inverse frame
+metric @code{ufg} are computed.
 
 @end defun
-@c @node CHR2
+
+@c @node ct_coordsys
 @c @unnumberedsec phony
-@defun CHR2 ([i,j],[k])
-yields the Christoffel symbol of the second kind
-defined by the relation
-@example
-                       ks
-    CHR2([i,j],[k]) = g    (g      + g      - g     )/2
-                             is,j     js,i     ij,s
-@end example
+@defun ct_coordsys (coordinate_system,[extra_args])
+Sets up a predefined coordinate system and metric. The argument
+coordinate_system can be one of the following symbols:
+
+*** TO BE WRITTEN ***
+
 @end defun
-@c @node CHRISTOF
+
+@c @node init_ctensor
 @c @unnumberedsec phony
-@defun CHRISTOF (arg)
-A function in the CTENSR (Component Tensor
+@defun init_ctensor ()
+Initializes the CTENSOR package.
+
+*** TO BE WRITTEN ***
+@end defun
+
+
+@section The tensors of curved space
+
+The main purpose of the CTENSOR package is to compute the tensors
+of curved space(time), most notably the tensors used in general
+relativity.
+
+When a metric base is used, CTENSOR can compute the following tensors:
+
+@example
+
+ lg  -- ug
+   \      \
+    lcs -- mcs -- ric -- uric 
+              \      \       \
+               \      tracer - ein -- lein
+                \
+                 riem -- lriem -- weyl
+                     \
+                      uriem
+
+
+@end example
+
+CTENSOR can also work using moving frames. When @code{cframe_flag} is
+set to @code{true}, the following tensors can be calculated:
+
+@example
+
+ lfg -- ufg
+     \
+ fri -- fr -- lcs -- mcs -- lriem -- ric -- uric
+      \                       |  \      \       \
+       lg -- ug               |   weyl   tracer - ein -- lein
+                              |\
+                              | riem
+                              |
+                              \uriem
+
+@end example
+
+@c @node christof
+@c @unnumberedsec phony
+@defun christof (dis)
+A function in the CTENSOR (Component Tensor
 Manipulation) package.  It computes the Christoffel symbols of both
-kinds.  The arg determines which results are to be immediately
+kinds.  The argument @code{dis} determines which results are to be immediately
 displayed.  The Christoffel symbols of the first and second kinds are
-stored in the arrays LCS[i,j,k] and MCS[i,j,k] respectively and
+stored in the arrays @code{lcs[i,j,k]} and @code{mcs[i,j,k]} respectively and
 defined to be symmetric in the first two indices. If the argument to
-CHRISTOF is LCS or MCS then the unique non-zero values of LCS[i,j,k]
-or MCS[i,j,k], respectively, will be displayed. If the argument is ALL
-then the unique non-zero values of LCS[i,j,k] and MCS[i,j,k] will be
-displayed.  If the argument is FALSE then the display of the elements
-will not occur. The array elements MCS[i,j,k] are defined in such a
+@code{christof} is @code{lcs} or @code{mcs} then the unique non-zero values of @code{lcs[i,j,k]}
+or @code{mcs[i,j,k]}, respectively, will be displayed. If the argument is @code{all}
+then the unique non-zero values of @code{lcs[i,j,k]} and @code{mcs[i,j,k]} will be
+displayed.  If the argument is @code{false} then the display of the elements
+will not occur. The array elements @code{mcs[i,j,k]} are defined in such a
 manner that the final index is contravariant.
+@end defun
+
+@c @node ricci
+@c @unnumberedsec phony
+@defun ricci (dis)
+A function in the CTENSOR (Component Tensor
+Manipulation) package. @code{ricci} computes the covariant (symmetric)
+components @code{ric[i,j]} of the Ricci tensor.  If the argument @code{dis} is @code{true},
+then the non-zero components are displayed.
+
+@c @node uricci
+@c @unnumberedsec phony
+@defun uricci (dis)
+Tensor package) This function first computes the
+covariant components @code{ric[i,j]} of the Ricci tensor.
+Then the mixed Ricci tensor is computed using the
+contravariant metric tensor.  If the value of the argument @code{dis}
+is @code{true}, then these mixed components, @code{uric[i,j]} (the index i is
+covariant and the index j is contravariant), will be displayed
+directly.  Otherwise, @code{ricci(false)} will simply compute the entries
+of the array @code{uric[i,j]} without displaying the results.
 
 @end defun
-@c @node COVDIFF
-@c @unnumberedsec phony
-@defun COVDIFF (exp,v1,v2,...)
-yields the covariant derivative of exp with
-respect to the variables vi in terms of the Christoffel symbols of the
-second kind (CHR2).  In order to evaluate these, one should use
-EV(exp,CHR2).
+
+*** TO BE WRITTEN ***
 
 @end defun
-@c @node CURVATURE
+@c @node scurvature
 @c @unnumberedsec phony
-@defun CURVATURE ([i,j,k],[h])
-Indicial Tensor Package) yields the Riemann
-curvature tensor in terms of the Christoffel symbols of the second
-kind (CHR2).  The following notation is used:
-@example
-               h            h           h        %1        h
-      CURVATURE     = - CHR2      - CHR2     CHR2    + CHR2
-               i j k        i k,j       %1 j     i k       i j,k
-                              h         %1
-                        + CHR2      CHR2
-                              %1 k      i j
-@end example
+@defun scurvature ()
+
+returns the scalar curvature (obtained by contracting
+the Ricci tensor) of the Riemannian manifold with the given metric.
+
 @end defun
-@c @node DIAGMETRIC
+@c @node einstein
 @c @unnumberedsec phony
-@defvar DIAGMETRIC
- default:[] - An option in the CTENSR (Component Tensor
-Manipulation) package.  If DIAGMETRIC is TRUE special routines compute
-all geometrical objects (which contain the metric tensor explicitly)
-by taking into consideration the diagonality of the metric. Reduced
-run times will, of course, result. Note: this option is set
-automatically by TSETUP if a diagonal metric is specified.
-
-@end defvar
-@c @node DIM
-@c @unnumberedsec phony
-@defvar DIM
- default:[4] - An option in the CTENSR (Component Tensor
-Manipulation) package.  DIM is the dimension of the manifold with the
-default 4. The command DIM:N; will reset the dimension to any other
-integral value.
-
-@end defvar
-@c @node EINSTEIN
-@c @unnumberedsec phony
-@defun EINSTEIN (dis)
-A function in the CTENSR (Component Tensor
-Manipulation) package.  EINSTEIN computes the mixed Einstein tensor
+@defun einstein (dis)
+A function in the CTENSOR (Component Tensor
+Manipulation) package.  @code{einstein} computes the mixed Einstein tensor
 after the Christoffel symbols and Ricci tensor have been obtained
-(with the functions CHRISTOF and RICCICOM).  If the argument dis is
-TRUE, then the non-zero values of the mixed Einstein tensor G[i,j]
-will be displayed where j is the contravariant index.
-RATEINSTEIN[TRUE] if TRUE will cause the rational simplification on
-these components. If RATFAC[FALSE] is TRUE then the components will
+(with the functions @code{christof} and @code{ricci}).  If the argument @code{dis} is
+@code{true}, then the non-zero values of the mixed Einstein tensor @code{ein[i,j]}
+will be displayed where @code{j} is the contravariant index.
+The variable @code{rateinstein} (default: @code{true} will cause the rational simplification on
+these components. If @code{ratfac} (default: @code{false}) is TRUE then the components will
 also be factored.
 
 @end defun
-@c @node LRICCICOM
+@c @node leinstein
 @c @unnumberedsec phony
-@defun LRICCICOM (dis)
-A function in the CTENSR (Component Tensor
-Manipulation) package.  LRICCICOM computes the covariant (symmetric)
-components LR[i,j] of the Ricci tensor.  If the argument dis is TRUE,
-then the non-zero components are displayed.
+@defun leinstein (dis)
+Covariant Einstein-tensor.
+
+*** TO BE WRITTEN ***
 
 @end defun
-@c @node MOTION
-@c @unnumberedsec phony
-@defun MOTION (dis)
-A function in the CTENSR (Component Tensor
-Manipulation) package.  MOTION computes the geodesic equations of
-motion for a given metric.  They are stored in the array EM[i].  If
-the argument dis is TRUE then these equations are displayed.
 
-@end defun
-@c @node OMEGA
+@c @node riemann
 @c @unnumberedsec phony
-@defvar OMEGA
- default:[] - An option in the CTENSR (Component Tensor
-Manipulation) package.  OMEGA assigns a list of coordinates to the
-variable. While normally defined when the function TSETUP is called,
-one may redefine the coordinates with the assignment
-OMEGA:[j1,j2,...jn] where the j's are the new coordinate names. A call
-to OMEGA will return the coordinate name list.  Also see
-DESCRIBE(TSETUP); .
+@defun riemann (dis)
+A function in the CTENSOR (Component Tensor
+Manipulation) Package.  @code{riemann} computes the Riemann curvature tensor
+from the given metric and the corresponding Christoffel symbols. The following
+index conventions are used:
 
-@end defvar
-@c @node RIEMANN
-@c @unnumberedsec phony
-@defun RIEMANN (dis)
-A function in the CTENSR (Component Tensor
-Manipulation) Package.  RIEMANN computes the Riemann curvature tensor
-from the given metric and the corresponding Christoffel symbols.  If
-dis is TRUE, the non-zero components R[i,j,k,l] will be displayed. All
-the indicated indices are covariant.  As with the Einstein tensor,
-various switches set by the user control the simplification of the
-components of the Riemann tensor.  If RATRIEMAN[TRUE] is TRUE then
-rational simplification will be done. If RATFAC[FALSE] is TRUE then
+@example
+                l      _l       _l       _l   _m    _l   _m
+ R[i,j,k,l] =  R    = |      - |      + |    |   - |    |
+                ijk     ij,k     ik,j     mk   ij    mj   ik
+@end example
+
+This notation is consistent with the notation used by the ITENSOR
+package and its @code{icurvature} function.
+If the optional argument @code{dis} is @code{true},
+the non-zero components @code{riem[i,j,k,l]} will be displayed.
+As with the Einstein tensor, various switches set by the user
+control the simplification of the components of the Riemann tensor.
+If @code{ratriemann} (default: @code{true}) is @code{true}, then
+rational simplification will be done. If @code{ratfac} (default:
+@code{false}) is @code{true} then
 each of the components will also be factored.
 
 @end defun
-@c @node TRANSFORM
+
+@c @node lriemann
 @c @unnumberedsec phony
-@defun TRANSFORM
- - The TRANSFORM command in the CTENSR package has been
-renamed to TTRANSFORM.
+@defun lriemann (dis)
+Covariant Riemann-tensor (@code{lriem[]}).
+
+*** TO BE WRITTEN ***
 
 @end defun
-@c @node TSETUP
+
+@c @node uriemann
 @c @unnumberedsec phony
-@defun TSETUP ()
-A function in the CTENSR (Component Tensor Manipulation)
-package which automatically loads the CTENSR package from within
-Maxima (if it is not already loaded) and then prompts the user to
-make use of it.  See CTENSOR (nota bene, not CTENSR) for more details.
+@defun uriemann (dis)
+returns the contravariant components of the Riemann
+curvature tensor as array elements @code{uriem[i,j,k,l]}.  These are displayed
+if @code{dis} is @code{true}.
 
 @end defun
-@c @node TTRANSFORM
+
+@c @node rinvariant
 @c @unnumberedsec phony
-@defun TTRANSFORM (matrix)
-A function in the CTENSR (Component Tensor
+@defun rinvariant ()
+*** TO BE WRITTEN ***
+Tensor package) forms the Kretchmann-invariant (@code{kinvariant}) obtained by
+contracting the tensors
+@example
+lriem[i,j,k,l]*uriem[i,j,k,l].
+@end example
+
+This object is not automatically simplified since it can be very large.
+
+@end defun
+
+@c @node weyl
+@c @unnumberedsec phony
+@defun weyl ()
+computes the Weyl conformal tensor.  If the argument @code{dis} is
+@code{true}, the non-zero components @code{weyl[i,j,k,l]} will be displayed to the
+user.  Otherwise, these components will simply be computed and stored.
+If the switch @code{ratweyl} is set to @code{true}, then the components will be
+rationally simplified; if @code{ratfac} is @code{true} then the results will be
+factored as well.
+
+@end defun
+
+@section Frame fields
+
+When the variable @code{cframe_flag} is set to true, the CTENSOR package
+performs its calculations using a moving frame.
+
+@c @node frame_bracket
+@c @unnumberedsec phony
+@defun frame_bracket (fr,fri,diagframe)
+The frame bracket (@code{fb[]}).
+
+*** TO BE WRITTEN ***
+@end defun
+
+@section Algebraic classification
+
+A new feature (as of November, 2004) of CTENSOR is its ability to
+compute the Petrov classification of a 4-dimensional spacetime metric.
+For a demonstration of this capability, see the file
+@code{share/tensor/petrov.dem}.
+
+@c @node nptetrad
+@c @unnumberedsec phony
+@defun nptetrad ()
+Compute a Newman-Penrose null tetrad (@code{np}) and its inverse (@code{npi}).
+
+*** TO BE WRITTEN ***
+@end defun
+
+@c @node psi
+@c @unnumberedsec phony
+@defun psi (dis)
+Compute the five Newman-Penrose coefficients @code{psi[0]}...@code{psi[4]}.
+
+*** TO BE WRITTEN ***
+
+@end defun
+
+@c @node petrov
+@c @unnumberedsec phony
+@defun petrov ()
+Compute the Petrov classification of the metric characterized by @code{psi[0]}...@code{psi[4]}.
+
+*** TO BE WRITTEN ***
+
+@end defun
+
+
+@section Torsion and nonmetricity
+
+*** TO BE WRITTEN - NOT YET IMPLEMENTED ***
+
+
+@section miscellaneous features
+
+@c @node ctransform
+@c @unnumberedsec phony
+@defun ctransform (matrix)
+A function in the CTENSOR (Component Tensor
 Manipulation) package which will perform a coordinate transformation
 upon an arbitrary square symmetric matrix. The user must input the
 functions which define the transformation.  (Formerly called TRANSFORM.)
 
 @end defun
+
+@c @node findde
+@c @unnumberedsec phony
+@defun findde ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node cograd
+@c @unnumberedsec phony
+@defun cograd ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node contragrad
+@c @unnumberedsec phony
+@defun contragrad ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node dscalar
+@c @unnumberedsec phony
+@defun dscalar ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node checkdiv
+@c @unnumberedsec phony
+@defun checkdiv ()
+*** TO BE WRITTEN ***
+@end defun
+
+@c @node cgeodesic
+@c @unnumberedsec phony
+@defun cgeodesic (dis)
+A function in the CTENSOR (Component Tensor
+Manipulation) package.  @code{cgeodesic} computes the geodesic equations of
+motion for a given metric.  They are stored in the array @code{geod[i]}.  If
+the argument @code{dis} is @code{true} then these equations are displayed.
+
+@end defun
+
+
+@c @node bdvac
+@c @unnumberedsec phony
+@defun bdvac ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node invariant1
+@c @unnumberedsec phony
+@defun invariant1 ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node invariant2
+@c @unnumberedsec phony
+@defun invariant2 ()
+*** TO BE WRITTEN - NOT YET IMPLEMENTED ***
+@end defun
+@c @node bimetric
+@c @unnumberedsec phony
+@defun bimetric ()
+*** TO BE WRITTEN - NOT YET IMPLEMENTED ***
+@end defun
+
+@section Utility functions
+
+@c @node diagmatrixp
+@c @unnumberedsec phony
+@defun diagmatrixp ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node symmetricp
+@c @unnumberedsec phony
+@defun symmetricp ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node ntermst
+@c @unnumberedsec phony
+@defun ntermst ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node cdisplay
+@c @unnumberedsec phony
+@defun cdisplay ()
+*** TO BE WRITTEN ***
+@end defun
+@c @node deleten
+@c @unnumberedsec phony
+@defun deleten ()
+*** TO BE WRITTEN ***
+@end defun
+
+@section Variables used by CTENSOR
+
+
+@c @node dim
+@c @unnumberedsec phony
+@defvar dim
+ default:[4] - An option in the CTENSOR (Component Tensor
+Manipulation) package.  @code{dim} is the dimension of the manifold with the
+default 4. The command @code{dim:n}; will reset the dimension to any other
+value @code{n}.
+
+@end defvar
+@c @node diagmetric
+@c @unnumberedsec phony
+@defvar diagmetric
+ default:@code{false} - An option in the CTENSOR (Component Tensor
+Manipulation) package.  If @code{diagmetric} is @code{true} special routines compute
+all geometrical objects (which contain the metric tensor explicitly)
+by taking into consideration the diagonality of the metric. Reduced
+run times will, of course, result. Note: this option is set
+automatically by @code{csetup()} if a diagonal metric is specified.
+
+@end defvar
+
+ctrgsimp
+
+cframe_flag
+
+ctayswitch
+
+gdet
+
+ratchristof
+
+@c @node rateinstein
+@c @unnumberedsec phony
+@defvar rateinstein
+ default: @code{false} - if @code{true} rational simplification will be
+performed on the non-zero components of Einstein tensors; if
+@code{ratfac} is @code{true} then the components will also be factored.
+
+@end defvar
+
+@end defvar
+@c @node ratriemann
+@c @unnumberedsec phony
+@defvar ratriemann
+ default: @code{false} - one of the switches which controls
+simplification of Riemann tensors; if @code{true}, then rational
+simplification will be done; if @code{ratfac} is @code{true} then each of the
+components will also be factored.
+
+@end defvar
+
+ratweyl
+
+lfg
+
+ufg
+
+riem
+
+lriem
+
+uriem
+
+ric
+
+uric
+
+lg
+
+ug
+
+weyl
+
+fb
+
+kinvariant
+
+np
+
+npi
+
+tensorkill
+
+@c @node ct_coords
+@c @unnumberedsec phony
+@defvar ct_coords
+ default:[] - An option in the CTENSOR (Component Tensor
+Manipulation) package.  @code{ct_coords} contains a list of coordinates.
+While normally defined when the function @code{csetup} is called,
+one may redefine the coordinates with the assignment
+@code{ct_coords:[j1,j2,...jn]} where the j's are the new coordinate names.
+See also @code{csetup}.
+
+@end defvar
+
+
+
+@section Reserved names
+
+The following names are used internally by the CTENSOR package and
+should not be redefined:
+
+_lg()
+
+_ug()
+
+cleanup()
+
+contract4()
+
+ctaylor()
+
+filemet()
+
+findde1()
+
+findde2()
+
+findde3()
+
+kdelt()
+
+newmet()
+
+setflags()
+
+readvalue()
+
+resimp()
+
+sermet()
+
+txyzsum()
+
+tmetric()
+
+triemann()
+
+tricci()
+
+trrc()
+
+yesp()
+
+
+@section Changes
+
+In November, 2004, the CTENSOR package was extensively rewritten.
+Many functions and variables have been renamed in order to make the
+package compatible with the commercial version of MACSYMA.
+
+
+@code{vect_coords}				Was: COORDINATES
+
+@code{ctaylor()}				Was: DLGTAYLOR()
+
+@code{lgeod[]}					Was: EM
+
+@code{ein[]}					Was: G[]
+
+@code{ric[]}					Was: LR[]
+
+@code{ricci()}					Was: LRICCICOM()
+
+@code{ctaypov}					Was: MINP
+
+@code{cgeodesic()}				Was: MOTION
+
+@code{ct_coords}				Was: OMEGA
+
+@code{ctayvar}					Was: PARAM
+
+@code{riem[]}					Was: R[]
+
+@code{uriemann()}				Was: RAISERIEMANN()
+
+@code{ratriemann}				Was: RATRIEMAN
+
+@code{uric[]}					Was: RICCI[]
+
+@code{uricci()}					Was: RICCICOM()
+
+@code{cmetric()}				Was: SETMETRIC()
+
+@code{ctaypt}					Was: TAYPT
+
+@code{ctayswitch}				Was: TAYSWITCH
+
+@code{csetup()}					Was: TSETUP()
+
+@code{ctransform()}				Was: TTRANSFORM()
+
+@code{uriem[]}					Was: UR[]
+
+@code{weyl[]}					Was: W[]
+
+
+
+
+
+
+
+
+
