@@ -545,10 +545,12 @@ well.
 @defun LOAD ("filename")
 ; takes one argument, a filename represented as a
 "string" (i.e. inside quotation marks), or as list (e.g. inside square
-brackets), and locates and loads in the indicated file.  If no
-directory is specified, it then searches the SHAREi directories and
-any other directories listed in the FILE_SEARCH variable and loads the
-indicated file. LOAD("EIGEN") will load the eigen package without the
+brackets), and locates and loads in the indicated file.
+If no directory is specified,
+LOAD calls FILE_SEARCH with FILE_SEARCH_MAXIMA and FILE_SEARCH_LISP
+as the search directories.
+
+LOAD("EIGEN") will load the eigen package without the
 need for the user to be aware of the details of whether the package
 was compiled, translated, saved, or fassaved, i.e. LOAD will work on
 both LOADFILEable and BATCHable files.  Note: LOAD will use BATCHLOAD
@@ -559,8 +561,9 @@ BATCH, and DEMO.  Do DESCRIBE(command); for details.  LOADFILE and
 RESTORE work for files written with SAVE; BATCH and DEMO for those
 files written with STRINGOUT or created as lists of commands with a
 text editor.
-If load can't find the file, check the value FILE_SEARCH to make sure
-that it contains an appropriate template.
+
+If LOAD can't find the file, check the values of FILE_SEARCH_MAXIMA
+and FILE_SEARCH_LISP to make sure that they contain appropriate templates.
 
 @example
 (%i4) load("eigen");
