@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.8 2002-09-11 01:09:40 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.9 2002-09-13 17:40:58 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -77,11 +77,13 @@ proc acceptMaxima { win port filter } {
 }
 
 proc openMaxima { win filter } {
-    global maxima_priv env
+    global maxima_priv env maxima_default
 
-    set port [acceptMaxima $win 4008 $filter]
+    set port $maxima_default(iLocalPort)
+    set port [acceptMaxima $win $port $filter]
     if { $port >= 0 } {
 	set com ""
+	# if {$maxima_priv(platform) == "cygwin"} {set com "/bin/bash "}
 	append com    $maxima_priv(localMaximaServer)
 	regsub PORT $com $port com
 	if { [info exists env(MAXIMA_INT_INPUT_STRING)] } {
@@ -277,10 +279,8 @@ proc runOneMaxima { win } {
 	vwait [oloc $win pid]
 	after cancel $af
 	if { $pid  == -1 } {
-	    if { "[info  command console]" != "" } { console show }
-	    if { [tk_dialog .jim ask {Starting maxima timed out.  Wait longer?} \
-		      {} yes  no yes ] } {
-		list
+	    if {[tide_yesno {Starting maxima timed out.  Wait longer?}]} {
+		continue
 	    } else {
 		closeMaxima $win
 		set err   "runOneMaxima timed out"
@@ -288,7 +288,7 @@ proc runOneMaxima { win } {
 		if { [info exists pdata(maximaInit,[oget $win socket])] } {
 		    append err : $pdata(maximaInit,[oget $win socket])
 		}
-		error $err
+		return -code error $err
 	    }
 	}
     }
@@ -308,8 +308,20 @@ proc sendMaxima { win form } {
     if { ![regexp "\[\$;\]\[ \t\n\r\]*\$" $form ] } {
 	# append form ";"
     }
-    puts -nonewline $maximaSocket $form
-    flush $maximaSocket
+    if {[catch {
+	puts -nonewline $maximaSocket $form
+	flush $maximaSocket} err]} {
+	set mes "Error sending to Maxima:"
+	if {[string match "can not find channel named*" err]} {
+	    # The maxima went away
+	    set maximaSocket ""
+	    unset maximaSocket
+	    set mess [M "$mess\n%s\nYou must Restart" $err]
+	} else {
+	    set mess [M "$mess:\n%s\nYou may need to Restart" $err]
+	}
+	tide_failure $mess
+    }
 }
 
 
@@ -321,7 +333,7 @@ proc sendMaximaWait { win form {timeout 20000 }} {
     if { ![regexp "\[\$;\]|^\[ \t]*:" $form ] } {
 	append form ";"
     }
-    sendMaximaCall $win $form\n [list oset $win maximaWait 1]
+    sendMaximaCall $win "$form\n" [list oset $win maximaWait 1]
     #mike FIXME: This should be a counter
     set maximaWait -1
     set af [after $timeout oset $win maximaWait -1]
@@ -372,8 +384,21 @@ proc sendMaximaCall { win form call } {
     } else {
 	catch { unset pdata($maximaSocket,wait) }
     }
-    puts -nonewline $maximaSocket $form
-    flush $maximaSocket
+    if {[catch {
+	puts -nonewline $maximaSocket $form
+	flush $maximaSocket} err]} {
+	set mes "Error sending to Maxima:"
+	if {[string match "can not find channel named*" err]} {
+	    # The maxima went away
+	    set maximaSocket ""
+	    unset maximaSocket
+	    set mess [M "$mess\n%s\nYou must Restart" $err]
+	} else {
+	    set mess [M "$mess:\n%s\nYou may need to Restart" $err]
+	}
+	tide_failure $mess
+	return
+    }
     if { [info exists counter] } {
 	setAction pdata($maximaSocket,result) $call
     }

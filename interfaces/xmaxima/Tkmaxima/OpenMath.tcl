@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.10 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.11 2002-09-13 17:39:19 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -478,19 +478,16 @@ proc programFromTags {tags} {
 
 proc saveToFile { commandPanel label file } {
     makeLocal $commandPanel textwin
-    global ftpInfo
     $label configure -relief sunken
     set lab [$label cget -text]
-    # set text [saveText $textwin 0.0 end]
+
     # save just as text
     set text [$textwin get 0.0 end]
-    if { [catch { set fi [open $file w] } ] } {
-	set ftpInfo(directory) [string trimleft [file dirname $file] /]
-	if { "$ftpInfo(directory)" == "" } { set ftpInfo(directory) . }
-	set ftpInfo(data) $text
-	ftpDialog $textwin -filename [file tail $file]
-	return 0
-	# myerror "Could not open file $file"
+
+    if { [catch { set fi [open $file w] } err] } {
+	return -code error \
+	    [M "Could not open file %s\n%s" \
+		 [file native $file] $err]
     }
     puts $fi $text
     close $fi
