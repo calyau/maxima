@@ -839,7 +839,7 @@
 	 `("\\mathbf{do}" ,(eighth x))))
 
 (defun texmdoin (x)
-  (nconc `("\\mathbf{for}" ,(second x) $|in| ,(third x))
+  (nconc `("\\mathbf{for}" ,(second x) "\\mathbf{in}" ,(third x))
 	 (cond ((sixth x) `("\\mathbf{thru}" ,(sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((eq 'mnot (caar (seventh x)))
