@@ -414,6 +414,11 @@
 
 
 ;; Compute bessel_j(n+1/2,z) in terms of trig functions.
+;;
+;; See A&S 10.1.8 and 10.1.9.
+;;
+;; Note that bessel.lisp has a different implementation of this.
+;; Should we use that instead?
 (defun besredtrig (n z)
   (cond ((minusp n)
 	 (trigredminus (mul -1 (add1 n)) z))
@@ -458,15 +463,15 @@
 			  (power (add z z) 2r)))))
      (go loop)))
 
-(defun secondsum
-    (n z)
-  (prog(count result 2r+1 n1)
+;; Compute Q(n+1/2,z) in A&S 10.1.9.
+(defun secondsum (n z)
+  (prog (count result 2r+1 n1)
      (setq n1
 	   ($entier (div (sub1 n) 2))
 	   count
 	   0
 	   result
-	   (inv z))
+	   (mul n (add 1 n) (inv (add z z))))
      (cond ((equal n1 -1)(return 0)))
      loop
      (cond ((eq count n1)(return result)))
@@ -526,6 +531,7 @@
 				(zl-delete (car l1) l2 1))))
 	(t (zl-intersection (cdr l1) l2))))
 
+#+(or)
 (defun 2inp (l)
   (prog(count)
      (setq count 0)
@@ -536,7 +542,7 @@
      (setq l (cdr l))
      (go loop)))
 
-
+#+(or)
 (defun 2ratp (l)
   (prog(count)
      (setq count 0)
@@ -546,9 +552,14 @@
      (cond ((eq (caaar l) 'rat)(setq count (add1 count))))
      (setq l (cdr l))
      (go loop)))
-;;2NUMP SHOULD BE ELIMINATED. IT IS NOT EFFICIENT TO USE ANYTHING ELSE BUT JUST CONVERTING TO RAT REPRESENTATION ALL 0.X ,X IN N. ESPECIALLY LATER WHEN WE CONVERT TO OMONIMA FOR TESTING TO FIND THE RIGHT FORMULA
+
+;;2NUMP SHOULD BE ELIMINATED. IT IS NOT EFFICIENT TO USE ANYTHING ELSE
+;;BUT JUST CONVERTING TO RAT REPRESENTATION ALL 0.X ,X IN
+;;N. ESPECIALLY LATER WHEN WE CONVERT TO OMONIMA FOR TESTING TO FIND
+;;THE RIGHT FORMULA
 
 
+#+(or)
 (defun 2nump (l)
   (prog(count)
      (setq count 0)
@@ -760,13 +771,19 @@
 
 
 
-(defun hyp-cos
-    (a b c)
+#+nil
+(defun hyp-cos (a b c)
   (prog (a2 a1 z1)
+     ;; a1 = (a+b-1/2)/2
+     ;; z1 = 1-var
+     ;; a2 = c/2
      (setq a1 (div (sub (add a b) (div 1 2)) 2))
      (setq z1 (sub 1 var))
      (setq a2 (mul c (inv 2)))
      (cond ((equal (sub (add a b) (div 1 2)) c)
+	    ;; a+b-1/2 = c
+	    ;;
+	    ;; 2^(2*a1 - 1)/sqrt(z1)*(1+sqrt(z1))^(1-2*a1)
 	    (return (mul (power 2 (sub (mul a1 2) 1))
 			 (inv (power  z1 (div 1 2)))
 			 (power (add 1
@@ -775,6 +792,9 @@
 						 2)))
 				(sub 1 (mul 2 a1)))))))
      (cond ((equal (add 1 (mul 2 a1)) c)
+	    ;; c = 1+2*a1 = a+b+1/2
+	    ;;
+	    ;; 2^(c-1)*(1+sqrt(z1))^(-(c-1))
 	    (return (mul (power 2 (sub c 1))
 			 (power (add 1
 				     (power z1
@@ -782,6 +802,37 @@
 						 2)))
 				(mul -1 (sub c 1)))))))
      ))
+
+(defun hyp-cos (a b c)
+  (let ((a1 (div (sub (add a b) (div 1 2)) 2))
+	(a2 (mul c (inv 2)))
+	(z1 (sub 1 var)))
+    ;; a1 = (a+b-1/2)/2
+    ;; z1 = 1-var
+    ;; a2 = c/2
+    (cond ((equal (sub (add a b)
+		       (div 1 2))
+		  c)
+	   ;; a+b-1/2 = c
+	   ;;
+	   ;; 2^(2*a1 - 1)/sqrt(z1)*(1+sqrt(z1))^(1-2*a1)
+	   (mul (power 2 (sub (mul a1 2) 1))
+		(inv (power  z1 (div 1 2)))
+		(power (add 1
+			    (power z1
+				   (div 1
+					2)))
+		       (sub 1 (mul 2 a1)))))
+	  ((equal (add 1 (mul 2 a1)) c)
+	   ;; c = 1+2*a1 = a+b+1/2
+	   ;;
+	   ;; 2^(c-1)*(1+sqrt(z1))^(-(c-1))
+	   (mul (power 2 (sub c 1))
+		(power (add 1
+			    (power z1
+				   (div 1
+					2)))
+		       (mul -1 (sub c 1))))))))
 
 (defun degen2f1
     (a b c)
