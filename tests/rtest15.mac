@@ -102,7 +102,104 @@ compile(f);
 [f];
 f(2);
 4;
-kill(f);
+/* Some tests for lambda expressions.
+  We test for both TRANSLATE and COMPILE because there are some compiler
+  macros for translated code (defined via DEFOPT) */
+define_variable(qwerty,1,fixnum);
+1;
+/* m-tlambda */
+f():=apply(lambda([u],u+qwerty),[1]);
+f():=apply(lambda([u],u+qwerty),[1]);
+f();
+2;
+translate(f);
+[f];
+f();
+2;
+compile(f);
+[f];
+f();
+2;
+/* m-tlambda&env */
+f(x):=apply(lambda([u],u+x),[1]);
+f(x):=apply(lambda([u],u+x),[1]);
+f(1);
+2;
+translate(f);
+[f];
+f(1);
+2;
+compile(f);
+[f];
+f(1);
+2;
+/* m-tlambda&env */
+f(x,qwerty):=apply(lambda([u],u+x+qwerty),[1]);
+f(x,qwerty):=apply(lambda([u],u+x+qwerty),[1]);
+f(1,0);
+2;
+translate(f);
+[f];
+f(1,0);
+2;
+compile(f);
+[f];
+f(1,0);
+2;
+/* m-tlambda&env (outer) and m-tlambda (inner) */
+f(x):=apply(lambda([u],x+apply(lambda([v],v+qwerty),[u])),[-1]);
+f(x):=apply(lambda([u],x+apply(lambda([v],v+qwerty),[u])),[-1]);
+f(2);
+2;
+translate(f);
+[f];
+f(2);
+2;
+compile(f);
+[f];
+f(2);
+2;
+/* m-tlambda& */
+f():=apply(lambda([u,[v]],[u+qwerty,v]),[0,2,3]);
+f():=apply(lambda([u,[v]],[u+qwerty,v]),[0,2,3]);
+f();
+[1,[2,3]];
+translate(f);
+[f];
+f();
+[1,[2,3]];
+compile(f);
+[f];
+f();
+[1,[2,3]];
+/* m-tlambda&env& */
+f(x):=apply(lambda([u,[v]],[u+x,v]),[0,2,3]);
+f(x):=apply(lambda([u,[v]],[u+x,v]),[0,2,3]);
+f(1);
+[1,[2,3]];
+translate(f);
+[f];
+f(1);
+[1,[2,3]];
+compile(f);
+[f];
+f(1);
+[1,[2,3]];
+/* m-tlambda&env (from the sum), the inner lambda currently remains
+  untranslated.  This is really a test for fungen&env-for-mevalsumarg. */
+f(n):=sum(apply(lambda([x],i+x),[i]),i,1,n);
+f(n):=sum(apply(lambda([x],i+x),[i]),i,1,n);
+f(3);
+12;
+translate(f);
+[f];
+f(3);
+12;
+compile(f);
+[f];
+f(3);
+12;
+kill(qwerty,f);
 done;
 /* This should kill f, but doesn't which upsets subsequent tests
    Redefining it then killing it does the right thing */
