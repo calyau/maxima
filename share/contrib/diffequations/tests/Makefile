@@ -9,7 +9,7 @@ check: $(TEST_FILES)
 	(echo 'to_lisp();';\
 	echo '(setq *maxima-testsdir* ".")';\
 	echo '(to-maxima)';\
-	echo 'file_search_maxima:append(["../###.{mac}"],file_search_maxima);';\
+	echo 'file_search_maxima:append(["../###.MAC"],file_search_maxima);';\
 	echo "load('pdiff);";\
 	echo "use_pdiff:false;";\
 	echo "load('contrib_ode);";\
@@ -20,7 +20,7 @@ check.log: $(TEST_FILES)
 	(echo 'to_lisp();';\
 	echo '(setq *maxima-testsdir* ".")';\
 	echo '(to-maxima)';\
-	echo 'file_search_maxima:append(["../###.{mac}"],file_search_maxima);';\
+	echo 'file_search_maxima:append(["../###.MAC"],file_search_maxima);';\
 	echo "load('pdiff);";\
 	echo "use_pdiff:false;";\
 	echo "load('contrib_ode);";\
