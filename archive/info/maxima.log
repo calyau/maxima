@@ -1,4 +1,4 @@
-This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  5 JUN 2001 03:34
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.7.19)  6 JUN 2001 03:20
 **maxima.texi
 (maxima.texi (texinfo.tex Loading texinfo [version 1999-04-25.15]: Basics,
 \bindingoffset=\dimen16
@@ -177,34 +177,8 @@ Overfull \hbox (15.10587pt too wide) in paragraph at lines 482--482
 [34] [35] [36] [37] [38] [39]) Chapter 6 [40] (Simplification.texi [41]
 [42] [43] [44] [45] [46]) Chapter 7 [47] [48] (Plotting.texi [49] [50] [51]
 [52]) Chapter 8 [53] [54] (Input.texi [55] [56] [57] [58] [59] [60] [61]
-[62] [63] [64] [65] [66]
-Overfull \hbox (15.10587pt too wide) in paragraph at lines 920--920
- []@texttt $$-{{\log \left(x^{2}-x+1\right)}\over{6}}+{{\arctan {{2\>x-1}\over{
-[] |
-
-@hbox(7.60416+2.43333)x433.62
-.@glue(@leftskip) 57.8151
-.@hbox(0.0+0.0)x0.0
-.@texttt $
-.@texttt $
-.@texttt -
-.etc.
-
-
-Overfull \hbox (84.09012pt too wide) in paragraph at lines 921--921
- [] @texttt \sqrt{3}}}}\over{\sqrt{3}}}+{{\log \left(x+1\right)}\over{3}}\leqno
-{\tt (D1)}$$[] |
-
-@hbox(7.60416+2.43333)x433.62
-.@glue(@leftskip) 57.8151
-.@hbox(0.0+0.0)x0.0
-.@penalty 10000
-.@glue 5.74869
-.@texttt \
-.etc.
-
-[67]) Chapter 9 [68] (Floating.texi [69] [70]) Chapter 10 [71] [72]
-(Contexts.texi [73]
+[62] [63] [64] [65] [66] [67]) Chapter 9 [68] (Floating.texi [69] [70])
+Chapter 10 [71] [72] (Contexts.texi [73]
 Underfull \hbox (badness 3954) in paragraph at lines 151--164
  @textrm and AN-TI-SYM-MET-RIC. [Note: sys-tem @texttt "@textrm fea-tures@textt
 t " @textrm may be checked with
@@ -762,4 +736,4 @@ Here is how much of TeX's memory you used:
  19 hyphenation exceptions out of 1000
  15i,6n,13p,247b,447s stack positions out of 300i,100n,500p,50000b,10000s
 
-Output written on maxima.dvi (281 pages, 1001768 bytes).
+Output written on maxima.dvi (281 pages, 1002372 bytes).

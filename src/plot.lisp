@@ -8,7 +8,7 @@
 
 (eval-when (compile eval load)
  (defmacro coerce-float (x)
-   `(lisp::float ,x 1.d0))
+   `(lisp::float (meval* ,x) 1.d0))
   )
 
 (defvar *z-range* nil)
@@ -20,6 +20,7 @@
 (defvar $plot_options '((mlist)
 			((mlist) |$x| -3 3)
 			((mlist) |$y| -3 3)
+			((mlist) |$t| -3 3)
 			((mlist) $grid 30 30)
 			((mlist) $view_direction 1 1 1)
 			((mlist) $colour_z nil)
@@ -416,27 +417,6 @@ setrgbcolor} def
 	 (setf (aref pts (f+ 2 i)) (funcall fz x1 x2 x3)))))
   ))
 
-
-(defun coerce-float-fun (expr &optional lvars)
-  (cond ((and (consp expr) (functionp expr))
-	 expr)
-	((and (symbolp expr) (not (member expr lvars)))
-	 (cond ((fboundp expr) expr)
-	       (t (mfuncall '$translate expr) expr)))
-	(t
-	 (let ((vars (or lvars ($sort ($listofvars expr))))
-	       (na (gensym "TMPF")))
-	   (when (and (eql (length vars) 2)
-		      (member '$r vars))
-	     ;($set_plot_option '((mlist) $transform_xy $polar_to_xy))
-   	;(format t "Using polar coordinates")
-		 )
-	 (meval* `((MDEFINE SIMP) ((,na) ,@(cdr vars))
-		     ((MPROGN) ;(($MODEDECLARE) ,vars  $FLOAT)
-		      ((mprog) ((mlist) ((msetq) tem ,expr))
-		       ((mcond) ((complexp) tem) ((realpart) tem) t tem)))))
-	 (coerce-float-fun na)))))
-
 (defun coerce-float-fun (expr &optional lvars)
   (cond ((and (consp expr) (functionp expr))
 	 expr)
@@ -515,6 +495,7 @@ setrgbcolor} def
          (setq i1 (+ i1 1))
         (setq i2 (+ i2 1))))
 
+
 (defun $concat_polygons (pl1 pl2 &aux tem new)
   (setq new
 	  (sloop for v in pl1 
@@ -558,73 +539,121 @@ setrgbcolor} def
 	  (t (error "bad lis")))))
   
 
-;; arrange so that the list of points x0,y0,x1,y1,.. on the curve
-;; never have abs(y1-y0 ) and (x1-x0) <= deltax 
+;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
+;; the rest of the parametric list after the list will be pushed plot_options
 
-(defun draw2d (f range &optional
-		 (nticks (nth 2($get_plot_option '$nticks)))
-		 (yrange ($get_plot_option '|$y|))
-		 ($numer t)
-		 )
-				  
-  (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
-
-  (let* ((x (coerce-float (nth 2 range)))
-	 (xend (coerce-float (nth 3 range)))
+(defun draw2d-parametric (param range1 &aux range tem)
+  (cond ((and ($listp (setq tem (nth 4 param)))
+	      (symbolp (cadr tem))
+	      (eql ($length tem) 3)
+	      (<= (length (symbol-name (cadr tem))) 2))
+	      ;; sure looks like a range
+	      (setq range tem)))
+  (let* (($plot_options ($append ($rest param 3)
+				 (if range1
+				     ($cons range1 $plot_options)
+				   $plot_options)))
+	 (nticks (nth 2($get_plot_option '$nticks)))
+	 (trange (or range ($get_plot_option '|$t|)))
+	 (xrange ($get_plot_option '|$x|))
+	 (yrange ($get_plot_option '|$y|))
+	 ($numer t)
+	 (tmin (coerce-float (nth 2 trange)))
+	 (tmax (coerce-float (nth 3 trange)))
+	 (xmin (coerce-float (nth 2 xrange)))
+	 (xmax (coerce-float (nth 3 xrange)))
 	 (ymin (coerce-float (nth 2 yrange)))
 	 (ymax (coerce-float (nth 3 yrange)))
-	 (eps ($/ (- xend x) (coerce-float nticks)))
-	 (x1 0.0)
-	 (y1 0.0)
-	 (y (funcall f x))
-	 (dy 0.0)
-         (epsy ($/ (- ymax ymin) 1.0))
-	 (eps2 (* eps eps))
-	 in-range last-ok
+	 (x 0.0) ; have to initialize to some floating point..
+	 (y 0.0)
+	 (tt tmin)
+	 (eps (/ (- tmax tmin) (- nticks 1)))
+	 f1 f2 in-range-y in-range-x in-range last-ok 
 	 )
-    (declare (long-float x1 y1 x y dy eps2 eps ymin ymax ))
-   ;(print (list 'ymin ymin 'ymax ymax epsy))
-     (setq x ($- x eps))  
-    (cons '(mlist)
-	  (sloop   do
-					;	     (format t "~%(~,3f ~,3f)(~,3f ~,3f) [~,3f] ~,3f ----1" x y x1 y1 dy eps)
-	     (setq x1 ($+ eps x))
-	     (setq y1 (funcall f x1))
-	     (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
-	     (cond (in-range
-		    ;; (format t "~%(~,3f ~,3f)(~,3f ~,3f) [~,3f] ~,3f ----2" x y x1 y1 dy eps)
-		    (setq dy (- y1 y))
-		    ;;  (format t "~%(~,3f ~,3f)(~,3f ~,3f) [~,3f] ~,3f ----3" x y x1 y1 dy eps)
+    (declare (long-float x y tt ymin ymax xmin xmax tmin tmax eps))
+    (setq f1 (coerce-float-fun (nth 2 param) `((mlist), (nth 1 trange))))
+    (setq f2 (coerce-float-fun (nth 3 param) `((mlist), (nth 1 trange))))
+   (cons '(mlist simp)    
+    (sloop 
+	   do 
+	   (setq x (funcall f1 tt))
+	   (setq y (funcall f2 tt))
+	   (setq in-range-y (and (<= y ymax) (>= y ymin)))
+	   (setq in-range-x  (and  (<= x xmax) (>= x xmin)))
+	   (setq in-range (and in-range-x in-range-y))
+	   when (and (not in-range) (not last-ok))
+	   collect  'moveto and collect 'moveto
+	   do
+	   (setq last-ok in-range)
+	   collect (if in-range-x x (if (> x xmax) xmax xmin))
+	   collect (if in-range-y y (if (> y ymax) ymax ymin))
+	   when (>= tt tmax) do (sloop::loop-finish)
+	   do (setq tt (+ tt eps))
+	   (if (>= tt tmax) (setq tt tmax))
+	   )))
+)
 
-		    (cond ((< dy 0) (setq dy (- dy))))
-		    (cond ((> dy eps)
-			   (setq x1 (+ x (/ eps2 dy)))
-			   (setq y1 (funcall f x1))
-			   (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
-			   (or in-range (setq x1 (+ eps x)))
+;; arrange so that the list of points x0,y0,x1,y1,.. on the curve
+;; never have abs(y1-y0 ) and (x1-x0) <= deltax
+
+(defun draw2d (f range )
+  (if (and ($listp f) (equal '$parametric (cadr f)))
+      (return-from draw2d (draw2d-parametric f range)))
+  (let* ((nticks (nth 2($get_plot_option '$nticks)))
+	 (yrange ($get_plot_option '|$y|))
+	 ($numer t)
+	 )
+				  
+    (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
+
+    (let* ((x (coerce-float (nth 2 range)))
+	   (xend (coerce-float (nth 3 range)))
+	   (ymin (coerce-float (nth 2 yrange)))
+	   (ymax (coerce-float (nth 3 yrange)))
+	   (eps ($/ (- xend x) (coerce-float nticks)))
+	   (x1 0.0)
+	   (y1 0.0)
+	   (y (funcall f x))
+	   (dy 0.0)
+	   (epsy ($/ (- ymax ymin) 1.0))
+	   (eps2 (* eps eps))
+	   in-range last-ok
+	   )
+      (declare (long-float x1 y1 x y dy eps2 eps ymin ymax ))
+					;(print (list 'ymin ymin 'ymax ymax epsy))
+      (setq x ($- x eps))  
+      (cons '(mlist)
+	    (sloop   do
+		     (setq x1 ($+ eps x))
+		     (setq y1 (funcall f x1))
+		     (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
+		     (cond (in-range
+			    (setq dy (- y1 y))
+			    (cond ((< dy 0) (setq dy (- dy))))
+			    (cond ((> dy eps)
+				   (setq x1 (+ x (/ eps2 dy)))
+				   (setq y1 (funcall f x1))
+				   (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
+				   (or in-range (setq x1 (+ eps x)))
+				   )
+				  ))
 			   )
-			  ))
-		   )
-	     (setq x x1)
-	     (setq y y1)
-	     when (or (and (not last-ok)
-		      	 (not in-range))
-		      (> dy epsy))
+		     (setq x x1)
+		     (setq y y1)
+		     when (or (and (not last-ok)
+				   (not in-range))
+			      (> dy epsy))
 
-		       collect 'moveto and collect 'moveto
-	     do
-	     (setq last-ok in-range)
-;	     (print x)
-		; (format t "~%(~,3f ~,3f)(~,3f ~,3f) [~,3f] ~,3f ----4" x y x1 y1 dy eps)
-		;  (show (list x y dy))
-	     collect x1 
-	     collect (if in-range y1 (if (> y1 ymax) ymax ymin))
-
-	     when (>= x xend)
-	     collect xend and
-	     collect (let ((tem (funcall f xend)))
-		       (if (>= tem ymax) ymax (if (<= tem ymin) ymin tem)))
-	     and do (sloop::loop-finish)))))
+		     collect 'moveto and collect 'moveto
+		     do
+		     (setq last-ok in-range)
+		     collect x1 
+		     collect (if in-range y1 (if (> y1 ymax) ymax ymin))
+		     when (>= x xend)
+		     collect xend and
+		     collect (let ((tem (funcall f xend)))
+			       (if (>= tem ymax) ymax (if (<= tem ymin) ymin tem)))
+		     and do (sloop::loop-finish))))))
 
 (defun get-range (lis)
   (let ((ymin most-positive-long-float)
@@ -684,14 +713,17 @@ setrgbcolor} def
 
 (defvar $openmath_plot_command "omplotdata")
 
-(defun $plot2d(fun range &rest options &aux ($numer t) $display2d
+(defun $plot2d(fun &optional range &rest options &aux ($numer t) $display2d
                           (i 0) plot-format file plot-name
 			  ($plot_options $plot_options))
   (dolist (v options) ($set_plot_option v))
+  (or ($listp fun ) (setf fun `((mlist) ,fun)))
+  (cond ((eq (cadr fun) '$parametric)
+	 (or range (setq range (nth 4 fun)))
+	 (setf fun `((mlist) ,fun))))
   (cond ((eq ($get_plot_option '$PLOT_FORMAT 2) '$openmath)
          (return-from $plot2d (apply '$plot2dOpen fun range options))))
-  (setq range (check-range range))
-  (or ($listp fun ) (setf fun `((mlist) ,fun)))
+  (check-range range)
   (setq plot-format  ($get_plot_option '$plot_format 2))
   (setq file (format nil "maxout.~(~a~)" (stripdollar plot-format)))
   

@@ -353,7 +353,7 @@ required.
 @end defun
 
 @defun GCDEX (f,g)
-@defun GCDEX (f,g,var)
+@defunx GCDEX (f,g,var)
 returns a list containing [a,b,u] where u is the gcd of f and g,
 and u = a*f + b*g.   The arguments f and g should b univariate polynomials,
 or else polynomials in VAR a supplied @b{main} variable   

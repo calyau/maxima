@@ -917,8 +917,9 @@ file.
 			 6	       SQRT(3)	        3
 (C2) tex(d1);
 
-$$-@{@{\log \left(x^@{2@}-x+1\right)@}\over@{6@}@}+@{@{\arctan @{@{2\>x-1@}\over@{
- \sqrt@{3@}@}@}@}\over@{\sqrt@{3@}@}@}+@{@{\log \left(x+1\right)@}\over@{3@}@}\leqno@{\tt (D1)@}$$
+$$-@{@{\log \left(x^@{2@}-x+1\right)@}\over@{6@}@}
+  +@{@{\arctan @{@{2\>x-1@}\over@{\sqrt@{3@}@}@}@}\over@{\sqrt@{3@}@}@}
+  +@{@{\log \left(x+1\right)@}\over@{3@}@}\leqno@{\tt (D1)@}$$
 (D2) 				     (D1)
 (C6) tex(integrate(sin(x),x));
 

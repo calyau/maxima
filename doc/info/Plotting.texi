@@ -41,6 +41,9 @@ yaxislabel.
 
 @defun PLOT2D (expr,range,...,options,..)
 @defunx PLOT2D ([expr1,expr2,..,exprn],xrange,...,options,..)
+@defunx PLOT2D (parametric_expr)
+@defunx PLOT2D ([..,expr,..,parametric_expr,..],xrange,...,options)
+
 EXPR is an expression to be plotted on y axis as
 a function of 1 variable.
 RANGE is of the form [var,min,max] and expr is assumed to
@@ -51,9 +54,31 @@ be performed, for the default y range.   It may be specified
 as an option or using SET_PLOT_OPTION.
 
 @example
-plot2d(sin(x),[x,-5,5]);
-plot2d(sec(x),[x,-2,2],[y,-20,20],[nticks,200]);
+(C1) plot2d(sin(x),[x,-5,5]);
+(C2) plot2d(sec(x),[x,-2,2],[y,-20,20],[nticks,200]);
 @end example
+
+Anywhere there may be an EXPR you may also use a parametric
+expression: 
+PARAMETRIC_EXPR is a Maxima list of the form
+@code{[parametric, xexpr, yexpr, trange, ..options]}
+Here XEXPR and YEXPR are functions of 1 variable VAR which is
+the first element of the range TRANGE.  
+The plot is of the path traced out by the pair
+@code{[XEXPR, YEXPR]} as VAR varies in TRANGE.
+In the following example, we plot a circle, then we do
+the plot with only a few points used, so that we get a star,
+and finally we plot this together with an ordinary function of X.
+
+
+@example
+(C1) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2]]);
+(C2) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2],
+        [nticks,8]]);
+(C3) plot2d([x^3+2,[parametric,cos(t),sin(t),[t,-5,5]]],
+        [x,-3,3]);
+@end example
+
 
 @end defun
 

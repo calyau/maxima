@@ -314,6 +314,7 @@ mhayat.o:mhayat.lisp
 numerm.o:numerm.lisp
 transm.o:transm.lisp
 optimize.o:optimize.lisp
+plot.o:plot.lisp
 
 othernames:
 	@ for v in ${OTHERS} ${TRANSLATED} ; do echo src/$$v ; done

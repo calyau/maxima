@@ -397,6 +397,7 @@ Function and Variable Index
 * GAMMALIM:                              Definitions for Special Functions.
 * GAUSS:                                 Definitions for Statistics.
 * GCD:                                   Definitions for Polynomials.
+* GCDEX:                                 Definitions for Polynomials.
 * GCFACTOR:                              Definitions for Polynomials.
 * GEN_LAGUERRE:                          Definitions for Orthogonal Polynomials.
 * GENDIFF:                               Definitions for Differentiation.
