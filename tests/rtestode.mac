@@ -1,9 +1,5 @@
 /* ODE tests */
 
-/* Some of the tests are commented out.  The majority of them fail
-   due to some sort of testsuite interaction.  They pass if these
-   tests are run first, but then other tests fail */
-
 kill(all);
 done;
 
@@ -30,11 +26,10 @@ y^2-y = x^3+2*x^2+2*x+%C;
 method;
 separable;
 
-/* Testsuite interaction causes this to fail */
-/* ode2(x^2*cos(x*y)*'diff(y,x) + (sin(x*y)+x*y*(cos(x*y)))=0, y, x);
+ode2(x^2*cos(x*y)*'diff(y,x) + (sin(x*y)+x*y*(cos(x*y)))=0, y, x);
 x*sin(x*y)=%C;
 method;
-exact; */
+exact;
 
 ode2( (2*x*y-exp(-2*y))*'diff(y,x)+y=0, y, x);
 x*exp(2*y) - log(y) = %C;
@@ -43,11 +38,10 @@ exact;
 intfactor;
 exp(2*y)/y;
 
-/* testsuite interaction causes this to fail */
-/* ode2( 'diff(y,x)=(y/x)^2+2*(y/x), y, x);
+ode2( 'diff(y,x)=(y/x)^2+2*(y/x), y, x);
 -(x*y+x^2)/y = %C;
 method;
-exact; */
+exact;
 
 ode2( 'diff(y,x)+(2/x)*y=(1/x^2)*y^3, y, x);
 y = 1/(sqrt( 2/(5*x^5) + %C)*x^2);
@@ -96,23 +90,22 @@ y=%K1*%J[2](x-1)+%K2*%Y[2](x-1);
 method;
 bessel;
 
-/* ode2( 'diff(y,x,2)+2*'diff(y,x)+y=exp(x), y, x);
+ode2( 'diff(y,x,2)+2*'diff(y,x)+y=exp(x), y, x);
 y=exp(x)/4+(%K2*x+%K1)*exp(-x);
 method;
 variationofparameters;
-/* Particular solution */
 yp;
-exp(x)/4; */
+exp(x)/4;
 
-/* ode2( x*'diff(y,x,2)+('diff(y,x))^2=0, y, x);
+ode2( x*'diff(y,x,2)+('diff(y,x))^2=0, y, x);
 y='integrate(1/(log(x)+%K1),x)+%K2;
 method;
-freeofy; */
+freeofy;
 
-/* ode2( y*'diff(y,x,2)+('diff(y,x))^2=0, y, x);
+ode2( y*'diff(y,x,2)+('diff(y,x))^2=0, y, x);
 y^2/(2*%K1)=x+%K2;
 method;
-freeofx; */
+freeofx;
 
 eq: 'diff(y,x,2)+x*'diff(y,x)+exp(-x^2)*y=0;
 'diff(y,x,2)+x*'diff(y,x,1)+%e^-x^2*y = 0;
@@ -156,10 +149,10 @@ atvalue(f(x),x = 0,1);
 desolve([eqn1,eqn2],[f(x),g(x)]);
 [f(x) = a*%e^x-a+1,g(x) = cos(x)+a*%e^x-a+g(0)-1];
 
-/* eqn3: 'diff(f(x),x,2)+f(x)=2*x;
+eqn3: 'diff(f(x),x,2)+f(x)=2*x;
 'diff(f(x),x,2)+f(x)=2*x;
 desolve(eqn3,f(x));
-f(x) = sin(x)*(at('diff(f(x),x,1),x = 0)-2)+f(0)*cos(x)+2*x; */
+f(x) = sin(x)*(at('diff(f(x),x,1),x = 0)-2)+f(0)*cos(x)+2*x;
 
 
 /* Tests from:
@@ -214,13 +207,12 @@ ans:ode2(eqn,y,x);
 false;
 
 /* Equation 6 - Dependent variable missing */
-/* Another testsuite interaction problem */
-/* eqn:'diff(y,x,2)+2*x*'diff(y,x)=2*x;
+eqn:'diff(y,x,2)+2*x*'diff(y,x)=2*x;
 'diff(y,x,2)+2*x*'diff(y,x,1) = 2*x;
 ans: ode2(eqn,y,x);
 y = sqrt(%pi)*%k1*erf(x)/2+x+%k2;
 is(ratsimp(ev(eqn,ans,diff)));
-true; */
+true;
 
 /* Equation 7 - Liouvillian solution */
 eqn: (x^3/2-x^2)*'diff(y,x,2)+(s2*x^2-3*x+1)*'diff(y,x)+(x-1)*y=0;
