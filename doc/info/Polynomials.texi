@@ -1,3 +1,4 @@
+@c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introduction to Polynomials::  
 * Definitions for Polynomials::  
@@ -281,7 +282,6 @@ fits in one machine word), complete factorization of the integer will
 be attempted.  The user's setting of @code{intfaclim} is used for internal
 calls to @code{factor}. Thus, @code{intfaclim} may be reset to prevent Maxima from
 taking an inordinately long time factoring large integers.
-@code{newfac} may be set to true to use the new factoring routines.
 
 Examples:
 @c EXAMPLES BELOW ADAPTED FROM examples (factor)
@@ -983,40 +983,103 @@ Example:
 @end defun
 
 @defun ratdenom (@var{expr})
-Returns the denominator of the rational expression @var{expr}.
-If @var{expr} is in general form then the @code{denom} function should be used
-instead, unless one wishes to get a CRE result.
+Returns the denominator of @var{expr},
+after coercing @var{expr} to a canonical rational expression (CRE).
+The return value is a CRE.
 
+@c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
+@var{expr} is coerced to a CRE by @code{rat}
+if it is not already a CRE.
+This conversion may change the form of @var{expr} by putting all terms
+over a common denominator.
+
+@code{denom} is similar, but returns an ordinary expression instead of a CRE.
+Also, @code{denom} does not attempt to place all terms over a common denominator,
+and thus some expressions which are considered ratios by @code{ratdenom}
+are not considered ratios by @code{denom}.
+
+@c NEEDS AN EXAMPLE HERE
 @end defun
 
 @defvar ratdenomdivide
 Default value: @code{true}
 
-When @code{ratdenomdivide} is @code{false}, stops the splitting up
-of the terms of the numerator of @code{ratexpand}'ed expressions from
-occurring.
+When @code{ratdenomdivide} is @code{true},
+@code{ratexpand} expands a ratio in which the numerator is a sum 
+into a sum of ratios,
+all having a common denominator.
+Otherwise, @code{ratexpand} collapses a sum of ratios into a single ratio,
+the numerator of which is the sum of the numerators of each ratio.
+
+Examples:
+
+@example
+(%i1) expr: (x^2 + x + 1)/(y^2 + 7);
+                            2
+                           x  + x + 1
+(%o1)                      ----------
+                              2
+                             y  + 7
+(%i2) ratdenomdivide: true$
+(%i3) ratexpand (expr);
+                       2
+                      x        x        1
+(%o3)               ------ + ------ + ------
+                     2        2        2
+                    y  + 7   y  + 7   y  + 7
+(%i4) ratdenomdivide: false$
+(%i5) ratexpand (expr);
+                            2
+                           x  + x + 1
+(%o5)                      ----------
+                              2
+                             y  + 7
+(%i6) expr2: a^2/(b^2 + 3) + b/(b^2 + 3);
+                                     2
+                           b        a
+(%o6)                    ------ + ------
+                          2        2
+                         b  + 3   b  + 3
+(%i7) ratexpand (expr2);
+                                  2
+                             b + a
+(%o7)                        ------
+                              2
+                             b  + 3
+@end example
 
 @end defvar
 
 @defun ratdiff (@var{expr}, @var{x})
-Differentiates the rational expression @var{expr} (which
-must be a ratio of polynomials or a polynomial in the variable @var{x})
-with respect to @var{x}.
-For rational expressions this is much faster than @code{diff}.
-@c IS THE RESULT EQUIVALENT TO diff ??
+Differentiates the rational expression @var{expr} with respect to @var{x}.
+@var{expr} must be a ratio of polynomials or a polynomial in @var{x}.
+The argument @var{x} may be a variable or a subexpression of @var{expr}.
+@c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
+@c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
+@c HOW TO DESCRIBE THAT ??
 
-The result is returned in canonical rational expression (CRE) form.
-@c "SHOULD NOT" -- WHAT IS THIS ABOUT ?? 
-@c (GREP ALL TEXI FILES FOR "SHOULD" AT SOME POINT)
-However, @code{ratdiff} should not be used on factored CRE forms;
-use @code{diff} instead for such expressions.
+The result is equivalent to @code{diff}, although perhaps in a different form.
+@code{ratdiff} may be faster than @code{diff}, for rational expressions.
+
+@code{ratdiff} returns a canonical rational expression (CRE) if @code{expr} is a CRE.
+Otherwise, @code{ratdiff} returns a general expression.
+
+@code{ratdiff} considers only the dependence of @var{expr} on @var{x},
+and ignores any dependencies established by @code{depends}.
+
+@c WHAT THIS IS ABOUT -- ratdiff (rat (factor (expr)), x) AND ratdiff (factor (rat (expr)), x) BOTH SUCCEED
+@c COMMENTING THIS OUT UNTIL SOMEONE CAN ESTABLISH SOME CRE'S FOR WHICH ratdiff FAILS
+@c However, @code{ratdiff} should not be used on factored CRE forms;
+@c use @code{diff} instead for such expressions.
 
 Example:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
 @c expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
-@c modulus: 3$
-@c mod (expr);
 @c ratdiff (expr, x);
+@c expr: f(x)^3 - f(x)^2 + 7;
+@c ratdiff (expr, f(x));
+@c expr: (a + b)^3 + (a + b)^2;
+@c ratdiff (expr, a + b);
 
 @example
 (%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
@@ -1025,30 +1088,39 @@ Example:
 (%o1)                   ----------------
                               5
                              x  + 5
-(%i2) modulus: 3$
-(%i3) mod (expr);
-                            2
-                           x  + x - 1
-(%o3)                 --------------------
-                       4    3    2
-                      x  + x  + x  + x + 1
-(%i4) ratdiff (expr, x);
-                       5    4    3
-                      x  - x  - x  + x - 1
-(%o4)            ------------------------------
-                  8    7    5    4    3
-                 x  - x  + x  - x  + x  - x + 1
+(%i2) ratdiff (expr, x);
+                    7       5       4       2
+                 8 x  + 40 x  - 55 x  - 60 x  - 50
+(%o2)          - ---------------------------------
+                          10       5
+                         x   + 10 x  + 25
+(%i3) expr: f(x)^3 - f(x)^2 + 7;
+                         3       2
+(%o3)                   f (x) - f (x) + 7
+(%i4) ratdiff (expr, f(x));
+                           2
+(%o4)                   3 f (x) - 2 f(x)
+(%i5) expr: (a + b)^3 + (a + b)^2;
+                              3          2
+(%o5)                  (b + a)  + (b + a)
+(%i6) ratdiff (expr, a + b);
+                    2                    2
+(%o6)            3 b  + (6 a + 2) b + 3 a  + 2 a
 @end example
 
 @end defun
 
 @defun ratdisrep (@var{expr})
-changes its argument from CRE form to general form.
+Returns its argument as a general expression.
+If @var{expr} is a general expression, it is returned unchanged.
+
+Typically @code{ratdisrep} is called to convert a canonical rational expression (CRE)
+into a general expression.
+@c NOT REALLY FOND OF YOU-CAN-DO-THIS-YOU-CAN-DO-THAT STATEMENTS
 This is sometimes convenient if one wishes to stop the "contagion", or
-use rational functions in non-rational contexts.  Most CRE functions
-will work on either CRE or non-CRE expressions, but the answers may
-take different forms.  If @code{ratdisrep} is given a non-CRE for an
-argument, it returns its argument unchanged.  See also @code{totaldisrep}.
+use rational functions in non-rational contexts.
+
+See also @code{totaldisrep}.
 
 @end defun
 
@@ -1058,28 +1130,37 @@ Default value: 2.0e-8
 @code{ratepsilon} is the tolerance used in the conversion
 of floating point numbers to rational numbers.
 
+@c NEED EXAMPLES HERE
 @end defvar
 
-@c ratexpand IS ALSO A VARIABLE -- MAKE SURE THAT IS CLEAR
-@defun ratexpand (@var{expr})
-expands @var{expr} by multiplying out products of sums and
+@defvr {Function} ratexpand (@var{expr})
+@defvrx {Variable} ratexpand
+Expands @var{expr} by multiplying out products of sums and
 exponentiated sums, combining fractions over a common denominator,
 cancelling the greatest common divisor of the numerator and
 denominator, then splitting the numerator (if a sum) into its
-respective terms divided by the denominator.  This is accomplished by
-converting @var{expr} to CRE form and then back to general form.
+respective terms divided by the denominator.
 
+The return value of @code{ratexpand} is a general expression,
+even if @var{expr} is a canonical rational expression (CRE).
+
+@c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
 The switch @code{ratexpand} if @code{true} will cause CRE
 expressions to be fully expanded when they are converted back to
 general form or displayed, while if it is @code{false} then they will be put
-into a recursive form. (see @code{ratsimp})
+into a recursive form.
+See also @code{ratsimp}.
 
-@code{ratdenomdivide} - if @code{false} will stop the splitting up of the
-terms of the numerator of @code{ratexpand}'ed expressions from occurring.
+When @code{ratdenomdivide} is @code{true},
+@code{ratexpand} expands a ratio in which the numerator is a sum 
+into a sum of ratios,
+all having a common denominator.
+Otherwise, @code{ratexpand} collapses a sum of ratios into a single ratio,
+the numerator of which is the sum of the numerators of each ratio.
 
-@code{keepfloat} if set to @code{true} will prevent floating point numbers
-from being rationalized when expressions which contain them are
-converted to CRE form.
+When @code{keepfloat} is @code{true}, prevents floating
+point numbers from being rationalized when expressions which contain
+them are converted to canonical rational expression (CRE) form.
 
 Examples:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -1110,73 +1191,96 @@ Examples:
                 x  + x  - x - 1   x  + x  - x - 1
 @end example
 
-@end defun
+@end defvr
 
 @defvar ratfac
 Default value: @code{false}
 
-When @code{ratfac} is @code{true} invokes a partially factored form
-for CRE rational expressions.  During rational operations the
-expression is maintained as fully factored as possible without an
-actual call to the factor package.  This should always save space and
-may save some time in some computations.  The numerator and
-denominator are still made relatively prime, for example
-RAT((X^2 -1)^4/(X+1)^2);  yields (X-1)^4*(X+1)^2),
+When @code{ratfac} is @code{true},
+canonical rational expressions (CRE) are manipulated in a partially factored form.
+
+During rational operations the
+expression is maintained as fully factored as possible without calling @code{factor}.
+This should always save space and may save time in some computations.
+The numerator and denominator are made relatively prime, for example
+@code{rat ((x^2 - 1)^4/(x + 1)^2)} yields @code{(x - 1)^4 (x + 1)^2)},
 but the factors within each part may not be relatively prime.
-In the @code{ctensr} (Component Tensor Manipulation) Package, if @code{ratfac} is
-@code{true}, it causes the Ricci, Einstein, Riemann, and Weyl tensors and the
-Scalar Curvature to be factored automatically.  @i{This should only be
+
+In the @code{ctensr} (Component Tensor Manipulation) package,
+Ricci, Einstein, Riemann, and Weyl tensors and the scalar curvature 
+are factored automatically when @code{ratfac} is @code{true}.
+@i{@code{ratfac} should only be
 set for cases where the tensorial components are known to consist of
 few terms.}
 
-Note: The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
+The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
 both be used at the same time.
 
+@c NEED EXAMPLES HERE
 @end defvar
 
 @defun ratnumer (@var{expr})
-obtains the numerator of the rational expression @var{expr}.
-If @var{expr} is in general form then the @code{num} function should be used
-instead, unless one wishes to get a CRE result.
+Returns the numerator of @var{expr},
+after coercing @var{expr} to a canonical rational expression (CRE).
+The return value is a CRE.
 
+@c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
+@var{expr} is coerced to a CRE by @code{rat}
+if it is not already a CRE.
+This conversion may change the form of @var{expr} by putting all terms
+over a common denominator.
+
+@code{num} is similar, but returns an ordinary expression instead of a CRE.
+Also, @code{num} does not attempt to place all terms over a common denominator,
+and thus some expressions which are considered ratios by @code{ratnumer}
+are not considered ratios by @code{num}.
+
+@c NEEDS AN EXAMPLE HERE
 @end defun
 
 @defun ratnump (@var{expr})
-is @code{true} if @var{expr} is a rational number (includes integers)
-else @code{false}.
+Returns @code{true} if @var{expr} is a literal integer or ratio of literal integers,
+otherwise @code{false}.
 
 @end defun
 
 @defun ratp (@var{expr})
-is @code{true} if @var{expr} is in CRE or extended CRE form else @code{false}.
+Returns @code{true} if @var{expr} is a canonical rational expression (CRE) or extended CRE,
+otherwise @code{false}.
+
+CRE are created by @code{rat} and related functions.
+Extended CRE are created by @code{taylor} and related functions.
 
 @end defun
 
 @defvar ratprint
 Default value: @code{true}
 
-When @code{ratprint} is @code{false}, suppresses the printout of the
-message informing the user of the conversion of floating point numbers
-to rational numbers.
+When @code{ratprint} is @code{true},
+a message informing the user of the conversion of floating point numbers
+to rational numbers is displayed.
 
 @end defvar
 
 @defun ratsimp (@var{expr})
-rationally simplifies (similar to @code{ratexpand}) the
-expression @var{expr} and all of its subexpressions including the arguments
-to non- rational functions.  The result is returned as the quotient of
-two polynomials in a recursive form, i.e.  the coefficients of the
-main variable are polynomials in the other variables.  Variables may,
-as in @code{ratexpand}, include non-rational functions (e.g. SIN(X**2+1) )
-but with @code{ratsimp}, the arguments to non-rational functions are
-rationally simplified.  Note that @code{ratsimp} is affected by some of the
-variables which affect @code{ratexpand}.
+@defunx ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
+Simplifies the expression @var{expr} and all of its subexpressions,
+including the arguments to non-rational functions.
+The result is returned as the quotient of two polynomials in a recursive form,
+that is, the coefficients of the main variable are polynomials in the other variables.
+Variables may include non-rational functions (e.g., @code{sin (x^2 + 1)})
+and the arguments to any such functions are also rationally simplified.
 
-RATSIMP(@var{expr},v1,v2,...,vn) - enables rational simplification with the
+@code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}
+enables rational simplification with the
 specification of variable ordering as in @code{ratvars}.
 
-@code{ratsimpexpons} - if @code{true} will cause exponents of expressions to
-be @code{ratsimp}'ed automatically during simplification.
+When @code{ratsimpexpons} is @code{true},
+@code{ratsimp} is applied to the exponents of expressions during simplification.
+
+See also @code{ratexpand}.
+Note that @code{ratsimp} is affected by some of the
+flags which affect @code{ratexpand}.
 
 Examples:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -1220,25 +1324,38 @@ Examples:
 @defvar ratsimpexpons
 Default value: @code{false}
 
-When @code{ratsimpexpons} is @code{true}, causes exponents of
-expressions to be @code{ratsimp}'ed automatically during simplification.
+When @code{ratsimpexpons} is @code{true},
+@code{ratsimp} is applied to the exponents of expressions during simplification.
 
+@c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
 @end defvar
 
-@defun ratsubst (a, b, c)
-substitutes a for b in c.  b may be a sum, product,
-power, etc.  @code{ratsubst} knows something of the meaning of expressions
-whereas @code{subst} does a purely syntactic substitution.  Thus
-SUBST(A,X+Y,X+Y+Z) returns X+Y+Z whereas @code{ratsubst} would return Z+A.
-@code{radsubstflag} if @code{true} permits @code{ratsubst} to make substitutions
-like U for SQRT(X) in X.
+@defun ratsubst (@var{a}, @var{b}, @var{c})
+Substitutes @var{a} for @var{b} in @var{c} and returns the resulting expression.
+@c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
+@var{b} may be a sum, product, power, etc.
+
+@c WHAT, EXACTLY, DOES ratsubst KNOW ??
+@code{ratsubst} knows something of the meaning of expressions
+whereas @code{subst} does a purely syntactic substitution.
+Thus @code{subst (a, x + y, x + y + z)} returns @code{x + y + z}
+whereas @code{ratsubst} returns @code{z + a}.
+
+When @code{radsubstflag} is @code{true},
+@code{ratsubst} makes substitutions for radicals in expressions
+which don't explicitly contain them.
 
 Examples:
 @c EXAMPLES BELOW ADAPTED FROM examples (ratsubst)
+@c WITH SOME ADDITIONAL STUFF
 @c ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
 @c cos(x)^4 + cos(x)^3 + cos(x)^2 + cos(x) + 1;
 @c ratsubst (1 - sin(x)^2, cos(x)^2, %);
 @c ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
+@c radsubstflag: false$
+@c ratsubst (u, sqrt(x), x);
+@c radsubstflag: true$
+@c ratsubst (u, sqrt(x), x);
 
 @example
 (%i1) ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
@@ -1253,30 +1370,55 @@ Examples:
 (%i4) ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
                         4           2
 (%o4)                cos (x) - 2 cos (x) + 1
+(%i5) radsubstflag: false$
+(%i6) ratsubst (u, sqrt(x), x);
+(%o6)                           x
+(%i7) radsubstflag: true$
+(%i8) ratsubst (u, sqrt(x), x);
+                                2
+(%o8)                          u
 @end example
 
 @end defun
 
-@defun ratvars (var1, var2, ..., varn)
-forms its n arguments into a list in
-which the rightmost variable varn will be the main variable of future
-rational expressions in which it occurs, and the other variables will
-follow in sequence.  If a variable is missing from the @code{ratvars} list,
-it will be given lower priority than the leftmost variable var1. The
-arguments to @code{ratvars} can be either variables or non-rational functions
-(e.g. SIN(X)).  The variable @code{ratvars} is a list of the arguments which
-have been given to this function.
+@defvr {Function} ratvars (@var{x_1}, ..., @var{x_n})
+@defvrx {Function} ratvars ()
+@defvrx {Variable} ratvars
+Declares main variables @var{x_1}, ..., @var{x_n} for rational expressions.
+@var{x_n}, if present in a rational expression, is considered the main variable.
+Otherwise, @var{x_[n-1]} is considered the main variable if present,
+and so on through the preceding variables to @var{x_1},
+which is considered the main variable only if none of the succeeding variables are present.
 
-@end defun
+If a variable in a rational expression is not present in the @code{ratvars} list,
+it is given a lower priority than @var{x_1}.
 
-@defun ratweight (v1, w1, ..., vn, wn)
-assigns a weight of wi to the variable
-vi.  This causes a term to be replaced by 0 if its weight exceeds the
-value of the variable @code{ratwtlvl} (default is no truncation).
+The arguments to @code{ratvars} can be either variables or non-rational functions
+such as @code{sin(x)}.
+
+The variable @code{ratvars} is a list of the arguments of 
+the function @code{ratvars} when it was called most recently.
+Each call to the function @code{ratvars} resets the list.
+@code{ratvars ()} clears the list.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@defun ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@defunx ratweight ()
+Assigns a weight @var{w_i} to the variable @var{x_i}.
+This causes a term to be replaced by 0 if its weight exceeds the
+value of the variable @code{ratwtlvl} (default yields no truncation).
 The weight of a term is the sum of the products of the
-weight of a variable in the term times its power.  Thus the weight of
-3*v1**2*v2 is 2*w1+w2.  This truncation occurs only when multiplying
-or exponentiating CRE forms of expressions.
+weight of a variable in the term times its power.
+For example, the weight of @code{3 x_1^2 x_2} is @code{2 w_1 + w_2}.
+Truncation according to @code{ratwtlvl} is carried out only when multiplying
+or exponentiating canonical rational expressions (CRE).
+
+@code{ratweight ()} returns the cumulative list of weight assignments.
+
+Note: The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
+both be used at the same time.
 
 Examples:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -1298,16 +1440,14 @@ Examples:
 (%o5)/R/                  2 b + 2 a + 1
 @end example
 
-Note: The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
-both be used at the same time.
-
 @end defun
 
 @defvar ratweights
-@c DEFAULT VALUE ??
+Default value: @code{[]}
 
-@code{ratweights} is a list of weight assignments (set up by the @code{ratweight}
-function), @code{ratweights;} or @code{ratweight();} will show you the list.
+@code{ratweights} is the list of weights assigned by @code{ratweight}.
+The list is cumulative:
+each call to @code{ratweight} places additional items in the list.
 
 @c DO WE REALLY NEED TO MENTION THIS ??
 @code{kill (ratweights)} and @code{save (ratweights)} both work as expected.
@@ -1318,39 +1458,54 @@ function), @code{ratweights;} or @code{ratweight();} will show you the list.
 Default value: @code{false}
 
 @code{ratwtlvl} is used in combination with the @code{ratweight}
-function to control the truncation of rational (CRE form) expressions
-(for the default value of @code{false}, no truncation occurs).
+function to control the truncation of canonical rational expressions (CRE).
+For the default value of @code{false}, no truncation occurs.
 
 @end defvar
 
-@defun remainder (p1, p2, var1, ...)
-computes the remainder of the polynomial
-p1 divided by the polynomial p2.
+@defun remainder (@var{p_1}, @var{p_2})
+@defunx remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+Returns the remainder of the polynomial @var{p_1} divided by the polynomial @var{p_2}.
+The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
 
+@code{remainder} returns the second element
+of the two-element list returned by @code{divide}.
+
+@c NEED SOME EXAMPLES HERE
 @end defun
 
-@c BOTH A VARIABLE AND A FUNCTION
-@defun resultant (p1, p2, var)
-computes the resultant of the two polynomials
-p1 and p2, eliminating the variable var.  The resultant is a
-determinant of the coefficients of var in p1 and p2 which equals zero
-if and only if p1 and p2 have a non-constant factor in common.  If p1
-or p2 can be factored, it may be desirable to call @code{factor} before
-calling @code{resultant}.
+@c CAN PROBABLY BE CLARIFIED
+@defvr {Function} resultant (@var{p_1}, @var{p_2}, @var{x})
+@defvrx {Variable} resultant
+Computes the resultant of the two polynomials @var{p_1} and @var{p_2},
+eliminating the variable @var{x}.
+The resultant is a determinant of the coefficients of @var{x}
+in @var{p_1} and @var{p_2},
+which equals zero
+if and only if @var{p_1} and @var{p_2} have a non-constant factor in common.
 
-@code{resultant} - controls which algorithm will be used to compute
-the resultant.  @code{subres} for subresultant prs [the default], @code{mod} for
-modular resultant algorithm, and @code{red} for reduced prs.  On most
-problems @code{subres} should be best.  On some large degree univariate or
-bivariate problems @code{mod} may be better.  Another alternative is the
-@code{bezout} command which takes the same arguments as @code{resultant} and returns
-a matrix.  @code{determinant} of this matrix is the desired resultant.
+If @var{p_1} or @var{p_2} can be factored,
+it may be desirable to call @code{factor} before calling @code{resultant}.
 
-@end defun
+The variable @code{resultant} controls which algorithm will be used to compute
+the resultant.
+@c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
+@code{subres} for subresultant prs,
+@code{mod} for modular resultant algorithm,
+and @code{red} for reduced prs.
+On most problems @code{subres} should be best.
+On some large degree univariate or bivariate problems @code{mod} may be better.
+
+The function @code{bezout} takes the same arguments as @code{resultant} and returns
+a matrix.  The determinant of the return value is the desired resultant.
+
+@c NEED AN EXAMPLE HERE
+@end defvr
 
 @defvar savefactors
 Default value: @code{false}
 
+@c "certain functions" -- WHICH ONES ??
 When @code{savefactors} is @code{true}, causes the factors of an
 expression which is a product of factors to be saved by certain
 functions in order to speed up later factorizations of expressions
@@ -1358,14 +1513,16 @@ containing some of the same factors.
 
 @end defvar
 
+@c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
 @defun sqfr (@var{expr})
-is similar to @code{factor} except that the polynomial factors are
-"square-free." That is, they have factors only of degree one.  This
-algorithm, which is also used by the first stage of @code{factor}, utilizes
-the fact that a polynomial has in common with its nth derivative all
-its factors of degree > n.  Thus by taking gcds with the polynomial of
+is similar to @code{factor} except that the polynomial factors are "square-free."
+That is, they have factors only of degree one.
+This algorithm, which is also used by the first stage of @code{factor}, utilizes
+the fact that a polynomial has in common with its n'th derivative all
+its factors of degree greater than n.  Thus by taking greatest common divisors
+with the polynomial of
 the derivatives with respect to each variable in the polynomial, all
-factors of degree > 1 can be found.
+factors of degree greater than 1 can be found.
 
 Example:
 @c FOLLOWING GENERATED FROM THIS EXPRESSION
@@ -1379,25 +1536,41 @@ Example:
 
 @end defun
 
-@defun tellrat (poly)
-adds to the ring of algebraic integers known to
-Maxima, the element which is the solution of the polynomial with
-integer coefficients.  Maxima initially knows about %I and all roots
-of integers. TELLRAT(X); means substitute 0 for X in rational
-functions.  There is a command @code{untellrat} which takes kernels and
-removes @code{tellrat} properties.  When @code{tellrat}'ing a multivariate
-polynomial, e.g. TELLRAT(X^2-Y^2);, there would be an ambiguity as to
-whether to substitute Y^2 for X^2 or vice versa.  The system will pick
-a particular ordering, but if the user wants to specify which, e.g.
-TELLRAT(Y^2=X^2); provides a syntax which says replace Y^2 by X^2.
-@code{tellrat} and @code{untellrat} both can take any number of arguments, and
-TELLRAT(); returns a list of the current substitutions.  Note: When
-you @code{tellrat} reducible polynomials, you want to be careful not to
-attempt to rationalize a denominator with a zero divisor.  E.g.
-TELLRAT(W^3-1)$ ALGEBRAIC:TRUE$ RAT(1/(W^2-W)); will give "quotient by
-zero".  This error can be avoided by setting @code{ratalgdenom} to @code{false}.
+@c THIS ITEM STILL NEEDS WORK
+@defun tellrat (@var{p_1}, ..., @var{p_n})
+@defunx tellrat ()
+Adds to the ring of algebraic integers known to Maxima
+the elements which are the solutions of the polynomials @var{p_1}, ..., @var{p_n}.
+Each argument @var{p_i} is a polynomial with integer coefficients.
+
+@code{tellrat (@var{x})} effectively means substitute 0 for @var{x} in rational
+functions.
+
+@code{tellrat ()} returns a list of the current substitutions.
+
 @code{algebraic} must be set to @code{true} in order for the simplification of
 algebraic integers to take effect.
+
+Maxima initially knows about the imaginary unit @code{%i}
+and all roots of integers.
+
+There is a command @code{untellrat} which takes kernels and
+removes @code{tellrat} properties.
+
+When @code{tellrat}'ing a multivariate
+polynomial, e.g., @code{tellrat (x^2 - y^2)}, there would be an ambiguity as to
+whether to substitute @code{@var{y}^2} for @code{@var{x}^2}
+or vice versa.  
+Maxima picks a particular ordering, but if the user wants to specify which, e.g.
+@code{tellrat (y^2 = x^2)} provides a syntax which says replace
+@code{@var{y}^2} by @code{@var{x}^2}.
+
+@c CAN'T TELL WHAT THIS IS ABOUT -- tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w));
+@c DOES NOT YIELD AN ERROR, SO WHAT IS THE POINT ABOUT ratalgdenom ??
+@c When you @code{tellrat} reducible polynomials, you want to be careful not to
+@c attempt to rationalize a denominator with a zero divisor.  E.g.
+@c tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w)); will give "quotient by
+@c zero".  This error can be avoided by setting @code{ratalgdenom} to @code{false}.
 
 Examples:
 @c EXAMPLE ADAPTED FROM example (tellrat)
@@ -1436,16 +1609,20 @@ Examples:
 @end defun
 
 @defun totaldisrep (@var{expr})
-converts every subexpression of @var{expr} from CRE to
-general form.  If @var{expr} is itself in CRE form then this is identical to
-@code{ratdisrep} but if not then @code{ratdisrep} would return @var{expr} unchanged while
-@code{totaldisrep} would "totally disrep" it.  This is useful for
-ratdisrepping expressions e.g., equations, lists, matrices, etc. which
+Converts every subexpression of @var{expr} from canonical rational expressions (CRE) to
+general form and returns the result.
+If @var{expr} is itself in CRE form then @code{totaldisrep} is identical to
+@code{ratdisrep}.
+
+@code{totaldisrep} may be useful for
+ratdisrepping expressions such as equations, lists, matrices, etc., which
 have some subexpressions in CRE form.
 
+@c NEED EXAMPLES HERE
 @end defun
 
-@defun untellrat (x)
-takes kernels and removes @code{tellrat} properties.
+@defun untellrat (@var{x_1}, ..., @var{x_n})
+Removes @code{tellrat} properties from @var{x_1}, ..., @var{x_n}.
 
+@c NEED EXAMPLES HERE
 @end defun
