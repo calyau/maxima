@@ -64,7 +64,8 @@
 		(ELEMXPT (LIST '(MEXPT)
 			       BASE*
 			       (SIMPLIFY (LIST '(MTIMES)
-					   (LIST '(%LOG)
+					       (list '(mexpt)
+						     (list '(%log) base*) -1)					   (LIST '(%LOG)
 						 (CADR EXP))
 					   (CADDR EXP))))))
 	       ((NOT (SETQ W

@@ -7,9 +7,9 @@ done$
 apropos('TR_OPTIMIZE_MAX_LOOP);
 [TR_OPTIMIZE_MAX_LOOP]$
 
-/* Known failure - 7 April 2002 */
+/* Test introduced 7 April 2002. Bug fix incorporated 9 June 2002 */
 integrate(3^log(x),x);
-x*%E^(LOG(3)*LOG(x))/(LOG(3)+1)$
+3^((1/LOG(3)+1)*LOG(x))/((1/LOG(3)+1)*LOG(3))$
 
 /* Wester[1995] Problem 84 - Known failure - 7 April 2002 */
 integrate(sqrt(x+1/x-2),x,0,1);
