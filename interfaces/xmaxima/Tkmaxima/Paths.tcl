@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.4 2003-01-05 19:00:32 amundson Exp $
+#       $Id: Paths.tcl,v 1.5 2003-01-26 21:43:31 amundson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -216,6 +216,11 @@ proc setMaxDir {} {
 	lappend auto_path $dir
     }
 
+    # jfa: extend path so that gcl can see gcc in windows package
+    # I don't know that this is the best place for this
+    if {$tcl_platform(platform) == "windows"} {
+	set env(PATH) "$maxima_priv(maxima_prefix)\\bin\\;$env(PATH)"
+    }
 }
 
 proc vMAXSetMaximaCommand {} {
