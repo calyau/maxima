@@ -1283,6 +1283,14 @@ genhom;
 (pn_(272),ans:contrib_ode(eqn:x^2*'diff(y,x)=a+b*x*y+c*x^4*y^2,y,x));
 false;
 
+/* 275 - Abel eqn of 1st kind */
+(pn_(275),ans:contrib_ode(eqn:x^2*'diff(y,x)=a*x^2*y^2-a*y^3,y,x));
+false;
+
+/* 276 - Abel eqn of 1st kind */
+(pn_(276),ans:contrib_ode(eqn:x^2*'diff(y,x)+a*y^2+b*x^2*y^3=0,y,x));
+false;
+
 /* 300 Riccati 
    Fails as can't solve -'DIFF(z,x,2)/(x^2-1)-z/(x^2-1)^3 = 0
    Lie symmetry method works 
@@ -1295,6 +1303,10 @@ y = (x*log(x+1)-x*log(x-1)+2*%c*x-2)/(log(x+1)-log(x-1)+2*%c);
 [lie,0];
 
 /* 301 Riccati */
+
+/* 304 - Abel eqn od 1st kind */
+(pn_(304),ans:contrib_ode(eqn:(1+x^2)*'diff(y,x)=1+y^2-2*x*y*(1+y^2),y,x)); 
+false;
 
 /* 311 Riccati - Fails as can't solve 2nd order linear ode */
 (pn_(311),ans:contrib_ode(eqn:(a^2+x^2)*'diff(y,x)=a^2+3*x*y-2*y^2,y,x));
@@ -1328,6 +1340,10 @@ y=(2*x^2+%c)/(x+%c);
 
 /* 338 Riccati - Fails as can't solve 2nd order linear ode */
 (pn_(338),ans:contrib_ode(eqn:2*x*(1-x)*'diff(y,x)+x+(1-2*x)*y^2=0,y,x));
+false;
+
+/* 345 - Abel eqn of 1st kind */
+(pn_(345),ans:contrib_ode(eqn:(a+b*x)^2*'diff(y,x)+c*y^2+(a+b*x)*y^3=0,y,x));
 false;
 
 /* 347 */
@@ -1378,6 +1394,9 @@ false;
 
 /* 380 Riccati */
 
+/* 383 Abel eqn of 1st kind - ode1_lie problems */
+/*(pn_(383),ans:contrib_ode(eqn:x^7*'diff(y,x)+5*x^3*y^2+2*(1+x^2)*y^3=0,y,x));*/
+
 /* 385 Riccati 
   Can't solve -'DIFF(z,x,2)/x^n-n*x^(-n-1)*'DIFF(z,x,1)+x^(-n-1)*z = 0
 */
@@ -1404,3 +1423,17 @@ genhom;
 
 /* 388 Riccati */
 
+/* 402 - Abel eqn of 1st kind.  absolute invariant K:  1/(8*a^2*b) */
+(pn_(402),a:1/3,b:-1/6,ans:contrib_ode(eqn:x^(3/2)*'diff(y,x)=a+b*x^(3/2)*y^3,y,x));
+ [x = %C*%E^((SQRT(x)*(2*y*LOG(SQRT(x)*y+1)-2*y*LOG(SQRT(x)*y-2))+2*LOG(SQRT(x)*y+1)-2*LOG(SQRT(x)*y-2)-6)/(3*SQRT(x)*y+3))];
+/* CHECKME:  Get different soln with ode1_abel */
+kill(a,b);
+done;
+
+/* 422 - Abel eqn of 2nd kind */
+(pn_(422),ans:contrib_ode(eqn:y*'diff(y,x)+x^3+y=0,y,x));
+false;
+
+/* 593 - Abel eqn of 2nd kind */
+(pn_(593),ans:contrib_ode(eqn:x^7*y*'diff(y,x)=2*(1+x^2)+5*x^3*y,y,x));
+false;
