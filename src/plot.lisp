@@ -33,7 +33,13 @@
 			((mlist) $transform_xy nil)
 			((mlist) $run_viewer t)
 			((mlist) $plot_format $openmath)
-			((mlist) $nticks 100)
+			;; With adaptive plotting, 100 is probably too
+			;; many ticks.  I (rtoy) think 10 is a more
+			;; reasonable default.
+			((mlist) $nticks 10)
+			;; Controls the number of splittings
+			;; adaptive-plotting will do.
+			((mlist) $adapt_depth 10)
 			))
 
 (defun $get_plot_option (name &optional n)
@@ -75,6 +81,7 @@
 							 ))
 			    (merror "Only [zic,geomview,ps,openmath,gnuplot] are available"))
 			value)
+	  ($adapt_depth (check-list-items name (cddr value) 'fixnum 1))
 	  (t
 	   (merror "Unknown plot option specified:  ~M" name))))
   (sloop for v on (cdr $plot_options)
@@ -769,6 +776,7 @@ setrgbcolor} def
       (return-from draw2d (draw2d-parametric f range)))
   (let* ((nticks (nth 2 ($get_plot_option '$nticks)))
 	 (yrange ($get_plot_option '|$y|))
+	 (depth (nth 2 ($get_plot_option '$adapt_depth)))
 	 ($numer t))
 
     (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
@@ -814,7 +822,7 @@ setrgbcolor} def
 		      (cddr
 		       (adaptive-plot f (car x-start) (car x-mid) (car x-end)
 				      (car y-start) (car y-mid) (car y-end)
-				      10 1d-5)))))
+				      depth 1d-5)))))
 	  
 
       (format t "Points = ~D~%" (length result))
