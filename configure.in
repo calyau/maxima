@@ -226,36 +226,59 @@ if test x"${openmcl}" = xtrue ; then
 fi
 
 if test x"${explicit_lisp}" = xfalse ; then
-	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
-	if test x"${clisp_found}" = xtrue ; then
-		clisp=true
+dnl  	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
+dnl  	if test x"${clisp_found}" = xtrue ; then
+dnl  		clisp=true
+dnl  	else
+dnl  		AC_CHECK_PROG(gcl_found,${gcl_default_name},true,false)
+dnl  		if test x"${gcl_found}" = xtrue ; then
+dnl  			gcl=true
+dnl  		else
+dnl  			AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
+dnl  			if test x"${cmucl_found}" = xtrue ; then
+dnl  				cmucl=true
+dnl  			else
+dnl  				AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
+dnl  				if test x"${sbcl_found}" = xtrue ; then
+dnl  				   	sbcl=true
+dnl  				else
+dnl  					AC_CHECK_PROG(acl6_found,$ACL6_NAME,true,false)
+dnl  					if test x"${acl6_found}" = xtrue ; then
+dnl  						acl6=true
+dnl  					else
+dnl  						AC_CHECK_PROG(openmcl_found,$OPENMCL_NAME,true,false)
+dnl  						if test x"${openmcl_found}" = xtrue ; then
+dnl  							openmcl=true
+dnl  						else
+dnl  							AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl6_default_name}(ACL6),${openmcl_default_name}(OpenMCL)] were found in PATH)
+dnl  						fi
+dnl  					fi
+dnl  				fi
+dnl  			fi
+dnl  		fi
+dnl  	fi
+	dnl See if any of the lisps can be found
+  	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
+	AC_CHECK_PROG(gcl_found,${gcl_default_name},true,false)
+	AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
+	AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
+	AC_CHECK_PROG(acl6_found,$ACL6_NAME,true,false)
+	AC_CHECK_PROG(openmcl_found,$OPENMCL_NAME,true,false)
+
+  	if test x"${clisp_found}" = xtrue ; then
+  		clisp=true
+  	elif test x"${gcl_found}" = xtrue ; then
+		gcl=true
+	elif test x"${cmucl_found}" = xtrue ; then
+		cmucl=true
+	elif test x"${sbcl_found}" = xtrue ; then
+	   	sbcl=true
+	elif test x"${acl6_found}" = xtrue ; then
+		acl6=true
+	elif test x"${openmcl_found}" = xtrue ; then
+		openmcl=true
 	else
-		AC_CHECK_PROG(gcl_found,${gcl_default_name},true,false)
-		if test x"${gcl_found}" = xtrue ; then
-			gcl=true
-		else
-			AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
-			if test x"${cmucl_found}" = xtrue ; then
-				cmucl=true
-			else
-				AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
-				if test x"${sbcl_found}" = xtrue ; then
-				   	sbcl=true
-				else
-					AC_CHECK_PROG(acl6_found,$ACL6_NAME,true,false)
-					if test x"${acl6_found}" = xtrue ; then
-						acl6=true
-					else
-						AC_CHECK_PROG(openmcl_found,$OPENMCL_NAME,true,false)
-						if test x"${openmcl_found}" = xtrue ; then
-							openmcl=true
-						else
-							AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl6_default_name}(ACL6),${openmcl_default_name}(OpenMCL)] were found in PATH)
-						fi
-					fi
-				fi
-			fi
-		fi
+		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl6_default_name}(ACL6),${openmcl_default_name}(OpenMCL)] were found in PATH)
 	fi
 fi
 
@@ -328,28 +351,18 @@ AC_ARG_WITH(default-lisp,
      	esac],
 	[if test x"${clisp}" = xtrue ; then
 		DEFAULTLISP=clisp
+	elif test x"${cmucl}" = xtrue ; then
+		DEFAULTLISP=cmucl
+	elif test x"${sbcl}" = xtrue ; then
+	   	DEFAULTLISP=sbcl
+	elif test x"${gcl}" = xtrue ; then
+	   	DEFAULTLISP=gcl
+	elif test x"${acl6}" = xtrue ; then
+		DEFAULTLISP=acl6
+	elif test x"${openmcl}" = xtrue ; then
+		DEFAULTLISP=openmcl
 	else
-		if test x"${cmucl}" = xtrue ; then
-			DEFAULTLISP=cmucl
-		else
-			if test x"${sbcl}" = xtrue ; then
-			   	DEFAULTLISP=sbcl
-			else
-				if test x"${gcl}" = xtrue ; then
-				   	DEFAULTLISP=gcl
-				else
-					if test x"${acl6}" = xtrue ; then
-						DEFAULTLISP=acl6
-					else
-						if test x"${openmcl}" = xtrue ; then
-							DEFAULTLISP=openmcl
-						else
-							AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
-						fi
-					fi
-				fi
-			fi
-		fi
+		AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
 	fi])
 
 AC_SUBST(CLISP_NAME)
