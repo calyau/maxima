@@ -159,10 +159,10 @@ else
 	tmp_exec_prefix="${exec_prefix}"
 fi
 expanded_exec_prefix="${tmp_exec_prefix}"
-expanded_libdir="`eval "exec_prefix=${tmp_exec_prefix};echo ${libdir}"`"
-expanded_libexecdir="`eval "exec_prefix=${tmp_exec_prefix};echo ${libexecdir}"`"
-expanded_datadir="`eval "prefix=${tmp_prefix};echo ${datadir}"`"
-expanded_infodir="`eval "prefix=${tmp_prefix};echo ${infodir}"`"
+expanded_libdir="`eval \"exec_prefix=${tmp_exec_prefix};echo ${libdir}\"`"
+expanded_libexecdir="`eval \"exec_prefix=${tmp_exec_prefix};echo ${libexecdir}\"`"
+expanded_datadir="`eval \"prefix=${tmp_prefix};echo ${datadir}\"`"
+expanded_infodir="`eval \"prefix=${tmp_prefix};echo ${infodir}\"`"
 
 AC_SUBST(expanded_exec_prefix)
 AC_SUBST(expanded_libdir)
