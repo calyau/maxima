@@ -101,6 +101,127 @@ returns the Bessel function J for complex Z and real A >
 J[I+A- ENTIER(A)](Z).
 
 @end defun
+
+@c @node BESSEL_J
+@c @unnumberedsec phony
+@defun BESSEL_J [v](z)
+The Bessel function of the first kind of order @math{v} and argument
+@math{z}.  It is defined by 
+@ifinfo
+@example
+		       INF
+		       ====	  k  - v - 2 k  v + 2 k
+		       \     (- 1)  2	       z
+ 		        >    --------------------------
+		       /        k! GAMMA(v + k + 1)
+		       ====
+		       k = 0
+@end example
+@end ifinfo
+
+@tex
+$$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
+ }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
+@end tex
+@end defun
+
+@c @node BESSEL_Y
+@c @unnumberedsec phony
+@defun BESSEL_Y [v](z)
+The Bessel function of the second kind of order @math{v} and argument
+@math{z}.  It is defined by
+@ifinfo
+@example
+                   COS(%PI v) BESSEL_J (z) - BESSEL_J   (z)
+                                      v              - v
+                   ----------------------------------------
+                                  SIN(%PI v)
+@end example
+@end ifinfo
+
+@tex
+$${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
+ \sin \left(\pi\,v\right)}}$$
+@end tex
+
+when @math{v} is not an integer.  When @math{v} is an integer @math{n},
+the limit as @math{v} approaches @math{n} is taken.
+
+@end defun
+
+@c @node BESSEL_I
+@c @unnumberedsec phony
+@defun BESSEL_I [v](z)
+The modified Bessel function of the first kind of order @math{v} and
+argument @math{z}.    It is defined by 
+@ifinfo
+@example
+
+			   INF
+			   ====	  - v - 2 k  v + 2 k
+			   \	 2	    z
+(D1) 			    >	 -------------------
+			   /	 k! GAMMA(v + k + 1)
+			   ====
+			   k = 0
+@end example
+@end ifinfo
+
+@tex
+$$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
+ \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
+@end tex
+
+@end defun
+
+@c @node BESSEL_K
+@c @unnumberedsec phony
+@defun BESSEL_K [v](z)
+The modified Bessel function of the second kind of order @math{v} and
+argument @math{z}.  It is defined by
+@ifinfo
+@example
+
+		%PI CSC(%PI v) (BESSEL_I   (z) - BESSEL_I (z))
+					- v		 v
+(D3) 	        ----------------------------------------------
+				      2
+@end example
+@end ifinfo
+@tex
+$${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
+@end tex
+when @math{v} is not an integer.  If @math{v} is an integer @math{n},
+then the limit as @math{v} approaches @math{n} is taken.
+@end defun
+
+@defvar BESSELEXPAND
+ default: FALSE
+ Controls expansion of the Bessel functions when the order half of an
+ odd integer.  In this case, the Bessel functions can be expanded in
+ terms of other elementary functions.  When BESSELEXPAND is true, the
+ Bessel function is expanded.
+
+@example
+(C1) bessel_j[3/2](z);
+
+(D1)                            BESSEL_J   (z)
+                                        3/2
+(C2) besselexpand:true;
+
+(D2)                                 TRUE
+(C3) bessel_j[3/2](z);
+
+                                         COS(z)   SIN(z)
+                        SQRT(2) SQRT(z) (------ - ------)
+                                           z         2
+                                                    z
+(D3)                  - ---------------------------------
+                                    SQRT(%PI)
+
+@end example
+@end defvar
+
 @c @node BETA
 @c @unnumberedsec phony
 @defun BETA (X, Y)
