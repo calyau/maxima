@@ -105,15 +105,13 @@
 
 
 (defun hgfsimp-exec (arg-l1 arg-l2 arg)
-  (setq arg-l1 (copy-tree arg-l1)
-	arg-l2 (copy-tree arg-l2))
-  (prog (res $exponentialize)
-     (setq  res
-	    (hgfsimp arg-l1 arg-l2 arg))
-     (cond ((or (numberp res) (not (atom res)))
-	    (return res)))
-     (return (fpqform arg-l1 arg-l2 arg))))
-
+  (let* ((l1 (copy-tree arg-l1))
+	 (l2 (copy-tree arg-l2))
+	 ($exponentialize nil)
+	 (res (hgfsimp l1 l2 arg)))
+    (if (or (numberp res) (not (atom res)))
+	res
+	(fpqform l1 l2 arg))))
 
 (defun hgfsimp (arg-l1 arg-l2 var)
   (prog (resimp listcmdiff)
@@ -143,11 +141,11 @@
 ;; them from both L1 and L2.
 (defun simpg (arg-l1 arg-l2)
   (let ((il (zl-intersection arg-l1 arg-l2)))
-     (cond ((null il)
-	    (simpg-exec arg-l1 arg-l2))
-	   (t
-	    (simpg-exec (del il arg-l1)
-			  (del il arg-l2))))))
+    (cond ((null il)
+	   (simpg-exec arg-l1 arg-l2))
+	  (t
+	   (simpg-exec (del il arg-l1)
+		       (del il arg-l2))))))
 
 (defun del (a b)
   (cond ((null a) b)
@@ -157,22 +155,23 @@
 ;; Handle the simple cases where the result is either a polynomial, or
 ;; is undefined because we divide by zero.
 (defun simpg-exec (arg-l1 arg-l2)
-  (prog(n)
-     (cond ((zerop-in-l arg-l1)
-	    ;; A zero in the first index means the series terminates
-	    ;; after the first term, so the result is always 1.
-	    (return 1)))
-     (cond ((setq n (hyp-negp-in-l arg-l1))
-	    ;; A negative integer in the first series means we have a
-	    ;; polynomial.
-	    (return (create-poly arg-l1 arg-l2 n))))
-     (cond ((or (zerop-in-l arg-l2)
-		(hyp-negp-in-l arg-l2))
-	    ;; A zero or negative number in the second index means we
-	    ;; eventually divide by zero, so we're undefined.
-	    (return 'undef)))
-     ;; We failed so more complicated stuff needs to be done.
-     (return (append (list 'fail) (list arg-l1) (list arg-l2)))))
+  (let (n)
+    (cond ((zerop-in-l arg-l1)
+	   ;; A zero in the first index means the series terminates
+	   ;; after the first term, so the result is always 1.
+	   1)
+	  ((setq n (hyp-negp-in-l arg-l1))
+	   ;; A negative integer in the first series means we have a
+	   ;; polynomial.
+	   (create-poly arg-l1 arg-l2 n))
+	  ((or (zerop-in-l arg-l2)
+	       (hyp-negp-in-l arg-l2))
+	   ;; A zero or negative number in the second index means we
+	   ;; eventually divide by zero, so we're undefined.
+	   'undef)
+	  (t
+	   ;; We failed so more complicated stuff needs to be done.
+	   (append (list 'fail) (list arg-l1) (list arg-l2))))))
 
 			
 
@@ -235,32 +234,6 @@
 	   (2f0polys arg-l1 n))
 	  (t (create-any-poly arg-l1 arg-l2 (mul -1 n))))))
 
-
-#+nil
-(defun 1f1polys (l2 n)
-  (prog(c fact1 fact2)
-     (setq c
-	   (car l2)
-	   n
-	   (mul -1 n)
-	   fact1
-	   (mul (power 2 n)
-		(factorial n)
-		(inv (power -1 n)))
-	   fact2
-	   (mul (power 2 (inv 2))(power var (inv 2))))
-     (cond ((equal c (div 1 2))
-	    (return (mul fact1
-			 (inv (factorial (add n n)))
-			 (hermpol (add n n) fact2)))))
-     (cond ((equal c (div 3 2))
-	    (return (mul fact1
-			 (inv (factorial (add n n 1)))
-			 (hermpol (add n n 1) fact2)))))
-     (return (mul (factorial n)
-		  (gm c)
-		  (gm (add c n))
-		  (lagpol n (sub c 1) var)))))
 
 (defun 1f1polys (arg-l2 n)
   (let* ((c (car arg-l2))
@@ -334,22 +307,6 @@
       `(($laguerre) ,n ,arg)
       `(($gen_laguerre) ,n ,a, arg)))
 
-
-#+nil
-(defun 2f0polys (l1 n)
-  (prog(a b temp x)
-     (setq a (car l1) b (cadr l1))
-     (cond ((equal (sub b a)(div -1 2))
-	    (setq temp a a b b temp)))
-     (cond ((equal (sub b a)(div 1 2))
-	    ;; 2F0(-n,-n+1/2,z) or 2F0(-n-1/2,-n,z)
-	    ;;(setq x (power (div 2 (mul -1 var)) (inv 2)))
-	    (return (interhermpol n a b var))))
-     (setq x (mul -1 (inv var)) n (mul -1 n))
-     (return (mul (factorial n)
-		  (inv (power x n))
-		  (inv (power -1 n))
-		  (lagpol n (add b n) x)))))
 
 (defun 2f0polys (arg-l1 n)
   (let ((a (car arg-l1))
@@ -477,6 +434,8 @@
     (n a b x)
   (list '(mqapply)(list '($%p array) n a b) x))
 
+
+;; Jacobi polynomial
 (defun jacobpol (n a b x)
   `(($jacobi_p) ,n ,a ,b ,x))
 
@@ -486,6 +445,8 @@
   (cond ((equal v 0) (tchebypol n x))
 	(t (list '(mqapply)(list '($%c array) n v) x))))
 
+;; Gegenbauer (Ultraspherical) polynomial.  We use ultraspherical to
+;; match specfun.
 (defun gegenpol (n v x)
   (cond ((equal v 0) (tchebypol n x))
 	(t `(($ultraspherical) ,n ,v ,x))))
@@ -539,6 +500,7 @@
 	(t (append (list (add (car l) 1)) (incr1 (cdr l))))))
 
 
+#+nil
 (defun dispatch-spec-simp (arg-l1 arg-l2)
   (prog(len1 len2)
      (setq len1 (length arg-l1) len2 (length arg-l2))
@@ -549,6 +511,24 @@
 		 (equal len2 1))
 	    (return (simp2f1 arg-l1 arg-l2))))
      (return (fpqform arg-l1 arg-l2 var))))
+
+;; Figure out the orders of generalized hypergeometric function we
+;; have and call the right simplifier.
+(defun dispatch-spec-simp (arg-l1 arg-l2)
+  (let  ((len1 (length arg-l1))
+	 (len2 (length arg-l2)))
+    (cond ((and (lessp len1 2)
+		(lessp len2 2))
+	   ;; pFq where p and q < 2.
+	   (simp2>f<2 arg-l1 arg-l2 len1 len2))
+	  ((and (equal len1 2)
+		(equal len2 1))
+	   ;; 2F1
+	   (simp2f1 arg-l1 arg-l2))
+	  (t
+	   ;; We don't have simplifiers for any other hypergeometric
+	   ;; function.
+	   (fpqform arg-l1 arg-l2 var)))))
 
 
 #+nil
@@ -738,7 +718,7 @@
      (go loop)))
 
 ;; sqrt(2/(pi*z))
-(defun ctr(z)
+(defun ctr (z)
   (power (div 2 (mul '$%pi z)) (inv 2)))
 
 (defun negcoef (x)
@@ -805,46 +785,6 @@
 				(zl-delete (car arg-l1) arg-l2 1))))
 	(t (zl-intersection (cdr arg-l1) arg-l2))))
 
-#+(or)
-(defun 2inp (l)
-  (prog(count)
-     (setq count 0)
-     loop
-     (cond ((and (null l)(greaterp count 1))(return t)))
-     (cond ((null l)(return nil)))
-     (cond ((hyp-integerp (car l))(setq count (add1 count))))
-     (setq l (cdr l))
-     (go loop)))
-
-#+(or)
-(defun 2ratp (l)
-  (prog(count)
-     (setq count 0)
-     loop
-     (cond ((and (null l)(greaterp count 1))(return t)))
-     (cond ((null l)(return nil)))
-     (cond ((eq (caaar l) 'rat)(setq count (add1 count))))
-     (setq l (cdr l))
-     (go loop)))
-
-;;2NUMP SHOULD BE ELIMINATED. IT IS NOT EFFICIENT TO USE ANYTHING ELSE
-;;BUT JUST CONVERTING TO RAT REPRESENTATION ALL 0.X ,X IN
-;;N. ESPECIALLY LATER WHEN WE CONVERT TO OMONIMA FOR TESTING TO FIND
-;;THE RIGHT FORMULA
-
-
-#+(or)
-(defun 2nump (l)
-  (prog(count)
-     (setq count 0)
-     loop
-     (cond ((and (null l)(greaterp count 1))(return t)))
-     (cond ((null l)(return nil)))
-     (cond ((numberp (car l))(setq count (add1 count))))
-     (setq l (cdr l))
-     (go loop)))
-
-
 ;; Whittaker M function.  A&S 13.1.32 defines it as
 ;;
 ;; %m[k,u](z) = exp(-z/2)*z^(u+1/2)*M(1/2+u-k,1+2*u,z)
@@ -852,9 +792,6 @@
 ;; where M is the confluent hypergeometric function.
 (defun whitfun (k m var)
   (list '(mqapply) (list '($%m array) k m) var))
-
-;; Enable STEP7 algorithm if non-NIL.  
-(defvar *enable-step7* t)
 
 (defvar $trace2f1 nil
   "Enables simple tracing of simp2f1 so you can see how it decides
@@ -918,8 +855,7 @@
        (format t " Test a-b+1/2 is a numerical integer...~%"))
      (cond ((hyp-integerp (add (sub a b) (inv 2)))
 	    ;; F(a,b;c,z) where a-b+1/2 is an integer
-	    (cond ((and *enable-step7*
-			(setq lgf (step7 a b c)))
+	    (cond ((setq lgf (step7 a b c))
 		   (unless (atom lgf)
 		     (when $trace2f1
 		       (format t " Yes: step7~%"))
@@ -2355,7 +2291,7 @@
 
 ||#
 
-(defun freevarpar(exp)
+(defun freevarpar (exp)
   (cond ((freevar exp) (freepar exp))
 	(t nil)))
 
@@ -2378,7 +2314,9 @@
 	(t (and (freepar (car exp))
 		(freepar (cdr exp))))))
 
-(defun haspar(exp)(cond ((freepar exp) nil)(t t)))
+(defun haspar (exp)
+  (cond ((freepar exp) nil)
+	(t t)))
 
 ;; Confluent hypergeometric function.
 ;;
@@ -2568,12 +2506,6 @@
   (let ((-z (mul -1 z)))
     (mul a (power -z (mul -1 a))
 	 `(($%gammagreek) ,a ,-z))))
-
-#+nil
-(defun prod
-    (a m)
-  (cond ((eq m 2) (mul a (add a 1)))
-	(t (mul (add a (sub1 m))(prod a (sub1 m))))))
 
 ;; M(a,c,z), when a and c are numbers, and a-c is a negative integer
 (defun erfgamnumred (a c z)
@@ -2821,68 +2753,6 @@
 	      (fctrl a (sub1 n))))))
 
 
-;;(DEFUN CHECKSIGNTM			
-;;       (EXPR)				
-;;       (PROG (ASLIST QUEST ZEROSIGNTEST PRODUCTCASE)	
-;;	     (SETQ ASLIST CHECKCOEFSIGNLIST)
-;;	     (COND ((ATOM EXPR) (GO LOOP)))
-;;	     (COND ((EQ (CAAR EXPR) 'MTIMES)
-;;		    (SETQ PRODUCTCASE T)))
-;;	     LOOP
-;;	     (COND ((NULL ASLIST)
-;;		    (SETQ CHECKCOEFSIGNLIST
-;;			  (APPEND CHECKCOEFSIGNLIST
-;;				  (LIST (CONS
-;;					 EXPR
-;;					 (LIST
-;;					  (SETQ
-;;					   QUEST
-;;					   (CHECKFLAGANDACT
-;;					    EXPR)))))))
-;;		    (RETURN QUEST)))
-;;	     (COND ((EQUAL (CAAR ASLIST) EXPR)
-;;		    (RETURN (CADAR ASLIST))))
-;;	     (SETQ ASLIST (CDR ASLIST))
-;;	     (GO LOOP))) 
-
-;;(DEFUN CHECKFLAGANDACT
-;;       (EXPR)
-;;       (COND (PRODUCTCASE (SETQ PRODUCTCASE NIL)
-;;			  (FINDSIGNOFTHEIRPRODUCT (FINDSIGNOFACTORS
-;;						   (CDR EXPR))))
-;;	     (T (ASKSIGN ($REALPART EXPR))))) 
-
-;;(DEFUN FINDSIGNOFACTORS
-;;       (LISTOFACTORS)
-;;       (COND ((NULL LISTOFACTORS) NIL)
-;;	     ((EQ ZEROSIGNTEST '$ZERO) '$ZERO)
-;;	     (T (APPEND (LIST (SETQ ZEROSIGNTEST
-;;				    (CHECKSIGNTM (CAR
-;;						  LISTOFACTORS))))
-;;			(FINDSIGNOFACTORS (CDR LISTOFACTORS)))))) 
-
-;;(DEFUN FINDSIGNOFTHEIRPRODUCT
-;;       (LIST)
-;;       (PROG (SIGN)
-;;	     (COND ((EQ LIST '$ZERO) (RETURN '$ZERO)))
-;;	     (SETQ SIGN '$POSITIVE)
-;;	     LOOP
-;;	     (COND ((NULL LIST) (RETURN SIGN)))
-;;	     (COND ((EQ (CAR LIST) '$POSITIVE)
-;;		    (SETQ LIST (CDR LIST))
-;;		    (GO LOOP)))
-;;	     (COND ((EQ (CAR LIST) '$NEGATIVE)
-;;		    (SETQ SIGN
-;;			  (CHANGESIGN SIGN)
-;;			  LIST
-;;			  (CDR LIST))
-;;		    (GO LOOP)))
-;;	     (RETURN '$ZERO))) 
-
-;;(DEFUN CHANGESIGN
-;;       (SIGN)
-;;       (COND ((EQ SIGN '$POSITIVE) '$NEGATIVE) (T '$POSITIVE))) 
-
 
 (setq *par* '$p)                           
 
@@ -2989,10 +2859,11 @@
 	 (setq arg-l2 (incr1 arg-l2)))
       result)))
 
-(defun combin
-    (k count)
+;; binomial(k,count)
+(defun combin (k count)
   (div (factorial k)
-       (mul (factorial count)(factorial (sub k count)))))
+       (mul (factorial count)
+	    (factorial (sub k count)))))
 
 
 ;; Algor. II from thesis:minimizes differentiations
