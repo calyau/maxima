@@ -1,7 +1,20 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.5 2002-09-13 17:28:35 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.6 2002-09-14 17:25:34 mikeclarkson Exp $
 #
+
+proc pMAXSaveTexToFile {text} {
+    set file [tide_savefile [M "Save to a file"] "" *.out]
+    if {$file != ""} {
+	set contents [$text get 1.0 end]
+	set fd [open $file w]
+	if {[catch {puts $fd $contents} err]} {
+	    tide_failure [M "Error writing to file:\n%s" $err]
+	}
+	catch {close $fd}
+    }
+}
+
 
 proc vMAXAddSystemMenu {fr text} {
     global maxima_priv maxima_default
@@ -95,19 +108,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [list CNclearinput $text]
     $m add separator
     $m add command -underline 0 -label {Save Console to File} \
-	-command {
-	    set file [tide_savefile [M "Save to a file"] "" *.out]
-	    if {$file != ""} {
-		set text $maxima_priv(cConsoleText)
-		set contents [$text get 1.0 end]
-		set fd [open $file w]
-		if {[catch {puts $fd $contents} err]} {
-		    tide_failure [M "Error writing to file:\n%s" $err]
-		}
-		catch {close $fd}
-	    }
-	}
-
+	-command [list pMAXSaveTexToFile $maxima_priv(cConsoleText)]
 
     # Add a Options menubutton
     set m [menu .menu.options -tearoff 0]
@@ -115,10 +116,10 @@ proc vMAXAddSystemMenu {fr text} {
 
     $m add command -underline 0 -label {Toggle Browser Visibility} \
 	-command {
-	    if { [catch { pack info .browser }] } { 
-		pack .browser -side bottom 
-	    } else { 
-		pack forget .browser 
+	    if { [catch { pack info .browser }] } {
+		pack .browser -side bottom
+	    } else {
+		pack forget .browser
 	    }
 	}
 
@@ -144,7 +145,7 @@ proc vMAXAddSystemMenu {fr text} {
     # Add a Maxima menubutton
     set m [menu .menu.maxima -tearoff 0]
     .menu add cascade -label Maxima -menu $m
-    
+
     set km [menu $m.kill]
     $m add cascade -label "Clear Memory" -menu $km
     $km add command -label "Kill All" \
@@ -167,7 +168,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-state $state \
 	-label {Run Tests} \
 	-command "sendMaxima $text {:lisp (progn (si::chdir \"$dir\")(load \"tests.lisp\"))\n}"
-    
+
 
     # Add a Help menubutton
     set m [menu .menu.help -tearoff 0]

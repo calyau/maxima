@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Plotdf.tcl,v 1.4 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -106,7 +106,7 @@ proc doHelpdf { win } {
 			       Clicking at a point computes the trajectory
 			       (x(t),y(t)) starting at that point, and satisfying
 			       the differential equation
-			       
+			
 			       dx/dt = dxdt
 			       dy/dt = dydt
 
@@ -132,7 +132,7 @@ proc doHelpdf { win } {
 			       You may print to a postscript printer, or save the plot \
 				   as a postscript file, by clicking on save.   To change \
 				   between printing and saving see the Print Options under Config.
-			       
+			
 			   } $Parser(help)]]
 }
 
@@ -211,21 +211,21 @@ proc doIntegrate { win x0 y0 } {
 					 # xxxxxxxx following is for a bug in win95 version
 					 if { abs($xn1) + abs($yn1) +abs($xn2)+abs($yn2) < $mee    } {
 					     $c create line $xn1 $yn1 $xn2 $yn2 -tags path -width $linewidth -fill $linecolor
-					     
+					
 					 }
-					 
+					
 					 if { "$im" != "" } {
 					     #puts hi
 					     $c create image $xn1 $yn1 -image $im -anchor center \
 						 -tags "point"
-					     
+					
 					 } else {
 					     $c create oval [expr $xn1 -2] [expr $yn1 -2] [expr $xn1 +2] [expr $yn1 +2] -fill $color
 
 					 }
-					 
-					 
-					 
+					
+					
+					
 
 					 # puts "$xn1 $yn1"
 					 set xn1 $xn2
@@ -241,7 +241,11 @@ proc doIntegrate { win x0 y0 } {
 proc plotVersusT {win } {
     linkLocal $win didLast dydt dxdt parameters xcenter xradius
     set nwin .versust.plot2d
-    if { "$parameters" != ""  } { set pars ", $parameters"} else { set pars ""}
+    if { "$parameters" != ""  } {
+	set pars ", $parameters"
+    } else {
+	set pars ""
+    }
     oset $nwin themaintitle "dy/dt=$dydt, dx/dt=$dxdt $pars"
     lappend plotdata [list maintitle [list oget $nwin themaintitle]]
 
@@ -381,10 +385,10 @@ proc drawDF { win tinitial } {
     set i -1
     for { set x [expr {[$rtosx $xmin] - $stepsize}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
 	for { set y [expr {[$rtosy $ymax] - $stepsize}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
-	    
-	    
+	
+	
 	    set len [lindex $all [incr i]]
-	    
+	
 	    set fac [expr {$s1/$len + $s2}]
 	    set dfx [lindex $all [incr i]]
 	    set dfy [lindex $all [incr i]]
@@ -443,7 +447,7 @@ proc plotdf { args } {
     makeFrameDf $win
     oset $win sliderCommand sliderCommandDf
     oset $win trajectoryStarts ""
-    
+
 
     oset $win maintitle [concat "makeLocal $win  dxdt dydt dydx ;"  \
 			     {if { "$dydx" == "" } { concat "dx/dt = $dxdt , dy/dt = $dydt"}  else {

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Parse.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Parse.tcl,v 1.3 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### Parse.tcl ######
 ############################################################
@@ -18,22 +18,23 @@ foreach v  { { ( 120 } { \[ 120 } { ) 120 } { \] 120 }  { ^ 110}
 { && 30 } { || 20 } { ? 10 } { : 10 }  { ; 5 }}  {
     set parse_table([lindex $v 0]) [lindex $v 1]
     set getOp([lindex $v 0]) doBinary
-    
+
 }
 
 proc binding_power {s} {
     global parse_table billy
     set billy $s
-    if { [catch { set tem $parse_table($s) }] } { 
-	return 0 
-    } else { 
-	return $tem 
+    if { [catch { set tem $parse_table($s) }] } {
+	return 0
+    } else {
+	return $tem
     }
 }
 
 proc getOneMatch { s inds } {
     return [string range $s [lindex $inds 0] [lindex $inds 1]]
 }
+
 proc parseTokenize { str } {
     regsub  -all {[*][*]} $str "^" str
     set ans ""
@@ -42,32 +43,35 @@ proc parseTokenize { str } {
 	set str [string trimleft $str " \t\n" ]
 	set s [string range $str 0 1]
 	set bp [binding_power $s]
-	if { $bp > 0 } { append ans " $s"
-	set str [string range $str 2 end]
-	continue
-    } else {
-	set s [string range $s 0 0]
-        set bp [binding_power $s]
-        if { $bp > 0 } { append ans " $s"
-	set str [string range $str 1 end]
-	continue
+	if { $bp > 0 } {
+	    append ans " $s"
+	    set str [string range $str 2 end]
+	    continue
+	} else {
+	    set s [string range $s 0 0]
+	    set bp [binding_power $s]
+	    if { $bp > 0 } {
+		append ans " $s"
+		set str [string range $str 1 end]
+		continue
+	    }
+	}
+	if { "$s" == "" } {
+	    return $ans
+	}
+	if { [regexp -indices {^[0-9.]+([eE][+---]?[0-9]+)?} $str all] } {
+	    append ans " { number [getOneMatch $str $all] }"
+	    # append ans " [getOneMatch $str $all]"
+	    set str [string range $str [expr {1+ [lindex $all 1]}] end]
+	}  elseif { [regexp -indices {^[$a-zA-Z][a-zA-Z0-9]*} $str all] } {
+	    append ans " { id [getOneMatch $str $all] } "
+	    # append ans " [getOneMatch $str $all]"
+	    set str [string range $str [expr {1+ [lindex $all 1]}] end]
+	}  else {
+	    error "parser unrecognized: $str"
+	}
     }
-}
-if { "$s" == "" } {
     return $ans
-}
-if { [regexp -indices {^[0-9.]+([eE][+---]?[0-9]+)?} $str all] } {
-    append ans " { number [getOneMatch $str $all] }"
-    # append ans " [getOneMatch $str $all]"
-    set str [string range $str [expr {1+ [lindex $all 1]}] end]
-}  elseif { [regexp -indices {^[$a-zA-Z][a-zA-Z0-9]*} $str all] } {
-    append ans " { id [getOneMatch $str $all] } "
-    # append ans " [getOneMatch $str $all]"
-    set str [string range $str [expr {1+ [lindex $all 1]}] end]
-}  else { error "parser unrecognized: $str"
-}
-}
-return $ans
 }
 
 set Parser(reserved) " acos cos hypo sinh asin cosh log sqrt atan exp log10 tan atan2 floor pow tanh ceil fmod sin abs double int round"
@@ -86,8 +90,8 @@ proc nexttok { } {
     if {[llength $x ] > 1 } {
 	set Parser(tokenval) [lindex $x 1]
 	return [lindex $x 0]
-    } else { 
-	return $x 
+    } else {
+	return $x
     }
 }
 
@@ -128,7 +132,7 @@ proc parseMatch { t } {
     global Parser
     if { "$t" == "$Parser(lookahead)" } {
 	set Parser(lookahead)  [nexttok]
-    } else { 
+    } else {
 	error "syntax error: wanted $t"
     }
 }
@@ -157,10 +161,10 @@ proc getExprn { n } {
     incr n 10
     if  { $n == 110 } {
 	if { "$Parser(lookahead)" == "-" || "$Parser(lookahead)" == "+"  } {
-            if { "$Parser(lookahead)" == "-" } { 
-		set this PRE_MINUS 
+            if { "$Parser(lookahead)" == "-" } {
+		set this PRE_MINUS
 	    } else {
-		set this PRE_PLUS 
+		set this PRE_PLUS
 	    }
 	    parseMatch $Parser(lookahead)
 	    getExprn $n
@@ -190,8 +194,8 @@ proc getExprn { n } {
 	    }
 	    emit $this
 
-	} else { 
-	    return 
+	} else {
+	    return
 	}
     }
 }
@@ -218,7 +222,9 @@ proc getExpr120 { } {
 	    emit $Parser(tokenval) number
 	    parseMatch $Parser(lookahead)
 	    break;
-	} else { error "syntax error" }
+	} else {
+	    error "syntax error"
+	}
     }
 }
 
@@ -235,7 +241,7 @@ proc doBinary { } {
     if { "$x" == "," } {
 	set a($nargs) "$a($nargs) $x $a($s)"
     } else {
-	set a($nargs) "($a($nargs) $x $a($s))"} 
+	set a($nargs) "($a($nargs) $x $a($s))"}
     }
 }
 
@@ -288,11 +294,11 @@ proc parseFromSuffixList { list } {
 	incr i
 	# all binary
 	if { [llength $x] > 1 } {
-	    
+	
 	    set a([incr nargs]) [lindex $x 1]
 
 	} else {
-	    $getOp($x) 
+	    $getOp($x)
 	}
     }
 
@@ -341,10 +347,10 @@ proc parseConvert { expr args } {
 	    } else {
 		set allvars($w) 1
 		append new " {$v}"
-	    }   
+	    }
 	}  else {
 	    if { [llength $v] > 1 } {
-		append new " {$v}" 
+		append new " {$v}"
 	    } else {
 		append new " $v" }
 	    }

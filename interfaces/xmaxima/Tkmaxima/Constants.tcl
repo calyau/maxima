@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.13 2002-09-13 17:34:18 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.14 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -18,8 +18,23 @@ proc cMAXINITBeforeIni {} {
 
     set maxima_default(iConsoleWidth) 80
     set maxima_default(iConsoleHeight) 24
-    
+
     set maxima_default(iLocalPort) 4008
+
+    # From Browser.tcl
+    set maxima_default(defaultservers) {
+	nmtp://genie1.ma.utexas.edu/
+	nmtp://linux51.ma.utexas.edu/
+	nmtp://linux52.ma.utexas.edu/
+    }
+
+    global embed_args
+    if { "[info var embed_args]" != "" } {
+	# the following will be defined only in the plugin
+	set maxima_default(defaultservers) nmtp://genie1.ma.utexas.edu/
+    }
+
+
 }
 
 proc cMAXINITAfterIni {} {
@@ -28,7 +43,7 @@ proc cMAXINITAfterIni {} {
     global MathServer
     set MathServer [list $maxima_default(sMathServerHost) \
 			$maxima_default(iMathServerPort) ]
-    
+
     # from plot3d.tcl
     set maxima_priv(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [incr i] < 1000} {}} 1] 0]))}]
 
@@ -36,7 +51,7 @@ proc cMAXINITAfterIni {} {
     global show_balloons
     set show_balloons $maxima_default(iShowBalloons)
 
-   
+
 }
 
 # Constants

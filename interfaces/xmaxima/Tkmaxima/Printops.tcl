@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Printops.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Printops.tcl,v 1.3 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### Printops.tcl ######
 ############################################################
@@ -157,7 +157,11 @@ proc setPrintOptions { lis } {
 	set printOption(setupDone) 1
 	getOptions $printOptions $lis -allowOtherKeys 1 \
 		-setdefaults [catch { source [getEnv HOME]/.printOptions }] -usearray printOption
-        if { "$printOption(printer)" == "" } {set printOption(printer) [getEnv PRINTER] } else { set printOption(printer) lw8b }
+        if { "$printOption(printer)" == "" } {
+	    set printOption(printer) [getEnv PRINTER]
+	} else {
+	    set printOption(printer) lw8b
+	}
 	
     }
     if { [info exists browser_version] } { set printOption(tofile) 2 }
@@ -195,7 +199,7 @@ proc mkPrintDialog { name args } {
         $canv raise printoptions
 	set dismiss "$canv delete $item; destroy $name "
     }
-    
+
     frame $name.fr
 
     set w $name.fr

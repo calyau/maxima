@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NPlot3d.tcl,v 1.4 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: NPlot3d.tcl,v 1.5 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### NPlot3d.tcl ######
 ############################################################
@@ -60,19 +60,19 @@ proc  fixupZ { } {
 	    set z nam
 	}  elseif { $dotruncate  &&  ($z > $zzmax || $z < $zzmin) } {
 	    set z nam
-	    
+	
 	} else {
 	    if { $flatten } {
-		if { $z > $zzmax } { 
-		    set z $zzmax 
+		if { $z > $zzmax } {
+		    set z $zzmax
 		} elseif {$z < $zzmin } {
-		    set z $zzmin 
+		    set z $zzmin
 		}
 	    }
-	    if { $z < $zmin }  { 
-		set zmin $z 
-	    } elseif {$z > $zmax } { 
-		set zmax $z 
+	    if { $z < $zmin }  {
+		set zmin $z
+	    } elseif {$z > $zmax } {
+		set zmax $z
 	    }
 	}
     }
@@ -91,7 +91,7 @@ proc normalizeToLengthOne { v } {
 		    [expr { [lindex $v 2] / $norm  } ] ]
 	
     } else {
-	return "1.0 0.0 0.0 " 
+	return "1.0 0.0 0.0 "
     }
 }
 
@@ -137,7 +137,7 @@ proc addOnePlot3d { win data } {
 	    desetq "xmin xmax" [lindex $data 1]
 	    desetq "ymin ymax" [lindex $data 2]
 	    set pts [lindex $data 3]
-	    
+	
 	    set ncols [llength $pts]
 	    set nrows  [llength [lindex $pts 0]]
 	    set data [list variable_grid [linspace $xmin $xmax $ncols] \
@@ -165,7 +165,9 @@ proc addOnePlot3d { win data } {
 		set zzmax [expr {$zcenter + $zradius}]
 		set zzmin [expr {$zcenter - $zradius}]
 		#puts "zzmax=$zzmax,$zzmin"
-	    } else { set flatten 0 }
+	    } else {
+		set flatten 0
+	    }
 
 
 
@@ -187,7 +189,7 @@ proc addOnePlot3d { win data } {
 		}
 	    }
 	} elseif { "$type" == "matrix_mesh" } {
-	    
+	
 	    desetq "xmat ymat zmat" [lrange $data 1 end]
 	    foreach v {x y z} {
 		
@@ -299,7 +301,8 @@ proc tubeFromCurveData { pts nsides radius } {
     if { $closed } {
 	set f1 [expr {$n -2}]
 	set f2 1
-    } else { set f1 0
+    } else {
+	set f1 0
 	set f2 1
     }
     set delta [vectorDiff [lindex $pts $f2] [lindex $pts $f1]]

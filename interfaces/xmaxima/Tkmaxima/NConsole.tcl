@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NConsole.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: NConsole.tcl,v 1.4 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### NConsole.tcl ######
 ############################################################
@@ -211,8 +211,8 @@ proc matchingParen { s1  } {
 	set c [string index $v 0]
 	if { "$c" == "c" } {
 	    incr count -1
-	} else { 
-	    incr count 
+	} else {
+	    incr count
 	}
 	if { $count == 0 } {
 	    return $ind

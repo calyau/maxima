@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: CMMenu.tcl,v 1.6 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: CMMenu.tcl,v 1.7 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 proc CMmenu { win } {
     global buttonfont maxima_priv
@@ -80,8 +80,8 @@ proc CMmenu { win } {
     set m [oget $win.edit menu]
     #oset $win showEditBar "show edit bar"
     $m add command -underline 0 -label {Previous Input   Alt-p} -command "CNpreviousInput \[oget $win textwin\] -1"
-    $m add command -underline 0 -label {Clear input   C-u} -command "CNclearinput \[oget $win textwin\]" 
-    $m add command -underline 0 -label {Cut   C-c} -command "tk_textCut \[oget $win textwin\]" 
+    $m add command -underline 0 -label {Clear input   C-u} -command "CNclearinput \[oget $win textwin\]"
+    $m add command -underline 0 -label {Cut   C-c} -command "tk_textCut \[oget $win textwin\]"
     $m add command -underline 0 -label {Paste   C-v} -command "tk_textPaste \[oget $win textwin\]" \
 	pack $menubar -side top
     return $win

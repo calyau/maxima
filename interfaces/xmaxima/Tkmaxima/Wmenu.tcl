@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Wmenu.tcl,v 1.4 2002-09-13 17:40:07 mikeclarkson Exp $
+#       $Id: Wmenu.tcl,v 1.5 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### wmenu.tcl ######
 ############################################################
@@ -70,7 +70,8 @@ proc setHelp {win  help args } {
 	    != "flat" } {
 	set enter ""
 	set exit ""
-    } else { set enter "$win configure -relief raised" ;
+    } else {
+	set enter "$win configure -relief raised" ;
 	set exit "$win configure -relief $current"
     }
     # puts "current=$current"
@@ -126,7 +127,9 @@ proc showHelp1 { win help args } {
 	}
 	if { $tk_version < 8.0 } {
 	    $helpwin config -relief ridge -borderwidth 2
-	} else { $helpwin config -relief solid }
+	} else {
+	    $helpwin config -relief solid
+	}
 	
 	oset $top helpwin $helpwin
     }

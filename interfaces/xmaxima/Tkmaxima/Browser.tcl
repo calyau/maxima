@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.9 2002-09-13 17:34:18 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.10 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### browser.tcl ######
 ############################################################
@@ -115,6 +115,7 @@ bind OpenMathText <Control-Key-w> {
 
 
 global maxima_priv
+if {0} {
 if {! [info exists maxima_priv(bindings_added) ] } {
     bind Text <Control-Key-k> "openMathControlK %W \n [bind Text <Control-Key-k>]"
     bind Text <B3-Motion> [bind Text <B2-Motion>]
@@ -122,7 +123,7 @@ if {! [info exists maxima_priv(bindings_added) ] } {
 
     set maxima_priv(bindings_added) 1
 }
-
+}
 set maxima_priv(doublek) 0
 
 bind OpenMathText <Control-Key-k><Control-Key-k> {
@@ -133,7 +134,9 @@ proc openMathControlK { win } {
     global maxima_priv
     if { $maxima_priv(doublek) != 0 } {
 	set now [popl killRing ""]
-    } else { set now "" }
+    } else {
+	set now ""
+    }
     set maxima_priv(doublek) 0
     if { [$win compare insert == "insert lineend" ]  } {
 	if { [$win compare insert < end] } {
@@ -233,7 +236,7 @@ proc saveText { win args } {
 	    lappend stop($end) $v
 	    set allar($begin) 1
 	    set allar($end) 1
-	    
+	
 	}
     }
     proc __comp { a b} " return  \[$win compare \$a > \$b \] "
@@ -307,11 +310,11 @@ proc tagRanges { win tag begin end } {
 		    append answer "[lindex $next 0] $end"
 		    return $answer
 		} else {
-		    return $answer 
+		    return $answer
 		}
 	    }
 	    return $answer
-	    
+	
 	}
 }
 
@@ -412,7 +415,7 @@ set maxima_priv(richTextCommands) {Tins TinsSlashEnd}
 ## endsource keyb.tcl
 
 proc underTop {top win} {
-    if { "$top" == "." } { 
+    if { "$top" == "." } {
 	return $win
     } else {
 	return $top$win
@@ -572,7 +575,7 @@ proc decodeURL { name } {
 
     if { [regexp {^([a-z]+)[(]?([0-9]*)[)]?:/([^ ]+)$} $name all type port path ] } {
 	lappend answer type $type
-    } else { 
+    } else {
 	set path $name ; set type ""
     }
 
@@ -666,8 +669,8 @@ proc resolveURL { name current {post ""} } {
 		    } elseif { "$ndir" != "" } {
 			if { "$cdir" != ""  } {
 			    set new [string trimright $cdir /]/$ndir
-			} else { 
-			    set new $ndir 
+			} else {
+			    set new $ndir
 			}
 		    } else {
 			set new $cdir
@@ -679,8 +682,8 @@ proc resolveURL { name current {post ""} } {
 			lappend ans $x $y
 		    }
 		}
-		post { 
-		    list 
+		post {
+		    list
 		}
 		default {
 		    lappend ans $x  [assoc $x $decode $y]
@@ -763,7 +766,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	    } else {
 		set sock [socket [assoc server $res] [assoc port $res 80]]
 	    }
-	    
+	
 	    fconfigure $sock -blocking 0
 	    ##DO NOT DELETE THE FOLLOWING !!!!!puts!!!!!!!!
 	    #puts request=[getURLrequest [dirnamePlusFilename $res] [assoc server $res] [assoc port $res] image/gif $post]
@@ -774,7 +777,9 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	    puts $sock [getURLrequest $path $server $port image/gif $post]
 	    if { "$post" == "" } {
 		oset $sock cachename "http://$server:$port$path"
-	    } else { oset $sock cachename "" }
+	    } else {
+		oset $sock cachename ""
+	    }
 	    flush $sock
 	    if { [readAllData $sock -tovar maxima_priv(url_result) \
 		      -translation binary -mimeheader maxima_priv(mimeheader)  \
@@ -802,7 +807,9 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		set contentType text/html
 	    } elseif {  [regexp {[.]gif([^/]*)$} $name ] } {
 		set contentType image/gif
-	    } else { set contentType text/plain }
+	    } else {
+		set contentType text/plain
+	    }
 	    uplevel 1 set $type $contentType
 
 	    close $fi
@@ -910,11 +917,11 @@ proc backgroundGetImage1  { image res width height }   {
 			unset maxima_priv($s,mimeheader)
 		    }
 
-		    
-		    
+		
+		
 		    # all the below just to try to remove the file..
 		    #  depending on versions and in environments..
-		    
+		
 		}
 	    }
 	}
@@ -923,8 +930,8 @@ proc backgroundGetImage1  { image res width height }   {
 	    set ans $image
 	    # puts "$image config -file [toLocalFilename $res]"
 	    #set ans [image create photo -file [toLocalFilename $res]]
-	    
-	    
+	
+	
 	}
 	default { error "unknown type of image" }
     }
@@ -1042,13 +1049,13 @@ proc OpenMathOpenUrl { name args} {
 	catch { set currentUrl [decodeURL [oget $textwin baseurl]] }
 
 	if { $reload == 0} {
-	    
+	
 	    set new [resolveURL $name $currentUrl $post]
 	    if { [set anchor [assoc anchor $new]] != "" } {
 		set new [delassoc anchor $new]
 	    }
 	    set ii -1
-	    foreach v $history { 
+	    foreach v $history {
 		incr ii
 		if { "[delassoc post $new]" == "[delassoc post [oget $v.text currentUrl]]" } {
 		    # puts "new=$new\nold=[oget $v.text currentUrl]"
@@ -1059,7 +1066,7 @@ proc OpenMathOpenUrl { name args} {
 			update
 			catch {  $v.text yview anchor:$anchor }
 		    }
-		    
+		
 		    #    OpenMathGetWindow $commandPanel $v
 		    #    pushHistory $commandPanel $v
 		    return
@@ -1075,8 +1082,8 @@ proc OpenMathOpenUrl { name args} {
     while { [incr count -1] > 0 } {
 	set new [resolveURL $name $currentUrl $post]
 	set result [getURL $new contentType mimeheader $post]
-	if { [set tem [assoc location $mimeheader]] == "" } { 
-	    break 
+	if { [set tem [assoc location $mimeheader]] == "" } {
+	    break
 	}
 	set name $tem
     }
@@ -1181,7 +1188,7 @@ proc OpenMathOpenUrl { name args} {
 	#puts "======end========"
 	puts "$errmsg1"
 	error "unable to evaluate [encodeURL $new]:$errmsg1"}
-    
+
 }
 
 
@@ -1220,10 +1227,6 @@ proc omScrollPage { win n } {
     }
 }
 
-#bind Text <Control-v> "omScrollPage %W 1"
-#bind Text <Meta-v> "omScrollPage %W -1"
-#bind Text <Alt-v> "omScrollPage %W -1"
-
 proc addTagSameRange { win oldtag newtag index } {
     if { [lsearch [$win tag names $index] $oldtag ] >= 0 } {
 	set this [$win tag prevrange $oldtag $index+1char]
@@ -1235,16 +1238,9 @@ proc addTagSameRange { win oldtag newtag index } {
     }
 }
 
-global maxima_default
-set maxima_default(defaultservers) { nmtp://genie1.ma.utexas.edu/ nmtp://linux51.ma.utexas.edu/ nmtp://linux52.ma.utexas.edu/ }
-global embed_args
-if { "[info var embed_args]" != "" } {
-    set maxima_default(defaultservers) nmtp://genie1.ma.utexas.edu/
-}
-
 proc getBaseprogram { } {
     global maxima_default
-    lindex  $maxima_default(defaultservers) 0
+    return [lindex  $maxima_default(defaultservers) 0]
 }
 
 proc fileBaseprogram { textwin parent x y } {
@@ -1280,7 +1276,9 @@ proc fontDialog { top } {
 	    lappend lis [expr {$i - 3}]
 	    incr i
 	}
-	if { "$fam" == "fixed" } { set fixed 1 } else { set fixed 0}
+	if { "$fam" == "fixed" } { set fixed 1 } else {
+	    set fixed 0
+	}
 	mkLabelListBoxChooser $win.size$fam "list $lis" maxima_default($fam,adjust)
 	mkLabelListBoxChooser $win.family$fam "getFontFamilies $fixed " maxima_default($fam)
 	set fo [xHMmapFont "font:$fam:normal:r:3"]

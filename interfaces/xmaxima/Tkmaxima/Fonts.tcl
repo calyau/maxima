@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Fonts.tcl,v 1.5 2002-09-12 07:59:39 mikeclarkson Exp $
+#       $Id: Fonts.tcl,v 1.6 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 
 # set font {Courier 8}
@@ -46,7 +46,7 @@ switch -exact -- $tcl_platform(platform) windows {
 	set _prop_default "Tahoma"
     }
 
-    # make sure this font is installed 
+    # make sure this font is installed
     set _allowed [string tolow [font families]]
     foreach font [list $_prop_default "MS Sans Serif" Tahoma Arial System] {
 	if {[lsearch -exact $_allowed [string tolow $font]] > -1} {
@@ -56,7 +56,7 @@ switch -exact -- $tcl_platform(platform) windows {
     }
 
     set _fixed_default {Courier New}
-    # make sure this font is installed 
+    # make sure this font is installed
     foreach font [list $_fixed_default Courier System] {
 	if {[lsearch -exact $_allowed [string tolow $font]] > -1} {
 	    set _fixed_default $font
@@ -73,7 +73,7 @@ switch -exact -- $tcl_platform(platform) windows {
 
 } default {
     set _prop_default helvetica
-    # make sure this font is installed 
+    # make sure this font is installed
     set _allowed [string tolow [font families]]
     foreach font [list $_prop_default times fixed] {
 	if {[lsearch -exact $_allowed [string tolow $font]] > -1} {
@@ -82,14 +82,14 @@ switch -exact -- $tcl_platform(platform) windows {
 	}
     }
     set _fixed_default courier
-    # make sure this font is installed 
+    # make sure this font is installed
     foreach font [list $_fixed_default fixed] {
 	if {[lsearch -exact $_allowed [string tolow $font]] > -1} {
 	    set _fixed_default $font
 	    break
 	}
     }
-    
+
     set fontCourier8 [list $_fixed_default -$_pixel]
     set fixedFont [font create -family $_fixed_default -size -$_pixel]
 
@@ -105,8 +105,8 @@ set maxima_default(adjust) 0
 if {0} {
     catch {
 	set width_ [expr {.9 * [winfo screenwidth .]}]
-	if { [winfo width .] >= 500 } {  
-	    set width_ [winfo width .] 
+	if { [winfo width .] >= 500 } {
+	    set width_ [winfo width .]
 	}
 	set maxima_default(adjust) [expr {
 					  $width_<= 640 ? -1 :

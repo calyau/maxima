@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Base64.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Base64.tcl,v 1.3 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### Base64.tcl ######
 ############################################################
@@ -21,7 +21,7 @@ proc tobase64 { binary } {
 		    [expr {((($x & 3)<<4) | (($y >> 4) & 15))}]][char64 \
 		    [expr {((($y & 15)<<2) | (($z &255) >> 6))}]][char64 \
 		    [expr {($z & 63) }]]
-	    
+	
 	}
     }
     return $new

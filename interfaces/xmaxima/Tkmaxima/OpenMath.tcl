@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.11 2002-09-13 17:39:19 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.12 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -35,7 +35,7 @@ proc getDefaultFontSize { width } {
 	set wid1 [fontMeasure $fixedFont 10]
 	set guess [expr {round($width/double($wid1) * 10.0)}]
 	while { [fontMeasure $fixedFont $guess] < $width && $guess <= 14 } {
-	    incr guess 
+	    incr guess
 	}
 	incr guess -1
 	while { [fontMeasure $fixedFont $guess] > $width } { incr guess -1 }
@@ -241,14 +241,12 @@ proc omPanel { w args } {
     $m add command -label "Base Program" \
 	-command  {fileBaseprogram [oget [omPanel %W] textwin]  %W %x %y}   \
 	-help {Show and allow altering of the base program, which shows which is the default host for programs to run on.   May also be specified in <body baseprogram= ...> in the .html file.}
-    set new [$m add entry -label {Save file:} \
-		 -help {_eval {Save to the file list below([oget [omPanel %W] savefilename]).  Not available when running inside Netscape}}]
-    $new.entry configure  -textvariable [oloc $win savefilename]
 
-    bind $new.entry  <Return> "saveToFile $win $new.label \[oget $win savefilename\] "
-    bind $new.label  <Button-1> "saveToFile $win $new.label \[oget $win savefilename\] "
+    $m add command -label {Save to file} \
+	-command "pMAXSaveTexToFile \[oget $win textwin\]" \
+	-help {_eval {Save to the file list below([oget [omPanel %W] savefilename]).  Not available when running inside Netscape}}
 
-    $m add command -label Preferences \
+    $m add command -label Fonts \
 	-command "fontDialog .fontdialog" \
 	-help {set the default font sizes and types}
     $m add command -label "Exit" \
@@ -314,7 +312,7 @@ proc omDoStop { win } {
     if { [regexp {sock[0-9]+} $var sock] } {
 	oset $sock done -1
 	if { ![catch { close $sock} ] } {
-	    
+	
 	    append maxima_priv(load_rate) "--aborted"
 	}
     }
@@ -356,9 +354,9 @@ proc setTypeForEval { menu program } {
 	    oset $men items ""
 	    oset $key parent $menu
 	    proc $men {option args } $body
-	    
+	
 	    ##### end
-	    
+	
 
 	    foreach v $options {
 		desetq "key dflt help" $v
@@ -454,7 +452,8 @@ proc toggleEditBar  {win} {
     if { [winfo viewable $editbar] }  {
 	pack forget $editbar
 	oset $win showEditBar "show edit bar"
-    } else { pack $editbar -in $win -side bottom -expand 1 -fill x
+    } else {
+	pack $editbar -in $win -side bottom -expand 1 -fill x
 	oset $win showEditBar "hide edit bar"
     }
 }
@@ -498,7 +497,7 @@ proc saveToFile { commandPanel label file } {
 if { [catch { package require Safesock } ] } {
     catch { policy  home }
     # catch {  policy outside }
-    
+
 }
 
 
@@ -729,7 +728,7 @@ proc doInvoke { w index } {
 
 	}
     }
-    
+
 
 }
 
@@ -1037,7 +1036,9 @@ proc markForProgram { w args } {
 	    $w insert tmp [lindex $templates [expr {[clock clicks]%[llength $templates]}]] plain
 	    $w insert tmp RESULT {Tresult Tmodified}
 	    $w insert tmp " "  {plain}
-	} else { apply $w tag add Tmodified $nextResult}
+	} else {
+	    apply $w tag add Tmodified $nextResult
+	}
 
     }
 }

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.5 2002-09-13 17:42:18 mikeclarkson Exp $
+#       $Id: Plot2d.tcl,v 1.6 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -55,7 +55,7 @@ proc mkPlot2d { args } {
     # eval global [optionFirstItems $plot2dOptions]
     set win [assoc -windowname $args]
     if { "$win" == "" } {
-	set win [getOptionDefault windowname $plot2dOptions] 
+	set win [getOptionDefault windowname $plot2dOptions]
     }
     global  [oarray $win]
     set data [assoc -data $args ]
@@ -142,7 +142,7 @@ proc doHelp2d {win } {
 			       You may print to a postscript printer, or save the plot \
 				   as a postscript file, by clicking on save.   To change \
 				   between printing and saving see the Print Options under Config.
-			       
+			
 
 
 
@@ -227,7 +227,7 @@ proc  calculatePlot1 { win x0 h0 fun  limit } {
     set ansx ""
     set ansy ""
     while { [catch { set y0 [$fun $x0] } ] && $x0 <= $xmax }  {
-	set x0 [expr {$x0 + $h0}] 
+	set x0 [expr {$x0 + $h0}]
     }
     if { $x0 > $xmax } {
 	# puts "catching {$fun $x0}"
@@ -293,7 +293,7 @@ proc  calculatePlot1 { win x0 h0 fun  limit } {
 		return [list $ansx $ansy]
 	    }
 
-	    
+	
 	    # hopefully common case!!
 	    # puts "got it: $x1,$y1,"
 	    lappend ansx $x1
@@ -539,8 +539,10 @@ proc redraw2dData { win  args } {
 			catch { set color [oget $win color] }
 			
 			if { [info exists didLabel([oget $win curveNumber])] } {
-			    set label "" } else { set didLabel([oget $win curveNumber]) 1
-			    }
+			    set label ""
+			} else {
+			    set didLabel([oget $win curveNumber]) 1
+			}
 			set errorbar [oget $win errorbar]
 			# puts "errorbar=$errorbar"
 			if { $errorbar != 0 } {
@@ -558,8 +560,8 @@ proc redraw2dData { win  args } {
 				    $c create line [expr {$xx - $errorbar}] $y1 [expr {$xx +$errorbar}] $y1 $xx $y1 $xx $y2 [expr {$xx -$errorbar}] $y2 [expr {$xx + $errorbar}] $y2  -tags [list [concat $tags line[oget $win curveNumber]]]  -fill $color
 				}
 			    }
-			    
-			    
+			
+			
 			    set yvalues [lrange $yvalues [llength $xvalues] end]
 			} else {
 
@@ -685,7 +687,7 @@ proc drawPlot {win listpts args } {
 	    } else {
 		if { $plotpoints } {
 		    set im [getPoint $pointsize $fill]
-		    
+		
 		    # there is no eval, so we need this.
 		    if { "$im" != "" } {
 			foreach { x y } $pts {
@@ -698,7 +700,7 @@ proc drawPlot {win listpts args } {
 				[expr {$y -$pointsize}] [expr {$x +$pointsize}] \
 				[expr {$y +$pointsize}] -tags $tags \
 				-fill $fill -outline {}
-			    
+			
 			}
 		    }
 		}
@@ -713,7 +715,7 @@ proc drawPlot {win listpts args } {
 		    }
 		}
 	    }
-	    
+	
 	}
     }
     plot2dDrawLabel $win $label $fill

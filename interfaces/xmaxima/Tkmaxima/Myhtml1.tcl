@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml1.tcl,v 1.5 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Myhtml1.tcl,v 1.6 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### Myhtml1.tcl ######
 ############################################################
@@ -78,7 +78,7 @@ defTag math -body {
 	set pre {$\displaystyle}
 	xHMassureNewlines 1
     }
-    
+
     set wc $win.c[incr xHMpriv(counter)]
     canvas $wc 		-background [$win cget -background] -highlightthickness 0 -borderwidth 0
 
@@ -117,7 +117,7 @@ proc getDim { dim  max } {
     } elseif { $dim  < 0 } {
 	return $max
     } else {
-	return $dim 
+	return $dim
     }
 }
 

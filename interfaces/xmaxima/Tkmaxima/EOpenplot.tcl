@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: EOpenplot.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: EOpenplot.tcl,v 1.4 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### EOpenplot.tcl ######
 ############################################################
@@ -37,7 +37,9 @@ proc eval_openplot { program w thisRange resultRange } {
     if { [lsearch $allowed $f] >= 0 } {
 	apply $f [lrange $tem 1 end]
 	ShowPlotWindow $w $name $thisRange $resultRange $desired
-    } else { error "$f not allowed, only {$allowed}" }
+    } else {
+	error "$f not allowed, only {$allowed}"
+    }
     return 0
 }
 
@@ -67,10 +69,10 @@ proc plotWindowName { w } {
     }
     set name ".plotfr"	
     if { "$plot" == "multiple" } {
-	if { ![info exists count] } { 
+	if { ![info exists count] } {
 	    set count 1
 	} else {
-	    incr count 
+	    incr count
 	}
 	append name $count
     }
@@ -178,7 +180,9 @@ proc ShowPlotWindow { w name thisRange resultRange desired } {
 	    if { $y0 - [lindex $dl 1] + $h2 +5 < $h1  } {
 		set prev $ind
 		set ind [$w index "$ind - 1 line" ]
-	    } else { break }
+	    } else {
+		break
+	    }
 	}
     }
 

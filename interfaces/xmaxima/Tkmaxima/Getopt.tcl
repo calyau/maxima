@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Getopt.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Getopt.tcl,v 1.3 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### Getopt.tcl ######
 ############################################################
@@ -37,7 +37,7 @@ proc optLoc { op ar }  {
 	return [lindex $op 0]
     } else {
 	#puts "$ar\([lindex $op 0]\)"
-	return "$ar\([lindex $op 0]\)" 
+	return "$ar\([lindex $op 0]\)"
     }
 
 }
@@ -131,9 +131,9 @@ proc assq {key list {dflt ""}} {
 
 proc safeValue { loc level} {
     if { ![catch { set me [uplevel $level set $loc] } ] } {
-	return $me  
+	return $me
     }  else {
-	return "`unset'" 
+	return "`unset'"
     }
 }
 
@@ -177,7 +177,9 @@ proc setSplittingOptionsRest {  keypairs rest arglist } {
 	if { $i >= [llength $arglist] } { break }
 	if { "[string range [lindex $arglist $i] 0 0]" == "-" } {
 	    incr i 2
-	} else { break }
+	} else {
+	    break
+	}
     }
     set keys [lrange $arglist 0 [expr $i -1]]
     set res [lrange $arglist  $i end]

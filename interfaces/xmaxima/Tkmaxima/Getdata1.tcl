@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Getdata1.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Getdata1.tcl,v 1.5 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### getdata1.tcl ######
 ############################################################
@@ -128,7 +128,7 @@ proc readMimeHeader { sock } {
 	}
 	if { $n <=1 && ($n==0 || "$line" == "\r") }  {
 	    # we are done the header
-	    
+	
 	    append [oloc $sock result] $result\n
 	    regsub -all "\r"  [oget $sock result] "" result
 	    set lis [split $result \n]
@@ -211,11 +211,11 @@ proc readAllData1 { sock } {
 		return finished
 	    }
 	    if { $n <= $chunksize } { break    }
-	    
+	
 	}
     } errmsg   ] } {
-	if { "$errmsg" == "finished" } { 
-	    return 
+	if { "$errmsg" == "finished" } {
+	    return
 	} else {
 	    global errorInfo ; error "error: $errmsg , $errorInfo"
 	}
@@ -255,7 +255,8 @@ proc wrFinishRead { sock } {
     }
     if { $contentlength < 0 || $bytesread >= $contentlength } {
 	oset $sock done 1
-    } else { oset $sock done -1
+    } else {
+	oset $sock done -1
     }
     catch { close $sock }	
     if { $docommand } {
@@ -265,7 +266,7 @@ proc wrFinishRead { sock } {
     #puts "wrFinishRead, tovar=$tovar,tochannel=$tochannel,res=$res,bytesread=$bytesread"	
     clearLocal $sock
     oset $sock done $res
-    
+
     return $res
 }
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Macros.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Macros.tcl,v 1.3 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### Macros.tcl ######
 ############################################################
@@ -18,7 +18,7 @@ proc desetq {lis lis2} {
 proc assoc { key lis args } {
     foreach { k val } $lis {
 	if { "$k" == "$key" } {
-	    return $val 
+	    return $val
 	}
     }
     return [lindex $args 0]

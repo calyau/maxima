@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tryembed.tcl,v 1.5 2002-09-10 06:59:28 mikeclarkson Exp $
+#       $Id: Tryembed.tcl,v 1.6 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### Tryembed.tcl ######
 ############################################################
@@ -78,7 +78,8 @@ proc auto_load1 { slave name {namespace ""} } {
 	foreach v $arglist {
 	    if { [info default $name $v theDefault] } {
 		lappend theargs [list $v $theDefault]
-	    } else { lappend theargs $v
+	    } else {
+		lappend theargs $v
 	    }
 	}
 	interp eval $slave [list proc $name $theargs [info body $name]]
@@ -94,7 +95,7 @@ proc setupPrintVariables { slave } {
 	doExit  fontCourier8   plotdfOptions ftpInfo maxima_priv} {
 	if { [array exists  $v] } {
 	    interp eval $slave [list array set $v [array get $v *] ]
-	} else { 
+	} else {
 	    interp eval $slave [list set $v [set $v ]]
 	}
     }
@@ -282,7 +283,8 @@ proc SafesockServerAnswer { slave command sock host port } {
     if { [SafesockAllow $slave $host [lindex $peer 2]] > 0 } {
 	interp transfer {} $sock $slave
 	interp eval $slave $command $sock $host $port
-    } else { interp eval $slave [list error "connection from $host and $port disallowed"]
+    } else {
+	interp eval $slave [list error "connection from $host and $port disallowed"]
     }
 }
 
@@ -416,7 +418,9 @@ proc SafesockSocketAlias {slave host port args} {
     if [info exists good] {
 	if { "$option" != "" } {
 	    set sock [interp invokehidden $slave socket $option $host $good]
-	} else { set sock [interp invokehidden $slave socket $host $good]}
+	} else {
+	    set sock [interp invokehidden $slave socket $host $good]
+	}
 	browser_log $slave normal socket $host $port
 	return $sock
     }

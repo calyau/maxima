@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.7 2002-09-10 09:17:19 mikeclarkson Exp $
+#       $Id: Myhtml.tcl,v 1.8 2002-09-14 17:25:34 mikeclarkson Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -238,8 +238,8 @@ proc xHMsetFont { win fonttag  } {
     global tcl_platform
     if { "$tcl_platform(platform)" == "unix" } {
 	set usePixel "-"
-    } else { 
-	set usePixel "" 
+    } else {
+	set usePixel ""
     }
     font config $font -family $family -size $usePixel$maxima_default($fam,$si) -slant $slant -weight $weight
     return
@@ -841,10 +841,10 @@ proc xHM_do1 { a b {c xx} } {
 	  }
 	  return $result
       } else {
-	  return [format %c $b] 
+	  return [format %c $b]
       }
    } else {
-       return [string index $a 0] 
+       return [string index $a 0]
    }
 }
 
@@ -1028,7 +1028,9 @@ proc xHMassureNewlines { n } {
 	foreach _v [lrange [split [$win get "$wvar(W_insert)-4char" $wvar(W_insert)] \n] 1 end] {
 	    if { [string trim "$_v"  " "] == "" } {
 		incr _have
-	    } else { set _have 0}
+	    } else {
+		set _have 0
+	    }
 	}
 #    set _have  [$win  compare $wvar(W_insert) == "$wvar(W_insert) linestart"]
 	xHMtextInsert $win [dupString "\n" [expr {$_n - $_have}]]
@@ -1213,7 +1215,7 @@ foreach v $HMdefaultOptions {set HMOption([lindex $v 0]) [lindex $v 1] }
 proc xHMwget { win key dflt } {
     upvar #0 xHMvar$win wvar
     if { [info exists wvar($key)] } {
-	return $wvar($key) 
+	return $wvar($key)
     } else {
 	return $dflt
 }
@@ -1346,7 +1348,9 @@ proc HexDecode { me }  {
 proc dec1 { s } {
     if { [scan  $s %x d] } {
 	format %c $d
-    } else { error "cant decode hex $s" }
+    } else {
+	error "cant decode hex $s"
+    }
 }
 
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Push.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Push.tcl,v 1.3 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### push.tcl ######
 ############################################################
@@ -44,13 +44,13 @@ proc pushl { val key  } {
 proc peekl {key default {m 1}} {
     global __pushl_ar
     if { [catch { set val [set __pushl_ar($key) ] } ] } {
-	return $default 
+	return $default
     } else {
 	set n [llength $val]
 	if { $m > 0 && $m <= $n } {
 	    return [lindex $val [incr n -$m]]
-	} else { 
-	    return $default 
+	} else {
+	    return $default
 	}
     }
 }
@@ -72,7 +72,7 @@ proc popl { key  dflt} {
     global __pushl_ar
 
     if { [catch { set val [set __pushl_ar($key) ] } ] } {
-	return $dflt 
+	return $dflt
     } else {
 	set n [llength $val]
 	set result [lindex $val [incr n -1]]
@@ -80,7 +80,7 @@ proc popl { key  dflt} {
 	if { $n > 0 } {
 	    set __pushl_ar($key) [lrange $val 0 [expr {$n -1}]]
 	} else {
-	    unset __pushl_ar($key) 
+	    unset __pushl_ar($key)
 	}
 	return $result
     }

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.5 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Plotconf.tcl,v 1.6 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -12,7 +12,7 @@ proc makeFrame { w type } {
     global   writefile doExit fontSize buttonfont maxima_priv
     set win $w
     if { "$w" == "." } {
-        set w "" 
+        set w ""
     } else {
 	catch { destroy $w}
 	
@@ -70,7 +70,7 @@ proc makeFrame { w type } {
     button $wb.replot -text "Replot" -command "replot$type $win" -font $buttonFont
     setBalloonhelp $win $wb.replot {Use the current settings and recompute the plot.  The settings may be altered in Config}
 
-    
+
 
     button $wb.config -text "Config" -command "doConfig$type $win" -font $buttonFont
     setBalloonhelp $win $wb.config {Configure various options about the plot window.  After doing this one may do replot.  Hint: you may leave the config menu on the screen and certain actions take place immediately, such as rotating or computing a trajectory at a point.  To make room for the window you might slide the graph to the right, and possibly shrink it using the unzoom feature}
@@ -203,8 +203,8 @@ proc popBind { win key  } {
 proc maybeExit { n } {
     if { "[info proc OpenMathOpenUrl]" != "" } {
 	uplevel 1 return
-    } else { 
-	exit 0 
+    } else {
+	exit 0
     }
 }
 
@@ -335,8 +335,8 @@ proc writePostscript { win } {
 	unbindAdjustWidth $c printrectangle [eval [oget $win maintitle]]
     }
     $c delete balloon
-    
-    
+
+
     set bbox [eval $c bbox [$c find withtag printrectangle]]
     desetq "x1 y1 x2 y2" $bbox
     #     set title "unknown plot"
@@ -378,11 +378,11 @@ proc writePostscript { win } {
 		puts $fi $output
 		close $fi
 	    }
-	} 1 { 
+	} 1 {
 	    set fi [open $printOption(psfilename) w]
 	    puts $fi $output
-	    close $fi 
-	} 2 { 
+	    close $fi
+	} 2 {
 	    global ftpInfo
 	    set ftpInfo(data) $output
 	    ftpDialog $win
@@ -1123,10 +1123,11 @@ proc resizePlotWindow  { w width height } {
 	after 100 update ;
 	return }
     if { ![catch { set tem [oget $w lastResize] } ] && [expr {[clock seconds] - $tem }] < 2 } { return
-    } else { oset $w lastResize [clock seconds ]
+    } else {
+	oset $w lastResize [clock seconds ]
     }
     #puts "resizePlotWindow $w $width $height"
-    
+
     # return
     set par [winfo parent $w]
     set facx 1.0
@@ -1171,7 +1172,7 @@ proc resizePlotWindow  { w width height } {
 	$w.c config -width $nwidth  -height $nheight
 
     }
-    
+
 }
 
 
@@ -1259,7 +1260,7 @@ proc sliderUpdate { win var val } {
 	 [info exists sliderCommand] } {
 
 	$sliderCommand $win $var $val
-    }   
+    }
 }
 
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Send-some.tcl,v 1.4 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Send-some.tcl,v 1.5 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### send-some.tcl ######
 
@@ -263,7 +263,8 @@ proc openConnection { tohost port magic program } {
 proc sendInterrupt { program } {
     global pdata interrupt_signal
     set socket $pdata($program,socket)
-    puts $socket $interrupt_signal ; flush $socket
+    puts $socket $interrupt_signal
+    flush $socket
 }
 
 proc sendCommand { program c }   {
@@ -388,11 +389,11 @@ proc assureProgram { program timeout tries } {
 	    set pdata(waiting,$sock) 1
 	    debugsend "waiting on  pdata(waiting,$sock)"
 	    myVwait pdata(waiting,$sock)
-	    
+	
 	    debugsend "..done now pdata(waiting,$sock)=$pdata(waiting,$sock)"
 	    if { $pdata(waiting,$sock) < 0 } {
 		debugsend "timed out,$pdata(waiting,$sock)"
-		return 0 
+		return 0
 	    }
 	    set me [read $sock]
 	    if { "[string index $me 0]" == ""  && [eof $sock] } {
@@ -482,7 +483,7 @@ proc preeval { program name } {
 	lappend pdata($program,preeval) $name
 	return 0
     } else {
-	return 1 
+	return 1
     }
 }
 
@@ -507,7 +508,7 @@ proc statServer  {server {timeout 1000}} {
 proc isAlive1 { s } {
     global maxima_priv
     if { [catch { read $s } ] } {
-	set maxima_priv(isalive) -1 
+	set maxima_priv(isalive) -1
     } else {
 	set maxima_priv(isalive) 1
     }

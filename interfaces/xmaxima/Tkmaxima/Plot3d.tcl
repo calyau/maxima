@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.5 2002-09-13 17:42:21 mikeclarkson Exp $
+#       $Id: Plot3d.tcl,v 1.6 2002-09-14 17:25:35 mikeclarkson Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -70,7 +70,9 @@ proc calculatePlot3d {win fun  nx ny } {
 	set zzmax [expr {$zcenter + $zradius}]
 	set zzmin [expr {$zcenter - $zradius}]
 	#puts "zzmax=$zzmax,$zzmin"
-    } else { set flatten 0 }
+    } else {
+	set flatten 0
+    }
 
     catch { unset  $meshes }
     set k 0
@@ -306,14 +308,14 @@ proc getOrderedMeshIndices { win } {
 		set z 0
 		foreach w $tem {
 		    set z [expr {$z + [lindex $pts2 $w] }  ]
-		    
+		
 		}	
 		set z [expr { $z/double($k)}]
 	    }
 	    lappend ans [list $z $i]
 	    # append pp($z) "$i "
 	    incr i
-	    
+	
 	} ]} {
 	    set lmesh [lreplace $lmesh $i $i]
 	}
@@ -521,7 +523,7 @@ proc resetPtsForLmesh { win } {
 			[lindex $points [expr {$w +2}]]
 		    catch {set wvar(c2,$k) $wvar(c1,$w)}
 		    incr k 3
-		    
+		
 		}
 		
 	    }
@@ -631,7 +633,7 @@ proc doHelp3d { win } {
 			       You may print to a postscript printer, or save the plot \
 				   as a postscript file, by clicking on save.   To change \
 				   between printing and saving see the Print Options under Config.
-			       
+			
 			       Clicking with the right mouse button and dragging may be used \
 				   instead of the scroll bars to slide the plot \
 				   around.
