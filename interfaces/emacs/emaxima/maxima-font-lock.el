@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.11 $
-;; $Date: 2004-11-03 20:46:44 $
+;; $Revision: 1.12 $
+;; $Date: 2004-11-05 19:46:40 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -1437,8 +1437,8 @@
 ;;; now for the symbols
 
 (defvar maxima-symbols
-;  (mapcar
-;   (lambda (x) (list x))
+  (mapcar
+   (lambda (x) (list x))
    (append
     maxima-vars-1
     maxima-vars-2
@@ -1457,7 +1457,6 @@
     maxima-macros
     maxima-specops
     maxima-decs
-    maxima-spsymbs-1))
-;)
+    maxima-spsymbs-1)))
     
 ;;; end of maxima-font-lock.el
