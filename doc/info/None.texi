@@ -665,3 +665,32 @@ or primary disk pack respectively.
 
 @end defun
 @c END TEXT RECENTLY (200410) CUT FROM doc/info/Runtime.texi
+
+@defun FASSAVE (args)
+is similar to SAVE but produces a FASL file in which
+the sharing of subexpressions which are shared in core is preserved in
+the file created.  Hence, expressions which have common subexpressions
+will consume less space when loaded back from a file created by
+FASSAVE rather than by SAVE.  Files created with FASSAVE are reloaded
+using LOADFILE, just as files created with SAVE.  FASSAVE returns a
+list of the form [<name of file>,<size of file in blocks>,...] where
+...  are the things saved.  Warnings are printed out in the case of
+large files.  FASSAVE may be used while a WRITEFILE is in progress.
+
+@end defun
+
+@node OPTIMIZATION, Definitions for Function Definition, MACROS, Function Definition
+@section OPTIMIZATION
+
+The optimu files no longer exist in Maxima.  The documentation is left 
+here for historical purposes.
+
+When using TRANSLATE and generating code with MACSYMA,
+there are a number of techniques which can save time and be helpful.
+Do DEMO("optimu.dem") for a demonstration.  In particular, the
+function FLOATDEFUNK from TRANSL;OPTIMU FASL, creates a function
+definition from a math-like expression, but it optimizes it (with
+OPTIMIZE) and puts in the MODE_DECLAREations needed to COMPILE
+correctly. (This can be done by hand, of course).  The demo will only
+run in a fresh macsyma.
+
