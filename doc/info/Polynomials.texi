@@ -84,12 +84,19 @@ coefficient of var in exp (as found by @code{ratcoef} if exp is in CRE form
 otherwise by @code{coeff}) and whose second member is the remaining part of
 exp.  That is, [A,B] where exp=A*var+B.
 
+Example:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c islinear (expr, x) := block ([c],
+@c         c: bothcoef (rat (expr, x), x),
+@c         is (freeof (x, c) and c[1] # 0))$
+@c islinear ((r^2 - (x - r)^2)/x, x);
+
 @example
-(%i1) islinear(exp,var):=block([c],
-        c:bothcoef(rat(exp,var),var),
-        is(freeof(var,c) and c[1]#0))$
-(%i2) islinear((r**2-(x-r)**2)/x,x);
-(%o2)                              true
+(%i1) islinear (expr, x) := block ([c],
+        c: bothcoef (rat (expr, x), x),
+        is (freeof (x, c) and c[1] # 0))$
+(%i2) islinear ((r^2 - (x - r)^2)/x, x);
+(%o2)                         true
 @end example
 
 @end defun
@@ -102,11 +109,16 @@ expression (X+Y) should occur in exp).  Sometimes it may be necessary
 to expand or factor exp in order to make v^n explicit.  This is not
 done automatically by @code{coeff}.
 
+Examples:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c coeff (2*a*tan(x) + tan(x) + b = 5*tan(x) + 3, tan(x));
+@c coeff (y + x*%e^x + 1, x, 0);
+
 @example
-(%i1) coeff(2*a*tan(x)+tan(x)+b=5*tan(x)+3,tan(x));
-(%o1)                         2 a + 1 = 5
-(%i2) coeff(y+x*%e**x+1,x,0);
-(%o2)                            y + 1
+(%i1) coeff (2*a*tan(x) + tan(x) + b = 5*tan(x) + 3, tan(x));
+(%o1)                      2 a + 1 = 5
+(%i2) coeff (y + x*%e^x + 1, x, 0);
+(%o2)                         y + 1
 @end example
 
 @end defun
@@ -123,9 +135,14 @@ the greatest common divisor of the coefficients of the terms of the
 polynomial p1 in the variable varn (this is the content) and whose
 second element is the polynomial p1 divided by the content.
 
+Examples:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c content (2*x*y + 4*x^2*y^2, y);
+
 @example
-(%i1) content(2*x*y+4*x**2*y**2,y);
-(%o1)            [2*x, 2*x*y**2+y].
+(%i1) content (2*x*y + 4*x^2*y^2, y);
+                                   2
+(%o1)                   [2 x, 2 x y  + y]
 @end example
 
 @end defun
@@ -142,11 +159,16 @@ polynomial variable, varn.  The other variables are as in the @code{ratvars}
 function.  The result is a list whose first element is the quotient
 and whose second element is the remainder.
 
+Examples:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c divide (x + y, x - y, x);
+@c divide (x + y, x - y);
+
 @example
-(%i1) divide(x+y,x-y,x);
-(%o1)                        [1, 2 y]
-(%i2) divide(x+y,x-y);
-(%o2)                      [ - 1, 2 x]
+(%i1) divide (x + y, x - y, x);
+(%o1)                       [1, 2 y]
+(%i2) divide (x + y, x - y);
+(%o2)                      [- 1, 2 x]
 @end example
 
 @noindent
@@ -164,21 +186,27 @@ list is returned free of the variables v1,...,vk.  In this case @code{solve}
 is called to solve the last resultant for the last variable.
 
 Example:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr1: 2*x^2 + y*x + z;
+@c expr2: 3*x + 5*y - z - 1;
+@c expr3: z^2 + x - y^2 + 5;
+@c eliminate ([expr3, expr2, expr1], [y, z]);
 
 @example
-(%i1) exp1:2*x^2+y*x+z;
-                                    2
-(%o1)                   z + x y + 2 x
-(%i2) exp2:3*x+5*y-z-1;
-(%o2)                - z + 5 y + 3 x - 1
-(%i3) exp3:z^2+x-y^2+5;
-                       2    2
-(%o3)                  z  - y  + x + 5
-(%i4) eliminate([exp3,exp2,exp1],[y,z]);
-            8         7         6          5          4
-(%o3) [7425 x  - 1170 x  + 1299 x  + 12076 x  + 22887 x
-                               3         2
-                       - 5154 x  - 1291 x  + 7688 x + 15376]
+(%i1) expr1: 2*x^2 + y*x + z;
+                                      2
+(%o1)                    z + x y + 2 x
+(%i2) expr2: 3*x + 5*y - z - 1;
+(%o2)                  - z + 5 y + 3 x - 1
+(%i3) expr3: z^2 + x - y^2 + 5;
+                          2    2
+(%o3)                    z  - y  + x + 5
+(%i4) eliminate ([expr3, expr2, expr1], [y, z]);
+             8         7         6          5          4
+(%o4) [7425 x  - 1170 x  + 1299 x  + 12076 x  + 22887 x
+
+                                    3         2
+                            - 5154 x  - 1291 x  + 7688 x + 15376]
 @end example
 
 @end defun
@@ -208,13 +236,12 @@ into (N+1)!.
 @code{sumsplitfact} if set to @code{false} will cause @code{minfactorial} to be
 applied after a @code{factcomb}.
 
-@example
-(%i1) (n+1)^b*n!^b;
-                                      b   b
-(%o1)                           (n + 1)  n!
-(%i2) factcomb(%);
-@end example
-
+@c Example:
+@c UH, THESE ARE THE EXPRESSIONS WHICH WERE GIVEN IN 
+@c THE PREVIOUS REVISION OF THIS FILE, BUT IN THIS CASE
+@c factcomb HAS NO EFFECT -- I GUESS A DIFFERENT EXAMPLE IS CALLED FOR
+@c (n + 1)^b*n!^b;
+@c factcomb (%);
 @end defun
 
 @defun factor (exp)
@@ -387,15 +414,21 @@ into groups of terms such that their sum is factorable.  It can
 recover the result of @code{expand ((x + y)^2 + (z + w)^2)} but it can't recover
 @code{expand ((x + 1)^2 + (x + y)^2)} because the terms have variables in common.
 
+Example:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
+@c factorsum (%);
+
 @example
-(%i1) (x+1)*((u+v)^2+a*(w+z)^2),expand;
-      2      2                            2      2
+(%i1) expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
+           2      2                            2      2
 (%o1) a x z  + a z  + 2 a w x z + 2 a w z + a w  x + v  x
-                     2        2    2            2
-        + 2 u v x + u  x + a w  + v  + 2 u v + u
-(%i2) factorsum(%);
+
+                                     2        2    2            2
+                        + 2 u v x + u  x + a w  + v  + 2 u v + u
+(%i2) factorsum (%);
                                    2          2
-(%o2)                 (x + 1) (a (z + w)  + (v + u) )
+(%o2)            (x + 1) (a (z + w)  + (v + u) )
 @end example
 
 @end defun
@@ -481,28 +514,32 @@ to @code{[f,g,-1]} and the next one is built as
 if @code{q = quotient(r[i]/r[i+1])} then @code{lis[i+2]:lis[i]-q*lis[i+1]}, and it
 terminates at @code{lis[i+1]} when the remainder @code{r[i+2]} is zero.
 
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c gcdex (x^2 + 1, x^3 + 4);
+@c % . [x^2 + 1, x^3 + 4, -1];
+
 @example
-(%i1) gcdex(x^2+1,x^3+4);
-
-                              2
-                             x  + 4 x - 1  x + 4
-(%o1)/R/                   [- ------------, -----, 1]
-                                  17        17
-
-(%i2) %o1.[x^2+1,x^3+4,-1];
-(%o2)                                   0
+(%i1) gcdex (x^2 + 1, x^3 + 4);
+                       2
+                      x  + 4 x - 1  x + 4
+(%o1)/R/           [- ------------, -----, 1]
+                           17        17
+(%i2) % . [x^2 + 1, x^3 + 4, -1];
+(%o2)/R/                        0
 @end example
 
 Note that the gcd in the following is @code{1}
 since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[y,x] }
 
-@example
-(%i4) gcdex(x*(y+1),y^2-1,x);
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c gcdex (x*(y + 1), y^2 - 1, x);
 
-                                      1
-(%o4)                            [0, ------, 1]
-                                     2
-                                    y  - 1
+@example
+(%i1) gcdex (x*(y + 1), y^2 - 1, x);
+                               1
+(%o1)/R/                 [0, ------, 1]
+                              2
+                             y  - 1
 @end example
 
 @end defun
@@ -521,9 +558,13 @@ factors the polynomial exp over the Gaussian integers
 (that is, the integers with the imaginary unit @code{%i} adjoined).  This is like
 FACTOR(exp,A**2+1) where A is %I.
 
+Example:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c gfactor (x^4 - 1);
+
 @example
-(%i1)  gfactor(x**4-1);
-(%o1)        (x - 1) (x + 1) (x + %i) (x - %i)
+(%i1) gfactor (x^4 - 1);
+(%o1)           (x - 1) (x + 1) (x - %i) (x + %i)
 @end example
 
 @end defun
@@ -645,20 +686,24 @@ converted to rational numbers.
 
 (Also see the @code{ratexpand} and  @code{ratsimp} functions.)
 
+Example:
+@c FOLLOW GENERATED FROM THESE EXPRESSIONS
+@c ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /(4*y^2 + x^2);
+@c rat (%, y, a, x);
+
 @example
-(%i1) ((x-2*y)**4/(x**2-4*y**2)**2+1)*(y+a)*(2*y+x)
-        /(4*y**2+x**2);
+(%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /(4*y^2 + x^2);
                                            4
                                   (x - 2 y)
               (y + a) (2 y + x) (------------ + 1)
                                    2      2 2
                                  (x  - 4 y )
-(%o1)          ------------------------------------
+(%o1)         ------------------------------------
                               2    2
                            4 y  + x
-(%i2) rat(%,y,a,x);
+(%i2) rat (%, y, a, x);
                             2 a + 2 y
-(%o2)/r/                     ---------
+(%o2)/R/                    ---------
                              x + 2 y
 @end example
 
@@ -687,10 +732,15 @@ negative powers, @code{ratcoef} should not be used.  Since exp is rationally
 simplified before it is examined, coefficients may not appear quite
 the way they were envisioned.
 
+Example:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c s: a*x + b*x + 5$
+@c ratcoef (s, a + b);
+
 @example
-(%i1) s:a*x+b*x+5$
-(%i2) ratcoef(s,a+b);
-(%o2)               x
+(%i1) s: a*x + b*x + 5$
+(%i2) ratcoef (s, a + b);
+(%o2)                           x
 @end example
 
 @end defun
@@ -719,26 +769,38 @@ than @code{diff}.  The result is left in CRE form.  However, @code{ratdiff} shou
 not be used on factored CRE forms; use @code{diff} instead for such
 expressions.
 
+Example:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
+@c modulus: 3$
+@c mod (expr);
+@c ratdiff (expr, x);
+
 @example
-(%i1) (4*x**3+10*x-11)/(x**5+5);
-                                         3
-                                      4 x  + 10 x - 11
-(%o1)                                  ----------------
-                                            5
-                                           x  
-(%i2) modulus:3$
-(%i3) mod(%o1);
-                                2
-                               x  + x - 1
-(%o3)                      --------------------
-                           4    3    2
-                          x  + x  + x  + x + 1
-(%i4) ratdiff(%o1,x);
-                          5    4    3
-                         x  - x  - x  + x - 1
-(%o4)                ------------------------------
-                     8    7    5    4    3
-                    x  - x  + x  - x  + x  - x + 1
+(%i1) s: a*x + b*x + 5$
+(%i2) ratcoef (s, a + b);
+(%o2)                           x
+(%i3) kill(all);
+(%o0)                         done
+(%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
+                           3
+                        4 x  + 10 x - 11
+(%o1)                   ----------------
+                              5
+                             x  + 5
+(%i2) modulus: 3$
+(%i3) mod (expr);
+                            2
+                           x  + x - 1
+(%o3)                 --------------------
+                       4    3    2
+                      x  + x  + x  + x + 1
+(%i4) ratdiff (expr, x);
+                       5    4    3
+                      x  - x  - x  + x - 1
+(%o4)            ------------------------------
+                  8    7    5    4    3
+                 x  - x  + x  - x  + x  - x + 1
 @end example
 
 @end defun
@@ -782,26 +844,33 @@ terms of the numerator of @code{ratexpand}'ed expressions from occurring.
 from being rationalized when expressions which contain them are
 converted to CRE form.
 
+Examples:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ratexpand ((2*x - 3*y)^3);
+@c expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
+@c expand (expr);
+@c ratexpand (expr);
+
 @example
-(%i1) ratexpand((2*x-3*y)**3);
-                3         2       2        3
-(%o1)      - 27 y  + 54 x y  - 36 x  y + 8 x
-(%i2) (x-1)/(x+1)**2+1/(x-1);
-                              x - 1       1
-(%o2)                         -------- + -----
-                                    2   x - 1
-                             (x + 1)
-(%i3) expand(%o2);
-                         x              1           1
-(%o3)                ------------ - ------------ + -----
-                     2              2             x - 1
-                    x  + 2 x + 1   x  + 2 x + 1
-(%i4) ratexpand(%o2);
-                             2
-                          2 x                 2
-(%o4)                 --------------- + ---------------
-                      3    2            3    2
-                     x  + x  - x - 1   x  + x  - x - 1
+(%i1) ratexpand ((2*x - 3*y)^3);
+                     3         2       2        3
+(%o1)          - 27 y  + 54 x y  - 36 x  y + 8 x
+(%i2) expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
+                         x - 1       1
+(%o2)                   -------- + -----
+                               2   x - 1
+                        (x + 1)
+(%i3) expand (expr);
+                    x              1           1
+(%o3)          ------------ - ------------ + -----
+                2              2             x - 1
+               x  + 2 x + 1   x  + 2 x + 1
+(%i4) ratexpand (expr);
+                        2
+                     2 x                 2
+(%o4)           --------------- + ---------------
+                 3    2            3    2
+                x  + x  - x - 1   x  + x  - x - 1
 @end example
 
 @end defun
@@ -872,32 +941,41 @@ specification of variable ordering as in @code{ratvars}.
 @code{ratsimpexpons} - if @code{true} will cause exponents of expressions to
 be @code{ratsimp}'ed automatically during simplification.
 
+Examples:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
+@c ratsimp (%);
+@c ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
+@c ratsimp (%);
+@c x^(a + 1/a), ratsimpexpons: true;
+
 @example
-(%i1) sin(x/(x^2+x))=%e^((log(x)+1)**2-log(x)**2);
-                                           2          2
-                    x          (log(x) + 1)  - log (x)
-(%o1)          sin(------) = %e
-                   2
-                  x  + x
-(%i2) ratsimp(%);
-                                  1          2
-(%o2)                        sin(-----) = %e x
-                                x + 1
-(%i3) ((x-1)**(3/2)-(x+1)*sqrt(x-1))/sqrt((x-1)*(x+1));
+(%i1) sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
+                                         2      2
+                   x         (log(x) + 1)  - log (x)
+(%o1)        sin(------) = %e
+                  2
+                 x  + x
+(%i2) ratsimp (%);
+                             1          2
+(%o2)                  sin(-----) = %e x
+                           x + 1
+(%i3) ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
                        3/2
                 (x - 1)    - sqrt(x - 1) (x + 1)
-(%o3)            --------------------------------
-                    sqrt(x - 1) sqrt(x + 1)
-(%i4) ratsimp(%);
+(%o3)           --------------------------------
+                     sqrt((x - 1) (x + 1))
+(%i4) ratsimp (%);
+                           2 sqrt(x - 1)
+(%o4)                    - -------------
                                  2
-(%o4)                      - -----------
-                            sqrt(x + 1)
-(%i5)  x**(a+1/a),ratsimpexpons:true;
-                    2
-                   a  + 1
-                   ------
-                     a
-(%o5)              x
+                           sqrt(x  - 1)
+(%i5) x^(a + 1/a), ratsimpexpons: true;
+                               2
+                              a  + 1
+                              ------
+                                a
+(%o5)                        x
 @end example
 
 @end defun
@@ -963,16 +1041,24 @@ weight of a variable in the term times its power.  Thus the weight of
 3*v1**2*v2 is 2*w1+w2.  This truncation occurs only when multiplying
 or exponentiating CRE forms of expressions.
 
+Examples:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ratweight (a, 1, b, 1);
+@c expr1: rat(a + b + 1)$
+@c expr1^2;
+@c ratwtlvl: 1$
+@c expr1^2;
+
 @example
-(%i5) ratweight(a,1,b,1);
-(%o5)                         [[b, 1], [a, 1]]
-(%i6) exp1:rat(a+b+1)$
-(%i7) %**2;
-                      2                  2
-(%o7)/r/              b  + (2 a + 2) b + a  + 2 a + 1
-(%i8) ratwtlvl:1$
-(%i9) exp1**2;
-(%o9)/r/                       2 b + 2 a + 1
+(%i1) ratweight (a, 1, b, 1);
+(%o1)                     [a, 1, b, 1]
+(%i2) expr1: rat(a + b + 1)$
+(%i3) expr1^2;
+                  2                  2
+(%o3)/R/         b  + (2 a + 2) b + a  + 2 a + 1
+(%i4) ratwtlvl: 1$
+(%i5) expr1^2;
+(%o5)/R/                  2 b + 2 a + 1
 @end example
 
 Note: The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
@@ -986,14 +1072,8 @@ both be used at the same time.
 @code{ratweights} is a list of weight assignments (set up by the @code{ratweight}
 function), @code{ratweights;} or @code{ratweight();} will show you the list.
 
-@example
-kill(...,ratweights)
-@end example
-and
-@example
-save(...,ratweights);
-@end example
-both work.
+@c DO WE REALLY NEED TO MENTION THIS ??
+@code{kill (ratweights)} and @code{save (ratweights)} both work as expected.
 
 @end defvar
 
@@ -1050,10 +1130,14 @@ its factors of degree > n.  Thus by taking gcds with the polynomial of
 the derivatives with respect to each variable in the polynomial, all
 factors of degree > 1 can be found.
 
+Example:
+@c FOLLOWING GENERATED FROM THIS EXPRESSION
+@c sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
+
 @example
-(%i1) sqfr(4*x**4+4*x**3-3*x**2-4*x-1);
-                             2               2
-(%o1)                       (x  - 1) (2 x + 1)
+(%i1) sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
+                                2   2
+(%o1)                  (2 x + 1)  (x  - 1)
 @end example
 
 @end defun
