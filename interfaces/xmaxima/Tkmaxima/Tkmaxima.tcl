@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tkmaxima.tcl,v 1.1 2002-09-19 16:13:49 mikeclarkson Exp $
+#       $Id: Tkmaxima.tcl,v 1.2 2003-01-05 19:03:11 amundson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -250,12 +250,13 @@ object_class MAXTkmaxima {
     method exit {{text ""} {val "0"}} {
 	global maxima_priv
 	
-	set retval [tide_yesnocancel "Exiting Maxima. Save Preferences?"]
-	switch -exact -- $retval "1" {
-	    catch {savePreferences}
-	} -1 {
-	    return
-	}
+# jfa: We don't need to ask about saving preferences every single time.
+# 	set retval [tide_yesnocancel "Exiting Maxima. Save Preferences?"]
+# 	switch -exact -- $retval "1" {
+# 	    catch {savePreferences}
+# 	} -1 {
+# 	    return
+# 	}
 	
 	update
 	if {$text == ""} {
