@@ -228,14 +228,24 @@ literals.")
     re-regs))
 
 (defun allocate-re-regs ()
-  (make-alien re-registers 1))
+  (let ((regs (make-alien re-registers 1)))
+    (setf (slot (deref regs) 'num-regs) 0)
+    regs))
+
 
 (defun free-re-regs (re-regs)
   (declare (type (alien (* re-registers)) re-regs))
+
   (let ((r (deref re-regs)))
-    (free-alien (slot r 'start))
-    (free-alien (slot r 'end))
-    (free-alien re-regs)))
+    ;;(format t "freeing ~A:~%" re-regs)
+    ;;(format t " num-regs:    ~A~%" (slot r 'num-regs))
+    (when (plusp (slot r 'num-regs))
+      ;;(format t " free start:  ~A~%" (slot r 'start))
+      ;;(format t " free end:    ~A~%" (slot r 'end))
+      (free-alien (slot r 'start))
+      (free-alien (slot r 'end))
+      (free-alien re-regs)
+      )))
 
 (defun make-case-fold-table ()
   "Translation table to fold all uppercase ASCII characters to lower
