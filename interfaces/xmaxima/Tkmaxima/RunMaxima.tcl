@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.15 2002-10-25 17:03:29 amundson Exp $
+#       $Id: RunMaxima.tcl,v 1.16 2003-01-05 19:01:41 amundson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -455,7 +455,7 @@ proc CMkill {  signal pid } {
     if {[string is int $pid]} {
 	gui status "Signaling $pid with $signal"
 	if {$tcl_platform(platform) == "windows" } {
-	    winkill -pid $pid -signal $signal
+	    exec $maxima_priv(kill) $signal $pid
 	} else {
 	    exec $maxima_priv(kill) $signal $pid
 	}
