@@ -12,6 +12,9 @@ Filename:  share/contrib/README
 
 Notes on specific packages:
 
+diffequations/  This directory contains additional methods for
+		solving ordinary differential equations.
+
 format/         This directory contains most of Bruce Miller's
                 Format package.
 		http://math.nist.gov/~BMiller/computer-algebra/
@@ -33,3 +36,6 @@ nset/           This is nset by Barton Willis and Stavros
 
 pdiff/          This is Barton Willis's pdiff package from
                 http://www.unk.edu/acad/math/people/willisb/
+
+rand/           Code from books and papers by Richard H. Rand
+		(http://tam.cornell.edu/Rand.html)
