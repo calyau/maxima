@@ -17,6 +17,7 @@
 ;; Couldn't this copy to some static area?
 (DEFMACRO PURCOPY (X) X)
 
+#-nocp
 (DEFMACRO CHARPOS (IGNOR)ignor  '(CDR (CURSORPOS)))
 (DEFMACRO MAXIMA-SLEEP (SECONDS) `(PROCESS-SLEEP (FIX (f* ,SECONDS 60.))))
 

@@ -43,7 +43,8 @@
 ;Update from F302 --gsb
 (DEFMSPEC $GRIND (X) (SETQ X (CDR X))
   (LET (Y)
-    (IF (NOT (ZEROP (CHARPOS T))) (MTERPRI))
+    #+nocp(fresh-line)
+    #-nocp(IF (NOT (ZEROP (CHARPOS T))) (MTERPRI))
     (COND ((OR (NULL X) (CDR X)) (WNA-ERR '$GRIND))
 	  ((SYMBOLP (SETQ X (STRMEVAL (CAR X))))
 	   (SETQ X ($VERBIFY X))
@@ -79,7 +80,8 @@
 
 (defun i-$grind (x)
   (LET (Y)
-    (IF (NOT (ZEROP (CHARPOS T))) (MTERPRI))
+    #+nocp(fresh-line)
+    #-nocp(IF (NOT (ZEROP (CHARPOS T))) (MTERPRI))
     (COND  ((SYMBOLP (SETQ X (STRMEVAL  X)))
 	    (SETQ X ($VERBIFY X))
 	    (COND ((SETQ Y (MGET X 'MEXPR))
