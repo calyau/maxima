@@ -1,0 +1,17 @@
+/* This file contains tests added since April 2002 */
+
+kill(all);
+done$
+
+/* apropos function added 7 April 2002 */
+apropos('TR_OPTIMIZE_MAX_LOOP);
+[TR_OPTIMIZE_MAX_LOOP]$
+
+/* Known failure - 7 April 2002 */
+integrate(3^log(x),x);
+x*%E^(LOG(3)*LOG(x))/(LOG(3)+1)$
+
+/* Wester[1995] Problem 84 - Known failure - 7 April 2002 */
+integrate(sqrt(x+1/x-2),x,0,1);
+4/3$
+
