@@ -406,8 +406,10 @@
     (setq translated-file (alter-pathname (or out-file-name in-file-name) :type "LISP"))
     (setq warn-file (alter-pathname in-file-name :type "UNLISP"))
     (with-open-file (in-stream in-file-name)
-      (with-open-file (out-stream translated-file :direction :output)
-	(with-open-file (warn-stream warn-file :direction :output)
+      (with-open-file (out-stream translated-file :direction :output
+				  :if-exists :supersede)
+	(with-open-file (warn-stream warn-file :direction :output
+				     :if-exists :supersede)
 	      (setq *translation-msgs-files* (list warn-stream))
 	  (IF TTYMSGSP
 	      (SETQ *TRANSLATION-MSGS-FILES*
