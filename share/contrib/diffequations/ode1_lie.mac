@@ -230,15 +230,30 @@ ode1_a(phi,y,x) := block(
    Symmetries and First Order ODE Patterns 
 */
 lie_FxHx(Phi,y,x) := block(
-  [Phi_y, Phi_yy, Q, Q_y],
+  [Phi_y, Phi_yy, Q, Q_y,_a,_b,_c,gen],
 
   ode_disp2("In lie_FxHx with Phi:",Phi),
   Phi_y: ratsimp(diff(Phi,y)),
   Phi_yy: ratsimp(diff(Phi_y,y)),
   ode_disp2("Phi_yy = ",Phi_yy),
   if (Phi_yy=0) then (
-    ode_disp("Phi_yy=0 in lie_FxHx.  This case not handled yet"),
-    return(false)
+    /* Phi must be linear in y, say Phi = _a*y + _b */
+    ode_disp("    Phi_yy=0 so Phi must be linear in y"),
+    _c: bothcoef(expand(Phi),y),
+    _a: first(_c),
+    _b: expand(second(_c)),
+   ode_disp2("    _a: ",_a),
+   ode_disp2("    _b: ",_b),
+   if not(freeof(y,_a)) then error("lie_FxHx: _a not free of ",y),
+   if not(freeof(y,_b)) then error("lie_FxHx: _b not free of ",y),
+   if (_a=0) then (
+     gen:lie_symgen_separable(_b,1,y,x)
+   ) else (
+     gen:lie_symgen_linear(_a,_b,y,x)
+   ),
+   ode_disp2("    xi: ",gen[1]),
+   ode_disp2("    eta: ",gen[2]),
+   return(gen)
   ),
   Q:ratsimp(Phi_y/Phi_yy),  /* (39) */
   Q_y:ratsimp(diff(Q,y)),
@@ -310,3 +325,30 @@ lie_exact(phi,mu,y,x) := block(
    RETURN(RATSIMP(A + INTEGRATE(RATSIMP(N-DIFF(A,Y)),Y)) = %C))$
 */
 
+/* Find  symmetry generators [ xi, eta ] of separable
+   first order ode 'diff(y,x) = phi(x,y) = f(x)*g(y) 
+
+   Can find generator [ xi(x), 0 ] = [ 1/f, 0 ]
+  */
+lie_symgen_separable(f,g,y,x) := block(return([1/f,0]))$
+
+/* Find symmetry generators [ xi, eta ] of linear 
+   first order ode 'diff(y,x) = phi(x,y) = f(x)*y + g(x) 
+
+   Can find generator [ xi(x), eta(x) ]
+ */
+lie_symgen_linear(f,g,y,x) := block(
+  [xi, eta, expintf],
+  ode_disp("    In lie_symgen_linear"),
+  xi: 1/f,
+  ode_disp2("     xi: ",xi),
+  expintf: radcan(exp(integrate(f,x))),
+  ode_disp2("     expintf: ",expintf),
+
+  eta: expintf*(integrate((f*diff(g,x)-diff(f,x)*g)/(f^2*expintf),x)+%c),
+  ode_disp2("     eta: ",eta),
+  ode_disp("     and after eta:radcan(eta)"),
+  eta:radcan(eta),
+  ode_disp2("     eta: ",eta),
+  [xi,eta]
+)$
