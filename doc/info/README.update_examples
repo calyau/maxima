@@ -2,7 +2,7 @@
 Perl script `update_examples' is intended to update 
 examples in the Maxima texinfo documentation.
 
- is a filter - it reads standard input 
+`update_examples' is a filter - it reads standard input 
 and direst result to standard output:
 
 ./update_examples < original.texi > updated.texi
