@@ -37,7 +37,9 @@
 			((mlist) $colour_z nil)
 			((mlist) $transform_xy nil)
 			((mlist) $run_viewer t)
-			((mlist) $plot_format $openmath)
+			((mlist) $plot_format $gnuplot)
+			((mlist) $gnuplot_term $default)
+			((mlist) $gnuplot_out_file nil)
 			;; With adaptive plotting, 100 is probably too
 			;; many ticks.  I (rtoy) think 10 is a more
 			;; reasonable default.
@@ -45,12 +47,38 @@
 			;; Controls the number of splittings
 			;; adaptive-plotting will do.
 			((mlist) $adapt_depth 10)
+			((mlist) $gnuplot_pm3d nil)
+			((mlist) $gnuplot_preamble "")
+			((mlist) $gnuplot_curve_titles 
+			 ((mlist) $default))
+			((mlist) $gnuplot_curve_styles
+			 ((mlist) 
+			  "with lines 3"
+			  "with lines 1"
+			  "with lines 2"
+			  "with lines 5"
+			  "with lines 4"
+			  "with lines 6"
+			  "with lines 7"))
+			((mlist) $gnuplot_default_term_command "")
+			((mlist) $gnuplot_dumb_term_command
+			  "set term dumb 79 22")
+			((mlist) $gnuplot_ps_term_command
+			  "set size 1.5, 1.5;set term postscript eps enhanced color solid 24")
 			))
 
 (defun $get_plot_option (name &optional n)
   (sloop for v in (cdr $plot_options)
      when (eq (nth 1 v) name) do
      (return (if n (nth n  v) v))))
+
+(defun get-plot-option-string (option &optional (index 1))
+  (let* ((val ($get_plot_option option 2))
+	 (val-list (if ($listp val)
+		       (cdr val)
+		       `(,val))))
+    (format nil "~a" 
+	    (stripdollar (nth (mod (- index 1) (length val-list)) val-list)))))
 
 (defun check-list-items (name lis type length)
   (or (eql (length lis) length)
@@ -77,15 +105,31 @@
 	  ($view_direction (check-list-items name (cddr value) 'number 3))
 	  ($grid  (check-list-items name (cddr value) 'fixnum 2))
 	  ($nticks  (check-list-items name (cddr value) 'fixnum 1))
-	  (($colour_z $run_viewer $transform_xy)
+	  (($colour_z $run_viewer $transform_xy $gnuplot_pm3d)
 	   (check-list-items name (cddr value) 't 1))
 	  ($plot_format (or (member (nth 2 value) '($zic $geomview $ps
 							 $gnuplot
+							 $mgnuplot
 							 $zplot
 							 $openmath
 							 ))
-			    (merror "Only [zic,geomview,ps,openmath,gnuplot] are available"))
+			    (merror "plot_format: only [gnuplot,mgnuplot,openmath,ps,geomview] are available"))
 			value)
+	  ($gnuplot_term (or (member (nth 2 value)
+				     '($default $ps $dumb))
+			     (merror "gnuplot_term: only [default,ps,dumb] are available"))
+			 value)
+	  ($gnuplot_out_file value)
+	  ($gnuplot_curve_titles (if ($listp value)
+				     value
+				     `((mlist) ,value)))
+	  ($gnuplot_curve_styles (if ($listp value)
+				     value
+				     `((mlist) ,value)))
+	  ($gnuplot_preamble value)
+	  ($gnuplot_default_term_command value)
+	  ($gnuplot_dumb_term_command value)
+	  ($gnuplot_ps_term_command value)
 	  ($adapt_depth (check-list-items name (cddr value) 'fixnum 1))
 	  (t
 	   (merror "Unknown plot option specified:  ~M" name))))
@@ -96,8 +140,6 @@
   )
   
 (defvar $pstream nil)
-
-
 
 (defun print-pt1 (f str)
   (format str "~g " f))
@@ -850,7 +892,9 @@ setrgbcolor} def
 				 depth 1d-5))))
 	  
 
-      (format t "Points = ~D~%" (length result))
+;; jfa: I don't think this is necessary any longer
+;;      (format t "Points = ~D~%" (length result))
+
       ;; Fix up out-of-range values
       (do ((x result (cddr x))
 	   (y (cdr result) (cddr y)))
@@ -928,20 +972,78 @@ setrgbcolor} def
   (p "%%Trailer")
   (p "%%EOF"))
 
+(if (string= *autoconf-win32* "true")
+    (progn 
+      (defvar $gnuplot_command "wgnuplot")
+      (defvar $gnuplot_view_args "~a -")
+      (defvar $viewtext_command "type ~a"))
+    (progn 
+      (defvar $gnuplot_command "gnuplot")
+      (defvar $gnuplot_view_args "-persist ~a")
+      (defvar $viewtext_command "cat ~a")))
 
-(defvar $gnuplot_command "mgnuplot")
+(defvar $mgnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview maxout.geomview")
 
 (defvar $openmath_plot_command "omplotdata")
 
+(defun gnuplot-print-header (dest)
+  (let ((gnuplot-out-file nil))
+    (if ($get_plot_option '$gnuplot_pm3d 2)
+	(format dest "set pm3d~%"))
+    (if ($get_plot_option '$gnuplot_out_file 2)
+	(setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
+    (case ($get_plot_option '$gnuplot_term 2)
+      ($default
+       (format dest "~a~%" 
+	       (get-plot-option-string '$gnuplot_default_term_command)))
+      ($ps
+       (format dest "~a~%" 
+	       (get-plot-option-string '$gnuplot_ps_term_command))
+       (if gnuplot-out-file
+	   (format dest "set out '~a'~%" gnuplot-out-file)))
+      ($dumb
+       (format dest "~a~%" 
+	       (get-plot-option-string '$gnuplot_dumb_term_command))
+       (if gnuplot-out-file
+	   (format dest "set out '~a'~%" gnuplot-out-file))))
+    (format dest "~a~%" (get-plot-option-string '$gnuplot_preamble))))
+
+
+(defun gnuplot-process (file)
+  (let ((gnuplot-term ($get_plot_option '$gnuplot_term 2))
+	(gnuplot-out-file ($get_plot_option '$gnuplot_out_file 2))
+	(gnuplot-out-file-string (get-plot-option-string '$gnuplot_out_file))
+	(run-viewer ($get_plot_option '$run_viewer 2))
+	(view-file))
+    ;; run gnuplot in batch mode if necessary before viewing
+    (if (and gnuplot-out-file (not (eq gnuplot-term '$default)))
+	 ($system (format nil "~a ~a" $gnuplot_command file)))
+    (when run-viewer
+      (if (eq gnuplot-term '$default)
+	 (setf view-file file)
+	 (setf view-file gnuplot-out-file-string))
+      (case gnuplot-term
+	($default
+	 ($system (format nil "~a ~a" $gnuplot_command
+			  (format nil $gnuplot_view_args view-file))))
+	($ps
+	 (if gnuplot-out-file
+	     ($system (format nil $viewps_command view-file))
+	     ($system (format nil "~a ~a" $gnuplot_command file))))
+	($dumb
+	 (if gnuplot-out-file
+	     ($system (format nil "~a ~a" $viewtext_command view-file))
+	     ($system (format nil "~a ~a" $gnuplot_command file))))))
+    (if gnuplot-out-file
+	(format t "output file \"~a\".~%" gnuplot-out-file-string))))
+
 (defun $plot2d (fun &optional range &rest options &aux ($numer t) $display2d
-		    (i 0) plot-format file plot-name
-		    ($plot_options $plot_options))
+		(i 0) plot-format gnuplot-term gnuplot-out-file
+		file plot-name
+		($plot_options $plot_options))
   (dolist (v options) ($set_plot_option v))
-
-  ;; IF NOT COMMENTED, plot2d(expr,range,[plot_format,ps]) GENERATES BAD POSTSCRIPT (SEE BUG REPORT #834729)
-  ;; (or ($listp fun ) (setf fun `((mlist) ,fun)))	
-
+  
   (cond ((eq (cadr fun) '$parametric)
 	 (or range (setq range (nth 4 fun)))
 	 (setf fun `((mlist) ,fun))))
@@ -949,38 +1051,83 @@ setrgbcolor} def
          (return-from $plot2d (apply '$plot2d_ps fun range options))))
   (cond ((eq ($get_plot_option '$PLOT_FORMAT 2) '$openmath)
          (return-from $plot2d (apply '$plot2dOpen fun range options))))
+
+;; this has to come after the checks for ps and openmath 
+;; (see bug report #834729)
+  (or ($listp fun ) (setf fun `((mlist) ,fun)))	
+
   (check-range range)
-  (setq plot-format  ($get_plot_option '$plot_format 2))
-  (setq file (format nil "maxout.~(~a~)" (stripdollar plot-format)))
+  (setf plot-format  ($get_plot_option '$plot_format 2))
+  (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
+  (if ($get_plot_option '$gnuplot_out_file 2)
+      (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
+  (if (and (eq plot-format '$gnuplot) 
+	   (eq gnuplot-term '$default) 
+	   gnuplot-out-file)
+      (setf file gnuplot-out-file)
+      (setf file (format nil "maxout.~(~a~)" (stripdollar plot-format))))
   
-  (with-open-file (st file :direction :output :if-exists :supersede)  
+  (with-open-file (st file :direction :output :if-exists :supersede)
+    (case plot-format
+      ($gnuplot
+       (gnuplot-print-header st)
+       (format st "plot")))
     (dolist (v (cdr fun))
-	    (incf i)
-	    (setq plot-name
-		  (let ((string (coerce (mstring v) 'string)))
-		    (cond ((< (length string) 9) string)
-			  (t (format nil "Fun~a" i)))))
-	(case plot-format
-	      ($xgraph
-	       (format st "~%~% \"~a\"~%" plot-name))
-	      ($gnuplot
-	       (format st "~%~%# \"~a\"~%" plot-name))
-	       )
+      (incf i)
+      (setq plot-name
+	    (let ((string (coerce (mstring v) 'string)))
+	      (cond ((< (length string) 20) string)
+		    (t (format nil "Fun~a" i)))))
+      (case plot-format
+	($gnuplot
+	 (if (> i 1)
+	     (format st ","))
+	 (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
+	   (if (equal title "DEFAULT")
+	       (setf title (format nil "title '~a'" plot-name)))
+	   (format st " '-' ~a ~a" title 
+		   (get-plot-option-string '$gnuplot_curve_styles i))))))
+    (case plot-format
+      ($gnuplot
+       (format st "~%")))
+    (setf i 0)
+    (dolist (v (cdr fun))
+      (incf i)
+      (setq plot-name
+	    (let ((string (coerce (mstring v) 'string)))
+	      (cond ((< (length string) 20) string)
+		    (t (format nil "Fun~a" i)))))
+      (case plot-format
+	($xgraph
+	 (format st "~%~% \"~a\"~%" plot-name))
+	($gnuplot
+	 (if (> i 1)
+	     (format st "e~%")))
+	($mgnuplot
+	 (format st "~%~%# \"~a\"~%" plot-name))
+	)
       (sloop for (v w) on (cdr (draw2d v range )) by 'cddr
-	 do
-	 (cond ((eq v 'moveto)
-		(cond ((equal plot-format '$gnuplot)
+	     do
+	     (cond ((eq v 'moveto)
+		    (cond 
+		      ((equal plot-format '$gnuplot)
+		       ;; A blank line means a discontinuity
+		       (format st "~%"))
+		      ((equal plot-format '$mgnuplot)
 		       ;; A blank line means a discontinuity
 		       (format st "~%"))
 		      (t
 		       (format st "move "))))
-	       (t  (format st "~g ~g ~%" v w))))))
+		   (t  (format st "~g ~g ~%" v w))))))
   (case plot-format
-	($gnuplot 
-	 ($system (concatenate 'string *maxima-plotdir* "/" $gnuplot_command) " -plot2d maxout.gnuplot -title '" plot-name "'"))
-	($xgraph
-	 ($system "xgraph -t 'Maxima Plot' < maxout.xgraph &"))
-	))
+    ($gnuplot 
+     (gnuplot-process file))
+    ($mgnuplot 
+     ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command) " -plot2d maxout.mgnuplot -title '" plot-name "'"))
+    ($xgraph
+     ($system "xgraph -t 'Maxima Plot' < maxout.xgraph &"))
+    )
+  "")
 
 (defun maxima-bin-search (command)
   (or ($file_search command
@@ -1076,16 +1223,6 @@ setrgbcolor} def
 	   ))
     (format *standard-output* "~% }")
     )
-
-		   
-		  
-	   
-				
-				
-	   
-
-           
-
 
 
 (defun tcl-output-list ( st lis )
@@ -1489,7 +1626,7 @@ setrgbcolor} def
 
 
 (defun $view_zic ()
-  (let ((izdir (getenv "IZICDIR")))
+  (let ((izdir (maxima-getenv "IZICDIR")))
     (or (probe-file
 	 (format nil "~a/tcl-files/maxima.tcl" izdir))
 	(error
@@ -1581,13 +1718,23 @@ setrgbcolor} def
 		     ($plot_options $plot_options)
 		     ($in_netmath $in_netmath)
 		     colour-z grid
-		     plot-format
+		     plot-format gnuplot-term gnuplot-out-file file
+		     orig-fun
 		     )
   (declare (special *original-points*))
+  (setf orig-fun fun)
   (cond (options
 	 (dolist (v options)
 	   ($set_plot_option v))))
-  (setq plot-format  ($get_plot_option '$plot_format 2))
+  (setf plot-format  ($get_plot_option '$plot_format 2))
+  (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
+  (if ($get_plot_option '$gnuplot_out_file 2)
+      (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
+  (if (and (eq plot-format '$gnuplot) 
+	   (eq gnuplot-term '$default) 
+	   gnuplot-out-file)
+      (setf file gnuplot-out-file)
+      (setf file (format nil "maxout.~(~a~)" (stripdollar plot-format))))
   (and $in_netmath (setq $in_netmath (eq plot-format '$openmath)))
   (setq xrange (check-range xrange))
   (setq yrange (check-range yrange))
@@ -1625,9 +1772,7 @@ setrgbcolor} def
       ;; compute bounding box.
   (let (($pstream
 	 (cond ($in_netmath *standard-output*)
-	       (t (open (format nil "maxout.~(~a~)" (stripdollar plot-format))
-			:direction :output
-			:if-exists :supersede)))))
+	       (t (open file :direction :output :if-exists :supersede)))))
     (unwind-protect
       (case  plot-format
 	($zic
@@ -1648,7 +1793,19 @@ setrgbcolor} def
 		   )
 	   (output-points pl nil)))
 	($gnuplot
-	   (output-points pl (nth 2 grid)))
+	 (gnuplot-print-header $pstream)
+	 (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
+	       (plot-name
+		(let ((string (coerce (mstring orig-fun) 'string)))
+		  (cond ((< (length string) 20) string)
+			(t (format nil "Function"))))))
+	   (if (equal title "DEFAULT")
+	       (setf title (format nil "title '~a'" plot-name)))
+	   (format $pstream "splot '-' ~a ~a~%" title 
+		   (get-plot-option-string '$gnuplot_curve_styles 1)))
+	 (output-points pl (nth 2 grid)))
+	($mgnuplot
+	 (output-points pl (nth 2 grid)))
 	($openmath
 	 (progn
 	   (format $pstream "{plot3d {matrix_mesh ~%")
@@ -1721,18 +1878,23 @@ setrgbcolor} def
 	       (setq $pstream nil)
 	       ))
       )
-      (cond (($get_plot_option '$run_viewer 2)
-	     (case plot-format
-	       ($zic ($view_zic))
-	       ($ps ($viewps))
-	       ($openmath
-		($system (concatenate 'string *maxima-plotdir* "/" $openmath_plot_command) " maxout.openmath")
-		)
-	       ($geomview ($system $geomview_command))
-	       ($gnuplot ($system (concatenate 'string *maxima-plotdir* "/" $gnuplot_command)
-				  " -parametric3d maxout.gnuplot" ))
-	       )))
-      )))
+    (if (eq plot-format '$gnuplot)
+	(gnuplot-process file)
+	(cond (($get_plot_option '$run_viewer 2)
+	       (case plot-format
+		 ($zic ($view_zic))
+		 ($ps ($viewps))
+		 ($openmath
+		  ($system (concatenate 'string *maxima-plotdir* "/" $openmath_plot_command) " maxout.openmath")
+		  )
+		 ($geomview ($system $geomview_command))
+		 ($mgnuplot ($system (concatenate 
+				      'string *maxima-plotdir* "/" 
+				      $mgnuplot_command)
+				     " -parametric3d maxout.mgnuplot" ))
+		 ))))
+    ))
+    "")
   
 
 #| these are already defined in clmacs.lisp |#
