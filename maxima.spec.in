@@ -114,7 +114,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/*
 %{_mandir}/man1/maxima.1
 %{_bindir}/maxima
-%doc AUTHORS COPYING COPYING1 INSTALL README README.lisps README.rpms
+%doc AUTHORS COPYING INSTALL README README.lisps README.rpms
 
 %files xmaxima
 %{_bindir}/xmaxima

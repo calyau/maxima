@@ -7,8 +7,8 @@ quite reliable, and has good garbage collection, and no memory leaks.
 It comes with hundreds of self tests.
 
 Maxima is distributed under the GNU General Public License, with some
-export restrictions from the U.S. Department of Energy. See the files
-COPYING and COPYING1.
+export restrictions from the U.S. Department of Energy. See the file
+COPYING.
 
 Installation information is available in the file INSTALL. Summary
 information about this release can be found in the file NEWS. Detailed
