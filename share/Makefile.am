@@ -60,7 +60,6 @@ calculus/cartan.dem\
 calculus/cartan.lisp\
 calculus/fourie.dem\
 calculus/fourie.mac\
-calculus/fourie.usg\
 calculus/gendif.mac\
 calculus/gendif.usg\
 calculus/optmiz.dem\
@@ -369,7 +368,6 @@ matrix/determ.mac\
 matrix/determ.usg\
 matrix/eigen.dem\
 matrix/eigen.mac\
-matrix/eigen.usg\
 matrix/eigen_1.dem\
 matrix/eigeni.mac\
 matrix/invert.mac\
@@ -480,7 +478,6 @@ simplification/stopex.dem\
 simplification/stopex.mac\
 simplification/stopex.usg\
 specfunctions/airy.lisp\
-specfunctions/airy.usg\
 specfunctions/ellipt.lisp\
 specfunctions/ellipt.usg\
 specfunctions/gamma.mac\
