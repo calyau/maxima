@@ -1,41 +1,33 @@
 info_TEXINFOS = maxima.texi
-maxima_TEXINFOS = Introduction.texi
-maxima_TEXINFOS = Help.texi
-maxima_TEXINFOS = Command.texi
-maxima_TEXINFOS = Operators.texi
-maxima_TEXINFOS = Expressions.texi
-maxima_TEXINFOS = Simplification.texi
-maxima_TEXINFOS = Plotting.texi
-maxima_TEXINFOS = Input.texi
-maxima_TEXINFOS = Floating.texi
-maxima_TEXINFOS = Contexts.texi
-maxima_TEXINFOS = Polynomials.texi
-maxima_TEXINFOS = Constants.texi
-maxima_TEXINFOS = Logarithms.texi
-maxima_TEXINFOS = Trigonometric.texi
-maxima_TEXINFOS = Special.texi
-maxima_TEXINFOS = SpecfunII.texi
-maxima_TEXINFOS = Limits.texi
-maxima_TEXINFOS = Differentiation.texi
-maxima_TEXINFOS = Integration.texi
-maxima_TEXINFOS = Equations.texi
-maxima_TEXINFOS = Differential.texi
-maxima_TEXINFOS = Numerical.texi
-maxima_TEXINFOS = Statistics.texi
-maxima_TEXINFOS = Arrays.texi
-maxima_TEXINFOS = Matrices.texi
-maxima_TEXINFOS = Affine.texi
-maxima_TEXINFOS = Tensor.texi
-maxima_TEXINFOS = Ctensor.texi
-maxima_TEXINFOS = Series.texi
-maxima_TEXINFOS = Number.texi
-maxima_TEXINFOS = Symmetries.texi
-maxima_TEXINFOS = Groups.texi
-maxima_TEXINFOS = Runtime.texi
-maxima_TEXINFOS = Miscellaneous.texi
-maxima_TEXINFOS = Rules.texi
-maxima_TEXINFOS = Lists.texi
-maxima_TEXINFOS = Function.texi
-maxima_TEXINFOS = Program.texi
-maxima_TEXINFOS = Debugging.texi
-maxima_TEXINFOS = Indices.texi
+maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
+  Expressions.texi Simplification.texi Plotting.texi Input.texi \
+  Floating.texi Contexts.texi Polynomials.texi Constants.texi \
+  Logarithms.texi Trigonometric.texi Special.texi SpecfunII.texi \
+  Limits.texi Differentiation.texi Integration.texi Equations.texi \
+  Differential.texi Numerical.texi \
+  Statistics.texi Arrays.texi Matrices.texi Affine.texi Tensor.texi \
+  Ctensor.texi Series.texi Number.texi Symmetries.texi Groups.texi \
+  Runtime.texi Miscellaneous.texi Rules.texi Lists.texi Function.texi \
+  Program.texi Debugging.texi Indices.texi
+
+maximahtml.mk:
+	./texi2html -split_chapter maxima.texi
+	rm -f maxima-html.mk
+	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml.mk
+
+include maximahtml.mk
+
+$(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
+	./texi2html -split_chapter maxima.texi 
+
+include $(top_srcdir)/common.mk
+dochtml_DATA = $(MAXIMAHTML)
+
+clean: clean-info
+clean: clean-html
+
+clean-info:
+	rm -f maxima.info*
+
+clean-html:
+	rm -f maxima*.html

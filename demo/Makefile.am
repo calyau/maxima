@@ -1,4 +1,5 @@
-genericdirDATA = array.dem\
+include $(top_srcdir)/common.mk
+demo_DATA = array.dem\
 cf.dem\
 demo.dem\
 eaton1.dem\
@@ -14,6 +15,3 @@ rombrg.dem\
 subscr.dem\
 sumcon.dem\
 trgsmp.dem
-
-genericdir =$(pkgdatadir)/@VERSION@/demo
-include $(top_srcdir)/common.mk
