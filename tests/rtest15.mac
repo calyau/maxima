@@ -80,29 +80,6 @@ assoc(x,[x=2]);
 assoc(1,[x=2],foobar);
 foobar$
 
-/* every tests */
-every([]);
-false$
-every([false]);
-false$
-every([false,false]);
-false$
-every(false);
-false$
-every(false,false);
-false$
-every(true);
-true$
-every([true]);
-true$
-every([true,true]);
-true$
-every(true,true);
-true$
-every([true,false]);
-false$
-every(true,false);
-false$
 /* some older versions of gcl had a bug that resulted in a failure of the */
 /* following. */
 primep(80630964769);

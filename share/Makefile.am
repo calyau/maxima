@@ -37,6 +37,9 @@ affine/todd-coxeter.lisp\
 algebra/charsets/README\
 algebra/charsets/charsets.mac\
 algebra/charsets/test1.mac\
+algebra/charsets/set.lisp\
+algebra/charsets/flatten.lisp\
+algebra/charsets/rtestflatten.mac\
 algebra/differ.dem\
 algebra/differ.mac\
 algebra/gcdex.mac\

@@ -263,7 +263,6 @@ evalw.lisp \
 ezgcd.lisp \
 factor.lisp \
 fcall.lisp \
-flatten.lisp \
 float.lisp \
 fortra.lisp \
 generate-sys-proclaim.lisp \

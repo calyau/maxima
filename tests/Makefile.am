@@ -67,7 +67,6 @@ rtest9a.mac \
 rtest9.mac \
 rtestode.mac \
 rtestode_zp.mac \
-rtestflatten.mac \
 rtestnset.mac \
 rtesthyp.mac \
 testsuite.lisp
