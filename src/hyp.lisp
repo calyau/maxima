@@ -10,21 +10,17 @@
 ;;    #-gcl (:compile-toplevel :execute)
 ;;    (declare-top (special fun w b l alglist $true $false n  c l1 l2)))
 
-(declare-top (special fun #||w b l||# $true $false #|| n  c ||# #||l1 l2||#))
+(declare-top (special $true $false))
 
-(declare-top (special var *par* zerosigntest productcase 
-		      fldeg flgkum checkcoefsignlist serieslist
+(declare-top (special var *par*
+		      checkcoefsignlist
 		      $exponentialize $bestriglim $radexpand))
 
 
 ;; (eval-when (compile eval) (load '((dsk ell) macros >)) )
 
-(declare-top (special fldeg flgkum listcmdiff checkcoefsignlist serieslist
-		      fl1f1))
-
-(setq flgkum t fldeg t fl1f1 t checkcoefsignlist nil)
-
-(declare-top (special eps $exponentialize $bestriglim $radexpand))
+;; Why is this needed?
+(setq checkcoefsignlist nil)
 
 ;; I (rtoy) don't know what the default should be. but $hgfred sets it
 ;; to 3.  But we also need to define it because some of the specint
@@ -39,7 +35,7 @@
     #-gcl (:execute :compile-toplevel)
     (defmacro fixp (x) `(typep ,x 'fixnum))
 
-    (setq flgkum t fldeg t fl1f1 t checkcoefsignlist '())
+    (setq checkcoefsignlist '())
     ;;      $BESTRIGLIM 3. $RADEXPAND '$ALL
 
     (defmacro simp (x) `(simplifya ,x ()))
@@ -120,7 +116,7 @@
 
 
 (defun hgfsimp (arg-l1 arg-l2 var)
-  (prog (resimp)
+  (prog (resimp listcmdiff)
      (setq arg-l1 (macsimp arg-l1)
 	   arg-l2 (macsimp arg-l2)
 	   resimp (simpg arg-l1 arg-l2))
@@ -2253,8 +2249,7 @@
   (cond ((freevar exp) (freepar exp))
 	(t nil)))
 
-(declare-top (special serieslist var *par* zerosigntest productcase))
-
+;; Why is this needed?
 (setq *par* '$p)
 
 ;;(DEFUN FREEVAR (A) 
@@ -3390,7 +3385,5 @@
 (eval-when
     #+gcl (compile)
     #-gcl (:compile-toplevel)
-    (declare-top (unspecial serieslist var *par* zerosigntest productcase
-			    fldeg flgkum listcmdiff checkcoefsignlist ))
-  
-    (declare-top (unspecial fun #|w b l n c|#)))
+    (declare-top (unspecial var *par* checkcoefsignlist))
+    )
