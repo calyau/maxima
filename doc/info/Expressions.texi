@@ -385,26 +385,37 @@ for @code{%e^x} in @code{%e^(a*x)} to take place.
 
 @end defvar
 
-@defun freeof (x_1, x_2, x_3, ..., expr)
-Returns @code{true}
-if no subexpression of @code{expr} is equal to @code{x_1}, or @code{x_2}, or @code{x_3}, ..., 
-and @code{false} otherwise.
+@defun freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+@code{freeof (@var{x_1}, @var{expr})}
+returns @code{true}
+if no subexpression of @var{expr} is equal to @var{x_1}
+or if @var{x_1} occurs only as a dummy variable in @var{expr},
+and returns @code{false} otherwise.
 
-@code{x_1}, etc., may be names of functions and variables, subscripted names,
+@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}
+is equivalent to @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
+
+The arguments @var{x_1}, ..., @var{x_n} 
+may be names of functions and variables, subscripted names,
 operators (enclosed in double quotes), or general expressions.
 @code{freeof} evaluates its arguments.
-@code{freeof} operates only on @code{expr} as it stands (after evaluation) and
-does not attempt to determine if some equivalent expression would give a different result.
 
-If @code{x} is a dummy variable of @code{expr}, then @code{freeof (x, expr)} will
-return @code{true}. 
+@code{freeof} operates only on @var{expr} as it stands (after simplification and evaluation) and
+does not attempt to determine if some equivalent expression would give a different result.
+In particular, simplification may yield an equivalent but different expression which comprises
+some different elements than the original form of @var{expr}.
+
 A variable is a dummy variable in an expression if it has no binding outside of the expression.
-Dummy variables include
+Dummy variables recognized by @code{freeof} are
 the index of a sum or product, the limit variable in @code{limit},
 the integration variable in the definite integral form of @code{integrate},
 the original variable in @code{laplace},
 formal variables in @code{at} expressions,
 and arguments in @code{lambda} expressions.
+Local variables in @code{block} are not recognized by @code{freeof} as dummy variables;
+this is a bug.
+
+The indefinite form of @code{integrate} is @i{not} free of its variable of integration.
 
 @itemize @bullet
 @item
@@ -445,6 +456,7 @@ Arguments are names of functions, variables, subscripted names, operators, and e
 
 @item
 @code{freeof} does not consider equivalent expressions.
+Simplification may yield an equivalent but different expression.
 
 @example
 (%i1) expr: (a+b)^5$
@@ -455,15 +467,23 @@ Arguments are names of functions, variables, subscripted names, operators, and e
 (%o3)                         true
 (%i4) freeof (a+b, expr);
 (%o4)                         false
+(%i5) exp (x);
+                                 x
+(%o5)                          %e
+(%i6) freeof (exp, exp (x));
+(%o6)                         true
 @end example
 
-@item A summation or integration is free of its dummy variable.
+@item A summation or definite integral is free of its dummy variable.
+An indefinite integral is not free of its variable of integration.
 
 @example
 (%i1) freeof (i, 'sum (f(i), i, 0, n));
 (%o1)                         true
 (%i2) freeof (x, 'integrate (x^2, x, 0, 1));
 (%o2)                         true
+(%i3) freeof (x, 'integrate (x^2, x));
+(%o3)                         false
 @end example
 @end itemize
 
