@@ -10,14 +10,14 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
  *
- * Supplement to itensor.lisp: implementation of frames and torsion
+ * Algebraic classification of metrics
  *
  */
 
 if get('ctensor,'version)=false then load(ctensor);
 ("Computing the Petrov classification of the Schwarzschild metric")$
 ("We use frames, set up simplification flags")$
-(cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
+(cframe_flag:true,gcd:spmod,ctrgsimp:true,ratwtlvl:false,ratfac:true);
 ("We use the stock Schwarzschild frame")$
 ct_coordsys(exteriorschwarzschild,all);
 ("The inverse metric tensor is needed by nptetrad()")$

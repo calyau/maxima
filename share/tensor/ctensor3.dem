@@ -9,12 +9,12 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
  *
- * Demonstrates curvature tensors through a conformally flat metric
+ * CTENSOR features for (mainly) gravitational theory
  */
 
 if get('ctensor,'version)=false then load(ctensor);
 ("A conformally flat metric helps demonstrate the curvature tensors")$
-ratfac:true;
+(ratwtlvl:false,ratfac:true);
 derivabbrev:true;
 dim:4;
 ct_coords:[x,y,z,t];

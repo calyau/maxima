@@ -21,6 +21,7 @@ The double divergence of the Riemann-tensor on its antisymmetric
 indices should vanish. We can prove this in geodesic coordinates:")$
 showtime:true;
 if get('itensor,'version)=false then load(itensor);
+remcomps(g);
 imetric(g);
 covdiff(icurvature([r,s,t],[u])*g([],[s,i])*g([],[t,j]),i)$
 nterms(%);
@@ -30,6 +31,7 @@ ishow(%)$
 canform(covdiff(%,j))$
 nterms(%);
 rename(expand(igeodesic_coords(%th(2),g)));
+showtime:false;
 
 /* Old version. Longer, faster, but uses suspect simplifications.
 load(itensor)$

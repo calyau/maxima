@@ -10,9 +10,9 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
  *
- * MAXIMA CTENSOR demo: Proving that the Reissner-Nordstrom metric
- * is that of a point charge.
- *
+ * The equation of motion of a free particle in a five dimensional
+ * Kaluza-Klein metric appears as the motion of a charged particle
+ * in four dimensional space in the presence of an EM field
  */
 
 ("

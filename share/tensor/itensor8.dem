@@ -15,6 +15,7 @@ if get('itensor,'version)=false then load(itensor);
 if get('ctensor,'version)=false then load(ctensor);
 ("The RHS of the heat transport equation")$
 dim:3;
+remcomps(g);
 imetric(g);
 eqn:ishow(td = canform(rename(expand(covdiff(
      -k([],[])*covdiff(t([],[]),i),j)*g([],[i,j]))))+ source)$

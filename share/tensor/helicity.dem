@@ -13,7 +13,8 @@
  * Proving the conservation of helicity in hydrodynamics
  *
 */
-(if get('itensor,'version)=false then load(itensor),icounter:5,idummyx:j)$
+(if get('itensor,'version)=false then load(itensor),
+ icounter:5,idummyx:j,derivabbrev:false)$
 
 ("the conservation of helicity in hydrodynamics")$
 ("the covariant formulation of the Euler equation is")$

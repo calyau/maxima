@@ -9,7 +9,7 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
  *
- * Demonstrates curvature tensors through the Schwarzschild metric
+ * Differential geometry in CTENSOR
  */
 
 if get('ctensor,'version)=false then load(ctensor);
@@ -19,7 +19,7 @@ dim:4;
 ("The coordinate labels")$
 ct_coords:[x,y,z,t];
 ("Rational simplification of geometrical objects")$
-ratfac:true;
+(ratwtlvl:false,ratfac:true);
 ("Here is the Schwarzschild metric in standard coordinates:")$
 lg:matrix([1/(1-2*m/x),0,0,0],[0,x^2,0,0],
           [0,0,x^2*sin(y)^2,0],[0,0,0,2*m/x-1]);

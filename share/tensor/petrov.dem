@@ -10,8 +10,7 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
  *
- * MAXIMA CTENSOR demo: Demonstrating the equation of motion in
- * a 5D Kaluza-Klein spacetime.
+ * MAXIMA CTENSOR demo: The Petrov classification of the Kerr metric.
  *
  */
 

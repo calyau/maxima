@@ -23,4 +23,5 @@ canform(liediff(v,extdiff(a([i1,i2]),i3))-extdiff(liediff(v,a([i1,i2])),i3));
 canform(liediff(v,extdiff(a([i1,i2,i3]),i4))-extdiff(liediff(v,a([i1,i2,i3])),i4));
 canform(liediff(v,extdiff(a([i1,i2,i3,i4]),i5))-extdiff(liediff(v,a([i1,i2,i3,i4])),i5));
 canform(liediff(v,extdiff(a([i1,i2,i3,i4,i5]),i6))-extdiff(liediff(v,a([i1,i2,i3,i4,i5])),i6));
+showtime:false;
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */

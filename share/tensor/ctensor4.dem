@@ -10,7 +10,7 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
  *
- * Supplement to itensor.lisp: implementation of frames and torsion
+ * Using frame fields in CTENSOR
  *
  */
 

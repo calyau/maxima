@@ -13,91 +13,74 @@
  *
  */
 kill(all);
-showtime:all$
- /* if properties(GCFAC) = [] then load(scifac,fasl)$  */
-/*load(facexp); */
-/*load(ode2);*/
-("This file finds the Schwarzschild solution of 
- the Einstein vacuum equations" );
 
+("Finding the Schwarzschild solution of the Einstein vacuum equations" )$
+
+showtime:all;
 if get('ctensor,'version)=false then load(ctensor);
-/* the following allows the batch program to run by presetting flags */
-setflags()$
-/* this calls for the rational simplification of geometrical objects */
-ratfac:true$
-("Specify the dimension of the manifold and
-the coordinate labels.");
-(dim:4,ct_coords:[r,th,ph,t])$
-("Enter the general static spherically symmetric metric."); 
+(ratwtlvl:false,ratfac:true);
+("Specify the dimension of the manifold and the coordinate labels.")$
+(dim:4,ct_coords:[r,th,ph,t]);
+("Enter the general static spherically symmetric metric.")$
 lg:matrix([a,0,0,0],[0,r^2,0,0],[0,0,r^2*sin(th)^2,0],[0,0,0,-d]);
 ug:invert(lg)$
-("Specify functional dependencies"); 
+("Specify functional dependencies")$
 depends([a,d],r);
-("computes inverse metric and specifies diagonality");
-ug:invert(lg)$
-("computes the mixed Christoffel symbols but not display them");
-christof(false)$
-("computes and ratsimps Ricci tensor");
-uricci(false)$
-("computes and displays the Einstein tensor");
+("computes inverse metric and specifies diagonality")$
+ug:invert(lg);
+("computes the mixed Christoffel symbols but not display them")$
+christof(false);
+("computes and ratsimps Ricci tensor")$
+uricci(false);
+("computes and displays the Einstein tensor")$
 einstein(true);
 
-("makes a list of the non-zero components of the Einstein tensor (EIN)
-where the 2 indicates the order of the array EIN");
-
+("List of the non-zero components of the rank 2 Einstein tensor")$
 exp:findde(ein,2);
 
-("now begins to solve the field equations");
-
+("Now begin to solve the field equations")$
 exp1:ode2(last(exp),a,r);
 
-(" a kludge to get the solution (the 1,1 component) explicitly");
-
+("A kludge to get the solution (the 1,1 component) explicitly")$
 solve(exp1,r);
 resultlist:solve(%,a)$
 h:ev(part(resultlist,1),eval);
-("to cast the solution into standard form");
+("To cast the solution into standard form")$
 h1:h,exp(%c) = 1/(2*m),factor;
-("now to find the 4,4 component");
+("Now to find the 4,4 component")$
 ev(first(exp),h1,diff,factor);
 ode2(num(%),d,r);
 expand(radcan(%));
 h2:ev(%,%c = 1);
-("h1 and h2 should be the solution and to check");
+("h1 and h2 should be the solution and to check")$
 sol:[h1,h2];
 exp,sol,diff,ratsimp;
-/* kill(all);
-IF GET('CTENSOR,'VERSION) = FALSE THEN LOAD("ctensor.mac")$ */
-(dim:4,ct_coords:[r,th,ph,t])$
+
+kill(all);
+if get('ctensor,'version)=false then load(ctensor);
+(dim:4,ct_coords:[r,th,ph,t]);
 
 ("Enter the Schwarzschild metric in standard coordinates.")$ 
-lg : matrix([1/(1-2*m/r),0,0,0],[0,r^2,0,0]
-  ,[0,0,r^2*sin(th)^2,0],[0,0,0,(2*m/r-1)])$
+lg:matrix([1/(1-2*m/r),0,0,0],[0,r^2,0,0]
+  ,[0,0,r^2*sin(th)^2,0],[0,0,0,(2*m/r-1)]);
 ug:invert(lg)$
 
 ("Compute and display mixed Christoffel symbols")$
-
-christof(all)$
-uricci(true)$
+christof(all);
+uricci(true);
 ("computes scalar curvature")$
 scurvature();
 ("computes Riemann tensor")$
-lriemann(true)$
+lriemann(true);
 ("computes contravariant Riemann tensor")$
-uriemann(false)$
+uriemann(false);
 ("computes the Kretchmann invariant Rijkl^2")$
 rinvariant();
 diagmetric:true;
 ("Compute the covariant form of geodesic equations")$
-cgeodesic(true)$
-
-/*("Compute the contravariant form geodesic equations");
-block( for i thru dim do 
-       emc[i]: factorfacsum(ratexpand(sum(ug[i,a]*geod[a],a,1,dim))),
-	         for i thru dim do ldisplay(emc[i]));*/
-
+cgeodesic(true);
 
 block([title: "Schwarzschild Potential for Mass M=2",m:2.],
 plot3d([r*cos(th),r*sin(th),ug[1,1]],[r,.4,4.],[th,-%pi,%pi],['grid,50,15]));
-
+showtime:false;
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */

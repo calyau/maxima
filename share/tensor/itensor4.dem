@@ -43,7 +43,6 @@ ishow(contract(expand(lc2kdt(%))))$
 
 ishow('levi_civita([i,j,k],[])*a([],[j])*b([],[k])*'levi_civita([],[i,l,n])*c([l],[])*u([n],[]))$
 ishow(contract(expand(lc2kdt(%))))$
-ishow(contract(expand(%)))$
 
 ("Two simplification rules process Levi-Civita index patterns")$
 ishow('levi_civita([i,j,k],[])*a([],[j])*a([],[k])+'levi_civita([],[i,j,k])*a([j])*b([k]))$

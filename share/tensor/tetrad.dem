@@ -26,7 +26,7 @@ fri:matrix(
   [0,           0,  r,       0],
   [0,           0,  0,r*sin(d)]);
 ("The problem is simple enough for automatic simplification:")$
-(ctrgsimp:true, ratfac:true, cframe_flag:true)$
+(ctrgsimp:true,ratwtlvl:false,ratfac:true,cframe_flag:true)$
 cmetric();
 ("Compute the Ricci rotation coefficients")$
 christof(true);
