@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.4 2002-09-07 10:05:06 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.5 2002-09-07 10:31:13 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -287,6 +287,8 @@ proc runOneMaxima { win } {
 
 proc sendMaxima { win form } {
     linkLocal $win maximaSocket
+    if {![info exists maximaSocket] || $maximaSocket == ""} {return}
+
     if { ![regexp "\[\$;\]\[ \t\n\r\]*\$" $form ] } {
 	# append form ";"
     }
@@ -335,6 +337,8 @@ proc sendMaximaWait { win form {timeout 20000 }} {
 #
 proc sendMaximaCall { win form call } {
     linkLocal $win maximaSocket
+    if {![info exists maximaSocket] || $maximaSocket == ""} {return}
+
     global pdata
     set begin [$win index lastStart]
     if { [regexp {C([0-9]+)} [$win get "$begin linestart" $begin] junk \
