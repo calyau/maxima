@@ -769,6 +769,9 @@
   (append l (list "\\verb|" (make-string (cadr x) :initial-element #\space) "|") r))
 
 ; jh: verb & mbox
+(defun qndispla (form)
+  (let (($display2d nil))
+    (displa form)))
 
 (defun latex (x)
 ;;  (princ x)  ;; uncomment to debug.
@@ -785,6 +788,3 @@
         (latex form)
       (funcall old-displa form))))
 
-(defun qndispla (form)
-  (let (($display2d nil))
-    (displa form)))
