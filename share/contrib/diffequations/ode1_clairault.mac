@@ -58,7 +58,7 @@ plusseparable(eq,x,y) := block(
    
  */
 ode1_clairault(eq,y,x) := block(
-  [ans,%C,de,%f,%g,%p,%r,_t,sep],
+  [ans,%c,de,%f,%g,%p,%r,_t,sep],
   /* substitute %p=y', %r=x*y'-y */
   de: expand(lhs(eq)-rhs(eq)),
   de: subst(%p,'diff(y,x),de),
@@ -91,7 +91,7 @@ ode1_clairault(eq,y,x) := block(
   ode_disp2("     %f: ",%f),
   ode_disp2("     %g: ",%g),
   method: 'clairault,
-  ans:subst(x*%C-y,%r,%f)=subst(%C,%p,%g),
+  ans:subst(x*%c-y,%r,%f)=subst(%c,%p,%g),
   /* Try and solve for y */
   _t:solve(ans,y),
   if length(_t)=0 then ans:[ans] else ans:_t,

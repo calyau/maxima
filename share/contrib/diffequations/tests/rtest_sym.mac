@@ -98,7 +98,7 @@ ode1_lie(phi,y,x);
 -(2*x*y^2-x^2)/(2*y^2)=%c;
 
 /* This is a subcase of the case above.  It seems OK */
-sym:lie_FxHx(phi:(x-%E^(2*u))/x^2,u,x);
+sym:lie_FxHx(phi:(x-%e^(2*u))/x^2,u,x);
 [-1,-1/x];
 symtest(phi,xi:sym[1],eta:sym[2],u,x);
 0;
@@ -121,28 +121,28 @@ false;
 
  */
 s:lie_symgen_separable(f:cos(x),g:exp(y),y,x);
-[1/COS(x),0];
+[1/cos(x),0];
 symtest(phi:f*g,xi:s[1],eta:s[2],y,x);
 0;
 mu:lie_integrating_factor(phi,xi,eta);
--%E^-y;
+-%e^-y;
 ans:lie_exact(phi,mu,y,x);
-%E^-y*(SIN(x)*%E^y+1) = %C;
+%e^-y*(sin(x)*%e^y+1) = %c;
 solve(ans,y);
-[y = -LOG(%C-SIN(x))];
+[y = -log(%c-sin(x))];
 ode_check('diff(y,x)=phi,%[1]);
 0;
 
 s:lie_symgen_separable(f:cos(x),g:tan(y),y,x);
-[1/COS(x),0];
+[1/cos(x),0];
 symtest(phi:f*g,xi:s[1],eta:s[2],y,x);
 0;
 mu:lie_integrating_factor(phi,xi,eta);
--1/TAN(y);
+-1/tan(y);
 ans:lie_exact(phi,mu,y,x);
-SIN(x)-LOG(SIN(y)) = %C;
+sin(x)-log(sin(y)) = %c;
 solve(ans,y);
-[y = ASIN(%E^(SIN(x)-%C))];
+[y = asin(%e^(sin(x)-%c))];
 ode_check('diff(y,x)=phi,%[1]);
 0;
 
@@ -153,28 +153,28 @@ ode_check('diff(y,x)=phi,%[1]);
 
  */
 s:lie_symgen_linear(f:2,g:1,y,x);
-[1/2,%C*%E^(2*x)];
+[1/2,%c*%e^(2*x)];
 symtest(phi:f*y+g,xi:s[1],eta:s[2],y,x);
 0;
 mu:lie_integrating_factor(phi,xi,eta);
--2/(2*y-2*%C*%E^(2*x)+1);
+-2/(2*y-2*%c*%e^(2*x)+1);
 ans:lie_exact(phi,mu,y,x);
-2*x-LOG(-2*y+2*%C*%E^(2*x)-1) = %C;
+2*x-log(-2*y+2*%c*%e^(2*x)-1) = %c;
 solve(ans,y);
-[y = -(%E^(2*x-%C)-2*%C*%E^(2*x)+1)/2];
+[y = -(%e^(2*x-%c)-2*%c*%e^(2*x)+1)/2];
 ode_check('diff(y,x)=phi,%[1]);
 0;
 
 s:lie_symgen_linear(f:1,g:sin(x)+x,y,x);
-[1,(SIN(x)-COS(x)+2*%C*%E^x-2)/2];
+[1,(sin(x)-cos(x)+2*%c*%e^x-2)/2];
 symtest(phi:f*y+g,xi:s[1],eta:s[2],y,x);
 0;
 mu:lie_integrating_factor(phi,xi,eta);
--2/(2*y+SIN(x)+COS(x)-2*%C*%E^x+2*x+2);
+-2/(2*y+sin(x)+cos(x)-2*%c*%e^x+2*x+2);
 ans:lie_exact(phi,mu,y,x);
-x-LOG(2*y+SIN(x)+COS(x)-2*%C*%E^x+2*x+2) = %C;
+x-log(2*y+sin(x)+cos(x)-2*%c*%e^x+2*x+2) = %c;
 solve(ans,y);
-[y = -(SIN(x)+COS(x)-%E^(x-%C)-2*%C*%E^x+2*x+2)/2];
+[y = -(sin(x)+cos(x)-%e^(x-%c)-2*%c*%e^x+2*x+2)/2];
 ode_check('diff(y,x)=phi,%[1]);
 0;
 

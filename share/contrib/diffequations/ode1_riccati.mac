@@ -74,7 +74,7 @@ ode1_riccati(eq,y,x) := block(
     ode1_riccati_original(b,c,m,y,x)
   ),
   if ( ans#false ) then (
-    method:'RICCATI,
+    method:'riccati,
     return(ans)
   ),
 
@@ -99,7 +99,7 @@ ode1_riccati(eq,y,x) := block(
     ode1_riccati_special(a,b,c,n,y,x)
   ),
   if ( ans#false ) then (
-    method:'RICCATI,
+    method:'riccati,
     return(ans)
   ),
 
@@ -108,7 +108,7 @@ ode1_riccati(eq,y,x) := block(
   */
   ans:ode1_riccati_general(f0,f1,f2,y,x),
   if ( ans#false ) then (
-    method:'RICCATI,
+    method:'riccati,
     return(ans)
   ),
 
@@ -429,8 +429,8 @@ ode1_riccati_general(f0,f1,f2,y,x) := block(
   )
   else (
     ode_disp("    solution found"),
-    method:'RICCATI,
-    ans:rhs(ans[1]), ans:subst(1,%K1,ans), ans:subst(%C,%K2,ans),
+    method:'riccati,
+    ans:rhs(ans[1]), ans:subst(1,%k1,ans), ans:subst(%c,%k2,ans),
     return(y=ratsimp(-diff(ans,x)/(ans*f2)))
   )
 )$
